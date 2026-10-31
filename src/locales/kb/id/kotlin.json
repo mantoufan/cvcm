@@ -1,0 +1,197 @@
+{
+  "title": "Tutorial Kotlin: null safety, fungsi, koleksi, dan coroutine — cv.cm",
+  "description": "Belajar Kotlin langkah demi langkah: instal dan jalankan Hello, world, val dan var, null safety, when, lambda, data class, koleksi, coroutine, dan penanganan error.",
+  "h1": "Tutorial Kotlin untuk pemula",
+  "answer": "Kotlin adalah bahasa modern bertipe statis dari JetBrains yang berjalan di JVM dan menjadi bahasa pilihan untuk pengembangan Android. Bahasa ini ringkas, sepenuhnya interoperable dengan Java, dan sistem tipenya mencegah sebagian besar error null pointer saat kompilasi. Halaman ini membahas setup, variabel, null safety, alur kontrol, fungsi, koleksi, class, coroutine, dan penanganan error lengkap dengan contoh yang bisa dijalankan.",
+  "sections": [
+    {
+      "h": "Apa itu Kotlin dan untuk apa digunakan",
+      "body": [
+        "Kotlin adalah bahasa pemrograman serbaguna bertipe statis yang dibuat oleh JetBrains. Kotlin berjalan di Java Virtual Machine (JVM), dan juga bisa dikompilasi ke JavaScript, WebAssembly, dan kode mesin native. Kotlin sepenuhnya interoperable dengan Java: file Kotlin bisa memanggil library Java apa pun, dan kode Java bisa memanggil Kotlin.",
+        "Sejak 2019 Google merekomendasikan Kotlin sebagai bahasa utama untuk aplikasi Android, sehingga sebagian besar kode Android baru ditulis dengan Kotlin. Kotlin juga umum dipakai di sisi server dengan framework seperti Spring Boot dan Ktor, dan Kotlin Multiplatform memungkinkan tim berbagi logika bisnis antara Android, iOS, desktop, dan web."
+      ]
+    },
+    {
+      "h": "Instal Kotlin dan jalankan Hello, world",
+      "body": [
+        "Cara termudah untuk memulai adalah IntelliJ IDEA atau Android Studio, yang sudah menyertakan Kotlin. Untuk command line, instal compiler (misalnya lewat SDKMAN! atau Homebrew) dan Java runtime (JDK). Program Kotlin dimulai dari fungsi `main` tingkat atas; tidak perlu class.",
+        {
+          "code": "// hello.kt\nfun main() {\n    println(\"Hello, world!\")\n}",
+          "lang": "kotlin"
+        },
+        {
+          "code": "kotlinc hello.kt -include-runtime -d hello.jar\njava -jar hello.jar\n# Hello, world!",
+          "lang": "shell"
+        },
+        "Build tool seperti Gradle (dengan Kotlin DSL) adalah pilihan normal untuk proyek sungguhan. Anda juga bisa mencoba kode tanpa menginstal apa pun di Kotlin Playground online."
+      ]
+    },
+    {
+      "h": "Variabel dan tipe dasar",
+      "body": [
+        "Deklarasikan variabel read-only dengan `val` dan variabel yang bisa diubah dengan `var`. Compiler menebak tipenya, tetapi Anda bisa menuliskannya setelah titik dua. Utamakan `val`: kode jadi lebih mudah dipahami.",
+        {
+          "code": "val name = \"Ada\"          // String, cannot be reassigned\nvar count: Int = 0        // explicit type, can change\ncount += 1\nval pi = 3.14159          // Double\nval big = 9_000_000_000L  // Long\nprintln(\"$name has $count item(s), pi is ${\"%.2f\".format(pi)}\")\n// Ada has 1 item(s), pi is 3.14",
+          "lang": "kotlin"
+        },
+        {
+          "table": {
+            "head": [
+              "Tipe",
+              "Contoh",
+              "Catatan"
+            ],
+            "rows": [
+              [
+                "`Int`",
+                "`42`",
+                "bilangan bulat bertanda 32-bit"
+              ],
+              [
+                "`Long`",
+                "`42L`",
+                "bilangan bulat bertanda 64-bit"
+              ],
+              [
+                "`Double`",
+                "`3.14`",
+                "bilangan floating point 64-bit"
+              ],
+              [
+                "`Boolean`",
+                "`true`",
+                "`true` atau `false`"
+              ],
+              [
+                "`Char`",
+                "`'k'`",
+                "satu karakter"
+              ],
+              [
+                "`String`",
+                "`\"text\"`",
+                "immutable; mendukung template `$name`"
+              ]
+            ]
+          }
+        },
+        "Kotlin tidak punya pelebaran angka implisit: `Int` tidak otomatis dikonversi menjadi `Long`. Panggil `toLong()`, `toDouble()`, atau `toString()` secara eksplisit."
+      ]
+    },
+    {
+      "h": "Null safety",
+      "body": [
+        "Null safety adalah fitur andalan Kotlin. Tipe biasa seperti `String` tidak pernah bisa berisi `null`. Untuk mengizinkan null, tambahkan `?`, seperti `String?`, dan compiler akan memaksa Anda menangani kasus null sebelum nilainya dipakai.",
+        {
+          "code": "fun greet(name: String?) {\n    // println(name.length)        // compile error: name may be null\n    println(name?.length)           // safe call: prints null if name is null\n    val len = name?.length ?: 0     // Elvis operator: default value\n    if (name != null) {\n        println(name.uppercase())   // smart cast: name is String here\n    }\n    println(\"length = $len\")\n}\nfun main() {\n    greet(\"kotlin\")   // 6, KOTLIN, length = 6\n    greet(null)       // null, length = 0\n}",
+          "lang": "kotlin"
+        },
+        {
+          "note": "Operator not-null assertion `!!` mengubah nilai nullable menjadi non-null dan melempar `NullPointerException` jika nilainya null. Pemula sering menambahkan `!!` hanya untuk membungkam compiler; gunakan `?.`, `?:`, atau pengecekan `if` sebagai gantinya."
+        }
+      ]
+    },
+    {
+      "h": "Alur kontrol: if, when, dan loop",
+      "body": [
+        "Di Kotlin `if` dan `when` adalah ekspresi, sehingga keduanya mengembalikan nilai. `when` menggantikan pernyataan `switch` di Java dan C, dan bisa mencocokkan nilai, rentang, dan tipe.",
+        {
+          "code": "val score = 82\nval grade = if (score >= 50) \"pass\" else \"fail\"\nval letter = when (score) {\n    in 90..100 -> \"A\"\n    in 80..89 -> \"B\"\n    in 70..79 -> \"C\"\n    else -> \"F\"\n}\nprintln(\"$grade $letter\")         // pass B\nfor (i in 1..3) print(\"$i \")      // 1 2 3\nprintln()\nfor (i in 10 downTo 0 step 5) print(\"$i \")  // 10 5 0\nprintln()\nvar n = 3\nwhile (n > 0) { print(n); n-- }   // 321\nprintln()",
+          "lang": "kotlin"
+        },
+        "`1..3` adalah rentang tertutup yang menyertakan kedua ujungnya; `0 until 3` (atau `0..<3`) tidak menyertakan ujung akhir, dan ini biasanya yang Anda inginkan untuk indeks."
+      ]
+    },
+    {
+      "h": "Fungsi dan lambda",
+      "body": [
+        "Fungsi dideklarasikan dengan `fun`. Parameter bisa punya nilai default, pemanggil bisa memakai named argument, dan fungsi yang bodinya satu ekspresi bisa memakai `=`.",
+        {
+          "code": "fun area(width: Double, height: Double = 1.0): Double = width * height\nfun main() {\n    println(area(3.0, 2.0))          // 6.0\n    println(area(width = 4.0))       // 4.0 (default height)\n    val square = { x: Int -> x * x } // a lambda stored in a variable\n    println(square(5))               // 25\n    val nums = listOf(1, 2, 3, 4, 5)\n    val evensSquared = nums.filter { it % 2 == 0 }.map { it * it }\n    println(evensSquared)            // [4, 16]\n}",
+          "lang": "kotlin"
+        },
+        "Jika lambda punya satu parameter, Anda bisa merujuknya sebagai `it`. Jika argumen terakhir sebuah fungsi adalah lambda, lambda itu boleh diletakkan di luar tanda kurung, itulah sebabnya `filter { ... }` terbaca seperti blok bawaan."
+      ]
+    },
+    {
+      "h": "Koleksi dan data class",
+      "body": [
+        "Standard library memisahkan koleksi read-only dan mutable: `listOf`, `setOf`, dan `mapOf` membuat koleksi read-only, sedangkan `mutableListOf`, `mutableSetOf`, dan `mutableMapOf` bisa diubah.",
+        {
+          "code": "val fruits = mutableListOf(\"apple\", \"banana\")\nfruits.add(\"cherry\")\nval ages = mapOf(\"Ann\" to 31, \"Bo\" to 25)\nprintln(fruits.size)              // 3\nprintln(ages[\"Ann\"])              // 31\nprintln(ages[\"Zed\"])              // null (map lookups are nullable)\ndata class User(val name: String, val age: Int)\nval u = User(\"Ann\", 31)\nval older = u.copy(age = 32)\nprintln(u)                        // User(name=Ann, age=31)\nprintln(u == User(\"Ann\", 31))     // true (structural equality)\nval (n, a) = older                // destructuring\nprintln(\"$n $a\")                  // Ann 32",
+          "lang": "kotlin"
+        },
+        "`data class` otomatis mendapatkan `equals`, `hashCode`, `toString`, `copy`, dan destructuring. `==` di Kotlin membandingkan isi (memanggil `equals`); `===` membandingkan referensi."
+      ]
+    },
+    {
+      "h": "Class, extension function, dan coroutine",
+      "body": [
+        "Class bersifat final secara default; tandai class dengan `open` agar bisa diwarisi. Extension function menambahkan method ke tipe yang sudah ada tanpa mengubahnya, dan class `sealed` memodelkan himpunan kasus tertutup yang bisa diperiksa `when` secara menyeluruh.",
+        {
+          "code": "fun String.shout(): String = uppercase() + \"!\"\nsealed class Shape\ndata class Circle(val r: Double) : Shape()\ndata class Rect(val w: Double, val h: Double) : Shape()\nfun area(s: Shape): Double = when (s) {\n    is Circle -> Math.PI * s.r * s.r\n    is Rect -> s.w * s.h\n}   // no else needed: the compiler knows all cases\nfun main() {\n    println(\"hi\".shout())                   // HI!\n    println(area(Rect(2.0, 3.0)))           // 6.0\n}",
+          "lang": "kotlin"
+        },
+        "Untuk kode asinkron dan konkuren, Kotlin memakai coroutine dari library `kotlinx.coroutines`. Fungsi `suspend` bisa berhenti sejenak tanpa memblokir thread, dan builder seperti `launch` dan `async` memulai coroutine di dalam sebuah scope. Beginilah aplikasi Android melakukan panggilan jaringan di luar main thread."
+      ]
+    },
+    {
+      "h": "Penanganan error",
+      "body": [
+        "Kotlin punya `try`, `catch`, dan `finally` seperti Java, tetapi semua exception bersifat unchecked: Anda tidak pernah dipaksa mendeklarasikan atau menangkapnya. `try` juga merupakan ekspresi. Untuk kegagalan yang bisa diperkirakan, standard library menyediakan `runCatching` dan `Result`, dan fungsi seperti `toIntOrNull()` mengembalikan `null` alih-alih melempar exception.",
+        {
+          "code": "fun parse(s: String): Int = try {\n    s.toInt()\n} catch (e: NumberFormatException) {\n    -1\n}\nfun main() {\n    println(parse(\"42\"))              // 42\n    println(parse(\"x\"))               // -1\n    println(\"7\".toIntOrNull())        // 7\n    println(\"seven\".toIntOrNull())    // null\n    val r = runCatching { \"abc\".toInt() }\n    println(r.isFailure)              // true\n}",
+          "lang": "kotlin"
+        }
+      ]
+    },
+    {
+      "h": "Program lengkap kecil: frekuensi kata",
+      "body": [
+        "Program ini menghitung seberapa sering tiap kata muncul dalam teks dan mencetak tiga teratas. Program ini memakai extension string, fungsi koleksi, dan data class.",
+        {
+          "code": "data class WordCount(val word: String, val count: Int)\nfun topWords(text: String, n: Int): List<WordCount> =\n    text.lowercase()\n        .split(Regex(\"[^a-z']+\"))\n        .filter { it.isNotBlank() }\n        .groupingBy { it }\n        .eachCount()\n        .map { (w, c) -> WordCount(w, c) }\n        .sortedWith(compareByDescending<WordCount> { it.count }.thenBy { it.word })\n        .take(n)\nfun main() {\n    val text = \"The cat and the dog. The dog sat, and the cat ran.\"\n    for ((word, count) in topWords(text, 3)) {\n        println(\"$word: $count\")\n    }\n}\n// the: 4\n// and: 2\n// cat: 2",
+          "lang": "kotlin"
+        },
+        {
+          "note": "Kesalahan umum pemula: memakai `var` di mana-mana alih-alih `val`; menyebar `!!` untuk membungkam error null; lupa bahwa `1..n` menyertakan `n`; mencoba mewarisi class yang tidak ditandai `open`; dan memanggil kode blocking (seperti `Thread.sleep`) di dalam coroutine alih-alih `delay`."
+        }
+      ]
+    },
+    {
+      "h": "Langkah selanjutnya",
+      "body": [
+        {
+          "ul": [
+            "Dokumentasi resmi Kotlin di kotlinlang.org, mulai dari Basic syntax dan Kotlin tour.",
+            "Kotlin Koans, kumpulan latihan kecil yang berjalan di browser.",
+            "Panduan Android Developers untuk Kotlin di Android, atau panduan Ktor dan Spring untuk Kotlin di sisi server.",
+            "Panduan kotlinx.coroutines ketika Anda butuh kode asinkron."
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Apakah Kotlin lebih baik daripada Java?",
+      "a": "Kotlin lebih ringkas dan menambahkan null safety, data class, dan coroutine, tetapi berjalan di JVM yang sama dan memakai library yang sama. Banyak tim memakai kedua bahasa dalam satu proyek, jadi pilihannya soal gaya dan produktivitas, bukan kemampuan."
+    },
+    {
+      "q": "Apakah saya perlu belajar Java sebelum Kotlin?",
+      "a": "Tidak. Anda bisa belajar Kotlin sebagai bahasa JVM pertama. Mengenal sedikit Java membantu saat membaca kode Android lama atau dokumentasi library Java."
+    },
+    {
+      "q": "Apa perbedaan val dan var?",
+      "a": "`val` mendeklarasikan referensi read-only yang tidak bisa diberi nilai ulang setelah inisialisasi, sedangkan `var` mendeklarasikan referensi yang bisa. `val` yang menunjuk ke list mutable tetap bisa diubah isinya."
+    },
+    {
+      "q": "Apakah Kotlin bisa dipakai untuk aplikasi iOS?",
+      "a": "Bisa, lewat Kotlin Multiplatform yang mengompilasi kode Kotlin bersama menjadi kode native untuk iOS. Antarmuka pengguna sering kali tetap ditulis dengan Swift, meskipun Compose Multiplatform juga dapat berbagi kode UI."
+    },
+    {
+      "q": "Apa fungsi operator ?: di Kotlin?",
+      "a": "Itu adalah operator Elvis: `a ?: b` mengembalikan `a` jika tidak null, dan jika tidak mengembalikan `b`. Operator ini sering dipadukan dengan safe call, seperti `name?.length ?: 0`."
+    }
+  ]
+}

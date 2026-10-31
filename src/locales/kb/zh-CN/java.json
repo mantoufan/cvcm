@@ -1,0 +1,193 @@
+{
+  "title": "Java 入门教程：类、数据类型、集合与异常 — cv.cm",
+  "description": "一页学会 Java：安装 JDK 并运行 Hello world，基本数据类型，流程控制，方法，类，record，集合，异常处理与完整示例。",
+  "h1": "Java 入门教程（零基础）",
+  "answer": "Java 是一门静态类型的面向对象语言，编译为字节码，在任意操作系统的 Java 虚拟机（JVM）上运行。安装 JDK，把一个类保存为 `Hello.java`，然后运行 `java Hello.java`。核心概念包括：类与对象、基本类型与引用类型、集合框架（`List`、`Map`、`Set`）、受检异常，以及 record、`var` 和模式匹配等较新的特性。",
+  "sections": [
+    {
+      "h": "Java 是什么，用来做什么",
+      "body": [
+        "Java 由 Sun Microsystems 于 1995 年发布，如今在开源的 OpenJDK 项目中开发，Oracle 是主要的维护方。它的承诺是“一次编写，到处运行”：编译器生成字节码，JVM 在 Windows、macOS 和 Linux 上运行它。Java 被用于大型企业后端（常搭配 Spring Boot）、Android 应用（与 Kotlin 并用）、Apache Kafka 和 Hadoop 等大数据工具，以及许多桌面和嵌入式系统。每六个月发布一个新版本，生产环境通常选用 Java 21 这类长期支持（LTS）版本。"
+      ]
+    },
+    {
+      "h": "安装 JDK 并运行 Hello, world",
+      "body": [
+        "安装 JDK（Java Development Kit），例如 Eclipse Temurin 这类 OpenJDK 构建版本，或 Oracle 的 JDK。用 `java -version` 检查。每个 Java 程序都位于某个类中，执行从 `main` 开始。",
+        {
+          "code": "public class Hello {\n    public static void main(String[] args) {\n        System.out.println(\"Hello, world\");\n    }\n}",
+          "lang": "java"
+        },
+        {
+          "code": "java Hello.java        # run a single source file directly\n# Hello, world\njavac Hello.java       # or compile to Hello.class first\njava Hello",
+          "lang": "shell"
+        },
+        "文件名必须与 public 类名一致（`class Hello` 对应 `Hello.java`）。"
+      ]
+    },
+    {
+      "h": "变量与基本类型",
+      "body": [
+        "Java 有八种基本类型，直接存储值；另有引用类型（如 `String` 和数组这样的对象）。每个变量都有固定的类型；在方法内部，`var` 允许编译器根据初始值推断类型。",
+        {
+          "table": {
+            "head": [
+              "类型",
+              "大小",
+              "示例"
+            ],
+            "rows": [
+              [
+                "`int`",
+                "32 位",
+                "`int n = 42;`"
+              ],
+              [
+                "`long`",
+                "64 位",
+                "`long big = 10_000_000_000L;`"
+              ],
+              [
+                "`double`",
+                "64 位浮点",
+                "`double pi = 3.14159;`"
+              ],
+              [
+                "`boolean`",
+                "真/假",
+                "`boolean ok = true;`"
+              ],
+              [
+                "`char`",
+                "16 位 UTF-16 单元",
+                "`char c = 'A';`"
+              ],
+              [
+                "`byte`, `short`, `float`",
+                "8、16、32 位",
+                "较少使用"
+              ],
+              [
+                "`String`",
+                "引用",
+                "`String s = \"hi\";`"
+              ]
+            ]
+          }
+        },
+        {
+          "code": "int count = 7;\ndouble avg = count / 2;          // 3.0, integer division happens first\ndouble avg2 = count / 2.0;       // 3.5\nvar name = \"Ada\";                // inferred as String\nString msg = name + \" has \" + count + \" items\";\nSystem.out.println(msg);         // Ada has 7 items\nSystem.out.println(Integer.parseInt(\"12\") + 1); // 13",
+          "lang": "java"
+        },
+        "这只是代码片段：请把这类语句放在 `main` 等方法内部。"
+      ]
+    },
+    {
+      "h": "流程控制",
+      "body": [
+        {
+          "code": "int score = 72;\nif (score >= 90) {\n    System.out.println(\"A\");\n} else if (score >= 70) {\n    System.out.println(\"B\");     // B\n} else {\n    System.out.println(\"C\");\n}\nfor (int i = 0; i < 3; i++) {\n    System.out.println(i);       // 0, 1, 2\n}\nString day = \"SAT\";\nString kind = switch (day) {     // switch expression\n    case \"SAT\", \"SUN\" -> \"weekend\";\n    default -> \"weekday\";\n};\nSystem.out.println(kind);        // weekend",
+          "lang": "java"
+        },
+        "Java 还有 `while`、`do`/`while`，以及增强型 `for (String s : list)` 循环，用于遍历数组和集合。"
+      ]
+    },
+    {
+      "h": "方法、类与 record",
+      "body": [
+        "类把字段（数据）和方法（行为）组织在一起。`static` 方法属于类本身；其他方法则在用 `new` 创建的对象上调用。`record` 是声明不可变数据类的简便写法：编译器会生成构造器、访问器、`equals`、`hashCode` 和 `toString`。",
+        {
+          "code": "public class Shapes {\n    static double square(double x) {\n        return x * x;\n    }\n    static class Counter {\n        private int value;\n        void increment() { value++; }\n        int get() { return value; }\n    }\n    record Point(int x, int y) {\n        double distance() { return Math.sqrt(x * x + y * y); }\n    }\n    public static void main(String[] args) {\n        System.out.println(square(4));        // 16.0\n        Counter c = new Counter();\n        c.increment();\n        c.increment();\n        System.out.println(c.get());          // 2\n        Point p = new Point(3, 4);\n        System.out.println(p + \" \" + p.distance()); // Point[x=3, y=4] 5.0\n    }\n}",
+          "lang": "java"
+        },
+        "类只能继承一个父类（`extends`），但可以实现多个接口（`implements`）。字段通常是 `private`，通过方法访问。"
+      ]
+    },
+    {
+      "h": "集合：List、Map 和 Set",
+      "body": [
+        "`java.util` 中的集合框架提供了可变长度的数据结构。集合存放的是对象，所以基本类型会自动装箱（`int` 变成 `Integer`）。",
+        {
+          "code": "import java.util.*;\npublic class Collections101 {\n    public static void main(String[] args) {\n        List<Integer> nums = new ArrayList<>(List.of(3, 1, 2));\n        nums.add(5);\n        Collections.sort(nums);\n        System.out.println(nums + \" \" + nums.get(0));  // [1, 2, 3, 5] 1\n        Map<String, Integer> ages = new HashMap<>();\n        ages.put(\"ann\", 31);\n        ages.put(\"bob\", 25);\n        System.out.println(ages.getOrDefault(\"zed\", 0)); // 0\n        Set<String> tags = new TreeSet<>(List.of(\"b\", \"a\", \"b\"));\n        System.out.println(tags);                        // [a, b]\n        List<Integer> evensSquared = nums.stream()\n            .filter(n -> n % 2 == 0)\n            .map(n -> n * n)\n            .toList();\n        System.out.println(evensSquared);                // [4]\n    }\n}",
+          "lang": "java"
+        },
+        "最后一条语句使用了流（stream）和 lambda，这是转换集合的函数式风格。`List.of` 创建不可变列表；需要修改时请用 `new ArrayList<>(...)` 包装。"
+      ]
+    },
+    {
+      "h": "标志性特性：静态类型、接口与模式匹配",
+      "body": [
+        "接口定义了许多类都可以实现的契约，这是大多数 Java 设计的基础。现代 Java 加入了模式匹配：`instanceof` 和 `switch` 可以一步完成类型测试并绑定变量。密封接口（Java 17 及以后）会列出所有允许的实现，因此编译器可以检查 `switch` 是否覆盖了所有情况。",
+        {
+          "code": "public class Areas {\n    sealed interface Shape permits Circle, Rect {}\n    record Circle(double r) implements Shape {}\n    record Rect(double w, double h) implements Shape {}\n    static double area(Shape s) {\n        return switch (s) {\n            case Circle c -> Math.PI * c.r() * c.r();\n            case Rect r -> r.w() * r.h();\n        };\n    }\n    public static void main(String[] args) {\n        System.out.println(area(new Rect(2, 3)));  // 6.0\n    }\n}",
+          "lang": "java"
+        },
+        "这样的 `switch` 模式匹配在 Java 21 LTS 及之后版本中已是标准特性。"
+      ]
+    },
+    {
+      "h": "异常",
+      "body": [
+        "错误以异常的形式表示。受检异常（如 `IOException`）必须捕获或用 `throws` 声明；非受检异常（`RuntimeException` 的子类，如 `NullPointerException`）则不必。`try`-with-resources 会自动关闭文件和连接。",
+        {
+          "code": "import java.io.*;\nimport java.nio.file.*;\npublic class ReadFirst {\n    static int parseAge(String text) {\n        int age = Integer.parseInt(text);   // may throw NumberFormatException\n        if (age < 0) throw new IllegalArgumentException(\"negative age\");\n        return age;\n    }\n    public static void main(String[] args) {\n        try {\n            System.out.println(parseAge(\"abc\"));\n        } catch (NumberFormatException e) {\n            System.out.println(\"not a number\");  // not a number\n        }\n        try (BufferedReader in = Files.newBufferedReader(Path.of(\"notes.txt\"))) {\n            System.out.println(in.readLine());\n        } catch (IOException e) {\n            System.out.println(\"cannot read: \" + e.getMessage());\n        }\n    }\n}",
+          "lang": "java"
+        }
+      ]
+    },
+    {
+      "h": "一个完整的小程序：词频统计",
+      "body": [
+        {
+          "code": "import java.io.IOException;\nimport java.nio.file.*;\nimport java.util.*;\npublic class WordCount {\n    public static void main(String[] args) throws IOException {\n        if (args.length != 1) {\n            System.err.println(\"usage: java WordCount.java FILE\");\n            System.exit(1);\n        }\n        String text = Files.readString(Path.of(args[0])).toLowerCase();\n        Map<String, Integer> counts = new HashMap<>();\n        for (String word : text.split(\"[^a-z']+\")) {\n            if (!word.isEmpty()) counts.merge(word, 1, Integer::sum);\n        }\n        counts.entrySet().stream()\n            .sorted(Map.Entry.<String, Integer>comparingByValue().reversed())\n            .limit(5)\n            .forEach(e -> System.out.printf(\"%5d  %s%n\", e.getValue(), e.getKey()));\n    }\n}",
+          "lang": "java"
+        },
+        "用 `java WordCount.java notes.txt` 运行。它会输出出现次数最多的五个单词及其次数。"
+      ]
+    },
+    {
+      "h": "新手常见错误",
+      "body": [
+        {
+          "note": "比较字符串要用 `a.equals(b)`，而不是 `a == b`。`==` 运算符检查的是两个引用是否指向同一个对象，对于内容相同的文本它也可能为 false。"
+        },
+        {
+          "ul": [
+            "整数除法：`5 / 2` 的结果是 `2`。让其中一边是 `double`，才能得到 `2.5`。",
+            "对 `null` 调用方法会抛出 `NullPointerException`。请检查 `null`，或对可能缺失的值使用 `Optional`。",
+            "试图修改用 `List.of` 创建的列表，会抛出 `UnsupportedOperationException`。",
+            "忘记数组和 `List` 的下标从 0 开始，因此最后一个元素在 `length - 1`。"
+          ]
+        }
+      ]
+    },
+    {
+      "h": "接下来学什么",
+      "body": [
+        "跟随官方 Java 开发者网站 dev.java 上的学习路径，并随时打开 Java SE API 文档作为参考。学习构建工具（Maven 或 Gradle）、用 JUnit 做单元测试，然后学习 Spring Boot 等框架来开发 Web 服务。同样运行在 JVM 上的 Kotlin 是顺理成章的下一门语言。"
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Java 难学吗？",
+      "a": "Java 比 Python 更啰嗦，因为你要声明类型并把代码放进类里，但它的规则前后一致，编译器也会尽早指出错误。许多大学把它作为第一门编程语言。"
+    },
+    {
+      "q": "JDK 和 JVM 有什么区别？",
+      "a": "JVM 负责运行编译后的字节码。JDK 是完整的开发工具包：JVM 加上编译器 `javac`、标准库和各种工具。开发者需要安装的是 JDK。"
+    },
+    {
+      "q": "应该学哪个 Java 版本？",
+      "a": "学习当前的长期支持版本，例如 Java 21 或更新的 LTS。旧代码仍可在新的 JVM 上运行，所以学到的现代写法同样适用于现有项目。"
+    },
+    {
+      "q": "Java 和 JavaScript 是一回事吗？",
+      "a": "不是。尽管名字相似，它们是两种独立的语言，类型系统、运行环境和用途都不同。"
+    },
+    {
+      "q": "Java 现在还有人用吗？",
+      "a": "有。它仍然是企业后端、Android 和数据基础设施中使用最多的语言之一。"
+    }
+  ]
+}

@@ -1,0 +1,157 @@
+{
+  "title": "싱글턴 패턴: 의도, TypeScript 예제, 함정과 대안 — cv.cm",
+  "description": "싱글턴 디자인 패턴 설명: TypeScript에서 인스턴스를 하나로 보장하는 방법, 지연 초기화와 비동기 변형, 테스트를 어렵게 하는 이유, 더 나은 대안을 다룹니다.",
+  "h1": "예제로 이해하는 싱글턴 패턴",
+  "answer": "싱글턴 패턴은 클래스의 인스턴스가 하나뿐임을 보장하고 그 인스턴스에 대한 전역 접근 지점을 제공하는 생성 패턴입니다. TypeScript에서는 private 생성자와, 처음 사용할 때 인스턴스를 만들고 이후에는 같은 객체를 반환하는 정적 메서드로 구현합니다. 설정 객체나 커넥션 풀처럼 정말로 유일해야 하는 리소스에 유용하지만 전역 상태처럼 동작하기 때문에, 많은 팀이 공유 인스턴스 하나를 명시적으로 넘겨주는 방식을 선호합니다.",
+  "sections": [
+    {
+      "h": "의도",
+      "body": [
+        "클래스의 인스턴스가 하나뿐임을 보장하고, 그 인스턴스에 대한 전역 접근 지점을 제공합니다. 싱글턴 패턴은 Gang of Four(GoF) 책의 다섯 가지 생성 패턴 중 하나입니다."
+      ]
+    },
+    {
+      "h": "해결하는 문제",
+      "body": [
+        "프로그램에 정확히 하나만 존재해야 하는 객체가 있습니다. 환경 변수에서 읽어 온 애플리케이션 설정, 프로세스 내 캐시, 데이터베이스 커넥션 풀을 떠올려 보세요. 모든 모듈이 `new Config()`를 호출하면 각자 환경을 다시 읽고, 캐시는 여러 사본으로 쪼개지며, 풀의 한도는 의미가 없어집니다.",
+        "필요한 것은 두 가지입니다. 두 번째 인스턴스가 실수로 만들어지지 않는다는 보장과, 어떤 코드든 유일한 인스턴스에 쉽게 접근하는 방법입니다."
+      ]
+    },
+    {
+      "h": "구조와 참여자",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "참여자",
+              "역할"
+            ],
+            "rows": [
+              [
+                "싱글턴 클래스",
+                "생성자를 숨겨 다른 코드가 `new`를 직접 호출하지 못하게 함."
+              ],
+              [
+                "정적 인스턴스 필드",
+                "인스턴스가 만들어지면 그 하나를 보관."
+              ],
+              [
+                "정적 접근 메서드(흔히 `getInstance`)",
+                "첫 호출 때 인스턴스를 만들고(지연 초기화) 매 호출마다 같은 객체를 반환."
+              ],
+              [
+                "클라이언트",
+                "접근 메서드를 통해서만 인스턴스를 얻음."
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "TypeScript 구현",
+      "body": [
+        "private 생성자는 클래스 밖에서 `new AppConfig()`를 컴파일 오류로 만듭니다. 정적 메서드가 객체를 지연 생성합니다.",
+        {
+          "code": "class AppConfig {\n  private static instance: AppConfig | undefined;\n  readonly settings: Record<string, string>;\n  private constructor() {\n    console.log(\"loading config once\");\n    this.settings = { mode: \"production\", region: \"eu\" };\n  }\n  static getInstance(): AppConfig {\n    if (!AppConfig.instance) {\n      AppConfig.instance = new AppConfig();\n    }\n    return AppConfig.instance;\n  }\n}\nconst a = AppConfig.getInstance(); // loading config once\nconst b = AppConfig.getInstance();\nconsole.log(a === b);          // true\nconsole.log(a.settings.mode);  // production\n// new AppConfig(); // error: constructor is private",
+          "lang": "typescript"
+        },
+        {
+          "note": "TypeScript의 `private`은 컴파일 시점에만 검사됩니다. 순수 JavaScript 코드는 여전히 생성자를 호출할 수 있습니다. 런타임 보장이 필요하다면 이미 인스턴스가 있을 때 생성자에서 예외를 던지거나, 아래에 보이는 모듈 수준 인스턴스를 사용하세요."
+        },
+        "JavaScript와 TypeScript에서 ES 모듈은 프로그램당 한 번만 평가되므로, 모듈에서 인스턴스를 export하는 것이 가장 간단한 싱글턴입니다. 모든 `import`가 같은 객체를 받습니다.",
+        {
+          "code": "// logger.ts\nclass Logger {\n  private lines: string[] = [];\n  log(msg: string): void { this.lines.push(msg); console.log(msg); }\n  count(): number { return this.lines.length; }\n}\nexport const logger = new Logger();\n// elsewhere: import { logger } from \"./logger\";\nlogger.log(\"started\");      // started\nconsole.log(logger.count()); // 1",
+          "lang": "typescript"
+        }
+      ]
+    },
+    {
+      "h": "비동기 초기화",
+      "body": [
+        "데이터베이스 연결을 여는 것처럼 인스턴스 생성이 비동기라면, 두 호출자가 모두 \"아직 인스턴스가 없다\"고 보고 첫 번째 연결이 끝나기 전에 연결을 두 개 시작할 수 있습니다. 결과가 아니라 프로미스를 캐시하세요.",
+        {
+          "code": "class Database {\n  private static ready: Promise<Database> | undefined;\n  private constructor(readonly url: string) {}\n  static get(): Promise<Database> {\n    if (!Database.ready) {\n      Database.ready = (async () => {\n        await new Promise((r) => setTimeout(r, 10)); // simulate connecting\n        console.log(\"connected once\");\n        return new Database(\"db://main\");\n      })();\n    }\n    return Database.ready;\n  }\n}\nconst [x, y] = await Promise.all([Database.get(), Database.get()]);\nconsole.log(x === y); // true",
+          "lang": "typescript"
+        },
+        "Java나 C# 같은 멀티스레드 언어에서도 같은 이유로 지연 생성에 동기화가 필요합니다. 흔한 해법은 정적 필드에서의 즉시 초기화, 지연 홀더 클래스, Java에서는 원소가 하나뿐인 `enum`입니다."
+      ]
+    },
+    {
+      "h": "언제 쓰고 언제 쓰지 말아야 하나",
+      "body": [
+        "다음과 같을 때 싱글턴 패턴을 사용합니다.",
+        {
+          "ul": [
+            "편의가 아니라 정확성을 위해 인스턴스가 정확히 하나여야 할 때(하드웨어 장치 하나, 프로세스 전체의 레지스트리 하나).",
+            "생성 비용이 크고 객체가 생성 후 상태가 없거나 스레드 안전할 때."
+          ]
+        },
+        "다음 경우에는 피하거나 제한하세요.",
+        {
+          "ul": [
+            "주로 편리한 전역 접근을 원할 때. 싱글턴은 이름만 근사한 전역 가변 상태입니다. 어떤 코드든 바꿀 수 있고, 의존 관계가 함수 시그니처에 드러나지 않습니다.",
+            "테스트가 필요할 때. 싱글턴을 공유하는 테스트는 서로 영향을 주고, 실제 인스턴스를 가짜로 교체하기도 어렵습니다.",
+            "\"인스턴스는 하나\"라는 규칙이 나중에 바뀔 수 있을 때. 예를 들어 테넌트마다 캐시가 하나씩 필요해지는 경우입니다."
+          ]
+        },
+        "흔한 대안은 의존성 주입입니다. 프로그램 시작 시점(컴포지션 루트)에 인스턴스 하나를 만들어 필요한 클래스에 넘겨 줍니다. 여전히 인스턴스는 하나지만 의존 관계가 드러나고 교체할 수 있습니다.",
+        {
+          "code": "class Cache {\n  private data = new Map<string, string>();\n  get(key: string): string | undefined { return this.data.get(key); }\n  set(key: string, value: string): void { this.data.set(key, value); }\n}\nclass UserService {\n  constructor(private cache: Cache) {} // dependency is explicit\n  remember(id: string, name: string): void { this.cache.set(id, name); }\n}\nconst sharedCache = new Cache(); // the single instance, created once\nconst users = new UserService(sharedCache);\nusers.remember(\"u1\", \"Ada\");\nconsole.log(sharedCache.get(\"u1\")); // Ada",
+          "lang": "typescript"
+        }
+      ]
+    },
+    {
+      "h": "실제 사용 사례",
+      "body": [
+        {
+          "ul": [
+            "Java: `Runtime.getRuntime()`은 실행 중인 Java 애플리케이션의 유일한 `Runtime` 객체를 반환합니다.",
+            "Node.js는 처음 로드한 뒤 모듈을 캐시하므로, 모듈이 export한 객체는 그것을 require하거나 import하는 모든 파일이 공유합니다.",
+            "브라우저는 페이지마다 `window`와 `document` 같은 유일한 전역 객체를 제공합니다.",
+            "Angular와 Spring 같은 의존성 주입 프레임워크는 기본적으로 \"싱글턴 스코프\" 서비스를 만듭니다. 인젝터나 컨테이너당 인스턴스 하나이며, 이 패턴의 정적 접근 부분은 없습니다."
+          ]
+        },
+        {
+          "note": "Node.js는 확인된 파일 경로를 기준으로 모듈을 캐시합니다. 같은 패키지의 사본 두 개가 서로 다른 `node_modules` 폴더에 설치되어 있으면 서로 별개의 \"싱글턴\"이 두 개 생깁니다."
+        }
+      ]
+    },
+    {
+      "h": "관련 패턴",
+      "body": [
+        {
+          "ul": [
+            "추상 팩토리, 빌더, 프로토타입 객체는 팩토리 하나면 충분하므로 흔히 싱글턴으로 구현됩니다.",
+            "퍼사드 객체는 하위 시스템의 진입점 하나면 보통 충분하므로 단일 인스턴스인 경우가 많습니다.",
+            "플라이웨이트 패턴도 객체를 공유하지만, 상태별로 공유 인스턴스를 여러 개 관리하는 반면 싱글턴은 정확히 하나뿐입니다.",
+            "GoF 패턴은 아니지만, 의존성 주입은 최신 코드에서 싱글턴을 대체하는 가장 흔한 방법입니다."
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "싱글턴 패턴은 안티패턴인가요?",
+      "a": "안티패턴이라고 불리는 경우가 많습니다. 숨겨진 전역 상태를 들여오고 테스트를 어렵게 하기 때문입니다. 인스턴스가 하나인 것은 괜찮고, 문제는 전역 접근입니다. 인스턴스 하나를 만들어 명시적으로 넘겨 주면 대부분의 문제를 피할 수 있습니다."
+    },
+    {
+      "q": "TypeScript에서 싱글턴은 어떻게 만드나요?",
+      "a": "private 생성자, 인스턴스를 담는 private 정적 필드, 첫 호출 때 인스턴스를 만드는 정적 메서드를 사용합니다. 모듈에서 인스턴스 하나를 export하는 것이 더 간단한 대안입니다."
+    },
+    {
+      "q": "JavaScript 모듈은 싱글턴인가요?",
+      "a": "사실상 그렇습니다. 모듈은 한 번만 평가되고 같은 프로그램에서 모든 import하는 쪽이 export를 공유합니다. 같은 코드가 서로 다른 두 경로에서 로드되는 경우는 예외입니다."
+    },
+    {
+      "q": "싱글턴을 쓰는 코드는 어떻게 테스트하나요?",
+      "a": "싱글턴이 인터페이스를 구현하게 하고 테스트 대상 코드에 넘겨서, 테스트가 가짜를 공급할 수 있게 하세요. 설계를 바꿀 수 없다면 테스트에서만 쓰는 리셋 메서드를 추가하세요."
+    },
+    {
+      "q": "싱글턴과 정적 클래스는 무엇이 다른가요?",
+      "a": "싱글턴은 진짜 객체입니다. 인터페이스를 구현하고, 매개변수로 전달되며, 지연 생성될 수 있습니다. 정적 멤버만 있는 클래스는 대체하거나 객체로 전달할 수 없습니다."
+    }
+  ]
+}

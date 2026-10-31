@@ -1,0 +1,215 @@
+{
+  "title": "堆疊與佇列（Stack 和 Queue）圖解：LIFO 與 FIFO、Python 程式碼與複雜度 — cv.cm",
+  "description": "用 Python 程式碼說明堆疊（LIFO）與佇列（FIFO）：以 list 當堆疊、以 collections.deque 當佇列，並介紹括號配對、BFS 與時間複雜度。",
+  "h1": "堆疊與佇列教學：LIFO 與 FIFO 的差別與 Python 範例",
+  "answer": "堆疊是後加入的項目最先被移除的集合（LIFO，後進先出），就像一疊盤子。佇列則是先加入的項目最先被移除的集合（FIFO，先進先出），就像結帳排隊的人龍。兩者的新增與移除都是 O(1) 時間。在 Python 中，用 `list` 當堆疊，用 `collections.deque` 當佇列。",
+  "sections": [
+    {
+      "h": "堆疊與佇列解決什麼問題",
+      "body": [
+        "許多程式需要先記住一些項目，稍後再依固定順序處理。堆疊先給你最新的項目，適合處理巢狀的工作：函式呼叫、復原歷史、括號配對與深度優先搜尋。佇列先給你最舊的項目，適合公平的等待順序：列印工作、工作排程器、訊息佇列與廣度優先搜尋。",
+        "兩者都是抽象資料型別（abstract data type）：由它支援的操作來定義，而不是由儲存方式決定。你可以用陣列或鏈結串列來實作任何一種。"
+      ]
+    },
+    {
+      "h": "操作與名稱",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "操作",
+              "堆疊（LIFO）",
+              "佇列（FIFO）"
+            ],
+            "rows": [
+              [
+                "新增項目",
+                "push：放到頂端",
+                "enqueue：加到尾端"
+              ],
+              [
+                "移除項目",
+                "pop：從頂端取出",
+                "dequeue：從前端取出"
+              ],
+              [
+                "查看但不移除",
+                "peek / top",
+                "peek / front"
+              ],
+              [
+                "Python 型別",
+                "`list`，搭配 `append` 與 `pop`",
+                "`collections.deque`，搭配 `append` 與 `popleft`"
+              ],
+              [
+                "輸入 1、2、3 時的移除順序",
+                "3, 2, 1",
+                "1, 2, 3"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "實例演練：逐步看 push 與 pop",
+      "body": [
+        "把 1、2、3 依序放進兩種結構，再各移除兩個項目。",
+        {
+          "table": {
+            "head": [
+              "步驟",
+              "堆疊內容（頂端在右）",
+              "佇列內容（前端在左）"
+            ],
+            "rows": [
+              [
+                "加入 1",
+                "[1]",
+                "[1]"
+              ],
+              [
+                "加入 2",
+                "[1, 2]",
+                "[1, 2]"
+              ],
+              [
+                "加入 3",
+                "[1, 2, 3]",
+                "[1, 2, 3]"
+              ],
+              [
+                "移除",
+                "回傳 3，剩下 [1, 2]",
+                "回傳 1，剩下 [2, 3]"
+              ],
+              [
+                "移除",
+                "回傳 2，剩下 [1]",
+                "回傳 2，剩下 [3]"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "Python 實作",
+      "body": [
+        "Python 的 `list` 本身就是很好的堆疊：`append` 與 `pop()` 操作串列的尾端，均攤時間為 O(1)。至於佇列，不要使用 `list.pop(0)`，因為它會搬移所有剩下的元素，成本是 O(n)。請改用 `collections.deque`，兩端操作都是 O(1)。",
+        {
+          "code": "from collections import deque\nstack = []\nstack.append(1)\nstack.append(2)\nstack.append(3)\nprint(stack.pop(), stack[-1])   # 3 2\nqueue = deque()\nqueue.append(\"a\")\nqueue.append(\"b\")\nqueue.append(\"c\")\nprint(queue.popleft(), queue[0])  # a b\nprint(len(stack), len(queue))     # 2 2",
+          "lang": "python"
+        },
+        "如果你想要有名稱清楚的方法和明確的錯誤訊息，可以用一個小類別包裝這些內建型別：",
+        {
+          "code": "from collections import deque\nclass Queue:\n    def __init__(self):\n        self._items = deque()\n    def enqueue(self, item):\n        self._items.append(item)\n    def dequeue(self):\n        if not self._items:\n            raise IndexError(\"dequeue from empty queue\")\n        return self._items.popleft()\n    def __len__(self):\n        return len(self._items)\nq = Queue()\nq.enqueue(\"job1\")\nq.enqueue(\"job2\")\nprint(q.dequeue(), len(q))  # job1 1",
+          "lang": "python"
+        }
+      ]
+    },
+    {
+      "h": "經典堆疊問題：括號配對",
+      "body": [
+        "要檢查每個括號是否都以正確順序閉合，只要把每個左括號 push 進去。遇到右括號時，堆疊頂端必須是與它配對的左括號。",
+        {
+          "code": "def is_balanced(text):\n    pairs = {\")\": \"(\", \"]\": \"[\", \"}\": \"{\"}\n    stack = []\n    for ch in text:\n        if ch in \"([{\":\n            stack.append(ch)\n        elif ch in pairs:\n            if not stack or stack.pop() != pairs[ch]:\n                return False\n    return not stack\nprint(is_balanced(\"f(a[1], {b: 2})\"))  # True\nprint(is_balanced(\"(]\"))               # False\nprint(is_balanced(\"((\"))               # False",
+          "lang": "python"
+        },
+        "同樣的想法也能用來計算後序表示式（逆波蘭表示法）、把遞迴改寫成迴圈，以及實現深度優先搜尋：用你自己的串列取代呼叫堆疊。"
+      ]
+    },
+    {
+      "h": "經典佇列問題：廣度優先搜尋",
+      "body": [
+        "廣度優先搜尋會一層一層地走訪圖。佇列正好做到這一點：先被發現的節點先被處理。",
+        {
+          "code": "from collections import deque\ndef bfs_order(graph, start):\n    seen = {start}\n    queue = deque([start])\n    order = []\n    while queue:\n        node = queue.popleft()\n        order.append(node)\n        for nxt in graph[node]:\n            if nxt not in seen:\n                seen.add(nxt)\n                queue.append(nxt)\n    return order\ngraph = {\"A\": [\"B\", \"C\"], \"B\": [\"D\"], \"C\": [\"D\"], \"D\": []}\nprint(bfs_order(graph, \"A\"))  # ['A', 'B', 'C', 'D']",
+          "lang": "python"
+        }
+      ]
+    },
+    {
+      "h": "時間與空間複雜度",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "操作",
+              "堆疊（`list`）",
+              "佇列（`deque`）",
+              "佇列（`list.pop(0)`）"
+            ],
+            "rows": [
+              [
+                "新增",
+                "均攤 O(1)",
+                "O(1)",
+                "均攤 O(1)"
+              ],
+              [
+                "移除",
+                "O(1)",
+                "O(1)",
+                "O(n)，元素向左搬移"
+              ],
+              [
+                "查看",
+                "O(1)",
+                "O(1)",
+                "O(1)"
+              ],
+              [
+                "n 個項目的空間",
+                "O(n)",
+                "O(n)",
+                "O(n)"
+              ]
+            ]
+          }
+        },
+        "均攤（amortized）的意思是：偶爾某次 `append` 會調整底層陣列的大小，成本為 O(n)，但平均分攤到大量操作上，每次仍是 O(1)。"
+      ]
+    },
+    {
+      "h": "變體與常見錯誤",
+      "body": [
+        {
+          "ul": [
+            "雙端佇列（deque）：兩端都能新增與移除。`collections.deque` 就是一種，它既能當堆疊也能當佇列。",
+            "優先佇列（priority queue）：先移除最小（或最大）的項目，而不是最舊的。請使用 `heapq`，詳見二元堆積那一頁。",
+            "環形緩衝區（circular buffer）：以環繞索引存放在陣列中的固定大小佇列。`deque(maxlen=n)` 在滿了之後會丟掉最舊的項目。",
+            "執行緒安全佇列：`queue.Queue` 用於執行緒，`asyncio.Queue` 用於協程，等待項目時會阻塞。",
+            "用兩個堆疊做出佇列：push 到輸入堆疊，當輸出堆疊為空時，再把全部項目倒過去。每個項目只會搬移一次，所以操作為均攤 O(1)。"
+          ]
+        },
+        {
+          "note": "對空的 `list` 呼叫 `pop()`，或對空的 `deque` 呼叫 `popleft()`，都會拋出 `IndexError`。移除前請先檢查 `if stack:`，或捕捉這個例外。"
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "堆疊和佇列有什麼差別？",
+      "a": "堆疊先移除最近加入的項目（LIFO），佇列先移除最舊的項目（FIFO）。兩者的新增與移除都是 O(1) 時間。"
+    },
+    {
+      "q": "在 Python 中，佇列該用 list 還是 deque？",
+      "a": "請用 `collections.deque`。用 `pop(0)` 從 `list` 前端移除是 O(n)，因為其他元素都要搬移；`deque.popleft()` 則是 O(1)。"
+    },
+    {
+      "q": "實際的程式在哪裡會用到堆疊？",
+      "a": "儲存函式呼叫的呼叫堆疊、復原與重做歷史、瀏覽器的上一頁按鈕、運算式解析、括號配對，以及深度優先搜尋。"
+    },
+    {
+      "q": "什麼是堆疊溢位（stack overflow）？",
+      "a": "當呼叫堆疊的空間用完時就會發生，通常是因為遞迴太深或無限遞迴。在 Python 中，超過遞迴上限時會出現 `RecursionError`。"
+    },
+    {
+      "q": "queue.Queue 和 collections.deque 一樣嗎？",
+      "a": "不一樣。`queue.Queue` 是執行緒安全的佇列，帶有鎖，其 `get` 與 `put` 會阻塞，用來在執行緒之間傳遞工作。`collections.deque` 則是更快、不會阻塞的通用容器。"
+    }
+  ]
+}

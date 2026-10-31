@@ -1,0 +1,198 @@
+{
+  "title": "二叉树遍历详解：前序、中序、后序和层序的 Python 实现 — cv.cm",
+  "description": "二叉树遍历详解：前序、中序、后序和层序（BFS），附递归与迭代的 Python 代码、逐步演示和复杂度。",
+  "h1": "二叉树遍历详解：前序、中序、后序和层序",
+  "answer": "遍历二叉树，就是按固定顺序恰好访问每个节点一次。三种深度优先顺序的区别只在于何时访问节点本身：前序是 根、左、右；中序是 左、根、右；后序是 左、右、根。层序遍历是广度优先，用队列一行一行地访问整棵树。四种遍历的时间都是 O(n)。",
+  "sections": [
+    {
+      "h": "遍历顺序为什么重要",
+      "body": [
+        "树没有唯一的自然顺序，所以算法会选择适合任务的那一种。对二叉搜索树做中序遍历，会按从小到大的顺序得到所有键。前序先访问父节点再访问孩子，复制一棵树或把树写出来以便重建时需要它。后序先访问孩子再访问父节点，删除一棵树、计算文件夹大小或求值表达式树时需要它。层序最先找到最浅的节点，也能逐行打印一棵树。"
+      ]
+    },
+    {
+      "h": "同一棵树上的四种顺序",
+      "body": [
+        "我们使用这棵树：根节点 1 有孩子 2 和 3；节点 2 有孩子 4 和 5；节点 3 有右孩子 6。",
+        {
+          "code": "        1\n       / \\\n      2   3\n     / \\   \\\n    4   5   6",
+          "lang": "text"
+        },
+        {
+          "table": {
+            "head": [
+              "顺序",
+              "规则",
+              "结果"
+            ],
+            "rows": [
+              [
+                "前序",
+                "根、左、右",
+                "1 2 4 5 3 6"
+              ],
+              [
+                "中序",
+                "左、根、右",
+                "4 2 5 1 3 6"
+              ],
+              [
+                "后序",
+                "左、右、根",
+                "4 5 2 6 3 1"
+              ],
+              [
+                "层序",
+                "逐行，从左到右",
+                "1 2 3 4 5 6"
+              ]
+            ]
+          }
+        },
+        "记住前三种的简单办法：名字说明了节点放在哪里。前（pre）表示在两棵子树之前，中（in）表示在它们之间，后（post）表示在它们之后。左子树总是先于右子树被访问。"
+      ]
+    },
+    {
+      "h": "递归实现",
+      "body": [
+        "递归版本直接对应定义。每个函数在不同的一行访问节点。",
+        {
+          "code": "class Node:\n    def __init__(self, val, left=None, right=None):\n        self.val, self.left, self.right = val, left, right\ndef preorder(node, out):\n    if node:\n        out.append(node.val)\n        preorder(node.left, out)\n        preorder(node.right, out)\n    return out\ndef inorder(node, out):\n    if node:\n        inorder(node.left, out)\n        out.append(node.val)\n        inorder(node.right, out)\n    return out\ndef postorder(node, out):\n    if node:\n        postorder(node.left, out)\n        postorder(node.right, out)\n        out.append(node.val)\n    return out\nroot = Node(1, Node(2, Node(4), Node(5)), Node(3, None, Node(6)))\nprint(preorder(root, []))   # [1, 2, 4, 5, 3, 6]\nprint(inorder(root, []))    # [4, 2, 5, 1, 3, 6]\nprint(postorder(root, []))  # [4, 5, 2, 6, 3, 1]",
+          "lang": "python"
+        }
+      ]
+    },
+    {
+      "h": "用栈实现迭代的前序和中序",
+      "body": [
+        "递归使用调用栈。为了避免在很深的树上触及递归限制，可以自己管理栈。对于前序，弹出一个节点并访问它，然后先压入右孩子再压入左孩子，这样左孩子会先被处理。",
+        "对于中序，尽可能向左走，沿途把节点压入栈。当不能再往左走时，弹出一个节点并访问它，然后转向它的右孩子。",
+        {
+          "code": "def preorder_iter(root):\n    out, stack = [], [root] if root else []\n    while stack:\n        node = stack.pop()\n        out.append(node.val)\n        if node.right:\n            stack.append(node.right)\n        if node.left:\n            stack.append(node.left)\n    return out\ndef inorder_iter(root):\n    out, stack, node = [], [], root\n    while stack or node:\n        while node:              # go as far left as possible\n            stack.append(node)\n            node = node.left\n        node = stack.pop()\n        out.append(node.val)\n        node = node.right\n    return out\nprint(preorder_iter(root))  # [1, 2, 4, 5, 3, 6]\nprint(inorder_iter(root))   # [4, 2, 5, 1, 3, 6]",
+          "lang": "python"
+        }
+      ]
+    },
+    {
+      "h": "迭代的后序和层序",
+      "body": [
+        "迭代的后序最棘手。一种清晰的做法是使用标志位：每个节点压入两次，第二次标记为“孩子处理完后再访问”。层序用队列而不是栈；一次处理队列中的一整层，还能顺便得到每个节点的深度。",
+        {
+          "code": "from collections import deque\ndef postorder_iter(root):\n    out, stack = [], [(root, False)] if root else []\n    while stack:\n        node, children_done = stack.pop()\n        if children_done:\n            out.append(node.val)\n        else:\n            stack.append((node, True))\n            if node.right:\n                stack.append((node.right, False))\n            if node.left:\n                stack.append((node.left, False))\n    return out\ndef level_order(root):\n    levels, queue = [], deque([root] if root else [])\n    while queue:\n        level = []\n        for _ in range(len(queue)):   # nodes of the current level\n            node = queue.popleft()\n            level.append(node.val)\n            if node.left:\n                queue.append(node.left)\n            if node.right:\n                queue.append(node.right)\n        levels.append(level)\n    return levels\nprint(postorder_iter(root))  # [4, 5, 2, 6, 3, 1]\nprint(level_order(root))     # [[1], [2, 3], [4, 5, 6]]",
+          "lang": "python"
+        },
+        "后序的另一个常见技巧：先运行修改过的前序（根、右、左），再把结果反转。"
+      ]
+    },
+    {
+      "h": "时间与空间复杂度",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "遍历方式",
+              "时间",
+              "额外空间",
+              "原因"
+            ],
+            "rows": [
+              [
+                "前序 / 中序 / 后序（递归）",
+                "O(n)",
+                "O(h)",
+                "调用栈每层保存一个栈帧"
+              ],
+              [
+                "前序 / 中序 / 后序（迭代）",
+                "O(n)",
+                "O(h)",
+                "显式栈最多保存一条路径加上兄弟节点"
+              ],
+              [
+                "层序",
+                "O(n)",
+                "O(w)",
+                "队列最多保存完整的一层"
+              ],
+              [
+                "Morris 中序遍历",
+                "O(n)",
+                "O(1)",
+                "临时把空的右指针改接成线索"
+              ]
+            ]
+          }
+        },
+        "这里 n 是节点数，h 是高度，w 是最大宽度。对平衡树来说，h 约为 log2(n)，w 可达约 n/2；对链状的树来说，h 是 n，w 是 1。"
+      ]
+    },
+    {
+      "h": "常见错误",
+      "body": [
+        {
+          "ul": [
+            "在迭代的前序中先压左孩子再压右孩子。栈是 LIFO，所以想先处理的孩子必须最后压入。",
+            "忘记空树：每个函数对 `root is None` 都应返回空结果。",
+            "在层序中用 `list` 加 `pop(0)` 当队列。每次弹出是 O(n)；请使用 `collections.deque`。",
+            "对很深的树依赖递归。Python 到达递归限制（默认约 1000）时会抛出 `RecursionError`。",
+            "指望单一的遍历结果就能确定一棵树。仅有前序是有歧义的；前序加中序（值互不相同时）才足以重建。"
+          ]
+        }
+      ]
+    },
+    {
+      "h": "何时使用哪种遍历",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "任务",
+              "遍历方式"
+            ],
+            "rows": [
+              [
+                "按顺序列出 BST 的键、验证 BST、求第 k 小",
+                "中序"
+              ],
+              [
+                "复制或序列化一棵树、打印目录大纲",
+                "前序"
+              ],
+              [
+                "删除一棵树、计算子树大小或高度、求值表达式树",
+                "后序"
+              ],
+              [
+                "最小深度、右视图、按层打印、最近的节点",
+                "层序"
+              ]
+            ]
+          }
+        },
+        "前序、中序和后序都是深度优先搜索的形式；层序则是应用在树上的广度优先搜索。同样的思路可以推广到一般的图，只是还需要一个已访问节点的集合。"
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "前序、中序和后序有什么区别？",
+      "a": "只在于访问节点的位置。前序在子树之前访问节点，中序在左子树和右子树之间访问，后序在两棵子树之后访问。"
+    },
+    {
+      "q": "哪种遍历能得到二叉搜索树的有序输出？",
+      "a": "中序遍历。在 BST 中，所有左边的键更小，所有右边的键更大，所以按 左、根、右 访问会得到升序的键。"
+    },
+    {
+      "q": "层序遍历就是 BFS 吗？",
+      "a": "是的。层序遍历就是树上的广度优先搜索。它使用队列，并按深度顺序访问节点。"
+    },
+    {
+      "q": "为什么用迭代遍历而不是递归？",
+      "a": "递归深度等于树的高度，而 Python 超过递归限制就会抛出 `RecursionError`。显式栈没有这种限制，也便于中途暂停或提前结束。"
+    },
+    {
+      "q": "能用 O(1) 的额外空间遍历一棵树吗？",
+      "a": "可以。Morris 遍历会临时把每个节点的中序前驱链接回该节点，因此不需要栈，并在结束前恢复这棵树。它的时间是 O(n)。"
+    }
+  ]
+}

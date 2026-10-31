@@ -1,0 +1,192 @@
+{
+  "title": "Thuật toán duyệt theo chiều sâu (DFS): code Python đệ quy và lặp, độ phức tạp — cv.cm",
+  "description": "Giải thích thuật toán duyệt theo chiều sâu (DFS): đi sâu rồi quay lui, ví dụ từng bước, code Python đệ quy và dùng ngăn xếp, phát hiện chu trình và chi phí O(V + E).",
+  "h1": "Thuật toán DFS (duyệt theo chiều sâu) là gì: cách hoạt động, code và độ phức tạp",
+  "answer": "DFS (Depth-first search, duyệt theo chiều sâu) là thuật toán duyệt đồ thị: đi theo một đường càng xa càng tốt, rồi lùi về nút gần nhất còn nút kề chưa thăm và tiếp tục từ đó. DFS dùng đệ quy hoặc một ngăn xếp tường minh cùng một tập các nút đã thăm. DFS thăm mọi nút có thể tới được trong thời gian O(V + E) và là nền tảng cho phát hiện chu trình, sắp xếp tô-pô, tìm thành phần liên thông và quay lui.",
+  "sections": [
+    {
+      "h": "DFS giải bài toán gì",
+      "body": [
+        "DFS trả lời câu hỏi “từ đây có thể đến được đâu?” bằng cách khám phá trọn một nhánh trước khi sang nhánh khác. Thứ tự này hữu ích khi cấu trúc của các đường đi quan trọng hơn độ dài của chúng: tìm lối ra khỏi mê cung, kiểm tra đồ thị có chu trình hay không, sắp xếp các công việc phụ thuộc nhau, hoặc liệt kê mọi lời giải của một câu đố.",
+        "Khác với duyệt theo chiều rộng, DFS không tìm đường đi ngắn nhất. Điểm mạnh của nó là chỉ cần giữ đường đi hiện tại trong bộ nhớ và tự nhiên ghi lại thời điểm vào nút cũng như thời điểm hoàn tất nút."
+      ]
+    },
+    {
+      "h": "Ý tưởng bằng lời đơn giản",
+      "body": [
+        {
+          "ol": [
+            "Đánh dấu nút hiện tại là đã thăm.",
+            "Với mỗi nút kề chưa thăm, di chuyển tới đó và lặp lại bước 1 từ nút ấy.",
+            "Khi một nút không còn nút kề nào chưa thăm, nút đó đã hoàn tất: quay về nút mà bạn đã đi từ đó đến.",
+            "Khi quay về nút xuất phát và nó không còn nút kề chưa thăm, cuộc tìm kiếm kết thúc."
+          ]
+        },
+        "Việc quay về nút trước đó gọi là quay lui (backtracking). Với đệ quy, ngăn xếp lời gọi làm việc này giúp bạn."
+      ]
+    },
+    {
+      "h": "Ví dụ từng bước",
+      "body": [
+        "Dùng lại đồ thị vô hướng trong bài về BFS: A–B, A–C, B–D, C–D, C–E, D–F. Bắt đầu từ A và thử các nút kề theo thứ tự bảng chữ cái.",
+        {
+          "table": {
+            "head": [
+              "Bước",
+              "Hành động",
+              "Đường đi hiện tại (ngăn xếp)"
+            ],
+            "rows": [
+              [
+                "1",
+                "Thăm A",
+                "A"
+              ],
+              [
+                "2",
+                "A → B (nút kề chưa thăm đầu tiên)",
+                "A, B"
+              ],
+              [
+                "3",
+                "B → D",
+                "A, B, D"
+              ],
+              [
+                "4",
+                "D → C (B đã thăm)",
+                "A, B, D, C"
+              ],
+              [
+                "5",
+                "C → E (A và D đã thăm)",
+                "A, B, D, C, E"
+              ],
+              [
+                "6",
+                "E không có nút kề mới: hoàn tất E, lùi về C; hoàn tất C, lùi về D",
+                "A, B, D"
+              ],
+              [
+                "7",
+                "D → F",
+                "A, B, D, F"
+              ],
+              [
+                "8",
+                "Hoàn tất F, D, B, A",
+                "rỗng"
+              ]
+            ]
+          }
+        },
+        "Thứ tự thăm là A, B, D, C, E, F. Thứ tự hoàn tất là E, C, F, D, B, A. Sắp xếp tô-pô và các thuật toán tìm thành phần liên thông mạnh dùng thứ tự hoàn tất này."
+      ]
+    },
+    {
+      "h": "Cài đặt bằng Python",
+      "body": [
+        "Phiên bản đệ quy ngắn nhất và gần với ý tưởng nhất:",
+        {
+          "code": "def dfs(graph, node, visited=None):\n    if visited is None:\n        visited = []\n    visited.append(node)\n    for nxt in graph[node]:\n        if nxt not in visited:\n            dfs(graph, nxt, visited)\n    return visited\ngraph = {\n    \"A\": [\"B\", \"C\"], \"B\": [\"A\", \"D\"], \"C\": [\"A\", \"D\", \"E\"],\n    \"D\": [\"B\", \"C\", \"F\"], \"E\": [\"C\"], \"F\": [\"D\"],\n}\nprint(dfs(graph, \"A\"))  # ['A', 'B', 'D', 'C', 'E', 'F']",
+          "lang": "python"
+        },
+        "Dùng list giúp ví dụ dễ đọc nhưng phép kiểm tra `in` có độ phức tạp O(n). Với đồ thị lớn, hãy giữ một `set` riêng để kiểm tra tư cách thành viên. Phiên bản lặp dùng ngăn xếp tường minh và tránh giới hạn đệ quy của Python. Các nút kề được đẩy vào theo thứ tự ngược để khi lấy ra vẫn đúng thứ tự ban đầu:",
+        {
+          "code": "def dfs_iterative(graph, start):\n    visited, order = set(), []\n    stack = [start]\n    while stack:\n        node = stack.pop()\n        if node in visited:\n            continue\n        visited.add(node)\n        order.append(node)\n        for nxt in reversed(graph[node]):\n            if nxt not in visited:\n                stack.append(nxt)\n    return order\nprint(dfs_iterative(graph, \"A\"))  # ['A', 'B', 'D', 'C', 'E', 'F']",
+          "lang": "python"
+        },
+        "Lưu ý điểm khác so với BFS: ở đây nút được đánh dấu khi được lấy ra khỏi ngăn xếp, nên nó có thể nằm trong ngăn xếp nhiều lần. Điều này đúng với DFS và giữ đúng thứ tự duyệt sâu thật sự."
+      ]
+    },
+    {
+      "h": "Phát hiện chu trình trong đồ thị có hướng",
+      "body": [
+        "Một ứng dụng kinh điển của DFS là tô màu mỗi nút: trắng (chưa gặp), xám (đang nằm trên đường đi hiện tại) và đen (đã hoàn tất). Chạm tới một nút xám nghĩa là có cạnh quay ngược vào đường đi hiện tại, tức là có chu trình.",
+        {
+          "code": "def has_cycle(graph):\n    WHITE, GRAY, BLACK = 0, 1, 2\n    color = {node: WHITE for node in graph}\n    def visit(node):\n        color[node] = GRAY\n        for nxt in graph[node]:\n            if color[nxt] == GRAY:\n                return True              # back edge\n            if color[nxt] == WHITE and visit(nxt):\n                return True\n        color[node] = BLACK\n        return False\n    return any(color[n] == WHITE and visit(n) for n in graph)\nprint(has_cycle({\"a\": [\"b\"], \"b\": [\"c\"], \"c\": [\"a\"]}))  # True\nprint(has_cycle({\"a\": [\"b\"], \"b\": [\"c\"], \"c\": []}))     # False",
+          "lang": "python"
+        }
+      ]
+    },
+    {
+      "h": "Độ phức tạp thời gian và không gian",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Đại lượng",
+              "Chi phí",
+              "Lý do"
+            ],
+            "rows": [
+              [
+                "Thời gian",
+                "O(V + E)",
+                "Mỗi nút được thăm một lần và mỗi cạnh được xét một lần theo mỗi chiều."
+              ],
+              [
+                "Không gian",
+                "O(V)",
+                "Tập đã thăm cộng với ngăn xếp đệ quy hoặc ngăn xếp tường minh, có thể lớn tới độ dài của đường đi dài nhất."
+              ],
+              [
+                "Ma trận kề",
+                "Thời gian O(V²)",
+                "Liệt kê các nút kề của mỗi nút tốn O(V)."
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "Biến thể và lỗi thường gặp",
+      "body": [
+        {
+          "ul": [
+            "Pre-order và post-order: ghi lại nút khi vào nút (pre-order) hoặc khi hoàn tất nút (post-order). Thứ tự post-order đảo ngược của đồ thị có hướng không chu trình (DAG) là một thứ tự tô-pô.",
+            "Thành phần liên thông: bắt đầu một lượt DFS mới từ mỗi nút còn chưa thăm; mỗi lần bắt đầu tương ứng một thành phần.",
+            "DFS tăng dần độ sâu (iterative deepening): chạy DFS với giới hạn độ sâu 0, 1, 2, … Cách này tìm được đường đi ngắn nhất như BFS nhưng tốn ít bộ nhớ như DFS.",
+            "Loang màu (flood fill) trên lưới (công cụ đổ màu) là DFS hoặc BFS trên các ô lân cận cùng màu."
+          ]
+        },
+        {
+          "note": "Giới hạn đệ quy mặc định của Python là khoảng 1000 khung (xem `sys.getrecursionlimit()`). DFS đệ quy trên đường đi dài, chẳng hạn chuỗi 2000 nút hoặc lưới lớn, sẽ gây `RecursionError`. Với dữ liệu lớn, hãy dùng phiên bản lặp thay vì tăng giới hạn."
+        },
+        "Các lỗi thường gặp khác: quên tập đã thăm (vòng lặp vô hạn khi có chu trình), dùng đối số mặc định có thể thay đổi như `visited=[]` (nó bị dùng chung giữa các lần gọi), và coi cạnh vô hướng quay về nút cha là chu trình."
+      ]
+    },
+    {
+      "h": "Khi nào dùng DFS và ứng dụng thực tế",
+      "body": [
+        {
+          "ul": [
+            "Dùng DFS cho bài toán khả năng tiếp cận, phát hiện chu trình, sắp xếp tô-pô, thành phần liên thông và liên thông mạnh, cầu và khớp, cũng như tìm kiếm vét cạn bằng quay lui.",
+            "Dùng BFS khi cần ít bước nhất, và dùng Dijkstra hoặc A* khi các cạnh có trọng số.",
+            "Bài phỏng vấn: đếm số đảo, nhân bản đồ thị, course schedule (phát hiện chu trình), tổng đường đi trong cây nhị phân, sinh hoán vị.",
+            "Thực tế: hệ thống build và trình quản lý gói giải quyết thứ tự phụ thuộc, trình biên dịch phân tích luồng điều khiển, sinh mê cung, và duyệt cây trên hệ thống tệp hoặc tài liệu HTML."
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "DFS nên viết đệ quy hay lặp?",
+      "a": "Cả hai đều được. Đệ quy ngắn hơn và dùng ngăn xếp lời gọi một cách ngầm định; ngăn xếp tường minh tránh giới hạn đệ quy ở các ngôn ngữ như Python và cho cùng thứ tự duyệt nếu bạn đẩy các nút kề theo thứ tự ngược."
+    },
+    {
+      "q": "DFS có tìm được đường đi ngắn nhất không?",
+      "a": "Không. DFS tìm ra một đường đi nào đó, không nhất thiết là đường có ít cạnh nhất. Hãy dùng BFS cho đồ thị không trọng số và thuật toán Dijkstra cho đồ thị có trọng số."
+    },
+    {
+      "q": "Độ phức tạp thời gian của DFS là bao nhiêu?",
+      "a": "O(V + E) với danh sách kề, vì mỗi nút và mỗi cạnh được xử lý một số lần không đổi. Với ma trận kề là O(V²)."
+    },
+    {
+      "q": "Pre-order, in-order và post-order liên quan gì đến DFS?",
+      "a": "Cả ba đều là phép duyệt theo chiều sâu của cây, chỉ khác nhau ở thời điểm xử lý nút hiện tại: trước các nút con, giữa nút con trái và phải, hoặc sau các nút con."
+    }
+  ]
+}

@@ -1,0 +1,157 @@
+{
+  "title": "Singleton パターン：目的、TypeScriptの実装例、落とし穴と代替案 — cv.cm",
+  "description": "Singleton パターンを解説。TypeScriptでインスタンスを1つに保つ方法、遅延初期化と非同期版、テストが難しくなる理由、より良い代替案を紹介します。",
+  "h1": "Singleton パターンを例でわかりやすく解説",
+  "answer": "Singleton パターンは、クラスのインスタンスが1つだけであることを保証し、そこへのグローバルなアクセス点を提供する生成パターンです。TypeScriptでは、プライベートなコンストラクタと、初回の使用時にインスタンスを作り、以降は同じオブジェクトを返す静的メソッドで実装します。設定オブジェクトやコネクションプールなど、本当に唯一であるべきリソースに向いていますが、グローバルな状態のように振る舞うため、単一の共有インスタンスを明示的に渡す方法を好むチームも多くあります。",
+  "sections": [
+    {
+      "h": "目的",
+      "body": [
+        "クラスのインスタンスが1つだけであることを保証し、そこへのグローバルなアクセス点を提供します。Singleton パターンは、Gang of Four（GoF）の書籍にある5つの生成パターンの1つです。"
+      ]
+    },
+    {
+      "h": "解決する問題",
+      "body": [
+        "プログラム内にちょうど1つだけ存在すべきオブジェクトがあります。環境変数から読み込むアプリケーション設定、プロセス内キャッシュ、データベース接続のプールなどです。すべてのモジュールが `new Config()` を呼ぶと、そのたびに環境変数を読み直し、キャッシュは多数のコピーに分裂し、プールの上限も意味を失います。",
+        "必要なのは2つです。誤って2つ目のインスタンスを作れないという保証と、どのコードからもその唯一のインスタンスに簡単に到達できる手段です。"
+      ]
+    },
+    {
+      "h": "構造と登場要素",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "要素",
+              "役割"
+            ],
+            "rows": [
+              [
+                "Singleton クラス",
+                "コンストラクタを隠し、ほかのコードが直接 `new` を呼べないようにします。"
+              ],
+              [
+                "静的なインスタンスフィールド",
+                "作成された唯一のインスタンスを保持します。"
+              ],
+              [
+                "静的なアクセスメソッド（多くは `getInstance`）",
+                "初回の呼び出しでインスタンスを作成し（遅延初期化）、以降のすべての呼び出しで同じオブジェクトを返します。"
+              ],
+              [
+                "クライアント",
+                "アクセスメソッドを通じてのみインスタンスを取得します。"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "TypeScriptでの実装",
+      "body": [
+        "プライベートなコンストラクタにより、クラスの外での `new AppConfig()` はコンパイルエラーになります。静的メソッドが、オブジェクトを遅延して作成します。",
+        {
+          "code": "class AppConfig {\n  private static instance: AppConfig | undefined;\n  readonly settings: Record<string, string>;\n  private constructor() {\n    console.log(\"loading config once\");\n    this.settings = { mode: \"production\", region: \"eu\" };\n  }\n  static getInstance(): AppConfig {\n    if (!AppConfig.instance) {\n      AppConfig.instance = new AppConfig();\n    }\n    return AppConfig.instance;\n  }\n}\nconst a = AppConfig.getInstance(); // loading config once\nconst b = AppConfig.getInstance();\nconsole.log(a === b);          // true\nconsole.log(a.settings.mode);  // production\n// new AppConfig(); // error: constructor is private",
+          "lang": "typescript"
+        },
+        {
+          "note": "TypeScriptの `private` はコンパイル時にしかチェックされません。素のJavaScriptコードなら、コンストラクタを呼べてしまいます。実行時の保証が必要なら、インスタンスがすでにある場合にコンストラクタで例外を投げるか、次に示すモジュールレベルのインスタンスを使います。"
+        },
+        "JavaScriptとTypeScriptでは、ESモジュールはプログラムごとに1回だけ評価されるので、モジュールからインスタンスをエクスポートするのが最も簡単なSingletonです。どの `import` も同じオブジェクトを受け取ります。",
+        {
+          "code": "// logger.ts\nclass Logger {\n  private lines: string[] = [];\n  log(msg: string): void { this.lines.push(msg); console.log(msg); }\n  count(): number { return this.lines.length; }\n}\nexport const logger = new Logger();\n// elsewhere: import { logger } from \"./logger\";\nlogger.log(\"started\");      // started\nconsole.log(logger.count()); // 1",
+          "lang": "typescript"
+        }
+      ]
+    },
+    {
+      "h": "非同期の初期化",
+      "body": [
+        "データベース接続を開くときのように、インスタンスの作成が非同期の場合、2つの呼び出し元がどちらも「まだインスタンスがない」と判断し、最初の接続が完了する前に2つの接続を開始してしまうことがあります。結果ではなく、Promiseをキャッシュしましょう。",
+        {
+          "code": "class Database {\n  private static ready: Promise<Database> | undefined;\n  private constructor(readonly url: string) {}\n  static get(): Promise<Database> {\n    if (!Database.ready) {\n      Database.ready = (async () => {\n        await new Promise((r) => setTimeout(r, 10)); // simulate connecting\n        console.log(\"connected once\");\n        return new Database(\"db://main\");\n      })();\n    }\n    return Database.ready;\n  }\n}\nconst [x, y] = await Promise.all([Database.get(), Database.get()]);\nconsole.log(x === y); // true",
+          "lang": "typescript"
+        },
+        "JavaやC#のようなマルチスレッド言語では、同じ理由で遅延作成に同期処理が必要です。一般的な解決策は、静的フィールドでの先行初期化、遅延ホルダークラス、Javaでは要素が1つの `enum` です。"
+      ]
+    },
+    {
+      "h": "使うべきとき、使わないとき",
+      "body": [
+        "次の場合はSingleton パターンを使います。",
+        {
+          "ul": [
+            "利便性のためだけでなく、正しさのためにインスタンスがちょうど1つ必要な場合（1つのハードウェアデバイス、プロセス全体で1つのレジストリなど）。",
+            "作成コストが高く、作成後のオブジェクトが状態を持たない、またはスレッドセーフな場合。"
+          ]
+        },
+        "次の場合は避けるか、使い方を限定します。",
+        {
+          "ul": [
+            "主な目的が、グローバルに手軽にアクセスすることである場合。Singletonは、見栄えの良い名前を付けたグローバルなミュータブルな状態です。どのコードからでも変更でき、依存関係が関数のシグネチャから見えなくなります。",
+            "テストが必要な場合。Singletonを共有するテストは互いに影響し合い、本物のインスタンスをフェイクに置き換えるのも困難です。",
+            "「インスタンスは1つ」というルールが後で変わるかもしれない場合。例えば、テナントごとに1つのキャッシュが必要になるときです。"
+          ]
+        },
+        "通常の代替案は依存性の注入です。プログラムの開始時（コンポジションルート）にインスタンスを1つ作り、それを必要とするクラスに渡します。インスタンスは1つのままですが、依存関係が見え、置き換えもできます。",
+        {
+          "code": "class Cache {\n  private data = new Map<string, string>();\n  get(key: string): string | undefined { return this.data.get(key); }\n  set(key: string, value: string): void { this.data.set(key, value); }\n}\nclass UserService {\n  constructor(private cache: Cache) {} // dependency is explicit\n  remember(id: string, name: string): void { this.cache.set(id, name); }\n}\nconst sharedCache = new Cache(); // the single instance, created once\nconst users = new UserService(sharedCache);\nusers.remember(\"u1\", \"Ada\");\nconsole.log(sharedCache.get(\"u1\")); // Ada",
+          "lang": "typescript"
+        }
+      ]
+    },
+    {
+      "h": "実際の利用例",
+      "body": [
+        {
+          "ul": [
+            "Java：`Runtime.getRuntime()` は、実行中のJavaアプリケーションに対応する唯一の `Runtime` オブジェクトを返します。",
+            "Node.jsは最初の読み込み後にモジュールをキャッシュするため、モジュールがエクスポートしたオブジェクトは、それをrequireまたはimportするすべてのファイルで共有されます。",
+            "ブラウザーは、ページごとに `window` や `document` のような唯一のグローバルオブジェクトを提供します。",
+            "AngularやSpringのような依存性の注入を備えたフレームワークは、既定で「Singletonスコープ」のサービスを作ります。インジェクターまたはコンテナごとに1つのインスタンスで、このパターンの静的アクセスの部分はありません。"
+          ]
+        },
+        {
+          "note": "Node.jsは、解決されたファイルパスでモジュールをキャッシュします。同じパッケージの2つのコピーが別々の `node_modules` フォルダーにインストールされていると、別々の2つの「Singleton」ができてしまいます。"
+        }
+      ]
+    },
+    {
+      "h": "関連するパターン",
+      "body": [
+        {
+          "ul": [
+            "Abstract Factory パターン、Builder パターン、Prototype パターンのオブジェクトは、ファクトリが1つあれば十分なため、Singletonとして実装されることがよくあります。",
+            "Facade パターンのオブジェクトも、サブシステムへの入口が1つあれば普通は足りるため、単一のインスタンスにすることがよくあります。",
+            "Flyweight パターンもオブジェクトを共有しますが、状態をキーにして多数の共有インスタンスを管理します。Singleton パターンのインスタンスはちょうど1つです。",
+            "依存性の注入はGoFパターンではありませんが、現代のコードにおけるSingleton パターンの最も一般的な代替策です。"
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Singleton パターンはアンチパターンですか？",
+      "a": "隠れたグローバルな状態を持ち込み、テストを難しくするため、しばしばそう呼ばれます。インスタンスが1つであること自体は問題ありません。問題はグローバルなアクセスです。インスタンスを1つ作って明示的に渡せば、ほとんどの問題は避けられます。"
+    },
+    {
+      "q": "TypeScriptでSingletonを作るには？",
+      "a": "プライベートなコンストラクタ、インスタンス用のプライベートな静的フィールド、初回の呼び出しでインスタンスを作る静的メソッドを使います。モジュールから単一のインスタンスをエクスポートする方法は、より簡単な代替策です。"
+    },
+    {
+      "q": "JavaScriptのモジュールはSingletonですか？",
+      "a": "事実上そうです。モジュールは1回だけ評価され、そのエクスポートは同じプログラム内のすべてのインポート元で共有されます。ただし、同じコードが2つの異なるパスから読み込まれる場合は別です。"
+    },
+    {
+      "q": "Singletonを使うコードはどうテストしますか？",
+      "a": "Singletonにインターフェイスを実装させ、テスト対象のコードに渡すようにすれば、テストでフェイクを差し込めます。設計を変更できない場合は、テスト専用のリセットメソッドを追加します。"
+    },
+    {
+      "q": "Singletonと静的クラスの違いは何ですか？",
+      "a": "Singletonは本物のオブジェクトなので、インターフェイスを実装でき、引数として渡せ、遅延して作成できます。静的メンバーだけのクラスは、置き換えたり、オブジェクトとして受け渡したりできません。"
+    }
+  ]
+}

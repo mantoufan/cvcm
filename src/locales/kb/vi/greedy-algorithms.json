@@ -1,0 +1,238 @@
+{
+  "title": "Thuật toán tham lam: cách hoạt động, khi nào thất bại, ví dụ Python — cv.cm",
+  "description": "Giải thích thuật toán tham lam: chọn phương án tốt nhất cục bộ ở mỗi bước. Lập lịch khoảng thời gian từng bước, code Python, chứng minh, phản ví dụ và độ phức tạp.",
+  "h1": "Thuật toán tham lam là gì: cách hoạt động, code và ví dụ",
+  "answer": "Thuật toán tham lam (greedy) xây dựng lời giải từng bước và ở mỗi bước chọn phương án trông tốt nhất ngay lúc đó, không quay lại sửa các lựa chọn trước. Nó nhanh và đơn giản, nhưng chỉ đúng với bài toán có tính chất lựa chọn tham lam (greedy-choice property), tức lựa chọn tốt nhất cục bộ luôn nằm trong một lời giải tối ưu nào đó. Các thuật toán tham lam kinh điển và đúng gồm lập lịch khoảng thời gian, mã hóa Huffman, thuật toán Dijkstra và các thuật toán cây khung nhỏ nhất Kruskal, Prim.",
+  "sections": [
+    {
+      "h": "Thuật toán tham lam giải bài toán gì",
+      "body": [
+        "Thuật toán tham lam nhắm tới các bài toán tối ưu: chọn được nhiều hoạt động nhất, dùng ít đồng xu nhất, xây mạng rẻ nhất, nén tệp thành ít bit nhất. Thay vì duyệt mọi tổ hợp, thuật toán tham lam sắp xếp hoặc ưu tiên các phương án và chốt phương án tốt nhất ở mỗi bước. Điều đó thường cho thời gian O(n log n), thường chỉ là chi phí sắp xếp.",
+        "Phần khó không nằm ở code mà ở chứng minh. Nhiều quy tắc tham lam tự nhiên là sai, nên bạn phải chứng minh quy tắc đúng hoặc kiểm thử nó với lời giải vét cạn."
+      ]
+    },
+    {
+      "h": "Ý tưởng bằng lời đơn giản",
+      "body": [
+        {
+          "ol": [
+            "Tìm một quy tắc xếp hạng các lựa chọn, ví dụ “kết thúc sớm nhất trước” hoặc “cạnh nhẹ nhất trước”.",
+            "Sắp xếp các phương án theo quy tắc đó, hoặc giữ chúng trong hàng đợi ưu tiên.",
+            "Duyệt qua các phương án và lấy từng phương án vẫn được ràng buộc cho phép.",
+            "Không bao giờ hoàn tác một lựa chọn."
+          ]
+        },
+        "Thuật toán tham lam đúng khi hai tính chất sau cùng thỏa. Tính chất lựa chọn tham lam: có một lời giải tối ưu chứa lựa chọn tham lam đầu tiên. Cấu trúc con tối ưu: sau khi đưa ra lựa chọn đó, phần còn lại của bài toán là một bản nhỏ hơn của cùng bài toán. Cách chứng minh thường dùng là lập luận hoán đổi (exchange argument): lấy một lời giải tối ưu bất kỳ và chỉ ra rằng đổi một lựa chọn của nó sang lựa chọn tham lam không làm nó tệ đi."
+      ]
+    },
+    {
+      "h": "Ví dụ: lập lịch khoảng thời gian",
+      "body": [
+        "Bạn có một phòng họp và các yêu cầu sau (bắt đầu, kết thúc): A (1, 4), B (3, 5), C (0, 6), D (5, 7), E (3, 9), F (5, 9), G (6, 10), H (8, 11). Hãy đặt được nhiều cuộc họp không chồng nhau nhất có thể. Quy tắc tham lam đúng là: luôn chọn cuộc họp kết thúc sớm nhất trong số những cuộc bắt đầu sau khi cuộc họp đã đặt gần nhất kết thúc.",
+        {
+          "table": {
+            "head": [
+              "Cuộc họp (sắp theo giờ kết thúc)",
+              "Bắt đầu, kết thúc",
+              "Bắt đầu sau giờ kết thúc gần nhất?",
+              "Quyết định",
+              "Giờ kết thúc gần nhất"
+            ],
+            "rows": [
+              [
+                "A",
+                "1, 4",
+                "có (chưa đặt gì)",
+                "Đặt",
+                "4"
+              ],
+              [
+                "B",
+                "3, 5",
+                "không (3 < 4)",
+                "Bỏ qua",
+                "4"
+              ],
+              [
+                "C",
+                "0, 6",
+                "không",
+                "Bỏ qua",
+                "4"
+              ],
+              [
+                "D",
+                "5, 7",
+                "có",
+                "Đặt",
+                "7"
+              ],
+              [
+                "E",
+                "3, 9",
+                "không",
+                "Bỏ qua",
+                "7"
+              ],
+              [
+                "F",
+                "5, 9",
+                "không",
+                "Bỏ qua",
+                "7"
+              ],
+              [
+                "G",
+                "6, 10",
+                "không",
+                "Bỏ qua",
+                "7"
+              ],
+              [
+                "H",
+                "8, 11",
+                "có",
+                "Đặt",
+                "11"
+              ]
+            ]
+          }
+        },
+        "Kết quả: A, D, H, ba cuộc họp, là mức tối đa. Vì sao đúng: cuộc họp kết thúc sớm nhất để lại nhiều thời gian nhất cho mọi việc khác, nên thay cuộc họp đầu tiên của bất kỳ lịch tối ưu nào bằng nó không bao giờ gây xung đột."
+      ]
+    },
+    {
+      "h": "Cài đặt bằng Python",
+      "body": [
+        {
+          "code": "def max_meetings(meetings):\n    \"\"\"meetings: list of (name, start, end). Returns the booked names.\"\"\"\n    booked, last_end = [], float(\"-inf\")\n    for name, start, end in sorted(meetings, key=lambda m: m[2]):\n        if start >= last_end:\n            booked.append(name)\n            last_end = end\n    return booked\n\nrequests = [(\"A\", 1, 4), (\"B\", 3, 5), (\"C\", 0, 6), (\"D\", 5, 7),\n            (\"E\", 3, 9), (\"F\", 5, 9), (\"G\", 6, 10), (\"H\", 8, 11)]\nprint(max_meetings(requests))  # ['A', 'D', 'H']",
+          "lang": "python"
+        },
+        "Một ví dụ kinh điển thứ hai là bài toán cái túi phân số (fractional knapsack): khi bạn được lấy một phần của vật, lấy các vật theo thứ tự giá trị trên mỗi đơn vị khối lượng là tối ưu.",
+        {
+          "code": "def fractional_knapsack(items, capacity):\n    \"\"\"items: list of (value, weight). Returns the best total value.\"\"\"\n    total = 0.0\n    for value, weight in sorted(items, key=lambda i: i[0] / i[1], reverse=True):\n        take = min(weight, capacity)\n        total += value * take / weight\n        capacity -= take\n        if capacity == 0:\n            break\n    return total\n\nprint(fractional_knapsack([(60, 10), (100, 20), (120, 30)], 50))  # 240.0",
+          "lang": "python"
+        }
+      ]
+    },
+    {
+      "h": "Khi tham lam thất bại: các phản ví dụ",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Bài toán",
+              "Quy tắc tham lam hấp dẫn",
+              "Phản ví dụ",
+              "Phương pháp đúng"
+            ],
+            "rows": [
+              [
+                "Đổi tiền xu, các đồng 1, 3, 4",
+                "Lấy đồng lớn nhất trước",
+                "Số tiền 6: tham lam 4 + 1 + 1 (3 đồng), tối ưu 3 + 3 (2 đồng)",
+                "Quy hoạch động"
+              ],
+              [
+                "Cái túi 0/1 (chỉ lấy nguyên vật)",
+                "Giá trị trên khối lượng cao nhất trước",
+                "Sức chứa 50, các vật (60, 10), (100, 20), (120, 30): tham lam lấy 60 + 100 = 160, tối ưu 100 + 120 = 220",
+                "Quy hoạch động"
+              ],
+              [
+                "Lập lịch khoảng thời gian",
+                "Cuộc họp ngắn nhất trước",
+                "(0, 5), (4, 7), (6, 11): tham lam chỉ lấy (4, 7), tối ưu lấy hai cuộc còn lại",
+                "Kết thúc sớm nhất trước"
+              ],
+              [
+                "Đường đi ngắn nhất với cạnh âm",
+                "Dijkstra: nút gần nhất trước",
+                "Bất kỳ đồ thị nào mà cạnh âm làm một nút đã chốt trở nên rẻ hơn",
+                "Bellman-Ford"
+              ]
+            ]
+          }
+        },
+        {
+          "note": "Đổi tiền xu tham lam cho đáp án tối ưu với các hệ tiền chuẩn như 1, 2, 5, 10, 20, 50, nhưng không đúng với mọi bộ tiền xu. Trước khi tin một quy tắc tham lam, hãy so sánh nó với lời giải vét cạn trên nhiều đầu vào ngẫu nhiên nhỏ."
+        }
+      ]
+    },
+    {
+      "h": "Độ phức tạp thời gian và không gian",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Thuật toán",
+              "Thời gian",
+              "Lý do"
+            ],
+            "rows": [
+              [
+                "Lập lịch khoảng thời gian",
+                "O(n log n)",
+                "Sắp xếp theo giờ kết thúc; lượt quét là O(n)."
+              ],
+              [
+                "Cái túi phân số",
+                "O(n log n)",
+                "Sắp xếp theo giá trị trên khối lượng."
+              ],
+              [
+                "Mã hóa Huffman",
+                "O(n log n)",
+                "n − 1 lần gộp, mỗi lần có thao tác heap."
+              ],
+              [
+                "MST Kruskal",
+                "O(E log E)",
+                "Sắp xếp cạnh cộng union-find gần hằng số."
+              ],
+              [
+                "Đường đi ngắn nhất Dijkstra",
+                "O((V + E) log V)",
+                "Hàng đợi ưu tiên dùng heap."
+              ]
+            ]
+          }
+        },
+        "Không gian thường là O(n) cho bản sao đã sắp xếp hoặc heap. Nếu đầu vào đã được sắp xếp, nhiều thuật toán tham lam chạy trong O(n)."
+      ]
+    },
+    {
+      "h": "Khi nào dùng tham lam và ứng dụng thực tế",
+      "body": [
+        {
+          "ul": [
+            "Dùng tham lam khi bạn chứng minh được tính chất lựa chọn tham lam, hoặc khi chấp nhận đáp án xấp xỉ nhanh. Nếu không, hãy dùng quy hoạch động hoặc quay lui.",
+            "Nén dữ liệu: mã hóa Huffman xây các mã tiền tố tối ưu bằng cách liên tục gộp hai ký hiệu ít xuất hiện nhất; nó được dùng trong các định dạng như DEFLATE (ZIP, gzip, PNG).",
+            "Mạng: cây khung nhỏ nhất (Kruskal, Prim) và định tuyến đường đi ngắn nhất (Dijkstra).",
+            "Lập lịch: hạn chót sớm nhất trước (earliest deadline first), và đặt phòng hoặc máy.",
+            "Xấp xỉ: với bài toán phủ tập hợp (set cover), quy tắc tham lam “chọn tập phủ nhiều phần tử chưa được phủ nhất” không tối ưu nhưng đảm bảo nằm trong hệ số logarit của tối ưu.",
+            "Bài phỏng vấn: jump game, gas station, assign cookies, non-overlapping intervals, minimum number of arrows to burst balloons, task scheduler."
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Thuật toán tham lam là gì, nói đơn giản?",
+      "a": "Đó là thuật toán luôn chọn phương án trông tốt nhất ở thời điểm hiện tại và không bao giờ xem xét lại. Nó chỉ đúng với những bài toán mà các lựa chọn cục bộ này luôn dẫn đến đáp án tốt nhất toàn cục."
+    },
+    {
+      "q": "Làm sao chứng minh một thuật toán tham lam là đúng?",
+      "a": "Cách thường dùng là lập luận hoán đổi: bắt đầu từ một lời giải tối ưu bất kỳ và chỉ ra rằng bạn có thể thay lựa chọn đầu tiên của nó bằng lựa chọn tham lam mà không làm nó tệ đi, rồi lặp lại trên phần bài toán còn lại."
+    },
+    {
+      "q": "Tham lam hay quy hoạch động?",
+      "a": "Hãy thử tham lam trước nếu một quy tắc đơn giản có vẻ đúng, rồi tìm phản ví dụ. Nếu có, bài toán cần quy hoạch động, vốn so sánh mọi lựa chọn cho từng bài toán con."
+    },
+    {
+      "q": "Thuật toán Dijkstra có phải tham lam không?",
+      "a": "Có. Nó luôn chốt nút chưa chốt gần nhất. Lựa chọn tham lam này đúng vì trọng số cạnh không âm."
+    }
+  ]
+}

@@ -1,0 +1,167 @@
+{
+  "title": "裝飾者模式：透過包裝物件來新增行為，附 TypeScript 範例 — cv.cm",
+  "description": "說明裝飾者（Decorator）設計模式：在執行時期透過包裝物件來為它新增職責。附 TypeScript 範例、函式裝飾器與 Java I/O 的應用。",
+  "h1": "裝飾者模式詳解與範例",
+  "answer": "裝飾者是一種結構型設計模式，它把物件包在另一個具有相同介面的物件中，藉此動態地為該物件新增職責。每個裝飾者都會把呼叫轉發給被包裝的物件，並在前後加入自己的行為，例如記錄、快取或壓縮。因為裝飾者可以用任意順序堆疊，所以相較於為每一種功能組合都建立一個子類別，它是更有彈性的替代方案。",
+  "sections": [
+    {
+      "h": "意圖",
+      "body": [
+        "動態地為物件附加額外的職責。對於擴充功能，裝飾者提供了比繼承子類別更有彈性的替代方案。裝飾者是《設計模式》（Gang of Four，簡稱 GoF）一書中七種結構型模式之一，在書中也稱為 Wrapper。"
+      ]
+    },
+    {
+      "h": "它解決的問題",
+      "body": [
+        "想像一個提供 `get(key)` 的資料儲存。有些呼叫端想要記錄，有些想要記憶體內快取，有些兩者都要，還有些想要在速度慢的網路後端上重試。如果用繼承，你會寫出 `LoggingStore`、`CachingStore`、`LoggingCachingStore`、`RetryingCachingStore` 等等：每一種組合就是一個子類別，而且這些組合在編譯時期就固定了。",
+        "裝飾者把每項功能變成一個小型的包裝類別。你可以在執行時期，把一個物件包進另一個物件裡，組合出需要的樣子，而使用這個儲存的程式碼，無論有幾層，看到的都是同一個介面。"
+      ]
+    },
+    {
+      "h": "結構與參與者",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "參與者",
+              "職責",
+              "範例中的對應"
+            ],
+            "rows": [
+              [
+                "元件（Component）",
+                "真正的物件與裝飾者共用的介面。",
+                "`Store`"
+              ],
+              [
+                "具體元件（ConcreteComponent）",
+                "負責核心工作的原始物件。",
+                "`SlowStore`"
+              ],
+              [
+                "裝飾者（Decorator）",
+                "持有元件的參照，並透過轉發來實作相同的介面。",
+                "`StoreDecorator`"
+              ],
+              [
+                "具體裝飾者（ConcreteDecorator）",
+                "在轉發之前或之後加入行為。",
+                "`LoggingStore`、`CachingStore`"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "TypeScript 實作",
+      "body": [
+        {
+          "code": "interface Store {\n  get(key: string): string;\n}\n\nclass SlowStore implements Store {\n  get(key: string): string { console.log(`  (database read: ${key})`); return key.toUpperCase(); }\n}\n\n// Base decorator: forwards everything to the wrapped store.\nabstract class StoreDecorator implements Store {\n  constructor(protected inner: Store) {}\n  get(key: string): string { return this.inner.get(key); }\n}\n\nclass LoggingStore extends StoreDecorator {\n  get(key: string): string {\n    console.log(`get ${key}`);\n    return super.get(key);\n  }\n}\n\nclass CachingStore extends StoreDecorator {\n  private cache = new Map<string, string>();\n  get(key: string): string {\n    if (!this.cache.has(key)) this.cache.set(key, super.get(key));\n    return this.cache.get(key)!;\n  }\n}\n\n// Stack features in any order at run time.\nconst store: Store = new LoggingStore(new CachingStore(new SlowStore()));\nconsole.log(store.get(\"ada\"));\nconsole.log(store.get(\"ada\"));\n// get ada\n//   (database read: ada)\n// ADA\n// get ada\n// ADA",
+          "lang": "typescript"
+        },
+        "第二次呼叫雖然會被記錄，但是由快取回應，所以不會再次讀取資料庫。如果你對調順序，寫成 `new CachingStore(new LoggingStore(...))`，就只有快取未命中的才會被記錄。裝飾者的順序會改變行為，這既是它的特色，也是常見的困惑來源。"
+      ]
+    },
+    {
+      "h": "TypeScript 中的函式裝飾器",
+      "body": [
+        "當元件只是單一函式時，裝飾者可以是一個高階函式：它接收一個函式，並回傳具有相同簽章、但多了額外行為的新函式。",
+        {
+          "code": "function withTiming<A extends unknown[], R>(name: string, fn: (...args: A) => R) {\n  return (...args: A): R => {\n    const start = performance.now();\n    try {\n      return fn(...args);\n    } finally {\n      console.log(`${name} took ${(performance.now() - start).toFixed(1)} ms`);\n    }\n  };\n}\n\nconst slowSquare = (n: number) => { for (let i = 0; i < 1e6; i++); return n * n; };\nconst timedSquare = withTiming(\"square\", slowSquare);\nconsole.log(timedSquare(12)); // square took ... ms, then 144",
+          "lang": "typescript"
+        },
+        {
+          "note": "TypeScript 也有裝飾器語法 `@name`，可套用在類別和類別成員上。它是一種語言功能（TypeScript 5.0 新增了對標準 ECMAScript 裝飾器的支援），可以用來實作這個模式，但兩者並不相同：GoF 的裝飾者是在執行時期包裝物件，而 `@` 裝飾器則是修改類別的定義。"
+        }
+      ]
+    },
+    {
+      "h": "何時使用、何時不該用",
+      "body": [
+        "在以下情況使用裝飾者：",
+        {
+          "ul": [
+            "你想為個別物件新增記錄、快取、重試、驗證、壓縮或存取檢查這類功能，同時不影響同一個類別的其他物件。",
+            "功能必須能自由組合，而繼承子類別會讓每一種組合都產生一個類別。",
+            "你無法或不該更動原始類別，例如因為它來自某個函式庫。"
+          ]
+        },
+        "在以下情況應避免使用：",
+        {
+          "ul": [
+            "你只需要一種固定的額外行為。直接加進去，或是用一個子類別會更簡單。",
+            "程式碼依賴物件的身分或具體類別。被裝飾過的物件是不同的物件，所以像 `instanceof SlowStore` 或 `===` 比較這類檢查會失敗。",
+            "許多小層次會讓除錯變得困難。層層堆疊的包裝器會產生很長的呼叫堆疊，也讓人搞不清楚是哪一層做了什麼。"
+          ]
+        },
+        "網頁框架（如 Express 或 Koa）中的中介軟體（middleware）是相關的概念：每一層接收請求、可能對它採取動作，然後再傳下去。"
+      ]
+    },
+    {
+      "h": "實際應用",
+      "body": [
+        {
+          "ul": [
+            "Java I/O：`new BufferedInputStream(new FileInputStream(\"data.bin\"))` 把一個串流包進另一個加上緩衝功能的串流，而且兩者都具有 `InputStream` 介面。GoF 一書本身就把串流當作典型的例子來討論。",
+            "Java 集合：`Collections.unmodifiableList(list)` 和 `Collections.synchronizedList(list)` 會回傳包裝器，在現有的清單外加上唯讀行為或鎖定機制。",
+            "Python：像 `functools.lru_cache` 這類函式裝飾器會包裝一個函式並加上快取，而 `functools.wraps` 則能幫助包裝器保留被包裝函式的名稱與文件字串。"
+          ]
+        }
+      ]
+    },
+    {
+      "h": "相關模式",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "模式",
+              "與裝飾者的差異"
+            ],
+            "rows": [
+              [
+                "轉接器",
+                "改變物件的介面。裝飾者則保持介面不變並新增行為。"
+              ],
+              [
+                "代理",
+                "結構相同但目的不同：它控制存取（延遲建立、遠端存取、權限），而且通常自己管理真正物件的生命週期。"
+              ],
+              [
+                "組合",
+                "同樣使用遞迴的組合，但組合節點持有許多子節點；裝飾者則恰好只包裝一個。"
+              ],
+              [
+                "策略",
+                "透過替換演算法來改變物件的內部。裝飾者則是藉由包裝來改變物件的外部。"
+              ],
+              [
+                "責任鏈",
+                "同樣會讓請求通過一連串的物件，但每個處理者都可能中止請求；裝飾者通常一律會轉發。"
+              ]
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "裝飾者和繼承有什麼差別？",
+      "a": "繼承是在編譯時期為整個類別新增行為。裝飾者則是在執行時期為單一物件新增行為，而且多個裝飾者可以用任意順序組合。"
+    },
+    {
+      "q": "裝飾者和代理有什麼差別？",
+      "a": "它們的形狀相同。裝飾者新增的是由用戶端自行選擇堆疊的功能，而代理則是控制對真正物件的存取，常常負責建立它，或決定是否要呼叫它。"
+    },
+    {
+      "q": "TypeScript 的 @decorators 就是裝飾者模式嗎？",
+      "a": "不完全是。`@` 裝飾器是一種語言功能，會在類別與其成員被定義時修改它們。它們可以用來實作包裝，但 GoF 的模式講的是在執行時期包裝物件。"
+    },
+    {
+      "q": "裝飾者的順序重要嗎？",
+      "a": "重要。每個裝飾者都比它所包裝的物件先看到呼叫，所以放在記錄器外面的快取，會對記錄器隱藏重複的呼叫，而放在快取外面的記錄器則會看到每一次呼叫。"
+    }
+  ]
+}

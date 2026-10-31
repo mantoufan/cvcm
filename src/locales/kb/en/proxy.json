@@ -1,0 +1,177 @@
+{
+  "title": "Proxy pattern: virtual, protection and caching proxies in TypeScript — cv.cm",
+  "description": "The Proxy pattern puts a stand-in object in front of a real one to control access. See caching, lazy and protection proxies in TypeScript and JS Proxy.",
+  "h1": "Proxy pattern explained with examples",
+  "answer": "Proxy is a structural design pattern that provides a substitute object with the same interface as a real object, so that the proxy can control access to it. The client talks to the proxy as if it were the real object, and the proxy decides when and how to forward each call. Common kinds are virtual proxies (lazy creation), protection proxies (access checks), caching proxies and remote proxies.",
+  "sections": [
+    {
+      "h": "Intent and the problem it solves",
+      "body": [
+        "Intent: provide a surrogate or placeholder for another object to control access to it. Proxy is one of the structural patterns in the Gang of Four (GoF) book.",
+        "Suppose an app calls a weather service over the network. Each call takes hundreds of milliseconds and costs money, and the same city is often requested many times per minute. You cannot change the service class, and you do not want to add caching code to every place that calls it. A proxy solves this: it implements the same interface, keeps a cache, and only calls the real service on a cache miss. Callers do not change at all.",
+        "The same idea covers other needs: create an expensive object only when it is first used, check permissions before a call, log every call, or hide the fact that the real object lives on another machine."
+      ]
+    },
+    {
+      "h": "Structure and participants",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Role",
+              "Responsibility"
+            ],
+            "rows": [
+              [
+                "Subject",
+                "The interface shared by the real object and the proxy, so the client can use either one"
+              ],
+              [
+                "Real subject",
+                "The object that does the actual work"
+              ],
+              [
+                "Proxy",
+                "Implements the subject interface, holds or creates a reference to the real subject, and adds control logic before or after forwarding"
+              ],
+              [
+                "Client",
+                "Works only with the subject interface and does not know whether it has a proxy"
+              ]
+            ]
+          }
+        },
+        {
+          "table": {
+            "head": [
+              "Kind of proxy",
+              "What it controls"
+            ],
+            "rows": [
+              [
+                "Virtual proxy",
+                "Delays creating an expensive object until it is needed"
+              ],
+              [
+                "Protection proxy",
+                "Checks whether the caller is allowed to perform an operation"
+              ],
+              [
+                "Caching proxy",
+                "Stores results and returns them for repeated requests"
+              ],
+              [
+                "Remote proxy",
+                "Represents an object in another process or machine and handles the communication"
+              ],
+              [
+                "Logging proxy",
+                "Records calls and arguments without changing the real object"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "TypeScript implementation: a caching proxy",
+      "body": [
+        "`WeatherService` is the subject. `CachedWeatherService` is the proxy: it has the same method and forwards to the real service only when the cached value is missing or too old.",
+        {
+          "code": "interface WeatherService {\n  getTemperature(city: string): Promise<number>;\n}\nclass RemoteWeatherService implements WeatherService {\n  calls = 0;\n  async getTemperature(city: string): Promise<number> {\n    this.calls++; // imagine a slow HTTP request here\n    return city.length * 3;\n  }\n}\nclass CachedWeatherService implements WeatherService {\n  private cache = new Map<string, { value: number; time: number }>();\n  constructor(private real: WeatherService, private maxAgeMs = 60_000) {}\n  async getTemperature(city: string): Promise<number> {\n    const hit = this.cache.get(city);\n    if (hit && Date.now() - hit.time < this.maxAgeMs) return hit.value;\n    const value = await this.real.getTemperature(city);\n    this.cache.set(city, { value, time: Date.now() });\n    return value;\n  }\n}\nasync function main() {\n  const real = new RemoteWeatherService();\n  const weather: WeatherService = new CachedWeatherService(real);\n  await weather.getTemperature(\"Paris\");\n  await weather.getTemperature(\"Paris\");\n  console.log(await weather.getTemperature(\"Hanoi\"), \"real calls:\", real.calls);\n  // 15 real calls: 2\n}\nmain();",
+          "lang": "typescript"
+        },
+        "The client variable is typed as `WeatherService`, so you can switch between the real service and the proxy in one place, for example in a dependency injection setup."
+      ]
+    },
+    {
+      "h": "A virtual and protection proxy with JavaScript Proxy",
+      "body": [
+        "JavaScript has a built-in `Proxy` object (ES2015) that intercepts operations such as property reads, writes and function calls through handler functions called traps. It is a convenient way to build a proxy without writing a class for each interface.",
+        {
+          "code": "type Account = { owner: string; balance: number };\nfunction readOnly<T extends object>(target: T): T {\n  return new Proxy(target, {\n    set(_obj, prop) {\n      throw new Error(\"Cannot change \" + String(prop) + \": read-only\");\n    },\n  });\n}\nconst account = readOnly<Account>({ owner: \"Ana\", balance: 100 });\nconsole.log(account.balance); // 100\ntry {\n  account.balance = 0;\n} catch (e) {\n  console.log((e as Error).message); // Cannot change balance: read-only\n}",
+          "lang": "typescript"
+        },
+        {
+          "note": "A JavaScript `Proxy` intercepts operations on one object, but it is not free: every trapped operation runs a function. Do not wrap hot data structures in a `Proxy` without measuring the cost."
+        }
+      ]
+    },
+    {
+      "h": "When to use it and when not to",
+      "body": [
+        {
+          "ul": [
+            "Use it to add lazy loading, access control, caching, logging or remote access without changing the real class or its callers.",
+            "Use it when the real object is outside your control, such as a library class or a network client.",
+            "Do not use it when a plain function wrapper is enough. For one function, a higher-order function such as `memoize(fn)` is simpler than a class.",
+            "Do not hide slow or failing remote calls behind a proxy that looks local. Callers still need to handle latency and errors, so make that visible in the interface (for example by returning a `Promise`).",
+            "Be careful with identity: a proxy is a different object from the real subject, so `proxy === real` is false."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Real-world uses",
+      "body": [
+        {
+          "ul": [
+            "Vue 3 builds its reactivity system on JavaScript `Proxy`: reading a property records a dependency and writing it triggers updates.",
+            "Java provides `java.lang.reflect.Proxy` to create dynamic proxy classes at runtime; frameworks use it to add transactions, security checks or remote calls around interfaces.",
+            "Object-relational mappers such as Hibernate return lazy proxies for related entities and load the real data from the database on first access.",
+            "Remote procedure call libraries generate client stubs that look like local objects but send each call over the network."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Related patterns",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Pattern",
+              "How it differs from Proxy"
+            ],
+            "rows": [
+              [
+                "Decorator",
+                "Same structure, different goal: Decorator adds new behavior and is often stacked; Proxy controls access and usually manages the real object's life cycle."
+              ],
+              [
+                "Adapter",
+                "Adapter gives an object a different interface; Proxy keeps exactly the same interface."
+              ],
+              [
+                "Facade",
+                "Facade offers a new, simpler interface to a whole subsystem; Proxy stands in for one object."
+              ],
+              [
+                "Flyweight",
+                "Flyweight shares objects to save memory; a virtual proxy delays creating an object to save time and memory."
+              ]
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "What is the difference between Proxy and Decorator?",
+      "a": "Both wrap an object with the same interface. A decorator adds responsibilities and is usually composed by the client, while a proxy controls access to the real object and often creates or manages that object itself."
+    },
+    {
+      "q": "Is the JavaScript Proxy object the same as the Proxy pattern?",
+      "a": "It is a language feature that makes the pattern easy to implement. A JavaScript `Proxy` intercepts operations on a target object through traps, which is exactly what a proxy in the GoF sense does."
+    },
+    {
+      "q": "What is a virtual proxy?",
+      "a": "A virtual proxy stands in for an object that is expensive to create, such as a large image. It creates the real object only when a method that needs it is first called."
+    },
+    {
+      "q": "Is a reverse proxy server an example of the Proxy pattern?",
+      "a": "It follows the same idea at the network level: a server such as nginx sits in front of other servers with the same HTTP interface and adds caching, access control or load balancing. The GoF pattern describes the same idea for objects in one program."
+    }
+  ]
+}

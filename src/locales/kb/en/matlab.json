@@ -1,0 +1,195 @@
+{
+  "title": "MATLAB tutorial: matrices, vectorization, functions and plotting — cv.cm",
+  "description": "Learn MATLAB basics (and free GNU Octave): run scripts, create vectors and matrices, index them, use loops, functions, anonymous functions, errors and plots.",
+  "h1": "MATLAB tutorial for beginners",
+  "answer": "MATLAB is a numerical computing language and environment from MathWorks in which every value is a matrix. You write `A * B` for a matrix product, `A .* B` for element-wise multiplication, index from 1, and replace many loops with vectorized expressions. It includes plotting and a large set of toolboxes for engineering and science. GNU Octave is a free, open-source alternative that runs most basic MATLAB code unchanged.",
+  "sections": [
+    {
+      "h": "What MATLAB is and who uses it",
+      "body": [
+        "MATLAB (\"matrix laboratory\") began as a tool by Cleve Moler for easy access to linear algebra libraries and became a commercial product of MathWorks. It combines a language, an interactive desktop, plotting, and toolboxes for signal processing, control systems, optimization, statistics, image processing and machine learning. Simulink, a companion product, models dynamic systems with block diagrams.",
+        "MATLAB is widely used in engineering and science courses, research labs, and industries such as automotive, aerospace and finance. It requires a paid license (many universities provide one). GNU Octave is free software with largely compatible syntax; it covers the core language and many functions but not MathWorks toolboxes or Simulink."
+      ]
+    },
+    {
+      "h": "Install and run Hello, world",
+      "body": [
+        "Install MATLAB from MathWorks, use MATLAB Online in a browser, or install GNU Octave from octave.org (Windows, macOS, Linux). Code is saved in `.m` files. A script is a file of commands; you run it by typing its name, without `.m`, in the Command Window.",
+        {
+          "code": "% hello.m\ndisp('Hello, world!')",
+          "lang": "matlab"
+        },
+        {
+          "code": "matlab -batch \"hello\"   # MATLAB from a terminal\noctave hello.m          # GNU Octave\n# Hello, world!",
+          "lang": "shell"
+        },
+        "Comments start with `%`. A line that ends without a semicolon prints its result, so `x = 5` shows `x = 5`, while `x = 5;` stays silent."
+      ]
+    },
+    {
+      "h": "Variables and basic types",
+      "body": [
+        "Variables are created by assignment and need no declaration. Numbers are `double` (64-bit floating point) by default, and even a single number is a 1-by-1 matrix.",
+        {
+          "table": {
+            "head": [
+              "Type",
+              "Example",
+              "Notes"
+            ],
+            "rows": [
+              [
+                "double",
+                "`x = 3.14`",
+                "The default numeric type"
+              ],
+              [
+                "integer types",
+                "`n = int32(42)`",
+                "`int8` to `int64`, `uint8` to `uint64`; arithmetic saturates"
+              ],
+              [
+                "logical",
+                "`ok = true`",
+                "Result of comparisons such as `x > 2`"
+              ],
+              [
+                "char array",
+                "`name = 'Ana'`",
+                "Single quotes; a row vector of characters"
+              ],
+              [
+                "string",
+                "`s = \"Ana\"`",
+                "MATLAB string object; Octave treats double quotes as a char array"
+              ],
+              [
+                "cell array",
+                "`c = {'Ana', 30}`",
+                "Holds values of different types"
+              ],
+              [
+                "struct",
+                "`p.name = 'Ana'`",
+                "Named fields"
+              ]
+            ]
+          }
+        },
+        {
+          "code": "x = 10;\ny = 3;\nx / y              % 3.3333\nmod(x, y)          % 1\nx ^ 2              % 100\nname = 'Ana';\nfprintf('%s is %d years old\\n', name, 30)\n% Ana is 30 years old\nclass(x)           % 'double'",
+          "lang": "matlab"
+        }
+      ]
+    },
+    {
+      "h": "Vectors and matrices",
+      "body": [
+        "Square brackets build arrays: spaces or commas separate columns, semicolons separate rows. Indexing uses parentheses and starts at 1; `end` means the last index and `:` means \"all\".",
+        {
+          "code": "v = [3 1 4 1 5];\nv(1)               % 3\nv(end)             % 5\nv(2:4)             % [1 4 1]\nv * 2              % [6 2 8 2 10]\nv(v > 2)           % [3 4 5]   logical indexing\nA = [1 2; 3 4];\nA(2, :)            % second row: [3 4]\nA'                 % transpose:  [1 3; 2 4]\nA * A              % matrix product: [7 10; 15 22]\nA .* A             % element-wise:   [1 4; 9 16]\nb = [5; 11];\nx = A \\ b          % solves A*x = b: [1; 2]\nz = zeros(2, 3);   % also ones, eye, rand\nr = 0:0.25:1;      % [0 0.25 0.5 0.75 1]",
+          "lang": "matlab"
+        },
+        "Operators with a dot (`.*`, `./`, `.^`) work element by element; without the dot they follow the rules of linear algebra. The backslash operator solves linear systems and is more accurate than computing `inv(A) * b`."
+      ]
+    },
+    {
+      "h": "Control flow",
+      "body": [
+        {
+          "code": "score = 85;\nif score >= 90\n    disp('A')\nelseif score >= 80\n    disp('B')\nelse\n    disp('C')\nend\n\ntotal = 0;\nfor k = 1:10\n    total = total + k;\nend\nfprintf('total = %d\\n', total)   % total = 55\n\nn = 3;\nwhile n > 0\n    n = n - 1;\nend\n\nswitch 'red'\n    case {'red', 'green'}\n        disp('a color')\n    otherwise\n        disp('unknown')\nend",
+          "lang": "matlab"
+        },
+        "Every block ends with `end`. Many loops can be replaced by a vectorized expression: the loop above is the same as `sum(1:10)`, which is shorter and usually faster. If you must build an array in a loop, preallocate it first, for example `result = zeros(1, 1000);`."
+      ]
+    },
+    {
+      "h": "Functions and anonymous functions",
+      "body": [
+        "A function lives in its own file whose name matches the function name. A function can return several outputs. Scripts can also contain local functions at the end of the file in recent MATLAB versions.",
+        {
+          "code": "% stats.m\nfunction [m, s] = stats(x)\n%STATS Mean and sample standard deviation of a vector.\n    m = mean(x);\n    s = std(x);\nend",
+          "lang": "matlab"
+        },
+        {
+          "code": "[m, s] = stats([2 4 4 5 7])   % m = 4.4000, s = 1.8166\n[biggest, where] = max([3 9 2])   % biggest = 9, where = 2\n\nf = @(x) x.^2 + 1;            % anonymous function\nf(3)                          % 10\nf([1 2 3])                    % [2 5 10]\nfzero(@(x) x.^2 - 2, 1)       % 1.4142, a root near 1\nintegral(f, 0, 1)             % 1.3333",
+          "lang": "matlab"
+        },
+        "Anonymous functions, created with `@`, are often passed to other functions such as `fzero`, `integral`, `arrayfun` or optimization routines. Write them with element-wise operators (`.^`) so they also work on vectors."
+      ]
+    },
+    {
+      "h": "Structs and cell arrays",
+      "body": [
+        {
+          "code": "person.name = 'Ana';\nperson.age = 30;\nfprintf('%s is %d\\n', person.name, person.age)   % Ana is 30\n\nc = {'Ana', 30, [1 2 3]};   % cell array with mixed types\nc{2}                         % 30 (curly braces get the content)\nclass(c(2))                  % 'cell' (parentheses get a sub-cell)\nnames = {'Ana', 'Ben', 'Cleo'};\nnumel(names)                 % 3\nupper(names{1})              % 'ANA'",
+          "lang": "matlab"
+        },
+        "MATLAB also has a `table` type for column-oriented data with named variables, similar to a spreadsheet; `readtable` loads CSV and Excel files into it."
+      ]
+    },
+    {
+      "h": "Error handling",
+      "body": [
+        "Raise an error with `error`, optionally with an identifier such as `'demo:negative'`, and handle it with `try ... catch`. The caught object (an `MException` in MATLAB) has `identifier` and `message` fields.",
+        {
+          "code": "% safe_sqrt.m\nfunction r = safe_sqrt(x)\n    if x < 0\n        error('demo:negative', 'Input must be non-negative, got %g', x);\n    end\n    r = sqrt(x);\nend",
+          "lang": "matlab"
+        },
+        {
+          "code": "try\n    safe_sqrt(-4);\ncatch err\n    fprintf('%s: %s\\n', err.identifier, err.message)\nend\n% demo:negative: Input must be non-negative, got -4",
+          "lang": "matlab"
+        },
+        "Use `warning(...)` for problems that should not stop the program. Without the check, `sqrt(-4)` would not fail at all: it returns the complex number `0 + 2i`."
+      ]
+    },
+    {
+      "h": "A small complete program: analyze and plot data",
+      "body": [
+        {
+          "code": "% temps.m - analyze a week of temperatures\ntemps = [21.5 23.0 19.8 25.1 24.3 18.9 22.7];\ndays = 1:numel(temps);\n\navg = mean(temps);\n[hottest, idx] = max(temps);\nabove = days(temps > avg);\n\nfprintf('Average: %.2f\\n', avg)\nfprintf('Hottest: %.1f on day %d\\n', hottest, idx)\nfprintf('Days above average: %s\\n', mat2str(above))\n\nplot(days, temps, '-o')\nhold on\nplot(days, avg * ones(size(days)), '--')\nxlabel('Day'); ylabel('Temperature (C)')\ntitle('Temperatures this week')\nlegend('Daily', 'Average')\n% Average: 22.19\n% Hottest: 25.1 on day 4\n% Days above average: [2 4 5 7]",
+          "lang": "matlab"
+        },
+        "The script uses logical indexing to find the days above the average without a loop, then draws a line chart with markers and a dashed average line. The same code runs in GNU Octave.",
+        {
+          "note": "Common beginner mistakes: using `*` or `^` where you meant element-wise `.*` or `.^` (you get a dimension error or a matrix power); indexing with 0 (`v(0)` is an error); forgetting semicolons, which floods the output; naming a script or variable like a built-in function (`sum`, `max`, `i`), which hides the function; using `i` and `j` as loop variables when complex numbers are involved; and growing arrays inside loops instead of preallocating."
+        }
+      ]
+    },
+    {
+      "h": "Where to go next",
+      "body": [
+        {
+          "ul": [
+            "The MATLAB documentation from MathWorks, starting with the getting-started pages.",
+            "MATLAB Onramp, the free interactive introductory course from MathWorks.",
+            "The GNU Octave manual if you use Octave, including its notes on MATLAB compatibility.",
+            "Learn vectorization, `readtable` for data files and the plotting functions next."
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Is there a free version of MATLAB?",
+      "a": "MATLAB itself needs a license, although MathWorks offers trials and many universities provide campus licenses. GNU Octave is a free, open-source program that runs most basic MATLAB code."
+    },
+    {
+      "q": "What is the difference between * and .* in MATLAB?",
+      "a": "`*` is matrix multiplication from linear algebra, which requires matching inner dimensions. `.*` multiplies corresponding elements of two arrays of the same size."
+    },
+    {
+      "q": "Is GNU Octave fully compatible with MATLAB?",
+      "a": "Not fully. Core syntax, matrices, functions and plotting are largely compatible, but Octave lacks MathWorks toolboxes, Simulink and some newer MATLAB features, and it accepts a few extra syntax forms of its own."
+    },
+    {
+      "q": "Why does MATLAB start indexing at 1?",
+      "a": "MATLAB follows mathematical notation, where the first element of a vector or matrix is element 1. Fortran, R and Julia use the same convention."
+    },
+    {
+      "q": "Should I learn MATLAB or Python?",
+      "a": "Learn MATLAB if your course, lab or company uses it, especially with Simulink or specific toolboxes. Python with NumPy, SciPy and Matplotlib is free and more general-purpose, and the concepts transfer between the two."
+    }
+  ]
+}

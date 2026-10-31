@@ -1,0 +1,229 @@
+{
+  "title": "Insertion sort explained: how it works, Python code and complexity — cv.cm",
+  "description": "Insertion sort builds a sorted list one item at a time by shifting larger items right. Trace, Python code, O(n²) and O(n) cases, stability and uses.",
+  "h1": "Insertion sort explained: how it works, code and complexity",
+  "answer": "Insertion sort builds the sorted result one element at a time. It takes the next element, shifts every larger element in the sorted part one position to the right, and drops the element into the gap, the way many people sort playing cards in their hand. It is O(n²) in the average and worst case, O(n) on input that is already or nearly sorted, uses O(1) extra space and is stable. It is the fastest simple sort for small or nearly sorted arrays, which is why hybrid sorts such as Timsort use it.",
+  "sections": [
+    {
+      "h": "The idea in plain words",
+      "body": [
+        "Treat the first element as a sorted list of length one. Take the second element and insert it before or after the first. Take the third element and insert it into the right place among the first two. Continue until every element has been inserted.",
+        "To insert, hold the new element aside (call it `key`), then walk left through the sorted part. Every element larger than `key` moves one position right. When you reach an element that is not larger, or the start of the list, put `key` in the empty slot."
+      ]
+    },
+    {
+      "h": "Worked example, step by step",
+      "body": [
+        "Sort `[12, 11, 13, 5, 6]`. The part before the bar is sorted (but not yet final).",
+        {
+          "table": {
+            "head": [
+              "Step",
+              "key",
+              "Shifts",
+              "List after the step"
+            ],
+            "rows": [
+              [
+                "1",
+                "11",
+                "12 moves right",
+                "`[11, 12 | 13, 5, 6]`"
+              ],
+              [
+                "2",
+                "13",
+                "none, 12 is smaller",
+                "`[11, 12, 13 | 5, 6]`"
+              ],
+              [
+                "3",
+                "5",
+                "13, 12, 11 move right",
+                "`[5, 11, 12, 13 | 6]`"
+              ],
+              [
+                "4",
+                "6",
+                "13, 12, 11 move right",
+                "`[5, 6, 11, 12, 13]`"
+              ]
+            ]
+          }
+        },
+        "Notice step 2: an element that is already in place costs a single comparison. That is why insertion sort is fast on nearly sorted input."
+      ]
+    },
+    {
+      "h": "Python implementation",
+      "body": [
+        {
+          "code": "def insertion_sort(items):\n    \"\"\"Sort a list in place, ascending. Returns the same list.\"\"\"\n    for i in range(1, len(items)):\n        key = items[i]\n        j = i - 1\n        while j >= 0 and items[j] > key:   # strict >, keeps it stable\n            items[j + 1] = items[j]        # shift right\n            j -= 1\n        items[j + 1] = key                 # drop into the gap\n    return items\nprint(insertion_sort([12, 11, 13, 5, 6]))   # [5, 6, 11, 12, 13]\nprint(insertion_sort([1, 2, 3, 4]))         # [1, 2, 3, 4], 3 comparisons",
+          "lang": "python"
+        },
+        "Shifting instead of swapping writes each moved element once, which is about half the work of the swap-based version. You can also find the insertion point with binary search, as below. This reduces comparisons to O(n log n) in total, but the shifts are still O(n²), so the overall time stays O(n²).",
+        {
+          "code": "from bisect import insort_right\ndef binary_insertion_sort(items):\n    result = []\n    for x in items:\n        insort_right(result, x)   # stable: equal items go after\n    return result\nprint(binary_insertion_sort([3, 1, 2, 1]))   # [1, 1, 2, 3]",
+          "lang": "python"
+        }
+      ]
+    },
+    {
+      "h": "Time and space complexity",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Case",
+              "Time",
+              "Reason"
+            ],
+            "rows": [
+              [
+                "Best (already sorted)",
+                "O(n)",
+                "each element needs one comparison and no shifts"
+              ],
+              [
+                "Average (random order)",
+                "O(n²)",
+                "about n²/4 shifts on average"
+              ],
+              [
+                "Worst (reverse order)",
+                "O(n²)",
+                "element i shifts past all i earlier elements"
+              ],
+              [
+                "Extra space",
+                "O(1)",
+                "sorts in place with one temporary value"
+              ]
+            ]
+          }
+        },
+        "More precisely, the running time is O(n + I), where I is the number of inversions (pairs out of order). If every element is at most k positions from its final place, I is at most n · k, so insertion sort is O(n · k): very fast when k is small."
+      ]
+    },
+    {
+      "h": "How insertion sort compares with other sorts",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Algorithm",
+              "Best",
+              "Average",
+              "Worst",
+              "Extra space",
+              "Stable"
+            ],
+            "rows": [
+              [
+                "Insertion sort",
+                "O(n)",
+                "O(n²)",
+                "O(n²)",
+                "O(1)",
+                "Yes"
+              ],
+              [
+                "Bubble sort",
+                "O(n)",
+                "O(n²)",
+                "O(n²)",
+                "O(1)",
+                "Yes"
+              ],
+              [
+                "Selection sort",
+                "O(n²)",
+                "O(n²)",
+                "O(n²)",
+                "O(1)",
+                "No"
+              ],
+              [
+                "Merge sort",
+                "O(n log n)",
+                "O(n log n)",
+                "O(n log n)",
+                "O(n)",
+                "Yes"
+              ],
+              [
+                "Quicksort",
+                "O(n log n)",
+                "O(n log n)",
+                "O(n²)",
+                "O(log n)",
+                "No"
+              ],
+              [
+                "Heapsort",
+                "O(n log n)",
+                "O(n log n)",
+                "O(n log n)",
+                "O(1)",
+                "No"
+              ],
+              [
+                "Timsort (Python `sorted`)",
+                "O(n)",
+                "O(n log n)",
+                "O(n log n)",
+                "O(n)",
+                "Yes"
+              ]
+            ]
+          }
+        },
+        "Insertion sort is stable because an element only moves left past elements that are strictly greater. It is also online: it can sort data as it arrives, keeping a sorted prefix at every moment. For short lists, its low overhead beats O(n log n) algorithms, so Timsort (used by Python and by Java for objects) sorts short runs with binary insertion sort, and many quicksort implementations switch to insertion sort below a small size."
+      ]
+    },
+    {
+      "h": "Variants and common mistakes",
+      "body": [
+        {
+          "ul": [
+            "Binary insertion sort: binary search for the position, then shift. Fewer comparisons, which helps when comparing is expensive.",
+            "Shell sort: run insertion sort on elements a gap apart, then shrink the gap down to 1. It moves far-away elements quickly and is much faster than plain insertion sort on large arrays.",
+            "Linked-list insertion sort: no shifting is needed, but finding the position is still a linear scan."
+          ]
+        },
+        {
+          "note": "Common bugs: writing `items[j] >= key` (moves equal items and breaks stability), checking `items[j] > key` before `j >= 0` (in Python, `items[-1]` silently reads the last element instead of failing), and writing `key` to `items[j]` instead of `items[j + 1]` after the loop."
+        }
+      ]
+    },
+    {
+      "h": "When to use insertion sort",
+      "body": [
+        "Use it for small arrays (tens of elements), for data that is nearly sorted, such as a list that was sorted and then had a few items appended, and when you need a simple stable in-place sort. For large random data, use an O(n log n) sort; in Python that means `sorted()` or `list.sort()`, which already apply insertion sort to small runs internally.",
+        "Interview questions often ask for the trace, the best and worst cases, why it is stable, or why it beats O(n log n) algorithms on small and nearly sorted input."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Is insertion sort stable?",
+      "a": "Yes. Elements move left only past elements that are strictly greater, so equal elements stay in their original order."
+    },
+    {
+      "q": "What is the best case of insertion sort?",
+      "a": "O(n), when the input is already sorted: each new element is compared once with its left neighbour and stays in place."
+    },
+    {
+      "q": "Why is insertion sort used in Timsort?",
+      "a": "For short sequences, its very low overhead makes it faster than merge sort or quicksort, and it is stable. Timsort uses binary insertion sort to extend short runs before merging them."
+    },
+    {
+      "q": "Is insertion sort better than bubble sort?",
+      "a": "Yes, in practice. Both are O(n²) and stable, but insertion sort performs fewer comparisons and writes and adapts better to nearly sorted input."
+    },
+    {
+      "q": "Does binary search make insertion sort O(n log n)?",
+      "a": "No. It reduces the number of comparisons to O(n log n), but shifting elements to make room is still O(n²) in the worst case."
+    }
+  ]
+}

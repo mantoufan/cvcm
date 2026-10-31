@@ -1,0 +1,169 @@
+{
+  "title": "Fortran 入門教學：現代語法、陣列、模組與程序 — cv.cm",
+  "description": "學會現代 Fortran：用 gfortran 編譯 Hello world、宣告具型別的變數、使用迴圈、函式、副程式、模組、整個陣列運算與 iostat。",
+  "h1": "Fortran 入門教學",
+  "answer": "Fortran 是為數值與科學運算而打造的編譯式、靜態型別語言。現代 Fortran（Fortran 90 及之後的標準）具備自由格式原始碼、模組、動態陣列與強大的整個陣列運算，編譯器會把它轉成非常快的機器碼。安裝免費的 gfortran 編譯器，把程式碼存成 `.f90` 檔案，再用 `gfortran hello.f90 -o hello` 建置。",
+  "sections": [
+    {
+      "h": "Fortran 是什麼、誰在使用",
+      "body": [
+        "Fortran（「formula translation」，公式翻譯）於 1950 年代由 John Backus 領導的 IBM 團隊開發，是至今仍在積極使用的最古老的程式語言之一。它由 ISO 標準化；主要版本包括 Fortran 90、95、2003、2008、2018 與 2023。舊式的固定格式風格（大寫的 `FORTRAN 77`，程式碼從第 7 欄開始）仍然可以編譯，但新的程式碼使用本頁所示的自由格式語法。",
+        "Fortran 用在需要大量數值運算的場合：天氣與氣候模型、計算流體力學、物理與化學模擬，以及許多在超級電腦上執行的程式。BLAS 與 LAPACK 線性代數函式庫的參考版本是用 Fortran 寫成的，NumPy 與 MATLAB 等工具的底層就用到它們。"
+      ]
+    },
+    {
+      "h": "安裝編譯器並執行 Hello, world",
+      "body": [
+        "gfortran 屬於 GCC，是免費的，可在 Linux（套件 `gfortran`）、macOS（Homebrew `gcc`）與 Windows（MSYS2 或 WSL）上取得。Intel 的 ifx 與 LLVM Flang 則是其他編譯器。Fortran Package Manager（`fpm`）可以建立並建置專案。",
+        {
+          "code": "program hello\n  implicit none\n  print *, \"Hello, world!\"\nend program hello",
+          "lang": "fortran"
+        },
+        {
+          "code": "gfortran hello.f90 -o hello\n./hello\n#  Hello, world!",
+          "lang": "shell"
+        },
+        "`print *` 使用 list-directed 輸出，會替你決定間距（注意開頭的空格）。Fortran 不分大小寫：`PRINT`、`Print` 與 `print` 是相同的。"
+      ]
+    },
+    {
+      "h": "變數與基本型別",
+      "body": [
+        "所有宣告都要放在程式單元的最上方，在可執行陳述式之前。請務必寫 `implicit none`：沒有它的話，未宣告且以 I 到 N 開頭的名稱會默默地變成整數，其他則變成實數。",
+        {
+          "table": {
+            "head": [
+              "型別",
+              "宣告範例",
+              "說明"
+            ],
+            "rows": [
+              [
+                "integer",
+                "`integer :: count = 3`",
+                "通常是 32 位元；64 位元請用 `integer(int64)`"
+              ],
+              [
+                "real",
+                "`real :: x`",
+                "通常是單精度"
+              ],
+              [
+                "real(real64)",
+                "`real(real64) :: y`",
+                "雙精度，科學運算的常用選擇"
+              ],
+              [
+                "complex",
+                "`complex :: z = (1.0, 2.0)`",
+                "內建複數"
+              ],
+              [
+                "logical",
+                "`logical :: done = .false.`",
+                "`.true.` / `.false.`，運算子為 `.and.`、`.or.`、`.not.`"
+              ],
+              [
+                "character",
+                "`character(len=20) :: name`",
+                "固定長度字串，以空格補齊"
+              ]
+            ]
+          }
+        },
+        {
+          "code": "program types\n  use, intrinsic :: iso_fortran_env, only: int64, real64\n  implicit none\n  integer :: count = 3\n  integer(int64) :: big = 9000000000_int64\n  real(real64) :: third\n  logical :: done = .false.\n  character(len=:), allocatable :: name\n\n  third = 1.0_real64 / 3.0_real64\n  name = \"Ana\"\n  print *, count, big, third, done, name\nend program types",
+          "lang": "fortran"
+        },
+        "後綴 `_real64` 用來設定字面值的 kind（精度）。沒有它的話，`1.0` 是單精度常數，指派給雙精度變數時會損失位數。"
+      ]
+    },
+    {
+      "h": "流程控制",
+      "body": [
+        {
+          "code": "program control\n  implicit none\n  integer :: i, total, score\n\n  total = 0\n  do i = 1, 10\n    if (mod(i, 2) == 0) cycle   ! skip even numbers\n    total = total + i\n  end do\n  print *, \"sum of odd numbers:\", total   ! 25\n\n  score = 85\n  if (score >= 90) then\n    print *, \"A\"\n  else if (score >= 80) then\n    print *, \"B\"\n  else\n    print *, \"C\"\n  end if\n\n  select case (score)\n  case (90:)\n    print *, \"excellent\"\n  case (80:89)\n    print *, \"good\"\n  case default\n    print *, \"keep going\"\n  end select\nend program control",
+          "lang": "fortran"
+        },
+        "`do i = 1, 10` 包含兩端，選用的第三個值可設定步進（`do i = 10, 1, -1`）。`cycle` 跳到下一次迭代，`exit` 離開迴圈。也可以使用 `do while (condition)`，以及搭配 `exit` 的單純 `do`。註解以 `!` 開頭。"
+      ]
+    },
+    {
+      "h": "函式、副程式與模組",
+      "body": [
+        "Fortran 有兩種程序：函式會回傳值，可用在運算式中；副程式（subroutine）以 `call` 呼叫，並透過引數回傳結果。請把程序放在模組中，讓編譯器能檢查每一次呼叫。",
+        {
+          "code": "module geometry\n  implicit none\ncontains\n  function circle_area(r) result(a)\n    real, intent(in) :: r\n    real :: a\n    a = 3.14159 * r**2\n  end function circle_area\n\n  subroutine swap(a, b)\n    integer, intent(inout) :: a, b\n    integer :: tmp\n    tmp = a\n    a = b\n    b = tmp\n  end subroutine swap\nend module geometry\n\nprogram demo\n  use geometry\n  implicit none\n  integer :: x, y\n  x = 1\n  y = 2\n  print *, circle_area(2.0)   ! about 12.566\n  call swap(x, y)\n  print *, x, y               ! 2 1\nend program demo",
+          "lang": "fortran"
+        },
+        "引數以傳參考的方式傳遞，所以程序可以更改呼叫者的變數。`intent(in)`、`intent(out)` 與 `intent(inout)` 用來說明並強制每個引數可以做什麼。`**` 是次方運算子。"
+      ]
+    },
+    {
+      "h": "陣列：Fortran 的招牌特色",
+      "body": [
+        "陣列是 Fortran 的核心。索引預設從 1 開始（允許任何下界），算術運算可以對整個陣列進行而不需迴圈，切片使用 `a(start:end)`，許多內建函式也可直接對陣列運算。",
+        {
+          "code": "program arrays\n  implicit none\n  integer :: i\n  real :: a(5), b(5)\n  real, allocatable :: c(:)\n  integer :: m(2, 3)\n\n  a = [(real(i), i = 1, 5)]   ! 1.0 2.0 3.0 4.0 5.0\n  b = 2.0 * a + 1.0           ! whole-array arithmetic\n  print *, b(2:4)             ! 5.0 7.0 9.0\n  print *, sum(a), maxval(b)  ! 15.0 11.0\n\n  allocate(c(10))\n  c = 0.0\n  print *, size(c)            ! 10\n  deallocate(c)\n\n  m = reshape([1, 2, 3, 4, 5, 6], [2, 3])\n  print *, m(2, 1)            ! 2 (column-major order)\nend program arrays",
+          "lang": "fortran"
+        },
+        "多維陣列以欄優先（column-major）順序儲存：第一個索引在記憶體中變動最快，與 C 相反。為了速度，請讓最內層迴圈遍歷第一個索引。其他實用的內建函式還有 `matmul`、`dot_product`、`transpose`、`minval` 與 `count`。現代 Fortran 也提供 `do concurrent` 迴圈與 coarray，用於平行程式。"
+      ]
+    },
+    {
+      "h": "錯誤處理",
+      "body": [
+        "Fortran 沒有例外。可能失敗的陳述式會接受狀態引數：輸入輸出用 `iostat`，`allocate` 用 `stat`。請檢查其值並做出反應；如果省略，發生錯誤時程式會停止。`error stop` 會以錯誤結束程式。",
+        {
+          "code": "program parse\n  implicit none\n  character(len=20) :: text\n  integer :: n, ios\n\n  text = \"abc\"\n  read(text, *, iostat=ios) n\n  if (ios /= 0) then\n    print *, \"not a number: \", trim(text)\n  else\n    print *, \"n =\", n\n  end if\nend program parse",
+          "lang": "fortran"
+        },
+        "如上所示，從字元變數讀取稱為內部讀取（internal read），是把字串轉成數字的慣用方式。"
+      ]
+    },
+    {
+      "h": "完整的小程式：平均值與標準差",
+      "body": [
+        {
+          "code": "module stats\n  implicit none\n  integer, parameter :: dp = kind(1.0d0)\ncontains\n  pure function mean(x) result(m)\n    real(dp), intent(in) :: x(:)\n    real(dp) :: m\n    m = sum(x) / size(x)\n  end function mean\n\n  pure function std_dev(x) result(s)\n    real(dp), intent(in) :: x(:)\n    real(dp) :: s\n    s = sqrt(sum((x - mean(x))**2) / (size(x) - 1))\n  end function std_dev\nend module stats\n\nprogram main\n  use stats\n  implicit none\n  real(dp) :: values(5)\n  values = [2.0_dp, 4.0_dp, 4.0_dp, 5.0_dp, 7.0_dp]\n  print '(a, f6.3)', \"mean    = \", mean(values)\n  print '(a, f6.3)', \"std dev = \", std_dev(values)\nend program main\n! mean    =  4.400\n! std dev =  1.817",
+          "lang": "fortran"
+        },
+        "`x(:)` 宣告是 assumed-shape 陣列，所以函式可接受任意長度的陣列。`pure` 承諾函式沒有副作用。格式 `'(a, f6.3)'` 會印出一個字串，後面接著寬度 6、小數 3 位的實數。",
+        {
+          "note": "新手常見錯誤：忘了 `implicit none`；整數除法（`1 / 2` 是 0，請寫 `1.0 / 2.0`）；在雙精度程式碼中使用單精度字面值（寫 `0.1` 而不是 `0.1_dp`）；在程序內的宣告中初始化區域變數，這會讓它具有 `save` 屬性，因此在多次呼叫之間會保留其值；以及在最內層迴圈遍歷最後一個索引，由於欄優先順序，速度會很慢。"
+        }
+      ]
+    },
+    {
+      "h": "接下來可以學什麼",
+      "body": [
+        {
+          "ul": [
+            "fortran-lang.org：Learn 區有快速入門教學與最佳實務。",
+            "GNU Fortran（gfortran）手冊，內有編譯器選項與內建程序。",
+            "試試 Fortran Package Manager（fpm）來建立專案，並使用 Fortran 標準函式庫（stdlib）等函式庫。",
+            "學習時請開啟警告與執行期檢查來編譯，例如 `gfortran -Wall -fcheck=all`。"
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Fortran 現在還有人用嗎？",
+      "a": "有。Fortran 仍廣泛用於科學運算與高效能運算，特別是氣候、天氣、物理與工程模擬，語言標準也仍持續更新。"
+    },
+    {
+      "q": ".f 與 .f90 檔案有什麼差別？",
+      "a": "依慣例，`.f` 與 `.for` 檔案使用 FORTRAN 77 的舊式固定格式排版，欄位位置很重要，而 `.f90` 檔案使用自由格式原始碼。`.f90` 副檔名用於任何現代標準的自由格式程式碼，不只是 Fortran 90。"
+    },
+    {
+      "q": "為什麼 Fortran 很快？",
+      "a": "這門語言是為數值運算而設計的：陣列是內建的，別名規則讓編譯器能積極最佳化，而且數十年來的編譯器開發都以它為目標。寫得好的 C 或 C++ 也能達到相近的速度。"
+    },
+    {
+      "q": "Fortran 的陣列從 0 還是 1 開始？",
+      "a": "預設從 1 開始，但你可以選擇任意下界，例如 `real :: a(0:9)` 宣告十個元素，索引從 0 到 9。"
+    }
+  ]
+}

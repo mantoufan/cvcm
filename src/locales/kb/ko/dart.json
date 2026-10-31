@@ -1,0 +1,193 @@
+{
+  "title": "다트 기초 강좌: null 안전성, 함수, 컬렉션, 비동기 — cv.cm",
+  "description": "다트(Dart)를 처음부터 배웁니다. Hello, world 실행, 변수와 타입, 건전한 null 안전성, switch 패턴, 함수, 리스트와 맵, 레코드, 클래스, async/await를 다룹니다.",
+  "h1": "입문자를 위한 다트 기초 강좌",
+  "answer": "다트(Dart)는 구글이 만든 정적 타입 객체 지향 언어로, Flutter 앱 프레임워크의 언어로 가장 잘 알려져 있습니다. 건전한 null 안전성을 갖추고 있고, 네이티브 코드와 JavaScript 또는 WebAssembly로 컴파일되며, 개발 중에는 빠른 핫 리로드를 지원합니다. 이 페이지에서는 환경 설정, 타입, null 안전성, 제어 흐름, 함수, 컬렉션, 클래스, 비동기 코드, 예외 처리를 차례로 살펴봅니다.",
+  "sections": [
+    {
+      "h": "다트란 무엇이고 어디에 쓰는가",
+      "body": [
+        "다트(Dart)는 구글이 개발한 클라이언트 최적화 프로그래밍 언어입니다. 타입 추론을 지원하는 정적 타입 언어이며 건전한 null 안전성을 갖추고 있고, 네이티브 기계어(모바일, 데스크톱, 서버용)와 JavaScript 또는 WebAssembly(웹용)로 모두 컴파일됩니다. 개발 중에는 핫 리로드가 되는 가상 머신에서 실행되므로 변경 사항이 실행 중인 앱에 몇 초 안에 반영됩니다.",
+        "대부분 Flutter로 앱을 만들려고 다트를 배웁니다. Flutter는 하나의 코드베이스로 Android, iOS, 웹, Windows, macOS, Linux를 지원하는 구글의 UI 툴킷입니다. 다트는 명령줄 도구와 백엔드 서비스에도 쓰입니다."
+      ]
+    },
+    {
+      "h": "다트 설치와 Hello, world 실행",
+      "body": [
+        "dart.dev에서 Dart SDK를 설치하세요(다트가 포함된 Flutter를 설치해도 됩니다). 모든 다트 프로그램은 최상위 `main` 함수에서 시작합니다.",
+        {
+          "code": "// hello.dart\nvoid main() {\n  print('Hello, world!');\n}",
+          "lang": "dart"
+        },
+        {
+          "code": "dart run hello.dart\n# Hello, world!\ndart compile exe hello.dart   # builds a native executable\ndart create my_app            # creates a new console project",
+          "lang": "shell"
+        },
+        "이 페이지의 모든 예제는 dartpad.dev의 브라우저 기반 에디터인 DartPad에서도 실행해 볼 수 있습니다."
+      ]
+    },
+    {
+      "h": "변수와 기본 타입",
+      "body": [
+        "컴파일러가 타입을 추론하게 하려면 `var`, 한 번만 할당하는 변수에는 `final`, 컴파일 시점 상수에는 `const`를 사용합니다. 타입을 직접 명시해도 됩니다.",
+        {
+          "code": "void main() {\n  var name = 'Dart';        // inferred as String\n  int year = 2011;          // explicit type\n  final now = DateTime.now(); // set once, at run time\n  const pi = 3.14159;       // compile-time constant\n  double ratio = 2;         // int literal becomes 2.0\n  bool ok = year > 2000;\n  print('$name since $year, pi=${pi.toStringAsFixed(2)}, ok=$ok, ratio=$ratio');\n  // Dart since 2011, pi=3.14, ok=true, ratio=2.0\n  print(now.year > 2000);   // true\n}",
+          "lang": "dart"
+        },
+        {
+          "table": {
+            "head": [
+              "타입",
+              "예시",
+              "설명"
+            ],
+            "rows": [
+              [
+                "`int`",
+                "`42`",
+                "정수. 네이티브 플랫폼에서는 64비트"
+              ],
+              [
+                "`double`",
+                "`3.14`",
+                "64비트 부동 소수점"
+              ],
+              [
+                "`num`",
+                "`7` 또는 `7.5`",
+                "`int`와 `double`의 상위 타입"
+              ],
+              [
+                "`bool`",
+                "`true`",
+                "조건식에는 `true`와 `false`만 쓸 수 있음"
+              ],
+              [
+                "`String`",
+                "`'hi'`",
+                "UTF-16. `$x`, `${expr}` 보간 지원"
+              ],
+              [
+                "`dynamic`",
+                "무엇이든 가능",
+                "정적 검사를 끄므로 대부분의 코드에서는 피할 것"
+              ]
+            ]
+          }
+        },
+        "웹에서는 `int` 값이 JavaScript 숫자로 표현되므로 아주 큰 정수는 정밀도를 잃을 수 있습니다."
+      ]
+    },
+    {
+      "h": "건전한 null 안전성",
+      "body": [
+        "다트 3부터 모든 다트 코드는 건전한 null 안전성을 사용합니다. `String` 타입 변수는 null이 될 수 없으며, null을 허용하려면 `String?`라고 씁니다. 컴파일러가 모든 사용을 검사하므로 null 오류를 프로그램 실행 전에 잡아 냅니다.",
+        {
+          "code": "int lengthOf(String? s) {\n  // return s.length;         // compile error: s might be null\n  if (s == null) return 0;\n  return s.length;            // promoted to String after the check\n}\nvoid main() {\n  String? nickname;\n  print(nickname?.length);    // null (null-aware access)\n  print(nickname ?? 'guest'); // guest (default if null)\n  nickname ??= 'dee';         // assign only if null\n  print(lengthOf(nickname));  // 3\n  late String config;         // initialized later, checked at run time\n  config = 'loaded';\n  print(config);              // loaded\n}",
+          "lang": "dart"
+        },
+        {
+          "note": "`!` 연산자(예: `s!.length`)는 컴파일러에 값이 null이 아니라고 알려 주며, 틀리면 실행 중에 예외가 발생합니다. null 검사나 `??`를 우선 쓰세요. 또한 `late`는 검사를 실행 시점으로 옮기므로, `late` 변수를 할당하기 전에 읽으면 오류가 발생합니다."
+        }
+      ]
+    },
+    {
+      "h": "제어 흐름",
+      "body": [
+        "다트에는 일반적인 `if`, `for`, `while`, `do-while`이 있고, 모든 iterable을 순회하는 `for-in` 반복문도 있습니다. 다트 3부터 `switch`가 패턴 매칭을 지원하며 식으로도 사용할 수 있습니다.",
+        {
+          "code": "void main() {\n  var scores = [72, 95, 48];\n  for (var s in scores) {\n    if (s >= 90) {\n      print('$s excellent');\n    } else if (s >= 50) {\n      print('$s pass');\n    } else {\n      print('$s fail');\n    }\n  }\n  for (var i = 0; i < 3; i++) {\n    print('i = $i');\n  }\n  var day = 6;\n  var kind = switch (day) {\n    6 || 7 => 'weekend',\n    >= 1 && <= 5 => 'weekday',\n    _ => 'invalid',\n  };\n  print(kind); // weekend\n}",
+          "lang": "dart"
+        }
+      ]
+    },
+    {
+      "h": "함수",
+      "body": [
+        "함수는 일급 객체입니다. 매개변수는 위치 매개변수, `[]` 안의 선택적 위치 매개변수, `{}` 안의 이름 있는 매개변수가 될 수 있습니다. 이름 있는 매개변수는 `required`를 붙이지 않으면 선택 사항입니다. 화살표 문법 `=>`는 식 하나를 반환하는 함수의 축약형입니다.",
+        {
+          "code": "int add(int a, int b) => a + b;\nString greet(String name, {String greeting = 'Hello', required bool loud}) {\n  var text = '$greeting, $name';\n  return loud ? text.toUpperCase() : text;\n}\nString label(String text, [int? width]) =>\n    width == null ? text : text.padRight(width, '.');\nvoid main() {\n  print(add(2, 3));                              // 5\n  print(greet('Ana', loud: false));              // Hello, Ana\n  print(greet('Ana', greeting: 'Hi', loud: true)); // HI, ANA\n  print(label('id', 5));                         // id...\n  var twice = (int x) => x * 2;                  // anonymous function\n  print([1, 2, 3].map(twice).toList());          // [2, 4, 6]\n}",
+          "lang": "dart"
+        }
+      ]
+    },
+    {
+      "h": "컬렉션: List, Set, Map, 레코드",
+      "body": [
+        "핵심 컬렉션은 `List`(순서 있음), `Set`(중복 없음), `Map`(키-값 쌍)입니다. 컬렉션 리터럴에서는 `if`, `for`, 전개 연산자 `...`를 쓸 수 있습니다. 다트 3에 추가된 레코드는 클래스를 선언하지 않고도 여러 값을 묶어 줍니다.",
+        {
+          "code": "void main() {\n  var nums = [3, 1, 2];               // List<int>\n  nums.add(4);\n  nums.sort();\n  print(nums);                        // [1, 2, 3, 4]\n  var tags = {'dart', 'flutter', 'dart'};\n  print(tags.length);                 // 2\n  var ages = {'Ann': 31, 'Bo': 25};   // Map<String, int>\n  ages['Cy'] = 40;\n  print(ages['Bo']);                  // 25\n  var showAll = false;\n  var menu = ['Home', if (showAll) 'Admin', for (var n in nums) 'Item $n'];\n  print(menu);  // [Home, Item 1, Item 2, Item 3, Item 4]\n  (String, int) pair = ('Ann', 31);   // a record\n  var (who, age) = pair;              // destructuring\n  print('$who is $age');              // Ann is 31\n}",
+          "lang": "dart"
+        }
+      ]
+    },
+    {
+      "h": "클래스와 async/await",
+      "body": [
+        "다트는 객체 지향 언어이며 모든 값이 객체입니다. 클래스는 초기화 형식 매개변수(`this.x`)를 쓰는 생성자, 이름 있는 생성자, 게터, 믹스인, 인터페이스를 지원합니다. 비동기 코드는 `async`와 `await`와 함께 `Future`, `Stream`을 사용하며, 파일이나 네트워크를 기다리는 동안에도 Flutter 앱이 반응성을 유지하게 해 줍니다.",
+        {
+          "code": "class Point {\n  final double x, y;\n  const Point(this.x, this.y);\n  Point.origin() : x = 0, y = 0;     // named constructor\n  double get sum => x + y;           // getter\n  @override\n  String toString() => 'Point($x, $y)';\n}\nFuture<String> fetchUser() async {\n  await Future.delayed(Duration(milliseconds: 100));\n  return 'ana';\n}\nFuture<void> main() async {\n  print(Point(1, 2).sum);            // 3.0\n  print(Point.origin());             // Point(0.0, 0.0)\n  var user = await fetchUser();\n  print('user: $user');              // user: ana\n}",
+          "lang": "dart"
+        }
+      ]
+    },
+    {
+      "h": "예외 처리",
+      "body": [
+        "`throw`로 예외를 던지고 `try`, `on`, `catch`, `finally`로 처리합니다. 특정 타입만 잡으려면 `on SomeType`을 사용하세요. 다트는 프로그램이 처리할 수 있는 예상된 문제인 `Exception`과, 보통 잡지 말아야 하는 버그(예: 실패한 assertion, 범위 오류)인 `Error`를 구분합니다.",
+        {
+          "code": "int parseAge(String s) {\n  var n = int.tryParse(s);            // null instead of throwing\n  if (n == null || n < 0) {\n    throw FormatException('Not a valid age: $s');\n  }\n  return n;\n}\nvoid main() {\n  for (var input in ['42', 'abc']) {\n    try {\n      print(parseAge(input));\n    } on FormatException catch (e) {\n      print('Error: ${e.message}');\n    } finally {\n      print('checked $input');\n    }\n  }\n}\n// 42 / checked 42 / Error: Not a valid age: abc / checked abc",
+          "lang": "dart"
+        }
+      ]
+    },
+    {
+      "h": "작은 완성 프로그램: 장바구니 합계",
+      "body": [
+        "이 프로그램은 클래스로 상품을 표현하고, 장바구니를 맵에 저장해 영수증을 출력합니다. 클래스, 맵, 문자열 서식, 컬렉션 메서드를 함께 사용합니다.",
+        {
+          "code": "class Product {\n  final String name;\n  final double price;\n  const Product(this.name, this.price);\n}\nvoid main() {\n  const apple = Product('Apple', 0.5);\n  const bread = Product('Bread', 2.25);\n  final cart = <Product, int>{apple: 6, bread: 2};\n  var total = 0.0;\n  cart.forEach((product, qty) {\n    final line = product.price * qty;\n    total += line;\n    print('${product.name.padRight(6)} x$qty  ${line.toStringAsFixed(2)}');\n  });\n  final count = cart.values.reduce((a, b) => a + b);\n  print('$count items, total ${total.toStringAsFixed(2)}');\n}\n// Apple  x6  3.00\n// Bread  x2  4.50\n// 8 items, total 7.50",
+          "lang": "dart"
+        },
+        {
+          "note": "입문자가 자주 하는 실수: `await`를 빠뜨려 값 대신 `Future`를 받기, `dynamic`을 쓰거나 타입을 `Object`로 두어 컴파일 시점 검사를 잃기, `!`와 `late` 남용하기, `final`(한 번 할당)과 `const`(컴파일 시점에 결정)를 혼동하기, 리스트를 순회하는 중에 수정하기."
+        }
+      ]
+    },
+    {
+      "h": "다음 단계",
+      "body": [
+        {
+          "ul": [
+            "dart.dev의 Dart 언어 투어와 튜토리얼.",
+            "공식 스타일·설계 가이드인 Effective Dart.",
+            "앱을 만들고 싶다면 flutter.dev의 Flutter 문서.",
+            "다트와 Flutter의 패키지 저장소인 pub.dev."
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "다트는 Flutter 전용 언어인가요?",
+      "a": "아니요. 다트는 범용 언어이며 명령줄 도구, 서버, 웹 앱도 만들 수 있습니다. Flutter가 다트를 배우는 가장 인기 있는 이유일 뿐입니다."
+    },
+    {
+      "q": "다트는 컴파일 언어인가요, 인터프리터 언어인가요?",
+      "a": "두 방식이 모두 있습니다. 개발 중에는 JIT 컴파일과 핫 리로드가 되는 VM에서 실행하고, 릴리스할 때는 네이티브 기계어로 AOT 컴파일하거나 웹용 JavaScript 또는 WebAssembly로 컴파일합니다."
+    },
+    {
+      "q": "다트에서 final과 const의 차이는 무엇인가요?",
+      "a": "`final` 변수는 한 번만 할당되며 실행 시점에 정해져도 됩니다. `const` 값은 컴파일 시점에 알려져 있어야 하고 깊은 수준까지 불변이며, 덕분에 Flutter가 상수 위젯을 재사용할 수 있습니다."
+    },
+    {
+      "q": "다트는 자바나 JavaScript와 비슷한가요?",
+      "a": "C 스타일 문법과 클래스는 Java, C#, JavaScript 개발자에게 친숙합니다. JavaScript와 달리 다트는 정적 타입 언어이며 건전한 null 안전성을 갖추고 있습니다."
+    },
+    {
+      "q": "다트의 ?? 연산자는 무엇을 하나요?",
+      "a": "`a ?? b`는 `a`가 null이 아니면 `a`를, 아니면 `b`를 반환합니다. 관련 연산자인 `a ??= b`는 `a`가 null일 때만 `b`를 `a`에 할당합니다."
+    }
+  ]
+}

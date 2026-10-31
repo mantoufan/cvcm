@@ -1,0 +1,214 @@
+{
+  "title": "Two pointers dan sliding window: pola, kode Python, dan contoh — cv.cm",
+  "description": "Teknik two pointers dan sliding window mengubah banyak soal array dan string dari O(n²) menjadi O(n). Pelajari kedua pola dengan penelusuran dan kode Python.",
+  "h1": "Penjelasan teknik two pointers dan sliding window",
+  "answer": "Two pointers adalah teknik ketika dua indeks bergerak menelusuri array atau string, biasanya dari kedua ujung saling mendekat atau searah dengan kecepatan berbeda, sehingga setiap elemen dikunjungi sejumlah kali yang konstan. Sliding window adalah varian searah yang menjaga rentang berurutan antara pointer kiri dan kanan, lalu memperbarui nilai berjalan saat window membesar dan mengecil. Keduanya sering menurunkan pencarian brute-force O(n²) atas pasangan atau subarray menjadi O(n).",
+  "sections": [
+    {
+      "h": "Masalah apa yang diselesaikan teknik ini",
+      "body": [
+        "Banyak soal array dan string menanyakan pasangan atau rentang berurutan: dua angka yang jumlahnya sama dengan target, substring terpanjang tanpa karakter berulang, subarray terpendek dengan jumlah minimal k. Memeriksa setiap pasangan atau setiap rentang berbiaya O(n²) atau lebih. Two pointers menghindarinya dengan memanfaatkan sifat data, seperti urutan terurut atau fakta bahwa window hanya butuh pembaruan kecil, untuk menyingkirkan banyak kandidat sekaligus.",
+        {
+          "table": {
+            "head": [
+              "Pola",
+              "Pergerakan pointer",
+              "Soal tipikal"
+            ],
+            "rows": [
+              [
+                "Dua ujung berlawanan",
+                "`left` mulai dari 0, `right` dari ujung, keduanya bergerak saling mendekat",
+                "jumlah pasangan pada array terurut, cek palindrom, container with most water"
+              ],
+              [
+                "Cepat dan lambat",
+                "keduanya mulai dari awal, satu bergerak setiap langkah, yang lain hanya kadang-kadang",
+                "menghapus duplikat di tempat, partisi, deteksi siklus pada linked list"
+              ],
+              [
+                "Sliding window",
+                "`right` memperluas window, `left` mempersempitnya",
+                "substring atau subarray terpanjang atau terpendek dengan suatu kondisi"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "Pointer dua ujung: jumlah pasangan pada array terurut",
+      "body": [
+        "Cari dua angka dalam list terurut `[1, 3, 4, 6, 8, 11]` yang jumlahnya 10. Mulai dari yang terkecil dan terbesar. Jika jumlahnya terlalu kecil, satu-satunya cara menaikkannya adalah menggeser `left` ke kanan; jika terlalu besar, geser `right` ke kiri.",
+        {
+          "table": {
+            "head": [
+              "Langkah",
+              "left (nilai)",
+              "right (nilai)",
+              "Jumlah",
+              "Aksi"
+            ],
+            "rows": [
+              [
+                "1",
+                "0 (1)",
+                "5 (11)",
+                "12",
+                "terlalu besar, right -= 1"
+              ],
+              [
+                "2",
+                "0 (1)",
+                "4 (8)",
+                "9",
+                "terlalu kecil, left += 1"
+              ],
+              [
+                "3",
+                "1 (3)",
+                "4 (8)",
+                "11",
+                "terlalu besar, right -= 1"
+              ],
+              [
+                "4",
+                "1 (3)",
+                "3 (6)",
+                "9",
+                "terlalu kecil, left += 1"
+              ],
+              [
+                "5",
+                "2 (4)",
+                "3 (6)",
+                "10",
+                "ketemu: 4 + 6"
+              ]
+            ]
+          }
+        },
+        {
+          "code": "def pair_with_sum(nums, target):\n    left, right = 0, len(nums) - 1\n    while left < right:\n        s = nums[left] + nums[right]\n        if s == target:\n            return left, right\n        if s < target:\n            left += 1\n        else:\n            right -= 1\n    return None\nprint(pair_with_sum([1, 3, 4, 6, 8, 11], 10))   # (2, 3)\nprint(pair_with_sum([1, 3, 4, 6, 8, 11], 2))    # None",
+          "lang": "python"
+        },
+        "Setiap langkah menggeser satu pointer ke dalam, sehingga paling banyak ada n − 1 langkah: waktu O(n) dan ruang O(1). Bentuk yang sama dipakai untuk memeriksa apakah string palindrom, membalik array di tempat, dan, di dalam perulangan luar, menyelesaikan 3Sum dalam O(n²) alih-alih O(n³)."
+      ]
+    },
+    {
+      "h": "Pointer cepat dan lambat: memfilter di tempat",
+      "body": [
+        "Pointer lambat menandai posisi untuk elemen berikutnya yang dipertahankan; pointer cepat memindai setiap elemen. Cara ini menghapus duplikat dari list terurut tanpa memori tambahan.",
+        {
+          "code": "def dedupe_sorted(nums):\n    \"\"\"Remove duplicates in place; return the new length.\"\"\"\n    if not nums:\n        return 0\n    slow = 0\n    for fast in range(1, len(nums)):\n        if nums[fast] != nums[slow]:\n            slow += 1\n            nums[slow] = nums[fast]\n    return slow + 1\na = [1, 1, 2, 3, 3, 3, 5]\nk = dedupe_sorted(a)\nprint(k, a[:k])   # 4 [1, 2, 3, 5]",
+          "lang": "python"
+        },
+        "Pada linked list, pointer cepat bergerak dua node per langkah dan pointer lambat satu node. Jika keduanya bertemu, berarti list memiliki siklus (deteksi siklus Floyd); ketika pointer cepat mencapai ujung, pointer lambat berada di tengah."
+      ]
+    },
+    {
+      "h": "Sliding window: substring terpanjang tanpa pengulangan",
+      "body": [
+        "Sliding window menjaga rentang `s[left:right + 1]` tetap valid. Majukan `right` satu karakter setiap kali. Ketika karakter baru melanggar aturan, majukan `left` sampai window valid lagi. Catat window terbaik sepanjang jalan.",
+        {
+          "code": "def longest_unique(s):\n    last_seen = {}          # char -> last index\n    left = best = 0\n    for right, ch in enumerate(s):\n        if ch in last_seen and last_seen[ch] >= left:\n            left = last_seen[ch] + 1   # jump past the repeat\n        last_seen[ch] = right\n        best = max(best, right - left + 1)\n    return best\nprint(longest_unique(\"abcabcbb\"))   # 3  (\"abc\")\nprint(longest_unique(\"pwwkew\"))     # 3  (\"wke\")\nprint(longest_unique(\"\"))           # 0",
+          "lang": "python"
+        },
+        "Window ada dua jenis. Window berukuran tetap k elemen menambahkan elemen yang masuk di kanan dan membuang elemen yang keluar di kiri, misalnya untuk menghitung rata-rata bergerak. Window berukuran variabel membesar dan mengecil untuk memenuhi suatu kondisi, seperti contoh di atas.",
+        {
+          "code": "def min_len_subarray(nums, k):\n    \"\"\"Shortest subarray with sum >= k (non-negative nums).\"\"\"\n    left = total = 0\n    best = float(\"inf\")\n    for right, x in enumerate(nums):\n        total += x\n        while total >= k:\n            best = min(best, right - left + 1)\n            total -= nums[left]\n            left += 1\n    return 0 if best == float(\"inf\") else best\nprint(min_len_subarray([2, 3, 1, 2, 4, 3], 7))   # 2  ([4, 3])",
+          "lang": "python"
+        }
+      ]
+    },
+    {
+      "h": "Kompleksitas waktu dan ruang",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Soal",
+              "Brute force",
+              "Two pointers / window",
+              "Ruang tambahan"
+            ],
+            "rows": [
+              [
+                "Jumlah pasangan, input terurut",
+                "O(n²)",
+                "O(n)",
+                "O(1)"
+              ],
+              [
+                "Hapus duplikat, terurut",
+                "O(n) dengan list baru",
+                "O(n) di tempat",
+                "O(1)"
+              ],
+              [
+                "Substring unik terpanjang",
+                "O(n³) atau O(n²)",
+                "O(n)",
+                "O(k), k karakter berbeda"
+              ],
+              [
+                "Subarray terpendek dengan jumlah ≥ k",
+                "O(n²)",
+                "O(n)",
+                "O(1)"
+              ]
+            ]
+          }
+        },
+        "Alasan sliding window berkompleksitas O(n) walaupun ada perulangan `while` bersarang: `left` dan `right` masing-masing maju paling banyak n kali secara total, sehingga total pekerjaannya paling banyak 2n langkah."
+      ]
+    },
+    {
+      "h": "Kesalahan umum",
+      "body": [
+        {
+          "ul": [
+            "Memakai pointer dua ujung pada data tak terurut. Keputusan menggeser ke kiri atau kanan hanya benar karena array-nya terurut.",
+            "Memakai sliding window berbasis jumlah ketika angka bisa negatif. Mempersempit window tidak lagi selalu menurunkan jumlah; pakai prefix sum dengan hash map sebagai gantinya.",
+            "Panjang window off-by-one: window `left..right` inklusif memiliki `right - left + 1` elemen.",
+            "Lupa berhenti pada `left < right`, yang membuat satu elemen berpasangan dengan dirinya sendiri.",
+            "Menggeser `left` mundur. Pada contoh substring, pengecekan `last_seen[ch] >= left` mencegah lompatan kembali ke posisi lama."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Kapan memakainya, dan soal wawancara yang umum",
+      "body": [
+        "Gunakan two pointers ketika input terurut (atau bisa diurutkan dengan murah) dan Anda mencari pasangan, atau ketika perlu memodifikasi array di tempat. Gunakan sliding window ketika soal menyebut subarray atau substring yang berurutan dan meminta yang terpanjang, terpendek, maksimum, atau jumlah dengan kondisi yang berubah secara terprediksi saat window membesar. Jika datanya tak terurut dan Anda butuh pasangan, hash set biasanya lebih sederhana dan juga O(n).",
+        {
+          "ul": [
+            "Two Sum II (input terurut), 3Sum, Container With Most Water, Trapping Rain Water.",
+            "Valid Palindrome, Reverse String, Move Zeroes, Remove Duplicates from Sorted Array.",
+            "Longest Substring Without Repeating Characters, Minimum Window Substring, Sliding Window Maximum (dengan deque).",
+            "Linked List Cycle, Middle of the Linked List."
+          ]
+        },
+        "Di luar wawancara, ide yang sama muncul pada penggabungan file terurut, protokol jaringan yang melacak window paket yang belum dikonfirmasi (TCP sliding window), rate limiter yang menghitung kejadian dalam N detik terakhir, dan rata-rata bergerak pada data deret waktu."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Apa itu teknik two pointers?",
+      "a": "Cara memindai array atau string dengan dua indeks yang bergerak menurut aturan sederhana, sehingga setiap elemen diproses sejumlah kali yang konstan. Teknik ini sering mengubah pencarian pasangan O(n²) menjadi O(n)."
+    },
+    {
+      "q": "Apa perbedaan two pointers dan sliding window?",
+      "a": "Sliding window adalah jenis two pointers yang kedua indeksnya bergerak searah dan elemen di antaranya membentuk subarray atau substring saat ini. Two pointers dua ujung melihat pasangan, bukan rentang."
+    },
+    {
+      "q": "Mengapa sliding window O(n) padahal punya perulangan bersarang?",
+      "a": "Perulangan dalam hanya memajukan `left`, dan `left` paling banyak bergerak n kali selama seluruh proses. Bersama n gerakan `right`, totalnya paling banyak 2n langkah."
+    },
+    {
+      "q": "Apakah two pointers membutuhkan array terurut?",
+      "a": "Pola jumlah pasangan dengan dua ujung memerlukannya. Pointer cepat-lambat dan sliding window tidak, tetapi window berbasis jumlah mensyaratkan angka non-negatif."
+    }
+  ]
+}

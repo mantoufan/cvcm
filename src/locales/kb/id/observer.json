@@ -1,0 +1,151 @@
+{
+  "title": "Pola Observer: subject, subscriber, dan event di TypeScript — cv.cm",
+  "description": "Pola Observer memungkinkan objek berlangganan ke objek lain dan diberi tahu saat objek itu berubah. Pelajari peran, contoh TypeScript bertipe, dan jebakannya.",
+  "h1": "Penjelasan pola Observer beserta contohnya",
+  "answer": "Observer adalah pola desain behavioral di mana sebuah objek, yang disebut subject, menyimpan daftar dependen, yang disebut observer, dan memberi tahu mereka secara otomatis saat state-nya berubah. Observer berlangganan dan berhenti berlangganan saat runtime, dan subject tidak perlu tahu class konkret mereka. Event listener di browser, `EventEmitter` Node.js, dan library reaktif seperti RxJS semuanya dibangun di atas gagasan ini.",
+  "sections": [
+    {
+      "h": "Tujuan dan masalah yang diselesaikan",
+      "body": [
+        "Tujuan: mendefinisikan ketergantungan satu-ke-banyak antarobjek sehingga saat satu objek berubah state, semua dependennya diberi tahu dan diperbarui secara otomatis. Observer adalah salah satu pola behavioral dalam buku Gang of Four (GoF), dan juga dikenal sebagai publish-subscribe atau pola listener.",
+        "Bayangkan keranjang belanja di toko web. Saat item ditambahkan, ikon keranjang di header harus menampilkan jumlah baru, sidebar harus menampilkan total baru, dan modul analytics harus mencatat event-nya. Jika keranjang memanggil semuanya secara langsung, modul keranjang bergantung pada header, sidebar, dan analytics. Menambah reaksi keempat berarti mengedit keranjang lagi.",
+        "Dengan Observer, keranjang hanya menyimpan daftar subscriber dan memanggil masing-masing saat berubah. Header, sidebar, dan analytics mendaftarkan diri sendiri. Keranjang tidak meng-import mereka, dan fitur baru bisa bereaksi terhadap perubahan keranjang tanpa menyentuh kode keranjang."
+      ]
+    },
+    {
+      "h": "Struktur dan peserta",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Peran",
+              "Tanggung jawab"
+            ],
+            "rows": [
+              [
+                "Subject (publisher)",
+                "Menyimpan daftar observer dan menyediakan method untuk mendaftarkan dan membatalkan langganan mereka; memberi tahu mereka saat ada perubahan"
+              ],
+              [
+                "Observer (subscriber)",
+                "Interface dengan method update, sering hanya berupa fungsi callback"
+              ],
+              [
+                "Concrete subject",
+                "Menyimpan state yang diminati dan memanggil notify saat berubah"
+              ],
+              [
+                "Concrete observer",
+                "Bereaksi terhadap notifikasi, misalnya dengan menggambar ulang sebagian UI"
+              ]
+            ]
+          }
+        },
+        "Ada dua gaya notifikasi. Pada model push, subject mengirim data yang berubah bersama notifikasi. Pada model pull, ia hanya mengatakan \"ada yang berubah\" dan observer meminta data yang dibutuhkan dari subject."
+      ]
+    },
+    {
+      "h": "Implementasi TypeScript",
+      "body": [
+        "Class generik `Subject` yang kecil menangani langganan. Observer adalah fungsi biasa, bentuk yang paling umum di TypeScript. `subscribe` mengembalikan fungsi untuk berhenti berlangganan, sehingga pemanggil tidak bisa lupa listener mana yang mereka daftarkan.",
+        {
+          "code": "type Listener<T> = (value: T) => void;\n\nclass Subject<T> {\n  private listeners = new Set<Listener<T>>();\n\n  subscribe(listener: Listener<T>): () => void {\n    this.listeners.add(listener);\n    return () => this.listeners.delete(listener);\n  }\n\n  protected notify(value: T) {\n    for (const listener of [...this.listeners]) listener(value);\n  }\n}\n\ntype CartEvent = { count: number; total: number };\n\nclass Cart extends Subject<CartEvent> {\n  private items: { name: string; price: number }[] = [];\n\n  add(name: string, price: number) {\n    this.items.push({ name, price });\n    const total = this.items.reduce((sum, item) => sum + item.price, 0);\n    this.notify({ count: this.items.length, total });\n  }\n}\n\nconst cart = new Cart();\ncart.subscribe(({ count }) => console.log(\"header: \" + count + \" items\"));\nconst stopAnalytics = cart.subscribe(({ total }) => console.log(\"analytics: total \" + total));\n\ncart.add(\"Book\", 12);\nstopAnalytics(); // unsubscribe\ncart.add(\"Pen\", 3);\n// header: 1 items\n// analytics: total 12\n// header: 2 items",
+          "lang": "typescript"
+        },
+        "`notify` mengiterasi salinan set (`[...this.listeners]`). Dengan begitu, listener yang berhenti berlangganan sendiri saat notifikasi tidak mengganggu loop.",
+        {
+          "note": "Lupa berhenti berlangganan adalah bug Observer yang paling umum. Subject menyimpan referensi ke setiap listener, sehingga komponen UI yang sudah dihancurkan tetapi masih berlangganan tetap berada di memori dan terus bereaksi terhadap event. Selalu panggil fungsi unsubscribe saat observer tidak lagi dibutuhkan, misalnya di kode cleanup komponen."
+        }
+      ]
+    },
+    {
+      "h": "Memakai EventTarget bawaan",
+      "body": [
+        "Browser, Node.js, dan Deno menyediakan `EventTarget`, jadi Anda sering tidak perlu class subject sendiri:",
+        {
+          "code": "const thermostat = new EventTarget();\n\nthermostat.addEventListener(\"change\", (e) => {\n  console.log(\"new temperature:\", (e as CustomEvent<number>).detail);\n});\n\nthermostat.dispatchEvent(new CustomEvent(\"change\", { detail: 21.5 }));\n// new temperature: 21.5",
+          "lang": "typescript"
+        },
+        "Node.js juga punya class `EventEmitter` di modul `node:events`, dengan method `on`, `off`, dan `emit`."
+      ]
+    },
+    {
+      "h": "Kapan dipakai dan kapan tidak",
+      "body": [
+        {
+          "ul": [
+            "Pakai bila perubahan di satu objek harus memperbarui objek lain, dan Anda tidak tahu sebelumnya berapa banyak atau yang mana.",
+            "Pakai untuk menjaga modul inti tetap independen dari kode UI, logging, atau analytics yang bereaksi terhadapnya.",
+            "Pakai untuk event yang terjadi seiring waktu, seperti input pengguna, pesan, atau pembacaan sensor.",
+            "Jangan dipakai bila hanya ada satu penerima tetap; pemanggilan method langsung atau parameter callback lebih mudah diikuti.",
+            "Hati-hati dengan rantai observer yang memicu notifikasi lain. Hal itu dapat menyebabkan loop pembaruan dan membuat sulit melihat mengapa sesuatu berubah.",
+            "Jangan bergantung pada urutan pemanggilan observer kecuali subject mendokumentasikannya."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Penggunaan di dunia nyata",
+      "body": [
+        {
+          "ul": [
+            "DOM: `element.addEventListener(\"click\", handler)` mendaftarkan observer ke sebuah elemen.",
+            "Node.js: `EventEmitter` adalah dasar stream, server HTTP, dan banyak objek inti lainnya.",
+            "API observer di browser seperti `MutationObserver`, `IntersectionObserver`, dan `ResizeObserver` memberi tahu callback tentang perubahan pada halaman.",
+            "RxJS memodelkan aliran nilai sebagai observable yang dilanggani observer.",
+            "Java: `java.util.Observable` sudah deprecated sejak Java 9; sebagai gantinya dipakai interface `java.util.concurrent.Flow` (publisher dan subscriber) serta interface event listener."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Pola terkait",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Pola",
+              "Perbedaannya dengan Observer"
+            ],
+            "rows": [
+              [
+                "Mediator",
+                "Mediator mengenal objek yang berpartisipasi dan mengoordinasikan mereka; subject hanya menyiarkan dan tidak tahu apa yang dilakukan observer."
+              ],
+              [
+                "Publish-subscribe dengan broker",
+                "Publisher dan subscriber sama sekali tidak saling mengenal dan berkomunikasi lewat message broker atau event bus, sering antarproses."
+              ],
+              [
+                "Command",
+                "Sebuah notifikasi dapat membawa objek command; Command berkaitan dengan satu permintaan, Observer dengan notifikasi satu-ke-banyak."
+              ],
+              [
+                "Iterator",
+                "Iterator berbasis pull (konsumen meminta nilai berikutnya); Observer berbasis push (produsen mengirim nilai saat terjadi)."
+              ]
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Apa perbedaan antara Observer dan publish-subscribe?",
+      "a": "Pada pola Observer klasik, observer mendaftar langsung ke subject. Pada publish-subscribe, broker atau kanal event berada di antara keduanya, sehingga publisher dan subscriber tidak saling mengenal. Banyak orang memakai kedua nama itu secara longgar untuk gagasan yang sama."
+    },
+    {
+      "q": "Bagaimana menghindari memory leak dengan pola Observer?",
+      "a": "Berhenti berlangganan observer saat tidak lagi dibutuhkan. Mengembalikan fungsi unsubscribe dari `subscribe`, atau memakai `AbortSignal` dengan `addEventListener`, membuat cleanup menjadi mudah."
+    },
+    {
+      "q": "Apakah observer dipanggil secara sinkron?",
+      "a": "Pada contoh di atas serta di `EventTarget` dan `EventEmitter`, listener berjalan sinkron sesuai urutan penambahannya. Library lain mungkin mengirim notifikasi secara asinkron, jadi periksa dokumentasinya."
+    },
+    {
+      "q": "Apakah Observer sama dengan reactive programming?",
+      "a": "Reactive programming dibangun di atas Observer. Library seperti RxJS menambahkan operator untuk memfilter, menggabungkan, dan mentransformasi aliran notifikasi, serta aturan untuk error dan penyelesaian."
+    }
+  ]
+}

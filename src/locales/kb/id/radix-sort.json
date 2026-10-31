@@ -1,0 +1,235 @@
+{
+  "title": "Penjelasan radix sort: LSD dan MSD, kode Python, dan kompleksitas — cv.cm",
+  "description": "Radix sort mengurutkan bilangan bulat atau string berpanjang tetap digit demi digit dengan counting sort yang stabil, dalam waktu O(d · (n + b)). Penelusuran, kode Python, LSD vs MSD.",
+  "h1": "Penjelasan radix sort: cara kerja, kode, dan kompleksitas",
+  "answer": "Radix sort adalah algoritma pengurutan non-comparison yang mengurutkan bilangan bulat atau string berpanjang tetap satu digit (atau karakter) setiap kali. Versi least-significant-digit (LSD) yang umum mengurutkan berdasarkan digit terakhir lebih dulu, lalu digit berikutnya, hingga digit paling signifikan, memakai sort yang stabil seperti counting sort pada setiap pass. Dengan d digit pada basis b, waktunya O(d · (n + b)) dan memakai ruang tambahan O(n + b). Karena setiap pass stabil, hasil akhirnya terurut penuh dan stabil.",
+  "sections": [
+    {
+      "h": "Masalah apa yang diselesaikan radix sort",
+      "body": [
+        "Counting sort bersifat linear tetapi butuh array hitungan sebesar seluruh rentang kunci, yang mustahil untuk bilangan bulat 32-bit atau 64-bit. Radix sort memecah setiap kunci menjadi digit-digit kecil dan menjalankan counting sort sekali per digit, sehingga setiap pass hanya butuh array hitungan dengan b entri (10 untuk digit desimal, 256 untuk byte).",
+        "Ini bekerja untuk kunci apa pun yang bisa dipecah menjadi urutan simbol kecil yang tetap: bilangan bulat non-negatif, tanggal berformat YYYYMMDD, kode berpanjang tetap seperti kode pos, alamat IP, dan string berlebar tetap."
+      ]
+    },
+    {
+      "h": "Contoh: LSD radix sort pada basis 10",
+      "body": [
+        "Urutkan `[170, 45, 75, 90, 802, 24, 2, 66]`. Angka terbesar punya 3 digit, jadi ada 3 pass. Setiap pass adalah sort stabil berdasarkan satu digit: digit yang sama mempertahankan urutan dari pass sebelumnya.",
+        {
+          "table": {
+            "head": [
+              "Pass",
+              "Diurutkan menurut",
+              "Hasil"
+            ],
+            "rows": [
+              [
+                "Awal",
+                "",
+                "`[170, 45, 75, 90, 802, 24, 2, 66]`"
+              ],
+              [
+                "1",
+                "digit satuan",
+                "`[170, 90, 802, 2, 24, 45, 75, 66]`"
+              ],
+              [
+                "2",
+                "digit puluhan",
+                "`[802, 2, 24, 45, 66, 170, 75, 90]`"
+              ],
+              [
+                "3",
+                "digit ratusan",
+                "`[2, 24, 45, 66, 75, 90, 170, 802]`"
+              ]
+            ]
+          }
+        },
+        "Setelah pass 2, angka-angka terurut menurut dua digit terakhirnya. Pada pass 3, angka 2, 24, 45, 66, 75, dan 90 semuanya berdigit ratusan 0, dan stabilitas mempertahankan urutan yang dihasilkan pass 2. Itulah sebabnya setiap pass harus stabil."
+      ]
+    },
+    {
+      "h": "Implementasi Python",
+      "body": [
+        {
+          "code": "def counting_pass(nums, exp, base):\n    \"\"\"Stable counting sort of nums by the digit at exp.\"\"\"\n    count = [0] * base\n    for x in nums:\n        count[(x // exp) % base] += 1\n    for d in range(1, base):\n        count[d] += count[d - 1]\n    out = [0] * len(nums)\n    for x in reversed(nums):\n        d = (x // exp) % base\n        count[d] -= 1\n        out[count[d]] = x\n    return out\n\ndef radix_sort(nums, base=10):\n    \"\"\"LSD radix sort for non-negative integers.\"\"\"\n    if not nums:\n        return []\n    exp, biggest = 1, max(nums)\n    while biggest // exp > 0:\n        nums = counting_pass(nums, exp, base)\n        exp *= base\n    return nums\n\nprint(radix_sort([170, 45, 75, 90, 802, 24, 2, 66]))\n# [2, 24, 45, 66, 75, 90, 170, 802]\nprint(radix_sort([3, 0, 1, 0], base=256))   # [0, 0, 1, 3]",
+          "lang": "python"
+        },
+        "Memakai basis 256 berarti setiap pass melihat satu byte, sehingga bilangan bulat 32-bit hanya butuh 4 pass. Untuk menyertakan bilangan negatif, urutkan nilai negatif dan non-negatif secara terpisah lalu gabungkan, atau geser semua kunci sebesar nilai minimum. Untuk string berpanjang tetap, pakai kode karakter pada posisi i sebagai digit dan jalankan dari posisi terakhir ke pertama."
+      ]
+    },
+    {
+      "h": "Kompleksitas waktu dan ruang",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Ukuran",
+              "Nilai",
+              "Alasan"
+            ],
+            "rows": [
+              [
+                "Waktu, semua kasus",
+                "O(d · (n + b))",
+                "d pass, masing-masing counting sort atas n kunci dan b nilai digit"
+              ],
+              [
+                "Ruang tambahan",
+                "O(n + b)",
+                "buffer output dan array hitungan per pass"
+              ],
+              [
+                "Jumlah pass untuk kunci 32-bit",
+                "4 pada basis 256",
+                "32 bit ÷ 8 bit per digit"
+              ],
+              [
+                "Perbandingan",
+                "0",
+                "digit dipakai sebagai indeks array"
+              ]
+            ]
+          }
+        },
+        "Ketika d konstan (kunci berlebar tetap) dan b dipilih mendekati n atau nilai tetap seperti 256, waktunya O(n). Untuk n kunci yang semuanya berbeda, d harus minimal log_b n, sehingga radix sort tidak mengalahkan O(n log n) untuk kunci berukuran sembarang; ia cepat karena setiap langkahnya adalah operasi array yang sederhana."
+      ]
+    },
+    {
+      "h": "Perbandingan radix sort dengan sort lain",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Algoritma",
+              "Terbaik",
+              "Rata-rata",
+              "Terburuk",
+              "Ruang tambahan",
+              "Stabil"
+            ],
+            "rows": [
+              [
+                "Radix sort (LSD)",
+                "O(d · (n + b))",
+                "O(d · (n + b))",
+                "O(d · (n + b))",
+                "O(n + b)",
+                "Ya"
+              ],
+              [
+                "Counting sort",
+                "O(n + k)",
+                "O(n + k)",
+                "O(n + k)",
+                "O(n + k)",
+                "Ya"
+              ],
+              [
+                "Merge sort",
+                "O(n log n)",
+                "O(n log n)",
+                "O(n log n)",
+                "O(n)",
+                "Ya"
+              ],
+              [
+                "Quicksort",
+                "O(n log n)",
+                "O(n log n)",
+                "O(n²)",
+                "O(log n)",
+                "Tidak"
+              ],
+              [
+                "Heapsort",
+                "O(n log n)",
+                "O(n log n)",
+                "O(n log n)",
+                "O(1)",
+                "Tidak"
+              ],
+              [
+                "Timsort (`sorted` di Python)",
+                "O(n)",
+                "O(n log n)",
+                "O(n log n)",
+                "O(n)",
+                "Ya"
+              ]
+            ]
+          }
+        },
+        "Pada tabel, n adalah jumlah kunci, k rentang kunci untuk counting sort, d jumlah digit, dan b basis. Radix sort LSD stabil selama setiap pass digit stabil. Ia membutuhkan kunci dengan struktur tetap, sedangkan comparison sort seperti merge sort dan quicksort bekerja dengan urutan apa pun, termasuk fungsi pembanding kustom."
+      ]
+    },
+    {
+      "h": "LSD vs MSD, dan kesalahan umum",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "",
+              "LSD (digit paling tidak signifikan dulu)",
+              "MSD (digit paling signifikan dulu)"
+            ],
+            "rows": [
+              [
+                "Urutan pass",
+                "dari digit terakhir ke pertama",
+                "dari digit pertama ke terakhir, secara rekursif per bucket"
+              ],
+              [
+                "Paling cocok untuk",
+                "bilangan bulat dan string berpanjang tetap",
+                "string berpanjang bervariasi, bisa berhenti lebih awal pada prefiks yang unik"
+              ],
+              [
+                "Implementasi",
+                "perulangan sederhana",
+                "rekursif; biasanya beralih ke insertion sort untuk bucket kecil"
+              ],
+              [
+                "Stabil",
+                "ya, dengan pass yang stabil",
+                "ya, dengan distribusi bucket yang stabil"
+              ]
+            ]
+          }
+        },
+        {
+          "note": "Bug yang umum: memakai sort tidak stabil untuk setiap digit (hasilnya salah, bukan sekadar tidak stabil), memulai dari digit paling signifikan di perulangan LSD, menghitung jumlah pass dari elemen pertama alih-alih nilai maksimum, dan memberikan bilangan negatif ke `(x // exp) % base`, yang hasil floor division dan modulo di Python-nya menghasilkan digit yang tidak mengurutkan bilangan negatif dengan benar."
+        }
+      ]
+    },
+    {
+      "h": "Kapan memakai radix sort",
+      "body": [
+        "Radix sort cocok untuk array besar berisi bilangan bulat atau kunci berlebar tetap, seperti ID 32-bit, timestamp, alamat IPv4, atau string berpanjang tetap, terutama di GPU dan pustaka berkinerja tinggi yang diuntungkan oleh pola akses memorinya yang teratur. Ia dipakai dalam pembangunan suffix array dan beberapa beban kerja database dan grafis. Untuk list Python biasa, `sorted()` hampir selalu lebih cepat dalam praktik karena berjalan dalam kode C yang dioptimalkan. Dalam wawancara, radix sort muncul saat ditanya cara mengurutkan dalam waktu linear, misalnya soal Maximum Gap."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Apakah radix sort stabil?",
+      "a": "Radix sort LSD stabil ketika setiap pass digit memakai sort stabil seperti counting sort. Algoritma ini sebenarnya bergantung pada stabilitas itu agar benar."
+    },
+    {
+      "q": "Berapa kompleksitas waktu radix sort?",
+      "a": "O(d · (n + b)), dengan d jumlah digit, n jumlah kunci, dan b basis. Untuk kunci berlebar tetap, d dan b konstan, sehingga linear terhadap n."
+    },
+    {
+      "q": "Apakah radix sort lebih cepat daripada quicksort?",
+      "a": "Bisa, untuk array besar berisi bilangan bulat berlebar tetap, karena tidak melakukan perbandingan dan mengakses memori dengan pola teratur. Untuk data umum, array kecil, atau urutan kustom, quicksort atau sort bawaan biasanya lebih baik."
+    },
+    {
+      "q": "Apa perbedaan radix sort LSD dan MSD?",
+      "a": "LSD mengurutkan dari digit paling tidak signifikan ke paling signifikan dengan satu pass sederhana per digit. MSD mulai dari digit paling signifikan dan mengurutkan setiap bucket secara rekursif, yang cocok untuk string berpanjang bervariasi."
+    },
+    {
+      "q": "Bisakah radix sort mengurutkan string?",
+      "a": "Bisa. Perlakukan setiap karakter sebagai digit. LSD bekerja langsung untuk string berpanjang sama; radix sort MSD menangani string dengan panjang berbeda."
+    }
+  ]
+}

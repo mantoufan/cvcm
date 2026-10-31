@@ -1,0 +1,155 @@
+{
+  "title": "Command パターン：TypeScript での Undo・Redo とキューの例 — cv.cm",
+  "description": "Command パターンは、リクエストをオブジェクトにして、キューへの追加、ログ記録、元に戻す操作を可能にします。役割と TypeScript での Undo/Redo の作り方を解説します。",
+  "h1": "Command パターンとは？例でわかりやすく解説",
+  "answer": "Command は振る舞いに関するデザインパターンで、リクエストを、実行に必要なすべてを含む独立したオブジェクトにします。リクエストがオブジェクトなので、保存したり、受け渡したり、キューに入れたり、ログに残したり、後で元に戻したりできます。コマンドを起動するオブジェクト（たとえばボタン）は、どのオブジェクトがどのように処理するかを知る必要がありません。",
+  "sections": [
+    {
+      "h": "目的と解決する問題",
+      "body": [
+        "目的：リクエストをオブジェクトとしてカプセル化することで、クライアントをさまざまなリクエストでパラメータ化し、リクエストのキューイングやログ記録、取り消し可能な操作をサポートすることです。Command は Gang of Four（GoF）の書籍にある振る舞いパターンの 1 つです。",
+        "テキストエディタを考えてみましょう。「太字にする」という同じ操作を、ツールバーのボタン、メニュー項目、キーボードショートカットの Ctrl+B から起動できます。これらがそれぞれエディタを直接呼び出すと、ロジックが 3 か所に重複します。さらに、エディタは Undo もサポートしなければなりません。ユーザーが Ctrl+Z を押したとき、プログラムは直前の操作が何で、どうすれば元に戻せるかを知っている必要があります。",
+        "Command は両方の問題を解決します。それぞれの操作が `execute` メソッド（必要なら `undo` メソッドも）を持つオブジェクトになります。ボタン、メニュー、ショートカットはすべて同じコマンドオブジェクトを持ちます。エディタは実行済みコマンドの履歴リストを保持するので、Undo は履歴の最後のコマンドを取り出して、その `undo` メソッドを呼ぶだけです。"
+      ]
+    },
+    {
+      "h": "構造と登場する役割",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "役割",
+              "責務"
+            ],
+            "rows": [
+              [
+                "Command",
+                "`execute` メソッド（多くの場合は `undo` も）を持つインターフェース"
+              ],
+              [
+                "Concrete command",
+                "Receiver とパラメータを保持し、`execute` の中で Receiver のメソッドを呼ぶ"
+              ],
+              [
+                "Receiver",
+                "実際の処理のやり方を知っているオブジェクト。たとえばドキュメントや銀行口座"
+              ],
+              [
+                "Invoker",
+                "コマンドに実行を依頼する。Undo や Redo のために履歴を保持することもある"
+              ],
+              [
+                "Client（クライアント）",
+                "Concrete command を生成し、Receiver と Invoker に結び付ける"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "TypeScript での実装：Undo と Redo",
+      "body": [
+        "`TextDocument` が Receiver です。`InsertText` と `DeleteLast` は、自分自身を元に戻すのに十分な情報を記憶しているコマンドです。`Editor` は Invoker で、Undo 用と Redo 用の 2 つのスタックを持ちます。",
+        {
+          "code": "interface Command {\n  execute(): void;\n  undo(): void;\n}\nclass TextDocument {\n  text = \"\";\n}\nclass InsertText implements Command {\n  constructor(private doc: TextDocument, private value: string) {}\n  execute() { this.doc.text += this.value; }\n  undo() { this.doc.text = this.doc.text.slice(0, -this.value.length); }\n}\nclass DeleteLast implements Command {\n  private removed = \"\";\n  constructor(private doc: TextDocument, private count: number) {}\n  execute() {\n    this.removed = this.doc.text.slice(-this.count);\n    this.doc.text = this.doc.text.slice(0, -this.count);\n  }\n  undo() { this.doc.text += this.removed; }\n}\nclass Editor {\n  private done: Command[] = [];\n  private undone: Command[] = [];\n  run(cmd: Command) { cmd.execute(); this.done.push(cmd); this.undone = []; }\n  undo() { const c = this.done.pop(); if (c) { c.undo(); this.undone.push(c); } }\n  redo() { const c = this.undone.pop(); if (c) { c.execute(); this.done.push(c); } }\n}\nconst doc = new TextDocument();\nconst editor = new Editor();\neditor.run(new InsertText(doc, \"Hello\"));\neditor.run(new InsertText(doc, \", world\"));\neditor.run(new DeleteLast(doc, 7));\nconsole.log(doc.text); // Hello\neditor.undo();\nconsole.log(doc.text); // Hello, world\neditor.redo();\nconsole.log(doc.text); // Hello",
+          "lang": "typescript"
+        },
+        {
+          "note": "新しいコマンドを実行したら、上の `run` のように Redo スタックを必ずクリアしてください。そうしないと、Redo が想定外のドキュメント状態にコマンドを適用してしまい、テキストが壊れます。"
+        }
+      ]
+    },
+    {
+      "h": "導入前と導入後",
+      "body": [
+        "このパターンを使わない場合、UI はドキュメントを直接呼び出すため、何が起きたかを記録するものがなく、Undo は不可能です。",
+        {
+          "code": "// Before: each trigger calls the receiver directly\nboldButton.onclick = () => doc.makeBold(selection);\nmenuBold.onclick = () => doc.makeBold(selection);\n// After: every trigger shares one command, and the editor records it\nconst bold = () => new MakeBold(doc, selection);\nboldButton.onclick = () => editor.run(bold());\nmenuBold.onclick = () => editor.run(bold());",
+          "lang": "typescript"
+        },
+        "後者のコードは、前の例のような `MakeBold` コマンドクラスがあることを前提にした断片です。UI は太字にする方法を知らなくてよくなり、すべての操作が 1 か所を通るので、そこで記録・ログ出力・取り消しができます。"
+      ]
+    },
+    {
+      "h": "使うべき場面と避けるべき場面",
+      "body": [
+        {
+          "ul": [
+            "Undo と Redo、マクロ（まとめて実行するコマンドのリスト）、コマンド履歴に使います。",
+            "処理のキューイングやスケジューリングに使います。ジョブキューはコマンドオブジェクトを保存し、ワーカーが後でそれを実行します。",
+            "操作のログ記録や再生に使います。たとえば、シリアライズしたコマンドを別のサーバーに送る場合です。",
+            "UI 要素と、それが起動するコードを切り離すために使います。",
+            "コールバックだけで足りる場合は使いません。TypeScript では関数がすでに第一級の値なので、`button.onclick = save` は Undo なしのコマンドとして十分に機能します。`undo`、表示用の名前、シリアライズのような追加の振る舞いが必要になったときに、コマンドクラスを導入しましょう。"
+          ]
+        }
+      ]
+    },
+    {
+      "h": "実際の利用例",
+      "body": [
+        {
+          "ul": [
+            "Java の `Runnable` インターフェースは、`run` というメソッドを 1 つ持つコマンドです。スレッドやエグゼキュータが、処理を後で実行するために使います。",
+            "Redux のアクションは、変更を記述するただのオブジェクトで、リデューサがそれを適用します。アクションのログによってタイムトラベルデバッグが可能になります。これは Command に近い仕組みで、ロジックがコマンドではなくリデューサにある点が異なります。",
+            "VS Code などの多くのエディタは、キー、メニュー、コマンドパレットに割り当てられる名前付きコマンドを登録します。",
+            "データベースのマイグレーションには、`up` と `down` の手順があることが多く、これはコマンドの execute と undo のペアにあたります。"
+          ]
+        }
+      ]
+    },
+    {
+      "h": "関連するパターン",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "パターン",
+              "Command パターンとの違い"
+            ],
+            "rows": [
+              [
+                "Strategy パターン",
+                "Strategy は 1 つのタスクのやり方を差し替えます。Command は、保存・キュー化・取り消しができるように、何をするか（リクエスト）をパッケージ化します。"
+              ],
+              [
+                "Memento パターン",
+                "Memento は Undo のために状態のスナップショットを保存します。Command は操作を保存して、それを逆に実行します。元に戻すのが難しいときは、両者を組み合わせることがよくあります。"
+              ],
+              [
+                "Chain of Responsibility パターン",
+                "コマンドをハンドラの連鎖に沿って渡し、それを実行するハンドラを見つけられます。"
+              ],
+              [
+                "Composite パターン",
+                "マクロコマンドは Composite です。ほかのコマンドから成るコマンドになります。"
+              ],
+              [
+                "Observer パターン",
+                "Observer は多数のリスナーにイベントを通知します。Command は 1 つの Receiver に送られる 1 つのリクエストです。"
+              ]
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Command パターンはどのように Undo を実現しますか？",
+      "a": "各コマンドは、自分の `execute` を元に戻す `undo` メソッドを持ち、実行中に保存したデータを使うことがよくあります。Invoker は実行済みコマンドのスタックを保持し、最新のものの `undo` を呼びます。"
+    },
+    {
+      "q": "Command と Strategy の違いは何ですか？",
+      "a": "Strategy は同じタスクを行う異なる方法を表し、それを使うオブジェクトが選びます。Command は Receiver とパラメータを含む特定のリクエストを表し、後で実行したり、キューに入れたり、取り消したりできます。"
+    },
+    {
+      "q": "コールバック関数はコマンドですか？",
+      "a": "コールバックは最小限のコマンドです。後で実行する処理をパッケージ化しています。Undo、説明、シリアライズ、その他のメタデータも必要なときには、本格的なコマンドオブジェクトが必要になります。"
+    },
+    {
+      "q": "マクロコマンドとは何ですか？",
+      "a": "マクロコマンドはコマンドのリストを保持し、順番に実行します。その Undo は逆の順序で元に戻します。これは Composite パターンの応用です。"
+    }
+  ]
+}

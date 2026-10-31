@@ -1,0 +1,194 @@
+{
+  "title": "COBOL tutorial: divisions, PIC data, PERFORM loops and files — cv.cm",
+  "description": "Learn COBOL basics: compile Hello world with GnuCOBOL, understand the four divisions, PIC clauses, IF and EVALUATE, PERFORM loops, tables, files and errors.",
+  "h1": "COBOL tutorial for beginners",
+  "answer": "COBOL (Common Business-Oriented Language) is a compiled language designed for business data processing: records, files, reports and exact decimal arithmetic. Programs are split into four divisions, data is described with PIC (picture) clauses, and the code reads like English sentences such as `ADD AMOUNT TO TOTAL`. It still runs core systems in banks, insurers and governments, mostly on IBM mainframes. You can learn it for free with the GnuCOBOL compiler: `cobc -x hello.cob`.",
+  "sections": [
+    {
+      "h": "What COBOL is and who uses it",
+      "body": [
+        "COBOL was designed in 1959 by the CODASYL committee, with strong influence from Grace Hopper's earlier FLOW-MATIC language. It is standardized by ISO; later standards added structured programming, object orientation and other features, and the most recent revision was published in 2023.",
+        "COBOL is used for batch processing and transaction systems: account processing, payroll, insurance claims, tax and benefit systems. Much of this code runs on IBM Z mainframes with IBM Enterprise COBOL, together with CICS for transactions and Db2 for data. Jobs maintaining and modernizing these systems remain common."
+      ]
+    },
+    {
+      "h": "Install GnuCOBOL and run Hello, world",
+      "body": [
+        "GnuCOBOL is a free compiler that translates COBOL to C and then to a native program. It is available as the `gnucobol` package on many Linux distributions and in Homebrew on macOS; Windows users can use WSL or a prebuilt package.",
+        {
+          "code": "       IDENTIFICATION DIVISION.\n       PROGRAM-ID. HELLO.\n       PROCEDURE DIVISION.\n           DISPLAY \"Hello, world!\".\n           STOP RUN.",
+          "lang": "cobol"
+        },
+        {
+          "code": "cobc -x hello.cob\n./hello\n# Hello, world!",
+          "lang": "shell"
+        },
+        "The code uses the traditional fixed format: columns 1 to 6 are for sequence numbers, column 7 marks comments (`*`) or continuation lines, Area A (columns 8 to 11) holds division, section and paragraph names, and Area B (columns 12 to 72) holds statements. GnuCOBOL also accepts free-format source with `cobc -x -free`. The option `-x` builds an executable instead of a module."
+      ]
+    },
+    {
+      "h": "The four divisions",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Division",
+              "Purpose"
+            ],
+            "rows": [
+              [
+                "IDENTIFICATION DIVISION",
+                "Names the program (`PROGRAM-ID`)"
+              ],
+              [
+                "ENVIRONMENT DIVISION",
+                "Connects the program to the outside world, for example which files it uses"
+              ],
+              [
+                "DATA DIVISION",
+                "Declares all data: file records, working storage, parameters"
+              ],
+              [
+                "PROCEDURE DIVISION",
+                "The executable statements, organized into paragraphs"
+              ]
+            ]
+          }
+        },
+        "Every variable must be declared in the DATA DIVISION before use. The WORKING-STORAGE SECTION holds the program's variables, the FILE SECTION describes file records, and the LINKAGE SECTION describes parameters passed by a caller."
+      ]
+    },
+    {
+      "h": "Data and PIC clauses",
+      "body": [
+        "COBOL describes data by its exact layout. A level number shows the hierarchy (01 is a record, 05 a field inside it), and a PIC clause gives the format: `X` is any character, `9` is a digit, `S` a sign, and `V` an implied decimal point.",
+        {
+          "table": {
+            "head": [
+              "Declaration",
+              "Meaning",
+              "Example value"
+            ],
+            "rows": [
+              [
+                "`PIC X(10)`",
+                "10 characters, padded with spaces",
+                "`\"Ana       \"`"
+              ],
+              [
+                "`PIC 9(3)`",
+                "Unsigned 3-digit number",
+                "`030`"
+              ],
+              [
+                "`PIC S9(5)V99`",
+                "Signed, 5 digits before and 2 after the decimal point",
+                "`-01234.50`"
+              ],
+              [
+                "`PIC $ZZ,ZZ9.99`",
+                "Edited output: currency sign, leading zeros as spaces",
+                "`$ 1,234.50`"
+              ],
+              [
+                "`PIC S9(7)V99 COMP-3`",
+                "Packed decimal, common on mainframes",
+                "stored in 5 bytes"
+              ],
+              [
+                "`88 IS-DONE VALUE \"Y\"`",
+                "Condition name: a Boolean test on its parent field",
+                "`IF IS-DONE`"
+              ]
+            ]
+          }
+        },
+        {
+          "code": "       IDENTIFICATION DIVISION.\n       PROGRAM-ID. DATA-DEMO.\n       DATA DIVISION.\n       WORKING-STORAGE SECTION.\n       01  WS-NAME        PIC X(10)      VALUE \"Ana\".\n       01  WS-AGE         PIC 9(3)       VALUE 30.\n       01  WS-PRICE       PIC S9(5)V99   VALUE 1234.50.\n       01  WS-PRICE-OUT   PIC $ZZ,ZZ9.99.\n       01  WS-CUSTOMER.\n           05  WS-FIRST   PIC X(10).\n           05  WS-LAST    PIC X(15).\n       PROCEDURE DIVISION.\n           MOVE WS-PRICE TO WS-PRICE-OUT\n           DISPLAY WS-NAME \"is \" WS-AGE\n           DISPLAY \"Price: \" WS-PRICE-OUT\n           STOP RUN.\n      *> Ana       is 030\n      *> Price: $ 1,234.50",
+          "lang": "cobol"
+        },
+        "Numbers are stored in decimal, so `0.10 + 0.20` is exactly `0.30`, which is one reason COBOL suits money. `WS-CUSTOMER` is a group item: it can be moved as a whole or field by field."
+      ]
+    },
+    {
+      "h": "Control flow: IF, EVALUATE and PERFORM",
+      "body": [
+        {
+          "code": "       IDENTIFICATION DIVISION.\n       PROGRAM-ID. CONTROL-DEMO.\n       DATA DIVISION.\n       WORKING-STORAGE SECTION.\n       01  WS-I        PIC 99.\n       01  WS-TOTAL    PIC 9(4) VALUE 0.\n       01  WS-SCORE    PIC 999  VALUE 85.\n       PROCEDURE DIVISION.\n           PERFORM VARYING WS-I FROM 1 BY 1 UNTIL WS-I > 10\n               ADD WS-I TO WS-TOTAL\n           END-PERFORM\n           DISPLAY \"Total: \" WS-TOTAL\n           EVALUATE TRUE\n               WHEN WS-SCORE >= 90\n                   DISPLAY \"A\"\n               WHEN WS-SCORE >= 80\n                   DISPLAY \"B\"\n               WHEN OTHER\n                   DISPLAY \"C\"\n           END-EVALUATE\n           IF WS-TOTAL > 50\n               DISPLAY \"big\"\n           ELSE\n               DISPLAY \"small\"\n           END-IF\n           STOP RUN.\n      *> Total: 0055\n      *> B\n      *> big",
+          "lang": "cobol"
+        },
+        "`PERFORM VARYING` is COBOL's counting loop and `PERFORM UNTIL condition` its while loop. `EVALUATE` is a switch statement. Scope terminators such as `END-IF` and `END-PERFORM` close each block; a period ends the whole sentence."
+      ]
+    },
+    {
+      "h": "Paragraphs, arithmetic and tables",
+      "body": [
+        "COBOL has no functions in the usual sense. You organize logic into named paragraphs and run them with `PERFORM`; larger units become separate programs called with `CALL \"PROG\" USING ...`. Arithmetic uses verbs (`ADD`, `SUBTRACT`, `MULTIPLY`, `DIVIDE`) or `COMPUTE` with a formula. Arrays are called tables and are declared with `OCCURS`; their indexes start at 1.",
+        {
+          "code": "       IDENTIFICATION DIVISION.\n       PROGRAM-ID. PARA-DEMO.\n       DATA DIVISION.\n       WORKING-STORAGE SECTION.\n       01  WS-PRICES.\n           05  WS-PRICE   PIC 9(3)V99 OCCURS 3 TIMES.\n       01  WS-I           PIC 9.\n       01  WS-SUM         PIC 9(4)V99 VALUE 0.\n       01  WS-SUM-OUT     PIC Z,ZZ9.99.\n       PROCEDURE DIVISION.\n       MAIN-PARA.\n           MOVE 10.50 TO WS-PRICE(1)\n           MOVE 4.25  TO WS-PRICE(2)\n           MOVE 7.00  TO WS-PRICE(3)\n           PERFORM ADD-PRICE VARYING WS-I FROM 1 BY 1 UNTIL WS-I > 3\n           COMPUTE WS-SUM = WS-SUM * 1.1\n           MOVE WS-SUM TO WS-SUM-OUT\n           DISPLAY \"With 10% tax: \" WS-SUM-OUT\n           STOP RUN.\n       ADD-PRICE.\n           ADD WS-PRICE(WS-I) TO WS-SUM.\n      *> With 10% tax:    23.92",
+          "lang": "cobol"
+        },
+        "The sum is 21.75; multiplied by 1.1 it is 23.925, and COBOL truncates to the two declared decimals (23.92) unless you write `COMPUTE ... ROUNDED`."
+      ]
+    },
+    {
+      "h": "Error handling",
+      "body": [
+        "COBOL has no exceptions in everyday code. Instead, statements have conditional phrases: `ON SIZE ERROR` for arithmetic overflow or division by zero, `AT END` for the end of a file, `INVALID KEY` for indexed files, and a `FILE STATUS` field that receives a two-character code after every file operation (`\"00\"` means success).",
+        {
+          "code": "           DIVIDE WS-A BY WS-B GIVING WS-C\n               ON SIZE ERROR\n                   DISPLAY \"Division failed\"\n               NOT ON SIZE ERROR\n                   DISPLAY \"Result: \" WS-C\n           END-DIVIDE",
+          "lang": "cobol"
+        }
+      ]
+    },
+    {
+      "h": "A small complete program: total of a sales file",
+      "body": [
+        "Reading fixed-layout records from a file is typical COBOL work. This program reads `sales.txt`, where each line has a 10-character item name followed by a 7-digit amount with two implied decimals.",
+        {
+          "code": "apples    0001250\npears     0000899\nplums     0002000",
+          "lang": "text"
+        },
+        {
+          "code": "       IDENTIFICATION DIVISION.\n       PROGRAM-ID. SALES-TOTAL.\n       ENVIRONMENT DIVISION.\n       INPUT-OUTPUT SECTION.\n       FILE-CONTROL.\n           SELECT SALES-FILE ASSIGN TO \"sales.txt\"\n               ORGANIZATION IS LINE SEQUENTIAL\n               FILE STATUS IS WS-FS.\n       DATA DIVISION.\n       FILE SECTION.\n       FD  SALES-FILE.\n       01  SALES-REC.\n           05  SR-ITEM     PIC X(10).\n           05  SR-AMOUNT   PIC 9(5)V99.\n       WORKING-STORAGE SECTION.\n       01  WS-FS           PIC XX.\n       01  WS-EOF          PIC X VALUE \"N\".\n           88  NO-MORE-RECORDS       VALUE \"Y\".\n       01  WS-TOTAL        PIC 9(7)V99 VALUE 0.\n       01  WS-TOTAL-OUT    PIC Z,ZZZ,ZZ9.99.\n       PROCEDURE DIVISION.\n           OPEN INPUT SALES-FILE\n           IF WS-FS NOT = \"00\"\n               DISPLAY \"Cannot open file, status \" WS-FS\n               STOP RUN\n           END-IF\n           PERFORM UNTIL NO-MORE-RECORDS\n               READ SALES-FILE\n                   AT END SET NO-MORE-RECORDS TO TRUE\n                   NOT AT END ADD SR-AMOUNT TO WS-TOTAL\n               END-READ\n           END-PERFORM\n           CLOSE SALES-FILE\n           MOVE WS-TOTAL TO WS-TOTAL-OUT\n           DISPLAY \"Total sales: \" WS-TOTAL-OUT\n           STOP RUN.",
+          "lang": "cobol"
+        },
+        "Running it prints `Total sales:` followed by `41.49` right-aligned in the 12-character edited field. `LINE SEQUENTIAL` means a text file with one record per line; it is supported by GnuCOBOL and other PC compilers, while mainframe programs usually read fixed-length datasets defined in JCL.",
+        {
+          "note": "Common beginner mistakes: a stray period inside an `IF` block, which ends the whole statement early (use scope terminators like `END-IF`); code outside columns 8 to 72 in fixed format; silent truncation when moving a value into a field that is too small (`MOVE 1234 TO` a `PIC 99` field stores 34); storing negative results in a field without `S` in its PIC, which drops the sign; and forgetting `ON SIZE ERROR` or file status checks."
+        }
+      ]
+    },
+    {
+      "h": "Where to go next",
+      "body": [
+        {
+          "ul": [
+            "The GnuCOBOL project pages and its Programmer's Guide for a full language reference.",
+            "IBM's Enterprise COBOL for z/OS documentation for mainframe COBOL, CICS and Db2 usage.",
+            "Practice reading and writing files, sorting with the `SORT` verb, and producing formatted reports.",
+            "Learn the surrounding mainframe tools (JCL, TSO/ISPF) if you want to work on production systems."
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Is COBOL still used?",
+      "a": "Yes. Many banks, insurers and government agencies still run COBOL programs for core batch and transaction processing, so there is ongoing demand for developers who can maintain and modernize them."
+    },
+    {
+      "q": "Is COBOL hard to learn?",
+      "a": "The syntax is verbose but simple, and most beginners can write working programs quickly. The harder part is the mainframe environment around it: JCL, datasets, CICS and Db2."
+    },
+    {
+      "q": "Can I learn COBOL without a mainframe?",
+      "a": "Yes. GnuCOBOL runs on Linux, macOS and Windows and supports standard COBOL, so you can learn the language on a normal computer before moving to a mainframe."
+    },
+    {
+      "q": "Why does COBOL use decimal numbers?",
+      "a": "Business data such as money must be exact. COBOL stores numbers as decimal digits with a fixed number of decimal places, which avoids the rounding errors of binary floating point."
+    }
+  ]
+}

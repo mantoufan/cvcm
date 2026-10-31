@@ -1,0 +1,218 @@
+{
+  "title": "Tutorial Clojure: sintaks, koleksi, fungsi, dan REPL — cv.cm",
+  "description": "Belajar Clojure dari nol: memasang CLI, menulis Hello world, memakai vector dan map immutable, mendefinisikan fungsi, threading macro, atom, dan penanganan error.",
+  "h1": "Tutorial Clojure untuk pemula",
+  "answer": "Clojure adalah Lisp dinamis dan fungsional yang berjalan di Java Virtual Machine (dengan ClojureScript untuk JavaScript). Kode ditulis sebagai list dalam tanda kurung, data bersifat immutable secara default, dan program dibangun dengan menggabungkan fungsi-fungsi kecil atas vector, map, dan set. Anda memasang Clojure CLI, memulai REPL dengan `clj`, dan menjalankan file dengan `clojure -M hello.clj`.",
+  "sections": [
+    {
+      "h": "Apa itu Clojure dan siapa yang memakainya",
+      "body": [
+        "Clojure dibuat oleh Rich Hickey dan pertama kali dirilis pada 2007. Clojure adalah dialek Lisp: setiap ekspresi adalah list yang elemen pertamanya berupa fungsi atau operator, misalnya `(+ 1 2)`. Clojure dikompilasi menjadi bytecode JVM, sehingga dapat memanggil library Java apa pun secara langsung. ClojureScript mengompilasi bahasa yang sama ke JavaScript untuk browser dan Node.js.",
+        "Clojure dipakai untuk layanan web back-end, data processing pipeline, dan sistem bisnis internal, terutama oleh tim yang menghargai data immutable dan pengembangan interaktif. Developer biasanya bekerja di dalam REPL (read-eval-print loop) yang terhubung ke editor, mengevaluasi satu ekspresi sekali waktu sementara program berjalan."
+      ]
+    },
+    {
+      "h": "Memasang Clojure dan menjalankan Hello, world",
+      "body": [
+        "Pasang Java runtime (JDK 17 atau lebih baru adalah pilihan aman), lalu pasang Clojure CLI tools dari clojure.org (Homebrew di macOS, script instalasi di Linux, atau installer Windows). CLI menyediakan dua perintah: `clj` (REPL dengan penyuntingan baris) dan `clojure` (untuk menjalankan program).",
+        {
+          "code": ";; hello.clj\n(println \"Hello, world!\")",
+          "lang": "clojure"
+        },
+        {
+          "code": "clojure -M hello.clj\n# Hello, world!\nclj\n# user=> (+ 1 2)\n# 3",
+          "lang": "shell"
+        },
+        "Proyek nyata menyimpan dependensinya dalam file `deps.edn` dan kodenya di bawah `src/`, dengan satu namespace per file. Leiningen (`lein`) adalah build tool yang lebih lama tetapi masih populer, dengan file `project.clj`."
+      ]
+    },
+    {
+      "h": "Nilai, tipe, dan nama",
+      "body": [
+        "Clojure bertipe dinamis. `def` mengikat nama global (sebuah var) dan `let` mengikat nama lokal. Nilai tidak berubah setelah dibuat: tidak ada statement assignment.",
+        {
+          "table": {
+            "head": [
+              "Tipe",
+              "Contoh",
+              "Catatan"
+            ],
+            "rows": [
+              [
+                "Integer",
+                "`42`",
+                "`long` 64-bit; `42N` adalah BigInt"
+              ],
+              [
+                "Floating point",
+                "`3.14`",
+                "`double` Java"
+              ],
+              [
+                "Ratio",
+                "`(/ 1 3)`",
+                "Pecahan eksak `1/3`, bukan 0.333"
+              ],
+              [
+                "String",
+                "`\"hello\"`",
+                "`String` Java, hanya dengan tanda kutip ganda"
+              ],
+              [
+                "Karakter",
+                "`\\a`",
+                "Satu karakter"
+              ],
+              [
+                "Keyword",
+                "`:name`",
+                "Label yang cepat dan mengevaluasi dirinya sendiri, sering dipakai sebagai key map"
+              ],
+              [
+                "Boolean / nil",
+                "`true`, `false`, `nil`",
+                "Hanya `false` dan `nil` yang falsy"
+              ]
+            ]
+          }
+        },
+        {
+          "code": "(def pi-approx 3.14159)\n(let [r 2\n      area (* pi-approx r r)]\n  (println \"Area:\" area))\n;; Area: 12.56636\n(str \"a\" 1 :b)   ;; => \"a1:b\"",
+          "lang": "clojure"
+        }
+      ]
+    },
+    {
+      "h": "Alur kontrol",
+      "body": [
+        "Di Clojure segalanya adalah ekspresi yang mengembalikan nilai, termasuk `if`. `if` menerima tepat satu form \"then\" dan satu form \"else\"; gunakan `when` untuk beberapa efek samping tanpa cabang else, dan `cond` untuk beberapa kondisi.",
+        {
+          "code": "(defn grade [score]\n  (cond\n    (>= score 90) \"A\"\n    (>= score 80) \"B\"\n    :else         \"C\"))\n(println (grade 85))            ;; B\n(when (pos? 5) (println \"positive\") :done)\n(doseq [x [1 2 3]] (println (* x x)))   ;; 1 4 9\n(for [x (range 5) :when (odd? x)] (* x 10))   ;; => (10 30)\n(loop [i 0 acc 0]\n  (if (< i 5) (recur (inc i) (+ acc i)) acc))   ;; => 10",
+          "lang": "clojure"
+        },
+        "Tidak ada perulangan `for` dengan penghitung yang diubah-ubah. `doseq` menjalankan efek samping untuk setiap elemen, `for` membangun lazy sequence (list comprehension), dan `loop`/`recur` menyatakan iterasi tanpa menambah call stack."
+      ]
+    },
+    {
+      "h": "Fungsi",
+      "body": [
+        "Definisikan fungsi bernama dengan `defn`. Sebuah fungsi dapat punya beberapa arity (jumlah argumen berbeda), dan `#(...)` adalah bentuk singkat untuk fungsi anonim kecil dengan `%` sebagai argumennya.",
+        {
+          "code": "(defn greet\n  ([] (greet \"world\"))\n  ([name] (str \"Hello, \" name \"!\")))\n(greet)          ;; => \"Hello, world!\"\n(greet \"Ana\")    ;; => \"Hello, Ana!\"\n(defn sum-all [& nums] (reduce + nums))\n(sum-all 1 2 3)  ;; => 6\n(map #(* % %) [1 2 3])        ;; => (1 4 9)\n(filter even? (range 10))     ;; => (0 2 4 6 8)",
+          "lang": "clojure"
+        },
+        "Fungsi adalah nilai: Anda dapat meneruskannya ke `map`, `filter`, dan `reduce`, mengembalikannya dari fungsi lain, dan menyimpannya di dalam map."
+      ]
+    },
+    {
+      "h": "Koleksi: list, vector, map, dan set",
+      "body": [
+        "Empat koleksi inti Clojure bersifat immutable dan persistent: \"mengubah\" salah satunya menghasilkan versi baru yang berbagi sebagian besar strukturnya dengan versi lama, sehingga pembaruan murah.",
+        {
+          "table": {
+            "head": [
+              "Koleksi",
+              "Literal",
+              "Penggunaan umum"
+            ],
+            "rows": [
+              [
+                "List",
+                "`'(1 2 3)`",
+                "Kode dan data sekuensial yang ditambahkan di depan"
+              ],
+              [
+                "Vector",
+                "`[1 2 3]`",
+                "Sequence berindeks, penambahan di akhir"
+              ],
+              [
+                "Map",
+                "`{:name \"Ana\" :age 30}`",
+                "Record key-value"
+              ],
+              [
+                "Set",
+                "`#{:red :green}`",
+                "Nilai unik, pengujian keanggotaan"
+              ]
+            ]
+          }
+        },
+        {
+          "code": "(def user {:name \"Ana\" :age 30})\n(:name user)                   ;; => \"Ana\"\n(assoc user :email \"a@x.io\")   ;; new map with :email\n(update user :age inc)         ;; => {:name \"Ana\", :age 31}\n(conj [1 2] 3)                 ;; => [1 2 3]\n(contains? #{:red :green} :red) ;; => true\n(get-in {:a {:b 1}} [:a :b])   ;; => 1\nuser                           ;; unchanged: {:name \"Ana\", :age 30}",
+          "lang": "clojure"
+        }
+      ]
+    },
+    {
+      "h": "Fitur khas: threading macro, atom, dan macro",
+      "body": [
+        "Threading macro membuat data pipeline terbaca dari atas ke bawah. `->` menyisipkan hasil sebelumnya sebagai argumen pertama form berikutnya; `->>` menyisipkannya sebagai argumen terakhir.",
+        {
+          "code": "(->> (range 1 11)\n     (filter odd?)\n     (map #(* % %))\n     (reduce +))   ;; => 165\n(def counter (atom 0))\n(swap! counter inc)\n(swap! counter + 10)\n@counter           ;; => 11\n(defmacro unless [test & body]\n  `(if ~test nil (do ~@body)))\n(unless false (println \"runs\"))",
+          "lang": "clojure"
+        },
+        "Atom menyimpan state yang bisa berubah: `swap!` menerapkan fungsi secara atomik, sehingga aman dipakai dari beberapa thread. Ref dan agent mencakup kasus konkurensi lainnya. Karena kode adalah data (list), macro dapat mentransformasi kode sebelum dikompilasi; `when`, `cond`, dan `->` sendiri adalah macro."
+      ]
+    },
+    {
+      "h": "Penanganan error",
+      "body": [
+        "Clojure memakai exception JVM dengan `try`, `catch`, dan `finally`. Untuk menyertakan data pada error, lempar `ex-info` dan baca kembali datanya dengan `ex-data`.",
+        {
+          "code": "(defn parse-age [s]\n  (let [n (Long/parseLong s)]\n    (when (neg? n)\n      (throw (ex-info \"Age must not be negative\" {:value n})))\n    n))\n(try\n  (parse-age \"-5\")\n  (catch clojure.lang.ExceptionInfo e\n    (println (ex-message e) (ex-data e)))\n  (catch NumberFormatException _\n    (println \"not a number\")))\n;; Age must not be negative {:value -5}",
+          "lang": "clojure"
+        }
+      ]
+    },
+    {
+      "h": "Program lengkap kecil: frekuensi kata",
+      "body": [
+        {
+          "code": "(ns wordcount\n  (:require [clojure.string :as str]))\n(defn word-counts [text]\n  (->> (str/split (str/lower-case text) #\"\\W+\")\n       (remove str/blank?)\n       frequencies\n       (sort-by val >)))\n(doseq [[word n] (take 2 (word-counts \"The cat and the hat and the bat\"))]\n  (println word n))\n;; the 3\n;; and 2",
+          "lang": "clojure"
+        },
+        "Program ini mengubah teks menjadi huruf kecil, memecahnya pada karakter non-kata dengan literal regular expression `#\"\\W+\"`, menghitung setiap kata dengan `frequencies` (yang mengembalikan map), dan mengurutkan entri berdasarkan jumlah secara menurun.",
+        {
+          "note": "Kesalahan umum pemula: menaruh fungsi di luar tanda kurung (`print(x)` alih-alih `(println x)`); mengira `assoc` atau `conj` mengubah koleksi di tempat (keduanya mengembalikan koleksi baru, jadi simpan hasilnya); lupa bahwa `map` dan `for` bersifat lazy, sehingga efek samping di dalamnya mungkin tidak pernah dijalankan di REPL atau script (gunakan `doseq` atau `run!`); dan menganggap `0` atau string kosong sebagai false (hanya `false` dan `nil` yang falsy)."
+        }
+      ]
+    },
+    {
+      "h": "Langkah selanjutnya",
+      "body": [
+        {
+          "ul": [
+            "Panduan resmi di clojure.org: Getting Started, Learn Clojure, dan panduan deps.edn.",
+            "Halaman referensi Clojure untuk sintaks reader, special form, dan struktur data.",
+            "Siapkan editor dengan REPL yang terhubung (misalnya Calva untuk VS Code, CIDER untuk Emacs, atau Cursive untuk IntelliJ).",
+            "Coba ClojureScript jika Anda ingin menargetkan browser."
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Apakah Clojure bahasa fungsional?",
+      "a": "Ya. Clojure mengutamakan fungsi murni dan data immutable, tetapi bersifat pragmatis: mengizinkan efek samping dan menyediakan state mutable yang terkelola lewat atom, ref, dan agent."
+    },
+    {
+      "q": "Apakah saya perlu tahu Java untuk belajar Clojure?",
+      "a": "Tidak. Anda dapat mempelajari bahasanya tanpa Java, tetapi Java runtime harus terpasang, dan sedikit pengetahuan tentang JVM membantu saat membaca stack trace atau memakai library Java."
+    },
+    {
+      "q": "Apa perbedaan list dan vector di Clojure?",
+      "a": "List `'(1 2 3)` menambahkan elemen di depan dan terutama dipakai untuk kode; vector `[1 2 3]` menambahkan di akhir dan mendukung akses cepat berdasarkan indeks. Sebagian besar data dalam program Clojure disimpan dalam vector dan map."
+    },
+    {
+      "q": "Mengapa Clojure memakai begitu banyak tanda kurung?",
+      "a": "Kode Clojure ditulis sebagai struktur data Lisp, sehingga setiap pemanggilan adalah sebuah list. Sintaks yang seragam inilah yang memungkinkan macro, dan editor dengan structural editing membuat tanda kurung mudah dikelola."
+    },
+    {
+      "q": "Apa perbedaan Clojure dan ClojureScript?",
+      "a": "Keduanya bahasa yang sama pada host yang berbeda: Clojure berjalan di JVM, ClojureScript dikompilasi ke JavaScript. Interop dengan host berbeda, tetapi fungsi inti dan struktur datanya sama."
+    }
+  ]
+}

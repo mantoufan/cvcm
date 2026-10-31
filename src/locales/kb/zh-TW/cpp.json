@@ -1,0 +1,226 @@
+{
+  "title": "C++ 入門教學：型別、類別、STL 容器與 RAII — cv.cm",
+  "description": "一頁學會現代 C++：編譯 Hello world、型別與 auto、流程控制、函式、類別、vector 與 map、智慧指標、RAII 與例外處理。",
+  "h1": "C++ 入門教學",
+  "answer": "C++ 是編譯式的靜態型別語言，結合了 C 的速度與底層控制能力，並加入類別、樣板與龐大的標準函式庫。用 `g++ -std=c++20 hello.cpp -o hello` 編譯 `hello.cpp`，再執行 `./hello`。現代 C++ 程式碼以 `std::string`、`std::vector` 和 `std::map` 取代原始陣列，以智慧指標取代手動 `delete`，並利用 RAII 讓資源自動釋放。",
+  "sections": [
+    {
+      "h": "C++ 是什麼，用來做什麼",
+      "body": [
+        "C++ 由 Bjarne Stroustrup 於 1979 年在貝爾實驗室開始開發，最初名為「C with Classes」。它由 ISO 標準化；C++11 開啟了「現代 C++」時代，之後有 C++17、C++20 與 C++23。C++ 用在重視效能與控制力的地方：遊戲引擎（Unreal Engine）、網頁瀏覽器（Chrome、Firefox）、資料庫、交易系統、嵌入式裝置、編譯器與機器學習執行環境。它的核心理念是零負擔抽象：你沒用到的功能不會有任何代價。"
+      ]
+    },
+    {
+      "h": "安裝編譯器並執行 Hello, world",
+      "body": [
+        "Linux 與 macOS 上使用 GCC（`g++`）或 Clang（`clang++`），Windows 上則透過 Visual Studio 使用 Microsoft Visual C++。請明確指定標準版本。",
+        {
+          "code": "#include <iostream>\n\nint main() {\n    std::cout << \"Hello, world\\n\";\n    return 0;\n}",
+          "lang": "cpp"
+        },
+        {
+          "code": "g++ -std=c++20 -Wall -Wextra hello.cpp -o hello\n./hello\n# Hello, world",
+          "lang": "shell"
+        },
+        "`std::cout` 是標準輸出串流，`<<` 用來寫入它。標準函式庫中的所有內容都位於命名空間 `std` 之下。"
+      ]
+    },
+    {
+      "h": "變數、型別與 auto",
+      "body": [
+        "C++ 擁有與 C 相同的內建型別，另外還有作為關鍵字的 `bool`、參考（reference），以及 `std::string` 等函式庫型別。`auto` 讓編譯器根據初始值推導型別。大括號初始化 `{}` 不允許窄化轉換。",
+        {
+          "table": {
+            "head": [
+              "型別",
+              "範例",
+              "說明"
+            ],
+            "rows": [
+              [
+                "`int`, `long long`",
+                "`int n{42};`",
+                "有號整數"
+              ],
+              [
+                "`double`",
+                "`double x{3.14};`",
+                "64 位元浮點數"
+              ],
+              [
+                "`bool`",
+                "`bool ok{true};`",
+                "`true` 或 `false`"
+              ],
+              [
+                "`char`",
+                "`char c{'A'};`",
+                "一個位元組"
+              ],
+              [
+                "`std::string`",
+                "`std::string s{\"hi\"};`",
+                "可增長的文字，來自 `<string>`"
+              ],
+              [
+                "`auto`",
+                "`auto v = 2.5;`",
+                "自動推導，這裡是 `double`"
+              ],
+              [
+                "`T&`",
+                "`int& r = n;`",
+                "參考：`n` 的另一個名稱"
+              ]
+            ]
+          }
+        },
+        {
+          "code": "#include <iostream>\n#include <string>\n\nint main() {\n    int count{7};\n    auto avg = count / 2.0;          // double, 3.5\n    std::string name{\"Ada\"};\n    name += \" Lovelace\";\n    const int& ref = count;          // read-only alias of count\n    std::cout << name << \" \" << name.size() << \" \" << avg << \" \" << ref << \"\\n\";\n    // Ada Lovelace 12 3.5 7\n}",
+          "lang": "cpp"
+        }
+      ]
+    },
+    {
+      "h": "流程控制與函式",
+      "body": [
+        "流程控制與 C 相同，另外還有範圍式 `for` 迴圈。傳遞大型物件時請用 `const` 參考以避免複製；若函式需要修改它們，則使用非 `const` 參考。",
+        {
+          "code": "#include <iostream>\n#include <string>\n#include <vector>\n\nint square(int x) { return x * x; }\n\nvoid addSuffix(std::string& s, const std::string& suffix = \"!\") {\n    s += suffix;\n}\n\nint main() {\n    int score = 72;\n    if (score >= 90) std::cout << \"A\\n\";\n    else if (score >= 70) std::cout << \"B\\n\";   // B\n    else std::cout << \"C\\n\";\n\n    std::vector<int> nums{1, 2, 3};\n    for (int n : nums) std::cout << square(n) << \" \";  // 1 4 9\n    std::cout << \"\\n\";\n\n    std::string word = \"hi\";\n    addSuffix(word);\n    std::cout << word << \"\\n\";                  // hi!\n}",
+          "lang": "cpp"
+        }
+      ]
+    },
+    {
+      "h": "類別",
+      "body": [
+        "類別把資料成員與成員函式組合在一起。建構子負責建立物件的初始狀態；`private` 成員對外部程式碼是隱藏的。`struct` 與 class 相同，只是成員預設為 public。",
+        {
+          "code": "#include <iostream>\n#include <string>\n#include <utility>\n\nclass Account {\npublic:\n    explicit Account(std::string owner) : owner_(std::move(owner)) {}\n\n    void deposit(double amount) {\n        if (amount > 0) balance_ += amount;\n    }\n    double balance() const { return balance_; }\n    const std::string& owner() const { return owner_; }\n\nprivate:\n    std::string owner_;\n    double balance_ = 0.0;\n};\n\nint main() {\n    Account acc{\"Ann\"};\n    acc.deposit(50);\n    acc.deposit(-5);   // ignored\n    std::cout << acc.owner() << \": \" << acc.balance() << \"\\n\";  // Ann: 50\n}",
+          "lang": "cpp"
+        },
+        "繼承（`class Savings : public Account`）與 `virtual` 函式提供執行階段的多型。請在覆寫的函式上標示 `override`，讓編譯器幫你檢查。"
+      ]
+    },
+    {
+      "h": "標準函式庫容器與演算法",
+      "body": [
+        "標準函式庫（常稱為 STL）提供容器與演算法，它們透過迭代器彼此搭配運作。",
+        {
+          "table": {
+            "head": [
+              "容器",
+              "類似",
+              "適用情境"
+            ],
+            "rows": [
+              [
+                "`std::vector<T>`",
+                "動態陣列",
+                "預設的序列容器"
+              ],
+              [
+                "`std::array<T, N>`",
+                "固定大小陣列",
+                "大小在編譯期已知"
+              ],
+              [
+                "`std::map<K, V>`",
+                "已排序的字典",
+                "鍵有序，查找為 O(log n)"
+              ],
+              [
+                "`std::unordered_map<K, V>`",
+                "雜湊表",
+                "平均查找速度快，為 O(1)"
+              ],
+              [
+                "`std::set<T>`",
+                "已排序且不重複的集合",
+                "成員檢查、有序輸出"
+              ]
+            ]
+          }
+        },
+        {
+          "code": "#include <algorithm>\n#include <iostream>\n#include <map>\n#include <string>\n#include <vector>\n\nint main() {\n    std::vector<int> nums{3, 1, 2, 5};\n    std::sort(nums.begin(), nums.end());\n    auto evens = std::count_if(nums.begin(), nums.end(),\n                               [](int n) { return n % 2 == 0; });\n    std::cout << nums.front() << \" \" << nums.back() << \" \" << evens << \"\\n\";  // 1 5 1\n\n    std::map<std::string, int> ages{{\"bob\", 25}, {\"ann\", 31}};\n    ages[\"cy\"] = 40;\n    for (const auto& [name, age] : ages) {     // structured bindings\n        std::cout << name << \"=\" << age << \" \";  // ann=31 bob=25 cy=40\n    }\n    std::cout << \"\\n\";\n}",
+          "lang": "cpp"
+        },
+        "`[](int n) { ... }` 是 lambda，一種直接寫在原地的匿名函式。樣板（template）讓同一個 `std::vector` 能用於任何元素型別；你也可以用 `template <typename T>` 自己撰寫。"
+      ]
+    },
+    {
+      "h": "招牌特色：RAII 與智慧指標",
+      "body": [
+        "RAII（Resource Acquisition Is Initialization，資源取得即初始化）表示資源由物件擁有：建構子取得資源，解構子釋放資源。由於物件離開作用域時解構子會自動執行，即使拋出例外也一樣，因此記憶體、檔案與鎖都不會洩漏。智慧指標就是把 RAII 應用在堆積記憶體上。",
+        {
+          "code": "#include <iostream>\n#include <memory>\n\nstruct Noisy {\n    int id;\n    explicit Noisy(int i) : id(i) { std::cout << \"create \" << id << \"\\n\"; }\n    ~Noisy() { std::cout << \"destroy \" << id << \"\\n\"; }\n};\n\nint main() {\n    auto a = std::make_unique<Noisy>(1);       // sole owner\n    {\n        auto b = std::make_shared<Noisy>(2);   // shared, reference-counted\n        auto c = b;                            // two owners now\n        std::cout << \"owners: \" << b.use_count() << \"\\n\";\n    }                                          // destroy 2 happens here\n    std::cout << \"end of main\\n\";\n}                                              // destroy 1 happens here",
+          "lang": "cpp"
+        },
+        "輸出：`create 1`、`create 2`、`owners: 2`、`destroy 2`、`end of main`、`destroy 1`。在現代程式碼中，你幾乎不該自己寫 `new` 和 `delete`。"
+      ]
+    },
+    {
+      "h": "以例外處理錯誤",
+      "body": [
+        "拋出例外物件，並以 `const` 參考捕捉。標準例外型別位於 `<stdexcept>`。不會拋出例外的函式可標示為 `noexcept`。",
+        {
+          "code": "#include <iostream>\n#include <stdexcept>\n#include <string>\n\nint parseAge(const std::string& text) {\n    int age = std::stoi(text);   // throws std::invalid_argument on \"abc\"\n    if (age < 0) throw std::out_of_range(\"negative age\");\n    return age;\n}\n\nint main() {\n    try {\n        std::cout << parseAge(\"41\") << \"\\n\";   // 41\n        std::cout << parseAge(\"abc\") << \"\\n\";\n    } catch (const std::invalid_argument&) {\n        std::cout << \"not a number\\n\";         // not a number\n    } catch (const std::exception& e) {\n        std::cout << \"error: \" << e.what() << \"\\n\";\n    }\n}",
+          "lang": "cpp"
+        },
+        "對於可預期的失敗，許多程式碼庫會回傳 `std::optional<T>`（C++17）或 `std::expected<T, E>`（C++23），而不是拋出例外。"
+      ]
+    },
+    {
+      "h": "完整的小程式：單字頻率統計",
+      "body": [
+        {
+          "code": "#include <algorithm>\n#include <cctype>\n#include <fstream>\n#include <iostream>\n#include <string>\n#include <unordered_map>\n#include <vector>\n\nint main(int argc, char* argv[]) {\n    if (argc != 2) {\n        std::cerr << \"usage: \" << argv[0] << \" FILE\\n\";\n        return 1;\n    }\n    std::ifstream in(argv[1]);\n    if (!in) {\n        std::cerr << \"cannot open \" << argv[1] << \"\\n\";\n        return 1;\n    }\n    std::unordered_map<std::string, int> counts;\n    std::string word;\n    while (in >> word) {\n        std::string clean;\n        for (unsigned char ch : word)\n            if (std::isalpha(ch)) clean += static_cast<char>(std::tolower(ch));\n        if (!clean.empty()) ++counts[clean];\n    }\n    std::vector<std::pair<std::string, int>> top(counts.begin(), counts.end());\n    std::sort(top.begin(), top.end(),\n              [](const auto& a, const auto& b) { return a.second > b.second; });\n    for (size_t i = 0; i < top.size() && i < 5; ++i)\n        std::cout << top[i].second << \"  \" << top[i].first << \"\\n\";\n}",
+          "lang": "cpp"
+        },
+        "以 `g++ -std=c++20 -O2 words.cpp -o words` 編譯，再執行 `./words notes.txt`。`in` 離開作用域時檔案會自動關閉，這又是 RAII 的應用。"
+      ]
+    },
+    {
+      "h": "初學者常見錯誤",
+      "body": [
+        {
+          "note": "C++ 繼承了 C 的未定義行為：用 `[]` 讀取 `std::vector` 結尾之後的元素、使用懸空參考，或讀取未初始化的變數，可能看似正常，之後才出問題。學習時請使用 `.at(i)`，並以 `-fsanitize=address,undefined -g` 編譯。"
+        },
+        {
+          "ul": [
+            "在標頭檔中寫 `using namespace std;`，這會污染所有引入該標頭檔的檔案。",
+            "明明用 `const&` 就夠了，卻以傳值方式傳遞 `std::vector` 這類大型物件。",
+            "在比較中混用有號與無號數，例如 `int i` 與 `v.size()`。開啟警告就能發現這類問題。",
+            "在 `push_back` 之後仍保留指向 `std::vector` 的迭代器或參考，元素可能已被搬移。",
+            "使用原始的 `new` 和 `delete`，而不是 `std::make_unique`、`std::vector` 或其他具擁有權的型別。"
+          ]
+        }
+      ]
+    },
+    {
+      "h": "接下來學什麼",
+      "body": [
+        "把 cppreference.com 當作語言與函式庫的參考，並參考 C++ Core Guidelines（由 Bjarne Stroustrup 與 Herb Sutter 編輯）學習良好實務。Standard C++ Foundation 的網站 isocpp.org 有入門頁面與推薦書籍。學習用 CMake 建置專案，再進一步學習移動語意、樣板、`constexpr`，以及使用 `std::thread` 的並行處理。"
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "學 C++ 之前要先學 C 嗎？",
+      "a": "不是必要的。現代 C++ 教學從 `std::string`、`std::vector` 與類別開始，之後才介紹原始指標與 C 風格陣列。先學 C 確實有助於理解記憶體。"
+    },
+    {
+      "q": "該使用哪個 C++ 標準？",
+      "a": "目前的 GCC、Clang 與 MSVC 對 C++17 和 C++20 支援良好，C++23 的支援也在增加。請用 `-std=c++20` 之類的旗標明確指定。"
+    },
+    {
+      "q": "指標和參考有什麼差別？",
+      "a": "參考是別名，建立時就必須綁定，之後不能改綁，也不能是 null。指標儲存位址，可以是 null，也可以改指向其他位置。"
+    },
+    {
+      "q": "C++ 很難學嗎？",
+      "a": "這門語言相當龐大，學習曲線會比 Python 或 Go 更長。堅持使用現代功能、標準容器與智慧指標，就能避開大部分經典陷阱。"
+    }
+  ]
+}

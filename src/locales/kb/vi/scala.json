@@ -1,0 +1,216 @@
+{
+  "title": "Hướng dẫn học Scala: pattern matching, collection, case class và Option — cv.cm",
+  "description": "Học Scala 3 cơ bản từng bước: chạy Hello, world, val và var, biểu thức if và for, pattern matching, hàm, collection bất biến, case class và Option, có ví dụ minh họa.",
+  "h1": "Học Scala cơ bản cho người mới bắt đầu",
+  "answer": "Scala là ngôn ngữ kiểu tĩnh trên JVM, kết hợp lập trình hướng đối tượng và lập trình hàm, được dùng rộng rãi trong kỹ thuật dữ liệu với Apache Spark và cho các backend đồng thời. Các điểm mạnh là suy luận kiểu, collection bất biến, case class và pattern matching. Trang này dùng Scala 3 để trình bày cài đặt, giá trị, cấu trúc điều khiển, hàm, collection, trait, enum và xử lý lỗi bằng Option, Either và Try.",
+  "sections": [
+    {
+      "h": "Scala là gì và dùng để làm gì",
+      "body": [
+        "Scala là ngôn ngữ kiểu tĩnh kết hợp lập trình hướng đối tượng và lập trình hàm. Ngôn ngữ do Martin Odersky tạo ra tại EPFL, chạy chủ yếu trên Java Virtual Machine, kèm Scala.js cho trình duyệt và Scala Native cho tệp thực thi native. Mã Scala có thể dùng mọi thư viện Java.",
+        "Scala được dùng rộng rãi trong kỹ thuật dữ liệu (Apache Spark viết bằng Scala), cho các backend đồng thời và phân tán (Akka, Pekko, ZIO, Cats Effect), cũng như các hệ thống tài chính và xử lý luồng. Hướng dẫn này dùng cú pháp Scala 3, cho phép khối lệnh theo thụt lề; dấu ngoặc nhọn vẫn dùng được."
+      ]
+    },
+    {
+      "h": "Cài đặt Scala và chạy Hello, world",
+      "body": [
+        "Trình cài đặt được khuyến nghị là Coursier (`cs setup`), cài lệnh `scala` và một JDK. Trong Scala 3, phương thức có chú thích `@main` là điểm vào của chương trình.",
+        {
+          "code": "// hello.scala\n@main def hello(): Unit =\n  println(\"Hello, world!\")",
+          "lang": "scala"
+        },
+        {
+          "code": "scala run hello.scala\n# Hello, world!",
+          "lang": "shell"
+        },
+        "Với dự án lớn hơn, sbt và Mill là các công cụ build phổ biến. Scastie (scastie.scala-lang.org) chạy Scala ngay trên trình duyệt mà không cần cài gì."
+      ]
+    },
+    {
+      "h": "Giá trị, biến và các kiểu cơ bản",
+      "body": [
+        "Dùng `val` cho giá trị bất biến và `var` cho biến có thể thay đổi. Kiểu được suy luận tự động nhưng có thể ghi sau dấu hai chấm. Scala theo đúng phong cách dùng `val` gần như ở mọi nơi.",
+        {
+          "code": "val name = \"Scala\"            // String\nvar count: Int = 1            // mutable\ncount += 1\nval ratio = 3.0 / 4           // Double: 0.75\nval big = 12345678901L        // Long\nval ok = count > 1            // Boolean\nprintln(s\"$name: count=$count ratio=$ratio ok=$ok\")\n// Scala: count=2 ratio=0.75 ok=true\nprintln(f\"pi is ${math.Pi}%.3f\")   // pi is 3.142",
+          "lang": "scala"
+        },
+        {
+          "table": {
+            "head": [
+              "Kiểu",
+              "Ví dụ",
+              "Ghi chú"
+            ],
+            "rows": [
+              [
+                "`Int`",
+                "`42`",
+                "số nguyên có dấu 32 bit"
+              ],
+              [
+                "`Long`",
+                "`42L`",
+                "số nguyên có dấu 64 bit"
+              ],
+              [
+                "`Double`",
+                "`3.14`",
+                "số thực dấu phẩy động 64 bit"
+              ],
+              [
+                "`Boolean`",
+                "`true`",
+                "`true` or `false`"
+              ],
+              [
+                "`String`",
+                "`\"hi\"`",
+                "chuỗi Java; hỗ trợ bộ nội suy `s\"...\"` và `f\"...\"`"
+              ],
+              [
+                "`Unit`",
+                "`()`",
+                "giống `void`: không có giá trị có ý nghĩa"
+              ]
+            ]
+          }
+        },
+        "Mọi thứ trong Scala đều là biểu thức: `if`, khối lệnh và `match` đều trả về giá trị, nên bạn hiếm khi cần `var` tạm."
+      ]
+    },
+    {
+      "h": "Cấu trúc điều khiển và pattern matching",
+      "body": [
+        "`if` trả về giá trị. `for` lặp trên khoảng và collection, và khi kèm `yield` nó tạo ra collection mới. `match` là pattern matching mạnh mẽ của Scala, một tính năng đặc trưng của ngôn ngữ.",
+        {
+          "code": "val n = 7\nval parity = if n % 2 == 0 then \"even\" else \"odd\"\nprintln(parity)                        // odd\nfor i <- 1 to 3 do print(s\"$i \")       // 1 2 3\nprintln()\nval squares = for i <- 1 to 4 yield i * i\nprintln(squares)                       // Vector(1, 4, 9, 16)\ndef describe(x: Any): String = x match\n  case 0             => \"zero\"\n  case i: Int if i < 0 => \"negative int\"\n  case i: Int        => s\"int $i\"\n  case s: String     => s\"string of length ${s.length}\"\n  case (a, b)        => s\"pair $a and $b\"\n  case _             => \"something else\"\nprintln(describe(-5))                  // negative int\nprintln(describe(\"hey\"))               // string of length 3\nprintln(describe((1, \"x\")))            // pair 1 and x",
+          "lang": "scala"
+        },
+        "`1 to 3` bao gồm 3; `1 until 3` dừng trước 3. `case _` ở cuối là ký tự đại diện khớp mọi giá trị; nếu thiếu, giá trị không khớp sẽ ném `MatchError`."
+      ]
+    },
+    {
+      "h": "Hàm và hàm bậc cao",
+      "body": [
+        "Phương thức được định nghĩa bằng `def`. Hàm là giá trị: bạn có thể lưu, truyền làm đối số và trả về chúng. Tham số có thể có giá trị mặc định, và nơi gọi có thể dùng đối số có tên.",
+        {
+          "code": "def add(a: Int, b: Int): Int = a + b\ndef greet(name: String, greeting: String = \"Hello\"): String =\n  s\"$greeting, $name!\"\nval double = (x: Int) => x * 2        // function value\ndef applyTwice(f: Int => Int, x: Int): Int = f(f(x))\nprintln(add(2, 3))                    // 5\nprintln(greet(\"Ann\"))                 // Hello, Ann!\nprintln(greet(\"Ann\", greeting = \"Hi\")) // Hi, Ann!\nprintln(applyTwice(double, 5))        // 20\nprintln(List(1, 2, 3, 4).filter(_ % 2 == 0).map(_ * 10)) // List(20, 40)",
+          "lang": "scala"
+        },
+        "Dấu gạch dưới trong `_ * 10` là cách viết tắt cho lambda một tham số, `x => x * 10`."
+      ]
+    },
+    {
+      "h": "Collection",
+      "body": [
+        "Các collection chuẩn mặc định là bất biến: những thao tác như `map`, `filter` và `:+` trả về collection mới và giữ nguyên bản gốc. Phiên bản có thể thay đổi nằm trong `scala.collection.mutable`.",
+        {
+          "code": "val nums = List(5, 3, 8)\nval more = nums :+ 1                  // List(5, 3, 8, 1); nums unchanged\nprintln(more.sorted)                  // List(1, 3, 5, 8)\nprintln(nums.sum)                     // 16\nval v = Vector(\"a\", \"b\", \"c\")         // fast indexed access\nprintln(v(1))                         // b\nval ages = Map(\"Ann\" -> 31, \"Bo\" -> 25)\nprintln(ages(\"Ann\"))                  // 31\nprintln(ages.get(\"Zed\"))              // None\nprintln(ages.getOrElse(\"Zed\", 0))     // 0\nval unique = Set(1, 2, 2, 3)\nprintln(unique.size)                  // 3\nval words = List(\"apple\", \"avocado\", \"banana\")\nprintln(words.groupBy(_.head)('a'))  // List(apple, avocado)",
+          "lang": "scala"
+        },
+        {
+          "table": {
+            "head": [
+              "Collection",
+              "Dùng cho"
+            ],
+            "rows": [
+              [
+                "`List`",
+                "danh sách liên kết bất biến; thêm vào đầu và truy cập head/tail nhanh"
+              ],
+              [
+                "`Vector`",
+                "dãy bất biến có chỉ mục; lựa chọn mặc định tốt cho đa số trường hợp"
+              ],
+              [
+                "`Map`",
+                "tra cứu theo khóa-giá trị"
+              ],
+              [
+                "`Set`",
+                "phần tử duy nhất và kiểm tra thành viên"
+              ],
+              [
+                "`Array`",
+                "mảng Java kích thước cố định, có thể thay đổi"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "Case class, trait và enum",
+      "body": [
+        "`case class` là kiểu dữ liệu bất biến tự động có so sánh bằng, `toString`, `copy` và hỗ trợ pattern matching. `trait` giống interface nhưng có thể chứa cả mã. Scala 3 bổ sung `enum` cho kiểu dữ liệu đại số.",
+        {
+          "code": "trait Shape:\n  def area: Double\ncase class Circle(r: Double) extends Shape:\n  def area: Double = math.Pi * r * r\ncase class Rect(w: Double, h: Double) extends Shape:\n  def area: Double = w * h\nenum Color:\n  case Red, Green, Blue\n@main def shapes(): Unit =\n  val all: List[Shape] = List(Circle(1), Rect(2, 3))\n  all.foreach(s => println(f\"$s area=${s.area}%.2f\"))\n  // Circle(1.0) area=3.14\n  // Rect(2.0,3.0) area=6.00\n  val r = Rect(2, 3)\n  println(r == Rect(2, 3))            // true\n  println(r.copy(h = 10))             // Rect(2.0,10.0)\n  println(Color.values.toList)        // List(Red, Green, Blue)",
+          "lang": "scala"
+        },
+        "Các tính năng đặc trưng khác gồm `given` và `using` (tham số theo ngữ cảnh, trước đây là implicit), extension method, opaque type và union type như `Int | String`."
+      ]
+    },
+    {
+      "h": "Xử lý lỗi với Option, Either và Try",
+      "body": [
+        "Scala hỗ trợ `try`, `catch` và `finally`, nhưng mã theo phong cách đặc trưng mô hình hóa lỗi bằng kiểu. `Option` là `Some(value)` hoặc `None`; `Either` chứa lỗi `Left` hoặc kết quả `Right`; `Try` bắt ngoại lệ thành `Failure`.",
+        {
+          "code": "import scala.util.{Try, Success, Failure}\ndef parseInt(s: String): Option[Int] = s.toIntOption\ndef safeDivide(a: Int, b: Int): Either[String, Int] =\n  if b == 0 then Left(\"division by zero\") else Right(a / b)\nprintln(parseInt(\"42\"))               // Some(42)\nprintln(parseInt(\"x\"))                // None\nprintln(safeDivide(10, 2))            // Right(5)\nprintln(safeDivide(1, 0))             // Left(division by zero)\nTry(\"abc\".toInt) match\n  case Success(n) => println(s\"got $n\")\n  case Failure(e) => println(s\"failed: ${e.getClass.getSimpleName}\")\n// failed: NumberFormatException",
+          "lang": "scala"
+        },
+        {
+          "note": "Tránh dùng `null` trong mã Scala và tránh gọi `.get` trên `Option`, vì sẽ ném lỗi nếu giá trị là `None`. Hãy dùng `getOrElse`, `map`, `match` hoặc `for` comprehension thay thế."
+        }
+      ]
+    },
+    {
+      "h": "Một chương trình hoàn chỉnh nhỏ: bảng điểm",
+      "body": [
+        "Chương trình này phân tích các dòng `name,score`, bỏ qua dòng không hợp lệ và in điểm trung bình của từng học sinh. Nó dùng case class, `Option`, `groupBy` và định dạng chuỗi.",
+        {
+          "code": "case class Score(name: String, value: Int)\ndef parse(line: String): Option[Score] =\n  line.split(\",\").map(_.trim) match\n    case Array(name, v) => v.toIntOption.map(Score(name, _))\n    case _              => None\n@main def report(): Unit =\n  val lines = List(\"ann, 90\", \"bo, 70\", \"ann, 80\", \"broken line\", \"bo, x\")\n  val scores = lines.flatMap(parse)\n  val averages = scores.groupBy(_.name).view.mapValues { list =>\n    list.map(_.value).sum.toDouble / list.size\n  }.toList.sortBy(_._1)\n  for (name, avg) <- averages do\n    println(f\"$name%-4s $avg%.1f\")\n// ann  85.0\n// bo   70.0",
+          "lang": "scala"
+        },
+        {
+          "note": "Các lỗi thường gặp của người mới: trộn tab và thụt lề không nhất quán trong cú pháp thụt lề của Scala 3; chia số nguyên (`3 / 4` là `0`, hãy viết `3.0 / 4`); theo thói quen dùng `var` và collection có thể thay đổi; gọi `.get` trên `Option`; và viết biểu thức `match` không đầy đủ."
+        }
+      ]
+    },
+    {
+      "h": "Học tiếp ở đâu",
+      "body": [
+        {
+          "ul": [
+            "Scala 3 Book tại docs.scala-lang.org, bao quát ngôn ngữ từ cơ bản đến các trừu tượng theo ngữ cảnh.",
+            "Scala Toolkit cho các tác vụ thường ngày như tệp, JSON và HTTP.",
+            "Tài liệu Apache Spark nếu bạn muốn dùng Scala để xử lý dữ liệu.",
+            "Các khóa học được liên kết từ scala-lang.org, gồm các khóa lập trình hàm của EPFL."
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Nên học Scala 2 hay Scala 3?",
+      "a": "Hãy học Scala 3 cho dự án mới. Scala 2.13 vẫn còn trong nhiều codebase hiện có, kể cả một phần hệ sinh thái Spark, và phần lớn khái niệm cốt lõi là như nhau."
+    },
+    {
+      "q": "Scala có phải ngôn ngữ lập trình hàm không?",
+      "a": "Scala vừa hướng đối tượng vừa hàm. Mọi giá trị đều là đối tượng, nhưng hàm là giá trị hạng nhất, collection mặc định bất biến và pattern matching đóng vai trò trung tâm."
+    },
+    {
+      "q": "val và var trong Scala khác nhau thế nào?",
+      "a": "`val` định nghĩa giá trị không thể gán lại, còn `var` định nghĩa biến có thể gán lại. Scala theo phong cách ưu tiên `val` cùng collection bất biến."
+    },
+    {
+      "q": "Case class là gì?",
+      "a": "Case class là lớp dành cho dữ liệu bất biến. Trình biên dịch tự sinh so sánh bằng theo cấu trúc, `toString` dễ đọc, phương thức `copy` và hỗ trợ pattern matching."
+    },
+    {
+      "q": "Scala còn được dùng không?",
+      "a": "Có. Scala vẫn là ngôn ngữ cốt lõi của Apache Spark, của các nền tảng dữ liệu và xử lý luồng, và của các thư viện backend hàm như ZIO và Cats Effect."
+    }
+  ]
+}

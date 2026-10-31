@@ -1,0 +1,190 @@
+{
+  "title": "Visual Basic 튜토리얼: VB.NET 문법, 타입, 컬렉션, 클래스 — cv.cm",
+  "description": "Visual Basic .NET을 배웁니다. 프로젝트 생성, Dim으로 변수 선언, If, Select Case, 반복문, 함수, List, Dictionary, 클래스, LINQ, Try까지 다룹니다.",
+  "h1": "초보자를 위한 Visual Basic .NET 기초 튜토리얼",
+  "answer": "Visual Basic .NET(VB.NET)은 `Dim`, `If ... Then ... End If`, `For ... Next` 같은 영어에 가까운 키워드를 쓰는 .NET 플랫폼용 객체지향 정적 타입 언어입니다. 대소문자를 구분하지 않으며 C#과 같은 .NET 라이브러리를 사용합니다. `dotnet new console -lang VB`로 프로젝트를 만들고 `dotnet run`으로 실행합니다. Microsoft Office 안의 매크로 언어인 VBA는 문법이 비슷한 이전 세대 친척입니다.",
+  "sections": [
+    {
+      "h": "Visual Basic .NET이란 무엇이며 누가 쓰는가",
+      "body": [
+        "VB.NET은 클래식 Visual Basic(VB6)의 .NET 후속 언어입니다. C#과 같은 중간 언어로 컴파일되므로 두 언어가 라이브러리를 공유하고 한 솔루션에서 함께 쓸 수도 있습니다. 주로 Windows 데스크톱 애플리케이션(Windows Forms, WPF), 사내 업무 도구, ASP.NET 웹 애플리케이션, 기존 VB 코드베이스의 유지보수에 쓰입니다.",
+        "Microsoft는 최신 .NET에서도 Visual Basic을 계속 지원하지만 큰 새 기능으로 언어를 발전시킬 계획은 없다고 밝혔고, 새 .NET 기능은 보통 C#에 먼저 나옵니다. 기존 VB 코드가 없는 새 프로젝트라면 C#이 더 흔한 선택이지만, VB.NET은 프로그래밍을 배우고 업무용 소프트웨어를 만들기에 여전히 읽기 쉬운 언어입니다."
+      ]
+    },
+    {
+      "h": "설치와 Hello, world 실행",
+      "body": [
+        ".NET SDK를 설치합니다(Windows, macOS, Linux). Windows의 Visual Studio에는 Visual Basic 템플릿과 시각적 폼 디자이너도 포함되어 있습니다.",
+        {
+          "code": "dotnet new console -lang VB -o HelloVB\ncd HelloVB\ndotnet run\n# Hello, world!",
+          "lang": "shell"
+        },
+        {
+          "code": "' Program.vb\nImports System\n\nModule Program\n    Sub Main(args As String())\n        Console.WriteLine(\"Hello, world!\")\n    End Sub\nEnd Module",
+          "lang": "vb"
+        },
+        "`Module`은 공유 프로시저를 담고, `Sub Main`은 진입점입니다. 주석은 작은따옴표 `'`로 시작합니다. 문장은 보통 줄 끝에서 끝나며 세미콜론이나 중괄호가 없습니다."
+      ]
+    },
+    {
+      "h": "변수와 기본 타입",
+      "body": [
+        "변수는 `Dim name As Type`으로 선언합니다. `Option Infer On`(기본값)이면 값을 대입할 때 타입을 생략할 수 있습니다. 위험한 암묵적 변환을 컴파일 오류로 만들려면 각 파일 맨 위에 `Option Strict On`을 쓰거나(또는 프로젝트에서 설정) 하세요.",
+        {
+          "table": {
+            "head": [
+              "타입",
+              "예시",
+              "설명"
+            ],
+            "rows": [
+              [
+                "Integer",
+                "`Dim n As Integer = 42`",
+                "32비트. `Long`은 64비트"
+              ],
+              [
+                "Double",
+                "`Dim x As Double = 3.14`",
+                "64비트 부동소수점"
+              ],
+              [
+                "Decimal",
+                "`Dim price As Decimal = 19.99D`",
+                "정확한 십진수로, 금액에 적합"
+              ],
+              [
+                "String",
+                "`Dim s As String = \"hello\"`",
+                "문자열은 `&`로 연결"
+              ],
+              [
+                "Char",
+                "`Dim c As Char = \"a\"c`",
+                "문자 하나, 접미사 `c`"
+              ],
+              [
+                "Boolean",
+                "`Dim ok As Boolean = True`",
+                "`True` / `False`"
+              ],
+              [
+                "Date",
+                "`Dim d As Date = #2026-01-15#`",
+                "날짜와 시간 값"
+              ]
+            ]
+          }
+        },
+        {
+          "code": "Option Strict On\nModule Types\n    Sub Main()\n        Dim name As String = \"Ana\"\n        Dim age = 30                  ' inferred as Integer\n        Console.WriteLine(name & \" is \" & age.ToString())\n        Console.WriteLine($\"Next year {name} is {age + 1}\")\n        Console.WriteLine(7 / 2)      ' 3.5 (always Double)\n        Console.WriteLine(7 \\ 2)      ' 3 (integer division)\n        Console.WriteLine(7 Mod 2)    ' 1\n    End Sub\nEnd Module",
+          "lang": "vb"
+        }
+      ]
+    },
+    {
+      "h": "제어 흐름",
+      "body": [
+        {
+          "code": "Dim score = 85\nIf score >= 90 Then\n    Console.WriteLine(\"A\")\nElseIf score >= 80 Then\n    Console.WriteLine(\"B\")\nElse\n    Console.WriteLine(\"C\")\nEnd If\n\nSelect Case score\n    Case 90 To 100\n        Console.WriteLine(\"excellent\")\n    Case 80 To 89\n        Console.WriteLine(\"good\")\n    Case Else\n        Console.WriteLine(\"keep going\")\nEnd Select\n\nFor i = 1 To 3\n    Console.WriteLine($\"{i} squared is {i * i}\")\nNext\n\nDim n = 3\nDo While n > 0\n    n -= 1\nLoop",
+          "lang": "vb"
+        },
+        "이 문장들은 `Sub` 안에 들어갑니다. `For i = 1 To 3`은 양 끝을 포함하며 거꾸로 세려면 `Step -1`을 추가합니다. `For Each item In collection`은 모든 컬렉션을 순회합니다. 반복문을 일찍 벗어나려면 `Exit For`나 `Exit Do`를 씁니다. 조건에는 `AndAlso`와 `OrElse`를 권장합니다. 결과가 정해지면 바로 평가를 멈추는 반면 `And`와 `Or`는 항상 양쪽을 모두 평가합니다."
+      ]
+    },
+    {
+      "h": "Sub, 함수, 람다",
+      "body": [
+        "`Sub`는 값을 반환하지 않고 `Function`은 반환합니다. 매개변수는 기본적으로 `ByVal`(복사본)로 전달되며, `ByRef`를 쓰면 프로시저가 호출자의 변수를 바꿀 수 있습니다. 매개변수는 기본값이 있는 `Optional`로 만들 수 있습니다.",
+        {
+          "code": "Function Add(a As Integer, b As Integer) As Integer\n    Return a + b\nEnd Function\n\nSub Greet(Optional name As String = \"world\")\n    Console.WriteLine($\"Hello, {name}!\")\nEnd Sub\n\nSub Increment(ByRef value As Integer)\n    value += 1\nEnd Sub\n\n' Inside Sub Main:\nDim x = 5\nIncrement(x)                                  ' x is now 6\nGreet()                                       ' Hello, world!\nDim square = Function(n As Integer) n * n     ' lambda\nConsole.WriteLine(square(Add(1, 2)))          ' 9",
+          "lang": "vb"
+        }
+      ]
+    },
+    {
+      "h": "배열, List, Dictionary",
+      "body": [
+        {
+          "code": "Dim nums() As Integer = {3, 1, 2}\nDim five(4) As Integer            ' 5 elements, indexes 0 to 4\nArray.Sort(nums)\nConsole.WriteLine(String.Join(\", \", nums))   ' 1, 2, 3\n\nDim names As New List(Of String) From {\"Ana\", \"Ben\"}\nnames.Add(\"Cleo\")\nConsole.WriteLine(names.Count)               ' 3\n\nDim ages As New Dictionary(Of String, Integer)\nages(\"Ana\") = 30\nages(\"Ben\") = 17\nFor Each pair In ages\n    Console.WriteLine($\"{pair.Key}: {pair.Value}\")\nNext",
+          "lang": "vb"
+        },
+        "배열과 리스트는 0부터 시작하며 괄호로 인덱싱합니다: `nums(0)`. 제네릭 타입은 `Of`를 씁니다. `List(Of String)`은 C#의 `List<string>`에 해당하는 VB 표기입니다. `Dim five(4)`는 길이가 아니라 상한을 선언하므로 요소가 다섯 개인 배열이 됩니다."
+      ]
+    },
+    {
+      "h": "대표 기능: 클래스, 속성, LINQ 쿼리",
+      "body": [
+        "VB.NET은 완전한 객체지향 언어입니다. 클래스는 속성, 메서드, 생성자(`Sub New`), 상속(`Inherits`), 인터페이스(`Implements`), 이벤트(`Event`, `RaiseEvent`, `Handles`)를 가집니다. LINQ 쿼리는 읽기 쉬운 쿼리 문법으로 쓸 수 있습니다.",
+        {
+          "code": "Public Class Person\n    Public Property Name As String\n    Public Property Age As Integer\n\n    Public Sub New(name As String, age As Integer)\n        Me.Name = name\n        Me.Age = age\n    End Sub\nEnd Class\n\n' Inside Sub Main:\nDim people As New List(Of Person) From {\n    New Person(\"Ana\", 30),\n    New Person(\"Ben\", 17)\n}\nDim adults = From p In people\n             Where p.Age >= 18\n             Select p.Name\nFor Each adultName In adults\n    Console.WriteLine(adultName)   ' Ana\nNext",
+          "lang": "vb"
+        },
+        "VB는 대소문자를 구분하지 않으므로 `Name`과 `name`은 같은 식별자입니다. 생성자 안에서 `Me.Name`은 속성을, `name`은 매개변수를 가리킵니다. 그 밖에 VB 고유의 편의 기능으로 `With ... End With` 블록, XML 리터럴, 일반적인 작업을 위한 `My` 네임스페이스가 있습니다."
+      ]
+    },
+    {
+      "h": "오류 처리",
+      "body": [
+        "VB.NET은 구조적 예외 처리를 사용합니다: `Try`, `Catch`, `Finally`, `Throw`. `Catch`에는 `When` 필터를 넣을 수 있습니다. VB6와 VBA의 예전 방식인 `On Error GoTo`는 여전히 컴파일되지만 새 .NET 코드에서는 쓰지 말아야 합니다.",
+        {
+          "code": "Function ParseAge(s As String) As Integer\n    Dim n As Integer\n    If Not Integer.TryParse(s, n) Then\n        Throw New FormatException($\"Not a number: {s}\")\n    End If\n    If n < 0 Then Throw New ArgumentOutOfRangeException(NameOf(s))\n    Return n\nEnd Function\n\n' Inside Sub Main:\nTry\n    Console.WriteLine(ParseAge(\"abc\"))\nCatch ex As FormatException\n    Console.WriteLine(\"Error: \" & ex.Message)   ' Error: Not a number: abc\nFinally\n    Console.WriteLine(\"done\")\nEnd Try",
+          "lang": "vb"
+        }
+      ]
+    },
+    {
+      "h": "작은 완성 프로그램: 단어 빈도",
+      "body": [
+        {
+          "code": "Imports System\nImports System.Collections.Generic\nImports System.Linq\n\nModule WordCount\n    Sub Main()\n        Dim text = \"the cat and the hat and the bat\"\n        Dim counts As New Dictionary(Of String, Integer)\n\n        For Each word In text.Split(\" \"c)\n            If counts.ContainsKey(word) Then\n                counts(word) += 1\n            Else\n                counts(word) = 1\n            End If\n        Next\n\n        Dim top = counts.OrderByDescending(Function(kv) kv.Value).Take(2)\n        For Each kv In top\n            Console.WriteLine($\"{kv.Key} {kv.Value}\")\n        Next\n    End Sub\nEnd Module\n' the 3\n' and 2",
+          "lang": "vb"
+        },
+        {
+          "note": "초보자가 자주 하는 실수: `Dim a(4)`가 요소 네 개를 만든다고 생각하는 것(다섯 개를 만듭니다), 단락 평가하는 `AndAlso`/`OrElse`가 필요한 곳에 `And`/`Or`를 쓰는 것(예를 들어 `If x IsNot Nothing And x.Length > 0`은 `x`가 `Nothing`이면 실패합니다), `/`가 정수 나눗셈을 한다고 기대하는 것(`\\`를 사용하세요), 타입 오류를 실행 시점까지 숨기는 `Option Strict Off`를 그대로 두는 것, VB.NET과 코드와 라이브러리가 다른 VBA를 혼동하는 것입니다."
+        }
+      ]
+    },
+    {
+      "h": "VBA: Microsoft Office 안의 Visual Basic",
+      "body": [
+        "Visual Basic for Applications(VBA)는 Excel, Word, Access 같은 Microsoft Office 애플리케이션에 내장된 매크로 언어입니다. .NET이 아니라 클래식 Visual Basic을 기반으로 하며, Office 애플리케이션 안에서 실행되고, Office 객체 모델(통합 문서, 범위, 문서)을 사용하고, VBA 편집기(Windows에서 Alt+F11)에서 편집합니다. `Dim`, `If`, `For`, `Sub`의 기본 문법은 같아서 VB.NET 지식이 VBA에도 도움이 됩니다.",
+        {
+          "code": "' VBA in Excel: write the squares of 1 to 5 into column A\nSub FillSquares()\n    Dim i As Long\n    For i = 1 To 5\n        Cells(i, 1).Value = i * i\n    Next i\n    MsgBox \"Done\"\nEnd Sub",
+          "lang": "vb"
+        }
+      ]
+    },
+    {
+      "h": "다음 단계",
+      "body": [
+        {
+          "ul": [
+            "Microsoft Learn의 Visual Basic 문서. 시작 가이드와 언어 레퍼런스가 있습니다.",
+            ".NET 기본 클래스 라이브러리(컬렉션, 파일, LINQ)를 익히세요. C#과 공유됩니다.",
+            "데스크톱 앱을 만들려면 Visual Studio의 Windows Forms나 WPF 템플릿을 사용해 보세요.",
+            "Office 자동화에는 사용하는 애플리케이션에 맞는 Microsoft Learn의 VBA 레퍼런스를 읽어 보세요."
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Visual Basic .NET은 끝난 언어인가요?",
+      "a": "아니요. 현재 .NET 버전과 Visual Studio에서 지원되지만 Microsoft가 큰 새 언어 기능을 추가할 계획은 없으므로, 대부분의 새 .NET 프로젝트는 C#을 선택합니다."
+    },
+    {
+      "q": "VB.NET과 VBA의 차이는 무엇인가요?",
+      "a": "VB.NET은 독립 실행형 애플리케이션을 만드는 완전한 .NET 언어입니다. VBA는 Excel 같은 Office 애플리케이션 안에서 실행되는, 클래식 Visual Basic 기반의 매크로 언어입니다. 문법은 비슷하지만 런타임과 라이브러리가 다릅니다."
+    },
+    {
+      "q": "VB.NET과 C# 중 무엇을 배워야 하나요?",
+      "a": "VB 코드를 유지보수하거나 매우 읽기 쉬운 문법을 원한다면 VB.NET도 괜찮습니다. 새 프로젝트, 취업 기회, 최신 .NET 기능을 생각하면 보통 C#이 더 나은 투자이며, 배운 라이브러리는 두 언어 사이에서 그대로 통합니다."
+    },
+    {
+      "q": "Visual Basic은 대소문자를 구분하나요?",
+      "a": "아니요. `Dim Total`, `total`, `TOTAL`은 모두 같은 변수를 가리키며, 편집기가 보통 대소문자를 자동으로 맞춰 줍니다."
+    }
+  ]
+}

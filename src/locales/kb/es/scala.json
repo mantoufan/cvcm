@@ -1,0 +1,216 @@
+{
+  "title": "Tutorial de Scala: pattern matching, colecciones, case classes y Option — cv.cm",
+  "description": "Aprende Scala 3 paso a paso: Hello, world, val y var, expresiones if y for, pattern matching, funciones, colecciones inmutables, case classes y Option.",
+  "h1": "Tutorial de Scala para principiantes",
+  "answer": "Scala es un lenguaje de la JVM con tipado estático que combina programación orientada a objetos y funcional, muy usado en ingeniería de datos con Apache Spark y en backends concurrentes. Sus rasgos clave son la inferencia de tipos, las colecciones inmutables, las case classes y el pattern matching. Esta página usa Scala 3 para cubrir la instalación, los valores, el control de flujo, las funciones, las colecciones, los traits, los enums y el manejo de errores con Option, Either y Try.",
+  "sections": [
+    {
+      "h": "Qué es Scala y para qué se usa",
+      "body": [
+        "Scala es un lenguaje de tipado estático que combina programación orientada a objetos y funcional. Lo creó Martin Odersky en la EPFL y se ejecuta sobre todo en la máquina virtual de Java (JVM), con Scala.js para el navegador y Scala Native para binarios nativos. El código Scala puede usar cualquier biblioteca de Java.",
+        "Scala se usa mucho en ingeniería de datos (Apache Spark está escrito en Scala), en backends concurrentes y distribuidos (Akka, Pekko, ZIO, Cats Effect) y en sistemas financieros y de streaming. Este tutorial usa la sintaxis de Scala 3, que permite bloques basados en sangría; las llaves siguen funcionando."
+      ]
+    },
+    {
+      "h": "Instalar Scala y ejecutar Hello, world",
+      "body": [
+        "El instalador recomendado es Coursier (`cs setup`), que instala el comando `scala` y un JDK. En Scala 3, un método anotado con `@main` es el punto de entrada del programa.",
+        {
+          "code": "// hello.scala\n@main def hello(): Unit =\n  println(\"Hello, world!\")",
+          "lang": "scala"
+        },
+        {
+          "code": "scala run hello.scala\n# Hello, world!",
+          "lang": "shell"
+        },
+        "Para proyectos más grandes, sbt y Mill son las herramientas de compilación habituales. Scastie (scastie.scala-lang.org) ejecuta Scala en el navegador sin instalar nada."
+      ]
+    },
+    {
+      "h": "Valores, variables y tipos básicos",
+      "body": [
+        "Usa `val` para un valor inmutable y `var` para una variable mutable. Los tipos se infieren, pero se pueden escribir después de dos puntos. El Scala idiomático usa `val` casi siempre.",
+        {
+          "code": "val name = \"Scala\"            // String\nvar count: Int = 1            // mutable\ncount += 1\nval ratio = 3.0 / 4           // Double: 0.75\nval big = 12345678901L        // Long\nval ok = count > 1            // Boolean\nprintln(s\"$name: count=$count ratio=$ratio ok=$ok\")\n// Scala: count=2 ratio=0.75 ok=true\nprintln(f\"pi is ${math.Pi}%.3f\")   // pi is 3.142",
+          "lang": "scala"
+        },
+        {
+          "table": {
+            "head": [
+              "Tipo",
+              "Ejemplo",
+              "Notas"
+            ],
+            "rows": [
+              [
+                "`Int`",
+                "`42`",
+                "entero de 32 bits con signo"
+              ],
+              [
+                "`Long`",
+                "`42L`",
+                "entero de 64 bits con signo"
+              ],
+              [
+                "`Double`",
+                "`3.14`",
+                "punto flotante de 64 bits"
+              ],
+              [
+                "`Boolean`",
+                "`true`",
+                "`true` o `false`"
+              ],
+              [
+                "`String`",
+                "`\"hi\"`",
+                "cadena de Java; interpoladores `s\"...\"` y `f\"...\"`"
+              ],
+              [
+                "`Unit`",
+                "`()`",
+                "como `void`: sin valor significativo"
+              ]
+            ]
+          }
+        },
+        "En Scala todo es una expresión: `if`, los bloques y `match` devuelven un valor, así que rara vez necesitas `var`s temporales."
+      ]
+    },
+    {
+      "h": "Control de flujo y pattern matching",
+      "body": [
+        "`if` devuelve un valor. `for` recorre rangos y colecciones, y con `yield` construye una colección nueva. `match` es el potente pattern matching de Scala, una de las señas de identidad del lenguaje.",
+        {
+          "code": "val n = 7\nval parity = if n % 2 == 0 then \"even\" else \"odd\"\nprintln(parity)                        // odd\nfor i <- 1 to 3 do print(s\"$i \")       // 1 2 3\nprintln()\nval squares = for i <- 1 to 4 yield i * i\nprintln(squares)                       // Vector(1, 4, 9, 16)\ndef describe(x: Any): String = x match\n  case 0             => \"zero\"\n  case i: Int if i < 0 => \"negative int\"\n  case i: Int        => s\"int $i\"\n  case s: String     => s\"string of length ${s.length}\"\n  case (a, b)        => s\"pair $a and $b\"\n  case _             => \"something else\"\nprintln(describe(-5))                  // negative int\nprintln(describe(\"hey\"))               // string of length 3\nprintln(describe((1, \"x\")))            // pair 1 and x",
+          "lang": "scala"
+        },
+        "`1 to 3` incluye el 3; `1 until 3` se detiene antes del 3. El último `case _` es un comodín que coincide con cualquier cosa; sin él, un valor sin coincidencia lanza un `MatchError`."
+      ]
+    },
+    {
+      "h": "Funciones y funciones de orden superior",
+      "body": [
+        "Los métodos se definen con `def`. Las funciones son valores: puedes guardarlas, pasarlas como argumentos y devolverlas. Los parámetros pueden tener valores por defecto, y quien llama puede usar argumentos con nombre.",
+        {
+          "code": "def add(a: Int, b: Int): Int = a + b\ndef greet(name: String, greeting: String = \"Hello\"): String =\n  s\"$greeting, $name!\"\nval double = (x: Int) => x * 2        // function value\ndef applyTwice(f: Int => Int, x: Int): Int = f(f(x))\nprintln(add(2, 3))                    // 5\nprintln(greet(\"Ann\"))                 // Hello, Ann!\nprintln(greet(\"Ann\", greeting = \"Hi\")) // Hi, Ann!\nprintln(applyTwice(double, 5))        // 20\nprintln(List(1, 2, 3, 4).filter(_ % 2 == 0).map(_ * 10)) // List(20, 40)",
+          "lang": "scala"
+        },
+        "El guion bajo en `_ * 10` es una abreviatura de una lambda de un parámetro, `x => x * 10`."
+      ]
+    },
+    {
+      "h": "Colecciones",
+      "body": [
+        "Las colecciones estándar son inmutables por defecto: operaciones como `map`, `filter` y `:+` devuelven una colección nueva y dejan intacta la original. Las versiones mutables están en `scala.collection.mutable`.",
+        {
+          "code": "val nums = List(5, 3, 8)\nval more = nums :+ 1                  // List(5, 3, 8, 1); nums unchanged\nprintln(more.sorted)                  // List(1, 3, 5, 8)\nprintln(nums.sum)                     // 16\nval v = Vector(\"a\", \"b\", \"c\")         // fast indexed access\nprintln(v(1))                         // b\nval ages = Map(\"Ann\" -> 31, \"Bo\" -> 25)\nprintln(ages(\"Ann\"))                  // 31\nprintln(ages.get(\"Zed\"))              // None\nprintln(ages.getOrElse(\"Zed\", 0))     // 0\nval unique = Set(1, 2, 2, 3)\nprintln(unique.size)                  // 3\nval words = List(\"apple\", \"avocado\", \"banana\")\nprintln(words.groupBy(_.head)('a'))  // List(apple, avocado)",
+          "lang": "scala"
+        },
+        {
+          "table": {
+            "head": [
+              "Colección",
+              "Para qué sirve"
+            ],
+            "rows": [
+              [
+                "`List`",
+                "lista enlazada inmutable; inserción rápida al principio y acceso rápido a head/tail"
+              ],
+              [
+                "`Vector`",
+                "secuencia indexada inmutable; buena opción general por defecto"
+              ],
+              [
+                "`Map`",
+                "búsqueda por clave y valor"
+              ],
+              [
+                "`Set`",
+                "elementos únicos y pruebas de pertenencia"
+              ],
+              [
+                "`Array`",
+                "arreglo de Java mutable y de tamaño fijo"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "Case classes, traits y enums",
+      "body": [
+        "Una `case class` es un tipo de datos inmutable que obtiene automáticamente igualdad, `toString`, `copy` y soporte para pattern matching. Un `trait` es como una interfaz que además puede contener código. Scala 3 añade `enum` para tipos de datos algebraicos.",
+        {
+          "code": "trait Shape:\n  def area: Double\ncase class Circle(r: Double) extends Shape:\n  def area: Double = math.Pi * r * r\ncase class Rect(w: Double, h: Double) extends Shape:\n  def area: Double = w * h\nenum Color:\n  case Red, Green, Blue\n@main def shapes(): Unit =\n  val all: List[Shape] = List(Circle(1), Rect(2, 3))\n  all.foreach(s => println(f\"$s area=${s.area}%.2f\"))\n  // Circle(1.0) area=3.14\n  // Rect(2.0,3.0) area=6.00\n  val r = Rect(2, 3)\n  println(r == Rect(2, 3))            // true\n  println(r.copy(h = 10))             // Rect(2.0,10.0)\n  println(Color.values.toList)        // List(Red, Green, Blue)",
+          "lang": "scala"
+        },
+        "Otras características distintivas son `given` y `using` (parámetros contextuales, antes implícitos), los métodos de extensión, los tipos opacos y los tipos unión como `Int | String`."
+      ]
+    },
+    {
+      "h": "Manejo de errores con Option, Either y Try",
+      "body": [
+        "Scala admite `try`, `catch` y `finally`, pero el código idiomático modela el fallo con tipos. `Option` es `Some(value)` o `None`; `Either` contiene un error `Left` o un resultado `Right`; `Try` captura una excepción como `Failure`.",
+        {
+          "code": "import scala.util.{Try, Success, Failure}\ndef parseInt(s: String): Option[Int] = s.toIntOption\ndef safeDivide(a: Int, b: Int): Either[String, Int] =\n  if b == 0 then Left(\"division by zero\") else Right(a / b)\nprintln(parseInt(\"42\"))               // Some(42)\nprintln(parseInt(\"x\"))                // None\nprintln(safeDivide(10, 2))            // Right(5)\nprintln(safeDivide(1, 0))             // Left(division by zero)\nTry(\"abc\".toInt) match\n  case Success(n) => println(s\"got $n\")\n  case Failure(e) => println(s\"failed: ${e.getClass.getSimpleName}\")\n// failed: NumberFormatException",
+          "lang": "scala"
+        },
+        {
+          "note": "Evita `null` en el código Scala y evita llamar a `.get` sobre un `Option`, que lanza una excepción si es `None`. Usa en su lugar `getOrElse`, `map`, `match` o una comprensión `for`."
+        }
+      ]
+    },
+    {
+      "h": "Un programa completo y pequeño: informe de notas",
+      "body": [
+        "Este programa analiza líneas con el formato `name,score`, omite las líneas no válidas e imprime el promedio de cada estudiante. Usa case classes, `Option`, `groupBy` y formato de cadenas.",
+        {
+          "code": "case class Score(name: String, value: Int)\ndef parse(line: String): Option[Score] =\n  line.split(\",\").map(_.trim) match\n    case Array(name, v) => v.toIntOption.map(Score(name, _))\n    case _              => None\n@main def report(): Unit =\n  val lines = List(\"ann, 90\", \"bo, 70\", \"ann, 80\", \"broken line\", \"bo, x\")\n  val scores = lines.flatMap(parse)\n  val averages = scores.groupBy(_.name).view.mapValues { list =>\n    list.map(_.value).sum.toDouble / list.size\n  }.toList.sortBy(_._1)\n  for (name, avg) <- averages do\n    println(f\"$name%-4s $avg%.1f\")\n// ann  85.0\n// bo   70.0",
+          "lang": "scala"
+        },
+        {
+          "note": "Errores habituales de los principiantes: mezclar tabuladores y sangrías inconsistentes en la sintaxis con sangría de Scala 3; la división entera (`3 / 4` es `0`, escribe `3.0 / 4`); usar `var` y colecciones mutables por costumbre; llamar a `.get` sobre un `Option`; y escribir expresiones `match` no exhaustivas."
+        }
+      ]
+    },
+    {
+      "h": "Siguientes pasos",
+      "body": [
+        {
+          "ul": [
+            "El Scala 3 Book en docs.scala-lang.org, que cubre el lenguaje desde lo básico hasta las abstracciones contextuales.",
+            "El Scala Toolkit para tareas cotidianas como archivos, JSON y HTTP.",
+            "La documentación de Apache Spark si quieres usar Scala para procesar datos.",
+            "Los cursos enlazados desde scala-lang.org, incluidos los cursos de programación funcional de la EPFL."
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "¿Debo aprender Scala 2 o Scala 3?",
+      "a": "Aprende Scala 3 para proyectos nuevos. Scala 2.13 todavía se encuentra en muchos códigos existentes, incluidas partes del ecosistema de Spark, y la mayoría de los conceptos fundamentales son los mismos."
+    },
+    {
+      "q": "¿Es Scala un lenguaje funcional?",
+      "a": "Scala es a la vez orientado a objetos y funcional. Todo valor es un objeto, pero las funciones son valores de primera clase, las colecciones son inmutables por defecto y el pattern matching es central."
+    },
+    {
+      "q": "¿Cuál es la diferencia entre val y var en Scala?",
+      "a": "`val` define un valor que no se puede reasignar y `var` define una variable que sí. El Scala idiomático prefiere `val` junto con colecciones inmutables."
+    },
+    {
+      "q": "¿Qué es una case class?",
+      "a": "Una case class es una clase pensada para datos inmutables. El compilador genera igualdad estructural, un `toString` legible, un método `copy` y soporte para pattern matching."
+    },
+    {
+      "q": "¿Se sigue usando Scala?",
+      "a": "Sí. Sigue siendo un lenguaje central para Apache Spark, para plataformas de streaming y datos, y para bibliotecas de backend funcional como ZIO y Cats Effect."
+    }
+  ]
+}

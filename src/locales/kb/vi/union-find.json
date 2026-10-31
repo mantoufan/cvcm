@@ -1,0 +1,186 @@
+{
+  "title": "Union-find (tập hợp rời nhau - DSU): nén đường đi, hợp theo hạng, Python — cv.cm",
+  "description": "Giải thích union-find (disjoint set union, DSU): find và union, nén đường đi và hợp theo hạng hoặc kích thước, code Python, ví dụ lần theo từng bước và độ phức tạp.",
+  "h1": "Union-find (tập hợp rời nhau - DSU): cách hoạt động, code và độ phức tạp",
+  "answer": "Union-find, còn gọi là tập hợp rời nhau (disjoint set union, DSU), theo dõi các phần tử được chia thành những nhóm không giao nhau. Nó hỗ trợ hai thao tác: `find(x)` trả về đại diện của nhóm chứa x, và `union(x, y)` gộp nhóm của x và y. Mỗi nhóm được lưu dưới dạng cây các con trỏ cha. Với nén đường đi (path compression) và hợp theo hạng hoặc kích thước, bất kỳ chuỗi thao tác nào cũng chạy trong thời gian khấu hao gần như hằng số cho mỗi thao tác.",
+  "sections": [
+    {
+      "h": "Union-find giải quyết vấn đề gì",
+      "body": [
+        "Hãy tưởng tượng một mạng máy tính nơi các sợi cáp được thêm từng cái một, và sau mỗi sợi bạn phải trả lời \"máy A và máy B có được kết nối không?\". Chạy tìm kiếm đồ thị cho mỗi câu hỏi tốn O(n + m) mỗi lần. Union-find trả lời mỗi câu hỏi trong gần O(1) bằng cách duy trì các nhóm liên thông khi cáp được thêm vào.",
+        "Nhu cầu tương tự xuất hiện trong thuật toán cây khung nhỏ nhất Kruskal (hai đầu mút này đã thuộc cùng một cây chưa?), trong phát hiện chu trình ở đồ thị vô hướng, trong gom các tài khoản dùng chung một email, trong mô phỏng thấm (percolation), và trong xử lý ảnh để gán nhãn các vùng liên thông."
+      ]
+    },
+    {
+      "h": "Ý tưởng giải thích đơn giản",
+      "body": [
+        "Mỗi phần tử trỏ tới một cha. Phần tử trỏ vào chính nó là gốc, và gốc là đại diện của cả nhóm. Để tìm nhóm của x, đi theo các con trỏ cha cho tới khi gặp gốc. Để gộp hai nhóm, tìm cả hai gốc và cho một gốc trỏ tới gốc kia.",
+        "Hai tối ưu hóa giữ cho các cây luôn phẳng:",
+        {
+          "ul": [
+            "Hợp theo hạng (hoặc theo kích thước): gắn cây thấp hơn (hoặc nhỏ hơn) dưới cây cao hơn (hoặc lớn hơn), nên chiều cao cây chỉ tăng khi hai cây bằng nhau được gộp.",
+            "Nén đường đi: trong `find`, cho mọi node trên đường đi trỏ thẳng tới gốc, nên lần tra sau chỉ mất một bước."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Ví dụ minh họa: năm phần tử",
+      "body": [
+        "Bắt đầu với các phần tử 0 đến 4, mỗi phần tử một nhóm. Mảng cha là `[0, 1, 2, 3, 4]`. Ta dùng hợp theo kích thước và cho gốc thứ hai làm con khi kích thước bằng nhau.",
+        {
+          "table": {
+            "head": [
+              "Thao tác",
+              "Gốc tìm được",
+              "Mảng cha sau đó",
+              "Các nhóm"
+            ],
+            "rows": [
+              [
+                "bắt đầu",
+                "-",
+                "[0, 1, 2, 3, 4]",
+                "{0} {1} {2} {3} {4}"
+              ],
+              [
+                "union(0, 1)",
+                "0 và 1, kích thước bằng nhau",
+                "[0, 0, 2, 3, 4]",
+                "{0, 1} {2} {3} {4}"
+              ],
+              [
+                "union(2, 3)",
+                "2 và 3, kích thước bằng nhau",
+                "[0, 0, 2, 2, 4]",
+                "{0, 1} {2, 3} {4}"
+              ],
+              [
+                "union(1, 3)",
+                "0 và 2, kích thước bằng nhau",
+                "[0, 0, 0, 2, 4]",
+                "{0, 1, 2, 3} {4}"
+              ],
+              [
+                "find(3)",
+                "3 tới 2 tới 0, gốc 0",
+                "[0, 0, 0, 0, 4]",
+                "đã nén đường đi: 3 giờ trỏ tới 0"
+              ],
+              [
+                "connected(1, 4)",
+                "gốc 0 và 4",
+                "không đổi",
+                "False, khác nhóm"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "Cài đặt bằng Python",
+      "body": [
+        "Phiên bản này dùng hợp theo kích thước và `find` dạng lặp với nén đường đi, nên không gặp vấn đề độ sâu đệ quy. `union` trả về False khi hai phần tử đã ở cùng một nhóm, điều này hữu ích để phát hiện chu trình.",
+        {
+          "code": "class UnionFind:\n    def __init__(self, n):\n        self.parent = list(range(n))\n        self.size = [1] * n\n        self.groups = n\n\n    def find(self, x):\n        root = x\n        while self.parent[root] != root:\n            root = self.parent[root]\n        while self.parent[x] != root:       # path compression\n            self.parent[x], x = root, self.parent[x]\n        return root\n\n    def union(self, a, b):\n        ra, rb = self.find(a), self.find(b)\n        if ra == rb:\n            return False                    # already connected\n        if self.size[ra] < self.size[rb]:\n            ra, rb = rb, ra                 # ra is the larger root\n        self.parent[rb] = ra\n        self.size[ra] += self.size[rb]\n        self.groups -= 1\n        return True\n\n    def connected(self, a, b):\n        return self.find(a) == self.find(b)\n\nuf = UnionFind(5)\nuf.union(0, 1)\nuf.union(2, 3)\nuf.union(1, 3)\nprint(uf.find(3), uf.parent)       # 0 [0, 0, 0, 0, 4]\nprint(uf.connected(1, 4), uf.groups)  # False 2",
+          "lang": "python"
+        },
+        {
+          "note": "Trong vòng lặp nén đường đi, `self.parent[x], x = root, self.parent[x]` hoạt động được vì Python tính toàn bộ vế phải trước. Tách thành hai dòng sai thứ tự sẽ làm mất node kế tiếp trên đường đi."
+        }
+      ]
+    },
+    {
+      "h": "Ví dụ: phát hiện chu trình trong đồ thị vô hướng",
+      "body": [
+        "Xử lý từng cạnh một. Nếu cả hai đầu mút của một cạnh đã có cùng gốc, cạnh đó đóng thành một chu trình. Thuật toán Kruskal dùng đúng phép kiểm tra này sau khi sắp xếp các cạnh theo trọng số.",
+        {
+          "code": "def has_cycle(n, edges):\n    uf = UnionFind(n)\n    for a, b in edges:\n        if not uf.union(a, b):\n            return True\n    return False\n\nprint(has_cycle(4, [(0, 1), (1, 2), (2, 3)]))  # False\nprint(has_cycle(4, [(0, 1), (1, 2), (2, 0)]))  # True",
+          "lang": "python"
+        }
+      ]
+    },
+    {
+      "h": "Độ phức tạp thời gian và không gian",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Phiên bản",
+              "find / union (xấu nhất cho mỗi thao tác)",
+              "m thao tác trên n phần tử"
+            ],
+            "rows": [
+              [
+                "Không tối ưu",
+                "O(n)",
+                "O(m n), cây có thể thành chuỗi"
+              ],
+              [
+                "Chỉ hợp theo hạng hoặc kích thước",
+                "O(log n)",
+                "O(m log n)"
+              ],
+              [
+                "Chỉ nén đường đi",
+                "O(log n) khấu hao",
+                "O(m log n) khấu hao"
+              ],
+              [
+                "Cả hai tối ưu",
+                "O(α(n)) khấu hao",
+                "O(m α(n))"
+              ]
+            ]
+          }
+        },
+        "α(n) là hàm Ackermann nghịch đảo, tăng chậm đến mức không quá 4 với mọi n có thể đặt vừa trong một máy tính thực. Trên thực tế điều này nghĩa là thời gian hằng số cho mỗi thao tác. Robert Tarjan đã chứng minh chặn này vào năm 1975. Không gian là O(n) cho các mảng cha và kích thước."
+      ]
+    },
+    {
+      "h": "Các biến thể và lỗi thường gặp",
+      "body": [
+        {
+          "ul": [
+            "So sánh phần tử thay vì gốc: `union` phải nối `find(a)` và `find(b)`, không phải chính `a` và `b`.",
+            "Cho rằng `parent[x]` là đại diện. Sau các lần union, chỉ `find(x)` mới đúng; hãy gọi `find` trên mọi phần tử trước khi nhóm theo cha.",
+            "`find` đệ quy trên đầu vào lớn mà không hợp theo hạng có thể chạm giới hạn đệ quy của Python; phiên bản lặp ở trên tránh được điều này.",
+            "Phần tử không phải số nguyên từ 0 đến n-1: hãy ánh xạ chúng sang chỉ số bằng `dict` trước, hoặc lưu cha trong một `dict` và thêm phần tử theo kiểu lười (lazy).",
+            "Union-find không thể tách nhóm. Nếu các cạnh bị xóa, bạn cần một cấu trúc khác hoặc cách tiếp cận ngoại tuyến xử lý các thao tác xóa theo thứ tự ngược.",
+            "Union-find có trọng số lưu một độ lệch tới cha trên mỗi node, trả lời được các câu như \"a nặng hơn b bao nhiêu?\"."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Khi nào dùng và các bài toán điển hình",
+      "body": [
+        "Dùng union-find khi các nhóm chỉ ngày càng gộp lại và bạn cần hỏi hai phần tử có cùng nhóm không, hoặc có bao nhiêu nhóm. Với một câu hỏi liên thông đơn lẻ trên đồ thị tĩnh, BFS hoặc DFS thông thường đơn giản hơn. Khi cần đường đi thực sự, hãy dùng tìm kiếm đồ thị, vì union-find chỉ biết tư cách thành viên.",
+        "Các bài toán điển hình: số thành phần liên thông, số hòn đảo (với ô lưới là phần tử), cạnh dư thừa (cạnh tạo ra chu trình), gộp tài khoản, tính thỏa mãn của các phương trình đẳng thức như `a == b, b != c`, và cây khung nhỏ nhất Kruskal."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Union-find và DSU khác nhau thế nào?",
+      "a": "Đó là hai tên của cùng một cấu trúc dữ liệu. Disjoint set union (DSU) và disjoint-set forest cũng là các tên phổ biến."
+    },
+    {
+      "q": "Tại sao union-find gần như O(1)?",
+      "a": "Với hợp theo hạng và nén đường đi, chi phí khấu hao cho mỗi thao tác là O(α(n)), với α là hàm Ackermann nghịch đảo. Nó không vượt quá 4 với mọi kích thước đầu vào thực tế."
+    },
+    {
+      "q": "Có cần dùng cả hợp theo hạng và nén đường đi không?",
+      "a": "Chỉ một trong hai đã cho hành vi O(log n) khấu hao, thường là đủ nhanh. Dùng cả hai cho chặn gần hằng số và chỉ tốn thêm vài dòng."
+    },
+    {
+      "q": "Union-find có cho biết các thành viên của một nhóm không?",
+      "a": "Không trực tiếp. Bạn có thể gọi `find` trên mọi phần tử và nhóm theo gốc trong O(n α(n)), hoặc duy trì danh sách thành viên cho mỗi gốc và gộp các danh sách khi union."
+    },
+    {
+      "q": "Hợp theo hạng hay hợp theo kích thước?",
+      "a": "Cả hai cho cùng chặn tiệm cận. Hợp theo kích thước thường được ưa chuộng vì kích thước mỗi nhóm tự nó là thông tin hữu ích."
+    }
+  ]
+}

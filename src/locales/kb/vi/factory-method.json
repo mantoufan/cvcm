@@ -1,0 +1,168 @@
+{
+  "title": "Mẫu Factory Method: mục đích, cấu trúc và ví dụ TypeScript — cv.cm",
+  "description": "Giải thích mẫu thiết kế Factory Method: lớp con chọn đối tượng sẽ tạo. Ví dụ TypeScript, khi nào dùng, so với mẫu Abstract Factory.",
+  "h1": "Mẫu Factory Method giải thích kèm ví dụ",
+  "answer": "Factory Method là mẫu thiết kế khởi tạo định nghĩa một phương thức để tạo đối tượng nhưng để các lớp con quyết định lớp cụ thể nào sẽ được khởi tạo. Lớp cơ sở viết logic của mình dựa trên một interface sản phẩm và gọi phương thức factory, như `createTransport()`, thay vì `new`. Nhờ đó bạn thêm được kiểu sản phẩm mới chỉ bằng cách thêm một lớp con, mà không sửa mã đang dùng các sản phẩm.",
+  "sections": [
+    {
+      "h": "Mục đích",
+      "body": [
+        "Định nghĩa một interface để tạo đối tượng, nhưng để các lớp con quyết định lớp nào sẽ được khởi tạo. Factory Method cho phép một lớp hoãn việc khởi tạo cho các lớp con. Đây là một trong năm mẫu khởi tạo trong cuốn sách Gang of Four (GoF), và là mẫu khởi tạo duy nhất có phạm vi lớp, vì nó dựa trên kế thừa."
+      ]
+    },
+    {
+      "h": "Vấn đề nó giải quyết",
+      "body": [
+        "Hãy hình dung một module thông báo. Nó định dạng thông điệp, gửi đi và ghi nhật ký kết quả. Ban đầu nó chỉ gửi email, nên mã gọi `new EmailChannel()` trực tiếp. Sau đó sản phẩm cần SMS, rồi thông báo đẩy. Mỗi kênh mới đồng nghĩa với việc sửa cùng một lớp và thêm một nhánh `if`, dù các bước định dạng và ghi nhật ký không bao giờ thay đổi.",
+        "Quy trình gửi là ổn định; chỉ loại kênh thay đổi. Factory Method chuyển quyết định thay đổi duy nhất, tức là tạo lớp nào, vào một phương thức có thể ghi đè."
+      ]
+    },
+    {
+      "h": "Cấu trúc và các thành phần tham gia",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Thành phần",
+              "Trách nhiệm",
+              "Trong ví dụ"
+            ],
+            "rows": [
+              [
+                "Product",
+                "Interface của các đối tượng mà phương thức factory tạo ra.",
+                "`Channel`"
+              ],
+              [
+                "ConcreteProduct",
+                "Triển khai interface Product.",
+                "`EmailChannel`, `SmsChannel`"
+              ],
+              [
+                "Creator",
+                "Khai báo phương thức factory và chứa logic dùng sản phẩm.",
+                "`Notifier`"
+              ],
+              [
+                "ConcreteCreator",
+                "Ghi đè phương thức factory để trả về một ConcreteProduct cụ thể.",
+                "`EmailNotifier`, `SmsNotifier`"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "Triển khai bằng TypeScript",
+      "body": [
+        {
+          "code": "interface Channel {\n  send(to: string, text: string): string;\n}\n\nclass EmailChannel implements Channel {\n  send(to: string, text: string): string { return `email to ${to}: ${text}`; }\n}\n\nclass SmsChannel implements Channel {\n  send(to: string, text: string): string { return `sms to ${to}: ${text.slice(0, 20)}`; }\n}\n\nabstract class Notifier {\n  // The factory method: subclasses choose the concrete product.\n  protected abstract createChannel(): Channel;\n  // Shared logic that works with any Channel.\n  notify(to: string, text: string): void {\n    const channel = this.createChannel();\n    const result = channel.send(to, text.trim());\n    console.log(\"[log]\", result);\n  }\n}\n\nclass EmailNotifier extends Notifier {\n  protected createChannel(): Channel { return new EmailChannel(); }\n}\n\nclass SmsNotifier extends Notifier {\n  protected createChannel(): Channel { return new SmsChannel(); }\n}\n\nconst notifiers: Notifier[] = [new EmailNotifier(), new SmsNotifier()];\nfor (const n of notifiers) n.notify(\"ada\", \" Your order has shipped today \");\n// [log] email to ada: Your order has shipped today\n// [log] sms to ada: Your order has shipp",
+          "lang": "typescript"
+        },
+        "Giờ đây thêm thông báo đẩy chỉ cần viết `PushChannel` và `PushNotifier`. Phương thức `notify`, và mọi nơi gọi nó, giữ nguyên.",
+        "Trước khi áp dụng mẫu, quyết định tạo đối tượng bị chôn trong logic dùng chung:",
+        {
+          "code": "class Notifier {\n  constructor(private kind: \"email\" | \"sms\") {}\n  notify(to: string, text: string): void {\n    // every new channel edits this method\n    const result = this.kind === \"email\"\n      ? `email to ${to}: ${text}`\n      : `sms to ${to}: ${text.slice(0, 20)}`;\n    console.log(\"[log]\", result);\n  }\n}",
+          "lang": "typescript"
+        }
+      ]
+    },
+    {
+      "h": "Một lựa chọn nhẹ hơn: truyền hàm factory",
+      "body": [
+        "Factory Method dùng kế thừa. Trong TypeScript bạn thường đạt được cùng độ linh hoạt bằng composition, bằng cách truyền một hàm tạo vào hàm khởi tạo. Cách này tránh một lớp con cho mỗi sản phẩm:",
+        {
+          "code": "interface Channel { send(to: string, text: string): string; }\nclass Notifier {\n  constructor(private createChannel: () => Channel) {}\n  notify(to: string, text: string): void {\n    console.log(\"[log]\", this.createChannel().send(to, text));\n  }\n}\nconst push = new Notifier(() => ({ send: (to, text) => `push to ${to}: ${text}` }));\npush.notify(\"ada\", \"Hello\"); // [log] push to ada: Hello",
+          "lang": "typescript"
+        },
+        "Dùng phiên bản lớp con khi mỗi creator vốn đã có lớp riêng vì lý do khác, hoặc khi framework mong bạn mở rộng một lớp cơ sở. Dùng phiên bản hàm khi khác biệt duy nhất giữa các biến thể là đối tượng chúng tạo ra."
+      ]
+    },
+    {
+      "h": "Khi nào nên dùng, và khi nào không",
+      "body": [
+        "Dùng mẫu Factory Method khi:",
+        {
+          "ul": [
+            "Một lớp chứa thuật toán ổn định nhưng không thể biết trước nó phải tạo những đối tượng cụ thể nào.",
+            "Bạn viết framework hoặc thư viện và muốn người dùng cắm các lớp sản phẩm của riêng họ bằng cách kế thừa.",
+            "Bạn muốn giữ logic tạo của một kiểu ở một chỗ thay vì rải các lời gọi `new` khắp nơi."
+          ]
+        },
+        "Tránh nó khi:",
+        {
+          "ul": [
+            "Chỉ có một kiểu sản phẩm và không có dấu hiệu thực sự về kiểu thứ hai. Dùng `new` trực tiếp rõ ràng hơn.",
+            "Lý do duy nhất là để có thể kiểm thử. Truyền phụ thuộc qua hàm khởi tạo thì đơn giản hơn.",
+            "Bạn sẽ tạo một cây kế thừa creator song song phản chiếu từng sản phẩm một mà không có logic nào khác."
+          ]
+        },
+        {
+          "note": "\"Phương thức factory tĩnh\" (static factory method), như `Array.from()` hay `Promise.resolve()`, là ý tưởng khác: một hàm tĩnh có tên trả về một thể hiện. Nó hữu ích, nhưng không phải Factory Method của GoF, vốn dựa vào việc lớp con ghi đè một phương thức."
+        }
+      ]
+    },
+    {
+      "h": "Ứng dụng thực tế",
+      "body": [
+        {
+          "ul": [
+            "Collection của Java: `Iterable.iterator()` được khai báo một lần, và mỗi lớp collection (`ArrayList`, `HashSet` và các lớp khác) ghi đè để trả về lớp iterator riêng. Cuốn sách GoF mô tả cách dùng Factory Method này cho duyệt đa hình.",
+            "Iterable của JavaScript: mọi iterable triển khai `[Symbol.iterator]()`, một phương thức trả về iterator mới phù hợp với collection đó.",
+            "Các framework giao diện thường cho lớp con ghi đè một phương thức tạo component, ô hay view, trong khi lớp cơ sở kiểm soát bố cục và vòng đời."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Các mẫu liên quan",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Mẫu",
+              "Khác nhau thế nào"
+            ],
+            "rows": [
+              [
+                "Abstract Factory",
+                "Tạo cả một họ sản phẩm liên quan thông qua một đối tượng có nhiều phương thức tạo. Các phương thức của nó thường được triển khai dưới dạng factory method."
+              ],
+              [
+                "Template Method",
+                "Factory Method thường được gọi từ một template method, như `notify` gọi `createChannel` ở trên."
+              ],
+              [
+                "Prototype",
+                "Tạo đối tượng bằng cách sao chép một thể hiện thay vì kế thừa creator, nên không cần cây creator song song."
+              ],
+              [
+                "Builder",
+                "Tập trung xây dựng từng bước một đối tượng phức tạp, không phải chọn lớp nào để tạo."
+              ]
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Khác nhau giữa Factory Method và Abstract Factory là gì?",
+      "a": "Factory Method là một phương thức đơn mà các lớp con ghi đè để tạo một sản phẩm. Abstract Factory là một đối tượng có nhiều phương thức tạo, sinh ra một họ sản phẩm liên quan phải dùng cùng nhau."
+    },
+    {
+      "q": "Hàm factory đơn giản có giống Factory Method không?",
+      "a": "Không hẳn. Hàm như `createShape(kind)` với switch bên trong thường được gọi là simple factory. Factory Method của GoF dựa vào việc lớp con ghi đè phương thức tạo, nhưng cả hai đều giấu `new` khỏi client."
+    },
+    {
+      "q": "Factory Method có tuân theo nguyên lý đóng/mở không?",
+      "a": "Có. Bạn thêm sản phẩm mới bằng cách thêm một lớp sản phẩm mới và một lớp con creator mới, mà không đổi logic hiện có của creator."
+    },
+    {
+      "q": "Phương thức factory có bắt buộc là abstract không?",
+      "a": "Không. Lớp cơ sở có thể cung cấp cách triển khai mặc định trả về một sản phẩm chuẩn, và các lớp con chỉ ghi đè khi cần thứ khác."
+    }
+  ]
+}

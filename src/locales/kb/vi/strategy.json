@@ -1,0 +1,152 @@
+{
+  "title": "Mẫu Strategy: thuật toán thay thế được, kèm ví dụ TypeScript — cv.cm",
+  "description": "Mẫu Strategy đặt mỗi thuật toán vào một đối tượng riêng để bạn hoán đổi lúc chạy. Xem cách viết bằng lớp và bằng hàm trong TypeScript, cùng lúc nên dùng.",
+  "h1": "Mẫu Strategy (Strategy pattern) giải thích kèm ví dụ",
+  "answer": "Strategy là một mẫu thiết kế hành vi (behavioral design pattern): nó định nghĩa một họ thuật toán, đặt từng thuật toán vào một đối tượng riêng có chung giao diện và làm cho chúng có thể thay thế lẫn nhau. Đoạn mã dùng thuật toán, gọi là context (ngữ cảnh), giữ một tham chiếu đến strategy và gọi nó mà không cần biết đó là strategy nào. Trong TypeScript, một strategy thường chỉ là một hàm, như hàm so sánh truyền vào `array.sort()`.",
+  "sections": [
+    {
+      "h": "Mục đích và vấn đề cần giải quyết",
+      "body": [
+        "Mục đích: định nghĩa một họ thuật toán, đóng gói từng thuật toán và làm cho chúng thay thế được cho nhau. Mẫu Strategy cho phép thuật toán thay đổi độc lập với các client sử dụng nó. Đây là một trong các mẫu hành vi trong cuốn sách của nhóm Gang of Four (GoF), nơi nó còn được gọi là Policy.",
+        "Giả sử một trang thanh toán cần tính phí vận chuyển. Giao hàng tiêu chuẩn tính phí cố định, giao nhanh tính thêm theo mỗi kilôgam, còn nhận tại cửa hàng thì miễn phí. Phiên bản đầu tiên gộp cả ba công thức vào một phương thức với chuỗi `if`/`else` theo loại vận chuyển. Mỗi lựa chọn mới, chẳng hạn một hãng vận chuyển đối tác, lại buộc bạn sửa phương thức đó, và muốn kiểm thử một công thức thì phải đi qua tất cả các công thức còn lại.",
+        "Với mẫu Strategy, mỗi công thức trở thành một đối tượng hoặc hàm riêng có cùng chữ ký. Trang thanh toán nhận strategy đã chọn và gọi nó. Thêm một hãng vận chuyển chỉ cần thêm một strategy mới; phần thanh toán không phải thay đổi."
+      ]
+    },
+    {
+      "h": "Cấu trúc và các thành phần tham gia",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Vai trò",
+              "Trách nhiệm"
+            ],
+            "rows": [
+              [
+                "Strategy",
+                "Giao diện chung cho mọi phiên bản của thuật toán"
+              ],
+              [
+                "Concrete strategy (strategy cụ thể)",
+                "Một cách triển khai cụ thể của thuật toán"
+              ],
+              [
+                "Context (ngữ cảnh)",
+                "Giữ một strategy, gọi nó khi cần thuật toán và có thể cho phép client thay thế nó"
+              ],
+              [
+                "Client",
+                "Chọn một strategy cụ thể và đưa cho context"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "Triển khai bằng TypeScript",
+      "body": [
+        "Vì hàm là giá trị trong TypeScript, giao diện strategy đơn giản nhất là một kiểu hàm. Context là lớp `Checkout`.",
+        {
+          "code": "type Parcel = { weightKg: number; subtotal: number };\ntype ShippingStrategy = (parcel: Parcel) => number;\n\nconst standard: ShippingStrategy = (p) => (p.subtotal >= 50 ? 0 : 4.99);\nconst express: ShippingStrategy = (p) => 9.99 + 1.5 * p.weightKg;\nconst pickup: ShippingStrategy = () => 0;\n\nclass Checkout {\n  constructor(private shipping: ShippingStrategy) {}\n\n  setShipping(strategy: ShippingStrategy) {\n    this.shipping = strategy;\n  }\n\n  total(parcel: Parcel): number {\n    return Math.round((parcel.subtotal + this.shipping(parcel)) * 100) / 100;\n  }\n}\n\nconst parcel = { weightKg: 2, subtotal: 30 };\nconst checkout = new Checkout(standard);\nconsole.log(checkout.total(parcel)); // 34.99\ncheckout.setShipping(express);\nconsole.log(checkout.total(parcel)); // 42.99\ncheckout.setShipping(pickup);\nconsole.log(checkout.total(parcel)); // 30",
+          "lang": "typescript"
+        },
+        "Nếu strategy cần cấu hình hoặc có nhiều phương thức, hãy dùng interface và lớp. Phiên bản này còn gán cho mỗi strategy một cái tên để giao diện người dùng hiển thị:",
+        {
+          "code": "interface Shipping {\n  readonly label: string;\n  cost(weightKg: number): number;\n}\n\nclass Courier implements Shipping {\n  readonly label: string;\n  constructor(private ratePerKg: number, company: string) {\n    this.label = company + \" courier\";\n  }\n  cost(weightKg: number) { return this.ratePerKg * weightKg; }\n}\n\nconst options: Shipping[] = [new Courier(2, \"North\"), new Courier(3.5, \"Fast\")];\nfor (const o of options) console.log(o.label, o.cost(4));\n// North courier 8\n// Fast courier 14",
+          "lang": "typescript"
+        },
+        {
+          "note": "Client phải biết có những strategy nào thì mới chọn được. Hãy gom việc chọn này vào một chỗ, chẳng hạn một bảng ánh xạ từ tên cài đặt sang strategy, thay vì lặp lại chuỗi `if`/`else` mà mẫu này sinh ra để loại bỏ."
+        }
+      ]
+    },
+    {
+      "h": "Trước và sau khi áp dụng",
+      "body": [
+        "Trước đây, việc chọn thuật toán được viết cứng bên trong phương thức:",
+        {
+          "code": "function shippingCost(type: string, p: Parcel): number {\n  if (type === \"standard\") return p.subtotal >= 50 ? 0 : 4.99;\n  else if (type === \"express\") return 9.99 + 1.5 * p.weightKg;\n  else if (type === \"pickup\") return 0;\n  throw new Error(\"Unknown shipping type \" + type);\n}\n// After: a lookup table of strategies replaces the chain\nconst strategies: Record<string, ShippingStrategy> = { standard, express, pickup };",
+          "lang": "typescript"
+        },
+        "Đoạn mã này dùng lại các kiểu và hàm của ví dụ đầu tiên. Bảng ánh xạ biến tập lựa chọn thành dữ liệu thay vì mã, nên có thể dựng từ cấu hình hoặc mở rộng bằng plugin."
+      ]
+    },
+    {
+      "h": "Khi nào nên dùng và khi nào không",
+      "body": [
+        {
+          "ul": [
+            "Nên dùng khi có nhiều cách để làm cùng một việc và việc chọn cách nào phụ thuộc vào cấu hình, dữ liệu người dùng nhập hoặc dữ liệu đang xử lý.",
+            "Nên dùng để loại bỏ những khối điều kiện lớn chọn giữa các thuật toán.",
+            "Nên dùng để kiểm thử từng thuật toán riêng biệt và để mã khác thêm thuật toán mới mà không phải sửa context.",
+            "Không nên dùng khi chỉ có một thuật toán và không thực sự cần thay đổi nó. Một interface thừa chỉ thêm một tầng gián tiếp vô ích.",
+            "Đừng tạo lớp khi một tham số kiểu hàm là đủ. Trong TypeScript, truyền một hàm chính là dạng nhẹ của mẫu Strategy."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Ứng dụng trong thực tế",
+      "body": [
+        {
+          "ul": [
+            "`Array.prototype.sort(compareFn)` nhận chiến lược so sánh dưới dạng một hàm, nhờ vậy cùng một phép sắp xếp có thể xếp số, ngày tháng hoặc tên.",
+            "Interface `Comparator` của Java là một strategy cho `Collections.sort` và `List.sort`.",
+            "Passport.js, middleware xác thực cho Node.js, gọi mỗi cách đăng nhập (mật khẩu cục bộ, các nhà cung cấp OAuth) là một strategy và cho phép ứng dụng cắm chúng vào.",
+            "Các thư viện nén và băm cho phép người gọi chọn thuật toán qua một giao diện chung."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Các mẫu liên quan",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Mẫu",
+              "Khác với mẫu Strategy như thế nào"
+            ],
+            "rows": [
+              [
+                "State",
+                "Cấu trúc giống nhau, nhưng các trạng thái tự chuyển đổi khi đối tượng thay đổi; còn strategy thường do client chọn và giữ nguyên cho đến khi bị thay."
+              ],
+              [
+                "Template Method",
+                "Mẫu Template Method thay đổi từng phần của thuật toán qua kế thừa và giữ cố định các bước tổng thể; mẫu Strategy thay cả thuật toán qua kết hợp (composition)."
+              ],
+              [
+                "Command",
+                "Command là một yêu cầu để chạy sau; strategy là một cách thực hiện công việc mà context gọi khi cần."
+              ],
+              [
+                "Decorator",
+                "Decorator thay đổi hành vi của đối tượng bằng cách bọc nó từ bên ngoài; strategy thay đổi hành vi từ bên trong bằng cách thay một thành phần."
+              ]
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Mẫu Strategy khác mẫu State ở điểm nào?",
+      "a": "Cấu trúc gần như giống hệt nhau. Strategy do client chọn để quyết định cách làm một việc, còn các đối tượng state tự thay đổi trạng thái hiện tại của context do chính các hành động của nó."
+    },
+    {
+      "q": "Truyền một callback có phải là mẫu Strategy không?",
+      "a": "Có. Trong các ngôn ngữ có hàm hạng nhất (first-class function), một callback hiện thực phần thay đổi được của thuật toán, chẳng hạn hàm so sánh, chính là mẫu Strategy ở dạng đơn giản nhất."
+    },
+    {
+      "q": "Mẫu Strategy khác mẫu Template Method ở điểm nào?",
+      "a": "Template Method dùng kế thừa: lớp cơ sở cố định các bước và lớp con điền vào một số bước. Strategy dùng kết hợp: context giữ một đối tượng hoặc hàm mà nó có thể thay thế lúc chạy."
+    },
+    {
+      "q": "Mẫu Strategy có tuân theo nguyên lý open/closed không?",
+      "a": "Có. Bạn có thể thêm strategy mới mà không sửa context, nên context mở cho việc mở rộng nhưng đóng đối với việc sửa đổi."
+    }
+  ]
+}

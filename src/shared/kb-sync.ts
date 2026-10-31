@@ -14,19 +14,27 @@ export type KbSyncEntry = {
   minutes: Record<Locale, number>;
 };
 
+/** Prose of a block; code samples are counted apart (see readingMinutes). */
 function blockText(block: KbBlock): string {
   if (typeof block === "string") return block;
   if ("ul" in block) return block.ul.join(" ");
   if ("ol" in block) return block.ol.join(" ");
   if ("table" in block) return [...block.table.head, ...block.table.rows.flat()].join(" ");
+  if ("code" in block) return "";
   return block.note;
 }
 
-/** Reading time: ~220 words a minute, or ~400 characters for Chinese, Japanese and Korean. */
+const words = (text: string): number => text.split(/\s+/).filter(Boolean).length;
+
+/**
+ * Reading time: ~220 words a minute, or ~400 characters for Chinese, Japanese and Korean.
+ * Code samples are the same in every locale, so they count as English words (a token between spaces) everywhere.
+ */
 export function readingMinutes(locale: Locale, copy: KbArticleCopy): number {
   const text = [copy.answer, ...copy.sections.flatMap((s) => [s.h, ...s.body.map(blockText)]), ...copy.faq.flatMap((f) => [f.q, f.a])].join(" ");
+  const code = copy.sections.flatMap((s) => s.body.map((block) => (typeof block === "object" && "code" in block ? block.code : ""))).join(" ");
   const cjk = locale === "zh-CN" || locale === "zh-TW" || locale === "ja" || locale === "ko";
-  const units = cjk ? text.replace(/\s+/g, "").length / 400 : text.split(/\s+/).filter(Boolean).length / 220;
+  const units = (cjk ? text.replace(/\s+/g, "").length / 400 : words(text) / 220) + words(code) / 220;
   return Math.max(1, Math.round(units));
 }
 

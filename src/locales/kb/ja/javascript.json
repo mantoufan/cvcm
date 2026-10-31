@@ -1,0 +1,191 @@
+{
+  "title": "JavaScriptチュートリアル：変数・関数・配列・オブジェクト・非同期処理 — cv.cm",
+  "description": "JavaScript入門を1ページで：Node.jsやブラウザでHello world、letとconst、型、ループ、関数、配列、オブジェクト、Promiseとasync/awaitまで解説します。",
+  "h1": "JavaScript入門チュートリアル（初心者向け）",
+  "answer": "JavaScriptはWebのためのプログラミング言語で、すべてのブラウザで動作し、Node.jsを使えばサーバーやコマンドラインでも動きます。変数は `const` と `let` で宣言し、関数は関数宣言またはアロー関数で書き、データは配列とオブジェクトに格納します。ネットワークリクエストのような時間のかかる処理はPromiseと `async`/`await` で扱います。`node hello.js` を実行するか、ブラウザのコンソールを開いて始めましょう。",
+  "sections": [
+    {
+      "h": "JavaScriptとは何か、何に使われるか",
+      "body": [
+        "JavaScriptはECMAScriptとして標準化された動的型付け言語です。もともとWebページ向けに作られ、クリックへの反応、ページの更新、サーバーとの通信を担います。現在ではNode.js、Deno、Bunを通じてサーバーやツールでも、デスクトップアプリ（Electron）やモバイルアプリ（React Native）でも動きます。フロントエンド開発者、フルスタック開発者をはじめ、Webを作る人なら誰でも使います。このページの現代的な構文（`let`、`const`、アロー関数、クラス、モジュール）はES2015以降の仕様で追加されたものです。"
+      ]
+    },
+    {
+      "h": "Hello, world を実行する",
+      "body": [
+        "方法1：任意のWebページを開き、F12キー（Macでは Cmd+Option+J）で開発者コンソールを開いて、下の1行を入力します。方法2：nodejs.orgからNode.jsをインストールし、この1行を `hello.js` として保存して実行します。",
+        {
+          "code": "console.log(\"Hello, world\");",
+          "lang": "javascript"
+        },
+        {
+          "code": "node hello.js\n# Hello, world",
+          "lang": "shell"
+        }
+      ]
+    },
+    {
+      "h": "変数と基本の型",
+      "body": [
+        "再代入しない値には `const`、変化する値には `let` を使います。ブロックスコープを無視する古い `var` は避けましょう。`typeof` は値の型を返します。",
+        {
+          "table": {
+            "head": [
+              "型",
+              "例",
+              "typeof"
+            ],
+            "rows": [
+              [
+                "number",
+                "`42`, `3.14`, `NaN`",
+                "`\"number\"`"
+              ],
+              [
+                "bigint",
+                "`10n`",
+                "`\"bigint\"`"
+              ],
+              [
+                "string",
+                "`\"hi\"`, `'hi'`, `` `hi ${name}` ``",
+                "`\"string\"`"
+              ],
+              [
+                "boolean",
+                "`true`, `false`",
+                "`\"boolean\"`"
+              ],
+              [
+                "undefined",
+                "`undefined`",
+                "`\"undefined\"`"
+              ],
+              [
+                "null",
+                "`null`",
+                "`\"object\"`（歴史的な仕様上の癖）"
+              ],
+              [
+                "object",
+                "`{}`、`[]`、関数",
+                "`\"object\"` または `\"function\"`"
+              ]
+            ]
+          }
+        },
+        {
+          "code": "const name = \"Ada\";\nlet count = 1;\ncount += 1;\nconsole.log(`${name} has ${count} items`); // Ada has 2 items\nconsole.log(0.1 + 0.2);                    // 0.30000000000000004\nconsole.log(Number(\"12\") + 1, \"12\" + 1);   // 13 121",
+          "lang": "javascript"
+        }
+      ]
+    },
+    {
+      "h": "制御構文：if、ループ、等価比較",
+      "body": [
+        "比較には常に `===` と `!==` を使ってください。緩い `==` は先に型変換を行うため、`0 == \"\"` は `true` になります。",
+        {
+          "code": "const score = 72;\nif (score >= 90) {\n  console.log(\"A\");\n} else if (score >= 70) {\n  console.log(\"B\"); // B\n} else {\n  console.log(\"C\");\n}\nfor (let i = 0; i < 3; i++) console.log(i); // 0 1 2\nfor (const fruit of [\"apple\", \"pear\"]) console.log(fruit);\nlet n = 10;\nwhile (n > 1) n = Math.floor(n / 2);\nconsole.log(n); // 1",
+          "lang": "javascript"
+        }
+      ]
+    },
+    {
+      "h": "関数",
+      "body": [
+        "関数は値なので、変数に代入したり、他の関数に渡したり、戻り値にしたりできます。アロー関数は短く書ける形式で、コールバックによく使われます。",
+        {
+          "code": "function greet(name, greeting = \"Hello\") {\n  return `${greeting}, ${name}!`;\n}\nconst square = (x) => x * x;\nconst sum = (...nums) => nums.reduce((a, b) => a + b, 0);\nconsole.log(greet(\"Lin\"));     // Hello, Lin!\nconsole.log(square(5));        // 25\nconsole.log(sum(1, 2, 3, 4));  // 10",
+          "lang": "javascript"
+        }
+      ]
+    },
+    {
+      "h": "配列とオブジェクト",
+      "body": [
+        "配列は順序のあるリスト、オブジェクトは文字列のキーと値の対応です。どちらも参照渡しです。キーが文字列でない場合や値を重複させたくない場合は、組み込みの `Map` や `Set` が使えます。",
+        {
+          "code": "const nums = [3, 1, 2];\nnums.push(5);\nconst doubled = nums.map((n) => n * 2);\nconst evens = nums.filter((n) => n % 2 === 0);\nconsole.log(doubled, evens);             // [ 6, 2, 4, 10 ] [ 2 ]\nconsole.log([...nums].sort((a, b) => a - b)); // [ 1, 2, 3, 5 ]\nconst user = { name: \"Ann\", age: 31 };\nuser.city = \"Oslo\";\nconst { name, age } = user;              // destructuring\nconsole.log(name, age, Object.keys(user)); // Ann 31 [ 'name', 'age', 'city' ]\nconsole.log(JSON.stringify(user));       // {\"name\":\"Ann\",\"age\":31,\"city\":\"Oslo\"}",
+          "lang": "javascript"
+        },
+        {
+          "note": "比較関数なしの `sort()` は文字列として並べ替えるため、`[10, 9, 1].sort()` は `[1, 10, 9]` になります。数値を並べ替えるには `(a, b) => a - b` を渡します。"
+        }
+      ]
+    },
+    {
+      "h": "特徴的な機能：Promiseによる非同期処理",
+      "body": [
+        "JavaScriptはイベントループを備えた1本のスレッドでコードを実行します。時間のかかる処理（タイマー、ネットワーク、ファイル）はブロックせず、後で完了するPromiseを返します。`async` 関数では `await` を使って、この処理を上から下へ順に書けます。",
+        {
+          "code": "const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));\nasync function main() {\n  console.log(\"start\");\n  await wait(500);\n  console.log(\"half a second later\");\n  const [a, b] = await Promise.all([wait(100).then(() => 1), wait(200).then(() => 2)]);\n  console.log(a + b); // 3\n}\nmain();\nconsole.log(\"main() was called\"); // prints before \"half a second later\"",
+          "lang": "javascript"
+        },
+        "クラス（`class Dog extends Animal {}`）、モジュール（`import` と `export`）、オプショナルチェーン（`user?.address?.city`）、Null合体演算子（`value ?? \"default\"`）なども、よく使う現代的な機能です。"
+      ]
+    },
+    {
+      "h": "エラー処理",
+      "body": [
+        "`Error` オブジェクトを throw し、`try`/`catch` で捕捉します。`async` 関数では、拒否されたPromiseは `await` の位置で例外になります。",
+        {
+          "code": "function parseAge(text) {\n  const age = Number(text);\n  if (!Number.isInteger(age) || age < 0) {\n    throw new Error(`invalid age: ${text}`);\n  }\n  return age;\n}\ntry {\n  console.log(parseAge(\"41\"));  // 41\n  console.log(parseAge(\"abc\"));\n} catch (err) {\n  console.log(err.message);     // invalid age: abc\n} finally {\n  console.log(\"done\");\n}",
+          "lang": "javascript"
+        }
+      ]
+    },
+    {
+      "h": "小さな完成プログラム：取得して要約する",
+      "body": [
+        "このNode.jsスクリプト（Node 18以降は `fetch` が組み込み済み）は、公開APIからJSONをダウンロードして短い要約を表示します。`repos.mjs` として保存し、`node repos.mjs nodejs` で実行します。",
+        {
+          "code": "const org = process.argv[2] ?? \"nodejs\";\nasync function topRepos(name, n = 3) {\n  const res = await fetch(`https://api.github.com/orgs/${name}/repos?per_page=100`);\n  if (!res.ok) throw new Error(`HTTP ${res.status}`);\n  const repos = await res.json();\n  return repos\n    .sort((a, b) => b.stargazers_count - a.stargazers_count)\n    .slice(0, n)\n    .map((r) => `${r.stargazers_count}\\t${r.name}`);\n}\ntry {\n  const lines = await topRepos(org);\n  console.log(lines.join(\"\\n\"));\n} catch (err) {\n  console.error(\"failed:\", err.message);\n  process.exitCode = 1;\n}",
+          "lang": "javascript"
+        },
+        "拡張子 `.mjs` によりファイルがESモジュールとして扱われ、トップレベルで `await` が使えます。"
+      ]
+    },
+    {
+      "h": "初心者がよくやる間違い",
+      "body": [
+        {
+          "ul": [
+            "`===` の代わりに `==` を使い、予想外の型変換が起こる。",
+            "`await` を忘れ、値ではなく保留中の `Promise` オブジェクトを受け取ってしまう。",
+            "`const` でオブジェクトが不変になると思い込む。禁止されるのは再代入だけで、`obj.x = 1` は実行できます。必要なら `Object.freeze` を使います。",
+            "オブジェクトや配列を `===` で比較する。これは中身ではなく同一性を比べます。",
+            "メソッドをコールバックとして渡すと `this` が失われる。アロー関数か `.bind(obj)` を使います。"
+          ]
+        }
+      ]
+    },
+    {
+      "h": "次のステップ",
+      "body": [
+        "最も充実した無料のリファレンスであるMDNのJavaScriptガイドを読み、ブラウザのDOM（`document.querySelector`、イベント）で練習しましょう。続いて、npmとモジュール、フロントエンド向けのReact・Vue・Svelteなどのフレームワーク、またはサーバー向けのNode.jsを学びます。JavaScriptにTypeScriptを加えると、静的型付けとエディタの強力な支援が得られます。"
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "JavaScriptとJavaは同じものですか？",
+      "a": "いいえ。名前が似ているだけで、無関係の言語です。Javaは静的型付けでJVMバイトコードにコンパイルされ、JavaScriptは動的型付けでブラウザやNode.jsで動作します。"
+    },
+    {
+      "q": "let、const、varのどれを使うべきですか？",
+      "a": "基本は `const`、再代入が必要なときは `let` を使います。`var` は関数スコープで巻き上げ（hoisting）が起こり、バグの原因になるため避けましょう。"
+    },
+    {
+      "q": "nullとundefinedの違いは何ですか？",
+      "a": "`undefined` は変数やプロパティに値が与えられていないことを表します。`null` は「何もない」ことを示すために意図的に代入する値です。"
+    },
+    {
+      "q": "なぜ 0.1 + 0.2 は 0.3 にならないのですか？",
+      "a": "JavaScriptの数値は64ビットの2進浮動小数点数で、0.1を正確に表せないためです。表示時に丸めるか、お金の計算では整数（たとえばセント単位）を使いましょう。"
+    },
+    {
+      "q": "JavaScriptの学習にNode.jsは必要ですか？",
+      "a": "いいえ。どのブラウザでも開発者コンソールでJavaScriptを実行できます。Node.jsは、ファイルからスクリプトを実行したり、サーバーやツールを作ったりするときに役立ちます。"
+    }
+  ]
+}

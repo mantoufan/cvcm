@@ -1,0 +1,147 @@
+{
+  "title": "Interpreter pattern: grammars, expression trees and TypeScript example — cv.cm",
+  "description": "The Interpreter pattern models each grammar rule as a class and evaluates sentences as a tree. Build a tiny expression language in TypeScript.",
+  "h1": "Interpreter pattern explained with examples",
+  "answer": "Interpreter is a behavioral design pattern that defines a representation for the grammar of a small language and an interpreter that evaluates sentences in that language. Each grammar rule becomes a class, a sentence becomes a tree of these objects (an abstract syntax tree), and evaluating the sentence means calling `interpret` on the root, which recursively interprets its children. It suits small, simple languages such as filters, rules and formulas.",
+  "sections": [
+    {
+      "h": "Intent and the problem it solves",
+      "body": [
+        "Intent: given a language, define a representation for its grammar along with an interpreter that uses the representation to interpret sentences in the language. Interpreter is one of the behavioral patterns in the Gang of Four (GoF) book.",
+        "Suppose users of a pricing system want to write their own discount rules, such as `price * 0.9` or `price - 5`, and the rules must be stored in a database and evaluated later. Hard-coding each rule is impossible, because users create new ones all the time. You need a small language and a way to evaluate it.",
+        "The Interpreter pattern gives you a simple design for that evaluation step. Numbers, variables and operators each become a class. A rule like `price * 0.9` becomes a tree: a multiply node with a variable node and a number node as children. To compute the result, you call `interpret` on the multiply node with a context that holds the current price."
+      ]
+    },
+    {
+      "h": "Structure and participants",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Role",
+              "Responsibility"
+            ],
+            "rows": [
+              [
+                "Abstract expression",
+                "Declares the `interpret(context)` operation shared by all nodes"
+              ],
+              [
+                "Terminal expression",
+                "A leaf of the tree, such as a number literal or a variable name"
+              ],
+              [
+                "Nonterminal expression",
+                "A grammar rule made of other expressions, such as addition or multiplication; it interprets its children and combines the results"
+              ],
+              [
+                "Context",
+                "Global information for interpretation, such as variable values"
+              ],
+              [
+                "Client",
+                "Builds the syntax tree (by hand or with a parser) and calls `interpret`"
+              ]
+            ]
+          }
+        },
+        "The grammar for the example below, written in a simple notation:",
+        {
+          "code": "expression ::= number | variable | expression op expression\nop         ::= \"+\" | \"-\" | \"*\" | \"/\"",
+          "lang": "text"
+        }
+      ]
+    },
+    {
+      "h": "TypeScript implementation",
+      "body": [
+        "Each grammar rule is a class implementing `Expression`. The `parse` function turns a space-separated expression in postfix notation (operators after their operands) into a tree, which keeps the parser short.",
+        {
+          "code": "type Context = Record<string, number>;\ninterface Expression {\n  interpret(ctx: Context): number;\n}\nclass Num implements Expression {\n  constructor(private value: number) {}\n  interpret() { return this.value; }\n}\nclass Var implements Expression {\n  constructor(private name: string) {}\n  interpret(ctx: Context) {\n    if (!Object.hasOwn(ctx, this.name)) throw new Error(\"Unknown variable \" + this.name);\n    return ctx[this.name];\n  }\n}\nconst ops = { \"+\": (a: number, b: number) => a + b, \"-\": (a: number, b: number) => a - b,\n  \"*\": (a: number, b: number) => a * b, \"/\": (a: number, b: number) => a / b };\nclass BinaryOp implements Expression {\n  constructor(private op: keyof typeof ops, private left: Expression, private right: Expression) {}\n  interpret(ctx: Context) { return ops[this.op](this.left.interpret(ctx), this.right.interpret(ctx)); }\n}\nfunction parse(source: string): Expression {\n  const stack: Expression[] = [];\n  for (const token of source.trim().split(/\\s+/)) {\n    if (Object.hasOwn(ops, token)) {\n      const right = stack.pop()!, left = stack.pop()!;\n      stack.push(new BinaryOp(token as keyof typeof ops, left, right));\n    } else if (!isNaN(Number(token))) stack.push(new Num(Number(token)));\n    else stack.push(new Var(token));\n  }\n  return stack[0];\n}\nconst rule = parse(\"price 0.9 * 5 -\"); // (price * 0.9) - 5\nconsole.log(rule.interpret({ price: 100 })); // 85\nconsole.log(rule.interpret({ price: 40 })); // 31",
+          "lang": "typescript"
+        },
+        "The tree for `price 0.9 * 5 -` is a minus node whose left child is a multiply node (with `price` and `0.9`) and whose right child is the number `5`. Once parsed, the same tree can be evaluated many times with different contexts.",
+        {
+          "note": "The pattern describes how to represent and evaluate a sentence, not how to parse text. Real input needs a proper parser with error messages; the minimal postfix parser above does no validation of malformed input."
+        }
+      ]
+    },
+    {
+      "h": "When to use it and when not to",
+      "body": [
+        {
+          "ul": [
+            "Use it when the language is small and the grammar is simple: search filters, feature-flag rules, permission expressions, unit conversions or spreadsheet-style formulas.",
+            "Use it when the same expression is evaluated many times with different data, so building the tree once pays off.",
+            "Do not use it for large languages. One class per rule becomes hard to maintain; use a parser generator or an existing embedded language instead.",
+            "Do not use it when performance is critical. Walking an object tree is slower than compiling to bytecode or machine code.",
+            "Never solve the problem with `eval` on user input. A small interpreter only supports the operations you define, which is much safer."
+          ]
+        },
+        "To add new operations over the same tree, such as pretty-printing or type checking, combine Interpreter with Visitor instead of adding more methods to every node class."
+      ]
+    },
+    {
+      "h": "Real-world uses",
+      "body": [
+        {
+          "ul": [
+            "Regular expression engines compile a pattern into a tree or graph of node objects; matching walks these nodes, which is the Interpreter idea applied to the regex grammar.",
+            "Language tools represent source code as an abstract syntax tree: Python's `ast` module and the ESTree specification used by JavaScript tools such as Babel and ESLint describe node types for every grammar rule.",
+            "SQL databases parse a `WHERE` clause into an expression tree and evaluate it for each row.",
+            "Template engines and rule engines evaluate small expressions inside templates or business rules."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Related patterns",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Pattern",
+              "How it relates to Interpreter"
+            ],
+            "rows": [
+              [
+                "Composite",
+                "The syntax tree is a Composite: nonterminal expressions contain other expressions. Interpreter adds the meaning of each node."
+              ],
+              [
+                "Visitor",
+                "Visitor moves operations out of the node classes, so many operations (evaluate, print, check) can share one tree."
+              ],
+              [
+                "Iterator",
+                "An iterator can walk the nodes of a syntax tree without exposing how they are stored."
+              ],
+              [
+                "Flyweight",
+                "Terminal symbols that repeat often, such as common constants, can be shared as flyweights."
+              ]
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "What is the difference between terminal and nonterminal expressions?",
+      "a": "A terminal expression is a leaf that cannot be broken down further, such as a number or a variable. A nonterminal expression represents a rule built from other expressions, such as addition, and interprets its children to produce its result."
+    },
+    {
+      "q": "Does the Interpreter pattern include a parser?",
+      "a": "No. The pattern assumes you already have a syntax tree. You can build the tree by hand, write a small parser, or use a parser generator."
+    },
+    {
+      "q": "When should I not use the Interpreter pattern?",
+      "a": "Avoid it for complex grammars or performance-critical code. Large languages need too many classes, and tree-walking evaluation is slower than compiled approaches."
+    },
+    {
+      "q": "How is Interpreter related to Composite?",
+      "a": "The syntax tree in Interpreter has the same shape as a Composite: leaves and nodes that contain other nodes, all with a common interface. Interpreter gives that structure a specific meaning, namely evaluating a language."
+    }
+  ]
+}

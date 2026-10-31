@@ -1,0 +1,220 @@
+{
+  "title": "Penjelasan bubble sort: cara kerja, kode Python, dan kompleksitas — cv.cm",
+  "description": "Bubble sort berulang kali menukar item bersebelahan yang urutannya salah. Lihat penelusuran per pass, kode Python, kompleksitas O(n²), stabilitas, dan alternatif yang lebih baik.",
+  "h1": "Penjelasan bubble sort: cara kerja, kode, dan kompleksitas",
+  "answer": "Bubble sort adalah algoritma pengurutan sederhana yang berulang kali menelusuri list dan menukar setiap pasangan elemen bersebelahan yang urutannya salah. Setelah setiap pass, elemen terbesar yang tersisa berpindah, atau “menggelembung”, ke posisi akhirnya di ujung list. Waktunya O(n²) pada kasus rata-rata dan terburuk serta O(n) pada list yang sudah terurut, memakai ruang tambahan O(1), dan bersifat stabil. Algoritma ini terutama dipakai untuk pembelajaran; program sungguhan memakai sort bawaan.",
+  "sections": [
+    {
+      "h": "Ide dasar dengan kata-kata sederhana",
+      "body": [
+        "Bandingkan dua elemen pertama. Jika yang pertama lebih besar, tukar. Lalu bandingkan elemen kedua dan ketiga, lalu ketiga dan keempat, dan seterusnya sampai akhir list. Ini satu pass. Setelah pass pertama, elemen terbesar dijamin berada di posisi terakhir, karena setiap perbandingan membawanya satu langkah ke kanan.",
+        "Ulangi pass pada bagian yang belum terurut, yang mengecil satu elemen setiap kali. Jika satu pass penuh tidak melakukan pertukaran, list sudah terurut dan Anda bisa berhenti lebih awal."
+      ]
+    },
+    {
+      "h": "Contoh pass demi pass",
+      "body": [
+        "Urutkan `[5, 1, 4, 2, 8]` secara menaik. Elemen setelah garis berada di posisi akhirnya.",
+        {
+          "table": {
+            "head": [
+              "Pass",
+              "Perbandingan dan pertukaran",
+              "List setelah pass"
+            ],
+            "rows": [
+              [
+                "1",
+                "5↔1 tukar, 5↔4 tukar, 5↔2 tukar, 5 dan 8 tetap",
+                "`[1, 4, 2, 5, 8]`  (8 di tempatnya)"
+              ],
+              [
+                "2",
+                "1 dan 4 tetap, 4↔2 tukar, 4 dan 5 tetap",
+                "`[1, 2, 4, 5, 8]`  (5 di tempatnya)"
+              ],
+              [
+                "3",
+                "1 dan 2 tetap, 2 dan 4 tetap, tanpa pertukaran",
+                "`[1, 2, 4, 5, 8]`  terurut, berhenti"
+              ]
+            ]
+          }
+        },
+        "Tanpa keluar lebih awal, algoritma akan menjalankan pass keempat. Dengan itu, tiga pass sudah cukup di sini."
+      ]
+    },
+    {
+      "h": "Implementasi Python",
+      "body": [
+        {
+          "code": "def bubble_sort(items):\n    \"\"\"Sort a list in place, ascending. Returns the same list.\"\"\"\n    n = len(items)\n    for end in range(n - 1, 0, -1):     # last index of the unsorted part\n        swapped = False\n        for i in range(end):\n            if items[i] > items[i + 1]:  # strict >, keeps equal items in order\n                items[i], items[i + 1] = items[i + 1], items[i]\n                swapped = True\n        if not swapped:                  # no swaps: already sorted\n            break\n    return items\nprint(bubble_sort([5, 1, 4, 2, 8]))     # [1, 2, 4, 5, 8]\nprint(bubble_sort([3, 3, 1]))           # [1, 3, 3]\nprint(bubble_sort([]))                  # []",
+          "lang": "python"
+        },
+        "Perulangan dalam berhenti di `end` karena semua yang setelahnya sudah di tempatnya. Flag `swapped` memberikan kasus terbaik O(n) pada input yang sudah terurut."
+      ]
+    },
+    {
+      "h": "Kompleksitas waktu dan ruang",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Kasus",
+              "Perbandingan",
+              "Waktu",
+              "Alasan"
+            ],
+            "rows": [
+              [
+                "Terbaik (sudah terurut)",
+                "n − 1",
+                "O(n)",
+                "satu pass tanpa pertukaran, lalu berhenti"
+              ],
+              [
+                "Rata-rata (urutan acak)",
+                "sekitar n²/2",
+                "O(n²)",
+                "sekitar n²/4 pertukaran rata-rata"
+              ],
+              [
+                "Terburuk (urutan terbalik)",
+                "n(n − 1)/2",
+                "O(n²)",
+                "setiap perbandingan adalah pertukaran"
+              ],
+              [
+                "Ruang tambahan",
+                "",
+                "O(1)",
+                "mengurutkan di tempat dengan beberapa variabel"
+              ]
+            ]
+          }
+        },
+        "Untuk 10.000 elemen dengan urutan terbalik, itu hampir 50 juta perbandingan dan pertukaran. Jumlah pertukaran selalu sama dengan jumlah inversi, yaitu pasangan elemen yang urutannya salah."
+      ]
+    },
+    {
+      "h": "Perbandingan bubble sort dengan sort lain",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Algoritma",
+              "Terbaik",
+              "Rata-rata",
+              "Terburuk",
+              "Ruang tambahan",
+              "Stabil"
+            ],
+            "rows": [
+              [
+                "Bubble sort",
+                "O(n)",
+                "O(n²)",
+                "O(n²)",
+                "O(1)",
+                "Ya"
+              ],
+              [
+                "Selection sort",
+                "O(n²)",
+                "O(n²)",
+                "O(n²)",
+                "O(1)",
+                "Tidak"
+              ],
+              [
+                "Insertion sort",
+                "O(n)",
+                "O(n²)",
+                "O(n²)",
+                "O(1)",
+                "Ya"
+              ],
+              [
+                "Merge sort",
+                "O(n log n)",
+                "O(n log n)",
+                "O(n log n)",
+                "O(n)",
+                "Ya"
+              ],
+              [
+                "Quicksort",
+                "O(n log n)",
+                "O(n log n)",
+                "O(n²)",
+                "O(log n)",
+                "Tidak"
+              ],
+              [
+                "Heapsort",
+                "O(n log n)",
+                "O(n log n)",
+                "O(n log n)",
+                "O(1)",
+                "Tidak"
+              ],
+              [
+                "Timsort (`sorted` di Python)",
+                "O(n)",
+                "O(n log n)",
+                "O(n log n)",
+                "O(n)",
+                "Ya"
+              ]
+            ]
+          }
+        },
+        "Bubble sort stabil karena hanya menukar elemen bersebelahan dan hanya ketika urutannya benar-benar salah, sehingga elemen yang sama tidak pernah saling melewati. Insertion sort punya kompleksitas dan stabilitas yang sama, tetapi dalam praktik melakukan lebih sedikit penulisan dan lebih cepat, itulah sebabnya insertion sort, bukan bubble sort, dipakai di dalam algoritma hibrida seperti Timsort."
+      ]
+    },
+    {
+      "h": "Varian dan kesalahan umum",
+      "body": [
+        {
+          "ul": [
+            "Cocktail shaker sort berjalan dari kiri ke kanan lalu dari kanan ke kiri secara bergantian, sehingga elemen kecil di ujung (disebut turtle) pindah ke depan lebih cepat. Kompleksitasnya tetap O(n²).",
+            "Comb sort membandingkan elemen yang berjarak tertentu (gap) lalu memperkecil gap, yang menyingkirkan banyak turtle sejak awal; dengan gap 1 algoritma ini menjadi bubble sort.",
+            "Odd-even transposition sort membandingkan semua pasangan ganjil, lalu semua pasangan genap, dan dipakai untuk mengajarkan pengurutan paralel."
+          ]
+        },
+        {
+          "note": "Bug yang umum: memakai `>=` alih-alih `>` (ini menukar elemen yang sama dan merusak stabilitas), membiarkan perulangan dalam berjalan sampai `n` sehingga `items[i + 1]` keluar dari rentang, dan lupa flag keluar lebih awal, yang menghilangkan kasus terbaik O(n)."
+        }
+      ]
+    },
+    {
+      "h": "Kapan memakai bubble sort",
+      "body": [
+        "Hampir tidak pernah di kode produksi. Di Python, panggil `sorted(items)` atau `items.sort()`, yang memakai Timsort, berjalan dalam O(n log n), dan stabil. Bubble sort tetap berguna untuk diketahui karena paling sederhana dijelaskan, pembuktian kebenarannya mudah diikuti, dan ini pertanyaan pertama yang umum di wawancara atau ujian tentang perulangan, pertukaran, dan kompleksitas.",
+        "Satu-satunya keuntungan praktis adalah mendeteksi list yang sudah terurut dalam satu pass O(n), tetapi perulangan biasa yang membandingkan tetangga juga bisa melakukannya tanpa mengurutkan apa pun."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Apakah bubble sort stabil?",
+      "a": "Ya. Algoritma ini hanya menukar elemen bersebelahan ketika yang kiri benar-benar lebih besar, sehingga elemen yang sama mempertahankan urutan aslinya."
+    },
+    {
+      "q": "Berapa kompleksitas waktu bubble sort?",
+      "a": "O(n²) pada kasus rata-rata dan terburuk. Dengan keluar lebih awal ketika satu pass tidak melakukan pertukaran, kasus terbaik pada input yang sudah terurut adalah O(n)."
+    },
+    {
+      "q": "Mengapa disebut bubble sort?",
+      "a": "Elemen besar bergerak ke ujung list satu pertukaran demi satu pertukaran, seperti gelembung yang naik ke permukaan. Setelah pass k, k elemen terbesar sudah di tempatnya."
+    },
+    {
+      "q": "Apakah bubble sort lebih cepat daripada insertion sort?",
+      "a": "Tidak. Keduanya O(n²), tetapi insertion sort biasanya melakukan lebih sedikit operasi dan lebih cepat dalam praktik, terutama pada data yang hampir terurut."
+    },
+    {
+      "q": "Apakah bubble sort memakai memori tambahan?",
+      "a": "Tidak. Algoritma ini mengurutkan di tempat dan hanya butuh ruang tambahan O(1) untuk indeks perulangan dan satu nilai sementara saat pertukaran."
+    }
+  ]
+}

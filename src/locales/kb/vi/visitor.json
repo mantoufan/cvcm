@@ -1,0 +1,154 @@
+{
+  "title": "Mẫu Visitor: double dispatch và visitor cho AST trong TypeScript — cv.cm",
+  "description": "Mẫu Visitor thêm thao tác mới cho một hệ phân cấp lớp mà không sửa các lớp đó. Tìm hiểu double dispatch, mã TypeScript và cách thay thế bằng union type.",
+  "h1": "Mẫu Visitor (Visitor pattern) giải thích kèm ví dụ",
+  "answer": "Visitor là một mẫu thiết kế hành vi (behavioral design pattern) cho phép bạn thêm thao tác mới cho một nhóm lớp liên quan mà không sửa các lớp đó. Mỗi thao tác được viết thành một đối tượng visitor với một phương thức cho từng kiểu phần tử, và mỗi phần tử có phương thức `accept(visitor)` gọi phương thức visitor tương ứng. Kỹ thuật này, gọi là double dispatch (điều phối kép), chọn đoạn mã chạy dựa trên cả kiểu phần tử lẫn kiểu visitor. Trình biên dịch, linter và công cụ biến đổi mã dùng visitor để duyệt cây cú pháp.",
+  "sections": [
+    {
+      "h": "Mục đích và vấn đề cần giải quyết",
+      "body": [
+        "Mục đích: biểu diễn một thao tác sẽ thực hiện trên các phần tử của một cấu trúc đối tượng. Mẫu Visitor cho phép định nghĩa thao tác mới mà không đổi các lớp phần tử mà nó tác động lên. Đây là một trong các mẫu hành vi trong cuốn sách của nhóm Gang of Four (GoF).",
+        "Giả sử một chương trình vẽ có ba lớp hình: `Circle`, `Rectangle` và `Group`. Theo thời gian bạn cần nhiều thao tác trên chúng: tính tổng diện tích, xuất ra SVG, xuất ra JSON, đếm số hình, kiểm tra chồng lấn. Nếu mỗi thao tác trở thành một phương thức trên mọi lớp hình, các lớp hình sẽ phình ra với mã chẳng liên quan gì đến việc là một hình, và mỗi thao tác mới đều phải đụng đến tất cả chúng.",
+        "Với mẫu Visitor, mỗi thao tác là một lớp (visitor tính diện tích, visitor xuất SVG) chứa mã cho mọi kiểu hình. Các hình chỉ cần một phương thức chung, `accept`. Thêm thao tác nghĩa là viết thêm một visitor mới; các lớp hình giữ nguyên."
+      ]
+    },
+    {
+      "h": "Cấu trúc và các thành phần tham gia",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Vai trò",
+              "Trách nhiệm"
+            ],
+            "rows": [
+              [
+                "Visitor",
+                "Giao diện có một phương thức visit cho mỗi kiểu phần tử cụ thể, như `visitCircle` và `visitRectangle`"
+              ],
+              [
+                "Concrete visitor (visitor cụ thể)",
+                "Triển khai một thao tác cho mọi kiểu phần tử và có thể thu thập kết quả"
+              ],
+              [
+                "Element (phần tử)",
+                "Giao diện có phương thức `accept(visitor)`"
+              ],
+              [
+                "Concrete element (phần tử cụ thể)",
+                "Triển khai `accept` bằng cách gọi phương thức visit cho kiểu của chính nó, truyền chính nó vào"
+              ],
+              [
+                "Object structure (cấu trúc đối tượng)",
+                "Một tập hợp hoặc cây các phần tử, như tài liệu hay cây cú pháp, mà visitor duyệt qua"
+              ]
+            ]
+          }
+        },
+        "Vì sao cần `accept`: trong TypeScript, Java và C#, một lời gọi phương thức chọn cách triển khai dựa trên kiểu của đối tượng được gọi (single dispatch, điều phối đơn). Lời gọi `accept` điều phối theo kiểu phần tử, còn lời gọi bên trong nó, như `visitor.visitCircle(this)`, điều phối theo kiểu visitor. Kết hợp lại, chúng tạo thành double dispatch."
+      ]
+    },
+    {
+      "h": "Triển khai bằng TypeScript",
+      "body": [
+        "Interface visitor là generic theo kiểu trả về, nhờ vậy một visitor có thể tính số còn visitor khác sinh ra chuỗi.",
+        {
+          "code": "interface ShapeVisitor<R> {\n  visitCircle(c: Circle): R;\n  visitRectangle(r: Rectangle): R;\n  visitGroup(g: Group): R;\n}\ninterface Shape {\n  accept<R>(visitor: ShapeVisitor<R>): R;\n}\n\nclass Circle implements Shape {\n  constructor(readonly radius: number) {}\n  accept<R>(v: ShapeVisitor<R>) { return v.visitCircle(this); }\n}\nclass Rectangle implements Shape {\n  constructor(readonly width: number, readonly height: number) {}\n  accept<R>(v: ShapeVisitor<R>) { return v.visitRectangle(this); }\n}\nclass Group implements Shape {\n  constructor(readonly children: Shape[]) {}\n  accept<R>(v: ShapeVisitor<R>) { return v.visitGroup(this); }\n}\n\nclass AreaVisitor implements ShapeVisitor<number> {\n  visitCircle(c: Circle) { return Math.PI * c.radius ** 2; }\n  visitRectangle(r: Rectangle) { return r.width * r.height; }\n  visitGroup(g: Group): number {\n    return g.children.reduce((sum, child) => sum + child.accept(this), 0);\n  }\n}\n\nclass SvgVisitor implements ShapeVisitor<string> {\n  visitCircle(c: Circle) { return '<circle r=\"' + c.radius + '\"/>'; }\n  visitRectangle(r: Rectangle) { return '<rect width=\"' + r.width + '\" height=\"' + r.height + '\"/>'; }\n  visitGroup(g: Group): string { return \"<g>\" + g.children.map((c) => c.accept(this)).join(\"\") + \"</g>\"; }\n}\n\nconst drawing = new Group([new Circle(1), new Rectangle(2, 3), new Group([new Rectangle(1, 1)])]);\nconsole.log(drawing.accept(new AreaVisitor()).toFixed(2)); // 10.14\nconsole.log(drawing.accept(new SvgVisitor()));\n// <g><circle r=\"1\"/><rect width=\"2\" height=\"3\"/><g><rect width=\"1\" height=\"1\"/></g></g>",
+          "lang": "typescript"
+        },
+        "Một thao tác thứ ba, như đếm số hình, sẽ là một lớp mới triển khai `ShapeVisitor<number>`. Không lớp hình nào phải thay đổi.",
+        {
+          "note": "Mẫu Visitor giúp thêm thao tác dễ dàng nhưng thêm kiểu phần tử thì khó. Một lớp hình mới, như `Triangle`, đòi hỏi một phương thức mới trong interface visitor và trong mọi visitor hiện có. Hãy dùng mẫu này khi tập kiểu phần tử ổn định còn tập thao tác liên tục tăng."
+        }
+      ]
+    },
+    {
+      "h": "Cách thay thế trong TypeScript: union type và switch",
+      "body": [
+        "Trong TypeScript, một discriminated union cùng câu lệnh `switch` đầy đủ mang lại nhiều lợi ích tương tự với ít mã hơn. Trình biên dịch báo lỗi nếu thiếu một case, thay thế cho sự an toàn mà interface visitor cung cấp:",
+        {
+          "code": "type Shape =\n  | { kind: \"circle\"; radius: number }\n  | { kind: \"rect\"; width: number; height: number }\n  | { kind: \"group\"; children: Shape[] };\n\nfunction area(s: Shape): number {\n  switch (s.kind) {\n    case \"circle\": return Math.PI * s.radius ** 2;\n    case \"rect\": return s.width * s.height;\n    case \"group\": return s.children.reduce((sum, c) => sum + area(c), 0);\n    default: {\n      const unreachable: never = s; // compile error if a kind is not handled\n      return unreachable;\n    }\n  }\n}\n\nconsole.log(area({ kind: \"group\", children: [{ kind: \"rect\", width: 2, height: 3 }] })); // 6",
+          "lang": "typescript"
+        },
+        "Mỗi thao tác mới là một hàm mới. Phong cách này phù hợp với dữ liệu thuần, như JSON hoặc cây cú pháp, và là cách nhiều codebase TypeScript dùng thay cho visitor dựa trên lớp."
+      ]
+    },
+    {
+      "h": "Khi nào nên dùng và khi nào không",
+      "body": [
+        {
+          "ul": [
+            "Nên dùng khi bạn có một tập lớp phần tử ổn định và cần nhiều thao tác không liên quan trên chúng, như đánh giá, in, kiểm tra kiểu và tối ưu hóa trên một cây cú pháp.",
+            "Nên dùng để giữ mã của một thao tác ở cùng một chỗ: toàn bộ phần xuất SVG nằm trong một visitor, không rải rác qua nhiều lớp.",
+            "Nên dùng khi visitor cần tích lũy trạng thái trong lúc duyệt một cấu trúc, như bảng ký hiệu hoặc tổng chạy.",
+            "Không nên dùng khi các kiểu phần tử thay đổi thường xuyên; mỗi thay đổi lan sang mọi visitor.",
+            "Không nên dùng khi có ít phần tử và các thao tác đơn giản. Phương thức trên các lớp, hoặc một hàm với `switch`, dễ đọc hơn.",
+            "Lưu ý rằng visitor thường cần truy cập dữ liệu của phần tử, điều này có thể khiến bạn phải để các trường ở chế độ công khai."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Ứng dụng trong thực tế",
+      "body": [
+        {
+          "ul": [
+            "Plugin Babel là các visitor: một đối tượng có các phương thức đặt tên theo kiểu nút, như `Identifier` hoặc `CallExpression`, mà `@babel/traverse` gọi khi duyệt cây cú pháp.",
+            "Các rule của ESLint trả về một đối tượng gồm các phương thức visitor theo khóa là kiểu nút, và ESLint gọi chúng trong lúc duyệt.",
+            "Các lớp `ast.NodeVisitor` và `ast.NodeTransformer` của Python gọi các phương thức `visit_` đặt tên theo lớp nút, như `visit_Name`.",
+            "`java.nio.file.FileVisitor` của Java, dùng với `Files.walkFileTree`, nhận callback cho từng thư mục và tệp trong một cây tệp."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Các mẫu liên quan",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Mẫu",
+              "Liên hệ với mẫu Visitor như thế nào"
+            ],
+            "rows": [
+              [
+                "Composite",
+                "Visitor thường được áp dụng cho cấu trúc Composite; phương thức visit của một nhóm sẽ thăm các phần tử con, như trong ví dụ."
+              ],
+              [
+                "Interpreter",
+                "Interpreter đánh giá một cây cú pháp; visitor có thể triển khai việc đánh giá đó, cộng thêm các thao tác khác trên cùng cây."
+              ],
+              [
+                "Iterator",
+                "Iterator duyệt qua các phần tử; visitor định nghĩa thao tác trên từng phần tử. Hai mẫu có thể kết hợp với nhau."
+              ],
+              [
+                "Strategy",
+                "Strategy thay đổi một thuật toán cho một context; visitor gói một thao tác cho nhiều kiểu phần tử."
+              ]
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Double dispatch là gì?",
+      "a": "Double dispatch nghĩa là đoạn mã chạy phụ thuộc vào kiểu của hai đối tượng. Trong mẫu Visitor, `element.accept(visitor)` chọn theo kiểu phần tử, còn `visitor.visitX(this)` bên trong nó chọn theo kiểu visitor."
+    },
+    {
+      "q": "Khi nào không nên dùng mẫu Visitor?",
+      "a": "Hãy tránh nó khi kiểu phần tử mới được thêm thường xuyên, vì mỗi kiểu mới đòi hỏi sửa mọi visitor. Nó cũng thêm nhiều thủ tục rườm rà không đáng cho vài thao tác đơn giản."
+    },
+    {
+      "q": "Mẫu Visitor có hữu ích trong TypeScript không?",
+      "a": "Nó hữu ích với các cấu trúc đối tượng dựa trên lớp. Với dữ liệu thuần, một discriminated union cùng `switch` đầy đủ thường đạt kết quả tương tự với ít mã hơn và kiểm tra kiểu đầy đủ."
+    },
+    {
+      "q": "Vì sao Babel và ESLint dùng visitor?",
+      "a": "Cả hai làm việc trên cây cú pháp có nhiều kiểu nút và hỗ trợ nhiều plugin hoặc rule độc lập. Visitor cho phép mỗi plugin hay rule chỉ xử lý những kiểu nút nó quan tâm, còn công cụ lo việc duyệt cây."
+    }
+  ]
+}

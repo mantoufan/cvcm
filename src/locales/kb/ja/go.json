@@ -1,0 +1,186 @@
+{
+  "title": "Goチュートリアル：型・スライス・構造体・ゴルーチン・エラー処理 — cv.cm",
+  "description": "Go言語入門を1ページで：インストールとHello world、型、ループ、関数、スライスとマップ、構造体とインターフェース、ゴルーチンとチャネル、エラー処理まで解説します。",
+  "h1": "Go言語入門チュートリアル（初心者向け）",
+  "answer": "Go（Golangとも呼ばれます）は、Googleが開発したシンプルなコンパイル型の静的型付け言語で、高速なビルド、扱いやすい並行処理、信頼性の高いサーバーを目指して作られました。Goをインストールし、`main` パッケージを書いて `go run hello.go` で実行します。少数の型、スライスとマップ、メソッドを持つ構造体、暗黙的なインターフェース、並行処理のためのゴルーチンとチャネル、通常の値として返されるエラーが中心的な内容です。",
+  "sections": [
+    {
+      "h": "Goとは何か、何に使われるか",
+      "body": [
+        "Goは、GoogleでRobert Griesemer、Rob Pike、Ken Thompsonが設計し、2009年にオープンソースとして公開されました。単一の静的バイナリにコンパイルされ、起動が速く、ガベージコレクタとネットワーク向けの充実した標準ライブラリを備えています。クラウドインフラやコマンドラインツールで使われ、Docker、Kubernetes、Terraform、PrometheusはGoで書かれています。多くの企業がWeb APIやマイクロサービスにも採用しています。言語が意図的に小さく作られているため、チームが違ってもコードが似た見た目になります。"
+      ]
+    },
+    {
+      "h": "Goのインストールと Hello, world の実行",
+      "body": [
+        "go.dev/dlからGoをダウンロードし、`go version` で確認します。フォルダを作ってモジュールを開始し、`main.go` を追加します。",
+        {
+          "code": "package main\n\nimport \"fmt\"\n\nfunc main() {\n    fmt.Println(\"Hello, world\")\n}",
+          "lang": "go"
+        },
+        {
+          "code": "go mod init example.com/hello\ngo run .\n# Hello, world\ngo build     # produces a standalone binary named hello",
+          "lang": "shell"
+        },
+        "実行は `package main` の `func main` から始まります。コードの整形には `gofmt`（または `go fmt`）を実行します。Goのコードはすべて同じスタイルで、実際のソースファイルではインデントにタブを使います。"
+      ]
+    },
+    {
+      "h": "変数と基本の型",
+      "body": [
+        "変数は `var name type = value` で宣言するか、関数内では型を推論する短縮形 `name := value` で宣言します。代入されていない変数にはゼロ値（`0`、`\"\"`、`false`、`nil`）が入ります。",
+        {
+          "table": {
+            "head": [
+              "型",
+              "例",
+              "ゼロ値"
+            ],
+            "rows": [
+              [
+                "`int`, `int64`",
+                "`n := 42`",
+                "`0`"
+              ],
+              [
+                "`float64`",
+                "`x := 3.14`",
+                "`0`"
+              ],
+              [
+                "`bool`",
+                "`ok := true`",
+                "`false`"
+              ],
+              [
+                "`string`",
+                "`s := \"hi\"`",
+                "`\"\"`"
+              ],
+              [
+                "`rune`",
+                "`r := 'é'`",
+                "`0`（Unicodeコードポイント）"
+              ],
+              [
+                "`byte`",
+                "`b := byte(65)`",
+                "`0`（`uint8` の別名）"
+              ]
+            ]
+          }
+        },
+        {
+          "code": "package main\n\nimport (\n    \"fmt\"\n    \"strconv\"\n)\n\nfunc main() {\n    name := \"Ada\"\n    count := 7\n    avg := float64(count) / 2 // explicit conversion is required\n    fmt.Printf(\"%s has %d items, avg %.1f\\n\", name, count, avg) // Ada has 7 items, avg 3.5\n    n, err := strconv.Atoi(\"12\")\n    fmt.Println(n+1, err) // 13 <nil>\n}",
+          "lang": "go"
+        },
+        "Goは数値型どうしを暗黙的に変換しません。また、使っていない変数や使っていないimportはコンパイラがエラーにします。"
+      ]
+    },
+    {
+      "h": "制御構文と関数",
+      "body": [
+        "条件式を括弧で囲む必要はなく、波括弧は必須です。`for` は唯一のループキーワードで、従来型、while型、range型のループをすべて表せます。関数は複数の値を返せます。",
+        {
+          "code": "package main\n\nimport \"fmt\"\n\nfunc divmod(a, b int) (int, int) {\n    return a / b, a % b\n}\n\nfunc main() {\n    score := 72\n    if score >= 90 {\n        fmt.Println(\"A\")\n    } else if score >= 70 {\n        fmt.Println(\"B\") // B\n    } else {\n        fmt.Println(\"C\")\n    }\n\n    for i := 0; i < 3; i++ {\n        fmt.Print(i, \" \") // 0 1 2\n    }\n    fmt.Println()\n\n    n := 10\n    for n > 1 { // while-style loop\n        n /= 2\n    }\n\n    q, r := divmod(17, 5)\n    fmt.Println(n, q, r) // 1 3 2\n\n    switch day := \"SAT\"; day {\n    case \"SAT\", \"SUN\":\n        fmt.Println(\"weekend\") // no break needed\n    default:\n        fmt.Println(\"weekday\")\n    }\n}",
+          "lang": "go"
+        }
+      ]
+    },
+    {
+      "h": "スライス、マップ、構造体",
+      "body": [
+        "スライスは配列を伸縮できる形で参照するもので、日常的に使うリスト型です。マップはハッシュテーブルです。構造体は名前付きのフィールドをまとめ、メソッドはレシーバを持つ関数です。",
+        {
+          "code": "package main\n\nimport (\n    \"fmt\"\n    \"sort\"\n)\n\ntype Point struct {\n    X, Y int\n}\n\nfunc (p Point) Add(o Point) Point { return Point{p.X + o.X, p.Y + o.Y} }\n\nfunc (p *Point) Scale(k int) { p.X *= k; p.Y *= k } // pointer receiver modifies p\n\nfunc main() {\n    nums := []int{3, 1, 2}\n    nums = append(nums, 5)\n    sort.Ints(nums)\n    fmt.Println(nums, len(nums), nums[1:3]) // [1 2 3 5] 4 [2 3]\n\n    ages := map[string]int{\"ann\": 31, \"bob\": 25}\n    ages[\"cy\"] = 40\n    age, ok := ages[\"zed\"]\n    fmt.Println(age, ok, len(ages)) // 0 false 3\n\n    for i, n := range nums {\n        fmt.Print(i, \":\", n, \" \") // 0:1 1:2 2:3 3:5\n    }\n    fmt.Println()\n\n    p := Point{1, 2}.Add(Point{3, 4})\n    p.Scale(2)\n    fmt.Printf(\"%+v\\n\", p) // {X:8 Y:12}\n}",
+          "lang": "go"
+        },
+        "マップの反復順序は意図的にランダムです。順序を固定したい場合はキーをソートしてください。大文字で始まる名前（`Point`、`Add`）は、パッケージの外に公開されます。"
+      ]
+    },
+    {
+      "h": "インターフェース",
+      "body": [
+        "インターフェースはメソッドのシグネチャを列挙します。型がそれらのメソッドを持っていれば、そのインターフェースを満たします。`implements` キーワードはありません。",
+        {
+          "code": "package main\n\nimport (\n    \"fmt\"\n    \"math\"\n)\n\ntype Shape interface {\n    Area() float64\n}\n\ntype Circle struct{ R float64 }\ntype Rect struct{ W, H float64 }\n\nfunc (c Circle) Area() float64 { return math.Pi * c.R * c.R }\nfunc (r Rect) Area() float64   { return r.W * r.H }\n\nfunc main() {\n    shapes := []Shape{Circle{1}, Rect{2, 3}}\n    total := 0.0\n    for _, s := range shapes {\n        total += s.Area()\n    }\n    fmt.Printf(\"%.2f\\n\", total) // 9.14\n}",
+          "lang": "go"
+        },
+        "Goにはジェネリクス（Go 1.18以降）もあり、たとえば `func Max[T int | float64](a, b T) T` のように書けます。主に `slices` や `maps` パッケージなどのライブラリ関数を通じて使うことになります。"
+      ]
+    },
+    {
+      "h": "特徴的な機能：ゴルーチンとチャネル",
+      "body": [
+        "ゴルーチンは `go` キーワードで開始する軽量なスレッドで、1つのプログラムで何千も実行できます。ゴルーチンどうしはチャネルを通じて通信し、チャネルは値を安全に受け渡します。`sync.WaitGroup` は、ゴルーチンのグループが終わるのを待ちます。",
+        {
+          "code": "package main\n\nimport (\n    \"fmt\"\n    \"sync\"\n)\n\nfunc square(n int, results chan<- int, wg *sync.WaitGroup) {\n    defer wg.Done()\n    results <- n * n\n}\n\nfunc main() {\n    results := make(chan int, 5)\n    var wg sync.WaitGroup\n    for i := 1; i <= 5; i++ {\n        wg.Add(1)\n        go square(i, results, &wg)\n    }\n    wg.Wait()\n    close(results)\n\n    sum := 0\n    for r := range results {\n        sum += r\n    }\n    fmt.Println(sum) // 55\n}",
+          "lang": "go"
+        },
+        "`defer` は、囲んでいる関数が戻るときに実行する呼び出しを予約します。Goのコードがファイルを閉じたりミューテックスをアンロックしたりする方法です。開発中は `go run -race .` を使うと、データ競合を検出できます。"
+      ]
+    },
+    {
+      "h": "エラー処理",
+      "body": [
+        "Goには、通常の失敗に対する例外がありません。失敗しうる関数は最後の戻り値として `error` を返し、呼び出し側がすぐに確認します。エラーを `%w` でラップすると、元のエラーを `errors.Is` で調べられるまま、文脈を追加できます。",
+        {
+          "code": "package main\n\nimport (\n    \"errors\"\n    \"fmt\"\n    \"os\"\n)\n\nfunc readConfig(path string) ([]byte, error) {\n    data, err := os.ReadFile(path)\n    if err != nil {\n        return nil, fmt.Errorf(\"read config: %w\", err)\n    }\n    return data, nil\n}\n\nfunc main() {\n    _, err := readConfig(\"missing.json\")\n    if errors.Is(err, os.ErrNotExist) {\n        fmt.Println(\"no config file:\", err)\n    }\n}",
+          "lang": "go"
+        },
+        "`panic` と `recover` もありますが、プログラミングのミスや本当に想定外の状態のためのもので、通常のエラー処理には使いません。"
+      ]
+    },
+    {
+      "h": "小さな完成プログラム：小さなWebサーバー",
+      "body": [
+        "標準ライブラリだけで、このプログラムはHTTPでJSONを返します。`go run .` で実行し、`http://localhost:8080/hello?name=Ann` を開きます。",
+        {
+          "code": "package main\n\nimport (\n    \"encoding/json\"\n    \"log\"\n    \"net/http\"\n    \"time\"\n)\n\ntype Greeting struct {\n    Message string    `json:\"message\"`\n    Time    time.Time `json:\"time\"`\n}\n\nfunc hello(w http.ResponseWriter, r *http.Request) {\n    name := r.URL.Query().Get(\"name\")\n    if name == \"\" {\n        name = \"world\"\n    }\n    w.Header().Set(\"Content-Type\", \"application/json\")\n    err := json.NewEncoder(w).Encode(Greeting{\"Hello, \" + name, time.Now()})\n    if err != nil {\n        log.Println(\"encode:\", err)\n    }\n}\n\nfunc main() {\n    http.HandleFunc(\"/hello\", hello)\n    log.Println(\"listening on :8080\")\n    log.Fatal(http.ListenAndServe(\":8080\", nil))\n}",
+          "lang": "go"
+        },
+        "各フィールドの型の後ろにある文字列は構造体タグで、JSONのキー名を指定します。各リクエストは、自動的にそれぞれのゴルーチンで処理されます。"
+      ]
+    },
+    {
+      "h": "初心者がよくやる間違い",
+      "body": [
+        {
+          "note": "`nil` のマップへ書き込むとpanicになります。`var m map[string]int` で宣言したマップは、代入の前に `make(map[string]int)` またはリテラルで作る必要があります。"
+        },
+        {
+          "ul": [
+            "`_` でエラーを無視する。問題にならないと確信できる場合を除き、返された `error` はすべて確認しましょう。",
+            "`append` が元のスライスをその場で変更すると思い込む。`s = append(s, x)` のように、必ず戻り値を使います。",
+            "ゴルーチンを開始したあと、それらが終わる前に `main` が戻ってしまう。`sync.WaitGroup` やチャネルで待ちます。",
+            "メソッドが構造体を変更する必要があるのに、値レシーバを使う。`func (p *Point)` のようなポインタレシーバを使います。"
+          ]
+        }
+      ]
+    },
+    {
+      "h": "次のステップ",
+      "body": [
+        "インタラクティブなTour of Goを進め、その後Effective Goとpkg.go.devの標準ライブラリのドキュメントを読みましょう。単体テストとベンチマークのための `go test`、タイムアウトとキャンセルのための `context` パッケージ、依存関係を管理するモジュールも学びます。"
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "GoとGolangのどちらが正式名称ですか？",
+      "a": "正式名称はGoです。「Golang」は、以前のサイトのアドレス golang.org に由来し、今でも検索キーワードとして使われています。"
+    },
+    {
+      "q": "Goはオブジェクト指向ですか？",
+      "a": "部分的にそうです。Goにはメソッドとインターフェースがありますが、クラスや継承はありません。構造体の埋め込みと小さなインターフェースの組み合わせで型を作ります。"
+    },
+    {
+      "q": "GoはPythonより速いですか？",
+      "a": "CPUに負荷がかかる処理の大半では、はい。Goはネイティブの機械語にコンパイルされ、静的型付けだからです。ただし、重い処理がCで書かれたライブラリの内部で行われる場合は、Pythonでも高速に動作します。"
+    },
+    {
+      "q": "ゴルーチンとスレッドの違いは何ですか？",
+      "a": "ゴルーチンはGoのランタイムが管理し、小さなスタックから始まって必要に応じて拡張されます。ランタイムが多数のゴルーチンを少数のOSスレッドに割り当てて実行するため、ゴルーチンの生成コストははるかに小さくなります。"
+    }
+  ]
+}

@@ -1,0 +1,175 @@
+{
+  "title": "Patrón Bridge: separar la abstracción de la implementación, ejemplo en TypeScript — cv.cm",
+  "description": "El patrón Bridge explicado: divide una clase en jerarquías de abstracción e implementación que varían por separado. Ejemplo en TypeScript y usos reales.",
+  "h1": "Patrón Bridge explicado con ejemplos",
+  "answer": "Bridge es un patrón de diseño estructural que divide una gran jerarquía de clases en dos jerarquías separadas, una abstracción y una implementación, conectadas por composición. La abstracción (por ejemplo, tipos de informes) mantiene una referencia a un objeto de implementación (por ejemplo, renderizadores de salida) y le delega el trabajo de bajo nivel. Así, ambos lados pueden crecer de forma independiente: 3 tipos de informe y 3 renderizadores necesitan 6 clases en lugar de 9 combinaciones de subclases.",
+  "sections": [
+    {
+      "h": "Intención",
+      "body": [
+        "Desacoplar una abstracción de su implementación para que ambas puedan variar de forma independiente. El patrón Bridge es uno de los siete patrones estructurales del libro de la Banda de los Cuatro (GoF), donde también se conoce como Handle/Body."
+      ]
+    },
+    {
+      "h": "El problema que resuelve",
+      "body": [
+        "Imagina una aplicación que envía dos tipos de mensajes, alertas y recordatorios, por dos canales, correo electrónico y SMS. Si lo modelas con herencia, obtienes `EmailAlert`, `SmsAlert`, `EmailReminder` y `SmsReminder`. Añade un canal push y un mensaje resumen, y necesitas nueve clases. Cada tipo nuevo en cualquiera de los lados multiplica el total.",
+        "El problema real es que la jerarquía de clases mezcla dos preguntas independientes: qué es el mensaje y cómo se entrega. Bridge las separa en dos jerarquías y las conecta con una referencia, de modo que el total crece por suma en lugar de por multiplicación.",
+        {
+          "table": {
+            "head": [
+              "Diseño",
+              "2 mensajes × 2 canales",
+              "3 mensajes × 3 canales",
+              "4 mensajes × 4 canales"
+            ],
+            "rows": [
+              [
+                "Una subclase por combinación",
+                "4 clases",
+                "9 clases",
+                "16 clases"
+              ],
+              [
+                "Bridge",
+                "4 clases",
+                "6 clases",
+                "8 clases"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "Estructura y participantes",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Participante",
+              "Responsabilidad",
+              "En el ejemplo"
+            ],
+            "rows": [
+              [
+                "Abstraction",
+                "La interfaz de alto nivel que usan los clientes; mantiene una referencia a un Implementor.",
+                "`Message`"
+              ],
+              [
+                "RefinedAbstraction",
+                "Extiende la abstracción con comportamiento propio de cada variante.",
+                "`Alert`, `Reminder`"
+              ],
+              [
+                "Implementor",
+                "Interfaz de las operaciones de bajo nivel.",
+                "`Sender`"
+              ],
+              [
+                "ConcreteImplementor",
+                "Implementa las operaciones de bajo nivel para una plataforma o tecnología.",
+                "`EmailSender`, `SmsSender`"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "Implementación en TypeScript",
+      "body": [
+        {
+          "code": "// Implementor: how a message is delivered.\ninterface Sender {\n  deliver(to: string, subject: string, body: string): string;\n}\n\nclass EmailSender implements Sender {\n  deliver(to: string, subject: string, body: string) { return `email ${to} | ${subject} | ${body}`; }\n}\n\nclass SmsSender implements Sender {\n  deliver(to: string, subject: string, body: string) { return `sms ${to} | ${subject}: ${body}`.slice(0, 40); }\n}\n\n// Abstraction: what the message is. It holds the bridge to a Sender.\nabstract class Message {\n  constructor(protected sender: Sender) {}\n  abstract send(to: string): string;\n}\n\nclass Alert extends Message {\n  constructor(sender: Sender, private problem: string) { super(sender); }\n  send(to: string): string {\n    return this.sender.deliver(to, \"ALERT\", this.problem.toUpperCase());\n  }\n}\n\nclass Reminder extends Message {\n  constructor(sender: Sender, private task: string, private due: string) { super(sender); }\n  send(to: string): string {\n    return this.sender.deliver(to, \"Reminder\", `${this.task} by ${this.due}`);\n  }\n}\n\nconsole.log(new Alert(new SmsSender(), \"disk full\").send(\"+100\")); // sms +100 | ALERT: DISK FULL\nconsole.log(new Reminder(new EmailSender(), \"Pay invoice\", \"Friday\").send(\"ada@example.com\"));\n// email ada@example.com | Reminder | Pay invoice by Friday",
+          "lang": "typescript"
+        },
+        "Añadir un `PushSender` es una sola clase, y funciona de inmediato con alertas y recordatorios. Añadir un mensaje `Digest` es una sola clase, y funciona de inmediato con todos los emisores. Como el emisor es solo un argumento del constructor, también puede elegirse en tiempo de ejecución, por ejemplo a partir de las preferencias del usuario."
+      ]
+    },
+    {
+      "h": "Cuándo usarlo y cuándo no",
+      "body": [
+        "Usa el patrón Bridge cuando:",
+        {
+          "ul": [
+            "Una clase varíe en dos o más dimensiones independientes y la herencia crearía una clase para cada combinación.",
+            "Quieras cambiar la implementación en tiempo de ejecución, o compartir un objeto de implementación entre varias abstracciones.",
+            "Construyas código que deba ejecutarse en varias plataformas (sistemas operativos, back ends de renderizado, motores de bases de datos) y quieras los detalles de plataforma en una jerarquía separada."
+          ]
+        },
+        "Evítalo cuando:",
+        {
+          "ul": [
+            "Solo haya una dimensión de cambio. Basta con una interfaz simple con varias implementaciones.",
+            "Lo añadas «para más adelante» con una sola implementación. La capa adicional hace el código más difícil de leer sin ningún beneficio todavía."
+          ]
+        },
+        {
+          "note": "Bridge se diseña desde el principio, cuando sabes que ambos lados variarán. Si estás encajando una clase existente en una interfaz a posteriori, necesitas un patrón Adapter, no un patrón Bridge."
+        }
+      ]
+    },
+    {
+      "h": "Usos en el mundo real",
+      "body": [
+        {
+          "ul": [
+            "JDBC en Java es un ejemplo muy conocido: el código de la aplicación se escribe contra la API JDBC, mientras que cada proveedor de bases de datos aporta un controlador que implementa las operaciones de bajo nivel. Los dos lados evolucionan de forma independiente.",
+            "Los toolkits gráficos y de interfaz de usuario mantienen una API de widgets o formas independiente de la plataforma sobre back ends de dibujo específicos de cada plataforma. El propio ejemplo del libro GoF es una abstracción `Window` con una implementación `WindowImp` distinta por cada sistema de ventanas.",
+            "Las bibliotecas de registro (logging) suelen separar la API del logger que llama el código de los manejadores o appenders que escriben en archivos, consolas o servicios de red."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Patrones relacionados",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Patrón",
+              "Cómo se relaciona con Bridge"
+            ],
+            "rows": [
+              [
+                "Adapter",
+                "Tiene una forma parecida, pero hace que clases existentes sin relación funcionen juntas después de haber sido diseñadas. Bridge se planifica antes de escribir las clases."
+              ],
+              [
+                "Strategy",
+                "También delega en un objeto intercambiable. Strategy trata de intercambiar un algoritmo; Bridge trata de separar toda una jerarquía de abstracción de su jerarquía de implementación."
+              ],
+              [
+                "Abstract Factory",
+                "Puede crear y configurar el objeto de implementación adecuado para un bridge, por ejemplo el back end de plataforma correcto."
+              ],
+              [
+                "Composite",
+                "Bridge también se basa en la composición en lugar de la herencia, pero Composite trata de árboles de objetos, no de dos jerarquías independientes."
+              ]
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "¿Qué significa «implementación» en el patrón Bridge?",
+      "a": "No significa el código dentro de una clase. Significa una jerarquía aparte de objetos que hacen el trabajo de bajo nivel, específico de la plataforma, y en los que la abstracción delega."
+    },
+    {
+      "q": "¿Cuál es la diferencia entre el patrón Bridge y el patrón Strategy?",
+      "a": "Su estructura es casi la misma. Strategy se centra en intercambiar un algoritmo dentro de un objeto, mientras que Bridge separa dos jerarquías enteras para que cada una pueda ampliarse de forma independiente."
+    },
+    {
+      "q": "¿Cuál es la diferencia entre el patrón Bridge y el patrón Adapter?",
+      "a": "Bridge se diseña de antemano para que dos lados puedan variar. Adapter se añade después para que una clase existente e incompatible encaje en una interfaz."
+    },
+    {
+      "q": "¿El patrón Bridge es lo mismo que la inyección de dependencias?",
+      "a": "No. Bridge es una forma de estructurar dos jerarquías. La inyección de dependencias es una forma de suministrar el objeto de implementación, y es una manera natural de dar a una abstracción su implementador."
+    }
+  ]
+}

@@ -1,0 +1,193 @@
+{
+  "title": "Java tutorial: classes, types, collections and exceptions — cv.cm",
+  "description": "Learn Java in one page: install a JDK and run Hello world, primitive types, control flow, methods, classes, records, collections, exceptions and a full example.",
+  "h1": "Java tutorial for beginners",
+  "answer": "Java is a statically typed, object-oriented language that compiles to bytecode and runs on the Java Virtual Machine (JVM) on any operating system. Install a JDK, save a class in `Hello.java` and run `java Hello.java`. The core ideas are classes and objects, primitive and reference types, the collections framework (`List`, `Map`, `Set`), checked exceptions, and newer features such as records, `var` and pattern matching.",
+  "sections": [
+    {
+      "h": "What Java is and what it is used for",
+      "body": [
+        "Java was released by Sun Microsystems in 1995 and is now developed in the open OpenJDK project, with Oracle as the main steward. Its promise is \"write once, run anywhere\": the compiler produces bytecode, and the JVM runs it on Windows, macOS and Linux. Java is used for large business back ends (often with Spring Boot), Android apps (alongside Kotlin), big-data tools such as Apache Kafka and Hadoop, and many desktop and embedded systems. A new version comes out every six months, and long-term support (LTS) versions such as Java 21 are the usual choice for production."
+      ]
+    },
+    {
+      "h": "Install a JDK and run Hello, world",
+      "body": [
+        "Install a JDK (Java Development Kit), for example an OpenJDK build such as Eclipse Temurin or Oracle's JDK. Check it with `java -version`. Every Java program lives in a class, and execution starts at `main`.",
+        {
+          "code": "public class Hello {\n    public static void main(String[] args) {\n        System.out.println(\"Hello, world\");\n    }\n}",
+          "lang": "java"
+        },
+        {
+          "code": "java Hello.java        # run a single source file directly\n# Hello, world\njavac Hello.java       # or compile to Hello.class first\njava Hello",
+          "lang": "shell"
+        },
+        "The file name must match the public class name (`Hello.java` for `class Hello`)."
+      ]
+    },
+    {
+      "h": "Variables and basic types",
+      "body": [
+        "Java has eight primitive types, stored directly as values, and reference types (objects such as `String` and arrays). Every variable has a fixed type; `var` lets the compiler infer it from the initial value inside methods.",
+        {
+          "table": {
+            "head": [
+              "Type",
+              "Size",
+              "Example"
+            ],
+            "rows": [
+              [
+                "`int`",
+                "32-bit",
+                "`int n = 42;`"
+              ],
+              [
+                "`long`",
+                "64-bit",
+                "`long big = 10_000_000_000L;`"
+              ],
+              [
+                "`double`",
+                "64-bit float",
+                "`double pi = 3.14159;`"
+              ],
+              [
+                "`boolean`",
+                "true/false",
+                "`boolean ok = true;`"
+              ],
+              [
+                "`char`",
+                "16-bit UTF-16 unit",
+                "`char c = 'A';`"
+              ],
+              [
+                "`byte`, `short`, `float`",
+                "8, 16, 32-bit",
+                "Used less often"
+              ],
+              [
+                "`String`",
+                "reference",
+                "`String s = \"hi\";`"
+              ]
+            ]
+          }
+        },
+        {
+          "code": "int count = 7;\ndouble avg = count / 2;          // 3.0, integer division happens first\ndouble avg2 = count / 2.0;       // 3.5\nvar name = \"Ada\";                // inferred as String\nString msg = name + \" has \" + count + \" items\";\nSystem.out.println(msg);         // Ada has 7 items\nSystem.out.println(Integer.parseInt(\"12\") + 1); // 13",
+          "lang": "java"
+        },
+        "This is a fragment: place statements like these inside a method such as `main`."
+      ]
+    },
+    {
+      "h": "Control flow",
+      "body": [
+        {
+          "code": "int score = 72;\nif (score >= 90) {\n    System.out.println(\"A\");\n} else if (score >= 70) {\n    System.out.println(\"B\");     // B\n} else {\n    System.out.println(\"C\");\n}\nfor (int i = 0; i < 3; i++) {\n    System.out.println(i);       // 0, 1, 2\n}\nString day = \"SAT\";\nString kind = switch (day) {     // switch expression\n    case \"SAT\", \"SUN\" -> \"weekend\";\n    default -> \"weekday\";\n};\nSystem.out.println(kind);        // weekend",
+          "lang": "java"
+        },
+        "Java also has `while`, `do`/`while`, and the enhanced `for (String s : list)` loop for iterating over arrays and collections."
+      ]
+    },
+    {
+      "h": "Methods, classes and records",
+      "body": [
+        "A class bundles fields (data) and methods (behavior). `static` methods belong to the class itself; other methods are called on an object created with `new`. A `record` is a short way to declare an immutable data class: the compiler generates the constructor, accessors, `equals`, `hashCode` and `toString`.",
+        {
+          "code": "public class Shapes {\n    static double square(double x) {\n        return x * x;\n    }\n    static class Counter {\n        private int value;\n        void increment() { value++; }\n        int get() { return value; }\n    }\n    record Point(int x, int y) {\n        double distance() { return Math.sqrt(x * x + y * y); }\n    }\n    public static void main(String[] args) {\n        System.out.println(square(4));        // 16.0\n        Counter c = new Counter();\n        c.increment();\n        c.increment();\n        System.out.println(c.get());          // 2\n        Point p = new Point(3, 4);\n        System.out.println(p + \" \" + p.distance()); // Point[x=3, y=4] 5.0\n    }\n}",
+          "lang": "java"
+        },
+        "Classes can extend one parent class (`extends`) and implement many interfaces (`implements`). Fields are usually `private`, with access through methods."
+      ]
+    },
+    {
+      "h": "Collections: List, Map and Set",
+      "body": [
+        "The collections framework in `java.util` provides resizable data structures. Collections hold objects, so primitives are boxed automatically (`int` becomes `Integer`).",
+        {
+          "code": "import java.util.*;\npublic class Collections101 {\n    public static void main(String[] args) {\n        List<Integer> nums = new ArrayList<>(List.of(3, 1, 2));\n        nums.add(5);\n        Collections.sort(nums);\n        System.out.println(nums + \" \" + nums.get(0));  // [1, 2, 3, 5] 1\n        Map<String, Integer> ages = new HashMap<>();\n        ages.put(\"ann\", 31);\n        ages.put(\"bob\", 25);\n        System.out.println(ages.getOrDefault(\"zed\", 0)); // 0\n        Set<String> tags = new TreeSet<>(List.of(\"b\", \"a\", \"b\"));\n        System.out.println(tags);                        // [a, b]\n        List<Integer> evensSquared = nums.stream()\n            .filter(n -> n % 2 == 0)\n            .map(n -> n * n)\n            .toList();\n        System.out.println(evensSquared);                // [4]\n    }\n}",
+          "lang": "java"
+        },
+        "The last statement uses streams and lambdas, a functional style for transforming collections. `List.of` creates an immutable list; wrap it in `new ArrayList<>(...)` when you need to change it."
+      ]
+    },
+    {
+      "h": "Signature features: static typing, interfaces and pattern matching",
+      "body": [
+        "Interfaces define a contract that many classes can implement, which is the basis of most Java design. Modern Java adds pattern matching: `instanceof` and `switch` can test a type and bind a variable in one step. Sealed interfaces (Java 17 and later) list every allowed implementation, so the compiler can check that a `switch` covers all cases.",
+        {
+          "code": "public class Areas {\n    sealed interface Shape permits Circle, Rect {}\n    record Circle(double r) implements Shape {}\n    record Rect(double w, double h) implements Shape {}\n    static double area(Shape s) {\n        return switch (s) {\n            case Circle c -> Math.PI * c.r() * c.r();\n            case Rect r -> r.w() * r.h();\n        };\n    }\n    public static void main(String[] args) {\n        System.out.println(area(new Rect(2, 3)));  // 6.0\n    }\n}",
+          "lang": "java"
+        },
+        "Pattern matching for `switch` like this is standard in Java 21 LTS and later."
+      ]
+    },
+    {
+      "h": "Exceptions",
+      "body": [
+        "Errors are exceptions. Checked exceptions (such as `IOException`) must be caught or declared with `throws`; unchecked ones (subclasses of `RuntimeException`, such as `NullPointerException`) need not be. `try`-with-resources closes files and connections automatically.",
+        {
+          "code": "import java.io.*;\nimport java.nio.file.*;\npublic class ReadFirst {\n    static int parseAge(String text) {\n        int age = Integer.parseInt(text);   // may throw NumberFormatException\n        if (age < 0) throw new IllegalArgumentException(\"negative age\");\n        return age;\n    }\n    public static void main(String[] args) {\n        try {\n            System.out.println(parseAge(\"abc\"));\n        } catch (NumberFormatException e) {\n            System.out.println(\"not a number\");  // not a number\n        }\n        try (BufferedReader in = Files.newBufferedReader(Path.of(\"notes.txt\"))) {\n            System.out.println(in.readLine());\n        } catch (IOException e) {\n            System.out.println(\"cannot read: \" + e.getMessage());\n        }\n    }\n}",
+          "lang": "java"
+        }
+      ]
+    },
+    {
+      "h": "A small complete program: word counter",
+      "body": [
+        {
+          "code": "import java.io.IOException;\nimport java.nio.file.*;\nimport java.util.*;\npublic class WordCount {\n    public static void main(String[] args) throws IOException {\n        if (args.length != 1) {\n            System.err.println(\"usage: java WordCount.java FILE\");\n            System.exit(1);\n        }\n        String text = Files.readString(Path.of(args[0])).toLowerCase();\n        Map<String, Integer> counts = new HashMap<>();\n        for (String word : text.split(\"[^a-z']+\")) {\n            if (!word.isEmpty()) counts.merge(word, 1, Integer::sum);\n        }\n        counts.entrySet().stream()\n            .sorted(Map.Entry.<String, Integer>comparingByValue().reversed())\n            .limit(5)\n            .forEach(e -> System.out.printf(\"%5d  %s%n\", e.getValue(), e.getKey()));\n    }\n}",
+          "lang": "java"
+        },
+        "Run it with `java WordCount.java notes.txt`. It prints the five most common words with their counts."
+      ]
+    },
+    {
+      "h": "Common beginner mistakes",
+      "body": [
+        {
+          "note": "Compare strings with `a.equals(b)`, not `a == b`. The `==` operator checks whether two references point to the same object, and it can be false for equal text."
+        },
+        {
+          "ul": [
+            "Integer division: `5 / 2` is `2`. Make one side a `double` to get `2.5`.",
+            "`NullPointerException` from calling a method on `null`. Check for `null`, or use `Optional` for values that may be missing.",
+            "Trying to change a list created with `List.of`, which throws `UnsupportedOperationException`.",
+            "Forgetting that array and `List` indexes start at 0, so the last element is at `length - 1`."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Where to go next",
+      "body": [
+        "Follow the learning paths on dev.java, the official Java developer site, and keep the Java SE API documentation open as a reference. Learn a build tool (Maven or Gradle), unit testing with JUnit, and then a framework such as Spring Boot for web services. Kotlin, which also runs on the JVM, is a natural next language."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Is Java hard to learn?",
+      "a": "Java is more verbose than Python, because you declare types and put code in classes, but its rules are consistent and the compiler explains mistakes early. Many universities use it as a first language."
+    },
+    {
+      "q": "What is the difference between the JDK and the JVM?",
+      "a": "The JVM runs compiled bytecode. The JDK is the full development kit: the JVM plus the compiler `javac`, the standard library and tools. Developers install the JDK."
+    },
+    {
+      "q": "Which Java version should I learn?",
+      "a": "Learn a current long-term support version, such as Java 21 or a newer LTS. Older code still runs on new JVMs, so modern skills also apply to existing projects."
+    },
+    {
+      "q": "Is Java the same as JavaScript?",
+      "a": "No. Despite the similar names, they are separate languages with different type systems, runtimes and uses."
+    },
+    {
+      "q": "Is Java still used?",
+      "a": "Yes. It remains one of the most used languages for enterprise back ends, Android and data infrastructure."
+    }
+  ]
+}

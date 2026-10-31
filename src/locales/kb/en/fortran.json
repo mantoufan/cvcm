@@ -1,0 +1,169 @@
+{
+  "title": "Fortran tutorial: modern syntax, arrays, modules and procedures — cv.cm",
+  "description": "Learn modern Fortran: compile Hello world with gfortran, declare typed variables, use loops, functions, subroutines, modules, whole-array operations and iostat.",
+  "h1": "Fortran tutorial for beginners",
+  "answer": "Fortran is a compiled, statically typed language built for numerical and scientific computing. Modern Fortran (Fortran 90 and later standards) has free-form source, modules, dynamic arrays and powerful whole-array operations, and compilers turn it into very fast machine code. Install the free gfortran compiler, save code in a `.f90` file and build it with `gfortran hello.f90 -o hello`.",
+  "sections": [
+    {
+      "h": "What Fortran is and who uses it",
+      "body": [
+        "Fortran (\"formula translation\") was developed at IBM by a team led by John Backus in the 1950s and is one of the oldest programming languages still in active use. It is standardized by ISO; major revisions include Fortran 90, 95, 2003, 2008, 2018 and 2023. The old fixed-form style (upper-case `FORTRAN 77`, code starting in column 7) is still compiled, but new code uses the free-form syntax shown here.",
+        "Fortran is used where heavy number crunching matters: weather and climate models, computational fluid dynamics, physics and chemistry simulations, and many programs that run on supercomputers. The reference versions of the BLAS and LAPACK linear algebra libraries, used underneath tools such as NumPy and MATLAB, are written in Fortran."
+      ]
+    },
+    {
+      "h": "Install a compiler and run Hello, world",
+      "body": [
+        "gfortran, part of GCC, is free and available on Linux (package `gfortran`), macOS (Homebrew `gcc`) and Windows (MSYS2 or WSL). Intel's ifx and LLVM Flang are other compilers. The Fortran Package Manager (`fpm`) can create and build projects.",
+        {
+          "code": "program hello\n  implicit none\n  print *, \"Hello, world!\"\nend program hello",
+          "lang": "fortran"
+        },
+        {
+          "code": "gfortran hello.f90 -o hello\n./hello\n#  Hello, world!",
+          "lang": "shell"
+        },
+        "`print *` uses list-directed output, which chooses spacing for you (note the leading space). Fortran is not case-sensitive: `PRINT`, `Print` and `print` are the same."
+      ]
+    },
+    {
+      "h": "Variables and basic types",
+      "body": [
+        "All declarations come at the top of a program unit, before executable statements. Always write `implicit none`: without it, undeclared names starting with I to N are silently integers and all others are reals.",
+        {
+          "table": {
+            "head": [
+              "Type",
+              "Example declaration",
+              "Notes"
+            ],
+            "rows": [
+              [
+                "integer",
+                "`integer :: count = 3`",
+                "Usually 32-bit; `integer(int64)` for 64-bit"
+              ],
+              [
+                "real",
+                "`real :: x`",
+                "Usually single precision"
+              ],
+              [
+                "real(real64)",
+                "`real(real64) :: y`",
+                "Double precision, the usual choice for science"
+              ],
+              [
+                "complex",
+                "`complex :: z = (1.0, 2.0)`",
+                "Built-in complex numbers"
+              ],
+              [
+                "logical",
+                "`logical :: done = .false.`",
+                "`.true.` / `.false.`, operators `.and.`, `.or.`, `.not.`"
+              ],
+              [
+                "character",
+                "`character(len=20) :: name`",
+                "Fixed-length string, padded with spaces"
+              ]
+            ]
+          }
+        },
+        {
+          "code": "program types\n  use, intrinsic :: iso_fortran_env, only: int64, real64\n  implicit none\n  integer :: count = 3\n  integer(int64) :: big = 9000000000_int64\n  real(real64) :: third\n  logical :: done = .false.\n  character(len=:), allocatable :: name\n\n  third = 1.0_real64 / 3.0_real64\n  name = \"Ana\"\n  print *, count, big, third, done, name\nend program types",
+          "lang": "fortran"
+        },
+        "The suffix `_real64` sets the kind (precision) of a literal. Without it, `1.0` is a single-precision constant, which loses digits when assigned to a double-precision variable."
+      ]
+    },
+    {
+      "h": "Control flow",
+      "body": [
+        {
+          "code": "program control\n  implicit none\n  integer :: i, total, score\n\n  total = 0\n  do i = 1, 10\n    if (mod(i, 2) == 0) cycle   ! skip even numbers\n    total = total + i\n  end do\n  print *, \"sum of odd numbers:\", total   ! 25\n\n  score = 85\n  if (score >= 90) then\n    print *, \"A\"\n  else if (score >= 80) then\n    print *, \"B\"\n  else\n    print *, \"C\"\n  end if\n\n  select case (score)\n  case (90:)\n    print *, \"excellent\"\n  case (80:89)\n    print *, \"good\"\n  case default\n    print *, \"keep going\"\n  end select\nend program control",
+          "lang": "fortran"
+        },
+        "`do i = 1, 10` includes both ends, and an optional third value sets the step (`do i = 10, 1, -1`). `cycle` skips to the next iteration and `exit` leaves the loop. `do while (condition)` and a plain `do` with `exit` are also available. Comments start with `!`."
+      ]
+    },
+    {
+      "h": "Functions, subroutines and modules",
+      "body": [
+        "Fortran has two kinds of procedures: a function returns a value and is used in expressions; a subroutine is called with `call` and returns results through its arguments. Put procedures in a module so the compiler can check every call.",
+        {
+          "code": "module geometry\n  implicit none\ncontains\n  function circle_area(r) result(a)\n    real, intent(in) :: r\n    real :: a\n    a = 3.14159 * r**2\n  end function circle_area\n\n  subroutine swap(a, b)\n    integer, intent(inout) :: a, b\n    integer :: tmp\n    tmp = a\n    a = b\n    b = tmp\n  end subroutine swap\nend module geometry\n\nprogram demo\n  use geometry\n  implicit none\n  integer :: x, y\n  x = 1\n  y = 2\n  print *, circle_area(2.0)   ! about 12.566\n  call swap(x, y)\n  print *, x, y               ! 2 1\nend program demo",
+          "lang": "fortran"
+        },
+        "Arguments are passed by reference, so a procedure can change the caller's variables. `intent(in)`, `intent(out)` and `intent(inout)` document and enforce what each argument may do. `**` is the power operator."
+      ]
+    },
+    {
+      "h": "Arrays: Fortran's signature feature",
+      "body": [
+        "Arrays are central to Fortran. Indexes start at 1 by default (any lower bound is allowed), arithmetic works on whole arrays without loops, slices use `a(start:end)`, and many intrinsic functions operate on arrays directly.",
+        {
+          "code": "program arrays\n  implicit none\n  integer :: i\n  real :: a(5), b(5)\n  real, allocatable :: c(:)\n  integer :: m(2, 3)\n\n  a = [(real(i), i = 1, 5)]   ! 1.0 2.0 3.0 4.0 5.0\n  b = 2.0 * a + 1.0           ! whole-array arithmetic\n  print *, b(2:4)             ! 5.0 7.0 9.0\n  print *, sum(a), maxval(b)  ! 15.0 11.0\n\n  allocate(c(10))\n  c = 0.0\n  print *, size(c)            ! 10\n  deallocate(c)\n\n  m = reshape([1, 2, 3, 4, 5, 6], [2, 3])\n  print *, m(2, 1)            ! 2 (column-major order)\nend program arrays",
+          "lang": "fortran"
+        },
+        "Multi-dimensional arrays are stored in column-major order: the first index changes fastest in memory, the opposite of C. For speed, make the innermost loop run over the first index. Other useful intrinsics are `matmul`, `dot_product`, `transpose`, `minval` and `count`. Modern Fortran also offers `do concurrent` loops and coarrays for parallel programs."
+      ]
+    },
+    {
+      "h": "Error handling",
+      "body": [
+        "Fortran has no exceptions. Statements that can fail accept a status argument: `iostat` for input and output, `stat` for `allocate`. Check the value and react; if you omit it, an error stops the program. `error stop` ends the program with an error.",
+        {
+          "code": "program parse\n  implicit none\n  character(len=20) :: text\n  integer :: n, ios\n\n  text = \"abc\"\n  read(text, *, iostat=ios) n\n  if (ios /= 0) then\n    print *, \"not a number: \", trim(text)\n  else\n    print *, \"n =\", n\n  end if\nend program parse",
+          "lang": "fortran"
+        },
+        "Reading from a character variable, as above, is called an internal read and is the usual way to convert a string to a number."
+      ]
+    },
+    {
+      "h": "A small complete program: mean and standard deviation",
+      "body": [
+        {
+          "code": "module stats\n  implicit none\n  integer, parameter :: dp = kind(1.0d0)\ncontains\n  pure function mean(x) result(m)\n    real(dp), intent(in) :: x(:)\n    real(dp) :: m\n    m = sum(x) / size(x)\n  end function mean\n\n  pure function std_dev(x) result(s)\n    real(dp), intent(in) :: x(:)\n    real(dp) :: s\n    s = sqrt(sum((x - mean(x))**2) / (size(x) - 1))\n  end function std_dev\nend module stats\n\nprogram main\n  use stats\n  implicit none\n  real(dp) :: values(5)\n  values = [2.0_dp, 4.0_dp, 4.0_dp, 5.0_dp, 7.0_dp]\n  print '(a, f6.3)', \"mean    = \", mean(values)\n  print '(a, f6.3)', \"std dev = \", std_dev(values)\nend program main\n! mean    =  4.400\n! std dev =  1.817",
+          "lang": "fortran"
+        },
+        "The `x(:)` declaration is an assumed-shape array, so the functions accept arrays of any length. `pure` promises that a function has no side effects. The format `'(a, f6.3)'` prints a string followed by a real number 6 characters wide with 3 decimals.",
+        {
+          "note": "Common beginner mistakes: forgetting `implicit none`; integer division (`1 / 2` is 0, write `1.0 / 2.0`); single-precision literals in double-precision code (`0.1` instead of `0.1_dp`); initializing a local variable in its declaration inside a procedure, which gives it the `save` attribute so it keeps its value between calls; and looping over the last index in the innermost loop, which is slow because of column-major order."
+        }
+      ]
+    },
+    {
+      "h": "Where to go next",
+      "body": [
+        {
+          "ul": [
+            "fortran-lang.org: the Learn section with a quickstart tutorial and best practices.",
+            "The GNU Fortran (gfortran) manual for compiler options and intrinsic procedures.",
+            "Try the Fortran Package Manager (fpm) to create projects and use libraries such as the Fortran standard library (stdlib).",
+            "Compile with warnings and runtime checks while learning, for example `gfortran -Wall -fcheck=all`."
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Is Fortran still used today?",
+      "a": "Yes. Fortran remains widely used in scientific computing and high-performance computing, especially for climate, weather, physics and engineering simulations, and the language standard is still being updated."
+    },
+    {
+      "q": "What is the difference between .f and .f90 files?",
+      "a": "By convention, `.f` and `.for` files use the old fixed-form layout of FORTRAN 77, where columns matter, while `.f90` files use free-form source. The `.f90` extension is used for free-form code of any modern standard, not only Fortran 90."
+    },
+    {
+      "q": "Why is Fortran fast?",
+      "a": "The language was designed for numerical work: arrays are built in, aliasing rules let compilers optimize aggressively, and decades of compiler work target it. Well-written C or C++ can reach similar speed."
+    },
+    {
+      "q": "Do Fortran arrays start at 0 or 1?",
+      "a": "They start at 1 by default, but you can choose any lower bound, for example `real :: a(0:9)` declares ten elements indexed from 0 to 9."
+    }
+  ]
+}

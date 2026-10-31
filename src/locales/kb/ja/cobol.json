@@ -1,0 +1,194 @@
+{
+  "title": "COBOL入門：4つの部・PICデータ・PERFORM・ファイルを解説 — cv.cm",
+  "description": "COBOLの基本を学べる入門講座。GnuCOBOLでHello worldをコンパイルし、4つの部、PIC句、IFとEVALUATE、PERFORMループ、テーブル、ファイル、エラー処理を解説します。",
+  "h1": "COBOL入門：初心者向けチュートリアル",
+  "answer": "COBOL(Common Business-Oriented Language)は、レコード、ファイル、帳票、正確な10進演算といった業務データ処理のために設計された、コンパイル型の言語です。プログラムは4つの部(DIVISION)に分かれ、データはPIC(picture)句で記述し、コードは`ADD AMOUNT TO TOTAL`のように英語の文章のように読めます。今でも銀行、保険会社、政府の基幹システムで、主にIBMメインフレーム上で動いています。GnuCOBOLコンパイラ(`cobc -x hello.cob`)を使えば、無料で学べます。",
+  "sections": [
+    {
+      "h": "COBOLとは何か、誰が使うのか",
+      "body": [
+        "COBOLは1959年にCODASYL委員会が設計し、Grace Hopperの先行する言語FLOW-MATICの影響を強く受けています。ISOで標準化されており、後の規格で構造化プログラミング、オブジェクト指向などの機能が加わり、直近の改訂は2023年に公開されました。",
+        "COBOLは、バッチ処理とトランザクションシステムに使われています。口座処理、給与計算、保険金の請求、税や給付のシステムなどです。このコードの多くは、IBM Enterprise COBOLを使ってIBM Zメインフレーム上で動き、トランザクションにはCICS、データにはDb2が組み合わされます。これらのシステムの保守と近代化の仕事は、今も多くあります。"
+      ]
+    },
+    {
+      "h": "GnuCOBOLのインストールとhello, worldの実行",
+      "body": [
+        "GnuCOBOLは、COBOLをCに変換してからネイティブプログラムにする、無料のコンパイラです。多くのLinuxディストリビューションでは`gnucobol`パッケージ、macOSではHomebrewで入手できます。Windowsでは、WSLかビルド済みパッケージを使えます。",
+        {
+          "code": "       IDENTIFICATION DIVISION.\n       PROGRAM-ID. HELLO.\n       PROCEDURE DIVISION.\n           DISPLAY \"Hello, world!\".\n           STOP RUN.",
+          "lang": "cobol"
+        },
+        {
+          "code": "cobc -x hello.cob\n./hello\n# Hello, world!",
+          "lang": "shell"
+        },
+        "このコードは従来の固定形式を使っています。1〜6桁目は連番用、7桁目はコメント(`*`)または継続行の印、A領域(8〜11桁目)には部、節、段落の名前、B領域(12〜72桁目)には文を書きます。GnuCOBOLは、`cobc -x -free`で自由形式のソースも受け付けます。オプション`-x`は、モジュールではなく実行ファイルをビルドします。"
+      ]
+    },
+    {
+      "h": "4つの部",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "部",
+              "目的"
+            ],
+            "rows": [
+              [
+                "IDENTIFICATION DIVISION",
+                "プログラムに名前を付ける(`PROGRAM-ID`)"
+              ],
+              [
+                "ENVIRONMENT DIVISION",
+                "プログラムを外部とつなぐ。たとえば使うファイルなど"
+              ],
+              [
+                "DATA DIVISION",
+                "すべてのデータを宣言する。ファイルのレコード、作業用記憶域、パラメーター"
+              ],
+              [
+                "PROCEDURE DIVISION",
+                "実行文。段落にまとめられる"
+              ]
+            ]
+          }
+        },
+        "すべての変数は、使う前にDATA DIVISIONで宣言しなければなりません。WORKING-STORAGE SECTIONにはプログラムの変数、FILE SECTIONにはファイルのレコード、LINKAGE SECTIONには呼び出し側から渡されるパラメーターを記述します。"
+      ]
+    },
+    {
+      "h": "データとPIC句",
+      "body": [
+        "COBOLは、データを正確なレイアウトで記述します。レベル番号は階層を示し(01はレコード、05はその中のフィールド)、PIC句が形式を指定します。`X`は任意の文字、`9`は数字、`S`は符号、`V`は暗黙の小数点です。",
+        {
+          "table": {
+            "head": [
+              "宣言",
+              "意味",
+              "値の例"
+            ],
+            "rows": [
+              [
+                "`PIC X(10)`",
+                "10文字。空白で埋められる",
+                "`\"Ana       \"`"
+              ],
+              [
+                "`PIC 9(3)`",
+                "符号なしの3桁の数",
+                "`030`"
+              ],
+              [
+                "`PIC S9(5)V99`",
+                "符号付き。小数点の前が5桁、後が2桁",
+                "`-01234.50`"
+              ],
+              [
+                "`PIC $ZZ,ZZ9.99`",
+                "編集出力：通貨記号、先頭のゼロは空白に",
+                "`$ 1,234.50`"
+              ],
+              [
+                "`PIC S9(7)V99 COMP-3`",
+                "パック10進数。メインフレームでよく使う",
+                "5バイトで格納"
+              ],
+              [
+                "`88 IS-DONE VALUE \"Y\"`",
+                "条件名：親のフィールドに対する真偽値のテスト",
+                "`IF IS-DONE`"
+              ]
+            ]
+          }
+        },
+        {
+          "code": "       IDENTIFICATION DIVISION.\n       PROGRAM-ID. DATA-DEMO.\n       DATA DIVISION.\n       WORKING-STORAGE SECTION.\n       01  WS-NAME        PIC X(10)      VALUE \"Ana\".\n       01  WS-AGE         PIC 9(3)       VALUE 30.\n       01  WS-PRICE       PIC S9(5)V99   VALUE 1234.50.\n       01  WS-PRICE-OUT   PIC $ZZ,ZZ9.99.\n       01  WS-CUSTOMER.\n           05  WS-FIRST   PIC X(10).\n           05  WS-LAST    PIC X(15).\n       PROCEDURE DIVISION.\n           MOVE WS-PRICE TO WS-PRICE-OUT\n           DISPLAY WS-NAME \"is \" WS-AGE\n           DISPLAY \"Price: \" WS-PRICE-OUT\n           STOP RUN.\n      *> Ana       is 030\n      *> Price: $ 1,234.50",
+          "lang": "cobol"
+        },
+        "数値は10進数で格納されるため、`0.10 + 0.20`は正確に`0.30`になります。これが、COBOLがお金の扱いに向いている理由の1つです。`WS-CUSTOMER`は集団項目で、全体でも、フィールドごとでも移動できます。"
+      ]
+    },
+    {
+      "h": "制御構文：IF・EVALUATE・PERFORM",
+      "body": [
+        {
+          "code": "       IDENTIFICATION DIVISION.\n       PROGRAM-ID. CONTROL-DEMO.\n       DATA DIVISION.\n       WORKING-STORAGE SECTION.\n       01  WS-I        PIC 99.\n       01  WS-TOTAL    PIC 9(4) VALUE 0.\n       01  WS-SCORE    PIC 999  VALUE 85.\n       PROCEDURE DIVISION.\n           PERFORM VARYING WS-I FROM 1 BY 1 UNTIL WS-I > 10\n               ADD WS-I TO WS-TOTAL\n           END-PERFORM\n           DISPLAY \"Total: \" WS-TOTAL\n           EVALUATE TRUE\n               WHEN WS-SCORE >= 90\n                   DISPLAY \"A\"\n               WHEN WS-SCORE >= 80\n                   DISPLAY \"B\"\n               WHEN OTHER\n                   DISPLAY \"C\"\n           END-EVALUATE\n           IF WS-TOTAL > 50\n               DISPLAY \"big\"\n           ELSE\n               DISPLAY \"small\"\n           END-IF\n           STOP RUN.\n      *> Total: 0055\n      *> B\n      *> big",
+          "lang": "cobol"
+        },
+        "`PERFORM VARYING`はCOBOLのカウント付きループ、`PERFORM UNTIL condition`はwhileループです。`EVALUATE`はswitch文にあたります。`END-IF`や`END-PERFORM`などの範囲終了子が各ブロックを閉じ、ピリオドは文全体を終わらせます。"
+      ]
+    },
+    {
+      "h": "段落・算術・テーブル",
+      "body": [
+        "COBOLには、一般的な意味での関数がありません。ロジックは名前付きの段落にまとめて`PERFORM`で実行し、より大きな単位は`CALL \"PROG\" USING ...`で呼ぶ別プログラムにします。算術には動詞(`ADD`、`SUBTRACT`、`MULTIPLY`、`DIVIDE`)か、式を使う`COMPUTE`を使います。配列はテーブルと呼ばれ、`OCCURS`で宣言し、添字は1から始まります。",
+        {
+          "code": "       IDENTIFICATION DIVISION.\n       PROGRAM-ID. PARA-DEMO.\n       DATA DIVISION.\n       WORKING-STORAGE SECTION.\n       01  WS-PRICES.\n           05  WS-PRICE   PIC 9(3)V99 OCCURS 3 TIMES.\n       01  WS-I           PIC 9.\n       01  WS-SUM         PIC 9(4)V99 VALUE 0.\n       01  WS-SUM-OUT     PIC Z,ZZ9.99.\n       PROCEDURE DIVISION.\n       MAIN-PARA.\n           MOVE 10.50 TO WS-PRICE(1)\n           MOVE 4.25  TO WS-PRICE(2)\n           MOVE 7.00  TO WS-PRICE(3)\n           PERFORM ADD-PRICE VARYING WS-I FROM 1 BY 1 UNTIL WS-I > 3\n           COMPUTE WS-SUM = WS-SUM * 1.1\n           MOVE WS-SUM TO WS-SUM-OUT\n           DISPLAY \"With 10% tax: \" WS-SUM-OUT\n           STOP RUN.\n       ADD-PRICE.\n           ADD WS-PRICE(WS-I) TO WS-SUM.\n      *> With 10% tax:    23.92",
+          "lang": "cobol"
+        },
+        "合計は21.75で、1.1を掛けると23.925になりますが、`COMPUTE ... ROUNDED`と書かない限り、COBOLは宣言された小数2桁に切り捨てます(23.92)。"
+      ]
+    },
+    {
+      "h": "エラー処理",
+      "body": [
+        "日常的なコードでは、COBOLに例外はありません。代わりに、文に条件句があります。算術のオーバーフローやゼロ除算には`ON SIZE ERROR`、ファイルの終わりには`AT END`、索引ファイルには`INVALID KEY`、そしてファイル操作のたびに2文字のコードを受け取る`FILE STATUS`フィールドです(`\"00\"`は成功を意味します)。",
+        {
+          "code": "           DIVIDE WS-A BY WS-B GIVING WS-C\n               ON SIZE ERROR\n                   DISPLAY \"Division failed\"\n               NOT ON SIZE ERROR\n                   DISPLAY \"Result: \" WS-C\n           END-DIVIDE",
+          "lang": "cobol"
+        }
+      ]
+    },
+    {
+      "h": "小さな完成プログラム：売上ファイルの合計",
+      "body": [
+        "固定レイアウトのレコードをファイルから読み込むのは、典型的なCOBOLの仕事です。このプログラムは`sales.txt`を読みます。各行は、10文字の品名に続いて、暗黙の小数2桁を持つ7桁の金額です。",
+        {
+          "code": "apples    0001250\npears     0000899\nplums     0002000",
+          "lang": "text"
+        },
+        {
+          "code": "       IDENTIFICATION DIVISION.\n       PROGRAM-ID. SALES-TOTAL.\n       ENVIRONMENT DIVISION.\n       INPUT-OUTPUT SECTION.\n       FILE-CONTROL.\n           SELECT SALES-FILE ASSIGN TO \"sales.txt\"\n               ORGANIZATION IS LINE SEQUENTIAL\n               FILE STATUS IS WS-FS.\n       DATA DIVISION.\n       FILE SECTION.\n       FD  SALES-FILE.\n       01  SALES-REC.\n           05  SR-ITEM     PIC X(10).\n           05  SR-AMOUNT   PIC 9(5)V99.\n       WORKING-STORAGE SECTION.\n       01  WS-FS           PIC XX.\n       01  WS-EOF          PIC X VALUE \"N\".\n           88  NO-MORE-RECORDS       VALUE \"Y\".\n       01  WS-TOTAL        PIC 9(7)V99 VALUE 0.\n       01  WS-TOTAL-OUT    PIC Z,ZZZ,ZZ9.99.\n       PROCEDURE DIVISION.\n           OPEN INPUT SALES-FILE\n           IF WS-FS NOT = \"00\"\n               DISPLAY \"Cannot open file, status \" WS-FS\n               STOP RUN\n           END-IF\n           PERFORM UNTIL NO-MORE-RECORDS\n               READ SALES-FILE\n                   AT END SET NO-MORE-RECORDS TO TRUE\n                   NOT AT END ADD SR-AMOUNT TO WS-TOTAL\n               END-READ\n           END-PERFORM\n           CLOSE SALES-FILE\n           MOVE WS-TOTAL TO WS-TOTAL-OUT\n           DISPLAY \"Total sales: \" WS-TOTAL-OUT\n           STOP RUN.",
+          "lang": "cobol"
+        },
+        "実行すると、`Total sales:`に続いて、12文字の編集フィールドに右寄せで`41.49`が出力されます。`LINE SEQUENTIAL`は、1行が1レコードのテキストファイルを意味し、GnuCOBOLなどのPC向けコンパイラが対応しています。メインフレームのプログラムは通常、JCLで定義した固定長のデータセットを読みます。",
+        {
+          "note": "初心者がよくやる間違い：`IF`ブロックの途中にある不要なピリオドが文全体を早く終わらせる(`END-IF`などの範囲終了子を使います)、固定形式で8〜72桁目の外にコードを書く、小さすぎるフィールドへ値を移すときの黙った切り捨て(`PIC 99`のフィールドに`MOVE 1234 TO`すると34が格納されます)、PICに`S`がないフィールドに負の結果を格納して符号が落ちる、`ON SIZE ERROR`やファイルステータスの確認を忘れる、などです。"
+        }
+      ]
+    },
+    {
+      "h": "次に学ぶこと",
+      "body": [
+        {
+          "ul": [
+            "GnuCOBOLプロジェクトのページと、言語リファレンスの全体像がわかるProgrammer's Guide。",
+            "メインフレームのCOBOL、CICS、Db2の使い方についての、IBMのEnterprise COBOL for z/OSのドキュメント。",
+            "ファイルの読み書き、`SORT`動詞による並べ替え、整形した帳票の出力を練習する。",
+            "本番のシステムで働きたいなら、周辺のメインフレームツール(JCL、TSO/ISPF)を学ぶ。"
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "COBOLは今でも使われていますか？",
+      "a": "はい。多くの銀行、保険会社、官公庁が、基幹のバッチ処理やトランザクション処理で今もCOBOLプログラムを動かしており、それらを保守・近代化できる開発者への需要が続いています。"
+    },
+    {
+      "q": "COBOLは習得が難しいですか？",
+      "a": "構文は冗長ですが単純で、ほとんどの初心者はすぐに動くプログラムを書けます。難しいのは、周辺のメインフレーム環境、つまりJCL、データセット、CICS、Db2のほうです。"
+    },
+    {
+      "q": "メインフレームなしでCOBOLを学べますか？",
+      "a": "はい。GnuCOBOLはLinux、macOS、Windowsで動き、標準的なCOBOLに対応しているので、メインフレームに移る前に、普通のコンピューターでこの言語を学べます。"
+    },
+    {
+      "q": "COBOLはなぜ10進数を使うのですか？",
+      "a": "お金のような業務データは正確でなければなりません。COBOLは数値を、小数の桁数が固定された10進の数字として格納するため、2進の浮動小数点数の丸め誤差を避けられます。"
+    }
+  ]
+}

@@ -1,0 +1,237 @@
+{
+  "title": "Sắp xếp đếm (Counting Sort): cách hoạt động, mã Python và độ phức tạp — cv.cm",
+  "description": "Sắp xếp đếm sắp xếp số nguyên trong khoảng nhỏ trong O(n + k) bằng cách đếm từng giá trị, không so sánh. Ví dụ từng bước, mã Python ổn định.",
+  "h1": "Thuật toán sắp xếp đếm: cách hoạt động, mã và độ phức tạp",
+  "answer": "Sắp xếp đếm là thuật toán sắp xếp không dựa trên so sánh, dành cho số nguyên (hoặc khóa ánh xạ được sang số nguyên) trong một khoảng nhỏ đã biết có kích thước k. Nó đếm mỗi giá trị xuất hiện bao nhiêu lần, biến các số đếm thành vị trí bắt đầu bằng tổng cộng dồn, rồi đặt mỗi phần tử thẳng vào vị trí của nó. Thuật toán chạy O(n + k) thời gian và dùng O(n + k) không gian phụ. Phiên bản dùng tổng tiền tố là ổn định, nên nó là viên gạch nền của sắp xếp cơ số.",
+  "sections": [
+    {
+      "h": "Sắp xếp đếm giải quyết vấn đề gì",
+      "body": [
+        "Mọi thuật toán chỉ so sánh từng cặp phần tử đều cần Ω(n log n) phép so sánh ở trường hợp xấu nhất. Sắp xếp đếm tránh giới hạn này bằng cách không so sánh gì cả: nó dùng chính khóa làm chỉ số mảng. Khi các khóa là số nguyên nhỏ, như điểm thi từ 0 đến 100, tuổi, byte từ 0 đến 255 hay số sao đánh giá, cách này nhanh hơn mọi thuật toán sắp xếp dựa trên so sánh.",
+        "Cái giá phải trả là bộ nhớ tỉ lệ với khoảng giá trị của khóa. Sắp xếp một ít số nguyên 64 bit rải khắp miền giá trị sẽ cần mảng đếm lớn đến mức không thể."
+      ]
+    },
+    {
+      "h": "Ý tưởng và ví dụ minh họa",
+      "body": [
+        "Sắp xếp `[4, 2, 2, 8, 3, 3, 1]`, có các giá trị nằm trong khoảng 0 đến 8 (k = 9).",
+        {
+          "ol": [
+            "Đếm từng giá trị: `count[v]` là số lần v xuất hiện.",
+            "Tổng tiền tố: thay mỗi số đếm bằng số phần tử nhỏ hơn hoặc bằng giá trị đó. Khi đó `count[v]` là vị trí ngay sau vị trí cuối cùng nơi v thuộc về.",
+            "Đặt phần tử: duyệt đầu vào từ phải sang trái; với mỗi giá trị v, giảm `count[v]` và ghi v vào vị trí đó. Duyệt từ phải sang trái giữ nguyên thứ tự ban đầu của các giá trị bằng nhau."
+          ]
+        },
+        {
+          "table": {
+            "head": [
+              "Giá trị",
+              "0",
+              "1",
+              "2",
+              "3",
+              "4",
+              "5",
+              "6",
+              "7",
+              "8"
+            ],
+            "rows": [
+              [
+                "Số lần đếm",
+                "0",
+                "1",
+                "2",
+                "2",
+                "1",
+                "0",
+                "0",
+                "0",
+                "1"
+              ],
+              [
+                "Tổng tiền tố",
+                "0",
+                "1",
+                "3",
+                "5",
+                "6",
+                "6",
+                "6",
+                "6",
+                "7"
+              ]
+            ]
+          }
+        },
+        "Vậy số 1 đi vào chỉ số 0, hai số 2 vào chỉ số 1 và 2, hai số 3 vào 3 và 4, số 4 vào chỉ số 5 và số 8 vào chỉ số 6. Kết quả: `[1, 2, 2, 3, 3, 4, 8]`."
+      ]
+    },
+    {
+      "h": "Cài đặt bằng Python",
+      "body": [
+        "Phiên bản ổn định này sắp xếp các đối tượng bất kỳ theo khóa số nguyên từ 0 đến `k - 1`.",
+        {
+          "code": "def counting_sort(items, k, key=lambda x: x):\n    \"\"\"Stable sort of items by integer key in range(k).\"\"\"\n    count = [0] * k\n    for x in items:\n        count[key(x)] += 1\n    for v in range(1, k):                # prefix sums\n        count[v] += count[v - 1]\n    out = [None] * len(items)\n    for x in reversed(items):            # right to left: stable\n        count[key(x)] -= 1\n        out[count[key(x)]] = x\n    return out\n\nprint(counting_sort([4, 2, 2, 8, 3, 3, 1], k=9))\n# [1, 2, 2, 3, 3, 4, 8]\npeople = [(\"Ana\", 3), (\"Bo\", 1), (\"Cy\", 3), (\"Di\", 2)]\nprint(counting_sort(people, k=4, key=lambda p: p[1]))\n# [('Bo', 1), ('Di', 2), ('Ana', 3), ('Cy', 3)]",
+          "lang": "python"
+        },
+        "Khi chỉ sắp xếp các số nguyên thuần và không cần tính ổn định, có một phiên bản đơn giản hơn dựng lại đầu ra từ các số đếm. Biến thể này còn xử lý được số âm bằng cách dịch theo giá trị nhỏ nhất:",
+        {
+          "code": "def counting_sort_ints(nums):\n    if not nums:\n        return []\n    lo, hi = min(nums), max(nums)\n    count = [0] * (hi - lo + 1)\n    for x in nums:\n        count[x - lo] += 1\n    out = []\n    for offset, c in enumerate(count):\n        out.extend([offset + lo] * c)\n    return out\n\nprint(counting_sort_ints([3, -1, 2, -1, 0]))   # [-1, -1, 0, 2, 3]",
+          "lang": "python"
+        }
+      ]
+    },
+    {
+      "h": "Độ phức tạp thời gian và không gian",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Đại lượng",
+              "Giá trị",
+              "Lý do"
+            ],
+            "rows": [
+              [
+                "Thời gian, mọi trường hợp",
+                "O(n + k)",
+                "một lượt qua đầu vào, một lượt qua mảng đếm, một lượt để đặt phần tử"
+              ],
+              [
+                "Không gian phụ",
+                "O(n + k)",
+                "mảng đếm kích thước k và mảng đầu ra kích thước n"
+              ],
+              [
+                "Số phép so sánh",
+                "0",
+                "khóa được dùng làm chỉ số, không được so sánh"
+              ]
+            ]
+          }
+        },
+        "Sắp xếp đếm là tuyến tính khi k là O(n). Nếu k lớn hơn n rất nhiều, ví dụ 1.000 giá trị trong khoảng 0 đến 10⁹, mảng đếm sẽ chiếm ưu thế và nên dùng sắp xếp dựa trên so sánh hoặc sắp xếp cơ số."
+      ]
+    },
+    {
+      "h": "So sánh sắp xếp đếm với các thuật toán khác",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Thuật toán",
+              "Tốt nhất",
+              "Trung bình",
+              "Xấu nhất",
+              "Không gian phụ",
+              "Ổn định"
+            ],
+            "rows": [
+              [
+                "Sắp xếp đếm",
+                "O(n + k)",
+                "O(n + k)",
+                "O(n + k)",
+                "O(n + k)",
+                "Có"
+              ],
+              [
+                "Sắp xếp cơ số (LSD)",
+                "O(d · (n + b))",
+                "O(d · (n + b))",
+                "O(d · (n + b))",
+                "O(n + b)",
+                "Có"
+              ],
+              [
+                "Sắp xếp trộn",
+                "O(n log n)",
+                "O(n log n)",
+                "O(n log n)",
+                "O(n)",
+                "Có"
+              ],
+              [
+                "Sắp xếp nhanh",
+                "O(n log n)",
+                "O(n log n)",
+                "O(n²)",
+                "O(log n)",
+                "Không"
+              ],
+              [
+                "Sắp xếp vun đống",
+                "O(n log n)",
+                "O(n log n)",
+                "O(n log n)",
+                "O(1)",
+                "Không"
+              ],
+              [
+                "Sắp xếp chèn",
+                "O(n)",
+                "O(n²)",
+                "O(n²)",
+                "O(1)",
+                "Có"
+              ],
+              [
+                "Timsort (`sorted` của Python)",
+                "O(n)",
+                "O(n log n)",
+                "O(n log n)",
+                "O(n)",
+                "Có"
+              ]
+            ]
+          }
+        },
+        "Ở đây k là kích thước khoảng khóa, d là số chữ số và b là cơ số dùng trong sắp xếp cơ số. Sắp xếp đếm ổn định khi các phần tử được đặt bằng tổng tiền tố từ phải sang trái. Phiên bản dựng lại từ số đếm cho cùng kết quả với số nguyên thuần nhưng không mang theo được dữ liệu khác đi cùng khóa."
+      ]
+    },
+    {
+      "h": "Biến thể và lỗi thường gặp",
+      "body": [
+        {
+          "ul": [
+            "Sắp xếp cơ số chạy một lần sắp xếp đếm ổn định cho mỗi chữ số, mở rộng ý tưởng sang số nguyên lớn và chuỗi độ dài cố định.",
+            "Bucket sort rải giá trị vào các thùng theo khoảng và sắp xếp từng thùng; nó nhanh khi giá trị phân bố đều.",
+            "Đếm mà không sắp xếp: thường bạn chỉ cần các số đếm, ví dụ để dựng biểu đồ tần suất hoặc tìm giá trị xuất hiện nhiều nhất. `collections.Counter` làm trực tiếp việc này."
+          ]
+        },
+        {
+          "note": "Các lỗi hay gặp: duyệt đầu vào từ trái sang phải trong vòng lặp đặt phần tử (vẫn đúng thứ tự nhưng không còn ổn định, làm hỏng sắp xếp cơ số), quên dịch các khóa âm, cấp phát mảng đếm theo số phần tử thay vì khoảng khóa, và dùng sắp xếp đếm cho số thực hoặc chuỗi bất kỳ, vốn không có khoảng số nguyên nhỏ."
+        }
+      ]
+    },
+    {
+      "h": "Khi nào nên dùng sắp xếp đếm",
+      "body": [
+        "Dùng khi khóa là số nguyên trong khoảng nhỏ so với số phần tử: điểm số, tuổi, ngày trong tháng, byte, giá trị kênh màu từ 0 đến 255, hoặc các giá trị enum nhỏ. Nó cũng là bước trong của sắp xếp cơ số và của các thuật toán dựng mảng hậu tố. Trong phỏng vấn, nó xuất hiện ở các câu như sort colors (giá trị 0, 1, 2), sắp xếp theo tần suất, H-index, và câu hỏi kinh điển làm sao vượt giới hạn O(n log n) của các thuật toán sắp xếp dựa trên so sánh."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Sắp xếp đếm có ổn định không?",
+      "a": "Có, phiên bản chuẩn dùng tổng tiền tố và đặt phần tử từ phải sang trái là ổn định. Tính chất đó cho phép sắp xếp cơ số dùng nó cho từng chữ số."
+    },
+    {
+      "q": "Độ phức tạp thời gian của sắp xếp đếm là gì?",
+      "a": "O(n + k), trong đó n là số phần tử và k là kích thước khoảng khóa. Giống nhau ở trường hợp tốt nhất, trung bình và xấu nhất."
+    },
+    {
+      "q": "Vì sao sắp xếp đếm nhanh hơn O(n log n)?",
+      "a": "Cận dưới Ω(n log n) chỉ áp dụng cho các thuật toán sắp xếp dựa trên so sánh. Sắp xếp đếm không bao giờ so sánh các phần tử; nó dùng mỗi khóa làm chỉ số mảng, nên không bị giới hạn đó."
+    },
+    {
+      "q": "Sắp xếp đếm có xử lý được số âm không?",
+      "a": "Có. Trừ giá trị nhỏ nhất khỏi mọi khóa để khóa nhỏ nhất ánh xạ về chỉ số 0, và cộng lại khi ghi đầu ra."
+    },
+    {
+      "q": "Khi nào không nên dùng sắp xếp đếm?",
+      "a": "Khi khoảng khóa k lớn hơn n rất nhiều, khi khóa là số thực hoặc chuỗi bất kỳ, hoặc khi bộ nhớ eo hẹp. Khi đó một thuật toán dựa trên so sánh như `sorted()` là lựa chọn tốt hơn."
+    }
+  ]
+}

@@ -1,0 +1,191 @@
+{
+  "title": "Học lập trình C# cơ bản: kiểu, lớp, collection, LINQ và async — cv.cm",
+  "description": "Học C# trong một trang: chạy Hello world với .NET SDK, kiểu dữ liệu, điều khiển luồng, lớp, record, List và Dictionary, LINQ, async và ngoại lệ.",
+  "h1": "Hướng dẫn học lập trình C# cơ bản cho người mới",
+  "answer": "C# là ngôn ngữ hướng đối tượng kiểu tĩnh của Microsoft, chạy trên .NET, một runtime miễn phí, đa nền tảng cho Windows, macOS và Linux. Hãy cài .NET SDK, chạy `dotnet new console`, rồi `dotnet run` sẽ in ra \"Hello, World!\". Các ý tưởng cốt lõi là lớp và record, collection generic như `List<T>` và `Dictionary<K, V>`, truy vấn LINQ, `async`/`await`, pattern matching và ngoại lệ.",
+  "sections": [
+    {
+      "h": "C# là gì và dùng để làm gì",
+      "body": [
+        "C# (đọc là \"C sharp\") được thiết kế tại Microsoft bởi một nhóm do Anders Hejlsberg dẫn dắt và phát hành lần đầu năm 2002. Nó được Ecma chuẩn hóa (ECMA-334) và phát triển công khai cùng .NET. C# được dùng cho web API và trang web (ASP.NET Core), ứng dụng desktop Windows, ứng dụng di động và desktop đa nền tảng (.NET MAUI), dịch vụ đám mây và game: engine Unity dùng C# cho script game. Cú pháp của nó thuộc họ C nên quen thuộc với lập trình viên Java, C++ và JavaScript."
+      ]
+    },
+    {
+      "h": "Cài .NET và chạy Hello, world",
+      "body": [
+        "Tải .NET SDK từ dot.net và kiểm tra bằng `dotnet --version`. Tạo và chạy một dự án console:",
+        {
+          "code": "dotnet new console -o HelloApp\ncd HelloApp\ndotnet run\n# Hello, World!",
+          "lang": "shell"
+        },
+        "Mẫu dự án tạo ra `Program.cs`, dùng top-level statements, nên với chương trình nhỏ không cần lớp hay phương thức `Main`:",
+        {
+          "code": "Console.WriteLine(\"Hello, World!\");",
+          "lang": "csharp"
+        }
+      ]
+    },
+    {
+      "h": "Biến và các kiểu dữ liệu cơ bản",
+      "body": [
+        "Mỗi biến có một kiểu tĩnh. `var` cho phép trình biên dịch suy luận kiểu từ giá trị. Kiểu giá trị (số, `bool`, `struct`) giữ dữ liệu trực tiếp; kiểu tham chiếu (`string`, lớp, mảng) tham chiếu tới một đối tượng.",
+        {
+          "table": {
+            "head": [
+              "Kiểu",
+              "Ví dụ",
+              "Ghi chú"
+            ],
+            "rows": [
+              [
+                "`int`",
+                "`int n = 42;`",
+                "Số nguyên 32 bit"
+              ],
+              [
+                "`long`",
+                "`long big = 10_000_000_000;`",
+                "Số nguyên 64 bit"
+              ],
+              [
+                "`double`",
+                "`double x = 3.14;`",
+                "Số thực dấu phẩy động 64 bit"
+              ],
+              [
+                "`decimal`",
+                "`decimal price = 19.99m;`",
+                "Hệ thập phân, phù hợp cho tiền tệ"
+              ],
+              [
+                "`bool`",
+                "`bool ok = true;`",
+                "`true` hoặc `false`"
+              ],
+              [
+                "`char`",
+                "`char c = 'A';`",
+                "Đơn vị mã UTF-16"
+              ],
+              [
+                "`string`",
+                "`string s = \"hi\";`",
+                "Văn bản bất biến"
+              ]
+            ]
+          }
+        },
+        {
+          "code": "var name = \"Ada\";\nint count = 7;\ndouble avg = count / 2.0;\nConsole.WriteLine($\"{name} has {count} items, avg {avg}\");  // Ada has 7 items, avg 3.5\nConsole.WriteLine(count / 2);                              // 3 (integer division)\nConsole.WriteLine(int.Parse(\"12\") + 1);                    // 13\nstring? nickname = null;   // ? marks a nullable reference\nConsole.WriteLine(nickname ?? \"none\");                     // none",
+          "lang": "csharp"
+        },
+        "`$\"...\"` là chuỗi nội suy. Các dự án mới bật kiểu tham chiếu nullable, nên trình biên dịch cảnh báo khi giá trị có thể là `null` được dùng mà không kiểm tra."
+      ]
+    },
+    {
+      "h": "Điều khiển luồng và phương thức",
+      "body": [
+        {
+          "code": "int score = 72;\nif (score >= 90) Console.WriteLine(\"A\");\nelse if (score >= 70) Console.WriteLine(\"B\");   // B\nelse Console.WriteLine(\"C\");\n\nfor (int i = 0; i < 3; i++) Console.Write($\"{Square(i)} \");  // 0 1 4\nConsole.WriteLine();\n\nforeach (var fruit in new[] { \"apple\", \"pear\" }) Console.WriteLine(fruit);\n\nstring day = \"SAT\";\nstring kind = day switch\n{\n    \"SAT\" or \"SUN\" => \"weekend\",\n    _ => \"weekday\",\n};\nConsole.WriteLine(kind);   // weekend\nConsole.WriteLine(Greet(\"Lin\"));                // Hello, Lin!\n\nstatic int Square(int x) => x * x;\nstatic string Greet(string name, string greeting = \"Hello\") => $\"{greeting}, {name}!\";",
+          "lang": "csharp"
+        },
+        "Biểu thức `switch` và mẫu `or` là một phần của pattern matching trong C#. Phương thức có thể có tham số mặc định, đối số có tên (`Greet(name: \"Lin\")`) và thân biểu thức với `=>`."
+      ]
+    },
+    {
+      "h": "Lớp, thuộc tính và record",
+      "body": [
+        "Lớp có trường, thuộc tính (trường kèm logic get và set) và phương thức. `record` là kiểu có phép so sánh bằng dựa trên giá trị, lý tưởng cho dữ liệu bất biến.",
+        {
+          "code": "var acc = new Account(\"Ann\");\nacc.Deposit(50);\nConsole.WriteLine($\"{acc.Owner}: {acc.Balance}\");   // Ann: 50\n\nvar p1 = new Point(3, 4);\nvar p2 = p1 with { Y = 5 };                         // copy with one change\nConsole.WriteLine(p1);                              // Point { X = 3, Y = 4 }\nConsole.WriteLine(p1 == new Point(3, 4));           // True\n\npublic class Account\n{\n    public string Owner { get; }\n    public decimal Balance { get; private set; }\n\n    public Account(string owner) => Owner = owner;\n\n    public void Deposit(decimal amount)\n    {\n        if (amount <= 0) throw new ArgumentException(\"amount must be positive\");\n        Balance += amount;\n    }\n}\n\npublic record Point(int X, int Y);",
+          "lang": "csharp"
+        },
+        "Khai báo kiểu phải đặt sau các top-level statements trong cùng tệp. Lớp hỗ trợ đơn kế thừa (`class Savings : Account`) và số lượng interface tùy ý."
+      ]
+    },
+    {
+      "h": "Collection và LINQ",
+      "body": [
+        "Các collection generic trong `System.Collections.Generic` là cấu trúc dữ liệu dùng hằng ngày. LINQ (Language Integrated Query) thêm các phương thức như `Where`, `Select`, `OrderBy` và `GroupBy` cho mọi collection.",
+        {
+          "code": "var nums = new List<int> { 3, 1, 2, 5 };\nnums.Add(4);\nnums.Sort();\nConsole.WriteLine(string.Join(\", \", nums));      // 1, 2, 3, 4, 5\n\nvar ages = new Dictionary<string, int> { [\"ann\"] = 31, [\"bob\"] = 25 };\nages[\"cy\"] = 40;\nif (ages.TryGetValue(\"bob\", out int bobAge)) Console.WriteLine(bobAge);  // 25\n\nvar evenSquares = nums.Where(n => n % 2 == 0).Select(n => n * n).ToList();\nConsole.WriteLine(string.Join(\" \", evenSquares)); // 4 16\n\nvar oldest = ages.OrderByDescending(kv => kv.Value).First();\nConsole.WriteLine(oldest.Key);                    // cy",
+          "lang": "csharp"
+        },
+        "Các collection phổ biến khác là `HashSet<T>` cho phần tử duy nhất, `Queue<T>`, `Stack<T>` và mảng kích thước cố định như `int[]`."
+      ]
+    },
+    {
+      "h": "Tính năng đặc trưng: async và await",
+      "body": [
+        "C# đã đưa ra mô hình `async`/`await` mà nhiều ngôn ngữ sau này áp dụng. Phương thức `async` trả về `Task` và có thể `await` các thao tác chậm, như yêu cầu web hoặc đọc tệp, mà không chặn luồng.",
+        {
+          "code": "using System.Net.Http;\n\nusing var http = new HttpClient();\nvar sizes = await Task.WhenAll(\n    GetLengthAsync(http, \"https://example.com\"),\n    GetLengthAsync(http, \"https://example.org\"));\nConsole.WriteLine($\"downloaded {sizes.Sum()} characters\");\n\nstatic async Task<int> GetLengthAsync(HttpClient http, string url)\n{\n    string html = await http.GetStringAsync(url);\n    return html.Length;\n}",
+          "lang": "csharp"
+        },
+        "`Task.WhenAll` chạy cả hai yêu cầu cùng lúc và chờ cả hai. Khai báo `using var` giải phóng `HttpClient` ở cuối phạm vi."
+      ]
+    },
+    {
+      "h": "Ngoại lệ",
+      "body": [
+        "Lỗi là các ngoại lệ. Hãy bắt các kiểu cụ thể trước, và dùng `finally` hoặc `using` để dọn dẹp. Mẫu `TryParse` tránh ngoại lệ với dữ liệu nhập thường không hợp lệ.",
+        {
+          "code": "try\n{\n    int age = int.Parse(\"abc\");\n}\ncatch (FormatException ex)\n{\n    Console.WriteLine($\"not a number: {ex.Message}\");\n}\nfinally\n{\n    Console.WriteLine(\"done\");\n}\n\nif (!int.TryParse(\"41\", out int parsed)) parsed = 0;\nConsole.WriteLine(parsed);   // 41",
+          "lang": "csharp"
+        }
+      ]
+    },
+    {
+      "h": "Một chương trình nhỏ hoàn chỉnh: tần suất từ",
+      "body": [
+        "Thay `Program.cs` trong dự án console bằng đoạn mã này, rồi chạy `dotnet run -- notes.txt`.",
+        {
+          "code": "using System.Text.RegularExpressions;\n\nif (args.Length != 1)\n{\n    Console.Error.WriteLine(\"usage: dotnet run -- FILE\");\n    return 1;\n}\n\ntry\n{\n    string text = File.ReadAllText(args[0]).ToLowerInvariant();\n    var top = Regex.Matches(text, \"[a-z']+\")\n        .GroupBy(m => m.Value)\n        .Select(g => (Word: g.Key, Count: g.Count()))\n        .OrderByDescending(t => t.Count)\n        .Take(5);\n\n    foreach (var (word, count) in top)\n        Console.WriteLine($\"{count,5}  {word}\");\n    return 0;\n}\ncatch (FileNotFoundException)\n{\n    Console.Error.WriteLine($\"file not found: {args[0]}\");\n    return 1;\n}",
+          "lang": "csharp"
+        },
+        "Top-level statements có thể đọc `args` của dòng lệnh và trả về mã thoát. `System.IO`, `System.Linq` và `System.Collections.Generic` được nhập tự động qua implicit usings trong các dự án mới."
+      ]
+    },
+    {
+      "h": "Những lỗi thường gặp của người mới",
+      "body": [
+        {
+          "note": "Đừng chặn mã bất đồng bộ bằng `.Result` hoặc `.Wait()`. Nó có thể gây deadlock trong ứng dụng UI và ASP.NET cũ, và lãng phí luồng ở nơi khác. Hãy dùng `await` suốt từ dưới lên trên."
+        },
+        {
+          "ul": [
+            "Dùng `double` cho tiền; hãy dùng `decimal` để tránh lỗi làm tròn nhị phân.",
+            "Bỏ qua cảnh báo nullable, rồi chúng thành `NullReferenceException` khi chạy.",
+            "Sửa một `List<T>` bên trong `foreach` trên chính list đó, sẽ ném `InvalidOperationException`.",
+            "Tạo `HttpClient` mới cho mỗi yêu cầu trong ứng dụng chạy lâu. Hãy tái sử dụng một thể hiện hoặc dùng `IHttpClientFactory`.",
+            "Quên rằng truy vấn LINQ chạy lười: truy vấn chạy lại mỗi lần được duyệt trừ khi bạn gọi `ToList()`."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Học tiếp ở đâu",
+      "body": [
+        "Microsoft Learn có tài liệu C# chính thức, gồm phần tham quan ngôn ngữ và các bài hướng dẫn tương tác. Sau đó học ASP.NET Core cho web API, Entity Framework Core cho cơ sở dữ liệu, hoặc Unity cho game, và dùng xUnit hoặc NUnit để kiểm thử. Visual Studio, VS Code với C# Dev Kit và JetBrains Rider là các trình soạn thảo phổ biến."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "C# chỉ dành cho Windows phải không?",
+      "a": "Không. .NET hiện đại chạy trên Windows, macOS và Linux, và ứng dụng C# có thể triển khai lên máy chủ Linux và container. Chỉ một số framework giao diện desktop, như WPF và Windows Forms, là chỉ dành cho Windows."
+    },
+    {
+      "q": "C# và .NET khác nhau thế nào?",
+      "a": "C# là ngôn ngữ lập trình. .NET là runtime và thư viện biên dịch và chạy mã C# (cũng như F# và Visual Basic)."
+    },
+    {
+      "q": "C# có giống Java không?",
+      "a": "Có, ở nhiều mặt: cả hai đều là ngôn ngữ hướng đối tượng, kiểu tĩnh, có bộ thu gom rác, với cú pháp kiểu C. C# thêm các tính năng như thuộc tính, LINQ, `async`/`await`, struct kiểu giá trị và record."
+    },
+    {
+      "q": "C# có tốt để làm game không?",
+      "a": "Có. Unity, một trong những engine game được dùng nhiều nhất, dùng C# cho script game, và engine Godot cũng hỗ trợ C#."
+    }
+  ]
+}

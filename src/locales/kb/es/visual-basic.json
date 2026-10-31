@@ -1,0 +1,190 @@
+{
+  "title": "Tutorial de Visual Basic: sintaxis de VB.NET, tipos, colecciones y clases — cv.cm",
+  "description": "Aprende Visual Basic .NET: crea un proyecto, declara variables con Dim, usa If, Select Case y bucles, funciones, List, Dictionary, clases, LINQ y Try.",
+  "h1": "Tutorial de Visual Basic .NET para principiantes",
+  "answer": "Visual Basic .NET (VB.NET) es un lenguaje orientado a objetos y de tipado estático para la plataforma .NET, con palabras clave parecidas al inglés como `Dim`, `If ... Then ... End If` y `For ... Next`. No distingue mayúsculas de minúsculas y usa las mismas bibliotecas de .NET que C#. Crea un proyecto con `dotnet new console -lang VB` y ejecútalo con `dotnet run`. VBA, el lenguaje de macros de Microsoft Office, es un pariente más antiguo con una sintaxis similar.",
+  "sections": [
+    {
+      "h": "Qué es Visual Basic .NET y quién lo usa",
+      "body": [
+        "VB.NET es el sucesor en .NET del Visual Basic clásico (VB6). Se compila al mismo lenguaje intermedio que C#, por lo que ambos lenguajes pueden compartir bibliotecas e incluso combinarse en una misma solución. Se usa sobre todo en aplicaciones de escritorio para Windows (Windows Forms, WPF), herramientas internas de empresa, aplicaciones web ASP.NET y el mantenimiento de bases de código VB existentes.",
+        "Microsoft sigue dando soporte a Visual Basic en el .NET moderno, pero ha dicho que no planea evolucionar el lenguaje con grandes funciones nuevas; las novedades de .NET suelen aparecer primero en C#. Para un proyecto nuevo sin código VB previo, C# es la elección más común, pero VB.NET sigue siendo un lenguaje legible para aprender a programar y para software empresarial."
+      ]
+    },
+    {
+      "h": "Instala y ejecuta Hello, world",
+      "body": [
+        "Instala el SDK de .NET (Windows, macOS o Linux). Visual Studio en Windows también incluye plantillas de Visual Basic y un diseñador visual de formularios.",
+        {
+          "code": "dotnet new console -lang VB -o HelloVB\ncd HelloVB\ndotnet run\n# Hello, world!",
+          "lang": "shell"
+        },
+        {
+          "code": "' Program.vb\nImports System\n\nModule Program\n    Sub Main(args As String())\n        Console.WriteLine(\"Hello, world!\")\n    End Sub\nEnd Module",
+          "lang": "vb"
+        },
+        "Un `Module` contiene procedimientos compartidos, y `Sub Main` es el punto de entrada. Los comentarios empiezan con un apóstrofo `'`. Cada instrucción normalmente termina al final de la línea; no hay punto y coma ni llaves."
+      ]
+    },
+    {
+      "h": "Variables y tipos básicos",
+      "body": [
+        "Declara las variables con `Dim name As Type`. Con `Option Infer On` (el valor por defecto) puedes omitir el tipo cuando asignas un valor. Pon `Option Strict On` al principio de cada archivo (o actívalo en el proyecto) para que las conversiones implícitas arriesgadas se conviertan en errores de compilación.",
+        {
+          "table": {
+            "head": [
+              "Tipo",
+              "Ejemplo",
+              "Notas"
+            ],
+            "rows": [
+              [
+                "Integer",
+                "`Dim n As Integer = 42`",
+                "32 bits; `Long` es de 64 bits"
+              ],
+              [
+                "Double",
+                "`Dim x As Double = 3.14`",
+                "Punto flotante de 64 bits"
+              ],
+              [
+                "Decimal",
+                "`Dim price As Decimal = 19.99D`",
+                "Decimal exacto, bueno para dinero"
+              ],
+              [
+                "String",
+                "`Dim s As String = \"hello\"`",
+                "Une cadenas con `&`"
+              ],
+              [
+                "Char",
+                "`Dim c As Char = \"a\"c`",
+                "Un solo carácter, sufijo `c`"
+              ],
+              [
+                "Boolean",
+                "`Dim ok As Boolean = True`",
+                "`True` / `False`"
+              ],
+              [
+                "Date",
+                "`Dim d As Date = #2026-01-15#`",
+                "Valor de fecha y hora"
+              ]
+            ]
+          }
+        },
+        {
+          "code": "Option Strict On\nModule Types\n    Sub Main()\n        Dim name As String = \"Ana\"\n        Dim age = 30                  ' inferred as Integer\n        Console.WriteLine(name & \" is \" & age.ToString())\n        Console.WriteLine($\"Next year {name} is {age + 1}\")\n        Console.WriteLine(7 / 2)      ' 3.5 (always Double)\n        Console.WriteLine(7 \\ 2)      ' 3 (integer division)\n        Console.WriteLine(7 Mod 2)    ' 1\n    End Sub\nEnd Module",
+          "lang": "vb"
+        }
+      ]
+    },
+    {
+      "h": "Control de flujo",
+      "body": [
+        {
+          "code": "Dim score = 85\nIf score >= 90 Then\n    Console.WriteLine(\"A\")\nElseIf score >= 80 Then\n    Console.WriteLine(\"B\")\nElse\n    Console.WriteLine(\"C\")\nEnd If\n\nSelect Case score\n    Case 90 To 100\n        Console.WriteLine(\"excellent\")\n    Case 80 To 89\n        Console.WriteLine(\"good\")\n    Case Else\n        Console.WriteLine(\"keep going\")\nEnd Select\n\nFor i = 1 To 3\n    Console.WriteLine($\"{i} squared is {i * i}\")\nNext\n\nDim n = 3\nDo While n > 0\n    n -= 1\nLoop",
+          "lang": "vb"
+        },
+        "Estas instrucciones van dentro de un `Sub`. `For i = 1 To 3` incluye ambos extremos; añade `Step -1` para contar hacia atrás. `For Each item In collection` recorre cualquier colección. Usa `Exit For` o `Exit Do` para salir antes de un bucle. En las condiciones, prefiere `AndAlso` y `OrElse`: dejan de evaluar en cuanto se conoce el resultado, mientras que `And` y `Or` siempre evalúan ambos lados."
+      ]
+    },
+    {
+      "h": "Sub, funciones y lambdas",
+      "body": [
+        "Un `Sub` no devuelve un valor; una `Function` sí. Los parámetros se pasan `ByVal` (una copia) por defecto; `ByRef` permite que el procedimiento cambie la variable de quien lo llama. Los parámetros pueden ser `Optional` con un valor por defecto.",
+        {
+          "code": "Function Add(a As Integer, b As Integer) As Integer\n    Return a + b\nEnd Function\n\nSub Greet(Optional name As String = \"world\")\n    Console.WriteLine($\"Hello, {name}!\")\nEnd Sub\n\nSub Increment(ByRef value As Integer)\n    value += 1\nEnd Sub\n\n' Inside Sub Main:\nDim x = 5\nIncrement(x)                                  ' x is now 6\nGreet()                                       ' Hello, world!\nDim square = Function(n As Integer) n * n     ' lambda\nConsole.WriteLine(square(Add(1, 2)))          ' 9",
+          "lang": "vb"
+        }
+      ]
+    },
+    {
+      "h": "Arreglos, List y Dictionary",
+      "body": [
+        {
+          "code": "Dim nums() As Integer = {3, 1, 2}\nDim five(4) As Integer            ' 5 elements, indexes 0 to 4\nArray.Sort(nums)\nConsole.WriteLine(String.Join(\", \", nums))   ' 1, 2, 3\n\nDim names As New List(Of String) From {\"Ana\", \"Ben\"}\nnames.Add(\"Cleo\")\nConsole.WriteLine(names.Count)               ' 3\n\nDim ages As New Dictionary(Of String, Integer)\nages(\"Ana\") = 30\nages(\"Ben\") = 17\nFor Each pair In ages\n    Console.WriteLine($\"{pair.Key}: {pair.Value}\")\nNext",
+          "lang": "vb"
+        },
+        "Los arreglos y las listas se indexan desde 0 con paréntesis: `nums(0)`. Los tipos genéricos usan `Of`: `List(Of String)` es la forma en VB del `List<string>` de C#. Ten en cuenta que `Dim five(4)` declara el límite superior, no la longitud, así que el arreglo tiene cinco elementos."
+      ]
+    },
+    {
+      "h": "Características distintivas: clases, propiedades y consultas LINQ",
+      "body": [
+        "VB.NET es totalmente orientado a objetos: las clases tienen propiedades, métodos, constructores (`Sub New`), herencia (`Inherits`), interfaces (`Implements`) y eventos (`Event`, `RaiseEvent`, `Handles`). Las consultas LINQ pueden escribirse con una sintaxis de consulta legible.",
+        {
+          "code": "Public Class Person\n    Public Property Name As String\n    Public Property Age As Integer\n\n    Public Sub New(name As String, age As Integer)\n        Me.Name = name\n        Me.Age = age\n    End Sub\nEnd Class\n\n' Inside Sub Main:\nDim people As New List(Of Person) From {\n    New Person(\"Ana\", 30),\n    New Person(\"Ben\", 17)\n}\nDim adults = From p In people\n             Where p.Age >= 18\n             Select p.Name\nFor Each adultName In adults\n    Console.WriteLine(adultName)   ' Ana\nNext",
+          "lang": "vb"
+        },
+        "Como VB no distingue mayúsculas de minúsculas, `Name` y `name` son el mismo identificador; dentro del constructor, `Me.Name` se refiere a la propiedad y `name` al parámetro. Otras comodidades propias de VB son los bloques `With ... End With`, los literales XML y el espacio de nombres `My` para tareas comunes."
+      ]
+    },
+    {
+      "h": "Manejo de errores",
+      "body": [
+        "VB.NET usa manejo estructurado de excepciones: `Try`, `Catch`, `Finally` y `Throw`. Un `Catch` puede incluir un filtro `When`. El estilo antiguo `On Error GoTo` de VB6 y VBA todavía compila, pero no debe usarse en código .NET nuevo.",
+        {
+          "code": "Function ParseAge(s As String) As Integer\n    Dim n As Integer\n    If Not Integer.TryParse(s, n) Then\n        Throw New FormatException($\"Not a number: {s}\")\n    End If\n    If n < 0 Then Throw New ArgumentOutOfRangeException(NameOf(s))\n    Return n\nEnd Function\n\n' Inside Sub Main:\nTry\n    Console.WriteLine(ParseAge(\"abc\"))\nCatch ex As FormatException\n    Console.WriteLine(\"Error: \" & ex.Message)   ' Error: Not a number: abc\nFinally\n    Console.WriteLine(\"done\")\nEnd Try",
+          "lang": "vb"
+        }
+      ]
+    },
+    {
+      "h": "Un programa pequeño y completo: frecuencia de palabras",
+      "body": [
+        {
+          "code": "Imports System\nImports System.Collections.Generic\nImports System.Linq\n\nModule WordCount\n    Sub Main()\n        Dim text = \"the cat and the hat and the bat\"\n        Dim counts As New Dictionary(Of String, Integer)\n\n        For Each word In text.Split(\" \"c)\n            If counts.ContainsKey(word) Then\n                counts(word) += 1\n            Else\n                counts(word) = 1\n            End If\n        Next\n\n        Dim top = counts.OrderByDescending(Function(kv) kv.Value).Take(2)\n        For Each kv In top\n            Console.WriteLine($\"{kv.Key} {kv.Value}\")\n        Next\n    End Sub\nEnd Module\n' the 3\n' and 2",
+          "lang": "vb"
+        },
+        {
+          "note": "Errores comunes de principiante: pensar que `Dim a(4)` crea cuatro elementos (crea cinco); usar `And`/`Or` donde se necesita el cortocircuito de `AndAlso`/`OrElse`, por ejemplo `If x IsNot Nothing And x.Length > 0` falla cuando `x` es `Nothing`; esperar que `/` haga una división entera (usa `\\`); dejar `Option Strict Off`, que oculta errores de tipo hasta el momento de la ejecución; y confundir VB.NET con VBA, cuyo código y bibliotecas son distintos."
+        }
+      ]
+    },
+    {
+      "h": "VBA: Visual Basic dentro de Microsoft Office",
+      "body": [
+        "Visual Basic for Applications (VBA) es el lenguaje de macros integrado en aplicaciones de Microsoft Office como Excel, Word y Access. Se basa en el Visual Basic clásico, no en .NET: se ejecuta dentro de la aplicación de Office, usa el modelo de objetos de Office (libros, rangos, documentos) y se edita en el editor de VBA (Alt+F11 en Windows). La sintaxis básica de `Dim`, `If`, `For` y `Sub` es la misma, lo que hace útil el conocimiento de VB.NET para VBA.",
+        {
+          "code": "' VBA in Excel: write the squares of 1 to 5 into column A\nSub FillSquares()\n    Dim i As Long\n    For i = 1 To 5\n        Cells(i, 1).Value = i * i\n    Next i\n    MsgBox \"Done\"\nEnd Sub",
+          "lang": "vb"
+        }
+      ]
+    },
+    {
+      "h": "Adónde ir después",
+      "body": [
+        {
+          "ul": [
+            "Microsoft Learn: la documentación de Visual Basic, incluida la guía de inicio y la referencia del lenguaje.",
+            "Aprende la biblioteca de clases base de .NET (colecciones, archivos, LINQ); se comparte con C#.",
+            "Para aplicaciones de escritorio, prueba las plantillas de Windows Forms o WPF en Visual Studio.",
+            "Para automatizar Office, lee la referencia de VBA en Microsoft Learn de la aplicación que uses."
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "¿Está muerto Visual Basic .NET?",
+      "a": "No. Tiene soporte en las versiones actuales de .NET y en Visual Studio, pero Microsoft no planea grandes funciones nuevas del lenguaje, así que la mayoría de los proyectos nuevos de .NET eligen C#."
+    },
+    {
+      "q": "¿Cuál es la diferencia entre VB.NET y VBA?",
+      "a": "VB.NET es un lenguaje completo de .NET para crear aplicaciones independientes. VBA es un lenguaje de macros basado en el Visual Basic clásico que se ejecuta dentro de aplicaciones de Office como Excel; la sintaxis es parecida, pero el entorno de ejecución y las bibliotecas son distintos."
+    },
+    {
+      "q": "¿Debería aprender VB.NET o C#?",
+      "a": "Si mantienes código VB o quieres una sintaxis muy legible, VB.NET está bien. Para proyectos nuevos, oportunidades de trabajo y las funciones más recientes de .NET, C# suele ser la mejor inversión, y las bibliotecas que aprendas se trasladan de un lenguaje al otro."
+    },
+    {
+      "q": "¿Visual Basic distingue mayúsculas de minúsculas?",
+      "a": "No. `Dim Total`, `total` y `TOTAL` se refieren a la misma variable, y el editor normalmente normaliza las mayúsculas por ti."
+    }
+  ]
+}

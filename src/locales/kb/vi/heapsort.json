@@ -1,0 +1,250 @@
+{
+  "title": "Sắp xếp vun đống (Heapsort): đống nhị phân, sift-down, mã Python và độ phức tạp — cv.cm",
+  "description": "Sắp xếp vun đống xây max-heap rồi liên tục chuyển phần tử lớn nhất về cuối, trong O(n log n) thời gian, O(1) không gian. Ví dụ, mã Python, heapq.",
+  "h1": "Thuật toán sắp xếp vun đống: cách hoạt động, mã và độ phức tạp",
+  "answer": "Sắp xếp vun đống là thuật toán sắp xếp dựa trên so sánh, trước tiên sắp mảng thành max-heap (đống cực đại), một cây nhị phân lưu trong mảng mà mỗi nút cha đều không nhỏ hơn các nút con. Sau đó nó liên tục đổi phần tử lớn nhất (nút gốc) xuống cuối mảng, thu nhỏ đống đi một và khôi phục tính chất đống bằng cách đẩy nút gốc mới xuống (sift-down). Thuật toán chạy O(n log n) trong mọi trường hợp và sắp xếp tại chỗ với O(1) không gian phụ, nhưng không ổn định và trong thực tế thường chậm hơn sắp xếp nhanh.",
+  "sections": [
+    {
+      "h": "Ý tưởng bằng lời đơn giản",
+      "body": [
+        "Sắp xếp vun đống là sắp xếp chọn với cách tìm giá trị lớn nhất nhanh hơn. Sắp xếp chọn quét toàn bộ phần chưa sắp xếp, mỗi lần O(n). Sắp xếp vun đống giữ phần chưa sắp xếp dưới dạng đống, nên giá trị lớn nhất luôn ở chỉ số 0 và khôi phục thứ tự sau khi lấy nó ra chỉ tốn O(log n).",
+        "Đống nhị phân được lưu trong mảng thường, không cần con trỏ. Với phần tử ở chỉ số `i`:",
+        {
+          "ul": [
+            "con trái ở `2*i + 1` và con phải ở `2*i + 2`;",
+            "nút cha ở `(i - 1) // 2`;",
+            "trong max-heap, mỗi nút cha lớn hơn hoặc bằng các nút con, nên phần tử lớn nhất ở chỉ số 0."
+          ]
+        },
+        {
+          "ol": [
+            "Xây max-heap từ mảng bằng cách đẩy xuống (sift down) mọi nút không phải lá, bắt đầu từ nút cuối và đi về chỉ số 0.",
+            "Đổi gốc (giá trị lớn nhất) với phần tử cuối của đống. Phần tử đó giờ đã ở đúng chỗ cuối cùng.",
+            "Thu nhỏ đống đi một và đẩy gốc mới xuống cho đến khi tính chất đống được thỏa mãn trở lại.",
+            "Lặp lại bước 2 và 3 cho đến khi đống chỉ còn một phần tử."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Ví dụ minh họa từng bước",
+      "body": [
+        "Sắp xếp `[4, 10, 3, 5, 1]`. Các phần tử sau dấu gạch đã được sắp xếp và cố định.",
+        {
+          "table": {
+            "head": [
+              "Bước",
+              "Hành động",
+              "Mảng"
+            ],
+            "rows": [
+              [
+                "Bắt đầu",
+                "",
+                "`[4, 10, 3, 5, 1]`"
+              ],
+              [
+                "Xây 1",
+                "đẩy xuống chỉ số 1 (10): lớn hơn các con 5 và 1, không đổi",
+                "`[4, 10, 3, 5, 1]`"
+              ],
+              [
+                "Xây 2",
+                "đẩy xuống chỉ số 0 (4): đổi chỗ với 10, rồi với 5",
+                "`[10, 5, 3, 4, 1]`  max-heap"
+              ],
+              [
+                "Lấy ra 1",
+                "đổi 10 xuống cuối, đẩy 1 xuống: đổi chỗ với 5, rồi với 4",
+                "`[5, 4, 3, 1 | 10]`"
+              ],
+              [
+                "Lấy ra 2",
+                "đổi 5 xuống cuối, đẩy 1 xuống: đổi chỗ với 4",
+                "`[4, 1, 3 | 5, 10]`"
+              ],
+              [
+                "Lấy ra 3",
+                "đổi 4 xuống cuối, đẩy 3 xuống: không có con nào lớn hơn",
+                "`[3, 1 | 4, 5, 10]`"
+              ],
+              [
+                "Lấy ra 4",
+                "đổi 3 xuống cuối",
+                "`[1 | 3, 4, 5, 10]`  đã sắp xếp"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "Cài đặt bằng Python",
+      "body": [
+        {
+          "code": "def sift_down(a, root, end):\n    \"\"\"Restore the max-heap property for a[root..end-1].\"\"\"\n    while True:\n        child = 2 * root + 1\n        if child >= end:\n            return\n        if child + 1 < end and a[child + 1] > a[child]:\n            child += 1                      # pick the larger child\n        if a[root] >= a[child]:\n            return\n        a[root], a[child] = a[child], a[root]\n        root = child\n\ndef heapsort(a):\n    \"\"\"Sort list a in place, ascending.\"\"\"\n    n = len(a)\n    for i in range(n // 2 - 1, -1, -1):     # build the max-heap\n        sift_down(a, i, n)\n    for end in range(n - 1, 0, -1):\n        a[0], a[end] = a[end], a[0]         # move the max to the end\n        sift_down(a, 0, end)\n    return a\n\nprint(heapsort([4, 10, 3, 5, 1]))   # [1, 3, 4, 5, 10]\nprint(heapsort([2, 2, 1]))          # [1, 2, 2]",
+          "lang": "python"
+        },
+        "Module `heapq` của Python cung cấp min-heap trên list thông thường. Lấy ra từng phần tử cho ra danh sách đã sắp xếp, đó là một bản sắp xếp vun đống ngắn gọn (không tại chỗ):",
+        {
+          "code": "import heapq\n\ndef heapsort_heapq(items):\n    h = list(items)\n    heapq.heapify(h)                       # O(n)\n    return [heapq.heappop(h) for _ in range(len(h))]\n\nprint(heapsort_heapq([4, 10, 3, 5, 1]))     # [1, 3, 4, 5, 10]\nprint(heapq.nlargest(2, [4, 10, 3, 5, 1]))  # [10, 5]",
+          "lang": "python"
+        }
+      ]
+    },
+    {
+      "h": "Độ phức tạp thời gian và không gian",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Trường hợp",
+              "Thời gian",
+              "Lý do"
+            ],
+            "rows": [
+              [
+                "Xây đống",
+                "O(n)",
+                "hầu hết các nút nằm gần đáy và chỉ đẩy xuống một đoạn ngắn"
+              ],
+              [
+                "Tốt nhất",
+                "O(n log n)",
+                "n − 1 lần lấy ra, mỗi lần đẩy xuống tối đa log₂ n mức (khóa phân biệt)"
+              ],
+              [
+                "Trung bình",
+                "O(n log n)",
+                "cùng khối lượng công việc bất kể thứ tự"
+              ],
+              [
+                "Xấu nhất",
+                "O(n log n)",
+                "chiều cao cây luôn khoảng log₂ n"
+              ],
+              [
+                "Không gian phụ",
+                "O(1)",
+                "đống nằm ngay trong mảng đầu vào, sift-down là một vòng lặp"
+              ]
+            ]
+          }
+        },
+        "Xây đống từ dưới lên là O(n), không phải O(n log n), vì tổng chiều cao các nút trong cây nhị phân đầy đủ là O(n). Giai đoạn lấy ra chiếm phần lớn tổng thời gian."
+      ]
+    },
+    {
+      "h": "So sánh sắp xếp vun đống với các thuật toán khác",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Thuật toán",
+              "Tốt nhất",
+              "Trung bình",
+              "Xấu nhất",
+              "Không gian phụ",
+              "Ổn định"
+            ],
+            "rows": [
+              [
+                "Sắp xếp vun đống",
+                "O(n log n)",
+                "O(n log n)",
+                "O(n log n)",
+                "O(1)",
+                "Không"
+              ],
+              [
+                "Sắp xếp nhanh",
+                "O(n log n)",
+                "O(n log n)",
+                "O(n²)",
+                "O(log n)",
+                "Không"
+              ],
+              [
+                "Sắp xếp trộn",
+                "O(n log n)",
+                "O(n log n)",
+                "O(n log n)",
+                "O(n)",
+                "Có"
+              ],
+              [
+                "Sắp xếp chọn",
+                "O(n²)",
+                "O(n²)",
+                "O(n²)",
+                "O(1)",
+                "Không"
+              ],
+              [
+                "Sắp xếp chèn",
+                "O(n)",
+                "O(n²)",
+                "O(n²)",
+                "O(1)",
+                "Có"
+              ],
+              [
+                "Timsort (`sorted` của Python)",
+                "O(n)",
+                "O(n log n)",
+                "O(n log n)",
+                "O(n)",
+                "Có"
+              ]
+            ]
+          }
+        },
+        "Sắp xếp vun đống không ổn định: việc đổi gốc xuống cuối có thể đưa một phần tử vượt qua các phần tử cùng khóa. Điểm mạnh chính là đảm bảo O(n log n) ở trường hợp xấu nhất cùng với O(1) không gian phụ, một sự kết hợp mà cả sắp xếp nhanh lẫn sắp xếp trộn đều không có. Điểm yếu là truy cập bộ nhớ: nhảy giữa chỉ số `i` và `2*i + 1` dùng bộ nhớ đệm CPU kém, nên thường chậm hơn sắp xếp nhanh được cài đặt tốt. Introsort dùng sắp xếp vun đống làm phương án dự phòng khi sắp xếp nhanh đệ quy quá sâu."
+      ]
+    },
+    {
+      "h": "Biến thể và lỗi thường gặp",
+      "body": [
+        {
+          "ul": [
+            "Sắp xếp một phần: để chỉ lấy k phần tử lớn nhất, xây đống và lấy ra k lần, O(n + k log n). Trong Python, `heapq.nlargest` và `heapq.nsmallest` làm việc này.",
+            "Top-k từ một luồng dữ liệu: giữ một min-heap kích thước k và đẩy vào hoặc thay thế từng phần tử mới, O(n log k) thời gian và O(k) bộ nhớ.",
+            "Bottom-up heapsort đẩy “ô trống” xuống tận lá trước rồi mới đẩy lên, giúp tiết kiệm phép so sánh.",
+            "Smoothsort, biến thể dựa trên đống của Dijkstra, chạy O(n) trên đầu vào đã sắp xếp nhưng ít được dùng vì phức tạp."
+          ]
+        },
+        {
+          "note": "Các lỗi hay gặp: dùng min-heap tại chỗ và nhận kết quả giảm dần, bắt đầu vòng xây ở chỉ số `n // 2` với công thức con tính từ 1 trên mảng tính từ 0, quên thu nhỏ đống (`end`) sau mỗi lần đổi chỗ, và chỉ so sánh với con trái khi sift-down."
+        }
+      ]
+    },
+    {
+      "h": "Khi nào nên dùng sắp xếp vun đống",
+      "body": [
+        "Dùng sắp xếp vun đống khi cần đảm bảo O(n log n) ở trường hợp xấu nhất mà không thêm bộ nhớ, ví dụ trong hệ thống nhúng hoặc thời gian thực, hoặc làm phương án dự phòng an toàn bên trong thuật toán sắp xếp khác. Với mã Python hằng ngày, hãy dùng `sorted()`, ổn định và nhanh hơn trên dữ liệu điển hình. Bản thân đống hữu ích hơn việc sắp xếp: hàng đợi ưu tiên, đường đi ngắn nhất Dijkstra, bộ lập lịch, trộn k danh sách đã sắp xếp (`heapq.merge`) và tìm k giá trị lớn nhất đều dựa trên nó. Phỏng vấn thường hỏi công thức chỉ số của đống, vì sao xây đống là O(n), và bài toán top-k."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Sắp xếp vun đống có ổn định không?",
+      "a": "Không. Chuyển gốc xuống cuối và đẩy các phần tử xuống có thể làm thay đổi thứ tự tương đối của các khóa bằng nhau."
+    },
+    {
+      "q": "Độ phức tạp thời gian của sắp xếp vun đống là gì?",
+      "a": "O(n log n) ở trường hợp tốt nhất, trung bình và xấu nhất. Xây đống là O(n) và mỗi lần trong n − 1 lần lấy ra tốn O(log n)."
+    },
+    {
+      "q": "Sắp xếp vun đống có tại chỗ không?",
+      "a": "Có. Đống được lưu ngay trong mảng đang sắp xếp, và phần đã sắp xếp lớn dần từ cuối, nên chỉ cần O(1) không gian phụ."
+    },
+    {
+      "q": "Vì sao sắp xếp vun đống chậm hơn sắp xếp nhanh trong thực tế?",
+      "a": "Cả hai đều O(n log n) trung bình, nhưng sắp xếp vun đống nhảy giữa các vị trí xa nhau trong mảng, gây nhiều lần trượt bộ nhớ đệm hơn, và nó thực hiện nhiều phép so sánh hơn mỗi phần tử so với sắp xếp nhanh."
+    },
+    {
+      "q": "Làm sao sắp xếp bằng heapq trong Python?",
+      "a": "Gọi `heapq.heapify(list)` rồi gọi `heapq.heappop` lặp lại, hoặc dùng `heapq.nsmallest(k, items)` để lấy k phần tử nhỏ nhất. Để sắp xếp đầy đủ, `sorted()` đơn giản và nhanh hơn."
+    }
+  ]
+}

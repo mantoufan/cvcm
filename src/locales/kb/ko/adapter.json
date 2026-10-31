@@ -1,0 +1,184 @@
+{
+  "title": "어댑터 패턴: 호환되지 않는 인터페이스를 함께 동작시키기, TypeScript 예제 — cv.cm",
+  "description": "어댑터 디자인 패턴 설명: 호환되지 않는 인터페이스를 가진 클래스를 감싸 클라이언트가 쓸 수 있게 합니다. TypeScript 예제, 객체 어댑터와 클래스 어댑터, 실제 사용 사례를 다룹니다.",
+  "h1": "예제로 이해하는 어댑터 패턴",
+  "answer": "어댑터 패턴은 기존 클래스의 인터페이스를 클라이언트 코드가 기대하는 인터페이스로 변환하는 구조 패턴입니다. 어댑터는 호환되지 않는 객체를 감싸 모든 호출을 번역합니다. 예를 들어 `charge(amountCents)`를 레거시의 `makePayment(\"12.50\")`로 바꿔 줍니다. 서드파티나 레거시 컴포넌트를 수정하지 않고, 그 어색한 API가 코드 전체로 퍼지지 않게 하면서 재사용할 수 있습니다. 래퍼(Wrapper)라고도 부릅니다.",
+  "sections": [
+    {
+      "h": "의도",
+      "body": [
+        "클래스의 인터페이스를 클라이언트가 기대하는 다른 인터페이스로 변환합니다. 어댑터 패턴은 인터페이스가 호환되지 않아 함께 동작할 수 없던 클래스들이 함께 동작하게 해 줍니다. Gang of Four(GoF) 책의 일곱 가지 구조 패턴 중 하나입니다."
+      ]
+    },
+    {
+      "h": "해결하는 문제",
+      "body": [
+        "쇼핑몰 코드는 작은 `PaymentGateway` 인터페이스로 동작합니다. `charge(amountCents, currency)`가 `ok` 플래그와 거래 ID를 담은 결과를 반환합니다. 그런데 회사가 SDK 모양이 완전히 다른 결제 업체와 계약했습니다. 금액은 십진수 문자열이고, 통화는 요청 객체의 일부이며, 오류는 숫자 상태 코드로 돌아옵니다.",
+        "SDK는 바꿀 수 없고, 새 모양에 맞추려고 모든 호출부를 다시 쓰고 싶지도 않습니다. SDK의 스타일이 결제, 환불, 보고서 코드까지 번지면 나중에 업체를 바꿀 때 비용이 큽니다. 어댑터는 번역을 한 클래스에 가둡니다."
+      ]
+    },
+    {
+      "h": "구조와 참여자",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "참여자",
+              "역할",
+              "예제에서"
+            ],
+            "rows": [
+              [
+                "Target",
+                "클라이언트가 기대하는 인터페이스.",
+                "`PaymentGateway`"
+              ],
+              [
+                "Adaptee",
+                "호환되지 않는 인터페이스를 가진 기존 클래스.",
+                "`LegacyPayClient`"
+              ],
+              [
+                "Adapter",
+                "Target을 구현하고 호출을 Adaptee로 번역.",
+                "`LegacyPayAdapter`"
+              ],
+              [
+                "Client",
+                "Target 인터페이스만 사용.",
+                "`checkout`"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "TypeScript 구현",
+      "body": [
+        {
+          "code": "// Target: what our code expects.\ninterface PaymentGateway {\n  charge(amountCents: number, currency: string): { ok: boolean; id: string };\n}\n\n// Adaptee: a third-party SDK we cannot change.\nclass LegacyPayClient {\n  makePayment(req: { amount: string; curr: string }): { status: number; ref: string } {\n    return { status: req.curr === \"USD\" ? 200 : 422, ref: `TX-${req.amount}` };\n  }\n}\n\n// Adapter: implements the Target by translating to the Adaptee.\nclass LegacyPayAdapter implements PaymentGateway {\n  constructor(private client: LegacyPayClient) {}\n\n  charge(amountCents: number, currency: string) {\n    const res = this.client.makePayment({\n      amount: (amountCents / 100).toFixed(2),\n      curr: currency.toUpperCase(),\n    });\n    return { ok: res.status === 200, id: res.ref };\n  }\n}\n\n// Client code knows nothing about LegacyPayClient.\nfunction checkout(gateway: PaymentGateway, totalCents: number): string {\n  const result = gateway.charge(totalCents, \"usd\");\n  return result.ok ? `paid ${result.id}` : \"payment failed\";\n}\n\nconsole.log(checkout(new LegacyPayAdapter(new LegacyPayClient()), 1250)); // paid TX-12.50",
+          "lang": "typescript"
+        },
+        "나중에 다른 업체로 바꾸려면 어댑터를 하나 더 작성하면 됩니다. `checkout`과 다른 모든 호출부는 그대로이며, 테스트에서는 가짜 `PaymentGateway`를 넘길 수 있습니다."
+      ]
+    },
+    {
+      "h": "객체 어댑터와 클래스 어댑터",
+      "body": [
+        "GoF 책은 두 가지 형태를 설명합니다.",
+        {
+          "table": {
+            "head": [
+              "형태",
+              "동작 방식",
+              "비고"
+            ],
+            "rows": [
+              [
+                "객체 어댑터",
+                "adaptee에 대한 참조를 가지고 위임합니다(합성).",
+                "adaptee와 그 모든 서브클래스에 사용할 수 있습니다. TypeScript, Java, C#에서 일반적인 선택입니다."
+              ],
+              [
+                "클래스 어댑터",
+                "adaptee를 상속하고 target 인터페이스를 구현합니다.",
+                "adaptee를 상속해야 하므로 그 클래스 하나만 적응시킬 수 있습니다. 다중 상속이 가능한 C++에서 흔합니다."
+              ]
+            ]
+          }
+        },
+        "TypeScript와 JavaScript에서는 함수를 적응시키는 것만으로 충분한 경우가 많습니다. Node.js에는 이런 종류의 작은 어댑터가 들어 있습니다. `util.promisify()`는 콜백 스타일 함수를 프로미스를 반환하는 함수로 바꿔 줍니다.",
+        {
+          "code": "import { promisify } from \"node:util\";\n\n// Adaptee: old callback style (error first, then result).\nfunction readConfig(name: string, cb: (err: Error | null, value?: string) => void): void {\n  setTimeout(() => cb(null, `config for ${name}`), 10);\n}\n\n// Adapted: the same function, now with a promise-based interface.\nconst readConfigAsync = promisify(readConfig);\nconsole.log(await readConfigAsync(\"app\")); // config for app",
+          "lang": "typescript"
+        }
+      ]
+    },
+    {
+      "h": "언제 쓰고 언제 쓰지 말아야 하나",
+      "body": [
+        "다음과 같을 때 어댑터 패턴을 사용합니다.",
+        {
+          "ul": [
+            "기존 클래스를 쓰고 싶지만 그 인터페이스가 코드가 필요로 하는 것과 맞지 않을 때.",
+            "서드파티 라이브러리나 레거시 시스템을 통합하면서 그 API를 프로그램의 가장자리에 가두고 싶을 때.",
+            "두 결제 업체처럼 서로 다른 여러 구현을 하나의 인터페이스 뒤에 두고 싶을 때."
+          ]
+        },
+        "다음 경우에는 피하세요.",
+        {
+          "ul": [
+            "양쪽 모두 직접 소유하고 있을 때. 번역 계층을 추가하는 것보다 한쪽 인터페이스를 바꾸는 편이 대개 더 간단합니다.",
+            "adaptee가 실제로 지원할 수 없는 target 인터페이스의 큰 부분을 어댑터가 흉내 내야 할 때. 실제 불일치를 해결하는 대신 숨기게 됩니다."
+          ]
+        },
+        {
+          "note": "어댑터는 얇게 유지하세요. 이름, 단위, 오류 형식을 번역해야 하며 비즈니스 규칙을 담아서는 안 됩니다. 어댑터가 커진다면 그 로직은 아마 다른 곳에 있어야 합니다."
+        }
+      ]
+    },
+    {
+      "h": "실제 사용 사례",
+      "body": [
+        {
+          "ul": [
+            "Node.js: `util.promisify()`는 콜백 기반 함수를 프로미스에 맞게 적응시킵니다.",
+            "Java: `Arrays.asList()`는 배열을 `List` 인터페이스로 쓸 수 있게 하고, `InputStreamReader`는 바이트 기반 `InputStream`을 문자 기반 `Reader`로 읽을 수 있게 합니다.",
+            "데이터베이스 라이브러리와 ORM은 데이터베이스마다 어댑터나 드라이버를 하나씩 두므로, 같은 쿼리 API가 PostgreSQL, MySQL, SQLite에서 동작합니다.",
+            "프런트엔드 코드는 같은 이유로 브라우저 API나 분석 SDK를 프로젝트 전용 작은 인터페이스 뒤에 감싸는 경우가 많습니다."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "관련 패턴",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "패턴",
+              "어댑터 패턴과의 차이"
+            ],
+            "rows": [
+              [
+                "데코레이터 패턴",
+                "같은 인터페이스를 유지하며 동작을 추가합니다. 어댑터는 인터페이스를 바꾸고 새 동작은 추가하지 않습니다."
+              ],
+              [
+                "프록시 패턴",
+                "같은 인터페이스를 유지하며 객체에 대한 접근을 제어합니다(지연 로딩, 캐싱, 권한)."
+              ],
+              [
+                "퍼사드 패턴",
+                "많은 클래스로 이루어진 하위 시스템 전체에 새롭고 더 단순한 인터페이스를 정의합니다. 어댑터는 기존 인터페이스 하나를 다른 기존 인터페이스에 맞춥니다."
+              ],
+              [
+                "브리지 패턴",
+                "추상과 구현이 따로 변할 수 있도록 처음부터 설계합니다. 어댑터는 대개 이미 있는 클래스를 맞추려고 나중에 추가합니다."
+              ]
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "어댑터 패턴과 퍼사드 패턴은 무엇이 다른가요?",
+      "a": "어댑터는 기존 클래스 하나를 클라이언트가 이미 기대하는 인터페이스에 맞춥니다. 퍼사드는 여러 클래스로 이루어진 복잡한 하위 시스템 앞에 새롭고 더 단순한 인터페이스를 만듭니다."
+    },
+    {
+      "q": "어댑터 패턴과 데코레이터 패턴은 무엇이 다른가요?",
+      "a": "둘 다 객체를 감쌉니다. 데코레이터는 같은 인터페이스를 유지하며 동작을 추가하고, 어댑터는 인터페이스를 바꿔서 감싼 객체를 원래는 쓸 수 없던 곳에 쓸 수 있게 합니다."
+    },
+    {
+      "q": "어댑터는 래퍼와 같은 건가요?",
+      "a": "GoF 책에서 래퍼(Wrapper)는 어댑터의 다른 이름입니다. 일상적으로는 데코레이터와 프록시도 \"래퍼\"라고 부르므로, 어떤 패턴인지는 의도로 판단합니다."
+    },
+    {
+      "q": "어댑터 하나로 여러 클래스를 적응시킬 수 있나요?",
+      "a": "객체 어댑터는 adaptee와 그 모든 서브클래스에 쓸 수 있습니다. 서로 관련 없는 클래스를 적응시키려면 보통 클래스마다 어댑터를 하나씩 두고, 모두 같은 target 인터페이스를 구현합니다."
+    }
+  ]
+}

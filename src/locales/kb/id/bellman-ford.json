@@ -1,0 +1,165 @@
+{
+  "title": "Algoritma Bellman-Ford: bobot negatif, deteksi siklus, kode Python — cv.cm",
+  "description": "Pelajari Bellman-Ford: jalur terpendek dengan bobot edge negatif, contoh penelusuran, kode Python, deteksi siklus negatif, dan kompleksitas waktu O(V × E).",
+  "h1": "Penjelasan algoritma Bellman-Ford: cara kerja, kode, dan kompleksitas",
+  "answer": "Algoritma Bellman-Ford menemukan jalur terpendek dari satu node awal ke semua node lain, bahkan ketika sebagian bobot edge negatif. Algoritma ini merelaksasi setiap edge sebanyak V − 1 kali; setelah itu semua jarak terpendek sudah benar. Satu putaran tambahan mendeteksi siklus negatif: jika masih ada jarak yang bisa diperbaiki, graf memiliki siklus dengan total bobot negatif. Waktu jalannya O(V × E).",
+  "sections": [
+    {
+      "h": "Masalah yang diselesaikan Bellman-Ford",
+      "body": [
+        "Algoritma Dijkstra cepat tetapi mensyaratkan bobot edge non-negatif. Sebagian masalah memang punya bobot negatif: pengembalian dana, keuntungan dalam penukaran mata uang, atau biaya energi yang bisa turun di bawah nol. Bellman-Ford menangani graf seperti ini dengan benar dan juga memberi tahu bila jalur terpendek tidak ada karena siklus negatif, yaitu putaran yang bisa dilalui terus-menerus agar biaya makin kecil.",
+        "Algoritma ini dinamai dari Richard Bellman dan Lester Ford Jr., yang menerbitkan versinya pada tahun 1950-an."
+      ]
+    },
+    {
+      "h": "Ide dasar dengan kata-kata sederhana",
+      "body": [
+        {
+          "ol": [
+            "Atur jarak node awal menjadi 0 dan jarak lainnya menjadi tak hingga.",
+            "Ulangi V − 1 kali: untuk setiap edge u → v dengan bobot w, jika `dist[u] + w < dist[v]`, perbarui `dist[v]`.",
+            "Lakukan satu putaran lagi pada semua edge. Jika masih ada jarak yang membaik, laporkan siklus negatif."
+          ]
+        },
+        "Mengapa V − 1 putaran? Jalur terpendek tanpa siklus memakai paling banyak V − 1 edge. Setelah putaran ke-k, setiap node yang jalur terpendeknya paling banyak k edge sudah memiliki jarak yang benar, sehingga V − 1 putaran mencakup semua jalur sederhana."
+      ]
+    },
+    {
+      "h": "Contoh langkah demi langkah",
+      "body": [
+        "Graf berarah dengan 4 node dan edge S→A (4), S→B (5), B→A (−3), A→C (3). Edge diproses dalam urutan ini di setiap putaran.",
+        {
+          "table": {
+            "head": [
+              "Putaran",
+              "S",
+              "A",
+              "B",
+              "C"
+            ],
+            "rows": [
+              [
+                "Awal",
+                "0",
+                "∞",
+                "∞",
+                "∞"
+              ],
+              [
+                "1",
+                "0",
+                "2 (lewat B: 5 − 3)",
+                "5",
+                "5 (lewat A: 2 + 3)"
+              ],
+              [
+                "2",
+                "0",
+                "2",
+                "5",
+                "5 (tidak berubah: berhenti lebih awal)"
+              ]
+            ]
+          }
+        },
+        "Pada putaran 1, A mula-mula menjadi 4 lewat S→A, lalu membaik menjadi 2 lewat B→A, dan C memakai nilai yang sudah membaik. Algoritma Dijkstra akan memfinalisasi A pada 4 sebelum melihat B, yang persis merupakan kesalahan akibat edge negatif."
+      ]
+    },
+    {
+      "h": "Implementasi Python",
+      "body": [
+        "Bellman-Ford bekerja pada list edge biasa, sehingga penulisannya singkat:",
+        {
+          "code": "def bellman_ford(nodes, edges, start):\n    \"\"\"edges: list of (u, v, weight). Returns dist, or raises on a negative cycle.\"\"\"\n    INF = float(\"inf\")\n    dist = {n: INF for n in nodes}\n    dist[start] = 0\n    for _ in range(len(nodes) - 1):\n        changed = False\n        for u, v, w in edges:\n            if dist[u] != INF and dist[u] + w < dist[v]:\n                dist[v] = dist[u] + w\n                changed = True\n        if not changed:\n            break                         # already optimal\n    for u, v, w in edges:\n        if dist[u] != INF and dist[u] + w < dist[v]:\n            raise ValueError(\"graph contains a negative cycle\")\n    return dist\nnodes = [\"S\", \"A\", \"B\", \"C\"]\nedges = [(\"S\", \"A\", 4), (\"S\", \"B\", 5), (\"B\", \"A\", -3), (\"A\", \"C\", 3)]\nprint(bellman_ford(nodes, edges, \"S\"))  # {'S': 0, 'A': 2, 'B': 5, 'C': 5}",
+          "lang": "python"
+        },
+        "Menambahkan edge C → B dengan bobot −6 membentuk siklus B → A → C → B dengan total bobot −3 + 3 − 6 = −6, sehingga putaran tambahan menemukannya:",
+        {
+          "code": "try:\n    bellman_ford(nodes, edges + [(\"C\", \"B\", -6)], \"S\")\nexcept ValueError as e:\n    print(e)  # graph contains a negative cycle",
+          "lang": "python"
+        },
+        "Pemeriksaan `dist[u] != INF` melewati edge yang keluar dari node yang belum dijangkau. Di Python, `float(\"inf\") + w` tetap tak hingga, jadi pemeriksaan ini terutama menghemat kerja. Pada bahasa yang memakai bilangan bulat besar sebagai tak hingga, pemeriksaan ini mencegah overflow dan pembaruan palsu."
+      ]
+    },
+    {
+      "h": "Kompleksitas waktu dan ruang",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Kasus",
+              "Waktu",
+              "Alasan"
+            ],
+            "rows": [
+              [
+                "Terburuk",
+                "O(V × E)",
+                "V − 1 putaran, masing-masing merelaksasi seluruh E edge."
+              ],
+              [
+                "Terbaik (keluar lebih awal)",
+                "O(E)",
+                "Jika putaran pertama tidak mengubah apa pun setelah node awal, perulangan berhenti."
+              ],
+              [
+                "Ruang",
+                "O(V)",
+                "Hanya peta jarak (dan parent opsional), selain list edge."
+              ]
+            ]
+          }
+        },
+        "Pada graf dengan 1.000 node dan 10.000 edge, itu bisa mencapai sekitar 10 juta relaksasi, sehingga Dijkstra jauh lebih cepat bila semua bobot non-negatif."
+      ]
+    },
+    {
+      "h": "Varian dan kesalahan umum",
+      "body": [
+        {
+          "ul": [
+            "Keluar lebih awal: berhenti saat satu putaran penuh tidak mengubah apa pun. Ini aman dan sering membuat algoritma jauh lebih cepat dalam praktik.",
+            "SPFA (shortest path faster algorithm): hanya merelaksasi ulang edge dari node yang jaraknya berubah, memakai queue. Biasanya cepat tetapi kasus terburuknya tetap O(V × E).",
+            "Jalur dengan batas hop: menjalankan tepat k putaran, dengan salinan jarak dari putaran sebelumnya, menghasilkan jalur termurah dengan paling banyak k edge. Ini menyelesaikan soal \"cheapest flights within k stops\".",
+            "Menemukan siklusnya: simpan peta parent; saat putaran tambahan memperbarui node v, ikuti parent sebanyak V kali untuk masuk ke dalam siklus, lalu telusuri sampai kembali ke node yang sama."
+          ]
+        },
+        {
+          "note": "Siklus negatif hanya berarti jika dapat dijangkau dari node awal. Siklus di bagian graf yang tidak terjangkau tidak memengaruhi jarak, dan penjaga `dist[u] != INF` mengabaikannya dengan benar. Pada graf tak berarah, setiap edge negatif sudah merupakan siklus negatif (bolak-balik), sehingga Bellman-Ford terutama dipakai pada graf berarah."
+        }
+      ]
+    },
+    {
+      "h": "Kapan memakainya dan penggunaannya di dunia nyata",
+      "body": [
+        {
+          "ul": [
+            "Gunakan Bellman-Ford jika bobot edge bisa negatif atau jika Anda harus mendeteksi siklus negatif. Selain itu, pilih Dijkstra.",
+            "Protokol routing distance-vector, seperti RIP, memakai gagasan Bellman-Ford terdistribusi: setiap router terus memperbarui estimasi jaraknya dari estimasi tetangganya.",
+            "Arbitrase mata uang: dengan bobot `-log(rate)`, siklus negatif adalah rangkaian penukaran yang berakhir dengan uang lebih banyak daripada awalnya.",
+            "Algoritma Johnson menjalankan Bellman-Ford sekali untuk memberi bobot ulang pada graf sehingga Dijkstra bisa dipakai dari setiap node untuk jalur terpendek semua pasangan.",
+            "Difference constraints (sistem pertidaksamaan seperti `x - y <= c`) dapat diselesaikan sebagai jalur terpendek; siklus negatif berarti tidak ada solusi."
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Mengapa Bellman-Ford menjalankan V − 1 iterasi?",
+      "a": "Jalur terpendek tanpa siklus berisi paling banyak V − 1 edge, dan setiap putaran memperbaiki jarak jalur dengan satu edge lebih banyak. Setelah V − 1 putaran semua jalur terpendek ditemukan, kecuali ada siklus negatif."
+    },
+    {
+      "q": "Bagaimana Bellman-Ford mendeteksi siklus negatif?",
+      "a": "Ia melakukan satu putaran lagi pada semua edge setelah V − 1 putaran. Jika masih ada jarak yang bisa dikurangi, ada jalur yang terus menjadi lebih murah, yang hanya mungkin terjadi dengan siklus negatif yang dapat dijangkau."
+    },
+    {
+      "q": "Apakah Bellman-Ford lebih cepat daripada Dijkstra?",
+      "a": "Tidak. Bellman-Ford O(V × E), sedangkan Dijkstra dengan heap O((V + E) log V). Gunakan Bellman-Ford hanya jika Anda butuh bobot negatif atau deteksi siklus."
+    },
+    {
+      "q": "Apakah Bellman-Ford termasuk dynamic programming?",
+      "a": "Ya. Putaran k menghitung jarak terbaik dengan paling banyak k edge dari hasil putaran k − 1, yang merupakan rekurensi dynamic programming atas jumlah edge."
+    }
+  ]
+}

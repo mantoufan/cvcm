@@ -1,0 +1,157 @@
+{
+  "title": "Patrón Singleton: intención, ejemplo en TypeScript, trampas y alternativas — cv.cm",
+  "description": "El patrón Singleton explicado: una sola instancia en TypeScript, variantes perezosa y asíncrona, por qué dificulta las pruebas y mejores alternativas.",
+  "h1": "Patrón Singleton explicado con ejemplos",
+  "answer": "Singleton es un patrón de diseño creacional que garantiza que una clase tenga una sola instancia y proporciona un punto de acceso global a ella. En TypeScript se implementa con un constructor privado y un método estático que crea la instancia en el primer uso y devuelve después el mismo objeto. Es útil para recursos realmente únicos, como un objeto de configuración o un pool de conexiones, pero actúa como estado global, por lo que muchos equipos prefieren pasar explícitamente una única instancia compartida.",
+  "sections": [
+    {
+      "h": "Intención",
+      "body": [
+        "Garantizar que una clase tenga una sola instancia y proporcionar un punto de acceso global a ella. El patrón Singleton es uno de los cinco patrones creacionales del libro de la Banda de los Cuatro (GoF)."
+      ]
+    },
+    {
+      "h": "El problema que resuelve",
+      "body": [
+        "Algunos objetos deben existir exactamente una vez en un programa. Piensa en la configuración de una aplicación cargada desde variables de entorno, en una caché dentro del proceso o en un pool de conexiones a bases de datos. Si cada módulo llamara a `new Config()`, cada uno volvería a leer el entorno, la caché se dividiría en muchas copias y el límite del pool no tendría sentido.",
+        "Necesitas dos cosas: la garantía de que no se pueda crear una segunda instancia por accidente y una forma sencilla de que cualquier código llegue a la única instancia."
+      ]
+    },
+    {
+      "h": "Estructura y participantes",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Participante",
+              "Responsabilidad"
+            ],
+            "rows": [
+              [
+                "Clase Singleton",
+                "Oculta su constructor para que otro código no pueda llamar a `new` directamente."
+              ],
+              [
+                "Campo estático de la instancia",
+                "Guarda la única instancia una vez creada."
+              ],
+              [
+                "Método estático de acceso (a menudo `getInstance`)",
+                "Crea la instancia en la primera llamada (inicialización perezosa) y devuelve el mismo objeto en cada llamada."
+              ],
+              [
+                "Cliente",
+                "Obtiene la instancia solo mediante el método de acceso."
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "Implementación en TypeScript",
+      "body": [
+        "Un constructor privado hace que `new AppConfig()` sea un error de compilación fuera de la clase. El método estático crea el objeto de forma perezosa:",
+        {
+          "code": "class AppConfig {\n  private static instance: AppConfig | undefined;\n  readonly settings: Record<string, string>;\n  private constructor() {\n    console.log(\"loading config once\");\n    this.settings = { mode: \"production\", region: \"eu\" };\n  }\n  static getInstance(): AppConfig {\n    if (!AppConfig.instance) {\n      AppConfig.instance = new AppConfig();\n    }\n    return AppConfig.instance;\n  }\n}\nconst a = AppConfig.getInstance(); // loading config once\nconst b = AppConfig.getInstance();\nconsole.log(a === b);          // true\nconsole.log(a.settings.mode);  // production\n// new AppConfig(); // error: constructor is private",
+          "lang": "typescript"
+        },
+        {
+          "note": "El `private` de TypeScript solo se comprueba en tiempo de compilación. El código JavaScript normal aún puede llamar al constructor. Si necesitas una garantía en tiempo de ejecución, lanza un error en el constructor cuando ya exista una instancia, o usa una instancia a nivel de módulo como se muestra a continuación."
+        },
+        "En JavaScript y TypeScript, un módulo ES se evalúa una vez por programa, así que exportar una instancia desde un módulo es el singleton más simple. Cada `import` recibe el mismo objeto:",
+        {
+          "code": "// logger.ts\nclass Logger {\n  private lines: string[] = [];\n  log(msg: string): void { this.lines.push(msg); console.log(msg); }\n  count(): number { return this.lines.length; }\n}\nexport const logger = new Logger();\n// elsewhere: import { logger } from \"./logger\";\nlogger.log(\"started\");      // started\nconsole.log(logger.count()); // 1",
+          "lang": "typescript"
+        }
+      ]
+    },
+    {
+      "h": "Inicialización asíncrona",
+      "body": [
+        "Si crear la instancia es asíncrono, como abrir una conexión a una base de datos, dos llamadores pueden ver «aún no hay instancia» y abrir dos conexiones antes de que termine la primera. Guarda en caché la promesa, no el resultado:",
+        {
+          "code": "class Database {\n  private static ready: Promise<Database> | undefined;\n  private constructor(readonly url: string) {}\n  static get(): Promise<Database> {\n    if (!Database.ready) {\n      Database.ready = (async () => {\n        await new Promise((r) => setTimeout(r, 10)); // simulate connecting\n        console.log(\"connected once\");\n        return new Database(\"db://main\");\n      })();\n    }\n    return Database.ready;\n  }\n}\nconst [x, y] = await Promise.all([Database.get(), Database.get()]);\nconsole.log(x === y); // true",
+          "lang": "typescript"
+        },
+        "En lenguajes con varios hilos como Java y C#, la creación perezosa necesita sincronización por la misma razón. Las soluciones habituales son la inicialización ansiosa en un campo estático, una clase contenedora perezosa o, en Java, un `enum` de un solo elemento."
+      ]
+    },
+    {
+      "h": "Cuándo usarlo y cuándo no",
+      "body": [
+        "Usa el patrón Singleton cuando:",
+        {
+          "ul": [
+            "Deba haber exactamente una instancia por corrección, no solo por comodidad (un dispositivo de hardware, un registro de todo el proceso).",
+            "La creación sea costosa y el objeto no tenga estado o sea seguro entre hilos tras crearse."
+          ]
+        },
+        "Evítalo, o limítalo, cuando:",
+        {
+          "ul": [
+            "Lo que buscas sobre todo es un acceso global cómodo. Un singleton es estado global mutable con un nombre más bonito: cualquier código puede cambiarlo y la dependencia queda oculta en las firmas de las funciones.",
+            "Necesites pruebas. Las pruebas que comparten un singleton se afectan entre sí, y es difícil sustituir la instancia real por una simulada.",
+            "La regla de «una sola instancia» pueda cambiar más adelante, por ejemplo cuando necesites una caché por cliente."
+          ]
+        },
+        "La alternativa habitual es la inyección de dependencias: crea una instancia al inicio del programa (la raíz de composición) y pásala a las clases que la necesitan. Sigues teniendo una instancia, pero la dependencia es visible y reemplazable.",
+        {
+          "code": "class Cache {\n  private data = new Map<string, string>();\n  get(key: string): string | undefined { return this.data.get(key); }\n  set(key: string, value: string): void { this.data.set(key, value); }\n}\nclass UserService {\n  constructor(private cache: Cache) {} // dependency is explicit\n  remember(id: string, name: string): void { this.cache.set(id, name); }\n}\nconst sharedCache = new Cache(); // the single instance, created once\nconst users = new UserService(sharedCache);\nusers.remember(\"u1\", \"Ada\");\nconsole.log(sharedCache.get(\"u1\")); // Ada",
+          "lang": "typescript"
+        }
+      ]
+    },
+    {
+      "h": "Usos en el mundo real",
+      "body": [
+        {
+          "ul": [
+            "Java: `Runtime.getRuntime()` devuelve el único objeto `Runtime` de la aplicación Java en ejecución.",
+            "Node.js guarda en caché los módulos tras la primera carga, así que el objeto exportado de un módulo lo comparten todos los archivos que lo requieren o importan.",
+            "Los navegadores exponen objetos globales únicos como `window` y `document` para cada página.",
+            "Los frameworks con inyección de dependencias, como Angular y Spring, crean por defecto servicios con ámbito «singleton»: una instancia por inyector o contenedor, sin la parte de acceso estático del patrón."
+          ]
+        },
+        {
+          "note": "Node.js guarda en caché los módulos por la ruta resuelta del archivo. Si hay dos copias del mismo paquete instaladas en carpetas `node_modules` distintas, tienes dos «singletons» separados."
+        }
+      ]
+    },
+    {
+      "h": "Patrones relacionados",
+      "body": [
+        {
+          "ul": [
+            "Los objetos de los patrones Abstract Factory, Builder y Prototype suelen implementarse como singletons, porque una sola fábrica basta.",
+            "Los objetos del patrón Facade suelen ser instancias únicas, ya que normalmente basta con un punto de entrada a un subsistema.",
+            "El patrón Flyweight también comparte objetos, pero gestiona muchas instancias compartidas identificadas por su estado, mientras que el patrón Singleton tiene exactamente una.",
+            "La inyección de dependencias, que no es un patrón GoF, es el reemplazo más común del patrón Singleton en el código moderno."
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "¿Es Singleton un antipatrón?",
+      "a": "A menudo se le llama así, porque introduce estado global oculto y dificulta las pruebas. Tener una sola instancia no es un problema; el problema es el acceso global. Crear una instancia y pasarla explícitamente evita la mayoría de los inconvenientes."
+    },
+    {
+      "q": "¿Cómo hago un singleton en TypeScript?",
+      "a": "Usa un constructor privado, un campo estático privado para la instancia y un método estático que cree la instancia en la primera llamada. Exportar una única instancia desde un módulo es una alternativa más simple."
+    },
+    {
+      "q": "¿Un módulo de JavaScript es un singleton?",
+      "a": "En la práctica, sí. Un módulo se evalúa una vez y sus exportaciones las comparten todos los que lo importan dentro del mismo programa, salvo que el mismo código se cargue desde dos rutas distintas."
+    },
+    {
+      "q": "¿Cómo pruebo código que usa un singleton?",
+      "a": "Haz que el singleton implemente una interfaz y pásalo al código que se prueba, para que las pruebas puedan suministrar uno simulado. Si no puedes cambiar el diseño, añade un método de reinicio que se use solo en las pruebas."
+    },
+    {
+      "q": "¿Cuál es la diferencia entre un singleton y una clase estática?",
+      "a": "Un singleton es un objeto real: puede implementar interfaces, pasarse como parámetro y crearse de forma perezosa. Una clase con solo miembros estáticos no puede sustituirse ni pasarse como objeto."
+    }
+  ]
+}

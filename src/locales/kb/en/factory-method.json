@@ -1,0 +1,168 @@
+{
+  "title": "Factory Method pattern: intent, structure and TypeScript example — cv.cm",
+  "description": "The Factory Method design pattern explained: subclasses choose which object to create. TypeScript example, when to use it, vs Abstract Factory.",
+  "h1": "Factory Method pattern explained with examples",
+  "answer": "Factory Method is a creational design pattern that defines a method for creating an object but lets subclasses decide which concrete class to instantiate. The base class writes its logic against a product interface and calls the factory method, such as `createTransport()`, instead of `new`. This lets you add new product types by adding a subclass, without editing the code that uses the products.",
+  "sections": [
+    {
+      "h": "Intent",
+      "body": [
+        "Define an interface for creating an object, but let subclasses decide which class to instantiate. Factory Method lets a class defer instantiation to subclasses. It is one of the five creational patterns in the Gang of Four (GoF) book, and the only creational one that is class-scoped, because it relies on inheritance."
+      ]
+    },
+    {
+      "h": "The problem it solves",
+      "body": [
+        "Imagine a notification module. It formats a message, sends it, and logs the result. At first it only sends email, so the code calls `new EmailChannel()` directly. Then the product needs SMS, then push notifications. Every new channel means editing the same class and adding another `if` branch, even though the formatting and logging steps never change.",
+        "The sending workflow is stable; only the kind of channel varies. Factory Method moves the one varying decision, which class to create, into a single overridable method."
+      ]
+    },
+    {
+      "h": "Structure and participants",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Participant",
+              "Responsibility",
+              "In the example"
+            ],
+            "rows": [
+              [
+                "Product",
+                "Interface of the objects the factory method creates.",
+                "`Channel`"
+              ],
+              [
+                "ConcreteProduct",
+                "Implements the Product interface.",
+                "`EmailChannel`, `SmsChannel`"
+              ],
+              [
+                "Creator",
+                "Declares the factory method and contains logic that uses the product.",
+                "`Notifier`"
+              ],
+              [
+                "ConcreteCreator",
+                "Overrides the factory method to return a specific ConcreteProduct.",
+                "`EmailNotifier`, `SmsNotifier`"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "TypeScript implementation",
+      "body": [
+        {
+          "code": "interface Channel {\n  send(to: string, text: string): string;\n}\n\nclass EmailChannel implements Channel {\n  send(to: string, text: string): string { return `email to ${to}: ${text}`; }\n}\n\nclass SmsChannel implements Channel {\n  send(to: string, text: string): string { return `sms to ${to}: ${text.slice(0, 20)}`; }\n}\n\nabstract class Notifier {\n  // The factory method: subclasses choose the concrete product.\n  protected abstract createChannel(): Channel;\n  // Shared logic that works with any Channel.\n  notify(to: string, text: string): void {\n    const channel = this.createChannel();\n    const result = channel.send(to, text.trim());\n    console.log(\"[log]\", result);\n  }\n}\n\nclass EmailNotifier extends Notifier {\n  protected createChannel(): Channel { return new EmailChannel(); }\n}\n\nclass SmsNotifier extends Notifier {\n  protected createChannel(): Channel { return new SmsChannel(); }\n}\n\nconst notifiers: Notifier[] = [new EmailNotifier(), new SmsNotifier()];\nfor (const n of notifiers) n.notify(\"ada\", \" Your order has shipped today \");\n// [log] email to ada: Your order has shipped today\n// [log] sms to ada: Your order has shipp",
+          "lang": "typescript"
+        },
+        "Adding push notifications now means writing `PushChannel` and `PushNotifier`. The `notify` method, and every caller of it, stays unchanged.",
+        "Before applying the pattern, the creation decision was buried in the shared logic:",
+        {
+          "code": "class Notifier {\n  constructor(private kind: \"email\" | \"sms\") {}\n  notify(to: string, text: string): void {\n    // every new channel edits this method\n    const result = this.kind === \"email\"\n      ? `email to ${to}: ${text}`\n      : `sms to ${to}: ${text.slice(0, 20)}`;\n    console.log(\"[log]\", result);\n  }\n}",
+          "lang": "typescript"
+        }
+      ]
+    },
+    {
+      "h": "A lighter alternative: pass a factory function",
+      "body": [
+        "Factory Method uses inheritance. In TypeScript you often get the same flexibility with composition by passing a creation function into the constructor. This avoids one subclass per product:",
+        {
+          "code": "interface Channel { send(to: string, text: string): string; }\nclass Notifier {\n  constructor(private createChannel: () => Channel) {}\n  notify(to: string, text: string): void {\n    console.log(\"[log]\", this.createChannel().send(to, text));\n  }\n}\nconst push = new Notifier(() => ({ send: (to, text) => `push to ${to}: ${text}` }));\npush.notify(\"ada\", \"Hello\"); // [log] push to ada: Hello",
+          "lang": "typescript"
+        },
+        "Use the subclass version when each creator already has its own class for other reasons, or when a framework expects you to extend a base class. Use the function version when the only difference between variants is the object they create."
+      ]
+    },
+    {
+      "h": "When to use it, and when not to",
+      "body": [
+        "Use Factory Method when:",
+        {
+          "ul": [
+            "A class contains a stable algorithm but cannot know in advance which concrete objects it must create.",
+            "You write a framework or library and want users to plug in their own product classes by subclassing.",
+            "You want to keep creation logic for a type in one place instead of scattering `new` calls."
+          ]
+        },
+        "Avoid it when:",
+        {
+          "ul": [
+            "There is only one product type and no real sign of a second one. A direct `new` is clearer.",
+            "The only reason is to make testing possible. Passing the dependency in through the constructor is simpler.",
+            "You would create a parallel hierarchy of creators that mirrors the products one to one with no other logic."
+          ]
+        },
+        {
+          "note": "A \"static factory method\", such as `Array.from()` or `Promise.resolve()`, is a different idea: a named static function that returns an instance. It is useful, but it is not the GoF Factory Method, which depends on subclasses overriding a method."
+        }
+      ]
+    },
+    {
+      "h": "Real-world uses",
+      "body": [
+        {
+          "ul": [
+            "Java collections: `Iterable.iterator()` is declared once, and each collection class (`ArrayList`, `HashSet` and others) overrides it to return its own iterator class. The GoF book describes this use of Factory Method for polymorphic iteration.",
+            "JavaScript iterables: every iterable implements `[Symbol.iterator]()`, a method that returns a new iterator suited to that collection.",
+            "UI frameworks often let subclasses override a method that creates a component, a cell or a view, while the base class controls layout and life cycle."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Related patterns",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Pattern",
+              "How it differs"
+            ],
+            "rows": [
+              [
+                "Abstract Factory",
+                "Creates a whole family of related products through an object with several creation methods. Its methods are often implemented as factory methods."
+              ],
+              [
+                "Template Method",
+                "Factory Method is frequently called from a template method, as `notify` calls `createChannel` above."
+              ],
+              [
+                "Prototype",
+                "Creates objects by copying an instance instead of subclassing the creator, so it needs no parallel creator hierarchy."
+              ],
+              [
+                "Builder",
+                "Focuses on constructing one complex object step by step, not on choosing which class to create."
+              ]
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "What is the difference between Factory Method and Abstract Factory?",
+      "a": "Factory Method is a single method that subclasses override to create one product. Abstract Factory is an object with several creation methods that produce a family of related products that must be used together."
+    },
+    {
+      "q": "Is a simple factory function the same as Factory Method?",
+      "a": "Not exactly. A function like `createShape(kind)` with a switch inside is often called a simple factory. The GoF Factory Method relies on a subclass overriding the creation method, but both hide `new` from the client."
+    },
+    {
+      "q": "Does Factory Method follow the open/closed principle?",
+      "a": "Yes. You add a new product by adding a new product class and a new creator subclass, without changing the creator's existing logic."
+    },
+    {
+      "q": "Must the factory method be abstract?",
+      "a": "No. The base class can provide a default implementation that returns a standard product, and subclasses override it only when they need something different."
+    }
+  ]
+}

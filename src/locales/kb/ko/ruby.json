@@ -1,0 +1,197 @@
+{
+  "title": "루비 기초 튜토리얼: 객체, 블록, 배열, 해시, 클래스 — cv.cm",
+  "description": "루비를 한 페이지로 배웁니다. Hello world 실행, 변수와 자료형, 제어 흐름, 메서드, 배열과 해시, 블록과 이터레이터, 클래스, 모듈, 예외 처리까지 다룹니다.",
+  "h1": "루비 기초 입문 튜토리얼",
+  "answer": "루비는 읽고 쓰기 즐겁게 설계된 동적 객체지향 스크립트 언어입니다. `puts \"Hello, world\"`를 `hello.rb`로 저장하고 `ruby hello.rb`로 실행하세요. 루비에서는 숫자와 `nil`까지 모든 것이 객체입니다. 핵심 개념은 `def`로 정의하는 메서드, 배열과 해시, `each`와 `map` 같은 이터레이터에 넘기는 블록, 클래스와 모듈, `begin`/`rescue`로 처리하는 예외입니다.",
+  "sections": [
+    {
+      "h": "루비란 무엇이고 어디에 쓰이는가",
+      "body": [
+        "루비는 일본의 마츠모토 유키히로(Yukihiro Matsumoto, \"Matz\")가 프로그래머를 행복하게 만들겠다는 목표로 만들어 1995년에 처음 공개했습니다. GitHub, Shopify 같은 사이트의 기반인 웹 프레임워크 Ruby on Rails를 통해 널리 알려졌습니다. 루비는 웹 애플리케이션, 스크립팅과 자동화, Homebrew와 CocoaPods 같은 개발자 도구에 쓰입니다. 표준 구현체는 CRuby(MRI라고도 함)입니다."
+      ]
+    },
+    {
+      "h": "루비 설치와 Hello, world 실행",
+      "body": [
+        "macOS와 많은 Linux 시스템에는 루비가 들어 있지만 오래된 경우가 많습니다. rbenv, asdf, mise 같은 버전 관리자나 Windows의 RubyInstaller로 최신 Ruby 3를 설치하세요. `ruby -v`로 확인합니다.",
+        {
+          "code": "puts \"Hello, world\"",
+          "lang": "ruby"
+        },
+        {
+          "code": "ruby hello.rb\n# Hello, world\nirb          # interactive Ruby shell",
+          "lang": "shell"
+        },
+        "`puts`는 값을 출력하고 줄바꿈을 붙입니다. 의미가 분명하면 메서드 인수의 괄호는 생략할 수 있습니다."
+      ]
+    },
+    {
+      "h": "변수와 기본 자료형",
+      "body": [
+        "변수는 선언이 필요 없고 어떤 객체든 담을 수 있습니다. 관례상 이름은 `snake_case`를 사용합니다. 상수는 대문자로 시작합니다.",
+        {
+          "table": {
+            "head": [
+              "클래스",
+              "예시",
+              "설명"
+            ],
+            "rows": [
+              [
+                "`Integer`",
+                "`42`, `2**100`",
+                "크기 제한 없음"
+              ],
+              [
+                "`Float`",
+                "`3.14`",
+                "배정밀도"
+              ],
+              [
+                "`String`",
+                "`\"hi #{name}\"`, `'hi'`",
+                "변경 가능, 큰따옴표는 변수를 치환"
+              ],
+              [
+                "`Symbol`",
+                "`:name`",
+                "변경 불가능한 식별자, 해시 키로 흔히 사용"
+              ],
+              [
+                "`true`, `false`",
+                "`true`",
+                "`false`와 `nil`만 거짓으로 취급"
+              ],
+              [
+                "`NilClass`",
+                "`nil`",
+                "값 없음"
+              ],
+              [
+                "`Array`, `Hash`",
+                "`[1, 2]`, `{a: 1}`",
+                "내장 컬렉션"
+              ]
+            ]
+          }
+        },
+        {
+          "code": "name = \"Ada\"\ncount = 7\nputs \"#{name} has #{count} items\"   # Ada has 7 items\nputs count / 2, count / 2.0         # 3, then 3.5\nputs \"12\".to_i + 1                  # 13\nputs 5.class, nil.to_a.inspect      # Integer, then []\nputs 0 ? \"0 is truthy\" : \"falsy\"    # 0 is truthy",
+          "lang": "ruby"
+        }
+      ]
+    },
+    {
+      "h": "제어 흐름",
+      "body": [
+        {
+          "code": "score = 72\nif score >= 90\n  puts \"A\"\nelsif score >= 70\n  puts \"B\"          # B\nelse\n  puts \"C\"\nend\n\nputs \"pass\" unless score < 50    # statement modifier\n\n3.times { |i| print i, \" \" }     # 0 1 2\nputs\n\nn = 10\nn /= 2 while n > 1\nputs n                           # 1\n\nkind = case \"SAT\"\n       when \"SAT\", \"SUN\" then \"weekend\"\n       else \"weekday\"\n       end\nputs kind                        # weekend",
+          "lang": "ruby"
+        },
+        "블록은 중괄호 대신 `end`로 끝납니다. 루비 코드는 보통 공백 2칸으로 들여씁니다."
+      ]
+    },
+    {
+      "h": "메서드",
+      "body": [
+        "메서드는 마지막 표현식의 값을 반환하므로 `return`이 필요 없는 경우가 많습니다. 관례상 불리언을 반환하는 메서드는 `?`로, 수신 객체를 직접 바꾸는 메서드는 `!`로 끝납니다.",
+        {
+          "code": "def greet(name, greeting: \"Hello\")\n  \"#{greeting}, #{name}!\"\nend\n\ndef total(*nums)\n  nums.sum\nend\n\nputs greet(\"Lin\")                   # Hello, Lin!\nputs greet(\"Lin\", greeting: \"Hi\")   # Hi, Lin!\nputs total(1, 2, 3)                 # 6\nputs 4.even?, \"abc\".upcase          # true, then ABC\n\ns = \"hello\"\ns.upcase!          # modifies s in place\nputs s             # HELLO",
+          "lang": "ruby"
+        }
+      ]
+    },
+    {
+      "h": "배열과 해시",
+      "body": [
+        {
+          "code": "nums = [3, 1, 2]\nnums << 5\np nums.sort, nums.first, nums.last   # [1, 2, 3, 5] then 3 then 5\np nums.sort[1..2]                    # [2, 3]\n\nages = { \"ann\" => 31, \"bob\" => 25 }\nages[\"cy\"] = 40\nages.each { |person, age| puts \"#{person} is #{age}\" }\np ages.fetch(\"zed\", 0)               # 0\n\nuser = { name: \"Ann\", city: \"Oslo\" } # symbol keys\np user[:name]                        # \"Ann\"",
+          "lang": "ruby"
+        },
+        "`p`는 값의 `inspect` 형태를 출력합니다. 따옴표와 대괄호를 보여 주므로 디버깅에 편리합니다."
+      ]
+    },
+    {
+      "h": "대표 기능: 블록과 이터레이터",
+      "body": [
+        "블록은 메서드에 넘기는 코드 덩어리로, 한 줄이면 `{ ... }`, 여러 줄이면 `do ... end`로 씁니다. 루비의 반복은 `for` 반복문보다 주로 블록으로 하며, `Enumerable` 메서드 덕분에 데이터 변환을 짧게 쓸 수 있습니다.",
+        {
+          "code": "nums = [1, 2, 3, 4, 5]\np nums.map { |n| n * n }               # [1, 4, 9, 16, 25]\np nums.select(&:even?)                 # [2, 4]\np nums.reduce(0) { |sum, n| sum + n }  # 15\np nums.each_slice(2).to_a              # [[1, 2], [3, 4], [5]]\np %w[pear fig apple].sort_by(&:length) # [\"fig\", \"pear\", \"apple\"]\n\ndef twice\n  yield\n  yield\nend\ntwice { puts \"hi\" }   # prints hi two times",
+          "lang": "ruby"
+        },
+        "`&:even?`는 `{ |n| n.even? }`의 줄임 표현입니다. 직접 만든 메서드도 블록을 받아 `yield`로 호출할 수 있습니다."
+      ]
+    },
+    {
+      "h": "클래스와 모듈",
+      "body": [
+        {
+          "code": "module Greeter\n  def hello\n    \"Hello from #{name}\"\n  end\nend\n\nclass Account\n  include Greeter          # mix in module methods\n  attr_reader :name, :balance\n\n  def initialize(name)\n    @name = name           # @ marks an instance variable\n    @balance = 0\n  end\n\n  def deposit(amount)\n    raise ArgumentError, \"amount must be positive\" unless amount.positive?\n    @balance += amount\n    self\n  end\n\n  def to_s = \"#{name}: #{balance}\"\nend\n\nacc = Account.new(\"Ann\")\nacc.deposit(30).deposit(20)\nputs acc        # Ann: 50\nputs acc.hello  # Hello from Ann",
+          "lang": "ruby"
+        },
+        "`attr_reader`는 getter 메서드를 만들어 줍니다. 모듈은 여러 클래스에 믹스인할 수 있는 메서드를 묶으며, 루비는 다중 상속 대신 이 방식을 씁니다. 한 줄짜리 `def to_s = ...` 형태는 Ruby 3.0 이상이 필요합니다."
+      ]
+    },
+    {
+      "h": "오류 처리",
+      "body": [
+        {
+          "code": "def parse_age(text)\n  age = Integer(text)       # raises ArgumentError on bad input\n  raise ArgumentError, \"negative age\" if age.negative?\n  age\nend\n\nbegin\n  puts parse_age(\"41\")      # 41\n  puts parse_age(\"abc\")\nrescue ArgumentError => e\n  puts \"error: #{e.message}\"  # error: invalid value for Integer(): \"abc\"\nensure\n  puts \"done\"\nend",
+          "lang": "ruby"
+        },
+        "`rescue`는 예외를 잡고 `ensure`는 항상 실행됩니다. 메서드 안에서는 `begin` 없이 `rescue`를 바로 쓸 수 있습니다."
+      ]
+    },
+    {
+      "h": "작은 완성 프로그램: 단어 빈도 세기",
+      "body": [
+        {
+          "code": "path = ARGV.fetch(0) { abort \"usage: ruby words.rb FILE\" }\n\nbegin\n  text = File.read(path).downcase\nrescue Errno::ENOENT\n  abort \"file not found: #{path}\"\nend\n\ncounts = text.scan(/[a-z']+/).tally\ncounts.max_by(5) { |_word, n| n }.each do |word, n|\n  puts format(\"%5d  %s\", n, word)\nend",
+          "lang": "ruby"
+        },
+        "`ruby words.rb notes.txt`로 실행합니다. `tally`는 같은 항목을 세어 해시로 만들고, `max_by(5)`는 개수가 가장 많은 항목 다섯 개를 반환합니다."
+      ]
+    },
+    {
+      "h": "초보자가 자주 하는 실수",
+      "body": [
+        {
+          "note": "`nil`과 `false`만 거짓입니다. 파이썬이나 자바스크립트와 달리 `0`, `\"\"`, `[]`는 모두 참이므로, 비었는지는 `.empty?`나 `.zero?`로 확인하세요."
+        },
+        {
+          "ul": [
+            "`if`, `def`, `class`, `do` 블록을 닫는 `end`를 빠뜨리는 경우.",
+            "문자열 키와 심볼 키를 섞어 쓰는 경우. `h[\"name\"]`과 `h[:name]`은 다른 키입니다.",
+            "작은따옴표를 쓰면서 `#{}` 보간이 동작하기를 기대하는 경우.",
+            "`!` 메서드를 호출하고 원래 객체가 바뀐다는 사실을 깨닫지 못하는 경우.",
+            "버전 관리자로 설치한 최신 버전 대신 오래된 시스템 루비를 쓰는 경우."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "다음 학습 단계",
+      "body": [
+        "ruby-lang.org의 문서 페이지, 특히 빠른 시작 \"Ruby in Twenty Minutes\"로 시작하고, 핵심 및 표준 라이브러리 레퍼런스는 docs.ruby-lang.org를 이용하세요. 의존성을 위한 Bundler와 젬, 테스트를 위한 RSpec 또는 Minitest를 익히고, 웹 애플리케이션을 만들고 싶다면 Ruby on Rails로 넘어가세요."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "루비는 아직도 쓰이나요?",
+      "a": "네. Ruby on Rails는 GitHub, Shopify를 비롯한 많은 오래된 웹 서비스를 움직이고 있으며, 루비는 스크립팅과 개발자 도구에서도 흔합니다. 새 프로젝트에서는 파이썬이나 자바스크립트보다 덜 쓰이지만 활발히 개발되고 있습니다."
+    },
+    {
+      "q": "루비와 Ruby on Rails는 무엇이 다른가요?",
+      "a": "루비는 프로그래밍 언어입니다. Rails는 루비로 작성된 웹 프레임워크로 라우팅, 데이터베이스 접근, 페이지 템플릿을 제공합니다."
+    },
+    {
+      "q": "루비의 심볼이란 무엇인가요?",
+      "a": "`:name` 같은 심볼은 변경 불가능한 유일한 식별자입니다. 같은 심볼은 언제나 같은 객체이므로 해시 키와 옵션 이름에 효율적입니다."
+    },
+    {
+      "q": "초보자에게는 루비와 파이썬 중 무엇이 좋은가요?",
+      "a": "둘 다 읽기 쉬운 문법을 가진 좋은 첫 언어입니다. 파이썬은 특히 데이터 과학 등 활용 범위가 더 넓고, 루비는 표현력이 아주 뛰어나며 Rails를 이용한 웹 개발에 강합니다."
+    }
+  ]
+}

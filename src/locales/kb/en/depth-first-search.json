@@ -1,0 +1,192 @@
+{
+  "title": "Depth-first search (DFS): recursive and iterative Python code, complexity — cv.cm",
+  "description": "Depth-first search explained: how DFS goes deep before backtracking, a traced example, recursive and stack-based Python code, cycle detection and O(V + E) cost.",
+  "h1": "Depth-first search (DFS) explained: how it works, code and complexity",
+  "answer": "Depth-first search (DFS) is a graph traversal that follows one path as far as it can go, then backs up to the last node that still has an unvisited neighbor and continues from there. It uses recursion or an explicit stack plus a visited set. DFS visits every reachable node in O(V + E) time and is the basis for cycle detection, topological sorting, connected components and backtracking.",
+  "sections": [
+    {
+      "h": "What problem DFS solves",
+      "body": [
+        "DFS answers the question \"what can I reach from here?\" by exploring one branch completely before trying the next. That order is useful whenever the structure of paths matters more than their length: finding a way out of a maze, checking whether a graph has a cycle, ordering tasks that depend on each other, or listing all solutions of a puzzle.",
+        "Unlike breadth-first search, DFS does not find shortest paths. Its strength is that it keeps only the current path in memory and that it naturally records when a node is entered and when it is finished."
+      ]
+    },
+    {
+      "h": "The idea in plain words",
+      "body": [
+        {
+          "ol": [
+            "Mark the current node as visited.",
+            "For each neighbor that is not visited, move to it and repeat step 1 from there.",
+            "When a node has no unvisited neighbors left, it is finished: go back to the node you came from.",
+            "When you return to the start node and it has no unvisited neighbors, the search is complete."
+          ]
+        },
+        "Going back to the previous node is called backtracking. With recursion, the call stack does this for you."
+      ]
+    },
+    {
+      "h": "Worked example, step by step",
+      "body": [
+        "Use the same undirected graph as in the BFS article: A–B, A–C, B–D, C–D, C–E, D–F. Start at A and try neighbors in alphabetical order.",
+        {
+          "table": {
+            "head": [
+              "Step",
+              "Action",
+              "Current path (stack)"
+            ],
+            "rows": [
+              [
+                "1",
+                "Visit A",
+                "A"
+              ],
+              [
+                "2",
+                "A → B (first unvisited neighbor)",
+                "A, B"
+              ],
+              [
+                "3",
+                "B → D",
+                "A, B, D"
+              ],
+              [
+                "4",
+                "D → C (B is visited)",
+                "A, B, D, C"
+              ],
+              [
+                "5",
+                "C → E (A and D are visited)",
+                "A, B, D, C, E"
+              ],
+              [
+                "6",
+                "E has no new neighbors: finish E, back to C; finish C, back to D",
+                "A, B, D"
+              ],
+              [
+                "7",
+                "D → F",
+                "A, B, D, F"
+              ],
+              [
+                "8",
+                "Finish F, D, B, A",
+                "empty"
+              ]
+            ]
+          }
+        },
+        "The visiting order is A, B, D, C, E, F. The finishing order is E, C, F, D, B, A. Finishing order is what topological sort and strongly connected component algorithms use."
+      ]
+    },
+    {
+      "h": "Python implementation",
+      "body": [
+        "The recursive version is the shortest and closest to the idea:",
+        {
+          "code": "def dfs(graph, node, visited=None):\n    if visited is None:\n        visited = []\n    visited.append(node)\n    for nxt in graph[node]:\n        if nxt not in visited:\n            dfs(graph, nxt, visited)\n    return visited\ngraph = {\n    \"A\": [\"B\", \"C\"], \"B\": [\"A\", \"D\"], \"C\": [\"A\", \"D\", \"E\"],\n    \"D\": [\"B\", \"C\", \"F\"], \"E\": [\"C\"], \"F\": [\"D\"],\n}\nprint(dfs(graph, \"A\"))  # ['A', 'B', 'D', 'C', 'E', 'F']",
+          "lang": "python"
+        },
+        "A list keeps the example readable but makes `in` an O(n) check. For large graphs, keep a separate `set` for membership. The iterative version uses an explicit stack and avoids Python's recursion limit. Neighbors are pushed in reverse so they are popped in the original order:",
+        {
+          "code": "def dfs_iterative(graph, start):\n    visited, order = set(), []\n    stack = [start]\n    while stack:\n        node = stack.pop()\n        if node in visited:\n            continue\n        visited.add(node)\n        order.append(node)\n        for nxt in reversed(graph[node]):\n            if nxt not in visited:\n                stack.append(nxt)\n    return order\nprint(dfs_iterative(graph, \"A\"))  # ['A', 'B', 'D', 'C', 'E', 'F']",
+          "lang": "python"
+        },
+        "Note the difference from BFS: here a node is marked when it is popped, so it may sit on the stack more than once. That is correct for DFS and keeps the true depth-first order."
+      ]
+    },
+    {
+      "h": "Detecting a cycle in a directed graph",
+      "body": [
+        "A classic DFS application colors each node: white (not seen), gray (on the current path) and black (finished). Reaching a gray node means there is an edge back into the current path, which is a cycle.",
+        {
+          "code": "def has_cycle(graph):\n    WHITE, GRAY, BLACK = 0, 1, 2\n    color = {node: WHITE for node in graph}\n    def visit(node):\n        color[node] = GRAY\n        for nxt in graph[node]:\n            if color[nxt] == GRAY:\n                return True              # back edge\n            if color[nxt] == WHITE and visit(nxt):\n                return True\n        color[node] = BLACK\n        return False\n    return any(color[n] == WHITE and visit(n) for n in graph)\nprint(has_cycle({\"a\": [\"b\"], \"b\": [\"c\"], \"c\": [\"a\"]}))  # True\nprint(has_cycle({\"a\": [\"b\"], \"b\": [\"c\"], \"c\": []}))     # False",
+          "lang": "python"
+        }
+      ]
+    },
+    {
+      "h": "Time and space complexity",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Measure",
+              "Cost",
+              "Reason"
+            ],
+            "rows": [
+              [
+                "Time",
+                "O(V + E)",
+                "Each node is visited once and each edge is examined once per direction."
+              ],
+              [
+                "Space",
+                "O(V)",
+                "The visited set plus the recursion or explicit stack, which can grow to the length of the longest path."
+              ],
+              [
+                "Adjacency matrix",
+                "O(V²) time",
+                "Listing the neighbors of each node costs O(V)."
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "Variants and common mistakes",
+      "body": [
+        {
+          "ul": [
+            "Pre-order and post-order: record a node when you enter it (pre-order) or when you finish it (post-order). Reverse post-order of a directed acyclic graph is a topological order.",
+            "Connected components: start a new DFS from every node that is still unvisited; each start is one component.",
+            "Iterative deepening DFS: run DFS with a depth limit 0, 1, 2, … It finds shortest paths like BFS with the low memory of DFS.",
+            "Flood fill on a grid (the paint bucket tool) is DFS or BFS over neighboring cells of the same color."
+          ]
+        },
+        {
+          "note": "Python's default recursion limit is about 1000 frames (see `sys.getrecursionlimit()`). A recursive DFS on a long path, such as a 2000-node chain or a large grid, raises `RecursionError`. Use the iterative version for big inputs instead of raising the limit."
+        },
+        "Other frequent bugs: forgetting the visited set (infinite loop on any cycle), using a mutable default argument such as `visited=[]` (it is shared between calls), and treating an undirected edge back to the parent as a cycle."
+      ]
+    },
+    {
+      "h": "When to use DFS and real-world uses",
+      "body": [
+        {
+          "ul": [
+            "Use DFS for reachability, cycle detection, topological sort, connected and strongly connected components, bridges and articulation points, and for exhaustive search with backtracking.",
+            "Use BFS instead when you need the fewest steps, and Dijkstra or A* when edges have weights.",
+            "Interview problems: number of islands, clone a graph, course schedule (cycle detection), path sum in a binary tree, generating permutations.",
+            "Real world: build systems and package managers resolving dependency order, compilers analysing control flow, maze generation, and tree walks over file systems or HTML documents."
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Is DFS recursive or iterative?",
+      "a": "Both work. Recursion is shorter and uses the call stack implicitly; an explicit stack avoids recursion limits in languages such as Python and gives the same visiting order if you push neighbors in reverse."
+    },
+    {
+      "q": "Does DFS find the shortest path?",
+      "a": "No. DFS finds some path, not necessarily the one with the fewest edges. Use BFS for unweighted graphs and Dijkstra's algorithm for weighted graphs."
+    },
+    {
+      "q": "What is the time complexity of DFS?",
+      "a": "O(V + E) with an adjacency list, because every node and every edge is handled a constant number of times. With an adjacency matrix it is O(V²)."
+    },
+    {
+      "q": "How do pre-order, in-order and post-order relate to DFS?",
+      "a": "They are all depth-first traversals of a tree that differ only in when the current node is processed: before its children, between the left and right child, or after its children."
+    }
+  ]
+}

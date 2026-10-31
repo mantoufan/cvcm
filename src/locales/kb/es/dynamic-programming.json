@@ -1,0 +1,215 @@
+{
+  "title": "Programación dinámica: memoización, tabulación y problemas clásicos en Python — cv.cm",
+  "description": "Programación dinámica explicada para principiantes: subproblemas solapados, memoización frente a tabulación, una tabla de cambio de monedas paso a paso, ejemplos en Python y complejidad.",
+  "h1": "Programación dinámica explicada: cómo funciona, código y ejemplos",
+  "answer": "La programación dinámica (DP) resuelve un problema dividiéndolo en subproblemas más pequeños, resolviendo cada subproblema una sola vez y guardando el resultado para reutilizarlo. Funciona cuando el problema tiene subestructura óptima (la mejor respuesta se construye a partir de las mejores respuestas de los subproblemas) y subproblemas solapados (los mismos subproblemas aparecen una y otra vez). Puedes escribir DP de arriba abajo con memoización o de abajo arriba con una tabla; ambas formas convierten muchas soluciones exponenciales de fuerza bruta en soluciones polinómicas.",
+  "sections": [
+    {
+      "h": "Qué problema resuelve la programación dinámica",
+      "body": [
+        "Muchos problemas piden lo mejor, lo más barato o el número de formas: el menor número de monedas que suman una cantidad, la subsecuencia común más larga de dos cadenas, el conjunto más valioso de objetos que cabe en una mochila, el número de caminos en una cuadrícula. Una solución recursiva directa suele recalcular los mismos casos pequeños un número exponencial de veces. La DP elimina esa repetición.",
+        "El nombre viene de Richard Bellman, que desarrolló el método en la década de 1950. Aquí \"programación\" significa planificar o rellenar una tabla, no escribir código."
+      ]
+    },
+    {
+      "h": "La idea en palabras sencillas",
+      "body": [
+        "El Fibonacci recursivo ingenuo muestra el problema. `fib(5)` llama a `fib(4)` y a `fib(3)`, y `fib(4)` vuelve a llamar a `fib(3)`, y así sucesivamente: el número de llamadas crece de forma exponencial. Guardar cada resultado la primera vez que se calcula hace instantánea cualquier llamada posterior.",
+        {
+          "ol": [
+            "Define el estado: ¿cómo es un subproblema? Por ejemplo, `best[a]` = menor número de monedas que suman la cantidad a.",
+            "Escribe la recurrencia: ¿cómo se calcula un estado a partir de estados más pequeños? `best[a] = 1 + min(best[a - c] for each coin c)`.",
+            "Fija los casos base: `best[0] = 0`.",
+            "Elige el orden: de arriba abajo con memoización, o de abajo arriba de modo que los estados más pequeños se rellenen siempre primero.",
+            "Lee la respuesta en el estado correcto y reconstruye la elección concreta si hace falta."
+          ]
+        },
+        {
+          "table": {
+            "head": [
+              "Estilo",
+              "Cómo funciona",
+              "Ventajas",
+              "Inconvenientes"
+            ],
+            "rows": [
+              [
+                "De arriba abajo (memoización)",
+                "Función recursiva más una caché de resultados.",
+                "Es lo más cercano a la recurrencia; calcula solo los estados necesarios.",
+                "Límites de profundidad de recursión y sobrecoste de las llamadas."
+              ],
+              [
+                "De abajo arriba (tabulación)",
+                "Los bucles rellenan una tabla desde los estados más pequeños hacia arriba.",
+                "Sin recursión; es fácil reducir la memoria.",
+                "Hay que encontrar un orden de relleno válido; puede calcular estados que no se usan."
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "De arriba abajo: memoización con functools",
+      "body": [
+        "En Python, `functools.cache` (Python 3.9+) o `functools.lru_cache` añaden memoización a una función con una sola línea:",
+        {
+          "code": "from functools import cache\n\n@cache\ndef fib(n):\n    if n < 2:\n        return n\n    return fib(n - 1) + fib(n - 2)\n\nprint(fib(80))  # 23416728348467685",
+          "lang": "python"
+        },
+        "Sin el decorador, `fib(80)` haría más de 10¹⁶ llamadas recursivas. Con él, cada valor de 0 a 80 se calcula una sola vez."
+      ]
+    },
+    {
+      "h": "Ejemplo resuelto: cambio de monedas, de abajo arriba",
+      "body": [
+        "Monedas de 1, 3 y 4; cantidad 6. Un enfoque voraz toma primero la de 4 y necesita 4 + 1 + 1 = 3 monedas, pero 3 + 3 usa solo 2. La DP encuentra el verdadero mínimo rellenando `best[a]` para a = 0 a 6:",
+        {
+          "table": {
+            "head": [
+              "Cantidad a",
+              "Opciones: 1 + best[a − c]",
+              "best[a]"
+            ],
+            "rows": [
+              [
+                "0",
+                "caso base",
+                "0"
+              ],
+              [
+                "1",
+                "c=1: 1 + best[0] = 1",
+                "1"
+              ],
+              [
+                "2",
+                "c=1: 1 + best[1] = 2",
+                "2"
+              ],
+              [
+                "3",
+                "c=1: 3, c=3: 1 + best[0] = 1",
+                "1"
+              ],
+              [
+                "4",
+                "c=1: 2, c=3: 2, c=4: 1",
+                "1"
+              ],
+              [
+                "5",
+                "c=1: 2, c=3: 3, c=4: 2",
+                "2"
+              ],
+              [
+                "6",
+                "c=1: 3, c=3: 1 + best[3] = 2, c=4: 1 + best[2] = 3",
+                "2"
+              ]
+            ]
+          }
+        },
+        {
+          "code": "def min_coins(coins, amount):\n    INF = float(\"inf\")\n    best = [0] + [INF] * amount\n    for a in range(1, amount + 1):\n        for c in coins:\n            if c <= a and best[a - c] + 1 < best[a]:\n                best[a] = best[a - c] + 1\n    return best[amount] if best[amount] != INF else -1\n\nprint(min_coins([1, 3, 4], 6))  # 2\nprint(min_coins([2], 3))        # -1",
+          "lang": "python"
+        }
+      ]
+    },
+    {
+      "h": "Un ejemplo bidimensional: subsecuencia común más larga",
+      "body": [
+        "Muchos problemas de DP sobre dos secuencias usan una cuadrícula: `dp[i][j]` es la respuesta para los primeros i caracteres de una cadena y los primeros j de la otra. Para la subsecuencia común más larga (LCS), si los caracteres coinciden, se extiende la diagonal; en caso contrario, se toma lo mejor entre descartar un carácter de una cadena o de la otra.",
+        {
+          "code": "def lcs(a, b):\n    dp = [[0] * (len(b) + 1) for _ in range(len(a) + 1)]\n    for i in range(1, len(a) + 1):\n        for j in range(1, len(b) + 1):\n            if a[i - 1] == b[j - 1]:\n                dp[i][j] = dp[i - 1][j - 1] + 1\n            else:\n                dp[i][j] = max(dp[i - 1][j], dp[i][j - 1])\n    return dp[len(a)][len(b)]\n\nprint(lcs(\"ABCBDAB\", \"BDCABA\"))  # 4",
+          "lang": "python"
+        },
+        "Una LCS de longitud 4 es BCBA. La misma estructura de tabla resuelve la distancia de edición, que es como las herramientas de diff de texto miden cuánto se diferencian dos cadenas."
+      ]
+    },
+    {
+      "h": "Complejidad temporal y espacial",
+      "body": [
+        "La regla general: tiempo = número de estados × trabajo por estado; espacio = número de estados almacenados.",
+        {
+          "table": {
+            "head": [
+              "Problema",
+              "Estados",
+              "Tiempo",
+              "Espacio (se puede reducir a)"
+            ],
+            "rows": [
+              [
+                "Fibonacci",
+                "n",
+                "O(n)",
+                "O(n) → O(1) con dos variables"
+              ],
+              [
+                "Cambio de monedas (mínimo de monedas)",
+                "cantidad",
+                "O(amount × coins)",
+                "O(amount)"
+              ],
+              [
+                "LCS / distancia de edición",
+                "n × m",
+                "O(n × m)",
+                "O(n × m) → O(min(n, m)) si solo se necesita la longitud"
+              ],
+              [
+                "Mochila 0/1",
+                "objetos × capacidad",
+                "O(n × W)",
+                "O(W) con una sola fila, recorriendo la capacidad hacia abajo"
+              ]
+            ]
+          }
+        },
+        "El O(n × W) de la mochila es pseudopolinómico: depende del valor numérico de W, no del tamaño de la entrada en bits, por lo que es lento cuando W es enorme."
+      ]
+    },
+    {
+      "h": "Errores comunes y cuándo usar DP",
+      "body": [
+        {
+          "ul": [
+            "Estado incorrecto: si la recurrencia necesita información que el estado no contiene (por ejemplo, qué objetos ya se han usado), la respuesta es errónea. Añade esa información al estado.",
+            "Orden de relleno incorrecto: un bucle de abajo arriba debe calcular cada estado antes de leerlo.",
+            "Error de uno en el tamaño de la tabla: una cadena de longitud n necesita n + 1 filas para incluir el prefijo vacío.",
+            "Recursión profunda: una recursión con memoización sobre 10 000 estados puede superar el límite de recursión de Python; cambia a la versión de abajo arriba.",
+            "Argumentos no hashables: `functools.cache` necesita argumentos hashables, así que pasa tuplas en lugar de listas."
+          ]
+        },
+        {
+          "note": "Usa DP cuando los subproblemas se solapan. Si no se solapan, como en merge sort, basta con dividir y conquistar. Si una elección localmente óptima es demostrablemente correcta siempre, un algoritmo voraz es más simple y rápido; el cambio de monedas con valores de moneda arbitrarios es el caso clásico en el que el voraz falla y hace falta DP."
+        },
+        "Usos típicos en entrevistas y en el mundo real: subir escaleras, house robber, subsecuencia creciente más larga, word break, caminos únicos en una cuadrícula, distancia de edición, mochila, multiplicación encadenada de matrices; en la práctica, alineamiento de secuencias en bioinformática, herramientas de diff, correctores ortográficos, reconocimiento de voz (el algoritmo de Viterbi) y caminos más cortos como Bellman-Ford."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "¿Cuál es la diferencia entre memoización y tabulación?",
+      "a": "La memoización es de arriba abajo: una función recursiva guarda en caché los resultados a medida que los calcula. La tabulación es de abajo arriba: los bucles rellenan una tabla desde los casos base hacia arriba. Ambas tienen la misma complejidad en la mayoría de los problemas."
+    },
+    {
+      "q": "¿Cómo sé si un problema necesita programación dinámica?",
+      "a": "Busca una pregunta sobre lo mejor, lo más barato o el número de formas, junto con una recursión de fuerza bruta que repite los mismos subproblemas. Si puedes definir un estado y una recurrencia entre estados, la DP suele ser aplicable."
+    },
+    {
+      "q": "¿La programación dinámica es lo mismo que la recursión?",
+      "a": "No. La recursión es una forma de escribir código; la DP es la idea de resolver cada subproblema una sola vez y reutilizar el resultado. Una solución de DP puede ser recursiva con memoización o iterativa con una tabla."
+    },
+    {
+      "q": "¿Cuál es la diferencia entre programación dinámica y algoritmos voraces?",
+      "a": "Un algoritmo voraz toma una decisión localmente óptima en cada paso y nunca la reconsidera. La DP considera todas las opciones relevantes de cada subproblema y se queda con la mejor, por lo que es correcta en los casos en que el voraz falla."
+    },
+    {
+      "q": "¿Cuál es la diferencia entre programación dinámica y divide y vencerás?",
+      "a": "Ambos dividen un problema en subproblemas. Divide y vencerás trabaja con subproblemas independientes, mientras que la DP es para subproblemas que se solapan, de modo que guardar sus resultados ahorra trabajo."
+    }
+  ]
+}

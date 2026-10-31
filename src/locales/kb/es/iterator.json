@@ -1,0 +1,153 @@
+{
+  "title": "Patrón Iterator: recorrido, generadores y Symbol.iterator en TypeScript — cv.cm",
+  "description": "El patrón Iterator te permite recorrer una colección sin saber cómo está almacenada. Aprende los roles, Symbol.iterator y los generadores en TypeScript.",
+  "h1": "Patrón Iterator explicado con ejemplos",
+  "answer": "Iterator es un patrón de diseño de comportamiento que ofrece una forma de acceder a los elementos de una colección uno tras otro sin exponer cómo está almacenada. La lógica de recorrido vive en un objeto iterador aparte, con un método como `next()`, de modo que una colección puede ofrecer varios órdenes de recorrido y el código cliente puede recorrer arreglos, árboles y flujos de la misma manera. En TypeScript y JavaScript el patrón está integrado en el lenguaje mediante `Symbol.iterator` y `for...of`.",
+  "sections": [
+    {
+      "h": "Intención y el problema que resuelve",
+      "body": [
+        "Intención: proporcionar una forma de acceder secuencialmente a los elementos de un objeto agregado sin exponer su representación interna. Iterator es uno de los patrones de comportamiento del libro de la Banda de los Cuatro (Gang of Four, GoF).",
+        "Imagina una clase que guarda el organigrama de una empresa como un árbol. Distintas partes del programa necesitan listar a todos los empleados: un informe va nivel por nivel, otro necesita el orden en profundidad. Si cada informe recorre el árbol por sí mismo, cada informe depende de los campos internos del árbol, y cambiar el árbol para usar otro almacenamiento los rompe todos.",
+        "Con Iterator, el árbol ofrece objetos iteradores. Un informe pide un iterador y llama a `next()` hasta que termina. El informe no sabe si los datos son un árbol, un arreglo o filas obtenidas de una base de datos página a página."
+      ]
+    },
+    {
+      "h": "Estructura y participantes",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Rol",
+              "Responsabilidad"
+            ],
+            "rows": [
+              [
+                "Iterador",
+                "Interfaz de recorrido, normalmente `next()`, que devuelve el siguiente elemento y un indicador que dice si el recorrido ha terminado"
+              ],
+              [
+                "Iterador concreto",
+                "Implementa el recorrido de una colección y recuerda la posición actual"
+              ],
+              [
+                "Agregado (iterable)",
+                "Interfaz con un método que crea un iterador"
+              ],
+              [
+                "Agregado concreto",
+                "La colección; devuelve un nuevo iterador concreto cada vez que se le pide uno"
+              ],
+              [
+                "Cliente",
+                "Usa iteradores para visitar elementos sin conocer la estructura de la colección"
+              ]
+            ]
+          }
+        },
+        "En JavaScript estos roles tienen nombres estándar, definidos por los protocolos de iteración de ES2015. Un iterable tiene un método `[Symbol.iterator]()`. Un iterador tiene un método `next()` que devuelve `{ value, done }`. Todo bucle `for...of`, el operador de propagación `[...x]` y la asignación por desestructuración usan estos protocolos."
+      ]
+    },
+    {
+      "h": "Implementación en TypeScript: un iterador escrito a mano",
+      "body": [
+        "Esta clase de rango guarda solo su inicio, su fin y su paso, no una lista de números. Su iterador calcula cada valor bajo demanda.",
+        {
+          "code": "class Range implements Iterable<number> {\n  constructor(private start: number, private end: number, private step = 1) {}\n\n  [Symbol.iterator](): Iterator<number> {\n    let current = this.start;\n    const { end, step } = this;\n    return {\n      next(): IteratorResult<number> {\n        if (current >= end) return { value: undefined, done: true };\n        const value = current;\n        current += step;\n        return { value, done: false };\n      },\n    };\n  }\n}\n\nconst evens = new Range(0, 10, 2);\nfor (const n of evens) console.log(n); // 0 2 4 6 8 (one per line)\nconsole.log([...evens]); // [ 0, 2, 4, 6, 8 ]\nconsole.log(Math.max(...new Range(1, 4))); // 3",
+          "lang": "typescript"
+        },
+        "Cada llamada a `[Symbol.iterator]()` devuelve un iterador nuevo con su propia posición `current`. Por eso `evens` se puede recorrer dos veces. Si la colección devolviera siempre el mismo iterador, el segundo bucle no vería ningún elemento."
+      ]
+    },
+    {
+      "h": "Generadores: iteradores con menos código",
+      "body": [
+        "Una función generadora, escrita con `function*`, crea un iterador automáticamente. Cada `yield` produce el siguiente valor, y la función se pausa hasta que se vuelve a llamar a `next()`. Aquí un árbol binario ofrece un recorrido en orden central sin exponer sus nodos:",
+        {
+          "code": "class TreeNode<T> {\n  constructor(public value: T, public left?: TreeNode<T>, public right?: TreeNode<T>) {}\n}\n\nclass BinaryTree<T> implements Iterable<T> {\n  constructor(private root?: TreeNode<T>) {}\n\n  *[Symbol.iterator](): Generator<T> {\n    yield* inOrder(this.root);\n  }\n}\n\nfunction* inOrder<T>(node?: TreeNode<T>): Generator<T> {\n  if (!node) return;\n  yield* inOrder(node.left);\n  yield node.value;\n  yield* inOrder(node.right);\n}\n\nconst tree = new BinaryTree(\n  new TreeNode(5, new TreeNode(3, new TreeNode(1)), new TreeNode(8)),\n);\nconsole.log([...tree]); // [ 1, 3, 5, 8 ]\n\nfor (const value of tree) {\n  if (value > 3) break; // stops early; the rest is never computed\n  console.log(value); // 1, then 3\n}",
+          "lang": "typescript"
+        },
+        {
+          "note": "No añadas ni quites elementos de una colección mientras la recorres, a menos que la colección documente que es seguro. El iterador de `ArrayList` de Java lanza `ConcurrentModificationException`, y en JavaScript cambiar un arreglo durante un bucle puede saltarse o repetir elementos."
+        }
+      ]
+    },
+    {
+      "h": "Cuándo usarlo y cuándo no",
+      "body": [
+        {
+          "ul": [
+            "Úsalo cuando una colección tiene una estructura interna compleja (árbol, grafo, API paginada) y quieres que los clientes la recorran de forma sencilla.",
+            "Úsalo para ofrecer varios órdenes de recorrido sobre los mismos datos, como en profundidad y en anchura.",
+            "Úsalo para secuencias diferidas o infinitas, donde los valores se calculan solo cuando se piden.",
+            "Úsalo para dar a distintas colecciones una interfaz de bucle uniforme.",
+            "No escribas un iterador propio para datos que ya son un arreglo. Devuelve el arreglo (o una copia de solo lectura) y deja que los llamadores usen la iteración integrada.",
+            "No uses un iterador diferido cuando los llamadores necesiten acceso aleatorio por índice o la longitud de antemano; un arreglo encaja mejor."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Usos en el mundo real",
+      "body": [
+        {
+          "ul": [
+            "JavaScript: `Array`, `Map`, `Set` y `String` son iterables, y `map.entries()` o `set.values()` devuelven iteradores.",
+            "Java: la interfaz `java.util.Iterator` con `hasNext()` y `next()`, usada por el bucle `for` mejorado sobre cualquier `Iterable`.",
+            "Python: el protocolo de iteradores con `__iter__` y `__next__`, y las funciones generadoras con `yield`.",
+            "Bases de datos y APIs: los cursores sobre resultados de consultas y las APIs HTTP paginadas exponen los resultados de una página en una página, de modo que los clientes pueden iterar sobre resultados muy grandes sin cargarlo todo en memoria."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Patrones relacionados",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Patrón",
+              "Cómo se relaciona con Iterator"
+            ],
+            "rows": [
+              [
+                "Composite",
+                "Los iteradores se usan a menudo para recorrer árboles Composite sin exponer sus nodos."
+              ],
+              [
+                "Visitor",
+                "Iterator recorre los elementos; Visitor define qué hacer con cada elemento. A menudo se usan juntos."
+              ],
+              [
+                "Factory Method",
+                "El método que crea un iterador, como `[Symbol.iterator]()`, es un método de fábrica: cada colección devuelve su propia clase de iterador."
+              ],
+              [
+                "Memento",
+                "Un iterador puede guardar su posición como un memento para poder reanudar el recorrido más tarde."
+              ]
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "¿Cuál es la diferencia entre un iterable y un iterador?",
+      "a": "Un iterable es un objeto que puede producir un iterador, mediante `[Symbol.iterator]()` en JavaScript. Un iterador es el objeto que guarda la posición actual y devuelve los elementos uno a uno mediante `next()`."
+    },
+    {
+      "q": "¿Un generador es un iterador?",
+      "a": "Sí. Llamar a una función generadora devuelve un objeto generador, que es a la vez un iterador (tiene `next()`) y un iterable (se devuelve a sí mismo desde `[Symbol.iterator]()`)."
+    },
+    {
+      "q": "¿Por qué no exponer simplemente el arreglo interno?",
+      "a": "Exponer el arreglo ata a cada llamador a esa elección de almacenamiento y le permite modificarlo. Un iterador oculta la estructura, así que puedes cambiarla más tarde o calcular elementos de forma diferida sin cambiar a los llamadores."
+    },
+    {
+      "q": "¿Qué es un iterador interno?",
+      "a": "Un iterador interno es un método que recibe un callback y lo ejecuta para cada elemento, como `array.forEach(fn)`. La colección controla el bucle. Un iterador externo, como `next()`, deja que el cliente controle cuándo avanzar y cuándo parar."
+    }
+  ]
+}

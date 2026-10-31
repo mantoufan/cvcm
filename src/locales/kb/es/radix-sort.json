@@ -1,0 +1,235 @@
+{
+  "title": "Radix sort explicado: LSD y MSD, código en Python y complejidad — cv.cm",
+  "description": "Radix sort (ordenamiento por residuos) ordena enteros o cadenas de longitud fija dígito a dígito con un counting sort estable, en tiempo O(d · (n + b)). Traza, código en Python, LSD frente a MSD.",
+  "h1": "Radix sort (ordenamiento por residuos): cómo funciona, código y complejidad",
+  "answer": "Radix sort es un algoritmo de ordenamiento sin comparaciones que ordena enteros o cadenas de longitud fija un dígito (o carácter) cada vez. La versión habitual LSD (dígito menos significativo primero) ordena primero por el último dígito, luego por el siguiente, hasta llegar al más significativo, usando en cada pasada un ordenamiento estable como counting sort. Con d dígitos en base b, se ejecuta en tiempo O(d · (n + b)) y usa O(n + b) de espacio extra. Como cada pasada es estable, el resultado final queda totalmente ordenado y es estable.",
+  "sections": [
+    {
+      "h": "Qué problema resuelve radix sort",
+      "body": [
+        "Counting sort es lineal, pero necesita un arreglo de conteo tan grande como todo el rango de claves, lo que es imposible con enteros de 32 o 64 bits. Radix sort divide cada clave en dígitos pequeños y ejecuta counting sort una vez por dígito, de modo que cada pasada necesita un arreglo de conteo de solo b entradas (10 para dígitos decimales, 256 para bytes).",
+        "Funciona con cualquier clave que se pueda descomponer en una secuencia fija de símbolos pequeños: enteros no negativos, fechas escritas como YYYYMMDD, códigos de longitud fija como los códigos postales, direcciones IP y cadenas de ancho fijo."
+      ]
+    },
+    {
+      "h": "Ejemplo resuelto: radix sort LSD en base 10",
+      "body": [
+        "Ordena `[170, 45, 75, 90, 802, 24, 2, 66]`. El número mayor tiene 3 dígitos, así que hay 3 pasadas. Cada pasada es un ordenamiento estable por un dígito: los dígitos iguales conservan el orden de la pasada anterior.",
+        {
+          "table": {
+            "head": [
+              "Pasada",
+              "Ordenar por",
+              "Resultado"
+            ],
+            "rows": [
+              [
+                "Inicio",
+                "",
+                "`[170, 45, 75, 90, 802, 24, 2, 66]`"
+              ],
+              [
+                "1",
+                "dígito de las unidades",
+                "`[170, 90, 802, 2, 24, 45, 75, 66]`"
+              ],
+              [
+                "2",
+                "dígito de las decenas",
+                "`[802, 2, 24, 45, 66, 170, 75, 90]`"
+              ],
+              [
+                "3",
+                "dígito de las centenas",
+                "`[2, 24, 45, 66, 75, 90, 170, 802]`"
+              ]
+            ]
+          }
+        },
+        "Tras la pasada 2, los números están ordenados por sus dos últimos dígitos. En la pasada 3, 2, 24, 45, 66, 75 y 90 tienen todos el dígito de las centenas 0, y la estabilidad los mantiene en el orden que produjo la pasada 2. Por eso cada pasada debe ser estable."
+      ]
+    },
+    {
+      "h": "Implementación en Python",
+      "body": [
+        {
+          "code": "def counting_pass(nums, exp, base):\n    \"\"\"Stable counting sort of nums by the digit at exp.\"\"\"\n    count = [0] * base\n    for x in nums:\n        count[(x // exp) % base] += 1\n    for d in range(1, base):\n        count[d] += count[d - 1]\n    out = [0] * len(nums)\n    for x in reversed(nums):\n        d = (x // exp) % base\n        count[d] -= 1\n        out[count[d]] = x\n    return out\n\ndef radix_sort(nums, base=10):\n    \"\"\"LSD radix sort for non-negative integers.\"\"\"\n    if not nums:\n        return []\n    exp, biggest = 1, max(nums)\n    while biggest // exp > 0:\n        nums = counting_pass(nums, exp, base)\n        exp *= base\n    return nums\n\nprint(radix_sort([170, 45, 75, 90, 802, 24, 2, 66]))\n# [2, 24, 45, 66, 75, 90, 170, 802]\nprint(radix_sort([3, 0, 1, 0], base=256))   # [0, 0, 1, 3]",
+          "lang": "python"
+        },
+        "Usar base 256 significa que cada pasada examina un byte, así que los enteros de 32 bits necesitan solo 4 pasadas. Para incluir números negativos, ordena por separado los valores negativos y los no negativos y únelos, o desplaza todas las claves por el mínimo. Para cadenas de longitud fija, usa el código del carácter en la posición i como dígito y recorre de la última posición a la primera."
+      ]
+    },
+    {
+      "h": "Complejidad temporal y espacial",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Medida",
+              "Valor",
+              "Motivo"
+            ],
+            "rows": [
+              [
+                "Tiempo, en todos los casos",
+                "O(d · (n + b))",
+                "d pasadas, cada una un counting sort sobre n claves y b valores de dígito"
+              ],
+              [
+                "Espacio extra",
+                "O(n + b)",
+                "un búfer de salida y un arreglo de conteo por pasada"
+              ],
+              [
+                "Pasadas para claves de 32 bits",
+                "4 en base 256",
+                "32 bits ÷ 8 bits por dígito"
+              ],
+              [
+                "Comparaciones",
+                "0",
+                "los dígitos se usan como índices de un arreglo"
+              ]
+            ]
+          }
+        },
+        "Cuando d es una constante (claves de ancho fijo) y b se elige cercano a n o un valor fijo como 256, el tiempo es O(n). Para n claves todas distintas, d debe ser al menos log_b n, así que radix sort no supera a O(n log n) con claves de tamaño arbitrario; es rápido porque cada paso es una operación simple sobre un arreglo."
+      ]
+    },
+    {
+      "h": "Cómo se compara radix sort con otros ordenamientos",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Algoritmo",
+              "Mejor",
+              "Promedio",
+              "Peor",
+              "Espacio extra",
+              "Estable"
+            ],
+            "rows": [
+              [
+                "Radix sort (LSD)",
+                "O(d · (n + b))",
+                "O(d · (n + b))",
+                "O(d · (n + b))",
+                "O(n + b)",
+                "Sí"
+              ],
+              [
+                "Counting sort",
+                "O(n + k)",
+                "O(n + k)",
+                "O(n + k)",
+                "O(n + k)",
+                "Sí"
+              ],
+              [
+                "Merge sort",
+                "O(n log n)",
+                "O(n log n)",
+                "O(n log n)",
+                "O(n)",
+                "Sí"
+              ],
+              [
+                "Quicksort",
+                "O(n log n)",
+                "O(n log n)",
+                "O(n²)",
+                "O(log n)",
+                "No"
+              ],
+              [
+                "Heapsort",
+                "O(n log n)",
+                "O(n log n)",
+                "O(n log n)",
+                "O(1)",
+                "No"
+              ],
+              [
+                "Timsort (`sorted` de Python)",
+                "O(n)",
+                "O(n log n)",
+                "O(n log n)",
+                "O(n)",
+                "Sí"
+              ]
+            ]
+          }
+        },
+        "En la tabla, n es el número de claves, k el rango de claves de counting sort, d el número de dígitos y b la base. Radix sort LSD es estable siempre que cada pasada por dígito sea estable. Necesita claves con una estructura fija, mientras que los ordenamientos por comparación como merge sort y quicksort funcionan con cualquier orden, incluidas las funciones de comparación personalizadas."
+      ]
+    },
+    {
+      "h": "LSD frente a MSD y errores comunes",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "",
+              "LSD (dígito menos significativo primero)",
+              "MSD (dígito más significativo primero)"
+            ],
+            "rows": [
+              [
+                "Orden de las pasadas",
+                "del último dígito al primero",
+                "del primer dígito al último, de forma recursiva por cubeta"
+              ],
+              [
+                "Mejor para",
+                "enteros y cadenas de longitud fija",
+                "cadenas de longitud variable, con salida anticipada en prefijos únicos"
+              ],
+              [
+                "Implementación",
+                "bucle simple",
+                "recursiva; normalmente cambia a insertion sort en las cubetas pequeñas"
+              ],
+              [
+                "Estable",
+                "sí, con una pasada estable",
+                "sí, con una distribución estable en cubetas"
+              ]
+            ]
+          }
+        },
+        {
+          "note": "Errores frecuentes: usar un ordenamiento inestable en cada dígito (el resultado es incorrecto, no solo inestable), empezar por el dígito más significativo en el bucle LSD, calcular el número de pasadas a partir del primer elemento en lugar del máximo, y pasar números negativos a `(x // exp) % base`, donde la división entera y el módulo de Python producen dígitos que no ordenan correctamente los números negativos."
+        }
+      ]
+    },
+    {
+      "h": "Cuándo usar radix sort",
+      "body": [
+        "Radix sort encaja bien con arreglos grandes de enteros o claves de ancho fijo, como identificadores de 32 bits, marcas de tiempo, direcciones IPv4 o cadenas de longitud fija, sobre todo en GPU y en bibliotecas de alto rendimiento, donde su acceso regular a la memoria compensa. Se usa en la construcción de arreglos de sufijos y en algunas cargas de bases de datos y gráficos. Para listas normales de Python, `sorted()` casi siempre es más rápido en la práctica porque se ejecuta en código C optimizado. En las entrevistas, radix sort aparece cuando se pregunta cómo ordenar en tiempo lineal, por ejemplo en el problema Maximum Gap."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "¿Es estable radix sort?",
+      "a": "Radix sort LSD es estable cuando cada pasada por dígito usa un ordenamiento estable como counting sort. De hecho, el algoritmo depende de esa estabilidad para ser correcto."
+    },
+    {
+      "q": "¿Cuál es la complejidad temporal de radix sort?",
+      "a": "O(d · (n + b)), donde d es el número de dígitos, n el número de claves y b la base. Con claves de ancho fijo, d y b son constantes, así que es lineal en n."
+    },
+    {
+      "q": "¿Es radix sort más rápido que quicksort?",
+      "a": "Puede serlo con arreglos grandes de enteros de ancho fijo, porque no hace comparaciones y accede a la memoria con un patrón regular. Con datos generales, arreglos pequeños u órdenes personalizados, suele ser mejor quicksort o el ordenamiento integrado."
+    },
+    {
+      "q": "¿Cuál es la diferencia entre radix sort LSD y MSD?",
+      "a": "LSD ordena desde el dígito menos significativo hasta el más significativo con una pasada simple por dígito. MSD empieza por el dígito más significativo y ordena recursivamente cada cubeta, lo que conviene a las cadenas de longitud variable."
+    },
+    {
+      "q": "¿Puede radix sort ordenar cadenas?",
+      "a": "Sí. Trata cada carácter como un dígito. LSD funciona directamente con cadenas de la misma longitud; radix sort MSD maneja cadenas de longitudes distintas."
+    }
+  ]
+}

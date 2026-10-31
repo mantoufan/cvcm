@@ -1,0 +1,184 @@
+{
+  "title": "Adapter pattern: make incompatible interfaces work together, TypeScript example — cv.cm",
+  "description": "The Adapter design pattern explained: wrap a class with an incompatible interface so clients can use it. TypeScript example, object vs class adapter, real uses.",
+  "h1": "Adapter pattern explained with examples",
+  "answer": "Adapter is a structural design pattern that converts the interface of an existing class into the interface that client code expects. The adapter wraps the incompatible object and translates each call, for example turning `charge(amountCents)` into a legacy `makePayment(\"12.50\")`. It lets you reuse a third-party or legacy component without changing it and without spreading its awkward API through your code. It is also known as Wrapper.",
+  "sections": [
+    {
+      "h": "Intent",
+      "body": [
+        "Convert the interface of a class into another interface clients expect. Adapter lets classes work together that could not otherwise because of incompatible interfaces. It is one of the seven structural patterns in the Gang of Four (GoF) book."
+      ]
+    },
+    {
+      "h": "The problem it solves",
+      "body": [
+        "Your shop code works with a small `PaymentGateway` interface: `charge(amountCents, currency)` returns a result with an `ok` flag and a transaction ID. Now the business signs a contract with a payment provider whose SDK looks completely different: amounts are decimal strings, the currency is part of a request object, and errors come back as numeric status codes.",
+        "You cannot change the SDK, and you do not want to rewrite every caller to use the new shape. If the SDK's style leaks into checkout, refunds and reports, switching providers later will be expensive. An adapter keeps the translation in one class."
+      ]
+    },
+    {
+      "h": "Structure and participants",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Participant",
+              "Responsibility",
+              "In the example"
+            ],
+            "rows": [
+              [
+                "Target",
+                "The interface the client expects.",
+                "`PaymentGateway`"
+              ],
+              [
+                "Adaptee",
+                "The existing class with an incompatible interface.",
+                "`LegacyPayClient`"
+              ],
+              [
+                "Adapter",
+                "Implements Target and translates calls to the Adaptee.",
+                "`LegacyPayAdapter`"
+              ],
+              [
+                "Client",
+                "Works only with the Target interface.",
+                "`checkout`"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "TypeScript implementation",
+      "body": [
+        {
+          "code": "// Target: what our code expects.\ninterface PaymentGateway {\n  charge(amountCents: number, currency: string): { ok: boolean; id: string };\n}\n\n// Adaptee: a third-party SDK we cannot change.\nclass LegacyPayClient {\n  makePayment(req: { amount: string; curr: string }): { status: number; ref: string } {\n    return { status: req.curr === \"USD\" ? 200 : 422, ref: `TX-${req.amount}` };\n  }\n}\n\n// Adapter: implements the Target by translating to the Adaptee.\nclass LegacyPayAdapter implements PaymentGateway {\n  constructor(private client: LegacyPayClient) {}\n\n  charge(amountCents: number, currency: string) {\n    const res = this.client.makePayment({\n      amount: (amountCents / 100).toFixed(2),\n      curr: currency.toUpperCase(),\n    });\n    return { ok: res.status === 200, id: res.ref };\n  }\n}\n\n// Client code knows nothing about LegacyPayClient.\nfunction checkout(gateway: PaymentGateway, totalCents: number): string {\n  const result = gateway.charge(totalCents, \"usd\");\n  return result.ok ? `paid ${result.id}` : \"payment failed\";\n}\n\nconsole.log(checkout(new LegacyPayAdapter(new LegacyPayClient()), 1250)); // paid TX-12.50",
+          "lang": "typescript"
+        },
+        "Switching to another provider later means writing one more adapter. `checkout` and every other caller stay the same, and tests can pass a fake `PaymentGateway`."
+      ]
+    },
+    {
+      "h": "Object adapter versus class adapter",
+      "body": [
+        "The GoF book describes two forms:",
+        {
+          "table": {
+            "head": [
+              "Form",
+              "How it works",
+              "Notes"
+            ],
+            "rows": [
+              [
+                "Object adapter",
+                "Holds a reference to the adaptee and delegates to it (composition).",
+                "Works with the adaptee and all its subclasses. The usual choice in TypeScript, Java and C#."
+              ],
+              [
+                "Class adapter",
+                "Inherits from the adaptee and implements the target interface.",
+                "Needs inheritance from the adaptee, so it adapts only that one class. Common in C++ with multiple inheritance."
+              ]
+            ]
+          }
+        },
+        "In TypeScript and JavaScript, adapting a function is often enough. Node.js ships a small adapter of this kind: `util.promisify()` turns a callback-style function into one that returns a promise.",
+        {
+          "code": "import { promisify } from \"node:util\";\n\n// Adaptee: old callback style (error first, then result).\nfunction readConfig(name: string, cb: (err: Error | null, value?: string) => void): void {\n  setTimeout(() => cb(null, `config for ${name}`), 10);\n}\n\n// Adapted: the same function, now with a promise-based interface.\nconst readConfigAsync = promisify(readConfig);\nconsole.log(await readConfigAsync(\"app\")); // config for app",
+          "lang": "typescript"
+        }
+      ]
+    },
+    {
+      "h": "When to use it, and when not to",
+      "body": [
+        "Use Adapter when:",
+        {
+          "ul": [
+            "You want to use an existing class, but its interface does not match the one your code needs.",
+            "You integrate third-party libraries or legacy systems and want to keep their API at the edge of your program.",
+            "You want several different implementations, such as two payment providers, behind one interface."
+          ]
+        },
+        "Avoid it when:",
+        {
+          "ul": [
+            "You own both sides. Changing one of the interfaces is usually simpler than adding a translation layer.",
+            "The adapter would have to fake large parts of the target interface that the adaptee cannot really support. That hides a real mismatch instead of solving it."
+          ]
+        },
+        {
+          "note": "Keep adapters thin. They should translate names, units and error formats, not contain business rules. If an adapter grows large, the logic probably belongs somewhere else."
+        }
+      ]
+    },
+    {
+      "h": "Real-world uses",
+      "body": [
+        {
+          "ul": [
+            "Node.js: `util.promisify()` adapts callback-based functions to promises.",
+            "Java: `Arrays.asList()` lets an array be used through the `List` interface, and `InputStreamReader` lets a byte-based `InputStream` be read as a character-based `Reader`.",
+            "Database libraries and ORMs use one adapter or driver per database, so the same query API works with PostgreSQL, MySQL or SQLite.",
+            "Frontend code often wraps browser APIs or analytics SDKs behind a small project-specific interface for the same reason."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Related patterns",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Pattern",
+              "How it differs from Adapter"
+            ],
+            "rows": [
+              [
+                "Decorator",
+                "Keeps the same interface and adds behavior. Adapter changes the interface and adds no new behavior."
+              ],
+              [
+                "Proxy",
+                "Keeps the same interface and controls access to the object (lazy loading, caching, permissions)."
+              ],
+              [
+                "Facade",
+                "Defines a new, simpler interface for a whole subsystem of many classes. Adapter makes one existing interface match another existing one."
+              ],
+              [
+                "Bridge",
+                "Is designed up front to let an abstraction and its implementation vary separately. Adapter is usually added later to make existing classes fit."
+              ]
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "What is the difference between Adapter and Facade?",
+      "a": "An adapter makes one existing class match an interface that the client already expects. A facade creates a new, simpler interface in front of a complex subsystem of many classes."
+    },
+    {
+      "q": "What is the difference between Adapter and Decorator?",
+      "a": "Both wrap an object. A decorator keeps the same interface and adds behavior; an adapter changes the interface so the wrapped object can be used where it otherwise could not."
+    },
+    {
+      "q": "Is Adapter the same as a wrapper?",
+      "a": "Wrapper is another name for Adapter in the GoF book. In everyday speech, \"wrapper\" is also used for decorators and proxies, so the intent tells you which pattern is meant."
+    },
+    {
+      "q": "Can one adapter adapt several classes?",
+      "a": "An object adapter can work with an adaptee and all of its subclasses. Adapting unrelated classes usually means one adapter per class, all implementing the same target interface."
+    }
+  ]
+}

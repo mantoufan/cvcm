@@ -1,0 +1,183 @@
+{
+  "title": "Zig入門：型・スライス・エラー共用体・comptime・アロケーターを解説 — cv.cm",
+  "description": "Zigの基本を学べる入門講座。インストールとHello worldの実行、constとvar、配列とスライス、オプショナル、tryとcatchによるエラー共用体、defer、comptime、アロケーターを解説します。",
+  "h1": "Zig入門：初心者向けチュートリアル",
+  "answer": "Zigは、Cの現代的な代替を目指した、汎用のシステムプログラミング言語兼ツールチェーンです。隠れた制御フローも、ガベージコレクターも、隠れたメモリ確保もありません。アロケーターを明示的に渡し、エラーはエラー共用体と`try`で扱い、後始末は`defer`で行います。コンパイル時のコード実行(`comptime`)が、マクロとジェネリクスに代わります。ファイルは`zig run hello.zig`で実行します。Zigはまだバージョン1.0より前なので、言語と標準ライブラリの細部はリリースごとに変わります。",
+  "sections": [
+    {
+      "h": "Zigとは何か、誰が使うのか",
+      "body": [
+        "ZigはAndrew Kelleyが作り、非営利団体のZig Software Foundationが開発しています。Cと同じ領域、つまりOSの構成要素、組み込みファームウェア、ゲームエンジン、データベース、高速なコマンドラインツールを対象にしています。ZigコンパイラはCやC++のコードもコンパイルでき(`zig cc`)、多くのターゲットへクロスコンパイルもできるため、Cのツールチェーンとしてだけ使うプロジェクトもあります。",
+        "Zigで書かれた有名なプロジェクトには、JavaScriptランタイムのBun、金融データベースのTigerBeetle、ターミナルエミュレーターのGhosttyがあります。",
+        {
+          "note": "Zigは1.0より前のバージョンです。構文、特に標準ライブラリは0.xのリリースごとに変わり、古いバージョン向けに書かれたチュートリアルはコンパイルできないことがあります。このページは、複数のリリースで安定している基本に絞っています。インストールした正確なバージョン(`zig version`)のドキュメントを必ず読んでください。"
+        }
+      ]
+    },
+    {
+      "h": "Zigのインストールとhello, worldの実行",
+      "body": [
+        "ziglang.org/downloadから自分のシステム向けのビルド済みアーカイブをダウンロードし、展開して、フォルダーをPATHに追加するか、システムのパッケージマネージャーでZigをインストールします。別のインストーラーやランタイムはありません。",
+        {
+          "code": "// hello.zig\nconst std = @import(\"std\");\npub fn main() void {\n    std.debug.print(\"Hello, world!\\n\", .{});\n}",
+          "lang": "zig"
+        },
+        {
+          "code": "zig run hello.zig         # compile and run\n# Hello, world!\nzig build-exe hello.zig   # produce an executable named hello\nzig init                  # create a project with build.zig",
+          "lang": "shell"
+        },
+        "`std.debug.print`は標準エラー出力に書き込み、最近のどのバージョンでも最も簡単な出力方法です。2番目の引数は、書式のプレースホルダーに渡す値のタプルで、`.{}`は空のタプルです。標準出力に書き込むAPIはリリースごとに変わっているので、お使いのバージョンの標準ライブラリのドキュメントを確認してください。"
+      ]
+    },
+    {
+      "h": "変数と基本の型",
+      "body": [
+        "`const`は変わらない値を、`var`は変更可能な変数を宣言します。コンパイラは厳格で、使われていないローカル変数はエラーになり、一度も変更されない`var`もエラーになります。そのため、デフォルトでは`const`を使いましょう。",
+        {
+          "table": {
+            "head": [
+              "型",
+              "例",
+              "補足"
+            ],
+            "rows": [
+              [
+                "符号付き整数",
+                "`i8`, `i32`, `i64`",
+                "`i7`のように、任意のビット幅を使えます"
+              ],
+              [
+                "符号なし整数",
+                "`u8`, `u32`, `usize`",
+                "`usize`はポインターと同じサイズで、長さや添字に使います"
+              ],
+              [
+                "浮動小数点数",
+                "`f32`, `f64`",
+                "IEEE 754"
+              ],
+              [
+                "bool",
+                "`true`, `false`",
+                "整数からの暗黙の変換はありません"
+              ],
+              [
+                "配列",
+                "`[3]u8`",
+                "長さが固定で、コンパイル時にわかります"
+              ],
+              [
+                "スライス",
+                "`[]const u8`",
+                "ポインターと長さの組。文字列はバイトのスライスです"
+              ],
+              [
+                "オプショナル",
+                "`?i32`",
+                "値または`null`"
+              ],
+              [
+                "エラー共用体",
+                "`!u32`",
+                "値またはエラー"
+              ]
+            ]
+          }
+        },
+        {
+          "code": "const std = @import(\"std\");\npub fn main() void {\n    const age: u32 = 30;\n    var count: i32 = 0;\n    count += 1;\n    const name = \"Ana\"; // string literal, coerces to []const u8\n    std.debug.print(\"{s} is {d}, count = {d}\\n\", .{ name, age, count });\n    var maybe: ?i32 = null;\n    maybe = 5;\n    const value = maybe orelse 0;\n    std.debug.print(\"value = {d}\\n\", .{value});\n}",
+          "lang": "zig"
+        },
+        "書式のプレースホルダーは、出力のしかたを指定します。数値は`{d}`、文字列は`{s}`、1バイトを文字として出力するには`{c}`、任意の値のデバッグ出力には`{any}`です。"
+      ]
+    },
+    {
+      "h": "制御構文",
+      "body": [
+        "`if`、`switch`、`while`、`for`は、どれも式として使えます。`switch`は取りうるすべての値を網羅しなければならないので、たいていは`else`の分岐を加えます。",
+        {
+          "code": "const std = @import(\"std\");\npub fn main() void {\n    const n: i32 = -2;\n    const sign: []const u8 = if (n > 0) \"positive\" else if (n < 0) \"negative\" else \"zero\";\n    const score: u8 = 85;\n    const letter: u8 = switch (score) {\n        90...100 => 'A',\n        80...89 => 'B',\n        else => 'C',\n    };\n    std.debug.print(\"{s} {c}\\n\", .{ sign, letter }); // negative B\n    var i: u32 = 0;\n    while (i < 3) : (i += 1) {\n        std.debug.print(\"{d} \", .{i}); // 0 1 2\n    }\n    const items = [_]u8{ 10, 20, 30 };\n    for (items, 0..) |item, index| {\n        std.debug.print(\"\\n{d}: {d}\", .{ index, item });\n    }\n    std.debug.print(\"\\n\", .{});\n}",
+          "lang": "zig"
+        },
+        "`[_]u8{ ... }`と書くと、コンパイラが配列の長さを数えてくれます。`for (items, 0..)`は、要素とカウンターを同時にたどります。縦線の間の値はキャプチャと呼ばれます。"
+      ]
+    },
+    {
+      "h": "関数とcomptime",
+      "body": [
+        "関数は、パラメーターの型と戻り値の型を宣言します。引数は関数の内部では変更できません。ジェネリックなコードは`comptime`パラメーターで書きます。型はコンパイル時に存在する値なので、関数は型を引数として受け取れます。",
+        {
+          "code": "const std = @import(\"std\");\nfn add(a: i32, b: i32) i32 {\n    return a + b;\n}\nfn max(comptime T: type, a: T, b: T) T {\n    return if (a > b) a else b;\n}\npub fn main() void {\n    std.debug.print(\"{d}\\n\", .{add(2, 3)});            // 5\n    std.debug.print(\"{d}\\n\", .{max(i32, 3, 7)});       // 7\n    std.debug.print(\"{d}\\n\", .{max(f64, 1.5, 0.5)});   // 1.5\n}",
+          "lang": "zig"
+        },
+        "コンパイラは、`max`が呼ばれた型ごとに、別々のバージョンを作ります。標準ライブラリのジェネリックなデータ構造も同じ仕組みで作られています。型を受け取り、新しい構造体型を返す関数です。"
+      ]
+    },
+    {
+      "h": "エラー共用体・try・deferによるエラー処理",
+      "body": [
+        "エラーは値です。戻り値の型`!u32`は「`u32`またはエラー」を意味します。`try expr`はエラーがあれば呼び出し元にそのエラーを返し、`catch`はその場で処理します。エラーを黙って無視することはできません。",
+        {
+          "code": "const std = @import(\"std\");\nfn parseAge(s: []const u8) !u32 {\n    const n = try std.fmt.parseInt(i32, s, 10);\n    if (n < 0) return error.Negative;\n    return @intCast(n);\n}\npub fn main() void {\n    const age = parseAge(\"-5\") catch |err| {\n        std.debug.print(\"error: {s}\\n\", .{@errorName(err)});\n        return;\n    };\n    std.debug.print(\"age {d}\\n\", .{age});\n}\n// error: Negative",
+          "lang": "zig"
+        },
+        "`defer`は現在のブロックを抜けるときに文を実行し、`errdefer`はブロックがエラーで抜けるときだけ実行します。これにより、後始末のコードを、リソースを取得するコードの隣に置けます。"
+      ]
+    },
+    {
+      "h": "メモリとアロケーター",
+      "body": [
+        "Zigには、ガベージコレクターも、隠れたグローバルなアロケーターもありません。ヒープメモリを必要とする関数は`std.mem.Allocator`パラメーターを受け取るので、メモリをどこから取るか(ページアロケーター、アリーナ、固定バッファ、リークを検出するデバッグ用アロケーターなど)は呼び出し側が決めます。",
+        {
+          "code": "const std = @import(\"std\");\npub fn main() !void {\n    const allocator = std.heap.page_allocator;\n    const buf = try allocator.alloc(u32, 5);\n    defer allocator.free(buf);\n    for (buf, 0..) |*slot, i| {\n        slot.* = @intCast(i * i);\n    }\n    std.debug.print(\"{any}\\n\", .{buf}); // { 0, 1, 4, 9, 16 }\n}",
+          "lang": "zig"
+        },
+        "`|*slot|`は各要素へのポインターをキャプチャするので、ループから書き込めます。`slot.*`はポインターを参照外しします。DebugとReleaseSafeのビルドでは、整数のオーバーフローや範囲外の添字アクセスは、未定義動作ではなく、わかりやすいパニックでプログラムを止めます。"
+      ]
+    },
+    {
+      "h": "小さな完成プログラム：数値の平均",
+      "body": [
+        {
+          "code": "const std = @import(\"std\");\nfn average(numbers: []const i64) ?f64 {\n    if (numbers.len == 0) return null;\n    var sum: i64 = 0;\n    for (numbers) |n| sum += n;\n    const total: f64 = @floatFromInt(sum);\n    const len: f64 = @floatFromInt(numbers.len);\n    return total / len;\n}\npub fn main() !void {\n    const allocator = std.heap.page_allocator;\n    const buf = try allocator.alloc(i64, 16);\n    defer allocator.free(buf);\n    var it = std.mem.tokenizeScalar(u8, \"4 8 15 16 23 42\", ' ');\n    var count: usize = 0;\n    while (it.next()) |word| : (count += 1) {\n        buf[count] = try std.fmt.parseInt(i64, word, 10);\n    }\n    if (average(buf[0..count])) |avg| {\n        std.debug.print(\"count={d} avg={d:.2}\\n\", .{ count, avg });\n    }\n}\n// count=6 avg=18.00",
+          "lang": "zig"
+        },
+        "このプログラムは、文字列を空白で分割し、各部分を`try`で解析し、数値を`defer`で解放するヒープメモリに保存して、空のリストでは`null`になるオプショナルの平均を返します。",
+        {
+          "note": "初心者がよくやる間違い：ローカル変数を使わない、または一度も変更しない`var`を宣言する(どちらもコンパイルエラーです)、文字列に指定子なしの`{}`を使う(`{s}`を使います)、文字列リテラルがUnicode文字ではなくバイト配列であることを忘れる、`@intCast`のような明示的なキャストなしに整数型を混ぜる、古いバージョンのZig向けに書かれたチュートリアルのコードをコピーする、などです。"
+        }
+      ]
+    },
+    {
+      "h": "次に学ぶこと",
+      "body": [
+        {
+          "ul": [
+            "ziglang.org/documentationにある言語リファレンス。インストールしたバージョンのページを選びます。",
+            "ziglang.orgのLearnセクション。「Getting Started」と言語の概要があります。",
+            "壊れた小さなプログラムを1つずつ直していくZiglingsは、人気のあるコミュニティの練習問題集です。",
+            "標準ライブラリのソースを読む。Zigで書かれており、現在のAPIの最良のリファレンスです。"
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Zigは本番で使える段階ですか？",
+      "a": "本番でZigを使っている企業もありますが、言語は1.0より前なので、コンパイラをアップグレードすると互換性のない変更が入るものと想定し、その対応の時間を見込んでおく必要があります。"
+    },
+    {
+      "q": "ZigはCやRustの代わりになりますか？",
+      "a": "ZigはCに最も近く、手動のメモリ管理に、より良い安全性チェック、エラー処理、コンパイル時のコードを加えたものです。Rustは所有権システムと借用チェッカーでメモリ安全性を保証しますが、Zigにはそれがありません。"
+    },
+    {
+      "q": "ZigからCライブラリを使えますか？",
+      "a": "はい。ZigはCのヘッダーファイルをインポートしてC関数を直接呼び出せ、ZigコンパイラはCやC++のソースファイルもビルドできるため、言語を混ぜるのは簡単です。"
+    },
+    {
+      "q": "Zigのcomptimeとはどういう意味ですか？",
+      "a": "`comptime`は、コンパイル中に評価されるコードやパラメーターを示します。Zigは、別のマクロ言語の代わりに、これをジェネリクス、定数テーブル、コンパイル時チェックに使います。"
+    }
+  ]
+}

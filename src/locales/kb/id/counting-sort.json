@@ -1,0 +1,237 @@
+{
+  "title": "Penjelasan counting sort: cara kerja, kode Python, dan kompleksitas — cv.cm",
+  "description": "Counting sort mengurutkan bilangan bulat dalam rentang kecil dalam waktu O(n + k) dengan menghitung tiap nilai, tanpa perbandingan. Penelusuran, kode Python yang stabil, dan kapan memakainya.",
+  "h1": "Penjelasan counting sort: cara kerja, kode, dan kompleksitas",
+  "answer": "Counting sort adalah algoritma pengurutan non-comparison untuk bilangan bulat (atau kunci yang dipetakan ke bilangan bulat) dalam rentang kecil yang diketahui dengan ukuran k. Algoritma ini menghitung berapa kali setiap nilai muncul, mengubah hitungan menjadi posisi awal dengan jumlah kumulatif, dan menaruh setiap elemen langsung di posisinya. Waktunya O(n + k) dan memakai ruang tambahan O(n + k). Versi prefix-sum bersifat stabil, sehingga menjadi blok bangunan radix sort.",
+  "sections": [
+    {
+      "h": "Masalah apa yang diselesaikan counting sort",
+      "body": [
+        "Setiap sort yang hanya membandingkan pasangan elemen membutuhkan Ω(n log n) perbandingan pada kasus terburuk. Counting sort menghindari batas ini dengan tidak membandingkan sama sekali: ia memakai kunci itu sendiri sebagai indeks array. Ketika kuncinya bilangan bulat kecil, seperti nilai ujian 0 sampai 100, usia, byte 0 sampai 255, atau rating bintang, cara ini lebih cepat daripada comparison sort mana pun.",
+        "Harganya adalah memori yang sebanding dengan rentang kunci. Mengurutkan segelintir bilangan bulat 64-bit yang tersebar di seluruh rentang akan membutuhkan array hitungan yang sangat besar dan tidak realistis."
+      ]
+    },
+    {
+      "h": "Ide dan contoh langkah demi langkah",
+      "body": [
+        "Urutkan `[4, 2, 2, 8, 3, 3, 1]`, yang nilainya berada pada rentang 0 sampai 8 (k = 9).",
+        {
+          "ol": [
+            "Hitung setiap nilai: `count[v]` adalah berapa kali v muncul.",
+            "Prefix sum: ganti setiap hitungan dengan jumlah elemen yang kurang dari atau sama dengan nilai itu. Maka `count[v]` adalah satu posisi setelah posisi terakhir tempat v berada.",
+            "Tempatkan elemen: telusuri input dari kanan ke kiri; untuk setiap nilai v, kurangi `count[v]` lalu tulis v di posisi itu. Menelusuri dari kanan ke kiri menjaga nilai yang sama tetap dalam urutan aslinya."
+          ]
+        },
+        {
+          "table": {
+            "head": [
+              "Nilai",
+              "0",
+              "1",
+              "2",
+              "3",
+              "4",
+              "5",
+              "6",
+              "7",
+              "8"
+            ],
+            "rows": [
+              [
+                "Jumlah",
+                "0",
+                "1",
+                "2",
+                "2",
+                "1",
+                "0",
+                "0",
+                "0",
+                "1"
+              ],
+              [
+                "Prefix sum",
+                "0",
+                "1",
+                "3",
+                "5",
+                "6",
+                "6",
+                "6",
+                "6",
+                "7"
+              ]
+            ]
+          }
+        },
+        "Jadi angka 1 masuk ke indeks 0, dua angka 2 ke indeks 1 dan 2, dua angka 3 ke indeks 3 dan 4, angka 4 ke indeks 5, dan angka 8 ke indeks 6. Hasil: `[1, 2, 2, 3, 3, 4, 8]`."
+      ]
+    },
+    {
+      "h": "Implementasi Python",
+      "body": [
+        "Versi stabil ini mengurutkan objek apa pun berdasarkan kunci bilangan bulat antara 0 dan `k - 1`.",
+        {
+          "code": "def counting_sort(items, k, key=lambda x: x):\n    \"\"\"Stable sort of items by integer key in range(k).\"\"\"\n    count = [0] * k\n    for x in items:\n        count[key(x)] += 1\n    for v in range(1, k):                # prefix sums\n        count[v] += count[v - 1]\n    out = [None] * len(items)\n    for x in reversed(items):            # right to left: stable\n        count[key(x)] -= 1\n        out[count[key(x)]] = x\n    return out\n\nprint(counting_sort([4, 2, 2, 8, 3, 3, 1], k=9))\n# [1, 2, 2, 3, 3, 4, 8]\npeople = [(\"Ana\", 3), (\"Bo\", 1), (\"Cy\", 3), (\"Di\", 2)]\nprint(counting_sort(people, k=4, key=lambda p: p[1]))\n# [('Bo', 1), ('Di', 2), ('Ana', 3), ('Cy', 3)]",
+          "lang": "python"
+        },
+        "Ketika Anda hanya mengurutkan bilangan bulat biasa dan tidak butuh stabilitas, versi yang lebih sederhana membangun ulang output dari hitungan. Varian ini juga menangani bilangan negatif dengan menggeser sebesar nilai minimum:",
+        {
+          "code": "def counting_sort_ints(nums):\n    if not nums:\n        return []\n    lo, hi = min(nums), max(nums)\n    count = [0] * (hi - lo + 1)\n    for x in nums:\n        count[x - lo] += 1\n    out = []\n    for offset, c in enumerate(count):\n        out.extend([offset + lo] * c)\n    return out\n\nprint(counting_sort_ints([3, -1, 2, -1, 0]))   # [-1, -1, 0, 2, 3]",
+          "lang": "python"
+        }
+      ]
+    },
+    {
+      "h": "Kompleksitas waktu dan ruang",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Ukuran",
+              "Nilai",
+              "Alasan"
+            ],
+            "rows": [
+              [
+                "Waktu, semua kasus",
+                "O(n + k)",
+                "satu pass atas input, satu atas array hitungan, satu untuk menempatkan"
+              ],
+              [
+                "Ruang tambahan",
+                "O(n + k)",
+                "array hitungan berukuran k dan array output berukuran n"
+              ],
+              [
+                "Perbandingan",
+                "0",
+                "kunci dipakai sebagai indeks, tidak dibandingkan"
+              ]
+            ]
+          }
+        },
+        "Counting sort bersifat linear ketika k adalah O(n). Jika k jauh lebih besar daripada n, misalnya 1.000 nilai dalam rentang 0 sampai 10⁹, array hitungan mendominasi dan comparison sort atau radix sort lebih baik."
+      ]
+    },
+    {
+      "h": "Perbandingan counting sort dengan sort lain",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Algoritma",
+              "Terbaik",
+              "Rata-rata",
+              "Terburuk",
+              "Ruang tambahan",
+              "Stabil"
+            ],
+            "rows": [
+              [
+                "Counting sort",
+                "O(n + k)",
+                "O(n + k)",
+                "O(n + k)",
+                "O(n + k)",
+                "Ya"
+              ],
+              [
+                "Radix sort (LSD)",
+                "O(d · (n + b))",
+                "O(d · (n + b))",
+                "O(d · (n + b))",
+                "O(n + b)",
+                "Ya"
+              ],
+              [
+                "Merge sort",
+                "O(n log n)",
+                "O(n log n)",
+                "O(n log n)",
+                "O(n)",
+                "Ya"
+              ],
+              [
+                "Quicksort",
+                "O(n log n)",
+                "O(n log n)",
+                "O(n²)",
+                "O(log n)",
+                "Tidak"
+              ],
+              [
+                "Heapsort",
+                "O(n log n)",
+                "O(n log n)",
+                "O(n log n)",
+                "O(1)",
+                "Tidak"
+              ],
+              [
+                "Insertion sort",
+                "O(n)",
+                "O(n²)",
+                "O(n²)",
+                "O(1)",
+                "Ya"
+              ],
+              [
+                "Timsort (`sorted` di Python)",
+                "O(n)",
+                "O(n log n)",
+                "O(n log n)",
+                "O(n)",
+                "Ya"
+              ]
+            ]
+          }
+        },
+        "Di sini k adalah ukuran rentang kunci, d jumlah digit, dan b basis yang dipakai radix sort. Counting sort stabil ketika elemen ditempatkan memakai prefix sum dari kanan ke kiri. Versi sederhana yang membangun ulang dari hitungan menghasilkan hasil yang sama untuk bilangan bulat biasa tetapi tidak bisa membawa data lain bersama kuncinya."
+      ]
+    },
+    {
+      "h": "Varian dan kesalahan umum",
+      "body": [
+        {
+          "ul": [
+            "Radix sort menjalankan counting sort yang stabil satu kali per digit, yang memperluas ide ini ke bilangan bulat besar dan string dengan panjang tetap.",
+            "Bucket sort menyebarkan nilai ke bucket menurut rentang lalu mengurutkan setiap bucket; cepat ketika nilai tersebar merata.",
+            "Menghitung tanpa mengurutkan: sering kali Anda hanya butuh hitungannya, misalnya untuk membuat histogram atau mencari modus. `collections.Counter` melakukannya secara langsung."
+          ]
+        },
+        {
+          "note": "Bug yang umum: menelusuri input dari kiri ke kanan di perulangan penempatan (tetap terurut, tetapi tidak lagi stabil, yang merusak radix sort), lupa menggeser kunci negatif, mengalokasikan array hitungan berdasarkan jumlah elemen alih-alih rentang kunci, dan memakai counting sort pada float atau string sembarang, yang tidak punya rentang bilangan bulat kecil."
+        }
+      ]
+    },
+    {
+      "h": "Kapan memakai counting sort",
+      "body": [
+        "Pakai ketika kuncinya bilangan bulat dalam rentang yang kecil dibandingkan jumlah elemen: nilai ujian, usia, tanggal dalam bulan, byte, nilai kanal warna 0 sampai 255, atau nilai enum kecil. Ini juga langkah dalam radix sort dan algoritma pembangun suffix array. Dalam wawancara, ia muncul pada soal seperti sort colors (nilai 0, 1, 2), pengurutan berdasarkan frekuensi, dan H-index, serta pada pertanyaan klasik tentang cara menembus batas O(n log n) untuk comparison sort."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Apakah counting sort stabil?",
+      "a": "Ya, versi standar yang memakai prefix sum dan menempatkan elemen dari kanan ke kiri bersifat stabil. Sifat itulah yang memungkinkan radix sort memakainya untuk setiap digit."
+    },
+    {
+      "q": "Berapa kompleksitas waktu counting sort?",
+      "a": "O(n + k), dengan n jumlah elemen dan k ukuran rentang kunci. Sama pada kasus terbaik, rata-rata, dan terburuk."
+    },
+    {
+      "q": "Mengapa counting sort lebih cepat daripada O(n log n)?",
+      "a": "Batas bawah Ω(n log n) hanya berlaku untuk comparison sort. Counting sort tidak pernah membandingkan elemen; ia memakai setiap kunci sebagai indeks array, sehingga tidak tunduk pada batas itu."
+    },
+    {
+      "q": "Bisakah counting sort menangani bilangan negatif?",
+      "a": "Bisa. Kurangkan nilai minimum dari setiap kunci agar kunci terkecil dipetakan ke indeks 0, lalu tambahkan kembali saat menulis output."
+    },
+    {
+      "q": "Kapan sebaiknya tidak memakai counting sort?",
+      "a": "Ketika rentang kunci k jauh lebih besar daripada n, ketika kuncinya bilangan floating-point atau string sembarang, atau ketika memori terbatas. Comparison sort seperti `sorted()` lalu menjadi pilihan yang lebih baik."
+    }
+  ]
+}

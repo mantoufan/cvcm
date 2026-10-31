@@ -1,0 +1,153 @@
+{
+  "title": "原型模式：对象克隆、深拷贝与浅拷贝、TypeScript 示例 — cv.cm",
+  "description": "原型模式（Prototype）详解：通过克隆现有实例来创建对象。含 TypeScript clone() 示例、深拷贝与浅拷贝、structuredClone 及常见陷阱。",
+  "h1": "原型模式详解与示例",
+  "answer": "原型是一种创建型设计模式，它通过复制现有实例（即原型）来创建新对象，而不是用 `new` 从头构建。每个原型都实现一个 `clone()` 方法，因此客户端代码无需知道对象的具体类，就能复制它。当对象的配置成本很高，或者有许多预设变体时，它很有用。主要的陷阱是浅拷贝：嵌套的对象也必须一并复制，否则克隆体和原对象会共享它们。",
+  "sections": [
+    {
+      "h": "意图",
+      "body": [
+        "用原型实例指定要创建对象的种类，并通过复制这个原型来创建新对象。原型是《设计模式》（四人组，GoF）一书中五种创建型模式之一。"
+      ]
+    },
+    {
+      "h": "它要解决的问题",
+      "body": [
+        "设想一个图表编辑器，带有一个预设图形的调色板：红色的警告框、蓝色的便签、绿色的“已完成”徽章。每个预设都有尺寸、颜色、字体和一组样式规则。当用户把某个预设拖到画布上时，编辑器需要一个全新、独立的图形，并且初始设置与预设完全一致。",
+        "没有这个模式的话，编辑器就得为每个预设写一个单独的创建函数，还必须知道每一个具体的图形类。更糟的是，用户在运行时自定义的预设根本无法创建，因为没有任何代码事先知道它们的设置。有了原型模式，编辑器只需调用 `preset.clone()`。"
+      ]
+    },
+    {
+      "h": "结构与参与者",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "参与者",
+              "职责",
+              "示例中的对应"
+            ],
+            "rows": [
+              [
+                "原型（Prototype）",
+                "声明克隆自身的接口。",
+                "带有 `clone()` 的 `Shape`"
+              ],
+              [
+                "具体原型（ConcretePrototype）",
+                "通过复制自身状态来实现 `clone()`。",
+                "`Box`"
+              ],
+              [
+                "客户端（Client）",
+                "通过让原型克隆自己来创建新对象。",
+                "编辑器代码"
+              ],
+              [
+                "原型注册表（可选）",
+                "保存具名的原型，供客户端查找。",
+                "`palette` 映射"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "TypeScript 实现",
+      "body": [
+        "`clone()` 会复制每个字段，包括嵌套的对象和数组，因此副本与原对象相互独立：",
+        {
+          "code": "interface Shape {\n  clone(): Shape;\n  describe(): string;\n}\n\nclass Box implements Shape {\n  constructor(\n    public width: number,\n    public height: number,\n    public style: { fill: string; border: string },\n    public tags: string[],\n  ) {}\n\n  clone(): Box {\n    // copy nested objects too, so the clone shares nothing mutable\n    return new Box(this.width, this.height, { ...this.style }, [...this.tags]);\n  }\n\n  describe(): string {\n    return `${this.width}x${this.height} ${this.style.fill} [${this.tags.join(\", \")}]`;\n  }\n}\n\n// A registry of named prototypes, which could also be filled at run time.\nconst palette = new Map<string, Shape>([\n  [\"warning\", new Box(120, 40, { fill: \"red\", border: \"black\" }, [\"alert\"])],\n  [\"note\", new Box(160, 80, { fill: \"blue\", border: \"none\" }, [])],\n]);\n\nconst a = palette.get(\"warning\")!.clone() as Box;\na.width = 200;\na.tags.push(\"urgent\");\nconsole.log(a.describe());                        // 200x40 red [alert, urgent]\nconsole.log(palette.get(\"warning\")!.describe());  // 120x40 red [alert]",
+          "lang": "typescript"
+        },
+        "编辑器从不提及 `Box`。新增一个预设，只是在注册表里加一项，而不是新增一个类或一个创建函数。"
+      ]
+    },
+    {
+      "h": "浅拷贝与深拷贝",
+      "body": [
+        "原型模式最常见的 bug，是克隆体与原对象共享了嵌套对象。展开运算符的拷贝是浅拷贝：只复制最外层。",
+        {
+          "code": "const original = { name: \"note\", style: { fill: \"blue\" } };\n\nconst shallow = { ...original };\nshallow.style.fill = \"green\";\nconsole.log(original.style.fill); // green (shared object was changed)\n\nconst deep = structuredClone(original);\ndeep.style.fill = \"yellow\";\nconsole.log(original.style.fill); // green (unchanged)",
+          "lang": "typescript"
+        },
+        "`structuredClone()` 是现代浏览器和 Node.js 的内置函数，可以深拷贝普通数据，包括嵌套对象、数组、`Map`、`Set` 和 `Date`。它有两个在这里需要注意的限制：",
+        {
+          "ul": [
+            "类的实例会变回普通对象：副本丢失了原型，所以 `describe()` 这类方法不见了。",
+            "函数和 DOM 节点无法被克隆；`structuredClone()` 会抛出 `DataCloneError`。"
+          ]
+        },
+        {
+          "note": "对于类，请像主示例那样显式编写 `clone()` 方法。它能说明哪些字段是深拷贝的，并让副本保持原来的类。"
+        }
+      ]
+    },
+    {
+      "h": "何时使用，何时不用",
+      "body": [
+        "以下情况适合使用原型：",
+        {
+          "ul": [
+            "对象的初始化成本很高（从文件加载、经过计算、需要多步配置），而你需要许多相似的副本。",
+            "变体的集合在运行时才确定，例如由用户创建的预设或模板。",
+            "你希望创建对象时不依赖其具体类，也不想维护一套平行的工厂层级。"
+          ]
+        },
+        "以下情况应避免使用：",
+        {
+          "ul": [
+            "对象创建起来既便宜又简单。直接调用构造函数或工厂函数更清晰。",
+            "对象持有不应被复制的资源，例如打开的文件、套接字或唯一 ID。克隆这些对象需要特殊处理。",
+            "对象存在循环引用和复杂的所有权关系，使得正确的深拷贝很困难。"
+          ]
+        }
+      ]
+    },
+    {
+      "h": "实际应用",
+      "body": [
+        {
+          "ul": [
+            "JavaScript 本身就是基于原型的：`Object.create(proto)` 会创建一个继承自现有对象的新对象。这与该模式相关但并不完全相同，因为新对象是委托给原型，而不是复制它。",
+            "DOM：`node.cloneNode(true)` 会深拷贝一个元素及其子节点，这是批量生成重复 UI 片段的常用方式。",
+            "Java：类可以实现 `Cloneable` 接口并重写 `Object.clone()`，不过许多 Java 开发者更喜欢拷贝构造函数。",
+            "游戏引擎和编辑器通常从预先配置好的模板（常称为 prefab，预制体）中生成新对象。"
+          ]
+        }
+      ]
+    },
+    {
+      "h": "相关模式",
+      "body": [
+        {
+          "ul": [
+            "抽象工厂：工厂可以保存一组原型，并通过克隆它们来创建产品，而不必为每个产品族写一个工厂子类。",
+            "工厂方法：通过子类创建对象；原型通过复制实例，避免了这些子类。",
+            "组合与装饰：大量使用它们的设计常常能从原型中受益，因为复制一个已配置好的结构比重新构建它更容易。",
+            "备忘录：同样会复制对象的状态，但目的是之后恢复，而不是创建一个新的独立对象。"
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "原型模式和 JavaScript 的原型是一回事吗？",
+      "a": "不是。JavaScript 的原型是一种实现继承的语言机制：对象会把缺失的属性委托给它的原型。原型模式则是创建对象的独立副本。"
+    },
+    {
+      "q": "clone() 应该做深拷贝还是浅拷贝？",
+      "a": "对于可变的嵌套数据，通常应该深拷贝，这样克隆体和原对象互不影响。不可变的值以及共享的只读资源可以放心地继续共享。"
+    },
+    {
+      "q": "可以用 structuredClone() 来实现 clone() 吗？",
+      "a": "仅限普通数据对象。对于类的实例，`structuredClone()` 返回的是不带方法的普通对象，所以要自己编写复制逻辑，或者用构造函数重建实例。"
+    },
+    {
+      "q": "什么时候原型比工厂更合适？",
+      "a": "当变体很多、在运行时配置，或者初始化成本很高时。此时克隆一个现成的实例，比为每个变体写一个创建函数更简单。"
+    }
+  ]
+}

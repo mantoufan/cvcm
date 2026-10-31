@@ -1,0 +1,195 @@
+{
+  "title": "Học lập trình Swift cơ bản: optional, struct, enum và protocol — cv.cm",
+  "description": "Học Swift trong một trang: Hello world, let và var, kiểu dữ liệu, điều khiển luồng, closure, mảng và dictionary, optional, struct, enum và xử lý lỗi.",
+  "h1": "Hướng dẫn học lập trình Swift cơ bản cho người mới",
+  "answer": "Swift là ngôn ngữ biên dịch nhanh và an toàn do Apple tạo ra cho ứng dụng iPhone, iPad, Mac, Apple Watch và Apple TV, đồng thời cũng chạy được trên Linux và Windows. Lưu `print(\"Hello, world\")` vào `hello.swift` rồi chạy `swift hello.swift`. Các ý tưởng cốt lõi là hằng số `let` và biến `var`, suy luận kiểu, optional cho những giá trị có thể không có, struct và enum có ngữ nghĩa giá trị, protocol, và lỗi được xử lý bằng `do`/`try`/`catch`.",
+  "sections": [
+    {
+      "h": "Swift là gì và dùng để làm gì",
+      "body": [
+        "Apple giới thiệu Swift năm 2014 như một sự thay thế hiện đại cho Objective-C và mở mã nguồn năm 2015; dự án nằm tại swift.org. Đây là ngôn ngữ chính cho ứng dụng trên các nền tảng của Apple, thường đi cùng framework SwiftUI hoặc UIKit. Swift cũng được dùng cho mã phía máy chủ (ví dụ với framework Vapor) và công cụ dòng lệnh. Ngôn ngữ được thiết kế để ngăn các lỗi phổ biến: biến phải được khởi tạo, mảng kiểm tra chỉ số vượt giới hạn, và `nil` phải được xử lý một cách tường minh."
+      ]
+    },
+    {
+      "h": "Cài Swift và chạy Hello, world",
+      "body": [
+        "Trên Mac, cài Xcode từ App Store hoặc bộ công cụ dòng lệnh của Xcode. Trên Linux và Windows, tải toolchain từ swift.org. Kiểm tra bằng `swift --version`.",
+        {
+          "code": "print(\"Hello, world\")",
+          "lang": "swift"
+        },
+        {
+          "code": "swift hello.swift\n# Hello, world\nswiftc hello.swift -o hello   # compile to a binary\n./hello",
+          "lang": "shell"
+        },
+        "Với dự án lớn hơn, chạy `swift package init --type executable` rồi `swift run`. Playground của Xcode là một cách dễ khác để thử nghiệm."
+      ]
+    },
+    {
+      "h": "Hằng số, biến và các kiểu dữ liệu cơ bản",
+      "body": [
+        "Dùng `let` cho hằng số và `var` cho biến. Nên ưu tiên `let`; trình biên dịch sẽ cảnh báo khi một `var` không bao giờ bị thay đổi. Kiểu được suy luận, và Swift không bao giờ tự chuyển đổi giữa các kiểu số.",
+        {
+          "table": {
+            "head": [
+              "Kiểu",
+              "Ví dụ",
+              "Ghi chú"
+            ],
+            "rows": [
+              [
+                "`Int`",
+                "`let n = 42`",
+                "64 bit trên các nền tảng hiện đại"
+              ],
+              [
+                "`Double`",
+                "`let x = 3.14`",
+                "Kiểu số thực mặc định"
+              ],
+              [
+                "`Bool`",
+                "`let ok = true`",
+                "`true` hoặc `false`"
+              ],
+              [
+                "`String`",
+                "`let s = \"hi \\(name)\"`",
+                "Văn bản Unicode, kiểu giá trị"
+              ],
+              [
+                "`Character`",
+                "`let c: Character = \"é\"`",
+                "Một ký tự theo cảm nhận của người dùng"
+              ],
+              [
+                "`[Int]`, `[String: Int]`",
+                "`[1, 2]`, `[\"a\": 1]`",
+                "Mảng và dictionary"
+              ]
+            ]
+          }
+        },
+        {
+          "code": "let name = \"Ada\"\nvar count = 7\ncount += 1\nlet avg = Double(count) / 2   // explicit conversion\nprint(\"\\(name) has \\(count) items, avg \\(avg)\")  // Ada has 8 items, avg 4.0\nprint(7 / 2, 7 % 2)          // 3 1",
+          "lang": "swift"
+        },
+        "`\\(expression)` bên trong một chuỗi ký tự sẽ chèn một giá trị vào (nội suy chuỗi)."
+      ]
+    },
+    {
+      "h": "Điều khiển luồng",
+      "body": [
+        {
+          "code": "let score = 72\nif score >= 90 {\n    print(\"A\")\n} else if score >= 70 {\n    print(\"B\")                 // B\n} else {\n    print(\"C\")\n}\n\nfor i in 0..<3 {\n    print(i, terminator: \" \")  // 0 1 2\n}\nprint()\n\nvar n = 10\nwhile n > 1 { n /= 2 }\nprint(n)                       // 1\n\nlet day = \"SAT\"\nswitch day {\ncase \"SAT\", \"SUN\":\n    print(\"weekend\")           // weekend\ndefault:\n    print(\"weekday\")\n}",
+          "lang": "swift"
+        },
+        "`switch` phải bao quát mọi trường hợp, mặc định không chạy tràn xuống nhánh sau, và có thể khớp theo khoảng (`case 90...100:`), tuple và các case của enum."
+      ]
+    },
+    {
+      "h": "Hàm và closure",
+      "body": [
+        "Tham số có nhãn đối số mà bên gọi phải viết, khiến lời gọi đọc như một câu. Dùng `_` để bỏ nhãn. Closure là hàm không tên được viết trong cặp ngoặc nhọn.",
+        {
+          "code": "func greet(_ name: String, with greeting: String = \"Hello\") -> String {\n    return \"\\(greeting), \\(name)!\"\n}\n\nprint(greet(\"Lin\"))                  // Hello, Lin!\nprint(greet(\"Lin\", with: \"Hi\"))      // Hi, Lin!\n\nlet nums = [3, 1, 2, 5]\nlet squares = nums.map { $0 * $0 }\nlet evens = nums.filter { $0 % 2 == 0 }\nlet sorted = nums.sorted(by: >)\nprint(squares, evens, sorted)        // [9, 1, 4, 25] [2] [5, 3, 2, 1]",
+          "lang": "swift"
+        },
+        "`$0` chỉ đối số đầu tiên của closure. Khi closure là đối số cuối cùng, có thể viết nó sau cặp ngoặc tròn (cú pháp trailing closure)."
+      ]
+    },
+    {
+      "h": "Mảng, dictionary và set",
+      "body": [
+        {
+          "code": "var fruits = [\"apple\", \"pear\"]\nfruits.append(\"fig\")\nprint(fruits.count, fruits[0], fruits.contains(\"fig\"))  // 3 apple true\n\nvar ages: [String: Int] = [\"ann\": 31, \"bob\": 25]\nages[\"cy\"] = 40\nfor (person, age) in ages.sorted(by: { $0.key < $1.key }) {\n    print(person, age)                                  // ann 31, bob 25, cy 40\n}\nprint(ages[\"zed\", default: 0])                          // 0\n\nlet tags: Set = [\"b\", \"a\", \"b\"]\nprint(tags.count)                                       // 2",
+          "lang": "swift"
+        },
+        "Collection là kiểu giá trị: gán một mảng cho biến khác sẽ tạo ra bản sao độc lập (sao chép lười, chỉ khi một trong hai bị thay đổi). Mảng khai báo bằng `let` hoàn toàn không thể sửa đổi."
+      ]
+    },
+    {
+      "h": "Tính năng đặc trưng: optional",
+      "body": [
+        "Giá trị có thể không tồn tại có kiểu optional, viết là `String?`. Bạn không thể dùng nó như một `String` cho đến khi mở gói (unwrap), nên trình biên dịch buộc bạn xử lý trường hợp `nil`.",
+        {
+          "code": "let input = \"42\"\nlet number: Int? = Int(input)      // nil if input is not a number\n\nif let number {                     // unwrap: runs only when not nil\n    print(\"got \\(number)\")          // got 42\n}\n\nfunc firstWord(_ text: String) -> String? {\n    text.split(separator: \" \").first.map(String.init)\n}\n\nguard let word = firstWord(\"hello world\") else {\n    fatalError(\"no words\")\n}\nprint(word)                                  // hello\nprint(firstWord(\"\")?.uppercased() ?? \"none\") // none",
+          "lang": "swift"
+        },
+        "`if let` và `guard let` mở gói an toàn, `?.` (optional chaining) chỉ gọi phương thức khi giá trị tồn tại, còn `??` cung cấp giá trị mặc định. Việc mở gói cưỡng bức `value!` sẽ làm chương trình sập khi giá trị là `nil`, nên hãy dùng thật hiếm. Dạng rút gọn `if let number` cần Swift 5.7 trở lên."
+      ]
+    },
+    {
+      "h": "Struct, class, enum và protocol",
+      "body": [
+        "Struct và enum là kiểu giá trị; class là kiểu tham chiếu có kế thừa. Mã Swift ưu tiên struct và protocol (interface) hơn là cây phân cấp lớp.",
+        {
+          "code": "protocol Shape {\n    func area() -> Double\n}\n\nstruct Rect: Shape {\n    var width: Double\n    var height: Double\n    func area() -> Double { width * height }\n}\n\nenum Circle: Shape {\n    case unit\n    case radius(Double)\n    func area() -> Double {\n        switch self {\n        case .unit: return Double.pi\n        case .radius(let r): return Double.pi * r * r\n        }\n    }\n}\n\nlet shapes: [any Shape] = [Rect(width: 2, height: 3), Circle.radius(1)]\nlet total = shapes.reduce(0) { $0 + $1.area() }\nprint((total * 100).rounded() / 100)   // 9.14",
+          "lang": "swift"
+        },
+        "Struct tự động có hàm khởi tạo theo từng thành viên (`Rect(width:height:)`). Các case của enum có thể mang giá trị liên kết, như `.radius(Double)`."
+      ]
+    },
+    {
+      "h": "Xử lý lỗi",
+      "body": [
+        "Hàm có thể thất bại được đánh dấu `throws`. Bên gọi phải dùng `try` bên trong khối `do`/`catch`, hoặc dùng `try?` để biến lỗi thành `nil`.",
+        {
+          "code": "enum AgeError: Error {\n    case notANumber(String)\n    case negative\n}\n\nfunc parseAge(_ text: String) throws -> Int {\n    guard let age = Int(text) else { throw AgeError.notANumber(text) }\n    guard age >= 0 else { throw AgeError.negative }\n    return age\n}\n\ndo {\n    print(try parseAge(\"41\"))          // 41\n    print(try parseAge(\"abc\"))\n} catch AgeError.notANumber(let text) {\n    print(\"not a number: \\(text)\")     // not a number: abc\n} catch {\n    print(\"other error: \\(error)\")\n}\n\nlet maybe = try? parseAge(\"-3\")        // nil\nprint(maybe as Any)                    // nil",
+          "lang": "swift"
+        }
+      ]
+    },
+    {
+      "h": "Một chương trình hoàn chỉnh nhỏ: tần suất từ",
+      "body": [
+        {
+          "code": "import Foundation\n\nlet args = CommandLine.arguments\nguard args.count == 2 else {\n    print(\"usage: swift words.swift FILE\")\n    exit(1)\n}\n\ndo {\n    let text = try String(contentsOfFile: args[1], encoding: .utf8).lowercased()\n    let words = text.split { !$0.isLetter && $0 != \"'\" }\n    var counts: [Substring: Int] = [:]\n    for word in words {\n        counts[word, default: 0] += 1\n    }\n    for (word, n) in counts.sorted(by: { $0.value > $1.value }).prefix(5) {\n        print(String(n).padding(toLength: 6, withPad: \" \", startingAt: 0) + word)\n    }\n} catch {\n    print(\"cannot read \\(args[1]): \\(error.localizedDescription)\")\n    exit(1)\n}",
+          "lang": "swift"
+        },
+        "Chạy bằng `swift words.swift notes.txt`. `Foundation` cung cấp việc đọc tệp và các hàm hỗ trợ chuỗi; thư viện này có trên các nền tảng Apple và trong toolchain cho Linux và Windows."
+      ]
+    },
+    {
+      "h": "Lỗi thường gặp của người mới",
+      "body": [
+        {
+          "note": "Tránh mở gói cưỡng bức bằng `!` và các kiểu mở gói ngầm như `String!`, trừ khi giá trị chắc chắn tồn tại. Nếu lúc đó là `nil`, ứng dụng sẽ sập khi chạy."
+        },
+        {
+          "ul": [
+            "Cố thay đổi hằng số `let` hoặc thuộc tính của một struct khai báo bằng `let`. Hãy dùng `var` khi giá trị cần thay đổi.",
+            "Mong struct được chia sẻ như một đối tượng. Thay đổi bản sao không làm đổi bản gốc; hãy dùng class nếu cần danh tính dùng chung.",
+            "Truy cập `String` bằng số nguyên, chẳng hạn `s[0]`. Hãy dùng `s.first`, `s.prefix(3)` hoặc các giá trị `String.Index`.",
+            "Trộn `Int` và `Double` trong phép tính mà không chuyển đổi, đây là lỗi biên dịch.",
+            "Quên `try` trước lời gọi có thể ném lỗi, hoặc dùng `try!`, vốn làm chương trình sập khi có lỗi."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Học tiếp ở đâu",
+      "body": [
+        "Đọc \"The Swift Programming Language\" trên docs.swift.org, là hướng dẫn và tài liệu tham chiếu chính thức, cùng trung tâm tài liệu trên swift.org. Với ứng dụng, hãy làm theo các hướng dẫn SwiftUI của Apple trong Xcode. Sau đó học lập trình đồng thời trong Swift (`async`/`await` và actor), generic, và Swift Package Manager để quản lý thư viện phụ thuộc."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Swift chỉ dành cho nền tảng của Apple thôi sao?",
+      "a": "Không. Swift là mã nguồn mở và cũng chạy trên Linux và Windows, được dùng cho mã phía máy chủ và công cụ. Tuy nhiên, các framework ứng dụng như SwiftUI và UIKit chỉ có trên Apple."
+    },
+    {
+      "q": "Nên học Swift hay Objective-C?",
+      "a": "Hãy học Swift. Đây là ngôn ngữ Apple khuyến nghị cho ứng dụng mới, và khi cần nó có thể gọi mã Objective-C sẵn có."
+    },
+    {
+      "q": "Struct và class trong Swift khác nhau thế nào?",
+      "a": "Struct là kiểu giá trị, được sao chép khi gán hoặc truyền đi; class là kiểu tham chiếu, nên mọi biến cùng dùng chung một thể hiện. Class còn hỗ trợ kế thừa và deinitializer."
+    },
+    {
+      "q": "Dấu chấm hỏi sau một kiểu có nghĩa là gì?",
+      "a": "`Int?` là một optional: nó chứa hoặc một `Int` hoặc `nil`. Bạn phải mở gói nó, chẳng hạn bằng `if let`, trước khi dùng giá trị."
+    }
+  ]
+}

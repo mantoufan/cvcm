@@ -1,0 +1,182 @@
+{
+  "title": "Abstract Factory パターン：オブジェクトのファミリー、TypeScriptの例 — cv.cm",
+  "description": "Abstract Factory パターンを解説。具象クラスを指定せずに関連オブジェクトのファミリーを作る方法、TypeScriptの例、用途と落とし穴を紹介します。",
+  "h1": "Abstract Factory パターンを例でわかりやすく解説",
+  "answer": "Abstract Factory パターンは、具象クラスを指定せずに、関連するオブジェクトのファミリーを作るためのインターフェイスを提供する生成パターンです。クライアントコードは `LightThemeFactory` や `DarkThemeFactory` のようなファクトリオブジェクトを受け取り、それに各製品（ボタン、ダイアログ）を作らせます。1つのファクトリがファミリー全体を作るので、製品は常に互いに整合し、別のファクトリを渡すだけでファミリーを切り替えられます。",
+  "sections": [
+    {
+      "h": "目的",
+      "body": [
+        "具象クラスを指定せずに、関連または依存し合うオブジェクトのファミリーを作成するためのインターフェイスを提供します。Abstract Factory パターンは、Gang of Four（GoF）の書籍にある5つの生成パターンの1つで、同書ではKitとも呼ばれています。"
+      ]
+    },
+    {
+      "h": "解決する問題",
+      "body": [
+        "出力先を2つ、Webページとプレーンテキストのターミナルに対応できるレポートアプリを想像してください。どちらの出力先も、見出し、表、警告ボックスといった複数のコンポーネントを、それぞれ専用のバージョンで必要とします。Web用の見出しとターミナル用の表を混ぜてはいけません。出力が崩れてしまいます。",
+        "レポートのコードが `new HtmlHeading()` や `new TextTable()` を直接呼ぶと、具象クラスに縛られ、出力先の選択が多くの行に散らばり、ファミリーが混在するのを防ぐものもありません。Abstract Factory パターンは、1つのファミリーのすべての生成を1つのオブジェクトの背後にまとめるので、選択がちょうど1か所で行われます。"
+      ]
+    },
+    {
+      "h": "構造と登場要素",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "要素",
+              "役割",
+              "例では"
+            ],
+            "rows": [
+              [
+                "AbstractFactory",
+                "製品の種類ごとに1つの生成メソッドを宣言します。",
+                "`UiFactory`"
+              ],
+              [
+                "ConcreteFactory",
+                "1つのファミリー用の生成メソッドを実装します。",
+                "`HtmlFactory`, `TextFactory`"
+              ],
+              [
+                "AbstractProduct",
+                "1種類の製品のインターフェイスです。",
+                "`Heading`, `Alert`"
+              ],
+              [
+                "ConcreteProduct",
+                "特定のファミリーに属する製品です。",
+                "`HtmlHeading`, `TextAlert`"
+              ],
+              [
+                "Client",
+                "抽象ファクトリと抽象製品のインターフェイスだけを使います。",
+                "`renderReport`"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "TypeScriptでの実装",
+      "body": [
+        {
+          "code": "interface Heading { render(text: string): string; }\ninterface Alert { render(text: string): string; }\n\ninterface UiFactory {\n  createHeading(): Heading;\n  createAlert(): Alert;\n}\n\nclass HtmlFactory implements UiFactory {\n  createHeading(): Heading { return { render: (t) => `<h1>${t}</h1>` }; }\n  createAlert(): Alert { return { render: (t) => `<div class=\"alert\">${t}</div>` }; }\n}\n\nclass TextFactory implements UiFactory {\n  createHeading(): Heading { return { render: (t) => `${t}\\n${\"=\".repeat(t.length)}` }; }\n  createAlert(): Alert { return { render: (t) => `[!] ${t}` }; }\n}\n\n// The client knows only the interfaces.\nfunction renderReport(ui: UiFactory): string {\n  const heading = ui.createHeading();\n  const alert = ui.createAlert();\n  return [heading.render(\"Sales\"), alert.render(\"2 orders failed\")].join(\"\\n\");\n}\n\nconst target: string = \"text\"; // e.g. from a command-line flag\nconst factory: UiFactory = target === \"html\" ? new HtmlFactory() : new TextFactory();\nconsole.log(renderReport(factory));\n// Sales\n// =====\n// [!] 2 orders failed",
+          "lang": "typescript"
+        },
+        "具象クラスの名前が出てくるのは、ファクトリを選ぶ行だけです。`renderReport` はどのファミリーでも動作し、すべての製品を同じファクトリから受け取るので、HTMLとテキストの部品を誤って混ぜることはありません。",
+        "実際のプログラムでは、製品は通常、より多くのメソッドを持つクラスになります。この例ではオブジェクトリテラルで短くしていますが、構造は同じです。"
+      ]
+    },
+    {
+      "h": "使うべきとき、使わないとき",
+      "body": [
+        "次の場合はAbstract Factory パターンを使います。",
+        {
+          "ul": [
+            "システムが関連する製品の複数のファミリーを扱う必要があり、異なるファミリーの製品を組み合わせてはいけない場合（UIテーマ、OSのウィジェット、対応する接続オブジェクトとコマンドオブジェクトを持つデータベースドライバーなど）。",
+            "ファミリーを設定時に1度だけ選び、残りのコードをそれから独立させておきたい場合。",
+            "テストで、フェイクオブジェクトのファミリーを1つのファクトリから供給したい場合。"
+          ]
+        },
+        "次の場合は避けます。",
+        {
+          "ul": [
+            "ファミリーが1つしかない場合。直接 `new` を使うか、1つのファクトリ関数のほうが単純です。",
+            "製品の種類が頻繁に変わる場合。`createTable()` のような新しい種類の製品を追加すると、ファクトリのインターフェイスとすべての具象ファクトリを変更せざるを得ません。これがGoFの書籍に挙げられている主な弱点です。"
+          ]
+        },
+        {
+          "note": "「製品のバリエーションが多い」ことと「ファミリーが多い」ことを混同しないでください。1つのインターフェイスの実装を1つ選べば済むだけなら、Factory Method パターンや素の依存性の注入で十分です。"
+        }
+      ]
+    },
+    {
+      "h": "Abstract Factory パターンとFactory Method パターンの比較",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "観点",
+              "Factory Method パターン",
+              "Abstract Factory パターン"
+            ],
+            "rows": [
+              [
+                "作るもの",
+                "1つの製品",
+                "関連する製品のファミリー"
+              ],
+              [
+                "仕組み",
+                "サブクラスが1つの生成メソッドをオーバーライドする",
+                "クライアントが、複数の生成メソッドを持つファクトリオブジェクトを受け取る"
+              ],
+              [
+                "依存するもの",
+                "継承",
+                "合成"
+              ],
+              [
+                "追加しやすいもの",
+                "新しい製品のバリエーション（新しいサブクラス）",
+                "新しいファミリー（新しいファクトリクラス）"
+              ],
+              [
+                "追加しにくいもの",
+                "ほとんどなし。各クリエーターは独立している",
+                "新しい製品の種類（すべてのファクトリが変わる）"
+              ]
+            ]
+          }
+        },
+        "この2つはよく組み合わされます。具象ファクトリの各生成メソッドが、それ自体ファクトリメソッドになっています。"
+      ]
+    },
+    {
+      "h": "実際の利用例",
+      "body": [
+        {
+          "ul": [
+            "JavaのXML API：`DocumentBuilderFactory` と `TransformerFactory` は抽象クラスです。`newInstance()` が具象の実装を見つけ出し、それを使うコードは抽象型にだけ依存します。",
+            "JavaのJDBC APIも似た仕組みです。データベースドライバーが対応する `Connection`、`Statement`、`ResultSet` の実装を供給し、アプリケーションコードはインターフェイスだけを使います。",
+            "GoFの書籍自身の例は、複数のルックアンドフィールの標準に対応するユーザーインターフェイスのツールキットです。標準ごとに1つのファクトリがあり、それが対応するスクロールバー、ウィンドウ、ボタンを作成します。"
+          ]
+        }
+      ]
+    },
+    {
+      "h": "関連するパターン",
+      "body": [
+        {
+          "ul": [
+            "Factory Method パターン：具象ファクトリは、生成メソッドをファクトリメソッドとして実装することがよくあります。",
+            "Prototype パターン：ファクトリにプロトタイプのオブジェクトを設定し、それをコピーして製品を作れます。これにより、ファミリーごとのファクトリのサブクラスが不要になります。",
+            "Singleton パターン：アプリケーションに必要な具象ファクトリは、通常、それぞれ1つのインスタンスだけです。",
+            "Builder パターン：こちらも生成を隠しますが、1つの複雑なオブジェクトを段階的に構築します。Abstract Factory パターンは、完成した製品をすぐに返します。",
+            "Bridge パターン：抽象ファクトリで、Bridgeの実装側を作成して設定できます。"
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "製品のファミリーとは何ですか？",
+      "a": "一緒に使うよう設計されたオブジェクトの集まりで、たとえば1つのUIテーマのボタン、メニュー、ダイアログがそれに当たります。異なるファミリーの製品を混ぜると、一貫しない、あるいは壊れた結果になります。"
+    },
+    {
+      "q": "Abstract Factoryに新しい製品の種類を追加するには？",
+      "a": "ファクトリのインターフェイスに生成メソッドを追加し、すべての具象ファクトリで実装します。このため、このパターンは製品の種類の集合が安定している場合に最も適しています。"
+    },
+    {
+      "q": "Abstract Factory パターンは依存性の注入と同じですか？",
+      "a": "違いますが、相性は良好です。依存性の注入はオブジェクトを外から供給するものです。Abstract Factory パターンは、クライアントが関連する複数のオブジェクトを自分で作る必要があるときに注入できる、一種のオブジェクトです。"
+    },
+    {
+      "q": "Abstract Factoryをクラスではなく関数にできますか？",
+      "a": "はい。TypeScriptでは、ファクトリのインターフェイスを満たす、生成関数を持つ単なるオブジェクトでもファクトリになります。このパターンはインターフェイスとファミリーに関するもので、クラスに関するものではありません。"
+    }
+  ]
+}

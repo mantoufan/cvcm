@@ -1,0 +1,149 @@
+{
+  "title": "樣板方法模式：固定步驟、掛鉤與 TypeScript 範例 — cv.cm",
+  "description": "樣板方法模式在基底類別中固定演算法的步驟，讓子類別填入其中部分步驟。透過 TypeScript 範例了解掛鉤。",
+  "h1": "樣板方法模式（Template Method）詳解與範例",
+  "answer": "樣板方法（Template Method）是一種行為型設計模式，在基底類別的方法中定義演算法的骨架，讓子類別覆寫特定步驟而不改變整體順序。基底類別決定做什麼以及何時做；子類別決定部分步驟如何完成。帶有預設實作的選用步驟稱為掛鉤（hook）。",
+  "sections": [
+    {
+      "h": "意圖與要解決的問題",
+      "body": [
+        "意圖：在一個操作中定義演算法的骨架，把部分步驟延遲到子類別。樣板方法讓子類別在不改變演算法結構的情況下，重新定義演算法的某些步驟。它是《設計模式》（Gang of Four，簡稱 GoF）一書中的行為型模式之一。",
+        "想像一個報表工具，可將資料匯出為 CSV 和 JSON。兩個匯出器按相同順序做相同的事：載入資料列、檢查是否有資料、格式化，再加上附有筆數的頁尾。只有格式化的部分不同。如果每個匯出器各自撰寫，共通的步驟就會被複製，而在其中一個修正的問題（例如更好地處理空結果），很容易在另一個被遺忘。",
+        "有了樣板方法，基底類別 `Exporter` 包含 `export` 方法，裡面是固定順序的步驟。會變動的步驟則是抽象方法。`CsvExporter` 和 `JsonExporter` 只實作那些步驟。"
+      ]
+    },
+    {
+      "h": "結構與參與者",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "角色",
+              "職責"
+            ],
+            "rows": [
+              [
+                "抽象類別",
+                "實作樣板方法，以固定順序呼叫各步驟；宣告抽象步驟，也可以提供掛鉤"
+              ],
+              [
+                "樣板方法",
+                "定義演算法的公開方法；通常不應被覆寫"
+              ],
+              [
+                "基本操作",
+                "每個子類別都必須實作的抽象步驟"
+              ],
+              [
+                "掛鉤",
+                "帶有預設（通常為空）實作的步驟，子類別可以選擇覆寫"
+              ],
+              [
+                "具體類別",
+                "實作基本操作，並視需要覆寫掛鉤"
+              ]
+            ]
+          }
+        },
+        "這種設計反轉了控制權：由基底類別呼叫子類別的方法，而不是反過來。這有時稱為好萊塢原則：「別打給我們，我們會打給你」。"
+      ]
+    },
+    {
+      "h": "TypeScript 實作",
+      "body": [
+        "`export` 是樣板方法。`format` 是子類別必須實作的基本操作，`header` 則是預設為空的掛鉤。",
+        {
+          "code": "type Row = { name: string; score: number };\n\nabstract class Exporter {\n  // The template method: fixed order of steps\n  export(rows: Row[]): string {\n    if (rows.length === 0) return \"no data\";\n    const lines = [this.header(), this.format(rows), \"rows: \" + rows.length];\n    return lines.filter((line) => line !== \"\").join(\"\\n\");\n  }\n\n  protected abstract format(rows: Row[]): string; // required step\n  protected header(): string { return \"\"; }       // hook: optional step\n}\n\nclass CsvExporter extends Exporter {\n  protected header() { return \"name,score\"; }\n  protected format(rows: Row[]) {\n    return rows.map((r) => r.name + \",\" + r.score).join(\"\\n\");\n  }\n}\n\nclass JsonExporter extends Exporter {\n  protected format(rows: Row[]) {\n    return JSON.stringify(rows);\n  }\n}\n\nconst rows = [{ name: \"Ana\", score: 9 }, { name: \"Ben\", score: 7 }];\nconsole.log(new CsvExporter().export(rows));\n// name,score\n// Ana,9\n// Ben,7\n// rows: 2\nconsole.log(new JsonExporter().export(rows));\n// [{\"name\":\"Ana\",\"score\":9},{\"name\":\"Ben\",\"score\":7}]\n// rows: 2\nconsole.log(new JsonExporter().export([])); // no data",
+          "lang": "typescript"
+        },
+        "空資料的檢查與頁尾都集中在同一處。新增一個 XML 匯出器時，只需實作 `format`，其餘全都現成可用。",
+        {
+          "note": "TypeScript 沒有 `final` 關鍵字，所以子類別仍然可以覆寫 `export` 並破壞固定的順序。請在文件中註明不得覆寫樣板方法，並讓可覆寫的步驟數量保持少，讓子類別容易寫對。"
+        }
+      ]
+    },
+    {
+      "h": "用組合實現相同的概念",
+      "body": [
+        "繼承不是唯一的做法。你也可以把變動的步驟當作函式傳入，這使得這個模式成為策略的近親，並避免類別階層：",
+        {
+          "code": "type Row = { name: string; score: number };\ntype Steps = { format: (rows: Row[]) => string; header?: () => string };\n\nfunction exportRows(rows: Row[], steps: Steps): string {\n  if (rows.length === 0) return \"no data\";\n  const lines = [steps.header?.() ?? \"\", steps.format(rows), \"rows: \" + rows.length];\n  return lines.filter((line) => line !== \"\").join(\"\\n\");\n}\n\nconsole.log(exportRows([{ name: \"Ana\", score: 9 }], { format: (r) => r[0].name }));\n// Ana\n// rows: 1",
+          "lang": "typescript"
+        },
+        "當步驟很小、不需要在基底類別中共用狀態，或一個匯出器需要組合來自多個來源的步驟時，優先採用這種形式。"
+      ]
+    },
+    {
+      "h": "何時使用、何時不用",
+      "body": [
+        {
+          "ul": [
+            "當多個類別執行相同的演算法，只有少數步驟不同，而你想消除重複的部分時使用。",
+            "用於必須控制操作順序、同時讓使用者自訂步驟的框架，例如測試中的設定與清理。",
+            "使用掛鉤提供選用的擴充點，而不強迫每個子類別都實作。",
+            "變化很大或需要在執行期改變時不要使用。搭配組合的策略更有彈性。",
+            "避免樣板方法的深層階層。當子類別去覆寫子類別的子類別的步驟時，流程就變得難以追蹤。"
+          ]
+        }
+      ]
+    },
+    {
+      "h": "實際應用",
+      "body": [
+        {
+          "ul": [
+            "Java 的 `AbstractList`：你實作 `get(int)` 和 `size()`，基底類別就提供建立在其上的迭代、`indexOf`、`contains` 等方法。",
+            "Java 的 `InputStream`：子類別實作單一位元組的 `read()`，基底類別透過呼叫它來實作 `read(byte[], int, int)`（子類別可為了速度而覆寫）。",
+            "測試框架：JUnit、Python 的 `unittest` 等，會以固定順序呼叫 `setUp`、測試方法與 `tearDown`，而你只覆寫需要的步驟。",
+            "具有生命週期方法的 UI 框架，例如 React 類別元件中的 `componentDidMount`，會在它們自己演算法的固定時間點呼叫你的方法。"
+          ]
+        }
+      ]
+    },
+    {
+      "h": "相關模式",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "模式",
+              "與樣板方法的差異"
+            ],
+            "rows": [
+              [
+                "策略",
+                "策略在執行期透過組合替換整個演算法；樣板方法固定演算法，並在編譯期透過繼承改變其中的部分。"
+              ],
+              [
+                "工廠方法",
+                "工廠方法常常是樣板方法的其中一個步驟：也就是建立物件的那個步驟。"
+              ],
+              [
+                "掛鉤函式與回呼函式",
+                "把回呼函式傳入固定的演算法，是同一概念以組合為基礎的版本。"
+              ]
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "樣板方法模式中的掛鉤是什麼？",
+      "a": "掛鉤是在基底類別中有預設實作的步驟，通常什麼也不做。子類別可以覆寫它，在該處加入行為，但不是非做不可。"
+    },
+    {
+      "q": "樣板方法與策略有什麼不同？",
+      "a": "樣板方法使用繼承：基底類別擁有演算法，子類別覆寫步驟。策略使用組合：情境把整個演算法委派給可在執行期替換的物件或函式。"
+    },
+    {
+      "q": "樣板方法本身應該可以被覆寫嗎？",
+      "a": "不行。它的目的就是固定步驟的順序。在 Java 或 C# 中可以標記為 `final` 或非虛擬；在 TypeScript 中則必須靠文件說明，因為沒有 `final` 關鍵字。"
+    },
+    {
+      "q": "樣板方法與工廠方法有什麼關係？",
+      "a": "工廠方法常常是樣板方法的特化：基底類別的演算法包含一個建立物件的步驟，由子類別決定要建立哪個類別。"
+    }
+  ]
+}

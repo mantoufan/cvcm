@@ -1,0 +1,181 @@
+{
+  "title": "R tutorial: vectors, data frames, functions and statistics — cv.cm",
+  "description": "Learn R programming for data analysis: install R, run a script, vectors and types, if and loops, functions, lists, data frames, linear models, plots and errors.",
+  "h1": "R programming tutorial for beginners",
+  "answer": "R is a free language and environment for statistics, data analysis and graphics. Its core idea is vectorization: operations apply to whole vectors and data frame columns at once, so analysis code stays short. This page covers installing R, running scripts, vectors and types, control flow, functions, lists and data frames, statistical models, plotting and error handling.",
+  "sections": [
+    {
+      "h": "What R is and what it is used for",
+      "body": [
+        "R is a free, open-source language and environment for statistical computing and graphics. It descends from the S language developed at Bell Labs and is maintained by the R Core Team. R is vectorized: most operations work on whole vectors of data at once, which makes data analysis code short.",
+        "R is used by statisticians, data scientists, bioinformaticians, economists and researchers for data cleaning, statistical modeling, visualization and reproducible reports. Thousands of add-on packages are available from CRAN (the Comprehensive R Archive Network) and Bioconductor."
+      ]
+    },
+    {
+      "h": "Install R and run Hello, world",
+      "body": [
+        "Download R from CRAN for Windows, macOS or Linux. Many people also install RStudio or Positron, which are IDEs with an editor, console, plot viewer and help pane. You can type code directly in the R console or save it in a `.R` file.",
+        {
+          "code": "# hello.R\nprint(\"Hello, world!\")\ncat(\"Hello, world!\\n\")",
+          "lang": "r"
+        },
+        {
+          "code": "Rscript hello.R\n# [1] \"Hello, world!\"\n# Hello, world!",
+          "lang": "shell"
+        },
+        "`print` shows a value the way the console does, with the `[1]` index prefix. `cat` writes plain text, so you add the newline yourself."
+      ]
+    },
+    {
+      "h": "Variables, basic types and vectors",
+      "body": [
+        "Assign with `<-` (the conventional style) or `=`. There are no scalars in R: a single number is a vector of length 1. `c()` combines values into a vector, and arithmetic applies element by element.",
+        {
+          "code": "x <- 42                 # numeric (double)\nn <- 7L                 # integer (L suffix)\nname <- \"Ada\"           # character\nok <- TRUE              # logical\nclass(x); class(n); class(name)   # \"numeric\" \"integer\" \"character\"\nv <- c(2, 4, 6, 8)\nv * 10                  # [1] 20 40 60 80\nv[2]                    # [1] 4   (indexing starts at 1)\nv[v > 4]                # [1] 6 8\nlength(v); sum(v); mean(v)        # 4 20 5\n1:5                     # [1] 1 2 3 4 5\nseq(0, 1, by = 0.25)    # [1] 0.00 0.25 0.50 0.75 1.00",
+          "lang": "r"
+        },
+        {
+          "table": {
+            "head": [
+              "Type",
+              "Example",
+              "Notes"
+            ],
+            "rows": [
+              [
+                "numeric (double)",
+                "`3.14`, `42`",
+                "default for numbers"
+              ],
+              [
+                "integer",
+                "`42L`",
+                "whole numbers with the `L` suffix"
+              ],
+              [
+                "character",
+                "`\"text\"`",
+                "strings"
+              ],
+              [
+                "logical",
+                "`TRUE`, `FALSE`",
+                "`NA` means a missing value"
+              ],
+              [
+                "factor",
+                "`factor(c(\"lo\", \"hi\"))`",
+                "categorical data with fixed levels"
+              ]
+            ]
+          }
+        },
+        {
+          "note": "`NA` is a missing value and it spreads: `mean(c(1, NA, 3))` is `NA`. Pass `na.rm = TRUE` to ignore missing values, and test with `is.na(x)`, never `x == NA`."
+        }
+      ]
+    },
+    {
+      "h": "Control flow",
+      "body": [
+        "R has `if`/`else`, `for`, `while` and `repeat`. For vectors, the vectorized `ifelse()` is often better than a loop.",
+        {
+          "code": "temp <- 25\nif (temp > 30) {\n  print(\"hot\")\n} else if (temp > 15) {\n  print(\"mild\")         # [1] \"mild\"\n} else {\n  print(\"cold\")\n}\nfor (i in 1:3) {\n  cat(\"step\", i, \"\\n\")  # step 1 / step 2 / step 3\n}\nscores <- c(45, 80, 62)\nifelse(scores >= 50, \"pass\", \"fail\")\n# [1] \"fail\" \"pass\" \"pass\"",
+          "lang": "r"
+        },
+        "`if` needs a single `TRUE` or `FALSE`. Passing a longer vector to `if` is an error in R 4.2 and later; use `any()`, `all()` or `ifelse()` instead."
+      ]
+    },
+    {
+      "h": "Functions",
+      "body": [
+        "Functions are created with `function` and assigned to a name. The last evaluated expression is returned automatically; `return()` is only needed for an early exit. Arguments can have defaults and can be passed by name.",
+        {
+          "code": "bmi <- function(weight_kg, height_m = 1.75) {\n  weight_kg / height_m^2\n}\nbmi(70)                          # [1] 22.85714\nbmi(height_m = 1.6, weight_kg = 60)  # [1] 23.4375\nsquare <- function(x) x^2\nsquare(1:4)                      # [1] 1 4 9 16 (vectorized)\nsapply(c(1, 4, 9), sqrt)         # [1] 1 2 3\n(\\(x) x + 1)(10)                 # [1] 11 (short lambda syntax)",
+          "lang": "r"
+        },
+        "The short lambda syntax `\\(x)` is available since R 4.1, as is the native pipe `|>`, which passes the left side as the first argument: `c(1, 4, 9) |> sqrt() |> sum()` returns 6."
+      ]
+    },
+    {
+      "h": "Core data structures: vectors, lists and data frames",
+      "body": [
+        "Beyond atomic vectors, R has lists (which can hold values of different types), matrices, and data frames. A data frame is a table where each column is a vector of the same length; it is the central structure for data analysis.",
+        {
+          "code": "person <- list(name = \"Ann\", age = 31, langs = c(\"R\", \"SQL\"))\nperson$name                 # [1] \"Ann\"\nperson[[\"langs\"]][2]        # [1] \"SQL\"\ndf <- data.frame(\n  name  = c(\"Ann\", \"Bo\", \"Cy\"),\n  age   = c(31, 25, 40),\n  city  = c(\"Oslo\", \"Rome\", \"Oslo\")\n)\nnrow(df)                    # [1] 3\ndf$age                      # [1] 31 25 40\ndf[df$age > 30, \"name\"]     # [1] \"Ann\" \"Cy\"\ndf$senior <- df$age >= 40   # add a column\naggregate(age ~ city, data = df, FUN = mean)\n#   city  age\n# 1 Oslo 35.5\n# 2 Rome 25.0\nstr(df)                     # compact structure summary",
+          "lang": "r"
+        },
+        "`df[rows, columns]` selects by position, name or logical condition. Leaving one side empty, as in `df[1, ]`, means all rows or all columns."
+      ]
+    },
+    {
+      "h": "Statistics and plotting",
+      "body": [
+        "Statistical functions are built in: `summary`, `sd`, `quantile`, `cor`, `t.test` and `lm` (linear models), among many others. Base graphics draw a plot with one call.",
+        {
+          "code": "set.seed(1)\nx <- 1:20\ny <- 3 * x + rnorm(20, sd = 2)\nmodel <- lm(y ~ x)\nround(coef(model), 2)       # intercept near 0, slope near 3\nsummary(model)$r.squared    # close to 1\nplot(x, y, main = \"y vs x\")\nabline(model, col = \"red\")",
+          "lang": "r"
+        },
+        "The formula syntax `y ~ x` means \"model y as a function of x\" and is used across modeling functions. For advanced charts and data wrangling, most users install the tidyverse packages, such as ggplot2 and dplyr, with `install.packages(\"tidyverse\")`."
+      ]
+    },
+    {
+      "h": "Error handling",
+      "body": [
+        "Raise an error with `stop()` and a warning with `warning()`. Catch them with `tryCatch()`, which takes handler functions for `error`, `warning` and an optional `finally` block.",
+        {
+          "code": "safe_log <- function(x) {\n  if (!is.numeric(x)) stop(\"x must be numeric\")\n  if (any(x <= 0)) warning(\"non-positive values give NaN or -Inf\")\n  log(x)\n}\nresult <- tryCatch(\n  safe_log(\"ten\"),\n  error = function(e) {\n    message(\"Caught: \", conditionMessage(e))\n    NA\n  },\n  finally = message(\"done\")\n)\n# Caught: x must be numeric\n# done\nresult                      # [1] NA",
+          "lang": "r"
+        }
+      ]
+    },
+    {
+      "h": "A small complete program: summarize sales",
+      "body": [
+        "This script builds a small sales table, computes revenue per region with base R and prints the best region.",
+        {
+          "code": "sales <- data.frame(\n  region = c(\"North\", \"South\", \"North\", \"East\", \"South\"),\n  units  = c(10, 4, 6, 8, 12),\n  price  = c(2.5, 3.0, 2.5, 4.0, 3.0)\n)\nsales$revenue <- sales$units * sales$price\nby_region <- aggregate(revenue ~ region, data = sales, FUN = sum)\nby_region <- by_region[order(-by_region$revenue), ]\nprint(by_region, row.names = FALSE)\n#  region revenue\n#   South      48\n#   North      40\n#    East      32\nbest <- by_region$region[1]\ncat(sprintf(\"Best region: %s (%.2f)\\n\", best, max(by_region$revenue)))\n# Best region: South (48.00)",
+          "lang": "r"
+        },
+        {
+          "note": "Common beginner mistakes: forgetting that indexes start at 1; comparing with `== NA` instead of `is.na()`; growing a vector inside a loop (pre-allocate or use vectorized code); using `=` and `<-` inconsistently; and confusing `[` (returns a sub-list) with `[[` (returns one element) on lists."
+        }
+      ]
+    },
+    {
+      "h": "Where to go next",
+      "body": [
+        {
+          "ul": [
+            "An Introduction to R, the official manual on CRAN.",
+            "The built-in help: type `?mean` or `help(\"lm\")` in the console.",
+            "R for Data Science by Hadley Wickham and colleagues, free online, for the tidyverse approach.",
+            "CRAN Task Views, which list packages by field such as econometrics or machine learning."
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Is R or Python better for data analysis?",
+      "a": "Both are strong. R has a deep library of statistical methods and excellent plotting, and is common in academia and biostatistics; Python is more general-purpose and dominant in machine learning engineering. Many analysts learn both."
+    },
+    {
+      "q": "What is the difference between <- and = in R?",
+      "a": "Both assign at the top level, and `<-` is the conventional style. Inside a function call, `=` names an argument, so `f(x = 1)` passes an argument instead of creating a variable."
+    },
+    {
+      "q": "Why does R start counting at 1?",
+      "a": "R follows mathematical and statistical convention, as its predecessor S did, so the first element of a vector is `v[1]`. Index 0 returns an empty vector rather than an error."
+    },
+    {
+      "q": "What is the tidyverse?",
+      "a": "The tidyverse is a collection of R packages, including dplyr, ggplot2 and tidyr, that share a consistent design for importing, cleaning, transforming and plotting data."
+    },
+    {
+      "q": "How do I install an R package?",
+      "a": "Run `install.packages(\"name\")` once to download it from CRAN, then `library(name)` in each session to load it."
+    }
+  ]
+}

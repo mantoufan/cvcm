@@ -1,0 +1,190 @@
+{
+  "title": "Học PowerShell cơ bản: cmdlet, pipeline, biến và script — cv.cm",
+  "description": "Học viết script PowerShell từng bước: chạy tệp .ps1, cmdlet và pipeline đối tượng, biến, toán tử, hàm, hashtable và xử lý lỗi try/catch.",
+  "h1": "Hướng dẫn học PowerShell cơ bản cho người mới",
+  "answer": "PowerShell là shell và ngôn ngữ kịch bản đa nền tảng của Microsoft dùng để tự động hóa. Các lệnh của nó, gọi là cmdlet, truyền đối tượng .NET qua pipeline thay vì văn bản thuần, nên bạn có thể lọc, sắp xếp và xuất dữ liệu mà không cần phân tích cú pháp. Trang này bao gồm cài PowerShell 7, chạy script, cmdlet, biến, toán tử, điều khiển luồng, hàm, collection và xử lý lỗi.",
+  "sections": [
+    {
+      "h": "PowerShell là gì và dùng để làm gì",
+      "body": [
+        "PowerShell là shell và ngôn ngữ kịch bản đa nền tảng của Microsoft, xây dựng trên .NET. Khác với các shell truyền thống chỉ chuyển văn bản thuần giữa các lệnh, PowerShell truyền các đối tượng .NET có thuộc tính và phương thức, nên bạn có thể lọc và sắp xếp dữ liệu mà không phải phân tích văn bản.",
+        "Quản trị viên hệ thống và kỹ sư DevOps dùng PowerShell để tự động hóa Windows, quản lý Active Directory, Microsoft 365 và Azure, cũng như viết script build và triển khai. Có hai phiên bản: Windows PowerShell 5.1, được tích hợp sẵn trong Windows, và PowerShell 7 trở lên (tên lệnh `pwsh`), là mã nguồn mở và chạy trên Windows, Linux và macOS. Hướng dẫn này nhắm tới PowerShell 7."
+      ]
+    },
+    {
+      "h": "Cài PowerShell và chạy Hello, world",
+      "body": [
+        "Trên Windows, cài PowerShell 7 bằng `winget install --id Microsoft.PowerShell --source winget`; trên macOS và Linux, dùng Homebrew hoặc trình quản lý gói được nêu trong hướng dẫn cài đặt của Microsoft. Script là các tệp văn bản có đuôi `.ps1`.",
+        {
+          "code": "# hello.ps1\nWrite-Output \"Hello, world!\"",
+          "lang": "powershell"
+        },
+        {
+          "code": "pwsh ./hello.ps1\n# Hello, world!",
+          "lang": "shell"
+        },
+        "Trên Windows, chính sách thực thi (execution policy) có thể chặn script. `Set-ExecutionPolicy -Scope CurrentUser RemoteSigned` cho phép script cục bộ của bạn chạy nhưng vẫn yêu cầu script tải về phải được ký. Visual Studio Code cùng tiện ích mở rộng PowerShell là trình soạn thảo được khuyên dùng."
+      ]
+    },
+    {
+      "h": "Cmdlet và pipeline",
+      "body": [
+        "Các lệnh được gọi là cmdlet và đặt tên theo mẫu `Verb-Noun` (động từ-danh từ), như `Get-Process`, `Set-Location` hay `New-Item`. Ba cmdlet giúp bạn khám phá mọi thứ còn lại: `Get-Command`, `Get-Help` và `Get-Member`.",
+        {
+          "code": "Get-Command -Noun Process          # list commands that work with processes\nGet-Help Get-ChildItem -Examples   # show usage examples\n\n# five processes using the most memory\nGet-Process |\n    Sort-Object -Property WorkingSet64 -Descending |\n    Select-Object -First 5 -Property Name, Id, WorkingSet64\n\n# files larger than 1 MB in the current folder\nGet-ChildItem -File | Where-Object { $_.Length -gt 1MB } |\n    ForEach-Object { \"{0}  {1:N0} KB\" -f $_.Name, ($_.Length / 1KB) }\n\nGet-Date | Get-Member -MemberType Property   # inspect an object",
+          "lang": "powershell"
+        },
+        "Bên trong một script block, `$_` (hoặc `$PSItem`) là đối tượng hiện tại trong pipeline. Vì đối tượng giữ nguyên kiểu, `Sort-Object` sắp xếp số theo giá trị số và ngày theo thứ tự thời gian mà không cần làm thêm gì."
+      ]
+    },
+    {
+      "h": "Biến và kiểu dữ liệu",
+      "body": [
+        "Biến bắt đầu bằng `$`. Chúng chứa bất kỳ đối tượng .NET nào, và bạn có thể thêm ràng buộc kiểu trong ngoặc vuông. Chuỗi trong dấu nháy kép sẽ khai triển biến và biểu thức `$( )`; chuỗi trong dấu nháy đơn được giữ nguyên.",
+        {
+          "code": "$name = \"Ada\"\n[int]$count = 3\n$price = 19.99                      # System.Double\n$isAdmin = $false\n$today = Get-Date\n\n\"Hello, $name\"                      # Hello, Ada\n\"Next: $($count + 1)\"               # Next: 4\n'No $expansion here'                # No $expansion here\n$price.GetType().Name               # Double\n$today.ToString(\"yyyy-MM-dd\")       # for example 2026-10-31\n[int]\"42\" + 1                       # 43 (explicit conversion)",
+          "lang": "powershell"
+        },
+        {
+          "table": {
+            "head": [
+              "Kiểu",
+              "Ví dụ",
+              "Ghi chú"
+            ],
+            "rows": [
+              [
+                "`[int]`",
+                "`42`",
+                "số nguyên 32 bit"
+              ],
+              [
+                "`[double]`",
+                "`3.14`",
+                "số thực dấu phẩy động; dùng `[decimal]` cho tiền"
+              ],
+              [
+                "`[string]`",
+                "`\"text\"`",
+                "mặc định so sánh không phân biệt hoa thường"
+              ],
+              [
+                "`[bool]`",
+                "`$true`, `$false`",
+                "biến tự động, không phải từ khóa"
+              ],
+              [
+                "`[datetime]`",
+                "`Get-Date`",
+                "đối tượng `DateTime` đầy đủ của .NET"
+              ],
+              [
+                "`[array]`, `[hashtable]`",
+                "`@(1, 2)`, `@{ a = 1 }`",
+                "các collection, sẽ nói ở phần dưới"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "Toán tử và điều khiển luồng",
+      "body": [
+        "Toán tử so sánh là các từ chứ không phải ký hiệu: `-eq`, `-ne`, `-gt`, `-lt`, `-ge`, `-le`, `-like` (ký tự đại diện), `-match` (biểu thức chính quy) và `-contains`. So sánh chuỗi không phân biệt hoa thường trừ khi bạn dùng các dạng có `c` như `-ceq`.",
+        {
+          "code": "$temp = 22\nif ($temp -gt 30) {\n    \"hot\"\n} elseif ($temp -ge 15) {\n    \"mild\"                           # mild\n} else {\n    \"cold\"\n}\n\nswitch (\"report.csv\") {\n    { $_ -like \"*.csv\" } { \"CSV file\" }    # CSV file\n    { $_ -like \"*.txt\" } { \"text file\" }\n    default { \"other\" }\n}\n\nforeach ($n in 1..3) { \"n = $n\" }          # n = 1, n = 2, n = 3\nfor ($i = 0; $i -lt 2; $i++) { \"i = $i\" }  # i = 0, i = 1\n$k = 3\nwhile ($k -gt 0) { $k-- }\n\"Hello\" -eq \"hello\"                        # True",
+          "lang": "powershell"
+        },
+        {
+          "note": "Dùng `>` hoặc `=` để so sánh là lỗi kinh điển: `if ($a > 5)` chuyển hướng `$a` vào một tệp tên `5`, còn `=` là phép gán. Hãy dùng `-gt` và `-eq`. Khi so sánh với `$null`, đặt `$null` ở bên trái (`$null -eq $x`) để mảng không bị lọc nhầm."
+        }
+      ]
+    },
+    {
+      "h": "Hàm và tham số",
+      "body": [
+        "Hàm dùng khối `param()` để khai báo tham số có kiểu và có tên. Thêm `[CmdletBinding()]` giúp hàm có các tham số chung giống cmdlet dựng sẵn, như `-Verbose`. Mọi đầu ra không được bắt lại đều trở thành giá trị trả về của hàm.",
+        {
+          "code": "function Get-Greeting {\n    [CmdletBinding()]\n    param(\n        [Parameter(Mandatory)]\n        [string]$Name,\n        [string]$Greeting = \"Hello\"\n    )\n    Write-Verbose \"Building greeting for $Name\"\n    \"$Greeting, $Name!\"\n}\n\nGet-Greeting -Name \"Ann\"                  # Hello, Ann!\nGet-Greeting -Name \"Bo\" -Greeting \"Hi\"    # Hi, Bo!\nGet-Greeting \"Cy\" -Verbose                # also prints the verbose message",
+          "lang": "powershell"
+        },
+        "Gọi hàm giống như cmdlet, các đối số cách nhau bằng dấu cách: `Get-Greeting -Name Ann`. Viết `Get-Greeting(\"Ann\", \"Hi\")` sẽ truyền một đối số duy nhất là mảng, điều thường gây bất ngờ cho người đến từ ngôn ngữ khác."
+      ]
+    },
+    {
+      "h": "Mảng, hashtable và đối tượng tùy chỉnh",
+      "body": [
+        "Mảng được tạo bằng `@( )` hoặc danh sách ngăn cách bằng dấu phẩy. Hashtable, viết là `@{ }`, lưu các cặp khóa-giá trị. `[pscustomobject]` biến hashtable thành đối tượng dùng tốt với `Sort-Object`, `Format-Table` và `Export-Csv`.",
+        {
+          "code": "$langs = @(\"PowerShell\", \"Python\")\n$langs += \"Go\"                       # creates a new, longer array\n$langs.Count                         # 3\n$langs[0]                            # PowerShell\n$langs -contains \"Go\"                # True\n\n$ports = @{ http = 80; https = 443 }\n$ports[\"ssh\"] = 22\n$ports.https                         # 443\n$ports.Keys.Count                    # 3\n\n$user = [pscustomobject]@{ Name = \"Ann\"; Age = 31 }\n$user.Name                           # Ann\n$people = @(\n    [pscustomobject]@{ Name = \"Bo\"; Age = 25 }\n    $user\n)\n$people | Sort-Object Age | Format-Table",
+          "lang": "powershell"
+        },
+        "Thêm phần tử vào mảng bằng `+=` sẽ sao chép toàn bộ mảng mỗi lần. Với vòng lặp lớn, hãy gom đầu ra của vòng lặp trực tiếp (`$result = foreach (...) { ... }`) hoặc dùng `[System.Collections.Generic.List[object]]`."
+      ]
+    },
+    {
+      "h": "Xử lý lỗi",
+      "body": [
+        "PowerShell có lỗi kết thúc (terminating), làm dừng thực thi, và lỗi không kết thúc (non-terminating), chỉ in thông báo rồi chạy tiếp. `try`/`catch`/`finally` chỉ bắt lỗi kết thúc, vì vậy hãy thêm `-ErrorAction Stop` vào cmdlet khi bạn muốn bắt lỗi của nó.",
+        {
+          "code": "try {\n    $content = Get-Content -Path \"missing.txt\" -ErrorAction Stop\n}\ncatch [System.Management.Automation.ItemNotFoundException] {\n    Write-Warning \"File not found: $($_.Exception.Message)\"\n}\ncatch {\n    Write-Error \"Unexpected error: $_\"\n}\nfinally {\n    \"cleanup done\"\n}\n\n$ErrorActionPreference = \"Stop\"   # make all errors terminating in this script\nthrow \"Something went wrong\"      # raise your own terminating error",
+          "lang": "powershell"
+        },
+        "Bên trong `catch`, `$_` là bản ghi lỗi. Đặt `$ErrorActionPreference = \"Stop\"` ở đầu script là cách thường dùng để dừng ngay khi có lỗi."
+      ]
+    },
+    {
+      "h": "Một script hoàn chỉnh nhỏ: báo cáo dung lượng đĩa",
+      "body": [
+        "Script này liệt kê các tệp lớn nhất trong một thư mục, nhóm chúng theo phần mở rộng và xuất báo cáo CSV. Nó kết hợp tham số, pipeline, thuộc tính tính toán và xử lý lỗi.",
+        {
+          "code": "# report.ps1\nparam(\n    [string]$Path = \".\",\n    [int]$Top = 5\n)\n$ErrorActionPreference = \"Stop\"\n\n$files = Get-ChildItem -Path $Path -File -Recurse\n\n\"Largest $Top files:\"\n$files | Sort-Object Length -Descending | Select-Object -First $Top |\n    Format-Table Name, @{ Name = \"SizeKB\"; Expression = { [math]::Round($_.Length / 1KB, 1) } }\n\n$byExt = $files | Group-Object Extension | ForEach-Object {\n    [pscustomobject]@{\n        Extension = if ($_.Name) { $_.Name } else { \"(none)\" }\n        Files     = $_.Count\n        TotalMB   = [math]::Round(($_.Group | Measure-Object Length -Sum).Sum / 1MB, 2)\n    }\n} | Sort-Object TotalMB -Descending\n\n$byExt | Format-Table\n$byExt | Export-Csv -Path \"usage.csv\" -NoTypeInformation\n\"Report saved to usage.csv\"",
+          "lang": "powershell"
+        },
+        {
+          "code": "pwsh ./report.ps1 -Path ~/Documents -Top 3",
+          "lang": "shell"
+        },
+        {
+          "note": "Lỗi thường gặp của người mới: dùng `>`, `<` hoặc `==` thay cho `-gt`, `-lt` và `-eq`; gọi hàm bằng ngoặc và dấu phẩy; quên `-ErrorAction Stop` bên trong `try`; dùng `Write-Host` cho dữ liệu (nó ghi ra màn hình chứ không vào pipeline, nên hãy ưu tiên `Write-Output` hoặc giá trị thuần); và nhầm lẫn giữa Windows PowerShell 5.1 với PowerShell 7."
+        }
+      ]
+    },
+    {
+      "h": "Học tiếp ở đâu",
+      "body": [
+        {
+          "ul": [
+            "PowerShell 101 và tài liệu PowerShell trên Microsoft Learn.",
+            "`Get-Help about_*` ngay trong shell, ví dụ `Get-Help about_Operators`; hãy chạy `Update-Help` trước.",
+            "PowerShell Gallery, kho module chính thức, dùng cùng `Install-Module`.",
+            "PSScriptAnalyzer, một công cụ linter kiểm tra script theo các thực hành được khuyến nghị."
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "PowerShell và Windows PowerShell khác nhau thế nào?",
+      "a": "Windows PowerShell 5.1 là phiên bản cũ hơn, tích hợp sẵn trong Windows và dựa trên .NET Framework. PowerShell 7 trở lên là phiên bản đa nền tảng, mã nguồn mở, dựa trên .NET hiện đại, khởi động bằng lệnh `pwsh`."
+    },
+    {
+      "q": "PowerShell có giống Command Prompt không?",
+      "a": "Không. Command Prompt (`cmd.exe`) chạy các lệnh batch và truyền văn bản. PowerShell là ngôn ngữ kịch bản đầy đủ truyền đối tượng, dù vẫn chạy được hầu hết các chương trình dòng lệnh."
+    },
+    {
+      "q": "PowerShell có chạy được trên Linux và macOS không?",
+      "a": "Có. PowerShell 7 trở lên chạy trên Windows, Linux và macOS, mặc dù một số module dành riêng cho Windows chỉ có trên Windows."
+    },
+    {
+      "q": "Vì sao tôi không chạy được script .ps1 của mình?",
+      "a": "Chính sách thực thi trên Windows có thể đang chặn nó. Hãy chạy `Set-ExecutionPolicy -Scope CurrentUser RemoteSigned`, và khởi động script kèm đường dẫn, chẳng hạn `./script.ps1`."
+    },
+    {
+      "q": "$_ nghĩa là gì trong PowerShell?",
+      "a": "`$_` (cũng là `$PSItem`) là đối tượng hiện tại trong pipeline, dùng bên trong script block của các cmdlet như `Where-Object` và `ForEach-Object`, và là lỗi hiện tại bên trong `catch`."
+    }
+  ]
+}

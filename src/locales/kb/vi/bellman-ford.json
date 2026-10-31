@@ -1,0 +1,165 @@
+{
+  "title": "Thuật toán Bellman-Ford: trọng số âm, phát hiện chu trình âm, code Python — cv.cm",
+  "description": "Giải thích thuật toán Bellman-Ford: đường đi ngắn nhất với cạnh trọng số âm, ví dụ từng bước, code Python, phát hiện chu trình âm và độ phức tạp thời gian O(V × E).",
+  "h1": "Thuật toán Bellman-Ford là gì: cách hoạt động, code và độ phức tạp",
+  "answer": "Thuật toán Bellman-Ford tìm đường đi ngắn nhất từ một nút xuất phát đến mọi nút còn lại, kể cả khi một số cạnh có trọng số âm. Nó nới lỏng (relax) mọi cạnh V − 1 lần; sau đó mọi khoảng cách ngắn nhất đều đúng. Thêm một lượt nữa để phát hiện chu trình âm: nếu còn khoảng cách nào cải thiện được thì đồ thị có chu trình với tổng trọng số âm. Thuật toán chạy trong thời gian O(V × E).",
+  "sections": [
+    {
+      "h": "Bellman-Ford giải bài toán gì",
+      "body": [
+        "Thuật toán Dijkstra nhanh nhưng đòi hỏi trọng số cạnh không âm. Một số bài toán lại có trọng số âm một cách tự nhiên: khoản hoàn tiền, lợi nhuận khi đổi ngoại tệ, hay chi phí năng lượng có thể xuống dưới 0. Bellman-Ford xử lý đúng các đồ thị này và còn cho biết khi nào không tồn tại đường đi ngắn nhất do có chu trình âm, tức một vòng lặp mà bạn có thể đi mãi để chi phí ngày càng nhỏ.",
+        "Thuật toán được đặt theo tên Richard Bellman và Lester Ford Jr., những người đã công bố các phiên bản của nó vào thập niên 1950."
+      ]
+    },
+    {
+      "h": "Ý tưởng bằng lời đơn giản",
+      "body": [
+        {
+          "ol": [
+            "Đặt khoảng cách của nút xuất phát là 0 và của các nút khác là vô cùng.",
+            "Lặp lại V − 1 lần: với mỗi cạnh u → v có trọng số w, nếu `dist[u] + w < dist[v]` thì cập nhật `dist[v]`.",
+            "Chạy thêm một lượt qua mọi cạnh. Nếu vẫn còn khoảng cách cải thiện được, báo có chu trình âm."
+          ]
+        },
+        "Vì sao cần V − 1 vòng? Đường đi ngắn nhất không chứa chu trình dùng tối đa V − 1 cạnh. Sau vòng thứ k, mọi nút có đường đi ngắn nhất tối đa k cạnh đã có khoảng cách đúng, nên V − 1 vòng bao phủ mọi đường đi đơn."
+      ]
+    },
+    {
+      "h": "Ví dụ từng bước",
+      "body": [
+        "Đồ thị có hướng với 4 nút và các cạnh S→A (4), S→B (5), B→A (−3), A→C (3). Các cạnh được xử lý theo thứ tự này ở mọi vòng.",
+        {
+          "table": {
+            "head": [
+              "Vòng",
+              "S",
+              "A",
+              "B",
+              "C"
+            ],
+            "rows": [
+              [
+                "Khởi đầu",
+                "0",
+                "∞",
+                "∞",
+                "∞"
+              ],
+              [
+                "1",
+                "0",
+                "2 (qua B: 5 − 3)",
+                "5",
+                "5 (qua A: 2 + 3)"
+              ],
+              [
+                "2",
+                "0",
+                "2",
+                "5",
+                "5 (không đổi: dừng sớm)"
+              ]
+            ]
+          }
+        },
+        "Ở vòng 1, A trước tiên có giá trị 4 qua S→A, rồi cải thiện xuống 2 qua B→A, và C dùng giá trị đã cải thiện. Thuật toán Dijkstra sẽ chốt A ở giá trị 4 trước khi xét B, đúng là lỗi mà cạnh âm gây ra."
+      ]
+    },
+    {
+      "h": "Cài đặt bằng Python",
+      "body": [
+        "Bellman-Ford làm việc trên một danh sách cạnh đơn giản nên viết rất ngắn:",
+        {
+          "code": "def bellman_ford(nodes, edges, start):\n    \"\"\"edges: list of (u, v, weight). Returns dist, or raises on a negative cycle.\"\"\"\n    INF = float(\"inf\")\n    dist = {n: INF for n in nodes}\n    dist[start] = 0\n    for _ in range(len(nodes) - 1):\n        changed = False\n        for u, v, w in edges:\n            if dist[u] != INF and dist[u] + w < dist[v]:\n                dist[v] = dist[u] + w\n                changed = True\n        if not changed:\n            break                         # already optimal\n    for u, v, w in edges:\n        if dist[u] != INF and dist[u] + w < dist[v]:\n            raise ValueError(\"graph contains a negative cycle\")\n    return dist\nnodes = [\"S\", \"A\", \"B\", \"C\"]\nedges = [(\"S\", \"A\", 4), (\"S\", \"B\", 5), (\"B\", \"A\", -3), (\"A\", \"C\", 3)]\nprint(bellman_ford(nodes, edges, \"S\"))  # {'S': 0, 'A': 2, 'B': 5, 'C': 5}",
+          "lang": "python"
+        },
+        "Thêm cạnh C → B có trọng số −6 tạo ra chu trình B → A → C → B với tổng trọng số −3 + 3 − 6 = −6, nên lượt chạy thêm sẽ phát hiện ra nó:",
+        {
+          "code": "try:\n    bellman_ford(nodes, edges + [(\"C\", \"B\", -6)], \"S\")\nexcept ValueError as e:\n    print(e)  # graph contains a negative cycle",
+          "lang": "python"
+        },
+        "Phép kiểm tra `dist[u] != INF` bỏ qua các cạnh đi ra từ nút chưa tới được. Trong Python, `float(\"inf\") + w` vẫn là vô cùng nên phép kiểm tra chủ yếu để tiết kiệm công việc. Ở các ngôn ngữ dùng một số nguyên lớn làm vô cùng, nó giúp tránh tràn số và cập nhật sai."
+      ]
+    },
+    {
+      "h": "Độ phức tạp thời gian và không gian",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Trường hợp",
+              "Thời gian",
+              "Lý do"
+            ],
+            "rows": [
+              [
+                "Xấu nhất",
+                "O(V × E)",
+                "V − 1 vòng, mỗi vòng nới lỏng cả E cạnh."
+              ],
+              [
+                "Tốt nhất (thoát sớm)",
+                "O(E)",
+                "Nếu vòng đầu tiên không thay đổi gì ngoài nút xuất phát thì vòng lặp dừng."
+              ],
+              [
+                "Không gian",
+                "O(V)",
+                "Ngoài danh sách cạnh chỉ cần bảng khoảng cách (và bảng nút cha tùy chọn)."
+              ]
+            ]
+          }
+        },
+        "Với đồ thị 1.000 nút và 10.000 cạnh, đó là tới khoảng 10 triệu lần nới lỏng, nên Dijkstra nhanh hơn nhiều khi mọi trọng số không âm."
+      ]
+    },
+    {
+      "h": "Biến thể và lỗi thường gặp",
+      "body": [
+        {
+          "ul": [
+            "Thoát sớm: dừng khi một vòng đầy đủ không thay đổi gì. Cách này an toàn và thường giúp thuật toán nhanh hơn nhiều trong thực tế.",
+            "SPFA (shortest path faster algorithm): chỉ nới lỏng lại các cạnh đi ra từ nút có khoảng cách vừa thay đổi, dùng một hàng đợi. Thường nhanh nhưng trường hợp xấu nhất vẫn là O(V × E).",
+            "Đường đi giới hạn số chặng: chạy đúng k vòng, dùng bản sao khoảng cách của vòng trước, sẽ cho đường đi rẻ nhất có tối đa k cạnh. Cách này giải bài “cheapest flights within k stops”.",
+            "Tìm chính chu trình: giữ bảng nút cha; khi lượt chạy thêm cập nhật nút v, lần theo nút cha V lần để rơi vào bên trong chu trình, rồi đi tiếp cho đến khi quay lại đúng nút đó."
+          ]
+        },
+        {
+          "note": "Chu trình âm chỉ quan trọng nếu có thể tới được từ điểm xuất phát. Chu trình ở phần đồ thị bạn không thể tới được không ảnh hưởng đến khoảng cách, và điều kiện bảo vệ `dist[u] != INF` bỏ qua nó đúng cách. Trong đồ thị vô hướng, bất kỳ cạnh âm nào cũng tự nó là một chu trình âm (đi qua đi lại), nên Bellman-Ford chủ yếu dùng cho đồ thị có hướng."
+        }
+      ]
+    },
+    {
+      "h": "Khi nào dùng và ứng dụng thực tế",
+      "body": [
+        {
+          "ul": [
+            "Dùng Bellman-Ford khi trọng số cạnh có thể âm hoặc khi phải phát hiện chu trình âm. Còn lại nên ưu tiên Dijkstra.",
+            "Các giao thức định tuyến vector khoảng cách, như RIP, dùng ý tưởng Bellman-Ford phân tán: mỗi bộ định tuyến liên tục cập nhật ước lượng khoảng cách từ ước lượng của các hàng xóm.",
+            "Kinh doanh chênh lệch tỷ giá (arbitrage): với trọng số bằng `-log(rate)`, một chu trình âm là chuỗi giao dịch đổi tiền kết thúc với nhiều tiền hơn lúc đầu.",
+            "Thuật toán Johnson chạy Bellman-Ford một lần để đặt lại trọng số cho đồ thị, rồi dùng Dijkstra từ mọi nút để tìm đường đi ngắn nhất giữa mọi cặp.",
+            "Ràng buộc hiệu (hệ bất phương trình như `x - y <= c`) có thể giải bằng đường đi ngắn nhất; chu trình âm nghĩa là hệ vô nghiệm."
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Vì sao Bellman-Ford chạy V − 1 vòng lặp?",
+      "a": "Đường đi ngắn nhất không chứa chu trình có tối đa V − 1 cạnh, và mỗi vòng sửa khoảng cách của các đường đi nhiều hơn một cạnh. Sau V − 1 vòng, mọi đường đi ngắn nhất đã được tìm ra, trừ khi có chu trình âm."
+    },
+    {
+      "q": "Bellman-Ford phát hiện chu trình âm bằng cách nào?",
+      "a": "Nó chạy thêm một lượt qua mọi cạnh sau V − 1 vòng. Nếu vẫn giảm được khoảng cách nào đó, tức có đường đi cứ rẻ dần mãi, điều này chỉ xảy ra khi có chu trình âm có thể tới được."
+    },
+    {
+      "q": "Bellman-Ford có nhanh hơn Dijkstra không?",
+      "a": "Không. Bellman-Ford là O(V × E), còn Dijkstra dùng heap là O((V + E) log V). Chỉ dùng Bellman-Ford khi cần trọng số âm hoặc phát hiện chu trình."
+    },
+    {
+      "q": "Bellman-Ford có phải quy hoạch động không?",
+      "a": "Có. Vòng k tính khoảng cách tốt nhất dùng tối đa k cạnh từ kết quả của vòng k − 1, đó là một công thức truy hồi quy hoạch động theo số cạnh."
+    }
+  ]
+}

@@ -1,0 +1,226 @@
+{
+  "title": "Bash 教學：變數、迴圈、函式與 Shell 腳本 — cv.cm",
+  "description": "一步步學 Bash 腳本：執行腳本、變數與引號、if 與 case、迴圈、函式、陣列、管線與重新導向，以及安全的錯誤處理。",
+  "h1": "Bash 腳本入門教學",
+  "answer": "Bash 是 Linux 伺服器、macOS 終端機與 CI 管線中使用的 Unix 命令列 Shell 與腳本語言。Bash 腳本是由 Shell 指令組成的文字檔，搭配變數、條件、迴圈、函式與管線。本頁說明如何撰寫與執行腳本、安全地為變數加引號、流程控制、使用陣列、重新導向輸出，以及用 set -euo pipefail 處理錯誤。",
+  "sections": [
+    {
+      "h": "Bash 是什麼、可以拿來做什麼",
+      "body": [
+        "Bash（Bourne Again SHell）是 GNU 專案的命令列 Shell 與腳本語言。它讀取你輸入的指令、執行程式，並用管線與重新導向把它們串接起來。Bash 腳本就是由這些相同指令組成的文字檔，所以你在終端機中手動做的任何事都可以自動化。",
+        "Bash 是大多數 Linux 發行版預設的互動式 Shell，在 macOS 上也有（macOS 現在預設使用 zsh，但仍內建 Bash），在 Windows 上則可透過 WSL 或 Git Bash 使用。開發者、系統管理員與 DevOps 工程師用它撰寫建置腳本、部署、CI 工作、伺服器維護，以及搭配 `grep`、`sed`、`awk`、`sort` 等工具快速處理資料。"
+      ]
+    },
+    {
+      "h": "撰寫並執行 Hello, world",
+      "body": [
+        "腳本以 shebang 行開頭，告訴系統要使用哪個直譯器。用 `chmod` 讓檔案可執行，然後執行它。",
+        {
+          "code": "#!/usr/bin/env bash\n# hello.sh\necho \"Hello, world!\"",
+          "lang": "shell"
+        },
+        {
+          "code": "chmod +x hello.sh\n./hello.sh\n# Hello, world!\nbash hello.sh       # also works without chmod\nbash --version      # check which version you have",
+          "lang": "shell"
+        },
+        "`#!/usr/bin/env bash` 會在 `PATH` 中尋找 Bash，比寫死 `/bin/bash` 更具可攜性。如果腳本只用到 POSIX 功能，可以改用 `#!/bin/sh`，但此時就不能使用 `[[ ]]` 與陣列等 Bash 專屬語法。"
+      ]
+    },
+    {
+      "h": "變數、引號與展開",
+      "body": [
+        "用 `name=value` 指派，用 `$name` 或 `${name}` 讀取。每個變數都是字串；Bash 只在 `$(( ))` 內做整數運算。展開時請加上雙引號，讓空白與特殊字元保持原樣。",
+        {
+          "code": "name=\"Ada\"                 # no spaces around =\ncount=3\necho \"Hello, $name\"        # Hello, Ada\necho \"Next: $((count + 1))\"  # Next: 4  (integer arithmetic)\ntoday=$(date +%Y-%m-%d)    # command substitution\necho \"Today is $today\"\nfile=\"my report.txt\"\necho \"${file%.txt}.pdf\"    # my report.pdf  (strip suffix)\necho \"${#name}\"            # 3  (string length)\necho \"${missing:-default}\" # default  (fallback value)",
+          "lang": "shell"
+        },
+        {
+          "table": {
+            "head": [
+              "語法",
+              "意義"
+            ],
+            "rows": [
+              [
+                "`\"$var\"`",
+                "變數的值，保持為單一單字"
+              ],
+              [
+                "`'text'`",
+                "純文字，完全不展開"
+              ],
+              [
+                "`$(command)`",
+                "指令的輸出"
+              ],
+              [
+                "`$((a + b))`",
+                "整數運算"
+              ],
+              [
+                "`$1`, `$2`, `$@`, `$#`",
+                "腳本或函式的引數、所有引數、引數個數"
+              ],
+              [
+                "`$?`",
+                "上一個指令的結束狀態（0 代表成功）"
+              ]
+            ]
+          }
+        },
+        {
+          "note": "寫成 `name = value`（有空格）是最常見的初學者錯誤：Bash 會嘗試執行名為 `name` 的指令。此外，每個展開都要加引號：當檔名含有空格時，`rm $file` 會出錯或刪到錯誤的檔案，而 `rm \"$file\"` 則是安全的。"
+        }
+      ]
+    },
+    {
+      "h": "條件與 case",
+      "body": [
+        "`if` 會執行一個指令並檢查它的結束狀態。`[[ ]]` 測試指令用於比較字串與檢查檔案；`(( ))` 用於比較數字。`case` 則以萬用字元樣式比對值。",
+        {
+          "code": "#!/usr/bin/env bash\nfile=\"${1:-notes.txt}\"\n\nif [[ -f \"$file\" ]]; then\n  echo \"$file exists\"\nelif [[ -d \"$file\" ]]; then\n  echo \"$file is a directory\"\nelse\n  echo \"$file not found\"\nfi\n\nn=7\nif (( n % 2 == 1 )); then echo \"$n is odd\"; fi\n\ncase \"$file\" in\n  *.txt) echo \"text file\" ;;\n  *.sh)  echo \"shell script\" ;;\n  *)     echo \"something else\" ;;\nesac",
+          "lang": "shell"
+        },
+        {
+          "table": {
+            "head": [
+              "測試",
+              "為真的條件"
+            ],
+            "rows": [
+              [
+                "`[[ -f path ]]`",
+                "路徑是一般檔案"
+              ],
+              [
+                "`[[ -d path ]]`",
+                "路徑是目錄"
+              ],
+              [
+                "`[[ -z \"$s\" ]]`",
+                "字串為空"
+              ],
+              [
+                "`[[ \"$a\" == \"$b\" ]]`",
+                "字串相等"
+              ],
+              [
+                "`(( a > b ))`",
+                "數字 a 大於 b"
+              ],
+              [
+                "`[[ $a -lt $b ]]`",
+                "數字 a 小於 b（舊式寫法）"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "迴圈",
+      "body": [
+        "Bash 有走訪單字清單的 `for`、C 風格的 `for (( ))`、`while` 與 `until`。逐行讀取檔案則使用 `while read`。",
+        {
+          "code": "for fruit in apple banana cherry; do\n  echo \"fruit: $fruit\"\ndone\n\nfor (( i = 1; i <= 3; i++ )); do\n  echo \"i = $i\"\ndone\n\nfor f in *.log; do\n  [[ -e \"$f\" ]] || continue   # skip if no .log files match\n  echo \"log file: $f\"\ndone\n\nwhile IFS= read -r line; do\n  echo \"line: $line\"\ndone < input.txt",
+          "lang": "shell"
+        },
+        "`IFS= read -r` 會完全照原樣讀取每一行：`IFS=` 保留行首空白，`-r` 保留反斜線。"
+      ]
+    },
+    {
+      "h": "函式",
+      "body": [
+        "用 `name() { ... }` 定義函式，並像指令一樣呼叫它。引數以 `$1`、`$2` 等形式傳入。函式用 `return` 回傳結束狀態（0 到 255）；若要回傳資料，請把資料印出並用 `$( )` 擷取輸出。",
+        {
+          "code": "greet() {\n  local name=\"${1:-world}\"   # local variable, default value\n  echo \"Hello, $name!\"\n}\n\nis_even() {\n  (( $1 % 2 == 0 ))          # exit status 0 means true\n}\n\ngreet                         # Hello, world!\ngreet \"Ann\"                   # Hello, Ann!\nmsg=$(greet \"Bo\")             # capture output\necho \"Got: $msg\"              # Got: Hello, Bo!\n\nif is_even 4; then echo \"4 is even\"; fi",
+          "lang": "shell"
+        }
+      ]
+    },
+    {
+      "h": "陣列與關聯式陣列",
+      "body": [
+        "索引陣列存放字串清單。關聯式陣列將字串鍵對應到值，需要 Bash 4 以上，因此 macOS 內建的舊版 Bash 3.2 不能使用。",
+        {
+          "code": "langs=(\"bash\" \"python\" \"go\")\nlangs+=(\"rust\")\necho \"${langs[0]}\"           # bash\necho \"${#langs[@]}\"          # 4\nfor l in \"${langs[@]}\"; do echo \"- $l\"; done\n\n# associative array (Bash 4 or later)\ndeclare -A port\nport[http]=80\nport[https]=443\necho \"${port[https]}\"        # 443\nfor key in \"${!port[@]}\"; do\n  echo \"$key -> ${port[$key]}\"\ndone",
+          "lang": "shell"
+        },
+        "走訪元素時務必寫成加引號的 `\"${array[@]}\"`；這樣即使元素含有空格，每個元素仍會保持為一個單字。"
+      ]
+    },
+    {
+      "h": "管線與重新導向",
+      "body": [
+        "Bash 的招牌特色是組合小型程式。管線 `|` 把一個指令的輸出送到下一個指令的輸入。重新導向則把輸出送到檔案，或從檔案讀取輸入。檔案描述子 1 是標準輸出，2 是標準錯誤。",
+        {
+          "code": "ls -l > files.txt            # write stdout to a file (overwrite)\necho \"more\" >> files.txt     # append\ngrep error app.log 2> /dev/null   # discard error messages\nmake > build.log 2>&1        # stdout and stderr to the same file\n\n# count the 3 most common words in a file\ntr -cs '[:alpha:]' '\\n' < book.txt | tr '[:upper:]' '[:lower:]' |\n  sort | uniq -c | sort -rn | head -n 3",
+          "lang": "shell"
+        }
+      ]
+    },
+    {
+      "h": "錯誤處理與安全的腳本",
+      "body": [
+        "預設情況下，指令失敗後 Bash 會繼續執行。許多腳本一開始就寫 `set -euo pipefail`：`-e` 在遇到未處理的錯誤時結束，`-u` 把未設定的變數視為錯誤，`-o pipefail` 讓管線中任何一個指令失敗時整條管線就算失敗。`trap` 會在腳本結束時執行清理程式碼。",
+        {
+          "code": "#!/usr/bin/env bash\nset -euo pipefail            # stop on errors, unset vars, pipe failures\n\ntmp=$(mktemp)\ntrap 'rm -f \"$tmp\"' EXIT     # clean up when the script exits\n\nif ! grep -q \"ready\" status.txt; then\n  echo \"status is not ready\" >&2   # errors go to stderr\n  exit 1\nfi\n\ncp config.txt \"$tmp\" || { echo \"copy failed\" >&2; exit 2; }\necho \"ok\"",
+          "lang": "shell"
+        },
+        "用 `||` 在同一行處理失敗，用 `&&` 只在前一個指令成功時才執行下一個。`set -e` 有例外情況（例如 `if` 條件中的指令不會觸發它），所以重要的指令請明確檢查。"
+      ]
+    },
+    {
+      "h": "完整的小腳本：依日期備份",
+      "body": [
+        "這個腳本會把目錄封存成帶有時間戳記的 `.tar.gz` 檔，並只保留最新的五個封存檔。它用到引數、預設值、測試、指令替換與管線。",
+        {
+          "code": "#!/usr/bin/env bash\n# backup.sh: copy a directory into a dated .tar.gz archive\nset -euo pipefail\n\nusage() { echo \"usage: $0 SOURCE_DIR [DEST_DIR]\" >&2; exit 1; }\n\n[[ $# -ge 1 ]] || usage\nsrc=\"$1\"\ndest=\"${2:-$HOME/backups}\"\n[[ -d \"$src\" ]] || { echo \"not a directory: $src\" >&2; exit 1; }\n\nmkdir -p \"$dest\"\nstamp=$(date +%Y%m%d-%H%M%S)\narchive=\"$dest/$(basename \"$src\")-$stamp.tar.gz\"\n\ntar -czf \"$archive\" -C \"$(dirname \"$src\")\" \"$(basename \"$src\")\"\nsize=$(du -h \"$archive\" | cut -f1)\necho \"Created $archive ($size)\"\n\n# keep only the 5 newest archives for this source\nls -1t \"$dest\"/\"$(basename \"$src\")\"-*.tar.gz | tail -n +6 | while read -r old; do\n  rm -f -- \"$old\"\n  echo \"Removed $old\"\ndone",
+          "lang": "shell"
+        },
+        {
+          "code": "./backup.sh ~/projects/site\n# Created /home/ann/backups/site-20261031-093000.tar.gz (2.1M)",
+          "lang": "shell"
+        },
+        {
+          "note": "初學者常見的錯誤：`=` 前後加空格；變數沒加引號；把 `[ ]` 與 `[[ ]]` 混用；在必須處理特殊檔名的腳本中解析 `ls` 的輸出；忘了 `chmod +x`；以及腳本使用 Windows 換行字元（CRLF），導致出現 `$'\\r': command not found` 之類的錯誤。對腳本執行 ShellCheck 可以抓到其中大部分問題。"
+        }
+      ]
+    },
+    {
+      "h": "接下來可以學什麼",
+      "body": [
+        {
+          "ul": [
+            "GNU Bash Reference Manual，官方文件。",
+            "終端機中的 `man bash` 與 `help`（例如 `help read`）。",
+            "ShellCheck，會說明常見腳本錯誤的靜態分析工具。",
+            "如果需要讓腳本也能在 `sh`、`dash` 或 BusyBox 上執行，請參考 POSIX Shell 規範。"
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Bash 和 sh 有什麼差別？",
+      "a": "`sh` 是 POSIX Shell 標準，由 dash 等程式實作。Bash 與 POSIX sh 相容，但新增了 `[[ ]]`、陣列、`(( ))` 與大括號展開等功能。"
+    },
+    {
+      "q": "Bash 和 zsh 有什麼差別？",
+      "a": "兩者在大多數日常指令上都相容。zsh 增加了互動式功能，是 macOS 預設的 Shell；以 `bash` 為 shebang 寫成的腳本仍會用 Bash 執行。"
+    },
+    {
+      "q": "為什麼我的腳本顯示 permission denied？",
+      "a": "因為檔案沒有執行權限。請執行 `chmod +x script.sh`，或改用 `bash script.sh` 來啟動。"
+    },
+    {
+      "q": "如何把引數傳給 Bash 腳本？",
+      "a": "寫在腳本名稱後面，例如 `./script.sh one two`。在腳本內它們是 `$1` 和 `$2`，`$@` 代表全部引數，`$#` 是引數個數。"
+    },
+    {
+      "q": "應該用 Bash 寫大型程式嗎？",
+      "a": "Bash 最適合用來把指令串接在一起。當腳本變得複雜、需要資料結構或細緻的錯誤處理時，Python 這類語言通常更容易維護。"
+    }
+  ]
+}

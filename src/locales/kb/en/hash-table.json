@@ -1,0 +1,218 @@
+{
+  "title": "Hash table explained: hashing, collisions, load factor and Python dict — cv.cm",
+  "description": "How a hash table works: hash functions, buckets, collisions (chaining and open addressing), resizing, O(1) average lookups, with a Python implementation.",
+  "h1": "Hash table explained: how it works, code and complexity",
+  "answer": "A hash table stores key-value pairs in an array of buckets. A hash function turns each key into a number, and that number modulo the array size picks the bucket, so lookup, insert and delete take O(1) time on average. When two keys land in the same bucket (a collision), the table either keeps a small list per bucket (chaining) or probes for another free slot (open addressing). Python's `dict` and `set` are hash tables.",
+  "sections": [
+    {
+      "h": "What problem a hash table solves",
+      "body": [
+        "Suppose you store one million user records and need to find one by email. Scanning a list is O(n). Keeping the list sorted allows binary search in O(log n), but inserts become slow. A hash table finds the record in O(1) average time, no matter how many records there are, and inserts and deletes are just as fast.",
+        "That is why hash tables are everywhere: dictionaries and sets in programming languages, database hash indexes, caches, symbol tables in compilers, and deduplication."
+      ]
+    },
+    {
+      "h": "The idea in plain words",
+      "body": [
+        "Imagine a cloakroom with 100 numbered hooks. Instead of searching all hooks for your coat, the attendant computes a hook number from your name and goes straight there. The function that computes the number is the hash function. A good hash function is fast, always gives the same number for the same key, and spreads different keys evenly over the hooks.",
+        {
+          "ol": [
+            "Compute `h = hash(key)`.",
+            "Pick the bucket: `index = h % capacity`.",
+            "Look only in that bucket for the key."
+          ]
+        },
+        {
+          "note": "Keys must be hashable and must not change while they are in the table. That is why Python allows `tuple` and `str` as dict keys but not `list`: if a key changed, its hash would change and the table could no longer find it."
+        }
+      ]
+    },
+    {
+      "h": "Worked example: collisions with chaining",
+      "body": [
+        "Take a table with 4 buckets and a toy hash function: the sum of the letter positions (a = 1, b = 2, ...).",
+        {
+          "table": {
+            "head": [
+              "Key",
+              "Hash (letter sum)",
+              "Bucket (hash % 4)",
+              "Bucket contents after insert"
+            ],
+            "rows": [
+              [
+                "`cat`",
+                "3 + 1 + 20 = 24",
+                "0",
+                "bucket 0: [cat]"
+              ],
+              [
+                "`dog`",
+                "4 + 15 + 7 = 26",
+                "2",
+                "bucket 2: [dog]"
+              ],
+              [
+                "`act`",
+                "1 + 3 + 20 = 24",
+                "0",
+                "bucket 0: [cat, act]"
+              ],
+              [
+                "`bee`",
+                "2 + 5 + 5 = 12",
+                "0",
+                "bucket 0: [cat, act, bee]"
+              ]
+            ]
+          }
+        },
+        "`act` and `bee` collide with `cat`. Looking up `bee` now means checking three entries in bucket 0. With a poor hash function (letter sums ignore order) or too few buckets, chains grow long and the table becomes slow. Real hash functions mix all bits of the key, and real tables grow when they get too full."
+      ]
+    },
+    {
+      "h": "Python implementation with separate chaining",
+      "body": [
+        "Each bucket is a list of `[key, value]` pairs. When the number of items exceeds 0.75 times the number of buckets (the load factor), the table doubles its capacity and re-inserts everything.",
+        {
+          "code": "class HashTable:\n    def __init__(self, capacity=8):\n        self.buckets = [[] for _ in range(capacity)]\n        self.size = 0\n    def _bucket(self, key):\n        return self.buckets[hash(key) % len(self.buckets)]\n    def put(self, key, value):\n        bucket = self._bucket(key)\n        for pair in bucket:\n            if pair[0] == key:\n                pair[1] = value        # update existing key\n                return\n        bucket.append([key, value])\n        self.size += 1\n        if self.size > 0.75 * len(self.buckets):\n            self._resize()\n    def get(self, key, default=None):\n        for k, v in self._bucket(key):\n            if k == key:\n                return v\n        return default\n    def delete(self, key):\n        bucket = self._bucket(key)\n        for i, (k, _) in enumerate(bucket):\n            if k == key:\n                bucket.pop(i)\n                self.size -= 1\n                return True\n        return False\n    def _resize(self):\n        old = [pair for bucket in self.buckets for pair in bucket]\n        self.buckets = [[] for _ in range(2 * len(self.buckets))]\n        self.size = 0\n        for k, v in old:\n            self.put(k, v)",
+          "lang": "python"
+        },
+        {
+          "code": "t = HashTable()\nfor i, word in enumerate([\"red\", \"green\", \"blue\", \"cyan\", \"pink\", \"gold\", \"gray\"]):\n    t.put(word, i)\nt.put(\"red\", 100)\nt.delete(\"blue\")\nprint(t.get(\"red\"), t.get(\"blue\"), t.size, len(t.buckets))  # 100 None 6 16",
+          "lang": "python"
+        }
+      ]
+    },
+    {
+      "h": "Collision strategies compared",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Strategy",
+              "How it works",
+              "Strengths",
+              "Weaknesses"
+            ],
+            "rows": [
+              [
+                "Separate chaining",
+                "each bucket holds a list (or tree) of entries",
+                "simple; deletes are easy; tolerates high load",
+                "extra memory per entry; pointer chasing"
+              ],
+              [
+                "Linear probing",
+                "on collision, try the next slot, then the next",
+                "cache friendly; compact",
+                "clusters form; deletes need tombstones"
+              ],
+              [
+                "Quadratic probing / double hashing",
+                "jump by a growing or second-hash step",
+                "fewer clusters than linear probing",
+                "more complex; still needs tombstones"
+              ]
+            ]
+          }
+        },
+        "CPython's `dict` uses open addressing with a perturbed probe sequence and, since Python 3.7, guarantees that iteration follows insertion order. Java's `HashMap` uses chaining and turns long chains into balanced trees."
+      ]
+    },
+    {
+      "h": "Time and space complexity",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Operation",
+              "Average",
+              "Worst",
+              "Reason"
+            ],
+            "rows": [
+              [
+                "Lookup",
+                "O(1)",
+                "O(n)",
+                "worst case: all keys collide into one bucket"
+              ],
+              [
+                "Insert",
+                "O(1) amortized",
+                "O(n)",
+                "occasional resize re-inserts every item"
+              ],
+              [
+                "Delete",
+                "O(1)",
+                "O(n)",
+                "same as lookup"
+              ],
+              [
+                "Ordered iteration (sorted keys)",
+                "O(n log n)",
+                "O(n log n)",
+                "a hash table keeps no sort order, you must sort"
+              ],
+              [
+                "Space",
+                "O(n)",
+                "O(n)",
+                "the bucket array is kept a constant factor larger than n"
+              ]
+            ]
+          }
+        },
+        "The O(1) average depends on a good hash function and a bounded load factor. Python randomizes string hashes per process (hash seeding) so that an attacker cannot easily send many keys that collide and slow a server down to O(n) per request."
+      ]
+    },
+    {
+      "h": "Common mistakes",
+      "body": [
+        {
+          "ul": [
+            "Using a mutable object as a key, or defining `__eq__` on a class without a matching `__hash__`. Objects that are equal must have equal hashes.",
+            "Expecting sorted order. A hash table gives fast lookup, not order; use a sorted list or a balanced tree (a binary search tree) when you need range queries or the minimum key.",
+            "Relying on `hash()` values across runs: string hashes change between Python processes unless `PYTHONHASHSEED` is fixed. Use `hashlib` for stable hashes.",
+            "Treating a hash table as a security primitive. Hash tables use fast non-cryptographic hashes; passwords need dedicated password hashing functions."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "When to use it and typical interview uses",
+      "body": [
+        "Use a hash table whenever you need to answer \"have I seen this?\" or \"what value belongs to this key?\" quickly. Use a binary search tree or sorted array when you also need order, ranges or nearest keys.",
+        "Classic problems: two sum (store each number's index, look up `target - x`), counting frequencies (`collections.Counter`), grouping anagrams by sorted letters, detecting duplicates, and memoizing results in dynamic programming.",
+        {
+          "code": "def two_sum(nums, target):\n    seen = {}                      # value -> index\n    for i, x in enumerate(nums):\n        if target - x in seen:\n            return seen[target - x], i\n        seen[x] = i\n    return None\nprint(two_sum([2, 7, 11, 15], 9))  # (0, 1)",
+          "lang": "python"
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Why is hash table lookup O(1)?",
+      "a": "Computing the hash and the bucket index takes constant time, and with a good hash function and a bounded load factor each bucket holds only a few entries on average, so the search inside the bucket is also constant time."
+    },
+    {
+      "q": "What is a load factor?",
+      "a": "The number of stored items divided by the number of buckets. When it passes a threshold (often between 0.5 and 0.75), the table allocates a larger bucket array and re-inserts all items."
+    },
+    {
+      "q": "Is a Python dict a hash table?",
+      "a": "Yes. `dict` and `set` are hash tables implemented in C with open addressing. Since Python 3.7, `dict` also preserves insertion order."
+    },
+    {
+      "q": "What is the difference between a hash table and a hash map?",
+      "a": "In most contexts they mean the same thing: a key-value structure based on hashing. Some languages use the names for specific classes, such as Java's `HashMap` and the older synchronized `Hashtable`."
+    },
+    {
+      "q": "Can a hash table have duplicate keys?",
+      "a": "No. Inserting an existing key replaces its value. To store several values per key, make the value a list, or use `collections.defaultdict(list)`."
+    }
+  ]
+}

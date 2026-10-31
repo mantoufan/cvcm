@@ -1,0 +1,144 @@
+{
+  "title": "責任鏈模式：處理者、中介軟體與 TypeScript 範例 — cv.cm",
+  "description": "責任鏈（Chain of Responsibility）模式讓請求沿著一串處理者傳遞，直到有一個處理者接手。了解其結構、TypeScript 範例與中介軟體的應用。",
+  "h1": "責任鏈模式詳解與範例",
+  "answer": "責任鏈是一種行為型設計模式，它讓請求沿著一串處理者物件傳遞。每個處理者要嘛處理這個請求，要嘛把它轉發給鏈中的下一個處理者。傳送者不知道哪個處理者會處理請求，所以你可以新增、移除或重新排列處理者，而不必更動傳送者。網頁中介軟體與 DOM 事件冒泡，都是廣為人知的例子。",
+  "sections": [
+    {
+      "h": "意圖與它解決的問題",
+      "body": [
+        "意圖：讓不只一個物件有機會處理請求，藉此避免請求的傳送者與接收者之間的耦合。把接收的物件串成一條鏈，並讓請求沿著這條鏈傳遞，直到有物件處理它。這個模式是《設計模式》（Gang of Four，簡稱 GoF）一書中的行為型模式之一。",
+        "以網路商店的客服系統為例。低於 50 的退款請求可以由客服人員核准，500 以內由組長核准，更大的金額則需要經理處理。第一版往往把這些全部寫進一個函式，裡頭有一長串 `if`/`else`。每多一條規則，這個函式就更長，而且檢查的順序也被寫死了。",
+        "使用責任鏈時，每一個層級都變成各自的處理者，各負責一條規則。這些處理者被連結在一起，請求從第一個進入。要新增一個核准層級，只需要寫一個小類別，並把它插入鏈中。"
+      ]
+    },
+    {
+      "h": "結構與參與者",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "角色",
+              "職責"
+            ],
+            "rows": [
+              [
+                "處理者（Handler）",
+                "宣告處理請求的方法，並保存指向下一個處理者的參照"
+              ],
+              [
+                "具體處理者（Concrete handler）",
+                "處理自己負責的請求；否則把請求轉發給下一個處理者"
+              ],
+              [
+                "用戶端",
+                "建立這條鏈（或接收它），並把請求送給第一個處理者"
+              ]
+            ]
+          }
+        },
+        "常見的變化有兩種。在經典形式中，第一個能處理請求的處理者會終止這條鏈。在管線形式（大多數中介軟體採用）中，每個處理者都可以做一些工作，然後決定是否呼叫下一個。"
+      ]
+    },
+    {
+      "h": "TypeScript 實作",
+      "body": [
+        "抽象基底類別會保存下一個處理者，並提供預設的轉發行為。每個具體處理者覆寫 `handle`，並在無法決定時呼叫 `super.handle`。",
+        {
+          "code": "type Refund = { amount: number };\nabstract class Approver {\n  private next?: Approver;\n  setNext(next: Approver): Approver {\n    this.next = next;\n    return next; // allows a.setNext(b).setNext(c)\n  }\n  handle(req: Refund): string {\n    return this.next ? this.next.handle(req) : \"rejected: no one can approve \" + req.amount;\n  }\n}\nclass Agent extends Approver {\n  handle(req: Refund): string {\n    return req.amount < 50 ? \"agent approved \" + req.amount : super.handle(req);\n  }\n}\nclass TeamLead extends Approver {\n  handle(req: Refund): string {\n    return req.amount <= 500 ? \"team lead approved \" + req.amount : super.handle(req);\n  }\n}\nclass Manager extends Approver {\n  handle(req: Refund): string {\n    return req.amount <= 5000 ? \"manager approved \" + req.amount : super.handle(req);\n  }\n}\nconst chain = new Agent();\nchain.setNext(new TeamLead()).setNext(new Manager());\nfor (const amount of [20, 300, 2000, 9000]) console.log(chain.handle({ amount }));\n// agent approved 20\n// team lead approved 300\n// manager approved 2000\n// rejected: no one can approve 9000",
+          "lang": "typescript"
+        },
+        {
+          "note": "一定要決定在沒有任何處理者接受請求時該怎麼辦。這裡最後一次基底類別的呼叫會回傳拒絕。如果沒有這樣的預設，請求可能會悄悄地從鏈的尾端掉出去。"
+        }
+      ]
+    },
+    {
+      "h": "用一般函式實作的中介軟體形式",
+      "body": [
+        "在 TypeScript 中，你不需要類別。一串函式，每個函式接收一個 `next` 回呼，就能構成一條鏈。Express 和 Koa 的中介軟體就是這樣運作的。",
+        {
+          "code": "type Req = { user?: string; path: string };\ntype Middleware = (req: Req, next: () => string) => string;\nconst auth: Middleware = (req, next) => (req.user ? next() : \"401 Unauthorized\");\nconst log: Middleware = (req, next) => {\n  console.log(\"request\", req.path);\n  return next();\n};\nconst route = (req: Req) => \"200 OK \" + req.path;\nfunction run(chain: Middleware[], req: Req): string {\n  const step = (i: number): string =>\n    i < chain.length ? chain[i](req, () => step(i + 1)) : route(req);\n  return step(0);\n}\nconsole.log(run([log, auth], { path: \"/admin\" }));\nconsole.log(run([log, auth], { user: \"ana\", path: \"/admin\" }));\n// request /admin\n// 401 Unauthorized\n// request /admin\n// 200 OK /admin",
+          "lang": "typescript"
+        }
+      ]
+    },
+    {
+      "h": "何時使用、何時不該用",
+      "body": [
+        {
+          "ul": [
+            "當好幾個物件都可能處理請求，而正確的那個要到執行時期才決定時，就使用它。",
+            "當處理者的集合或順序應該可以設定時使用，例如驗證步驟、核准層級或 HTTP 中介軟體。",
+            "當你希望每條規則各自放在一個可獨立測試的小單元時使用。",
+            "對於兩三個永遠不變的固定檢查，不要使用它；簡單的 `if` 敘述更清楚。",
+            "要注意，過長的鏈比較難除錯，因為從呼叫的地方看不出最後是哪個處理者採取了行動。在處理者內加入記錄會有幫助。",
+            "鏈對順序很敏感。例如把驗證身分放在路由處理者之後，就失去了它的意義。"
+          ]
+        }
+      ]
+    },
+    {
+      "h": "實際應用",
+      "body": [
+        {
+          "ul": [
+            "Express 和 Koa 的中介軟體：每個函式接收請求和一個 `next` 函式，並決定是否繼續。",
+            "DOM 事件傳遞：事件從目標元素開始，向上冒泡經過它的祖先，任何監聽器都可以用 `event.stopPropagation()` 停止它。",
+            "Java 的 Servlet 過濾器構成一條過濾器鏈，其中每個過濾器呼叫 `chain.doFilter` 把請求傳下去。",
+            "記錄框架會把記錄從記錄器傳給它的父記錄器及其處理者。"
+          ]
+        }
+      ]
+    },
+    {
+      "h": "相關模式",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "模式",
+              "與責任鏈的差異"
+            ],
+            "rows": [
+              [
+                "裝飾者",
+                "裝飾者也會形成一串包裝器，但每個裝飾者一定會執行並轉發；處理者則可以中止這條鏈。"
+              ],
+              [
+                "命令",
+                "鏈中的請求常是一個命令物件；命令著重於把請求封裝起來，責任鏈則著重於找出由誰來處理。"
+              ],
+              [
+                "組合",
+                "組合樹中的父節點，是很自然的下一個處理者，GUI 事件沿著元件樹向上冒泡就是這樣。"
+              ],
+              [
+                "中介者",
+                "中介者透過一個知道所有接收者的中央物件來傳遞訊息；責任鏈則是把請求從一個處理者傳給下一個。"
+              ]
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "鏈中的每個處理者都必須處理請求嗎？",
+      "a": "不必。在經典形式中，第一個能處理請求的處理者會終止這條鏈。在中介軟體形式中，每個處理者可以做一些工作，然後呼叫下一個，所以好幾個處理者可以對同一個請求採取行動。"
+    },
+    {
+      "q": "Express 的中介軟體是責任鏈的例子嗎？",
+      "a": "是的。每個中介軟體函式接收請求和一個 `next` 回呼，它要嘛結束回應，要嘛呼叫 `next`，把控制權交給下一個中介軟體。"
+    },
+    {
+      "q": "如果沒有任何處理者處理請求會怎麼樣？",
+      "a": "這取決於你的設計。好的做法是在鏈的尾端加上預設行為，例如回傳錯誤、拋出例外或記錄，這樣請求就不會無聲無息地遺失。"
+    },
+    {
+      "q": "這和一串 if/else 敘述有什麼不同？",
+      "a": "邏輯是一樣的，但每個條件都變成獨立的物件或函式。這讓鏈可以在執行時期設定，並讓你不必編輯一個龐大的函式，就能新增步驟或重新排列順序。"
+    }
+  ]
+}

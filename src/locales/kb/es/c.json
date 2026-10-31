@@ -1,0 +1,192 @@
+{
+  "title": "Tutorial de C: tipos, punteros, arrays, cadenas y memoria — cv.cm",
+  "description": "Aprende C en una página: compila Hello world con gcc, tipos, control de flujo, funciones, arrays, cadenas, punteros, malloc y free, errores y un ejemplo completo.",
+  "h1": "Tutorial de programación en C para principiantes",
+  "answer": "C es un lenguaje compilado, pequeño y rápido, que da acceso directo a la memoria mediante punteros. Escribe `main` en un archivo `.c`, compílalo con `gcc hello.c -o hello` y ejecuta `./hello`. Las ideas centrales son los tipos de tamaño fijo, las funciones, los arrays y las cadenas terminadas en nulo, los punteros y las direcciones, la gestión manual de memoria con `malloc` y `free`, y el manejo de errores mediante valores de retorno.",
+  "sections": [
+    {
+      "h": "Qué es C y para qué se usa",
+      "body": [
+        "C fue creado por Dennis Ritchie en Bell Labs a principios de los años setenta para escribir el sistema operativo Unix. Está estandarizado por ISO (C99, C11, C17 y C23 son las ediciones principales). C compila a código máquina con muy poco entorno de ejecución, por lo que funciona casi en cualquier parte. Se usa en núcleos de sistemas operativos (Linux), firmware embebido, bases de datos (SQLite), entornos de ejecución de lenguajes (CPython está escrito en C) y bibliotecas de alto rendimiento. Aprender C también enseña cómo funcionan realmente la memoria y los ordenadores."
+      ]
+    },
+    {
+      "h": "Instalar un compilador y ejecutar Hello, world",
+      "body": [
+        "En Linux instala `gcc` (por ejemplo `sudo apt install build-essential`); en macOS ejecuta `xcode-select --install` para obtener `clang` (también disponible como `gcc`); en Windows usa MSYS2, WSL o Visual Studio.",
+        {
+          "code": "#include <stdio.h>\nint main(void) {\n    printf(\"Hello, world\\n\");\n    return 0;\n}",
+          "lang": "c"
+        },
+        {
+          "code": "gcc -Wall -Wextra -std=c17 hello.c -o hello\n./hello\n# Hello, world",
+          "lang": "shell"
+        },
+        "`#include` incorpora declaraciones de un archivo de cabecera, aquí la biblioteca estándar de entrada y salida. Devolver 0 desde `main` significa éxito. Compila siempre con las advertencias activadas (`-Wall -Wextra`)."
+      ]
+    },
+    {
+      "h": "Variables y tipos básicos",
+      "body": [
+        "Cada variable tiene un tipo que fija su tamaño y significado. Los tamaños dependen de la plataforma, salvo donde el estándar diga otra cosa; `<stdint.h>` ofrece tipos de ancho exacto como `int32_t`.",
+        {
+          "table": {
+            "head": [
+              "Tipo",
+              "Tamaño típico",
+              "Ejemplo",
+              "Formato de printf"
+            ],
+            "rows": [
+              [
+                "`char`",
+                "1 byte",
+                "`char c = 'A';`",
+                "`%c`"
+              ],
+              [
+                "`int`",
+                "4 bytes",
+                "`int n = 42;`",
+                "`%d`"
+              ],
+              [
+                "`long long`",
+                "8 bytes",
+                "`long long big = 1LL << 40;`",
+                "`%lld`"
+              ],
+              [
+                "`double`",
+                "8 bytes",
+                "`double x = 3.14;`",
+                "`%f`"
+              ],
+              [
+                "`bool`",
+                "1 byte",
+                "`bool ok = true;` (C99 `<stdbool.h>`)",
+                "`%d`"
+              ],
+              [
+                "`size_t`",
+                "8 bytes en 64 bits",
+                "`size_t len = sizeof(arr);`",
+                "`%zu`"
+              ]
+            ]
+          }
+        },
+        {
+          "code": "#include <stdio.h>\nint main(void) {\n    int count = 7;\n    double avg = count / 2;     /* 3.0: integer division first */\n    double avg2 = count / 2.0;  /* 3.5 */\n    printf(\"%d %.1f %.1f\\n\", count, avg, avg2);  /* 7 3.0 3.5 */\n    printf(\"%zu\\n\", sizeof(int));                /* 4 on most systems */\n    return 0;\n}",
+          "lang": "c"
+        }
+      ]
+    },
+    {
+      "h": "Control de flujo y funciones",
+      "body": [
+        "Una función debe declararse antes de usarse. Los argumentos se pasan por valor: la función recibe una copia.",
+        {
+          "code": "#include <stdio.h>\nint square(int x) {\n    return x * x;\n}\nint main(void) {\n    int score = 72;\n    if (score >= 90) {\n        printf(\"A\\n\");\n    } else if (score >= 70) {\n        printf(\"B\\n\");              /* B */\n    } else {\n        printf(\"C\\n\");\n    }\n    for (int i = 0; i < 3; i++) {\n        printf(\"%d \", square(i));   /* 0 1 4 */\n    }\n    printf(\"\\n\");\n    int n = 10;\n    while (n > 1) n /= 2;\n    printf(\"%d\\n\", n);              /* 1 */\n    return 0;\n}",
+          "lang": "c"
+        },
+        "C también tiene `do`/`while`, `switch` con etiquetas `case` (recuerda el `break`) y `goto`, que se usa sobre todo para la limpieza en rutas de error."
+      ]
+    },
+    {
+      "h": "Arrays y cadenas",
+      "body": [
+        "Un array es un número fijo de elementos almacenados contiguos. C no comprueba los límites ni guarda la longitud, así que la longitud se pasa por separado. Una cadena es un array de `char` que termina con un byte cero `'\\0'`.",
+        {
+          "code": "#include <stdio.h>\n#include <string.h>\nint sum(const int *values, size_t n) {\n    int total = 0;\n    for (size_t i = 0; i < n; i++) total += values[i];\n    return total;\n}\nint main(void) {\n    int nums[] = {3, 1, 2, 5};\n    size_t n = sizeof nums / sizeof nums[0];\n    printf(\"%zu items, sum %d\\n\", n, sum(nums, n));  /* 4 items, sum 11 */\n    char name[16] = \"Ada\";\n    strncat(name, \" Lovelace\", sizeof name - strlen(name) - 1);\n    printf(\"%s (%zu chars)\\n\", name, strlen(name));  /* Ada Lovelace (12 chars) */\n    return 0;\n}",
+          "lang": "c"
+        },
+        "Cuando se pasa un array a una función, decae a un puntero a su primer elemento, por eso `sum` recibe `const int *` y una longitud."
+      ]
+    },
+    {
+      "h": "Característica distintiva: los punteros",
+      "body": [
+        "Un puntero contiene la dirección de memoria de otro valor. `&x` da la dirección de `x`, y `*p` lee o escribe el valor en la dirección `p`. Los punteros permiten que las funciones modifiquen las variables de quien las llama, compartan datos grandes sin copiarlos y construyan estructuras de datos enlazadas.",
+        {
+          "code": "#include <stdio.h>\nvoid swap(int *a, int *b) {\n    int tmp = *a;\n    *a = *b;\n    *b = tmp;\n}\nint main(void) {\n    int x = 1, y = 2;\n    int *p = &x;\n    *p = 10;                      /* changes x */\n    swap(&x, &y);\n    printf(\"x=%d y=%d\\n\", x, y);  /* x=2 y=10 */\n    int arr[3] = {7, 8, 9};\n    int *q = arr;\n    printf(\"%d %d\\n\", *(q + 1), q[2]);  /* 8 9: pointer arithmetic */\n    return 0;\n}",
+          "lang": "c"
+        }
+      ]
+    },
+    {
+      "h": "Memoria dinámica con malloc y free",
+      "body": [
+        "Las variables locales viven en la pila (stack) y desaparecen cuando la función retorna. Para datos cuyo tamaño solo se conoce en tiempo de ejecución, o que deben sobrevivir a la función, reserva memoria en el heap con `malloc` y libérala con `free`. Cada `malloc` que tiene éxito necesita exactamente un `free`.",
+        {
+          "code": "#include <stdio.h>\n#include <stdlib.h>\nint main(void) {\n    size_t n = 5;\n    int *squares = malloc(n * sizeof *squares);\n    if (squares == NULL) {\n        fprintf(stderr, \"out of memory\\n\");\n        return 1;\n    }\n    for (size_t i = 0; i < n; i++) squares[i] = (int)(i * i);\n    printf(\"%d\\n\", squares[4]);  /* 16 */\n    free(squares);\n    squares = NULL;              /* avoid using a dangling pointer */\n    return 0;\n}",
+          "lang": "c"
+        },
+        "Funciones relacionadas son `calloc` (reserva y pone a cero) y `realloc` (cambia el tamaño). Agrupa valores relacionados con un `struct`, por ejemplo `struct point { int x; int y; };`."
+      ]
+    },
+    {
+      "h": "Manejo de errores",
+      "body": [
+        "C no tiene excepciones. Las funciones informan de los errores mediante valores de retorno (a menudo `-1`, `NULL` o un código de estado), y muchas funciones de la biblioteca también establecen la variable global `errno`. Comprueba todo valor de retorno que pueda fallar.",
+        {
+          "code": "#include <errno.h>\n#include <stdio.h>\n#include <string.h>\nint main(void) {\n    FILE *f = fopen(\"missing.txt\", \"r\");\n    if (f == NULL) {\n        fprintf(stderr, \"cannot open: %s\\n\", strerror(errno));\n        return 1;   /* cannot open: No such file or directory */\n    }\n    fclose(f);\n    return 0;\n}",
+          "lang": "c"
+        }
+      ]
+    },
+    {
+      "h": "Un programa completo pequeño: contador de líneas y palabras",
+      "body": [
+        "Este programa funciona como un pequeño `wc`: lee un archivo indicado en la línea de comandos e imprime el número de líneas, palabras y bytes.",
+        {
+          "code": "#include <ctype.h>\n#include <stdio.h>\nint main(int argc, char *argv[]) {\n    if (argc != 2) {\n        fprintf(stderr, \"usage: %s FILE\\n\", argv[0]);\n        return 1;\n    }\n    FILE *f = fopen(argv[1], \"r\");\n    if (f == NULL) {\n        perror(argv[1]);\n        return 1;\n    }\n    long lines = 0, words = 0, bytes = 0;\n    int c, in_word = 0;\n    while ((c = fgetc(f)) != EOF) {\n        bytes++;\n        if (c == '\\n') lines++;\n        if (isspace(c)) {\n            in_word = 0;\n        } else if (!in_word) {\n            in_word = 1;\n            words++;\n        }\n    }\n    fclose(f);\n    printf(\"%ld lines, %ld words, %ld bytes\\n\", lines, words, bytes);\n    return 0;\n}",
+          "lang": "c"
+        },
+        "Compila con `gcc -Wall -Wextra wc.c -o wc` y ejecuta `./wc notes.txt`. Observa que `c` es un `int`, no un `char`, para que pueda contener el valor especial `EOF`."
+      ]
+    },
+    {
+      "h": "Errores comunes de principiantes",
+      "body": [
+        {
+          "note": "Escribir más allá del final de un array o usar memoria después de `free` es comportamiento indefinido: el programa puede parecer funcionar, fallar más tarde o convertirse en un agujero de seguridad. Mientras aprendes, compila con `-fsanitize=address -g` para detectar estos errores."
+        },
+        {
+          "ul": [
+            "Usar `=` en lugar de `==` en una condición. Las advertencias (`-Wall`) detectan la mayoría de los casos.",
+            "Olvidar dejar espacio para el `'\\0'` final al dimensionar un búfer de cadena.",
+            "Usar `gets` o un `scanf(\"%s\", buf)` sin límite. Usa en su lugar `fgets(buf, sizeof buf, stdin)`.",
+            "Devolver un puntero a una variable local, que ya no existe cuando la función retorna.",
+            "Que los formatos de `printf` no coincidan con los tipos, como `%d` para un `size_t`."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Adónde ir después",
+      "body": [
+        "Usa la sección de C de cppreference.com como referencia del lenguaje y de la biblioteca estándar, y lee las páginas del grupo de trabajo de ISO (WG14) para el estándar en sí. Practica con structs, listas enlazadas, archivos de cabecera y programas de varios archivos construidos con `make`. Un depurador (`gdb` o `lldb`) y Valgrind o AddressSanitizer te ahorrarán horas. Después explora C++ o Rust, que se basan en las mismas ideas con más seguridad."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "¿Sigue valiendo la pena aprender C?",
+      "a": "Sí. Se sigue usando en sistemas operativos, dispositivos embebidos y bibliotecas críticas para el rendimiento, y enseña memoria, punteros y cómo se ejecuta el código compilado, lo que ayuda en cualquier otro lenguaje."
+    },
+    {
+      "q": "¿Cuál es la diferencia entre C y C++?",
+      "a": "C++ nació como una extensión de C y añade clases, plantillas, referencias, excepciones y una amplia biblioteca estándar. C sigue siendo pequeño y procedimental. La mayor parte del código C se parece mucho a C++ válido, pero son estándares distintos."
+    },
+    {
+      "q": "¿Por qué mi programa en C falla con un segmentation fault?",
+      "a": "Accedió a memoria que no le pertenece, normalmente a través de un puntero nulo, sin inicializar o ya liberado, o indexando más allá del final de un array. Ejecútalo en un depurador o con AddressSanitizer para encontrar la línea exacta."
+    },
+    {
+      "q": "¿Qué estándar de C debo usar?",
+      "a": "C17 está ampliamente soportado por los compiladores actuales, y C23 es el estándar más reciente. Indica la versión de forma explícita, por ejemplo `-std=c17`, para que el comportamiento sea coherente."
+    }
+  ]
+}

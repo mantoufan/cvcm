@@ -1,0 +1,195 @@
+{
+  "title": "MATLAB入門：行列、ベクトル化、関数、グラフ描画 — cv.cm",
+  "description": "MATLABの基礎を無料のGNU Octaveも含めて解説。スクリプトの実行、ベクトルと行列の作成とインデックス、ループ、関数、無名関数、エラー処理、グラフ描画を学びます。",
+  "h1": "MATLAB入門",
+  "answer": "MATLABは、MathWorks社が提供する数値計算向けの言語・環境で、すべての値が行列です。行列積は `A * B`、要素ごとの乗算は `A .* B` と書き、添字は1から始まり、多くのループをベクトル化した式に置き換えられます。グラフ描画機能と、工学・科学向けの豊富なツールボックスを備えています。GNU Octaveは無料のオープンソースの代替で、基本的なMATLABコードの大半をそのまま実行できます。",
+  "sections": [
+    {
+      "h": "MATLABとは何か、誰が使っているのか",
+      "body": [
+        "MATLAB（「matrix laboratory」）は、線形代数ライブラリを手軽に使えるようにしたいCleve Molerのツールとして始まり、MathWorks社の商用製品になりました。言語、対話型デスクトップ、グラフ描画に加え、信号処理、制御系、最適化、統計、画像処理、機械学習のツールボックスを備えています。関連製品のSimulinkは、ブロック線図で動的システムをモデル化します。",
+        "MATLABは、工学・科学の授業、研究室、自動車・航空宇宙・金融などの業界で広く使われています。有償ライセンスが必要です（多くの大学が提供しています）。GNU Octaveは文法がほぼ互換のフリーソフトウェアで、中核の言語と多くの関数をカバーしますが、MathWorks社のツールボックスやSimulinkには対応しません。"
+      ]
+    },
+    {
+      "h": "インストールとHello, world",
+      "body": [
+        "MathWorks社からMATLABをインストールするか、ブラウザーでMATLAB Onlineを使うか、octave.orgからGNU Octave（Windows、macOS、Linux）をインストールします。コードは `.m` ファイルに保存します。スクリプトはコマンドを並べたファイルで、コマンドウィンドウで `.m` を除いた名前を入力して実行します。",
+        {
+          "code": "% hello.m\ndisp('Hello, world!')",
+          "lang": "matlab"
+        },
+        {
+          "code": "matlab -batch \"hello\"   # MATLAB from a terminal\noctave hello.m          # GNU Octave\n# Hello, world!",
+          "lang": "shell"
+        },
+        "コメントは `%` で始めます。セミコロンなしで終わる行は結果を表示するので、`x = 5` は `x = 5` と表示し、`x = 5;` は何も表示しません。"
+      ]
+    },
+    {
+      "h": "変数と基本の型",
+      "body": [
+        "変数は代入で作られ、宣言は不要です。数値は既定で `double`（64ビット浮動小数点数）で、単一の数でも1行1列の行列です。",
+        {
+          "table": {
+            "head": [
+              "型",
+              "例",
+              "備考"
+            ],
+            "rows": [
+              [
+                "double",
+                "`x = 3.14`",
+                "既定の数値型"
+              ],
+              [
+                "整数型",
+                "`n = int32(42)`",
+                "`int8` から `int64`、`uint8` から `uint64`。演算は飽和する"
+              ],
+              [
+                "logical",
+                "`ok = true`",
+                "`x > 2` のような比較の結果"
+              ],
+              [
+                "文字配列",
+                "`name = 'Ana'`",
+                "シングルクォート。文字の行ベクトル"
+              ],
+              [
+                "string",
+                "`s = \"Ana\"`",
+                "MATLABの文字列オブジェクト。Octaveではダブルクォートも文字配列として扱う"
+              ],
+              [
+                "セル配列",
+                "`c = {'Ana', 30}`",
+                "異なる型の値を保持できる"
+              ],
+              [
+                "struct",
+                "`p.name = 'Ana'`",
+                "名前付きのフィールド"
+              ]
+            ]
+          }
+        },
+        {
+          "code": "x = 10;\ny = 3;\nx / y              % 3.3333\nmod(x, y)          % 1\nx ^ 2              % 100\nname = 'Ana';\nfprintf('%s is %d years old\\n', name, 30)\n% Ana is 30 years old\nclass(x)           % 'double'",
+          "lang": "matlab"
+        }
+      ]
+    },
+    {
+      "h": "ベクトルと行列",
+      "body": [
+        "角括弧で配列を作ります。スペースまたはカンマで列を、セミコロンで行を区切ります。添字は丸括弧で指定し、1から始まります。`end` は最後の添字、`:` は「すべて」を意味します。",
+        {
+          "code": "v = [3 1 4 1 5];\nv(1)               % 3\nv(end)             % 5\nv(2:4)             % [1 4 1]\nv * 2              % [6 2 8 2 10]\nv(v > 2)           % [3 4 5]   logical indexing\nA = [1 2; 3 4];\nA(2, :)            % second row: [3 4]\nA'                 % transpose:  [1 3; 2 4]\nA * A              % matrix product: [7 10; 15 22]\nA .* A             % element-wise:   [1 4; 9 16]\nb = [5; 11];\nx = A \\ b          % solves A*x = b: [1; 2]\nz = zeros(2, 3);   % also ones, eye, rand\nr = 0:0.25:1;      % [0 0.25 0.5 0.75 1]",
+          "lang": "matlab"
+        },
+        "ドット付きの演算子（`.*`、`./`、`.^`）は要素ごとに働き、ドットなしは線形代数の規則に従います。バックスラッシュ演算子は連立一次方程式を解き、`inv(A) * b` を計算するより精度が高くなります。"
+      ]
+    },
+    {
+      "h": "制御構文",
+      "body": [
+        {
+          "code": "score = 85;\nif score >= 90\n    disp('A')\nelseif score >= 80\n    disp('B')\nelse\n    disp('C')\nend\n\ntotal = 0;\nfor k = 1:10\n    total = total + k;\nend\nfprintf('total = %d\\n', total)   % total = 55\n\nn = 3;\nwhile n > 0\n    n = n - 1;\nend\n\nswitch 'red'\n    case {'red', 'green'}\n        disp('a color')\n    otherwise\n        disp('unknown')\nend",
+          "lang": "matlab"
+        },
+        "すべてのブロックは `end` で終わります。多くのループはベクトル化した式に置き換えられます。上のループは `sum(1:10)` と同じで、より短く、たいていは高速です。どうしてもループで配列を作る場合は、先に領域を確保しておきます（例：`result = zeros(1, 1000);`）。"
+      ]
+    },
+    {
+      "h": "関数と無名関数",
+      "body": [
+        "関数は、関数名と同じ名前の専用ファイルに書きます。関数は複数の出力を返せます。最近のMATLABのバージョンでは、スクリプトの末尾にローカル関数を置くこともできます。",
+        {
+          "code": "% stats.m\nfunction [m, s] = stats(x)\n%STATS Mean and sample standard deviation of a vector.\n    m = mean(x);\n    s = std(x);\nend",
+          "lang": "matlab"
+        },
+        {
+          "code": "[m, s] = stats([2 4 4 5 7])   % m = 4.4000, s = 1.8166\n[biggest, where] = max([3 9 2])   % biggest = 9, where = 2\n\nf = @(x) x.^2 + 1;            % anonymous function\nf(3)                          % 10\nf([1 2 3])                    % [2 5 10]\nfzero(@(x) x.^2 - 2, 1)       % 1.4142, a root near 1\nintegral(f, 0, 1)             % 1.3333",
+          "lang": "matlab"
+        },
+        "`@` で作る無名関数は、`fzero`、`integral`、`arrayfun`、最適化ルーチンなど、ほかの関数に渡すためによく使われます。ベクトルにも使えるように、要素ごとの演算子（`.^`）で書きましょう。"
+      ]
+    },
+    {
+      "h": "構造体とセル配列",
+      "body": [
+        {
+          "code": "person.name = 'Ana';\nperson.age = 30;\nfprintf('%s is %d\\n', person.name, person.age)   % Ana is 30\n\nc = {'Ana', 30, [1 2 3]};   % cell array with mixed types\nc{2}                         % 30 (curly braces get the content)\nclass(c(2))                  % 'cell' (parentheses get a sub-cell)\nnames = {'Ana', 'Ben', 'Cleo'};\nnumel(names)                 % 3\nupper(names{1})              % 'ANA'",
+          "lang": "matlab"
+        },
+        "MATLABには、スプレッドシートのように名前付き変数を持つ列指向のデータを扱う `table` 型もあります。`readtable` でCSVやExcelファイルを読み込めます。"
+      ]
+    },
+    {
+      "h": "エラー処理",
+      "body": [
+        "`error` でエラーを発生させます。`'demo:negative'` のような識別子を付けることもでき、`try ... catch` で処理します。捕捉したオブジェクト（MATLABでは `MException`）には `identifier` と `message` のフィールドがあります。",
+        {
+          "code": "% safe_sqrt.m\nfunction r = safe_sqrt(x)\n    if x < 0\n        error('demo:negative', 'Input must be non-negative, got %g', x);\n    end\n    r = sqrt(x);\nend",
+          "lang": "matlab"
+        },
+        {
+          "code": "try\n    safe_sqrt(-4);\ncatch err\n    fprintf('%s: %s\\n', err.identifier, err.message)\nend\n% demo:negative: Input must be non-negative, got -4",
+          "lang": "matlab"
+        },
+        "プログラムを止めるべきでない問題には `warning(...)` を使います。チェックがなければ、`sqrt(-4)` はまったく失敗せず、複素数 `0 + 2i` を返します。"
+      ]
+    },
+    {
+      "h": "小さな完成プログラム：データの分析とグラフ描画",
+      "body": [
+        {
+          "code": "% temps.m - analyze a week of temperatures\ntemps = [21.5 23.0 19.8 25.1 24.3 18.9 22.7];\ndays = 1:numel(temps);\n\navg = mean(temps);\n[hottest, idx] = max(temps);\nabove = days(temps > avg);\n\nfprintf('Average: %.2f\\n', avg)\nfprintf('Hottest: %.1f on day %d\\n', hottest, idx)\nfprintf('Days above average: %s\\n', mat2str(above))\n\nplot(days, temps, '-o')\nhold on\nplot(days, avg * ones(size(days)), '--')\nxlabel('Day'); ylabel('Temperature (C)')\ntitle('Temperatures this week')\nlegend('Daily', 'Average')\n% Average: 22.19\n% Hottest: 25.1 on day 4\n% Days above average: [2 4 5 7]",
+          "lang": "matlab"
+        },
+        "このスクリプトは、論理インデックスを使ってループなしで平均を上回る日を見つけ、マーカー付きの折れ線グラフと破線の平均線を描きます。同じコードがGNU Octaveでも動きます。",
+        {
+          "note": "初心者がよくやる間違い：要素ごとの `.*` や `.^` のつもりで `*` や `^` を使う（次元エラーが出るか、行列のべき乗になります）。0で添字を指定する（`v(0)` はエラーです）。セミコロンを忘れて出力があふれる。スクリプトや変数に組み込み関数と同じ名前（`sum`、`max`、`i`）を付けて、その関数を隠してしまう。複素数が絡むときに `i` や `j` をループ変数に使う。そして、領域を事前確保せずにループ内で配列を拡大していく。"
+        }
+      ]
+    },
+    {
+      "h": "次のステップ",
+      "body": [
+        {
+          "ul": [
+            "MathWorks社のMATLABドキュメント。まずは入門ページから。",
+            "MATLAB Onramp：MathWorks社が提供する無料の対話型入門コース。",
+            "Octaveを使う場合は、MATLAB互換性に関する注意も載っているGNU Octaveマニュアル。",
+            "次は、ベクトル化、データファイル用の `readtable`、グラフ描画関数を学びましょう。"
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "MATLABの無料版はありますか？",
+      "a": "MATLAB本体にはライセンスが必要ですが、MathWorks社は試用版を提供しており、多くの大学がキャンパスライセンスを用意しています。GNU Octaveは無料のオープンソースプログラムで、基本的なMATLABコードの大半を実行できます。"
+    },
+    {
+      "q": "MATLABの * と .* の違いは何ですか？",
+      "a": "`*` は線形代数の行列積で、内側の次元が一致している必要があります。`.*` は、同じサイズの2つの配列の対応する要素どうしを掛けます。"
+    },
+    {
+      "q": "GNU OctaveはMATLABと完全に互換ですか？",
+      "a": "完全ではありません。中核の文法、行列、関数、グラフ描画はほぼ互換ですが、OctaveにはMathWorks社のツールボックス、Simulink、一部の新しいMATLAB機能がなく、独自に追加の構文もいくつか受け付けます。"
+    },
+    {
+      "q": "MATLABの添字はなぜ1から始まるのですか？",
+      "a": "MATLABは数学の表記に従っており、ベクトルや行列の最初の要素は1番目の要素です。Fortran、R、Juliaも同じ規則です。"
+    },
+    {
+      "q": "MATLABとPythonはどちらを学ぶべきですか？",
+      "a": "授業や研究室、会社でMATLABを使うなら、特にSimulinkや特定のツールボックスを使うなら、MATLABを学びましょう。NumPy、SciPy、Matplotlibを使うPythonは無料でより汎用的で、考え方は両者で通用します。"
+    }
+  ]
+}

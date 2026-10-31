@@ -1,0 +1,195 @@
+{
+  "title": "MATLAB 入門教學：矩陣、向量化、函式與繪圖 — cv.cm",
+  "description": "學會 MATLAB 基礎（以及免費的 GNU Octave）：執行腳本、建立向量與矩陣、索引、使用迴圈、函式、匿名函式、錯誤與繪圖。",
+  "h1": "MATLAB 入門教學",
+  "answer": "MATLAB 是 MathWorks 推出的數值運算語言與環境，其中每個值都是矩陣。你用 `A * B` 表示矩陣乘積，用 `A .* B` 表示逐元素相乘，索引從 1 開始，並且用向量化運算式取代許多迴圈。它內建繪圖功能，以及大量供工程與科學使用的工具箱。GNU Octave 是免費的開放原始碼替代品，可以原封不動地執行大多數基本的 MATLAB 程式碼。",
+  "sections": [
+    {
+      "h": "MATLAB 是什麼、誰在使用",
+      "body": [
+        "MATLAB（「matrix laboratory」，矩陣實驗室）起初是 Cleve Moler 為了方便使用線性代數函式庫而開發的工具，後來成為 MathWorks 的商業產品。它結合了語言、互動式桌面環境、繪圖，以及用於訊號處理、控制系統、最佳化、統計、影像處理與機器學習的工具箱。它的配套產品 Simulink 則以方塊圖為動態系統建立模型。",
+        "MATLAB 廣泛用於工程與科學課程、研究實驗室，以及汽車、航太與金融等產業。它需要付費授權（許多大學會提供）。GNU Octave 是自由軟體，語法大致相容；它涵蓋核心語言與許多函式，但不包含 MathWorks 的工具箱或 Simulink。"
+      ]
+    },
+    {
+      "h": "安裝並執行 Hello, world",
+      "body": [
+        "可以從 MathWorks 安裝 MATLAB、在瀏覽器中使用 MATLAB Online，或從 octave.org 安裝 GNU Octave（Windows、macOS、Linux）。程式碼存放在 `.m` 檔案中。腳本是一個由指令組成的檔案；在命令視窗（Command Window）中輸入不含 `.m` 的檔名即可執行。",
+        {
+          "code": "% hello.m\ndisp('Hello, world!')",
+          "lang": "matlab"
+        },
+        {
+          "code": "matlab -batch \"hello\"   # MATLAB from a terminal\noctave hello.m          # GNU Octave\n# Hello, world!",
+          "lang": "shell"
+        },
+        "註解以 `%` 開頭。結尾沒有分號的那一行會印出其結果，所以 `x = 5` 會顯示 `x = 5`，而 `x = 5;` 則保持安靜。"
+      ]
+    },
+    {
+      "h": "變數與基本型別",
+      "body": [
+        "變數透過賦值建立，不需要宣告。數字預設為 `double`（64 位元浮點數），即使是單一個數字，也是 1×1 的矩陣。",
+        {
+          "table": {
+            "head": [
+              "型別",
+              "範例",
+              "說明"
+            ],
+            "rows": [
+              [
+                "double",
+                "`x = 3.14`",
+                "預設的數值型別"
+              ],
+              [
+                "integer types",
+                "`n = int32(42)`",
+                "`int8` 到 `int64`、`uint8` 到 `uint64`；運算會飽和（saturate）"
+              ],
+              [
+                "logical",
+                "`ok = true`",
+                "`x > 2` 這類比較的結果"
+              ],
+              [
+                "char array",
+                "`name = 'Ana'`",
+                "單引號；由字元組成的列向量"
+              ],
+              [
+                "string",
+                "`s = \"Ana\"`",
+                "MATLAB 的字串物件；Octave 把雙引號視為 char 陣列"
+              ],
+              [
+                "cell array",
+                "`c = {'Ana', 30}`",
+                "可存放不同型別的值"
+              ],
+              [
+                "struct",
+                "`p.name = 'Ana'`",
+                "具名欄位"
+              ]
+            ]
+          }
+        },
+        {
+          "code": "x = 10;\ny = 3;\nx / y              % 3.3333\nmod(x, y)          % 1\nx ^ 2              % 100\nname = 'Ana';\nfprintf('%s is %d years old\\n', name, 30)\n% Ana is 30 years old\nclass(x)           % 'double'",
+          "lang": "matlab"
+        }
+      ]
+    },
+    {
+      "h": "向量與矩陣",
+      "body": [
+        "方括號用來建立陣列：空格或逗號分隔欄，分號分隔列。索引使用小括號並從 1 開始；`end` 表示最後一個索引，`:` 表示「全部」。",
+        {
+          "code": "v = [3 1 4 1 5];\nv(1)               % 3\nv(end)             % 5\nv(2:4)             % [1 4 1]\nv * 2              % [6 2 8 2 10]\nv(v > 2)           % [3 4 5]   logical indexing\nA = [1 2; 3 4];\nA(2, :)            % second row: [3 4]\nA'                 % transpose:  [1 3; 2 4]\nA * A              % matrix product: [7 10; 15 22]\nA .* A             % element-wise:   [1 4; 9 16]\nb = [5; 11];\nx = A \\ b          % solves A*x = b: [1; 2]\nz = zeros(2, 3);   % also ones, eye, rand\nr = 0:0.25:1;      % [0 0.25 0.5 0.75 1]",
+          "lang": "matlab"
+        },
+        "帶點的運算子（`.*`、`./`、`.^`）逐元素運算；沒有點則遵循線性代數的規則。反斜線運算子可求解線性方程組，並且比計算 `inv(A) * b` 更精確。"
+      ]
+    },
+    {
+      "h": "流程控制",
+      "body": [
+        {
+          "code": "score = 85;\nif score >= 90\n    disp('A')\nelseif score >= 80\n    disp('B')\nelse\n    disp('C')\nend\n\ntotal = 0;\nfor k = 1:10\n    total = total + k;\nend\nfprintf('total = %d\\n', total)   % total = 55\n\nn = 3;\nwhile n > 0\n    n = n - 1;\nend\n\nswitch 'red'\n    case {'red', 'green'}\n        disp('a color')\n    otherwise\n        disp('unknown')\nend",
+          "lang": "matlab"
+        },
+        "每個區塊都以 `end` 結尾。許多迴圈可以用向量化運算式取代：上面的迴圈等同於 `sum(1:10)`，更短，通常也更快。如果必須在迴圈中建立陣列，請先預先配置，例如 `result = zeros(1, 1000);`。"
+      ]
+    },
+    {
+      "h": "函式與匿名函式",
+      "body": [
+        "函式放在自己的檔案中，檔名要與函式名稱相同。一個函式可以回傳多個輸出。在較新的 MATLAB 版本中，腳本的檔案結尾也可以包含區域函式。",
+        {
+          "code": "% stats.m\nfunction [m, s] = stats(x)\n%STATS Mean and sample standard deviation of a vector.\n    m = mean(x);\n    s = std(x);\nend",
+          "lang": "matlab"
+        },
+        {
+          "code": "[m, s] = stats([2 4 4 5 7])   % m = 4.4000, s = 1.8166\n[biggest, where] = max([3 9 2])   % biggest = 9, where = 2\n\nf = @(x) x.^2 + 1;            % anonymous function\nf(3)                          % 10\nf([1 2 3])                    % [2 5 10]\nfzero(@(x) x.^2 - 2, 1)       % 1.4142, a root near 1\nintegral(f, 0, 1)             % 1.3333",
+          "lang": "matlab"
+        },
+        "以 `@` 建立的匿名函式，經常傳給 `fzero`、`integral`、`arrayfun` 或最佳化常式等其他函式。請用逐元素運算子（`.^`）撰寫，讓它們也能作用於向量。"
+      ]
+    },
+    {
+      "h": "Struct 與 cell 陣列",
+      "body": [
+        {
+          "code": "person.name = 'Ana';\nperson.age = 30;\nfprintf('%s is %d\\n', person.name, person.age)   % Ana is 30\n\nc = {'Ana', 30, [1 2 3]};   % cell array with mixed types\nc{2}                         % 30 (curly braces get the content)\nclass(c(2))                  % 'cell' (parentheses get a sub-cell)\nnames = {'Ana', 'Ben', 'Cleo'};\nnumel(names)                 % 3\nupper(names{1})              % 'ANA'",
+          "lang": "matlab"
+        },
+        "MATLAB 還有 `table` 型別，用於以欄為導向、帶有具名變數的資料，類似試算表；`readtable` 可將 CSV 與 Excel 檔案載入其中。"
+      ]
+    },
+    {
+      "h": "錯誤處理",
+      "body": [
+        "用 `error` 引發錯誤，可選擇附上 `'demo:negative'` 這類識別碼，再用 `try ... catch` 處理。被攔截的物件（在 MATLAB 中是 `MException`）具有 `identifier` 與 `message` 欄位。",
+        {
+          "code": "% safe_sqrt.m\nfunction r = safe_sqrt(x)\n    if x < 0\n        error('demo:negative', 'Input must be non-negative, got %g', x);\n    end\n    r = sqrt(x);\nend",
+          "lang": "matlab"
+        },
+        {
+          "code": "try\n    safe_sqrt(-4);\ncatch err\n    fprintf('%s: %s\\n', err.identifier, err.message)\nend\n% demo:negative: Input must be non-negative, got -4",
+          "lang": "matlab"
+        },
+        "對於不應中斷程式的問題，請使用 `warning(...)`。如果沒有這個檢查，`sqrt(-4)` 根本不會失敗：它會回傳複數 `0 + 2i`。"
+      ]
+    },
+    {
+      "h": "完整的小程式：分析並繪製資料",
+      "body": [
+        {
+          "code": "% temps.m - analyze a week of temperatures\ntemps = [21.5 23.0 19.8 25.1 24.3 18.9 22.7];\ndays = 1:numel(temps);\n\navg = mean(temps);\n[hottest, idx] = max(temps);\nabove = days(temps > avg);\n\nfprintf('Average: %.2f\\n', avg)\nfprintf('Hottest: %.1f on day %d\\n', hottest, idx)\nfprintf('Days above average: %s\\n', mat2str(above))\n\nplot(days, temps, '-o')\nhold on\nplot(days, avg * ones(size(days)), '--')\nxlabel('Day'); ylabel('Temperature (C)')\ntitle('Temperatures this week')\nlegend('Daily', 'Average')\n% Average: 22.19\n% Hottest: 25.1 on day 4\n% Days above average: [2 4 5 7]",
+          "lang": "matlab"
+        },
+        "這個腳本使用邏輯索引，不用迴圈就找出高於平均值的日子，然後繪製帶標記的折線圖與一條虛線平均線。同樣的程式碼也能在 GNU Octave 中執行。",
+        {
+          "note": "新手常見錯誤：在想用逐元素的 `.*` 或 `.^` 時使用了 `*` 或 `^`（會得到維度錯誤或矩陣次方）；用 0 做索引（`v(0)` 是錯誤）；忘了分號，導致輸出氾濫；把腳本或變數取成內建函式的名稱（`sum`、`max`、`i`），讓原函式被遮蔽；在涉及複數時使用 `i` 與 `j` 作為迴圈變數；以及在迴圈中增長陣列，而不是預先配置。"
+        }
+      ]
+    },
+    {
+      "h": "接下來可以學什麼",
+      "body": [
+        {
+          "ul": [
+            "MathWorks 的 MATLAB 文件，從入門頁面開始。",
+            "MATLAB Onramp，MathWorks 提供的免費互動式入門課程。",
+            "如果你使用 Octave，請閱讀 GNU Octave 手冊，包括其中關於 MATLAB 相容性的說明。",
+            "接下來請學習向量化、用於資料檔案的 `readtable`，以及繪圖函式。"
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "MATLAB 有免費版嗎？",
+      "a": "MATLAB 本身需要授權，不過 MathWorks 提供試用，許多大學也提供校園授權。GNU Octave 是免費的開放原始碼程式，可以執行大多數基本的 MATLAB 程式碼。"
+    },
+    {
+      "q": "MATLAB 中的 * 與 .* 有什麼差別？",
+      "a": "`*` 是線性代數的矩陣乘法，要求內部維度相符。`.*` 則是將兩個相同大小的陣列對應的元素相乘。"
+    },
+    {
+      "q": "GNU Octave 與 MATLAB 完全相容嗎？",
+      "a": "並非完全相容。核心語法、矩陣、函式與繪圖大致相容，但 Octave 沒有 MathWorks 工具箱、Simulink 與部分較新的 MATLAB 功能，而且它還接受一些自己額外的語法形式。"
+    },
+    {
+      "q": "為什麼 MATLAB 從 1 開始索引？",
+      "a": "MATLAB 遵循數學記號，向量或矩陣的第一個元素是第 1 個元素。Fortran、R 與 Julia 也使用相同的慣例。"
+    },
+    {
+      "q": "該學 MATLAB 還是 Python？",
+      "a": "如果你的課程、實驗室或公司使用 MATLAB，尤其是搭配 Simulink 或特定工具箱，就學 MATLAB。搭配 NumPy、SciPy 與 Matplotlib 的 Python 是免費的，也更通用，而且兩者的概念可以互通。"
+    }
+  ]
+}

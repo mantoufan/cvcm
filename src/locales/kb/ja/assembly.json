@@ -1,0 +1,253 @@
+{
+  "title": "アセンブリ言語入門：x86-64のレジスタ・NASM構文・システムコール・関数を解説 — cv.cm",
+  "description": "LinuxでNASMを使ったx86-64アセンブリを学べる入門講座。レジスタ、算術、ジャンプとループ、メモリアドレッシング、システムコール、呼び出し規約、AT&T構文を解説します。",
+  "h1": "アセンブリ言語入門：初心者向けチュートリアル(x86-64、NASM)",
+  "answer": "アセンブリ言語は、プロセッサーの機械語命令を人間が読める形にしたものです。各行はたいてい、`mov rax, 1`や`add rax, rbx`のような1つの命令になります。レジスタ、メモリアドレス、スタックを直接扱い、変数も型もなく、ループはジャンプを組み合わせて自分で作ります。このチュートリアルでは、LinuxのNASMアセンブラーでx86-64を使います。`.asm`ファイルを書き、`nasm -f elf64`でアセンブルし、`ld`でリンクします。",
+  "sections": [
+    {
+      "h": "アセンブリとは何か、誰が使うのか",
+      "body": [
+        "プロセッサーのファミリーごとに独自の命令セットがあり、したがって独自のアセンブリ言語があります。x86-64(AMD64とも呼ばれます)はほとんどのデスクトップPCとサーバーで動き、ARM(AArch64)はほとんどのスマートフォン、Apple siliconのMac、多くのサーバーで動いています。アセンブラーはアセンブリを機械語に変換し、リンカーがその結果をまとめて実行ファイルにします。",
+        "今日では、全体をアセンブリで書くプログラムはほとんどありません。OSカーネルやブートローダー、性能が重要なルーチン(暗号、コーデック、数学ライブラリ)、組み込みファームウェア、コンパイラ開発、セキュリティ研究、リバースエンジニアリングで使われます。最もよくあるのは、コンパイラが何を生成したかを理解したり、クラッシュをデバッグしたりするために、開発者がアセンブリを読む場面です。"
+      ]
+    },
+    {
+      "h": "NASMのインストールとhello, worldの実行",
+      "body": [
+        "DebianやUbuntuでは、`sudo apt install nasm binutils`でツールをインストールします(`binutils`にリンカーの`ld`が含まれます)。このプログラムはシステムコールでLinuxカーネルを直接呼び出すので、Cライブラリは不要です。",
+        {
+          "code": "; hello.asm - x86-64 Linux, NASM syntax\nsection .data\n    msg     db \"Hello, world!\", 10   ; 10 = newline\n    msglen  equ $ - msg              ; length computed by the assembler\n\nsection .text\n    global _start\n\n_start:\n    mov     rax, 1          ; system call number 1 = write\n    mov     rdi, 1          ; file descriptor 1 = stdout\n    mov     rsi, msg        ; address of the bytes\n    mov     rdx, msglen     ; number of bytes\n    syscall\n\n    mov     rax, 60         ; system call number 60 = exit\n    xor     rdi, rdi        ; exit code 0\n    syscall",
+          "lang": "asm"
+        },
+        {
+          "code": "nasm -f elf64 hello.asm -o hello.o\nld hello.o -o hello\n./hello\n# Hello, world!",
+          "lang": "shell"
+        },
+        "`section .data`は初期化済みデータ、`section .text`はコードを置き、`_start`は`ld`が探すエントリーポイントです。コメントは`;`で始まります。最後の`exit`システムコールがないと、プロセッサーは続くバイト列をそのまま実行し続け、プログラムはクラッシュします。"
+      ]
+    },
+    {
+      "h": "レジスタとデータサイズ",
+      "body": [
+        "レジスタは、CPUの内部にある、小さくて非常に高速な記憶場所です。x86-64には16個の64ビット汎用レジスタがあります。それぞれ、より小さな部分としても使えます。",
+        {
+          "table": {
+            "head": [
+              "レジスタ",
+              "主な役割",
+              "小さな部分"
+            ],
+            "rows": [
+              [
+                "`rax`",
+                "戻り値、システムコール番号",
+                "`eax`(32ビット)、`ax`(16)、`al`(8)"
+              ],
+              [
+                "`rdi`, `rsi`, `rdx`",
+                "関数またはシステムコールの最初の3つの引数",
+                "`edi`, `esi`, `edx`"
+              ],
+              [
+                "`rcx`, `r8`, `r9`",
+                "関数の4番目から6番目の引数",
+                "`ecx`, `r8d`, `r9d`"
+              ],
+              [
+                "`rbx`, `rbp`, `r12`–`r15`",
+                "関数呼び出しをまたいで保持すべき値(呼び出される側が保存)",
+                "`ebx`, `r12d`"
+              ],
+              [
+                "`rsp`",
+                "スタックポインター：スタックの先頭のアドレス",
+                "データには使わない"
+              ],
+              [
+                "`rip`",
+                "命令ポインター(ジャンプ、呼び出し、リターンでのみ変わる)",
+                "直接書き込めない"
+              ]
+            ]
+          }
+        },
+        "メモリ上のデータは、`db`(バイト、8ビット)、`dw`(ワード、16)、`dd`(ダブルワード、32)、`dq`(クワッドワード、64)で宣言します。初期化されないバッファは、`resb`、`resq`などを使って`section .bss`に置きます。`eax`のような32ビットレジスタに書き込むと、`rax`の上位32ビットもクリアされます。そのため、`xor eax, eax`は`rax`をゼロにする一般的な方法です。"
+      ]
+    },
+    {
+      "h": "基本の命令と制御フロー",
+      "body": [
+        "ほとんどの命令は、先にデスティネーション(書き込み先)、次にソース(読み出し元)を取ります。`add rax, rbx`は`rax = rax + rbx`を意味します。`if`や`while`の文はありません。`cmp`で値を比較してフラグを設定し、条件付きジャンプを使います。",
+        {
+          "table": {
+            "head": [
+              "命令",
+              "意味"
+            ],
+            "rows": [
+              [
+                "`mov rax, rbx`",
+                "`rbx`を`rax`にコピーする"
+              ],
+              [
+                "`add`, `sub`, `imul`, `inc`, `dec`",
+                "整数演算"
+              ],
+              [
+                "`cmp rax, 10`",
+                "比較(`rax - 10`を計算し、フラグだけを設定する)"
+              ],
+              [
+                "`je`, `jne`, `jl`, `jg`, `jle`, `jge`",
+                "等しい、等しくない、より小さい、より大きい…ならジャンプ(符号付き)"
+              ],
+              [
+                "`jmp label`",
+                "無条件にジャンプする"
+              ],
+              [
+                "`push`, `pop`",
+                "値をスタックに置く、取り出す"
+              ],
+              [
+                "`call`, `ret`",
+                "関数を呼び出す、関数から戻る"
+              ]
+            ]
+          }
+        },
+        {
+          "code": "; sum.asm - add 1..10, return the result as the exit code\nsection .text\n    global _start\n\n_start:\n    xor     rax, rax        ; sum = 0\n    mov     rcx, 1          ; i = 1\n.loop:\n    cmp     rcx, 10\n    jg      .done           ; if i > 10, leave the loop\n    add     rax, rcx        ; sum += i\n    inc     rcx             ; i++\n    jmp     .loop\n.done:\n    mov     rdi, rax        ; exit code = sum\n    mov     rax, 60         ; exit\n    syscall",
+          "lang": "asm"
+        },
+        {
+          "code": "nasm -f elf64 sum.asm -o sum.o && ld sum.o -o sum\n./sum; echo $?\n# 55",
+          "lang": "shell"
+        },
+        "`.loop`のようにドットで始まるラベルは、直前の通常のラベルのローカルなラベルです。`jl`と`jg`は値を符号付きとして扱い、`jb`と`ja`は符号なしのバージョンです。"
+      ]
+    },
+    {
+      "h": "メモリアドレッシングと配列",
+      "body": [
+        "角かっこは「このアドレスのメモリ」を意味します。アドレスは、ベースレジスタ、1・2・4・8を掛けたインデックスレジスタ、定数を組み合わせられます：`[base + index*scale + offset]`。これにより、配列アクセスが1つの命令で済みます。",
+        {
+          "code": "section .data\n    nums    dq 3, 1, 4, 1, 5         ; five 64-bit integers\n    count   equ ($ - nums) / 8\n\nsection .text\n    global _start\n\n_start:\n    xor     rax, rax                 ; total = 0\n    xor     rcx, rcx                 ; index = 0\n.next:\n    add     rax, [nums + rcx*8]      ; total += nums[index]\n    inc     rcx\n    cmp     rcx, count\n    jl      .next\n    mov     rdi, rax                 ; exit code 14\n    mov     rax, 60\n    syscall",
+          "lang": "asm"
+        },
+        "`mov rax, nums`はアドレスをロードし、`mov rax, [nums]`はそこに格納された値をロードします。`lea rsi, [rbx + 8]`は、メモリを読まずにアドレスを計算します。レジスタからサイズがわからない場合は、`mov qword [rbx], 0`のように明示します。"
+      ]
+    },
+    {
+      "h": "関数と呼び出し規約",
+      "body": [
+        "Linuxでは、関数はSystem V AMD64 ABIに従います。整数の引数は`rdi`、`rsi`、`rdx`、`rcx`、`r8`、`r9`に入り、戻り値は`rax`に入ります。関数は`rbx`、`rbp`、`r12`–`r15`、`rsp`を保存しなければならず、`call`の直前では`rsp`が16の倍数でなければなりません。これらの規則に従うと、アセンブリから`printf`などのC関数を呼べ、Cからアセンブリを呼べます。",
+        {
+          "code": "; square.asm - define a function and call printf from the C library\n    extern  printf\n    global  main\n\nsection .data\n    fmt     db \"%ld squared is %ld\", 10, 0\n\nsection .text\nsquare:                         ; long square(long x)\n    mov     rax, rdi\n    imul    rax, rdi\n    ret\n\nmain:\n    push    rbx                 ; save rbx; also aligns rsp to 16\n    mov     rbx, 7\n    mov     rdi, rbx\n    call    square              ; rax = 49\n    lea     rdi, [rel fmt]      ; argument 1: format string\n    mov     rsi, rbx            ; argument 2\n    mov     rdx, rax            ; argument 3\n    xor     eax, eax            ; varargs: no vector registers used\n    call    printf wrt ..plt\n    xor     eax, eax            ; return 0 from main\n    pop     rbx\n    ret\n\nsection .note.GNU-stack noalloc noexec nowrite progbits",
+          "lang": "asm"
+        },
+        {
+          "code": "nasm -f elf64 square.asm -o square.o\ngcc square.o -o square\n./square\n# 7 squared is 49",
+          "lang": "shell"
+        },
+        "`gcc`でリンクすると、`main`を呼び出すCランタイムが加わります。`[rel fmt]`と`wrt ..plt`は位置独立コードを生成します。最近のLinuxディストリビューションは、これをデフォルトで使います。最後の行は、スタックを実行不可としてマークし、リンカーの警告を避けます。"
+      ]
+    },
+    {
+      "h": "エラー処理",
+      "body": [
+        "アセンブリに例外はありません。失敗したLinuxのシステムコールは、`rax`に負のエラー番号を返す(たとえば-2は`ENOENT`で「そのようなファイルはない」)ので、呼び出しのたびに符号を確認します。C標準ライブラリの関数は、戻り値と`errno`でエラーを報告します。無効なアドレスの読み取りやゼロ除算のようなハードウェアの障害は、シグナル(セグメンテーション違反や浮動小数点例外)でプログラムを止めます。",
+        {
+          "code": "    mov     rax, 2              ; system call 2 = open\n    lea     rdi, [rel path]     ; path is a zero-terminated string\n    xor     esi, esi            ; flags: O_RDONLY\n    syscall\n    test    rax, rax\n    js      .open_failed        ; negative result = -errno\n    mov     r12, rax            ; success: rax is the file descriptor",
+          "lang": "asm"
+        }
+      ]
+    },
+    {
+      "h": "小さな完成プログラム：数値を10進数で出力する",
+      "body": [
+        "数値を出力するには、自分で数字に変換する必要があります。このプログラムは、1 + 2 + ... + 100を計算し、10で繰り返し割って右から左へ桁を取り出し、1回のシステムコールで書き出します。",
+        {
+          "code": "section .bss\n    buf     resb 32\n\nsection .text\n    global _start\n\n_start:\n    xor     rax, rax\n    mov     rcx, 100\n.sum:\n    add     rax, rcx\n    loop    .sum                ; rcx -= 1, repeat while rcx != 0\n    lea     rsi, [buf + 31]\n    mov     byte [rsi], 10      ; newline at the end of the buffer\n    mov     rbx, 10\n.digit:\n    xor     rdx, rdx            ; div uses rdx:rax as the dividend\n    div     rbx                 ; rax = quotient, rdx = remainder\n    add     dl, '0'             ; remainder to ASCII digit\n    dec     rsi\n    mov     [rsi], dl\n    test    rax, rax\n    jnz     .digit\n    mov     rdx, buf + 32\n    sub     rdx, rsi            ; length = end - start\n    mov     rax, 1              ; write(1, rsi, rdx)\n    mov     rdi, 1\n    syscall\n    mov     rax, 60             ; exit(0)\n    xor     rdi, rdi\n    syscall\n; prints 5050",
+          "lang": "asm"
+        },
+        {
+          "note": "初心者がよくやる間違い：`exit`システムコールを忘れる、`rdx`をクリアせずに`div`を使う(結果がオーバーフローしてプログラムがクラッシュします)、`syscall`の後も`rcx`と`r11`が保持されると思い込む(カーネルが上書きします)、スタックがずれた状態でC関数を呼ぶ、アドレスとそのアドレスにある値を混同する(`msg`と`[msg]`)、例を読むときにIntelとAT&Tのオペランドの順序を取り違える、などです。"
+        }
+      ]
+    },
+    {
+      "h": "AT&T構文とIntel構文、そしてARM",
+      "body": [
+        "同じx86-64の命令でも、2つの構文で書けます。NASMと、IntelやMicrosoftのほとんどのドキュメントはIntel構文を使います。GNUアセンブラー(`as`)、GCCの出力、`objdump`は、デフォルトでAT&T構文を使います。`objdump -d -M intel`や`gcc -S -masm=intel`でIntel構文に切り替えられます。",
+        {
+          "table": {
+            "head": [
+              "項目",
+              "Intel (NASM)",
+              "AT&T (GNU as)"
+            ],
+            "rows": [
+              [
+                "オペランドの順序",
+                "`mov rax, 1`(デスティネーションが先)",
+                "`movq $1, %rax`(ソースが先)"
+              ],
+              [
+                "レジスタと定数",
+                "`rax`, `5`",
+                "`%rax`, `$5`"
+              ],
+              [
+                "メモリオペランド",
+                "`[rbx + rcx*8 + 16]`",
+                "`16(%rbx,%rcx,8)`"
+              ],
+              [
+                "オペランドのサイズ",
+                "`mov qword [rbx], 0`",
+                "`movq $0, (%rbx)`(サフィックスはb、w、l、q)"
+              ]
+            ]
+          }
+        },
+        "ARMプロセッサーは、別の命令セットを使います。AArch64には31個の64ビット汎用レジスタ(`x0`–`x30`)、固定長32ビットの命令エンコーディング、ロード/ストア設計があります。算術はレジスタに対してだけ行い、メモリは`ldr`と`str`でアクセスします。Linuxでは、システムコール番号を`x8`に入れ、`svc #0`で呼び出します。",
+        {
+          "code": "// AArch64 Linux, GNU as syntax: exit(0)\n    mov     x0, #0          // exit status\n    mov     x8, #93         // system call 93 = exit\n    svc     #0",
+          "lang": "asm"
+        }
+      ]
+    },
+    {
+      "h": "次に学ぶこと",
+      "body": [
+        {
+          "ul": [
+            "ディレクティブ、マクロ、出力形式についてのNASMマニュアル。",
+            "すべての命令の正確な動作を載せたIntel 64 and IA-32 Architectures Software Developer's Manuals。",
+            "呼び出し規約とスタックのレイアウトについてのSystem V AMD64 ABIの文書。",
+            "小さなC関数を`gcc -O2 -S -masm=intel`(またはオンラインのコンパイラエクスプローラー)でコンパイルし、生成されたアセンブリを読む。"
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "アセンブリ言語は今でも学ぶ価値がありますか？",
+      "a": "はい。コンピューターがどう動くかの理解、クラッシュのデバッグ、コンパイラの出力を読むこと、セキュリティの仕事、組み込み開発に役立ちます。アプリケーション全体をアセンブリで書くことは、今日ではほとんど現実的ではありません。"
+    },
+    {
+      "q": "x86アセンブリとARMアセンブリは同じですか？",
+      "a": "いいえ。レジスタ、命令、エンコーディングが異なる、別の命令セットです。概念(レジスタ、メモリ、ジャンプ、呼び出し規約)は共通ですが、コードはそのままでは使えません。"
+    },
+    {
+      "q": "NASMとGASの違いは何ですか？",
+      "a": "NASMはIntel構文を使う単体のアセンブラーです。GNUアセンブラーのGASはGCCが使うもので、デフォルトはAT&T構文ですが、`.intel_syntax noprefix`でIntel構文も受け付けます。"
+    },
+    {
+      "q": "このコードはWindowsやmacOSで動きますか？",
+      "a": "そのままでは動きません。命令はどのx86-64システムでも同じですが、システムコール番号、実行ファイルの形式、呼び出し規約が異なります。Windowsは別の呼び出し規約を使い、Apple silicon Macはx86-64ではなくARMを使います。"
+    }
+  ]
+}

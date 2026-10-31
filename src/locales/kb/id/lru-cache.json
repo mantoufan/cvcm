@@ -1,0 +1,223 @@
+{
+  "title": "LRU cache: hash map plus doubly linked list, kode Python O(1) — cv.cm",
+  "description": "Cara kerja LRU (least recently used) cache: get dan put O(1) dengan hash map dan doubly linked list, OrderedDict, dan functools.lru_cache di Python.",
+  "h1": "LRU cache: cara kerja, kode Python, dan kompleksitasnya",
+  "answer": "LRU (least recently used) cache menyimpan sejumlah item yang tetap dan, saat penuh, membuang (evict) item yang terakhir dipakai paling lama. Desain klasiknya menggabungkan hash map, yang menemukan key apa pun dalam O(1), dengan doubly linked list yang diurutkan berdasarkan pemakaian terbaru, yang memindahkan atau menghapus entri apa pun dalam O(1). Di Python, `collections.OrderedDict` membuat LRU cache hanya beberapa baris, dan `functools.lru_cache` menambahkannya ke fungsi apa pun.",
+  "sections": [
+    {
+      "h": "Masalah apa yang diselesaikan LRU cache",
+      "body": [
+        "Cache menyimpan hasil operasi yang lambat, seperti query database, request web, atau komputasi mahal, sehingga permintaan berulang dijawab dengan cepat. Memori terbatas, jadi cache harus memutuskan apa yang dibuang saat penuh. LRU bertaruh bahwa data yang baru dipakai akan segera dipakai lagi, dan data yang lama tidak disentuh kemungkinan besar tidak. Taruhan ini berhasil untuk banyak beban kerja nyata, itulah sebabnya LRU dan pendekatannya muncul di CPU cache, page cache sistem operasi, database, web server, dan CDN."
+      ]
+    },
+    {
+      "h": "Ide dasarnya: dua struktur bekerja bersama",
+      "body": [
+        "Kita butuh dua hal yang cepat: menemukan sebuah key, dan mengetahui key mana yang paling lama tidak dipakai. Hash map saja tidak punya urutan. List saja lambat untuk dicari. Bersama-sama, keduanya bisa melakukan keduanya:",
+        {
+          "table": {
+            "head": [
+              "Bagian",
+              "Tanggung jawab",
+              "Mengapa O(1)"
+            ],
+            "rows": [
+              [
+                "Hash map",
+                "memetakan setiap key ke node-nya di list",
+                "lookup hash rata-rata"
+              ],
+              [
+                "Doubly linked list",
+                "menjaga node berurutan dari yang paling baru sampai paling lama dipakai",
+                "melepas node dengan pointer `prev` dan `next` hanya mengubah empat referensi"
+              ],
+              [
+                "Sisi head",
+                "entri yang paling baru dipakai",
+                "entri baru dan yang diakses dipindahkan ke sini"
+              ],
+              [
+                "Sisi tail",
+                "entri yang paling lama tidak dipakai",
+                "evict dari sini saat cache penuh"
+              ]
+            ]
+          }
+        },
+        "Pada `get(key)`, cari node di map, pindahkan ke depan, dan kembalikan nilainya. Pada `put(key, value)`, perbarui atau buat node di depan; jika cache kini melebihi kapasitas, hapus node di belakang dan hapus key-nya dari map."
+      ]
+    },
+    {
+      "h": "Contoh langkah demi langkah dengan kapasitas 2",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Operasi",
+              "Hasil",
+              "Urutan sesudahnya (terbaru lebih dulu)",
+              "Catatan"
+            ],
+            "rows": [
+              [
+                "put(1, \"a\")",
+                "-",
+                "1",
+                ""
+              ],
+              [
+                "put(2, \"b\")",
+                "-",
+                "2, 1",
+                "cache penuh"
+              ],
+              [
+                "get(1)",
+                "\"a\"",
+                "1, 2",
+                "1 menjadi yang terbaru"
+              ],
+              [
+                "put(3, \"c\")",
+                "-",
+                "3, 1",
+                "membuang 2, yang paling lama tidak dipakai"
+              ],
+              [
+                "get(2)",
+                "miss",
+                "3, 1",
+                "2 sudah dibuang"
+              ],
+              [
+                "put(1, \"A\")",
+                "-",
+                "1, 3",
+                "update memindahkan 1 ke depan"
+              ],
+              [
+                "put(4, \"d\")",
+                "-",
+                "4, 1",
+                "membuang 3"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "Implementasi Python dari nol",
+      "body": [
+        "Node sentinel di head dan tail menghilangkan kasus khusus untuk list kosong: setiap node asli selalu punya node sebelum dan sesudahnya.",
+        {
+          "code": "class Node:\n    __slots__ = (\"key\", \"value\", \"prev\", \"next\")\n\n    def __init__(self, key=None, value=None):\n        self.key, self.value = key, value\n        self.prev = self.next = None\n\nclass LRUCache:\n    def __init__(self, capacity):\n        self.capacity = capacity\n        self.map = {}\n        self.head, self.tail = Node(), Node()   # sentinels\n        self.head.next, self.tail.prev = self.tail, self.head\n\n    def _unlink(self, node):\n        node.prev.next, node.next.prev = node.next, node.prev\n\n    def _push_front(self, node):\n        node.prev, node.next = self.head, self.head.next\n        self.head.next.prev = node\n        self.head.next = node\n\n    def get(self, key):\n        node = self.map.get(key)\n        if node is None:\n            return None\n        self._unlink(node)\n        self._push_front(node)\n        return node.value\n\n    def put(self, key, value):\n        if key in self.map:\n            self._unlink(self.map[key])\n        node = self.map[key] = Node(key, value)\n        self._push_front(node)\n        if len(self.map) > self.capacity:\n            lru = self.tail.prev\n            self._unlink(lru)\n            del self.map[lru.key]",
+          "lang": "python"
+        },
+        {
+          "code": "cache = LRUCache(2)\ncache.put(1, \"a\")\ncache.put(2, \"b\")\nprint(cache.get(1))   # a\ncache.put(3, \"c\")     # evicts key 2\nprint(cache.get(2))   # None\ncache.put(1, \"A\")\ncache.put(4, \"d\")     # evicts key 3\nprint(cache.get(3), cache.get(1), cache.get(4))  # None A d",
+          "lang": "python"
+        }
+      ]
+    },
+    {
+      "h": "Versi singkat dengan OrderedDict",
+      "body": [
+        "`collections.OrderedDict` sendiri adalah hash map yang digabung dengan doubly linked list, dan `move_to_end` serta `popitem(last=False)` bersifat O(1). Itu menjadikannya pilihan idiomatis di Python ketika Anda butuh LRU cache sebagai sebuah objek.",
+        {
+          "code": "from collections import OrderedDict\n\nclass LRU:\n    def __init__(self, capacity):\n        self.capacity = capacity\n        self.data = OrderedDict()\n\n    def get(self, key):\n        if key not in self.data:\n            return None\n        self.data.move_to_end(key)          # mark as most recent\n        return self.data[key]\n\n    def put(self, key, value):\n        self.data[key] = value\n        self.data.move_to_end(key)\n        if len(self.data) > self.capacity:\n            self.data.popitem(last=False)   # drop least recent\n\nc = LRU(2)\nc.put(\"x\", 1)\nc.put(\"y\", 2)\nc.get(\"x\")\nc.put(\"z\", 3)\nprint(list(c.data))  # ['x', 'z']",
+          "lang": "python"
+        }
+      ]
+    },
+    {
+      "h": "Meng-cache hasil fungsi dengan functools.lru_cache",
+      "body": [
+        "Untuk meng-cache nilai kembalian sebuah fungsi, gunakan dekorator `functools.lru_cache`. Argumen harus hashable, karena menjadi key dictionary. `cache_info()` menampilkan jumlah hit, miss, dan ukuran saat ini.",
+        {
+          "code": "from functools import lru_cache\n\n@lru_cache(maxsize=128)\ndef fib(n):\n    return n if n < 2 else fib(n - 1) + fib(n - 2)\n\nprint(fib(80))           # 23416728348467685\nprint(fib.cache_info())\n# CacheInfo(hits=78, misses=81, maxsize=128, currsize=81)",
+          "lang": "python"
+        },
+        "`maxsize=None` memberi cache tanpa batas, yang dilakukan `functools.cache` (Python 3.9 ke atas). Panggil `fib.cache_clear()` untuk mengosongkannya."
+      ]
+    },
+    {
+      "h": "Kompleksitas waktu dan ruang",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Operasi",
+              "Waktu",
+              "Alasan"
+            ],
+            "rows": [
+              [
+                "get",
+                "O(1) rata-rata",
+                "lookup hash ditambah melepas dan memasang kembali satu node"
+              ],
+              [
+                "put (insert atau update)",
+                "O(1) rata-rata",
+                "insert hash ditambah sejumlah konstan perubahan pointer"
+              ],
+              [
+                "Evict",
+                "O(1)",
+                "node yang paling lama tidak dipakai selalu berada di sebelah sentinel tail"
+              ],
+              [
+                "Ruang",
+                "O(capacity)",
+                "satu entri map dan satu node list per item yang di-cache"
+              ]
+            ]
+          }
+        },
+        {
+          "note": "Desain keliru yang umum menyimpan key dalam `list` Python biasa dan memanggil `list.remove(key)` pada setiap akses. Itu O(n) per operasi dan menggagalkan tujuan cache."
+        }
+      ]
+    },
+    {
+      "h": "Varian, kesalahan, dan kapan memakai LRU",
+      "body": [
+        {
+          "ul": [
+            "LFU (least frequently used) membuang item dengan akses paling sedikit; ia melindungi item populer dari scan sekali jalan tetapi lebih kompleks.",
+            "LRU aproksimasi: sistem seperti Redis mengambil sampel beberapa key dan membuang yang tertua di antaranya, alih-alih menjaga list yang tepat, sehingga menghemat memori.",
+            "TTL cache menghapus entri setelah waktu tertentu, sering dikombinasikan dengan batas ukuran.",
+            "Lupa memindahkan entri ke depan pada `get`, atau pada `put` untuk key yang sudah ada, mengubah LRU menjadi FIFO.",
+            "Lupa menghapus key yang di-evict dari hash map meninggalkan entri menggantung dan membocorkan memori.",
+            "Berbagi LRU cache antar thread membutuhkan lock di sekitar setiap operasi; `functools.lru_cache` aman dipanggil dari beberapa thread."
+          ]
+        },
+        "LRU adalah default yang baik ketika pemakaian terbaru memprediksi pemakaian mendatang. Ia buruk ketika scan besar sekali jalan mendorong keluar data yang sering dipakai; beban kerja seperti itu lebih cocok memakai LFU atau kebijakan yang tahan scan. Merancang LRU cache dengan operasi O(1) juga salah satu soal wawancara coding yang paling umum, karena menguji hash map dan linked list sekaligus."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "LRU singkatan dari apa?",
+      "a": "Least recently used. Saat cache penuh, ia membuang entri yang paling lama tidak dibaca atau ditulis."
+    },
+    {
+      "q": "Mengapa LRU cache butuh doubly linked list?",
+      "a": "Untuk menghapus node dari tengah list dalam O(1), Anda butuh node sebelumnya. Doubly linked list menyimpan `prev` di setiap node; singly linked list akan memerlukan pencarian O(n)."
+    },
+    {
+      "q": "Bisakah saya mengimplementasikan LRU cache hanya dengan dict Python?",
+      "a": "Sejak Python 3.7, `dict` mempertahankan urutan penyisipan, sehingga Anda bisa menghapus dan menyisipkan ulang key untuk menandainya sebagai terbaru dan meng-evict `next(iter(d))`. `OrderedDict` menyatakan maksudnya lebih jelas dengan `move_to_end` dan `popitem(last=False)`."
+    },
+    {
+      "q": "Apa bedanya lru_cache dan cache di functools?",
+      "a": "`functools.cache` adalah cache tanpa batas, setara dengan `lru_cache(maxsize=None)`. `lru_cache` dengan angka membuang hasil yang paling lama tidak dipakai begitu mencapai ukuran itu."
+    },
+    {
+      "q": "Apakah LRU selalu kebijakan eviction terbaik?",
+      "a": "Tidak. Ia sederhana dan bekerja baik ketika item terbaru kemungkinan dipakai ulang, tetapi scan sekuensial besar bisa membuang data yang berguna. LFU, ARC, dan kebijakan lain menangani beban kerja seperti itu dengan lebih baik."
+    }
+  ]
+}

@@ -1,0 +1,229 @@
+{
+  "title": "Insertion sort explicado: cómo funciona, código en Python y complejidad — cv.cm",
+  "description": "Insertion sort (ordenamiento por inserción) construye una lista ordenada elemento a elemento desplazando a la derecha los mayores. Traza, código en Python, casos O(n²) y O(n), estabilidad y usos.",
+  "h1": "Insertion sort (ordenamiento por inserción): cómo funciona, código y complejidad",
+  "answer": "Insertion sort construye el resultado ordenado un elemento cada vez. Toma el siguiente elemento, desplaza una posición a la derecha todos los elementos mayores de la parte ordenada y coloca el elemento en el hueco, igual que mucha gente ordena las cartas que tiene en la mano. Es O(n²) en el caso promedio y en el peor, O(n) con una entrada ya ordenada o casi ordenada, usa O(1) de espacio extra y es estable. Es el ordenamiento simple más rápido para arreglos pequeños o casi ordenados, por eso lo usan algoritmos híbridos como Timsort.",
+  "sections": [
+    {
+      "h": "La idea en palabras sencillas",
+      "body": [
+        "Considera el primer elemento como una lista ordenada de longitud uno. Toma el segundo elemento e insértalo antes o después del primero. Toma el tercero e insértalo en el lugar correcto entre los dos primeros. Continúa hasta que todos los elementos hayan sido insertados.",
+        "Para insertar, aparta el nuevo elemento (llámalo `key`) y recorre hacia la izquierda la parte ordenada. Cada elemento mayor que `key` se mueve una posición a la derecha. Cuando llegues a un elemento que no sea mayor, o al inicio de la lista, coloca `key` en el hueco vacío."
+      ]
+    },
+    {
+      "h": "Ejemplo resuelto, paso a paso",
+      "body": [
+        "Ordena `[12, 11, 13, 5, 6]`. La parte anterior a la barra está ordenada (pero aún no es definitiva).",
+        {
+          "table": {
+            "head": [
+              "Paso",
+              "key",
+              "Desplazamientos",
+              "Lista tras el paso"
+            ],
+            "rows": [
+              [
+                "1",
+                "11",
+                "12 se mueve a la derecha",
+                "`[11, 12 | 13, 5, 6]`"
+              ],
+              [
+                "2",
+                "13",
+                "ninguno, 12 es menor",
+                "`[11, 12, 13 | 5, 6]`"
+              ],
+              [
+                "3",
+                "5",
+                "13, 12 y 11 se mueven a la derecha",
+                "`[5, 11, 12, 13 | 6]`"
+              ],
+              [
+                "4",
+                "6",
+                "13, 12 y 11 se mueven a la derecha",
+                "`[5, 6, 11, 12, 13]`"
+              ]
+            ]
+          }
+        },
+        "Fíjate en el paso 2: un elemento que ya está en su sitio cuesta una sola comparación. Por eso insertion sort es rápido con entradas casi ordenadas."
+      ]
+    },
+    {
+      "h": "Implementación en Python",
+      "body": [
+        {
+          "code": "def insertion_sort(items):\n    \"\"\"Sort a list in place, ascending. Returns the same list.\"\"\"\n    for i in range(1, len(items)):\n        key = items[i]\n        j = i - 1\n        while j >= 0 and items[j] > key:   # strict >, keeps it stable\n            items[j + 1] = items[j]        # shift right\n            j -= 1\n        items[j + 1] = key                 # drop into the gap\n    return items\nprint(insertion_sort([12, 11, 13, 5, 6]))   # [5, 6, 11, 12, 13]\nprint(insertion_sort([1, 2, 3, 4]))         # [1, 2, 3, 4], 3 comparisons",
+          "lang": "python"
+        },
+        "Desplazar en lugar de intercambiar escribe cada elemento movido una sola vez, lo que supone aproximadamente la mitad del trabajo de la versión basada en intercambios. También puedes encontrar el punto de inserción con búsqueda binaria, como abajo. Esto reduce las comparaciones a O(n log n) en total, pero los desplazamientos siguen siendo O(n²), así que el tiempo global sigue siendo O(n²).",
+        {
+          "code": "from bisect import insort_right\ndef binary_insertion_sort(items):\n    result = []\n    for x in items:\n        insort_right(result, x)   # stable: equal items go after\n    return result\nprint(binary_insertion_sort([3, 1, 2, 1]))   # [1, 1, 2, 3]",
+          "lang": "python"
+        }
+      ]
+    },
+    {
+      "h": "Complejidad temporal y espacial",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Caso",
+              "Tiempo",
+              "Motivo"
+            ],
+            "rows": [
+              [
+                "Mejor (ya ordenada)",
+                "O(n)",
+                "cada elemento necesita una comparación y ningún desplazamiento"
+              ],
+              [
+                "Promedio (orden aleatorio)",
+                "O(n²)",
+                "unos n²/4 desplazamientos en promedio"
+              ],
+              [
+                "Peor (orden inverso)",
+                "O(n²)",
+                "el elemento i se desplaza más allá de los i elementos anteriores"
+              ],
+              [
+                "Espacio extra",
+                "O(1)",
+                "ordena in situ con un valor temporal"
+              ]
+            ]
+          }
+        },
+        "Con más precisión, el tiempo de ejecución es O(n + I), donde I es el número de inversiones (pares desordenados). Si cada elemento está como máximo a k posiciones de su lugar final, I es como mucho n · k, así que insertion sort es O(n · k): muy rápido cuando k es pequeño."
+      ]
+    },
+    {
+      "h": "Cómo se compara insertion sort con otros ordenamientos",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Algoritmo",
+              "Mejor",
+              "Promedio",
+              "Peor",
+              "Espacio extra",
+              "Estable"
+            ],
+            "rows": [
+              [
+                "Insertion sort",
+                "O(n)",
+                "O(n²)",
+                "O(n²)",
+                "O(1)",
+                "Sí"
+              ],
+              [
+                "Bubble sort",
+                "O(n)",
+                "O(n²)",
+                "O(n²)",
+                "O(1)",
+                "Sí"
+              ],
+              [
+                "Selection sort",
+                "O(n²)",
+                "O(n²)",
+                "O(n²)",
+                "O(1)",
+                "No"
+              ],
+              [
+                "Merge sort",
+                "O(n log n)",
+                "O(n log n)",
+                "O(n log n)",
+                "O(n)",
+                "Sí"
+              ],
+              [
+                "Quicksort",
+                "O(n log n)",
+                "O(n log n)",
+                "O(n²)",
+                "O(log n)",
+                "No"
+              ],
+              [
+                "Heapsort",
+                "O(n log n)",
+                "O(n log n)",
+                "O(n log n)",
+                "O(1)",
+                "No"
+              ],
+              [
+                "Timsort (`sorted` de Python)",
+                "O(n)",
+                "O(n log n)",
+                "O(n log n)",
+                "O(n)",
+                "Sí"
+              ]
+            ]
+          }
+        },
+        "Insertion sort es estable porque un elemento solo se mueve a la izquierda por encima de elementos estrictamente mayores. También es online: puede ordenar los datos a medida que llegan, manteniendo un prefijo ordenado en todo momento. Con listas cortas, su baja sobrecarga supera a los algoritmos O(n log n), así que Timsort (usado por Python y por Java para objetos) ordena las secuencias cortas con insertion sort binario, y muchas implementaciones de quicksort cambian a insertion sort por debajo de un tamaño pequeño."
+      ]
+    },
+    {
+      "h": "Variantes y errores comunes",
+      "body": [
+        {
+          "ul": [
+            "Insertion sort binario: búsqueda binaria de la posición y luego desplazamiento. Menos comparaciones, lo que ayuda cuando comparar es costoso.",
+            "Shell sort: aplica insertion sort a elementos separados por un hueco y luego reduce el hueco hasta 1. Mueve rápidamente los elementos lejanos y es mucho más rápido que insertion sort simple en arreglos grandes.",
+            "Insertion sort en listas enlazadas: no hace falta desplazar, pero encontrar la posición sigue siendo un recorrido lineal."
+          ]
+        },
+        {
+          "note": "Errores frecuentes: escribir `items[j] >= key` (mueve elementos iguales y rompe la estabilidad), comprobar `items[j] > key` antes que `j >= 0` (en Python, `items[-1]` lee en silencio el último elemento en lugar de fallar) y escribir `key` en `items[j]` en lugar de `items[j + 1]` después del bucle."
+        }
+      ]
+    },
+    {
+      "h": "Cuándo usar insertion sort",
+      "body": [
+        "Úsalo para arreglos pequeños (decenas de elementos), para datos casi ordenados, como una lista que se ordenó y a la que luego se añadieron unos pocos elementos, y cuando necesites un ordenamiento estable, simple e in situ. Para datos aleatorios grandes, usa un ordenamiento O(n log n); en Python eso significa `sorted()` o `list.sort()`, que ya aplican insertion sort internamente a las secuencias cortas.",
+        "Las preguntas de entrevista suelen pedir la traza, el mejor y el peor caso, por qué es estable o por qué supera a los algoritmos O(n log n) con entradas pequeñas y casi ordenadas."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "¿Es estable insertion sort?",
+      "a": "Sí. Los elementos solo se mueven a la izquierda por encima de elementos estrictamente mayores, así que los elementos iguales mantienen su orden original."
+    },
+    {
+      "q": "¿Cuál es el mejor caso de insertion sort?",
+      "a": "O(n), cuando la entrada ya está ordenada: cada elemento nuevo se compara una vez con su vecino de la izquierda y se queda en su sitio."
+    },
+    {
+      "q": "¿Por qué se usa insertion sort en Timsort?",
+      "a": "Con secuencias cortas, su sobrecarga muy baja lo hace más rápido que merge sort o quicksort, y además es estable. Timsort usa insertion sort binario para ampliar las secuencias cortas antes de combinarlas."
+    },
+    {
+      "q": "¿Es insertion sort mejor que bubble sort?",
+      "a": "Sí, en la práctica. Ambos son O(n²) y estables, pero insertion sort hace menos comparaciones y escrituras y se adapta mejor a entradas casi ordenadas."
+    },
+    {
+      "q": "¿La búsqueda binaria hace que insertion sort sea O(n log n)?",
+      "a": "No. Reduce el número de comparaciones a O(n log n), pero desplazar elementos para hacer sitio sigue siendo O(n²) en el peor caso."
+    }
+  ]
+}

@@ -1,0 +1,183 @@
+{
+  "title": "Học lập trình PHP cơ bản: biến, mảng, hàm, lớp và form — cv.cm",
+  "description": "Học PHP 8 hiện đại trong một trang: chạy Hello world, biến và kiểu dữ liệu, điều khiển luồng, hàm, mảng, lớp và enum, ngoại lệ cùng một trang web nhỏ.",
+  "h1": "Hướng dẫn học lập trình PHP cơ bản cho người mới",
+  "answer": "PHP là ngôn ngữ kịch bản phía máy chủ được tạo ra cho web: tệp PHP chạy trên máy chủ rồi gửi HTML hoặc JSON về trình duyệt. Cài PHP, lưu `<?php echo \"Hello, world\";` thành `hello.php` và chạy `php hello.php`, hoặc bật máy chủ cục bộ bằng `php -S localhost:8000`. Các ý tưởng cốt lõi là biến bắt đầu bằng `$`, mảng linh hoạt, hàm có khai báo kiểu, lớp, ngoại lệ và cách xử lý dữ liệu người dùng một cách an toàn.",
+  "sections": [
+    {
+      "h": "PHP là gì và dùng để làm gì",
+      "body": [
+        "PHP do Rasmus Lerdorf tạo ra năm 1994; tên gọi hiện nay là viết tắt của \"PHP: Hypertext Preprocessor\". Nó chạy trên hầu hết các dịch vụ hosting và vận hành một phần lớn các website, trong đó có WordPress, Drupal và MediaWiki của Wikipedia. Lập trình viên dùng PHP cho website nội dung, cửa hàng trực tuyến, REST API và ứng dụng web đầy đủ với các framework như Laravel và Symfony. PHP 8 hiện đại có hệ thống kiểu, trình biên dịch JIT, enum, attribute và hiệu năng tốt hơn nhiều so với các bản cũ."
+      ]
+    },
+    {
+      "h": "Cài PHP và chạy Hello, world",
+      "body": [
+        "Cài PHP từ php.net hoặc bằng trình quản lý gói (`brew install php`, `sudo apt install php-cli`, hay gói tổng hợp như XAMPP trên Windows). Kiểm tra bằng `php -v`. Mã PHP nằm giữa thẻ `<?php` và thẻ đóng `?>` (không bắt buộc).",
+        {
+          "code": "<?php\necho \"Hello, world\\n\";",
+          "lang": "php"
+        },
+        {
+          "code": "php hello.php\n# Hello, world\nphp -S localhost:8000    # serve the current folder at http://localhost:8000",
+          "lang": "shell"
+        },
+        "Trong các tệp chỉ chứa mã PHP, hãy bỏ thẻ đóng `?>` để tránh vô tình gửi khoảng trắng thừa về trình duyệt."
+      ]
+    },
+    {
+      "h": "Biến và các kiểu dữ liệu cơ bản",
+      "body": [
+        "Tên biến bắt đầu bằng `$`. Kiểu dữ liệu là động, nhưng bạn có thể khai báo kiểu cho tham số và giá trị trả về, còn `declare(strict_types=1);` ở đầu tệp sẽ chặn việc tự động chuyển đổi kiểu khi gọi hàm.",
+        {
+          "table": {
+            "head": [
+              "Kiểu",
+              "Ví dụ",
+              "Ghi chú"
+            ],
+            "rows": [
+              [
+                "`int`",
+                "`$n = 42;`",
+                "64 bit trên hầu hết hệ thống"
+              ],
+              [
+                "`float`",
+                "`$x = 3.14;`",
+                "Độ chính xác kép"
+              ],
+              [
+                "`string`",
+                "`$s = \"hi $name\";`",
+                "Dấu nháy kép nội suy biến, dấu nháy đơn thì không"
+              ],
+              [
+                "`bool`",
+                "`$ok = true;`",
+                "Từ khóa không phân biệt hoa thường"
+              ],
+              [
+                "`array`",
+                "`$a = [1, 2];`",
+                "Bản đồ có thứ tự: vừa là danh sách vừa là từ điển"
+              ],
+              [
+                "`null`",
+                "`$v = null;`",
+                "Không có giá trị"
+              ]
+            ]
+          }
+        },
+        {
+          "code": "<?php\n$name = \"Ada\";\n$count = 7;\necho \"$name has $count items\\n\";        // Ada has 7 items\necho 'No $interpolation here' . \"\\n\";   // No $interpolation here\necho intdiv($count, 2), \" \", $count / 2, \"\\n\";  // 3 3.5\nvar_dump((int) \"12\" + 1);                // int(13)",
+          "lang": "php"
+        },
+        "Toán tử `.` nối chuỗi; `+` chỉ dùng cho số."
+      ]
+    },
+    {
+      "h": "Điều khiển luồng",
+      "body": [
+        {
+          "code": "<?php\n$score = 72;\nif ($score >= 90) {\n    echo \"A\\n\";\n} elseif ($score >= 70) {\n    echo \"B\\n\";                   // B\n} else {\n    echo \"C\\n\";\n}\n\nfor ($i = 0; $i < 3; $i++) {\n    echo $i, \" \";                 // 0 1 2\n}\necho \"\\n\";\n\nforeach ([\"apple\", \"pear\"] as $fruit) {\n    echo $fruit, \"\\n\";\n}\n\n$kind = match ($day = \"SAT\") {   // match is strict and returns a value\n    \"SAT\", \"SUN\" => \"weekend\",\n    default => \"weekday\",\n};\necho $kind, \"\\n\";                 // weekend",
+          "lang": "php"
+        },
+        "`match` (từ PHP 8.0) so sánh bằng `===` và báo lỗi khi không nhánh nào khớp, khác với `switch` cũ vốn so sánh lỏng và chạy tràn xuống nhánh sau nếu thiếu `break`."
+      ]
+    },
+    {
+      "h": "Hàm",
+      "body": [
+        {
+          "code": "<?php\ndeclare(strict_types=1);\n\nfunction greet(string $name, string $greeting = \"Hello\"): string\n{\n    return \"$greeting, $name!\";\n}\n\necho greet(\"Lin\"), \"\\n\";                    // Hello, Lin!\necho greet(greeting: \"Hi\", name: \"Lin\"), \"\\n\"; // Hi, Lin!  (named arguments)\n\n$square = fn(int $x): int => $x * $x;       // arrow function\necho $square(5), \"\\n\";                      // 25\n\nfunction total(int ...$nums): int           // variadic\n{\n    return array_sum($nums);\n}\necho total(1, 2, 3), \"\\n\";                  // 6",
+          "lang": "php"
+        }
+      ]
+    },
+    {
+      "h": "Tính năng đặc trưng: mảng",
+      "body": [
+        "Mảng PHP là một kiểu linh hoạt, dùng được như danh sách, từ điển, ngăn xếp hoặc hàng đợi. Khóa là số nguyên hoặc chuỗi, và thứ tự chèn được giữ nguyên. Có rất nhiều hàm dựng sẵn làm việc với mảng.",
+        {
+          "code": "<?php\n$nums = [3, 1, 2];\n$nums[] = 5;                       // append\nsort($nums);\necho implode(\", \", $nums), \"\\n\";   // 1, 2, 3, 5\n\n$ages = [\"ann\" => 31, \"bob\" => 25];\n$ages[\"cy\"] = 40;\nforeach ($ages as $person => $age) {\n    echo \"$person is $age\\n\";\n}\necho $ages[\"zed\"] ?? 0, \"\\n\";      // 0  (null coalescing)\n\n$evens = array_filter($nums, fn($n) => $n % 2 === 0);\n$squares = array_map(fn($n) => $n * $n, $nums);\necho json_encode(array_values($evens)), \" \", json_encode($squares), \"\\n\";  // [2] [1,4,9,25]\necho count($ages), \" \", array_key_exists(\"bob\", $ages) ? \"yes\" : \"no\", \"\\n\"; // 3 yes",
+          "lang": "php"
+        },
+        "Mảng được sao chép khi gán (copy-on-write), khác với đối tượng vốn được truyền theo tay cầm (handle)."
+      ]
+    },
+    {
+      "h": "Lớp, constructor promotion và enum",
+      "body": [
+        {
+          "code": "<?php\ndeclare(strict_types=1);\n\nenum Role: string\n{\n    case Admin = \"admin\";\n    case Viewer = \"viewer\";\n}\n\nfinal class User\n{\n    public function __construct(\n        public readonly string $name,\n        public readonly Role $role = Role::Viewer,\n    ) {}\n\n    public function label(): string\n    {\n        return \"{$this->name} ({$this->role->value})\";\n    }\n}\n\n$u = new User(\"Ann\", Role::Admin);\necho $u->label(), \"\\n\";               // Ann (admin)\necho Role::from(\"viewer\")->name, \"\\n\"; // Viewer",
+          "lang": "php"
+        },
+        "Constructor promotion (PHP 8.0) khai báo và gán thuộc tính ngay trong chữ ký của hàm khởi tạo. Thuộc tính `readonly` (8.1) chỉ được gán một lần, còn backed enum (8.1) ánh xạ các case sang chuỗi hoặc số nguyên. Interface, abstract class và trait cũng được hỗ trợ."
+      ]
+    },
+    {
+      "h": "Xử lý lỗi",
+      "body": [
+        "PHP hiện đại ném ngoại lệ cho phần lớn lỗi. Hãy bắt các lớp con của `Exception` cho những lỗi có thể đoán trước; `Throwable` còn bao gồm cả lỗi của engine như `TypeError`.",
+        {
+          "code": "<?php\nfunction parseAge(string $text): int\n{\n    if (!ctype_digit($text)) {\n        throw new InvalidArgumentException(\"invalid age: $text\");\n    }\n    return (int) $text;\n}\n\ntry {\n    echo parseAge(\"41\"), \"\\n\";   // 41\n    echo parseAge(\"abc\"), \"\\n\";\n} catch (InvalidArgumentException $e) {\n    echo $e->getMessage(), \"\\n\"; // invalid age: abc\n} finally {\n    echo \"done\\n\";\n}",
+          "lang": "php"
+        }
+      ]
+    },
+    {
+      "h": "Một chương trình hoàn chỉnh nhỏ: endpoint API trả JSON",
+      "body": [
+        "Lưu đoạn này thành `api.php`, chạy `php -S localhost:8000` rồi mở `http://localhost:8000/api.php?name=Ann`. Chương trình đọc một tham số truy vấn, kiểm tra hợp lệ và trả về JSON.",
+        {
+          "code": "<?php\ndeclare(strict_types=1);\n\nheader(\"Content-Type: application/json; charset=utf-8\");\n\n$name = trim($_GET[\"name\"] ?? \"\");\nif ($name === \"\" || mb_strlen($name) > 50) {\n    http_response_code(400);\n    echo json_encode([\"error\" => \"name must be 1 to 50 characters\"]);\n    exit;\n}\n\n$response = [\n    \"message\" => \"Hello, $name!\",\n    \"length\" => mb_strlen($name),\n    \"time\" => date(DATE_ATOM),\n];\necho json_encode($response, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);",
+          "lang": "php"
+        },
+        "`$_GET`, `$_POST` và `$_COOKIE` chứa dữ liệu của yêu cầu. Hãy coi mọi giá trị trong đó là không đáng tin."
+      ]
+    },
+    {
+      "h": "Lỗi thường gặp của người mới",
+      "body": [
+        {
+          "note": "Đừng bao giờ đưa dữ liệu người dùng trực tiếp vào SQL hay HTML. Dùng prepared statement với PDO (`$stmt = $pdo->prepare(\"SELECT * FROM users WHERE id = ?\")`) để chống SQL injection, và dùng `htmlspecialchars($value)` khi in ra HTML để chống tấn công cross-site scripting."
+        },
+        {
+          "ul": [
+            "So sánh bằng `==`, vốn tự chuyển đổi kiểu; hãy dùng `===` và `!==`.",
+            "Quên `$` trước tên biến, hoặc quên dấu chấm phẩy ở cuối câu lệnh.",
+            "Lưu mật khẩu bằng `md5` hoặc `sha1`. Hãy dùng `password_hash` và `password_verify`.",
+            "Dùng `strlen` cho văn bản UTF-8; hàm này đếm byte. Hãy dùng `mb_strlen` để đếm ký tự.",
+            "Dùng phiên bản PHP cũ. Hãy dùng bản PHP 8 còn được hỗ trợ để có bản vá bảo mật và tính năng hiện đại."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Học tiếp ở đâu",
+      "body": [
+        "Tài liệu PHP Manual chính thức trên php.net mô tả mọi hàm, kèm phần tham chiếu ngôn ngữ và ghi chú của người dùng. Hãy học Composer, trình quản lý gói, và các chuẩn viết mã PSR, rồi thử một framework: Laravel hoặc Symfony cho ứng dụng, Slim cho API nhỏ. PHPUnit là công cụ kiểm thử tiêu chuẩn."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "PHP còn đáng học không?",
+      "a": "Có. PHP vận hành một phần lớn web, kể cả các site WordPress, và PHP 8 hiện đại cùng Laravel hoặc Symfony là cách làm ứng dụng web hiệu quả. Công việc bảo trì và xây dựng hệ thống PHP vẫn rất phổ biến."
+    },
+    {
+      "q": "PHP là ngôn ngữ frontend hay backend?",
+      "a": "Backend. PHP chạy trên máy chủ và gửi HTML, JSON hay tệp đã hoàn chỉnh về trình duyệt, nơi không bao giờ thấy mã PHP."
+    },
+    {
+      "q": "Khác nhau giữa echo và print là gì?",
+      "a": "Cả hai đều xuất văn bản. `echo` nhận nhiều đối số cách nhau bằng dấu phẩy và không trả về gì; `print` nhận một đối số và trả về 1. Trên thực tế phần lớn mã dùng `echo`."
+    },
+    {
+      "q": "declare(strict_types=1) làm gì?",
+      "a": "Nó làm cho khai báo kiểu vô hướng trở nên nghiêm ngặt với các lời gọi hàm từ tệp đó, nên truyền chuỗi `\"5\"` vào tham số `int` sẽ ném `TypeError` thay vì được chuyển đổi."
+    }
+  ]
+}

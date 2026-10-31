@@ -1,0 +1,161 @@
+{
+  "title": "Trie (prefix tree) explained: insert, search, autocomplete in Python — cv.cm",
+  "description": "Learn how a trie (prefix tree) stores strings by shared prefixes: insert, search, starts-with and autocomplete in Python, with complexity and variants.",
+  "h1": "Trie (prefix tree) explained: how it works, code and complexity",
+  "answer": "A trie, or prefix tree, is a tree that stores strings character by character: each edge is a character, and each path from the root spells a prefix. Words that share a prefix share the same nodes, and a flag marks where a complete word ends. Inserting or looking up a word of length m takes O(m) time, independent of how many words are stored, and finding all words with a given prefix is fast. Tries power autocomplete, spell checkers and IP routing tables.",
+  "sections": [
+    {
+      "h": "What problem a trie solves",
+      "body": [
+        "A hash set answers \"is this exact word stored?\" quickly, but it cannot answer \"which stored words start with `pre`?\" without checking every word. A sorted list can answer prefix queries with binary search, but inserts are slow. A trie is organized by prefixes, so prefix questions are its natural strength: autocomplete in a search box, word games, spell checking, and longest-prefix matching for network routes."
+      ]
+    },
+    {
+      "h": "The idea in plain words",
+      "body": [
+        "Think of a phone contact list that you narrow down one letter at a time. Typing `c` shows everyone starting with c, typing `ca` narrows the list, and so on. A trie stores the words in exactly that shape. The root is the empty prefix. Each node has a map from the next character to a child node, plus an end-of-word flag, because a word such as `car` can be both a complete word and a prefix of `cart`."
+      ]
+    },
+    {
+      "h": "Worked example: inserting car, cart, cat and dog",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Insert",
+              "Nodes reused",
+              "New nodes created",
+              "Word end marked at"
+            ],
+            "rows": [
+              [
+                "`car`",
+                "none",
+                "c, a, r",
+                "r (path car)"
+              ],
+              [
+                "`cart`",
+                "c, a, r",
+                "t",
+                "t (path cart)"
+              ],
+              [
+                "`cat`",
+                "c, a",
+                "t (a new child of a)",
+                "t (path cat)"
+              ],
+              [
+                "`dog`",
+                "none",
+                "d, o, g",
+                "g (path dog)"
+              ]
+            ]
+          }
+        },
+        "The four words have 13 letters in total but need only 8 nodes below the root (c, a, r, t, t, d, o, g), because `car`, `cart` and `cat` share `ca`. Searching for `ca` walks two nodes and succeeds as a prefix, but `ca` is not a word because its node is not marked as an end. Searching for `cow` fails at the second step: node c has no child o."
+      ]
+    },
+    {
+      "h": "Python implementation",
+      "body": [
+        "Each node holds a `dict` of children, which handles any alphabet including Unicode. The `starts_with` method collects every word below a prefix, which is the core of autocomplete.",
+        {
+          "code": "class TrieNode:\n    __slots__ = (\"children\", \"is_word\")\n    def __init__(self):\n        self.children = {}\n        self.is_word = False\nclass Trie:\n    def __init__(self):\n        self.root = TrieNode()\n    def insert(self, word):\n        node = self.root\n        for ch in word:\n            node = node.children.setdefault(ch, TrieNode())\n        node.is_word = True\n    def _find(self, prefix):\n        node = self.root\n        for ch in prefix:\n            node = node.children.get(ch)\n            if node is None:\n                return None\n        return node\n    def contains(self, word):\n        node = self._find(word)\n        return node is not None and node.is_word\n    def starts_with(self, prefix):\n        node, out = self._find(prefix), []\n        stack = [(node, prefix)] if node else []\n        while stack:\n            node, path = stack.pop()\n            if node.is_word:\n                out.append(path)\n            for ch, child in node.children.items():\n                stack.append((child, path + ch))\n        return sorted(out)",
+          "lang": "python"
+        },
+        {
+          "code": "t = Trie()\nfor w in [\"car\", \"cart\", \"cat\", \"dog\"]:\n    t.insert(w)\nprint(t.contains(\"car\"), t.contains(\"ca\"))  # True False\nprint(t.starts_with(\"ca\"))                  # ['car', 'cart', 'cat']\nprint(t.starts_with(\"x\"))                   # []",
+          "lang": "python"
+        },
+        "`starts_with` sorts its output for a stable order. A real autocomplete would also stop after the first few results and rank them, for example by stored popularity counts."
+      ]
+    },
+    {
+      "h": "Time and space complexity",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Operation",
+              "Time",
+              "Reason"
+            ],
+            "rows": [
+              [
+                "Insert a word of length m",
+                "O(m)",
+                "one step per character"
+              ],
+              [
+                "Search a word or check a prefix",
+                "O(m)",
+                "one dictionary lookup per character"
+              ],
+              [
+                "List all k words under a prefix",
+                "O(m + size of the subtree)",
+                "walk to the prefix, then visit every node below it"
+              ],
+              [
+                "Delete a word",
+                "O(m)",
+                "unmark the end, then optionally prune empty nodes"
+              ],
+              [
+                "Space",
+                "O(total characters stored)",
+                "worst case one node per character when nothing is shared"
+              ]
+            ]
+          }
+        },
+        "The time does not depend on the number of words n, which is the main advantage over a balanced tree of strings (O(m log n) comparisons). The cost is memory: each node is a separate object with its own dictionary, so a trie can use many times more memory than the raw strings."
+      ]
+    },
+    {
+      "h": "Variants and common mistakes",
+      "body": [
+        {
+          "ul": [
+            "Array children: use a fixed array of 26 slots for lowercase English. Faster than a `dict`, but wasteful for sparse or large alphabets.",
+            "Compressed trie (radix tree, Patricia trie): merges chains of single-child nodes into one edge labeled with a string, which saves a lot of memory. Radix trees are used for IP routing tables and in some HTTP routers.",
+            "Ternary search tree: each node has three children (less, equal, greater), which uses less memory than a wide array.",
+            "Counting trie: store a counter in each node to answer \"how many words start with this prefix?\" in O(m).",
+            "Bitwise trie: store numbers bit by bit to solve maximum-XOR problems."
+          ]
+        },
+        {
+          "note": "The most common bug is forgetting the end-of-word flag. Without it, inserting `cart` makes `contains(\"car\")` return True even though `car` was never inserted. A second common bug is deleting nodes that are still needed by longer words."
+        }
+      ]
+    },
+    {
+      "h": "When to use a trie and typical interview problems",
+      "body": [
+        "Use a trie when you need prefix queries, longest-prefix matching or ordered iteration over many strings with shared prefixes. Use a `set` or `dict` when you only need exact-match lookups: it is simpler and uses less memory in Python. For small, static word lists, a sorted list with the `bisect` module also answers prefix queries well.",
+        "Typical problems: implement a trie (insert, search, starts-with), word search in a grid with many target words, replace words with their shortest root, longest common prefix, design a search autocomplete system, and maximum XOR of two numbers using a bitwise trie."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Why is it called a trie?",
+      "a": "The name comes from the middle of the word retrieval. Edward Fredkin coined the term in a 1960 paper. Many people pronounce it like try to distinguish it from tree."
+    },
+    {
+      "q": "Is a trie faster than a hash table?",
+      "a": "For exact lookups both take time proportional to the word length, and a Python `dict` is usually faster and smaller. A trie wins when you need prefix searches, sorted iteration or longest-prefix matching."
+    },
+    {
+      "q": "How much memory does a trie use?",
+      "a": "In the worst case one node per stored character. Shared prefixes reduce this, and compressed tries (radix trees) reduce it further by merging single-child chains."
+    },
+    {
+      "q": "What is the difference between a trie and a radix tree?",
+      "a": "A radix tree is a compressed trie: any chain of nodes with a single child is merged into one node whose edge holds a whole substring. The lookups work the same way but need fewer nodes."
+    }
+  ]
+}

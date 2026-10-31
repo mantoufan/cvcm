@@ -1,0 +1,172 @@
+{
+  "title": "SOLID 原则：面向对象设计的五大原则及示例 — cv.cm",
+  "description": "逐一讲解面向对象设计的 SOLID 五大原则，每个原则配有简短的 TypeScript 前后对比示例，并说明何时适用。",
+  "h1": "SOLID 原则详解与示例",
+  "answer": "SOLID 是五条面向对象设计原则的首字母缩写：单一职责（Single responsibility）、开闭（Open/closed）、里氏替换（Liskov substitution）、接口隔离（Interface segregation）和依赖倒置（Dependency inversion）。这些原则由 Robert C. Martin 整理，缩写由 Michael Feathers 提出。它们的共同目标是让代码更容易修改：每个类只有一个变化的原因，新增行为时无需修改旧代码，子类型可以安全地替换父类型，接口保持精简，高层代码依赖抽象。",
+  "sections": [
+    {
+      "h": "SOLID 的含义",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "字母",
+              "原则",
+              "一句话规则"
+            ],
+            "rows": [
+              [
+                "S",
+                "单一职责原则（SRP）",
+                "一个类应该只有一个引起它变化的原因。"
+              ],
+              [
+                "O",
+                "开闭原则（OCP）",
+                "软件应该对扩展开放，对修改关闭。"
+              ],
+              [
+                "L",
+                "里氏替换原则（LSP）",
+                "凡是需要基类型的地方，都必须能使用其子类型。"
+              ],
+              [
+                "I",
+                "接口隔离原则（ISP）",
+                "不应强迫客户端依赖它们不使用的方法。"
+              ],
+              [
+                "D",
+                "依赖倒置原则（DIP）",
+                "依赖抽象，而不是依赖具体细节。"
+              ]
+            ]
+          }
+        },
+        "这些思想比这个缩写出现得更早。开闭原则来自 Bertrand Meyer 1988 年的著作《Object-Oriented Software Construction》，里氏替换原则来自 Barbara Liskov 1987 年的主题演讲《Data Abstraction and Hierarchy》。Robert C. Martin 在 2000 年前后的文章中阐述了这五条原则，后来 Michael Feathers 把它们排成了 SOLID 这个单词。"
+      ]
+    },
+    {
+      "h": "S：单一职责原则",
+      "body": [
+        "一个类应该只有一个变化的原因，也就是只服务于一个角色或一个关注点。如果一个类同时混合了业务规则、格式化和存储，那么修改其中任何一项，都可能破坏其他部分。",
+        "改造前：一个类同时负责计算、格式化和保存报表。",
+        {
+          "code": "class Report {\n  constructor(private sales: number[]) {}\n  total(): number { return this.sales.reduce((a, b) => a + b, 0); }\n  toHtml(): string { return `<p>Total: ${this.total()}</p>`; }\n  saveToFile(path: string): void { /* write this.toHtml() to disk */ }\n}",
+          "lang": "typescript"
+        },
+        "改造后：每个关注点都放在各自的小单元里，因此新增一种输出格式不会影响计算逻辑。",
+        {
+          "code": "class SalesReport {\n  constructor(private sales: number[]) {}\n  total(): number { return this.sales.reduce((a, b) => a + b, 0); }\n}\nclass HtmlFormatter {\n  format(r: SalesReport): string { return `<p>Total: ${r.total()}</p>`; }\n}\nclass ReportWriter {\n  save(content: string, path: string): void { /* write to disk */ }\n}\nconst html = new HtmlFormatter().format(new SalesReport([10, 20, 5]));\nconsole.log(html); // <p>Total: 35</p>",
+          "lang": "typescript"
+        }
+      ]
+    },
+    {
+      "h": "O：开闭原则",
+      "body": [
+        "你应该能通过添加新代码来增加新行为，而不是去修改已经正常工作并经过测试的代码。常用的手段是接口加多态。",
+        "改造前：每增加一种形状，就要修改 `area` 函数。",
+        {
+          "code": "type Shape = { kind: \"circle\"; r: number } | { kind: \"square\"; side: number };\nfunction area(s: Shape): number {\n  if (s.kind === \"circle\") return Math.PI * s.r ** 2;\n  if (s.kind === \"square\") return s.side ** 2;\n  throw new Error(\"unknown shape\");\n}",
+          "lang": "typescript"
+        },
+        "改造后：新增形状就是新增一个类，现有代码保持不变。",
+        {
+          "code": "interface Shape { area(): number; }\nclass Circle implements Shape {\n  constructor(private r: number) {}\n  area(): number { return Math.PI * this.r ** 2; }\n}\nclass Square implements Shape {\n  constructor(private side: number) {}\n  area(): number { return this.side ** 2; }\n}\nconst totalArea = (shapes: Shape[]) => shapes.reduce((sum, s) => sum + s.area(), 0);\nconsole.log(totalArea([new Square(2), new Square(3)])); // 13",
+          "lang": "typescript"
+        },
+        {
+          "note": "在 TypeScript 中，联合类型配合穷尽的 `switch` 也是一种合理的设计。它让新增操作变得容易，而新增类型变得更难，权衡方向正好相反。请根据哪种变化更可能发生来选择。"
+        }
+      ]
+    },
+    {
+      "h": "L：里氏替换原则",
+      "body": [
+        "如果代码能处理某个基类型，那么传入它的任何子类型时也必须继续正常工作。子类型不能加强前置条件、削弱保证，也不能在基类型不会抛出异常的地方抛出异常。",
+        "改造前：经典的正方形/长方形问题。`Square` 继承了 `Rectangle`，却破坏了“宽和高相互独立”这一预期。",
+        {
+          "code": "class Rectangle {\n  constructor(public width: number, public height: number) {}\n  setWidth(w: number): void { this.width = w; }\n  setHeight(h: number): void { this.height = h; }\n  area(): number { return this.width * this.height; }\n}\nclass Square extends Rectangle {\n  setWidth(w: number): void { this.width = w; this.height = w; }\n  setHeight(h: number): void { this.width = h; this.height = h; }\n}\nfunction stretch(r: Rectangle): number {\n  r.setWidth(5);\n  r.setHeight(4);\n  return r.area(); // caller expects 20\n}\nconsole.log(stretch(new Rectangle(1, 1))); // 20\nconsole.log(stretch(new Square(1, 1)));    // 16, surprise",
+          "lang": "typescript"
+        },
+        "改造后：不要用继承来建模这种关系。两种类型都实现一个共享的只读接口，没有人会期望单独调整正方形的各条边。",
+        {
+          "code": "interface Shape { area(): number; }\nclass Rectangle implements Shape {\n  constructor(readonly width: number, readonly height: number) {}\n  area(): number { return this.width * this.height; }\n}\nclass Square implements Shape {\n  constructor(readonly side: number) {}\n  area(): number { return this.side ** 2; }\n}\nconsole.log([new Rectangle(5, 4), new Square(4)].map((s) => s.area())); // [ 20, 16 ]",
+          "lang": "typescript"
+        }
+      ]
+    },
+    {
+      "h": "I：接口隔离原则",
+      "body": [
+        "庞大的接口会迫使类去实现它们无法支持的方法，通常只能靠抛出错误来应付。应将接口拆分成小而专注的接口，让每个类只实现它真正具备的功能。",
+        "改造前：一台简单的打印机不得不假装自己能扫描和传真。",
+        {
+          "code": "interface Machine {\n  print(doc: string): void;\n  scan(): string;\n  fax(doc: string): void;\n}\nclass BasicPrinter implements Machine {\n  print(doc: string): void { console.log(\"print\", doc); }\n  scan(): string { throw new Error(\"not supported\"); }\n  fax(doc: string): void { throw new Error(\"not supported\"); }\n}",
+          "lang": "typescript"
+        },
+        "改造后：拆成可以自由组合的小型角色接口。",
+        {
+          "code": "interface Printer { print(doc: string): void; }\ninterface Scanner { scan(): string; }\nclass BasicPrinter implements Printer {\n  print(doc: string): void { console.log(\"print\", doc); }\n}\nclass OfficeMachine implements Printer, Scanner {\n  print(doc: string): void { console.log(\"print\", doc); }\n  scan(): string { return \"scanned page\"; }\n}\nfunction printAll(p: Printer, docs: string[]): void { docs.forEach((d) => p.print(d)); }\nprintAll(new BasicPrinter(), [\"a.pdf\"]); // print a.pdf",
+          "lang": "typescript"
+        }
+      ]
+    },
+    {
+      "h": "D：依赖倒置原则",
+      "body": [
+        "高层策略不应依赖低层细节，例如某个具体的数据库或邮件服务。两者都应依赖于抽象，并且这个抽象通常由高层模块来定义。实际做法是从外部传入依赖（依赖注入），而不是在内部创建它们。",
+        "改造前：服务内部创建了具体的数据库客户端，因此无法测试，也无法切换实现。",
+        {
+          "code": "class MySqlUserStore {\n  find(id: string): string { return \"user \" + id; }\n}\nclass UserService {\n  private store = new MySqlUserStore(); // hard-wired detail\n  greet(id: string): string { return \"Hello, \" + this.store.find(id); }\n}",
+          "lang": "typescript"
+        },
+        "改造后：服务依赖一个接口；可以注入任何实现，包括测试中的假对象。",
+        {
+          "code": "interface UserStore { find(id: string): string; }\nclass UserService {\n  constructor(private store: UserStore) {}\n  greet(id: string): string { return \"Hello, \" + this.store.find(id); }\n}\nclass InMemoryUserStore implements UserStore {\n  constructor(private users: Record<string, string>) {}\n  find(id: string): string { return this.users[id] ?? \"unknown\"; }\n}\nconst service = new UserService(new InMemoryUserStore({ u1: \"Ada\" }));\nconsole.log(service.greet(\"u1\")); // Hello, Ada",
+          "lang": "typescript"
+        },
+        {
+          "note": "依赖倒置是一条设计原则；依赖注入是实现它的一种技术。注入容器或框架并非必需，通过构造函数传入对象就足够了。"
+        }
+      ]
+    },
+    {
+      "h": "何时应用 SOLID，何时不用",
+      "body": [
+        "SOLID 原则是针对经常变动的代码的指导方针，而不是铁律。盲目套用会产生大量只有一个实现的小类和接口，让代码更难理解。",
+        {
+          "ul": [
+            "当你确实感受到它们要解决的痛点时再应用：某个类在任何变动时都会出错，某个测试必须依赖真实数据库，或者同一个 switch 语句被复制到了很多地方。",
+            "不要提前为每个类都添加接口。等到出现第二个实现或需要测试替身时，再提取接口。",
+            "在小脚本和原型中，简单直接的代码通常更好。",
+            "许多设计模式都是 SOLID 的具体应用：策略和装饰器支持开闭原则，适配器和外观有助于隔离细节，抽象工厂则支持依赖倒置。"
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "SOLID 原则是谁提出的？",
+      "a": "Robert C. Martin 整理并阐述了这五条原则，其基础是 Bertrand Meyer（开闭）和 Barbara Liskov（替换）的早期工作。SOLID 这个缩写由 Michael Feathers 提出。"
+    },
+    {
+      "q": "SOLID 适用于函数式编程吗？",
+      "a": "这些思想是可以迁移的：函数小而专一，通过组合而不是修改来扩展行为，把依赖作为参数传入。不过基于类的表述只适用于面向对象代码。"
+    },
+    {
+      "q": "依赖倒置和依赖注入有什么区别？",
+      "a": "依赖倒置是一条原则：高层代码应该依赖抽象。依赖注入是一种技术，它从外部提供这些依赖，例如通过构造函数传入。"
+    },
+    {
+      "q": "哪条 SOLID 原则最重要？",
+      "a": "没有官方的排名。单一职责和依赖倒置通常能最快带来收益，因为它们让代码更容易理解和测试。"
+    },
+    {
+      "q": "违反 SOLID 原则一定不好吗？",
+      "a": "不一定。每条原则都要以额外的代码为代价。当更简单的设计更清晰，而它所防范的变化又不太可能发生时，可以有意识地不遵守。"
+    }
+  ]
+}

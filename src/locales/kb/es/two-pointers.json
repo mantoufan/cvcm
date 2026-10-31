@@ -1,0 +1,214 @@
+{
+  "title": "Dos punteros y ventana deslizante: patrones, código en Python y ejemplos — cv.cm",
+  "description": "Las técnicas de dos punteros y ventana deslizante convierten muchos problemas O(n²) de arreglos y cadenas en O(n). Aprende ambos patrones con trazas y código en Python.",
+  "h1": "Técnica de dos punteros y ventana deslizante explicada",
+  "answer": "Dos punteros es una técnica en la que dos índices recorren un arreglo o una cadena, normalmente desde ambos extremos hacia el centro o en la misma dirección a distinta velocidad, de modo que cada elemento se visita un número constante de veces. Una ventana deslizante es una variante en la misma dirección que mantiene un rango contiguo entre un puntero izquierdo y uno derecho y actualiza un valor acumulado a medida que la ventana crece y se encoge. Ambas suelen reducir una búsqueda de fuerza bruta O(n²) sobre pares o subarreglos a O(n).",
+  "sections": [
+    {
+      "h": "Qué problema resuelven estas técnicas",
+      "body": [
+        "Muchos problemas de arreglos y cadenas preguntan por pares o rangos contiguos: dos números que suman un objetivo, la subcadena más larga sin caracteres repetidos, el subarreglo más corto con suma de al menos k. Revisar todos los pares o todos los rangos cuesta O(n²) o más. Los dos punteros lo evitan aprovechando una propiedad de los datos, como el orden o el hecho de que la ventana solo necesita pequeñas actualizaciones, para descartar muchos candidatos de golpe.",
+        {
+          "table": {
+            "head": [
+              "Patrón",
+              "Movimiento de los punteros",
+              "Problemas típicos"
+            ],
+            "rows": [
+              [
+                "Extremos opuestos",
+                "`left` empieza en 0, `right` al final, y se mueven uno hacia el otro",
+                "suma de un par en un arreglo ordenado, comprobación de palíndromo, contenedor con más agua"
+              ],
+              [
+                "Rápido y lento",
+                "ambos empiezan al principio; uno avanza en cada paso y el otro solo a veces",
+                "eliminar duplicados in situ, partición, detección de ciclos en una lista enlazada"
+              ],
+              [
+                "Ventana deslizante",
+                "`right` amplía la ventana y `left` la reduce",
+                "subcadena o subarreglo más largo o más corto que cumple una condición"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "Punteros en extremos opuestos: suma de un par en un arreglo ordenado",
+      "body": [
+        "Encuentra dos números de la lista ordenada `[1, 3, 4, 6, 8, 11]` cuya suma sea 10. Empieza con el menor y el mayor. Si la suma es demasiado pequeña, la única forma de aumentarla es mover `left` a la derecha; si es demasiado grande, mueve `right` a la izquierda.",
+        {
+          "table": {
+            "head": [
+              "Paso",
+              "left (valor)",
+              "right (valor)",
+              "Suma",
+              "Acción"
+            ],
+            "rows": [
+              [
+                "1",
+                "0 (1)",
+                "5 (11)",
+                "12",
+                "demasiado grande, right -= 1"
+              ],
+              [
+                "2",
+                "0 (1)",
+                "4 (8)",
+                "9",
+                "demasiado pequeña, left += 1"
+              ],
+              [
+                "3",
+                "1 (3)",
+                "4 (8)",
+                "11",
+                "demasiado grande, right -= 1"
+              ],
+              [
+                "4",
+                "1 (3)",
+                "3 (6)",
+                "9",
+                "demasiado pequeña, left += 1"
+              ],
+              [
+                "5",
+                "2 (4)",
+                "3 (6)",
+                "10",
+                "encontrado: 4 + 6"
+              ]
+            ]
+          }
+        },
+        {
+          "code": "def pair_with_sum(nums, target):\n    left, right = 0, len(nums) - 1\n    while left < right:\n        s = nums[left] + nums[right]\n        if s == target:\n            return left, right\n        if s < target:\n            left += 1\n        else:\n            right -= 1\n    return None\nprint(pair_with_sum([1, 3, 4, 6, 8, 11], 10))   # (2, 3)\nprint(pair_with_sum([1, 3, 4, 6, 8, 11], 2))    # None",
+          "lang": "python"
+        },
+        "Cada paso mueve un puntero hacia dentro, así que hay como máximo n − 1 pasos: O(n) de tiempo y O(1) de espacio. La misma forma comprueba si una cadena es un palíndromo, invierte un arreglo in situ y, dentro de un bucle exterior, resuelve 3Sum en O(n²) en lugar de O(n³)."
+      ]
+    },
+    {
+      "h": "Punteros rápido y lento: filtrado in situ",
+      "body": [
+        "Un puntero lento marca dónde debe ir el siguiente elemento que se conserva; un puntero rápido recorre todos los elementos. Así se eliminan los duplicados de una lista ordenada sin memoria adicional.",
+        {
+          "code": "def dedupe_sorted(nums):\n    \"\"\"Remove duplicates in place; return the new length.\"\"\"\n    if not nums:\n        return 0\n    slow = 0\n    for fast in range(1, len(nums)):\n        if nums[fast] != nums[slow]:\n            slow += 1\n            nums[slow] = nums[fast]\n    return slow + 1\na = [1, 1, 2, 3, 3, 3, 5]\nk = dedupe_sorted(a)\nprint(k, a[:k])   # 4 [1, 2, 3, 5]",
+          "lang": "python"
+        },
+        "En listas enlazadas, el puntero rápido avanza dos nodos por paso y el lento uno. Si llegan a encontrarse, la lista tiene un ciclo (detección de ciclos de Floyd); cuando el puntero rápido llega al final, el lento está en el medio."
+      ]
+    },
+    {
+      "h": "Ventana deslizante: subcadena más larga sin repeticiones",
+      "body": [
+        "Una ventana deslizante mantiene válido el rango `s[left:right + 1]`. Avanza `right` un carácter cada vez. Cuando el nuevo carácter rompe la regla, avanza `left` hasta que la ventana vuelva a ser válida. Registra la mejor ventana sobre la marcha.",
+        {
+          "code": "def longest_unique(s):\n    last_seen = {}          # char -> last index\n    left = best = 0\n    for right, ch in enumerate(s):\n        if ch in last_seen and last_seen[ch] >= left:\n            left = last_seen[ch] + 1   # jump past the repeat\n        last_seen[ch] = right\n        best = max(best, right - left + 1)\n    return best\nprint(longest_unique(\"abcabcbb\"))   # 3  (\"abc\")\nprint(longest_unique(\"pwwkew\"))     # 3  (\"wke\")\nprint(longest_unique(\"\"))           # 0",
+          "lang": "python"
+        },
+        "Las ventanas son de dos tipos. Una ventana de tamaño fijo de k elementos añade el elemento que entra por la derecha y quita el que sale por la izquierda, por ejemplo para calcular una media móvil. Una ventana de tamaño variable crece y se encoge para cumplir una condición, como arriba.",
+        {
+          "code": "def min_len_subarray(nums, k):\n    \"\"\"Shortest subarray with sum >= k (non-negative nums).\"\"\"\n    left = total = 0\n    best = float(\"inf\")\n    for right, x in enumerate(nums):\n        total += x\n        while total >= k:\n            best = min(best, right - left + 1)\n            total -= nums[left]\n            left += 1\n    return 0 if best == float(\"inf\") else best\nprint(min_len_subarray([2, 3, 1, 2, 4, 3], 7))   # 2  ([4, 3])",
+          "lang": "python"
+        }
+      ]
+    },
+    {
+      "h": "Complejidad temporal y espacial",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Problema",
+              "Fuerza bruta",
+              "Dos punteros / ventana",
+              "Espacio extra"
+            ],
+            "rows": [
+              [
+                "Suma de un par, entrada ordenada",
+                "O(n²)",
+                "O(n)",
+                "O(1)"
+              ],
+              [
+                "Eliminar duplicados, ordenado",
+                "O(n) con una lista nueva",
+                "O(n) in situ",
+                "O(1)"
+              ],
+              [
+                "Subcadena única más larga",
+                "O(n³) u O(n²)",
+                "O(n)",
+                "O(k), k caracteres distintos"
+              ],
+              [
+                "Subarreglo más corto con suma ≥ k",
+                "O(n²)",
+                "O(n)",
+                "O(1)"
+              ]
+            ]
+          }
+        },
+        "La razón por la que una ventana deslizante es O(n) incluso con un bucle `while` anidado: `left` y `right` avanzan cada uno como máximo n veces en total, así que el trabajo total es como mucho 2n pasos."
+      ]
+    },
+    {
+      "h": "Errores comunes",
+      "body": [
+        {
+          "ul": [
+            "Usar punteros en extremos opuestos con datos sin ordenar. La decisión de mover left o right solo es correcta porque el arreglo está ordenado.",
+            "Usar una ventana deslizante basada en sumas cuando los números pueden ser negativos. Reducir la ventana ya no disminuye siempre la suma; usa en su lugar sumas de prefijos con un mapa hash.",
+            "Longitud de la ventana con desfase de uno: la ventana `left..right`, ambos incluidos, tiene `right - left + 1` elementos.",
+            "Olvidar detenerse en `left < right`, lo que permite que un único elemento forme pareja consigo mismo.",
+            "Mover `left` hacia atrás. En el ejemplo de la subcadena, la comprobación `last_seen[ch] >= left` evita saltar a una posición antigua."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Cuándo usarlas y preguntas típicas de entrevista",
+      "body": [
+        "Recurre a dos punteros cuando la entrada esté ordenada (o se pueda ordenar a bajo coste) y busques pares, o cuando necesites modificar un arreglo in situ. Recurre a una ventana deslizante cuando el enunciado hable de subarreglo o subcadena contigua y pida el más largo, el más corto, el máximo o un recuento con una condición que cambia de forma predecible al crecer la ventana. Si los datos no están ordenados y necesitas un par, un conjunto hash suele ser más simple y también O(n).",
+        {
+          "ul": [
+            "Two Sum II (entrada ordenada), 3Sum, Container With Most Water, Trapping Rain Water.",
+            "Valid Palindrome, Reverse String, Move Zeroes, Remove Duplicates from Sorted Array.",
+            "Longest Substring Without Repeating Characters, Minimum Window Substring, Sliding Window Maximum (con una deque).",
+            "Linked List Cycle, Middle of the Linked List."
+          ]
+        },
+        "Fuera de las entrevistas, las mismas ideas aparecen al combinar archivos ordenados, en protocolos de red que llevan una ventana de paquetes sin confirmar (ventana deslizante de TCP), en limitadores de tasa que cuentan eventos de los últimos N segundos y en medias móviles de series temporales."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "¿Qué es la técnica de dos punteros?",
+      "a": "Es una forma de recorrer un arreglo o una cadena con dos índices que se mueven según reglas simples, de modo que cada elemento se procesa un número constante de veces. A menudo convierte una búsqueda de pares O(n²) en O(n)."
+    },
+    {
+      "q": "¿Cuál es la diferencia entre dos punteros y ventana deslizante?",
+      "a": "Una ventana deslizante es un tipo de dos punteros en el que ambos índices se mueven en la misma dirección y los elementos entre ellos forman el subarreglo o la subcadena actual. Los dos punteros en extremos opuestos analizan pares, no rangos."
+    },
+    {
+      "q": "¿Por qué una ventana deslizante es O(n) si tiene un bucle anidado?",
+      "a": "El bucle interno solo avanza `left`, y `left` puede moverse como máximo n veces durante toda la ejecución. Junto con los n movimientos de `right`, son como mucho 2n pasos."
+    },
+    {
+      "q": "¿Dos punteros requiere un arreglo ordenado?",
+      "a": "El patrón de suma de pares en extremos opuestos, sí. Los punteros rápido y lento y las ventanas deslizantes no, pero una ventana basada en sumas requiere números no negativos."
+    }
+  ]
+}

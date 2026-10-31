@@ -1,0 +1,226 @@
+{
+  "title": "C++チュートリアル：型・クラス・STLコンテナ・RAII — cv.cm",
+  "description": "モダンC++入門を1ページで：Hello worldのコンパイル、型とauto、制御構文、関数、クラス、vectorとmap、スマートポインタ、RAII、例外処理まで解説します。",
+  "h1": "C++入門チュートリアル（初心者向け）",
+  "answer": "C++はコンパイル型の静的型付け言語で、Cの速度と低水準の制御に、クラス、テンプレート、大規模な標準ライブラリを組み合わせています。`hello.cpp` を `g++ -std=c++20 hello.cpp -o hello` でコンパイルし、`./hello` で実行します。モダンC++では、生の配列の代わりに `std::string`、`std::vector`、`std::map` を使い、手動の `delete` の代わりにスマートポインタを使い、RAIIによってリソースを自動的に解放します。",
+  "sections": [
+    {
+      "h": "C++とは何か、何に使われるか",
+      "body": [
+        "C++は1979年にBell研究所のBjarne Stroustrupが「C with Classes」として開発を始めた言語です。ISOによって標準化されており、C++11から「モダンC++」の時代が始まり、C++17、C++20、C++23が続きました。C++は性能と制御が重要な分野で使われています。ゲームエンジン（Unreal Engine）、Webブラウザ（Chrome、Firefox）、データベース、取引システム、組み込み機器、コンパイラ、機械学習のランタイムなどです。基本思想はゼロオーバーヘッド抽象化で、使わない機能にはコストがかかりません。"
+      ]
+    },
+    {
+      "h": "コンパイラのインストールと Hello, world の実行",
+      "body": [
+        "LinuxとmacOSではGCC（`g++`）またはClang（`clang++`）、WindowsではMicrosoft Visual C++（Visual Studio経由）を使います。規格のバージョンは明示的に指定しましょう。",
+        {
+          "code": "#include <iostream>\n\nint main() {\n    std::cout << \"Hello, world\\n\";\n    return 0;\n}",
+          "lang": "cpp"
+        },
+        {
+          "code": "g++ -std=c++20 -Wall -Wextra hello.cpp -o hello\n./hello\n# Hello, world",
+          "lang": "shell"
+        },
+        "`std::cout` は標準出力ストリームで、`<<` で書き込みます。標準ライブラリのものはすべて名前空間 `std` にあります。"
+      ]
+    },
+    {
+      "h": "変数、型、auto",
+      "body": [
+        "C++にはCと同じ組み込み型があり、さらに `bool` がキーワードとして加わり、参照や `std::string` などのライブラリ型があります。`auto` は初期化子からコンパイラに型を推論させます。波括弧初期化 `{}` は、縮小変換を拒否します。",
+        {
+          "table": {
+            "head": [
+              "型",
+              "例",
+              "備考"
+            ],
+            "rows": [
+              [
+                "`int`, `long long`",
+                "`int n{42};`",
+                "符号付き整数"
+              ],
+              [
+                "`double`",
+                "`double x{3.14};`",
+                "64ビット浮動小数点数"
+              ],
+              [
+                "`bool`",
+                "`bool ok{true};`",
+                "`true` または `false`"
+              ],
+              [
+                "`char`",
+                "`char c{'A'};`",
+                "1バイト"
+              ],
+              [
+                "`std::string`",
+                "`std::string s{\"hi\"};`",
+                "`<string>` で提供される、伸縮する文字列"
+              ],
+              [
+                "`auto`",
+                "`auto v = 2.5;`",
+                "推論された型。ここでは `double`"
+              ],
+              [
+                "`T&`",
+                "`int& r = n;`",
+                "参照：`n` の別名"
+              ]
+            ]
+          }
+        },
+        {
+          "code": "#include <iostream>\n#include <string>\n\nint main() {\n    int count{7};\n    auto avg = count / 2.0;          // double, 3.5\n    std::string name{\"Ada\"};\n    name += \" Lovelace\";\n    const int& ref = count;          // read-only alias of count\n    std::cout << name << \" \" << name.size() << \" \" << avg << \" \" << ref << \"\\n\";\n    // Ada Lovelace 12 3.5 7\n}",
+          "lang": "cpp"
+        }
+      ]
+    },
+    {
+      "h": "制御構文と関数",
+      "body": [
+        "制御構文はCと同じで、範囲ベースの `for` ループが加わります。大きなオブジェクトはコピーを避けるため `const` 参照で渡し、関数がオブジェクトを変更する場合は非 `const` 参照で渡します。",
+        {
+          "code": "#include <iostream>\n#include <string>\n#include <vector>\n\nint square(int x) { return x * x; }\n\nvoid addSuffix(std::string& s, const std::string& suffix = \"!\") {\n    s += suffix;\n}\n\nint main() {\n    int score = 72;\n    if (score >= 90) std::cout << \"A\\n\";\n    else if (score >= 70) std::cout << \"B\\n\";   // B\n    else std::cout << \"C\\n\";\n\n    std::vector<int> nums{1, 2, 3};\n    for (int n : nums) std::cout << square(n) << \" \";  // 1 4 9\n    std::cout << \"\\n\";\n\n    std::string word = \"hi\";\n    addSuffix(word);\n    std::cout << word << \"\\n\";                  // hi!\n}",
+          "lang": "cpp"
+        }
+      ]
+    },
+    {
+      "h": "クラス",
+      "body": [
+        "クラスはデータメンバーとメンバー関数をまとめます。コンストラクタがオブジェクトを初期化し、`private` メンバーは外部のコードから隠されます。`struct` は、メンバーがデフォルトで public である点を除いてクラスと同じです。",
+        {
+          "code": "#include <iostream>\n#include <string>\n#include <utility>\n\nclass Account {\npublic:\n    explicit Account(std::string owner) : owner_(std::move(owner)) {}\n\n    void deposit(double amount) {\n        if (amount > 0) balance_ += amount;\n    }\n    double balance() const { return balance_; }\n    const std::string& owner() const { return owner_; }\n\nprivate:\n    std::string owner_;\n    double balance_ = 0.0;\n};\n\nint main() {\n    Account acc{\"Ann\"};\n    acc.deposit(50);\n    acc.deposit(-5);   // ignored\n    std::cout << acc.owner() << \": \" << acc.balance() << \"\\n\";  // Ann: 50\n}",
+          "lang": "cpp"
+        },
+        "継承（`class Savings : public Account`）と `virtual` 関数により、実行時ポリモーフィズムが実現します。オーバーライドする関数には `override` を付けると、コンパイラが検査してくれます。"
+      ]
+    },
+    {
+      "h": "標準ライブラリのコンテナとアルゴリズム",
+      "body": [
+        "標準ライブラリ（STLとも呼ばれます）は、イテレータを通じて連携するコンテナとアルゴリズムを提供します。",
+        {
+          "table": {
+            "head": [
+              "コンテナ",
+              "似たもの",
+              "用途"
+            ],
+            "rows": [
+              [
+                "`std::vector<T>`",
+                "動的配列",
+                "標準的なシーケンスコンテナ"
+              ],
+              [
+                "`std::array<T, N>`",
+                "固定長配列",
+                "サイズがコンパイル時に分かっている場合"
+              ],
+              [
+                "`std::map<K, V>`",
+                "ソート済み辞書",
+                "キーが順序付き、検索はO(log n)"
+              ],
+              [
+                "`std::unordered_map<K, V>`",
+                "ハッシュテーブル",
+                "平均O(1)の高速な検索"
+              ],
+              [
+                "`std::set<T>`",
+                "ソート済みの重複なし集合",
+                "所属判定、順序付きの出力"
+              ]
+            ]
+          }
+        },
+        {
+          "code": "#include <algorithm>\n#include <iostream>\n#include <map>\n#include <string>\n#include <vector>\n\nint main() {\n    std::vector<int> nums{3, 1, 2, 5};\n    std::sort(nums.begin(), nums.end());\n    auto evens = std::count_if(nums.begin(), nums.end(),\n                               [](int n) { return n % 2 == 0; });\n    std::cout << nums.front() << \" \" << nums.back() << \" \" << evens << \"\\n\";  // 1 5 1\n\n    std::map<std::string, int> ages{{\"bob\", 25}, {\"ann\", 31}};\n    ages[\"cy\"] = 40;\n    for (const auto& [name, age] : ages) {     // structured bindings\n        std::cout << name << \"=\" << age << \" \";  // ann=31 bob=25 cy=40\n    }\n    std::cout << \"\\n\";\n}",
+          "lang": "cpp"
+        },
+        "`[](int n) { ... }` はラムダ式で、その場に書く無名関数です。テンプレートのおかげで、1つの `std::vector` があらゆる要素型で使えます。自分で書くには `template <typename T>` を使います。"
+      ]
+    },
+    {
+      "h": "特徴的な機能：RAIIとスマートポインタ",
+      "body": [
+        "RAII（Resource Acquisition Is Initialization、リソース取得は初期化）とは、リソースをオブジェクトが所有するという考え方です。コンストラクタが取得し、デストラクタが解放します。オブジェクトがスコープを抜けるとき、例外が投げられた場合でもデストラクタが自動的に実行されるため、メモリ、ファイル、ロックがリークしません。スマートポインタは、このRAIIをヒープメモリに適用したものです。",
+        {
+          "code": "#include <iostream>\n#include <memory>\n\nstruct Noisy {\n    int id;\n    explicit Noisy(int i) : id(i) { std::cout << \"create \" << id << \"\\n\"; }\n    ~Noisy() { std::cout << \"destroy \" << id << \"\\n\"; }\n};\n\nint main() {\n    auto a = std::make_unique<Noisy>(1);       // sole owner\n    {\n        auto b = std::make_shared<Noisy>(2);   // shared, reference-counted\n        auto c = b;                            // two owners now\n        std::cout << \"owners: \" << b.use_count() << \"\\n\";\n    }                                          // destroy 2 happens here\n    std::cout << \"end of main\\n\";\n}                                              // destroy 1 happens here",
+          "lang": "cpp"
+        },
+        "出力：`create 1`、`create 2`、`owners: 2`、`destroy 2`、`end of main`、`destroy 1`。モダンなコードでは、`new` や `delete` を自分で書くことはほとんどありません。"
+      ]
+    },
+    {
+      "h": "例外によるエラー処理",
+      "body": [
+        "例外オブジェクトを throw し、`const` 参照で catch します。標準の例外型は `<stdexcept>` にあります。例外を投げない関数には `noexcept` を付けられます。",
+        {
+          "code": "#include <iostream>\n#include <stdexcept>\n#include <string>\n\nint parseAge(const std::string& text) {\n    int age = std::stoi(text);   // throws std::invalid_argument on \"abc\"\n    if (age < 0) throw std::out_of_range(\"negative age\");\n    return age;\n}\n\nint main() {\n    try {\n        std::cout << parseAge(\"41\") << \"\\n\";   // 41\n        std::cout << parseAge(\"abc\") << \"\\n\";\n    } catch (const std::invalid_argument&) {\n        std::cout << \"not a number\\n\";         // not a number\n    } catch (const std::exception& e) {\n        std::cout << \"error: \" << e.what() << \"\\n\";\n    }\n}",
+          "lang": "cpp"
+        },
+        "想定内の失敗に対しては、例外を投げる代わりに `std::optional<T>`（C++17）や `std::expected<T, E>`（C++23）を返すコードベースも多くあります。"
+      ]
+    },
+    {
+      "h": "小さな完成プログラム：単語の出現頻度",
+      "body": [
+        {
+          "code": "#include <algorithm>\n#include <cctype>\n#include <fstream>\n#include <iostream>\n#include <string>\n#include <unordered_map>\n#include <vector>\n\nint main(int argc, char* argv[]) {\n    if (argc != 2) {\n        std::cerr << \"usage: \" << argv[0] << \" FILE\\n\";\n        return 1;\n    }\n    std::ifstream in(argv[1]);\n    if (!in) {\n        std::cerr << \"cannot open \" << argv[1] << \"\\n\";\n        return 1;\n    }\n    std::unordered_map<std::string, int> counts;\n    std::string word;\n    while (in >> word) {\n        std::string clean;\n        for (unsigned char ch : word)\n            if (std::isalpha(ch)) clean += static_cast<char>(std::tolower(ch));\n        if (!clean.empty()) ++counts[clean];\n    }\n    std::vector<std::pair<std::string, int>> top(counts.begin(), counts.end());\n    std::sort(top.begin(), top.end(),\n              [](const auto& a, const auto& b) { return a.second > b.second; });\n    for (size_t i = 0; i < top.size() && i < 5; ++i)\n        std::cout << top[i].second << \"  \" << top[i].first << \"\\n\";\n}",
+          "lang": "cpp"
+        },
+        "`g++ -std=c++20 -O2 words.cpp -o words` でコンパイルし、`./words notes.txt` で実行します。`in` がスコープを抜けるとファイルは自動的に閉じられます。これもRAIIです。"
+      ]
+    },
+    {
+      "h": "初心者がよくやる間違い",
+      "body": [
+        {
+          "note": "C++はCの未定義動作を引き継いでいます。`[]` で `std::vector` の末尾を越えて読む、ぶら下がり参照を使う、未初期化の変数を読むといった操作は、一見動いているようで後から失敗することがあります。学習中は `.at(i)` を使い、`-fsanitize=address,undefined -g` を付けてコンパイルしましょう。"
+        },
+        {
+          "ul": [
+            "ヘッダファイルに `using namespace std;` を書く。それをインクルードするすべてのファイルが汚染されます。",
+            "`const&` で足りるのに、`std::vector` などの大きなオブジェクトを値渡しする。",
+            "`int i` と `v.size()` の比較のように、符号付きと符号なしを混ぜて比較する。警告を有効にすると気づけます。",
+            "`push_back` の後も `std::vector` へのイテレータや参照を持ち続ける。要素が移動している可能性があります。",
+            "`std::make_unique` や `std::vector` などの所有する型を使わず、生の `new` と `delete` を使う。"
+          ]
+        }
+      ]
+    },
+    {
+      "h": "次のステップ",
+      "body": [
+        "言語とライブラリのリファレンスとしてcppreference.comを、良い書き方の指針としてC++ Core Guidelines（Bjarne StroustrupとHerb Sutterが編集）を使いましょう。Standard C++ Foundationのサイトisocpp.orgには、おすすめの書籍を載せた入門ページがあります。プロジェクトのビルドにはCMakeを学び、続いてムーブセマンティクス、テンプレート、`constexpr`、`std::thread` による並行処理へ進みます。"
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "C++の前にCを学ぶべきですか？",
+      "a": "必須ではありません。モダンC++の教え方は `std::string`、`std::vector`、クラスから始め、生ポインタやCスタイルの配列は後で扱います。ただし、Cを先に学ぶとメモリの理解には役立ちます。"
+    },
+    {
+      "q": "どのC++規格を使うべきですか？",
+      "a": "C++17とC++20は現行のGCC、Clang、MSVCで十分にサポートされており、C++23のサポートも広がっています。`-std=c++20` のようなフラグで明示的に選びましょう。"
+    },
+    {
+      "q": "ポインタと参照の違いは何ですか？",
+      "a": "参照は、作成時に束縛する必要があり、付け替えたりnullにしたりできない別名です。ポインタはアドレスを保持し、nullにでき、別の対象を指すように変更できます。"
+    },
+    {
+      "q": "C++は習得が難しいですか？",
+      "a": "言語の規模が大きいため、PythonやGoより学習曲線は長くなります。モダンな機能、標準コンテナ、スマートポインタに絞って使えば、典型的な落とし穴の大半を避けられます。"
+    }
+  ]
+}

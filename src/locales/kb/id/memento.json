@@ -1,0 +1,165 @@
+{
+  "title": "Pola Memento: snapshot dan undo dengan contoh TypeScript — cv.cm",
+  "description": "Pola Memento menyimpan dan memulihkan state objek tanpa membuka bagian dalamnya. Pelajari originator, memento, dan caretaker dengan kode undo TypeScript.",
+  "h1": "Penjelasan pola Memento beserta contohnya",
+  "answer": "Memento adalah pola desain behavioral yang menangkap state internal sebuah objek dalam objek snapshot, yang disebut memento, sehingga objek itu bisa dipulihkan ke state tersebut nanti. Objek pemilik state (originator) membuat dan memulihkan memento, sedangkan objek lain (caretaker) hanya menyimpannya dan tidak pernah melihat isinya. Ini cara standar untuk mengimplementasikan undo, checkpoint, dan save game tanpa merusak enkapsulasi.",
+  "sections": [
+    {
+      "h": "Tujuan dan masalah yang diselesaikan",
+      "body": [
+        "Tujuan: tanpa melanggar enkapsulasi, tangkap dan eksternalisasikan state internal objek sehingga objek itu dapat dipulihkan ke state tersebut nanti. Memento adalah salah satu pola behavioral dalam buku Gang of Four (GoF).",
+        "Bayangkan aplikasi menggambar di mana sebuah bentuk punya posisi, ukuran, warna, dan daftar nilai turunan privat yang dipakai untuk rendering. Anda ingin tombol undo. Undo manager bisa menyalin field bentuk itu sendiri, tetapi ia harus tahu setiap field privat, dan setiap kali class bentuk berubah, undo manager rusak. Menjadikan semua field publik hanya demi undo akan membuat kode mana pun bisa menaruh bentuk itu dalam keadaan tidak valid.",
+        "Memento menyelesaikan ini dengan membiarkan bentuk itu sendiri menghasilkan snapshot. Hanya bentuk itu yang tahu apa isi snapshot dan cara memulihkan darinya. Undo manager memperlakukan snapshot sebagai objek opaque: ia menyimpannya dalam daftar dan mengembalikan satu saat pengguna menekan undo."
+      ]
+    },
+    {
+      "h": "Struktur dan peserta",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Peran",
+              "Tanggung jawab"
+            ],
+            "rows": [
+              [
+                "Originator",
+                "Objek yang state-nya disimpan; membuat memento dari state saat ini dan memulihkan dirinya dari sebuah memento"
+              ],
+              [
+                "Memento",
+                "Snapshot immutable dari state originator; tidak mengekspos apa pun yang berguna bagi objek lain"
+              ],
+              [
+                "Caretaker",
+                "Memutuskan kapan menyimpan dan kapan memulihkan, serta menyimpan memento (misalnya dalam stack), tetapi tidak pernah membaca atau mengubah isinya"
+              ]
+            ]
+          }
+        },
+        "Gagasan kuncinya adalah dua interface: yang lebar untuk originator, yang bisa membaca state tersimpan, dan yang sempit untuk semua pihak lain, yang hanya bisa memegang memento."
+      ]
+    },
+    {
+      "h": "Implementasi TypeScript",
+      "body": [
+        "Class memento memakai private field JavaScript (`#state`), sehingga caretaker tidak bisa membaca data tersimpan dari objek memento. Pembacaan lewat method static `EditorMemento.read`, yang hanya dipanggil editor. Di proyek nyata, taruh class memento di modul yang sama dengan editor dan jangan di-export, sehingga modul lain bisa memegang memento tetapi tidak pernah membukanya.",
+        {
+          "code": "type EditorState = { text: string; cursor: number };\n\nclass EditorMemento {\n  readonly #state: EditorState;\n  constructor(state: EditorState) {\n    this.#state = { ...state }; // copy, so later edits do not change the snapshot\n  }\n  static read(m: EditorMemento): EditorState {\n    return { ...m.#state };\n  }\n}\n\nclass Editor {\n  private state: EditorState = { text: \"\", cursor: 0 };\n  type(words: string) {\n    const text = this.state.text + words;\n    this.state = { text, cursor: text.length };\n  }\n  get text() { return this.state.text; }\n  save(): EditorMemento { return new EditorMemento(this.state); }\n  restore(m: EditorMemento) { this.state = EditorMemento.read(m); }\n}\n\nclass History {\n  private stack: EditorMemento[] = [];\n  constructor(private editor: Editor) {}\n  backup() { this.stack.push(this.editor.save()); }\n  undo() { const m = this.stack.pop(); if (m) this.editor.restore(m); }\n}\n\nconst editor = new Editor();\nconst history = new History(editor);\nhistory.backup(); editor.type(\"Hello\");\nhistory.backup(); editor.type(\" world\");\nconsole.log(editor.text); // Hello world\nhistory.undo();\nconsole.log(editor.text); // Hello\nhistory.undo();\nconsole.log(JSON.stringify(editor.text)); // \"\"",
+          "lang": "typescript"
+        },
+        "`History` adalah caretaker. Ia memanggil `backup()` sebelum setiap perubahan dan `undo()` untuk kembali, tetapi tidak pernah melihat `text` atau `cursor`. Jika nanti Anda menambahkan rentang seleksi ke `EditorState`, `History` tidak berubah.",
+        {
+          "note": "Memento harus berupa salinan yang sesungguhnya. Jika ia hanya menyimpan referensi ke objek atau array mutable milik originator, edit berikutnya ikut mengubah snapshot, dan undo memulihkan state yang salah. Untuk data bersarang, gunakan deep copy seperti `structuredClone(state)`."
+        }
+      ]
+    },
+    {
+      "h": "Memento vs Command untuk undo",
+      "body": [
+        "Ada dua cara umum mengimplementasikan undo, dan keduanya sering digabung:",
+        {
+          "table": {
+            "head": [
+              "Pendekatan",
+              "Yang disimpan",
+              "Cocok bila",
+              "Biaya"
+            ],
+            "rows": [
+              [
+                "Memento",
+                "Snapshot seluruh state sebelum setiap perubahan",
+                "Perubahan sulit dibalik, atau state kecil",
+                "Memori bertambah sebesar ukuran state dikali jumlah langkah"
+              ],
+              [
+                "Command",
+                "Operasi dan data yang cukup untuk membaliknya",
+                "Setiap operasi punya kebalikan yang sederhana",
+                "Setiap command butuh logika undo yang benar"
+              ]
+            ]
+          }
+        },
+        "Kompromi praktis: simpan command untuk sebagian besar langkah dan memento penuh setiap N langkah, atau simpan hanya bagian state yang diubah sebuah command."
+      ]
+    },
+    {
+      "h": "Kapan dipakai dan kapan tidak",
+      "body": [
+        {
+          "ul": [
+            "Pakai untuk undo, redo, checkpoint, save game, dan tombol \"batal\" pada form yang harus membatalkan edit.",
+            "Pakai untuk transaksi di memori: ambil snapshot sebelum operasi berisiko dan pulihkan bila gagal.",
+            "Pakai bila caretaker tidak boleh bergantung pada field internal originator.",
+            "Jangan dipakai bila state sangat besar dan sering berubah, kecuali Anda membatasi panjang riwayat atau hanya menyimpan perbedaannya.",
+            "Jangan memakai seluruh seremoninya bila state sudah berupa nilai immutable biasa. Dengan data immutable, nilai lama sudah merupakan snapshot, dan menyimpan daftar nilai sebelumnya sudah cukup."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Penggunaan di dunia nyata",
+      "body": [
+        {
+          "ul": [
+            "History API browser: `history.pushState(state, \"\", url)` menyimpan objek state untuk setiap entri riwayat, dan event `popstate` mengembalikannya saat pengguna bernavigasi.",
+            "Redux dan store serupa menyimpan snapshot state yang immutable, yang dipakai tool untuk time-travel debugging.",
+            "Database SQL mendukung `SAVEPOINT` di dalam transaksi, sehingga pekerjaan bisa di-rollback ke titik bernama.",
+            "Editor teks, program grafis, dan game menyimpan snapshot untuk undo, autosave, dan slot simpan."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Pola terkait",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Pola",
+              "Hubungannya dengan Memento"
+            ],
+            "rows": [
+              [
+                "Command",
+                "Command bisa melakukan undo dengan membalik operasi; ia juga bisa menyimpan memento yang diambil sebelum berjalan dan memulihkannya di `undo`."
+              ],
+              [
+                "Prototype",
+                "Prototype mengkloning seluruh objek untuk membuat yang baru; memento menyimpan state untuk memulihkan objek yang sama nanti."
+              ],
+              [
+                "Iterator",
+                "Iterator dapat mengekspos posisinya saat ini sebagai memento sehingga traversal dapat dilanjutkan nanti."
+              ],
+              [
+                "State",
+                "State mengubah perilaku objek saat state-nya berubah; Memento hanya mencatat dan memulihkan data."
+              ]
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Apa perbedaan antara originator dan caretaker?",
+      "a": "Originator memiliki state dan satu-satunya objek yang dapat membuat memento dan memulihkan darinya. Caretaker memutuskan kapan menyimpan dan memulihkan serta menyimpan memento, tetapi memperlakukannya sebagai opaque."
+    },
+    {
+      "q": "Apakah Memento merusak enkapsulasi?",
+      "a": "Tidak, justru itu tujuannya. Field internal originator tetap privat, dan memento menyembunyikannya dari caretaker, sehingga hanya originator yang dapat membaca state tersimpan."
+    },
+    {
+      "q": "Bagaimana membatasi pemakaian memori dengan Memento?",
+      "a": "Simpan jumlah snapshot maksimum dan buang yang paling lama, simpan hanya bagian state yang berubah, atau gabungkan memento dengan command yang mencatat perubahan kecil."
+    },
+    {
+      "q": "Apakah serialisasi JSON itu memento?",
+      "a": "Serialisasi state ke JSON bisa menjadi format penyimpanan sebuah memento, dan berguna untuk menyimpan ke disk. Pola itu sendiri berkaitan dengan siapa yang membuat, menyimpan, dan memulihkan snapshot, bukan formatnya."
+    }
+  ]
+}

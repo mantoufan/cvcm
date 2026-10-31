@@ -1,0 +1,189 @@
+{
+  "title": "Erlang入門：パターンマッチ・再帰・プロセス・OTPを解説 — cv.cm",
+  "description": "Erlangの基本を順に学べる入門講座。モジュールのコンパイル、変数と型、パターンマッチ、ガード、再帰、リストとマップ、プロセス、OTP、let it crashのエラー処理を解説します。",
+  "h1": "Erlang入門：初心者向けチュートリアル",
+  "answer": "Erlangは、電話交換機やメッセージングサーバーのように、止まってはならないシステムのためにEricssonで作られた、関数型で並行処理向きの言語です。プログラムはBEAM仮想マシン上で多数の軽量プロセスとして動き、プロセス同士はメッセージで通信し、失敗するとスーパーバイザーが再起動します。このページでは、モジュールのコンパイル、型、パターンマッチ、再帰、リストとマップ、プロセス、OTP、エラー処理を扱います。",
+  "sections": [
+    {
+      "h": "Erlangとは何か、何に使うのか",
+      "body": [
+        "Erlangは、止まらずに動き続けなければならない電話交換機のために、1980年代にEricssonで設計された、関数型の動的型付け言語です。1998年にオープンソースとして公開されました。Erlangのプログラムは、何も共有せずメッセージで通信する多数の軽量プロセスとして、BEAM仮想マシン上で動きます。また、耐障害性のあるシステムを作るためのライブラリと設計原則であるOTP(Open Telecom Platform)が付属しています。",
+        "Erlangは、通信機器、メッセージングプラットフォーム(WhatsAppのバックエンドがErlangで作られたことは有名です)、RabbitMQのようなメッセージブローカー、RiakやCouchDBのようなデータベース、決済やIoTのシステムで使われています。ElixirとGleamもBEAM上で動き、Erlangのライブラリを直接使えます。"
+      ]
+    },
+    {
+      "h": "Erlangのインストールとhello, worldの実行",
+      "body": [
+        "Erlang/OTPは、erlang.orgからか、パッケージマネージャー(たとえば`brew install erlang`や`apt install erlang`)でインストールします。コードはモジュールに書きます。`name.erl`というファイルが`name`モジュールを定義し、公開(エクスポート)する関数を列挙します。",
+        {
+          "code": "% hello.erl\n-module(hello).\n-export([main/0]).\n\nmain() ->\n    io:format(\"Hello, world!~n\").",
+          "lang": "erlang"
+        },
+        {
+          "code": "erlc hello.erl                          # compiles to hello.beam\nerl -noshell -s hello main -s init stop\n# Hello, world!\nerl                                     # interactive shell; c(hello). then hello:main().",
+          "lang": "shell"
+        },
+        "コメントは`%`で始まります。書式文字列の`~n`は改行、`~p`は任意の項を出力します。シェルでは、すべての式の末尾にピリオドを付けます。"
+      ]
+    },
+    {
+      "h": "記号・変数・基本の型",
+      "body": [
+        "Erlangの記号は、初心者が最も驚くところです。カンマは式を区切り、セミコロンは節を区切り、ピリオドは関数やシェルのコマンドを終わらせます。変数は大文字またはアンダースコアで始まり、一度だけ束縛できます。",
+        {
+          "code": "1> Name = \"Erlang\".\n\"Erlang\"\n2> Year = 1986, Next = Year + 1.\n1987\n3> Year = 2000.\n** exception error: no match of right hand side value 2000\n4> 10 / 4.\n2.5\n5> {10 div 4, 10 rem 4}.\n{2,2}\n6> is_atom(ok).\ntrue\n7> <<\"binary string\">>.\n<<\"binary string\">>",
+          "lang": "erlang"
+        },
+        {
+          "table": {
+            "head": [
+              "型",
+              "例",
+              "補足"
+            ],
+            "rows": [
+              [
+                "integer",
+                "`42`, `16#FF`",
+                "任意精度。16進数は`16#`で書きます"
+              ],
+              [
+                "float",
+                "`3.14`",
+                "64ビット倍精度"
+              ],
+              [
+                "atom",
+                "`ok`, `error`, `'Hello'`",
+                "名前付き定数。小文字で始めるか、引用符で囲みます"
+              ],
+              [
+                "tuple",
+                "`{ok, 42}`",
+                "固定サイズの値のまとまり"
+              ],
+              [
+                "list",
+                "`[1, 2, 3]`",
+                "連結リスト。`\"abc\"`のような文字列は整数のリストです"
+              ],
+              [
+                "map",
+                "`#{name => \"Ann\"}`",
+                "キーと値のストア"
+              ],
+              [
+                "binary",
+                "`<<\"text\">>`",
+                "バイト列。テキストを効率よく保持する方法です"
+              ]
+            ]
+          }
+        },
+        "`true`と`false`は別の型ではなく、アトムです。`=`は代入ではなくマッチなので、3行目は失敗します。`Year`はすでに1986に束縛されているからです。"
+      ]
+    },
+    {
+      "h": "パターンマッチ・case・ガード",
+      "body": [
+        "パターンマッチは、タプル、リスト、マップを分解し、どの節を実行するかを選びます。`when`で書くガードは、節に条件を加えます。`case`と`if`は値を返す式です。",
+        {
+          "code": "-module(match).\n-export([describe/1, grade/1, demo/0]).\n\ndescribe({ok, Value}) -> io_lib:format(\"ok: ~p\", [Value]);\ndescribe({error, Reason}) -> io_lib:format(\"error: ~p\", [Reason]);\ndescribe(_Other) -> \"unknown\".\n\ngrade(Score) when Score >= 90 -> a;\ngrade(Score) when Score >= 70 -> b;\ngrade(_) -> c.\n\ndemo() ->\n    [First | Rest] = [1, 2, 3],\n    #{name := Name} = #{name => \"Ann\", age => 31},\n    Size = case length(Rest) of\n               0 -> empty;\n               N when N < 5 -> small;\n               _ -> large\n           end,\n    io:format(\"~p ~p ~s ~p ~p~n\", [First, Rest, Name, Size, grade(75)]),\n    io:format(\"~s~n\", [describe({error, timeout})]).\n% match:demo() prints:\n% 1 [2,3] Ann small b\n% error: timeout",
+          "lang": "erlang"
+        },
+        "最後の節を除き、すべての節は`;`で終わり、最後の節は`.`で終わります。どの節にも合わない場合、プロセスは`function_clause`または`case_clause`エラーを発生させます。"
+      ]
+    },
+    {
+      "h": "関数・再帰・高階関数",
+      "body": [
+        "関数は名前とアリティで識別され、`name/Arity`と書きます。ループはなく、繰り返しは再帰で行い、末尾再帰の関数は一定のスタック領域で動きます。無名関数は`fun ... end`と書きます。",
+        {
+          "code": "-module(fns).\n-export([factorial/1, sum/1, demo/0]).\n\nfactorial(0) -> 1;\nfactorial(N) when N > 0 -> N * factorial(N - 1).\n\nsum(List) -> sum(List, 0).          % public wrapper\nsum([], Acc) -> Acc;                 % tail-recursive helper sum/2\nsum([H | T], Acc) -> sum(T, Acc + H).\n\ndemo() ->\n    Double = fun(X) -> X * 2 end,\n    io:format(\"~p~n\", [factorial(20)]),                    % 2432902008176640000\n    io:format(\"~p~n\", [sum([1, 2, 3, 4])]),                % 10\n    io:format(\"~p~n\", [Double(21)]),                       % 42\n    io:format(\"~p~n\", [lists:map(Double, [1, 2, 3])]),     % [2,4,6]\n    io:format(\"~p~n\", [[X * X || X <- [1, 2, 3, 4, 5], X rem 2 =:= 1]]). % [1,9,25]",
+          "lang": "erlang"
+        },
+        "最後の行ではリスト内包表記を使っています。比較演算子に注意してください。`=:=`と`=/=`は厳密な等価・不等価を調べ、`==`と`/=`は数値を値で比較します(そのため`1 == 1.0`は真です)。「以下」は`<=`ではなく`=<`と書きます。"
+      ]
+    },
+    {
+      "h": "リスト・マップ・標準ライブラリ",
+      "body": [
+        "`lists`モジュールには`map`、`filter`、`foldl`、`sort`、`reverse`などがあります。`maps`はマップを、`string`と`binary`はテキストを扱います。完全なリファレンスはOTPのドキュメントにあります。",
+        {
+          "code": "1> L = [5, 3, 8, 1].\n[5,3,8,1]\n2> lists:sort(L).\n[1,3,5,8]\n3> lists:filter(fun(X) -> X > 2 end, L).\n[5,3,8]\n4> lists:foldl(fun(X, Acc) -> X + Acc end, 0, L).\n17\n5> M = #{ann => 31, bo => 25}, map_size(M).\n2\n6> M2 = M#{cy => 40}, map_size(M2).\n3\n7> maps:get(bo, M2).\n25\n8> maps:get(zed, M2, none).\nnone",
+          "lang": "erlang"
+        },
+        "`M#{cy => 40}`は新しいマップを作り、`M`自体は変わりません。すでに存在するキーだけを更新したいときは、`=>`の代わりに`:=`を使います。"
+      ]
+    },
+    {
+      "h": "プロセスとメッセージパッシング",
+      "body": [
+        "プロセスはErlangを代表する機能です。`spawn`が新しいプロセスを起動し、`!`がメッセージを送り、`receive`がパターンでメッセージを選んで待ちます。プロセスは軽量なので、システムは非常に多くのプロセスを動かせます。リンクとモニターにより、あるプロセスは別のプロセスが死んだことに気づけます。OTPのスーパーバイザーはこれを使って、失敗したワーカーを自動的に再起動します。",
+        {
+          "code": "-module(counter).\n-export([start/0, loop/1]).\n\nstart() ->\n    Pid = spawn(counter, loop, [0]),\n    Pid ! {add, 5},\n    Pid ! {add, 10},\n    Pid ! {get, self()},\n    receive\n        {count, N} -> io:format(\"count = ~p~n\", [N])   % count = 15\n    after 1000 ->\n        io:format(\"timeout~n\")\n    end.\n\nloop(Count) ->\n    receive\n        {add, N} -> loop(Count + N);\n        {get, From} -> From ! {count, Count}, loop(Count)\n    end.",
+          "lang": "erlang"
+        },
+        "この手書きのループが、まさにOTPの`gen_server`ビヘイビアが一般化しているものです。本番のコードでは、`gen_server`モジュールを書いて`supervisor`の配下に置きます。"
+      ]
+    },
+    {
+      "h": "エラー処理と「let it crash」",
+      "body": [
+        "Erlangの例外には、`error`、`throw`、`exit`の3種類があります。想定内の失敗は、通常`{ok, Value}`や`{error, Reason}`のタプルで返します。想定外の失敗は、捕捉しないことも多くあります。プロセスがクラッシュし、スーパーバイザーが正常な状態で再起動するからです。どうしても捕捉が必要なときは`try ... catch`を使います。",
+        {
+          "code": "1> file:read_file(\"missing.txt\").\n{error,enoent}\n2> try 1 / 0 catch error:badarith -> division_failed end.\ndivision_failed\n3> try throw(my_reason) catch throw:R -> {caught, R} end.\n{caught,my_reason}\n4> case file:read_file(\"missing.txt\") of {ok, Bin} -> Bin; {error, Why} -> Why end.\nenoent",
+          "lang": "erlang"
+        }
+      ]
+    },
+    {
+      "h": "小さな完成プログラム：単語の出現頻度",
+      "body": [
+        "このモジュールは、文字列中の単語をマップで数え、回数順に並べて、よく出る上位3語を表示します。文字列関数、`lists:foldl`、マップ、独自の並べ替えを組み合わせています。",
+        {
+          "code": "-module(wordfreq).\n-export([top/2, main/0]).\n\ntop(Text, N) ->\n    Words = string:lexemes(string:lowercase(Text), \" .,;:!?\\n\"),\n    Counts = lists:foldl(fun(W, Acc) ->\n                                 maps:update_with(W, fun(C) -> C + 1 end, 1, Acc)\n                         end, #{}, Words),\n    Sorted = lists:sort(fun({W1, C1}, {W2, C2}) ->\n                                {-C1, W1} =< {-C2, W2}\n                        end, maps:to_list(Counts)),\n    lists:sublist(Sorted, N).\n\nmain() ->\n    Text = \"The cat and the dog. The dog sat, and the cat ran.\",\n    [io:format(\"~s: ~p~n\", [W, C]) || {W, C} <- top(Text, 3)],\n    ok.\n% the: 4\n% and: 2\n% cat: 2",
+          "lang": "erlang"
+        },
+        {
+          "note": "初心者がよくやる間違い：`,`、`;`、`.`を混同する、変数を再束縛しようとする、`=<`の代わりに`<=`と書く、`=:=`のつもりで`==`を使う、関数のエクスポートを忘れる、またはアリティを間違えてエクスポートする、文字列とバイナリを取り違える(`\"abc\"`はリスト、`<<\"abc\">>`はバイナリです)、などです。"
+        }
+      ]
+    },
+    {
+      "h": "次に学ぶこと",
+      "body": [
+        {
+          "ul": [
+            "erlang.orgにあるErlang/OTPのドキュメント。Getting StartedガイドとOTP Design Principlesが含まれます。",
+            "『Learn You Some Erlang for Great Good!』。無料のオンライン書籍です。",
+            "標準のビルドツールrebar3と、Elixirと共通のパッケージマネージャーHex。",
+            "実際のサービスを作る段階での、`gen_server`と`supervisor`のリファレンスページ。"
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Erlangは今でも使われていますか？",
+      "a": "はい。Erlangは今も通信システム、メッセージングサービス、RabbitMQを支えています。また、Erlangのライブラリを使えるElixirやGleamを通じて、BEAMのエコシステムは成長を続けています。"
+    },
+    {
+      "q": "ErlangのOTPとは何ですか？",
+      "a": "OTPは、Erlangに付属するライブラリ、ツール、設計原則の集まりです。`gen_server`、`supervisor`、`application`といったビヘイビアを提供し、耐障害性のあるプログラムの構造を決めます。"
+    },
+    {
+      "q": "ErlangとElixirのどちらを学ぶべきですか？",
+      "a": "Elixirは構文が親しみやすく、Web関連のエコシステムが大きいです。Erlangは小さく、OTPと多くの中核ライブラリが書かれている言語です。どちらも同じ仮想マシンで動き、片方を知っていればもう片方も読みやすくなります。"
+    },
+    {
+      "q": "let it crashとはどういう意味ですか？",
+      "a": "プロセスの中で起こりうるすべてのエラーを処理しようとせず、プロセスを失敗させて、スーパーバイザーにクリーンな状態で再起動してもらうという考え方です。エラー処理のコードは小さく保たれ、システムは自動的に回復します。"
+    },
+    {
+      "q": "Erlangの変数が大文字で始まるのはなぜですか？",
+      "a": "Erlangは、大文字・小文字で変数とアトムを区別します。`Name`は変数で、`name`は定数値のアトムです。"
+    }
+  ]
+}

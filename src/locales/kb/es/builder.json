@@ -1,0 +1,149 @@
+{
+  "title": "Patrón Builder: construcción paso a paso, API fluida, ejemplo en TypeScript — cv.cm",
+  "description": "El patrón Builder explicado: construye objetos complejos paso a paso con una API fluida en TypeScript, el rol Director y cuándo basta un objeto de opciones.",
+  "h1": "Patrón Builder explicado con ejemplos",
+  "answer": "Builder es un patrón de diseño creacional que separa la construcción de un objeto complejo de su representación final, de modo que el mismo proceso paso a paso puede crear resultados distintos. En el código moderno suele aparecer como una API fluida: llamas a métodos como `.url()`, `.header()` y `.timeout()` sobre un builder, y después `.build()` devuelve un objeto terminado y validado. Sustituye a los constructores largos con muchos parámetros opcionales.",
+  "sections": [
+    {
+      "h": "Intención",
+      "body": [
+        "Separar la construcción de un objeto complejo de su representación, de modo que el mismo proceso de construcción pueda crear representaciones distintas. El patrón Builder es uno de los cinco patrones creacionales del libro de la Banda de los Cuatro (GoF)."
+      ]
+    },
+    {
+      "h": "El problema que resuelve",
+      "body": [
+        "Imagina un objeto de petición HTTP con una URL, un método, cualquier número de cabeceras, un cuerpo opcional, un tiempo de espera y un número de reintentos. Un constructor para todo esto es difícil de llamar correctamente:",
+        {
+          "code": "class HttpRequest {\n  constructor(\n    readonly url: string,\n    readonly method: string,\n    readonly headers: Record<string, string>,\n    readonly body?: string,\n    readonly timeoutMs?: number,\n    readonly retries?: number,\n  ) {}\n}\n\n// Which argument is which? Easy to swap 3 and 5000 by mistake.\nconst req = new HttpRequest(\"https://api.example.com\", \"POST\", {}, undefined, 3, 5000);",
+          "lang": "typescript"
+        },
+        "Esto se llama constructor telescópico. Además, no tiene dónde poner reglas como «una petición GET no puede tener cuerpo», y no puede construirse poco a poco, por ejemplo cuando las cabeceras se añaden en varios lugares antes de enviar."
+      ]
+    },
+    {
+      "h": "Estructura y participantes",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Participante",
+              "Responsabilidad",
+              "En el ejemplo"
+            ],
+            "rows": [
+              [
+                "Builder",
+                "Declara los pasos para crear las partes del producto.",
+                "Métodos de `RequestBuilder`"
+              ],
+              [
+                "ConcreteBuilder",
+                "Implementa los pasos, mantiene el estado parcial y devuelve el resultado.",
+                "`RequestBuilder`"
+              ],
+              [
+                "Director",
+                "Opcional. Ejecuta los pasos en un orden fijo para producir configuraciones habituales.",
+                "`jsonPost()`"
+              ],
+              [
+                "Product",
+                "El objeto complejo que se construye.",
+                "`HttpRequest`"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "Implementación en TypeScript",
+      "body": [
+        "Cada paso guarda un valor y devuelve `this`, de modo que las llamadas pueden encadenarse. `build()` valida la combinación y devuelve un producto inmutable:",
+        {
+          "code": "interface HttpRequest {\n  readonly url: string;\n  readonly method: \"GET\" | \"POST\";\n  readonly headers: Readonly<Record<string, string>>;\n  readonly body?: string;\n  readonly timeoutMs: number;\n}\n\nclass RequestBuilder {\n  private method: \"GET\" | \"POST\" = \"GET\";\n  private headers: Record<string, string> = {};\n  private body?: string;\n  private timeoutMs = 10_000;\n\n  constructor(private readonly url: string) {}\n\n  post(body: string): this { this.method = \"POST\"; this.body = body; return this; }\n  header(name: string, value: string): this { this.headers[name] = value; return this; }\n  timeout(ms: number): this { this.timeoutMs = ms; return this; }\n\n  build(): HttpRequest {\n    if (this.timeoutMs <= 0) throw new Error(\"timeout must be positive\");\n    return Object.freeze({\n      url: this.url, method: this.method, headers: { ...this.headers },\n      body: this.body, timeoutMs: this.timeoutMs,\n    });\n  }\n}\n\nconst request = new RequestBuilder(\"https://api.example.com/orders\")\n  .header(\"Accept\", \"application/json\")\n  .timeout(5_000)\n  .build();\nconsole.log(request.method, request.timeoutMs, request.headers);\n// GET 5000 { Accept: 'application/json' }",
+          "lang": "typescript"
+        },
+        "Un Director es simplemente código que conoce una receta habitual. En TypeScript suele ser una función normal que maneja el builder:",
+        {
+          "code": "interface Steps {\n  header(name: string, value: string): this;\n  post(body: string): this;\n}\n\n// Director: a reusable recipe that drives any builder with these steps.\nfunction jsonPost<B extends Steps>(builder: B, data: unknown): B {\n  return builder\n    .header(\"Content-Type\", \"application/json\")\n    .post(JSON.stringify(data));\n}\n\nclass LogBuilder implements Steps {\n  log: string[] = [];\n  header(name: string, value: string): this { this.log.push(`${name}=${value}`); return this; }\n  post(body: string): this { this.log.push(`POST ${body}`); return this; }\n}\n\nconsole.log(jsonPost(new LogBuilder(), { id: 7 }).log);\n// [ 'Content-Type=application/json', 'POST {\"id\":7}' ]",
+          "lang": "typescript"
+        },
+        "Esto muestra la idea original de GoF: los mismos pasos de construcción, manejados por el mismo director, pueden alimentar a builders distintos y producir representaciones distintas, aquí un registro en lugar de una petición."
+      ]
+    },
+    {
+      "h": "Cuándo usarlo y cuándo no",
+      "body": [
+        "Usa el patrón Builder cuando:",
+        {
+          "ul": [
+            "Un objeto tenga muchas partes opcionales, o partes que deban añadirse de una en una.",
+            "La construcción tenga reglas que involucren varios campos y deban comprobarse una sola vez, en `build()`.",
+            "Quieras que el objeto terminado sea inmutable, pero aun así montarlo paso a paso.",
+            "El mismo proceso de construcción deba producir representaciones distintas, como un documento exportado a HTML, Markdown o PDF."
+          ]
+        },
+        "Evítalo cuando:",
+        {
+          "ul": [
+            "El objeto tenga pocos campos. Un constructor es más corto y igual de claro.",
+            "Tu lenguaje ya tenga parámetros con nombre u opcionales. En TypeScript, un único objeto de opciones suele eliminar por completo la necesidad de un builder."
+          ]
+        },
+        {
+          "code": "interface RequestOptions {\n  url: string;\n  method?: \"GET\" | \"POST\";\n  headers?: Record<string, string>;\n  timeoutMs?: number;\n}\n\nfunction createRequest({ url, method = \"GET\", headers = {}, timeoutMs = 10_000 }: RequestOptions) {\n  return { url, method, headers, timeoutMs };\n}\n\nconsole.log(createRequest({ url: \"/orders\", timeoutMs: 5_000 }).method); // GET",
+          "lang": "typescript"
+        },
+        {
+          "note": "Un builder que se reutiliza después de `build()` puede filtrar estado al siguiente objeto. Copia todas las colecciones en `build()`, como hace el ejemplo con `headers`, o documenta que cada builder crea un solo objeto."
+        }
+      ]
+    },
+    {
+      "h": "Usos en el mundo real",
+      "body": [
+        {
+          "ul": [
+            "Java: `java.net.http.HttpRequest.newBuilder()` devuelve un `HttpRequest.Builder`; encadenas `uri()`, `header()` y `timeout()` y luego llamas a `build()`.",
+            "Java: `Locale.Builder` ensambla y valida una configuración regional a partir de partes de idioma, región y escritura.",
+            "Java y C#: `StringBuilder` ensambla una cadena a partir de muchas partes añadidas antes de producir la cadena final inmutable.",
+            "Muchos constructores de consultas SQL y de datos de prueba usan el mismo estilo fluido."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Patrones relacionados",
+      "body": [
+        {
+          "ul": [
+            "El patrón Abstract Factory crea familias enteras de productos y devuelve cada uno de inmediato; el patrón Builder construye un producto complejo paso a paso y lo devuelve al final.",
+            "Los árboles del patrón Composite suelen crearse con un builder, porque construir un árbol nodo a nodo es una serie natural de pasos.",
+            "La interfaz fluida es el estilo de API de encadenar llamadas que devuelven `this`. Builder suele usarla, pero no son lo mismo.",
+            "El patrón Prototype puede ser una alternativa cuando la mayoría de los objetos nuevos son pequeñas variaciones de una plantilla ya hecha."
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "¿Por qué cada método del builder devuelve this?",
+      "a": "Devolver el builder permite encadenar llamadas en una sola expresión, como `.header(...).timeout(...).build()`. Devolver `this` en TypeScript también conserva el tipo correcto en las subclases."
+    },
+    {
+      "q": "¿Necesito una clase Director?",
+      "a": "No. El Director es opcional en la descripción de GoF. En la práctica, normalmente basta con una función que aplique una secuencia habitual de pasos."
+    },
+    {
+      "q": "¿Sigue siendo útil el patrón Builder en TypeScript?",
+      "a": "A veces. Un objeto de opciones con valores por defecto cubre la mayoría de los casos simples. Builder sigue siendo útil cuando los objetos se ensamblan poco a poco, cuando hace falta validación entre campos o cuando quieres un resultado inmutable."
+    },
+    {
+      "q": "¿Cuál es la diferencia entre el patrón Builder y el patrón Factory Method?",
+      "a": "Factory Method decide qué clase instanciar y devuelve el objeto en una sola llamada. Builder permite al cliente controlar cómo se ensambla un objeto a lo largo de varias llamadas."
+    }
+  ]
+}

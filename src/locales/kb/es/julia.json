@@ -1,0 +1,229 @@
+{
+  "title": "Tutorial de Julia: arreglos, funciones, despacho múltiple y paquetes — cv.cm",
+  "description": "Aprende Julia desde cero: instala con juliaup, ejecuta Hola mundo, usa tipos, arreglos con índice desde 1, broadcasting, funciones, despacho múltiple, errores y paquetes.",
+  "h1": "Tutorial de Julia para principiantes",
+  "answer": "Julia es un lenguaje de alto nivel y de tipado dinámico diseñado para el cálculo numérico y científico rápido. Se lee como Python o MATLAB, pero compila cada función a código nativo la primera vez que se llama, por lo que los bucles pueden ejecutarse a velocidades cercanas a las de C. Su idea central es el despacho múltiple: una función elige su método según los tipos de todos sus argumentos. Instálalo con juliaup y ejecuta un archivo con `julia hello.jl`.",
+  "sections": [
+    {
+      "h": "Qué es Julia y quién lo usa",
+      "body": [
+        "Julia la crearon Jeff Bezanson, Stefan Karpinski, Viral Shah y Alan Edelman, y se hizo pública en 2012. La versión 1.0 llegó en 2018, y la serie 1.x mantiene la compatibilidad hacia atrás. Julia pretende resolver el «problema de los dos lenguajes»: prototipar en un lenguaje lento y fácil y luego reescribir las partes críticas en C o Fortran.",
+        "Julia la usan científicos, ingenieros y analistas de datos para simulación, ecuaciones diferenciales, optimización, estadística, aprendizaje automático y computación de alto rendimiento. Su ecosistema de paquetes cubre data frames, gráficos, computación en GPU y diferenciación automática."
+      ]
+    },
+    {
+      "h": "Instala Julia y ejecuta Hola, mundo",
+      "body": [
+        "El instalador recomendado es juliaup, que instala y actualiza versiones de Julia en Windows, macOS y Linux (consulta julialang.org/downloads). Tras la instalación, `julia` inicia el REPL y `julia file.jl` ejecuta un script.",
+        {
+          "code": "# hello.jl\nprintln(\"Hello, world!\")",
+          "lang": "julia"
+        },
+        {
+          "code": "julia hello.jl\n# Hello, world!\njulia\n# julia> 1 + 2\n# 3",
+          "lang": "shell"
+        },
+        "En el REPL, pulsa `]` para entrar en el modo de paquetes (por ejemplo `add DataFrames`), `?` para ver la ayuda de un nombre y `;` para una shell. Pulsa Retroceso para volver al prompt normal."
+      ]
+    },
+    {
+      "h": "Variables y tipos básicos",
+      "body": [
+        "Las variables no necesitan declaración, pero cada valor tiene un tipo concreto que puedes inspeccionar con `typeof`. Puedes añadir anotaciones de tipo a los argumentos de las funciones y a los campos de los struct cuando quieras.",
+        {
+          "table": {
+            "head": [
+              "Tipo",
+              "Ejemplo",
+              "Notas"
+            ],
+            "rows": [
+              [
+                "Int64",
+                "`42`",
+                "Entero predeterminado en sistemas de 64 bits; el desbordamiento da la vuelta"
+              ],
+              [
+                "Float64",
+                "`3.14`, `1e-3`",
+                "Coma flotante predeterminada"
+              ],
+              [
+                "Rational",
+                "`1//3`",
+                "Fracción exacta"
+              ],
+              [
+                "String",
+                "`\"hello\"`",
+                "UTF-8; se interpola con `\"$name\"`"
+              ],
+              [
+                "Char",
+                "`'a'`",
+                "Un solo carácter Unicode"
+              ],
+              [
+                "Bool",
+                "`true`, `false`",
+                "Valores lógicos"
+              ],
+              [
+                "Symbol",
+                "`:name`",
+                "Un nombre internado, que se usa a menudo como clave u opción"
+              ],
+              [
+                "Nothing",
+                "`nothing`",
+                "«Sin valor», lo devuelven las funciones sin resultado"
+              ]
+            ]
+          }
+        },
+        {
+          "code": "name = \"Ana\"\nage = 30\nprintln(\"$name is $age, next year $(age + 1)\")\n# Ana is 30, next year 31\ntypeof(age)   # Int64\n7 / 2         # 3.5  (always a float)\n7 ÷ 2         # 3    (integer division, also div(7, 2))\n2^10          # 1024",
+          "lang": "julia"
+        },
+        "Julia acepta nombres Unicode como `π` o `α`; en el REPL y en la mayoría de los editores escribes `\\pi` y pulsas Tab para obtener `π`."
+      ]
+    },
+    {
+      "h": "Control de flujo",
+      "body": [
+        "Los bloques terminan con la palabra clave `end`; la sangría es solo para facilitar la lectura. `if`, `for` y `while` funcionan como en la mayoría de los lenguajes, y las comprensiones construyen arreglos en una línea.",
+        {
+          "code": "function sign_name(n)\n    if n > 0\n        \"positive\"\n    elseif n < 0\n        \"negative\"\n    else\n        \"zero\"\n    end\nend\nfor i in 1:3\n    println(\"$i squared is $(i^2)\")\nend\nsquares = [x^2 for x in 1:5 if isodd(x)]   # [1, 9, 25]\nx = 5\nresult = x > 3 ? \"big\" : \"small\"           # \"big\"",
+          "lang": "julia"
+        },
+        "`1:3` es un rango que incluye ambos extremos. La última expresión de una función o de un bloque `if` es su valor, así que `sign_name(-2)` devuelve `\"negative\"` sin un `return` explícito."
+      ]
+    },
+    {
+      "h": "Funciones",
+      "body": [
+        {
+          "code": "add(x, y) = x + y                 # one-line definition\nfunction greet(name = \"world\"; punctuation = \"!\")\n    return \"Hello, $name$punctuation\"\nend\ngreet()                           # \"Hello, world!\"\ngreet(\"Ana\", punctuation = \".\")   # \"Hello, Ana.\"\nsquare = x -> x^2                 # anonymous function\nmap(square, [1, 2, 3])            # [1, 4, 9]\nv = [3, 1, 2]\nsort!(v)                          # v is now [1, 2, 3]",
+          "lang": "julia"
+        },
+        "Los argumentos posicionales van antes del punto y coma y los argumentos con nombre, después. Por convención, una función cuyo nombre termina en `!` modifica uno de sus argumentos, como `sort!` o `push!`, mientras que `sort` devuelve un arreglo nuevo."
+      ]
+    },
+    {
+      "h": "Arreglos, tuplas y diccionarios",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Estructura",
+              "Literal",
+              "Notas"
+            ],
+            "rows": [
+              [
+                "Vector",
+                "`[1, 2, 3]`",
+                "Índice desde 1, mutable, crece con `push!`"
+              ],
+              [
+                "Matrix",
+                "`[1 2; 3 4]`",
+                "Los espacios separan columnas, `;` separa filas"
+              ],
+              [
+                "Tuple",
+                "`(1, \"a\")`",
+                "Inmutable, de longitud fija"
+              ],
+              [
+                "Named tuple",
+                "`(name = \"Ana\", age = 30)`",
+                "Se accede a los campos con `.name`"
+              ],
+              [
+                "Dict",
+                "`Dict(\"a\" => 1)`",
+                "Mapa hash mutable"
+              ],
+              [
+                "Set",
+                "`Set([1, 2, 2])`",
+                "Valores únicos"
+              ]
+            ]
+          }
+        },
+        {
+          "code": "v = [10, 20, 30]\nv[1]          # 10   (first element)\nv[end]        # 30\npush!(v, 40)\nA = [1 2; 3 4]\nA * A         # matrix product: [7 10; 15 22]\nA .* A        # element-wise:   [1 4; 9 16]\nv .+ 1        # broadcasting:   [11, 21, 31, 41]\nsqrt.([1, 4, 9])   # [1.0, 2.0, 3.0]",
+          "lang": "julia"
+        },
+        "La sintaxis con punto se llama broadcasting: `f.(x)` aplica `f` a cada elemento, y `.+`, `.*` operan elemento a elemento. Julia fusiona las cadenas de operaciones con punto en un solo bucle."
+      ]
+    },
+    {
+      "h": "Característica distintiva: el despacho múltiple",
+      "body": [
+        "Una función de Julia puede tener muchos métodos. Cuando la llamas, Julia elige el método más específico para los tipos de todos los argumentos. Esto sustituye a los métodos de clase: los tipos guardan datos y el comportamiento se añade definiendo métodos para ellos, incluso desde otro paquete.",
+        {
+          "code": "abstract type Shape end\nstruct Circle <: Shape\n    r::Float64\nend\nstruct Rect <: Shape\n    w::Float64\n    h::Float64\nend\narea(c::Circle) = π * c.r^2\narea(r::Rect) = r.w * r.h\nshapes = [Circle(1.0), Rect(2.0, 3.0)]\nprintln(round.(area.(shapes), digits = 2))   # [3.14, 6.0]",
+          "lang": "julia"
+        },
+        "Como Julia compila una versión especializada de una función para los tipos de argumentos que ve, la primera llamada a una función es más lenta (incluye la compilación) y las siguientes son rápidas. Usa `mutable struct` cuando los campos deban cambiar después de crearse."
+      ]
+    },
+    {
+      "h": "Manejo de errores",
+      "body": [
+        "Julia usa excepciones. Lanza un tipo de excepción integrado como `ArgumentError` o `DomainError`, o define el tuyo como un struct que sea subtipo de `Exception`. `tryparse` devuelve `nothing` en lugar de lanzar una excepción.",
+        {
+          "code": "function parse_age(s)\n    n = tryparse(Int, s)\n    n === nothing && throw(ArgumentError(\"not a number: $s\"))\n    n < 0 && throw(DomainError(n, \"age must not be negative\"))\n    return n\nend\ntry\n    parse_age(\"abc\")\ncatch e\n    if e isa ArgumentError\n        println(\"Error: \", e.msg)\n    else\n        rethrow()\n    end\nend\n# Error: not a number: abc",
+          "lang": "julia"
+        }
+      ]
+    },
+    {
+      "h": "Un programa pequeño y completo: frecuencias de palabras",
+      "body": [
+        {
+          "code": "text = \"the cat and the hat and the bat\"\ncounts = Dict{String,Int}()\nfor w in split(text)\n    counts[w] = get(counts, w, 0) + 1\nend\ntop = sort(collect(counts), by = last, rev = true)\nfor (word, n) in first(top, 2)\n    println(word, \" \", n)\nend\n# the 3\n# and 2",
+          "lang": "julia"
+        },
+        "`split` divide la cadena por espacios en blanco, `get` devuelve 0 por defecto para las palabras nuevas, `collect` convierte el diccionario en un vector de pares `word => count`, y `by = last` ordena por la cantidad.",
+        {
+          "note": "Errores habituales de principiantes: indexar desde 0 (`v[0]` es un error; el primer elemento es `v[1]`); esperar que `7 / 2` sea un entero; escribir código crítico para el rendimiento en el nivel superior de un script en lugar de dentro de funciones (las variables globales son lentas, y asignar una global dentro de un bucle de nivel superior en un archivo provoca una advertencia de ámbito); y medir solo la primera llamada, que incluye la compilación."
+        }
+      ]
+    },
+    {
+      "h": "Siguientes pasos",
+      "body": [
+        {
+          "ul": [
+            "El manual oficial de Julia en docs.julialang.org, empezando por «Getting Started».",
+            "La página de aprendizaje de julialang.org, que lista tutoriales, libros y cursos.",
+            "Lee el capítulo «Performance Tips» del manual antes de optimizar código.",
+            "Explora paquetes como DataFrames.jl, Plots.jl y DifferentialEquations.jl."
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "¿Julia es más rápido que Python?",
+      "a": "En código con muchos bucles y trabajo numérico, Julia suele ser mucho más rápido que Python puro porque compila a código nativo. Python con bibliotecas como NumPy puede ser rápido en operaciones vectorizadas, así que la diferencia depende de la tarea."
+    },
+    {
+      "q": "¿Por qué Julia empieza a contar desde 1?",
+      "a": "Julia sigue la convención de las matemáticas y de lenguajes como MATLAB, R y Fortran, en los que el primer elemento de un arreglo tiene el índice 1."
+    },
+    {
+      "q": "¿Por qué la primera ejecución de mi código en Julia es lenta?",
+      "a": "Julia compila cada función para los tipos de argumentos la primera vez que se llama. Las siguientes llamadas reutilizan el código compilado, así que mide el rendimiento después de una llamada de calentamiento o con un paquete de benchmarking."
+    },
+    {
+      "q": "¿Julia es gratis?",
+      "a": "Sí. Julia es de código abierto bajo la licencia MIT, y casi todos sus paquetes también lo son."
+    }
+  ]
+}

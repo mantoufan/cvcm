@@ -1,0 +1,190 @@
+{
+  "title": "Visual Basic 入門教學：VB.NET 語法、型別、集合與類別 — cv.cm",
+  "description": "學會 Visual Basic .NET：建立專案、用 Dim 宣告變數、使用 If、Select Case 與迴圈、函式、List、Dictionary、類別、LINQ 與 Try。",
+  "h1": "Visual Basic .NET 入門教學",
+  "answer": "Visual Basic .NET（VB.NET）是 .NET 平台上的物件導向、靜態型別語言，關鍵字像英文，例如 `Dim`、`If ... Then ... End If` 與 `For ... Next`。它不分大小寫，且使用與 C# 相同的 .NET 函式庫。用 `dotnet new console -lang VB` 建立專案，再以 `dotnet run` 執行。VBA 是 Microsoft Office 內建的巨集語言，是語法相近的較早期同源語言。",
+  "sections": [
+    {
+      "h": "Visual Basic .NET 是什麼、誰在使用",
+      "body": [
+        "VB.NET 是傳統 Visual Basic（VB6）在 .NET 上的後繼者。它與 C# 編譯成相同的中介語言，因此兩種語言可以共用函式庫，甚至混用在同一個方案中。它主要用於 Windows 桌面應用程式（Windows Forms、WPF）、企業內部工具、ASP.NET 網頁應用程式，以及既有 VB 程式碼的維護。",
+        "Microsoft 持續在現代 .NET 上支援 Visual Basic，但已表示不打算再為這門語言加入重大的新功能；新的 .NET 功能通常會先出現在 C# 中。對於沒有既有 VB 程式碼的新專案，C# 是較常見的選擇，不過 VB.NET 對於學習程式設計與商業軟體來說，仍然是易讀的語言。"
+      ]
+    },
+    {
+      "h": "安裝並執行 Hello, world",
+      "body": [
+        "安裝 .NET SDK（Windows、macOS 或 Linux）。Windows 上的 Visual Studio 也包含 Visual Basic 範本與視覺化的表單設計工具。",
+        {
+          "code": "dotnet new console -lang VB -o HelloVB\ncd HelloVB\ndotnet run\n# Hello, world!",
+          "lang": "shell"
+        },
+        {
+          "code": "' Program.vb\nImports System\n\nModule Program\n    Sub Main(args As String())\n        Console.WriteLine(\"Hello, world!\")\n    End Sub\nEnd Module",
+          "lang": "vb"
+        },
+        "`Module` 存放共用的程序，`Sub Main` 是進入點。註解以單引號 `'` 開頭。每個陳述式通常在行尾結束；沒有分號或大括號。"
+      ]
+    },
+    {
+      "h": "變數與基本型別",
+      "body": [
+        "用 `Dim name As Type` 宣告變數。在 `Option Infer On`（預設值）下，指派值時可以省略型別。請在每個檔案的最上方加上 `Option Strict On`（或在專案中設定），讓有風險的隱含轉換變成編譯錯誤。",
+        {
+          "table": {
+            "head": [
+              "型別",
+              "範例",
+              "說明"
+            ],
+            "rows": [
+              [
+                "Integer",
+                "`Dim n As Integer = 42`",
+                "32 位元；`Long` 是 64 位元"
+              ],
+              [
+                "Double",
+                "`Dim x As Double = 3.14`",
+                "64 位元浮點數"
+              ],
+              [
+                "Decimal",
+                "`Dim price As Decimal = 19.99D`",
+                "精確的十進位數，適合處理金額"
+              ],
+              [
+                "String",
+                "`Dim s As String = \"hello\"`",
+                "用 `&` 連接字串"
+              ],
+              [
+                "Char",
+                "`Dim c As Char = \"a\"c`",
+                "單一字元，後綴為 `c`"
+              ],
+              [
+                "Boolean",
+                "`Dim ok As Boolean = True`",
+                "`True` / `False`"
+              ],
+              [
+                "Date",
+                "`Dim d As Date = #2026-01-15#`",
+                "日期與時間值"
+              ]
+            ]
+          }
+        },
+        {
+          "code": "Option Strict On\nModule Types\n    Sub Main()\n        Dim name As String = \"Ana\"\n        Dim age = 30                  ' inferred as Integer\n        Console.WriteLine(name & \" is \" & age.ToString())\n        Console.WriteLine($\"Next year {name} is {age + 1}\")\n        Console.WriteLine(7 / 2)      ' 3.5 (always Double)\n        Console.WriteLine(7 \\ 2)      ' 3 (integer division)\n        Console.WriteLine(7 Mod 2)    ' 1\n    End Sub\nEnd Module",
+          "lang": "vb"
+        }
+      ]
+    },
+    {
+      "h": "流程控制",
+      "body": [
+        {
+          "code": "Dim score = 85\nIf score >= 90 Then\n    Console.WriteLine(\"A\")\nElseIf score >= 80 Then\n    Console.WriteLine(\"B\")\nElse\n    Console.WriteLine(\"C\")\nEnd If\n\nSelect Case score\n    Case 90 To 100\n        Console.WriteLine(\"excellent\")\n    Case 80 To 89\n        Console.WriteLine(\"good\")\n    Case Else\n        Console.WriteLine(\"keep going\")\nEnd Select\n\nFor i = 1 To 3\n    Console.WriteLine($\"{i} squared is {i * i}\")\nNext\n\nDim n = 3\nDo While n > 0\n    n -= 1\nLoop",
+          "lang": "vb"
+        },
+        "這些陳述式要寫在 `Sub` 內。`For i = 1 To 3` 包含兩端；加上 `Step -1` 可以倒數。`For Each item In collection` 會走訪任何集合。使用 `Exit For` 或 `Exit Do` 可提早離開迴圈。撰寫條件時，建議用 `AndAlso` 與 `OrElse`：一旦結果確定就會停止求值，而 `And` 與 `Or` 則永遠兩邊都會求值。"
+      ]
+    },
+    {
+      "h": "Sub、函式與 lambda",
+      "body": [
+        "`Sub` 不回傳值；`Function` 則會。參數預設以 `ByVal`（複本）傳遞；`ByRef` 則讓程序能更改呼叫者的變數。參數可以是帶預設值的 `Optional`。",
+        {
+          "code": "Function Add(a As Integer, b As Integer) As Integer\n    Return a + b\nEnd Function\n\nSub Greet(Optional name As String = \"world\")\n    Console.WriteLine($\"Hello, {name}!\")\nEnd Sub\n\nSub Increment(ByRef value As Integer)\n    value += 1\nEnd Sub\n\n' Inside Sub Main:\nDim x = 5\nIncrement(x)                                  ' x is now 6\nGreet()                                       ' Hello, world!\nDim square = Function(n As Integer) n * n     ' lambda\nConsole.WriteLine(square(Add(1, 2)))          ' 9",
+          "lang": "vb"
+        }
+      ]
+    },
+    {
+      "h": "陣列、List 與 Dictionary",
+      "body": [
+        {
+          "code": "Dim nums() As Integer = {3, 1, 2}\nDim five(4) As Integer            ' 5 elements, indexes 0 to 4\nArray.Sort(nums)\nConsole.WriteLine(String.Join(\", \", nums))   ' 1, 2, 3\n\nDim names As New List(Of String) From {\"Ana\", \"Ben\"}\nnames.Add(\"Cleo\")\nConsole.WriteLine(names.Count)               ' 3\n\nDim ages As New Dictionary(Of String, Integer)\nages(\"Ana\") = 30\nages(\"Ben\") = 17\nFor Each pair In ages\n    Console.WriteLine($\"{pair.Key}: {pair.Value}\")\nNext",
+          "lang": "vb"
+        },
+        "陣列與 list 以括號從 0 開始索引：`nums(0)`。泛型型別使用 `Of`：`List(Of String)` 是 C# 的 `List<string>` 在 VB 中的寫法。請注意，`Dim five(4)` 宣告的是上界而不是長度，所以這個陣列有五個元素。"
+      ]
+    },
+    {
+      "h": "招牌特色：類別、屬性與 LINQ 查詢",
+      "body": [
+        "VB.NET 完全是物件導向的：類別具有屬性、方法、建構函式（`Sub New`）、繼承（`Inherits`）、介面（`Implements`）與事件（`Event`、`RaiseEvent`、`Handles`）。LINQ 查詢可以用易讀的查詢語法撰寫。",
+        {
+          "code": "Public Class Person\n    Public Property Name As String\n    Public Property Age As Integer\n\n    Public Sub New(name As String, age As Integer)\n        Me.Name = name\n        Me.Age = age\n    End Sub\nEnd Class\n\n' Inside Sub Main:\nDim people As New List(Of Person) From {\n    New Person(\"Ana\", 30),\n    New Person(\"Ben\", 17)\n}\nDim adults = From p In people\n             Where p.Age >= 18\n             Select p.Name\nFor Each adultName In adults\n    Console.WriteLine(adultName)   ' Ana\nNext",
+          "lang": "vb"
+        },
+        "由於 VB 不分大小寫，`Name` 與 `name` 是同一個識別字；在建構函式內，`Me.Name` 指的是屬性，`name` 指的是參數。其他 VB 特有的便利功能還有 `With ... End With` 區塊、XML 字面值，以及處理常見工作的 `My` 命名空間。"
+      ]
+    },
+    {
+      "h": "錯誤處理",
+      "body": [
+        "VB.NET 使用結構化例外處理：`Try`、`Catch`、`Finally` 與 `Throw`。`Catch` 可以包含 `When` 篩選條件。VB6 與 VBA 較舊的 `On Error GoTo` 風格仍可編譯，但不應用於新的 .NET 程式碼。",
+        {
+          "code": "Function ParseAge(s As String) As Integer\n    Dim n As Integer\n    If Not Integer.TryParse(s, n) Then\n        Throw New FormatException($\"Not a number: {s}\")\n    End If\n    If n < 0 Then Throw New ArgumentOutOfRangeException(NameOf(s))\n    Return n\nEnd Function\n\n' Inside Sub Main:\nTry\n    Console.WriteLine(ParseAge(\"abc\"))\nCatch ex As FormatException\n    Console.WriteLine(\"Error: \" & ex.Message)   ' Error: Not a number: abc\nFinally\n    Console.WriteLine(\"done\")\nEnd Try",
+          "lang": "vb"
+        }
+      ]
+    },
+    {
+      "h": "完整的小程式：字詞頻率",
+      "body": [
+        {
+          "code": "Imports System\nImports System.Collections.Generic\nImports System.Linq\n\nModule WordCount\n    Sub Main()\n        Dim text = \"the cat and the hat and the bat\"\n        Dim counts As New Dictionary(Of String, Integer)\n\n        For Each word In text.Split(\" \"c)\n            If counts.ContainsKey(word) Then\n                counts(word) += 1\n            Else\n                counts(word) = 1\n            End If\n        Next\n\n        Dim top = counts.OrderByDescending(Function(kv) kv.Value).Take(2)\n        For Each kv In top\n            Console.WriteLine($\"{kv.Key} {kv.Value}\")\n        Next\n    End Sub\nEnd Module\n' the 3\n' and 2",
+          "lang": "vb"
+        },
+        {
+          "note": "新手常見錯誤：以為 `Dim a(4)` 會建立四個元素（其實是五個）；在需要短路求值的地方使用 `And`/`Or` 而非 `AndAlso`/`OrElse`，例如 `If x IsNot Nothing And x.Length > 0` 在 `x` 為 `Nothing` 時會失敗；以為 `/` 做整數除法（整數除法請用 `\\`）；讓 `Option Strict Off`，導致型別錯誤要到執行時才會被發現；以及把 VB.NET 與 VBA 混為一談，兩者的程式碼與函式庫並不相同。"
+        }
+      ]
+    },
+    {
+      "h": "VBA：Microsoft Office 內的 Visual Basic",
+      "body": [
+        "Visual Basic for Applications（VBA）是內建於 Excel、Word 與 Access 等 Microsoft Office 應用程式的巨集語言。它以傳統 Visual Basic 為基礎，而不是 .NET：它在 Office 應用程式內執行，使用 Office 物件模型（活頁簿、儲存格範圍、文件），並在 VBA 編輯器中編輯（Windows 上按 Alt+F11）。`Dim`、`If`、`For` 與 `Sub` 的基本語法相同，因此懂 VB.NET 對學 VBA 很有幫助。",
+        {
+          "code": "' VBA in Excel: write the squares of 1 to 5 into column A\nSub FillSquares()\n    Dim i As Long\n    For i = 1 To 5\n        Cells(i, 1).Value = i * i\n    Next i\n    MsgBox \"Done\"\nEnd Sub",
+          "lang": "vb"
+        }
+      ]
+    },
+    {
+      "h": "接下來可以學什麼",
+      "body": [
+        {
+          "ul": [
+            "Microsoft Learn：Visual Basic 文件，包括入門指南與語言參考。",
+            "學習 .NET 基底類別庫（集合、檔案、LINQ）；它與 C# 共用。",
+            "若要開發桌面應用程式，可以試試 Visual Studio 中的 Windows Forms 或 WPF 範本。",
+            "若要自動化 Office，請閱讀 Microsoft Learn 上你所使用應用程式的 VBA 參考。"
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Visual Basic .NET 已經過時了嗎？",
+      "a": "沒有。它在目前的 .NET 版本與 Visual Studio 中都受到支援，但 Microsoft 不打算加入重大的新語言功能，所以大多數新的 .NET 專案會選擇 C#。"
+    },
+    {
+      "q": "VB.NET 與 VBA 有什麼差別？",
+      "a": "VB.NET 是完整的 .NET 語言，用來建構獨立的應用程式。VBA 是以傳統 Visual Basic 為基礎的巨集語言，在 Excel 等 Office 應用程式內執行；兩者語法相似，但執行環境與函式庫不同。"
+    },
+    {
+      "q": "該學 VB.NET 還是 C#？",
+      "a": "如果你要維護 VB 程式碼，或想要非常易讀的語法，VB.NET 就可以。對於新專案、就業機會與最新的 .NET 功能，C# 通常是更好的投資，而你學到的函式庫知識可以在兩者之間通用。"
+    },
+    {
+      "q": "Visual Basic 分大小寫嗎？",
+      "a": "不分。`Dim Total`、`total` 與 `TOTAL` 都指向同一個變數，編輯器通常會自動幫你統一大小寫。"
+    }
+  ]
+}

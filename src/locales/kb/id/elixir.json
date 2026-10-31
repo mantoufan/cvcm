@@ -1,0 +1,200 @@
+{
+  "title": "Tutorial Elixir: pattern matching, pipe, Enum, dan proses — cv.cm",
+  "description": "Belajar Elixir langkah demi langkah: menjalankan script, data immutable dan tipe, pattern matching, case dan cond, modul, operator pipe, Enum, proses, dan error.",
+  "h1": "Tutorial Elixir untuk pemula",
+  "answer": "Elixir adalah bahasa fungsional dinamis yang berjalan di virtual machine Erlang (BEAM), dirancang untuk sistem yang skalabel, tahan gangguan, dan konkuren. Gagasan intinya adalah data immutable, pattern matching, operator pipe, dan proses ringan yang berkomunikasi lewat pesan. Halaman ini membahas persiapan, tipe, pattern matching, alur kontrol, modul dan fungsi, koleksi, proses, dan penanganan error.",
+  "sections": [
+    {
+      "h": "Apa itu Elixir dan untuk apa dipakai",
+      "body": [
+        "Elixir adalah bahasa fungsional dinamis yang dibuat oleh José Valim dan pertama kali dirilis pada 2012. Elixir berjalan di BEAM, virtual machine milik Erlang, sehingga mewarisi proses ringan, ketahanan terhadap gangguan, dan dukungan sistem terdistribusi dari Erlang, sambil menambahkan sintaks yang ramah, macro, dan tooling modern.",
+        "Elixir dipakai untuk aplikasi web dan API dengan framework Phoenix, fitur real-time seperti chat dan dashboard langsung (Phoenix LiveView), sistem pesan, data pipeline, perangkat embedded dengan Nerves, dan machine learning dengan Nx. Perusahaan memilihnya untuk layanan yang harus menangani banyak koneksi bersamaan dan tetap berjalan ketika sebagian komponennya gagal."
+      ]
+    },
+    {
+      "h": "Memasang Elixir dan menjalankan Hello, world",
+      "body": [
+        "Pasang Elixir dari elixir-lang.org (yang juga memasang atau memerlukan Erlang/OTP). Script memakai ekstensi `.exs`; file proyek yang dikompilasi memakai `.ex`. `iex` memulai shell interaktif.",
+        {
+          "code": "# hello.exs\nIO.puts(\"Hello, world!\")",
+          "lang": "elixir"
+        },
+        {
+          "code": "elixir hello.exs\n# Hello, world!\niex                      # interactive shell; type h(Enum.map) for help\nmix new my_app           # create a new project with Mix, the build tool",
+          "lang": "shell"
+        },
+        "Komentar diawali dengan `#`. Tanda kurung di sekitar argumen fungsi bersifat opsional di banyak tempat, jadi `IO.puts \"hi\"` juga berfungsi."
+      ]
+    },
+    {
+      "h": "Tipe dasar dan immutability",
+      "body": [
+        "Semua data di Elixir bersifat immutable. Mengikat ulang sebuah nama dengan `=` mengarahkannya ke nilai baru; nilai lama tidak pernah berubah. String adalah binary UTF-8 yang ditulis dengan tanda kutip ganda, dan atom adalah konstanta bernama yang diawali titik dua.",
+        {
+          "code": "name = \"Elixir\"\nyear = 2012\nIO.puts(\"#{name} since #{year}\")    # Elixir since 2012\nIO.puts(10 / 4)                     # 2.5 (always a float)\nIO.puts(div(10, 4))                 # 2\nIO.puts(rem(10, 4))                 # 2\nIO.puts(\"ab\" <> \"cd\")               # abcd (string concatenation)\nIO.puts(String.length(\"héllo\"))     # 5 (counts characters, not bytes)\nIO.inspect(:ok)                     # :ok\nIO.inspect(is_atom(true))           # true (booleans are atoms)",
+          "lang": "elixir"
+        },
+        {
+          "table": {
+            "head": [
+              "Tipe",
+              "Contoh",
+              "Catatan"
+            ],
+            "rows": [
+              [
+                "integer",
+                "`42`, `1_000_000`",
+                "presisi arbitrer"
+              ],
+              [
+                "float",
+                "`3.14`",
+                "presisi ganda 64-bit"
+              ],
+              [
+                "atom",
+                "`:ok`, `:error`",
+                "konstanta; `true`, `false`, dan `nil` adalah atom"
+              ],
+              [
+                "string",
+                "`\"hello\"`",
+                "binary UTF-8; interpolasi dengan `#{}`"
+              ],
+              [
+                "list",
+                "`[1, 2, 3]`",
+                "linked list"
+              ],
+              [
+                "tuple",
+                "`{:ok, 1}`",
+                "ukuran tetap, disimpan berurutan di memori"
+              ],
+              [
+                "map",
+                "`%{\"a\" => 1}`",
+                "penyimpanan key-value"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "Pattern matching",
+      "body": [
+        "Di Elixir, `=` adalah operator match. Sisi kiri adalah pattern; jika sisi kanan cocok dengannya, variabel dalam pattern akan terikat. Pattern matching dipakai di mana-mana: pada assignment, `case`, kepala fungsi, dan penanganan error.",
+        {
+          "code": "{:ok, value} = {:ok, 42}\nIO.puts(value)                         # 42\n\n[first | rest] = [1, 2, 3]\nIO.inspect({first, rest})              # {1, [2, 3]}\n\n%{name: n} = %{name: \"Ann\", age: 31}\nIO.puts(n)                             # Ann\n\nresult = {:error, :not_found}\nmessage =\n  case result do\n    {:ok, v} -> \"got #{v}\"\n    {:error, reason} -> \"failed: #{reason}\"\n  end\nIO.puts(message)                       # failed: not_found\n\nx = 1\n^x = 1                                 # pin operator: match the current value",
+          "lang": "elixir"
+        },
+        "Jika pattern tidak cocok, Elixir memunculkan `MatchError`. Operator pin `^` berarti \"pakai nilai variabel yang sudah ada\" alih-alih mengikatnya ulang."
+      ]
+    },
+    {
+      "h": "Alur kontrol",
+      "body": [
+        "Elixir punya `case`, `cond`, dan `if`/`unless`, dan semuanya mengembalikan nilai. Tidak ada perulangan `for`/`while` yang mengubah penghitung; sebagai gantinya Anda memakai rekursi, modul `Enum`, atau comprehension `for`.",
+        {
+          "code": "temp = 22\nfeel =\n  cond do\n    temp > 30 -> \"hot\"\n    temp >= 15 -> \"mild\"\n    true -> \"cold\"\n  end\nIO.puts(feel)                                   # mild\n\nIO.puts(if(rem(temp, 2) == 0, do: \"even\", else: \"odd\"))  # even\n\nsquares = for n <- 1..5, rem(n, 2) == 1, do: n * n\nIO.inspect(squares)                             # [1, 9, 25]",
+          "lang": "elixir"
+        },
+        "Hanya `false` dan `nil` yang falsy; semua yang lain, termasuk `0` dan `\"\"`, adalah truthy."
+      ]
+    },
+    {
+      "h": "Fungsi, modul, dan operator pipe",
+      "body": [
+        "Fungsi bernama berada di dalam modul yang didefinisikan dengan `defmodule`. Sebuah fungsi dapat punya beberapa clause, yang dipilih lewat pattern matching dan guard (`when`). Fungsi anonim ditulis `fn ... end` dan dipanggil dengan tanda titik. Operator pipe `|>` meneruskan hasil satu ekspresi sebagai argumen pertama pada pemanggilan berikutnya.",
+        {
+          "code": "defmodule Math do\n  def factorial(0), do: 1\n  def factorial(n) when n > 0, do: n * factorial(n - 1)\n\n  def sign(n) when n < 0, do: :negative\n  def sign(0), do: :zero\n  def sign(_n), do: :positive\nend\n\nIO.puts(Math.factorial(5))          # 120\nIO.inspect(Math.sign(-3))           # :negative\n\ndouble = fn x -> x * 2 end\nIO.puts(double.(21))                # 42 (note the dot)\n\n\"  Elixir is fun  \"\n|> String.trim()\n|> String.upcase()\n|> String.split()\n|> IO.inspect()                     # [\"ELIXIR\", \"IS\", \"FUN\"]",
+          "lang": "elixir"
+        },
+        "Fungsi dikenali dari nama dan arity (jumlah argumen), yang dalam dokumentasi ditulis seperti `String.split/1` atau `Math.factorial/1`."
+      ]
+    },
+    {
+      "h": "Koleksi: list, map, keyword list, dan Enum",
+      "body": [
+        "Modul `Enum` bekerja dengan koleksi enumerable apa pun dan menyediakan `map`, `filter`, `reduce`, `sort_by`, `group_by`, dan banyak lagi. Map adalah struktur key-value utama; keyword list, seperti `[size: 10, color: :red]`, umum dipakai untuk opsi.",
+        {
+          "code": "nums = [5, 3, 8, 1]\nIO.inspect(Enum.sort(nums))                      # [1, 3, 5, 8]\nIO.inspect(Enum.map(nums, &(&1 * 10)))           # [50, 30, 80, 10]\nIO.inspect(Enum.filter(nums, fn n -> n > 2 end)) # [5, 3, 8]\nIO.puts(Enum.reduce(nums, 0, &+/2))              # 17\n\nuser = %{name: \"Ann\", age: 31}\nolder = %{user | age: 32}                        # update an existing key\nIO.puts(user.age)                                # 31 (unchanged)\nIO.puts(older.age)                               # 32\nwith_city = Map.put(user, :city, \"Oslo\")\nIO.puts(with_city.city)                          # Oslo\nIO.inspect(Map.get(user, :email, \"none\"))        # \"none\"",
+          "lang": "elixir"
+        },
+        "Operator capture `&` membuat fungsi anonim singkat: `&(&1 * 10)` berarti `fn x -> x * 10 end`, dan `&+/2` merujuk ke fungsi `+` dengan dua argumen."
+      ]
+    },
+    {
+      "h": "Proses dan konkurensi",
+      "body": [
+        "Fitur khas Elixir adalah proses BEAM: unit eksekusi yang sangat ringan dan terisolasi dengan memorinya sendiri. Proses hanya berkomunikasi dengan mengirim pesan, dan satu mesin dapat menjalankan ratusan ribu proses. Supervisor me-restart proses yang crash, dan inilah dasar pendekatan \"let it crash\" Elixir untuk ketahanan terhadap gangguan.",
+        {
+          "code": "parent = self()\n\nspawn(fn ->\n  send(parent, {:result, 6 * 7})\nend)\n\nreceive do\n  {:result, value} -> IO.puts(\"Got #{value}\")   # Got 42\nafter\n  1_000 -> IO.puts(\"timeout\")\nend\n\ntasks = for n <- 1..3, do: Task.async(fn -> n * n end)\nIO.inspect(Task.await_many(tasks))               # [1, 4, 9]",
+          "lang": "elixir"
+        },
+        "Di aplikasi nyata Anda jarang memanggil `spawn` secara langsung. Anda memakai abstraksi dari OTP seperti `Task`, `GenServer`, `Agent`, dan `Supervisor`."
+      ]
+    },
+    {
+      "h": "Penanganan error",
+      "body": [
+        "Elixir yang idiomatis mengembalikan tagged tuple seperti `{:ok, value}` atau `{:error, reason}` untuk kegagalan yang sudah diperkirakan dan memakai `case` atau `with` untuk menanganinya. Fungsi yang namanya berakhiran `!`, seperti `File.read!/1`, memunculkan exception sebagai gantinya. Exception dapat ditangkap dengan `try`/`rescue`, tetapi ini jarang dilakukan.",
+        {
+          "code": "case File.read(\"missing.txt\") do\n  {:ok, text} -> IO.puts(text)\n  {:error, reason} -> IO.puts(\"Cannot read: #{reason}\")   # Cannot read: enoent\nend\n\nwith {a, \"\"} <- Integer.parse(\"40\"),\n     {b, \"\"} <- Integer.parse(\"2\") do\n  IO.puts(a + b)                                         # 42\nelse\n  _ -> IO.puts(\"not a whole number\")\nend\n\ntry do\n  String.to_integer(\"abc\")\nrescue\n  e in ArgumentError -> IO.puts(\"Error: #{Exception.message(e)}\")\nend",
+          "lang": "elixir"
+        },
+        "`with` merangkai beberapa match dan berhenti pada yang pertama tidak cocok, lalu mengembalikan nilai tersebut. Ini menghindari ekspresi `case` yang bersarang dalam."
+      ]
+    },
+    {
+      "h": "Program lengkap kecil: frekuensi kata",
+      "body": [
+        "Script ini menghitung kata dalam sebuah teks dan mencetak tiga kata yang paling sering muncul. Ini adalah pipeline Elixir yang khas, disusun dari fungsi `String` dan `Enum`.",
+        {
+          "code": "defmodule WordFreq do\n  def top(text, n) do\n    text\n    |> String.downcase()\n    |> String.split(~r/[^a-z']+/, trim: true)\n    |> Enum.frequencies()\n    |> Enum.sort_by(fn {word, count} -> {-count, word} end)\n    |> Enum.take(n)\n  end\nend\n\n\"The cat and the dog. The dog sat, and the cat ran.\"\n|> WordFreq.top(3)\n|> Enum.each(fn {word, count} -> IO.puts(\"#{word}: #{count}\") end)\n# the: 4\n# and: 2\n# cat: 2",
+          "lang": "elixir"
+        },
+        {
+          "note": "Kesalahan umum pemula: mengira `=` meng-assign seperti di bahasa lain (padahal melakukan match); mencoba mengubah list atau map di dalam perulangan; lupa tanda titik saat memanggil fungsi anonim (`double.(2)`); membandingkan string dengan charlist, karena `\"abc\"` dan `~c\"abc\"` adalah tipe yang berbeda; dan memakai rescue pada exception alih-alih melakukan match pada `{:ok, _}` dan `{:error, _}`."
+        }
+      ]
+    },
+    {
+      "h": "Langkah selanjutnya",
+      "body": [
+        {
+          "ul": [
+            "Panduan resmi Getting Started di hexdocs.pm dan situs elixir-lang.org.",
+            "HexDocs, tempat dokumentasi Elixir dan setiap paket Hex dipublikasikan.",
+            "Panduan framework Phoenix untuk pengembangan web.",
+            "Elixir School, kurikulum komunitas yang gratis, dan jalur Elixir di Exercism untuk berlatih."
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Apa perbedaan Elixir dan Erlang?",
+      "a": "Keduanya berjalan di virtual machine BEAM yang sama dan dapat saling memanggil kode. Elixir menambahkan sintaks yang terinspirasi Ruby, macro, operator pipe, dan tool seperti Mix dan Hex, sedangkan Erlang adalah bahasa yang lebih tua tempat OTP dibangun."
+    },
+    {
+      "q": "Apakah Elixir bagus untuk pengembangan web?",
+      "a": "Ya. Framework Phoenix cepat dan menangani banyak koneksi simultan, dan LiveView memungkinkan Anda membangun halaman interaktif dengan HTML yang dirender server dan sedikit JavaScript."
+    },
+    {
+      "q": "Apakah Elixir bertipe statis?",
+      "a": "Elixir bertipe dinamis. Versi terbaru menambahkan sistem tipe bertahap berbasis teori himpunan ke dalam compiler, dan banyak tim juga memakai Dialyzer dengan typespec untuk menemukan error tipe."
+    },
+    {
+      "q": "Apa arti |> di Elixir?",
+      "a": "`|>` adalah operator pipe. `x |> f(y)` sama dengan `f(x, y)`, sehingga rangkaian transformasi dapat dibaca dari atas ke bawah."
+    },
+    {
+      "q": "Apa itu file .ex dan .exs?",
+      "a": "File `.ex` dikompilasi sebagai bagian dari proyek, sedangkan file `.exs` adalah script yang diinterpretasikan saat dijalankan, umum dipakai untuk test dan konfigurasi."
+    }
+  ]
+}

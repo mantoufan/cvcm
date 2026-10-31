@@ -1,0 +1,236 @@
+{
+  "title": "Sắp xếp trộn (Merge Sort): chia để trị, mã Python và độ phức tạp — cv.cm",
+  "description": "Sắp xếp trộn chia danh sách làm đôi, sắp xếp từng nửa rồi trộn lại trong O(n log n). Ví dụ từng bước, mã Python, bước trộn, tính ổn định và khi nào nên dùng.",
+  "h1": "Thuật toán sắp xếp trộn: cách hoạt động, mã và độ phức tạp",
+  "answer": "Sắp xếp trộn là thuật toán sắp xếp chia để trị. Nó chia danh sách thành hai nửa, sắp xếp từng nửa bằng đệ quy, rồi trộn hai nửa đã sắp xếp thành một danh sách bằng cách liên tục lấy phần tử đầu nhỏ hơn. Thuật toán luôn chạy trong O(n log n), ổn định, và cần O(n) bộ nhớ phụ để trộn. Nó là nền tảng của Timsort, thuật toán đứng sau `sorted()` của Python, và của sắp xếp ngoài cho dữ liệu không vừa bộ nhớ.",
+  "sections": [
+    {
+      "h": "Ý tưởng bằng lời đơn giản",
+      "body": [
+        "Danh sách có không hoặc một phần tử thì đã sắp xếp. Với danh sách dài hơn:",
+        {
+          "ol": [
+            "Chia: tách danh sách thành nửa trái và nửa phải.",
+            "Trị: sắp xếp từng nửa bằng sắp xếp trộn.",
+            "Kết hợp: trộn hai nửa đã sắp xếp. So sánh phần tử đầu của mỗi nửa, chuyển phần tử nhỏ hơn sang đầu ra, lặp lại cho đến khi một nửa hết; rồi sao chép phần còn lại của nửa kia."
+          ]
+        },
+        "Toàn bộ công việc thực sự nằm ở bước trộn, và trộn hai danh sách đã sắp xếp có tổng độ dài n chỉ cần tối đa n − 1 phép so sánh."
+      ]
+    },
+    {
+      "h": "Ví dụ minh họa từng bước",
+      "body": [
+        "Sắp xếp `[38, 27, 43, 3, 9, 82, 10]`.",
+        {
+          "table": {
+            "head": [
+              "Mức",
+              "Các danh sách con"
+            ],
+            "rows": [
+              [
+                "Tách 1",
+                "`[38, 27, 43]`  `[3, 9, 82, 10]`"
+              ],
+              [
+                "Tách 2",
+                "`[38]` `[27, 43]`  `[3, 9]` `[82, 10]`"
+              ],
+              [
+                "Tách 3",
+                "`[38]` `[27]` `[43]`  `[3]` `[9]` `[82]` `[10]`"
+              ],
+              [
+                "Trộn 1",
+                "`[38]` `[27, 43]`  `[3, 9]` `[10, 82]`"
+              ],
+              [
+                "Trộn 2",
+                "`[27, 38, 43]`  `[3, 9, 10, 82]`"
+              ],
+              [
+                "Trộn 3",
+                "`[3, 9, 10, 27, 38, 43, 82]`"
+              ]
+            ]
+          }
+        },
+        "Lần trộn cuối so sánh các phần tử đầu: 27 so với 3 lấy 3, 27 so với 9 lấy 9, 27 so với 10 lấy 10, 27 so với 82 lấy 27, 38 so với 82 lấy 38, 43 so với 82 lấy 43, rồi sao chép 82. Sáu phép so sánh cho bảy phần tử."
+      ]
+    },
+    {
+      "h": "Cài đặt bằng Python",
+      "body": [
+        {
+          "code": "def merge(left, right):\n    out, i, j = [], 0, 0\n    while i < len(left) and j < len(right):\n        if left[i] <= right[j]:     # <= takes from left on ties: stable\n            out.append(left[i]); i += 1\n        else:\n            out.append(right[j]); j += 1\n    out.extend(left[i:])            # one of these is empty\n    out.extend(right[j:])\n    return out\ndef merge_sort(items):\n    \"\"\"Return a new sorted list.\"\"\"\n    if len(items) <= 1:\n        return list(items)\n    mid = len(items) // 2\n    return merge(merge_sort(items[:mid]), merge_sort(items[mid:]))\nprint(merge_sort([38, 27, 43, 3, 9, 82, 10]))   # [3, 9, 10, 27, 38, 43, 82]\nprint(merge_sort([]))                           # []",
+          "lang": "python"
+        },
+        "Phiên bản từ trên xuống này rõ ràng nhưng sao chép các lát cắt. Phiên bản từ dưới lên tránh hoàn toàn đệ quy: trộn các đoạn độ rộng 1, rồi 2, rồi 4, và cứ thế.",
+        {
+          "code": "def merge_sort_bottom_up(items):\n    a = list(items)\n    width = 1\n    while width < len(a):\n        for lo in range(0, len(a), 2 * width):\n            mid, hi = lo + width, lo + 2 * width\n            a[lo:hi] = merge(a[lo:mid], a[mid:hi])\n        width *= 2\n    return a",
+          "lang": "python"
+        },
+        "Phiên bản từ dưới lên tái sử dụng `merge` ở trên. Thư viện chuẩn cũng có `heapq.merge`, trộn lười biếng (lazy) số lượng bất kỳ iterable đã sắp xếp."
+      ]
+    },
+    {
+      "h": "Độ phức tạp thời gian và không gian",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Trường hợp",
+              "Thời gian",
+              "Lý do"
+            ],
+            "rows": [
+              [
+                "Tốt nhất",
+                "O(n log n)",
+                "luôn chia và trộn, bất kể thứ tự"
+              ],
+              [
+                "Trung bình",
+                "O(n log n)",
+                "khoảng log₂ n mức, mỗi mức O(n) công việc trộn"
+              ],
+              [
+                "Xấu nhất",
+                "O(n log n)",
+                "cùng đệ quy; không có đầu vào xấu"
+              ],
+              [
+                "Không gian phụ",
+                "O(n)",
+                "bộ đệm để trộn, cộng với ngăn xếp đệ quy O(log n)"
+              ]
+            ]
+          }
+        },
+        "Hệ thức truy hồi là T(n) = 2T(n/2) + O(n). Mỗi mức của cây đệ quy làm tổng cộng O(n) công việc và có khoảng log₂ n mức, nên tổng là O(n log n). Với một triệu phần tử, đó là khoảng 20 mức."
+      ]
+    },
+    {
+      "h": "So sánh sắp xếp trộn với các thuật toán khác",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Thuật toán",
+              "Tốt nhất",
+              "Trung bình",
+              "Xấu nhất",
+              "Không gian phụ",
+              "Ổn định"
+            ],
+            "rows": [
+              [
+                "Sắp xếp trộn",
+                "O(n log n)",
+                "O(n log n)",
+                "O(n log n)",
+                "O(n)",
+                "Có"
+              ],
+              [
+                "Sắp xếp nhanh",
+                "O(n log n)",
+                "O(n log n)",
+                "O(n²)",
+                "O(log n)",
+                "Không"
+              ],
+              [
+                "Sắp xếp vun đống",
+                "O(n log n)",
+                "O(n log n)",
+                "O(n log n)",
+                "O(1)",
+                "Không"
+              ],
+              [
+                "Sắp xếp chèn",
+                "O(n)",
+                "O(n²)",
+                "O(n²)",
+                "O(1)",
+                "Có"
+              ],
+              [
+                "Sắp xếp nổi bọt",
+                "O(n)",
+                "O(n²)",
+                "O(n²)",
+                "O(1)",
+                "Có"
+              ],
+              [
+                "Sắp xếp chọn",
+                "O(n²)",
+                "O(n²)",
+                "O(n²)",
+                "O(1)",
+                "Không"
+              ],
+              [
+                "Timsort (`sorted` của Python)",
+                "O(n)",
+                "O(n log n)",
+                "O(n log n)",
+                "O(n)",
+                "Có"
+              ]
+            ]
+          }
+        },
+        "Sắp xếp trộn ổn định vì phép trộn lấy từ nửa trái khi hai phần tử bằng nhau, nên các phần tử bằng nhau giữ nguyên thứ tự. So với sắp xếp nhanh, nó đảm bảo trường hợp xấu nhất O(n log n) nhưng cần O(n) bộ nhớ phụ và thường di chuyển dữ liệu nhiều hơn trên mảng. So với sắp xếp vun đống, nó ổn định và truy cập bộ nhớ tuần tự, thân thiện với bộ nhớ đệm và đĩa."
+      ]
+    },
+    {
+      "h": "Biến thể và lỗi thường gặp",
+      "body": [
+        {
+          "ul": [
+            "Natural merge sort phát hiện các đoạn đã sắp xếp sẵn và trộn chúng, cho O(n) trên đầu vào đã sắp xếp. Timsort là bản natural merge sort được tinh chỉnh, dùng sắp xếp chèn nhị phân cho các đoạn ngắn.",
+            "Chuyển sang sắp xếp chèn cho các danh sách con nhỏ (ví dụ dưới khoảng 10 đến 30 phần tử) để giảm chi phí phụ.",
+            "Trên danh sách liên kết, sắp xếp trộn không cần bộ đệm phụ: việc trộn chỉ nối lại các nút, nên đây là lựa chọn thông thường để sắp xếp danh sách liên kết.",
+            "Sắp xếp trộn ngoài (external merge sort) sắp xếp từng khối vừa bộ nhớ, ghi ra đĩa, rồi thực hiện trộn k đường. Cơ sở dữ liệu và công cụ như `sort` của GNU dùng ý tưởng này cho tệp lớn.",
+            "Đếm nghịch thế: trong lúc trộn, mỗi khi một phần tử được lấy từ nửa phải, nó nhỏ hơn mọi phần tử còn lại của nửa trái."
+          ]
+        },
+        {
+          "note": "Các lỗi hay gặp: dùng `<` thay vì `<=` khi trộn (phá tính ổn định), quên sao chép phần đuôi còn lại sau vòng lặp, và tính `mid` sao cho một nửa rỗng còn nửa kia là cả danh sách, khiến đệ quy vô tận."
+        }
+      ]
+    },
+    {
+      "h": "Khi nào nên dùng sắp xếp trộn",
+      "body": [
+        "Chọn sắp xếp trộn khi cần sắp xếp ổn định với thời gian O(n log n) được đảm bảo, khi sắp xếp danh sách liên kết, hoặc khi dữ liệu quá lớn so với bộ nhớ. Trong Python, chỉ cần gọi `sorted()` hoặc `list.sort()`: chúng cài đặt Timsort, một biến thể của sắp xếp trộn, nên bạn đã có sẵn các tính chất này. Tự viết sắp xếp trộn là bài phỏng vấn kinh điển, thường mở rộng sang đếm nghịch thế hoặc trộn k danh sách đã sắp xếp."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Sắp xếp trộn có ổn định không?",
+      "a": "Có, miễn là phép trộn lấy từ nửa trái khi các phần tử bằng nhau (`<=`). Khi đó các phần tử bằng nhau giữ nguyên thứ tự ban đầu."
+    },
+    {
+      "q": "Độ phức tạp thời gian của sắp xếp trộn là gì?",
+      "a": "O(n log n) ở trường hợp tốt nhất, trung bình và xấu nhất. Danh sách được chia đôi khoảng log₂ n lần, và mỗi mức trộn tốn O(n)."
+    },
+    {
+      "q": "Vì sao sắp xếp trộn cần thêm không gian?",
+      "a": "Trộn hai nửa của mảng tại chỗ một cách hiệu quả là khó, nên cách cài đặt thông thường ghi kết quả trộn vào một bộ đệm riêng kích thước n. Có các biến thể tại chỗ nhưng phức tạp và chậm hơn trong thực tế."
+    },
+    {
+      "q": "Sắp xếp trộn có nhanh hơn sắp xếp nhanh không?",
+      "a": "Thường không với mảng trong bộ nhớ: sắp xếp nhanh có xu hướng nhanh hơn trung bình vì di chuyển ít dữ liệu hơn và không cần bộ đệm. Sắp xếp trộn thắng khi cần tính ổn định, trường hợp xấu nhất được đảm bảo, danh sách liên kết hoặc sắp xếp ngoài."
+    },
+    {
+      "q": "Python có dùng sắp xếp trộn không?",
+      "a": "`sorted()` và `list.sort()` của Python dùng Timsort, kết hợp giữa sắp xếp trộn và sắp xếp chèn. Từ Python 3.11, chiến lược trộn dựa trên powersort."
+    }
+  ]
+}

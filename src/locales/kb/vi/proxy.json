@@ -1,0 +1,177 @@
+{
+  "title": "Mẫu Proxy: virtual, protection và caching proxy trong TypeScript — cv.cm",
+  "description": "Mẫu Proxy đặt một đối tượng đại diện trước đối tượng thật để kiểm soát truy cập. Xem caching proxy, lazy proxy, protection proxy trong TypeScript và JS Proxy.",
+  "h1": "Mẫu Proxy (Design Pattern) giải thích kèm ví dụ",
+  "answer": "Proxy là một mẫu thiết kế cấu trúc (structural), cung cấp một đối tượng thay thế có cùng interface với đối tượng thật, để proxy có thể kiểm soát truy cập vào nó. Client nói chuyện với proxy như với đối tượng thật, và proxy quyết định khi nào và cách chuyển tiếp từng lời gọi. Các loại phổ biến là virtual proxy (khởi tạo lười), protection proxy (kiểm tra quyền truy cập), caching proxy và remote proxy.",
+  "sections": [
+    {
+      "h": "Mục đích và vấn đề mà mẫu này giải quyết",
+      "body": [
+        "Mục đích: cung cấp một đại diện hoặc chỗ giữ chỗ cho đối tượng khác để kiểm soát truy cập vào nó. Proxy là một trong các mẫu cấu trúc trong sách Gang of Four (GoF).",
+        "Giả sử một ứng dụng gọi dịch vụ thời tiết qua mạng. Mỗi lần gọi mất hàng trăm mili giây và tốn tiền, trong khi cùng một thành phố thường được yêu cầu nhiều lần mỗi phút. Bạn không thể sửa lớp của dịch vụ, và cũng không muốn thêm mã cache vào mọi nơi gọi nó. Proxy giải quyết việc này: nó cài đặt cùng interface, giữ một cache và chỉ gọi dịch vụ thật khi cache không có. Nơi gọi hoàn toàn không phải đổi.",
+        "Cùng ý tưởng đó đáp ứng các nhu cầu khác: chỉ tạo đối tượng tốn kém khi dùng lần đầu, kiểm tra quyền trước khi gọi, ghi log mọi lời gọi, hoặc che giấu việc đối tượng thật nằm trên máy khác."
+      ]
+    },
+    {
+      "h": "Cấu trúc và các thành phần",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Vai trò",
+              "Trách nhiệm"
+            ],
+            "rows": [
+              [
+                "Subject",
+                "Interface dùng chung cho đối tượng thật và proxy, để client dùng được cả hai"
+              ],
+              [
+                "Real subject",
+                "Đối tượng thực hiện công việc thật sự"
+              ],
+              [
+                "Proxy",
+                "Cài đặt interface của subject, giữ hoặc tạo tham chiếu đến real subject và thêm logic kiểm soát trước hoặc sau khi chuyển tiếp"
+              ],
+              [
+                "Client",
+                "Chỉ làm việc với interface của subject và không biết mình đang dùng proxy hay không"
+              ]
+            ]
+          }
+        },
+        {
+          "table": {
+            "head": [
+              "Loại proxy",
+              "Điều nó kiểm soát"
+            ],
+            "rows": [
+              [
+                "Virtual proxy",
+                "Trì hoãn việc tạo đối tượng tốn kém cho đến khi cần"
+              ],
+              [
+                "Protection proxy",
+                "Kiểm tra xem bên gọi có được phép thực hiện thao tác hay không"
+              ],
+              [
+                "Caching proxy",
+                "Lưu kết quả và trả lại cho các yêu cầu lặp lại"
+              ],
+              [
+                "Remote proxy",
+                "Đại diện cho đối tượng ở tiến trình hoặc máy khác và xử lý việc giao tiếp"
+              ],
+              [
+                "Logging proxy",
+                "Ghi lại lời gọi và đối số mà không thay đổi đối tượng thật"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "Cài đặt bằng TypeScript: caching proxy",
+      "body": [
+        "`WeatherService` là subject. `CachedWeatherService` là proxy: nó có cùng phương thức và chỉ chuyển tiếp đến dịch vụ thật khi giá trị trong cache bị thiếu hoặc quá cũ.",
+        {
+          "code": "interface WeatherService {\n  getTemperature(city: string): Promise<number>;\n}\nclass RemoteWeatherService implements WeatherService {\n  calls = 0;\n  async getTemperature(city: string): Promise<number> {\n    this.calls++; // imagine a slow HTTP request here\n    return city.length * 3;\n  }\n}\nclass CachedWeatherService implements WeatherService {\n  private cache = new Map<string, { value: number; time: number }>();\n  constructor(private real: WeatherService, private maxAgeMs = 60_000) {}\n  async getTemperature(city: string): Promise<number> {\n    const hit = this.cache.get(city);\n    if (hit && Date.now() - hit.time < this.maxAgeMs) return hit.value;\n    const value = await this.real.getTemperature(city);\n    this.cache.set(city, { value, time: Date.now() });\n    return value;\n  }\n}\nasync function main() {\n  const real = new RemoteWeatherService();\n  const weather: WeatherService = new CachedWeatherService(real);\n  await weather.getTemperature(\"Paris\");\n  await weather.getTemperature(\"Paris\");\n  console.log(await weather.getTemperature(\"Hanoi\"), \"real calls:\", real.calls);\n  // 15 real calls: 2\n}\nmain();",
+          "lang": "typescript"
+        },
+        "Biến client được khai báo kiểu `WeatherService`, nên bạn có thể chuyển giữa dịch vụ thật và proxy ở một nơi, ví dụ trong cấu hình dependency injection."
+      ]
+    },
+    {
+      "h": "Virtual proxy và protection proxy với JavaScript Proxy",
+      "body": [
+        "JavaScript có sẵn đối tượng `Proxy` (ES2015) chặn các thao tác như đọc thuộc tính, ghi thuộc tính và gọi hàm thông qua các hàm xử lý gọi là trap. Đây là cách tiện lợi để tạo proxy mà không phải viết một lớp cho từng interface.",
+        {
+          "code": "type Account = { owner: string; balance: number };\nfunction readOnly<T extends object>(target: T): T {\n  return new Proxy(target, {\n    set(_obj, prop) {\n      throw new Error(\"Cannot change \" + String(prop) + \": read-only\");\n    },\n  });\n}\nconst account = readOnly<Account>({ owner: \"Ana\", balance: 100 });\nconsole.log(account.balance); // 100\ntry {\n  account.balance = 0;\n} catch (e) {\n  console.log((e as Error).message); // Cannot change balance: read-only\n}",
+          "lang": "typescript"
+        },
+        {
+          "note": "`Proxy` của JavaScript chặn các thao tác trên một đối tượng, nhưng không miễn phí: mỗi thao tác bị chặn đều chạy một hàm. Đừng bọc các cấu trúc dữ liệu nóng trong `Proxy` khi chưa đo chi phí."
+        }
+      ]
+    },
+    {
+      "h": "Khi nào nên dùng và khi nào không",
+      "body": [
+        {
+          "ul": [
+            "Dùng để thêm tải lười, kiểm soát truy cập, lưu đệm, ghi log hoặc truy cập từ xa mà không thay đổi lớp thật hay nơi gọi nó.",
+            "Dùng khi đối tượng thật nằm ngoài tầm kiểm soát của bạn, như lớp thư viện hoặc client mạng.",
+            "Không dùng khi một hàm bọc đơn giản là đủ. Với một hàm, hàm bậc cao như `memoize(fn)` đơn giản hơn một lớp.",
+            "Đừng che giấu các lời gọi từ xa chậm hoặc dễ lỗi sau một proxy trông như cục bộ. Nơi gọi vẫn cần xử lý độ trễ và lỗi, nên hãy thể hiện điều đó trong interface (ví dụ bằng cách trả về `Promise`).",
+            "Lưu ý về danh tính: proxy là một đối tượng khác với real subject, nên `proxy === real` là false."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Ứng dụng thực tế",
+      "body": [
+        {
+          "ul": [
+            "Vue 3 xây dựng hệ thống reactivity trên `Proxy` của JavaScript: đọc một thuộc tính sẽ ghi nhận phụ thuộc và ghi nó sẽ kích hoạt cập nhật.",
+            "Java cung cấp `java.lang.reflect.Proxy` để tạo các lớp proxy động lúc chạy; các framework dùng nó để thêm giao dịch, kiểm tra bảo mật hoặc gọi từ xa quanh các interface.",
+            "Các ORM như Hibernate trả về lazy proxy cho các thực thể liên quan và tải dữ liệu thật từ cơ sở dữ liệu ở lần truy cập đầu tiên.",
+            "Các thư viện gọi thủ tục từ xa (RPC) sinh ra client stub trông như đối tượng cục bộ nhưng gửi mỗi lời gọi qua mạng."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Các mẫu liên quan",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Mẫu",
+              "Khác với Proxy ở điểm nào"
+            ],
+            "rows": [
+              [
+                "Decorator",
+                "Cùng cấu trúc, khác mục tiêu: Decorator thêm hành vi mới và thường được xếp chồng; Proxy kiểm soát truy cập và thường tự quản lý vòng đời của đối tượng thật."
+              ],
+              [
+                "Adapter",
+                "Adapter cho đối tượng một interface khác; Proxy giữ nguyên đúng interface."
+              ],
+              [
+                "Facade",
+                "Facade đưa ra interface mới, đơn giản hơn cho cả hệ thống con; Proxy đại diện cho một đối tượng."
+              ],
+              [
+                "Flyweight",
+                "Flyweight chia sẻ đối tượng để tiết kiệm bộ nhớ; virtual proxy trì hoãn việc tạo đối tượng để tiết kiệm thời gian và bộ nhớ."
+              ]
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Mẫu Proxy khác mẫu Decorator ở điểm nào?",
+      "a": "Cả hai đều bọc một đối tượng với cùng interface. Decorator thêm trách nhiệm và thường do client ghép lại, còn proxy kiểm soát truy cập vào đối tượng thật và thường tự tạo hoặc quản lý đối tượng đó."
+    },
+    {
+      "q": "Đối tượng Proxy của JavaScript có phải là mẫu Proxy không?",
+      "a": "Đó là một tính năng ngôn ngữ giúp cài đặt mẫu này dễ dàng. `Proxy` của JavaScript chặn các thao tác trên đối tượng đích thông qua trap, đúng là điều mà một proxy theo nghĩa GoF làm."
+    },
+    {
+      "q": "Virtual proxy là gì?",
+      "a": "Virtual proxy đại diện cho một đối tượng tốn kém để tạo, như một ảnh lớn. Nó chỉ tạo đối tượng thật khi một phương thức cần đến nó được gọi lần đầu."
+    },
+    {
+      "q": "Máy chủ reverse proxy có phải là ví dụ của mẫu Proxy không?",
+      "a": "Nó theo cùng ý tưởng ở mức mạng: một máy chủ như nginx đứng trước các máy chủ khác với cùng interface HTTP và thêm lưu đệm, kiểm soát truy cập hoặc cân bằng tải. Mẫu GoF mô tả cùng ý tưởng cho các đối tượng trong một chương trình."
+    }
+  ]
+}

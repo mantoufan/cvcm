@@ -1,0 +1,155 @@
+{
+  "title": "命令模式：復原、重做與佇列，附 TypeScript 範例 — cv.cm",
+  "description": "命令模式把請求封裝成物件，讓你能排入佇列、記錄日誌並支援復原。了解各角色，並用 TypeScript 實作復原與重做。",
+  "h1": "命令模式（Command）詳解與範例",
+  "answer": "命令（Command）是一種行為型設計模式，它把一個請求變成獨立的物件，其中包含執行該請求所需的全部資訊。由於請求成了物件，你可以儲存它、傳遞它、放進佇列、記錄日誌，之後還能復原。觸發命令的物件（例如按鈕）不需要知道是哪個物件執行工作，也不需要知道如何執行。",
+  "sections": [
+    {
+      "h": "意圖與要解決的問題",
+      "body": [
+        "意圖：將請求封裝成物件，讓你能以不同的請求參數化用戶端、將請求排入佇列或記錄日誌，並支援可復原的操作。命令是《設計模式》（Gang of Four，簡稱 GoF）一書中的行為型模式之一。",
+        "以文字編輯器為例。同一個動作，例如「把文字設為粗體」，可以由工具列按鈕、選單項目和快速鍵 Ctrl+B 觸發。如果這三處都直接呼叫編輯器，邏輯就會重複三份。更糟的是，編輯器還得支援復原：使用者按下 Ctrl+Z 後，程式必須知道上一個動作是什麼，以及如何還原它。",
+        "命令模式同時解決這兩個問題。每個動作都變成帶有 `execute` 方法的物件，也可以再加上 `undo` 方法。按鈕、選單和快速鍵都持有同一個命令物件。編輯器維護一份已執行命令的歷史清單，因此復原就是從清單取出最後一個命令，再呼叫它的 `undo` 方法。"
+      ]
+    },
+    {
+      "h": "結構與參與者",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "角色",
+              "職責"
+            ],
+            "rows": [
+              [
+                "命令",
+                "帶有 `execute` 方法（通常還有 `undo`）的介面"
+              ],
+              [
+                "具體命令",
+                "儲存接收者與參數，並在 `execute` 中呼叫接收者的方法"
+              ],
+              [
+                "接收者",
+                "真正知道如何完成工作的物件，例如文件或銀行帳戶"
+              ],
+              [
+                "調用者",
+                "要求命令執行；可以保存歷史紀錄以支援復原與重做"
+              ],
+              [
+                "用戶端",
+                "建立具體命令，並把它們與接收者、調用者連接起來"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "TypeScript 實作：復原與重做",
+      "body": [
+        "`TextDocument` 是接收者。`InsertText` 與 `DeleteLast` 是命令，它們記住了足夠的資訊，能夠還原自己。`Editor` 是調用者，擁有兩個堆疊：一個用於復原，一個用於重做。",
+        {
+          "code": "interface Command {\n  execute(): void;\n  undo(): void;\n}\nclass TextDocument {\n  text = \"\";\n}\nclass InsertText implements Command {\n  constructor(private doc: TextDocument, private value: string) {}\n  execute() { this.doc.text += this.value; }\n  undo() { this.doc.text = this.doc.text.slice(0, -this.value.length); }\n}\nclass DeleteLast implements Command {\n  private removed = \"\";\n  constructor(private doc: TextDocument, private count: number) {}\n  execute() {\n    this.removed = this.doc.text.slice(-this.count);\n    this.doc.text = this.doc.text.slice(0, -this.count);\n  }\n  undo() { this.doc.text += this.removed; }\n}\nclass Editor {\n  private done: Command[] = [];\n  private undone: Command[] = [];\n  run(cmd: Command) { cmd.execute(); this.done.push(cmd); this.undone = []; }\n  undo() { const c = this.done.pop(); if (c) { c.undo(); this.undone.push(c); } }\n  redo() { const c = this.undone.pop(); if (c) { c.execute(); this.done.push(c); } }\n}\nconst doc = new TextDocument();\nconst editor = new Editor();\neditor.run(new InsertText(doc, \"Hello\"));\neditor.run(new InsertText(doc, \", world\"));\neditor.run(new DeleteLast(doc, 7));\nconsole.log(doc.text); // Hello\neditor.undo();\nconsole.log(doc.text); // Hello, world\neditor.redo();\nconsole.log(doc.text); // Hello",
+          "lang": "typescript"
+        },
+        {
+          "note": "執行新命令時必須清空重做堆疊，如上面的 `run` 所做的。否則重做可能會把命令套用到它從未預期的文件狀態上，導致文字損毀。"
+        }
+      ]
+    },
+    {
+      "h": "使用前與使用後",
+      "body": [
+        "沒有這個模式時，UI 直接呼叫文件，由於沒有任何地方記錄發生過什麼，因此無法復原：",
+        {
+          "code": "// Before: each trigger calls the receiver directly\nboldButton.onclick = () => doc.makeBold(selection);\nmenuBold.onclick = () => doc.makeBold(selection);\n// After: every trigger shares one command, and the editor records it\nconst bold = () => new MakeBold(doc, selection);\nboldButton.onclick = () => editor.run(bold());\nmenuBold.onclick = () => editor.run(bold());",
+          "lang": "typescript"
+        },
+        "第二個版本只是一段程式碼片段，假設有一個類似上面的 `MakeBold` 命令類別。UI 不再知道加粗是怎麼做的，而且每個動作都經過同一個地方，可以在那裡被記錄、寫入日誌或復原。"
+      ]
+    },
+    {
+      "h": "何時使用、何時不用",
+      "body": [
+        {
+          "ul": [
+            "用於復原與重做、巨集（一併執行的一串命令）以及命令歷史。",
+            "用於排隊或排程工作：工作佇列儲存命令物件，工作者稍後再執行。",
+            "用於記錄或重播操作，例如把序列化後的命令傳送到另一台伺服器。",
+            "用於讓 UI 元件與它所觸發的程式碼解耦。",
+            "如果你只需要回呼函式，就不要用它。在 TypeScript 中函式本來就是一等公民值，`button.onclick = save` 就是一個完全可行、不帶復原的命令。只有在需要額外行為時，例如 `undo`、顯示用的名稱或序列化，才引入命令類別。"
+          ]
+        }
+      ]
+    },
+    {
+      "h": "實際應用",
+      "body": [
+        {
+          "ul": [
+            "Java 的 `Runnable` 介面就是只有一個 `run` 方法的命令，執行緒與執行器用它來稍後執行工作。",
+            "Redux 的 action 是描述變更的純物件，由 reducer 套用，而 action 日誌讓時間旅行除錯成為可能。這與命令模式十分相近，只是邏輯放在 reducer 而不是命令裡。",
+            "VS Code 與許多其他編輯器會註冊具名的命令，可繫結到按鍵、選單和命令面板。",
+            "資料庫遷移通常有 `up` 與 `down` 兩個步驟，正是命令的執行與復原這一對。"
+          ]
+        }
+      ]
+    },
+    {
+      "h": "相關模式",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "模式",
+              "與命令模式的差異"
+            ],
+            "rows": [
+              [
+                "策略",
+                "策略替換同一個任務的做法；命令則封裝要做什麼（一個請求），讓它可以被儲存、排隊或復原。"
+              ],
+              [
+                "備忘錄",
+                "備忘錄儲存狀態快照以供復原；命令儲存操作本身並反向執行。當反向操作困難時，兩者常常搭配使用。"
+              ],
+              [
+                "責任鏈",
+                "命令可以沿著處理者鏈傳遞，找出負責執行它的那一個。"
+              ],
+              [
+                "組合",
+                "巨集命令就是一個組合：由其他命令組成的命令。"
+              ],
+              [
+                "觀察者",
+                "觀察者把事件通知給許多監聽者；命令則是把一個請求送給一個接收者。"
+              ]
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "命令模式如何實作復原？",
+      "a": "每個命令都有一個 `undo` 方法，用來還原自己的 `execute`，通常會用到執行期間儲存的資料。調用者維護已執行命令的堆疊，並對最近的一個呼叫 `undo`。"
+    },
+    {
+      "q": "命令與策略有什麼不同？",
+      "a": "策略代表完成同一件事的不同方式，由使用它的物件選擇。命令代表一個具體的請求，連同它的接收者與參數，可以稍後執行、排隊或復原。"
+    },
+    {
+      "q": "回呼函式算是命令嗎？",
+      "a": "回呼函式是最精簡的命令：它封裝了一個稍後執行的動作。如果你還需要復原、描述、序列化或其他中繼資料，就需要完整的命令物件。"
+    },
+    {
+      "q": "什麼是巨集命令？",
+      "a": "巨集命令持有一串命令並依序執行。它的復原則以相反順序還原這些命令，這正是組合模式的應用。"
+    }
+  ]
+}

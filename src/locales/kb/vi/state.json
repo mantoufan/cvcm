@@ -1,0 +1,145 @@
+{
+  "title": "Mẫu State: các lớp trạng thái, chuyển trạng thái và ví dụ TypeScript — cv.cm",
+  "description": "Mẫu State cho phép đối tượng thay đổi hành vi khi trạng thái bên trong thay đổi. Thay các câu lệnh switch bằng lớp trạng thái trong TypeScript.",
+  "h1": "Mẫu State (Design Pattern) giải thích kèm ví dụ",
+  "answer": "State là một mẫu thiết kế hành vi (behavioral), cho phép một đối tượng thay đổi hành vi khi trạng thái bên trong thay đổi, như thể nó đổi lớp. Mỗi trạng thái trở thành một lớp riêng cài đặt cùng một interface, và đối tượng chính, gọi là context, ủy quyền công việc cho đối tượng trạng thái hiện tại. Việc chuyển trạng thái diễn ra bằng cách thay đối tượng trạng thái đó, loại bỏ các chuỗi `switch` hoặc `if` dài kiểm tra trường status trong mọi phương thức.",
+  "sections": [
+    {
+      "h": "Mục đích và vấn đề mà mẫu này giải quyết",
+      "body": [
+        "Mục đích: cho phép một đối tượng thay đổi hành vi khi trạng thái bên trong của nó thay đổi. Đối tượng sẽ có vẻ như đổi lớp. State là một trong các mẫu hành vi trong sách Gang of Four (GoF); ví dụ kinh điển là kết nối TCP hành xử khác nhau khi đang lắng nghe, đã thiết lập hoặc đã đóng.",
+        "Lấy một đơn hàng trực tuyến làm ví dụ. Nó có thể ở trạng thái chờ xử lý, đã thanh toán, đã giao hoặc đã hủy. Chỉ thanh toán được khi đang chờ xử lý. Chỉ giao được khi đã thanh toán. Hủy được khi chờ xử lý hoặc đã thanh toán, nhưng không được sau khi giao. Phiên bản đầu thường lưu một chuỗi `status` và mọi phương thức bắt đầu bằng một `switch` trên nó. Với bốn hành động và bốn trạng thái, đó là mười sáu trường hợp rải trên bốn phương thức. Thêm trạng thái mới, như “đã hoàn tiền”, nghĩa là sửa mọi phương thức, và rất dễ sót một chỗ.",
+        "Với mẫu State, mỗi trạng thái trở thành một lớp biết mỗi hành động có nghĩa gì trong trạng thái đó. Đơn hàng giữ tham chiếu đến đối tượng trạng thái hiện tại và chuyển tiếp mọi hành động cho nó."
+      ]
+    },
+    {
+      "h": "Cấu trúc và các thành phần",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Vai trò",
+              "Trách nhiệm"
+            ],
+            "rows": [
+              [
+                "Context",
+                "Đối tượng mà client sử dụng; giữ đối tượng trạng thái hiện tại và ủy quyền hành vi phụ thuộc trạng thái cho nó"
+              ],
+              [
+                "State",
+                "Interface khai báo các thao tác có hành vi phụ thuộc vào trạng thái"
+              ],
+              [
+                "Concrete state",
+                "Cài đặt hành vi cho một trạng thái và quyết định trạng thái kế tiếp là gì"
+              ]
+            ]
+          }
+        },
+        "Việc chuyển trạng thái có thể do chính các state quyết định (mỗi state đặt state kế tiếp lên context, như bên dưới) hoặc do context dùng một bảng chuyển trạng thái. Để các state quyết định thì logic liên quan nằm cùng nhau; một bảng trung tâm cho thấy mọi chuyển trạng thái ở một chỗ."
+      ]
+    },
+    {
+      "h": "Cài đặt bằng TypeScript",
+      "body": [
+        "Một lớp cơ sở cung cấp hành vi mặc định: từ chối hành động. Mỗi concrete state chỉ ghi đè những hành động hợp lệ với nó.",
+        {
+          "code": "abstract class OrderState {\n  abstract readonly name: string;\n  pay(order: Order): void { this.reject(\"pay\"); }\n  ship(order: Order): void { this.reject(\"ship\"); }\n  cancel(order: Order): void { this.reject(\"cancel\"); }\n  protected reject(action: string): never {\n    throw new Error(\"Cannot \" + action + \" an order that is \" + this.name);\n  }\n}\n\nclass Pending extends OrderState {\n  readonly name = \"pending\";\n  pay(order: Order) { order.setState(new Paid()); }\n  cancel(order: Order) { order.setState(new Cancelled()); }\n}\n\nclass Paid extends OrderState {\n  readonly name = \"paid\";\n  ship(order: Order) { order.setState(new Shipped()); }\n  cancel(order: Order) { order.setState(new Cancelled()); } // refund here\n}\n\nclass Shipped extends OrderState { readonly name = \"shipped\"; }\nclass Cancelled extends OrderState { readonly name = \"cancelled\"; }\n\nclass Order {\n  private state: OrderState = new Pending();\n  setState(next: OrderState) { this.state = next; }\n  get status() { return this.state.name; }\n  pay() { this.state.pay(this); }\n  ship() { this.state.ship(this); }\n  cancel() { this.state.cancel(this); }\n}\n\nconst order = new Order();\norder.pay();\norder.ship();\nconsole.log(order.status); // shipped\ntry { order.cancel(); } catch (e) { console.log((e as Error).message); }\n// Cannot cancel an order that is shipped",
+          "lang": "typescript"
+        },
+        "Để thêm trạng thái “refunded” bạn viết một lớp mới và chỉ sửa những state có thể dẫn tới nó. Bản thân `Order` không đổi.",
+        {
+          "note": "Đừng để client thay state từ bên ngoài. Ở đây `setState` để public cho ngắn gọn; trong dự án thực tế, hãy giữ nó nội bộ (ví dụ định nghĩa các state trong cùng module và không export) để chỉ những chuyển trạng thái hợp lệ mới xảy ra."
+        }
+      ]
+    },
+    {
+      "h": "Trước và sau",
+      "body": [
+        "Cùng các quy tắc đó được viết bằng trường status và câu lệnh `switch`. Cách này dùng được với vài trạng thái, nhưng mỗi phương thức lặp lại toàn bộ danh sách:",
+        {
+          "code": "type Status = \"pending\" | \"paid\" | \"shipped\" | \"cancelled\";\n\nclass OrderBefore {\n  status: Status = \"pending\";\n  ship() {\n    switch (this.status) {\n      case \"paid\": this.status = \"shipped\"; break;\n      default: throw new Error(\"Cannot ship an order that is \" + this.status);\n    }\n  }\n  // pay() and cancel() repeat the same switch\n}\n\nconst o = new OrderBefore();\ntry { o.ship(); } catch (e) { console.log((e as Error).message); }\n// Cannot ship an order that is pending",
+          "lang": "typescript"
+        },
+        "Với trường hợp nhỏ, phiên bản này hoàn toàn ổn và có thể nói là dễ đọc hơn. Trong TypeScript, kiểu union cho `Status` giúp trình biên dịch kiểm tra mọi trường hợp đều được xử lý. Hãy chuyển sang lớp state khi hành vi cho mỗi trạng thái dài hơn một hai dòng."
+      ]
+    },
+    {
+      "h": "Khi nào nên dùng và khi nào không",
+      "body": [
+        {
+          "ul": [
+            "Dùng khi một đối tượng hành xử rất khác nhau tùy theo trạng thái, và cùng các phép kiểm tra status xuất hiện trong nhiều phương thức.",
+            "Dùng khi các trạng thái và chuyển trạng thái thay đổi theo thời gian và bạn muốn quy tắc của mỗi trạng thái nằm ở một chỗ.",
+            "Dùng cho quy trình làm việc (đơn hàng, tài liệu, ticket), kết nối giao thức, nhân vật game và các thành phần giao diện như trình phát media.",
+            "Đừng dùng khi chỉ có hai hoặc ba trạng thái với hành vi tầm thường; enum hoặc kiểu union cùng `switch` đơn giản hơn.",
+            "Với các máy phức tạp có trạng thái lồng nhau hoặc song song, hãy cân nhắc thư viện máy trạng thái hoặc ký pháp statechart thay vì các lớp viết tay."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Ứng dụng thực tế",
+      "body": [
+        {
+          "ul": [
+            "Các cài đặt giao thức mạng mô hình hóa trạng thái kết nối như đang lắng nghe, đã thiết lập và đã đóng, đúng là ví dụ dùng trong sách GoF.",
+            "XState là thư viện JavaScript và TypeScript cho máy trạng thái và statechart, dùng cho logic giao diện và quy trình làm việc.",
+            "Đặc tả SCXML của W3C định nghĩa một định dạng XML cho statechart.",
+            "Phát triển game dùng các đối tượng state cho nhân vật (đứng yên, chạy, nhảy), mỗi state xử lý đầu vào khác nhau."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "State so với Strategy và các mẫu khác",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Mẫu",
+              "Khác với State ở điểm nào"
+            ],
+            "rows": [
+              [
+                "Strategy",
+                "Cấu trúc lớp gần như giống nhau. Strategy thường do client chọn và không tự thay đổi; các state thay thế nhau do chính hành động của đối tượng."
+              ],
+              [
+                "Flyweight",
+                "Các đối tượng state không có trường nào có thể được chia sẻ giữa mọi context dưới dạng flyweight hoặc hằng số."
+              ],
+              [
+                "Singleton",
+                "Các đối tượng state không giữ trạng thái thường là các thể hiện dùng chung duy nhất."
+              ],
+              [
+                "Memento",
+                "Memento lưu dữ liệu của một đối tượng để khôi phục sau; State thay đổi hành vi nào mà đối tượng sử dụng."
+              ]
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Mẫu State khác mẫu Strategy ở điểm nào?",
+      "a": "Cả hai đều ủy quyền hành vi cho một đối tượng có thể thay thế. Trong Strategy, client thường chọn thuật toán và nó giữ cố định. Trong State, các đối tượng state biết nhau và chuyển context sang state mới như một phần của hoạt động bình thường."
+    },
+    {
+      "q": "Mẫu State có giống máy trạng thái hữu hạn không?",
+      "a": "Mẫu State là một cách cài đặt máy trạng thái hữu hạn trong mã hướng đối tượng: mỗi trạng thái là một lớp và mỗi lần chuyển trạng thái thay đối tượng state hiện tại. Máy trạng thái cũng có thể được cài đặt bằng bảng chuyển trạng thái hoặc thư viện."
+    },
+    {
+      "q": "Ai nên quyết định trạng thái kế tiếp: context hay state?",
+      "a": "Cả hai đều được. Khi state quyết định, logic của mỗi state nằm cùng nhau. Khi context hoặc bảng chuyển trạng thái quyết định, mọi chuyển trạng thái hiện ra ở một chỗ và các state không cần biết nhau."
+    },
+    {
+      "q": "Các đối tượng state có thể được chia sẻ không?",
+      "a": "Có, nếu chúng không giữ dữ liệu riêng. Khi đó một thể hiện của mỗi state có thể được mọi đối tượng context dùng chung, giúp tiết kiệm cấp phát."
+    }
+  ]
+}

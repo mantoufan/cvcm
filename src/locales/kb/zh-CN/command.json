@@ -1,0 +1,155 @@
+{
+  "title": "命令模式：撤销、重做与队列，含 TypeScript 示例 — cv.cm",
+  "description": "命令模式（Command）把请求变成对象，使你可以将它排队、记录并撤销。了解其角色，并用 TypeScript 实现撤销/重做。",
+  "h1": "命令模式详解与示例",
+  "answer": "命令是一种行为型设计模式，它把请求变成一个独立的对象，其中包含执行该请求所需的一切。由于请求是对象，你可以保存它、传递它、放进队列、记录日志，并在之后撤销。触发命令的对象（例如按钮）无需知道由哪个对象执行工作，也无需知道怎么执行。",
+  "sections": [
+    {
+      "h": "意图与它要解决的问题",
+      "body": [
+        "意图：将请求封装为对象，从而让你可以用不同的请求对客户端进行参数化，对请求排队或记录日志，并支持可撤销的操作。命令是《设计模式》（四人组，GoF）一书中的行为型模式之一。",
+        "以文本编辑器为例。同一个操作，比如“把文字加粗”，可以由工具栏按钮、菜单项和键盘快捷键 Ctrl+B 触发。如果它们都直接调用编辑器，这段逻辑就在三个地方重复了。更糟的是，编辑器还必须支持撤销：用户按下 Ctrl+Z 之后，程序需要知道上一个操作是什么，以及如何把它还原。",
+        "命令模式同时解决了这两个问题。每个操作都变成一个带有 `execute` 方法（还可以有 `undo` 方法）的对象。按钮、菜单和快捷键都持有同一个命令对象。编辑器保存一个已执行命令的历史列表，于是撤销就是从列表中取出最后一个命令并调用它的 `undo` 方法。"
+      ]
+    },
+    {
+      "h": "结构与参与者",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "角色",
+              "职责"
+            ],
+            "rows": [
+              [
+                "命令（Command）",
+                "带有 `execute` 方法（通常还有 `undo`）的接口"
+              ],
+              [
+                "具体命令（Concrete command）",
+                "保存接收者和参数，并在 `execute` 中调用接收者的方法"
+              ],
+              [
+                "接收者（Receiver）",
+                "知道如何完成实际工作的对象，比如文档或银行账户"
+              ],
+              [
+                "调用者（Invoker）",
+                "要求命令执行；它可以保存历史记录用于撤销和重做"
+              ],
+              [
+                "客户端（Client）",
+                "创建具体命令，并把它们与接收者和调用者连接起来"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "TypeScript 实现：撤销与重做",
+      "body": [
+        "`TextDocument` 是接收者。`InsertText` 和 `DeleteLast` 是命令，它们记住了足够的信息来还原自己。`Editor` 是调用者，拥有两个栈：一个用于撤销，一个用于重做。",
+        {
+          "code": "interface Command {\n  execute(): void;\n  undo(): void;\n}\nclass TextDocument {\n  text = \"\";\n}\nclass InsertText implements Command {\n  constructor(private doc: TextDocument, private value: string) {}\n  execute() { this.doc.text += this.value; }\n  undo() { this.doc.text = this.doc.text.slice(0, -this.value.length); }\n}\nclass DeleteLast implements Command {\n  private removed = \"\";\n  constructor(private doc: TextDocument, private count: number) {}\n  execute() {\n    this.removed = this.doc.text.slice(-this.count);\n    this.doc.text = this.doc.text.slice(0, -this.count);\n  }\n  undo() { this.doc.text += this.removed; }\n}\nclass Editor {\n  private done: Command[] = [];\n  private undone: Command[] = [];\n  run(cmd: Command) { cmd.execute(); this.done.push(cmd); this.undone = []; }\n  undo() { const c = this.done.pop(); if (c) { c.undo(); this.undone.push(c); } }\n  redo() { const c = this.undone.pop(); if (c) { c.execute(); this.done.push(c); } }\n}\nconst doc = new TextDocument();\nconst editor = new Editor();\neditor.run(new InsertText(doc, \"Hello\"));\neditor.run(new InsertText(doc, \", world\"));\neditor.run(new DeleteLast(doc, 7));\nconsole.log(doc.text); // Hello\neditor.undo();\nconsole.log(doc.text); // Hello, world\neditor.redo();\nconsole.log(doc.text); // Hello",
+          "lang": "typescript"
+        },
+        {
+          "note": "执行新命令必须清空重做栈，就像上面的 `run` 所做的那样。否则，重做可能会把一个命令应用到它从未设计面对的文档状态上，导致文本损坏。"
+        }
+      ]
+    },
+    {
+      "h": "使用前后对比",
+      "body": [
+        "没有这个模式时，UI 直接调用文档，无法撤销，因为没有任何东西记录发生过什么：",
+        {
+          "code": "// Before: each trigger calls the receiver directly\nboldButton.onclick = () => doc.makeBold(selection);\nmenuBold.onclick = () => doc.makeBold(selection);\n// After: every trigger shares one command, and the editor records it\nconst bold = () => new MakeBold(doc, selection);\nboldButton.onclick = () => editor.run(bold());\nmenuBold.onclick = () => editor.run(bold());",
+          "lang": "typescript"
+        },
+        "第二个版本只是一个代码片段，假定存在一个像上面那样的 `MakeBold` 命令类。UI 不再知道加粗是如何实现的，每个操作都会经过同一个地方，在那里可以被记录、记日志或撤销。"
+      ]
+    },
+    {
+      "h": "何时使用，何时不用",
+      "body": [
+        {
+          "ul": [
+            "用于撤销和重做、宏（一起运行的命令列表）以及命令历史。",
+            "用于排队或调度工作：任务队列保存命令对象，由工作线程稍后执行。",
+            "用于记录或回放操作，例如把序列化的命令发送给另一台服务器。",
+            "用于把 UI 元素与它们触发的代码解耦。",
+            "如果你只需要一个回调，就不要使用它。在 TypeScript 中，函数本身就是一等公民，因此 `button.onclick = save` 就是一个完全合格、只是不能撤销的命令。当你需要 `undo`、用于显示的名称或序列化等额外行为时，再引入命令类。"
+          ]
+        }
+      ]
+    },
+    {
+      "h": "实际应用",
+      "body": [
+        {
+          "ul": [
+            "Java 的 `Runnable` 接口是只有一个方法 `run` 的命令，线程和执行器用它来稍后运行任务。",
+            "Redux 的 action 是描述变更的普通对象；reducer 负责应用它们，而 action 日志使时间旅行调试成为可能。这是命令模式的近亲，只不过逻辑放在 reducer 中，而不在命令里。",
+            "VS Code 和许多其他编辑器会注册具名命令，可以绑定到快捷键、菜单和命令面板。",
+            "数据库迁移通常有 `up` 和 `down` 两个步骤，正是命令的执行与撤销这一对。"
+          ]
+        }
+      ]
+    },
+    {
+      "h": "相关模式",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "模式",
+              "与命令的区别"
+            ],
+            "rows": [
+              [
+                "策略",
+                "策略替换一项任务的完成方式；命令封装要做什么（一个请求），以便存储、排队或撤销。"
+              ],
+              [
+                "备忘录",
+                "备忘录保存状态快照用于撤销；命令保存操作本身并将其逆转。当逆转很困难时，两者经常结合使用。"
+              ],
+              [
+                "责任链",
+                "命令可以沿着一条处理者链传递，以找到执行它的那一个。"
+              ],
+              [
+                "组合",
+                "宏命令就是一个组合：由其他命令构成的命令。"
+              ],
+              [
+                "观察者",
+                "观察者把一个事件通知给许多监听者；命令是发给一个接收者的一个请求。"
+              ]
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "命令模式是如何实现撤销的？",
+      "a": "每个命令都有一个 `undo` 方法，用来还原它自己的 `execute`，通常会用到执行期间保存的数据。调用者保存一个已执行命令的栈，并对最近的那个调用 `undo`。"
+    },
+    {
+      "q": "命令与策略有什么区别？",
+      "a": "策略代表完成同一任务的不同方式，由使用它的对象来选择。命令代表一个具体的请求，带有它的接收者和参数，可以稍后运行、排队或撤销。"
+    },
+    {
+      "q": "回调函数算是命令吗？",
+      "a": "回调是最小形式的命令：它封装了一个稍后运行的操作。当你还需要撤销、描述、序列化或其他元数据时，才需要完整的命令对象。"
+    },
+    {
+      "q": "什么是宏命令？",
+      "a": "宏命令持有一个命令列表，并按顺序执行它们。它的撤销则按相反的顺序还原这些命令，这是组合模式的一种应用。"
+    }
+  ]
+}

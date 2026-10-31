@@ -1,0 +1,216 @@
+{
+  "title": "Tutorial Scala: pattern matching, koleksi, case class, dan Option — cv.cm",
+  "description": "Belajar Scala 3 langkah demi langkah: jalankan Hello, world, val dan var, ekspresi if dan for, pattern matching, fungsi, koleksi immutable, case class, dan Option.",
+  "h1": "Tutorial Scala untuk pemula",
+  "answer": "Scala adalah bahasa JVM bertipe statis yang memadukan pemrograman berorientasi objek dan fungsional, banyak dipakai untuk data engineering dengan Apache Spark dan untuk backend konkuren. Fitur utamanya adalah type inference, koleksi immutable, case class, dan pattern matching. Halaman ini memakai Scala 3 untuk membahas setup, value, alur kontrol, fungsi, koleksi, trait, enum, dan penanganan error dengan Option, Either, dan Try.",
+  "sections": [
+    {
+      "h": "Apa itu Scala dan untuk apa digunakan",
+      "body": [
+        "Scala adalah bahasa bertipe statis yang memadukan pemrograman berorientasi objek dan fungsional. Scala dibuat oleh Martin Odersky di EPFL dan berjalan terutama di Java Virtual Machine, dengan Scala.js untuk browser dan Scala Native untuk binary native. Kode Scala bisa memakai library Java apa pun.",
+        "Scala banyak dipakai untuk data engineering (Apache Spark ditulis dengan Scala), untuk backend konkuren dan terdistribusi (Akka, Pekko, ZIO, Cats Effect), serta untuk sistem keuangan dan streaming. Tutorial ini memakai sintaks Scala 3, yang mengizinkan blok berbasis indentasi; kurung kurawal tetap berfungsi."
+      ]
+    },
+    {
+      "h": "Instal Scala dan jalankan Hello, world",
+      "body": [
+        "Installer yang direkomendasikan adalah Coursier (`cs setup`), yang menginstal perintah `scala` dan JDK. Di Scala 3, method yang diberi anotasi `@main` adalah titik masuk program.",
+        {
+          "code": "// hello.scala\n@main def hello(): Unit =\n  println(\"Hello, world!\")",
+          "lang": "scala"
+        },
+        {
+          "code": "scala run hello.scala\n# Hello, world!",
+          "lang": "shell"
+        },
+        "Untuk proyek yang lebih besar, sbt dan Mill adalah build tool yang umum. Scastie (scastie.scala-lang.org) menjalankan Scala di browser tanpa instalasi apa pun."
+      ]
+    },
+    {
+      "h": "Value, variabel, dan tipe dasar",
+      "body": [
+        "Gunakan `val` untuk nilai immutable dan `var` untuk variabel yang bisa diubah. Tipe ditebak otomatis tetapi bisa ditulis setelah titik dua. Scala yang idiomatis memakai `val` hampir di mana-mana.",
+        {
+          "code": "val name = \"Scala\"            // String\nvar count: Int = 1            // mutable\ncount += 1\nval ratio = 3.0 / 4           // Double: 0.75\nval big = 12345678901L        // Long\nval ok = count > 1            // Boolean\nprintln(s\"$name: count=$count ratio=$ratio ok=$ok\")\n// Scala: count=2 ratio=0.75 ok=true\nprintln(f\"pi is ${math.Pi}%.3f\")   // pi is 3.142",
+          "lang": "scala"
+        },
+        {
+          "table": {
+            "head": [
+              "Tipe",
+              "Contoh",
+              "Catatan"
+            ],
+            "rows": [
+              [
+                "`Int`",
+                "`42`",
+                "bilangan bulat bertanda 32-bit"
+              ],
+              [
+                "`Long`",
+                "`42L`",
+                "bilangan bulat bertanda 64-bit"
+              ],
+              [
+                "`Double`",
+                "`3.14`",
+                "bilangan floating point 64-bit"
+              ],
+              [
+                "`Boolean`",
+                "`true`",
+                "`true` atau `false`"
+              ],
+              [
+                "`String`",
+                "`\"hi\"`",
+                "String Java; interpolator `s\"...\"` dan `f\"...\"`"
+              ],
+              [
+                "`Unit`",
+                "`()`",
+                "seperti `void`: tidak ada nilai yang bermakna"
+              ]
+            ]
+          }
+        },
+        "Semua di Scala adalah ekspresi: `if`, blok, dan `match` semuanya mengembalikan nilai, sehingga Anda jarang membutuhkan `var` sementara."
+      ]
+    },
+    {
+      "h": "Alur kontrol dan pattern matching",
+      "body": [
+        "`if` mengembalikan nilai. `for` mengiterasi rentang dan koleksi, dan dengan `yield` ia membangun koleksi baru. `match` adalah pattern matching Scala yang andal, fitur khas bahasa ini.",
+        {
+          "code": "val n = 7\nval parity = if n % 2 == 0 then \"even\" else \"odd\"\nprintln(parity)                        // odd\nfor i <- 1 to 3 do print(s\"$i \")       // 1 2 3\nprintln()\nval squares = for i <- 1 to 4 yield i * i\nprintln(squares)                       // Vector(1, 4, 9, 16)\ndef describe(x: Any): String = x match\n  case 0             => \"zero\"\n  case i: Int if i < 0 => \"negative int\"\n  case i: Int        => s\"int $i\"\n  case s: String     => s\"string of length ${s.length}\"\n  case (a, b)        => s\"pair $a and $b\"\n  case _             => \"something else\"\nprintln(describe(-5))                  // negative int\nprintln(describe(\"hey\"))               // string of length 3\nprintln(describe((1, \"x\")))            // pair 1 and x",
+          "lang": "scala"
+        },
+        "`1 to 3` menyertakan 3; `1 until 3` berhenti sebelum 3. `case _` terakhir adalah wildcard yang cocok dengan apa saja; tanpanya, nilai yang tidak cocok akan melempar `MatchError`."
+      ]
+    },
+    {
+      "h": "Fungsi dan higher-order function",
+      "body": [
+        "Method didefinisikan dengan `def`. Fungsi adalah nilai: bisa disimpan, dikirim sebagai argumen, dan dikembalikan. Parameter bisa punya nilai default, dan pemanggil bisa memakai named argument.",
+        {
+          "code": "def add(a: Int, b: Int): Int = a + b\ndef greet(name: String, greeting: String = \"Hello\"): String =\n  s\"$greeting, $name!\"\nval double = (x: Int) => x * 2        // function value\ndef applyTwice(f: Int => Int, x: Int): Int = f(f(x))\nprintln(add(2, 3))                    // 5\nprintln(greet(\"Ann\"))                 // Hello, Ann!\nprintln(greet(\"Ann\", greeting = \"Hi\")) // Hi, Ann!\nprintln(applyTwice(double, 5))        // 20\nprintln(List(1, 2, 3, 4).filter(_ % 2 == 0).map(_ * 10)) // List(20, 40)",
+          "lang": "scala"
+        },
+        "Underscore pada `_ * 10` adalah singkatan untuk lambda satu parameter, `x => x * 10`."
+      ]
+    },
+    {
+      "h": "Koleksi",
+      "body": [
+        "Koleksi standar bersifat immutable secara default: operasi seperti `map`, `filter`, dan `:+` mengembalikan koleksi baru dan membiarkan yang asli tidak berubah. Versi mutable ada di `scala.collection.mutable`.",
+        {
+          "code": "val nums = List(5, 3, 8)\nval more = nums :+ 1                  // List(5, 3, 8, 1); nums unchanged\nprintln(more.sorted)                  // List(1, 3, 5, 8)\nprintln(nums.sum)                     // 16\nval v = Vector(\"a\", \"b\", \"c\")         // fast indexed access\nprintln(v(1))                         // b\nval ages = Map(\"Ann\" -> 31, \"Bo\" -> 25)\nprintln(ages(\"Ann\"))                  // 31\nprintln(ages.get(\"Zed\"))              // None\nprintln(ages.getOrElse(\"Zed\", 0))     // 0\nval unique = Set(1, 2, 2, 3)\nprintln(unique.size)                  // 3\nval words = List(\"apple\", \"avocado\", \"banana\")\nprintln(words.groupBy(_.head)('a'))  // List(apple, avocado)",
+          "lang": "scala"
+        },
+        {
+          "table": {
+            "head": [
+              "Koleksi",
+              "Gunakan untuk"
+            ],
+            "rows": [
+              [
+                "`List`",
+                "linked list immutable; prepend dan akses head/tail cepat"
+              ],
+              [
+                "`Vector`",
+                "sequence ber-indeks immutable; default umum yang bagus"
+              ],
+              [
+                "`Map`",
+                "pencarian key-value"
+              ],
+              [
+                "`Set`",
+                "elemen unik dan pengecekan keanggotaan"
+              ],
+              [
+                "`Array`",
+                "array Java mutable berukuran tetap"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "Case class, trait, dan enum",
+      "body": [
+        "`case class` adalah tipe data immutable yang otomatis mendapat equality, `toString`, `copy`, dan dukungan pattern matching. `trait` mirip interface yang juga bisa berisi kode. Scala 3 menambahkan `enum` untuk tipe data aljabar.",
+        {
+          "code": "trait Shape:\n  def area: Double\ncase class Circle(r: Double) extends Shape:\n  def area: Double = math.Pi * r * r\ncase class Rect(w: Double, h: Double) extends Shape:\n  def area: Double = w * h\nenum Color:\n  case Red, Green, Blue\n@main def shapes(): Unit =\n  val all: List[Shape] = List(Circle(1), Rect(2, 3))\n  all.foreach(s => println(f\"$s area=${s.area}%.2f\"))\n  // Circle(1.0) area=3.14\n  // Rect(2.0,3.0) area=6.00\n  val r = Rect(2, 3)\n  println(r == Rect(2, 3))            // true\n  println(r.copy(h = 10))             // Rect(2.0,10.0)\n  println(Color.values.toList)        // List(Red, Green, Blue)",
+          "lang": "scala"
+        },
+        "Fitur khas lainnya mencakup `given` dan `using` (parameter kontekstual, dulu disebut implicit), extension method, opaque type, dan union type seperti `Int | String`."
+      ]
+    },
+    {
+      "h": "Penanganan error dengan Option, Either, dan Try",
+      "body": [
+        "Scala mendukung `try`, `catch`, dan `finally`, tetapi kode yang idiomatis memodelkan kegagalan dengan tipe. `Option` bernilai `Some(value)` atau `None`; `Either` berisi error `Left` atau hasil `Right`; `Try` menangkap exception sebagai `Failure`.",
+        {
+          "code": "import scala.util.{Try, Success, Failure}\ndef parseInt(s: String): Option[Int] = s.toIntOption\ndef safeDivide(a: Int, b: Int): Either[String, Int] =\n  if b == 0 then Left(\"division by zero\") else Right(a / b)\nprintln(parseInt(\"42\"))               // Some(42)\nprintln(parseInt(\"x\"))                // None\nprintln(safeDivide(10, 2))            // Right(5)\nprintln(safeDivide(1, 0))             // Left(division by zero)\nTry(\"abc\".toInt) match\n  case Success(n) => println(s\"got $n\")\n  case Failure(e) => println(s\"failed: ${e.getClass.getSimpleName}\")\n// failed: NumberFormatException",
+          "lang": "scala"
+        },
+        {
+          "note": "Hindari `null` di kode Scala dan hindari memanggil `.get` pada `Option`, yang melempar error jika nilainya `None`. Gunakan `getOrElse`, `map`, `match`, atau for comprehension sebagai gantinya."
+        }
+      ]
+    },
+    {
+      "h": "Program lengkap kecil: laporan nilai",
+      "body": [
+        "Program ini mengurai baris `name,score`, melewati baris yang tidak valid, dan mencetak rata-rata tiap siswa. Program ini memakai case class, `Option`, `groupBy`, dan pemformatan string.",
+        {
+          "code": "case class Score(name: String, value: Int)\ndef parse(line: String): Option[Score] =\n  line.split(\",\").map(_.trim) match\n    case Array(name, v) => v.toIntOption.map(Score(name, _))\n    case _              => None\n@main def report(): Unit =\n  val lines = List(\"ann, 90\", \"bo, 70\", \"ann, 80\", \"broken line\", \"bo, x\")\n  val scores = lines.flatMap(parse)\n  val averages = scores.groupBy(_.name).view.mapValues { list =>\n    list.map(_.value).sum.toDouble / list.size\n  }.toList.sortBy(_._1)\n  for (name, avg) <- averages do\n    println(f\"$name%-4s $avg%.1f\")\n// ann  85.0\n// bo   70.0",
+          "lang": "scala"
+        },
+        {
+          "note": "Kesalahan umum pemula: mencampur tab dan indentasi yang tidak konsisten pada sintaks indentasi Scala 3; pembagian bilangan bulat (`3 / 4` hasilnya `0`, tulis `3.0 / 4`); memakai `var` dan koleksi mutable karena kebiasaan; memanggil `.get` pada `Option`; dan menulis ekspresi `match` yang tidak exhaustive."
+        }
+      ]
+    },
+    {
+      "h": "Langkah selanjutnya",
+      "body": [
+        {
+          "ul": [
+            "Scala 3 Book di docs.scala-lang.org, yang membahas bahasa ini dari dasar hingga contextual abstraction.",
+            "Scala Toolkit untuk tugas sehari-hari seperti file, JSON, dan HTTP.",
+            "Dokumentasi Apache Spark jika Anda ingin memakai Scala untuk pemrosesan data.",
+            "Kursus yang ditautkan dari scala-lang.org, termasuk kursus pemrograman fungsional EPFL."
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Sebaiknya belajar Scala 2 atau Scala 3?",
+      "a": "Pelajari Scala 3 untuk proyek baru. Scala 2.13 masih ditemukan di banyak codebase yang ada, termasuk sebagian ekosistem Spark, dan sebagian besar konsep intinya sama."
+    },
+    {
+      "q": "Apakah Scala bahasa fungsional?",
+      "a": "Scala berorientasi objek sekaligus fungsional. Setiap nilai adalah objek, tetapi fungsi adalah nilai kelas satu, koleksi immutable secara default, dan pattern matching menjadi pusatnya."
+    },
+    {
+      "q": "Apa perbedaan val dan var di Scala?",
+      "a": "`val` mendefinisikan nilai yang tidak bisa diberi nilai ulang, dan `var` mendefinisikan variabel yang bisa. Scala yang idiomatis lebih memilih `val` bersama koleksi immutable."
+    },
+    {
+      "q": "Apa itu case class?",
+      "a": "Case class adalah class yang ditujukan untuk data immutable. Compiler menghasilkan structural equality, `toString` yang mudah dibaca, method `copy`, dan dukungan pattern matching."
+    },
+    {
+      "q": "Apakah Scala masih dipakai?",
+      "a": "Ya. Scala tetap menjadi bahasa inti untuk Apache Spark, platform streaming dan data, serta library backend fungsional seperti ZIO dan Cats Effect."
+    }
+  ]
+}

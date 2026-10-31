@@ -1,0 +1,195 @@
+{
+  "title": "Swift 入門教學：Optional、struct、enum 與 protocol — cv.cm",
+  "description": "一頁學會 Swift：Hello world、let 與 var、型別、流程控制、閉包、陣列與字典、Optional、struct、enum 與錯誤處理。",
+  "h1": "Swift 入門教學",
+  "answer": "Swift 是 Apple 為 iPhone、iPad、Mac、Apple Watch 與 Apple TV 應用程式打造的快速、安全的編譯式語言，也能在 Linux 與 Windows 上執行。將 `print(\"Hello, world\")` 存成 `hello.swift`，再執行 `swift hello.swift`。核心概念包括 `let` 常數與 `var` 變數、型別推論、用來表示可能缺少之值的 Optional、具備值語意的 struct 與 enum、protocol，以及以 `do`/`try`/`catch` 處理的錯誤。",
+  "sections": [
+    {
+      "h": "Swift 是什麼，用來做什麼",
+      "body": [
+        "Swift 由 Apple 於 2014 年推出，作為 Objective-C 的現代替代品，並於 2015 年開放原始碼；專案位於 swift.org。它是 Apple 平台應用程式的主要語言，通常搭配 SwiftUI 或 UIKit 框架。Swift 也用於伺服器端程式（例如搭配 Vapor 框架）和命令列工具。這門語言的設計目的是預防常見錯誤：變數必須初始化、陣列會檢查邊界，而 `nil` 必須被明確處理。"
+      ]
+    },
+    {
+      "h": "安裝 Swift 並執行 Hello, world",
+      "body": [
+        "在 Mac 上，從 App Store 安裝 Xcode，或安裝 Xcode 命令列工具。在 Linux 與 Windows 上，則從 swift.org 下載工具鏈。用 `swift --version` 確認。",
+        {
+          "code": "print(\"Hello, world\")",
+          "lang": "swift"
+        },
+        {
+          "code": "swift hello.swift\n# Hello, world\nswiftc hello.swift -o hello   # compile to a binary\n./hello",
+          "lang": "shell"
+        },
+        "較大的專案請執行 `swift package init --type executable`，再執行 `swift run`。Xcode playground 也是方便實驗的方式。"
+      ]
+    },
+    {
+      "h": "常數、變數與基本型別",
+      "body": [
+        "常數用 `let`，變數用 `var`。優先使用 `let`；當 `var` 從未被修改時，編譯器會發出警告。型別會被推論，且 Swift 絕不會在數值型別之間隱含轉換。",
+        {
+          "table": {
+            "head": [
+              "型別",
+              "範例",
+              "說明"
+            ],
+            "rows": [
+              [
+                "`Int`",
+                "`let n = 42`",
+                "在現代平台上為 64 位元"
+              ],
+              [
+                "`Double`",
+                "`let x = 3.14`",
+                "預設的浮點數型別"
+              ],
+              [
+                "`Bool`",
+                "`let ok = true`",
+                "`true` 或 `false`"
+              ],
+              [
+                "`String`",
+                "`let s = \"hi \\(name)\"`",
+                "Unicode 文字，值型別"
+              ],
+              [
+                "`Character`",
+                "`let c: Character = \"é\"`",
+                "一個使用者感知的字元"
+              ],
+              [
+                "`[Int]`, `[String: Int]`",
+                "`[1, 2]`, `[\"a\": 1]`",
+                "陣列與字典"
+              ]
+            ]
+          }
+        },
+        {
+          "code": "let name = \"Ada\"\nvar count = 7\ncount += 1\nlet avg = Double(count) / 2   // explicit conversion\nprint(\"\\(name) has \\(count) items, avg \\(avg)\")  // Ada has 8 items, avg 4.0\nprint(7 / 2, 7 % 2)          // 3 1",
+          "lang": "swift"
+        },
+        "字串字面值中的 `\\(expression)` 會插入一個值（字串內插）。"
+      ]
+    },
+    {
+      "h": "流程控制",
+      "body": [
+        {
+          "code": "let score = 72\nif score >= 90 {\n    print(\"A\")\n} else if score >= 70 {\n    print(\"B\")                 // B\n} else {\n    print(\"C\")\n}\n\nfor i in 0..<3 {\n    print(i, terminator: \" \")  // 0 1 2\n}\nprint()\n\nvar n = 10\nwhile n > 1 { n /= 2 }\nprint(n)                       // 1\n\nlet day = \"SAT\"\nswitch day {\ncase \"SAT\", \"SUN\":\n    print(\"weekend\")           // weekend\ndefault:\n    print(\"weekday\")\n}",
+          "lang": "swift"
+        },
+        "`switch` 必須窮盡所有情況，預設不會繼續往下執行，並且可以比對範圍（`case 90...100:`）、tuple 和 enum case。"
+      ]
+    },
+    {
+      "h": "函式與閉包",
+      "body": [
+        "參數帶有呼叫端要寫出的引數標籤，讓呼叫讀起來像一句話。用 `_` 可以省略標籤。閉包是以大括號寫成的匿名函式。",
+        {
+          "code": "func greet(_ name: String, with greeting: String = \"Hello\") -> String {\n    return \"\\(greeting), \\(name)!\"\n}\n\nprint(greet(\"Lin\"))                  // Hello, Lin!\nprint(greet(\"Lin\", with: \"Hi\"))      // Hi, Lin!\n\nlet nums = [3, 1, 2, 5]\nlet squares = nums.map { $0 * $0 }\nlet evens = nums.filter { $0 % 2 == 0 }\nlet sorted = nums.sorted(by: >)\nprint(squares, evens, sorted)        // [9, 1, 4, 25] [2] [5, 3, 2, 1]",
+          "lang": "swift"
+        },
+        "`$0` 代表閉包的第一個引數。當閉包是最後一個引數時，可以寫在括號之後（尾隨閉包語法）。"
+      ]
+    },
+    {
+      "h": "陣列、字典與集合",
+      "body": [
+        {
+          "code": "var fruits = [\"apple\", \"pear\"]\nfruits.append(\"fig\")\nprint(fruits.count, fruits[0], fruits.contains(\"fig\"))  // 3 apple true\n\nvar ages: [String: Int] = [\"ann\": 31, \"bob\": 25]\nages[\"cy\"] = 40\nfor (person, age) in ages.sorted(by: { $0.key < $1.key }) {\n    print(person, age)                                  // ann 31, bob 25, cy 40\n}\nprint(ages[\"zed\", default: 0])                          // 0\n\nlet tags: Set = [\"b\", \"a\", \"b\"]\nprint(tags.count)                                       // 2",
+          "lang": "swift"
+        },
+        "集合是值型別：把陣列指派給另一個變數會建立獨立的副本（以延遲方式複製，只有在其中一個被修改時才會真正複製）。以 `let` 宣告的陣列則完全不能修改。"
+      ]
+    },
+    {
+      "h": "招牌特色：Optional",
+      "body": [
+        "可能缺少的值具有 Optional 型別，寫成 `String?`。在解包（unwrap）之前，你不能把它當作 `String` 使用，所以編譯器會強制你處理 `nil` 的情況。",
+        {
+          "code": "let input = \"42\"\nlet number: Int? = Int(input)      // nil if input is not a number\n\nif let number {                     // unwrap: runs only when not nil\n    print(\"got \\(number)\")          // got 42\n}\n\nfunc firstWord(_ text: String) -> String? {\n    text.split(separator: \" \").first.map(String.init)\n}\n\nguard let word = firstWord(\"hello world\") else {\n    fatalError(\"no words\")\n}\nprint(word)                                  // hello\nprint(firstWord(\"\")?.uppercased() ?? \"none\") // none",
+          "lang": "swift"
+        },
+        "`if let` 與 `guard let` 能安全地解包，`?.`（Optional 串連）只在值存在時才呼叫方法，`??` 則提供預設值。強制解包 `value!` 在值為 `nil` 時會當機，所以應少用。簡寫的 `if let number` 需要 Swift 5.7 以上。"
+      ]
+    },
+    {
+      "h": "Struct、class、enum 與 protocol",
+      "body": [
+        "struct 與 enum 是值型別；class 是支援繼承的參考型別。Swift 程式碼偏好使用 struct 與 protocol（介面），而不是 class 繼承階層。",
+        {
+          "code": "protocol Shape {\n    func area() -> Double\n}\n\nstruct Rect: Shape {\n    var width: Double\n    var height: Double\n    func area() -> Double { width * height }\n}\n\nenum Circle: Shape {\n    case unit\n    case radius(Double)\n    func area() -> Double {\n        switch self {\n        case .unit: return Double.pi\n        case .radius(let r): return Double.pi * r * r\n        }\n    }\n}\n\nlet shapes: [any Shape] = [Rect(width: 2, height: 3), Circle.radius(1)]\nlet total = shapes.reduce(0) { $0 + $1.area() }\nprint((total * 100).rounded() / 100)   // 9.14",
+          "lang": "swift"
+        },
+        "struct 會自動取得成員逐一初始化方法（`Rect(width:height:)`）。enum 的 case 可以攜帶關聯值，如 `.radius(Double)`。"
+      ]
+    },
+    {
+      "h": "錯誤處理",
+      "body": [
+        "可能失敗的函式會標示 `throws`。呼叫端必須在 `do`/`catch` 區塊內使用 `try`，或使用 `try?` 把錯誤轉成 `nil`。",
+        {
+          "code": "enum AgeError: Error {\n    case notANumber(String)\n    case negative\n}\n\nfunc parseAge(_ text: String) throws -> Int {\n    guard let age = Int(text) else { throw AgeError.notANumber(text) }\n    guard age >= 0 else { throw AgeError.negative }\n    return age\n}\n\ndo {\n    print(try parseAge(\"41\"))          // 41\n    print(try parseAge(\"abc\"))\n} catch AgeError.notANumber(let text) {\n    print(\"not a number: \\(text)\")     // not a number: abc\n} catch {\n    print(\"other error: \\(error)\")\n}\n\nlet maybe = try? parseAge(\"-3\")        // nil\nprint(maybe as Any)                    // nil",
+          "lang": "swift"
+        }
+      ]
+    },
+    {
+      "h": "完整的小程式：單字頻率統計",
+      "body": [
+        {
+          "code": "import Foundation\n\nlet args = CommandLine.arguments\nguard args.count == 2 else {\n    print(\"usage: swift words.swift FILE\")\n    exit(1)\n}\n\ndo {\n    let text = try String(contentsOfFile: args[1], encoding: .utf8).lowercased()\n    let words = text.split { !$0.isLetter && $0 != \"'\" }\n    var counts: [Substring: Int] = [:]\n    for word in words {\n        counts[word, default: 0] += 1\n    }\n    for (word, n) in counts.sorted(by: { $0.value > $1.value }).prefix(5) {\n        print(String(n).padding(toLength: 6, withPad: \" \", startingAt: 0) + word)\n    }\n} catch {\n    print(\"cannot read \\(args[1]): \\(error.localizedDescription)\")\n    exit(1)\n}",
+          "lang": "swift"
+        },
+        "以 `swift words.swift notes.txt` 執行。`Foundation` 提供讀取檔案與字串輔助功能；它在 Apple 平台以及 Linux 與 Windows 的工具鏈中都可使用。"
+      ]
+    },
+    {
+      "h": "初學者常見錯誤",
+      "body": [
+        {
+          "note": "除非能保證有值，否則請避免使用 `!` 強制解包，以及 `String!` 這類隱含解包型別。在那個時間點若為 `nil`，應用程式會在執行時當機。"
+        },
+        {
+          "ul": [
+            "試圖修改 `let` 常數，或以 `let` 宣告的 struct 的屬性。值需要改變時請使用 `var`。",
+            "以為 struct 會像物件一樣被共用。修改副本不會改變原本的值；如果需要共用同一個實體，請使用 class。",
+            "用整數對 `String` 做索引，例如 `s[0]`。請使用 `s.first`、`s.prefix(3)` 或 `String.Index` 值。",
+            "在算術中混用 `Int` 和 `Double` 而不轉換，這會造成編譯錯誤。",
+            "在會拋出錯誤的呼叫前忘了寫 `try`，或使用 `try!`，後者在出錯時會當機。"
+          ]
+        }
+      ]
+    },
+    {
+      "h": "接下來學什麼",
+      "body": [
+        "閱讀 docs.swift.org 上的「The Swift Programming Language」，這是官方的指南與參考，以及 swift.org 上的文件中心。若要開發應用程式，請在 Xcode 中跟著 Apple 的 SwiftUI 教學學習。接著學習 Swift 並行（`async`/`await` 與 actor）、泛型，以及管理相依套件的 Swift Package Manager。"
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Swift 只能用於 Apple 平台嗎？",
+      "a": "不是。Swift 是開放原始碼的，也能在 Linux 與 Windows 上執行，並用於伺服器端程式與工具。不過 SwiftUI 與 UIKit 等應用程式框架僅限 Apple 平台。"
+    },
+    {
+      "q": "該學 Swift 還是 Objective-C？",
+      "a": "學 Swift。它是 Apple 為新應用程式推薦的語言，需要時也能呼叫既有的 Objective-C 程式碼。"
+    },
+    {
+      "q": "Swift 中的 struct 和 class 有什麼差別？",
+      "a": "struct 是值型別，賦值或傳遞時會被複製；class 是參考型別，所有變數共用同一個實體。class 還支援繼承與解構子（deinitializer）。"
+    },
+    {
+      "q": "型別後面的問號是什麼意思？",
+      "a": "`Int?` 是 Optional：它存放的不是 `Int` 就是 `nil`。使用該值之前必須先解包，例如用 `if let`。"
+    }
+  ]
+}

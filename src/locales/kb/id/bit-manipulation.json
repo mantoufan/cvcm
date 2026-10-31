@@ -1,0 +1,267 @@
+{
+  "title": "Bit manipulation: operator bitwise, trik, dan bitmask di Python — cv.cm",
+  "description": "Pelajari bit manipulation: AND, OR, XOR, NOT, dan shift, trik umum seperti x & (x - 1), subset dengan bitmask, kode Python beserta output, dan jebakannya.",
+  "h1": "Penjelasan bit manipulation: operator, trik, dan contoh",
+  "answer": "Bit manipulation berarti bekerja langsung dengan digit biner (bit) dari bilangan bulat memakai operator bitwise: AND (`&`), OR (`|`), XOR (`^`), NOT (`~`), dan shift `<<` serta `>>`. Dengan operator ini Anda dapat menguji, mengatur, menghapus, dan membalik bit tertentu, menyimpan himpunan bilangan kecil dalam satu integer (bitmask), dan menyelesaikan masalah seperti menghitung set bit atau menemukan satu bilangan tak berpasangan dengan ruang tambahan konstan. Setiap operasi adalah satu instruksi CPU yang cepat untuk integer berukuran tetap.",
+  "sections": [
+    {
+      "h": "Masalah yang diselesaikan bit manipulation",
+      "body": [
+        "Integer adalah deretan bit, dan banyak masalah sebenarnya tentang bit-bit itu: izin file seperti `rwx`, feature flag, network mask, warna piksel, himpunan opsi yang ringkas, checksum, dan hash. Operator bitwise memungkinkan Anda membaca dan mengubah banyak bit sekaligus dalam satu operasi, yang hemat memori dan sangat cepat.",
+        "Soal wawancara juga memakai trik bit karena memberi solusi O(1) ruang yang elegan, misalnya menemukan satu bilangan yang muncul sekali ketika semua bilangan lain muncul dua kali."
+      ]
+    },
+    {
+      "h": "Operator",
+      "body": [
+        "Contoh memakai `a = 12` (biner `1100`) dan `b = 10` (biner `1010`).",
+        {
+          "table": {
+            "head": [
+              "Operator",
+              "Nama",
+              "Aturan per bit",
+              "Contoh",
+              "Hasil"
+            ],
+            "rows": [
+              [
+                "`a & b`",
+                "AND",
+                "1 jika kedua bit bernilai 1",
+                "`1100 & 1010`",
+                "`1000` = 8"
+              ],
+              [
+                "`a | b`",
+                "OR",
+                "1 jika salah satu bit bernilai 1",
+                "`1100 | 1010`",
+                "`1110` = 14"
+              ],
+              [
+                "`a ^ b`",
+                "XOR",
+                "1 jika bit berbeda",
+                "`1100 ^ 1010`",
+                "`0110` = 6"
+              ],
+              [
+                "`~a`",
+                "NOT",
+                "membalik setiap bit",
+                "`~12`",
+                "-13 (two's complement)"
+              ],
+              [
+                "`a << n`",
+                "shift kiri",
+                "menggeser bit ke kiri, mengisi dengan 0",
+                "`12 << 1`",
+                "24 (kali 2ⁿ)"
+              ],
+              [
+                "`a >> n`",
+                "shift kanan",
+                "menggeser bit ke kanan",
+                "`12 >> 2`",
+                "3 (floor division dengan 2ⁿ)"
+              ]
+            ]
+          }
+        },
+        {
+          "code": "a, b = 12, 10\nprint(bin(a), bin(b))         # 0b1100 0b1010\nprint(a & b, a | b, a ^ b)    # 8 14 6\nprint(~a, a << 1, a >> 2)     # -13 24 3\nprint(f\"{a ^ b:04b}\")         # 0110\nprint(int(\"1010\", 2))         # 10",
+          "lang": "python"
+        }
+      ]
+    },
+    {
+      "h": "Operasi satu bit",
+      "body": [
+        "Posisi bit dihitung dari 0 di sebelah kanan (least significant bit). Mask `1 << i` hanya memiliki bit i yang aktif.",
+        {
+          "table": {
+            "head": [
+              "Tugas",
+              "Ekspresi"
+            ],
+            "rows": [
+              [
+                "Menguji bit i",
+                "`(x >> i) & 1` or `x & (1 << i) != 0`"
+              ],
+              [
+                "Mengatur bit i",
+                "`x | (1 << i)`"
+              ],
+              [
+                "Menghapus bit i",
+                "`x & ~(1 << i)`"
+              ],
+              [
+                "Membalik bit i",
+                "`x ^ (1 << i)`"
+              ],
+              [
+                "Hanya bit aktif terendah",
+                "`x & -x`"
+              ],
+              [
+                "Menghapus bit aktif terendah",
+                "`x & (x - 1)`"
+              ],
+              [
+                "Apakah x pangkat dua? (x > 0)",
+                "`x & (x - 1) == 0`"
+              ]
+            ]
+          }
+        },
+        {
+          "note": "Prioritas operator: di Python, perbandingan lebih lemah daripada `&`, sehingga `x & (x - 1) == 0` bekerja sesuai maksud. Di C, C++, Java, dan JavaScript, `==` lebih kuat daripada `&`, sehingga ekspresi yang sama berarti `x & ((x - 1) == 0)`. Selalu tambahkan tanda kurung: `(x & (x - 1)) == 0`."
+        }
+      ]
+    },
+    {
+      "h": "Contoh: menghitung set bit",
+      "body": [
+        "Metode Brian Kernighan menghapus bit aktif terendah sampai tidak tersisa apa pun, sehingga loop-nya berjalan sekali per bit 1, bukan sekali per posisi bit. Penelusuran untuk x = 44 (biner `101100`):",
+        {
+          "table": {
+            "head": [
+              "Langkah",
+              "x (biner)",
+              "x - 1 (biner)",
+              "x & (x - 1)",
+              "Hitungan"
+            ],
+            "rows": [
+              [
+                "1",
+                "`101100`",
+                "`101011`",
+                "`101000`",
+                "1"
+              ],
+              [
+                "2",
+                "`101000`",
+                "`100111`",
+                "`100000`",
+                "2"
+              ],
+              [
+                "3",
+                "`100000`",
+                "`011111`",
+                "`000000`",
+                "3"
+              ]
+            ]
+          }
+        },
+        {
+          "code": "def count_bits(x):\n    count = 0\n    while x:\n        x &= x - 1        # drop the lowest set bit\n        count += 1\n    return count\n\nprint(count_bits(44))     # 3\nprint((44).bit_count())   # 3\nprint((44).bit_length())  # 6",
+          "lang": "python"
+        },
+        "`int.bit_count()` tersedia sejak Python 3.10. `int.bit_length()` mengembalikan jumlah bit yang dibutuhkan untuk menulis bilangan dalam biner, tanpa tanda."
+      ]
+    },
+    {
+      "h": "Trik klasik di Python",
+      "body": [
+        {
+          "code": "from functools import reduce\nfrom operator import xor\n\n# Every number appears twice except one: pairs cancel out with XOR.\nprint(reduce(xor, [4, 1, 2, 1, 2]))   # 4\n\n# Swap two integers without a temporary variable (for illustration only).\nx, y = 5, 9\nx ^= y; y ^= x; x ^= y\nprint(x, y)                            # 9 5\n\n# Bitmask as a set: enumerate all subsets of 3 items.\nitems = [\"a\", \"b\", \"c\"]\nfor mask in range(1 << len(items)):\n    print(mask, [items[i] for i in range(len(items)) if mask >> i & 1])\n# 0 []\n# 1 ['a']\n# 2 ['b']\n# 3 ['a', 'b']\n# 4 ['c']\n# 5 ['a', 'c']\n# 6 ['b', 'c']\n# 7 ['a', 'b', 'c']",
+          "lang": "python"
+        },
+        "Mask 0 adalah himpunan kosong, 5 (biner `101`) adalah `['a', 'c']`, dan 7 adalah ketiga item. Bitmask dynamic programming memakai gagasan yang sama, dengan mask sebagai state, untuk masalah hingga sekitar 20 item, seperti traveling salesman problem pada input kecil.",
+        "Dua klasik lainnya: `x & 1` bernilai 1 untuk bilangan ganjil, dan XOR dari semua bilangan 0 sampai n dengan semua nilai dalam list menemukan satu bilangan yang hilang."
+      ]
+    },
+    {
+      "h": "Kompleksitas waktu dan ruang",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Operasi",
+              "Waktu",
+              "Catatan"
+            ],
+            "rows": [
+              [
+                "`&`, `|`, `^`, `~`, shift pada integer ukuran mesin",
+                "O(1)",
+                "Satu instruksi CPU di C, Java, Go, atau Rust."
+              ],
+              [
+                "Operasi yang sama pada `int` Python",
+                "O(jumlah bit)",
+                "Integer Python berukuran tak terbatas; nilai kecil tetap sangat cepat."
+              ],
+              [
+                "Penghitungan bit Kernighan",
+                "O(jumlah set bit)",
+                "`int.bit_count()` lebih cepat di Python 3.10+."
+              ],
+              [
+                "Mengenumerasi semua subset dengan mask",
+                "O(n × 2ⁿ)",
+                "2ⁿ mask, masing-masing n pengujian bit."
+              ]
+            ]
+          }
+        },
+        "Bitmask memakai satu bit per elemen yang mungkin, sehingga himpunan 64 flag muat dalam satu integer 64-bit, dibandingkan dengan 64 variabel boolean terpisah atau entri list."
+      ]
+    },
+    {
+      "h": "Kesalahan umum",
+      "body": [
+        {
+          "ul": [
+            "Bilangan negatif: integer Python berperilaku seolah memiliki bit tanda yang tak terhingga banyaknya, sehingga `~5` adalah `-6` dan `bin(-5)` adalah `-0b101`, bukan string two's complement. Untuk melihat pola 32-bit, mask nilainya: `-5 & 0xFFFFFFFF`.",
+            "Right shift pada bilangan negatif di Python bersifat aritmetik: `-8 >> 1` adalah `-4`, dan `-1 >> 10` tetap `-1`.",
+            "Overflow pada bahasa dengan lebar tetap: di Java atau C, `1 << 31` pada int 32-bit menjadi negatif atau tidak terdefinisi; gunakan tipe 64-bit dan `1L << 40` atau `1ULL << 40`.",
+            "Menyamakan operator logika dan bitwise: `and` dan `or` (`&&`, `||` di bahasa ala C) mengembalikan nilai kebenaran, sedangkan `&` dan `|` bekerja bit demi bit.",
+            "Keterbacaan: mengganti `x * 2` dengan `x << 1` tidak memberi keuntungan kecepatan pada compiler modern maupun di Python, dan membuat kode lebih sulit dibaca."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Penggunaan di dunia nyata",
+      "body": [
+        {
+          "ul": [
+            "Izin file Unix: `chmod 754` mengatur tiga grup 3-bit (rwx = 4 + 2 + 1).",
+            "Jaringan: subnet mask IPv4, ketika `ip & mask` menghasilkan alamat jaringan sebuah blok CIDR.",
+            "Flag dan opsi: `re.IGNORECASE | re.MULTILINE` dan `enum.Flag` di Python menggabungkan opsi dengan OR.",
+            "Grafis dan warna: nilai RGB 24-bit mengemas merah, hijau, dan biru sebagai `(r << 16) | (g << 8) | b`.",
+            "Struktur data dan algoritma: Bloom filter, bitset, Fenwick tree (yang memakai `i & -i`), hashing, dan checksum.",
+            "Soal wawancara: single number, counting bits, power of two, reverse bits, missing number, subset dengan bitmask, sum of two integers without `+`."
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Apa yang dilakukan x & (x - 1)?",
+      "a": "Ekspresi ini menghapus bit aktif terendah dari x. Dipakai untuk menghitung set bit dan menguji apakah x positif adalah pangkat dua, yang benar bila hasilnya 0."
+    },
+    {
+      "q": "Mengapa ~5 sama dengan -6 di Python?",
+      "a": "Integer memakai two's complement, ketika `~x` sama dengan `-x - 1`. Python menerapkannya pada integer berukuran tak terbatas, sehingga membalik setiap bit dari 5 menghasilkan -6."
+    },
+    {
+      "q": "Bagaimana menghitung bit 1 dari sebuah bilangan di Python?",
+      "a": "Gunakan `x.bit_count()` di Python 3.10 atau lebih baru, atau `bin(x).count(\"1\")` di versi lama. Untuk bilangan negatif, `bit_count()` menghitung bit dari nilai absolutnya."
+    },
+    {
+      "q": "Apakah bit manipulation lebih cepat daripada aritmetika?",
+      "a": "Untuk integer berukuran tetap, operasi bitwise adalah instruksi tunggal, tetapi penjumlahan dan perkalian dengan konstanta juga demikian setelah optimasi compiler. Manfaat sebenarnya adalah penyimpanan yang ringkas dan algoritma dengan ruang konstan, bukan menggantikan aritmetika biasa."
+    }
+  ]
+}

@@ -1,0 +1,172 @@
+{
+  "title": "Nguyên lý SOLID: năm quy tắc thiết kế hướng đối tượng kèm ví dụ — cv.cm",
+  "description": "Giải thích từng nguyên lý trong năm nguyên lý SOLID của thiết kế hướng đối tượng, mỗi nguyên lý có ví dụ TypeScript ngắn trước/sau, cùng khi nào nên áp dụng.",
+  "h1": "Nguyên lý SOLID giải thích kèm ví dụ",
+  "answer": "SOLID là từ viết tắt của năm nguyên lý thiết kế hướng đối tượng: Single responsibility (đơn trách nhiệm), Open/closed (đóng/mở), Liskov substitution (thay thế Liskov), Interface segregation (tách interface) và Dependency inversion (đảo ngược phụ thuộc). Chúng được Robert C. Martin tổng hợp, còn từ viết tắt do Michael Feathers đặt ra. Cùng nhau, chúng nhằm làm mã dễ thay đổi hơn: mỗi lớp chỉ có một lý do để thay đổi, hành vi mới được thêm mà không sửa mã cũ, kiểu con là sự thay thế an toàn, interface luôn nhỏ gọn, và mã cấp cao phụ thuộc vào abstraction.",
+  "sections": [
+    {
+      "h": "SOLID nghĩa là gì",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Chữ cái",
+              "Nguyên lý",
+              "Quy tắc ngắn gọn"
+            ],
+            "rows": [
+              [
+                "S",
+                "Nguyên lý đơn trách nhiệm (Single responsibility principle, SRP)",
+                "Một lớp chỉ nên có một lý do để thay đổi."
+              ],
+              [
+                "O",
+                "Nguyên lý đóng/mở (Open/closed principle, OCP)",
+                "Phần mềm nên mở để mở rộng nhưng đóng đối với sửa đổi."
+              ],
+              [
+                "L",
+                "Nguyên lý thay thế Liskov (Liskov substitution principle, LSP)",
+                "Kiểu con phải dùng được ở bất cứ nơi nào mong đợi kiểu cha."
+              ],
+              [
+                "I",
+                "Nguyên lý tách interface (Interface segregation principle, ISP)",
+                "Không nên ép client phụ thuộc vào những phương thức mà nó không dùng."
+              ],
+              [
+                "D",
+                "Nguyên lý đảo ngược phụ thuộc (Dependency inversion principle, DIP)",
+                "Hãy phụ thuộc vào abstraction, không phụ thuộc vào chi tiết cụ thể."
+              ]
+            ]
+          }
+        },
+        "Các ý tưởng này có trước từ viết tắt. Nguyên lý đóng/mở xuất phát từ cuốn Object-Oriented Software Construction (1988) của Bertrand Meyer, còn nguyên lý thay thế từ bài diễn văn năm 1987 Data Abstraction and Hierarchy của Barbara Liskov. Robert C. Martin mô tả cả năm nguyên lý trong các bài viết quanh năm 2000, và Michael Feathers sau đó sắp xếp chúng thành từ SOLID."
+      ]
+    },
+    {
+      "h": "S: Nguyên lý đơn trách nhiệm",
+      "body": [
+        "Một lớp nên có một lý do để thay đổi, nghĩa là nó phục vụ một tác nhân hoặc một mối quan tâm. Khi một lớp trộn lẫn quy tắc nghiệp vụ, định dạng và lưu trữ, thay đổi ở bất kỳ phần nào cũng có nguy cơ làm hỏng các phần còn lại.",
+        "Trước: một lớp vừa tính toán, vừa định dạng, vừa lưu báo cáo.",
+        {
+          "code": "class Report {\n  constructor(private sales: number[]) {}\n  total(): number { return this.sales.reduce((a, b) => a + b, 0); }\n  toHtml(): string { return `<p>Total: ${this.total()}</p>`; }\n  saveToFile(path: string): void { /* write this.toHtml() to disk */ }\n}",
+          "lang": "typescript"
+        },
+        "Sau: mỗi mối quan tâm nằm trong một đơn vị nhỏ riêng, nên một định dạng đầu ra mới không đụng tới phần tính toán.",
+        {
+          "code": "class SalesReport {\n  constructor(private sales: number[]) {}\n  total(): number { return this.sales.reduce((a, b) => a + b, 0); }\n}\nclass HtmlFormatter {\n  format(r: SalesReport): string { return `<p>Total: ${r.total()}</p>`; }\n}\nclass ReportWriter {\n  save(content: string, path: string): void { /* write to disk */ }\n}\nconst html = new HtmlFormatter().format(new SalesReport([10, 20, 5]));\nconsole.log(html); // <p>Total: 35</p>",
+          "lang": "typescript"
+        }
+      ]
+    },
+    {
+      "h": "O: Nguyên lý đóng/mở",
+      "body": [
+        "Bạn nên thêm được hành vi mới bằng cách thêm mã mới, chứ không phải sửa mã đã chạy tốt và đã được kiểm thử. Công cụ thường dùng là interface cộng đa hình.",
+        "Trước: mỗi hình mới đồng nghĩa với việc sửa hàm `area`.",
+        {
+          "code": "type Shape = { kind: \"circle\"; r: number } | { kind: \"square\"; side: number };\nfunction area(s: Shape): number {\n  if (s.kind === \"circle\") return Math.PI * s.r ** 2;\n  if (s.kind === \"square\") return s.side ** 2;\n  throw new Error(\"unknown shape\");\n}",
+          "lang": "typescript"
+        },
+        "Sau: một hình mới là một lớp mới; mã hiện có giữ nguyên.",
+        {
+          "code": "interface Shape { area(): number; }\nclass Circle implements Shape {\n  constructor(private r: number) {}\n  area(): number { return Math.PI * this.r ** 2; }\n}\nclass Square implements Shape {\n  constructor(private side: number) {}\n  area(): number { return this.side ** 2; }\n}\nconst totalArea = (shapes: Shape[]) => shapes.reduce((sum, s) => sum + s.area(), 0);\nconsole.log(totalArea([new Square(2), new Square(3)])); // 13",
+          "lang": "typescript"
+        },
+        {
+          "note": "Trong TypeScript, union type với `switch` đầy đủ cũng là một thiết kế hợp lệ. Nó làm việc thêm thao tác mới dễ dàng và thêm kiểu mới khó hơn, tức là đánh đổi ngược lại. Hãy chọn dựa trên loại thay đổi nào có khả năng xảy ra hơn."
+        }
+      ]
+    },
+    {
+      "h": "L: Nguyên lý thay thế Liskov",
+      "body": [
+        "Nếu mã chạy được với kiểu cha, nó phải tiếp tục chạy khi nhận bất kỳ kiểu con nào. Kiểu con không được siết chặt điều kiện tiên quyết, làm yếu các đảm bảo, hay ném lỗi ở chỗ kiểu cha không ném.",
+        "Trước: bài toán hình vuông/hình chữ nhật kinh điển. `Square` kế thừa `Rectangle` nhưng phá vỡ kỳ vọng rằng chiều rộng và chiều cao độc lập với nhau.",
+        {
+          "code": "class Rectangle {\n  constructor(public width: number, public height: number) {}\n  setWidth(w: number): void { this.width = w; }\n  setHeight(h: number): void { this.height = h; }\n  area(): number { return this.width * this.height; }\n}\nclass Square extends Rectangle {\n  setWidth(w: number): void { this.width = w; this.height = w; }\n  setHeight(h: number): void { this.width = h; this.height = h; }\n}\nfunction stretch(r: Rectangle): number {\n  r.setWidth(5);\n  r.setHeight(4);\n  return r.area(); // caller expects 20\n}\nconsole.log(stretch(new Rectangle(1, 1))); // 20\nconsole.log(stretch(new Square(1, 1)));    // 16, surprise",
+          "lang": "typescript"
+        },
+        "Sau: đừng mô hình hóa quan hệ này bằng kế thừa. Cả hai kiểu cùng triển khai một interface chỉ đọc chung, và không ai mong đổi kích thước các cạnh của hình vuông một cách độc lập.",
+        {
+          "code": "interface Shape { area(): number; }\nclass Rectangle implements Shape {\n  constructor(readonly width: number, readonly height: number) {}\n  area(): number { return this.width * this.height; }\n}\nclass Square implements Shape {\n  constructor(readonly side: number) {}\n  area(): number { return this.side ** 2; }\n}\nconsole.log([new Rectangle(5, 4), new Square(4)].map((s) => s.area())); // [ 20, 16 ]",
+          "lang": "typescript"
+        }
+      ]
+    },
+    {
+      "h": "I: Nguyên lý tách interface",
+      "body": [
+        "Interface lớn ép các lớp phải triển khai những phương thức chúng không hỗ trợ được, thường bằng cách ném lỗi. Hãy chia chúng thành các interface nhỏ, tập trung, và để mỗi lớp chỉ triển khai những gì nó thực sự làm.",
+        "Trước: một máy in đơn giản buộc phải giả vờ có thể quét và gửi fax.",
+        {
+          "code": "interface Machine {\n  print(doc: string): void;\n  scan(): string;\n  fax(doc: string): void;\n}\nclass BasicPrinter implements Machine {\n  print(doc: string): void { console.log(\"print\", doc); }\n  scan(): string { throw new Error(\"not supported\"); }\n  fax(doc: string): void { throw new Error(\"not supported\"); }\n}",
+          "lang": "typescript"
+        },
+        "Sau: các interface vai trò nhỏ có thể kết hợp với nhau.",
+        {
+          "code": "interface Printer { print(doc: string): void; }\ninterface Scanner { scan(): string; }\nclass BasicPrinter implements Printer {\n  print(doc: string): void { console.log(\"print\", doc); }\n}\nclass OfficeMachine implements Printer, Scanner {\n  print(doc: string): void { console.log(\"print\", doc); }\n  scan(): string { return \"scanned page\"; }\n}\nfunction printAll(p: Printer, docs: string[]): void { docs.forEach((d) => p.print(d)); }\nprintAll(new BasicPrinter(), [\"a.pdf\"]); // print a.pdf",
+          "lang": "typescript"
+        }
+      ]
+    },
+    {
+      "h": "D: Nguyên lý đảo ngược phụ thuộc",
+      "body": [
+        "Chính sách cấp cao không nên phụ thuộc vào chi tiết cấp thấp như một cơ sở dữ liệu hay dịch vụ email cụ thể. Cả hai nên phụ thuộc vào một abstraction, và module cấp cao thường sở hữu abstraction đó. Trong thực tế, bạn truyền các phụ thuộc vào (dependency injection) thay vì tạo chúng bên trong.",
+        "Trước: service tự tạo một client cơ sở dữ liệu cụ thể, nên không thể kiểm thử hay đổi sang loại khác.",
+        {
+          "code": "class MySqlUserStore {\n  find(id: string): string { return \"user \" + id; }\n}\nclass UserService {\n  private store = new MySqlUserStore(); // hard-wired detail\n  greet(id: string): string { return \"Hello, \" + this.store.find(id); }\n}",
+          "lang": "typescript"
+        },
+        "Sau: service phụ thuộc vào một interface; có thể tiêm vào bất kỳ cách triển khai nào, kể cả bản giả trong kiểm thử.",
+        {
+          "code": "interface UserStore { find(id: string): string; }\nclass UserService {\n  constructor(private store: UserStore) {}\n  greet(id: string): string { return \"Hello, \" + this.store.find(id); }\n}\nclass InMemoryUserStore implements UserStore {\n  constructor(private users: Record<string, string>) {}\n  find(id: string): string { return this.users[id] ?? \"unknown\"; }\n}\nconst service = new UserService(new InMemoryUserStore({ u1: \"Ada\" }));\nconsole.log(service.greet(\"u1\")); // Hello, Ada",
+          "lang": "typescript"
+        },
+        {
+          "note": "Đảo ngược phụ thuộc là một nguyên lý thiết kế; tiêm phụ thuộc là một kỹ thuật để đạt được nó. Container hay framework tiêm phụ thuộc là tùy chọn. Truyền đối tượng qua hàm khởi tạo là đủ."
+        }
+      ]
+    },
+    {
+      "h": "Khi nào nên áp dụng SOLID, và khi nào không",
+      "body": [
+        "Các nguyên lý SOLID là hướng dẫn cho mã thay đổi thường xuyên, không phải luật. Áp dụng máy móc, chúng tạo ra rất nhiều lớp và interface nhỏ xíu chỉ có một cách triển khai, khiến mã khó theo dõi hơn.",
+        {
+          "ul": [
+            "Hãy áp dụng khi bạn thấy đúng nỗi đau mà chúng giải quyết: một lớp hỏng mỗi khi có gì thay đổi, một bài kiểm thử cần cơ sở dữ liệu thật, hoặc một câu lệnh switch bị sao chép ra nhiều nơi.",
+            "Đừng thêm interface cho mọi lớp từ trước. Hãy tách ra khi xuất hiện cách triển khai thứ hai hoặc một đối tượng giả cho kiểm thử.",
+            "Trong script nhỏ và bản mẫu, mã đơn giản và trực tiếp thường tốt hơn.",
+            "Nhiều mẫu thiết kế là ứng dụng cụ thể của SOLID: mẫu Strategy và mẫu Decorator hỗ trợ nguyên lý đóng/mở, mẫu Adapter và mẫu Facade giúp cô lập chi tiết, còn mẫu Abstract Factory hỗ trợ đảo ngược phụ thuộc."
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Ai tạo ra các nguyên lý SOLID?",
+      "a": "Robert C. Martin tổng hợp và mô tả năm nguyên lý, dựa trên công trình trước đó của Bertrand Meyer (đóng/mở) và Barbara Liskov (thay thế). Michael Feathers đặt ra từ viết tắt SOLID."
+    },
+    {
+      "q": "SOLID có áp dụng cho lập trình hàm không?",
+      "a": "Các ý tưởng chuyển đổi được: hàm nhỏ với một mục đích, kết hợp hành vi thay vì sửa nó, và truyền phụ thuộc làm tham số. Cách diễn đạt dựa trên lớp là riêng của mã hướng đối tượng."
+    },
+    {
+      "q": "Khác nhau giữa đảo ngược phụ thuộc và tiêm phụ thuộc là gì?",
+      "a": "Đảo ngược phụ thuộc là nguyên lý rằng mã cấp cao nên phụ thuộc vào abstraction. Tiêm phụ thuộc là kỹ thuật cung cấp các phụ thuộc đó từ bên ngoài, ví dụ qua hàm khởi tạo."
+    },
+    {
+      "q": "Nguyên lý SOLID nào quan trọng nhất?",
+      "a": "Không có xếp hạng chính thức. Đơn trách nhiệm và đảo ngược phụ thuộc thường mang lại lợi ích nhanh nhất vì chúng làm mã dễ hiểu và dễ kiểm thử hơn."
+    },
+    {
+      "q": "Vi phạm một nguyên lý SOLID có tệ không?",
+      "a": "Không phải lúc nào cũng vậy. Mỗi nguyên lý đều có cái giá là mã nhiều hơn. Hãy cố ý vi phạm khi thiết kế đơn giản hơn rõ ràng hơn và thay đổi mà nó phòng ngừa ít có khả năng xảy ra."
+    }
+  ]
+}

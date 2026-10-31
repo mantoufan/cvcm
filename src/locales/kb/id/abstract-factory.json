@@ -1,0 +1,182 @@
+{
+  "title": "Pola Abstract Factory: keluarga objek dan contoh TypeScript — cv.cm",
+  "description": "Pola desain Abstract Factory dijelaskan: membuat keluarga objek terkait tanpa menyebut kelas konkret. Contoh TypeScript, pemakaian, dan jebakannya.",
+  "h1": "Pola Abstract Factory dijelaskan dengan contoh",
+  "answer": "Abstract Factory adalah pola desain creational yang menyediakan interface untuk membuat keluarga objek terkait tanpa menentukan kelas konkretnya. Kode klien menerima objek factory, seperti `LightThemeFactory` atau `DarkThemeFactory`, lalu memintanya membuat setiap produk (tombol, dialog). Karena satu factory membuat seluruh keluarga, produk-produknya selalu serasi, dan Anda dapat berganti keluarga dengan meneruskan factory yang berbeda.",
+  "sections": [
+    {
+      "h": "Tujuan",
+      "body": [
+        "Menyediakan interface untuk membuat keluarga objek yang terkait atau saling bergantung tanpa menentukan kelas konkretnya. Pola Abstract Factory adalah salah satu dari lima pola creational dalam buku Gang of Four (GoF), tempat pola ini juga dikenal sebagai Kit."
+      ]
+    },
+    {
+      "h": "Masalah yang diselesaikan",
+      "body": [
+        "Bayangkan aplikasi laporan yang dapat merender keluaran untuk dua target: halaman web dan terminal teks biasa. Setiap target membutuhkan versi sendiri dari beberapa komponen: judul, tabel, dan kotak peringatan. Judul versi web tidak boleh dicampur dengan tabel versi terminal, atau keluarannya rusak.",
+        "Jika kode laporan memanggil `new HtmlHeading()` dan `new TextTable()` secara langsung, kode itu terikat pada kelas konkret, pilihan target tersebar di banyak baris, dan tidak ada yang mencegah seseorang mencampur keluarga. Pola Abstract Factory menaruh seluruh pembuatan untuk satu keluarga di balik satu objek, sehingga pilihan dibuat tepat di satu tempat."
+      ]
+    },
+    {
+      "h": "Struktur dan peserta",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Peserta",
+              "Tanggung jawab",
+              "Dalam contoh"
+            ],
+            "rows": [
+              [
+                "AbstractFactory",
+                "Mendeklarasikan satu method pembuat per tipe produk.",
+                "`UiFactory`"
+              ],
+              [
+                "ConcreteFactory",
+                "Mengimplementasikan method pembuat untuk satu keluarga.",
+                "`HtmlFactory`, `TextFactory`"
+              ],
+              [
+                "AbstractProduct",
+                "Interface untuk satu jenis produk.",
+                "`Heading`, `Alert`"
+              ],
+              [
+                "ConcreteProduct",
+                "Produk dari keluarga tertentu.",
+                "`HtmlHeading`, `TextAlert`"
+              ],
+              [
+                "Klien",
+                "Hanya memakai interface abstract factory dan abstract product.",
+                "`renderReport`"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "Implementasi TypeScript",
+      "body": [
+        {
+          "code": "interface Heading { render(text: string): string; }\ninterface Alert { render(text: string): string; }\n\ninterface UiFactory {\n  createHeading(): Heading;\n  createAlert(): Alert;\n}\n\nclass HtmlFactory implements UiFactory {\n  createHeading(): Heading { return { render: (t) => `<h1>${t}</h1>` }; }\n  createAlert(): Alert { return { render: (t) => `<div class=\"alert\">${t}</div>` }; }\n}\n\nclass TextFactory implements UiFactory {\n  createHeading(): Heading { return { render: (t) => `${t}\\n${\"=\".repeat(t.length)}` }; }\n  createAlert(): Alert { return { render: (t) => `[!] ${t}` }; }\n}\n\n// The client knows only the interfaces.\nfunction renderReport(ui: UiFactory): string {\n  const heading = ui.createHeading();\n  const alert = ui.createAlert();\n  return [heading.render(\"Sales\"), alert.render(\"2 orders failed\")].join(\"\\n\");\n}\n\nconst target: string = \"text\"; // e.g. from a command-line flag\nconst factory: UiFactory = target === \"html\" ? new HtmlFactory() : new TextFactory();\nconsole.log(renderReport(factory));\n// Sales\n// =====\n// [!] 2 orders failed",
+          "lang": "typescript"
+        },
+        "Satu-satunya tempat yang menyebut kelas konkret adalah baris yang memilih factory. `renderReport` bekerja dengan keluarga mana pun, dan tidak mungkin tanpa sengaja mencampur bagian HTML dan teks, karena semua produknya berasal dari factory yang sama.",
+        "Dalam program nyata, produk biasanya berupa kelas dengan lebih banyak method. Object literal membuat contoh tetap singkat; strukturnya sama."
+      ]
+    },
+    {
+      "h": "Kapan memakainya, dan kapan tidak",
+      "body": [
+        "Gunakan pola Abstract Factory ketika:",
+        {
+          "ul": [
+            "Sistem harus bekerja dengan beberapa keluarga produk terkait, dan produk dari keluarga berbeda tidak boleh digabungkan (tema UI, widget sistem operasi, driver database dengan objek koneksi dan perintah yang serasi).",
+            "Anda ingin memilih keluarga sekali saja, saat konfigurasi, dan menjaga sisa kode tetap independen darinya.",
+            "Anda ingin pengujian menyediakan keluarga objek tiruan lewat satu factory."
+          ]
+        },
+        "Hindari ketika:",
+        {
+          "ul": [
+            "Hanya ada satu keluarga. `new` langsung, atau satu fungsi factory, lebih sederhana.",
+            "Tipe produk sering berubah. Menambah jenis produk baru, seperti `createTable()`, memaksa Anda mengubah interface factory dan setiap factory konkret. Inilah kelemahan utama yang disebutkan buku GoF."
+          ]
+        },
+        {
+          "note": "Jangan menyamakan \"banyak varian produk\" dengan \"banyak keluarga\". Jika Anda hanya perlu memilih satu implementasi dari satu interface, pola Factory Method atau dependency injection biasa sudah cukup."
+        }
+      ]
+    },
+    {
+      "h": "Pola Abstract Factory dibandingkan pola Factory Method",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Aspek",
+              "Factory Method",
+              "Abstract Factory"
+            ],
+            "rows": [
+              [
+                "Membuat",
+                "Satu produk",
+                "Keluarga produk terkait"
+              ],
+              [
+                "Mekanisme",
+                "Subkelas meng-override satu method pembuat",
+                "Klien menerima objek factory dengan beberapa method pembuat"
+              ],
+              [
+                "Bergantung pada",
+                "Inheritance",
+                "Composition"
+              ],
+              [
+                "Mudah ditambah",
+                "Varian produk baru (subkelas baru)",
+                "Keluarga baru (kelas factory baru)"
+              ],
+              [
+                "Sulit ditambah",
+                "Hampir tidak ada; setiap creator independen",
+                "Tipe produk baru (setiap factory berubah)"
+              ]
+            ]
+          }
+        },
+        "Keduanya sering digabungkan: setiap method pembuat pada factory konkret sendiri adalah sebuah factory method."
+      ]
+    },
+    {
+      "h": "Pemakaian di dunia nyata",
+      "body": [
+        {
+          "ul": [
+            "API XML Java: `DocumentBuilderFactory` dan `TransformerFactory` adalah kelas abstract. `newInstance()` mencari implementasi konkret, dan kode yang memakainya hanya bergantung pada tipe abstract.",
+            "API JDBC Java bekerja dengan cara serupa: driver database menyediakan implementasi `Connection`, `Statement`, dan `ResultSet` yang serasi, dan kode aplikasi hanya memakai interface-nya.",
+            "Contoh dalam buku GoF sendiri adalah toolkit antarmuka pengguna yang mendukung beberapa standar look-and-feel, dengan satu factory per standar yang membuat scroll bar, jendela, dan tombol yang serasi."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Pola terkait",
+      "body": [
+        {
+          "ul": [
+            "Pola Factory Method: factory konkret sering mengimplementasikan method pembuatnya sebagai factory method.",
+            "Pola Prototype: factory dapat dikonfigurasi dengan objek prototipe dan membuat produk dengan menyalinnya, sehingga tidak perlu satu subkelas factory per keluarga.",
+            "Pola Singleton: aplikasi biasanya hanya butuh satu instance dari setiap factory konkret.",
+            "Pola Builder: juga menyembunyikan konstruksi, tetapi membangun satu objek kompleks langkah demi langkah, sedangkan pola Abstract Factory langsung mengembalikan produk jadi.",
+            "Pola Bridge: abstract factory dapat membuat dan mengonfigurasi sisi implementasi dari sebuah bridge."
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Apa itu keluarga produk?",
+      "a": "Sekumpulan objek yang dirancang untuk dipakai bersama, seperti tombol, menu, dan dialog dari satu tema UI. Mencampur produk dari keluarga berbeda akan menghasilkan tampilan yang tidak konsisten atau rusak."
+    },
+    {
+      "q": "Bagaimana menambah tipe produk baru ke Abstract Factory?",
+      "a": "Anda menambahkan method pembuat ke interface factory dan mengimplementasikannya di setiap factory konkret. Karena itulah pola ini paling cocok ketika kumpulan tipe produk stabil."
+    },
+    {
+      "q": "Apakah Abstract Factory sama dengan dependency injection?",
+      "a": "Tidak, tetapi keduanya bekerja baik bersama. Dependency injection menyediakan objek dari luar; Abstract Factory adalah jenis objek yang dapat Anda suntikkan ketika klien perlu membuat sendiri beberapa objek terkait."
+    },
+    {
+      "q": "Bisakah Abstract Factory berupa fungsi, bukan kelas?",
+      "a": "Bisa. Di TypeScript, factory dapat berupa objek biasa berisi fungsi-fungsi pembuat yang memenuhi interface factory. Pola ini tentang interface dan keluarga, bukan tentang kelas."
+    }
+  ]
+}

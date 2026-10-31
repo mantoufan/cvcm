@@ -1,0 +1,210 @@
+{
+  "title": "F# 入门教程：类型、模式匹配、管道与 .NET — cv.cm",
+  "description": "一步步学 F#：安装 .NET SDK、用 dotnet fsi 运行脚本、使用 let 绑定、列表、记录、可辨识联合、模式匹配和 Result。",
+  "h1": "F# 入门教程",
+  "answer": "F# 是 .NET 上函数式优先的静态类型语言。它会为你推断大多数类型，用缩进代替花括号，并把不可变数据、模式匹配和管道运算符 `|>` 作为常规写法，同时仍能完整使用 .NET 库。安装 .NET SDK 后，用 `dotnet fsi hello.fsx` 运行脚本。",
+  "sections": [
+    {
+      "h": "F# 是什么，谁在用",
+      "body": [
+        "F# 由微软研究院的 Don Syme 设计，如今是开源语言，由微软和 F# Software Foundation 社区共同维护。它属于 ML 语言家族（与 OCaml 类似），运行在 Windows、macOS 和 Linux 上的 .NET 之上。",
+        "团队用 F# 做金融建模、数据分析、业务领域密集的逻辑、Web 后端和脚本。因为它与 C# 编译成同样的 .NET 中间语言，F# 项目可以使用任何 NuGet 包，也可以被 C# 代码调用。"
+      ]
+    },
+    {
+      "h": "安装 F# 并运行 Hello, world",
+      "body": [
+        "从微软官网安装 .NET SDK。F# 已包含在内，无需单独安装。做快速实验时，写一个扩展名为 `.fsx` 的脚本文件，用 F# Interactive（`dotnet fsi`）运行。",
+        {
+          "code": "// hello.fsx\nprintfn \"Hello, world!\"",
+          "lang": "fsharp"
+        },
+        {
+          "code": "dotnet fsi hello.fsx\n# Hello, world!\ndotnet new console -lang \"F#\" -o HelloApp\ncd HelloApp\ndotnet run",
+          "lang": "shell"
+        },
+        "第二组命令会创建带 `.fsproj` 文件和 `Program.fs` 的完整控制台项目。在项目中，`.fsproj` 里列出的文件顺序很重要：一个文件只能使用排在它前面的文件中的代码。"
+      ]
+    },
+    {
+      "h": "值与基本类型",
+      "body": [
+        "`let` 把名字绑定到值。绑定默认不可变，除非你标记为 `mutable`，此时要用 `<-` 而不是 `=` 来修改。",
+        {
+          "table": {
+            "head": [
+              "类型",
+              "示例",
+              "说明"
+            ],
+            "rows": [
+              [
+                "int",
+                "`42`",
+                "32 位整数"
+              ],
+              [
+                "float",
+                "`3.14`",
+                "64 位浮点数（.NET 的 `double`）"
+              ],
+              [
+                "decimal",
+                "`19.99m`",
+                "精确的十进制数，适合表示金额"
+              ],
+              [
+                "string",
+                "`\"hello\"`",
+                "不可变的 .NET 字符串"
+              ],
+              [
+                "char",
+                "`'a'`",
+                "单个字符"
+              ],
+              [
+                "bool",
+                "`true`, `false`",
+                "逻辑值"
+              ],
+              [
+                "unit",
+                "`()`",
+                "“没有值”，类似 `void`"
+              ]
+            ]
+          }
+        },
+        {
+          "code": "let name = \"Ana\"\nlet age = 30\nlet mutable count = 0\ncount <- count + 1\nprintfn \"%s is %d, count = %d\" name age count\n// Ana is 30, count = 1\nlet total = float age + 0.5   // explicit conversion needed",
+          "lang": "fsharp"
+        },
+        "F# 从不隐式转换数字：`1 + 2.0` 是编译错误。请用 `float`、`int`、`string` 等函数转换。"
+      ]
+    },
+    {
+      "h": "控制流与函数",
+      "body": [
+        "`if` 是返回值的表达式，所以两个分支必须是同一类型。循环（`for`、`while`）是有的，但大多数代码改用集合函数。",
+        {
+          "code": "let sign n =\n    if n > 0 then \"positive\"\n    elif n < 0 then \"negative\"\n    else \"zero\"\nfor i in 1 .. 3 do\n    printfn \"%d squared is %d\" i (i * i)\nlet add x y = x + y          // int -> int -> int\nlet add5 = add 5             // partial application\nprintfn \"%d\" (add5 10)       // 15\nlet square = fun x -> x * x\n[1; 2; 3; 4]\n|> List.filter (fun x -> x % 2 = 0)\n|> List.map square\n|> printfn \"%A\"              // [4; 16]",
+          "lang": "fsharp"
+        },
+        "参数用空格分隔，不用逗号。每个函数一次接收一个参数（柯里化），所以 `add 5` 会返回一个新函数。管道运算符 `x |> f` 等价于 `f x`，让你能从上到下书写数据转换。缩进是有语义的：函数或循环的主体必须缩进在它下面。"
+      ]
+    },
+    {
+      "h": "集合、记录与 Option",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "集合",
+              "字面量",
+              "说明"
+            ],
+            "rows": [
+              [
+                "列表",
+                "`[1; 2; 3]`",
+                "不可变链表，默认选择"
+              ],
+              [
+                "数组",
+                "`[| 1; 2; 3 |]`",
+                "大小固定，元素可变，索引快"
+              ],
+              [
+                "序列",
+                "`seq { 1 .. 10 }`",
+                "惰性，按需计算"
+              ],
+              [
+                "映射",
+                "`Map [\"a\", 1; \"b\", 2]`",
+                "不可变字典"
+              ],
+              [
+                "集",
+                "`set [1; 2; 2]`",
+                "由唯一值组成的不可变集合"
+              ]
+            ]
+          }
+        },
+        {
+          "code": "type Person = { Name: string; Age: int }\nlet ana = { Name = \"Ana\"; Age = 30 }\nlet older = { ana with Age = 31 }       // copy with one change\nlet people = [ ana; { Name = \"Ben\"; Age = 17 } ]\nlet adult = people |> List.tryFind (fun p -> p.Age >= 18)\nmatch adult with\n| Some p -> printfn \"First adult: %s\" p.Name\n| None -> printfn \"No adults\"\n// First adult: Ana",
+          "lang": "fsharp"
+        },
+        "记录是带命名字段、按结构判断相等的不可变类型。F# 自己的类型没有 null；缺失的值用 `Option` 表示：`Some value` 或 `None`。`List.tryFind` 这样的函数返回 option，编译器会强制你处理两种情况。"
+      ]
+    },
+    {
+      "h": "标志性特性：可辨识联合与模式匹配",
+      "body": [
+        "可辨识联合描述的值恰好是若干具名分支中的一个，每个分支各带自己的数据。`match` 检查各个分支，如果你漏了一个，编译器会发出警告。",
+        {
+          "code": "type Shape =\n    | Circle of radius: float\n    | Rectangle of width: float * height: float\nlet area shape =\n    match shape with\n    | Circle r -> System.Math.PI * r * r\n    | Rectangle (w, h) -> w * h\n[ Circle 1.0; Rectangle (2.0, 3.0) ]\n|> List.map area\n|> List.iter (printfn \"%.2f\")\n// 3.14\n// 6.00",
+          "lang": "fsharp"
+        },
+        "其他知名特性还有类型推断（很少需要写类型标注）、度量单位（`float<m>` 不能与 `float<s>` 相加），以及用于异步代码的计算表达式，如 `task { ... }` 和 `async { ... }`。"
+      ]
+    },
+    {
+      "h": "错误处理",
+      "body": [
+        "对于预期内的失败，地道的 F# 会返回 `Result`：`Ok value` 或 `Error info`。对于意外失败，可以使用 .NET 异常，即 `try ... with`、`failwith` 和 `raise`。",
+        {
+          "code": "let parseAge (s: string) =\n    match System.Int32.TryParse(s) with\n    | true, n when n >= 0 -> Ok n\n    | true, _ -> Error \"Age must not be negative\"\n    | false, _ -> Error \"Not a number\"\nmatch parseAge \"abc\" with\n| Ok n -> printfn \"Age %d\" n\n| Error msg -> printfn \"Error: %s\" msg\n// Error: Not a number\nlet safeDivide a b =\n    try Some (a / b)\n    with :? System.DivideByZeroException -> None\nprintfn \"%A\" (safeDivide 10 0)   // None",
+          "lang": "fsharp"
+        },
+        "在 .NET 中 `TryParse` 有一个 `out` 参数；F# 把它转成元组 `(success, value)`，可以直接对它做匹配。"
+      ]
+    },
+    {
+      "h": "一个完整的小程序：词频统计",
+      "body": [
+        {
+          "code": "let text = \"the cat and the hat and the bat\"\ntext.Split(' ')\n|> Array.countBy id\n|> Array.sortByDescending snd\n|> Array.truncate 2\n|> Array.iter (fun (word, n) -> printfn \"%s %d\" word n)\n// the 3\n// and 2",
+          "lang": "fsharp"
+        },
+        "`Array.countBy id` 把相同的单词分组，返回 `(word, count)` 对；`snd` 取每一对的第二个元素用于排序；最后用解构元组的 lambda 打印结果。",
+        {
+          "note": "初学者常见错误：写成 `[1, 2, 3]`（那是只含一个元组的列表，应使用分号 `[1; 2; 3]`）；用 `=` 修改可变值（`=` 是比较，`<-` 才是赋值）；函数定义为 `add x y` 却写成 `add(1, 2)` 调用；不转换就混用 `int` 和 `float`；以及在 `.fsproj` 中把文件顺序放错。"
+        }
+      ]
+    },
+    {
+      "h": "接下来读什么",
+      "body": [
+        {
+          "ul": [
+            "Microsoft Learn：F# 文档，包括“Tour of F#”和语言参考。",
+            "在 `dotnet fsi` 中练习，可以粘贴代码并立即看到结果；输入以 `;;` 结束。",
+            "学习 `List`、`Array`、`Seq`、`Option` 和 `Result` 模块；日常代码大多由它们构成。",
+            "基础熟练之后，看看 NuGet 上的 F# Web 框架和库。"
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "F# 只能在 Windows 上用吗？",
+      "a": "不是。F# 运行在跨平台的 .NET 上，所以你可以在 Windows、macOS 和 Linux 上构建和运行 F# 程序。"
+    },
+    {
+      "q": "F# 和 C# 有什么区别？",
+      "a": "两者都运行在 .NET 上，可以使用同样的库。C# 以面向对象为主并加入了函数式特性，F# 则函数式优先，默认采用不可变数据、类型推断和模式匹配。"
+    },
+    {
+      "q": "F# 里的 |> 是什么意思？",
+      "a": "`x |> f` 是管道运算符，意思是 `f x`。它把左边的值作为右边函数的最后一个参数传入，所以一连串转换可以从上到下阅读。"
+    },
+    {
+      "q": "F# 和 OCaml 有关系吗？",
+      "a": "有。F# 属于 ML 家族，核心语法与 OCaml 接近，但它是为 .NET 构建的，默认使用有语义的缩进，并有计算表达式等自己的特性。"
+    }
+  ]
+}

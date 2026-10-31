@@ -1,0 +1,178 @@
+{
+  "title": "Binary heap dan priority queue: sift up, sift down, dan heapq Python — cv.cm",
+  "description": "Cara kerja binary heap: heap property, tata letak array, sift up dan sift down, heapify O(n), priority queue, dan heapq Python, lengkap dengan kode dan kompleksitas.",
+  "h1": "Binary heap: priority queue, kode Python, dan kompleksitasnya",
+  "answer": "Binary heap adalah complete binary tree yang disimpan dalam array di mana setiap induk lebih kecil atau sama dengan anak-anaknya (min-heap) atau lebih besar atau sama dengan mereka (max-heap). Item terkecil selalu berada di indeks 0, sehingga bisa dibaca dalam O(1), dan disisipkan atau dihapus dalam O(log n). Heap adalah cara standar untuk mengimplementasikan priority queue; di Python, gunakan modul `heapq`.",
+  "sections": [
+    {
+      "h": "Masalah apa yang diselesaikan heap",
+      "body": [
+        "Banyak program berulang kali membutuhkan item paling mendesak dari kumpulan yang terus berubah: event berikutnya dalam simulasi, node terdekat yang belum dikunjungi pada algoritma Dijkstra, tugas dengan prioritas tertinggi, atau k nilai terbesar dalam sebuah stream. Mengurutkan seluruh kumpulan setiap kali insert butuh O(n log n) setiap kali. Sorted list membuat penghapusan murah tetapi insert O(n). Heap membuat insert dan remove-min sama-sama O(log n), persis yang dibutuhkan priority queue.",
+        {
+          "note": "Heap hanya terurut sebagian. Minimum ada di atas, tetapi sisa array tidak terurut. Jangan berharap `heap[1]` adalah item terkecil kedua."
+        }
+      ]
+    },
+    {
+      "h": "Ide dasarnya: tree yang disimpan dalam array",
+      "body": [
+        "Heap adalah complete binary tree: setiap level penuh kecuali mungkin yang terakhir, yang diisi dari kiri. Bentuk itu memungkinkan kita menyimpan tree dalam list biasa tanpa pointer.",
+        {
+          "table": {
+            "head": [
+              "Hubungan",
+              "Rumus indeks (berbasis 0)"
+            ],
+            "rows": [
+              [
+                "Anak kiri dari i",
+                "`2 * i + 1`"
+              ],
+              [
+                "Anak kanan dari i",
+                "`2 * i + 2`"
+              ],
+              [
+                "Induk dari i",
+                "`(i - 1) // 2`"
+              ]
+            ]
+          }
+        },
+        "Dua operasi perbaikan menjaga heap property. Sift up: setelah menambahkan item baru di akhir, tukar dengan induknya selama ia lebih kecil. Sift down: setelah memindahkan item terakhir ke root, tukar dengan anak yang lebih kecil selama ia lebih besar dari anak itu. Setiap operasi bergerak di satu jalur root-ke-leaf, jadi paling banyak sekitar log2(n) pertukaran."
+      ]
+    },
+    {
+      "h": "Contoh langkah demi langkah: push dan pop",
+      "body": [
+        "Mulai dari min-heap `[2, 5, 3, 9, 6]` (2 adalah root, anak-anaknya 5 dan 3, dan 5 punya anak 9 dan 6).",
+        {
+          "ol": [
+            "Push 1: tambahkan di akhir, menjadi `[2, 5, 3, 9, 6, 1]`. Indeks 5 punya induk di indeks 2 (nilai 3).",
+            "1 lebih kecil dari 3, tukar: `[2, 5, 1, 9, 6, 3]`. Sekarang indeks 2 punya induk di indeks 0 (nilai 2).",
+            "1 lebih kecil dari 2, tukar: `[1, 5, 2, 9, 6, 3]`. Sudah sampai root, berhenti.",
+            "Pop: hapus root 1, pindahkan item terakhir 3 ke root: `[3, 5, 2, 9, 6]`.",
+            "Anak root adalah 5 dan 2; yang lebih kecil adalah 2, dan 3 lebih besar, tukar: `[2, 5, 3, 9, 6]`. Indeks 2 tidak punya anak, berhenti. Pop mengembalikan 1."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Implementasi min-heap di Python",
+      "body": [
+        "Kelas ini menunjukkan mekanismenya. Di kode sebenarnya gunakan `heapq`, seperti pada bagian berikutnya.",
+        {
+          "code": "class MinHeap:\n    def __init__(self):\n        self.a = []\n    def push(self, x):\n        a = self.a\n        a.append(x)\n        i = len(a) - 1\n        while i > 0 and a[i] < a[(i - 1) // 2]:      # sift up\n            p = (i - 1) // 2\n            a[i], a[p] = a[p], a[i]\n            i = p\n    def pop(self):\n        a = self.a\n        top, last = a[0], a.pop()                   # IndexError if empty\n        if a:\n            a[0], i = last, 0\n            while True:                             # sift down\n                c = 2 * i + 1\n                if c + 1 < len(a) and a[c + 1] < a[c]:\n                    c += 1                          # pick the smaller child\n                if c >= len(a) or a[i] <= a[c]:\n                    break\n                a[i], a[c] = a[c], a[i]\n                i = c\n        return top\nh = MinHeap()\nfor x in [5, 3, 9, 1, 6, 2]:\n    h.push(x)\nprint([h.pop() for _ in range(6)])  # [1, 2, 3, 5, 6, 9]",
+          "lang": "python"
+        }
+      ]
+    },
+    {
+      "h": "Priority queue dengan heapq Python",
+      "body": [
+        "Modul `heapq` bekerja pada list biasa dan selalu menjaganya sebagai min-heap. `heapify` mengubah list yang sudah ada menjadi heap di tempat dalam O(n). Untuk memakai prioritas, push tuple: Python membandingkan tuple elemen demi elemen, jadi elemen pertama adalah prioritasnya. Tambahkan counter sebagai tie-breaker agar item dengan prioritas sama tidak perlu dibandingkan langsung.",
+        {
+          "code": "import heapq\nfrom itertools import count\nnums = [7, 2, 9, 4, 1]\nheapq.heapify(nums)\nprint(nums[0], heapq.heappop(nums))      # 1 1\nprint(heapq.nlargest(2, [7, 2, 9, 4]))   # [9, 7]\ntasks, order = [], count()\nheapq.heappush(tasks, (2, next(order), \"write report\"))\nheapq.heappush(tasks, (1, next(order), \"fix outage\"))\nheapq.heappush(tasks, (2, next(order), \"reply to email\"))\nwhile tasks:\n    priority, _, name = heapq.heappop(tasks)\n    print(priority, name)\n# 1 fix outage\n# 2 write report\n# 2 reply to email",
+          "lang": "python"
+        },
+        "Untuk max-heap, Python 3.14 menambahkan `heapq.heapify_max`, `heapq.heappush_max`, dan `heapq.heappop_max`. Pada versi lama, triknya adalah mem-push key yang dinegasikan, misalnya `heapq.heappush(h, -score)`, lalu menegasikannya lagi saat pop."
+      ]
+    },
+    {
+      "h": "Kompleksitas waktu dan ruang",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Operasi",
+              "Waktu",
+              "Alasan"
+            ],
+            "rows": [
+              [
+                "Melihat minimum",
+                "O(1)",
+                "selalu ada di indeks 0"
+              ],
+              [
+                "Push (insert)",
+                "O(log n)",
+                "sift up sepanjang satu jalur"
+              ],
+              [
+                "Pop minimum",
+                "O(log n)",
+                "sift down sepanjang satu jalur"
+              ],
+              [
+                "Heapify n item",
+                "O(n)",
+                "sebagian besar node dekat dasar dan hanya bergeser sedikit"
+              ],
+              [
+                "Mencari nilai sembarang",
+                "O(n)",
+                "heap tidak terurut"
+              ],
+              [
+                "Heapsort",
+                "O(n log n)",
+                "heapify, lalu n kali pop"
+              ],
+              [
+                "Ruang",
+                "O(n)",
+                "satu array, tanpa pointer"
+              ]
+            ]
+          }
+        },
+        "Membangun heap dengan memanggil push sebanyak n kali butuh O(n log n). `heapify` melakukan sift down dari induk terakhir sampai root dan butuh O(n), jadi pilih itu jika semua item sudah ada."
+      ]
+    },
+    {
+      "h": "Varian dan kesalahan umum",
+      "body": [
+        {
+          "ul": [
+            "Max-heap: kode yang sama dengan perbandingan dibalik; di Python, pakai fungsi `_max` (3.14 ke atas) atau negasikan key.",
+            "d-ary heap: setiap node punya d anak. Tree yang lebih dangkal membuat push lebih murah dan pop sedikit lebih mahal.",
+            "Indexed priority queue / decrease-key: `heapq` tidak bisa mengubah prioritas item di tempat. Solusi umumnya (dipakai pada algoritma Dijkstra) adalah mem-push entri baru dan melewati entri usang saat di-pop.",
+            "Membandingkan item yang tidak bisa dibandingkan: mem-push `(priority, dict)` memunculkan `TypeError` ketika dua prioritas sama, karena Python lalu membandingkan dict-nya. Tambahkan counter sebagai elemen kedua tuple.",
+            "Menganggap list heap itu terurut. Hanya `heap[0]` yang dijamin; gunakan `sorted(heap)` jika Anda butuh semuanya berurutan.",
+            "Kesalahan off-by-one saat mencampur rumus berbasis 1 dari buku teks (anak `2i` dan `2i + 1`) dengan list Python berbasis 0."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Kapan memakai heap dan soal-soal khasnya",
+      "body": [
+        "Gunakan heap ketika Anda berulang kali hanya butuh item terkecil atau terbesar dari kumpulan yang terus berubah. Gunakan sorted list atau balanced tree jika Anda juga butuh iterasi terurut atau penghapusan sembarang, dan `min()` biasa jika Anda hanya butuh minimum satu kali.",
+        "Penggunaan klasik: shortest path Dijkstra dan minimum spanning tree Prim, menggabungkan k sorted list (`heapq.merge`), mencari k item terbesar atau terkecil (pertahankan heap berukuran k, O(n log k)), median berjalan (dua heap), task scheduler dan simulasi berbasis event, serta heapsort."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Apa bedanya heap dan priority queue?",
+      "a": "Priority queue adalah abstract data type: menyisipkan item dan mengeluarkan yang berprioritas tertinggi. Binary heap adalah struktur data paling umum untuk mengimplementasikannya."
+    },
+    {
+      "q": "Apakah heapq Python itu min-heap atau max-heap?",
+      "a": "Fungsi utamanya seperti `heappush` dan `heappop` menjaga min-heap, jadi `heappop` mengembalikan item terkecil. Python 3.14 menambahkan fungsi `_max` terpisah untuk max-heap; pada versi lama, simpan angka yang dinegasikan."
+    },
+    {
+      "q": "Mengapa heapify O(n) dan bukan O(n log n)?",
+      "a": "Heapify melakukan sift down pada setiap induk mulai dari bawah. Sekitar setengah node adalah leaf dan tidak bergeser, seperempat bergeser paling banyak satu level, dan seterusnya; total kerjanya berjumlah O(n)."
+    },
+    {
+      "q": "Apakah binary heap sama dengan binary search tree?",
+      "a": "Tidak. BST mengurutkan subtree kiri dan kanan sehingga key apa pun bisa dicari dalam O(log n). Heap hanya menjamin setiap induk lebih kecil dari anak-anaknya, jadi minimum ditemukan cepat tetapi mencari key lain itu O(n)."
+    },
+    {
+      "q": "Apakah heapsort stabil?",
+      "a": "Tidak. Pertukaran saat sift down bisa mengubah urutan key yang sama. Ia mengurutkan di tempat dalam waktu O(n log n) dengan ruang tambahan O(1)."
+    }
+  ]
+}

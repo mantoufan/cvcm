@@ -1,0 +1,238 @@
+{
+  "title": "Algoritmos voraces: cómo funcionan, cuándo fallan, ejemplos en Python — cv.cm",
+  "description": "Algoritmos voraces explicados: toma la mejor decisión local en cada paso. Planificación de intervalos paso a paso, código en Python, demostraciones, contraejemplos y complejidad.",
+  "h1": "Algoritmos voraces explicados: cómo funcionan, código y ejemplos",
+  "answer": "Un algoritmo voraz (greedy) construye una solución paso a paso y en cada paso toma la opción que parece mejor en ese momento, sin volver atrás para cambiar decisiones anteriores. Es rápido y simple, pero solo es correcto en problemas con la propiedad de elección voraz, en los que una elección localmente óptima forma siempre parte de alguna solución óptima. Entre los algoritmos voraces correctos clásicos están la planificación de intervalos, la codificación de Huffman, el algoritmo de Dijkstra y los algoritmos de Kruskal y Prim para el árbol de expansión mínima.",
+  "sections": [
+    {
+      "h": "Qué problema resuelven los algoritmos voraces",
+      "body": [
+        "Los algoritmos voraces atacan problemas de optimización: elegir el mayor número de actividades, usar el menor número de monedas, construir la red más barata, comprimir un archivo en el menor número de bits. En lugar de explorar todas las combinaciones, un algoritmo voraz ordena o prioriza las opciones y se compromete con la mejor en cada paso. Eso suele dar un tiempo O(n log n), a menudo solo el coste de ordenar.",
+        "Lo difícil no es el código sino la demostración. Muchas reglas voraces naturales son incorrectas, así que debes demostrar que la regla es correcta o contrastarla con una solución de fuerza bruta."
+      ]
+    },
+    {
+      "h": "La idea en palabras sencillas",
+      "body": [
+        {
+          "ol": [
+            "Encuentra una regla que ordene las opciones, por ejemplo \"primero la que termina antes\" o \"primero la arista más ligera\".",
+            "Ordena las opciones según esa regla o guárdalas en una cola de prioridad.",
+            "Recorre las opciones y toma cada una que las restricciones todavía permitan.",
+            "Nunca deshagas una elección."
+          ]
+        },
+        "Un algoritmo voraz es correcto cuando se cumplen dos propiedades. Propiedad de elección voraz: alguna solución óptima contiene la primera elección voraz. Subestructura óptima: tras tomar esa elección, el resto del problema es una instancia más pequeña del mismo problema. La demostración habitual es un argumento de intercambio: toma cualquier solución óptima y muestra que cambiar una de sus elecciones por la elección voraz no la empeora."
+      ]
+    },
+    {
+      "h": "Ejemplo resuelto: planificación de intervalos",
+      "body": [
+        "Tienes una sala de reuniones y estas solicitudes (inicio, fin): A (1, 4), B (3, 5), C (0, 6), D (5, 7), E (3, 9), F (5, 9), G (6, 10), H (8, 11). Reserva el mayor número posible de reuniones sin solapamientos. La regla voraz correcta es: elegir siempre la reunión que termina antes entre las que empiezan después de que termine la última reservada.",
+        {
+          "table": {
+            "head": [
+              "Reunión (ordenada por fin)",
+              "Inicio, fin",
+              "¿Empieza después del último fin?",
+              "Decisión",
+              "Último fin"
+            ],
+            "rows": [
+              [
+                "A",
+                "1, 4",
+                "sí (nada reservado)",
+                "Reservar",
+                "4"
+              ],
+              [
+                "B",
+                "3, 5",
+                "no (3 < 4)",
+                "Omitir",
+                "4"
+              ],
+              [
+                "C",
+                "0, 6",
+                "no",
+                "Omitir",
+                "4"
+              ],
+              [
+                "D",
+                "5, 7",
+                "sí",
+                "Reservar",
+                "7"
+              ],
+              [
+                "E",
+                "3, 9",
+                "no",
+                "Omitir",
+                "7"
+              ],
+              [
+                "F",
+                "5, 9",
+                "no",
+                "Omitir",
+                "7"
+              ],
+              [
+                "G",
+                "6, 10",
+                "no",
+                "Omitir",
+                "7"
+              ],
+              [
+                "H",
+                "8, 11",
+                "sí",
+                "Reservar",
+                "11"
+              ]
+            ]
+          }
+        },
+        "Resultado: A, D, H, tres reuniones, que es el máximo. Por qué funciona: la reunión que termina antes deja más tiempo libre para todo lo demás, así que sustituir la primera reunión de cualquier horario óptimo por ella nunca provoca un conflicto."
+      ]
+    },
+    {
+      "h": "Implementación en Python",
+      "body": [
+        {
+          "code": "def max_meetings(meetings):\n    \"\"\"meetings: list of (name, start, end). Returns the booked names.\"\"\"\n    booked, last_end = [], float(\"-inf\")\n    for name, start, end in sorted(meetings, key=lambda m: m[2]):\n        if start >= last_end:\n            booked.append(name)\n            last_end = end\n    return booked\n\nrequests = [(\"A\", 1, 4), (\"B\", 3, 5), (\"C\", 0, 6), (\"D\", 5, 7),\n            (\"E\", 3, 9), (\"F\", 5, 9), (\"G\", 6, 10), (\"H\", 8, 11)]\nprint(max_meetings(requests))  # ['A', 'D', 'H']",
+          "lang": "python"
+        },
+        "Un segundo ejemplo clásico es la mochila fraccionaria: cuando puedes tomar parte de un objeto, tomar los objetos en orden de valor por unidad de peso es óptimo.",
+        {
+          "code": "def fractional_knapsack(items, capacity):\n    \"\"\"items: list of (value, weight). Returns the best total value.\"\"\"\n    total = 0.0\n    for value, weight in sorted(items, key=lambda i: i[0] / i[1], reverse=True):\n        take = min(weight, capacity)\n        total += value * take / weight\n        capacity -= take\n        if capacity == 0:\n            break\n    return total\n\nprint(fractional_knapsack([(60, 10), (100, 20), (120, 30)], 50))  # 240.0",
+          "lang": "python"
+        }
+      ]
+    },
+    {
+      "h": "Cuando el voraz falla: contraejemplos",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Problema",
+              "Regla voraz tentadora",
+              "Contraejemplo",
+              "Método correcto"
+            ],
+            "rows": [
+              [
+                "Cambio de monedas, monedas 1, 3, 4",
+                "Tomar primero la moneda más grande",
+                "Cantidad 6: el voraz da 4 + 1 + 1 (3 monedas), lo óptimo es 3 + 3 (2 monedas)",
+                "Programación dinámica"
+              ],
+              [
+                "Mochila 0/1 (solo objetos enteros)",
+                "Primero el mejor valor por peso",
+                "Capacidad 50, objetos (60, 10), (100, 20), (120, 30): el voraz toma 60 + 100 = 160, lo óptimo es 100 + 120 = 220",
+                "Programación dinámica"
+              ],
+              [
+                "Planificación de intervalos",
+                "Primero la reunión más corta",
+                "(0, 5), (4, 7), (6, 11): el voraz toma solo (4, 7), lo óptimo toma las otras dos",
+                "Primero la que termina antes"
+              ],
+              [
+                "Camino más corto con aristas negativas",
+                "Primero el nodo más cercano de Dijkstra",
+                "Cualquier grafo en el que una arista negativa abarata un nodo ya finalizado",
+                "Bellman-Ford"
+              ]
+            ]
+          }
+        },
+        {
+          "note": "El cambio de monedas voraz sí da la respuesta óptima en sistemas de monedas canónicos como 1, 2, 5, 10, 20, 50, pero no para cualquier conjunto de monedas. Antes de fiarte de una regla voraz, compárala con una solución de fuerza bruta en muchas entradas aleatorias pequeñas."
+        }
+      ]
+    },
+    {
+      "h": "Complejidad temporal y espacial",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Algoritmo",
+              "Tiempo",
+              "Motivo"
+            ],
+            "rows": [
+              [
+                "Planificación de intervalos",
+                "O(n log n)",
+                "Ordenación por hora de fin; el recorrido es O(n)."
+              ],
+              [
+                "Mochila fraccionaria",
+                "O(n log n)",
+                "Ordenación por valor por peso."
+              ],
+              [
+                "Codificación de Huffman",
+                "O(n log n)",
+                "n − 1 fusiones, cada una con operaciones de montículo."
+              ],
+              [
+                "MST de Kruskal",
+                "O(E log E)",
+                "Ordenar las aristas más un union-find de coste casi constante."
+              ],
+              [
+                "Caminos más cortos de Dijkstra",
+                "O((V + E) log V)",
+                "Cola de prioridad basada en montículo."
+              ]
+            ]
+          }
+        },
+        "El espacio suele ser O(n) para la copia ordenada o el montículo. Si la entrada ya está ordenada, muchos algoritmos voraces se ejecutan en O(n)."
+      ]
+    },
+    {
+      "h": "Cuándo usar un algoritmo voraz y usos en el mundo real",
+      "body": [
+        {
+          "ul": [
+            "Usa un algoritmo voraz cuando puedas demostrar la propiedad de elección voraz, o cuando una respuesta aproximada rápida sea aceptable. En caso contrario, usa programación dinámica o backtracking.",
+            "Compresión: la codificación de Huffman construye códigos de prefijo óptimos fusionando repetidamente los dos símbolos menos frecuentes; se usa dentro de formatos como DEFLATE (ZIP, gzip, PNG).",
+            "Redes: árboles de expansión mínima (Kruskal, Prim) y enrutamiento por caminos más cortos (Dijkstra).",
+            "Planificación: primero el plazo más próximo (earliest deadline first) y reserva de salas o máquinas.",
+            "Aproximación: para el recubrimiento de conjuntos (set cover), la regla voraz \"elige el conjunto que cubra más elementos aún sin cubrir\" no es óptima, pero tiene garantizado quedar dentro de un factor logarítmico del óptimo.",
+            "Problemas de entrevista: jump game, gas station, assign cookies, intervalos sin solapamiento, número mínimo de flechas para reventar globos, task scheduler."
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "¿Qué es un algoritmo voraz, en palabras sencillas?",
+      "a": "Es un algoritmo que siempre toma la opción que parece mejor en ese momento y nunca la reconsidera. Solo es correcto en problemas donde esas elecciones locales conducen siempre a la mejor respuesta global."
+    },
+    {
+      "q": "¿Cómo demuestro que un algoritmo voraz es correcto?",
+      "a": "El método habitual es un argumento de intercambio: parte de cualquier solución óptima y muestra que puedes sustituir su primera elección por la elección voraz sin empeorarla; después repite el razonamiento con el problema restante."
+    },
+    {
+      "q": "¿Voraz o programación dinámica?",
+      "a": "Prueba primero con un algoritmo voraz si una regla simple parece correcta y busca luego un contraejemplo. Si existe, el problema necesita programación dinámica, que compara todas las opciones de cada subproblema."
+    },
+    {
+      "q": "¿Es voraz el algoritmo de Dijkstra?",
+      "a": "Sí. Siempre finaliza el nodo sin terminar más cercano. Esta decisión voraz es correcta porque los pesos de las aristas son no negativos."
+    }
+  ]
+}

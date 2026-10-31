@@ -1,0 +1,186 @@
+{
+  "title": "Tutorial Go: tipe data, slice, struct, goroutine, dan error — cv.cm",
+  "description": "Belajar Go dalam satu halaman: instal Go dan jalankan Hello world, tipe data, perulangan, fungsi, slice dan map, struct dan interface, goroutine dan channel, serta error.",
+  "h1": "Tutorial Go (Golang) untuk pemula",
+  "answer": "Go (sering disebut Golang) adalah bahasa terkompilasi yang sederhana dengan tipe statis dari Google, dibuat untuk build cepat, concurrency yang mudah, dan server yang andal. Instal Go, tulis package `main`, lalu jalankan dengan `go run hello.go`. Konsep intinya: sedikit tipe dasar, slice dan map, struct dengan method, interface implisit, goroutine dan channel untuk concurrency, serta error yang dikembalikan sebagai nilai biasa.",
+  "sections": [
+    {
+      "h": "Apa itu Go dan untuk apa dipakai",
+      "body": [
+        "Go dirancang di Google oleh Robert Griesemer, Rob Pike, dan Ken Thompson dan dirilis sebagai open source pada 2009. Go dikompilasi menjadi satu binary statis, startup-nya cepat, punya garbage collector, dan pustaka standar jaringan yang kaya. Go dipakai untuk infrastruktur cloud dan tool command line: Docker, Kubernetes, Terraform, dan Prometheus ditulis dalam Go, dan banyak perusahaan memakainya untuk web API dan microservice. Bahasanya sengaja dibuat kecil, sehingga kode dari tim berbeda terlihat mirip."
+      ]
+    },
+    {
+      "h": "Instal Go dan jalankan Hello, world",
+      "body": [
+        "Unduh Go dari go.dev/dl dan periksa dengan `go version`. Buat folder, mulai module, dan tambahkan `main.go`:",
+        {
+          "code": "package main\n\nimport \"fmt\"\n\nfunc main() {\n    fmt.Println(\"Hello, world\")\n}",
+          "lang": "go"
+        },
+        {
+          "code": "go mod init example.com/hello\ngo run .\n# Hello, world\ngo build     # produces a standalone binary named hello",
+          "lang": "shell"
+        },
+        "Eksekusi dimulai dari `func main` di `package main`. Jalankan `gofmt` (atau `go fmt`) untuk memformat kode; semua kode Go memakai gaya yang sama, dengan tab untuk indentasi di file sumber sebenarnya."
+      ]
+    },
+    {
+      "h": "Variabel dan tipe data dasar",
+      "body": [
+        "Deklarasikan variabel dengan `var name type = value`, atau di dalam fungsi dengan bentuk singkat `name := value`, yang menyimpulkan tipenya. Variabel yang tidak diberi nilai mendapat zero value: `0`, `\"\"`, `false`, atau `nil`.",
+        {
+          "table": {
+            "head": [
+              "Tipe",
+              "Contoh",
+              "Zero value"
+            ],
+            "rows": [
+              [
+                "`int`, `int64`",
+                "`n := 42`",
+                "`0`"
+              ],
+              [
+                "`float64`",
+                "`x := 3.14`",
+                "`0`"
+              ],
+              [
+                "`bool`",
+                "`ok := true`",
+                "`false`"
+              ],
+              [
+                "`string`",
+                "`s := \"hi\"`",
+                "`\"\"`"
+              ],
+              [
+                "`rune`",
+                "`r := 'é'`",
+                "`0` (sebuah code point Unicode)"
+              ],
+              [
+                "`byte`",
+                "`b := byte(65)`",
+                "`0` (alias untuk `uint8`)"
+              ]
+            ]
+          }
+        },
+        {
+          "code": "package main\n\nimport (\n    \"fmt\"\n    \"strconv\"\n)\n\nfunc main() {\n    name := \"Ada\"\n    count := 7\n    avg := float64(count) / 2 // explicit conversion is required\n    fmt.Printf(\"%s has %d items, avg %.1f\\n\", name, count, avg) // Ada has 7 items, avg 3.5\n    n, err := strconv.Atoi(\"12\")\n    fmt.Println(n+1, err) // 13 <nil>\n}",
+          "lang": "go"
+        },
+        "Go tidak pernah mengonversi tipe numerik secara implisit, dan compiler menolak variabel serta import yang tidak terpakai."
+      ]
+    },
+    {
+      "h": "Alur kontrol dan fungsi",
+      "body": [
+        "Kondisi tidak diapit tanda kurung, dan kurung kurawal wajib. `for` adalah satu-satunya keyword perulangan: ia mencakup perulangan klasik, gaya while, dan range. Fungsi dapat mengembalikan beberapa nilai.",
+        {
+          "code": "package main\n\nimport \"fmt\"\n\nfunc divmod(a, b int) (int, int) {\n    return a / b, a % b\n}\n\nfunc main() {\n    score := 72\n    if score >= 90 {\n        fmt.Println(\"A\")\n    } else if score >= 70 {\n        fmt.Println(\"B\") // B\n    } else {\n        fmt.Println(\"C\")\n    }\n\n    for i := 0; i < 3; i++ {\n        fmt.Print(i, \" \") // 0 1 2\n    }\n    fmt.Println()\n\n    n := 10\n    for n > 1 { // while-style loop\n        n /= 2\n    }\n\n    q, r := divmod(17, 5)\n    fmt.Println(n, q, r) // 1 3 2\n\n    switch day := \"SAT\"; day {\n    case \"SAT\", \"SUN\":\n        fmt.Println(\"weekend\") // no break needed\n    default:\n        fmt.Println(\"weekday\")\n    }\n}",
+          "lang": "go"
+        }
+      ]
+    },
+    {
+      "h": "Slice, map, dan struct",
+      "body": [
+        "Slice adalah tampilan array yang dapat tumbuh dan merupakan tipe list sehari-hari. Map adalah hash table. Struct mengelompokkan field bernama, dan method adalah fungsi dengan receiver.",
+        {
+          "code": "package main\n\nimport (\n    \"fmt\"\n    \"sort\"\n)\n\ntype Point struct {\n    X, Y int\n}\n\nfunc (p Point) Add(o Point) Point { return Point{p.X + o.X, p.Y + o.Y} }\n\nfunc (p *Point) Scale(k int) { p.X *= k; p.Y *= k } // pointer receiver modifies p\n\nfunc main() {\n    nums := []int{3, 1, 2}\n    nums = append(nums, 5)\n    sort.Ints(nums)\n    fmt.Println(nums, len(nums), nums[1:3]) // [1 2 3 5] 4 [2 3]\n\n    ages := map[string]int{\"ann\": 31, \"bob\": 25}\n    ages[\"cy\"] = 40\n    age, ok := ages[\"zed\"]\n    fmt.Println(age, ok, len(ages)) // 0 false 3\n\n    for i, n := range nums {\n        fmt.Print(i, \":\", n, \" \") // 0:1 1:2 2:3 3:5\n    }\n    fmt.Println()\n\n    p := Point{1, 2}.Add(Point{3, 4})\n    p.Scale(2)\n    fmt.Printf(\"%+v\\n\", p) // {X:8 Y:12}\n}",
+          "lang": "go"
+        },
+        "Urutan iterasi pada map sengaja acak; urutkan key jika Anda butuh urutan yang stabil. Nama yang diawali huruf kapital (`Point`, `Add`) diekspor dari package."
+      ]
+    },
+    {
+      "h": "Interface",
+      "body": [
+        "Interface mendaftar signature method. Sebuah tipe memenuhi interface hanya dengan memiliki method tersebut; tidak ada keyword `implements`.",
+        {
+          "code": "package main\n\nimport (\n    \"fmt\"\n    \"math\"\n)\n\ntype Shape interface {\n    Area() float64\n}\n\ntype Circle struct{ R float64 }\ntype Rect struct{ W, H float64 }\n\nfunc (c Circle) Area() float64 { return math.Pi * c.R * c.R }\nfunc (r Rect) Area() float64   { return r.W * r.H }\n\nfunc main() {\n    shapes := []Shape{Circle{1}, Rect{2, 3}}\n    total := 0.0\n    for _, s := range shapes {\n        total += s.Area()\n    }\n    fmt.Printf(\"%.2f\\n\", total) // 9.14\n}",
+          "lang": "go"
+        },
+        "Go juga punya generic (sejak Go 1.18), misalnya `func Max[T int | float64](a, b T) T`, yang sebagian besar akan Anda pakai lewat fungsi pustaka seperti di package `slices` dan `maps`."
+      ]
+    },
+    {
+      "h": "Fitur khas: goroutine dan channel",
+      "body": [
+        "Goroutine adalah thread ringan yang dimulai dengan keyword `go`; satu program dapat menjalankan ribuan goroutine. Goroutine berkomunikasi lewat channel, yang mengirim nilai dengan aman di antara mereka. `sync.WaitGroup` menunggu sekelompok goroutine selesai.",
+        {
+          "code": "package main\n\nimport (\n    \"fmt\"\n    \"sync\"\n)\n\nfunc square(n int, results chan<- int, wg *sync.WaitGroup) {\n    defer wg.Done()\n    results <- n * n\n}\n\nfunc main() {\n    results := make(chan int, 5)\n    var wg sync.WaitGroup\n    for i := 1; i <= 5; i++ {\n        wg.Add(1)\n        go square(i, results, &wg)\n    }\n    wg.Wait()\n    close(results)\n\n    sum := 0\n    for r := range results {\n        sum += r\n    }\n    fmt.Println(sum) // 55\n}",
+          "lang": "go"
+        },
+        "`defer` menjadwalkan sebuah pemanggilan agar dijalankan ketika fungsi di sekelilingnya selesai, dan begitulah kode Go menutup file dan membuka kunci mutex. Gunakan `go run -race .` untuk mendeteksi data race saat pengembangan."
+      ]
+    },
+    {
+      "h": "Penanganan error",
+      "body": [
+        "Go tidak memakai exception untuk kegagalan biasa. Fungsi yang bisa gagal mengembalikan `error` sebagai hasil terakhir, dan pemanggil langsung memeriksanya. Bungkus error dengan `%w` untuk menambah konteks sambil tetap membuat error asli bisa diperiksa dengan `errors.Is`.",
+        {
+          "code": "package main\n\nimport (\n    \"errors\"\n    \"fmt\"\n    \"os\"\n)\n\nfunc readConfig(path string) ([]byte, error) {\n    data, err := os.ReadFile(path)\n    if err != nil {\n        return nil, fmt.Errorf(\"read config: %w\", err)\n    }\n    return data, nil\n}\n\nfunc main() {\n    _, err := readConfig(\"missing.json\")\n    if errors.Is(err, os.ErrNotExist) {\n        fmt.Println(\"no config file:\", err)\n    }\n}",
+          "lang": "go"
+        },
+        "`panic` dan `recover` ada, tetapi dicadangkan untuk kesalahan pemrograman dan kondisi yang benar-benar tak terduga, bukan untuk penanganan error biasa."
+      ]
+    },
+    {
+      "h": "Program kecil yang lengkap: web server mini",
+      "body": [
+        "Hanya dengan pustaka standar, program ini melayani JSON lewat HTTP. Jalankan dengan `go run .` dan buka `http://localhost:8080/hello?name=Ann`.",
+        {
+          "code": "package main\n\nimport (\n    \"encoding/json\"\n    \"log\"\n    \"net/http\"\n    \"time\"\n)\n\ntype Greeting struct {\n    Message string    `json:\"message\"`\n    Time    time.Time `json:\"time\"`\n}\n\nfunc hello(w http.ResponseWriter, r *http.Request) {\n    name := r.URL.Query().Get(\"name\")\n    if name == \"\" {\n        name = \"world\"\n    }\n    w.Header().Set(\"Content-Type\", \"application/json\")\n    err := json.NewEncoder(w).Encode(Greeting{\"Hello, \" + name, time.Now()})\n    if err != nil {\n        log.Println(\"encode:\", err)\n    }\n}\n\nfunc main() {\n    http.HandleFunc(\"/hello\", hello)\n    log.Println(\"listening on :8080\")\n    log.Fatal(http.ListenAndServe(\":8080\", nil))\n}",
+          "lang": "go"
+        },
+        "Teks setelah tipe setiap field adalah struct tag yang menentukan nama key JSON. Setiap request ditangani di goroutine-nya sendiri secara otomatis."
+      ]
+    },
+    {
+      "h": "Kesalahan umum pemula",
+      "body": [
+        {
+          "note": "Menulis ke map `nil` menyebabkan panic. Map yang dideklarasikan dengan `var m map[string]int` harus dibuat dengan `make(map[string]int)` atau literal sebelum Anda mengisinya."
+        },
+        {
+          "ul": [
+            "Mengabaikan error dengan `_`. Periksa setiap `error` yang dikembalikan kecuali Anda yakin tidak berpengaruh.",
+            "Mengira `append` mengubah slice asli di tempat; selalu pakai hasilnya, seperti `s = append(s, x)`.",
+            "Memulai goroutine lalu membiarkan `main` selesai sebelum mereka selesai. Tunggu dengan `sync.WaitGroup` atau channel.",
+            "Memakai value receiver padahal method harus mengubah struct; gunakan pointer receiver seperti `func (p *Point)`."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Langkah selanjutnya",
+      "body": [
+        "Ikuti Tour of Go yang interaktif, lalu baca Effective Go dan dokumentasi pustaka standar di pkg.go.dev. Pelajari `go test` untuk unit test dan benchmark, package `context` untuk timeout dan pembatalan, serta module untuk dependensi."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Apakah namanya Go atau Golang?",
+      "a": "Nama resminya Go. \"Golang\" berasal dari alamat situs lama golang.org dan masih dipakai sebagai kata pencarian."
+    },
+    {
+      "q": "Apakah Go berorientasi objek?",
+      "a": "Sebagian. Go punya method dan interface, tetapi tidak ada class atau pewarisan; Anda membangun tipe dengan menyematkan (embedding) struct dan menyusun interface kecil."
+    },
+    {
+      "q": "Apakah Go lebih cepat daripada Python?",
+      "a": "Untuk sebagian besar pekerjaan yang membebani CPU, ya, karena Go dikompilasi ke kode mesin native dan bertipe statis. Python tetap bisa cepat ketika pekerjaan berat terjadi di dalam pustaka yang ditulis dengan C."
+    },
+    {
+      "q": "Apa perbedaan goroutine dan thread?",
+      "a": "Goroutine dikelola oleh runtime Go dan dimulai dengan stack kecil yang membesar sesuai kebutuhan. Runtime menjadwalkan banyak goroutine ke beberapa thread sistem operasi, sehingga goroutine jauh lebih murah dibuat."
+    }
+  ]
+}

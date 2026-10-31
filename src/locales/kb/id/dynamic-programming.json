@@ -1,0 +1,215 @@
+{
+  "title": "Dynamic programming: memoization, tabulation, dan soal klasik di Python — cv.cm",
+  "description": "Dynamic programming untuk pemula: overlapping subproblem, memoization vs tabulation, tabel coin change, contoh Python, dan kompleksitas.",
+  "h1": "Penjelasan dynamic programming: cara kerja, kode, dan contoh",
+  "answer": "Dynamic programming (DP) menyelesaikan masalah dengan memecahnya menjadi subproblem yang lebih kecil, menyelesaikan setiap subproblem sekali, dan menyimpan hasilnya agar bisa dipakai ulang. DP bekerja bila masalah memiliki optimal substructure (jawaban terbaik dibangun dari jawaban terbaik subproblem) dan overlapping subproblem (subproblem yang sama muncul berulang kali). DP bisa ditulis top-down dengan memoization atau bottom-up dengan tabel; keduanya mengubah banyak solusi brute-force eksponensial menjadi polinomial.",
+  "sections": [
+    {
+      "h": "Masalah yang diselesaikan dynamic programming",
+      "body": [
+        "Banyak masalah menanyakan yang terbaik, termurah, atau jumlah cara: koin paling sedikit untuk membentuk suatu nominal, longest common subsequence dari dua string, himpunan barang paling bernilai yang muat di dalam tas, jumlah jalur melintasi grid. Solusi rekursif langsung sering menghitung ulang kasus kecil yang sama sebanyak eksponensial. DP menghilangkan pengulangan itu.",
+        "Namanya berasal dari Richard Bellman, yang mengembangkan metode ini pada 1950-an. \"Programming\" di sini berarti perencanaan atau pengisian tabel, bukan menulis kode."
+      ]
+    },
+    {
+      "h": "Ide dasar dengan kata-kata sederhana",
+      "body": [
+        "Fibonacci rekursif yang naif memperlihatkan masalahnya. `fib(5)` memanggil `fib(4)` dan `fib(3)`, lalu `fib(4)` memanggil `fib(3)` lagi, dan seterusnya: jumlah pemanggilan tumbuh secara eksponensial. Menyimpan setiap hasil saat pertama kali dihitung membuat setiap pemanggilan berikutnya instan.",
+        {
+          "ol": [
+            "Tentukan state: seperti apa sebuah subproblem? Misalnya `best[a]` = koin paling sedikit untuk membentuk nominal a.",
+            "Tulis rekurensi: bagaimana sebuah state dihitung dari state yang lebih kecil? `best[a] = 1 + min(best[a - c] for each coin c)`.",
+            "Tetapkan kasus dasar: `best[0] = 0`.",
+            "Pilih urutan: top-down dengan memoization, atau bottom-up sehingga state yang lebih kecil selalu terisi lebih dulu.",
+            "Baca jawaban dari state yang tepat, dan rekonstruksi pilihan sebenarnya bila diperlukan."
+          ]
+        },
+        {
+          "table": {
+            "head": [
+              "Gaya",
+              "Cara kerja",
+              "Kelebihan",
+              "Kekurangan"
+            ],
+            "rows": [
+              [
+                "Top-down (memoization)",
+                "Fungsi rekursif ditambah cache hasil.",
+                "Paling dekat dengan rekurensi; hanya menghitung state yang dibutuhkan.",
+                "Terbatas kedalaman rekursi dan ada overhead pemanggilan."
+              ],
+              [
+                "Bottom-up (tabulation)",
+                "Loop mengisi tabel dari state terkecil ke atas.",
+                "Tanpa rekursi; mudah mengurangi memori.",
+                "Anda harus menemukan urutan pengisian yang valid; bisa menghitung state yang tidak terpakai."
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "Top-down: memoization dengan functools",
+      "body": [
+        "Di Python, `functools.cache` (Python 3.9+) atau `functools.lru_cache` menambahkan memoization pada fungsi hanya dengan satu baris:",
+        {
+          "code": "from functools import cache\n\n@cache\ndef fib(n):\n    if n < 2:\n        return n\n    return fib(n - 1) + fib(n - 2)\n\nprint(fib(80))  # 23416728348467685",
+          "lang": "python"
+        },
+        "Tanpa decorator, `fib(80)` akan melakukan lebih dari 10¹⁶ pemanggilan rekursif. Dengan decorator, setiap nilai dari 0 sampai 80 dihitung sekali."
+      ]
+    },
+    {
+      "h": "Contoh: coin change, bottom-up",
+      "body": [
+        "Koin 1, 3, dan 4; nominal 6. Pendekatan greedy mengambil 4 lebih dulu dan membutuhkan 4 + 1 + 1 = 3 koin, padahal 3 + 3 hanya memakai 2. DP menemukan minimum sebenarnya dengan mengisi `best[a]` untuk a = 0 sampai 6:",
+        {
+          "table": {
+            "head": [
+              "Nominal a",
+              "Opsi: 1 + best[a − c]",
+              "best[a]"
+            ],
+            "rows": [
+              [
+                "kasus dasar",
+                "base case",
+                "0"
+              ],
+              [
+                "1",
+                "c=1: 1 + best[0] = 1",
+                "1"
+              ],
+              [
+                "2",
+                "Contoh dua dimensi: longest common subsequence",
+                "Banyak masalah DP pada dua sequence memakai grid: `dp[i][j]` adalah jawaban untuk i karakter pertama dari satu string dan j karakter pertama dari string lain. Untuk longest common subsequence (LCS), jika karakternya cocok, perpanjang diagonal; jika tidak, ambil yang lebih baik dari membuang satu karakter dari salah satu string."
+              ],
+              [
+                "Salah satu LCS sepanjang 4 adalah BCBA. Struktur tabel yang sama menyelesaikan edit distance, yang dipakai alat diff teks untuk mengukur seberapa berbeda dua string.",
+                "Kompleksitas waktu dan ruang",
+                "Aturan umum: waktu = jumlah state × kerja per state; ruang = jumlah state yang disimpan."
+              ],
+              [
+                "Masalah",
+                "State",
+                "Waktu"
+              ],
+              [
+                "Ruang (bisa dikurangi menjadi)",
+                "Fibonacci",
+                "2"
+              ],
+              [
+                "6",
+                "O(n) → O(1) dengan dua variabel",
+                "Coin change (koin minimum)"
+              ]
+            ]
+          }
+        },
+        {
+          "code": "def min_coins(coins, amount):\n    INF = float(\"inf\")\n    best = [0] + [INF] * amount\n    for a in range(1, amount + 1):\n        for c in coins:\n            if c <= a and best[a - c] + 1 < best[a]:\n                best[a] = best[a - c] + 1\n    return best[amount] if best[amount] != INF else -1\n\nprint(min_coins([1, 3, 4], 6))  # 2\nprint(min_coins([2], 3))        # -1",
+          "lang": "python"
+        }
+      ]
+    },
+    {
+      "h": "nominal",
+      "body": [
+        "O(nominal × jumlah koin)",
+        {
+          "code": "def lcs(a, b):\n    dp = [[0] * (len(b) + 1) for _ in range(len(a) + 1)]\n    for i in range(1, len(a) + 1):\n        for j in range(1, len(b) + 1):\n            if a[i - 1] == b[j - 1]:\n                dp[i][j] = dp[i - 1][j - 1] + 1\n            else:\n                dp[i][j] = max(dp[i - 1][j], dp[i][j - 1])\n    return dp[len(a)][len(b)]\n\nprint(lcs(\"ABCBDAB\", \"BDCABA\"))  # 4",
+          "lang": "python"
+        },
+        "O(nominal)"
+      ]
+    },
+    {
+      "h": "LCS / edit distance",
+      "body": [
+        "The general rule: time = number of states × work per state; space = number of states stored.",
+        {
+          "table": {
+            "head": [
+              "Problem",
+              "O(n × m) → O(min(n, m)) jika hanya panjangnya yang dibutuhkan",
+              "Knapsack 0/1",
+              "barang × kapasitas"
+            ],
+            "rows": [
+              [
+                "Fibonacci",
+                "O(W) dengan satu baris, iterasi kapasitas menurun",
+                "O(n × W) pada knapsack bersifat pseudo-polynomial: bergantung pada nilai numerik W, bukan ukuran input dalam bit, sehingga lambat bila W sangat besar.",
+                "Kesalahan umum dan kapan memakai DP"
+              ],
+              [
+                "State yang salah: jika rekurensi membutuhkan informasi yang tidak dimiliki state (misalnya barang mana yang sudah dipakai), jawabannya salah. Tambahkan informasi itu ke state.",
+                "Urutan pengisian yang salah: loop bottom-up harus menghitung setiap state sebelum dibaca.",
+                "Off-by-one pada ukuran tabel: string sepanjang n membutuhkan n + 1 baris untuk menyertakan prefiks kosong.",
+                "Rekursi yang dalam: rekursi dengan memoization atas 10.000 state bisa melampaui batas rekursi Python; beralihlah ke bottom-up."
+              ],
+              [
+                "Argumen yang tidak hashable: `functools.cache` membutuhkan argumen yang hashable, jadi berikan tuple, bukan list.",
+                "Gunakan DP bila subproblem saling tumpang tindih. Jika tidak tumpang tindih, seperti pada merge sort, divide and conquer biasa sudah cukup. Jika pilihan terbaik secara lokal terbukti selalu benar, algoritma greedy lebih sederhana dan lebih cepat; coin change dengan nominal koin sembarang adalah kasus klasik ketika greedy gagal dan DP dibutuhkan.",
+                "Penggunaan umum dalam wawancara dan dunia nyata: climbing stairs, house robber, longest increasing subsequence, word break, unique paths pada grid, edit distance, knapsack, matrix chain multiplication; dalam praktik, sequence alignment di bioinformatika, alat diff, pemeriksa ejaan, pengenalan suara (algoritma Viterbi), dan jalur terpendek seperti Bellman-Ford.",
+                "Apa perbedaan memoization dan tabulation?"
+              ],
+              [
+                "Memoization bersifat top-down: fungsi rekursif menyimpan hasil ke cache saat menghitung. Tabulation bersifat bottom-up: loop mengisi tabel dari kasus dasar ke atas. Keduanya menghasilkan kompleksitas yang sama untuk sebagian besar masalah.",
+                "Bagaimana mengetahui apakah masalah membutuhkan dynamic programming?",
+                "Cari pertanyaan tentang yang terbaik, termurah, atau jumlah cara, ditambah rekursi brute-force yang mengulang subproblem yang sama. Jika Anda bisa mendefinisikan state dan rekurensi antar state, DP biasanya berlaku.",
+                "Apakah dynamic programming sama dengan rekursi?"
+              ]
+            ]
+          }
+        },
+        "Tidak. Rekursi adalah cara menulis kode; DP adalah gagasan menyelesaikan setiap subproblem sekali dan memakai ulang hasilnya. Solusi DP bisa rekursif dengan memoization atau iteratif dengan tabel."
+      ]
+    },
+    {
+      "h": "Apa perbedaan dynamic programming dan algoritma greedy?",
+      "body": [
+        {
+          "ul": [
+            "Algoritma greedy mengambil satu pilihan terbaik secara lokal di setiap langkah dan tidak pernah menimbang ulang. DP mempertimbangkan semua pilihan yang relevan untuk setiap subproblem dan menyimpan yang terbaik, sehingga benar pada kasus ketika greedy gagal.",
+            "Apa perbedaan dynamic programming dan divide and conquer?",
+            "Keduanya membagi masalah menjadi subproblem. Divide and conquer bekerja pada subproblem yang independen, sedangkan DP untuk subproblem yang tumpang tindih, sehingga menyimpan hasilnya menghemat kerja.",
+            "Deep recursion: a memoized recursion over 10,000 states can exceed Python's recursion limit; switch to bottom-up.",
+            "Unhashable arguments: `functools.cache` needs hashable arguments, so pass tuples instead of lists."
+          ]
+        },
+        {
+          "note": "Use DP when subproblems overlap. If they do not overlap, as in merge sort, plain divide and conquer is enough. If a locally best choice is provably always right, a greedy algorithm is simpler and faster; coin change with arbitrary coin values is the classic case where greedy fails and DP is needed."
+        },
+        "Typical interview and real-world uses: climbing stairs, house robber, longest increasing subsequence, word break, unique paths in a grid, edit distance, knapsack, matrix chain multiplication; in practice, sequence alignment in bioinformatics, diff tools, spell checkers, speech recognition (the Viterbi algorithm) and shortest paths such as Bellman-Ford."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "What is the difference between memoization and tabulation?",
+      "a": "Memoization is top-down: a recursive function caches results as it computes them. Tabulation is bottom-up: loops fill a table from the base cases upward. Both give the same complexity for most problems."
+    },
+    {
+      "q": "How do I know if a problem needs dynamic programming?",
+      "a": "Look for a question about the best, the cheapest or the number of ways, plus a brute-force recursion that repeats the same subproblems. If you can define a state and a recurrence between states, DP usually applies."
+    },
+    {
+      "q": "Is dynamic programming the same as recursion?",
+      "a": "No. Recursion is a way to write code; DP is the idea of solving each subproblem once and reusing the result. A DP solution can be recursive with memoization or iterative with a table."
+    },
+    {
+      "q": "What is the difference between dynamic programming and greedy algorithms?",
+      "a": "A greedy algorithm makes one locally best choice at each step and never reconsiders. DP considers all relevant choices for each subproblem and keeps the best, so it is correct in cases where greedy fails."
+    },
+    {
+      "q": "What is the difference between dynamic programming and divide and conquer?",
+      "a": "Both split a problem into subproblems. Divide and conquer works on independent subproblems, while DP is for subproblems that overlap, so storing their results saves work."
+    }
+  ]
+}

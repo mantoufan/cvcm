@@ -1,0 +1,177 @@
+{
+  "title": "Proxy パターン：TypeScript での仮想・保護・キャッシュプロキシ — cv.cm",
+  "description": "Proxy パターンは、本物のオブジェクトの前に代理オブジェクトを置いてアクセスを制御する設計パターンです。TypeScript と JavaScript の Proxy で、キャッシュ・遅延・保護プロキシを紹介します。",
+  "h1": "Proxy パターンとは？例でわかりやすく解説",
+  "answer": "Proxy は構造に関するデザインパターンで、本物のオブジェクトと同じインターフェースを持つ代理オブジェクトを用意し、本物へのアクセスを制御できるようにします。クライアントはプロキシを本物のオブジェクトであるかのように扱い、プロキシが各呼び出しをいつ、どのように転送するかを決めます。代表的な種類には、仮想プロキシ（遅延生成）、保護プロキシ（アクセスチェック）、キャッシュプロキシ、リモートプロキシがあります。",
+  "sections": [
+    {
+      "h": "目的と解決する問題",
+      "body": [
+        "目的：別のオブジェクトへのアクセスを制御するために、その代理または代替物を提供することです。Proxy は Gang of Four（GoF）の書籍にある構造パターンの 1 つです。",
+        "アプリがネットワーク越しに天気サービスを呼び出すとします。1 回の呼び出しに数百ミリ秒かかり、料金も発生しますが、同じ都市が 1 分間に何度も要求されることがよくあります。サービスのクラスは変更できず、呼び出し側のあらゆる場所にキャッシュのコードを足したくもありません。そこでプロキシを使います。プロキシは同じインターフェースを実装し、キャッシュを持ち、キャッシュミスのときだけ本物のサービスを呼び出します。呼び出し側は一切変更する必要がありません。",
+        "同じ考え方は、ほかの用途にも使えます。高コストなオブジェクトを最初に使われたときだけ生成する、呼び出しの前に権限を確認する、すべての呼び出しをログに記録する、本物のオブジェクトが別のマシンにあることを隠す、などです。"
+      ]
+    },
+    {
+      "h": "構造と登場する役割",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "役割",
+              "責務"
+            ],
+            "rows": [
+              [
+                "Subject",
+                "本物のオブジェクトとプロキシが共有するインターフェース。クライアントはどちらも同じように使える"
+              ],
+              [
+                "Real subject",
+                "実際の処理を行うオブジェクト"
+              ],
+              [
+                "Proxy",
+                "Subject のインターフェースを実装し、Real subject への参照を保持または生成して、転送の前後に制御ロジックを加える"
+              ],
+              [
+                "Client（クライアント）",
+                "Subject のインターフェースだけを扱い、プロキシを介しているかどうかを知らない"
+              ]
+            ]
+          }
+        },
+        {
+          "table": {
+            "head": [
+              "プロキシの種類",
+              "制御する対象"
+            ],
+            "rows": [
+              [
+                "仮想プロキシ",
+                "高コストなオブジェクトの生成を、必要になるまで遅らせる"
+              ],
+              [
+                "保護プロキシ",
+                "呼び出し元に操作の権限があるかを確認する"
+              ],
+              [
+                "キャッシュプロキシ",
+                "結果を保存し、同じリクエストが来たらそれを返す"
+              ],
+              [
+                "リモートプロキシ",
+                "別のプロセスやマシンにあるオブジェクトを代表し、通信を処理する"
+              ],
+              [
+                "ログプロキシ",
+                "本物のオブジェクトを変えずに、呼び出しと引数を記録する"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "TypeScript での実装：キャッシュプロキシ",
+      "body": [
+        "`WeatherService` が Subject です。`CachedWeatherService` がプロキシで、同じメソッドを持ち、キャッシュした値がない場合か古すぎる場合にだけ本物のサービスへ転送します。",
+        {
+          "code": "interface WeatherService {\n  getTemperature(city: string): Promise<number>;\n}\nclass RemoteWeatherService implements WeatherService {\n  calls = 0;\n  async getTemperature(city: string): Promise<number> {\n    this.calls++; // imagine a slow HTTP request here\n    return city.length * 3;\n  }\n}\nclass CachedWeatherService implements WeatherService {\n  private cache = new Map<string, { value: number; time: number }>();\n  constructor(private real: WeatherService, private maxAgeMs = 60_000) {}\n  async getTemperature(city: string): Promise<number> {\n    const hit = this.cache.get(city);\n    if (hit && Date.now() - hit.time < this.maxAgeMs) return hit.value;\n    const value = await this.real.getTemperature(city);\n    this.cache.set(city, { value, time: Date.now() });\n    return value;\n  }\n}\nasync function main() {\n  const real = new RemoteWeatherService();\n  const weather: WeatherService = new CachedWeatherService(real);\n  await weather.getTemperature(\"Paris\");\n  await weather.getTemperature(\"Paris\");\n  console.log(await weather.getTemperature(\"Hanoi\"), \"real calls:\", real.calls);\n  // 15 real calls: 2\n}\nmain();",
+          "lang": "typescript"
+        },
+        "クライアント側の変数は `WeatherService` 型なので、たとえば依存性注入の設定など、1 か所で本物のサービスとプロキシを切り替えられます。"
+      ]
+    },
+    {
+      "h": "JavaScript の Proxy による仮想・保護プロキシ",
+      "body": [
+        "JavaScript には組み込みの `Proxy` オブジェクト（ES2015）があり、プロパティの読み取り・書き込み・関数呼び出しといった操作を、トラップと呼ばれるハンドラ関数で横取りできます。インターフェースごとにクラスを書かなくてもプロキシを作れる便利な手段です。",
+        {
+          "code": "type Account = { owner: string; balance: number };\nfunction readOnly<T extends object>(target: T): T {\n  return new Proxy(target, {\n    set(_obj, prop) {\n      throw new Error(\"Cannot change \" + String(prop) + \": read-only\");\n    },\n  });\n}\nconst account = readOnly<Account>({ owner: \"Ana\", balance: 100 });\nconsole.log(account.balance); // 100\ntry {\n  account.balance = 0;\n} catch (e) {\n  console.log((e as Error).message); // Cannot change balance: read-only\n}",
+          "lang": "typescript"
+        },
+        {
+          "note": "JavaScript の `Proxy` は 1 つのオブジェクトに対する操作を横取りしますが、無料ではありません。トラップされた操作のたびに関数が実行されます。コストを測らずに、頻繁にアクセスされるデータ構造を `Proxy` で包まないでください。"
+        }
+      ]
+    },
+    {
+      "h": "使うべき場面と避けるべき場面",
+      "body": [
+        {
+          "ul": [
+            "本物のクラスや呼び出し側を変えずに、遅延ロード、アクセス制御、キャッシュ、ログ記録、リモートアクセスを加えたいときに使います。",
+            "ライブラリのクラスやネットワーククライアントのように、本物のオブジェクトを自分では変更できないときに使います。",
+            "単純な関数ラッパーで足りるときは使いません。関数 1 つなら、クラスよりも `memoize(fn)` のような高階関数のほうが簡単です。",
+            "遅い、または失敗するリモート呼び出しを、ローカルに見えるプロキシの陰に隠さないでください。呼び出し側は遅延とエラーを処理する必要があるため、インターフェースでそれを明示します（たとえば `Promise` を返す）。",
+            "同一性に注意しましょう。プロキシは本物の Subject とは別のオブジェクトなので、`proxy === real` は false になります。"
+          ]
+        }
+      ]
+    },
+    {
+      "h": "実際の利用例",
+      "body": [
+        {
+          "ul": [
+            "Vue 3 は、リアクティビティシステムを JavaScript の `Proxy` で構築しています。プロパティを読み取ると依存関係が記録され、書き込むと更新が実行されます。",
+            "Java には、実行時に動的なプロキシクラスを作る `java.lang.reflect.Proxy` があります。フレームワークはこれを使って、インターフェースの周りにトランザクション、セキュリティチェック、リモート呼び出しを追加します。",
+            "Hibernate のようなオブジェクトリレーショナルマッパーは、関連するエンティティに遅延プロキシを返し、最初にアクセスされたときにデータベースから本物のデータを読み込みます。",
+            "リモートプロシージャコール（RPC）ライブラリは、ローカルのオブジェクトのように見えて、呼び出しのたびにネットワークへ送信するクライアントスタブを生成します。"
+          ]
+        }
+      ]
+    },
+    {
+      "h": "関連するパターン",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "パターン",
+              "Proxy パターンとの違い"
+            ],
+            "rows": [
+              [
+                "Decorator パターン",
+                "構造は同じですが、目的が違います。Decorator は新しい振る舞いを追加し、積み重ねて使われることが多いのに対し、Proxy はアクセスを制御し、通常は本物のオブジェクトのライフサイクルを管理します。"
+              ],
+              [
+                "Adapter パターン",
+                "Adapter はオブジェクトに別のインターフェースを与えます。Proxy はまったく同じインターフェースを保ちます。"
+              ],
+              [
+                "Facade パターン",
+                "Facade はサブシステム全体に対する、新しくて簡単なインターフェースを提供します。Proxy は 1 つのオブジェクトの代理を務めます。"
+              ],
+              [
+                "Flyweight パターン",
+                "Flyweight はオブジェクトを共有してメモリを節約します。仮想プロキシはオブジェクトの生成を遅らせて、時間とメモリを節約します。"
+              ]
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Proxy パターンと Decorator パターンの違いは何ですか？",
+      "a": "どちらも同じインターフェースでオブジェクトを包みます。Decorator は責務を追加するもので、通常はクライアントが組み合わせます。Proxy は本物のオブジェクトへのアクセスを制御し、そのオブジェクト自体を生成・管理することもよくあります。"
+    },
+    {
+      "q": "JavaScript の Proxy オブジェクトは、Proxy パターンと同じものですか？",
+      "a": "このパターンを簡単に実装できるようにする言語機能です。JavaScript の `Proxy` は、トラップを通じて対象オブジェクトへの操作を横取りします。これはまさに GoF の意味でのプロキシの働きです。"
+    },
+    {
+      "q": "仮想プロキシとは何ですか？",
+      "a": "仮想プロキシは、大きな画像のように生成コストが高いオブジェクトの代理です。それを必要とするメソッドが初めて呼ばれたときに、はじめて本物のオブジェクトを生成します。"
+    },
+    {
+      "q": "リバースプロキシサーバーは Proxy パターンの例ですか？",
+      "a": "ネットワークレベルで同じ考え方に従っています。nginx のようなサーバーが、同じ HTTP インターフェースで他のサーバーの前に立ち、キャッシュ、アクセス制御、負荷分散を加えます。GoF のパターンは、同じ考え方を 1 つのプログラム内のオブジェクトについて説明したものです。"
+    }
+  ]
+}

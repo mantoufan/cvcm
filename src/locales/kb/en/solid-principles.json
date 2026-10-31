@@ -1,0 +1,172 @@
+{
+  "title": "SOLID principles: the five rules of object-oriented design with examples — cv.cm",
+  "description": "The five SOLID principles of object-oriented design explained one by one, each with a short TypeScript before/after example, plus when to apply them.",
+  "h1": "SOLID principles explained with examples",
+  "answer": "SOLID is an acronym for five object-oriented design principles: Single responsibility, Open/closed, Liskov substitution, Interface segregation and Dependency inversion. They were collected by Robert C. Martin, and the acronym was coined by Michael Feathers. Together they aim to make code easier to change: each class has one reason to change, new behavior is added without editing old code, subtypes are safe replacements, interfaces stay small, and high-level code depends on abstractions.",
+  "sections": [
+    {
+      "h": "What SOLID means",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Letter",
+              "Principle",
+              "Short rule"
+            ],
+            "rows": [
+              [
+                "S",
+                "Single responsibility principle (SRP)",
+                "A class should have only one reason to change."
+              ],
+              [
+                "O",
+                "Open/closed principle (OCP)",
+                "Software should be open for extension but closed for modification."
+              ],
+              [
+                "L",
+                "Liskov substitution principle (LSP)",
+                "Subtypes must be usable wherever their base type is expected."
+              ],
+              [
+                "I",
+                "Interface segregation principle (ISP)",
+                "Clients should not be forced to depend on methods they do not use."
+              ],
+              [
+                "D",
+                "Dependency inversion principle (DIP)",
+                "Depend on abstractions, not on concrete details."
+              ]
+            ]
+          }
+        },
+        "The ideas are older than the acronym. The open/closed principle comes from Bertrand Meyer's book Object-Oriented Software Construction (1988), and the substitution principle from Barbara Liskov's 1987 keynote Data Abstraction and Hierarchy. Robert C. Martin described all five in his writing around 2000, and Michael Feathers later arranged them into the word SOLID."
+      ]
+    },
+    {
+      "h": "S: Single responsibility principle",
+      "body": [
+        "A class should have one reason to change, meaning it should serve one actor or one concern. When a class mixes business rules, formatting and storage, a change to any of them risks breaking the others.",
+        "Before: one class calculates, formats and saves a report.",
+        {
+          "code": "class Report {\n  constructor(private sales: number[]) {}\n  total(): number { return this.sales.reduce((a, b) => a + b, 0); }\n  toHtml(): string { return `<p>Total: ${this.total()}</p>`; }\n  saveToFile(path: string): void { /* write this.toHtml() to disk */ }\n}",
+          "lang": "typescript"
+        },
+        "After: each concern lives in its own small unit, so a new output format does not touch the calculation.",
+        {
+          "code": "class SalesReport {\n  constructor(private sales: number[]) {}\n  total(): number { return this.sales.reduce((a, b) => a + b, 0); }\n}\nclass HtmlFormatter {\n  format(r: SalesReport): string { return `<p>Total: ${r.total()}</p>`; }\n}\nclass ReportWriter {\n  save(content: string, path: string): void { /* write to disk */ }\n}\nconst html = new HtmlFormatter().format(new SalesReport([10, 20, 5]));\nconsole.log(html); // <p>Total: 35</p>",
+          "lang": "typescript"
+        }
+      ]
+    },
+    {
+      "h": "O: Open/closed principle",
+      "body": [
+        "You should be able to add new behavior by adding new code, not by editing code that already works and is tested. The usual tool is an interface plus polymorphism.",
+        "Before: every new shape means editing the `area` function.",
+        {
+          "code": "type Shape = { kind: \"circle\"; r: number } | { kind: \"square\"; side: number };\nfunction area(s: Shape): number {\n  if (s.kind === \"circle\") return Math.PI * s.r ** 2;\n  if (s.kind === \"square\") return s.side ** 2;\n  throw new Error(\"unknown shape\");\n}",
+          "lang": "typescript"
+        },
+        "After: a new shape is a new class; existing code stays unchanged.",
+        {
+          "code": "interface Shape { area(): number; }\nclass Circle implements Shape {\n  constructor(private r: number) {}\n  area(): number { return Math.PI * this.r ** 2; }\n}\nclass Square implements Shape {\n  constructor(private side: number) {}\n  area(): number { return this.side ** 2; }\n}\nconst totalArea = (shapes: Shape[]) => shapes.reduce((sum, s) => sum + s.area(), 0);\nconsole.log(totalArea([new Square(2), new Square(3)])); // 13",
+          "lang": "typescript"
+        },
+        {
+          "note": "In TypeScript, a union type with an exhaustive `switch` is also a valid design. It makes adding new operations easy and adding new types harder, which is the opposite trade-off. Choose based on which kind of change is more likely."
+        }
+      ]
+    },
+    {
+      "h": "L: Liskov substitution principle",
+      "body": [
+        "If code works with a base type, it must keep working when given any subtype. A subtype must not strengthen preconditions, weaken guarantees, or throw where the base type does not.",
+        "Before: the classic square/rectangle problem. `Square` extends `Rectangle` but breaks the expectation that width and height are independent.",
+        {
+          "code": "class Rectangle {\n  constructor(public width: number, public height: number) {}\n  setWidth(w: number): void { this.width = w; }\n  setHeight(h: number): void { this.height = h; }\n  area(): number { return this.width * this.height; }\n}\nclass Square extends Rectangle {\n  setWidth(w: number): void { this.width = w; this.height = w; }\n  setHeight(h: number): void { this.width = h; this.height = h; }\n}\nfunction stretch(r: Rectangle): number {\n  r.setWidth(5);\n  r.setHeight(4);\n  return r.area(); // caller expects 20\n}\nconsole.log(stretch(new Rectangle(1, 1))); // 20\nconsole.log(stretch(new Square(1, 1)));    // 16, surprise",
+          "lang": "typescript"
+        },
+        "After: do not model the relation as inheritance. Both types implement a shared read-only interface, and nobody expects to resize a square's sides independently.",
+        {
+          "code": "interface Shape { area(): number; }\nclass Rectangle implements Shape {\n  constructor(readonly width: number, readonly height: number) {}\n  area(): number { return this.width * this.height; }\n}\nclass Square implements Shape {\n  constructor(readonly side: number) {}\n  area(): number { return this.side ** 2; }\n}\nconsole.log([new Rectangle(5, 4), new Square(4)].map((s) => s.area())); // [ 20, 16 ]",
+          "lang": "typescript"
+        }
+      ]
+    },
+    {
+      "h": "I: Interface segregation principle",
+      "body": [
+        "Large interfaces force classes to implement methods they cannot support, usually by throwing errors. Split them into small, focused interfaces, and let each class implement only what it really does.",
+        "Before: a simple printer must pretend it can scan and fax.",
+        {
+          "code": "interface Machine {\n  print(doc: string): void;\n  scan(): string;\n  fax(doc: string): void;\n}\nclass BasicPrinter implements Machine {\n  print(doc: string): void { console.log(\"print\", doc); }\n  scan(): string { throw new Error(\"not supported\"); }\n  fax(doc: string): void { throw new Error(\"not supported\"); }\n}",
+          "lang": "typescript"
+        },
+        "After: small role interfaces that can be combined.",
+        {
+          "code": "interface Printer { print(doc: string): void; }\ninterface Scanner { scan(): string; }\nclass BasicPrinter implements Printer {\n  print(doc: string): void { console.log(\"print\", doc); }\n}\nclass OfficeMachine implements Printer, Scanner {\n  print(doc: string): void { console.log(\"print\", doc); }\n  scan(): string { return \"scanned page\"; }\n}\nfunction printAll(p: Printer, docs: string[]): void { docs.forEach((d) => p.print(d)); }\nprintAll(new BasicPrinter(), [\"a.pdf\"]); // print a.pdf",
+          "lang": "typescript"
+        }
+      ]
+    },
+    {
+      "h": "D: Dependency inversion principle",
+      "body": [
+        "High-level policy should not depend on low-level details such as a specific database or email service. Both should depend on an abstraction, and the high-level module usually owns that abstraction. In practice, you pass dependencies in (dependency injection) instead of creating them inside.",
+        "Before: the service creates a concrete database client, so it cannot be tested or switched.",
+        {
+          "code": "class MySqlUserStore {\n  find(id: string): string { return \"user \" + id; }\n}\nclass UserService {\n  private store = new MySqlUserStore(); // hard-wired detail\n  greet(id: string): string { return \"Hello, \" + this.store.find(id); }\n}",
+          "lang": "typescript"
+        },
+        "After: the service depends on an interface; any implementation can be injected, including a fake in tests.",
+        {
+          "code": "interface UserStore { find(id: string): string; }\nclass UserService {\n  constructor(private store: UserStore) {}\n  greet(id: string): string { return \"Hello, \" + this.store.find(id); }\n}\nclass InMemoryUserStore implements UserStore {\n  constructor(private users: Record<string, string>) {}\n  find(id: string): string { return this.users[id] ?? \"unknown\"; }\n}\nconst service = new UserService(new InMemoryUserStore({ u1: \"Ada\" }));\nconsole.log(service.greet(\"u1\")); // Hello, Ada",
+          "lang": "typescript"
+        },
+        {
+          "note": "Dependency inversion is a design principle; dependency injection is one technique to achieve it. An injection container or framework is optional. Passing objects through a constructor is enough."
+        }
+      ]
+    },
+    {
+      "h": "When to apply SOLID, and when not to",
+      "body": [
+        "SOLID principles are guidelines for code that changes often, not laws. Applied blindly, they produce many tiny classes and interfaces with a single implementation, which makes code harder to follow.",
+        {
+          "ul": [
+            "Apply them when you feel the pain they address: a class that breaks every time anything changes, a test that needs a real database, or a switch statement copied into many places.",
+            "Do not add an interface for every class in advance. Extract one when a second implementation or a test double appears.",
+            "In small scripts and prototypes, simple and direct code is usually better.",
+            "Many design patterns are concrete applications of SOLID: Strategy and Decorator support open/closed, Adapter and Facade help isolate details, and Abstract Factory supports dependency inversion."
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Who created the SOLID principles?",
+      "a": "Robert C. Martin collected and described the five principles, building on earlier work by Bertrand Meyer (open/closed) and Barbara Liskov (substitution). Michael Feathers coined the acronym SOLID."
+    },
+    {
+      "q": "Does SOLID apply to functional programming?",
+      "a": "The ideas translate: small functions with one purpose, composing behavior instead of editing it, and passing dependencies as parameters. The class-based wording is specific to object-oriented code."
+    },
+    {
+      "q": "What is the difference between dependency inversion and dependency injection?",
+      "a": "Dependency inversion is the principle that high-level code should depend on abstractions. Dependency injection is a technique that supplies those dependencies from outside, for example through a constructor."
+    },
+    {
+      "q": "Which SOLID principle is most important?",
+      "a": "There is no official ranking. Single responsibility and dependency inversion usually give the quickest benefit, because they make code easier to understand and to test."
+    },
+    {
+      "q": "Is it bad to break a SOLID principle?",
+      "a": "Not always. Every principle has a cost in extra code. Break one deliberately when the simpler design is clearer and the change it protects against is unlikely."
+    }
+  ]
+}

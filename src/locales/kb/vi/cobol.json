@@ -1,0 +1,194 @@
+{
+  "title": "Hướng dẫn COBOL: các division, dữ liệu PIC, vòng lặp PERFORM và tệp — cv.cm",
+  "description": "Học COBOL cơ bản: biên dịch Hello world bằng GnuCOBOL, hiểu bốn division, mệnh đề PIC, IF và EVALUATE, vòng lặp PERFORM, bảng, tệp và xử lý lỗi.",
+  "h1": "Hướng dẫn COBOL cho người mới bắt đầu",
+  "answer": "COBOL (Common Business-Oriented Language) là ngôn ngữ biên dịch được thiết kế cho xử lý dữ liệu nghiệp vụ: bản ghi, tệp, báo cáo và số học thập phân chính xác. Chương trình chia thành bốn division, dữ liệu được mô tả bằng mệnh đề PIC (picture), và mã đọc giống câu tiếng Anh như `ADD AMOUNT TO TOTAL`. COBOL vẫn vận hành các hệ thống lõi tại ngân hàng, công ty bảo hiểm và cơ quan chính phủ, chủ yếu trên máy chủ mainframe của IBM. Bạn có thể học miễn phí với trình biên dịch GnuCOBOL: `cobc -x hello.cob`.",
+  "sections": [
+    {
+      "h": "COBOL là gì và ai dùng nó",
+      "body": [
+        "COBOL được ủy ban CODASYL thiết kế năm 1959, chịu ảnh hưởng mạnh từ ngôn ngữ FLOW-MATIC trước đó của Grace Hopper. Ngôn ngữ này được ISO chuẩn hóa; các chuẩn sau bổ sung lập trình có cấu trúc, hướng đối tượng và các tính năng khác, và bản sửa đổi mới nhất được công bố năm 2023.",
+        "COBOL được dùng cho xử lý theo lô và hệ thống giao dịch: xử lý tài khoản, bảng lương, bồi thường bảo hiểm, hệ thống thuế và phúc lợi. Phần lớn mã này chạy trên mainframe IBM Z với IBM Enterprise COBOL, cùng CICS cho giao dịch và Db2 cho dữ liệu. Các công việc bảo trì và hiện đại hóa những hệ thống này vẫn còn phổ biến."
+      ]
+    },
+    {
+      "h": "Cài GnuCOBOL và chạy Hello, world",
+      "body": [
+        "GnuCOBOL là trình biên dịch miễn phí, dịch COBOL sang C rồi thành chương trình gốc. Nó có sẵn dưới dạng gói `gnucobol` trên nhiều bản phân phối Linux và trong Homebrew trên macOS; người dùng Windows có thể dùng WSL hoặc gói dựng sẵn.",
+        {
+          "code": "       IDENTIFICATION DIVISION.\n       PROGRAM-ID. HELLO.\n       PROCEDURE DIVISION.\n           DISPLAY \"Hello, world!\".\n           STOP RUN.",
+          "lang": "cobol"
+        },
+        {
+          "code": "cobc -x hello.cob\n./hello\n# Hello, world!",
+          "lang": "shell"
+        },
+        "Mã dùng định dạng cố định truyền thống: cột 1 đến 6 dành cho số thứ tự, cột 7 đánh dấu chú thích (`*`) hoặc dòng nối tiếp, Area A (cột 8 đến 11) chứa tên division, section và paragraph, còn Area B (cột 12 đến 72) chứa các câu lệnh. GnuCOBOL cũng chấp nhận mã nguồn dạng tự do với `cobc -x -free`. Tùy chọn `-x` tạo tệp thực thi thay vì module."
+      ]
+    },
+    {
+      "h": "Bốn division",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Division",
+              "Mục đích"
+            ],
+            "rows": [
+              [
+                "IDENTIFICATION DIVISION",
+                "Đặt tên chương trình (`PROGRAM-ID`)"
+              ],
+              [
+                "ENVIRONMENT DIVISION",
+                "Kết nối chương trình với thế giới bên ngoài, ví dụ nó dùng những tệp nào"
+              ],
+              [
+                "DATA DIVISION",
+                "Khai báo toàn bộ dữ liệu: bản ghi tệp, vùng lưu trữ làm việc, tham số"
+              ],
+              [
+                "PROCEDURE DIVISION",
+                "Các câu lệnh thực thi, tổ chức thành các paragraph"
+              ]
+            ]
+          }
+        },
+        "Mọi biến phải được khai báo trong DATA DIVISION trước khi dùng. WORKING-STORAGE SECTION chứa các biến của chương trình, FILE SECTION mô tả bản ghi tệp, và LINKAGE SECTION mô tả tham số do bên gọi truyền vào."
+      ]
+    },
+    {
+      "h": "Dữ liệu và mệnh đề PIC",
+      "body": [
+        "COBOL mô tả dữ liệu theo đúng bố cục của nó. Số cấp (level number) thể hiện thứ bậc (01 là một bản ghi, 05 là một trường bên trong), còn mệnh đề PIC cho biết định dạng: `X` là ký tự bất kỳ, `9` là chữ số, `S` là dấu, và `V` là dấu thập phân ngầm định.",
+        {
+          "table": {
+            "head": [
+              "Khai báo",
+              "Ý nghĩa",
+              "Giá trị ví dụ"
+            ],
+            "rows": [
+              [
+                "`PIC X(10)`",
+                "10 ký tự, được đệm thêm dấu cách",
+                "`\"Ana       \"`"
+              ],
+              [
+                "`PIC 9(3)`",
+                "Số 3 chữ số không dấu",
+                "`030`"
+              ],
+              [
+                "`PIC S9(5)V99`",
+                "Có dấu, 5 chữ số trước và 2 chữ số sau dấu thập phân",
+                "`-01234.50`"
+              ],
+              [
+                "`PIC $ZZ,ZZ9.99`",
+                "Đầu ra đã biên tập: ký hiệu tiền tệ, số 0 đứng đầu thành dấu cách",
+                "`$ 1,234.50`"
+              ],
+              [
+                "`PIC S9(7)V99 COMP-3`",
+                "Thập phân đóng gói (packed decimal), phổ biến trên mainframe",
+                "lưu trong 5 byte"
+              ],
+              [
+                "`88 IS-DONE VALUE \"Y\"`",
+                "Tên điều kiện: phép kiểm tra Boolean trên trường cha của nó",
+                "`IF IS-DONE`"
+              ]
+            ]
+          }
+        },
+        {
+          "code": "       IDENTIFICATION DIVISION.\n       PROGRAM-ID. DATA-DEMO.\n       DATA DIVISION.\n       WORKING-STORAGE SECTION.\n       01  WS-NAME        PIC X(10)      VALUE \"Ana\".\n       01  WS-AGE         PIC 9(3)       VALUE 30.\n       01  WS-PRICE       PIC S9(5)V99   VALUE 1234.50.\n       01  WS-PRICE-OUT   PIC $ZZ,ZZ9.99.\n       01  WS-CUSTOMER.\n           05  WS-FIRST   PIC X(10).\n           05  WS-LAST    PIC X(15).\n       PROCEDURE DIVISION.\n           MOVE WS-PRICE TO WS-PRICE-OUT\n           DISPLAY WS-NAME \"is \" WS-AGE\n           DISPLAY \"Price: \" WS-PRICE-OUT\n           STOP RUN.\n      *> Ana       is 030\n      *> Price: $ 1,234.50",
+          "lang": "cobol"
+        },
+        "Số được lưu ở dạng thập phân, nên `0.10 + 0.20` đúng bằng `0.30`, đây là một lý do COBOL phù hợp với tiền bạc. `WS-CUSTOMER` là một mục nhóm: có thể chuyển cả nhóm hoặc từng trường."
+      ]
+    },
+    {
+      "h": "Luồng điều khiển: IF, EVALUATE và PERFORM",
+      "body": [
+        {
+          "code": "       IDENTIFICATION DIVISION.\n       PROGRAM-ID. CONTROL-DEMO.\n       DATA DIVISION.\n       WORKING-STORAGE SECTION.\n       01  WS-I        PIC 99.\n       01  WS-TOTAL    PIC 9(4) VALUE 0.\n       01  WS-SCORE    PIC 999  VALUE 85.\n       PROCEDURE DIVISION.\n           PERFORM VARYING WS-I FROM 1 BY 1 UNTIL WS-I > 10\n               ADD WS-I TO WS-TOTAL\n           END-PERFORM\n           DISPLAY \"Total: \" WS-TOTAL\n           EVALUATE TRUE\n               WHEN WS-SCORE >= 90\n                   DISPLAY \"A\"\n               WHEN WS-SCORE >= 80\n                   DISPLAY \"B\"\n               WHEN OTHER\n                   DISPLAY \"C\"\n           END-EVALUATE\n           IF WS-TOTAL > 50\n               DISPLAY \"big\"\n           ELSE\n               DISPLAY \"small\"\n           END-IF\n           STOP RUN.\n      *> Total: 0055\n      *> B\n      *> big",
+          "lang": "cobol"
+        },
+        "`PERFORM VARYING` là vòng lặp đếm của COBOL và `PERFORM UNTIL condition` là vòng lặp while. `EVALUATE` là câu lệnh switch. Các từ kết thúc phạm vi như `END-IF` và `END-PERFORM` đóng từng khối; dấu chấm kết thúc cả câu."
+      ]
+    },
+    {
+      "h": "Paragraph, số học và bảng",
+      "body": [
+        "COBOL không có hàm theo nghĩa thông thường. Bạn tổ chức logic thành các paragraph có tên và chạy chúng bằng `PERFORM`; các đơn vị lớn hơn trở thành chương trình riêng, được gọi bằng `CALL \"PROG\" USING ...`. Số học dùng các động từ (`ADD`, `SUBTRACT`, `MULTIPLY`, `DIVIDE`) hoặc `COMPUTE` với một công thức. Mảng được gọi là bảng (table) và khai báo bằng `OCCURS`; chỉ số bắt đầu từ 1.",
+        {
+          "code": "       IDENTIFICATION DIVISION.\n       PROGRAM-ID. PARA-DEMO.\n       DATA DIVISION.\n       WORKING-STORAGE SECTION.\n       01  WS-PRICES.\n           05  WS-PRICE   PIC 9(3)V99 OCCURS 3 TIMES.\n       01  WS-I           PIC 9.\n       01  WS-SUM         PIC 9(4)V99 VALUE 0.\n       01  WS-SUM-OUT     PIC Z,ZZ9.99.\n       PROCEDURE DIVISION.\n       MAIN-PARA.\n           MOVE 10.50 TO WS-PRICE(1)\n           MOVE 4.25  TO WS-PRICE(2)\n           MOVE 7.00  TO WS-PRICE(3)\n           PERFORM ADD-PRICE VARYING WS-I FROM 1 BY 1 UNTIL WS-I > 3\n           COMPUTE WS-SUM = WS-SUM * 1.1\n           MOVE WS-SUM TO WS-SUM-OUT\n           DISPLAY \"With 10% tax: \" WS-SUM-OUT\n           STOP RUN.\n       ADD-PRICE.\n           ADD WS-PRICE(WS-I) TO WS-SUM.\n      *> With 10% tax:    23.92",
+          "lang": "cobol"
+        },
+        "Tổng là 21.75; nhân với 1.1 được 23.925, và COBOL cắt bớt về hai chữ số thập phân đã khai báo (23.92) trừ khi bạn viết `COMPUTE ... ROUNDED`."
+      ]
+    },
+    {
+      "h": "Xử lý lỗi",
+      "body": [
+        "Trong mã thông thường, COBOL không có ngoại lệ. Thay vào đó, các câu lệnh có mệnh đề điều kiện: `ON SIZE ERROR` cho tràn số hoặc chia cho không, `AT END` cho hết tệp, `INVALID KEY` cho tệp có chỉ mục, và trường `FILE STATUS` nhận mã hai ký tự sau mỗi thao tác tệp (`\"00\"` nghĩa là thành công).",
+        {
+          "code": "           DIVIDE WS-A BY WS-B GIVING WS-C\n               ON SIZE ERROR\n                   DISPLAY \"Division failed\"\n               NOT ON SIZE ERROR\n                   DISPLAY \"Result: \" WS-C\n           END-DIVIDE",
+          "lang": "cobol"
+        }
+      ]
+    },
+    {
+      "h": "Một chương trình hoàn chỉnh nhỏ: tổng của tệp doanh số",
+      "body": [
+        "Đọc các bản ghi có bố cục cố định từ tệp là công việc điển hình của COBOL. Chương trình này đọc `sales.txt`, trong đó mỗi dòng có tên mặt hàng 10 ký tự theo sau là số tiền 7 chữ số với hai chữ số thập phân ngầm định.",
+        {
+          "code": "apples    0001250\npears     0000899\nplums     0002000",
+          "lang": "text"
+        },
+        {
+          "code": "       IDENTIFICATION DIVISION.\n       PROGRAM-ID. SALES-TOTAL.\n       ENVIRONMENT DIVISION.\n       INPUT-OUTPUT SECTION.\n       FILE-CONTROL.\n           SELECT SALES-FILE ASSIGN TO \"sales.txt\"\n               ORGANIZATION IS LINE SEQUENTIAL\n               FILE STATUS IS WS-FS.\n       DATA DIVISION.\n       FILE SECTION.\n       FD  SALES-FILE.\n       01  SALES-REC.\n           05  SR-ITEM     PIC X(10).\n           05  SR-AMOUNT   PIC 9(5)V99.\n       WORKING-STORAGE SECTION.\n       01  WS-FS           PIC XX.\n       01  WS-EOF          PIC X VALUE \"N\".\n           88  NO-MORE-RECORDS       VALUE \"Y\".\n       01  WS-TOTAL        PIC 9(7)V99 VALUE 0.\n       01  WS-TOTAL-OUT    PIC Z,ZZZ,ZZ9.99.\n       PROCEDURE DIVISION.\n           OPEN INPUT SALES-FILE\n           IF WS-FS NOT = \"00\"\n               DISPLAY \"Cannot open file, status \" WS-FS\n               STOP RUN\n           END-IF\n           PERFORM UNTIL NO-MORE-RECORDS\n               READ SALES-FILE\n                   AT END SET NO-MORE-RECORDS TO TRUE\n                   NOT AT END ADD SR-AMOUNT TO WS-TOTAL\n               END-READ\n           END-PERFORM\n           CLOSE SALES-FILE\n           MOVE WS-TOTAL TO WS-TOTAL-OUT\n           DISPLAY \"Total sales: \" WS-TOTAL-OUT\n           STOP RUN.",
+          "lang": "cobol"
+        },
+        "Khi chạy, chương trình in `Total sales:` theo sau là `41.49` căn phải trong trường đã biên tập rộng 12 ký tự. `LINE SEQUENTIAL` nghĩa là tệp văn bản mỗi dòng một bản ghi; GnuCOBOL và các trình biên dịch PC khác hỗ trợ kiểu này, còn chương trình mainframe thường đọc các dataset độ dài cố định được định nghĩa trong JCL.",
+        {
+          "note": "Các lỗi thường gặp của người mới: dấu chấm lạc trong khối `IF` làm kết thúc sớm cả câu lệnh (hãy dùng các từ kết thúc phạm vi như `END-IF`); mã nằm ngoài cột 8 đến 72 ở định dạng cố định; bị cắt bớt âm thầm khi chuyển giá trị vào trường quá nhỏ (`MOVE 1234 TO` một trường `PIC 99` sẽ lưu 34); lưu kết quả âm vào trường không có `S` trong PIC, làm mất dấu; và quên `ON SIZE ERROR` hoặc kiểm tra trạng thái tệp."
+        }
+      ]
+    },
+    {
+      "h": "Học tiếp ở đâu",
+      "body": [
+        {
+          "ul": [
+            "Các trang dự án GnuCOBOL và Programmer's Guide của nó để có tài liệu tham khảo ngôn ngữ đầy đủ.",
+            "Tài liệu IBM Enterprise COBOL for z/OS về COBOL trên mainframe, cách dùng CICS và Db2.",
+            "Luyện đọc và ghi tệp, sắp xếp bằng động từ `SORT`, và tạo báo cáo có định dạng.",
+            "Học các công cụ mainframe xung quanh (JCL, TSO/ISPF) nếu bạn muốn làm việc với hệ thống sản xuất."
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "COBOL còn được dùng không?",
+      "a": "Có. Nhiều ngân hàng, công ty bảo hiểm và cơ quan chính phủ vẫn chạy các chương trình COBOL cho xử lý lô và giao dịch cốt lõi, nên nhu cầu về lập trình viên có thể bảo trì và hiện đại hóa chúng vẫn tiếp diễn."
+    },
+    {
+      "q": "COBOL có khó học không?",
+      "a": "Cú pháp dài dòng nhưng đơn giản, và hầu hết người mới có thể nhanh chóng viết được chương trình chạy được. Phần khó hơn là môi trường mainframe xung quanh: JCL, dataset, CICS và Db2."
+    },
+    {
+      "q": "Tôi có thể học COBOL mà không cần mainframe không?",
+      "a": "Được. GnuCOBOL chạy trên Linux, macOS và Windows và hỗ trợ COBOL chuẩn, nên bạn có thể học ngôn ngữ trên máy tính thông thường trước khi chuyển sang mainframe."
+    },
+    {
+      "q": "Vì sao COBOL dùng số thập phân?",
+      "a": "Dữ liệu nghiệp vụ như tiền bạc phải chính xác. COBOL lưu số dưới dạng chữ số thập phân với số chữ số thập phân cố định, tránh được sai số làm tròn của dấu phẩy động nhị phân."
+    }
+  ]
+}

@@ -1,0 +1,186 @@
+{
+  "title": "Lua入門：テーブル・関数・メタテーブル・エラー処理を解説 — cv.cm",
+  "description": "Luaの基本を順に学べる入門講座。Hello, worldの実行、ローカル変数と型、ループ、関数とクロージャ、テーブル、メタテーブル、オブジェクト指向、pcallによるエラー処理を解説します。",
+  "h1": "Lua入門：初心者向けチュートリアル",
+  "answer": "Luaは、ゲーム、Roblox(派生言語のLuau経由)、Neovim、Redis、組み込み機器などで使われている、軽量で組み込みやすいスクリプト言語です。構文が小さく、データ構造はテーブル1つだけで、これが配列・辞書・オブジェクトを兼ねます。このページでは、Luaのインストール、変数と型、制御構文、関数、テーブル、メタテーブル、pcallによるエラー処理、そして完成したサンプルを扱います。",
+  "sections": [
+    {
+      "h": "Luaとは何か、何に使うのか",
+      "body": [
+        "Luaは、1993年にブラジルの大学PUC-Rioで生まれた、小さくて高速な動的型付けのスクリプト言語です。インタープリター全体がC言語で書かれたコンパクトなライブラリなので、大きなプログラムの中に簡単に組み込めます。データ構造はテーブルだけで概念も少ないため、短期間で習得できます。",
+        "Luaは主に組み込み用のスクリプト言語として使われています。ゲームエンジンやゲーム(RobloxはLuauというLuaの派生言語を使い、LÖVEやDefoldはLuaを使います)、エディターのNeovim、データベースのRedis、OpenRestyを使ったNginxなどのネットワークツール、さまざまな組み込み機器が例です。LuaJITは、Lua 5.1のコード向けの代表的なJIT(ジャストインタイム)コンパイラです。"
+      ]
+    },
+    {
+      "h": "LuaのインストールとHello, worldの実行",
+      "body": [
+        "Luaは、パッケージマネージャー(たとえば`brew install lua`や`apt install lua5.4`)でインストールするか、lua.orgのソースからビルドします。`lua`だけを実行すると対話プロンプトが起動します。",
+        {
+          "code": "-- hello.lua\nprint(\"Hello, world!\")",
+          "lang": "lua"
+        },
+        {
+          "code": "lua hello.lua\n# Hello, world!",
+          "lang": "shell"
+        },
+        "コメントは`--`で始まります。ブロックコメントは`--[[ ... ]]`と書きます。文末にセミコロンは必要ありません。"
+      ]
+    },
+    {
+      "h": "変数と基本の型",
+      "body": [
+        "変数はデフォルトでグローバルになります。本当にグローバルにしたい場合を除き、必ず`local`を付けて宣言しましょう。Luaの基本型は8種類あり、日常的によく使うものを下の表にまとめました。",
+        {
+          "code": "local name = \"Lua\"\nlocal year = 1993              -- integer\nlocal pi = 3.14159             -- float\nlocal ok = true\nlocal nothing = nil\n\nprint(type(name), type(year), type(nothing))  -- string  number  nil\nprint(math.type(year), math.type(pi))         -- integer  float\nprint(name .. \" \" .. year)                    -- Lua 1993 (.. joins strings)\nprint(#name)                                  -- 3 (length)\nprint(7 / 2, 7 // 2, 7 % 2, 2 ^ 10)           -- 3.5  3  1  1024.0\nprint(string.format(\"%.2f\", pi))              -- 3.14\nprint(tonumber(\"42\") + 1, tostring(10))       -- 43  10",
+          "lang": "lua"
+        },
+        {
+          "table": {
+            "head": [
+              "型",
+              "例",
+              "補足"
+            ],
+            "rows": [
+              [
+                "nil",
+                "`nil`",
+                "値がないこと。設定していない変数はnilになります"
+              ],
+              [
+                "boolean",
+                "`true`, `false`",
+                "偽になるのは`false`と`nil`だけで、`0`と`\"\"`は真です"
+              ],
+              [
+                "number",
+                "`42`, `3.14`",
+                "Lua 5.3以降は整数と浮動小数点数のサブタイプがあります"
+              ],
+              [
+                "string",
+                "`\"hi\"`, `'hi'`, `[[long]]`",
+                "変更できないバイト列の文字列"
+              ],
+              [
+                "table",
+                "`{1, 2, x = 3}`",
+                "唯一のデータ構造"
+              ],
+              [
+                "function",
+                "`function() end`",
+                "第一級の値"
+              ]
+            ]
+          }
+        },
+        "「等しくない」演算子は`!=`ではなく`~=`です。論理演算子は`and`、`or`、`not`という単語です。"
+      ]
+    },
+    {
+      "h": "制御構文",
+      "body": [
+        "ブロックはキーワード`end`で閉じます。Luaには`if`/`elseif`/`else`、`while`、`repeat ... until`、数値の`for`、イテレーターを扱える汎用の`for`があります。",
+        {
+          "code": "local score = 72\nif score >= 90 then\n  print(\"A\")\nelseif score >= 70 then\n  print(\"B\")                   -- B\nelse\n  print(\"C\")\nend\n\nfor i = 1, 3 do                -- 1 to 3, inclusive\n  io.write(i, \" \")             -- 1 2 3\nend\nprint()\n\nfor i = 10, 1, -4 do io.write(i, \" \") end   -- 10 6 2\nprint()\n\nlocal n = 3\nwhile n > 0 do n = n - 1 end\n\nrepeat\n  n = n + 1\nuntil n >= 2\nprint(n)                       -- 2",
+          "lang": "lua"
+        },
+        "`continue`文はありません。`::continue::`ラベルと`goto continue`を使うか、`if`でループの構造を組み替えてください。"
+      ]
+    },
+    {
+      "h": "関数",
+      "body": [
+        "関数は値です。`...`で可変個の引数を受け取れ、複数の値を返せます。クロージャは外側のスコープのローカル変数を捕捉します。",
+        {
+          "code": "local function add(a, b)\n  return a + b\nend\n\nlocal function minmax(t)\n  local lo, hi = math.huge, -math.huge\n  for _, v in ipairs(t) do\n    lo, hi = math.min(lo, v), math.max(hi, v)\n  end\n  return lo, hi                -- two return values\nend\n\nlocal function counter()\n  local count = 0\n  return function()            -- a closure\n    count = count + 1\n    return count\n  end\nend\n\nprint(add(2, 3))               -- 5\nlocal lo, hi = minmax({4, 9, 1})\nprint(lo, hi)                  -- 1  9\nlocal next_id = counter()\nprint(next_id(), next_id())    -- 1  2\nlocal function sum(...)\n  local total = 0\n  for _, v in ipairs({...}) do total = total + v end\n  return total\nend\nprint(sum(1, 2, 3))            -- 6",
+          "lang": "lua"
+        }
+      ]
+    },
+    {
+      "h": "テーブル：配列・辞書・オブジェクト",
+      "body": [
+        "テーブルは連想配列で、`nil`以外のどんな値でもキーにできます。この1つの構造が、配列、辞書、集合、モジュール、オブジェクトの役割を果たします。慣例として、配列の添字は1から始まります。",
+        {
+          "code": "local fruits = {\"apple\", \"banana\"}\ntable.insert(fruits, \"cherry\")\nprint(#fruits, fruits[1])            -- 3  apple\n\nfor i, f in ipairs(fruits) do        -- array part, in order\n  print(i, f)\nend\n\nlocal ages = {ann = 31, bo = 25}\nages[\"cy\"] = 40\nages.bo = nil                        -- remove a key\nfor k, v in pairs(ages) do           -- all keys, order not defined\n  print(k, v)\nend\n\ntable.sort(fruits, function(a, b) return a > b end)\nprint(table.concat(fruits, \", \"))    -- cherry, banana, apple",
+          "lang": "lua"
+        },
+        {
+          "note": "添字は1から始まり、`#t`が確実に使えるのは穴のないシーケンスだけです。配列の途中で`t[2] = nil`とすると長さが不定になるので、要素を削除して詰めたいときは`table.remove(t, 2)`を使ってください。"
+        }
+      ]
+    },
+    {
+      "h": "メタテーブルとオブジェクト指向のLua",
+      "body": [
+        "メタテーブルはLuaを代表する機能です。テーブルにメタテーブルを付けると、そのテーブルの振る舞いを変えられます。`__index`は存在しないキーの値を補い(継承に使われます)、`__add`、`__eq`、`__tostring`などのフィールドは演算子をオーバーロードします。コロン構文`obj:method()`は、オブジェクトを隠れた第1引数`self`として渡します。",
+        {
+          "code": "local Vector = {}\nVector.__index = Vector\n\nfunction Vector.new(x, y)\n  return setmetatable({x = x, y = y}, Vector)\nend\n\nfunction Vector:length()\n  return math.sqrt(self.x ^ 2 + self.y ^ 2)\nend\n\nVector.__add = function(a, b) return Vector.new(a.x + b.x, a.y + b.y) end\nVector.__tostring = function(v) return \"(\" .. v.x .. \", \" .. v.y .. \")\" end\n\nlocal v = Vector.new(3, 4) + Vector.new(0, 0)\nprint(tostring(v))       -- (3, 4)\nprint(v:length())        -- 5.0",
+          "lang": "lua"
+        },
+        "Luaにはコルーチン(`coroutine.create`、`coroutine.resume`、`coroutine.yield`)もあり、関数を途中で一時停止して後から再開できます。ゲームのスクリプトでは、複数フレームにまたがる段階的な動きを書くときによく使われます。"
+      ]
+    },
+    {
+      "h": "エラー処理",
+      "body": [
+        "エラーは`error(message)`で発生させます。`pcall`(保護呼び出し)で捕捉すると、プログラムが止まる代わりに`false`とエラーが返ります。`io.open`のように、エラーを発生させず`nil`とエラーメッセージを返すライブラリ関数も多くあります。",
+        {
+          "code": "local function divide(a, b)\n  if b == 0 then\n    error(\"division by zero\")\n  end\n  return a / b\nend\n\nlocal ok, result = pcall(divide, 10, 2)\nprint(ok, result)                  -- true  5.0\n\nok, result = pcall(divide, 1, 0)\nprint(ok, result)                  -- false  script.lua:3: division by zero\n\nlocal f, err = io.open(\"missing.txt\", \"r\")\nif not f then print(\"open failed: \" .. err) end",
+          "lang": "lua"
+        },
+        "エラーメッセージに含まれるファイル名と行番号は、コードが実行される場所によって変わります。`assert(value, message)`は`value`が`false`または`nil`のときにエラーを発生させるので、結果を手早く確認する方法として便利です。"
+      ]
+    },
+    {
+      "h": "小さな完成プログラム：単語カウント",
+      "body": [
+        "このプログラムは、パターンマッチで文章中の単語を数え、出現頻度順に並べて上位3つを表示します。文字列パターン、テーブル、独自の比較関数によるソート、文字列の書式化を使っています。",
+        {
+          "code": "local text = [[\nThe cat and the dog. The dog sat,\nand the cat ran.\n]]\n\nlocal counts = {}\nfor word in text:lower():gmatch(\"%a+\") do\n  counts[word] = (counts[word] or 0) + 1\nend\n\nlocal list = {}\nfor word, n in pairs(counts) do\n  list[#list + 1] = {word = word, n = n}\nend\ntable.sort(list, function(a, b)\n  if a.n ~= b.n then return a.n > b.n end\n  return a.word < b.word\nend)\n\nfor i = 1, 3 do\n  print(string.format(\"%-4s %d\", list[i].word, list[i].n))\nend\n-- the  4\n-- and  2\n-- cat  2",
+          "lang": "lua"
+        },
+        {
+          "note": "初心者がよくやる間違い：`local`を付け忘れて意図せずグローバル変数を作る、`~=`の代わりに`!=`を使う、配列が0から始まると思い込む、メソッド呼び出しで`:`の代わりに`.`を使う(`obj.method()`では`self`が渡されません)、`pairs`が決まった順序でキーを返すと思い込む、などです。"
+        }
+      ]
+    },
+    {
+      "h": "次に学ぶこと",
+      "body": [
+        {
+          "ul": [
+            "lua.orgにあるLua Reference Manual。短くて、必要なことが網羅されています。",
+            "Luaの作者の一人であるRoberto Ierusalimschyの『Programming in Lua』。初版はオンラインで無料で読めます。",
+            "Neovim用のLuaガイド、LÖVE、RobloxのLuauドキュメントなど、使っているホスト環境のドキュメント。",
+            "LuaRocks。Luaモジュールのパッケージマネージャーです。"
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Luaの配列はなぜ1から始まるのですか？",
+      "a": "Luaの設計者は、数学や、プログラマーでない人にとって一般的な数え方に合わせて、1始まりの添字を選びました。`ipairs`、`#`、`table.insert`といった標準ライブラリの関数は、いずれもシーケンスが1から始まることを前提にしています。"
+    },
+    {
+      "q": "LuaはPythonより速いですか？",
+      "a": "標準のLuaインタープリターは小さく、動的言語としては一般に高速です。LuaJITは多くの処理でさらに大幅に速くなります。実際の速度は処理内容によって変わるので、自分のケースで計測してください。"
+    },
+    {
+      "q": "pairsとipairsの違いは何ですか？",
+      "a": "`ipairs`は添字1から順に配列部分をたどり、最初の`nil`で止まります。`pairs`はテーブルのすべてのキーを、順序を保証せずに走査します。"
+    },
+    {
+      "q": "Luauとは何ですか？",
+      "a": "LuauはLua 5.1から派生し、Robloxが開発している言語です。段階的型付けと性能改善が加わっており、Robloxのゲームで使われています。"
+    },
+    {
+      "q": "Luaは初心者に向いていますか？",
+      "a": "はい。構文が小さく一貫していて概念も少ないため、ゲームのMOD作りや学習用に人気があります。標準ライブラリが最小限なので、機能を増やすにはホストプログラムやモジュールに頼ることになります。"
+    }
+  ]
+}

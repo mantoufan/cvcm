@@ -1,0 +1,175 @@
+{
+  "title": "橋接模式：分離抽象與實作，附 TypeScript 範例 — cv.cm",
+  "description": "說明橋接（Bridge）設計模式：把類別拆成可獨立變化的抽象階層與實作階層。附 TypeScript 範例與實際應用。",
+  "h1": "橋接模式詳解與範例",
+  "answer": "橋接是一種結構型設計模式，它把一個龐大的類別階層拆成兩個獨立的階層：抽象與實作，並以組合連接起來。抽象（例如各種報表）持有一個實作物件（例如輸出渲染器）的參照，並把低階的工作委派給它。這樣兩邊就能各自獨立成長，3 種報表搭配 3 種渲染器只需要 6 個類別，而不是 9 個子類別組合。",
+  "sections": [
+    {
+      "h": "意圖",
+      "body": [
+        "把抽象與它的實作解耦，讓兩者可以獨立變化。橋接是《設計模式》（Gang of Four，簡稱 GoF）一書中七種結構型模式之一，在書中也稱為 Handle/Body。"
+      ]
+    },
+    {
+      "h": "它解決的問題",
+      "body": [
+        "想像一個應用程式，要透過電子郵件和簡訊兩個管道，傳送警示和提醒兩種訊息。如果用繼承來建模，你會得到 `EmailAlert`、`SmsAlert`、`EmailReminder` 和 `SmsReminder`。再加上推播管道和摘要訊息，就需要九個類別。任何一邊每多一種類型，總數都會成倍增加。",
+        "真正的問題在於，這個類別階層把兩個獨立的問題混在一起：訊息是什麼，以及訊息如何送達。橋接把它們分成兩個階層，再用一個參照連接起來，於是總數是以相加而不是相乘的方式成長。",
+        {
+          "table": {
+            "head": [
+              "設計",
+              "2 種訊息 × 2 個管道",
+              "3 種訊息 × 3 個管道",
+              "4 種訊息 × 4 個管道"
+            ],
+            "rows": [
+              [
+                "每種組合一個子類別",
+                "4 個類別",
+                "9 個類別",
+                "16 個類別"
+              ],
+              [
+                "橋接",
+                "4 個類別",
+                "6 個類別",
+                "8 個類別"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "結構與參與者",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "參與者",
+              "職責",
+              "範例中的對應"
+            ],
+            "rows": [
+              [
+                "抽象（Abstraction）",
+                "用戶端使用的高層介面；持有一個實作者的參照。",
+                "`Message`"
+              ],
+              [
+                "精緻抽象（RefinedAbstraction）",
+                "擴充抽象，加入變化的行為。",
+                "`Alert`、`Reminder`"
+              ],
+              [
+                "實作者（Implementor）",
+                "低階操作的介面。",
+                "`Sender`"
+              ],
+              [
+                "具體實作者（ConcreteImplementor）",
+                "為某個平台或技術實作低階操作。",
+                "`EmailSender`、`SmsSender`"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "TypeScript 實作",
+      "body": [
+        {
+          "code": "// Implementor: how a message is delivered.\ninterface Sender {\n  deliver(to: string, subject: string, body: string): string;\n}\n\nclass EmailSender implements Sender {\n  deliver(to: string, subject: string, body: string) { return `email ${to} | ${subject} | ${body}`; }\n}\n\nclass SmsSender implements Sender {\n  deliver(to: string, subject: string, body: string) { return `sms ${to} | ${subject}: ${body}`.slice(0, 40); }\n}\n\n// Abstraction: what the message is. It holds the bridge to a Sender.\nabstract class Message {\n  constructor(protected sender: Sender) {}\n  abstract send(to: string): string;\n}\n\nclass Alert extends Message {\n  constructor(sender: Sender, private problem: string) { super(sender); }\n  send(to: string): string {\n    return this.sender.deliver(to, \"ALERT\", this.problem.toUpperCase());\n  }\n}\n\nclass Reminder extends Message {\n  constructor(sender: Sender, private task: string, private due: string) { super(sender); }\n  send(to: string): string {\n    return this.sender.deliver(to, \"Reminder\", `${this.task} by ${this.due}`);\n  }\n}\n\nconsole.log(new Alert(new SmsSender(), \"disk full\").send(\"+100\")); // sms +100 | ALERT: DISK FULL\nconsole.log(new Reminder(new EmailSender(), \"Pay invoice\", \"Friday\").send(\"ada@example.com\"));\n// email ada@example.com | Reminder | Pay invoice by Friday",
+          "lang": "typescript"
+        },
+        "新增 `PushSender` 只需要一個類別，它立刻就能搭配警示和提醒使用。新增 `Digest` 訊息也只需要一個類別，它立刻就能搭配每一種傳送者使用。因為傳送者只是建構函式的一個引數，所以也可以在執行時期選擇，例如依使用者的偏好設定決定。"
+      ]
+    },
+    {
+      "h": "何時使用、何時不該用",
+      "body": [
+        "在以下情況使用橋接：",
+        {
+          "ul": [
+            "一個類別在兩個或更多互相獨立的維度上變化，而繼承會為每一種組合都產生一個類別。",
+            "你想在執行時期切換實作，或是讓多個抽象共用同一個實作物件。",
+            "你寫的程式必須能在多個平台（作業系統、渲染後端、資料庫引擎）上執行，並希望把平台細節放進另一個獨立的階層。"
+          ]
+        },
+        "在以下情況應避免使用：",
+        {
+          "ul": [
+            "只有一個變化維度。一個簡單的介面搭配多個實作就夠了。",
+            "你只有一個實作，卻「為了以後」而加入它。多出來的一層只會讓程式碼更難閱讀，目前卻沒有任何好處。"
+          ]
+        },
+        {
+          "note": "橋接是一開始就設計好的，前提是你知道兩邊都會變化。如果你是事後才要讓現有的類別符合某個介面，需要的是轉接器，而不是橋接。"
+        }
+      ]
+    },
+    {
+      "h": "實際應用",
+      "body": [
+        {
+          "ul": [
+            "Java 的 JDBC 是一個有名的例子：應用程式碼是針對 JDBC API 撰寫，而每家資料庫廠商提供實作低階操作的驅動程式。兩邊可以各自演進。",
+            "圖形與 UI 工具箱在與平台無關的元件或形狀 API 底下，接上與平台相關的繪圖後端。GoF 一書自己的範例，就是一個 `Window` 抽象，搭配每種視窗系統各自的 `WindowImp` 實作。",
+            "記錄（logging）函式庫通常會把程式碼呼叫的記錄器 API，與寫入檔案、主控台或網路服務的處理器（handler 或 appender）分開。"
+          ]
+        }
+      ]
+    },
+    {
+      "h": "相關模式",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "模式",
+              "與橋接的關係"
+            ],
+            "rows": [
+              [
+                "轉接器",
+                "形狀相似，但它是在不相關的現有類別設計完成之後，讓它們能夠一起運作。橋接則是在撰寫類別之前就規劃好。"
+              ],
+              [
+                "策略",
+                "同樣是委派給一個可互換的物件。策略著重於替換演算法；橋接則是把整個抽象階層與實作階層分開。"
+              ],
+              [
+                "抽象工廠",
+                "可以為橋接建立並設定正確的實作物件，例如正確的平台後端。"
+              ],
+              [
+                "組合",
+                "橋接同樣是建立在「組合優於繼承」之上，但組合模式談的是物件構成的樹狀結構，而不是兩個獨立的階層。"
+              ]
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "橋接模式中的「實作」是什麼意思？",
+      "a": "它指的不是類別內部的程式碼，而是由另一個獨立的物件階層來負責低階、與平台相關的工作，抽象會把工作委派給它。"
+    },
+    {
+      "q": "橋接和策略有什麼差別？",
+      "a": "兩者的結構幾乎一樣。策略著重於替換物件內部的某個演算法，橋接則是把兩個完整的階層分開，讓各自都能獨立擴充。"
+    },
+    {
+      "q": "橋接和轉接器有什麼差別？",
+      "a": "橋接是事先設計好，讓兩邊都能變化。轉接器則是事後才加入，讓現有且不相容的類別符合某個介面。"
+    },
+    {
+      "q": "橋接就是依賴注入嗎？",
+      "a": "不是。橋接是一種組織兩個階層的方式。依賴注入是提供實作物件的方式，也是讓抽象取得其實作者的自然做法。"
+    }
+  ]
+}

@@ -1,0 +1,193 @@
+{
+  "title": "Tutorial Dart: null safety, fungsi, koleksi, dan async — cv.cm",
+  "description": "Belajar Dart dari nol: jalankan Hello, world, variabel dan tipe, sound null safety, switch pattern, fungsi, list dan map, record, class, dan async/await.",
+  "h1": "Tutorial Dart untuk pemula",
+  "answer": "Dart adalah bahasa berorientasi objek bertipe statis dari Google, paling dikenal sebagai bahasa framework aplikasi Flutter. Dart punya sound null safety, dikompilasi ke kode native maupun ke JavaScript atau WebAssembly, dan mendukung hot reload yang cepat saat pengembangan. Halaman ini membahas setup, tipe, null safety, alur kontrol, fungsi, koleksi, class, kode async, dan penanganan error.",
+  "sections": [
+    {
+      "h": "Apa itu Dart dan untuk apa digunakan",
+      "body": [
+        "Dart adalah bahasa pemrograman yang dioptimalkan untuk klien, dikembangkan oleh Google. Dart bertipe statis dengan type inference, punya sound null safety, dan dikompilasi ke kode mesin native (untuk mobile, desktop, dan server) maupun ke JavaScript atau WebAssembly (untuk web). Saat pengembangan, Dart berjalan di virtual machine dengan hot reload, sehingga perubahan muncul di aplikasi yang sedang berjalan dalam hitungan detik.",
+        "Kebanyakan orang belajar Dart untuk membuat aplikasi dengan Flutter, UI toolkit dari Google untuk Android, iOS, web, Windows, macOS, dan Linux dari satu codebase. Dart juga dipakai untuk tool command line dan layanan backend."
+      ]
+    },
+    {
+      "h": "Instal Dart dan jalankan Hello, world",
+      "body": [
+        "Instal Dart SDK dari dart.dev (atau instal Flutter, yang sudah menyertakan Dart). Setiap program Dart dimulai dari fungsi `main` tingkat atas.",
+        {
+          "code": "// hello.dart\nvoid main() {\n  print('Hello, world!');\n}",
+          "lang": "dart"
+        },
+        {
+          "code": "dart run hello.dart\n# Hello, world!\ndart compile exe hello.dart   # builds a native executable\ndart create my_app            # creates a new console project",
+          "lang": "shell"
+        },
+        "Anda juga bisa mencoba semua contoh di halaman ini di DartPad, editor berbasis browser di dartpad.dev."
+      ]
+    },
+    {
+      "h": "Variabel dan tipe dasar",
+      "body": [
+        "Gunakan `var` agar compiler menebak tipenya, `final` untuk variabel yang diisi sekali, dan `const` untuk konstanta saat kompilasi. Anda selalu bisa menuliskan tipenya secara eksplisit.",
+        {
+          "code": "void main() {\n  var name = 'Dart';        // inferred as String\n  int year = 2011;          // explicit type\n  final now = DateTime.now(); // set once, at run time\n  const pi = 3.14159;       // compile-time constant\n  double ratio = 2;         // int literal becomes 2.0\n  bool ok = year > 2000;\n  print('$name since $year, pi=${pi.toStringAsFixed(2)}, ok=$ok, ratio=$ratio');\n  // Dart since 2011, pi=3.14, ok=true, ratio=2.0\n  print(now.year > 2000);   // true\n}",
+          "lang": "dart"
+        },
+        {
+          "table": {
+            "head": [
+              "Tipe",
+              "Contoh",
+              "Catatan"
+            ],
+            "rows": [
+              [
+                "`int`",
+                "`42`",
+                "bilangan bulat; 64-bit di platform native"
+              ],
+              [
+                "`double`",
+                "`3.14`",
+                "bilangan floating point 64-bit"
+              ],
+              [
+                "`num`",
+                "`7` or `7.5`",
+                "supertipe dari `int` dan `double`"
+              ],
+              [
+                "`bool`",
+                "`true`",
+                "hanya `true` dan `false` yang boleh dipakai dalam kondisi"
+              ],
+              [
+                "`String`",
+                "`'hi'`",
+                "UTF-16; mendukung interpolasi `$x` dan `${expr}`"
+              ],
+              [
+                "`dynamic`",
+                "apa saja",
+                "mematikan pengecekan statis; hindari di sebagian besar kode"
+              ]
+            ]
+          }
+        },
+        "Di web, nilai `int` direpresentasikan sebagai angka JavaScript, sehingga bilangan bulat yang sangat besar bisa kehilangan presisi di sana."
+      ]
+    },
+    {
+      "h": "Sound null safety",
+      "body": [
+        "Sejak Dart 3, semua kode Dart memakai sound null safety. Variabel bertipe `String` tidak pernah bisa null; untuk mengizinkan null, tulis `String?`. Compiler memeriksa setiap penggunaan, sehingga error null tertangkap sebelum program berjalan.",
+        {
+          "code": "int lengthOf(String? s) {\n  // return s.length;         // compile error: s might be null\n  if (s == null) return 0;\n  return s.length;            // promoted to String after the check\n}\nvoid main() {\n  String? nickname;\n  print(nickname?.length);    // null (null-aware access)\n  print(nickname ?? 'guest'); // guest (default if null)\n  nickname ??= 'dee';         // assign only if null\n  print(lengthOf(nickname));  // 3\n  late String config;         // initialized later, checked at run time\n  config = 'loaded';\n  print(config);              // loaded\n}",
+          "lang": "dart"
+        },
+        {
+          "note": "Operator `!` (misalnya `s!.length`) memberi tahu compiler bahwa nilainya tidak null dan melempar error saat runtime jika Anda salah. Utamakan pengecekan null atau `??`. Perhatikan juga bahwa `late` memindahkan pengecekan ke runtime: membaca variabel `late` sebelum diisi akan melempar error."
+        }
+      ]
+    },
+    {
+      "h": "Alur kontrol",
+      "body": [
+        "Dart punya `if`, `for`, `while`, dan `do-while` seperti biasa, ditambah loop `for-in` untuk iterable apa pun. Sejak Dart 3, `switch` mendukung pattern matching dan bisa dipakai sebagai ekspresi.",
+        {
+          "code": "void main() {\n  var scores = [72, 95, 48];\n  for (var s in scores) {\n    if (s >= 90) {\n      print('$s excellent');\n    } else if (s >= 50) {\n      print('$s pass');\n    } else {\n      print('$s fail');\n    }\n  }\n  for (var i = 0; i < 3; i++) {\n    print('i = $i');\n  }\n  var day = 6;\n  var kind = switch (day) {\n    6 || 7 => 'weekend',\n    >= 1 && <= 5 => 'weekday',\n    _ => 'invalid',\n  };\n  print(kind); // weekend\n}",
+          "lang": "dart"
+        }
+      ]
+    },
+    {
+      "h": "Fungsi",
+      "body": [
+        "Fungsi adalah objek kelas satu (first-class). Parameter bisa positional, positional opsional dalam `[]`, atau named dalam `{}`. Named parameter bersifat opsional kecuali ditandai `required`. Sintaks panah `=>` adalah singkatan untuk fungsi yang mengembalikan satu ekspresi.",
+        {
+          "code": "int add(int a, int b) => a + b;\nString greet(String name, {String greeting = 'Hello', required bool loud}) {\n  var text = '$greeting, $name';\n  return loud ? text.toUpperCase() : text;\n}\nString label(String text, [int? width]) =>\n    width == null ? text : text.padRight(width, '.');\nvoid main() {\n  print(add(2, 3));                              // 5\n  print(greet('Ana', loud: false));              // Hello, Ana\n  print(greet('Ana', greeting: 'Hi', loud: true)); // HI, ANA\n  print(label('id', 5));                         // id...\n  var twice = (int x) => x * 2;                  // anonymous function\n  print([1, 2, 3].map(twice).toList());          // [2, 4, 6]\n}",
+          "lang": "dart"
+        }
+      ]
+    },
+    {
+      "h": "Koleksi: List, Set, Map, dan record",
+      "body": [
+        "Koleksi inti adalah `List` (berurutan), `Set` (item unik), dan `Map` (pasangan key-value). Literal koleksi mendukung `if`, `for`, dan operator spread `...`. Record, yang ditambahkan di Dart 3, mengelompokkan beberapa nilai tanpa mendeklarasikan class.",
+        {
+          "code": "void main() {\n  var nums = [3, 1, 2];               // List<int>\n  nums.add(4);\n  nums.sort();\n  print(nums);                        // [1, 2, 3, 4]\n  var tags = {'dart', 'flutter', 'dart'};\n  print(tags.length);                 // 2\n  var ages = {'Ann': 31, 'Bo': 25};   // Map<String, int>\n  ages['Cy'] = 40;\n  print(ages['Bo']);                  // 25\n  var showAll = false;\n  var menu = ['Home', if (showAll) 'Admin', for (var n in nums) 'Item $n'];\n  print(menu);  // [Home, Item 1, Item 2, Item 3, Item 4]\n  (String, int) pair = ('Ann', 31);   // a record\n  var (who, age) = pair;              // destructuring\n  print('$who is $age');              // Ann is 31\n}",
+          "lang": "dart"
+        }
+      ]
+    },
+    {
+      "h": "Class dan async/await",
+      "body": [
+        "Dart berorientasi objek: setiap nilai adalah objek. Class mendukung konstruktor dengan initializing formal (`this.x`), named constructor, getter, mixin, dan interface. Kode asinkron memakai `Future` dan `Stream` dengan `async` dan `await`, yang menjaga aplikasi Flutter tetap responsif saat menunggu file atau jaringan.",
+        {
+          "code": "class Point {\n  final double x, y;\n  const Point(this.x, this.y);\n  Point.origin() : x = 0, y = 0;     // named constructor\n  double get sum => x + y;           // getter\n  @override\n  String toString() => 'Point($x, $y)';\n}\nFuture<String> fetchUser() async {\n  await Future.delayed(Duration(milliseconds: 100));\n  return 'ana';\n}\nFuture<void> main() async {\n  print(Point(1, 2).sum);            // 3.0\n  print(Point.origin());             // Point(0.0, 0.0)\n  var user = await fetchUser();\n  print('user: $user');              // user: ana\n}",
+          "lang": "dart"
+        }
+      ]
+    },
+    {
+      "h": "Penanganan error",
+      "body": [
+        "Lempar exception dengan `throw` dan tangani dengan `try`, `on`, `catch`, dan `finally`. Gunakan `on SomeType` untuk menangkap tipe tertentu. Dart membedakan `Exception` (masalah yang diperkirakan dan bisa ditangani program) dari `Error` (bug, seperti assertion yang gagal atau range error) yang biasanya tidak perlu ditangkap.",
+        {
+          "code": "int parseAge(String s) {\n  var n = int.tryParse(s);            // null instead of throwing\n  if (n == null || n < 0) {\n    throw FormatException('Not a valid age: $s');\n  }\n  return n;\n}\nvoid main() {\n  for (var input in ['42', 'abc']) {\n    try {\n      print(parseAge(input));\n    } on FormatException catch (e) {\n      print('Error: ${e.message}');\n    } finally {\n      print('checked $input');\n    }\n  }\n}\n// 42 / checked 42 / Error: Not a valid age: abc / checked abc",
+          "lang": "dart"
+        }
+      ]
+    },
+    {
+      "h": "Program lengkap kecil: total keranjang belanja",
+      "body": [
+        "Program ini memodelkan produk dengan class, menyimpan keranjang dalam map, dan mencetak struk. Program ini memadukan class, map, pemformatan string, dan method koleksi.",
+        {
+          "code": "class Product {\n  final String name;\n  final double price;\n  const Product(this.name, this.price);\n}\nvoid main() {\n  const apple = Product('Apple', 0.5);\n  const bread = Product('Bread', 2.25);\n  final cart = <Product, int>{apple: 6, bread: 2};\n  var total = 0.0;\n  cart.forEach((product, qty) {\n    final line = product.price * qty;\n    total += line;\n    print('${product.name.padRight(6)} x$qty  ${line.toStringAsFixed(2)}');\n  });\n  final count = cart.values.reduce((a, b) => a + b);\n  print('$count items, total ${total.toStringAsFixed(2)}');\n}\n// Apple  x6  3.00\n// Bread  x2  4.50\n// 8 items, total 7.50",
+          "lang": "dart"
+        },
+        {
+          "note": "Kesalahan umum pemula: lupa `await` (yang didapat adalah `Future`, bukan nilai); memakai `dynamic` atau membiarkan tipe sebagai `Object` sehingga kehilangan pengecekan saat kompilasi; terlalu sering memakai `!` dan `late`; menyamakan `final` (diisi sekali) dengan `const` (diketahui saat kompilasi); dan mengubah list saat sedang diiterasi."
+        }
+      ]
+    },
+    {
+      "h": "Langkah selanjutnya",
+      "body": [
+        {
+          "ul": [
+            "Language tour dan tutorial Dart di dart.dev.",
+            "Effective Dart, panduan gaya dan desain resmi.",
+            "Dokumentasi Flutter di flutter.dev jika Anda ingin membuat aplikasi.",
+            "pub.dev, repositori package untuk Dart dan Flutter."
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Apakah Dart hanya untuk Flutter?",
+      "a": "Tidak. Dart adalah bahasa serbaguna dan bisa dipakai untuk membuat tool command line, server, dan aplikasi web. Flutter hanyalah alasan paling populer untuk mempelajarinya."
+    },
+    {
+      "q": "Apakah Dart dikompilasi atau diinterpretasi?",
+      "a": "Keduanya ada. Saat pengembangan Dart berjalan di VM dengan kompilasi just-in-time dan hot reload; untuk rilis, Dart dikompilasi ahead-of-time ke kode mesin native, atau ke JavaScript atau WebAssembly untuk web."
+    },
+    {
+      "q": "Apa perbedaan final dan const di Dart?",
+      "a": "Variabel `final` diisi sekali, mungkin saat runtime. Nilai `const` harus diketahui saat kompilasi dan bersifat immutable secara mendalam, sehingga Flutter bisa memakai ulang widget konstan."
+    },
+    {
+      "q": "Apakah Dart mirip Java atau JavaScript?",
+      "a": "Sintaks bergaya C dan class-nya terasa familier bagi developer Java, C#, dan JavaScript. Berbeda dari JavaScript, Dart bertipe statis dan punya sound null safety."
+    },
+    {
+      "q": "Apa fungsi operator ?? di Dart?",
+      "a": "`a ?? b` mengembalikan `a` jika tidak null, dan jika tidak mengembalikan `b`. Operator terkait `a ??= b` mengisi `a` dengan `b` hanya ketika `a` null."
+    }
+  ]
+}

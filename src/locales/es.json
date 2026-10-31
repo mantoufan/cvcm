@@ -3953,7 +3953,12 @@
       "codes": "Códigos",
       "files": "Archivos",
       "audio": "Audio",
-      "text": "Texto"
+      "text": "Texto",
+      "dev": "Desarrollo y web",
+      "time": "Fechas y horas",
+      "money": "Dinero y compras",
+      "health": "Salud y ejercicio",
+      "math": "Matemáticas y estudio"
     },
     "hub": {
       "kicker": "Lecciones del mismo día",
@@ -7487,6 +7492,399 @@
     "margin-vs-markup": {
       "name": "Margen vs markup",
       "blurb": "Dos formas de expresar la ganancia, cómo convertirlas y una tabla rápida."
+    },
+    "code": {
+      "label": "Programación",
+      "lead": "Tutoriales de una página sobre lenguajes de programación, patrones de diseño, estructuras de datos y algoritmos: primero la respuesta, luego código que funciona y enlaces a la documentación oficial.",
+      "all": "Todos los tutoriales de programación",
+      "groups": {
+        "languages": "Lenguajes de programación",
+        "patterns": "Patrones de diseño",
+        "structures": "Estructuras de datos",
+        "algorithms": "Algoritmos"
+      },
+      "blurbs": {
+        "languages": "Python, JavaScript, Java, C++, Go, Rust y muchos más, desde Hello World",
+        "patterns": "Los 23 patrones de la Banda de los Cuatro y SOLID, con TypeScript",
+        "structures": "Listas enlazadas, tablas hash, árboles, montículos y tries en Python",
+        "algorithms": "Ordenación, búsqueda, grafos y programación dinámica, con complejidad"
+      }
+    },
+    "linked-list": {
+      "name": "Lista enlazada",
+      "blurb": "Listas enlazadas simples y dobles: insertar, borrar, invertir, detectar ciclos y coste"
+    },
+    "stack-and-queue": {
+      "name": "Pila y cola",
+      "blurb": "Pilas LIFO y colas FIFO en Python: list, deque, emparejar paréntesis, BFS y complejidad"
+    },
+    "hash-table": {
+      "name": "Tabla hash",
+      "blurb": "Funciones hash, buckets, colisiones, factor de carga y redimensionado, con código Python"
+    },
+    "binary-search-tree": {
+      "name": "Árbol binario de búsqueda",
+      "blurb": "Regla de orden del BST, buscar, insertar y borrar en Python, equilibrado y complejidad"
+    },
+    "binary-tree-traversal": {
+      "name": "Recorrido de árboles binarios",
+      "blurb": "Preorden, inorden, postorden y por niveles, con código Python recursivo e iterativo"
+    },
+    "binary-heap": {
+      "name": "Montículo binario",
+      "blurb": "Propiedad del montículo, sift up/down, heapify, colas de prioridad y heapq de Python"
+    },
+    "trie": {
+      "name": "Trie (árbol de prefijos)",
+      "blurb": "Árbol de prefijos: insertar, buscar, starts-with y autocompletado en Python, y complejidad"
+    },
+    "union-find": {
+      "name": "Union-find (conjuntos disjuntos)",
+      "blurb": "Conjuntos disjuntos: find, union, compresión de caminos, unión por rango y tamaño"
+    },
+    "lru-cache": {
+      "name": "Caché LRU",
+      "blurb": "Caché del menos usado recientemente con hash map y lista doble, OrderedDict, lru_cache"
+    },
+    "big-o-notation": {
+      "name": "Notación Big O",
+      "blurb": "Complejidad temporal y espacial, clases habituales y cómo leerlas a partir del código"
+    },
+    "recursion": {
+      "name": "Recursión",
+      "blurb": "Casos base, pila de llamadas, memoización y límites de recursión en Python"
+    },
+    "binary-search": {
+      "name": "Búsqueda binaria",
+      "blurb": "Cómo la búsqueda binaria divide un rango ordenado, Python, bisect, variantes y trampas"
+    },
+    "two-pointers": {
+      "name": "Dos punteros y ventana deslizante",
+      "blurb": "Patrones de extremos opuestos, rápido-lento y ventana deslizante con Python y trazas"
+    },
+    "bubble-sort": {
+      "name": "Bubble sort (ordenamiento de burbuja)",
+      "blurb": "Cómo bubble sort intercambia vecinos, traza pasada a pasada, código Python y complejidad"
+    },
+    "selection-sort": {
+      "name": "Selection sort (ordenamiento por selección)",
+      "blurb": "Cómo selection sort elige el mínimo, traza paso a paso, código Python y estabilidad"
+    },
+    "insertion-sort": {
+      "name": "Insertion sort (ordenamiento por inserción)",
+      "blurb": "Cómo insertion sort desplaza elementos a su sitio, traza, Python, estabilidad y mejor caso"
+    },
+    "merge-sort": {
+      "name": "Merge sort (ordenamiento por mezcla)",
+      "blurb": "Merge sort de divide y vencerás: traza, Python, paso de mezcla, estabilidad y complejidad"
+    },
+    "quicksort": {
+      "name": "Quicksort (ordenamiento rápido)",
+      "blurb": "Pivotes, traza de la partición de Lomuto, Python, peor caso, estabilidad y quickselect"
+    },
+    "heapsort": {
+      "name": "Heapsort (ordenamiento por montículo)",
+      "blurb": "Max-heaps, sift-down, traza paso a paso, código Python, heapq y complejidad"
+    },
+    "counting-sort": {
+      "name": "Counting sort (ordenamiento por conteo)",
+      "blurb": "Counting sort lineal para claves enteras pequeñas: traza, Python estable, complejidad"
+    },
+    "radix-sort": {
+      "name": "Radix sort (ordenamiento por residuos)",
+      "blurb": "Radix sort LSD y MSD: traza dígito a dígito, código Python, estabilidad y complejidad"
+    },
+    "python": {
+      "name": "Python",
+      "blurb": "Sintaxis, tipos, control de flujo, funciones, colecciones, errores y archivos"
+    },
+    "javascript": {
+      "name": "JavaScript",
+      "blurb": "Variables, tipos, funciones, arrays, objetos, promesas y async/await en una página"
+    },
+    "typescript": {
+      "name": "TypeScript",
+      "blurb": "Tipos, interfaces, uniones, narrowing, genéricos y manejo de errores en una página"
+    },
+    "java": {
+      "name": "Java",
+      "blurb": "Tipos, clases, records, colecciones, excepciones y pattern matching en una página"
+    },
+    "c": {
+      "name": "C",
+      "blurb": "Tipos, funciones, arrays, cadenas, punteros, malloc/free y manejo de errores en una página"
+    },
+    "cpp": {
+      "name": "C++",
+      "blurb": "Tipos, clases, contenedores STL, lambdas, RAII, punteros inteligentes y excepciones"
+    },
+    "csharp": {
+      "name": "C#",
+      "blurb": "Tipos, clases, records, colecciones, LINQ, async/await y excepciones en una página"
+    },
+    "go": {
+      "name": "Go",
+      "blurb": "Tipos, slices, maps, structs, interfaces, goroutines, canales y errores en una página"
+    },
+    "rust": {
+      "name": "Rust",
+      "blurb": "Ownership, borrowing, structs, enums, match, colecciones y Result en una página"
+    },
+    "php": {
+      "name": "PHP",
+      "blurb": "Variables, arrays, funciones, clases, enums, excepciones y un endpoint JSON en una página"
+    },
+    "ruby": {
+      "name": "Ruby",
+      "blurb": "Tipos, métodos, arrays, hashes, bloques, clases, módulos y excepciones en una página"
+    },
+    "swift": {
+      "name": "Swift",
+      "blurb": "Tipos, opcionales, closures, colecciones, structs, enums, protocolos y errores"
+    },
+    "kotlin": {
+      "name": "Kotlin",
+      "blurb": "Null safety, control de flujo, funciones, data classes y corrutinas en una página"
+    },
+    "dart": {
+      "name": "Dart",
+      "blurb": "Null safety, funciones, colecciones, clases y async/await para Flutter"
+    },
+    "scala": {
+      "name": "Scala",
+      "blurb": "Sintaxis de Scala 3, pattern matching, colecciones, case classes y Option en una página"
+    },
+    "r": {
+      "name": "R",
+      "blurb": "Vectores, data frames, funciones, estadística y gráficos en R en una página"
+    },
+    "sql": {
+      "name": "SQL",
+      "blurb": "SELECT, JOIN, GROUP BY, CTE, transacciones y PostgreSQL vs MySQL vs SQLite"
+    },
+    "bash": {
+      "name": "Bash",
+      "blurb": "Scripts de shell, variables, comillas, bucles, funciones, pipes y set -euo pipefail"
+    },
+    "powershell": {
+      "name": "PowerShell",
+      "blurb": "Cmdlets, pipeline de objetos, variables, funciones, hashtables y try/catch"
+    },
+    "lua": {
+      "name": "Lua",
+      "blurb": "Variables, tablas, funciones, metatablas y pcall en Lua en una página"
+    },
+    "perl": {
+      "name": "Perl",
+      "blurb": "Escalares, arrays, hashes, subrutinas, expresiones regulares y errores en Perl"
+    },
+    "haskell": {
+      "name": "Haskell",
+      "blurb": "Funciones puras, tipos, pattern matching, listas, Maybe e IO en Haskell"
+    },
+    "elixir": {
+      "name": "Elixir",
+      "blurb": "Pattern matching, pipes, Enum, procesos y manejo de errores con {:ok, value}"
+    },
+    "erlang": {
+      "name": "Erlang",
+      "blurb": "Pattern matching, recursión, procesos, OTP y manejo de errores let-it-crash"
+    },
+    "clojure": {
+      "name": "Clojure",
+      "blurb": "Sintaxis, colecciones inmutables, funciones, macros, atoms y errores en una página"
+    },
+    "fsharp": {
+      "name": "F#",
+      "blurb": "Tipos, records, uniones, pattern matching, pipelines y Result en una página"
+    },
+    "ocaml": {
+      "name": "OCaml",
+      "blurb": "Tipos, records, variantes, pattern matching, módulos y errores en una página"
+    },
+    "julia": {
+      "name": "Julia",
+      "blurb": "Tipos, arrays, broadcasting, funciones, multiple dispatch y errores en una página"
+    },
+    "zig": {
+      "name": "Zig",
+      "blurb": "Tipos, slices, opcionales, error unions, comptime, defer y allocators en una página"
+    },
+    "fortran": {
+      "name": "Fortran",
+      "blurb": "Sintaxis moderna, tipos, bucles, procedimientos, módulos, arrays e iostat en una página"
+    },
+    "cobol": {
+      "name": "COBOL",
+      "blurb": "Divisiones, datos PIC, IF/EVALUATE, bucles PERFORM, tablas, archivos y errores"
+    },
+    "assembly": {
+      "name": "Assembly (x86-64)",
+      "blurb": "Registros, instrucciones, bucles, memoria, syscalls, llamadas x86-64 NASM y sintaxis AT&T"
+    },
+    "visual-basic": {
+      "name": "Visual Basic .NET",
+      "blurb": "Sintaxis de VB.NET, tipos, bucles, funciones, colecciones, clases, LINQ y VBA"
+    },
+    "objective-c": {
+      "name": "Objective-C",
+      "blurb": "Mensajes, clases, propiedades, colecciones de Foundation, bloques, ARC y NSError"
+    },
+    "matlab": {
+      "name": "MATLAB",
+      "blurb": "Matrices, índices, bucles, funciones, structs, cells, errores, gráficos y Octave"
+    },
+    "design-patterns": {
+      "name": "Patrones de diseño",
+      "blurb": "Qué son los patrones de diseño, los 23 patrones GoF por categoría y cómo elegir"
+    },
+    "solid-principles": {
+      "name": "Principios SOLID",
+      "blurb": "Los cinco principios de diseño SOLID, cada uno con un ejemplo antes/después en TypeScript"
+    },
+    "singleton": {
+      "name": "Patrón Singleton",
+      "blurb": "Una sola instancia: ejemplo en TypeScript, variante asíncrona, trampas y alternativas"
+    },
+    "factory-method": {
+      "name": "Patrón Factory Method",
+      "blurb": "Deja que las subclases elijan qué objeto crear: ejemplo en TypeScript y cuándo usarlo"
+    },
+    "abstract-factory": {
+      "name": "Patrón Abstract Factory",
+      "blurb": "Crea familias de objetos relacionados sin nombrar sus clases concretas"
+    },
+    "builder": {
+      "name": "Patrón Builder",
+      "blurb": "Construye objetos complejos paso a paso con una API fluida, más el rol Director"
+    },
+    "prototype": {
+      "name": "Patrón Prototype",
+      "blurb": "Crea objetos clonando instancias: clone() en TypeScript, copias profundas y superficiales"
+    },
+    "adapter": {
+      "name": "Patrón Adapter",
+      "blurb": "Haz que interfaces incompatibles trabajen juntas: ejemplo, adapter de objeto y de clase"
+    },
+    "bridge": {
+      "name": "Patrón Bridge",
+      "blurb": "Separa una abstracción de su implementación para que varíen de forma independiente"
+    },
+    "composite": {
+      "name": "Patrón Composite",
+      "blurb": "Trata objetos sueltos y árboles de objetos por igual: ejemplo de sistema de archivos"
+    },
+    "decorator": {
+      "name": "Patrón Decorator",
+      "blurb": "Añade comportamiento a objetos en ejecución envolviéndolos: decoradores de clase y función"
+    },
+    "facade": {
+      "name": "Patrón Facade",
+      "blurb": "Da a un subsistema complejo un único punto de entrada simple: ejemplo de pago"
+    },
+    "flyweight": {
+      "name": "Patrón Flyweight",
+      "blurb": "Comparte estado intrínseco entre muchos objetos para ahorrar memoria,"
+    },
+    "proxy": {
+      "name": "Patrón Proxy",
+      "blurb": "Controla el acceso a un objeto con proxies de caché, perezosos, de protección y remotos"
+    },
+    "chain-of-responsibility": {
+      "name": "Patrón Chain of Responsibility",
+      "blurb": "Pasa una petición por una cadena de manejadores hasta que uno la atiende, y middleware"
+    },
+    "command": {
+      "name": "Patrón Command",
+      "blurb": "Convierte peticiones en objetos para encolar, registrar, deshacer y rehacer en TypeScript"
+    },
+    "interpreter": {
+      "name": "Patrón Interpreter",
+      "blurb": "Modela un lenguaje pequeño con clases y evalúa árboles de expresiones en TypeScript"
+    },
+    "iterator": {
+      "name": "Patrón Iterator",
+      "blurb": "Recorre colecciones sin exponer su almacenamiento, con Symbol.iterator y generadores"
+    },
+    "mediator": {
+      "name": "Patrón Mediator",
+      "blurb": "Coordina componentes mediante un objeto central en lugar de referencias directas"
+    },
+    "memento": {
+      "name": "Patrón Memento",
+      "blurb": "Guarda y restaura el estado de un objeto sin exponer su interior: deshacer y checkpoints"
+    },
+    "observer": {
+      "name": "Patrón Observer",
+      "blurb": "Notifica a los suscriptores cuando cambia el sujeto, con código TypeScript tipado"
+    },
+    "state": {
+      "name": "Patrón State",
+      "blurb": "Cambia el comportamiento de un objeto según su estado con clases de estado, no con switch"
+    },
+    "strategy": {
+      "name": "Patrón Strategy",
+      "blurb": "Intercambia algoritmos en tiempo de ejecución, con funciones o clases en TypeScript"
+    },
+    "template-method": {
+      "name": "Patrón Template Method",
+      "blurb": "Fija los pasos de un algoritmo en la clase base y deja los detalles a las subclases"
+    },
+    "visitor": {
+      "name": "Patrón Visitor",
+      "blurb": "Añade operaciones a una jerarquía con double dispatch, y la alternativa con tipos unión"
+    },
+    "breadth-first-search": {
+      "name": "Búsqueda en anchura (BFS)",
+      "blurb": "BFS con una cola: ejemplo trazado, código Python, caminos más cortos y coste O(V + E)"
+    },
+    "depth-first-search": {
+      "name": "Búsqueda en profundidad (DFS)",
+      "blurb": "DFS recursivo e iterativo en Python, ejemplo trazado, detección de ciclos y coste O(V + E)"
+    },
+    "dijkstra": {
+      "name": "Algoritmo de Dijkstra",
+      "blurb": "Caminos más cortos con cola de prioridad: ejemplo, código Python con heapq y complejidad"
+    },
+    "bellman-ford": {
+      "name": "Algoritmo de Bellman-Ford",
+      "blurb": "Caminos más cortos con pesos negativos, detección de ciclos negativos y código Python"
+    },
+    "floyd-warshall": {
+      "name": "Algoritmo de Floyd-Warshall",
+      "blurb": "Caminos más cortos entre todos los pares: matriz, Python, reconstrucción de caminos, O(V³)"
+    },
+    "a-star-search": {
+      "name": "Búsqueda A*",
+      "blurb": "Búsqueda de caminos heurística con f = g + h: heurísticas admisibles, cuadrícula, Python"
+    },
+    "topological-sort": {
+      "name": "Ordenación topológica",
+      "blurb": "Ordena tareas por dependencias: algoritmo de Kahn, DFS, graphlib y detección de ciclos"
+    },
+    "minimum-spanning-tree": {
+      "name": "Árbol de expansión mínima",
+      "blurb": "Algoritmos de Kruskal y Prim: ejemplo trazado, código Python, union-find y montículos"
+    },
+    "dynamic-programming": {
+      "name": "Programación dinámica",
+      "blurb": "Memoización vs tabulación, cambio de monedas y LCS trazados, código Python y complejidad"
+    },
+    "greedy-algorithms": {
+      "name": "Algoritmos voraces",
+      "blurb": "La mejor elección local en cada paso: interval scheduling, código Python, contraejemplos"
+    },
+    "backtracking": {
+      "name": "Backtracking (vuelta atrás)",
+      "blurb": "Elegir, explorar, deshacer: N-Queens trazado, subconjuntos, permutaciones y poda en Python"
+    },
+    "kmp-string-search": {
+      "name": "Búsqueda de cadenas KMP",
+      "blurb": "Knuth-Morris-Pratt: función de prefijos, búsqueda trazada, código Python y coste O(n + m)"
+    },
+    "bit-manipulation": {
+      "name": "Manipulación de bits",
+      "blurb": "Operadores bit a bit, trucos de un solo bit, conteo de bits y bitmasks"
     }
   },
   "dice": {

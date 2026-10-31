@@ -1,0 +1,238 @@
+{
+  "title": "Algoritma greedy: cara kerja, kapan gagal, dan contoh Python — cv.cm",
+  "description": "Pelajari algoritma greedy: ambil pilihan lokal terbaik di setiap langkah. Interval scheduling dengan penelusuran, kode Python, pembuktian, counterexample, dan kompleksitas.",
+  "h1": "Penjelasan algoritma greedy: cara kerja, kode, dan contoh",
+  "answer": "Algoritma greedy membangun solusi langkah demi langkah dan di setiap langkah mengambil pilihan yang tampak terbaik saat itu, tanpa kembali mengubah pilihan sebelumnya. Algoritma ini cepat dan sederhana, tetapi hanya benar untuk masalah dengan greedy-choice property, yaitu pilihan lokal terbaik selalu menjadi bagian dari suatu solusi optimal. Algoritma greedy klasik yang benar mencakup interval scheduling, Huffman coding, algoritma Dijkstra, serta algoritma minimum spanning tree Kruskal dan Prim.",
+  "sections": [
+    {
+      "h": "Masalah yang diselesaikan algoritma greedy",
+      "body": [
+        "Algoritma greedy menyasar masalah optimasi: memilih aktivitas terbanyak, memakai koin paling sedikit, membangun jaringan termurah, memampatkan file ke bit paling sedikit. Alih-alih menjelajahi setiap kombinasi, algoritma greedy mengurutkan atau memprioritaskan opsi dan memilih yang terbaik di setiap langkah. Biasanya hasilnya waktu O(n log n), sering hanya sebesar biaya pengurutan.",
+        "Bagian tersulitnya bukan kode, melainkan pembuktian. Banyak aturan greedy yang tampak wajar ternyata salah, jadi Anda harus membuktikan aturan itu benar atau mengujinya terhadap solusi brute-force."
+      ]
+    },
+    {
+      "h": "Ide dasar dengan kata-kata sederhana",
+      "body": [
+        {
+          "ol": [
+            "Temukan aturan yang meranking pilihan, misalnya \"waktu selesai paling awal lebih dulu\" atau \"edge teringan lebih dulu\".",
+            "Urutkan opsi berdasarkan aturan itu, atau simpan di priority queue.",
+            "Telusuri opsi dan ambil setiap opsi yang masih diizinkan oleh batasan.",
+            "Jangan pernah membatalkan pilihan."
+          ]
+        },
+        "Algoritma greedy benar bila dua sifat terpenuhi. Greedy-choice property: ada solusi optimal yang memuat pilihan greedy pertama. Optimal substructure: setelah pilihan itu diambil, sisa masalah adalah instans yang lebih kecil dari masalah yang sama. Pembuktian yang lazim adalah exchange argument: ambil solusi optimal mana pun dan tunjukkan bahwa menukar salah satu pilihannya dengan pilihan greedy tidak membuatnya lebih buruk."
+      ]
+    },
+    {
+      "h": "Contoh: interval scheduling",
+      "body": [
+        "Anda punya satu ruang rapat dan permintaan berikut (mulai, selesai): A (1, 4), B (3, 5), C (0, 6), D (5, 7), E (3, 9), F (5, 9), G (6, 10), H (8, 11). Pesan rapat sebanyak mungkin yang tidak saling tumpang tindih. Aturan greedy yang benar: selalu pilih rapat yang paling cepat selesai di antara yang mulai setelah rapat terakhir yang dipesan selesai.",
+        {
+          "table": {
+            "head": [
+              "Rapat (diurutkan menurut waktu selesai)",
+              "Mulai, selesai",
+              "Mulai setelah selesai terakhir?",
+              "Keputusan",
+              "Selesai terakhir"
+            ],
+            "rows": [
+              [
+                "A",
+                "1, 4",
+                "ya (belum ada yang dipesan)",
+                "Pesan",
+                "4"
+              ],
+              [
+                "B",
+                "3, 5",
+                "tidak (3 < 4)",
+                "Lewati",
+                "4"
+              ],
+              [
+                "C",
+                "0, 6",
+                "tidak",
+                "Lewati",
+                "4"
+              ],
+              [
+                "D",
+                "5, 7",
+                "ya",
+                "Pesan",
+                "7"
+              ],
+              [
+                "E",
+                "3, 9",
+                "tidak",
+                "Lewati",
+                "7"
+              ],
+              [
+                "F",
+                "5, 9",
+                "tidak",
+                "Lewati",
+                "7"
+              ],
+              [
+                "G",
+                "6, 10",
+                "tidak",
+                "Lewati",
+                "7"
+              ],
+              [
+                "H",
+                "8, 11",
+                "ya",
+                "Pesan",
+                "11"
+              ]
+            ]
+          }
+        },
+        "Hasil: A, D, H, tiga rapat, yang merupakan jumlah maksimum. Mengapa berhasil: rapat yang paling cepat selesai menyisakan waktu paling banyak untuk yang lain, sehingga menggantikan rapat pertama pada jadwal optimal mana pun dengannya tidak pernah menimbulkan konflik."
+      ]
+    },
+    {
+      "h": "Implementasi Python",
+      "body": [
+        {
+          "code": "def max_meetings(meetings):\n    \"\"\"meetings: list of (name, start, end). Returns the booked names.\"\"\"\n    booked, last_end = [], float(\"-inf\")\n    for name, start, end in sorted(meetings, key=lambda m: m[2]):\n        if start >= last_end:\n            booked.append(name)\n            last_end = end\n    return booked\n\nrequests = [(\"A\", 1, 4), (\"B\", 3, 5), (\"C\", 0, 6), (\"D\", 5, 7),\n            (\"E\", 3, 9), (\"F\", 5, 9), (\"G\", 6, 10), (\"H\", 8, 11)]\nprint(max_meetings(requests))  # ['A', 'D', 'H']",
+          "lang": "python"
+        },
+        "Contoh klasik kedua adalah fractional knapsack: bila Anda boleh mengambil sebagian barang, mengambil barang berdasarkan urutan nilai per satuan berat adalah optimal.",
+        {
+          "code": "def fractional_knapsack(items, capacity):\n    \"\"\"items: list of (value, weight). Returns the best total value.\"\"\"\n    total = 0.0\n    for value, weight in sorted(items, key=lambda i: i[0] / i[1], reverse=True):\n        take = min(weight, capacity)\n        total += value * take / weight\n        capacity -= take\n        if capacity == 0:\n            break\n    return total\n\nprint(fractional_knapsack([(60, 10), (100, 20), (120, 30)], 50))  # 240.0",
+          "lang": "python"
+        }
+      ]
+    },
+    {
+      "h": "Ketika greedy gagal: counterexample",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Masalah",
+              "Aturan greedy yang menggoda",
+              "Counterexample",
+              "Metode yang benar"
+            ],
+            "rows": [
+              [
+                "Coin change, koin 1, 3, 4",
+                "Ambil koin terbesar lebih dulu",
+                "Nominal 6: greedy 4 + 1 + 1 (3 koin), optimal 3 + 3 (2 koin)",
+                "Dynamic programming"
+              ],
+              [
+                "Knapsack 0/1 (hanya barang utuh)",
+                "Nilai per berat terbaik lebih dulu",
+                "Kapasitas 50, barang (60, 10), (100, 20), (120, 30): greedy mengambil 60 + 100 = 160, optimal 100 + 120 = 220",
+                "Dynamic programming"
+              ],
+              [
+                "Interval scheduling",
+                "Rapat terpendek lebih dulu",
+                "(0, 5), (4, 7), (6, 11): greedy hanya mengambil (4, 7), optimal mengambil dua lainnya",
+                "Selesai paling awal lebih dulu"
+              ],
+              [
+                "Jalur terpendek dengan edge negatif",
+                "Node terdekat lebih dulu ala Dijkstra",
+                "Graf apa pun yang edge negatifnya membuat node yang sudah final menjadi lebih murah",
+                "Bellman-Ford"
+              ]
+            ]
+          }
+        },
+        {
+          "note": "Coin change greedy memang memberi jawaban optimal untuk sistem koin kanonis seperti 1, 2, 5, 10, 20, 50, tetapi tidak untuk setiap himpunan koin. Sebelum memercayai aturan greedy, bandingkan dengan solusi brute-force pada banyak input acak kecil."
+        }
+      ]
+    },
+    {
+      "h": "Kompleksitas waktu dan ruang",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Algoritma",
+              "Waktu",
+              "Alasan"
+            ],
+            "rows": [
+              [
+                "Interval scheduling",
+                "O(n log n)",
+                "Pengurutan berdasarkan waktu selesai; pemindaiannya O(n)."
+              ],
+              [
+                "Fractional knapsack",
+                "O(n log n)",
+                "Pengurutan berdasarkan nilai per berat."
+              ],
+              [
+                "Huffman coding",
+                "O(n log n)",
+                "n − 1 penggabungan, masing-masing dengan operasi heap."
+              ],
+              [
+                "MST Kruskal",
+                "O(E log E)",
+                "Pengurutan edge ditambah union-find yang hampir konstan."
+              ],
+              [
+                "Jalur terpendek Dijkstra",
+                "O((V + E) log V)",
+                "Priority queue berbasis heap."
+              ]
+            ]
+          }
+        },
+        "Ruang biasanya O(n) untuk salinan terurut atau heap. Jika input sudah terurut, banyak algoritma greedy berjalan dalam O(n)."
+      ]
+    },
+    {
+      "h": "Kapan memakai greedy dan penggunaannya di dunia nyata",
+      "body": [
+        {
+          "ul": [
+            "Gunakan greedy bila Anda bisa membuktikan greedy-choice property, atau bila jawaban aproksimasi yang cepat dapat diterima. Jika tidak, gunakan dynamic programming atau backtracking.",
+            "Kompresi: Huffman coding membangun prefix code optimal dengan berulang kali menggabungkan dua simbol paling jarang; dipakai di dalam format seperti DEFLATE (ZIP, gzip, PNG).",
+            "Jaringan: minimum spanning tree (Kruskal, Prim) dan routing jalur terpendek (Dijkstra).",
+            "Penjadwalan: earliest deadline first, serta pemesanan ruangan atau mesin.",
+            "Aproksimasi: untuk set cover, aturan greedy \"pilih himpunan yang mencakup item belum tercakup terbanyak\" tidak optimal tetapi dijamin berada dalam faktor logaritmik dari optimum.",
+            "Soal wawancara: jump game, gas station, assign cookies, non-overlapping intervals, minimum number of arrows to burst balloons, task scheduler."
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Apa itu algoritma greedy dengan kata-kata sederhana?",
+      "a": "Algoritma yang selalu mengambil opsi yang tampak terbaik saat itu dan tidak pernah mempertimbangkan ulang. Algoritma ini benar hanya untuk masalah ketika pilihan lokal tersebut selalu mengarah ke jawaban terbaik secara global."
+    },
+    {
+      "q": "Bagaimana membuktikan bahwa algoritma greedy benar?",
+      "a": "Metode yang lazim adalah exchange argument: mulai dari solusi optimal mana pun dan tunjukkan bahwa pilihan pertamanya dapat diganti dengan pilihan greedy tanpa membuatnya lebih buruk, lalu ulangi pada sisa masalah."
+    },
+    {
+      "q": "Greedy atau dynamic programming?",
+      "a": "Coba greedy lebih dulu jika aturan sederhana tampak benar, lalu cari counterexample. Jika ada, masalah itu membutuhkan dynamic programming, yang membandingkan semua pilihan untuk setiap subproblem."
+    },
+    {
+      "q": "Apakah algoritma Dijkstra termasuk greedy?",
+      "a": "Ya. Ia selalu memfinalisasi node belum final yang terdekat. Pilihan greedy ini benar karena bobot edge non-negatif."
+    }
+  ]
+}

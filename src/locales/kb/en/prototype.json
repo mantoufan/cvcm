@@ -1,0 +1,153 @@
+{
+  "title": "Prototype pattern: cloning objects, deep vs shallow copy, TypeScript example — cv.cm",
+  "description": "The Prototype design pattern explained: create objects by cloning an instance. TypeScript clone() example, deep vs shallow copy, structuredClone and pitfalls.",
+  "h1": "Prototype pattern explained with examples",
+  "answer": "Prototype is a creational design pattern that creates new objects by copying an existing instance, the prototype, instead of building them from scratch with `new`. Each prototype implements a `clone()` method, so client code can duplicate an object without knowing its concrete class. It is useful when objects are expensive to configure or come in many preset variations. The main pitfall is shallow copying: nested objects must be copied too, or the clone and the original will share them.",
+  "sections": [
+    {
+      "h": "Intent",
+      "body": [
+        "Specify the kinds of objects to create using a prototypical instance, and create new objects by copying this prototype. Prototype is one of the five creational patterns in the Gang of Four (GoF) book."
+      ]
+    },
+    {
+      "h": "The problem it solves",
+      "body": [
+        "Imagine a diagram editor with a palette of preset shapes: a red warning box, a blue note, a green \"done\" badge. Each preset has a size, colors, a font and a list of style rules. When the user drags a preset onto the canvas, the editor needs a new, independent shape that starts with exactly those settings.",
+        "Without the pattern, the editor would need a separate creation function for every preset, and it would have to know every concrete shape class. Worse, presets defined by the user at run time could not be created at all, because no code knows their settings in advance. With Prototype, the editor simply calls `preset.clone()`."
+      ]
+    },
+    {
+      "h": "Structure and participants",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Participant",
+              "Responsibility",
+              "In the example"
+            ],
+            "rows": [
+              [
+                "Prototype",
+                "Declares the interface for cloning itself.",
+                "`Shape` with `clone()`"
+              ],
+              [
+                "ConcretePrototype",
+                "Implements `clone()` by copying its own state.",
+                "`Box`"
+              ],
+              [
+                "Client",
+                "Creates new objects by asking a prototype to clone itself.",
+                "the editor code"
+              ],
+              [
+                "Prototype registry (optional)",
+                "Stores named prototypes so clients can look them up.",
+                "`palette` map"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "TypeScript implementation",
+      "body": [
+        "`clone()` copies every field, including nested objects and arrays, so the copy is independent of the original:",
+        {
+          "code": "interface Shape {\n  clone(): Shape;\n  describe(): string;\n}\n\nclass Box implements Shape {\n  constructor(\n    public width: number,\n    public height: number,\n    public style: { fill: string; border: string },\n    public tags: string[],\n  ) {}\n\n  clone(): Box {\n    // copy nested objects too, so the clone shares nothing mutable\n    return new Box(this.width, this.height, { ...this.style }, [...this.tags]);\n  }\n\n  describe(): string {\n    return `${this.width}x${this.height} ${this.style.fill} [${this.tags.join(\", \")}]`;\n  }\n}\n\n// A registry of named prototypes, which could also be filled at run time.\nconst palette = new Map<string, Shape>([\n  [\"warning\", new Box(120, 40, { fill: \"red\", border: \"black\" }, [\"alert\"])],\n  [\"note\", new Box(160, 80, { fill: \"blue\", border: \"none\" }, [])],\n]);\n\nconst a = palette.get(\"warning\")!.clone() as Box;\na.width = 200;\na.tags.push(\"urgent\");\nconsole.log(a.describe());                        // 200x40 red [alert, urgent]\nconsole.log(palette.get(\"warning\")!.describe());  // 120x40 red [alert]",
+          "lang": "typescript"
+        },
+        "The editor never names `Box`. A new preset is a new entry in the registry, not a new class or a new creation function."
+      ]
+    },
+    {
+      "h": "Shallow copy versus deep copy",
+      "body": [
+        "The most common bug with Prototype is a clone that shares nested objects with the original. A spread copy is shallow: it copies only the top level.",
+        {
+          "code": "const original = { name: \"note\", style: { fill: \"blue\" } };\n\nconst shallow = { ...original };\nshallow.style.fill = \"green\";\nconsole.log(original.style.fill); // green (shared object was changed)\n\nconst deep = structuredClone(original);\ndeep.style.fill = \"yellow\";\nconsole.log(original.style.fill); // green (unchanged)",
+          "lang": "typescript"
+        },
+        "`structuredClone()` is built into modern browsers and Node.js and deep-copies plain data, including nested objects, arrays, `Map`, `Set` and `Date`. It has two limits that matter here:",
+        {
+          "ul": [
+            "Class instances come back as plain objects: the copy loses its prototype, so methods such as `describe()` are missing.",
+            "Functions and DOM nodes cannot be cloned; `structuredClone()` throws a `DataCloneError`."
+          ]
+        },
+        {
+          "note": "For classes, write an explicit `clone()` method as in the main example. It documents which fields are copied deeply and keeps the copy's class."
+        }
+      ]
+    },
+    {
+      "h": "When to use it, and when not to",
+      "body": [
+        "Use Prototype when:",
+        {
+          "ul": [
+            "Objects are costly to set up (loaded from a file, computed, configured in many steps) and you need many similar copies.",
+            "The set of variants is defined at run time, for example presets or templates created by users.",
+            "You want to create objects without depending on their concrete classes, and without a parallel hierarchy of factories."
+          ]
+        },
+        "Avoid it when:",
+        {
+          "ul": [
+            "Objects are cheap and simple to create. Calling a constructor or a factory function is clearer.",
+            "Objects hold resources that should not be duplicated, such as open files, sockets or unique IDs. Cloning these needs special handling.",
+            "Objects have circular references and complex ownership, which make correct deep copying hard."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Real-world uses",
+      "body": [
+        {
+          "ul": [
+            "JavaScript itself is prototype-based: `Object.create(proto)` creates a new object that inherits from an existing one. This is related but not identical to the pattern, because the new object delegates to its prototype instead of copying it.",
+            "The DOM: `node.cloneNode(true)` deep-copies an element and its children, which is a common way to stamp out repeated UI fragments.",
+            "Java: classes can implement the `Cloneable` interface and override `Object.clone()`, although many Java developers prefer copy constructors.",
+            "Game engines and editors commonly spawn new objects from preconfigured templates (often called prefabs)."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Related patterns",
+      "body": [
+        {
+          "ul": [
+            "Abstract Factory: a factory can store a set of prototypes and create products by cloning them, instead of needing one factory subclass per family.",
+            "Factory Method: creates objects through subclasses; Prototype avoids those subclasses by copying instances.",
+            "Composite and Decorator: designs that use them heavily often benefit from Prototype, because copying a configured structure is easier than rebuilding it.",
+            "Memento: also copies an object's state, but to restore it later, not to create a new independent object."
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Is the Prototype pattern the same as JavaScript prototypes?",
+      "a": "No. JavaScript prototypes are a language mechanism for inheritance: an object delegates missing properties to its prototype. The Prototype pattern creates an independent copy of an object."
+    },
+    {
+      "q": "Should clone() make a deep or a shallow copy?",
+      "a": "Usually deep for mutable nested data, so the clone and the original do not affect each other. Immutable values and shared read-only resources can safely stay shared."
+    },
+    {
+      "q": "Can I use structuredClone() to implement clone()?",
+      "a": "Only for plain data objects. For class instances, `structuredClone()` returns a plain object without methods, so write the copy logic yourself or rebuild the instance with its constructor."
+    },
+    {
+      "q": "When is Prototype better than a factory?",
+      "a": "When the variants are many, configured at run time, or expensive to set up. Cloning a ready-made instance is then simpler than writing a creation function for each variant."
+    }
+  ]
+}

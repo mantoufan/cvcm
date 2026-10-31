@@ -1,0 +1,200 @@
+{
+  "title": "Objective-C 入門教學：訊息傳遞、類別、Foundation 集合與 block — cv.cm",
+  "description": "學會 Objective-C 基礎：用 clang 編譯 Hello world、傳送訊息、定義類別與屬性、使用 NSArray 與 NSDictionary、block、ARC 與 NSError。",
+  "h1": "Objective-C 入門教學",
+  "answer": "Objective-C 是在 C 之上加入 Smalltalk 風格物件導向訊息傳遞的語言。你透過方括號傳送訊息來呼叫方法，`[object doSomething:arg]`，在 `@interface` 與 `@implementation` 區塊中定義類別，並使用 Apple 的 Foundation 框架處理字串、陣列與字典。在 Swift 出現之前，它是 macOS 與 iOS App 的主要語言，至今仍用於許多既有的 Apple 程式碼。在 Mac 上，用 `clang -fobjc-arc -framework Foundation hello.m` 編譯。",
+  "sections": [
+    {
+      "h": "Objective-C 是什麼、誰在使用",
+      "body": [
+        "Objective-C 由 Brad Cox 與 Tom Love 於 1980 年代初創造，後來被 NeXT 採用於其 NeXTSTEP 系統，再由 Apple 承接，NeXTSTEP 也成為 macOS 與 iOS 的基礎。它是 C 的嚴格超集：任何 C 程式碼都是合法的 Objective-C，兩者可以自由混用。",
+        "如今 Apple 建議新的 App 使用 Swift，但 Objective-C 仍然受到完整支援。你會在較舊的 iOS 與 macOS App、許多系統框架與第三方函式庫，以及混用 C 或 C++ 與 Apple API 的專案中看到它。Swift 與 Objective-C 可以在同一個專案中互通，所以兩者都懂，對 Apple 平台的開發者很有用。"
+      ]
+    },
+    {
+      "h": "安裝並執行 Hello, world",
+      "body": [
+        "在 macOS 上，安裝 Xcode 或僅安裝命令列工具（`xcode-select --install`），其中包含 clang 編譯器與 Foundation 框架。原始碼檔案使用 `.m` 副檔名；標頭檔使用 `.h`。",
+        {
+          "code": "// hello.m\n#import <Foundation/Foundation.h>\n\nint main(void) {\n    @autoreleasepool {\n        NSLog(@\"Hello, world!\");\n    }\n    return 0;\n}",
+          "lang": "objc"
+        },
+        {
+          "code": "clang -fobjc-arc -framework Foundation hello.m -o hello\n./hello\n# 2026-10-31 10:00:00.000 hello[1234:5678] Hello, world!",
+          "lang": "shell"
+        },
+        "`NSLog` 會寫到標準錯誤輸出，並加上時間戳記與行程名稱。`@\"...\"` 建立的是 `NSString` 物件，而不是 C 字串。`-fobjc-arc` 會開啟自動參照計數（Automatic Reference Counting），這是標準的記憶體管理方式。在 Linux 上，GNUstep 專案提供相容的 Foundation 函式庫，但建置指令不同。"
+      ]
+    },
+    {
+      "h": "型別、物件與訊息",
+      "body": [
+        "因為 Objective-C 就是 C，所有 C 型別都能使用。物件一律透過指標使用（`NSString *name`）。呼叫方法稱為傳送訊息；引數會穿插在方法名稱的各個部分之間。",
+        {
+          "table": {
+            "head": [
+              "型別",
+              "範例",
+              "說明"
+            ],
+            "rows": [
+              [
+                "C 數字型別",
+                "`int`, `double`, `NSInteger`",
+                "在 64 位元平台上，`NSInteger` 是 64 位元"
+              ],
+              [
+                "BOOL",
+                "`BOOL ok = YES;`",
+                "`YES` / `NO`"
+              ],
+              [
+                "NSString *",
+                "`@\"hello\"`",
+                "不可變的字串物件"
+              ],
+              [
+                "NSNumber *",
+                "`@42`, `@3.14`, `@(x + 1)`",
+                "包裝數字，讓集合能存放它"
+              ],
+              [
+                "id",
+                "`id thing = @\"x\";`",
+                "指向任何物件的指標，沒有靜態型別"
+              ],
+              [
+                "nil",
+                "`nil`",
+                "空的物件指標"
+              ]
+            ]
+          }
+        },
+        {
+          "code": "NSString *name = @\"Ana\";\nNSInteger age = 30;\nNSString *line = [NSString stringWithFormat:@\"%@ is %ld\", name, (long)age];\nNSLog(@\"%@\", line);                          // Ana is 30\nNSLog(@\"%lu\", (unsigned long)[name length]); // 3\nNSString *upper = [name uppercaseString];    // @\"ANA\"\nBOOL same = [name isEqualToString:@\"Ana\"];   // YES\nNSString *nothing = nil;\nNSLog(@\"%lu\", (unsigned long)[nothing length]); // 0: messages to nil return 0",
+          "lang": "objc"
+        },
+        "在格式字串中，`%@` 會印出一個物件（它會呼叫該物件的 `description` 方法）。對 `nil` 傳送訊息是被允許的，並會回傳 `nil` 或 0，這避免了許多當機，但也可能掩蓋錯誤。"
+      ]
+    },
+    {
+      "h": "流程控制",
+      "body": [
+        "流程控制與 C 完全相同：`if`、`else`、`switch`、`for`、`while` 與 `do ... while`。Objective-C 另外加入了集合專用的 `for ... in` 快速列舉。",
+        {
+          "code": "NSInteger score = 85;\nif (score >= 90) {\n    NSLog(@\"A\");\n} else if (score >= 80) {\n    NSLog(@\"B\");\n} else {\n    NSLog(@\"C\");\n}\n\nfor (int i = 1; i <= 3; i++) {\n    NSLog(@\"%d squared is %d\", i, i * i);\n}\n\nfor (NSString *fruit in @[@\"apple\", @\"pear\"]) {\n    NSLog(@\"%@\", fruit);\n}",
+          "lang": "objc"
+        }
+      ]
+    },
+    {
+      "h": "類別、屬性與方法",
+      "body": [
+        "類別有公開的介面（通常放在 `.h` 檔案中）與實作（放在 `.m` 檔案中）。實例方法以 `-` 開頭，類別方法以 `+` 開頭。`@property` 宣告屬性，並產生它的 getter、setter 與以底線命名的後備變數。",
+        {
+          "code": "@interface Person : NSObject\n@property (nonatomic, copy) NSString *name;\n@property (nonatomic) NSInteger age;\n- (instancetype)initWithName:(NSString *)name age:(NSInteger)age;\n- (NSString *)greeting;\n@end\n\n@implementation Person\n- (instancetype)initWithName:(NSString *)name age:(NSInteger)age {\n    self = [super init];\n    if (self) {\n        _name = [name copy];\n        _age = age;\n    }\n    return self;\n}\n\n- (NSString *)greeting {\n    return [NSString stringWithFormat:@\"Hi, I am %@, %ld\", self.name, (long)self.age];\n}\n@end\n\n// Usage inside main:\nPerson *ana = [[Person alloc] initWithName:@\"Ana\" age:30];\nNSLog(@\"%@\", [ana greeting]);   // Hi, I am Ana, 30\nana.age = 31;                   // dot syntax calls the setter",
+          "lang": "objc"
+        },
+        "物件的建立分兩步：`alloc` 保留記憶體，再由 `init...` 方法初始化。上面的方法名為 `initWithName:age:`（冒號是名稱的一部分）。協定（`@protocol`）扮演介面的角色，而 category 讓你能為既有的類別新增方法，甚至包括 `NSString`。"
+      ]
+    },
+    {
+      "h": "Foundation 集合與 block",
+      "body": [
+        "Foundation 框架提供不可變的集合與可變的子類別。字面值讓它們寫起來很簡短。集合只能存放物件，所以數字要包裝成 `NSNumber`，而且不能存放 `nil`（請改用 `[NSNull null]`）。",
+        {
+          "table": {
+            "head": [
+              "類別",
+              "字面值或建立方式",
+              "可變版本"
+            ],
+            "rows": [
+              [
+                "NSArray",
+                "`@[@\"Ana\", @\"Ben\"]`",
+                "NSMutableArray"
+              ],
+              [
+                "NSDictionary",
+                "`@{@\"Ana\": @30}`",
+                "NSMutableDictionary"
+              ],
+              [
+                "NSSet",
+                "`[NSSet setWithArray:arr]`",
+                "NSMutableSet"
+              ],
+              [
+                "NSString",
+                "`@\"text\"`",
+                "NSMutableString"
+              ]
+            ]
+          }
+        },
+        {
+          "code": "NSArray<NSString *> *names = @[@\"Ana\", @\"Ben\"];\nNSMutableArray<NSString *> *more = [names mutableCopy];\n[more addObject:@\"Cleo\"];\nNSDictionary<NSString *, NSNumber *> *ages = @{@\"Ana\": @30, @\"Ben\": @17};\nNSLog(@\"%lu names, Ana is %@\", (unsigned long)more.count, ages[@\"Ana\"]);\n\nNSInteger (^square)(NSInteger) = ^(NSInteger x) { return x * x; };\nNSLog(@\"%ld\", (long)square(7));    // 49\n\nNSArray<NSNumber *> *sorted = [@[@3, @1, @2]\n    sortedArrayUsingComparator:^NSComparisonResult(NSNumber *a, NSNumber *b) {\n        return [a compare:b];\n    }];\nNSLog(@\"%@\", [sorted componentsJoinedByString:@\", \"]);   // 1, 2, 3",
+          "lang": "objc"
+        },
+        "以 `^` 撰寫的 block 是閉包：捕捉周圍作用域變數的匿名函式。Apple API 用它們來做回呼、排序，以及搭配 Grand Central Dispatch 的非同步工作。`<NSString *>` 的部分是輕量的泛型，有助於編譯器與 Swift，是選擇性的。"
+      ]
+    },
+    {
+      "h": "記憶體管理與錯誤處理",
+      "body": [
+        "使用 ARC 時，編譯器會替你插入參照計數的呼叫：當沒有任何強參照指向某個物件時，它就會被釋放。你只需要打破循環參照，通常是把其中一方標記為 `weak`（例如 delegate 屬性）。",
+        "可復原的錯誤使用 `NSError` 模式：方法失敗時回傳 `nil` 或 `NO`，並填入以參考方式傳入的 `NSError` 物件。例外（`@try`、`@catch`、`NSException`）雖然存在，但在 Cocoa 中它們代表的是索引超出範圍這類程式設計師的錯誤，而不是一般的失敗。",
+        {
+          "code": "NSError *error = nil;\nNSString *text = [NSString stringWithContentsOfFile:@\"/no/such/file\"\n                                           encoding:NSUTF8StringEncoding\n                                              error:&error];\nif (text == nil) {\n    NSLog(@\"Failed: %@\", error.localizedDescription);\n}",
+          "lang": "objc"
+        }
+      ]
+    },
+    {
+      "h": "完整的小程式：字詞頻率",
+      "body": [
+        {
+          "code": "#import <Foundation/Foundation.h>\n\nint main(void) {\n    @autoreleasepool {\n        NSString *text = @\"the cat and the hat and the bat\";\n        NSMutableDictionary<NSString *, NSNumber *> *counts = [NSMutableDictionary dictionary];\n        for (NSString *word in [text componentsSeparatedByString:@\" \"]) {\n            counts[word] = @(counts[word].integerValue + 1);\n        }\n        NSArray<NSString *> *sorted = [counts keysSortedByValueUsingComparator:\n            ^NSComparisonResult(NSNumber *a, NSNumber *b) { return [b compare:a]; }];\n        for (NSString *word in [sorted subarrayWithRange:NSMakeRange(0, 2)]) {\n            printf(\"%s %ld\\n\", word.UTF8String, (long)counts[word].integerValue);\n        }\n    }\n    return 0;\n}\n// the 3\n// and 2",
+          "lang": "objc"
+        },
+        "對於新字詞，`counts[word]` 是 `nil`，而 `nil.integerValue` 回傳 0，所以第一次計數會變成 1。比較函式把順序反轉，以便依次數由高到低排序，`printf` 則在不帶 `NSLog` 前綴的情況下列印。",
+        {
+          "note": "新手常見錯誤：用 `==` 比較字串（它比較的是指標；請用 `isEqualToString:`）；忘了字串字面值前面的 `@`；忘了物件宣告中的 `*`；把 `nil` 放進陣列或字典的字面值，會在執行時當機；用 `%d` 而不是 `%ld` 加上型別轉換來列印 `NSInteger`；以及沒有加 `-fobjc-arc` 就編譯。"
+        }
+      ]
+    },
+    {
+      "h": "接下來可以學什麼",
+      "body": [
+        {
+          "ul": [
+            "Apple 文件封存庫中的「Programming with Objective-C」指南，介紹語言基礎。",
+            "Apple 開發者文件中的 Foundation 框架參考。",
+            "Clang 文件中關於自動參照計數的部分，提供確切的記憶體規則。",
+            "如果你維護混合語言的程式碼，請學習 Objective-C 與 Swift 如何一起運作。"
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Objective-C 現在還有人用嗎？",
+      "a": "有，主要用於既有的 iOS 與 macOS App 及函式庫。Apple 建議新的程式碼使用 Swift，但 Xcode 與 Apple SDK 仍然支援 Objective-C。"
+    },
+    {
+      "q": "該先學 Swift 還是 Objective-C？",
+      "a": "對於新的 Apple 開發，請先學 Swift。當你需要閱讀或維護較舊的程式碼、緊密使用 C 或 C++ 函式庫，或想了解 Apple 框架底層如何運作時，再學 Objective-C。"
+    },
+    {
+      "q": "Objective-C 的方括號是什麼意思？",
+      "a": "它們用來傳送訊息：`[receiver message]` 會對物件 `receiver` 呼叫方法 `message`。引數接在冒號之後，如 `[dict setObject:value forKey:key]`。"
+    },
+    {
+      "q": "Objective-C 有垃圾回收嗎？",
+      "a": "現代的 Objective-C 使用自動參照計數（ARC），由編譯器加入 retain 與 release 呼叫。Apple 早期用於 macOS 的垃圾回收器已被棄用，且不再提供。"
+    }
+  ]
+}

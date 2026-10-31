@@ -1,0 +1,181 @@
+{
+  "title": "Perl入門：スカラー・配列・ハッシュ・正規表現を解説 — cv.cm",
+  "description": "Perlの基本を順に学べる入門講座。スクリプトの実行、スカラー、配列とハッシュ、制御構文、サブルーチン、リファレンス、正規表現、dieとeval、ログ解析プログラムまでを解説します。",
+  "h1": "Perl入門：初心者向けチュートリアル",
+  "answer": "Perlは、1987年にLarry Wallが作った動的なスクリプト言語で、テキスト処理と強力な組み込みの正規表現で知られています。ほとんどのUnix系システムに標準で入っており、システム管理、ログ処理、バイオインフォマティクスなどで使われています。このページでは、Perlの実行、スカラー、配列とハッシュ、制御構文、サブルーチン、リファレンス、正規表現、dieとevalによるエラー処理を扱います。",
+  "sections": [
+    {
+      "h": "Perlとは何か、何に使うのか",
+      "body": [
+        "Perlは、1987年にLarry Wallが作った高水準の動的型付け言語です。テキスト処理とレポート生成のために設計され、Unixのシステム管理や初期のWeb開発をつなぐ「糊(のり)」の言語として広まりました。Perlの正規表現は大きな影響を与え、ほかの多くの言語が「Perl互換」の正規表現構文を採用しています。",
+        "現在のPerlは、システム管理スクリプト、ログやテキストの処理、バイオインフォマティクス、レガシーなWebアプリケーション、ワンライナーのコマンドラインフィルターなどに使われています。ほとんどのLinuxやUnixシステムに標準で入っています。CPAN(Comprehensive Perl Archive Network)には、再利用できる膨大な数のモジュールが公開されています。このチュートリアルはPerl 5を扱います。かつてPerl 6と呼ばれていた言語は、現在はRakuという別の言語です。"
+      ]
+    },
+    {
+      "h": "Hello, worldの実行",
+      "body": [
+        "`perl -v`でPerlがインストールされているか確認します。Windowsでは、Strawberry Perlがよく使われるディストリビューションです。スクリプトの冒頭には必ず`use strict;`と`use warnings;`を書きましょう。タイプミスや安全でないコードを見つけてくれます。",
+        {
+          "code": "#!/usr/bin/env perl\nuse strict;\nuse warnings;\n\nprint \"Hello, world!\\n\";",
+          "lang": "perl"
+        },
+        {
+          "code": "perl hello.pl\n# Hello, world!\nperl -e 'print \"Hello from a one-liner\\n\"'",
+          "lang": "shell"
+        },
+        "文末にはセミコロンを付けます。コメントは`#`で始まります。二重引用符の文字列では変数と`\\n`などのエスケープが展開され、単一引用符の文字列はそのままの文字列になります。"
+      ]
+    },
+    {
+      "h": "変数：スカラー・配列・ハッシュ",
+      "body": [
+        "Perlの変数は、値の種類を示す記号(シギル)で始まります。変数は`my`で宣言し、外側のブロック内だけで使えるローカル変数にします。",
+        {
+          "code": "use strict;\nuse warnings;\n\nmy $name  = \"Perl\";             # scalar: one value\nmy $year  = 1987;\nmy @langs = (\"Perl\", \"C\", \"sh\"); # array: ordered list\nmy %port  = (http => 80, https => 443);  # hash: key-value pairs\n\nprint \"$name since $year\\n\";    # Perl since 1987\nprint \"First: $langs[0]\\n\";     # First: Perl (element is a scalar, so $)\nprint \"Count: \", scalar(@langs), \"\\n\";   # Count: 3\nprint \"HTTPS: $port{https}\\n\";  # HTTPS: 443\nprint \"Sum: \", \"10\" + 5, \"\\n\";  # Sum: 15 (strings convert to numbers)\nprint \"Join: \" . \"a\" . \"b\" x 3, \"\\n\";    # Join: abbb",
+          "lang": "perl"
+        },
+        {
+          "table": {
+            "head": [
+              "シギル",
+              "種類",
+              "例"
+            ],
+            "rows": [
+              [
+                "`$`",
+                "スカラー：数値、文字列、またはリファレンス",
+                "`my $n = 42;`"
+              ],
+              [
+                "`@`",
+                "配列：スカラーの順序付きリスト",
+                "`my @list = (1, 2);`"
+              ],
+              [
+                "`%`",
+                "ハッシュ：順序のないキーと値のペア",
+                "`my %h = (a => 1);`"
+              ],
+              [
+                "`&`",
+                "サブルーチン(あまり書きません)",
+                "`&name`"
+              ]
+            ]
+          }
+        },
+        {
+          "note": "Perlでは、数値用と文字列用で演算子が分かれています。`==`、`<`、`<=>`は数値を比較し、`eq`、`lt`、`cmp`は文字列を比較します。`\"abc\" == \"xyz\"`のように文字列に`==`を使うと、どちらも数値としては0になるので真になり、`use warnings`の下では警告が出ます。"
+        }
+      ]
+    },
+    {
+      "h": "制御構文",
+      "body": [
+        "Perlには`if`、`elsif`、`else`、`unless`、`while`、`until`、`for`、`foreach`があります。短い文の後ろに条件を付けて、英語のように読める書き方もできます。`next`は次の繰り返しへ進み、`last`はループを抜けます。",
+        {
+          "code": "use strict;\nuse warnings;\n\nmy $score = 72;\nif ($score >= 90) {\n    print \"A\\n\";\n} elsif ($score >= 70) {\n    print \"B\\n\";                 # B\n} else {\n    print \"C\\n\";\n}\nprint \"passed\\n\" if $score >= 50;          # statement modifier\nprint \"not perfect\\n\" unless $score == 100;\n\nfor my $i (1 .. 3) {\n    print \"i = $i\\n\";\n}\n\nmy @names = (\"ann\", \"bo\");\nforeach my $n (@names) {\n    next if $n eq \"bo\";          # skip to the next item\n    print ucfirst($n), \"\\n\";     # Ann\n}\n\nmy $k = 3;\nwhile ($k > 0) { $k--; }",
+          "lang": "perl"
+        },
+        "偽になる値は、`0`、`\"0\"`、空文字列`\"\"`、空のリスト、`undef`です。それ以外はすべて真です。"
+      ]
+    },
+    {
+      "h": "サブルーチン",
+      "body": [
+        "関数は`sub`で定義します。引数は特別な配列`@_`で渡され、最初の行でそれを名前付きの変数にコピーするのが定番です。サブルーチンはスカラーもリストも返せます。",
+        {
+          "code": "use strict;\nuse warnings;\n\nsub add {\n    my ($x, $y) = @_;            # arguments arrive in @_\n    return $x + $y;\n}\n\nsub greet {\n    my ($name, $greeting) = @_;\n    $greeting //= \"Hello\";       # default if undefined\n    return \"$greeting, $name!\";\n}\n\nsub stats {\n    my @nums = @_;\n    my $sum = 0;\n    $sum += $_ for @nums;\n    return ($sum, $sum / @nums); # return a list\n}\n\nprint add(2, 3), \"\\n\";           # 5\nprint greet(\"Ann\"), \"\\n\";        # Hello, Ann!\nmy ($total, $avg) = stats(4, 8, 6);\nprint \"$total $avg\\n\";           # 18 6",
+          "lang": "perl"
+        },
+        "現代のPerlはシグネチャにも対応していて、`sub add($x, $y) { ... }`のように書けます。`use v5.36;`以降を指定すると有効になり、`strict`と`warnings`も同時に有効になります。"
+      ]
+    },
+    {
+      "h": "配列・ハッシュ・リファレンス",
+      "body": [
+        "配列とハッシュには、`push`、`pop`、`shift`、`sort`、`map`、`grep`、`keys`、`exists`といった強力な組み込み関数があります。入れ子のデータにはリファレンスを使います。`[ ... ]`は配列リファレンス、`{ ... }`はハッシュリファレンスを作り、`->`でそれをたどります。",
+        {
+          "code": "use strict;\nuse warnings;\n\nmy @nums = (5, 3, 8, 1);\npush @nums, 9;                           # add to the end\nmy $last = pop @nums;                    # remove from the end: 9\nmy @sorted  = sort { $a <=> $b } @nums;  # numeric sort\nmy @doubled = map  { $_ * 2 } @sorted;\nmy @big     = grep { $_ > 4 } @sorted;\nprint \"@sorted | @doubled | @big\\n\";     # 1 3 5 8 | 2 6 10 16 | 5 8\n\nmy %age = (ann => 31, bo => 25);\n$age{cy} = 40;\ndelete $age{bo};\nfor my $who (sort keys %age) {\n    print \"$who is $age{$who}\\n\";        # ann is 31 / cy is 40\n}\nprint \"has ann\\n\" if exists $age{ann};\n\n# references build nested data structures\nmy $user = { name => \"Ann\", langs => [\"Perl\", \"SQL\"] };\nprint \"$user->{name} knows $user->{langs}[1]\\n\";  # Ann knows SQL\nprint scalar @{ $user->{langs} }, \"\\n\";           # 2",
+          "lang": "perl"
+        },
+        "`sort`ブロックの中では、`$a`と`$b`が比較される2つの要素です。`<=>`は数値として、`cmp`は文字列として比較します。単純な`sort @list`は文字列として並べ替えるため、`10`が`9`より前に来ます。"
+      ]
+    },
+    {
+      "h": "正規表現",
+      "body": [
+        "正規表現はPerlの構文に組み込まれていて、これが最大の特徴です。`=~`でマッチ`m/.../`や置換`s/.../.../`を適用します。キャプチャしたグループは`$1`、`$2`などで参照でき、`g`(グローバル)や`i`(大文字・小文字を区別しない)といった修飾子は閉じのスラッシュの後ろに付けます。",
+        {
+          "code": "use strict;\nuse warnings;\n\nmy $line = \"2026-10-31 ERROR disk full on /dev/sda1\";\n\nif ($line =~ /^(\\d{4})-(\\d\\d)-(\\d\\d)\\s+(\\w+)/) {\n    print \"year=$1 level=$4\\n\";          # year=2026 level=ERROR\n}\n\n(my $masked = $line) =~ s/\\d/#/g;        # copy, then replace digits\nprint \"$masked\\n\";                       # ####-##-## ERROR disk full on /dev/sda#\n\nmy @words = split /\\s+/, $line;\nprint scalar(@words), \" words\\n\";        # 6 words\n\nmy %h = (\"a=1, b=2, c=3\" =~ /(\\w)=(\\d)/g); # pairs into a hash\nprint join(\",\", map { \"$_$h{$_}\" } sort keys %h), \"\\n\";  # a1,b2,c3",
+          "lang": "perl"
+        },
+        "`qr/.../`を使うと、コンパイル済みのパターンを変数に保存できます。`x`修飾子を使うと、長いパターンをコメント付きで複数行に分けて書けます。"
+      ]
+    },
+    {
+      "h": "エラー処理",
+      "body": [
+        "`die`は例外を発生させ、`warn`は警告を標準エラー出力に表示します。`eval { ... }`は例外を捕捉し、エラーメッセージを`$@`に入れます。`open`などのシステムコールは失敗すると偽を返し、`$!`にOSのエラーを設定するので、`or die`で確認します。",
+        {
+          "code": "use strict;\nuse warnings;\n\nsub divide {\n    my ($x, $y) = @_;\n    die \"division by zero\\n\" if $y == 0;\n    return $x / $y;\n}\n\nmy $result = eval { divide(1, 0) };\nif ($@) {\n    print \"Caught: $@\";                  # Caught: division by zero\n}\n\nopen(my $fh, \"<\", \"missing.txt\")\n    or print \"Cannot open: $!\\n\";        # Cannot open: No such file or directory",
+          "lang": "perl"
+        },
+        "`\\n`で終わる`die`のメッセージは、書いたとおりに表示されます。改行がなければ、Perlはファイル名と行番号を付け足します。Perl 5.34以降は実験的な`try`/`catch`機能もあり、Try::Tinyなどのモジュールも広く使われています。"
+      ]
+    },
+    {
+      "h": "小さな完成プログラム：ログレベルのカウント",
+      "body": [
+        "このスクリプトは、コマンドラインで指定したファイルまたは標準入力からログを読み、レベルごとに行数を数えて、並べ替えた集計を表示します。ダイヤモンド演算子`<>`、正規表現、ハッシュ、`printf`の使い方がわかります。",
+        {
+          "code": "#!/usr/bin/env perl\n# logstat.pl: count log levels in a file or standard input\nuse strict;\nuse warnings;\n\nmy %count;\nmy $lines = 0;\n\nwhile (my $line = <>) {                  # reads files named on the command line, or STDIN\n    chomp $line;\n    $lines++;\n    next unless $line =~ /\\b(INFO|WARN|ERROR)\\b/;\n    $count{$1}++;\n}\n\nprintf \"%d lines read\\n\", $lines;\nfor my $level (sort { $count{$b} <=> $count{$a} || $a cmp $b } keys %count) {\n    printf \"%-5s %3d\\n\", $level, $count{$level};\n}",
+          "lang": "perl"
+        },
+        {
+          "code": "perl logstat.pl app.log\n# 120 lines read\n# INFO   97\n# WARN   18\n# ERROR   5",
+          "lang": "shell"
+        },
+        {
+          "note": "初心者がよくやる間違い：`use strict`と`use warnings`を書かない、文字列に`==`を使う、行を読んだ後の`chomp`を忘れて改行が付いたままになる、`$array[0]`(1つの要素)と`@array`(リスト全体)を混同する、`open`の戻り値を確認しない、などです。"
+        }
+      ]
+    },
+    {
+      "h": "次に学ぶこと",
+      "body": [
+        {
+          "ul": [
+            "perldoc.perl.orgのperlintroなどのチュートリアル。`perldoc perlintro`でオフラインでも読めます。",
+            "『Learning Perl』と『Modern Perl』。初心者向けの有名な2冊です。",
+            "MetaCPAN。CPANモジュールの検索インターフェースです。",
+            "正規表現の完全なリファレンスであるperlreとperlretut。"
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Perlは今でも使われていますか？",
+      "a": "はい。ほとんどのUnix系システムに標準で入っており、システム管理、テキスト処理、バイオインフォマティクス、長く稼働している業務システムでは今も一般的です。ただし、新規のWebプロジェクトでPerlを選ぶ例は減っています。"
+    },
+    {
+      "q": "PerlとRakuの違いは何ですか？",
+      "a": "RakuはPerl 6として始まりましたが、設計の異なる別の言語になりました。Perl 5は独立して開発が続けられており、Perlという名前はこのPerl 5を指します。"
+    },
+    {
+      "q": "Perlの変数がなぜ$、@、%で始まるのですか？",
+      "a": "シギルは、得られる値の種類を表します。単一のスカラーなら`$`、リストなら`@`、ハッシュなら`%`です。このため、`@items`の1つの要素は`$items[0]`と書きます。"
+    },
+    {
+      "q": "Perlのchompは何をしますか？",
+      "a": "`chomp`は文字列の末尾の改行を取り除きます。ファイルやキーボードから1行読み込んだ後に、ほとんどの場合必要になります。"
+    },
+    {
+      "q": "Perlは正規表現が得意ですか？",
+      "a": "はい。正規表現はPerlの中核の構文の一部です。ほかの多くのツールや言語が使う正規表現ライブラリPCREの名前も、Perlの正規表現のスタイルに由来しています。"
+    }
+  ]
+}

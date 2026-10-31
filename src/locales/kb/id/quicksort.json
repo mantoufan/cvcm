@@ -1,0 +1,262 @@
+{
+  "title": "Penjelasan quicksort: partisi, pivot, kode Python, dan kompleksitas — cv.cm",
+  "description": "Quicksort memilih pivot, mempartisi list di sekitarnya, lalu mengurutkan kedua sisi. Penelusuran partisi Lomuto, kode Python, O(n log n) vs O(n²), pivot, dan stabilitas.",
+  "h1": "Penjelasan quicksort: cara kerja, kode, dan kompleksitas",
+  "answer": "Quicksort adalah algoritma pengurutan divide-and-conquer. Algoritma ini memilih satu elemen sebagai pivot, menata ulang array sehingga elemen yang lebih kecil berada sebelum pivot dan yang lebih besar sesudahnya (partisi), lalu mengurutkan kedua sisi secara rekursif. Waktunya O(n log n) rata-rata dan mengurutkan di tempat dengan ruang stack O(log n), tetapi menurun menjadi O(n²) bila pivot terus-menerus buruk. Quicksort tidak stabil. Dengan pivot acak atau median-of-three, ini salah satu sort serbaguna tercepat dalam praktik.",
+  "sections": [
+    {
+      "h": "Ide dasar dengan kata-kata sederhana",
+      "body": [
+        {
+          "ol": [
+            "Pilih elemen pivot, misalnya elemen terakhir, atau elemen acak.",
+            "Partisi: pindahkan setiap elemen yang lebih kecil dari pivot ke kirinya dan setiap elemen yang lebih besar ke kanannya. Pivot kini berada di posisi akhirnya yang terurut.",
+            "Urutkan secara rekursif bagian di kiri pivot dan bagian di kanannya. Tidak ada yang perlu digabungkan sesudahnya."
+          ]
+        },
+        "Merge sort memecah dengan mudah dan menggabungkan dengan susah. Quicksort kebalikannya: partisi yang mengerjakan tugas berat, dan menyambung kedua bagian tidak butuh usaha karena keduanya sudah berada di tempat yang benar dalam array yang sama."
+      ]
+    },
+    {
+      "h": "Contoh: satu partisi Lomuto",
+      "body": [
+        "Partisi `[10, 80, 30, 90, 40, 50, 70]` dengan elemen terakhir, 70, sebagai pivot. Indeks `i` menandai ujung wilayah elemen yang lebih kecil dari pivot; `j` memindai dari kiri ke kanan.",
+        {
+          "table": {
+            "head": [
+              "j",
+              "items[j]",
+              "Lebih kecil dari 70?",
+              "Aksi",
+              "Array sesudahnya"
+            ],
+            "rows": [
+              [
+                "0",
+                "10",
+                "ya",
+                "i = 0, tukar 0↔0",
+                "`[10, 80, 30, 90, 40, 50, 70]`"
+              ],
+              [
+                "1",
+                "80",
+                "tidak",
+                "tidak ada",
+                "`[10, 80, 30, 90, 40, 50, 70]`"
+              ],
+              [
+                "2",
+                "30",
+                "ya",
+                "i = 1, tukar 1↔2",
+                "`[10, 30, 80, 90, 40, 50, 70]`"
+              ],
+              [
+                "3",
+                "90",
+                "tidak",
+                "tidak ada",
+                "`[10, 30, 80, 90, 40, 50, 70]`"
+              ],
+              [
+                "4",
+                "40",
+                "ya",
+                "i = 2, tukar 2↔4",
+                "`[10, 30, 40, 90, 80, 50, 70]`"
+              ],
+              [
+                "5",
+                "50",
+                "ya",
+                "i = 3, tukar 3↔5",
+                "`[10, 30, 40, 50, 80, 90, 70]`"
+              ],
+              [
+                "akhir",
+                "",
+                "",
+                "letakkan pivot di i + 1 = 4",
+                "`[10, 30, 40, 50, 70, 90, 80]`"
+              ]
+            ]
+          }
+        },
+        "70 kini berada di indeks 4, posisi akhirnya. Quicksort lalu mengurutkan `[10, 30, 40, 50]` dan `[90, 80]` secara terpisah."
+      ]
+    },
+    {
+      "h": "Implementasi Python",
+      "body": [
+        {
+          "code": "import random\n\ndef partition(a, lo, hi):\n    \"\"\"Lomuto partition of a[lo..hi] around a random pivot.\"\"\"\n    r = random.randint(lo, hi)\n    a[r], a[hi] = a[hi], a[r]       # move the pivot to the end\n    pivot = a[hi]\n    i = lo - 1\n    for j in range(lo, hi):\n        if a[j] < pivot:\n            i += 1\n            a[i], a[j] = a[j], a[i]\n    a[i + 1], a[hi] = a[hi], a[i + 1]\n    return i + 1\n\ndef quicksort(a, lo=0, hi=None):\n    \"\"\"Sort list a in place.\"\"\"\n    if hi is None:\n        hi = len(a) - 1\n    while lo < hi:\n        p = partition(a, lo, hi)\n        if p - lo < hi - p:           # recurse on the smaller side\n            quicksort(a, lo, p - 1)\n            lo = p + 1\n        else:\n            quicksort(a, p + 1, hi)\n            hi = p - 1\n    return a\n\nprint(quicksort([10, 80, 30, 90, 40, 50, 70]))   # [10, 30, 40, 50, 70, 80, 90]\nprint(quicksort([3, 3, 3, 1]))                   # [1, 3, 3, 3]",
+          "lang": "python"
+        },
+        "Berekursi ke sisi yang lebih kecil dan mengulang pada sisi yang lebih besar menjaga kedalaman stack tetap O(log n) bahkan pada kasus terburuk. Versi singkat yang tidak in-place populer untuk menjelaskan idenya, tetapi mengalokasikan list baru di setiap tingkat:",
+        {
+          "code": "def quicksort_simple(items):\n    if len(items) <= 1:\n        return items\n    pivot = items[len(items) // 2]\n    less = [x for x in items if x < pivot]\n    equal = [x for x in items if x == pivot]\n    greater = [x for x in items if x > pivot]\n    return quicksort_simple(less) + equal + quicksort_simple(greater)\n\nprint(quicksort_simple([5, 2, 9, 2, 7]))   # [2, 2, 5, 7, 9]",
+          "lang": "python"
+        }
+      ]
+    },
+    {
+      "h": "Kompleksitas waktu dan ruang",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Kasus",
+              "Waktu",
+              "Alasan"
+            ],
+            "rows": [
+              [
+                "Terbaik",
+                "O(n log n)",
+                "setiap pivot membagi rentang menjadi dua"
+              ],
+              [
+                "Rata-rata",
+                "O(n log n)",
+                "pivot acak memberi pembagian yang cukup seimbang, sekitar 1,39 n log₂ n perbandingan"
+              ],
+              [
+                "Terburuk",
+                "O(n²)",
+                "setiap pivot adalah elemen terkecil atau terbesar"
+              ],
+              [
+                "Ruang tambahan",
+                "O(log n)",
+                "stack rekursi ketika berekursi ke sisi yang lebih kecil"
+              ]
+            ]
+          }
+        },
+        "Kasus terburuk klasik adalah pivot tetap berupa elemen pertama atau terakhir pada input yang sudah terurut atau terurut terbalik: setiap partisi hanya menyingkirkan pivot, menghasilkan n tingkat dengan pekerjaan O(n). Pivot acak membuat hal ini sangat tidak mungkin untuk input apa pun."
+      ]
+    },
+    {
+      "h": "Perbandingan quicksort dengan sort lain",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Algoritma",
+              "Terbaik",
+              "Rata-rata",
+              "Terburuk",
+              "Ruang tambahan",
+              "Stabil"
+            ],
+            "rows": [
+              [
+                "Quicksort",
+                "O(n log n)",
+                "O(n log n)",
+                "O(n²)",
+                "O(log n)",
+                "Tidak"
+              ],
+              [
+                "Merge sort",
+                "O(n log n)",
+                "O(n log n)",
+                "O(n log n)",
+                "O(n)",
+                "Ya"
+              ],
+              [
+                "Heapsort",
+                "O(n log n)",
+                "O(n log n)",
+                "O(n log n)",
+                "O(1)",
+                "Tidak"
+              ],
+              [
+                "Insertion sort",
+                "O(n)",
+                "O(n²)",
+                "O(n²)",
+                "O(1)",
+                "Ya"
+              ],
+              [
+                "Bubble sort",
+                "O(n)",
+                "O(n²)",
+                "O(n²)",
+                "O(1)",
+                "Ya"
+              ],
+              [
+                "Selection sort",
+                "O(n²)",
+                "O(n²)",
+                "O(n²)",
+                "O(1)",
+                "Tidak"
+              ],
+              [
+                "Timsort (`sorted` di Python)",
+                "O(n)",
+                "O(n log n)",
+                "O(n log n)",
+                "O(n)",
+                "Ya"
+              ]
+            ]
+          }
+        },
+        "Quicksort tidak stabil: pertukaran saat partisi bisa memindahkan elemen melewati elemen yang sama. Biasanya ia mengalahkan merge sort dan heapsort pada array di memori karena perulangan dalamnya sederhana, bekerja di tempat, dan mengakses memori secara kebanyakan berurutan. Introsort, yang dipakai banyak implementasi `std::sort` pustaka standar C++, memulai dengan quicksort dan beralih ke heapsort jika rekursi terlalu dalam, sehingga O(n log n) terjamin."
+      ]
+    },
+    {
+      "h": "Pilihan pivot, varian, dan kesalahan umum",
+      "body": [
+        {
+          "ul": [
+            "Pilihan pivot: elemen pertama atau terakhir (sederhana, tetapi O(n²) pada input terurut), elemen acak, atau median dari tiga (pertama, tengah, terakhir).",
+            "Partisi Hoare: dua indeks bergerak saling mendekat dan menukar pasangan yang berada di sisi yang salah. Rata-rata melakukan lebih sedikit pertukaran daripada Lomuto.",
+            "Partisi tiga arah (Dutch national flag): membagi menjadi lebih kecil, sama, dan lebih besar. Ini membuat array dengan banyak kunci duplikat menjadi cepat; Lomuto biasa menurun menjadi O(n²) ketika semua kunci sama.",
+            "Dual-pivot quicksort memakai dua pivot dan tiga bagian; Java memakainya untuk mengurutkan array tipe primitif.",
+            "Quickselect memakai satu partisi dan berekursi hanya ke satu sisi untuk menemukan elemen terkecil ke-k dalam waktu rata-rata O(n)."
+          ]
+        },
+        {
+          "note": "Bug yang umum: off-by-one pada batas partisi yang meninggalkan pivot di dalam subarray (rekursi tak berujung), berekursi ke kedua sisi tanpa hati-hati sehingga input terurut menabrak batas rekursi Python sekitar 1000, dan mengira quicksort stabil."
+        }
+      ]
+    },
+    {
+      "h": "Kapan memakai quicksort",
+      "body": [
+        "Quicksort adalah pilihan default yang baik untuk mengurutkan array di memori ketika stabilitas tidak diperlukan. Di Python, pakai `sorted()` atau `list.sort()` saja; keduanya memakai Timsort, yang stabil dan cepat pada data yang sebagian terurut. Mengimplementasikan quicksort adalah tugas wawancara yang sangat umum, sering dilanjutkan dengan pertanyaan tentang kasus terburuk, pilihan pivot, stabilitas, atau memakai quickselect untuk mencari elemen terbesar ke-k."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Apakah quicksort stabil?",
+      "a": "Tidak. Partisi menukar elemen melintasi jarak jauh, sehingga elemen yang sama bisa berubah urutan relatifnya. Versi stabil ada tetapi butuh memori tambahan."
+    },
+    {
+      "q": "Apa kasus terburuk quicksort?",
+      "a": "O(n²), ketika setiap pivot adalah nilai minimum atau maksimum dari rentangnya, misalnya pivot elemen terakhir pada input yang sudah terurut. Pivot acak atau median-of-three menghindarinya dalam praktik."
+    },
+    {
+      "q": "Mengapa quicksort cepat dalam praktik?",
+      "a": "Ia mengurutkan di tempat, perulangan dalamnya hanya perbandingan dan pertukaran sederhana, dan memindai memori secara berurutan sehingga memanfaatkan cache CPU dengan baik. Konstanta rata-ratanya lebih kecil daripada heapsort dan tidak butuh buffer seperti merge sort."
+    },
+    {
+      "q": "Apa perbedaan quicksort dan merge sort?",
+      "a": "Quicksort mempartisi lebih dulu dan tidak butuh merge; merge sort membagi lebih dulu dan pekerjaannya ada di merge. Quicksort bekerja di tempat tetapi kasus terburuknya O(n²) dan tidak stabil; merge sort stabil, selalu O(n log n), dan butuh ruang tambahan O(n)."
+    },
+    {
+      "q": "Berapa banyak memori yang dipakai quicksort?",
+      "a": "Ia mengurutkan di tempat. Stack rekursinya O(log n) rata-rata, dan O(log n) juga pada kasus terburuk jika Anda selalu berekursi ke sisi yang lebih kecil lebih dulu."
+    }
+  ]
+}

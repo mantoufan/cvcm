@@ -1,0 +1,190 @@
+{
+  "title": "PowerShell入門：コマンドレット・パイプライン・変数・スクリプトを解説 — cv.cm",
+  "description": "PowerShellスクリプトの基本を順に学べる入門講座。.ps1スクリプトの実行、コマンドレットとオブジェクトパイプライン、変数、演算子、関数、ハッシュテーブル、try/catchによるエラー処理を解説します。",
+  "h1": "PowerShell入門：初心者向けチュートリアル",
+  "answer": "PowerShellは、自動化のためにMicrosoftが提供するクロスプラットフォームのシェル兼スクリプト言語です。コマンド(コマンドレット)はテキストではなく.NETオブジェクトをパイプラインで受け渡すため、テキストを解析しなくてもデータの絞り込み、並べ替え、エクスポートができます。このページでは、PowerShell 7のインストール、スクリプトの実行、コマンドレット、変数、演算子、制御構文、関数、コレクション、エラー処理を扱います。",
+  "sections": [
+    {
+      "h": "PowerShellとは何か、何に使うのか",
+      "body": [
+        "PowerShellは、.NET上に構築されたMicrosoft製のクロスプラットフォームのシェル兼スクリプト言語です。従来のシェルはコマンド間でプレーンテキストを受け渡しますが、PowerShellはプロパティとメソッドを持つ.NETオブジェクトを受け渡すので、テキストを解析せずにデータを絞り込んだり並べ替えたりできます。",
+        "システム管理者やDevOpsエンジニアは、PowerShellをWindowsの自動化、Active Directory・Microsoft 365・Azureの管理、ビルドやデプロイ用スクリプトの作成に使います。エディションは2種類あります。Windowsに組み込まれているWindows PowerShell 5.1と、オープンソースでWindows・Linux・macOSで動作するPowerShell 7以降(コマンド名は`pwsh`)です。このチュートリアルはPowerShell 7を対象にしています。"
+      ]
+    },
+    {
+      "h": "PowerShellのインストールとHello, worldの実行",
+      "body": [
+        "Windowsでは`winget install --id Microsoft.PowerShell --source winget`でPowerShell 7をインストールします。macOSとLinuxでは、Homebrewか、Microsoftのインストールガイドに載っているパッケージマネージャーを使ってください。スクリプトは拡張子`.ps1`のテキストファイルです。",
+        {
+          "code": "# hello.ps1\nWrite-Output \"Hello, world!\"",
+          "lang": "powershell"
+        },
+        {
+          "code": "pwsh ./hello.ps1\n# Hello, world!",
+          "lang": "shell"
+        },
+        "Windowsでは、実行ポリシーによってスクリプトがブロックされることがあります。`Set-ExecutionPolicy -Scope CurrentUser RemoteSigned`を実行すると、自分で作ったローカルのスクリプトは実行でき、ダウンロードしたスクリプトには署名が必要なままになります。エディターはPowerShell拡張機能を入れたVisual Studio Codeがおすすめです。"
+      ]
+    },
+    {
+      "h": "コマンドレットとパイプライン",
+      "body": [
+        "コマンドはコマンドレットと呼ばれ、`Get-Process`、`Set-Location`、`New-Item`のように`Verb-Noun`(動詞-名詞)の命名規則に従います。ほかのコマンドを調べるときは、`Get-Command`、`Get-Help`、`Get-Member`の3つが役に立ちます。",
+        {
+          "code": "Get-Command -Noun Process          # list commands that work with processes\nGet-Help Get-ChildItem -Examples   # show usage examples\n\n# five processes using the most memory\nGet-Process |\n    Sort-Object -Property WorkingSet64 -Descending |\n    Select-Object -First 5 -Property Name, Id, WorkingSet64\n\n# files larger than 1 MB in the current folder\nGet-ChildItem -File | Where-Object { $_.Length -gt 1MB } |\n    ForEach-Object { \"{0}  {1:N0} KB\" -f $_.Name, ($_.Length / 1KB) }\n\nGet-Date | Get-Member -MemberType Property   # inspect an object",
+          "lang": "powershell"
+        },
+        "スクリプトブロックの中では、`$_`(または`$PSItem`)がパイプラインを流れてきた現在のオブジェクトです。オブジェクトは型を保ったままなので、`Sort-Object`は何もしなくても数値を数値として、日付を時系列として並べ替えます。"
+      ]
+    },
+    {
+      "h": "変数と型",
+      "body": [
+        "変数は`$`で始まります。変数にはあらゆる.NETオブジェクトを入れられ、角かっこで型制約を付けることもできます。二重引用符の文字列では変数と`$( )`式が展開され、単一引用符の文字列はそのままの文字列になります。",
+        {
+          "code": "$name = \"Ada\"\n[int]$count = 3\n$price = 19.99                      # System.Double\n$isAdmin = $false\n$today = Get-Date\n\n\"Hello, $name\"                      # Hello, Ada\n\"Next: $($count + 1)\"               # Next: 4\n'No $expansion here'                # No $expansion here\n$price.GetType().Name               # Double\n$today.ToString(\"yyyy-MM-dd\")       # for example 2026-10-31\n[int]\"42\" + 1                       # 43 (explicit conversion)",
+          "lang": "powershell"
+        },
+        {
+          "table": {
+            "head": [
+              "型",
+              "例",
+              "補足"
+            ],
+            "rows": [
+              [
+                "`[int]`",
+                "`42`",
+                "32ビット整数"
+              ],
+              [
+                "`[double]`",
+                "`3.14`",
+                "浮動小数点数。金額には`[decimal]`を使います"
+              ],
+              [
+                "`[string]`",
+                "`\"text\"`",
+                "比較はデフォルトで大文字・小文字を区別しません"
+              ],
+              [
+                "`[bool]`",
+                "`$true`, `$false`",
+                "キーワードではなく自動変数です"
+              ],
+              [
+                "`[datetime]`",
+                "`Get-Date`",
+                "完全な.NETの`DateTime`オブジェクト"
+              ],
+              [
+                "`[array]`, `[hashtable]`",
+                "`@(1, 2)`, `@{ a = 1 }`",
+                "コレクション。後述します"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "演算子と制御構文",
+      "body": [
+        "比較演算子は記号ではなく単語です。`-eq`、`-ne`、`-gt`、`-lt`、`-ge`、`-le`、`-like`(ワイルドカード)、`-match`(正規表現)、`-contains`があります。文字列の比較は、`-ceq`のように`c`付きの演算子を使わない限り大文字・小文字を区別しません。",
+        {
+          "code": "$temp = 22\nif ($temp -gt 30) {\n    \"hot\"\n} elseif ($temp -ge 15) {\n    \"mild\"                           # mild\n} else {\n    \"cold\"\n}\n\nswitch (\"report.csv\") {\n    { $_ -like \"*.csv\" } { \"CSV file\" }    # CSV file\n    { $_ -like \"*.txt\" } { \"text file\" }\n    default { \"other\" }\n}\n\nforeach ($n in 1..3) { \"n = $n\" }          # n = 1, n = 2, n = 3\nfor ($i = 0; $i -lt 2; $i++) { \"i = $i\" }  # i = 0, i = 1\n$k = 3\nwhile ($k -gt 0) { $k-- }\n\"Hello\" -eq \"hello\"                        # True",
+          "lang": "powershell"
+        },
+        {
+          "note": "比較に`>`や`=`を使うのは典型的な間違いです。`if ($a > 5)`は`$a`を`5`というファイルにリダイレクトし、`=`は代入になります。`-gt`や`-eq`を使ってください。`$null`と比較するときは、配列が意図せず絞り込まれないよう、`$null`を左側に書きます(`$null -eq $x`)。"
+        }
+      ]
+    },
+    {
+      "h": "関数とパラメーター",
+      "body": [
+        "関数は`param()`ブロックで、型付きで名前のあるパラメーターを宣言します。`[CmdletBinding()]`を付けると、`-Verbose`など組み込みコマンドレットと同じ共通パラメーターが使えるようになります。キャプチャされなかった出力は、すべて関数の戻り値になります。",
+        {
+          "code": "function Get-Greeting {\n    [CmdletBinding()]\n    param(\n        [Parameter(Mandatory)]\n        [string]$Name,\n        [string]$Greeting = \"Hello\"\n    )\n    Write-Verbose \"Building greeting for $Name\"\n    \"$Greeting, $Name!\"\n}\n\nGet-Greeting -Name \"Ann\"                  # Hello, Ann!\nGet-Greeting -Name \"Bo\" -Greeting \"Hi\"    # Hi, Bo!\nGet-Greeting \"Cy\" -Verbose                # also prints the verbose message",
+          "lang": "powershell"
+        },
+        "関数はコマンドレットと同じように、引数を空白で区切って呼び出します。例：`Get-Greeting -Name Ann`。`Get-Greeting(\"Ann\", \"Hi\")`と書くと配列が1つの引数として渡されるため、ほかの言語から来た人がよくつまずきます。"
+      ]
+    },
+    {
+      "h": "配列・ハッシュテーブル・カスタムオブジェクト",
+      "body": [
+        "配列は`@( )`またはカンマ区切りのリストで作ります。`@{ }`と書くハッシュテーブルは、キーと値のペアを保持します。`[pscustomobject]`はハッシュテーブルをオブジェクトに変換し、`Sort-Object`、`Format-Table`、`Export-Csv`とうまく組み合わせられます。",
+        {
+          "code": "$langs = @(\"PowerShell\", \"Python\")\n$langs += \"Go\"                       # creates a new, longer array\n$langs.Count                         # 3\n$langs[0]                            # PowerShell\n$langs -contains \"Go\"                # True\n\n$ports = @{ http = 80; https = 443 }\n$ports[\"ssh\"] = 22\n$ports.https                         # 443\n$ports.Keys.Count                    # 3\n\n$user = [pscustomobject]@{ Name = \"Ann\"; Age = 31 }\n$user.Name                           # Ann\n$people = @(\n    [pscustomobject]@{ Name = \"Bo\"; Age = 25 }\n    $user\n)\n$people | Sort-Object Age | Format-Table",
+          "lang": "powershell"
+        },
+        "配列に`+=`で追加すると、そのたびに配列全体がコピーされます。ループが大きい場合は、ループの出力を直接受け取る(`$result = foreach (...) { ... }`)か、`[System.Collections.Generic.List[object]]`を使ってください。"
+      ]
+    },
+    {
+      "h": "エラー処理",
+      "body": [
+        "PowerShellのエラーには、実行を止める終了エラーと、メッセージを表示して処理を続ける非終了エラーがあります。`try`/`catch`/`finally`が捕捉するのは終了エラーだけなので、コマンドレットの失敗を捕捉したいときは`-ErrorAction Stop`を付けます。",
+        {
+          "code": "try {\n    $content = Get-Content -Path \"missing.txt\" -ErrorAction Stop\n}\ncatch [System.Management.Automation.ItemNotFoundException] {\n    Write-Warning \"File not found: $($_.Exception.Message)\"\n}\ncatch {\n    Write-Error \"Unexpected error: $_\"\n}\nfinally {\n    \"cleanup done\"\n}\n\n$ErrorActionPreference = \"Stop\"   # make all errors terminating in this script\nthrow \"Something went wrong\"      # raise your own terminating error",
+          "lang": "powershell"
+        },
+        "`catch`の中では、`$_`がエラーレコードです。スクリプトの先頭で`$ErrorActionPreference = \"Stop\"`を設定するのは、すぐに失敗させるためによく使われる方法です。"
+      ]
+    },
+    {
+      "h": "小さな完成スクリプト：ディスク使用量レポート",
+      "body": [
+        "このスクリプトは、フォルダー以下の大きなファイルを一覧にし、拡張子ごとにグループ化して、CSVレポートとして出力します。パラメーター、パイプライン、計算プロパティ、エラー処理をひととおり組み合わせています。",
+        {
+          "code": "# report.ps1\nparam(\n    [string]$Path = \".\",\n    [int]$Top = 5\n)\n$ErrorActionPreference = \"Stop\"\n\n$files = Get-ChildItem -Path $Path -File -Recurse\n\n\"Largest $Top files:\"\n$files | Sort-Object Length -Descending | Select-Object -First $Top |\n    Format-Table Name, @{ Name = \"SizeKB\"; Expression = { [math]::Round($_.Length / 1KB, 1) } }\n\n$byExt = $files | Group-Object Extension | ForEach-Object {\n    [pscustomobject]@{\n        Extension = if ($_.Name) { $_.Name } else { \"(none)\" }\n        Files     = $_.Count\n        TotalMB   = [math]::Round(($_.Group | Measure-Object Length -Sum).Sum / 1MB, 2)\n    }\n} | Sort-Object TotalMB -Descending\n\n$byExt | Format-Table\n$byExt | Export-Csv -Path \"usage.csv\" -NoTypeInformation\n\"Report saved to usage.csv\"",
+          "lang": "powershell"
+        },
+        {
+          "code": "pwsh ./report.ps1 -Path ~/Documents -Top 3",
+          "lang": "shell"
+        },
+        {
+          "note": "初心者がよくやる間違い：`-gt`、`-lt`、`-eq`の代わりに`>`、`<`、`==`を使う、関数をかっことカンマで呼び出す、`try`の中で`-ErrorAction Stop`を付け忘れる、データの出力に`Write-Host`を使う(画面に書き込むだけでパイプラインには流れないので、`Write-Output`か値そのものを使いましょう)、Windows PowerShell 5.1とPowerShell 7を混同する、などです。"
+        }
+      ]
+    },
+    {
+      "h": "次に学ぶこと",
+      "body": [
+        {
+          "ul": [
+            "Microsoft Learnにある「PowerShell 101」とPowerShellのドキュメント。",
+            "シェル内の`Get-Help about_*`。たとえば`Get-Help about_Operators`のように使います。先に`Update-Help`を実行してください。",
+            "PowerShell Gallery。モジュールの公式リポジトリで、`Install-Module`と組み合わせて使います。",
+            "PSScriptAnalyzer。推奨されるプラクティスに沿っているかどうかをスクリプトで検査するリンターです。"
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "PowerShellとWindows PowerShellの違いは何ですか？",
+      "a": "Windows PowerShell 5.1はWindowsに組み込まれている旧エディションで、.NET Frameworkをベースにしています。PowerShell 7以降はクロスプラットフォームのオープンソース版で、最新の.NETをベースにしており、`pwsh`コマンドで起動します。"
+    },
+    {
+      "q": "PowerShellはコマンドプロンプトと同じものですか？",
+      "a": "いいえ。コマンドプロンプト(`cmd.exe`)はバッチコマンドを実行し、テキストを受け渡します。PowerShellはオブジェクトを受け渡す本格的なスクリプト言語で、ほとんどのコマンドラインプログラムも実行できます。"
+    },
+    {
+      "q": "PowerShellはLinuxやmacOSでも動きますか？",
+      "a": "はい。PowerShell 7以降はWindows、Linux、macOSで動作します。ただし、Windows専用のモジュールの一部はWindowsでしか使えません。"
+    },
+    {
+      "q": ".ps1スクリプトが実行できないのはなぜですか？",
+      "a": "Windowsの実行ポリシーでブロックされている可能性があります。`Set-ExecutionPolicy -Scope CurrentUser RemoteSigned`を実行し、スクリプトは`./script.ps1`のようにパスを付けて起動してください。"
+    },
+    {
+      "q": "PowerShellの$_は何を意味しますか？",
+      "a": "`$_`(`$PSItem`も同じ)は、パイプラインを流れてきた現在のオブジェクトです。`Where-Object`や`ForEach-Object`などのスクリプトブロックの中で使い、`catch`の中では現在のエラーを指します。"
+    }
+  ]
+}

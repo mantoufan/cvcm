@@ -1,0 +1,226 @@
+{
+  "title": "C++ 入门教程：数据类型、类、STL 容器与 RAII — cv.cm",
+  "description": "一页学会现代 C++：编译 Hello world，类型与 auto，流程控制，函数，类，vector 与 map，智能指针，RAII 与异常。",
+  "h1": "C++ 入门教程（零基础）",
+  "answer": "C++ 是一门编译型、静态类型的语言，把 C 的速度和底层控制能力与类、模板和庞大的标准库结合在一起。用 `g++ -std=c++20 hello.cpp -o hello` 编译 `hello.cpp`，再运行 `./hello`。现代 C++ 代码使用 `std::string`、`std::vector` 和 `std::map`，而不是原始数组；使用智能指针，而不是手动 `delete`；并借助 RAII 让资源自动释放。",
+  "sections": [
+    {
+      "h": "C++ 是什么，用来做什么",
+      "body": [
+        "C++ 由 Bjarne Stroustrup 在贝尔实验室创建，1979 年起步，当时叫“带类的 C”。它由 ISO 标准化；C++11 开启了“现代 C++”时代，随后是 C++17、C++20 和 C++23。C++ 用于性能和控制力至关重要的场景：游戏引擎（Unreal Engine）、浏览器（Chrome、Firefox）、数据库、交易系统、嵌入式设备、编译器和机器学习运行时。它的指导思想是零开销抽象：你没用到的特性不会带来任何代价。"
+      ]
+    },
+    {
+      "h": "安装编译器并运行 Hello, world",
+      "body": [
+        "在 Linux 和 macOS 上使用 GCC（`g++`）或 Clang（`clang++`），在 Windows 上通过 Visual Studio 使用 Microsoft Visual C++。请显式指定标准版本。",
+        {
+          "code": "#include <iostream>\n\nint main() {\n    std::cout << \"Hello, world\\n\";\n    return 0;\n}",
+          "lang": "cpp"
+        },
+        {
+          "code": "g++ -std=c++20 -Wall -Wextra hello.cpp -o hello\n./hello\n# Hello, world",
+          "lang": "shell"
+        },
+        "`std::cout` 是标准输出流，`<<` 向它写入内容。标准库中的所有内容都位于命名空间 `std` 中。"
+      ]
+    },
+    {
+      "h": "变量、类型与 auto",
+      "body": [
+        "C++ 拥有与 C 相同的内置类型，另外 `bool` 是关键字，还有引用以及 `std::string` 等库类型。`auto` 让编译器根据初始化表达式推导类型。花括号初始化 `{}` 会拒绝窄化转换。",
+        {
+          "table": {
+            "head": [
+              "类型",
+              "示例",
+              "说明"
+            ],
+            "rows": [
+              [
+                "`int`, `long long`",
+                "`int n{42};`",
+                "有符号整数"
+              ],
+              [
+                "`double`",
+                "`double x{3.14};`",
+                "64 位浮点数"
+              ],
+              [
+                "`bool`",
+                "`bool ok{true};`",
+                "`true` 或 `false`"
+              ],
+              [
+                "`char`",
+                "`char c{'A'};`",
+                "一个字节"
+              ],
+              [
+                "`std::string`",
+                "`std::string s{\"hi\"};`",
+                "可增长的文本，来自 `<string>`"
+              ],
+              [
+                "`auto`",
+                "`auto v = 2.5;`",
+                "自动推导，这里是 `double`"
+              ],
+              [
+                "`T&`",
+                "`int& r = n;`",
+                "引用：`n` 的另一个名字"
+              ]
+            ]
+          }
+        },
+        {
+          "code": "#include <iostream>\n#include <string>\n\nint main() {\n    int count{7};\n    auto avg = count / 2.0;          // double, 3.5\n    std::string name{\"Ada\"};\n    name += \" Lovelace\";\n    const int& ref = count;          // read-only alias of count\n    std::cout << name << \" \" << name.size() << \" \" << avg << \" \" << ref << \"\\n\";\n    // Ada Lovelace 12 3.5 7\n}",
+          "lang": "cpp"
+        }
+      ]
+    },
+    {
+      "h": "流程控制与函数",
+      "body": [
+        "流程控制与 C 相同，另外还有基于范围的 `for` 循环。传递大对象时用 `const` 引用以避免拷贝；当函数需要修改对象时，使用非 `const` 引用。",
+        {
+          "code": "#include <iostream>\n#include <string>\n#include <vector>\n\nint square(int x) { return x * x; }\n\nvoid addSuffix(std::string& s, const std::string& suffix = \"!\") {\n    s += suffix;\n}\n\nint main() {\n    int score = 72;\n    if (score >= 90) std::cout << \"A\\n\";\n    else if (score >= 70) std::cout << \"B\\n\";   // B\n    else std::cout << \"C\\n\";\n\n    std::vector<int> nums{1, 2, 3};\n    for (int n : nums) std::cout << square(n) << \" \";  // 1 4 9\n    std::cout << \"\\n\";\n\n    std::string word = \"hi\";\n    addSuffix(word);\n    std::cout << word << \"\\n\";                  // hi!\n}",
+          "lang": "cpp"
+        }
+      ]
+    },
+    {
+      "h": "类",
+      "body": [
+        "类把数据成员和成员函数组织在一起。构造函数负责初始化对象；`private` 成员对外部代码隐藏。`struct` 与类基本相同，只是成员默认是 public。",
+        {
+          "code": "#include <iostream>\n#include <string>\n#include <utility>\n\nclass Account {\npublic:\n    explicit Account(std::string owner) : owner_(std::move(owner)) {}\n\n    void deposit(double amount) {\n        if (amount > 0) balance_ += amount;\n    }\n    double balance() const { return balance_; }\n    const std::string& owner() const { return owner_; }\n\nprivate:\n    std::string owner_;\n    double balance_ = 0.0;\n};\n\nint main() {\n    Account acc{\"Ann\"};\n    acc.deposit(50);\n    acc.deposit(-5);   // ignored\n    std::cout << acc.owner() << \": \" << acc.balance() << \"\\n\";  // Ann: 50\n}",
+          "lang": "cpp"
+        },
+        "继承（`class Savings : public Account`）和 `virtual` 函数提供运行时多态。给重写的函数标上 `override`，让编译器帮你检查。"
+      ]
+    },
+    {
+      "h": "标准库容器与算法",
+      "body": [
+        "标准库（常称 STL）提供了容器和算法，它们通过迭代器协同工作。",
+        {
+          "table": {
+            "head": [
+              "容器",
+              "类似",
+              "用途"
+            ],
+            "rows": [
+              [
+                "`std::vector<T>`",
+                "动态数组",
+                "默认的序列容器"
+              ],
+              [
+                "`std::array<T, N>`",
+                "固定长度数组",
+                "大小在编译期已知"
+              ],
+              [
+                "`std::map<K, V>`",
+                "有序字典",
+                "键有序，查找为 O(log n)"
+              ],
+              [
+                "`std::unordered_map<K, V>`",
+                "哈希表",
+                "平均查找速度快，为 O(1)"
+              ],
+              [
+                "`std::set<T>`",
+                "有序的不重复集合",
+                "判断成员是否存在，有序输出"
+              ]
+            ]
+          }
+        },
+        {
+          "code": "#include <algorithm>\n#include <iostream>\n#include <map>\n#include <string>\n#include <vector>\n\nint main() {\n    std::vector<int> nums{3, 1, 2, 5};\n    std::sort(nums.begin(), nums.end());\n    auto evens = std::count_if(nums.begin(), nums.end(),\n                               [](int n) { return n % 2 == 0; });\n    std::cout << nums.front() << \" \" << nums.back() << \" \" << evens << \"\\n\";  // 1 5 1\n\n    std::map<std::string, int> ages{{\"bob\", 25}, {\"ann\", 31}};\n    ages[\"cy\"] = 40;\n    for (const auto& [name, age] : ages) {     // structured bindings\n        std::cout << name << \"=\" << age << \" \";  // ann=31 bob=25 cy=40\n    }\n    std::cout << \"\\n\";\n}",
+          "lang": "cpp"
+        },
+        "`[](int n) { ... }` 是 lambda，即就地书写的匿名函数。模板使同一个 `std::vector` 能适用于任何元素类型；你也可以用 `template <typename T>` 编写自己的模板。"
+      ]
+    },
+    {
+      "h": "标志性特性：RAII 与智能指针",
+      "body": [
+        "RAII（Resource Acquisition Is Initialization，资源获取即初始化）指资源由某个对象持有：构造函数获取资源，析构函数释放资源。因为对象离开作用域时析构函数会自动运行，即使抛出了异常也一样，所以内存、文件和锁都不会泄漏。智能指针就是把 RAII 应用到堆内存上。",
+        {
+          "code": "#include <iostream>\n#include <memory>\n\nstruct Noisy {\n    int id;\n    explicit Noisy(int i) : id(i) { std::cout << \"create \" << id << \"\\n\"; }\n    ~Noisy() { std::cout << \"destroy \" << id << \"\\n\"; }\n};\n\nint main() {\n    auto a = std::make_unique<Noisy>(1);       // sole owner\n    {\n        auto b = std::make_shared<Noisy>(2);   // shared, reference-counted\n        auto c = b;                            // two owners now\n        std::cout << \"owners: \" << b.use_count() << \"\\n\";\n    }                                          // destroy 2 happens here\n    std::cout << \"end of main\\n\";\n}                                              // destroy 1 happens here",
+          "lang": "cpp"
+        },
+        "输出：`create 1`、`create 2`、`owners: 2`、`destroy 2`、`end of main`、`destroy 1`。在现代代码中，你几乎不应该自己写 `new` 和 `delete`。"
+      ]
+    },
+    {
+      "h": "用异常处理错误",
+      "body": [
+        "抛出异常对象，并以 `const` 引用捕获。标准异常类型位于 `<stdexcept>`。永远不会抛出异常的函数可以标记为 `noexcept`。",
+        {
+          "code": "#include <iostream>\n#include <stdexcept>\n#include <string>\n\nint parseAge(const std::string& text) {\n    int age = std::stoi(text);   // throws std::invalid_argument on \"abc\"\n    if (age < 0) throw std::out_of_range(\"negative age\");\n    return age;\n}\n\nint main() {\n    try {\n        std::cout << parseAge(\"41\") << \"\\n\";   // 41\n        std::cout << parseAge(\"abc\") << \"\\n\";\n    } catch (const std::invalid_argument&) {\n        std::cout << \"not a number\\n\";         // not a number\n    } catch (const std::exception& e) {\n        std::cout << \"error: \" << e.what() << \"\\n\";\n    }\n}",
+          "lang": "cpp"
+        },
+        "对于可预期的失败，许多代码库会返回 `std::optional<T>`（C++17）或 `std::expected<T, E>`（C++23），而不是抛出异常。"
+      ]
+    },
+    {
+      "h": "一个完整的小程序：词频统计",
+      "body": [
+        {
+          "code": "#include <algorithm>\n#include <cctype>\n#include <fstream>\n#include <iostream>\n#include <string>\n#include <unordered_map>\n#include <vector>\n\nint main(int argc, char* argv[]) {\n    if (argc != 2) {\n        std::cerr << \"usage: \" << argv[0] << \" FILE\\n\";\n        return 1;\n    }\n    std::ifstream in(argv[1]);\n    if (!in) {\n        std::cerr << \"cannot open \" << argv[1] << \"\\n\";\n        return 1;\n    }\n    std::unordered_map<std::string, int> counts;\n    std::string word;\n    while (in >> word) {\n        std::string clean;\n        for (unsigned char ch : word)\n            if (std::isalpha(ch)) clean += static_cast<char>(std::tolower(ch));\n        if (!clean.empty()) ++counts[clean];\n    }\n    std::vector<std::pair<std::string, int>> top(counts.begin(), counts.end());\n    std::sort(top.begin(), top.end(),\n              [](const auto& a, const auto& b) { return a.second > b.second; });\n    for (size_t i = 0; i < top.size() && i < 5; ++i)\n        std::cout << top[i].second << \"  \" << top[i].first << \"\\n\";\n}",
+          "lang": "cpp"
+        },
+        "用 `g++ -std=c++20 -O2 words.cpp -o words` 编译，再运行 `./words notes.txt`。`in` 离开作用域时文件会自动关闭，这又是 RAII。"
+      ]
+    },
+    {
+      "h": "新手常见错误",
+      "body": [
+        {
+          "note": "C++ 继承了 C 的未定义行为：用 `[]` 读取 `std::vector` 末尾之后的位置、使用悬空引用，或读取未初始化的变量，可能看起来正常，之后才出问题。学习时请使用 `.at(i)`，并用 `-fsanitize=address,undefined -g` 编译。"
+        },
+        {
+          "ul": [
+            "在头文件中写 `using namespace std;`，这会污染所有包含它的文件。",
+            "本可以用 `const&` 的地方，却按值传递 `std::vector` 之类的大对象。",
+            "在比较中混用有符号和无符号数，例如 `int i` 与 `v.size()`。开启警告就能看到这类问题。",
+            "在 `push_back` 之后继续持有指向 `std::vector` 的迭代器或引用，元素可能已被移动。",
+            "使用原始的 `new` 和 `delete`，而不是 `std::make_unique`、`std::vector` 或其他拥有资源的类型。"
+          ]
+        }
+      ]
+    },
+    {
+      "h": "接下来学什么",
+      "body": [
+        "把 cppreference.com 当作语言和库的参考，并阅读 C++ Core Guidelines（由 Bjarne Stroustrup 和 Herb Sutter 编辑）了解良好实践。Standard C++ Foundation 的网站 isocpp.org 有一个入门页面，推荐了相关书籍。学习用 CMake 构建项目，然后继续学习移动语义、模板、`constexpr`，以及使用 `std::thread` 的并发编程。"
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "学 C++ 之前要先学 C 吗？",
+      "a": "不是必须的。现代 C++ 教学从 `std::string`、`std::vector` 和类开始，之后才引入原始指针和 C 风格数组。不过先学 C 确实有助于理解内存。"
+    },
+    {
+      "q": "应该使用哪个 C++ 标准？",
+      "a": "当前的 GCC、Clang 和 MSVC 对 C++17 和 C++20 支持良好，对 C++23 的支持也在增加。请用 `-std=c++20` 这样的选项显式指定。"
+    },
+    {
+      "q": "指针和引用有什么区别？",
+      "a": "引用是一个别名，必须在创建时绑定，之后不能重新绑定，也不能为空。指针存储地址，可以为空，也可以改为指向别处。"
+    },
+    {
+      "q": "C++ 难学吗？",
+      "a": "这门语言很庞大，所以学习曲线比 Python 或 Go 更长。坚持使用现代特性、标准容器和智能指针，可以避开大部分经典陷阱。"
+    }
+  ]
+}

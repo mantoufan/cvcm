@@ -1,0 +1,218 @@
+{
+  "title": "Clojure tutorial: syntax, collections, functions and the REPL — cv.cm",
+  "description": "Learn Clojure from zero: install the CLI, write Hello world, use immutable vectors and maps, define functions, threading macros, atoms and error handling.",
+  "h1": "Clojure tutorial for beginners",
+  "answer": "Clojure is a dynamic, functional Lisp that runs on the Java Virtual Machine (with ClojureScript for JavaScript). Code is written as lists in parentheses, data is immutable by default, and you build programs by combining small functions over vectors, maps and sets. You install the Clojure CLI, start a REPL with `clj`, and run a file with `clojure -M hello.clj`.",
+  "sections": [
+    {
+      "h": "What Clojure is and who uses it",
+      "body": [
+        "Clojure was created by Rich Hickey and first released in 2007. It is a Lisp dialect: every expression is a list whose first element is the function or operator, for example `(+ 1 2)`. It compiles to JVM bytecode, so it can call any Java library directly. ClojureScript compiles the same language to JavaScript for browsers and Node.js.",
+        "Clojure is used for back-end web services, data processing pipelines and internal business systems, especially where teams value immutable data and interactive development. Developers usually work inside a REPL (read-eval-print loop) connected to their editor, evaluating one expression at a time while the program runs."
+      ]
+    },
+    {
+      "h": "Install Clojure and run Hello, world",
+      "body": [
+        "Install a Java runtime (JDK 17 or newer is a safe choice), then install the Clojure CLI tools from clojure.org (Homebrew on macOS, an install script on Linux, or the Windows installer). The CLI provides two commands: `clj` (a REPL with line editing) and `clojure` (for running programs).",
+        {
+          "code": ";; hello.clj\n(println \"Hello, world!\")",
+          "lang": "clojure"
+        },
+        {
+          "code": "clojure -M hello.clj\n# Hello, world!\nclj\n# user=> (+ 1 2)\n# 3",
+          "lang": "shell"
+        },
+        "Real projects keep their dependencies in a `deps.edn` file and their code under `src/`, with one namespace per file. Leiningen (`lein`) is an older but still popular build tool with a `project.clj` file."
+      ]
+    },
+    {
+      "h": "Values, types and names",
+      "body": [
+        "Clojure is dynamically typed. `def` binds a global name (a var) and `let` binds local names. Values do not change after creation: there is no assignment statement.",
+        {
+          "table": {
+            "head": [
+              "Type",
+              "Example",
+              "Notes"
+            ],
+            "rows": [
+              [
+                "Integer",
+                "`42`",
+                "A 64-bit `long`; `42N` is a BigInt"
+              ],
+              [
+                "Floating point",
+                "`3.14`",
+                "A Java `double`"
+              ],
+              [
+                "Ratio",
+                "`(/ 1 3)`",
+                "Exact fraction `1/3`, not 0.333"
+              ],
+              [
+                "String",
+                "`\"hello\"`",
+                "A Java `String`, double quotes only"
+              ],
+              [
+                "Character",
+                "`\\a`",
+                "A single character"
+              ],
+              [
+                "Keyword",
+                "`:name`",
+                "Fast, self-evaluating label, often a map key"
+              ],
+              [
+                "Boolean / nil",
+                "`true`, `false`, `nil`",
+                "Only `false` and `nil` are falsy"
+              ]
+            ]
+          }
+        },
+        {
+          "code": "(def pi-approx 3.14159)\n(let [r 2\n      area (* pi-approx r r)]\n  (println \"Area:\" area))\n;; Area: 12.56636\n(str \"a\" 1 :b)   ;; => \"a1:b\"",
+          "lang": "clojure"
+        }
+      ]
+    },
+    {
+      "h": "Control flow",
+      "body": [
+        "In Clojure everything is an expression that returns a value, including `if`. `if` takes exactly one \"then\" and one \"else\" form; use `when` for several side effects without an else branch, and `cond` for several conditions.",
+        {
+          "code": "(defn grade [score]\n  (cond\n    (>= score 90) \"A\"\n    (>= score 80) \"B\"\n    :else         \"C\"))\n(println (grade 85))            ;; B\n(when (pos? 5) (println \"positive\") :done)\n(doseq [x [1 2 3]] (println (* x x)))   ;; 1 4 9\n(for [x (range 5) :when (odd? x)] (* x 10))   ;; => (10 30)\n(loop [i 0 acc 0]\n  (if (< i 5) (recur (inc i) (+ acc i)) acc))   ;; => 10",
+          "lang": "clojure"
+        },
+        "There is no `for` loop with a counter that you mutate. `doseq` runs side effects for each element, `for` builds a lazy sequence (a list comprehension), and `loop`/`recur` expresses iteration without growing the call stack."
+      ]
+    },
+    {
+      "h": "Functions",
+      "body": [
+        "Define named functions with `defn`. A function can have several arities (different numbers of arguments), and `#(...)` is a short form for small anonymous functions where `%` is the argument.",
+        {
+          "code": "(defn greet\n  ([] (greet \"world\"))\n  ([name] (str \"Hello, \" name \"!\")))\n(greet)          ;; => \"Hello, world!\"\n(greet \"Ana\")    ;; => \"Hello, Ana!\"\n(defn sum-all [& nums] (reduce + nums))\n(sum-all 1 2 3)  ;; => 6\n(map #(* % %) [1 2 3])        ;; => (1 4 9)\n(filter even? (range 10))     ;; => (0 2 4 6 8)",
+          "lang": "clojure"
+        },
+        "Functions are values: you can pass them to `map`, `filter` and `reduce`, return them from other functions, and store them in maps."
+      ]
+    },
+    {
+      "h": "Collections: lists, vectors, maps and sets",
+      "body": [
+        "Clojure's four core collections are immutable and persistent: \"changing\" one returns a new version that shares most of its structure with the old one, so updates are cheap.",
+        {
+          "table": {
+            "head": [
+              "Collection",
+              "Literal",
+              "Typical use"
+            ],
+            "rows": [
+              [
+                "List",
+                "`'(1 2 3)`",
+                "Code and sequential data added at the front"
+              ],
+              [
+                "Vector",
+                "`[1 2 3]`",
+                "Indexed sequence, appends at the end"
+              ],
+              [
+                "Map",
+                "`{:name \"Ana\" :age 30}`",
+                "Key-value records"
+              ],
+              [
+                "Set",
+                "`#{:red :green}`",
+                "Unique values, membership tests"
+              ]
+            ]
+          }
+        },
+        {
+          "code": "(def user {:name \"Ana\" :age 30})\n(:name user)                   ;; => \"Ana\"\n(assoc user :email \"a@x.io\")   ;; new map with :email\n(update user :age inc)         ;; => {:name \"Ana\", :age 31}\n(conj [1 2] 3)                 ;; => [1 2 3]\n(contains? #{:red :green} :red) ;; => true\n(get-in {:a {:b 1}} [:a :b])   ;; => 1\nuser                           ;; unchanged: {:name \"Ana\", :age 30}",
+          "lang": "clojure"
+        }
+      ]
+    },
+    {
+      "h": "Signature features: threading macros, atoms and macros",
+      "body": [
+        "Threading macros make data pipelines read from top to bottom. `->` inserts the previous result as the first argument of the next form; `->>` inserts it as the last argument.",
+        {
+          "code": "(->> (range 1 11)\n     (filter odd?)\n     (map #(* % %))\n     (reduce +))   ;; => 165\n(def counter (atom 0))\n(swap! counter inc)\n(swap! counter + 10)\n@counter           ;; => 11\n(defmacro unless [test & body]\n  `(if ~test nil (do ~@body)))\n(unless false (println \"runs\"))",
+          "lang": "clojure"
+        },
+        "Atoms hold state that can change: `swap!` applies a function atomically, which makes them safe to use from several threads. Refs and agents cover other concurrency cases. Because code is data (lists), macros can transform code before it is compiled; `when`, `cond` and `->` are themselves macros."
+      ]
+    },
+    {
+      "h": "Error handling",
+      "body": [
+        "Clojure uses JVM exceptions with `try`, `catch` and `finally`. To attach data to an error, throw `ex-info` and read the data back with `ex-data`.",
+        {
+          "code": "(defn parse-age [s]\n  (let [n (Long/parseLong s)]\n    (when (neg? n)\n      (throw (ex-info \"Age must not be negative\" {:value n})))\n    n))\n(try\n  (parse-age \"-5\")\n  (catch clojure.lang.ExceptionInfo e\n    (println (ex-message e) (ex-data e)))\n  (catch NumberFormatException _\n    (println \"not a number\")))\n;; Age must not be negative {:value -5}",
+          "lang": "clojure"
+        }
+      ]
+    },
+    {
+      "h": "A small complete program: word frequencies",
+      "body": [
+        {
+          "code": "(ns wordcount\n  (:require [clojure.string :as str]))\n(defn word-counts [text]\n  (->> (str/split (str/lower-case text) #\"\\W+\")\n       (remove str/blank?)\n       frequencies\n       (sort-by val >)))\n(doseq [[word n] (take 2 (word-counts \"The cat and the hat and the bat\"))]\n  (println word n))\n;; the 3\n;; and 2",
+          "lang": "clojure"
+        },
+        "The program lower-cases the text, splits it on non-word characters with a regular expression literal `#\"\\W+\"`, counts each word with `frequencies` (which returns a map), and sorts the entries by count in descending order.",
+        {
+          "note": "Common beginner mistakes: putting the function outside the parentheses (`print(x)` instead of `(println x)`); expecting `assoc` or `conj` to modify a collection in place (they return a new one, so keep the result); forgetting that `map` and `for` are lazy, so side effects inside them may never run at the REPL or in a script (use `doseq` or `run!`); and treating `0` or an empty string as false (only `false` and `nil` are falsy)."
+        }
+      ]
+    },
+    {
+      "h": "Where to go next",
+      "body": [
+        {
+          "ul": [
+            "The official guides at clojure.org: Getting Started, Learn Clojure and the deps.edn guide.",
+            "The Clojure reference pages for the reader syntax, special forms and data structures.",
+            "Set up an editor with a connected REPL (for example Calva for VS Code, CIDER for Emacs or Cursive for IntelliJ).",
+            "Try ClojureScript if you want to target the browser."
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Is Clojure a functional language?",
+      "a": "Yes. Clojure favors pure functions and immutable data, but it is pragmatic: it allows side effects and offers managed mutable state through atoms, refs and agents."
+    },
+    {
+      "q": "Do I need to know Java to learn Clojure?",
+      "a": "No. You can learn the language without Java, but you need a Java runtime installed, and knowing a little about the JVM helps when you read stack traces or use Java libraries."
+    },
+    {
+      "q": "What is the difference between a list and a vector in Clojure?",
+      "a": "A list `'(1 2 3)` adds elements at the front and is mainly used for code; a vector `[1 2 3]` adds at the end and supports fast access by index. Most data in Clojure programs is stored in vectors and maps."
+    },
+    {
+      "q": "Why does Clojure use so many parentheses?",
+      "a": "Clojure code is written as Lisp data structures, so every call is a list. This uniform syntax is what makes macros possible, and editors with structural editing make the parentheses easy to manage."
+    },
+    {
+      "q": "What is the difference between Clojure and ClojureScript?",
+      "a": "They are the same language on different hosts: Clojure runs on the JVM, ClojureScript compiles to JavaScript. Host interop differs, but core functions and data structures are the same."
+    }
+  ]
+}

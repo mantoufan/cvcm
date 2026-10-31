@@ -1,0 +1,186 @@
+{
+  "title": "Go 入門教學：型別、slice、struct、goroutine 與錯誤處理 — cv.cm",
+  "description": "一頁學會 Go：安裝 Go 並執行 Hello world、型別、迴圈、函式、slice 與 map、struct 與介面、goroutine 與 channel，以及錯誤處理。",
+  "h1": "Go 語言入門教學",
+  "answer": "Go（常被稱為 Golang）是 Google 推出的簡潔、編譯式、靜態型別語言，專為快速建置、簡單的並行處理與可靠的伺服器而設計。安裝 Go 後，撰寫一個 `main` 套件，並用 `go run hello.go` 執行。核心概念包括精簡的型別集合、slice 與 map、帶有方法的 struct、隱式介面、用於並行的 goroutine 與 channel，以及把錯誤當成一般值回傳。",
+  "sections": [
+    {
+      "h": "Go 是什麼，用來做什麼",
+      "body": [
+        "Go 由 Google 的 Robert Griesemer、Rob Pike 與 Ken Thompson 設計，並於 2009 年以開放原始碼形式發布。它編譯成單一的靜態執行檔，啟動迅速，具備垃圾回收，並擁有豐富的網路標準函式庫。Go 用於雲端基礎架構與命令列工具：Docker、Kubernetes、Terraform 與 Prometheus 都是以 Go 寫成，許多公司也用它開發網頁 API 與微服務。這門語言刻意保持精簡，因此不同團隊寫出的程式碼風格相近。"
+      ]
+    },
+    {
+      "h": "安裝 Go 並執行 Hello, world",
+      "body": [
+        "從 go.dev/dl 下載 Go，並用 `go version` 確認。建立一個資料夾、初始化模組，然後加入 `main.go`：",
+        {
+          "code": "package main\n\nimport \"fmt\"\n\nfunc main() {\n    fmt.Println(\"Hello, world\")\n}",
+          "lang": "go"
+        },
+        {
+          "code": "go mod init example.com/hello\ngo run .\n# Hello, world\ngo build     # produces a standalone binary named hello",
+          "lang": "shell"
+        },
+        "程式從 `package main` 中的 `func main` 開始執行。執行 `gofmt`（或 `go fmt`）來格式化程式碼；所有 Go 程式碼都採用相同風格，實際的原始檔以 Tab 縮排。"
+      ]
+    },
+    {
+      "h": "變數與基本型別",
+      "body": [
+        "用 `var name type = value` 宣告變數，或在函式內使用簡短形式 `name := value`，它會推論型別。未賦值的變數會得到零值：`0`、`\"\"`、`false` 或 `nil`。",
+        {
+          "table": {
+            "head": [
+              "型別",
+              "範例",
+              "零值"
+            ],
+            "rows": [
+              [
+                "`int`, `int64`",
+                "`n := 42`",
+                "`0`"
+              ],
+              [
+                "`float64`",
+                "`x := 3.14`",
+                "`0`"
+              ],
+              [
+                "`bool`",
+                "`ok := true`",
+                "`false`"
+              ],
+              [
+                "`string`",
+                "`s := \"hi\"`",
+                "`\"\"`"
+              ],
+              [
+                "`rune`",
+                "`r := 'é'`",
+                "`0`（一個 Unicode 碼位）"
+              ],
+              [
+                "`byte`",
+                "`b := byte(65)`",
+                "`0`（`uint8` 的別名）"
+              ]
+            ]
+          }
+        },
+        {
+          "code": "package main\n\nimport (\n    \"fmt\"\n    \"strconv\"\n)\n\nfunc main() {\n    name := \"Ada\"\n    count := 7\n    avg := float64(count) / 2 // explicit conversion is required\n    fmt.Printf(\"%s has %d items, avg %.1f\\n\", name, count, avg) // Ada has 7 items, avg 3.5\n    n, err := strconv.Atoi(\"12\")\n    fmt.Println(n+1, err) // 13 <nil>\n}",
+          "lang": "go"
+        },
+        "Go 絕不會在數值型別之間隱含轉換，編譯器也會拒絕未使用的變數與未使用的 import。"
+      ]
+    },
+    {
+      "h": "流程控制與函式",
+      "body": [
+        "條件外面不加括號，但大括號是必須的。`for` 是唯一的迴圈關鍵字：它涵蓋傳統式、類似 while 的以及 range 迴圈。函式可以回傳多個值。",
+        {
+          "code": "package main\n\nimport \"fmt\"\n\nfunc divmod(a, b int) (int, int) {\n    return a / b, a % b\n}\n\nfunc main() {\n    score := 72\n    if score >= 90 {\n        fmt.Println(\"A\")\n    } else if score >= 70 {\n        fmt.Println(\"B\") // B\n    } else {\n        fmt.Println(\"C\")\n    }\n\n    for i := 0; i < 3; i++ {\n        fmt.Print(i, \" \") // 0 1 2\n    }\n    fmt.Println()\n\n    n := 10\n    for n > 1 { // while-style loop\n        n /= 2\n    }\n\n    q, r := divmod(17, 5)\n    fmt.Println(n, q, r) // 1 3 2\n\n    switch day := \"SAT\"; day {\n    case \"SAT\", \"SUN\":\n        fmt.Println(\"weekend\") // no break needed\n    default:\n        fmt.Println(\"weekday\")\n    }\n}",
+          "lang": "go"
+        }
+      ]
+    },
+    {
+      "h": "Slice、map 與 struct",
+      "body": [
+        "slice 是陣列的可增長檢視，也是日常使用的清單型別。map 是雜湊表。struct 把具名欄位組合在一起，而方法就是帶有接收者（receiver）的函式。",
+        {
+          "code": "package main\n\nimport (\n    \"fmt\"\n    \"sort\"\n)\n\ntype Point struct {\n    X, Y int\n}\n\nfunc (p Point) Add(o Point) Point { return Point{p.X + o.X, p.Y + o.Y} }\n\nfunc (p *Point) Scale(k int) { p.X *= k; p.Y *= k } // pointer receiver modifies p\n\nfunc main() {\n    nums := []int{3, 1, 2}\n    nums = append(nums, 5)\n    sort.Ints(nums)\n    fmt.Println(nums, len(nums), nums[1:3]) // [1 2 3 5] 4 [2 3]\n\n    ages := map[string]int{\"ann\": 31, \"bob\": 25}\n    ages[\"cy\"] = 40\n    age, ok := ages[\"zed\"]\n    fmt.Println(age, ok, len(ages)) // 0 false 3\n\n    for i, n := range nums {\n        fmt.Print(i, \":\", n, \" \") // 0:1 1:2 2:3 3:5\n    }\n    fmt.Println()\n\n    p := Point{1, 2}.Add(Point{3, 4})\n    p.Scale(2)\n    fmt.Printf(\"%+v\\n\", p) // {X:8 Y:12}\n}",
+          "lang": "go"
+        },
+        "走訪 map 的順序是刻意隨機的；如果需要穩定的順序，請先對鍵排序。以大寫字母開頭的名稱（`Point`、`Add`）會從套件中匯出。"
+      ]
+    },
+    {
+      "h": "介面",
+      "body": [
+        "介面列出方法簽章。一個型別只要擁有這些方法就算實作了該介面，沒有 `implements` 關鍵字。",
+        {
+          "code": "package main\n\nimport (\n    \"fmt\"\n    \"math\"\n)\n\ntype Shape interface {\n    Area() float64\n}\n\ntype Circle struct{ R float64 }\ntype Rect struct{ W, H float64 }\n\nfunc (c Circle) Area() float64 { return math.Pi * c.R * c.R }\nfunc (r Rect) Area() float64   { return r.W * r.H }\n\nfunc main() {\n    shapes := []Shape{Circle{1}, Rect{2, 3}}\n    total := 0.0\n    for _, s := range shapes {\n        total += s.Area()\n    }\n    fmt.Printf(\"%.2f\\n\", total) // 9.14\n}",
+          "lang": "go"
+        },
+        "Go 也有泛型（自 Go 1.18 起），例如 `func Max[T int | float64](a, b T) T`，你大多會透過 `slices` 與 `maps` 套件等函式庫函式來使用它。"
+      ]
+    },
+    {
+      "h": "招牌特色：goroutine 與 channel",
+      "body": [
+        "goroutine 是以 `go` 關鍵字啟動的輕量級執行緒；一個程式可以同時執行數千個。goroutine 之間透過 channel 溝通，channel 能在它們之間安全地傳遞值。`sync.WaitGroup` 用來等待一組 goroutine 完成。",
+        {
+          "code": "package main\n\nimport (\n    \"fmt\"\n    \"sync\"\n)\n\nfunc square(n int, results chan<- int, wg *sync.WaitGroup) {\n    defer wg.Done()\n    results <- n * n\n}\n\nfunc main() {\n    results := make(chan int, 5)\n    var wg sync.WaitGroup\n    for i := 1; i <= 5; i++ {\n        wg.Add(1)\n        go square(i, results, &wg)\n    }\n    wg.Wait()\n    close(results)\n\n    sum := 0\n    for r := range results {\n        sum += r\n    }\n    fmt.Println(sum) // 55\n}",
+          "lang": "go"
+        },
+        "`defer` 會安排一個呼叫在外層函式返回時執行，Go 程式碼就是用它來關閉檔案與解鎖 mutex。開發時可使用 `go run -race .` 偵測資料競爭。"
+      ]
+    },
+    {
+      "h": "錯誤處理",
+      "body": [
+        "Go 對一般的失敗沒有例外機制。可能失敗的函式會把 `error` 當作最後一個回傳值，呼叫端要立刻檢查。使用 `%w` 包裝錯誤可以加入脈絡，同時仍能用 `errors.Is` 檢查原始錯誤。",
+        {
+          "code": "package main\n\nimport (\n    \"errors\"\n    \"fmt\"\n    \"os\"\n)\n\nfunc readConfig(path string) ([]byte, error) {\n    data, err := os.ReadFile(path)\n    if err != nil {\n        return nil, fmt.Errorf(\"read config: %w\", err)\n    }\n    return data, nil\n}\n\nfunc main() {\n    _, err := readConfig(\"missing.json\")\n    if errors.Is(err, os.ErrNotExist) {\n        fmt.Println(\"no config file:\", err)\n    }\n}",
+          "lang": "go"
+        },
+        "`panic` 與 `recover` 雖然存在，但只保留給程式設計錯誤與真正意外的狀態，不用於一般的錯誤處理。"
+      ]
+    },
+    {
+      "h": "完整的小程式：迷你網頁伺服器",
+      "body": [
+        "只用標準函式庫，這個程式就能透過 HTTP 提供 JSON。用 `go run .` 執行，並開啟 `http://localhost:8080/hello?name=Ann`。",
+        {
+          "code": "package main\n\nimport (\n    \"encoding/json\"\n    \"log\"\n    \"net/http\"\n    \"time\"\n)\n\ntype Greeting struct {\n    Message string    `json:\"message\"`\n    Time    time.Time `json:\"time\"`\n}\n\nfunc hello(w http.ResponseWriter, r *http.Request) {\n    name := r.URL.Query().Get(\"name\")\n    if name == \"\" {\n        name = \"world\"\n    }\n    w.Header().Set(\"Content-Type\", \"application/json\")\n    err := json.NewEncoder(w).Encode(Greeting{\"Hello, \" + name, time.Now()})\n    if err != nil {\n        log.Println(\"encode:\", err)\n    }\n}\n\nfunc main() {\n    http.HandleFunc(\"/hello\", hello)\n    log.Println(\"listening on :8080\")\n    log.Fatal(http.ListenAndServe(\":8080\", nil))\n}",
+          "lang": "go"
+        },
+        "每個欄位型別後面的文字是 struct tag，用來設定 JSON 的鍵名。每個請求都會自動在各自的 goroutine 中處理。"
+      ]
+    },
+    {
+      "h": "初學者常見錯誤",
+      "body": [
+        {
+          "note": "寫入 `nil` map 會引發 panic。以 `var m map[string]int` 宣告的 map，必須先用 `make(map[string]int)` 或字面值建立，才能賦值。"
+        },
+        {
+          "ul": [
+            "用 `_` 忽略錯誤。除非確定它無關緊要，否則請檢查每個回傳的 `error`。",
+            "以為 `append` 會就地修改原本的 slice；請一律使用它的回傳值，如 `s = append(s, x)`。",
+            "啟動 goroutine 後，讓 `main` 在它們完成之前就返回。請用 `sync.WaitGroup` 或 channel 等待。",
+            "方法必須修改 struct 時卻使用了值接收者；請使用指標接收者，例如 `func (p *Point)`。"
+          ]
+        }
+      ]
+    },
+    {
+      "h": "接下來學什麼",
+      "body": [
+        "先走完互動式的 Tour of Go，再閱讀 Effective Go 與 pkg.go.dev 上的標準函式庫文件。學習用於單元測試與效能基準測試的 `go test`、處理逾時與取消的 `context` 套件，以及管理相依套件的模組。"
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "應該叫 Go 還是 Golang？",
+      "a": "正式名稱是 Go。「Golang」來自舊網址 golang.org，如今仍被當作搜尋關鍵字使用。"
+    },
+    {
+      "q": "Go 是物件導向語言嗎？",
+      "a": "部分是。Go 有方法與介面，但沒有類別與繼承；你透過嵌入 struct 與組合小型介面來建構型別。"
+    },
+    {
+      "q": "Go 比 Python 快嗎？",
+      "a": "在多數 CPU 密集的工作上是的，因為 Go 編譯成原生機器碼且具有靜態型別。不過當繁重的工作發生在以 C 寫成的函式庫中時，Python 也可以很快。"
+    },
+    {
+      "q": "goroutine 和執行緒有什麼差別？",
+      "a": "goroutine 由 Go 執行環境管理，一開始只有很小的堆疊，需要時再增長。執行環境會把許多 goroutine 排程到少數幾個作業系統執行緒上，因此建立 goroutine 的成本低得多。"
+    }
+  ]
+}

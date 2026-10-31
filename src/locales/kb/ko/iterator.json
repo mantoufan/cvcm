@@ -1,0 +1,153 @@
+{
+  "title": "이터레이터 패턴: TypeScript의 순회, 제너레이터, Symbol.iterator — cv.cm",
+  "description": "이터레이터 패턴은 컬렉션이 어떻게 저장되는지 몰라도 반복할 수 있게 합니다. TypeScript의 역할 구성, Symbol.iterator, 제너레이터를 알아봅니다.",
+  "h1": "이터레이터 패턴 예제로 쉽게 이해하기",
+  "answer": "이터레이터(Iterator)는 컬렉션이 어떻게 저장되어 있는지 드러내지 않고 요소에 차례로 접근하는 방법을 제공하는 행동 패턴입니다. 순회 로직은 `next()` 같은 메서드를 가진 별도의 이터레이터 객체에 있으므로, 하나의 컬렉션이 여러 순회 순서를 제공할 수 있고 클라이언트 코드는 배열, 트리, 스트림을 같은 방식으로 반복할 수 있습니다. TypeScript와 JavaScript에서는 `Symbol.iterator`와 `for...of`를 통해 이 패턴이 언어에 내장되어 있습니다.",
+  "sections": [
+    {
+      "h": "의도와 해결하는 문제",
+      "body": [
+        "의도: 내부 표현을 드러내지 않고 집합 객체의 요소에 순차적으로 접근하는 방법을 제공합니다. 이터레이터는 GoF(Gang of Four) 책에 실린 행동 패턴 중 하나입니다.",
+        "회사 조직도를 트리로 저장하는 클래스를 상상해 봅시다. 프로그램의 여러 부분이 모든 직원을 나열해야 합니다. 한 보고서는 레벨별로, 다른 보고서는 깊이 우선 순서로 가야 합니다. 보고서마다 직접 트리를 순회하면 모든 보고서가 트리의 내부 필드에 의존하게 되고, 트리의 저장 방식을 바꾸면 전부 깨집니다.",
+        "이터레이터 패턴에서는 트리가 이터레이터 객체를 제공합니다. 보고서는 이터레이터를 요청하고 끝날 때까지 `next()`를 호출합니다. 보고서는 데이터가 트리인지, 배열인지, 데이터베이스에서 페이지별로 가져온 행인지 알지 못합니다."
+      ]
+    },
+    {
+      "h": "구조와 참여자",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "역할",
+              "책임"
+            ],
+            "rows": [
+              [
+                "이터레이터(Iterator)",
+                "순회를 위한 인터페이스로, 보통 다음 요소와 순회가 끝났는지 알려 주는 플래그를 반환하는 `next()`를 가집니다"
+              ],
+              [
+                "구체 이터레이터(Concrete iterator)",
+                "하나의 컬렉션에 대한 순회를 구현하고 현재 위치를 기억합니다"
+              ],
+              [
+                "집합체(Aggregate, 이터러블)",
+                "이터레이터를 만드는 메서드를 가진 인터페이스"
+              ],
+              [
+                "구체 집합체(Concrete aggregate)",
+                "컬렉션 자체이며, 요청받을 때마다 새 구체 이터레이터를 반환합니다"
+              ],
+              [
+                "클라이언트(Client)",
+                "컬렉션의 구조를 모른 채 이터레이터로 요소를 방문합니다"
+              ]
+            ]
+          }
+        },
+        "JavaScript에서는 ES2015의 반복 프로토콜이 이 역할들에 표준 이름을 붙였습니다. 이터러블은 `[Symbol.iterator]()` 메서드를 가집니다. 이터레이터는 `{ value, done }`을 반환하는 `next()` 메서드를 가집니다. 모든 `for...of` 루프, 스프레드 `[...x]`, 구조 분해 할당이 이 프로토콜을 사용합니다."
+      ]
+    },
+    {
+      "h": "TypeScript 구현: 직접 작성한 이터레이터",
+      "body": [
+        "이 range 클래스는 숫자 목록이 아니라 시작, 끝, 간격만 저장합니다. 이터레이터가 값을 필요할 때마다 계산합니다.",
+        {
+          "code": "class Range implements Iterable<number> {\n  constructor(private start: number, private end: number, private step = 1) {}\n\n  [Symbol.iterator](): Iterator<number> {\n    let current = this.start;\n    const { end, step } = this;\n    return {\n      next(): IteratorResult<number> {\n        if (current >= end) return { value: undefined, done: true };\n        const value = current;\n        current += step;\n        return { value, done: false };\n      },\n    };\n  }\n}\n\nconst evens = new Range(0, 10, 2);\nfor (const n of evens) console.log(n); // 0 2 4 6 8 (one per line)\nconsole.log([...evens]); // [ 0, 2, 4, 6, 8 ]\nconsole.log(Math.max(...new Range(1, 4))); // 3",
+          "lang": "typescript"
+        },
+        "`[Symbol.iterator]()`를 호출할 때마다 자체 `current` 위치를 가진 새 이터레이터를 반환합니다. 그래서 `evens`를 두 번 반복할 수 있습니다. 컬렉션이 매번 같은 이터레이터를 반환하면 두 번째 루프에는 요소가 보이지 않습니다."
+      ]
+    },
+    {
+      "h": "제너레이터: 더 적은 코드로 만드는 이터레이터",
+      "body": [
+        "`function*`로 작성하는 제너레이터 함수는 이터레이터를 자동으로 만듭니다. `yield`마다 다음 값을 내보내고, 함수는 `next()`가 다시 호출될 때까지 멈춥니다. 다음은 이진 트리가 노드를 노출하지 않고 중위 순회를 제공하는 예입니다.",
+        {
+          "code": "class TreeNode<T> {\n  constructor(public value: T, public left?: TreeNode<T>, public right?: TreeNode<T>) {}\n}\n\nclass BinaryTree<T> implements Iterable<T> {\n  constructor(private root?: TreeNode<T>) {}\n\n  *[Symbol.iterator](): Generator<T> {\n    yield* inOrder(this.root);\n  }\n}\n\nfunction* inOrder<T>(node?: TreeNode<T>): Generator<T> {\n  if (!node) return;\n  yield* inOrder(node.left);\n  yield node.value;\n  yield* inOrder(node.right);\n}\n\nconst tree = new BinaryTree(\n  new TreeNode(5, new TreeNode(3, new TreeNode(1)), new TreeNode(8)),\n);\nconsole.log([...tree]); // [ 1, 3, 5, 8 ]\n\nfor (const value of tree) {\n  if (value > 3) break; // stops early; the rest is never computed\n  console.log(value); // 1, then 3\n}",
+          "lang": "typescript"
+        },
+        {
+          "note": "컬렉션이 안전하다고 문서에 밝히지 않았다면 반복하는 동안 요소를 추가하거나 제거하지 마세요. Java의 `ArrayList` 이터레이터는 `ConcurrentModificationException`을 던지고, JavaScript에서는 루프 중에 배열을 바꾸면 요소를 건너뛰거나 반복할 수 있습니다."
+        }
+      ]
+    },
+    {
+      "h": "언제 쓰고 언제 쓰지 말아야 할까",
+      "body": [
+        {
+          "ul": [
+            "컬렉션의 내부 구조(트리, 그래프, 페이지 방식 API)가 복잡하고 클라이언트가 단순하게 반복하길 원할 때 사용합니다.",
+            "깊이 우선과 너비 우선처럼 같은 데이터에 대해 여러 순회 순서를 제공할 때 사용합니다.",
+            "요청할 때만 값을 계산하는 지연 시퀀스나 무한 시퀀스에 사용합니다.",
+            "서로 다른 컬렉션에 하나의 통일된 반복 인터페이스를 줄 때 사용합니다.",
+            "이미 배열인 데이터에는 직접 이터레이터를 작성하지 않습니다. 배열(또는 읽기 전용 복사본)을 반환하고 호출자가 내장 반복을 쓰게 하세요.",
+            "호출자가 인덱스로 임의 접근하거나 길이를 미리 알아야 한다면 지연 이터레이터를 쓰지 마세요. 배열이 더 적합합니다."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "실제 사용 사례",
+      "body": [
+        {
+          "ul": [
+            "JavaScript: `Array`, `Map`, `Set`, `String`은 이터러블이며, `map.entries()`나 `set.values()`는 이터레이터를 반환합니다.",
+            "Java: `hasNext()`와 `next()`를 가진 `java.util.Iterator` 인터페이스로, 모든 `Iterable`에 대한 향상된 `for` 루프가 이를 사용합니다.",
+            "Python: `__iter__`와 `__next__`를 가진 이터레이터 프로토콜과 `yield`를 쓰는 제너레이터 함수.",
+            "데이터베이스와 API: 쿼리 결과에 대한 커서와 페이지네이션이 있는 HTTP API는 결과를 한 페이지씩 노출하므로, 클라이언트는 모든 것을 메모리에 올리지 않고 매우 큰 결과를 반복할 수 있습니다."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "관련 패턴",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "패턴",
+              "이터레이터 패턴과의 관계"
+            ],
+            "rows": [
+              [
+                "컴포지트",
+                "이터레이터는 컴포지트 트리의 노드를 노출하지 않고 순회하는 데 자주 쓰입니다."
+              ],
+              [
+                "비지터",
+                "이터레이터는 요소를 돌아다니고, 비지터는 각 요소에 무엇을 할지 정의합니다. 둘은 함께 쓰이는 경우가 많습니다."
+              ],
+              [
+                "팩토리 메서드",
+                "`[Symbol.iterator]()`처럼 이터레이터를 만드는 메서드는 팩토리 메서드입니다. 컬렉션마다 자신의 이터레이터 클래스를 반환합니다."
+              ],
+              [
+                "메멘토",
+                "이터레이터는 자신의 위치를 메멘토로 저장해 두었다가 나중에 순회를 재개할 수 있습니다."
+              ]
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "이터러블과 이터레이터의 차이는 무엇인가요?",
+      "a": "이터러블은 JavaScript에서 `[Symbol.iterator]()`를 통해 이터레이터를 만들어 낼 수 있는 객체입니다. 이터레이터는 현재 위치를 유지하며 `next()`로 요소를 하나씩 반환하는 객체입니다."
+    },
+    {
+      "q": "제너레이터도 이터레이터인가요?",
+      "a": "네. 제너레이터 함수를 호출하면 제너레이터 객체가 반환되는데, 이는 이터레이터(`next()`가 있음)이자 이터러블(`[Symbol.iterator]()`가 자기 자신을 반환함)입니다."
+    },
+    {
+      "q": "그냥 내부 배열을 공개하면 안 되나요?",
+      "a": "배열을 공개하면 모든 호출자가 그 저장 방식에 묶이고 배열을 수정할 수도 있습니다. 이터레이터는 구조를 숨기므로 나중에 구조를 바꾸거나 요소를 지연 계산해도 호출자를 바꿀 필요가 없습니다."
+    },
+    {
+      "q": "내부 이터레이터란 무엇인가요?",
+      "a": "내부 이터레이터는 `array.forEach(fn)`처럼 콜백을 받아 모든 요소에 대해 실행하는 메서드입니다. 루프를 컬렉션이 제어합니다. `next()` 같은 외부 이터레이터는 클라이언트가 언제 앞으로 가고 언제 멈출지 제어합니다."
+    }
+  ]
+}

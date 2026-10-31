@@ -1,0 +1,160 @@
+{
+  "title": "Pola Facade: satu interface sederhana untuk subsistem kompleks, contoh TypeScript — cv.cm",
+  "description": "Pola desain Facade dijelaskan: menyembunyikan subsistem kompleks di balik satu interface sederhana. Contoh checkout pesanan TypeScript dan pemakaian nyata.",
+  "h1": "Pola Facade dijelaskan dengan contoh",
+  "answer": "Facade adalah pola desain structural yang menyediakan satu interface sederhana dan tingkat lebih tinggi untuk sekumpulan interface dalam subsistem yang kompleks. Alih-alih memanggil layanan inventaris, pembayaran, pengiriman, dan email dalam urutan yang benar, kode klien memanggil satu method seperti `shop.placeOrder()`, dan facade mengoordinasikan kelas-kelas subsistem. Subsistem tetap ada dan dapat dipakai langsung bila perlu; facade hanya membuat kasus yang umum menjadi mudah.",
+  "sections": [
+    {
+      "h": "Tujuan",
+      "body": [
+        "Menyediakan interface terpadu untuk sekumpulan interface dalam subsistem. Facade mendefinisikan interface tingkat lebih tinggi yang membuat subsistem lebih mudah dipakai. Pola ini salah satu dari tujuh pola structural dalam buku Gang of Four (GoF)."
+      ]
+    },
+    {
+      "h": "Masalah yang diselesaikan",
+      "body": [
+        "Bayangkan toko online. Menempatkan pesanan membutuhkan beberapa layanan: memeriksa dan mencadangkan stok, menagih kartu, melepas stok jika pembayaran gagal, membuat pengiriman, dan mengirim email konfirmasi. Setiap layanan punya API dan aturannya sendiri.",
+        "Jika setiap pemanggil, seperti checkout web, API mobile, dan alat admin, menjalankan langkah-langkah ini sendiri, urutan yang sama disalin di banyak tempat. Setiap salinan bisa salah urutan atau lupa rollback, dan setiap pemanggil bergantung pada lima layanan. Ketika satu layanan berubah, semua pemanggil harus berubah. Facade menaruh urutan itu di satu tempat dan memberi pemanggil satu method."
+      ]
+    },
+    {
+      "h": "Struktur dan peserta",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Peserta",
+              "Tanggung jawab",
+              "Dalam contoh"
+            ],
+            "rows": [
+              [
+                "Facade",
+                "Mengetahui kelas subsistem mana yang menangani suatu permintaan dan mendelegasikan kepada mereka dalam urutan yang benar.",
+                "`OrderFacade`"
+              ],
+              [
+                "Kelas subsistem",
+                "Mengerjakan pekerjaan sebenarnya. Mereka tidak tahu tentang facade.",
+                "`Inventory`, `Payments`, `Shipping`, `Mailer`"
+              ],
+              [
+                "Klien",
+                "Memakai facade untuk tugas umum; masih boleh memakai kelas subsistem secara langsung untuk kasus khusus.",
+                "kode checkout"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "Implementasi TypeScript",
+      "body": [
+        {
+          "code": "// Subsystem classes, each with its own API.\nclass Inventory {\n  private stock = new Map([[\"book\", 2]]);\n  reserve(sku: string): boolean {\n    const n = this.stock.get(sku) ?? 0;\n    if (n === 0) return false;\n    this.stock.set(sku, n - 1);\n    return true;\n  }\n  release(sku: string): void { this.stock.set(sku, (this.stock.get(sku) ?? 0) + 1); }\n}\nclass Payments {\n  charge(card: string, cents: number): boolean { return card.startsWith(\"4\") && cents > 0; }\n}\nclass Shipping {\n  createShipment(sku: string, address: string): string { return `SHIP-${sku}-${address.length}`; }\n}\nclass Mailer {\n  send(to: string, text: string): void { console.log(`mail to ${to}: ${text}`); }\n}",
+          "lang": "typescript"
+        },
+        "Facade lalu menjalankan seluruh alur kerja dalam urutan yang benar di balik satu method:",
+        {
+          "code": "// Facade: one method that runs the whole workflow in the right order.\nclass OrderFacade {\n  constructor(private inventory = new Inventory(), private payments = new Payments(),\n              private shipping = new Shipping(), private mailer = new Mailer()) {}\n\n  placeOrder(sku: string, card: string, cents: number, email: string, address: string): string {\n    if (!this.inventory.reserve(sku)) return \"out of stock\";\n    if (!this.payments.charge(card, cents)) {\n      this.inventory.release(sku); // roll back the reservation\n      return \"payment declined\";\n    }\n    const shipmentId = this.shipping.createShipment(sku, address);\n    this.mailer.send(email, `Order confirmed, shipment ${shipmentId}`);\n    return \"ok\";\n  }\n}\n\nconst shop = new OrderFacade();\nconsole.log(shop.placeOrder(\"book\", \"4111\", 1999, \"ada@example.com\", \"1 Main St\"));\n// mail to ada@example.com: Order confirmed, shipment SHIP-book-9\n// ok\nconsole.log(shop.placeOrder(\"book\", \"5500\", 1999, \"bob@example.com\", \"2 Side St\")); // payment declined",
+          "lang": "typescript"
+        },
+        "Pemanggil sekarang bergantung pada satu kelas dengan satu method. Aturan rollback hanya ada satu kali. Kelas subsistem tetap tersedia, sehingga alat admin yang hanya perlu melepas stok dapat memanggil `Inventory` secara langsung."
+      ]
+    },
+    {
+      "h": "Kapan memakainya, dan kapan tidak",
+      "body": [
+        "Gunakan pola Facade ketika:",
+        {
+          "ul": [
+            "Subsistem kompleks dan sebagian besar klien hanya membutuhkan subset umum yang sederhana dari kemampuannya.",
+            "Anda ingin mengurangi jumlah dependensi antara kode klien dan banyak kelas subsistem.",
+            "Anda ingin mengorganisasi sistem ke dalam lapisan, dengan facade sebagai pintu masuk setiap lapisan.",
+            "Anda membungkus pustaka pihak ketiga yang besar dan ingin sisa kode Anda hanya memakai beberapa operasi yang dibutuhkan."
+          ]
+        },
+        "Hindari atau batasi ketika:",
+        {
+          "ul": [
+            "Subsistem sudah sederhana. Facade yang meneruskan tiap panggilan satu lawan satu menambah lapisan tanpa menyembunyikan apa pun.",
+            "Facade mulai mengumpulkan method yang tidak berhubungan dan aturan bisnis dari seluruh sistem. Ini masalah \"god object\": satu kelas yang tahu dan mengerjakan terlalu banyak. Pecah menjadi beberapa facade yang terfokus."
+          ]
+        },
+        {
+          "note": "Facade harus menyederhanakan, bukan memenjarakan. Jangan membuat subsistem menjadi private hanya karena ada facade. Klien tingkat lanjut sering membutuhkan API penuh, dan memblokirnya mendorong solusi tambal sulam."
+        }
+      ]
+    },
+    {
+      "h": "Pemakaian di dunia nyata",
+      "body": [
+        {
+          "ul": [
+            "Node.js: `fs.readFile()` membuka file, membacanya sampai akhir, dan menutupnya dalam satu panggilan. `fs.open()`, `fs.read()`, dan `fs.close()` yang lebih rendah tetap tersedia.",
+            "jQuery populer sebagian besar karena menaruh satu API yang singkat dan konsisten di depan DOM dan perbedaan browser pada masanya.",
+            "Contoh dalam buku GoF adalah compiler: satu kelas `Compiler` menyembunyikan scanner, parser, code generator, dan kelas subsistem lain dari program yang hanya ingin mengompilasi kode.",
+            "Service layer dan API gateway di aplikasi back-end bertindak sebagai facade di atas banyak layanan internal."
+          ]
+        },
+        {
+          "note": "Laravel, framework PHP, punya fitur bernama Facades. Itu gagasan yang berbeda: akses bergaya static ke objek di service container. Namanya sama, tetapi tujuannya bukan pola GoF."
+        }
+      ]
+    },
+    {
+      "h": "Pola terkait",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Pola",
+              "Perbedaannya dengan Facade"
+            ],
+            "rows": [
+              [
+                "Adapter",
+                "Membuat satu interface yang ada cocok dengan interface lain yang ada. Facade mendefinisikan interface baru yang lebih sederhana untuk banyak kelas."
+              ],
+              [
+                "Mediator",
+                "Juga memusatkan koordinasi, tetapi objek subsistem mengenal mediator dan berkomunikasi lewat mediator. Dengan facade, kelas subsistem tidak tahu bahwa facade ada."
+              ],
+              [
+                "Abstract Factory",
+                "Dapat dipakai bersama facade untuk membuat objek subsistem secara independen dari platform."
+              ],
+              [
+                "Singleton",
+                "Facade sering berupa instance tunggal, karena satu pintu masuk ke subsistem biasanya sudah cukup."
+              ],
+              [
+                "Proxy",
+                "Memiliki interface yang sama dengan satu objek dan mengontrol akses ke objek itu. Facade memiliki interface berbeda yang lebih sederhana di atas banyak objek."
+              ]
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Apa beda pola Facade dan pola Adapter?",
+      "a": "Adapter mengubah satu interface yang ada menjadi interface lain yang sudah diharapkan klien. Facade menciptakan interface baru yang lebih sederhana agar seluruh subsistem lebih mudah dipakai."
+    },
+    {
+      "q": "Apakah facade menyembunyikan subsistem sepenuhnya?",
+      "a": "Tidak. Facade membuat tugas umum menjadi mudah, tetapi klien yang membutuhkan kendali lebih tetap dapat memakai kelas subsistem secara langsung."
+    },
+    {
+      "q": "Bisakah satu sistem punya lebih dari satu facade?",
+      "a": "Bisa. Sistem besar sering punya satu facade per subsistem atau per kasus penggunaan, sehingga setiap facade tetap kecil dan terfokus."
+    },
+    {
+      "q": "Apakah service layer itu facade?",
+      "a": "Sering kali ya. Method service yang mengoordinasikan repository, API eksternal, dan notifikasi di balik satu panggilan berperan sebagai facade bagi kode yang memanggilnya."
+    }
+  ]
+}

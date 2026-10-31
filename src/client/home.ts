@@ -6,7 +6,7 @@ import type { Locale } from "../shared/locale";
 import { GAMES } from "../shared/games";
 import { gameName } from "../shared/games-i18n";
 import { CATEGORIES, FEATURED_TUTORIALS, appHref, deviceHref, gamesHref, kbHref, learnHref, quizHref, datasetHref } from "../shared/path";
-import { KB_ARTICLES } from "../shared/kb";
+import { KNOWLEDGE_ARTICLES, kbGroupsOf } from "../shared/kb";
 import { kbLinkItems } from "../shared/kb-i18n";
 import { QUIZZES } from "../shared/quiz";
 import { DATASETS } from "../shared/datasets";
@@ -63,8 +63,13 @@ export function mountHome(host: HTMLElement, locale: Locale): () => void {
       : []),
     h("section", { class: "wall" },
       h("h2", null, h("a", { href: kbHref(locale), "data-nav": "knowledge" }, t("kb.label"))),
-      linkList(kbLinkItems(locale, KB_ARTICLES)),
+      linkList(kbLinkItems(locale, KNOWLEDGE_ARTICLES)),
       h("p", { class: "more" }, h("a", { href: kbHref(locale), "data-nav": "knowledge" }, t("kb.all"))),
+    ),
+    h("section", { class: "wall" },
+      h("h2", null, h("a", { href: kbHref(locale, "code"), "data-nav": "coding" }, t("kb.code.label"))),
+      linkList(kbGroupsOf("code").map((group) => ({ href: `${kbHref(locale, "code")}#${group.id}`, name: t(`kb.code.groups.${group.id}`), blurb: t(`kb.code.blurbs.${group.id}`), nav: "coding" }))),
+      h("p", { class: "more" }, h("a", { href: kbHref(locale, "code"), "data-nav": "coding" }, t("kb.code.all"))),
     ),
     h("section", { class: "wall" },
       h("h2", null, t("nav.games")),

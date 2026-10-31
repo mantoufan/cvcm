@@ -1,0 +1,235 @@
+{
+  "title": "Radix sort explained: LSD and MSD, Python code and complexity — cv.cm",
+  "description": "Radix sort orders integers or fixed-length strings digit by digit with a stable counting sort, in O(d · (n + b)) time. Trace, Python code, LSD vs MSD.",
+  "h1": "Radix sort explained: how it works, code and complexity",
+  "answer": "Radix sort is a non-comparison sorting algorithm that sorts integers or fixed-length strings one digit (or character) at a time. The common least-significant-digit (LSD) version sorts by the last digit first, then the next, up to the most significant one, using a stable sort such as counting sort for each pass. With d digits in base b, it runs in O(d · (n + b)) time and uses O(n + b) extra space. Because each pass is stable, the final result is fully sorted and stable.",
+  "sections": [
+    {
+      "h": "What problem radix sort solves",
+      "body": [
+        "Counting sort is linear but needs a count array as large as the whole key range, which is impossible for 32-bit or 64-bit integers. Radix sort splits each key into small digits and runs counting sort once per digit, so each pass needs a count array of only b entries (10 for decimal digits, 256 for bytes).",
+        "It works for any key that can be broken into a fixed sequence of small symbols: non-negative integers, dates written as YYYYMMDD, fixed-length codes such as postal codes, IP addresses and fixed-width strings."
+      ]
+    },
+    {
+      "h": "Worked example: LSD radix sort in base 10",
+      "body": [
+        "Sort `[170, 45, 75, 90, 802, 24, 2, 66]`. The largest number has 3 digits, so there are 3 passes. Each pass is a stable sort by one digit: equal digits keep the order from the previous pass.",
+        {
+          "table": {
+            "head": [
+              "Pass",
+              "Sort by",
+              "Result"
+            ],
+            "rows": [
+              [
+                "Start",
+                "",
+                "`[170, 45, 75, 90, 802, 24, 2, 66]`"
+              ],
+              [
+                "1",
+                "ones digit",
+                "`[170, 90, 802, 2, 24, 45, 75, 66]`"
+              ],
+              [
+                "2",
+                "tens digit",
+                "`[802, 2, 24, 45, 66, 170, 75, 90]`"
+              ],
+              [
+                "3",
+                "hundreds digit",
+                "`[2, 24, 45, 66, 75, 90, 170, 802]`"
+              ]
+            ]
+          }
+        },
+        "After pass 2, numbers are sorted by their last two digits. In pass 3, 2, 24, 45, 66, 75 and 90 all have hundreds digit 0, and stability keeps them in the order pass 2 produced. That is why each pass must be stable."
+      ]
+    },
+    {
+      "h": "Python implementation",
+      "body": [
+        {
+          "code": "def counting_pass(nums, exp, base):\n    \"\"\"Stable counting sort of nums by the digit at exp.\"\"\"\n    count = [0] * base\n    for x in nums:\n        count[(x // exp) % base] += 1\n    for d in range(1, base):\n        count[d] += count[d - 1]\n    out = [0] * len(nums)\n    for x in reversed(nums):\n        d = (x // exp) % base\n        count[d] -= 1\n        out[count[d]] = x\n    return out\n\ndef radix_sort(nums, base=10):\n    \"\"\"LSD radix sort for non-negative integers.\"\"\"\n    if not nums:\n        return []\n    exp, biggest = 1, max(nums)\n    while biggest // exp > 0:\n        nums = counting_pass(nums, exp, base)\n        exp *= base\n    return nums\n\nprint(radix_sort([170, 45, 75, 90, 802, 24, 2, 66]))\n# [2, 24, 45, 66, 75, 90, 170, 802]\nprint(radix_sort([3, 0, 1, 0], base=256))   # [0, 0, 1, 3]",
+          "lang": "python"
+        },
+        "Using base 256 means each pass looks at one byte, so 32-bit integers need only 4 passes. To include negative numbers, sort the negative and non-negative values separately and join them, or offset all keys by the minimum. For fixed-length strings, use the character code at position i as the digit and go from the last position to the first."
+      ]
+    },
+    {
+      "h": "Time and space complexity",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Measure",
+              "Value",
+              "Reason"
+            ],
+            "rows": [
+              [
+                "Time, every case",
+                "O(d · (n + b))",
+                "d passes, each a counting sort over n keys and b digit values"
+              ],
+              [
+                "Extra space",
+                "O(n + b)",
+                "an output buffer and a count array per pass"
+              ],
+              [
+                "Passes for 32-bit keys",
+                "4 in base 256",
+                "32 bits ÷ 8 bits per digit"
+              ],
+              [
+                "Comparisons",
+                "0",
+                "digits are used as array indexes"
+              ]
+            ]
+          }
+        },
+        "When d is a constant (fixed-width keys) and b is chosen near n or a fixed value such as 256, the time is O(n). For n keys that are all distinct, d must be at least log_b n, so radix sort does not beat O(n log n) for arbitrary-size keys; it is fast because each step is a simple array operation."
+      ]
+    },
+    {
+      "h": "How radix sort compares with other sorts",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Algorithm",
+              "Best",
+              "Average",
+              "Worst",
+              "Extra space",
+              "Stable"
+            ],
+            "rows": [
+              [
+                "Radix sort (LSD)",
+                "O(d · (n + b))",
+                "O(d · (n + b))",
+                "O(d · (n + b))",
+                "O(n + b)",
+                "Yes"
+              ],
+              [
+                "Counting sort",
+                "O(n + k)",
+                "O(n + k)",
+                "O(n + k)",
+                "O(n + k)",
+                "Yes"
+              ],
+              [
+                "Merge sort",
+                "O(n log n)",
+                "O(n log n)",
+                "O(n log n)",
+                "O(n)",
+                "Yes"
+              ],
+              [
+                "Quicksort",
+                "O(n log n)",
+                "O(n log n)",
+                "O(n²)",
+                "O(log n)",
+                "No"
+              ],
+              [
+                "Heapsort",
+                "O(n log n)",
+                "O(n log n)",
+                "O(n log n)",
+                "O(1)",
+                "No"
+              ],
+              [
+                "Timsort (Python `sorted`)",
+                "O(n)",
+                "O(n log n)",
+                "O(n log n)",
+                "O(n)",
+                "Yes"
+              ]
+            ]
+          }
+        },
+        "In the table, n is the number of keys, k the key range for counting sort, d the number of digits and b the base. LSD radix sort is stable as long as every digit pass is stable. It needs keys with a fixed structure, while comparison sorts such as merge sort and quicksort work with any ordering, including custom comparison functions."
+      ]
+    },
+    {
+      "h": "LSD vs MSD, and common mistakes",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "",
+              "LSD (least significant digit first)",
+              "MSD (most significant digit first)"
+            ],
+            "rows": [
+              [
+                "Order of passes",
+                "last digit to first",
+                "first digit to last, recursively per bucket"
+              ],
+              [
+                "Best for",
+                "fixed-length integers and strings",
+                "variable-length strings, early exit on unique prefixes"
+              ],
+              [
+                "Implementation",
+                "simple loop",
+                "recursive; usually switches to insertion sort for small buckets"
+              ],
+              [
+                "Stable",
+                "yes, with a stable pass",
+                "yes, with stable bucket distribution"
+              ]
+            ]
+          }
+        },
+        {
+          "note": "Common bugs: using an unstable sort for each digit (the result is wrong, not just unstable), starting with the most significant digit in the LSD loop, computing the number of passes from the first element instead of the maximum, and feeding negative numbers to `(x // exp) % base`, where Python floor division and modulo produce digits that do not order negative numbers correctly."
+        }
+      ]
+    },
+    {
+      "h": "When to use radix sort",
+      "body": [
+        "Radix sort is a good fit for large arrays of fixed-width integers or keys, such as 32-bit IDs, timestamps, IPv4 addresses or fixed-length strings, especially on GPUs and in high-performance libraries where its regular memory access pays off. It is used in suffix-array construction and in some database and graphics workloads. For ordinary Python lists, `sorted()` is almost always faster in practice because it runs in optimized C code. In interviews, radix sort comes up when asked how to sort in linear time, for example the Maximum Gap problem."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Is radix sort stable?",
+      "a": "LSD radix sort is stable when every digit pass uses a stable sort such as counting sort. The algorithm actually depends on that stability to be correct."
+    },
+    {
+      "q": "What is the time complexity of radix sort?",
+      "a": "O(d · (n + b)), where d is the number of digits, n the number of keys and b the base. For fixed-width keys, d and b are constants, so it is linear in n."
+    },
+    {
+      "q": "Is radix sort faster than quicksort?",
+      "a": "It can be for large arrays of fixed-width integers, because it does no comparisons and accesses memory in a regular pattern. For general data, small arrays or custom orderings, quicksort or the built-in sort is usually better."
+    },
+    {
+      "q": "What is the difference between LSD and MSD radix sort?",
+      "a": "LSD sorts from the least significant digit to the most significant with one simple pass per digit. MSD starts with the most significant digit and recursively sorts each bucket, which suits variable-length strings."
+    },
+    {
+      "q": "Can radix sort sort strings?",
+      "a": "Yes. Treat each character as a digit. LSD works directly for strings of equal length; MSD radix sort handles strings of different lengths."
+    }
+  ]
+}

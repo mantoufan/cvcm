@@ -1,0 +1,186 @@
+{
+  "title": "Tutorial de Lua: tablas, funciones, metatablas y errores — cv.cm",
+  "description": "Aprende Lua paso a paso: ejecutar Hola, mundo, variables locales y tipos, bucles, funciones y clausuras, tablas, metatablas, POO y manejo de errores con pcall.",
+  "h1": "Tutorial de Lua para principiantes",
+  "answer": "Lua es un lenguaje de scripting ligero e incrustable que se usa en videojuegos, Roblox (mediante su dialecto Luau), Neovim, Redis y dispositivos embebidos. Tiene una sintaxis reducida y una única estructura de datos, la tabla, que sirve como arreglo, diccionario y objeto. Esta página cubre la instalación de Lua, las variables y los tipos, el control de flujo, las funciones, las tablas, las metatablas, el manejo de errores con pcall y un ejemplo completo.",
+  "sections": [
+    {
+      "h": "Qué es Lua y para qué se usa",
+      "body": [
+        "Lua es un lenguaje de scripting pequeño, rápido y de tipado dinámico creado en 1993 en la PUC-Rio, una universidad de Brasil. Todo su intérprete es una biblioteca compacta escrita en C, lo que facilita incrustarlo en programas más grandes. Tiene una sola estructura de datos, la tabla, y muy pocos conceptos, por lo que se aprende rápido.",
+        "Lua se usa sobre todo como lenguaje de scripting incrustado: motores de videojuegos y videojuegos (Roblox usa un dialecto de Lua llamado Luau; LÖVE y Defold usan Lua), el editor Neovim, la base de datos Redis, herramientas de red como Nginx con OpenResty y muchos dispositivos embebidos. LuaJIT es un popular compilador just-in-time para código Lua 5.1."
+      ]
+    },
+    {
+      "h": "Instala Lua y ejecuta Hola, mundo",
+      "body": [
+        "Instala Lua con tu gestor de paquetes (por ejemplo `brew install lua` o `apt install lua5.4`) o compílalo desde el código fuente en lua.org. Ejecuta `lua` sin argumentos para abrir un prompt interactivo.",
+        {
+          "code": "-- hello.lua\nprint(\"Hello, world!\")",
+          "lang": "lua"
+        },
+        {
+          "code": "lua hello.lua\n# Hello, world!",
+          "lang": "shell"
+        },
+        "Los comentarios empiezan con `--`. Un comentario de bloque se escribe `--[[ ... ]]`. Las instrucciones no necesitan punto y coma."
+      ]
+    },
+    {
+      "h": "Variables y tipos básicos",
+      "body": [
+        "Las variables son globales por defecto. Declara siempre las variables con `local`, a menos que de verdad quieras una global. Lua tiene ocho tipos básicos; los que usas a diario están a continuación.",
+        {
+          "code": "local name = \"Lua\"\nlocal year = 1993              -- integer\nlocal pi = 3.14159             -- float\nlocal ok = true\nlocal nothing = nil\n\nprint(type(name), type(year), type(nothing))  -- string  number  nil\nprint(math.type(year), math.type(pi))         -- integer  float\nprint(name .. \" \" .. year)                    -- Lua 1993 (.. joins strings)\nprint(#name)                                  -- 3 (length)\nprint(7 / 2, 7 // 2, 7 % 2, 2 ^ 10)           -- 3.5  3  1  1024.0\nprint(string.format(\"%.2f\", pi))              -- 3.14\nprint(tonumber(\"42\") + 1, tostring(10))       -- 43  10",
+          "lang": "lua"
+        },
+        {
+          "table": {
+            "head": [
+              "Tipo",
+              "Ejemplo",
+              "Notas"
+            ],
+            "rows": [
+              [
+                "nil",
+                "`nil`",
+                "ausencia de valor; las variables sin asignar son nil"
+              ],
+              [
+                "boolean",
+                "`true`, `false`",
+                "solo `false` y `nil` son falsos; `0` y `\"\"` son verdaderos"
+              ],
+              [
+                "number",
+                "`42`, `3.14`",
+                "subtipos entero y flotante desde Lua 5.3"
+              ],
+              [
+                "string",
+                "`\"hi\"`, `'hi'`, `[[long]]`",
+                "cadenas de bytes inmutables"
+              ],
+              [
+                "table",
+                "`{1, 2, x = 3}`",
+                "la única estructura de datos"
+              ],
+              [
+                "function",
+                "`function() end`",
+                "valores de primera clase"
+              ]
+            ]
+          }
+        },
+        "El operador de desigualdad es `~=`, no `!=`. Los operadores lógicos son las palabras `and`, `or` y `not`."
+      ]
+    },
+    {
+      "h": "Control de flujo",
+      "body": [
+        "Los bloques terminan con la palabra clave `end`. Lua tiene `if`/`elseif`/`else`, `while`, `repeat ... until`, un `for` numérico y un `for` genérico que funciona con iteradores.",
+        {
+          "code": "local score = 72\nif score >= 90 then\n  print(\"A\")\nelseif score >= 70 then\n  print(\"B\")                   -- B\nelse\n  print(\"C\")\nend\n\nfor i = 1, 3 do                -- 1 to 3, inclusive\n  io.write(i, \" \")             -- 1 2 3\nend\nprint()\n\nfor i = 10, 1, -4 do io.write(i, \" \") end   -- 10 6 2\nprint()\n\nlocal n = 3\nwhile n > 0 do n = n - 1 end\n\nrepeat\n  n = n + 1\nuntil n >= 2\nprint(n)                       -- 2",
+          "lang": "lua"
+        },
+        "No existe la instrucción `continue`; usa `goto continue` con una etiqueta `::continue::`, o reestructura el bucle con un `if`."
+      ]
+    },
+    {
+      "h": "Funciones",
+      "body": [
+        "Las funciones son valores. Pueden recibir un número variable de argumentos con `...` y devolver varios valores. Las clausuras capturan variables locales del ámbito que las contiene.",
+        {
+          "code": "local function add(a, b)\n  return a + b\nend\n\nlocal function minmax(t)\n  local lo, hi = math.huge, -math.huge\n  for _, v in ipairs(t) do\n    lo, hi = math.min(lo, v), math.max(hi, v)\n  end\n  return lo, hi                -- two return values\nend\n\nlocal function counter()\n  local count = 0\n  return function()            -- a closure\n    count = count + 1\n    return count\n  end\nend\n\nprint(add(2, 3))               -- 5\nlocal lo, hi = minmax({4, 9, 1})\nprint(lo, hi)                  -- 1  9\nlocal next_id = counter()\nprint(next_id(), next_id())    -- 1  2\nlocal function sum(...)\n  local total = 0\n  for _, v in ipairs({...}) do total = total + v end\n  return total\nend\nprint(sum(1, 2, 3))            -- 6",
+          "lang": "lua"
+        }
+      ]
+    },
+    {
+      "h": "Tablas: arreglos, diccionarios y objetos",
+      "body": [
+        "Una tabla es un arreglo asociativo que puede indexarse con cualquier valor excepto `nil`. La misma estructura sirve como arreglo, diccionario, conjunto, módulo u objeto. Por convención, los arreglos empiezan en el índice 1.",
+        {
+          "code": "local fruits = {\"apple\", \"banana\"}\ntable.insert(fruits, \"cherry\")\nprint(#fruits, fruits[1])            -- 3  apple\n\nfor i, f in ipairs(fruits) do        -- array part, in order\n  print(i, f)\nend\n\nlocal ages = {ann = 31, bo = 25}\nages[\"cy\"] = 40\nages.bo = nil                        -- remove a key\nfor k, v in pairs(ages) do           -- all keys, order not defined\n  print(k, v)\nend\n\ntable.sort(fruits, function(a, b) return a > b end)\nprint(table.concat(fruits, \", \"))    -- cherry, banana, apple",
+          "lang": "lua"
+        },
+        {
+          "note": "Los índices empiezan en 1, y `#t` solo es fiable para secuencias sin huecos. Asignar `t[2] = nil` en medio de un arreglo deja su longitud indefinida; usa `table.remove(t, 2)` para borrar y desplazar los elementos."
+        }
+      ]
+    },
+    {
+      "h": "Metatablas y Lua orientado a objetos",
+      "body": [
+        "Las metatablas son la característica distintiva de Lua. Una metatabla asociada a una tabla cambia su comportamiento: `__index` proporciona las claves que faltan (se usa para la herencia) y campos como `__add`, `__eq` y `__tostring` sobrecargan operadores. La sintaxis con dos puntos `obj:method()` pasa el objeto como primer parámetro oculto `self`.",
+        {
+          "code": "local Vector = {}\nVector.__index = Vector\n\nfunction Vector.new(x, y)\n  return setmetatable({x = x, y = y}, Vector)\nend\n\nfunction Vector:length()\n  return math.sqrt(self.x ^ 2 + self.y ^ 2)\nend\n\nVector.__add = function(a, b) return Vector.new(a.x + b.x, a.y + b.y) end\nVector.__tostring = function(v) return \"(\" .. v.x .. \", \" .. v.y .. \")\" end\n\nlocal v = Vector.new(3, 4) + Vector.new(0, 0)\nprint(tostring(v))       -- (3, 4)\nprint(v:length())        -- 5.0",
+          "lang": "lua"
+        },
+        "Lua también tiene corrutinas (`coroutine.create`, `coroutine.resume`, `coroutine.yield`), que permiten que una función se pause y se reanude más tarde. Los scripts de videojuegos las usan a menudo para comportamientos paso a paso que abarcan varios fotogramas."
+      ]
+    },
+    {
+      "h": "Manejo de errores",
+      "body": [
+        "Lanza un error con `error(message)`. Captúralo con `pcall` (llamada protegida), que devuelve `false` más el error en lugar de detener el programa. Muchas funciones de la biblioteca devuelven `nil` y un mensaje de error en lugar de lanzar un error, como hace `io.open`.",
+        {
+          "code": "local function divide(a, b)\n  if b == 0 then\n    error(\"division by zero\")\n  end\n  return a / b\nend\n\nlocal ok, result = pcall(divide, 10, 2)\nprint(ok, result)                  -- true  5.0\n\nok, result = pcall(divide, 1, 0)\nprint(ok, result)                  -- false  script.lua:3: division by zero\n\nlocal f, err = io.open(\"missing.txt\", \"r\")\nif not f then print(\"open failed: \" .. err) end",
+          "lang": "lua"
+        },
+        "El nombre de archivo y el número de línea del mensaje de error dependen de dónde se ejecute el código. `assert(value, message)` lanza un error cuando `value` es `false` o `nil` y es una forma breve de comprobar resultados."
+      ]
+    },
+    {
+      "h": "Un programa pequeño y completo: conteo de palabras",
+      "body": [
+        "Este programa cuenta las palabras de un texto con una búsqueda de patrones, las ordena por frecuencia e imprime las tres primeras. Usa patrones de cadenas, tablas, ordenación con un comparador personalizado y formato de cadenas.",
+        {
+          "code": "local text = [[\nThe cat and the dog. The dog sat,\nand the cat ran.\n]]\n\nlocal counts = {}\nfor word in text:lower():gmatch(\"%a+\") do\n  counts[word] = (counts[word] or 0) + 1\nend\n\nlocal list = {}\nfor word, n in pairs(counts) do\n  list[#list + 1] = {word = word, n = n}\nend\ntable.sort(list, function(a, b)\n  if a.n ~= b.n then return a.n > b.n end\n  return a.word < b.word\nend)\n\nfor i = 1, 3 do\n  print(string.format(\"%-4s %d\", list[i].word, list[i].n))\nend\n-- the  4\n-- and  2\n-- cat  2",
+          "lang": "lua"
+        },
+        {
+          "note": "Errores habituales de principiantes: olvidar `local` y crear globales por accidente; usar `!=` en lugar de `~=`; esperar que los arreglos empiecen en 0; usar `.` en lugar de `:` al llamar a métodos (`obj.method()` no pasa `self`); y suponer que `pairs` devuelve las claves en un orden fijo."
+        }
+      ]
+    },
+    {
+      "h": "Siguientes pasos",
+      "body": [
+        {
+          "ul": [
+            "El Lua Reference Manual en lua.org, breve y completo.",
+            "Programming in Lua, de Roberto Ierusalimschy, uno de los creadores de Lua; la primera edición es gratuita en línea.",
+            "La documentación de tu entorno anfitrión, como la guía de Lua de Neovim, LÖVE o la documentación de Luau de Roblox.",
+            "LuaRocks, el gestor de paquetes para módulos de Lua."
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "¿Por qué los arreglos de Lua empiezan en 1?",
+      "a": "Los diseñadores de Lua eligieron la indexación desde 1 para ajustarse a las convenciones matemáticas y de las personas que no programan. Las funciones de la biblioteca estándar, como `ipairs`, `#` y `table.insert`, suponen que las secuencias empiezan en 1."
+    },
+    {
+      "q": "¿Lua es más rápido que Python?",
+      "a": "El intérprete estándar de Lua es pequeño y, en general, rápido para un lenguaje dinámico, y LuaJIT es mucho más rápido en muchas cargas de trabajo. La velocidad real depende de la tarea, así que mide tu propio caso."
+    },
+    {
+      "q": "¿Cuál es la diferencia entre pairs e ipairs?",
+      "a": "`ipairs` recorre la parte de arreglo en orden desde el índice 1 hasta el primer `nil`. `pairs` visita todas las claves de la tabla en un orden no especificado."
+    },
+    {
+      "q": "¿Qué es Luau?",
+      "a": "Luau es un lenguaje derivado de Lua 5.1 y desarrollado por Roblox. Añade tipado gradual y mejoras de rendimiento, y se usa en los juegos de Roblox."
+    },
+    {
+      "q": "¿Lua es bueno para principiantes?",
+      "a": "Sí. Tiene una sintaxis pequeña y coherente y pocos conceptos, por eso es popular para crear mods de videojuegos y para la enseñanza. Su biblioteca estándar mínima hace que dependas del programa anfitrión o de módulos para tener más funciones."
+    }
+  ]
+}

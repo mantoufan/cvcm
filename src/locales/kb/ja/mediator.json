@@ -1,0 +1,134 @@
+{
+  "title": "Mediator パターン：TypeScript の例で部品の依存を減らす — cv.cm",
+  "description": "Mediator パターンは、オブジェクト間のやり取りを 1 つの中心オブジェクトに集め、互いを参照しなくて済むようにします。TypeScript のフォームの例で解説します。",
+  "h1": "Mediator パターンとは？例でわかりやすく解説",
+  "answer": "Mediator は振る舞いに関するデザインパターンで、オブジェクト同士を中心の Mediator オブジェクトを介して通信させることで、直接の依存を減らします。コンポーネントは、ほかのコンポーネントを直接呼ぶ代わりに、何かが起きたことを Mediator に伝え、Mediator がどのコンポーネントを更新するかを決めます。これにより、多対多の絡み合った参照の網が、単純な一対多のつながりになります。",
+  "sections": [
+    {
+      "h": "目的と解決する問題",
+      "body": [
+        "目的：オブジェクトの集合がどのようにやり取りするかをカプセル化するオブジェクトを定義することです。Mediator は、オブジェクト同士が互いを明示的に参照しないようにして疎結合を促し、やり取りのしかたを独立して変えられるようにします。Gang of Four（GoF）の書籍にある振る舞いパターンの 1 つです。",
+        "「法人アカウント」チェックボックス、会社名フィールド、メールフィールド、送信ボタンを持つ会員登録フォームを考えてみましょう。チェックボックスをオンにすると、会社名フィールドが表示されて必須になります。送信ボタンは、必須フィールドがすべて有効なときだけ有効にします。各コンポーネントがほかのコンポーネントを直接更新すると、チェックボックスは会社名フィールドとボタンを知り、メールフィールドはボタンを知り、というように続きます。ルールが増えるたびに相互参照が増え、どのコンポーネントも別のフォームで再利用できなくなります。",
+        "Mediator を使うと、コンポーネントは「自分が変わった」というイベントを報告するだけです。Mediator の役を務めるフォームオブジェクトが、フィールド同士がどう影響し合うかというルールをすべて持ちます。コンポーネントは単純で再利用しやすくなり、やり取りのロジックは 1 か所にまとまります。"
+      ]
+    },
+    {
+      "h": "構造と登場する役割",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "役割",
+              "責務"
+            ],
+            "rows": [
+              [
+                "Mediator",
+                "Colleague がイベントを報告するために呼ぶメソッド（`notify(sender, event)` など）を持つインターフェース"
+              ],
+              [
+                "Concrete mediator",
+                "すべての Colleague を知っており、それらの間の調整ルールを実装する"
+              ],
+              [
+                "Colleague",
+                "Mediator への参照を持つコンポーネント。ほかの Colleague を呼ぶ代わりに、自分のイベントを報告する"
+              ]
+            ]
+          }
+        },
+        "Mediator がない場合、互いに通信する n 個のコンポーネントには、最大で n × (n − 1) / 2 本のつながりが必要になることがあります。Mediator を使えば、各コンポーネントのつながりは Mediator への 1 本だけです。"
+      ]
+    },
+    {
+      "h": "TypeScript での実装",
+      "body": [
+        "各フィールドは変更を Mediator に報告します。`SignUpForm` が Concrete mediator で、会社名フィールドを表示・非表示にし、ボタンを有効にします。",
+        {
+          "code": "interface Mediator {\n  notify(sender: Component, event: string): void;\n}\n\nclass Component {\n  constructor(protected mediator: Mediator, readonly name: string) {}\n}\n\nclass Checkbox extends Component {\n  checked = false;\n  toggle() { this.checked = !this.checked; this.mediator.notify(this, \"change\"); }\n}\nclass TextField extends Component {\n  value = \"\";\n  visible = true;\n  type(text: string) { this.value = text; this.mediator.notify(this, \"change\"); }\n}\nclass Button extends Component { enabled = false; }\n\nclass SignUpForm implements Mediator {\n  isCompany = new Checkbox(this, \"isCompany\");\n  company = new TextField(this, \"company\");\n  email = new TextField(this, \"email\");\n  submit = new Button(this, \"submit\");\n  constructor() { this.company.visible = false; }\n\n  notify(sender: Component, event: string) {\n    if (sender === this.isCompany) this.company.visible = this.isCompany.checked;\n    const emailOk = this.email.value.includes(\"@\");\n    const companyOk = !this.company.visible || this.company.value.length > 0;\n    this.submit.enabled = emailOk && companyOk;\n    console.log(sender.name, event, \"-> submit enabled:\", this.submit.enabled);\n  }\n}\n\nconst form = new SignUpForm();\nform.email.type(\"ana@example.com\"); // email change -> submit enabled: true\nform.isCompany.toggle();            // isCompany change -> submit enabled: false\nform.company.type(\"Acme\");          // company change -> submit enabled: true",
+          "lang": "typescript"
+        },
+        "`Checkbox` と `TextField` は、ほかのフィールドが存在することを知らない点に注目してください。別の Mediator を与えれば、まったく別のフォームでも再利用できます。",
+        {
+          "note": "Mediator の主なリスクは、Mediator 自体がすべてを知る巨大なクラスに育ってしまうことです。これを god object と呼ぶことがあります。1 つの Mediator が無関係な多数のルールを扱っているなら、機能や画面の領域ごとに、より小さな複数の Mediator に分割しましょう。"
+        }
+      ]
+    },
+    {
+      "h": "使うべき場面と避けるべき場面",
+      "body": [
+        {
+          "ul": [
+            "オブジェクトの集まりが複雑だが明確なやり取りをしていて、それらの依存関係をたどりにくいときに使います。",
+            "互いを参照しているために切り離せないコンポーネントを、再利用できるようにしたいときに使います。",
+            "やり取りのルールが頻繁に変わり、1 か所で編集したいときに使います。",
+            "互いを呼び合うだけの 2 つのオブジェクトには使いません。直接の呼び出しのほうが明快です。",
+            "コンポーネントが、関心のある相手にイベントを一斉通知するだけでよい場合は使いません。単純なイベントエミッター（Observer）のほうが軽量です。"
+          ]
+        }
+      ]
+    },
+    {
+      "h": "実際の利用例",
+      "body": [
+        {
+          "ul": [
+            "GUI フレームワークのフォームやダイアログのコントローラ：親コンポーネントが状態を持ち、子の入力同士がどう影響し合うかを決め、子はイベントを発行するだけです。React で共通の親に「state を持ち上げる」のは、この考え方に沿っています。",
+            "チャットアプリケーション：ユーザーは互いに直接メッセージを送りません。チャットルームやサーバーが各メッセージを受け取り、適切なメンバーに届けます。",
+            "サービス間のメッセージブローカーやイベントバス：送信者はブローカーに発行し、ブローカーは送信者が知らない受信者へメッセージを中継します。",
+            "航空管制は典型的な例えです。飛行機はほかのすべての飛行機と交渉せず、管制塔とだけ交信します。"
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Mediator と Observer などのパターンの違い",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "パターン",
+              "Mediator パターンとの違い"
+            ],
+            "rows": [
+              [
+                "Observer パターン",
+                "Observer は一方向のブロードキャストです。Subject は任意の数のリスナーに通知し、リスナーが何をするかは知りません。Mediator は Colleague を知っていて、双方向に調整します。Mediator は Observer を使って実装されることがよくあります。"
+              ],
+              [
+                "Facade パターン",
+                "Facade はクライアントにサブシステムへの簡単なインターフェースを提供し、サブシステムは Facade の存在を知りません。Colleague は自分の Mediator を知っていて、それと通信します。"
+              ],
+              [
+                "Chain of Responsibility パターン",
+                "連鎖はリクエストをハンドラの列に沿って渡します。Mediator は、各イベントを適切なコンポーネントに送る単一のハブです。"
+              ],
+              [
+                "Command パターン",
+                "Colleague は Command オブジェクトを Mediator に送り、Mediator が誰にそれを実行させるかを決められます。"
+              ]
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Mediator と Observer の違いは何ですか？",
+      "a": "Observer では、Subject が知らない購読者にイベントをブロードキャストし、通信は一方向です。Mediator では、中心のオブジェクトが参加するコンポーネントを知っていて、それらが互いにどう影響するかを調整します。"
+    },
+    {
+      "q": "イベントバスは Mediator ですか？",
+      "a": "購読者にイベントを転送するだけのイベントバスは、Observer、つまり publish-subscribe に近いものです。コンポーネントが互いにどう反応するかを決めるルールを含んでいれば、Mediator になります。"
+    },
+    {
+      "q": "Mediator を使うとコードが追いにくくなりますか？",
+      "a": "そうなることがあります。直接の呼び出しは追いやすいのに対し、仲介された呼び出しは中心のオブジェクトを経由します。このパターンが効果を発揮するのは、代わりにたくさんのコンポーネントが互いに参照し合う状況です。"
+    },
+    {
+      "q": "1 つのコンポーネントが複数の Mediator を持てますか？",
+      "a": "通常、コンポーネントは生成時に設定される 1 つの Mediator を持ちます。コンポーネントは異なる文脈で別の Mediator と一緒に再利用でき、これがこのパターンの大きな利点の 1 つです。"
+    }
+  ]
+}

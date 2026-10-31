@@ -1,0 +1,229 @@
+{
+  "title": "Julia tutorial: arrays, functions, multiple dispatch and packages — cv.cm",
+  "description": "Learn Julia from scratch: install with juliaup, run Hello world, use types, 1-based arrays, broadcasting, functions, multiple dispatch, errors and packages.",
+  "h1": "Julia tutorial for beginners",
+  "answer": "Julia is a high-level, dynamically typed language designed for fast numerical and scientific computing. It reads like Python or MATLAB but compiles each function to native code the first time it is called, so loops can run at speeds close to C. Its central idea is multiple dispatch: a function picks its method based on the types of all its arguments. Install it with juliaup and run a file with `julia hello.jl`.",
+  "sections": [
+    {
+      "h": "What Julia is and who uses it",
+      "body": [
+        "Julia was created by Jeff Bezanson, Stefan Karpinski, Viral Shah and Alan Edelman, and it became public in 2012. Version 1.0 arrived in 2018, and the 1.x series keeps backward compatibility. Julia aims to solve the \"two-language problem\": prototyping in a slow, easy language and then rewriting the hot parts in C or Fortran.",
+        "Julia is used by scientists, engineers and data analysts for simulation, differential equations, optimization, statistics, machine learning and high-performance computing. Its package ecosystem covers data frames, plotting, GPU computing and automatic differentiation."
+      ]
+    },
+    {
+      "h": "Install Julia and run Hello, world",
+      "body": [
+        "The recommended installer is juliaup, which installs and updates Julia versions on Windows, macOS and Linux (see julialang.org/downloads). After installation, `julia` starts the REPL and `julia file.jl` runs a script.",
+        {
+          "code": "# hello.jl\nprintln(\"Hello, world!\")",
+          "lang": "julia"
+        },
+        {
+          "code": "julia hello.jl\n# Hello, world!\njulia\n# julia> 1 + 2\n# 3",
+          "lang": "shell"
+        },
+        "In the REPL, press `]` to enter package mode (for example `add DataFrames`), `?` for help on a name, and `;` for a shell. Press Backspace to return to the normal prompt."
+      ]
+    },
+    {
+      "h": "Variables and basic types",
+      "body": [
+        "Variables need no declaration, but every value has a concrete type, which you can inspect with `typeof`. You can add type annotations to function arguments and struct fields when you want them.",
+        {
+          "table": {
+            "head": [
+              "Type",
+              "Example",
+              "Notes"
+            ],
+            "rows": [
+              [
+                "Int64",
+                "`42`",
+                "Default integer on 64-bit systems; overflow wraps around"
+              ],
+              [
+                "Float64",
+                "`3.14`, `1e-3`",
+                "Default floating point"
+              ],
+              [
+                "Rational",
+                "`1//3`",
+                "Exact fraction"
+              ],
+              [
+                "String",
+                "`\"hello\"`",
+                "UTF-8; interpolate with `\"$name\"`"
+              ],
+              [
+                "Char",
+                "`'a'`",
+                "A single Unicode character"
+              ],
+              [
+                "Bool",
+                "`true`, `false`",
+                "Logical values"
+              ],
+              [
+                "Symbol",
+                "`:name`",
+                "An interned name, often used as a key or option"
+              ],
+              [
+                "Nothing",
+                "`nothing`",
+                "\"No value\", returned by functions with no result"
+              ]
+            ]
+          }
+        },
+        {
+          "code": "name = \"Ana\"\nage = 30\nprintln(\"$name is $age, next year $(age + 1)\")\n# Ana is 30, next year 31\ntypeof(age)   # Int64\n7 / 2         # 3.5  (always a float)\n7 ÷ 2         # 3    (integer division, also div(7, 2))\n2^10          # 1024",
+          "lang": "julia"
+        },
+        "Julia accepts Unicode names such as `π` or `α`; in the REPL and most editors you type `\\pi` and press Tab to get `π`."
+      ]
+    },
+    {
+      "h": "Control flow",
+      "body": [
+        "Blocks end with the keyword `end`; indentation is for readability only. `if`, `for` and `while` work as in most languages, and comprehensions build arrays in one line.",
+        {
+          "code": "function sign_name(n)\n    if n > 0\n        \"positive\"\n    elseif n < 0\n        \"negative\"\n    else\n        \"zero\"\n    end\nend\nfor i in 1:3\n    println(\"$i squared is $(i^2)\")\nend\nsquares = [x^2 for x in 1:5 if isodd(x)]   # [1, 9, 25]\nx = 5\nresult = x > 3 ? \"big\" : \"small\"           # \"big\"",
+          "lang": "julia"
+        },
+        "`1:3` is a range that includes both ends. The last expression in a function or `if` block is its value, so `sign_name(-2)` returns `\"negative\"` without an explicit `return`."
+      ]
+    },
+    {
+      "h": "Functions",
+      "body": [
+        {
+          "code": "add(x, y) = x + y                 # one-line definition\nfunction greet(name = \"world\"; punctuation = \"!\")\n    return \"Hello, $name$punctuation\"\nend\ngreet()                           # \"Hello, world!\"\ngreet(\"Ana\", punctuation = \".\")   # \"Hello, Ana.\"\nsquare = x -> x^2                 # anonymous function\nmap(square, [1, 2, 3])            # [1, 4, 9]\nv = [3, 1, 2]\nsort!(v)                          # v is now [1, 2, 3]",
+          "lang": "julia"
+        },
+        "Positional arguments come before the semicolon and keyword arguments after it. By convention, a function whose name ends in `!` modifies one of its arguments, such as `sort!` or `push!`, while `sort` returns a new array."
+      ]
+    },
+    {
+      "h": "Arrays, tuples and dictionaries",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Structure",
+              "Literal",
+              "Notes"
+            ],
+            "rows": [
+              [
+                "Vector",
+                "`[1, 2, 3]`",
+                "1-based, mutable, grows with `push!`"
+              ],
+              [
+                "Matrix",
+                "`[1 2; 3 4]`",
+                "Spaces separate columns, `;` separates rows"
+              ],
+              [
+                "Tuple",
+                "`(1, \"a\")`",
+                "Immutable, fixed length"
+              ],
+              [
+                "Named tuple",
+                "`(name = \"Ana\", age = 30)`",
+                "Fields accessed with `.name`"
+              ],
+              [
+                "Dict",
+                "`Dict(\"a\" => 1)`",
+                "Mutable hash map"
+              ],
+              [
+                "Set",
+                "`Set([1, 2, 2])`",
+                "Unique values"
+              ]
+            ]
+          }
+        },
+        {
+          "code": "v = [10, 20, 30]\nv[1]          # 10   (first element)\nv[end]        # 30\npush!(v, 40)\nA = [1 2; 3 4]\nA * A         # matrix product: [7 10; 15 22]\nA .* A        # element-wise:   [1 4; 9 16]\nv .+ 1        # broadcasting:   [11, 21, 31, 41]\nsqrt.([1, 4, 9])   # [1.0, 2.0, 3.0]",
+          "lang": "julia"
+        },
+        "The dot syntax is called broadcasting: `f.(x)` applies `f` to every element, and `.+`, `.*` work element by element. Julia fuses chains of dotted operations into a single loop."
+      ]
+    },
+    {
+      "h": "Signature feature: multiple dispatch",
+      "body": [
+        "A Julia function can have many methods. When you call it, Julia chooses the most specific method for the types of all the arguments. This replaces class methods: types hold data, and behavior is added by defining methods for them, even from another package.",
+        {
+          "code": "abstract type Shape end\nstruct Circle <: Shape\n    r::Float64\nend\nstruct Rect <: Shape\n    w::Float64\n    h::Float64\nend\narea(c::Circle) = π * c.r^2\narea(r::Rect) = r.w * r.h\nshapes = [Circle(1.0), Rect(2.0, 3.0)]\nprintln(round.(area.(shapes), digits = 2))   # [3.14, 6.0]",
+          "lang": "julia"
+        },
+        "Because Julia compiles a specialized version of a function for the argument types it sees, the first call of a function is slower (it includes compilation) and later calls are fast. Use `mutable struct` when fields must change after creation."
+      ]
+    },
+    {
+      "h": "Error handling",
+      "body": [
+        "Julia uses exceptions. Throw a built-in exception type such as `ArgumentError` or `DomainError`, or define your own as a struct that subtypes `Exception`. `tryparse` returns `nothing` instead of throwing.",
+        {
+          "code": "function parse_age(s)\n    n = tryparse(Int, s)\n    n === nothing && throw(ArgumentError(\"not a number: $s\"))\n    n < 0 && throw(DomainError(n, \"age must not be negative\"))\n    return n\nend\ntry\n    parse_age(\"abc\")\ncatch e\n    if e isa ArgumentError\n        println(\"Error: \", e.msg)\n    else\n        rethrow()\n    end\nend\n# Error: not a number: abc",
+          "lang": "julia"
+        }
+      ]
+    },
+    {
+      "h": "A small complete program: word frequencies",
+      "body": [
+        {
+          "code": "text = \"the cat and the hat and the bat\"\ncounts = Dict{String,Int}()\nfor w in split(text)\n    counts[w] = get(counts, w, 0) + 1\nend\ntop = sort(collect(counts), by = last, rev = true)\nfor (word, n) in first(top, 2)\n    println(word, \" \", n)\nend\n# the 3\n# and 2",
+          "lang": "julia"
+        },
+        "`split` breaks the string on whitespace, `get` returns a default of 0 for new words, `collect` turns the dictionary into a vector of `word => count` pairs, and `by = last` sorts by the count.",
+        {
+          "note": "Common beginner mistakes: indexing from 0 (`v[0]` is an error; the first element is `v[1]`); expecting `7 / 2` to be an integer; writing performance-critical code at the top level of a script instead of inside functions (global variables are slow, and assigning a global inside a top-level loop in a file triggers a scope warning); and timing only the first call, which includes compilation."
+        }
+      ]
+    },
+    {
+      "h": "Where to go next",
+      "body": [
+        {
+          "ul": [
+            "The official Julia manual at docs.julialang.org, starting with \"Getting Started\".",
+            "The learning page at julialang.org, which lists tutorials, books and courses.",
+            "Read the \"Performance Tips\" chapter of the manual before optimizing code.",
+            "Explore packages such as DataFrames.jl, Plots.jl and DifferentialEquations.jl."
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Is Julia faster than Python?",
+      "a": "For code with many loops and numeric work, Julia is usually much faster than pure Python because it compiles to native code. Python with libraries such as NumPy can be fast for vectorized operations, so the difference depends on the task."
+    },
+    {
+      "q": "Why does Julia start counting at 1?",
+      "a": "Julia follows the convention of mathematics and of languages such as MATLAB, R and Fortran, where the first element of an array has index 1."
+    },
+    {
+      "q": "Why is the first run of my Julia code slow?",
+      "a": "Julia compiles each function for the argument types the first time it is called. Later calls reuse the compiled code, so measure performance after a warm-up call or with a benchmarking package."
+    },
+    {
+      "q": "Is Julia free?",
+      "a": "Yes. Julia is open source under the MIT license, and almost all of its packages are open source too."
+    }
+  ]
+}

@@ -1,0 +1,211 @@
+{
+  "title": "Topological sort: Kahn's algorithm and DFS in Python, with examples — cv.cm",
+  "description": "Topological sort explained: order tasks so every dependency comes first. Kahn's algorithm and DFS in Python, cycle detection, graphlib and O(V + E) cost.",
+  "h1": "Topological sort explained: how it works, code and complexity",
+  "answer": "A topological sort orders the nodes of a directed acyclic graph (DAG) so that for every edge u → v, u comes before v. It answers \"in which order can I do these tasks if some depend on others?\" The two standard methods are Kahn's algorithm, which repeatedly removes nodes with no incoming edges, and DFS, which outputs nodes in reverse finishing order. Both run in O(V + E) time and both detect cycles, which make an ordering impossible.",
+  "sections": [
+    {
+      "h": "What problem topological sort solves",
+      "body": [
+        "Many real tasks have prerequisites: a course requires earlier courses, a source file must be compiled after the files it imports, a package must be installed after its dependencies, a spreadsheet cell must be computed after the cells it references. Draw each task as a node and each \"must come before\" rule as a directed edge. A topological order is any sequence of the tasks that respects every edge.",
+        "An order exists if and only if the graph has no directed cycle. If A needs B and B needs A, no valid order exists, and a good topological sort reports that instead of looping forever. A DAG usually has many valid orders; the algorithms return one of them."
+      ]
+    },
+    {
+      "h": "The idea in plain words",
+      "body": [
+        "Kahn's algorithm (published by Arthur Kahn in 1962) works from the front:",
+        {
+          "ol": [
+            "Count the incoming edges (the in-degree) of every node.",
+            "Put every node with in-degree 0 into a queue: these tasks have no unmet prerequisites.",
+            "Take a node from the queue and append it to the result. For each of its outgoing edges, lower the target's in-degree by 1; if it reaches 0, add the target to the queue.",
+            "When the queue is empty, if the result contains every node, it is a topological order. Otherwise the remaining nodes are part of a cycle."
+          ]
+        },
+        "The DFS method works from the back: a node is finished only after everything it points to is finished, so listing nodes in reverse finishing order puts each node before all of its successors."
+      ]
+    },
+    {
+      "h": "Worked example, step by step",
+      "body": [
+        "Getting dressed: underwear → pants, pants → shoes, socks → shoes, pants → belt, shirt → belt, shirt → tie, tie → jacket, belt → jacket. Kahn's algorithm, taking queued nodes in first-in, first-out order:",
+        {
+          "table": {
+            "head": [
+              "Step",
+              "Take",
+              "In-degrees that drop to 0",
+              "Queue after",
+              "Result so far"
+            ],
+            "rows": [
+              [
+                "Start",
+                "—",
+                "underwear, socks, shirt",
+                "underwear, socks, shirt",
+                "—"
+              ],
+              [
+                "1",
+                "underwear",
+                "pants",
+                "socks, shirt, pants",
+                "underwear"
+              ],
+              [
+                "2",
+                "socks",
+                "none (shoes still waits for pants)",
+                "shirt, pants",
+                "underwear, socks"
+              ],
+              [
+                "3",
+                "shirt",
+                "tie",
+                "pants, tie",
+                "…, shirt"
+              ],
+              [
+                "4",
+                "pants",
+                "shoes, belt",
+                "tie, shoes, belt",
+                "…, pants"
+              ],
+              [
+                "5",
+                "tie",
+                "none (jacket waits for belt)",
+                "shoes, belt",
+                "…, tie"
+              ],
+              [
+                "6",
+                "shoes",
+                "none",
+                "belt",
+                "…, shoes"
+              ],
+              [
+                "7",
+                "belt",
+                "jacket",
+                "jacket",
+                "…, belt"
+              ],
+              [
+                "8",
+                "jacket",
+                "none",
+                "empty",
+                "…, jacket"
+              ]
+            ]
+          }
+        },
+        "Final order: underwear, socks, shirt, pants, tie, shoes, belt, jacket. All 8 nodes are placed, so there is no cycle."
+      ]
+    },
+    {
+      "h": "Python implementation",
+      "body": [
+        "Kahn's algorithm with a deque:",
+        {
+          "code": "from collections import deque\ndef topo_sort(graph):\n    \"\"\"graph: dict node -> list of nodes that must come after it.\"\"\"\n    indegree = {n: 0 for n in graph}\n    for n in graph:\n        for m in graph[n]:\n            indegree[m] += 1\n    queue = deque(n for n in graph if indegree[n] == 0)\n    order = []\n    while queue:\n        n = queue.popleft()\n        order.append(n)\n        for m in graph[n]:\n            indegree[m] -= 1\n            if indegree[m] == 0:\n                queue.append(m)\n    if len(order) != len(graph):\n        raise ValueError(\"graph has a cycle\")\n    return order\ndress = {\n    \"underwear\": [\"pants\"], \"socks\": [\"shoes\"], \"shirt\": [\"belt\", \"tie\"],\n    \"pants\": [\"shoes\", \"belt\"], \"tie\": [\"jacket\"], \"belt\": [\"jacket\"],\n    \"shoes\": [], \"jacket\": [],\n}\nprint(topo_sort(dress))\n# ['underwear', 'socks', 'shirt', 'pants', 'tie', 'shoes', 'belt', 'jacket']",
+          "lang": "python"
+        },
+        "The DFS version appends a node after all its successors are done, then reverses the list:",
+        {
+          "code": "def topo_sort_dfs(graph):\n    order, state = [], {}             # state: 1 = in progress, 2 = done\n    def visit(n):\n        if state.get(n) == 1:\n            raise ValueError(\"graph has a cycle\")\n        if state.get(n) == 2:\n            return\n        state[n] = 1\n        for m in graph[n]:\n            visit(m)\n        state[n] = 2\n        order.append(n)\n    for n in graph:\n        visit(n)\n    return order[::-1]\nprint(topo_sort_dfs(dress))\n# ['shirt', 'tie', 'socks', 'underwear', 'pants', 'belt', 'jacket', 'shoes']",
+          "lang": "python"
+        },
+        "Both outputs are valid. Since Python 3.9, the standard library also has `graphlib.TopologicalSorter`. Note that it takes a mapping from each node to its predecessors, the opposite direction from the dictionaries above:",
+        {
+          "code": "from graphlib import TopologicalSorter\nts = TopologicalSorter({\"b\": {\"a\"}, \"c\": {\"a\", \"b\"}})   # node: its prerequisites\nprint(list(ts.static_order()))  # ['a', 'b', 'c']",
+          "lang": "python"
+        }
+      ]
+    },
+    {
+      "h": "Time and space complexity",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Method",
+              "Time",
+              "Space",
+              "Reason"
+            ],
+            "rows": [
+              [
+                "Kahn's algorithm",
+                "O(V + E)",
+                "O(V)",
+                "Each node enters the queue once; each edge lowers one in-degree once."
+              ],
+              [
+                "DFS",
+                "O(V + E)",
+                "O(V)",
+                "Each node is visited once and each edge followed once; the recursion stack can reach V frames."
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "Variants and common mistakes",
+      "body": [
+        {
+          "ul": [
+            "Smallest order first: replace the queue with a min-heap (`heapq`) to always pick the smallest available node. This gives the lexicographically smallest order in O((V + E) log V).",
+            "Parallel scheduling: process Kahn's algorithm in rounds, taking all in-degree-0 nodes at once. Each round is a batch of tasks that can run at the same time; the number of rounds is the length of the longest dependency chain. `graphlib.TopologicalSorter` supports this with `get_ready()` and `done()`.",
+            "Longest or shortest path in a DAG: relax edges in topological order to get the answer in O(V + E), even with negative weights.",
+            "Counting distinct orders is a much harder problem; do not try to list them all for large graphs."
+          ]
+        },
+        {
+          "note": "Watch the edge direction. \"A depends on B\" means B must come first, so the edge is B → A. Mixing up the direction gives a reversed order. Also make sure every node appears as a key in the dictionary, including nodes with no outgoing edges, or the in-degree lookup raises `KeyError`."
+        },
+        "The recursive DFS version has the same recursion limit issue as any recursive DFS in Python: for chains of thousands of nodes, use Kahn's algorithm."
+      ]
+    },
+    {
+      "h": "When to use it and real-world uses",
+      "body": [
+        {
+          "ul": [
+            "Build tools such as Make order targets by their dependencies, and package managers order installs by dependency graphs.",
+            "Spreadsheets recalculate cells in dependency order and report circular references.",
+            "Task schedulers and workflow engines, for example DAG-based data pipelines, run tasks in topological order.",
+            "Compilers order declarations and evaluate expression graphs; databases order foreign-key creation or deletion.",
+            "Interview problems: course schedule I and II, alien dictionary (letter order from sorted words), parallel courses, minimum height of a build plan."
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Can a graph with a cycle be topologically sorted?",
+      "a": "No. A cycle means some task must come before itself. Kahn's algorithm detects this because some nodes never reach in-degree 0, and the DFS method detects it by reaching a node that is still in progress."
+    },
+    {
+      "q": "Is a topological order unique?",
+      "a": "Usually not. It is unique only when the graph contains a path that visits every node, so each step has exactly one available node."
+    },
+    {
+      "q": "Kahn's algorithm or DFS?",
+      "a": "Both are O(V + E). Kahn's algorithm is iterative, reports cycles naturally and is easy to adapt for parallel batches or smallest-first order. DFS is shorter if you already have a DFS helper."
+    },
+    {
+      "q": "Does Python have a built-in topological sort?",
+      "a": "Yes. `graphlib.TopologicalSorter`, added in Python 3.9, returns an order with `static_order()` and raises `graphlib.CycleError` when the graph has a cycle."
+    }
+  ]
+}

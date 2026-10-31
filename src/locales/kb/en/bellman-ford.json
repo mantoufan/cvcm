@@ -1,0 +1,165 @@
+{
+  "title": "Bellman-Ford algorithm: negative weights, cycle detection, Python code — cv.cm",
+  "description": "Bellman-Ford explained: shortest paths with negative edge weights, a traced example, Python code, negative cycle detection and O(V × E) time complexity.",
+  "h1": "Bellman-Ford algorithm explained: how it works, code and complexity",
+  "answer": "The Bellman-Ford algorithm finds the shortest paths from one start node to all other nodes, even when some edge weights are negative. It relaxes every edge V − 1 times; after that, all shortest distances are correct. One extra pass detects a negative cycle: if any distance can still be improved, the graph has a cycle with negative total weight. It runs in O(V × E) time.",
+  "sections": [
+    {
+      "h": "What problem Bellman-Ford solves",
+      "body": [
+        "Dijkstra's algorithm is fast but requires non-negative edge weights. Some problems naturally have negative weights: a refund, a gain in a currency exchange, or an energy cost that can go below zero. Bellman-Ford handles these graphs correctly and also tells you when no shortest path exists because of a negative cycle, a loop you could go around forever to make the cost smaller and smaller.",
+        "The algorithm is named after Richard Bellman and Lester Ford Jr., who published versions of it in the 1950s."
+      ]
+    },
+    {
+      "h": "The idea in plain words",
+      "body": [
+        {
+          "ol": [
+            "Set the distance of the start node to 0 and all others to infinity.",
+            "Repeat V − 1 times: for every edge u → v with weight w, if `dist[u] + w < dist[v]`, update `dist[v]`.",
+            "Do one more pass over all edges. If any distance still improves, report a negative cycle."
+          ]
+        },
+        "Why V − 1 rounds? A shortest path without cycles uses at most V − 1 edges. After round k, every node whose shortest path has at most k edges already has its correct distance, so V − 1 rounds cover every simple path."
+      ]
+    },
+    {
+      "h": "Worked example, step by step",
+      "body": [
+        "Directed graph with 4 nodes and the edges S→A (4), S→B (5), B→A (−3), A→C (3). The edges are processed in this order in every round.",
+        {
+          "table": {
+            "head": [
+              "Round",
+              "S",
+              "A",
+              "B",
+              "C"
+            ],
+            "rows": [
+              [
+                "Start",
+                "0",
+                "∞",
+                "∞",
+                "∞"
+              ],
+              [
+                "1",
+                "0",
+                "2 (via B: 5 − 3)",
+                "5",
+                "5 (via A: 2 + 3)"
+              ],
+              [
+                "2",
+                "0",
+                "2",
+                "5",
+                "5 (no change: stop early)"
+              ]
+            ]
+          }
+        },
+        "In round 1, A first becomes 4 through S→A, then improves to 2 through B→A, and C uses the improved value. Dijkstra's algorithm would finalize A at 4 before looking at B, which is exactly the mistake a negative edge causes."
+      ]
+    },
+    {
+      "h": "Python implementation",
+      "body": [
+        "Bellman-Ford works on a plain list of edges, which makes it short to write:",
+        {
+          "code": "def bellman_ford(nodes, edges, start):\n    \"\"\"edges: list of (u, v, weight). Returns dist, or raises on a negative cycle.\"\"\"\n    INF = float(\"inf\")\n    dist = {n: INF for n in nodes}\n    dist[start] = 0\n    for _ in range(len(nodes) - 1):\n        changed = False\n        for u, v, w in edges:\n            if dist[u] != INF and dist[u] + w < dist[v]:\n                dist[v] = dist[u] + w\n                changed = True\n        if not changed:\n            break                         # already optimal\n    for u, v, w in edges:\n        if dist[u] != INF and dist[u] + w < dist[v]:\n            raise ValueError(\"graph contains a negative cycle\")\n    return dist\nnodes = [\"S\", \"A\", \"B\", \"C\"]\nedges = [(\"S\", \"A\", 4), (\"S\", \"B\", 5), (\"B\", \"A\", -3), (\"A\", \"C\", 3)]\nprint(bellman_ford(nodes, edges, \"S\"))  # {'S': 0, 'A': 2, 'B': 5, 'C': 5}",
+          "lang": "python"
+        },
+        "Adding an edge C → B with weight −6 creates the cycle B → A → C → B with total weight −3 + 3 − 6 = −6, so the extra pass finds it:",
+        {
+          "code": "try:\n    bellman_ford(nodes, edges + [(\"C\", \"B\", -6)], \"S\")\nexcept ValueError as e:\n    print(e)  # graph contains a negative cycle",
+          "lang": "python"
+        },
+        "The `dist[u] != INF` check skips edges that leave nodes not reached yet. In Python, `float(\"inf\") + w` is still infinity, so the check mainly saves work. In languages that use a large integer as infinity, it prevents overflow and false updates."
+      ]
+    },
+    {
+      "h": "Time and space complexity",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Case",
+              "Time",
+              "Reason"
+            ],
+            "rows": [
+              [
+                "Worst",
+                "O(V × E)",
+                "V − 1 rounds, each relaxing all E edges."
+              ],
+              [
+                "Best (early exit)",
+                "O(E)",
+                "If the first round changes nothing after the start, the loop stops."
+              ],
+              [
+                "Space",
+                "O(V)",
+                "Only the distance (and optional parent) map, besides the edge list."
+              ]
+            ]
+          }
+        },
+        "On a graph with 1,000 nodes and 10,000 edges that is up to about 10 million relaxations, so Dijkstra is much faster when all weights are non-negative."
+      ]
+    },
+    {
+      "h": "Variants and common mistakes",
+      "body": [
+        {
+          "ul": [
+            "Early exit: stop when a full round changes nothing. This is safe and often makes the algorithm much faster in practice.",
+            "SPFA (shortest path faster algorithm): only re-relax edges out of nodes whose distance changed, using a queue. It is often fast but has the same O(V × E) worst case.",
+            "Hop-limited paths: running exactly k rounds, using a copy of the distances from the previous round, gives the cheapest path with at most k edges. This solves \"cheapest flights within k stops\".",
+            "Finding the cycle itself: keep a parent map; when the extra pass updates node v, follow parents V times to land inside the cycle, then walk until you return to the same node."
+          ]
+        },
+        {
+          "note": "A negative cycle only matters if it is reachable from the start. A cycle in a part of the graph you cannot reach does not affect the distances, and the `dist[u] != INF` guard correctly ignores it. In an undirected graph, any negative edge is itself a negative cycle (go back and forth), so Bellman-Ford is mainly used on directed graphs."
+        }
+      ]
+    },
+    {
+      "h": "When to use it and real-world uses",
+      "body": [
+        {
+          "ul": [
+            "Use Bellman-Ford when edge weights can be negative or when you must detect negative cycles. Otherwise prefer Dijkstra.",
+            "Distance-vector routing protocols, such as RIP, use the distributed Bellman-Ford idea: each router repeatedly updates its distance estimates from its neighbors' estimates.",
+            "Currency arbitrage: with weights equal to `-log(rate)`, a negative cycle is a sequence of exchanges that ends with more money than it started with.",
+            "Johnson's algorithm runs Bellman-Ford once to re-weight a graph so that Dijkstra can then be used from every node for all-pairs shortest paths.",
+            "Difference constraints (systems of inequalities like `x - y <= c`) can be solved as shortest paths; a negative cycle means no solution exists."
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Why does Bellman-Ford run V − 1 iterations?",
+      "a": "A shortest path without cycles contains at most V − 1 edges, and each round fixes the distances of paths with one more edge. After V − 1 rounds every shortest path is found, unless there is a negative cycle."
+    },
+    {
+      "q": "How does Bellman-Ford detect a negative cycle?",
+      "a": "It does one more pass over all edges after the V − 1 rounds. If any distance can still be reduced, some path keeps getting cheaper, which is only possible with a reachable negative cycle."
+    },
+    {
+      "q": "Is Bellman-Ford faster than Dijkstra?",
+      "a": "No. Bellman-Ford is O(V × E), while Dijkstra with a heap is O((V + E) log V). Use Bellman-Ford only when you need negative weights or cycle detection."
+    },
+    {
+      "q": "Is Bellman-Ford dynamic programming?",
+      "a": "Yes. Round k computes the best distance using at most k edges from the results of round k − 1, which is a dynamic programming recurrence over the number of edges."
+    }
+  ]
+}

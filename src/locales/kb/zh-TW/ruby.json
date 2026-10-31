@@ -1,0 +1,197 @@
+{
+  "title": "Ruby 入門教學：物件、區塊、陣列、雜湊與類別 — cv.cm",
+  "description": "一頁學會 Ruby：執行 Hello world、變數與型別、流程控制、方法、陣列與雜湊、區塊與迭代器、類別、模組與例外處理。",
+  "h1": "Ruby 入門教學",
+  "answer": "Ruby 是動態的物件導向腳本語言，設計目標是讓人讀寫起來都愉快。將 `puts \"Hello, world\"` 存成 `hello.rb`，再執行 `ruby hello.rb`。在 Ruby 中一切皆物件，連數字和 `nil` 也不例外。核心概念包括以 `def` 定義的方法、陣列與雜湊、傳給 `each` 和 `map` 等迭代器的區塊、類別與模組，以及以 `begin`/`rescue` 處理的例外。",
+  "sections": [
+    {
+      "h": "Ruby 是什麼，用來做什麼",
+      "body": [
+        "Ruby 由日本的松本行弘（Yukihiro Matsumoto，人稱「Matz」）創造，於 1995 年首次發布，目標是讓程式設計師感到快樂。它因 Ruby on Rails 而廣為人知，GitHub 和 Shopify 等網站就是使用這個網頁框架。Ruby 用於網頁應用程式、腳本與自動化，以及 Homebrew 和 CocoaPods 等開發者工具。它的標準實作是 CRuby（也稱為 MRI）。"
+      ]
+    },
+    {
+      "h": "安裝 Ruby 並執行 Hello, world",
+      "body": [
+        "macOS 和許多 Linux 系統都內建 Ruby，但通常版本很舊；請用 rbenv、asdf 或 mise 等版本管理工具安裝目前的 Ruby 3，Windows 上則可使用 RubyInstaller。用 `ruby -v` 確認。",
+        {
+          "code": "puts \"Hello, world\"",
+          "lang": "ruby"
+        },
+        {
+          "code": "ruby hello.rb\n# Hello, world\nirb          # interactive Ruby shell",
+          "lang": "shell"
+        },
+        "`puts` 會印出值並加上換行。當語意明確時，方法引數的括號可以省略。"
+      ]
+    },
+    {
+      "h": "變數與基本型別",
+      "body": [
+        "變數不需要宣告，可以存放任何物件。依慣例，名稱使用 `snake_case`。常數以大寫字母開頭。",
+        {
+          "table": {
+            "head": [
+              "類別",
+              "範例",
+              "說明"
+            ],
+            "rows": [
+              [
+                "`Integer`",
+                "`42`, `2**100`",
+                "大小不限"
+              ],
+              [
+                "`Float`",
+                "`3.14`",
+                "雙精度"
+              ],
+              [
+                "`String`",
+                "`\"hi #{name}\"`, `'hi'`",
+                "可變；雙引號會內插變數"
+              ],
+              [
+                "`Symbol`",
+                "`:name`",
+                "不可變的識別字，常用作雜湊的鍵"
+              ],
+              [
+                "`true`, `false`",
+                "`true`",
+                "只有 `false` 和 `nil` 為假值"
+              ],
+              [
+                "`NilClass`",
+                "`nil`",
+                "沒有值"
+              ],
+              [
+                "`Array`, `Hash`",
+                "`[1, 2]`, `{a: 1}`",
+                "內建集合"
+              ]
+            ]
+          }
+        },
+        {
+          "code": "name = \"Ada\"\ncount = 7\nputs \"#{name} has #{count} items\"   # Ada has 7 items\nputs count / 2, count / 2.0         # 3, then 3.5\nputs \"12\".to_i + 1                  # 13\nputs 5.class, nil.to_a.inspect      # Integer, then []\nputs 0 ? \"0 is truthy\" : \"falsy\"    # 0 is truthy",
+          "lang": "ruby"
+        }
+      ]
+    },
+    {
+      "h": "流程控制",
+      "body": [
+        {
+          "code": "score = 72\nif score >= 90\n  puts \"A\"\nelsif score >= 70\n  puts \"B\"          # B\nelse\n  puts \"C\"\nend\n\nputs \"pass\" unless score < 50    # statement modifier\n\n3.times { |i| print i, \" \" }     # 0 1 2\nputs\n\nn = 10\nn /= 2 while n > 1\nputs n                           # 1\n\nkind = case \"SAT\"\n       when \"SAT\", \"SUN\" then \"weekend\"\n       else \"weekday\"\n       end\nputs kind                        # weekend",
+          "lang": "ruby"
+        },
+        "區塊以 `end` 結尾，而不是大括號。Ruby 程式碼通常以 2 個空格縮排。"
+      ]
+    },
+    {
+      "h": "方法",
+      "body": [
+        "方法會回傳最後一個運算式的值，因此通常不需要寫 `return`。依慣例，回傳布林值的方法以 `?` 結尾，會就地修改接收者的方法則以 `!` 結尾。",
+        {
+          "code": "def greet(name, greeting: \"Hello\")\n  \"#{greeting}, #{name}!\"\nend\n\ndef total(*nums)\n  nums.sum\nend\n\nputs greet(\"Lin\")                   # Hello, Lin!\nputs greet(\"Lin\", greeting: \"Hi\")   # Hi, Lin!\nputs total(1, 2, 3)                 # 6\nputs 4.even?, \"abc\".upcase          # true, then ABC\n\ns = \"hello\"\ns.upcase!          # modifies s in place\nputs s             # HELLO",
+          "lang": "ruby"
+        }
+      ]
+    },
+    {
+      "h": "陣列與雜湊",
+      "body": [
+        {
+          "code": "nums = [3, 1, 2]\nnums << 5\np nums.sort, nums.first, nums.last   # [1, 2, 3, 5] then 3 then 5\np nums.sort[1..2]                    # [2, 3]\n\nages = { \"ann\" => 31, \"bob\" => 25 }\nages[\"cy\"] = 40\nages.each { |person, age| puts \"#{person} is #{age}\" }\np ages.fetch(\"zed\", 0)               # 0\n\nuser = { name: \"Ann\", city: \"Oslo\" } # symbol keys\np user[:name]                        # \"Ann\"",
+          "lang": "ruby"
+        },
+        "`p` 會印出值的 `inspect` 形式，因為會顯示引號與括號，所以很適合除錯。"
+      ]
+    },
+    {
+      "h": "招牌特色：區塊與迭代器",
+      "body": [
+        "區塊是傳給方法的一段程式碼，單行時寫成 `{ ... }`，多行時寫成 `do ... end`。Ruby 的迭代主要透過區塊而非 `for` 迴圈完成，而 `Enumerable` 的方法讓資料轉換寫起來很簡短。",
+        {
+          "code": "nums = [1, 2, 3, 4, 5]\np nums.map { |n| n * n }               # [1, 4, 9, 16, 25]\np nums.select(&:even?)                 # [2, 4]\np nums.reduce(0) { |sum, n| sum + n }  # 15\np nums.each_slice(2).to_a              # [[1, 2], [3, 4], [5]]\np %w[pear fig apple].sort_by(&:length) # [\"fig\", \"pear\", \"apple\"]\n\ndef twice\n  yield\n  yield\nend\ntwice { puts \"hi\" }   # prints hi two times",
+          "lang": "ruby"
+        },
+        "`&:even?` 是 `{ |n| n.even? }` 的簡寫。你自己寫的方法可以接收區塊，並用 `yield` 呼叫它。"
+      ]
+    },
+    {
+      "h": "類別與模組",
+      "body": [
+        {
+          "code": "module Greeter\n  def hello\n    \"Hello from #{name}\"\n  end\nend\n\nclass Account\n  include Greeter          # mix in module methods\n  attr_reader :name, :balance\n\n  def initialize(name)\n    @name = name           # @ marks an instance variable\n    @balance = 0\n  end\n\n  def deposit(amount)\n    raise ArgumentError, \"amount must be positive\" unless amount.positive?\n    @balance += amount\n    self\n  end\n\n  def to_s = \"#{name}: #{balance}\"\nend\n\nacc = Account.new(\"Ann\")\nacc.deposit(30).deposit(20)\nputs acc        # Ann: 50\nputs acc.hello  # Hello from Ann",
+          "lang": "ruby"
+        },
+        "`attr_reader` 會產生 getter 方法。模組把方法組合在一起，可以混入（mix in）許多類別，Ruby 用這種方式取代多重繼承。單行的 `def to_s = ...` 寫法需要 Ruby 3.0 以上。"
+      ]
+    },
+    {
+      "h": "錯誤處理",
+      "body": [
+        {
+          "code": "def parse_age(text)\n  age = Integer(text)       # raises ArgumentError on bad input\n  raise ArgumentError, \"negative age\" if age.negative?\n  age\nend\n\nbegin\n  puts parse_age(\"41\")      # 41\n  puts parse_age(\"abc\")\nrescue ArgumentError => e\n  puts \"error: #{e.message}\"  # error: invalid value for Integer(): \"abc\"\nensure\n  puts \"done\"\nend",
+          "lang": "ruby"
+        },
+        "`rescue` 捕捉例外，`ensure` 則一定會執行。在方法內部可以直接寫 `rescue`，不需要 `begin`。"
+      ]
+    },
+    {
+      "h": "完整的小程式：單字頻率統計",
+      "body": [
+        {
+          "code": "path = ARGV.fetch(0) { abort \"usage: ruby words.rb FILE\" }\n\nbegin\n  text = File.read(path).downcase\nrescue Errno::ENOENT\n  abort \"file not found: #{path}\"\nend\n\ncounts = text.scan(/[a-z']+/).tally\ncounts.max_by(5) { |_word, n| n }.each do |word, n|\n  puts format(\"%5d  %s\", n, word)\nend",
+          "lang": "ruby"
+        },
+        "以 `ruby words.rb notes.txt` 執行。`tally` 會將相同的項目計數並存入雜湊，`max_by(5)` 則回傳計數最高的五個項目。"
+      ]
+    },
+    {
+      "h": "初學者常見錯誤",
+      "body": [
+        {
+          "note": "只有 `nil` 和 `false` 是假值。與 Python 或 JavaScript 不同，`0`、`\"\"` 和 `[]` 都是真值，所以要判斷是否為空請用 `.empty?` 或 `.zero?`。"
+        },
+        {
+          "ul": [
+            "忘了用 `end` 結束 `if`、`def`、`class` 或 `do` 區塊。",
+            "混用字串鍵與 symbol 鍵：`h[\"name\"]` 和 `h[:name]` 是不同的鍵。",
+            "使用單引號卻期待 `#{}` 內插能運作。",
+            "呼叫了 `!` 方法，卻沒發現它改變了原本的物件。",
+            "使用系統內建的舊版 Ruby，而不是用版本管理工具安裝的目前版本。"
+          ]
+        }
+      ]
+    },
+    {
+      "h": "接下來學什麼",
+      "body": [
+        "從 ruby-lang.org 的文件頁面開始，包括快速入門「Ruby in Twenty Minutes」，並使用 docs.ruby-lang.org 查閱核心與標準函式庫參考。學習管理相依套件的 Bundler 與 gem、用於測試的 RSpec 或 Minitest，之後如果想開發網頁應用程式，再學 Ruby on Rails。"
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "現在還有人用 Ruby 嗎？",
+      "a": "有。Ruby on Rails 驅動著許多成熟的網頁產品，包括 GitHub 和 Shopify，Ruby 也常用於腳本與開發者工具。新專案採用它的情況不如 Python 或 JavaScript 常見，但它仍持續積極開發中。"
+    },
+    {
+      "q": "Ruby 和 Ruby on Rails 有什麼差別？",
+      "a": "Ruby 是程式語言。Rails 則是以 Ruby 撰寫的網頁框架，提供路由、資料庫存取與頁面範本。"
+    },
+    {
+      "q": "Ruby 中的 symbol 是什麼？",
+      "a": "像 `:name` 這樣的 symbol 是不可變且唯一的識別字。相同的 symbol 永遠是同一個物件，因此很適合用作雜湊的鍵與選項名稱。"
+    },
+    {
+      "q": "初學者該選 Ruby 還是 Python？",
+      "a": "兩者都是語法易讀的好入門語言。Python 的應用範圍更廣，特別是在資料科學領域；Ruby 的表達力很強，搭配 Rails 開發網頁也很出色。"
+    }
+  ]
+}

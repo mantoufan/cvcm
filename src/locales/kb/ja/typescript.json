@@ -1,0 +1,183 @@
+{
+  "title": "TypeScriptチュートリアル：型・インターフェース・ジェネリクス・型の絞り込み — cv.cm",
+  "description": "TypeScript入門を1ページで：tscのインストールとHello world、基本の型、インターフェース、ユニオン型、型の絞り込み、ジェネリクス、エラー処理、完成サンプルまで解説します。",
+  "h1": "TypeScript入門チュートリアル（初心者向け）",
+  "answer": "TypeScriptは静的型付けを備えたJavaScriptです。`let count: number = 0` のように型注釈を書くと、コンパイラ `tsc` が型を検査し、ブラウザでもNode.jsでも動く通常のJavaScriptに変換します。基本の型、オブジェクトの形を表すインターフェースと型エイリアス、型の絞り込み（ナローイング）を伴うユニオン型、再利用できるコードのためのジェネリクスが要点です。型は実行時には消えます。",
+  "sections": [
+    {
+      "h": "TypeScriptとは何か、何に使われるか",
+      "body": [
+        "TypeScriptはMicrosoftが開発するオープンソースの言語で、2012年に最初のバージョンが公開されました。有効なJavaScriptはすべて有効なTypeScriptでもあるため、ファイル単位で段階的に導入できます。型チェッカーが、プロパティ名のタイプミスや `null` チェックの漏れなどを入力中に検出し、エディタは型情報を使って補完や安全なリネームを行います。大規模なフロントエンドアプリ（Angularはこれで書かれており、React、Vue、Svelteも十分に対応しています）、Node.jsのバックエンド、ライブラリで広く使われています。"
+      ]
+    },
+    {
+      "h": "インストールと Hello, world の実行",
+      "body": [
+        "まずNode.jsをインストールし、プロジェクトにnpmでコンパイラを入れます。`tsc` は `.ts` ファイルを `.js` にコンパイルします。",
+        {
+          "code": "const message: string = \"Hello, world\";\nconsole.log(message);",
+          "lang": "typescript"
+        },
+        {
+          "code": "npm install --save-dev typescript\nnpx tsc --init          # creates tsconfig.json\nnpx tsc hello.ts        # writes hello.js\nnode hello.js\n# Hello, world",
+          "lang": "shell"
+        },
+        "最近のNode.js、Deno、Bunは、型注釈を取り除くことで `.ts` ファイルを直接実行することもできます。ただし型チェックは行わないため、型エラーを見つけるには `npx tsc --noEmit` も実行してください。"
+      ]
+    },
+    {
+      "h": "基本の型と型推論",
+      "body": [
+        "すべての型を書く必要はほとんどありません。変数を初期化すると、TypeScriptが型を推論します。`let n = 5` は `number` 型です。関数の引数と公開APIには型注釈を付けましょう。",
+        {
+          "table": {
+            "head": [
+              "型",
+              "例",
+              "備考"
+            ],
+            "rows": [
+              [
+                "`number`",
+                "`let n: number = 3.5`",
+                "整数と浮動小数点数"
+              ],
+              [
+                "`string`",
+                "`let s: string = \"hi\"`",
+                "文字列"
+              ],
+              [
+                "`boolean`",
+                "`let ok: boolean = true`",
+                "true または false"
+              ],
+              [
+                "配列",
+                "`number[]` または `Array<number>`",
+                "どちらの書き方も同じ意味"
+              ],
+              [
+                "タプル",
+                "`[string, number]`",
+                "長さと各位置の型が固定"
+              ],
+              [
+                "`unknown`",
+                "`let x: unknown`",
+                "任意の値。使う前に確認が必要"
+              ],
+              [
+                "`any`",
+                "`let y: any`",
+                "チェックを無効にする。避ける"
+              ],
+              [
+                "`void` / `never`",
+                "関数の戻り値の型",
+                "何も返さない／決して戻らない"
+              ]
+            ]
+          }
+        },
+        {
+          "code": "let count = 0;          // inferred as number\ncount = \"ten\";          // error: Type 'string' is not assignable to type 'number'\nconst names: string[] = [\"Ann\", \"Bo\"];\nconst pair: [string, number] = [\"age\", 31];",
+          "lang": "typescript"
+        },
+        "2行目はコンパイルエラーになるようにわざと書いたもので、チェッカーの報告内容を示すためのものです。"
+      ]
+    },
+    {
+      "h": "関数、制御構文、型の絞り込み",
+      "body": [
+        "制御構文（`if`、`for`、`while`、`switch`）はJavaScriptとまったく同じです。TypeScriptが加えるのは型の絞り込み（ナローイング）で、`typeof x === \"string\"` のような判定の後は、そのブランチ内でコンパイラがより具体的な型を把握します。",
+        {
+          "code": "function greet(name: string, greeting = \"Hello\"): string {\n  return `${greeting}, ${name}!`;\n}\nfunction formatId(id: string | number): string {\n  if (typeof id === \"number\") {\n    return id.toFixed(0).padStart(6, \"0\"); // id is number here\n  }\n  return id.toUpperCase();                 // id is string here\n}\nconsole.log(greet(\"Lin\"));    // Hello, Lin!\nconsole.log(formatId(42));    // 000042\nconsole.log(formatId(\"ab7\")); // AB7",
+          "lang": "typescript"
+        },
+        "`string | number` はユニオン型で、値が列挙した型のいずれかであることを表します。省略可能な引数は `name?: string` と書き、その型には `undefined` が含まれます。"
+      ]
+    },
+    {
+      "h": "インターフェースと型エイリアス",
+      "body": [
+        "オブジェクトの形は `interface` または `type` エイリアスで記述します。TypeScriptは名前ではなく構造を検査するため、必要なプロパティを持つオブジェクトならどれでも適合します。",
+        {
+          "code": "interface User {\n  id: number;\n  name: string;\n  email?: string;          // optional\n  readonly createdAt: Date;\n}\ntype Role = \"admin\" | \"editor\" | \"viewer\"; // string literal union\nfunction describe(user: User, role: Role): string {\n  const contact = user.email ?? \"no email\";\n  return `${user.name} (${role}, ${contact})`;\n}\nconst ann: User = { id: 1, name: \"Ann\", createdAt: new Date() };\nconsole.log(describe(ann, \"editor\")); // Ann (editor, no email)",
+          "lang": "typescript"
+        }
+      ]
+    },
+    {
+      "h": "特徴的な機能：ジェネリクスと判別可能なユニオン",
+      "body": [
+        "ジェネリクスを使うと、型どうしの関連を保ったまま、1つの関数や型を多くの型で使えます。判別可能なユニオン（discriminated union）は、リテラル型の共通フィールドを持つオブジェクト型のユニオンです。そのフィールドで `switch` すると型が絞り込まれ、すべてのケースを処理しているかをコンパイラが検査できます。",
+        {
+          "code": "function first<T>(items: T[]): T | undefined {\n  return items[0];\n}\nconst n = first([10, 20]);   // n: number | undefined\nconst s = first([\"a\", \"b\"]); // s: string | undefined\ntype Shape =\n  | { kind: \"circle\"; radius: number }\n  | { kind: \"rect\"; width: number; height: number };\nfunction area(shape: Shape): number {\n  switch (shape.kind) {\n    case \"circle\":\n      return Math.PI * shape.radius ** 2;\n    case \"rect\":\n      return shape.width * shape.height;\n  }\n}\nconsole.log(n, s, area({ kind: \"rect\", width: 2, height: 3 })); // 10 a 6",
+          "lang": "typescript"
+        },
+        "組み込みのユーティリティ型は、既存の型から新しい型を作ります。`Partial<User>` はすべてのプロパティを省略可能にし、`Pick<User, \"id\" | \"name\">` は一部のプロパティだけを残し、`Record<string, number>` は辞書を表します。"
+      ]
+    },
+    {
+      "h": "エラー処理",
+      "body": [
+        "エラーはJavaScriptと同じく `throw` と `try`/`catch` で扱います。`strict` オプションを有効にすると、どんな値でも throw できるため、捕捉した値の型は `unknown` になります。使う前に確認してください。",
+        {
+          "code": "function parseAge(text: string): number {\n  const age = Number(text);\n  if (!Number.isInteger(age) || age < 0) {\n    throw new Error(`invalid age: ${text}`);\n  }\n  return age;\n}\ntry {\n  parseAge(\"abc\");\n} catch (err: unknown) {\n  const message = err instanceof Error ? err.message : String(err);\n  console.log(message); // invalid age: abc\n}",
+          "lang": "typescript"
+        }
+      ]
+    },
+    {
+      "h": "小さな完成プログラム：型付きの在庫管理",
+      "body": [
+        {
+          "code": "interface Item {\n  name: string;\n  price: number;\n  qty: number;\n}\ntype Summary = { total: number; cheapest?: Item; outOfStock: string[] };\nfunction summarize(items: Item[]): Summary {\n  let total = 0;\n  let cheapest: Item | undefined;\n  const outOfStock: string[] = [];\n  for (const item of items) {\n    total += item.price * item.qty;\n    if (item.qty === 0) outOfStock.push(item.name);\n    if (!cheapest || item.price < cheapest.price) cheapest = item;\n  }\n  return { total, cheapest, outOfStock };\n}\nconst result = summarize([\n  { name: \"pen\", price: 1.5, qty: 10 },\n  { name: \"book\", price: 12, qty: 2 },\n  { name: \"bag\", price: 30, qty: 0 },\n]);\nconsole.log(result.total, result.cheapest?.name, result.outOfStock);\n// 39 pen [ 'bag' ]",
+          "lang": "typescript"
+        },
+        "`qty: 10` を `qty: \"10\"` に変えてみてください。コードを実行する前に、コンパイラがエラーを報告します。"
+      ]
+    },
+    {
+      "h": "初心者がよくやる間違い",
+      "body": [
+        {
+          "note": "型は実行時には存在しません。`JSON.parse` や `fetch` で得たデータへの型注釈は、あくまで自分が行う約束にすぎません。信頼できない入力は、実際のチェックやスキーマライブラリで検証してください。"
+        },
+        {
+          "ul": [
+            "エラーを黙らせるために `any` を使う。`unknown` を使い、型を絞り込みましょう。",
+            "`as` による型アサーションを使いすぎる。これはコンパイラに確認させず、こちらを信用させるものです。",
+            "`tsconfig.json` で `strict` を無効のままにする。新しいプロジェクトでは有効にしましょう。`null` のチェックが働きます。",
+            "コンパイラがすでに推論できる型を書いてしまい、安全性は変わらないのに記述が増える。"
+          ]
+        }
+      ]
+    },
+    {
+      "h": "次のステップ",
+      "body": [
+        "公式のTypeScript Handbookを読み、typescriptlang.orgのTypeScript Playgroundで試してみましょう。コンパイル後のJavaScriptとエラーを並べて確認できます。その後、`tsconfig.json` のオプション、ライブラリの型宣言ファイル（`@types/...` パッケージ）、お好みのフレームワークでのTypeScriptの使い方を学びます。"
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "TypeScriptはJavaScriptとは別の言語ですか？",
+      "a": "JavaScriptのスーパーセットです。型の構文とチェッカーを追加し、通常のJavaScriptにコンパイルします。実行時の動作は、生成されたJavaScriptと同じです。"
+    },
+    {
+      "q": "TypeScriptの前にJavaScriptを学ぶべきですか？",
+      "a": "まずJavaScriptの基本（変数、関数、オブジェクト、Promise）を学んでください。TypeScriptはそれらを変えません。実行時の動作に慣れてからTypeScriptを加えると、型を覚えやすくなります。"
+    },
+    {
+      "q": "interfaceとtypeの違いは何ですか？",
+      "a": "どちらもオブジェクトの形を記述できます。インターフェースは拡張でき、再度宣言すると定義がマージされます。型エイリアスはユニオンやタプルなど、オブジェクト以外の型にも名前を付けられます。単純なオブジェクトの形ならどちらでも構いません。"
+    },
+    {
+      "q": "TypeScriptでコードは速くなりますか？",
+      "a": "いいえ。型はコンパイル時に取り除かれるため、出力は手書きのJavaScriptと同じ速度で動きます。メリットはバグの減少と、ツールの支援が強化されることです。"
+    }
+  ]
+}

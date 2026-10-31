@@ -1,0 +1,215 @@
+{
+  "title": "Stack dan queue: LIFO vs FIFO, kode Python, dan kompleksitas — cv.cm",
+  "description": "Penjelasan stack (LIFO) dan queue (FIFO) dengan kode Python: list sebagai stack, collections.deque sebagai queue, pencocokan tanda kurung, BFS, dan kompleksitas.",
+  "h1": "Stack dan queue: LIFO vs FIFO dengan contoh Python",
+  "answer": "Stack adalah kumpulan data di mana item yang terakhir ditambahkan menjadi yang pertama dikeluarkan (LIFO, last in first out), seperti tumpukan piring. Queue adalah kumpulan data di mana item yang pertama ditambahkan menjadi yang pertama dikeluarkan (FIFO, first in first out), seperti antrean di kasir. Keduanya mendukung penambahan dan penghapusan dalam waktu O(1). Di Python, gunakan `list` sebagai stack dan `collections.deque` sebagai queue.",
+  "sections": [
+    {
+      "h": "Masalah apa yang diselesaikan stack dan queue",
+      "body": [
+        "Banyak program perlu mengingat item dan memprosesnya nanti dalam urutan tertentu. Stack memberi item terbaru lebih dulu, cocok untuk pekerjaan bersarang: pemanggilan fungsi, riwayat undo, pencocokan tanda kurung, dan depth-first search. Queue memberi item terlama lebih dulu, cocok untuk antrean yang adil: pekerjaan cetak, task scheduler, message queue, dan breadth-first search.",
+        "Keduanya adalah abstract data type: didefinisikan oleh operasinya, bukan oleh cara penyimpanannya. Anda bisa membangun salah satunya di atas array atau linked list."
+      ]
+    },
+    {
+      "h": "Operasi dan istilahnya",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Operasi",
+              "Stack (LIFO)",
+              "Queue (FIFO)"
+            ],
+            "rows": [
+              [
+                "Menambah item",
+                "push: taruh di atas",
+                "enqueue: tambah di belakang"
+              ],
+              [
+                "Mengeluarkan item",
+                "pop: ambil dari atas",
+                "dequeue: ambil dari depan"
+              ],
+              [
+                "Melihat tanpa mengeluarkan",
+                "peek / top",
+                "peek / front"
+              ],
+              [
+                "Tipe di Python",
+                "`list` dengan `append` dan `pop`",
+                "`collections.deque` dengan `append` dan `popleft`"
+              ],
+              [
+                "Urutan keluar untuk input 1, 2, 3",
+                "3, 2, 1",
+                "1, 2, 3"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "Contoh langkah demi langkah: push dan pop",
+      "body": [
+        "Masukkan 1, 2, dan 3 ke kedua struktur, lalu keluarkan dua item.",
+        {
+          "table": {
+            "head": [
+              "Langkah",
+              "Isi stack (atas di kanan)",
+              "Isi queue (depan di kiri)"
+            ],
+            "rows": [
+              [
+                "tambah 1",
+                "[1]",
+                "[1]"
+              ],
+              [
+                "tambah 2",
+                "[1, 2]",
+                "[1, 2]"
+              ],
+              [
+                "tambah 3",
+                "[1, 2, 3]",
+                "[1, 2, 3]"
+              ],
+              [
+                "keluarkan",
+                "mengembalikan 3, sisa [1, 2]",
+                "mengembalikan 1, sisa [2, 3]"
+              ],
+              [
+                "keluarkan",
+                "mengembalikan 2, sisa [1]",
+                "mengembalikan 2, sisa [3]"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "Implementasi di Python",
+      "body": [
+        "`list` Python sudah merupakan stack yang baik: `append` dan `pop()` bekerja di ujung list dalam waktu O(1) amortized. Untuk queue, jangan pakai `list.pop(0)`, karena ia menggeser semua elemen yang tersisa dan butuh O(n). Gunakan `collections.deque`, yang O(1) di kedua ujung.",
+        {
+          "code": "from collections import deque\nstack = []\nstack.append(1)\nstack.append(2)\nstack.append(3)\nprint(stack.pop(), stack[-1])   # 3 2\nqueue = deque()\nqueue.append(\"a\")\nqueue.append(\"b\")\nqueue.append(\"c\")\nprint(queue.popleft(), queue[0])  # a b\nprint(len(stack), len(queue))     # 2 2",
+          "lang": "python"
+        },
+        "Jika Anda ingin method bernama dan pesan error yang jelas, bungkus tipe bawaan dalam kelas kecil:",
+        {
+          "code": "from collections import deque\nclass Queue:\n    def __init__(self):\n        self._items = deque()\n    def enqueue(self, item):\n        self._items.append(item)\n    def dequeue(self):\n        if not self._items:\n            raise IndexError(\"dequeue from empty queue\")\n        return self._items.popleft()\n    def __len__(self):\n        return len(self._items)\nq = Queue()\nq.enqueue(\"job1\")\nq.enqueue(\"job2\")\nprint(q.dequeue(), len(q))  # job1 1",
+          "lang": "python"
+        }
+      ]
+    },
+    {
+      "h": "Soal stack klasik: tanda kurung seimbang",
+      "body": [
+        "Untuk memeriksa bahwa setiap tanda kurung ditutup dengan urutan yang benar, push setiap tanda kurung buka. Saat menemukan tanda kurung tutup, elemen teratas stack harus pasangan pembukanya.",
+        {
+          "code": "def is_balanced(text):\n    pairs = {\")\": \"(\", \"]\": \"[\", \"}\": \"{\"}\n    stack = []\n    for ch in text:\n        if ch in \"([{\":\n            stack.append(ch)\n        elif ch in pairs:\n            if not stack or stack.pop() != pairs[ch]:\n                return False\n    return not stack\nprint(is_balanced(\"f(a[1], {b: 2})\"))  # True\nprint(is_balanced(\"(]\"))               # False\nprint(is_balanced(\"((\"))               # False",
+          "lang": "python"
+        },
+        "Ide yang sama dipakai untuk mengevaluasi ekspresi dalam notasi Polandia terbalik (reverse Polish notation), mengubah rekursi menjadi loop, dan menjalankan depth-first search: ganti call stack dengan list Anda sendiri."
+      ]
+    },
+    {
+      "h": "Soal queue klasik: breadth-first search",
+      "body": [
+        "Breadth-first search mengunjungi graf level demi level. Queue membuat hal itu terjadi: node yang ditemukan lebih dulu diproses lebih dulu.",
+        {
+          "code": "from collections import deque\ndef bfs_order(graph, start):\n    seen = {start}\n    queue = deque([start])\n    order = []\n    while queue:\n        node = queue.popleft()\n        order.append(node)\n        for nxt in graph[node]:\n            if nxt not in seen:\n                seen.add(nxt)\n                queue.append(nxt)\n    return order\ngraph = {\"A\": [\"B\", \"C\"], \"B\": [\"D\"], \"C\": [\"D\"], \"D\": []}\nprint(bfs_order(graph, \"A\"))  # ['A', 'B', 'C', 'D']",
+          "lang": "python"
+        }
+      ]
+    },
+    {
+      "h": "Kompleksitas waktu dan ruang",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Operasi",
+              "Stack (`list`)",
+              "Queue (`deque`)",
+              "Queue (`list.pop(0)`)"
+            ],
+            "rows": [
+              [
+                "Tambah",
+                "O(1) amortized",
+                "O(1)",
+                "O(1) amortized"
+              ],
+              [
+                "Hapus",
+                "O(1)",
+                "O(1)",
+                "O(n), elemen bergeser ke kiri"
+              ],
+              [
+                "Peek",
+                "O(1)",
+                "O(1)",
+                "O(1)"
+              ],
+              [
+                "Ruang untuk n item",
+                "O(n)",
+                "O(n)",
+                "O(n)"
+              ]
+            ]
+          }
+        },
+        "Amortized berarti `append` sesekali mengubah ukuran array di baliknya dan butuh O(n), tetapi dirata-ratakan atas banyak operasi, setiap operasi adalah O(1)."
+      ]
+    },
+    {
+      "h": "Varian dan kesalahan umum",
+      "body": [
+        {
+          "ul": [
+            "Deque (double-ended queue): tambah dan hapus di kedua ujung. `collections.deque` adalah salah satunya, dan ia bisa berperan sebagai stack sekaligus queue.",
+            "Priority queue: mengeluarkan item terkecil (atau terbesar) lebih dulu, bukan yang terlama. Gunakan `heapq`; lihat halaman binary heap.",
+            "Circular buffer: queue berukuran tetap yang disimpan dalam array dengan indeks yang berputar. `deque(maxlen=n)` membuang item terlama saat penuh.",
+            "Queue yang thread-safe: `queue.Queue` untuk thread dan `asyncio.Queue` untuk coroutine akan menunggu (blocking) sampai ada item.",
+            "Queue dari dua stack: push ke in-stack, dan saat out-stack kosong pindahkan semuanya. Setiap item hanya berpindah sekali, jadi operasinya O(1) amortized."
+          ]
+        },
+        {
+          "note": "Memanggil `pop()` pada `list` kosong atau `popleft()` pada `deque` kosong memunculkan `IndexError`. Periksa `if stack:` sebelum pop, atau tangkap exception-nya."
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Apa perbedaan stack dan queue?",
+      "a": "Stack mengeluarkan item yang paling baru ditambahkan lebih dulu (LIFO). Queue mengeluarkan item terlama lebih dulu (FIFO). Keduanya menambah dan menghapus dalam waktu O(1)."
+    },
+    {
+      "q": "Pakai list atau deque untuk queue di Python?",
+      "a": "Gunakan `collections.deque`. Menghapus dari depan `list` dengan `pop(0)` itu O(n) karena semua elemen lain bergeser; `deque.popleft()` adalah O(1)."
+    },
+    {
+      "q": "Di mana stack dipakai pada program nyata?",
+      "a": "Call stack yang menyimpan pemanggilan fungsi, riwayat undo dan redo, tombol back di browser, parsing ekspresi, pencocokan tanda kurung, dan depth-first search."
+    },
+    {
+      "q": "Apa itu stack overflow?",
+      "a": "Terjadi saat call stack kehabisan ruang, biasanya karena rekursi yang sangat dalam atau tak terbatas. Di Python muncul sebagai `RecursionError` ketika batas rekursi terlampaui."
+    },
+    {
+      "q": "Apakah queue.Queue sama dengan collections.deque?",
+      "a": "Tidak. `queue.Queue` adalah queue yang thread-safe dengan locking serta `get` dan `put` yang blocking, untuk mengoper pekerjaan antar thread. `collections.deque` adalah container serbaguna yang lebih cepat tanpa blocking."
+    }
+  ]
+}

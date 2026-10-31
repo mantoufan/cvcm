@@ -1,0 +1,152 @@
+{
+  "title": "Strategy パターン：交換できるアルゴリズムと TypeScript の例 — cv.cm",
+  "description": "Strategy パターンは、各アルゴリズムを独立したオブジェクトにして、実行時に入れ替えられるようにします。TypeScript でのクラスと関数の使い分け、使いどころを解説します。",
+  "h1": "Strategy パターンとは？例でわかりやすく解説",
+  "answer": "Strategy は振る舞いに関するデザインパターンで、アルゴリズムの一群を定義し、それぞれを共通のインターフェースを持つ別のオブジェクトに入れて、交換可能にします。アルゴリズムを使うコード（Context と呼ばれる）は、Strategy への参照を持ち、どれなのかを知らずにそれを呼び出します。TypeScript では、`array.sort()` に渡す比較関数のように、Strategy が単なる関数であることがよくあります。",
+  "sections": [
+    {
+      "h": "目的と解決する問題",
+      "body": [
+        "目的：アルゴリズムの一群を定義し、それぞれをカプセル化して、交換可能にすることです。Strategy は、アルゴリズムを、それを使うクライアントとは独立して変化させられます。Gang of Four（GoF）の書籍にある振る舞いパターンの 1 つで、そこでは Policy とも呼ばれています。",
+        "チェックアウトで送料を計算するとします。通常配送は定額、速達は 1 キログラムあたりの料金が高く、店舗受け取りは無料です。最初の実装では、3 つの計算式を 1 つのメソッドにまとめ、配送の種類による `if`/`else` の連鎖にします。提携の宅配業者のような新しい選択肢を追加するたびに、そのメソッドをまた編集することになり、1 つの計算式をテストするにも、他のすべてを通ることになります。",
+        "Strategy を使うと、各計算式が同じシグネチャを持つ独立したオブジェクトまたは関数になります。チェックアウトは、選ばれた Strategy を受け取って呼び出します。宅配業者を追加するには新しい Strategy を 1 つ足すだけで、チェックアウトは変わりません。"
+      ]
+    },
+    {
+      "h": "構造と登場する役割",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "役割",
+              "責務"
+            ],
+            "rows": [
+              [
+                "Strategy",
+                "アルゴリズムのすべてのバージョンに共通のインターフェース"
+              ],
+              [
+                "Concrete strategy",
+                "アルゴリズムの実装の 1 つ"
+              ],
+              [
+                "Context",
+                "Strategy を保持し、アルゴリズムが必要なときにそれを呼び出す。クライアントがそれを差し替えられるようにすることもある"
+              ],
+              [
+                "Client（クライアント）",
+                "Concrete strategy を選び、Context に渡す"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "TypeScript での実装",
+      "body": [
+        "TypeScript では関数が値なので、最も単純な Strategy のインターフェースは関数型です。Context は `Checkout` クラスです。",
+        {
+          "code": "type Parcel = { weightKg: number; subtotal: number };\ntype ShippingStrategy = (parcel: Parcel) => number;\n\nconst standard: ShippingStrategy = (p) => (p.subtotal >= 50 ? 0 : 4.99);\nconst express: ShippingStrategy = (p) => 9.99 + 1.5 * p.weightKg;\nconst pickup: ShippingStrategy = () => 0;\n\nclass Checkout {\n  constructor(private shipping: ShippingStrategy) {}\n\n  setShipping(strategy: ShippingStrategy) {\n    this.shipping = strategy;\n  }\n\n  total(parcel: Parcel): number {\n    return Math.round((parcel.subtotal + this.shipping(parcel)) * 100) / 100;\n  }\n}\n\nconst parcel = { weightKg: 2, subtotal: 30 };\nconst checkout = new Checkout(standard);\nconsole.log(checkout.total(parcel)); // 34.99\ncheckout.setShipping(express);\nconsole.log(checkout.total(parcel)); // 42.99\ncheckout.setShipping(pickup);\nconsole.log(checkout.total(parcel)); // 30",
+          "lang": "typescript"
+        },
+        "Strategy に設定や複数のメソッドが必要なら、代わりにインターフェースとクラスを使います。このバージョンでは、UI に表示できる名前を各 Strategy に持たせています。",
+        {
+          "code": "interface Shipping {\n  readonly label: string;\n  cost(weightKg: number): number;\n}\n\nclass Courier implements Shipping {\n  readonly label: string;\n  constructor(private ratePerKg: number, company: string) {\n    this.label = company + \" courier\";\n  }\n  cost(weightKg: number) { return this.ratePerKg * weightKg; }\n}\n\nconst options: Shipping[] = [new Courier(2, \"North\"), new Courier(3.5, \"Fast\")];\nfor (const o of options) console.log(o.label, o.cost(4));\n// North courier 8\n// Fast courier 14",
+          "lang": "typescript"
+        },
+        {
+          "note": "クライアントは、選ぶためにどの Strategy があるかを知っていなければなりません。この選択は、設定名から Strategy へのマップのように 1 か所にまとめ、このパターンで取り除こうとした `if`/`else` の連鎖を繰り返さないようにしましょう。"
+        }
+      ]
+    },
+    {
+      "h": "導入前と導入後",
+      "body": [
+        "導入前は、アルゴリズムの選択がメソッドの中に直接書かれています。",
+        {
+          "code": "function shippingCost(type: string, p: Parcel): number {\n  if (type === \"standard\") return p.subtotal >= 50 ? 0 : 4.99;\n  else if (type === \"express\") return 9.99 + 1.5 * p.weightKg;\n  else if (type === \"pickup\") return 0;\n  throw new Error(\"Unknown shipping type \" + type);\n}\n// After: a lookup table of strategies replaces the chain\nconst strategies: Record<string, ShippingStrategy> = { standard, express, pickup };",
+          "lang": "typescript"
+        },
+        "このコードの断片は、最初の例の型と関数を再利用しています。テーブルを使うことで、選択肢の集合がコードではなくデータになり、設定から構築したり、プラグインで拡張したりできます。"
+      ]
+    },
+    {
+      "h": "使うべき場面と避けるべき場面",
+      "body": [
+        {
+          "ul": [
+            "同じ作業を行う方法が複数あり、どれを選ぶかが設定、ユーザー入力、データによって決まるときに使います。",
+            "アルゴリズムを選ぶ大きな条件分岐のブロックをなくしたいときに使います。",
+            "各アルゴリズムを単独でテストし、Context を編集せずに別のコードが新しいアルゴリズムを追加できるようにしたいときに使います。",
+            "アルゴリズムが 1 つだけで、それを変える必要が特にない場合は使いません。余計なインターフェースは、間接的な層を増やすだけです。",
+            "関数の引数で足りるのに、クラスを作らないでください。TypeScript では、関数を渡すことが Strategy の軽量な形です。"
+          ]
+        }
+      ]
+    },
+    {
+      "h": "実際の利用例",
+      "body": [
+        {
+          "ul": [
+            "`Array.prototype.sort(compareFn)` は比較の Strategy を関数として受け取るので、同じソートで数値、日付、名前を並べ替えられます。",
+            "Java の `Comparator` インターフェースは、`Collections.sort` と `List.sort` のための Strategy です。",
+            "Node.js の認証ミドルウェアである Passport.js は、各ログイン方法（ローカルのパスワード、OAuth プロバイダ）を strategy と呼び、アプリケーションが差し込めるようにしています。",
+            "圧縮やハッシュのライブラリでは、呼び出し側が共通のインターフェースを通じてアルゴリズムを選べます。"
+          ]
+        }
+      ]
+    },
+    {
+      "h": "関連するパターン",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "パターン",
+              "Strategy パターンとの違い"
+            ],
+            "rows": [
+              [
+                "State パターン",
+                "構造は同じですが、State はオブジェクトの変化に応じて自分で切り替わります。Strategy は通常クライアントが選び、差し替えられるまでそのままです。"
+              ],
+              [
+                "Template Method パターン",
+                "Template Method は全体の手順を固定し、アルゴリズムの一部を継承で変えます。Strategy はアルゴリズム全体を合成で置き換えます。"
+              ],
+              [
+                "Command パターン",
+                "Command は後で実行するリクエストです。Strategy は、Context が必要なときに呼び出す、作業の実行方法です。"
+              ],
+              [
+                "Decorator パターン",
+                "Decorator は外側からオブジェクトを包んで振る舞いを変えます。Strategy は一部を置き換えて、内側から振る舞いを変えます。"
+              ]
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Strategy と State の違いは何ですか？",
+      "a": "構造はほぼ同じです。Strategy は、作業のやり方を選ぶためにクライアントが選びます。State オブジェクトは、Context の動作の結果として、Context の現在の状態を自分で切り替えます。"
+    },
+    {
+      "q": "コールバックを渡すことは Strategy パターンですか？",
+      "a": "はい。関数が第一級のオブジェクトである言語では、比較関数のように、アルゴリズムの可変部分を実装するコールバックは、最も単純な形の Strategy パターンです。"
+    },
+    {
+      "q": "Strategy と Template Method の違いは何ですか？",
+      "a": "Template Method は継承を使います。基底クラスが手順を固定し、サブクラスがその一部を埋めます。Strategy は合成を使います。Context が、実行時に差し替えられるオブジェクトや関数を保持します。"
+    },
+    {
+      "q": "Strategy は開放閉鎖の原則に従っていますか？",
+      "a": "はい。Context を変えずに新しい Strategy を追加できるので、Context は拡張に対して開かれ、修正に対して閉じています。"
+    }
+  ]
+}

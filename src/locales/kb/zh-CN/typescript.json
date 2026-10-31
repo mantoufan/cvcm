@@ -1,0 +1,183 @@
+{
+  "title": "TypeScript 入门教程：类型、接口、泛型与类型收窄 — cv.cm",
+  "description": "一页学会 TypeScript：安装 tsc 并运行 Hello world，基本类型，接口，联合类型，类型收窄，泛型，错误处理与完整示例。",
+  "h1": "TypeScript 入门教程（零基础）",
+  "answer": "TypeScript 就是带静态类型的 JavaScript。你添加 `let count: number = 0` 这样的类型注解，编译器 `tsc` 会先检查它们，再把代码转换为可在任何浏览器或 Node.js 中运行的普通 JavaScript。核心概念有：基本类型、描述对象形状的接口与类型别名、带类型收窄的联合类型，以及用于复用代码的泛型。类型在运行时会被擦除。",
+  "sections": [
+    {
+      "h": "TypeScript 是什么，用来做什么",
+      "body": [
+        "TypeScript 是微软开发的开源语言，2012 年首次发布。每个合法的 JavaScript 程序同时也是合法的 TypeScript 程序，因此可以逐个文件地引入。类型检查器会在你输入时发现属性拼错、漏掉 `null` 检查等错误，编辑器也会利用类型提供自动补全和安全重命名。它广泛用于大型前端应用（Angular 就是用它编写的，React、Vue 和 Svelte 也都支持良好）、Node.js 后端和各类库。"
+      ]
+    },
+    {
+      "h": "安装并运行 Hello, world",
+      "body": [
+        "先安装 Node.js，然后在项目中用 npm 安装编译器。`tsc` 会把 `.ts` 文件编译成 `.js`。",
+        {
+          "code": "const message: string = \"Hello, world\";\nconsole.log(message);",
+          "lang": "typescript"
+        },
+        {
+          "code": "npm install --save-dev typescript\nnpx tsc --init          # creates tsconfig.json\nnpx tsc hello.ts        # writes hello.js\nnode hello.js\n# Hello, world",
+          "lang": "shell"
+        },
+        "较新版本的 Node.js、Deno 和 Bun 也能直接运行 `.ts` 文件，做法是去掉类型注解。它们不做类型检查，所以仍需运行 `npx tsc --noEmit` 来查找类型错误。"
+      ]
+    },
+    {
+      "h": "基本类型与类型推断",
+      "body": [
+        "你很少需要把每个类型都写出来。初始化变量时，TypeScript 会推断其类型：`let n = 5` 是 `number`。请为函数参数和公开 API 添加类型注解。",
+        {
+          "table": {
+            "head": [
+              "类型",
+              "示例",
+              "说明"
+            ],
+            "rows": [
+              [
+                "`number`",
+                "`let n: number = 3.5`",
+                "整数和浮点数"
+              ],
+              [
+                "`string`",
+                "`let s: string = \"hi\"`",
+                "文本"
+              ],
+              [
+                "`boolean`",
+                "`let ok: boolean = true`",
+                "真或假"
+              ],
+              [
+                "数组",
+                "`number[]` 或 `Array<number>`",
+                "两种写法含义相同"
+              ],
+              [
+                "元组",
+                "`[string, number]`",
+                "长度和各位置类型固定"
+              ],
+              [
+                "`unknown`",
+                "`let x: unknown`",
+                "可以是任意值，使用前必须先检查"
+              ],
+              [
+                "`any`",
+                "`let y: any`",
+                "关闭类型检查，应避免使用"
+              ],
+              [
+                "`void` / `never`",
+                "函数返回类型",
+                "不返回任何值 / 永不返回"
+              ]
+            ]
+          }
+        },
+        {
+          "code": "let count = 0;          // inferred as number\ncount = \"ten\";          // error: Type 'string' is not assignable to type 'number'\nconst names: string[] = [\"Ann\", \"Bo\"];\nconst pair: [string, number] = [\"age\", 31];",
+          "lang": "typescript"
+        },
+        "第二行是故意写错的编译错误，用来展示检查器会报告什么。"
+      ]
+    },
+    {
+      "h": "函数、流程控制与类型收窄",
+      "body": [
+        "流程控制（`if`、`for`、`while`、`switch`）与 JavaScript 完全相同。TypeScript 增加的是类型收窄：在 `typeof x === \"string\"` 这样的检查之后，编译器会知道该分支内更具体的类型。",
+        {
+          "code": "function greet(name: string, greeting = \"Hello\"): string {\n  return `${greeting}, ${name}!`;\n}\nfunction formatId(id: string | number): string {\n  if (typeof id === \"number\") {\n    return id.toFixed(0).padStart(6, \"0\"); // id is number here\n  }\n  return id.toUpperCase();                 // id is string here\n}\nconsole.log(greet(\"Lin\"));    // Hello, Lin!\nconsole.log(formatId(42));    // 000042\nconsole.log(formatId(\"ab7\")); // AB7",
+          "lang": "typescript"
+        },
+        "`string | number` 是联合类型：值是所列类型之一。可选参数写作 `name?: string`，其类型包含 `undefined`。"
+      ]
+    },
+    {
+      "h": "接口与类型别名",
+      "body": [
+        "用 `interface` 或 `type` 别名描述对象的形状。TypeScript 检查的是结构而不是名称：只要对象具有正确的属性就符合要求。",
+        {
+          "code": "interface User {\n  id: number;\n  name: string;\n  email?: string;          // optional\n  readonly createdAt: Date;\n}\ntype Role = \"admin\" | \"editor\" | \"viewer\"; // string literal union\nfunction describe(user: User, role: Role): string {\n  const contact = user.email ?? \"no email\";\n  return `${user.name} (${role}, ${contact})`;\n}\nconst ann: User = { id: 1, name: \"Ann\", createdAt: new Date() };\nconsole.log(describe(ann, \"editor\")); // Ann (editor, no email)",
+          "lang": "typescript"
+        }
+      ]
+    },
+    {
+      "h": "标志性特性：泛型与可辨识联合",
+      "body": [
+        "泛型让一个函数或类型适用于多种类型，同时保持它们之间的关联。可辨识联合是一组共享某个字面量字段的对象类型的联合，因此对该字段做 `switch` 就能收窄类型，编译器还能检查是否处理了所有情况。",
+        {
+          "code": "function first<T>(items: T[]): T | undefined {\n  return items[0];\n}\nconst n = first([10, 20]);   // n: number | undefined\nconst s = first([\"a\", \"b\"]); // s: string | undefined\ntype Shape =\n  | { kind: \"circle\"; radius: number }\n  | { kind: \"rect\"; width: number; height: number };\nfunction area(shape: Shape): number {\n  switch (shape.kind) {\n    case \"circle\":\n      return Math.PI * shape.radius ** 2;\n    case \"rect\":\n      return shape.width * shape.height;\n  }\n}\nconsole.log(n, s, area({ kind: \"rect\", width: 2, height: 3 })); // 10 a 6",
+          "lang": "typescript"
+        },
+        "内置的工具类型可以由旧类型构造新类型：`Partial<User>` 让每个属性都变为可选，`Pick<User, \"id\" | \"name\">` 只保留部分属性，`Record<string, number>` 则描述一个字典。"
+      ]
+    },
+    {
+      "h": "错误处理",
+      "body": [
+        "错误的处理方式与 JavaScript 相同，使用 `throw` 和 `try`/`catch`。开启 `strict` 选项后，捕获到的值类型是 `unknown`，因为任何值都可能被抛出，所以使用前要先检查。",
+        {
+          "code": "function parseAge(text: string): number {\n  const age = Number(text);\n  if (!Number.isInteger(age) || age < 0) {\n    throw new Error(`invalid age: ${text}`);\n  }\n  return age;\n}\ntry {\n  parseAge(\"abc\");\n} catch (err: unknown) {\n  const message = err instanceof Error ? err.message : String(err);\n  console.log(message); // invalid age: abc\n}",
+          "lang": "typescript"
+        }
+      ]
+    },
+    {
+      "h": "一个完整的小程序：带类型的库存",
+      "body": [
+        {
+          "code": "interface Item {\n  name: string;\n  price: number;\n  qty: number;\n}\ntype Summary = { total: number; cheapest?: Item; outOfStock: string[] };\nfunction summarize(items: Item[]): Summary {\n  let total = 0;\n  let cheapest: Item | undefined;\n  const outOfStock: string[] = [];\n  for (const item of items) {\n    total += item.price * item.qty;\n    if (item.qty === 0) outOfStock.push(item.name);\n    if (!cheapest || item.price < cheapest.price) cheapest = item;\n  }\n  return { total, cheapest, outOfStock };\n}\nconst result = summarize([\n  { name: \"pen\", price: 1.5, qty: 10 },\n  { name: \"book\", price: 12, qty: 2 },\n  { name: \"bag\", price: 30, qty: 0 },\n]);\nconsole.log(result.total, result.cheapest?.name, result.outOfStock);\n// 39 pen [ 'bag' ]",
+          "lang": "typescript"
+        },
+        "试着把 `qty: 10` 改成 `qty: \"10\"`：编译器会在代码运行之前就报错。"
+      ]
+    },
+    {
+      "h": "新手常见错误",
+      "body": [
+        {
+          "note": "类型在运行时并不存在。给 `JSON.parse` 或 `fetch` 得到的数据加类型注解，只是你自己的承诺；对不可信的输入应使用真正的检查或 schema 库来校验。"
+        },
+        {
+          "ul": [
+            "用 `any` 来消除报错。更好的做法是使用 `unknown` 并对其收窄。",
+            "过度使用 `as` 类型断言，这等于让编译器无条件相信你，而不是去检查。",
+            "在 `tsconfig.json` 中不开启 `strict`。新项目请打开它，它会启用 `null` 检查。",
+            "写出编译器本来就能推断的类型，增加了噪音却没有带来安全性。"
+          ]
+        }
+      ]
+    },
+    {
+      "h": "接下来学什么",
+      "body": [
+        "阅读官方的 TypeScript Handbook，并在 typescriptlang.org 的 TypeScript Playground 中动手实验，它会并排显示编译后的 JavaScript 和错误信息。然后学习 `tsconfig.json` 的选项、库的类型声明文件（`@types/...` 包），以及在你选用的框架中使用 TypeScript。"
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "TypeScript 和 JavaScript 是不同的语言吗？",
+      "a": "它是 JavaScript 的超集：增加了类型语法和检查器，然后编译成普通 JavaScript。运行时行为与它生成的 JavaScript 完全一致。"
+    },
+    {
+      "q": "应该先学 JavaScript 再学 TypeScript 吗？",
+      "a": "先学好 JavaScript 基础（变量、函数、对象、Promise），因为 TypeScript 不会改变这些内容。然后再加入 TypeScript；熟悉运行时行为之后，类型会更容易学。"
+    },
+    {
+      "q": "interface 和 type 有什么区别？",
+      "a": "两者都能描述对象的形状。接口可以被扩展，也可以通过再次声明来合并；类型别名还可以为联合类型、元组和其他非对象类型命名。对于普通的对象形状，两者都可以。"
+    },
+    {
+      "q": "TypeScript 会让我的代码运行得更快吗？",
+      "a": "不会。类型在编译时被移除，所以输出的代码与手写 JavaScript 速度相同。它的好处是更少的 bug 和更好的工具支持。"
+    }
+  ]
+}

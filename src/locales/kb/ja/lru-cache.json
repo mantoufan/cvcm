@@ -1,0 +1,223 @@
+{
+  "title": "LRUキャッシュとは？ハッシュマップと双方向連結リストでO(1)を実現するPythonコード — cv.cm",
+  "description": "LRU（最長未使用）キャッシュの仕組みを解説。ハッシュマップと双方向連結リストでgetとputをO(1)にする方法、PythonのOrderedDictとfunctools.lru_cacheを学べます。",
+  "h1": "LRUキャッシュとは？仕組み・コード・計算量を解説",
+  "answer": "LRU（Least Recently Used、最長未使用）キャッシュは、一定数の要素を保持し、満杯になったら最も長い間使われていない要素を追い出します。定番の設計は、任意のキーをO(1)で見つけるハッシュマップと、使用順に並べた双方向連結リストの組み合わせです。連結リストでは、任意のエントリをO(1)で移動・削除できます。Pythonでは、`collections.OrderedDict`を使えばLRUキャッシュが数行で書け、`functools.lru_cache`を使えば任意の関数にキャッシュを付けられます。",
+  "sections": [
+    {
+      "h": "LRUキャッシュが解決する問題",
+      "body": [
+        "キャッシュは、データベースのクエリ、Webリクエスト、重い計算のような遅い処理の結果を保存し、同じリクエストにすばやく答えられるようにします。メモリには限りがあるため、キャッシュは満杯になったときに何を捨てるかを決めなければなりません。LRUは、最近使われたデータはすぐにまた使われ、長い間触られていないデータはおそらく使われない、という賭けをします。この賭けは多くの実際のワークロードでうまくいくので、LRUとその近似は、CPUキャッシュ、OSのページキャッシュ、データベース、Webサーバー、CDNに登場します。"
+      ]
+    },
+    {
+      "h": "考え方：2つの構造が協力する",
+      "body": [
+        "速くしたいことが2つあります。キーを見つけることと、どのキーが最も長く使われていないかを知ることです。ハッシュマップだけでは順序がありません。リストだけでは検索が遅くなります。2つを組み合わせれば、両方を実現できます。",
+        {
+          "table": {
+            "head": [
+              "部品",
+              "役割",
+              "O(1)である理由"
+            ],
+            "rows": [
+              [
+                "ハッシュマップ",
+                "各キーを、リスト内のノードに対応付ける",
+                "平均ケースのハッシュ検索"
+              ],
+              [
+                "双方向連結リスト",
+                "ノードを、最近使われた順から古い順に並べて保持する",
+                "`prev`と`next`ポインタでノードを切り離すと、4つの参照が変わるだけ"
+              ],
+              [
+                "先頭側",
+                "最も最近使われたエントリ",
+                "新しいエントリとアクセスされたエントリはここに移される"
+              ],
+              [
+                "末尾側",
+                "最も長く使われていないエントリ",
+                "キャッシュが満杯のときは、ここから追い出す"
+              ]
+            ]
+          }
+        },
+        "`get(key)`では、マップでノードを検索し、先頭に移動して、その値を返します。`put(key, value)`では、ノードを更新または新規作成して先頭に置きます。キャッシュが容量を超えたら、末尾のノードを削除し、そのキーをマップからも削除します。"
+      ]
+    },
+    {
+      "h": "具体例：容量2の場合",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "操作",
+              "結果",
+              "操作後の順序（新しい順）",
+              "備考"
+            ],
+            "rows": [
+              [
+                "put(1, \"a\")",
+                "-",
+                "1",
+                ""
+              ],
+              [
+                "put(2, \"b\")",
+                "-",
+                "2, 1",
+                "キャッシュが満杯"
+              ],
+              [
+                "get(1)",
+                "\"a\"",
+                "1, 2",
+                "1が最も新しくなる"
+              ],
+              [
+                "put(3, \"c\")",
+                "-",
+                "3, 1",
+                "最も長く使われていない2を追い出す"
+              ],
+              [
+                "get(2)",
+                "miss",
+                "3, 1",
+                "2は追い出されている"
+              ],
+              [
+                "put(1, \"A\")",
+                "-",
+                "1, 3",
+                "更新により1が先頭に移る"
+              ],
+              [
+                "put(4, \"d\")",
+                "-",
+                "4, 1",
+                "3を追い出す"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "ゼロから作るPython実装",
+      "body": [
+        "番兵（sentinel）として先頭ノードと末尾ノードを置くと、空のリストの特殊ケースがなくなります。実データのノードは、必ず前後にノードを持つからです。",
+        {
+          "code": "class Node:\n    __slots__ = (\"key\", \"value\", \"prev\", \"next\")\n\n    def __init__(self, key=None, value=None):\n        self.key, self.value = key, value\n        self.prev = self.next = None\n\nclass LRUCache:\n    def __init__(self, capacity):\n        self.capacity = capacity\n        self.map = {}\n        self.head, self.tail = Node(), Node()   # sentinels\n        self.head.next, self.tail.prev = self.tail, self.head\n\n    def _unlink(self, node):\n        node.prev.next, node.next.prev = node.next, node.prev\n\n    def _push_front(self, node):\n        node.prev, node.next = self.head, self.head.next\n        self.head.next.prev = node\n        self.head.next = node\n\n    def get(self, key):\n        node = self.map.get(key)\n        if node is None:\n            return None\n        self._unlink(node)\n        self._push_front(node)\n        return node.value\n\n    def put(self, key, value):\n        if key in self.map:\n            self._unlink(self.map[key])\n        node = self.map[key] = Node(key, value)\n        self._push_front(node)\n        if len(self.map) > self.capacity:\n            lru = self.tail.prev\n            self._unlink(lru)\n            del self.map[lru.key]",
+          "lang": "python"
+        },
+        {
+          "code": "cache = LRUCache(2)\ncache.put(1, \"a\")\ncache.put(2, \"b\")\nprint(cache.get(1))   # a\ncache.put(3, \"c\")     # evicts key 2\nprint(cache.get(2))   # None\ncache.put(1, \"A\")\ncache.put(4, \"d\")     # evicts key 3\nprint(cache.get(3), cache.get(1), cache.get(4))  # None A d",
+          "lang": "python"
+        }
+      ]
+    },
+    {
+      "h": "OrderedDictを使った短い版",
+      "body": [
+        "`collections.OrderedDict`は、それ自体がハッシュマップと双方向連結リストの組み合わせで、`move_to_end`と`popitem(last=False)`はO(1)です。このため、オブジェクトとしてLRUキャッシュが必要なときの、Pythonらしい選択になります。",
+        {
+          "code": "from collections import OrderedDict\n\nclass LRU:\n    def __init__(self, capacity):\n        self.capacity = capacity\n        self.data = OrderedDict()\n\n    def get(self, key):\n        if key not in self.data:\n            return None\n        self.data.move_to_end(key)          # mark as most recent\n        return self.data[key]\n\n    def put(self, key, value):\n        self.data[key] = value\n        self.data.move_to_end(key)\n        if len(self.data) > self.capacity:\n            self.data.popitem(last=False)   # drop least recent\n\nc = LRU(2)\nc.put(\"x\", 1)\nc.put(\"y\", 2)\nc.get(\"x\")\nc.put(\"z\", 3)\nprint(list(c.data))  # ['x', 'z']",
+          "lang": "python"
+        }
+      ]
+    },
+    {
+      "h": "functools.lru_cacheで関数の結果をキャッシュする",
+      "body": [
+        "関数の戻り値をキャッシュするには、`functools.lru_cache`デコレータを使います。引数は辞書のキーになるため、ハッシュ可能でなければなりません。`cache_info()`で、ヒット数、ミス数、現在のサイズが分かります。",
+        {
+          "code": "from functools import lru_cache\n\n@lru_cache(maxsize=128)\ndef fib(n):\n    return n if n < 2 else fib(n - 1) + fib(n - 2)\n\nprint(fib(80))           # 23416728348467685\nprint(fib.cache_info())\n# CacheInfo(hits=78, misses=81, maxsize=128, currsize=81)",
+          "lang": "python"
+        },
+        "`maxsize=None`にすると上限のないキャッシュになります。`functools.cache`（Python 3.9以降）がこれに当たります。`fib.cache_clear()`を呼ぶと、キャッシュが空になります。"
+      ]
+    },
+    {
+      "h": "時間計算量と空間計算量",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "操作",
+              "時間",
+              "理由"
+            ],
+            "rows": [
+              [
+                "get",
+                "平均O(1)",
+                "ハッシュ検索と、1ノードの切り離しおよび再接続"
+              ],
+              [
+                "put（挿入または更新）",
+                "平均O(1)",
+                "ハッシュの挿入と、定数回のポインタ変更"
+              ],
+              [
+                "追い出し",
+                "O(1)",
+                "最も長く使われていないノードは常に末尾の番兵の隣にある"
+              ],
+              [
+                "空間",
+                "O(容量)",
+                "キャッシュされた要素ごとに、マップのエントリ1つとリストのノード1つ"
+              ]
+            ]
+          }
+        },
+        {
+          "note": "よくある誤った設計は、キーを素のPythonの`list`に保持し、アクセスのたびに`list.remove(key)`を呼ぶものです。これは1操作あたりO(n)かかり、キャッシュの意味がなくなります。"
+        }
+      ]
+    },
+    {
+      "h": "変種、間違い、LRUを使う場面",
+      "body": [
+        {
+          "ul": [
+            "LFU（Least Frequently Used）は、アクセス回数が最も少ない要素を追い出します。1回限りのスキャンから人気のある要素を守れますが、より複雑です。",
+            "近似LRU：Redisのようなシステムは、正確なリストを保持する代わりに、いくつかのキーをサンプリングし、その中で最も古いものを追い出します。メモリを節約できます。",
+            "TTLキャッシュは、一定時間が過ぎたエントリを期限切れにします。サイズの上限と組み合わせることが多いです。",
+            "`get`のとき、または既存のキーの`put`のときに、エントリを先頭に移動し忘れると、LRUがFIFOになってしまいます。",
+            "追い出したキーをハッシュマップから削除し忘れると、宙に浮いたエントリが残り、メモリリークになります。",
+            "LRUキャッシュをスレッド間で共有するには、各操作をロックで囲む必要があります。`functools.lru_cache`は、複数のスレッドから呼んでも安全です。"
+          ]
+        },
+        "最近の使用が将来の使用を予測できるなら、LRUは良いデフォルトです。大きな1回限りのスキャンで、頻繁に使われるデータが押し出されると、性能が悪くなります。そのようなワークロードには、LFUやスキャン耐性のあるポリシーが向いています。O(1)の操作を持つLRUキャッシュの設計は、ハッシュマップと連結リストを同時に試せるため、コーディング面接で最もよく出る問題の1つでもあります。"
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "LRUとは何の略ですか？",
+      "a": "Least Recently Used（最長未使用）の略です。キャッシュが満杯になると、読み書きされずに最も長い時間が経ったエントリを追い出します。"
+    },
+    {
+      "q": "LRUキャッシュに双方向連結リストが必要なのはなぜですか？",
+      "a": "リストの途中からノードをO(1)で取り除くには、その前のノードが必要です。双方向連結リストは、すべてのノードに`prev`を持ちます。単方向連結リストでは、O(n)の検索が必要になります。"
+    },
+    {
+      "q": "Pythonのdictだけで、LRUキャッシュを実装できますか？",
+      "a": "Python 3.7以降、`dict`は挿入順を保持するので、キーを削除して再挿入することで「最近使った」印を付け、`next(iter(d))`を追い出せます。`OrderedDict`なら、`move_to_end`と`popitem(last=False)`で、意図がより明確に表せます。"
+    },
+    {
+      "q": "functoolsのlru_cacheとcacheの違いは何ですか？",
+      "a": "`functools.cache`は上限のないキャッシュで、`lru_cache(maxsize=None)`と同等です。数値を指定した`lru_cache`は、そのサイズに達すると、最も長く使われていない結果を追い出します。"
+    },
+    {
+      "q": "LRUは常に最良の追い出しポリシーですか？",
+      "a": "いいえ。単純で、最近の要素が再利用されやすい場合にはうまく働きますが、大きな逐次スキャンによって有用なデータが押し流されることがあります。LFU、ARCなどのポリシーは、そのようなワークロードをよりうまく扱えます。"
+    }
+  ]
+}

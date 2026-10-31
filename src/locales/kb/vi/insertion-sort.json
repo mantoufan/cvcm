@@ -1,0 +1,229 @@
+{
+  "title": "Sắp xếp chèn (Insertion Sort): cách hoạt động, mã Python và độ phức tạp — cv.cm",
+  "description": "Sắp xếp chèn xây danh sách đã sắp xếp từng phần tử một bằng cách dịch các phần tử lớn hơn sang phải. Ví dụ, mã Python, O(n²) và O(n), tính ổn định và ứng dụng.",
+  "h1": "Thuật toán sắp xếp chèn: cách hoạt động, mã và độ phức tạp",
+  "answer": "Sắp xếp chèn xây kết quả đã sắp xếp từng phần tử một. Nó lấy phần tử kế tiếp, dịch mọi phần tử lớn hơn trong phần đã sắp xếp sang phải một vị trí, rồi thả phần tử vào chỗ trống, giống cách nhiều người xếp bài trên tay. Thuật toán là O(n²) ở trường hợp trung bình và xấu nhất, O(n) với đầu vào đã hoặc gần như đã sắp xếp, dùng O(1) bộ nhớ phụ và ổn định. Đây là thuật toán sắp xếp đơn giản nhanh nhất cho mảng nhỏ hoặc gần như đã sắp xếp, vì thế các thuật toán lai như Timsort dùng nó.",
+  "sections": [
+    {
+      "h": "Ý tưởng bằng lời đơn giản",
+      "body": [
+        "Coi phần tử đầu tiên là danh sách đã sắp xếp có độ dài một. Lấy phần tử thứ hai và chèn vào trước hoặc sau phần tử đầu. Lấy phần tử thứ ba và chèn vào đúng chỗ giữa hai phần tử đầu. Tiếp tục cho đến khi mọi phần tử đã được chèn.",
+        "Để chèn, hãy để phần tử mới sang một bên (gọi là `key`), rồi đi sang trái qua phần đã sắp xếp. Mọi phần tử lớn hơn `key` dịch sang phải một vị trí. Khi gặp phần tử không lớn hơn, hoặc đến đầu danh sách, đặt `key` vào ô trống."
+      ]
+    },
+    {
+      "h": "Ví dụ minh họa từng bước",
+      "body": [
+        "Sắp xếp `[12, 11, 13, 5, 6]`. Phần trước dấu gạch đã được sắp xếp (nhưng chưa phải vị trí cuối cùng).",
+        {
+          "table": {
+            "head": [
+              "Bước",
+              "key",
+              "Phần tử dịch chuyển",
+              "Danh sách sau bước"
+            ],
+            "rows": [
+              [
+                "1",
+                "11",
+                "12 dịch sang phải",
+                "`[11, 12 | 13, 5, 6]`"
+              ],
+              [
+                "2",
+                "13",
+                "không có, 12 nhỏ hơn",
+                "`[11, 12, 13 | 5, 6]`"
+              ],
+              [
+                "3",
+                "5",
+                "13, 12, 11 dịch sang phải",
+                "`[5, 11, 12, 13 | 6]`"
+              ],
+              [
+                "4",
+                "6",
+                "13, 12, 11 dịch sang phải",
+                "`[5, 6, 11, 12, 13]`"
+              ]
+            ]
+          }
+        },
+        "Lưu ý bước 2: phần tử đã đúng chỗ chỉ tốn một phép so sánh. Đó là lý do sắp xếp chèn nhanh với đầu vào gần như đã sắp xếp."
+      ]
+    },
+    {
+      "h": "Cài đặt bằng Python",
+      "body": [
+        {
+          "code": "def insertion_sort(items):\n    \"\"\"Sort a list in place, ascending. Returns the same list.\"\"\"\n    for i in range(1, len(items)):\n        key = items[i]\n        j = i - 1\n        while j >= 0 and items[j] > key:   # strict >, keeps it stable\n            items[j + 1] = items[j]        # shift right\n            j -= 1\n        items[j + 1] = key                 # drop into the gap\n    return items\nprint(insertion_sort([12, 11, 13, 5, 6]))   # [5, 6, 11, 12, 13]\nprint(insertion_sort([1, 2, 3, 4]))         # [1, 2, 3, 4], 3 comparisons",
+          "lang": "python"
+        },
+        "Dịch chuyển thay vì đổi chỗ chỉ ghi mỗi phần tử được di chuyển một lần, bằng khoảng một nửa công việc của phiên bản đổi chỗ. Bạn cũng có thể tìm điểm chèn bằng tìm kiếm nhị phân như dưới đây. Cách này giảm số phép so sánh xuống O(n log n) tổng cộng, nhưng việc dịch chuyển vẫn là O(n²), nên thời gian tổng thể vẫn là O(n²).",
+        {
+          "code": "from bisect import insort_right\ndef binary_insertion_sort(items):\n    result = []\n    for x in items:\n        insort_right(result, x)   # stable: equal items go after\n    return result\nprint(binary_insertion_sort([3, 1, 2, 1]))   # [1, 1, 2, 3]",
+          "lang": "python"
+        }
+      ]
+    },
+    {
+      "h": "Độ phức tạp thời gian và không gian",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Trường hợp",
+              "Thời gian",
+              "Lý do"
+            ],
+            "rows": [
+              [
+                "Tốt nhất (đã sắp xếp)",
+                "O(n)",
+                "mỗi phần tử cần một phép so sánh và không phải dịch chuyển"
+              ],
+              [
+                "Trung bình (thứ tự ngẫu nhiên)",
+                "O(n²)",
+                "trung bình khoảng n²/4 lần dịch chuyển"
+              ],
+              [
+                "Xấu nhất (thứ tự ngược)",
+                "O(n²)",
+                "phần tử thứ i dịch qua toàn bộ i phần tử đứng trước"
+              ],
+              [
+                "Không gian phụ",
+                "O(1)",
+                "sắp xếp tại chỗ với một giá trị tạm"
+              ]
+            ]
+          }
+        },
+        "Chính xác hơn, thời gian chạy là O(n + I), trong đó I là số nghịch thế (các cặp sai thứ tự). Nếu mọi phần tử cách vị trí cuối cùng của nó tối đa k vị trí, I nhiều nhất là n · k, nên sắp xếp chèn là O(n · k): rất nhanh khi k nhỏ."
+      ]
+    },
+    {
+      "h": "So sánh sắp xếp chèn với các thuật toán khác",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Thuật toán",
+              "Tốt nhất",
+              "Trung bình",
+              "Xấu nhất",
+              "Không gian phụ",
+              "Ổn định"
+            ],
+            "rows": [
+              [
+                "Sắp xếp chèn",
+                "O(n)",
+                "O(n²)",
+                "O(n²)",
+                "O(1)",
+                "Có"
+              ],
+              [
+                "Sắp xếp nổi bọt",
+                "O(n)",
+                "O(n²)",
+                "O(n²)",
+                "O(1)",
+                "Có"
+              ],
+              [
+                "Sắp xếp chọn",
+                "O(n²)",
+                "O(n²)",
+                "O(n²)",
+                "O(1)",
+                "Không"
+              ],
+              [
+                "Sắp xếp trộn",
+                "O(n log n)",
+                "O(n log n)",
+                "O(n log n)",
+                "O(n)",
+                "Có"
+              ],
+              [
+                "Sắp xếp nhanh",
+                "O(n log n)",
+                "O(n log n)",
+                "O(n²)",
+                "O(log n)",
+                "Không"
+              ],
+              [
+                "Sắp xếp vun đống",
+                "O(n log n)",
+                "O(n log n)",
+                "O(n log n)",
+                "O(1)",
+                "Không"
+              ],
+              [
+                "Timsort (`sorted` của Python)",
+                "O(n)",
+                "O(n log n)",
+                "O(n log n)",
+                "O(n)",
+                "Có"
+              ]
+            ]
+          }
+        },
+        "Sắp xếp chèn ổn định vì một phần tử chỉ di chuyển sang trái qua các phần tử thực sự lớn hơn nó. Nó cũng là thuật toán trực tuyến (online): có thể sắp xếp dữ liệu khi nó đến, luôn giữ một tiền tố đã sắp xếp. Với danh sách ngắn, chi phí phụ thấp của nó thắng các thuật toán O(n log n), nên Timsort (dùng trong Python và trong Java cho đối tượng) sắp xếp các đoạn ngắn bằng sắp xếp chèn nhị phân, và nhiều bản cài đặt sắp xếp nhanh chuyển sang sắp xếp chèn khi kích thước nhỏ."
+      ]
+    },
+    {
+      "h": "Biến thể và lỗi thường gặp",
+      "body": [
+        {
+          "ul": [
+            "Sắp xếp chèn nhị phân: tìm vị trí bằng tìm kiếm nhị phân rồi mới dịch chuyển. Ít phép so sánh hơn, có lợi khi việc so sánh tốn kém.",
+            "Shell sort: chạy sắp xếp chèn trên các phần tử cách nhau một khoảng (gap), rồi thu nhỏ khoảng đó xuống 1. Nó di chuyển nhanh các phần tử ở xa và nhanh hơn nhiều so với sắp xếp chèn thường trên mảng lớn.",
+            "Sắp xếp chèn trên danh sách liên kết: không cần dịch chuyển, nhưng tìm vị trí vẫn là quét tuyến tính."
+          ]
+        },
+        {
+          "note": "Các lỗi hay gặp: viết `items[j] >= key` (di chuyển cả phần tử bằng nhau và phá tính ổn định), kiểm tra `items[j] > key` trước `j >= 0` (trong Python, `items[-1]` âm thầm đọc phần tử cuối thay vì báo lỗi), và ghi `key` vào `items[j]` thay vì `items[j + 1]` sau vòng lặp."
+        }
+      ]
+    },
+    {
+      "h": "Khi nào nên dùng sắp xếp chèn",
+      "body": [
+        "Dùng nó cho mảng nhỏ (vài chục phần tử), cho dữ liệu gần như đã sắp xếp, như list đã sắp xếp rồi thêm vài phần tử ở cuối, và khi bạn cần một thuật toán sắp xếp tại chỗ ổn định đơn giản. Với dữ liệu ngẫu nhiên lớn, hãy dùng thuật toán O(n log n); trong Python đó là `sorted()` hoặc `list.sort()`, vốn đã áp dụng sắp xếp chèn cho các đoạn nhỏ bên trong.",
+        "Câu hỏi phỏng vấn thường yêu cầu theo dõi các bước, trường hợp tốt nhất và xấu nhất, vì sao nó ổn định, hoặc vì sao nó thắng các thuật toán O(n log n) trên đầu vào nhỏ và gần như đã sắp xếp."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Sắp xếp chèn có ổn định không?",
+      "a": "Có. Phần tử chỉ di chuyển sang trái qua các phần tử thực sự lớn hơn, nên các phần tử bằng nhau giữ nguyên thứ tự ban đầu."
+    },
+    {
+      "q": "Trường hợp tốt nhất của sắp xếp chèn là gì?",
+      "a": "O(n), khi đầu vào đã sắp xếp: mỗi phần tử mới được so sánh một lần với phần tử bên trái và giữ nguyên chỗ."
+    },
+    {
+      "q": "Vì sao Timsort dùng sắp xếp chèn?",
+      "a": "Với các dãy ngắn, chi phí phụ rất thấp khiến nó nhanh hơn sắp xếp trộn hay sắp xếp nhanh, và nó ổn định. Timsort dùng sắp xếp chèn nhị phân để kéo dài các đoạn ngắn trước khi trộn."
+    },
+    {
+      "q": "Sắp xếp chèn có tốt hơn sắp xếp nổi bọt không?",
+      "a": "Có, trong thực tế. Cả hai đều O(n²) và ổn định, nhưng sắp xếp chèn thực hiện ít phép so sánh và ghi hơn, và thích nghi tốt hơn với đầu vào gần như đã sắp xếp."
+    },
+    {
+      "q": "Tìm kiếm nhị phân có làm sắp xếp chèn thành O(n log n) không?",
+      "a": "Không. Nó giảm số phép so sánh xuống O(n log n), nhưng việc dịch phần tử để tạo chỗ vẫn là O(n²) ở trường hợp xấu nhất."
+    }
+  ]
+}

@@ -1,0 +1,193 @@
+{
+  "title": "Tutorial de Dart: null safety, funciones, colecciones y async — cv.cm",
+  "description": "Aprende Dart desde cero: ejecuta Hola, mundo, variables y tipos, null safety sólida, patrones en switch, funciones, listas y mapas, records, clases y async/await.",
+  "h1": "Tutorial de Dart para principiantes",
+  "answer": "Dart es un lenguaje orientado a objetos de tipado estático creado por Google, conocido sobre todo como el lenguaje del framework de apps Flutter. Tiene null safety sólida, compila a código nativo y a JavaScript o WebAssembly, y ofrece hot reload rápido durante el desarrollo. Esta página recorre la instalación, los tipos, la null safety, el control de flujo, las funciones, las colecciones, las clases, el código asíncrono y el manejo de errores.",
+  "sections": [
+    {
+      "h": "Qué es Dart y para qué se usa",
+      "body": [
+        "Dart es un lenguaje de programación optimizado para clientes, desarrollado por Google. Tiene tipado estático con inferencia de tipos, null safety sólida y compila tanto a código máquina nativo (para móvil, escritorio y servidores) como a JavaScript o WebAssembly (para la web). Durante el desarrollo se ejecuta en una máquina virtual con hot reload, de modo que los cambios aparecen en una app en ejecución en pocos segundos.",
+        "La mayoría de la gente aprende Dart para crear apps con Flutter, el toolkit de interfaces de Google para Android, iOS, web, Windows, macOS y Linux desde una sola base de código. Dart también se usa para herramientas de línea de comandos y servicios de backend."
+      ]
+    },
+    {
+      "h": "Instala Dart y ejecuta Hola, mundo",
+      "body": [
+        "Instala el SDK de Dart desde dart.dev (o instala Flutter, que incluye Dart). Todo programa en Dart empieza en una función `main` de nivel superior.",
+        {
+          "code": "// hello.dart\nvoid main() {\n  print('Hello, world!');\n}",
+          "lang": "dart"
+        },
+        {
+          "code": "dart run hello.dart\n# Hello, world!\ndart compile exe hello.dart   # builds a native executable\ndart create my_app            # creates a new console project",
+          "lang": "shell"
+        },
+        "También puedes probar todos los ejemplos de esta página en DartPad, el editor en el navegador de dartpad.dev."
+      ]
+    },
+    {
+      "h": "Variables y tipos básicos",
+      "body": [
+        "Usa `var` para que el compilador infiera el tipo, `final` para una variable que se asigna una sola vez y `const` para una constante en tiempo de compilación. Siempre puedes escribir el tipo de forma explícita.",
+        {
+          "code": "void main() {\n  var name = 'Dart';        // inferred as String\n  int year = 2011;          // explicit type\n  final now = DateTime.now(); // set once, at run time\n  const pi = 3.14159;       // compile-time constant\n  double ratio = 2;         // int literal becomes 2.0\n  bool ok = year > 2000;\n  print('$name since $year, pi=${pi.toStringAsFixed(2)}, ok=$ok, ratio=$ratio');\n  // Dart since 2011, pi=3.14, ok=true, ratio=2.0\n  print(now.year > 2000);   // true\n}",
+          "lang": "dart"
+        },
+        {
+          "table": {
+            "head": [
+              "Tipo",
+              "Ejemplo",
+              "Notas"
+            ],
+            "rows": [
+              [
+                "`int`",
+                "`42`",
+                "entero; de 64 bits en plataformas nativas"
+              ],
+              [
+                "`double`",
+                "`3.14`",
+                "coma flotante de 64 bits"
+              ],
+              [
+                "`num`",
+                "`7` o `7.5`",
+                "supertipo de `int` y `double`"
+              ],
+              [
+                "`bool`",
+                "`true`",
+                "en las condiciones solo se permiten `true` y `false`"
+              ],
+              [
+                "`String`",
+                "`'hi'`",
+                "UTF-16; admite la interpolación `$x` y `${expr}`"
+              ],
+              [
+                "`dynamic`",
+                "cualquier valor",
+                "desactiva la comprobación estática; evítalo en la mayor parte del código"
+              ]
+            ]
+          }
+        },
+        "En la web, los valores `int` se representan como números de JavaScript, así que allí los enteros muy grandes pueden perder precisión."
+      ]
+    },
+    {
+      "h": "Null safety sólida",
+      "body": [
+        "Desde Dart 3, todo el código Dart usa null safety sólida. Una variable de tipo `String` nunca puede ser null; para permitir null, escribe `String?`. El compilador revisa cada uso, de modo que los errores de null se detectan antes de ejecutar el programa.",
+        {
+          "code": "int lengthOf(String? s) {\n  // return s.length;         // compile error: s might be null\n  if (s == null) return 0;\n  return s.length;            // promoted to String after the check\n}\nvoid main() {\n  String? nickname;\n  print(nickname?.length);    // null (null-aware access)\n  print(nickname ?? 'guest'); // guest (default if null)\n  nickname ??= 'dee';         // assign only if null\n  print(lengthOf(nickname));  // 3\n  late String config;         // initialized later, checked at run time\n  config = 'loaded';\n  print(config);              // loaded\n}",
+          "lang": "dart"
+        },
+        {
+          "note": "El operador `!` (por ejemplo `s!.length`) le dice al compilador que un valor no es null y lanza un error en tiempo de ejecución si te equivocas. Es preferible una comprobación de null o `??`. Ten en cuenta también que `late` traslada la comprobación al tiempo de ejecución: leer una variable `late` antes de asignarla lanza un error."
+        }
+      ]
+    },
+    {
+      "h": "Control de flujo",
+      "body": [
+        "Dart tiene los habituales `if`, `for`, `while` y `do-while`, además de un bucle `for-in` sobre cualquier iterable. Desde Dart 3, `switch` admite coincidencia de patrones y puede usarse como expresión.",
+        {
+          "code": "void main() {\n  var scores = [72, 95, 48];\n  for (var s in scores) {\n    if (s >= 90) {\n      print('$s excellent');\n    } else if (s >= 50) {\n      print('$s pass');\n    } else {\n      print('$s fail');\n    }\n  }\n  for (var i = 0; i < 3; i++) {\n    print('i = $i');\n  }\n  var day = 6;\n  var kind = switch (day) {\n    6 || 7 => 'weekend',\n    >= 1 && <= 5 => 'weekday',\n    _ => 'invalid',\n  };\n  print(kind); // weekend\n}",
+          "lang": "dart"
+        }
+      ]
+    },
+    {
+      "h": "Funciones",
+      "body": [
+        "Las funciones son objetos de primera clase. Los parámetros pueden ser posicionales, posicionales opcionales entre `[]` o con nombre entre `{}`. Los parámetros con nombre son opcionales salvo que se marquen como `required`. La sintaxis de flecha `=>` es una abreviatura para una función que devuelve una sola expresión.",
+        {
+          "code": "int add(int a, int b) => a + b;\nString greet(String name, {String greeting = 'Hello', required bool loud}) {\n  var text = '$greeting, $name';\n  return loud ? text.toUpperCase() : text;\n}\nString label(String text, [int? width]) =>\n    width == null ? text : text.padRight(width, '.');\nvoid main() {\n  print(add(2, 3));                              // 5\n  print(greet('Ana', loud: false));              // Hello, Ana\n  print(greet('Ana', greeting: 'Hi', loud: true)); // HI, ANA\n  print(label('id', 5));                         // id...\n  var twice = (int x) => x * 2;                  // anonymous function\n  print([1, 2, 3].map(twice).toList());          // [2, 4, 6]\n}",
+          "lang": "dart"
+        }
+      ]
+    },
+    {
+      "h": "Colecciones: List, Set, Map y records",
+      "body": [
+        "Las colecciones básicas son `List` (ordenada), `Set` (elementos únicos) y `Map` (pares clave-valor). Los literales de colección admiten `if`, `for` y el operador de propagación `...`. Los records, añadidos en Dart 3, agrupan varios valores sin declarar una clase.",
+        {
+          "code": "void main() {\n  var nums = [3, 1, 2];               // List<int>\n  nums.add(4);\n  nums.sort();\n  print(nums);                        // [1, 2, 3, 4]\n  var tags = {'dart', 'flutter', 'dart'};\n  print(tags.length);                 // 2\n  var ages = {'Ann': 31, 'Bo': 25};   // Map<String, int>\n  ages['Cy'] = 40;\n  print(ages['Bo']);                  // 25\n  var showAll = false;\n  var menu = ['Home', if (showAll) 'Admin', for (var n in nums) 'Item $n'];\n  print(menu);  // [Home, Item 1, Item 2, Item 3, Item 4]\n  (String, int) pair = ('Ann', 31);   // a record\n  var (who, age) = pair;              // destructuring\n  print('$who is $age');              // Ann is 31\n}",
+          "lang": "dart"
+        }
+      ]
+    },
+    {
+      "h": "Clases y async/await",
+      "body": [
+        "Dart es orientado a objetos: todo valor es un objeto. Las clases admiten constructores con parámetros de inicialización (`this.x`), constructores con nombre, getters, mixins e interfaces. El código asíncrono usa `Future` y `Stream` con `async` y `await`, lo que mantiene las apps de Flutter receptivas mientras esperan archivos o la red.",
+        {
+          "code": "class Point {\n  final double x, y;\n  const Point(this.x, this.y);\n  Point.origin() : x = 0, y = 0;     // named constructor\n  double get sum => x + y;           // getter\n  @override\n  String toString() => 'Point($x, $y)';\n}\nFuture<String> fetchUser() async {\n  await Future.delayed(Duration(milliseconds: 100));\n  return 'ana';\n}\nFuture<void> main() async {\n  print(Point(1, 2).sum);            // 3.0\n  print(Point.origin());             // Point(0.0, 0.0)\n  var user = await fetchUser();\n  print('user: $user');              // user: ana\n}",
+          "lang": "dart"
+        }
+      ]
+    },
+    {
+      "h": "Manejo de errores",
+      "body": [
+        "Lanza una excepción con `throw` y trátala con `try`, `on`, `catch` y `finally`. Usa `on SomeType` para capturar un tipo concreto. Dart distingue entre `Exception` (un problema esperado que el programa puede manejar) y `Error` (un fallo de programación, como una aserción fallida o un error de rango) que normalmente no debes capturar.",
+        {
+          "code": "int parseAge(String s) {\n  var n = int.tryParse(s);            // null instead of throwing\n  if (n == null || n < 0) {\n    throw FormatException('Not a valid age: $s');\n  }\n  return n;\n}\nvoid main() {\n  for (var input in ['42', 'abc']) {\n    try {\n      print(parseAge(input));\n    } on FormatException catch (e) {\n      print('Error: ${e.message}');\n    } finally {\n      print('checked $input');\n    }\n  }\n}\n// 42 / checked 42 / Error: Not a valid age: abc / checked abc",
+          "lang": "dart"
+        }
+      ]
+    },
+    {
+      "h": "Un programa completo y pequeño: total del carrito de compras",
+      "body": [
+        "Este programa modela productos con una clase, guarda un carrito en un mapa e imprime un recibo. Combina clases, mapas, formato de cadenas y métodos de colecciones.",
+        {
+          "code": "class Product {\n  final String name;\n  final double price;\n  const Product(this.name, this.price);\n}\nvoid main() {\n  const apple = Product('Apple', 0.5);\n  const bread = Product('Bread', 2.25);\n  final cart = <Product, int>{apple: 6, bread: 2};\n  var total = 0.0;\n  cart.forEach((product, qty) {\n    final line = product.price * qty;\n    total += line;\n    print('${product.name.padRight(6)} x$qty  ${line.toStringAsFixed(2)}');\n  });\n  final count = cart.values.reduce((a, b) => a + b);\n  print('$count items, total ${total.toStringAsFixed(2)}');\n}\n// Apple  x6  3.00\n// Bread  x2  4.50\n// 8 items, total 7.50",
+          "lang": "dart"
+        },
+        {
+          "note": "Errores habituales de principiantes: olvidar `await` (obtienes un `Future` en lugar de un valor); usar `dynamic` o dejar los tipos como `Object` y perder las comprobaciones en tiempo de compilación; abusar de `!` y `late`; confundir `final` (se asigna una vez) con `const` (conocido en tiempo de compilación); y modificar una lista mientras se recorre."
+        }
+      ]
+    },
+    {
+      "h": "Siguientes pasos",
+      "body": [
+        {
+          "ul": [
+            "El recorrido por el lenguaje Dart y los tutoriales en dart.dev.",
+            "Effective Dart, la guía oficial de estilo y diseño.",
+            "La documentación de Flutter en flutter.dev si quieres crear apps.",
+            "pub.dev, el repositorio de paquetes de Dart y Flutter."
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "¿Dart sirve solo para Flutter?",
+      "a": "No. Dart es un lenguaje de propósito general y permite crear herramientas de línea de comandos, servidores y apps web. Flutter es simplemente el motivo más popular para aprenderlo."
+    },
+    {
+      "q": "¿Dart es compilado o interpretado?",
+      "a": "Existen ambos modos. Durante el desarrollo, Dart se ejecuta en una VM con compilación just-in-time y hot reload; para la versión final se compila de forma anticipada a código máquina nativo, o a JavaScript o WebAssembly para la web."
+    },
+    {
+      "q": "¿Cuál es la diferencia entre final y const en Dart?",
+      "a": "Una variable `final` se asigna una sola vez, posiblemente en tiempo de ejecución. Un valor `const` debe conocerse en tiempo de compilación y es inmutable en profundidad, lo que permite a Flutter reutilizar widgets constantes."
+    },
+    {
+      "q": "¿Dart se parece a Java o a JavaScript?",
+      "a": "Su sintaxis de estilo C y sus clases resultan familiares a quien programa en Java, C# o JavaScript. A diferencia de JavaScript, Dart tiene tipado estático y null safety sólida."
+    },
+    {
+      "q": "¿Qué hace el operador ?? en Dart?",
+      "a": "`a ?? b` devuelve `a` si no es null y, en caso contrario, `b`. El operador relacionado `a ??= b` asigna `b` a `a` solo cuando `a` es null."
+    }
+  ]
+}

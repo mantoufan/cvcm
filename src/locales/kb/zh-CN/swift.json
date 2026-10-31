@@ -1,0 +1,195 @@
+{
+  "title": "Swift 入门教程：可选类型、结构体、枚举与协议 — cv.cm",
+  "description": "一页学会 Swift：Hello world，let 与 var，数据类型，流程控制，闭包，数组与字典，可选类型，结构体，枚举与错误处理。",
+  "h1": "Swift 入门教程（零基础）",
+  "answer": "Swift 是 Apple 为 iPhone、iPad、Mac、Apple Watch 和 Apple TV 应用打造的快速、安全的编译型语言，也可以在 Linux 和 Windows 上运行。把 `print(\"Hello, world\")` 保存为 `hello.swift`，然后运行 `swift hello.swift`。核心概念包括：`let` 常量和 `var` 变量、类型推断、用于可能缺失的值的可选类型、具有值语义的结构体和枚举、协议，以及用 `do`/`try`/`catch` 处理的错误。",
+  "sections": [
+    {
+      "h": "Swift 是什么，用来做什么",
+      "body": [
+        "Swift 由 Apple 于 2014 年推出，作为 Objective-C 的现代替代品，并于 2015 年开源；项目位于 swift.org。它是 Apple 平台应用的主要开发语言，通常搭配 SwiftUI 或 UIKit 框架。Swift 也用于服务器端代码（例如使用 Vapor 框架）和命令行工具。这门语言旨在防止常见的 bug：变量必须初始化，数组会检查边界，`nil` 必须被显式处理。"
+      ]
+    },
+    {
+      "h": "安装 Swift 并运行 Hello, world",
+      "body": [
+        "在 Mac 上，从 App Store 安装 Xcode，或安装 Xcode 命令行工具。在 Linux 和 Windows 上，从 swift.org 下载工具链。用 `swift --version` 检查。",
+        {
+          "code": "print(\"Hello, world\")",
+          "lang": "swift"
+        },
+        {
+          "code": "swift hello.swift\n# Hello, world\nswiftc hello.swift -o hello   # compile to a binary\n./hello",
+          "lang": "shell"
+        },
+        "较大的项目可以运行 `swift package init --type executable`，然后 `swift run`。Xcode playground 是另一种便捷的试验方式。"
+      ]
+    },
+    {
+      "h": "常量、变量与基本类型",
+      "body": [
+        "常量用 `let`，变量用 `var`。优先使用 `let`；当某个 `var` 从未被修改时，编译器会给出警告。类型会被自动推断，Swift 也从不在数值类型之间隐式转换。",
+        {
+          "table": {
+            "head": [
+              "类型",
+              "示例",
+              "说明"
+            ],
+            "rows": [
+              [
+                "`Int`",
+                "`let n = 42`",
+                "现代平台上为 64 位"
+              ],
+              [
+                "`Double`",
+                "`let x = 3.14`",
+                "默认的浮点类型"
+              ],
+              [
+                "`Bool`",
+                "`let ok = true`",
+                "`true` 或 `false`"
+              ],
+              [
+                "`String`",
+                "`let s = \"hi \\(name)\"`",
+                "Unicode 文本，值类型"
+              ],
+              [
+                "`Character`",
+                "`let c: Character = \"é\"`",
+                "一个用户感知的字符"
+              ],
+              [
+                "`[Int]`, `[String: Int]`",
+                "`[1, 2]`, `[\"a\": 1]`",
+                "数组与字典"
+              ]
+            ]
+          }
+        },
+        {
+          "code": "let name = \"Ada\"\nvar count = 7\ncount += 1\nlet avg = Double(count) / 2   // explicit conversion\nprint(\"\\(name) has \\(count) items, avg \\(avg)\")  // Ada has 8 items, avg 4.0\nprint(7 / 2, 7 % 2)          // 3 1",
+          "lang": "swift"
+        },
+        "字符串字面量中的 `\\(expression)` 会插入一个值（字符串插值）。"
+      ]
+    },
+    {
+      "h": "流程控制",
+      "body": [
+        {
+          "code": "let score = 72\nif score >= 90 {\n    print(\"A\")\n} else if score >= 70 {\n    print(\"B\")                 // B\n} else {\n    print(\"C\")\n}\n\nfor i in 0..<3 {\n    print(i, terminator: \" \")  // 0 1 2\n}\nprint()\n\nvar n = 10\nwhile n > 1 { n /= 2 }\nprint(n)                       // 1\n\nlet day = \"SAT\"\nswitch day {\ncase \"SAT\", \"SUN\":\n    print(\"weekend\")           // weekend\ndefault:\n    print(\"weekday\")\n}",
+          "lang": "swift"
+        },
+        "`switch` 必须穷尽所有情况，默认不会贯穿到下一个分支，并且可以匹配范围（`case 90...100:`）、元组和枚举项。"
+      ]
+    },
+    {
+      "h": "函数与闭包",
+      "body": [
+        "参数带有调用者要写出的实参标签，让调用读起来像句子。用 `_` 可以省略标签。闭包是写在花括号里的匿名函数。",
+        {
+          "code": "func greet(_ name: String, with greeting: String = \"Hello\") -> String {\n    return \"\\(greeting), \\(name)!\"\n}\n\nprint(greet(\"Lin\"))                  // Hello, Lin!\nprint(greet(\"Lin\", with: \"Hi\"))      // Hi, Lin!\n\nlet nums = [3, 1, 2, 5]\nlet squares = nums.map { $0 * $0 }\nlet evens = nums.filter { $0 % 2 == 0 }\nlet sorted = nums.sorted(by: >)\nprint(squares, evens, sorted)        // [9, 1, 4, 25] [2] [5, 3, 2, 1]",
+          "lang": "swift"
+        },
+        "`$0` 指代闭包的第一个参数。当闭包是最后一个参数时，可以写在圆括号之后（尾随闭包语法）。"
+      ]
+    },
+    {
+      "h": "数组、字典与集合",
+      "body": [
+        {
+          "code": "var fruits = [\"apple\", \"pear\"]\nfruits.append(\"fig\")\nprint(fruits.count, fruits[0], fruits.contains(\"fig\"))  // 3 apple true\n\nvar ages: [String: Int] = [\"ann\": 31, \"bob\": 25]\nages[\"cy\"] = 40\nfor (person, age) in ages.sorted(by: { $0.key < $1.key }) {\n    print(person, age)                                  // ann 31, bob 25, cy 40\n}\nprint(ages[\"zed\", default: 0])                          // 0\n\nlet tags: Set = [\"b\", \"a\", \"b\"]\nprint(tags.count)                                       // 2",
+          "lang": "swift"
+        },
+        "集合是值类型：把数组赋值给另一个变量会创建一个独立的副本（惰性复制，仅在其中一个被修改时才复制）。用 `let` 声明的数组完全不能被修改。"
+      ]
+    },
+    {
+      "h": "标志性特性：可选类型",
+      "body": [
+        "可能缺失的值具有可选类型，写作 `String?`。在解包之前，你不能把它当作 `String` 使用，所以编译器会强制你处理 `nil` 的情况。",
+        {
+          "code": "let input = \"42\"\nlet number: Int? = Int(input)      // nil if input is not a number\n\nif let number {                     // unwrap: runs only when not nil\n    print(\"got \\(number)\")          // got 42\n}\n\nfunc firstWord(_ text: String) -> String? {\n    text.split(separator: \" \").first.map(String.init)\n}\n\nguard let word = firstWord(\"hello world\") else {\n    fatalError(\"no words\")\n}\nprint(word)                                  // hello\nprint(firstWord(\"\")?.uppercased() ?? \"none\") // none",
+          "lang": "swift"
+        },
+        "`if let` 和 `guard let` 可以安全地解包，`?.`（可选链）仅在值存在时才调用方法，`??` 提供默认值。强制解包 `value!` 在值为 `nil` 时会崩溃，所以请少用。简写形式 `if let number` 需要 Swift 5.7 或更高版本。"
+      ]
+    },
+    {
+      "h": "结构体、类、枚举与协议",
+      "body": [
+        "结构体和枚举是值类型；类是支持继承的引用类型。Swift 代码更倾向于使用结构体和协议（接口），而不是类的层级结构。",
+        {
+          "code": "protocol Shape {\n    func area() -> Double\n}\n\nstruct Rect: Shape {\n    var width: Double\n    var height: Double\n    func area() -> Double { width * height }\n}\n\nenum Circle: Shape {\n    case unit\n    case radius(Double)\n    func area() -> Double {\n        switch self {\n        case .unit: return Double.pi\n        case .radius(let r): return Double.pi * r * r\n        }\n    }\n}\n\nlet shapes: [any Shape] = [Rect(width: 2, height: 3), Circle.radius(1)]\nlet total = shapes.reduce(0) { $0 + $1.area() }\nprint((total * 100).rounded() / 100)   // 9.14",
+          "lang": "swift"
+        },
+        "结构体会自动获得逐成员初始化器（`Rect(width:height:)`）。枚举项可以携带关联值，如 `.radius(Double)`。"
+      ]
+    },
+    {
+      "h": "错误处理",
+      "body": [
+        "可能失败的函数标记为 `throws`。调用者必须在 `do`/`catch` 块中使用 `try`，或用 `try?` 把错误转换为 `nil`。",
+        {
+          "code": "enum AgeError: Error {\n    case notANumber(String)\n    case negative\n}\n\nfunc parseAge(_ text: String) throws -> Int {\n    guard let age = Int(text) else { throw AgeError.notANumber(text) }\n    guard age >= 0 else { throw AgeError.negative }\n    return age\n}\n\ndo {\n    print(try parseAge(\"41\"))          // 41\n    print(try parseAge(\"abc\"))\n} catch AgeError.notANumber(let text) {\n    print(\"not a number: \\(text)\")     // not a number: abc\n} catch {\n    print(\"other error: \\(error)\")\n}\n\nlet maybe = try? parseAge(\"-3\")        // nil\nprint(maybe as Any)                    // nil",
+          "lang": "swift"
+        }
+      ]
+    },
+    {
+      "h": "一个完整的小程序：词频统计",
+      "body": [
+        {
+          "code": "import Foundation\n\nlet args = CommandLine.arguments\nguard args.count == 2 else {\n    print(\"usage: swift words.swift FILE\")\n    exit(1)\n}\n\ndo {\n    let text = try String(contentsOfFile: args[1], encoding: .utf8).lowercased()\n    let words = text.split { !$0.isLetter && $0 != \"'\" }\n    var counts: [Substring: Int] = [:]\n    for word in words {\n        counts[word, default: 0] += 1\n    }\n    for (word, n) in counts.sorted(by: { $0.value > $1.value }).prefix(5) {\n        print(String(n).padding(toLength: 6, withPad: \" \", startingAt: 0) + word)\n    }\n} catch {\n    print(\"cannot read \\(args[1]): \\(error.localizedDescription)\")\n    exit(1)\n}",
+          "lang": "swift"
+        },
+        "用 `swift words.swift notes.txt` 运行。`Foundation` 提供文件读取和字符串辅助功能；它在 Apple 平台以及 Linux 和 Windows 的工具链中均可使用。"
+      ]
+    },
+    {
+      "h": "新手常见错误",
+      "body": [
+        {
+          "note": "避免用 `!` 强制解包，以及使用 `String!` 这类隐式解包类型，除非该值确定存在。此时若遇到 `nil`，应用会在运行时崩溃。"
+        },
+        {
+          "ul": [
+            "试图修改 `let` 常量，或 `let` 结构体的属性。值需要改变时请使用 `var`。",
+            "以为结构体会像对象那样被共享。修改副本不会改变原来的值；需要共享同一个实例时请使用类。",
+            "用整数给 `String` 做索引，比如 `s[0]`。请使用 `s.first`、`s.prefix(3)` 或 `String.Index` 值。",
+            "在算术中混用 `Int` 和 `Double` 而不转换，这是编译错误。",
+            "在会抛出错误的调用前忘记写 `try`，或使用 `try!`，一旦出错就会崩溃。"
+          ]
+        }
+      ]
+    },
+    {
+      "h": "接下来学什么",
+      "body": [
+        "阅读 docs.swift.org 上的《The Swift Programming Language》（官方指南与参考）以及 swift.org 上的文档中心。开发应用时，可以在 Xcode 中跟着 Apple 的 SwiftUI 教程学习。然后学习 Swift 并发（`async`/`await` 和 actor）、泛型，以及用于管理依赖的 Swift Package Manager。"
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Swift 只能用于 Apple 平台吗？",
+      "a": "不是。Swift 是开源的，也能在 Linux 和 Windows 上运行，并用于服务器端代码和工具。不过，SwiftUI 和 UIKit 等应用框架仅限 Apple 平台。"
+    },
+    {
+      "q": "应该学 Swift 还是 Objective-C？",
+      "a": "学 Swift。它是 Apple 为新应用推荐的语言，必要时还能调用现有的 Objective-C 代码。"
+    },
+    {
+      "q": "Swift 中结构体和类有什么区别？",
+      "a": "结构体是值类型，赋值或传递时会被复制；类是引用类型，所有变量共享同一个实例。类还支持继承和反初始化器（deinitializer）。"
+    },
+    {
+      "q": "类型后面的问号是什么意思？",
+      "a": "`Int?` 是可选类型：它要么包含一个 `Int`，要么是 `nil`。使用其中的值之前，必须先解包，例如用 `if let`。"
+    }
+  ]
+}

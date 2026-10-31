@@ -1,0 +1,195 @@
+{
+  "title": "Tutorial de Swift: opcionales, structs, enums y protocolos — cv.cm",
+  "description": "Aprende Swift en una página: Hello world, let y var, tipos, control de flujo, closures, arrays y diccionarios, opcionales, structs, enums y errores.",
+  "h1": "Tutorial de Swift para principiantes",
+  "answer": "Swift es un lenguaje rápido, seguro y compilado creado por Apple para aplicaciones de iPhone, iPad, Mac, Apple Watch y Apple TV, y que también funciona en Linux y Windows. Guarda `print(\"Hello, world\")` en `hello.swift` y ejecuta `swift hello.swift`. Las ideas centrales son las constantes con `let` y las variables con `var`, la inferencia de tipos, los opcionales para valores que pueden faltar, los structs y enums con semántica de valor, los protocolos y los errores tratados con `do`/`try`/`catch`.",
+  "sections": [
+    {
+      "h": "Qué es Swift y para qué se usa",
+      "body": [
+        "Swift fue presentado por Apple en 2014 como sustituto moderno de Objective-C y se publicó como código abierto en 2015; el proyecto está en swift.org. Es el lenguaje principal de las aplicaciones en plataformas Apple, normalmente con los frameworks SwiftUI o UIKit. Swift también se usa para código del lado del servidor (por ejemplo con el framework Vapor) y herramientas de línea de comandos. El lenguaje está diseñado para evitar errores comunes: las variables deben inicializarse, los arrays comprueban sus límites y `nil` debe tratarse de forma explícita."
+      ]
+    },
+    {
+      "h": "Instalar Swift y ejecutar Hello, world",
+      "body": [
+        "En un Mac, instala Xcode desde la App Store o las herramientas de línea de comandos de Xcode. En Linux y Windows, descarga una toolchain desde swift.org. Compruébalo con `swift --version`.",
+        {
+          "code": "print(\"Hello, world\")",
+          "lang": "swift"
+        },
+        {
+          "code": "swift hello.swift\n# Hello, world\nswiftc hello.swift -o hello   # compile to a binary\n./hello",
+          "lang": "shell"
+        },
+        "Para un proyecto más grande, ejecuta `swift package init --type executable` y después `swift run`. Los playgrounds de Xcode son otra forma fácil de experimentar."
+      ]
+    },
+    {
+      "h": "Constantes, variables y tipos básicos",
+      "body": [
+        "Usa `let` para constantes y `var` para variables. Prefiere `let`; el compilador avisa cuando un `var` no se modifica nunca. Los tipos se infieren, y Swift nunca convierte implícitamente entre tipos numéricos.",
+        {
+          "table": {
+            "head": [
+              "Tipo",
+              "Ejemplo",
+              "Notas"
+            ],
+            "rows": [
+              [
+                "`Int`",
+                "`let n = 42`",
+                "64 bits en las plataformas modernas"
+              ],
+              [
+                "`Double`",
+                "`let x = 3.14`",
+                "Tipo de coma flotante por defecto"
+              ],
+              [
+                "`Bool`",
+                "`let ok = true`",
+                "`true` o `false`"
+              ],
+              [
+                "`String`",
+                "`let s = \"hi \\(name)\"`",
+                "Texto Unicode, tipo de valor"
+              ],
+              [
+                "`Character`",
+                "`let c: Character = \"é\"`",
+                "Un carácter tal como lo percibe el usuario"
+              ],
+              [
+                "`[Int]`, `[String: Int]`",
+                "`[1, 2]`, `[\"a\": 1]`",
+                "Array y diccionario"
+              ]
+            ]
+          }
+        },
+        {
+          "code": "let name = \"Ada\"\nvar count = 7\ncount += 1\nlet avg = Double(count) / 2   // explicit conversion\nprint(\"\\(name) has \\(count) items, avg \\(avg)\")  // Ada has 8 items, avg 4.0\nprint(7 / 2, 7 % 2)          // 3 1",
+          "lang": "swift"
+        },
+        "`\\(expression)` dentro de un literal de cadena inserta un valor (interpolación de cadenas)."
+      ]
+    },
+    {
+      "h": "Control de flujo",
+      "body": [
+        {
+          "code": "let score = 72\nif score >= 90 {\n    print(\"A\")\n} else if score >= 70 {\n    print(\"B\")                 // B\n} else {\n    print(\"C\")\n}\n\nfor i in 0..<3 {\n    print(i, terminator: \" \")  // 0 1 2\n}\nprint()\n\nvar n = 10\nwhile n > 1 { n /= 2 }\nprint(n)                       // 1\n\nlet day = \"SAT\"\nswitch day {\ncase \"SAT\", \"SUN\":\n    print(\"weekend\")           // weekend\ndefault:\n    print(\"weekday\")\n}",
+          "lang": "swift"
+        },
+        "`switch` debe ser exhaustivo, no continúa en la siguiente rama por defecto y puede hacer coincidir rangos (`case 90...100:`), tuplas y casos de enum."
+      ]
+    },
+    {
+      "h": "Funciones y closures",
+      "body": [
+        "Los parámetros tienen etiquetas de argumento que escribe quien llama, lo que hace que las llamadas se lean como frases. Usa `_` para omitir una etiqueta. Los closures son funciones anónimas escritas entre llaves.",
+        {
+          "code": "func greet(_ name: String, with greeting: String = \"Hello\") -> String {\n    return \"\\(greeting), \\(name)!\"\n}\n\nprint(greet(\"Lin\"))                  // Hello, Lin!\nprint(greet(\"Lin\", with: \"Hi\"))      // Hi, Lin!\n\nlet nums = [3, 1, 2, 5]\nlet squares = nums.map { $0 * $0 }\nlet evens = nums.filter { $0 % 2 == 0 }\nlet sorted = nums.sorted(by: >)\nprint(squares, evens, sorted)        // [9, 1, 4, 25] [2] [5, 3, 2, 1]",
+          "lang": "swift"
+        },
+        "`$0` se refiere al primer argumento del closure. Cuando un closure es el último argumento, puede escribirse después de los paréntesis (sintaxis de trailing closure)."
+      ]
+    },
+    {
+      "h": "Arrays, diccionarios y conjuntos",
+      "body": [
+        {
+          "code": "var fruits = [\"apple\", \"pear\"]\nfruits.append(\"fig\")\nprint(fruits.count, fruits[0], fruits.contains(\"fig\"))  // 3 apple true\n\nvar ages: [String: Int] = [\"ann\": 31, \"bob\": 25]\nages[\"cy\"] = 40\nfor (person, age) in ages.sorted(by: { $0.key < $1.key }) {\n    print(person, age)                                  // ann 31, bob 25, cy 40\n}\nprint(ages[\"zed\", default: 0])                          // 0\n\nlet tags: Set = [\"b\", \"a\", \"b\"]\nprint(tags.count)                                       // 2",
+          "lang": "swift"
+        },
+        "Las colecciones son tipos de valor: asignar un array a otra variable crea una copia independiente (copiada de forma diferida, solo cuando una de ellas cambia). Un array declarado con `let` no puede modificarse en absoluto."
+      ]
+    },
+    {
+      "h": "Característica distintiva: los opcionales",
+      "body": [
+        "Un valor que puede faltar tiene un tipo opcional, que se escribe `String?`. No puedes usarlo como `String` hasta que lo desenvuelves, así que el compilador te obliga a tratar el caso `nil`.",
+        {
+          "code": "let input = \"42\"\nlet number: Int? = Int(input)      // nil if input is not a number\n\nif let number {                     // unwrap: runs only when not nil\n    print(\"got \\(number)\")          // got 42\n}\n\nfunc firstWord(_ text: String) -> String? {\n    text.split(separator: \" \").first.map(String.init)\n}\n\nguard let word = firstWord(\"hello world\") else {\n    fatalError(\"no words\")\n}\nprint(word)                                  // hello\nprint(firstWord(\"\")?.uppercased() ?? \"none\") // none",
+          "lang": "swift"
+        },
+        "`if let` y `guard let` desenvuelven de forma segura, `?.` (encadenamiento opcional) llama a un método solo cuando el valor existe, y `??` proporciona un valor por defecto. El desenvolvimiento forzado `value!` falla cuando el valor es `nil`, así que úsalo poco. La forma corta `if let number` requiere Swift 5.7 o posterior."
+      ]
+    },
+    {
+      "h": "Structs, clases, enums y protocolos",
+      "body": [
+        "Los structs y enums son tipos de valor; las clases son tipos de referencia con herencia. El código Swift prefiere los structs y los protocolos (interfaces) a las jerarquías de clases.",
+        {
+          "code": "protocol Shape {\n    func area() -> Double\n}\n\nstruct Rect: Shape {\n    var width: Double\n    var height: Double\n    func area() -> Double { width * height }\n}\n\nenum Circle: Shape {\n    case unit\n    case radius(Double)\n    func area() -> Double {\n        switch self {\n        case .unit: return Double.pi\n        case .radius(let r): return Double.pi * r * r\n        }\n    }\n}\n\nlet shapes: [any Shape] = [Rect(width: 2, height: 3), Circle.radius(1)]\nlet total = shapes.reduce(0) { $0 + $1.area() }\nprint((total * 100).rounded() / 100)   // 9.14",
+          "lang": "swift"
+        },
+        "Los structs reciben automáticamente un inicializador memberwise (`Rect(width:height:)`). Los casos de un enum pueden llevar valores asociados, como hace `.radius(Double)`."
+      ]
+    },
+    {
+      "h": "Manejo de errores",
+      "body": [
+        "Las funciones que pueden fallar se marcan con `throws`. Quien las llama debe usar `try` dentro de un bloque `do`/`catch`, o usar `try?` para convertir un error en `nil`.",
+        {
+          "code": "enum AgeError: Error {\n    case notANumber(String)\n    case negative\n}\n\nfunc parseAge(_ text: String) throws -> Int {\n    guard let age = Int(text) else { throw AgeError.notANumber(text) }\n    guard age >= 0 else { throw AgeError.negative }\n    return age\n}\n\ndo {\n    print(try parseAge(\"41\"))          // 41\n    print(try parseAge(\"abc\"))\n} catch AgeError.notANumber(let text) {\n    print(\"not a number: \\(text)\")     // not a number: abc\n} catch {\n    print(\"other error: \\(error)\")\n}\n\nlet maybe = try? parseAge(\"-3\")        // nil\nprint(maybe as Any)                    // nil",
+          "lang": "swift"
+        }
+      ]
+    },
+    {
+      "h": "Un programa completo pequeño: frecuencia de palabras",
+      "body": [
+        {
+          "code": "import Foundation\n\nlet args = CommandLine.arguments\nguard args.count == 2 else {\n    print(\"usage: swift words.swift FILE\")\n    exit(1)\n}\n\ndo {\n    let text = try String(contentsOfFile: args[1], encoding: .utf8).lowercased()\n    let words = text.split { !$0.isLetter && $0 != \"'\" }\n    var counts: [Substring: Int] = [:]\n    for word in words {\n        counts[word, default: 0] += 1\n    }\n    for (word, n) in counts.sorted(by: { $0.value > $1.value }).prefix(5) {\n        print(String(n).padding(toLength: 6, withPad: \" \", startingAt: 0) + word)\n    }\n} catch {\n    print(\"cannot read \\(args[1]): \\(error.localizedDescription)\")\n    exit(1)\n}",
+          "lang": "swift"
+        },
+        "Ejecútalo con `swift words.swift notes.txt`. `Foundation` ofrece lectura de archivos y utilidades para cadenas; está disponible en las plataformas Apple y en las toolchains de Linux y Windows."
+      ]
+    },
+    {
+      "h": "Errores comunes de principiantes",
+      "body": [
+        {
+          "note": "Evita el desenvolvimiento forzado con `!` y los tipos desenvueltos implícitamente como `String!`, salvo cuando un valor esté garantizado. Un `nil` en ese punto hace fallar la aplicación en tiempo de ejecución."
+        },
+        {
+          "ul": [
+            "Intentar cambiar una constante `let` o una propiedad de un struct declarado con `let`. Usa `var` cuando el valor deba cambiar.",
+            "Esperar que un struct se comparta como un objeto. Cambiar una copia no cambia el original; usa una clase si necesitas identidad compartida.",
+            "Indexar un `String` con un entero, como `s[0]`. Usa `s.first`, `s.prefix(3)` o valores de `String.Index`.",
+            "Mezclar `Int` y `Double` en una operación aritmética sin convertir, lo que es un error de compilación.",
+            "Olvidar `try` antes de una llamada que lanza errores, o usar `try!`, que falla ante un error."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Adónde ir después",
+      "body": [
+        "Lee «The Swift Programming Language» en docs.swift.org, la guía y referencia oficial, y el centro de documentación de swift.org. Para aplicaciones, sigue los tutoriales de SwiftUI de Apple en Xcode. Después aprende la concurrencia de Swift (`async`/`await` y actores), los genéricos y el Swift Package Manager para las dependencias."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "¿Swift es solo para plataformas Apple?",
+      "a": "No. Swift es de código abierto y también funciona en Linux y Windows, y se usa para código del lado del servidor y herramientas. Sin embargo, los frameworks de aplicaciones como SwiftUI y UIKit son exclusivos de Apple."
+    },
+    {
+      "q": "¿Debo aprender Swift u Objective-C?",
+      "a": "Aprende Swift. Es el lenguaje que Apple recomienda para las aplicaciones nuevas, y puede llamar a código Objective-C existente cuando haga falta."
+    },
+    {
+      "q": "¿Cuál es la diferencia entre un struct y una clase en Swift?",
+      "a": "Un struct es un tipo de valor que se copia al asignarlo o pasarlo; una clase es un tipo de referencia, de modo que todas las variables comparten una sola instancia. Las clases también admiten herencia y deinicializadores."
+    },
+    {
+      "q": "¿Qué significa el signo de interrogación después de un tipo?",
+      "a": "`Int?` es un opcional: contiene un `Int` o `nil`. Debes desenvolverlo, por ejemplo con `if let`, antes de usar el valor."
+    }
+  ]
+}

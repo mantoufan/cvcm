@@ -1,0 +1,192 @@
+{
+  "title": "Búsqueda en profundidad (DFS): código en Python recursivo e iterativo, complejidad — cv.cm",
+  "description": "Búsqueda en profundidad explicada: cómo DFS baja hasta el fondo antes de retroceder, un ejemplo paso a paso, código en Python recursivo y con pila, detección de ciclos y coste O(V + E).",
+  "h1": "Búsqueda en profundidad (DFS) explicada: cómo funciona, código y complejidad",
+  "answer": "La búsqueda en profundidad (DFS, del inglés depth-first search) es un recorrido de grafos que sigue un camino hasta donde puede llegar y luego retrocede al último nodo que aún tiene un vecino sin visitar para continuar desde allí. Usa recursión o una pila explícita más un conjunto de visitados. DFS visita todos los nodos alcanzables en tiempo O(V + E) y es la base de la detección de ciclos, la ordenación topológica, las componentes conexas y el backtracking.",
+  "sections": [
+    {
+      "h": "Qué problema resuelve DFS",
+      "body": [
+        "DFS responde a la pregunta \"¿qué puedo alcanzar desde aquí?\" explorando una rama por completo antes de probar la siguiente. Ese orden es útil cuando importa más la estructura de los caminos que su longitud: encontrar la salida de un laberinto, comprobar si un grafo tiene un ciclo, ordenar tareas que dependen unas de otras o listar todas las soluciones de un rompecabezas.",
+        "A diferencia de la búsqueda en anchura, DFS no encuentra caminos más cortos. Su fortaleza es que solo guarda en memoria el camino actual y que registra de forma natural cuándo se entra en un nodo y cuándo se termina con él."
+      ]
+    },
+    {
+      "h": "La idea en palabras sencillas",
+      "body": [
+        {
+          "ol": [
+            "Marca el nodo actual como visitado.",
+            "Para cada vecino que no esté visitado, pasa a él y repite el paso 1 desde ahí.",
+            "Cuando un nodo ya no tiene vecinos sin visitar, está terminado: vuelve al nodo del que vienes.",
+            "Cuando regresas al nodo inicial y ya no tiene vecinos sin visitar, la búsqueda ha terminado."
+          ]
+        },
+        "Volver al nodo anterior se llama retroceso (backtracking). Con recursión, la pila de llamadas lo hace por ti."
+      ]
+    },
+    {
+      "h": "Ejemplo resuelto, paso a paso",
+      "body": [
+        "Usa el mismo grafo no dirigido del artículo de BFS: A–B, A–C, B–D, C–D, C–E, D–F. Empieza en A y prueba los vecinos en orden alfabético.",
+        {
+          "table": {
+            "head": [
+              "Paso",
+              "Acción",
+              "Camino actual (pila)"
+            ],
+            "rows": [
+              [
+                "1",
+                "Visitar A",
+                "A"
+              ],
+              [
+                "2",
+                "A → B (primer vecino sin visitar)",
+                "A, B"
+              ],
+              [
+                "3",
+                "B → D",
+                "A, B, D"
+              ],
+              [
+                "4",
+                "D → C (B ya está visitado)",
+                "A, B, D, C"
+              ],
+              [
+                "5",
+                "C → E (A y D ya están visitados)",
+                "A, B, D, C, E"
+              ],
+              [
+                "6",
+                "E no tiene vecinos nuevos: terminar E, volver a C; terminar C, volver a D",
+                "A, B, D"
+              ],
+              [
+                "7",
+                "D → F",
+                "A, B, D, F"
+              ],
+              [
+                "8",
+                "Terminar F, D, B, A",
+                "vacía"
+              ]
+            ]
+          }
+        },
+        "El orden de visita es A, B, D, C, E, F. El orden de finalización es E, C, F, D, B, A. El orden de finalización es el que usan la ordenación topológica y los algoritmos de componentes fuertemente conexas."
+      ]
+    },
+    {
+      "h": "Implementación en Python",
+      "body": [
+        "La versión recursiva es la más corta y la más cercana a la idea:",
+        {
+          "code": "def dfs(graph, node, visited=None):\n    if visited is None:\n        visited = []\n    visited.append(node)\n    for nxt in graph[node]:\n        if nxt not in visited:\n            dfs(graph, nxt, visited)\n    return visited\ngraph = {\n    \"A\": [\"B\", \"C\"], \"B\": [\"A\", \"D\"], \"C\": [\"A\", \"D\", \"E\"],\n    \"D\": [\"B\", \"C\", \"F\"], \"E\": [\"C\"], \"F\": [\"D\"],\n}\nprint(dfs(graph, \"A\"))  # ['A', 'B', 'D', 'C', 'E', 'F']",
+          "lang": "python"
+        },
+        "Una lista mantiene el ejemplo legible, pero hace que `in` sea una comprobación O(n). Para grafos grandes, usa un `set` aparte para la pertenencia. La versión iterativa usa una pila explícita y evita el límite de recursión de Python. Los vecinos se apilan en orden inverso para que salgan en el orden original:",
+        {
+          "code": "def dfs_iterative(graph, start):\n    visited, order = set(), []\n    stack = [start]\n    while stack:\n        node = stack.pop()\n        if node in visited:\n            continue\n        visited.add(node)\n        order.append(node)\n        for nxt in reversed(graph[node]):\n            if nxt not in visited:\n                stack.append(nxt)\n    return order\nprint(dfs_iterative(graph, \"A\"))  # ['A', 'B', 'D', 'C', 'E', 'F']",
+          "lang": "python"
+        },
+        "Fíjate en la diferencia con BFS: aquí un nodo se marca cuando se extrae de la pila, así que puede estar en ella más de una vez. Eso es correcto para DFS y conserva el verdadero orden en profundidad."
+      ]
+    },
+    {
+      "h": "Detectar un ciclo en un grafo dirigido",
+      "body": [
+        "Una aplicación clásica de DFS colorea cada nodo: blanco (no visto), gris (en el camino actual) y negro (terminado). Llegar a un nodo gris significa que hay una arista de vuelta al camino actual, es decir, un ciclo.",
+        {
+          "code": "def has_cycle(graph):\n    WHITE, GRAY, BLACK = 0, 1, 2\n    color = {node: WHITE for node in graph}\n    def visit(node):\n        color[node] = GRAY\n        for nxt in graph[node]:\n            if color[nxt] == GRAY:\n                return True              # back edge\n            if color[nxt] == WHITE and visit(nxt):\n                return True\n        color[node] = BLACK\n        return False\n    return any(color[n] == WHITE and visit(n) for n in graph)\nprint(has_cycle({\"a\": [\"b\"], \"b\": [\"c\"], \"c\": [\"a\"]}))  # True\nprint(has_cycle({\"a\": [\"b\"], \"b\": [\"c\"], \"c\": []}))     # False",
+          "lang": "python"
+        }
+      ]
+    },
+    {
+      "h": "Complejidad temporal y espacial",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Medida",
+              "Coste",
+              "Motivo"
+            ],
+            "rows": [
+              [
+                "Tiempo",
+                "O(V + E)",
+                "Cada nodo se visita una vez y cada arista se examina una vez por sentido."
+              ],
+              [
+                "Espacio",
+                "O(V)",
+                "El conjunto de visitados más la pila de recursión o la pila explícita, que puede crecer hasta la longitud del camino más largo."
+              ],
+              [
+                "Matriz de adyacencia",
+                "Tiempo O(V²)",
+                "Listar los vecinos de cada nodo cuesta O(V)."
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "Variantes y errores comunes",
+      "body": [
+        {
+          "ul": [
+            "Preorden y postorden: registra un nodo al entrar en él (preorden) o al terminar con él (postorden). El postorden inverso de un grafo acíclico dirigido es un orden topológico.",
+            "Componentes conexas: inicia un nuevo DFS desde cada nodo que siga sin visitar; cada inicio es una componente.",
+            "DFS con profundización iterativa: ejecuta DFS con un límite de profundidad 0, 1, 2, … Encuentra caminos más cortos como BFS con la poca memoria de DFS.",
+            "El relleno por inundación en una cuadrícula (la herramienta cubo de pintura) es un DFS o BFS sobre celdas vecinas del mismo color."
+          ]
+        },
+        {
+          "note": "El límite de recursión por defecto de Python es de unos 1000 marcos (consulta `sys.getrecursionlimit()`). Un DFS recursivo sobre un camino largo, como una cadena de 2000 nodos o una cuadrícula grande, lanza `RecursionError`. Usa la versión iterativa para entradas grandes en lugar de subir el límite."
+        },
+        "Otros errores frecuentes: olvidar el conjunto de visitados (bucle infinito ante cualquier ciclo), usar un argumento por defecto mutable como `visited=[]` (se comparte entre llamadas) y tratar como ciclo una arista no dirigida de vuelta al padre."
+      ]
+    },
+    {
+      "h": "Cuándo usar DFS y usos en el mundo real",
+      "body": [
+        {
+          "ul": [
+            "Usa DFS para alcanzabilidad, detección de ciclos, ordenación topológica, componentes conexas y fuertemente conexas, puentes y puntos de articulación, y para la búsqueda exhaustiva con backtracking.",
+            "Usa BFS en su lugar cuando necesites el menor número de pasos, y Dijkstra o A* cuando las aristas tengan pesos.",
+            "Problemas de entrevista: número de islas, clonar un grafo, horario de cursos (detección de ciclos), suma de camino en un árbol binario, generación de permutaciones.",
+            "En el mundo real: sistemas de compilación y gestores de paquetes que resuelven el orden de dependencias, compiladores que analizan el flujo de control, generación de laberintos y recorridos de árboles en sistemas de archivos o documentos HTML."
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "¿DFS es recursivo o iterativo?",
+      "a": "Ambos sirven. La recursión es más corta y usa la pila de llamadas de forma implícita; una pila explícita evita los límites de recursión en lenguajes como Python y da el mismo orden de visita si apilas los vecinos en orden inverso."
+    },
+    {
+      "q": "¿DFS encuentra el camino más corto?",
+      "a": "No. DFS encuentra algún camino, no necesariamente el de menos aristas. Usa BFS en grafos sin pesos y el algoritmo de Dijkstra en grafos con pesos."
+    },
+    {
+      "q": "¿Cuál es la complejidad temporal de DFS?",
+      "a": "O(V + E) con una lista de adyacencia, porque cada nodo y cada arista se procesan un número constante de veces. Con una matriz de adyacencia es O(V²)."
+    },
+    {
+      "q": "¿Cómo se relacionan preorden, inorden y postorden con DFS?",
+      "a": "Todos son recorridos en profundidad de un árbol que solo se diferencian en cuándo se procesa el nodo actual: antes de sus hijos, entre el hijo izquierdo y el derecho, o después de sus hijos."
+    }
+  ]
+}

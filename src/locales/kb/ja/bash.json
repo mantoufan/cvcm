@@ -1,0 +1,226 @@
+{
+  "title": "Bash入門：変数・ループ・関数・シェルスクリプトを解説 — cv.cm",
+  "description": "Bashスクリプトを基礎から学べる入門講座。スクリプトの実行、変数とクォート、ifとcase、ループ、関数、配列、パイプとリダイレクト、安全なエラー処理を解説します。",
+  "h1": "Bashスクリプト入門：初心者向けチュートリアル",
+  "answer": "Bashは、Linuxサーバー、macOSのターミナル、CIパイプラインで使われる、Unixのコマンドラインシェル兼スクリプト言語です。Bashスクリプトは、シェルコマンドを書いたテキストファイルで、変数、条件分岐、ループ、関数、パイプと組み合わせて使います。このページでは、スクリプトの書き方と実行方法、変数の安全なクォート、制御構文、配列、出力のリダイレクト、set -euo pipefailによるエラー処理を紹介します。",
+  "sections": [
+    {
+      "h": "Bashとは何か、何に使われるのか",
+      "body": [
+        "Bash（Bourne Again SHell）は、GNUプロジェクトのコマンドラインシェル兼スクリプト言語です。入力したコマンドを読み取ってプログラムを実行し、パイプやリダイレクトでそれらを接続します。Bashスクリプトはそれと同じコマンドを書いたテキストファイルなので、ターミナルで手作業で行うことは何でも自動化できます。",
+        "Bashは、ほとんどのLinuxディストリビューションで標準の対話型シェルです。macOSでは標準シェルがzshになりましたが、Bashも引き続き同梱されています。Windowsでは、WSLやGit Bashで使えます。開発者、システム管理者、DevOpsエンジニアは、ビルドスクリプト、デプロイ、CIジョブ、サーバーの保守、`grep`、`sed`、`awk`、`sort` などによる手早いデータ処理に使っています。"
+      ]
+    },
+    {
+      "h": "Hello, worldを書いて実行する",
+      "body": [
+        "スクリプトは、使うインタプリタをシステムに伝えるshebang行で始まります。`chmod` でファイルを実行可能にしてから、実行します。",
+        {
+          "code": "#!/usr/bin/env bash\n# hello.sh\necho \"Hello, world!\"",
+          "lang": "shell"
+        },
+        {
+          "code": "chmod +x hello.sh\n./hello.sh\n# Hello, world!\nbash hello.sh       # also works without chmod\nbash --version      # check which version you have",
+          "lang": "shell"
+        },
+        "`#!/usr/bin/env bash` は `PATH` からBashを探すので、`/bin/bash` を直接書くよりも移植性が高くなります。スクリプトがPOSIXの機能だけを使うなら `#!/bin/sh` も使えますが、その場合は `[[ ]]` や配列のようなBash固有の構文は使えません。"
+      ]
+    },
+    {
+      "h": "変数、クォート、展開",
+      "body": [
+        "代入は `name=value`、参照は `$name` または `${name}` で行います。すべての変数は文字列で、Bashが整数演算を行うのは `$(( ))` の中だけです。展開は二重引用符で囲むと、空白や特殊文字がそのまま保たれます。",
+        {
+          "code": "name=\"Ada\"                 # no spaces around =\ncount=3\necho \"Hello, $name\"        # Hello, Ada\necho \"Next: $((count + 1))\"  # Next: 4  (integer arithmetic)\ntoday=$(date +%Y-%m-%d)    # command substitution\necho \"Today is $today\"\nfile=\"my report.txt\"\necho \"${file%.txt}.pdf\"    # my report.pdf  (strip suffix)\necho \"${#name}\"            # 3  (string length)\necho \"${missing:-default}\" # default  (fallback value)",
+          "lang": "shell"
+        },
+        {
+          "table": {
+            "head": [
+              "構文",
+              "意味"
+            ],
+            "rows": [
+              [
+                "`\"$var\"`",
+                "変数の値。1つの単語として扱われる"
+              ],
+              [
+                "`'text'`",
+                "リテラルのテキスト。展開は一切されない"
+              ],
+              [
+                "`$(command)`",
+                "コマンドの出力"
+              ],
+              [
+                "`$((a + b))`",
+                "整数演算"
+              ],
+              [
+                "`$1`, `$2`, `$@`, `$#`",
+                "スクリプトや関数の引数、すべての引数、引数の数"
+              ],
+              [
+                "`$?`",
+                "直前のコマンドの終了ステータス（0は成功）"
+              ]
+            ]
+          }
+        },
+        {
+          "note": "空白を入れて `name = value` と書くのは、初心者が最もよくやる間違いです。Bashは `name` というコマンドを実行しようとします。また、すべての展開をクォートしてください。ファイル名に空白が含まれると、`rm $file` は壊れたり別のファイルを削除したりしますが、`rm \"$file\"` なら安全です。"
+        }
+      ]
+    },
+    {
+      "h": "条件分岐とcase",
+      "body": [
+        "`if` はコマンドを実行して、その終了ステータスを調べます。テストコマンド `[[ ]]` は文字列の比較やファイルの検査を行い、`(( ))` は数値を比較します。`case` は、値をglobパターンと照合します。",
+        {
+          "code": "#!/usr/bin/env bash\nfile=\"${1:-notes.txt}\"\n\nif [[ -f \"$file\" ]]; then\n  echo \"$file exists\"\nelif [[ -d \"$file\" ]]; then\n  echo \"$file is a directory\"\nelse\n  echo \"$file not found\"\nfi\n\nn=7\nif (( n % 2 == 1 )); then echo \"$n is odd\"; fi\n\ncase \"$file\" in\n  *.txt) echo \"text file\" ;;\n  *.sh)  echo \"shell script\" ;;\n  *)     echo \"something else\" ;;\nesac",
+          "lang": "shell"
+        },
+        {
+          "table": {
+            "head": [
+              "テスト",
+              "真になる条件"
+            ],
+            "rows": [
+              [
+                "`[[ -f path ]]`",
+                "パスが通常のファイルである"
+              ],
+              [
+                "`[[ -d path ]]`",
+                "パスがディレクトリである"
+              ],
+              [
+                "`[[ -z \"$s\" ]]`",
+                "文字列が空である"
+              ],
+              [
+                "`[[ \"$a\" == \"$b\" ]]`",
+                "文字列が等しい"
+              ],
+              [
+                "`(( a > b ))`",
+                "数値aがbより大きい"
+              ],
+              [
+                "`[[ $a -lt $b ]]`",
+                "数値aがbより小さい（古い書き方）"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "ループ",
+      "body": [
+        "Bashには、単語のリストを回す `for`、C言語風の `for (( ))`、`while`、`until` があります。ファイルを1行ずつ読むには `while read` を使います。",
+        {
+          "code": "for fruit in apple banana cherry; do\n  echo \"fruit: $fruit\"\ndone\n\nfor (( i = 1; i <= 3; i++ )); do\n  echo \"i = $i\"\ndone\n\nfor f in *.log; do\n  [[ -e \"$f\" ]] || continue   # skip if no .log files match\n  echo \"log file: $f\"\ndone\n\nwhile IFS= read -r line; do\n  echo \"line: $line\"\ndone < input.txt",
+          "lang": "shell"
+        },
+        "`IFS= read -r` は、各行を書かれたとおりに読み取ります。`IFS=` は行頭の空白を保ち、`-r` はバックスラッシュを保ちます。"
+      ]
+    },
+    {
+      "h": "関数",
+      "body": [
+        "関数は `name() { ... }` で定義し、コマンドのように呼び出します。引数は `$1`、`$2` のように渡されます。関数は `return` で終了ステータス（0〜255）を返します。データを返すには、それを出力し、`$( )` で出力を取り込みます。",
+        {
+          "code": "greet() {\n  local name=\"${1:-world}\"   # local variable, default value\n  echo \"Hello, $name!\"\n}\n\nis_even() {\n  (( $1 % 2 == 0 ))          # exit status 0 means true\n}\n\ngreet                         # Hello, world!\ngreet \"Ann\"                   # Hello, Ann!\nmsg=$(greet \"Bo\")             # capture output\necho \"Got: $msg\"              # Got: Hello, Bo!\n\nif is_even 4; then echo \"4 is even\"; fi",
+          "lang": "shell"
+        }
+      ]
+    },
+    {
+      "h": "配列と連想配列",
+      "body": [
+        "インデックス配列は文字列のリストを保持します。連想配列は文字列のキーを値に対応付けます。これにはBash 4以降が必要で、macOSに付属する古いBash 3.2では使えません。",
+        {
+          "code": "langs=(\"bash\" \"python\" \"go\")\nlangs+=(\"rust\")\necho \"${langs[0]}\"           # bash\necho \"${#langs[@]}\"          # 4\nfor l in \"${langs[@]}\"; do echo \"- $l\"; done\n\n# associative array (Bash 4 or later)\ndeclare -A port\nport[http]=80\nport[https]=443\necho \"${port[https]}\"        # 443\nfor key in \"${!port[@]}\"; do\n  echo \"$key -> ${port[$key]}\"\ndone",
+          "lang": "shell"
+        },
+        "要素を回すときは、必ず `\"${array[@]}\"` と引用符付きで書いてください。要素に空白が含まれていても、各要素が1つの単語として保たれます。"
+      ]
+    },
+    {
+      "h": "パイプとリダイレクト",
+      "body": [
+        "Bashを代表する特長は、小さなプログラムを組み合わせられることです。パイプ `|` は、あるコマンドの出力を次のコマンドの入力に渡します。リダイレクトは、出力をファイルに送ったり、入力をファイルから読み込んだりします。ファイルディスクリプタの1は標準出力、2は標準エラー出力です。",
+        {
+          "code": "ls -l > files.txt            # write stdout to a file (overwrite)\necho \"more\" >> files.txt     # append\ngrep error app.log 2> /dev/null   # discard error messages\nmake > build.log 2>&1        # stdout and stderr to the same file\n\n# count the 3 most common words in a file\ntr -cs '[:alpha:]' '\\n' < book.txt | tr '[:upper:]' '[:lower:]' |\n  sort | uniq -c | sort -rn | head -n 3",
+          "lang": "shell"
+        }
+      ]
+    },
+    {
+      "h": "エラー処理と安全なスクリプト",
+      "body": [
+        "デフォルトでは、Bashはコマンドが失敗しても処理を続けます。多くのスクリプトは `set -euo pipefail` で始まります。`-e` は未処理のエラーで終了し、`-u` は未設定の変数をエラーとして扱い、`-o pipefail` はパイプライン中のどれかのコマンドが失敗したらパイプライン全体を失敗にします。`trap` は、スクリプトの終了時にクリーンアップ用のコードを実行します。",
+        {
+          "code": "#!/usr/bin/env bash\nset -euo pipefail            # stop on errors, unset vars, pipe failures\n\ntmp=$(mktemp)\ntrap 'rm -f \"$tmp\"' EXIT     # clean up when the script exits\n\nif ! grep -q \"ready\" status.txt; then\n  echo \"status is not ready\" >&2   # errors go to stderr\n  exit 1\nfi\n\ncp config.txt \"$tmp\" || { echo \"copy failed\" >&2; exit 2; }\necho \"ok\"",
+          "lang": "shell"
+        },
+        "`||` で1行の中で失敗を処理し、`&&` で直前のコマンドが成功した場合にだけコマンドを実行します。`set -e` には例外があり（たとえば `if` の条件内のコマンドでは作動しません）、重要なコマンドは明示的に確認してください。"
+      ]
+    },
+    {
+      "h": "小さな完成スクリプト：日付付きバックアップ",
+      "body": [
+        "このスクリプトは、ディレクトリをタイムスタンプ付きの `.tar.gz` ファイルにアーカイブし、最新の5つだけを残します。引数、デフォルト値、テスト、コマンド置換、パイプを使っています。",
+        {
+          "code": "#!/usr/bin/env bash\n# backup.sh: copy a directory into a dated .tar.gz archive\nset -euo pipefail\n\nusage() { echo \"usage: $0 SOURCE_DIR [DEST_DIR]\" >&2; exit 1; }\n\n[[ $# -ge 1 ]] || usage\nsrc=\"$1\"\ndest=\"${2:-$HOME/backups}\"\n[[ -d \"$src\" ]] || { echo \"not a directory: $src\" >&2; exit 1; }\n\nmkdir -p \"$dest\"\nstamp=$(date +%Y%m%d-%H%M%S)\narchive=\"$dest/$(basename \"$src\")-$stamp.tar.gz\"\n\ntar -czf \"$archive\" -C \"$(dirname \"$src\")\" \"$(basename \"$src\")\"\nsize=$(du -h \"$archive\" | cut -f1)\necho \"Created $archive ($size)\"\n\n# keep only the 5 newest archives for this source\nls -1t \"$dest\"/\"$(basename \"$src\")\"-*.tar.gz | tail -n +6 | while read -r old; do\n  rm -f -- \"$old\"\n  echo \"Removed $old\"\ndone",
+          "lang": "shell"
+        },
+        {
+          "code": "./backup.sh ~/projects/site\n# Created /home/ann/backups/site-20261031-093000.tar.gz (2.1M)",
+          "lang": "shell"
+        },
+        {
+          "note": "初心者がよくやる間違い：`=` の前後に空白を入れる、変数をクォートしない、`[ ]` と `[[ ]]` を同じものとして使う、珍しいファイル名を扱う必要があるスクリプトで `ls` の出力を解析する、`chmod +x` を忘れる、スクリプトの改行コードがWindows形式（CRLF）で `$'\\r': command not found` のようなエラーが出る。ShellCheckでスクリプトを検査すると、これらのほとんどを見つけられます。"
+        }
+      ]
+    },
+    {
+      "h": "次のステップ",
+      "body": [
+        {
+          "ul": [
+            "公式ドキュメントの「GNU Bash Reference Manual」。",
+            "ターミナルでの `man bash` と `help`（例：`help read`）。",
+            "スクリプトのよくあるバグを説明してくれる静的解析ツール、ShellCheck。",
+            "`sh`、`dash`、BusyBoxでも動くスクリプトが必要な場合は、POSIXシェルの仕様。"
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Bashとshの違いは何ですか？",
+      "a": "`sh` はPOSIXシェルの標準で、dashなどのプログラムが実装しています。BashはPOSIX shと互換性があり、`[[ ]]`、配列、`(( ))`、ブレース展開といった機能を追加しています。"
+    },
+    {
+      "q": "Bashとzshの違いは何ですか？",
+      "a": "日常的なコマンドのほとんどは、どちらでも互換性があります。zshは対話的な機能が充実しており、macOSの標準シェルです。`bash` のshebangで書かれたスクリプトは、引き続きBashで実行されます。"
+    },
+    {
+      "q": "スクリプトを実行すると permission denied と表示されるのはなぜですか？",
+      "a": "ファイルが実行可能になっていません。`chmod +x script.sh` を実行するか、`bash script.sh` で起動してください。"
+    },
+    {
+      "q": "Bashスクリプトに引数を渡すにはどうしますか？",
+      "a": "`./script.sh one two` のように、スクリプト名の後ろに書きます。スクリプト内では `$1` と `$2` で参照でき、`$@` はすべての引数、`$#` は引数の数を保持します。"
+    },
+    {
+      "q": "大きなプログラムをBashで書くべきですか？",
+      "a": "Bashは、コマンドをつなぎ合わせる用途に最適です。スクリプトが複雑になり、データ構造や慎重なエラー処理が必要になったら、通常はPythonのような言語のほうが保守しやすくなります。"
+    }
+  ]
+}

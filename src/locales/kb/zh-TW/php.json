@@ -1,0 +1,183 @@
+{
+  "title": "PHP 入門教學：變數、陣列、函式、類別與表單 — cv.cm",
+  "description": "一頁學會現代 PHP 8：執行 Hello world、變數與型別、流程控制、函式、陣列、類別與列舉、例外處理，以及簡單的網頁。",
+  "h1": "PHP 入門教學",
+  "answer": "PHP 是專為網頁打造的伺服器端腳本語言：PHP 檔案在伺服器上執行，並將 HTML 或 JSON 傳送給瀏覽器。安裝 PHP 後，將 `<?php echo \"Hello, world\";` 存成 `hello.php` 並執行 `php hello.php`，或用 `php -S localhost:8000` 啟動本機伺服器。核心概念包括以 `$` 開頭的變數、靈活的陣列、帶有型別宣告的函式、類別、例外，以及安全處理使用者輸入。",
+  "sections": [
+    {
+      "h": "PHP 是什麼，用來做什麼",
+      "body": [
+        "PHP 由 Rasmus Lerdorf 於 1994 年創造；現在這個名稱代表「PHP: Hypertext Preprocessor」。幾乎所有虛擬主機都能執行它，大量網站都由它驅動，包括 WordPress、Drupal 與維基百科使用的 MediaWiki。開發者用它建立內容網站、網路商店、REST API，並搭配 Laravel 與 Symfony 等框架開發完整的網頁應用程式。現代 PHP 8 擁有型別系統、JIT 編譯器、列舉、屬性（attribute），效能也遠勝舊版本。"
+      ]
+    },
+    {
+      "h": "安裝 PHP 並執行 Hello, world",
+      "body": [
+        "從 php.net 或套件管理工具安裝 PHP（`brew install php`、`sudo apt install php-cli`，或 Windows 上的 XAMPP 這類整合套件），並用 `php -v` 確認。PHP 程式碼寫在 `<?php` 與可省略的結尾 `?>` 標籤之間。",
+        {
+          "code": "<?php\necho \"Hello, world\\n\";",
+          "lang": "php"
+        },
+        {
+          "code": "php hello.php\n# Hello, world\nphp -S localhost:8000    # serve the current folder at http://localhost:8000",
+          "lang": "shell"
+        },
+        "在只包含 PHP 程式碼的檔案中，請省略結尾的 `?>` 標籤，以免意外把多餘的空白字元傳送給瀏覽器。"
+      ]
+    },
+    {
+      "h": "變數與基本型別",
+      "body": [
+        "變數名稱以 `$` 開頭。型別是動態的，但你可以宣告參數與回傳型別，而檔案開頭的 `declare(strict_types=1);` 會停止函式呼叫中的自動型別轉換。",
+        {
+          "table": {
+            "head": [
+              "型別",
+              "範例",
+              "說明"
+            ],
+            "rows": [
+              [
+                "`int`",
+                "`$n = 42;`",
+                "多數系統上為 64 位元"
+              ],
+              [
+                "`float`",
+                "`$x = 3.14;`",
+                "雙精度"
+              ],
+              [
+                "`string`",
+                "`$s = \"hi $name\";`",
+                "雙引號會內插變數，單引號不會"
+              ],
+              [
+                "`bool`",
+                "`$ok = true;`",
+                "不分大小寫的關鍵字"
+              ],
+              [
+                "`array`",
+                "`$a = [1, 2];`",
+                "有序對應表：同時是 list 與字典"
+              ],
+              [
+                "`null`",
+                "`$v = null;`",
+                "沒有值"
+              ]
+            ]
+          }
+        },
+        {
+          "code": "<?php\n$name = \"Ada\";\n$count = 7;\necho \"$name has $count items\\n\";        // Ada has 7 items\necho 'No $interpolation here' . \"\\n\";   // No $interpolation here\necho intdiv($count, 2), \" \", $count / 2, \"\\n\";  // 3 3.5\nvar_dump((int) \"12\" + 1);                // int(13)",
+          "lang": "php"
+        },
+        "`.` 運算子用來連接字串；`+` 只用於數字。"
+      ]
+    },
+    {
+      "h": "流程控制",
+      "body": [
+        {
+          "code": "<?php\n$score = 72;\nif ($score >= 90) {\n    echo \"A\\n\";\n} elseif ($score >= 70) {\n    echo \"B\\n\";                   // B\n} else {\n    echo \"C\\n\";\n}\n\nfor ($i = 0; $i < 3; $i++) {\n    echo $i, \" \";                 // 0 1 2\n}\necho \"\\n\";\n\nforeach ([\"apple\", \"pear\"] as $fruit) {\n    echo $fruit, \"\\n\";\n}\n\n$kind = match ($day = \"SAT\") {   // match is strict and returns a value\n    \"SAT\", \"SUN\" => \"weekend\",\n    default => \"weekday\",\n};\necho $kind, \"\\n\";                 // weekend",
+          "lang": "php"
+        },
+        "`match`（PHP 8.0 起）以 `===` 比較，沒有任何分支符合時會拋出錯誤；舊的 `switch` 則是寬鬆比較，且沒有 `break` 時會繼續往下執行。"
+      ]
+    },
+    {
+      "h": "函式",
+      "body": [
+        {
+          "code": "<?php\ndeclare(strict_types=1);\n\nfunction greet(string $name, string $greeting = \"Hello\"): string\n{\n    return \"$greeting, $name!\";\n}\n\necho greet(\"Lin\"), \"\\n\";                    // Hello, Lin!\necho greet(greeting: \"Hi\", name: \"Lin\"), \"\\n\"; // Hi, Lin!  (named arguments)\n\n$square = fn(int $x): int => $x * $x;       // arrow function\necho $square(5), \"\\n\";                      // 25\n\nfunction total(int ...$nums): int           // variadic\n{\n    return array_sum($nums);\n}\necho total(1, 2, 3), \"\\n\";                  // 6",
+          "lang": "php"
+        }
+      ]
+    },
+    {
+      "h": "招牌特色：陣列",
+      "body": [
+        "PHP 陣列是一種靈活的型別，可以當作 list、字典、堆疊或佇列使用。鍵可以是整數或字串，並會保留插入順序。還有大量內建函式可以操作陣列。",
+        {
+          "code": "<?php\n$nums = [3, 1, 2];\n$nums[] = 5;                       // append\nsort($nums);\necho implode(\", \", $nums), \"\\n\";   // 1, 2, 3, 5\n\n$ages = [\"ann\" => 31, \"bob\" => 25];\n$ages[\"cy\"] = 40;\nforeach ($ages as $person => $age) {\n    echo \"$person is $age\\n\";\n}\necho $ages[\"zed\"] ?? 0, \"\\n\";      // 0  (null coalescing)\n\n$evens = array_filter($nums, fn($n) => $n % 2 === 0);\n$squares = array_map(fn($n) => $n * $n, $nums);\necho json_encode(array_values($evens)), \" \", json_encode($squares), \"\\n\";  // [2] [1,4,9,25]\necho count($ages), \" \", array_key_exists(\"bob\", $ages) ? \"yes\" : \"no\", \"\\n\"; // 3 yes",
+          "lang": "php"
+        },
+        "陣列在賦值時會被複製（寫入時複製），這與以控制代碼（handle）傳遞的物件不同。"
+      ]
+    },
+    {
+      "h": "類別、建構子提升與列舉",
+      "body": [
+        {
+          "code": "<?php\ndeclare(strict_types=1);\n\nenum Role: string\n{\n    case Admin = \"admin\";\n    case Viewer = \"viewer\";\n}\n\nfinal class User\n{\n    public function __construct(\n        public readonly string $name,\n        public readonly Role $role = Role::Viewer,\n    ) {}\n\n    public function label(): string\n    {\n        return \"{$this->name} ({$this->role->value})\";\n    }\n}\n\n$u = new User(\"Ann\", Role::Admin);\necho $u->label(), \"\\n\";               // Ann (admin)\necho Role::from(\"viewer\")->name, \"\\n\"; // Viewer",
+          "lang": "php"
+        },
+        "建構子提升（PHP 8.0）讓你直接在建構子簽章中宣告並賦值屬性。`readonly` 屬性（8.1）只能設定一次，而具值列舉（backed enum，8.1）可將各個 case 對應到字串或整數。也提供介面、抽象類別與 trait。"
+      ]
+    },
+    {
+      "h": "錯誤處理",
+      "body": [
+        "現代 PHP 對大多數錯誤都會拋出例外。對可預期的失敗請捕捉 `Exception` 的子類別；`Throwable` 還涵蓋 `TypeError` 這類引擎層級的錯誤。",
+        {
+          "code": "<?php\nfunction parseAge(string $text): int\n{\n    if (!ctype_digit($text)) {\n        throw new InvalidArgumentException(\"invalid age: $text\");\n    }\n    return (int) $text;\n}\n\ntry {\n    echo parseAge(\"41\"), \"\\n\";   // 41\n    echo parseAge(\"abc\"), \"\\n\";\n} catch (InvalidArgumentException $e) {\n    echo $e->getMessage(), \"\\n\"; // invalid age: abc\n} finally {\n    echo \"done\\n\";\n}",
+          "lang": "php"
+        }
+      ]
+    },
+    {
+      "h": "完整的小程式：JSON API 端點",
+      "body": [
+        "將它存成 `api.php`，執行 `php -S localhost:8000`，並開啟 `http://localhost:8000/api.php?name=Ann`。它會讀取一個查詢參數、驗證後回傳 JSON。",
+        {
+          "code": "<?php\ndeclare(strict_types=1);\n\nheader(\"Content-Type: application/json; charset=utf-8\");\n\n$name = trim($_GET[\"name\"] ?? \"\");\nif ($name === \"\" || mb_strlen($name) > 50) {\n    http_response_code(400);\n    echo json_encode([\"error\" => \"name must be 1 to 50 characters\"]);\n    exit;\n}\n\n$response = [\n    \"message\" => \"Hello, $name!\",\n    \"length\" => mb_strlen($name),\n    \"time\" => date(DATE_ATOM),\n];\necho json_encode($response, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);",
+          "lang": "php"
+        },
+        "`$_GET`、`$_POST` 和 `$_COOKIE` 存放請求資料。請把其中的每個值都視為不可信。"
+      ]
+    },
+    {
+      "h": "初學者常見錯誤",
+      "body": [
+        {
+          "note": "絕不要把使用者輸入直接放進 SQL 或 HTML。請使用 PDO 的預備陳述式（`$stmt = $pdo->prepare(\"SELECT * FROM users WHERE id = ?\")`）來防止 SQL 注入，並在輸出到 HTML 時使用 `htmlspecialchars($value)` 來防止跨站腳本攻擊（XSS）。"
+        },
+        {
+          "ul": [
+            "使用會轉換型別的 `==` 比較；請改用 `===` 和 `!==`。",
+            "忘了變數名稱前的 `$`，或陳述式結尾的分號。",
+            "使用 `md5` 或 `sha1` 儲存密碼。請使用 `password_hash` 與 `password_verify`。",
+            "對 UTF-8 文字使用 `strlen`；它計算的是位元組數。要計算字元數請用 `mb_strlen`。",
+            "執行舊版 PHP。請使用仍受支援的 PHP 8 版本，才能取得安全性修補與現代功能。"
+          ]
+        }
+      ]
+    },
+    {
+      "h": "接下來學什麼",
+      "body": [
+        "php.net 上的官方 PHP Manual 記載了每個函式，並附有語言參考與使用者備註。學習套件管理工具 Composer 與 PSR 程式碼風格標準，然後嘗試框架：應用程式可選 Laravel 或 Symfony，小型 API 可選 Slim。PHPUnit 是標準的測試工具。"
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "現在還值得學 PHP 嗎？",
+      "a": "值得。網路上有很大一部分由它驅動，包括 WordPress 網站，而搭配 Laravel 或 Symfony 的現代 PHP 8 是開發網頁應用程式的高效率方式。維護與開發 PHP 系統的工作機會相當常見。"
+    },
+    {
+      "q": "PHP 是前端還是後端語言？",
+      "a": "後端。PHP 在伺服器上執行，並將完成的 HTML、JSON 或檔案傳送給瀏覽器，瀏覽器看不到 PHP 程式碼。"
+    },
+    {
+      "q": "echo 和 print 有什麼差別？",
+      "a": "兩者都輸出文字。`echo` 可以接受以逗號分隔的多個引數，且不回傳任何值；`print` 只接受一個引數，並回傳 1。實務上大多數程式碼都使用 `echo`。"
+    },
+    {
+      "q": "declare(strict_types=1) 有什麼作用？",
+      "a": "它讓該檔案發出的函式呼叫採用嚴格的純量型別宣告，所以把字串 `\"5\"` 傳給 `int` 參數時會拋出 `TypeError`，而不是自動轉換。"
+    }
+  ]
+}

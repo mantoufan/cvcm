@@ -1,0 +1,198 @@
+{
+  "title": "Cây khung nhỏ nhất: thuật toán Kruskal và Prim trong Python — cv.cm",
+  "description": "Giải thích cây khung nhỏ nhất (MST): thuật toán Kruskal với union-find và thuật toán Prim với heap, ví dụ từng bước, code Python và chi phí O(E log E).",
+  "h1": "Cây khung nhỏ nhất là gì: thuật toán Kruskal và Prim",
+  "answer": "Cây khung nhỏ nhất (minimum spanning tree, MST) của một đồ thị vô hướng, liên thông, có trọng số là tập các cạnh nối mọi nút mà không tạo chu trình và có tổng trọng số nhỏ nhất có thể. Thuật toán Kruskal sắp xếp mọi cạnh và thêm cạnh rẻ nhất không tạo chu trình, dùng union-find. Thuật toán Prim phát triển một cây từ nút xuất phát, luôn thêm cạnh rẻ nhất đi ra khỏi cây, dùng hàng đợi ưu tiên. Cả hai chạy trong thời gian O(E log E).",
+  "sections": [
+    {
+      "h": "Cây khung nhỏ nhất giải bài toán gì",
+      "body": [
+        "Giả sử bạn phải nối nhiều tòa nhà bằng cáp, nhiều thị trấn bằng đường, hoặc nhiều máy chủ bằng liên kết mạng, và mỗi kết nối khả dĩ có một chi phí. Bạn muốn mọi nơi đều được kết nối (trực tiếp hoặc gián tiếp) với tổng chi phí thấp nhất. Các kết nối thừa tạo thành vòng không bao giờ cần thiết, nên đáp án là một cây: V nút được nối bằng đúng V − 1 cạnh. Cây đó chính là cây khung nhỏ nhất.",
+        "MST không phải là cây đường đi ngắn nhất. Nó tối thiểu hóa tổng trọng số của mọi cạnh, chứ không phải khoảng cách từ một nút xuất phát đến các nút khác."
+      ]
+    },
+    {
+      "h": "Vì sao lựa chọn tham lam đúng: tính chất lát cắt (cut property)",
+      "body": [
+        "Chia các nút thành hai nhóm bất kỳ. Trong các cạnh nối giữa hai nhóm, cạnh nhẹ nhất thuộc về một cây khung nhỏ nhất nào đó. Cả hai thuật toán dựa vào sự thật này:",
+        {
+          "table": {
+            "head": [
+              "Thuật toán",
+              "Quy tắc tham lam",
+              "Cấu trúc dữ liệu hỗ trợ"
+            ],
+            "rows": [
+              [
+                "Kruskal (1956)",
+                "Lấy cạnh từ nhẹ nhất đến nặng nhất; giữ cạnh nếu nó nối hai thành phần khác nhau.",
+                "Union-find (disjoint set union)"
+              ],
+              [
+                "Prim (1957; cũng là Jarník, 1930)",
+                "Phát triển một cây; liên tục thêm cạnh nhẹ nhất từ cây tới một nút bên ngoài nó.",
+                "Hàng đợi ưu tiên min-heap"
+              ]
+            ]
+          }
+        },
+        "Nếu mọi trọng số cạnh khác nhau, MST là duy nhất, nên cả hai thuật toán trả về cùng một cây. Khi có trọng số bằng nhau, có thể có nhiều MST với cùng tổng trọng số."
+      ]
+    },
+    {
+      "h": "Ví dụ từng bước",
+      "body": [
+        "Đồ thị vô hướng với 5 nút và các cạnh A–B 4, A–C 3, B–C 1, B–D 2, C–D 4, D–E 2, C–E 5.",
+        "Thuật toán Kruskal, các cạnh được sắp theo trọng số:",
+        {
+          "table": {
+            "head": [
+              "Cạnh",
+              "Trọng số",
+              "Quyết định",
+              "Các thành phần sau đó"
+            ],
+            "rows": [
+              [
+                "B–C",
+                "1",
+                "Thêm",
+                "{B, C} {A} {D} {E}"
+              ],
+              [
+                "B–D",
+                "2",
+                "Thêm",
+                "{B, C, D} {A} {E}"
+              ],
+              [
+                "D–E",
+                "2",
+                "Thêm",
+                "{B, C, D, E} {A}"
+              ],
+              [
+                "A–C",
+                "3",
+                "Thêm",
+                "{A, B, C, D, E}: đủ 4 cạnh, xong"
+              ],
+              [
+                "A–B, C–D, C–E",
+                "4, 4, 5",
+                "Không cần (mỗi cạnh sẽ tạo chu trình)",
+                "—"
+              ]
+            ]
+          }
+        },
+        "Thuật toán Prim từ A: cạnh rẻ nhất đi ra khỏi {A} là A–C (3); từ {A, C} là C–B (1); từ {A, B, C} là B–D (2); từ {A, B, C, D} là D–E (2). Cùng một cây, tổng trọng số 3 + 1 + 2 + 2 = 8."
+      ]
+    },
+    {
+      "h": "Thuật toán Kruskal trong Python",
+      "body": [
+        "Union-find giữ một con trỏ nút cha cho mỗi nút. `find` trả về đại diện của thành phần chứa một nút, và hai nút liên thông chính xác khi chúng có cùng đại diện.",
+        {
+          "code": "def kruskal(nodes, edges):\n    parent = {n: n for n in nodes}\n\n    def find(x):\n        while parent[x] != x:\n            parent[x] = parent[parent[x]]   # path halving\n            x = parent[x]\n        return x\n\n    tree, total = [], 0\n    for w, u, v in sorted(edges):\n        ru, rv = find(u), find(v)\n        if ru != rv:                          # different components: no cycle\n            parent[ru] = rv\n            tree.append((u, v, w))\n            total += w\n    return tree, total\n\nnodes = \"ABCDE\"\nedges = [(4, \"A\", \"B\"), (3, \"A\", \"C\"), (1, \"B\", \"C\"), (2, \"B\", \"D\"),\n         (4, \"C\", \"D\"), (2, \"D\", \"E\"), (5, \"C\", \"E\")]\nprint(kruskal(nodes, edges))\n# ([('B', 'C', 1), ('B', 'D', 2), ('D', 'E', 2), ('A', 'C', 3)], 8)",
+          "lang": "python"
+        },
+        "Union-find đầy đủ còn dùng hợp theo hạng (rank) hoặc kích thước để giữ cây thấp. Riêng path halving đã nhanh trong thực tế. Bạn có thể dừng vòng lặp sớm khi cây đã có V − 1 cạnh."
+      ]
+    },
+    {
+      "h": "Thuật toán Prim trong Python",
+      "body": [
+        "Thuật toán Prim cần danh sách kề. Nó dùng xóa lười giống thuật toán Dijkstra: đẩy mọi cạnh đi ra khỏi cây, và bỏ qua các cạnh có đầu kia đã nằm trong cây.",
+        {
+          "code": "import heapq\nfrom collections import defaultdict\n\ndef prim(edges, start):\n    graph = defaultdict(list)\n    for w, u, v in edges:\n        graph[u].append((w, u, v))\n        graph[v].append((w, v, u))\n    in_tree = {start}\n    heap = list(graph[start])\n    heapq.heapify(heap)\n    tree, total = [], 0\n    while heap:\n        w, u, v = heapq.heappop(heap)\n        if v in in_tree:\n            continue\n        in_tree.add(v)\n        tree.append((u, v, w))\n        total += w\n        for edge in graph[v]:\n            if edge[2] not in in_tree:\n                heapq.heappush(heap, edge)\n    return tree, total\n\nprint(prim(edges, \"A\"))\n# ([('A', 'C', 3), ('C', 'B', 1), ('B', 'D', 2), ('D', 'E', 2)], 8)",
+          "lang": "python"
+        }
+      ]
+    },
+    {
+      "h": "Độ phức tạp thời gian và không gian",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Thuật toán",
+              "Thời gian",
+              "Không gian",
+              "Phù hợp nhất cho"
+            ],
+            "rows": [
+              [
+                "Kruskal",
+                "O(E log E)",
+                "O(V + E)",
+                "Đồ thị thưa, hoặc khi các cạnh đã cho sẵn dạng danh sách. Sắp xếp chiếm phần lớn thời gian; union-find gần như O(1) mỗi thao tác."
+              ],
+              [
+                "Prim với binary heap",
+                "O(E log V)",
+                "O(V + E)",
+                "Đồ thị cho dưới dạng danh sách kề."
+              ],
+              [
+                "Prim với mảng (không dùng heap)",
+                "O(V²)",
+                "O(V)",
+                "Đồ thị dày, ví dụ mọi cặp điểm."
+              ]
+            ]
+          }
+        },
+        "Vì E tối đa là V², log E tối đa là 2 log V, nên O(E log E) và O(E log V) cùng bậc."
+      ]
+    },
+    {
+      "h": "Biến thể và lỗi thường gặp",
+      "body": [
+        {
+          "ul": [
+            "Đồ thị không liên thông: không có cây khung. Khi đó Kruskal trả về rừng khung nhỏ nhất (mỗi thành phần một cây); Prim từ một điểm xuất phát chỉ bao phủ thành phần của điểm đó. Hãy kiểm tra cây có V − 1 cạnh.",
+            "Cây khung lớn nhất: sắp xếp cạnh theo thứ tự giảm dần (hoặc đổi dấu trọng số). Trọng số âm không ảnh hưởng đến cả hai thuật toán.",
+            "Đồ thị có hướng cần thuật toán khác (arborescence nhỏ nhất, Chu-Liu/Edmonds); Kruskal và Prim không áp dụng được.",
+            "Phân cụm: chạy Kruskal và dừng khi còn k thành phần. Kết quả là phân cụm liên kết đơn (single-linkage) thành k nhóm.",
+            "Thuật toán Borůvka, từ năm 1926, thêm cùng lúc cạnh rẻ nhất từ mỗi thành phần và song song hóa tốt."
+          ]
+        },
+        {
+          "note": "Một lỗi thường gặp trong Kruskal là kiểm tra chu trình bằng tập các nút đã thăm thay vì union-find. Hai nút có thể cùng đã thăm nhưng thuộc các thành phần khác nhau, nên cạnh giữa chúng vẫn cần. Chỉ “cùng thành phần” mới có nghĩa là “sẽ tạo chu trình”."
+        }
+      ]
+    },
+    {
+      "h": "Khi nào dùng và ứng dụng thực tế",
+      "body": [
+        {
+          "ul": [
+            "Thiết kế mạng: cách rẻ nhất để nối các địa điểm bằng cáp, ống hoặc đường, khi bất kỳ bố cục liên thông nào cũng chấp nhận được.",
+            "Thuật toán xấp xỉ: MST cho một hành trình dài không quá gấp đôi độ dài tối ưu của bài toán người bán hàng (traveling salesman) metric.",
+            "Phân cụm và phân đoạn ảnh bằng cách cắt các cạnh nặng nhất của MST.",
+            "Bài phỏng vấn: min cost to connect all points, connecting cities with minimum cost, optimize water distribution in a village."
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Thuật toán Kruskal khác Prim như thế nào?",
+      "a": "Kruskal xử lý toàn bộ cạnh theo thứ tự từ nhẹ nhất đến nặng nhất và gộp các thành phần bằng union-find. Prim phát triển một cây duy nhất từ một nút bằng hàng đợi ưu tiên. Cả hai đều tìm được cây khung nhỏ nhất."
+    },
+    {
+      "q": "Cây khung nhỏ nhất có duy nhất không?",
+      "a": "Nó duy nhất khi mọi trọng số cạnh khác nhau. Khi có trọng số bằng nhau, có thể có nhiều cây với cùng tổng trọng số nhỏ nhất."
+    },
+    {
+      "q": "Cây khung nhỏ nhất có giống cây đường đi ngắn nhất không?",
+      "a": "Không. MST tối thiểu hóa tổng mọi cạnh của nó, còn cây đường đi ngắn nhất, như cây từ thuật toán Dijkstra, tối thiểu hóa khoảng cách từ một nguồn đến mỗi nút. Hai cây này thường khác nhau."
+    },
+    {
+      "q": "Cây khung có bao nhiêu cạnh?",
+      "a": "Đúng V − 1 cho đồ thị liên thông có V nút. Ít cạnh hơn không thể nối mọi nút, còn nhiều cạnh hơn sẽ tạo chu trình."
+    }
+  ]
+}

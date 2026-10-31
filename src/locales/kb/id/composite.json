@@ -1,0 +1,163 @@
+{
+  "title": "Pola Composite: perlakukan pohon dan objek tunggal sama, contoh TypeScript — cv.cm",
+  "description": "Pola desain Composite dijelaskan: membangun struktur pohon yang daun dan kelompoknya berbagi satu interface. Contoh sistem file TypeScript dan pemakaian nyata.",
+  "h1": "Pola Composite dijelaskan dengan contoh",
+  "answer": "Composite adalah pola desain structural yang memungkinkan Anda menyusun objek menjadi struktur pohon lalu memperlakukan objek tunggal dan kelompok objek dengan cara yang sama. Sebuah leaf (seperti file) dan sebuah composite (seperti folder yang berisi file dan folder lain) mengimplementasikan interface yang sama, misalnya `size()`. Composite mengimplementasikan operasi dengan memanggilnya pada anak-anaknya, sehingga kode klien dapat bekerja dengan seluruh pohon tanpa memeriksa jenis simpulnya.",
+  "sections": [
+    {
+      "h": "Tujuan",
+      "body": [
+        "Menyusun objek menjadi struktur pohon untuk merepresentasikan hierarki bagian-keseluruhan. Pola Composite memungkinkan klien memperlakukan objek tunggal dan komposisi objek secara seragam. Pola ini salah satu dari tujuh pola structural dalam buku Gang of Four (GoF)."
+      ]
+    },
+    {
+      "h": "Masalah yang diselesaikan",
+      "body": [
+        "Bayangkan aplikasi penyimpanan yang harus menampilkan ukuran total item apa pun. File punya ukuran. Ukuran folder adalah jumlah semua isinya, dan folder dapat berisi file dan folder lain, bersarang sedalam apa pun.",
+        "Tanpa interface bersama, setiap potongan kode yang menelusuri pohon harus bertanya \"ini file atau folder?\" dan menangani tiap kasus, biasanya dengan rekursi yang ditulis berulang-ulang. Menambah tipe simpul baru, seperti shortcut atau arsip terkompresi, berarti mencari dan memperbarui semua pemeriksaan itu. Pola Composite menaruh rekursi di dalam simpul-simpulnya sendiri."
+      ]
+    },
+    {
+      "h": "Struktur dan peserta",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Peserta",
+              "Tanggung jawab",
+              "Dalam contoh"
+            ],
+            "rows": [
+              [
+                "Component",
+                "Mendeklarasikan interface bersama untuk semua objek dalam pohon.",
+                "`FsNode`"
+              ],
+              [
+                "Leaf",
+                "Objek tanpa anak; mengimplementasikan operasi secara langsung.",
+                "`FileNode`"
+              ],
+              [
+                "Composite",
+                "Menyimpan komponen anak dan mengimplementasikan operasi dengan mendelegasikan kepada mereka.",
+                "`Folder`"
+              ],
+              [
+                "Klien",
+                "Bekerja dengan simpul mana pun lewat interface Component.",
+                "`report`"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "Implementasi TypeScript",
+      "body": [
+        {
+          "code": "interface FsNode {\n  readonly name: string;\n  size(): number;\n  print(indent?: string): string[];\n}\n\nclass FileNode implements FsNode {\n  constructor(readonly name: string, private bytes: number) {}\n  size(): number { return this.bytes; }\n  print(indent = \"\"): string[] { return [`${indent}${this.name} (${this.bytes})`]; }\n}\n\nclass Folder implements FsNode {\n  private children: FsNode[] = [];\n  constructor(readonly name: string) {}\n  add(...nodes: FsNode[]): this { this.children.push(...nodes); return this; }\n  size(): number { return this.children.reduce((sum, c) => sum + c.size(), 0); }\n\n  print(indent = \"\"): string[] {\n    const lines = [`${indent}${this.name}/ (${this.size()})`];\n    for (const child of this.children) lines.push(...child.print(indent + \"  \"));\n    return lines;\n  }\n}\n\nconst root = new Folder(\"project\").add(\n  new FileNode(\"README.md\", 120),\n  new Folder(\"src\").add(new FileNode(\"main.ts\", 900), new FileNode(\"util.ts\", 300)),\n);\n\n// The client treats a single file and a whole tree the same way.\nconst report = (node: FsNode) => console.log(node.print().join(\"\\n\"));\nreport(root);\n// project/ (1320)\n//   README.md (120)\n//   src/ (1200)\n//     main.ts (900)\n//     util.ts (300)\nreport(new FileNode(\"notes.txt\", 42)); // notes.txt (42)",
+          "lang": "typescript"
+        },
+        "`report` tidak pernah memeriksa tipe simpul. Jenis simpul baru, seperti `Symlink` yang melaporkan ukuran nol, hanya perlu mengimplementasikan `FsNode`."
+      ]
+    },
+    {
+      "h": "Keputusan desain: transparansi versus keamanan",
+      "body": [
+        "Di mana method pengelola anak seperti `add()` dan `remove()` sebaiknya berada? Buku GoF menjelaskan trade-off-nya:",
+        {
+          "table": {
+            "head": [
+              "Pilihan",
+              "Artinya",
+              "Trade-off"
+            ],
+            "rows": [
+              [
+                "Keamanan",
+                "Hanya `Composite` yang punya `add()` dan `remove()`, seperti pada contoh di atas.",
+                "Aman secara tipe: Anda tidak bisa menambah anak ke file. Tetapi klien harus tahu kapan mereka memegang composite."
+              ],
+              [
+                "Transparansi",
+                "`Component` mendeklarasikan `add()` dan `remove()`, dan leaf melempar error atau mengabaikannya.",
+                "Semua simpul tampak identik bagi klien, tetapi kesalahan baru muncul saat runtime."
+              ]
+            ]
+          }
+        },
+        "Di TypeScript, pendekatan keamanan biasanya lebih baik, karena type checker menangkap kesalahan saat kompilasi.",
+        {
+          "note": "Rekursi dalam composite bisa mahal pada pohon besar. Pada contoh, `print()` memanggil `size()` di setiap folder, yang menelusuri sub-pohon lagi. Untuk pohon besar, cache hasilnya atau hitung ukuran dalam satu lintasan. Pastikan juga sebuah simpul tidak dapat ditambahkan ke sub-pohonnya sendiri, yang akan menciptakan rekursi tak berujung."
+        }
+      ]
+    },
+    {
+      "h": "Kapan memakainya, dan kapan tidak",
+      "body": [
+        "Gunakan pola Composite ketika:",
+        {
+          "ul": [
+            "Data Anda secara alami berbentuk pohon: file dan folder, widget UI di dalam kontainer, menu dan submenu, bagan organisasi, bentuk gambar dan grup.",
+            "Klien seharusnya bisa mengabaikan perbedaan antara satu objek dan sekelompok objek."
+          ]
+        },
+        "Hindari ketika:",
+        {
+          "ul": [
+            "Strukturnya datar atau selalu hanya satu tingkat. Array biasa lebih sederhana.",
+            "Leaf dan grup membutuhkan operasi yang sangat berbeda. Memaksa keduanya ke satu interface menciptakan method yang tidak masuk akal bagi sebagian simpul.",
+            "Anda perlu membatasi anak apa saja yang boleh dipegang composite, misalnya hanya tipe simpul tertentu. Interface yang seragam mempersulit penegakan aturan semacam itu dalam sistem tipe."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Pemakaian di dunia nyata",
+      "body": [
+        {
+          "ul": [
+            "DOM: setiap elemen dan simpul teks adalah `Node`. Elemen dapat berisi simpul lain, dan banyak operasi, seperti `textContent` atau `cloneNode(true)`, bekerja sama pada satu simpul maupun seluruh sub-pohon.",
+            "Framework komponen UI seperti React, Vue, dan Angular membangun antarmuka sebagai pohon tempat sebuah komponen dapat merender komponen lain.",
+            "Java AWT dan Swing: `Container` adalah subkelas `Component` dan menyimpan komponen lain, sehingga panel penuh tombol sendiri adalah sebuah komponen.",
+            "Abstract syntax tree di compiler, scene graph di game engine, dan menu bersarang semuanya mengikuti gagasan yang sama."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Pola terkait",
+      "body": [
+        {
+          "ul": [
+            "Pola Iterator: menelusuri simpul-simpul composite tanpa membuka cara anak-anak disimpan.",
+            "Pola Visitor: menambah operasi baru pada pohon composite (ekspor, validasi, statistik) tanpa mengubah kelas simpul.",
+            "Pola Decorator: juga punya interface komponen dan membungkus objek secara rekursif, tetapi decorator punya tepat satu anak dan menambah perilaku, sedangkan composite punya banyak anak dan menggabungkan hasil mereka.",
+            "Pola Builder: sering dipakai untuk membangun pohon composite yang kompleks langkah demi langkah.",
+            "Pola Chain of Responsibility: sering memakai tautan induk dari composite, meneruskan permintaan dari anak ke induknya, seperti event browser yang naik (bubble) di DOM."
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Apa beda leaf dan composite?",
+      "a": "Leaf tidak punya anak dan mengerjakan tugasnya sendiri. Composite menyimpan komponen anak dan biasanya bekerja dengan memanggil operasi yang sama pada setiap anak lalu menggabungkan hasilnya."
+    },
+    {
+      "q": "Apakah pola Composite hanya untuk pohon?",
+      "a": "Pola ini dirancang untuk hierarki bagian-keseluruhan berbentuk pohon. Graf umum dengan siklus membutuhkan kehati-hatian ekstra, seperti mencatat simpul yang sudah dikunjungi, untuk menghindari rekursi tak berujung."
+    },
+    {
+      "q": "Apa beda pola Composite dan pola Decorator?",
+      "a": "Keduanya memakai interface bersama dan composition rekursif. Decorator membungkus tepat satu objek untuk menambah perilaku, sedangkan composite mengelompokkan banyak anak agar diperlakukan sebagai satu."
+    },
+    {
+      "q": "Haruskah add() ada juga di kelas leaf?",
+      "a": "Hanya jika Anda ingin transparansi penuh dan menerima error saat runtime ketika seseorang menambah anak ke leaf. Pada bahasa bertipe, biasanya lebih aman menaruh `add()` hanya di composite."
+    }
+  ]
+}

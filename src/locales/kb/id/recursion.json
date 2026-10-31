@@ -1,0 +1,209 @@
+{
+  "title": "Penjelasan rekursi: base case, call stack, dan contoh di Python — cv.cm",
+  "description": "Rekursi adalah fungsi yang memanggil dirinya sendiri pada input yang lebih kecil. Pelajari base case, call stack, memoization, dan batas rekursi dengan contoh kode Python.",
+  "h1": "Penjelasan rekursi: cara kerja dan contoh di Python",
+  "answer": "Rekursi adalah teknik ketika sebuah fungsi menyelesaikan masalah dengan memanggil dirinya sendiri pada versi yang lebih kecil dari masalah yang sama. Setiap fungsi rekursif membutuhkan base case yang mengembalikan nilai tanpa rekursi lagi, dan kasus rekursif yang bergerak mendekati base case. Setiap pemanggilan menunggu di call stack sampai pemanggilan yang lebih kecil selesai. Rekursi cocok untuk tree, data bersarang, dan algoritma divide-and-conquer seperti merge sort.",
+  "sections": [
+    {
+      "h": "Masalah apa yang diselesaikan rekursi",
+      "body": [
+        "Sebagian masalah didefinisikan dengan dirinya sendiri. Sebuah folder berisi file dan folder lain. Node tree punya sub-tree sebagai anak. Faktorial n adalah n dikali faktorial n − 1. Menulis semua itu dengan perulangan biasa sering kali membutuhkan stack eksplisit untuk pekerjaan yang tertunda; dengan rekursi, bahasa pemrograman yang menyimpan stack itu untuk Anda.",
+        "Fungsi rekursif punya dua bagian:",
+        {
+          "ul": [
+            "Base case: input terkecil yang dijawab langsung. Untuk faktorial, `0! = 1`.",
+            "Kasus rekursif: perkecil masalahnya, panggil fungsi pada bagian yang lebih kecil, lalu gabungkan hasilnya. Untuk faktorial, `n! = n × (n − 1)!`."
+          ]
+        },
+        {
+          "code": "def factorial(n):\n    if n == 0:                  # base case\n        return 1\n    return n * factorial(n - 1) # recursive case\nprint(factorial(5))   # 120",
+          "lang": "python"
+        }
+      ]
+    },
+    {
+      "h": "Call stack, ditelusuri langkah demi langkah",
+      "body": [
+        "Setiap pemanggilan mendapat frame sendiri di call stack, berisi salinan `n` miliknya sendiri. Pemanggilan turun sampai base case, lalu hasilnya naik kembali dalam urutan terbalik.",
+        {
+          "table": {
+            "head": [
+              "Langkah",
+              "Pemanggilan",
+              "Keadaan"
+            ],
+            "rows": [
+              [
+                "1",
+                "`factorial(3)`",
+                "menunggu `factorial(2)`"
+              ],
+              [
+                "2",
+                "`factorial(2)`",
+                "menunggu `factorial(1)`"
+              ],
+              [
+                "3",
+                "`factorial(1)`",
+                "menunggu `factorial(0)`"
+              ],
+              [
+                "4",
+                "`factorial(0)`",
+                "base case, mengembalikan 1"
+              ],
+              [
+                "5",
+                "`factorial(1)`",
+                "mengembalikan 1 × 1 = 1"
+              ],
+              [
+                "6",
+                "`factorial(2)`",
+                "mengembalikan 2 × 1 = 2"
+              ],
+              [
+                "7",
+                "`factorial(3)`",
+                "mengembalikan 3 × 2 = 6"
+              ]
+            ]
+          }
+        },
+        "Kedalaman stack di sini adalah n + 1 frame, sehingga ruang tambahannya O(n) meskipun tidak ada list yang dibuat."
+      ]
+    },
+    {
+      "h": "Rekursi pada data bersarang",
+      "body": [
+        "Rekursi paling berguna ketika bentuk datanya sendiri rekursif. Fungsi ini menjumlahkan semua angka dalam list yang mungkin berisi list lain, pada kedalaman berapa pun.",
+        {
+          "code": "def deep_sum(items):\n    total = 0\n    for x in items:\n        if isinstance(x, list):\n            total += deep_sum(x)   # same problem, smaller piece\n        else:\n            total += x\n    return total\nprint(deep_sum([1, [2, 3], [4, [5, [6]]]]))   # 21",
+          "lang": "python"
+        },
+        "Pola yang sama dipakai untuk menelusuri pohon direktori, dokumen JSON, DOM HTML, atau binary tree: tangani node saat ini, lalu lakukan rekursi ke setiap anaknya.",
+        {
+          "code": "def power_set(items):\n    if not items:\n        return [[]]\n    rest = power_set(items[1:])\n    return rest + [[items[0]] + s for s in rest]\nprint(power_set([1, 2, 3]))\n# [[], [3], [2], [2, 3], [1], [1, 3], [1, 2], [1, 2, 3]]",
+          "lang": "python"
+        }
+      ]
+    },
+    {
+      "h": "Kompleksitas fungsi rekursif",
+      "body": [
+        "Perkirakan biayanya sebagai (jumlah pemanggilan) × (pekerjaan per pemanggilan). Ruang minimal sebesar kedalaman stack maksimum.",
+        {
+          "table": {
+            "head": [
+              "Fungsi",
+              "Pemanggilan",
+              "Waktu",
+              "Ruang stack"
+            ],
+            "rows": [
+              [
+                "factorial(n)",
+                "n + 1",
+                "O(n)",
+                "O(n)"
+              ],
+              [
+                "binary search, rekursif",
+                "sekitar log₂ n",
+                "O(log n)",
+                "O(log n)"
+              ],
+              [
+                "merge sort",
+                "sekitar 2n",
+                "O(n log n)",
+                "O(log n) stack, buffer O(n)"
+              ],
+              [
+                "Fibonacci naif",
+                "sekitar 1,6ⁿ",
+                "batas O(2ⁿ)",
+                "O(n)"
+              ],
+              [
+                "power set",
+                "n + 1",
+                "O(n · 2ⁿ)",
+                "stack O(n), outputnya 2ⁿ list"
+              ]
+            ]
+          }
+        },
+        "Rekurensi divide-and-conquer seperti T(n) = 2T(n/2) + O(n) pada merge sort menghasilkan O(n log n). Fungsi yang memanggil dirinya dua kali pada n − 1 tumbuh secara eksponensial."
+      ]
+    },
+    {
+      "h": "Memoization: berhenti mengulang pekerjaan",
+      "body": [
+        "Fungsi Fibonacci yang naif menghitung ulang nilai yang sama berkali-kali: `fib(5)` memanggil `fib(3)` dua kali dan `fib(2)` tiga kali. Menyimpan setiap hasil di cache saat pertama kali dihitung mengubah waktu eksponensial menjadi linear. `functools.lru_cache` di Python (atau `functools.cache`, Python 3.9+) melakukannya dengan satu decorator.",
+        {
+          "code": "from functools import lru_cache\ndef fib_slow(n):\n    return n if n < 2 else fib_slow(n - 1) + fib_slow(n - 2)\n@lru_cache(maxsize=None)\ndef fib(n):\n    return n if n < 2 else fib(n - 1) + fib(n - 2)\nprint(fib_slow(20))   # 6765, about 22,000 calls\nprint(fib(90))        # 2880067194370816120, 91 distinct calls",
+          "lang": "python"
+        },
+        "Rekursi dengan memoization adalah bentuk top-down dari dynamic programming. Bentuk bottom-up mengisi tabel dengan perulangan."
+      ]
+    },
+    {
+      "h": "Batas rekursi dan mengubahnya menjadi perulangan",
+      "body": [
+        {
+          "note": "CPython membatasi kedalaman rekursi. Batas bawaannya 1000 frame (lihat `sys.getrecursionlimit()`); melewatinya memunculkan `RecursionError`. Python tidak mengoptimalkan tail call, sehingga fungsi tail-recursive pun memakai satu frame per pemanggilan."
+        },
+        "Anda bisa menaikkan batas dengan `sys.setrecursionlimit()`, tetapi rekursi yang sangat dalam tetap bisa membuat interpreter crash. Untuk input yang mungkin dalam, seperti linked list berisi sejuta node atau tree yang degenerate, tulis ulang fungsinya dengan perulangan dan stack eksplisit.",
+        {
+          "code": "def deep_sum_iter(items):\n    total, stack = 0, [items]\n    while stack:\n        current = stack.pop()\n        for x in current:\n            if isinstance(x, list):\n                stack.append(x)\n            else:\n                total += x\n    return total\nprint(deep_sum_iter([1, [2, 3], [4, [5, [6]]]]))   # 21",
+          "lang": "python"
+        }
+      ]
+    },
+    {
+      "h": "Kesalahan umum",
+      "body": [
+        {
+          "ul": [
+            "Base case hilang atau tidak pernah tercapai, misalnya `factorial(-1)` dengan kode di atas tidak pernah mencapai 0 dan berakhir dengan `RecursionError`.",
+            "Kasus rekursif yang tidak memperkecil input, seperti memanggil `f(n)` dari dalam `f(n)`.",
+            "Lupa `return` hasil rekursif: `factorial(n - 1)` tanpa `return` menghasilkan `None`.",
+            "Menyalin data pada setiap pemanggilan. `items[1:]` menyalin list, sehingga rekursi pada slice dari list panjang berbiaya waktu O(n²); kirim indeks sebagai gantinya.",
+            "Memakai argumen default yang mutable seperti `def f(x, seen=[])` untuk membawa state antar pemanggilan; list yang sama dipakai bersama oleh setiap pemanggilan fungsi."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Kapan memakai rekursi",
+      "body": [
+        "Pakai rekursi ketika data atau masalahnya memang rekursif: tree, graf (depth-first search), struktur bersarang, parsing ekspresi, backtracking (permutasi, N-Queens, sudoku), dan divide and conquer (merge sort, quicksort, binary search). Pakai perulangan ketika masalahnya berupa urutan sederhana, atau ketika kedalamannya bisa tumbuh mengikuti ukuran input di Python.",
+        "Dalam wawancara kerja, pertanyaan rekursi biasanya menguji apakah Anda bisa menyebutkan base case, kasus rekursif, biaya waktu dan ruang termasuk stack, serta kapan memoization membantu."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Apa itu base case dalam rekursi?",
+      "a": "Base case adalah input yang dijawab langsung oleh fungsi rekursif tanpa memanggil dirinya sendiri. Base case menghentikan rekursi; tanpanya, fungsi terus memanggil dirinya sampai stack overflow."
+    },
+    {
+      "q": "Apakah rekursi lebih lambat daripada perulangan?",
+      "a": "Di Python, biasanya sedikit lebih lambat, karena setiap pemanggilan fungsi punya overhead dan memakai stack frame. Kompleksitasnya sering sama; risiko praktis utamanya adalah batas kedalaman rekursi."
+    },
+    {
+      "q": "Berapa kedalaman rekursi maksimum di Python?",
+      "a": "Batas bawaan CPython adalah 1000 frame, yang bisa dibaca dengan `sys.getrecursionlimit()` dan diubah dengan `sys.setrecursionlimit()`. Melewatinya memunculkan `RecursionError`."
+    },
+    {
+      "q": "Apa itu tail recursion?",
+      "a": "Sebuah pemanggilan disebut tail call jika itu hal terakhir yang dilakukan fungsi sebelum return. Beberapa bahasa memakai ulang stack frame untuk tail call, tetapi CPython tidak, jadi tail recursion di Python tetap menambah stack."
+    },
+    {
+      "q": "Bisakah setiap fungsi rekursif ditulis sebagai perulangan?",
+      "a": "Bisa. Setiap rekursi dapat diubah menjadi perulangan yang mengelola stack eksplisit. Untuk rekursi linear sederhana seperti faktorial, perulangan biasa dengan akumulator sudah cukup."
+    }
+  ]
+}

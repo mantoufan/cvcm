@@ -1,0 +1,218 @@
+{
+  "title": "Bảng băm (hash table): hàm băm, xung đột, hệ số tải và dict Python — cv.cm",
+  "description": "Bảng băm hoạt động thế nào: hàm băm, bucket, xung đột (nối chuỗi và địa chỉ mở), đổi kích thước, tra cứu O(1) trung bình, kèm cài đặt bằng Python.",
+  "h1": "Bảng băm (hash table): cách hoạt động, code và độ phức tạp",
+  "answer": "Bảng băm lưu các cặp khóa-giá trị trong một mảng các bucket. Hàm băm biến mỗi khóa thành một số, số đó chia lấy dư cho kích thước mảng sẽ chọn ra bucket, nên tra cứu, chèn và xóa tốn O(1) trung bình. Khi hai khóa rơi vào cùng một bucket (xung đột), bảng hoặc giữ một danh sách nhỏ cho mỗi bucket (nối chuỗi - chaining) hoặc dò tìm ô trống khác (địa chỉ mở - open addressing). `dict` và `set` của Python là bảng băm.",
+  "sections": [
+    {
+      "h": "Bảng băm giải quyết vấn đề gì",
+      "body": [
+        "Giả sử bạn lưu một triệu bản ghi người dùng và cần tìm một bản ghi theo email. Quét danh sách là O(n). Giữ danh sách đã sắp xếp cho phép tìm nhị phân trong O(log n), nhưng việc chèn trở nên chậm. Bảng băm tìm bản ghi trong O(1) trung bình, dù có bao nhiêu bản ghi, và chèn, xóa cũng nhanh như vậy.",
+        "Đó là lý do bảng băm có mặt ở khắp nơi: từ điển và tập hợp trong các ngôn ngữ lập trình, chỉ mục băm của cơ sở dữ liệu, bộ nhớ đệm, bảng ký hiệu trong trình biên dịch và loại bỏ trùng lặp."
+      ]
+    },
+    {
+      "h": "Ý tưởng giải thích đơn giản",
+      "body": [
+        "Hãy tưởng tượng một phòng gửi áo khoác có 100 móc đánh số. Thay vì tìm áo trên tất cả các móc, nhân viên tính ra số móc từ tên bạn rồi đi thẳng tới đó. Hàm tính ra số đó là hàm băm. Một hàm băm tốt thì nhanh, luôn cho cùng một số với cùng một khóa, và phân bố các khóa khác nhau đều trên các móc.",
+        {
+          "ol": [
+            "Tính `h = hash(key)`.",
+            "Chọn bucket: `index = h % capacity`.",
+            "Chỉ tìm khóa trong bucket đó."
+          ]
+        },
+        {
+          "note": "Khóa phải băm được (hashable) và không được thay đổi khi đang nằm trong bảng. Vì vậy Python cho phép `tuple` và `str` làm khóa dict nhưng không cho `list`: nếu khóa thay đổi, giá trị băm của nó cũng đổi và bảng sẽ không tìm thấy nó nữa."
+        }
+      ]
+    },
+    {
+      "h": "Ví dụ minh họa: xung đột với nối chuỗi",
+      "body": [
+        "Lấy một bảng có 4 bucket và một hàm băm đồ chơi: tổng vị trí các chữ cái (a = 1, b = 2, ...).",
+        {
+          "table": {
+            "head": [
+              "Khóa",
+              "Giá trị băm (tổng chữ cái)",
+              "Bucket (hash % 4)",
+              "Nội dung bucket sau khi chèn"
+            ],
+            "rows": [
+              [
+                "`cat`",
+                "3 + 1 + 20 = 24",
+                "0",
+                "bucket 0: [cat]"
+              ],
+              [
+                "`dog`",
+                "4 + 15 + 7 = 26",
+                "2",
+                "bucket 2: [dog]"
+              ],
+              [
+                "`act`",
+                "1 + 3 + 20 = 24",
+                "0",
+                "bucket 0: [cat, act]"
+              ],
+              [
+                "`bee`",
+                "2 + 5 + 5 = 12",
+                "0",
+                "bucket 0: [cat, act, bee]"
+              ]
+            ]
+          }
+        },
+        "`act` và `bee` xung đột với `cat`. Giờ tra cứu `bee` nghĩa là kiểm tra ba mục trong bucket 0. Với hàm băm kém (tổng chữ cái bỏ qua thứ tự) hoặc quá ít bucket, chuỗi sẽ dài ra và bảng trở nên chậm. Hàm băm thực tế trộn mọi bit của khóa, và bảng thực tế sẽ lớn thêm khi quá đầy."
+      ]
+    },
+    {
+      "h": "Cài đặt bằng Python với nối chuỗi",
+      "body": [
+        "Mỗi bucket là một danh sách các cặp `[key, value]`. Khi số phần tử vượt quá 0,75 lần số bucket (hệ số tải - load factor), bảng nhân đôi dung lượng và chèn lại tất cả.",
+        {
+          "code": "class HashTable:\n    def __init__(self, capacity=8):\n        self.buckets = [[] for _ in range(capacity)]\n        self.size = 0\n    def _bucket(self, key):\n        return self.buckets[hash(key) % len(self.buckets)]\n    def put(self, key, value):\n        bucket = self._bucket(key)\n        for pair in bucket:\n            if pair[0] == key:\n                pair[1] = value        # update existing key\n                return\n        bucket.append([key, value])\n        self.size += 1\n        if self.size > 0.75 * len(self.buckets):\n            self._resize()\n    def get(self, key, default=None):\n        for k, v in self._bucket(key):\n            if k == key:\n                return v\n        return default\n    def delete(self, key):\n        bucket = self._bucket(key)\n        for i, (k, _) in enumerate(bucket):\n            if k == key:\n                bucket.pop(i)\n                self.size -= 1\n                return True\n        return False\n    def _resize(self):\n        old = [pair for bucket in self.buckets for pair in bucket]\n        self.buckets = [[] for _ in range(2 * len(self.buckets))]\n        self.size = 0\n        for k, v in old:\n            self.put(k, v)",
+          "lang": "python"
+        },
+        {
+          "code": "t = HashTable()\nfor i, word in enumerate([\"red\", \"green\", \"blue\", \"cyan\", \"pink\", \"gold\", \"gray\"]):\n    t.put(word, i)\nt.put(\"red\", 100)\nt.delete(\"blue\")\nprint(t.get(\"red\"), t.get(\"blue\"), t.size, len(t.buckets))  # 100 None 6 16",
+          "lang": "python"
+        }
+      ]
+    },
+    {
+      "h": "So sánh các chiến lược xử lý xung đột",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Chiến lược",
+              "Cách hoạt động",
+              "Điểm mạnh",
+              "Điểm yếu"
+            ],
+            "rows": [
+              [
+                "Nối chuỗi (separate chaining)",
+                "mỗi bucket giữ một danh sách (hoặc cây) các mục",
+                "đơn giản; xóa dễ; chịu được tải cao",
+                "tốn thêm bộ nhớ cho mỗi mục; phải đuổi theo con trỏ"
+              ],
+              [
+                "Dò tuyến tính (linear probing)",
+                "khi xung đột, thử ô kế tiếp, rồi ô tiếp nữa",
+                "thân thiện với cache; gọn",
+                "hình thành cụm; xóa cần tombstone (dấu mộ)"
+              ],
+              [
+                "Dò bậc hai / băm kép",
+                "nhảy theo bước tăng dần hoặc bước từ hàm băm thứ hai",
+                "ít cụm hơn dò tuyến tính",
+                "phức tạp hơn; vẫn cần tombstone"
+              ]
+            ]
+          }
+        },
+        "`dict` của CPython dùng địa chỉ mở với chuỗi dò có nhiễu (perturbed) và, từ Python 3.7, đảm bảo việc duyệt theo thứ tự chèn. `HashMap` của Java dùng nối chuỗi và biến các chuỗi dài thành cây cân bằng."
+      ]
+    },
+    {
+      "h": "Độ phức tạp thời gian và không gian",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Thao tác",
+              "Trung bình",
+              "Xấu nhất",
+              "Lý do"
+            ],
+            "rows": [
+              [
+                "Tra cứu",
+                "O(1)",
+                "O(n)",
+                "trường hợp xấu nhất: mọi khóa xung đột vào một bucket"
+              ],
+              [
+                "Chèn",
+                "O(1) khấu hao",
+                "O(n)",
+                "thỉnh thoảng đổi kích thước phải chèn lại mọi phần tử"
+              ],
+              [
+                "Xóa",
+                "O(1)",
+                "O(n)",
+                "giống tra cứu"
+              ],
+              [
+                "Duyệt có thứ tự (khóa đã sắp xếp)",
+                "O(n log n)",
+                "O(n log n)",
+                "bảng băm không giữ thứ tự sắp xếp, bạn phải tự sắp xếp"
+              ],
+              [
+                "Không gian",
+                "O(n)",
+                "O(n)",
+                "mảng bucket được giữ lớn hơn n một hệ số không đổi"
+              ]
+            ]
+          }
+        },
+        "O(1) trung bình phụ thuộc vào hàm băm tốt và hệ số tải bị chặn. Python ngẫu nhiên hóa giá trị băm của chuỗi theo từng tiến trình (hash seeding) để kẻ tấn công không dễ gửi nhiều khóa xung đột làm máy chủ chậm xuống O(n) cho mỗi yêu cầu."
+      ]
+    },
+    {
+      "h": "Lỗi thường gặp",
+      "body": [
+        {
+          "ul": [
+            "Dùng đối tượng khả biến làm khóa, hoặc định nghĩa `__eq__` cho một lớp mà không có `__hash__` tương ứng. Các đối tượng bằng nhau phải có giá trị băm bằng nhau.",
+            "Mong đợi thứ tự đã sắp xếp. Bảng băm cho tra cứu nhanh chứ không cho thứ tự; hãy dùng danh sách đã sắp xếp hoặc cây cân bằng (cây tìm kiếm nhị phân) khi cần truy vấn theo khoảng hoặc khóa nhỏ nhất.",
+            "Dựa vào giá trị `hash()` giữa các lần chạy: giá trị băm của chuỗi thay đổi giữa các tiến trình Python trừ khi cố định `PYTHONHASHSEED`. Hãy dùng `hashlib` để có giá trị băm ổn định.",
+            "Coi bảng băm là một thành phần bảo mật. Bảng băm dùng hàm băm nhanh không mật mã; mật khẩu cần các hàm băm mật khẩu chuyên dụng."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Khi nào dùng và các cách dùng điển hình trong phỏng vấn",
+      "body": [
+        "Hãy dùng bảng băm bất cứ khi nào bạn cần trả lời nhanh câu hỏi \"mình đã thấy cái này chưa?\" hoặc \"khóa này ứng với giá trị nào?\". Dùng cây tìm kiếm nhị phân hoặc mảng đã sắp xếp khi bạn còn cần thứ tự, khoảng hoặc khóa gần nhất.",
+        "Các bài toán kinh điển: two sum (lưu chỉ số của mỗi số, tra `target - x`), đếm tần suất (`collections.Counter`), nhóm các từ đảo chữ theo chữ cái đã sắp xếp, phát hiện trùng lặp và ghi nhớ kết quả (memoization) trong quy hoạch động.",
+        {
+          "code": "def two_sum(nums, target):\n    seen = {}                      # value -> index\n    for i, x in enumerate(nums):\n        if target - x in seen:\n            return seen[target - x], i\n        seen[x] = i\n    return None\nprint(two_sum([2, 7, 11, 15], 9))  # (0, 1)",
+          "lang": "python"
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Tại sao tra cứu bảng băm là O(1)?",
+      "a": "Tính giá trị băm và chỉ số bucket tốn thời gian không đổi, và với hàm băm tốt cùng hệ số tải bị chặn, mỗi bucket trung bình chỉ chứa vài mục, nên việc tìm trong bucket cũng tốn thời gian không đổi."
+    },
+    {
+      "q": "Hệ số tải (load factor) là gì?",
+      "a": "Là số phần tử đã lưu chia cho số bucket. Khi vượt một ngưỡng (thường từ 0,5 đến 0,75), bảng cấp phát mảng bucket lớn hơn và chèn lại toàn bộ phần tử."
+    },
+    {
+      "q": "dict của Python có phải là bảng băm không?",
+      "a": "Có. `dict` và `set` là bảng băm được cài đặt bằng C với địa chỉ mở. Từ Python 3.7, `dict` còn giữ thứ tự chèn."
+    },
+    {
+      "q": "Bảng băm (hash table) và hash map khác nhau thế nào?",
+      "a": "Trong hầu hết ngữ cảnh chúng là một: cấu trúc khóa-giá trị dựa trên băm. Một số ngôn ngữ dùng các tên này cho các lớp cụ thể, như `HashMap` của Java và `Hashtable` đồng bộ cũ hơn."
+    },
+    {
+      "q": "Bảng băm có thể có khóa trùng không?",
+      "a": "Không. Chèn một khóa đã tồn tại sẽ thay giá trị của nó. Để lưu nhiều giá trị cho mỗi khóa, hãy cho giá trị là một list, hoặc dùng `collections.defaultdict(list)`."
+    }
+  ]
+}

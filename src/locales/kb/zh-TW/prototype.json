@@ -1,0 +1,153 @@
+{
+  "title": "原型模式：複製物件、深複製與淺複製、TypeScript 範例 — cv.cm",
+  "description": "說明原型（Prototype）設計模式：透過複製實例來建立物件。附 TypeScript 的 clone() 範例、深複製與淺複製、structuredClone 與常見陷阱。",
+  "h1": "原型模式詳解與範例",
+  "answer": "原型是一種建立型設計模式，它透過複製現有的實例（也就是原型）來建立新物件，而不是用 `new` 從頭建構。每個原型都實作 `clone()` 方法，因此用戶端程式碼不必知道具體的類別，就能複製一個物件。當物件的設定成本高昂，或有許多預設變化版本時，這個模式很有用。最主要的陷阱是淺複製：巢狀的物件也必須一併複製，否則複製品和原件會共用它們。",
+  "sections": [
+    {
+      "h": "意圖",
+      "body": [
+        "用一個原型實例來指定要建立的物件種類，並透過複製這個原型來建立新物件。原型是《設計模式》（Gang of Four，簡稱 GoF）一書中五種建立型模式之一。"
+      ]
+    },
+    {
+      "h": "它解決的問題",
+      "body": [
+        "想像一個圖表編輯器，有一個預設圖形的調色盤：紅色警告方塊、藍色便條、綠色「完成」徽章。每個預設都有尺寸、顏色、字型和一組樣式規則。當使用者把預設拖到畫布上時，編輯器需要一個全新、獨立的圖形，而且一開始就帶有那些設定。",
+        "沒有這個模式的話，編輯器需要為每個預設寫一個獨立的建立函式，而且必須知道每一個具體的圖形類別。更糟的是，使用者在執行時期自行定義的預設根本無法建立，因為沒有任何程式碼事先知道它們的設定。有了原型，編輯器只要呼叫 `preset.clone()` 即可。"
+      ]
+    },
+    {
+      "h": "結構與參與者",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "參與者",
+              "職責",
+              "範例中的對應"
+            ],
+            "rows": [
+              [
+                "原型（Prototype）",
+                "宣告複製自己的介面。",
+                "帶有 `clone()` 的 `Shape`"
+              ],
+              [
+                "具體原型（ConcretePrototype）",
+                "透過複製自己的狀態來實作 `clone()`。",
+                "`Box`"
+              ],
+              [
+                "用戶端",
+                "請原型複製自己，藉此建立新物件。",
+                "編輯器的程式碼"
+              ],
+              [
+                "原型登錄表（選用）",
+                "儲存具名的原型，讓用戶端可以查詢。",
+                "`palette` 這個 map"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "TypeScript 實作",
+      "body": [
+        "`clone()` 會複製每個欄位，包括巢狀的物件和陣列，因此複製品與原件是互相獨立的：",
+        {
+          "code": "interface Shape {\n  clone(): Shape;\n  describe(): string;\n}\n\nclass Box implements Shape {\n  constructor(\n    public width: number,\n    public height: number,\n    public style: { fill: string; border: string },\n    public tags: string[],\n  ) {}\n\n  clone(): Box {\n    // copy nested objects too, so the clone shares nothing mutable\n    return new Box(this.width, this.height, { ...this.style }, [...this.tags]);\n  }\n\n  describe(): string {\n    return `${this.width}x${this.height} ${this.style.fill} [${this.tags.join(\", \")}]`;\n  }\n}\n\n// A registry of named prototypes, which could also be filled at run time.\nconst palette = new Map<string, Shape>([\n  [\"warning\", new Box(120, 40, { fill: \"red\", border: \"black\" }, [\"alert\"])],\n  [\"note\", new Box(160, 80, { fill: \"blue\", border: \"none\" }, [])],\n]);\n\nconst a = palette.get(\"warning\")!.clone() as Box;\na.width = 200;\na.tags.push(\"urgent\");\nconsole.log(a.describe());                        // 200x40 red [alert, urgent]\nconsole.log(palette.get(\"warning\")!.describe());  // 120x40 red [alert]",
+          "lang": "typescript"
+        },
+        "編輯器從頭到尾都不需要提到 `Box`。新增一個預設，只是在登錄表中加一筆資料，而不是新增一個類別或一個建立函式。"
+      ]
+    },
+    {
+      "h": "淺複製與深複製",
+      "body": [
+        "原型最常見的錯誤，就是複製品與原件共用巢狀物件。展開運算式的複製是淺複製：只會複製最上層。",
+        {
+          "code": "const original = { name: \"note\", style: { fill: \"blue\" } };\n\nconst shallow = { ...original };\nshallow.style.fill = \"green\";\nconsole.log(original.style.fill); // green (shared object was changed)\n\nconst deep = structuredClone(original);\ndeep.style.fill = \"yellow\";\nconsole.log(original.style.fill); // green (unchanged)",
+          "lang": "typescript"
+        },
+        "`structuredClone()` 內建於現代瀏覽器與 Node.js，可以對一般資料做深複製，包括巢狀物件、陣列、`Map`、`Set` 和 `Date`。它有兩個在此值得注意的限制：",
+        {
+          "ul": [
+            "類別的實例複製後會變成普通物件：複製品會失去原型，所以像 `describe()` 這樣的方法就不見了。",
+            "函式和 DOM 節點無法被複製；`structuredClone()` 會拋出 `DataCloneError`。"
+          ]
+        },
+        {
+          "note": "對於類別，請像主要範例那樣自行撰寫明確的 `clone()` 方法。這樣能清楚標明哪些欄位是深複製，也能保留複製品的類別。"
+        }
+      ]
+    },
+    {
+      "h": "何時使用、何時不該用",
+      "body": [
+        "在以下情況使用原型：",
+        {
+          "ul": [
+            "物件的設定成本很高（從檔案載入、經過運算，或要經過許多步驟設定），而你需要許多相似的複製品。",
+            "變化版本的集合是在執行時期定義的，例如由使用者建立的預設或範本。",
+            "你想建立物件，但不想依賴它們的具體類別，也不想要有一組平行的工廠階層。"
+          ]
+        },
+        "在以下情況應避免使用：",
+        {
+          "ul": [
+            "物件的建立既便宜又簡單。直接呼叫建構函式或工廠函式會更清楚。",
+            "物件持有不應被複製的資源，例如開啟的檔案、socket 或唯一識別碼。複製這類物件需要特別處理。",
+            "物件有循環參照且所有權關係複雜，讓正確的深複製變得困難。"
+          ]
+        }
+      ]
+    },
+    {
+      "h": "實際應用",
+      "body": [
+        {
+          "ul": [
+            "JavaScript 本身就是以原型為基礎：`Object.create(proto)` 會建立一個繼承自現有物件的新物件。這與此模式相關但並不完全相同，因為新物件是委派給它的原型，而不是複製它。",
+            "DOM：`node.cloneNode(true)` 會對元素及其子節點做深複製，這是大量產生重複 UI 片段的常見方式。",
+            "Java：類別可以實作 `Cloneable` 介面並覆寫 `Object.clone()`，不過許多 Java 開發者比較喜歡複製建構函式。",
+            "遊戲引擎與編輯器通常會從預先設定好的範本（常稱為 prefab）產生新物件。"
+          ]
+        }
+      ]
+    },
+    {
+      "h": "相關模式",
+      "body": [
+        {
+          "ul": [
+            "抽象工廠：工廠可以儲存一組原型並透過複製來建立產品，這樣就不需要為每個系列各寫一個工廠子類別。",
+            "工廠方法：透過子類別建立物件；原型則透過複製實例來避免這些子類別。",
+            "組合與裝飾者：大量使用它們的設計，往往也能從原型獲益，因為複製已設定好的結構比重新建構容易。",
+            "備忘錄：同樣會複製物件的狀態，但目的是日後還原，而不是建立一個新的獨立物件。"
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "原型模式和 JavaScript 的原型一樣嗎？",
+      "a": "不一樣。JavaScript 的原型是語言層級的繼承機制：物件會把缺少的屬性委派給它的原型。原型模式則是建立物件的獨立複製品。"
+    },
+    {
+      "q": "clone() 應該做深複製還是淺複製？",
+      "a": "對於可變的巢狀資料，通常應做深複製，讓複製品與原件互不影響。不可變的值和共用的唯讀資源則可以安心繼續共用。"
+    },
+    {
+      "q": "可以用 structuredClone() 來實作 clone() 嗎？",
+      "a": "只適用於一般的資料物件。對於類別的實例，`structuredClone()` 會回傳沒有方法的普通物件，所以要自行撰寫複製邏輯，或用建構函式重建實例。"
+    },
+    {
+      "q": "什麼時候原型比工廠更好？",
+      "a": "當變化版本很多、是在執行時期設定的，或是設定成本很高的時候。複製一個現成的實例，比為每個變化版本各寫一個建立函式更簡單。"
+    }
+  ]
+}

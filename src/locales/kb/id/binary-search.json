@@ -1,0 +1,205 @@
+{
+  "title": "Penjelasan binary search: cara kerja, kode Python, dan kompleksitas — cv.cm",
+  "description": "Binary search menemukan nilai dalam list terurut dalam O(log n) langkah dengan membagi dua rentang. Penelusuran langkah demi langkah, kode Python, bisect, varian, dan bug off-by-one.",
+  "h1": "Penjelasan binary search: cara kerja, kode, dan kompleksitas",
+  "answer": "Binary search menemukan target dalam array terurut dengan berulang kali memeriksa elemen tengah dan membuang separuh yang tidak mungkin berisi target. Setiap langkah membagi dua rentang pencarian, sehingga paling banyak dibutuhkan sekitar log₂ n + 1 perbandingan: 20 untuk sejuta item. Waktunya O(log n) dengan ruang tambahan O(1), tetapi hanya berfungsi pada data yang terurut (atau, lebih umum, monoton).",
+  "sections": [
+    {
+      "h": "Masalah apa yang diselesaikan binary search",
+      "body": [
+        "Linear search memeriksa item satu per satu dan butuh hingga n perbandingan. Jika datanya terurut, Anda bisa jauh lebih baik: bandingkan target dengan item tengah, dan Anda langsung tahu separuh mana yang dipertahankan. Idenya sama seperti mencari kata di kamus cetak.",
+        "Binary search juga berfungsi pada apa pun yang monoton, bukan hanya array. Jika sebuah kondisi ya/tidak bernilai false untuk semua nilai kecil dan true untuk semua nilai besar, binary search menemukan batasnya. Ini disebut binary search pada jawaban."
+      ]
+    },
+    {
+      "h": "Contoh langkah demi langkah",
+      "body": [
+        "Cari 23 dalam list terurut `[2, 5, 8, 12, 16, 23, 38, 56, 72, 91]` (indeks 0 sampai 9). Simpan dua indeks, `lo` dan `hi`, yang membatasi rentang yang masih perlu diperiksa.",
+        {
+          "table": {
+            "head": [
+              "Langkah",
+              "lo",
+              "hi",
+              "mid",
+              "items[mid]",
+              "Keputusan"
+            ],
+            "rows": [
+              [
+                "1",
+                "0",
+                "9",
+                "4",
+                "16",
+                "16 < 23, cari ke kanan: lo = 5"
+              ],
+              [
+                "2",
+                "5",
+                "9",
+                "7",
+                "56",
+                "56 > 23, cari ke kiri: hi = 6"
+              ],
+              [
+                "3",
+                "5",
+                "6",
+                "5",
+                "23",
+                "ditemukan di indeks 5"
+              ]
+            ]
+          }
+        },
+        "Tiga perbandingan, bukan enam seperti pemindaian linear. Untuk list berisi sejuta item, binary search paling banyak butuh 20."
+      ]
+    },
+    {
+      "h": "Implementasi Python",
+      "body": [
+        "Versi iteratif di bawah memakai rentang tertutup `[lo, hi]`: kedua ujungnya masih kandidat. Perulangan berjalan selama rentang tidak kosong.",
+        {
+          "code": "def binary_search(items, target):\n    lo, hi = 0, len(items) - 1\n    while lo <= hi:\n        mid = (lo + hi) // 2\n        if items[mid] == target:\n            return mid\n        if items[mid] < target:\n            lo = mid + 1          # target is in the right half\n        else:\n            hi = mid - 1          # target is in the left half\n    return -1                     # not found\ndata = [2, 5, 8, 12, 16, 23, 38, 56, 72, 91]\nprint(binary_search(data, 23))   # 5\nprint(binary_search(data, 7))    # -1",
+          "lang": "python"
+        },
+        "Dalam kode Python sehari-hari, pakai modul pustaka standar `bisect`. `bisect_left` mengembalikan posisi paling kiri tempat target bisa disisipkan sambil menjaga list tetap terurut, yang sekaligus menunjukkan apakah target ada.",
+        {
+          "code": "from bisect import bisect_left, bisect_right, insort\ndata = [1, 3, 3, 3, 7, 9]\ni = bisect_left(data, 3)\nprint(i, bisect_right(data, 3))   # 1 4  (3 occupies indexes 1..3)\nprint(i < len(data) and data[i] == 3)   # True: 3 is present\nprint(bisect_left(data, 5))       # 4: insertion point for 5\ninsort(data, 5)\nprint(data)                       # [1, 3, 3, 3, 5, 7, 9]",
+          "lang": "python"
+        }
+      ]
+    },
+    {
+      "h": "Kompleksitas waktu dan ruang",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Kasus",
+              "Waktu",
+              "Alasan"
+            ],
+            "rows": [
+              [
+                "Terbaik",
+                "O(1)",
+                "elemen tengah pertama adalah targetnya"
+              ],
+              [
+                "Rata-rata",
+                "O(log n)",
+                "rentang terbagi dua pada setiap langkah"
+              ],
+              [
+                "Terburuk",
+                "O(log n)",
+                "sekitar log₂ n + 1 langkah sampai rentang kosong"
+              ],
+              [
+                "Ruang, iteratif",
+                "O(1)",
+                "hanya dua atau tiga indeks"
+              ],
+              [
+                "Ruang, rekursif",
+                "O(log n)",
+                "satu stack frame per pembagian dua"
+              ]
+            ]
+          }
+        },
+        {
+          "note": "Binary search membutuhkan array terurut dengan akses indeks O(1). Pada linked list, mencapai elemen tengah berbiaya O(n), sehingga keuntungannya hilang. Mengurutkan dulu berbiaya O(n log n), jadi untuk satu kali pencarian pada data tak terurut, pemindaian linear lebih murah."
+        }
+      ]
+    },
+    {
+      "h": "Varian: pertama, terakhir, dan binary search pada jawaban",
+      "body": [
+        "Banyak soal tidak menanyakan apakah suatu nilai ada, melainkan di mana batasnya: indeks pertama dengan nilai minimal x, kemunculan terakhir x, atau bilangan terkecil yang memenuhi suatu kondisi. Pakai rentang setengah terbuka `[lo, hi)` dan jangan pernah berhenti lebih awal.",
+        {
+          "code": "def first_true(lo, hi, ok):\n    \"\"\"Smallest x in [lo, hi) with ok(x) True, or hi if none.\n    ok must be False...False True...True over the range.\"\"\"\n    while lo < hi:\n        mid = (lo + hi) // 2\n        if ok(mid):\n            hi = mid          # mid may be the answer, keep it\n        else:\n            lo = mid + 1      # mid is too small\n    return lo\ndata = [1, 3, 3, 3, 7, 9]\nprint(first_true(0, len(data), lambda i: data[i] >= 3))   # 1\n# Integer square root of 200: largest x with x*x <= 200\nprint(first_true(0, 201, lambda x: x * x > 200) - 1)      # 14",
+          "lang": "python"
+        },
+        {
+          "ul": [
+            "Lower bound (indeks pertama dengan nilai ≥ x): `bisect_left`.",
+            "Upper bound (indeks pertama dengan nilai > x): `bisect_right`.",
+            "Jumlah x dalam list terurut: `bisect_right(a, x) - bisect_left(a, x)`.",
+            "Pencarian pada rotated sorted array, mencari puncak (peak finding), dan meminimalkan nilai maksimum (misalnya kapasitas terkecil yang bisa mengirim semua paket dalam D hari) adalah varian klasik di wawancara kerja."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Kesalahan umum",
+      "body": [
+        {
+          "ul": [
+            "Mencampur konvensi rentang. Dengan rentang tertutup pakai `lo <= hi` dan `hi = mid - 1`; dengan rentang setengah terbuka pakai `lo < hi` dan `hi = mid`. Mencampurnya menyebabkan perulangan tak terbatas atau elemen yang terlewat.",
+            "Menulis `lo = mid` alih-alih `lo = mid + 1`. Ketika `hi = lo + 1`, mid sama dengan lo dan perulangan tidak pernah berakhir.",
+            "Menjalankan binary search pada data tak terurut. Hasilnya salah tanpa error apa pun.",
+            "Integer overflow pada `(lo + hi) / 2` di bahasa dengan integer berukuran tetap seperti Java, C, dan C++. Pakai `lo + (hi - lo) / 2`. Integer Python tidak overflow, jadi `(lo + hi) // 2` aman.",
+            "Mengembalikan kecocokan pertama yang ditemukan padahal soal meminta kemunculan pertama di antara duplikat."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Kapan memakai binary search",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Situasi",
+              "Pilihan yang lebih baik"
+            ],
+            "rows": [
+              [
+                "Banyak pencarian pada data yang jarang berubah",
+                "urutkan sekali, lalu binary search"
+              ],
+              [
+                "Hanya pencarian exact-match, data sering berubah",
+                "hash table (`set`, `dict`), O(1) rata-rata"
+              ],
+              [
+                "Data terurut dengan banyak insert dan query rentang",
+                "binary search tree seimbang atau B-tree"
+              ],
+              [
+                "Satu pencarian pada data tak terurut",
+                "linear search, O(n)"
+              ]
+            ]
+          }
+        },
+        "Pemakaian di dunia nyata mencakup indeks database dan file system (B-tree menggeneralisasi idenya), `git bisect` untuk mencari commit yang memunculkan bug, mencari nilai dalam tabel rentang terurut seperti blok IP, dan banyak masalah numerik yang mencari sebuah ambang (threshold)."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Berapa kompleksitas waktu binary search?",
+      "a": "O(log n) pada kasus rata-rata dan terburuk, serta O(1) pada kasus terbaik. Setiap perbandingan membagi dua rentang tersisa, sehingga 1.000.000 item paling banyak butuh 20 perbandingan."
+    },
+    {
+      "q": "Apakah binary search butuh array terurut?",
+      "a": "Ya. Array harus terurut menurut urutan yang sama dengan yang dipakai untuk membandingkan, atau kondisi yang diuji harus monoton. Pada data tak terurut, hasilnya tidak bisa diandalkan."
+    },
+    {
+      "q": "Apa fungsi bisect di Python?",
+      "a": "Modul `bisect` menjalankan binary search pada list terurut. `bisect_left` dan `bisect_right` mengembalikan titik penyisipan, dan `insort` menyisipkan sambil menjaga list tetap terurut (pencariannya O(log n), penyisipannya sendiri O(n))."
+    },
+    {
+      "q": "Mana yang lebih baik, binary search rekursif atau iteratif?",
+      "a": "Versi iteratif biasanya lebih disukai karena memakai ruang O(1) dan menghindari overhead rekursi. Versi rekursif sama benarnya dan memakai ruang stack O(log n)."
+    },
+    {
+      "q": "Mengapa binary search memakai lo + (hi - lo) / 2?",
+      "a": "Di bahasa dengan integer berukuran tetap, `lo + hi` bisa overflow ketika keduanya besar. `lo + (hi - lo) / 2` menghasilkan titik tengah yang sama tanpa overflow. Di Python ini tidak diperlukan."
+    }
+  ]
+}

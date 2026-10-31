@@ -1,0 +1,184 @@
+{
+  "title": "Adapter パターン：互換性のないインターフェイスをつなぐ、TypeScriptの例 — cv.cm",
+  "description": "Adapter パターンを解説。互換性のないインターフェイスを持つクラスをラップして、クライアントから使えるようにする方法を、TypeScriptの例、オブジェクトAdapterとクラスAdapter、実際の利用例とともに紹介します。",
+  "h1": "Adapter パターンを例でわかりやすく解説",
+  "answer": "Adapter パターンは、既存のクラスのインターフェイスを、クライアントコードが期待するインターフェイスに変換する構造パターンです。Adapterは互換性のないオブジェクトをラップして、すべての呼び出しを変換します。たとえば `charge(amountCents)` を、レガシーな `makePayment(\"12.50\")` に変えます。サードパーティやレガシーのコンポーネントを、変更せずに再利用でき、その扱いにくいAPIをコード全体に広げずに済みます。Wrapperとも呼ばれます。",
+  "sections": [
+    {
+      "h": "目的",
+      "body": [
+        "クラスのインターフェイスを、クライアントが期待する別のインターフェイスに変換します。Adapter パターンは、インターフェイスの互換性がないために共に動作できなかったクラス同士を、協調して動作できるようにします。Gang of Four（GoF）の書籍にある7つの構造パターンの1つです。"
+      ]
+    },
+    {
+      "h": "解決する問題",
+      "body": [
+        "ショップのコードは、小さな `PaymentGateway` インターフェイスで動いています。`charge(amountCents, currency)` は、`ok` フラグと取引IDを含む結果を返します。ここで、ビジネス側が決済プロバイダーと契約しましたが、そのSDKはまったく違う形をしています。金額は10進数の文字列で、通貨はリクエストオブジェクトの一部であり、エラーは数値のステータスコードで返ってきます。",
+        "SDKは変更できませんし、新しい形に合わせてすべての呼び出し元を書き直したくもありません。SDKのスタイルが、チェックアウト、返金、レポートにまで漏れ出すと、後でプロバイダーを切り替えるときにコストが高くつきます。Adapterなら、変換を1つのクラスにとどめられます。"
+      ]
+    },
+    {
+      "h": "構造と登場要素",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "要素",
+              "役割",
+              "例では"
+            ],
+            "rows": [
+              [
+                "Target",
+                "クライアントが期待するインターフェイスです。",
+                "`PaymentGateway`"
+              ],
+              [
+                "Adaptee",
+                "互換性のないインターフェイスを持つ既存のクラスです。",
+                "`LegacyPayClient`"
+              ],
+              [
+                "Adapter",
+                "Targetを実装し、呼び出しをAdapteeに変換します。",
+                "`LegacyPayAdapter`"
+              ],
+              [
+                "Client",
+                "Targetインターフェイスだけを使います。",
+                "`checkout`"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "TypeScriptでの実装",
+      "body": [
+        {
+          "code": "// Target: what our code expects.\ninterface PaymentGateway {\n  charge(amountCents: number, currency: string): { ok: boolean; id: string };\n}\n\n// Adaptee: a third-party SDK we cannot change.\nclass LegacyPayClient {\n  makePayment(req: { amount: string; curr: string }): { status: number; ref: string } {\n    return { status: req.curr === \"USD\" ? 200 : 422, ref: `TX-${req.amount}` };\n  }\n}\n\n// Adapter: implements the Target by translating to the Adaptee.\nclass LegacyPayAdapter implements PaymentGateway {\n  constructor(private client: LegacyPayClient) {}\n\n  charge(amountCents: number, currency: string) {\n    const res = this.client.makePayment({\n      amount: (amountCents / 100).toFixed(2),\n      curr: currency.toUpperCase(),\n    });\n    return { ok: res.status === 200, id: res.ref };\n  }\n}\n\n// Client code knows nothing about LegacyPayClient.\nfunction checkout(gateway: PaymentGateway, totalCents: number): string {\n  const result = gateway.charge(totalCents, \"usd\");\n  return result.ok ? `paid ${result.id}` : \"payment failed\";\n}\n\nconsole.log(checkout(new LegacyPayAdapter(new LegacyPayClient()), 1250)); // paid TX-12.50",
+          "lang": "typescript"
+        },
+        "後で別のプロバイダーに切り替えるときは、Adapterをもう1つ書くだけです。`checkout` とほかのすべての呼び出し元は変わらず、テストでは `PaymentGateway` のフェイクを渡せます。"
+      ]
+    },
+    {
+      "h": "オブジェクトAdapterとクラスAdapter",
+      "body": [
+        "GoFの書籍は2つの形を紹介しています。",
+        {
+          "table": {
+            "head": [
+              "形",
+              "仕組み",
+              "備考"
+            ],
+            "rows": [
+              [
+                "オブジェクトAdapter",
+                "Adapteeへの参照を保持して、委譲します（合成）。",
+                "Adapteeとそのすべてのサブクラスで動作します。TypeScript、Java、C#では通常こちらを選びます。"
+              ],
+              [
+                "クラスAdapter",
+                "Adapteeを継承し、Targetのインターフェイスを実装します。",
+                "Adapteeからの継承が必要なので、そのクラスだけに対応します。多重継承のあるC++でよく見られます。"
+              ]
+            ]
+          }
+        },
+        "TypeScriptやJavaScriptでは、関数を適応させるだけで十分なことが多くあります。Node.jsにはこの種の小さなAdapterが付属しています。`util.promisify()` は、コールバック形式の関数を、Promiseを返す関数に変えます。",
+        {
+          "code": "import { promisify } from \"node:util\";\n\n// Adaptee: old callback style (error first, then result).\nfunction readConfig(name: string, cb: (err: Error | null, value?: string) => void): void {\n  setTimeout(() => cb(null, `config for ${name}`), 10);\n}\n\n// Adapted: the same function, now with a promise-based interface.\nconst readConfigAsync = promisify(readConfig);\nconsole.log(await readConfigAsync(\"app\")); // config for app",
+          "lang": "typescript"
+        }
+      ]
+    },
+    {
+      "h": "使うべきとき、使わないとき",
+      "body": [
+        "次の場合はAdapter パターンを使います。",
+        {
+          "ul": [
+            "既存のクラスを使いたいが、そのインターフェイスがコードの必要とするものと合わない場合。",
+            "サードパーティのライブラリやレガシーシステムを統合し、そのAPIをプログラムの境界に留めておきたい場合。",
+            "2つの決済プロバイダーのように、複数の異なる実装を1つのインターフェイスの背後に置きたい場合。"
+          ]
+        },
+        "次の場合は避けます。",
+        {
+          "ul": [
+            "両側を自分で所有している場合。変換層を追加するより、インターフェイスの一方を変更するほうが通常は簡単です。",
+            "Adapteeが本当にはサポートできないTargetインターフェイスの大部分を、Adapterが偽装しなければならない場合。本当の不一致を解決せず、隠すことになります。"
+          ]
+        },
+        {
+          "note": "Adapterは薄く保ちましょう。名前、単位、エラー形式を変換するもので、ビジネスルールを含むべきではありません。Adapterが肥大化してきたら、そのロジックは別の場所に置くべきでしょう。"
+        }
+      ]
+    },
+    {
+      "h": "実際の利用例",
+      "body": [
+        {
+          "ul": [
+            "Node.js：`util.promisify()` は、コールバックベースの関数をPromiseに適応させます。",
+            "Java：`Arrays.asList()` は配列を `List` インターフェイスで使えるようにし、`InputStreamReader` はバイトベースの `InputStream` を文字ベースの `Reader` として読めるようにします。",
+            "データベースライブラリやORMは、データベースごとに1つのAdapterまたはドライバーを使うので、同じクエリAPIがPostgreSQL、MySQL、SQLiteで動きます。",
+            "フロントエンドのコードでも、同じ理由で、ブラウザーAPIや分析SDKを、プロジェクト固有の小さなインターフェイスの背後にラップすることがよくあります。"
+          ]
+        }
+      ]
+    },
+    {
+      "h": "関連するパターン",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "パターン",
+              "Adapter パターンとの違い"
+            ],
+            "rows": [
+              [
+                "Decorator パターン",
+                "同じインターフェイスを保ち、振る舞いを追加します。Adapter パターンはインターフェイスを変え、新しい振る舞いは追加しません。"
+              ],
+              [
+                "Proxy パターン",
+                "同じインターフェイスを保ち、オブジェクトへのアクセスを制御します（遅延読み込み、キャッシュ、権限）。"
+              ],
+              [
+                "Facade パターン",
+                "多くのクラスからなるサブシステム全体に、新しいより単純なインターフェイスを定義します。Adapter パターンは、既存のインターフェイスを別の既存のインターフェイスに合わせます。"
+              ],
+              [
+                "Bridge パターン",
+                "抽象とその実装を別々に変化させられるよう、最初から設計します。Adapter パターンは通常、既存のクラスを合わせるために後から追加します。"
+              ]
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Adapter パターンとFacade パターンの違いは何ですか？",
+      "a": "Adapterは、既存の1つのクラスを、クライアントがすでに期待しているインターフェイスに合わせます。Facadeは、多くのクラスからなる複雑なサブシステムの前に、新しいより単純なインターフェイスを作ります。"
+    },
+    {
+      "q": "Adapter パターンとDecorator パターンの違いは何ですか？",
+      "a": "どちらもオブジェクトをラップします。Decoratorは同じインターフェイスを保ち、振る舞いを追加します。Adapterはインターフェイスを変え、ラップされたオブジェクトを、本来使えない場所で使えるようにします。"
+    },
+    {
+      "q": "Adapter パターンとラッパーは同じものですか？",
+      "a": "GoFの書籍では、WrapperはAdapterの別名です。日常会話では、「ラッパー」はDecoratorやProxyにも使われるので、どのパターンを指すかは意図で判断します。"
+    },
+    {
+      "q": "1つのAdapterで複数のクラスに対応できますか？",
+      "a": "オブジェクトAdapterは、Adapteeとそのすべてのサブクラスで動作します。無関係なクラスを適応させる場合は、通常、クラスごとに1つのAdapterを用意し、すべてが同じTargetインターフェイスを実装します。"
+    }
+  ]
+}

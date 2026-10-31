@@ -44,5 +44,41 @@
         "a": "Bài hướng dẫn đi qua từng bước của một tác vụ. Bài kiến thức giải thích ý tưởng phía sau, chẳng hạn một định dạng hay công thức hoạt động ra sao, để bạn tự đưa ra quyết định."
       }
     ]
+  },
+  "codeHub": {
+    "kicker": "Lập trình",
+    "all": "Tất cả hướng dẫn lập trình",
+    "title": "Học lập trình: ngôn ngữ, mẫu thiết kế và thuật toán — cv.cm",
+    "description": "Hướng dẫn miễn phí một trang cho Python, JavaScript, Java, C++, Go, Rust và nhiều ngôn ngữ khác, 23 mẫu thiết kế, cấu trúc dữ liệu và thuật toán, kèm mã.",
+    "h1": "Hướng dẫn lập trình",
+    "lede": "Học một ngôn ngữ lập trình, một mẫu thiết kế hay một thuật toán trong một trang. Mỗi bài trả lời câu hỏi trước, rồi đưa mã chạy được, các lỗi thường gặp và tài liệu tham khảo chính thức.",
+    "groups": {
+      "languages": "Ngôn ngữ lập trình",
+      "patterns": "Mẫu thiết kế",
+      "structures": "Cấu trúc dữ liệu",
+      "algorithms": "Thuật toán"
+    },
+    "about": [
+      "Bài về ngôn ngữ bắt đầu từ cài công cụ và in Hello, world, rồi tới hàm, tập hợp, xử lý lỗi và một chương trình nhỏ hoàn chỉnh. Bài về mẫu thiết kế giải thích vấn đề mà mỗi mẫu Gang of Four giải quyết, với ví dụ TypeScript và khi nào không nên dùng. Bài về cấu trúc dữ liệu và thuật toán đi qua một ví dụ từng bước, đưa mã Python và nêu độ phức tạp thời gian và bộ nhớ.",
+      "Mã ví dụ ngắn, chạy được nguyên văn, và mỗi trang đều liên kết tới tài liệu ngôn ngữ, tiêu chuẩn hoặc nguồn gốc đã dùng để kiểm tra."
+    ],
+    "faq": [
+      {
+        "q": "Nên học ngôn ngữ lập trình nào đầu tiên?",
+        "a": "Với đa số người mới, Python hoặc JavaScript: cú pháp đơn giản, cộng đồng lớn và chạy ở mọi nơi. Chọn JavaScript để làm web, Python cho dữ liệu, tự động hóa và lập trình nói chung."
+      },
+      {
+        "q": "Cần cài gì để làm theo hướng dẫn?",
+        "a": "Mỗi bài về ngôn ngữ đều bắt đầu bằng cách cài công cụ chính thức và chạy chương trình đầu tiên. Bài về mẫu thiết kế và thuật toán dùng TypeScript và Python, chạy được trên máy hoặc trong bất kỳ môi trường chạy trực tuyến nào."
+      },
+      {
+        "q": "Các hướng dẫn này có miễn phí không?",
+        "a": "Có. Mọi bài đều đọc miễn phí, không cần tài khoản, và mã ví dụ có thể dùng lại trong dự án của bạn."
+      },
+      {
+        "q": "Cấu trúc dữ liệu và thuật toán khác nhau thế nào?",
+        "a": "Cấu trúc dữ liệu là cách lưu dữ liệu, như mảng, bảng băm hay cây. Thuật toán là chuỗi bước giải một bài toán, như sắp xếp hay tìm đường đi ngắn nhất, và tốc độ của nó thường phụ thuộc vào cấu trúc dữ liệu được dùng."
+      }
+    ]
   }
 }

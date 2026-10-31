@@ -68,6 +68,7 @@ h2 { font-size: 1.15rem; line-height: 1.35; }
 /* Link lists: the home directory, hubs and related links */
 .wall { padding-top: 2rem; }
 .wall > h2 { margin: 0 0 0.5rem; }
+.wall > h3 { margin: 1.25rem 0 0.5rem; font-size: 1rem; }
 .group > h3 { margin: 1.4rem 0 0.35rem; font-size: 0.78rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-soft); }
 .group > h3 a { color: inherit; text-decoration: none; }
 .links { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr)); gap: 0 0.75rem; }
@@ -588,6 +589,8 @@ input[type="color"] { width: 2.6rem; height: 2.2rem; padding: 0; border: 1px sol
 .kb-section h2 { margin: 0 0 0.5rem; font-size: 1.2rem; }
 .kb-section p, .kb-section li { overflow-wrap: anywhere; }
 .kb code { font-family: var(--mono); font-size: 0.88em; padding: 0.05em 0.3em; border-radius: 4px; background: var(--gray); border: 1px solid var(--line); }
+.kb-code { margin: 0.75rem 0; padding: 0.75rem 0.9rem; overflow-x: auto; background: var(--gray); border: 1px solid var(--line); border-radius: var(--radius); line-height: 1.5; tab-size: 4; }
+.kb .kb-code code { display: block; padding: 0; border: 0; background: none; font-size: 0.85rem; white-space: pre; overflow-wrap: normal; }
 .kb-table { overflow-x: auto; margin: 0.75rem 0; border: 1px solid var(--line); border-radius: var(--radius); }
 .kb-table table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
 .kb-table th, .kb-table td { padding: 0.5rem 0.7rem; text-align: left; vertical-align: top; border-bottom: 1px solid var(--line); }

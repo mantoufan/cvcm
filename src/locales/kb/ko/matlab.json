@@ -1,0 +1,195 @@
+{
+  "title": "MATLAB 튜토리얼: 행렬, 벡터화, 함수, 그래프 그리기 — cv.cm",
+  "description": "MATLAB 기초(무료 GNU Octave 포함) 배우기: 스크립트 실행, 벡터와 행렬 만들기, 인덱싱, 반복문, 함수, 익명 함수, 오류 처리, 그래프까지 알려 드립니다.",
+  "h1": "초보자를 위한 MATLAB 튜토리얼",
+  "answer": "MATLAB은 MathWorks에서 만든 수치 계산 언어이자 환경으로, 모든 값이 행렬입니다. 행렬 곱은 `A * B`, 원소별 곱셈은 `A .* B`로 쓰고, 인덱스는 1부터 시작하며, 많은 반복문을 벡터화된 식으로 대체합니다. 그래프 기능과 공학·과학용 툴박스가 풍부하게 갖춰져 있습니다. GNU Octave는 무료 오픈 소스 대안으로, 기본적인 MATLAB 코드 대부분을 수정 없이 실행합니다.",
+  "sections": [
+    {
+      "h": "MATLAB이란 무엇이고 누가 쓰는가",
+      "body": [
+        "MATLAB(\"matrix laboratory\")은 Cleve Moler가 선형대수 라이브러리를 쉽게 쓰려고 만든 도구에서 출발해 MathWorks의 상용 제품이 되었습니다. 언어, 대화형 데스크톱, 그래프 기능, 그리고 신호 처리, 제어 시스템, 최적화, 통계, 이미지 처리, 머신러닝용 툴박스를 하나로 묶었습니다. 함께 쓰는 제품인 Simulink는 블록 다이어그램으로 동적 시스템을 모델링합니다.",
+        "MATLAB은 공학·과학 수업, 연구실, 자동차·항공우주·금융 같은 산업에서 널리 쓰입니다. 유료 라이선스가 필요하지만 많은 대학이 제공합니다. GNU Octave는 문법이 대체로 호환되는 자유 소프트웨어이며, 핵심 언어와 많은 함수를 지원하지만 MathWorks 툴박스와 Simulink는 지원하지 않습니다."
+      ]
+    },
+    {
+      "h": "설치하고 Hello, world 실행하기",
+      "body": [
+        "MathWorks에서 MATLAB을 설치하거나, 브라우저에서 MATLAB Online을 쓰거나, octave.org에서 GNU Octave(Windows, macOS, Linux)를 설치합니다. 코드는 `.m` 파일에 저장합니다. 스크립트는 명령을 모아 둔 파일이며, 명령 창에서 `.m`을 뺀 이름을 입력해 실행합니다.",
+        {
+          "code": "% hello.m\ndisp('Hello, world!')",
+          "lang": "matlab"
+        },
+        {
+          "code": "matlab -batch \"hello\"   # MATLAB from a terminal\noctave hello.m          # GNU Octave\n# Hello, world!",
+          "lang": "shell"
+        },
+        "주석은 `%`로 시작합니다. 세미콜론 없이 끝나는 줄은 결과를 출력하므로 `x = 5`는 `x = 5`를 보여 주고 `x = 5;`는 아무것도 출력하지 않습니다."
+      ]
+    },
+    {
+      "h": "변수와 기본 타입",
+      "body": [
+        "변수는 대입으로 만들어지며 선언이 필요 없습니다. 숫자는 기본적으로 `double`(64비트 부동 소수점)이고, 숫자 하나도 1×1 행렬입니다.",
+        {
+          "table": {
+            "head": [
+              "타입",
+              "예시",
+              "비고"
+            ],
+            "rows": [
+              [
+                "double",
+                "`x = 3.14`",
+                "기본 숫자 타입"
+              ],
+              [
+                "정수 타입",
+                "`n = int32(42)`",
+                "`int8`부터 `int64`, `uint8`부터 `uint64`까지; 산술 연산은 포화(saturate)됩니다"
+              ],
+              [
+                "logical",
+                "`ok = true`",
+                "`x > 2` 같은 비교의 결과"
+              ],
+              [
+                "문자 배열",
+                "`name = 'Ana'`",
+                "작은따옴표; 문자로 이루어진 행 벡터"
+              ],
+              [
+                "string",
+                "`s = \"Ana\"`",
+                "MATLAB 문자열 객체; Octave는 큰따옴표를 문자 배열로 취급합니다"
+              ],
+              [
+                "셀 배열",
+                "`c = {'Ana', 30}`",
+                "서로 다른 타입의 값을 담을 수 있습니다"
+              ],
+              [
+                "구조체",
+                "`p.name = 'Ana'`",
+                "이름이 붙은 필드"
+              ]
+            ]
+          }
+        },
+        {
+          "code": "x = 10;\ny = 3;\nx / y              % 3.3333\nmod(x, y)          % 1\nx ^ 2              % 100\nname = 'Ana';\nfprintf('%s is %d years old\\n', name, 30)\n% Ana is 30 years old\nclass(x)           % 'double'",
+          "lang": "matlab"
+        }
+      ]
+    },
+    {
+      "h": "벡터와 행렬",
+      "body": [
+        "대괄호로 배열을 만듭니다. 공백이나 쉼표는 열을, 세미콜론은 행을 구분합니다. 인덱싱은 소괄호를 쓰고 1부터 시작하며, `end`는 마지막 인덱스, `:`는 \"전체\"를 뜻합니다.",
+        {
+          "code": "v = [3 1 4 1 5];\nv(1)               % 3\nv(end)             % 5\nv(2:4)             % [1 4 1]\nv * 2              % [6 2 8 2 10]\nv(v > 2)           % [3 4 5]   logical indexing\nA = [1 2; 3 4];\nA(2, :)            % second row: [3 4]\nA'                 % transpose:  [1 3; 2 4]\nA * A              % matrix product: [7 10; 15 22]\nA .* A             % element-wise:   [1 4; 9 16]\nb = [5; 11];\nx = A \\ b          % solves A*x = b: [1; 2]\nz = zeros(2, 3);   % also ones, eye, rand\nr = 0:0.25:1;      % [0 0.25 0.5 0.75 1]",
+          "lang": "matlab"
+        },
+        "점이 붙은 연산자(`.*`, `./`, `.^`)는 원소별로 동작하고, 점이 없으면 선형대수 규칙을 따릅니다. 백슬래시 연산자는 연립 일차 방정식을 풀며 `inv(A) * b`를 계산하는 것보다 정확합니다."
+      ]
+    },
+    {
+      "h": "제어 흐름",
+      "body": [
+        {
+          "code": "score = 85;\nif score >= 90\n    disp('A')\nelseif score >= 80\n    disp('B')\nelse\n    disp('C')\nend\n\ntotal = 0;\nfor k = 1:10\n    total = total + k;\nend\nfprintf('total = %d\\n', total)   % total = 55\n\nn = 3;\nwhile n > 0\n    n = n - 1;\nend\n\nswitch 'red'\n    case {'red', 'green'}\n        disp('a color')\n    otherwise\n        disp('unknown')\nend",
+          "lang": "matlab"
+        },
+        "모든 블록은 `end`로 끝납니다. 많은 반복문은 벡터화된 식으로 바꿀 수 있습니다. 위의 반복문은 `sum(1:10)`과 같으며 더 짧고 대개 더 빠릅니다. 반복문 안에서 배열을 만들어야 한다면 먼저 `result = zeros(1, 1000);`처럼 미리 할당하세요."
+      ]
+    },
+    {
+      "h": "함수와 익명 함수",
+      "body": [
+        "함수는 함수 이름과 같은 이름의 파일에 둡니다. 함수는 여러 값을 반환할 수 있습니다. 최근 MATLAB 버전에서는 스크립트 파일 끝에 로컬 함수를 둘 수도 있습니다.",
+        {
+          "code": "% stats.m\nfunction [m, s] = stats(x)\n%STATS Mean and sample standard deviation of a vector.\n    m = mean(x);\n    s = std(x);\nend",
+          "lang": "matlab"
+        },
+        {
+          "code": "[m, s] = stats([2 4 4 5 7])   % m = 4.4000, s = 1.8166\n[biggest, where] = max([3 9 2])   % biggest = 9, where = 2\n\nf = @(x) x.^2 + 1;            % anonymous function\nf(3)                          % 10\nf([1 2 3])                    % [2 5 10]\nfzero(@(x) x.^2 - 2, 1)       % 1.4142, a root near 1\nintegral(f, 0, 1)             % 1.3333",
+          "lang": "matlab"
+        },
+        "`@`로 만드는 익명 함수는 `fzero`, `integral`, `arrayfun`, 최적화 루틴 같은 다른 함수에 자주 전달됩니다. 벡터에도 동작하도록 원소별 연산자(`.^`)로 작성하세요."
+      ]
+    },
+    {
+      "h": "구조체와 셀 배열",
+      "body": [
+        {
+          "code": "person.name = 'Ana';\nperson.age = 30;\nfprintf('%s is %d\\n', person.name, person.age)   % Ana is 30\n\nc = {'Ana', 30, [1 2 3]};   % cell array with mixed types\nc{2}                         % 30 (curly braces get the content)\nclass(c(2))                  % 'cell' (parentheses get a sub-cell)\nnames = {'Ana', 'Ben', 'Cleo'};\nnumel(names)                 % 3\nupper(names{1})              % 'ANA'",
+          "lang": "matlab"
+        },
+        "MATLAB에는 스프레드시트처럼 이름이 붙은 변수를 열 단위로 담는 `table` 타입도 있으며, `readtable`로 CSV와 Excel 파일을 불러옵니다."
+      ]
+    },
+    {
+      "h": "오류 처리",
+      "body": [
+        "`error`로 오류를 발생시키며, `'demo:negative'` 같은 식별자를 붙일 수 있습니다. `try ... catch`로 처리합니다. 잡힌 객체(MATLAB에서는 `MException`)에는 `identifier`와 `message` 필드가 있습니다.",
+        {
+          "code": "% safe_sqrt.m\nfunction r = safe_sqrt(x)\n    if x < 0\n        error('demo:negative', 'Input must be non-negative, got %g', x);\n    end\n    r = sqrt(x);\nend",
+          "lang": "matlab"
+        },
+        {
+          "code": "try\n    safe_sqrt(-4);\ncatch err\n    fprintf('%s: %s\\n', err.identifier, err.message)\nend\n% demo:negative: Input must be non-negative, got -4",
+          "lang": "matlab"
+        },
+        "프로그램을 멈추지 않아야 하는 문제에는 `warning(...)`을 씁니다. 검사를 하지 않으면 `sqrt(-4)`는 실패하지 않고 복소수 `0 + 2i`를 반환합니다."
+      ]
+    },
+    {
+      "h": "작은 완성 프로그램: 데이터 분석과 그래프",
+      "body": [
+        {
+          "code": "% temps.m - analyze a week of temperatures\ntemps = [21.5 23.0 19.8 25.1 24.3 18.9 22.7];\ndays = 1:numel(temps);\n\navg = mean(temps);\n[hottest, idx] = max(temps);\nabove = days(temps > avg);\n\nfprintf('Average: %.2f\\n', avg)\nfprintf('Hottest: %.1f on day %d\\n', hottest, idx)\nfprintf('Days above average: %s\\n', mat2str(above))\n\nplot(days, temps, '-o')\nhold on\nplot(days, avg * ones(size(days)), '--')\nxlabel('Day'); ylabel('Temperature (C)')\ntitle('Temperatures this week')\nlegend('Daily', 'Average')\n% Average: 22.19\n% Hottest: 25.1 on day 4\n% Days above average: [2 4 5 7]",
+          "lang": "matlab"
+        },
+        "스크립트는 논리 인덱싱으로 반복문 없이 평균보다 높은 날을 찾고, 마커가 있는 꺾은선 그래프와 점선 평균선을 그립니다. 같은 코드가 GNU Octave에서도 실행됩니다.",
+        {
+          "note": "초보자가 자주 하는 실수: 원소별 `.*`나 `.^`를 의도했는데 `*`나 `^`를 쓰기(차원 오류가 나거나 행렬 거듭제곱이 됨), 0으로 인덱싱하기(`v(0)`은 오류), 세미콜론을 빼먹어 출력이 넘쳐 나게 하기, 스크립트나 변수에 내장 함수 이름(`sum`, `max`, `i`)을 붙여 함수를 가려 버리기, 복소수를 다루면서 `i`와 `j`를 반복 변수로 쓰기, 미리 할당하지 않고 반복문 안에서 배열을 키우기."
+        }
+      ]
+    },
+    {
+      "h": "다음 단계",
+      "body": [
+        {
+          "ul": [
+            "MathWorks의 MATLAB 문서, 시작하기 페이지부터.",
+            "MathWorks의 무료 대화형 입문 과정인 MATLAB Onramp.",
+            "Octave를 쓴다면 MATLAB 호환성에 관한 설명을 포함한 GNU Octave 매뉴얼.",
+            "다음으로 벡터화, 데이터 파일용 `readtable`, 그래프 함수를 배워 보세요."
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "MATLAB의 무료 버전이 있나요?",
+      "a": "MATLAB 자체는 라이선스가 필요하지만 MathWorks가 체험판을 제공하고 많은 대학이 캠퍼스 라이선스를 제공합니다. GNU Octave는 기본적인 MATLAB 코드 대부분을 실행하는 무료 오픈 소스 프로그램입니다."
+    },
+    {
+      "q": "MATLAB에서 *와 .*의 차이는 무엇인가요?",
+      "a": "`*`는 선형대수의 행렬 곱셈으로, 안쪽 차원이 일치해야 합니다. `.*`는 크기가 같은 두 배열의 대응하는 원소끼리 곱합니다."
+    },
+    {
+      "q": "GNU Octave는 MATLAB과 완전히 호환되나요?",
+      "a": "완전하지는 않습니다. 핵심 문법, 행렬, 함수, 그래프는 대체로 호환되지만 Octave에는 MathWorks 툴박스, Simulink, 일부 최신 MATLAB 기능이 없고, 자체적으로 몇 가지 추가 문법을 허용합니다."
+    },
+    {
+      "q": "MATLAB은 왜 인덱스가 1부터 시작하나요?",
+      "a": "MATLAB은 벡터나 행렬의 첫 번째 원소를 1번 원소로 보는 수학 표기법을 따릅니다. Fortran, R, Julia도 같은 규칙을 씁니다."
+    },
+    {
+      "q": "MATLAB과 Python 중 무엇을 배워야 하나요?",
+      "a": "수업, 연구실, 회사에서 MATLAB을 쓴다면, 특히 Simulink나 특정 툴박스와 함께 쓴다면 MATLAB을 배우세요. NumPy, SciPy, Matplotlib을 갖춘 Python은 무료이고 더 범용적이며, 개념은 두 언어 사이에서 그대로 통합니다."
+    }
+  ]
+}

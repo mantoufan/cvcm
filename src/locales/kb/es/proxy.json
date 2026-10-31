@@ -1,0 +1,177 @@
+{
+  "title": "Patrón Proxy: proxies virtuales, de protección y de caché en TypeScript — cv.cm",
+  "description": "El patrón Proxy coloca un objeto sustituto delante de uno real para controlar el acceso. Mira proxies de caché, diferidos y de protección en TypeScript y el Proxy de JS.",
+  "h1": "Patrón Proxy explicado con ejemplos",
+  "answer": "Proxy es un patrón de diseño estructural que ofrece un objeto sustituto con la misma interfaz que un objeto real, de modo que el proxy puede controlar el acceso a él. El cliente habla con el proxy como si fuera el objeto real, y el proxy decide cuándo y cómo reenviar cada llamada. Los tipos más comunes son los proxies virtuales (creación diferida), los proxies de protección (comprobaciones de acceso), los proxies de caché y los proxies remotos.",
+  "sections": [
+    {
+      "h": "Intención y el problema que resuelve",
+      "body": [
+        "Intención: proporcionar un sustituto o marcador de posición de otro objeto para controlar el acceso a él. Proxy es uno de los patrones estructurales del libro de la Banda de los Cuatro (Gang of Four, GoF).",
+        "Supón que una aplicación llama a un servicio meteorológico por la red. Cada llamada tarda cientos de milisegundos y cuesta dinero, y la misma ciudad se solicita muchas veces por minuto. No puedes cambiar la clase del servicio y no quieres añadir código de caché en cada lugar que lo llama. Un proxy lo resuelve: implementa la misma interfaz, mantiene una caché y solo llama al servicio real cuando la caché no tiene el dato. Los llamadores no cambian en absoluto.",
+        "La misma idea cubre otras necesidades: crear un objeto costoso solo la primera vez que se usa, comprobar permisos antes de una llamada, registrar cada llamada u ocultar que el objeto real vive en otra máquina."
+      ]
+    },
+    {
+      "h": "Estructura y participantes",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Rol",
+              "Responsabilidad"
+            ],
+            "rows": [
+              [
+                "Sujeto",
+                "La interfaz compartida por el objeto real y el proxy, para que el cliente pueda usar cualquiera de los dos"
+              ],
+              [
+                "Sujeto real",
+                "El objeto que hace el trabajo de verdad"
+              ],
+              [
+                "Proxy",
+                "Implementa la interfaz del sujeto, guarda o crea una referencia al sujeto real y añade lógica de control antes o después de reenviar"
+              ],
+              [
+                "Cliente",
+                "Trabaja solo con la interfaz del sujeto y no sabe si tiene un proxy"
+              ]
+            ]
+          }
+        },
+        {
+          "table": {
+            "head": [
+              "Tipo de proxy",
+              "Qué controla"
+            ],
+            "rows": [
+              [
+                "Proxy virtual",
+                "Retrasa la creación de un objeto costoso hasta que se necesita"
+              ],
+              [
+                "Proxy de protección",
+                "Comprueba si quien llama tiene permiso para realizar una operación"
+              ],
+              [
+                "Proxy de caché",
+                "Almacena resultados y los devuelve ante peticiones repetidas"
+              ],
+              [
+                "Proxy remoto",
+                "Representa un objeto de otro proceso o máquina y se encarga de la comunicación"
+              ],
+              [
+                "Proxy de registro",
+                "Registra llamadas y argumentos sin cambiar el objeto real"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "Implementación en TypeScript: un proxy de caché",
+      "body": [
+        "`WeatherService` es el sujeto. `CachedWeatherService` es el proxy: tiene el mismo método y reenvía al servicio real solo cuando el valor en caché falta o es demasiado antiguo.",
+        {
+          "code": "interface WeatherService {\n  getTemperature(city: string): Promise<number>;\n}\nclass RemoteWeatherService implements WeatherService {\n  calls = 0;\n  async getTemperature(city: string): Promise<number> {\n    this.calls++; // imagine a slow HTTP request here\n    return city.length * 3;\n  }\n}\nclass CachedWeatherService implements WeatherService {\n  private cache = new Map<string, { value: number; time: number }>();\n  constructor(private real: WeatherService, private maxAgeMs = 60_000) {}\n  async getTemperature(city: string): Promise<number> {\n    const hit = this.cache.get(city);\n    if (hit && Date.now() - hit.time < this.maxAgeMs) return hit.value;\n    const value = await this.real.getTemperature(city);\n    this.cache.set(city, { value, time: Date.now() });\n    return value;\n  }\n}\nasync function main() {\n  const real = new RemoteWeatherService();\n  const weather: WeatherService = new CachedWeatherService(real);\n  await weather.getTemperature(\"Paris\");\n  await weather.getTemperature(\"Paris\");\n  console.log(await weather.getTemperature(\"Hanoi\"), \"real calls:\", real.calls);\n  // 15 real calls: 2\n}\nmain();",
+          "lang": "typescript"
+        },
+        "La variable cliente está tipada como `WeatherService`, así que puedes cambiar entre el servicio real y el proxy en un solo lugar, por ejemplo en una configuración de inyección de dependencias."
+      ]
+    },
+    {
+      "h": "Un proxy virtual y de protección con el Proxy de JavaScript",
+      "body": [
+        "JavaScript tiene un objeto `Proxy` integrado (ES2015) que intercepta operaciones como lecturas y escrituras de propiedades y llamadas a funciones mediante funciones manejadoras llamadas traps. Es una forma cómoda de construir un proxy sin escribir una clase para cada interfaz.",
+        {
+          "code": "type Account = { owner: string; balance: number };\nfunction readOnly<T extends object>(target: T): T {\n  return new Proxy(target, {\n    set(_obj, prop) {\n      throw new Error(\"Cannot change \" + String(prop) + \": read-only\");\n    },\n  });\n}\nconst account = readOnly<Account>({ owner: \"Ana\", balance: 100 });\nconsole.log(account.balance); // 100\ntry {\n  account.balance = 0;\n} catch (e) {\n  console.log((e as Error).message); // Cannot change balance: read-only\n}",
+          "lang": "typescript"
+        },
+        {
+          "note": "Un `Proxy` de JavaScript intercepta operaciones sobre un objeto, pero no es gratis: cada operación interceptada ejecuta una función. No envuelvas estructuras de datos muy usadas en un `Proxy` sin medir el coste."
+        }
+      ]
+    },
+    {
+      "h": "Cuándo usarlo y cuándo no",
+      "body": [
+        {
+          "ul": [
+            "Úsalo para añadir carga diferida, control de acceso, caché, registro o acceso remoto sin cambiar la clase real ni a sus llamadores.",
+            "Úsalo cuando el objeto real esté fuera de tu control, como una clase de una biblioteca o un cliente de red.",
+            "No lo uses cuando baste un envoltorio de función simple. Para una sola función, una función de orden superior como `memoize(fn)` es más sencilla que una clase.",
+            "No escondas llamadas remotas lentas o que fallan tras un proxy que parece local. Los llamadores siguen necesitando manejar la latencia y los errores, así que hazlo visible en la interfaz (por ejemplo, devolviendo una `Promise`).",
+            "Ten cuidado con la identidad: un proxy es un objeto distinto del sujeto real, así que `proxy === real` es falso."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Usos en el mundo real",
+      "body": [
+        {
+          "ul": [
+            "Vue 3 construye su sistema de reactividad sobre el `Proxy` de JavaScript: leer una propiedad registra una dependencia y escribirla dispara las actualizaciones.",
+            "Java ofrece `java.lang.reflect.Proxy` para crear clases proxy dinámicas en tiempo de ejecución; los frameworks lo usan para añadir transacciones, comprobaciones de seguridad o llamadas remotas alrededor de interfaces.",
+            "Los mapeadores objeto-relacionales como Hibernate devuelven proxies diferidos para las entidades relacionadas y cargan los datos reales de la base de datos en el primer acceso.",
+            "Las bibliotecas de llamada a procedimiento remoto generan stubs de cliente que parecen objetos locales pero envían cada llamada por la red."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Patrones relacionados",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Patrón",
+              "En qué se diferencia de Proxy"
+            ],
+            "rows": [
+              [
+                "Decorator",
+                "Misma estructura, distinto objetivo: Decorator añade comportamiento nuevo y suele apilarse; Proxy controla el acceso y normalmente gestiona el ciclo de vida del objeto real."
+              ],
+              [
+                "Adapter",
+                "Adapter da a un objeto una interfaz distinta; Proxy mantiene exactamente la misma interfaz."
+              ],
+              [
+                "Facade",
+                "Facade ofrece una interfaz nueva y más simple para todo un subsistema; Proxy sustituye a un solo objeto."
+              ],
+              [
+                "Flyweight",
+                "Flyweight comparte objetos para ahorrar memoria; un proxy virtual retrasa la creación de un objeto para ahorrar tiempo y memoria."
+              ]
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "¿Cuál es la diferencia entre Proxy y Decorator?",
+      "a": "Ambos envuelven un objeto con la misma interfaz. Un decorador añade responsabilidades y normalmente lo compone el cliente, mientras que un proxy controla el acceso al objeto real y a menudo crea o gestiona ese objeto por sí mismo."
+    },
+    {
+      "q": "¿El objeto Proxy de JavaScript es lo mismo que el patrón Proxy?",
+      "a": "Es una característica del lenguaje que facilita implementar el patrón. Un `Proxy` de JavaScript intercepta operaciones sobre un objeto destino mediante traps, que es exactamente lo que hace un proxy en el sentido de GoF."
+    },
+    {
+      "q": "¿Qué es un proxy virtual?",
+      "a": "Un proxy virtual sustituye a un objeto que es costoso de crear, como una imagen grande. Crea el objeto real solo cuando se llama por primera vez a un método que lo necesita."
+    },
+    {
+      "q": "¿Un servidor proxy inverso es un ejemplo del patrón Proxy?",
+      "a": "Sigue la misma idea a nivel de red: un servidor como nginx se coloca delante de otros servidores con la misma interfaz HTTP y añade caché, control de acceso o balanceo de carga. El patrón GoF describe la misma idea para objetos dentro de un programa."
+    }
+  ]
+}

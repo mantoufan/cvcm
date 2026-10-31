@@ -1,0 +1,191 @@
+{
+  "title": "Tutorial de C#: tipos, clases, colecciones, LINQ y async — cv.cm",
+  "description": "Aprende C# en una página: ejecuta Hello world con el SDK de .NET, tipos, control de flujo, clases, records, List y Dictionary, LINQ, async y excepciones.",
+  "h1": "Tutorial de C# para principiantes",
+  "answer": "C# es un lenguaje orientado a objetos de tipado estático creado por Microsoft que se ejecuta en .NET, un entorno de ejecución gratuito y multiplataforma para Windows, macOS y Linux. Instala el SDK de .NET, ejecuta `dotnet new console` y `dotnet run` imprime «Hello, World!». Las ideas centrales son las clases y los records, las colecciones genéricas como `List<T>` y `Dictionary<K, V>`, las consultas LINQ, `async`/`await`, el pattern matching y las excepciones.",
+  "sections": [
+    {
+      "h": "Qué es C# y para qué se usa",
+      "body": [
+        "C# (se pronuncia «C sharp») fue diseñado en Microsoft por un equipo dirigido por Anders Hejlsberg y se publicó por primera vez en 2002. Está estandarizado por Ecma (ECMA-334) y se desarrolla de forma abierta junto con .NET. C# se usa para APIs y sitios web (ASP.NET Core), aplicaciones de escritorio para Windows, aplicaciones móviles y de escritorio multiplataforma (.NET MAUI), servicios en la nube y videojuegos: el motor Unity usa C# para los scripts de juego. Su sintaxis pertenece a la familia de C, así que resulta familiar a quienes conocen Java, C++ y JavaScript."
+      ]
+    },
+    {
+      "h": "Instalar .NET y ejecutar Hello, world",
+      "body": [
+        "Descarga el SDK de .NET desde dot.net y compruébalo con `dotnet --version`. Crea y ejecuta un proyecto de consola:",
+        {
+          "code": "dotnet new console -o HelloApp\ncd HelloApp\ndotnet run\n# Hello, World!",
+          "lang": "shell"
+        },
+        "La plantilla crea `Program.cs`, que usa instrucciones de nivel superior, así que un programa pequeño no necesita una clase ni un método `Main`:",
+        {
+          "code": "Console.WriteLine(\"Hello, World!\");",
+          "lang": "csharp"
+        }
+      ]
+    },
+    {
+      "h": "Variables y tipos básicos",
+      "body": [
+        "Cada variable tiene un tipo estático. `var` permite que el compilador lo infiera a partir del valor. Los tipos de valor (números, `bool`, `struct`) contienen sus datos directamente; los tipos de referencia (`string`, clases, arrays) se refieren a un objeto.",
+        {
+          "table": {
+            "head": [
+              "Tipo",
+              "Ejemplo",
+              "Notas"
+            ],
+            "rows": [
+              [
+                "`int`",
+                "`int n = 42;`",
+                "Entero de 32 bits"
+              ],
+              [
+                "`long`",
+                "`long big = 10_000_000_000;`",
+                "Entero de 64 bits"
+              ],
+              [
+                "`double`",
+                "`double x = 3.14;`",
+                "Punto flotante de 64 bits"
+              ],
+              [
+                "`decimal`",
+                "`decimal price = 19.99m;`",
+                "Base 10, bueno para dinero"
+              ],
+              [
+                "`bool`",
+                "`bool ok = true;`",
+                "`true` o `false`"
+              ],
+              [
+                "`char`",
+                "`char c = 'A';`",
+                "Unidad de código UTF-16"
+              ],
+              [
+                "`string`",
+                "`string s = \"hi\";`",
+                "Texto inmutable"
+              ]
+            ]
+          }
+        },
+        {
+          "code": "var name = \"Ada\";\nint count = 7;\ndouble avg = count / 2.0;\nConsole.WriteLine($\"{name} has {count} items, avg {avg}\");  // Ada has 7 items, avg 3.5\nConsole.WriteLine(count / 2);                              // 3 (integer division)\nConsole.WriteLine(int.Parse(\"12\") + 1);                    // 13\nstring? nickname = null;   // ? marks a nullable reference\nConsole.WriteLine(nickname ?? \"none\");                     // none",
+          "lang": "csharp"
+        },
+        "`$\"...\"` es una cadena interpolada. Los proyectos nuevos activan los tipos de referencia que aceptan null, así que el compilador avisa cuando se usa sin comprobar un valor que puede ser `null`."
+      ]
+    },
+    {
+      "h": "Control de flujo y métodos",
+      "body": [
+        {
+          "code": "int score = 72;\nif (score >= 90) Console.WriteLine(\"A\");\nelse if (score >= 70) Console.WriteLine(\"B\");   // B\nelse Console.WriteLine(\"C\");\n\nfor (int i = 0; i < 3; i++) Console.Write($\"{Square(i)} \");  // 0 1 4\nConsole.WriteLine();\n\nforeach (var fruit in new[] { \"apple\", \"pear\" }) Console.WriteLine(fruit);\n\nstring day = \"SAT\";\nstring kind = day switch\n{\n    \"SAT\" or \"SUN\" => \"weekend\",\n    _ => \"weekday\",\n};\nConsole.WriteLine(kind);   // weekend\nConsole.WriteLine(Greet(\"Lin\"));                // Hello, Lin!\n\nstatic int Square(int x) => x * x;\nstatic string Greet(string name, string greeting = \"Hello\") => $\"{greeting}, {name}!\";",
+          "lang": "csharp"
+        },
+        "La expresión `switch` y el patrón `or` forman parte del pattern matching de C#. Los métodos pueden tener valores por defecto en los parámetros, argumentos con nombre (`Greet(name: \"Lin\")`) y cuerpos de expresión con `=>`."
+      ]
+    },
+    {
+      "h": "Clases, propiedades y records",
+      "body": [
+        "Las clases tienen campos, propiedades (campos con lógica de get y set) y métodos. Un `record` es un tipo cuya igualdad se basa en sus valores, ideal para datos inmutables.",
+        {
+          "code": "var acc = new Account(\"Ann\");\nacc.Deposit(50);\nConsole.WriteLine($\"{acc.Owner}: {acc.Balance}\");   // Ann: 50\n\nvar p1 = new Point(3, 4);\nvar p2 = p1 with { Y = 5 };                         // copy with one change\nConsole.WriteLine(p1);                              // Point { X = 3, Y = 4 }\nConsole.WriteLine(p1 == new Point(3, 4));           // True\n\npublic class Account\n{\n    public string Owner { get; }\n    public decimal Balance { get; private set; }\n\n    public Account(string owner) => Owner = owner;\n\n    public void Deposit(decimal amount)\n    {\n        if (amount <= 0) throw new ArgumentException(\"amount must be positive\");\n        Balance += amount;\n    }\n}\n\npublic record Point(int X, int Y);",
+          "lang": "csharp"
+        },
+        "Las declaraciones de tipos deben ir después de las instrucciones de nivel superior en el mismo archivo. Las clases admiten herencia simple (`class Savings : Account`) y cualquier número de interfaces."
+      ]
+    },
+    {
+      "h": "Colecciones y LINQ",
+      "body": [
+        "Las colecciones genéricas de `System.Collections.Generic` son las estructuras de datos de uso diario. LINQ (Language Integrated Query) añade a toda colección métodos como `Where`, `Select`, `OrderBy` y `GroupBy`.",
+        {
+          "code": "var nums = new List<int> { 3, 1, 2, 5 };\nnums.Add(4);\nnums.Sort();\nConsole.WriteLine(string.Join(\", \", nums));      // 1, 2, 3, 4, 5\n\nvar ages = new Dictionary<string, int> { [\"ann\"] = 31, [\"bob\"] = 25 };\nages[\"cy\"] = 40;\nif (ages.TryGetValue(\"bob\", out int bobAge)) Console.WriteLine(bobAge);  // 25\n\nvar evenSquares = nums.Where(n => n % 2 == 0).Select(n => n * n).ToList();\nConsole.WriteLine(string.Join(\" \", evenSquares)); // 4 16\n\nvar oldest = ages.OrderByDescending(kv => kv.Value).First();\nConsole.WriteLine(oldest.Key);                    // cy",
+          "lang": "csharp"
+        },
+        "Otras colecciones habituales son `HashSet<T>` para elementos únicos, `Queue<T>`, `Stack<T>` y los arrays de tamaño fijo como `int[]`."
+      ]
+    },
+    {
+      "h": "Característica distintiva: async y await",
+      "body": [
+        "C# introdujo el modelo `async`/`await` que muchos lenguajes adoptaron después. Un método `async` devuelve un `Task` y puede hacer `await` de operaciones lentas, como peticiones web o lecturas de archivos, sin bloquear un hilo.",
+        {
+          "code": "using System.Net.Http;\n\nusing var http = new HttpClient();\nvar sizes = await Task.WhenAll(\n    GetLengthAsync(http, \"https://example.com\"),\n    GetLengthAsync(http, \"https://example.org\"));\nConsole.WriteLine($\"downloaded {sizes.Sum()} characters\");\n\nstatic async Task<int> GetLengthAsync(HttpClient http, string url)\n{\n    string html = await http.GetStringAsync(url);\n    return html.Length;\n}",
+          "lang": "csharp"
+        },
+        "`Task.WhenAll` ejecuta ambas peticiones a la vez y espera a las dos. La declaración `using var` libera el `HttpClient` al final del ámbito."
+      ]
+    },
+    {
+      "h": "Excepciones",
+      "body": [
+        "Los errores son excepciones. Captura primero los tipos específicos y usa `finally` o `using` para la limpieza. El patrón `TryParse` evita las excepciones con entradas que a menudo no son válidas.",
+        {
+          "code": "try\n{\n    int age = int.Parse(\"abc\");\n}\ncatch (FormatException ex)\n{\n    Console.WriteLine($\"not a number: {ex.Message}\");\n}\nfinally\n{\n    Console.WriteLine(\"done\");\n}\n\nif (!int.TryParse(\"41\", out int parsed)) parsed = 0;\nConsole.WriteLine(parsed);   // 41",
+          "lang": "csharp"
+        }
+      ]
+    },
+    {
+      "h": "Un programa completo pequeño: frecuencia de palabras",
+      "body": [
+        "Sustituye `Program.cs` en un proyecto de consola por este código y ejecuta `dotnet run -- notes.txt`.",
+        {
+          "code": "using System.Text.RegularExpressions;\n\nif (args.Length != 1)\n{\n    Console.Error.WriteLine(\"usage: dotnet run -- FILE\");\n    return 1;\n}\n\ntry\n{\n    string text = File.ReadAllText(args[0]).ToLowerInvariant();\n    var top = Regex.Matches(text, \"[a-z']+\")\n        .GroupBy(m => m.Value)\n        .Select(g => (Word: g.Key, Count: g.Count()))\n        .OrderByDescending(t => t.Count)\n        .Take(5);\n\n    foreach (var (word, count) in top)\n        Console.WriteLine($\"{count,5}  {word}\");\n    return 0;\n}\ncatch (FileNotFoundException)\n{\n    Console.Error.WriteLine($\"file not found: {args[0]}\");\n    return 1;\n}",
+          "lang": "csharp"
+        },
+        "Las instrucciones de nivel superior pueden leer los `args` de la línea de comandos y devolver un código de salida. `System.IO`, `System.Linq` y `System.Collections.Generic` se importan automáticamente mediante los implicit usings de los proyectos nuevos."
+      ]
+    },
+    {
+      "h": "Errores comunes de principiantes",
+      "body": [
+        {
+          "note": "No bloquees el código asíncrono con `.Result` o `.Wait()`. Puede provocar interbloqueos (deadlocks) en aplicaciones de interfaz de usuario y en ASP.NET antiguo, y en otros casos desperdicia hilos. Usa `await` en toda la cadena."
+        },
+        {
+          "ul": [
+            "Usar `double` para dinero; usa `decimal` para evitar errores de redondeo binario.",
+            "Ignorar las advertencias de nulabilidad, que luego se convierten en `NullReferenceException` en tiempo de ejecución.",
+            "Modificar una `List<T>` dentro de un `foreach` sobre esa misma lista, lo que lanza `InvalidOperationException`.",
+            "Crear un `HttpClient` nuevo para cada petición en una aplicación de larga duración. Reutiliza una sola instancia o usa `IHttpClientFactory`.",
+            "Olvidar que las consultas LINQ se ejecutan de forma diferida: la consulta se vuelve a ejecutar cada vez que se enumera, salvo que llames a `ToList()`."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Adónde ir después",
+      "body": [
+        "Microsoft Learn tiene la documentación oficial de C#, con un recorrido por el lenguaje y tutoriales interactivos. Después aprende ASP.NET Core para APIs web, Entity Framework Core para bases de datos o Unity para videojuegos, y usa xUnit o NUnit para las pruebas. Visual Studio, VS Code con el C# Dev Kit y JetBrains Rider son los editores habituales."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "¿C# es solo para Windows?",
+      "a": "No. El .NET moderno se ejecuta en Windows, macOS y Linux, y las aplicaciones C# pueden desplegarse en servidores Linux y contenedores. Solo algunos frameworks de interfaz de escritorio, como WPF y Windows Forms, son exclusivos de Windows."
+    },
+    {
+      "q": "¿Cuál es la diferencia entre C# y .NET?",
+      "a": "C# es el lenguaje de programación. .NET es el entorno de ejecución y las bibliotecas que compilan y ejecutan el código C# (y también F# y Visual Basic)."
+    },
+    {
+      "q": "¿C# se parece a Java?",
+      "a": "Sí, en muchos aspectos: ambos son lenguajes orientados a objetos, de tipado estático y con recolector de basura, con sintaxis de estilo C. C# añade características como las propiedades, LINQ, `async`/`await`, los structs de tipo valor y los records."
+    },
+    {
+      "q": "¿C# es bueno para desarrollar videojuegos?",
+      "a": "Sí. Unity, uno de los motores de juego más usados, emplea C# para los scripts, y el motor Godot también admite C#."
+    }
+  ]
+}

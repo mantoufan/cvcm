@@ -1,0 +1,295 @@
+{
+  "title": "設計模式（Design Patterns）：GoF 23 種模式、分類與選用方法 — cv.cm",
+  "description": "認識軟體設計模式、四人幫（GoF）經典著作，一張表看懂 23 種建立型、結構型與行為型模式，並學會如何挑選與了解其限制。",
+  "h1": "設計模式完整介紹：四人幫（GoF）的 23 種設計模式",
+  "answer": "設計模式是針對軟體設計中反覆出現的問題，所整理出來、有名稱且可重複運用的解法，描述層次高於具體程式碼。最經典的目錄是 1994 年由 Gamma、Helm、Johnson 與 Vlissides（即「四人幫」，Gang of Four，GoF）合著的《Design Patterns: Elements of Reusable Object-Oriented Software》，書中收錄 23 種模式，分為三大類：5 種建立型、7 種結構型、11 種行為型。設計模式能讓團隊擁有共通的語彙，但它們是用來解決特定問題的工具，本身並不是目標。",
+  "sections": [
+    {
+      "h": "什麼是設計模式",
+      "body": [
+        "設計模式不是函式庫，也不是可以直接複製貼上的程式碼。它是對「反覆出現的問題」、「解法的核心」以及「採用後的取捨」所做的描述。實際的程式碼仍須由你依照所用的程式語言與專案自行撰寫。",
+        "GoF 這本書以四個基本要素來描述每一種模式：",
+        {
+          "ul": [
+            "名稱：一兩個字就能讓開發者討論設計，例如「我們可以用 Decorator 把它包起來」。",
+            "問題：什麼時候該使用這個模式，以及促使你需要它的情境。",
+            "解法：涉及的類別或物件、各自的職責，以及它們如何協作。",
+            "效果：成本與好處，例如以更多類別換取更高的彈性。"
+          ]
+        },
+        "這個概念源自建築領域。Christopher Alexander 在 1977 年出版的《A Pattern Language》描述了建築與城鎮中反覆出現的解法，GoF 的作者們便把同樣的想法應用到物件導向軟體上。"
+      ]
+    },
+    {
+      "h": "四人幫（GoF）這本書",
+      "body": [
+        "《Design Patterns: Elements of Reusable Object-Oriented Software》由 Addison-Wesley 於 1994 年出版。書中範例使用 C++ 與 Smalltalk，但這些模式適用於任何物件導向語言，包括 Java、C#、TypeScript、Python 和 Kotlin。",
+        "除了模式目錄之外，這本書還提出貫穿多數模式的兩項通用原則：",
+        {
+          "ul": [
+            "針對介面寫程式，而不是針對實作。程式碼應該依賴物件「能做什麼」，而不是它的具體類別。",
+            "優先使用物件組合，而非類別繼承。以組合物件來建立行為，通常比建立很深的類別階層更有彈性。"
+          ]
+        },
+        "書中也依「作用範圍」替每種模式分類：類別模式使用繼承，在編譯期就已固定（Factory Method、類別版 Adapter、Interpreter、Template Method）；物件模式使用組合，可以在執行期改變（其餘所有模式）。"
+      ]
+    },
+    {
+      "h": "依分類列出 GoF 的 23 種模式",
+      "body": [
+        "建立型模式處理物件如何被建立；結構型模式處理類別與物件如何組合成更大的結構；行為型模式處理物件之間如何溝通並分擔職責。",
+        {
+          "table": {
+            "head": [
+              "模式",
+              "分類",
+              "一句話說明用途"
+            ],
+            "rows": [
+              [
+                "Abstract Factory（抽象工廠）",
+                "建立型",
+                "建立一整組相關的物件，而不必指名它們的具體類別。"
+              ],
+              [
+                "Builder（建造者）",
+                "建立型",
+                "一步一步建構複雜物件，將建構過程與表示方式分離。"
+              ],
+              [
+                "Factory Method（工廠方法）",
+                "建立型",
+                "由子類別決定要實例化哪個類別。"
+              ],
+              [
+                "Prototype（原型）",
+                "建立型",
+                "透過複製既有的實例來建立新物件。"
+              ],
+              [
+                "Singleton（單例）",
+                "建立型",
+                "確保一個類別只有一個實例，並提供全域存取點。"
+              ],
+              [
+                "Adapter（轉接器）",
+                "結構型",
+                "把一個介面轉換成用戶端所期望的另一個介面。"
+              ],
+              [
+                "Bridge（橋接）",
+                "結構型",
+                "將抽象與實作分離，讓兩者可以各自獨立變化。"
+              ],
+              [
+                "Composite（組合）",
+                "結構型",
+                "以相同的方式對待單一物件與物件組成的樹狀結構。"
+              ],
+              [
+                "Decorator（裝飾者）",
+                "結構型",
+                "藉由包裝物件，動態地為它加上額外的職責。"
+              ],
+              [
+                "Facade（外觀）",
+                "結構型",
+                "為複雜的子系統提供一個簡單的統一介面。"
+              ],
+              [
+                "Flyweight（享元）",
+                "結構型",
+                "共用相同的狀態，以有效率地支援大量細粒度物件。"
+              ],
+              [
+                "Proxy（代理）",
+                "結構型",
+                "提供一個替身物件，用來控制對另一個物件的存取。"
+              ],
+              [
+                "Chain of Responsibility（責任鏈）",
+                "行為型",
+                "沿著處理者組成的鏈傳遞請求，直到有人處理為止。"
+              ],
+              [
+                "Command（命令）",
+                "行為型",
+                "把請求變成物件，使其可以排入佇列、記錄日誌或復原。"
+              ],
+              [
+                "Interpreter（直譯器）",
+                "行為型",
+                "用類別表示簡單語言的文法，並解譯該語言的句子。"
+              ],
+              [
+                "Iterator（迭代器）",
+                "行為型",
+                "依序存取集合中的元素，而不暴露其內部結構。"
+              ],
+              [
+                "Mediator（仲介者）",
+                "行為型",
+                "集中管理物件之間的通訊，讓它們不必彼此直接參照。"
+              ],
+              [
+                "Memento（備忘錄）",
+                "行為型",
+                "在不破壞封裝的前提下，擷取並還原物件的狀態。"
+              ],
+              [
+                "Observer（觀察者）",
+                "行為型",
+                "當一個物件改變時，自動通知所有依賴它的物件。"
+              ],
+              [
+                "State（狀態）",
+                "行為型",
+                "讓物件在內部狀態改變時，隨之改變自己的行為。"
+              ],
+              [
+                "Strategy（策略）",
+                "行為型",
+                "讓一組演算法在同一個介面下可以彼此替換。"
+              ],
+              [
+                "Template Method（樣板方法）",
+                "行為型",
+                "定義演算法的骨架，並讓子類別填入其中部分步驟。"
+              ],
+              [
+                "Visitor（訪問者）",
+                "行為型",
+                "在不修改類別階層的前提下，為其新增操作。"
+              ]
+            ]
+          }
+        },
+        {
+          "note": "許多模式在類別圖上看起來很像。Adapter、Decorator 與 Proxy 都會包裝一個物件；Strategy 與 State 都會委派給可替換的物件。它們的差別在於意圖，所以要學的是每個模式解決的問題，而不只是它的外形。"
+        }
+      ]
+    },
+    {
+      "h": "實戰中的模式：以 TypeScript 實作 Strategy",
+      "body": [
+        "下面用一個小例子示範模式的實際運作。結帳流程需要用不同方式計算運費。與其寫一長串越來越冗長的 `if`/`else`，不如把每條規則都做成同一介面下可互換的物件：",
+        {
+          "code": "interface ShippingStrategy {\n  cost(weightKg: number): number;\n}\nclass FlatRate implements ShippingStrategy {\n  cost(): number { return 5; }\n}\nclass PerKilogram implements ShippingStrategy {\n  cost(weightKg: number): number { return 2 * weightKg; }\n}\nclass Checkout {\n  constructor(private shipping: ShippingStrategy) {}\n  setShipping(s: ShippingStrategy): void { this.shipping = s; }\n  total(itemsPrice: number, weightKg: number): number {\n    return itemsPrice + this.shipping.cost(weightKg);\n  }\n}\nconst checkout = new Checkout(new FlatRate());\nconsole.log(checkout.total(40, 3)); // 45\ncheckout.setShipping(new PerKilogram());\nconsole.log(checkout.total(40, 3)); // 46",
+          "lang": "typescript"
+        },
+        "在 TypeScript 中，函式本身就是值，所以同樣的設計可以用更少的程式碼表達。這是個常見的主題：在支援一級函式（first-class functions）的語言中，許多模式會變得更簡單，甚至不再需要。",
+        {
+          "code": "type Shipping = (weightKg: number) => number;\nconst flatRate: Shipping = () => 5;\nconst perKilogram: Shipping = (w) => 2 * w;\nfunction total(itemsPrice: number, weightKg: number, shipping: Shipping): number {\n  return itemsPrice + shipping(weightKg);\n}\nconsole.log(total(40, 3, flatRate));    // 45\nconsole.log(total(40, 3, perKilogram)); // 46",
+          "lang": "typescript"
+        }
+      ]
+    },
+    {
+      "h": "如何選擇設計模式",
+      "body": [
+        "一律從問題出發，而不是從模式出發。只有當模式能解決程式碼中真正的痛點時，它多出來的類別才值得。下列問題可以指出常見的候選模式：",
+        {
+          "table": {
+            "head": [
+              "如果你的問題是……",
+              "可以考慮"
+            ],
+            "rows": [
+              [
+                "程式碼不該依賴它所建立的具體類別",
+                "Factory Method、Abstract Factory"
+              ],
+              [
+                "建構子有很多選用參數",
+                "Builder"
+              ],
+              [
+                "需要把既有類別套進另一個不同的介面",
+                "Adapter"
+              ],
+              [
+                "複雜的函式庫需要一個簡單的入口",
+                "Facade"
+              ],
+              [
+                "想為物件增加功能，又不想子類別暴增",
+                "Decorator"
+              ],
+              [
+                "處理樹狀結構，例如選單、檔案或 UI 元件",
+                "Composite、Visitor、Iterator"
+              ],
+              [
+                "一個物件改變時，許多部分都要跟著反應",
+                "Observer"
+              ],
+              [
+                "行為取決於某種模式或狀態，且分支很多",
+                "State"
+              ],
+              [
+                "需要可互換的演算法或規則",
+                "Strategy"
+              ],
+              [
+                "動作必須能復原、排入佇列或記錄",
+                "Command、Memento"
+              ]
+            ]
+          }
+        },
+        {
+          "ol": [
+            "先寫出最簡單、能運作的程式碼。",
+            "當同一種修改一再造成困擾時（例如每新增一種付款方式就要修改五個檔案），先把問題講清楚。",
+            "查閱能解決該問題的模式，並仔細閱讀它們的效果與取捨。",
+            "採用能消除痛點的最小版本模式，到此為止。"
+          ]
+        }
+      ]
+    },
+    {
+      "h": "批評與限制",
+      "body": [
+        "設計模式很有用，但常被誤用。以下常見的批評值得了解：",
+        {
+          "ul": [
+            "過度使用：為了「以防萬一」而加入工廠、介面與各種管理器，會讓簡單的程式碼難以閱讀，這有時被稱為「模式狂熱」（pattern fever）。",
+            "缺少語言特性：Peter Norvig 在 1996 年指出，GoF 的 23 種模式中有 16 種在 Lisp、Dylan 等動態語言中是不可見的，或是變得更簡單。一級函式可以取代 Strategy 與 Command，內建的迭代器則取代了 Iterator。",
+            "尤其是 Singleton，當它被當成全域狀態使用時，普遍被視為反模式，因為它會隱藏相依關係，並讓測試更困難。",
+            "這份目錄成形於 1994 年。後來的實務又出現了書中沒有的其他知名模式，例如相依注入（dependency injection）、Repository，以及各種 Model-View-Controller 變體。"
+          ]
+        },
+        "這本書長久的價值在於它提供的語彙，以及思考取捨的習慣。對另一位開發者說一句「這是個 Adapter」，短短幾個字就能傳達很多資訊。"
+      ]
+    },
+    {
+      "h": "相關原則",
+      "body": [
+        "設計模式經常與物件導向設計的 SOLID 原則一起說明。例如 Strategy 與 Decorator 是實踐開放封閉原則的直接方式，而 Abstract Factory 則是應用相依反轉原則的常見做法。了解這些原則，有助於理解模式為什麼會是現在這個樣子。"
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "設計模式一共有幾種？",
+      "a": "四人幫（GoF）的書收錄了 23 種模式：5 種建立型、7 種結構型和 11 種行為型。之後還有許多其他模式被提出，例如針對並行處理、企業級應用程式與使用者介面的模式。"
+    },
+    {
+      "q": "應該先學哪些設計模式？",
+      "a": "先從實際程式碼中最常遇到的開始：Strategy、Observer、Factory Method、Decorator、Adapter 與 Facade。接著再學 Builder、Composite 和 Command。"
+    },
+    {
+      "q": "設計模式現在還有用嗎？",
+      "a": "有用，它們既是共通語彙，也是反覆出現問題的解法。部分模式如今已內建在程式語言與框架中，你不必自己寫出完整的類別結構就能使用。"
+    },
+    {
+      "q": "設計模式只適用於物件導向語言嗎？",
+      "a": "GoF 模式是為物件導向語言所寫，但其背後的概念無處不在。在函數式語言中，許多模式會變成簡單的高階函式。"
+    },
+    {
+      "q": "設計模式和演算法有什麼不同？",
+      "a": "演算法是解決運算問題（例如排序）的一組精確步驟。設計模式則描述如何組織程式碼與職責，必須依各個程式調整，而不是照著步驟逐一執行。"
+    }
+  ]
+}

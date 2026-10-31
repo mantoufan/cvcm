@@ -1,0 +1,193 @@
+{
+  "title": "Javaチュートリアル：クラス・型・コレクション・例外処理 — cv.cm",
+  "description": "Java入門を1ページで：JDKのインストールとHello world、基本データ型、制御構文、メソッド、クラス、レコード、コレクション、例外処理、完成サンプルまで解説します。",
+  "h1": "Java入門チュートリアル（初心者向け）",
+  "answer": "Javaは静的型付けのオブジェクト指向言語で、バイトコードにコンパイルされ、どのOS上でもJava仮想マシン（JVM）で動作します。JDKをインストールし、クラスを `Hello.java` に保存して `java Hello.java` で実行します。クラスとオブジェクト、プリミティブ型と参照型、コレクションフレームワーク（`List`、`Map`、`Set`）、検査例外、そしてレコード、`var`、パターンマッチングといった新しい機能が中心的な内容です。",
+  "sections": [
+    {
+      "h": "Javaとは何か、何に使われるか",
+      "body": [
+        "Javaは1995年にSun Microsystemsが公開した言語で、現在はオープンなOpenJDKプロジェクトで開発され、Oracleが中心的な役割を担っています。「Write once, run anywhere（一度書けばどこでも動く）」が特徴で、コンパイラが生成したバイトコードをJVMがWindows、macOS、Linuxで実行します。大規模な業務システムのバックエンド（Spring Bootがよく使われます）、Androidアプリ（Kotlinと併用）、Apache KafkaやHadoopなどのビッグデータ基盤、多くのデスクトップ・組み込みシステムで使われています。新バージョンは6か月ごとにリリースされ、本番ではJava 21などの長期サポート（LTS）版を選ぶのが一般的です。"
+      ]
+    },
+    {
+      "h": "JDKのインストールと Hello, world の実行",
+      "body": [
+        "JDK（Java Development Kit）をインストールします。Eclipse TemurinなどのOpenJDKビルドや、OracleのJDKが使えます。`java -version` で確認します。Javaのプログラムはすべてクラスの中に書き、実行は `main` から始まります。",
+        {
+          "code": "public class Hello {\n    public static void main(String[] args) {\n        System.out.println(\"Hello, world\");\n    }\n}",
+          "lang": "java"
+        },
+        {
+          "code": "java Hello.java        # run a single source file directly\n# Hello, world\njavac Hello.java       # or compile to Hello.class first\njava Hello",
+          "lang": "shell"
+        },
+        "ファイル名は public クラスの名前と一致させる必要があります（`class Hello` なら `Hello.java`）。"
+      ]
+    },
+    {
+      "h": "変数と基本の型",
+      "body": [
+        "Javaには、値として直接格納される8つのプリミティブ型と、参照型（`String` や配列などのオブジェクト）があります。すべての変数には固定の型があり、メソッド内では `var` を使うと初期値からコンパイラが型を推論します。",
+        {
+          "table": {
+            "head": [
+              "型",
+              "サイズ",
+              "例"
+            ],
+            "rows": [
+              [
+                "`int`",
+                "32ビット",
+                "`int n = 42;`"
+              ],
+              [
+                "`long`",
+                "64ビット",
+                "`long big = 10_000_000_000L;`"
+              ],
+              [
+                "`double`",
+                "64ビット浮動小数点数",
+                "`double pi = 3.14159;`"
+              ],
+              [
+                "`boolean`",
+                "true/false",
+                "`boolean ok = true;`"
+              ],
+              [
+                "`char`",
+                "16ビットのUTF-16単位",
+                "`char c = 'A';`"
+              ],
+              [
+                "`byte`, `short`, `float`",
+                "8、16、32ビット",
+                "使う機会は少なめ"
+              ],
+              [
+                "`String`",
+                "参照",
+                "`String s = \"hi\";`"
+              ]
+            ]
+          }
+        },
+        {
+          "code": "int count = 7;\ndouble avg = count / 2;          // 3.0, integer division happens first\ndouble avg2 = count / 2.0;       // 3.5\nvar name = \"Ada\";                // inferred as String\nString msg = name + \" has \" + count + \" items\";\nSystem.out.println(msg);         // Ada has 7 items\nSystem.out.println(Integer.parseInt(\"12\") + 1); // 13",
+          "lang": "java"
+        },
+        "これはコードの断片です。このような文は `main` などのメソッドの中に書いてください。"
+      ]
+    },
+    {
+      "h": "制御構文",
+      "body": [
+        {
+          "code": "int score = 72;\nif (score >= 90) {\n    System.out.println(\"A\");\n} else if (score >= 70) {\n    System.out.println(\"B\");     // B\n} else {\n    System.out.println(\"C\");\n}\nfor (int i = 0; i < 3; i++) {\n    System.out.println(i);       // 0, 1, 2\n}\nString day = \"SAT\";\nString kind = switch (day) {     // switch expression\n    case \"SAT\", \"SUN\" -> \"weekend\";\n    default -> \"weekday\";\n};\nSystem.out.println(kind);        // weekend",
+          "lang": "java"
+        },
+        "Javaには `while`、`do`/`while` のほか、配列やコレクションを順に処理する拡張 `for (String s : list)` ループもあります。"
+      ]
+    },
+    {
+      "h": "メソッド、クラス、レコード",
+      "body": [
+        "クラスはフィールド（データ）とメソッド（振る舞い）をまとめます。`static` メソッドはクラス自体に属し、それ以外のメソッドは `new` で作ったオブジェクトに対して呼び出します。`record` は不変のデータクラスを簡潔に宣言する方法で、コンストラクタ、アクセサ、`equals`、`hashCode`、`toString` をコンパイラが生成します。",
+        {
+          "code": "public class Shapes {\n    static double square(double x) {\n        return x * x;\n    }\n    static class Counter {\n        private int value;\n        void increment() { value++; }\n        int get() { return value; }\n    }\n    record Point(int x, int y) {\n        double distance() { return Math.sqrt(x * x + y * y); }\n    }\n    public static void main(String[] args) {\n        System.out.println(square(4));        // 16.0\n        Counter c = new Counter();\n        c.increment();\n        c.increment();\n        System.out.println(c.get());          // 2\n        Point p = new Point(3, 4);\n        System.out.println(p + \" \" + p.distance()); // Point[x=3, y=4] 5.0\n    }\n}",
+          "lang": "java"
+        },
+        "クラスは親クラスを1つだけ継承（`extends`）でき、インターフェースは複数実装（`implements`）できます。フィールドは通常 `private` にして、メソッド経由でアクセスします。"
+      ]
+    },
+    {
+      "h": "コレクション：List、Map、Set",
+      "body": [
+        "`java.util` のコレクションフレームワークは、サイズを変更できるデータ構造を提供します。コレクションはオブジェクトを保持するため、プリミティブ型は自動的にボクシングされます（`int` は `Integer` になります）。",
+        {
+          "code": "import java.util.*;\npublic class Collections101 {\n    public static void main(String[] args) {\n        List<Integer> nums = new ArrayList<>(List.of(3, 1, 2));\n        nums.add(5);\n        Collections.sort(nums);\n        System.out.println(nums + \" \" + nums.get(0));  // [1, 2, 3, 5] 1\n        Map<String, Integer> ages = new HashMap<>();\n        ages.put(\"ann\", 31);\n        ages.put(\"bob\", 25);\n        System.out.println(ages.getOrDefault(\"zed\", 0)); // 0\n        Set<String> tags = new TreeSet<>(List.of(\"b\", \"a\", \"b\"));\n        System.out.println(tags);                        // [a, b]\n        List<Integer> evensSquared = nums.stream()\n            .filter(n -> n % 2 == 0)\n            .map(n -> n * n)\n            .toList();\n        System.out.println(evensSquared);                // [4]\n    }\n}",
+          "lang": "java"
+        },
+        "最後の文はストリームとラムダ式を使っており、コレクションを変換する関数型のスタイルです。`List.of` は変更できないリストを作ります。変更したい場合は `new ArrayList<>(...)` で包みます。"
+      ]
+    },
+    {
+      "h": "特徴的な機能：静的型付け、インターフェース、パターンマッチング",
+      "body": [
+        "インターフェースは多くのクラスが実装できる契約を定義するもので、Javaの設計の基礎です。現代のJavaにはパターンマッチングがあり、`instanceof` や `switch` で型の判定と変数の束縛を一度に行えます。シールドインターフェース（Java 17以降）は許可される実装をすべて列挙するため、`switch` がすべてのケースを網羅しているかをコンパイラが検査できます。",
+        {
+          "code": "public class Areas {\n    sealed interface Shape permits Circle, Rect {}\n    record Circle(double r) implements Shape {}\n    record Rect(double w, double h) implements Shape {}\n    static double area(Shape s) {\n        return switch (s) {\n            case Circle c -> Math.PI * c.r() * c.r();\n            case Rect r -> r.w() * r.h();\n        };\n    }\n    public static void main(String[] args) {\n        System.out.println(area(new Rect(2, 3)));  // 6.0\n    }\n}",
+          "lang": "java"
+        },
+        "このような `switch` のパターンマッチングは、Java 21 LTS以降で標準機能です。"
+      ]
+    },
+    {
+      "h": "例外処理",
+      "body": [
+        "エラーは例外として扱われます。検査例外（`IOException` など）は捕捉するか `throws` で宣言する必要があります。非検査例外（`NullPointerException` のような `RuntimeException` のサブクラス）は不要です。`try`-with-resources は、ファイルや接続を自動的に閉じます。",
+        {
+          "code": "import java.io.*;\nimport java.nio.file.*;\npublic class ReadFirst {\n    static int parseAge(String text) {\n        int age = Integer.parseInt(text);   // may throw NumberFormatException\n        if (age < 0) throw new IllegalArgumentException(\"negative age\");\n        return age;\n    }\n    public static void main(String[] args) {\n        try {\n            System.out.println(parseAge(\"abc\"));\n        } catch (NumberFormatException e) {\n            System.out.println(\"not a number\");  // not a number\n        }\n        try (BufferedReader in = Files.newBufferedReader(Path.of(\"notes.txt\"))) {\n            System.out.println(in.readLine());\n        } catch (IOException e) {\n            System.out.println(\"cannot read: \" + e.getMessage());\n        }\n    }\n}",
+          "lang": "java"
+        }
+      ]
+    },
+    {
+      "h": "小さな完成プログラム：単語カウンター",
+      "body": [
+        {
+          "code": "import java.io.IOException;\nimport java.nio.file.*;\nimport java.util.*;\npublic class WordCount {\n    public static void main(String[] args) throws IOException {\n        if (args.length != 1) {\n            System.err.println(\"usage: java WordCount.java FILE\");\n            System.exit(1);\n        }\n        String text = Files.readString(Path.of(args[0])).toLowerCase();\n        Map<String, Integer> counts = new HashMap<>();\n        for (String word : text.split(\"[^a-z']+\")) {\n            if (!word.isEmpty()) counts.merge(word, 1, Integer::sum);\n        }\n        counts.entrySet().stream()\n            .sorted(Map.Entry.<String, Integer>comparingByValue().reversed())\n            .limit(5)\n            .forEach(e -> System.out.printf(\"%5d  %s%n\", e.getValue(), e.getKey()));\n    }\n}",
+          "lang": "java"
+        },
+        "`java WordCount.java notes.txt` で実行します。出現回数の多い単語を上位5件、回数とともに表示します。"
+      ]
+    },
+    {
+      "h": "初心者がよくやる間違い",
+      "body": [
+        {
+          "note": "文字列の比較には `a == b` ではなく `a.equals(b)` を使います。`==` 演算子は2つの参照が同じオブジェクトを指すかを調べるので、同じ内容の文字列でも false になることがあります。"
+        },
+        {
+          "ul": [
+            "整数の除算：`5 / 2` は `2` です。`2.5` を得るには、どちらかを `double` にします。",
+            "`null` に対してメソッドを呼び出して `NullPointerException` が発生する。`null` をチェックするか、値がないかもしれない場合は `Optional` を使います。",
+            "`List.of` で作ったリストを変更しようとして、`UnsupportedOperationException` が発生する。",
+            "配列や `List` のインデックスが0から始まることを忘れ、最後の要素が `length - 1` にあることを見落とす。"
+          ]
+        }
+      ]
+    },
+    {
+      "h": "次のステップ",
+      "body": [
+        "公式のJava開発者向けサイトdev.javaの学習パスに沿って学び、Java SE APIドキュメントをリファレンスとして手元に開いておきましょう。ビルドツール（MavenまたはGradle）、JUnitによる単体テストを学び、続いてWebサービス向けのSpring Bootなどのフレームワークに進みます。同じくJVMで動くKotlinも、次に学ぶ言語として自然な選択です。"
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Javaは習得が難しいですか？",
+      "a": "Javaは型を宣言し、コードをクラスの中に書く必要があるため、Pythonより記述が冗長になります。ただし規則は一貫しており、コンパイラが早い段階でミスを説明してくれます。多くの大学が最初の言語として採用しています。"
+    },
+    {
+      "q": "JDKとJVMの違いは何ですか？",
+      "a": "JVMはコンパイル済みのバイトコードを実行します。JDKは開発キット一式で、JVMに加えてコンパイラ `javac`、標準ライブラリ、各種ツールが含まれます。開発者がインストールするのはJDKです。"
+    },
+    {
+      "q": "どのバージョンのJavaを学ぶべきですか？",
+      "a": "Java 21やそれ以降のLTSなど、現行の長期サポート版を学びましょう。古いコードも新しいJVMで動くため、最新の知識は既存プロジェクトにも役立ちます。"
+    },
+    {
+      "q": "JavaとJavaScriptは同じものですか？",
+      "a": "いいえ。名前は似ていますが、型システム、実行環境、用途の異なる別々の言語です。"
+    },
+    {
+      "q": "Javaはまだ使われていますか？",
+      "a": "はい。業務システムのバックエンド、Android、データ基盤で、今でも最も使われている言語の一つです。"
+    }
+  ]
+}

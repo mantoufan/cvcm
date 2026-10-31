@@ -1,0 +1,295 @@
+{
+  "title": "Design pattern: 23 pola GoF, kategori, dan cara memilihnya — cv.cm",
+  "description": "Apa itu design pattern perangkat lunak, buku Gang of Four, tabel 23 pola creational, structural, dan behavioral, cara memilih pola, serta batasannya.",
+  "h1": "Design pattern dijelaskan: 23 pola Gang of Four",
+  "answer": "Design pattern adalah solusi bernama yang dapat dipakai ulang untuk masalah yang terus muncul dalam desain perangkat lunak, dijelaskan pada tingkat di atas kode konkret. Katalog klasiknya adalah buku tahun 1994 Design Patterns: Elements of Reusable Object-Oriented Software karya Gamma, Helm, Johnson, dan Vlissides (\"Gang of Four\", GoF), yang mendaftar 23 pola dalam tiga kelompok: 5 creational, 7 structural, dan 11 behavioral. Pola memberi tim kosakata bersama, tetapi pola adalah alat untuk masalah tertentu, bukan tujuan itu sendiri.",
+  "sections": [
+    {
+      "h": "Apa itu design pattern",
+      "body": [
+        "Design pattern bukan pustaka atau potongan kode yang tinggal disalin. Design pattern adalah deskripsi masalah yang berulang, inti solusinya, dan trade-off dari pemakaiannya. Anda tetap menulis kodenya sendiri, disesuaikan dengan bahasa dan program Anda.",
+        "Buku GoF menjelaskan setiap pola dengan empat elemen penting:",
+        {
+          "ul": [
+            "Nama: satu atau dua kata yang memungkinkan developer membicarakan desain, misalnya \"kita bisa membungkusnya dengan pola Decorator\".",
+            "Masalah: kapan pola diterapkan, dan situasi yang membuatnya diperlukan.",
+            "Solusi: kelas atau objek yang terlibat, tanggung jawabnya, dan cara mereka berkolaborasi.",
+            "Konsekuensi: biaya dan manfaatnya, misalnya fleksibilitas lebih besar dengan imbalan lebih banyak kelas."
+          ]
+        },
+        "Gagasan ini berasal dari arsitektur. Buku Christopher Alexander, A Pattern Language (1977), menjelaskan solusi berulang untuk bangunan dan kota, dan para penulis GoF menerapkan gagasan yang sama pada perangkat lunak berorientasi objek."
+      ]
+    },
+    {
+      "h": "Buku Gang of Four",
+      "body": [
+        "Design Patterns: Elements of Reusable Object-Oriented Software diterbitkan Addison-Wesley pada 1994. Contohnya memakai C++ dan Smalltalk, tetapi polanya berlaku untuk bahasa berorientasi objek apa pun, termasuk Java, C#, TypeScript, Python, dan Kotlin.",
+        "Selain katalog, buku ini menganjurkan dua prinsip umum yang mendasari sebagian besar pola:",
+        {
+          "ul": [
+            "Program to an interface, not an implementation. Kode sebaiknya bergantung pada apa yang bisa dilakukan sebuah objek, bukan pada kelas konkretnya.",
+            "Favor object composition over class inheritance. Membangun perilaku dengan menggabungkan objek biasanya lebih fleksibel daripada membangun hierarki kelas yang dalam."
+          ]
+        },
+        "Buku ini juga mengklasifikasikan setiap pola menurut cakupannya: pola kelas memakai inheritance dan ditetapkan saat kompilasi (pola Factory Method, pola Adapter versi kelas, pola Interpreter, pola Template Method), sedangkan pola objek memakai composition dan dapat berubah saat runtime (semua yang lain)."
+      ]
+    },
+    {
+      "h": "Semua 23 pola GoF menurut kategori",
+      "body": [
+        "Pola creational mengatur cara objek dibuat. Pola structural mengatur cara kelas dan objek digabungkan menjadi struktur yang lebih besar. Pola behavioral mengatur cara objek berkomunikasi dan berbagi tanggung jawab.",
+        {
+          "table": {
+            "head": [
+              "Pola",
+              "Kategori",
+              "Tujuan dalam satu kalimat"
+            ],
+            "rows": [
+              [
+                "Abstract Factory",
+                "Creational",
+                "Membuat keluarga objek yang saling terkait tanpa menyebut kelas konkretnya."
+              ],
+              [
+                "Builder",
+                "Creational",
+                "Membangun objek kompleks langkah demi langkah, memisahkan konstruksi dari representasinya."
+              ],
+              [
+                "Factory Method",
+                "Creational",
+                "Membiarkan subkelas menentukan kelas mana yang diinstansiasi."
+              ],
+              [
+                "Prototype",
+                "Creational",
+                "Membuat objek baru dengan menyalin instance yang sudah ada."
+              ],
+              [
+                "Singleton",
+                "Creational",
+                "Memastikan sebuah kelas hanya punya satu instance dan menyediakan akses global ke instance itu."
+              ],
+              [
+                "Adapter",
+                "Structural",
+                "Mengubah satu interface menjadi interface lain yang diharapkan klien."
+              ],
+              [
+                "Bridge",
+                "Structural",
+                "Memisahkan abstraksi dari implementasinya agar keduanya dapat bervariasi secara independen."
+              ],
+              [
+                "Composite",
+                "Structural",
+                "Memperlakukan objek tunggal dan pohon objek dengan cara yang sama."
+              ],
+              [
+                "Decorator",
+                "Structural",
+                "Menambahkan tanggung jawab ke objek secara dinamis dengan membungkusnya."
+              ],
+              [
+                "Facade",
+                "Structural",
+                "Menyediakan satu interface sederhana untuk subsistem yang kompleks."
+              ],
+              [
+                "Flyweight",
+                "Structural",
+                "Berbagi state yang sama agar sejumlah besar objek kecil dapat didukung secara efisien."
+              ],
+              [
+                "Proxy",
+                "Structural",
+                "Menyediakan pengganti yang mengontrol akses ke objek lain."
+              ],
+              [
+                "Chain of Responsibility",
+                "Behavioral",
+                "Meneruskan permintaan sepanjang rantai handler sampai ada yang menanganinya."
+              ],
+              [
+                "Command",
+                "Behavioral",
+                "Mengubah permintaan menjadi objek agar dapat diantrekan, dicatat, atau dibatalkan."
+              ],
+              [
+                "Interpreter",
+                "Behavioral",
+                "Merepresentasikan tata bahasa dari bahasa sederhana sebagai kelas dan mengevaluasi kalimat di dalamnya."
+              ],
+              [
+                "Iterator",
+                "Behavioral",
+                "Mengakses elemen koleksi secara berurutan tanpa membuka struktur internalnya."
+              ],
+              [
+                "Mediator",
+                "Behavioral",
+                "Memusatkan komunikasi antarobjek agar mereka tidak saling merujuk secara langsung."
+              ],
+              [
+                "Memento",
+                "Behavioral",
+                "Menangkap dan memulihkan state objek tanpa merusak enkapsulasi."
+              ],
+              [
+                "Observer",
+                "Behavioral",
+                "Memberi tahu semua dependen secara otomatis ketika sebuah objek berubah."
+              ],
+              [
+                "State",
+                "Behavioral",
+                "Membiarkan objek mengubah perilakunya ketika state internalnya berubah."
+              ],
+              [
+                "Strategy",
+                "Behavioral",
+                "Membuat sekumpulan algoritma dapat dipertukarkan di balik satu interface."
+              ],
+              [
+                "Template Method",
+                "Behavioral",
+                "Mendefinisikan kerangka algoritma dan membiarkan subkelas mengisi beberapa langkahnya."
+              ],
+              [
+                "Visitor",
+                "Behavioral",
+                "Menambahkan operasi baru pada hierarki kelas tanpa mengubah kelas-kelas tersebut."
+              ]
+            ]
+          }
+        },
+        {
+          "note": "Banyak pola tampak mirip dalam diagram kelas. Pola Adapter, pola Decorator, dan pola Proxy sama-sama membungkus objek; pola Strategy dan pola State sama-sama mendelegasikan ke objek yang dapat dipertukarkan. Bedanya ada pada tujuan, jadi pelajari masalah yang diselesaikan tiap pola, bukan hanya bentuknya."
+        }
+      ]
+    },
+    {
+      "h": "Pola dalam praktik: pola Strategy di TypeScript",
+      "body": [
+        "Berikut contoh kecil sebuah pola yang bekerja. Sebuah checkout harus menghitung ongkos kirim dengan berbagai cara. Alih-alih rantai `if`/`else` yang terus memanjang, setiap aturan menjadi objek yang dapat dipertukarkan di balik satu interface:",
+        {
+          "code": "interface ShippingStrategy {\n  cost(weightKg: number): number;\n}\nclass FlatRate implements ShippingStrategy {\n  cost(): number { return 5; }\n}\nclass PerKilogram implements ShippingStrategy {\n  cost(weightKg: number): number { return 2 * weightKg; }\n}\nclass Checkout {\n  constructor(private shipping: ShippingStrategy) {}\n  setShipping(s: ShippingStrategy): void { this.shipping = s; }\n  total(itemsPrice: number, weightKg: number): number {\n    return itemsPrice + this.shipping.cost(weightKg);\n  }\n}\nconst checkout = new Checkout(new FlatRate());\nconsole.log(checkout.total(40, 3)); // 45\ncheckout.setShipping(new PerKilogram());\nconsole.log(checkout.total(40, 3)); // 46",
+          "lang": "typescript"
+        },
+        "Di TypeScript, fungsi adalah nilai, sehingga desain yang sama dapat ditulis dengan kode lebih sedikit. Ini tema yang umum: banyak pola menjadi lebih sederhana, atau hilang, pada bahasa dengan fungsi first-class.",
+        {
+          "code": "type Shipping = (weightKg: number) => number;\nconst flatRate: Shipping = () => 5;\nconst perKilogram: Shipping = (w) => 2 * w;\nfunction total(itemsPrice: number, weightKg: number, shipping: Shipping): number {\n  return itemsPrice + shipping(weightKg);\n}\nconsole.log(total(40, 3, flatRate));    // 45\nconsole.log(total(40, 3, perKilogram)); // 46",
+          "lang": "typescript"
+        }
+      ]
+    },
+    {
+      "h": "Cara memilih pola",
+      "body": [
+        "Mulailah dari masalah, jangan pernah dari polanya. Pola layak menambah kelas hanya jika menghilangkan kesulitan nyata dalam kode Anda. Pertanyaan berikut menunjuk ke kandidat yang biasa:",
+        {
+          "table": {
+            "head": [
+              "Jika masalah Anda adalah...",
+              "Pertimbangkan"
+            ],
+            "rows": [
+              [
+                "Kode tidak boleh bergantung pada kelas konkret yang dibuatnya",
+                "Pola Factory Method, pola Abstract Factory"
+              ],
+              [
+                "Konstruktor memiliki banyak parameter opsional",
+                "Pola Builder"
+              ],
+              [
+                "Anda perlu menyesuaikan kelas yang ada ke interface yang berbeda",
+                "Pola Adapter"
+              ],
+              [
+                "Pustaka kompleks membutuhkan satu pintu masuk yang sederhana",
+                "Pola Facade"
+              ],
+              [
+                "Anda ingin menambah fitur ke objek tanpa ledakan jumlah subkelas",
+                "Pola Decorator"
+              ],
+              [
+                "Anda bekerja dengan struktur pohon, seperti menu, file, atau widget UI",
+                "Pola Composite, pola Visitor, pola Iterator"
+              ],
+              [
+                "Banyak bagian harus bereaksi ketika satu objek berubah",
+                "Pola Observer"
+              ],
+              [
+                "Perilaku bergantung pada mode atau status dengan banyak cabang",
+                "Pola State"
+              ],
+              [
+                "Anda butuh algoritma atau aturan yang dapat dipertukarkan",
+                "Pola Strategy"
+              ],
+              [
+                "Aksi harus bisa dibatalkan, diantrekan, atau dicatat",
+                "Pola Command, pola Memento"
+              ]
+            ]
+          }
+        },
+        {
+          "ol": [
+            "Tulis dulu kode paling sederhana yang berfungsi.",
+            "Ketika perubahan yang sama terus menyakitkan (misalnya, setiap jenis pembayaran baru mengubah lima file), beri nama masalahnya.",
+            "Cari pola yang menangani masalah itu dan baca konsekuensinya.",
+            "Terapkan versi terkecil dari pola yang menghilangkan masalah tersebut, lalu berhenti di situ."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Kritik dan batasan",
+      "body": [
+        "Design pattern berguna, tetapi sering disalahgunakan. Kritik yang umum perlu diketahui:",
+        {
+          "ul": [
+            "Pemakaian berlebihan: menambah factory, interface, dan manager \"untuk jaga-jaga\" membuat kode sederhana sulit dibaca. Ini kadang disebut pattern fever.",
+            "Fitur bahasa yang hilang: pada 1996 Peter Norvig menunjukkan bahwa 16 dari 23 pola GoF tidak terlihat atau lebih sederhana pada bahasa dinamis seperti Lisp dan Dylan. Fungsi first-class menggantikan pola Strategy dan pola Command, dan iterator bawaan menggantikan pola Iterator.",
+            "Pola Singleton khususnya dianggap luas sebagai anti-pattern jika dipakai sebagai state global, karena menyembunyikan dependensi dan mempersulit pengujian.",
+            "Katalog ini berasal dari 1994. Praktik selanjutnya menambahkan pola terkenal lain yang tidak ada di buku, seperti dependency injection, repository, dan berbagai varian Model-View-Controller."
+          ]
+        },
+        "Nilai abadi buku ini adalah kosakata dan kebiasaan memikirkan trade-off. Mengatakan \"ini pola Adapter\" memberi tahu developer lain banyak hal dalam dua kata."
+      ]
+    },
+    {
+      "h": "Prinsip terkait",
+      "body": [
+        "Pola sering dijelaskan bersama prinsip SOLID dalam desain berorientasi objek. Misalnya, pola Strategy dan pola Decorator adalah cara langsung mengikuti open/closed principle, dan pola Abstract Factory adalah cara umum menerapkan dependency inversion principle. Mempelajari prinsipnya membantu Anda memahami mengapa sebuah pola berbentuk seperti itu."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Ada berapa design pattern?",
+      "a": "Buku Gang of Four mengatalogkan 23 pola: 5 creational, 7 structural, dan 11 behavioral. Banyak pola lain telah dijelaskan sejak itu, misalnya untuk konkurensi, aplikasi enterprise, dan antarmuka pengguna."
+    },
+    {
+      "q": "Design pattern mana yang sebaiknya dipelajari dulu?",
+      "a": "Mulai dari yang paling sering Anda temui di kode nyata: pola Strategy, pola Observer, pola Factory Method, pola Decorator, pola Adapter, dan pola Facade. Setelah itu pelajari pola Builder, pola Composite, dan pola Command."
+    },
+    {
+      "q": "Apakah design pattern masih relevan?",
+      "a": "Ya, sebagai kosakata bersama dan sebagai solusi untuk masalah yang berulang. Beberapa pola kini sudah tertanam di bahasa dan framework, sehingga Anda memakainya tanpa menulis struktur kelas lengkapnya."
+    },
+    {
+      "q": "Apakah design pattern hanya berlaku untuk bahasa berorientasi objek?",
+      "a": "Pola GoF ditulis untuk bahasa berorientasi objek, tetapi gagasan dasarnya muncul di mana-mana. Pada bahasa fungsional, banyak di antaranya menjadi fungsi higher-order yang sederhana."
+    },
+    {
+      "q": "Apa bedanya design pattern dengan algoritma?",
+      "a": "Algoritma adalah urutan langkah yang tepat untuk menyelesaikan masalah komputasi, seperti pengurutan. Design pattern menjelaskan cara mengorganisasi kode dan tanggung jawab, dan disesuaikan untuk setiap program, bukan diikuti langkah demi langkah."
+    }
+  ]
+}

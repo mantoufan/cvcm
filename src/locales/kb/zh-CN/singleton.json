@@ -1,0 +1,157 @@
+{
+  "title": "单例模式：意图、TypeScript 示例、常见陷阱与替代方案 — cv.cm",
+  "description": "单例模式（Singleton）详解：如何在 TypeScript 中保证只有一个实例，懒加载与异步变体，为什么它不利于测试，以及更好的替代方案。",
+  "h1": "单例模式详解与示例",
+  "answer": "单例模式是一种创建型设计模式，保证一个类只有一个实例，并提供访问它的全局入口。在 TypeScript 中，通常用私有构造函数加一个静态方法来实现：静态方法在首次调用时创建实例，之后始终返回同一个对象。它适合真正唯一的资源，例如配置对象或连接池，但它本质上相当于全局状态，所以很多团队更倾向于显式传递同一个共享实例。",
+  "sections": [
+    {
+      "h": "意图",
+      "body": [
+        "保证一个类只有一个实例，并提供访问该实例的全局入口。单例是《设计模式》（四人组，GoF）一书中五种创建型模式之一。"
+      ]
+    },
+    {
+      "h": "它要解决的问题",
+      "body": [
+        "有些对象在程序中必须且只能存在一份，比如从环境变量加载的应用配置、进程内缓存，或者数据库连接池。如果每个模块都调用 `new Config()`，每次都会重新读取环境变量，缓存会被拆成许多份，连接池的上限也就形同虚设。",
+        "这里需要两样东西：一是保证不会被意外创建出第二个实例，二是让任何代码都能方便地拿到这唯一的实例。"
+      ]
+    },
+    {
+      "h": "结构与参与者",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "参与者",
+              "职责"
+            ],
+            "rows": [
+              [
+                "单例类",
+                "隐藏构造函数，使其他代码无法直接调用 `new`。"
+              ],
+              [
+                "静态实例字段",
+                "实例创建后，用它保存这唯一的实例。"
+              ],
+              [
+                "静态访问方法（常叫 `getInstance`）",
+                "首次调用时创建实例（懒初始化），之后每次调用都返回同一个对象。"
+              ],
+              [
+                "客户端",
+                "只通过访问方法获取实例。"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "TypeScript 实现",
+      "body": [
+        "私有构造函数会让类外部的 `new AppConfig()` 在编译时报错。静态方法以懒加载方式创建对象：",
+        {
+          "code": "class AppConfig {\n  private static instance: AppConfig | undefined;\n  readonly settings: Record<string, string>;\n  private constructor() {\n    console.log(\"loading config once\");\n    this.settings = { mode: \"production\", region: \"eu\" };\n  }\n  static getInstance(): AppConfig {\n    if (!AppConfig.instance) {\n      AppConfig.instance = new AppConfig();\n    }\n    return AppConfig.instance;\n  }\n}\nconst a = AppConfig.getInstance(); // loading config once\nconst b = AppConfig.getInstance();\nconsole.log(a === b);          // true\nconsole.log(a.settings.mode);  // production\n// new AppConfig(); // error: constructor is private",
+          "lang": "typescript"
+        },
+        {
+          "note": "TypeScript 的 `private` 只在编译期检查，普通 JavaScript 代码仍然可以调用构造函数。如果需要运行时的保证，可以在实例已存在时在构造函数中抛出错误，或者使用下面所示的模块级实例。"
+        },
+        "在 JavaScript 和 TypeScript 中，一个 ES 模块在整个程序里只会求值一次，所以从模块中导出一个实例就是最简单的单例。每次 `import` 拿到的都是同一个对象：",
+        {
+          "code": "// logger.ts\nclass Logger {\n  private lines: string[] = [];\n  log(msg: string): void { this.lines.push(msg); console.log(msg); }\n  count(): number { return this.lines.length; }\n}\nexport const logger = new Logger();\n// elsewhere: import { logger } from \"./logger\";\nlogger.log(\"started\");      // started\nconsole.log(logger.count()); // 1",
+          "lang": "typescript"
+        }
+      ]
+    },
+    {
+      "h": "异步初始化",
+      "body": [
+        "如果创建实例是异步的，比如要打开数据库连接，那么两个调用方可能同时看到“还没有实例”，在第一个连接完成之前就各自发起了连接。应该缓存 promise，而不是缓存结果：",
+        {
+          "code": "class Database {\n  private static ready: Promise<Database> | undefined;\n  private constructor(readonly url: string) {}\n  static get(): Promise<Database> {\n    if (!Database.ready) {\n      Database.ready = (async () => {\n        await new Promise((r) => setTimeout(r, 10)); // simulate connecting\n        console.log(\"connected once\");\n        return new Database(\"db://main\");\n      })();\n    }\n    return Database.ready;\n  }\n}\nconst [x, y] = await Promise.all([Database.get(), Database.get()]);\nconsole.log(x === y); // true",
+          "lang": "typescript"
+        },
+        "在 Java、C# 等多线程语言中，懒创建出于同样的原因需要同步。常见的解决办法有：用静态字段做饿汉式初始化、使用懒加载的持有者类，或者在 Java 中使用只有一个元素的 `enum`。"
+      ]
+    },
+    {
+      "h": "何时使用，何时不用",
+      "body": [
+        "以下情况适合使用单例：",
+        {
+          "ul": [
+            "出于正确性而不只是方便，必须只有一个实例（例如一个硬件设备、一个进程级注册表）。",
+            "创建成本很高，并且对象创建后是无状态的或线程安全的。"
+          ]
+        },
+        "以下情况应避免使用，或者加以限制：",
+        {
+          "ul": [
+            "你主要是想方便地全局访问。单例其实是换了个好听名字的全局可变状态：任何代码都能修改它，而且这个依赖不会出现在函数签名里。",
+            "你需要写测试。共享同一个单例的测试会互相影响，也很难把真实实例换成假对象。",
+            "“只有一个实例”的规则以后可能会变，比如需要为每个租户各配一个缓存。"
+          ]
+        },
+        "常见的替代方案是依赖注入：在程序启动时（组合根）创建一个实例，再把它传给需要的类。实例依然只有一个，但依赖关系是可见的，也可以被替换。",
+        {
+          "code": "class Cache {\n  private data = new Map<string, string>();\n  get(key: string): string | undefined { return this.data.get(key); }\n  set(key: string, value: string): void { this.data.set(key, value); }\n}\nclass UserService {\n  constructor(private cache: Cache) {} // dependency is explicit\n  remember(id: string, name: string): void { this.cache.set(id, name); }\n}\nconst sharedCache = new Cache(); // the single instance, created once\nconst users = new UserService(sharedCache);\nusers.remember(\"u1\", \"Ada\");\nconsole.log(sharedCache.get(\"u1\")); // Ada",
+          "lang": "typescript"
+        }
+      ]
+    },
+    {
+      "h": "实际应用",
+      "body": [
+        {
+          "ul": [
+            "Java：`Runtime.getRuntime()` 返回正在运行的 Java 应用唯一的 `Runtime` 对象。",
+            "Node.js 在首次加载后会缓存模块，因此模块导出的对象会被每个 require 或 import 它的文件共享。",
+            "浏览器为每个页面提供唯一的全局对象，例如 `window` 和 `document`。",
+            "带依赖注入的框架，如 Angular 和 Spring，默认创建“单例作用域”的服务：每个注入器或容器一个实例，但没有该模式中的静态访问部分。"
+          ]
+        },
+        {
+          "note": "Node.js 按解析后的文件路径缓存模块。如果同一个包的两份副本安装在不同的 `node_modules` 目录里，就会得到两个互相独立的“单例”。"
+        }
+      ]
+    },
+    {
+      "h": "相关模式",
+      "body": [
+        {
+          "ul": [
+            "抽象工厂、建造者和原型对象常常实现为单例，因为一个工厂就够了。",
+            "外观对象通常也是单个实例，因为子系统通常只需要一个入口。",
+            "享元同样共享对象，但它管理的是按状态索引的许多共享实例，而单例恰好只有一个。",
+            "依赖注入不属于 GoF 模式，却是现代代码中取代单例最常见的方式。"
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "单例是反模式吗？",
+      "a": "人们常这样称呼它，因为它引入了隐藏的全局状态，也让测试更困难。只有一个实例本身没有问题，问题在于全局访问。创建一个实例并显式传递，就能避开大部分问题。"
+    },
+    {
+      "q": "如何在 TypeScript 中实现单例？",
+      "a": "使用私有构造函数、一个保存实例的私有静态字段，以及在首次调用时创建实例的静态方法。更简单的办法是从模块中导出一个实例。"
+    },
+    {
+      "q": "JavaScript 模块是单例吗？",
+      "a": "实际效果上是的。模块只会被求值一次，它的导出内容由同一程序中所有导入方共享，除非同一份代码是从两个不同路径加载的。"
+    },
+    {
+      "q": "如何测试使用了单例的代码？",
+      "a": "让单例实现一个接口，并把它传入被测代码，这样测试时就能提供假对象。如果无法改动设计，可以添加一个仅在测试中使用的重置方法。"
+    },
+    {
+      "q": "单例与静态类有什么区别？",
+      "a": "单例是一个真正的对象：它可以实现接口、作为参数传递，也可以懒创建。只有静态成员的类则无法被替换，也不能当作对象传来传去。"
+    }
+  ]
+}

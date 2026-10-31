@@ -1,0 +1,183 @@
+{
+  "title": "Tutorial PHP: variabel, array, fungsi, class, dan form — cv.cm",
+  "description": "Belajar PHP 8 modern dalam satu halaman: jalankan Hello world, variabel dan tipe data, alur kontrol, fungsi, array, class dan enum, exception, serta halaman web kecil.",
+  "h1": "Tutorial PHP untuk pemula",
+  "answer": "PHP adalah bahasa scripting sisi server yang dibuat untuk web: file PHP dijalankan di server dan mengirim HTML atau JSON ke browser. Instal PHP, simpan `<?php echo \"Hello, world\";` sebagai `hello.php` lalu jalankan `php hello.php`, atau mulai server lokal dengan `php -S localhost:8000`. Konsep intinya: variabel berawalan `$`, array yang fleksibel, fungsi dengan deklarasi tipe, class, exception, dan penanganan input pengguna yang aman.",
+  "sections": [
+    {
+      "h": "Apa itu PHP dan untuk apa dipakai",
+      "body": [
+        "PHP dibuat oleh Rasmus Lerdorf pada 1994; namanya kini kependekan dari \"PHP: Hypertext Preprocessor\". PHP berjalan di hampir semua web hosting dan menjadi tenaga bagi sebagian besar situs web, termasuk WordPress, Drupal, dan MediaWiki milik Wikipedia. Developer memakainya untuk situs konten, toko online, REST API, dan aplikasi web lengkap dengan framework seperti Laravel dan Symfony. PHP 8 modern punya sistem tipe, JIT compiler, enum, attribute, dan performa jauh lebih baik daripada versi lama."
+      ]
+    },
+    {
+      "h": "Instal PHP dan jalankan Hello, world",
+      "body": [
+        "Instal PHP dari php.net atau package manager (`brew install php`, `sudo apt install php-cli`, atau paket seperti XAMPP di Windows). Periksa dengan `php -v`. Kode PHP berada di antara tag `<?php` dan tag penutup `?>` yang opsional.",
+        {
+          "code": "<?php\necho \"Hello, world\\n\";",
+          "lang": "php"
+        },
+        {
+          "code": "php hello.php\n# Hello, world\nphp -S localhost:8000    # serve the current folder at http://localhost:8000",
+          "lang": "shell"
+        },
+        "Pada file yang hanya berisi kode PHP, hilangkan tag penutup `?>`, agar tidak ada spasi nyasar yang terkirim ke browser secara tidak sengaja."
+      ]
+    },
+    {
+      "h": "Variabel dan tipe data dasar",
+      "body": [
+        "Nama variabel diawali `$`. Tipenya dinamis, tetapi Anda bisa mendeklarasikan tipe parameter dan tipe kembalian, dan `declare(strict_types=1);` di bagian atas file menghentikan konversi otomatis pada pemanggilan fungsi.",
+        {
+          "table": {
+            "head": [
+              "Tipe",
+              "Contoh",
+              "Catatan"
+            ],
+            "rows": [
+              [
+                "`int`",
+                "`$n = 42;`",
+                "64-bit di sebagian besar sistem"
+              ],
+              [
+                "`float`",
+                "`$x = 3.14;`",
+                "Presisi ganda"
+              ],
+              [
+                "`string`",
+                "`$s = \"hi $name\";`",
+                "Tanda kutip ganda melakukan interpolasi, kutip tunggal tidak"
+              ],
+              [
+                "`bool`",
+                "`$ok = true;`",
+                "Keyword tidak peka huruf besar-kecil"
+              ],
+              [
+                "`array`",
+                "`$a = [1, 2];`",
+                "Map berurutan: list dan dictionary dalam satu tipe"
+              ],
+              [
+                "`null`",
+                "`$v = null;`",
+                "Tanpa nilai"
+              ]
+            ]
+          }
+        },
+        {
+          "code": "<?php\n$name = \"Ada\";\n$count = 7;\necho \"$name has $count items\\n\";        // Ada has 7 items\necho 'No $interpolation here' . \"\\n\";   // No $interpolation here\necho intdiv($count, 2), \" \", $count / 2, \"\\n\";  // 3 3.5\nvar_dump((int) \"12\" + 1);                // int(13)",
+          "lang": "php"
+        },
+        "Operator `.` menggabungkan string; `+` hanya untuk angka."
+      ]
+    },
+    {
+      "h": "Alur kontrol",
+      "body": [
+        {
+          "code": "<?php\n$score = 72;\nif ($score >= 90) {\n    echo \"A\\n\";\n} elseif ($score >= 70) {\n    echo \"B\\n\";                   // B\n} else {\n    echo \"C\\n\";\n}\n\nfor ($i = 0; $i < 3; $i++) {\n    echo $i, \" \";                 // 0 1 2\n}\necho \"\\n\";\n\nforeach ([\"apple\", \"pear\"] as $fruit) {\n    echo $fruit, \"\\n\";\n}\n\n$kind = match ($day = \"SAT\") {   // match is strict and returns a value\n    \"SAT\", \"SUN\" => \"weekend\",\n    default => \"weekday\",\n};\necho $kind, \"\\n\";                 // weekend",
+          "lang": "php"
+        },
+        "`match` (PHP 8.0 ke atas) membandingkan dengan `===` dan melempar error bila tidak ada cabang yang cocok, berbeda dengan `switch` lama yang membandingkan longgar dan lanjut ke cabang berikutnya tanpa `break`."
+      ]
+    },
+    {
+      "h": "Fungsi",
+      "body": [
+        {
+          "code": "<?php\ndeclare(strict_types=1);\n\nfunction greet(string $name, string $greeting = \"Hello\"): string\n{\n    return \"$greeting, $name!\";\n}\n\necho greet(\"Lin\"), \"\\n\";                    // Hello, Lin!\necho greet(greeting: \"Hi\", name: \"Lin\"), \"\\n\"; // Hi, Lin!  (named arguments)\n\n$square = fn(int $x): int => $x * $x;       // arrow function\necho $square(5), \"\\n\";                      // 25\n\nfunction total(int ...$nums): int           // variadic\n{\n    return array_sum($nums);\n}\necho total(1, 2, 3), \"\\n\";                  // 6",
+          "lang": "php"
+        }
+      ]
+    },
+    {
+      "h": "Fitur khas: array",
+      "body": [
+        "Array PHP adalah satu tipe fleksibel yang berfungsi sebagai list, dictionary, stack, atau queue. Key-nya berupa integer atau string, dan urutan penyisipan dipertahankan. Sekumpulan besar fungsi bawaan bekerja pada array.",
+        {
+          "code": "<?php\n$nums = [3, 1, 2];\n$nums[] = 5;                       // append\nsort($nums);\necho implode(\", \", $nums), \"\\n\";   // 1, 2, 3, 5\n\n$ages = [\"ann\" => 31, \"bob\" => 25];\n$ages[\"cy\"] = 40;\nforeach ($ages as $person => $age) {\n    echo \"$person is $age\\n\";\n}\necho $ages[\"zed\"] ?? 0, \"\\n\";      // 0  (null coalescing)\n\n$evens = array_filter($nums, fn($n) => $n % 2 === 0);\n$squares = array_map(fn($n) => $n * $n, $nums);\necho json_encode(array_values($evens)), \" \", json_encode($squares), \"\\n\";  // [2] [1,4,9,25]\necho count($ages), \" \", array_key_exists(\"bob\", $ages) ? \"yes\" : \"no\", \"\\n\"; // 3 yes",
+          "lang": "php"
+        },
+        "Array disalin saat penugasan (copy-on-write), berbeda dengan objek yang dikirim lewat handle."
+      ]
+    },
+    {
+      "h": "Class, constructor promotion, dan enum",
+      "body": [
+        {
+          "code": "<?php\ndeclare(strict_types=1);\n\nenum Role: string\n{\n    case Admin = \"admin\";\n    case Viewer = \"viewer\";\n}\n\nfinal class User\n{\n    public function __construct(\n        public readonly string $name,\n        public readonly Role $role = Role::Viewer,\n    ) {}\n\n    public function label(): string\n    {\n        return \"{$this->name} ({$this->role->value})\";\n    }\n}\n\n$u = new User(\"Ann\", Role::Admin);\necho $u->label(), \"\\n\";               // Ann (admin)\necho Role::from(\"viewer\")->name, \"\\n\"; // Viewer",
+          "lang": "php"
+        },
+        "Constructor promotion (PHP 8.0) mendeklarasikan dan mengisi properti di signature constructor. Properti `readonly` (8.1) hanya dapat diisi sekali, dan backed enum (8.1) memetakan case ke string atau integer. Interface, abstract class, dan trait juga tersedia."
+      ]
+    },
+    {
+      "h": "Penanganan error",
+      "body": [
+        "PHP modern melempar exception untuk sebagian besar error. Tangkap subclass `Exception` untuk kegagalan yang diperkirakan; `Throwable` juga mencakup error engine seperti `TypeError`.",
+        {
+          "code": "<?php\nfunction parseAge(string $text): int\n{\n    if (!ctype_digit($text)) {\n        throw new InvalidArgumentException(\"invalid age: $text\");\n    }\n    return (int) $text;\n}\n\ntry {\n    echo parseAge(\"41\"), \"\\n\";   // 41\n    echo parseAge(\"abc\"), \"\\n\";\n} catch (InvalidArgumentException $e) {\n    echo $e->getMessage(), \"\\n\"; // invalid age: abc\n} finally {\n    echo \"done\\n\";\n}",
+          "lang": "php"
+        }
+      ]
+    },
+    {
+      "h": "Program kecil yang lengkap: endpoint API JSON",
+      "body": [
+        "Simpan sebagai `api.php`, jalankan `php -S localhost:8000`, lalu buka `http://localhost:8000/api.php?name=Ann`. Program ini membaca parameter query, memvalidasinya, dan mengembalikan JSON.",
+        {
+          "code": "<?php\ndeclare(strict_types=1);\n\nheader(\"Content-Type: application/json; charset=utf-8\");\n\n$name = trim($_GET[\"name\"] ?? \"\");\nif ($name === \"\" || mb_strlen($name) > 50) {\n    http_response_code(400);\n    echo json_encode([\"error\" => \"name must be 1 to 50 characters\"]);\n    exit;\n}\n\n$response = [\n    \"message\" => \"Hello, $name!\",\n    \"length\" => mb_strlen($name),\n    \"time\" => date(DATE_ATOM),\n];\necho json_encode($response, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);",
+          "lang": "php"
+        },
+        "`$_GET`, `$_POST`, dan `$_COOKIE` menyimpan data request. Anggap setiap nilai di dalamnya tidak tepercaya."
+      ]
+    },
+    {
+      "h": "Kesalahan umum pemula",
+      "body": [
+        {
+          "note": "Jangan pernah memasukkan input pengguna langsung ke SQL atau HTML. Gunakan prepared statement dengan PDO (`$stmt = $pdo->prepare(\"SELECT * FROM users WHERE id = ?\")`) untuk mencegah SQL injection, dan `htmlspecialchars($value)` saat mencetak ke HTML untuk mencegah cross-site scripting."
+        },
+        {
+          "ul": [
+            "Membandingkan dengan `==`, yang mengonversi tipe; gunakan `===` dan `!==`.",
+            "Lupa `$` pada nama variabel, atau titik koma di akhir pernyataan.",
+            "Menyimpan password dengan `md5` atau `sha1`. Gunakan `password_hash` dan `password_verify`.",
+            "Memakai `strlen` pada teks UTF-8; fungsi ini menghitung byte. Gunakan `mb_strlen` untuk menghitung karakter.",
+            "Memakai PHP versi lama. Gunakan rilis PHP 8 yang masih didukung untuk perbaikan keamanan dan fitur modern."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Langkah selanjutnya",
+      "body": [
+        "PHP Manual resmi di php.net mendokumentasikan setiap fungsi, lengkap dengan referensi bahasa dan catatan pengguna. Pelajari Composer, package manager-nya, dan standar penulisan kode PSR, lalu coba framework: Laravel atau Symfony untuk aplikasi, atau Slim untuk API kecil. PHPUnit adalah tool pengujian standar."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Apakah PHP masih layak dipelajari?",
+      "a": "Ya. PHP menjalankan sebagian besar web, termasuk situs WordPress, dan PHP 8 modern dengan Laravel atau Symfony adalah cara yang produktif untuk membangun aplikasi web. Lowongan untuk merawat dan membangun sistem PHP masih banyak."
+    },
+    {
+      "q": "Apakah PHP bahasa frontend atau backend?",
+      "a": "Backend. PHP berjalan di server dan mengirim HTML, JSON, atau file yang sudah jadi ke browser, yang tidak pernah melihat kode PHP-nya."
+    },
+    {
+      "q": "Apa perbedaan echo dan print?",
+      "a": "Keduanya menampilkan teks. `echo` bisa menerima beberapa argumen yang dipisah koma dan tidak mengembalikan apa pun; `print` menerima satu argumen dan mengembalikan 1. Dalam praktik, sebagian besar kode memakai `echo`."
+    },
+    {
+      "q": "Apa fungsi declare(strict_types=1)?",
+      "a": "Perintah ini membuat deklarasi tipe skalar bersifat ketat untuk pemanggilan fungsi dari file tersebut, sehingga mengirim string `\"5\"` ke parameter `int` melempar `TypeError`, bukan dikonversi."
+    }
+  ]
+}

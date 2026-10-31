@@ -1,0 +1,215 @@
+{
+  "title": "栈和队列详解：LIFO 与 FIFO、Python 代码和时间复杂度 — cv.cm",
+  "description": "用 Python 代码讲解栈（LIFO）和队列（FIFO）：用 list 做栈、用 collections.deque 做队列，括号匹配、广度优先搜索与复杂度。",
+  "h1": "栈和队列详解：用 Python 示例讲清 LIFO 与 FIFO",
+  "answer": "栈是一种后添加的元素最先被移除的集合（LIFO，后进先出），就像一摞盘子。队列是先添加的元素最先被移除的集合（FIFO，先进先出），就像结账时排的队。两者的添加和移除都是 O(1) 时间。在 Python 中，用 `list` 当栈，用 `collections.deque` 当队列。",
+  "sections": [
+    {
+      "h": "栈和队列解决什么问题",
+      "body": [
+        "许多程序需要先记住一些元素，之后再按固定顺序处理。栈先给出最近加入的元素，适合嵌套式的工作：函数调用、撤销历史、括号匹配和深度优先搜索。队列先给出最早加入的元素，适合公平的等待：打印任务、任务调度器、消息队列和广度优先搜索。",
+        "两者都是抽象数据类型：它们由操作定义，而不是由存储方式定义。你可以基于数组或链表来实现其中任何一个。"
+      ]
+    },
+    {
+      "h": "操作与名称",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "操作",
+              "栈（LIFO）",
+              "队列（FIFO）"
+            ],
+            "rows": [
+              [
+                "添加元素",
+                "push：放到栈顶",
+                "enqueue：加到队尾"
+              ],
+              [
+                "移除元素",
+                "pop：从栈顶取出",
+                "dequeue：从队头取出"
+              ],
+              [
+                "查看但不移除",
+                "peek / top",
+                "peek / front"
+              ],
+              [
+                "Python 类型",
+                "`list`，配合 `append` 和 `pop`",
+                "`collections.deque`，配合 `append` 和 `popleft`"
+              ],
+              [
+                "输入 1、2、3 时的移除顺序",
+                "3, 2, 1",
+                "1, 2, 3"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "示例演练：逐步 push 和 pop",
+      "body": [
+        "把 1、2、3 依次放入两种结构，然后移除两个元素。",
+        {
+          "table": {
+            "head": [
+              "步骤",
+              "栈的内容（栈顶在右）",
+              "队列的内容（队头在左）"
+            ],
+            "rows": [
+              [
+                "添加 1",
+                "[1]",
+                "[1]"
+              ],
+              [
+                "添加 2",
+                "[1, 2]",
+                "[1, 2]"
+              ],
+              [
+                "添加 3",
+                "[1, 2, 3]",
+                "[1, 2, 3]"
+              ],
+              [
+                "移除",
+                "返回 3，剩下 [1, 2]",
+                "返回 1，剩下 [2, 3]"
+              ],
+              [
+                "移除",
+                "返回 2，剩下 [1]",
+                "返回 2，剩下 [3]"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "Python 实现",
+      "body": [
+        "Python 的 `list` 本身就是个不错的栈：`append` 和 `pop()` 都作用于列表末尾，均摊时间为 O(1)。做队列时不要用 `list.pop(0)`，因为它会移动所有剩余元素，代价是 O(n)。请使用 `collections.deque`，它在两端都是 O(1)。",
+        {
+          "code": "from collections import deque\nstack = []\nstack.append(1)\nstack.append(2)\nstack.append(3)\nprint(stack.pop(), stack[-1])   # 3 2\nqueue = deque()\nqueue.append(\"a\")\nqueue.append(\"b\")\nqueue.append(\"c\")\nprint(queue.popleft(), queue[0])  # a b\nprint(len(stack), len(queue))     # 2 2",
+          "lang": "python"
+        },
+        "如果想要有名字的方法和清晰的报错，可以用一个小类把内置类型包装起来：",
+        {
+          "code": "from collections import deque\nclass Queue:\n    def __init__(self):\n        self._items = deque()\n    def enqueue(self, item):\n        self._items.append(item)\n    def dequeue(self):\n        if not self._items:\n            raise IndexError(\"dequeue from empty queue\")\n        return self._items.popleft()\n    def __len__(self):\n        return len(self._items)\nq = Queue()\nq.enqueue(\"job1\")\nq.enqueue(\"job2\")\nprint(q.dequeue(), len(q))  # job1 1",
+          "lang": "python"
+        }
+      ]
+    },
+    {
+      "h": "经典栈问题：括号匹配",
+      "body": [
+        "要检查每个括号是否按正确顺序闭合，就把每个左括号压入栈。遇到右括号时，栈顶必须是与之匹配的左括号。",
+        {
+          "code": "def is_balanced(text):\n    pairs = {\")\": \"(\", \"]\": \"[\", \"}\": \"{\"}\n    stack = []\n    for ch in text:\n        if ch in \"([{\":\n            stack.append(ch)\n        elif ch in pairs:\n            if not stack or stack.pop() != pairs[ch]:\n                return False\n    return not stack\nprint(is_balanced(\"f(a[1], {b: 2})\"))  # True\nprint(is_balanced(\"(]\"))               # False\nprint(is_balanced(\"((\"))               # False",
+          "lang": "python"
+        },
+        "同样的思路还能用来计算逆波兰表达式、把递归改写成循环，以及实现深度优先搜索：用你自己的列表代替调用栈。"
+      ]
+    },
+    {
+      "h": "经典队列问题：广度优先搜索",
+      "body": [
+        "广度优先搜索按层访问图。队列恰好能做到这一点：先发现的节点先处理。",
+        {
+          "code": "from collections import deque\ndef bfs_order(graph, start):\n    seen = {start}\n    queue = deque([start])\n    order = []\n    while queue:\n        node = queue.popleft()\n        order.append(node)\n        for nxt in graph[node]:\n            if nxt not in seen:\n                seen.add(nxt)\n                queue.append(nxt)\n    return order\ngraph = {\"A\": [\"B\", \"C\"], \"B\": [\"D\"], \"C\": [\"D\"], \"D\": []}\nprint(bfs_order(graph, \"A\"))  # ['A', 'B', 'C', 'D']",
+          "lang": "python"
+        }
+      ]
+    },
+    {
+      "h": "时间与空间复杂度",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "操作",
+              "栈（`list`）",
+              "队列（`deque`）",
+              "队列（`list.pop(0)`）"
+            ],
+            "rows": [
+              [
+                "添加",
+                "均摊 O(1)",
+                "O(1)",
+                "均摊 O(1)"
+              ],
+              [
+                "移除",
+                "O(1)",
+                "O(1)",
+                "O(n)，元素左移"
+              ],
+              [
+                "查看",
+                "O(1)",
+                "O(1)",
+                "O(1)"
+              ],
+              [
+                "n 个元素的空间",
+                "O(n)",
+                "O(n)",
+                "O(n)"
+              ]
+            ]
+          }
+        },
+        "均摊的意思是：偶尔一次 `append` 会重新分配底层数组，代价为 O(n)，但在大量操作上取平均，每次操作都是 O(1)。"
+      ]
+    },
+    {
+      "h": "变体与常见错误",
+      "body": [
+        {
+          "ul": [
+            "双端队列（deque）：两端都能添加和移除。`collections.deque` 就是其中一种，它既可以当栈用，也可以当队列用。",
+            "优先队列：先移除最小（或最大）的元素，而不是最早的。使用 `heapq`；参见二叉堆页面。",
+            "循环缓冲区：用数组存储、下标回绕的定长队列。`deque(maxlen=n)` 在满时会丢弃最旧的元素。",
+            "线程安全队列：`queue.Queue` 用于线程，`asyncio.Queue` 用于协程，它们在等待元素时会阻塞。",
+            "用两个栈实现队列：向入栈压入元素，当出栈为空时把所有元素倒过去。每个元素只移动一次，所以操作是均摊 O(1)。"
+          ]
+        },
+        {
+          "note": "对空的 `list` 调用 `pop()`，或对空的 `deque` 调用 `popleft()`，会抛出 `IndexError`。弹出前先检查 `if stack:`，或者捕获异常。"
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "栈和队列有什么区别？",
+      "a": "栈先移除最近添加的元素（LIFO），队列先移除最早添加的元素（FIFO）。两者的添加和移除都是 O(1) 时间。"
+    },
+    {
+      "q": "在 Python 中做队列应该用 list 还是 deque？",
+      "a": "用 `collections.deque`。用 `pop(0)` 从 `list` 头部移除是 O(n)，因为其余元素都要移动；而 `deque.popleft()` 是 O(1)。"
+    },
+    {
+      "q": "栈在实际程序中用在哪里？",
+      "a": "存储函数调用的调用栈、撤销和重做历史、浏览器的后退按钮、表达式解析、括号匹配以及深度优先搜索。"
+    },
+    {
+      "q": "什么是栈溢出？",
+      "a": "当调用栈空间耗尽时就会发生，通常是因为递归过深或无限递归。在 Python 中，超过递归限制时表现为 `RecursionError`。"
+    },
+    {
+      "q": "queue.Queue 和 collections.deque 一样吗？",
+      "a": "不一样。`queue.Queue` 是带锁、`get` 和 `put` 可阻塞的线程安全队列，用于在线程之间传递任务。`collections.deque` 是更快的通用容器，不会阻塞。"
+    }
+  ]
+}

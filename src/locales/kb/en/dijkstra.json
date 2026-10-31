@@ -1,0 +1,234 @@
+{
+  "title": "Dijkstra's algorithm: shortest paths with a priority queue in Python — cv.cm",
+  "description": "Dijkstra's algorithm explained: how it finds shortest paths in a weighted graph, a step-by-step trace, Python heapq code and O((V + E) log V) cost.",
+  "h1": "Dijkstra's algorithm explained: how it works, code and complexity",
+  "answer": "Dijkstra's algorithm finds the shortest path from one start node to every other node in a graph whose edge weights are non-negative. It repeatedly picks the unfinished node with the smallest known distance, marks it as final, and relaxes its outgoing edges. With a binary-heap priority queue it runs in O((V + E) log V) time. It gives wrong answers if any edge weight is negative.",
+  "sections": [
+    {
+      "h": "What problem Dijkstra's algorithm solves",
+      "body": [
+        "Breadth-first search finds the path with the fewest edges, but roads, network links and flights have different lengths, costs or delays. Dijkstra's algorithm solves the single-source shortest path problem on such weighted graphs: given a start node, find the cheapest total cost to reach every other node, and the path that achieves it.",
+        "Edsger W. Dijkstra published the algorithm in 1959 in the paper \"A note on two problems in connexion with graphs\"."
+      ]
+    },
+    {
+      "h": "The idea in plain words",
+      "body": [
+        {
+          "ol": [
+            "Set the distance of the start node to 0 and every other distance to infinity.",
+            "Pick the unfinished node with the smallest distance. Its distance is now final.",
+            "Relax each outgoing edge u → v with weight w: if `dist[u] + w < dist[v]`, set `dist[v] = dist[u] + w` and remember u as the parent of v.",
+            "Repeat steps 2 and 3 until every reachable node is finished."
+          ]
+        },
+        "Why is the smallest distance final? Every other route to that node would have to pass through a node whose distance is already at least as large, and with non-negative weights the remaining edges can only add cost."
+      ]
+    },
+    {
+      "h": "Worked example, step by step",
+      "body": [
+        "Directed graph with edges A→B (4), A→C (1), C→B (2), B→D (1), C→D (5), D→E (3). Start at A.",
+        {
+          "table": {
+            "head": [
+              "Step",
+              "Finalize",
+              "A",
+              "B",
+              "C",
+              "D",
+              "E"
+            ],
+            "rows": [
+              [
+                "Start",
+                "—",
+                "0",
+                "∞",
+                "∞",
+                "∞",
+                "∞"
+              ],
+              [
+                "1",
+                "A (0)",
+                "0",
+                "4",
+                "1",
+                "∞",
+                "∞"
+              ],
+              [
+                "2",
+                "C (1)",
+                "0",
+                "3 via C",
+                "1",
+                "6 via C",
+                "∞"
+              ],
+              [
+                "3",
+                "B (3)",
+                "0",
+                "3",
+                "1",
+                "4 via B",
+                "∞"
+              ],
+              [
+                "4",
+                "D (4)",
+                "0",
+                "3",
+                "1",
+                "4",
+                "7"
+              ],
+              [
+                "5",
+                "E (7)",
+                "0",
+                "3",
+                "1",
+                "4",
+                "7"
+              ]
+            ]
+          }
+        },
+        "B first gets distance 4 from the direct edge, then improves to 3 through C. The shortest path to E is A → C → B → D → E with total cost 1 + 2 + 1 + 3 = 7."
+      ]
+    },
+    {
+      "h": "Python implementation with heapq",
+      "body": [
+        "Python's `heapq` module provides a binary min-heap. Instead of a \"decrease key\" operation, push a new `(distance, node)` pair whenever a distance improves and skip outdated pairs when they are popped. This is called lazy deletion.",
+        {
+          "code": "import heapq\ndef dijkstra(graph, start):\n    dist = {start: 0}\n    parent = {start: None}\n    heap = [(0, start)]\n    while heap:\n        d, u = heapq.heappop(heap)\n        if d > dist[u]:\n            continue                      # outdated entry\n        for v, w in graph[u]:\n            nd = d + w\n            if nd < dist.get(v, float(\"inf\")):\n                dist[v] = nd\n                parent[v] = u\n                heapq.heappush(heap, (nd, v))\n    return dist, parent\ngraph = {\n    \"A\": [(\"B\", 4), (\"C\", 1)], \"B\": [(\"D\", 1)],\n    \"C\": [(\"B\", 2), (\"D\", 5)], \"D\": [(\"E\", 3)], \"E\": [],\n}\ndist, parent = dijkstra(graph, \"A\")\nprint(dist)  # {'A': 0, 'B': 3, 'C': 1, 'D': 4, 'E': 7}",
+          "lang": "python"
+        },
+        "To get the path to one target, follow the parent links back to the start:",
+        {
+          "code": "def path_to(parent, target):\n    path = []\n    while target is not None:\n        path.append(target)\n        target = parent[target]\n    return path[::-1]\nprint(path_to(parent, \"E\"))  # ['A', 'C', 'B', 'D', 'E']",
+          "lang": "python"
+        },
+        "If you only need the distance to one target, you can stop as soon as that target is popped from the heap: its distance is final at that moment."
+      ]
+    },
+    {
+      "h": "Time and space complexity",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Priority queue",
+              "Time",
+              "Notes"
+            ],
+            "rows": [
+              [
+                "Binary heap (heapq)",
+                "O((V + E) log V)",
+                "The usual choice. With lazy deletion the heap can hold up to E entries, which is still O(log V) per operation because log E is at most 2 log V."
+              ],
+              [
+                "Plain array, scan for minimum",
+                "O(V²)",
+                "Better for very dense graphs where E is close to V²."
+              ],
+              [
+                "Fibonacci heap",
+                "O(E + V log V)",
+                "Best in theory, rarely faster in practice because of large constants."
+              ]
+            ]
+          }
+        },
+        "Space is O(V + E) for the graph, the distance and parent maps, and the heap."
+      ]
+    },
+    {
+      "h": "Variants and common mistakes",
+      "body": [
+        {
+          "note": "Negative edge weights break Dijkstra's algorithm: a node can be finalized and later become cheaper through a negative edge. Use Bellman-Ford for graphs with negative weights. A large constant added to every edge does not fix this, because it penalizes paths with more edges."
+        },
+        {
+          "ul": [
+            "Forgetting the `if d > dist[u]: continue` check is not wrong, but it makes the algorithm process stale entries and can slow it down a lot.",
+            "Pushing only the node instead of `(distance, node)` makes the heap order meaningless.",
+            "If nodes are objects that cannot be compared, ties in distance make `heapq` compare the nodes and raise `TypeError`. Push `(distance, counter, node)` with a unique counter.",
+            "A* search is Dijkstra with a heuristic added to the priority; it explores fewer nodes when you have a good estimate of the remaining distance.",
+            "Bidirectional Dijkstra runs from both the start and the goal and stops when the searches meet."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "When to use it and real-world uses",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Graph",
+              "Algorithm"
+            ],
+            "rows": [
+              [
+                "Unweighted, or all weights equal",
+                "BFS, O(V + E)"
+              ],
+              [
+                "Non-negative weights, one source",
+                "Dijkstra"
+              ],
+              [
+                "Negative weights, no negative cycle",
+                "Bellman-Ford, O(V × E)"
+              ],
+              [
+                "All pairs, small dense graph",
+                "Floyd-Warshall, O(V³)"
+              ],
+              [
+                "One target with a distance estimate",
+                "A* search"
+              ]
+            ]
+          }
+        },
+        {
+          "ul": [
+            "Routing: link-state routing protocols such as OSPF and IS-IS run a shortest path first computation based on Dijkstra's algorithm.",
+            "Maps and navigation, where production systems add preprocessing on top of Dijkstra-style search.",
+            "Interview problems: network delay time, cheapest flights (with a stop limit), path with minimum effort in a grid, and any \"minimum total cost\" question on a graph."
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Does Dijkstra's algorithm work with negative weights?",
+      "a": "No. It assumes that once a node has the smallest tentative distance, no later path can make it cheaper, and a negative edge breaks that assumption. Use Bellman-Ford instead."
+    },
+    {
+      "q": "What is the time complexity of Dijkstra's algorithm?",
+      "a": "With a binary heap it is O((V + E) log V). With a simple array it is O(V²), which can be better for dense graphs."
+    },
+    {
+      "q": "Is Dijkstra's algorithm greedy?",
+      "a": "Yes. At every step it makes the locally best choice, finalizing the closest unfinished node, and that choice is provably correct when all weights are non-negative."
+    },
+    {
+      "q": "What is the difference between Dijkstra and BFS?",
+      "a": "BFS uses a plain queue and counts edges, so it is correct only when every edge has the same weight. Dijkstra uses a priority queue ordered by total distance, so it handles different non-negative weights."
+    },
+    {
+      "q": "Does Dijkstra find the shortest path between all pairs of nodes?",
+      "a": "One run gives shortest paths from one source. Run it from every node to get all pairs, or use Floyd-Warshall for small dense graphs."
+    }
+  ]
+}

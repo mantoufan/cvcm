@@ -1,0 +1,223 @@
+{
+  "title": "Python 入門教學：語法、型別、函式與檔案一頁搞懂 — cv.cm",
+  "description": "一頁學會 Python 3：安裝並執行 Hello world、變數與型別、if 與迴圈、函式、list 與 dict、例外處理、檔案操作，以及完整範例程式。",
+  "h1": "Python 入門教學",
+  "answer": "Python 是一種通用的直譯式語言，以易讀的語法聞名，使用縮排而非大括號來劃分區塊。安裝 Python 3 後，將 `print(\"Hello, world\")` 存成 `hello.py`，再執行 `python3 hello.py` 即可。核心概念包括動態型別、以 `def` 定義的函式、內建的 list、dict 與 set、以 `try`/`except` 處理的例外，以及龐大的標準函式庫。",
+  "sections": [
+    {
+      "h": "Python 是什麼，用來做什麼",
+      "body": [
+        "Python 是一種高階、動態型別的語言，由 Guido van Rossum 於 1991 年首次發布。程式碼由直譯器執行（參考實作為 CPython），因此不需要獨立的編譯步驟。它常用於資料分析與機器學習（NumPy、pandas、PyTorch）、網站後端（Django、Flask、FastAPI）、自動化腳本、科學運算與程式教學。Python 2 已於 2020 年終止支援，所以請直接學 Python 3。"
+      ]
+    },
+    {
+      "h": "安裝 Python 並執行 Hello, world",
+      "body": [
+        "Windows 與 macOS 可從 python.org 下載安裝程式，Linux 則使用套件管理工具安裝。用 `python3 --version` 確認安裝成功（Windows 上指令通常是 `py` 或 `python`）。將下列內容存成 `hello.py`：",
+        {
+          "code": "print(\"Hello, world\")",
+          "lang": "python"
+        },
+        {
+          "code": "python3 hello.py\n# Hello, world",
+          "lang": "shell"
+        },
+        "只執行 `python3` 而不指定檔案，會進入互動式提示字元（REPL），很適合一次試一行程式。"
+      ]
+    },
+    {
+      "h": "變數與基本型別",
+      "body": [
+        "對變數賦值即建立變數。你不需要宣告型別，型別由值本身決定，用 `type(x)` 就能查看。",
+        {
+          "table": {
+            "head": [
+              "型別",
+              "範例",
+              "說明"
+            ],
+            "rows": [
+              [
+                "`int`",
+                "`42`, `-7`, `10**20`",
+                "任意大小的整數"
+              ],
+              [
+                "`float`",
+                "`3.14`, `1e-3`",
+                "64 位元浮點數"
+              ],
+              [
+                "`bool`",
+                "`True`, `False`",
+                "首字母大寫"
+              ],
+              [
+                "`str`",
+                "`\"hi\"`, `'hi'`",
+                "不可變的 Unicode 文字"
+              ],
+              [
+                "`None`",
+                "`None`",
+                "表示「沒有值」"
+              ]
+            ]
+          }
+        },
+        {
+          "code": "name = \"Ada\"\nage = 36\nheight = 1.65\nprint(f\"{name} is {age} years old\")  # Ada is 36 years old\nprint(7 / 2, 7 // 2, 7 % 2)          # 3.5 3 1\nprint(int(\"12\") + 1)                 # 13",
+          "lang": "python"
+        }
+      ]
+    },
+    {
+      "h": "流程控制：if、for 與 while",
+      "body": [
+        "區塊以冒號開頭，並由縮排界定（慣例為 4 個空格）。`for` 迴圈可走訪任何序列；`range(n)` 會產生 0 到 n−1 的數字。",
+        {
+          "code": "score = 72\nif score >= 90:\n    grade = \"A\"\nelif score >= 70:\n    grade = \"B\"\nelse:\n    grade = \"C\"\nprint(grade)  # B\nfor i in range(3):\n    print(i)  # 0, then 1, then 2\nn = 10\nwhile n > 1:\n    n = n // 2\nprint(n)  # 1",
+          "lang": "python"
+        }
+      ]
+    },
+    {
+      "h": "函式",
+      "body": [
+        "以 `def` 定義函式。參數可以有預設值，呼叫時也可以用名稱傳入引數。沒有 `return` 的函式會回傳 `None`。",
+        {
+          "code": "def greet(name, greeting=\"Hello\"):\n    return f\"{greeting}, {name}!\"\nprint(greet(\"Lin\"))                 # Hello, Lin!\nprint(greet(\"Lin\", greeting=\"Hi\"))  # Hi, Lin!\nsquare = lambda x: x * x\nprint(square(5))                    # 25",
+          "lang": "python"
+        },
+        "型別提示（type hint），例如 `def area(w: float, h: float) -> float:`，可以說明程式意圖，也讓 mypy 等工具檢查程式碼，但直譯器本身不會強制執行。"
+      ]
+    },
+    {
+      "h": "List、tuple、dict 與 set",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "型別",
+              "字面值",
+              "有序",
+              "可變",
+              "典型用途"
+            ],
+            "rows": [
+              [
+                "`list`",
+                "`[1, 2, 3]`",
+                "是",
+                "是",
+                "可修改的序列"
+              ],
+              [
+                "`tuple`",
+                "`(1, 2)`",
+                "是",
+                "否",
+                "固定的一組值"
+              ],
+              [
+                "`dict`",
+                "`{\"a\": 1}`",
+                "依插入順序",
+                "是",
+                "由鍵查找值"
+              ],
+              [
+                "`set`",
+                "`{1, 2}`",
+                "否",
+                "是",
+                "不重複的元素、成員檢查"
+              ]
+            ]
+          }
+        },
+        {
+          "code": "nums = [3, 1, 2]\nnums.append(5)\nnums.sort()\nprint(nums, nums[0], nums[-1], nums[1:3])  # [1, 2, 3, 5] 1 5 [2, 3]\nages = {\"ann\": 31, \"bob\": 25}\nages[\"cy\"] = 40\nfor person, age in ages.items():\n    print(person, age)\nprint(ages.get(\"zed\", 0))  # 0\nsquares = [x * x for x in range(5) if x % 2 == 0]\nprint(squares)  # [0, 4, 16]",
+          "lang": "python"
+        },
+        "最後一行是 list comprehension（串列生成式），這是 Python 的招牌特色之一：用一個運算式就能由迴圈與可選的篩選條件建立 list。dict 與 set 也有相同寫法的 comprehension。"
+      ]
+    },
+    {
+      "h": "招牌特色：解包、with 與產生器",
+      "body": [
+        {
+          "code": "a, b = 1, 2\na, b = b, a            # swap without a temporary\nfirst, *rest = [1, 2, 3, 4]\nprint(first, rest)     # 1 [2, 3, 4]\nwith open(\"notes.txt\", \"w\", encoding=\"utf-8\") as f:\n    f.write(\"line one\\n\")   # file is closed automatically\ndef countdown(n):\n    while n > 0:\n        yield n\n        n -= 1\nprint(list(countdown(3)))  # [3, 2, 1]",
+          "lang": "python"
+        },
+        "`with` 陳述式會替你執行設定與清理的程式碼（這裡是即使發生錯誤也會自動關閉檔案）。使用 `yield` 的函式稱為產生器（generator）：它會惰性地一次產生一個值，處理大量資料時可節省記憶體。"
+      ]
+    },
+    {
+      "h": "以 try 與 except 處理錯誤",
+      "body": [
+        "錯誤會以例外的形式被拋出。請捕捉你預期的特定例外型別，並用 `finally` 放置一定要執行的程式碼。",
+        {
+          "code": "def parse_age(text):\n    try:\n        age = int(text)\n    except ValueError:\n        print(f\"not a number: {text!r}\")\n        return None\n    if age < 0:\n        raise ValueError(\"age cannot be negative\")\n    return age\nprint(parse_age(\"41\"))   # 41\nprint(parse_age(\"abc\"))  # not a number: 'abc', then None",
+          "lang": "python"
+        }
+      ]
+    },
+    {
+      "h": "完整的小程式：單字計數器",
+      "body": [
+        "這個腳本會讀取命令列指定的文字檔，並印出出現次數最多的五個單字，只使用標準函式庫。",
+        {
+          "code": "import sys\nfrom collections import Counter\ndef top_words(path, n=5):\n    with open(path, encoding=\"utf-8\") as f:\n        words = f.read().lower().split()\n    cleaned = [w.strip(\".,;:!?\\\"'()\") for w in words]\n    return Counter(w for w in cleaned if w).most_common(n)\nif __name__ == \"__main__\":\n    if len(sys.argv) != 2:\n        sys.exit(\"usage: python3 count.py FILE\")\n    try:\n        for word, count in top_words(sys.argv[1]):\n            print(f\"{count:5}  {word}\")\n    except FileNotFoundError:\n        sys.exit(f\"file not found: {sys.argv[1]}\")",
+          "lang": "python"
+        },
+        "以 `python3 count.py notes.txt` 執行。`if __name__ == \"__main__\":` 這個判斷讓檔案被當成模組匯入時，不會執行腳本的主要部分。"
+      ]
+    },
+    {
+      "h": "初學者常見錯誤",
+      "body": [
+        {
+          "note": "不要把可變物件當作參數預設值：`def add(item, items=[])` 會讓所有呼叫共用同一個 list。請改用 `items=None`，並在函式內部建立 list。"
+        },
+        {
+          "ul": [
+            "混用 Tab 與空格，或縮排不一致，會導致 `IndentationError`。請將編輯器設定為插入 4 個空格。",
+            "`=` 是賦值，`==` 是比較。只有在與 `None` 比較時才使用 `is`（`if x is None`）。",
+            "`input()` 一律回傳字串；做數學運算前請先用 `int()` 或 `float()` 轉換。",
+            "用 `b = a` 並不會複製 list；兩個名稱指向同一個 list。請使用 `b = a.copy()` 或 `b = list(a)`。",
+            "請在虛擬環境（`python3 -m venv .venv`）中安裝套件，不要裝進系統的 Python。"
+          ]
+        }
+      ]
+    },
+    {
+      "h": "接下來學什麼",
+      "body": [
+        "先把官方的 Python Tutorial 走過一遍，再瀏覽 Library Reference，認識 `pathlib`、`json`、`datetime`、`itertools` 等模組。學會用 `pip` 與虛擬環境管理第三方套件，並用 `unittest` 或 pytest 撰寫測試。之後可以選擇方向：網站（Django 或 FastAPI）、資料分析（pandas）或自動化。"
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Python 適合初學者嗎？",
+      "a": "適合。它的語法簡短、接近一般英文，錯誤訊息清楚，還能在 REPL 中逐行試寫程式。Python 在業界也被廣泛使用，所以入門學到的技能一直都派得上用場。"
+    },
+    {
+      "q": "Python 是編譯式還是直譯式？",
+      "a": "CPython 會先將原始碼編譯成位元組碼（bytecode），再直譯執行這些位元組碼，這一切在執行腳本時都會自動完成，你不需要另外執行編譯步驟。"
+    },
+    {
+      "q": "list 和 tuple 有什麼差別？",
+      "a": "list 是可變的：可以新增、刪除與修改元素。tuple 是不可變的，適合用來表示固定的一組值，也可以當作 dict 的鍵。"
+    },
+    {
+      "q": "為什麼我的 Python 程式很慢？",
+      "a": "純 Python 的迴圈比編譯式語言慢。請善用內建函式、comprehension，以及 NumPy 這類內部迴圈以 C 執行的函式庫。"
+    },
+    {
+      "q": "命令列該用 python 還是 python3？",
+      "a": "在 macOS 與大多數 Linux 系統上請用 `python3`，因為 `python` 可能不存在，或指向別的東西。Windows 上通常使用 `py` 啟動器。"
+    }
+  ]
+}

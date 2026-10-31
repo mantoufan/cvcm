@@ -44,5 +44,41 @@
         "a": "Tutorial memandu satu tugas langkah demi langkah. Artikel pengetahuan menjelaskan konsep di baliknya, misalnya cara kerja sebuah format atau rumus, agar Anda bisa mengambil keputusan sendiri."
       }
     ]
+  },
+  "codeHub": {
+    "kicker": "Pemrograman",
+    "all": "Semua tutorial pemrograman",
+    "title": "Tutorial pemrograman: bahasa, pola desain, dan algoritme — cv.cm",
+    "description": "Tutorial gratis satu halaman untuk Python, JavaScript, Java, C++, Go, Rust, dan lainnya, 23 pola desain, serta struktur data dan algoritme dasar, lengkap dengan kode.",
+    "h1": "Tutorial pemrograman",
+    "lede": "Pelajari satu bahasa pemrograman, pola desain, atau algoritme dalam satu halaman. Setiap tutorial menjawab pertanyaan lebih dulu, lalu menampilkan kode yang berjalan, kesalahan umum, dan referensi resmi.",
+    "groups": {
+      "languages": "Bahasa pemrograman",
+      "patterns": "Pola desain",
+      "structures": "Struktur data",
+      "algorithms": "Algoritme"
+    },
+    "about": [
+      "Tutorial bahasa dimulai dari memasang perangkat dan mencetak Hello, world, lalu fungsi, koleksi, penanganan galat, hingga satu program kecil yang lengkap. Halaman pola menjelaskan masalah yang diselesaikan tiap pola Gang of Four, dengan contoh TypeScript dan kapan sebaiknya tidak dipakai. Halaman struktur data dan algoritme menelusuri contoh langkah demi langkah, memberi kode Python, dan menyebutkan kompleksitas waktu dan ruang.",
+      "Contoh kode singkat dan bisa dijalankan apa adanya, dan setiap halaman menautkan dokumentasi bahasa, standar, atau sumber asli yang dipakai untuk memeriksanya."
+    ],
+    "faq": [
+      {
+        "q": "Bahasa pemrograman apa yang sebaiknya dipelajari pertama?",
+        "a": "Bagi kebanyakan pemula, Python atau JavaScript: sintaksisnya sederhana, komunitasnya besar, dan berjalan di mana saja. Pilih JavaScript untuk situs web, Python untuk data, otomatisasi, dan pemrograman umum."
+      },
+      {
+        "q": "Apakah perlu memasang sesuatu untuk mengikuti tutorial?",
+        "a": "Setiap tutorial bahasa diawali cara memasang perangkat resmi dan menjalankan program pertama. Halaman pola dan algoritme memakai TypeScript dan Python, yang bisa dijalankan di komputer atau di lingkungan daring mana pun."
+      },
+      {
+        "q": "Apakah tutorial ini gratis?",
+        "a": "Ya. Semua tutorial gratis dibaca tanpa akun, dan contoh kodenya boleh dipakai ulang di proyek Anda."
+      },
+      {
+        "q": "Apa beda struktur data dan algoritme?",
+        "a": "Struktur data adalah cara menyimpan data, seperti array, hash table, atau tree. Algoritme adalah urutan langkah untuk menyelesaikan masalah, seperti mengurutkan atau mencari jalur terpendek, dan kecepatannya sering bergantung pada struktur data yang dipakai."
+      }
+    ]
   }
 }

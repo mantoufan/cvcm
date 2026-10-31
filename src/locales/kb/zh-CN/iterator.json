@@ -1,0 +1,153 @@
+{
+  "title": "迭代器模式：遍历、生成器与 TypeScript 中的 Symbol.iterator — cv.cm",
+  "description": "迭代器模式（Iterator）让你无需知道集合如何存储就能遍历它。了解其角色，以及 TypeScript 中的 Symbol.iterator 与生成器。",
+  "h1": "迭代器模式详解与示例",
+  "answer": "迭代器是一种行为型设计模式，它提供一种依次访问集合元素、而不暴露集合存储方式的办法。遍历逻辑放在单独的迭代器对象里，通过 `next()` 之类的方法驱动，因此同一个集合可以提供多种遍历顺序，客户端代码也能用同样的方式遍历数组、树和数据流。在 TypeScript 和 JavaScript 中，这一模式通过 `Symbol.iterator` 和 `for...of` 内置在语言里。",
+  "sections": [
+    {
+      "h": "意图与它要解决的问题",
+      "body": [
+        "意图：提供一种方法，顺序访问聚合对象中的各个元素，而又不暴露该对象的内部表示。迭代器是《设计模式》（Gang of Four，GoF）一书中的行为型模式之一。",
+        "设想一个把公司组织架构存成树的类。程序的不同部分都需要列出所有员工：一份报表按层级逐层输出，另一份需要深度优先顺序。如果每份报表都自己遍历这棵树，每份报表就都依赖树的内部字段，一旦把树改成别的存储方式，它们会全部出错。",
+        "有了迭代器，树会提供迭代器对象。报表只需要获取一个迭代器，并不断调用 `next()` 直到结束。报表并不知道数据是一棵树、一个数组，还是从数据库逐页取回的行。"
+      ]
+    },
+    {
+      "h": "结构与参与者",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "角色",
+              "职责"
+            ],
+            "rows": [
+              [
+                "迭代器",
+                "遍历接口，通常是返回下一个元素的 `next()`，同时带有表示遍历是否结束的标志"
+              ],
+              [
+                "具体迭代器",
+                "实现对某一种集合的遍历，并记住当前位置"
+              ],
+              [
+                "聚合（可迭代对象）",
+                "带有创建迭代器方法的接口"
+              ],
+              [
+                "具体聚合",
+                "集合本身；每次被请求时返回一个新的具体迭代器"
+              ],
+              [
+                "客户端",
+                "通过迭代器访问元素，而不必了解集合的结构"
+              ]
+            ]
+          }
+        },
+        "在 JavaScript 中，这些角色有标准名称，由 ES2015 的迭代协议定义。可迭代对象（iterable）拥有 `[Symbol.iterator]()` 方法。迭代器（iterator）拥有返回 `{ value, done }` 的 `next()` 方法。每一个 `for...of` 循环、展开语法 `[...x]` 和解构赋值都使用这些协议。"
+      ]
+    },
+    {
+      "h": "TypeScript 实现：手写迭代器",
+      "body": [
+        "这个 range 类只保存起点、终点和步长，而不是一个数字列表。它的迭代器按需计算每个值。",
+        {
+          "code": "class Range implements Iterable<number> {\n  constructor(private start: number, private end: number, private step = 1) {}\n\n  [Symbol.iterator](): Iterator<number> {\n    let current = this.start;\n    const { end, step } = this;\n    return {\n      next(): IteratorResult<number> {\n        if (current >= end) return { value: undefined, done: true };\n        const value = current;\n        current += step;\n        return { value, done: false };\n      },\n    };\n  }\n}\n\nconst evens = new Range(0, 10, 2);\nfor (const n of evens) console.log(n); // 0 2 4 6 8 (one per line)\nconsole.log([...evens]); // [ 0, 2, 4, 6, 8 ]\nconsole.log(Math.max(...new Range(1, 4))); // 3",
+          "lang": "typescript"
+        },
+        "每次调用 `[Symbol.iterator]()` 都会返回一个带有自己 `current` 位置的新迭代器，因此 `evens` 可以被循环两次。如果集合每次返回同一个迭代器，第二次循环就看不到任何元素。"
+      ]
+    },
+    {
+      "h": "生成器：用更少的代码写迭代器",
+      "body": [
+        "用 `function*` 编写的生成器函数会自动创建迭代器。每个 `yield` 产出下一个值，函数随后暂停，直到再次调用 `next()`。下面的二叉树提供了中序遍历，而不暴露其节点：",
+        {
+          "code": "class TreeNode<T> {\n  constructor(public value: T, public left?: TreeNode<T>, public right?: TreeNode<T>) {}\n}\n\nclass BinaryTree<T> implements Iterable<T> {\n  constructor(private root?: TreeNode<T>) {}\n\n  *[Symbol.iterator](): Generator<T> {\n    yield* inOrder(this.root);\n  }\n}\n\nfunction* inOrder<T>(node?: TreeNode<T>): Generator<T> {\n  if (!node) return;\n  yield* inOrder(node.left);\n  yield node.value;\n  yield* inOrder(node.right);\n}\n\nconst tree = new BinaryTree(\n  new TreeNode(5, new TreeNode(3, new TreeNode(1)), new TreeNode(8)),\n);\nconsole.log([...tree]); // [ 1, 3, 5, 8 ]\n\nfor (const value of tree) {\n  if (value > 3) break; // stops early; the rest is never computed\n  console.log(value); // 1, then 3\n}",
+          "lang": "typescript"
+        },
+        {
+          "note": "遍历集合的过程中，不要添加或删除元素，除非该集合的文档明确说明这样做是安全的。Java 的 `ArrayList` 迭代器会抛出 `ConcurrentModificationException`，而在 JavaScript 中，循环时修改数组可能会跳过或重复元素。"
+        }
+      ]
+    },
+    {
+      "h": "何时使用，何时不用",
+      "body": [
+        {
+          "ul": [
+            "当集合的内部结构复杂（树、图、分页 API），而你希望客户端能简单地循环访问时使用。",
+            "当需要对同一份数据提供多种遍历顺序（例如深度优先和广度优先）时使用。",
+            "用于惰性序列或无限序列，其中的值只在被请求时才计算。",
+            "用它为不同的集合提供统一的循环接口。",
+            "对已经是数组的数据，不要再写自定义迭代器。直接返回数组（或只读副本），让调用方使用内置的迭代方式即可。",
+            "当调用方需要按索引随机访问或需要提前知道长度时，不要使用惰性迭代器；数组更合适。"
+          ]
+        }
+      ]
+    },
+    {
+      "h": "实际应用",
+      "body": [
+        {
+          "ul": [
+            "JavaScript：`Array`、`Map`、`Set` 和 `String` 都是可迭代对象，`map.entries()` 或 `set.values()` 返回迭代器。",
+            "Java：带有 `hasNext()` 和 `next()` 的 `java.util.Iterator` 接口，任何 `Iterable` 上的增强 `for` 循环都用它。",
+            "Python：由 `__iter__` 和 `__next__` 构成的迭代器协议，以及使用 `yield` 的生成器函数。",
+            "数据库和 API：查询结果的游标和分页 HTTP API 每次只提供一页结果，客户端因此可以遍历非常大的结果集，而不必全部载入内存。"
+          ]
+        }
+      ]
+    },
+    {
+      "h": "相关模式",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "模式",
+              "与迭代器的关系"
+            ],
+            "rows": [
+              [
+                "组合",
+                "迭代器常用来遍历组合树，而不暴露其节点。"
+              ],
+              [
+                "访问者",
+                "迭代器负责遍历元素；访问者定义对每个元素做什么。两者经常配合使用。"
+              ],
+              [
+                "工厂方法",
+                "创建迭代器的方法（例如 `[Symbol.iterator]()`）就是工厂方法：每个集合返回自己的迭代器类。"
+              ],
+              [
+                "备忘录",
+                "迭代器可以把当前位置保存为备忘录，以便之后恢复遍历。"
+              ]
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "可迭代对象和迭代器有什么区别？",
+      "a": "可迭代对象是能产生迭代器的对象，在 JavaScript 中通过 `[Symbol.iterator]()` 实现。迭代器是保存当前位置、并通过 `next()` 逐个返回元素的对象。"
+    },
+    {
+      "q": "生成器是迭代器吗？",
+      "a": "是。调用生成器函数会返回一个生成器对象，它既是迭代器（有 `next()`），也是可迭代对象（`[Symbol.iterator]()` 返回它自身）。"
+    },
+    {
+      "q": "为什么不直接暴露内部数组？",
+      "a": "暴露数组会让每个调用方都绑定到这种存储方式，还能随意修改它。迭代器隐藏了结构，因此你以后可以更换存储，或惰性计算元素，而无需改动调用方。"
+    },
+    {
+      "q": "什么是内部迭代器？",
+      "a": "内部迭代器是接收回调并对每个元素执行它的方法，例如 `array.forEach(fn)`，循环由集合控制。外部迭代器（如 `next()`）则由客户端控制何时前进、何时停止。"
+    }
+  ]
+}

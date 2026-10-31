@@ -1,0 +1,229 @@
+{
+  "title": "Học lập trình Julia cơ bản: mảng, hàm, multiple dispatch và gói — cv.cm",
+  "description": "Học Julia từ đầu: cài bằng juliaup, chạy Hello world, dùng kiểu dữ liệu, mảng đánh chỉ số từ 1, broadcasting, hàm, multiple dispatch, lỗi và gói.",
+  "h1": "Hướng dẫn học lập trình Julia cơ bản cho người mới",
+  "answer": "Julia là ngôn ngữ bậc cao, kiểu động, được thiết kế cho tính toán số và khoa học nhanh. Nó đọc giống Python hoặc MATLAB nhưng biên dịch mỗi hàm ra mã native ngay lần gọi đầu tiên, nên vòng lặp có thể chạy với tốc độ gần C. Ý tưởng trung tâm là multiple dispatch: một hàm chọn phương thức dựa trên kiểu của tất cả các đối số. Cài bằng juliaup và chạy một tệp bằng `julia hello.jl`.",
+  "sections": [
+    {
+      "h": "Julia là gì và ai dùng nó",
+      "body": [
+        "Julia do Jeff Bezanson, Stefan Karpinski, Viral Shah và Alan Edelman tạo ra, và công bố năm 2012. Phiên bản 1.0 ra mắt năm 2018, và dòng 1.x giữ tương thích ngược. Julia nhắm tới việc giải quyết \"bài toán hai ngôn ngữ\": tạo mẫu bằng một ngôn ngữ chậm mà dễ dùng, rồi viết lại các phần nóng bằng C hoặc Fortran.",
+        "Julia được các nhà khoa học, kỹ sư và nhà phân tích dữ liệu dùng cho mô phỏng, phương trình vi phân, tối ưu hóa, thống kê, học máy và tính toán hiệu năng cao. Hệ sinh thái gói của nó bao gồm data frame, vẽ đồ thị, tính toán GPU và đạo hàm tự động."
+      ]
+    },
+    {
+      "h": "Cài Julia và chạy Hello, world",
+      "body": [
+        "Trình cài đặt được khuyên dùng là juliaup, cài và cập nhật các phiên bản Julia trên Windows, macOS và Linux (xem julialang.org/downloads). Sau khi cài, `julia` mở REPL và `julia file.jl` chạy một script.",
+        {
+          "code": "# hello.jl\nprintln(\"Hello, world!\")",
+          "lang": "julia"
+        },
+        {
+          "code": "julia hello.jl\n# Hello, world!\njulia\n# julia> 1 + 2\n# 3",
+          "lang": "shell"
+        },
+        "Trong REPL, nhấn `]` để vào chế độ gói (ví dụ `add DataFrames`), `?` để xem trợ giúp về một tên, và `;` để vào shell. Nhấn Backspace để quay về dấu nhắc thông thường."
+      ]
+    },
+    {
+      "h": "Biến và các kiểu dữ liệu cơ bản",
+      "body": [
+        "Biến không cần khai báo, nhưng mọi giá trị đều có một kiểu cụ thể, bạn có thể xem bằng `typeof`. Bạn có thể thêm chú thích kiểu cho đối số hàm và trường struct khi muốn.",
+        {
+          "table": {
+            "head": [
+              "Kiểu",
+              "Ví dụ",
+              "Ghi chú"
+            ],
+            "rows": [
+              [
+                "Int64",
+                "`42`",
+                "Số nguyên mặc định trên hệ 64 bit; tràn số thì quay vòng"
+              ],
+              [
+                "Float64",
+                "`3.14`, `1e-3`",
+                "Số thực dấu phẩy động mặc định"
+              ],
+              [
+                "Rational",
+                "`1//3`",
+                "Phân số chính xác"
+              ],
+              [
+                "String",
+                "`\"hello\"`",
+                "UTF-8; nội suy bằng `\"$name\"`"
+              ],
+              [
+                "Char",
+                "`'a'`",
+                "Một ký tự Unicode đơn"
+              ],
+              [
+                "Bool",
+                "`true`, `false`",
+                "Giá trị logic"
+              ],
+              [
+                "Symbol",
+                "`:name`",
+                "Một tên được intern, thường dùng làm khóa hoặc tùy chọn"
+              ],
+              [
+                "Nothing",
+                "`nothing`",
+                "\"Không có giá trị\", được trả về bởi hàm không có kết quả"
+              ]
+            ]
+          }
+        },
+        {
+          "code": "name = \"Ana\"\nage = 30\nprintln(\"$name is $age, next year $(age + 1)\")\n# Ana is 30, next year 31\ntypeof(age)   # Int64\n7 / 2         # 3.5  (always a float)\n7 ÷ 2         # 3    (integer division, also div(7, 2))\n2^10          # 1024",
+          "lang": "julia"
+        },
+        "Julia chấp nhận tên Unicode như `π` hoặc `α`; trong REPL và hầu hết trình soạn thảo bạn gõ `\\pi` rồi nhấn Tab để có `π`."
+      ]
+    },
+    {
+      "h": "Điều khiển luồng",
+      "body": [
+        "Các khối kết thúc bằng từ khóa `end`; thụt lề chỉ để dễ đọc. `if`, `for` và `while` hoạt động như ở hầu hết ngôn ngữ, và comprehension tạo mảng chỉ trong một dòng.",
+        {
+          "code": "function sign_name(n)\n    if n > 0\n        \"positive\"\n    elseif n < 0\n        \"negative\"\n    else\n        \"zero\"\n    end\nend\nfor i in 1:3\n    println(\"$i squared is $(i^2)\")\nend\nsquares = [x^2 for x in 1:5 if isodd(x)]   # [1, 9, 25]\nx = 5\nresult = x > 3 ? \"big\" : \"small\"           # \"big\"",
+          "lang": "julia"
+        },
+        "`1:3` là một khoảng bao gồm cả hai đầu. Biểu thức cuối cùng trong hàm hoặc khối `if` chính là giá trị của nó, nên `sign_name(-2)` trả về `\"negative\"` mà không cần `return` tường minh."
+      ]
+    },
+    {
+      "h": "Hàm",
+      "body": [
+        {
+          "code": "add(x, y) = x + y                 # one-line definition\nfunction greet(name = \"world\"; punctuation = \"!\")\n    return \"Hello, $name$punctuation\"\nend\ngreet()                           # \"Hello, world!\"\ngreet(\"Ana\", punctuation = \".\")   # \"Hello, Ana.\"\nsquare = x -> x^2                 # anonymous function\nmap(square, [1, 2, 3])            # [1, 4, 9]\nv = [3, 1, 2]\nsort!(v)                          # v is now [1, 2, 3]",
+          "lang": "julia"
+        },
+        "Đối số vị trí đứng trước dấu chấm phẩy và đối số từ khóa đứng sau. Theo quy ước, hàm có tên kết thúc bằng `!` sẽ thay đổi một trong các đối số của nó, như `sort!` hay `push!`, còn `sort` trả về một mảng mới."
+      ]
+    },
+    {
+      "h": "Mảng, tuple và dictionary",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Cấu trúc",
+              "Cú pháp literal",
+              "Ghi chú"
+            ],
+            "rows": [
+              [
+                "Vector",
+                "`[1, 2, 3]`",
+                "Chỉ số từ 1, khả biến, tăng bằng `push!`"
+              ],
+              [
+                "Matrix",
+                "`[1 2; 3 4]`",
+                "Dấu cách ngăn cách cột, `;` ngăn cách hàng"
+              ],
+              [
+                "Tuple",
+                "`(1, \"a\")`",
+                "Bất biến, độ dài cố định"
+              ],
+              [
+                "Tuple có tên",
+                "`(name = \"Ana\", age = 30)`",
+                "Truy cập trường bằng `.name`"
+              ],
+              [
+                "Dict",
+                "`Dict(\"a\" => 1)`",
+                "Bảng băm khả biến"
+              ],
+              [
+                "Set",
+                "`Set([1, 2, 2])`",
+                "Các giá trị duy nhất"
+              ]
+            ]
+          }
+        },
+        {
+          "code": "v = [10, 20, 30]\nv[1]          # 10   (first element)\nv[end]        # 30\npush!(v, 40)\nA = [1 2; 3 4]\nA * A         # matrix product: [7 10; 15 22]\nA .* A        # element-wise:   [1 4; 9 16]\nv .+ 1        # broadcasting:   [11, 21, 31, 41]\nsqrt.([1, 4, 9])   # [1.0, 2.0, 3.0]",
+          "lang": "julia"
+        },
+        "Cú pháp dấu chấm gọi là broadcasting: `f.(x)` áp dụng `f` cho từng phần tử, còn `.+`, `.*` hoạt động theo từng phần tử. Julia gộp chuỗi các phép toán có dấu chấm thành một vòng lặp duy nhất."
+      ]
+    },
+    {
+      "h": "Tính năng đặc trưng: multiple dispatch",
+      "body": [
+        "Một hàm Julia có thể có nhiều phương thức. Khi bạn gọi nó, Julia chọn phương thức cụ thể nhất cho kiểu của tất cả các đối số. Điều này thay thế phương thức của lớp: kiểu giữ dữ liệu, còn hành vi được thêm bằng cách định nghĩa phương thức cho chúng, kể cả từ một gói khác.",
+        {
+          "code": "abstract type Shape end\nstruct Circle <: Shape\n    r::Float64\nend\nstruct Rect <: Shape\n    w::Float64\n    h::Float64\nend\narea(c::Circle) = π * c.r^2\narea(r::Rect) = r.w * r.h\nshapes = [Circle(1.0), Rect(2.0, 3.0)]\nprintln(round.(area.(shapes), digits = 2))   # [3.14, 6.0]",
+          "lang": "julia"
+        },
+        "Vì Julia biên dịch một phiên bản chuyên biệt của hàm cho các kiểu đối số mà nó gặp, lần gọi đầu tiên của hàm chậm hơn (gồm cả biên dịch) và các lần sau thì nhanh. Dùng `mutable struct` khi các trường cần thay đổi sau khi tạo."
+      ]
+    },
+    {
+      "h": "Xử lý lỗi",
+      "body": [
+        "Julia dùng ngoại lệ. Hãy ném một kiểu ngoại lệ dựng sẵn như `ArgumentError` hoặc `DomainError`, hoặc tự định nghĩa một struct là kiểu con của `Exception`. `tryparse` trả về `nothing` thay vì ném lỗi.",
+        {
+          "code": "function parse_age(s)\n    n = tryparse(Int, s)\n    n === nothing && throw(ArgumentError(\"not a number: $s\"))\n    n < 0 && throw(DomainError(n, \"age must not be negative\"))\n    return n\nend\ntry\n    parse_age(\"abc\")\ncatch e\n    if e isa ArgumentError\n        println(\"Error: \", e.msg)\n    else\n        rethrow()\n    end\nend\n# Error: not a number: abc",
+          "lang": "julia"
+        }
+      ]
+    },
+    {
+      "h": "Một chương trình hoàn chỉnh nhỏ: tần suất từ",
+      "body": [
+        {
+          "code": "text = \"the cat and the hat and the bat\"\ncounts = Dict{String,Int}()\nfor w in split(text)\n    counts[w] = get(counts, w, 0) + 1\nend\ntop = sort(collect(counts), by = last, rev = true)\nfor (word, n) in first(top, 2)\n    println(word, \" \", n)\nend\n# the 3\n# and 2",
+          "lang": "julia"
+        },
+        "`split` tách chuỗi theo khoảng trắng, `get` trả về giá trị mặc định 0 cho từ mới, `collect` biến dictionary thành vector các cặp `word => count`, và `by = last` sắp xếp theo số lần.",
+        {
+          "note": "Lỗi thường gặp của người mới: đánh chỉ số từ 0 (`v[0]` là lỗi; phần tử đầu tiên là `v[1]`); mong `7 / 2` là số nguyên; viết mã quan trọng về hiệu năng ở cấp cao nhất của script thay vì trong hàm (biến toàn cục chậm, và gán biến toàn cục trong vòng lặp cấp cao nhất của tệp sẽ gây cảnh báo phạm vi); và chỉ đo thời gian lần gọi đầu tiên, vốn gồm cả biên dịch."
+        }
+      ]
+    },
+    {
+      "h": "Học tiếp ở đâu",
+      "body": [
+        {
+          "ul": [
+            "Sách hướng dẫn Julia chính thức tại docs.julialang.org, bắt đầu từ \"Getting Started\".",
+            "Trang học tập tại julialang.org, liệt kê các hướng dẫn, sách và khóa học.",
+            "Đọc chương \"Performance Tips\" trong sách hướng dẫn trước khi tối ưu mã.",
+            "Khám phá các gói như DataFrames.jl, Plots.jl và DifferentialEquations.jl."
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Julia có nhanh hơn Python không?",
+      "a": "Với mã có nhiều vòng lặp và tính toán số, Julia thường nhanh hơn nhiều so với Python thuần vì biên dịch ra mã native. Python cùng các thư viện như NumPy có thể nhanh với các phép toán vector hóa, nên sự khác biệt tùy thuộc vào tác vụ."
+    },
+    {
+      "q": "Vì sao Julia đếm từ 1?",
+      "a": "Julia theo quy ước của toán học và của các ngôn ngữ như MATLAB, R và Fortran, nơi phần tử đầu tiên của mảng có chỉ số 1."
+    },
+    {
+      "q": "Vì sao lần chạy đầu của mã Julia chậm?",
+      "a": "Julia biên dịch mỗi hàm cho các kiểu đối số ngay lần gọi đầu tiên. Các lần gọi sau dùng lại mã đã biên dịch, nên hãy đo hiệu năng sau một lần gọi khởi động hoặc bằng một gói đo hiệu năng."
+    },
+    {
+      "q": "Julia có miễn phí không?",
+      "a": "Có. Julia là mã nguồn mở theo giấy phép MIT, và gần như mọi gói của nó cũng là mã nguồn mở."
+    }
+  ]
+}

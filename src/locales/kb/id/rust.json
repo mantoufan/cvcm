@@ -1,0 +1,189 @@
+{
+  "title": "Tutorial Rust: ownership, borrowing, enum, dan Result — cv.cm",
+  "description": "Belajar Rust dalam satu halaman: Hello world dengan Cargo, tipe data, alur kontrol, ownership dan borrowing, struct, enum dan match, Vec, HashMap, serta Result.",
+  "h1": "Tutorial Rust untuk pemula",
+  "answer": "Rust adalah bahasa sistem terkompilasi dengan tipe statis yang secepat C dan C++ tetapi mencegah kesalahan memori saat kompilasi, tanpa garbage collector. Instal dengan rustup, jalankan `cargo new hello` dan `cargo run`. Konsep intinya: ownership dan borrowing (diperiksa oleh borrow checker), struct dan enum dengan `match`, collection seperti `Vec` dan `HashMap`, serta penanganan error dengan `Result` dan operator `?`.",
+  "sections": [
+    {
+      "h": "Apa itu Rust dan untuk apa dipakai",
+      "body": [
+        "Rust bermula sebagai proyek pribadi Graydon Hoare, disponsori Mozilla, dan mencapai versi 1.0 pada 2015. Kini Rust diurus oleh Rust Foundation. Rust dipakai di tempat yang menuntut kecepatan sekaligus keandalan: tool command line (ripgrep), layanan web, komponen browser di Firefox, bagian dari kernel Linux dan Windows, perangkat embedded, dan WebAssembly. Compiler-nya ketat, tetapi sebagai gantinya satu kelas bug penuh, seperti use-after-free dan data race, tidak bisa terjadi pada kode Rust yang aman."
+      ]
+    },
+    {
+      "h": "Instal Rust dan jalankan Hello, world",
+      "body": [
+        "Instal toolchain dengan rustup dari rustup.rs. Ia menyediakan `rustc` (compiler) dan Cargo (build tool sekaligus package manager). Buat proyek:",
+        {
+          "code": "cargo new hello\ncd hello\ncargo run\n# Hello, world!",
+          "lang": "shell"
+        },
+        "Cargo membuat `src/main.rs`:",
+        {
+          "code": "fn main() {\n    println!(\"Hello, world!\");\n}",
+          "lang": "rust"
+        },
+        "`println!` diakhiri `!` karena ia adalah macro, bukan fungsi. Macro menghasilkan kode saat kompilasi; di sini, format string diperiksa ketika Anda mengompilasi."
+      ]
+    },
+    {
+      "h": "Variabel dan tipe data dasar",
+      "body": [
+        "Variabel bersifat immutable secara default; tambahkan `mut` untuk mengizinkan perubahan. Tipe biasanya disimpulkan, tetapi setiap nilai memiliki tepat satu tipe statis, dan konversi numerik dilakukan eksplisit dengan `as`.",
+        {
+          "table": {
+            "head": [
+              "Tipe",
+              "Contoh",
+              "Catatan"
+            ],
+            "rows": [
+              [
+                "`i32`, `i64`, `u8`, `usize`",
+                "`let n: i32 = 42;`",
+                "Bertanda (`i`) dan tak bertanda (`u`); `usize` untuk indeks"
+              ],
+              [
+                "`f64`",
+                "`let x = 3.14;`",
+                "Tipe float default"
+              ],
+              [
+                "`bool`",
+                "`let ok = true;`",
+                "`true` atau `false`"
+              ],
+              [
+                "`char`",
+                "`let c = 'é';`",
+                "Sebuah Unicode scalar value, 4 byte"
+              ],
+              [
+                "`&str`",
+                "`let s = \"hi\";`",
+                "String slice pinjaman (borrowed)"
+              ],
+              [
+                "`String`",
+                "`String::from(\"hi\")`",
+                "Teks UTF-8 milik sendiri (owned) yang dapat bertambah"
+              ],
+              [
+                "Tuple, array",
+                "`(1, \"a\")`, `[0; 3]`",
+                "Ukuran tetap"
+              ]
+            ]
+          }
+        },
+        {
+          "code": "fn main() {\n    let name = \"Ada\";\n    let mut count = 7;\n    count += 1;\n    let avg = count as f64 / 2.0;\n    println!(\"{name} has {count} items, avg {avg}\"); // Ada has 8 items, avg 4\n    let parsed: i32 = \"12\".parse().unwrap();\n    println!(\"{}\", parsed + 1); // 13\n}",
+          "lang": "rust"
+        }
+      ]
+    },
+    {
+      "h": "Alur kontrol dan fungsi",
+      "body": [
+        "`if`, `match`, dan blok adalah ekspresi: mereka menghasilkan nilai. Ekspresi terakhir sebuah fungsi, tanpa titik koma, adalah nilai kembaliannya.",
+        {
+          "code": "fn square(x: i32) -> i32 {\n    x * x\n}\n\nfn main() {\n    let score = 72;\n    let grade = if score >= 90 { \"A\" } else if score >= 70 { \"B\" } else { \"C\" };\n    println!(\"{grade}\"); // B\n\n    for i in 0..3 {\n        print!(\"{} \", square(i)); // 0 1 4\n    }\n    println!();\n\n    let mut n = 10;\n    while n > 1 {\n        n /= 2;\n    }\n    let label = loop {\n        break \"done\"; // loop can return a value with break\n    };\n    println!(\"{n} {label}\"); // 1 done\n}",
+          "lang": "rust"
+        }
+      ]
+    },
+    {
+      "h": "Fitur khas: ownership dan borrowing",
+      "body": [
+        "Setiap nilai punya tepat satu owner. Ketika owner keluar dari scope, nilai itu di-drop (dibebaskan). Menugaskan nilai heap seperti `String` ke variabel lain akan memindahkannya (move), dan nama lama tidak bisa dipakai lagi. Untuk memakai nilai tanpa mengambil kepemilikan, pinjam dengan reference: sejumlah reference bersama `&T`, atau tepat satu reference mutable `&mut T`, pada satu waktu.",
+        {
+          "code": "fn length(s: &str) -> usize {\n    s.len() // borrows, does not take ownership\n}\n\nfn add_exclamation(s: &mut String) {\n    s.push('!');\n}\n\nfn main() {\n    let a = String::from(\"hello\");\n    let b = a; // ownership moves to b\n    // println!(\"{a}\"); // error: borrow of moved value: `a`\n    let mut c = b.clone(); // explicit deep copy\n    add_exclamation(&mut c);\n    println!(\"{} {} {}\", b, c, length(&c)); // hello hello! 6\n}",
+          "lang": "rust"
+        },
+        "Aturan ini ditegakkan oleh borrow checker saat kompilasi, dan itulah cara Rust mencapai keamanan memori tanpa garbage collector. Tipe sederhana seperti integer mengimplementasikan `Copy`, sehingga disalin, bukan dipindahkan."
+      ]
+    },
+    {
+      "h": "Struct, enum, dan pattern matching",
+      "body": [
+        "Struct mengelompokkan field, dan blok `impl` menambahkan method. Enum dapat membawa data di setiap variant, dan `match` harus menangani setiap variant, yang diperiksa oleh compiler. Enum standar `Option<T>` (`Some(value)` atau `None`) menggantikan null.",
+        {
+          "code": "#[derive(Debug)]\nstruct Point {\n    x: f64,\n    y: f64,\n}\n\nimpl Point {\n    fn distance(&self) -> f64 {\n        (self.x * self.x + self.y * self.y).sqrt()\n    }\n}\n\nenum Shape {\n    Circle(f64),\n    Rect { w: f64, h: f64 },\n}\n\nfn area(s: &Shape) -> f64 {\n    match s {\n        Shape::Circle(r) => std::f64::consts::PI * r * r,\n        Shape::Rect { w, h } => w * h,\n    }\n}\n\nfn main() {\n    let p = Point { x: 3.0, y: 4.0 };\n    println!(\"{:?} {}\", p, p.distance()); // Point { x: 3.0, y: 4.0 } 5\n    println!(\"{}\", area(&Shape::Rect { w: 2.0, h: 3.0 })); // 6\n    let nums = [10, 20];\n    if let Some(v) = nums.first() {\n        println!(\"first is {v}\"); // first is 10\n    }\n}",
+          "lang": "rust"
+        },
+        "Trait mendefinisikan perilaku bersama, mirip interface: `#[derive(Debug)]` meminta compiler mengimplementasikan trait `Debug` agar `{:?}` bisa mencetak struct."
+      ]
+    },
+    {
+      "h": "Collection: Vec dan HashMap",
+      "body": [
+        {
+          "code": "use std::collections::HashMap;\n\nfn main() {\n    let mut nums = vec![3, 1, 2];\n    nums.push(5);\n    nums.sort();\n    println!(\"{:?} {}\", nums, nums.len()); // [1, 2, 3, 5] 4\n\n    let evens: Vec<i32> = nums.iter().filter(|n| *n % 2 == 0).map(|n| n * n).collect();\n    println!(\"{:?}\", evens); // [4]\n\n    let mut ages: HashMap<&str, u32> = HashMap::new();\n    ages.insert(\"ann\", 31);\n    ages.insert(\"bob\", 25);\n    *ages.entry(\"ann\").or_insert(0) += 1;\n    println!(\"{:?} {:?}\", ages.get(\"ann\"), ages.get(\"zed\")); // Some(32) None\n}",
+          "lang": "rust"
+        },
+        "Iterator dengan closure (`|n| ...`) seperti `filter`, `map`, dan `collect` dikompilasi menjadi kode secepat perulangan yang ditulis tangan."
+      ]
+    },
+    {
+      "h": "Penanganan error dengan Result dan ?",
+      "body": [
+        "Fungsi yang bisa gagal mengembalikan `Result<T, E>`: `Ok(value)` atau `Err(error)`. Operator `?` mengembalikan error ke pemanggil lebih awal, sehingga jalur error tetap ringkas. Bug yang tak dapat dipulihkan memakai `panic!`.",
+        {
+          "code": "use std::num::ParseIntError;\n\nfn parse_age(text: &str) -> Result<u32, ParseIntError> {\n    let age: u32 = text.trim().parse()?; // returns Err early on bad input\n    Ok(age)\n}\n\nfn main() {\n    match parse_age(\"41\") {\n        Ok(age) => println!(\"age {age}\"), // age 41\n        Err(e) => println!(\"error: {e}\"),\n    }\n    match parse_age(\"abc\") {\n        Ok(age) => println!(\"age {age}\"),\n        Err(e) => println!(\"error: {e}\"), // error: invalid digit found in string\n    }\n}",
+          "lang": "rust"
+        }
+      ]
+    },
+    {
+      "h": "Program kecil yang lengkap: frekuensi kata",
+      "body": [
+        "Taruh ini di `src/main.rs` dan jalankan `cargo run -- notes.txt`.",
+        {
+          "code": "use std::collections::HashMap;\nuse std::{env, fs, process};\n\nfn main() {\n    let path = env::args().nth(1).unwrap_or_else(|| {\n        eprintln!(\"usage: words FILE\");\n        process::exit(1);\n    });\n    let text = match fs::read_to_string(&path) {\n        Ok(t) => t.to_lowercase(),\n        Err(e) => {\n            eprintln!(\"cannot read {path}: {e}\");\n            process::exit(1);\n        }\n    };\n\n    let mut counts: HashMap<&str, usize> = HashMap::new();\n    for word in text.split(|c: char| !c.is_alphanumeric()).filter(|w| !w.is_empty()) {\n        *counts.entry(word).or_insert(0) += 1;\n    }\n\n    let mut top: Vec<(&str, usize)> = counts.into_iter().collect();\n    top.sort_by(|a, b| b.1.cmp(&a.1).then(a.0.cmp(b.0)));\n    for (word, n) in top.iter().take(5) {\n        println!(\"{n:5}  {word}\");\n    }\n}",
+          "lang": "rust"
+        },
+        "`HashMap` menyimpan slice `&str` yang meminjam dari `text`, jadi tidak ada kata yang disalin; borrow checker menjamin bahwa `text` hidup cukup lama."
+      ]
+    },
+    {
+      "h": "Kesalahan umum pemula",
+      "body": [
+        {
+          "note": "Melawan borrow checker dengan menambahkan `.clone()` di mana-mana atau memakai `.unwrap()` pada setiap `Result` membuat kode bisa dikompilasi tetapi menyembunyikan masalah. Baca pesan compiler lebih dulu; biasanya ia menyebut persis apa yang harus diubah."
+        },
+        {
+          "ul": [
+            "Memakai nilai setelah dipindahkan. Pinjam (`&value`) atau clone dengan sengaja.",
+            "Mencoba mengindeks `String` dengan `s[0]`. String berformat UTF-8, jadi gunakan `s.chars()` atau byte slice pada batas karakter.",
+            "Memegang reference ke `Vec` saat melakukan push; push dapat mengalokasikan ulang, sehingga compiler melarangnya.",
+            "Mencampuradukkan `String` (owned) dan `&str` (borrowed). Terima `&str` pada parameter fungsi agar keduanya bisa dipakai."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Langkah selanjutnya",
+      "body": [
+        "Baca \"The Rust Programming Language\" (dikenal sebagai the book), tersedia gratis di doc.rust-lang.org, dan coba Rust by Example untuk contoh singkat yang bisa dijalankan. Lalu pelajari trait dan generic secara mendalam, lifetime, pengujian dengan `cargo test`, dan crate dari crates.io seperti `serde` untuk serialisasi dan `tokio` untuk program async. Jalankan `cargo clippy` untuk saran lint tambahan."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Apakah Rust sulit dipelajari?",
+      "a": "Beberapa minggu pertama lebih sulit daripada di kebanyakan bahasa karena ownership dan borrowing adalah ide baru. Setelah terbiasa, compiler menangkap banyak bug lebih awal, dan banyak developer merasa kode Rust lebih mudah dirawat."
+    },
+    {
+      "q": "Apakah Rust punya garbage collector?",
+      "a": "Tidak. Memori dibebaskan otomatis ketika owner-nya keluar dari scope, ditentukan saat kompilasi oleh aturan ownership. Tipe reference-counted `Rc` dan `Arc` tersedia untuk kepemilikan bersama."
+    },
+    {
+      "q": "Apa itu unsafe Rust?",
+      "a": "Kode di dalam blok `unsafe` boleh melakukan hal yang tidak dapat diverifikasi compiler, seperti men-dereference raw pointer atau memanggil fungsi C. Pemakaiannya dibatasi, biasanya dibungkus dalam API yang aman."
+    },
+    {
+      "q": "Rust atau Go: mana yang sebaiknya dipelajari?",
+      "a": "Go lebih sederhana dan lebih cepat dipelajari serta populer untuk layanan jaringan. Rust memberi kontrol dan performa lebih besar dengan jaminan yang lebih kuat, dengan konsekuensi kurva belajar yang lebih curam."
+    }
+  ]
+}

@@ -1,0 +1,215 @@
+{
+  "title": "スタックとキューとは？LIFOとFIFOの違い、Pythonコードと計算量 — cv.cm",
+  "description": "スタック（LIFO）とキュー（FIFO）をPythonコードで解説。listをスタックに、collections.dequeをキューに使う方法、括弧の対応チェック、幅優先探索、計算量まで学べます。",
+  "h1": "スタックとキューとは？LIFOとFIFOの違いをPythonで解説",
+  "answer": "スタックは、最後に追加した要素を最初に取り出すコレクション（LIFO：後入れ先出し）で、積み重ねた皿のようなものです。キューは、最初に追加した要素を最初に取り出すコレクション（FIFO：先入れ先出し）で、レジの行列のようなものです。どちらも追加と取り出しがO(1)で行えます。Pythonでは、スタックには`list`を、キューには`collections.deque`を使います。",
+  "sections": [
+    {
+      "h": "スタックとキューが解決する問題",
+      "body": [
+        "多くのプログラムは、要素を覚えておき、あとから決まった順序で処理する必要があります。スタックは最新の要素を最初に返すので、関数呼び出し、undo履歴、括弧の対応チェック、深さ優先探索のような入れ子になった処理に向いています。キューは最も古い要素を最初に返すので、印刷ジョブ、タスクスケジューラ、メッセージキュー、幅優先探索のような、公平な順番待ちに向いています。",
+        "どちらも抽象データ型で、内部の格納方法ではなく操作によって定義されます。配列でも連結リストでも、どちらでも実装できます。"
+      ]
+    },
+    {
+      "h": "操作と呼び方",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "操作",
+              "スタック（LIFO）",
+              "キュー（FIFO）"
+            ],
+            "rows": [
+              [
+                "要素を追加",
+                "push：一番上に載せる",
+                "enqueue：末尾に追加する"
+              ],
+              [
+                "要素を取り出す",
+                "pop：一番上から取る",
+                "dequeue：先頭から取る"
+              ],
+              [
+                "取り出さずに見る",
+                "peek / top",
+                "peek / front"
+              ],
+              [
+                "Pythonの型",
+                "`append`と`pop`を使う`list`",
+                "`append`と`popleft`を使う`collections.deque`"
+              ],
+              [
+                "入力1, 2, 3の取り出し順",
+                "3, 2, 1",
+                "1, 2, 3"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "具体例：pushとpopを1ステップずつ",
+      "body": [
+        "1、2、3を両方のデータ構造に追加し、その後2回取り出します。",
+        {
+          "table": {
+            "head": [
+              "ステップ",
+              "スタックの中身（右が上）",
+              "キューの中身（左が先頭）"
+            ],
+            "rows": [
+              [
+                "1を追加",
+                "[1]",
+                "[1]"
+              ],
+              [
+                "2を追加",
+                "[1, 2]",
+                "[1, 2]"
+              ],
+              [
+                "3を追加",
+                "[1, 2, 3]",
+                "[1, 2, 3]"
+              ],
+              [
+                "取り出す",
+                "3を返し、[1, 2]が残る",
+                "1を返し、[2, 3]が残る"
+              ],
+              [
+                "取り出す",
+                "2を返し、[1]が残る",
+                "2を返し、[3]が残る"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "Pythonでの実装",
+      "body": [
+        "Pythonの`list`は、そのままスタックとして優れています。`append`と`pop()`はリストの末尾に対して働き、償却O(1)です。キューには`list.pop(0)`を使わないでください。残りの要素をすべてずらすのでO(n)かかります。両端でO(1)の`collections.deque`を使いましょう。",
+        {
+          "code": "from collections import deque\nstack = []\nstack.append(1)\nstack.append(2)\nstack.append(3)\nprint(stack.pop(), stack[-1])   # 3 2\nqueue = deque()\nqueue.append(\"a\")\nqueue.append(\"b\")\nqueue.append(\"c\")\nprint(queue.popleft(), queue[0])  # a b\nprint(len(stack), len(queue))     # 2 2",
+          "lang": "python"
+        },
+        "メソッド名を分かりやすくし、エラーも明確にしたい場合は、組み込み型を小さなクラスで包みます。",
+        {
+          "code": "from collections import deque\nclass Queue:\n    def __init__(self):\n        self._items = deque()\n    def enqueue(self, item):\n        self._items.append(item)\n    def dequeue(self):\n        if not self._items:\n            raise IndexError(\"dequeue from empty queue\")\n        return self._items.popleft()\n    def __len__(self):\n        return len(self._items)\nq = Queue()\nq.enqueue(\"job1\")\nq.enqueue(\"job2\")\nprint(q.dequeue(), len(q))  # job1 1",
+          "lang": "python"
+        }
+      ]
+    },
+    {
+      "h": "定番のスタック問題：括弧の対応チェック",
+      "body": [
+        "すべての括弧が正しい順序で閉じられているか調べるには、開き括弧をすべてpushします。閉じ括弧が来たら、スタックの一番上がそれに対応する開き括弧でなければなりません。",
+        {
+          "code": "def is_balanced(text):\n    pairs = {\")\": \"(\", \"]\": \"[\", \"}\": \"{\"}\n    stack = []\n    for ch in text:\n        if ch in \"([{\":\n            stack.append(ch)\n        elif ch in pairs:\n            if not stack or stack.pop() != pairs[ch]:\n                return False\n    return not stack\nprint(is_balanced(\"f(a[1], {b: 2})\"))  # True\nprint(is_balanced(\"(]\"))               # False\nprint(is_balanced(\"((\"))               # False",
+          "lang": "python"
+        },
+        "同じ考え方で、逆ポーランド記法の式の評価、再帰のループへの書き換え、深さ優先探索ができます。呼び出しスタックを、自分で用意したlistに置き換えるわけです。"
+      ]
+    },
+    {
+      "h": "定番のキュー問題：幅優先探索",
+      "body": [
+        "幅優先探索は、グラフをレベルごとに訪問します。キューを使えば、先に発見したノードから先に処理されるので、これが実現できます。",
+        {
+          "code": "from collections import deque\ndef bfs_order(graph, start):\n    seen = {start}\n    queue = deque([start])\n    order = []\n    while queue:\n        node = queue.popleft()\n        order.append(node)\n        for nxt in graph[node]:\n            if nxt not in seen:\n                seen.add(nxt)\n                queue.append(nxt)\n    return order\ngraph = {\"A\": [\"B\", \"C\"], \"B\": [\"D\"], \"C\": [\"D\"], \"D\": []}\nprint(bfs_order(graph, \"A\"))  # ['A', 'B', 'C', 'D']",
+          "lang": "python"
+        }
+      ]
+    },
+    {
+      "h": "時間計算量と空間計算量",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "操作",
+              "スタック（`list`）",
+              "キュー（`deque`）",
+              "キュー（`list.pop(0)`）"
+            ],
+            "rows": [
+              [
+                "追加",
+                "償却O(1)",
+                "O(1)",
+                "償却O(1)"
+              ],
+              [
+                "取り出し",
+                "O(1)",
+                "O(1)",
+                "O(n)、要素が左にずれる"
+              ],
+              [
+                "参照（peek）",
+                "O(1)",
+                "O(1)",
+                "O(1)"
+              ],
+              [
+                "n個の要素の空間",
+                "O(n)",
+                "O(n)",
+                "O(n)"
+              ]
+            ]
+          }
+        },
+        "償却（amortized）とは、たまに`append`で内部配列のサイズ変更が起きてO(n)かかるものの、多数の操作で平均すると1回あたりO(1)になる、という意味です。"
+      ]
+    },
+    {
+      "h": "種類と、よくある間違い",
+      "body": [
+        {
+          "ul": [
+            "デック（両端キュー）：両端で追加・削除ができます。`collections.deque`がその一例で、スタックとしてもキューとしても使えます。",
+            "優先度付きキュー：最も古い要素ではなく、最小（または最大）の要素を最初に取り出します。`heapq`を使います。二分ヒープのページも参照してください。",
+            "循環バッファ：インデックスを折り返して配列に格納する固定サイズのキューです。`deque(maxlen=n)`は、満杯になると最も古い要素を捨てます。",
+            "スレッドセーフなキュー：スレッド用の`queue.Queue`とコルーチン用の`asyncio.Queue`は、要素が来るまで待機（ブロック）します。",
+            "2つのスタックで作るキュー：入力用スタックにpushし、出力用スタックが空になったら全要素を移し替えます。各要素が移るのは1回だけなので、操作は償却O(1)です。"
+          ]
+        },
+        {
+          "note": "空の`list`に`pop()`、空の`deque`に`popleft()`を呼ぶと`IndexError`が発生します。取り出す前に`if stack:`で確認するか、例外を捕捉してください。"
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "スタックとキューの違いは何ですか？",
+      "a": "スタックは、最後に追加した要素を最初に取り出します（LIFO）。キューは、最も古い要素を最初に取り出します（FIFO）。どちらも追加と取り出しはO(1)です。"
+    },
+    {
+      "q": "Pythonでキューを作るとき、listとdequeのどちらを使うべきですか？",
+      "a": "`collections.deque`を使ってください。`list`の先頭から`pop(0)`で取り出すと、他のすべての要素がずれるためO(n)ですが、`deque.popleft()`はO(1)です。"
+    },
+    {
+      "q": "スタックは実際のプログラムのどこで使われていますか？",
+      "a": "関数呼び出しを保存するコールスタック、undo/redo履歴、ブラウザの「戻る」ボタン、式の構文解析、括弧の対応チェック、深さ優先探索などです。"
+    },
+    {
+      "q": "スタックオーバーフローとは何ですか？",
+      "a": "コールスタックの領域を使い切ったときに起こります。たいていは、非常に深い再帰や無限再帰が原因です。Pythonでは、再帰の上限を超えると`RecursionError`として現れます。"
+    },
+    {
+      "q": "queue.Queueはcollections.dequeと同じですか？",
+      "a": "いいえ。`queue.Queue`は、ロックとブロッキングの`get`・`put`を備えたスレッドセーフなキューで、スレッド間で作業を受け渡すためのものです。`collections.deque`は、ブロッキングのない、より高速な汎用コンテナです。"
+    }
+  ]
+}

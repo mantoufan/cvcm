@@ -3953,7 +3953,12 @@
       "codes": "二维码与条码",
       "files": "图片与 PDF",
       "audio": "音频",
-      "text": "文字"
+      "text": "文字与写作",
+      "dev": "开发与网页",
+      "time": "日期与时间",
+      "money": "理财与购物",
+      "health": "健康与运动",
+      "math": "数学与学习"
     },
     "hub": {
       "kicker": "极简 · 完整 · 图解",
@@ -7487,6 +7492,399 @@
     "margin-vs-markup": {
       "name": "毛利率和加价率的区别",
       "blurb": "两种表示利润的方式、如何换算，附速查表。"
+    },
+    "code": {
+      "label": "编码",
+      "lead": "编程语言、设计模式、数据结构与算法的单页教程：先给结论，再给可运行的代码，并附官方文档链接。",
+      "all": "全部编码教程",
+      "groups": {
+        "languages": "编程语言",
+        "patterns": "设计模式",
+        "structures": "数据结构",
+        "algorithms": "算法"
+      },
+      "blurbs": {
+        "languages": "Python、JavaScript、Java、C++、Go、Rust 等，从 Hello World 学起",
+        "patterns": "GoF 全部 23 种设计模式与 SOLID 原则，附 TypeScript 示例",
+        "structures": "链表、哈希表、树、堆、字典树，附 Python 代码",
+        "algorithms": "排序、查找、图算法与动态规划，附复杂度分析"
+      }
+    },
+    "linked-list": {
+      "name": "链表",
+      "blurb": "单向与双向链表：插入、删除、反转、环检测与复杂度"
+    },
+    "stack-and-queue": {
+      "name": "栈和队列",
+      "blurb": "用 Python 讲 LIFO 栈与 FIFO 队列：括号匹配、BFS 与复杂度"
+    },
+    "hash-table": {
+      "name": "哈希表",
+      "blurb": "哈希函数、桶、冲突、负载因子与扩容，附 Python 代码"
+    },
+    "binary-search-tree": {
+      "name": "二叉搜索树",
+      "blurb": "BST 有序规则、搜索、插入与删除的 Python 实现、平衡与复杂度"
+    },
+    "binary-tree-traversal": {
+      "name": "二叉树遍历",
+      "blurb": "前序、中序、后序与层序，递归与迭代的 Python 代码"
+    },
+    "binary-heap": {
+      "name": "二叉堆",
+      "blurb": "堆性质、上浮下沉、建堆、优先队列与 Python heapq"
+    },
+    "trie": {
+      "name": "Trie（前缀树）",
+      "blurb": "前缀树的插入、搜索、前缀判断与自动补全，附复杂度"
+    },
+    "union-find": {
+      "name": "并查集",
+      "blurb": "不相交集合并查：find、union、路径压缩与按秩合并，附 Python"
+    },
+    "lru-cache": {
+      "name": "LRU 缓存",
+      "blurb": "用哈希表加双向链表实现最近最少使用缓存，含 OrderedDict"
+    },
+    "big-o-notation": {
+      "name": "大 O 表示法",
+      "blurb": "时间与空间复杂度、常见类别及如何从代码中读出"
+    },
+    "recursion": {
+      "name": "递归",
+      "blurb": "基准情形、调用栈、记忆化与 Python 递归深度限制"
+    },
+    "binary-search": {
+      "name": "二分查找",
+      "blurb": "二分查找如何折半有序区间：Python 代码、bisect、变体与陷阱"
+    },
+    "two-pointers": {
+      "name": "双指针与滑动窗口",
+      "blurb": "对撞指针、快慢指针与滑动窗口，附 Python 代码和过程追踪"
+    },
+    "bubble-sort": {
+      "name": "冒泡排序",
+      "blurb": "冒泡排序如何交换相邻元素：逐趟追踪、Python 代码与复杂度"
+    },
+    "selection-sort": {
+      "name": "选择排序",
+      "blurb": "选择排序如何挑出最小值：分步追踪、Python 代码与稳定性"
+    },
+    "insertion-sort": {
+      "name": "插入排序",
+      "blurb": "插入排序如何移位归位：追踪、Python 代码、稳定性与最佳情形"
+    },
+    "merge-sort": {
+      "name": "归并排序",
+      "blurb": "分治归并排序：追踪、Python 代码、合并步骤、稳定性与复杂度"
+    },
+    "quicksort": {
+      "name": "快速排序",
+      "blurb": "基准、Lomuto 分区追踪、Python 代码、最坏情形与快速选择"
+    },
+    "heapsort": {
+      "name": "堆排序",
+      "blurb": "大根堆、下沉、分步追踪、Python 代码、heapq 与复杂度"
+    },
+    "counting-sort": {
+      "name": "计数排序",
+      "blurb": "小整数键的线性时间计数排序：追踪、稳定的 Python 代码与复杂度"
+    },
+    "radix-sort": {
+      "name": "基数排序",
+      "blurb": "LSD 与 MSD 基数排序：逐位追踪、Python 代码、稳定性与复杂度"
+    },
+    "python": {
+      "name": "Python",
+      "blurb": "语法、类型、流程控制、函数、集合、错误与文件，一页讲完"
+    },
+    "javascript": {
+      "name": "JavaScript",
+      "blurb": "变量、类型、函数、数组、对象、Promise 与 async/await"
+    },
+    "typescript": {
+      "name": "TypeScript",
+      "blurb": "类型、接口、联合类型、类型收窄、泛型与错误处理一页讲完"
+    },
+    "java": {
+      "name": "Java",
+      "blurb": "类型、类、record、集合、异常与模式匹配一页讲完"
+    },
+    "c": {
+      "name": "C",
+      "blurb": "类型、函数、数组、字符串、指针、malloc/free 与错误处理"
+    },
+    "cpp": {
+      "name": "C++",
+      "blurb": "类型、类、STL 容器、lambda、RAII、智能指针与异常"
+    },
+    "csharp": {
+      "name": "C#",
+      "blurb": "类型、类、record、集合、LINQ、async/await 与异常"
+    },
+    "go": {
+      "name": "Go",
+      "blurb": "类型、切片、map、结构体、接口、goroutine、channel 与错误"
+    },
+    "rust": {
+      "name": "Rust",
+      "blurb": "所有权、借用、结构体、枚举、match、集合与 Result 一页讲完"
+    },
+    "php": {
+      "name": "PHP",
+      "blurb": "变量、数组、函数、类、枚举、异常与 JSON 接口一页讲完"
+    },
+    "ruby": {
+      "name": "Ruby",
+      "blurb": "类型、方法、数组、哈希、块、类、模块与异常"
+    },
+    "swift": {
+      "name": "Swift",
+      "blurb": "类型、可选值、闭包、集合、结构体、枚举、协议与错误"
+    },
+    "kotlin": {
+      "name": "Kotlin",
+      "blurb": "空安全、控制流、函数、数据类与协程一页讲完"
+    },
+    "dart": {
+      "name": "Dart",
+      "blurb": "空安全、函数、集合、类与 async/await，面向 Flutter"
+    },
+    "scala": {
+      "name": "Scala",
+      "blurb": "Scala 3 语法、模式匹配、集合、case class 与 Option"
+    },
+    "r": {
+      "name": "R",
+      "blurb": "向量、数据框、函数、统计与绘图一页讲完"
+    },
+    "sql": {
+      "name": "SQL",
+      "blurb": "SELECT、JOIN、GROUP BY、CTE、事务，及三种数据库差异"
+    },
+    "bash": {
+      "name": "Bash",
+      "blurb": "脚本、变量、引号、循环、函数、管道与 set -euo pipefail"
+    },
+    "powershell": {
+      "name": "PowerShell",
+      "blurb": "Cmdlet、对象管道、变量、函数、哈希表与 try/catch"
+    },
+    "lua": {
+      "name": "Lua",
+      "blurb": "变量、表、函数、元表与 pcall 一页讲完"
+    },
+    "perl": {
+      "name": "Perl",
+      "blurb": "标量、数组、哈希、子程序、正则表达式与错误处理"
+    },
+    "haskell": {
+      "name": "Haskell",
+      "blurb": "纯函数、类型、模式匹配、列表、Maybe 与 IO"
+    },
+    "elixir": {
+      "name": "Elixir",
+      "blurb": "模式匹配、管道、Enum、进程与 {:ok, value} 错误处理"
+    },
+    "erlang": {
+      "name": "Erlang",
+      "blurb": "模式匹配、递归、进程、OTP 与 let-it-crash 错误处理"
+    },
+    "clojure": {
+      "name": "Clojure",
+      "blurb": "语法、不可变集合、函数、宏、atom 与错误处理"
+    },
+    "fsharp": {
+      "name": "F#",
+      "blurb": "类型、记录、联合、模式匹配、管道与 Result 一页讲完"
+    },
+    "ocaml": {
+      "name": "OCaml",
+      "blurb": "类型、记录、变体、模式匹配、模块与错误处理"
+    },
+    "julia": {
+      "name": "Julia",
+      "blurb": "类型、数组、广播、函数、多重派发与错误处理"
+    },
+    "zig": {
+      "name": "Zig",
+      "blurb": "类型、切片、可选值、错误联合、comptime、defer 与分配器"
+    },
+    "fortran": {
+      "name": "Fortran",
+      "blurb": "现代语法、类型、循环、过程、模块、数组与 iostat"
+    },
+    "cobol": {
+      "name": "COBOL",
+      "blurb": "四大部、PIC 数据、IF/EVALUATE、PERFORM 循环、表与文件"
+    },
+    "assembly": {
+      "name": "Assembly (x86-64)",
+      "blurb": "x86-64 NASM 寄存器、指令、循环、内存、系统调用与 AT&T 语法"
+    },
+    "visual-basic": {
+      "name": "Visual Basic .NET",
+      "blurb": "VB.NET 语法、类型、循环、函数、集合、类、LINQ 与 VBA"
+    },
+    "objective-c": {
+      "name": "Objective-C",
+      "blurb": "消息、类、属性、Foundation 集合、block、ARC、NSError"
+    },
+    "matlab": {
+      "name": "MATLAB",
+      "blurb": "矩阵、索引、循环、函数、结构体、元胞、绘图与 Octave"
+    },
+    "design-patterns": {
+      "name": "设计模式",
+      "blurb": "设计模式是什么、GoF 23 种模式分类及如何选择"
+    },
+    "solid-principles": {
+      "name": "SOLID 原则",
+      "blurb": "SOLID 五大设计原则，各附 TypeScript 前后对比示例"
+    },
+    "singleton": {
+      "name": "单例模式",
+      "blurb": "保证只有一个实例：TypeScript 示例、异步变体与替代方案"
+    },
+    "factory-method": {
+      "name": "工厂方法模式",
+      "blurb": "让子类决定创建哪种对象：TypeScript 示例与适用场景"
+    },
+    "abstract-factory": {
+      "name": "抽象工厂模式",
+      "blurb": "无需指定具体类，即可创建一族相关对象"
+    },
+    "builder": {
+      "name": "建造者模式",
+      "blurb": "用流式 API 分步构建复杂对象，并介绍 Director 角色"
+    },
+    "prototype": {
+      "name": "原型模式",
+      "blurb": "通过克隆实例创建对象：TypeScript clone()、深浅拷贝"
+    },
+    "adapter": {
+      "name": "适配器模式",
+      "blurb": "让不兼容的接口协同工作：TypeScript 示例、对象与类适配器"
+    },
+    "bridge": {
+      "name": "桥接模式",
+      "blurb": "分离抽象与实现，使两者可独立变化"
+    },
+    "composite": {
+      "name": "组合模式",
+      "blurb": "统一对待单个对象与对象树：TypeScript 文件系统示例"
+    },
+    "decorator": {
+      "name": "装饰器模式",
+      "blurb": "运行时通过包装为对象添加行为：类与函数装饰器"
+    },
+    "facade": {
+      "name": "外观模式",
+      "blurb": "为复杂子系统提供统一入口：TypeScript 结账示例"
+    },
+    "flyweight": {
+      "name": "享元模式",
+      "blurb": "共享内部状态以节省内存，附 TypeScript 示例"
+    },
+    "proxy": {
+      "name": "代理模式",
+      "blurb": "用缓存、懒加载、保护和远程代理控制对象访问"
+    },
+    "chain-of-responsibility": {
+      "name": "责任链模式",
+      "blurb": "沿处理者链传递请求直到被处理，含中间件形式"
+    },
+    "command": {
+      "name": "命令模式",
+      "blurb": "把请求变成对象，用于排队、记录、撤销与重做"
+    },
+    "interpreter": {
+      "name": "解释器模式",
+      "blurb": "用类建模小型语言，在 TypeScript 中求值表达式树"
+    },
+    "iterator": {
+      "name": "迭代器模式",
+      "blurb": "不暴露内部存储地遍历集合，含 Symbol.iterator 与生成器"
+    },
+    "mediator": {
+      "name": "中介者模式",
+      "blurb": "通过一个中心对象协调组件，取代直接引用"
+    },
+    "memento": {
+      "name": "备忘录模式",
+      "blurb": "不暴露内部细节地保存与恢复状态，用于撤销与检查点"
+    },
+    "observer": {
+      "name": "观察者模式",
+      "blurb": "主体变化时自动通知订阅者，附带类型的 TypeScript 代码"
+    },
+    "state": {
+      "name": "状态模式",
+      "blurb": "用状态类代替 switch，让对象行为随状态改变"
+    },
+    "strategy": {
+      "name": "策略模式",
+      "blurb": "运行时替换可互换的算法，用 TypeScript 函数或类实现"
+    },
+    "template-method": {
+      "name": "模板方法模式",
+      "blurb": "在基类固定算法步骤，由子类填充细节"
+    },
+    "visitor": {
+      "name": "访问者模式",
+      "blurb": "通过双分派为类层次添加操作，及联合类型替代方案"
+    },
+    "breadth-first-search": {
+      "name": "广度优先搜索（BFS）",
+      "blurb": "用队列实现 BFS：示例追踪、Python 代码、最短路径与 O(V + E)"
+    },
+    "depth-first-search": {
+      "name": "深度优先搜索（DFS）",
+      "blurb": "递归与迭代 DFS：示例追踪、环检测与 O(V + E) 复杂度"
+    },
+    "dijkstra": {
+      "name": "Dijkstra 算法",
+      "blurb": "用优先队列求最短路径：示例追踪、Python heapq 代码与复杂度"
+    },
+    "bellman-ford": {
+      "name": "Bellman-Ford 算法",
+      "blurb": "含负权边的最短路径、负环检测与 Python 代码"
+    },
+    "floyd-warshall": {
+      "name": "Floyd-Warshall 算法",
+      "blurb": "全源最短路径：矩阵示例追踪、Python 代码、路径还原与 O(V³)"
+    },
+    "a-star-search": {
+      "name": "A* 搜索",
+      "blurb": "f = g + h 启发式寻路：可采纳启发函数、网格示例与 Python 代码"
+    },
+    "topological-sort": {
+      "name": "拓扑排序",
+      "blurb": "按依赖排序任务：Kahn 算法、DFS、graphlib 与环检测"
+    },
+    "minimum-spanning-tree": {
+      "name": "最小生成树",
+      "blurb": "Kruskal 与 Prim 算法：示例追踪、Python 代码、并查集与堆"
+    },
+    "dynamic-programming": {
+      "name": "动态规划",
+      "blurb": "记忆化与制表法对比，零钱兑换与 LCS 追踪、Python 代码与复杂度"
+    },
+    "greedy-algorithms": {
+      "name": "贪心算法",
+      "blurb": "每步选局部最优：区间调度追踪、Python 代码与反例"
+    },
+    "backtracking": {
+      "name": "回溯算法",
+      "blurb": "选择、探索、撤销：N 皇后追踪、子集、排列与 Python 剪枝"
+    },
+    "kmp-string-search": {
+      "name": "KMP 字符串匹配",
+      "blurb": "前缀函数、搜索追踪、Python 代码与 O(n + m)"
+    },
+    "bit-manipulation": {
+      "name": "位运算",
+      "blurb": "位运算符、单比特技巧、统计位数与位掩码，附 Python 示例"
     }
   },
   "dice": {

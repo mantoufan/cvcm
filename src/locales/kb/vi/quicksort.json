@@ -1,0 +1,262 @@
+{
+  "title": "Sắp xếp nhanh (Quicksort): phân hoạch, pivot, mã Python và độ phức tạp — cv.cm",
+  "description": "Sắp xếp nhanh chọn pivot, phân hoạch danh sách quanh nó rồi sắp xếp hai phía. Ví dụ phân hoạch Lomuto, mã Python, O(n log n) so với O(n²), cách chọn pivot.",
+  "h1": "Thuật toán sắp xếp nhanh: cách hoạt động, mã và độ phức tạp",
+  "answer": "Sắp xếp nhanh là thuật toán sắp xếp chia để trị. Nó chọn một phần tử làm pivot (phần tử chốt), sắp xếp lại mảng sao cho các phần tử nhỏ hơn đứng trước pivot và các phần tử lớn hơn đứng sau (phân hoạch), rồi sắp xếp hai phía bằng đệ quy. Thuật toán chạy O(n log n) trung bình và sắp xếp tại chỗ với O(log n) không gian ngăn xếp, nhưng suy giảm thành O(n²) khi các pivot luôn tệ. Nó không ổn định. Với pivot ngẫu nhiên hoặc trung vị của ba, đây là một trong những thuật toán sắp xếp đa dụng nhanh nhất trong thực tế.",
+  "sections": [
+    {
+      "h": "Ý tưởng bằng lời đơn giản",
+      "body": [
+        {
+          "ol": [
+            "Chọn một phần tử pivot, ví dụ phần tử cuối hoặc một phần tử ngẫu nhiên.",
+            "Phân hoạch: chuyển mọi phần tử nhỏ hơn pivot sang bên trái nó và mọi phần tử lớn hơn sang bên phải. Lúc này pivot đã ở đúng vị trí cuối cùng đã sắp xếp.",
+            "Sắp xếp đệ quy phần bên trái pivot và phần bên phải pivot. Sau đó không cần kết hợp gì thêm."
+          ]
+        },
+        "Sắp xếp trộn chia dễ nhưng trộn khó. Sắp xếp nhanh ngược lại: việc phân hoạch làm công việc chính, còn nối hai nửa miễn phí vì chúng đã nằm đúng chỗ trong cùng một mảng."
+      ]
+    },
+    {
+      "h": "Ví dụ minh họa: một lần phân hoạch Lomuto",
+      "body": [
+        "Phân hoạch `[10, 80, 30, 90, 40, 50, 70]` với phần tử cuối, 70, làm pivot. Chỉ số `i` đánh dấu cuối vùng các phần tử nhỏ hơn pivot; `j` quét từ trái sang phải.",
+        {
+          "table": {
+            "head": [
+              "j",
+              "items[j]",
+              "Nhỏ hơn 70?",
+              "Hành động",
+              "Mảng sau đó"
+            ],
+            "rows": [
+              [
+                "0",
+                "10",
+                "có",
+                "i = 0, đổi chỗ 0↔0",
+                "`[10, 80, 30, 90, 40, 50, 70]`"
+              ],
+              [
+                "1",
+                "80",
+                "không",
+                "không có",
+                "`[10, 80, 30, 90, 40, 50, 70]`"
+              ],
+              [
+                "2",
+                "30",
+                "có",
+                "i = 1, đổi chỗ 1↔2",
+                "`[10, 30, 80, 90, 40, 50, 70]`"
+              ],
+              [
+                "3",
+                "90",
+                "không",
+                "không có",
+                "`[10, 30, 80, 90, 40, 50, 70]`"
+              ],
+              [
+                "4",
+                "40",
+                "có",
+                "i = 2, đổi chỗ 2↔4",
+                "`[10, 30, 40, 90, 80, 50, 70]`"
+              ],
+              [
+                "5",
+                "50",
+                "có",
+                "i = 3, đổi chỗ 3↔5",
+                "`[10, 30, 40, 50, 80, 90, 70]`"
+              ],
+              [
+                "cuối",
+                "",
+                "",
+                "đặt pivot vào i + 1 = 4",
+                "`[10, 30, 40, 50, 70, 90, 80]`"
+              ]
+            ]
+          }
+        },
+        "Giờ 70 nằm ở chỉ số 4, vị trí cuối cùng của nó. Sau đó sắp xếp nhanh sắp xếp riêng `[10, 30, 40, 50]` và `[90, 80]`."
+      ]
+    },
+    {
+      "h": "Cài đặt bằng Python",
+      "body": [
+        {
+          "code": "import random\n\ndef partition(a, lo, hi):\n    \"\"\"Lomuto partition of a[lo..hi] around a random pivot.\"\"\"\n    r = random.randint(lo, hi)\n    a[r], a[hi] = a[hi], a[r]       # move the pivot to the end\n    pivot = a[hi]\n    i = lo - 1\n    for j in range(lo, hi):\n        if a[j] < pivot:\n            i += 1\n            a[i], a[j] = a[j], a[i]\n    a[i + 1], a[hi] = a[hi], a[i + 1]\n    return i + 1\n\ndef quicksort(a, lo=0, hi=None):\n    \"\"\"Sort list a in place.\"\"\"\n    if hi is None:\n        hi = len(a) - 1\n    while lo < hi:\n        p = partition(a, lo, hi)\n        if p - lo < hi - p:           # recurse on the smaller side\n            quicksort(a, lo, p - 1)\n            lo = p + 1\n        else:\n            quicksort(a, p + 1, hi)\n            hi = p - 1\n    return a\n\nprint(quicksort([10, 80, 30, 90, 40, 50, 70]))   # [10, 30, 40, 50, 70, 80, 90]\nprint(quicksort([3, 3, 3, 1]))                   # [1, 3, 3, 3]",
+          "lang": "python"
+        },
+        "Đệ quy vào phía nhỏ hơn và lặp trên phía lớn hơn giữ độ sâu ngăn xếp ở O(log n) ngay cả trong trường hợp xấu nhất. Một phiên bản ngắn, không tại chỗ, rất phổ biến để giải thích ý tưởng, nhưng nó cấp phát list mới ở mỗi mức:",
+        {
+          "code": "def quicksort_simple(items):\n    if len(items) <= 1:\n        return items\n    pivot = items[len(items) // 2]\n    less = [x for x in items if x < pivot]\n    equal = [x for x in items if x == pivot]\n    greater = [x for x in items if x > pivot]\n    return quicksort_simple(less) + equal + quicksort_simple(greater)\n\nprint(quicksort_simple([5, 2, 9, 2, 7]))   # [2, 2, 5, 7, 9]",
+          "lang": "python"
+        }
+      ]
+    },
+    {
+      "h": "Độ phức tạp thời gian và không gian",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Trường hợp",
+              "Thời gian",
+              "Lý do"
+            ],
+            "rows": [
+              [
+                "Tốt nhất",
+                "O(n log n)",
+                "mỗi pivot chia đôi phạm vi"
+              ],
+              [
+                "Trung bình",
+                "O(n log n)",
+                "pivot ngẫu nhiên cho các phép chia đủ cân bằng, khoảng 1,39 n log₂ n phép so sánh"
+              ],
+              [
+                "Xấu nhất",
+                "O(n²)",
+                "mỗi pivot đều là phần tử nhỏ nhất hoặc lớn nhất"
+              ],
+              [
+                "Không gian phụ",
+                "O(log n)",
+                "ngăn xếp đệ quy khi đệ quy vào phía nhỏ hơn"
+              ]
+            ]
+          }
+        },
+        "Trường hợp xấu nhất kinh điển là pivot cố định ở phần tử đầu hoặc cuối trên đầu vào đã sắp xếp hoặc sắp xếp ngược: mỗi lần phân hoạch chỉ loại được pivot, tạo ra n mức với O(n) công việc. Pivot ngẫu nhiên khiến điều này cực kỳ khó xảy ra với mọi đầu vào."
+      ]
+    },
+    {
+      "h": "So sánh sắp xếp nhanh với các thuật toán khác",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Thuật toán",
+              "Tốt nhất",
+              "Trung bình",
+              "Xấu nhất",
+              "Không gian phụ",
+              "Ổn định"
+            ],
+            "rows": [
+              [
+                "Sắp xếp nhanh",
+                "O(n log n)",
+                "O(n log n)",
+                "O(n²)",
+                "O(log n)",
+                "Không"
+              ],
+              [
+                "Sắp xếp trộn",
+                "O(n log n)",
+                "O(n log n)",
+                "O(n log n)",
+                "O(n)",
+                "Có"
+              ],
+              [
+                "Sắp xếp vun đống",
+                "O(n log n)",
+                "O(n log n)",
+                "O(n log n)",
+                "O(1)",
+                "Không"
+              ],
+              [
+                "Sắp xếp chèn",
+                "O(n)",
+                "O(n²)",
+                "O(n²)",
+                "O(1)",
+                "Có"
+              ],
+              [
+                "Sắp xếp nổi bọt",
+                "O(n)",
+                "O(n²)",
+                "O(n²)",
+                "O(1)",
+                "Có"
+              ],
+              [
+                "Sắp xếp chọn",
+                "O(n²)",
+                "O(n²)",
+                "O(n²)",
+                "O(1)",
+                "Không"
+              ],
+              [
+                "Timsort (`sorted` của Python)",
+                "O(n)",
+                "O(n log n)",
+                "O(n log n)",
+                "O(n)",
+                "Có"
+              ]
+            ]
+          }
+        },
+        "Sắp xếp nhanh không ổn định: một phép đổi chỗ khi phân hoạch có thể đưa một phần tử vượt qua phần tử bằng nó. Nó thường thắng sắp xếp trộn và sắp xếp vun đống trên mảng trong bộ nhớ vì vòng lặp trong đơn giản, làm việc tại chỗ và truy cập bộ nhớ chủ yếu tuần tự. Introsort, được nhiều bản cài đặt `std::sort` trong thư viện chuẩn C++ dùng, bắt đầu bằng sắp xếp nhanh và chuyển sang sắp xếp vun đống nếu đệ quy quá sâu, nhờ đó đảm bảo O(n log n)."
+      ]
+    },
+    {
+      "h": "Lựa chọn pivot, biến thể và lỗi thường gặp",
+      "body": [
+        {
+          "ul": [
+            "Lựa chọn pivot: phần tử đầu hoặc cuối (đơn giản, nhưng O(n²) trên đầu vào đã sắp xếp), phần tử ngẫu nhiên, hoặc trung vị của ba (đầu, giữa, cuối).",
+            "Phân hoạch Hoare: hai chỉ số tiến vào nhau và đổi chỗ các cặp nằm sai phía. Trung bình nó đổi chỗ ít hơn Lomuto.",
+            "Phân hoạch ba đường (cờ quốc gia Hà Lan): chia thành nhỏ hơn, bằng và lớn hơn. Nó giúp mảng có nhiều khóa trùng chạy nhanh; Lomuto thuần túy suy giảm thành O(n²) khi mọi khóa bằng nhau.",
+            "Dual-pivot quicksort dùng hai pivot và ba phần; Java dùng nó để sắp xếp mảng kiểu nguyên thủy.",
+            "Quickselect dùng một lần phân hoạch và chỉ đệ quy vào một phía để tìm phần tử nhỏ thứ k trong O(n) trung bình."
+          ]
+        },
+        {
+          "note": "Các lỗi hay gặp: lệch một ở biên phân hoạch khiến pivot còn nằm trong mảng con (đệ quy vô tận), đệ quy cả hai phía một cách bất cẩn khiến đầu vào đã sắp xếp chạm giới hạn đệ quy khoảng 1000 của Python, và nhầm rằng sắp xếp nhanh ổn định."
+        }
+      ]
+    },
+    {
+      "h": "Khi nào nên dùng sắp xếp nhanh",
+      "body": [
+        "Sắp xếp nhanh là lựa chọn mặc định tốt để sắp xếp mảng trong bộ nhớ khi không cần tính ổn định. Trong Python, hãy dùng `sorted()` hoặc `list.sort()`; chúng dùng Timsort, ổn định và nhanh trên dữ liệu đã sắp xếp một phần. Cài đặt sắp xếp nhanh là bài phỏng vấn rất phổ biến, thường kèm câu hỏi về trường hợp xấu nhất, cách chọn pivot, tính ổn định, hoặc dùng quickselect để tìm phần tử lớn thứ k."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Sắp xếp nhanh có ổn định không?",
+      "a": "Không. Phân hoạch đổi chỗ các phần tử ở khoảng cách xa, nên các phần tử bằng nhau có thể đổi thứ tự tương đối. Có các phiên bản ổn định nhưng cần thêm bộ nhớ."
+    },
+    {
+      "q": "Trường hợp xấu nhất của sắp xếp nhanh là gì?",
+      "a": "O(n²), khi mọi pivot đều là giá trị nhỏ nhất hoặc lớn nhất trong phạm vi của nó, ví dụ pivot là phần tử cuối trên đầu vào đã sắp xếp. Pivot ngẫu nhiên hoặc trung vị của ba tránh được điều này trong thực tế."
+    },
+    {
+      "q": "Vì sao sắp xếp nhanh nhanh trong thực tế?",
+      "a": "Nó sắp xếp tại chỗ, vòng lặp trong chỉ là so sánh và đổi chỗ đơn giản, và quét bộ nhớ tuần tự nên tận dụng tốt bộ nhớ đệm CPU. Hằng số trung bình của nó nhỏ hơn sắp xếp vun đống và không cần bộ đệm như sắp xếp trộn."
+    },
+    {
+      "q": "Sắp xếp nhanh khác sắp xếp trộn thế nào?",
+      "a": "Sắp xếp nhanh phân hoạch trước và không cần trộn; sắp xếp trộn chia trước và làm việc ở bước trộn. Sắp xếp nhanh tại chỗ nhưng xấu nhất O(n²) và không ổn định; sắp xếp trộn ổn định, luôn O(n log n) và cần O(n) không gian phụ."
+    },
+    {
+      "q": "Sắp xếp nhanh dùng bao nhiêu bộ nhớ?",
+      "a": "Nó sắp xếp tại chỗ. Ngăn xếp đệ quy là O(log n) trung bình, và cũng O(log n) ở trường hợp xấu nhất nếu bạn luôn đệ quy vào phía nhỏ hơn trước."
+    }
+  ]
+}

@@ -1,0 +1,195 @@
+{
+  "title": "Tutorial de MATLAB: matrices, vectorización, funciones y gráficos — cv.cm",
+  "description": "Aprende MATLAB y GNU Octave: scripts, vectores y matrices, indexación, bucles, funciones, funciones anónimas, manejo de errores y gráficos.",
+  "h1": "Tutorial de MATLAB para principiantes",
+  "answer": "MATLAB es un lenguaje y entorno de cálculo numérico de MathWorks en el que todo valor es una matriz. Escribes `A * B` para un producto de matrices, `A .* B` para una multiplicación elemento a elemento, indexas desde 1 y sustituyes muchos bucles por expresiones vectorizadas. Incluye gráficos y un amplio conjunto de toolboxes para ingeniería y ciencia. GNU Octave es una alternativa gratuita y de código abierto que ejecuta sin cambios la mayor parte del código básico de MATLAB.",
+  "sections": [
+    {
+      "h": "Qué es MATLAB y quién lo usa",
+      "body": [
+        "MATLAB («matrix laboratory») empezó como una herramienta de Cleve Moler para acceder fácilmente a bibliotecas de álgebra lineal y se convirtió en un producto comercial de MathWorks. Combina un lenguaje, un escritorio interactivo, gráficos y toolboxes para procesamiento de señales, sistemas de control, optimización, estadística, procesamiento de imágenes y aprendizaje automático. Simulink, un producto complementario, modela sistemas dinámicos con diagramas de bloques.",
+        "MATLAB se usa mucho en cursos de ingeniería y ciencias, laboratorios de investigación e industrias como la automoción, la aeroespacial y las finanzas. Requiere una licencia de pago (muchas universidades ofrecen una). GNU Octave es software libre con una sintaxis en gran parte compatible; cubre el lenguaje básico y muchas funciones, pero no las toolboxes de MathWorks ni Simulink."
+      ]
+    },
+    {
+      "h": "Instala y ejecuta Hello, world",
+      "body": [
+        "Instala MATLAB desde MathWorks, usa MATLAB Online en el navegador o instala GNU Octave desde octave.org (Windows, macOS, Linux). El código se guarda en archivos `.m`. Un script es un archivo de comandos; lo ejecutas escribiendo su nombre, sin `.m`, en la ventana de comandos.",
+        {
+          "code": "% hello.m\ndisp('Hello, world!')",
+          "lang": "matlab"
+        },
+        {
+          "code": "matlab -batch \"hello\"   # MATLAB from a terminal\noctave hello.m          # GNU Octave\n# Hello, world!",
+          "lang": "shell"
+        },
+        "Los comentarios empiezan con `%`. Una línea que termina sin punto y coma muestra su resultado, así que `x = 5` muestra `x = 5`, mientras que `x = 5;` no muestra nada."
+      ]
+    },
+    {
+      "h": "Variables y tipos básicos",
+      "body": [
+        "Las variables se crean por asignación y no necesitan declaración. Los números son `double` (punto flotante de 64 bits) por defecto, e incluso un solo número es una matriz de 1 por 1.",
+        {
+          "table": {
+            "head": [
+              "Tipo",
+              "Ejemplo",
+              "Notas"
+            ],
+            "rows": [
+              [
+                "double",
+                "`x = 3.14`",
+                "El tipo numérico por defecto"
+              ],
+              [
+                "tipos enteros",
+                "`n = int32(42)`",
+                "`int8` a `int64`, `uint8` a `uint64`; la aritmética satura"
+              ],
+              [
+                "logical",
+                "`ok = true`",
+                "Resultado de comparaciones como `x > 2`"
+              ],
+              [
+                "arreglo de caracteres (char)",
+                "`name = 'Ana'`",
+                "Comillas simples; un vector fila de caracteres"
+              ],
+              [
+                "string",
+                "`s = \"Ana\"`",
+                "Objeto string de MATLAB; Octave trata las comillas dobles como un arreglo de caracteres"
+              ],
+              [
+                "arreglo de celdas (cell)",
+                "`c = {'Ana', 30}`",
+                "Contiene valores de distintos tipos"
+              ],
+              [
+                "struct",
+                "`p.name = 'Ana'`",
+                "Campos con nombre"
+              ]
+            ]
+          }
+        },
+        {
+          "code": "x = 10;\ny = 3;\nx / y              % 3.3333\nmod(x, y)          % 1\nx ^ 2              % 100\nname = 'Ana';\nfprintf('%s is %d years old\\n', name, 30)\n% Ana is 30 years old\nclass(x)           % 'double'",
+          "lang": "matlab"
+        }
+      ]
+    },
+    {
+      "h": "Vectores y matrices",
+      "body": [
+        "Los corchetes construyen arreglos: los espacios o las comas separan columnas y los puntos y comas separan filas. La indexación usa paréntesis y empieza en 1; `end` significa el último índice y `:` significa «todos».",
+        {
+          "code": "v = [3 1 4 1 5];\nv(1)               % 3\nv(end)             % 5\nv(2:4)             % [1 4 1]\nv * 2              % [6 2 8 2 10]\nv(v > 2)           % [3 4 5]   logical indexing\nA = [1 2; 3 4];\nA(2, :)            % second row: [3 4]\nA'                 % transpose:  [1 3; 2 4]\nA * A              % matrix product: [7 10; 15 22]\nA .* A             % element-wise:   [1 4; 9 16]\nb = [5; 11];\nx = A \\ b          % solves A*x = b: [1; 2]\nz = zeros(2, 3);   % also ones, eye, rand\nr = 0:0.25:1;      % [0 0.25 0.5 0.75 1]",
+          "lang": "matlab"
+        },
+        "Los operadores con punto (`.*`, `./`, `.^`) trabajan elemento a elemento; sin el punto siguen las reglas del álgebra lineal. El operador barra invertida resuelve sistemas lineales y es más preciso que calcular `inv(A) * b`."
+      ]
+    },
+    {
+      "h": "Control de flujo",
+      "body": [
+        {
+          "code": "score = 85;\nif score >= 90\n    disp('A')\nelseif score >= 80\n    disp('B')\nelse\n    disp('C')\nend\n\ntotal = 0;\nfor k = 1:10\n    total = total + k;\nend\nfprintf('total = %d\\n', total)   % total = 55\n\nn = 3;\nwhile n > 0\n    n = n - 1;\nend\n\nswitch 'red'\n    case {'red', 'green'}\n        disp('a color')\n    otherwise\n        disp('unknown')\nend",
+          "lang": "matlab"
+        },
+        "Cada bloque termina con `end`. Muchos bucles pueden sustituirse por una expresión vectorizada: el bucle anterior equivale a `sum(1:10)`, que es más corto y normalmente más rápido. Si tienes que construir un arreglo dentro de un bucle, resérvalo antes, por ejemplo `result = zeros(1, 1000);`."
+      ]
+    },
+    {
+      "h": "Funciones y funciones anónimas",
+      "body": [
+        "Una función vive en su propio archivo, cuyo nombre coincide con el de la función. Una función puede devolver varias salidas. En las versiones recientes de MATLAB, los scripts también pueden contener funciones locales al final del archivo.",
+        {
+          "code": "% stats.m\nfunction [m, s] = stats(x)\n%STATS Mean and sample standard deviation of a vector.\n    m = mean(x);\n    s = std(x);\nend",
+          "lang": "matlab"
+        },
+        {
+          "code": "[m, s] = stats([2 4 4 5 7])   % m = 4.4000, s = 1.8166\n[biggest, where] = max([3 9 2])   % biggest = 9, where = 2\n\nf = @(x) x.^2 + 1;            % anonymous function\nf(3)                          % 10\nf([1 2 3])                    % [2 5 10]\nfzero(@(x) x.^2 - 2, 1)       % 1.4142, a root near 1\nintegral(f, 0, 1)             % 1.3333",
+          "lang": "matlab"
+        },
+        "Las funciones anónimas, creadas con `@`, se pasan a menudo a otras funciones como `fzero`, `integral`, `arrayfun` o rutinas de optimización. Escríbelas con operadores elemento a elemento (`.^`) para que también funcionen con vectores."
+      ]
+    },
+    {
+      "h": "Structs y arreglos de celdas",
+      "body": [
+        {
+          "code": "person.name = 'Ana';\nperson.age = 30;\nfprintf('%s is %d\\n', person.name, person.age)   % Ana is 30\n\nc = {'Ana', 30, [1 2 3]};   % cell array with mixed types\nc{2}                         % 30 (curly braces get the content)\nclass(c(2))                  % 'cell' (parentheses get a sub-cell)\nnames = {'Ana', 'Ben', 'Cleo'};\nnumel(names)                 % 3\nupper(names{1})              % 'ANA'",
+          "lang": "matlab"
+        },
+        "MATLAB también tiene un tipo `table` para datos orientados a columnas con variables con nombre, parecido a una hoja de cálculo; `readtable` carga en él archivos CSV y Excel."
+      ]
+    },
+    {
+      "h": "Manejo de errores",
+      "body": [
+        "Lanza un error con `error`, opcionalmente con un identificador como `'demo:negative'`, y trátalo con `try ... catch`. El objeto capturado (una `MException` en MATLAB) tiene los campos `identifier` y `message`.",
+        {
+          "code": "% safe_sqrt.m\nfunction r = safe_sqrt(x)\n    if x < 0\n        error('demo:negative', 'Input must be non-negative, got %g', x);\n    end\n    r = sqrt(x);\nend",
+          "lang": "matlab"
+        },
+        {
+          "code": "try\n    safe_sqrt(-4);\ncatch err\n    fprintf('%s: %s\\n', err.identifier, err.message)\nend\n% demo:negative: Input must be non-negative, got -4",
+          "lang": "matlab"
+        },
+        "Usa `warning(...)` para problemas que no deben detener el programa. Sin la comprobación, `sqrt(-4)` no fallaría en absoluto: devuelve el número complejo `0 + 2i`."
+      ]
+    },
+    {
+      "h": "Un programa pequeño y completo: analizar y graficar datos",
+      "body": [
+        {
+          "code": "% temps.m - analyze a week of temperatures\ntemps = [21.5 23.0 19.8 25.1 24.3 18.9 22.7];\ndays = 1:numel(temps);\n\navg = mean(temps);\n[hottest, idx] = max(temps);\nabove = days(temps > avg);\n\nfprintf('Average: %.2f\\n', avg)\nfprintf('Hottest: %.1f on day %d\\n', hottest, idx)\nfprintf('Days above average: %s\\n', mat2str(above))\n\nplot(days, temps, '-o')\nhold on\nplot(days, avg * ones(size(days)), '--')\nxlabel('Day'); ylabel('Temperature (C)')\ntitle('Temperatures this week')\nlegend('Daily', 'Average')\n% Average: 22.19\n% Hottest: 25.1 on day 4\n% Days above average: [2 4 5 7]",
+          "lang": "matlab"
+        },
+        "El script usa indexación lógica para encontrar los días por encima del promedio sin un bucle y después dibuja un gráfico de líneas con marcadores y una línea discontinua para el promedio. El mismo código se ejecuta en GNU Octave.",
+        {
+          "note": "Errores comunes de principiante: usar `*` o `^` cuando querías `.*` o `.^` elemento a elemento (obtienes un error de dimensiones o una potencia de matriz); indexar con 0 (`v(0)` es un error); olvidar los puntos y comas, lo que inunda la salida; dar a un script o variable el nombre de una función incorporada (`sum`, `max`, `i`), lo que oculta la función; usar `i` y `j` como variables de bucle cuando intervienen números complejos; y hacer crecer arreglos dentro de bucles en lugar de reservarlos antes."
+        }
+      ]
+    },
+    {
+      "h": "Adónde ir después",
+      "body": [
+        {
+          "ul": [
+            "La documentación de MATLAB de MathWorks, empezando por las páginas de introducción.",
+            "MATLAB Onramp, el curso introductorio interactivo y gratuito de MathWorks.",
+            "El manual de GNU Octave si usas Octave, incluidas sus notas sobre la compatibilidad con MATLAB.",
+            "Aprende después la vectorización, `readtable` para archivos de datos y las funciones de graficación."
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "¿Existe una versión gratuita de MATLAB?",
+      "a": "MATLAB necesita una licencia, aunque MathWorks ofrece pruebas y muchas universidades proporcionan licencias de campus. GNU Octave es un programa gratuito y de código abierto que ejecuta la mayor parte del código básico de MATLAB."
+    },
+    {
+      "q": "¿Cuál es la diferencia entre * y .* en MATLAB?",
+      "a": "`*` es la multiplicación de matrices del álgebra lineal, que exige que coincidan las dimensiones interiores. `.*` multiplica los elementos correspondientes de dos arreglos del mismo tamaño."
+    },
+    {
+      "q": "¿GNU Octave es totalmente compatible con MATLAB?",
+      "a": "No del todo. La sintaxis básica, las matrices, las funciones y los gráficos son en gran parte compatibles, pero Octave carece de las toolboxes de MathWorks, de Simulink y de algunas funciones recientes de MATLAB, y acepta algunas formas de sintaxis adicionales propias."
+    },
+    {
+      "q": "¿Por qué MATLAB empieza a indexar en 1?",
+      "a": "MATLAB sigue la notación matemática, en la que el primer elemento de un vector o matriz es el elemento 1. Fortran, R y Julia usan la misma convención."
+    },
+    {
+      "q": "¿Debería aprender MATLAB o Python?",
+      "a": "Aprende MATLAB si tu curso, laboratorio o empresa lo usa, sobre todo con Simulink o toolboxes concretas. Python con NumPy, SciPy y Matplotlib es gratuito y de propósito más general, y los conceptos se trasladan de uno a otro."
+    }
+  ]
+}

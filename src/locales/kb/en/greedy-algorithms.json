@@ -1,0 +1,238 @@
+{
+  "title": "Greedy algorithms: how they work, when they fail, Python examples — cv.cm",
+  "description": "Greedy algorithms explained: make the best local choice at each step. Interval scheduling traced, Python code, proofs, counterexamples and complexity.",
+  "h1": "Greedy algorithms explained: how they work, code and examples",
+  "answer": "A greedy algorithm builds a solution step by step and at each step takes the choice that looks best right now, without going back to change earlier choices. It is fast and simple, but it is only correct for problems with the greedy-choice property, where a locally best choice is always part of some optimal solution. Classic correct greedy algorithms include interval scheduling, Huffman coding, Dijkstra's algorithm and Kruskal's and Prim's minimum spanning tree algorithms.",
+  "sections": [
+    {
+      "h": "What problem greedy algorithms solve",
+      "body": [
+        "Greedy algorithms target optimization problems: choose the most activities, use the fewest coins, build the cheapest network, compress a file into the fewest bits. Instead of exploring every combination, a greedy algorithm sorts or prioritizes the options and commits to the best one at each step. That usually gives O(n log n) time, often just the cost of sorting.",
+        "The hard part is not the code but the proof. Many natural greedy rules are wrong, so you must either prove that the rule is correct or test it against a brute-force solution."
+      ]
+    },
+    {
+      "h": "The idea in plain words",
+      "body": [
+        {
+          "ol": [
+            "Find a rule that ranks the choices, for example \"earliest finishing time first\" or \"lightest edge first\".",
+            "Sort the options by that rule, or keep them in a priority queue.",
+            "Go through the options and take each one that is still allowed by the constraints.",
+            "Never undo a choice."
+          ]
+        },
+        "A greedy algorithm is correct when two properties hold. Greedy-choice property: some optimal solution contains the first greedy choice. Optimal substructure: after making that choice, the rest of the problem is a smaller instance of the same problem. The usual proof is an exchange argument: take any optimal solution and show that swapping one of its choices for the greedy choice does not make it worse."
+      ]
+    },
+    {
+      "h": "Worked example: interval scheduling",
+      "body": [
+        "You have one meeting room and these requests (start, end): A (1, 4), B (3, 5), C (0, 6), D (5, 7), E (3, 9), F (5, 9), G (6, 10), H (8, 11). Book as many non-overlapping meetings as possible. The correct greedy rule is: always pick the meeting that ends first among those that start after the last booked one ends.",
+        {
+          "table": {
+            "head": [
+              "Meeting (sorted by end)",
+              "Start, end",
+              "Starts after last end?",
+              "Decision",
+              "Last end"
+            ],
+            "rows": [
+              [
+                "A",
+                "1, 4",
+                "yes (nothing booked)",
+                "Book",
+                "4"
+              ],
+              [
+                "B",
+                "3, 5",
+                "no (3 < 4)",
+                "Skip",
+                "4"
+              ],
+              [
+                "C",
+                "0, 6",
+                "no",
+                "Skip",
+                "4"
+              ],
+              [
+                "D",
+                "5, 7",
+                "yes",
+                "Book",
+                "7"
+              ],
+              [
+                "E",
+                "3, 9",
+                "no",
+                "Skip",
+                "7"
+              ],
+              [
+                "F",
+                "5, 9",
+                "no",
+                "Skip",
+                "7"
+              ],
+              [
+                "G",
+                "6, 10",
+                "no",
+                "Skip",
+                "7"
+              ],
+              [
+                "H",
+                "8, 11",
+                "yes",
+                "Book",
+                "11"
+              ]
+            ]
+          }
+        },
+        "Result: A, D, H, three meetings, which is the maximum. Why it works: the meeting that ends first leaves the most time for everything else, so replacing the first meeting of any optimal schedule with it never causes a conflict."
+      ]
+    },
+    {
+      "h": "Python implementation",
+      "body": [
+        {
+          "code": "def max_meetings(meetings):\n    \"\"\"meetings: list of (name, start, end). Returns the booked names.\"\"\"\n    booked, last_end = [], float(\"-inf\")\n    for name, start, end in sorted(meetings, key=lambda m: m[2]):\n        if start >= last_end:\n            booked.append(name)\n            last_end = end\n    return booked\n\nrequests = [(\"A\", 1, 4), (\"B\", 3, 5), (\"C\", 0, 6), (\"D\", 5, 7),\n            (\"E\", 3, 9), (\"F\", 5, 9), (\"G\", 6, 10), (\"H\", 8, 11)]\nprint(max_meetings(requests))  # ['A', 'D', 'H']",
+          "lang": "python"
+        },
+        "A second classic example is the fractional knapsack: when you may take part of an item, taking items in order of value per unit of weight is optimal.",
+        {
+          "code": "def fractional_knapsack(items, capacity):\n    \"\"\"items: list of (value, weight). Returns the best total value.\"\"\"\n    total = 0.0\n    for value, weight in sorted(items, key=lambda i: i[0] / i[1], reverse=True):\n        take = min(weight, capacity)\n        total += value * take / weight\n        capacity -= take\n        if capacity == 0:\n            break\n    return total\n\nprint(fractional_knapsack([(60, 10), (100, 20), (120, 30)], 50))  # 240.0",
+          "lang": "python"
+        }
+      ]
+    },
+    {
+      "h": "When greedy fails: counterexamples",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Problem",
+              "Tempting greedy rule",
+              "Counterexample",
+              "Correct method"
+            ],
+            "rows": [
+              [
+                "Coin change, coins 1, 3, 4",
+                "Take the largest coin first",
+                "Amount 6: greedy 4 + 1 + 1 (3 coins), optimal 3 + 3 (2 coins)",
+                "Dynamic programming"
+              ],
+              [
+                "0/1 knapsack (whole items only)",
+                "Best value per weight first",
+                "Capacity 50, items (60, 10), (100, 20), (120, 30): greedy takes 60 + 100 = 160, optimal 100 + 120 = 220",
+                "Dynamic programming"
+              ],
+              [
+                "Interval scheduling",
+                "Shortest meeting first",
+                "(0, 5), (4, 7), (6, 11): greedy takes only (4, 7), optimal takes the other two",
+                "Earliest end first"
+              ],
+              [
+                "Shortest path with negative edges",
+                "Dijkstra's closest node first",
+                "Any graph where a negative edge makes a finalized node cheaper",
+                "Bellman-Ford"
+              ]
+            ]
+          }
+        },
+        {
+          "note": "Greedy coin change does give the optimal answer for canonical coin systems such as 1, 2, 5, 10, 20, 50, but not for every set of coins. Before trusting a greedy rule, compare it with a brute-force solution on many small random inputs."
+        }
+      ]
+    },
+    {
+      "h": "Time and space complexity",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Algorithm",
+              "Time",
+              "Reason"
+            ],
+            "rows": [
+              [
+                "Interval scheduling",
+                "O(n log n)",
+                "Sorting by end time; the scan is O(n)."
+              ],
+              [
+                "Fractional knapsack",
+                "O(n log n)",
+                "Sorting by value per weight."
+              ],
+              [
+                "Huffman coding",
+                "O(n log n)",
+                "n − 1 merges, each with heap operations."
+              ],
+              [
+                "Kruskal's MST",
+                "O(E log E)",
+                "Sorting edges plus near-constant union-find."
+              ],
+              [
+                "Dijkstra's shortest paths",
+                "O((V + E) log V)",
+                "Heap-based priority queue."
+              ]
+            ]
+          }
+        },
+        "Space is usually O(n) for the sorted copy or the heap. If the input is already sorted, many greedy algorithms run in O(n)."
+      ]
+    },
+    {
+      "h": "When to use greedy and real-world uses",
+      "body": [
+        {
+          "ul": [
+            "Use greedy when you can prove the greedy-choice property, or when a fast approximate answer is acceptable. Otherwise use dynamic programming or backtracking.",
+            "Compression: Huffman coding builds optimal prefix codes by repeatedly merging the two least frequent symbols; it is used inside formats such as DEFLATE (ZIP, gzip, PNG).",
+            "Networks: minimum spanning trees (Kruskal, Prim) and shortest path routing (Dijkstra).",
+            "Scheduling: earliest deadline first, and booking rooms or machines.",
+            "Approximation: for set cover, the greedy rule \"pick the set covering the most uncovered items\" is not optimal but is guaranteed to be within a logarithmic factor of the optimum.",
+            "Interview problems: jump game, gas station, assign cookies, non-overlapping intervals, minimum number of arrows to burst balloons, task scheduler."
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "What is a greedy algorithm in simple words?",
+      "a": "It is an algorithm that always takes the option that looks best at the moment and never reconsiders. It is correct only for problems where these local choices always lead to a globally best answer."
+    },
+    {
+      "q": "How do I prove that a greedy algorithm is correct?",
+      "a": "The usual method is an exchange argument: start from any optimal solution and show that you can replace its first choice with the greedy choice without making it worse, then repeat on the remaining problem."
+    },
+    {
+      "q": "Greedy or dynamic programming?",
+      "a": "Try greedy first if a simple rule seems right, then look for a counterexample. If one exists, the problem needs dynamic programming, which compares all choices for each subproblem."
+    },
+    {
+      "q": "Is Dijkstra's algorithm greedy?",
+      "a": "Yes. It always finalizes the closest unfinished node. This greedy choice is correct because edge weights are non-negative."
+    }
+  ]
+}

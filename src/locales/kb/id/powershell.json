@@ -1,0 +1,190 @@
+{
+  "title": "Tutorial PowerShell: cmdlet, pipeline, variabel, dan skrip — cv.cm",
+  "description": "Belajar scripting PowerShell langkah demi langkah: menjalankan skrip .ps1, cmdlet dan object pipeline, variabel, operator, fungsi, hashtable, dan error try/catch.",
+  "h1": "Tutorial PowerShell untuk pemula",
+  "answer": "PowerShell adalah shell dan bahasa scripting lintas platform dari Microsoft untuk otomatisasi. Perintahnya, yang disebut cmdlet, meneruskan objek .NET melalui pipeline alih-alih teks biasa, sehingga Anda bisa memfilter, mengurutkan, dan mengekspor data tanpa parsing. Halaman ini membahas instalasi PowerShell 7, menjalankan skrip, cmdlet, variabel, operator, alur kontrol, fungsi, koleksi, dan penanganan error.",
+  "sections": [
+    {
+      "h": "Apa itu PowerShell dan untuk apa digunakan",
+      "body": [
+        "PowerShell adalah shell dan bahasa scripting lintas platform dari Microsoft, dibangun di atas .NET. Berbeda dari shell tradisional yang meneruskan teks biasa antarperintah, PowerShell meneruskan objek .NET lengkap dengan properti dan method, sehingga Anda bisa memfilter dan mengurutkan data tanpa mengurai teks.",
+        "System administrator dan DevOps engineer memakai PowerShell untuk mengotomatisasi Windows, mengelola Active Directory, Microsoft 365, dan Azure, serta menulis skrip build dan deployment. Ada dua edisi: Windows PowerShell 5.1 yang bawaan Windows, dan PowerShell 7 ke atas (nama perintah `pwsh`) yang open source dan berjalan di Windows, Linux, dan macOS. Tutorial ini menargetkan PowerShell 7."
+      ]
+    },
+    {
+      "h": "Instal PowerShell dan jalankan Hello, world",
+      "body": [
+        "Di Windows, instal PowerShell 7 dengan `winget install --id Microsoft.PowerShell --source winget`; di macOS dan Linux, gunakan Homebrew atau package manager yang dijelaskan di panduan instalasi Microsoft. Skrip adalah file teks berekstensi `.ps1`.",
+        {
+          "code": "# hello.ps1\nWrite-Output \"Hello, world!\"",
+          "lang": "powershell"
+        },
+        {
+          "code": "pwsh ./hello.ps1\n# Hello, world!",
+          "lang": "shell"
+        },
+        "Di Windows, execution policy bisa memblokir skrip. `Set-ExecutionPolicy -Scope CurrentUser RemoteSigned` mengizinkan skrip lokal milik Anda sendiri sementara skrip hasil unduhan tetap harus ditandatangani. Visual Studio Code dengan ekstensi PowerShell adalah editor yang direkomendasikan."
+      ]
+    },
+    {
+      "h": "Cmdlet dan pipeline",
+      "body": [
+        "Perintah disebut cmdlet dan mengikuti pola penamaan `Verb-Noun`, seperti `Get-Process`, `Set-Location`, atau `New-Item`. Tiga cmdlet membantu Anda menjelajahi hal lainnya: `Get-Command`, `Get-Help`, dan `Get-Member`.",
+        {
+          "code": "Get-Command -Noun Process          # list commands that work with processes\nGet-Help Get-ChildItem -Examples   # show usage examples\n\n# five processes using the most memory\nGet-Process |\n    Sort-Object -Property WorkingSet64 -Descending |\n    Select-Object -First 5 -Property Name, Id, WorkingSet64\n\n# files larger than 1 MB in the current folder\nGet-ChildItem -File | Where-Object { $_.Length -gt 1MB } |\n    ForEach-Object { \"{0}  {1:N0} KB\" -f $_.Name, ($_.Length / 1KB) }\n\nGet-Date | Get-Member -MemberType Property   # inspect an object",
+          "lang": "powershell"
+        },
+        "Di dalam script block, `$_` (atau `$PSItem`) adalah objek saat ini di pipeline. Karena objek mempertahankan tipenya, `Sort-Object` mengurutkan angka secara numerik dan tanggal secara kronologis tanpa usaha tambahan."
+      ]
+    },
+    {
+      "h": "Variabel dan tipe",
+      "body": [
+        "Variabel diawali `$`. Variabel bisa menampung objek .NET apa pun, dan Anda bisa menambahkan batasan tipe dalam kurung siku. String bertanda kutip ganda meng-expand variabel dan ekspresi `$( )`; string bertanda kutip tunggal bersifat literal.",
+        {
+          "code": "$name = \"Ada\"\n[int]$count = 3\n$price = 19.99                      # System.Double\n$isAdmin = $false\n$today = Get-Date\n\n\"Hello, $name\"                      # Hello, Ada\n\"Next: $($count + 1)\"               # Next: 4\n'No $expansion here'                # No $expansion here\n$price.GetType().Name               # Double\n$today.ToString(\"yyyy-MM-dd\")       # for example 2026-10-31\n[int]\"42\" + 1                       # 43 (explicit conversion)",
+          "lang": "powershell"
+        },
+        {
+          "table": {
+            "head": [
+              "Tipe",
+              "Contoh",
+              "Catatan"
+            ],
+            "rows": [
+              [
+                "`[int]`",
+                "`42`",
+                "bilangan bulat 32-bit"
+              ],
+              [
+                "`[double]`",
+                "`3.14`",
+                "floating point; `[decimal]` untuk uang"
+              ],
+              [
+                "`[string]`",
+                "`\"text\"`",
+                "perbandingan tidak peka huruf besar-kecil secara default"
+              ],
+              [
+                "`[bool]`",
+                "`$true`, `$false`",
+                "variabel otomatis, bukan keyword"
+              ],
+              [
+                "`[datetime]`",
+                "`Get-Date`",
+                "objek .NET `DateTime` lengkap"
+              ],
+              [
+                "`[array]`, `[hashtable]`",
+                "`@(1, 2)`, `@{ a = 1 }`",
+                "koleksi, dibahas di bawah"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "Operator dan alur kontrol",
+      "body": [
+        "Operator perbandingan berupa kata, bukan simbol: `-eq`, `-ne`, `-gt`, `-lt`, `-ge`, `-le`, `-like` (wildcard), `-match` (regular expression), dan `-contains`. Perbandingan string tidak peka huruf besar-kecil kecuali Anda memakai versi `c` seperti `-ceq`.",
+        {
+          "code": "$temp = 22\nif ($temp -gt 30) {\n    \"hot\"\n} elseif ($temp -ge 15) {\n    \"mild\"                           # mild\n} else {\n    \"cold\"\n}\n\nswitch (\"report.csv\") {\n    { $_ -like \"*.csv\" } { \"CSV file\" }    # CSV file\n    { $_ -like \"*.txt\" } { \"text file\" }\n    default { \"other\" }\n}\n\nforeach ($n in 1..3) { \"n = $n\" }          # n = 1, n = 2, n = 3\nfor ($i = 0; $i -lt 2; $i++) { \"i = $i\" }  # i = 0, i = 1\n$k = 3\nwhile ($k -gt 0) { $k-- }\n\"Hello\" -eq \"hello\"                        # True",
+          "lang": "powershell"
+        },
+        {
+          "note": "Memakai `>` atau `=` untuk membandingkan adalah kesalahan klasik: `if ($a > 5)` mengalihkan `$a` ke file bernama `5`, dan `=` melakukan assignment. Gunakan `-gt` dan `-eq`. Saat membandingkan dengan `$null`, letakkan `$null` di kiri (`$null -eq $x`) agar array tidak terfilter secara tidak sengaja."
+        }
+      ]
+    },
+    {
+      "h": "Fungsi dan parameter",
+      "body": [
+        "Fungsi memakai blok `param()` untuk mendeklarasikan parameter bernama dengan tipe. Menambahkan `[CmdletBinding()]` memberi fungsi common parameter yang sama dengan cmdlet bawaan, seperti `-Verbose`. Output apa pun yang tidak ditangkap menjadi nilai kembalian fungsi.",
+        {
+          "code": "function Get-Greeting {\n    [CmdletBinding()]\n    param(\n        [Parameter(Mandatory)]\n        [string]$Name,\n        [string]$Greeting = \"Hello\"\n    )\n    Write-Verbose \"Building greeting for $Name\"\n    \"$Greeting, $Name!\"\n}\n\nGet-Greeting -Name \"Ann\"                  # Hello, Ann!\nGet-Greeting -Name \"Bo\" -Greeting \"Hi\"    # Hi, Bo!\nGet-Greeting \"Cy\" -Verbose                # also prints the verbose message",
+          "lang": "powershell"
+        },
+        "Panggil fungsi seperti cmdlet, dengan spasi di antara argumen: `Get-Greeting -Name Ann`. Menulis `Get-Greeting(\"Ann\", \"Hi\")` meneruskan satu argumen berupa array, kejutan yang sering dialami orang dari bahasa lain."
+      ]
+    },
+    {
+      "h": "Array, hashtable, dan objek kustom",
+      "body": [
+        "Array dibuat dengan `@( )` atau daftar yang dipisahkan koma. Hashtable, ditulis `@{ }`, menyimpan pasangan key-value. `[pscustomobject]` mengubah hashtable menjadi objek yang bekerja baik dengan `Sort-Object`, `Format-Table`, dan `Export-Csv`.",
+        {
+          "code": "$langs = @(\"PowerShell\", \"Python\")\n$langs += \"Go\"                       # creates a new, longer array\n$langs.Count                         # 3\n$langs[0]                            # PowerShell\n$langs -contains \"Go\"                # True\n\n$ports = @{ http = 80; https = 443 }\n$ports[\"ssh\"] = 22\n$ports.https                         # 443\n$ports.Keys.Count                    # 3\n\n$user = [pscustomobject]@{ Name = \"Ann\"; Age = 31 }\n$user.Name                           # Ann\n$people = @(\n    [pscustomobject]@{ Name = \"Bo\"; Age = 25 }\n    $user\n)\n$people | Sort-Object Age | Format-Table",
+          "lang": "powershell"
+        },
+        "Menambah ke array dengan `+=` menyalin seluruh array setiap kali. Untuk loop besar, kumpulkan output loop secara langsung (`$result = foreach (...) { ... }`) atau pakai `[System.Collections.Generic.List[object]]`."
+      ]
+    },
+    {
+      "h": "Penanganan error",
+      "body": [
+        "PowerShell punya terminating error, yang menghentikan eksekusi, dan non-terminating error, yang mencetak pesan lalu melanjutkan. `try`/`catch`/`finally` hanya menangkap terminating error, jadi tambahkan `-ErrorAction Stop` pada cmdlet saat Anda ingin menangkap kegagalannya.",
+        {
+          "code": "try {\n    $content = Get-Content -Path \"missing.txt\" -ErrorAction Stop\n}\ncatch [System.Management.Automation.ItemNotFoundException] {\n    Write-Warning \"File not found: $($_.Exception.Message)\"\n}\ncatch {\n    Write-Error \"Unexpected error: $_\"\n}\nfinally {\n    \"cleanup done\"\n}\n\n$ErrorActionPreference = \"Stop\"   # make all errors terminating in this script\nthrow \"Something went wrong\"      # raise your own terminating error",
+          "lang": "powershell"
+        },
+        "Di dalam `catch`, `$_` adalah error record. Mengatur `$ErrorActionPreference = \"Stop\"` di bagian atas skrip adalah cara umum untuk fail fast."
+      ]
+    },
+    {
+      "h": "Skrip lengkap kecil: laporan penggunaan disk",
+      "body": [
+        "Skrip ini mendaftar file terbesar di bawah sebuah folder, mengelompokkannya menurut ekstensi, dan mengekspor laporan CSV. Skrip ini memadukan parameter, pipeline, calculated property, dan penanganan error.",
+        {
+          "code": "# report.ps1\nparam(\n    [string]$Path = \".\",\n    [int]$Top = 5\n)\n$ErrorActionPreference = \"Stop\"\n\n$files = Get-ChildItem -Path $Path -File -Recurse\n\n\"Largest $Top files:\"\n$files | Sort-Object Length -Descending | Select-Object -First $Top |\n    Format-Table Name, @{ Name = \"SizeKB\"; Expression = { [math]::Round($_.Length / 1KB, 1) } }\n\n$byExt = $files | Group-Object Extension | ForEach-Object {\n    [pscustomobject]@{\n        Extension = if ($_.Name) { $_.Name } else { \"(none)\" }\n        Files     = $_.Count\n        TotalMB   = [math]::Round(($_.Group | Measure-Object Length -Sum).Sum / 1MB, 2)\n    }\n} | Sort-Object TotalMB -Descending\n\n$byExt | Format-Table\n$byExt | Export-Csv -Path \"usage.csv\" -NoTypeInformation\n\"Report saved to usage.csv\"",
+          "lang": "powershell"
+        },
+        {
+          "code": "pwsh ./report.ps1 -Path ~/Documents -Top 3",
+          "lang": "shell"
+        },
+        {
+          "note": "Kesalahan umum pemula: memakai `>`, `<`, atau `==` alih-alih `-gt`, `-lt`, dan `-eq`; memanggil fungsi dengan tanda kurung dan koma; lupa `-ErrorAction Stop` di dalam `try`; memakai `Write-Host` untuk data (ia menulis ke layar, bukan ke pipeline, jadi pilih `Write-Output` atau nilai biasa); dan mencampuradukkan Windows PowerShell 5.1 dengan PowerShell 7."
+        }
+      ]
+    },
+    {
+      "h": "Langkah selanjutnya",
+      "body": [
+        {
+          "ul": [
+            "PowerShell 101 dan dokumentasi PowerShell di Microsoft Learn.",
+            "`Get-Help about_*` di shell, misalnya `Get-Help about_Operators`; jalankan `Update-Help` terlebih dahulu.",
+            "PowerShell Gallery, repositori resmi modul, yang dipakai bersama `Install-Module`.",
+            "PSScriptAnalyzer, linter yang memeriksa skrip terhadap praktik yang direkomendasikan."
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Apa perbedaan PowerShell dan Windows PowerShell?",
+      "a": "Windows PowerShell 5.1 adalah edisi lama bawaan Windows dan berbasis .NET Framework. PowerShell 7 ke atas adalah edisi lintas platform dan open source berbasis .NET modern, dijalankan dengan perintah `pwsh`."
+    },
+    {
+      "q": "Apakah PowerShell sama dengan Command Prompt?",
+      "a": "Tidak. Command Prompt (`cmd.exe`) menjalankan perintah batch dan meneruskan teks. PowerShell adalah bahasa scripting lengkap yang meneruskan objek, meskipun masih bisa menjalankan sebagian besar program command line."
+    },
+    {
+      "q": "Bisakah PowerShell berjalan di Linux dan macOS?",
+      "a": "Bisa. PowerShell 7 ke atas berjalan di Windows, Linux, dan macOS, meskipun beberapa modul khusus Windows hanya tersedia di Windows."
+    },
+    {
+      "q": "Mengapa skrip .ps1 saya tidak bisa dijalankan?",
+      "a": "Execution policy di Windows mungkin memblokirnya. Jalankan `Set-ExecutionPolicy -Scope CurrentUser RemoteSigned`, dan mulai skrip dengan path, seperti `./script.ps1`."
+    },
+    {
+      "q": "Apa arti $_ di PowerShell?",
+      "a": "`$_` (juga `$PSItem`) adalah objek saat ini di pipeline, dipakai di dalam script block untuk cmdlet seperti `Where-Object` dan `ForEach-Object`, dan merupakan error saat ini di dalam `catch`."
+    }
+  ]
+}

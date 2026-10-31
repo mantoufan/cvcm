@@ -1,0 +1,253 @@
+{
+  "title": "Tutorial de ensamblador: registros x86-64, sintaxis NASM, llamadas al sistema y funciones — cv.cm",
+  "description": "Aprende ensamblador x86-64 en Linux con NASM: registros, saltos y bucles, memoria, llamadas al sistema, convención de llamada y sintaxis AT&T.",
+  "h1": "Tutorial de lenguaje ensamblador para principiantes (x86-64, NASM)",
+  "answer": "El lenguaje ensamblador es una forma legible de las instrucciones de máquina de un procesador: cada línea suele convertirse en una instrucción como `mov rax, 1` o `add rax, rbx`. Trabajas directamente con registros, direcciones de memoria y la pila, sin variables, tipos ni bucles más allá de lo que construyas con saltos. Este tutorial usa x86-64 en Linux con el ensamblador NASM: escribe un archivo `.asm`, ensámblalo con `nasm -f elf64` y enlázalo con `ld`.",
+  "sections": [
+    {
+      "h": "Qué es el ensamblador y quién lo usa",
+      "body": [
+        "Cada familia de procesadores tiene su propio conjunto de instrucciones y, por tanto, su propio lenguaje ensamblador. x86-64 (también llamado AMD64) funciona en la mayoría de los PC de escritorio y servidores; ARM (AArch64) funciona en la mayoría de los teléfonos, los Mac con chip Apple y muchos servidores. Un ensamblador traduce el código ensamblador a código máquina, y un enlazador combina el resultado en un ejecutable.",
+        "Hoy pocos programas se escriben por completo en ensamblador. Se usa en núcleos de sistemas operativos y gestores de arranque, rutinas críticas para el rendimiento (criptografía, códecs, bibliotecas matemáticas), firmware embebido, desarrollo de compiladores, investigación de seguridad e ingeniería inversa. Lo más habitual es que los desarrolladores lean ensamblador para entender lo que produjo un compilador o para depurar un fallo."
+      ]
+    },
+    {
+      "h": "Instala NASM y ejecuta Hello, world",
+      "body": [
+        "En Debian o Ubuntu, instala las herramientas con `sudo apt install nasm binutils` (`binutils` incluye el enlazador `ld`). Este programa llama directamente al núcleo de Linux mediante llamadas al sistema, así que no necesita biblioteca de C.",
+        {
+          "code": "; hello.asm - x86-64 Linux, NASM syntax\nsection .data\n    msg     db \"Hello, world!\", 10   ; 10 = newline\n    msglen  equ $ - msg              ; length computed by the assembler\n\nsection .text\n    global _start\n\n_start:\n    mov     rax, 1          ; system call number 1 = write\n    mov     rdi, 1          ; file descriptor 1 = stdout\n    mov     rsi, msg        ; address of the bytes\n    mov     rdx, msglen     ; number of bytes\n    syscall\n\n    mov     rax, 60         ; system call number 60 = exit\n    xor     rdi, rdi        ; exit code 0\n    syscall",
+          "lang": "asm"
+        },
+        {
+          "code": "nasm -f elf64 hello.asm -o hello.o\nld hello.o -o hello\n./hello\n# Hello, world!",
+          "lang": "shell"
+        },
+        "`section .data` contiene los datos inicializados, `section .text` contiene el código y `_start` es el punto de entrada que busca `ld`. Los comentarios empiezan con `;`. Sin la llamada final al sistema `exit`, el procesador seguiría ejecutando los bytes que haya a continuación y el programa fallaría."
+      ]
+    },
+    {
+      "h": "Registros y tamaños de datos",
+      "body": [
+        "Los registros son pequeñas ubicaciones de almacenamiento muy rápidas dentro de la CPU. x86-64 tiene 16 registros de propósito general de 64 bits. Cada uno también puede usarse en partes más pequeñas.",
+        {
+          "table": {
+            "head": [
+              "Registro",
+              "Función habitual",
+              "Partes más pequeñas"
+            ],
+            "rows": [
+              [
+                "`rax`",
+                "Valor de retorno, número de llamada al sistema",
+                "`eax` (32 bits), `ax` (16), `al` (8)"
+              ],
+              [
+                "`rdi`, `rsi`, `rdx`",
+                "Los tres primeros argumentos de función o de llamada al sistema",
+                "`edi`, `esi`, `edx`"
+              ],
+              [
+                "`rcx`, `r8`, `r9`",
+                "Del cuarto al sexto argumento de función",
+                "`ecx`, `r8d`, `r9d`"
+              ],
+              [
+                "`rbx`, `rbp`, `r12`–`r15`",
+                "Valores que deben sobrevivir a las llamadas a funciones (los conserva la función llamada)",
+                "`ebx`, `r12d`"
+              ],
+              [
+                "`rsp`",
+                "Puntero de pila: dirección de la cima de la pila",
+                "No usar para datos"
+              ],
+              [
+                "`rip`",
+                "Puntero de instrucción (solo cambia con saltos, llamadas y retornos)",
+                "No se puede escribir directamente"
+              ]
+            ]
+          }
+        },
+        "Los datos en memoria se declaran con `db` (byte, 8 bits), `dw` (palabra, 16), `dd` (palabra doble, 32) y `dq` (palabra cuádruple, 64). Los búferes sin inicializar van en `section .bss` con `resb`, `resq` y similares. Escribir en un registro de 32 bits como `eax` también borra los 32 bits superiores de `rax`, y por eso `xor eax, eax` es una forma habitual de poner `rax` a cero."
+      ]
+    },
+    {
+      "h": "Instrucciones básicas y control de flujo",
+      "body": [
+        "La mayoría de las instrucciones toman primero el destino y después el origen: `add rax, rbx` significa `rax = rax + rbx`. No hay instrucciones `if` ni `while`; comparas valores con `cmp`, que actualiza los indicadores (flags), y después usas un salto condicional.",
+        {
+          "table": {
+            "head": [
+              "Instrucción",
+              "Significado"
+            ],
+            "rows": [
+              [
+                "`mov rax, rbx`",
+                "Copia `rbx` en `rax`"
+              ],
+              [
+                "`add`, `sub`, `imul`, `inc`, `dec`",
+                "Aritmética de enteros"
+              ],
+              [
+                "`cmp rax, 10`",
+                "Compara (calcula `rax - 10` y solo actualiza los indicadores)"
+              ],
+              [
+                "`je`, `jne`, `jl`, `jg`, `jle`, `jge`",
+                "Salta si es igual, distinto, menor, mayor... (con signo)"
+              ],
+              [
+                "`jmp label`",
+                "Salta incondicionalmente"
+              ],
+              [
+                "`push`, `pop`",
+                "Coloca un valor en la pila, lo retira"
+              ],
+              [
+                "`call`, `ret`",
+                "Llama a una función, vuelve de ella"
+              ]
+            ]
+          }
+        },
+        {
+          "code": "; sum.asm - add 1..10, return the result as the exit code\nsection .text\n    global _start\n\n_start:\n    xor     rax, rax        ; sum = 0\n    mov     rcx, 1          ; i = 1\n.loop:\n    cmp     rcx, 10\n    jg      .done           ; if i > 10, leave the loop\n    add     rax, rcx        ; sum += i\n    inc     rcx             ; i++\n    jmp     .loop\n.done:\n    mov     rdi, rax        ; exit code = sum\n    mov     rax, 60         ; exit\n    syscall",
+          "lang": "asm"
+        },
+        {
+          "code": "nasm -f elf64 sum.asm -o sum.o && ld sum.o -o sum\n./sum; echo $?\n# 55",
+          "lang": "shell"
+        },
+        "Las etiquetas que empiezan con un punto, como `.loop`, son locales a la etiqueta normal anterior. `jl` y `jg` tratan los valores como con signo; `jb` y `ja` son las versiones sin signo."
+      ]
+    },
+    {
+      "h": "Direccionamiento de memoria y arreglos",
+      "body": [
+        "Los corchetes significan «la memoria en esta dirección». Una dirección puede combinar un registro base, un registro índice multiplicado por 1, 2, 4 u 8, y una constante: `[base + index*scale + offset]`. Así, acceder a un arreglo es una sola instrucción.",
+        {
+          "code": "section .data\n    nums    dq 3, 1, 4, 1, 5         ; five 64-bit integers\n    count   equ ($ - nums) / 8\n\nsection .text\n    global _start\n\n_start:\n    xor     rax, rax                 ; total = 0\n    xor     rcx, rcx                 ; index = 0\n.next:\n    add     rax, [nums + rcx*8]      ; total += nums[index]\n    inc     rcx\n    cmp     rcx, count\n    jl      .next\n    mov     rdi, rax                 ; exit code 14\n    mov     rax, 60\n    syscall",
+          "lang": "asm"
+        },
+        "`mov rax, nums` carga la dirección, mientras que `mov rax, [nums]` carga el valor almacenado allí. `lea rsi, [rbx + 8]` calcula una dirección sin leer memoria. Cuando el tamaño no queda claro por un registro, indícalo: `mov qword [rbx], 0`."
+      ]
+    },
+    {
+      "h": "Funciones y la convención de llamada",
+      "body": [
+        "En Linux, las funciones siguen la ABI System V AMD64. Los argumentos enteros van en `rdi`, `rsi`, `rdx`, `rcx`, `r8`, `r9`; el valor de retorno está en `rax`. Una función debe preservar `rbx`, `rbp`, `r12`–`r15` y `rsp`, y `rsp` debe ser múltiplo de 16 justo antes de un `call`. Seguir estas reglas permite que el ensamblador llame a funciones de C como `printf`, y que C llame a ensamblador.",
+        {
+          "code": "; square.asm - define a function and call printf from the C library\n    extern  printf\n    global  main\n\nsection .data\n    fmt     db \"%ld squared is %ld\", 10, 0\n\nsection .text\nsquare:                         ; long square(long x)\n    mov     rax, rdi\n    imul    rax, rdi\n    ret\n\nmain:\n    push    rbx                 ; save rbx; also aligns rsp to 16\n    mov     rbx, 7\n    mov     rdi, rbx\n    call    square              ; rax = 49\n    lea     rdi, [rel fmt]      ; argument 1: format string\n    mov     rsi, rbx            ; argument 2\n    mov     rdx, rax            ; argument 3\n    xor     eax, eax            ; varargs: no vector registers used\n    call    printf wrt ..plt\n    xor     eax, eax            ; return 0 from main\n    pop     rbx\n    ret\n\nsection .note.GNU-stack noalloc noexec nowrite progbits",
+          "lang": "asm"
+        },
+        {
+          "code": "nasm -f elf64 square.asm -o square.o\ngcc square.o -o square\n./square\n# 7 squared is 49",
+          "lang": "shell"
+        },
+        "Enlazar con `gcc` añade el runtime de C, que llama a `main`. `[rel fmt]` y `wrt ..plt` producen código independiente de la posición, que las distribuciones modernas de Linux usan por defecto. La última línea marca la pila como no ejecutable y evita una advertencia del enlazador."
+      ]
+    },
+    {
+      "h": "Manejo de errores",
+      "body": [
+        "El ensamblador no tiene excepciones. Una llamada al sistema de Linux que falla devuelve un número de error negativo en `rax` (por ejemplo -2, `ENOENT`, «no existe el archivo»), así que compruebas el signo después de cada llamada. Las funciones de la biblioteca de C informan de los errores mediante su valor de retorno y `errno`. Los fallos de hardware, como leer una dirección no válida o dividir por cero, detienen el programa con una señal (fallo de segmentación o excepción de punto flotante).",
+        {
+          "code": "    mov     rax, 2              ; system call 2 = open\n    lea     rdi, [rel path]     ; path is a zero-terminated string\n    xor     esi, esi            ; flags: O_RDONLY\n    syscall\n    test    rax, rax\n    js      .open_failed        ; negative result = -errno\n    mov     r12, rax            ; success: rax is the file descriptor",
+          "lang": "asm"
+        }
+      ]
+    },
+    {
+      "h": "Un programa pequeño y completo: imprimir un número en decimal",
+      "body": [
+        "Imprimir un número implica convertirlo tú mismo en dígitos. Este programa calcula 1 + 2 + ... + 100, divide repetidamente entre 10 para obtener los dígitos de derecha a izquierda y los escribe con una sola llamada al sistema.",
+        {
+          "code": "section .bss\n    buf     resb 32\n\nsection .text\n    global _start\n\n_start:\n    xor     rax, rax\n    mov     rcx, 100\n.sum:\n    add     rax, rcx\n    loop    .sum                ; rcx -= 1, repeat while rcx != 0\n    lea     rsi, [buf + 31]\n    mov     byte [rsi], 10      ; newline at the end of the buffer\n    mov     rbx, 10\n.digit:\n    xor     rdx, rdx            ; div uses rdx:rax as the dividend\n    div     rbx                 ; rax = quotient, rdx = remainder\n    add     dl, '0'             ; remainder to ASCII digit\n    dec     rsi\n    mov     [rsi], dl\n    test    rax, rax\n    jnz     .digit\n    mov     rdx, buf + 32\n    sub     rdx, rsi            ; length = end - start\n    mov     rax, 1              ; write(1, rsi, rdx)\n    mov     rdi, 1\n    syscall\n    mov     rax, 60             ; exit(0)\n    xor     rdi, rdi\n    syscall\n; prints 5050",
+          "lang": "asm"
+        },
+        {
+          "note": "Errores comunes de principiante: olvidar la llamada al sistema `exit`; usar `div` sin poner antes a cero `rdx` (el resultado se desborda y el programa falla); esperar que `rcx` y `r11` sobrevivan a un `syscall` (el núcleo los sobrescribe); llamar a funciones de C con la pila desalineada; confundir una dirección con el valor que hay en ella (`msg` frente a `[msg]`); y mezclar el orden de operandos de Intel y AT&T al leer ejemplos."
+        }
+      ]
+    },
+    {
+      "h": "Sintaxis AT&T frente a Intel, y ARM",
+      "body": [
+        "La misma instrucción x86-64 puede escribirse en dos sintaxis. NASM y la mayor parte de la documentación de Intel y Microsoft usan la sintaxis Intel. El ensamblador de GNU (`as`), la salida de GCC y `objdump` usan por defecto la sintaxis AT&T; `objdump -d -M intel` y `gcc -S -masm=intel` cambian a la sintaxis Intel.",
+        {
+          "table": {
+            "head": [
+              "Aspecto",
+              "Intel (NASM)",
+              "AT&T (GNU as)"
+            ],
+            "rows": [
+              [
+                "Orden de operandos",
+                "`mov rax, 1` (primero el destino)",
+                "`movq $1, %rax` (primero el origen)"
+              ],
+              [
+                "Registros y constantes",
+                "`rax`, `5`",
+                "`%rax`, `$5`"
+              ],
+              [
+                "Operando de memoria",
+                "`[rbx + rcx*8 + 16]`",
+                "`16(%rbx,%rcx,8)`"
+              ],
+              [
+                "Tamaño del operando",
+                "`mov qword [rbx], 0`",
+                "`movq $0, (%rbx)` (sufijo b, w, l, q)"
+              ]
+            ]
+          }
+        },
+        "Los procesadores ARM usan un conjunto de instrucciones distinto. AArch64 tiene 31 registros de propósito general de 64 bits (`x0`–`x30`), codificaciones de instrucción fijas de 32 bits y un diseño de carga/almacenamiento: la aritmética solo opera sobre registros, y la memoria se accede con `ldr` y `str`. En Linux, el número de llamada al sistema va en `x8` y la llamada se hace con `svc #0`.",
+        {
+          "code": "// AArch64 Linux, GNU as syntax: exit(0)\n    mov     x0, #0          // exit status\n    mov     x8, #93         // system call 93 = exit\n    svc     #0",
+          "lang": "asm"
+        }
+      ]
+    },
+    {
+      "h": "Adónde ir después",
+      "body": [
+        {
+          "ul": [
+            "El manual de NASM para directivas, macros y formatos de salida.",
+            "Los manuales para desarrolladores de software de las arquitecturas Intel 64 e IA-32, para el comportamiento exacto de cada instrucción.",
+            "El documento de la ABI System V AMD64 para las convenciones de llamada y la disposición de la pila.",
+            "Compila pequeñas funciones de C con `gcc -O2 -S -masm=intel` (o un explorador de compiladores en línea) y lee el ensamblador generado."
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "¿Sigue valiendo la pena aprender lenguaje ensamblador?",
+      "a": "Sí, para entender cómo funcionan los ordenadores, depurar fallos, leer la salida de un compilador, trabajar en seguridad y desarrollar sistemas embebidos. Escribir aplicaciones completas en ensamblador rara vez es práctico hoy."
+    },
+    {
+      "q": "¿El ensamblador x86 es igual que el ensamblador ARM?",
+      "a": "No. Son conjuntos de instrucciones distintos, con registros, instrucciones y codificaciones diferentes. Los conceptos (registros, memoria, saltos, convenciones de llamada) se trasladan, pero el código no."
+    },
+    {
+      "q": "¿Cuál es la diferencia entre NASM y GAS?",
+      "a": "NASM es un ensamblador independiente que usa la sintaxis Intel. GAS, el ensamblador de GNU, lo usa GCC y por defecto emplea la sintaxis AT&T, aunque también acepta la sintaxis Intel con `.intel_syntax noprefix`."
+    },
+    {
+      "q": "¿Este código funciona en Windows o macOS?",
+      "a": "No sin cambios. Las instrucciones son las mismas en cualquier sistema x86-64, pero los números de las llamadas al sistema, el formato del ejecutable y la convención de llamada son distintos. Windows usa otra convención de llamada, y los Mac con chip Apple usan ARM en lugar de x86-64."
+    }
+  ]
+}

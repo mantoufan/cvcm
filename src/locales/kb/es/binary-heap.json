@@ -1,0 +1,178 @@
+{
+  "title": "Montículo binario y cola de prioridad: sift up, sift down y heapq de Python — cv.cm",
+  "description": "Cómo funciona un montículo binario (heap): la propiedad del heap, su disposición en un arreglo, sift up y sift down, heapify en O(n), colas de prioridad y heapq de Python, con código y complejidad.",
+  "h1": "Montículo binario explicado: colas de prioridad, código y complejidad",
+  "answer": "Un montículo binario (binary heap) es un árbol binario completo guardado en un arreglo en el que cada padre es menor o igual que sus hijos (min-heap) o mayor o igual que ellos (max-heap). El elemento más pequeño siempre está en el índice 0, así que puedes leerlo en O(1) e insertar o extraer en O(log n). Los montículos son la forma estándar de implementar una cola de prioridad; en Python, usa el módulo `heapq`.",
+  "sections": [
+    {
+      "h": "Qué problema resuelve un montículo",
+      "body": [
+        "Muchos programas necesitan repetidamente el elemento más urgente de una colección cambiante: el siguiente evento de una simulación, el nodo no visitado más cercano en el algoritmo de Dijkstra, la tarea de mayor prioridad o los k valores mayores de un flujo de datos. Ordenar toda la colección tras cada inserción cuesta O(n log n) cada vez. Una lista ordenada abarata la extracción pero la inserción es O(n). Un montículo hace que tanto insertar como extraer el mínimo cuesten O(log n), justo lo que necesita una cola de prioridad.",
+        {
+          "note": "Un montículo está solo parcialmente ordenado. El mínimo está arriba, pero el resto del arreglo no está ordenado. No esperes que `heap[1]` sea el segundo elemento más pequeño."
+        }
+      ]
+    },
+    {
+      "h": "La idea: un árbol guardado en un arreglo",
+      "body": [
+        "Un montículo es un árbol binario completo: todos los niveles están llenos salvo quizá el último, que se llena de izquierda a derecha. Esa forma permite guardar el árbol en una lista simple sin punteros.",
+        {
+          "table": {
+            "head": [
+              "Relación",
+              "Fórmula de índice (base 0)"
+            ],
+            "rows": [
+              [
+                "Hijo izquierdo de i",
+                "`2 * i + 1`"
+              ],
+              [
+                "Hijo derecho de i",
+                "`2 * i + 2`"
+              ],
+              [
+                "Padre de i",
+                "`(i - 1) // 2`"
+              ]
+            ]
+          }
+        },
+        "Dos operaciones de reparación mantienen la propiedad del heap. Sift up: tras añadir un elemento nuevo al final, se intercambia con su padre mientras sea menor. Sift down: tras mover el último elemento a la raíz, se intercambia con su hijo menor mientras sea mayor que ese hijo. Cada operación recorre un único camino de la raíz a una hoja, así que hace como máximo unos log2(n) intercambios."
+      ]
+    },
+    {
+      "h": "Ejemplo resuelto: push y pop",
+      "body": [
+        "Parte del min-heap `[2, 5, 3, 9, 6]` (2 es la raíz, sus hijos son 5 y 3, y 5 tiene hijos 9 y 6).",
+        {
+          "ol": [
+            "Push de 1: añádelo al final, resulta `[2, 5, 3, 9, 6, 1]`. El índice 5 tiene como padre el índice 2 (valor 3).",
+            "1 es menor que 3, intercambia: `[2, 5, 1, 9, 6, 3]`. Ahora el índice 2 tiene como padre el índice 0 (valor 2).",
+            "1 es menor que 2, intercambia: `[1, 5, 2, 9, 6, 3]`. Llegó a la raíz, detente.",
+            "Pop: quita la raíz 1 y mueve el último elemento 3 a la raíz: `[3, 5, 2, 9, 6]`.",
+            "Los hijos de la raíz son 5 y 2; el menor es 2, y 3 es mayor, intercambia: `[2, 5, 3, 9, 6]`. El índice 2 no tiene hijos, detente. El pop devolvió 1."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Implementación en Python de un min-heap",
+      "body": [
+        "Esta clase muestra la mecánica. En código real usa `heapq`, que se ve en la siguiente sección.",
+        {
+          "code": "class MinHeap:\n    def __init__(self):\n        self.a = []\n    def push(self, x):\n        a = self.a\n        a.append(x)\n        i = len(a) - 1\n        while i > 0 and a[i] < a[(i - 1) // 2]:      # sift up\n            p = (i - 1) // 2\n            a[i], a[p] = a[p], a[i]\n            i = p\n    def pop(self):\n        a = self.a\n        top, last = a[0], a.pop()                   # IndexError if empty\n        if a:\n            a[0], i = last, 0\n            while True:                             # sift down\n                c = 2 * i + 1\n                if c + 1 < len(a) and a[c + 1] < a[c]:\n                    c += 1                          # pick the smaller child\n                if c >= len(a) or a[i] <= a[c]:\n                    break\n                a[i], a[c] = a[c], a[i]\n                i = c\n        return top\nh = MinHeap()\nfor x in [5, 3, 9, 1, 6, 2]:\n    h.push(x)\nprint([h.pop() for _ in range(6)])  # [1, 2, 3, 5, 6, 9]",
+          "lang": "python"
+        }
+      ]
+    },
+    {
+      "h": "Colas de prioridad con heapq de Python",
+      "body": [
+        "El módulo `heapq` trabaja sobre una lista normal y la mantiene siempre como un min-heap. `heapify` convierte una lista existente en un montículo in situ en O(n). Para usar prioridades, apila tuplas: Python compara las tuplas elemento a elemento, así que el primer elemento es la prioridad. Añade un contador como desempate para que los elementos con igual prioridad nunca tengan que compararse directamente.",
+        {
+          "code": "import heapq\nfrom itertools import count\nnums = [7, 2, 9, 4, 1]\nheapq.heapify(nums)\nprint(nums[0], heapq.heappop(nums))      # 1 1\nprint(heapq.nlargest(2, [7, 2, 9, 4]))   # [9, 7]\ntasks, order = [], count()\nheapq.heappush(tasks, (2, next(order), \"write report\"))\nheapq.heappush(tasks, (1, next(order), \"fix outage\"))\nheapq.heappush(tasks, (2, next(order), \"reply to email\"))\nwhile tasks:\n    priority, _, name = heapq.heappop(tasks)\n    print(priority, name)\n# 1 fix outage\n# 2 write report\n# 2 reply to email",
+          "lang": "python"
+        },
+        "Para un max-heap, Python 3.14 añadió `heapq.heapify_max`, `heapq.heappush_max` y `heapq.heappop_max`. En versiones anteriores, el truco habitual es insertar claves negadas, por ejemplo `heapq.heappush(h, -score)`, y negarlas de nuevo al extraer."
+      ]
+    },
+    {
+      "h": "Complejidad temporal y espacial",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Operación",
+              "Tiempo",
+              "Motivo"
+            ],
+            "rows": [
+              [
+                "Consultar el mínimo",
+                "O(1)",
+                "siempre está en el índice 0"
+              ],
+              [
+                "Push (insertar)",
+                "O(log n)",
+                "sift up por un único camino"
+              ],
+              [
+                "Pop del mínimo",
+                "O(log n)",
+                "sift down por un único camino"
+              ],
+              [
+                "Heapify de n elementos",
+                "O(n)",
+                "la mayoría de los nodos están cerca del fondo y se mueven poco"
+              ],
+              [
+                "Buscar un valor arbitrario",
+                "O(n)",
+                "el montículo no está ordenado"
+              ],
+              [
+                "Heapsort",
+                "O(n log n)",
+                "heapify y luego n pops"
+              ],
+              [
+                "Espacio",
+                "O(n)",
+                "un solo arreglo, sin punteros"
+              ]
+            ]
+          }
+        },
+        "Construir un montículo llamando a push n veces cuesta O(n log n). `heapify` hace sift down desde el último padre hasta la raíz y cuesta O(n), así que prefiérelo cuando ya tienes todos los elementos."
+      ]
+    },
+    {
+      "h": "Variantes y errores comunes",
+      "body": [
+        {
+          "ul": [
+            "Max-heap: el mismo código con la comparación invertida; en Python, usa las funciones `_max` (3.14 y posteriores) o niega las claves.",
+            "Heap d-ario: cada nodo tiene d hijos. Un árbol menos profundo abarata el push y encarece un poco el pop.",
+            "Cola de prioridad indexada / decrease-key: `heapq` no puede cambiar in situ la prioridad de un elemento. Una solución habitual (usada en el algoritmo de Dijkstra) es insertar una entrada nueva y saltar las entradas obsoletas cuando se extraen.",
+            "Comparar elementos no comparables: insertar `(priority, dict)` lanza `TypeError` cuando dos prioridades son iguales, porque Python pasa a comparar los diccionarios. Añade un contador como segundo elemento de la tupla.",
+            "Tratar la lista del montículo como ordenada. Solo `heap[0]` está garantizado; usa `sorted(heap)` si necesitas todo en orden.",
+            "Errores de desfase de uno al mezclar fórmulas con base 1 (hijos `2i` y `2i + 1`) de los libros de texto con listas de Python con base 0."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Cuándo usar un montículo y problemas típicos",
+      "body": [
+        "Usa un montículo cuando necesites repetidamente solo el elemento menor o mayor de una colección que cambia. Usa una lista ordenada o un árbol balanceado cuando además necesites iteración ordenada o eliminaciones arbitrarias, y un simple `min()` cuando solo necesites el mínimo una vez.",
+        "Usos clásicos: camino más corto de Dijkstra y árbol de expansión mínima de Prim, mezclar k listas ordenadas (`heapq.merge`), hallar los k elementos mayores o menores (mantén un montículo de tamaño k, O(n log k)), la mediana móvil (dos montículos), planificadores de tareas y simulaciones dirigidas por eventos, y heapsort."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "¿Cuál es la diferencia entre un montículo y una cola de prioridad?",
+      "a": "Una cola de prioridad es un tipo de dato abstracto: insertas elementos y extraes el de mayor prioridad. Un montículo binario es la estructura de datos más común para implementarla."
+    },
+    {
+      "q": "¿heapq de Python es un min-heap o un max-heap?",
+      "a": "Las funciones principales como `heappush` y `heappop` mantienen un min-heap, así que `heappop` devuelve el elemento más pequeño. Python 3.14 añadió funciones `_max` separadas para max-heaps; en versiones anteriores, guarda números negados."
+    },
+    {
+      "q": "¿Por qué heapify es O(n) y no O(n log n)?",
+      "a": "Heapify hace sift down de cada padre empezando por abajo. Alrededor de la mitad de los nodos son hojas y no se mueven, una cuarta parte se mueve como mucho un nivel, y así sucesivamente; el trabajo total suma O(n)."
+    },
+    {
+      "q": "¿Un montículo binario es lo mismo que un árbol binario de búsqueda?",
+      "a": "No. Un BST ordena los subárboles izquierdo y derecho para poder buscar cualquier clave en O(log n). Un montículo solo garantiza que cada padre es menor que sus hijos, así que encuentra el mínimo rápido pero buscar otras claves es O(n)."
+    },
+    {
+      "q": "¿Heapsort es estable?",
+      "a": "No. Los intercambios durante el sift down pueden reordenar claves iguales. Ordena in situ en tiempo O(n log n) con O(1) de espacio adicional."
+    }
+  ]
+}

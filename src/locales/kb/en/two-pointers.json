@@ -1,0 +1,214 @@
+{
+  "title": "Two pointers and sliding window: patterns, Python code and examples — cv.cm",
+  "description": "The two pointers and sliding window techniques turn many O(n²) array and string problems into O(n). Learn both patterns with traces and Python code.",
+  "h1": "Two pointers and sliding window technique explained",
+  "answer": "Two pointers is a technique where two indexes move through an array or string, usually from both ends toward each other or in the same direction at different speeds, so that each element is visited a constant number of times. A sliding window is a same-direction variant that keeps a contiguous range between a left and a right pointer and updates a running value as the window grows and shrinks. Both often reduce an O(n²) brute-force search over pairs or subarrays to O(n).",
+  "sections": [
+    {
+      "h": "What problem these techniques solve",
+      "body": [
+        "Many array and string problems ask about pairs or contiguous ranges: two numbers that add up to a target, the longest substring without repeated characters, the shortest subarray with a sum of at least k. Checking every pair or every range costs O(n²) or more. Two pointers avoid this by using a property of the data, such as sorted order or the fact that a window only needs small updates, to rule out many candidates at once.",
+        {
+          "table": {
+            "head": [
+              "Pattern",
+              "Pointer movement",
+              "Typical problems"
+            ],
+            "rows": [
+              [
+                "Opposite ends",
+                "`left` starts at 0, `right` at the end, they move toward each other",
+                "pair sum in a sorted array, palindrome check, container with most water"
+              ],
+              [
+                "Fast and slow",
+                "both start at the beginning, one moves every step, the other only sometimes",
+                "remove duplicates in place, partition, cycle detection in a linked list"
+              ],
+              [
+                "Sliding window",
+                "`right` extends the window, `left` shrinks it",
+                "longest or shortest substring or subarray with a condition"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "Opposite-end pointers: pair sum in a sorted array",
+      "body": [
+        "Find two numbers in the sorted list `[1, 3, 4, 6, 8, 11]` whose sum is 10. Start with the smallest and largest. If the sum is too small, the only way to increase it is to move `left` right; if it is too large, move `right` left.",
+        {
+          "table": {
+            "head": [
+              "Step",
+              "left (value)",
+              "right (value)",
+              "Sum",
+              "Action"
+            ],
+            "rows": [
+              [
+                "1",
+                "0 (1)",
+                "5 (11)",
+                "12",
+                "too large, right -= 1"
+              ],
+              [
+                "2",
+                "0 (1)",
+                "4 (8)",
+                "9",
+                "too small, left += 1"
+              ],
+              [
+                "3",
+                "1 (3)",
+                "4 (8)",
+                "11",
+                "too large, right -= 1"
+              ],
+              [
+                "4",
+                "1 (3)",
+                "3 (6)",
+                "9",
+                "too small, left += 1"
+              ],
+              [
+                "5",
+                "2 (4)",
+                "3 (6)",
+                "10",
+                "found: 4 + 6"
+              ]
+            ]
+          }
+        },
+        {
+          "code": "def pair_with_sum(nums, target):\n    left, right = 0, len(nums) - 1\n    while left < right:\n        s = nums[left] + nums[right]\n        if s == target:\n            return left, right\n        if s < target:\n            left += 1\n        else:\n            right -= 1\n    return None\nprint(pair_with_sum([1, 3, 4, 6, 8, 11], 10))   # (2, 3)\nprint(pair_with_sum([1, 3, 4, 6, 8, 11], 2))    # None",
+          "lang": "python"
+        },
+        "Each step moves one pointer inward, so there are at most n − 1 steps: O(n) time and O(1) space. The same shape checks whether a string is a palindrome, reverses an array in place, and, inside an outer loop, solves 3Sum in O(n²) instead of O(n³)."
+      ]
+    },
+    {
+      "h": "Fast and slow pointers: in-place filtering",
+      "body": [
+        "A slow pointer marks where the next kept element should go; a fast pointer scans every element. This removes duplicates from a sorted list without extra memory.",
+        {
+          "code": "def dedupe_sorted(nums):\n    \"\"\"Remove duplicates in place; return the new length.\"\"\"\n    if not nums:\n        return 0\n    slow = 0\n    for fast in range(1, len(nums)):\n        if nums[fast] != nums[slow]:\n            slow += 1\n            nums[slow] = nums[fast]\n    return slow + 1\na = [1, 1, 2, 3, 3, 3, 5]\nk = dedupe_sorted(a)\nprint(k, a[:k])   # 4 [1, 2, 3, 5]",
+          "lang": "python"
+        },
+        "On linked lists, the fast pointer moves two nodes per step and the slow pointer one. If they ever meet, the list has a cycle (Floyd's cycle detection); when the fast pointer reaches the end, the slow one is at the middle."
+      ]
+    },
+    {
+      "h": "Sliding window: longest substring without repeats",
+      "body": [
+        "A sliding window keeps the range `s[left:right + 1]` valid. Move `right` forward one character at a time. When the new character breaks the rule, move `left` forward until the window is valid again. Record the best window as you go.",
+        {
+          "code": "def longest_unique(s):\n    last_seen = {}          # char -> last index\n    left = best = 0\n    for right, ch in enumerate(s):\n        if ch in last_seen and last_seen[ch] >= left:\n            left = last_seen[ch] + 1   # jump past the repeat\n        last_seen[ch] = right\n        best = max(best, right - left + 1)\n    return best\nprint(longest_unique(\"abcabcbb\"))   # 3  (\"abc\")\nprint(longest_unique(\"pwwkew\"))     # 3  (\"wke\")\nprint(longest_unique(\"\"))           # 0",
+          "lang": "python"
+        },
+        "Windows come in two kinds. A fixed-size window of k elements adds the element entering on the right and removes the one leaving on the left, for example to compute a moving average. A variable-size window grows and shrinks to satisfy a condition, as above.",
+        {
+          "code": "def min_len_subarray(nums, k):\n    \"\"\"Shortest subarray with sum >= k (non-negative nums).\"\"\"\n    left = total = 0\n    best = float(\"inf\")\n    for right, x in enumerate(nums):\n        total += x\n        while total >= k:\n            best = min(best, right - left + 1)\n            total -= nums[left]\n            left += 1\n    return 0 if best == float(\"inf\") else best\nprint(min_len_subarray([2, 3, 1, 2, 4, 3], 7))   # 2  ([4, 3])",
+          "lang": "python"
+        }
+      ]
+    },
+    {
+      "h": "Time and space complexity",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Problem",
+              "Brute force",
+              "Two pointers / window",
+              "Extra space"
+            ],
+            "rows": [
+              [
+                "Pair sum, sorted input",
+                "O(n²)",
+                "O(n)",
+                "O(1)"
+              ],
+              [
+                "Remove duplicates, sorted",
+                "O(n) with a new list",
+                "O(n) in place",
+                "O(1)"
+              ],
+              [
+                "Longest unique substring",
+                "O(n³) or O(n²)",
+                "O(n)",
+                "O(k), k distinct characters"
+              ],
+              [
+                "Shortest subarray with sum ≥ k",
+                "O(n²)",
+                "O(n)",
+                "O(1)"
+              ]
+            ]
+          }
+        },
+        "The reason a sliding window is O(n) even with a nested `while` loop: `left` and `right` each move forward at most n times in total, so the total work is at most 2n steps."
+      ]
+    },
+    {
+      "h": "Common mistakes",
+      "body": [
+        {
+          "ul": [
+            "Using opposite-end pointers on unsorted data. The decision to move left or right is only correct because the array is sorted.",
+            "Using a sum-based sliding window when numbers can be negative. Shrinking the window no longer always decreases the sum; use prefix sums with a hash map instead.",
+            "Off-by-one window length: the window `left..right` inclusive has `right - left + 1` elements.",
+            "Forgetting to stop at `left < right`, which lets a single element pair with itself.",
+            "Moving `left` backward. In the substring example, the check `last_seen[ch] >= left` prevents jumping back to an old position."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "When to use them, and typical interview questions",
+      "body": [
+        "Reach for two pointers when the input is sorted (or can be sorted cheaply) and you are looking for pairs, or when you need to modify an array in place. Reach for a sliding window when the question says contiguous subarray or substring and asks for a longest, shortest, maximum or count with a condition that changes predictably as the window grows. If the data is unsorted and you need a pair, a hash set is usually simpler and also O(n).",
+        {
+          "ul": [
+            "Two Sum II (sorted input), 3Sum, Container With Most Water, Trapping Rain Water.",
+            "Valid Palindrome, Reverse String, Move Zeroes, Remove Duplicates from Sorted Array.",
+            "Longest Substring Without Repeating Characters, Minimum Window Substring, Sliding Window Maximum (with a deque).",
+            "Linked List Cycle, Middle of the Linked List."
+          ]
+        },
+        "Outside interviews, the same ideas appear in merging sorted files, network protocols that track a window of unacknowledged packets (TCP sliding window), rate limiters that count events in the last N seconds, and moving averages in time series."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "What is the two pointers technique?",
+      "a": "It is a way to scan an array or string with two indexes that move according to simple rules, so each element is processed a constant number of times. It often turns an O(n²) pair search into O(n)."
+    },
+    {
+      "q": "What is the difference between two pointers and sliding window?",
+      "a": "A sliding window is a kind of two pointers where both indexes move in the same direction and the elements between them form the current subarray or substring. Opposite-end two pointers look at pairs, not ranges."
+    },
+    {
+      "q": "Why is a sliding window O(n) when it has a nested loop?",
+      "a": "The inner loop only moves `left` forward, and `left` can move at most n times over the whole run. Together with the n moves of `right`, that is at most 2n steps."
+    },
+    {
+      "q": "Does two pointers require a sorted array?",
+      "a": "The opposite-end pair-sum pattern does. Fast-and-slow pointers and sliding windows do not, but a sum-based window requires non-negative numbers."
+    }
+  ]
+}

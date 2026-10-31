@@ -1,0 +1,172 @@
+{
+  "title": "SOLID原則：オブジェクト指向設計の5つの原則を例で解説 — cv.cm",
+  "description": "オブジェクト指向設計の5つのSOLID原則を1つずつ解説。それぞれにTypeScriptの短い改善前後の例を付け、適用すべき場面も紹介します。",
+  "h1": "SOLID原則を例でわかりやすく解説",
+  "answer": "SOLIDは、オブジェクト指向設計の5つの原則、つまり単一責任（Single responsibility）、開放閉鎖（Open/closed）、リスコフの置換（Liskov substitution）、インターフェイス分離（Interface segregation）、依存性逆転（Dependency inversion）の頭文字を並べた略語です。Robert C. Martinがまとめ、略語はMichael Feathersが考案しました。目指すのはコードを変更しやすくすることで、各クラスの変更理由は1つだけにし、古いコードを編集せずに新しい振る舞いを追加し、サブタイプは安全に置き換えられるようにし、インターフェイスは小さく保ち、上位のコードは抽象に依存させます。",
+  "sections": [
+    {
+      "h": "SOLIDとは",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "頭文字",
+              "原則",
+              "ひとことで言うと"
+            ],
+            "rows": [
+              [
+                "S",
+                "単一責任の原則（SRP）",
+                "クラスを変更する理由は1つだけであるべきです。"
+              ],
+              [
+                "O",
+                "開放閉鎖の原則（OCP）",
+                "ソフトウェアは拡張に対して開かれ、修正に対して閉じているべきです。"
+              ],
+              [
+                "L",
+                "リスコフの置換原則（LSP）",
+                "基底型が期待される場所では、どのサブタイプも使えなければなりません。"
+              ],
+              [
+                "I",
+                "インターフェイス分離の原則（ISP）",
+                "クライアントに、使わないメソッドへの依存を強制してはいけません。"
+              ],
+              [
+                "D",
+                "依存性逆転の原則（DIP）",
+                "具体的な詳細ではなく、抽象に依存しましょう。"
+              ]
+            ]
+          }
+        },
+        "考え方自体は略語より古くからあります。開放閉鎖の原則はBertrand Meyerの著書『Object-Oriented Software Construction』（1988年）に、置換原則はBarbara Liskovの1987年の基調講演「Data Abstraction and Hierarchy」に由来します。Robert C. Martinは2000年ごろの著作で5つすべてを論じ、のちにMichael Feathersがそれを「SOLID」という語に並べ替えました。"
+      ]
+    },
+    {
+      "h": "S：単一責任の原則",
+      "body": [
+        "クラスの変更理由は1つだけ、つまり1人のアクターまたは1つの関心事にだけ仕えるべきです。クラスがビジネスルール、書式整形、保存を一緒に抱えていると、どれか1つを変更したときにほかを壊すおそれがあります。",
+        "改善前：1つのクラスがレポートの計算、整形、保存をすべて行っています。",
+        {
+          "code": "class Report {\n  constructor(private sales: number[]) {}\n  total(): number { return this.sales.reduce((a, b) => a + b, 0); }\n  toHtml(): string { return `<p>Total: ${this.total()}</p>`; }\n  saveToFile(path: string): void { /* write this.toHtml() to disk */ }\n}",
+          "lang": "typescript"
+        },
+        "改善後：関心事ごとに小さな単位に分けたので、新しい出力形式を追加しても計算部分には手を触れません。",
+        {
+          "code": "class SalesReport {\n  constructor(private sales: number[]) {}\n  total(): number { return this.sales.reduce((a, b) => a + b, 0); }\n}\nclass HtmlFormatter {\n  format(r: SalesReport): string { return `<p>Total: ${r.total()}</p>`; }\n}\nclass ReportWriter {\n  save(content: string, path: string): void { /* write to disk */ }\n}\nconst html = new HtmlFormatter().format(new SalesReport([10, 20, 5]));\nconsole.log(html); // <p>Total: 35</p>",
+          "lang": "typescript"
+        }
+      ]
+    },
+    {
+      "h": "O：開放閉鎖の原則",
+      "body": [
+        "新しい振る舞いは、すでに動作確認とテストが済んだコードを編集するのではなく、新しいコードを追加して加えられるべきです。一般的な手段は、インターフェイスとポリモーフィズムです。",
+        "改善前：図形が増えるたびに `area` 関数を編集することになります。",
+        {
+          "code": "type Shape = { kind: \"circle\"; r: number } | { kind: \"square\"; side: number };\nfunction area(s: Shape): number {\n  if (s.kind === \"circle\") return Math.PI * s.r ** 2;\n  if (s.kind === \"square\") return s.side ** 2;\n  throw new Error(\"unknown shape\");\n}",
+          "lang": "typescript"
+        },
+        "改善後：新しい図形は新しいクラスにすればよく、既存のコードは変わりません。",
+        {
+          "code": "interface Shape { area(): number; }\nclass Circle implements Shape {\n  constructor(private r: number) {}\n  area(): number { return Math.PI * this.r ** 2; }\n}\nclass Square implements Shape {\n  constructor(private side: number) {}\n  area(): number { return this.side ** 2; }\n}\nconst totalArea = (shapes: Shape[]) => shapes.reduce((sum, s) => sum + s.area(), 0);\nconsole.log(totalArea([new Square(2), new Square(3)])); // 13",
+          "lang": "typescript"
+        },
+        {
+          "note": "TypeScriptでは、ユニオン型と網羅的な `switch` の組み合わせも有効な設計です。新しい操作は追加しやすく、新しい型は追加しにくくなり、トレードオフは逆になります。どちらの種類の変更が起こりやすいかで選びましょう。"
+        }
+      ]
+    },
+    {
+      "h": "L：リスコフの置換原則",
+      "body": [
+        "コードが基底型で動作するなら、どのサブタイプを渡しても動作し続けなければなりません。サブタイプは、事前条件を強めたり、保証を弱めたり、基底型が投げない場面で例外を投げたりしてはいけません。",
+        "改善前：古典的な正方形と長方形の問題です。`Square` は `Rectangle` を継承しますが、幅と高さが独立しているという期待を壊してしまいます。",
+        {
+          "code": "class Rectangle {\n  constructor(public width: number, public height: number) {}\n  setWidth(w: number): void { this.width = w; }\n  setHeight(h: number): void { this.height = h; }\n  area(): number { return this.width * this.height; }\n}\nclass Square extends Rectangle {\n  setWidth(w: number): void { this.width = w; this.height = w; }\n  setHeight(h: number): void { this.width = h; this.height = h; }\n}\nfunction stretch(r: Rectangle): number {\n  r.setWidth(5);\n  r.setHeight(4);\n  return r.area(); // caller expects 20\n}\nconsole.log(stretch(new Rectangle(1, 1))); // 20\nconsole.log(stretch(new Square(1, 1)));    // 16, surprise",
+          "lang": "typescript"
+        },
+        "改善後：両者の関係を継承でモデル化しません。両方の型が読み取り専用の共通インターフェイスを実装し、正方形の辺を独立に変更できると期待する人はいません。",
+        {
+          "code": "interface Shape { area(): number; }\nclass Rectangle implements Shape {\n  constructor(readonly width: number, readonly height: number) {}\n  area(): number { return this.width * this.height; }\n}\nclass Square implements Shape {\n  constructor(readonly side: number) {}\n  area(): number { return this.side ** 2; }\n}\nconsole.log([new Rectangle(5, 4), new Square(4)].map((s) => s.area())); // [ 20, 16 ]",
+          "lang": "typescript"
+        }
+      ]
+    },
+    {
+      "h": "I：インターフェイス分離の原則",
+      "body": [
+        "大きなインターフェイスは、クラスにサポートできないメソッドの実装を強いることになり、たいていはエラーを投げることになります。小さく焦点を絞ったインターフェイスに分割し、各クラスには本当にできることだけを実装させましょう。",
+        "改善前：単純なプリンターが、スキャンやファックスもできるふりをしなければなりません。",
+        {
+          "code": "interface Machine {\n  print(doc: string): void;\n  scan(): string;\n  fax(doc: string): void;\n}\nclass BasicPrinter implements Machine {\n  print(doc: string): void { console.log(\"print\", doc); }\n  scan(): string { throw new Error(\"not supported\"); }\n  fax(doc: string): void { throw new Error(\"not supported\"); }\n}",
+          "lang": "typescript"
+        },
+        "改善後：組み合わせて使える、小さな役割ごとのインターフェイスにします。",
+        {
+          "code": "interface Printer { print(doc: string): void; }\ninterface Scanner { scan(): string; }\nclass BasicPrinter implements Printer {\n  print(doc: string): void { console.log(\"print\", doc); }\n}\nclass OfficeMachine implements Printer, Scanner {\n  print(doc: string): void { console.log(\"print\", doc); }\n  scan(): string { return \"scanned page\"; }\n}\nfunction printAll(p: Printer, docs: string[]): void { docs.forEach((d) => p.print(d)); }\nprintAll(new BasicPrinter(), [\"a.pdf\"]); // print a.pdf",
+          "lang": "typescript"
+        }
+      ]
+    },
+    {
+      "h": "D：依存性逆転の原則",
+      "body": [
+        "上位のポリシーは、特定のデータベースやメールサービスのような下位の詳細に依存すべきではありません。両者は抽象に依存し、その抽象は通常、上位のモジュールが所有します。実際には、依存先を内部で作らず、外から渡します（依存性の注入）。",
+        "改善前：サービスが具体的なデータベースクライアントを自分で作るので、テストも切り替えもできません。",
+        {
+          "code": "class MySqlUserStore {\n  find(id: string): string { return \"user \" + id; }\n}\nclass UserService {\n  private store = new MySqlUserStore(); // hard-wired detail\n  greet(id: string): string { return \"Hello, \" + this.store.find(id); }\n}",
+          "lang": "typescript"
+        },
+        "改善後：サービスはインターフェイスに依存し、テスト用のフェイクを含め、どんな実装でも注入できます。",
+        {
+          "code": "interface UserStore { find(id: string): string; }\nclass UserService {\n  constructor(private store: UserStore) {}\n  greet(id: string): string { return \"Hello, \" + this.store.find(id); }\n}\nclass InMemoryUserStore implements UserStore {\n  constructor(private users: Record<string, string>) {}\n  find(id: string): string { return this.users[id] ?? \"unknown\"; }\n}\nconst service = new UserService(new InMemoryUserStore({ u1: \"Ada\" }));\nconsole.log(service.greet(\"u1\")); // Hello, Ada",
+          "lang": "typescript"
+        },
+        {
+          "note": "依存性逆転は設計原則で、依存性の注入（dependency injection）はそれを実現する手法の1つです。注入用のコンテナやフレームワークは必須ではなく、コンストラクタでオブジェクトを渡すだけで十分です。"
+        }
+      ]
+    },
+    {
+      "h": "SOLIDを適用すべきとき、しないとき",
+      "body": [
+        "SOLID原則は、頻繁に変更されるコードのための指針であり、法律ではありません。盲目的に適用すると、小さなクラスや実装が1つしかないインターフェイスが大量にでき、かえってコードが追いにくくなります。",
+        {
+          "ul": [
+            "原則が解決する痛みを感じたときに適用しましょう。例えば、何かが変わるたびに壊れるクラス、本物のデータベースが必要なテスト、多くの箇所にコピーされたswitch文などです。",
+            "すべてのクラスのために先回りしてインターフェイスを用意するのはやめましょう。2つ目の実装やテスト用の代役が現れた時点で抽出します。",
+            "小さなスクリプトやプロトタイプでは、単純で直接的なコードのほうが通常は優れています。",
+            "多くのデザインパターンはSOLIDの具体的な応用です。Strategy パターンとDecorator パターンは開放閉鎖を支え、Adapter パターンとFacade パターンは詳細の隔離に役立ち、Abstract Factory パターンは依存性逆転を支えます。"
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "SOLID原則は誰が考えたのですか？",
+      "a": "Robert C. Martinが5つの原則をまとめて説明しました。その土台には、Bertrand Meyer（開放閉鎖）とBarbara Liskov（置換）による先行研究があります。SOLIDという略語はMichael Feathersが考案しました。"
+    },
+    {
+      "q": "SOLIDは関数型プログラミングにも当てはまりますか？",
+      "a": "考え方は置き換えられます。目的を1つに絞った小さな関数、振る舞いを編集せず合成すること、依存先を引数として渡すことです。クラスを前提にした表現は、オブジェクト指向のコードに固有のものです。"
+    },
+    {
+      "q": "依存性逆転と依存性の注入の違いは何ですか？",
+      "a": "依存性逆転は、上位のコードが抽象に依存すべきだという原則です。依存性の注入は、その依存先を、たとえばコンストラクタを通じて外から与える手法です。"
+    },
+    {
+      "q": "SOLIDの中で最も重要な原則はどれですか？",
+      "a": "公式な優先順位はありません。単一責任と依存性逆転は、コードを理解しやすくテストしやすくするので、通常は最も早く効果が出ます。"
+    },
+    {
+      "q": "SOLID原則を破るのは悪いことですか？",
+      "a": "必ずしもそうではありません。どの原則にも、コードが増えるというコストがあります。単純な設計のほうが明快で、その原則が守ろうとする変更が起こりそうにないときは、意図的に破ってかまいません。"
+    }
+  ]
+}

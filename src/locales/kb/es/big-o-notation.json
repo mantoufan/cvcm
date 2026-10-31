@@ -1,0 +1,253 @@
+{
+  "title": "Notación Big O explicada: complejidad temporal, clases comunes y ejemplos — cv.cm",
+  "description": "La notación Big O describe cómo crece el tiempo de ejecución o la memoria según el tamaño de la entrada. Aprende O(1), O(log n), O(n), O(n log n) y O(n²) con ejemplos en Python.",
+  "h1": "Notación Big O explicada con ejemplos",
+  "answer": "La notación Big O describe cómo crece el tiempo de ejecución o el uso de memoria de un algoritmo a medida que crece el tamaño de la entrada n. Conserva solo el término de mayor crecimiento y descarta las constantes, de modo que 3n² + 5n + 2 pasos se escribe O(n²). Las clases más comunes, de la más rápida a la más lenta, son O(1), O(log n), O(n), O(n log n), O(n²) y O(2ⁿ). Permite comparar algoritmos sin ejecutarlos en una máquina concreta.",
+  "sections": [
+    {
+      "h": "Qué problema resuelve Big O",
+      "body": [
+        "Medir un programa en segundos solo dice algo sobre una máquina, un lenguaje y una entrada. Big O responde a una pregunta más útil: si la entrada se hace 10 veces mayor, ¿cuánto más trabajo hace el algoritmo? Un algoritmo que hace 10 veces más trabajo escala de forma muy distinta a uno que hace 100 veces más.",
+        "Formalmente, f(n) es O(g(n)) si existen constantes c y n₀ tales que f(n) ≤ c · g(n) para todo n ≥ n₀. En palabras sencillas, g es una cota superior del crecimiento de f cuando n es suficientemente grande, ignorando los factores constantes.",
+        {
+          "ul": [
+            "n es el tamaño de la entrada: la longitud de una lista, el número de caracteres de una cadena, el número de nodos de un grafo.",
+            "La complejidad temporal cuenta los pasos básicos (comparaciones, asignaciones, operaciones aritméticas).",
+            "La complejidad espacial cuenta la memoria extra utilizada, sin contar la propia entrada."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Cómo simplificar una expresión",
+      "body": [
+        "Cuenta los pasos como una función de n y aplica dos reglas: descarta los factores constantes y conserva solo el término dominante.",
+        {
+          "table": {
+            "head": [
+              "Número exacto de pasos",
+              "Regla aplicada",
+              "Big O"
+            ],
+            "rows": [
+              [
+                "`5`",
+                "constante",
+                "O(1)"
+              ],
+              [
+                "`3n + 10`",
+                "se descartan 3 y 10",
+                "O(n)"
+              ],
+              [
+                "`n²/2 + n/2`",
+                "se conserva n², se descarta 1/2",
+                "O(n²)"
+              ],
+              [
+                "`2n log n + 100n`",
+                "n log n crece más rápido que n",
+                "O(n log n)"
+              ],
+              [
+                "`n³ + 2ⁿ`",
+                "2ⁿ crece más rápido que cualquier potencia de n",
+                "O(2ⁿ)"
+              ]
+            ]
+          }
+        },
+        "Cuando un algoritmo tiene dos entradas independientes, conserva ambas: recorrer una lista de longitud n y luego otra de longitud m es O(n + m), y un bucle dentro de otro es O(n · m). La base del logaritmo no importa en Big O, porque log₂ n y log₁₀ n solo se diferencian en un factor constante."
+      ]
+    },
+    {
+      "h": "Clases de complejidad comunes",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Clase",
+              "Nombre",
+              "Pasos para n = 1.000",
+              "Ejemplo típico"
+            ],
+            "rows": [
+              [
+                "O(1)",
+                "constante",
+                "1",
+                "leer `items[i]`, buscar una clave en un `dict` (caso promedio)"
+              ],
+              [
+                "O(log n)",
+                "logarítmica",
+                "unos 10",
+                "búsqueda binaria en una lista ordenada"
+              ],
+              [
+                "O(n)",
+                "lineal",
+                "1,000",
+                "encontrar el máximo de una lista"
+              ],
+              [
+                "O(n log n)",
+                "linealítmica",
+                "unos 10.000",
+                "merge sort, `sorted()` de Python"
+              ],
+              [
+                "O(n²)",
+                "cuadrática",
+                "1,000,000",
+                "comparar todos los pares, bubble sort"
+              ],
+              [
+                "O(2ⁿ)",
+                "exponencial",
+                "un número de 302 dígitos",
+                "probar todos los subconjuntos"
+              ],
+              [
+                "O(n!)",
+                "factorial",
+                "mucho mayor todavía",
+                "probar todos los órdenes posibles"
+              ]
+            ]
+          }
+        },
+        "Una guía aproximada: en un ordenador moderno, un bucle simple puede ejecutar decenas de millones de pasos básicos por segundo en Python y mucho más en lenguajes compilados. Así, O(n log n) funciona bien con millones de elementos, O(n²) se vuelve lento hacia las decenas de miles y O(2ⁿ) no es viable más allá de unos 40 a 60 elementos."
+      ]
+    },
+    {
+      "h": "Cómo leer la complejidad en código Python",
+      "body": [
+        "Fíjate en los bucles. Un único bucle sobre la entrada es O(n). Un bucle anidado en otro sobre la misma entrada es O(n²). Un bucle que reduce a la mitad el rango restante en cada vuelta es O(log n).",
+        {
+          "code": "def first(items):            # O(1): one step, whatever the size\n    return items[0]\ndef total(items):            # O(n): touches each item once\n    s = 0\n    for x in items:\n        s += x\n    return s\ndef has_duplicate(items):    # O(n^2): compares every pair\n    for i in range(len(items)):\n        for j in range(i + 1, len(items)):\n            if items[i] == items[j]:\n                return True\n    return False\ndef halvings(n):             # O(log n): n is halved each step\n    steps = 0\n    while n > 1:\n        n //= 2\n        steps += 1\n    return steps\nprint(first([7, 8]), total([1, 2, 3]), has_duplicate([1, 2, 1]), halvings(1024))\n# 7 6 True 10",
+          "lang": "python"
+        },
+        "Las llamadas a bibliotecas tienen su propio coste. `x in some_list` es O(n), `x in some_set` es O(1) en promedio, `list.insert(0, x)` es O(n) porque se desplazan todos los elementos, y `sorted()` es O(n log n). Un bucle que llama n veces a una operación O(n) es O(n²), aunque parezca un solo bucle.",
+        {
+          "code": "def has_duplicate_fast(items):   # O(n) time, O(n) extra space\n    seen = set()\n    for x in items:\n        if x in seen:            # average O(1) set lookup\n            return True\n        seen.add(x)\n    return False\nprint(has_duplicate_fast([3, 1, 4, 1, 5]))   # True\nprint(has_duplicate_fast(list(range(10))))   # False",
+          "lang": "python"
+        }
+      ]
+    },
+    {
+      "h": "Mejor, promedio y peor caso",
+      "body": [
+        "El mismo algoritmo puede hacer cantidades de trabajo distintas con entradas diferentes del mismo tamaño, por lo que la complejidad suele indicarse para tres casos.",
+        {
+          "table": {
+            "head": [
+              "Algoritmo",
+              "Mejor",
+              "Promedio",
+              "Peor"
+            ],
+            "rows": [
+              [
+                "Búsqueda lineal",
+                "O(1), el objetivo es el primero",
+                "O(n)",
+                "O(n), el objetivo no está"
+              ],
+              [
+                "Insertion sort",
+                "O(n), ya ordenado",
+                "O(n²)",
+                "O(n²), orden inverso"
+              ],
+              [
+                "Quicksort",
+                "O(n log n)",
+                "O(n log n)",
+                "O(n²), pivotes malos"
+              ],
+              [
+                "Búsqueda en tabla hash",
+                "O(1)",
+                "O(1)",
+                "O(n), muchas colisiones"
+              ]
+            ]
+          }
+        },
+        "Cuando alguien dice solo «la complejidad de X», normalmente se refiere al peor caso, o al caso promedio en las tablas hash y en quicksort. El coste amortizado es una cuarta idea: añadir un elemento a una lista de Python es ocasionalmente O(n) cuando la lista amplía su almacenamiento, pero O(1) en promedio a lo largo de muchas inserciones."
+      ]
+    },
+    {
+      "h": "Big O, Big Omega y Big Theta",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Notación",
+              "Significado",
+              "Ejemplo"
+            ],
+            "rows": [
+              [
+                "O(g)",
+                "cota superior: no crece más rápido que g",
+                "la búsqueda lineal es O(n)"
+              ],
+              [
+                "Ω(g)",
+                "cota inferior: crece al menos tan rápido como g",
+                "cualquier ordenamiento por comparación es Ω(n log n) en el peor caso"
+              ],
+              [
+                "Θ(g)",
+                "cota ajustada: es O(g) y Ω(g) a la vez",
+                "merge sort es Θ(n log n)"
+              ]
+            ]
+          }
+        },
+        "Estrictamente, un algoritmo O(n) también es O(n²), porque O es solo una cota superior. En el uso cotidiano, la gente escribe Big O pero se refiere a la cota más ajustada que conoce, que es lo que expresa Θ."
+      ]
+    },
+    {
+      "h": "Errores comunes",
+      "body": [
+        {
+          "note": "Big O oculta las constantes. Un algoritmo O(n) con una constante grande puede ser más lento que uno O(n²) cuando n es pequeño. Por eso muchas rutinas de ordenamiento rápidas pasan a insertion sort en sublistas cortas."
+        },
+        {
+          "ul": [
+            "Olvidar el coste de las operaciones integradas, como `in` en una lista o el slicing `items[1:]`, que copia y cuesta O(k) para k elementos copiados.",
+            "Contar mal las llamadas recursivas: una función que se llama dos veces con n − 1 es O(2ⁿ), no O(n).",
+            "Ignorar el espacio: construir una lista nueva de tamaño n, o una recursión de profundidad n, cuesta O(n) de memoria.",
+            "Escribir O(2n) u O(n + 5). Ambas se simplifican a O(n)."
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "¿Qué significa O(1)?",
+      "a": "O(1) significa tiempo constante: el trabajo no crece con el tamaño de la entrada. Leer un elemento de una lista por índice es O(1) tanto si la lista tiene 10 como 10 millones de elementos."
+    },
+    {
+      "q": "¿Es O(log n) más rápido que O(n)?",
+      "a": "Sí, para n grande. Al duplicar la entrada, un algoritmo O(log n) añade solo un paso, mientras que uno O(n) duplica el trabajo. Para un millón de elementos, log₂ n es aproximadamente 20."
+    },
+    {
+      "q": "¿Cuál es la complejidad temporal de sorted() en Python?",
+      "a": "`sorted()` y `list.sort()` de Python son O(n log n) en el peor caso y O(n) con una entrada ya ordenada, y usan O(n) de memoria adicional."
+    },
+    {
+      "q": "¿Big O mide segundos?",
+      "a": "No. Mide cómo crece la cantidad de trabajo con el tamaño de la entrada. Los segundos reales dependen de la máquina, del lenguaje y de los factores constantes que Big O ignora."
+    },
+    {
+      "q": "¿Cuál es la diferencia entre complejidad temporal y espacial?",
+      "a": "La complejidad temporal cuenta los pasos que da un algoritmo; la complejidad espacial cuenta la memoria extra que necesita. Ambas se expresan en Big O y a menudo se intercambia una por otra, por ejemplo usando un set para ahorrar tiempo."
+    }
+  ]
+}

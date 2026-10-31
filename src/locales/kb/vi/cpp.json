@@ -1,0 +1,226 @@
+{
+  "title": "Học lập trình C++ cơ bản: kiểu, lớp, container STL và RAII — cv.cm",
+  "description": "Học C++ hiện đại trong một trang: biên dịch Hello world, kiểu dữ liệu và auto, điều khiển luồng, hàm, lớp, vector và map, con trỏ thông minh, RAII và ngoại lệ.",
+  "h1": "Hướng dẫn học lập trình C++ cơ bản cho người mới",
+  "answer": "C++ là ngôn ngữ biên dịch, kiểu tĩnh, kết hợp tốc độ và khả năng kiểm soát mức thấp của C với lớp, template và một thư viện chuẩn lớn. Biên dịch `hello.cpp` bằng `g++ -std=c++20 hello.cpp -o hello` rồi chạy `./hello`. Mã C++ hiện đại dùng `std::string`, `std::vector` và `std::map` thay cho mảng thô, con trỏ thông minh thay cho `delete` thủ công, và RAII để tài nguyên được giải phóng tự động.",
+  "sections": [
+    {
+      "h": "C++ là gì và dùng để làm gì",
+      "body": [
+        "C++ do Bjarne Stroustrup tạo ra tại Bell Labs, bắt đầu từ năm 1979 với tên \"C with Classes\". Nó được ISO chuẩn hóa; C++11 mở ra kỷ nguyên \"C++ hiện đại\", tiếp theo là C++17, C++20 và C++23. C++ được dùng ở nơi hiệu năng và khả năng kiểm soát quan trọng: engine game (Unreal Engine), trình duyệt web (Chrome, Firefox), cơ sở dữ liệu, hệ thống giao dịch, thiết bị nhúng, trình biên dịch và runtime học máy. Ý tưởng chủ đạo của nó là trừu tượng hóa không tốn thêm chi phí (zero-overhead): tính năng bạn không dùng thì không tốn gì."
+      ]
+    },
+    {
+      "h": "Cài trình biên dịch và chạy Hello, world",
+      "body": [
+        "Dùng GCC (`g++`) hoặc Clang (`clang++`) trên Linux và macOS, hoặc Microsoft Visual C++ trên Windows (qua Visual Studio). Hãy chọn phiên bản chuẩn một cách tường minh.",
+        {
+          "code": "#include <iostream>\n\nint main() {\n    std::cout << \"Hello, world\\n\";\n    return 0;\n}",
+          "lang": "cpp"
+        },
+        {
+          "code": "g++ -std=c++20 -Wall -Wextra hello.cpp -o hello\n./hello\n# Hello, world",
+          "lang": "shell"
+        },
+        "`std::cout` là luồng xuất chuẩn và `<<` ghi vào đó. Mọi thứ trong thư viện chuẩn nằm trong không gian tên `std`."
+      ]
+    },
+    {
+      "h": "Biến, kiểu dữ liệu và auto",
+      "body": [
+        "C++ có các kiểu dựng sẵn giống C, cộng thêm `bool` là từ khóa, tham chiếu, và các kiểu của thư viện như `std::string`. `auto` yêu cầu trình biên dịch suy luận kiểu từ biểu thức khởi tạo. Khởi tạo bằng ngoặc nhọn `{}` từ chối các chuyển đổi làm hẹp kiểu.",
+        {
+          "table": {
+            "head": [
+              "Kiểu",
+              "Ví dụ",
+              "Ghi chú"
+            ],
+            "rows": [
+              [
+                "`int`, `long long`",
+                "`int n{42};`",
+                "Số nguyên có dấu"
+              ],
+              [
+                "`double`",
+                "`double x{3.14};`",
+                "Số thực dấu phẩy động 64 bit"
+              ],
+              [
+                "`bool`",
+                "`bool ok{true};`",
+                "`true` hoặc `false`"
+              ],
+              [
+                "`char`",
+                "`char c{'A'};`",
+                "Một byte"
+              ],
+              [
+                "`std::string`",
+                "`std::string s{\"hi\"};`",
+                "Văn bản co giãn được, từ `<string>`"
+              ],
+              [
+                "`auto`",
+                "`auto v = 2.5;`",
+                "Được suy luận, ở đây là `double`"
+              ],
+              [
+                "`T&`",
+                "`int& r = n;`",
+                "Một tham chiếu: tên gọi khác của `n`"
+              ]
+            ]
+          }
+        },
+        {
+          "code": "#include <iostream>\n#include <string>\n\nint main() {\n    int count{7};\n    auto avg = count / 2.0;          // double, 3.5\n    std::string name{\"Ada\"};\n    name += \" Lovelace\";\n    const int& ref = count;          // read-only alias of count\n    std::cout << name << \" \" << name.size() << \" \" << avg << \" \" << ref << \"\\n\";\n    // Ada Lovelace 12 3.5 7\n}",
+          "lang": "cpp"
+        }
+      ]
+    },
+    {
+      "h": "Điều khiển luồng và hàm",
+      "body": [
+        "Điều khiển luồng giống C, cộng thêm vòng lặp `for` theo phạm vi. Truyền đối tượng lớn bằng tham chiếu `const` để tránh sao chép, và bằng tham chiếu không `const` khi hàm cần thay đổi chúng.",
+        {
+          "code": "#include <iostream>\n#include <string>\n#include <vector>\n\nint square(int x) { return x * x; }\n\nvoid addSuffix(std::string& s, const std::string& suffix = \"!\") {\n    s += suffix;\n}\n\nint main() {\n    int score = 72;\n    if (score >= 90) std::cout << \"A\\n\";\n    else if (score >= 70) std::cout << \"B\\n\";   // B\n    else std::cout << \"C\\n\";\n\n    std::vector<int> nums{1, 2, 3};\n    for (int n : nums) std::cout << square(n) << \" \";  // 1 4 9\n    std::cout << \"\\n\";\n\n    std::string word = \"hi\";\n    addSuffix(word);\n    std::cout << word << \"\\n\";                  // hi!\n}",
+          "lang": "cpp"
+        }
+      ]
+    },
+    {
+      "h": "Lớp",
+      "body": [
+        "Lớp gom các thành viên dữ liệu và hàm thành viên. Constructor thiết lập một đối tượng; thành viên `private` bị ẩn khỏi mã bên ngoài. `struct` giống lớp, chỉ khác là thành viên mặc định là public.",
+        {
+          "code": "#include <iostream>\n#include <string>\n#include <utility>\n\nclass Account {\npublic:\n    explicit Account(std::string owner) : owner_(std::move(owner)) {}\n\n    void deposit(double amount) {\n        if (amount > 0) balance_ += amount;\n    }\n    double balance() const { return balance_; }\n    const std::string& owner() const { return owner_; }\n\nprivate:\n    std::string owner_;\n    double balance_ = 0.0;\n};\n\nint main() {\n    Account acc{\"Ann\"};\n    acc.deposit(50);\n    acc.deposit(-5);   // ignored\n    std::cout << acc.owner() << \": \" << acc.balance() << \"\\n\";  // Ann: 50\n}",
+          "lang": "cpp"
+        },
+        "Kế thừa (`class Savings : public Account`) và hàm `virtual` cho tính đa hình lúc chạy. Hãy đánh dấu các hàm ghi đè bằng `override` để trình biên dịch kiểm tra chúng."
+      ]
+    },
+    {
+      "h": "Container và thuật toán của thư viện chuẩn",
+      "body": [
+        "Thư viện chuẩn (thường gọi là STL) cung cấp các container và thuật toán phối hợp với nhau qua iterator.",
+        {
+          "table": {
+            "head": [
+              "Container",
+              "Tương đương",
+              "Dùng cho"
+            ],
+            "rows": [
+              [
+                "`std::vector<T>`",
+                "Mảng động",
+                "Container tuần tự mặc định"
+              ],
+              [
+                "`std::array<T, N>`",
+                "Mảng cố định",
+                "Kích thước biết lúc biên dịch"
+              ],
+              [
+                "`std::map<K, V>`",
+                "Từ điển có thứ tự",
+                "Khóa có thứ tự, tra cứu O(log n)"
+              ],
+              [
+                "`std::unordered_map<K, V>`",
+                "Bảng băm",
+                "Tra cứu nhanh, trung bình O(1)"
+              ],
+              [
+                "`std::set<T>`",
+                "Tập hợp duy nhất có thứ tự",
+                "Kiểm tra thành viên, xuất theo thứ tự"
+              ]
+            ]
+          }
+        },
+        {
+          "code": "#include <algorithm>\n#include <iostream>\n#include <map>\n#include <string>\n#include <vector>\n\nint main() {\n    std::vector<int> nums{3, 1, 2, 5};\n    std::sort(nums.begin(), nums.end());\n    auto evens = std::count_if(nums.begin(), nums.end(),\n                               [](int n) { return n % 2 == 0; });\n    std::cout << nums.front() << \" \" << nums.back() << \" \" << evens << \"\\n\";  // 1 5 1\n\n    std::map<std::string, int> ages{{\"bob\", 25}, {\"ann\", 31}};\n    ages[\"cy\"] = 40;\n    for (const auto& [name, age] : ages) {     // structured bindings\n        std::cout << name << \"=\" << age << \" \";  // ann=31 bob=25 cy=40\n    }\n    std::cout << \"\\n\";\n}",
+          "lang": "cpp"
+        },
+        "`[](int n) { ... }` là lambda, một hàm không tên viết ngay tại chỗ. Template là thứ giúp một `std::vector` dùng được cho mọi kiểu phần tử; bạn có thể tự viết bằng `template <typename T>`."
+      ]
+    },
+    {
+      "h": "Tính năng đặc trưng: RAII và con trỏ thông minh",
+      "body": [
+        "RAII (Resource Acquisition Is Initialization) nghĩa là một tài nguyên thuộc sở hữu của một đối tượng: constructor lấy nó và destructor giải phóng nó. Vì destructor chạy tự động khi đối tượng ra khỏi phạm vi, kể cả khi có ngoại lệ được ném, bộ nhớ, tệp và khóa không thể bị rò rỉ. Con trỏ thông minh áp dụng RAII cho bộ nhớ heap.",
+        {
+          "code": "#include <iostream>\n#include <memory>\n\nstruct Noisy {\n    int id;\n    explicit Noisy(int i) : id(i) { std::cout << \"create \" << id << \"\\n\"; }\n    ~Noisy() { std::cout << \"destroy \" << id << \"\\n\"; }\n};\n\nint main() {\n    auto a = std::make_unique<Noisy>(1);       // sole owner\n    {\n        auto b = std::make_shared<Noisy>(2);   // shared, reference-counted\n        auto c = b;                            // two owners now\n        std::cout << \"owners: \" << b.use_count() << \"\\n\";\n    }                                          // destroy 2 happens here\n    std::cout << \"end of main\\n\";\n}                                              // destroy 1 happens here",
+          "lang": "cpp"
+        },
+        "Kết quả: `create 1`, `create 2`, `owners: 2`, `destroy 2`, `end of main`, `destroy 1`. Trong mã hiện đại, bạn hầu như không bao giờ nên tự viết `new` và `delete`."
+      ]
+    },
+    {
+      "h": "Xử lý lỗi bằng ngoại lệ",
+      "body": [
+        "Ném một đối tượng ngoại lệ và bắt nó bằng tham chiếu `const`. Các kiểu ngoại lệ chuẩn nằm trong `<stdexcept>`. Hàm không bao giờ ném có thể được đánh dấu `noexcept`.",
+        {
+          "code": "#include <iostream>\n#include <stdexcept>\n#include <string>\n\nint parseAge(const std::string& text) {\n    int age = std::stoi(text);   // throws std::invalid_argument on \"abc\"\n    if (age < 0) throw std::out_of_range(\"negative age\");\n    return age;\n}\n\nint main() {\n    try {\n        std::cout << parseAge(\"41\") << \"\\n\";   // 41\n        std::cout << parseAge(\"abc\") << \"\\n\";\n    } catch (const std::invalid_argument&) {\n        std::cout << \"not a number\\n\";         // not a number\n    } catch (const std::exception& e) {\n        std::cout << \"error: \" << e.what() << \"\\n\";\n    }\n}",
+          "lang": "cpp"
+        },
+        "Với các lỗi có thể lường trước, nhiều codebase trả về `std::optional<T>` (C++17) hoặc `std::expected<T, E>` (C++23) thay vì ném ngoại lệ."
+      ]
+    },
+    {
+      "h": "Một chương trình nhỏ hoàn chỉnh: tần suất từ",
+      "body": [
+        {
+          "code": "#include <algorithm>\n#include <cctype>\n#include <fstream>\n#include <iostream>\n#include <string>\n#include <unordered_map>\n#include <vector>\n\nint main(int argc, char* argv[]) {\n    if (argc != 2) {\n        std::cerr << \"usage: \" << argv[0] << \" FILE\\n\";\n        return 1;\n    }\n    std::ifstream in(argv[1]);\n    if (!in) {\n        std::cerr << \"cannot open \" << argv[1] << \"\\n\";\n        return 1;\n    }\n    std::unordered_map<std::string, int> counts;\n    std::string word;\n    while (in >> word) {\n        std::string clean;\n        for (unsigned char ch : word)\n            if (std::isalpha(ch)) clean += static_cast<char>(std::tolower(ch));\n        if (!clean.empty()) ++counts[clean];\n    }\n    std::vector<std::pair<std::string, int>> top(counts.begin(), counts.end());\n    std::sort(top.begin(), top.end(),\n              [](const auto& a, const auto& b) { return a.second > b.second; });\n    for (size_t i = 0; i < top.size() && i < 5; ++i)\n        std::cout << top[i].second << \"  \" << top[i].first << \"\\n\";\n}",
+          "lang": "cpp"
+        },
+        "Biên dịch bằng `g++ -std=c++20 -O2 words.cpp -o words` và chạy `./words notes.txt`. Tệp được đóng tự động khi `in` ra khỏi phạm vi, đó lại là RAII."
+      ]
+    },
+    {
+      "h": "Những lỗi thường gặp của người mới",
+      "body": [
+        {
+          "note": "C++ thừa hưởng hành vi không xác định của C: đọc vượt cuối `std::vector` bằng `[]`, dùng tham chiếu treo, hoặc đọc biến chưa khởi tạo có thể có vẻ chạy được rồi hỏng về sau. Hãy dùng `.at(i)` khi học, và biên dịch với `-fsanitize=address,undefined -g`."
+        },
+        {
+          "ul": [
+            "Viết `using namespace std;` trong tệp header, làm ô nhiễm mọi tệp include chúng.",
+            "Truyền đối tượng lớn như `std::vector` theo giá trị trong khi `const&` là đủ.",
+            "Trộn kiểu có dấu và không dấu trong so sánh, chẳng hạn `int i` với `v.size()`. Hãy bật cảnh báo để thấy những lỗi này.",
+            "Giữ iterator hoặc tham chiếu vào một `std::vector` sau `push_back`, vì các phần tử có thể bị di chuyển.",
+            "Dùng `new` và `delete` thô thay cho `std::make_unique`, `std::vector` hoặc các kiểu sở hữu khác."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Học tiếp ở đâu",
+      "body": [
+        "Hãy dùng cppreference.com làm tài liệu tham khảo ngôn ngữ và thư viện, và C++ Core Guidelines (do Bjarne Stroustrup và Herb Sutter biên tập) cho thực hành tốt. Trang Standard C++ Foundation isocpp.org có trang bắt đầu kèm sách đề xuất. Học CMake để build dự án, rồi chuyển sang move semantics, template, `constexpr` và lập trình đồng thời với `std::thread`."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Có nên học C trước C++ không?",
+      "a": "Không bắt buộc. Cách dạy C++ hiện đại bắt đầu bằng `std::string`, `std::vector` và lớp, còn con trỏ thô và mảng kiểu C được giới thiệu sau. Học C trước thì có giúp bạn hiểu về bộ nhớ."
+    },
+    {
+      "q": "Nên dùng chuẩn C++ nào?",
+      "a": "C++17 và C++20 được GCC, Clang và MSVC hiện nay hỗ trợ tốt, còn hỗ trợ C++23 đang tăng dần. Hãy chọn một chuẩn tường minh bằng cờ như `-std=c++20`."
+    },
+    {
+      "q": "Con trỏ và tham chiếu khác nhau thế nào?",
+      "a": "Tham chiếu là một bí danh phải được gắn khi tạo, không thể gắn lại hay bằng null. Con trỏ lưu một địa chỉ, có thể bằng null và có thể đổi để trỏ chỗ khác."
+    },
+    {
+      "q": "C++ có khó học không?",
+      "a": "Ngôn ngữ này rất lớn, nên hãy chuẩn bị cho đường học dài hơn Python hoặc Go. Bám vào các tính năng hiện đại, container chuẩn và con trỏ thông minh sẽ tránh được hầu hết bẫy kinh điển."
+    }
+  ]
+}

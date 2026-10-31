@@ -1,0 +1,210 @@
+{
+  "title": "Tutorial F#: tipe, pattern matching, pipeline, dan .NET — cv.cm",
+  "description": "Belajar F# langkah demi langkah: .NET SDK, script dengan dotnet fsi, let binding, list, record, discriminated union, pattern matching, dan Result.",
+  "h1": "Tutorial F# untuk pemula",
+  "answer": "F# adalah bahasa .NET bertipe statis yang mengutamakan gaya fungsional. F# menyimpulkan sebagian besar tipe untuk Anda, memakai indentasi alih-alih kurung kurawal, dan menjadikan data immutable, pattern matching, serta operator pipeline `|>` sebagai cara normal menulis kode, sambil tetap memberi akses penuh ke library .NET. Pasang .NET SDK dan jalankan script dengan `dotnet fsi hello.fsx`.",
+  "sections": [
+    {
+      "h": "Apa itu F# dan siapa yang memakainya",
+      "body": [
+        "F# dirancang oleh Don Syme di Microsoft Research dan kini merupakan bahasa open source yang dipelihara oleh Microsoft dan komunitas F# Software Foundation. F# termasuk keluarga bahasa ML (seperti OCaml) dan berjalan di .NET pada Windows, macOS, dan Linux.",
+        "Tim memakai F# untuk pemodelan keuangan, analisis data, logika bisnis yang kaya domain, back end web, dan scripting. Karena dikompilasi ke intermediate language .NET yang sama dengan C#, proyek F# dapat memakai paket NuGet apa pun dan dapat dipanggil dari kode C#."
+      ]
+    },
+    {
+      "h": "Memasang F# dan menjalankan Hello, world",
+      "body": [
+        "Pasang .NET SDK dari Microsoft. F# sudah disertakan, jadi tidak perlu instalasi terpisah. Untuk percobaan cepat, tulis file script dengan ekstensi `.fsx` dan jalankan dengan F# Interactive (`dotnet fsi`).",
+        {
+          "code": "// hello.fsx\nprintfn \"Hello, world!\"",
+          "lang": "fsharp"
+        },
+        {
+          "code": "dotnet fsi hello.fsx\n# Hello, world!\ndotnet new console -lang \"F#\" -o HelloApp\ncd HelloApp\ndotnet run",
+          "lang": "shell"
+        },
+        "Kelompok perintah kedua membuat proyek console lengkap dengan file `.fsproj` dan `Program.fs`. Dalam proyek, urutan file yang terdaftar di `.fsproj` penting: sebuah file hanya dapat memakai kode dari file di atasnya."
+      ]
+    },
+    {
+      "h": "Nilai dan tipe dasar",
+      "body": [
+        "`let` mengikat sebuah nama ke nilai. Binding bersifat immutable kecuali Anda menandainya `mutable`, lalu Anda mengubahnya dengan `<-`, bukan `=`.",
+        {
+          "table": {
+            "head": [
+              "Tipe",
+              "Contoh",
+              "Catatan"
+            ],
+            "rows": [
+              [
+                "int",
+                "`42`",
+                "Integer 32-bit"
+              ],
+              [
+                "float",
+                "`3.14`",
+                "Floating point 64-bit (`double` .NET)"
+              ],
+              [
+                "decimal",
+                "`19.99m`",
+                "Desimal eksak, cocok untuk uang"
+              ],
+              [
+                "string",
+                "`\"hello\"`",
+                "String .NET yang immutable"
+              ],
+              [
+                "char",
+                "`'a'`",
+                "Satu karakter"
+              ],
+              [
+                "bool",
+                "`true`, `false`",
+                "Nilai logika"
+              ],
+              [
+                "unit",
+                "`()`",
+                "\"Tanpa nilai\", seperti `void`"
+              ]
+            ]
+          }
+        },
+        {
+          "code": "let name = \"Ana\"\nlet age = 30\nlet mutable count = 0\ncount <- count + 1\nprintfn \"%s is %d, count = %d\" name age count\n// Ana is 30, count = 1\nlet total = float age + 0.5   // explicit conversion needed",
+          "lang": "fsharp"
+        },
+        "F# tidak pernah mengonversi angka secara implisit: `1 + 2.0` adalah compile error. Konversikan dengan fungsi seperti `float`, `int`, dan `string`."
+      ]
+    },
+    {
+      "h": "Alur kontrol dan fungsi",
+      "body": [
+        "`if` adalah ekspresi yang mengembalikan nilai, jadi kedua cabang harus bertipe sama. Perulangan ada (`for`, `while`), tetapi sebagian besar kode memakai fungsi koleksi.",
+        {
+          "code": "let sign n =\n    if n > 0 then \"positive\"\n    elif n < 0 then \"negative\"\n    else \"zero\"\nfor i in 1 .. 3 do\n    printfn \"%d squared is %d\" i (i * i)\nlet add x y = x + y          // int -> int -> int\nlet add5 = add 5             // partial application\nprintfn \"%d\" (add5 10)       // 15\nlet square = fun x -> x * x\n[1; 2; 3; 4]\n|> List.filter (fun x -> x % 2 = 0)\n|> List.map square\n|> printfn \"%A\"              // [4; 16]",
+          "lang": "fsharp"
+        },
+        "Argumen dipisahkan spasi, bukan koma. Setiap fungsi menerima satu argumen setiap kali (currying), jadi `add 5` mengembalikan fungsi baru. Operator pipeline `x |> f` berarti `f x` dan memungkinkan Anda menulis transformasi data dari atas ke bawah. Indentasi bermakna: isi sebuah fungsi atau perulangan harus menjorok di bawahnya."
+      ]
+    },
+    {
+      "h": "Koleksi, record, dan option",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Koleksi",
+              "Literal",
+              "Catatan"
+            ],
+            "rows": [
+              [
+                "List",
+                "`[1; 2; 3]`",
+                "Linked list immutable, pilihan default"
+              ],
+              [
+                "Array",
+                "`[| 1; 2; 3 |]`",
+                "Ukuran tetap, elemen mutable, pengindeksan cepat"
+              ],
+              [
+                "Sequence",
+                "`seq { 1 .. 10 }`",
+                "Lazy, dihitung sesuai kebutuhan"
+              ],
+              [
+                "Map",
+                "`Map [\"a\", 1; \"b\", 2]`",
+                "Dictionary immutable"
+              ],
+              [
+                "Set",
+                "`set [1; 2; 2]`",
+                "Set immutable berisi nilai unik"
+              ]
+            ]
+          }
+        },
+        {
+          "code": "type Person = { Name: string; Age: int }\nlet ana = { Name = \"Ana\"; Age = 30 }\nlet older = { ana with Age = 31 }       // copy with one change\nlet people = [ ana; { Name = \"Ben\"; Age = 17 } ]\nlet adult = people |> List.tryFind (fun p -> p.Age >= 18)\nmatch adult with\n| Some p -> printfn \"First adult: %s\" p.Name\n| None -> printfn \"No adults\"\n// First adult: Ana",
+          "lang": "fsharp"
+        },
+        "Record adalah tipe immutable dengan field bernama dan kesamaan struktural. F# tidak punya null untuk tipenya sendiri; nilai yang hilang berupa `Option`: `Some value` atau `None`. Fungsi seperti `List.tryFind` mengembalikan option, dan compiler memaksa Anda menangani kedua kasus."
+      ]
+    },
+    {
+      "h": "Fitur khas: discriminated union dan pattern matching",
+      "body": [
+        "Discriminated union menggambarkan nilai yang tepat salah satu dari beberapa case bernama, masing-masing dengan datanya sendiri. `match` memeriksa case-nya, dan compiler memberi peringatan jika Anda melewatkan satu.",
+        {
+          "code": "type Shape =\n    | Circle of radius: float\n    | Rectangle of width: float * height: float\nlet area shape =\n    match shape with\n    | Circle r -> System.Math.PI * r * r\n    | Rectangle (w, h) -> w * h\n[ Circle 1.0; Rectangle (2.0, 3.0) ]\n|> List.map area\n|> List.iter (printfn \"%.2f\")\n// 3.14\n// 6.00",
+          "lang": "fsharp"
+        },
+        "Fitur terkenal lainnya adalah inferensi tipe (Anda jarang menulis anotasi tipe), units of measure (`float<m>` tidak dapat dijumlahkan dengan `float<s>`), dan computation expression seperti `task { ... }` dan `async { ... }` untuk kode asinkron."
+      ]
+    },
+    {
+      "h": "Penanganan error",
+      "body": [
+        "Untuk kegagalan yang sudah diperkirakan, F# yang idiomatis mengembalikan `Result`: `Ok value` atau `Error info`. Untuk kegagalan tak terduga, exception .NET tersedia lewat `try ... with`, `failwith`, dan `raise`.",
+        {
+          "code": "let parseAge (s: string) =\n    match System.Int32.TryParse(s) with\n    | true, n when n >= 0 -> Ok n\n    | true, _ -> Error \"Age must not be negative\"\n    | false, _ -> Error \"Not a number\"\nmatch parseAge \"abc\" with\n| Ok n -> printfn \"Age %d\" n\n| Error msg -> printfn \"Error: %s\" msg\n// Error: Not a number\nlet safeDivide a b =\n    try Some (a / b)\n    with :? System.DivideByZeroException -> None\nprintfn \"%A\" (safeDivide 10 0)   // None",
+          "lang": "fsharp"
+        },
+        "`TryParse` punya parameter `out` di .NET; F# mengubahnya menjadi tuple `(success, value)` yang dapat langsung Anda match."
+      ]
+    },
+    {
+      "h": "Program lengkap kecil: frekuensi kata",
+      "body": [
+        {
+          "code": "let text = \"the cat and the hat and the bat\"\ntext.Split(' ')\n|> Array.countBy id\n|> Array.sortByDescending snd\n|> Array.truncate 2\n|> Array.iter (fun (word, n) -> printfn \"%s %d\" word n)\n// the 3\n// and 2",
+          "lang": "fsharp"
+        },
+        "`Array.countBy id` mengelompokkan kata yang sama dan mengembalikan pasangan `(word, count)`, `snd` mengambil elemen kedua dari setiap pasangan untuk pengurutan, dan hasilnya dicetak dengan lambda yang membongkar tuple.",
+        {
+          "note": "Kesalahan umum pemula: menulis `[1, 2, 3]` (itu list berisi satu tuple; gunakan titik koma `[1; 2; 3]`); memakai `=` untuk mengubah nilai mutable (`=` membandingkan, `<-` meng-assign); memanggil fungsi sebagai `add(1, 2)` padahal didefinisikan sebagai `add x y`; mencampur `int` dan `float` tanpa konversi; dan menaruh file pada urutan yang salah di `.fsproj`."
+        }
+      ]
+    },
+    {
+      "h": "Langkah selanjutnya",
+      "body": [
+        {
+          "ul": [
+            "Microsoft Learn: dokumentasi F#, termasuk \"Tour of F#\" dan referensi bahasa.",
+            "Berlatihlah di `dotnet fsi`, tempat Anda dapat menempelkan kode dan langsung melihat hasilnya; akhiri input dengan `;;`.",
+            "Pelajari modul `List`, `Array`, `Seq`, `Option`, dan `Result`; sebagian besar kode sehari-hari dibangun dari modul-modul itu.",
+            "Lihat framework dan library web F# di NuGet setelah dasar-dasarnya nyaman."
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Apakah F# hanya untuk Windows?",
+      "a": "Tidak. F# berjalan di .NET yang lintas platform, jadi Anda dapat membangun dan menjalankan program F# di Windows, macOS, dan Linux."
+    },
+    {
+      "q": "Apa perbedaan F# dan C#?",
+      "a": "Keduanya berjalan di .NET dan dapat memakai library yang sama. C# mengutamakan berorientasi objek dengan fitur fungsional yang ditambahkan, sedangkan F# mengutamakan fungsional, dengan data immutable, inferensi tipe, dan pattern matching sebagai default."
+    },
+    {
+      "q": "Apa arti |> di F#?",
+      "a": "`x |> f` adalah operator pipeline dan berarti `f x`. Operator ini meneruskan nilai di kiri sebagai argumen terakhir fungsi di kanan, sehingga rangkaian transformasi terbaca dari atas ke bawah."
+    },
+    {
+      "q": "Apakah F# berkaitan dengan OCaml?",
+      "a": "Ya. F# termasuk keluarga ML dan sintaks intinya dekat dengan OCaml, tetapi dibangun untuk .NET, memakai indentasi bermakna secara default, dan punya fitur sendiri seperti computation expression."
+    }
+  ]
+}

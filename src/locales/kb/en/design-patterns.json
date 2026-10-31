@@ -1,0 +1,295 @@
+{
+  "title": "Design patterns: the 23 GoF patterns, categories and how to choose — cv.cm",
+  "description": "What software design patterns are, the Gang of Four book, a table of all 23 creational, structural and behavioral patterns, how to choose one, and their limits.",
+  "h1": "Design patterns explained: the 23 Gang of Four patterns",
+  "answer": "A design pattern is a named, reusable solution to a problem that keeps appearing in software design, described at a level above concrete code. The classic catalog is the 1994 book Design Patterns: Elements of Reusable Object-Oriented Software by Gamma, Helm, Johnson and Vlissides (the \"Gang of Four\", GoF), which lists 23 patterns in three groups: 5 creational, 7 structural and 11 behavioral. Patterns give teams a shared vocabulary, but they are tools for specific problems, not goals in themselves.",
+  "sections": [
+    {
+      "h": "What a design pattern is",
+      "body": [
+        "A design pattern is not a library or a piece of code you copy. It is a description of a recurring problem, the core of a solution, and the trade-offs of using it. You still write the code yourself, adapted to your language and your program.",
+        "The GoF book describes every pattern with four essential elements:",
+        {
+          "ul": [
+            "Name: a word or two that lets developers talk about the design, such as \"we can wrap it in a Decorator\".",
+            "Problem: when to apply the pattern, and the situation that makes it necessary.",
+            "Solution: the classes or objects involved, their responsibilities and how they collaborate.",
+            "Consequences: the costs and benefits, such as more flexibility in exchange for more classes."
+          ]
+        },
+        "The idea comes from architecture. Christopher Alexander's book A Pattern Language (1977) described recurring solutions for buildings and towns, and the GoF authors applied the same idea to object-oriented software."
+      ]
+    },
+    {
+      "h": "The Gang of Four book",
+      "body": [
+        "Design Patterns: Elements of Reusable Object-Oriented Software was published by Addison-Wesley in 1994. Its examples are in C++ and Smalltalk, but the patterns apply to any object-oriented language, including Java, C#, TypeScript, Python and Kotlin.",
+        "Besides the catalog, the book argues for two general principles that run through most of the patterns:",
+        {
+          "ul": [
+            "Program to an interface, not an implementation. Code should depend on what an object can do, not on its concrete class.",
+            "Favor object composition over class inheritance. Building behavior by combining objects is usually more flexible than building deep class hierarchies."
+          ]
+        },
+        "The book also classifies each pattern by scope: class patterns use inheritance and are fixed at compile time (Factory Method, class Adapter, Interpreter, Template Method), while object patterns use composition and can change at run time (all the others)."
+      ]
+    },
+    {
+      "h": "All 23 GoF patterns by category",
+      "body": [
+        "Creational patterns deal with how objects are created. Structural patterns deal with how classes and objects are combined into larger structures. Behavioral patterns deal with how objects communicate and share responsibilities.",
+        {
+          "table": {
+            "head": [
+              "Pattern",
+              "Category",
+              "Intent in one line"
+            ],
+            "rows": [
+              [
+                "Abstract Factory",
+                "Creational",
+                "Create families of related objects without naming their concrete classes."
+              ],
+              [
+                "Builder",
+                "Creational",
+                "Construct a complex object step by step, separating construction from representation."
+              ],
+              [
+                "Factory Method",
+                "Creational",
+                "Let subclasses decide which class to instantiate."
+              ],
+              [
+                "Prototype",
+                "Creational",
+                "Create new objects by copying an existing instance."
+              ],
+              [
+                "Singleton",
+                "Creational",
+                "Ensure a class has only one instance and give global access to it."
+              ],
+              [
+                "Adapter",
+                "Structural",
+                "Convert one interface into another that clients expect."
+              ],
+              [
+                "Bridge",
+                "Structural",
+                "Separate an abstraction from its implementation so both can vary independently."
+              ],
+              [
+                "Composite",
+                "Structural",
+                "Treat individual objects and trees of objects in the same way."
+              ],
+              [
+                "Decorator",
+                "Structural",
+                "Add responsibilities to an object dynamically by wrapping it."
+              ],
+              [
+                "Facade",
+                "Structural",
+                "Provide one simple interface to a complex subsystem."
+              ],
+              [
+                "Flyweight",
+                "Structural",
+                "Share common state to support large numbers of small objects efficiently."
+              ],
+              [
+                "Proxy",
+                "Structural",
+                "Provide a stand-in that controls access to another object."
+              ],
+              [
+                "Chain of Responsibility",
+                "Behavioral",
+                "Pass a request along a chain of handlers until one handles it."
+              ],
+              [
+                "Command",
+                "Behavioral",
+                "Turn a request into an object, so it can be queued, logged or undone."
+              ],
+              [
+                "Interpreter",
+                "Behavioral",
+                "Represent a simple language's grammar as classes and evaluate sentences in it."
+              ],
+              [
+                "Iterator",
+                "Behavioral",
+                "Access elements of a collection in order without exposing its internal structure."
+              ],
+              [
+                "Mediator",
+                "Behavioral",
+                "Centralize communication between objects so they do not refer to each other directly."
+              ],
+              [
+                "Memento",
+                "Behavioral",
+                "Capture and restore an object's state without breaking encapsulation."
+              ],
+              [
+                "Observer",
+                "Behavioral",
+                "Notify all dependents automatically when an object changes."
+              ],
+              [
+                "State",
+                "Behavioral",
+                "Let an object change its behavior when its internal state changes."
+              ],
+              [
+                "Strategy",
+                "Behavioral",
+                "Make a family of algorithms interchangeable behind one interface."
+              ],
+              [
+                "Template Method",
+                "Behavioral",
+                "Define an algorithm's skeleton and let subclasses fill in some steps."
+              ],
+              [
+                "Visitor",
+                "Behavioral",
+                "Add new operations to a class hierarchy without changing those classes."
+              ]
+            ]
+          }
+        },
+        {
+          "note": "Many patterns look alike in a class diagram. Adapter, Decorator and Proxy all wrap an object; Strategy and State both delegate to an interchangeable object. They differ in intent, so learn the problem each one solves, not only its shape."
+        }
+      ]
+    },
+    {
+      "h": "A pattern in practice: Strategy in TypeScript",
+      "body": [
+        "Here is a small example of a pattern at work. A checkout must calculate shipping in different ways. Instead of a growing `if`/`else` chain, each rule becomes an interchangeable object behind one interface:",
+        {
+          "code": "interface ShippingStrategy {\n  cost(weightKg: number): number;\n}\nclass FlatRate implements ShippingStrategy {\n  cost(): number { return 5; }\n}\nclass PerKilogram implements ShippingStrategy {\n  cost(weightKg: number): number { return 2 * weightKg; }\n}\nclass Checkout {\n  constructor(private shipping: ShippingStrategy) {}\n  setShipping(s: ShippingStrategy): void { this.shipping = s; }\n  total(itemsPrice: number, weightKg: number): number {\n    return itemsPrice + this.shipping.cost(weightKg);\n  }\n}\nconst checkout = new Checkout(new FlatRate());\nconsole.log(checkout.total(40, 3)); // 45\ncheckout.setShipping(new PerKilogram());\nconsole.log(checkout.total(40, 3)); // 46",
+          "lang": "typescript"
+        },
+        "In TypeScript, functions are values, so the same design can be written with less code. This is a common theme: many patterns become simpler, or disappear, in languages with first-class functions.",
+        {
+          "code": "type Shipping = (weightKg: number) => number;\nconst flatRate: Shipping = () => 5;\nconst perKilogram: Shipping = (w) => 2 * w;\nfunction total(itemsPrice: number, weightKg: number, shipping: Shipping): number {\n  return itemsPrice + shipping(weightKg);\n}\nconsole.log(total(40, 3, flatRate));    // 45\nconsole.log(total(40, 3, perKilogram)); // 46",
+          "lang": "typescript"
+        }
+      ]
+    },
+    {
+      "h": "How to choose a pattern",
+      "body": [
+        "Start from the problem, never from the pattern. A pattern is worth its extra classes only when it removes a real pain in your code. These questions point to the usual candidates:",
+        {
+          "table": {
+            "head": [
+              "If your problem is...",
+              "Consider"
+            ],
+            "rows": [
+              [
+                "Code must not depend on which concrete class it creates",
+                "Factory Method, Abstract Factory"
+              ],
+              [
+                "A constructor has many optional parameters",
+                "Builder"
+              ],
+              [
+                "You need to fit an existing class into a different interface",
+                "Adapter"
+              ],
+              [
+                "A complex library needs one simple entry point",
+                "Facade"
+              ],
+              [
+                "You want to add features to objects without subclass explosion",
+                "Decorator"
+              ],
+              [
+                "You work with trees, such as menus, files or UI widgets",
+                "Composite, Visitor, Iterator"
+              ],
+              [
+                "Many parts must react when one object changes",
+                "Observer"
+              ],
+              [
+                "Behavior depends on a mode or status with many branches",
+                "State"
+              ],
+              [
+                "You need interchangeable algorithms or rules",
+                "Strategy"
+              ],
+              [
+                "Actions must be undone, queued or logged",
+                "Command, Memento"
+              ]
+            ]
+          }
+        },
+        {
+          "ol": [
+            "Write the simplest code that works first.",
+            "When the same change keeps hurting (for example, every new payment type edits five files), name the problem.",
+            "Look up the patterns that address that problem and read their consequences.",
+            "Apply the smallest version of the pattern that removes the pain, and stop there."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Criticism and limits",
+      "body": [
+        "Design patterns are useful, but they are often misused. The common criticisms are worth knowing:",
+        {
+          "ul": [
+            "Overuse: adding factories, interfaces and managers \"just in case\" makes simple code hard to read. This is sometimes called pattern fever.",
+            "Missing language features: in 1996 Peter Norvig showed that 16 of the 23 GoF patterns are invisible or simpler in dynamic languages such as Lisp and Dylan. First-class functions replace Strategy and Command, and built-in iterators replace Iterator.",
+            "Singleton in particular is widely considered an anti-pattern when used as global state, because it hides dependencies and makes testing harder.",
+            "The catalog is from 1994. Later practice added other well-known patterns that are not in the book, such as dependency injection, repository, and Model-View-Controller variants."
+          ]
+        },
+        "The lasting value of the book is the vocabulary and the habit of thinking about trade-offs. Saying \"this is an Adapter\" tells another developer a lot in two words."
+      ]
+    },
+    {
+      "h": "Related principles",
+      "body": [
+        "Patterns are often explained together with the SOLID principles of object-oriented design. For example, Strategy and Decorator are direct ways to follow the open/closed principle, and Abstract Factory is a common way to apply the dependency inversion principle. Learning the principles helps you understand why a pattern is shaped the way it is."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "How many design patterns are there?",
+      "a": "The Gang of Four book catalogs 23 patterns: 5 creational, 7 structural and 11 behavioral. Many other patterns have been described since, for example for concurrency, enterprise applications and user interfaces."
+    },
+    {
+      "q": "Which design patterns should I learn first?",
+      "a": "Start with the ones you will meet most often in real code: Strategy, Observer, Factory Method, Decorator, Adapter and Facade. Then learn Builder, Composite and Command."
+    },
+    {
+      "q": "Are design patterns still relevant?",
+      "a": "Yes, as a shared vocabulary and as solutions to recurring problems. Some patterns are now built into languages and frameworks, so you use them without writing the full class structure."
+    },
+    {
+      "q": "Do design patterns only apply to object-oriented languages?",
+      "a": "The GoF patterns were written for object-oriented languages, but the underlying ideas appear everywhere. In functional languages many of them become simple higher-order functions."
+    },
+    {
+      "q": "What is the difference between a design pattern and an algorithm?",
+      "a": "An algorithm is a precise sequence of steps that solves a computational problem, such as sorting. A design pattern describes how to organize code and responsibilities, and it is adapted to each program rather than followed step by step."
+    }
+  ]
+}

@@ -1,0 +1,193 @@
+{
+  "title": "Hướng dẫn học Dart: null safety, hàm, collection và async — cv.cm",
+  "description": "Học Dart cơ bản từ đầu: chạy Hello, world, biến và kiểu, sound null safety, switch pattern, hàm, list và map, record, lớp và async/await, kèm ví dụ minh họa.",
+  "h1": "Học Dart cơ bản cho người mới bắt đầu",
+  "answer": "Dart là ngôn ngữ hướng đối tượng, kiểu tĩnh do Google phát triển, nổi tiếng nhất là ngôn ngữ của framework ứng dụng Flutter. Dart có sound null safety, biên dịch ra mã native cũng như JavaScript hoặc WebAssembly, và hỗ trợ hot reload nhanh khi phát triển. Trang này hướng dẫn cài đặt, kiểu dữ liệu, null safety, cấu trúc điều khiển, hàm, collection, lớp, mã bất đồng bộ và xử lý lỗi.",
+  "sections": [
+    {
+      "h": "Dart là gì và dùng để làm gì",
+      "body": [
+        "Dart là ngôn ngữ lập trình tối ưu cho phía client do Google phát triển. Dart có kiểu tĩnh kèm suy luận kiểu, có sound null safety, và biên dịch cả sang mã máy native (cho di động, desktop và máy chủ) lẫn JavaScript hoặc WebAssembly (cho web). Khi phát triển, Dart chạy trên máy ảo có hot reload, nên thay đổi hiện ra trong ứng dụng đang chạy chỉ sau vài giây.",
+        "Hầu hết mọi người học Dart để xây dựng ứng dụng bằng Flutter, bộ công cụ UI của Google cho Android, iOS, web, Windows, macOS và Linux từ một mã nguồn duy nhất. Dart cũng được dùng cho công cụ dòng lệnh và dịch vụ backend."
+      ]
+    },
+    {
+      "h": "Cài đặt Dart và chạy Hello, world",
+      "body": [
+        "Cài Dart SDK từ dart.dev (hoặc cài Flutter, bộ này đã kèm sẵn Dart). Mọi chương trình Dart đều bắt đầu từ hàm `main` ở cấp cao nhất.",
+        {
+          "code": "// hello.dart\nvoid main() {\n  print('Hello, world!');\n}",
+          "lang": "dart"
+        },
+        {
+          "code": "dart run hello.dart\n# Hello, world!\ndart compile exe hello.dart   # builds a native executable\ndart create my_app            # creates a new console project",
+          "lang": "shell"
+        },
+        "Bạn cũng có thể chạy thử mọi ví dụ trong trang này trên DartPad, trình soạn thảo trên trình duyệt tại dartpad.dev."
+      ]
+    },
+    {
+      "h": "Biến và các kiểu dữ liệu cơ bản",
+      "body": [
+        "Dùng `var` để trình biên dịch tự suy ra kiểu, `final` cho biến chỉ gán một lần, và `const` cho hằng số xác định lúc biên dịch. Bạn luôn có thể ghi kiểu tường minh thay vào đó.",
+        {
+          "code": "void main() {\n  var name = 'Dart';        // inferred as String\n  int year = 2011;          // explicit type\n  final now = DateTime.now(); // set once, at run time\n  const pi = 3.14159;       // compile-time constant\n  double ratio = 2;         // int literal becomes 2.0\n  bool ok = year > 2000;\n  print('$name since $year, pi=${pi.toStringAsFixed(2)}, ok=$ok, ratio=$ratio');\n  // Dart since 2011, pi=3.14, ok=true, ratio=2.0\n  print(now.year > 2000);   // true\n}",
+          "lang": "dart"
+        },
+        {
+          "table": {
+            "head": [
+              "Kiểu",
+              "Ví dụ",
+              "Ghi chú"
+            ],
+            "rows": [
+              [
+                "`int`",
+                "`42`",
+                "số nguyên; 64 bit trên các nền tảng native"
+              ],
+              [
+                "`double`",
+                "`3.14`",
+                "số thực dấu phẩy động 64 bit"
+              ],
+              [
+                "`num`",
+                "`7` or `7.5`",
+                "kiểu cha của `int` và `double`"
+              ],
+              [
+                "`bool`",
+                "`true`",
+                "điều kiện chỉ chấp nhận `true` và `false`"
+              ],
+              [
+                "`String`",
+                "`'hi'`",
+                "UTF-16; hỗ trợ nội suy `$x` và `${expr}`"
+              ],
+              [
+                "`dynamic`",
+                "bất kỳ giá trị nào",
+                "tắt kiểm tra tĩnh; nên tránh trong hầu hết mã"
+              ]
+            ]
+          }
+        },
+        "Trên web, giá trị `int` được biểu diễn như số JavaScript, nên các số nguyên rất lớn có thể mất độ chính xác ở đó."
+      ]
+    },
+    {
+      "h": "Sound null safety",
+      "body": [
+        "Từ Dart 3, toàn bộ mã Dart dùng sound null safety. Biến kiểu `String` không bao giờ là null; để cho phép null, hãy viết `String?`. Trình biên dịch kiểm tra mọi chỗ dùng, nên lỗi null được phát hiện trước khi chương trình chạy.",
+        {
+          "code": "int lengthOf(String? s) {\n  // return s.length;         // compile error: s might be null\n  if (s == null) return 0;\n  return s.length;            // promoted to String after the check\n}\nvoid main() {\n  String? nickname;\n  print(nickname?.length);    // null (null-aware access)\n  print(nickname ?? 'guest'); // guest (default if null)\n  nickname ??= 'dee';         // assign only if null\n  print(lengthOf(nickname));  // 3\n  late String config;         // initialized later, checked at run time\n  config = 'loaded';\n  print(config);              // loaded\n}",
+          "lang": "dart"
+        },
+        {
+          "note": "Toán tử `!` (ví dụ `s!.length`) báo cho trình biên dịch rằng giá trị không null và sẽ ném lỗi lúc chạy nếu bạn sai. Nên dùng kiểm tra null hoặc `??`. Lưu ý thêm rằng `late` dời việc kiểm tra sang lúc chạy: đọc biến `late` trước khi gán sẽ ném lỗi."
+        }
+      ]
+    },
+    {
+      "h": "Cấu trúc điều khiển",
+      "body": [
+        "Dart có `if`, `for`, `while` và `do-while` quen thuộc, cùng vòng lặp `for-in` trên mọi iterable. Từ Dart 3, `switch` hỗ trợ so khớp mẫu (pattern matching) và có thể dùng như một biểu thức.",
+        {
+          "code": "void main() {\n  var scores = [72, 95, 48];\n  for (var s in scores) {\n    if (s >= 90) {\n      print('$s excellent');\n    } else if (s >= 50) {\n      print('$s pass');\n    } else {\n      print('$s fail');\n    }\n  }\n  for (var i = 0; i < 3; i++) {\n    print('i = $i');\n  }\n  var day = 6;\n  var kind = switch (day) {\n    6 || 7 => 'weekend',\n    >= 1 && <= 5 => 'weekday',\n    _ => 'invalid',\n  };\n  print(kind); // weekend\n}",
+          "lang": "dart"
+        }
+      ]
+    },
+    {
+      "h": "Hàm",
+      "body": [
+        "Hàm là đối tượng hạng nhất. Tham số có thể là vị trí, vị trí tùy chọn trong `[]`, hoặc có tên trong `{}`. Tham số có tên là tùy chọn trừ khi đánh dấu `required`. Cú pháp mũi tên `=>` là cách viết tắt cho hàm trả về một biểu thức.",
+        {
+          "code": "int add(int a, int b) => a + b;\nString greet(String name, {String greeting = 'Hello', required bool loud}) {\n  var text = '$greeting, $name';\n  return loud ? text.toUpperCase() : text;\n}\nString label(String text, [int? width]) =>\n    width == null ? text : text.padRight(width, '.');\nvoid main() {\n  print(add(2, 3));                              // 5\n  print(greet('Ana', loud: false));              // Hello, Ana\n  print(greet('Ana', greeting: 'Hi', loud: true)); // HI, ANA\n  print(label('id', 5));                         // id...\n  var twice = (int x) => x * 2;                  // anonymous function\n  print([1, 2, 3].map(twice).toList());          // [2, 4, 6]\n}",
+          "lang": "dart"
+        }
+      ]
+    },
+    {
+      "h": "Collection: List, Set, Map và record",
+      "body": [
+        "Các collection cốt lõi là `List` (có thứ tự), `Set` (phần tử duy nhất) và `Map` (cặp khóa-giá trị). Literal của collection hỗ trợ `if`, `for` và toán tử trải `...`. Record, thêm vào ở Dart 3, gom nhiều giá trị mà không cần khai báo lớp.",
+        {
+          "code": "void main() {\n  var nums = [3, 1, 2];               // List<int>\n  nums.add(4);\n  nums.sort();\n  print(nums);                        // [1, 2, 3, 4]\n  var tags = {'dart', 'flutter', 'dart'};\n  print(tags.length);                 // 2\n  var ages = {'Ann': 31, 'Bo': 25};   // Map<String, int>\n  ages['Cy'] = 40;\n  print(ages['Bo']);                  // 25\n  var showAll = false;\n  var menu = ['Home', if (showAll) 'Admin', for (var n in nums) 'Item $n'];\n  print(menu);  // [Home, Item 1, Item 2, Item 3, Item 4]\n  (String, int) pair = ('Ann', 31);   // a record\n  var (who, age) = pair;              // destructuring\n  print('$who is $age');              // Ann is 31\n}",
+          "lang": "dart"
+        }
+      ]
+    },
+    {
+      "h": "Lớp và async/await",
+      "body": [
+        "Dart hướng đối tượng: mọi giá trị đều là đối tượng. Lớp hỗ trợ constructor với tham số khởi tạo (`this.x`), constructor có tên, getter, mixin và interface. Mã bất đồng bộ dùng `Future` và `Stream` với `async` và `await`, giúp ứng dụng Flutter luôn phản hồi khi chờ tệp hoặc mạng.",
+        {
+          "code": "class Point {\n  final double x, y;\n  const Point(this.x, this.y);\n  Point.origin() : x = 0, y = 0;     // named constructor\n  double get sum => x + y;           // getter\n  @override\n  String toString() => 'Point($x, $y)';\n}\nFuture<String> fetchUser() async {\n  await Future.delayed(Duration(milliseconds: 100));\n  return 'ana';\n}\nFuture<void> main() async {\n  print(Point(1, 2).sum);            // 3.0\n  print(Point.origin());             // Point(0.0, 0.0)\n  var user = await fetchUser();\n  print('user: $user');              // user: ana\n}",
+          "lang": "dart"
+        }
+      ]
+    },
+    {
+      "h": "Xử lý lỗi",
+      "body": [
+        "Ném ngoại lệ bằng `throw` và xử lý bằng `try`, `on`, `catch` và `finally`. Dùng `on SomeType` để bắt một kiểu cụ thể. Dart phân biệt `Exception` (vấn đề dự kiến mà chương trình có thể xử lý) với `Error` (lỗi lập trình, như assertion thất bại hoặc lỗi vượt phạm vi) mà thông thường bạn không nên bắt.",
+        {
+          "code": "int parseAge(String s) {\n  var n = int.tryParse(s);            // null instead of throwing\n  if (n == null || n < 0) {\n    throw FormatException('Not a valid age: $s');\n  }\n  return n;\n}\nvoid main() {\n  for (var input in ['42', 'abc']) {\n    try {\n      print(parseAge(input));\n    } on FormatException catch (e) {\n      print('Error: ${e.message}');\n    } finally {\n      print('checked $input');\n    }\n  }\n}\n// 42 / checked 42 / Error: Not a valid age: abc / checked abc",
+          "lang": "dart"
+        }
+      ]
+    },
+    {
+      "h": "Một chương trình hoàn chỉnh nhỏ: tổng tiền giỏ hàng",
+      "body": [
+        "Chương trình này mô hình hóa sản phẩm bằng một lớp, lưu giỏ hàng trong một map và in hóa đơn. Nó kết hợp lớp, map, định dạng chuỗi và các phương thức của collection.",
+        {
+          "code": "class Product {\n  final String name;\n  final double price;\n  const Product(this.name, this.price);\n}\nvoid main() {\n  const apple = Product('Apple', 0.5);\n  const bread = Product('Bread', 2.25);\n  final cart = <Product, int>{apple: 6, bread: 2};\n  var total = 0.0;\n  cart.forEach((product, qty) {\n    final line = product.price * qty;\n    total += line;\n    print('${product.name.padRight(6)} x$qty  ${line.toStringAsFixed(2)}');\n  });\n  final count = cart.values.reduce((a, b) => a + b);\n  print('$count items, total ${total.toStringAsFixed(2)}');\n}\n// Apple  x6  3.00\n// Bread  x2  4.50\n// 8 items, total 7.50",
+          "lang": "dart"
+        },
+        {
+          "note": "Các lỗi thường gặp của người mới: quên `await` (bạn nhận về một `Future` thay vì giá trị); dùng `dynamic` hoặc để kiểu là `Object` và mất kiểm tra lúc biên dịch; lạm dụng `!` và `late`; nhầm `final` (gán một lần) với `const` (biết lúc biên dịch); và sửa list trong lúc đang duyệt nó."
+        }
+      ]
+    },
+    {
+      "h": "Học tiếp ở đâu",
+      "body": [
+        {
+          "ul": [
+            "Language tour và các hướng dẫn về Dart tại dart.dev.",
+            "Effective Dart, hướng dẫn chính thức về phong cách và thiết kế.",
+            "Tài liệu Flutter tại flutter.dev nếu bạn muốn xây dựng ứng dụng.",
+            "pub.dev, kho gói của Dart và Flutter."
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Dart chỉ dùng cho Flutter thôi à?",
+      "a": "Không. Dart là ngôn ngữ đa dụng và có thể dùng để viết công cụ dòng lệnh, máy chủ và ứng dụng web. Flutter chỉ đơn giản là lý do phổ biến nhất để học Dart."
+    },
+    {
+      "q": "Dart là ngôn ngữ biên dịch hay thông dịch?",
+      "a": "Có cả hai chế độ. Khi phát triển, Dart chạy trên VM với biên dịch JIT (just-in-time) và hot reload; khi phát hành, nó được biên dịch AOT (ahead-of-time) ra mã máy native, hoặc ra JavaScript hay WebAssembly cho web."
+    },
+    {
+      "q": "final và const trong Dart khác nhau thế nào?",
+      "a": "Biến `final` chỉ gán một lần, có thể ở lúc chạy. Giá trị `const` phải biết ngay lúc biên dịch và bất biến hoàn toàn, nhờ đó Flutter có thể tái sử dụng các widget hằng."
+    },
+    {
+      "q": "Dart có giống Java hay JavaScript không?",
+      "a": "Cú pháp kiểu C và các lớp của Dart quen thuộc với lập trình viên Java, C# và JavaScript. Khác JavaScript, Dart có kiểu tĩnh và sound null safety."
+    },
+    {
+      "q": "Toán tử ?? trong Dart làm gì?",
+      "a": "`a ?? b` trả về `a` nếu `a` không null, ngược lại trả về `b`. Toán tử liên quan `a ??= b` chỉ gán `b` cho `a` khi `a` là null."
+    }
+  ]
+}

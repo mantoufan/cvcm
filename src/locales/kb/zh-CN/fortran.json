@@ -1,0 +1,169 @@
+{
+  "title": "Fortran 入门教程：现代语法、数组、模块与过程 — cv.cm",
+  "description": "学习现代 Fortran：用 gfortran 编译 Hello world、声明带类型的变量、使用循环、函数、子程序、模块、整个数组运算和 iostat。",
+  "h1": "Fortran 入门教程",
+  "answer": "Fortran 是一门为数值和科学计算而生的编译型静态类型语言。现代 Fortran（Fortran 90 及之后的标准）具有自由格式源码、模块、动态数组和强大的整个数组运算，编译器能把它转换成非常快的机器码。安装免费的 gfortran 编译器，把代码保存在 `.f90` 文件中，用 `gfortran hello.f90 -o hello` 构建。",
+  "sections": [
+    {
+      "h": "Fortran 是什么，谁在用",
+      "body": [
+        "Fortran（“公式翻译”，formula translation）由 John Backus 领导的团队在 20 世纪 50 年代于 IBM 开发，是仍在积极使用的最古老的编程语言之一。它由 ISO 标准化，主要修订版本有 Fortran 90、95、2003、2008、2018 和 2023。旧的固定格式风格（大写的 `FORTRAN 77`，代码从第 7 列开始）仍然可以编译，但新代码使用这里展示的自由格式语法。",
+        "Fortran 用于大量数值计算的场景：天气和气候模型、计算流体力学、物理和化学模拟，以及许多在超级计算机上运行的程序。NumPy 和 MATLAB 等工具底层使用的 BLAS 与 LAPACK 线性代数库，其参考实现就是用 Fortran 写的。"
+      ]
+    },
+    {
+      "h": "安装编译器并运行 Hello, world",
+      "body": [
+        "gfortran 是 GCC 的一部分，免费，可用于 Linux（软件包 `gfortran`）、macOS（Homebrew 的 `gcc`）和 Windows（MSYS2 或 WSL）。Intel 的 ifx 和 LLVM Flang 是其他编译器。Fortran 包管理器（`fpm`）可以创建和构建项目。",
+        {
+          "code": "program hello\n  implicit none\n  print *, \"Hello, world!\"\nend program hello",
+          "lang": "fortran"
+        },
+        {
+          "code": "gfortran hello.f90 -o hello\n./hello\n#  Hello, world!",
+          "lang": "shell"
+        },
+        "`print *` 使用列表导向输出，由系统为你选择间距（注意开头的空格）。Fortran 不区分大小写：`PRINT`、`Print` 和 `print` 是一样的。"
+      ]
+    },
+    {
+      "h": "变量与基本类型",
+      "body": [
+        "所有声明都放在程序单元的开头，在可执行语句之前。务必写上 `implicit none`：没有它，以 I 到 N 开头的未声明名字会被悄悄当作整数，其余的则是实数。",
+        {
+          "table": {
+            "head": [
+              "类型",
+              "声明示例",
+              "说明"
+            ],
+            "rows": [
+              [
+                "integer",
+                "`integer :: count = 3`",
+                "通常为 32 位；64 位用 `integer(int64)`"
+              ],
+              [
+                "real",
+                "`real :: x`",
+                "通常是单精度"
+              ],
+              [
+                "real(real64)",
+                "`real(real64) :: y`",
+                "双精度，科学计算的常用选择"
+              ],
+              [
+                "complex",
+                "`complex :: z = (1.0, 2.0)`",
+                "内置复数"
+              ],
+              [
+                "logical",
+                "`logical :: done = .false.`",
+                "`.true.` / `.false.`，运算符 `.and.`、`.or.`、`.not.`"
+              ],
+              [
+                "character",
+                "`character(len=20) :: name`",
+                "定长字符串，用空格填充"
+              ]
+            ]
+          }
+        },
+        {
+          "code": "program types\n  use, intrinsic :: iso_fortran_env, only: int64, real64\n  implicit none\n  integer :: count = 3\n  integer(int64) :: big = 9000000000_int64\n  real(real64) :: third\n  logical :: done = .false.\n  character(len=:), allocatable :: name\n\n  third = 1.0_real64 / 3.0_real64\n  name = \"Ana\"\n  print *, count, big, third, done, name\nend program types",
+          "lang": "fortran"
+        },
+        "后缀 `_real64` 设置字面量的 kind（精度）。没有它，`1.0` 是单精度常量，赋给双精度变量时会丢失有效数字。"
+      ]
+    },
+    {
+      "h": "控制流",
+      "body": [
+        {
+          "code": "program control\n  implicit none\n  integer :: i, total, score\n\n  total = 0\n  do i = 1, 10\n    if (mod(i, 2) == 0) cycle   ! skip even numbers\n    total = total + i\n  end do\n  print *, \"sum of odd numbers:\", total   ! 25\n\n  score = 85\n  if (score >= 90) then\n    print *, \"A\"\n  else if (score >= 80) then\n    print *, \"B\"\n  else\n    print *, \"C\"\n  end if\n\n  select case (score)\n  case (90:)\n    print *, \"excellent\"\n  case (80:89)\n    print *, \"good\"\n  case default\n    print *, \"keep going\"\n  end select\nend program control",
+          "lang": "fortran"
+        },
+        "`do i = 1, 10` 包含两端，可选的第三个值设置步长（`do i = 10, 1, -1`）。`cycle` 跳到下一次迭代，`exit` 离开循环。也可以使用 `do while (condition)`，以及带 `exit` 的普通 `do`。注释以 `!` 开头。"
+      ]
+    },
+    {
+      "h": "函数、子程序与模块",
+      "body": [
+        "Fortran 有两种过程：函数返回一个值，用在表达式中；子程序用 `call` 调用，通过参数返回结果。请把过程放进模块，这样编译器就能检查每一次调用。",
+        {
+          "code": "module geometry\n  implicit none\ncontains\n  function circle_area(r) result(a)\n    real, intent(in) :: r\n    real :: a\n    a = 3.14159 * r**2\n  end function circle_area\n\n  subroutine swap(a, b)\n    integer, intent(inout) :: a, b\n    integer :: tmp\n    tmp = a\n    a = b\n    b = tmp\n  end subroutine swap\nend module geometry\n\nprogram demo\n  use geometry\n  implicit none\n  integer :: x, y\n  x = 1\n  y = 2\n  print *, circle_area(2.0)   ! about 12.566\n  call swap(x, y)\n  print *, x, y               ! 2 1\nend program demo",
+          "lang": "fortran"
+        },
+        "参数按引用传递，所以过程可以改变调用者的变量。`intent(in)`、`intent(out)` 和 `intent(inout)` 说明并强制规定每个参数能做什么。`**` 是乘方运算符。"
+      ]
+    },
+    {
+      "h": "数组：Fortran 的标志性特性",
+      "body": [
+        "数组是 Fortran 的核心。索引默认从 1 开始（允许任意下界），算术运算无需循环就能作用于整个数组，切片使用 `a(start:end)`，许多内置函数可以直接对数组操作。",
+        {
+          "code": "program arrays\n  implicit none\n  integer :: i\n  real :: a(5), b(5)\n  real, allocatable :: c(:)\n  integer :: m(2, 3)\n\n  a = [(real(i), i = 1, 5)]   ! 1.0 2.0 3.0 4.0 5.0\n  b = 2.0 * a + 1.0           ! whole-array arithmetic\n  print *, b(2:4)             ! 5.0 7.0 9.0\n  print *, sum(a), maxval(b)  ! 15.0 11.0\n\n  allocate(c(10))\n  c = 0.0\n  print *, size(c)            ! 10\n  deallocate(c)\n\n  m = reshape([1, 2, 3, 4, 5, 6], [2, 3])\n  print *, m(2, 1)            ! 2 (column-major order)\nend program arrays",
+          "lang": "fortran"
+        },
+        "多维数组按列优先顺序存储：第一个索引在内存中变化最快，与 C 相反。为了速度，让最内层循环遍历第一个索引。其他有用的内置函数有 `matmul`、`dot_product`、`transpose`、`minval` 和 `count`。现代 Fortran 还提供 `do concurrent` 循环和 coarray，用于并行程序。"
+      ]
+    },
+    {
+      "h": "错误处理",
+      "body": [
+        "Fortran 没有异常。可能失败的语句接受一个状态参数：输入输出用 `iostat`，`allocate` 用 `stat`。检查它的值并做出反应；如果省略，出错时程序会终止。`error stop` 以错误结束程序。",
+        {
+          "code": "program parse\n  implicit none\n  character(len=20) :: text\n  integer :: n, ios\n\n  text = \"abc\"\n  read(text, *, iostat=ios) n\n  if (ios /= 0) then\n    print *, \"not a number: \", trim(text)\n  else\n    print *, \"n =\", n\n  end if\nend program parse",
+          "lang": "fortran"
+        },
+        "像上面这样从字符变量中读取，称为内部读取，是把字符串转换为数字的常用方式。"
+      ]
+    },
+    {
+      "h": "一个完整的小程序：平均值与标准差",
+      "body": [
+        {
+          "code": "module stats\n  implicit none\n  integer, parameter :: dp = kind(1.0d0)\ncontains\n  pure function mean(x) result(m)\n    real(dp), intent(in) :: x(:)\n    real(dp) :: m\n    m = sum(x) / size(x)\n  end function mean\n\n  pure function std_dev(x) result(s)\n    real(dp), intent(in) :: x(:)\n    real(dp) :: s\n    s = sqrt(sum((x - mean(x))**2) / (size(x) - 1))\n  end function std_dev\nend module stats\n\nprogram main\n  use stats\n  implicit none\n  real(dp) :: values(5)\n  values = [2.0_dp, 4.0_dp, 4.0_dp, 5.0_dp, 7.0_dp]\n  print '(a, f6.3)', \"mean    = \", mean(values)\n  print '(a, f6.3)', \"std dev = \", std_dev(values)\nend program main\n! mean    =  4.400\n! std dev =  1.817",
+          "lang": "fortran"
+        },
+        "`x(:)` 声明是假定形状数组，所以这些函数可以接受任意长度的数组。`pure` 保证函数没有副作用。格式 `'(a, f6.3)'` 打印一个字符串，后面跟一个宽 6 个字符、保留 3 位小数的实数。",
+        {
+          "note": "初学者常见错误：忘记 `implicit none`；整数除法（`1 / 2` 是 0，要写 `1.0 / 2.0`）；在双精度代码中使用单精度字面量（用了 `0.1` 而不是 `0.1_dp`）；在过程内的声明中初始化局部变量，这会使它带上 `save` 属性，从而在多次调用之间保留值；以及让最内层循环遍历最后一个索引，由于列优先顺序，这样很慢。"
+        }
+      ]
+    },
+    {
+      "h": "接下来读什么",
+      "body": [
+        {
+          "ul": [
+            "fortran-lang.org：Learn 部分有快速入门教程和最佳实践。",
+            "GNU Fortran（gfortran）手册，介绍编译器选项和内置过程。",
+            "试试 Fortran 包管理器（fpm），用它创建项目并使用 Fortran 标准库（stdlib）等库。",
+            "学习时带上警告和运行时检查来编译，例如 `gfortran -Wall -fcheck=all`。"
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Fortran 现在还有人用吗？",
+      "a": "有。Fortran 在科学计算和高性能计算中仍被广泛使用，尤其是气候、天气、物理和工程模拟，语言标准也仍在更新。"
+    },
+    {
+      "q": ".f 和 .f90 文件有什么区别？",
+      "a": "按照惯例，`.f` 和 `.for` 文件使用 FORTRAN 77 的旧固定格式，列位置有意义，而 `.f90` 文件使用自由格式源码。`.f90` 扩展名用于任何现代标准的自由格式代码，而不仅限于 Fortran 90。"
+    },
+    {
+      "q": "Fortran 为什么快？",
+      "a": "这门语言就是为数值工作而设计的：数组是内置的，别名规则让编译器可以大胆优化，而且几十年的编译器工作都针对它。写得好的 C 或 C++ 也能达到相近的速度。"
+    },
+    {
+      "q": "Fortran 数组从 0 还是 1 开始？",
+      "a": "默认从 1 开始，但你可以选择任意下界，例如 `real :: a(0:9)` 声明了十个元素，索引为 0 到 9。"
+    }
+  ]
+}

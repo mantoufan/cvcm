@@ -1,0 +1,205 @@
+{
+  "title": "Floyd-Warshall algorithm: all-pairs shortest paths in Python — cv.cm",
+  "description": "Floyd-Warshall explained: all-pairs shortest paths with three nested loops, a traced example, Python code, path reconstruction, negative cycles and O(V³) cost.",
+  "h1": "Floyd-Warshall algorithm explained: how it works, code and complexity",
+  "answer": "The Floyd-Warshall algorithm computes the shortest path between every pair of nodes in a weighted graph. It keeps a V × V distance matrix and, for each node k in turn, checks whether going through k makes the path from i to j shorter: `dist[i][j] = min(dist[i][j], dist[i][k] + dist[k][j])`. It handles negative edge weights, detects negative cycles, and runs in O(V³) time with O(V²) memory.",
+  "sections": [
+    {
+      "h": "What problem Floyd-Warshall solves",
+      "body": [
+        "Sometimes you need the distance between all pairs of places, not just from one start: a table of travel times between all cities, the latency between every pair of servers, or the full reachability of a dependency graph. Floyd-Warshall solves this all-pairs shortest path problem with a very short dynamic programming algorithm.",
+        "It was published by Robert Floyd in 1962 (\"Algorithm 97: Shortest path\"), building on Stephen Warshall's 1962 algorithm for transitive closure."
+      ]
+    },
+    {
+      "h": "The idea in plain words",
+      "body": [
+        "Number the nodes 0 to V − 1. After processing node k, `dist[i][j]` is the shortest path from i to j that uses only nodes 0 to k as intermediate stops. Allowing one more intermediate node k gives two options: the old best path that avoids k, or a path i → k → j made of two best paths that already only use nodes before k.",
+        {
+          "ol": [
+            "Fill the matrix: 0 on the diagonal, the edge weight where an edge exists, infinity elsewhere.",
+            "For k = 0 to V − 1, for every pair (i, j): if `dist[i][k] + dist[k][j] < dist[i][j]`, update it.",
+            "After the last k, the matrix holds all shortest distances. A negative value on the diagonal means a negative cycle."
+          ]
+        },
+        "The order of the loops is essential: k must be the outer loop."
+      ]
+    },
+    {
+      "h": "Worked example, step by step",
+      "body": [
+        "Directed graph with 4 nodes and edges 0→1 (3), 0→3 (7), 1→0 (8), 1→2 (2), 2→0 (5), 2→3 (1), 3→0 (2). Start matrix (row = from, column = to):",
+        {
+          "table": {
+            "head": [
+              "From \\ to",
+              "0",
+              "1",
+              "2",
+              "3"
+            ],
+            "rows": [
+              [
+                "0",
+                "0",
+                "3",
+                "∞",
+                "7"
+              ],
+              [
+                "1",
+                "8",
+                "0",
+                "2",
+                "∞"
+              ],
+              [
+                "2",
+                "5",
+                "∞",
+                "0",
+                "1"
+              ],
+              [
+                "3",
+                "2",
+                "∞",
+                "∞",
+                "0"
+              ]
+            ]
+          }
+        },
+        {
+          "ol": [
+            "k = 0: paths may pass through node 0. 1→3 becomes 8 + 7 = 15, 2→1 becomes 5 + 3 = 8 and 3→1 becomes 2 + 3 = 5.",
+            "k = 1: through node 1. 0→2 becomes 3 + 2 = 5 and 3→2 becomes 5 + 2 = 7.",
+            "k = 2: through node 2. 0→3 improves from 7 to 5 + 1 = 6, 1→3 from 15 to 2 + 1 = 3, and 1→0 from 8 to 2 + 5 = 7.",
+            "k = 3: through node 3. 1→0 improves from 7 to 3 + 2 = 5, 2→0 from 5 to 1 + 2 = 3, and 2→1 from 8 to 1 + 5 = 6."
+          ]
+        },
+        "Final matrix rows: 0 → [0, 3, 5, 6], 1 → [5, 0, 2, 3], 2 → [3, 6, 0, 1], 3 → [2, 5, 7, 0]."
+      ]
+    },
+    {
+      "h": "Python implementation",
+      "body": [
+        {
+          "code": "INF = float(\"inf\")\ndef floyd_warshall(n, edges):\n    dist = [[0 if i == j else INF for j in range(n)] for i in range(n)]\n    nxt = [[j if i == j else None for j in range(n)] for i in range(n)]\n    for u, v, w in edges:\n        dist[u][v] = w\n        nxt[u][v] = v\n    for k in range(n):\n        for i in range(n):\n            for j in range(n):\n                if dist[i][k] + dist[k][j] < dist[i][j]:\n                    dist[i][j] = dist[i][k] + dist[k][j]\n                    nxt[i][j] = nxt[i][k]\n    return dist, nxt\nedges = [(0, 1, 3), (0, 3, 7), (1, 0, 8), (1, 2, 2),\n         (2, 0, 5), (2, 3, 1), (3, 0, 2)]\ndist, nxt = floyd_warshall(4, edges)\nfor row in dist:\n    print(row)\n# [0, 3, 5, 6]\n# [5, 0, 2, 3]\n# [3, 6, 0, 1]\n# [2, 5, 7, 0]",
+          "lang": "python"
+        },
+        "The `nxt` matrix stores the first step on the best path from i to j, which is enough to rebuild any path:",
+        {
+          "code": "def path(nxt, i, j):\n    if nxt[i][j] is None:\n        return []                         # no path\n    route = [i]\n    while i != j:\n        i = nxt[i][j]\n        route.append(i)\n    return route\nprint(path(nxt, 1, 0))  # [1, 2, 3, 0]",
+          "lang": "python"
+        },
+        "If you have many nodes and want speed in Python, the same triple loop can be written with NumPy as one vectorized update per k: `d = np.minimum(d, d[:, k, None] + d[None, k, :])`."
+      ]
+    },
+    {
+      "h": "Time and space complexity",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Measure",
+              "Cost",
+              "Reason"
+            ],
+            "rows": [
+              [
+                "Time",
+                "O(V³)",
+                "Three nested loops over all nodes, independent of the number of edges."
+              ],
+              [
+                "Space",
+                "O(V²)",
+                "The distance matrix (plus the optional next-hop matrix). Updating in place is safe."
+              ],
+              [
+                "Practical size",
+                "a few hundred to a few thousand nodes",
+                "V = 1,000 means 10⁹ inner steps, which is slow in pure Python but fine in C or NumPy."
+              ]
+            ]
+          }
+        },
+        "For sparse graphs with non-negative weights, running Dijkstra from every node costs O(V × (V + E) log V), which is faster than O(V³) when E is much smaller than V²."
+      ]
+    },
+    {
+      "h": "Variants and common mistakes",
+      "body": [
+        {
+          "note": "Putting k in the inner loop is the most common bug. The algorithm is only correct when k is the outermost loop, because each round must finish using intermediate nodes 0 to k − 1 before node k is allowed."
+        },
+        {
+          "ul": [
+            "Negative cycles: after the loops, if `dist[i][i] < 0` for some i, node i lies on a negative cycle and shortest paths through it are undefined.",
+            "Transitive closure (Warshall): use booleans and replace min/plus with or/and: `reach[i][j] = reach[i][j] or (reach[i][k] and reach[k][j])`.",
+            "Minimax and maximin paths: replace `+` with `max` (or `min`) to find, for example, the path whose largest edge is as small as possible.",
+            "Use a large finite number instead of infinity only if you are sure that the sum of two of them cannot overflow; in Python, `float(\"inf\")` is the safe choice.",
+            "Initialize the diagonal to 0, and when there are parallel edges keep the smallest weight."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "When to use it and real-world uses",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Need",
+              "Best choice"
+            ],
+            "rows": [
+              [
+                "All pairs, dense or small graph (V up to a few hundred)",
+                "Floyd-Warshall"
+              ],
+              [
+                "All pairs, large sparse graph, non-negative weights",
+                "Dijkstra from every node"
+              ],
+              [
+                "All pairs, sparse graph with negative weights",
+                "Johnson's algorithm"
+              ],
+              [
+                "One source only",
+                "Dijkstra or Bellman-Ford"
+              ]
+            ]
+          }
+        },
+        {
+          "ul": [
+            "Precomputing a distance table between all stations, warehouses or cities for later lookups.",
+            "Graph analytics such as closeness centrality or the diameter of a small network.",
+            "Interview problems: find the city with the smallest number of neighbors within a distance threshold, evaluate division (ratios as path products), course prerequisites as transitive closure."
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Can Floyd-Warshall handle negative edge weights?",
+      "a": "Yes, as long as there is no negative cycle. If there is one, some diagonal entry `dist[i][i]` becomes negative, which is how you detect it."
+    },
+    {
+      "q": "Why must k be the outer loop?",
+      "a": "The algorithm builds solutions in stages: stage k allows only nodes 0 to k as intermediate stops. Every pair must be updated for stage k before any path is allowed to use node k + 1."
+    },
+    {
+      "q": "Is Floyd-Warshall dynamic programming?",
+      "a": "Yes. The state is the shortest path from i to j using intermediate nodes up to k, and each stage is computed from the previous one. The k dimension is dropped because updating in place does not change the result."
+    },
+    {
+      "q": "Floyd-Warshall or Dijkstra?",
+      "a": "Use Dijkstra for one source or for large sparse graphs with non-negative weights. Use Floyd-Warshall when you need all pairs on a small or dense graph, or when there are negative weights."
+    }
+  ]
+}

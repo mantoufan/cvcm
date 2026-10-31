@@ -1,0 +1,165 @@
+{
+  "title": "Patrón Memento: instantáneas y deshacer con un ejemplo en TypeScript — cv.cm",
+  "description": "El patrón Memento guarda y restaura el estado de un objeto sin exponer sus entrañas. Aprende originador, memento y cuidador con código de deshacer en TypeScript.",
+  "h1": "Patrón Memento explicado con ejemplos",
+  "answer": "Memento es un patrón de diseño de comportamiento que captura el estado interno de un objeto en una instantánea, llamada memento, para poder restaurar el objeto a ese estado más tarde. El objeto que posee el estado (el originador) crea y restaura mementos, mientras que otro objeto (el cuidador) solo los almacena y nunca mira dentro. Es la forma estándar de implementar deshacer, puntos de control y partidas guardadas sin romper el encapsulamiento.",
+  "sections": [
+    {
+      "h": "Intención y el problema que resuelve",
+      "body": [
+        "Intención: sin violar el encapsulamiento, capturar y externalizar el estado interno de un objeto para que pueda restaurarse a ese estado más tarde. Memento es uno de los patrones de comportamiento del libro de la Banda de los Cuatro (Gang of Four, GoF).",
+        "Imagina una aplicación de dibujo donde una figura tiene posición, tamaño, color y una lista de valores privados derivados usados para el renderizado. Quieres un botón de deshacer. El gestor de deshacer podría copiar él mismo los campos de la figura, pero entonces debe conocer cada campo privado, y cada vez que cambia la clase de la figura, el gestor de deshacer se rompe. Hacer públicos todos los campos solo para deshacer permitiría que cualquier código dejara la figura en un estado inválido.",
+        "Memento lo resuelve dejando que la propia figura produzca una instantánea. Solo la figura sabe qué hay dentro de la instantánea y cómo restaurarse a partir de ella. El gestor de deshacer trata las instantáneas como objetos opacos: las guarda en una lista y devuelve una cuando el usuario pulsa deshacer."
+      ]
+    },
+    {
+      "h": "Estructura y participantes",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Rol",
+              "Responsabilidad"
+            ],
+            "rows": [
+              [
+                "Originador",
+                "El objeto cuyo estado se guarda; crea un memento de su estado actual y se restaura a partir de un memento"
+              ],
+              [
+                "Memento",
+                "Una instantánea inmutable del estado del originador; no expone nada útil a otros objetos"
+              ],
+              [
+                "Cuidador",
+                "Decide cuándo guardar y cuándo restaurar, y conserva los mementos (por ejemplo en una pila), pero nunca lee ni cambia su contenido"
+              ]
+            ]
+          }
+        },
+        "La idea clave son dos interfaces: una ancha para el originador, que puede leer el estado guardado, y una estrecha para todos los demás, que solo pueden sostener el memento."
+      ]
+    },
+    {
+      "h": "Implementación en TypeScript",
+      "body": [
+        "La clase memento usa campos privados de JavaScript (`#state`), de modo que el cuidador no puede leer los datos almacenados desde el objeto memento. La lectura pasa por el método estático `EditorMemento.read`, al que solo llama el editor. En un proyecto real, pon la clase memento en el mismo módulo que el editor y no la exportes, para que otros módulos puedan sostener mementos pero nunca abrirlos.",
+        {
+          "code": "type EditorState = { text: string; cursor: number };\n\nclass EditorMemento {\n  readonly #state: EditorState;\n  constructor(state: EditorState) {\n    this.#state = { ...state }; // copy, so later edits do not change the snapshot\n  }\n  static read(m: EditorMemento): EditorState {\n    return { ...m.#state };\n  }\n}\n\nclass Editor {\n  private state: EditorState = { text: \"\", cursor: 0 };\n  type(words: string) {\n    const text = this.state.text + words;\n    this.state = { text, cursor: text.length };\n  }\n  get text() { return this.state.text; }\n  save(): EditorMemento { return new EditorMemento(this.state); }\n  restore(m: EditorMemento) { this.state = EditorMemento.read(m); }\n}\n\nclass History {\n  private stack: EditorMemento[] = [];\n  constructor(private editor: Editor) {}\n  backup() { this.stack.push(this.editor.save()); }\n  undo() { const m = this.stack.pop(); if (m) this.editor.restore(m); }\n}\n\nconst editor = new Editor();\nconst history = new History(editor);\nhistory.backup(); editor.type(\"Hello\");\nhistory.backup(); editor.type(\" world\");\nconsole.log(editor.text); // Hello world\nhistory.undo();\nconsole.log(editor.text); // Hello\nhistory.undo();\nconsole.log(JSON.stringify(editor.text)); // \"\"",
+          "lang": "typescript"
+        },
+        "`History` es el cuidador. Llama a `backup()` antes de cada cambio y a `undo()` para volver atrás, pero nunca ve `text` ni `cursor`. Si más adelante añades un rango de selección a `EditorState`, `History` no cambia.",
+        {
+          "note": "Un memento debe ser una copia real. Si solo guarda una referencia al objeto o arreglo mutable del originador, las ediciones posteriores también cambian la instantánea, y deshacer restaura el estado equivocado. Para datos anidados, usa una copia profunda como `structuredClone(state)`."
+        }
+      ]
+    },
+    {
+      "h": "Memento frente a Command para deshacer",
+      "body": [
+        "Hay dos formas habituales de implementar deshacer, y a menudo se combinan:",
+        {
+          "table": {
+            "head": [
+              "Enfoque",
+              "Qué se guarda",
+              "Conviene cuando",
+              "Coste"
+            ],
+            "rows": [
+              [
+                "Memento",
+                "Una instantánea de todo el estado antes de cada cambio",
+                "Los cambios son difíciles de revertir, o el estado es pequeño",
+                "La memoria crece con el tamaño del estado por el número de pasos"
+              ],
+              [
+                "Command",
+                "La operación y datos suficientes para revertirla",
+                "Cada operación tiene una inversa simple",
+                "Cada comando necesita una lógica de deshacer correcta"
+              ]
+            ]
+          }
+        },
+        "Un compromiso práctico: guardar comandos en la mayoría de los pasos y un memento completo cada N pasos, o guardar solo la parte del estado que cambia un comando."
+      ]
+    },
+    {
+      "h": "Cuándo usarlo y cuándo no",
+      "body": [
+        {
+          "ul": [
+            "Úsalo para deshacer, rehacer, puntos de control, partidas guardadas y botones de \"cancelar\" en formularios que deben revertir las ediciones.",
+            "Úsalo para transacciones en memoria: toma una instantánea antes de una operación arriesgada y restaura si falla.",
+            "Úsalo cuando el cuidador no deba depender de los campos internos del originador.",
+            "No lo uses cuando el estado sea muy grande y cambie a menudo, a menos que limites la longitud del historial o guardes solo las diferencias.",
+            "No añadas toda la ceremonia cuando el estado ya es un valor inmutable simple. Con datos inmutables, un valor antiguo ya es una instantánea, y basta con conservar una lista de valores anteriores."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Usos en el mundo real",
+      "body": [
+        {
+          "ul": [
+            "La API History del navegador: `history.pushState(state, \"\", url)` guarda un objeto de estado para cada entrada del historial, y el evento `popstate` lo devuelve cuando el usuario navega.",
+            "Redux y almacenes similares conservan instantáneas inmutables del estado, que las herramientas usan para depurar viajando en el tiempo.",
+            "Las bases de datos SQL admiten `SAVEPOINT` dentro de una transacción, de modo que el trabajo puede revertirse hasta un punto con nombre.",
+            "Los editores de texto, los programas de gráficos y los juegos guardan instantáneas para deshacer, autoguardado y ranuras de guardado."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Patrones relacionados",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Patrón",
+              "Cómo se relaciona con Memento"
+            ],
+            "rows": [
+              [
+                "Command",
+                "Command puede deshacer revirtiendo una operación; también puede guardar un memento tomado antes de ejecutarse y restaurarlo en `undo`."
+              ],
+              [
+                "Prototype",
+                "Prototype clona un objeto completo para crear uno nuevo; un memento guarda el estado para restaurar más tarde el mismo objeto."
+              ],
+              [
+                "Iterator",
+                "Un iterador puede exponer su posición actual como un memento para que un recorrido pueda reanudarse más tarde."
+              ],
+              [
+                "State",
+                "State cambia el comportamiento del objeto cuando cambia su estado; Memento solo registra y restaura los datos."
+              ]
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "¿Cuál es la diferencia entre originador y cuidador?",
+      "a": "El originador posee el estado y es el único objeto que puede crear un memento y restaurarse a partir de él. El cuidador decide cuándo guardar y restaurar y conserva los mementos, pero los trata como opacos."
+    },
+    {
+      "q": "¿Memento rompe el encapsulamiento?",
+      "a": "No, ese es su propósito. Los campos internos del originador siguen siendo privados, y el memento los oculta al cuidador, así que solo el originador puede leer el estado guardado."
+    },
+    {
+      "q": "¿Cómo limito el uso de memoria con Memento?",
+      "a": "Mantén un número máximo de instantáneas y descarta las más antiguas, guarda solo la parte cambiada del estado, o combina mementos con comandos que registren cambios pequeños."
+    },
+    {
+      "q": "¿La serialización JSON es un memento?",
+      "a": "Serializar el estado a JSON puede ser el formato de almacenamiento de un memento, y es útil para guardar en disco. El patrón en sí trata de quién crea, conserva y restaura la instantánea, no del formato."
+    }
+  ]
+}

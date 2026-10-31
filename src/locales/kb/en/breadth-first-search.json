@@ -1,0 +1,219 @@
+{
+  "title": "Breadth-first search (BFS): algorithm, Python code and complexity — cv.cm",
+  "description": "Breadth-first search explained: how BFS explores a graph level by level with a queue, a traced example, Python code, shortest paths and O(V + E) complexity.",
+  "h1": "Breadth-first search (BFS) explained: how it works, code and complexity",
+  "answer": "Breadth-first search (BFS) is a graph traversal that visits the start node first, then all of its neighbors, then their neighbors, and so on, one level at a time. It uses a first-in, first-out queue and a set of visited nodes. On an unweighted graph, BFS finds the shortest path (fewest edges) from the start to every reachable node. It runs in O(V + E) time.",
+  "sections": [
+    {
+      "h": "What problem BFS solves",
+      "body": [
+        "Many problems are graphs in disguise: web pages and links, friends in a social network, squares on a game board, states of a puzzle. BFS answers two common questions about such a graph: which nodes can I reach from a start node, and what is the smallest number of steps to reach each of them?",
+        "Because BFS explores in rings of increasing distance, the first time it reaches a node is always along a path with the fewest edges. This makes it the standard algorithm for shortest paths when every edge has the same cost."
+      ]
+    },
+    {
+      "h": "The idea in plain words",
+      "body": [
+        {
+          "ol": [
+            "Put the start node in a queue and mark it as visited.",
+            "Take the node at the front of the queue.",
+            "For each neighbor that is not visited yet, mark it as visited and add it to the back of the queue.",
+            "Repeat steps 2 and 3 until the queue is empty."
+          ]
+        },
+        "Mark a node as visited when you add it to the queue, not when you take it out. Otherwise the same node can be added many times before it is processed."
+      ]
+    },
+    {
+      "h": "Worked example, step by step",
+      "body": [
+        "Take this undirected graph: A–B, A–C, B–D, C–D, C–E, D–F. Start at A and visit neighbors in alphabetical order.",
+        {
+          "table": {
+            "head": [
+              "Step",
+              "Take from queue",
+              "Newly discovered",
+              "Queue after step"
+            ],
+            "rows": [
+              [
+                "0",
+                "—",
+                "A (distance 0)",
+                "A"
+              ],
+              [
+                "1",
+                "A",
+                "B, C (distance 1)",
+                "B, C"
+              ],
+              [
+                "2",
+                "B",
+                "D (distance 2)",
+                "C, D"
+              ],
+              [
+                "3",
+                "C",
+                "E (distance 2)",
+                "D, E"
+              ],
+              [
+                "4",
+                "D",
+                "F (distance 3)",
+                "E, F"
+              ],
+              [
+                "5",
+                "E",
+                "none",
+                "F"
+              ],
+              [
+                "6",
+                "F",
+                "none",
+                "empty"
+              ]
+            ]
+          }
+        },
+        "The visiting order is A, B, C, D, E, F. D is reachable from both B and C, but it is discovered only once, from B, because it is marked as visited at that moment."
+      ]
+    },
+    {
+      "h": "Python implementation",
+      "body": [
+        "Use `collections.deque` for the queue: `popleft()` is O(1), while `list.pop(0)` is O(n). The graph is a dictionary that maps each node to a list of neighbors (an adjacency list).",
+        {
+          "code": "from collections import deque\ndef bfs(graph, start):\n    \"\"\"Return the distance (number of edges) from start to each reachable node.\"\"\"\n    dist = {start: 0}\n    queue = deque([start])\n    while queue:\n        node = queue.popleft()\n        for nxt in graph[node]:\n            if nxt not in dist:          # not visited yet\n                dist[nxt] = dist[node] + 1\n                queue.append(nxt)\n    return dist\ngraph = {\n    \"A\": [\"B\", \"C\"], \"B\": [\"A\", \"D\"], \"C\": [\"A\", \"D\", \"E\"],\n    \"D\": [\"B\", \"C\", \"F\"], \"E\": [\"C\"], \"F\": [\"D\"],\n}\nprint(bfs(graph, \"A\"))  # {'A': 0, 'B': 1, 'C': 1, 'D': 2, 'E': 2, 'F': 3}",
+          "lang": "python"
+        },
+        "Here the `dist` dictionary does double duty: it is the visited set and it stores the answer. To rebuild the actual path, also store the parent of each node and walk back from the target.",
+        {
+          "code": "def shortest_path(graph, start, goal):\n    parent = {start: None}\n    queue = deque([start])\n    while queue:\n        node = queue.popleft()\n        if node == goal:\n            path = []\n            while node is not None:\n                path.append(node)\n                node = parent[node]\n            return path[::-1]\n        for nxt in graph[node]:\n            if nxt not in parent:\n                parent[nxt] = node\n                queue.append(nxt)\n    return None  # goal not reachable\nprint(shortest_path(graph, \"A\", \"F\"))  # ['A', 'B', 'D', 'F']",
+          "lang": "python"
+        }
+      ]
+    },
+    {
+      "h": "Time and space complexity",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Measure",
+              "Cost",
+              "Reason"
+            ],
+            "rows": [
+              [
+                "Time",
+                "O(V + E)",
+                "Each node is queued once and each edge is checked once (twice in an undirected graph)."
+              ],
+              [
+                "Space",
+                "O(V)",
+                "The visited set, the queue and the parent map each hold at most V entries."
+              ],
+              [
+                "Grid of R × C cells",
+                "O(R × C)",
+                "Each cell is a node with at most 4 edges."
+              ]
+            ]
+          }
+        },
+        "V is the number of vertices (nodes) and E the number of edges. With an adjacency matrix instead of lists, the time becomes O(V²) because finding the neighbors of a node costs O(V)."
+      ]
+    },
+    {
+      "h": "Variants and common mistakes",
+      "body": [
+        {
+          "ul": [
+            "Grid BFS: treat each cell as a node and the four (or eight) neighboring cells as edges. Check bounds and walls before adding a cell.",
+            "Multi-source BFS: put several start nodes in the queue at distance 0. This finds the distance to the nearest source, for example the nearest exit in a maze.",
+            "0-1 BFS: when edge weights are only 0 or 1, use a deque and push 0-weight neighbors to the front. It gives shortest paths in O(V + E).",
+            "Bidirectional BFS: search from the start and the goal at the same time and stop when the two frontiers meet. It often explores far fewer nodes.",
+            "Level-by-level processing: record `len(queue)` at the start of each round and pop exactly that many nodes to handle one level at a time."
+          ]
+        },
+        {
+          "note": "Common bugs: marking nodes as visited when they are dequeued (causes duplicates and wrong counts), using `list.pop(0)` (makes BFS quadratic), and using BFS for weighted graphs. With different edge weights, the path with the fewest edges is not the cheapest; use Dijkstra's algorithm instead."
+        }
+      ]
+    },
+    {
+      "h": "When to use BFS and real-world uses",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Situation",
+              "Best choice"
+            ],
+            "rows": [
+              [
+                "Shortest path, all edges cost the same",
+                "BFS"
+              ],
+              [
+                "Shortest path, non-negative weights",
+                "Dijkstra's algorithm"
+              ],
+              [
+                "Shortest path with a good distance estimate",
+                "A* search"
+              ],
+              [
+                "Cycle detection, topological order, connected components",
+                "DFS (BFS also works for components)"
+              ],
+              [
+                "Very deep graphs with little memory",
+                "DFS or iterative deepening"
+              ]
+            ]
+          }
+        },
+        {
+          "ul": [
+            "Interview problems: shortest path in a maze or grid, word ladder, rotting oranges (multi-source BFS), binary tree level-order traversal, minimum number of moves for a knight.",
+            "Networks: finding all devices within k hops, broadcast in peer-to-peer networks, \"people you may know\" at distance 2 in a social graph.",
+            "Web crawlers that visit pages in order of link distance from a seed page.",
+            "Garbage collectors (for example Cheney's copying collector) and puzzle solvers that need the fewest moves."
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "What data structure does BFS use?",
+      "a": "BFS uses a FIFO queue to decide which node to process next and a set (or dictionary) to remember visited nodes. In Python, use `collections.deque` for the queue."
+    },
+    {
+      "q": "Does BFS always find the shortest path?",
+      "a": "Yes, on an unweighted graph, or when every edge has the same weight, BFS finds a path with the fewest edges. On a weighted graph it does not; use Dijkstra's algorithm or Bellman-Ford."
+    },
+    {
+      "q": "What is the difference between BFS and DFS?",
+      "a": "BFS explores level by level with a queue, so it finds shortest paths in unweighted graphs. DFS goes as deep as possible first with a stack or recursion, which suits cycle detection, topological sorting and exhaustive search."
+    },
+    {
+      "q": "Why is my BFS slow in Python?",
+      "a": "The usual causes are `list.pop(0)`, which shifts the whole list on every call, and checking visited nodes with a list instead of a set. Use `deque.popleft()` and a set or dictionary."
+    },
+    {
+      "q": "Can BFS work on a tree?",
+      "a": "Yes. On a tree, BFS is the level-order traversal. A tree has no cycles, so you can skip the visited set if you only move from parent to child."
+    }
+  ]
+}

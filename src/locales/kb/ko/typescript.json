@@ -1,0 +1,183 @@
+{
+  "title": "타입스크립트 기초 튜토리얼: 타입, 인터페이스, 제네릭, 타입 좁히기 — cv.cm",
+  "description": "타입스크립트를 한 페이지로 배웁니다. tsc 설치와 Hello world 실행, 기본 타입, 인터페이스, 유니온 타입, 타입 좁히기, 제네릭, 오류 처리, 완성 예제까지 다룹니다.",
+  "h1": "타입스크립트 기초 입문 튜토리얼",
+  "answer": "타입스크립트는 정적 타입을 가진 자바스크립트입니다. `let count: number = 0`처럼 타입 어노테이션을 추가하면 컴파일러 `tsc`가 이를 검사한 뒤, 브라우저나 Node.js 어디서든 실행되는 순수 자바스크립트로 변환합니다. 핵심 개념은 기본 타입, 객체 모양을 나타내는 인터페이스와 타입 별칭, 타입 좁히기를 동반하는 유니온 타입, 재사용 가능한 코드를 위한 제네릭입니다. 타입은 실행 시점에는 제거됩니다.",
+  "sections": [
+    {
+      "h": "타입스크립트란 무엇이고 어디에 쓰이는가",
+      "body": [
+        "타입스크립트는 Microsoft가 개발해 2012년에 처음 공개한 오픈 소스 언어입니다. 유효한 자바스크립트 프로그램은 모두 유효한 타입스크립트이므로 파일 단위로 점진적으로 도입할 수 있습니다. 타입 검사기는 속성 이름 오타나 빠뜨린 `null` 검사 같은 실수를 코드를 작성하는 중에 잡아 주고, 편집기는 타입을 자동 완성과 안전한 이름 변경에 활용합니다. 대규모 프런트엔드 앱(Angular는 타입스크립트로 작성되었고 React, Vue, Svelte도 잘 지원합니다), Node.js 백엔드, 라이브러리에 널리 쓰입니다."
+      ]
+    },
+    {
+      "h": "설치와 Hello, world 실행",
+      "body": [
+        "먼저 Node.js를 설치하고, 프로젝트에 npm으로 컴파일러를 설치합니다. `tsc`는 `.ts` 파일을 `.js`로 컴파일합니다.",
+        {
+          "code": "const message: string = \"Hello, world\";\nconsole.log(message);",
+          "lang": "typescript"
+        },
+        {
+          "code": "npm install --save-dev typescript\nnpx tsc --init          # creates tsconfig.json\nnpx tsc hello.ts        # writes hello.js\nnode hello.js\n# Hello, world",
+          "lang": "shell"
+        },
+        "최신 Node.js, Deno, Bun은 타입 어노테이션을 제거하는 방식으로 `.ts` 파일을 직접 실행할 수도 있습니다. 다만 타입 검사는 하지 않으므로 타입 오류를 찾으려면 `npx tsc --noEmit`을 따로 실행하세요."
+      ]
+    },
+    {
+      "h": "기본 타입과 타입 추론",
+      "body": [
+        "모든 타입을 일일이 쓸 필요는 거의 없습니다. 변수를 초기화하면 타입스크립트가 타입을 추론합니다. `let n = 5`는 `number`입니다. 함수 매개변수와 공개 API에는 타입을 명시하세요.",
+        {
+          "table": {
+            "head": [
+              "타입",
+              "예시",
+              "설명"
+            ],
+            "rows": [
+              [
+                "`number`",
+                "`let n: number = 3.5`",
+                "정수와 실수"
+              ],
+              [
+                "`string`",
+                "`let s: string = \"hi\"`",
+                "텍스트"
+              ],
+              [
+                "`boolean`",
+                "`let ok: boolean = true`",
+                "true 또는 false"
+              ],
+              [
+                "배열",
+                "`number[]` or `Array<number>`",
+                "두 표기는 같은 뜻"
+              ],
+              [
+                "튜플",
+                "`[string, number]`",
+                "길이와 각 위치의 타입이 고정"
+              ],
+              [
+                "`unknown`",
+                "`let x: unknown`",
+                "어떤 값이든 가능, 사용 전에 검사 필요"
+              ],
+              [
+                "`any`",
+                "`let y: any`",
+                "검사를 끄므로 피할 것"
+              ],
+              [
+                "`void` / `never`",
+                "함수 반환 타입",
+                "아무것도 반환하지 않음 / 절대 반환하지 않음"
+              ]
+            ]
+          }
+        },
+        {
+          "code": "let count = 0;          // inferred as number\ncount = \"ten\";          // error: Type 'string' is not assignable to type 'number'\nconst names: string[] = [\"Ann\", \"Bo\"];\nconst pair: [string, number] = [\"age\", 31];",
+          "lang": "typescript"
+        },
+        "두 번째 줄은 검사기가 무엇을 보고하는지 보여 주려고 일부러 넣은 컴파일 오류입니다."
+      ]
+    },
+    {
+      "h": "함수, 제어 흐름, 타입 좁히기",
+      "body": [
+        "제어 흐름(`if`, `for`, `while`, `switch`)은 자바스크립트와 완전히 같습니다. 타입스크립트가 더하는 것은 타입 좁히기입니다. `typeof x === \"string\"` 같은 검사를 거치면 컴파일러가 그 분기 안에서 더 구체적인 타입을 알게 됩니다.",
+        {
+          "code": "function greet(name: string, greeting = \"Hello\"): string {\n  return `${greeting}, ${name}!`;\n}\nfunction formatId(id: string | number): string {\n  if (typeof id === \"number\") {\n    return id.toFixed(0).padStart(6, \"0\"); // id is number here\n  }\n  return id.toUpperCase();                 // id is string here\n}\nconsole.log(greet(\"Lin\"));    // Hello, Lin!\nconsole.log(formatId(42));    // 000042\nconsole.log(formatId(\"ab7\")); // AB7",
+          "lang": "typescript"
+        },
+        "`string | number`는 유니온 타입으로, 값이 나열된 타입 중 하나라는 뜻입니다. 선택적 매개변수는 `name?: string`처럼 쓰며, 그 타입에는 `undefined`가 포함됩니다."
+      ]
+    },
+    {
+      "h": "인터페이스와 타입 별칭",
+      "body": [
+        "객체의 모양은 `interface`나 `type` 별칭으로 설명합니다. 타입스크립트는 이름이 아니라 구조를 검사하므로, 알맞은 속성을 가진 객체라면 무엇이든 들어맞습니다.",
+        {
+          "code": "interface User {\n  id: number;\n  name: string;\n  email?: string;          // optional\n  readonly createdAt: Date;\n}\ntype Role = \"admin\" | \"editor\" | \"viewer\"; // string literal union\nfunction describe(user: User, role: Role): string {\n  const contact = user.email ?? \"no email\";\n  return `${user.name} (${role}, ${contact})`;\n}\nconst ann: User = { id: 1, name: \"Ann\", createdAt: new Date() };\nconsole.log(describe(ann, \"editor\")); // Ann (editor, no email)",
+          "lang": "typescript"
+        }
+      ]
+    },
+    {
+      "h": "대표 기능: 제네릭과 구별된 유니온",
+      "body": [
+        "제네릭을 쓰면 하나의 함수나 타입이 여러 타입에서 동작하면서도 타입 사이의 연결을 유지합니다. 구별된 유니온(discriminated union)은 리터럴 필드를 공유하는 객체 타입들의 유니온입니다. 그 필드로 `switch`하면 타입이 좁혀지고, 컴파일러가 모든 경우를 처리했는지 검사할 수 있습니다.",
+        {
+          "code": "function first<T>(items: T[]): T | undefined {\n  return items[0];\n}\nconst n = first([10, 20]);   // n: number | undefined\nconst s = first([\"a\", \"b\"]); // s: string | undefined\ntype Shape =\n  | { kind: \"circle\"; radius: number }\n  | { kind: \"rect\"; width: number; height: number };\nfunction area(shape: Shape): number {\n  switch (shape.kind) {\n    case \"circle\":\n      return Math.PI * shape.radius ** 2;\n    case \"rect\":\n      return shape.width * shape.height;\n  }\n}\nconsole.log(n, s, area({ kind: \"rect\", width: 2, height: 3 })); // 10 a 6",
+          "lang": "typescript"
+        },
+        "내장 유틸리티 타입은 기존 타입에서 새 타입을 만듭니다. `Partial<User>`는 모든 속성을 선택적으로, `Pick<User, \"id\" | \"name\">`은 일부 속성만 남기고, `Record<string, number>`는 딕셔너리를 나타냅니다."
+      ]
+    },
+    {
+      "h": "오류 처리",
+      "body": [
+        "오류는 자바스크립트와 같이 `throw`와 `try`/`catch`로 다룹니다. `strict` 옵션을 켜면 어떤 값이든 던져질 수 있으므로 잡힌 값의 타입이 `unknown`이 됩니다. 사용하기 전에 검사하세요.",
+        {
+          "code": "function parseAge(text: string): number {\n  const age = Number(text);\n  if (!Number.isInteger(age) || age < 0) {\n    throw new Error(`invalid age: ${text}`);\n  }\n  return age;\n}\ntry {\n  parseAge(\"abc\");\n} catch (err: unknown) {\n  const message = err instanceof Error ? err.message : String(err);\n  console.log(message); // invalid age: abc\n}",
+          "lang": "typescript"
+        }
+      ]
+    },
+    {
+      "h": "작은 완성 프로그램: 타입이 있는 재고 관리",
+      "body": [
+        {
+          "code": "interface Item {\n  name: string;\n  price: number;\n  qty: number;\n}\ntype Summary = { total: number; cheapest?: Item; outOfStock: string[] };\nfunction summarize(items: Item[]): Summary {\n  let total = 0;\n  let cheapest: Item | undefined;\n  const outOfStock: string[] = [];\n  for (const item of items) {\n    total += item.price * item.qty;\n    if (item.qty === 0) outOfStock.push(item.name);\n    if (!cheapest || item.price < cheapest.price) cheapest = item;\n  }\n  return { total, cheapest, outOfStock };\n}\nconst result = summarize([\n  { name: \"pen\", price: 1.5, qty: 10 },\n  { name: \"book\", price: 12, qty: 2 },\n  { name: \"bag\", price: 30, qty: 0 },\n]);\nconsole.log(result.total, result.cheapest?.name, result.outOfStock);\n// 39 pen [ 'bag' ]",
+          "lang": "typescript"
+        },
+        "`qty: 10`을 `qty: \"10\"`으로 바꿔 보세요. 코드를 실행하기도 전에 컴파일러가 오류를 알려 줍니다."
+      ]
+    },
+    {
+      "h": "초보자가 자주 하는 실수",
+      "body": [
+        {
+          "note": "타입은 실행 시점에 존재하지 않습니다. `JSON.parse`나 `fetch`로 받은 데이터에 붙인 타입 어노테이션은 스스로 하는 약속일 뿐입니다. 신뢰할 수 없는 입력은 실제 검사나 스키마 라이브러리로 검증하세요."
+        },
+        {
+          "ul": [
+            "오류를 없애려고 `any`를 쓰는 경우. `unknown`을 쓰고 타입을 좁히는 편이 낫습니다.",
+            "컴파일러가 검사하는 대신 개발자를 믿게 만드는 `as` 타입 단언을 남용하는 경우.",
+            "`tsconfig.json`에서 `strict`를 꺼 두는 경우. 새 프로젝트에서는 켜 두세요. `null` 검사가 활성화됩니다.",
+            "컴파일러가 이미 추론할 수 있는 타입을 직접 적는 경우. 안전성은 늘지 않고 코드만 어수선해집니다."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "다음 학습 단계",
+      "body": [
+        "공식 TypeScript Handbook을 읽고, typescriptlang.org의 TypeScript Playground에서 실험해 보세요. 컴파일된 자바스크립트와 오류를 나란히 보여 줍니다. 그다음 `tsconfig.json` 옵션, 라이브러리용 타입 선언 파일(`@types/...` 패키지), 사용하는 프레임워크와 함께 쓰는 타입스크립트를 배우세요."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "타입스크립트는 자바스크립트와 다른 언어인가요?",
+      "a": "자바스크립트의 상위 집합입니다. 타입 문법과 검사기를 더한 뒤 순수 자바스크립트로 컴파일합니다. 실행 시점의 동작은 생성된 자바스크립트와 같습니다."
+    },
+    {
+      "q": "타입스크립트보다 자바스크립트를 먼저 배워야 하나요?",
+      "a": "변수, 함수, 객체, 프로미스 같은 자바스크립트 기초를 먼저 익히세요. 타입스크립트는 이런 부분을 바꾸지 않습니다. 실행 시점의 동작에 익숙해진 뒤 타입스크립트를 더하면 타입을 배우기 쉽습니다."
+    },
+    {
+      "q": "interface와 type은 무엇이 다른가요?",
+      "a": "둘 다 객체의 모양을 설명합니다. 인터페이스는 확장할 수 있고 다시 선언해 병합할 수 있습니다. 타입 별칭은 유니온, 튜플 같은 객체가 아닌 타입에도 이름을 붙일 수 있습니다. 단순한 객체 모양이라면 어느 쪽이든 괜찮습니다."
+    },
+    {
+      "q": "타입스크립트를 쓰면 코드가 더 빨라지나요?",
+      "a": "아닙니다. 타입은 컴파일 중에 제거되므로 결과물은 직접 작성한 자바스크립트와 같은 속도로 실행됩니다. 이점은 버그가 줄어들고 도구 지원이 좋아진다는 것입니다."
+    }
+  ]
+}

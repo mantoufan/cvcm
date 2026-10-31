@@ -1,0 +1,235 @@
+{
+  "title": "Sắp xếp cơ số (Radix Sort): LSD và MSD, mã Python và độ phức tạp — cv.cm",
+  "description": "Sắp xếp cơ số xếp số nguyên hoặc chuỗi độ dài cố định theo từng chữ số bằng sắp xếp đếm ổn định, trong O(d · (n + b)). Ví dụ, mã Python, so sánh LSD và MSD.",
+  "h1": "Thuật toán sắp xếp cơ số: cách hoạt động, mã và độ phức tạp",
+  "answer": "Sắp xếp cơ số là thuật toán sắp xếp không dựa trên so sánh, sắp xếp số nguyên hoặc chuỗi độ dài cố định từng chữ số (hoặc ký tự) một. Phiên bản LSD (chữ số có nghĩa thấp nhất trước) phổ biến sắp xếp theo chữ số cuối trước, rồi chữ số kế, cho đến chữ số có nghĩa cao nhất, dùng một thuật toán sắp xếp ổn định như sắp xếp đếm cho mỗi lượt. Với d chữ số trong cơ số b, nó chạy O(d · (n + b)) thời gian và dùng O(n + b) không gian phụ. Vì mỗi lượt đều ổn định, kết quả cuối cùng được sắp xếp hoàn toàn và ổn định.",
+  "sections": [
+    {
+      "h": "Sắp xếp cơ số giải quyết vấn đề gì",
+      "body": [
+        "Sắp xếp đếm là tuyến tính nhưng cần mảng đếm lớn bằng cả khoảng giá trị của khóa, điều không thể với số nguyên 32 bit hay 64 bit. Sắp xếp cơ số tách mỗi khóa thành các chữ số nhỏ và chạy sắp xếp đếm một lần cho mỗi chữ số, nên mỗi lượt chỉ cần mảng đếm b phần tử (10 cho chữ số thập phân, 256 cho byte).",
+        "Nó dùng được cho mọi khóa có thể tách thành một dãy cố định các ký hiệu nhỏ: số nguyên không âm, ngày viết dạng YYYYMMDD, mã có độ dài cố định như mã bưu chính, địa chỉ IP và chuỗi có độ rộng cố định."
+      ]
+    },
+    {
+      "h": "Ví dụ minh họa: sắp xếp cơ số LSD trong cơ số 10",
+      "body": [
+        "Sắp xếp `[170, 45, 75, 90, 802, 24, 2, 66]`. Số lớn nhất có 3 chữ số, nên có 3 lượt. Mỗi lượt là một lần sắp xếp ổn định theo một chữ số: các chữ số bằng nhau giữ thứ tự từ lượt trước.",
+        {
+          "table": {
+            "head": [
+              "Lượt",
+              "Sắp xếp theo",
+              "Kết quả"
+            ],
+            "rows": [
+              [
+                "Bắt đầu",
+                "",
+                "`[170, 45, 75, 90, 802, 24, 2, 66]`"
+              ],
+              [
+                "1",
+                "chữ số hàng đơn vị",
+                "`[170, 90, 802, 2, 24, 45, 75, 66]`"
+              ],
+              [
+                "2",
+                "chữ số hàng chục",
+                "`[802, 2, 24, 45, 66, 170, 75, 90]`"
+              ],
+              [
+                "3",
+                "chữ số hàng trăm",
+                "`[2, 24, 45, 66, 75, 90, 170, 802]`"
+              ]
+            ]
+          }
+        },
+        "Sau lượt 2, các số đã được sắp xếp theo hai chữ số cuối. Ở lượt 3, các số 2, 24, 45, 66, 75 và 90 đều có chữ số hàng trăm là 0, và tính ổn định giữ chúng theo thứ tự mà lượt 2 tạo ra. Đó là lý do mỗi lượt phải ổn định."
+      ]
+    },
+    {
+      "h": "Cài đặt bằng Python",
+      "body": [
+        {
+          "code": "def counting_pass(nums, exp, base):\n    \"\"\"Stable counting sort of nums by the digit at exp.\"\"\"\n    count = [0] * base\n    for x in nums:\n        count[(x // exp) % base] += 1\n    for d in range(1, base):\n        count[d] += count[d - 1]\n    out = [0] * len(nums)\n    for x in reversed(nums):\n        d = (x // exp) % base\n        count[d] -= 1\n        out[count[d]] = x\n    return out\n\ndef radix_sort(nums, base=10):\n    \"\"\"LSD radix sort for non-negative integers.\"\"\"\n    if not nums:\n        return []\n    exp, biggest = 1, max(nums)\n    while biggest // exp > 0:\n        nums = counting_pass(nums, exp, base)\n        exp *= base\n    return nums\n\nprint(radix_sort([170, 45, 75, 90, 802, 24, 2, 66]))\n# [2, 24, 45, 66, 75, 90, 170, 802]\nprint(radix_sort([3, 0, 1, 0], base=256))   # [0, 0, 1, 3]",
+          "lang": "python"
+        },
+        "Dùng cơ số 256 nghĩa là mỗi lượt xét một byte, nên số nguyên 32 bit chỉ cần 4 lượt. Để bao gồm số âm, hãy sắp xếp riêng các giá trị âm và không âm rồi ghép lại, hoặc dịch mọi khóa theo giá trị nhỏ nhất. Với chuỗi độ dài cố định, dùng mã ký tự ở vị trí i làm chữ số và đi từ vị trí cuối về vị trí đầu."
+      ]
+    },
+    {
+      "h": "Độ phức tạp thời gian và không gian",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Đại lượng",
+              "Giá trị",
+              "Lý do"
+            ],
+            "rows": [
+              [
+                "Thời gian, mọi trường hợp",
+                "O(d · (n + b))",
+                "d lượt, mỗi lượt là một sắp xếp đếm trên n khóa và b giá trị chữ số"
+              ],
+              [
+                "Không gian phụ",
+                "O(n + b)",
+                "một bộ đệm đầu ra và một mảng đếm cho mỗi lượt"
+              ],
+              [
+                "Số lượt cho khóa 32 bit",
+                "4 trong cơ số 256",
+                "32 bit ÷ 8 bit mỗi chữ số"
+              ],
+              [
+                "Số phép so sánh",
+                "0",
+                "các chữ số được dùng làm chỉ số mảng"
+              ]
+            ]
+          }
+        },
+        "Khi d là hằng số (khóa có độ rộng cố định) và b được chọn gần n hoặc một giá trị cố định như 256, thời gian là O(n). Với n khóa đều khác nhau, d phải ít nhất là log_b n, nên sắp xếp cơ số không vượt O(n log n) với khóa kích thước tùy ý; nó nhanh vì mỗi bước là một thao tác mảng đơn giản."
+      ]
+    },
+    {
+      "h": "So sánh sắp xếp cơ số với các thuật toán khác",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Thuật toán",
+              "Tốt nhất",
+              "Trung bình",
+              "Xấu nhất",
+              "Không gian phụ",
+              "Ổn định"
+            ],
+            "rows": [
+              [
+                "Sắp xếp cơ số (LSD)",
+                "O(d · (n + b))",
+                "O(d · (n + b))",
+                "O(d · (n + b))",
+                "O(n + b)",
+                "Có"
+              ],
+              [
+                "Sắp xếp đếm",
+                "O(n + k)",
+                "O(n + k)",
+                "O(n + k)",
+                "O(n + k)",
+                "Có"
+              ],
+              [
+                "Sắp xếp trộn",
+                "O(n log n)",
+                "O(n log n)",
+                "O(n log n)",
+                "O(n)",
+                "Có"
+              ],
+              [
+                "Sắp xếp nhanh",
+                "O(n log n)",
+                "O(n log n)",
+                "O(n²)",
+                "O(log n)",
+                "Không"
+              ],
+              [
+                "Sắp xếp vun đống",
+                "O(n log n)",
+                "O(n log n)",
+                "O(n log n)",
+                "O(1)",
+                "Không"
+              ],
+              [
+                "Timsort (`sorted` của Python)",
+                "O(n)",
+                "O(n log n)",
+                "O(n log n)",
+                "O(n)",
+                "Có"
+              ]
+            ]
+          }
+        },
+        "Trong bảng, n là số khóa, k là khoảng khóa của sắp xếp đếm, d là số chữ số và b là cơ số. Sắp xếp cơ số LSD ổn định miễn là mỗi lượt chữ số đều ổn định. Nó cần khóa có cấu trúc cố định, trong khi các thuật toán dựa trên so sánh như sắp xếp trộn và sắp xếp nhanh làm việc với mọi thứ tự, kể cả hàm so sánh tùy chỉnh."
+      ]
+    },
+    {
+      "h": "LSD so với MSD, và lỗi thường gặp",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "",
+              "LSD (chữ số thấp nhất trước)",
+              "MSD (chữ số cao nhất trước)"
+            ],
+            "rows": [
+              [
+                "Thứ tự các lượt",
+                "từ chữ số cuối đến chữ số đầu",
+                "từ chữ số đầu đến chữ số cuối, đệ quy trong từng thùng"
+              ],
+              [
+                "Phù hợp nhất cho",
+                "số nguyên và chuỗi có độ dài cố định",
+                "chuỗi có độ dài thay đổi, thoát sớm khi tiền tố là duy nhất"
+              ],
+              [
+                "Cài đặt",
+                "vòng lặp đơn giản",
+                "đệ quy; thường chuyển sang sắp xếp chèn cho các thùng nhỏ"
+              ],
+              [
+                "Ổn định",
+                "có, nếu mỗi lượt ổn định",
+                "có, nếu việc phân phối vào thùng ổn định"
+              ]
+            ]
+          }
+        },
+        {
+          "note": "Các lỗi hay gặp: dùng thuật toán không ổn định cho mỗi chữ số (kết quả sai, không chỉ là mất ổn định), bắt đầu từ chữ số cao nhất trong vòng lặp LSD, tính số lượt từ phần tử đầu tiên thay vì giá trị lớn nhất, và đưa số âm vào `(x // exp) % base`, nơi phép chia lấy sàn và phép lấy dư của Python cho ra các chữ số không sắp thứ tự đúng cho số âm."
+        }
+      ]
+    },
+    {
+      "h": "Khi nào nên dùng sắp xếp cơ số",
+      "body": [
+        "Sắp xếp cơ số rất phù hợp với mảng lớn các số nguyên hoặc khóa có độ rộng cố định, như ID 32 bit, dấu thời gian, địa chỉ IPv4 hoặc chuỗi độ dài cố định, đặc biệt trên GPU và trong các thư viện hiệu năng cao nơi cách truy cập bộ nhớ đều đặn của nó phát huy tác dụng. Nó được dùng trong dựng mảng hậu tố và một số tải công việc cơ sở dữ liệu và đồ họa. Với list Python thông thường, `sorted()` gần như luôn nhanh hơn trong thực tế vì chạy bằng mã C đã tối ưu. Trong phỏng vấn, sắp xếp cơ số xuất hiện khi được hỏi cách sắp xếp trong thời gian tuyến tính, ví dụ bài Maximum Gap."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Sắp xếp cơ số có ổn định không?",
+      "a": "Sắp xếp cơ số LSD ổn định khi mỗi lượt chữ số dùng một thuật toán ổn định như sắp xếp đếm. Thực ra thuật toán phụ thuộc vào tính ổn định đó để đúng."
+    },
+    {
+      "q": "Độ phức tạp thời gian của sắp xếp cơ số là gì?",
+      "a": "O(d · (n + b)), trong đó d là số chữ số, n là số khóa và b là cơ số. Với khóa có độ rộng cố định, d và b là hằng số, nên nó tuyến tính theo n."
+    },
+    {
+      "q": "Sắp xếp cơ số có nhanh hơn sắp xếp nhanh không?",
+      "a": "Có thể, với mảng lớn các số nguyên có độ rộng cố định, vì nó không so sánh và truy cập bộ nhớ theo mẫu đều đặn. Với dữ liệu tổng quát, mảng nhỏ hoặc thứ tự tùy chỉnh, sắp xếp nhanh hoặc hàm sắp xếp có sẵn thường tốt hơn."
+    },
+    {
+      "q": "Sắp xếp cơ số LSD và MSD khác nhau thế nào?",
+      "a": "LSD sắp xếp từ chữ số thấp nhất đến cao nhất với một lượt đơn giản cho mỗi chữ số. MSD bắt đầu từ chữ số cao nhất và sắp xếp đệ quy từng thùng, phù hợp với chuỗi độ dài thay đổi."
+    },
+    {
+      "q": "Sắp xếp cơ số có sắp xếp được chuỗi không?",
+      "a": "Có. Coi mỗi ký tự là một chữ số. LSD dùng trực tiếp cho các chuỗi cùng độ dài; sắp xếp cơ số MSD xử lý được các chuỗi có độ dài khác nhau."
+    }
+  ]
+}

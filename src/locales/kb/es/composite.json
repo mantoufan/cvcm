@@ -1,0 +1,163 @@
+{
+  "title": "Patrón Composite: trata árboles y objetos simples igual, ejemplo en TypeScript — cv.cm",
+  "description": "El patrón de diseño Composite explicado: crea estructuras de árbol donde hojas y grupos comparten una misma interfaz. Ejemplo de sistema de archivos en TypeScript y usos reales.",
+  "h1": "Patrón Composite explicado con ejemplos",
+  "answer": "Composite es un patrón de diseño estructural que permite componer objetos en estructuras de árbol y tratar después los objetos individuales y los grupos de objetos de la misma manera. Una hoja (como un archivo) y un compuesto (como una carpeta que contiene archivos y otras carpetas) implementan la misma interfaz, por ejemplo `size()`. El compuesto implementa la operación llamándola en sus hijos, de modo que el código cliente puede trabajar con un árbol completo sin comprobar qué tipo de nodo tiene.",
+  "sections": [
+    {
+      "h": "Intención",
+      "body": [
+        "Componer objetos en estructuras de árbol para representar jerarquías parte-todo. Composite permite que los clientes traten de forma uniforme los objetos individuales y las composiciones de objetos. Es uno de los siete patrones estructurales del libro de la Banda de los Cuatro (Gang of Four, GoF)."
+      ]
+    },
+    {
+      "h": "El problema que resuelve",
+      "body": [
+        "Imagina una aplicación de almacenamiento que debe mostrar el tamaño total de cualquier elemento. Un archivo tiene un tamaño. El tamaño de una carpeta es la suma de todo lo que contiene, y una carpeta puede contener archivos y otras carpetas, anidadas a cualquier profundidad.",
+        "Sin una interfaz común, cada fragmento de código que recorre el árbol debe preguntar \"¿esto es un archivo o una carpeta?\" y tratar cada caso, normalmente con recursión escrita una y otra vez. Añadir un nuevo tipo de nodo, como un acceso directo o un archivo comprimido, obliga a buscar y actualizar todas esas comprobaciones. Composite coloca la recursión dentro de los propios nodos."
+      ]
+    },
+    {
+      "h": "Estructura y participantes",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Participante",
+              "Responsabilidad",
+              "En el ejemplo"
+            ],
+            "rows": [
+              [
+                "Componente",
+                "Declara la interfaz común para todos los objetos del árbol.",
+                "`FsNode`"
+              ],
+              [
+                "Hoja",
+                "Un objeto sin hijos; implementa la operación directamente.",
+                "`FileNode`"
+              ],
+              [
+                "Compuesto",
+                "Almacena componentes hijos e implementa la operación delegando en ellos.",
+                "`Folder`"
+              ],
+              [
+                "Cliente",
+                "Trabaja con cualquier nodo a través de la interfaz del componente.",
+                "`report`"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "Implementación en TypeScript",
+      "body": [
+        {
+          "code": "interface FsNode {\n  readonly name: string;\n  size(): number;\n  print(indent?: string): string[];\n}\n\nclass FileNode implements FsNode {\n  constructor(readonly name: string, private bytes: number) {}\n  size(): number { return this.bytes; }\n  print(indent = \"\"): string[] { return [`${indent}${this.name} (${this.bytes})`]; }\n}\n\nclass Folder implements FsNode {\n  private children: FsNode[] = [];\n  constructor(readonly name: string) {}\n  add(...nodes: FsNode[]): this { this.children.push(...nodes); return this; }\n  size(): number { return this.children.reduce((sum, c) => sum + c.size(), 0); }\n\n  print(indent = \"\"): string[] {\n    const lines = [`${indent}${this.name}/ (${this.size()})`];\n    for (const child of this.children) lines.push(...child.print(indent + \"  \"));\n    return lines;\n  }\n}\n\nconst root = new Folder(\"project\").add(\n  new FileNode(\"README.md\", 120),\n  new Folder(\"src\").add(new FileNode(\"main.ts\", 900), new FileNode(\"util.ts\", 300)),\n);\n\n// The client treats a single file and a whole tree the same way.\nconst report = (node: FsNode) => console.log(node.print().join(\"\\n\"));\nreport(root);\n// project/ (1320)\n//   README.md (120)\n//   src/ (1200)\n//     main.ts (900)\n//     util.ts (300)\nreport(new FileNode(\"notes.txt\", 42)); // notes.txt (42)",
+          "lang": "typescript"
+        },
+        "`report` nunca comprueba el tipo de nodo. Un nuevo tipo de nodo, como un `Symlink` que informa de un tamaño cero, solo necesita implementar `FsNode`."
+      ]
+    },
+    {
+      "h": "Decisiones de diseño: transparencia frente a seguridad",
+      "body": [
+        "¿Dónde deben vivir los métodos de gestión de hijos, como `add()` y `remove()`? El libro GoF describe el equilibrio:",
+        {
+          "table": {
+            "head": [
+              "Opción",
+              "Qué significa",
+              "Contrapartida"
+            ],
+            "rows": [
+              [
+                "Seguridad",
+                "Solo `Composite` tiene `add()` y `remove()`, como en el ejemplo anterior.",
+                "Seguro en tipos: no puedes añadir un hijo a un archivo. Pero los clientes deben saber cuándo tienen un compuesto."
+              ],
+              [
+                "Transparencia",
+                "`Component` declara `add()` y `remove()`, y las hojas lanzan un error o los ignoran.",
+                "Todos los nodos se ven idénticos para los clientes, pero los errores aparecen solo en tiempo de ejecución."
+              ]
+            ]
+          }
+        },
+        "En TypeScript, el enfoque de seguridad suele funcionar mejor, porque el verificador de tipos detecta el error en tiempo de compilación.",
+        {
+          "note": "La recursión en un compuesto puede ser costosa en árboles grandes. En el ejemplo, `print()` llama a `size()` en cada carpeta, lo que vuelve a recorrer el subárbol. Para árboles grandes, guarda los resultados en caché o calcula los tamaños en una sola pasada. Asegúrate también de que un nodo no pueda añadirse a su propio subárbol, lo que crearía recursión infinita."
+        }
+      ]
+    },
+    {
+      "h": "Cuándo usarlo y cuándo no",
+      "body": [
+        "Usa Composite cuando:",
+        {
+          "ul": [
+            "Tus datos son de forma natural un árbol: archivos y carpetas, widgets de interfaz dentro de contenedores, menús y submenús, organigramas, figuras y grupos de dibujo.",
+            "Los clientes deberían poder ignorar la diferencia entre un objeto y un grupo de objetos."
+          ]
+        },
+        "Evítalo cuando:",
+        {
+          "ul": [
+            "La estructura es plana o siempre tiene un solo nivel. Un arreglo simple es más sencillo.",
+            "Las hojas y los grupos necesitan operaciones muy distintas. Forzarlos en una sola interfaz crea métodos que no tienen sentido para algunos nodos.",
+            "Necesitas restringir qué hijos puede contener un compuesto, por ejemplo solo ciertos tipos de nodo. La interfaz uniforme hace más difícil aplicar esas reglas en el sistema de tipos."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Usos en el mundo real",
+      "body": [
+        {
+          "ul": [
+            "El DOM: cada elemento y cada nodo de texto es un `Node`. Los elementos pueden contener otros nodos, y muchas operaciones, como `textContent` o `cloneNode(true)`, funcionan igual en un solo nodo y en un subárbol completo.",
+            "Los frameworks de componentes de interfaz como React, Vue y Angular construyen interfaces como árboles donde un componente puede renderizar otros componentes.",
+            "Java AWT y Swing: `Container` es una subclase de `Component` y contiene otros componentes, así que un panel lleno de botones es a su vez un componente.",
+            "Los árboles de sintaxis abstracta en los compiladores, los grafos de escena en los motores de juegos y los menús anidados siguen la misma idea."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Patrones relacionados",
+      "body": [
+        {
+          "ul": [
+            "Iterator: recorre los nodos de un compuesto sin exponer cómo se almacenan los hijos.",
+            "Visitor: añade nuevas operaciones sobre un árbol compuesto (exportación, validación, estadísticas) sin cambiar las clases de los nodos.",
+            "Decorator: también tiene una interfaz de componente y envuelve objetos de forma recursiva, pero un decorador tiene exactamente un hijo y añade comportamiento, mientras que un compuesto tiene muchos hijos y combina sus resultados.",
+            "Builder: se usa a menudo para construir paso a paso árboles compuestos complejos.",
+            "Chain of Responsibility: suele usar los enlaces al padre de un compuesto, pasando una petición desde un hijo hacia sus padres, como los eventos del navegador que burbujean por el DOM."
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "¿Cuál es la diferencia entre una hoja y un compuesto?",
+      "a": "Una hoja no tiene hijos y hace el trabajo por sí misma. Un compuesto contiene componentes hijos y normalmente hace su trabajo llamando a la misma operación en cada hijo y combinando los resultados."
+    },
+    {
+      "q": "¿Composite sirve solo para árboles?",
+      "a": "Está diseñado para jerarquías parte-todo con forma de árbol. Un grafo general con ciclos requiere cuidados adicionales, como registrar los nodos visitados, para evitar la recursión infinita."
+    },
+    {
+      "q": "¿Cuál es la diferencia entre Composite y Decorator?",
+      "a": "Ambos usan una interfaz compartida y composición recursiva. Un decorador envuelve exactamente un objeto para añadir comportamiento, mientras que un compuesto agrupa muchos hijos para tratarlos como uno solo."
+    },
+    {
+      "q": "¿Debería add() estar también en la clase hoja?",
+      "a": "Solo si quieres transparencia total y aceptas errores en tiempo de ejecución cuando alguien añade un hijo a una hoja. En lenguajes con tipos suele ser más seguro poner `add()` solo en el compuesto."
+    }
+  ]
+}

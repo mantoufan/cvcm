@@ -1,0 +1,250 @@
+{
+  "title": "Penjelasan heapsort: binary heap, sift-down, kode Python, dan kompleksitas — cv.cm",
+  "description": "Heapsort membangun max-heap dan berulang kali memindahkan item terbesar ke akhir, dalam waktu O(n log n) dan ruang O(1). Penelusuran, kode Python, heapq, dan stabilitas.",
+  "h1": "Penjelasan heapsort: cara kerja, kode, dan kompleksitas",
+  "answer": "Heapsort adalah comparison sort yang pertama-tama menata array menjadi max-heap, yaitu binary tree yang disimpan dalam array dengan setiap parent minimal sebesar anak-anaknya. Lalu ia berulang kali menukar elemen terbesar (root) ke akhir array, mengecilkan heap satu elemen, dan memulihkan sifat heap dengan men-sift root baru ke bawah. Waktunya O(n log n) pada semua kasus dan mengurutkan di tempat dengan ruang tambahan O(1), tetapi tidak stabil dan biasanya lebih lambat daripada quicksort dalam praktik.",
+  "sections": [
+    {
+      "h": "Ide dasar dengan kata-kata sederhana",
+      "body": [
+        "Heapsort adalah selection sort dengan cara yang lebih cepat untuk mencari nilai maksimum. Selection sort memindai seluruh bagian belum terurut, O(n) setiap kali. Heapsort menyimpan bagian belum terurut sebagai heap, sehingga nilai maksimum selalu ada di indeks 0 dan memulihkan urutan setelah mengambilnya hanya berbiaya O(log n).",
+        "Binary heap disimpan dalam array biasa tanpa pointer. Untuk elemen di indeks `i`:",
+        {
+          "ul": [
+            "anak kiri ada di `2*i + 1` dan anak kanan di `2*i + 2`;",
+            "parent ada di `(i - 1) // 2`;",
+            "pada max-heap, setiap parent lebih besar atau sama dengan anak-anaknya, sehingga elemen terbesar ada di indeks 0."
+          ]
+        },
+        {
+          "ol": [
+            "Bangun max-heap dari array dengan men-sift down setiap node non-daun, mulai dari yang terakhir dan bergerak ke indeks 0.",
+            "Tukar root (nilai maksimum) dengan elemen terakhir heap. Elemen itu kini berada di tempat akhirnya.",
+            "Kecilkan heap satu elemen dan sift root baru ke bawah sampai sifat heap berlaku lagi.",
+            "Ulangi langkah 2 dan 3 sampai heap tinggal satu elemen."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Contoh langkah demi langkah",
+      "body": [
+        "Urutkan `[4, 10, 3, 5, 1]`. Elemen setelah garis sudah terurut dan final.",
+        {
+          "table": {
+            "head": [
+              "Langkah",
+              "Aksi",
+              "Array"
+            ],
+            "rows": [
+              [
+                "Awal",
+                "",
+                "`[4, 10, 3, 5, 1]`"
+              ],
+              [
+                "Bangun 1",
+                "sift down indeks 1 (10): lebih besar dari anak 5 dan 1, tidak berubah",
+                "`[4, 10, 3, 5, 1]`"
+              ],
+              [
+                "Bangun 2",
+                "sift down indeks 0 (4): tukar dengan 10, lalu dengan 5",
+                "`[10, 5, 3, 4, 1]`  max-heap"
+              ],
+              [
+                "Ekstrak 1",
+                "tukar 10 ke akhir, sift 1 ke bawah: tukar dengan 5, lalu dengan 4",
+                "`[5, 4, 3, 1 | 10]`"
+              ],
+              [
+                "Ekstrak 2",
+                "tukar 5 ke akhir, sift 1 ke bawah: tukar dengan 4",
+                "`[4, 1, 3 | 5, 10]`"
+              ],
+              [
+                "Ekstrak 3",
+                "tukar 4 ke akhir, sift 3 ke bawah: tidak ada anak yang lebih besar",
+                "`[3, 1 | 4, 5, 10]`"
+              ],
+              [
+                "Ekstrak 4",
+                "tukar 3 ke akhir",
+                "`[1 | 3, 4, 5, 10]`  terurut"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "Implementasi Python",
+      "body": [
+        {
+          "code": "def sift_down(a, root, end):\n    \"\"\"Restore the max-heap property for a[root..end-1].\"\"\"\n    while True:\n        child = 2 * root + 1\n        if child >= end:\n            return\n        if child + 1 < end and a[child + 1] > a[child]:\n            child += 1                      # pick the larger child\n        if a[root] >= a[child]:\n            return\n        a[root], a[child] = a[child], a[root]\n        root = child\n\ndef heapsort(a):\n    \"\"\"Sort list a in place, ascending.\"\"\"\n    n = len(a)\n    for i in range(n // 2 - 1, -1, -1):     # build the max-heap\n        sift_down(a, i, n)\n    for end in range(n - 1, 0, -1):\n        a[0], a[end] = a[end], a[0]         # move the max to the end\n        sift_down(a, 0, end)\n    return a\n\nprint(heapsort([4, 10, 3, 5, 1]))   # [1, 3, 4, 5, 10]\nprint(heapsort([2, 2, 1]))          # [1, 2, 2]",
+          "lang": "python"
+        },
+        "Modul `heapq` Python menyediakan min-heap pada list biasa. Mengeluarkan setiap elemen menghasilkan list terurut, yang merupakan heapsort singkat (tidak in-place):",
+        {
+          "code": "import heapq\n\ndef heapsort_heapq(items):\n    h = list(items)\n    heapq.heapify(h)                       # O(n)\n    return [heapq.heappop(h) for _ in range(len(h))]\n\nprint(heapsort_heapq([4, 10, 3, 5, 1]))     # [1, 3, 4, 5, 10]\nprint(heapq.nlargest(2, [4, 10, 3, 5, 1]))  # [10, 5]",
+          "lang": "python"
+        }
+      ]
+    },
+    {
+      "h": "Kompleksitas waktu dan ruang",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Kasus",
+              "Waktu",
+              "Alasan"
+            ],
+            "rows": [
+              [
+                "Membangun heap",
+                "O(n)",
+                "sebagian besar node berada dekat dasar dan hanya di-sift down dalam jarak pendek"
+              ],
+              [
+                "Terbaik",
+                "O(n log n)",
+                "n − 1 ekstraksi, masing-masing sift-down hingga log₂ n tingkat (kunci berbeda)"
+              ],
+              [
+                "Rata-rata",
+                "O(n log n)",
+                "pekerjaan yang sama apa pun urutannya"
+              ],
+              [
+                "Terburuk",
+                "O(n log n)",
+                "tinggi tree selalu sekitar log₂ n"
+              ],
+              [
+                "Ruang tambahan",
+                "O(1)",
+                "heap berada di dalam array input, sift-down berupa perulangan"
+              ]
+            ]
+          }
+        },
+        "Membangun heap secara bottom-up adalah O(n), bukan O(n log n), karena jumlah tinggi node pada complete binary tree adalah O(n). Fase ekstraksi yang mendominasi total."
+      ]
+    },
+    {
+      "h": "Perbandingan heapsort dengan sort lain",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Algoritma",
+              "Terbaik",
+              "Rata-rata",
+              "Terburuk",
+              "Ruang tambahan",
+              "Stabil"
+            ],
+            "rows": [
+              [
+                "Heapsort",
+                "O(n log n)",
+                "O(n log n)",
+                "O(n log n)",
+                "O(1)",
+                "Tidak"
+              ],
+              [
+                "Quicksort",
+                "O(n log n)",
+                "O(n log n)",
+                "O(n²)",
+                "O(log n)",
+                "Tidak"
+              ],
+              [
+                "Merge sort",
+                "O(n log n)",
+                "O(n log n)",
+                "O(n log n)",
+                "O(n)",
+                "Ya"
+              ],
+              [
+                "Selection sort",
+                "O(n²)",
+                "O(n²)",
+                "O(n²)",
+                "O(1)",
+                "Tidak"
+              ],
+              [
+                "Insertion sort",
+                "O(n)",
+                "O(n²)",
+                "O(n²)",
+                "O(1)",
+                "Ya"
+              ],
+              [
+                "Timsort (`sorted` di Python)",
+                "O(n)",
+                "O(n log n)",
+                "O(n log n)",
+                "O(n)",
+                "Ya"
+              ]
+            ]
+          }
+        },
+        "Heapsort tidak stabil: menukar root ke akhir dapat membawa elemen melewati elemen lain yang berkunci sama. Kekuatan utamanya adalah kasus terburuk O(n log n) yang terjamin bersama ruang tambahan O(1), kombinasi yang tidak ditawarkan quicksort maupun merge sort. Kelemahannya ada pada akses memori: melompat antara indeks `i` dan `2*i + 1` kurang memanfaatkan cache CPU, sehingga biasanya lebih lambat daripada quicksort yang diimplementasikan dengan baik. Introsort memakai heapsort sebagai cadangan ketika quicksort berekursi terlalu dalam."
+      ]
+    },
+    {
+      "h": "Varian dan kesalahan umum",
+      "body": [
+        {
+          "ul": [
+            "Pengurutan parsial: untuk mendapatkan hanya k item terbesar, bangun heap lalu ekstrak k kali, O(n + k log n). Di Python, `heapq.nlargest` dan `heapq.nsmallest` melakukannya.",
+            "Top-k dari aliran data (stream): pertahankan min-heap berukuran k dan push atau ganti setiap item baru, waktu O(n log k) dan memori O(k).",
+            "Bottom-up heapsort men-sift lubang ke bawah sampai daun terlebih dahulu lalu naik, yang menghemat perbandingan.",
+            "Smoothsort, varian berbasis heap buatan Dijkstra, berjalan dalam O(n) pada input yang sudah terurut tetapi jarang dipakai karena rumit."
+          ]
+        },
+        {
+          "note": "Bug yang umum: memakai min-heap di tempat sehingga hasilnya menurun, memulai perulangan pembangunan di indeks `n // 2` dengan rumus anak berbasis 1 pada array berbasis 0, lupa mengecilkan heap (`end`) setelah tiap pertukaran, dan hanya membandingkan dengan anak kiri saat sift-down."
+        }
+      ]
+    },
+    {
+      "h": "Kapan memakai heapsort",
+      "body": [
+        "Pakai heapsort ketika Anda butuh kasus terburuk O(n log n) yang terjamin tanpa memori tambahan, misalnya pada sistem embedded atau real-time, atau sebagai cadangan pengaman di dalam sort lain. Untuk kode Python sehari-hari, pakai `sorted()`, yang stabil dan lebih cepat pada data umum. Heap itu sendiri lebih berguna daripada pengurutannya: priority queue, jalur terpendek Dijkstra, scheduler, penggabungan k list terurut (`heapq.merge`), dan pencarian k nilai terbesar semuanya dibangun di atasnya. Wawancara sering menanyakan rumus indeks heap, mengapa membangun heap itu O(n), dan masalah top-k."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Apakah heapsort stabil?",
+      "a": "Tidak. Memindahkan root ke akhir dan men-sift elemen ke bawah dapat mengubah urutan relatif kunci yang sama."
+    },
+    {
+      "q": "Berapa kompleksitas waktu heapsort?",
+      "a": "O(n log n) pada kasus terbaik, rata-rata, dan terburuk. Membangun heap adalah O(n) dan masing-masing dari n − 1 ekstraksi berbiaya O(log n)."
+    },
+    {
+      "q": "Apakah heapsort in-place?",
+      "a": "Ya. Heap disimpan di dalam array yang diurutkan, dan bagian terurut tumbuh dari akhir, sehingga hanya butuh ruang tambahan O(1)."
+    },
+    {
+      "q": "Mengapa heapsort lebih lambat daripada quicksort dalam praktik?",
+      "a": "Keduanya O(n log n) rata-rata, tetapi heapsort melompat antar posisi array yang berjauhan, yang menyebabkan lebih banyak cache miss, dan ia melakukan lebih banyak perbandingan per elemen daripada quicksort."
+    },
+    {
+      "q": "Bagaimana cara mengurutkan dengan heapq di Python?",
+      "a": "Panggil `heapq.heapify(list)` lalu `heapq.heappop` berulang kali, atau pakai `heapq.nsmallest(k, items)` untuk k terkecil. Untuk pengurutan penuh, `sorted()` lebih sederhana dan lebih cepat."
+    }
+  ]
+}

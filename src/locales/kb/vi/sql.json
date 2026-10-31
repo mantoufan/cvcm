@@ -1,0 +1,263 @@
+{
+  "title": "Hướng dẫn học SQL: SELECT, JOIN, GROUP BY và transaction — cv.cm",
+  "description": "Học SQL cơ bản từng bước: tạo bảng, SELECT với WHERE và ORDER BY, join, GROUP BY, CTE, window function, transaction và so sánh PostgreSQL, MySQL, SQLite.",
+  "h1": "Học SQL cơ bản cho người mới bắt đầu",
+  "answer": "SQL là ngôn ngữ chuẩn để tạo, truy vấn và thay đổi dữ liệu trong các cơ sở dữ liệu quan hệ như PostgreSQL, MySQL và SQLite. Bạn viết các câu lệnh khai báo như SELECT, INSERT, UPDATE và DELETE, còn cơ sở dữ liệu tự quyết định cách thực thi. Trang này dạy thiết kế bảng, lọc dữ liệu, join, nhóm, truy vấn con, window function và transaction, đồng thời liệt kê các khác biệt chính giữa PostgreSQL, MySQL và SQLite.",
+  "sections": [
+    {
+      "h": "SQL là gì và dùng để làm gì",
+      "body": [
+        "SQL (Structured Query Language) là ngôn ngữ chuẩn để làm việc với cơ sở dữ liệu quan hệ, nơi dữ liệu được lưu trong các bảng gồm hàng và cột. Bạn mô tả dữ liệu mình muốn, còn công cụ cơ sở dữ liệu tự quyết định cách tìm. SQL được chuẩn hóa bởi ISO/IEC 9075, và mọi hệ quản trị lớn đều triển khai phần lõi của chuẩn cùng các phần mở rộng riêng.",
+        "Lập trình viên, nhà phân tích dữ liệu, kỹ sư dữ liệu và quản trị viên cơ sở dữ liệu dùng SQL hằng ngày: để lưu dữ liệu ứng dụng, trả lời câu hỏi kinh doanh, tạo báo cáo và cấp dữ liệu cho các pipeline. Các hệ mã nguồn mở phổ biến nhất là PostgreSQL, MySQL (và nhánh MariaDB) và SQLite; hệ thương mại gồm Microsoft SQL Server và Oracle Database."
+      ]
+    },
+    {
+      "h": "Có cơ sở dữ liệu và chạy truy vấn đầu tiên",
+      "body": [
+        "Cách dễ nhất để bắt đầu là SQLite, cơ sở dữ liệu không cần máy chủ, lưu trong một tệp duy nhất. SQLite được cài sẵn trên macOS và hầu hết hệ thống Linux. PostgreSQL và MySQL chạy dưới dạng máy chủ và đi kèm các client dòng lệnh `psql` và `mysql`.",
+        {
+          "code": "sqlite3 shop.db                      # SQLite: opens or creates a file\npsql -U postgres -d shop             # PostgreSQL client\nmysql -u root -p shop                # MySQL client",
+          "lang": "shell"
+        },
+        {
+          "code": "SELECT 'Hello, world!' AS greeting;\n-- greeting\n-- Hello, world!",
+          "lang": "sql"
+        },
+        "Từ khóa SQL không phân biệt hoa thường. Viết từ khóa in hoa và tên in thường là quy ước phổ biến giúp truy vấn dễ đọc hơn. Câu lệnh kết thúc bằng dấu chấm phẩy, và `--` bắt đầu một chú thích."
+      ]
+    },
+    {
+      "h": "Tạo bảng: kiểu dữ liệu và ràng buộc",
+      "body": [
+        "Định nghĩa bảng liệt kê các cột, kiểu của chúng và các ràng buộc giữ cho dữ liệu hợp lệ. Trang này dùng hai bảng, `customers` và `orders`, trong mọi ví dụ.",
+        {
+          "code": "CREATE TABLE customers (\n  id    INTEGER PRIMARY KEY,\n  name  VARCHAR(100) NOT NULL,\n  city  VARCHAR(50)\n);\nCREATE TABLE orders (\n  id          INTEGER PRIMARY KEY,\n  customer_id INTEGER NOT NULL REFERENCES customers(id),\n  amount      DECIMAL(10, 2) NOT NULL,\n  ordered_on  DATE NOT NULL\n);\nINSERT INTO customers (id, name, city) VALUES\n  (1, 'Ann', 'Oslo'), (2, 'Bo', 'Rome'), (3, 'Cy', 'Oslo');\nINSERT INTO orders (id, customer_id, amount, ordered_on) VALUES\n  (1, 1, 30.00, '2026-01-05'),\n  (2, 1, 45.50, '2026-02-10'),\n  (3, 2, 12.00, '2026-02-11');",
+          "lang": "sql"
+        },
+        {
+          "table": {
+            "head": [
+              "Kiểu",
+              "Lưu trữ",
+              "Ghi chú"
+            ],
+            "rows": [
+              [
+                "`INTEGER`, `BIGINT`",
+                "số nguyên",
+                "dùng `BIGINT` cho ID lớn"
+              ],
+              [
+                "`DECIMAL(p, s)`",
+                "số thập phân chính xác",
+                "dùng cho tiền tệ, không bao giờ dùng `FLOAT`"
+              ],
+              [
+                "`VARCHAR(n)`, `TEXT`",
+                "chuỗi",
+                "`TEXT` không thuộc chuẩn nhưng được hỗ trợ rộng rãi"
+              ],
+              [
+                "`DATE`, `TIMESTAMP`",
+                "ngày và giờ",
+                "viết literal dạng `'2026-01-05'`"
+              ],
+              [
+                "`BOOLEAN`",
+                "đúng hoặc sai",
+                "MySQL coi nó là `TINYINT(1)`"
+              ]
+            ]
+          }
+        },
+        "Các ràng buộc gồm `PRIMARY KEY` (định danh duy nhất của hàng), `NOT NULL`, `UNIQUE`, `CHECK (condition)` và `FOREIGN KEY` / `REFERENCES` (giá trị phải tồn tại ở bảng khác). Chuỗi dùng nháy đơn; nháy kép dành cho định danh trong SQL chuẩn."
+      ]
+    },
+    {
+      "h": "SELECT: lọc, sắp xếp và giới hạn",
+      "body": [
+        "`SELECT` đọc dữ liệu. `WHERE` lọc hàng, `ORDER BY` sắp xếp, và `LIMIT` (hoặc `FETCH FIRST n ROWS ONLY` theo chuẩn) giới hạn số hàng trả về.",
+        {
+          "code": "SELECT name, city\nFROM customers\nWHERE city = 'Oslo'\nORDER BY name;\n-- Ann | Oslo\n-- Cy  | Oslo\nSELECT id, amount,\n       CASE WHEN amount >= 40 THEN 'large'\n            WHEN amount >= 20 THEN 'medium'\n            ELSE 'small' END AS size\nFROM orders\nWHERE amount BETWEEN 10 AND 50\nORDER BY amount DESC\nLIMIT 2;\n-- 2 | 45.50 | large\n-- 1 | 30.00 | medium\nSELECT name FROM customers WHERE city IS NULL;   -- not: city = NULL\nSELECT name FROM customers WHERE name LIKE 'A%'; -- Ann",
+          "lang": "sql"
+        },
+        {
+          "note": "`NULL` nghĩa là không xác định, nên `city = NULL` không bao giờ đúng. Hãy luôn dùng `IS NULL` hoặc `IS NOT NULL`. Cũng lưu ý thứ tự logic của một truy vấn là `FROM`, `WHERE`, `GROUP BY`, `HAVING`, `SELECT`, `ORDER BY`, nên bí danh cột định nghĩa trong `SELECT` không dùng được trong `WHERE`."
+        }
+      ]
+    },
+    {
+      "h": "JOIN: kết hợp các bảng",
+      "body": [
+        "Join khớp các hàng của hai bảng theo một điều kiện, thường là khóa ngoại. `INNER JOIN` (hoặc chỉ `JOIN`) chỉ giữ các hàng khớp; `LEFT JOIN` giữ mọi hàng của bảng bên trái và điền `NULL` vào các cột thiếu.",
+        {
+          "code": "SELECT c.name, o.amount\nFROM customers AS c\nJOIN orders AS o ON o.customer_id = c.id\nORDER BY o.amount DESC;\n-- Ann | 45.50\n-- Ann | 30.00\n-- Bo  | 12.00\nSELECT c.name, o.id AS order_id\nFROM customers AS c\nLEFT JOIN orders AS o ON o.customer_id = c.id\nWHERE o.id IS NULL;        -- customers with no orders\n-- Cy | NULL",
+          "lang": "sql"
+        },
+        {
+          "table": {
+            "head": [
+              "Join",
+              "Trả về"
+            ],
+            "rows": [
+              [
+                "`INNER JOIN`",
+                "các hàng khớp ở cả hai bảng"
+              ],
+              [
+                "`LEFT JOIN`",
+                "mọi hàng bên trái, cộng với các hàng khớp bên phải hoặc `NULL`"
+              ],
+              [
+                "`RIGHT JOIN`",
+                "mọi hàng bên phải, cộng với các hàng khớp bên trái hoặc `NULL`"
+              ],
+              [
+                "`FULL OUTER JOIN`",
+                "mọi hàng của cả hai phía; MySQL không hỗ trợ"
+              ],
+              [
+                "`CROSS JOIN`",
+                "mọi tổ hợp của các hàng (tích Descartes)"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "GROUP BY và hàm tổng hợp",
+      "body": [
+        "Các hàm tổng hợp như `COUNT`, `SUM`, `AVG`, `MIN` và `MAX` tóm tắt nhiều hàng thành một. `GROUP BY` tạo một hàng kết quả cho mỗi nhóm, và `HAVING` lọc các nhóm sau khi tổng hợp, còn `WHERE` lọc hàng trước đó.",
+        {
+          "code": "SELECT c.name,\n       COUNT(o.id)               AS orders,\n       COALESCE(SUM(o.amount), 0) AS total\nFROM customers AS c\nLEFT JOIN orders AS o ON o.customer_id = c.id\nGROUP BY c.id, c.name\nORDER BY total DESC;\n-- Ann | 2 | 75.50\n-- Bo  | 1 | 12.00\n-- Cy  | 0 | 0\nSELECT city, COUNT(*) AS n\nFROM customers\nGROUP BY city\nHAVING COUNT(*) > 1;\n-- Oslo | 2",
+          "lang": "sql"
+        },
+        "`COUNT(*)` đếm hàng, còn `COUNT(column)` chỉ đếm giá trị không null, nên Cy có 0 đơn hàng ở trên. `COALESCE` trả về đối số không null đầu tiên."
+      ]
+    },
+    {
+      "h": "Truy vấn con, CTE và window function",
+      "body": [
+        "Truy vấn con (subquery) là truy vấn nằm trong truy vấn khác. Common table expression (CTE), viết bằng `WITH`, đặt tên cho một truy vấn con và giúp truy vấn dài dễ đọc. Window function như `ROW_NUMBER`, `RANK` và `SUM(...) OVER` tính giá trị trên các hàng liên quan mà không gộp chúng thành nhóm.",
+        {
+          "code": "SELECT name FROM customers\nWHERE id IN (SELECT customer_id FROM orders WHERE amount > 20);\n-- Ann\nWITH totals AS (\n  SELECT customer_id, SUM(amount) AS total\n  FROM orders\n  GROUP BY customer_id\n)\nSELECT c.name, t.total,\n       RANK() OVER (ORDER BY t.total DESC) AS rnk\nFROM totals AS t\nJOIN customers AS c ON c.id = t.customer_id;\n-- Ann | 75.50 | 1\n-- Bo  | 12.00 | 2",
+          "lang": "sql"
+        },
+        "CTE và window function được PostgreSQL, SQLite 3.25 trở lên và MySQL 8.0 trở lên hỗ trợ."
+      ]
+    },
+    {
+      "h": "Thay đổi dữ liệu: INSERT, UPDATE, DELETE và transaction",
+      "body": [
+        "`UPDATE` và `DELETE` tác động lên mọi hàng khớp mệnh đề `WHERE`. Một transaction gom nhiều câu lệnh lại để tất cả cùng thành công hoặc cùng thất bại.",
+        {
+          "code": "UPDATE customers SET city = 'Paris' WHERE id = 2;\nDELETE FROM orders WHERE amount < 15;\nBEGIN;\nUPDATE orders SET amount = amount - 10 WHERE id = 1;\nUPDATE orders SET amount = amount + 10 WHERE id = 2;\nCOMMIT;                    -- or ROLLBACK; to undo both\nSELECT id, amount FROM orders;\n-- 1 | 20.00\n-- 2 | 55.50",
+          "lang": "sql"
+        },
+        {
+          "note": "`UPDATE` hoặc `DELETE` không có `WHERE` sẽ thay đổi mọi hàng trong bảng. Hãy chạy cùng điều kiện đó dưới dạng `SELECT` trước để xem hàng nào bị ảnh hưởng, và làm việc trong transaction khi có thể."
+        }
+      ]
+    },
+    {
+      "h": "Khác biệt giữa PostgreSQL, MySQL và SQLite",
+      "body": [
+        "Phần lõi của SQL có tính di động, nhưng mỗi hệ khác nhau ở chi tiết. Đây là những khác biệt người mới gặp đầu tiên.",
+        {
+          "table": {
+            "head": [
+              "Tính năng",
+              "PostgreSQL",
+              "MySQL",
+              "SQLite"
+            ],
+            "rows": [
+              [
+                "ID tự tăng",
+                "`GENERATED ALWAYS AS IDENTITY` or `SERIAL`",
+                "`AUTO_INCREMENT`",
+                "`INTEGER PRIMARY KEY`"
+              ],
+              [
+                "Đặt tên trích dẫn",
+                "`\"name\"`",
+                "dấu backtick bao quanh tên",
+                "`\"name\"`"
+              ],
+              [
+                "Giới hạn số hàng",
+                "`LIMIT n` or `FETCH FIRST n ROWS ONLY`",
+                "`LIMIT n`",
+                "`LIMIT n`"
+              ],
+              [
+                "Nối chuỗi",
+                "`a || b`",
+                "`CONCAT(a, b)`",
+                "`a || b`"
+              ],
+              [
+                "Kiểu boolean",
+                "kiểu `BOOLEAN` thật",
+                "`TINYINT(1)`",
+                "lưu dưới dạng 0 và 1"
+              ],
+              [
+                "Kiểu dữ liệu",
+                "nghiêm ngặt",
+                "nghiêm ngặt ở chế độ strict mặc định",
+                "linh hoạt, trừ khi bảng được khai báo `STRICT`"
+              ],
+              [
+                "Upsert",
+                "`ON CONFLICT ... DO UPDATE`",
+                "`ON DUPLICATE KEY UPDATE`",
+                "`ON CONFLICT ... DO UPDATE`"
+              ]
+            ]
+          }
+        },
+        "Các khác biệt khác gồm hàm ngày tháng (`NOW()` trong PostgreSQL và MySQL, `datetime('now')` trong SQLite), phân biệt hoa thường khi so sánh chuỗi, và hỗ trợ full outer join mà MySQL không có."
+      ]
+    },
+    {
+      "h": "Lỗi thường gặp và học tiếp ở đâu",
+      "body": [
+        {
+          "ul": [
+            "Xây dựng truy vấn bằng cách nối dữ liệu người dùng nhập, dẫn tới SQL injection. Hãy luôn dùng truy vấn tham số hóa (placeholder như `?` hoặc `$1`) từ ngôn ngữ lập trình của bạn.",
+            "Chọn một cột trong truy vấn có nhóm mà cột đó không nằm trong `GROUP BY` cũng không nằm trong hàm tổng hợp.",
+            "Dùng `FLOAT` cho tiền thay vì `DECIMAL`.",
+            "Quên tạo chỉ mục cho các cột dùng trong join và bộ lọc; `CREATE INDEX idx_orders_customer ON orders(customer_id);` và `EXPLAIN` giúp ích ở đây.",
+            "Giả định các hàng trả về theo thứ tự cố định khi không có `ORDER BY`."
+          ]
+        },
+        "Để học thêm, hãy đọc các sổ tay chính thức: PostgreSQL tutorial, MySQL Reference Manual và SQLite SQL language reference. Hãy luyện tập trên một bộ dữ liệu thật bằng cách viết câu hỏi bằng tiếng thường rồi chuyển từng câu thành truy vấn."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "SQL có phải ngôn ngữ lập trình không?",
+      "a": "SQL là ngôn ngữ truy vấn khai báo: bạn mô tả kết quả mong muốn thay vì các bước để tính ra nó. Các phần mở rộng của nhà cung cấp như PL/pgSQL và T-SQL bổ sung biến, vòng lặp và thủ tục."
+    },
+    {
+      "q": "Người mới nên bắt đầu với cơ sở dữ liệu nào?",
+      "a": "SQLite không cần máy chủ và rất phù hợp để học. PostgreSQL là lựa chọn tốt để học SQL đúng chuẩn cho ứng dụng thực tế, còn MySQL phổ biến trong dịch vụ hosting web."
+    },
+    {
+      "q": "WHERE và HAVING khác nhau thế nào?",
+      "a": "`WHERE` lọc từng hàng trước khi nhóm, còn `HAVING` lọc các nhóm sau khi các hàm tổng hợp được tính."
+    },
+    {
+      "q": "INNER JOIN và LEFT JOIN khác nhau thế nào?",
+      "a": "`INNER JOIN` chỉ trả về các hàng có khớp ở cả hai bảng. `LEFT JOIN` trả về mọi hàng của bảng bên trái và điền `NULL` vào các cột của bảng bên phải khi không có hàng khớp."
+    },
+    {
+      "q": "Làm sao ngăn chặn SQL injection?",
+      "a": "Đừng bao giờ chèn dữ liệu người dùng vào văn bản SQL. Hãy dùng truy vấn tham số hóa hoặc prepared statement, trong đó cơ sở dữ liệu nhận câu truy vấn và các giá trị riêng biệt."
+    }
+  ]
+}

@@ -1,0 +1,234 @@
+{
+  "title": "Algoritmo de Dijkstra: caminos más cortos con una cola de prioridad en Python — cv.cm",
+  "description": "Algoritmo de Dijkstra explicado: cómo encuentra caminos más cortos en un grafo con pesos, una traza paso a paso, código en Python con heapq y coste O((V + E) log V).",
+  "h1": "Algoritmo de Dijkstra explicado: cómo funciona, código y complejidad",
+  "answer": "El algoritmo de Dijkstra encuentra el camino más corto desde un nodo inicial hasta todos los demás nodos de un grafo cuyas aristas tienen pesos no negativos. Elige repetidamente el nodo sin terminar con la menor distancia conocida, lo marca como definitivo y relaja sus aristas salientes. Con una cola de prioridad basada en un montículo binario se ejecuta en tiempo O((V + E) log V). Da resultados incorrectos si algún peso es negativo.",
+  "sections": [
+    {
+      "h": "Qué problema resuelve el algoritmo de Dijkstra",
+      "body": [
+        "La búsqueda en anchura encuentra el camino con menos aristas, pero las carreteras, los enlaces de red y los vuelos tienen longitudes, costes o retrasos distintos. El algoritmo de Dijkstra resuelve el problema del camino más corto desde un único origen en estos grafos con pesos: dado un nodo inicial, halla el coste total mínimo para llegar a cada uno de los demás nodos y el camino que lo consigue.",
+        "Edsger W. Dijkstra publicó el algoritmo en 1959 en el artículo \"A note on two problems in connexion with graphs\"."
+      ]
+    },
+    {
+      "h": "La idea en palabras sencillas",
+      "body": [
+        {
+          "ol": [
+            "Asigna distancia 0 al nodo inicial e infinito a todas las demás.",
+            "Elige el nodo sin terminar con la menor distancia. Su distancia ya es definitiva.",
+            "Relaja cada arista saliente u → v de peso w: si `dist[u] + w < dist[v]`, asigna `dist[v] = dist[u] + w` y recuerda u como el padre de v.",
+            "Repite los pasos 2 y 3 hasta que todos los nodos alcanzables estén terminados."
+          ]
+        },
+        "¿Por qué es definitiva la menor distancia? Cualquier otra ruta hacia ese nodo tendría que pasar por un nodo cuya distancia ya es al menos igual de grande y, con pesos no negativos, las aristas restantes solo pueden sumar coste."
+      ]
+    },
+    {
+      "h": "Ejemplo resuelto, paso a paso",
+      "body": [
+        "Grafo dirigido con las aristas A→B (4), A→C (1), C→B (2), B→D (1), C→D (5), D→E (3). Empieza en A.",
+        {
+          "table": {
+            "head": [
+              "Paso",
+              "Finalizar",
+              "A",
+              "B",
+              "C",
+              "D",
+              "E"
+            ],
+            "rows": [
+              [
+                "Inicio",
+                "—",
+                "0",
+                "∞",
+                "∞",
+                "∞",
+                "∞"
+              ],
+              [
+                "1",
+                "A (0)",
+                "0",
+                "4",
+                "1",
+                "∞",
+                "∞"
+              ],
+              [
+                "2",
+                "C (1)",
+                "0",
+                "3 vía C",
+                "1",
+                "6 vía C",
+                "∞"
+              ],
+              [
+                "3",
+                "B (3)",
+                "0",
+                "3",
+                "1",
+                "4 vía B",
+                "∞"
+              ],
+              [
+                "4",
+                "D (4)",
+                "0",
+                "3",
+                "1",
+                "4",
+                "7"
+              ],
+              [
+                "5",
+                "E (7)",
+                "0",
+                "3",
+                "1",
+                "4",
+                "7"
+              ]
+            ]
+          }
+        },
+        "B recibe primero la distancia 4 por la arista directa y luego mejora a 3 pasando por C. El camino más corto hasta E es A → C → B → D → E con un coste total de 1 + 2 + 1 + 3 = 7."
+      ]
+    },
+    {
+      "h": "Implementación en Python con heapq",
+      "body": [
+        "El módulo `heapq` de Python ofrece un montículo binario de mínimos. En lugar de una operación de \"disminuir clave\", inserta un nuevo par `(distance, node)` cada vez que una distancia mejora y descarta los pares obsoletos cuando se extraen. Esto se llama eliminación perezosa.",
+        {
+          "code": "import heapq\ndef dijkstra(graph, start):\n    dist = {start: 0}\n    parent = {start: None}\n    heap = [(0, start)]\n    while heap:\n        d, u = heapq.heappop(heap)\n        if d > dist[u]:\n            continue                      # outdated entry\n        for v, w in graph[u]:\n            nd = d + w\n            if nd < dist.get(v, float(\"inf\")):\n                dist[v] = nd\n                parent[v] = u\n                heapq.heappush(heap, (nd, v))\n    return dist, parent\ngraph = {\n    \"A\": [(\"B\", 4), (\"C\", 1)], \"B\": [(\"D\", 1)],\n    \"C\": [(\"B\", 2), (\"D\", 5)], \"D\": [(\"E\", 3)], \"E\": [],\n}\ndist, parent = dijkstra(graph, \"A\")\nprint(dist)  # {'A': 0, 'B': 3, 'C': 1, 'D': 4, 'E': 7}",
+          "lang": "python"
+        },
+        "Para obtener el camino hasta un destino, sigue los enlaces a los padres hacia atrás hasta el inicio:",
+        {
+          "code": "def path_to(parent, target):\n    path = []\n    while target is not None:\n        path.append(target)\n        target = parent[target]\n    return path[::-1]\nprint(path_to(parent, \"E\"))  # ['A', 'C', 'B', 'D', 'E']",
+          "lang": "python"
+        },
+        "Si solo necesitas la distancia a un destino, puedes detenerte en cuanto ese destino sale del montículo: su distancia ya es definitiva en ese momento."
+      ]
+    },
+    {
+      "h": "Complejidad temporal y espacial",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Cola de prioridad",
+              "Tiempo",
+              "Notas"
+            ],
+            "rows": [
+              [
+                "Montículo binario (heapq)",
+                "O((V + E) log V)",
+                "La opción habitual. Con eliminación perezosa el montículo puede contener hasta E entradas, lo que sigue siendo O(log V) por operación porque log E es como máximo 2 log V."
+              ],
+              [
+                "Arreglo simple, búsqueda del mínimo",
+                "O(V²)",
+                "Mejor para grafos muy densos en los que E se acerca a V²."
+              ],
+              [
+                "Montículo de Fibonacci",
+                "O(E + V log V)",
+                "El mejor en teoría, pero rara vez más rápido en la práctica por sus constantes grandes."
+              ]
+            ]
+          }
+        },
+        "El espacio es O(V + E) para el grafo, los mapas de distancias y padres, y el montículo."
+      ]
+    },
+    {
+      "h": "Variantes y errores comunes",
+      "body": [
+        {
+          "note": "Los pesos negativos rompen el algoritmo de Dijkstra: un nodo puede darse por definitivo y después resultar más barato a través de una arista negativa. Usa Bellman-Ford para grafos con pesos negativos. Sumar una constante grande a todas las aristas no lo arregla, porque penaliza los caminos con más aristas."
+        },
+        {
+          "ul": [
+            "Olvidar la comprobación `if d > dist[u]: continue` no es incorrecto, pero hace que el algoritmo procese entradas obsoletas y puede ralentizarlo mucho.",
+            "Insertar solo el nodo en lugar de `(distance, node)` hace que el orden del montículo no tenga sentido.",
+            "Si los nodos son objetos que no se pueden comparar, los empates de distancia hacen que `heapq` compare los nodos y lance `TypeError`. Inserta `(distance, counter, node)` con un contador único.",
+            "La búsqueda A* es Dijkstra con una heurística sumada a la prioridad; explora menos nodos cuando tienes una buena estimación de la distancia restante.",
+            "Dijkstra bidireccional se ejecuta desde el origen y desde el destino a la vez y se detiene cuando las búsquedas se encuentran."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Cuándo usarlo y usos en el mundo real",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Grafo",
+              "Algoritmo"
+            ],
+            "rows": [
+              [
+                "Sin pesos, o todos los pesos iguales",
+                "BFS, O(V + E)"
+              ],
+              [
+                "Pesos no negativos, un origen",
+                "Dijkstra"
+              ],
+              [
+                "Pesos negativos, sin ciclos negativos",
+                "Bellman-Ford, O(V × E)"
+              ],
+              [
+                "Todos los pares, grafo pequeño y denso",
+                "Floyd-Warshall, O(V³)"
+              ],
+              [
+                "Un destino con estimación de distancia",
+                "Búsqueda A*"
+              ]
+            ]
+          }
+        },
+        {
+          "ul": [
+            "Enrutamiento: los protocolos de enrutamiento de estado de enlace, como OSPF e IS-IS, ejecutan un cálculo del camino más corto primero (SPF) basado en el algoritmo de Dijkstra.",
+            "Mapas y navegación, donde los sistemas de producción añaden preprocesamiento sobre una búsqueda de tipo Dijkstra.",
+            "Problemas de entrevista: tiempo de retraso de red, vuelos más baratos (con límite de escalas), camino de mínimo esfuerzo en una cuadrícula y cualquier pregunta de \"coste total mínimo\" sobre un grafo."
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "¿Funciona el algoritmo de Dijkstra con pesos negativos?",
+      "a": "No. Supone que, cuando un nodo tiene la menor distancia provisional, ningún camino posterior puede abaratarlo, y una arista negativa rompe esa suposición. Usa Bellman-Ford en su lugar."
+    },
+    {
+      "q": "¿Cuál es la complejidad temporal del algoritmo de Dijkstra?",
+      "a": "Con un montículo binario es O((V + E) log V). Con un arreglo simple es O(V²), que puede ser mejor en grafos densos."
+    },
+    {
+      "q": "¿Es voraz el algoritmo de Dijkstra?",
+      "a": "Sí. En cada paso toma la mejor decisión local, finalizar el nodo sin terminar más cercano, y esa decisión es demostrablemente correcta cuando todos los pesos son no negativos."
+    },
+    {
+      "q": "¿Cuál es la diferencia entre Dijkstra y BFS?",
+      "a": "BFS usa una cola simple y cuenta aristas, por lo que solo es correcto cuando todas las aristas tienen el mismo peso. Dijkstra usa una cola de prioridad ordenada por distancia total, así que admite pesos no negativos distintos."
+    },
+    {
+      "q": "¿Dijkstra encuentra el camino más corto entre todos los pares de nodos?",
+      "a": "Una ejecución da los caminos más cortos desde un solo origen. Ejecútalo desde cada nodo para obtener todos los pares, o usa Floyd-Warshall en grafos pequeños y densos."
+    }
+  ]
+}

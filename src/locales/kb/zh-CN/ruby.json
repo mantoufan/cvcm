@@ -1,0 +1,197 @@
+{
+  "title": "Ruby 入门教程：对象、块、数组、哈希与类 — cv.cm",
+  "description": "一页学会 Ruby：运行 Hello world，变量与类型，流程控制，方法，数组与哈希，块与迭代器，类，模块与异常。",
+  "h1": "Ruby 入门教程（零基础）",
+  "answer": "Ruby 是一门动态的面向对象脚本语言，读写起来令人愉快。把 `puts \"Hello, world\"` 保存为 `hello.rb`，然后运行 `ruby hello.rb`。Ruby 中一切皆对象，连数字和 `nil` 也不例外。核心概念包括：用 `def` 定义的方法、数组和哈希、传给 `each` 和 `map` 等迭代器的块、类和模块，以及用 `begin`/`rescue` 处理的异常。",
+  "sections": [
+    {
+      "h": "Ruby 是什么，用来做什么",
+      "body": [
+        "Ruby 由日本的松本行弘（Yukihiro Matsumoto，人称“Matz”）创建，1995 年首次发布，目标是让程序员快乐。它因 Ruby on Rails 而广为人知，GitHub 和 Shopify 等网站背后就是这个 Web 框架。Ruby 用于 Web 应用、脚本与自动化，以及 Homebrew 和 CocoaPods 等开发者工具。它的标准实现是 CRuby（也称 MRI）。"
+      ]
+    },
+    {
+      "h": "安装 Ruby 并运行 Hello, world",
+      "body": [
+        "macOS 和许多 Linux 系统自带 Ruby，但版本往往很旧；请用 rbenv、asdf 或 mise 等版本管理器安装当前的 Ruby 3，在 Windows 上则使用 RubyInstaller。用 `ruby -v` 检查。",
+        {
+          "code": "puts \"Hello, world\"",
+          "lang": "ruby"
+        },
+        {
+          "code": "ruby hello.rb\n# Hello, world\nirb          # interactive Ruby shell",
+          "lang": "shell"
+        },
+        "`puts` 输出一个值并换行。在含义清楚时，方法参数两边的圆括号可以省略。"
+      ]
+    },
+    {
+      "h": "变量与基本类型",
+      "body": [
+        "变量无需声明，可以保存任意对象。按惯例，名称使用 `snake_case`。常量以大写字母开头。",
+        {
+          "table": {
+            "head": [
+              "类",
+              "示例",
+              "说明"
+            ],
+            "rows": [
+              [
+                "`Integer`",
+                "`42`, `2**100`",
+                "任意大小"
+              ],
+              [
+                "`Float`",
+                "`3.14`",
+                "双精度"
+              ],
+              [
+                "`String`",
+                "`\"hi #{name}\"`, `'hi'`",
+                "可变；双引号会插值"
+              ],
+              [
+                "`Symbol`",
+                "`:name`",
+                "不可变的标识符，常用作哈希的键"
+              ],
+              [
+                "`true`, `false`",
+                "`true`",
+                "只有 `false` 和 `nil` 为假"
+              ],
+              [
+                "`NilClass`",
+                "`nil`",
+                "没有值"
+              ],
+              [
+                "`Array`, `Hash`",
+                "`[1, 2]`, `{a: 1}`",
+                "内置集合"
+              ]
+            ]
+          }
+        },
+        {
+          "code": "name = \"Ada\"\ncount = 7\nputs \"#{name} has #{count} items\"   # Ada has 7 items\nputs count / 2, count / 2.0         # 3, then 3.5\nputs \"12\".to_i + 1                  # 13\nputs 5.class, nil.to_a.inspect      # Integer, then []\nputs 0 ? \"0 is truthy\" : \"falsy\"    # 0 is truthy",
+          "lang": "ruby"
+        }
+      ]
+    },
+    {
+      "h": "流程控制",
+      "body": [
+        {
+          "code": "score = 72\nif score >= 90\n  puts \"A\"\nelsif score >= 70\n  puts \"B\"          # B\nelse\n  puts \"C\"\nend\n\nputs \"pass\" unless score < 50    # statement modifier\n\n3.times { |i| print i, \" \" }     # 0 1 2\nputs\n\nn = 10\nn /= 2 while n > 1\nputs n                           # 1\n\nkind = case \"SAT\"\n       when \"SAT\", \"SUN\" then \"weekend\"\n       else \"weekday\"\n       end\nputs kind                        # weekend",
+          "lang": "ruby"
+        },
+        "代码块以 `end` 结束，而不是花括号。Ruby 代码通常用 2 个空格缩进。"
+      ]
+    },
+    {
+      "h": "方法",
+      "body": [
+        "方法返回最后一个表达式的值，所以通常不需要写 `return`。按惯例，返回布尔值的方法以 `?` 结尾，原地修改接收者的方法以 `!` 结尾。",
+        {
+          "code": "def greet(name, greeting: \"Hello\")\n  \"#{greeting}, #{name}!\"\nend\n\ndef total(*nums)\n  nums.sum\nend\n\nputs greet(\"Lin\")                   # Hello, Lin!\nputs greet(\"Lin\", greeting: \"Hi\")   # Hi, Lin!\nputs total(1, 2, 3)                 # 6\nputs 4.even?, \"abc\".upcase          # true, then ABC\n\ns = \"hello\"\ns.upcase!          # modifies s in place\nputs s             # HELLO",
+          "lang": "ruby"
+        }
+      ]
+    },
+    {
+      "h": "数组与哈希",
+      "body": [
+        {
+          "code": "nums = [3, 1, 2]\nnums << 5\np nums.sort, nums.first, nums.last   # [1, 2, 3, 5] then 3 then 5\np nums.sort[1..2]                    # [2, 3]\n\nages = { \"ann\" => 31, \"bob\" => 25 }\nages[\"cy\"] = 40\nages.each { |person, age| puts \"#{person} is #{age}\" }\np ages.fetch(\"zed\", 0)               # 0\n\nuser = { name: \"Ann\", city: \"Oslo\" } # symbol keys\np user[:name]                        # \"Ann\"",
+          "lang": "ruby"
+        },
+        "`p` 输出值的 `inspect` 形式，它会显示引号和方括号，便于调试。"
+      ]
+    },
+    {
+      "h": "标志性特性：块与迭代器",
+      "body": [
+        "块是传给方法的一段代码，单行时写作 `{ ... }`，跨行时写作 `do ... end`。Ruby 的迭代主要通过块完成，而不是 `for` 循环，`Enumerable` 的方法让数据转换写起来很简短。",
+        {
+          "code": "nums = [1, 2, 3, 4, 5]\np nums.map { |n| n * n }               # [1, 4, 9, 16, 25]\np nums.select(&:even?)                 # [2, 4]\np nums.reduce(0) { |sum, n| sum + n }  # 15\np nums.each_slice(2).to_a              # [[1, 2], [3, 4], [5]]\np %w[pear fig apple].sort_by(&:length) # [\"fig\", \"pear\", \"apple\"]\n\ndef twice\n  yield\n  yield\nend\ntwice { puts \"hi\" }   # prints hi two times",
+          "lang": "ruby"
+        },
+        "`&:even?` 是 `{ |n| n.even? }` 的简写。你自己的方法可以接收块，并用 `yield` 调用它。"
+      ]
+    },
+    {
+      "h": "类与模块",
+      "body": [
+        {
+          "code": "module Greeter\n  def hello\n    \"Hello from #{name}\"\n  end\nend\n\nclass Account\n  include Greeter          # mix in module methods\n  attr_reader :name, :balance\n\n  def initialize(name)\n    @name = name           # @ marks an instance variable\n    @balance = 0\n  end\n\n  def deposit(amount)\n    raise ArgumentError, \"amount must be positive\" unless amount.positive?\n    @balance += amount\n    self\n  end\n\n  def to_s = \"#{name}: #{balance}\"\nend\n\nacc = Account.new(\"Ann\")\nacc.deposit(30).deposit(20)\nputs acc        # Ann: 50\nputs acc.hello  # Hello from Ann",
+          "lang": "ruby"
+        },
+        "`attr_reader` 会生成 getter 方法。模块把方法组织在一起，可以混入许多类，Ruby 用它代替多重继承。单行的 `def to_s = ...` 写法需要 Ruby 3.0 或更高版本。"
+      ]
+    },
+    {
+      "h": "错误处理",
+      "body": [
+        {
+          "code": "def parse_age(text)\n  age = Integer(text)       # raises ArgumentError on bad input\n  raise ArgumentError, \"negative age\" if age.negative?\n  age\nend\n\nbegin\n  puts parse_age(\"41\")      # 41\n  puts parse_age(\"abc\")\nrescue ArgumentError => e\n  puts \"error: #{e.message}\"  # error: invalid value for Integer(): \"abc\"\nensure\n  puts \"done\"\nend",
+          "lang": "ruby"
+        },
+        "`rescue` 捕获异常，`ensure` 总会执行。在方法内部，可以直接写 `rescue` 而不必写 `begin`。"
+      ]
+    },
+    {
+      "h": "一个完整的小程序：词频统计",
+      "body": [
+        {
+          "code": "path = ARGV.fetch(0) { abort \"usage: ruby words.rb FILE\" }\n\nbegin\n  text = File.read(path).downcase\nrescue Errno::ENOENT\n  abort \"file not found: #{path}\"\nend\n\ncounts = text.scan(/[a-z']+/).tally\ncounts.max_by(5) { |_word, n| n }.each do |word, n|\n  puts format(\"%5d  %s\", n, word)\nend",
+          "lang": "ruby"
+        },
+        "用 `ruby words.rb notes.txt` 运行。`tally` 把相同的元素计数到一个哈希中，`max_by(5)` 返回计数最高的五个条目。"
+      ]
+    },
+    {
+      "h": "新手常见错误",
+      "body": [
+        {
+          "note": "只有 `nil` 和 `false` 为假。与 Python 或 JavaScript 不同，`0`、`\"\"` 和 `[]` 都为真，所以判断是否为空请用 `.empty?` 或 `.zero?`。"
+        },
+        {
+          "ul": [
+            "忘记用 `end` 结束 `if`、`def`、`class` 或 `do` 块。",
+            "混用字符串键和符号键：`h[\"name\"]` 与 `h[:name]` 是不同的键。",
+            "使用单引号却期望 `#{}` 插值生效。",
+            "调用了 `!` 方法，却没意识到它修改了原对象。",
+            "使用系统自带的旧版 Ruby，而不是用版本管理器安装的当前版本。"
+          ]
+        }
+      ]
+    },
+    {
+      "h": "接下来学什么",
+      "body": [
+        "从 ruby-lang.org 的文档页面开始，其中包括快速入门“Ruby in Twenty Minutes”，核心类库和标准库的参考请查阅 docs.ruby-lang.org。学习用 Bundler 和 gem 管理依赖，用 RSpec 或 Minitest 写测试；如果想开发 Web 应用，再学习 Ruby on Rails。"
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Ruby 现在还有人用吗？",
+      "a": "有。Ruby on Rails 支撑着许多成熟的 Web 产品，包括 GitHub 和 Shopify，Ruby 在脚本和开发者工具中也很常见。新项目中它不如 Python 或 JavaScript 常见，但仍在积极开发。"
+    },
+    {
+      "q": "Ruby 和 Ruby on Rails 有什么区别？",
+      "a": "Ruby 是编程语言。Rails 是用 Ruby 编写的 Web 框架，提供路由、数据库访问和页面模板。"
+    },
+    {
+      "q": "Ruby 中的符号（symbol）是什么？",
+      "a": "`:name` 这样的符号是不可变的唯一标识符。同一个符号始终是同一个对象，因此用作哈希的键和选项名称时很高效。"
+    },
+    {
+      "q": "初学者学 Ruby 还是 Python？",
+      "a": "两者都是语法易读的优秀入门语言。Python 的应用范围更广，尤其在数据科学领域；Ruby 表达力很强，搭配 Rails 做 Web 开发很有优势。"
+    }
+  ]
+}

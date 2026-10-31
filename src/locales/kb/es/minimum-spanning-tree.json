@@ -1,0 +1,198 @@
+{
+  "title": "Árbol de expansión mínima: algoritmos de Kruskal y Prim en Python — cv.cm",
+  "description": "Árbol de expansión mínima explicado: algoritmo de Kruskal con union-find y algoritmo de Prim con un montículo, un ejemplo paso a paso, código en Python y coste O(E log E).",
+  "h1": "Árbol de expansión mínima explicado: algoritmos de Kruskal y Prim",
+  "answer": "Un árbol de expansión mínima (MST, del inglés minimum spanning tree) de un grafo conexo, no dirigido y con pesos es un conjunto de aristas que conecta todos los nodos sin ningún ciclo y con el menor peso total posible. El algoritmo de Kruskal ordena todas las aristas y añade la más barata que no cree un ciclo, usando union-find. El algoritmo de Prim hace crecer un árbol desde un nodo inicial, añadiendo siempre la arista más barata que sale del árbol, con una cola de prioridad. Ambos se ejecutan en tiempo O(E log E).",
+  "sections": [
+    {
+      "h": "Qué problema resuelve un árbol de expansión mínima",
+      "body": [
+        "Supón que debes conectar varios edificios con cable, varias ciudades con carreteras o varios servidores con enlaces de red, y que cada conexión posible tiene un coste. Quieres que todos los lugares queden conectados (directa o indirectamente) con el menor coste total. Las conexiones sobrantes que forman un bucle nunca hacen falta, así que la respuesta es un árbol: V nodos unidos por exactamente V − 1 aristas. Ese árbol es el árbol de expansión mínima.",
+        "Un MST no es un árbol de caminos más cortos. Minimiza el peso total de todas las aristas, no la distancia desde un nodo inicial hasta los demás."
+      ]
+    },
+    {
+      "h": "Por qué funciona la decisión voraz: la propiedad del corte",
+      "body": [
+        "Divide los nodos en dos grupos cualesquiera. Entre las aristas que cruzan de un grupo al otro, la más ligera pertenece a algún árbol de expansión mínima. Ambos algoritmos se apoyan en este hecho:",
+        {
+          "table": {
+            "head": [
+              "Algoritmo",
+              "Regla voraz",
+              "Estructura de datos auxiliar"
+            ],
+            "rows": [
+              [
+                "Kruskal (1956)",
+                "Toma las aristas de la más ligera a la más pesada; conserva una arista si une dos componentes distintas.",
+                "Union-find (conjuntos disjuntos)"
+              ],
+              [
+                "Prim (1957; también Jarník, 1930)",
+                "Hace crecer un árbol; añade repetidamente la arista más ligera desde el árbol hasta un nodo exterior.",
+                "Cola de prioridad con montículo de mínimos"
+              ]
+            ]
+          }
+        },
+        "Si todos los pesos de las aristas son distintos, el MST es único, así que ambos algoritmos devuelven el mismo árbol. Con pesos iguales puede haber varios MST con el mismo total."
+      ]
+    },
+    {
+      "h": "Ejemplo resuelto, paso a paso",
+      "body": [
+        "Grafo no dirigido con 5 nodos y las aristas A–B 4, A–C 3, B–C 1, B–D 2, C–D 4, D–E 2, C–E 5.",
+        "Algoritmo de Kruskal, con las aristas ordenadas por peso:",
+        {
+          "table": {
+            "head": [
+              "Arista",
+              "Peso",
+              "Decisión",
+              "Componentes después"
+            ],
+            "rows": [
+              [
+                "B–C",
+                "1",
+                "Añadir",
+                "{B, C} {A} {D} {E}"
+              ],
+              [
+                "B–D",
+                "2",
+                "Añadir",
+                "{B, C, D} {A} {E}"
+              ],
+              [
+                "D–E",
+                "2",
+                "Añadir",
+                "{B, C, D, E} {A}"
+              ],
+              [
+                "A–C",
+                "3",
+                "Añadir",
+                "{A, B, C, D, E}: 4 aristas, terminado"
+              ],
+              [
+                "A–B, C–D, C–E",
+                "4, 4, 5",
+                "No hacen falta (cada una crearía un ciclo)",
+                "—"
+              ]
+            ]
+          }
+        },
+        "Algoritmo de Prim desde A: la arista más barata que sale de {A} es A–C (3); desde {A, C} es C–B (1); desde {A, B, C} es B–D (2); desde {A, B, C, D} es D–E (2). El mismo árbol, con peso total 3 + 1 + 2 + 2 = 8."
+      ]
+    },
+    {
+      "h": "Algoritmo de Kruskal en Python",
+      "body": [
+        "Union-find guarda un puntero al padre por cada nodo. `find` devuelve el representante de la componente de un nodo, y dos nodos están conectados exactamente cuando tienen el mismo representante.",
+        {
+          "code": "def kruskal(nodes, edges):\n    parent = {n: n for n in nodes}\n\n    def find(x):\n        while parent[x] != x:\n            parent[x] = parent[parent[x]]   # path halving\n            x = parent[x]\n        return x\n\n    tree, total = [], 0\n    for w, u, v in sorted(edges):\n        ru, rv = find(u), find(v)\n        if ru != rv:                          # different components: no cycle\n            parent[ru] = rv\n            tree.append((u, v, w))\n            total += w\n    return tree, total\n\nnodes = \"ABCDE\"\nedges = [(4, \"A\", \"B\"), (3, \"A\", \"C\"), (1, \"B\", \"C\"), (2, \"B\", \"D\"),\n         (4, \"C\", \"D\"), (2, \"D\", \"E\"), (5, \"C\", \"E\")]\nprint(kruskal(nodes, edges))\n# ([('B', 'C', 1), ('B', 'D', 2), ('D', 'E', 2), ('A', 'C', 3)], 8)",
+          "lang": "python"
+        },
+        "Un union-find completo también usa unión por rango o por tamaño, que mantiene los árboles poco profundos. Solo con la compresión de caminos por mitades ya es rápido en la práctica. Puedes detener el bucle antes de tiempo cuando el árbol tenga V − 1 aristas."
+      ]
+    },
+    {
+      "h": "Algoritmo de Prim en Python",
+      "body": [
+        "El algoritmo de Prim necesita una lista de adyacencia. Usa eliminación perezosa, como el algoritmo de Dijkstra: inserta cada arista que sale del árbol y omite las aristas cuyo extremo lejano ya está en el árbol.",
+        {
+          "code": "import heapq\nfrom collections import defaultdict\n\ndef prim(edges, start):\n    graph = defaultdict(list)\n    for w, u, v in edges:\n        graph[u].append((w, u, v))\n        graph[v].append((w, v, u))\n    in_tree = {start}\n    heap = list(graph[start])\n    heapq.heapify(heap)\n    tree, total = [], 0\n    while heap:\n        w, u, v = heapq.heappop(heap)\n        if v in in_tree:\n            continue\n        in_tree.add(v)\n        tree.append((u, v, w))\n        total += w\n        for edge in graph[v]:\n            if edge[2] not in in_tree:\n                heapq.heappush(heap, edge)\n    return tree, total\n\nprint(prim(edges, \"A\"))\n# ([('A', 'C', 3), ('C', 'B', 1), ('B', 'D', 2), ('D', 'E', 2)], 8)",
+          "lang": "python"
+        }
+      ]
+    },
+    {
+      "h": "Complejidad temporal y espacial",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Algoritmo",
+              "Tiempo",
+              "Espacio",
+              "Ideal para"
+            ],
+            "rows": [
+              [
+                "Kruskal",
+                "O(E log E)",
+                "O(V + E)",
+                "Grafos dispersos, o aristas ya dadas como lista. La ordenación domina; union-find es casi O(1) por operación."
+              ],
+              [
+                "Prim con montículo binario",
+                "O(E log V)",
+                "O(V + E)",
+                "Grafos dados como listas de adyacencia."
+              ],
+              [
+                "Prim con arreglo (sin montículo)",
+                "O(V²)",
+                "O(V)",
+                "Grafos densos, por ejemplo todos los pares de puntos."
+              ]
+            ]
+          }
+        },
+        "Como E es como máximo V², log E es como máximo 2 log V, así que O(E log E) y O(E log V) son del mismo orden."
+      ]
+    },
+    {
+      "h": "Variantes y errores comunes",
+      "body": [
+        {
+          "ul": [
+            "Grafo no conexo: no existe un árbol de expansión. Kruskal devuelve entonces un bosque de expansión mínima (un árbol por componente); Prim desde un solo inicio cubre únicamente la componente de ese inicio. Comprueba que el árbol tenga V − 1 aristas.",
+            "Árbol de expansión máxima: ordena las aristas de mayor a menor (o cambia el signo de los pesos). Los pesos negativos no suponen problema para ninguno de los dos algoritmos.",
+            "Los grafos dirigidos requieren otro algoritmo (arborescencia mínima, Chu-Liu/Edmonds); Kruskal y Prim no se aplican.",
+            "Agrupamiento (clustering): ejecuta Kruskal y detente cuando queden k componentes. El resultado es un agrupamiento de enlace simple en k grupos.",
+            "El algoritmo de Borůvka, de 1926, añade a la vez la arista más barata de cada componente y se paraleliza bien."
+          ]
+        },
+        {
+          "note": "Un error común en Kruskal es comprobar los ciclos con un conjunto de nodos visitados en lugar de union-find. Dos nodos pueden estar ambos visitados y pertenecer a componentes distintas, por lo que la arista entre ellos sigue haciendo falta. Solo \"misma componente\" significa \"crearía un ciclo\"."
+        }
+      ]
+    },
+    {
+      "h": "Cuándo usarlo y usos en el mundo real",
+      "body": [
+        {
+          "ul": [
+            "Diseño de redes: la forma más barata de conectar sedes con cable, tuberías o carreteras, cuando sirve cualquier trazado conexo.",
+            "Algoritmos de aproximación: un MST da un recorrido de como máximo el doble de la longitud óptima para el problema del viajante métrico.",
+            "Agrupamiento y segmentación de imágenes cortando las aristas más pesadas del MST.",
+            "Problemas de entrevista: coste mínimo para conectar todos los puntos, conectar ciudades con coste mínimo, optimizar la distribución de agua en un pueblo."
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "¿Cuál es la diferencia entre los algoritmos de Kruskal y Prim?",
+      "a": "Kruskal procesa todas las aristas globalmente de la más ligera a la más pesada y fusiona componentes con union-find. Prim hace crecer un único árbol desde un nodo con una cola de prioridad. Ambos encuentran un árbol de expansión mínima."
+    },
+    {
+      "q": "¿Es único el árbol de expansión mínima?",
+      "a": "Es único cuando todos los pesos de las aristas son distintos. Con pesos iguales puede haber varios árboles con el mismo peso total mínimo."
+    },
+    {
+      "q": "¿Es lo mismo un árbol de expansión mínima que un árbol de caminos más cortos?",
+      "a": "No. El MST minimiza la suma de todas sus aristas, mientras que un árbol de caminos más cortos, como el del algoritmo de Dijkstra, minimiza la distancia desde un origen hasta cada nodo. Los dos árboles suelen ser distintos."
+    },
+    {
+      "q": "¿Cuántas aristas tiene un árbol de expansión?",
+      "a": "Exactamente V − 1 en un grafo conexo con V nodos. Con menos aristas no se pueden conectar todos los nodos, y con más se crearía un ciclo."
+    }
+  ]
+}

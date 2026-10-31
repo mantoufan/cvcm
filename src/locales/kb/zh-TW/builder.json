@@ -1,0 +1,149 @@
+{
+  "title": "建造者模式：逐步建構、流式 API 與 TypeScript 範例 — cv.cm",
+  "description": "說明建造者（Builder）設計模式：以流式的 TypeScript API 逐步建構複雜物件、指揮者（Director）角色，以及何時用選項物件就夠了。",
+  "h1": "建造者模式詳解與範例",
+  "answer": "建造者是一種建立型設計模式，它把複雜物件的建構過程與最終呈現的樣貌分開，讓同一套逐步進行的流程能產生不同的結果。在現代程式碼中，它通常以流式 API（fluent API）的形式出現：你在建造者上呼叫 `.url()`、`.header()`、`.timeout()` 這類方法，最後由 `.build()` 回傳一個完成且通過驗證的物件。它可以取代帶有大量選用參數的冗長建構函式。",
+  "sections": [
+    {
+      "h": "意圖",
+      "body": [
+        "把複雜物件的建構過程與它的呈現樣貌分離，讓同一套建構流程可以產生不同的呈現。建造者是《設計模式》（Gang of Four，簡稱 GoF）一書中五種建立型模式之一。"
+      ]
+    },
+    {
+      "h": "它解決的問題",
+      "body": [
+        "想像一個 HTTP 請求物件，包含網址、方法、任意數量的標頭、選用的本文、逾時時間與重試次數。要替這些東西寫一個建構函式，很難正確呼叫：",
+        {
+          "code": "class HttpRequest {\n  constructor(\n    readonly url: string,\n    readonly method: string,\n    readonly headers: Record<string, string>,\n    readonly body?: string,\n    readonly timeoutMs?: number,\n    readonly retries?: number,\n  ) {}\n}\n\n// Which argument is which? Easy to swap 3 and 5000 by mistake.\nconst req = new HttpRequest(\"https://api.example.com\", \"POST\", {}, undefined, 3, 5000);",
+          "lang": "typescript"
+        },
+        "這種情況稱為伸縮式建構函式（telescoping constructor）。它也沒有地方放「GET 請求不能有本文」這類規則，而且無法逐步建構，例如標頭在送出前要在好幾個地方陸續加入時就辦不到。"
+      ]
+    },
+    {
+      "h": "結構與參與者",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "參與者",
+              "職責",
+              "範例中的對應"
+            ],
+            "rows": [
+              [
+                "建造者（Builder）",
+                "宣告建立產品各部分的步驟。",
+                "`RequestBuilder` 的各個方法"
+              ],
+              [
+                "具體建造者（ConcreteBuilder）",
+                "實作這些步驟、保存部分完成的狀態並回傳結果。",
+                "`RequestBuilder`"
+              ],
+              [
+                "指揮者（Director）",
+                "選用。依固定順序執行這些步驟，以產生常見的設定。",
+                "`jsonPost()`"
+              ],
+              [
+                "產品（Product）",
+                "被建構的複雜物件。",
+                "`HttpRequest`"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "TypeScript 實作",
+      "body": [
+        "每個步驟都會儲存一個值並回傳 `this`，因此呼叫可以串接起來。`build()` 會驗證各欄位的組合，並回傳不可變的產品：",
+        {
+          "code": "interface HttpRequest {\n  readonly url: string;\n  readonly method: \"GET\" | \"POST\";\n  readonly headers: Readonly<Record<string, string>>;\n  readonly body?: string;\n  readonly timeoutMs: number;\n}\n\nclass RequestBuilder {\n  private method: \"GET\" | \"POST\" = \"GET\";\n  private headers: Record<string, string> = {};\n  private body?: string;\n  private timeoutMs = 10_000;\n\n  constructor(private readonly url: string) {}\n\n  post(body: string): this { this.method = \"POST\"; this.body = body; return this; }\n  header(name: string, value: string): this { this.headers[name] = value; return this; }\n  timeout(ms: number): this { this.timeoutMs = ms; return this; }\n\n  build(): HttpRequest {\n    if (this.timeoutMs <= 0) throw new Error(\"timeout must be positive\");\n    return Object.freeze({\n      url: this.url, method: this.method, headers: { ...this.headers },\n      body: this.body, timeoutMs: this.timeoutMs,\n    });\n  }\n}\n\nconst request = new RequestBuilder(\"https://api.example.com/orders\")\n  .header(\"Accept\", \"application/json\")\n  .timeout(5_000)\n  .build();\nconsole.log(request.method, request.timeoutMs, request.headers);\n// GET 5000 { Accept: 'application/json' }",
+          "lang": "typescript"
+        },
+        "指揮者其實就是知道常見配方的程式碼。在 TypeScript 中，它常常只是一個驅動建造者的普通函式：",
+        {
+          "code": "interface Steps {\n  header(name: string, value: string): this;\n  post(body: string): this;\n}\n\n// Director: a reusable recipe that drives any builder with these steps.\nfunction jsonPost<B extends Steps>(builder: B, data: unknown): B {\n  return builder\n    .header(\"Content-Type\", \"application/json\")\n    .post(JSON.stringify(data));\n}\n\nclass LogBuilder implements Steps {\n  log: string[] = [];\n  header(name: string, value: string): this { this.log.push(`${name}=${value}`); return this; }\n  post(body: string): this { this.log.push(`POST ${body}`); return this; }\n}\n\nconsole.log(jsonPost(new LogBuilder(), { id: 7 }).log);\n// [ 'Content-Type=application/json', 'POST {\"id\":7}' ]",
+          "lang": "typescript"
+        },
+        "這顯示了 GoF 原本的想法：同樣的建構步驟由同一個指揮者驅動，可以交給不同的建造者，產生不同的呈現，這裡產生的是日誌而不是請求。"
+      ]
+    },
+    {
+      "h": "何時使用、何時不該用",
+      "body": [
+        "在以下情況使用建造者：",
+        {
+          "ul": [
+            "物件有許多選用的部分，或是必須一次加入一個部分。",
+            "建構時有牽涉多個欄位的規則，應該在 `build()` 中一次檢查。",
+            "你希望完成的物件是不可變的，但仍然能一步一步組裝。",
+            "同一套建構流程必須產生不同的呈現，例如把文件匯出成 HTML、Markdown 或 PDF。"
+          ]
+        },
+        "在以下情況應避免使用：",
+        {
+          "ul": [
+            "物件只有幾個欄位。建構函式更短，也一樣清楚。",
+            "你的語言本身就有具名參數或選用參數。在 TypeScript 中，單一個選項物件往往就能完全省去建造者。"
+          ]
+        },
+        {
+          "code": "interface RequestOptions {\n  url: string;\n  method?: \"GET\" | \"POST\";\n  headers?: Record<string, string>;\n  timeoutMs?: number;\n}\n\nfunction createRequest({ url, method = \"GET\", headers = {}, timeoutMs = 10_000 }: RequestOptions) {\n  return { url, method, headers, timeoutMs };\n}\n\nconsole.log(createRequest({ url: \"/orders\", timeoutMs: 5_000 }).method); // GET",
+          "lang": "typescript"
+        },
+        {
+          "note": "在 `build()` 之後還重複使用的建造者，可能會把狀態洩漏到下一個物件。要嘛像範例對 `headers` 那樣，在 `build()` 中複製所有集合，要嘛註明每個建造者只能建立一個物件。"
+        }
+      ]
+    },
+    {
+      "h": "實際應用",
+      "body": [
+        {
+          "ul": [
+            "Java：`java.net.http.HttpRequest.newBuilder()` 會回傳 `HttpRequest.Builder`；你串接 `uri()`、`header()` 和 `timeout()`，再呼叫 `build()`。",
+            "Java：`Locale.Builder` 會根據語言、地區與文字系統等部分，組裝並驗證一個地區設定。",
+            "Java 與 C#：`StringBuilder` 會先把許多附加的片段組裝起來，最後才產生不可變的字串。",
+            "許多 SQL 查詢建造器與測試資料建造器也採用同樣的流式風格。"
+          ]
+        }
+      ]
+    },
+    {
+      "h": "相關模式",
+      "body": [
+        {
+          "ul": [
+            "抽象工廠會建立整個系列的產品，並立即回傳每一個；建造者則是一步一步建構單一的複雜產品，到最後才回傳。",
+            "組合模式的樹狀結構常用建造者來建立，因為一個節點一個節點地建樹，本來就是一連串的步驟。",
+            "流式介面（fluent interface）是串接回傳 `this` 的呼叫的 API 風格。建造者常會使用它，但兩者並不是同一件事。",
+            "當大多數新物件都只是現成範本的小幅變化時，原型可以是替代方案。"
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "為什麼每個建造者方法都要回傳 this？",
+      "a": "回傳建造者本身，可以讓你用單一運算式串接呼叫，例如 `.header(...).timeout(...).build()`。在 TypeScript 中回傳 `this`，也能在子類別中保持正確的型別。"
+    },
+    {
+      "q": "一定要有指揮者類別嗎？",
+      "a": "不用。在 GoF 的描述中，指揮者是選用的。實務上，用一個套用常見步驟順序的函式通常就夠了。"
+    },
+    {
+      "q": "在 TypeScript 中建造者還有用嗎？",
+      "a": "有時有用。帶預設值的選項物件可以涵蓋大多數簡單的情況。當物件需要逐步組裝、需要跨欄位驗證，或是希望得到不可變的結果時，建造者仍然很有用。"
+    },
+    {
+      "q": "建造者和工廠方法有什麼差別？",
+      "a": "工廠方法決定要實例化哪個類別，並在一次呼叫中回傳物件。建造者則讓用戶端透過多次呼叫，控制單一物件如何組裝。"
+    }
+  ]
+}

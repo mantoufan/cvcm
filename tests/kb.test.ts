@@ -10,7 +10,7 @@ import worker from "../src/worker";
 import { LOCALES } from "../src/shared/locale";
 import { kbMessages, messages } from "../src/shared/messages";
 import { FEATURED_TUTORIALS, TOOLS, kbHref, parseAppPath } from "../src/shared/path";
-import { KB_ARTICLES, KB_GROUPS, KB_META, kbForTool, type KbId } from "../src/shared/kb";
+import { CODE_ARTICLES, KB_ARTICLES, KB_GROUPS, KB_META, KNOWLEDGE_ARTICLES, kbForTool, kbShelfOf, type KbId } from "../src/shared/kb";
 import { kbArticleJsonLd, kbCopy, kbMinutes, kbPageHtml, kbUpdated, type KbArticleCopy, type KbBlock } from "../src/shared/kb-i18n";
 import { KB_MINUTES, KB_UPDATED } from "../src/locales/kb/meta";
 import { applyHtmlSeo, pageCanonical, pageTitle } from "../src/shared/seo";
@@ -28,11 +28,16 @@ function shape(value: unknown): unknown {
   return typeof value;
 }
 
+/** Prose strings; code samples are left out (they are plain text, escaped whole). */
 function strings(value: unknown): string[] {
   if (typeof value === "string") return [value];
   if (Array.isArray(value)) return value.flatMap(strings);
-  if (value && typeof value === "object") return Object.values(value).flatMap(strings);
+  if (value && typeof value === "object") return "code" in value ? [] : Object.values(value).flatMap(strings);
   return [];
+}
+
+function codeBlocks(copy: KbArticleCopy): KbBlock[] {
+  return copy.sections.flatMap((s) => s.body.filter((block) => typeof block === "object" && "code" in block));
 }
 
 describe("knowledge: routes", () => {
@@ -47,6 +52,39 @@ describe("knowledge: routes", () => {
     expect(parseAppPath("/en/learn/make-qr/")).toEqual({ kind: "learn", locale: "en", tutorial: "make-qr" });
     expect(kbHref("zh-TW", "apr-vs-apy")).toBe("/zh-tw/learn/knowledge/apr-vs-apy/");
     expect(kbHref("ja")).toBe("/ja/learn/knowledge/");
+  });
+
+  it("parses the coding shelf under /learn/code/ and keeps each article on its own shelf", () => {
+    expect(parseAppPath("/en/learn/code/")).toEqual({ kind: "kb", locale: "en", article: "code" });
+    expect(parseAppPath("/ja/learn/code/python/")).toEqual({ kind: "kb", locale: "ja", article: "python" });
+    expect(parseAppPath("/learn/code/")).toEqual({ kind: "bare-kb", article: "code" });
+    expect(parseAppPath("/learn/code/quicksort")).toEqual({ kind: "bare-kb", article: "quicksort" });
+    expect(parseAppPath("/en/learn/knowledge/python/")).toEqual({ kind: "unknown" });
+    expect(parseAppPath("/en/learn/code/what-is-heic/")).toEqual({ kind: "unknown" });
+    expect(parseAppPath("/en/learn/code/nope/")).toEqual({ kind: "unknown" });
+    expect(kbHref("en", "code")).toBe("/en/learn/code/");
+    expect(kbHref("zh-CN", "observer")).toBe("/zh-cn/learn/code/observer/");
+    expect(kbHref("en", "hub")).toBe("/en/learn/knowledge/");
+    for (const id of CODE_ARTICLES) expect(kbShelfOf(id)).toBe("code");
+    for (const id of KNOWLEDGE_ARTICLES) expect(kbShelfOf(id)).toBe("knowledge");
+  });
+
+  it("serves the coding hub and articles, and redirects bare paths", async () => {
+    const assets = { fetch: async () => new Response(SHELL, { headers: { "Content-Type": "text/html; charset=utf-8" } }) };
+    const bare = await worker.fetch(new Request("https://cv.cm/learn/code/rust/", { headers: { "Accept-Language": "es" } }), { ASSETS: assets });
+    expect(bare.status).toBe(302);
+    expect(bare.headers.get("Location")).toBe("https://cv.cm/es/learn/code/rust/");
+    const hub = await worker.fetch(new Request("https://cv.cm/zh-cn/learn/code/"), { ASSETS: assets });
+    expect(hub.status).toBe(200);
+    const hubHtml = await hub.text();
+    expect(hubHtml).toContain(`<title>${pageTitle("zh-CN", { kb: true, kbId: "code" })}</title>`);
+    expect(hubHtml).toContain('<meta property="og:type" content="website" />');
+    const page = await worker.fetch(new Request("https://cv.cm/en/learn/code/binary-search/"), { ASSETS: assets });
+    expect(page.status).toBe(200);
+    const html = await page.text();
+    expect(html).toContain('<link rel="canonical" href="https://cv.cm/en/learn/code/binary-search/"');
+    expect(html).toContain('<meta property="og:type" content="article" />');
+    expect(html).toContain('<pre class="kb-code"><code data-lang="python">');
   });
 
   it("redirects bare paths, adds the slash, 404s unknown articles and serves the page", async () => {
@@ -71,6 +109,7 @@ describe("knowledge: routes", () => {
     const xml = buildSitemapXml();
     for (const locale of LOCALES) {
       expect(xml).toContain(`<loc>https://cv.cm${kbHref(locale)}</loc>`);
+      expect(xml).toContain(`<loc>https://cv.cm${kbHref(locale, "code")}</loc>`);
       for (const id of KB_ARTICLES) expect(xml).toContain(`<loc>https://cv.cm${kbHref(locale, id)}</loc>`);
     }
   });
@@ -103,7 +142,21 @@ describe("knowledge: SEO", () => {
     expect(ld.dateModified).toBe(kbUpdated("en", "md5-vs-sha-256"));
     expect((ld.citation as unknown[]).length).toBe(KB_META["md5-vs-sha-256"].sources.length);
     const hub = kbArticleJsonLd("en", null) as { mainEntity: { itemListElement: unknown[] } };
-    expect(hub.mainEntity.itemListElement.length).toBe(KB_ARTICLES.length);
+    expect(hub.mainEntity.itemListElement.length).toBe(KNOWLEDGE_ARTICLES.length);
+    const codeHub = kbArticleJsonLd("en", "code") as { url: string; mainEntity: { itemListElement: unknown[] } };
+    expect(codeHub.url).toBe("https://cv.cm/en/learn/code/");
+    expect(codeHub.mainEntity.itemListElement.length).toBe(CODE_ARTICLES.length);
+  });
+
+  it("renders the coding hub by group and code samples escaped, untouched by inline formatting", () => {
+    const hub = kbPageHtml("en", "code");
+    for (const group of KB_GROUPS.filter((g) => g.shelf === "code")) expect(hub).toContain(`<section class="wall" id="${group.id}">`);
+    expect(hub).toContain('href="/en/learn/code/python/"');
+    expect(hub).not.toContain("/learn/knowledge/what-is-heic/");
+    const page = kbPageHtml("en", "cpp");
+    expect(page).toContain("&lt;iostream&gt;");
+    expect(page).toContain('href="/en/learn/code/" data-nav="coding"');
+    expect(page).not.toMatch(/<(script|img|iframe)/i);
   });
 
   it("escapes copy and renders `code` spans", () => {
@@ -125,10 +178,10 @@ describe("knowledge: catalog and copy", () => {
   it("links only to real tools, published tutorials and other articles", () => {
     for (const id of KB_ARTICLES) {
       const meta = KB_META[id];
-      expect(meta.tools.length, id).toBeGreaterThan(0);
+      if (kbShelfOf(id) === "knowledge") expect(meta.tools.length, id).toBeGreaterThan(0);
       for (const tool of meta.tools) expect(TOOLS, `${id} tool ${tool}`).toContain(tool);
       for (const tutorial of meta.tutorials) expect(FEATURED_TUTORIALS, `${id} tutorial ${tutorial}`).toContain(tutorial);
-      for (const other of meta.related) expect(KB_ARTICLES.includes(other) && other !== id, `${id} related ${other}`).toBe(true);
+      for (const other of meta.related) expect(KB_ARTICLES.includes(other) && other !== id && kbShelfOf(other) === kbShelfOf(id), `${id} related ${other}`).toBe(true);
       for (const source of meta.sources) expect(source.href, id).toMatch(/^https:\/\//);
     }
     expect(kbForTool("base64")).toEqual(["what-is-base64"]);
@@ -141,6 +194,14 @@ describe("knowledge: catalog and copy", () => {
       for (const id of KB_ARTICLES) expect(shape(kbCopy(locale, id)), `${locale} ${id}`).toEqual(shape(kbCopy("en", id)));
     }
     expect(shape(kbCopy("en", "what-is-heic"))).toEqual(shape(enHeic));
+  });
+
+  it("keeps code samples identical in every locale", () => {
+    for (const id of CODE_ARTICLES) {
+      const en = codeBlocks(kbCopy("en", id));
+      expect(en.length, id).toBeGreaterThan(0);
+      for (const locale of LOCALES) expect(codeBlocks(kbCopy(locale, id)), `${locale} ${id}`).toEqual(en);
+    }
   });
 
   it("has a name and blurb for every article in every core pack", () => {
@@ -225,12 +286,15 @@ describe("knowledge: sync (run `npm run kb:sync` after editing any article or it
     for (const locale of LOCALES) expect(Object.keys(KB_LOADERS[locale]).sort(), locale).toEqual([...KB_ARTICLES].sort());
   });
 
-  it("preloads only the hub pack, or the hub pack plus one article", () => {
+  it("preloads only the hub pack on either hub, or the hub pack plus one article", () => {
     const packs = { en: ["/a/en.js"], "kb-en": ["/a/kb-en.js"], "kb-en/iso-8601": ["/a/iso.js"], "kb-en/what-is-uuid": ["/a/uuid.js"] };
     const shell = "<head></head>";
     const hub = preloadLocalePack(shell, "en", false, packs, false, false, "hub");
     expect(hub).toContain("/a/kb-en.js");
     expect(hub).not.toContain("/a/iso.js");
+    const codeHub = preloadLocalePack(shell, "en", false, packs, false, false, "code");
+    expect(codeHub).toContain("/a/kb-en.js");
+    expect(codeHub).not.toContain("/a/iso.js");
     const article = preloadLocalePack(shell, "en", false, packs, false, false, "iso-8601");
     expect(article).toContain("/a/kb-en.js");
     expect(article).toContain("/a/iso.js");

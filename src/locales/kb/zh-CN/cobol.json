@@ -1,0 +1,194 @@
+{
+  "title": "COBOL 入门教程：四大部、PIC 数据、PERFORM 循环与文件 — cv.cm",
+  "description": "学习 COBOL 基础：用 GnuCOBOL 编译 Hello world、理解四大部、PIC 子句、IF 和 EVALUATE、PERFORM 循环、表、文件与错误处理。",
+  "h1": "COBOL 入门教程",
+  "answer": "COBOL（Common Business-Oriented Language，通用商业导向语言）是为商业数据处理而设计的编译型语言：记录、文件、报表和精确的十进制运算。程序分为四大部（division），数据用 PIC（picture）子句描述，代码读起来像英文句子，例如 `ADD AMOUNT TO TOTAL`。它至今仍在银行、保险公司和政府的核心系统中运行，大多在 IBM 大型机上。你可以用 GnuCOBOL 编译器免费学习：`cobc -x hello.cob`。",
+  "sections": [
+    {
+      "h": "COBOL 是什么，谁在用",
+      "body": [
+        "COBOL 由 CODASYL 委员会于 1959 年设计，深受 Grace Hopper 早期语言 FLOW-MATIC 的影响。它由 ISO 标准化；后来的标准加入了结构化编程、面向对象等特性，最近一次修订发布于 2023 年。",
+        "COBOL 用于批处理和事务系统：账户处理、薪资、保险理赔、税务和福利系统。这些代码很多运行在 IBM Z 大型机上，使用 IBM Enterprise COBOL，配合用于事务的 CICS 和用于数据的 Db2。维护和现代化这些系统的工作岗位依然常见。"
+      ]
+    },
+    {
+      "h": "安装 GnuCOBOL 并运行 Hello, world",
+      "body": [
+        "GnuCOBOL 是一个免费的编译器，先把 COBOL 翻译成 C，再编译成原生程序。许多 Linux 发行版里有名为 `gnucobol` 的软件包，macOS 上可以用 Homebrew；Windows 用户可以使用 WSL 或预构建的软件包。",
+        {
+          "code": "       IDENTIFICATION DIVISION.\n       PROGRAM-ID. HELLO.\n       PROCEDURE DIVISION.\n           DISPLAY \"Hello, world!\".\n           STOP RUN.",
+          "lang": "cobol"
+        },
+        {
+          "code": "cobc -x hello.cob\n./hello\n# Hello, world!",
+          "lang": "shell"
+        },
+        "这段代码使用传统的固定格式：第 1 到 6 列用于序号，第 7 列标记注释（`*`）或续行，A 区（第 8 到 11 列）放部、节和段落的名字，B 区（第 12 到 72 列）放语句。GnuCOBOL 也接受自由格式的源码，用 `cobc -x -free`。选项 `-x` 构建可执行文件，而不是模块。"
+      ]
+    },
+    {
+      "h": "四大部",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "部",
+              "用途"
+            ],
+            "rows": [
+              [
+                "IDENTIFICATION DIVISION",
+                "为程序命名（`PROGRAM-ID`）"
+              ],
+              [
+                "ENVIRONMENT DIVISION",
+                "把程序与外部世界相连，例如使用哪些文件"
+              ],
+              [
+                "DATA DIVISION",
+                "声明所有数据：文件记录、工作存储区、参数"
+              ],
+              [
+                "PROCEDURE DIVISION",
+                "可执行语句，组织成段落"
+              ]
+            ]
+          }
+        },
+        "每个变量在使用前都必须在 DATA DIVISION 中声明。WORKING-STORAGE SECTION 存放程序的变量，FILE SECTION 描述文件记录，LINKAGE SECTION 描述调用者传入的参数。"
+      ]
+    },
+    {
+      "h": "数据与 PIC 子句",
+      "body": [
+        "COBOL 按精确的布局来描述数据。层级号表示层次结构（01 是记录，05 是其中的字段），PIC 子句给出格式：`X` 是任意字符，`9` 是数字，`S` 是符号，`V` 是隐含的小数点。",
+        {
+          "table": {
+            "head": [
+              "声明",
+              "含义",
+              "示例值"
+            ],
+            "rows": [
+              [
+                "`PIC X(10)`",
+                "10 个字符，用空格填充",
+                "`\"Ana       \"`"
+              ],
+              [
+                "`PIC 9(3)`",
+                "无符号 3 位数字",
+                "`030`"
+              ],
+              [
+                "`PIC S9(5)V99`",
+                "带符号，小数点前 5 位、后 2 位",
+                "`-01234.50`"
+              ],
+              [
+                "`PIC $ZZ,ZZ9.99`",
+                "编辑后的输出：货币符号，前导零显示为空格",
+                "`$ 1,234.50`"
+              ],
+              [
+                "`PIC S9(7)V99 COMP-3`",
+                "压缩十进制，大型机上很常见",
+                "占 5 个字节"
+              ],
+              [
+                "`88 IS-DONE VALUE \"Y\"`",
+                "条件名：对其父字段的布尔测试",
+                "`IF IS-DONE`"
+              ]
+            ]
+          }
+        },
+        {
+          "code": "       IDENTIFICATION DIVISION.\n       PROGRAM-ID. DATA-DEMO.\n       DATA DIVISION.\n       WORKING-STORAGE SECTION.\n       01  WS-NAME        PIC X(10)      VALUE \"Ana\".\n       01  WS-AGE         PIC 9(3)       VALUE 30.\n       01  WS-PRICE       PIC S9(5)V99   VALUE 1234.50.\n       01  WS-PRICE-OUT   PIC $ZZ,ZZ9.99.\n       01  WS-CUSTOMER.\n           05  WS-FIRST   PIC X(10).\n           05  WS-LAST    PIC X(15).\n       PROCEDURE DIVISION.\n           MOVE WS-PRICE TO WS-PRICE-OUT\n           DISPLAY WS-NAME \"is \" WS-AGE\n           DISPLAY \"Price: \" WS-PRICE-OUT\n           STOP RUN.\n      *> Ana       is 030\n      *> Price: $ 1,234.50",
+          "lang": "cobol"
+        },
+        "数字以十进制存储，所以 `0.10 + 0.20` 恰好等于 `0.30`，这是 COBOL 适合处理金额的原因之一。`WS-CUSTOMER` 是组项：可以整体移动，也可以逐个字段移动。"
+      ]
+    },
+    {
+      "h": "控制流：IF、EVALUATE 与 PERFORM",
+      "body": [
+        {
+          "code": "       IDENTIFICATION DIVISION.\n       PROGRAM-ID. CONTROL-DEMO.\n       DATA DIVISION.\n       WORKING-STORAGE SECTION.\n       01  WS-I        PIC 99.\n       01  WS-TOTAL    PIC 9(4) VALUE 0.\n       01  WS-SCORE    PIC 999  VALUE 85.\n       PROCEDURE DIVISION.\n           PERFORM VARYING WS-I FROM 1 BY 1 UNTIL WS-I > 10\n               ADD WS-I TO WS-TOTAL\n           END-PERFORM\n           DISPLAY \"Total: \" WS-TOTAL\n           EVALUATE TRUE\n               WHEN WS-SCORE >= 90\n                   DISPLAY \"A\"\n               WHEN WS-SCORE >= 80\n                   DISPLAY \"B\"\n               WHEN OTHER\n                   DISPLAY \"C\"\n           END-EVALUATE\n           IF WS-TOTAL > 50\n               DISPLAY \"big\"\n           ELSE\n               DISPLAY \"small\"\n           END-IF\n           STOP RUN.\n      *> Total: 0055\n      *> B\n      *> big",
+          "lang": "cobol"
+        },
+        "`PERFORM VARYING` 是 COBOL 的计数循环，`PERFORM UNTIL condition` 是它的 while 循环。`EVALUATE` 相当于 switch 语句。`END-IF`、`END-PERFORM` 这样的作用域终止符关闭每个代码块；句点则结束整个句子。"
+      ]
+    },
+    {
+      "h": "段落、算术与表",
+      "body": [
+        "COBOL 没有通常意义上的函数。你把逻辑组织成具名段落，用 `PERFORM` 执行；更大的单元成为独立的程序，用 `CALL \"PROG\" USING ...` 调用。算术使用动词（`ADD`、`SUBTRACT`、`MULTIPLY`、`DIVIDE`）或带公式的 `COMPUTE`。数组称为表，用 `OCCURS` 声明；索引从 1 开始。",
+        {
+          "code": "       IDENTIFICATION DIVISION.\n       PROGRAM-ID. PARA-DEMO.\n       DATA DIVISION.\n       WORKING-STORAGE SECTION.\n       01  WS-PRICES.\n           05  WS-PRICE   PIC 9(3)V99 OCCURS 3 TIMES.\n       01  WS-I           PIC 9.\n       01  WS-SUM         PIC 9(4)V99 VALUE 0.\n       01  WS-SUM-OUT     PIC Z,ZZ9.99.\n       PROCEDURE DIVISION.\n       MAIN-PARA.\n           MOVE 10.50 TO WS-PRICE(1)\n           MOVE 4.25  TO WS-PRICE(2)\n           MOVE 7.00  TO WS-PRICE(3)\n           PERFORM ADD-PRICE VARYING WS-I FROM 1 BY 1 UNTIL WS-I > 3\n           COMPUTE WS-SUM = WS-SUM * 1.1\n           MOVE WS-SUM TO WS-SUM-OUT\n           DISPLAY \"With 10% tax: \" WS-SUM-OUT\n           STOP RUN.\n       ADD-PRICE.\n           ADD WS-PRICE(WS-I) TO WS-SUM.\n      *> With 10% tax:    23.92",
+          "lang": "cobol"
+        },
+        "总和是 21.75；乘以 1.1 得 23.925，COBOL 会截断到声明的两位小数（23.92），除非你写 `COMPUTE ... ROUNDED`。"
+      ]
+    },
+    {
+      "h": "错误处理",
+      "body": [
+        "日常 COBOL 代码里没有异常。取而代之的是语句上的条件短语：`ON SIZE ERROR` 处理算术溢出或除以零，`AT END` 处理文件结束，`INVALID KEY` 用于索引文件，还有一个 `FILE STATUS` 字段，在每次文件操作之后接收一个两字符的代码（`\"00\"` 表示成功）。",
+        {
+          "code": "           DIVIDE WS-A BY WS-B GIVING WS-C\n               ON SIZE ERROR\n                   DISPLAY \"Division failed\"\n               NOT ON SIZE ERROR\n                   DISPLAY \"Result: \" WS-C\n           END-DIVIDE",
+          "lang": "cobol"
+        }
+      ]
+    },
+    {
+      "h": "一个完整的小程序：销售文件汇总",
+      "body": [
+        "从文件中读取固定布局的记录是典型的 COBOL 工作。这个程序读取 `sales.txt`，其中每行有一个 10 个字符的商品名，后跟一个带两位隐含小数的 7 位数字金额。",
+        {
+          "code": "apples    0001250\npears     0000899\nplums     0002000",
+          "lang": "text"
+        },
+        {
+          "code": "       IDENTIFICATION DIVISION.\n       PROGRAM-ID. SALES-TOTAL.\n       ENVIRONMENT DIVISION.\n       INPUT-OUTPUT SECTION.\n       FILE-CONTROL.\n           SELECT SALES-FILE ASSIGN TO \"sales.txt\"\n               ORGANIZATION IS LINE SEQUENTIAL\n               FILE STATUS IS WS-FS.\n       DATA DIVISION.\n       FILE SECTION.\n       FD  SALES-FILE.\n       01  SALES-REC.\n           05  SR-ITEM     PIC X(10).\n           05  SR-AMOUNT   PIC 9(5)V99.\n       WORKING-STORAGE SECTION.\n       01  WS-FS           PIC XX.\n       01  WS-EOF          PIC X VALUE \"N\".\n           88  NO-MORE-RECORDS       VALUE \"Y\".\n       01  WS-TOTAL        PIC 9(7)V99 VALUE 0.\n       01  WS-TOTAL-OUT    PIC Z,ZZZ,ZZ9.99.\n       PROCEDURE DIVISION.\n           OPEN INPUT SALES-FILE\n           IF WS-FS NOT = \"00\"\n               DISPLAY \"Cannot open file, status \" WS-FS\n               STOP RUN\n           END-IF\n           PERFORM UNTIL NO-MORE-RECORDS\n               READ SALES-FILE\n                   AT END SET NO-MORE-RECORDS TO TRUE\n                   NOT AT END ADD SR-AMOUNT TO WS-TOTAL\n               END-READ\n           END-PERFORM\n           CLOSE SALES-FILE\n           MOVE WS-TOTAL TO WS-TOTAL-OUT\n           DISPLAY \"Total sales: \" WS-TOTAL-OUT\n           STOP RUN.",
+          "lang": "cobol"
+        },
+        "运行后会打印 `Total sales:`，后面是在 12 个字符的编辑字段中右对齐的 `41.49`。`LINE SEQUENTIAL` 表示每行一条记录的文本文件；GnuCOBOL 和其他 PC 编译器支持它，而大型机程序通常读取 JCL 中定义的定长数据集。",
+        {
+          "note": "初学者常见错误：`IF` 块里多出一个句点，会提前结束整个语句（请使用 `END-IF` 这样的作用域终止符）；固定格式下代码写在第 8 到 72 列之外；把值移入过小的字段时被悄悄截断（`MOVE 1234 TO` 一个 `PIC 99` 字段，存的是 34）；把负数结果存入 PIC 中没有 `S` 的字段，符号会丢失；以及忘记 `ON SIZE ERROR` 或文件状态检查。"
+        }
+      ]
+    },
+    {
+      "h": "接下来读什么",
+      "body": [
+        {
+          "ul": [
+            "GnuCOBOL 项目页面及其《程序员指南》（Programmer's Guide），其中有完整的语言参考。",
+            "IBM 的 Enterprise COBOL for z/OS 文档，介绍大型机 COBOL、CICS 和 Db2 的用法。",
+            "练习读写文件，用 `SORT` 动词排序，并生成格式化报表。",
+            "如果想在生产系统上工作，还要学习周边的大型机工具（JCL、TSO/ISPF）。"
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "COBOL 现在还有人用吗？",
+      "a": "有。许多银行、保险公司和政府机构仍在运行 COBOL 程序处理核心批处理和事务，因此对能维护和现代化这些程序的开发者一直有需求。"
+    },
+    {
+      "q": "COBOL 难学吗？",
+      "a": "它的语法冗长但简单，大多数初学者很快就能写出可运行的程序。更难的是它周边的大型机环境：JCL、数据集、CICS 和 Db2。"
+    },
+    {
+      "q": "没有大型机也能学 COBOL 吗？",
+      "a": "可以。GnuCOBOL 可在 Linux、macOS 和 Windows 上运行，支持标准 COBOL，所以你可以先在普通电脑上学习这门语言，再转向大型机。"
+    },
+    {
+      "q": "COBOL 为什么使用十进制数？",
+      "a": "金额之类的商业数据必须精确。COBOL 把数字存储为十进制数位，小数位数固定，从而避免了二进制浮点数的舍入误差。"
+    }
+  ]
+}

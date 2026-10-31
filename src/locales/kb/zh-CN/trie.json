@@ -1,0 +1,161 @@
+{
+  "title": "Trie（前缀树）详解：插入、查找与 Python 自动补全 — cv.cm",
+  "description": "了解 Trie（前缀树）如何按共享前缀存储字符串：插入、查找、前缀判断和 Python 自动补全，附复杂度与变体。",
+  "h1": "Trie（前缀树）详解：原理、代码与时间复杂度",
+  "answer": "Trie，又称前缀树，是一种逐字符存储字符串的树：每条边是一个字符，从根出发的每条路径拼出一个前缀。共享前缀的单词共享相同的节点，并用一个标志标记完整单词在哪里结束。插入或查找长度为 m 的单词需要 O(m) 时间，与已存储的单词数量无关，而且查找带有给定前缀的所有单词也很快。Trie 是自动补全、拼写检查和 IP 路由表背后的技术。",
+  "sections": [
+    {
+      "h": "Trie 解决什么问题",
+      "body": [
+        "哈希集合能快速回答“这个确切的单词是否已存储？”，但如果不检查每个单词，就无法回答“哪些已存储的单词以 `pre` 开头？”。有序列表可以用二分查找回答前缀查询，但插入很慢。Trie 按前缀组织，所以前缀问题正是它的强项：搜索框中的自动补全、文字游戏、拼写检查，以及网络路由的最长前缀匹配。"
+      ]
+    },
+    {
+      "h": "用大白话理解 Trie",
+      "body": [
+        "想想手机通讯录，你每输入一个字母就缩小一次范围。输入 `c` 会显示所有以 c 开头的人，输入 `ca` 范围更小，依此类推。Trie 存储单词的形状正是如此。根代表空前缀。每个节点有一个从下一个字符到子节点的映射，外加一个单词结束标志，因为像 `car` 这样的单词既可以是完整的单词，也可以是 `cart` 的前缀。"
+      ]
+    },
+    {
+      "h": "示例演练：插入 car、cart、cat 和 dog",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "插入",
+              "复用的节点",
+              "新建的节点",
+              "单词结束标记在"
+            ],
+            "rows": [
+              [
+                "`car`",
+                "无",
+                "c, a, r",
+                "r（路径 car）"
+              ],
+              [
+                "`cart`",
+                "c, a, r",
+                "t",
+                "t（路径 cart）"
+              ],
+              [
+                "`cat`",
+                "c, a",
+                "t（a 的一个新子节点）",
+                "t（路径 cat）"
+              ],
+              [
+                "`dog`",
+                "无",
+                "d, o, g",
+                "g（路径 dog）"
+              ]
+            ]
+          }
+        },
+        "这四个单词一共有 13 个字母，但根下面只需要 8 个节点（c, a, r, t, t, d, o, g），因为 `car`、`cart` 和 `cat` 共享 `ca`。查找 `ca` 会走过两个节点，作为前缀成功，但 `ca` 不是单词，因为它的节点没有标记为结束。查找 `cow` 在第二步就失败了：节点 c 没有孩子 o。"
+      ]
+    },
+    {
+      "h": "Python 实现",
+      "body": [
+        "每个节点持有一个子节点的 `dict`，可以处理包括 Unicode 在内的任何字母表。`starts_with` 方法会收集某个前缀下的所有单词，这是自动补全的核心。",
+        {
+          "code": "class TrieNode:\n    __slots__ = (\"children\", \"is_word\")\n    def __init__(self):\n        self.children = {}\n        self.is_word = False\nclass Trie:\n    def __init__(self):\n        self.root = TrieNode()\n    def insert(self, word):\n        node = self.root\n        for ch in word:\n            node = node.children.setdefault(ch, TrieNode())\n        node.is_word = True\n    def _find(self, prefix):\n        node = self.root\n        for ch in prefix:\n            node = node.children.get(ch)\n            if node is None:\n                return None\n        return node\n    def contains(self, word):\n        node = self._find(word)\n        return node is not None and node.is_word\n    def starts_with(self, prefix):\n        node, out = self._find(prefix), []\n        stack = [(node, prefix)] if node else []\n        while stack:\n            node, path = stack.pop()\n            if node.is_word:\n                out.append(path)\n            for ch, child in node.children.items():\n                stack.append((child, path + ch))\n        return sorted(out)",
+          "lang": "python"
+        },
+        {
+          "code": "t = Trie()\nfor w in [\"car\", \"cart\", \"cat\", \"dog\"]:\n    t.insert(w)\nprint(t.contains(\"car\"), t.contains(\"ca\"))  # True False\nprint(t.starts_with(\"ca\"))                  # ['car', 'cart', 'cat']\nprint(t.starts_with(\"x\"))                   # []",
+          "lang": "python"
+        },
+        "`starts_with` 会对输出排序，以得到稳定的顺序。真正的自动补全还会在前几个结果之后停止并对结果排名，例如按存储的热度计数排名。"
+      ]
+    },
+    {
+      "h": "时间与空间复杂度",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "操作",
+              "时间",
+              "原因"
+            ],
+            "rows": [
+              [
+                "插入长度为 m 的单词",
+                "O(m)",
+                "每个字符一步"
+              ],
+              [
+                "查找单词或检查前缀",
+                "O(m)",
+                "每个字符一次字典查找"
+              ],
+              [
+                "列出前缀下的全部 k 个单词",
+                "O(m + 子树大小)",
+                "先走到前缀，再访问其下的每个节点"
+              ],
+              [
+                "删除单词",
+                "O(m)",
+                "取消结束标记，然后可选地清理空节点"
+              ],
+              [
+                "空间",
+                "O(存储的总字符数)",
+                "最坏情况下，没有共享时每个字符一个节点"
+              ]
+            ]
+          }
+        },
+        "时间不取决于单词数量 n，这是相对于字符串平衡树（O(m log n) 次比较）的主要优势。代价是内存：每个节点都是带有自己字典的独立对象，所以 Trie 占用的内存可能是原始字符串的许多倍。"
+      ]
+    },
+    {
+      "h": "变体与常见错误",
+      "body": [
+        {
+          "ul": [
+            "数组子节点：对小写英文字母使用固定的 26 个槽位的数组。比 `dict` 快，但对稀疏或很大的字母表很浪费。",
+            "压缩 Trie（基数树、Patricia Trie）：把只有一个孩子的节点链合并成一条带字符串标签的边，能节省大量内存。基数树用于 IP 路由表和某些 HTTP 路由器。",
+            "三叉搜索树：每个节点有三个孩子（小于、等于、大于），比宽数组占用的内存更少。",
+            "计数 Trie：在每个节点中存一个计数器，就能在 O(m) 内回答“有多少单词以这个前缀开头？”。",
+            "按位 Trie：逐位存储数字，用来解决最大异或问题。"
+          ]
+        },
+        {
+          "note": "最常见的 bug 是忘记单词结束标志。没有它，插入 `cart` 会让 `contains(\"car\")` 返回 True，尽管 `car` 从未被插入。第二个常见 bug 是删除了仍被更长单词使用的节点。"
+        }
+      ]
+    },
+    {
+      "h": "何时使用 Trie，以及典型面试题",
+      "body": [
+        "当你需要前缀查询、最长前缀匹配，或对许多带共享前缀的字符串做有序遍历时，请使用 Trie。如果只需要精确匹配查找，请使用 `set` 或 `dict`：在 Python 中更简单，占用内存也更少。对于小而固定的单词表，用 `bisect` 模块配合有序列表也能很好地回答前缀查询。",
+        "典型问题：实现 Trie（插入、查找、前缀判断）、在网格中用多个目标词做单词搜索、用最短词根替换单词、最长公共前缀、设计搜索自动补全系统，以及用按位 Trie 求两个数的最大异或。"
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "为什么叫 trie？",
+      "a": "这个名字取自 retrieval（检索）一词的中间部分。Edward Fredkin 在 1960 年的一篇论文中提出了这个术语。很多人把它读成 try，以便与 tree 区分。"
+    },
+    {
+      "q": "Trie 比哈希表快吗？",
+      "a": "对于精确查找，两者耗时都与单词长度成正比，而 Python 的 `dict` 通常更快、更省内存。当你需要前缀搜索、有序遍历或最长前缀匹配时，Trie 更有优势。"
+    },
+    {
+      "q": "Trie 占用多少内存？",
+      "a": "最坏情况下每个存储的字符一个节点。共享前缀会减少这个数量，压缩 Trie（基数树）通过合并单孩子链进一步减少。"
+    },
+    {
+      "q": "Trie 和基数树有什么区别？",
+      "a": "基数树是压缩的 Trie：任何只有一个孩子的节点链都会被合并成一个节点，其边上保存整个子串。查找的方式相同，但需要的节点更少。"
+    }
+  ]
+}

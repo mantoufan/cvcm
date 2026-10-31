@@ -1,0 +1,183 @@
+{
+  "title": "TypeScript tutorial: types, interfaces, generics and narrowing — cv.cm",
+  "description": "Learn TypeScript in one page: install tsc and run Hello world, basic types, interfaces, union types, narrowing, generics, error handling and a full example.",
+  "h1": "TypeScript tutorial for beginners",
+  "answer": "TypeScript is JavaScript with static types. You add type annotations such as `let count: number = 0`, and the compiler `tsc` checks them before turning the code into plain JavaScript that runs in any browser or in Node.js. The key ideas are basic types, interfaces and type aliases for object shapes, union types with narrowing, and generics for reusable code. Types are erased at runtime.",
+  "sections": [
+    {
+      "h": "What TypeScript is and what it is used for",
+      "body": [
+        "TypeScript is an open-source language developed by Microsoft and first released in 2012. Every valid JavaScript program is also valid TypeScript, so you can adopt it file by file. The type checker catches mistakes such as misspelled properties or a missing `null` check while you type, and editors use the types for autocomplete and safe renaming. It is widely used for large front-end apps (Angular is written in it, and React, Vue and Svelte support it well), Node.js back ends and libraries."
+      ]
+    },
+    {
+      "h": "Install and run Hello, world",
+      "body": [
+        "Install Node.js first, then install the compiler in your project with npm. `tsc` compiles `.ts` files to `.js`.",
+        {
+          "code": "const message: string = \"Hello, world\";\nconsole.log(message);",
+          "lang": "typescript"
+        },
+        {
+          "code": "npm install --save-dev typescript\nnpx tsc --init          # creates tsconfig.json\nnpx tsc hello.ts        # writes hello.js\nnode hello.js\n# Hello, world",
+          "lang": "shell"
+        },
+        "Recent versions of Node.js, Deno and Bun can also run `.ts` files directly by removing the type annotations. They do not type-check, so still run `npx tsc --noEmit` to find type errors."
+      ]
+    },
+    {
+      "h": "Basic types and type inference",
+      "body": [
+        "You rarely need to write every type. When you initialize a variable, TypeScript infers its type: `let n = 5` is a `number`. Annotate function parameters and public APIs.",
+        {
+          "table": {
+            "head": [
+              "Type",
+              "Example",
+              "Notes"
+            ],
+            "rows": [
+              [
+                "`number`",
+                "`let n: number = 3.5`",
+                "Integers and floats"
+              ],
+              [
+                "`string`",
+                "`let s: string = \"hi\"`",
+                "Text"
+              ],
+              [
+                "`boolean`",
+                "`let ok: boolean = true`",
+                "true or false"
+              ],
+              [
+                "Array",
+                "`number[]` or `Array<number>`",
+                "Both forms mean the same"
+              ],
+              [
+                "Tuple",
+                "`[string, number]`",
+                "Fixed length and positions"
+              ],
+              [
+                "`unknown`",
+                "`let x: unknown`",
+                "Any value, must be checked before use"
+              ],
+              [
+                "`any`",
+                "`let y: any`",
+                "Turns off checking; avoid"
+              ],
+              [
+                "`void` / `never`",
+                "function return types",
+                "Returns nothing / never returns"
+              ]
+            ]
+          }
+        },
+        {
+          "code": "let count = 0;          // inferred as number\ncount = \"ten\";          // error: Type 'string' is not assignable to type 'number'\nconst names: string[] = [\"Ann\", \"Bo\"];\nconst pair: [string, number] = [\"age\", 31];",
+          "lang": "typescript"
+        },
+        "The second line is a deliberate compile error, shown to illustrate what the checker reports."
+      ]
+    },
+    {
+      "h": "Functions, control flow and narrowing",
+      "body": [
+        "Control flow (`if`, `for`, `while`, `switch`) is exactly the same as in JavaScript. What TypeScript adds is narrowing: after a check such as `typeof x === \"string\"`, the compiler knows the more specific type inside that branch.",
+        {
+          "code": "function greet(name: string, greeting = \"Hello\"): string {\n  return `${greeting}, ${name}!`;\n}\nfunction formatId(id: string | number): string {\n  if (typeof id === \"number\") {\n    return id.toFixed(0).padStart(6, \"0\"); // id is number here\n  }\n  return id.toUpperCase();                 // id is string here\n}\nconsole.log(greet(\"Lin\"));    // Hello, Lin!\nconsole.log(formatId(42));    // 000042\nconsole.log(formatId(\"ab7\")); // AB7",
+          "lang": "typescript"
+        },
+        "`string | number` is a union type: the value is one of the listed types. Optional parameters are written `name?: string`, and their type includes `undefined`."
+      ]
+    },
+    {
+      "h": "Interfaces and type aliases",
+      "body": [
+        "Describe the shape of objects with an `interface` or a `type` alias. TypeScript checks structure, not names: any object with the right properties fits.",
+        {
+          "code": "interface User {\n  id: number;\n  name: string;\n  email?: string;          // optional\n  readonly createdAt: Date;\n}\ntype Role = \"admin\" | \"editor\" | \"viewer\"; // string literal union\nfunction describe(user: User, role: Role): string {\n  const contact = user.email ?? \"no email\";\n  return `${user.name} (${role}, ${contact})`;\n}\nconst ann: User = { id: 1, name: \"Ann\", createdAt: new Date() };\nconsole.log(describe(ann, \"editor\")); // Ann (editor, no email)",
+          "lang": "typescript"
+        }
+      ]
+    },
+    {
+      "h": "Signature features: generics and discriminated unions",
+      "body": [
+        "Generics let one function or type work with many types while keeping them connected. A discriminated union is a union of object types that share a literal field, so a `switch` on that field narrows the type, and the compiler can check that every case is handled.",
+        {
+          "code": "function first<T>(items: T[]): T | undefined {\n  return items[0];\n}\nconst n = first([10, 20]);   // n: number | undefined\nconst s = first([\"a\", \"b\"]); // s: string | undefined\ntype Shape =\n  | { kind: \"circle\"; radius: number }\n  | { kind: \"rect\"; width: number; height: number };\nfunction area(shape: Shape): number {\n  switch (shape.kind) {\n    case \"circle\":\n      return Math.PI * shape.radius ** 2;\n    case \"rect\":\n      return shape.width * shape.height;\n  }\n}\nconsole.log(n, s, area({ kind: \"rect\", width: 2, height: 3 })); // 10 a 6",
+          "lang": "typescript"
+        },
+        "Built-in utility types build new types from old ones: `Partial<User>` makes every property optional, `Pick<User, \"id\" | \"name\">` keeps only some properties, and `Record<string, number>` describes a dictionary."
+      ]
+    },
+    {
+      "h": "Error handling",
+      "body": [
+        "Errors work as in JavaScript, with `throw` and `try`/`catch`. With the `strict` option on, the caught value has type `unknown`, because any value can be thrown, so check it before use.",
+        {
+          "code": "function parseAge(text: string): number {\n  const age = Number(text);\n  if (!Number.isInteger(age) || age < 0) {\n    throw new Error(`invalid age: ${text}`);\n  }\n  return age;\n}\ntry {\n  parseAge(\"abc\");\n} catch (err: unknown) {\n  const message = err instanceof Error ? err.message : String(err);\n  console.log(message); // invalid age: abc\n}",
+          "lang": "typescript"
+        }
+      ]
+    },
+    {
+      "h": "A small complete program: typed inventory",
+      "body": [
+        {
+          "code": "interface Item {\n  name: string;\n  price: number;\n  qty: number;\n}\ntype Summary = { total: number; cheapest?: Item; outOfStock: string[] };\nfunction summarize(items: Item[]): Summary {\n  let total = 0;\n  let cheapest: Item | undefined;\n  const outOfStock: string[] = [];\n  for (const item of items) {\n    total += item.price * item.qty;\n    if (item.qty === 0) outOfStock.push(item.name);\n    if (!cheapest || item.price < cheapest.price) cheapest = item;\n  }\n  return { total, cheapest, outOfStock };\n}\nconst result = summarize([\n  { name: \"pen\", price: 1.5, qty: 10 },\n  { name: \"book\", price: 12, qty: 2 },\n  { name: \"bag\", price: 30, qty: 0 },\n]);\nconsole.log(result.total, result.cheapest?.name, result.outOfStock);\n// 39 pen [ 'bag' ]",
+          "lang": "typescript"
+        },
+        "Try changing `qty: 10` to `qty: \"10\"`: the compiler reports the error before the code ever runs."
+      ]
+    },
+    {
+      "h": "Common beginner mistakes",
+      "body": [
+        {
+          "note": "Types do not exist at runtime. A type annotation on data from `JSON.parse` or `fetch` is only a promise you make; validate untrusted input with real checks or a schema library."
+        },
+        {
+          "ul": [
+            "Using `any` to silence errors. Prefer `unknown` and narrow it.",
+            "Overusing `as` type assertions, which tell the compiler to trust you instead of checking.",
+            "Leaving `strict` off in `tsconfig.json`. Turn it on in new projects; it enables `null` checks.",
+            "Writing types the compiler can already infer, which adds noise without safety."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Where to go next",
+      "body": [
+        "Read the official TypeScript Handbook, and experiment in the TypeScript Playground on typescriptlang.org, which shows the compiled JavaScript and errors side by side. Then learn `tsconfig.json` options, type declaration files for libraries (`@types/...` packages), and TypeScript with your framework of choice."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Is TypeScript a different language from JavaScript?",
+      "a": "It is a superset of JavaScript: it adds type syntax and a checker, then compiles to plain JavaScript. Runtime behavior is the same as the JavaScript it produces."
+    },
+    {
+      "q": "Should I learn JavaScript before TypeScript?",
+      "a": "Learn the JavaScript basics first (variables, functions, objects, promises), because TypeScript does not change them. Then add TypeScript; the types are easier to learn once the runtime behavior is familiar."
+    },
+    {
+      "q": "What is the difference between interface and type?",
+      "a": "Both describe object shapes. Interfaces can be extended and merged by declaring them again; type aliases can also name unions, tuples and other non-object types. For plain object shapes either works."
+    },
+    {
+      "q": "Does TypeScript make my code faster?",
+      "a": "No. Types are removed during compilation, so the output runs at the same speed as hand-written JavaScript. The benefit is fewer bugs and better tooling."
+    }
+  ]
+}

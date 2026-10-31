@@ -1,0 +1,154 @@
+{
+  "title": "Patrón Visitor: doble despacho y visitantes de AST en TypeScript — cv.cm",
+  "description": "El patrón Visitor añade operaciones a una jerarquía de clases sin cambiar sus clases. Aprende el doble despacho, el código en TypeScript y la alternativa con tipos unión.",
+  "h1": "Patrón Visitor explicado con ejemplos",
+  "answer": "Visitor es un patrón de diseño de comportamiento que permite añadir nuevas operaciones a un grupo de clases relacionadas sin cambiar esas clases. Cada operación se escribe como un objeto visitante con un método por cada tipo de elemento, y cada elemento tiene un método `accept(visitor)` que llama al método del visitante correspondiente. Esta técnica, llamada doble despacho, elige el código que se ejecuta según el tipo del elemento y el tipo del visitante. Los compiladores, los linters y los transformadores de código usan visitantes para recorrer árboles de sintaxis.",
+  "sections": [
+    {
+      "h": "Intención y el problema que resuelve",
+      "body": [
+        "Intención: representar una operación que se realizará sobre los elementos de una estructura de objetos. Visitor permite definir una nueva operación sin cambiar las clases de los elementos sobre los que opera. Es uno de los patrones de comportamiento del libro de la Banda de los Cuatro (Gang of Four, GoF).",
+        "Supón que un programa de dibujo tiene tres clases de figuras: `Circle`, `Rectangle` y `Group`. Con el tiempo necesitas muchas operaciones sobre ellas: calcular el área total, exportar a SVG, exportar a JSON, contar las figuras, comprobar solapamientos. Si cada operación se convierte en un método de cada clase de figura, las clases de figuras crecen con código que no tiene nada que ver con ser una figura, y cada operación nueva las toca todas.",
+        "Con Visitor, cada operación se convierte en una clase (un visitante de área, un visitante de SVG) que contiene el código para cada tipo de figura. Las figuras solo necesitan un método genérico, `accept`. Añadir una operación significa escribir un visitante nuevo; las clases de figuras quedan sin cambios."
+      ]
+    },
+    {
+      "h": "Estructura y participantes",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Rol",
+              "Responsabilidad"
+            ],
+            "rows": [
+              [
+                "Visitante",
+                "Interfaz con un método visit por cada tipo de elemento concreto, como `visitCircle` y `visitRectangle`"
+              ],
+              [
+                "Visitante concreto",
+                "Implementa una operación para todos los tipos de elemento y puede acumular un resultado"
+              ],
+              [
+                "Elemento",
+                "Interfaz con un método `accept(visitor)`"
+              ],
+              [
+                "Elemento concreto",
+                "Implementa `accept` llamando al método visit de su propio tipo y pasándose a sí mismo"
+              ],
+              [
+                "Estructura de objetos",
+                "Una colección o árbol de elementos, como un documento o un árbol de sintaxis, que los visitantes recorren"
+              ]
+            ]
+          }
+        },
+        "Por qué hace falta `accept`: en TypeScript, Java y C#, una llamada a un método elige su implementación según el tipo del objeto sobre el que se llama (despacho simple). La llamada a `accept` despacha según el tipo del elemento, y la llamada dentro de ella, como `visitor.visitCircle(this)`, despacha según el tipo del visitante. Juntas forman el doble despacho."
+      ]
+    },
+    {
+      "h": "Implementación en TypeScript",
+      "body": [
+        "La interfaz del visitante es genérica en su tipo de retorno, de modo que un visitante puede calcular números y otro puede producir cadenas.",
+        {
+          "code": "interface ShapeVisitor<R> {\n  visitCircle(c: Circle): R;\n  visitRectangle(r: Rectangle): R;\n  visitGroup(g: Group): R;\n}\ninterface Shape {\n  accept<R>(visitor: ShapeVisitor<R>): R;\n}\n\nclass Circle implements Shape {\n  constructor(readonly radius: number) {}\n  accept<R>(v: ShapeVisitor<R>) { return v.visitCircle(this); }\n}\nclass Rectangle implements Shape {\n  constructor(readonly width: number, readonly height: number) {}\n  accept<R>(v: ShapeVisitor<R>) { return v.visitRectangle(this); }\n}\nclass Group implements Shape {\n  constructor(readonly children: Shape[]) {}\n  accept<R>(v: ShapeVisitor<R>) { return v.visitGroup(this); }\n}\n\nclass AreaVisitor implements ShapeVisitor<number> {\n  visitCircle(c: Circle) { return Math.PI * c.radius ** 2; }\n  visitRectangle(r: Rectangle) { return r.width * r.height; }\n  visitGroup(g: Group): number {\n    return g.children.reduce((sum, child) => sum + child.accept(this), 0);\n  }\n}\n\nclass SvgVisitor implements ShapeVisitor<string> {\n  visitCircle(c: Circle) { return '<circle r=\"' + c.radius + '\"/>'; }\n  visitRectangle(r: Rectangle) { return '<rect width=\"' + r.width + '\" height=\"' + r.height + '\"/>'; }\n  visitGroup(g: Group): string { return \"<g>\" + g.children.map((c) => c.accept(this)).join(\"\") + \"</g>\"; }\n}\n\nconst drawing = new Group([new Circle(1), new Rectangle(2, 3), new Group([new Rectangle(1, 1)])]);\nconsole.log(drawing.accept(new AreaVisitor()).toFixed(2)); // 10.14\nconsole.log(drawing.accept(new SvgVisitor()));\n// <g><circle r=\"1\"/><rect width=\"2\" height=\"3\"/><g><rect width=\"1\" height=\"1\"/></g></g>",
+          "lang": "typescript"
+        },
+        "Una tercera operación, como contar figuras, sería una clase nueva que implemente `ShapeVisitor<number>`. Ninguna de las clases de figuras cambiaría.",
+        {
+          "note": "Visitor facilita añadir operaciones pero dificulta añadir tipos de elemento. Una nueva clase de figura, como `Triangle`, requiere un método nuevo en la interfaz del visitante y en cada visitante existente. Usa el patrón cuando el conjunto de tipos de elemento es estable y el conjunto de operaciones sigue creciendo."
+        }
+      ]
+    },
+    {
+      "h": "La alternativa en TypeScript: tipos unión y switch",
+      "body": [
+        "En TypeScript, una unión discriminada con un `switch` exhaustivo da muchos de los mismos beneficios con menos código. El compilador informa de un error si falta un caso, lo que sustituye la seguridad que ofrece la interfaz del visitante:",
+        {
+          "code": "type Shape =\n  | { kind: \"circle\"; radius: number }\n  | { kind: \"rect\"; width: number; height: number }\n  | { kind: \"group\"; children: Shape[] };\n\nfunction area(s: Shape): number {\n  switch (s.kind) {\n    case \"circle\": return Math.PI * s.radius ** 2;\n    case \"rect\": return s.width * s.height;\n    case \"group\": return s.children.reduce((sum, c) => sum + area(c), 0);\n    default: {\n      const unreachable: never = s; // compile error if a kind is not handled\n      return unreachable;\n    }\n  }\n}\n\nconsole.log(area({ kind: \"group\", children: [{ kind: \"rect\", width: 2, height: 3 }] })); // 6",
+          "lang": "typescript"
+        },
+        "Cada operación nueva es una función nueva. Este estilo encaja con datos simples, como JSON o árboles de sintaxis, y es lo que usan muchas bases de código de TypeScript en lugar de visitantes basados en clases."
+      ]
+    },
+    {
+      "h": "Cuándo usarlo y cuándo no",
+      "body": [
+        {
+          "ul": [
+            "Úsalo cuando tienes un conjunto estable de clases de elementos y necesitas muchas operaciones no relacionadas sobre ellas, como evaluación, impresión, comprobación de tipos y optimización en un árbol de sintaxis.",
+            "Úsalo para mantener junto el código de las operaciones: toda la exportación a SVG vive en un visitante, no repartida en muchas clases.",
+            "Úsalo cuando un visitante necesita acumular estado mientras recorre una estructura, como una tabla de símbolos o un total acumulado.",
+            "No lo uses cuando los tipos de elemento cambian a menudo; cada cambio repercute en todos los visitantes.",
+            "No lo uses cuando los elementos son pocos y las operaciones simples. Los métodos en las clases, o una función con un `switch`, son más fáciles de leer.",
+            "Ten en cuenta que los visitantes suelen necesitar acceso a los datos de los elementos, lo que puede empujarte a hacer públicos los campos."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Usos en el mundo real",
+      "body": [
+        {
+          "ul": [
+            "Los plugins de Babel son visitantes: un objeto con métodos que llevan el nombre de tipos de nodo, como `Identifier` o `CallExpression`, a los que `@babel/traverse` llama mientras recorre el árbol de sintaxis.",
+            "Las reglas de ESLint devuelven un objeto de métodos visitantes indexados por tipo de nodo, y ESLint los llama durante el recorrido.",
+            "Las clases `ast.NodeVisitor` y `ast.NodeTransformer` de Python llaman a métodos `visit_` con el nombre de la clase del nodo, como `visit_Name`.",
+            "`java.nio.file.FileVisitor` de Java, usado con `Files.walkFileTree`, recibe callbacks por cada directorio y archivo de un árbol de archivos."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Patrones relacionados",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Patrón",
+              "Cómo se relaciona con Visitor"
+            ],
+            "rows": [
+              [
+                "Composite",
+                "Los visitantes se aplican a menudo a estructuras Composite; el método visit de un grupo visita a sus hijos, como en el ejemplo."
+              ],
+              [
+                "Interpreter",
+                "Un intérprete evalúa un árbol de sintaxis; un visitante puede implementar esa evaluación, además de otras operaciones sobre el mismo árbol."
+              ],
+              [
+                "Iterator",
+                "Un iterador recorre los elementos; un visitante define la operación sobre cada elemento. Pueden combinarse."
+              ],
+              [
+                "Strategy",
+                "Una estrategia varía un algoritmo para un contexto; un visitante agrupa una operación para muchos tipos de elemento."
+              ]
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "¿Qué es el doble despacho?",
+      "a": "Doble despacho significa que el código que se ejecuta depende de los tipos de dos objetos. En Visitor, `element.accept(visitor)` selecciona el tipo del elemento, y `visitor.visitX(this)` dentro de ella selecciona el tipo del visitante."
+    },
+    {
+      "q": "¿Cuándo no debería usar el patrón Visitor?",
+      "a": "Evítalo cuando se añaden nuevos tipos de elemento a menudo, porque cada tipo nuevo requiere cambios en todos los visitantes. También añade una ceremonia que no compensa para unas pocas operaciones simples."
+    },
+    {
+      "q": "¿Es útil Visitor en TypeScript?",
+      "a": "Es útil para estructuras de objetos basadas en clases. Para datos simples, una unión discriminada con un `switch` exhaustivo suele lograr el mismo resultado con menos código y comprobación de tipos completa."
+    },
+    {
+      "q": "¿Por qué Babel y ESLint usan visitantes?",
+      "a": "Ambos trabajan sobre árboles de sintaxis con muchos tipos de nodo y admiten muchos plugins o reglas independientes. Los visitantes permiten que cada plugin o regla maneje solo los tipos de nodo que le interesan, mientras la herramienta se encarga del recorrido."
+    }
+  ]
+}

@@ -1,0 +1,215 @@
+{
+  "title": "스택과 큐 쉽게 이해하기: LIFO vs FIFO, 파이썬 코드와 시간 복잡도 — cv.cm",
+  "description": "스택(LIFO)과 큐(FIFO)를 파이썬 코드로 설명합니다. list로 스택, collections.deque로 큐 만들기, 괄호 검사, BFS, 시간 복잡도까지 다룹니다.",
+  "h1": "스택과 큐란? LIFO와 FIFO를 파이썬 예제로 이해하기",
+  "answer": "스택은 마지막에 넣은 항목이 가장 먼저 나오는 자료구조(LIFO, 후입선출)로, 쌓아 놓은 접시와 같습니다. 큐는 처음에 넣은 항목이 가장 먼저 나오는 자료구조(FIFO, 선입선출)로, 계산대 앞의 줄과 같습니다. 둘 다 추가와 제거가 O(1)입니다. 파이썬에서는 `list`를 스택으로, `collections.deque`를 큐로 사용하세요.",
+  "sections": [
+    {
+      "h": "스택과 큐가 해결하는 문제",
+      "body": [
+        "많은 프로그램은 항목을 기억해 두었다가 정해진 순서로 나중에 처리해야 합니다. 스택은 가장 최근 항목을 먼저 꺼내 주므로 함수 호출, 실행 취소 기록, 괄호 짝 맞추기, 깊이 우선 탐색 같은 중첩된 작업에 맞습니다. 큐는 가장 오래된 항목을 먼저 꺼내 주므로 인쇄 작업, 작업 스케줄러, 메시지 큐, 너비 우선 탐색처럼 공정한 대기에 맞습니다.",
+        "둘 다 추상 자료형(ADT)입니다. 어떻게 저장하느냐가 아니라 어떤 연산을 제공하느냐로 정의되며, 배열이나 연결 리스트 위에 어느 쪽이든 만들 수 있습니다."
+      ]
+    },
+    {
+      "h": "연산과 이름",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "연산",
+              "스택 (LIFO)",
+              "큐 (FIFO)"
+            ],
+            "rows": [
+              [
+                "항목 추가",
+                "push: 맨 위에 올림",
+                "enqueue: 뒤에 추가"
+              ],
+              [
+                "항목 제거",
+                "pop: 맨 위에서 꺼냄",
+                "dequeue: 앞에서 꺼냄"
+              ],
+              [
+                "제거하지 않고 확인",
+                "peek / top",
+                "peek / front"
+              ],
+              [
+                "파이썬 타입",
+                "`append`와 `pop`을 쓰는 `list`",
+                "`append`와 `popleft`를 쓰는 `collections.deque`"
+              ],
+              [
+                "입력 1, 2, 3일 때 제거 순서",
+                "3, 2, 1",
+                "1, 2, 3"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "예제: push와 pop을 단계별로 보기",
+      "body": [
+        "두 자료구조에 1, 2, 3을 넣은 다음 항목 두 개를 제거합니다.",
+        {
+          "table": {
+            "head": [
+              "단계",
+              "스택 내용 (맨 위가 오른쪽)",
+              "큐 내용 (맨 앞이 왼쪽)"
+            ],
+            "rows": [
+              [
+                "1 추가",
+                "[1]",
+                "[1]"
+              ],
+              [
+                "2 추가",
+                "[1, 2]",
+                "[1, 2]"
+              ],
+              [
+                "3 추가",
+                "[1, 2, 3]",
+                "[1, 2, 3]"
+              ],
+              [
+                "제거",
+                "3을 반환, [1, 2]가 남음",
+                "1을 반환, [2, 3]이 남음"
+              ],
+              [
+                "제거",
+                "2를 반환, [1]이 남음",
+                "2를 반환, [3]이 남음"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "파이썬 구현",
+      "body": [
+        "파이썬의 `list`는 이미 훌륭한 스택입니다. `append`와 `pop()`은 리스트의 끝에서 분할 상환 O(1)로 동작합니다. 큐에는 `list.pop(0)`을 쓰지 마세요. 남은 요소를 모두 이동시키므로 O(n)이 듭니다. 양쪽 끝에서 O(1)인 `collections.deque`를 사용하세요.",
+        {
+          "code": "from collections import deque\nstack = []\nstack.append(1)\nstack.append(2)\nstack.append(3)\nprint(stack.pop(), stack[-1])   # 3 2\nqueue = deque()\nqueue.append(\"a\")\nqueue.append(\"b\")\nqueue.append(\"c\")\nprint(queue.popleft(), queue[0])  # a b\nprint(len(stack), len(queue))     # 2 2",
+          "lang": "python"
+        },
+        "메서드 이름을 명확히 하고 오류 메시지도 분명하게 하고 싶다면 내장 타입을 작은 클래스로 감싸세요.",
+        {
+          "code": "from collections import deque\nclass Queue:\n    def __init__(self):\n        self._items = deque()\n    def enqueue(self, item):\n        self._items.append(item)\n    def dequeue(self):\n        if not self._items:\n            raise IndexError(\"dequeue from empty queue\")\n        return self._items.popleft()\n    def __len__(self):\n        return len(self._items)\nq = Queue()\nq.enqueue(\"job1\")\nq.enqueue(\"job2\")\nprint(q.dequeue(), len(q))  # job1 1",
+          "lang": "python"
+        }
+      ]
+    },
+    {
+      "h": "대표적인 스택 문제: 올바른 괄호",
+      "body": [
+        "모든 괄호가 올바른 순서로 닫혔는지 확인하려면 여는 괄호를 만날 때마다 push합니다. 닫는 괄호를 만나면 스택의 맨 위가 그에 맞는 여는 괄호여야 합니다.",
+        {
+          "code": "def is_balanced(text):\n    pairs = {\")\": \"(\", \"]\": \"[\", \"}\": \"{\"}\n    stack = []\n    for ch in text:\n        if ch in \"([{\":\n            stack.append(ch)\n        elif ch in pairs:\n            if not stack or stack.pop() != pairs[ch]:\n                return False\n    return not stack\nprint(is_balanced(\"f(a[1], {b: 2})\"))  # True\nprint(is_balanced(\"(]\"))               # False\nprint(is_balanced(\"((\"))               # False",
+          "lang": "python"
+        },
+        "같은 아이디어로 후위 표기법(역폴란드 표기법) 수식을 계산하고, 재귀를 반복문으로 바꾸고, 깊이 우선 탐색을 구현할 수 있습니다. 호출 스택 대신 직접 만든 리스트를 쓰면 됩니다."
+      ]
+    },
+    {
+      "h": "대표적인 큐 문제: 너비 우선 탐색",
+      "body": [
+        "너비 우선 탐색은 그래프를 레벨 단위로 방문합니다. 큐를 쓰면 먼저 발견한 노드가 먼저 처리되므로 이 순서가 자연스럽게 만들어집니다.",
+        {
+          "code": "from collections import deque\ndef bfs_order(graph, start):\n    seen = {start}\n    queue = deque([start])\n    order = []\n    while queue:\n        node = queue.popleft()\n        order.append(node)\n        for nxt in graph[node]:\n            if nxt not in seen:\n                seen.add(nxt)\n                queue.append(nxt)\n    return order\ngraph = {\"A\": [\"B\", \"C\"], \"B\": [\"D\"], \"C\": [\"D\"], \"D\": []}\nprint(bfs_order(graph, \"A\"))  # ['A', 'B', 'C', 'D']",
+          "lang": "python"
+        }
+      ]
+    },
+    {
+      "h": "시간 복잡도와 공간 복잡도",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "연산",
+              "스택 (`list`)",
+              "큐 (`deque`)",
+              "큐 (`list.pop(0)`)"
+            ],
+            "rows": [
+              [
+                "추가",
+                "분할 상환 O(1)",
+                "O(1)",
+                "분할 상환 O(1)"
+              ],
+              [
+                "제거",
+                "O(1)",
+                "O(1)",
+                "O(n), 요소가 왼쪽으로 이동"
+              ],
+              [
+                "peek",
+                "O(1)",
+                "O(1)",
+                "O(1)"
+              ],
+              [
+                "n개 항목의 공간",
+                "O(n)",
+                "O(n)",
+                "O(n)"
+              ]
+            ]
+          }
+        },
+        "분할 상환이란, 가끔 `append`가 내부 배열의 크기를 조정하느라 O(n)이 들지만 많은 연산에 걸쳐 평균을 내면 연산 하나당 O(1)이라는 뜻입니다."
+      ]
+    },
+    {
+      "h": "변형과 흔한 실수",
+      "body": [
+        {
+          "ul": [
+            "덱(양방향 큐): 양쪽 끝에서 추가하고 제거합니다. `collections.deque`가 덱이며 스택과 큐 역할을 모두 할 수 있습니다.",
+            "우선순위 큐: 가장 오래된 항목이 아니라 가장 작은(또는 가장 큰) 항목을 먼저 꺼냅니다. `heapq`를 사용하세요. 이진 힙 페이지를 참고하세요.",
+            "원형 버퍼: 인덱스가 순환하는 배열에 저장하는 고정 크기 큐입니다. `deque(maxlen=n)`은 가득 차면 가장 오래된 항목을 버립니다.",
+            "스레드 안전 큐: 스레드에는 `queue.Queue`, 코루틴에는 `asyncio.Queue`가 있으며 항목을 기다리는 동안 블록됩니다.",
+            "스택 두 개로 만든 큐: in 스택에 push하고, out 스택이 비면 모든 항목을 옮깁니다. 각 항목은 한 번만 옮겨지므로 연산은 분할 상환 O(1)입니다."
+          ]
+        },
+        {
+          "note": "빈 `list`에서 `pop()`을 호출하거나 빈 `deque`에서 `popleft()`를 호출하면 `IndexError`가 발생합니다. pop하기 전에 `if stack:`으로 확인하거나 예외를 처리하세요."
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "스택과 큐의 차이는 무엇인가요?",
+      "a": "스택은 가장 최근에 추가한 항목을 먼저 제거하고(LIFO), 큐는 가장 오래된 항목을 먼저 제거합니다(FIFO). 둘 다 추가와 제거가 O(1)입니다."
+    },
+    {
+      "q": "파이썬에서 큐로 list와 deque 중 무엇을 써야 하나요?",
+      "a": "`collections.deque`를 사용하세요. `list`의 앞에서 `pop(0)`으로 제거하면 나머지 요소가 모두 이동하므로 O(n)이지만, `deque.popleft()`는 O(1)입니다."
+    },
+    {
+      "q": "실제 프로그램에서 스택은 어디에 쓰이나요?",
+      "a": "함수 호출을 저장하는 호출 스택, 실행 취소·다시 실행 기록, 브라우저의 뒤로 가기 버튼, 수식 파싱, 괄호 짝 검사, 깊이 우선 탐색 등에 쓰입니다."
+    },
+    {
+      "q": "스택 오버플로란 무엇인가요?",
+      "a": "호출 스택의 공간이 바닥나는 현상으로, 대개 매우 깊거나 무한한 재귀 때문에 발생합니다. 파이썬에서는 재귀 한도를 넘으면 `RecursionError`로 나타납니다."
+    },
+    {
+      "q": "queue.Queue와 collections.deque는 같은가요?",
+      "a": "아닙니다. `queue.Queue`는 락과 블로킹 `get`·`put`을 갖춘 스레드 안전 큐로, 스레드 간에 작업을 전달하기 위한 것입니다. `collections.deque`는 블로킹이 없는 더 빠른 범용 컨테이너입니다."
+    }
+  ]
+}

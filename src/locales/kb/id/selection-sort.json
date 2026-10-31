@@ -1,0 +1,216 @@
+{
+  "title": "Penjelasan selection sort: cara kerja, kode Python, dan kompleksitas — cv.cm",
+  "description": "Selection sort berulang kali memilih item terkecil yang tersisa lalu menukarnya ke posisinya. Penelusuran langkah demi langkah, kode Python, biaya O(n²), dan alasan tidak stabil.",
+  "h1": "Penjelasan selection sort: cara kerja, kode, dan kompleksitas",
+  "answer": "Selection sort membagi list menjadi bagian terurut di kiri dan bagian belum terurut di kanan. Pada setiap langkah, algoritma mencari elemen terkecil di bagian belum terurut lalu menukarnya ke posisi belum terurut yang pertama. Algoritma ini selalu melakukan sekitar n²/2 perbandingan, sehingga O(n²) pada semua kasus, tetapi melakukan paling banyak n − 1 pertukaran dan memakai ruang tambahan O(1). Versi array yang umum tidak stabil.",
+  "sections": [
+    {
+      "h": "Ide dasar dengan kata-kata sederhana",
+      "body": [
+        "Pindai seluruh list dan temukan elemen terkecil. Tukar dengan elemen di indeks 0; sekarang indeks 0 sudah final. Pindai sisa list mulai dari indeks 1, temukan yang terkecil, lalu tukar ke indeks 1. Lanjutkan sampai tersisa satu elemen, yang pasti merupakan yang terbesar.",
+        "Tidak seperti bubble sort dan insertion sort, selection sort tidak diuntungkan oleh input yang sudah terurut: algoritma ini tetap harus memindai setiap elemen yang tersisa untuk memastikan sudah menemukan nilai minimum."
+      ]
+    },
+    {
+      "h": "Contoh langkah demi langkah",
+      "body": [
+        "Urutkan `[64, 25, 12, 22, 11]`. Bagian sebelum garis sudah terurut dan final.",
+        {
+          "table": {
+            "head": [
+              "Langkah",
+              "Bagian belum terurut",
+              "Minimum yang ditemukan",
+              "Pertukaran",
+              "List setelah langkah"
+            ],
+            "rows": [
+              [
+                "1",
+                "`64, 25, 12, 22, 11`",
+                "11 di indeks 4",
+                "indeks 0 ↔ 4",
+                "`[11 | 25, 12, 22, 64]`"
+              ],
+              [
+                "2",
+                "`25, 12, 22, 64`",
+                "12 di indeks 2",
+                "indeks 1 ↔ 2",
+                "`[11, 12 | 25, 22, 64]`"
+              ],
+              [
+                "3",
+                "`25, 22, 64`",
+                "22 di indeks 3",
+                "indeks 2 ↔ 3",
+                "`[11, 12, 22 | 25, 64]`"
+              ],
+              [
+                "4",
+                "`25, 64`",
+                "25 di indeks 3",
+                "tidak perlu",
+                "`[11, 12, 22, 25 | 64]`"
+              ]
+            ]
+          }
+        },
+        "Empat langkah untuk lima elemen, dengan 4 + 3 + 2 + 1 = 10 perbandingan dan tiga pertukaran sungguhan."
+      ]
+    },
+    {
+      "h": "Implementasi Python",
+      "body": [
+        {
+          "code": "def selection_sort(items):\n    \"\"\"Sort a list in place, ascending. Returns the same list.\"\"\"\n    n = len(items)\n    for i in range(n - 1):\n        smallest = i\n        for j in range(i + 1, n):\n            if items[j] < items[smallest]:\n                smallest = j\n        if smallest != i:\n            items[i], items[smallest] = items[smallest], items[i]\n    return items\nprint(selection_sort([64, 25, 12, 22, 11]))   # [11, 12, 22, 25, 64]\nprint(selection_sort([2, 1]))                 # [1, 2]",
+          "lang": "python"
+        },
+        "Perulangan luar berjalan n − 1 kali karena elemen terakhir yang tersisa otomatis sudah di tempatnya. Perulangan dalam hanya mencatat sebuah indeks; pertukaran terjadi sekali per langkah luar."
+      ]
+    },
+    {
+      "h": "Kompleksitas waktu dan ruang",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Ukuran",
+              "Nilai",
+              "Alasan"
+            ],
+            "rows": [
+              [
+                "Perbandingan, semua kasus",
+                "n(n − 1)/2",
+                "setiap langkah memindai seluruh bagian belum terurut"
+              ],
+              [
+                "Waktu, terbaik / rata-rata / terburuk",
+                "O(n²)",
+                "pemindaian tidak bergantung pada urutan"
+              ],
+              [
+                "Pertukaran, terburuk",
+                "n − 1",
+                "paling banyak satu pertukaran per langkah"
+              ],
+              [
+                "Ruang tambahan",
+                "O(1)",
+                "di tempat, satu variabel indeks"
+              ]
+            ]
+          }
+        },
+        "Jumlah penulisan yang sedikit adalah satu-satunya kekuatan nyata selection sort. Jika menulis ke memori jauh lebih mahal daripada membaca, seperti pada sebagian memori flash atau saat memindahkan record besar, penulisan yang lebih sedikit bisa berarti. Cycle sort melangkah lebih jauh dengan menulis setiap elemen paling banyak satu kali."
+      ]
+    },
+    {
+      "h": "Stabilitas: mengapa selection sort tidak stabil",
+      "body": [
+        "Sort yang stabil mempertahankan urutan relatif elemen yang sama. Pertukaran jarak jauh pada selection sort dapat melompatkan sebuah elemen melewati elemen lain yang bernilai sama.",
+        {
+          "code": "def selection_sort_by_key(items, key):\n    n = len(items)\n    for i in range(n - 1):\n        m = min(range(i, n), key=lambda j: key(items[j]))\n        items[i], items[m] = items[m], items[i]\n    return items\ncards = [(\"4\", \"hearts\"), (\"4\", \"spades\"), (\"2\", \"clubs\")]\nprint(selection_sort_by_key(cards, key=lambda c: c[0]))\n# [('2', 'clubs'), ('4', 'spades'), ('4', 'hearts')]  order of the 4s changed",
+          "lang": "python"
+        },
+        "Angka 2 ditukar dengan 4 hati, yang memindahkan 4 hati ke belakang 4 sekop. Versi stabil ada: alih-alih menukar, keluarkan nilai minimum dan sisipkan di posisi i, sambil menggeser yang lain ke kanan. Cara ini menjaga urutan tetapi memakan O(n) penulisan per langkah."
+      ]
+    },
+    {
+      "h": "Perbandingan selection sort dengan sort lain",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Algoritma",
+              "Terbaik",
+              "Rata-rata",
+              "Terburuk",
+              "Ruang tambahan",
+              "Stabil"
+            ],
+            "rows": [
+              [
+                "Selection sort",
+                "O(n²)",
+                "O(n²)",
+                "O(n²)",
+                "O(1)",
+                "Tidak"
+              ],
+              [
+                "Bubble sort",
+                "O(n)",
+                "O(n²)",
+                "O(n²)",
+                "O(1)",
+                "Ya"
+              ],
+              [
+                "Insertion sort",
+                "O(n)",
+                "O(n²)",
+                "O(n²)",
+                "O(1)",
+                "Ya"
+              ],
+              [
+                "Heapsort",
+                "O(n log n)",
+                "O(n log n)",
+                "O(n log n)",
+                "O(1)",
+                "Tidak"
+              ],
+              [
+                "Merge sort",
+                "O(n log n)",
+                "O(n log n)",
+                "O(n log n)",
+                "O(n)",
+                "Ya"
+              ],
+              [
+                "Quicksort",
+                "O(n log n)",
+                "O(n log n)",
+                "O(n²)",
+                "O(log n)",
+                "Tidak"
+              ]
+            ]
+          }
+        },
+        "Heapsort adalah selection sort dengan struktur data yang lebih baik: ia juga berulang kali memilih elemen terbesar yang tersisa, tetapi menemukannya dalam O(log n) memakai binary heap alih-alih pemindaian O(n), sehingga totalnya menjadi O(n log n)."
+      ]
+    },
+    {
+      "h": "Kapan memakai selection sort",
+      "body": [
+        "Pakai `sorted()` atau `list.sort()` bawaan di kode Python sungguhan. Selection sort layak diketahui sebagai contoh pembelajaran, untuk array berukuran tetap yang sangat kecil di lingkungan terbatas, dan ketika jumlah penulisan harus minimal. Ini pertanyaan ujian dan wawancara yang sering muncul, biasanya berupa: telusuri langkahnya, hitung perbandingan dan pertukaran, lalu jelaskan mengapa tidak stabil.",
+        {
+          "note": "Kesalahan umum: menukar di dalam perulangan dalam setiap kali melihat elemen yang lebih kecil (ini mengubahnya menjadi algoritma lain yang lebih lambat), memulai perulangan dalam dari `i` alih-alih `i + 1` (tidak berbahaya tetapi boros), dan mengklaim kasus terbaik O(n), yang tidak dimiliki selection sort."
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Apakah selection sort stabil?",
+      "a": "Versi array standar yang bekerja di tempat tidak stabil, karena pertukaran jarak jauh bisa memindahkan elemen melewati elemen yang sama. Versi yang menyisipkan alih-alih menukar bersifat stabil tetapi melakukan lebih banyak penulisan."
+    },
+    {
+      "q": "Berapa kompleksitas waktu selection sort?",
+      "a": "O(n²) pada kasus terbaik, rata-rata, dan terburuk. Algoritma ini selalu melakukan n(n − 1)/2 perbandingan, apa pun urutan inputnya."
+    },
+    {
+      "q": "Berapa banyak pertukaran yang dilakukan selection sort?",
+      "a": "Paling banyak n − 1, satu per langkah luar. Ini lebih sedikit daripada bubble sort atau insertion sort, yang bisa melakukan O(n²) pertukaran atau pergeseran."
+    },
+    {
+      "q": "Apa perbedaan selection sort dan insertion sort?",
+      "a": "Selection sort memilih nilai minimum dari bagian belum terurut dan menambahkannya ke bagian terurut. Insertion sort mengambil elemen berikutnya dan menyisipkannya ke tempat yang tepat di bagian terurut. Insertion sort stabil dan punya kasus terbaik O(n); selection sort tidak keduanya."
+    }
+  ]
+}

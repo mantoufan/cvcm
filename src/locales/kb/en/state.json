@@ -1,0 +1,145 @@
+{
+  "title": "State pattern: state classes, transitions and TypeScript example — cv.cm",
+  "description": "The State pattern lets an object change its behavior when its internal state changes. Replace switch statements with state classes in TypeScript.",
+  "h1": "State pattern explained with examples",
+  "answer": "State is a behavioral design pattern that lets an object change its behavior when its internal state changes, so that it appears to change its class. Each state becomes a separate class that implements the same interface, and the main object, called the context, delegates its work to the current state object. Transitions happen by replacing that state object, which removes long `switch` or `if` chains that check a status field in every method.",
+  "sections": [
+    {
+      "h": "Intent and the problem it solves",
+      "body": [
+        "Intent: allow an object to alter its behavior when its internal state changes. The object will appear to change its class. State is one of the behavioral patterns in the Gang of Four (GoF) book; its classic example is a TCP connection that behaves differently when it is listening, established or closed.",
+        "Take an online order. It can be pending, paid, shipped or cancelled. Paying works only when pending. Shipping works only when paid. Cancelling is allowed when pending or paid, but not after shipping. A first version stores a `status` string and every method starts with a `switch` on it. With four actions and four states that is sixteen cases spread over four methods. Adding a new state, such as \"refunded\", means editing every method, and it is easy to miss one.",
+        "With the State pattern, each status becomes a class that knows what each action means in that status. The order holds a reference to its current state object and forwards every action to it."
+      ]
+    },
+    {
+      "h": "Structure and participants",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Role",
+              "Responsibility"
+            ],
+            "rows": [
+              [
+                "Context",
+                "The object clients use; holds the current state object and delegates state-specific behavior to it"
+              ],
+              [
+                "State",
+                "Interface declaring the operations whose behavior depends on the state"
+              ],
+              [
+                "Concrete state",
+                "Implements the behavior for one state and decides which state comes next"
+              ]
+            ]
+          }
+        },
+        "Transitions can be decided by the states themselves (each state sets the next one on the context, as below) or by the context using a transition table. Letting states decide keeps related logic together; a central table makes all transitions visible in one place."
+      ]
+    },
+    {
+      "h": "TypeScript implementation",
+      "body": [
+        "A base class provides the default behavior: reject the action. Each concrete state overrides only the actions that are valid for it.",
+        {
+          "code": "abstract class OrderState {\n  abstract readonly name: string;\n  pay(order: Order): void { this.reject(\"pay\"); }\n  ship(order: Order): void { this.reject(\"ship\"); }\n  cancel(order: Order): void { this.reject(\"cancel\"); }\n  protected reject(action: string): never {\n    throw new Error(\"Cannot \" + action + \" an order that is \" + this.name);\n  }\n}\n\nclass Pending extends OrderState {\n  readonly name = \"pending\";\n  pay(order: Order) { order.setState(new Paid()); }\n  cancel(order: Order) { order.setState(new Cancelled()); }\n}\n\nclass Paid extends OrderState {\n  readonly name = \"paid\";\n  ship(order: Order) { order.setState(new Shipped()); }\n  cancel(order: Order) { order.setState(new Cancelled()); } // refund here\n}\n\nclass Shipped extends OrderState { readonly name = \"shipped\"; }\nclass Cancelled extends OrderState { readonly name = \"cancelled\"; }\n\nclass Order {\n  private state: OrderState = new Pending();\n  setState(next: OrderState) { this.state = next; }\n  get status() { return this.state.name; }\n  pay() { this.state.pay(this); }\n  ship() { this.state.ship(this); }\n  cancel() { this.state.cancel(this); }\n}\n\nconst order = new Order();\norder.pay();\norder.ship();\nconsole.log(order.status); // shipped\ntry { order.cancel(); } catch (e) { console.log((e as Error).message); }\n// Cannot cancel an order that is shipped",
+          "lang": "typescript"
+        },
+        "To add a \"refunded\" state you write one new class and change only the states that can lead to it. `Order` itself does not change.",
+        {
+          "note": "Do not let clients replace the state from outside. Here `setState` is public for brevity; in a real project, keep it internal (for example by defining the states in the same module and not exporting them) so that only valid transitions can happen."
+        }
+      ]
+    },
+    {
+      "h": "Before and after",
+      "body": [
+        "The same rules written with a status field and `switch` statements. This works for a few states, but every method repeats the full list:",
+        {
+          "code": "type Status = \"pending\" | \"paid\" | \"shipped\" | \"cancelled\";\n\nclass OrderBefore {\n  status: Status = \"pending\";\n  ship() {\n    switch (this.status) {\n      case \"paid\": this.status = \"shipped\"; break;\n      default: throw new Error(\"Cannot ship an order that is \" + this.status);\n    }\n  }\n  // pay() and cancel() repeat the same switch\n}\n\nconst o = new OrderBefore();\ntry { o.ship(); } catch (e) { console.log((e as Error).message); }\n// Cannot ship an order that is pending",
+          "lang": "typescript"
+        },
+        "For small cases, this version is perfectly fine and arguably easier to read. In TypeScript, a union type for `Status` lets the compiler check that every case is handled. Move to state classes when the behavior per state grows beyond one or two lines."
+      ]
+    },
+    {
+      "h": "When to use it and when not to",
+      "body": [
+        {
+          "ul": [
+            "Use it when an object behaves very differently depending on its state, and the same status checks appear in many methods.",
+            "Use it when states and transitions change over time and you want each state's rules in one place.",
+            "Use it for workflows (orders, documents, tickets), protocol connections, game characters and UI components such as media players.",
+            "Do not use it when there are only two or three states with trivial behavior; an enum or union type and a `switch` is simpler.",
+            "For complex machines with nested or parallel states, consider a state machine library or the statecharts notation instead of hand-written classes."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Real-world uses",
+      "body": [
+        {
+          "ul": [
+            "Network protocol implementations model connection states such as listening, established and closed, which is the example used in the GoF book.",
+            "XState is a JavaScript and TypeScript library for state machines and statecharts, used for UI logic and workflows.",
+            "The W3C SCXML specification defines an XML format for statecharts.",
+            "Game development uses state objects for characters (idle, running, jumping), where each state handles input differently."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "State vs Strategy and other patterns",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Pattern",
+              "How it differs from State"
+            ],
+            "rows": [
+              [
+                "Strategy",
+                "The class structure is almost the same. A strategy is usually chosen by the client and does not change by itself; states replace each other as a result of the object's own actions."
+              ],
+              [
+                "Flyweight",
+                "State objects without fields can be shared between all contexts as flyweights or constants."
+              ],
+              [
+                "Singleton",
+                "Stateless state objects are often single shared instances."
+              ],
+              [
+                "Memento",
+                "Memento saves the data of an object to restore it later; State changes which behavior the object uses."
+              ]
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "What is the difference between State and Strategy?",
+      "a": "Both delegate behavior to an interchangeable object. In Strategy, the client usually picks the algorithm and it stays fixed. In State, the state objects know about each other and switch the context to a new state as part of normal operation."
+    },
+    {
+      "q": "Is the State pattern the same as a finite state machine?",
+      "a": "The State pattern is one way to implement a finite state machine in object-oriented code: each state is a class and each transition replaces the current state object. Machines can also be implemented with transition tables or libraries."
+    },
+    {
+      "q": "Who should decide the next state: the context or the state?",
+      "a": "Both work. When states decide, the logic for each state stays together. When the context or a transition table decides, all transitions are visible in one place and states do not need to know each other."
+    },
+    {
+      "q": "Can state objects be shared?",
+      "a": "Yes, if they hold no data of their own. Then one instance of each state can be shared by all context objects, which saves allocations."
+    }
+  ]
+}

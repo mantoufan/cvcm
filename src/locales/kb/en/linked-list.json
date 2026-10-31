@@ -1,0 +1,193 @@
+{
+  "title": "Linked list explained: singly and doubly linked lists, Python code and complexity — cv.cm",
+  "description": "Learn how a linked list works: nodes and pointers, insert, delete, reverse and cycle detection in Python, with time complexity compared to arrays.",
+  "h1": "Linked list explained: how it works, code and complexity",
+  "answer": "A linked list is a sequence of nodes where each node stores a value and a reference (pointer) to the next node. Unlike an array, the nodes are not stored next to each other in memory, so inserting or removing a node at a known position takes O(1) time, but finding the k-th element takes O(n) because you must walk from the head. A doubly linked list also stores a pointer to the previous node.",
+  "sections": [
+    {
+      "h": "What problem a linked list solves",
+      "body": [
+        "An array (a Python `list`) keeps its elements in one contiguous block of memory. Reading `a[i]` is instant, but inserting at the front shifts every other element one slot to the right, which costs O(n). A linked list avoids that shift: each element lives in its own node, and nodes are connected by references. To insert, you only change a couple of references.",
+        "Linked lists are the building block behind many other structures: stacks, queues, hash table buckets (separate chaining), LRU caches and adjacency lists in graphs."
+      ]
+    },
+    {
+      "h": "The idea in plain words",
+      "body": [
+        "Think of a treasure hunt: each clue tells you where the next clue is. You cannot jump to clue number 7; you must follow clues 1 to 6 first. The list itself only remembers the first node, called the head. The last node points to nothing (`None`).",
+        {
+          "table": {
+            "head": [
+              "Kind",
+              "Each node stores",
+              "Typical use"
+            ],
+            "rows": [
+              [
+                "Singly linked",
+                "value, `next`",
+                "stacks, simple queues, hash buckets"
+              ],
+              [
+                "Doubly linked",
+                "value, `next`, `prev`",
+                "deques, LRU caches, text editor buffers"
+              ],
+              [
+                "Circular",
+                "like singly or doubly, but the tail points back to the head",
+                "round-robin scheduling, ring buffers"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "Worked example: inserting and deleting",
+      "body": [
+        "Start with the list `3 -> 7 -> 9`. We insert 5 after 3, then delete 7.",
+        {
+          "ol": [
+            "Create a new node with value 5.",
+            "Set `new.next` to the node after 3 (the node 7).",
+            "Set `node3.next` to the new node. The list is now `3 -> 5 -> 7 -> 9`.",
+            "To delete 7, find the node before it (5) by walking from the head.",
+            "Set `node5.next = node5.next.next`, which skips 7. The list is now `3 -> 5 -> 9`. Python's garbage collector frees the unreachable node."
+          ]
+        },
+        {
+          "note": "The order of steps 2 and 3 matters. If you first set `node3.next = new`, you lose the only reference to the rest of the list."
+        }
+      ]
+    },
+    {
+      "h": "Python implementation of a singly linked list",
+      "body": [
+        "This class keeps a reference to the head and a size counter. It supports adding at the front and back, deleting the first matching value, and iteration.",
+        {
+          "code": "class Node:\n    def __init__(self, value, next=None):\n        self.value = value\n        self.next = next\nclass LinkedList:\n    def __init__(self):\n        self.head = None\n        self.size = 0\n    def push_front(self, value):\n        self.head = Node(value, self.head)\n        self.size += 1\n    def push_back(self, value):\n        node = Node(value)\n        if self.head is None:\n            self.head = node\n        else:\n            cur = self.head\n            while cur.next:\n                cur = cur.next\n            cur.next = node\n        self.size += 1\n    def remove(self, value):\n        prev, cur = None, self.head\n        while cur and cur.value != value:\n            prev, cur = cur, cur.next\n        if cur is None:\n            return False          # not found\n        if prev is None:\n            self.head = cur.next  # removing the head\n        else:\n            prev.next = cur.next\n        self.size -= 1\n        return True\n    def __iter__(self):\n        cur = self.head\n        while cur:\n            yield cur.value\n            cur = cur.next",
+          "lang": "python"
+        },
+        {
+          "code": "items = LinkedList()\nfor x in [3, 7, 9]:\n    items.push_back(x)\nitems.push_front(1)\nitems.remove(7)\nprint(list(items), items.size)  # [1, 3, 9] 3",
+          "lang": "python"
+        },
+        "`push_back` here walks the whole list, so it is O(n). Keeping an extra `tail` reference makes it O(1); that is what real queue implementations do."
+      ]
+    },
+    {
+      "h": "Classic operations: reverse and cycle detection",
+      "body": [
+        "Reversing a list in place is the most common linked list interview question. Walk the list once and turn each `next` pointer around.",
+        {
+          "code": "def reverse(head):\n    prev = None\n    cur = head\n    while cur:\n        nxt = cur.next     # remember the rest\n        cur.next = prev    # turn the pointer around\n        prev, cur = cur, nxt\n    return prev            # new head\ndef has_cycle(head):\n    slow = fast = head\n    while fast and fast.next:\n        slow = slow.next\n        fast = fast.next.next\n        if slow is fast:\n            return True\n    return False\nhead = Node(1, Node(2, Node(3)))\nhead = reverse(head)\nprint(head.value, head.next.value, head.next.next.value)  # 3 2 1\nprint(has_cycle(head))  # False",
+          "lang": "python"
+        },
+        "`has_cycle` is Floyd's tortoise and hare algorithm: a slow pointer moves one step and a fast pointer moves two steps. If there is a loop, the fast pointer eventually meets the slow one; if not, it reaches `None`. It uses O(1) extra memory."
+      ]
+    },
+    {
+      "h": "Time and space complexity",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Operation",
+              "Singly linked list",
+              "Python list (dynamic array)",
+              "Reason"
+            ],
+            "rows": [
+              [
+                "Access k-th element",
+                "O(n)",
+                "O(1)",
+                "a linked list must walk k nodes"
+              ],
+              [
+                "Insert or delete at the front",
+                "O(1)",
+                "O(n)",
+                "an array shifts every element"
+              ],
+              [
+                "Insert or delete after a known node",
+                "O(1)",
+                "O(n)",
+                "only references change"
+              ],
+              [
+                "Append at the end",
+                "O(1) with a tail pointer",
+                "O(1) amortized",
+                "both are cheap"
+              ],
+              [
+                "Search for a value",
+                "O(n)",
+                "O(n)",
+                "both scan element by element"
+              ],
+              [
+                "Extra memory",
+                "one or two references per node",
+                "some spare capacity",
+                "nodes are separate objects"
+              ]
+            ]
+          }
+        },
+        "In practice, arrays are often faster even for operations where the linked list has a better Big O, because array elements sit next to each other in memory and use the CPU cache well. Linked list nodes are scattered."
+      ]
+    },
+    {
+      "h": "Variants and common mistakes",
+      "body": [
+        {
+          "ul": [
+            "Forgetting the empty list: always check `head is None` before reading `head.next`.",
+            "Losing the rest of the list by overwriting `next` before saving it (see `nxt` in `reverse`).",
+            "Not updating `head` when the first node is removed, or `tail` when the last node is removed.",
+            "Using recursion on very long lists: Python's default recursion limit is about 1000 frames, so iterative code is safer.",
+            "A dummy (sentinel) head node removes most special cases: every real node then has a previous node.",
+            "In a doubly linked list, every insert and delete must update four references; missing one corrupts the list silently."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "When to use a linked list, and what to use in Python",
+      "body": [
+        "Use a linked list when you insert and remove at the ends or in the middle at positions you already hold a reference to, and you rarely need random access. Examples: an LRU cache (doubly linked list plus hash map), the free list of a memory allocator, undo history, or the buckets of a hash table.",
+        "In everyday Python code you rarely write your own. For a queue or deque, use `collections.deque`, which gives O(1) appends and pops at both ends. For general sequences, use `list`. Write your own linked list for learning, for interviews, and when you need to splice nodes in O(1), as in an LRU cache.",
+        {
+          "code": "from collections import deque\nq = deque([1, 2, 3])\nq.appendleft(0)\nq.append(4)\nprint(q.popleft(), q.pop(), list(q))  # 0 4 [1, 2, 3]",
+          "lang": "python"
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Is a Python list a linked list?",
+      "a": "No. A Python `list` is a dynamic array of references stored contiguously, so indexing is O(1) and inserting at the front is O(n). `collections.deque` is the closest built-in to a linked list for queue use."
+    },
+    {
+      "q": "Why is access in a linked list O(n)?",
+      "a": "Nodes are not stored at predictable addresses. The only way to reach the k-th node is to start at the head and follow k `next` references."
+    },
+    {
+      "q": "When is a doubly linked list better than a singly linked list?",
+      "a": "When you need to delete a node given only a reference to it, or move backwards. With a `prev` pointer, deletion is O(1) without searching for the previous node, at the cost of one extra reference per node."
+    },
+    {
+      "q": "How do you find the middle of a linked list in one pass?",
+      "a": "Use two pointers: move one by one step and the other by two steps. When the fast pointer reaches the end, the slow pointer is at the middle."
+    },
+    {
+      "q": "What is a sentinel node?",
+      "a": "A dummy node placed before the first real node (and sometimes after the last). It holds no data, but it means every real node has a neighbor, so insert and delete code needs fewer special cases for the empty list and the head."
+    }
+  ]
+}

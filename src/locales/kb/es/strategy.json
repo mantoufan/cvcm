@@ -1,0 +1,152 @@
+{
+  "title": "Patrón Strategy: algoritmos intercambiables con un ejemplo en TypeScript — cv.cm",
+  "description": "El patrón Strategy pone cada algoritmo en su propio objeto para que puedas intercambiarlos en tiempo de ejecución. Mira clases frente a funciones en TypeScript y cuándo usarlo.",
+  "h1": "Patrón Strategy explicado con ejemplos",
+  "answer": "Strategy es un patrón de diseño de comportamiento que define una familia de algoritmos, pone cada uno en un objeto aparte con una interfaz común y los hace intercambiables. El código que usa un algoritmo, llamado contexto, guarda una referencia a una estrategia y la llama sin saber cuál es. En TypeScript una estrategia suele ser simplemente una función, como el comparador que se pasa a `array.sort()`.",
+  "sections": [
+    {
+      "h": "Intención y el problema que resuelve",
+      "body": [
+        "Intención: definir una familia de algoritmos, encapsular cada uno y hacerlos intercambiables. Strategy permite que el algoritmo varíe independientemente de los clientes que lo usan. Es uno de los patrones de comportamiento del libro de la Banda de los Cuatro (Gang of Four, GoF), donde también se llama Policy.",
+        "Supón que un proceso de pago calcula el coste de envío. El envío estándar es una tarifa fija, el exprés cuesta más por kilogramo y la recogida en tienda es gratis. Una primera versión pone las tres fórmulas en un método con una cadena `if`/`else` sobre el tipo de envío. Cada opción nueva, como un mensajero asociado, significa editar de nuevo ese método, y probar una fórmula implica pasar por todas las demás.",
+        "Con Strategy, cada fórmula se convierte en su propio objeto o función con la misma firma. El proceso de pago recibe la estrategia elegida y la llama. Añadir un mensajero significa añadir una estrategia nueva; el proceso de pago no cambia."
+      ]
+    },
+    {
+      "h": "Estructura y participantes",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Rol",
+              "Responsabilidad"
+            ],
+            "rows": [
+              [
+                "Estrategia",
+                "Interfaz común para todas las versiones del algoritmo"
+              ],
+              [
+                "Estrategia concreta",
+                "Una implementación del algoritmo"
+              ],
+              [
+                "Contexto",
+                "Guarda una estrategia, la llama cuando necesita el algoritmo y puede permitir que los clientes la reemplacen"
+              ],
+              [
+                "Cliente",
+                "Elige una estrategia concreta y se la da al contexto"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "Implementación en TypeScript",
+      "body": [
+        "Como las funciones son valores en TypeScript, la interfaz de estrategia más simple es un tipo función. El contexto es la clase `Checkout`.",
+        {
+          "code": "type Parcel = { weightKg: number; subtotal: number };\ntype ShippingStrategy = (parcel: Parcel) => number;\n\nconst standard: ShippingStrategy = (p) => (p.subtotal >= 50 ? 0 : 4.99);\nconst express: ShippingStrategy = (p) => 9.99 + 1.5 * p.weightKg;\nconst pickup: ShippingStrategy = () => 0;\n\nclass Checkout {\n  constructor(private shipping: ShippingStrategy) {}\n\n  setShipping(strategy: ShippingStrategy) {\n    this.shipping = strategy;\n  }\n\n  total(parcel: Parcel): number {\n    return Math.round((parcel.subtotal + this.shipping(parcel)) * 100) / 100;\n  }\n}\n\nconst parcel = { weightKg: 2, subtotal: 30 };\nconst checkout = new Checkout(standard);\nconsole.log(checkout.total(parcel)); // 34.99\ncheckout.setShipping(express);\nconsole.log(checkout.total(parcel)); // 42.99\ncheckout.setShipping(pickup);\nconsole.log(checkout.total(parcel)); // 30",
+          "lang": "typescript"
+        },
+        "Si una estrategia necesita configuración o varios métodos, usa una interfaz y clases. Esta versión también da a cada estrategia un nombre que la interfaz puede mostrar:",
+        {
+          "code": "interface Shipping {\n  readonly label: string;\n  cost(weightKg: number): number;\n}\n\nclass Courier implements Shipping {\n  readonly label: string;\n  constructor(private ratePerKg: number, company: string) {\n    this.label = company + \" courier\";\n  }\n  cost(weightKg: number) { return this.ratePerKg * weightKg; }\n}\n\nconst options: Shipping[] = [new Courier(2, \"North\"), new Courier(3.5, \"Fast\")];\nfor (const o of options) console.log(o.label, o.cost(4));\n// North courier 8\n// Fast courier 14",
+          "lang": "typescript"
+        },
+        {
+          "note": "El cliente tiene que saber qué estrategias existen para elegir una. Mantén esa elección en un solo lugar, como un mapa desde el nombre de un ajuste a una estrategia, en lugar de repetir la cadena `if`/`else` que el patrón pretendía eliminar."
+        }
+      ]
+    },
+    {
+      "h": "Antes y después",
+      "body": [
+        "Antes, la elección del algoritmo está fijada dentro del método:",
+        {
+          "code": "function shippingCost(type: string, p: Parcel): number {\n  if (type === \"standard\") return p.subtotal >= 50 ? 0 : 4.99;\n  else if (type === \"express\") return 9.99 + 1.5 * p.weightKg;\n  else if (type === \"pickup\") return 0;\n  throw new Error(\"Unknown shipping type \" + type);\n}\n// After: a lookup table of strategies replaces the chain\nconst strategies: Record<string, ShippingStrategy> = { standard, express, pickup };",
+          "lang": "typescript"
+        },
+        "Este fragmento reutiliza los tipos y las funciones del primer ejemplo. La tabla convierte el conjunto de opciones en datos en lugar de código, de modo que puede construirse desde la configuración o ampliarse mediante plugins."
+      ]
+    },
+    {
+      "h": "Cuándo usarlo y cuándo no",
+      "body": [
+        {
+          "ul": [
+            "Úsalo cuando hay varias formas de hacer la misma tarea y la elección depende de la configuración, de la entrada del usuario o de los datos.",
+            "Úsalo para eliminar grandes bloques condicionales que eligen entre algoritmos.",
+            "Úsalo para probar cada algoritmo de forma aislada y permitir que otro código añada nuevos algoritmos sin editar el contexto.",
+            "No lo uses cuando solo hay un algoritmo y no hay una necesidad real de cambiarlo. Una interfaz adicional añade indirección para nada.",
+            "No crees clases cuando basta un parámetro de función. En TypeScript, pasar una función es la forma ligera de Strategy."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Usos en el mundo real",
+      "body": [
+        {
+          "ul": [
+            "`Array.prototype.sort(compareFn)` recibe la estrategia de comparación como una función, así que la misma ordenación puede ordenar números, fechas o nombres.",
+            "La interfaz `Comparator` de Java es una estrategia para `Collections.sort` y `List.sort`.",
+            "Passport.js, el middleware de autenticación para Node.js, llama estrategia a cada método de inicio de sesión (contraseña local, proveedores OAuth) y permite que las aplicaciones los conecten.",
+            "Las bibliotecas de compresión y de hash dejan que quien llama elija un algoritmo mediante una interfaz común."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Patrones relacionados",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Patrón",
+              "En qué se diferencia de Strategy"
+            ],
+            "rows": [
+              [
+                "State",
+                "Misma estructura, pero los estados se cambian a sí mismos cuando el objeto cambia; una estrategia normalmente la elige el cliente y permanece hasta que se reemplaza."
+              ],
+              [
+                "Template Method",
+                "Template Method varía partes de un algoritmo mediante herencia y fija los pasos generales; Strategy reemplaza el algoritmo completo mediante composición."
+              ],
+              [
+                "Command",
+                "Un comando es una petición para ejecutar más tarde; una estrategia es una forma de realizar una tarea que el contexto llama cuando la necesita."
+              ],
+              [
+                "Decorator",
+                "Un decorador cambia el comportamiento de un objeto envolviéndolo desde fuera; una estrategia cambia el comportamiento desde dentro reemplazando una parte."
+              ]
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "¿Cuál es la diferencia entre Strategy y State?",
+      "a": "Las estructuras son casi idénticas. Una estrategia la elige el cliente para decidir cómo se hace una tarea, mientras que los objetos de estado cambian ellos mismos el estado actual del contexto como resultado de sus acciones."
+    },
+    {
+      "q": "¿Pasar un callback es el patrón Strategy?",
+      "a": "Sí, en lenguajes con funciones de primera clase un callback que implementa una parte variable de un algoritmo, como un comparador, es el patrón Strategy en su forma más simple."
+    },
+    {
+      "q": "¿Cuál es la diferencia entre Strategy y Template Method?",
+      "a": "Template Method usa herencia: una clase base fija los pasos y las subclases completan algunos. Strategy usa composición: el contexto guarda un objeto o función que puede reemplazar en tiempo de ejecución."
+    },
+    {
+      "q": "¿Strategy sigue el principio abierto/cerrado?",
+      "a": "Sí. Puedes añadir nuevas estrategias sin cambiar el contexto, así que el contexto está abierto a la extensión pero cerrado a la modificación."
+    }
+  ]
+}

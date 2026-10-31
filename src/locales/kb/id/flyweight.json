@@ -1,0 +1,167 @@
+{
+  "title": "Pola Flyweight: tujuan, struktur, dan contoh TypeScript — cv.cm",
+  "description": "Pola Flyweight membagi state yang sama antara banyak objek serupa untuk menghemat memori. Pelajari intrinsic vs extrinsic state dengan contoh TypeScript.",
+  "h1": "Penjelasan pola Flyweight beserta contohnya",
+  "answer": "Flyweight adalah pola desain struktural yang memungkinkan program mendukung objek serupa dalam jumlah sangat besar dengan membagi bagian yang sama. Setiap objek dipecah menjadi intrinsic state (dibagi bersama, immutable, disimpan sekali di dalam flyweight) dan extrinsic state (unik untuk tiap penggunaan, dikirim oleh pemanggil). Sebuah factory menyimpan flyweight dalam cache sehingga intrinsic state yang sama tidak pernah disimpan dua kali.",
+  "sections": [
+    {
+      "h": "Tujuan dan masalah yang diselesaikan",
+      "body": [
+        "Tujuan: memakai pembagian (sharing) agar objek berukuran kecil dalam jumlah besar bisa ditangani secara efisien. Pola ini berasal dari buku Gang of Four (GoF) dan termasuk kategori struktural.",
+        "Bayangkan sebuah peta yang menggambar satu juta pohon. Setiap pohon punya posisi (x, y) dan jenis: nama spesies, warna, dan gambar tekstur berukuran beberapa kilobyte. Jika setiap objek pohon menyimpan salinan teksturnya sendiri, pemakaian memori tumbuh sebanding dengan jumlah pohon, dan program bisa kehabisan memori. Padahal spesiesnya hanya beberapa. Tekstur, nama, dan warna sama untuk setiap pohon ek.",
+        "Flyweight memindahkan data yang berulang ke sejumlah kecil objek bersama. Sebuah pohon lalu hanya menyimpan posisinya ditambah referensi ke jenis pohon yang dibagi bersama. Satu juta pohon dengan lima spesies hanya butuh lima salinan tekstur, bukan satu juta."
+      ]
+    },
+    {
+      "h": "State intrinsic dan extrinsic",
+      "body": [
+        "Langkah kuncinya adalah memisahkan data setiap objek menjadi dua jenis:",
+        {
+          "table": {
+            "head": [
+              "State",
+              "Arti",
+              "Contoh pohon"
+            ],
+            "rows": [
+              [
+                "Intrinsic",
+                "Tidak bergantung pada konteks, identik untuk banyak objek, disimpan di dalam flyweight, dan tidak pernah berubah",
+                "Nama spesies, warna, tekstur"
+              ],
+              [
+                "Extrinsic",
+                "Bergantung pada konteks, berbeda untuk setiap penggunaan, disimpan oleh klien dan dikirim ke method flyweight",
+                "Posisi x dan y"
+              ]
+            ]
+          }
+        },
+        "Karena sebuah flyweight dibagi bersama, ia harus immutable. Jika satu klien bisa mengubah warna jenis pohon ek yang dibagi, setiap pohon ek di peta ikut berubah."
+      ]
+    },
+    {
+      "h": "Struktur dan peserta",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Peran",
+              "Tanggung jawab"
+            ],
+            "rows": [
+              [
+                "Flyweight",
+                "Menyimpan intrinsic state dan menyediakan operasi yang menerima extrinsic state sebagai parameter"
+              ],
+              [
+                "Flyweight factory",
+                "Membuat dan menyimpan flyweight dalam cache; mengembalikan yang sudah ada saat intrinsic state yang sama diminta lagi"
+              ],
+              [
+                "Context",
+                "Menyimpan extrinsic state ditambah referensi ke sebuah flyweight (satu context untuk tiap objek di dunia nyata)"
+              ],
+              [
+                "Client",
+                "Meminta flyweight dari factory dan menyimpan atau menghitung extrinsic state"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "Implementasi TypeScript",
+      "body": [
+        "Factory memakai `Map` dengan kunci berupa nilai intrinsic. `TreeType` adalah flyweight, `Tree` adalah context, dan `Forest` adalah klien.",
+        {
+          "code": "class TreeType {\n  constructor(\n    readonly name: string,\n    readonly color: string,\n    readonly texture: Uint8Array, // large, shared data\n  ) {}\n  draw(x: number, y: number): string {\n    return this.name + \" (\" + this.color + \") at \" + x + \",\" + y;\n  }\n}\nclass TreeTypeFactory {\n  private static cache = new Map<string, TreeType>();\n  static get(name: string, color: string): TreeType {\n    const key = name + \"|\" + color;\n    let type = this.cache.get(key);\n    if (!type) {\n      type = new TreeType(name, color, new Uint8Array(4096));\n      this.cache.set(key, type);\n    }\n    return type;\n  }\n}\nclass Tree {\n  constructor(readonly x: number, readonly y: number, readonly type: TreeType) {}\n  draw(): string {\n    return this.type.draw(this.x, this.y);\n  }\n}\nconst forest: Tree[] = [];\nfor (let i = 0; i < 100_000; i++) {\n  const [name, color] = i % 2 === 0 ? [\"Oak\", \"green\"] : [\"Birch\", \"white\"];\n  forest.push(new Tree(i, i * 2, TreeTypeFactory.get(name, color)));\n}\nconst types = new Set(forest.map((t) => t.type));\nconsole.log(forest.length, \"trees,\", types.size, \"tree types\");\nconsole.log(forest[3].draw());\n// 100000 trees, 2 tree types\n// Birch (white) at 3,6",
+          "lang": "typescript"
+        },
+        "Tanpa factory, program akan mengalokasikan 100.000 buffer tekstur. Dengan factory, hanya ada dua. Objek `Tree` tetap ada, tetapi masing-masing hanya menyimpan dua angka dan satu referensi.",
+        {
+          "note": "Flyweight hanya menghemat memori jika banyak objek benar-benar berbagi intrinsic state yang sama. Jika hampir setiap objek punya kombinasi yang unik, cache hanya menambah biaya pencarian dan tidak menghemat apa pun."
+        }
+      ]
+    },
+    {
+      "h": "Kapan dipakai dan kapan tidak",
+      "body": [
+        "Pakai Flyweight bila semua hal berikut terpenuhi:",
+        {
+          "ul": [
+            "Program membuat objek serupa dalam jumlah sangat besar.",
+            "Pemakaian memori adalah masalah yang terukur, bukan dugaan.",
+            "Sebagian besar state tiap objek bisa dijadikan extrinsic atau dibagi bersama.",
+            "Program tidak bergantung pada identitas objek (dua context dengan flyweight yang sama boleh berbagi flyweight itu)."
+          ]
+        },
+        "Hindari pola ini bila jumlah objek sedikit, bila objek perlu mengubah data bersamanya secara mandiri, atau bila tambahan kerumitan karena harus mengirim extrinsic state ke mana-mana membuat kode lebih sulit dibaca daripada memori yang dihemat. Dalam banyak kasus ada solusi yang lebih sederhana: simpan data dalam array paralel atau typed array, atau lakukan intern pada string berulang di dalam `Map`.",
+        "Trade-off: Flyweight menukar memori dengan waktu CPU. Extrinsic state mungkin harus dihitung ulang atau dicari setiap kali sebuah method dipanggil."
+      ]
+    },
+    {
+      "h": "Penggunaan di dunia nyata",
+      "body": [
+        {
+          "ul": [
+            "Java: `Integer.valueOf(int)` mengembalikan objek `Integer` dari cache untuk nilai -128 sampai 127, sehingga boxing angka kecil tidak mengalokasikan objek baru setiap kali.",
+            "Java: `String.intern()` mengembalikan salinan string kanonik yang dibagi dari string pool.",
+            "Editor teks dan browser merender glyph dari cache font bersama: setiap karakter di layar menyimpan posisinya, sedangkan bentuk glyph disimpan sekali per font dan ukuran.",
+            "Game engine memakai instanced rendering: satu mesh dan material dibagi bersama, dan hanya data per-instance seperti posisi dan rotasi yang dikirim untuk setiap salinan."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Pola terkait",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Pola",
+              "Perbedaannya dengan Flyweight"
+            ],
+            "rows": [
+              [
+                "Singleton",
+                "Singleton menjamin satu instance dari sebuah class; Flyweight menyimpan satu instance per intrinsic state yang berbeda, jadi bisa ada banyak."
+              ],
+              [
+                "Factory Method",
+                "Flyweight factory adalah factory yang punya cache; Factory Method berfokus pada membiarkan subclass memilih class yang akan dibuat."
+              ],
+              [
+                "Composite",
+                "Node daun pada pohon Composite sering diimplementasikan sebagai flyweight agar daun yang berulang berbagi memori."
+              ],
+              [
+                "Prototype",
+                "Prototype menyalin objek untuk membuat yang baru; Flyweight menghindari penyalinan dengan membagi satu objek."
+              ]
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Apa perbedaan antara intrinsic dan extrinsic state?",
+      "a": "Intrinsic state dibagi bersama dan identik untuk banyak objek, sehingga disimpan di dalam flyweight dan tidak pernah berubah. Extrinsic state berbeda untuk setiap penggunaan, sehingga klien yang menyimpannya dan mengirimkannya ke method flyweight."
+    },
+    {
+      "q": "Apakah Flyweight sama dengan caching?",
+      "a": "Flyweight memang memakai cache, tetapi tujuannya berbeda. Cache menghindari penghitungan ulang suatu hasil, sedangkan Flyweight menghindari penyimpanan data immutable yang sama berkali-kali dengan membagi satu objek ke banyak pengguna."
+    },
+    {
+      "q": "Mengapa flyweight harus immutable?",
+      "a": "Banyak context memegang referensi ke flyweight yang sama. Jika salah satunya mengubahnya, perubahan itu akan muncul di setiap context lain yang ikut berbagi."
+    },
+    {
+      "q": "Apakah Flyweight berguna di JavaScript dan TypeScript?",
+      "a": "Ya, ketika Anda membuat ratusan ribu objek, misalnya partikel, tile peta, atau sel grid. Objek di JavaScript punya overhead per objek, sehingga membagi data yang berulang dapat mengurangi pemakaian memori dan beban garbage collection."
+    }
+  ]
+}

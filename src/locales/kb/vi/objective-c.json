@@ -1,0 +1,200 @@
+{
+  "title": "Hướng dẫn Objective-C: thông điệp, lớp, collection Foundation và block — cv.cm",
+  "description": "Học Objective-C cơ bản: biên dịch Hello world bằng clang, gửi thông điệp, định nghĩa lớp và thuộc tính, dùng NSArray và NSDictionary, block, ARC và NSError.",
+  "h1": "Hướng dẫn Objective-C cho người mới bắt đầu",
+  "answer": "Objective-C là C được bổ sung cơ chế truyền thông điệp hướng đối tượng theo kiểu Smalltalk. Bạn gọi phương thức bằng cách gửi thông điệp trong dấu ngoặc vuông, `[object doSomething:arg]`, định nghĩa lớp trong các khối `@interface` và `@implementation`, và dùng framework Foundation của Apple cho chuỗi, mảng và từ điển. Đây từng là ngôn ngữ chính cho ứng dụng macOS và iOS trước Swift và vẫn được dùng trong nhiều cơ sở mã Apple hiện có. Trên Mac, biên dịch bằng `clang -fobjc-arc -framework Foundation hello.m`.",
+  "sections": [
+    {
+      "h": "Objective-C là gì và ai dùng nó",
+      "body": [
+        "Objective-C do Brad Cox và Tom Love tạo ra đầu thập niên 1980, được NeXT dùng cho hệ thống NeXTSTEP, rồi Apple kế thừa, khi NeXTSTEP trở thành nền tảng của macOS và iOS. Nó là tập cha chặt chẽ của C: mọi mã C đều là Objective-C hợp lệ và bạn có thể trộn hai thứ tự do.",
+        "Ngày nay Apple khuyến nghị Swift cho ứng dụng mới, nhưng Objective-C vẫn được hỗ trợ đầy đủ. Nó có trong các ứng dụng iOS và macOS cũ hơn, nhiều framework hệ thống và thư viện bên thứ ba, cùng các dự án trộn C hoặc C++ với API của Apple. Swift và Objective-C tương tác được trong cùng một dự án, nên biết cả hai rất hữu ích cho lập trình viên nền tảng Apple."
+      ]
+    },
+    {
+      "h": "Cài đặt và chạy Hello, world",
+      "body": [
+        "Trên macOS, cài Xcode hoặc chỉ các công cụ dòng lệnh (`xcode-select --install`), gồm trình biên dịch clang và framework Foundation. Tệp nguồn dùng phần mở rộng `.m`; tệp header dùng `.h`.",
+        {
+          "code": "// hello.m\n#import <Foundation/Foundation.h>\n\nint main(void) {\n    @autoreleasepool {\n        NSLog(@\"Hello, world!\");\n    }\n    return 0;\n}",
+          "lang": "objc"
+        },
+        {
+          "code": "clang -fobjc-arc -framework Foundation hello.m -o hello\n./hello\n# 2026-10-31 10:00:00.000 hello[1234:5678] Hello, world!",
+          "lang": "shell"
+        },
+        "`NSLog` ghi ra lỗi chuẩn và thêm dấu thời gian cùng tên tiến trình. `@\"...\"` tạo một đối tượng `NSString` thay vì chuỗi C. `-fobjc-arc` bật Automatic Reference Counting, cách quản lý bộ nhớ chuẩn. Trên Linux, dự án GNUstep cung cấp thư viện Foundation tương thích, với lệnh build khác."
+      ]
+    },
+    {
+      "h": "Kiểu, đối tượng và thông điệp",
+      "body": [
+        "Vì Objective-C là C, mọi kiểu C đều dùng được. Đối tượng luôn được dùng qua con trỏ (`NSString *name`). Gọi phương thức được gọi là gửi thông điệp; các đối số xen kẽ với các phần của tên phương thức.",
+        {
+          "table": {
+            "head": [
+              "Kiểu",
+              "Ví dụ",
+              "Ghi chú"
+            ],
+            "rows": [
+              [
+                "Số của C",
+                "`int`, `double`, `NSInteger`",
+                "`NSInteger` là 64 bit trên nền tảng 64 bit"
+              ],
+              [
+                "BOOL",
+                "`BOOL ok = YES;`",
+                "`YES` / `NO`"
+              ],
+              [
+                "NSString *",
+                "`@\"hello\"`",
+                "Đối tượng chuỗi bất biến"
+              ],
+              [
+                "NSNumber *",
+                "`@42`, `@3.14`, `@(x + 1)`",
+                "Đóng gói một số để collection có thể chứa nó"
+              ],
+              [
+                "id",
+                "`id thing = @\"x\";`",
+                "Con trỏ tới đối tượng bất kỳ, không có kiểu tĩnh"
+              ],
+              [
+                "nil",
+                "`nil`",
+                "Con trỏ đối tượng rỗng"
+              ]
+            ]
+          }
+        },
+        {
+          "code": "NSString *name = @\"Ana\";\nNSInteger age = 30;\nNSString *line = [NSString stringWithFormat:@\"%@ is %ld\", name, (long)age];\nNSLog(@\"%@\", line);                          // Ana is 30\nNSLog(@\"%lu\", (unsigned long)[name length]); // 3\nNSString *upper = [name uppercaseString];    // @\"ANA\"\nBOOL same = [name isEqualToString:@\"Ana\"];   // YES\nNSString *nothing = nil;\nNSLog(@\"%lu\", (unsigned long)[nothing length]); // 0: messages to nil return 0",
+          "lang": "objc"
+        },
+        "Trong chuỗi định dạng, `%@` in một đối tượng (gọi phương thức `description` của nó). Gửi thông điệp tới `nil` là được phép và trả về `nil` hoặc 0, tránh được nhiều vụ treo nhưng cũng có thể che giấu lỗi."
+      ]
+    },
+    {
+      "h": "Luồng điều khiển",
+      "body": [
+        "Luồng điều khiển y hệt C: `if`, `else`, `switch`, `for`, `while` và `do ... while`. Objective-C thêm duyệt nhanh bằng `for ... in` cho các collection.",
+        {
+          "code": "NSInteger score = 85;\nif (score >= 90) {\n    NSLog(@\"A\");\n} else if (score >= 80) {\n    NSLog(@\"B\");\n} else {\n    NSLog(@\"C\");\n}\n\nfor (int i = 1; i <= 3; i++) {\n    NSLog(@\"%d squared is %d\", i, i * i);\n}\n\nfor (NSString *fruit in @[@\"apple\", @\"pear\"]) {\n    NSLog(@\"%@\", fruit);\n}",
+          "lang": "objc"
+        }
+      ]
+    },
+    {
+      "h": "Lớp, thuộc tính và phương thức",
+      "body": [
+        "Một lớp có interface công khai (thường trong tệp `.h`) và phần triển khai (trong tệp `.m`). Phương thức thể hiện bắt đầu bằng `-`, phương thức lớp bằng `+`. `@property` khai báo một thuộc tính và tạo getter, setter cùng biến lưu trữ có tên bắt đầu bằng dấu gạch dưới.",
+        {
+          "code": "@interface Person : NSObject\n@property (nonatomic, copy) NSString *name;\n@property (nonatomic) NSInteger age;\n- (instancetype)initWithName:(NSString *)name age:(NSInteger)age;\n- (NSString *)greeting;\n@end\n\n@implementation Person\n- (instancetype)initWithName:(NSString *)name age:(NSInteger)age {\n    self = [super init];\n    if (self) {\n        _name = [name copy];\n        _age = age;\n    }\n    return self;\n}\n\n- (NSString *)greeting {\n    return [NSString stringWithFormat:@\"Hi, I am %@, %ld\", self.name, (long)self.age];\n}\n@end\n\n// Usage inside main:\nPerson *ana = [[Person alloc] initWithName:@\"Ana\" age:30];\nNSLog(@\"%@\", [ana greeting]);   // Hi, I am Ana, 30\nana.age = 31;                   // dot syntax calls the setter",
+          "lang": "objc"
+        },
+        "Đối tượng được tạo qua hai bước: `alloc` cấp phát bộ nhớ và một phương thức `init...` khởi tạo nó. Phương thức ở trên có tên `initWithName:age:` (dấu hai chấm là một phần của tên). Protocol (`@protocol`) đóng vai trò interface, và category cho phép thêm phương thức vào lớp có sẵn, kể cả `NSString`."
+      ]
+    },
+    {
+      "h": "Collection Foundation và block",
+      "body": [
+        "Framework Foundation cung cấp các collection bất biến và các lớp con có thể thay đổi. Literal giúp viết chúng ngắn gọn. Collection chỉ chứa đối tượng, nên số được đóng gói thành `NSNumber`, và không thể lưu `nil` (hãy dùng `[NSNull null]`).",
+        {
+          "table": {
+            "head": [
+              "Lớp",
+              "Literal hoặc cách tạo",
+              "Phiên bản có thể thay đổi"
+            ],
+            "rows": [
+              [
+                "NSArray",
+                "`@[@\"Ana\", @\"Ben\"]`",
+                "NSMutableArray"
+              ],
+              [
+                "NSDictionary",
+                "`@{@\"Ana\": @30}`",
+                "NSMutableDictionary"
+              ],
+              [
+                "NSSet",
+                "`[NSSet setWithArray:arr]`",
+                "NSMutableSet"
+              ],
+              [
+                "NSString",
+                "`@\"text\"`",
+                "NSMutableString"
+              ]
+            ]
+          }
+        },
+        {
+          "code": "NSArray<NSString *> *names = @[@\"Ana\", @\"Ben\"];\nNSMutableArray<NSString *> *more = [names mutableCopy];\n[more addObject:@\"Cleo\"];\nNSDictionary<NSString *, NSNumber *> *ages = @{@\"Ana\": @30, @\"Ben\": @17};\nNSLog(@\"%lu names, Ana is %@\", (unsigned long)more.count, ages[@\"Ana\"]);\n\nNSInteger (^square)(NSInteger) = ^(NSInteger x) { return x * x; };\nNSLog(@\"%ld\", (long)square(7));    // 49\n\nNSArray<NSNumber *> *sorted = [@[@3, @1, @2]\n    sortedArrayUsingComparator:^NSComparisonResult(NSNumber *a, NSNumber *b) {\n        return [a compare:b];\n    }];\nNSLog(@\"%@\", [sorted componentsJoinedByString:@\", \"]);   // 1, 2, 3",
+          "lang": "objc"
+        },
+        "Block, viết bằng `^`, là closure: hàm ẩn danh nắm bắt biến từ phạm vi xung quanh. API của Apple dùng chúng cho callback, sắp xếp và tác vụ bất đồng bộ với Grand Central Dispatch. Phần `<NSString *>` là generics nhẹ giúp trình biên dịch và Swift; chúng là tùy chọn."
+      ]
+    },
+    {
+      "h": "Quản lý bộ nhớ và xử lý lỗi",
+      "body": [
+        "Với ARC, trình biên dịch tự chèn các lời gọi đếm tham chiếu cho bạn: một đối tượng được giải phóng khi không còn tham chiếu mạnh nào trỏ tới nó. Bạn chỉ cần phá vỡ các chu trình tham chiếu, thường bằng cách đánh dấu một phía là `weak` (ví dụ thuộc tính delegate).",
+        "Lỗi có thể khắc phục dùng mẫu `NSError`: phương thức trả về `nil` hoặc `NO` khi thất bại và điền vào một đối tượng `NSError` truyền theo tham chiếu. Ngoại lệ (`@try`, `@catch`, `NSException`) có tồn tại, nhưng trong Cocoa chúng báo lỗi của lập trình viên như chỉ số ngoài phạm vi, không phải thất bại thông thường.",
+        {
+          "code": "NSError *error = nil;\nNSString *text = [NSString stringWithContentsOfFile:@\"/no/such/file\"\n                                           encoding:NSUTF8StringEncoding\n                                              error:&error];\nif (text == nil) {\n    NSLog(@\"Failed: %@\", error.localizedDescription);\n}",
+          "lang": "objc"
+        }
+      ]
+    },
+    {
+      "h": "Một chương trình hoàn chỉnh nhỏ: tần suất từ",
+      "body": [
+        {
+          "code": "#import <Foundation/Foundation.h>\n\nint main(void) {\n    @autoreleasepool {\n        NSString *text = @\"the cat and the hat and the bat\";\n        NSMutableDictionary<NSString *, NSNumber *> *counts = [NSMutableDictionary dictionary];\n        for (NSString *word in [text componentsSeparatedByString:@\" \"]) {\n            counts[word] = @(counts[word].integerValue + 1);\n        }\n        NSArray<NSString *> *sorted = [counts keysSortedByValueUsingComparator:\n            ^NSComparisonResult(NSNumber *a, NSNumber *b) { return [b compare:a]; }];\n        for (NSString *word in [sorted subarrayWithRange:NSMakeRange(0, 2)]) {\n            printf(\"%s %ld\\n\", word.UTF8String, (long)counts[word].integerValue);\n        }\n    }\n    return 0;\n}\n// the 3\n// and 2",
+          "lang": "objc"
+        },
+        "Với từ mới, `counts[word]` là `nil`, và `nil.integerValue` trả về 0, nên số đếm đầu tiên thành 1. Bộ so sánh đảo thứ tự để sắp xếp theo số đếm từ cao xuống thấp, và `printf` in ra không có tiền tố của `NSLog`.",
+        {
+          "note": "Các lỗi thường gặp của người mới: so sánh chuỗi bằng `==` (nó so sánh con trỏ; hãy dùng `isEqualToString:`); quên `@` trước literal chuỗi; quên `*` khi khai báo đối tượng; đưa `nil` vào literal mảng hoặc từ điển, gây treo khi chạy; in `NSInteger` bằng `%d` thay vì `%ld` kèm ép kiểu; và biên dịch mà không có `-fobjc-arc`."
+        }
+      ]
+    },
+    {
+      "h": "Học tiếp ở đâu",
+      "body": [
+        {
+          "ul": [
+            "Hướng dẫn \"Programming with Objective-C\" của Apple trong kho tài liệu để nắm kiến thức cơ bản về ngôn ngữ.",
+            "Tài liệu tham khảo framework Foundation trong tài liệu dành cho nhà phát triển của Apple.",
+            "Tài liệu Clang về Automatic Reference Counting để biết chính xác các quy tắc bộ nhớ.",
+            "Tìm hiểu cách Objective-C và Swift làm việc cùng nhau nếu bạn bảo trì cơ sở mã hỗn hợp."
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Objective-C còn được dùng không?",
+      "a": "Có, chủ yếu trong các ứng dụng và thư viện iOS, macOS hiện có. Apple khuyến nghị Swift cho mã mới, nhưng Xcode và các SDK của Apple vẫn hỗ trợ Objective-C."
+    },
+    {
+      "q": "Nên học Swift hay Objective-C trước?",
+      "a": "Với phát triển Apple mới, hãy học Swift trước. Hãy học Objective-C khi bạn cần đọc hoặc bảo trì mã cũ, dùng sát các thư viện C hoặc C++, hoặc hiểu các framework của Apple hoạt động bên dưới ra sao."
+    },
+    {
+      "q": "Dấu ngoặc vuông trong Objective-C nghĩa là gì?",
+      "a": "Chúng gửi một thông điệp: `[receiver message]` gọi phương thức `message` trên đối tượng `receiver`. Các đối số theo sau dấu hai chấm, như trong `[dict setObject:value forKey:key]`."
+    },
+    {
+      "q": "Objective-C có thu gom rác không?",
+      "a": "Objective-C hiện đại dùng Automatic Reference Counting (ARC), trong đó trình biên dịch thêm các lời gọi retain và release. Trình thu gom rác cũ của Apple cho macOS đã bị ngừng hỗ trợ và không còn nữa."
+    }
+  ]
+}

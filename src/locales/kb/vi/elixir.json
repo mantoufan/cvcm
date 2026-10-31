@@ -1,0 +1,200 @@
+{
+  "title": "Học lập trình Elixir cơ bản: khớp mẫu, pipe, Enum và process — cv.cm",
+  "description": "Học Elixir từng bước: chạy script, dữ liệu bất biến và kiểu dữ liệu, khớp mẫu, case và cond, module, toán tử pipe, Enum, process và xử lý lỗi.",
+  "h1": "Hướng dẫn học lập trình Elixir cơ bản cho người mới",
+  "answer": "Elixir là ngôn ngữ hàm, kiểu động, chạy trên máy ảo Erlang (BEAM), được thiết kế cho các hệ thống mở rộng được, chịu lỗi và đồng thời. Các ý tưởng cốt lõi là dữ liệu bất biến, khớp mẫu, toán tử pipe và các process nhẹ giao tiếp bằng tin nhắn. Trang này bao gồm cài đặt, kiểu dữ liệu, khớp mẫu, điều khiển luồng, module và hàm, collection, process và xử lý lỗi.",
+  "sections": [
+    {
+      "h": "Elixir là gì và dùng để làm gì",
+      "body": [
+        "Elixir là ngôn ngữ hàm, kiểu động, do José Valim tạo ra và phát hành lần đầu năm 2012. Nó chạy trên BEAM, máy ảo của Erlang, nên thừa hưởng process nhẹ, khả năng chịu lỗi và hỗ trợ hệ thống phân tán của Erlang, đồng thời bổ sung cú pháp thân thiện, macro và công cụ hiện đại.",
+        "Elixir được dùng cho ứng dụng web và API với framework Phoenix, các tính năng thời gian thực như chat và dashboard trực tiếp (Phoenix LiveView), hệ thống nhắn tin, đường ống dữ liệu, thiết bị nhúng với Nerves và học máy với Nx. Các công ty chọn nó cho những dịch vụ phải xử lý nhiều kết nối đồng thời và tiếp tục chạy khi một phần bị lỗi."
+      ]
+    },
+    {
+      "h": "Cài Elixir và chạy Hello, world",
+      "body": [
+        "Cài Elixir từ elixir-lang.org (nó cũng cài hoặc yêu cầu Erlang/OTP). Script dùng đuôi `.exs`; tệp dự án được biên dịch dùng `.ex`. `iex` khởi động shell tương tác.",
+        {
+          "code": "# hello.exs\nIO.puts(\"Hello, world!\")",
+          "lang": "elixir"
+        },
+        {
+          "code": "elixir hello.exs\n# Hello, world!\niex                      # interactive shell; type h(Enum.map) for help\nmix new my_app           # create a new project with Mix, the build tool",
+          "lang": "shell"
+        },
+        "Chú thích bắt đầu bằng `#`. Dấu ngoặc quanh đối số hàm là tùy chọn ở nhiều chỗ, nên `IO.puts \"hi\"` cũng chạy được."
+      ]
+    },
+    {
+      "h": "Các kiểu cơ bản và tính bất biến",
+      "body": [
+        "Mọi dữ liệu trong Elixir đều bất biến. Gán lại một tên bằng `=` làm nó trỏ tới giá trị mới; giá trị cũ không bao giờ bị thay đổi. Chuỗi là binary UTF-8 viết trong dấu nháy kép, còn atom là hằng số có tên bắt đầu bằng dấu hai chấm.",
+        {
+          "code": "name = \"Elixir\"\nyear = 2012\nIO.puts(\"#{name} since #{year}\")    # Elixir since 2012\nIO.puts(10 / 4)                     # 2.5 (always a float)\nIO.puts(div(10, 4))                 # 2\nIO.puts(rem(10, 4))                 # 2\nIO.puts(\"ab\" <> \"cd\")               # abcd (string concatenation)\nIO.puts(String.length(\"héllo\"))     # 5 (counts characters, not bytes)\nIO.inspect(:ok)                     # :ok\nIO.inspect(is_atom(true))           # true (booleans are atoms)",
+          "lang": "elixir"
+        },
+        {
+          "table": {
+            "head": [
+              "Kiểu",
+              "Ví dụ",
+              "Ghi chú"
+            ],
+            "rows": [
+              [
+                "integer",
+                "`42`, `1_000_000`",
+                "độ chính xác tùy ý"
+              ],
+              [
+                "float",
+                "`3.14`",
+                "độ chính xác kép 64 bit"
+              ],
+              [
+                "atom",
+                "`:ok`, `:error`",
+                "hằng số; `true`, `false` và `nil` là atom"
+              ],
+              [
+                "string",
+                "`\"hello\"`",
+                "binary UTF-8; nội suy bằng `#{}`"
+              ],
+              [
+                "list",
+                "`[1, 2, 3]`",
+                "danh sách liên kết"
+              ],
+              [
+                "tuple",
+                "`{:ok, 1}`",
+                "kích thước cố định, lưu liên tục trong bộ nhớ"
+              ],
+              [
+                "map",
+                "`%{\"a\" => 1}`",
+                "kho khóa-giá trị"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "Khớp mẫu",
+      "body": [
+        "Trong Elixir, `=` là toán tử khớp. Vế trái là một mẫu; nếu vế phải khớp, các biến trong mẫu sẽ được gán. Khớp mẫu được dùng ở khắp nơi: trong phép gán, `case`, đầu hàm và xử lý lỗi.",
+        {
+          "code": "{:ok, value} = {:ok, 42}\nIO.puts(value)                         # 42\n\n[first | rest] = [1, 2, 3]\nIO.inspect({first, rest})              # {1, [2, 3]}\n\n%{name: n} = %{name: \"Ann\", age: 31}\nIO.puts(n)                             # Ann\n\nresult = {:error, :not_found}\nmessage =\n  case result do\n    {:ok, v} -> \"got #{v}\"\n    {:error, reason} -> \"failed: #{reason}\"\n  end\nIO.puts(message)                       # failed: not_found\n\nx = 1\n^x = 1                                 # pin operator: match the current value",
+          "lang": "elixir"
+        },
+        "Nếu mẫu không khớp, Elixir phát sinh `MatchError`. Toán tử ghim `^` nghĩa là \"dùng giá trị hiện có của biến này\" thay vì gán lại."
+      ]
+    },
+    {
+      "h": "Điều khiển luồng",
+      "body": [
+        "Elixir có `case`, `cond` và `if`/`unless`, và tất cả đều trả về giá trị. Không có vòng lặp `for`/`while` thay đổi biến đếm; bạn dùng đệ quy, module `Enum` hoặc biểu thức `for` comprehension.",
+        {
+          "code": "temp = 22\nfeel =\n  cond do\n    temp > 30 -> \"hot\"\n    temp >= 15 -> \"mild\"\n    true -> \"cold\"\n  end\nIO.puts(feel)                                   # mild\n\nIO.puts(if(rem(temp, 2) == 0, do: \"even\", else: \"odd\"))  # even\n\nsquares = for n <- 1..5, rem(n, 2) == 1, do: n * n\nIO.inspect(squares)                             # [1, 9, 25]",
+          "lang": "elixir"
+        },
+        "Chỉ `false` và `nil` là sai; mọi thứ khác, kể cả `0` và `\"\"`, đều là đúng."
+      ]
+    },
+    {
+      "h": "Hàm, module và toán tử pipe",
+      "body": [
+        "Hàm có tên nằm trong module định nghĩa bằng `defmodule`. Một hàm có thể có nhiều mệnh đề, được chọn bằng khớp mẫu và guard (`when`). Hàm ẩn danh viết là `fn ... end` và được gọi bằng dấu chấm. Toán tử pipe `|>` truyền kết quả của một biểu thức làm đối số đầu tiên của lời gọi tiếp theo.",
+        {
+          "code": "defmodule Math do\n  def factorial(0), do: 1\n  def factorial(n) when n > 0, do: n * factorial(n - 1)\n\n  def sign(n) when n < 0, do: :negative\n  def sign(0), do: :zero\n  def sign(_n), do: :positive\nend\n\nIO.puts(Math.factorial(5))          # 120\nIO.inspect(Math.sign(-3))           # :negative\n\ndouble = fn x -> x * 2 end\nIO.puts(double.(21))                # 42 (note the dot)\n\n\"  Elixir is fun  \"\n|> String.trim()\n|> String.upcase()\n|> String.split()\n|> IO.inspect()                     # [\"ELIXIR\", \"IS\", \"FUN\"]",
+          "lang": "elixir"
+        },
+        "Hàm được xác định bằng tên và arity (số đối số), viết là `String.split/1` hoặc `Math.factorial/1` trong tài liệu."
+      ]
+    },
+    {
+      "h": "Collection: danh sách, map, keyword list và Enum",
+      "body": [
+        "Module `Enum` làm việc với mọi collection có thể duyệt và cung cấp `map`, `filter`, `reduce`, `sort_by`, `group_by` cùng nhiều hàm khác. Map là cấu trúc khóa-giá trị chính; keyword list, như `[size: 10, color: :red]`, thường dùng cho các tùy chọn.",
+        {
+          "code": "nums = [5, 3, 8, 1]\nIO.inspect(Enum.sort(nums))                      # [1, 3, 5, 8]\nIO.inspect(Enum.map(nums, &(&1 * 10)))           # [50, 30, 80, 10]\nIO.inspect(Enum.filter(nums, fn n -> n > 2 end)) # [5, 3, 8]\nIO.puts(Enum.reduce(nums, 0, &+/2))              # 17\n\nuser = %{name: \"Ann\", age: 31}\nolder = %{user | age: 32}                        # update an existing key\nIO.puts(user.age)                                # 31 (unchanged)\nIO.puts(older.age)                               # 32\nwith_city = Map.put(user, :city, \"Oslo\")\nIO.puts(with_city.city)                          # Oslo\nIO.inspect(Map.get(user, :email, \"none\"))        # \"none\"",
+          "lang": "elixir"
+        },
+        "Toán tử capture `&` tạo hàm ẩn danh ngắn: `&(&1 * 10)` nghĩa là `fn x -> x * 10 end`, và `&+/2` chỉ hàm `+` với hai đối số."
+      ]
+    },
+    {
+      "h": "Process và đồng thời",
+      "body": [
+        "Tính năng đặc trưng của Elixir là process BEAM: một đơn vị thực thi rất nhẹ, tách biệt, có bộ nhớ riêng. Các process chỉ giao tiếp bằng cách gửi tin nhắn, và một máy có thể chạy hàng trăm nghìn process. Supervisor khởi động lại các process bị sập, đó là nền tảng cho cách tiếp cận chịu lỗi \"let it crash\" của Elixir.",
+        {
+          "code": "parent = self()\n\nspawn(fn ->\n  send(parent, {:result, 6 * 7})\nend)\n\nreceive do\n  {:result, value} -> IO.puts(\"Got #{value}\")   # Got 42\nafter\n  1_000 -> IO.puts(\"timeout\")\nend\n\ntasks = for n <- 1..3, do: Task.async(fn -> n * n end)\nIO.inspect(Task.await_many(tasks))               # [1, 4, 9]",
+          "lang": "elixir"
+        },
+        "Trong ứng dụng thực tế, bạn hiếm khi gọi `spawn` trực tiếp. Bạn dùng các abstraction của OTP như `Task`, `GenServer`, `Agent` và `Supervisor`."
+      ]
+    },
+    {
+      "h": "Xử lý lỗi",
+      "body": [
+        "Elixir thành ngữ trả về tuple gắn thẻ như `{:ok, value}` hoặc `{:error, reason}` cho các lỗi có thể đoán trước, và dùng `case` hoặc `with` để xử lý. Các hàm có tên kết thúc bằng `!`, như `File.read!/1`, thì phát sinh ngoại lệ. Ngoại lệ có thể bắt bằng `try`/`rescue`, nhưng cách này không phổ biến.",
+        {
+          "code": "case File.read(\"missing.txt\") do\n  {:ok, text} -> IO.puts(text)\n  {:error, reason} -> IO.puts(\"Cannot read: #{reason}\")   # Cannot read: enoent\nend\n\nwith {a, \"\"} <- Integer.parse(\"40\"),\n     {b, \"\"} <- Integer.parse(\"2\") do\n  IO.puts(a + b)                                         # 42\nelse\n  _ -> IO.puts(\"not a whole number\")\nend\n\ntry do\n  String.to_integer(\"abc\")\nrescue\n  e in ArgumentError -> IO.puts(\"Error: #{Exception.message(e)}\")\nend",
+          "lang": "elixir"
+        },
+        "`with` nối nhiều phép khớp và dừng ở phép đầu tiên không khớp, trả về giá trị đó. Nó tránh các biểu thức `case` lồng sâu."
+      ]
+    },
+    {
+      "h": "Một chương trình hoàn chỉnh nhỏ: tần suất từ",
+      "body": [
+        "Script này đếm từ trong một văn bản và in ba từ phổ biến nhất. Đây là một pipeline Elixir điển hình xây từ các hàm `String` và `Enum`.",
+        {
+          "code": "defmodule WordFreq do\n  def top(text, n) do\n    text\n    |> String.downcase()\n    |> String.split(~r/[^a-z']+/, trim: true)\n    |> Enum.frequencies()\n    |> Enum.sort_by(fn {word, count} -> {-count, word} end)\n    |> Enum.take(n)\n  end\nend\n\n\"The cat and the dog. The dog sat, and the cat ran.\"\n|> WordFreq.top(3)\n|> Enum.each(fn {word, count} -> IO.puts(\"#{word}: #{count}\") end)\n# the: 4\n# and: 2\n# cat: 2",
+          "lang": "elixir"
+        },
+        {
+          "note": "Lỗi thường gặp của người mới: mong `=` gán giá trị như ở ngôn ngữ khác (nó là phép khớp); cố thay đổi list hoặc map trong vòng lặp; quên dấu chấm khi gọi hàm ẩn danh (`double.(2)`); so sánh chuỗi với charlist, vì `\"abc\"` và `~c\"abc\"` là hai kiểu khác nhau; và rescue ngoại lệ thay vì khớp trên `{:ok, _}` và `{:error, _}`."
+        }
+      ]
+    },
+    {
+      "h": "Học tiếp ở đâu",
+      "body": [
+        {
+          "ul": [
+            "Hướng dẫn Getting Started chính thức trên hexdocs.pm và website elixir-lang.org.",
+            "HexDocs, nơi công bố tài liệu của Elixir và mọi gói Hex.",
+            "Các hướng dẫn framework Phoenix cho phát triển web.",
+            "Elixir School, giáo trình cộng đồng miễn phí, và track Elixir của Exercism để luyện tập."
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Elixir và Erlang khác nhau thế nào?",
+      "a": "Cả hai chạy trên cùng máy ảo BEAM và có thể gọi mã của nhau. Elixir bổ sung cú pháp lấy cảm hứng từ Ruby, macro, toán tử pipe và các công cụ như Mix và Hex, còn Erlang là ngôn ngữ cũ hơn mà OTP được xây dựng bằng nó."
+    },
+    {
+      "q": "Elixir có tốt cho phát triển web không?",
+      "a": "Có. Framework Phoenix nhanh và xử lý được nhiều kết nối đồng thời, còn LiveView cho phép bạn xây trang tương tác bằng HTML render phía máy chủ với rất ít JavaScript."
+    },
+    {
+      "q": "Elixir có kiểu tĩnh không?",
+      "a": "Elixir có kiểu động. Các phiên bản gần đây đang bổ sung vào trình biên dịch một hệ thống kiểu dần dựa trên lý thuyết tập hợp, và nhiều nhóm cũng dùng Dialyzer với typespec để tìm lỗi kiểu."
+    },
+    {
+      "q": "|> nghĩa là gì trong Elixir?",
+      "a": "`|>` là toán tử pipe. `x |> f(y)` giống với `f(x, y)`, nên một chuỗi biến đổi có thể đọc từ trên xuống dưới."
+    },
+    {
+      "q": "Tệp .ex và .exs là gì?",
+      "a": "Tệp `.ex` được biên dịch như một phần của dự án, còn tệp `.exs` là script được thông dịch khi chạy, thường dùng cho kiểm thử và cấu hình."
+    }
+  ]
+}

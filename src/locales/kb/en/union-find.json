@@ -1,0 +1,186 @@
+{
+  "title": "Union-find (disjoint set union) explained: path compression, union by rank, Python — cv.cm",
+  "description": "Union-find (disjoint set union, DSU) explained: find and union, path compression and union by rank or size, Python code, a traced example and complexity.",
+  "h1": "Union-find (disjoint set union) explained: how it works, code and complexity",
+  "answer": "Union-find, also called disjoint set union (DSU), keeps track of elements split into non-overlapping groups. It supports two operations: `find(x)` returns a representative of x's group, and `union(x, y)` merges the groups of x and y. Each group is stored as a tree of parent pointers. With path compression and union by rank or size, any sequence of operations runs in nearly constant amortized time per operation.",
+  "sections": [
+    {
+      "h": "What problem union-find solves",
+      "body": [
+        "Imagine a network of computers where cables are added one at a time, and after each cable you must answer \"are computer A and computer B connected?\". Running a graph search for every question costs O(n + m) each time. Union-find answers each question in nearly O(1) by maintaining the connected groups as cables are added.",
+        "The same need appears in Kruskal's minimum spanning tree algorithm (do these two endpoints already belong to the same tree?), in detecting cycles in an undirected graph, in grouping accounts that share an email address, in percolation simulations, and in image processing to label connected regions."
+      ]
+    },
+    {
+      "h": "The idea in plain words",
+      "body": [
+        "Every element points to a parent. An element that points to itself is a root, and the root is the representative of the whole group. To find the group of x, follow parent pointers until you reach a root. To merge two groups, find both roots and make one root point to the other.",
+        "Two optimizations keep the trees flat:",
+        {
+          "ul": [
+            "Union by rank (or by size): attach the shorter (or smaller) tree under the taller (or larger) one, so the tree height grows only when two equal trees merge.",
+            "Path compression: during `find`, make every node on the path point directly to the root, so the next lookup is one step."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Worked example: five elements",
+      "body": [
+        "Start with elements 0 to 4, each in its own group. The parent array is `[0, 1, 2, 3, 4]`. We use union by size and make the second root the child when sizes are equal.",
+        {
+          "table": {
+            "head": [
+              "Operation",
+              "Roots found",
+              "Parent array after",
+              "Groups"
+            ],
+            "rows": [
+              [
+                "start",
+                "-",
+                "[0, 1, 2, 3, 4]",
+                "{0} {1} {2} {3} {4}"
+              ],
+              [
+                "union(0, 1)",
+                "0 and 1, equal size",
+                "[0, 0, 2, 3, 4]",
+                "{0, 1} {2} {3} {4}"
+              ],
+              [
+                "union(2, 3)",
+                "2 and 3, equal size",
+                "[0, 0, 2, 2, 4]",
+                "{0, 1} {2, 3} {4}"
+              ],
+              [
+                "union(1, 3)",
+                "0 and 2, equal size",
+                "[0, 0, 0, 2, 4]",
+                "{0, 1, 2, 3} {4}"
+              ],
+              [
+                "find(3)",
+                "3 to 2 to 0, root 0",
+                "[0, 0, 0, 0, 4]",
+                "path compressed: 3 now points to 0"
+              ],
+              [
+                "connected(1, 4)",
+                "roots 0 and 4",
+                "unchanged",
+                "False, different groups"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "Python implementation",
+      "body": [
+        "This version uses union by size and an iterative `find` with path compression, so it has no recursion depth problems. `union` returns False when the two elements were already in the same group, which is useful for cycle detection.",
+        {
+          "code": "class UnionFind:\n    def __init__(self, n):\n        self.parent = list(range(n))\n        self.size = [1] * n\n        self.groups = n\n\n    def find(self, x):\n        root = x\n        while self.parent[root] != root:\n            root = self.parent[root]\n        while self.parent[x] != root:       # path compression\n            self.parent[x], x = root, self.parent[x]\n        return root\n\n    def union(self, a, b):\n        ra, rb = self.find(a), self.find(b)\n        if ra == rb:\n            return False                    # already connected\n        if self.size[ra] < self.size[rb]:\n            ra, rb = rb, ra                 # ra is the larger root\n        self.parent[rb] = ra\n        self.size[ra] += self.size[rb]\n        self.groups -= 1\n        return True\n\n    def connected(self, a, b):\n        return self.find(a) == self.find(b)\n\nuf = UnionFind(5)\nuf.union(0, 1)\nuf.union(2, 3)\nuf.union(1, 3)\nprint(uf.find(3), uf.parent)       # 0 [0, 0, 0, 0, 4]\nprint(uf.connected(1, 4), uf.groups)  # False 2",
+          "lang": "python"
+        },
+        {
+          "note": "In the path compression loop, `self.parent[x], x = root, self.parent[x]` works because Python evaluates the whole right side first. Splitting it into two lines in the wrong order loses the next node on the path."
+        }
+      ]
+    },
+    {
+      "h": "Example: detecting a cycle in an undirected graph",
+      "body": [
+        "Process the edges one by one. If both endpoints of an edge already have the same root, the edge closes a cycle. Kruskal's algorithm uses exactly this check after sorting edges by weight.",
+        {
+          "code": "def has_cycle(n, edges):\n    uf = UnionFind(n)\n    for a, b in edges:\n        if not uf.union(a, b):\n            return True\n    return False\n\nprint(has_cycle(4, [(0, 1), (1, 2), (2, 3)]))  # False\nprint(has_cycle(4, [(0, 1), (1, 2), (2, 0)]))  # True",
+          "lang": "python"
+        }
+      ]
+    },
+    {
+      "h": "Time and space complexity",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Version",
+              "find / union (worst case per operation)",
+              "m operations on n elements"
+            ],
+            "rows": [
+              [
+                "No optimizations",
+                "O(n)",
+                "O(m n), trees can become chains"
+              ],
+              [
+                "Union by rank or size only",
+                "O(log n)",
+                "O(m log n)"
+              ],
+              [
+                "Path compression only",
+                "O(log n) amortized",
+                "O(m log n) amortized"
+              ],
+              [
+                "Both optimizations",
+                "O(α(n)) amortized",
+                "O(m α(n))"
+              ]
+            ]
+          }
+        },
+        "α(n) is the inverse Ackermann function, which grows so slowly that it is at most 4 for any n that could fit in a real computer. In practice this means constant time per operation. Robert Tarjan proved this bound in 1975. Space is O(n) for the parent and size arrays."
+      ]
+    },
+    {
+      "h": "Variants and common mistakes",
+      "body": [
+        {
+          "ul": [
+            "Comparing elements instead of roots: `union` must link `find(a)` and `find(b)`, not `a` and `b` themselves.",
+            "Assuming `parent[x]` is the representative. After unions, only `find(x)` is correct; call `find` on every element before grouping by parent.",
+            "Recursive `find` on large inputs without union by rank can hit Python's recursion limit; the iterative version above avoids it.",
+            "Elements that are not integers 0 to n-1: map them to indexes with a `dict` first, or store parents in a `dict` and add elements lazily.",
+            "Union-find cannot split groups. If edges are deleted, you need a different structure or an offline approach that processes deletions in reverse.",
+            "Weighted union-find stores an offset to the parent on each node, which answers questions such as \"how much heavier is a than b?\"."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "When to use it and typical problems",
+      "body": [
+        "Use union-find when groups only ever merge and you need to ask whether two elements are in the same group, or how many groups exist. For a single connectivity question on a static graph, a plain BFS or DFS is simpler. When you need actual paths, use graph search instead, because union-find only knows membership.",
+        "Typical problems: number of connected components, number of islands (with grid cells as elements), redundant connection (the edge that creates a cycle), accounts merge, satisfiability of equality equations such as `a == b, b != c`, and Kruskal's minimum spanning tree."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "What is the difference between union-find and DSU?",
+      "a": "They are two names for the same data structure. Disjoint set union (DSU) and disjoint-set forest are also common names."
+    },
+    {
+      "q": "Why is union-find almost O(1)?",
+      "a": "With union by rank and path compression, the amortized cost per operation is O(α(n)), where α is the inverse Ackermann function. It is no more than 4 for any practical input size."
+    },
+    {
+      "q": "Do I need both union by rank and path compression?",
+      "a": "Either one alone gives O(log n) amortized behavior, which is usually fast enough. Using both gives the near-constant bound and costs only a few extra lines."
+    },
+    {
+      "q": "Can union-find tell me the members of a group?",
+      "a": "Not directly. You can call `find` on every element and group them by root in O(n α(n)), or maintain a member list per root and merge the lists during union."
+    },
+    {
+      "q": "Union by rank or union by size?",
+      "a": "Both give the same asymptotic bounds. Union by size is often preferred because the size of each group is useful information in itself."
+    }
+  ]
+}

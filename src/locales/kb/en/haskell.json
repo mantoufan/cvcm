@@ -1,0 +1,179 @@
+{
+  "title": "Haskell tutorial: types, pattern matching, lists and IO — cv.cm",
+  "description": "Learn Haskell step by step: install GHC, run Hello, world, types and inference, functions and guards, lists, data types, type classes, Maybe, Either and IO.",
+  "h1": "Haskell tutorial for beginners",
+  "answer": "Haskell is a purely functional, statically typed language with type inference and lazy evaluation. Programs are built from pure functions, algebraic data types and pattern matching, and side effects are tracked in types such as IO. This page covers installing GHC, types, functions and guards, lists and higher-order functions, data types, type classes, Maybe and Either, and a complete example.",
+  "sections": [
+    {
+      "h": "What Haskell is and what it is used for",
+      "body": [
+        "Haskell is a purely functional programming language with a strong static type system, type inference and lazy evaluation. It was designed by a committee of researchers and first defined in 1990; the current standard is Haskell 2010, and GHC (the Glasgow Haskell Compiler) is the main implementation. In Haskell, functions have no side effects unless their type says so, which makes programs easier to reason about and test.",
+        "Haskell is used in finance and fintech, compilers and programming-language tools (Pandoc and the ShellCheck linter are written in Haskell), blockchain projects, web backends and research. Many people also learn it because its ideas, such as algebraic data types, type classes and pure functions, have influenced Rust, Swift, Scala, Kotlin and TypeScript."
+      ]
+    },
+    {
+      "h": "Install GHC and run Hello, world",
+      "body": [
+        "The recommended installer is GHCup, which installs GHC, the build tools Cabal and Stack, and the Haskell Language Server for editors. Every program has a `main` action of type `IO ()`.",
+        {
+          "code": "-- hello.hs\nmain :: IO ()\nmain = putStrLn \"Hello, world!\"",
+          "lang": "haskell"
+        },
+        {
+          "code": "runghc hello.hs          # run without compiling\n# Hello, world!\nghc hello.hs && ./hello  # compile to a native executable\nghci                     # interactive REPL; load a file with :load hello.hs",
+          "lang": "shell"
+        },
+        "Comments start with `--`. In GHCi, `:type expression` (or `:t`) shows the type of any expression, which is one of the best ways to learn."
+      ]
+    },
+    {
+      "h": "Values, types and type inference",
+      "body": [
+        "Names are bound once and never change: there are no mutable variables. Type signatures are written with `::` and are optional, because the compiler infers them, but writing them for top-level definitions is good practice.",
+        {
+          "code": "name :: String\nname = \"Haskell\"\n\nyear :: Int\nyear = 1990\n\nratio :: Double\nratio = fromIntegral year / 1000   -- convert Int to Double explicitly\n\nmain :: IO ()\nmain = do\n  putStrLn (name ++ \" \" ++ show year)  -- Haskell 1990\n  print ratio                          -- 1.99\n  print (7 `div` 2, 7 `mod` 2)         -- (3,1)\n  print (2 ^ 64 :: Integer)            -- 18446744073709551616",
+          "lang": "haskell"
+        },
+        {
+          "table": {
+            "head": [
+              "Type",
+              "Example",
+              "Notes"
+            ],
+            "rows": [
+              [
+                "`Int`",
+                "`42`",
+                "fixed-size integer (64-bit with GHC on common platforms)"
+              ],
+              [
+                "`Integer`",
+                "`2 ^ 100`",
+                "arbitrary-precision integer"
+              ],
+              [
+                "`Double`",
+                "`3.14`",
+                "64-bit floating point"
+              ],
+              [
+                "`Bool`",
+                "`True`, `False`",
+                "capitalized constructors"
+              ],
+              [
+                "`Char`",
+                "`'h'`",
+                "a Unicode character"
+              ],
+              [
+                "`String`",
+                "`\"text\"`",
+                "a list of `Char`, `[Char]`; `Data.Text` is faster"
+              ]
+            ]
+          }
+        },
+        "`show` converts a value to a `String`, and `print` is `putStrLn . show`. Numbers are never converted implicitly; use `fromIntegral`, `round` or `truncate`."
+      ]
+    },
+    {
+      "h": "Functions, guards and pattern matching",
+      "body": [
+        "Function application is written with spaces, not parentheses: `add 2 3`. Every function takes one argument and returns another function for the rest, a feature called currying, so `add 2` is itself a function. Pattern matching and guards replace most `if` chains.",
+        {
+          "code": "add :: Int -> Int -> Int\nadd x y = x + y\n\nfactorial :: Integer -> Integer\nfactorial 0 = 1\nfactorial n = n * factorial (n - 1)\n\ngrade :: Int -> Char\ngrade score\n  | score >= 90 = 'A'\n  | score >= 70 = 'B'\n  | otherwise   = 'C'\n\ndescribe :: [a] -> String\ndescribe []  = \"empty\"\ndescribe [_] = \"one item\"\ndescribe _   = \"many items\"\n\nmain :: IO ()\nmain = do\n  print (add 2 3)                 -- 5\n  print (map (add 10) [1, 2, 3])  -- [11,12,13] (partial application)\n  print (factorial 20)            -- 2432902008176640000\n  print (grade 75)                -- 'B'\n  putStrLn (describe \"hi\")        -- many items\n  print (if even 4 then \"even\" else \"odd\")  -- \"even\"",
+          "lang": "haskell"
+        },
+        "`if` is an expression and always needs an `else`. There are no loops: repetition is done with recursion or with higher-order functions such as `map`, `filter` and `foldr`."
+      ]
+    },
+    {
+      "h": "Lists, tuples and higher-order functions",
+      "body": [
+        "Lists hold values of one type and are the most common collection. Tuples group a fixed number of values of possibly different types. List comprehensions, ranges and the function composition operator `.` make data processing concise.",
+        {
+          "code": "import Data.List (sortOn)\n\nmain :: IO ()\nmain = do\n  let nums = [5, 3, 8, 1] :: [Int]\n  print (head nums, length nums, sum nums)       -- (5,4,17)\n  print (0 : nums)                               -- [0,5,3,8,1] (prepend)\n  print (filter even nums)                       -- [8]\n  print (foldr (+) 0 [1 .. 10])                  -- 55\n  print [x * x | x <- [1 .. 5], odd x]           -- [1,9,25]\n  print (take 5 [1, 3 ..])                       -- [1,3,5,7,9] (lazy infinite list)\n  let people = [(\"Ann\", 31), (\"Bo\", 25)] :: [(String, Int)]\n  print (map fst (sortOn snd people))            -- [\"Bo\",\"Ann\"]\n  print ((length . filter (> 2)) nums)           -- 3\n  print (zip [1 :: Int ..] \"abc\")                -- [(1,'a'),(2,'b'),(3,'c')]",
+          "lang": "haskell"
+        },
+        "Because Haskell is lazy, values are computed only when needed. That is why `take 5 [1, 3 ..]` works on an infinite list. Laziness can also build up large unevaluated expressions; prefer `foldl'` from `Data.List` over `foldl` for sums of long lists."
+      ]
+    },
+    {
+      "h": "Algebraic data types and type classes",
+      "body": [
+        "You define your own types with `data`. A type can have several constructors (a sum type), each with fields (a product type). Type classes such as `Show`, `Eq`, `Ord` and `Functor` describe shared behavior, similar to interfaces; `deriving` generates common instances automatically.",
+        {
+          "code": "data Shape = Circle Double | Rect Double Double\n  deriving (Show, Eq)\n\narea :: Shape -> Double\narea (Circle r) = pi * r * r\narea (Rect w h) = w * h\n\ndata User = User { userName :: String, userAge :: Int }\n  deriving Show\n\nclass Describable a where\n  describe :: a -> String\n\ninstance Describable Shape where\n  describe (Circle _) = \"a circle\"\n  describe (Rect _ _) = \"a rectangle\"\n\nmain :: IO ()\nmain = do\n  print (map area [Circle 1, Rect 2 3])   -- [3.141592653589793,6.0]\n  putStrLn (describe (Rect 1 1))          -- a rectangle\n  let u = User { userName = \"Ann\", userAge = 31 }\n  print (u { userAge = 32 })              -- User {userName = \"Ann\", userAge = 32}",
+          "lang": "haskell"
+        }
+      ]
+    },
+    {
+      "h": "Maybe, Either and IO",
+      "body": [
+        "Haskell has no `null` and no unchecked exceptions in pure code. A value that may be missing has type `Maybe a` (`Just x` or `Nothing`), and a computation that may fail with a reason has type `Either e a` (`Left err` or `Right x`). Side effects such as reading input live in the `IO` type, and `do` notation sequences them.",
+        {
+          "code": "import Text.Read (readMaybe)\n\nsafeDiv :: Int -> Int -> Either String Int\nsafeDiv _ 0 = Left \"division by zero\"\nsafeDiv x y = Right (x `div` y)\n\nparseAge :: String -> Maybe Int\nparseAge s = case readMaybe s of\n  Just n | n >= 0 -> Just n\n  _               -> Nothing\n\nmain :: IO ()\nmain = do\n  print (safeDiv 10 2)          -- Right 5\n  print (safeDiv 1 0)           -- Left \"division by zero\"\n  print (parseAge \"42\")         -- Just 42\n  print (parseAge \"abc\")        -- Nothing\n  print (fmap (+ 1) (Just 41))  -- Just 42\n  putStrLn \"Your name?\"\n  n <- getLine                  -- an IO action that returns a String\n  putStrLn (\"Hi, \" ++ n)",
+          "lang": "haskell"
+        },
+        {
+          "note": "Functions such as `head`, `tail` and `div` by zero throw a runtime error on bad input; for example `head []` crashes. Pattern match on the list, or use `Maybe`-returning alternatives, to keep your program total. Exceptions from `IO` can be caught with `catch` and `try` from `Control.Exception`."
+        }
+      ]
+    },
+    {
+      "h": "A small complete program: word frequency",
+      "body": [
+        "This program reads text from standard input, counts word frequencies with a `Map` and prints the three most common words. It uses function composition, `Data.Map` from the containers package that ships with GHC, and sorting.",
+        {
+          "code": "import Data.Char (isAlpha, toLower)\nimport Data.List (sortBy)\nimport Data.Ord (comparing, Down (..))\nimport qualified Data.Map.Strict as Map\n\nwordFreq :: String -> [(String, Int)]\nwordFreq =\n  sortBy (comparing (Down . snd) <> comparing fst)\n    . Map.toList\n    . Map.fromListWith (+)\n    . map (\\w -> (w, 1))\n    . words\n    . map (\\c -> if isAlpha c then toLower c else ' ')\n\nmain :: IO ()\nmain = do\n  text <- getContents\n  mapM_ (\\(w, n) -> putStrLn (w ++ \": \" ++ show n)) (take 3 (wordFreq text))",
+          "lang": "haskell"
+        },
+        {
+          "code": "echo \"The cat and the dog. The dog sat, and the cat ran.\" | runghc wordfreq.hs\n# the: 4\n# and: 2\n# cat: 2",
+          "lang": "shell"
+        },
+        {
+          "note": "Common beginner mistakes: mixing tabs and spaces (indentation is significant); writing `f(x, y)` instead of `f x y`; forgetting that `-1` as an argument needs parentheses, as in `abs (-1)`; using `head` on possibly empty lists; and expecting `let` inside `do` to change an existing value, when it only creates a new name."
+        }
+      ]
+    },
+    {
+      "h": "Where to go next",
+      "body": [
+        {
+          "ul": [
+            "The documentation page at haskell.org, which links to tutorials, books and the GHC User's Guide.",
+            "Hackage, the package repository, and Hoogle, a search engine that finds functions by name or by type.",
+            "Learn You a Haskell for Great Good! and Real World Haskell, two freely readable books.",
+            "The Haskell 2010 Language Report for the precise language definition."
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Is Haskell hard to learn?",
+      "a": "It feels different because it has no mutable variables or loops and uses an expressive type system. Beginners who learn recursion, pattern matching and types step by step usually find the core language small and consistent."
+    },
+    {
+      "q": "What does purely functional mean?",
+      "a": "Functions always return the same result for the same input and do not change state or perform input and output. Effects are still possible, but they are expressed in types such as `IO`."
+    },
+    {
+      "q": "What is a monad in Haskell?",
+      "a": "A monad is a type class for types such as `Maybe`, `Either` and `IO` that support chaining computations with `>>=`. `do` notation is syntax for that chaining."
+    },
+    {
+      "q": "What is lazy evaluation?",
+      "a": "Expressions are evaluated only when their value is needed. This allows infinite lists and avoids unnecessary work, but it can make memory usage harder to predict."
+    },
+    {
+      "q": "Should I use Stack or Cabal?",
+      "a": "Both build Haskell projects and both are installed by GHCup. Cabal is the standard build tool; Stack adds curated package snapshots. Either is fine for beginners."
+    }
+  ]
+}

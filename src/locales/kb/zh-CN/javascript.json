@@ -1,0 +1,191 @@
+{
+  "title": "JavaScript 入门教程：变量、函数、数组、对象与异步 — cv.cm",
+  "description": "一页学会现代 JavaScript：在 Node.js 或浏览器中运行 Hello world，let 与 const，数据类型，循环，函数，数组，对象，Promise 与 async。",
+  "h1": "JavaScript 入门教程（零基础）",
+  "answer": "JavaScript 是 Web 的编程语言：所有浏览器都能运行它，Node.js 则让它运行在服务器和命令行上。用 `const` 和 `let` 声明变量，用函数声明或箭头函数编写函数，用数组和对象存放数据，并用 Promise 与 `async`/`await` 处理网络请求等耗时操作。运行 `node hello.js` 或打开浏览器控制台即可开始。",
+  "sections": [
+    {
+      "h": "JavaScript 是什么，用来做什么",
+      "body": [
+        "JavaScript 是一门动态类型语言，标准名称为 ECMAScript。它最初为网页而生，用来响应点击、更新页面并与服务器通信。如今它也通过 Node.js、Deno 和 Bun 运行在服务器和各类工具上，还用于桌面应用（Electron）和移动应用（React Native）。前端开发者、全栈开发者以及所有做 Web 开发的人都会用到它。本页的现代语法（`let`、`const`、箭头函数、类、模块）来自 ES2015 及之后的版本。"
+      ]
+    },
+    {
+      "h": "运行 Hello, world",
+      "body": [
+        "方式一：打开任意网页，按 F12（Mac 上按 Cmd+Option+J）打开开发者控制台，输入下面这行代码。方式二：从 nodejs.org 安装 Node.js，把这行代码保存为 `hello.js` 并运行。",
+        {
+          "code": "console.log(\"Hello, world\");",
+          "lang": "javascript"
+        },
+        {
+          "code": "node hello.js\n# Hello, world",
+          "lang": "shell"
+        }
+      ]
+    },
+    {
+      "h": "变量与基本类型",
+      "body": [
+        "不会被重新赋值的值用 `const`，会变化的值用 `let`。避免使用旧的 `var`，它不遵守块级作用域。`typeof` 用于查看值的类型。",
+        {
+          "table": {
+            "head": [
+              "类型",
+              "示例",
+              "typeof"
+            ],
+            "rows": [
+              [
+                "number",
+                "`42`, `3.14`, `NaN`",
+                "`\"number\"`"
+              ],
+              [
+                "bigint",
+                "`10n`",
+                "`\"bigint\"`"
+              ],
+              [
+                "string",
+                "`\"hi\"`, `'hi'`, `` `hi ${name}` ``",
+                "`\"string\"`"
+              ],
+              [
+                "boolean",
+                "`true`, `false`",
+                "`\"boolean\"`"
+              ],
+              [
+                "undefined",
+                "`undefined`",
+                "`\"undefined\"`"
+              ],
+              [
+                "null",
+                "`null`",
+                "`\"object\"`（历史遗留的怪异行为）"
+              ],
+              [
+                "object",
+                "`{}`、`[]`、函数",
+                "`\"object\"` 或 `\"function\"`"
+              ]
+            ]
+          }
+        },
+        {
+          "code": "const name = \"Ada\";\nlet count = 1;\ncount += 1;\nconsole.log(`${name} has ${count} items`); // Ada has 2 items\nconsole.log(0.1 + 0.2);                    // 0.30000000000000004\nconsole.log(Number(\"12\") + 1, \"12\" + 1);   // 13 121",
+          "lang": "javascript"
+        }
+      ]
+    },
+    {
+      "h": "流程控制：if、循环与相等判断",
+      "body": [
+        "请始终使用 `===` 和 `!==` 比较。宽松的 `==` 会先转换类型，因此 `0 == \"\"` 为 `true`。",
+        {
+          "code": "const score = 72;\nif (score >= 90) {\n  console.log(\"A\");\n} else if (score >= 70) {\n  console.log(\"B\"); // B\n} else {\n  console.log(\"C\");\n}\nfor (let i = 0; i < 3; i++) console.log(i); // 0 1 2\nfor (const fruit of [\"apple\", \"pear\"]) console.log(fruit);\nlet n = 10;\nwhile (n > 1) n = Math.floor(n / 2);\nconsole.log(n); // 1",
+          "lang": "javascript"
+        }
+      ]
+    },
+    {
+      "h": "函数",
+      "body": [
+        "函数也是值：可以存进变量、传给其他函数，也可以作为返回值。箭头函数是更简短的写法，常用于回调。",
+        {
+          "code": "function greet(name, greeting = \"Hello\") {\n  return `${greeting}, ${name}!`;\n}\nconst square = (x) => x * x;\nconst sum = (...nums) => nums.reduce((a, b) => a + b, 0);\nconsole.log(greet(\"Lin\"));     // Hello, Lin!\nconsole.log(square(5));        // 25\nconsole.log(sum(1, 2, 3, 4));  // 10",
+          "lang": "javascript"
+        }
+      ]
+    },
+    {
+      "h": "数组与对象",
+      "body": [
+        "数组是有序列表，对象把字符串键映射到值。两者都按引用传递。当键不是字符串或值必须唯一时，可以使用内置的 `Map` 和 `Set`。",
+        {
+          "code": "const nums = [3, 1, 2];\nnums.push(5);\nconst doubled = nums.map((n) => n * 2);\nconst evens = nums.filter((n) => n % 2 === 0);\nconsole.log(doubled, evens);             // [ 6, 2, 4, 10 ] [ 2 ]\nconsole.log([...nums].sort((a, b) => a - b)); // [ 1, 2, 3, 5 ]\nconst user = { name: \"Ann\", age: 31 };\nuser.city = \"Oslo\";\nconst { name, age } = user;              // destructuring\nconsole.log(name, age, Object.keys(user)); // Ann 31 [ 'name', 'age', 'city' ]\nconsole.log(JSON.stringify(user));       // {\"name\":\"Ann\",\"age\":31,\"city\":\"Oslo\"}",
+          "lang": "javascript"
+        },
+        {
+          "note": "不带比较函数的 `sort()` 按字符串排序，所以 `[10, 9, 1].sort()` 的结果是 `[1, 10, 9]`。对数字排序请传入 `(a, b) => a - b`。"
+        }
+      ]
+    },
+    {
+      "h": "标志性特性：用 Promise 编写异步代码",
+      "body": [
+        "JavaScript 在单线程上通过事件循环运行你的代码。耗时操作（定时器、网络、文件）不会阻塞，而是返回一个稍后才会完成的 Promise。`async` 函数配合 `await`，可以让你自上而下地书写这类代码。",
+        {
+          "code": "const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));\nasync function main() {\n  console.log(\"start\");\n  await wait(500);\n  console.log(\"half a second later\");\n  const [a, b] = await Promise.all([wait(100).then(() => 1), wait(200).then(() => 2)]);\n  console.log(a + b); // 3\n}\nmain();\nconsole.log(\"main() was called\"); // prints before \"half a second later\"",
+          "lang": "javascript"
+        },
+        "类（`class Dog extends Animal {}`）、模块（`import` 和 `export`）、可选链（`user?.address?.city`）以及空值合并运算符（`value ?? \"default\"`）也是你会经常用到的现代特性。"
+      ]
+    },
+    {
+      "h": "错误处理",
+      "body": [
+        "抛出 `Error` 对象，并用 `try`/`catch` 捕获。在 `async` 函数中，被拒绝的 Promise 会在 `await` 处变成异常。",
+        {
+          "code": "function parseAge(text) {\n  const age = Number(text);\n  if (!Number.isInteger(age) || age < 0) {\n    throw new Error(`invalid age: ${text}`);\n  }\n  return age;\n}\ntry {\n  console.log(parseAge(\"41\"));  // 41\n  console.log(parseAge(\"abc\"));\n} catch (err) {\n  console.log(err.message);     // invalid age: abc\n} finally {\n  console.log(\"done\");\n}",
+          "lang": "javascript"
+        }
+      ]
+    },
+    {
+      "h": "一个完整的小程序：请求并汇总数据",
+      "body": [
+        "这个 Node.js 脚本（Node 18 及以上内置 `fetch`）从公开 API 下载 JSON 并输出简短摘要。把它保存为 `repos.mjs`，然后运行 `node repos.mjs nodejs`。",
+        {
+          "code": "const org = process.argv[2] ?? \"nodejs\";\nasync function topRepos(name, n = 3) {\n  const res = await fetch(`https://api.github.com/orgs/${name}/repos?per_page=100`);\n  if (!res.ok) throw new Error(`HTTP ${res.status}`);\n  const repos = await res.json();\n  return repos\n    .sort((a, b) => b.stargazers_count - a.stargazers_count)\n    .slice(0, n)\n    .map((r) => `${r.stargazers_count}\\t${r.name}`);\n}\ntry {\n  const lines = await topRepos(org);\n  console.log(lines.join(\"\\n\"));\n} catch (err) {\n  console.error(\"failed:\", err.message);\n  process.exitCode = 1;\n}",
+          "lang": "javascript"
+        },
+        "`.mjs` 扩展名使文件成为 ES 模块，因此可以在顶层使用 `await`。"
+      ]
+    },
+    {
+      "h": "新手常见错误",
+      "body": [
+        {
+          "ul": [
+            "用 `==` 代替 `===`，导致出人意料的类型转换。",
+            "忘记写 `await`，结果得到的是待定状态的 `Promise` 对象，而不是真正的值。",
+            "以为 `const` 能让对象不可变。它只是禁止重新赋值，`obj.x = 1` 依然有效。需要时请使用 `Object.freeze`。",
+            "用 `===` 比较对象或数组，它比较的是引用是否相同，而不是内容。",
+            "把方法当作回调传递时丢失了 `this`。请使用箭头函数或 `.bind(obj)`。"
+          ]
+        }
+      ]
+    },
+    {
+      "h": "接下来学什么",
+      "body": [
+        "阅读 MDN 的 JavaScript 指南（这是最完整的免费参考资料），并通过浏览器 DOM（`document.querySelector`、事件）进行练习。然后学习 npm 与模块，前端框架如 React、Vue 或 Svelte，或用 Node.js 开发服务器。在 JavaScript 之上加入 TypeScript，可以获得静态类型和更好的编辑器支持。"
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "JavaScript 和 Java 是同一种语言吗？",
+      "a": "不是。它们是毫不相关的两种语言，只是名字相似。Java 是静态类型语言，编译为 JVM 字节码；JavaScript 是动态类型语言，运行在浏览器和 Node.js 中。"
+    },
+    {
+      "q": "应该用 let、const 还是 var？",
+      "a": "默认使用 `const`，需要重新赋值时使用 `let`。避免使用 `var`，因为它是函数作用域并且会变量提升，容易引发 bug。"
+    },
+    {
+      "q": "null 和 undefined 有什么区别？",
+      "a": "`undefined` 表示变量或属性从未被赋值。`null` 是你有意赋予的值，表示“空”。"
+    },
+    {
+      "q": "为什么 0.1 + 0.2 不等于 0.3？",
+      "a": "JavaScript 的数字是 64 位二进制浮点数，无法精确表示 0.1。显示时请做舍入，处理金额时请使用整数（例如以分为单位）。"
+    },
+    {
+      "q": "学 JavaScript 一定要装 Node.js 吗？",
+      "a": "不需要。每个浏览器的开发者控制台都能运行 JavaScript。当你想从文件运行脚本，或构建服务器和工具时，Node.js 才有用。"
+    }
+  ]
+}

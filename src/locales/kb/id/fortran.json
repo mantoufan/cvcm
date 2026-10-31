@@ -1,0 +1,169 @@
+{
+  "title": "Tutorial Fortran: sintaks modern, array, modul, dan prosedur — cv.cm",
+  "description": "Belajar Fortran modern: mengompilasi Hello world dengan gfortran, variabel bertipe, perulangan, fungsi, subroutine, modul, operasi array, dan iostat.",
+  "h1": "Tutorial Fortran untuk pemula",
+  "answer": "Fortran adalah bahasa terkompilasi bertipe statis yang dibuat untuk komputasi numerik dan ilmiah. Fortran modern (Fortran 90 dan standar sesudahnya) punya source free-form, modul, array dinamis, dan operasi seluruh array yang kuat, dan compiler mengubahnya menjadi kode mesin yang sangat cepat. Pasang compiler gfortran yang gratis, simpan kode dalam file `.f90`, dan build dengan `gfortran hello.f90 -o hello`.",
+  "sections": [
+    {
+      "h": "Apa itu Fortran dan siapa yang memakainya",
+      "body": [
+        "Fortran (\"formula translation\") dikembangkan di IBM oleh tim yang dipimpin John Backus pada 1950-an dan merupakan salah satu bahasa pemrograman tertua yang masih aktif dipakai. Fortran distandarkan oleh ISO; revisi besarnya meliputi Fortran 90, 95, 2003, 2008, 2018, dan 2023. Gaya fixed-form lama (`FORTRAN 77` huruf kapital, kode dimulai di kolom 7) masih dikompilasi, tetapi kode baru memakai sintaks free-form yang ditampilkan di sini.",
+        "Fortran dipakai di tempat yang memerlukan perhitungan numerik berat: model cuaca dan iklim, computational fluid dynamics, simulasi fisika dan kimia, dan banyak program yang berjalan di superkomputer. Versi referensi library aljabar linear BLAS dan LAPACK, yang dipakai di balik tool seperti NumPy dan MATLAB, ditulis dalam Fortran."
+      ]
+    },
+    {
+      "h": "Memasang compiler dan menjalankan Hello, world",
+      "body": [
+        "gfortran, bagian dari GCC, gratis dan tersedia di Linux (paket `gfortran`), macOS (Homebrew `gcc`), dan Windows (MSYS2 atau WSL). ifx dari Intel dan LLVM Flang adalah compiler lainnya. Fortran Package Manager (`fpm`) dapat membuat dan membangun proyek.",
+        {
+          "code": "program hello\n  implicit none\n  print *, \"Hello, world!\"\nend program hello",
+          "lang": "fortran"
+        },
+        {
+          "code": "gfortran hello.f90 -o hello\n./hello\n#  Hello, world!",
+          "lang": "shell"
+        },
+        "`print *` memakai list-directed output, yang memilihkan spasi untuk Anda (perhatikan spasi di depan). Fortran tidak peka huruf besar/kecil: `PRINT`, `Print`, dan `print` sama saja."
+      ]
+    },
+    {
+      "h": "Variabel dan tipe dasar",
+      "body": [
+        "Semua deklarasi berada di bagian atas sebuah program unit, sebelum statement yang dieksekusi. Selalu tulis `implicit none`: tanpanya, nama yang tidak dideklarasikan dan diawali huruf I sampai N diam-diam menjadi integer dan yang lain menjadi real.",
+        {
+          "table": {
+            "head": [
+              "Tipe",
+              "Contoh deklarasi",
+              "Catatan"
+            ],
+            "rows": [
+              [
+                "integer",
+                "`integer :: count = 3`",
+                "Biasanya 32-bit; `integer(int64)` untuk 64-bit"
+              ],
+              [
+                "real",
+                "`real :: x`",
+                "Biasanya presisi tunggal"
+              ],
+              [
+                "real(real64)",
+                "`real(real64) :: y`",
+                "Presisi ganda, pilihan umum untuk sains"
+              ],
+              [
+                "complex",
+                "`complex :: z = (1.0, 2.0)`",
+                "Bilangan kompleks bawaan"
+              ],
+              [
+                "logical",
+                "`logical :: done = .false.`",
+                "`.true.` / `.false.`, operator `.and.`, `.or.`, `.not.`"
+              ],
+              [
+                "character",
+                "`character(len=20) :: name`",
+                "String berpanjang tetap, diisi spasi"
+              ]
+            ]
+          }
+        },
+        {
+          "code": "program types\n  use, intrinsic :: iso_fortran_env, only: int64, real64\n  implicit none\n  integer :: count = 3\n  integer(int64) :: big = 9000000000_int64\n  real(real64) :: third\n  logical :: done = .false.\n  character(len=:), allocatable :: name\n\n  third = 1.0_real64 / 3.0_real64\n  name = \"Ana\"\n  print *, count, big, third, done, name\nend program types",
+          "lang": "fortran"
+        },
+        "Akhiran `_real64` menetapkan kind (presisi) sebuah literal. Tanpanya, `1.0` adalah konstanta presisi tunggal, yang kehilangan digit saat di-assign ke variabel presisi ganda."
+      ]
+    },
+    {
+      "h": "Alur kontrol",
+      "body": [
+        {
+          "code": "program control\n  implicit none\n  integer :: i, total, score\n\n  total = 0\n  do i = 1, 10\n    if (mod(i, 2) == 0) cycle   ! skip even numbers\n    total = total + i\n  end do\n  print *, \"sum of odd numbers:\", total   ! 25\n\n  score = 85\n  if (score >= 90) then\n    print *, \"A\"\n  else if (score >= 80) then\n    print *, \"B\"\n  else\n    print *, \"C\"\n  end if\n\n  select case (score)\n  case (90:)\n    print *, \"excellent\"\n  case (80:89)\n    print *, \"good\"\n  case default\n    print *, \"keep going\"\n  end select\nend program control",
+          "lang": "fortran"
+        },
+        "`do i = 1, 10` menyertakan kedua ujung, dan nilai ketiga yang opsional menetapkan langkah (`do i = 10, 1, -1`). `cycle` melompat ke iterasi berikutnya dan `exit` keluar dari perulangan. `do while (condition)` dan `do` biasa dengan `exit` juga tersedia. Komentar diawali dengan `!`."
+      ]
+    },
+    {
+      "h": "Fungsi, subroutine, dan modul",
+      "body": [
+        "Fortran punya dua jenis prosedur: function mengembalikan nilai dan dipakai dalam ekspresi; subroutine dipanggil dengan `call` dan mengembalikan hasil lewat argumennya. Taruh prosedur dalam modul agar compiler dapat memeriksa setiap pemanggilan.",
+        {
+          "code": "module geometry\n  implicit none\ncontains\n  function circle_area(r) result(a)\n    real, intent(in) :: r\n    real :: a\n    a = 3.14159 * r**2\n  end function circle_area\n\n  subroutine swap(a, b)\n    integer, intent(inout) :: a, b\n    integer :: tmp\n    tmp = a\n    a = b\n    b = tmp\n  end subroutine swap\nend module geometry\n\nprogram demo\n  use geometry\n  implicit none\n  integer :: x, y\n  x = 1\n  y = 2\n  print *, circle_area(2.0)   ! about 12.566\n  call swap(x, y)\n  print *, x, y               ! 2 1\nend program demo",
+          "lang": "fortran"
+        },
+        "Argumen diteruskan secara reference, sehingga prosedur dapat mengubah variabel milik pemanggil. `intent(in)`, `intent(out)`, dan `intent(inout)` mendokumentasikan dan menegakkan apa yang boleh dilakukan setiap argumen. `**` adalah operator pangkat."
+      ]
+    },
+    {
+      "h": "Array: fitur khas Fortran",
+      "body": [
+        "Array adalah inti Fortran. Indeks dimulai dari 1 secara default (batas bawah apa pun diizinkan), aritmetika bekerja pada seluruh array tanpa perulangan, slice memakai `a(start:end)`, dan banyak fungsi intrinsic beroperasi langsung pada array.",
+        {
+          "code": "program arrays\n  implicit none\n  integer :: i\n  real :: a(5), b(5)\n  real, allocatable :: c(:)\n  integer :: m(2, 3)\n\n  a = [(real(i), i = 1, 5)]   ! 1.0 2.0 3.0 4.0 5.0\n  b = 2.0 * a + 1.0           ! whole-array arithmetic\n  print *, b(2:4)             ! 5.0 7.0 9.0\n  print *, sum(a), maxval(b)  ! 15.0 11.0\n\n  allocate(c(10))\n  c = 0.0\n  print *, size(c)            ! 10\n  deallocate(c)\n\n  m = reshape([1, 2, 3, 4, 5, 6], [2, 3])\n  print *, m(2, 1)            ! 2 (column-major order)\nend program arrays",
+          "lang": "fortran"
+        },
+        "Array multidimensi disimpan dalam urutan column-major: indeks pertama berubah paling cepat di memori, kebalikan dari C. Demi kecepatan, buat perulangan terdalam berjalan pada indeks pertama. Fungsi intrinsic berguna lainnya adalah `matmul`, `dot_product`, `transpose`, `minval`, dan `count`. Fortran modern juga menawarkan perulangan `do concurrent` dan coarray untuk program paralel."
+      ]
+    },
+    {
+      "h": "Penanganan error",
+      "body": [
+        "Fortran tidak punya exception. Statement yang bisa gagal menerima argumen status: `iostat` untuk input dan output, `stat` untuk `allocate`. Periksa nilainya dan bereaksilah; jika dihilangkan, error menghentikan program. `error stop` mengakhiri program dengan error.",
+        {
+          "code": "program parse\n  implicit none\n  character(len=20) :: text\n  integer :: n, ios\n\n  text = \"abc\"\n  read(text, *, iostat=ios) n\n  if (ios /= 0) then\n    print *, \"not a number: \", trim(text)\n  else\n    print *, \"n =\", n\n  end if\nend program parse",
+          "lang": "fortran"
+        },
+        "Membaca dari variabel character, seperti di atas, disebut internal read dan merupakan cara lazim mengonversi string menjadi angka."
+      ]
+    },
+    {
+      "h": "Program lengkap kecil: rata-rata dan simpangan baku",
+      "body": [
+        {
+          "code": "module stats\n  implicit none\n  integer, parameter :: dp = kind(1.0d0)\ncontains\n  pure function mean(x) result(m)\n    real(dp), intent(in) :: x(:)\n    real(dp) :: m\n    m = sum(x) / size(x)\n  end function mean\n\n  pure function std_dev(x) result(s)\n    real(dp), intent(in) :: x(:)\n    real(dp) :: s\n    s = sqrt(sum((x - mean(x))**2) / (size(x) - 1))\n  end function std_dev\nend module stats\n\nprogram main\n  use stats\n  implicit none\n  real(dp) :: values(5)\n  values = [2.0_dp, 4.0_dp, 4.0_dp, 5.0_dp, 7.0_dp]\n  print '(a, f6.3)', \"mean    = \", mean(values)\n  print '(a, f6.3)', \"std dev = \", std_dev(values)\nend program main\n! mean    =  4.400\n! std dev =  1.817",
+          "lang": "fortran"
+        },
+        "Deklarasi `x(:)` adalah assumed-shape array, sehingga fungsi menerima array dengan panjang berapa pun. `pure` menjanjikan bahwa fungsi tidak punya efek samping. Format `'(a, f6.3)'` mencetak string diikuti bilangan real selebar 6 karakter dengan 3 desimal.",
+        {
+          "note": "Kesalahan umum pemula: lupa `implicit none`; pembagian integer (`1 / 2` hasilnya 0, tulis `1.0 / 2.0`); literal presisi tunggal dalam kode presisi ganda (`0.1` alih-alih `0.1_dp`); menginisialisasi variabel lokal pada deklarasinya di dalam prosedur, yang memberinya atribut `save` sehingga nilainya bertahan antarpemanggilan; dan melakukan perulangan pada indeks terakhir di perulangan terdalam, yang lambat karena urutan column-major."
+        }
+      ]
+    },
+    {
+      "h": "Langkah selanjutnya",
+      "body": [
+        {
+          "ul": [
+            "fortran-lang.org: bagian Learn dengan tutorial quickstart dan praktik terbaik.",
+            "Manual GNU Fortran (gfortran) untuk opsi compiler dan prosedur intrinsic.",
+            "Coba Fortran Package Manager (fpm) untuk membuat proyek dan memakai library seperti Fortran standard library (stdlib).",
+            "Kompilasi dengan peringatan dan pemeriksaan runtime selama belajar, misalnya `gfortran -Wall -fcheck=all`."
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Apakah Fortran masih dipakai sekarang?",
+      "a": "Ya. Fortran masih banyak dipakai dalam komputasi ilmiah dan komputasi performa tinggi, terutama untuk simulasi iklim, cuaca, fisika, dan rekayasa, dan standar bahasanya masih terus diperbarui."
+    },
+    {
+      "q": "Apa perbedaan file .f dan .f90?",
+      "a": "Menurut konvensi, file `.f` dan `.for` memakai tata letak fixed-form lama dari FORTRAN 77, di mana kolom berpengaruh, sedangkan file `.f90` memakai source free-form. Ekstensi `.f90` dipakai untuk kode free-form dari standar modern mana pun, bukan hanya Fortran 90."
+    },
+    {
+      "q": "Mengapa Fortran cepat?",
+      "a": "Bahasa ini dirancang untuk pekerjaan numerik: array sudah bawaan, aturan aliasing memungkinkan compiler mengoptimalkan secara agresif, dan puluhan tahun pekerjaan compiler diarahkan padanya. C atau C++ yang ditulis dengan baik dapat mencapai kecepatan serupa."
+    },
+    {
+      "q": "Apakah array Fortran dimulai dari 0 atau 1?",
+      "a": "Dimulai dari 1 secara default, tetapi Anda dapat memilih batas bawah apa pun, misalnya `real :: a(0:9)` mendeklarasikan sepuluh elemen dengan indeks 0 sampai 9."
+    }
+  ]
+}

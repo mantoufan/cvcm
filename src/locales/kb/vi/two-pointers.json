@@ -1,0 +1,214 @@
+{
+  "title": "Hai con trỏ và cửa sổ trượt: mẫu thuật toán, mã Python và ví dụ — cv.cm",
+  "description": "Kỹ thuật hai con trỏ và cửa sổ trượt biến nhiều bài toán mảng và chuỗi O(n²) thành O(n). Học cả hai mẫu qua ví dụ từng bước và mã Python.",
+  "h1": "Kỹ thuật hai con trỏ (two pointers) và cửa sổ trượt (sliding window)",
+  "answer": "Hai con trỏ là kỹ thuật dùng hai chỉ số chạy qua một mảng hoặc chuỗi, thường từ hai đầu tiến vào nhau hoặc cùng chiều với tốc độ khác nhau, sao cho mỗi phần tử chỉ được thăm một số lần hằng số. Cửa sổ trượt là biến thể cùng chiều, giữ một đoạn liên tiếp giữa con trỏ trái và con trỏ phải và cập nhật một giá trị chạy khi cửa sổ giãn ra hoặc co lại. Cả hai thường giảm việc tìm kiếm vét cạn O(n²) trên các cặp hoặc mảng con xuống O(n).",
+  "sections": [
+    {
+      "h": "Các kỹ thuật này giải quyết vấn đề gì",
+      "body": [
+        "Nhiều bài toán mảng và chuỗi hỏi về các cặp hoặc đoạn liên tiếp: hai số có tổng bằng một giá trị cho trước, chuỗi con dài nhất không có ký tự lặp, mảng con ngắn nhất có tổng ít nhất k. Kiểm tra mọi cặp hoặc mọi đoạn tốn O(n²) hoặc hơn. Hai con trỏ tránh điều này bằng cách tận dụng một tính chất của dữ liệu, như thứ tự đã sắp xếp hoặc việc cửa sổ chỉ cần cập nhật nhỏ, để loại bỏ nhiều ứng viên cùng lúc.",
+        {
+          "table": {
+            "head": [
+              "Mẫu",
+              "Cách di chuyển con trỏ",
+              "Bài toán điển hình"
+            ],
+            "rows": [
+              [
+                "Hai đầu",
+                "`left` bắt đầu ở 0, `right` ở cuối, hai con trỏ tiến vào nhau",
+                "tổng cặp trong mảng đã sắp xếp, kiểm tra palindrome, container with most water"
+              ],
+              [
+                "Nhanh và chậm",
+                "cả hai bắt đầu từ đầu, một con trỏ đi mỗi bước, con trỏ kia chỉ đi đôi khi",
+                "xóa phần tử trùng tại chỗ, phân hoạch, phát hiện chu trình trong danh sách liên kết"
+              ],
+              [
+                "Cửa sổ trượt",
+                "`right` mở rộng cửa sổ, `left` thu hẹp nó",
+                "chuỗi con hoặc mảng con dài nhất hoặc ngắn nhất thỏa một điều kiện"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "Con trỏ hai đầu: tổng cặp trong mảng đã sắp xếp",
+      "body": [
+        "Tìm hai số trong danh sách đã sắp xếp `[1, 3, 4, 6, 8, 11]` có tổng bằng 10. Bắt đầu từ số nhỏ nhất và lớn nhất. Nếu tổng quá nhỏ, cách duy nhất để tăng là dịch `left` sang phải; nếu quá lớn, dịch `right` sang trái.",
+        {
+          "table": {
+            "head": [
+              "Bước",
+              "left (giá trị)",
+              "right (giá trị)",
+              "Tổng",
+              "Hành động"
+            ],
+            "rows": [
+              [
+                "1",
+                "0 (1)",
+                "5 (11)",
+                "12",
+                "quá lớn, right -= 1"
+              ],
+              [
+                "2",
+                "0 (1)",
+                "4 (8)",
+                "9",
+                "quá nhỏ, left += 1"
+              ],
+              [
+                "3",
+                "1 (3)",
+                "4 (8)",
+                "11",
+                "quá lớn, right -= 1"
+              ],
+              [
+                "4",
+                "1 (3)",
+                "3 (6)",
+                "9",
+                "quá nhỏ, left += 1"
+              ],
+              [
+                "5",
+                "2 (4)",
+                "3 (6)",
+                "10",
+                "tìm thấy: 4 + 6"
+              ]
+            ]
+          }
+        },
+        {
+          "code": "def pair_with_sum(nums, target):\n    left, right = 0, len(nums) - 1\n    while left < right:\n        s = nums[left] + nums[right]\n        if s == target:\n            return left, right\n        if s < target:\n            left += 1\n        else:\n            right -= 1\n    return None\nprint(pair_with_sum([1, 3, 4, 6, 8, 11], 10))   # (2, 3)\nprint(pair_with_sum([1, 3, 4, 6, 8, 11], 2))    # None",
+          "lang": "python"
+        },
+        "Mỗi bước dịch một con trỏ vào trong, nên có tối đa n − 1 bước: O(n) thời gian và O(1) không gian. Cùng khuôn này kiểm tra chuỗi có là palindrome không, đảo ngược mảng tại chỗ, và khi đặt trong một vòng lặp ngoài thì giải 3Sum trong O(n²) thay vì O(n³)."
+      ]
+    },
+    {
+      "h": "Con trỏ nhanh và chậm: lọc tại chỗ",
+      "body": [
+        "Con trỏ chậm đánh dấu nơi phần tử được giữ tiếp theo sẽ nằm; con trỏ nhanh quét qua mọi phần tử. Cách này xóa phần tử trùng khỏi list đã sắp xếp mà không cần thêm bộ nhớ.",
+        {
+          "code": "def dedupe_sorted(nums):\n    \"\"\"Remove duplicates in place; return the new length.\"\"\"\n    if not nums:\n        return 0\n    slow = 0\n    for fast in range(1, len(nums)):\n        if nums[fast] != nums[slow]:\n            slow += 1\n            nums[slow] = nums[fast]\n    return slow + 1\na = [1, 1, 2, 3, 3, 3, 5]\nk = dedupe_sorted(a)\nprint(k, a[:k])   # 4 [1, 2, 3, 5]",
+          "lang": "python"
+        },
+        "Trên danh sách liên kết, con trỏ nhanh đi hai nút mỗi bước còn con trỏ chậm đi một nút. Nếu chúng gặp nhau thì danh sách có chu trình (phát hiện chu trình của Floyd); khi con trỏ nhanh tới cuối, con trỏ chậm đang ở giữa."
+      ]
+    },
+    {
+      "h": "Cửa sổ trượt: chuỗi con dài nhất không lặp ký tự",
+      "body": [
+        "Cửa sổ trượt giữ đoạn `s[left:right + 1]` luôn hợp lệ. Dịch `right` tiến từng ký tự một. Khi ký tự mới phá vỡ quy tắc, dịch `left` tiến cho đến khi cửa sổ hợp lệ trở lại. Ghi nhận cửa sổ tốt nhất trong quá trình đó.",
+        {
+          "code": "def longest_unique(s):\n    last_seen = {}          # char -> last index\n    left = best = 0\n    for right, ch in enumerate(s):\n        if ch in last_seen and last_seen[ch] >= left:\n            left = last_seen[ch] + 1   # jump past the repeat\n        last_seen[ch] = right\n        best = max(best, right - left + 1)\n    return best\nprint(longest_unique(\"abcabcbb\"))   # 3  (\"abc\")\nprint(longest_unique(\"pwwkew\"))     # 3  (\"wke\")\nprint(longest_unique(\"\"))           # 0",
+          "lang": "python"
+        },
+        "Cửa sổ có hai loại. Cửa sổ kích thước cố định k phần tử thêm phần tử đi vào bên phải và bỏ phần tử đi ra bên trái, ví dụ để tính trung bình trượt. Cửa sổ kích thước thay đổi giãn ra và co lại để thỏa một điều kiện, như ở trên.",
+        {
+          "code": "def min_len_subarray(nums, k):\n    \"\"\"Shortest subarray with sum >= k (non-negative nums).\"\"\"\n    left = total = 0\n    best = float(\"inf\")\n    for right, x in enumerate(nums):\n        total += x\n        while total >= k:\n            best = min(best, right - left + 1)\n            total -= nums[left]\n            left += 1\n    return 0 if best == float(\"inf\") else best\nprint(min_len_subarray([2, 3, 1, 2, 4, 3], 7))   # 2  ([4, 3])",
+          "lang": "python"
+        }
+      ]
+    },
+    {
+      "h": "Độ phức tạp thời gian và không gian",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Bài toán",
+              "Vét cạn",
+              "Hai con trỏ / cửa sổ",
+              "Không gian phụ"
+            ],
+            "rows": [
+              [
+                "Tổng cặp, đầu vào đã sắp xếp",
+                "O(n²)",
+                "O(n)",
+                "O(1)"
+              ],
+              [
+                "Xóa phần tử trùng, đã sắp xếp",
+                "O(n) với list mới",
+                "O(n) tại chỗ",
+                "O(1)"
+              ],
+              [
+                "Chuỗi con không lặp dài nhất",
+                "O(n³) hoặc O(n²)",
+                "O(n)",
+                "O(k), k ký tự phân biệt"
+              ],
+              [
+                "Mảng con ngắn nhất có tổng ≥ k",
+                "O(n²)",
+                "O(n)",
+                "O(1)"
+              ]
+            ]
+          }
+        },
+        "Lý do cửa sổ trượt là O(n) dù có vòng `while` lồng bên trong: `left` và `right` mỗi con trỏ chỉ tiến tối đa n lần tính tổng cộng, nên tổng công việc nhiều nhất là 2n bước."
+      ]
+    },
+    {
+      "h": "Lỗi thường gặp",
+      "body": [
+        {
+          "ul": [
+            "Dùng con trỏ hai đầu trên dữ liệu chưa sắp xếp. Quyết định dịch trái hay phải chỉ đúng nhờ mảng đã được sắp xếp.",
+            "Dùng cửa sổ trượt theo tổng khi các số có thể âm. Thu hẹp cửa sổ không còn luôn làm giảm tổng; hãy dùng tổng tiền tố với bảng băm thay thế.",
+            "Sai lệch một khi tính độ dài cửa sổ: cửa sổ `left..right` tính cả hai đầu có `right - left + 1` phần tử.",
+            "Quên dừng ở `left < right`, khiến một phần tử ghép cặp với chính nó.",
+            "Dịch `left` lùi lại. Trong ví dụ chuỗi con, phép kiểm tra `last_seen[ch] >= left` ngăn việc nhảy ngược về vị trí cũ."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Khi nào dùng và các câu hỏi phỏng vấn điển hình",
+      "body": [
+        "Hãy nghĩ đến hai con trỏ khi đầu vào đã sắp xếp (hoặc sắp xếp rẻ) và bạn tìm các cặp, hoặc khi cần sửa mảng tại chỗ. Hãy nghĩ đến cửa sổ trượt khi đề nói mảng con hoặc chuỗi con liên tiếp và hỏi dài nhất, ngắn nhất, lớn nhất hoặc số lượng với điều kiện thay đổi có quy luật khi cửa sổ giãn ra. Nếu dữ liệu chưa sắp xếp và bạn cần một cặp, hash set thường đơn giản hơn và cũng là O(n).",
+        {
+          "ul": [
+            "Two Sum II (đầu vào đã sắp xếp), 3Sum, Container With Most Water, Trapping Rain Water.",
+            "Valid Palindrome, Reverse String, Move Zeroes, Remove Duplicates from Sorted Array.",
+            "Longest Substring Without Repeating Characters, Minimum Window Substring, Sliding Window Maximum (với deque).",
+            "Linked List Cycle, Middle of the Linked List."
+          ]
+        },
+        "Ngoài phỏng vấn, các ý tưởng này xuất hiện khi trộn các tệp đã sắp xếp, trong giao thức mạng theo dõi một cửa sổ các gói chưa được xác nhận (cửa sổ trượt TCP), bộ giới hạn tốc độ đếm sự kiện trong N giây gần nhất, và trung bình trượt trong chuỗi thời gian."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Kỹ thuật hai con trỏ là gì?",
+      "a": "Đó là cách quét mảng hoặc chuỗi bằng hai chỉ số di chuyển theo các quy tắc đơn giản, để mỗi phần tử được xử lý một số lần hằng số. Nó thường biến việc tìm cặp O(n²) thành O(n)."
+    },
+    {
+      "q": "Hai con trỏ và cửa sổ trượt khác nhau thế nào?",
+      "a": "Cửa sổ trượt là một dạng hai con trỏ trong đó cả hai chỉ số cùng chiều và các phần tử giữa chúng tạo thành mảng con hoặc chuỗi con hiện tại. Hai con trỏ hai đầu xét các cặp, không phải các đoạn."
+    },
+    {
+      "q": "Vì sao cửa sổ trượt là O(n) dù có vòng lặp lồng nhau?",
+      "a": "Vòng lặp bên trong chỉ dịch `left` tiến, và `left` di chuyển tối đa n lần trong toàn bộ quá trình. Cộng với n lần dịch của `right`, tổng cộng nhiều nhất 2n bước."
+    },
+    {
+      "q": "Hai con trỏ có yêu cầu mảng đã sắp xếp không?",
+      "a": "Mẫu tổng cặp hai đầu thì có. Con trỏ nhanh-chậm và cửa sổ trượt thì không, nhưng cửa sổ theo tổng đòi hỏi các số không âm."
+    }
+  ]
+}

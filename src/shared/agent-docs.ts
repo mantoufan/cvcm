@@ -4,6 +4,7 @@ import en from "../locales/en.json";
 import { AI_MODELS, formatMb, modelBytes, type AiModelId } from "./ai-models";
 import { CLIP_MAX_VIEWS, CLIP_TTL_MS } from "./clip";
 import { DATASETS, csvHref } from "./datasets";
+import { CODE_ARTICLES } from "./kb";
 import { LOCALES, localePath } from "./locale";
 import { AI_TOOLS, CATEGORIES, appHref, datasetHref, gamesHref, kbHref, learnHref, quizHref, type CategoryId, type ToolId } from "./path";
 import { SITE_ORIGIN } from "./sitemap";
@@ -185,6 +186,7 @@ export function buildLlmsTxt(): string {
     "",
     `- [Tutorials](${SITE_ORIGIN}${learnHref("en", null)}): illustrated how-to guides.`,
     `- [Knowledge base](${SITE_ORIGIN}${kbHref("en", null)}): sourced explainers.`,
+    `- [Coding tutorials](${SITE_ORIGIN}${kbHref("en", "code")}): ${CODE_ARTICLES.length} one-page tutorials on programming languages, design patterns, data structures and algorithms, with runnable code.`,
     `- [Datasets](${SITE_ORIGIN}${datasetHref("en", null)}): ${DATASETS.length} public reference tables, each also a CSV (for example ${SITE_ORIGIN}${csvHref(DATASETS[0])}).`,
     `- [Personality tests](${SITE_ORIGIN}${quizHref("en", null)}): quizzes that run in the page.`,
     `- [Games](${SITE_ORIGIN}${gamesHref("en", null)}): free homebrew games playable in the browser.`,

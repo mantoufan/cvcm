@@ -1,0 +1,226 @@
+{
+  "title": "Tutorial Bash: variabel, loop, fungsi, dan shell script — cv.cm",
+  "description": "Belajar scripting Bash langkah demi langkah: menjalankan skrip, variabel dan quoting, if dan case, loop, fungsi, array, pipe dan redirection, serta penanganan error yang aman.",
+  "h1": "Tutorial scripting Bash untuk pemula",
+  "answer": "Bash adalah shell dan bahasa scripting command line Unix yang dipakai di server Linux, terminal macOS, dan pipeline CI. Skrip Bash adalah file teks berisi perintah shell yang dipadukan dengan variabel, kondisi, loop, fungsi, dan pipe. Halaman ini menunjukkan cara menulis dan menjalankan skrip, memberi quote pada variabel dengan aman, alur kontrol, memakai array, mengalihkan output, dan menangani error dengan set -euo pipefail.",
+  "sections": [
+    {
+      "h": "Apa itu Bash dan untuk apa digunakan",
+      "body": [
+        "Bash (Bourne Again SHell) adalah shell command line dan bahasa scripting dari GNU Project. Bash membaca perintah yang Anda ketik, menjalankan program, dan menghubungkannya dengan pipe dan redirection. Skrip Bash adalah file teks berisi perintah-perintah yang sama, sehingga apa pun yang Anda lakukan manual di terminal bisa diotomatisasi.",
+        "Bash adalah shell interaktif default di sebagian besar distro Linux dan tersedia di macOS (yang kini memakai zsh sebagai default tetapi masih menyertakan Bash) serta di Windows lewat WSL atau Git Bash. Developer, system administrator, dan DevOps engineer memakainya untuk skrip build, deployment, job CI, pemeliharaan server, dan pemrosesan data cepat dengan tool seperti `grep`, `sed`, `awk`, dan `sort`."
+      ]
+    },
+    {
+      "h": "Tulis dan jalankan Hello, world",
+      "body": [
+        "Skrip diawali baris shebang yang memberi tahu sistem interpreter mana yang dipakai. Buat file bisa dieksekusi dengan `chmod`, lalu jalankan.",
+        {
+          "code": "#!/usr/bin/env bash\n# hello.sh\necho \"Hello, world!\"",
+          "lang": "shell"
+        },
+        {
+          "code": "chmod +x hello.sh\n./hello.sh\n# Hello, world!\nbash hello.sh       # also works without chmod\nbash --version      # check which version you have",
+          "lang": "shell"
+        },
+        "`#!/usr/bin/env bash` mencari Bash di `PATH`, yang lebih portabel daripada menulis `/bin/bash` secara tetap. Jika skrip hanya memakai fitur POSIX, Anda bisa memakai `#!/bin/sh`, tetapi sintaks khusus Bash seperti `[[ ]]` dan array tidak boleh dipakai."
+      ]
+    },
+    {
+      "h": "Variabel, quoting, dan expansion",
+      "body": [
+        "Isi dengan `name=value` dan baca dengan `$name` atau `${name}`. Setiap variabel adalah string; Bash hanya melakukan aritmetika bilangan bulat di dalam `$(( ))`. Gunakan tanda kutip ganda di sekitar expansion agar spasi dan karakter khusus tetap utuh.",
+        {
+          "code": "name=\"Ada\"                 # no spaces around =\ncount=3\necho \"Hello, $name\"        # Hello, Ada\necho \"Next: $((count + 1))\"  # Next: 4  (integer arithmetic)\ntoday=$(date +%Y-%m-%d)    # command substitution\necho \"Today is $today\"\nfile=\"my report.txt\"\necho \"${file%.txt}.pdf\"    # my report.pdf  (strip suffix)\necho \"${#name}\"            # 3  (string length)\necho \"${missing:-default}\" # default  (fallback value)",
+          "lang": "shell"
+        },
+        {
+          "table": {
+            "head": [
+              "Sintaks",
+              "Arti"
+            ],
+            "rows": [
+              [
+                "`\"$var\"`",
+                "nilai var, tetap sebagai satu kata"
+              ],
+              [
+                "`'text'`",
+                "teks literal, tanpa expansion sama sekali"
+              ],
+              [
+                "`$(command)`",
+                "output sebuah perintah"
+              ],
+              [
+                "`$((a + b))`",
+                "aritmetika bilangan bulat"
+              ],
+              [
+                "`$1`, `$2`, `$@`, `$#`",
+                "argumen skrip atau fungsi, semua argumen, jumlah argumen"
+              ],
+              [
+                "`$?`",
+                "exit status perintah terakhir (0 berarti sukses)"
+              ]
+            ]
+          }
+        },
+        {
+          "note": "Menulis `name = value` dengan spasi adalah kesalahan pemula yang paling umum: Bash lalu mencoba menjalankan perintah bernama `name`. Beri quote juga pada setiap expansion: `rm $file` rusak atau menghapus file yang salah ketika nama berisi spasi, sedangkan `rm \"$file\"` aman."
+        }
+      ]
+    },
+    {
+      "h": "Kondisi dan case",
+      "body": [
+        "`if` menjalankan perintah dan memeriksa exit status-nya. Perintah tes `[[ ]]` membandingkan string dan memeriksa file; `(( ))` membandingkan angka. `case` mencocokkan nilai dengan pola glob.",
+        {
+          "code": "#!/usr/bin/env bash\nfile=\"${1:-notes.txt}\"\n\nif [[ -f \"$file\" ]]; then\n  echo \"$file exists\"\nelif [[ -d \"$file\" ]]; then\n  echo \"$file is a directory\"\nelse\n  echo \"$file not found\"\nfi\n\nn=7\nif (( n % 2 == 1 )); then echo \"$n is odd\"; fi\n\ncase \"$file\" in\n  *.txt) echo \"text file\" ;;\n  *.sh)  echo \"shell script\" ;;\n  *)     echo \"something else\" ;;\nesac",
+          "lang": "shell"
+        },
+        {
+          "table": {
+            "head": [
+              "Tes",
+              "Benar jika"
+            ],
+            "rows": [
+              [
+                "`[[ -f path ]]`",
+                "path adalah file biasa"
+              ],
+              [
+                "`[[ -d path ]]`",
+                "path adalah direktori"
+              ],
+              [
+                "`[[ -z \"$s\" ]]`",
+                "string kosong"
+              ],
+              [
+                "`[[ \"$a\" == \"$b\" ]]`",
+                "string sama"
+              ],
+              [
+                "`(( a > b ))`",
+                "angka a lebih besar dari b"
+              ],
+              [
+                "`[[ $a -lt $b ]]`",
+                "angka a lebih kecil dari b (gaya lama)"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "Loop",
+      "body": [
+        "Bash punya `for` atas daftar kata, `for (( ))` bergaya C, `while`, dan `until`. Membaca file baris demi baris memakai `while read`.",
+        {
+          "code": "for fruit in apple banana cherry; do\n  echo \"fruit: $fruit\"\ndone\n\nfor (( i = 1; i <= 3; i++ )); do\n  echo \"i = $i\"\ndone\n\nfor f in *.log; do\n  [[ -e \"$f\" ]] || continue   # skip if no .log files match\n  echo \"log file: $f\"\ndone\n\nwhile IFS= read -r line; do\n  echo \"line: $line\"\ndone < input.txt",
+          "lang": "shell"
+        },
+        "`IFS= read -r` membaca tiap baris persis seperti tertulis: `IFS=` mempertahankan spasi di depan dan `-r` mempertahankan backslash."
+      ]
+    },
+    {
+      "h": "Fungsi",
+      "body": [
+        "Definisikan fungsi dengan `name() { ... }` dan panggil seperti perintah. Argumen datang sebagai `$1`, `$2`, dan seterusnya. Fungsi mengembalikan exit status (0 sampai 255) dengan `return`; untuk mengembalikan data, cetak datanya dan tangkap outputnya dengan `$( )`.",
+        {
+          "code": "greet() {\n  local name=\"${1:-world}\"   # local variable, default value\n  echo \"Hello, $name!\"\n}\n\nis_even() {\n  (( $1 % 2 == 0 ))          # exit status 0 means true\n}\n\ngreet                         # Hello, world!\ngreet \"Ann\"                   # Hello, Ann!\nmsg=$(greet \"Bo\")             # capture output\necho \"Got: $msg\"              # Got: Hello, Bo!\n\nif is_even 4; then echo \"4 is even\"; fi",
+          "lang": "shell"
+        }
+      ]
+    },
+    {
+      "h": "Array dan associative array",
+      "body": [
+        "Indexed array menyimpan daftar string. Associative array memetakan key string ke nilai dan membutuhkan Bash 4 atau lebih baru, sehingga tidak tersedia di Bash 3.2 lama yang disertakan macOS.",
+        {
+          "code": "langs=(\"bash\" \"python\" \"go\")\nlangs+=(\"rust\")\necho \"${langs[0]}\"           # bash\necho \"${#langs[@]}\"          # 4\nfor l in \"${langs[@]}\"; do echo \"- $l\"; done\n\n# associative array (Bash 4 or later)\ndeclare -A port\nport[http]=80\nport[https]=443\necho \"${port[https]}\"        # 443\nfor key in \"${!port[@]}\"; do\n  echo \"$key -> ${port[$key]}\"\ndone",
+          "lang": "shell"
+        },
+        "Selalu tulis `\"${array[@]}\"` dengan tanda kutip untuk mengiterasi elemen; ini menjaga setiap elemen sebagai satu kata meskipun berisi spasi."
+      ]
+    },
+    {
+      "h": "Pipe dan redirection",
+      "body": [
+        "Fitur khas Bash adalah menyusun program-program kecil. Pipe `|` mengirim output satu perintah ke input perintah berikutnya. Redirection mengirim output ke file atau membaca input dari file. File descriptor 1 adalah standard output dan 2 adalah standard error.",
+        {
+          "code": "ls -l > files.txt            # write stdout to a file (overwrite)\necho \"more\" >> files.txt     # append\ngrep error app.log 2> /dev/null   # discard error messages\nmake > build.log 2>&1        # stdout and stderr to the same file\n\n# count the 3 most common words in a file\ntr -cs '[:alpha:]' '\\n' < book.txt | tr '[:upper:]' '[:lower:]' |\n  sort | uniq -c | sort -rn | head -n 3",
+          "lang": "shell"
+        }
+      ]
+    },
+    {
+      "h": "Penanganan error dan skrip yang aman",
+      "body": [
+        "Secara default Bash terus berjalan setelah sebuah perintah gagal. Banyak skrip diawali `set -euo pipefail`: `-e` keluar saat ada error yang tidak ditangani, `-u` memperlakukan variabel yang belum diatur sebagai error, dan `-o pipefail` membuat pipeline gagal jika ada perintah di dalamnya yang gagal. `trap` menjalankan kode pembersihan saat skrip keluar.",
+        {
+          "code": "#!/usr/bin/env bash\nset -euo pipefail            # stop on errors, unset vars, pipe failures\n\ntmp=$(mktemp)\ntrap 'rm -f \"$tmp\"' EXIT     # clean up when the script exits\n\nif ! grep -q \"ready\" status.txt; then\n  echo \"status is not ready\" >&2   # errors go to stderr\n  exit 1\nfi\n\ncp config.txt \"$tmp\" || { echo \"copy failed\" >&2; exit 2; }\necho \"ok\"",
+          "lang": "shell"
+        },
+        "Gunakan `||` untuk menangani kegagalan dalam satu baris dan `&&` untuk menjalankan perintah hanya jika perintah sebelumnya berhasil. `set -e` punya pengecualian (misalnya, perintah di dalam kondisi `if` tidak memicunya), jadi periksa perintah penting secara eksplisit."
+      ]
+    },
+    {
+      "h": "Skrip lengkap kecil: backup bertanggal",
+      "body": [
+        "Skrip ini mengarsipkan direktori ke file `.tar.gz` berstempel waktu dan hanya menyimpan lima arsip terbaru. Skrip ini memakai argumen, nilai default, tes, command substitution, dan pipe.",
+        {
+          "code": "#!/usr/bin/env bash\n# backup.sh: copy a directory into a dated .tar.gz archive\nset -euo pipefail\n\nusage() { echo \"usage: $0 SOURCE_DIR [DEST_DIR]\" >&2; exit 1; }\n\n[[ $# -ge 1 ]] || usage\nsrc=\"$1\"\ndest=\"${2:-$HOME/backups}\"\n[[ -d \"$src\" ]] || { echo \"not a directory: $src\" >&2; exit 1; }\n\nmkdir -p \"$dest\"\nstamp=$(date +%Y%m%d-%H%M%S)\narchive=\"$dest/$(basename \"$src\")-$stamp.tar.gz\"\n\ntar -czf \"$archive\" -C \"$(dirname \"$src\")\" \"$(basename \"$src\")\"\nsize=$(du -h \"$archive\" | cut -f1)\necho \"Created $archive ($size)\"\n\n# keep only the 5 newest archives for this source\nls -1t \"$dest\"/\"$(basename \"$src\")\"-*.tar.gz | tail -n +6 | while read -r old; do\n  rm -f -- \"$old\"\n  echo \"Removed $old\"\ndone",
+          "lang": "shell"
+        },
+        {
+          "code": "./backup.sh ~/projects/site\n# Created /home/ann/backups/site-20261031-093000.tar.gz (2.1M)",
+          "lang": "shell"
+        },
+        {
+          "note": "Kesalahan umum pemula: spasi di sekitar `=`; variabel tanpa quote; memakai `[ ]` dan `[[ ]]` secara bergantian; mengurai output `ls` dalam skrip yang harus menangani nama file tak biasa; lupa `chmod +x`; dan akhiran baris Windows (CRLF) di skrip, yang menyebabkan error seperti `$'\\r': command not found`. Jalankan ShellCheck pada skrip Anda untuk menangkap sebagian besar masalah ini."
+        }
+      ]
+    },
+    {
+      "h": "Langkah selanjutnya",
+      "body": [
+        {
+          "ul": [
+            "GNU Bash Reference Manual, dokumentasi resmi.",
+            "`man bash` dan `help` (misalnya `help read`) di terminal Anda.",
+            "ShellCheck, tool analisis statis yang menjelaskan bug umum pada skrip.",
+            "Spesifikasi POSIX shell jika Anda butuh skrip yang juga berjalan di `sh`, `dash`, atau BusyBox."
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Apa perbedaan Bash dan sh?",
+      "a": "`sh` adalah standar POSIX shell, diimplementasikan oleh program seperti dash. Bash kompatibel dengan POSIX sh tetapi menambahkan fitur seperti `[[ ]]`, array, `(( ))`, dan brace expansion."
+    },
+    {
+      "q": "Apa perbedaan Bash dan zsh?",
+      "a": "Keduanya kompatibel untuk sebagian besar perintah sehari-hari. zsh menambahkan fitur interaktif dan merupakan shell default di macOS; skrip yang ditulis dengan shebang `bash` tetap berjalan dengan Bash."
+    },
+    {
+      "q": "Mengapa skrip saya menampilkan permission denied?",
+      "a": "File belum executable. Jalankan `chmod +x script.sh`, atau mulai dengan `bash script.sh`."
+    },
+    {
+      "q": "Bagaimana cara memberi argumen ke skrip Bash?",
+      "a": "Tulis setelah nama skrip, seperti `./script.sh one two`. Di dalam skrip, argumen itu adalah `$1` dan `$2`, `$@` berisi semuanya, dan `$#` adalah jumlahnya."
+    },
+    {
+      "q": "Haruskah saya menulis program besar dengan Bash?",
+      "a": "Bash paling cocok untuk merangkai perintah. Ketika skrip menjadi kompleks, membutuhkan struktur data atau penanganan error yang cermat, bahasa seperti Python biasanya lebih mudah dipelihara."
+    }
+  ]
+}

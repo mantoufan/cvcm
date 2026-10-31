@@ -1,0 +1,216 @@
+{
+  "title": "스칼라 기초 강좌: 패턴 매칭, 컬렉션, 케이스 클래스, Option — cv.cm",
+  "description": "스칼라 3(Scala 3)를 단계별로 배웁니다. Hello, world 실행, val과 var, if와 for 식, 패턴 매칭, 함수, 불변 컬렉션, 케이스 클래스, Option을 다룹니다.",
+  "h1": "입문자를 위한 스칼라 기초 강좌",
+  "answer": "스칼라(Scala)는 객체 지향과 함수형 프로그래밍을 결합한 정적 타입 JVM 언어로, Apache Spark를 이용한 데이터 엔지니어링과 동시성 백엔드에 널리 쓰입니다. 타입 추론, 불변 컬렉션, 케이스 클래스, 패턴 매칭이 핵심 특징입니다. 이 페이지에서는 스칼라 3를 기준으로 환경 설정, 값, 제어 흐름, 함수, 컬렉션, 트레이트, 열거형, Option·Either·Try를 이용한 오류 처리를 다룹니다.",
+  "sections": [
+    {
+      "h": "스칼라란 무엇이고 어디에 쓰는가",
+      "body": [
+        "스칼라(Scala)는 객체 지향과 함수형 프로그래밍을 결합한 정적 타입 언어입니다. EPFL의 Martin Odersky가 만들었으며 주로 자바 가상 머신(JVM)에서 실행되고, 브라우저용 Scala.js와 네이티브 바이너리용 Scala Native도 있습니다. 스칼라 코드는 모든 자바 라이브러리를 사용할 수 있습니다.",
+        "스칼라는 데이터 엔지니어링(Apache Spark가 스칼라로 작성됨), 동시성·분산 백엔드(Akka, Pekko, ZIO, Cats Effect), 금융과 스트리밍 시스템에 널리 쓰입니다. 이 강좌는 들여쓰기 기반 블록을 허용하는 스칼라 3 문법을 사용하며, 중괄호도 그대로 동작합니다."
+      ]
+    },
+    {
+      "h": "스칼라 설치와 Hello, world 실행",
+      "body": [
+        "권장 설치 도구는 Coursier(`cs setup`)이며, `scala` 명령과 JDK를 함께 설치해 줍니다. 스칼라 3에서는 `@main` 애너테이션을 붙인 메서드가 프로그램의 진입점입니다.",
+        {
+          "code": "// hello.scala\n@main def hello(): Unit =\n  println(\"Hello, world!\")",
+          "lang": "scala"
+        },
+        {
+          "code": "scala run hello.scala\n# Hello, world!",
+          "lang": "shell"
+        },
+        "규모가 큰 프로젝트에서는 sbt와 Mill이 흔히 쓰는 빌드 도구입니다. Scastie(scastie.scala-lang.org)에서는 아무것도 설치하지 않고 브라우저에서 스칼라를 실행할 수 있습니다."
+      ]
+    },
+    {
+      "h": "값, 변수, 기본 타입",
+      "body": [
+        "불변 값에는 `val`, 변경 가능한 변수에는 `var`를 사용합니다. 타입은 추론되지만 콜론 뒤에 직접 쓸 수도 있습니다. 스칼라다운 코드는 거의 모든 곳에서 `val`을 씁니다.",
+        {
+          "code": "val name = \"Scala\"            // String\nvar count: Int = 1            // mutable\ncount += 1\nval ratio = 3.0 / 4           // Double: 0.75\nval big = 12345678901L        // Long\nval ok = count > 1            // Boolean\nprintln(s\"$name: count=$count ratio=$ratio ok=$ok\")\n// Scala: count=2 ratio=0.75 ok=true\nprintln(f\"pi is ${math.Pi}%.3f\")   // pi is 3.142",
+          "lang": "scala"
+        },
+        {
+          "table": {
+            "head": [
+              "타입",
+              "예시",
+              "설명"
+            ],
+            "rows": [
+              [
+                "`Int`",
+                "`42`",
+                "32비트 부호 있는 정수"
+              ],
+              [
+                "`Long`",
+                "`42L`",
+                "64비트 부호 있는 정수"
+              ],
+              [
+                "`Double`",
+                "`3.14`",
+                "64비트 부동 소수점"
+              ],
+              [
+                "`Boolean`",
+                "`true`",
+                "`true` 또는 `false`"
+              ],
+              [
+                "`String`",
+                "`\"hi\"`",
+                "Java 문자열. `s\"...\"`, `f\"...\"` 보간자 지원"
+              ],
+              [
+                "`Unit`",
+                "`()`",
+                "`void`와 비슷하며 의미 있는 값이 없음"
+              ]
+            ]
+          }
+        },
+        "스칼라에서는 모든 것이 식입니다. `if`, 블록, `match`가 모두 값을 반환하므로 임시 `var`가 필요한 경우가 거의 없습니다."
+      ]
+    },
+    {
+      "h": "제어 흐름과 패턴 매칭",
+      "body": [
+        "`if`는 값을 반환합니다. `for`는 범위와 컬렉션을 순회하며, `yield`와 함께 쓰면 새 컬렉션을 만듭니다. `match`는 스칼라의 강력한 패턴 매칭으로, 이 언어의 대표 기능입니다.",
+        {
+          "code": "val n = 7\nval parity = if n % 2 == 0 then \"even\" else \"odd\"\nprintln(parity)                        // odd\nfor i <- 1 to 3 do print(s\"$i \")       // 1 2 3\nprintln()\nval squares = for i <- 1 to 4 yield i * i\nprintln(squares)                       // Vector(1, 4, 9, 16)\ndef describe(x: Any): String = x match\n  case 0             => \"zero\"\n  case i: Int if i < 0 => \"negative int\"\n  case i: Int        => s\"int $i\"\n  case s: String     => s\"string of length ${s.length}\"\n  case (a, b)        => s\"pair $a and $b\"\n  case _             => \"something else\"\nprintln(describe(-5))                  // negative int\nprintln(describe(\"hey\"))               // string of length 3\nprintln(describe((1, \"x\")))            // pair 1 and x",
+          "lang": "scala"
+        },
+        "`1 to 3`은 3을 포함하고 `1 until 3`은 3 앞에서 멈춥니다. 마지막 `case _`는 무엇이든 일치시키는 와일드카드이며, 이것이 없고 일치하는 경우가 없으면 `MatchError`가 발생합니다."
+      ]
+    },
+    {
+      "h": "함수와 고차 함수",
+      "body": [
+        "메서드는 `def`로 정의합니다. 함수는 값이므로 변수에 저장하고, 인자로 전달하고, 반환할 수 있습니다. 매개변수에 기본값을 줄 수 있고, 호출할 때 이름 있는 인자를 쓸 수 있습니다.",
+        {
+          "code": "def add(a: Int, b: Int): Int = a + b\ndef greet(name: String, greeting: String = \"Hello\"): String =\n  s\"$greeting, $name!\"\nval double = (x: Int) => x * 2        // function value\ndef applyTwice(f: Int => Int, x: Int): Int = f(f(x))\nprintln(add(2, 3))                    // 5\nprintln(greet(\"Ann\"))                 // Hello, Ann!\nprintln(greet(\"Ann\", greeting = \"Hi\")) // Hi, Ann!\nprintln(applyTwice(double, 5))        // 20\nprintln(List(1, 2, 3, 4).filter(_ % 2 == 0).map(_ * 10)) // List(20, 40)",
+          "lang": "scala"
+        },
+        "`_ * 10`의 밑줄은 매개변수가 하나인 람다 `x => x * 10`의 축약형입니다."
+      ]
+    },
+    {
+      "h": "컬렉션",
+      "body": [
+        "표준 컬렉션은 기본적으로 불변입니다. `map`, `filter`, `:+` 같은 연산은 원본을 그대로 두고 새 컬렉션을 반환합니다. 변경 가능한 버전은 `scala.collection.mutable`에 있습니다.",
+        {
+          "code": "val nums = List(5, 3, 8)\nval more = nums :+ 1                  // List(5, 3, 8, 1); nums unchanged\nprintln(more.sorted)                  // List(1, 3, 5, 8)\nprintln(nums.sum)                     // 16\nval v = Vector(\"a\", \"b\", \"c\")         // fast indexed access\nprintln(v(1))                         // b\nval ages = Map(\"Ann\" -> 31, \"Bo\" -> 25)\nprintln(ages(\"Ann\"))                  // 31\nprintln(ages.get(\"Zed\"))              // None\nprintln(ages.getOrElse(\"Zed\", 0))     // 0\nval unique = Set(1, 2, 2, 3)\nprintln(unique.size)                  // 3\nval words = List(\"apple\", \"avocado\", \"banana\")\nprintln(words.groupBy(_.head)('a'))  // List(apple, avocado)",
+          "lang": "scala"
+        },
+        {
+          "table": {
+            "head": [
+              "컬렉션",
+              "용도"
+            ],
+            "rows": [
+              [
+                "`List`",
+                "불변 연결 리스트. 앞쪽 추가와 head/tail 접근이 빠름"
+              ],
+              [
+                "`Vector`",
+                "불변 인덱스 시퀀스. 범용 기본값으로 적합"
+              ],
+              [
+                "`Map`",
+                "키-값 조회"
+              ],
+              [
+                "`Set`",
+                "고유한 요소와 포함 여부 검사"
+              ],
+              [
+                "`Array`",
+                "변경 가능한 고정 크기 Java 배열"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "케이스 클래스, 트레이트, 열거형",
+      "body": [
+        "`case class`는 동등성 비교, `toString`, `copy`, 패턴 매칭 지원이 자동으로 만들어지는 불변 데이터 타입입니다. `trait`는 코드를 담을 수도 있는 인터페이스와 비슷합니다. 스칼라 3에는 대수적 데이터 타입을 위한 `enum`이 추가되었습니다.",
+        {
+          "code": "trait Shape:\n  def area: Double\ncase class Circle(r: Double) extends Shape:\n  def area: Double = math.Pi * r * r\ncase class Rect(w: Double, h: Double) extends Shape:\n  def area: Double = w * h\nenum Color:\n  case Red, Green, Blue\n@main def shapes(): Unit =\n  val all: List[Shape] = List(Circle(1), Rect(2, 3))\n  all.foreach(s => println(f\"$s area=${s.area}%.2f\"))\n  // Circle(1.0) area=3.14\n  // Rect(2.0,3.0) area=6.00\n  val r = Rect(2, 3)\n  println(r == Rect(2, 3))            // true\n  println(r.copy(h = 10))             // Rect(2.0,10.0)\n  println(Color.values.toList)        // List(Red, Green, Blue)",
+          "lang": "scala"
+        },
+        "그 밖의 대표 기능으로 `given`과 `using`(예전의 implicit에 해당하는 문맥 매개변수), 확장 메서드, 불투명 타입, `Int | String` 같은 유니온 타입이 있습니다."
+      ]
+    },
+    {
+      "h": "Option, Either, Try로 오류 처리하기",
+      "body": [
+        "스칼라도 `try`, `catch`, `finally`를 지원하지만 스칼라다운 코드는 실패를 타입으로 표현합니다. `Option`은 `Some(value)` 또는 `None`이고, `Either`는 `Left` 오류 또는 `Right` 결과를 담으며, `Try`는 예외를 `Failure`로 감쌉니다.",
+        {
+          "code": "import scala.util.{Try, Success, Failure}\ndef parseInt(s: String): Option[Int] = s.toIntOption\ndef safeDivide(a: Int, b: Int): Either[String, Int] =\n  if b == 0 then Left(\"division by zero\") else Right(a / b)\nprintln(parseInt(\"42\"))               // Some(42)\nprintln(parseInt(\"x\"))                // None\nprintln(safeDivide(10, 2))            // Right(5)\nprintln(safeDivide(1, 0))             // Left(division by zero)\nTry(\"abc\".toInt) match\n  case Success(n) => println(s\"got $n\")\n  case Failure(e) => println(s\"failed: ${e.getClass.getSimpleName}\")\n// failed: NumberFormatException",
+          "lang": "scala"
+        },
+        {
+          "note": "스칼라 코드에서는 `null`을 피하고, `None`이면 예외가 발생하는 `Option`의 `.get` 호출도 피하세요. 대신 `getOrElse`, `map`, `match`, `for` 컴프리헨션을 사용합니다."
+        }
+      ]
+    },
+    {
+      "h": "작은 완성 프로그램: 성적 보고서",
+      "body": [
+        "이 프로그램은 `name,score` 형식의 줄을 파싱하고, 잘못된 줄은 건너뛰며, 학생별 평균을 출력합니다. 케이스 클래스, `Option`, `groupBy`, 문자열 서식을 사용합니다.",
+        {
+          "code": "case class Score(name: String, value: Int)\ndef parse(line: String): Option[Score] =\n  line.split(\",\").map(_.trim) match\n    case Array(name, v) => v.toIntOption.map(Score(name, _))\n    case _              => None\n@main def report(): Unit =\n  val lines = List(\"ann, 90\", \"bo, 70\", \"ann, 80\", \"broken line\", \"bo, x\")\n  val scores = lines.flatMap(parse)\n  val averages = scores.groupBy(_.name).view.mapValues { list =>\n    list.map(_.value).sum.toDouble / list.size\n  }.toList.sortBy(_._1)\n  for (name, avg) <- averages do\n    println(f\"$name%-4s $avg%.1f\")\n// ann  85.0\n// bo   70.0",
+          "lang": "scala"
+        },
+        {
+          "note": "입문자가 자주 하는 실수: 스칼라 3 들여쓰기 문법에서 탭과 일관성 없는 들여쓰기 섞기, 정수 나눗셈(`3 / 4`는 `0`이므로 `3.0 / 4`로 쓰기), 습관적으로 `var`와 변경 가능한 컬렉션 쓰기, `Option`에 `.get` 호출하기, 모든 경우를 다루지 않는 `match` 식 작성하기."
+        }
+      ]
+    },
+    {
+      "h": "다음 단계",
+      "body": [
+        {
+          "ul": [
+            "docs.scala-lang.org의 Scala 3 Book. 기초부터 문맥 추상화까지 언어 전반을 다룹니다.",
+            "파일, JSON, HTTP 같은 일상적인 작업을 위한 Scala Toolkit.",
+            "데이터 처리에 스칼라를 쓰고 싶다면 Apache Spark 문서.",
+            "EPFL 함수형 프로그래밍 강의를 포함해 scala-lang.org에 링크된 강의들."
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "스칼라 2와 스칼라 3 중 무엇을 배워야 하나요?",
+      "a": "새 프로젝트라면 스칼라 3를 배우세요. 스칼라 2.13은 Spark 생태계 일부를 포함한 많은 기존 코드베이스에서 여전히 쓰이지만, 핵심 개념은 대부분 같습니다."
+    },
+    {
+      "q": "스칼라는 함수형 언어인가요?",
+      "a": "스칼라는 객체 지향이면서 함수형입니다. 모든 값이 객체이지만 함수는 일급 값이고, 컬렉션은 기본적으로 불변이며, 패턴 매칭이 중심 역할을 합니다."
+    },
+    {
+      "q": "스칼라에서 val과 var의 차이는 무엇인가요?",
+      "a": "`val`은 다시 할당할 수 없는 값을, `var`는 다시 할당할 수 있는 변수를 정의합니다. 스칼라다운 코드는 `val`과 불변 컬렉션을 함께 사용하는 것을 선호합니다."
+    },
+    {
+      "q": "케이스 클래스란 무엇인가요?",
+      "a": "케이스 클래스는 불변 데이터를 위한 클래스입니다. 컴파일러가 구조적 동등성, 읽기 쉬운 `toString`, `copy` 메서드, 패턴 매칭 지원을 만들어 줍니다."
+    },
+    {
+      "q": "스칼라는 아직도 쓰이나요?",
+      "a": "네. Apache Spark, 스트리밍과 데이터 플랫폼, ZIO와 Cats Effect 같은 함수형 백엔드 라이브러리의 핵심 언어로 여전히 쓰입니다."
+    }
+  ]
+}

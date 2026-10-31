@@ -1,0 +1,183 @@
+{
+  "title": "PHPチュートリアル：変数・配列・関数・クラス・フォーム — cv.cm",
+  "description": "PHP 8入門を1ページで：Hello worldの実行、変数と型、制御構文、関数、配列、クラスと列挙型、例外処理、簡単なWebページまで解説します。",
+  "h1": "PHP入門チュートリアル（初心者向け）",
+  "answer": "PHPはWeb向けに作られたサーバーサイドのスクリプト言語で、PHPファイルはサーバー上で実行され、HTMLやJSONをブラウザに送ります。PHPをインストールし、`<?php echo \"Hello, world\";` を `hello.php` として保存して `php hello.php` で実行するか、`php -S localhost:8000` でローカルサーバーを起動します。`$` 付きの変数、柔軟な配列、型宣言付きの関数、クラス、例外、ユーザー入力の安全な扱いが中心的な内容です。",
+  "sections": [
+    {
+      "h": "PHPとは何か、何に使われるか",
+      "body": [
+        "PHPは1994年にRasmus Lerdorfが作った言語で、名前は現在「PHP: Hypertext Preprocessor」の略です。ほぼすべてのWebホスティングで動作し、WordPress、Drupal、WikipediaのMediaWikiなど、多くのWebサイトを支えています。コンテンツサイト、ネットショップ、REST API、LaravelやSymfonyなどのフレームワークを使った本格的なWebアプリケーションに使われます。現代のPHP 8には、型システム、JITコンパイラ、列挙型、アトリビュートがあり、古いバージョンよりも性能が大きく向上しています。"
+      ]
+    },
+    {
+      "h": "PHPのインストールと Hello, world の実行",
+      "body": [
+        "php.netまたはパッケージマネージャーでPHPをインストールします（`brew install php`、`sudo apt install php-cli`、WindowsならXAMPPなどのバンドル）。`php -v` で確認します。PHPのコードは `<?php` と、省略可能な閉じタグ `?>` の間に書きます。",
+        {
+          "code": "<?php\necho \"Hello, world\\n\";",
+          "lang": "php"
+        },
+        {
+          "code": "php hello.php\n# Hello, world\nphp -S localhost:8000    # serve the current folder at http://localhost:8000",
+          "lang": "shell"
+        },
+        "PHPのコードだけを含むファイルでは、閉じタグ `?>` を書かないでください。そうすれば、余計な空白がうっかりブラウザに送られることがありません。"
+      ]
+    },
+    {
+      "h": "変数と基本の型",
+      "body": [
+        "変数名は `$` で始まります。型は動的ですが、引数と戻り値の型を宣言でき、ファイルの先頭に `declare(strict_types=1);` を書くと、関数呼び出しでの自動的な型変換が行われなくなります。",
+        {
+          "table": {
+            "head": [
+              "型",
+              "例",
+              "備考"
+            ],
+            "rows": [
+              [
+                "`int`",
+                "`$n = 42;`",
+                "多くの環境で64ビット"
+              ],
+              [
+                "`float`",
+                "`$x = 3.14;`",
+                "倍精度"
+              ],
+              [
+                "`string`",
+                "`$s = \"hi $name\";`",
+                "二重引用符では変数が展開され、単一引用符では展開されない"
+              ],
+              [
+                "`bool`",
+                "`$ok = true;`",
+                "大文字小文字を区別しないキーワード"
+              ],
+              [
+                "`array`",
+                "`$a = [1, 2];`",
+                "順序付きマップ：リストと辞書が1つになったもの"
+              ],
+              [
+                "`null`",
+                "`$v = null;`",
+                "値なし"
+              ]
+            ]
+          }
+        },
+        {
+          "code": "<?php\n$name = \"Ada\";\n$count = 7;\necho \"$name has $count items\\n\";        // Ada has 7 items\necho 'No $interpolation here' . \"\\n\";   // No $interpolation here\necho intdiv($count, 2), \" \", $count / 2, \"\\n\";  // 3 3.5\nvar_dump((int) \"12\" + 1);                // int(13)",
+          "lang": "php"
+        },
+        "`.` 演算子は文字列を連結します。`+` は数値専用です。"
+      ]
+    },
+    {
+      "h": "制御構文",
+      "body": [
+        {
+          "code": "<?php\n$score = 72;\nif ($score >= 90) {\n    echo \"A\\n\";\n} elseif ($score >= 70) {\n    echo \"B\\n\";                   // B\n} else {\n    echo \"C\\n\";\n}\n\nfor ($i = 0; $i < 3; $i++) {\n    echo $i, \" \";                 // 0 1 2\n}\necho \"\\n\";\n\nforeach ([\"apple\", \"pear\"] as $fruit) {\n    echo $fruit, \"\\n\";\n}\n\n$kind = match ($day = \"SAT\") {   // match is strict and returns a value\n    \"SAT\", \"SUN\" => \"weekend\",\n    default => \"weekday\",\n};\necho $kind, \"\\n\";                 // weekend",
+          "lang": "php"
+        },
+        "`match`（PHP 8.0以降）は `===` で比較し、どの分岐にも一致しない場合はエラーを投げます。従来の `switch` は緩く比較し、`break` がないと次のケースに落ちていきます。"
+      ]
+    },
+    {
+      "h": "関数",
+      "body": [
+        {
+          "code": "<?php\ndeclare(strict_types=1);\n\nfunction greet(string $name, string $greeting = \"Hello\"): string\n{\n    return \"$greeting, $name!\";\n}\n\necho greet(\"Lin\"), \"\\n\";                    // Hello, Lin!\necho greet(greeting: \"Hi\", name: \"Lin\"), \"\\n\"; // Hi, Lin!  (named arguments)\n\n$square = fn(int $x): int => $x * $x;       // arrow function\necho $square(5), \"\\n\";                      // 25\n\nfunction total(int ...$nums): int           // variadic\n{\n    return array_sum($nums);\n}\necho total(1, 2, 3), \"\\n\";                  // 6",
+          "lang": "php"
+        }
+      ]
+    },
+    {
+      "h": "特徴的な機能：配列",
+      "body": [
+        "PHPの配列は、リスト、辞書、スタック、キューとして使える1つの柔軟な型です。キーは整数または文字列で、挿入順が保持されます。配列を扱う組み込み関数も数多くあります。",
+        {
+          "code": "<?php\n$nums = [3, 1, 2];\n$nums[] = 5;                       // append\nsort($nums);\necho implode(\", \", $nums), \"\\n\";   // 1, 2, 3, 5\n\n$ages = [\"ann\" => 31, \"bob\" => 25];\n$ages[\"cy\"] = 40;\nforeach ($ages as $person => $age) {\n    echo \"$person is $age\\n\";\n}\necho $ages[\"zed\"] ?? 0, \"\\n\";      // 0  (null coalescing)\n\n$evens = array_filter($nums, fn($n) => $n % 2 === 0);\n$squares = array_map(fn($n) => $n * $n, $nums);\necho json_encode(array_values($evens)), \" \", json_encode($squares), \"\\n\";  // [2] [1,4,9,25]\necho count($ages), \" \", array_key_exists(\"bob\", $ages) ? \"yes\" : \"no\", \"\\n\"; // 3 yes",
+          "lang": "php"
+        },
+        "配列は、オブジェクト（ハンドルで渡されます）とは異なり、代入時にコピーされます（コピーオンライト）。"
+      ]
+    },
+    {
+      "h": "クラス、コンストラクタ昇格、列挙型",
+      "body": [
+        {
+          "code": "<?php\ndeclare(strict_types=1);\n\nenum Role: string\n{\n    case Admin = \"admin\";\n    case Viewer = \"viewer\";\n}\n\nfinal class User\n{\n    public function __construct(\n        public readonly string $name,\n        public readonly Role $role = Role::Viewer,\n    ) {}\n\n    public function label(): string\n    {\n        return \"{$this->name} ({$this->role->value})\";\n    }\n}\n\n$u = new User(\"Ann\", Role::Admin);\necho $u->label(), \"\\n\";               // Ann (admin)\necho Role::from(\"viewer\")->name, \"\\n\"; // Viewer",
+          "lang": "php"
+        },
+        "コンストラクタ昇格（PHP 8.0）では、コンストラクタのシグネチャでプロパティの宣言と代入を同時に行います。`readonly` プロパティ（8.1）は一度だけ設定でき、バックド列挙型（8.1）は各ケースを文字列や整数に対応付けます。インターフェース、抽象クラス、トレイトも使えます。"
+      ]
+    },
+    {
+      "h": "エラー処理",
+      "body": [
+        "現代のPHPは、ほとんどのエラーで例外を投げます。想定内の失敗には `Exception` のサブクラスを catch します。`Throwable` なら、`TypeError` のようなエンジンのエラーも含みます。",
+        {
+          "code": "<?php\nfunction parseAge(string $text): int\n{\n    if (!ctype_digit($text)) {\n        throw new InvalidArgumentException(\"invalid age: $text\");\n    }\n    return (int) $text;\n}\n\ntry {\n    echo parseAge(\"41\"), \"\\n\";   // 41\n    echo parseAge(\"abc\"), \"\\n\";\n} catch (InvalidArgumentException $e) {\n    echo $e->getMessage(), \"\\n\"; // invalid age: abc\n} finally {\n    echo \"done\\n\";\n}",
+          "lang": "php"
+        }
+      ]
+    },
+    {
+      "h": "小さな完成プログラム：JSON APIのエンドポイント",
+      "body": [
+        "これを `api.php` として保存し、`php -S localhost:8000` を実行して、`http://localhost:8000/api.php?name=Ann` を開きます。クエリパラメータを読み取り、検証して、JSONを返します。",
+        {
+          "code": "<?php\ndeclare(strict_types=1);\n\nheader(\"Content-Type: application/json; charset=utf-8\");\n\n$name = trim($_GET[\"name\"] ?? \"\");\nif ($name === \"\" || mb_strlen($name) > 50) {\n    http_response_code(400);\n    echo json_encode([\"error\" => \"name must be 1 to 50 characters\"]);\n    exit;\n}\n\n$response = [\n    \"message\" => \"Hello, $name!\",\n    \"length\" => mb_strlen($name),\n    \"time\" => date(DATE_ATOM),\n];\necho json_encode($response, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);",
+          "lang": "php"
+        },
+        "`$_GET`、`$_POST`、`$_COOKIE` はリクエストのデータを保持します。その中のすべての値を、信頼できないものとして扱ってください。"
+      ]
+    },
+    {
+      "h": "初心者がよくやる間違い",
+      "body": [
+        {
+          "note": "ユーザー入力をSQLやHTMLに直接埋め込んではいけません。SQLインジェクションを防ぐにはPDOのプリペアドステートメント（`$stmt = $pdo->prepare(\"SELECT * FROM users WHERE id = ?\")`）を、クロスサイトスクリプティングを防ぐにはHTMLへ出力する際に `htmlspecialchars($value)` を使います。"
+        },
+        {
+          "ul": [
+            "`==` で比較する。型変換が行われるので、`===` と `!==` を使います。",
+            "変数名の `$` や、文末のセミコロンを忘れる。",
+            "パスワードを `md5` や `sha1` で保存する。`password_hash` と `password_verify` を使います。",
+            "UTF-8のテキストに `strlen` を使う。これはバイト数を数えます。文字数には `mb_strlen` を使います。",
+            "古いバージョンのPHPを使い続ける。セキュリティ修正と最新機能のために、サポート中のPHP 8系を使いましょう。"
+          ]
+        }
+      ]
+    },
+    {
+      "h": "次のステップ",
+      "body": [
+        "php.netの公式PHPマニュアルには、言語リファレンスとユーザーノートを含め、すべての関数が載っています。パッケージマネージャーのComposerとPSRコーディング規約を学び、フレームワークを試しましょう。アプリケーションならLaravelかSymfony、小さなAPIならSlimがあります。テストの標準ツールはPHPUnitです。"
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "PHPは今でも学ぶ価値がありますか？",
+      "a": "はい。WordPressサイトを含め、Webの大きな部分を動かしており、PHP 8とLaravelやSymfonyの組み合わせは、Webアプリケーションを生産的に作れる手段です。PHPシステムの保守や開発の仕事も多くあります。"
+    },
+    {
+      "q": "PHPはフロントエンドとバックエンドのどちらの言語ですか？",
+      "a": "バックエンドです。PHPはサーバー上で動作し、完成したHTML、JSON、ファイルをブラウザに送ります。ブラウザがPHPのコードを見ることはありません。"
+    },
+    {
+      "q": "echoとprintの違いは何ですか？",
+      "a": "どちらもテキストを出力します。`echo` はカンマ区切りで複数の引数を取れて何も返さず、`print` は引数を1つだけ取り、1を返します。実際には、ほとんどのコードが `echo` を使います。"
+    },
+    {
+      "q": "declare(strict_types=1)は何をしますか？",
+      "a": "そのファイルから行う関数呼び出しで、スカラー型宣言を厳密にします。文字列 `\"5\"` を `int` 型の引数に渡すと、変換されずに `TypeError` が投げられます。"
+    }
+  ]
+}

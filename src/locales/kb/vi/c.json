@@ -1,0 +1,192 @@
+{
+  "title": "Học lập trình C cơ bản: kiểu dữ liệu, con trỏ, mảng, chuỗi và bộ nhớ — cv.cm",
+  "description": "Học C trong một trang: biên dịch Hello world với gcc, kiểu dữ liệu, điều khiển luồng, hàm, mảng, chuỗi, con trỏ, malloc và free, xử lý lỗi và một ví dụ hoàn chỉnh.",
+  "h1": "Hướng dẫn học lập trình C cơ bản cho người mới",
+  "answer": "C là ngôn ngữ biên dịch nhỏ gọn, nhanh, cho phép truy cập trực tiếp bộ nhớ thông qua con trỏ. Viết `main` trong tệp `.c`, biên dịch bằng `gcc hello.c -o hello` rồi chạy `./hello`. Các ý tưởng cốt lõi là kiểu có kích thước cố định, hàm, mảng và chuỗi kết thúc bằng ký tự null, con trỏ và địa chỉ, quản lý bộ nhớ thủ công với `malloc` và `free`, và xử lý lỗi qua giá trị trả về.",
+  "sections": [
+    {
+      "h": "C là gì và dùng để làm gì",
+      "body": [
+        "C được Dennis Ritchie tạo ra tại Bell Labs vào đầu thập niên 1970 để viết hệ điều hành Unix. Nó được ISO chuẩn hóa (C99, C11, C17 và C23 là các bản chính). C biên dịch thành mã máy với rất ít runtime, nên chạy hầu như ở mọi nơi. Nó được dùng cho nhân hệ điều hành (Linux), firmware nhúng, cơ sở dữ liệu (SQLite), runtime của các ngôn ngữ (CPython viết bằng C) và thư viện hiệu năng cao. Học C cũng giúp bạn hiểu bộ nhớ và máy tính thực sự hoạt động ra sao."
+      ]
+    },
+    {
+      "h": "Cài trình biên dịch và chạy Hello, world",
+      "body": [
+        "Trên Linux hãy cài `gcc` (ví dụ `sudo apt install build-essential`); trên macOS chạy `xcode-select --install` để có `clang` (cũng gọi được là `gcc`); trên Windows dùng MSYS2, WSL hoặc Visual Studio.",
+        {
+          "code": "#include <stdio.h>\nint main(void) {\n    printf(\"Hello, world\\n\");\n    return 0;\n}",
+          "lang": "c"
+        },
+        {
+          "code": "gcc -Wall -Wextra -std=c17 hello.c -o hello\n./hello\n# Hello, world",
+          "lang": "shell"
+        },
+        "`#include` nạp các khai báo từ tệp header, ở đây là thư viện nhập xuất chuẩn. Trả về 0 từ `main` nghĩa là thành công. Luôn biên dịch với cảnh báo được bật (`-Wall -Wextra`)."
+      ]
+    },
+    {
+      "h": "Biến và các kiểu dữ liệu cơ bản",
+      "body": [
+        "Mỗi biến có một kiểu quy định kích thước và ý nghĩa của nó. Kích thước phụ thuộc vào nền tảng, trừ khi chuẩn quy định khác; `<stdint.h>` cung cấp các kiểu có độ rộng chính xác như `int32_t`.",
+        {
+          "table": {
+            "head": [
+              "Kiểu",
+              "Kích thước thường gặp",
+              "Ví dụ",
+              "Định dạng printf"
+            ],
+            "rows": [
+              [
+                "`char`",
+                "1 byte",
+                "`char c = 'A';`",
+                "`%c`"
+              ],
+              [
+                "`int`",
+                "4 byte",
+                "`int n = 42;`",
+                "`%d`"
+              ],
+              [
+                "`long long`",
+                "8 byte",
+                "`long long big = 1LL << 40;`",
+                "`%lld`"
+              ],
+              [
+                "`double`",
+                "8 byte",
+                "`double x = 3.14;`",
+                "`%f`"
+              ],
+              [
+                "`bool`",
+                "1 byte",
+                "`bool ok = true;` (C99 `<stdbool.h>`)",
+                "`%d`"
+              ],
+              [
+                "`size_t`",
+                "8 byte trên hệ 64 bit",
+                "`size_t len = sizeof(arr);`",
+                "`%zu`"
+              ]
+            ]
+          }
+        },
+        {
+          "code": "#include <stdio.h>\nint main(void) {\n    int count = 7;\n    double avg = count / 2;     /* 3.0: integer division first */\n    double avg2 = count / 2.0;  /* 3.5 */\n    printf(\"%d %.1f %.1f\\n\", count, avg, avg2);  /* 7 3.0 3.5 */\n    printf(\"%zu\\n\", sizeof(int));                /* 4 on most systems */\n    return 0;\n}",
+          "lang": "c"
+        }
+      ]
+    },
+    {
+      "h": "Điều khiển luồng và hàm",
+      "body": [
+        "Hàm phải được khai báo trước khi dùng. Đối số được truyền theo giá trị: hàm nhận một bản sao.",
+        {
+          "code": "#include <stdio.h>\nint square(int x) {\n    return x * x;\n}\nint main(void) {\n    int score = 72;\n    if (score >= 90) {\n        printf(\"A\\n\");\n    } else if (score >= 70) {\n        printf(\"B\\n\");              /* B */\n    } else {\n        printf(\"C\\n\");\n    }\n    for (int i = 0; i < 3; i++) {\n        printf(\"%d \", square(i));   /* 0 1 4 */\n    }\n    printf(\"\\n\");\n    int n = 10;\n    while (n > 1) n /= 2;\n    printf(\"%d\\n\", n);              /* 1 */\n    return 0;\n}",
+          "lang": "c"
+        },
+        "C còn có `do`/`while`, `switch` với nhãn `case` (nhớ `break`), và `goto`, chủ yếu dùng để dọn dẹp trong các nhánh lỗi."
+      ]
+    },
+    {
+      "h": "Mảng và chuỗi",
+      "body": [
+        "Mảng là một số lượng phần tử cố định nằm cạnh nhau. C không kiểm tra giới hạn và không lưu độ dài, nên bạn phải truyền độ dài riêng. Chuỗi là mảng `char` kết thúc bằng một byte không `'\\0'`.",
+        {
+          "code": "#include <stdio.h>\n#include <string.h>\nint sum(const int *values, size_t n) {\n    int total = 0;\n    for (size_t i = 0; i < n; i++) total += values[i];\n    return total;\n}\nint main(void) {\n    int nums[] = {3, 1, 2, 5};\n    size_t n = sizeof nums / sizeof nums[0];\n    printf(\"%zu items, sum %d\\n\", n, sum(nums, n));  /* 4 items, sum 11 */\n    char name[16] = \"Ada\";\n    strncat(name, \" Lovelace\", sizeof name - strlen(name) - 1);\n    printf(\"%s (%zu chars)\\n\", name, strlen(name));  /* Ada Lovelace (12 chars) */\n    return 0;\n}",
+          "lang": "c"
+        },
+        "Khi truyền mảng vào hàm, nó suy biến (decay) thành con trỏ tới phần tử đầu tiên, đó là lý do `sum` nhận `const int *` và một độ dài."
+      ]
+    },
+    {
+      "h": "Tính năng đặc trưng: con trỏ",
+      "body": [
+        "Con trỏ giữ địa chỉ bộ nhớ của một giá trị khác. `&x` cho địa chỉ của `x`, còn `*p` đọc hoặc ghi giá trị tại địa chỉ `p`. Con trỏ cho phép hàm sửa biến của bên gọi, chia sẻ dữ liệu lớn mà không sao chép, và xây dựng các cấu trúc dữ liệu liên kết.",
+        {
+          "code": "#include <stdio.h>\nvoid swap(int *a, int *b) {\n    int tmp = *a;\n    *a = *b;\n    *b = tmp;\n}\nint main(void) {\n    int x = 1, y = 2;\n    int *p = &x;\n    *p = 10;                      /* changes x */\n    swap(&x, &y);\n    printf(\"x=%d y=%d\\n\", x, y);  /* x=2 y=10 */\n    int arr[3] = {7, 8, 9};\n    int *q = arr;\n    printf(\"%d %d\\n\", *(q + 1), q[2]);  /* 8 9: pointer arithmetic */\n    return 0;\n}",
+          "lang": "c"
+        }
+      ]
+    },
+    {
+      "h": "Bộ nhớ động với malloc và free",
+      "body": [
+        "Biến cục bộ nằm trên stack và biến mất khi hàm trả về. Với dữ liệu mà kích thước chỉ biết lúc chạy, hoặc phải tồn tại lâu hơn hàm, hãy cấp phát trên heap bằng `malloc` và giải phóng bằng `free`. Mỗi `malloc` thành công cần đúng một `free`.",
+        {
+          "code": "#include <stdio.h>\n#include <stdlib.h>\nint main(void) {\n    size_t n = 5;\n    int *squares = malloc(n * sizeof *squares);\n    if (squares == NULL) {\n        fprintf(stderr, \"out of memory\\n\");\n        return 1;\n    }\n    for (size_t i = 0; i < n; i++) squares[i] = (int)(i * i);\n    printf(\"%d\\n\", squares[4]);  /* 16 */\n    free(squares);\n    squares = NULL;              /* avoid using a dangling pointer */\n    return 0;\n}",
+          "lang": "c"
+        },
+        "Các hàm liên quan là `calloc` (cấp phát và xóa về 0) và `realloc` (đổi kích thước). Hãy nhóm các giá trị liên quan bằng `struct`, ví dụ `struct point { int x; int y; };`."
+      ]
+    },
+    {
+      "h": "Xử lý lỗi",
+      "body": [
+        "C không có ngoại lệ. Hàm báo lỗi qua giá trị trả về (thường là `-1`, `NULL` hoặc mã trạng thái), và nhiều hàm thư viện còn đặt biến toàn cục `errno`. Hãy kiểm tra mọi giá trị trả về có thể thất bại.",
+        {
+          "code": "#include <errno.h>\n#include <stdio.h>\n#include <string.h>\nint main(void) {\n    FILE *f = fopen(\"missing.txt\", \"r\");\n    if (f == NULL) {\n        fprintf(stderr, \"cannot open: %s\\n\", strerror(errno));\n        return 1;   /* cannot open: No such file or directory */\n    }\n    fclose(f);\n    return 0;\n}",
+          "lang": "c"
+        }
+      ]
+    },
+    {
+      "h": "Một chương trình nhỏ hoàn chỉnh: đếm dòng và từ",
+      "body": [
+        "Chương trình này hoạt động như một `wc` thu nhỏ: nó đọc tệp được chỉ định trên dòng lệnh và in ra số dòng, số từ và số byte.",
+        {
+          "code": "#include <ctype.h>\n#include <stdio.h>\nint main(int argc, char *argv[]) {\n    if (argc != 2) {\n        fprintf(stderr, \"usage: %s FILE\\n\", argv[0]);\n        return 1;\n    }\n    FILE *f = fopen(argv[1], \"r\");\n    if (f == NULL) {\n        perror(argv[1]);\n        return 1;\n    }\n    long lines = 0, words = 0, bytes = 0;\n    int c, in_word = 0;\n    while ((c = fgetc(f)) != EOF) {\n        bytes++;\n        if (c == '\\n') lines++;\n        if (isspace(c)) {\n            in_word = 0;\n        } else if (!in_word) {\n            in_word = 1;\n            words++;\n        }\n    }\n    fclose(f);\n    printf(\"%ld lines, %ld words, %ld bytes\\n\", lines, words, bytes);\n    return 0;\n}",
+          "lang": "c"
+        },
+        "Biên dịch bằng `gcc -Wall -Wextra wc.c -o wc` và chạy `./wc notes.txt`. Lưu ý `c` là `int`, không phải `char`, để nó chứa được giá trị đặc biệt `EOF`."
+      ]
+    },
+    {
+      "h": "Những lỗi thường gặp của người mới",
+      "body": [
+        {
+          "note": "Ghi vượt quá cuối mảng hoặc dùng bộ nhớ sau khi `free` là hành vi không xác định: chương trình có thể có vẻ chạy được, sập về sau, hoặc trở thành lỗ hổng bảo mật. Khi học hãy biên dịch với `-fsanitize=address -g` để bắt các lỗi này."
+        },
+        {
+          "ul": [
+            "Dùng `=` thay cho `==` trong điều kiện. Cảnh báo (`-Wall`) bắt được hầu hết trường hợp.",
+            "Quên chừa chỗ cho ký tự kết thúc `'\\0'` khi định kích thước bộ đệm chuỗi.",
+            "Dùng `gets` hoặc `scanf(\"%s\", buf)` không giới hạn. Hãy dùng `fgets(buf, sizeof buf, stdin)` thay thế.",
+            "Trả về con trỏ tới biến cục bộ, vốn không còn tồn tại sau khi hàm trả về.",
+            "Dùng sai định dạng `printf` so với kiểu, chẳng hạn `%d` cho `size_t`."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Học tiếp ở đâu",
+      "body": [
+        "Hãy dùng mục C của cppreference.com làm tài liệu tham khảo cho ngôn ngữ và thư viện chuẩn, và đọc các trang của nhóm làm việc ISO (WG14) về chính bản chuẩn. Luyện tập với struct, danh sách liên kết, tệp header và chương trình nhiều tệp build bằng `make`. Một trình gỡ lỗi (`gdb` hoặc `lldb`) cùng Valgrind hoặc AddressSanitizer sẽ giúp bạn tiết kiệm hàng giờ. Sau đó khám phá C++ hoặc Rust, xây dựng trên cùng các ý tưởng nhưng an toàn hơn."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "C có còn đáng học không?",
+      "a": "Có. C vẫn được dùng cho hệ điều hành, thiết bị nhúng và thư viện đòi hỏi hiệu năng, và nó dạy về bộ nhớ, con trỏ và cách mã đã biên dịch chạy, điều có ích cho mọi ngôn ngữ khác."
+    },
+    {
+      "q": "C và C++ khác nhau thế nào?",
+      "a": "C++ bắt đầu như một phần mở rộng của C và thêm lớp, template, tham chiếu, ngoại lệ và một thư viện chuẩn lớn. C vẫn nhỏ gọn và thủ tục. Phần lớn mã C gần như là C++ hợp lệ, nhưng chúng là hai chuẩn riêng biệt."
+    },
+    {
+      "q": "Vì sao chương trình C của tôi sập với lỗi segmentation fault?",
+      "a": "Nó truy cập vùng nhớ không thuộc về mình, thường qua con trỏ null, chưa khởi tạo hoặc đã giải phóng, hoặc do lập chỉ mục vượt quá cuối mảng. Hãy chạy nó trong trình gỡ lỗi hoặc với AddressSanitizer để tìm ra đúng dòng."
+    },
+    {
+      "q": "Nên dùng chuẩn C nào?",
+      "a": "C17 được các trình biên dịch hiện nay hỗ trợ rộng rãi, còn C23 là chuẩn mới nhất. Hãy chỉ định phiên bản rõ ràng, ví dụ `-std=c17`, để hành vi nhất quán."
+    }
+  ]
+}

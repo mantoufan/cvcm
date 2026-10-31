@@ -1,0 +1,200 @@
+{
+  "title": "Objective-C入門：メッセージ、クラス、Foundationコレクション、ブロック — cv.cm",
+  "description": "Objective-Cの基礎を解説。clangでHello worldをコンパイルし、メッセージ送信、クラスとプロパティ、NSArrayとNSDictionary、ブロック、ARC、NSErrorを学びます。",
+  "h1": "Objective-C入門",
+  "answer": "Objective-Cは、C言語にSmalltalk風のオブジェクト指向メッセージングを加えた言語です。メソッドは角括弧のメッセージ送信 `[object doSomething:arg]` で呼び出し、クラスは `@interface` と `@implementation` のブロックで定義し、文字列・配列・辞書にはAppleのFoundationフレームワークを使います。Swift登場以前はmacOSとiOSアプリの主力言語であり、今も多くの既存Appleコード資産で使われています。Macでは `clang -fobjc-arc -framework Foundation hello.m` でコンパイルします。",
+  "sections": [
+    {
+      "h": "Objective-Cとは何か、誰が使っているのか",
+      "body": [
+        "Objective-Cは1980年代前半にBrad CoxとTom Loveが考案し、NeXTがNeXTSTEPに採用し、さらにAppleが引き継ぎました。そのNeXTSTEPがmacOSとiOSの土台になっています。Cの厳密なスーパーセットで、あらゆるCコードがそのままObjective-Cとして有効であり、両者を自由に混在させられます。",
+        "現在、Appleは新規アプリにSwiftを推奨していますが、Objective-Cも引き続き完全にサポートされています。古いiOS・macOSアプリ、多くのシステムフレームワークやサードパーティライブラリ、CやC++とAppleのAPIを組み合わせるプロジェクトで見かけます。SwiftとObjective-Cは同じプロジェクト内で相互運用できるので、Appleプラットフォームの開発者は両方を知っておくと役立ちます。"
+      ]
+    },
+    {
+      "h": "インストールとHello, world",
+      "body": [
+        "macOSでは、Xcode、またはコマンドラインツールのみ（`xcode-select --install`）をインストールします。どちらにもclangコンパイラとFoundationフレームワークが含まれています。ソースファイルの拡張子は `.m`、ヘッダーは `.h` です。",
+        {
+          "code": "// hello.m\n#import <Foundation/Foundation.h>\n\nint main(void) {\n    @autoreleasepool {\n        NSLog(@\"Hello, world!\");\n    }\n    return 0;\n}",
+          "lang": "objc"
+        },
+        {
+          "code": "clang -fobjc-arc -framework Foundation hello.m -o hello\n./hello\n# 2026-10-31 10:00:00.000 hello[1234:5678] Hello, world!",
+          "lang": "shell"
+        },
+        "`NSLog` は標準エラー出力に書き込み、タイムスタンプとプロセス名を付加します。`@\"...\"` はC文字列ではなく `NSString` オブジェクトを作ります。`-fobjc-arc` は標準的なメモリ管理であるARC（自動参照カウント）を有効にします。Linuxでは、GNUstepプロジェクトが互換のFoundationライブラリを提供しており、ビルドコマンドは異なります。"
+      ]
+    },
+    {
+      "h": "型、オブジェクト、メッセージ",
+      "body": [
+        "Objective-CはCなので、C言語の型はすべて使えます。オブジェクトは常にポインタ経由で扱います（`NSString *name`）。メソッドの呼び出しは「メッセージの送信」と呼ばれ、引数はメソッド名の各パーツの間に挟まれて並びます。",
+        {
+          "table": {
+            "head": [
+              "型",
+              "例",
+              "備考"
+            ],
+            "rows": [
+              [
+                "C言語の数値型",
+                "`int`, `double`, `NSInteger`",
+                "`NSInteger` は64ビットプラットフォームでは64ビット"
+              ],
+              [
+                "BOOL",
+                "`BOOL ok = YES;`",
+                "`YES` / `NO`"
+              ],
+              [
+                "NSString *",
+                "`@\"hello\"`",
+                "不変の文字列オブジェクト"
+              ],
+              [
+                "NSNumber *",
+                "`@42`, `@3.14`, `@(x + 1)`",
+                "数値をボックス化し、コレクションに入れられるようにする"
+              ],
+              [
+                "id",
+                "`id thing = @\"x\";`",
+                "任意のオブジェクトへのポインタ。静的な型なし"
+              ],
+              [
+                "nil",
+                "`nil`",
+                "ヌルのオブジェクトポインタ"
+              ]
+            ]
+          }
+        },
+        {
+          "code": "NSString *name = @\"Ana\";\nNSInteger age = 30;\nNSString *line = [NSString stringWithFormat:@\"%@ is %ld\", name, (long)age];\nNSLog(@\"%@\", line);                          // Ana is 30\nNSLog(@\"%lu\", (unsigned long)[name length]); // 3\nNSString *upper = [name uppercaseString];    // @\"ANA\"\nBOOL same = [name isEqualToString:@\"Ana\"];   // YES\nNSString *nothing = nil;\nNSLog(@\"%lu\", (unsigned long)[nothing length]); // 0: messages to nil return 0",
+          "lang": "objc"
+        },
+        "書式文字列では、`%@` がオブジェクトを出力します（`description` メソッドが呼ばれます）。`nil` へのメッセージ送信は許可されており、`nil` または0を返します。これで多くのクラッシュを避けられますが、バグが隠れることもあります。"
+      ]
+    },
+    {
+      "h": "制御構文",
+      "body": [
+        "制御構文はまったくCと同じで、`if`、`else`、`switch`、`for`、`while`、`do ... while` を使います。Objective-Cは、コレクション向けに `for ... in` による高速列挙を追加しています。",
+        {
+          "code": "NSInteger score = 85;\nif (score >= 90) {\n    NSLog(@\"A\");\n} else if (score >= 80) {\n    NSLog(@\"B\");\n} else {\n    NSLog(@\"C\");\n}\n\nfor (int i = 1; i <= 3; i++) {\n    NSLog(@\"%d squared is %d\", i, i * i);\n}\n\nfor (NSString *fruit in @[@\"apple\", @\"pear\"]) {\n    NSLog(@\"%@\", fruit);\n}",
+          "lang": "objc"
+        }
+      ]
+    },
+    {
+      "h": "クラス、プロパティ、メソッド",
+      "body": [
+        "クラスには、公開インターフェイス（通常は `.h` ファイル）と実装（`.m` ファイル）があります。インスタンスメソッドは `-` で、クラスメソッドは `+` で始めます。`@property` はプロパティを宣言し、そのゲッター、セッター、そしてアンダースコア付きの名前の内部変数を生成します。",
+        {
+          "code": "@interface Person : NSObject\n@property (nonatomic, copy) NSString *name;\n@property (nonatomic) NSInteger age;\n- (instancetype)initWithName:(NSString *)name age:(NSInteger)age;\n- (NSString *)greeting;\n@end\n\n@implementation Person\n- (instancetype)initWithName:(NSString *)name age:(NSInteger)age {\n    self = [super init];\n    if (self) {\n        _name = [name copy];\n        _age = age;\n    }\n    return self;\n}\n\n- (NSString *)greeting {\n    return [NSString stringWithFormat:@\"Hi, I am %@, %ld\", self.name, (long)self.age];\n}\n@end\n\n// Usage inside main:\nPerson *ana = [[Person alloc] initWithName:@\"Ana\" age:30];\nNSLog(@\"%@\", [ana greeting]);   // Hi, I am Ana, 30\nana.age = 31;                   // dot syntax calls the setter",
+          "lang": "objc"
+        },
+        "オブジェクトは2段階で作ります。`alloc` がメモリを確保し、`init...` メソッドが初期化します。上のメソッドの名前は `initWithName:age:` です（コロンも名前の一部です）。プロトコル（`@protocol`）はインターフェイスの役割を担い、カテゴリを使うと `NSString` のような既存クラスにもメソッドを追加できます。"
+      ]
+    },
+    {
+      "h": "Foundationのコレクションとブロック",
+      "body": [
+        "Foundationフレームワークは、不変のコレクションと、その可変なサブクラスを提供します。リテラルを使うと短く書けます。コレクションに入れられるのはオブジェクトだけなので、数値は `NSNumber` にボックス化し、`nil` は格納できません（代わりに `[NSNull null]` を使います）。",
+        {
+          "table": {
+            "head": [
+              "クラス",
+              "リテラルまたは作成方法",
+              "可変版"
+            ],
+            "rows": [
+              [
+                "NSArray",
+                "`@[@\"Ana\", @\"Ben\"]`",
+                "NSMutableArray"
+              ],
+              [
+                "NSDictionary",
+                "`@{@\"Ana\": @30}`",
+                "NSMutableDictionary"
+              ],
+              [
+                "NSSet",
+                "`[NSSet setWithArray:arr]`",
+                "NSMutableSet"
+              ],
+              [
+                "NSString",
+                "`@\"text\"`",
+                "NSMutableString"
+              ]
+            ]
+          }
+        },
+        {
+          "code": "NSArray<NSString *> *names = @[@\"Ana\", @\"Ben\"];\nNSMutableArray<NSString *> *more = [names mutableCopy];\n[more addObject:@\"Cleo\"];\nNSDictionary<NSString *, NSNumber *> *ages = @{@\"Ana\": @30, @\"Ben\": @17};\nNSLog(@\"%lu names, Ana is %@\", (unsigned long)more.count, ages[@\"Ana\"]);\n\nNSInteger (^square)(NSInteger) = ^(NSInteger x) { return x * x; };\nNSLog(@\"%ld\", (long)square(7));    // 49\n\nNSArray<NSNumber *> *sorted = [@[@3, @1, @2]\n    sortedArrayUsingComparator:^NSComparisonResult(NSNumber *a, NSNumber *b) {\n        return [a compare:b];\n    }];\nNSLog(@\"%@\", [sorted componentsJoinedByString:@\", \"]);   // 1, 2, 3",
+          "lang": "objc"
+        },
+        "ブロックは `^` で書くクロージャ、つまり周囲のスコープの変数を捕捉できる無名関数です。AppleのAPIでは、コールバック、ソート、Grand Central Dispatchによる非同期処理に使われます。`<NSString *>` の部分は、コンパイラとSwiftを助ける軽量なジェネリクスで、省略も可能です。"
+      ]
+    },
+    {
+      "h": "メモリ管理とエラー処理",
+      "body": [
+        "ARCでは、参照カウントの呼び出しをコンパイラが挿入してくれます。強い参照が1つもなくなると、オブジェクトは解放されます。自分で対処する必要があるのは循環参照だけで、通常は片側を `weak` にします（例えばデリゲートプロパティ）。",
+        "回復可能なエラーには `NSError` パターンを使います。メソッドは失敗時に `nil` または `NO` を返し、参照渡しで受け取った `NSError` オブジェクトに内容を設定します。例外（`@try`、`@catch`、`NSException`）もありますが、Cocoaでは、範囲外の添字のようなプログラマーのミスを知らせるためのもので、通常の失敗には使いません。",
+        {
+          "code": "NSError *error = nil;\nNSString *text = [NSString stringWithContentsOfFile:@\"/no/such/file\"\n                                           encoding:NSUTF8StringEncoding\n                                              error:&error];\nif (text == nil) {\n    NSLog(@\"Failed: %@\", error.localizedDescription);\n}",
+          "lang": "objc"
+        }
+      ]
+    },
+    {
+      "h": "小さな完成プログラム：単語の出現頻度",
+      "body": [
+        {
+          "code": "#import <Foundation/Foundation.h>\n\nint main(void) {\n    @autoreleasepool {\n        NSString *text = @\"the cat and the hat and the bat\";\n        NSMutableDictionary<NSString *, NSNumber *> *counts = [NSMutableDictionary dictionary];\n        for (NSString *word in [text componentsSeparatedByString:@\" \"]) {\n            counts[word] = @(counts[word].integerValue + 1);\n        }\n        NSArray<NSString *> *sorted = [counts keysSortedByValueUsingComparator:\n            ^NSComparisonResult(NSNumber *a, NSNumber *b) { return [b compare:a]; }];\n        for (NSString *word in [sorted subarrayWithRange:NSMakeRange(0, 2)]) {\n            printf(\"%s %ld\\n\", word.UTF8String, (long)counts[word].integerValue);\n        }\n    }\n    return 0;\n}\n// the 3\n// and 2",
+          "lang": "objc"
+        },
+        "新しい単語の場合、`counts[word]` は `nil` で、`nil.integerValue` は0を返すため、最初のカウントは1になります。コンパレーターは順序を逆にして、カウントの多い順に並べます。`printf` は `NSLog` の接頭辞なしで出力します。",
+        {
+          "note": "初心者がよくやる間違い：文字列を `==` で比較する（これはポインタの比較です。`isEqualToString:` を使います）。文字列リテラルの前の `@` を忘れる。オブジェクト宣言の `*` を忘れる。配列や辞書のリテラルに `nil` を入れて、実行時にクラッシュさせる。`NSInteger` を `%d` で出力する（`%ld` とキャストを使います）。そして `-fobjc-arc` なしでコンパイルする。"
+        }
+      ]
+    },
+    {
+      "h": "次のステップ",
+      "body": [
+        {
+          "ul": [
+            "言語の基礎は、ドキュメントアーカイブにあるAppleの「Programming with Objective-C」ガイドで。",
+            "Appleのデベロッパードキュメントにある、Foundationフレームワークのリファレンス。",
+            "正確なメモリのルールは、ClangのAutomatic Reference Countingのドキュメントで。",
+            "混在したコード資産を保守する場合は、Objective-CとSwiftの連携方法を学びましょう。"
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Objective-Cは今でも使われていますか？",
+      "a": "はい。主に既存のiOS・macOSアプリやライブラリで使われています。Appleは新しいコードにSwiftを推奨していますが、XcodeやApple SDKでObjective-Cは引き続きサポートされています。"
+    },
+    {
+      "q": "SwiftとObjective-Cはどちらを先に学ぶべきですか？",
+      "a": "新規のApple向け開発なら、まずSwiftを学びましょう。Objective-Cは、古いコードを読んだり保守したりする必要があるとき、CやC++のライブラリと密接に連携させるとき、Appleのフレームワークが内部でどう動くかを理解したいときに学びます。"
+    },
+    {
+      "q": "Objective-Cの角括弧は何を意味しますか？",
+      "a": "メッセージの送信を表します。`[receiver message]` は、オブジェクト `receiver` のメソッド `message` を呼び出します。引数は、`[dict setObject:value forKey:key]` のようにコロンの後ろに続きます。"
+    },
+    {
+      "q": "Objective-Cにはガベージコレクションがありますか？",
+      "a": "現在のObjective-Cは自動参照カウント（ARC）を使い、コンパイラがretainとreleaseの呼び出しを追加します。macOS向けの古いガベージコレクタはAppleによって非推奨となり、現在は利用できません。"
+    }
+  ]
+}

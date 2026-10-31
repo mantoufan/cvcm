@@ -1,0 +1,253 @@
+{
+  "title": "汇编语言教程：x86-64 寄存器、NASM 语法、系统调用与函数 — cv.cm",
+  "description": "在 Linux 上用 NASM 学习 x86-64 汇编：寄存器、算术运算、跳转与循环、内存寻址、系统调用、调用约定和 AT&T 语法。",
+  "h1": "汇编语言入门教程（x86-64，NASM）",
+  "answer": "汇编语言是处理器机器指令的可读形式：每行通常对应一条指令，如 `mov rax, 1` 或 `add rax, rbx`。你直接操作寄存器、内存地址和栈，没有变量、类型，也没有循环，除非用跳转自己搭出来。本教程在 Linux 上使用 x86-64 和 NASM 汇编器：编写 `.asm` 文件，用 `nasm -f elf64` 汇编，再用 `ld` 链接。",
+  "sections": [
+    {
+      "h": "汇编是什么，谁在用",
+      "body": [
+        "每个处理器家族都有自己的指令集，因此也有自己的汇编语言。x86-64（也称 AMD64）运行在大多数台式机和服务器上；ARM（AArch64）运行在大多数手机、Apple 芯片的 Mac 和许多服务器上。汇编器把汇编翻译成机器码，链接器再把结果合并成可执行文件。",
+        "如今很少有程序完全用汇编编写。它用于操作系统内核和引导程序、性能关键的例程（密码学、编解码器、数学库）、嵌入式固件、编译器开发、安全研究和逆向工程。更多时候，开发者阅读汇编是为了弄清编译器生成了什么，或者调试崩溃。"
+      ]
+    },
+    {
+      "h": "安装 NASM 并运行 Hello, world",
+      "body": [
+        "在 Debian 或 Ubuntu 上，用 `sudo apt install nasm binutils` 安装工具（`binutils` 提供链接器 `ld`）。这个程序通过系统调用直接调用 Linux 内核，所以不需要 C 库。",
+        {
+          "code": "; hello.asm - x86-64 Linux, NASM syntax\nsection .data\n    msg     db \"Hello, world!\", 10   ; 10 = newline\n    msglen  equ $ - msg              ; length computed by the assembler\n\nsection .text\n    global _start\n\n_start:\n    mov     rax, 1          ; system call number 1 = write\n    mov     rdi, 1          ; file descriptor 1 = stdout\n    mov     rsi, msg        ; address of the bytes\n    mov     rdx, msglen     ; number of bytes\n    syscall\n\n    mov     rax, 60         ; system call number 60 = exit\n    xor     rdi, rdi        ; exit code 0\n    syscall",
+          "lang": "asm"
+        },
+        {
+          "code": "nasm -f elf64 hello.asm -o hello.o\nld hello.o -o hello\n./hello\n# Hello, world!",
+          "lang": "shell"
+        },
+        "`section .data` 存放已初始化的数据，`section .text` 存放代码，`_start` 是 `ld` 查找的入口点。注释以 `;` 开头。如果没有最后的 `exit` 系统调用，处理器会继续执行后面的任何字节，程序就会崩溃。"
+      ]
+    },
+    {
+      "h": "寄存器与数据大小",
+      "body": [
+        "寄存器是 CPU 内部小而极快的存储位置。x86-64 有 16 个 64 位通用寄存器。每个寄存器也可以只使用较小的部分。",
+        {
+          "table": {
+            "head": [
+              "寄存器",
+              "常见用途",
+              "较小的部分"
+            ],
+            "rows": [
+              [
+                "`rax`",
+                "返回值、系统调用号",
+                "`eax`（32 位）、`ax`（16 位）、`al`（8 位）"
+              ],
+              [
+                "`rdi`, `rsi`, `rdx`",
+                "前三个函数参数或系统调用参数",
+                "`edi`, `esi`, `edx`"
+              ],
+              [
+                "`rcx`, `r8`, `r9`",
+                "第四到第六个函数参数",
+                "`ecx`, `r8d`, `r9d`"
+              ],
+              [
+                "`rbx`, `rbp`, `r12`–`r15`",
+                "必须在函数调用后保持不变的值（被调用者保存）",
+                "`ebx`, `r12d`"
+              ],
+              [
+                "`rsp`",
+                "栈指针：栈顶的地址",
+                "不要用来存放数据"
+              ],
+              [
+                "`rip`",
+                "指令指针（只会被跳转、调用、返回改变）",
+                "不能直接写入"
+              ]
+            ]
+          }
+        },
+        "内存中的数据用 `db`（字节，8 位）、`dw`（字，16 位）、`dd`（双字，32 位）和 `dq`（四字，64 位）声明。未初始化的缓冲区放在 `section .bss` 中，用 `resb`、`resq` 等。写入 `eax` 这样的 32 位寄存器时，也会清除 `rax` 的高 32 位，这就是 `xor eax, eax` 成为把 `rax` 置零的常用方法的原因。"
+      ]
+    },
+    {
+      "h": "基本指令与控制流",
+      "body": [
+        "大多数指令先写目的操作数，再写源操作数：`add rax, rbx` 表示 `rax = rax + rbx`。没有 `if` 或 `while` 语句；你用 `cmp` 比较值，它会设置标志位，然后使用条件跳转。",
+        {
+          "table": {
+            "head": [
+              "指令",
+              "含义"
+            ],
+            "rows": [
+              [
+                "`mov rax, rbx`",
+                "把 `rbx` 复制到 `rax`"
+              ],
+              [
+                "`add`, `sub`, `imul`, `inc`, `dec`",
+                "整数算术"
+              ],
+              [
+                "`cmp rax, 10`",
+                "比较（计算 `rax - 10`，只设置标志位）"
+              ],
+              [
+                "`je`, `jne`, `jl`, `jg`, `jle`, `jge`",
+                "相等、不相等、小于、大于时跳转……（有符号）"
+              ],
+              [
+                "`jmp label`",
+                "无条件跳转"
+              ],
+              [
+                "`push`, `pop`",
+                "把一个值压入栈，再取出"
+              ],
+              [
+                "`call`, `ret`",
+                "调用函数，从函数返回"
+              ]
+            ]
+          }
+        },
+        {
+          "code": "; sum.asm - add 1..10, return the result as the exit code\nsection .text\n    global _start\n\n_start:\n    xor     rax, rax        ; sum = 0\n    mov     rcx, 1          ; i = 1\n.loop:\n    cmp     rcx, 10\n    jg      .done           ; if i > 10, leave the loop\n    add     rax, rcx        ; sum += i\n    inc     rcx             ; i++\n    jmp     .loop\n.done:\n    mov     rdi, rax        ; exit code = sum\n    mov     rax, 60         ; exit\n    syscall",
+          "lang": "asm"
+        },
+        {
+          "code": "nasm -f elf64 sum.asm -o sum.o && ld sum.o -o sum\n./sum; echo $?\n# 55",
+          "lang": "shell"
+        },
+        "以点开头的标签，如 `.loop`，属于前一个普通标签的局部标签。`jl` 和 `jg` 把值当作有符号数；`jb` 和 `ja` 是无符号版本。"
+      ]
+    },
+    {
+      "h": "内存寻址与数组",
+      "body": [
+        "方括号表示“这个地址处的内存”。地址可以由基址寄存器、乘以 1、2、4 或 8 的变址寄存器和一个常量组合而成：`[base + index*scale + offset]`。这使得数组访问只需一条指令。",
+        {
+          "code": "section .data\n    nums    dq 3, 1, 4, 1, 5         ; five 64-bit integers\n    count   equ ($ - nums) / 8\n\nsection .text\n    global _start\n\n_start:\n    xor     rax, rax                 ; total = 0\n    xor     rcx, rcx                 ; index = 0\n.next:\n    add     rax, [nums + rcx*8]      ; total += nums[index]\n    inc     rcx\n    cmp     rcx, count\n    jl      .next\n    mov     rdi, rax                 ; exit code 14\n    mov     rax, 60\n    syscall",
+          "lang": "asm"
+        },
+        "`mov rax, nums` 加载地址，而 `mov rax, [nums]` 加载存放在那里的值。`lea rsi, [rbx + 8]` 只计算地址，不读取内存。当大小无法从寄存器推断时，要明确写出：`mov qword [rbx], 0`。"
+      ]
+    },
+    {
+      "h": "函数与调用约定",
+      "body": [
+        "在 Linux 上，函数遵循 System V AMD64 ABI。整数参数放在 `rdi`、`rsi`、`rdx`、`rcx`、`r8`、`r9` 中；返回值在 `rax` 中。函数必须保持 `rbx`、`rbp`、`r12`–`r15` 和 `rsp` 不变，并且在 `call` 之前 `rsp` 必须是 16 的倍数。遵循这些规则，汇编就能调用 `printf` 这样的 C 函数，C 也能调用汇编。",
+        {
+          "code": "; square.asm - define a function and call printf from the C library\n    extern  printf\n    global  main\n\nsection .data\n    fmt     db \"%ld squared is %ld\", 10, 0\n\nsection .text\nsquare:                         ; long square(long x)\n    mov     rax, rdi\n    imul    rax, rdi\n    ret\n\nmain:\n    push    rbx                 ; save rbx; also aligns rsp to 16\n    mov     rbx, 7\n    mov     rdi, rbx\n    call    square              ; rax = 49\n    lea     rdi, [rel fmt]      ; argument 1: format string\n    mov     rsi, rbx            ; argument 2\n    mov     rdx, rax            ; argument 3\n    xor     eax, eax            ; varargs: no vector registers used\n    call    printf wrt ..plt\n    xor     eax, eax            ; return 0 from main\n    pop     rbx\n    ret\n\nsection .note.GNU-stack noalloc noexec nowrite progbits",
+          "lang": "asm"
+        },
+        {
+          "code": "nasm -f elf64 square.asm -o square.o\ngcc square.o -o square\n./square\n# 7 squared is 49",
+          "lang": "shell"
+        },
+        "用 `gcc` 链接会加入 C 运行时，由它调用 `main`。`[rel fmt]` 和 `wrt ..plt` 生成位置无关代码，这是现代 Linux 发行版默认使用的。最后一行把栈标记为不可执行，并避免链接器警告。"
+      ]
+    },
+    {
+      "h": "错误处理",
+      "body": [
+        "汇编没有异常。失败的 Linux 系统调用会在 `rax` 中返回一个负的错误号（例如 -2，即 `ENOENT`，“没有这样的文件”），所以每次调用之后都要检查符号。C 库函数通过返回值和 `errno` 报告错误。硬件故障，比如读取无效地址或除以零，会通过信号终止程序（段错误或浮点异常）。",
+        {
+          "code": "    mov     rax, 2              ; system call 2 = open\n    lea     rdi, [rel path]     ; path is a zero-terminated string\n    xor     esi, esi            ; flags: O_RDONLY\n    syscall\n    test    rax, rax\n    js      .open_failed        ; negative result = -errno\n    mov     r12, rax            ; success: rax is the file descriptor",
+          "lang": "asm"
+        }
+      ]
+    },
+    {
+      "h": "一个完整的小程序：以十进制打印一个数",
+      "body": [
+        "打印数字意味着要自己把它转换成数位。这个程序计算 1 + 2 + ... + 100，反复除以 10 从右往左得到各位数字，并用一次系统调用把它们写出去。",
+        {
+          "code": "section .bss\n    buf     resb 32\n\nsection .text\n    global _start\n\n_start:\n    xor     rax, rax\n    mov     rcx, 100\n.sum:\n    add     rax, rcx\n    loop    .sum                ; rcx -= 1, repeat while rcx != 0\n    lea     rsi, [buf + 31]\n    mov     byte [rsi], 10      ; newline at the end of the buffer\n    mov     rbx, 10\n.digit:\n    xor     rdx, rdx            ; div uses rdx:rax as the dividend\n    div     rbx                 ; rax = quotient, rdx = remainder\n    add     dl, '0'             ; remainder to ASCII digit\n    dec     rsi\n    mov     [rsi], dl\n    test    rax, rax\n    jnz     .digit\n    mov     rdx, buf + 32\n    sub     rdx, rsi            ; length = end - start\n    mov     rax, 1              ; write(1, rsi, rdx)\n    mov     rdi, 1\n    syscall\n    mov     rax, 60             ; exit(0)\n    xor     rdi, rdi\n    syscall\n; prints 5050",
+          "lang": "asm"
+        },
+        {
+          "note": "初学者常见错误：忘记 `exit` 系统调用；使用 `div` 之前没有先清除 `rdx`（结果会溢出，程序崩溃）；以为 `rcx` 和 `r11` 在 `syscall` 之后保持不变（内核会覆盖它们）；在栈未对齐的情况下调用 C 函数；混淆地址与该地址处的值（`msg` 与 `[msg]`）；以及阅读示例时弄混 Intel 和 AT&T 的操作数顺序。"
+        }
+      ]
+    },
+    {
+      "h": "AT&T 与 Intel 语法，以及 ARM",
+      "body": [
+        "同一条 x86-64 指令可以用两种语法书写。NASM 以及大多数 Intel 和 Microsoft 文档使用 Intel 语法。GNU 汇编器（`as`）、GCC 的输出和 `objdump` 默认使用 AT&T 语法；`objdump -d -M intel` 和 `gcc -S -masm=intel` 可切换到 Intel 语法。",
+        {
+          "table": {
+            "head": [
+              "方面",
+              "Intel (NASM)",
+              "AT&T (GNU as)"
+            ],
+            "rows": [
+              [
+                "操作数顺序",
+                "`mov rax, 1`（先写目的操作数）",
+                "`movq $1, %rax`（先写源操作数）"
+              ],
+              [
+                "寄存器与常量",
+                "`rax`, `5`",
+                "`%rax`, `$5`"
+              ],
+              [
+                "内存操作数",
+                "`[rbx + rcx*8 + 16]`",
+                "`16(%rbx,%rcx,8)`"
+              ],
+              [
+                "操作数大小",
+                "`mov qword [rbx], 0`",
+                "`movq $0, (%rbx)`（后缀 b、w、l、q）"
+              ]
+            ]
+          }
+        },
+        "ARM 处理器使用不同的指令集。AArch64 有 31 个 64 位通用寄存器（`x0`–`x30`）、固定的 32 位指令编码，以及加载/存储设计：算术只作用于寄存器，内存用 `ldr` 和 `str` 访问。在 Linux 上，系统调用号放在 `x8` 中，用 `svc #0` 发起调用。",
+        {
+          "code": "// AArch64 Linux, GNU as syntax: exit(0)\n    mov     x0, #0          // exit status\n    mov     x8, #93         // system call 93 = exit\n    svc     #0",
+          "lang": "asm"
+        }
+      ]
+    },
+    {
+      "h": "接下来读什么",
+      "body": [
+        {
+          "ul": [
+            "NASM 手册，介绍伪指令、宏和输出格式。",
+            "Intel 64 and IA-32 Architectures Software Developer's Manuals，其中有每条指令的确切行为。",
+            "System V AMD64 ABI 文档，介绍调用约定和栈布局。",
+            "用 `gcc -O2 -S -masm=intel`（或在线的编译器浏览器）编译小的 C 函数，然后阅读生成的汇编。"
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "汇编语言现在还值得学吗？",
+      "a": "值得，它有助于理解计算机如何工作、调试崩溃、阅读编译器输出、做安全工作和嵌入式开发。如今用汇编编写整个应用程序很少是实际可行的。"
+    },
+    {
+      "q": "x86 汇编和 ARM 汇编一样吗？",
+      "a": "不一样。它们是不同的指令集，寄存器、指令和编码都不同。概念（寄存器、内存、跳转、调用约定）是相通的，但代码不能通用。"
+    },
+    {
+      "q": "NASM 和 GAS 有什么区别？",
+      "a": "NASM 是使用 Intel 语法的独立汇编器。GAS 即 GNU 汇编器，被 GCC 使用，默认采用 AT&T 语法，不过用 `.intel_syntax noprefix` 也可以接受 Intel 语法。"
+    },
+    {
+      "q": "这段代码能在 Windows 或 macOS 上运行吗？",
+      "a": "不能原样运行。指令在任何 x86-64 系统上都相同，但系统调用号、可执行文件格式和调用约定不同。Windows 使用不同的调用约定，Apple 芯片的 Mac 使用 ARM 而不是 x86-64。"
+    }
+  ]
+}

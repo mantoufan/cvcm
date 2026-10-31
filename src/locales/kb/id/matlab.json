@@ -1,0 +1,195 @@
+{
+  "title": "Tutorial MATLAB: matriks, vektorisasi, fungsi, dan plot — cv.cm",
+  "description": "Belajar dasar MATLAB (dan GNU Octave yang gratis): jalankan skrip, buat vektor dan matriks, indeks, loop, fungsi, fungsi anonim, penanganan error, dan plot.",
+  "h1": "Tutorial MATLAB untuk pemula",
+  "answer": "MATLAB adalah bahasa dan lingkungan komputasi numerik dari MathWorks yang setiap nilainya berupa matriks. Anda menulis `A * B` untuk perkalian matriks, `A .* B` untuk perkalian per elemen, indeks dimulai dari 1, dan banyak loop bisa diganti dengan ekspresi vektorisasi. MATLAB sudah menyertakan fitur plot dan banyak toolbox untuk teknik dan sains. GNU Octave adalah alternatif gratis dan open source yang menjalankan sebagian besar kode dasar MATLAB tanpa perubahan.",
+  "sections": [
+    {
+      "h": "Apa itu MATLAB dan siapa yang memakainya",
+      "body": [
+        "MATLAB (\"matrix laboratory\") bermula sebagai alat buatan Cleve Moler untuk memudahkan akses ke pustaka aljabar linear, lalu menjadi produk komersial MathWorks. MATLAB menggabungkan bahasa pemrograman, desktop interaktif, plot, dan toolbox untuk pemrosesan sinyal, sistem kendali, optimasi, statistika, pengolahan citra, dan machine learning. Simulink, produk pendampingnya, memodelkan sistem dinamis dengan diagram blok.",
+        "MATLAB banyak dipakai dalam perkuliahan teknik dan sains, laboratorium riset, serta industri seperti otomotif, kedirgantaraan, dan keuangan. MATLAB memerlukan lisensi berbayar (banyak universitas menyediakannya). GNU Octave adalah perangkat lunak bebas dengan sintaks yang sebagian besar kompatibel; Octave mencakup bahasa inti dan banyak fungsi, tetapi tidak mencakup toolbox MathWorks maupun Simulink."
+      ]
+    },
+    {
+      "h": "Instal dan jalankan Hello, world",
+      "body": [
+        "Instal MATLAB dari MathWorks, gunakan MATLAB Online di browser, atau instal GNU Octave dari octave.org (Windows, macOS, Linux). Kode disimpan dalam file `.m`. Skrip adalah file berisi perintah; Anda menjalankannya dengan mengetik namanya, tanpa `.m`, di Command Window.",
+        {
+          "code": "% hello.m\ndisp('Hello, world!')",
+          "lang": "matlab"
+        },
+        {
+          "code": "matlab -batch \"hello\"   # MATLAB from a terminal\noctave hello.m          # GNU Octave\n# Hello, world!",
+          "lang": "shell"
+        },
+        "Komentar diawali `%`. Baris yang berakhir tanpa titik koma akan mencetak hasilnya, jadi `x = 5` menampilkan `x = 5`, sedangkan `x = 5;` tidak menampilkan apa pun."
+      ]
+    },
+    {
+      "h": "Variabel dan tipe dasar",
+      "body": [
+        "Variabel dibuat lewat penugasan dan tidak perlu dideklarasikan. Angka secara bawaan bertipe `double` (floating point 64-bit), dan satu angka pun adalah matriks 1 kali 1.",
+        {
+          "table": {
+            "head": [
+              "Tipe",
+              "Contoh",
+              "Catatan"
+            ],
+            "rows": [
+              [
+                "double",
+                "`x = 3.14`",
+                "Tipe numerik bawaan"
+              ],
+              [
+                "tipe integer",
+                "`n = int32(42)`",
+                "`int8` hingga `int64`, `uint8` hingga `uint64`; aritmetikanya bersifat saturasi"
+              ],
+              [
+                "logical",
+                "`ok = true`",
+                "Hasil perbandingan seperti `x > 2`"
+              ],
+              [
+                "array char",
+                "`name = 'Ana'`",
+                "Tanda kutip tunggal; vektor baris berisi karakter"
+              ],
+              [
+                "string",
+                "`s = \"Ana\"`",
+                "Objek string MATLAB; Octave memperlakukan tanda kutip ganda sebagai array char"
+              ],
+              [
+                "cell array",
+                "`c = {'Ana', 30}`",
+                "Menyimpan nilai dengan tipe berbeda"
+              ],
+              [
+                "struct",
+                "`p.name = 'Ana'`",
+                "Field bernama"
+              ]
+            ]
+          }
+        },
+        {
+          "code": "x = 10;\ny = 3;\nx / y              % 3.3333\nmod(x, y)          % 1\nx ^ 2              % 100\nname = 'Ana';\nfprintf('%s is %d years old\\n', name, 30)\n% Ana is 30 years old\nclass(x)           % 'double'",
+          "lang": "matlab"
+        }
+      ]
+    },
+    {
+      "h": "Vektor dan matriks",
+      "body": [
+        "Tanda kurung siku membangun array: spasi atau koma memisahkan kolom, titik koma memisahkan baris. Pengindeksan memakai tanda kurung biasa dan dimulai dari 1; `end` berarti indeks terakhir dan `:` berarti \"semua\".",
+        {
+          "code": "v = [3 1 4 1 5];\nv(1)               % 3\nv(end)             % 5\nv(2:4)             % [1 4 1]\nv * 2              % [6 2 8 2 10]\nv(v > 2)           % [3 4 5]   logical indexing\nA = [1 2; 3 4];\nA(2, :)            % second row: [3 4]\nA'                 % transpose:  [1 3; 2 4]\nA * A              % matrix product: [7 10; 15 22]\nA .* A             % element-wise:   [1 4; 9 16]\nb = [5; 11];\nx = A \\ b          % solves A*x = b: [1; 2]\nz = zeros(2, 3);   % also ones, eye, rand\nr = 0:0.25:1;      % [0 0.25 0.5 0.75 1]",
+          "lang": "matlab"
+        },
+        "Operator dengan titik (`.*`, `./`, `.^`) bekerja per elemen; tanpa titik, operator mengikuti aturan aljabar linear. Operator backslash menyelesaikan sistem persamaan linear dan lebih akurat daripada menghitung `inv(A) * b`."
+      ]
+    },
+    {
+      "h": "Alur kontrol",
+      "body": [
+        {
+          "code": "score = 85;\nif score >= 90\n    disp('A')\nelseif score >= 80\n    disp('B')\nelse\n    disp('C')\nend\n\ntotal = 0;\nfor k = 1:10\n    total = total + k;\nend\nfprintf('total = %d\\n', total)   % total = 55\n\nn = 3;\nwhile n > 0\n    n = n - 1;\nend\n\nswitch 'red'\n    case {'red', 'green'}\n        disp('a color')\n    otherwise\n        disp('unknown')\nend",
+          "lang": "matlab"
+        },
+        "Setiap blok diakhiri dengan `end`. Banyak loop bisa diganti dengan ekspresi vektorisasi: loop di atas sama dengan `sum(1:10)`, yang lebih singkat dan biasanya lebih cepat. Jika harus membangun array di dalam loop, alokasikan dulu ukurannya, misalnya `result = zeros(1, 1000);`."
+      ]
+    },
+    {
+      "h": "Fungsi dan fungsi anonim",
+      "body": [
+        "Sebuah fungsi berada di file sendiri yang namanya sama dengan nama fungsi. Fungsi dapat mengembalikan beberapa output. Pada MATLAB versi terbaru, skrip juga boleh memuat fungsi lokal di akhir file.",
+        {
+          "code": "% stats.m\nfunction [m, s] = stats(x)\n%STATS Mean and sample standard deviation of a vector.\n    m = mean(x);\n    s = std(x);\nend",
+          "lang": "matlab"
+        },
+        {
+          "code": "[m, s] = stats([2 4 4 5 7])   % m = 4.4000, s = 1.8166\n[biggest, where] = max([3 9 2])   % biggest = 9, where = 2\n\nf = @(x) x.^2 + 1;            % anonymous function\nf(3)                          % 10\nf([1 2 3])                    % [2 5 10]\nfzero(@(x) x.^2 - 2, 1)       % 1.4142, a root near 1\nintegral(f, 0, 1)             % 1.3333",
+          "lang": "matlab"
+        },
+        "Fungsi anonim, dibuat dengan `@`, sering diteruskan ke fungsi lain seperti `fzero`, `integral`, `arrayfun`, atau rutin optimasi. Tulis dengan operator per elemen (`.^`) agar juga berfungsi pada vektor."
+      ]
+    },
+    {
+      "h": "Struct dan cell array",
+      "body": [
+        {
+          "code": "person.name = 'Ana';\nperson.age = 30;\nfprintf('%s is %d\\n', person.name, person.age)   % Ana is 30\n\nc = {'Ana', 30, [1 2 3]};   % cell array with mixed types\nc{2}                         % 30 (curly braces get the content)\nclass(c(2))                  % 'cell' (parentheses get a sub-cell)\nnames = {'Ana', 'Ben', 'Cleo'};\nnumel(names)                 % 3\nupper(names{1})              % 'ANA'",
+          "lang": "matlab"
+        },
+        "MATLAB juga memiliki tipe `table` untuk data berorientasi kolom dengan variabel bernama, mirip spreadsheet; `readtable` memuat file CSV dan Excel ke dalamnya."
+      ]
+    },
+    {
+      "h": "Penanganan error",
+      "body": [
+        "Munculkan error dengan `error`, opsional dengan identifier seperti `'demo:negative'`, dan tangani dengan `try ... catch`. Objek yang tertangkap (`MException` di MATLAB) memiliki field `identifier` dan `message`.",
+        {
+          "code": "% safe_sqrt.m\nfunction r = safe_sqrt(x)\n    if x < 0\n        error('demo:negative', 'Input must be non-negative, got %g', x);\n    end\n    r = sqrt(x);\nend",
+          "lang": "matlab"
+        },
+        {
+          "code": "try\n    safe_sqrt(-4);\ncatch err\n    fprintf('%s: %s\\n', err.identifier, err.message)\nend\n% demo:negative: Input must be non-negative, got -4",
+          "lang": "matlab"
+        },
+        "Gunakan `warning(...)` untuk masalah yang tidak perlu menghentikan program. Tanpa pengecekan, `sqrt(-4)` tidak akan gagal sama sekali: hasilnya bilangan kompleks `0 + 2i`."
+      ]
+    },
+    {
+      "h": "Program lengkap kecil: analisis dan plot data",
+      "body": [
+        {
+          "code": "% temps.m - analyze a week of temperatures\ntemps = [21.5 23.0 19.8 25.1 24.3 18.9 22.7];\ndays = 1:numel(temps);\n\navg = mean(temps);\n[hottest, idx] = max(temps);\nabove = days(temps > avg);\n\nfprintf('Average: %.2f\\n', avg)\nfprintf('Hottest: %.1f on day %d\\n', hottest, idx)\nfprintf('Days above average: %s\\n', mat2str(above))\n\nplot(days, temps, '-o')\nhold on\nplot(days, avg * ones(size(days)), '--')\nxlabel('Day'); ylabel('Temperature (C)')\ntitle('Temperatures this week')\nlegend('Daily', 'Average')\n% Average: 22.19\n% Hottest: 25.1 on day 4\n% Days above average: [2 4 5 7]",
+          "lang": "matlab"
+        },
+        "Skrip memakai logical indexing untuk menemukan hari-hari di atas rata-rata tanpa loop, lalu menggambar grafik garis dengan penanda dan garis rata-rata putus-putus. Kode yang sama berjalan di GNU Octave.",
+        {
+          "note": "Kesalahan umum pemula: memakai `*` atau `^` padahal maksudnya `.*` atau `.^` per elemen (hasilnya error dimensi atau pangkat matriks); mengindeks dengan 0 (`v(0)` adalah error); lupa titik koma sehingga output membanjiri layar; menamai skrip atau variabel seperti fungsi bawaan (`sum`, `max`, `i`), yang menyembunyikan fungsi itu; memakai `i` dan `j` sebagai variabel loop ketika bilangan kompleks terlibat; serta memperbesar array di dalam loop alih-alih mengalokasikannya lebih dulu."
+        }
+      ]
+    },
+    {
+      "h": "Langkah selanjutnya",
+      "body": [
+        {
+          "ul": [
+            "Dokumentasi MATLAB dari MathWorks, mulai dari halaman getting-started.",
+            "MATLAB Onramp, kursus pengantar interaktif gratis dari MathWorks.",
+            "Manual GNU Octave jika Anda memakai Octave, termasuk catatannya tentang kompatibilitas dengan MATLAB.",
+            "Selanjutnya pelajari vektorisasi, `readtable` untuk file data, dan fungsi-fungsi plot."
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Apakah ada MATLAB versi gratis?",
+      "a": "MATLAB sendiri memerlukan lisensi, meskipun MathWorks menawarkan masa percobaan dan banyak universitas menyediakan lisensi kampus. GNU Octave adalah program open source gratis yang menjalankan sebagian besar kode dasar MATLAB."
+    },
+    {
+      "q": "Apa beda * dan .* di MATLAB?",
+      "a": "`*` adalah perkalian matriks dari aljabar linear, yang mensyaratkan dimensi dalam yang cocok. `.*` mengalikan elemen-elemen yang bersesuaian dari dua array berukuran sama."
+    },
+    {
+      "q": "Apakah GNU Octave sepenuhnya kompatibel dengan MATLAB?",
+      "a": "Tidak sepenuhnya. Sintaks inti, matriks, fungsi, dan plot sebagian besar kompatibel, tetapi Octave tidak punya toolbox MathWorks, Simulink, dan beberapa fitur MATLAB yang lebih baru, serta menerima beberapa bentuk sintaks tambahan miliknya sendiri."
+    },
+    {
+      "q": "Mengapa MATLAB memulai indeks dari 1?",
+      "a": "MATLAB mengikuti notasi matematika, tempat elemen pertama dari vektor atau matriks adalah elemen 1. Fortran, R, dan Julia memakai konvensi yang sama."
+    },
+    {
+      "q": "Sebaiknya belajar MATLAB atau Python?",
+      "a": "Pelajari MATLAB jika mata kuliah, lab, atau perusahaan Anda memakainya, terutama bersama Simulink atau toolbox tertentu. Python dengan NumPy, SciPy, dan Matplotlib gratis serta lebih serbaguna, dan konsepnya bisa dipindahkan di antara keduanya."
+    }
+  ]
+}

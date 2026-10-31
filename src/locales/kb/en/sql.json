@@ -1,0 +1,263 @@
+{
+  "title": "SQL tutorial: SELECT, JOIN, GROUP BY and transactions — cv.cm",
+  "description": "Learn SQL step by step: create tables, SELECT with WHERE and ORDER BY, joins, GROUP BY, CTEs, window functions, transactions and PostgreSQL vs MySQL vs SQLite.",
+  "h1": "SQL tutorial for beginners",
+  "answer": "SQL is the standard language for creating, querying and changing data in relational databases such as PostgreSQL, MySQL and SQLite. You write declarative statements like SELECT, INSERT, UPDATE and DELETE, and the database decides how to run them. This page teaches table design, filtering, joins, grouping, subqueries, window functions and transactions, and lists the main differences between PostgreSQL, MySQL and SQLite.",
+  "sections": [
+    {
+      "h": "What SQL is and what it is used for",
+      "body": [
+        "SQL (Structured Query Language) is the standard language for working with relational databases, where data is stored in tables of rows and columns. You describe what data you want, and the database engine decides how to find it. SQL is standardized by ISO/IEC 9075, and every major database implements the core of the standard plus its own extensions.",
+        "Developers, data analysts, data engineers and database administrators use SQL every day: to store application data, to answer business questions, to build reports and to feed data pipelines. The most common open-source engines are PostgreSQL, MySQL (and its fork MariaDB) and SQLite; commercial ones include Microsoft SQL Server and Oracle Database."
+      ]
+    },
+    {
+      "h": "Get a database and run your first query",
+      "body": [
+        "The easiest way to start is SQLite, a serverless database stored in a single file. It is preinstalled on macOS and most Linux systems. PostgreSQL and MySQL run as servers and come with the command-line clients `psql` and `mysql`.",
+        {
+          "code": "sqlite3 shop.db                      # SQLite: opens or creates a file\npsql -U postgres -d shop             # PostgreSQL client\nmysql -u root -p shop                # MySQL client",
+          "lang": "shell"
+        },
+        {
+          "code": "SELECT 'Hello, world!' AS greeting;\n-- greeting\n-- Hello, world!",
+          "lang": "sql"
+        },
+        "SQL keywords are case-insensitive. Writing keywords in uppercase and names in lowercase is a common convention that makes queries easier to read. A statement ends with a semicolon, and `--` starts a comment."
+      ]
+    },
+    {
+      "h": "Create tables: data types and constraints",
+      "body": [
+        "A table definition lists columns, their types, and constraints that keep the data valid. This page uses two tables, `customers` and `orders`, in every example.",
+        {
+          "code": "CREATE TABLE customers (\n  id    INTEGER PRIMARY KEY,\n  name  VARCHAR(100) NOT NULL,\n  city  VARCHAR(50)\n);\nCREATE TABLE orders (\n  id          INTEGER PRIMARY KEY,\n  customer_id INTEGER NOT NULL REFERENCES customers(id),\n  amount      DECIMAL(10, 2) NOT NULL,\n  ordered_on  DATE NOT NULL\n);\nINSERT INTO customers (id, name, city) VALUES\n  (1, 'Ann', 'Oslo'), (2, 'Bo', 'Rome'), (3, 'Cy', 'Oslo');\nINSERT INTO orders (id, customer_id, amount, ordered_on) VALUES\n  (1, 1, 30.00, '2026-01-05'),\n  (2, 1, 45.50, '2026-02-10'),\n  (3, 2, 12.00, '2026-02-11');",
+          "lang": "sql"
+        },
+        {
+          "table": {
+            "head": [
+              "Type",
+              "Stores",
+              "Notes"
+            ],
+            "rows": [
+              [
+                "`INTEGER`, `BIGINT`",
+                "whole numbers",
+                "use `BIGINT` for large IDs"
+              ],
+              [
+                "`DECIMAL(p, s)`",
+                "exact decimals",
+                "use for money, never `FLOAT`"
+              ],
+              [
+                "`VARCHAR(n)`, `TEXT`",
+                "strings",
+                "`TEXT` is not in the standard but is widely supported"
+              ],
+              [
+                "`DATE`, `TIMESTAMP`",
+                "dates and times",
+                "write literals as `'2026-01-05'`"
+              ],
+              [
+                "`BOOLEAN`",
+                "true or false",
+                "MySQL treats it as `TINYINT(1)`"
+              ]
+            ]
+          }
+        },
+        "Constraints include `PRIMARY KEY` (unique row identifier), `NOT NULL`, `UNIQUE`, `CHECK (condition)` and `FOREIGN KEY` / `REFERENCES` (the value must exist in another table). Strings use single quotes; double quotes are for identifiers in standard SQL."
+      ]
+    },
+    {
+      "h": "SELECT: filter, sort and limit",
+      "body": [
+        "`SELECT` reads data. `WHERE` filters rows, `ORDER BY` sorts them, and `LIMIT` (or the standard `FETCH FIRST n ROWS ONLY`) restricts how many come back.",
+        {
+          "code": "SELECT name, city\nFROM customers\nWHERE city = 'Oslo'\nORDER BY name;\n-- Ann | Oslo\n-- Cy  | Oslo\nSELECT id, amount,\n       CASE WHEN amount >= 40 THEN 'large'\n            WHEN amount >= 20 THEN 'medium'\n            ELSE 'small' END AS size\nFROM orders\nWHERE amount BETWEEN 10 AND 50\nORDER BY amount DESC\nLIMIT 2;\n-- 2 | 45.50 | large\n-- 1 | 30.00 | medium\nSELECT name FROM customers WHERE city IS NULL;   -- not: city = NULL\nSELECT name FROM customers WHERE name LIKE 'A%'; -- Ann",
+          "lang": "sql"
+        },
+        {
+          "note": "`NULL` means unknown, so `city = NULL` is never true. Always use `IS NULL` or `IS NOT NULL`. Also note that the logical order of a query is `FROM`, `WHERE`, `GROUP BY`, `HAVING`, `SELECT`, `ORDER BY`, so a column alias defined in `SELECT` cannot be used in `WHERE`."
+        }
+      ]
+    },
+    {
+      "h": "JOIN: combine tables",
+      "body": [
+        "A join matches rows from two tables using a condition, usually a foreign key. `INNER JOIN` (or just `JOIN`) keeps only matching rows; `LEFT JOIN` keeps every row of the left table and fills missing columns with `NULL`.",
+        {
+          "code": "SELECT c.name, o.amount\nFROM customers AS c\nJOIN orders AS o ON o.customer_id = c.id\nORDER BY o.amount DESC;\n-- Ann | 45.50\n-- Ann | 30.00\n-- Bo  | 12.00\nSELECT c.name, o.id AS order_id\nFROM customers AS c\nLEFT JOIN orders AS o ON o.customer_id = c.id\nWHERE o.id IS NULL;        -- customers with no orders\n-- Cy | NULL",
+          "lang": "sql"
+        },
+        {
+          "table": {
+            "head": [
+              "Join",
+              "Returns"
+            ],
+            "rows": [
+              [
+                "`INNER JOIN`",
+                "rows that match in both tables"
+              ],
+              [
+                "`LEFT JOIN`",
+                "all left rows, plus matches from the right or `NULL`"
+              ],
+              [
+                "`RIGHT JOIN`",
+                "all right rows, plus matches from the left or `NULL`"
+              ],
+              [
+                "`FULL OUTER JOIN`",
+                "all rows from both sides; not supported by MySQL"
+              ],
+              [
+                "`CROSS JOIN`",
+                "every combination of rows (a Cartesian product)"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "GROUP BY and aggregate functions",
+      "body": [
+        "Aggregate functions such as `COUNT`, `SUM`, `AVG`, `MIN` and `MAX` summarize many rows into one. `GROUP BY` makes one result row per group, and `HAVING` filters groups after aggregation, while `WHERE` filters rows before it.",
+        {
+          "code": "SELECT c.name,\n       COUNT(o.id)               AS orders,\n       COALESCE(SUM(o.amount), 0) AS total\nFROM customers AS c\nLEFT JOIN orders AS o ON o.customer_id = c.id\nGROUP BY c.id, c.name\nORDER BY total DESC;\n-- Ann | 2 | 75.50\n-- Bo  | 1 | 12.00\n-- Cy  | 0 | 0\nSELECT city, COUNT(*) AS n\nFROM customers\nGROUP BY city\nHAVING COUNT(*) > 1;\n-- Oslo | 2",
+          "lang": "sql"
+        },
+        "`COUNT(*)` counts rows, while `COUNT(column)` counts only non-null values, which is why Cy gets 0 orders above. `COALESCE` returns its first non-null argument."
+      ]
+    },
+    {
+      "h": "Subqueries, CTEs and window functions",
+      "body": [
+        "A subquery is a query inside another query. A common table expression (CTE), written with `WITH`, gives a subquery a name and makes long queries readable. Window functions such as `ROW_NUMBER`, `RANK` and `SUM(...) OVER` compute values across related rows without collapsing them into groups.",
+        {
+          "code": "SELECT name FROM customers\nWHERE id IN (SELECT customer_id FROM orders WHERE amount > 20);\n-- Ann\nWITH totals AS (\n  SELECT customer_id, SUM(amount) AS total\n  FROM orders\n  GROUP BY customer_id\n)\nSELECT c.name, t.total,\n       RANK() OVER (ORDER BY t.total DESC) AS rnk\nFROM totals AS t\nJOIN customers AS c ON c.id = t.customer_id;\n-- Ann | 75.50 | 1\n-- Bo  | 12.00 | 2",
+          "lang": "sql"
+        },
+        "CTEs and window functions are supported by PostgreSQL, SQLite 3.25 and later, and MySQL 8.0 and later."
+      ]
+    },
+    {
+      "h": "Change data: INSERT, UPDATE, DELETE and transactions",
+      "body": [
+        "`UPDATE` and `DELETE` affect every row that matches the `WHERE` clause. A transaction groups several statements so that they all succeed or all fail together.",
+        {
+          "code": "UPDATE customers SET city = 'Paris' WHERE id = 2;\nDELETE FROM orders WHERE amount < 15;\nBEGIN;\nUPDATE orders SET amount = amount - 10 WHERE id = 1;\nUPDATE orders SET amount = amount + 10 WHERE id = 2;\nCOMMIT;                    -- or ROLLBACK; to undo both\nSELECT id, amount FROM orders;\n-- 1 | 20.00\n-- 2 | 55.50",
+          "lang": "sql"
+        },
+        {
+          "note": "An `UPDATE` or `DELETE` without `WHERE` changes every row in the table. Run the same condition as a `SELECT` first to see which rows will be affected, and work inside a transaction when you can."
+        }
+      ]
+    },
+    {
+      "h": "PostgreSQL, MySQL and SQLite differences",
+      "body": [
+        "The core of SQL is portable, but each engine differs in details. These are the differences beginners meet first.",
+        {
+          "table": {
+            "head": [
+              "Feature",
+              "PostgreSQL",
+              "MySQL",
+              "SQLite"
+            ],
+            "rows": [
+              [
+                "Auto-increment ID",
+                "`GENERATED ALWAYS AS IDENTITY` or `SERIAL`",
+                "`AUTO_INCREMENT`",
+                "`INTEGER PRIMARY KEY`"
+              ],
+              [
+                "Quoting names",
+                "`\"name\"`",
+                "backticks around the name",
+                "`\"name\"`"
+              ],
+              [
+                "Limit rows",
+                "`LIMIT n` or `FETCH FIRST n ROWS ONLY`",
+                "`LIMIT n`",
+                "`LIMIT n`"
+              ],
+              [
+                "String concatenation",
+                "`a || b`",
+                "`CONCAT(a, b)`",
+                "`a || b`"
+              ],
+              [
+                "Booleans",
+                "real `BOOLEAN` type",
+                "`TINYINT(1)`",
+                "stored as 0 and 1"
+              ],
+              [
+                "Typing",
+                "strict",
+                "strict in default strict mode",
+                "flexible, unless the table is declared `STRICT`"
+              ],
+              [
+                "Upsert",
+                "`ON CONFLICT ... DO UPDATE`",
+                "`ON DUPLICATE KEY UPDATE`",
+                "`ON CONFLICT ... DO UPDATE`"
+              ]
+            ]
+          }
+        },
+        "Other differences include date functions (`NOW()` in PostgreSQL and MySQL, `datetime('now')` in SQLite), case-sensitivity of string comparisons, and full outer join support, which MySQL lacks."
+      ]
+    },
+    {
+      "h": "Common mistakes and where to go next",
+      "body": [
+        {
+          "ul": [
+            "Building queries by concatenating user input, which allows SQL injection. Always use parameterized queries (placeholders such as `?` or `$1`) from your programming language.",
+            "Selecting a column in a grouped query that is neither in `GROUP BY` nor inside an aggregate function.",
+            "Using `FLOAT` for money instead of `DECIMAL`.",
+            "Forgetting indexes on columns used in joins and filters; `CREATE INDEX idx_orders_customer ON orders(customer_id);` and `EXPLAIN` help here.",
+            "Assuming rows come back in a fixed order without `ORDER BY`."
+          ]
+        },
+        "For further study, read the official manuals: the PostgreSQL tutorial, the MySQL Reference Manual and the SQLite SQL language reference. Practice on a real dataset by writing questions in plain English and turning each into a query."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Is SQL a programming language?",
+      "a": "SQL is a declarative query language: you describe the result you want rather than the steps to compute it. Vendor extensions such as PL/pgSQL and T-SQL add variables, loops and procedures."
+    },
+    {
+      "q": "Which database should a beginner start with?",
+      "a": "SQLite needs no server and is ideal for learning. PostgreSQL is a strong choice for learning standard-compliant SQL for real applications, and MySQL is common in web hosting."
+    },
+    {
+      "q": "What is the difference between WHERE and HAVING?",
+      "a": "`WHERE` filters individual rows before grouping, and `HAVING` filters groups after aggregate functions are computed."
+    },
+    {
+      "q": "What is the difference between INNER JOIN and LEFT JOIN?",
+      "a": "`INNER JOIN` returns only rows that have a match in both tables. `LEFT JOIN` returns every row from the left table and fills the right table's columns with `NULL` when there is no match."
+    },
+    {
+      "q": "How do I prevent SQL injection?",
+      "a": "Never insert user input into SQL text. Use parameterized queries or prepared statements, where the database receives the query and the values separately."
+    }
+  ]
+}

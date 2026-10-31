@@ -13,7 +13,7 @@ export function preloadLocalePack(html: string, locale: Locale, game = false, pa
     ...(quiz ? packs[`quiz-${locale}`] ?? [] : []),
     ...(dataset ? packs[`datasets-${locale}`] ?? [] : []),
     ...(kb ? packs[`kb-${locale}`] ?? [] : []),
-    ...(kb && kb !== "hub" ? packs[`kb-${locale}/${kb}`] ?? [] : []),
+    ...(kb && kb !== "hub" && kb !== "code" ? packs[`kb-${locale}/${kb}`] ?? [] : []),
   ])];
   if (!files.length) return html;
   const links = files.map((href) => `<link rel="modulepreload" crossorigin href="${href}">`).join("\n  ");

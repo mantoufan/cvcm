@@ -2,7 +2,7 @@ import { LOCALES, DEFAULT_LOCALE, type Locale } from "./locale";
 import { GAME_CONSOLES, GAMES, type GameConsoleId, type GameId } from "./games";
 import { DEVICE_PAGES, type DevicePageId } from "./device";
 import { QUIZZES, type QuizId } from "./quiz";
-import { KB_ARTICLES, type KbId } from "./kb";
+import { KB_ARTICLES, kbArticleOf, kbGroupsOf, kbShelfOfPage, type KbPage } from "./kb";
 import { DATASET_SNAPSHOT, DATASETS, type DatasetId } from "./datasets";
 import { KB_UPDATED } from "../locales/kb/meta";
 import { CONVERT_JOBS, RESIZE_JOBS, SITEMAP_SECTIONS, TOOLS, FEATURED_TUTORIALS, LEGAL_PAGES, appHref, deviceHref, gamesHref, kbHref, learnHref, legalHref, quizHref, datasetHref, type ConvertJobId, type ResizeJobId, type ToolId, type LegalPageId, type TutorialId } from "./path";
@@ -32,7 +32,7 @@ export type SitemapPage =
   | { locale: Locale; kind: "legal"; page: LegalPageId }
   | { locale: Locale; kind: "quiz"; quiz: QuizId | null }
   | { locale: Locale; kind: "dataset"; dataset: DatasetId | null }
-  | { locale: Locale; kind: "kb"; article: KbId | null };
+  | { locale: Locale; kind: "kb"; article: KbPage };
 
 export function sitemapPages(): SitemapPage[] {
   const pages: SitemapPage[] = [];
@@ -44,6 +44,7 @@ export function sitemapPages(): SitemapPage[] {
     pages.push({ locale, kind: "learn", tutorial: null });
     for (const tutorial of FEATURED_TUTORIALS) pages.push({ locale, kind: "learn", tutorial });
     pages.push({ locale, kind: "kb", article: null });
+    pages.push({ locale, kind: "kb", article: "code" });
     for (const article of KB_ARTICLES) pages.push({ locale, kind: "kb", article });
     pages.push({ locale, kind: "games", console: null, game: null });
     for (const consoleId of GAME_CONSOLES) {
@@ -126,8 +127,10 @@ export function sitemapSectionUrl(section: SitemapSection): string {
  */
 function pageLastmod(page: SitemapPage): string | null {
   if (page.kind === "kb") {
-    if (page.article) return KB_UPDATED[page.article][page.locale];
-    return KB_ARTICLES.map((id) => KB_UPDATED[id][page.locale]).sort().at(-1) ?? null;
+    const id = kbArticleOf(page.article);
+    if (id) return KB_UPDATED[id][page.locale];
+    // A hub: its newest article.
+    return kbGroupsOf(kbShelfOfPage(page.article)).flatMap((group) => group.articles).map((article) => KB_UPDATED[article][page.locale]).sort().at(-1) ?? null;
   }
   if (page.kind === "dataset") return DATASET_SNAPSHOT;
   return null;
