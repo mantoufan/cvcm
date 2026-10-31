@@ -25,6 +25,11 @@ for (const [src, chunk] of Object.entries(manifest)) {
   // A locale's article loader table, fetched before any article in that locale: preloaded as "kb-<locale>/loaders".
   const loaders = /^src\/locales\/kb\/loaders\/([^/]+)\.ts$/.exec(src);
   if (loaders) localePacks[`kb-${loaders[1]}/loaders`] = [`/${chunk.file}`];
+  // Reference entries and loader tables, the same way: "ref-<locale>/<id>" and "ref-<locale>/loaders" (the pack itself is "ref-<locale>" above).
+  const entry = /^src\/locales\/ref\/([a-zA-Z-]+)\/([a-z0-9-]+)\.json$/.exec(src);
+  if (entry && entry[1] !== "index") localePacks[`ref-${entry[1]}/${entry[2]}`] = [`/${chunk.file}`];
+  const refLoaders = /^src\/locales\/ref\/loaders\/([^/]+)\.ts$/.exec(src);
+  if (refLoaders) localePacks[`ref-${refLoaders[1]}/loaders`] = [`/${chunk.file}`];
 }
 if (!Object.keys(localePacks).length) throw new Error("no locale packs in Vite manifest");
 
@@ -44,6 +49,7 @@ const pageModules = {
   quiz: "src/client/quiz/ui.ts",
   dataset: "src/client/datasets/ui.ts",
   kb: "src/client/kb/ui.ts",
+  ref: "src/client/ref/ui.ts",
 };
 const hubs = Object.keys(pageModules).length;
 const toolsSrc = readFileSync(resolve(root, "src/client/tools.ts"), "utf8");
@@ -62,7 +68,8 @@ for (const [page, src] of Object.entries(pageModules)) {
 // Data tables: each table's rows are their own lazy chunk, preloaded as "rows-<file>" next to the dataset page chunk.
 for (const file of readdirSync(resolve(root, "src/data"))) {
   const m = /^(.+)\.json$/.exec(file);
-  if (!m || m[1] === "meta") continue;
+  // ref-photos.json is not a table: the reference pages import it whole.
+  if (!m || m[1] === "meta" || m[1] === "ref-photos") continue;
   const files = chunkFiles(`src/data/${file}`);
   if (!files.length) throw new Error(`no Vite chunk for src/data/${file}`);
   pageChunks[`rows-${m[1]}`] = files;
@@ -79,6 +86,8 @@ await esbuild.build({
   outfile: "dist/_worker.js",
   legalComments: "none",
   minify: true,
+  // Raw UTF-8 instead of \uXXXX escapes: CJK copy is 3 bytes a character, not 6, which keeps the Worker under the 25 MiB limit.
+  charset: "utf8",
   define: { __LOCALE_PACKS__: JSON.stringify(localePacks), __PAGE_CHUNKS__: JSON.stringify(pageChunks) },
   plugins: [{
     name: "game-names",

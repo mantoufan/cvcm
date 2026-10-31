@@ -18,6 +18,7 @@ import {
   parseAppPath,
   quizHref,
   datasetHref,
+  refHref,
   toolJob,
   withSearch,
   type ConvertJobId,
@@ -33,6 +34,7 @@ import type { MarketId } from "../shared/markets";
 import { QUIZZES, type QuizId } from "../shared/quiz";
 import { DATASETS, type DatasetId } from "../shared/datasets";
 import { KNOWLEDGE_ARTICLES, isKbId, kbArticleOf, kbGroupsOf, type KbPage } from "../shared/kb";
+import { isRefId, type RefId, type RefPage } from "../shared/ref";
 import { BRANDED_TOOLS, hreflangAlternates, pageCanonical, pageDescription, pageTitle } from "../shared/seo";
 import { toolLessonsSection } from "./tool-lessons";
 import { TOOL_LOADERS } from "./tools";
@@ -68,6 +70,8 @@ let quizPage: QuizId | "hub" | null = null;
 let datasetPage: DatasetId | "hub" | null = null;
 /** A kb page: "hub" for /learn/knowledge/, "code" for /learn/code/, else the article id. */
 let kbPage: KbPage = null;
+/** A reference page: "hub" for /reference/, else the entry id. */
+let refPage: RefPage = null;
 const noop = (): void => {};
 let unmountCurrent: () => void = noop;
 /** Settles once the page from the latest render() has mounted and is on screen. */
@@ -183,6 +187,18 @@ export function boot(): void {
     setLocale(loc);
     applyKb(parsed.article);
     history.replaceState(null, "", withSearch(kbHref(loc, parsed.article), location.search));
+  } else if (parsed.kind === "ref") {
+    setLocale(parsed.locale);
+    applyRef(parsed.entry);
+    const canonical = refHref(parsed.locale, parsed.entry);
+    if (location.pathname !== canonical) {
+      history.replaceState(null, "", withSearch(canonical, location.search));
+    }
+  } else if (parsed.kind === "bare-ref") {
+    const loc = stored ?? negotiateLocale(navigator.languages?.join(",") || navigator.language, null);
+    setLocale(loc);
+    applyRef(parsed.entry);
+    history.replaceState(null, "", withSearch(refHref(loc, parsed.entry), location.search));
   } else if (parsed.kind === "clip") {
     const loc = stored ?? negotiateLocale(navigator.languages?.join(",") || navigator.language, null);
     setLocale(loc);
@@ -225,12 +241,18 @@ export function boot(): void {
   render();
 }
 
-/** Start the game or knowledge pack download when such a link is about to be followed, so the page opens without a wait. */
+/** Start the game, knowledge or reference pack download when such a link is about to be followed, so the page opens without a wait. */
 function prefetchGamePack(e: Event): void {
   const target = e.target as Element | null;
   const loc = locale();
   if (target?.closest?.('a[data-nav^="game-"]')) {
     if (!hasPageMessages(loc, true)) loadPageMessages(loc, true).catch(() => {});
+  } else if (target?.closest?.('a[data-nav^="ref-"], a[data-nav="reference"]')) {
+    // data-nav is "ref-<entry id>" on an entry link, "reference" on a hub link.
+    const nav = target.closest('a[data-nav^="ref-"], a[data-nav="reference"]')?.getAttribute("data-nav") ?? "";
+    const id = nav.startsWith("ref-") ? nav.slice(4) : "";
+    const page: RefPage = isRefId(id) ? id : "hub";
+    if (!hasPageMessages(loc, false, false, false, false, null, page)) loadPageMessages(loc, false, false, false, false, null, page).catch(() => {});
   } else {
     const link = target?.closest?.('a[data-nav^="kb-"], a[data-nav="knowledge"], a[data-nav="coding"]');
     if (!link) return;
@@ -276,6 +298,7 @@ function applyTool(next: ToolId | null, nextClip: string | null): void {
   quizPage = null;
   datasetPage = null;
   kbPage = null;
+  refPage = null;
 }
 
 function applyLearn(next: TutorialId | null): void {
@@ -293,6 +316,7 @@ function applyLearn(next: TutorialId | null): void {
   quizPage = null;
   datasetPage = null;
   kbPage = null;
+  refPage = null;
 }
 
 function applyGames(consoleId: GameConsoleId | null, nextGame: GameId | null): void {
@@ -310,6 +334,7 @@ function applyGames(consoleId: GameConsoleId | null, nextGame: GameId | null): v
   quizPage = null;
   datasetPage = null;
   kbPage = null;
+  refPage = null;
 }
 
 function applyDevice(page: DevicePageId): void {
@@ -327,6 +352,7 @@ function applyDevice(page: DevicePageId): void {
   quizPage = null;
   datasetPage = null;
   kbPage = null;
+  refPage = null;
 }
 
 function applyLegal(page: LegalPageId): void {
@@ -344,6 +370,7 @@ function applyLegal(page: LegalPageId): void {
   quizPage = null;
   datasetPage = null;
   kbPage = null;
+  refPage = null;
 }
 
 function applyQuiz(id: QuizId | null): void {
@@ -360,6 +387,8 @@ function applyQuiz(id: QuizId | null): void {
   legalPage = null;
   quizPage = id ?? "hub";
   datasetPage = null;
+  kbPage = null;
+  refPage = null;
 }
 
 function applyDataset(id: DatasetId | null): void {
@@ -377,11 +406,17 @@ function applyDataset(id: DatasetId | null): void {
   quizPage = null;
   datasetPage = id ?? "hub";
   kbPage = null;
+  refPage = null;
 }
 
 function applyKb(id: Exclude<KbPage, "hub">): void {
   applyTool(null, null);
   kbPage = id ?? "hub";
+}
+
+function applyRef(id: RefId | null): void {
+  applyTool(null, null);
+  refPage = id ?? "hub";
 }
 
 function unmountTools(): void {
@@ -392,7 +427,7 @@ function unmountTools(): void {
 
 export function render(): void {
   const parsed = parseAppPath(location.pathname);
-  const loc: Locale = parsed.kind === "app" || parsed.kind === "learn" || parsed.kind === "games" || parsed.kind === "markets" || parsed.kind === "device" || parsed.kind === "legal" || parsed.kind === "quiz" || parsed.kind === "dataset" || parsed.kind === "kb"
+  const loc: Locale = parsed.kind === "app" || parsed.kind === "learn" || parsed.kind === "games" || parsed.kind === "markets" || parsed.kind === "device" || parsed.kind === "legal" || parsed.kind === "quiz" || parsed.kind === "dataset" || parsed.kind === "kb" || parsed.kind === "ref"
     ? parsed.locale
     : locale();
   const req = ++localeReq;
@@ -401,9 +436,10 @@ export function render(): void {
   const quiz = parsed.kind === "quiz" || parsed.kind === "bare-quiz";
   const dataset = parsed.kind === "dataset" || parsed.kind === "bare-dataset";
   const kb: KbPage = parsed.kind === "kb" || parsed.kind === "bare-kb" ? parsed.article ?? "hub" : null;
-  if (!hasPageMessages(loc, gamePage, legal, quiz, dataset, kb)) {
+  const ref: RefPage = parsed.kind === "ref" || parsed.kind === "bare-ref" ? parsed.entry ?? "hub" : null;
+  if (!hasPageMessages(loc, gamePage, legal, quiz, dataset, kb, ref)) {
     // Keep the current (or server-rendered) page until this page's strings arrive.
-    loadPageMessages(loc, gamePage, legal, quiz, dataset, kb).then(
+    loadPageMessages(loc, gamePage, legal, quiz, dataset, kb, ref).then(
       () => {
         try {
           sessionStorage.removeItem(RELOAD_KEY);
@@ -476,13 +512,20 @@ export function render(): void {
     applyKb(parsed.article);
   } else if (parsed.kind === "bare-kb") {
     applyKb(parsed.article);
+  } else if (parsed.kind === "ref") {
+    setLocale(parsed.locale);
+    applyRef(parsed.entry);
+  } else if (parsed.kind === "bare-ref") {
+    applyRef(parsed.entry);
   } else if (parsed.kind === "bare") {
     applyTool(parsed.tool, parsed.clipId ?? null);
   } else {
     applyTool(null, null);
   }
 
-  const seo = kbPage
+  const seo = refPage
+    ? { ref: true as const, refId: refPage === "hub" ? null : refPage }
+    : kbPage
     ? { kb: true as const, kbId: kbPage }
     : learnHub || tutorial
     ? { learn: true as const, tutorial }
@@ -511,7 +554,7 @@ export function render(): void {
   upsertMeta("property", "og:title", pageTitle(loc, seo));
   upsertMeta("property", "og:description", pageDescription(loc, seo));
   upsertMeta("property", "og:url", pageCanonical(loc, seo));
-  upsertMeta("property", "og:type", (tutorial || gameId || kbArticleOf(kbPage)) ? "article" : "website");
+  upsertMeta("property", "og:type", (tutorial || gameId || kbArticleOf(kbPage) || (refPage && refPage !== "hub")) ? "article" : "website");
   syncHreflang(seo);
   const image = devicePage
     ? DEVICE_COVER
@@ -529,7 +572,7 @@ export function render(): void {
   upsertMeta("name", "twitter:description", pageDescription(loc, seo));
   upsertMeta("name", "twitter:image", image ? `https://cv.cm${image.split("?")[0]}` : null);
   syncBrandIcon(Boolean(tool && !tutorial && !gameId && !devicePage && !marketId && BRANDED_TOOLS.has(tool)));
-  syncPageJsonLd(loc, tool, tutorial, gameId, gamesHub, convertJob, resizeJob, marketId, marketsHub, devicePage, gameConsole, legalPage, quizPage, datasetPage, kbPage);
+  syncPageJsonLd(loc, tool, tutorial, gameId, gamesHub, convertJob, resizeJob, marketId, marketsHub, devicePage, gameConsole, legalPage, quizPage, datasetPage, kbPage, refPage);
 
   const root = appEl();
   const gen = pageGen;
@@ -662,12 +705,13 @@ function shell(loc: Locale): { page: HTMLElement; ready: Promise<void> } {
   const ready = mountPage(main, loc).catch((err: unknown) => {
     console.error(err);
   });
-  const home = !(tool || tutorial || learnHub || gamesHub || gameId || marketsHub || marketId || devicePage || legalPage || quizPage || datasetPage || kbPage);
+  const home = !(tool || tutorial || learnHub || gamesHub || gameId || marketsHub || marketId || devicePage || legalPage || quizPage || datasetPage || kbPage || refPage);
   const toolsOn = Boolean(tool) || Boolean(devicePage) || Boolean(marketsHub || marketId);
   const gamesOn = gamesHub || Boolean(gameId);
   const learnOn = learnHub || Boolean(tutorial) || Boolean(kbPage);
   const testsOn = Boolean(quizPage);
   const dataOn = Boolean(datasetPage);
+  const refOn = Boolean(refPage);
   const page = h("div", { class: "page" + (home ? " is-home" : "") + (gameId || gameConsole === "flash" ? " is-game" : "") },
     h("header", { class: "top" },
       h("a", { class: "brand", href: appHref(loc, null), "data-nav": "home", "aria-label": t("brand") }, "cv.cm"),
@@ -675,6 +719,7 @@ function shell(loc: Locale): { page: HTMLElement; ready: Promise<void> } {
         navLink(`${appHref(loc, null)}#tools`, t("nav.tools"), toolsOn, "tools"),
         navLink(quizHref(loc), t("nav.tests"), testsOn, "tests"),
         navLink(datasetHref(loc), t("nav.data"), dataOn, "datasets"),
+        navLink(refHref(loc), t("nav.reference"), refOn, "reference"),
         navLink(gamesHref(loc, null), t("nav.games"), gamesOn, "games"),
         navLink(learnHref(loc, null), t("nav.learn"), learnOn, "learn"),
       ),
@@ -725,6 +770,10 @@ function toolDirectory(loc: Locale): HTMLElement {
           h("a", { href: datasetHref(loc, id), "data-nav": `dataset-${id}`, "aria-current": datasetPage === id ? "page" : undefined }, t(`dataset.${id}.name`)),
         ),
       ),
+    ),
+    // Entry names live in the ref pack (reference pages only), so the footer links the hub.
+    h("div", { class: "dir-group" },
+      h("h2", null, h("a", { href: refHref(loc), "data-nav": "reference", "aria-current": refPage === "hub" ? "page" : undefined }, t("nav.reference"))),
     ),
     h("div", { class: "dir-group" },
       h("h2", null, h("a", { href: kbHref(loc), "data-nav": "knowledge" }, t("kb.label"))),
@@ -792,6 +841,10 @@ async function mountPage(main: HTMLElement, loc: Locale): Promise<void> {
     const m = await import("./kb/ui");
     if (!alive()) return;
     m.mountKb(main, loc, kbPage);
+  } else if (refPage) {
+    const m = await import("./ref/ui");
+    if (!alive()) return;
+    m.mountRef(main, loc, refPage === "hub" ? null : refPage);
   } else if (legalPage) {
     main.innerHTML = legalStaticHtml(loc, legalPage);
   } else if (marketId || marketsHub) {
@@ -864,6 +917,8 @@ function localeHref(next: Locale): string {
     ? withSearch(datasetHref(next, datasetPage === "hub" ? null : datasetPage), location.search)
     : kbPage
     ? withSearch(kbHref(next, kbPage), location.search)
+    : refPage
+    ? withSearch(refHref(next, refPage === "hub" ? null : refPage), location.search)
     : legalPage
     ? withSearch(legalHref(next, legalPage), location.search)
     : learnHub || tutorial

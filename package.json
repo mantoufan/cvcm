@@ -13,6 +13,7 @@
     "preview": "vite preview --port 4173 --strictPort",
     "typecheck": "tsc --noEmit",
     "kb:sync": "node scripts/kb-sync.mjs",
+    "ref:sync": "node scripts/ref-sync.mjs",
     "test": "vitest run",
     "deploy": "npm run build && wrangler pages deploy dist --project-name cvcm --commit-dirty=true"
   },

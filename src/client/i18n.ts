@@ -13,6 +13,8 @@ import {
   hasKbMessages,
   hasQuizMessages,
   hasDatasetMessages,
+  hasRefEntry,
+  hasRefMessages,
   messages,
   registerGameMessages,
   registerLegalMessages,
@@ -21,15 +23,20 @@ import {
   registerKbMessages,
   registerQuizMessages,
   registerDatasetMessages,
+  registerRefEntry,
+  registerRefMessages,
   type GameMessages,
   type LegalMessages,
   type LocaleMessages,
   type KbMessages,
   type QuizMessages,
   type DatasetMessages,
+  type RefMessages,
 } from "../shared/messages";
 import type { KbArticleCopy } from "../shared/kb-i18n";
 import { kbArticleOf, type KbId, type KbPage } from "../shared/kb";
+import type { RefEntryCopy } from "../shared/ref-i18n";
+import type { RefId, RefPage } from "../shared/ref";
 
 // One chunk per locale, so a page downloads only the strings it shows.
 const PACKS: Record<Locale, () => Promise<{ default: LocaleMessages }>> = {
@@ -122,15 +129,48 @@ async function loadKbArticle(next: Locale, id: KbId): Promise<void> {
   registerKbArticle(next, id, m.default);
 }
 
-/** Whether the strings a page needs are loaded: the locale pack, plus the game, legal, quiz, dataset or kb pack on those pages. */
-export function hasPageMessages(next: Locale, game: boolean, legal = false, quiz = false, dataset = false, kb: KbPage = null): boolean {
-  const article = kbArticleOf(kb);
-  return hasMessages(next) && (!game || hasGameMessages(next)) && (!legal || hasLegalMessages(next)) && (!quiz || hasQuizMessages(next)) && (!dataset || hasDatasetMessages(next))
-    && (!kb || (hasKbMessages(next) && (!article || hasKbArticle(next, article))));
+// Reference hub copy plus entry names (`npm run ref:sync`), only for /reference/ pages.
+const REF_PACKS: Record<Locale, () => Promise<{ default: RefMessages }>> = {
+  en: () => import("../locales/packs/ref-en"),
+  "zh-CN": () => import("../locales/packs/ref-zh-CN"),
+  "zh-TW": () => import("../locales/packs/ref-zh-TW"),
+  ja: () => import("../locales/packs/ref-ja"),
+  ko: () => import("../locales/packs/ref-ko"),
+  vi: () => import("../locales/packs/ref-vi"),
+  id: () => import("../locales/packs/ref-id"),
+  es: () => import("../locales/packs/ref-es"),
+};
+
+// One chunk per reference entry and locale, through that locale's generated loader table (like kb articles).
+const REF_LOADER_TABLES: Record<Locale, () => Promise<{ REF_LOADERS: Record<RefId, () => Promise<unknown>> }>> = {
+  en: () => import("../locales/ref/loaders/en"),
+  "zh-CN": () => import("../locales/ref/loaders/zh-CN"),
+  "zh-TW": () => import("../locales/ref/loaders/zh-TW"),
+  ja: () => import("../locales/ref/loaders/ja"),
+  ko: () => import("../locales/ref/loaders/ko"),
+  vi: () => import("../locales/ref/loaders/vi"),
+  id: () => import("../locales/ref/loaders/id"),
+  es: () => import("../locales/ref/loaders/es"),
+};
+
+async function loadRefEntry(next: Locale, id: RefId): Promise<void> {
+  const { REF_LOADERS } = await REF_LOADER_TABLES[next]();
+  const m = (await REF_LOADERS[id]()) as { default: RefEntryCopy };
+  registerRefEntry(next, id, m.default);
 }
 
-export async function loadPageMessages(next: Locale, game: boolean, legal = false, quiz = false, dataset = false, kb: KbPage = null): Promise<void> {
+/** Whether the strings a page needs are loaded: the locale pack, plus the game, legal, quiz, dataset or kb pack on those pages. */
+export function hasPageMessages(next: Locale, game: boolean, legal = false, quiz = false, dataset = false, kb: KbPage = null, ref: RefPage = null): boolean {
   const article = kbArticleOf(kb);
+  const entry = ref && ref !== "hub" ? ref : null;
+  return hasMessages(next) && (!game || hasGameMessages(next)) && (!legal || hasLegalMessages(next)) && (!quiz || hasQuizMessages(next)) && (!dataset || hasDatasetMessages(next))
+    && (!kb || (hasKbMessages(next) && (!article || hasKbArticle(next, article))))
+    && (!ref || (hasRefMessages(next) && (!entry || hasRefEntry(next, entry))));
+}
+
+export async function loadPageMessages(next: Locale, game: boolean, legal = false, quiz = false, dataset = false, kb: KbPage = null, ref: RefPage = null): Promise<void> {
+  const article = kbArticleOf(kb);
+  const entry = ref && ref !== "hub" ? ref : null;
   await Promise.all([
     hasMessages(next) ? null : PACKS[next]().then((m) => registerMessages(next, m.default)),
     !game || hasGameMessages(next) ? null : GAME_PACKS[next]().then((m) => registerGameMessages(next, m.default)),
@@ -139,6 +179,8 @@ export async function loadPageMessages(next: Locale, game: boolean, legal = fals
     !dataset || hasDatasetMessages(next) ? null : DATASET_PACKS[next]().then((m) => registerDatasetMessages(next, m.default)),
     !kb || hasKbMessages(next) ? null : KB_PACKS[next]().then((m) => registerKbMessages(next, m.default)),
     !article || hasKbArticle(next, article) ? null : loadKbArticle(next, article),
+    !ref || hasRefMessages(next) ? null : REF_PACKS[next]().then((m) => registerRefMessages(next, m.default)),
+    !entry || hasRefEntry(next, entry) ? null : loadRefEntry(next, entry),
   ]);
 }
 
