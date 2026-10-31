@@ -1,0 +1,161 @@
+{
+  "title": "Trie (cây tiền tố): chèn, tìm, gợi ý tự động bằng Python — cv.cm",
+  "description": "Tìm hiểu trie (cây tiền tố) lưu chuỗi theo tiền tố chung: chèn, tìm, starts-with và gợi ý tự động (autocomplete) bằng Python, kèm độ phức tạp và các biến thể.",
+  "h1": "Trie (cây tiền tố): cách hoạt động, code và độ phức tạp",
+  "answer": "Trie, hay cây tiền tố (prefix tree), là cây lưu chuỗi từng ký tự một: mỗi cạnh là một ký tự, và mỗi đường đi từ gốc ghép thành một tiền tố. Các từ có chung tiền tố dùng chung các node, và một cờ đánh dấu nơi một từ hoàn chỉnh kết thúc. Chèn hoặc tra một từ độ dài m tốn O(m), không phụ thuộc số từ đã lưu, và việc tìm mọi từ có một tiền tố cho trước rất nhanh. Trie là nền tảng của gợi ý tự động, trình kiểm tra chính tả và bảng định tuyến IP.",
+  "sections": [
+    {
+      "h": "Trie giải quyết vấn đề gì",
+      "body": [
+        "Tập băm (hash set) trả lời nhanh \"từ chính xác này có được lưu không?\", nhưng không trả lời được \"những từ nào bắt đầu bằng `pre`?\" mà không kiểm tra từng từ. Danh sách đã sắp xếp trả lời truy vấn tiền tố bằng tìm nhị phân, nhưng chèn chậm. Trie được tổ chức theo tiền tố, nên các câu hỏi về tiền tố là thế mạnh tự nhiên của nó: gợi ý tự động trong ô tìm kiếm, trò chơi chữ, kiểm tra chính tả và khớp tiền tố dài nhất cho tuyến đường mạng."
+      ]
+    },
+    {
+      "h": "Ý tưởng giải thích đơn giản",
+      "body": [
+        "Hãy nghĩ tới danh bạ điện thoại mà bạn thu hẹp dần từng chữ cái. Gõ `c` hiện mọi người bắt đầu bằng c, gõ `ca` thu hẹp danh sách, và cứ thế. Trie lưu các từ đúng theo hình dạng đó. Gốc là tiền tố rỗng. Mỗi node có một map từ ký tự kế tiếp tới node con, cộng một cờ kết thúc từ, vì một từ như `car` có thể vừa là từ hoàn chỉnh vừa là tiền tố của `cart`."
+      ]
+    },
+    {
+      "h": "Ví dụ minh họa: chèn car, cart, cat và dog",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Chèn",
+              "Node dùng lại",
+              "Node mới tạo",
+              "Đánh dấu kết thúc từ tại"
+            ],
+            "rows": [
+              [
+                "`car`",
+                "không có",
+                "c, a, r",
+                "r (đường car)"
+              ],
+              [
+                "`cart`",
+                "c, a, r",
+                "t",
+                "t (đường cart)"
+              ],
+              [
+                "`cat`",
+                "c, a",
+                "t (con mới của a)",
+                "t (đường cat)"
+              ],
+              [
+                "`dog`",
+                "không có",
+                "d, o, g",
+                "g (đường dog)"
+              ]
+            ]
+          }
+        },
+        "Bốn từ có tổng cộng 13 chữ cái nhưng chỉ cần 8 node dưới gốc (c, a, r, t, t, d, o, g), vì `car`, `cart` và `cat` dùng chung `ca`. Tìm `ca` đi qua hai node và thành công với tư cách tiền tố, nhưng `ca` không phải là từ vì node của nó không được đánh dấu kết thúc. Tìm `cow` thất bại ở bước thứ hai: node c không có con o."
+      ]
+    },
+    {
+      "h": "Cài đặt bằng Python",
+      "body": [
+        "Mỗi node giữ một `dict` các con, xử lý được mọi bảng chữ cái kể cả Unicode. Phương thức `starts_with` thu thập mọi từ bên dưới một tiền tố, đây là cốt lõi của gợi ý tự động.",
+        {
+          "code": "class TrieNode:\n    __slots__ = (\"children\", \"is_word\")\n    def __init__(self):\n        self.children = {}\n        self.is_word = False\nclass Trie:\n    def __init__(self):\n        self.root = TrieNode()\n    def insert(self, word):\n        node = self.root\n        for ch in word:\n            node = node.children.setdefault(ch, TrieNode())\n        node.is_word = True\n    def _find(self, prefix):\n        node = self.root\n        for ch in prefix:\n            node = node.children.get(ch)\n            if node is None:\n                return None\n        return node\n    def contains(self, word):\n        node = self._find(word)\n        return node is not None and node.is_word\n    def starts_with(self, prefix):\n        node, out = self._find(prefix), []\n        stack = [(node, prefix)] if node else []\n        while stack:\n            node, path = stack.pop()\n            if node.is_word:\n                out.append(path)\n            for ch, child in node.children.items():\n                stack.append((child, path + ch))\n        return sorted(out)",
+          "lang": "python"
+        },
+        {
+          "code": "t = Trie()\nfor w in [\"car\", \"cart\", \"cat\", \"dog\"]:\n    t.insert(w)\nprint(t.contains(\"car\"), t.contains(\"ca\"))  # True False\nprint(t.starts_with(\"ca\"))                  # ['car', 'cart', 'cat']\nprint(t.starts_with(\"x\"))                   # []",
+          "lang": "python"
+        },
+        "`starts_with` sắp xếp đầu ra để có thứ tự ổn định. Một hệ thống gợi ý tự động thực tế còn dừng sau vài kết quả đầu và xếp hạng chúng, chẳng hạn theo số lần phổ biến đã lưu."
+      ]
+    },
+    {
+      "h": "Độ phức tạp thời gian và không gian",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Thao tác",
+              "Thời gian",
+              "Lý do"
+            ],
+            "rows": [
+              [
+                "Chèn một từ độ dài m",
+                "O(m)",
+                "một bước cho mỗi ký tự"
+              ],
+              [
+                "Tìm một từ hoặc kiểm tra tiền tố",
+                "O(m)",
+                "một lần tra từ điển cho mỗi ký tự"
+              ],
+              [
+                "Liệt kê k từ dưới một tiền tố",
+                "O(m + size of the subtree)",
+                "đi tới tiền tố, rồi thăm mọi node bên dưới"
+              ],
+              [
+                "Xóa một từ",
+                "O(m)",
+                "bỏ đánh dấu kết thúc, rồi tùy chọn cắt tỉa các node rỗng"
+              ],
+              [
+                "Không gian",
+                "O(total characters stored)",
+                "xấu nhất là một node cho mỗi ký tự khi không có gì dùng chung"
+              ]
+            ]
+          }
+        },
+        "Thời gian không phụ thuộc số từ n, đó là ưu điểm chính so với cây cân bằng chứa chuỗi (O(m log n) phép so sánh). Cái giá là bộ nhớ: mỗi node là một đối tượng riêng với dictionary riêng, nên trie có thể dùng bộ nhớ gấp nhiều lần so với các chuỗi thô."
+      ]
+    },
+    {
+      "h": "Các biến thể và lỗi thường gặp",
+      "body": [
+        {
+          "ul": [
+            "Con dạng mảng: dùng mảng cố định 26 ô cho chữ thường tiếng Anh. Nhanh hơn `dict`, nhưng lãng phí với bảng chữ cái thưa hoặc lớn.",
+            "Trie nén (radix tree, Patricia trie): gộp các chuỗi node chỉ có một con thành một cạnh gắn nhãn là chuỗi, tiết kiệm rất nhiều bộ nhớ. Radix tree được dùng trong bảng định tuyến IP và một số bộ định tuyến HTTP.",
+            "Cây tìm kiếm tam phân (ternary search tree): mỗi node có ba con (nhỏ hơn, bằng, lớn hơn), dùng ít bộ nhớ hơn mảng rộng.",
+            "Trie đếm: lưu một bộ đếm trong mỗi node để trả lời \"có bao nhiêu từ bắt đầu bằng tiền tố này?\" trong O(m).",
+            "Trie theo bit: lưu số theo từng bit để giải các bài toán XOR lớn nhất."
+          ]
+        },
+        {
+          "note": "Lỗi phổ biến nhất là quên cờ kết thúc từ. Thiếu nó, chèn `cart` làm `contains(\"car\")` trả về True dù `car` chưa từng được chèn. Lỗi phổ biến thứ hai là xóa các node vẫn còn cần cho những từ dài hơn."
+        }
+      ]
+    },
+    {
+      "h": "Khi nào dùng trie và các bài toán phỏng vấn điển hình",
+      "body": [
+        "Dùng trie khi bạn cần truy vấn tiền tố, khớp tiền tố dài nhất hoặc duyệt có thứ tự nhiều chuỗi có tiền tố chung. Dùng `set` hoặc `dict` khi chỉ cần tra cứu khớp chính xác: đơn giản hơn và dùng ít bộ nhớ hơn trong Python. Với danh sách từ nhỏ, tĩnh, danh sách đã sắp xếp cùng mô-đun `bisect` cũng trả lời tốt các truy vấn tiền tố.",
+        "Các bài toán điển hình: cài đặt trie (insert, search, starts-with), tìm từ trong lưới với nhiều từ đích, thay từ bằng gốc ngắn nhất của nó, tiền tố chung dài nhất, thiết kế hệ thống gợi ý tìm kiếm, và XOR lớn nhất của hai số bằng trie theo bit."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Tại sao gọi là trie?",
+      "a": "Tên này lấy từ phần giữa của từ retrieval (truy xuất). Edward Fredkin đặt ra thuật ngữ này trong một bài báo năm 1960. Nhiều người đọc là \"try\" để phân biệt với tree."
+    },
+    {
+      "q": "Trie có nhanh hơn bảng băm không?",
+      "a": "Với tra cứu chính xác, cả hai đều tốn thời gian tỉ lệ với độ dài từ, và `dict` của Python thường nhanh hơn và nhỏ hơn. Trie thắng khi bạn cần tìm theo tiền tố, duyệt theo thứ tự đã sắp xếp hoặc khớp tiền tố dài nhất."
+    },
+    {
+      "q": "Trie dùng bao nhiêu bộ nhớ?",
+      "a": "Xấu nhất là một node cho mỗi ký tự đã lưu. Tiền tố chung giảm con số này, và trie nén (radix tree) giảm thêm bằng cách gộp các chuỗi chỉ có một con."
+    },
+    {
+      "q": "Trie và radix tree khác nhau thế nào?",
+      "a": "Radix tree là trie nén: mọi chuỗi node chỉ có một con được gộp thành một node có cạnh chứa cả một chuỗi con. Việc tra cứu hoạt động như nhau nhưng cần ít node hơn."
+    }
+  ]
+}

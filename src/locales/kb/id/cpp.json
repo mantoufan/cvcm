@@ -1,0 +1,226 @@
+{
+  "title": "Tutorial C++: tipe data, class, container STL, dan RAII — cv.cm",
+  "description": "Belajar C++ modern dalam satu halaman: kompilasi Hello world, tipe data dan auto, alur kontrol, fungsi, class, vector dan map, smart pointer, RAII, dan exception.",
+  "h1": "Tutorial C++ untuk pemula",
+  "answer": "C++ adalah bahasa terkompilasi dengan tipe statis yang memadukan kecepatan dan kontrol tingkat rendah C dengan class, template, dan pustaka standar yang besar. Kompilasi `hello.cpp` dengan `g++ -std=c++20 hello.cpp -o hello` lalu jalankan `./hello`. Kode C++ modern memakai `std::string`, `std::vector`, dan `std::map` alih-alih array mentah, smart pointer alih-alih `delete` manual, dan RAII agar resource dilepas secara otomatis.",
+  "sections": [
+    {
+      "h": "Apa itu C++ dan untuk apa dipakai",
+      "body": [
+        "C++ dibuat oleh Bjarne Stroustrup di Bell Labs, dimulai pada 1979 sebagai \"C with Classes\". C++ distandarkan oleh ISO; C++11 membuka era \"C++ modern\", disusul C++17, C++20, dan C++23. C++ dipakai di tempat yang mementingkan performa dan kontrol: game engine (Unreal Engine), browser web (Chrome, Firefox), database, sistem trading, perangkat embedded, compiler, dan runtime machine learning. Prinsip utamanya adalah abstraksi tanpa overhead: fitur yang tidak Anda pakai tidak menambah biaya."
+      ]
+    },
+    {
+      "h": "Instal compiler dan jalankan Hello, world",
+      "body": [
+        "Gunakan GCC (`g++`) atau Clang (`clang++`) di Linux dan macOS, atau Microsoft Visual C++ di Windows (lewat Visual Studio). Tentukan versi standar secara eksplisit.",
+        {
+          "code": "#include <iostream>\n\nint main() {\n    std::cout << \"Hello, world\\n\";\n    return 0;\n}",
+          "lang": "cpp"
+        },
+        {
+          "code": "g++ -std=c++20 -Wall -Wextra hello.cpp -o hello\n./hello\n# Hello, world",
+          "lang": "shell"
+        },
+        "`std::cout` adalah output stream standar dan `<<` menulis ke dalamnya. Semua isi pustaka standar berada di namespace `std`."
+      ]
+    },
+    {
+      "h": "Variabel, tipe data, dan auto",
+      "body": [
+        "C++ memiliki tipe bawaan yang sama dengan C, ditambah `bool` sebagai keyword, reference, dan tipe pustaka seperti `std::string`. `auto` meminta compiler menyimpulkan tipe dari nilai awalnya. Inisialisasi dengan kurung kurawal `{}` menolak konversi yang menyempit (narrowing).",
+        {
+          "table": {
+            "head": [
+              "Tipe",
+              "Contoh",
+              "Catatan"
+            ],
+            "rows": [
+              [
+                "`int`, `long long`",
+                "`int n{42};`",
+                "Bilangan bulat bertanda"
+              ],
+              [
+                "`double`",
+                "`double x{3.14};`",
+                "Floating point 64-bit"
+              ],
+              [
+                "`bool`",
+                "`bool ok{true};`",
+                "`true` atau `false`"
+              ],
+              [
+                "`char`",
+                "`char c{'A'};`",
+                "Satu byte"
+              ],
+              [
+                "`std::string`",
+                "`std::string s{\"hi\"};`",
+                "Teks yang dapat bertambah, dari `<string>`"
+              ],
+              [
+                "`auto`",
+                "`auto v = 2.5;`",
+                "Disimpulkan, di sini `double`"
+              ],
+              [
+                "`T&`",
+                "`int& r = n;`",
+                "Reference: nama lain untuk `n`"
+              ]
+            ]
+          }
+        },
+        {
+          "code": "#include <iostream>\n#include <string>\n\nint main() {\n    int count{7};\n    auto avg = count / 2.0;          // double, 3.5\n    std::string name{\"Ada\"};\n    name += \" Lovelace\";\n    const int& ref = count;          // read-only alias of count\n    std::cout << name << \" \" << name.size() << \" \" << avg << \" \" << ref << \"\\n\";\n    // Ada Lovelace 12 3.5 7\n}",
+          "lang": "cpp"
+        }
+      ]
+    },
+    {
+      "h": "Alur kontrol dan fungsi",
+      "body": [
+        "Alur kontrol sama seperti di C, ditambah perulangan `for` berbasis range. Kirim objek besar dengan reference `const` untuk menghindari salinan, dan dengan reference non-`const` bila fungsi harus mengubahnya.",
+        {
+          "code": "#include <iostream>\n#include <string>\n#include <vector>\n\nint square(int x) { return x * x; }\n\nvoid addSuffix(std::string& s, const std::string& suffix = \"!\") {\n    s += suffix;\n}\n\nint main() {\n    int score = 72;\n    if (score >= 90) std::cout << \"A\\n\";\n    else if (score >= 70) std::cout << \"B\\n\";   // B\n    else std::cout << \"C\\n\";\n\n    std::vector<int> nums{1, 2, 3};\n    for (int n : nums) std::cout << square(n) << \" \";  // 1 4 9\n    std::cout << \"\\n\";\n\n    std::string word = \"hi\";\n    addSuffix(word);\n    std::cout << word << \"\\n\";                  // hi!\n}",
+          "lang": "cpp"
+        }
+      ]
+    },
+    {
+      "h": "Class",
+      "body": [
+        "Class mengelompokkan data member dan member function. Constructor menyiapkan objek; member `private` disembunyikan dari kode luar. `struct` sama dengan class, kecuali member-nya publik secara default.",
+        {
+          "code": "#include <iostream>\n#include <string>\n#include <utility>\n\nclass Account {\npublic:\n    explicit Account(std::string owner) : owner_(std::move(owner)) {}\n\n    void deposit(double amount) {\n        if (amount > 0) balance_ += amount;\n    }\n    double balance() const { return balance_; }\n    const std::string& owner() const { return owner_; }\n\nprivate:\n    std::string owner_;\n    double balance_ = 0.0;\n};\n\nint main() {\n    Account acc{\"Ann\"};\n    acc.deposit(50);\n    acc.deposit(-5);   // ignored\n    std::cout << acc.owner() << \": \" << acc.balance() << \"\\n\";  // Ann: 50\n}",
+          "lang": "cpp"
+        },
+        "Pewarisan (`class Savings : public Account`) dan fungsi `virtual` memberi polimorfisme saat runtime. Tandai fungsi yang menimpa dengan `override` agar compiler memeriksanya."
+      ]
+    },
+    {
+      "h": "Container dan algoritma pustaka standar",
+      "body": [
+        "Pustaka standar (sering disebut STL) menyediakan container dan algoritma yang bekerja bersama lewat iterator.",
+        {
+          "table": {
+            "head": [
+              "Container",
+              "Seperti",
+              "Dipakai untuk"
+            ],
+            "rows": [
+              [
+                "`std::vector<T>`",
+                "Array dinamis",
+                "Container urutan default"
+              ],
+              [
+                "`std::array<T, N>`",
+                "Array tetap",
+                "Ukuran diketahui saat kompilasi"
+              ],
+              [
+                "`std::map<K, V>`",
+                "Dictionary terurut",
+                "Key terurut, pencarian O(log n)"
+              ],
+              [
+                "`std::unordered_map<K, V>`",
+                "Hash table",
+                "Pencarian cepat, rata-rata O(1)"
+              ],
+              [
+                "`std::set<T>`",
+                "Set unik terurut",
+                "Pengecekan keanggotaan, output terurut"
+              ]
+            ]
+          }
+        },
+        {
+          "code": "#include <algorithm>\n#include <iostream>\n#include <map>\n#include <string>\n#include <vector>\n\nint main() {\n    std::vector<int> nums{3, 1, 2, 5};\n    std::sort(nums.begin(), nums.end());\n    auto evens = std::count_if(nums.begin(), nums.end(),\n                               [](int n) { return n % 2 == 0; });\n    std::cout << nums.front() << \" \" << nums.back() << \" \" << evens << \"\\n\";  // 1 5 1\n\n    std::map<std::string, int> ages{{\"bob\", 25}, {\"ann\", 31}};\n    ages[\"cy\"] = 40;\n    for (const auto& [name, age] : ages) {     // structured bindings\n        std::cout << name << \"=\" << age << \" \";  // ann=31 bob=25 cy=40\n    }\n    std::cout << \"\\n\";\n}",
+          "lang": "cpp"
+        },
+        "`[](int n) { ... }` adalah lambda, fungsi tanpa nama yang ditulis langsung di tempat. Template-lah yang membuat satu `std::vector` berfungsi untuk tipe elemen apa pun; Anda bisa menulis sendiri dengan `template <typename T>`."
+      ]
+    },
+    {
+      "h": "Fitur khas: RAII dan smart pointer",
+      "body": [
+        "RAII (Resource Acquisition Is Initialization) berarti sebuah resource dimiliki oleh objek: constructor memperolehnya dan destructor melepaskannya. Karena destructor berjalan otomatis ketika objek keluar dari scope, bahkan saat exception dilempar, memori, file, dan lock tidak bisa bocor. Smart pointer menerapkan RAII pada memori heap.",
+        {
+          "code": "#include <iostream>\n#include <memory>\n\nstruct Noisy {\n    int id;\n    explicit Noisy(int i) : id(i) { std::cout << \"create \" << id << \"\\n\"; }\n    ~Noisy() { std::cout << \"destroy \" << id << \"\\n\"; }\n};\n\nint main() {\n    auto a = std::make_unique<Noisy>(1);       // sole owner\n    {\n        auto b = std::make_shared<Noisy>(2);   // shared, reference-counted\n        auto c = b;                            // two owners now\n        std::cout << \"owners: \" << b.use_count() << \"\\n\";\n    }                                          // destroy 2 happens here\n    std::cout << \"end of main\\n\";\n}                                              // destroy 1 happens here",
+          "lang": "cpp"
+        },
+        "Output: `create 1`, `create 2`, `owners: 2`, `destroy 2`, `end of main`, `destroy 1`. Pada kode modern, Anda hampir tidak perlu menulis `new` dan `delete` sendiri."
+      ]
+    },
+    {
+      "h": "Penanganan error dengan exception",
+      "body": [
+        "Lempar objek exception dan tangkap dengan reference `const`. Tipe exception standar ada di `<stdexcept>`. Fungsi yang tidak pernah melempar dapat ditandai `noexcept`.",
+        {
+          "code": "#include <iostream>\n#include <stdexcept>\n#include <string>\n\nint parseAge(const std::string& text) {\n    int age = std::stoi(text);   // throws std::invalid_argument on \"abc\"\n    if (age < 0) throw std::out_of_range(\"negative age\");\n    return age;\n}\n\nint main() {\n    try {\n        std::cout << parseAge(\"41\") << \"\\n\";   // 41\n        std::cout << parseAge(\"abc\") << \"\\n\";\n    } catch (const std::invalid_argument&) {\n        std::cout << \"not a number\\n\";         // not a number\n    } catch (const std::exception& e) {\n        std::cout << \"error: \" << e.what() << \"\\n\";\n    }\n}",
+          "lang": "cpp"
+        },
+        "Untuk kegagalan yang diperkirakan, banyak codebase mengembalikan `std::optional<T>` (C++17) atau `std::expected<T, E>` (C++23) alih-alih melempar exception."
+      ]
+    },
+    {
+      "h": "Program kecil yang lengkap: frekuensi kata",
+      "body": [
+        {
+          "code": "#include <algorithm>\n#include <cctype>\n#include <fstream>\n#include <iostream>\n#include <string>\n#include <unordered_map>\n#include <vector>\n\nint main(int argc, char* argv[]) {\n    if (argc != 2) {\n        std::cerr << \"usage: \" << argv[0] << \" FILE\\n\";\n        return 1;\n    }\n    std::ifstream in(argv[1]);\n    if (!in) {\n        std::cerr << \"cannot open \" << argv[1] << \"\\n\";\n        return 1;\n    }\n    std::unordered_map<std::string, int> counts;\n    std::string word;\n    while (in >> word) {\n        std::string clean;\n        for (unsigned char ch : word)\n            if (std::isalpha(ch)) clean += static_cast<char>(std::tolower(ch));\n        if (!clean.empty()) ++counts[clean];\n    }\n    std::vector<std::pair<std::string, int>> top(counts.begin(), counts.end());\n    std::sort(top.begin(), top.end(),\n              [](const auto& a, const auto& b) { return a.second > b.second; });\n    for (size_t i = 0; i < top.size() && i < 5; ++i)\n        std::cout << top[i].second << \"  \" << top[i].first << \"\\n\";\n}",
+          "lang": "cpp"
+        },
+        "Kompilasi dengan `g++ -std=c++20 -O2 words.cpp -o words` dan jalankan `./words notes.txt`. File ditutup otomatis ketika `in` keluar dari scope, lagi-lagi berkat RAII."
+      ]
+    },
+    {
+      "h": "Kesalahan umum pemula",
+      "body": [
+        {
+          "note": "C++ mewarisi undefined behavior dari C: membaca melewati akhir `std::vector` dengan `[]`, memakai dangling reference, atau membaca variabel yang belum diinisialisasi mungkin tampak berjalan lalu gagal belakangan. Gunakan `.at(i)` saat belajar, dan kompilasi dengan `-fsanitize=address,undefined -g`."
+        },
+        {
+          "ul": [
+            "Menulis `using namespace std;` di file header, yang mencemari setiap file yang meng-include-nya.",
+            "Mengirim objek besar seperti `std::vector` secara by value padahal `const&` sudah cukup.",
+            "Mencampur signed dan unsigned dalam perbandingan, seperti `int i` dengan `v.size()`. Aktifkan peringatan untuk melihatnya.",
+            "Menyimpan iterator atau reference ke `std::vector` setelah `push_back`, yang mungkin memindahkan elemen.",
+            "Memakai `new` dan `delete` mentah alih-alih `std::make_unique`, `std::vector`, atau tipe pemilik lainnya."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Langkah selanjutnya",
+      "body": [
+        "Gunakan cppreference.com sebagai referensi bahasa dan pustaka, serta C++ Core Guidelines (disunting oleh Bjarne Stroustrup dan Herb Sutter) untuk praktik yang baik. Situs Standard C++ Foundation, isocpp.org, punya halaman getting-started dengan rekomendasi buku. Pelajari CMake untuk membangun proyek, lalu lanjut ke move semantics, template, `constexpr`, dan concurrency dengan `std::thread`."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Perlukah belajar C sebelum C++?",
+      "a": "Tidak wajib. Pengajaran C++ modern dimulai dengan `std::string`, `std::vector`, dan class, serta memperkenalkan pointer mentah dan array gaya C belakangan. Belajar C lebih dulu memang membantu memahami memori."
+    },
+    {
+      "q": "Standar C++ mana yang sebaiknya dipakai?",
+      "a": "C++17 dan C++20 didukung dengan baik oleh GCC, Clang, dan MSVC terkini, dan dukungan C++23 terus bertambah. Pilih satu secara eksplisit dengan flag seperti `-std=c++20`."
+    },
+    {
+      "q": "Apa perbedaan pointer dan reference?",
+      "a": "Reference adalah alias yang harus terikat saat dibuat dan tidak dapat dialihkan atau bernilai null. Pointer menyimpan alamat, bisa null, dan bisa diubah untuk menunjuk ke tempat lain."
+    },
+    {
+      "q": "Apakah C++ sulit dipelajari?",
+      "a": "Bahasanya besar, jadi kurva belajarnya lebih panjang daripada Python atau Go. Berpegang pada fitur modern, container standar, dan smart pointer menghindarkan sebagian besar jebakan klasik."
+    }
+  ]
+}

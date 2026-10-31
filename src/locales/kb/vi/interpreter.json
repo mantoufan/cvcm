@@ -1,0 +1,147 @@
+{
+  "title": "Mẫu Interpreter: ngữ pháp, cây biểu thức và ví dụ TypeScript — cv.cm",
+  "description": "Mẫu Interpreter mô hình hóa mỗi quy tắc ngữ pháp thành một lớp và đánh giá câu như một cây. Xây dựng ngôn ngữ biểu thức nhỏ bằng TypeScript.",
+  "h1": "Mẫu Interpreter (Design Pattern) giải thích kèm ví dụ",
+  "answer": "Interpreter là một mẫu thiết kế hành vi (behavioral), định nghĩa cách biểu diễn ngữ pháp của một ngôn ngữ nhỏ và một trình thông dịch đánh giá các câu trong ngôn ngữ đó. Mỗi quy tắc ngữ pháp trở thành một lớp, một câu trở thành cây gồm các đối tượng này (cây cú pháp trừu tượng - abstract syntax tree), và đánh giá câu nghĩa là gọi `interpret` ở gốc, rồi nó đệ quy thông dịch các nút con. Mẫu này phù hợp với các ngôn ngữ nhỏ, đơn giản như bộ lọc, quy tắc và công thức.",
+  "sections": [
+    {
+      "h": "Mục đích và vấn đề mà mẫu này giải quyết",
+      "body": [
+        "Mục đích: với một ngôn ngữ cho trước, định nghĩa cách biểu diễn ngữ pháp của nó cùng một trình thông dịch dùng cách biểu diễn đó để thông dịch các câu trong ngôn ngữ. Interpreter là một trong các mẫu hành vi trong sách Gang of Four (GoF).",
+        "Giả sử người dùng hệ thống định giá muốn tự viết quy tắc giảm giá, như `price * 0.9` hoặc `price - 5`, và các quy tắc phải được lưu trong cơ sở dữ liệu để đánh giá sau. Không thể viết cứng từng quy tắc, vì người dùng liên tục tạo quy tắc mới. Bạn cần một ngôn ngữ nhỏ và cách đánh giá nó.",
+        "Mẫu Interpreter cho bạn một thiết kế đơn giản cho bước đánh giá đó. Số, biến và toán tử mỗi thứ trở thành một lớp. Quy tắc như `price * 0.9` trở thành một cây: nút nhân có hai nút con là nút biến và nút số. Để tính kết quả, bạn gọi `interpret` trên nút nhân với một context chứa giá hiện tại."
+      ]
+    },
+    {
+      "h": "Cấu trúc và các thành phần",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Vai trò",
+              "Trách nhiệm"
+            ],
+            "rows": [
+              [
+                "Abstract expression",
+                "Khai báo thao tác `interpret(context)` chung cho mọi nút"
+              ],
+              [
+                "Terminal expression",
+                "Một lá của cây, như một số hằng hoặc tên biến"
+              ],
+              [
+                "Nonterminal expression",
+                "Một quy tắc ngữ pháp tạo từ các biểu thức khác, như phép cộng hoặc nhân; nó thông dịch các nút con và kết hợp kết quả"
+              ],
+              [
+                "Context",
+                "Thông tin toàn cục cho việc thông dịch, như giá trị của các biến"
+              ],
+              [
+                "Client",
+                "Dựng cây cú pháp (bằng tay hoặc bằng parser) và gọi `interpret`"
+              ]
+            ]
+          }
+        },
+        "Ngữ pháp của ví dụ bên dưới, viết bằng ký hiệu đơn giản:",
+        {
+          "code": "expression ::= number | variable | expression op expression\nop         ::= \"+\" | \"-\" | \"*\" | \"/\"",
+          "lang": "text"
+        }
+      ]
+    },
+    {
+      "h": "Cài đặt bằng TypeScript",
+      "body": [
+        "Mỗi quy tắc ngữ pháp là một lớp cài đặt `Expression`. Hàm `parse` biến biểu thức viết theo ký pháp hậu tố (toán tử đứng sau toán hạng), cách nhau bằng dấu cách, thành một cây, giúp parser ngắn gọn.",
+        {
+          "code": "type Context = Record<string, number>;\ninterface Expression {\n  interpret(ctx: Context): number;\n}\nclass Num implements Expression {\n  constructor(private value: number) {}\n  interpret() { return this.value; }\n}\nclass Var implements Expression {\n  constructor(private name: string) {}\n  interpret(ctx: Context) {\n    if (!Object.hasOwn(ctx, this.name)) throw new Error(\"Unknown variable \" + this.name);\n    return ctx[this.name];\n  }\n}\nconst ops = { \"+\": (a: number, b: number) => a + b, \"-\": (a: number, b: number) => a - b,\n  \"*\": (a: number, b: number) => a * b, \"/\": (a: number, b: number) => a / b };\nclass BinaryOp implements Expression {\n  constructor(private op: keyof typeof ops, private left: Expression, private right: Expression) {}\n  interpret(ctx: Context) { return ops[this.op](this.left.interpret(ctx), this.right.interpret(ctx)); }\n}\nfunction parse(source: string): Expression {\n  const stack: Expression[] = [];\n  for (const token of source.trim().split(/\\s+/)) {\n    if (Object.hasOwn(ops, token)) {\n      const right = stack.pop()!, left = stack.pop()!;\n      stack.push(new BinaryOp(token as keyof typeof ops, left, right));\n    } else if (!isNaN(Number(token))) stack.push(new Num(Number(token)));\n    else stack.push(new Var(token));\n  }\n  return stack[0];\n}\nconst rule = parse(\"price 0.9 * 5 -\"); // (price * 0.9) - 5\nconsole.log(rule.interpret({ price: 100 })); // 85\nconsole.log(rule.interpret({ price: 40 })); // 31",
+          "lang": "typescript"
+        },
+        "Cây của `price 0.9 * 5 -` là một nút trừ có con trái là nút nhân (với `price` và `0.9`) và con phải là số `5`. Sau khi phân tích, cùng một cây có thể được đánh giá nhiều lần với các context khác nhau.",
+        {
+          "note": "Mẫu này mô tả cách biểu diễn và đánh giá một câu, không phải cách phân tích văn bản. Đầu vào thực tế cần một parser đúng nghĩa với thông báo lỗi; parser hậu tố tối giản ở trên không kiểm tra đầu vào sai định dạng."
+        }
+      ]
+    },
+    {
+      "h": "Khi nào nên dùng và khi nào không",
+      "body": [
+        {
+          "ul": [
+            "Dùng khi ngôn ngữ nhỏ và ngữ pháp đơn giản: bộ lọc tìm kiếm, quy tắc feature flag, biểu thức phân quyền, chuyển đổi đơn vị hoặc công thức kiểu bảng tính.",
+            "Dùng khi cùng một biểu thức được đánh giá nhiều lần với dữ liệu khác nhau, nên dựng cây một lần là có lợi.",
+            "Đừng dùng cho ngôn ngữ lớn. Một lớp cho mỗi quy tắc trở nên khó bảo trì; hãy dùng trình sinh parser hoặc một ngôn ngữ nhúng có sẵn.",
+            "Đừng dùng khi hiệu năng là then chốt. Duyệt một cây đối tượng chậm hơn biên dịch ra bytecode hoặc mã máy.",
+            "Đừng bao giờ giải quyết bài toán bằng `eval` trên đầu vào của người dùng. Một trình thông dịch nhỏ chỉ hỗ trợ các thao tác bạn định nghĩa, an toàn hơn nhiều."
+          ]
+        },
+        "Để thêm thao tác mới trên cùng cây, như in đẹp hoặc kiểm tra kiểu, hãy kết hợp Interpreter với Visitor thay vì thêm phương thức vào mọi lớp nút."
+      ]
+    },
+    {
+      "h": "Ứng dụng thực tế",
+      "body": [
+        {
+          "ul": [
+            "Các engine biểu thức chính quy biên dịch một mẫu thành cây hoặc đồ thị các đối tượng nút; việc khớp duyệt các nút này, đó là ý tưởng Interpreter áp dụng cho ngữ pháp regex.",
+            "Các công cụ ngôn ngữ biểu diễn mã nguồn dưới dạng cây cú pháp trừu tượng: module `ast` của Python và đặc tả ESTree mà các công cụ JavaScript như Babel và ESLint dùng mô tả các loại nút cho mọi quy tắc ngữ pháp.",
+            "Cơ sở dữ liệu SQL phân tích mệnh đề `WHERE` thành cây biểu thức và đánh giá nó cho từng dòng.",
+            "Template engine và rule engine đánh giá các biểu thức nhỏ bên trong template hoặc quy tắc nghiệp vụ."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Các mẫu liên quan",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Mẫu",
+              "Quan hệ với Interpreter"
+            ],
+            "rows": [
+              [
+                "Composite",
+                "Cây cú pháp là một Composite: các biểu thức nonterminal chứa các biểu thức khác. Interpreter thêm ý nghĩa cho từng nút."
+              ],
+              [
+                "Visitor",
+                "Visitor chuyển thao tác ra khỏi các lớp nút, nên nhiều thao tác (đánh giá, in, kiểm tra) có thể dùng chung một cây."
+              ],
+              [
+                "Iterator",
+                "Iterator có thể duyệt các nút của cây cú pháp mà không để lộ cách chúng được lưu."
+              ],
+              [
+                "Flyweight",
+                "Các ký hiệu terminal lặp lại thường xuyên, như các hằng phổ biến, có thể được chia sẻ dưới dạng flyweight."
+              ]
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Biểu thức terminal và nonterminal khác nhau thế nào?",
+      "a": "Biểu thức terminal là một lá không thể chia nhỏ hơn, như một số hoặc một biến. Biểu thức nonterminal biểu diễn một quy tắc tạo từ các biểu thức khác, như phép cộng, và thông dịch các nút con để tạo kết quả."
+    },
+    {
+      "q": "Mẫu Interpreter có bao gồm parser không?",
+      "a": "Không. Mẫu này giả định bạn đã có cây cú pháp. Bạn có thể dựng cây bằng tay, viết parser nhỏ hoặc dùng trình sinh parser."
+    },
+    {
+      "q": "Khi nào không nên dùng mẫu Interpreter?",
+      "a": "Tránh dùng cho ngữ pháp phức tạp hoặc mã cần hiệu năng cao. Ngôn ngữ lớn cần quá nhiều lớp, và đánh giá bằng cách duyệt cây chậm hơn các cách tiếp cận biên dịch."
+    },
+    {
+      "q": "Interpreter liên quan đến Composite như thế nào?",
+      "a": "Cây cú pháp trong Interpreter có cùng hình dạng với Composite: các lá và các nút chứa nút khác, tất cả có interface chung. Interpreter gán cho cấu trúc đó một ý nghĩa cụ thể, đó là đánh giá một ngôn ngữ."
+    }
+  ]
+}

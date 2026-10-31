@@ -1,0 +1,193 @@
+{
+  "title": "Tutorial Java: class, tipe data, collection, dan exception — cv.cm",
+  "description": "Belajar Java dalam satu halaman: instal JDK dan jalankan Hello world, tipe primitif, alur kontrol, method, class, record, collection, exception, dan contoh lengkap.",
+  "h1": "Tutorial Java untuk pemula",
+  "answer": "Java adalah bahasa berorientasi objek dengan tipe statis yang dikompilasi menjadi bytecode dan berjalan di Java Virtual Machine (JVM) pada sistem operasi apa pun. Instal JDK, simpan class di `Hello.java`, lalu jalankan `java Hello.java`. Konsep intinya: class dan objek, tipe primitif dan reference, collections framework (`List`, `Map`, `Set`), checked exception, serta fitur baru seperti record, `var`, dan pattern matching.",
+  "sections": [
+    {
+      "h": "Apa itu Java dan untuk apa dipakai",
+      "body": [
+        "Java dirilis oleh Sun Microsystems pada 1995 dan kini dikembangkan di proyek terbuka OpenJDK, dengan Oracle sebagai pengelola utama. Janjinya adalah \"write once, run anywhere\": compiler menghasilkan bytecode, dan JVM menjalankannya di Windows, macOS, dan Linux. Java dipakai untuk back end bisnis berskala besar (sering dengan Spring Boot), aplikasi Android (berdampingan dengan Kotlin), tool big data seperti Apache Kafka dan Hadoop, serta banyak sistem desktop dan embedded. Versi baru rilis setiap enam bulan, dan versi long-term support (LTS) seperti Java 21 biasanya jadi pilihan untuk produksi."
+      ]
+    },
+    {
+      "h": "Instal JDK dan jalankan Hello, world",
+      "body": [
+        "Instal JDK (Java Development Kit), misalnya build OpenJDK seperti Eclipse Temurin atau JDK dari Oracle. Periksa dengan `java -version`. Setiap program Java berada di dalam class, dan eksekusi dimulai dari `main`.",
+        {
+          "code": "public class Hello {\n    public static void main(String[] args) {\n        System.out.println(\"Hello, world\");\n    }\n}",
+          "lang": "java"
+        },
+        {
+          "code": "java Hello.java        # run a single source file directly\n# Hello, world\njavac Hello.java       # or compile to Hello.class first\njava Hello",
+          "lang": "shell"
+        },
+        "Nama file harus sama dengan nama class publik (`Hello.java` untuk `class Hello`)."
+      ]
+    },
+    {
+      "h": "Variabel dan tipe data dasar",
+      "body": [
+        "Java memiliki delapan tipe primitif yang disimpan langsung sebagai nilai, dan tipe reference (objek seperti `String` dan array). Setiap variabel punya tipe tetap; `var` membuat compiler menyimpulkan tipe dari nilai awal di dalam method.",
+        {
+          "table": {
+            "head": [
+              "Tipe",
+              "Ukuran",
+              "Contoh"
+            ],
+            "rows": [
+              [
+                "`int`",
+                "32-bit",
+                "`int n = 42;`"
+              ],
+              [
+                "`long`",
+                "64-bit",
+                "`long big = 10_000_000_000L;`"
+              ],
+              [
+                "`double`",
+                "float 64-bit",
+                "`double pi = 3.14159;`"
+              ],
+              [
+                "`boolean`",
+                "true/false",
+                "`boolean ok = true;`"
+              ],
+              [
+                "`char`",
+                "unit UTF-16 16-bit",
+                "`char c = 'A';`"
+              ],
+              [
+                "`byte`, `short`, `float`",
+                "8, 16, 32-bit",
+                "Jarang dipakai"
+              ],
+              [
+                "`String`",
+                "reference",
+                "`String s = \"hi\";`"
+              ]
+            ]
+          }
+        },
+        {
+          "code": "int count = 7;\ndouble avg = count / 2;          // 3.0, integer division happens first\ndouble avg2 = count / 2.0;       // 3.5\nvar name = \"Ada\";                // inferred as String\nString msg = name + \" has \" + count + \" items\";\nSystem.out.println(msg);         // Ada has 7 items\nSystem.out.println(Integer.parseInt(\"12\") + 1); // 13",
+          "lang": "java"
+        },
+        "Ini hanya potongan kode: letakkan pernyataan seperti ini di dalam method seperti `main`."
+      ]
+    },
+    {
+      "h": "Alur kontrol",
+      "body": [
+        {
+          "code": "int score = 72;\nif (score >= 90) {\n    System.out.println(\"A\");\n} else if (score >= 70) {\n    System.out.println(\"B\");     // B\n} else {\n    System.out.println(\"C\");\n}\nfor (int i = 0; i < 3; i++) {\n    System.out.println(i);       // 0, 1, 2\n}\nString day = \"SAT\";\nString kind = switch (day) {     // switch expression\n    case \"SAT\", \"SUN\" -> \"weekend\";\n    default -> \"weekday\";\n};\nSystem.out.println(kind);        // weekend",
+          "lang": "java"
+        },
+        "Java juga punya `while`, `do`/`while`, dan perulangan `for (String s : list)` yang disempurnakan untuk mengiterasi array dan collection."
+      ]
+    },
+    {
+      "h": "Method, class, dan record",
+      "body": [
+        "Class menggabungkan field (data) dan method (perilaku). Method `static` milik class itu sendiri; method lain dipanggil pada objek yang dibuat dengan `new`. `record` adalah cara singkat mendeklarasikan data class yang immutable: compiler membuatkan constructor, accessor, `equals`, `hashCode`, dan `toString`.",
+        {
+          "code": "public class Shapes {\n    static double square(double x) {\n        return x * x;\n    }\n    static class Counter {\n        private int value;\n        void increment() { value++; }\n        int get() { return value; }\n    }\n    record Point(int x, int y) {\n        double distance() { return Math.sqrt(x * x + y * y); }\n    }\n    public static void main(String[] args) {\n        System.out.println(square(4));        // 16.0\n        Counter c = new Counter();\n        c.increment();\n        c.increment();\n        System.out.println(c.get());          // 2\n        Point p = new Point(3, 4);\n        System.out.println(p + \" \" + p.distance()); // Point[x=3, y=4] 5.0\n    }\n}",
+          "lang": "java"
+        },
+        "Class dapat meng-extend satu parent class (`extends`) dan mengimplementasikan banyak interface (`implements`). Field biasanya `private`, dengan akses lewat method."
+      ]
+    },
+    {
+      "h": "Collection: List, Map, dan Set",
+      "body": [
+        "Collections framework di `java.util` menyediakan struktur data yang ukurannya dapat berubah. Collection menyimpan objek, jadi tipe primitif di-box otomatis (`int` menjadi `Integer`).",
+        {
+          "code": "import java.util.*;\npublic class Collections101 {\n    public static void main(String[] args) {\n        List<Integer> nums = new ArrayList<>(List.of(3, 1, 2));\n        nums.add(5);\n        Collections.sort(nums);\n        System.out.println(nums + \" \" + nums.get(0));  // [1, 2, 3, 5] 1\n        Map<String, Integer> ages = new HashMap<>();\n        ages.put(\"ann\", 31);\n        ages.put(\"bob\", 25);\n        System.out.println(ages.getOrDefault(\"zed\", 0)); // 0\n        Set<String> tags = new TreeSet<>(List.of(\"b\", \"a\", \"b\"));\n        System.out.println(tags);                        // [a, b]\n        List<Integer> evensSquared = nums.stream()\n            .filter(n -> n % 2 == 0)\n            .map(n -> n * n)\n            .toList();\n        System.out.println(evensSquared);                // [4]\n    }\n}",
+          "lang": "java"
+        },
+        "Pernyataan terakhir memakai stream dan lambda, gaya fungsional untuk mengubah collection. `List.of` membuat list immutable; bungkus dengan `new ArrayList<>(...)` bila perlu mengubahnya."
+      ]
+    },
+    {
+      "h": "Fitur khas: tipe statis, interface, dan pattern matching",
+      "body": [
+        "Interface mendefinisikan kontrak yang bisa diimplementasikan banyak class, dan inilah dasar sebagian besar desain Java. Java modern menambahkan pattern matching: `instanceof` dan `switch` dapat menguji tipe dan mengikat variabel dalam satu langkah. Sealed interface (Java 17 ke atas) mendaftar semua implementasi yang diizinkan, sehingga compiler bisa memeriksa bahwa `switch` mencakup semua kasus.",
+        {
+          "code": "public class Areas {\n    sealed interface Shape permits Circle, Rect {}\n    record Circle(double r) implements Shape {}\n    record Rect(double w, double h) implements Shape {}\n    static double area(Shape s) {\n        return switch (s) {\n            case Circle c -> Math.PI * c.r() * c.r();\n            case Rect r -> r.w() * r.h();\n        };\n    }\n    public static void main(String[] args) {\n        System.out.println(area(new Rect(2, 3)));  // 6.0\n    }\n}",
+          "lang": "java"
+        },
+        "Pattern matching untuk `switch` seperti ini sudah standar di Java 21 LTS dan sesudahnya."
+      ]
+    },
+    {
+      "h": "Exception",
+      "body": [
+        "Error berupa exception. Checked exception (seperti `IOException`) harus ditangkap atau dideklarasikan dengan `throws`; unchecked exception (subclass dari `RuntimeException`, seperti `NullPointerException`) tidak wajib. `try`-with-resources menutup file dan koneksi secara otomatis.",
+        {
+          "code": "import java.io.*;\nimport java.nio.file.*;\npublic class ReadFirst {\n    static int parseAge(String text) {\n        int age = Integer.parseInt(text);   // may throw NumberFormatException\n        if (age < 0) throw new IllegalArgumentException(\"negative age\");\n        return age;\n    }\n    public static void main(String[] args) {\n        try {\n            System.out.println(parseAge(\"abc\"));\n        } catch (NumberFormatException e) {\n            System.out.println(\"not a number\");  // not a number\n        }\n        try (BufferedReader in = Files.newBufferedReader(Path.of(\"notes.txt\"))) {\n            System.out.println(in.readLine());\n        } catch (IOException e) {\n            System.out.println(\"cannot read: \" + e.getMessage());\n        }\n    }\n}",
+          "lang": "java"
+        }
+      ]
+    },
+    {
+      "h": "Program kecil yang lengkap: penghitung kata",
+      "body": [
+        {
+          "code": "import java.io.IOException;\nimport java.nio.file.*;\nimport java.util.*;\npublic class WordCount {\n    public static void main(String[] args) throws IOException {\n        if (args.length != 1) {\n            System.err.println(\"usage: java WordCount.java FILE\");\n            System.exit(1);\n        }\n        String text = Files.readString(Path.of(args[0])).toLowerCase();\n        Map<String, Integer> counts = new HashMap<>();\n        for (String word : text.split(\"[^a-z']+\")) {\n            if (!word.isEmpty()) counts.merge(word, 1, Integer::sum);\n        }\n        counts.entrySet().stream()\n            .sorted(Map.Entry.<String, Integer>comparingByValue().reversed())\n            .limit(5)\n            .forEach(e -> System.out.printf(\"%5d  %s%n\", e.getValue(), e.getKey()));\n    }\n}",
+          "lang": "java"
+        },
+        "Jalankan dengan `java WordCount.java notes.txt`. Program ini mencetak lima kata paling sering muncul beserta jumlahnya."
+      ]
+    },
+    {
+      "h": "Kesalahan umum pemula",
+      "body": [
+        {
+          "note": "Bandingkan string dengan `a.equals(b)`, bukan `a == b`. Operator `==` memeriksa apakah dua reference menunjuk objek yang sama, dan bisa bernilai false untuk teks yang sama."
+        },
+        {
+          "ul": [
+            "Pembagian bilangan bulat: `5 / 2` adalah `2`. Jadikan salah satu sisi `double` untuk mendapat `2.5`.",
+            "`NullPointerException` karena memanggil method pada `null`. Periksa `null`, atau gunakan `Optional` untuk nilai yang mungkin tidak ada.",
+            "Mencoba mengubah list yang dibuat dengan `List.of`, yang melempar `UnsupportedOperationException`.",
+            "Lupa bahwa indeks array dan `List` dimulai dari 0, jadi elemen terakhir berada di `length - 1`."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Langkah selanjutnya",
+      "body": [
+        "Ikuti jalur belajar di dev.java, situs developer Java resmi, dan siapkan dokumentasi Java SE API sebagai referensi. Pelajari build tool (Maven atau Gradle), unit testing dengan JUnit, lalu framework seperti Spring Boot untuk layanan web. Kotlin, yang juga berjalan di JVM, adalah bahasa lanjutan yang wajar."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Apakah Java sulit dipelajari?",
+      "a": "Java lebih bertele-tele daripada Python, karena Anda mendeklarasikan tipe dan menaruh kode di dalam class, tetapi aturannya konsisten dan compiler menjelaskan kesalahan sejak dini. Banyak universitas memakainya sebagai bahasa pertama."
+    },
+    {
+      "q": "Apa perbedaan JDK dan JVM?",
+      "a": "JVM menjalankan bytecode hasil kompilasi. JDK adalah kit pengembangan lengkap: JVM ditambah compiler `javac`, pustaka standar, dan tool. Developer menginstal JDK."
+    },
+    {
+      "q": "Versi Java mana yang sebaiknya dipelajari?",
+      "a": "Pelajari versi long-term support terkini, seperti Java 21 atau LTS yang lebih baru. Kode lama masih berjalan di JVM baru, jadi keahlian modern juga berlaku untuk proyek yang sudah ada."
+    },
+    {
+      "q": "Apakah Java sama dengan JavaScript?",
+      "a": "Tidak. Meski namanya mirip, keduanya bahasa terpisah dengan sistem tipe, runtime, dan kegunaan yang berbeda."
+    },
+    {
+      "q": "Apakah Java masih dipakai?",
+      "a": "Ya. Java tetap menjadi salah satu bahasa yang paling banyak dipakai untuk back end enterprise, Android, dan infrastruktur data."
+    }
+  ]
+}

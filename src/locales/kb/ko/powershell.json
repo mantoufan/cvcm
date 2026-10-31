@@ -1,0 +1,190 @@
+{
+  "title": "파워셸 기초 강좌: cmdlet, 파이프라인, 변수, 스크립트 — cv.cm",
+  "description": "파워셸(PowerShell) 스크립트를 단계별로 배웁니다. .ps1 스크립트 실행, cmdlet과 객체 파이프라인, 변수, 연산자, 함수, 해시테이블, try/catch 오류 처리를 다룹니다.",
+  "h1": "입문자를 위한 파워셸 기초 강좌",
+  "answer": "파워셸(PowerShell)은 자동화를 위한 Microsoft의 크로스 플랫폼 셸이자 스크립트 언어입니다. cmdlet이라 부르는 명령은 일반 텍스트가 아니라 .NET 객체를 파이프라인으로 전달하므로, 텍스트를 파싱하지 않고도 데이터를 필터링, 정렬, 내보내기 할 수 있습니다. 이 페이지에서는 PowerShell 7 설치, 스크립트 실행, cmdlet, 변수, 연산자, 제어 흐름, 함수, 컬렉션, 오류 처리를 다룹니다.",
+  "sections": [
+    {
+      "h": "파워셸이란 무엇이고 어디에 쓰는가",
+      "body": [
+        "파워셸(PowerShell)은 .NET 기반의 Microsoft 크로스 플랫폼 셸이자 스크립트 언어입니다. 명령 사이에 일반 텍스트를 전달하는 전통적인 셸과 달리, 파워셸은 속성과 메서드를 가진 .NET 객체를 전달하므로 텍스트를 파싱하지 않고도 데이터를 필터링하고 정렬할 수 있습니다.",
+        "시스템 관리자와 DevOps 엔지니어는 Windows 자동화, Active Directory·Microsoft 365·Azure 관리, 빌드와 배포 스크립트 작성에 파워셸을 사용합니다. 에디션은 두 가지입니다. Windows에 기본 내장된 Windows PowerShell 5.1과, 오픈 소스이며 Windows, Linux, macOS에서 실행되는 PowerShell 7 이상(명령 이름 `pwsh`)입니다. 이 강좌는 PowerShell 7을 기준으로 합니다."
+      ]
+    },
+    {
+      "h": "파워셸 설치와 Hello, world 실행",
+      "body": [
+        "Windows에서는 `winget install --id Microsoft.PowerShell --source winget`으로 PowerShell 7을 설치하고, macOS와 Linux에서는 Homebrew나 Microsoft 설치 가이드에 나온 패키지 관리자를 사용합니다. 스크립트는 `.ps1` 확장자를 가진 텍스트 파일입니다.",
+        {
+          "code": "# hello.ps1\nWrite-Output \"Hello, world!\"",
+          "lang": "powershell"
+        },
+        {
+          "code": "pwsh ./hello.ps1\n# Hello, world!",
+          "lang": "shell"
+        },
+        "Windows에서는 실행 정책이 스크립트를 막을 수 있습니다. `Set-ExecutionPolicy -Scope CurrentUser RemoteSigned`를 실행하면 내가 만든 로컬 스크립트는 허용하면서 내려받은 스크립트는 여전히 서명을 요구합니다. PowerShell 확장을 설치한 Visual Studio Code를 권장 에디터로 사용하세요."
+      ]
+    },
+    {
+      "h": "cmdlet과 파이프라인",
+      "body": [
+        "명령을 cmdlet이라고 하며 `Get-Process`, `Set-Location`, `New-Item`처럼 `동사-명사`(`Verb-Noun`) 이름 규칙을 따릅니다. 나머지 모든 것을 탐색하는 데 도움이 되는 cmdlet은 `Get-Command`, `Get-Help`, `Get-Member` 세 가지입니다.",
+        {
+          "code": "Get-Command -Noun Process          # list commands that work with processes\nGet-Help Get-ChildItem -Examples   # show usage examples\n\n# five processes using the most memory\nGet-Process |\n    Sort-Object -Property WorkingSet64 -Descending |\n    Select-Object -First 5 -Property Name, Id, WorkingSet64\n\n# files larger than 1 MB in the current folder\nGet-ChildItem -File | Where-Object { $_.Length -gt 1MB } |\n    ForEach-Object { \"{0}  {1:N0} KB\" -f $_.Name, ($_.Length / 1KB) }\n\nGet-Date | Get-Member -MemberType Property   # inspect an object",
+          "lang": "powershell"
+        },
+        "스크립트 블록 안에서 `$_`(또는 `$PSItem`)는 파이프라인의 현재 객체입니다. 객체가 타입을 유지하므로 `Sort-Object`는 별다른 작업 없이 숫자는 숫자순으로, 날짜는 시간순으로 정렬합니다."
+      ]
+    },
+    {
+      "h": "변수와 타입",
+      "body": [
+        "변수는 `$`로 시작합니다. 어떤 .NET 객체든 담을 수 있으며 대괄호로 타입 제약을 붙일 수 있습니다. 큰따옴표 문자열은 변수와 `$( )` 식을 확장하고, 작은따옴표 문자열은 문자 그대로입니다.",
+        {
+          "code": "$name = \"Ada\"\n[int]$count = 3\n$price = 19.99                      # System.Double\n$isAdmin = $false\n$today = Get-Date\n\n\"Hello, $name\"                      # Hello, Ada\n\"Next: $($count + 1)\"               # Next: 4\n'No $expansion here'                # No $expansion here\n$price.GetType().Name               # Double\n$today.ToString(\"yyyy-MM-dd\")       # for example 2026-10-31\n[int]\"42\" + 1                       # 43 (explicit conversion)",
+          "lang": "powershell"
+        },
+        {
+          "table": {
+            "head": [
+              "타입",
+              "예시",
+              "설명"
+            ],
+            "rows": [
+              [
+                "`[int]`",
+                "`42`",
+                "32비트 정수"
+              ],
+              [
+                "`[double]`",
+                "`3.14`",
+                "부동 소수점. 금액에는 `[decimal]` 사용"
+              ],
+              [
+                "`[string]`",
+                "`\"text\"`",
+                "기본적으로 대소문자를 구분하지 않고 비교함"
+              ],
+              [
+                "`[bool]`",
+                "`$true`, `$false`",
+                "키워드가 아니라 자동 변수"
+              ],
+              [
+                "`[datetime]`",
+                "`Get-Date`",
+                "완전한 .NET `DateTime` 객체"
+              ],
+              [
+                "`[array]`, `[hashtable]`",
+                "`@(1, 2)`, `@{ a = 1 }`",
+                "컬렉션. 아래에서 설명함"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "연산자와 제어 흐름",
+      "body": [
+        "비교 연산자는 기호가 아니라 단어입니다. `-eq`, `-ne`, `-gt`, `-lt`, `-ge`, `-le`, `-like`(와일드카드), `-match`(정규 표현식), `-contains`가 있습니다. 문자열 비교는 `-ceq`처럼 `c`가 붙은 버전을 쓰지 않으면 대소문자를 구분하지 않습니다.",
+        {
+          "code": "$temp = 22\nif ($temp -gt 30) {\n    \"hot\"\n} elseif ($temp -ge 15) {\n    \"mild\"                           # mild\n} else {\n    \"cold\"\n}\n\nswitch (\"report.csv\") {\n    { $_ -like \"*.csv\" } { \"CSV file\" }    # CSV file\n    { $_ -like \"*.txt\" } { \"text file\" }\n    default { \"other\" }\n}\n\nforeach ($n in 1..3) { \"n = $n\" }          # n = 1, n = 2, n = 3\nfor ($i = 0; $i -lt 2; $i++) { \"i = $i\" }  # i = 0, i = 1\n$k = 3\nwhile ($k -gt 0) { $k-- }\n\"Hello\" -eq \"hello\"                        # True",
+          "lang": "powershell"
+        },
+        {
+          "note": "비교에 `>`나 `=`를 쓰는 것이 고전적인 실수입니다. `if ($a > 5)`는 `$a`를 `5`라는 이름의 파일로 리다이렉트하고, `=`는 값을 할당합니다. `-gt`와 `-eq`를 사용하세요. `$null`과 비교할 때는 배열이 의도치 않게 필터링되지 않도록 `$null`을 왼쪽에 두세요(`$null -eq $x`)."
+        }
+      ]
+    },
+    {
+      "h": "함수와 매개변수",
+      "body": [
+        "함수는 `param()` 블록으로 타입이 있는 이름 있는 매개변수를 선언합니다. `[CmdletBinding()]`을 붙이면 함수가 `-Verbose` 같은 내장 cmdlet의 공통 매개변수를 갖게 됩니다. 변수에 담지 않은 출력은 모두 함수의 반환값이 됩니다.",
+        {
+          "code": "function Get-Greeting {\n    [CmdletBinding()]\n    param(\n        [Parameter(Mandatory)]\n        [string]$Name,\n        [string]$Greeting = \"Hello\"\n    )\n    Write-Verbose \"Building greeting for $Name\"\n    \"$Greeting, $Name!\"\n}\n\nGet-Greeting -Name \"Ann\"                  # Hello, Ann!\nGet-Greeting -Name \"Bo\" -Greeting \"Hi\"    # Hi, Bo!\nGet-Greeting \"Cy\" -Verbose                # also prints the verbose message",
+          "lang": "powershell"
+        },
+        "함수는 cmdlet처럼 인자 사이를 공백으로 구분해 호출합니다. 예: `Get-Greeting -Name Ann`. `Get-Greeting(\"Ann\", \"Hi\")`는 배열 하나를 인자로 전달하는데, 다른 언어에서 온 사람들이 자주 놀라는 부분입니다."
+      ]
+    },
+    {
+      "h": "배열, 해시테이블, 사용자 지정 객체",
+      "body": [
+        "배열은 `@( )` 또는 쉼표로 구분한 목록으로 만듭니다. `@{ }`로 쓰는 해시테이블은 키-값 쌍을 저장합니다. `[pscustomobject]`는 해시테이블을 객체로 바꿔 주며 `Sort-Object`, `Format-Table`, `Export-Csv`와 잘 어울립니다.",
+        {
+          "code": "$langs = @(\"PowerShell\", \"Python\")\n$langs += \"Go\"                       # creates a new, longer array\n$langs.Count                         # 3\n$langs[0]                            # PowerShell\n$langs -contains \"Go\"                # True\n\n$ports = @{ http = 80; https = 443 }\n$ports[\"ssh\"] = 22\n$ports.https                         # 443\n$ports.Keys.Count                    # 3\n\n$user = [pscustomobject]@{ Name = \"Ann\"; Age = 31 }\n$user.Name                           # Ann\n$people = @(\n    [pscustomobject]@{ Name = \"Bo\"; Age = 25 }\n    $user\n)\n$people | Sort-Object Age | Format-Table",
+          "lang": "powershell"
+        },
+        "`+=`로 배열에 추가하면 매번 배열 전체를 복사합니다. 반복이 많을 때는 반복문의 출력을 직접 수집하거나(`$result = foreach (...) { ... }`) `[System.Collections.Generic.List[object]]`를 사용하세요."
+      ]
+    },
+    {
+      "h": "오류 처리",
+      "body": [
+        "파워셸에는 실행을 멈추는 종료 오류(terminating error)와, 메시지를 출력하고 계속 진행하는 비종료 오류(non-terminating error)가 있습니다. `try`/`catch`/`finally`는 종료 오류만 잡으므로, cmdlet의 실패를 잡고 싶다면 `-ErrorAction Stop`을 추가하세요.",
+        {
+          "code": "try {\n    $content = Get-Content -Path \"missing.txt\" -ErrorAction Stop\n}\ncatch [System.Management.Automation.ItemNotFoundException] {\n    Write-Warning \"File not found: $($_.Exception.Message)\"\n}\ncatch {\n    Write-Error \"Unexpected error: $_\"\n}\nfinally {\n    \"cleanup done\"\n}\n\n$ErrorActionPreference = \"Stop\"   # make all errors terminating in this script\nthrow \"Something went wrong\"      # raise your own terminating error",
+          "lang": "powershell"
+        },
+        "`catch` 안에서 `$_`는 오류 레코드입니다. 스크립트 맨 위에 `$ErrorActionPreference = \"Stop\"`을 설정하는 것은 빠르게 실패하게 하는 흔한 방법입니다."
+      ]
+    },
+    {
+      "h": "작은 완성 스크립트: 디스크 사용량 보고서",
+      "body": [
+        "이 스크립트는 폴더 아래의 가장 큰 파일을 나열하고, 확장자별로 그룹화한 뒤 CSV 보고서로 내보냅니다. 매개변수, 파이프라인, 계산된 속성, 오류 처리를 함께 사용합니다.",
+        {
+          "code": "# report.ps1\nparam(\n    [string]$Path = \".\",\n    [int]$Top = 5\n)\n$ErrorActionPreference = \"Stop\"\n\n$files = Get-ChildItem -Path $Path -File -Recurse\n\n\"Largest $Top files:\"\n$files | Sort-Object Length -Descending | Select-Object -First $Top |\n    Format-Table Name, @{ Name = \"SizeKB\"; Expression = { [math]::Round($_.Length / 1KB, 1) } }\n\n$byExt = $files | Group-Object Extension | ForEach-Object {\n    [pscustomobject]@{\n        Extension = if ($_.Name) { $_.Name } else { \"(none)\" }\n        Files     = $_.Count\n        TotalMB   = [math]::Round(($_.Group | Measure-Object Length -Sum).Sum / 1MB, 2)\n    }\n} | Sort-Object TotalMB -Descending\n\n$byExt | Format-Table\n$byExt | Export-Csv -Path \"usage.csv\" -NoTypeInformation\n\"Report saved to usage.csv\"",
+          "lang": "powershell"
+        },
+        {
+          "code": "pwsh ./report.ps1 -Path ~/Documents -Top 3",
+          "lang": "shell"
+        },
+        {
+          "note": "입문자가 자주 하는 실수: `-gt`, `-lt`, `-eq` 대신 `>`, `<`, `==` 사용하기, 괄호와 쉼표로 함수 호출하기, `try` 안에서 `-ErrorAction Stop` 잊기, 데이터에 `Write-Host` 사용하기(화면에만 쓰고 파이프라인에는 쓰지 않으므로 `Write-Output`이나 일반 값을 사용), Windows PowerShell 5.1과 PowerShell 7을 혼동하기."
+        }
+      ]
+    },
+    {
+      "h": "다음 단계",
+      "body": [
+        {
+          "ul": [
+            "Microsoft Learn의 PowerShell 101과 PowerShell 문서.",
+            "셸에서 `Get-Help about_*`(예: `Get-Help about_Operators`). 먼저 `Update-Help`를 실행하세요.",
+            "`Install-Module`과 함께 쓰는 공식 모듈 저장소 PowerShell Gallery.",
+            "스크립트가 권장 사례를 따르는지 검사하는 린터 PSScriptAnalyzer."
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "PowerShell과 Windows PowerShell의 차이는 무엇인가요?",
+      "a": "Windows PowerShell 5.1은 Windows에 내장된 이전 에디션으로 .NET Framework 기반입니다. PowerShell 7 이상은 최신 .NET 기반의 크로스 플랫폼 오픈 소스 에디션이며 `pwsh` 명령으로 시작합니다."
+    },
+    {
+      "q": "PowerShell은 명령 프롬프트와 같은 건가요?",
+      "a": "아닙니다. 명령 프롬프트(`cmd.exe`)는 배치 명령을 실행하고 텍스트를 전달합니다. PowerShell은 객체를 전달하는 완전한 스크립트 언어이며, 대부분의 명령줄 프로그램도 그대로 실행할 수 있습니다."
+    },
+    {
+      "q": "PowerShell을 Linux와 macOS에서 실행할 수 있나요?",
+      "a": "네. PowerShell 7 이상은 Windows, Linux, macOS에서 실행됩니다. 다만 일부 Windows 전용 모듈은 Windows에서만 사용할 수 있습니다."
+    },
+    {
+      "q": "내 .ps1 스크립트가 실행되지 않는 이유는 무엇인가요?",
+      "a": "Windows의 실행 정책이 막고 있을 수 있습니다. `Set-ExecutionPolicy -Scope CurrentUser RemoteSigned`를 실행하고, `./script.ps1`처럼 경로를 붙여 스크립트를 시작하세요."
+    },
+    {
+      "q": "PowerShell에서 $_는 무엇을 뜻하나요?",
+      "a": "`$_`(`$PSItem`도 같음)는 파이프라인의 현재 객체로, `Where-Object`와 `ForEach-Object` 같은 cmdlet의 스크립트 블록 안에서 쓰이며, `catch` 안에서는 현재 오류를 가리킵니다."
+    }
+  ]
+}

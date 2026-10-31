@@ -1,0 +1,186 @@
+{
+  "title": "Học lập trình Go cơ bản: kiểu, slice, struct, goroutine và lỗi — cv.cm",
+  "description": "Học Go trong một trang: cài Go và chạy Hello world, kiểu dữ liệu, vòng lặp, hàm, slice và map, struct và interface, goroutine và channel, xử lý lỗi.",
+  "h1": "Hướng dẫn học lập trình Go (Golang) cơ bản cho người mới",
+  "answer": "Go (thường gọi là Golang) là ngôn ngữ biên dịch, kiểu tĩnh, đơn giản của Google, được xây dựng để build nhanh, xử lý đồng thời dễ dàng và máy chủ đáng tin cậy. Hãy cài Go, viết một package `main` và chạy bằng `go run hello.go`. Các ý tưởng cốt lõi là một tập kiểu nhỏ, slice và map, struct có phương thức, interface ngầm định, goroutine và channel cho đồng thời, và lỗi được trả về như giá trị thông thường.",
+  "sections": [
+    {
+      "h": "Go là gì và dùng để làm gì",
+      "body": [
+        "Go được Robert Griesemer, Rob Pike và Ken Thompson thiết kế tại Google và phát hành mã nguồn mở năm 2009. Nó biên dịch thành một tệp nhị phân tĩnh duy nhất, khởi động nhanh, có bộ thu gom rác và thư viện chuẩn phong phú cho mạng. Go được dùng cho hạ tầng đám mây và công cụ dòng lệnh: Docker, Kubernetes, Terraform và Prometheus đều viết bằng Go, và nhiều công ty dùng nó cho web API và microservice. Ngôn ngữ này được cố ý giữ nhỏ, nên mã của các nhóm khác nhau trông giống nhau."
+      ]
+    },
+    {
+      "h": "Cài Go và chạy Hello, world",
+      "body": [
+        "Tải Go từ go.dev/dl và kiểm tra bằng `go version`. Tạo một thư mục, khởi tạo module và thêm `main.go`:",
+        {
+          "code": "package main\n\nimport \"fmt\"\n\nfunc main() {\n    fmt.Println(\"Hello, world\")\n}",
+          "lang": "go"
+        },
+        {
+          "code": "go mod init example.com/hello\ngo run .\n# Hello, world\ngo build     # produces a standalone binary named hello",
+          "lang": "shell"
+        },
+        "Việc thực thi bắt đầu tại `func main` trong `package main`. Chạy `gofmt` (hoặc `go fmt`) để định dạng mã; mọi mã Go dùng cùng một phong cách, với tab để thụt lề trong tệp nguồn thực tế."
+      ]
+    },
+    {
+      "h": "Biến và các kiểu dữ liệu cơ bản",
+      "body": [
+        "Khai báo biến bằng `var name type = value`, hoặc trong hàm bằng dạng ngắn `name := value`, tự suy luận kiểu. Biến chưa được gán sẽ nhận giá trị zero: `0`, `\"\"`, `false` hoặc `nil`.",
+        {
+          "table": {
+            "head": [
+              "Kiểu",
+              "Ví dụ",
+              "Giá trị zero"
+            ],
+            "rows": [
+              [
+                "`int`, `int64`",
+                "`n := 42`",
+                "`0`"
+              ],
+              [
+                "`float64`",
+                "`x := 3.14`",
+                "`0`"
+              ],
+              [
+                "`bool`",
+                "`ok := true`",
+                "`false`"
+              ],
+              [
+                "`string`",
+                "`s := \"hi\"`",
+                "`\"\"`"
+              ],
+              [
+                "`rune`",
+                "`r := 'é'`",
+                "`0` (một code point Unicode)"
+              ],
+              [
+                "`byte`",
+                "`b := byte(65)`",
+                "`0` (bí danh của `uint8`)"
+              ]
+            ]
+          }
+        },
+        {
+          "code": "package main\n\nimport (\n    \"fmt\"\n    \"strconv\"\n)\n\nfunc main() {\n    name := \"Ada\"\n    count := 7\n    avg := float64(count) / 2 // explicit conversion is required\n    fmt.Printf(\"%s has %d items, avg %.1f\\n\", name, count, avg) // Ada has 7 items, avg 3.5\n    n, err := strconv.Atoi(\"12\")\n    fmt.Println(n+1, err) // 13 <nil>\n}",
+          "lang": "go"
+        },
+        "Go không bao giờ tự chuyển đổi ngầm giữa các kiểu số, và trình biên dịch từ chối biến không dùng và import không dùng."
+      ]
+    },
+    {
+      "h": "Điều khiển luồng và hàm",
+      "body": [
+        "Điều kiện không có dấu ngoặc đơn, và dấu ngoặc nhọn là bắt buộc. `for` là từ khóa vòng lặp duy nhất: nó bao gồm vòng lặp cổ điển, kiểu while và range. Hàm có thể trả về nhiều giá trị.",
+        {
+          "code": "package main\n\nimport \"fmt\"\n\nfunc divmod(a, b int) (int, int) {\n    return a / b, a % b\n}\n\nfunc main() {\n    score := 72\n    if score >= 90 {\n        fmt.Println(\"A\")\n    } else if score >= 70 {\n        fmt.Println(\"B\") // B\n    } else {\n        fmt.Println(\"C\")\n    }\n\n    for i := 0; i < 3; i++ {\n        fmt.Print(i, \" \") // 0 1 2\n    }\n    fmt.Println()\n\n    n := 10\n    for n > 1 { // while-style loop\n        n /= 2\n    }\n\n    q, r := divmod(17, 5)\n    fmt.Println(n, q, r) // 1 3 2\n\n    switch day := \"SAT\"; day {\n    case \"SAT\", \"SUN\":\n        fmt.Println(\"weekend\") // no break needed\n    default:\n        fmt.Println(\"weekday\")\n    }\n}",
+          "lang": "go"
+        }
+      ]
+    },
+    {
+      "h": "Slice, map và struct",
+      "body": [
+        "Slice là một khung nhìn co giãn được của mảng và là kiểu danh sách dùng hằng ngày. Map là bảng băm. Struct gom các trường có tên, và phương thức là hàm có receiver.",
+        {
+          "code": "package main\n\nimport (\n    \"fmt\"\n    \"sort\"\n)\n\ntype Point struct {\n    X, Y int\n}\n\nfunc (p Point) Add(o Point) Point { return Point{p.X + o.X, p.Y + o.Y} }\n\nfunc (p *Point) Scale(k int) { p.X *= k; p.Y *= k } // pointer receiver modifies p\n\nfunc main() {\n    nums := []int{3, 1, 2}\n    nums = append(nums, 5)\n    sort.Ints(nums)\n    fmt.Println(nums, len(nums), nums[1:3]) // [1 2 3 5] 4 [2 3]\n\n    ages := map[string]int{\"ann\": 31, \"bob\": 25}\n    ages[\"cy\"] = 40\n    age, ok := ages[\"zed\"]\n    fmt.Println(age, ok, len(ages)) // 0 false 3\n\n    for i, n := range nums {\n        fmt.Print(i, \":\", n, \" \") // 0:1 1:2 2:3 3:5\n    }\n    fmt.Println()\n\n    p := Point{1, 2}.Add(Point{3, 4})\n    p.Scale(2)\n    fmt.Printf(\"%+v\\n\", p) // {X:8 Y:12}\n}",
+          "lang": "go"
+        },
+        "Thứ tự duyệt map được cố ý làm ngẫu nhiên; hãy sắp xếp các khóa nếu cần thứ tự ổn định. Tên bắt đầu bằng chữ hoa (`Point`, `Add`) được xuất ra khỏi package."
+      ]
+    },
+    {
+      "h": "Interface",
+      "body": [
+        "Interface liệt kê chữ ký phương thức. Một kiểu thỏa mãn interface chỉ cần có các phương thức đó; không có từ khóa `implements`.",
+        {
+          "code": "package main\n\nimport (\n    \"fmt\"\n    \"math\"\n)\n\ntype Shape interface {\n    Area() float64\n}\n\ntype Circle struct{ R float64 }\ntype Rect struct{ W, H float64 }\n\nfunc (c Circle) Area() float64 { return math.Pi * c.R * c.R }\nfunc (r Rect) Area() float64   { return r.W * r.H }\n\nfunc main() {\n    shapes := []Shape{Circle{1}, Rect{2, 3}}\n    total := 0.0\n    for _, s := range shapes {\n        total += s.Area()\n    }\n    fmt.Printf(\"%.2f\\n\", total) // 9.14\n}",
+          "lang": "go"
+        },
+        "Go cũng có generic (từ Go 1.18), ví dụ `func Max[T int | float64](a, b T) T`, mà bạn sẽ dùng chủ yếu qua các hàm thư viện như trong package `slices` và `maps`."
+      ]
+    },
+    {
+      "h": "Tính năng đặc trưng: goroutine và channel",
+      "body": [
+        "Goroutine là luồng nhẹ khởi chạy bằng từ khóa `go`; một chương trình có thể chạy hàng chục nghìn goroutine. Các goroutine giao tiếp qua channel, truyền giá trị an toàn giữa chúng. `sync.WaitGroup` chờ một nhóm goroutine hoàn thành.",
+        {
+          "code": "package main\n\nimport (\n    \"fmt\"\n    \"sync\"\n)\n\nfunc square(n int, results chan<- int, wg *sync.WaitGroup) {\n    defer wg.Done()\n    results <- n * n\n}\n\nfunc main() {\n    results := make(chan int, 5)\n    var wg sync.WaitGroup\n    for i := 1; i <= 5; i++ {\n        wg.Add(1)\n        go square(i, results, &wg)\n    }\n    wg.Wait()\n    close(results)\n\n    sum := 0\n    for r := range results {\n        sum += r\n    }\n    fmt.Println(sum) // 55\n}",
+          "lang": "go"
+        },
+        "`defer` hẹn một lời gọi chạy khi hàm bao quanh trả về, đó là cách mã Go đóng tệp và mở khóa mutex. Dùng `go run -race .` để phát hiện data race khi phát triển."
+      ]
+    },
+    {
+      "h": "Xử lý lỗi",
+      "body": [
+        "Go không có ngoại lệ cho các lỗi thông thường. Hàm có thể thất bại trả về một `error` làm kết quả cuối, và bên gọi kiểm tra ngay. Bọc lỗi bằng `%w` để thêm ngữ cảnh mà vẫn kiểm tra được lỗi gốc bằng `errors.Is`.",
+        {
+          "code": "package main\n\nimport (\n    \"errors\"\n    \"fmt\"\n    \"os\"\n)\n\nfunc readConfig(path string) ([]byte, error) {\n    data, err := os.ReadFile(path)\n    if err != nil {\n        return nil, fmt.Errorf(\"read config: %w\", err)\n    }\n    return data, nil\n}\n\nfunc main() {\n    _, err := readConfig(\"missing.json\")\n    if errors.Is(err, os.ErrNotExist) {\n        fmt.Println(\"no config file:\", err)\n    }\n}",
+          "lang": "go"
+        },
+        "`panic` và `recover` có tồn tại, nhưng dành cho lỗi lập trình và trạng thái thực sự bất ngờ, không dùng để xử lý lỗi thông thường."
+      ]
+    },
+    {
+      "h": "Một chương trình nhỏ hoàn chỉnh: máy chủ web nhỏ",
+      "body": [
+        "Chỉ với thư viện chuẩn, chương trình này phục vụ JSON qua HTTP. Chạy bằng `go run .` và mở `http://localhost:8080/hello?name=Ann`.",
+        {
+          "code": "package main\n\nimport (\n    \"encoding/json\"\n    \"log\"\n    \"net/http\"\n    \"time\"\n)\n\ntype Greeting struct {\n    Message string    `json:\"message\"`\n    Time    time.Time `json:\"time\"`\n}\n\nfunc hello(w http.ResponseWriter, r *http.Request) {\n    name := r.URL.Query().Get(\"name\")\n    if name == \"\" {\n        name = \"world\"\n    }\n    w.Header().Set(\"Content-Type\", \"application/json\")\n    err := json.NewEncoder(w).Encode(Greeting{\"Hello, \" + name, time.Now()})\n    if err != nil {\n        log.Println(\"encode:\", err)\n    }\n}\n\nfunc main() {\n    http.HandleFunc(\"/hello\", hello)\n    log.Println(\"listening on :8080\")\n    log.Fatal(http.ListenAndServe(\":8080\", nil))\n}",
+          "lang": "go"
+        },
+        "Đoạn văn bản sau kiểu của mỗi trường là struct tag đặt tên khóa JSON. Mỗi yêu cầu được xử lý trong goroutine riêng một cách tự động."
+      ]
+    },
+    {
+      "h": "Những lỗi thường gặp của người mới",
+      "body": [
+        {
+          "note": "Ghi vào map `nil` gây panic. Map khai báo bằng `var m map[string]int` phải được tạo bằng `make(map[string]int)` hoặc literal trước khi gán."
+        },
+        {
+          "ul": [
+            "Bỏ qua lỗi bằng `_`. Hãy kiểm tra mọi `error` được trả về trừ khi bạn chắc chắn nó không quan trọng.",
+            "Mong `append` thay đổi slice gốc tại chỗ; hãy luôn dùng kết quả trả về, như `s = append(s, x)`.",
+            "Khởi chạy goroutine rồi để `main` kết thúc trước khi chúng xong. Hãy chờ bằng `sync.WaitGroup` hoặc channel.",
+            "Dùng value receiver khi phương thức phải sửa struct; hãy dùng pointer receiver như `func (p *Point)`."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Học tiếp ở đâu",
+      "body": [
+        "Hãy làm Tour of Go tương tác, rồi đọc Effective Go và tài liệu thư viện chuẩn tại pkg.go.dev. Học `go test` cho kiểm thử đơn vị và benchmark, package `context` cho timeout và hủy bỏ, và module cho các phụ thuộc."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Gọi là Go hay Golang?",
+      "a": "Tên chính thức là Go. \"Golang\" xuất phát từ địa chỉ website cũ golang.org và vẫn được dùng làm từ khóa tìm kiếm."
+    },
+    {
+      "q": "Go có hướng đối tượng không?",
+      "a": "Một phần. Go có phương thức và interface nhưng không có lớp hay kế thừa; bạn xây dựng kiểu bằng cách nhúng struct và kết hợp các interface nhỏ."
+    },
+    {
+      "q": "Go có nhanh hơn Python không?",
+      "a": "Với hầu hết công việc nặng về CPU thì có, vì Go biên dịch ra mã máy gốc và có kiểu tĩnh. Python vẫn có thể nhanh khi phần việc nặng nằm trong các thư viện viết bằng C."
+    },
+    {
+      "q": "Goroutine và luồng (thread) khác nhau thế nào?",
+      "a": "Goroutine được runtime của Go quản lý và bắt đầu với stack nhỏ tăng dần khi cần. Runtime lập lịch nhiều goroutine lên một vài luồng của hệ điều hành, nên tạo goroutine rẻ hơn nhiều."
+    }
+  ]
+}

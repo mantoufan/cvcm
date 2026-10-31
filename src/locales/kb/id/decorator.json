@@ -1,0 +1,167 @@
+{
+  "title": "Pola Decorator: menambah perilaku dengan membungkus objek, contoh TypeScript — cv.cm",
+  "description": "Pola desain Decorator dijelaskan: menambah tanggung jawab pada objek saat runtime dengan membungkusnya. Contoh TypeScript, decorator fungsi, dan Java I/O.",
+  "h1": "Pola Decorator dijelaskan dengan contoh",
+  "answer": "Decorator adalah pola desain structural yang menambah tanggung jawab pada objek secara dinamis dengan membungkusnya dalam objek lain yang memiliki interface sama. Setiap decorator meneruskan panggilan ke objek yang dibungkus dan menambah perilakunya sendiri sebelum atau sesudahnya, seperti logging, caching, atau kompresi. Karena decorator dapat ditumpuk dalam urutan apa pun, pola ini menjadi alternatif yang fleksibel daripada membuat subkelas untuk setiap kombinasi fitur.",
+  "sections": [
+    {
+      "h": "Tujuan",
+      "body": [
+        "Menempelkan tanggung jawab tambahan pada objek secara dinamis. Decorator menyediakan alternatif yang fleksibel dibanding subclassing untuk memperluas fungsionalitas. Pola Decorator adalah salah satu dari tujuh pola structural dalam buku Gang of Four (GoF), tempat pola ini juga dikenal sebagai Wrapper."
+      ]
+    },
+    {
+      "h": "Masalah yang diselesaikan",
+      "body": [
+        "Bayangkan penyimpanan data dengan `get(key)`. Sebagian pemanggil ingin logging, sebagian ingin cache dalam memori, sebagian ingin keduanya, dan sebagian ingin percobaan ulang untuk back end jaringan yang lambat. Dengan inheritance Anda akan menulis `LoggingStore`, `CachingStore`, `LoggingCachingStore`, `RetryingCachingStore`, dan seterusnya: satu subkelas untuk setiap kombinasi, dan kombinasinya ditetapkan saat kompilasi.",
+        "Pola Decorator mengubah setiap fitur menjadi kelas pembungkus kecil. Anda membangun kombinasi yang dibutuhkan saat runtime dengan membungkus satu objek dengan objek lain, dan kode yang memakai store melihat interface yang sama berapa pun jumlah lapisannya."
+      ]
+    },
+    {
+      "h": "Struktur dan peserta",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Peserta",
+              "Tanggung jawab",
+              "Dalam contoh"
+            ],
+            "rows": [
+              [
+                "Component",
+                "Interface yang dibagi oleh objek asli dan decorator.",
+                "`Store`"
+              ],
+              [
+                "ConcreteComponent",
+                "Objek asli yang mengerjakan tugas inti.",
+                "`SlowStore`"
+              ],
+              [
+                "Decorator",
+                "Menyimpan referensi ke Component dan mengimplementasikan interface yang sama dengan meneruskan panggilan.",
+                "`StoreDecorator`"
+              ],
+              [
+                "ConcreteDecorator",
+                "Menambah perilaku sebelum atau sesudah meneruskan.",
+                "`LoggingStore`, `CachingStore`"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "Implementasi TypeScript",
+      "body": [
+        {
+          "code": "interface Store {\n  get(key: string): string;\n}\n\nclass SlowStore implements Store {\n  get(key: string): string { console.log(`  (database read: ${key})`); return key.toUpperCase(); }\n}\n\n// Base decorator: forwards everything to the wrapped store.\nabstract class StoreDecorator implements Store {\n  constructor(protected inner: Store) {}\n  get(key: string): string { return this.inner.get(key); }\n}\n\nclass LoggingStore extends StoreDecorator {\n  get(key: string): string {\n    console.log(`get ${key}`);\n    return super.get(key);\n  }\n}\n\nclass CachingStore extends StoreDecorator {\n  private cache = new Map<string, string>();\n  get(key: string): string {\n    if (!this.cache.has(key)) this.cache.set(key, super.get(key));\n    return this.cache.get(key)!;\n  }\n}\n\n// Stack features in any order at run time.\nconst store: Store = new LoggingStore(new CachingStore(new SlowStore()));\nconsole.log(store.get(\"ada\"));\nconsole.log(store.get(\"ada\"));\n// get ada\n//   (database read: ada)\n// ADA\n// get ada\n// ADA",
+          "lang": "typescript"
+        },
+        "Panggilan kedua dicatat tetapi dijawab dari cache, sehingga database tidak dibaca lagi. Jika Anda menukar urutannya, `new CachingStore(new LoggingStore(...))`, hanya cache miss yang dicatat. Urutan decorator mengubah perilaku, yang sekaligus merupakan fitur dan sumber kebingungan yang umum."
+      ]
+    },
+    {
+      "h": "Decorator fungsi di TypeScript",
+      "body": [
+        "Ketika komponennya berupa satu fungsi, decorator dapat berupa fungsi higher-order: menerima sebuah fungsi dan mengembalikan fungsi baru dengan signature yang sama dan perilaku tambahan.",
+        {
+          "code": "function withTiming<A extends unknown[], R>(name: string, fn: (...args: A) => R) {\n  return (...args: A): R => {\n    const start = performance.now();\n    try {\n      return fn(...args);\n    } finally {\n      console.log(`${name} took ${(performance.now() - start).toFixed(1)} ms`);\n    }\n  };\n}\n\nconst slowSquare = (n: number) => { for (let i = 0; i < 1e6; i++); return n * n; };\nconst timedSquare = withTiming(\"square\", slowSquare);\nconsole.log(timedSquare(12)); // square took ... ms, then 144",
+          "lang": "typescript"
+        },
+        {
+          "note": "TypeScript juga punya sintaks decorator, `@name`, yang diterapkan pada kelas dan anggota kelas. Itu fitur bahasa (TypeScript 5.0 menambahkan dukungan untuk decorator standar ECMAScript) yang dapat dipakai untuk mengimplementasikan pola ini, tetapi bukan hal yang sama: pola Decorator ala GoF membungkus objek saat runtime, sedangkan decorator `@` mengubah definisi kelas."
+        }
+      ]
+    },
+    {
+      "h": "Kapan memakainya, dan kapan tidak",
+      "body": [
+        "Gunakan pola Decorator ketika:",
+        {
+          "ul": [
+            "Anda ingin menambah fitur seperti logging, caching, percobaan ulang, validasi, kompresi, atau pemeriksaan akses pada objek tertentu, tanpa memengaruhi objek lain dari kelas yang sama.",
+            "Fitur harus bisa digabungkan secara bebas, dan subclassing akan menghasilkan kelas untuk setiap kombinasi.",
+            "Anda tidak bisa atau tidak sebaiknya mengubah kelas aslinya, misalnya karena berasal dari pustaka."
+          ]
+        },
+        "Hindari ketika:",
+        {
+          "ul": [
+            "Anda hanya butuh satu perilaku tambahan yang tetap. Menambahkannya langsung, atau memakai satu subkelas, lebih sederhana.",
+            "Kode bergantung pada identitas atau kelas konkret objek. Objek yang didekorasi adalah objek yang berbeda, sehingga pemeriksaan seperti `instanceof SlowStore` atau perbandingan `===` gagal.",
+            "Banyak lapisan kecil mempersulit debugging. Tumpukan pembungkus yang dalam menghasilkan call stack panjang dan membuat tidak jelas lapisan mana melakukan apa."
+          ]
+        },
+        "Middleware di framework web, seperti Express atau Koa, adalah gagasan yang terkait: setiap lapisan menerima permintaan, boleh bertindak atasnya, dan meneruskannya."
+      ]
+    },
+    {
+      "h": "Pemakaian di dunia nyata",
+      "body": [
+        {
+          "ul": [
+            "Java I/O: `new BufferedInputStream(new FileInputStream(\"data.bin\"))` membungkus sebuah stream dengan stream lain yang menambah buffering, dan keduanya memiliki interface `InputStream`. Buku GoF sendiri membahas stream sebagai contoh khas.",
+            "Koleksi Java: `Collections.unmodifiableList(list)` dan `Collections.synchronizedList(list)` mengembalikan pembungkus yang menambah perilaku read-only atau penguncian di sekitar list yang ada.",
+            "Python: decorator fungsi seperti `functools.lru_cache` membungkus fungsi dan menambah caching, dan `functools.wraps` membantu pembungkus mempertahankan nama dan docstring fungsi yang dibungkus."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Pola terkait",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Pola",
+              "Perbedaannya dengan Decorator"
+            ],
+            "rows": [
+              [
+                "Adapter",
+                "Mengubah interface objek. Decorator mempertahankan interface dan menambah perilaku."
+              ],
+              [
+                "Proxy",
+                "Memiliki struktur yang sama tetapi tujuan berbeda: mengontrol akses (pembuatan lazy, akses jarak jauh, izin), dan biasanya mengelola siklus hidup objek asli sendiri."
+              ],
+              [
+                "Composite",
+                "Juga memakai composition rekursif, tetapi composite menyimpan banyak anak; decorator membungkus tepat satu."
+              ],
+              [
+                "Strategy",
+                "Mengubah bagian dalam objek dengan menukar algoritma. Decorator mengubah bagian luar dengan membungkusnya."
+              ],
+              [
+                "Chain of Responsibility",
+                "Juga meneruskan permintaan melalui serangkaian objek, tetapi setiap handler boleh menghentikan permintaan; decorator biasanya selalu meneruskan."
+              ]
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Apa beda pola Decorator dan inheritance?",
+      "a": "Inheritance menambah perilaku ke seluruh kelas saat kompilasi. Decorator menambah perilaku ke satu objek saat runtime, dan beberapa decorator dapat digabungkan dalam urutan apa pun."
+    },
+    {
+      "q": "Apa beda pola Decorator dan pola Proxy?",
+      "a": "Bentuknya sama. Decorator menambah fitur yang dipilih klien untuk ditumpuk, sedangkan proxy mengontrol akses ke objek asli, sering kali membuatnya atau memutuskan apakah akan memanggilnya sama sekali."
+    },
+    {
+      "q": "Apakah @decorator TypeScript adalah pola Decorator?",
+      "a": "Tidak persis. Decorator `@` adalah fitur bahasa yang mengubah kelas dan anggotanya saat didefinisikan. Decorator itu bisa dipakai untuk mengimplementasikan pembungkusan, tetapi pola GoF adalah tentang membungkus objek saat runtime."
+    },
+    {
+      "q": "Apakah urutan decorator berpengaruh?",
+      "a": "Ya. Setiap decorator melihat panggilan sebelum objek yang dibungkusnya, jadi cache yang diletakkan di luar logger menyembunyikan panggilan berulang dari logger, sedangkan logger di luar cache melihat setiap panggilan."
+    }
+  ]
+}

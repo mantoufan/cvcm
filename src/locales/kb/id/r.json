@@ -1,0 +1,181 @@
+{
+  "title": "Tutorial R: vektor, data frame, fungsi, dan statistik — cv.cm",
+  "description": "Belajar pemrograman R untuk analisis data: instal R, jalankan skrip, vektor dan tipe, if dan loop, fungsi, list, data frame, model linear, plot, dan error.",
+  "h1": "Tutorial pemrograman R untuk pemula",
+  "answer": "R adalah bahasa dan lingkungan gratis untuk statistik, analisis data, dan grafik. Ide intinya adalah vektorisasi: operasi diterapkan pada seluruh vektor dan kolom data frame sekaligus, sehingga kode analisis tetap ringkas. Halaman ini membahas instalasi R, menjalankan skrip, vektor dan tipe, alur kontrol, fungsi, list dan data frame, model statistik, pembuatan plot, dan penanganan error.",
+  "sections": [
+    {
+      "h": "Apa itu R dan untuk apa digunakan",
+      "body": [
+        "R adalah bahasa dan lingkungan open source gratis untuk komputasi statistik dan grafik. R diturunkan dari bahasa S yang dikembangkan di Bell Labs dan dipelihara oleh R Core Team. R bersifat vectorized: sebagian besar operasi bekerja pada seluruh vektor data sekaligus, sehingga kode analisis data menjadi ringkas.",
+        "R dipakai oleh ahli statistik, data scientist, bioinformatikawan, ekonom, dan peneliti untuk membersihkan data, membuat model statistik, visualisasi, dan laporan yang dapat direproduksi. Ribuan package tambahan tersedia dari CRAN (Comprehensive R Archive Network) dan Bioconductor."
+      ]
+    },
+    {
+      "h": "Instal R dan jalankan Hello, world",
+      "body": [
+        "Unduh R dari CRAN untuk Windows, macOS, atau Linux. Banyak orang juga menginstal RStudio atau Positron, yaitu IDE dengan editor, konsol, penampil plot, dan panel bantuan. Anda bisa mengetik kode langsung di konsol R atau menyimpannya dalam file `.R`.",
+        {
+          "code": "# hello.R\nprint(\"Hello, world!\")\ncat(\"Hello, world!\\n\")",
+          "lang": "r"
+        },
+        {
+          "code": "Rscript hello.R\n# [1] \"Hello, world!\"\n# Hello, world!",
+          "lang": "shell"
+        },
+        "`print` menampilkan nilai seperti yang dilakukan konsol, dengan awalan indeks `[1]`. `cat` menulis teks polos, sehingga Anda menambahkan baris baru sendiri."
+      ]
+    },
+    {
+      "h": "Variabel, tipe dasar, dan vektor",
+      "body": [
+        "Beri nilai dengan `<-` (gaya konvensional) atau `=`. Di R tidak ada skalar: satu angka adalah vektor dengan panjang 1. `c()` menggabungkan nilai menjadi vektor, dan aritmetika diterapkan elemen demi elemen.",
+        {
+          "code": "x <- 42                 # numeric (double)\nn <- 7L                 # integer (L suffix)\nname <- \"Ada\"           # character\nok <- TRUE              # logical\nclass(x); class(n); class(name)   # \"numeric\" \"integer\" \"character\"\nv <- c(2, 4, 6, 8)\nv * 10                  # [1] 20 40 60 80\nv[2]                    # [1] 4   (indexing starts at 1)\nv[v > 4]                # [1] 6 8\nlength(v); sum(v); mean(v)        # 4 20 5\n1:5                     # [1] 1 2 3 4 5\nseq(0, 1, by = 0.25)    # [1] 0.00 0.25 0.50 0.75 1.00",
+          "lang": "r"
+        },
+        {
+          "table": {
+            "head": [
+              "Tipe",
+              "Contoh",
+              "Catatan"
+            ],
+            "rows": [
+              [
+                "numeric (double)",
+                "`3.14`, `42`",
+                "default untuk angka"
+              ],
+              [
+                "integer",
+                "`42L`",
+                "bilangan bulat dengan akhiran `L`"
+              ],
+              [
+                "character",
+                "`\"text\"`",
+                "string"
+              ],
+              [
+                "logical",
+                "`TRUE`, `FALSE`",
+                "`NA` berarti nilai yang hilang"
+              ],
+              [
+                "factor",
+                "`factor(c(\"lo\", \"hi\"))`",
+                "data kategorikal dengan level tetap"
+              ]
+            ]
+          }
+        },
+        {
+          "note": "`NA` adalah nilai yang hilang dan ia menyebar: `mean(c(1, NA, 3))` hasilnya `NA`. Berikan `na.rm = TRUE` untuk mengabaikan nilai yang hilang, dan uji dengan `is.na(x)`, jangan pernah `x == NA`."
+        }
+      ]
+    },
+    {
+      "h": "Alur kontrol",
+      "body": [
+        "R punya `if`/`else`, `for`, `while`, dan `repeat`. Untuk vektor, `ifelse()` yang tervektorisasi sering lebih baik daripada loop.",
+        {
+          "code": "temp <- 25\nif (temp > 30) {\n  print(\"hot\")\n} else if (temp > 15) {\n  print(\"mild\")         # [1] \"mild\"\n} else {\n  print(\"cold\")\n}\nfor (i in 1:3) {\n  cat(\"step\", i, \"\\n\")  # step 1 / step 2 / step 3\n}\nscores <- c(45, 80, 62)\nifelse(scores >= 50, \"pass\", \"fail\")\n# [1] \"fail\" \"pass\" \"pass\"",
+          "lang": "r"
+        },
+        "`if` membutuhkan satu `TRUE` atau `FALSE`. Memberikan vektor yang lebih panjang ke `if` adalah error di R 4.2 ke atas; gunakan `any()`, `all()`, atau `ifelse()` sebagai gantinya."
+      ]
+    },
+    {
+      "h": "Fungsi",
+      "body": [
+        "Fungsi dibuat dengan `function` dan diberi nama. Ekspresi terakhir yang dievaluasi dikembalikan otomatis; `return()` hanya diperlukan untuk keluar lebih awal. Argumen bisa punya nilai default dan bisa diberikan dengan nama.",
+        {
+          "code": "bmi <- function(weight_kg, height_m = 1.75) {\n  weight_kg / height_m^2\n}\nbmi(70)                          # [1] 22.85714\nbmi(height_m = 1.6, weight_kg = 60)  # [1] 23.4375\nsquare <- function(x) x^2\nsquare(1:4)                      # [1] 1 4 9 16 (vectorized)\nsapply(c(1, 4, 9), sqrt)         # [1] 1 2 3\n(\\(x) x + 1)(10)                 # [1] 11 (short lambda syntax)",
+          "lang": "r"
+        },
+        "Sintaks lambda singkat `\\(x)` tersedia sejak R 4.1, begitu juga native pipe `|>`, yang meneruskan sisi kiri sebagai argumen pertama: `c(1, 4, 9) |> sqrt() |> sum()` menghasilkan 6."
+      ]
+    },
+    {
+      "h": "Struktur data inti: vektor, list, dan data frame",
+      "body": [
+        "Selain vektor atomik, R punya list (yang bisa menampung nilai dengan tipe berbeda), matriks, dan data frame. Data frame adalah tabel tempat setiap kolom berupa vektor dengan panjang yang sama; ini adalah struktur utama untuk analisis data.",
+        {
+          "code": "person <- list(name = \"Ann\", age = 31, langs = c(\"R\", \"SQL\"))\nperson$name                 # [1] \"Ann\"\nperson[[\"langs\"]][2]        # [1] \"SQL\"\ndf <- data.frame(\n  name  = c(\"Ann\", \"Bo\", \"Cy\"),\n  age   = c(31, 25, 40),\n  city  = c(\"Oslo\", \"Rome\", \"Oslo\")\n)\nnrow(df)                    # [1] 3\ndf$age                      # [1] 31 25 40\ndf[df$age > 30, \"name\"]     # [1] \"Ann\" \"Cy\"\ndf$senior <- df$age >= 40   # add a column\naggregate(age ~ city, data = df, FUN = mean)\n#   city  age\n# 1 Oslo 35.5\n# 2 Rome 25.0\nstr(df)                     # compact structure summary",
+          "lang": "r"
+        },
+        "`df[rows, columns]` memilih berdasarkan posisi, nama, atau kondisi logis. Mengosongkan salah satu sisi, seperti pada `df[1, ]`, berarti semua baris atau semua kolom."
+      ]
+    },
+    {
+      "h": "Statistik dan pembuatan plot",
+      "body": [
+        "Fungsi statistik sudah tersedia: `summary`, `sd`, `quantile`, `cor`, `t.test`, dan `lm` (model linear), di antara banyak lainnya. Base graphics menggambar plot dengan satu panggilan.",
+        {
+          "code": "set.seed(1)\nx <- 1:20\ny <- 3 * x + rnorm(20, sd = 2)\nmodel <- lm(y ~ x)\nround(coef(model), 2)       # intercept near 0, slope near 3\nsummary(model)$r.squared    # close to 1\nplot(x, y, main = \"y vs x\")\nabline(model, col = \"red\")",
+          "lang": "r"
+        },
+        "Sintaks formula `y ~ x` berarti \"modelkan y sebagai fungsi dari x\" dan dipakai di berbagai fungsi pemodelan. Untuk grafik lanjutan dan data wrangling, kebanyakan pengguna menginstal package tidyverse, seperti ggplot2 dan dplyr, dengan `install.packages(\"tidyverse\")`."
+      ]
+    },
+    {
+      "h": "Penanganan error",
+      "body": [
+        "Munculkan error dengan `stop()` dan peringatan dengan `warning()`. Tangkap keduanya dengan `tryCatch()`, yang menerima fungsi handler untuk `error`, `warning`, dan blok `finally` opsional.",
+        {
+          "code": "safe_log <- function(x) {\n  if (!is.numeric(x)) stop(\"x must be numeric\")\n  if (any(x <= 0)) warning(\"non-positive values give NaN or -Inf\")\n  log(x)\n}\nresult <- tryCatch(\n  safe_log(\"ten\"),\n  error = function(e) {\n    message(\"Caught: \", conditionMessage(e))\n    NA\n  },\n  finally = message(\"done\")\n)\n# Caught: x must be numeric\n# done\nresult                      # [1] NA",
+          "lang": "r"
+        }
+      ]
+    },
+    {
+      "h": "Program lengkap kecil: ringkasan penjualan",
+      "body": [
+        "Skrip ini membuat tabel penjualan kecil, menghitung pendapatan per wilayah dengan base R, dan mencetak wilayah terbaik.",
+        {
+          "code": "sales <- data.frame(\n  region = c(\"North\", \"South\", \"North\", \"East\", \"South\"),\n  units  = c(10, 4, 6, 8, 12),\n  price  = c(2.5, 3.0, 2.5, 4.0, 3.0)\n)\nsales$revenue <- sales$units * sales$price\nby_region <- aggregate(revenue ~ region, data = sales, FUN = sum)\nby_region <- by_region[order(-by_region$revenue), ]\nprint(by_region, row.names = FALSE)\n#  region revenue\n#   South      48\n#   North      40\n#    East      32\nbest <- by_region$region[1]\ncat(sprintf(\"Best region: %s (%.2f)\\n\", best, max(by_region$revenue)))\n# Best region: South (48.00)",
+          "lang": "r"
+        },
+        {
+          "note": "Kesalahan umum pemula: lupa bahwa indeks dimulai dari 1; membandingkan dengan `== NA` alih-alih `is.na()`; menumbuhkan vektor di dalam loop (alokasikan di awal atau pakai kode tervektorisasi); memakai `=` dan `<-` secara tidak konsisten; dan menyamakan `[` (mengembalikan sub-list) dengan `[[` (mengembalikan satu elemen) pada list."
+        }
+      ]
+    },
+    {
+      "h": "Langkah selanjutnya",
+      "body": [
+        {
+          "ul": [
+            "An Introduction to R, manual resmi di CRAN.",
+            "Bantuan bawaan: ketik `?mean` atau `help(\"lm\")` di konsol.",
+            "R for Data Science oleh Hadley Wickham dan rekan-rekannya, gratis secara online, untuk pendekatan tidyverse.",
+            "CRAN Task Views, yang mendaftar package menurut bidang seperti ekonometrika atau machine learning."
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Mana yang lebih baik untuk analisis data, R atau Python?",
+      "a": "Keduanya kuat. R punya pustaka metode statistik yang mendalam dan plotting yang sangat baik, serta umum di dunia akademik dan biostatistik; Python lebih serbaguna dan dominan di rekayasa machine learning. Banyak analis mempelajari keduanya."
+    },
+    {
+      "q": "Apa perbedaan <- dan = di R?",
+      "a": "Keduanya melakukan assignment di tingkat atas, dan `<-` adalah gaya konvensional. Di dalam pemanggilan fungsi, `=` menamai argumen, jadi `f(x = 1)` meneruskan argumen, bukan membuat variabel."
+    },
+    {
+      "q": "Mengapa R mulai menghitung dari 1?",
+      "a": "R mengikuti konvensi matematika dan statistika, seperti pendahulunya S, sehingga elemen pertama vektor adalah `v[1]`. Indeks 0 mengembalikan vektor kosong, bukan error."
+    },
+    {
+      "q": "Apa itu tidyverse?",
+      "a": "Tidyverse adalah kumpulan package R, termasuk dplyr, ggplot2, dan tidyr, yang berbagi desain konsisten untuk mengimpor, membersihkan, mengubah, dan memplot data."
+    },
+    {
+      "q": "Bagaimana cara menginstal package R?",
+      "a": "Jalankan `install.packages(\"name\")` sekali untuk mengunduhnya dari CRAN, lalu `library(name)` di setiap sesi untuk memuatnya."
+    }
+  ]
+}

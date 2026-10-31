@@ -1,0 +1,186 @@
+{
+  "title": "Tutorial de Go: tipos, slices, structs, goroutines y errores — cv.cm",
+  "description": "Aprende Go en una página: instala Go y ejecuta Hello world, tipos, bucles, funciones, slices y maps, structs e interfaces, goroutines y canales, y errores.",
+  "h1": "Tutorial de Go para principiantes",
+  "answer": "Go (a menudo llamado Golang) es un lenguaje sencillo, compilado y de tipado estático creado por Google, pensado para compilaciones rápidas, concurrencia fácil y servidores fiables. Instala Go, escribe un paquete `main` y ejecútalo con `go run hello.go`. Las ideas centrales son un conjunto pequeño de tipos, slices y maps, structs con métodos, interfaces implícitas, goroutines y canales para la concurrencia, y errores devueltos como valores ordinarios.",
+  "sections": [
+    {
+      "h": "Qué es Go y para qué se usa",
+      "body": [
+        "Go fue diseñado en Google por Robert Griesemer, Rob Pike y Ken Thompson, y se publicó como código abierto en 2009. Compila a un único binario estático, arranca rápido, tiene recolector de basura y una rica biblioteca estándar para redes. Se usa en infraestructura en la nube y herramientas de línea de comandos: Docker, Kubernetes, Terraform y Prometheus están escritos en Go, y muchas empresas lo usan para APIs web y microservicios. El lenguaje es deliberadamente pequeño, por lo que el código de distintos equipos se parece."
+      ]
+    },
+    {
+      "h": "Instalar Go y ejecutar Hello, world",
+      "body": [
+        "Descarga Go desde go.dev/dl y compruébalo con `go version`. Crea una carpeta, inicia un módulo y añade `main.go`:",
+        {
+          "code": "package main\n\nimport \"fmt\"\n\nfunc main() {\n    fmt.Println(\"Hello, world\")\n}",
+          "lang": "go"
+        },
+        {
+          "code": "go mod init example.com/hello\ngo run .\n# Hello, world\ngo build     # produces a standalone binary named hello",
+          "lang": "shell"
+        },
+        "La ejecución empieza en `func main` dentro de `package main`. Ejecuta `gofmt` (o `go fmt`) para dar formato al código; todo el código Go usa el mismo estilo, con tabuladores para la indentación en los archivos reales."
+      ]
+    },
+    {
+      "h": "Variables y tipos básicos",
+      "body": [
+        "Declara variables con `var name type = value`, o dentro de funciones con la forma corta `name := value`, que infiere el tipo. Las variables a las que no se asigna nada reciben un valor cero: `0`, `\"\"`, `false` o `nil`.",
+        {
+          "table": {
+            "head": [
+              "Tipo",
+              "Ejemplo",
+              "Valor cero"
+            ],
+            "rows": [
+              [
+                "`int`, `int64`",
+                "`n := 42`",
+                "`0`"
+              ],
+              [
+                "`float64`",
+                "`x := 3.14`",
+                "`0`"
+              ],
+              [
+                "`bool`",
+                "`ok := true`",
+                "`false`"
+              ],
+              [
+                "`string`",
+                "`s := \"hi\"`",
+                "`\"\"`"
+              ],
+              [
+                "`rune`",
+                "`r := 'é'`",
+                "`0` (un punto de código Unicode)"
+              ],
+              [
+                "`byte`",
+                "`b := byte(65)`",
+                "`0` (alias de `uint8`)"
+              ]
+            ]
+          }
+        },
+        {
+          "code": "package main\n\nimport (\n    \"fmt\"\n    \"strconv\"\n)\n\nfunc main() {\n    name := \"Ada\"\n    count := 7\n    avg := float64(count) / 2 // explicit conversion is required\n    fmt.Printf(\"%s has %d items, avg %.1f\\n\", name, count, avg) // Ada has 7 items, avg 3.5\n    n, err := strconv.Atoi(\"12\")\n    fmt.Println(n+1, err) // 13 <nil>\n}",
+          "lang": "go"
+        },
+        "Go nunca convierte implícitamente entre tipos numéricos, y el compilador rechaza las variables y los imports sin usar."
+      ]
+    },
+    {
+      "h": "Control de flujo y funciones",
+      "body": [
+        "No hay paréntesis alrededor de las condiciones y las llaves son obligatorias. `for` es la única palabra clave de bucle: cubre los bucles clásicos, los de estilo while y los de rango. Las funciones pueden devolver varios valores.",
+        {
+          "code": "package main\n\nimport \"fmt\"\n\nfunc divmod(a, b int) (int, int) {\n    return a / b, a % b\n}\n\nfunc main() {\n    score := 72\n    if score >= 90 {\n        fmt.Println(\"A\")\n    } else if score >= 70 {\n        fmt.Println(\"B\") // B\n    } else {\n        fmt.Println(\"C\")\n    }\n\n    for i := 0; i < 3; i++ {\n        fmt.Print(i, \" \") // 0 1 2\n    }\n    fmt.Println()\n\n    n := 10\n    for n > 1 { // while-style loop\n        n /= 2\n    }\n\n    q, r := divmod(17, 5)\n    fmt.Println(n, q, r) // 1 3 2\n\n    switch day := \"SAT\"; day {\n    case \"SAT\", \"SUN\":\n        fmt.Println(\"weekend\") // no break needed\n    default:\n        fmt.Println(\"weekday\")\n    }\n}",
+          "lang": "go"
+        }
+      ]
+    },
+    {
+      "h": "Slices, maps y structs",
+      "body": [
+        "Un slice es una vista ampliable de un array y es el tipo de lista de uso diario. Un map es una tabla hash. Un struct agrupa campos con nombre, y los métodos son funciones con un receptor.",
+        {
+          "code": "package main\n\nimport (\n    \"fmt\"\n    \"sort\"\n)\n\ntype Point struct {\n    X, Y int\n}\n\nfunc (p Point) Add(o Point) Point { return Point{p.X + o.X, p.Y + o.Y} }\n\nfunc (p *Point) Scale(k int) { p.X *= k; p.Y *= k } // pointer receiver modifies p\n\nfunc main() {\n    nums := []int{3, 1, 2}\n    nums = append(nums, 5)\n    sort.Ints(nums)\n    fmt.Println(nums, len(nums), nums[1:3]) // [1 2 3 5] 4 [2 3]\n\n    ages := map[string]int{\"ann\": 31, \"bob\": 25}\n    ages[\"cy\"] = 40\n    age, ok := ages[\"zed\"]\n    fmt.Println(age, ok, len(ages)) // 0 false 3\n\n    for i, n := range nums {\n        fmt.Print(i, \":\", n, \" \") // 0:1 1:2 2:3 3:5\n    }\n    fmt.Println()\n\n    p := Point{1, 2}.Add(Point{3, 4})\n    p.Scale(2)\n    fmt.Printf(\"%+v\\n\", p) // {X:8 Y:12}\n}",
+          "lang": "go"
+        },
+        "El orden de iteración de un map es aleatorio a propósito; ordena las claves si necesitas un orden estable. Los nombres que empiezan con mayúscula (`Point`, `Add`) se exportan desde el paquete."
+      ]
+    },
+    {
+      "h": "Interfaces",
+      "body": [
+        "Una interfaz enumera firmas de métodos. Un tipo satisface una interfaz simplemente por tener esos métodos; no existe la palabra clave `implements`.",
+        {
+          "code": "package main\n\nimport (\n    \"fmt\"\n    \"math\"\n)\n\ntype Shape interface {\n    Area() float64\n}\n\ntype Circle struct{ R float64 }\ntype Rect struct{ W, H float64 }\n\nfunc (c Circle) Area() float64 { return math.Pi * c.R * c.R }\nfunc (r Rect) Area() float64   { return r.W * r.H }\n\nfunc main() {\n    shapes := []Shape{Circle{1}, Rect{2, 3}}\n    total := 0.0\n    for _, s := range shapes {\n        total += s.Area()\n    }\n    fmt.Printf(\"%.2f\\n\", total) // 9.14\n}",
+          "lang": "go"
+        },
+        "Go también tiene genéricos (desde Go 1.18), por ejemplo `func Max[T int | float64](a, b T) T`, que usarás sobre todo a través de funciones de biblioteca como las de los paquetes `slices` y `maps`."
+      ]
+    },
+    {
+      "h": "Característica distintiva: goroutines y canales",
+      "body": [
+        "Una goroutine es un hilo ligero que se inicia con la palabra clave `go`; un programa puede ejecutar miles de ellas. Las goroutines se comunican mediante canales, que pasan valores de forma segura entre ellas. `sync.WaitGroup` espera a que termine un grupo de goroutines.",
+        {
+          "code": "package main\n\nimport (\n    \"fmt\"\n    \"sync\"\n)\n\nfunc square(n int, results chan<- int, wg *sync.WaitGroup) {\n    defer wg.Done()\n    results <- n * n\n}\n\nfunc main() {\n    results := make(chan int, 5)\n    var wg sync.WaitGroup\n    for i := 1; i <= 5; i++ {\n        wg.Add(1)\n        go square(i, results, &wg)\n    }\n    wg.Wait()\n    close(results)\n\n    sum := 0\n    for r := range results {\n        sum += r\n    }\n    fmt.Println(sum) // 55\n}",
+          "lang": "go"
+        },
+        "`defer` programa una llamada para que se ejecute cuando retorne la función que la contiene, que es como el código Go cierra archivos y libera mutex. Usa `go run -race .` para detectar condiciones de carrera durante el desarrollo."
+      ]
+    },
+    {
+      "h": "Manejo de errores",
+      "body": [
+        "Go no tiene excepciones para los fallos ordinarios. Una función que puede fallar devuelve un `error` como último resultado, y quien la llama lo comprueba enseguida. Envuelve los errores con `%w` para añadir contexto y mantener el error original inspeccionable con `errors.Is`.",
+        {
+          "code": "package main\n\nimport (\n    \"errors\"\n    \"fmt\"\n    \"os\"\n)\n\nfunc readConfig(path string) ([]byte, error) {\n    data, err := os.ReadFile(path)\n    if err != nil {\n        return nil, fmt.Errorf(\"read config: %w\", err)\n    }\n    return data, nil\n}\n\nfunc main() {\n    _, err := readConfig(\"missing.json\")\n    if errors.Is(err, os.ErrNotExist) {\n        fmt.Println(\"no config file:\", err)\n    }\n}",
+          "lang": "go"
+        },
+        "`panic` y `recover` existen, pero se reservan para errores de programación y estados realmente inesperados, no para el manejo normal de errores."
+      ]
+    },
+    {
+      "h": "Un programa completo pequeño: un servidor web mínimo",
+      "body": [
+        "Con solo la biblioteca estándar, este programa sirve JSON por HTTP. Ejecútalo con `go run .` y abre `http://localhost:8080/hello?name=Ann`.",
+        {
+          "code": "package main\n\nimport (\n    \"encoding/json\"\n    \"log\"\n    \"net/http\"\n    \"time\"\n)\n\ntype Greeting struct {\n    Message string    `json:\"message\"`\n    Time    time.Time `json:\"time\"`\n}\n\nfunc hello(w http.ResponseWriter, r *http.Request) {\n    name := r.URL.Query().Get(\"name\")\n    if name == \"\" {\n        name = \"world\"\n    }\n    w.Header().Set(\"Content-Type\", \"application/json\")\n    err := json.NewEncoder(w).Encode(Greeting{\"Hello, \" + name, time.Now()})\n    if err != nil {\n        log.Println(\"encode:\", err)\n    }\n}\n\nfunc main() {\n    http.HandleFunc(\"/hello\", hello)\n    log.Println(\"listening on :8080\")\n    log.Fatal(http.ListenAndServe(\":8080\", nil))\n}",
+          "lang": "go"
+        },
+        "El texto que sigue al tipo de cada campo es una etiqueta de struct (struct tag) que fija el nombre de la clave JSON. Cada petición se atiende automáticamente en su propia goroutine."
+      ]
+    },
+    {
+      "h": "Errores comunes de principiantes",
+      "body": [
+        {
+          "note": "Escribir en un map `nil` provoca un panic. Un map declarado con `var m map[string]int` debe crearse con `make(map[string]int)` o con un literal antes de asignarle valores."
+        },
+        {
+          "ul": [
+            "Ignorar errores con `_`. Comprueba cada `error` devuelto, salvo que estés seguro de que no puede importar.",
+            "Esperar que `append` modifique el slice original en el sitio; usa siempre el resultado, como en `s = append(s, x)`.",
+            "Iniciar goroutines y dejar que `main` retorne antes de que terminen. Espera con `sync.WaitGroup` o con canales.",
+            "Usar un receptor por valor cuando el método debe modificar el struct; usa un receptor puntero como `func (p *Point)`."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Adónde ir después",
+      "body": [
+        "Haz el Tour of Go interactivo y lee después Effective Go y la documentación de la biblioteca estándar en pkg.go.dev. Aprende `go test` para pruebas unitarias y benchmarks, el paquete `context` para tiempos de espera y cancelación, y los módulos para las dependencias."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "¿Se llama Go o Golang?",
+      "a": "El nombre oficial es Go. «Golang» viene de la antigua dirección web golang.org y se sigue usando como término de búsqueda."
+    },
+    {
+      "q": "¿Go es orientado a objetos?",
+      "a": "En parte. Go tiene métodos e interfaces, pero no clases ni herencia; los tipos se construyen incrustando structs y componiendo interfaces pequeñas."
+    },
+    {
+      "q": "¿Go es más rápido que Python?",
+      "a": "En la mayoría de las tareas limitadas por CPU, sí, porque Go compila a código máquina nativo y tiene tipos estáticos. Python aún puede ser rápido cuando el trabajo pesado ocurre dentro de bibliotecas escritas en C."
+    },
+    {
+      "q": "¿Cuál es la diferencia entre una goroutine y un hilo?",
+      "a": "Una goroutine la gestiona el entorno de ejecución de Go y empieza con una pila pequeña que crece según haga falta. El entorno de ejecución planifica muchas goroutines sobre unos pocos hilos del sistema operativo, por lo que crear goroutines es mucho más barato."
+    }
+  ]
+}

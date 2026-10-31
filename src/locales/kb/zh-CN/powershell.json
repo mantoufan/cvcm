@@ -1,0 +1,190 @@
+{
+  "title": "PowerShell 入门教程：cmdlet、管道、变量与脚本 — cv.cm",
+  "description": "一步步学 PowerShell 脚本：运行 .ps1 脚本、cmdlet 与对象管道、变量、运算符、函数、哈希表以及 try/catch 错误处理。",
+  "h1": "PowerShell 入门教程",
+  "answer": "PowerShell 是微软推出的跨平台 Shell 和自动化脚本语言。它的命令称为 cmdlet，通过管道传递的是 .NET 对象而不是纯文本，因此无需解析文本即可过滤、排序和导出数据。本页涵盖安装 PowerShell 7、运行脚本、cmdlet、变量、运算符、流程控制、函数、集合和错误处理。",
+  "sections": [
+    {
+      "h": "PowerShell 是什么，用来做什么",
+      "body": [
+        "PowerShell 是微软推出的基于 .NET 的跨平台 Shell 和脚本语言。传统 Shell 在命令之间传递纯文本，而 PowerShell 传递带有属性和方法的 .NET 对象，所以无需解析文本就能过滤和排序数据。",
+        "系统管理员和 DevOps 工程师用 PowerShell 自动化 Windows 管理、管理 Active Directory、Microsoft 365 和 Azure，以及编写构建和部署脚本。它有两个版本：Windows 内置的 Windows PowerShell 5.1，以及开源并可运行在 Windows、Linux 和 macOS 上的 PowerShell 7 及更高版本（命令名为 `pwsh`）。本教程以 PowerShell 7 为准。"
+      ]
+    },
+    {
+      "h": "安装 PowerShell 并运行 Hello, world",
+      "body": [
+        "在 Windows 上，用 `winget install --id Microsoft.PowerShell --source winget` 安装 PowerShell 7；在 macOS 和 Linux 上，使用 Homebrew 或微软安装指南中介绍的包管理器。脚本是扩展名为 `.ps1` 的文本文件。",
+        {
+          "code": "# hello.ps1\nWrite-Output \"Hello, world!\"",
+          "lang": "powershell"
+        },
+        {
+          "code": "pwsh ./hello.ps1\n# Hello, world!",
+          "lang": "shell"
+        },
+        "在 Windows 上，执行策略可能会阻止脚本运行。`Set-ExecutionPolicy -Scope CurrentUser RemoteSigned` 允许运行你自己的本地脚本，同时仍要求下载的脚本必须签名。推荐使用安装了 PowerShell 扩展的 Visual Studio Code 作为编辑器。"
+      ]
+    },
+    {
+      "h": "Cmdlet 与管道",
+      "body": [
+        "命令称为 cmdlet，遵循「动词-名词」的命名模式，如 `Get-Process`、`Set-Location` 或 `New-Item`。有三个 cmdlet 能帮你探索其他一切：`Get-Command`、`Get-Help` 和 `Get-Member`。",
+        {
+          "code": "Get-Command -Noun Process          # list commands that work with processes\nGet-Help Get-ChildItem -Examples   # show usage examples\n\n# five processes using the most memory\nGet-Process |\n    Sort-Object -Property WorkingSet64 -Descending |\n    Select-Object -First 5 -Property Name, Id, WorkingSet64\n\n# files larger than 1 MB in the current folder\nGet-ChildItem -File | Where-Object { $_.Length -gt 1MB } |\n    ForEach-Object { \"{0}  {1:N0} KB\" -f $_.Name, ($_.Length / 1KB) }\n\nGet-Date | Get-Member -MemberType Property   # inspect an object",
+          "lang": "powershell"
+        },
+        "在脚本块内，`$_`（或 `$PSItem`）是管道中的当前对象。由于对象保留了类型，`Sort-Object` 无需额外处理就能按数值排序数字、按时间顺序排序日期。"
+      ]
+    },
+    {
+      "h": "变量与类型",
+      "body": [
+        "变量以 `$` 开头。它们可以保存任何 .NET 对象，你也可以用方括号添加类型约束。双引号字符串会展开变量和 `$( )` 表达式；单引号字符串则是字面文本。",
+        {
+          "code": "$name = \"Ada\"\n[int]$count = 3\n$price = 19.99                      # System.Double\n$isAdmin = $false\n$today = Get-Date\n\n\"Hello, $name\"                      # Hello, Ada\n\"Next: $($count + 1)\"               # Next: 4\n'No $expansion here'                # No $expansion here\n$price.GetType().Name               # Double\n$today.ToString(\"yyyy-MM-dd\")       # for example 2026-10-31\n[int]\"42\" + 1                       # 43 (explicit conversion)",
+          "lang": "powershell"
+        },
+        {
+          "table": {
+            "head": [
+              "类型",
+              "示例",
+              "说明"
+            ],
+            "rows": [
+              [
+                "`[int]`",
+                "`42`",
+                "32 位整数"
+              ],
+              [
+                "`[double]`",
+                "`3.14`",
+                "浮点数；金额请使用 `[decimal]`"
+              ],
+              [
+                "`[string]`",
+                "`\"text\"`",
+                "默认不区分大小写的比较"
+              ],
+              [
+                "`[bool]`",
+                "`$true`, `$false`",
+                "自动变量，不是关键字"
+              ],
+              [
+                "`[datetime]`",
+                "`Get-Date`",
+                "完整的 .NET `DateTime` 对象"
+              ],
+              [
+                "`[array]`, `[hashtable]`",
+                "`@(1, 2)`, `@{ a = 1 }`",
+                "集合，下文介绍"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "运算符与流程控制",
+      "body": [
+        "比较运算符是单词而不是符号：`-eq`、`-ne`、`-gt`、`-lt`、`-ge`、`-le`、`-like`（通配符）、`-match`（正则表达式）和 `-contains`。字符串比较默认不区分大小写，除非使用 `-ceq` 这类以 `c` 开头的版本。",
+        {
+          "code": "$temp = 22\nif ($temp -gt 30) {\n    \"hot\"\n} elseif ($temp -ge 15) {\n    \"mild\"                           # mild\n} else {\n    \"cold\"\n}\n\nswitch (\"report.csv\") {\n    { $_ -like \"*.csv\" } { \"CSV file\" }    # CSV file\n    { $_ -like \"*.txt\" } { \"text file\" }\n    default { \"other\" }\n}\n\nforeach ($n in 1..3) { \"n = $n\" }          # n = 1, n = 2, n = 3\nfor ($i = 0; $i -lt 2; $i++) { \"i = $i\" }  # i = 0, i = 1\n$k = 3\nwhile ($k -gt 0) { $k-- }\n\"Hello\" -eq \"hello\"                        # True",
+          "lang": "powershell"
+        },
+        {
+          "note": "用 `>` 或 `=` 来比较是经典错误：`if ($a > 5)` 会把 `$a` 重定向到名为 `5` 的文件，而 `=` 是赋值。请使用 `-gt` 和 `-eq`。与 `$null` 比较时，把 `$null` 放在左边（`$null -eq $x`），以免无意中过滤了数组。"
+        }
+      ]
+    },
+    {
+      "h": "函数与参数",
+      "body": [
+        "函数使用 `param()` 块声明带类型的具名参数。加上 `[CmdletBinding()]` 后，函数会获得与内置 cmdlet 相同的通用参数，如 `-Verbose`。任何未被捕获的输出都会成为函数的返回值。",
+        {
+          "code": "function Get-Greeting {\n    [CmdletBinding()]\n    param(\n        [Parameter(Mandatory)]\n        [string]$Name,\n        [string]$Greeting = \"Hello\"\n    )\n    Write-Verbose \"Building greeting for $Name\"\n    \"$Greeting, $Name!\"\n}\n\nGet-Greeting -Name \"Ann\"                  # Hello, Ann!\nGet-Greeting -Name \"Bo\" -Greeting \"Hi\"    # Hi, Bo!\nGet-Greeting \"Cy\" -Verbose                # also prints the verbose message",
+          "lang": "powershell"
+        },
+        "像调用 cmdlet 一样调用函数，参数之间用空格分隔：`Get-Greeting -Name Ann`。写成 `Get-Greeting(\"Ann\", \"Hi\")` 会传入单个数组参数，这常让从其他语言转来的人感到意外。"
+      ]
+    },
+    {
+      "h": "数组、哈希表与自定义对象",
+      "body": [
+        "数组用 `@( )` 或逗号分隔的列表创建。哈希表写作 `@{ }`，存储键值对。`[pscustomobject]` 可把哈希表转换为对象，与 `Sort-Object`、`Format-Table` 和 `Export-Csv` 配合良好。",
+        {
+          "code": "$langs = @(\"PowerShell\", \"Python\")\n$langs += \"Go\"                       # creates a new, longer array\n$langs.Count                         # 3\n$langs[0]                            # PowerShell\n$langs -contains \"Go\"                # True\n\n$ports = @{ http = 80; https = 443 }\n$ports[\"ssh\"] = 22\n$ports.https                         # 443\n$ports.Keys.Count                    # 3\n\n$user = [pscustomobject]@{ Name = \"Ann\"; Age = 31 }\n$user.Name                           # Ann\n$people = @(\n    [pscustomobject]@{ Name = \"Bo\"; Age = 25 }\n    $user\n)\n$people | Sort-Object Age | Format-Table",
+          "lang": "powershell"
+        },
+        "用 `+=` 向数组追加元素，每次都会复制整个数组。对于大循环，请直接收集循环输出（`$result = foreach (...) { ... }`），或使用 `[System.Collections.Generic.List[object]]`。"
+      ]
+    },
+    {
+      "h": "错误处理",
+      "body": [
+        "PowerShell 有会中止执行的终止错误，以及只打印消息并继续执行的非终止错误。`try`/`catch`/`finally` 只能捕获终止错误，所以想捕获某个 cmdlet 的失败时，要给它加上 `-ErrorAction Stop`。",
+        {
+          "code": "try {\n    $content = Get-Content -Path \"missing.txt\" -ErrorAction Stop\n}\ncatch [System.Management.Automation.ItemNotFoundException] {\n    Write-Warning \"File not found: $($_.Exception.Message)\"\n}\ncatch {\n    Write-Error \"Unexpected error: $_\"\n}\nfinally {\n    \"cleanup done\"\n}\n\n$ErrorActionPreference = \"Stop\"   # make all errors terminating in this script\nthrow \"Something went wrong\"      # raise your own terminating error",
+          "lang": "powershell"
+        },
+        "在 `catch` 内，`$_` 是错误记录。在脚本顶部设置 `$ErrorActionPreference = \"Stop\"` 是实现快速失败的常用做法。"
+      ]
+    },
+    {
+      "h": "一个完整的小脚本：磁盘占用报告",
+      "body": [
+        "这个脚本列出某个文件夹下最大的文件，按扩展名分组，并导出 CSV 报告。它综合运用了参数、管道、计算属性和错误处理。",
+        {
+          "code": "# report.ps1\nparam(\n    [string]$Path = \".\",\n    [int]$Top = 5\n)\n$ErrorActionPreference = \"Stop\"\n\n$files = Get-ChildItem -Path $Path -File -Recurse\n\n\"Largest $Top files:\"\n$files | Sort-Object Length -Descending | Select-Object -First $Top |\n    Format-Table Name, @{ Name = \"SizeKB\"; Expression = { [math]::Round($_.Length / 1KB, 1) } }\n\n$byExt = $files | Group-Object Extension | ForEach-Object {\n    [pscustomobject]@{\n        Extension = if ($_.Name) { $_.Name } else { \"(none)\" }\n        Files     = $_.Count\n        TotalMB   = [math]::Round(($_.Group | Measure-Object Length -Sum).Sum / 1MB, 2)\n    }\n} | Sort-Object TotalMB -Descending\n\n$byExt | Format-Table\n$byExt | Export-Csv -Path \"usage.csv\" -NoTypeInformation\n\"Report saved to usage.csv\"",
+          "lang": "powershell"
+        },
+        {
+          "code": "pwsh ./report.ps1 -Path ~/Documents -Top 3",
+          "lang": "shell"
+        },
+        {
+          "note": "初学者常见错误：用 `>`、`<` 或 `==` 代替 `-gt`、`-lt` 和 `-eq`；用括号和逗号调用函数；在 `try` 中忘记 `-ErrorAction Stop`；用 `Write-Host` 输出数据（它写到屏幕而不是管道，应优先使用 `Write-Output` 或直接返回值）；以及混淆 Windows PowerShell 5.1 与 PowerShell 7。"
+        }
+      ]
+    },
+    {
+      "h": "接下来学什么",
+      "body": [
+        {
+          "ul": [
+            "Microsoft Learn 上的 PowerShell 101 和 PowerShell 文档。",
+            "在 Shell 中使用 `Get-Help about_*`，例如 `Get-Help about_Operators`；请先运行 `Update-Help`。",
+            "PowerShell Gallery，官方模块仓库，配合 `Install-Module` 使用。",
+            "PSScriptAnalyzer：一款按推荐实践检查脚本的 lint 工具。"
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "PowerShell 和 Windows PowerShell 有什么区别？",
+      "a": "Windows PowerShell 5.1 是 Windows 内置的旧版本，基于 .NET Framework。PowerShell 7 及更高版本是基于现代 .NET 的跨平台开源版本，用 `pwsh` 命令启动。"
+    },
+    {
+      "q": "PowerShell 和命令提示符是一回事吗？",
+      "a": "不是。命令提示符（`cmd.exe`）运行批处理命令并传递文本。PowerShell 是完整的脚本语言，传递的是对象，不过它同样可以运行大多数命令行程序。"
+    },
+    {
+      "q": "PowerShell 能在 Linux 和 macOS 上运行吗？",
+      "a": "可以。PowerShell 7 及更高版本可运行在 Windows、Linux 和 macOS 上，但一些 Windows 专用的模块只能在 Windows 上使用。"
+    },
+    {
+      "q": "为什么我的 .ps1 脚本无法运行？",
+      "a": "可能是 Windows 的执行策略阻止了它。运行 `Set-ExecutionPolicy -Scope CurrentUser RemoteSigned`，并用路径启动脚本，如 `./script.ps1`。"
+    },
+    {
+      "q": "PowerShell 中的 $_ 是什么意思？",
+      "a": "`$_`（也写作 `$PSItem`）是管道中的当前对象，用于 `Where-Object` 和 `ForEach-Object` 等 cmdlet 的脚本块内；在 `catch` 内则表示当前的错误。"
+    }
+  ]
+}

@@ -1,0 +1,211 @@
+{
+  "title": "Topological sort: algoritma Kahn dan DFS di Python, dengan contoh — cv.cm",
+  "description": "Pelajari topological sort: urutkan tugas agar setiap dependensi lebih dulu. Algoritma Kahn dan DFS di Python, deteksi siklus, graphlib, dan biaya O(V + E).",
+  "h1": "Penjelasan topological sort: cara kerja, kode, dan kompleksitas",
+  "answer": "Topological sort mengurutkan node pada directed acyclic graph (DAG) sehingga untuk setiap edge u → v, u muncul sebelum v. Ia menjawab \"dalam urutan apa saya bisa mengerjakan tugas-tugas ini jika sebagian bergantung pada yang lain?\" Dua metode standarnya adalah algoritma Kahn, yang berulang kali menghapus node tanpa edge masuk, dan DFS, yang mengeluarkan node dalam urutan selesai terbalik. Keduanya berjalan dalam waktu O(V + E) dan sama-sama mendeteksi siklus, yang membuat pengurutan mustahil.",
+  "sections": [
+    {
+      "h": "Masalah yang diselesaikan topological sort",
+      "body": [
+        "Banyak tugas nyata punya prasyarat: mata kuliah membutuhkan mata kuliah sebelumnya, file sumber harus dikompilasi setelah file yang di-import-nya, paket harus diinstal setelah dependensinya, sel spreadsheet harus dihitung setelah sel yang dirujuknya. Gambarkan setiap tugas sebagai node dan setiap aturan \"harus lebih dulu\" sebagai edge berarah. Urutan topologis adalah setiap rangkaian tugas yang memenuhi semua edge.",
+        "Urutan hanya ada jika dan hanya jika graf tidak memiliki siklus berarah. Jika A membutuhkan B dan B membutuhkan A, tidak ada urutan yang valid, dan topological sort yang baik melaporkannya alih-alih berputar tanpa henti. Sebuah DAG biasanya punya banyak urutan valid; algoritma mengembalikan salah satunya."
+      ]
+    },
+    {
+      "h": "Ide dasar dengan kata-kata sederhana",
+      "body": [
+        "Algoritma Kahn (diterbitkan oleh Arthur Kahn pada 1962) bekerja dari depan:",
+        {
+          "ol": [
+            "Hitung edge masuk (in-degree) setiap node.",
+            "Masukkan setiap node dengan in-degree 0 ke queue: tugas-tugas ini tidak punya prasyarat yang belum terpenuhi.",
+            "Ambil sebuah node dari queue dan tambahkan ke hasil. Untuk setiap edge keluarnya, kurangi in-degree targetnya sebesar 1; jika mencapai 0, tambahkan target ke queue.",
+            "Ketika queue kosong, jika hasil berisi semua node, itulah urutan topologis. Jika tidak, node yang tersisa merupakan bagian dari siklus."
+          ]
+        },
+        "Metode DFS bekerja dari belakang: sebuah node selesai hanya setelah semua yang ditunjuknya selesai, sehingga mendaftar node dalam urutan selesai terbalik menempatkan setiap node sebelum semua penerusnya."
+      ]
+    },
+    {
+      "h": "Contoh langkah demi langkah",
+      "body": [
+        "Berpakaian: underwear → pants, pants → shoes, socks → shoes, pants → belt, shirt → belt, shirt → tie, tie → jacket, belt → jacket. Algoritma Kahn, mengambil node dalam queue dengan urutan first-in, first-out:",
+        {
+          "table": {
+            "head": [
+              "Langkah",
+              "Diambil",
+              "In-degree yang turun ke 0",
+              "Queue setelahnya",
+              "Hasil sejauh ini"
+            ],
+            "rows": [
+              [
+                "Awal",
+                "—",
+                "underwear, socks, shirt",
+                "underwear, socks, shirt",
+                "—"
+              ],
+              [
+                "1",
+                "underwear",
+                "pants",
+                "socks, shirt, pants",
+                "underwear"
+              ],
+              [
+                "2",
+                "socks",
+                "tidak ada (shoes masih menunggu pants)",
+                "shirt, pants",
+                "underwear, socks"
+              ],
+              [
+                "3",
+                "shirt",
+                "tie",
+                "pants, tie",
+                "…, shirt"
+              ],
+              [
+                "4",
+                "pants",
+                "shoes, belt",
+                "tie, shoes, belt",
+                "…, pants"
+              ],
+              [
+                "5",
+                "tie",
+                "tidak ada (jacket menunggu belt)",
+                "shoes, belt",
+                "…, tie"
+              ],
+              [
+                "6",
+                "shoes",
+                "tidak ada",
+                "belt",
+                "…, shoes"
+              ],
+              [
+                "7",
+                "belt",
+                "jacket",
+                "jacket",
+                "…, belt"
+              ],
+              [
+                "8",
+                "jacket",
+                "tidak ada",
+                "kosong",
+                "…, jacket"
+              ]
+            ]
+          }
+        },
+        "Urutan akhir: underwear, socks, shirt, pants, tie, shoes, belt, jacket. Ke-8 node sudah ditempatkan, jadi tidak ada siklus."
+      ]
+    },
+    {
+      "h": "Implementasi Python",
+      "body": [
+        "Algoritma Kahn dengan deque:",
+        {
+          "code": "from collections import deque\ndef topo_sort(graph):\n    \"\"\"graph: dict node -> list of nodes that must come after it.\"\"\"\n    indegree = {n: 0 for n in graph}\n    for n in graph:\n        for m in graph[n]:\n            indegree[m] += 1\n    queue = deque(n for n in graph if indegree[n] == 0)\n    order = []\n    while queue:\n        n = queue.popleft()\n        order.append(n)\n        for m in graph[n]:\n            indegree[m] -= 1\n            if indegree[m] == 0:\n                queue.append(m)\n    if len(order) != len(graph):\n        raise ValueError(\"graph has a cycle\")\n    return order\ndress = {\n    \"underwear\": [\"pants\"], \"socks\": [\"shoes\"], \"shirt\": [\"belt\", \"tie\"],\n    \"pants\": [\"shoes\", \"belt\"], \"tie\": [\"jacket\"], \"belt\": [\"jacket\"],\n    \"shoes\": [], \"jacket\": [],\n}\nprint(topo_sort(dress))\n# ['underwear', 'socks', 'shirt', 'pants', 'tie', 'shoes', 'belt', 'jacket']",
+          "lang": "python"
+        },
+        "Versi DFS menambahkan node setelah semua penerusnya selesai, lalu membalik list:",
+        {
+          "code": "def topo_sort_dfs(graph):\n    order, state = [], {}             # state: 1 = in progress, 2 = done\n    def visit(n):\n        if state.get(n) == 1:\n            raise ValueError(\"graph has a cycle\")\n        if state.get(n) == 2:\n            return\n        state[n] = 1\n        for m in graph[n]:\n            visit(m)\n        state[n] = 2\n        order.append(n)\n    for n in graph:\n        visit(n)\n    return order[::-1]\nprint(topo_sort_dfs(dress))\n# ['shirt', 'tie', 'socks', 'underwear', 'pants', 'belt', 'jacket', 'shoes']",
+          "lang": "python"
+        },
+        "Kedua hasil valid. Sejak Python 3.9, pustaka standar juga memiliki `graphlib.TopologicalSorter`. Perhatikan bahwa ia menerima pemetaan dari setiap node ke para pendahulunya, arah yang berlawanan dengan dictionary di atas:",
+        {
+          "code": "from graphlib import TopologicalSorter\nts = TopologicalSorter({\"b\": {\"a\"}, \"c\": {\"a\", \"b\"}})   # node: its prerequisites\nprint(list(ts.static_order()))  # ['a', 'b', 'c']",
+          "lang": "python"
+        }
+      ]
+    },
+    {
+      "h": "Kompleksitas waktu dan ruang",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Metode",
+              "Waktu",
+              "Ruang",
+              "Alasan"
+            ],
+            "rows": [
+              [
+                "Algoritma Kahn",
+                "O(V + E)",
+                "O(V)",
+                "Setiap node masuk ke queue sekali; setiap edge mengurangi satu in-degree sekali."
+              ],
+              [
+                "DFS",
+                "O(V + E)",
+                "O(V)",
+                "Setiap node dikunjungi sekali dan setiap edge diikuti sekali; stack rekursi bisa mencapai V frame."
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "Varian dan kesalahan umum",
+      "body": [
+        {
+          "ul": [
+            "Urutan terkecil lebih dulu: ganti queue dengan min-heap (`heapq`) agar selalu memilih node tersedia yang terkecil. Ini menghasilkan urutan terkecil secara leksikografis dalam O((V + E) log V).",
+            "Penjadwalan paralel: jalankan algoritma Kahn per putaran, mengambil semua node ber-in-degree 0 sekaligus. Setiap putaran adalah satu batch tugas yang dapat berjalan bersamaan; jumlah putaran sama dengan panjang rantai dependensi terpanjang. `graphlib.TopologicalSorter` mendukung ini lewat `get_ready()` dan `done()`.",
+            "Jalur terpanjang atau terpendek pada DAG: relaksasi edge menurut urutan topologis untuk mendapatkan jawaban dalam O(V + E), bahkan dengan bobot negatif.",
+            "Menghitung jumlah urutan yang berbeda adalah masalah yang jauh lebih sulit; jangan mencoba mendaftar semuanya untuk graf besar."
+          ]
+        },
+        {
+          "note": "Perhatikan arah edge. \"A bergantung pada B\" berarti B harus lebih dulu, sehingga edge-nya B → A. Tertukarnya arah menghasilkan urutan terbalik. Pastikan juga setiap node muncul sebagai key di dictionary, termasuk node tanpa edge keluar, atau pencarian in-degree memunculkan `KeyError`."
+        },
+        "Versi DFS rekursif memiliki masalah batas rekursi yang sama seperti DFS rekursif lainnya di Python: untuk rantai ribuan node, gunakan algoritma Kahn."
+      ]
+    },
+    {
+      "h": "Kapan memakainya dan penggunaannya di dunia nyata",
+      "body": [
+        {
+          "ul": [
+            "Build tool seperti Make mengurutkan target berdasarkan dependensinya, dan package manager mengurutkan instalasi berdasarkan graf dependensi.",
+            "Spreadsheet menghitung ulang sel menurut urutan dependensi dan melaporkan referensi melingkar.",
+            "Task scheduler dan workflow engine, misalnya pipeline data berbasis DAG, menjalankan tugas dalam urutan topologis.",
+            "Compiler mengurutkan deklarasi dan mengevaluasi graf ekspresi; database mengurutkan pembuatan atau penghapusan foreign key.",
+            "Soal wawancara: course schedule I dan II, alien dictionary (urutan huruf dari kata-kata terurut), parallel courses, tinggi minimum rencana build."
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Bisakah graf yang memiliki siklus diurutkan secara topologis?",
+      "a": "Tidak. Siklus berarti ada tugas yang harus mendahului dirinya sendiri. Algoritma Kahn mendeteksinya karena sebagian node tidak pernah mencapai in-degree 0, dan metode DFS mendeteksinya dengan menemukan node yang masih dalam proses."
+    },
+    {
+      "q": "Apakah urutan topologis itu unik?",
+      "a": "Biasanya tidak. Urutan itu unik hanya bila graf memiliki jalur yang melewati semua node, sehingga setiap langkah hanya punya satu node yang tersedia."
+    },
+    {
+      "q": "Algoritma Kahn atau DFS?",
+      "a": "Keduanya O(V + E). Algoritma Kahn bersifat iteratif, melaporkan siklus secara alami, dan mudah disesuaikan untuk batch paralel atau urutan terkecil lebih dulu. DFS lebih singkat jika Anda sudah punya helper DFS."
+    },
+    {
+      "q": "Apakah Python punya topological sort bawaan?",
+      "a": "Ada. `graphlib.TopologicalSorter`, ditambahkan di Python 3.9, mengembalikan urutan dengan `static_order()` dan memunculkan `graphlib.CycleError` bila graf memiliki siklus."
+    }
+  ]
+}

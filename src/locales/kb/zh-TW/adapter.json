@@ -1,0 +1,184 @@
+{
+  "title": "轉接器模式：讓不相容的介面一起運作，附 TypeScript 範例 — cv.cm",
+  "description": "說明轉接器（Adapter）設計模式：包裝介面不相容的類別，讓用戶端能使用它。附 TypeScript 範例、物件轉接器與類別轉接器的差異，以及實際應用。",
+  "h1": "轉接器模式詳解與範例",
+  "answer": "轉接器是一種結構型設計模式，它把現有類別的介面轉換成用戶端程式碼所期待的介面。轉接器會包裝不相容的物件，並翻譯每一次呼叫，例如把 `charge(amountCents)` 轉成舊系統的 `makePayment(\"12.50\")`。這讓你不必修改第三方或舊有的元件就能重複使用它，也不會讓它彆扭的 API 擴散到你的程式碼各處。它也稱為包裝器（Wrapper）。",
+  "sections": [
+    {
+      "h": "意圖",
+      "body": [
+        "把某個類別的介面轉換成用戶端所期待的另一個介面。轉接器讓原本因介面不相容而無法合作的類別能夠一起運作。它是《設計模式》（Gang of Four，簡稱 GoF）一書中七種結構型模式之一。"
+      ]
+    },
+    {
+      "h": "它解決的問題",
+      "body": [
+        "你的商店程式碼使用一個小型的 `PaymentGateway` 介面：`charge(amountCents, currency)` 會回傳含有 `ok` 旗標與交易編號的結果。現在公司和一家支付服務商簽約，但它的 SDK 長得完全不同：金額是十進位字串、幣別包含在請求物件裡，而錯誤則以數字狀態碼回傳。",
+        "你無法修改這個 SDK，也不想改寫每個呼叫端去適應新的形式。如果 SDK 的風格滲透到結帳、退款與報表，日後要換服務商就會很昂貴。轉接器能把這層翻譯集中在一個類別裡。"
+      ]
+    },
+    {
+      "h": "結構與參與者",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "參與者",
+              "職責",
+              "範例中的對應"
+            ],
+            "rows": [
+              [
+                "目標（Target）",
+                "用戶端所期待的介面。",
+                "`PaymentGateway`"
+              ],
+              [
+                "被轉接者（Adaptee）",
+                "介面不相容的現有類別。",
+                "`LegacyPayClient`"
+              ],
+              [
+                "轉接器（Adapter）",
+                "實作目標介面，並把呼叫翻譯給被轉接者。",
+                "`LegacyPayAdapter`"
+              ],
+              [
+                "用戶端",
+                "只使用目標介面。",
+                "`checkout`"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "TypeScript 實作",
+      "body": [
+        {
+          "code": "// Target: what our code expects.\ninterface PaymentGateway {\n  charge(amountCents: number, currency: string): { ok: boolean; id: string };\n}\n\n// Adaptee: a third-party SDK we cannot change.\nclass LegacyPayClient {\n  makePayment(req: { amount: string; curr: string }): { status: number; ref: string } {\n    return { status: req.curr === \"USD\" ? 200 : 422, ref: `TX-${req.amount}` };\n  }\n}\n\n// Adapter: implements the Target by translating to the Adaptee.\nclass LegacyPayAdapter implements PaymentGateway {\n  constructor(private client: LegacyPayClient) {}\n\n  charge(amountCents: number, currency: string) {\n    const res = this.client.makePayment({\n      amount: (amountCents / 100).toFixed(2),\n      curr: currency.toUpperCase(),\n    });\n    return { ok: res.status === 200, id: res.ref };\n  }\n}\n\n// Client code knows nothing about LegacyPayClient.\nfunction checkout(gateway: PaymentGateway, totalCents: number): string {\n  const result = gateway.charge(totalCents, \"usd\");\n  return result.ok ? `paid ${result.id}` : \"payment failed\";\n}\n\nconsole.log(checkout(new LegacyPayAdapter(new LegacyPayClient()), 1250)); // paid TX-12.50",
+          "lang": "typescript"
+        },
+        "日後要換成另一家服務商，只需要再寫一個轉接器。`checkout` 和所有其他呼叫端都不必更動，測試時也能傳入假的 `PaymentGateway`。"
+      ]
+    },
+    {
+      "h": "物件轉接器與類別轉接器",
+      "body": [
+        "GoF 一書描述了兩種形式：",
+        {
+          "table": {
+            "head": [
+              "形式",
+              "運作方式",
+              "說明"
+            ],
+            "rows": [
+              [
+                "物件轉接器",
+                "持有被轉接者的參照並委派給它（組合）。",
+                "可搭配被轉接者及其所有子類別使用。這是 TypeScript、Java 和 C# 中的常見選擇。"
+              ],
+              [
+                "類別轉接器",
+                "繼承被轉接者並實作目標介面。",
+                "需要繼承被轉接者，所以只能轉接那一個類別。常見於支援多重繼承的 C++。"
+              ]
+            ]
+          }
+        },
+        "在 TypeScript 和 JavaScript 中，轉接一個函式往往就夠了。Node.js 內建了一個這類的小型轉接器：`util.promisify()` 會把回呼風格的函式轉成回傳 promise 的函式。",
+        {
+          "code": "import { promisify } from \"node:util\";\n\n// Adaptee: old callback style (error first, then result).\nfunction readConfig(name: string, cb: (err: Error | null, value?: string) => void): void {\n  setTimeout(() => cb(null, `config for ${name}`), 10);\n}\n\n// Adapted: the same function, now with a promise-based interface.\nconst readConfigAsync = promisify(readConfig);\nconsole.log(await readConfigAsync(\"app\")); // config for app",
+          "lang": "typescript"
+        }
+      ]
+    },
+    {
+      "h": "何時使用、何時不該用",
+      "body": [
+        "在以下情況使用轉接器：",
+        {
+          "ul": [
+            "你想使用現有的類別，但它的介面和你的程式碼所需要的不一致。",
+            "你要整合第三方函式庫或舊有系統，並希望把它們的 API 限制在程式的邊緣。",
+            "你想讓好幾種不同的實作（例如兩家支付服務商）放在同一個介面後面。"
+          ]
+        },
+        "在以下情況應避免使用：",
+        {
+          "ul": [
+            "兩邊都是你自己擁有的。修改其中一邊的介面通常比加一層翻譯層更簡單。",
+            "轉接器必須假裝支援目標介面中被轉接者其實無法真正支援的大部分功能。這會掩蓋真正的不匹配，而不是解決它。"
+          ]
+        },
+        {
+          "note": "讓轉接器保持輕薄。它們應該只翻譯名稱、單位與錯誤格式，而不是包含業務規則。如果轉接器變得龐大，那些邏輯可能應該放在別處。"
+        }
+      ]
+    },
+    {
+      "h": "實際應用",
+      "body": [
+        {
+          "ul": [
+            "Node.js：`util.promisify()` 把以回呼為基礎的函式轉接成 promise。",
+            "Java：`Arrays.asList()` 讓陣列可以透過 `List` 介面使用，`InputStreamReader` 則讓以位元組為基礎的 `InputStream` 能被當成以字元為基礎的 `Reader` 來讀取。",
+            "資料庫函式庫與 ORM 會為每種資料庫各用一個轉接器或驅動程式，讓同一套查詢 API 能搭配 PostgreSQL、MySQL 或 SQLite。",
+            "前端程式碼也常為了同樣的理由，把瀏覽器 API 或分析 SDK 包在專案自訂的小型介面後面。"
+          ]
+        }
+      ]
+    },
+    {
+      "h": "相關模式",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "模式",
+              "與轉接器的差異"
+            ],
+            "rows": [
+              [
+                "裝飾者",
+                "保持相同的介面並新增行為。轉接器則改變介面，而不新增行為。"
+              ],
+              [
+                "代理",
+                "保持相同的介面並控制對物件的存取（延遲載入、快取、權限）。"
+              ],
+              [
+                "外觀",
+                "為由許多類別組成的整個子系統定義一個新的、較簡單的介面。轉接器則是讓一個現有的介面符合另一個現有的介面。"
+              ],
+              [
+                "橋接",
+                "一開始就設計好，讓抽象與其實作可以各自獨立變化。轉接器通常是事後才加入，讓現有的類別能夠配合。"
+              ]
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "轉接器和外觀有什麼差別？",
+      "a": "轉接器讓某一個現有的類別符合用戶端已經期待的介面。外觀則是在由許多類別組成的複雜子系統前面，建立一個新的、較簡單的介面。"
+    },
+    {
+      "q": "轉接器和裝飾者有什麼差別？",
+      "a": "兩者都會包裝物件。裝飾者保持相同的介面並新增行為；轉接器則是改變介面，讓被包裝的物件能用在原本無法使用的地方。"
+    },
+    {
+      "q": "轉接器就是包裝器嗎？",
+      "a": "在 GoF 一書中，包裝器是轉接器的另一個名稱。在日常用語中，「包裝器」也會用來指裝飾者和代理，所以要看意圖，才知道指的是哪一種模式。"
+    },
+    {
+      "q": "一個轉接器可以轉接好幾個類別嗎？",
+      "a": "物件轉接器可以搭配一個被轉接者及其所有子類別。若要轉接彼此不相關的類別，通常是每個類別各用一個轉接器，並且都實作同一個目標介面。"
+    }
+  ]
+}

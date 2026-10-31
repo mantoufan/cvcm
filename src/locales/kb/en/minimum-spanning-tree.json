@@ -1,0 +1,198 @@
+{
+  "title": "Minimum spanning tree: Kruskal's and Prim's algorithms in Python — cv.cm",
+  "description": "Minimum spanning tree explained: Kruskal's algorithm with union-find and Prim's algorithm with a heap, a traced example, Python code and O(E log E) cost.",
+  "h1": "Minimum spanning tree explained: Kruskal's and Prim's algorithms",
+  "answer": "A minimum spanning tree (MST) of a connected, undirected, weighted graph is a set of edges that connects all nodes without any cycle and has the smallest possible total weight. Kruskal's algorithm sorts all edges and adds the cheapest edge that does not create a cycle, using union-find. Prim's algorithm grows one tree from a start node, always adding the cheapest edge that leaves the tree, using a priority queue. Both run in O(E log E) time.",
+  "sections": [
+    {
+      "h": "What problem a minimum spanning tree solves",
+      "body": [
+        "Suppose you must connect several buildings with cable, several towns with roads, or several servers with network links, and each possible connection has a cost. You want every place to be connected (directly or indirectly) at the lowest total cost. Extra connections that form a loop are never needed, so the answer is a tree: V nodes joined by exactly V − 1 edges. That tree is the minimum spanning tree.",
+        "An MST is not a shortest-path tree. It minimizes the total weight of all edges, not the distance from one start node to the others."
+      ]
+    },
+    {
+      "h": "Why the greedy choice works: the cut property",
+      "body": [
+        "Split the nodes into any two groups. Among the edges that cross between the groups, the lightest one belongs to some minimum spanning tree. Both algorithms rely on this fact:",
+        {
+          "table": {
+            "head": [
+              "Algorithm",
+              "Greedy rule",
+              "Helper data structure"
+            ],
+            "rows": [
+              [
+                "Kruskal (1956)",
+                "Take edges from lightest to heaviest; keep an edge if it joins two different components.",
+                "Union-find (disjoint set union)"
+              ],
+              [
+                "Prim (1957; also Jarník, 1930)",
+                "Grow one tree; repeatedly add the lightest edge from the tree to a node outside it.",
+                "Min-heap priority queue"
+              ]
+            ]
+          }
+        },
+        "If all edge weights are different, the MST is unique, so both algorithms return the same tree. With equal weights there can be several MSTs with the same total."
+      ]
+    },
+    {
+      "h": "Worked example, step by step",
+      "body": [
+        "Undirected graph with 5 nodes and edges A–B 4, A–C 3, B–C 1, B–D 2, C–D 4, D–E 2, C–E 5.",
+        "Kruskal's algorithm, edges sorted by weight:",
+        {
+          "table": {
+            "head": [
+              "Edge",
+              "Weight",
+              "Decision",
+              "Components after"
+            ],
+            "rows": [
+              [
+                "B–C",
+                "1",
+                "Add",
+                "{B, C} {A} {D} {E}"
+              ],
+              [
+                "B–D",
+                "2",
+                "Add",
+                "{B, C, D} {A} {E}"
+              ],
+              [
+                "D–E",
+                "2",
+                "Add",
+                "{B, C, D, E} {A}"
+              ],
+              [
+                "A–C",
+                "3",
+                "Add",
+                "{A, B, C, D, E}: 4 edges, done"
+              ],
+              [
+                "A–B, C–D, C–E",
+                "4, 4, 5",
+                "Not needed (each would make a cycle)",
+                "—"
+              ]
+            ]
+          }
+        },
+        "Prim's algorithm from A: the cheapest edge leaving {A} is A–C (3); from {A, C} it is C–B (1); from {A, B, C} it is B–D (2); from {A, B, C, D} it is D–E (2). Same tree, total weight 3 + 1 + 2 + 2 = 8."
+      ]
+    },
+    {
+      "h": "Kruskal's algorithm in Python",
+      "body": [
+        "Union-find keeps a parent pointer per node. `find` returns the representative of a node's component, and two nodes are connected exactly when they have the same representative.",
+        {
+          "code": "def kruskal(nodes, edges):\n    parent = {n: n for n in nodes}\n\n    def find(x):\n        while parent[x] != x:\n            parent[x] = parent[parent[x]]   # path halving\n            x = parent[x]\n        return x\n\n    tree, total = [], 0\n    for w, u, v in sorted(edges):\n        ru, rv = find(u), find(v)\n        if ru != rv:                          # different components: no cycle\n            parent[ru] = rv\n            tree.append((u, v, w))\n            total += w\n    return tree, total\n\nnodes = \"ABCDE\"\nedges = [(4, \"A\", \"B\"), (3, \"A\", \"C\"), (1, \"B\", \"C\"), (2, \"B\", \"D\"),\n         (4, \"C\", \"D\"), (2, \"D\", \"E\"), (5, \"C\", \"E\")]\nprint(kruskal(nodes, edges))\n# ([('B', 'C', 1), ('B', 'D', 2), ('D', 'E', 2), ('A', 'C', 3)], 8)",
+          "lang": "python"
+        },
+        "A full union-find also uses union by rank or size, which keeps the trees shallow. Path halving alone is already fast in practice. You can stop the loop early once the tree has V − 1 edges."
+      ]
+    },
+    {
+      "h": "Prim's algorithm in Python",
+      "body": [
+        "Prim's algorithm needs an adjacency list. It uses lazy deletion like Dijkstra's algorithm: push every edge that leaves the tree, and skip edges whose far end is already in the tree.",
+        {
+          "code": "import heapq\nfrom collections import defaultdict\n\ndef prim(edges, start):\n    graph = defaultdict(list)\n    for w, u, v in edges:\n        graph[u].append((w, u, v))\n        graph[v].append((w, v, u))\n    in_tree = {start}\n    heap = list(graph[start])\n    heapq.heapify(heap)\n    tree, total = [], 0\n    while heap:\n        w, u, v = heapq.heappop(heap)\n        if v in in_tree:\n            continue\n        in_tree.add(v)\n        tree.append((u, v, w))\n        total += w\n        for edge in graph[v]:\n            if edge[2] not in in_tree:\n                heapq.heappush(heap, edge)\n    return tree, total\n\nprint(prim(edges, \"A\"))\n# ([('A', 'C', 3), ('C', 'B', 1), ('B', 'D', 2), ('D', 'E', 2)], 8)",
+          "lang": "python"
+        }
+      ]
+    },
+    {
+      "h": "Time and space complexity",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Algorithm",
+              "Time",
+              "Space",
+              "Best for"
+            ],
+            "rows": [
+              [
+                "Kruskal",
+                "O(E log E)",
+                "O(V + E)",
+                "Sparse graphs, or edges already given as a list. Sorting dominates; union-find is nearly O(1) per operation."
+              ],
+              [
+                "Prim with binary heap",
+                "O(E log V)",
+                "O(V + E)",
+                "Graphs given as adjacency lists."
+              ],
+              [
+                "Prim with array (no heap)",
+                "O(V²)",
+                "O(V)",
+                "Dense graphs, for example all pairs of points."
+              ]
+            ]
+          }
+        },
+        "Because E is at most V², log E is at most 2 log V, so O(E log E) and O(E log V) are the same order."
+      ]
+    },
+    {
+      "h": "Variants and common mistakes",
+      "body": [
+        {
+          "ul": [
+            "Disconnected graph: there is no spanning tree. Kruskal then returns a minimum spanning forest (one tree per component); Prim from one start covers only that start's component. Check that the tree has V − 1 edges.",
+            "Maximum spanning tree: sort edges in descending order (or negate the weights). Negative weights are fine for both algorithms.",
+            "Directed graphs need a different algorithm (minimum arborescence, Chu-Liu/Edmonds); Kruskal and Prim do not apply.",
+            "Clustering: run Kruskal and stop when k components remain. The result is a single-linkage clustering into k groups.",
+            "Borůvka's algorithm, from 1926, adds the cheapest edge from every component at once and parallelizes well."
+          ]
+        },
+        {
+          "note": "A common bug in Kruskal is checking cycles with a visited set of nodes instead of union-find. Two nodes can both be visited yet belong to different components, so the edge between them is still needed. Only \"same component\" means \"would create a cycle\"."
+        }
+      ]
+    },
+    {
+      "h": "When to use it and real-world uses",
+      "body": [
+        {
+          "ul": [
+            "Network design: the cheapest way to connect sites with cable, pipes or roads, when any connected layout is acceptable.",
+            "Approximation algorithms: an MST gives a tour at most twice the optimal length for the metric traveling salesman problem.",
+            "Clustering and image segmentation by cutting the heaviest MST edges.",
+            "Interview problems: min cost to connect all points, connecting cities with minimum cost, optimize water distribution in a village."
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "What is the difference between Kruskal's and Prim's algorithms?",
+      "a": "Kruskal processes all edges globally from lightest to heaviest and merges components with union-find. Prim grows a single tree from one node with a priority queue. Both find a minimum spanning tree."
+    },
+    {
+      "q": "Is the minimum spanning tree unique?",
+      "a": "It is unique when all edge weights are different. With equal weights there can be several trees with the same minimum total weight."
+    },
+    {
+      "q": "Is a minimum spanning tree the same as a shortest path tree?",
+      "a": "No. The MST minimizes the sum of all its edges, while a shortest path tree, such as the one from Dijkstra's algorithm, minimizes the distance from one source to each node. The two trees are often different."
+    },
+    {
+      "q": "How many edges does a spanning tree have?",
+      "a": "Exactly V − 1 for a connected graph with V nodes. Fewer edges cannot connect all nodes, and more edges would create a cycle."
+    }
+  ]
+}

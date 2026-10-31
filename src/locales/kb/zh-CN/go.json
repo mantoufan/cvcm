@@ -1,0 +1,186 @@
+{
+  "title": "Go 语言入门教程：类型、切片、结构体、goroutine 与错误处理 — cv.cm",
+  "description": "一页学会 Go：安装 Go 并运行 Hello world，数据类型，循环，函数，切片与 map，结构体与接口，goroutine 与 channel，以及错误处理。",
+  "h1": "Go 语言入门教程（零基础）",
+  "answer": "Go（常被称为 Golang）是 Google 推出的简洁、编译型、静态类型语言，为快速构建、轻松并发和可靠的服务器而设计。安装 Go，编写一个 `main` 包，用 `go run hello.go` 运行。核心概念包括：精简的一组类型、切片与 map、带方法的结构体、隐式接口、用于并发的 goroutine 与 channel，以及作为普通值返回的错误。",
+  "sections": [
+    {
+      "h": "Go 是什么，用来做什么",
+      "body": [
+        "Go 由 Google 的 Robert Griesemer、Rob Pike 和 Ken Thompson 设计，2009 年以开源形式发布。它编译为单个静态二进制文件，启动速度快，带有垃圾回收器和丰富的网络标准库。它被用于云基础设施和命令行工具：Docker、Kubernetes、Terraform 和 Prometheus 都是用 Go 编写的，许多公司也用它开发 Web API 和微服务。这门语言刻意保持小巧，因此不同团队写出的代码风格相似。"
+      ]
+    },
+    {
+      "h": "安装 Go 并运行 Hello, world",
+      "body": [
+        "从 go.dev/dl 下载 Go，并用 `go version` 检查。新建一个文件夹，初始化模块，然后添加 `main.go`：",
+        {
+          "code": "package main\n\nimport \"fmt\"\n\nfunc main() {\n    fmt.Println(\"Hello, world\")\n}",
+          "lang": "go"
+        },
+        {
+          "code": "go mod init example.com/hello\ngo run .\n# Hello, world\ngo build     # produces a standalone binary named hello",
+          "lang": "shell"
+        },
+        "程序从 `package main` 中的 `func main` 开始执行。运行 `gofmt`（或 `go fmt`）来格式化代码；所有 Go 代码都使用同一种风格，真实的源文件用制表符缩进。"
+      ]
+    },
+    {
+      "h": "变量与基本类型",
+      "body": [
+        "用 `var name type = value` 声明变量，或在函数内部使用会自动推断类型的简短形式 `name := value`。未赋值的变量会得到零值：`0`、`\"\"`、`false` 或 `nil`。",
+        {
+          "table": {
+            "head": [
+              "类型",
+              "示例",
+              "零值"
+            ],
+            "rows": [
+              [
+                "`int`, `int64`",
+                "`n := 42`",
+                "`0`"
+              ],
+              [
+                "`float64`",
+                "`x := 3.14`",
+                "`0`"
+              ],
+              [
+                "`bool`",
+                "`ok := true`",
+                "`false`"
+              ],
+              [
+                "`string`",
+                "`s := \"hi\"`",
+                "`\"\"`"
+              ],
+              [
+                "`rune`",
+                "`r := 'é'`",
+                "`0`（一个 Unicode 码点）"
+              ],
+              [
+                "`byte`",
+                "`b := byte(65)`",
+                "`0`（`uint8` 的别名）"
+              ]
+            ]
+          }
+        },
+        {
+          "code": "package main\n\nimport (\n    \"fmt\"\n    \"strconv\"\n)\n\nfunc main() {\n    name := \"Ada\"\n    count := 7\n    avg := float64(count) / 2 // explicit conversion is required\n    fmt.Printf(\"%s has %d items, avg %.1f\\n\", name, count, avg) // Ada has 7 items, avg 3.5\n    n, err := strconv.Atoi(\"12\")\n    fmt.Println(n+1, err) // 13 <nil>\n}",
+          "lang": "go"
+        },
+        "Go 从不在数值类型之间隐式转换，编译器还会拒绝未使用的变量和未使用的 import。"
+      ]
+    },
+    {
+      "h": "流程控制与函数",
+      "body": [
+        "条件两边没有圆括号，花括号则是必需的。`for` 是唯一的循环关键字：经典循环、类似 while 的循环和 range 循环都用它。函数可以返回多个值。",
+        {
+          "code": "package main\n\nimport \"fmt\"\n\nfunc divmod(a, b int) (int, int) {\n    return a / b, a % b\n}\n\nfunc main() {\n    score := 72\n    if score >= 90 {\n        fmt.Println(\"A\")\n    } else if score >= 70 {\n        fmt.Println(\"B\") // B\n    } else {\n        fmt.Println(\"C\")\n    }\n\n    for i := 0; i < 3; i++ {\n        fmt.Print(i, \" \") // 0 1 2\n    }\n    fmt.Println()\n\n    n := 10\n    for n > 1 { // while-style loop\n        n /= 2\n    }\n\n    q, r := divmod(17, 5)\n    fmt.Println(n, q, r) // 1 3 2\n\n    switch day := \"SAT\"; day {\n    case \"SAT\", \"SUN\":\n        fmt.Println(\"weekend\") // no break needed\n    default:\n        fmt.Println(\"weekday\")\n    }\n}",
+          "lang": "go"
+        }
+      ]
+    },
+    {
+      "h": "切片、map 与结构体",
+      "body": [
+        "切片是数组的可增长视图，是日常使用的列表类型。map 是哈希表。结构体把具名字段组织在一起，方法则是带接收者的函数。",
+        {
+          "code": "package main\n\nimport (\n    \"fmt\"\n    \"sort\"\n)\n\ntype Point struct {\n    X, Y int\n}\n\nfunc (p Point) Add(o Point) Point { return Point{p.X + o.X, p.Y + o.Y} }\n\nfunc (p *Point) Scale(k int) { p.X *= k; p.Y *= k } // pointer receiver modifies p\n\nfunc main() {\n    nums := []int{3, 1, 2}\n    nums = append(nums, 5)\n    sort.Ints(nums)\n    fmt.Println(nums, len(nums), nums[1:3]) // [1 2 3 5] 4 [2 3]\n\n    ages := map[string]int{\"ann\": 31, \"bob\": 25}\n    ages[\"cy\"] = 40\n    age, ok := ages[\"zed\"]\n    fmt.Println(age, ok, len(ages)) // 0 false 3\n\n    for i, n := range nums {\n        fmt.Print(i, \":\", n, \" \") // 0:1 1:2 2:3 3:5\n    }\n    fmt.Println()\n\n    p := Point{1, 2}.Add(Point{3, 4})\n    p.Scale(2)\n    fmt.Printf(\"%+v\\n\", p) // {X:8 Y:12}\n}",
+          "lang": "go"
+        },
+        "遍历 map 的顺序是刻意随机的；需要稳定顺序时请对键排序。以大写字母开头的名称（`Point`、`Add`）会从包中导出。"
+      ]
+    },
+    {
+      "h": "接口",
+      "body": [
+        "接口列出方法签名。一个类型只要拥有这些方法就满足该接口，不存在 `implements` 关键字。",
+        {
+          "code": "package main\n\nimport (\n    \"fmt\"\n    \"math\"\n)\n\ntype Shape interface {\n    Area() float64\n}\n\ntype Circle struct{ R float64 }\ntype Rect struct{ W, H float64 }\n\nfunc (c Circle) Area() float64 { return math.Pi * c.R * c.R }\nfunc (r Rect) Area() float64   { return r.W * r.H }\n\nfunc main() {\n    shapes := []Shape{Circle{1}, Rect{2, 3}}\n    total := 0.0\n    for _, s := range shapes {\n        total += s.Area()\n    }\n    fmt.Printf(\"%.2f\\n\", total) // 9.14\n}",
+          "lang": "go"
+        },
+        "Go 自 1.18 起也支持泛型，例如 `func Max[T int | float64](a, b T) T`，你大多是通过 `slices` 和 `maps` 包等库函数来使用它。"
+      ]
+    },
+    {
+      "h": "标志性特性：goroutine 与 channel",
+      "body": [
+        "goroutine 是用 `go` 关键字启动的轻量级线程；一个程序可以同时运行成千上万个。goroutine 之间通过 channel 通信，它能在 goroutine 之间安全地传递值。`sync.WaitGroup` 用来等待一组 goroutine 结束。",
+        {
+          "code": "package main\n\nimport (\n    \"fmt\"\n    \"sync\"\n)\n\nfunc square(n int, results chan<- int, wg *sync.WaitGroup) {\n    defer wg.Done()\n    results <- n * n\n}\n\nfunc main() {\n    results := make(chan int, 5)\n    var wg sync.WaitGroup\n    for i := 1; i <= 5; i++ {\n        wg.Add(1)\n        go square(i, results, &wg)\n    }\n    wg.Wait()\n    close(results)\n\n    sum := 0\n    for r := range results {\n        sum += r\n    }\n    fmt.Println(sum) // 55\n}",
+          "lang": "go"
+        },
+        "`defer` 会安排一次调用在外层函数返回时执行，Go 代码就是靠它来关闭文件和解锁互斥锁的。开发时可用 `go run -race .` 检测数据竞争。"
+      ]
+    },
+    {
+      "h": "错误处理",
+      "body": [
+        "对于普通的失败，Go 没有异常。可能失败的函数把 `error` 作为最后一个返回值，调用者立即检查它。用 `%w` 包装错误可以添加上下文，同时仍能用 `errors.Is` 检查原始错误。",
+        {
+          "code": "package main\n\nimport (\n    \"errors\"\n    \"fmt\"\n    \"os\"\n)\n\nfunc readConfig(path string) ([]byte, error) {\n    data, err := os.ReadFile(path)\n    if err != nil {\n        return nil, fmt.Errorf(\"read config: %w\", err)\n    }\n    return data, nil\n}\n\nfunc main() {\n    _, err := readConfig(\"missing.json\")\n    if errors.Is(err, os.ErrNotExist) {\n        fmt.Println(\"no config file:\", err)\n    }\n}",
+          "lang": "go"
+        },
+        "`panic` 和 `recover` 是存在的，但仅用于程序错误和真正意外的状态，不用于常规的错误处理。"
+      ]
+    },
+    {
+      "h": "一个完整的小程序：迷你 Web 服务器",
+      "body": [
+        "只用标准库，这个程序就能通过 HTTP 提供 JSON 服务。用 `go run .` 运行，然后打开 `http://localhost:8080/hello?name=Ann`。",
+        {
+          "code": "package main\n\nimport (\n    \"encoding/json\"\n    \"log\"\n    \"net/http\"\n    \"time\"\n)\n\ntype Greeting struct {\n    Message string    `json:\"message\"`\n    Time    time.Time `json:\"time\"`\n}\n\nfunc hello(w http.ResponseWriter, r *http.Request) {\n    name := r.URL.Query().Get(\"name\")\n    if name == \"\" {\n        name = \"world\"\n    }\n    w.Header().Set(\"Content-Type\", \"application/json\")\n    err := json.NewEncoder(w).Encode(Greeting{\"Hello, \" + name, time.Now()})\n    if err != nil {\n        log.Println(\"encode:\", err)\n    }\n}\n\nfunc main() {\n    http.HandleFunc(\"/hello\", hello)\n    log.Println(\"listening on :8080\")\n    log.Fatal(http.ListenAndServe(\":8080\", nil))\n}",
+          "lang": "go"
+        },
+        "每个字段类型后面的文本是结构体标签（struct tag），用来设置 JSON 键名。每个请求都会自动在各自的 goroutine 中处理。"
+      ]
+    },
+    {
+      "h": "新手常见错误",
+      "body": [
+        {
+          "note": "向 `nil` map 写入会引发 panic。用 `var m map[string]int` 声明的 map，必须先用 `make(map[string]int)` 或字面量创建，才能赋值。"
+        },
+        {
+          "ul": [
+            "用 `_` 忽略错误。除非你确定无关紧要，否则要检查每一个返回的 `error`。",
+            "以为 `append` 会原地修改原切片；务必使用它的返回值，如 `s = append(s, x)`。",
+            "启动了 goroutine，却让 `main` 在它们结束之前就返回。请用 `sync.WaitGroup` 或 channel 等待。",
+            "方法需要修改结构体时却使用了值接收者；请使用指针接收者，例如 `func (p *Point)`。"
+          ]
+        }
+      ]
+    },
+    {
+      "h": "接下来学什么",
+      "body": [
+        "先做交互式的 Tour of Go，再阅读 Effective Go 和 pkg.go.dev 上的标准库文档。学习用 `go test` 做单元测试和基准测试，用 `context` 包处理超时和取消，用模块管理依赖。"
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "该叫 Go 还是 Golang？",
+      "a": "官方名称是 Go。“Golang”来自早期的网站域名 golang.org，如今仍被用作搜索词。"
+    },
+    {
+      "q": "Go 是面向对象的吗？",
+      "a": "部分是。Go 有方法和接口，但没有类和继承；你通过嵌入结构体和组合小接口来构建类型。"
+    },
+    {
+      "q": "Go 比 Python 快吗？",
+      "a": "对大多数 CPU 密集型工作来说是的，因为 Go 编译为本机机器码并且有静态类型。当繁重的工作发生在用 C 编写的库内部时，Python 也可以很快。"
+    },
+    {
+      "q": "goroutine 和线程有什么区别？",
+      "a": "goroutine 由 Go 运行时管理，起始栈很小，会按需增长。运行时把大量 goroutine 调度到少量操作系统线程上，所以创建 goroutine 的开销要低得多。"
+    }
+  ]
+}

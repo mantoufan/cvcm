@@ -1,0 +1,183 @@
+{
+  "title": "Học lập trình Zig cơ bản: kiểu, slice, error union, comptime và allocator — cv.cm",
+  "description": "Học Zig cơ bản: cài đặt và chạy Hello world, dùng const và var, mảng và slice, optional, error union với try và catch, defer, comptime và allocator.",
+  "h1": "Hướng dẫn học lập trình Zig cơ bản cho người mới",
+  "answer": "Zig là ngôn ngữ lập trình hệ thống đa dụng kèm bộ công cụ, được xem như một lựa chọn hiện đại thay cho C. Nó không có luồng điều khiển ẩn, không có bộ thu gom rác và không cấp phát bộ nhớ ngầm: bạn truyền allocator một cách tường minh, xử lý lỗi bằng error union và `try`, và dọn dẹp bằng `defer`. Việc thực thi mã lúc biên dịch (`comptime`) thay thế macro và generic. Chạy một tệp bằng `zig run hello.zig`. Zig vẫn đang ở trước phiên bản 1.0, nên chi tiết của ngôn ngữ và thư viện chuẩn thay đổi giữa các bản phát hành.",
+  "sections": [
+    {
+      "h": "Zig là gì và ai dùng nó",
+      "body": [
+        "Zig do Andrew Kelley tạo ra và được phát triển bởi tổ chức phi lợi nhuận Zig Software Foundation. Nó nhắm tới cùng loại công việc như C: thành phần hệ điều hành, firmware nhúng, công cụ làm game, cơ sở dữ liệu và công cụ dòng lệnh nhanh. Trình biên dịch Zig cũng biên dịch được mã C và C++ (`zig cc`) và biên dịch chéo sang nhiều nền tảng, nên một số dự án chỉ dùng nó như bộ công cụ C.",
+        "Các dự án nổi tiếng viết bằng Zig gồm môi trường chạy JavaScript Bun, cơ sở dữ liệu tài chính TigerBeetle và trình giả lập terminal Ghostty.",
+        {
+          "note": "Zig đang ở trước 1.0. Cú pháp và đặc biệt là thư viện chuẩn thay đổi giữa các bản 0.x, và hướng dẫn viết cho phiên bản cũ có thể không biên dịch được. Trang này chỉ nói về những phần cơ bản đã ổn định qua nhiều bản phát hành; hãy luôn đọc tài liệu của đúng phiên bản bạn đã cài (`zig version`)."
+        }
+      ]
+    },
+    {
+      "h": "Cài Zig và chạy Hello, world",
+      "body": [
+        "Tải về gói dựng sẵn cho hệ thống của bạn từ ziglang.org/download, giải nén và thêm thư mục vào PATH, hoặc cài Zig bằng trình quản lý gói của hệ thống. Không có trình cài đặt hay môi trường chạy riêng.",
+        {
+          "code": "// hello.zig\nconst std = @import(\"std\");\npub fn main() void {\n    std.debug.print(\"Hello, world!\\n\", .{});\n}",
+          "lang": "zig"
+        },
+        {
+          "code": "zig run hello.zig         # compile and run\n# Hello, world!\nzig build-exe hello.zig   # produce an executable named hello\nzig init                  # create a project with build.zig",
+          "lang": "shell"
+        },
+        "`std.debug.print` ghi ra đầu ra lỗi chuẩn và là cách đơn giản nhất để in trong mọi phiên bản gần đây. Đối số thứ hai là một tuple các giá trị cho các chỗ giữ chỗ định dạng; `.{}` là tuple rỗng. API ghi ra đầu ra chuẩn đã thay đổi giữa các bản phát hành, nên hãy xem tài liệu thư viện chuẩn của phiên bản bạn dùng."
+      ]
+    },
+    {
+      "h": "Biến và các kiểu dữ liệu cơ bản",
+      "body": [
+        "`const` khai báo một giá trị không bao giờ đổi và `var` khai báo một biến khả biến. Trình biên dịch rất nghiêm ngặt: biến cục bộ không dùng là lỗi, và `var` không bao giờ bị sửa cũng là lỗi, nên hãy mặc định dùng `const`.",
+        {
+          "table": {
+            "head": [
+              "Kiểu",
+              "Ví dụ",
+              "Ghi chú"
+            ],
+            "rows": [
+              [
+                "Số nguyên có dấu",
+                "`i8`, `i32`, `i64`",
+                "Cho phép mọi độ rộng, ví dụ `i7`"
+              ],
+              [
+                "Số nguyên không dấu",
+                "`u8`, `u32`, `usize`",
+                "`usize` có kích thước bằng con trỏ, dùng cho độ dài và chỉ số"
+              ],
+              [
+                "Số thực",
+                "`f32`, `f64`",
+                "IEEE 754"
+              ],
+              [
+                "bool",
+                "`true`, `false`",
+                "Không chuyển đổi ngầm từ số nguyên"
+              ],
+              [
+                "Array",
+                "`[3]u8`",
+                "Độ dài cố định biết ngay lúc biên dịch"
+              ],
+              [
+                "Slice",
+                "`[]const u8`",
+                "Con trỏ cộng độ dài; chuỗi là slice các byte"
+              ],
+              [
+                "Optional",
+                "`?i32`",
+                "Một giá trị hoặc `null`"
+              ],
+              [
+                "Error union",
+                "`!u32`",
+                "Một giá trị hoặc một lỗi"
+              ]
+            ]
+          }
+        },
+        {
+          "code": "const std = @import(\"std\");\npub fn main() void {\n    const age: u32 = 30;\n    var count: i32 = 0;\n    count += 1;\n    const name = \"Ana\"; // string literal, coerces to []const u8\n    std.debug.print(\"{s} is {d}, count = {d}\\n\", .{ name, age, count });\n    var maybe: ?i32 = null;\n    maybe = 5;\n    const value = maybe orelse 0;\n    std.debug.print(\"value = {d}\\n\", .{value});\n}",
+          "lang": "zig"
+        },
+        "Các chỗ giữ chỗ định dạng cho biết cách in: `{d}` cho số, `{s}` cho chuỗi, `{c}` cho một byte dưới dạng ký tự, `{any}` để gỡ lỗi mọi giá trị."
+      ]
+    },
+    {
+      "h": "Điều khiển luồng",
+      "body": [
+        "`if`, `switch`, `while` và `for` đều có thể dùng làm biểu thức. `switch` phải bao quát mọi giá trị có thể, nên thường bạn thêm một nhánh `else`.",
+        {
+          "code": "const std = @import(\"std\");\npub fn main() void {\n    const n: i32 = -2;\n    const sign: []const u8 = if (n > 0) \"positive\" else if (n < 0) \"negative\" else \"zero\";\n    const score: u8 = 85;\n    const letter: u8 = switch (score) {\n        90...100 => 'A',\n        80...89 => 'B',\n        else => 'C',\n    };\n    std.debug.print(\"{s} {c}\\n\", .{ sign, letter }); // negative B\n    var i: u32 = 0;\n    while (i < 3) : (i += 1) {\n        std.debug.print(\"{d} \", .{i}); // 0 1 2\n    }\n    const items = [_]u8{ 10, 20, 30 };\n    for (items, 0..) |item, index| {\n        std.debug.print(\"\\n{d}: {d}\", .{ index, item });\n    }\n    std.debug.print(\"\\n\", .{});\n}",
+          "lang": "zig"
+        },
+        "`[_]u8{ ... }` để trình biên dịch tự đếm độ dài mảng. `for (items, 0..)` lặp qua các phần tử và một biến đếm cùng lúc; các giá trị giữa hai dấu gạch đứng gọi là capture."
+      ]
+    },
+    {
+      "h": "Hàm và comptime",
+      "body": [
+        "Hàm khai báo kiểu của tham số và kiểu trả về. Đối số là bất biến bên trong hàm. Mã generic được viết bằng tham số `comptime`: một kiểu là giá trị tồn tại lúc biên dịch, nên hàm có thể nhận một kiểu làm đối số.",
+        {
+          "code": "const std = @import(\"std\");\nfn add(a: i32, b: i32) i32 {\n    return a + b;\n}\nfn max(comptime T: type, a: T, b: T) T {\n    return if (a > b) a else b;\n}\npub fn main() void {\n    std.debug.print(\"{d}\\n\", .{add(2, 3)});            // 5\n    std.debug.print(\"{d}\\n\", .{max(i32, 3, 7)});       // 7\n    std.debug.print(\"{d}\\n\", .{max(f64, 1.5, 0.5)});   // 1.5\n}",
+          "lang": "zig"
+        },
+        "Trình biên dịch tạo một phiên bản `max` riêng cho từng kiểu mà nó được gọi. Cơ chế tương tự được dùng để xây dựng các cấu trúc dữ liệu generic trong thư viện chuẩn: một hàm nhận một kiểu và trả về một kiểu struct mới."
+      ]
+    },
+    {
+      "h": "Xử lý lỗi với error union, try và defer",
+      "body": [
+        "Lỗi là giá trị. Kiểu trả về `!u32` nghĩa là \"một `u32` hoặc một lỗi\". `try expr` trả lỗi về cho bên gọi nếu có lỗi; `catch` xử lý ngay tại chỗ. Lỗi không thể bị bỏ qua một cách âm thầm.",
+        {
+          "code": "const std = @import(\"std\");\nfn parseAge(s: []const u8) !u32 {\n    const n = try std.fmt.parseInt(i32, s, 10);\n    if (n < 0) return error.Negative;\n    return @intCast(n);\n}\npub fn main() void {\n    const age = parseAge(\"-5\") catch |err| {\n        std.debug.print(\"error: {s}\\n\", .{@errorName(err)});\n        return;\n    };\n    std.debug.print(\"age {d}\\n\", .{age});\n}\n// error: Negative",
+          "lang": "zig"
+        },
+        "`defer` chạy một câu lệnh khi khối hiện tại thoát, còn `errdefer` chỉ chạy khi khối thoát do lỗi. Chúng giữ mã dọn dẹp ngay cạnh mã đã lấy tài nguyên."
+      ]
+    },
+    {
+      "h": "Bộ nhớ và allocator",
+      "body": [
+        "Zig không có bộ thu gom rác và không có allocator toàn cục ẩn. Mọi hàm cần bộ nhớ heap đều nhận tham số `std.mem.Allocator`, nên bên gọi quyết định bộ nhớ đến từ đâu (page allocator, arena, bộ đệm cố định, hoặc allocator gỡ lỗi phát hiện rò rỉ).",
+        {
+          "code": "const std = @import(\"std\");\npub fn main() !void {\n    const allocator = std.heap.page_allocator;\n    const buf = try allocator.alloc(u32, 5);\n    defer allocator.free(buf);\n    for (buf, 0..) |*slot, i| {\n        slot.* = @intCast(i * i);\n    }\n    std.debug.print(\"{any}\\n\", .{buf}); // { 0, 1, 4, 9, 16 }\n}",
+          "lang": "zig"
+        },
+        "`|*slot|` bắt một con trỏ tới từng phần tử để vòng lặp có thể ghi vào nó, và `slot.*` giải tham chiếu con trỏ. Trong bản build Debug và ReleaseSafe, tràn số nguyên và truy cập chỉ số ngoài giới hạn sẽ dừng chương trình bằng một panic rõ ràng thay vì gây hành vi không xác định."
+      ]
+    },
+    {
+      "h": "Một chương trình hoàn chỉnh nhỏ: trung bình các số",
+      "body": [
+        {
+          "code": "const std = @import(\"std\");\nfn average(numbers: []const i64) ?f64 {\n    if (numbers.len == 0) return null;\n    var sum: i64 = 0;\n    for (numbers) |n| sum += n;\n    const total: f64 = @floatFromInt(sum);\n    const len: f64 = @floatFromInt(numbers.len);\n    return total / len;\n}\npub fn main() !void {\n    const allocator = std.heap.page_allocator;\n    const buf = try allocator.alloc(i64, 16);\n    defer allocator.free(buf);\n    var it = std.mem.tokenizeScalar(u8, \"4 8 15 16 23 42\", ' ');\n    var count: usize = 0;\n    while (it.next()) |word| : (count += 1) {\n        buf[count] = try std.fmt.parseInt(i64, word, 10);\n    }\n    if (average(buf[0..count])) |avg| {\n        std.debug.print(\"count={d} avg={d:.2}\\n\", .{ count, avg });\n    }\n}\n// count=6 avg=18.00",
+          "lang": "zig"
+        },
+        "Chương trình tách một chuỗi theo dấu cách, phân tích từng phần bằng `try`, lưu các số trong bộ nhớ heap được giải phóng bằng `defer`, và trả về giá trị trung bình optional là `null` khi danh sách rỗng.",
+        {
+          "note": "Lỗi thường gặp của người mới: để biến cục bộ không dùng hoặc khai báo `var` không bao giờ đổi (cả hai đều là lỗi biên dịch); dùng `{}` không kèm bộ chỉ định cho chuỗi (hãy dùng `{s}`); quên rằng chuỗi literal là mảng byte chứ không phải ký tự Unicode; trộn các kiểu số nguyên mà không ép kiểu tường minh như `@intCast`; và sao chép mã từ hướng dẫn viết cho phiên bản Zig cũ."
+        }
+      ]
+    },
+    {
+      "h": "Học tiếp ở đâu",
+      "body": [
+        {
+          "ul": [
+            "Tài liệu tham chiếu ngôn ngữ tại ziglang.org/documentation, hãy chọn trang đúng với phiên bản bạn đã cài.",
+            "Mục Learn của ziglang.org, gồm \"Getting Started\" và phần tổng quan về ngôn ngữ.",
+            "Ziglings, một bộ chương trình nhỏ bị hỏng để bạn sửa từng cái, là bộ bài tập cộng đồng phổ biến.",
+            "Đọc mã nguồn thư viện chuẩn: nó được viết bằng Zig và là tài liệu tham chiếu tốt nhất cho các API hiện hành."
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Zig đã sẵn sàng cho môi trường sản phẩm chưa?",
+      "a": "Một số công ty dùng Zig trong sản phẩm, nhưng ngôn ngữ đang trước 1.0, nên bạn nên chuẩn bị cho các thay đổi gây lỗi khi nâng cấp trình biên dịch và dành thời gian cho việc đó."
+    },
+    {
+      "q": "Zig có thay thế C hay Rust không?",
+      "a": "Zig gần với C nhất: quản lý bộ nhớ thủ công nhưng có kiểm tra an toàn tốt hơn, xử lý lỗi và mã lúc biên dịch. Rust đảm bảo an toàn bộ nhớ thông qua hệ thống ownership và borrow checker, những thứ Zig không có."
+    },
+    {
+      "q": "Zig có dùng được thư viện C không?",
+      "a": "Có. Zig có thể import tệp header C và gọi trực tiếp hàm C, và trình biên dịch Zig có thể build tệp nguồn C và C++, nên việc trộn các ngôn ngữ rất đơn giản."
+    },
+    {
+      "q": "comptime nghĩa là gì trong Zig?",
+      "a": "`comptime` đánh dấu mã hoặc tham số được đánh giá trong lúc biên dịch. Zig dùng nó cho generic, bảng hằng số và kiểm tra lúc biên dịch thay vì một ngôn ngữ macro riêng."
+    }
+  ]
+}

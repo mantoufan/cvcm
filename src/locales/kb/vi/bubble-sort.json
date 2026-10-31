@@ -1,0 +1,220 @@
+{
+  "title": "Sắp xếp nổi bọt (Bubble Sort): cách hoạt động, mã Python và độ phức tạp — cv.cm",
+  "description": "Sắp xếp nổi bọt liên tục đổi chỗ các phần tử kề nhau sai thứ tự. Xem ví dụ từng lượt, mã Python, độ phức tạp O(n²), tính ổn định và các lựa chọn tốt hơn.",
+  "h1": "Thuật toán sắp xếp nổi bọt: cách hoạt động, mã và độ phức tạp",
+  "answer": "Sắp xếp nổi bọt là thuật toán sắp xếp đơn giản, liên tục duyệt qua danh sách và đổi chỗ mỗi cặp phần tử kề nhau sai thứ tự. Sau mỗi lượt, phần tử lớn nhất còn lại đã “nổi” lên vị trí cuối cùng của nó ở cuối danh sách. Thuật toán tốn O(n²) thời gian ở trường hợp trung bình và xấu nhất, O(n) với danh sách đã sắp xếp, dùng O(1) bộ nhớ phụ và ổn định. Nó chủ yếu dùng để giảng dạy; chương trình thực tế dùng hàm sắp xếp có sẵn.",
+  "sections": [
+    {
+      "h": "Ý tưởng bằng lời đơn giản",
+      "body": [
+        "So sánh hai phần tử đầu tiên. Nếu phần tử đầu lớn hơn, đổi chỗ chúng. Rồi so sánh phần tử thứ hai và thứ ba, rồi thứ ba và thứ tư, cứ thế đến cuối danh sách. Đó là một lượt. Sau lượt đầu tiên, phần tử lớn nhất chắc chắn nằm cuối, vì mỗi phép so sánh đẩy nó sang phải một bước.",
+        "Lặp lại lượt này trên phần chưa sắp xếp, vốn thu nhỏ đi một phần tử mỗi lần. Nếu cả một lượt không có lần đổi chỗ nào, danh sách đã sắp xếp và bạn có thể dừng sớm."
+      ]
+    },
+    {
+      "h": "Ví dụ minh họa từng lượt",
+      "body": [
+        "Sắp xếp `[5, 1, 4, 2, 8]` theo thứ tự tăng dần. Các phần tử sau dấu gạch đã ở vị trí cuối cùng.",
+        {
+          "table": {
+            "head": [
+              "Lượt",
+              "So sánh và đổi chỗ",
+              "Danh sách sau lượt"
+            ],
+            "rows": [
+              [
+                "1",
+                "5↔1 đổi, 5↔4 đổi, 5↔2 đổi, 5 và 8 giữ nguyên",
+                "`[1, 4, 2, 5, 8]`  (8 vào đúng chỗ)"
+              ],
+              [
+                "2",
+                "1 và 4 giữ, 4↔2 đổi, 4 và 5 giữ",
+                "`[1, 2, 4, 5, 8]`  (5 vào đúng chỗ)"
+              ],
+              [
+                "3",
+                "1 và 2 giữ, 2 và 4 giữ, không đổi chỗ",
+                "`[1, 2, 4, 5, 8]`  đã sắp xếp, dừng"
+              ]
+            ]
+          }
+        },
+        "Nếu không thoát sớm, thuật toán sẽ chạy lượt thứ tư. Khi có thoát sớm, ba lượt là đủ trong ví dụ này."
+      ]
+    },
+    {
+      "h": "Cài đặt bằng Python",
+      "body": [
+        {
+          "code": "def bubble_sort(items):\n    \"\"\"Sort a list in place, ascending. Returns the same list.\"\"\"\n    n = len(items)\n    for end in range(n - 1, 0, -1):     # last index of the unsorted part\n        swapped = False\n        for i in range(end):\n            if items[i] > items[i + 1]:  # strict >, keeps equal items in order\n                items[i], items[i + 1] = items[i + 1], items[i]\n                swapped = True\n        if not swapped:                  # no swaps: already sorted\n            break\n    return items\nprint(bubble_sort([5, 1, 4, 2, 8]))     # [1, 2, 4, 5, 8]\nprint(bubble_sort([3, 3, 1]))           # [1, 3, 3]\nprint(bubble_sort([]))                  # []",
+          "lang": "python"
+        },
+        "Vòng lặp trong dừng ở `end` vì mọi thứ phía sau đã đúng chỗ. Cờ `swapped` cho trường hợp tốt nhất O(n) với đầu vào đã sắp xếp."
+      ]
+    },
+    {
+      "h": "Độ phức tạp thời gian và không gian",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Trường hợp",
+              "Số phép so sánh",
+              "Thời gian",
+              "Lý do"
+            ],
+            "rows": [
+              [
+                "Tốt nhất (đã sắp xếp)",
+                "n − 1",
+                "O(n)",
+                "một lượt không đổi chỗ, rồi dừng"
+              ],
+              [
+                "Trung bình (thứ tự ngẫu nhiên)",
+                "khoảng n²/2",
+                "O(n²)",
+                "trung bình khoảng n²/4 lần đổi chỗ"
+              ],
+              [
+                "Xấu nhất (thứ tự ngược)",
+                "n(n − 1)/2",
+                "O(n²)",
+                "mỗi phép so sánh đều là một lần đổi chỗ"
+              ],
+              [
+                "Không gian phụ",
+                "",
+                "O(1)",
+                "sắp xếp tại chỗ với vài biến"
+              ]
+            ]
+          }
+        },
+        "Với 10.000 phần tử theo thứ tự ngược, đó là gần 50 triệu phép so sánh và đổi chỗ. Số lần đổi chỗ luôn bằng số nghịch thế (inversion), tức số cặp phần tử sai thứ tự."
+      ]
+    },
+    {
+      "h": "So sánh sắp xếp nổi bọt với các thuật toán khác",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Thuật toán",
+              "Tốt nhất",
+              "Trung bình",
+              "Xấu nhất",
+              "Không gian phụ",
+              "Ổn định"
+            ],
+            "rows": [
+              [
+                "Sắp xếp nổi bọt",
+                "O(n)",
+                "O(n²)",
+                "O(n²)",
+                "O(1)",
+                "Có"
+              ],
+              [
+                "Sắp xếp chọn",
+                "O(n²)",
+                "O(n²)",
+                "O(n²)",
+                "O(1)",
+                "Không"
+              ],
+              [
+                "Sắp xếp chèn",
+                "O(n)",
+                "O(n²)",
+                "O(n²)",
+                "O(1)",
+                "Có"
+              ],
+              [
+                "Sắp xếp trộn",
+                "O(n log n)",
+                "O(n log n)",
+                "O(n log n)",
+                "O(n)",
+                "Có"
+              ],
+              [
+                "Sắp xếp nhanh",
+                "O(n log n)",
+                "O(n log n)",
+                "O(n²)",
+                "O(log n)",
+                "Không"
+              ],
+              [
+                "Sắp xếp vun đống",
+                "O(n log n)",
+                "O(n log n)",
+                "O(n log n)",
+                "O(1)",
+                "Không"
+              ],
+              [
+                "Timsort (`sorted` của Python)",
+                "O(n)",
+                "O(n log n)",
+                "O(n log n)",
+                "O(n)",
+                "Có"
+              ]
+            ]
+          }
+        },
+        "Sắp xếp nổi bọt ổn định vì nó chỉ đổi chỗ các phần tử kề nhau và chỉ khi chúng thực sự sai thứ tự, nên các phần tử bằng nhau không bao giờ vượt qua nhau. Sắp xếp chèn có cùng độ phức tạp và tính ổn định nhưng trong thực tế ghi ít hơn và nhanh hơn, vì thế nó, chứ không phải sắp xếp nổi bọt, được dùng trong các thuật toán lai như Timsort."
+      ]
+    },
+    {
+      "h": "Biến thể và lỗi thường gặp",
+      "body": [
+        {
+          "ul": [
+            "Cocktail shaker sort đi từ trái sang phải rồi từ phải sang trái ở các lượt xen kẽ, giúp các phần tử nhỏ nằm cuối (gọi là “rùa”) tiến lên đầu nhanh hơn. Nó vẫn là O(n²).",
+            "Comb sort so sánh các phần tử cách nhau một khoảng (gap) và thu nhỏ dần khoảng đó, loại bỏ nhiều “rùa” từ sớm; khi gap bằng 1 nó trở thành sắp xếp nổi bọt.",
+            "Odd-even transposition sort so sánh mọi cặp lẻ rồi mọi cặp chẵn, và được dùng để dạy sắp xếp song song."
+          ]
+        },
+        {
+          "note": "Các lỗi hay gặp: dùng `>=` thay vì `>` (đổi chỗ cả phần tử bằng nhau và phá tính ổn định), để vòng lặp trong chạy tới `n` khiến `items[i + 1]` vượt phạm vi, và quên cờ thoát sớm nên mất trường hợp tốt nhất O(n)."
+        }
+      ]
+    },
+    {
+      "h": "Khi nào nên dùng sắp xếp nổi bọt",
+      "body": [
+        "Gần như không bao giờ trong mã sản phẩm. Trong Python, hãy gọi `sorted(items)` hoặc `items.sort()`, dùng Timsort, chạy O(n log n) và ổn định. Sắp xếp nổi bọt vẫn đáng biết vì nó là thuật toán sắp xếp dễ giải thích nhất, chứng minh tính đúng đắn dễ theo dõi, và là câu hỏi đầu tiên quen thuộc trong phỏng vấn hay đề thi về vòng lặp, đổi chỗ và độ phức tạp.",
+        "Ưu điểm thực tế duy nhất là phát hiện danh sách đã sắp xếp chỉ trong một lượt O(n), nhưng một vòng lặp thường so sánh các phần tử kề nhau cũng làm được mà không cần sắp xếp gì."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Sắp xếp nổi bọt có ổn định không?",
+      "a": "Có. Nó chỉ đổi chỗ các phần tử kề nhau khi phần tử bên trái thực sự lớn hơn, nên các phần tử bằng nhau giữ nguyên thứ tự ban đầu."
+    },
+    {
+      "q": "Độ phức tạp thời gian của sắp xếp nổi bọt là gì?",
+      "a": "O(n²) ở trường hợp trung bình và xấu nhất. Với thoát sớm khi một lượt không đổi chỗ, trường hợp tốt nhất trên đầu vào đã sắp xếp là O(n)."
+    },
+    {
+      "q": "Vì sao gọi là sắp xếp nổi bọt?",
+      "a": "Các phần tử lớn di chuyển về cuối danh sách từng lần đổi chỗ, như bọt khí nổi lên mặt nước. Sau lượt thứ k, k phần tử lớn nhất đã vào đúng chỗ."
+    },
+    {
+      "q": "Sắp xếp nổi bọt có nhanh hơn sắp xếp chèn không?",
+      "a": "Không. Cả hai đều O(n²), nhưng sắp xếp chèn thường thực hiện ít thao tác hơn và chạy nhanh hơn trong thực tế, nhất là với dữ liệu gần như đã sắp xếp."
+    },
+    {
+      "q": "Sắp xếp nổi bọt có dùng thêm bộ nhớ không?",
+      "a": "Không. Nó sắp xếp tại chỗ và chỉ cần O(1) bộ nhớ phụ cho các chỉ số vòng lặp và một giá trị tạm khi đổi chỗ."
+    }
+  ]
+}

@@ -1,0 +1,144 @@
+{
+  "title": "责任链模式：处理者、中间件与 TypeScript 示例 — cv.cm",
+  "description": "责任链模式（Chain of Responsibility）让请求沿着处理者链传递，直到有一个处理者处理它。了解其结构、TypeScript 示例和中间件应用。",
+  "h1": "责任链模式详解与示例",
+  "answer": "责任链是一种行为型设计模式，它让请求沿着一条处理者对象链传递。每个处理者要么处理请求，要么把它转发给链中的下一个处理者。发送者不知道最终由哪个处理者处理请求，所以可以在不修改发送者的情况下添加、删除或重新排列处理者。Web 中间件和 DOM 事件冒泡就是众所周知的例子。",
+  "sections": [
+    {
+      "h": "意图与它要解决的问题",
+      "body": [
+        "意图：让多个对象都有机会处理请求，从而避免请求的发送者与接收者之间的耦合。把接收对象连成一条链，并沿着这条链传递请求，直到有一个对象处理它。该模式是《设计模式》（四人组，GoF）一书中的行为型模式之一。",
+        "以网店的客服系统为例。金额低于 50 的退款请求，客服专员就可以批准；500 以内由组长批准；更大的金额则需要经理批准。最初的版本往往把这一切放进一个带有长长 `if`/`else` 链的函数里。每增加一条规则，这个函数就更长一些，而且检查的顺序是写死的。",
+        "有了责任链，每个级别都成为拥有一条规则的独立处理者。这些处理者被连接在一起，请求从第一个进入。增加一个新的审批级别，只需编写一个小类并把它插入链中。"
+      ]
+    },
+    {
+      "h": "结构与参与者",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "角色",
+              "职责"
+            ],
+            "rows": [
+              [
+                "处理者（Handler）",
+                "声明处理请求的方法，并保存对下一个处理者的引用"
+              ],
+              [
+                "具体处理者（Concrete handler）",
+                "处理自己负责的请求；否则把请求转发给下一个处理者"
+              ],
+              [
+                "客户端（Client）",
+                "构建链（或接收一条现成的链），并把请求发给第一个处理者"
+              ]
+            ]
+          }
+        },
+        "常见的变体有两种。在经典形式中，第一个能处理请求的处理者会终止这条链。在管道形式（大多数中间件采用）中，每个处理者都可以先做一些工作，再决定是否调用下一个。"
+      ]
+    },
+    {
+      "h": "TypeScript 实现",
+      "body": [
+        "一个抽象基类保存下一个处理者，并提供默认的转发行为。每个具体处理者重写 `handle`，在无法决定时调用 `super.handle`。",
+        {
+          "code": "type Refund = { amount: number };\nabstract class Approver {\n  private next?: Approver;\n  setNext(next: Approver): Approver {\n    this.next = next;\n    return next; // allows a.setNext(b).setNext(c)\n  }\n  handle(req: Refund): string {\n    return this.next ? this.next.handle(req) : \"rejected: no one can approve \" + req.amount;\n  }\n}\nclass Agent extends Approver {\n  handle(req: Refund): string {\n    return req.amount < 50 ? \"agent approved \" + req.amount : super.handle(req);\n  }\n}\nclass TeamLead extends Approver {\n  handle(req: Refund): string {\n    return req.amount <= 500 ? \"team lead approved \" + req.amount : super.handle(req);\n  }\n}\nclass Manager extends Approver {\n  handle(req: Refund): string {\n    return req.amount <= 5000 ? \"manager approved \" + req.amount : super.handle(req);\n  }\n}\nconst chain = new Agent();\nchain.setNext(new TeamLead()).setNext(new Manager());\nfor (const amount of [20, 300, 2000, 9000]) console.log(chain.handle({ amount }));\n// agent approved 20\n// team lead approved 300\n// manager approved 2000\n// rejected: no one can approve 9000",
+          "lang": "typescript"
+        },
+        {
+          "note": "一定要决定当没有处理者接受请求时会发生什么。这里，基类的最后一次调用会返回拒绝。没有这样的默认处理，请求可能会悄无声息地从链的末端掉出去。"
+        }
+      ]
+    },
+    {
+      "h": "用普通函数实现的中间件形式",
+      "body": [
+        "在 TypeScript 中并不需要类。一个函数列表，其中每个函数接收一个 `next` 回调，就构成了一条链。Express 和 Koa 的中间件就是这样工作的。",
+        {
+          "code": "type Req = { user?: string; path: string };\ntype Middleware = (req: Req, next: () => string) => string;\nconst auth: Middleware = (req, next) => (req.user ? next() : \"401 Unauthorized\");\nconst log: Middleware = (req, next) => {\n  console.log(\"request\", req.path);\n  return next();\n};\nconst route = (req: Req) => \"200 OK \" + req.path;\nfunction run(chain: Middleware[], req: Req): string {\n  const step = (i: number): string =>\n    i < chain.length ? chain[i](req, () => step(i + 1)) : route(req);\n  return step(0);\n}\nconsole.log(run([log, auth], { path: \"/admin\" }));\nconsole.log(run([log, auth], { user: \"ana\", path: \"/admin\" }));\n// request /admin\n// 401 Unauthorized\n// request /admin\n// 200 OK /admin",
+          "lang": "typescript"
+        }
+      ]
+    },
+    {
+      "h": "何时使用，何时不用",
+      "body": [
+        {
+          "ul": [
+            "当多个对象都可能处理请求，并且由运行时决定哪一个合适时，使用它。",
+            "当处理者的集合或顺序需要可配置时使用，例如校验步骤、审批级别或 HTTP 中间件。",
+            "当你希望每条规则都放在各自的小单元中，便于单独测试时使用。",
+            "对于两三个永远不变的固定检查，不要使用它；简单的 `if` 语句更清晰。",
+            "要意识到，过长的链更难调试，因为从调用处看不出最后是哪个处理者起了作用。在处理者内部记录日志会有帮助。",
+            "链对顺序很敏感。例如，把身份验证放在路由处理者之后，就违背了它的初衷。"
+          ]
+        }
+      ]
+    },
+    {
+      "h": "实际应用",
+      "body": [
+        {
+          "ul": [
+            "Express 和 Koa 中间件：每个函数接收请求和一个 `next` 函数，并决定是否继续。",
+            "DOM 事件传播：事件从目标元素向上经过它的各级祖先冒泡，任何监听器都可以用 `event.stopPropagation()` 阻止它。",
+            "Java Servlet 过滤器构成过滤器链，其中每个过滤器调用 `chain.doFilter` 把请求传递下去。",
+            "日志框架会把日志记录从一个 logger 传递给它的父 logger 及其处理器。"
+          ]
+        }
+      ]
+    },
+    {
+      "h": "相关模式",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "模式",
+              "与责任链的区别"
+            ],
+            "rows": [
+              [
+                "装饰",
+                "装饰也形成一条包装链，但每个装饰器总是会运行并转发；处理者则可以终止这条链。"
+              ],
+              [
+                "命令",
+                "链中的请求往往就是一个命令对象；命令关注的是如何封装请求，而责任链关注的是找出谁来处理它。"
+              ],
+              [
+                "组合",
+                "组合树中的父节点天然就是下一个处理者，GUI 事件就是这样沿着组件树向上冒泡的。"
+              ],
+              [
+                "中介者",
+                "中介者通过一个了解所有接收者的中心对象来路由消息；责任链则是把请求从一个处理者传给下一个。"
+              ]
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "链中的每个处理者都必须处理请求吗？",
+      "a": "不必。在经典形式中，第一个能处理请求的处理者会终止这条链。在中间件形式中，每个处理者可以做一些工作，然后调用下一个，因此多个处理者可以作用于同一个请求。"
+    },
+    {
+      "q": "Express 中间件是责任链的例子吗？",
+      "a": "是的。每个中间件函数接收请求和一个 `next` 回调，它要么结束响应，要么调用 `next` 把控制权交给下一个中间件。"
+    },
+    {
+      "q": "如果没有处理者处理请求会怎样？",
+      "a": "这取决于你的设计。好的做法是在链的末端添加一个默认处理，比如返回错误、抛出异常或记录日志，这样请求就不会悄悄丢失。"
+    },
+    {
+      "q": "它与一串 if/else 语句有什么不同？",
+      "a": "逻辑是一样的，但每个条件都变成了单独的对象或函数。这使得链可以在运行时配置，并且无需编辑一个庞大的函数就能添加步骤或调整顺序。"
+    }
+  ]
+}

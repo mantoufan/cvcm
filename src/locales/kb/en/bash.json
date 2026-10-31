@@ -1,0 +1,226 @@
+{
+  "title": "Bash tutorial: variables, loops, functions and shell scripts — cv.cm",
+  "description": "Learn Bash scripting step by step: run a script, variables and quoting, if and case, loops, functions, arrays, pipes and redirection, and safe error handling.",
+  "h1": "Bash scripting tutorial for beginners",
+  "answer": "Bash is the Unix command-line shell and scripting language used on Linux servers, macOS terminals and CI pipelines. A Bash script is a text file of shell commands, combined with variables, conditions, loops, functions and pipes. This page shows how to write and run scripts, quote variables safely, control flow, use arrays, redirect output and handle errors with set -euo pipefail.",
+  "sections": [
+    {
+      "h": "What Bash is and what it is used for",
+      "body": [
+        "Bash (the Bourne Again SHell) is a command-line shell and scripting language from the GNU Project. It reads commands you type, runs programs, and connects them with pipes and redirections. A Bash script is a text file of those same commands, so anything you do by hand in a terminal can be automated.",
+        "Bash is the default interactive shell on most Linux distributions and is available on macOS (which now defaults to zsh but still ships Bash) and on Windows through WSL or Git Bash. Developers, system administrators and DevOps engineers use it for build scripts, deployment, CI jobs, server maintenance and quick data processing with tools like `grep`, `sed`, `awk` and `sort`."
+      ]
+    },
+    {
+      "h": "Write and run Hello, world",
+      "body": [
+        "A script starts with a shebang line that tells the system which interpreter to use. Make the file executable with `chmod`, then run it.",
+        {
+          "code": "#!/usr/bin/env bash\n# hello.sh\necho \"Hello, world!\"",
+          "lang": "shell"
+        },
+        {
+          "code": "chmod +x hello.sh\n./hello.sh\n# Hello, world!\nbash hello.sh       # also works without chmod\nbash --version      # check which version you have",
+          "lang": "shell"
+        },
+        "`#!/usr/bin/env bash` finds Bash on the `PATH`, which is more portable than hard-coding `/bin/bash`. If a script uses only POSIX features, it can use `#!/bin/sh` instead, but then Bash-only syntax such as `[[ ]]` and arrays is not allowed."
+      ]
+    },
+    {
+      "h": "Variables, quoting and expansion",
+      "body": [
+        "Assign with `name=value` and read with `$name` or `${name}`. Every variable is a string; Bash does integer arithmetic only inside `$(( ))`. Use double quotes around expansions so that spaces and special characters stay intact.",
+        {
+          "code": "name=\"Ada\"                 # no spaces around =\ncount=3\necho \"Hello, $name\"        # Hello, Ada\necho \"Next: $((count + 1))\"  # Next: 4  (integer arithmetic)\ntoday=$(date +%Y-%m-%d)    # command substitution\necho \"Today is $today\"\nfile=\"my report.txt\"\necho \"${file%.txt}.pdf\"    # my report.pdf  (strip suffix)\necho \"${#name}\"            # 3  (string length)\necho \"${missing:-default}\" # default  (fallback value)",
+          "lang": "shell"
+        },
+        {
+          "table": {
+            "head": [
+              "Syntax",
+              "Meaning"
+            ],
+            "rows": [
+              [
+                "`\"$var\"`",
+                "value of var, kept as one word"
+              ],
+              [
+                "`'text'`",
+                "literal text, no expansion at all"
+              ],
+              [
+                "`$(command)`",
+                "output of a command"
+              ],
+              [
+                "`$((a + b))`",
+                "integer arithmetic"
+              ],
+              [
+                "`$1`, `$2`, `$@`, `$#`",
+                "script or function arguments, all arguments, argument count"
+              ],
+              [
+                "`$?`",
+                "exit status of the last command (0 means success)"
+              ]
+            ]
+          }
+        },
+        {
+          "note": "Writing `name = value` with spaces is the most common beginner error: Bash then tries to run a command called `name`. Also quote every expansion: `rm $file` breaks or deletes the wrong files when the name contains spaces, while `rm \"$file\"` is safe."
+        }
+      ]
+    },
+    {
+      "h": "Conditions and case",
+      "body": [
+        "`if` runs a command and checks its exit status. The `[[ ]]` test command compares strings and checks files; `(( ))` compares numbers. `case` matches a value against glob patterns.",
+        {
+          "code": "#!/usr/bin/env bash\nfile=\"${1:-notes.txt}\"\n\nif [[ -f \"$file\" ]]; then\n  echo \"$file exists\"\nelif [[ -d \"$file\" ]]; then\n  echo \"$file is a directory\"\nelse\n  echo \"$file not found\"\nfi\n\nn=7\nif (( n % 2 == 1 )); then echo \"$n is odd\"; fi\n\ncase \"$file\" in\n  *.txt) echo \"text file\" ;;\n  *.sh)  echo \"shell script\" ;;\n  *)     echo \"something else\" ;;\nesac",
+          "lang": "shell"
+        },
+        {
+          "table": {
+            "head": [
+              "Test",
+              "True when"
+            ],
+            "rows": [
+              [
+                "`[[ -f path ]]`",
+                "path is a regular file"
+              ],
+              [
+                "`[[ -d path ]]`",
+                "path is a directory"
+              ],
+              [
+                "`[[ -z \"$s\" ]]`",
+                "string is empty"
+              ],
+              [
+                "`[[ \"$a\" == \"$b\" ]]`",
+                "strings are equal"
+              ],
+              [
+                "`(( a > b ))`",
+                "number a is greater than b"
+              ],
+              [
+                "`[[ $a -lt $b ]]`",
+                "number a is less than b (older style)"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "Loops",
+      "body": [
+        "Bash has `for` over a list of words, a C-style `for (( ))`, `while` and `until`. Reading a file line by line uses `while read`.",
+        {
+          "code": "for fruit in apple banana cherry; do\n  echo \"fruit: $fruit\"\ndone\n\nfor (( i = 1; i <= 3; i++ )); do\n  echo \"i = $i\"\ndone\n\nfor f in *.log; do\n  [[ -e \"$f\" ]] || continue   # skip if no .log files match\n  echo \"log file: $f\"\ndone\n\nwhile IFS= read -r line; do\n  echo \"line: $line\"\ndone < input.txt",
+          "lang": "shell"
+        },
+        "`IFS= read -r` reads each line exactly as written: `IFS=` keeps leading spaces and `-r` keeps backslashes."
+      ]
+    },
+    {
+      "h": "Functions",
+      "body": [
+        "Define a function with `name() { ... }` and call it like a command. Arguments arrive as `$1`, `$2` and so on. A function returns an exit status (0 to 255) with `return`; to return data, print it and capture the output with `$( )`.",
+        {
+          "code": "greet() {\n  local name=\"${1:-world}\"   # local variable, default value\n  echo \"Hello, $name!\"\n}\n\nis_even() {\n  (( $1 % 2 == 0 ))          # exit status 0 means true\n}\n\ngreet                         # Hello, world!\ngreet \"Ann\"                   # Hello, Ann!\nmsg=$(greet \"Bo\")             # capture output\necho \"Got: $msg\"              # Got: Hello, Bo!\n\nif is_even 4; then echo \"4 is even\"; fi",
+          "lang": "shell"
+        }
+      ]
+    },
+    {
+      "h": "Arrays and associative arrays",
+      "body": [
+        "Indexed arrays hold a list of strings. Associative arrays map string keys to values and need Bash 4 or later, so they are not available in the older Bash 3.2 that ships with macOS.",
+        {
+          "code": "langs=(\"bash\" \"python\" \"go\")\nlangs+=(\"rust\")\necho \"${langs[0]}\"           # bash\necho \"${#langs[@]}\"          # 4\nfor l in \"${langs[@]}\"; do echo \"- $l\"; done\n\n# associative array (Bash 4 or later)\ndeclare -A port\nport[http]=80\nport[https]=443\necho \"${port[https]}\"        # 443\nfor key in \"${!port[@]}\"; do\n  echo \"$key -> ${port[$key]}\"\ndone",
+          "lang": "shell"
+        },
+        "Always write `\"${array[@]}\"` with quotes to loop over elements; it keeps each element as one word even if it contains spaces."
+      ]
+    },
+    {
+      "h": "Pipes and redirection",
+      "body": [
+        "Bash's signature feature is composing small programs. A pipe `|` sends one command's output to the next command's input. Redirections send output to files or read input from them. File descriptor 1 is standard output and 2 is standard error.",
+        {
+          "code": "ls -l > files.txt            # write stdout to a file (overwrite)\necho \"more\" >> files.txt     # append\ngrep error app.log 2> /dev/null   # discard error messages\nmake > build.log 2>&1        # stdout and stderr to the same file\n\n# count the 3 most common words in a file\ntr -cs '[:alpha:]' '\\n' < book.txt | tr '[:upper:]' '[:lower:]' |\n  sort | uniq -c | sort -rn | head -n 3",
+          "lang": "shell"
+        }
+      ]
+    },
+    {
+      "h": "Error handling and safe scripts",
+      "body": [
+        "By default Bash keeps going after a command fails. Many scripts start with `set -euo pipefail`: `-e` exits on an unhandled error, `-u` treats unset variables as errors, and `-o pipefail` makes a pipeline fail if any command in it fails. `trap` runs cleanup code when the script exits.",
+        {
+          "code": "#!/usr/bin/env bash\nset -euo pipefail            # stop on errors, unset vars, pipe failures\n\ntmp=$(mktemp)\ntrap 'rm -f \"$tmp\"' EXIT     # clean up when the script exits\n\nif ! grep -q \"ready\" status.txt; then\n  echo \"status is not ready\" >&2   # errors go to stderr\n  exit 1\nfi\n\ncp config.txt \"$tmp\" || { echo \"copy failed\" >&2; exit 2; }\necho \"ok\"",
+          "lang": "shell"
+        },
+        "Use `||` to handle a failure on one line and `&&` to run a command only if the previous one succeeded. `set -e` has exceptions (for example, commands inside `if` conditions do not trigger it), so check important commands explicitly."
+      ]
+    },
+    {
+      "h": "A small complete script: dated backups",
+      "body": [
+        "This script archives a directory into a timestamped `.tar.gz` file and keeps only the five newest archives. It uses arguments, defaults, tests, command substitution and pipes.",
+        {
+          "code": "#!/usr/bin/env bash\n# backup.sh: copy a directory into a dated .tar.gz archive\nset -euo pipefail\n\nusage() { echo \"usage: $0 SOURCE_DIR [DEST_DIR]\" >&2; exit 1; }\n\n[[ $# -ge 1 ]] || usage\nsrc=\"$1\"\ndest=\"${2:-$HOME/backups}\"\n[[ -d \"$src\" ]] || { echo \"not a directory: $src\" >&2; exit 1; }\n\nmkdir -p \"$dest\"\nstamp=$(date +%Y%m%d-%H%M%S)\narchive=\"$dest/$(basename \"$src\")-$stamp.tar.gz\"\n\ntar -czf \"$archive\" -C \"$(dirname \"$src\")\" \"$(basename \"$src\")\"\nsize=$(du -h \"$archive\" | cut -f1)\necho \"Created $archive ($size)\"\n\n# keep only the 5 newest archives for this source\nls -1t \"$dest\"/\"$(basename \"$src\")\"-*.tar.gz | tail -n +6 | while read -r old; do\n  rm -f -- \"$old\"\n  echo \"Removed $old\"\ndone",
+          "lang": "shell"
+        },
+        {
+          "code": "./backup.sh ~/projects/site\n# Created /home/ann/backups/site-20261031-093000.tar.gz (2.1M)",
+          "lang": "shell"
+        },
+        {
+          "note": "Common beginner mistakes: spaces around `=`; unquoted variables; using `[ ]` and `[[ ]]` interchangeably; parsing the output of `ls` in scripts that must handle unusual file names; forgetting `chmod +x`; and Windows line endings (CRLF) in scripts, which cause errors such as `$'\\r': command not found`. Run ShellCheck on your scripts to catch most of these."
+        }
+      ]
+    },
+    {
+      "h": "Where to go next",
+      "body": [
+        {
+          "ul": [
+            "The GNU Bash Reference Manual, the official documentation.",
+            "`man bash` and `help` (for example `help read`) in your terminal.",
+            "ShellCheck, a static analysis tool that explains common script bugs.",
+            "The POSIX shell specification if you need scripts that also run in `sh`, `dash` or BusyBox."
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "What is the difference between Bash and sh?",
+      "a": "`sh` is the POSIX shell standard, implemented by programs such as dash. Bash is compatible with POSIX sh but adds features like `[[ ]]`, arrays, `(( ))` and brace expansion."
+    },
+    {
+      "q": "What is the difference between Bash and zsh?",
+      "a": "Both are compatible for most everyday commands. zsh adds interactive features and is the default shell on macOS; scripts written with a `bash` shebang still run with Bash."
+    },
+    {
+      "q": "Why does my script say permission denied?",
+      "a": "The file is not executable. Run `chmod +x script.sh`, or start it with `bash script.sh`."
+    },
+    {
+      "q": "How do I pass arguments to a Bash script?",
+      "a": "Write them after the script name, as in `./script.sh one two`. Inside the script they are `$1` and `$2`, `$@` holds all of them and `$#` is their count."
+    },
+    {
+      "q": "Should I write large programs in Bash?",
+      "a": "Bash is best for gluing commands together. When a script grows complex, needs data structures or careful error handling, a language such as Python is usually easier to maintain."
+    }
+  ]
+}

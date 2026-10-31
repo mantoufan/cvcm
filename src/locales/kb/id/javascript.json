@@ -1,0 +1,191 @@
+{
+  "title": "Tutorial JavaScript: variabel, fungsi, array, objek, dan async — cv.cm",
+  "description": "Belajar JavaScript modern dalam satu halaman: jalankan Hello world di Node.js atau browser, let dan const, tipe data, perulangan, fungsi, array, objek, promise, dan async.",
+  "h1": "Tutorial JavaScript untuk pemula",
+  "answer": "JavaScript adalah bahasa pemrograman untuk web: semua browser menjalankannya, dan Node.js menjalankannya di server serta command line. Deklarasikan variabel dengan `const` dan `let`, tulis fungsi sebagai deklarasi atau arrow function, simpan data dalam array dan objek, lalu tangani pekerjaan lambat seperti request jaringan dengan promise dan `async`/`await`. Jalankan `node hello.js` atau buka console browser untuk mulai.",
+  "sections": [
+    {
+      "h": "Apa itu JavaScript dan untuk apa dipakai",
+      "body": [
+        "JavaScript adalah bahasa dengan tipe dinamis yang distandarkan sebagai ECMAScript. Bahasa ini dibuat untuk halaman web, tempat ia merespons klik, memperbarui halaman, dan berkomunikasi dengan server. Kini JavaScript juga berjalan di server dan tool lewat Node.js, Deno, dan Bun, di aplikasi desktop (Electron), serta di aplikasi mobile (React Native). Front-end developer, full-stack developer, dan siapa pun yang membangun untuk web memakainya. Sintaks modern di halaman ini (`let`, `const`, arrow function, class, module) berasal dari ES2015 dan edisi sesudahnya."
+      ]
+    },
+    {
+      "h": "Jalankan Hello, world",
+      "body": [
+        "Opsi 1: buka halaman web apa saja, tekan F12 (atau Cmd+Option+J di Mac) untuk membuka developer console, lalu ketik baris di bawah. Opsi 2: instal Node.js dari nodejs.org, simpan baris itu sebagai `hello.js`, dan jalankan.",
+        {
+          "code": "console.log(\"Hello, world\");",
+          "lang": "javascript"
+        },
+        {
+          "code": "node hello.js\n# Hello, world",
+          "lang": "shell"
+        }
+      ]
+    },
+    {
+      "h": "Variabel dan tipe data dasar",
+      "body": [
+        "Gunakan `const` untuk nilai yang tidak diubah ulang dan `let` untuk nilai yang berubah. Hindari `var` yang lama, karena ia mengabaikan block scope. `typeof` menampilkan tipe suatu nilai.",
+        {
+          "table": {
+            "head": [
+              "Tipe",
+              "Contoh",
+              "typeof"
+            ],
+            "rows": [
+              [
+                "number",
+                "`42`, `3.14`, `NaN`",
+                "`\"number\"`"
+              ],
+              [
+                "bigint",
+                "`10n`",
+                "`\"bigint\"`"
+              ],
+              [
+                "string",
+                "`\"hi\"`, `'hi'`, `` `hi ${name}` ``",
+                "`\"string\"`"
+              ],
+              [
+                "boolean",
+                "`true`, `false`",
+                "`\"boolean\"`"
+              ],
+              [
+                "undefined",
+                "`undefined`",
+                "`\"undefined\"`"
+              ],
+              [
+                "null",
+                "`null`",
+                "`\"object\"` (keanehan historis)"
+              ],
+              [
+                "object",
+                "`{}`, `[]`, fungsi",
+                "`\"object\"` atau `\"function\"`"
+              ]
+            ]
+          }
+        },
+        {
+          "code": "const name = \"Ada\";\nlet count = 1;\ncount += 1;\nconsole.log(`${name} has ${count} items`); // Ada has 2 items\nconsole.log(0.1 + 0.2);                    // 0.30000000000000004\nconsole.log(Number(\"12\") + 1, \"12\" + 1);   // 13 121",
+          "lang": "javascript"
+        }
+      ]
+    },
+    {
+      "h": "Alur kontrol: if, perulangan, dan kesetaraan",
+      "body": [
+        "Selalu bandingkan dengan `===` dan `!==`. Operator longgar `==` mengonversi tipe terlebih dahulu, sehingga `0 == \"\"` bernilai `true`.",
+        {
+          "code": "const score = 72;\nif (score >= 90) {\n  console.log(\"A\");\n} else if (score >= 70) {\n  console.log(\"B\"); // B\n} else {\n  console.log(\"C\");\n}\nfor (let i = 0; i < 3; i++) console.log(i); // 0 1 2\nfor (const fruit of [\"apple\", \"pear\"]) console.log(fruit);\nlet n = 10;\nwhile (n > 1) n = Math.floor(n / 2);\nconsole.log(n); // 1",
+          "lang": "javascript"
+        }
+      ]
+    },
+    {
+      "h": "Fungsi",
+      "body": [
+        "Fungsi adalah nilai: Anda bisa menyimpannya di variabel, mengirimnya ke fungsi lain, dan mengembalikannya. Arrow function adalah bentuk yang lebih singkat dan umum dipakai untuk callback.",
+        {
+          "code": "function greet(name, greeting = \"Hello\") {\n  return `${greeting}, ${name}!`;\n}\nconst square = (x) => x * x;\nconst sum = (...nums) => nums.reduce((a, b) => a + b, 0);\nconsole.log(greet(\"Lin\"));     // Hello, Lin!\nconsole.log(square(5));        // 25\nconsole.log(sum(1, 2, 3, 4));  // 10",
+          "lang": "javascript"
+        }
+      ]
+    },
+    {
+      "h": "Array dan objek",
+      "body": [
+        "Array adalah daftar berurutan; objek memetakan key string ke nilai. Keduanya dikirim secara reference. `Map` dan `Set` adalah alternatif bawaan ketika key bukan string atau nilai harus unik.",
+        {
+          "code": "const nums = [3, 1, 2];\nnums.push(5);\nconst doubled = nums.map((n) => n * 2);\nconst evens = nums.filter((n) => n % 2 === 0);\nconsole.log(doubled, evens);             // [ 6, 2, 4, 10 ] [ 2 ]\nconsole.log([...nums].sort((a, b) => a - b)); // [ 1, 2, 3, 5 ]\nconst user = { name: \"Ann\", age: 31 };\nuser.city = \"Oslo\";\nconst { name, age } = user;              // destructuring\nconsole.log(name, age, Object.keys(user)); // Ann 31 [ 'name', 'age', 'city' ]\nconsole.log(JSON.stringify(user));       // {\"name\":\"Ann\",\"age\":31,\"city\":\"Oslo\"}",
+          "lang": "javascript"
+        },
+        {
+          "note": "`sort()` tanpa fungsi pembanding mengurutkan sebagai string, jadi `[10, 9, 1].sort()` menghasilkan `[1, 10, 9]`. Kirim `(a, b) => a - b` untuk angka."
+        }
+      ]
+    },
+    {
+      "h": "Fitur khas: kode asinkron dengan promise",
+      "body": [
+        "JavaScript menjalankan kode Anda pada satu thread dengan event loop. Operasi lambat (timer, jaringan, file) tidak memblokir; operasi itu mengembalikan promise yang selesai nanti. Fungsi `async` memungkinkan Anda menulis kode ini dari atas ke bawah dengan `await`.",
+        {
+          "code": "const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));\nasync function main() {\n  console.log(\"start\");\n  await wait(500);\n  console.log(\"half a second later\");\n  const [a, b] = await Promise.all([wait(100).then(() => 1), wait(200).then(() => 2)]);\n  console.log(a + b); // 3\n}\nmain();\nconsole.log(\"main() was called\"); // prints before \"half a second later\"",
+          "lang": "javascript"
+        },
+        "Class (`class Dog extends Animal {}`), module (`import` dan `export`), optional chaining (`user?.address?.city`), dan operator nullish (`value ?? \"default\"`) adalah fitur modern lain yang akan sering Anda pakai."
+      ]
+    },
+    {
+      "h": "Penanganan error",
+      "body": [
+        "Lempar objek `Error` dan tangkap dengan `try`/`catch`. Pada fungsi `async`, promise yang ditolak menjadi exception di `await`.",
+        {
+          "code": "function parseAge(text) {\n  const age = Number(text);\n  if (!Number.isInteger(age) || age < 0) {\n    throw new Error(`invalid age: ${text}`);\n  }\n  return age;\n}\ntry {\n  console.log(parseAge(\"41\"));  // 41\n  console.log(parseAge(\"abc\"));\n} catch (err) {\n  console.log(err.message);     // invalid age: abc\n} finally {\n  console.log(\"done\");\n}",
+          "lang": "javascript"
+        }
+      ]
+    },
+    {
+      "h": "Program kecil yang lengkap: fetch dan ringkas",
+      "body": [
+        "Skrip Node.js ini (Node 18 ke atas sudah punya `fetch` bawaan) mengunduh JSON dari API publik dan mencetak ringkasan singkat. Simpan sebagai `repos.mjs` dan jalankan `node repos.mjs nodejs`.",
+        {
+          "code": "const org = process.argv[2] ?? \"nodejs\";\nasync function topRepos(name, n = 3) {\n  const res = await fetch(`https://api.github.com/orgs/${name}/repos?per_page=100`);\n  if (!res.ok) throw new Error(`HTTP ${res.status}`);\n  const repos = await res.json();\n  return repos\n    .sort((a, b) => b.stargazers_count - a.stargazers_count)\n    .slice(0, n)\n    .map((r) => `${r.stargazers_count}\\t${r.name}`);\n}\ntry {\n  const lines = await topRepos(org);\n  console.log(lines.join(\"\\n\"));\n} catch (err) {\n  console.error(\"failed:\", err.message);\n  process.exitCode = 1;\n}",
+          "lang": "javascript"
+        },
+        "Ekstensi `.mjs` menjadikan file sebagai ES module, sehingga `await` boleh dipakai di level teratas."
+      ]
+    },
+    {
+      "h": "Kesalahan umum pemula",
+      "body": [
+        {
+          "ul": [
+            "Memakai `==` alih-alih `===`, yang menyebabkan konversi tipe mengejutkan.",
+            "Lupa `await`, sehingga Anda mendapat objek `Promise` yang masih pending, bukan nilainya.",
+            "Mengira `const` membuat objek immutable. `const` hanya mencegah penugasan ulang; `obj.x = 1` tetap bisa. Gunakan `Object.freeze` bila perlu.",
+            "Membandingkan objek atau array dengan `===`, yang memeriksa identitas, bukan isi.",
+            "Kehilangan `this` saat mengirim method sebagai callback. Gunakan arrow function atau `.bind(obj)`."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Langkah selanjutnya",
+      "body": [
+        "Baca MDN JavaScript Guide, referensi gratis yang paling lengkap, dan berlatihlah dengan DOM browser (`document.querySelector`, event). Lalu pelajari npm dan module, framework seperti React, Vue, atau Svelte untuk front end, atau Node.js untuk server. Menambahkan TypeScript di atas JavaScript memberi Anda tipe statis dan bantuan editor yang lebih baik."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Apakah JavaScript sama dengan Java?",
+      "a": "Tidak. Keduanya bahasa yang tidak berhubungan dengan nama mirip. Java bertipe statis dan dikompilasi ke bytecode JVM; JavaScript bertipe dinamis dan berjalan di browser serta Node.js."
+    },
+    {
+      "q": "Sebaiknya pakai let, const, atau var?",
+      "a": "Gunakan `const` secara default dan `let` bila perlu menugaskan ulang. Hindari `var`, karena scope-nya fungsi dan di-hoist, sehingga rawan bug."
+    },
+    {
+      "q": "Apa perbedaan null dan undefined?",
+      "a": "`undefined` berarti variabel atau properti belum pernah diberi nilai. `null` adalah nilai yang sengaja Anda tetapkan untuk menyatakan kosong."
+    },
+    {
+      "q": "Mengapa 0.1 + 0.2 tidak sama dengan 0.3?",
+      "a": "Angka JavaScript adalah floating point biner 64-bit, yang tidak bisa menyimpan 0.1 secara persis. Bulatkan saat ditampilkan, atau gunakan bilangan bulat (misalnya sen) untuk uang."
+    },
+    {
+      "q": "Apakah saya perlu Node.js untuk belajar JavaScript?",
+      "a": "Tidak. Setiap browser bisa menjalankan JavaScript di developer console-nya. Node.js berguna saat Anda ingin menjalankan skrip dari file atau membangun server dan tool."
+    }
+  ]
+}

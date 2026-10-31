@@ -1,0 +1,223 @@
+{
+  "title": "LRU cache explained: hash map plus doubly linked list, O(1) Python code — cv.cm",
+  "description": "How an LRU (least recently used) cache works: O(1) get and put with a hash map and doubly linked list, OrderedDict and functools.lru_cache in Python.",
+  "h1": "LRU cache explained: how it works, code and complexity",
+  "answer": "An LRU (least recently used) cache holds a fixed number of items and, when it is full, evicts the item that was used longest ago. The classic design combines a hash map, which finds any key in O(1), with a doubly linked list ordered by recent use, which moves or removes any entry in O(1). In Python, `collections.OrderedDict` makes an LRU cache a few lines long, and `functools.lru_cache` adds one to any function.",
+  "sections": [
+    {
+      "h": "What problem an LRU cache solves",
+      "body": [
+        "A cache keeps the results of slow operations, such as database queries, web requests or expensive computations, so repeated requests are answered quickly. Memory is limited, so the cache must decide what to throw away when it is full. LRU bets that data used recently will be used again soon, and data not touched for a long time probably will not. This bet works well for many real workloads, which is why LRU and its approximations appear in CPU caches, operating system page caches, databases, web servers and CDNs."
+      ]
+    },
+    {
+      "h": "The idea: two structures working together",
+      "body": [
+        "We need two things to be fast: finding a key, and knowing which key is the least recently used. A hash map alone has no order. A list alone is slow to search. Together they do both:",
+        {
+          "table": {
+            "head": [
+              "Part",
+              "Responsibility",
+              "Why it is O(1)"
+            ],
+            "rows": [
+              [
+                "Hash map",
+                "maps each key to its node in the list",
+                "average-case hash lookup"
+              ],
+              [
+                "Doubly linked list",
+                "keeps nodes ordered from most to least recently used",
+                "unlinking a node with `prev` and `next` pointers changes four references"
+              ],
+              [
+                "Head side",
+                "the most recently used entry",
+                "new and accessed entries are moved here"
+              ],
+              [
+                "Tail side",
+                "the least recently used entry",
+                "evict from here when the cache is full"
+              ]
+            ]
+          }
+        },
+        "On `get(key)`, look up the node in the map, move it to the front, and return its value. On `put(key, value)`, update or create the node at the front; if the cache is now over capacity, remove the node at the back and delete its key from the map."
+      ]
+    },
+    {
+      "h": "Worked example with capacity 2",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Operation",
+              "Result",
+              "Order after (most recent first)",
+              "Note"
+            ],
+            "rows": [
+              [
+                "put(1, \"a\")",
+                "-",
+                "1",
+                ""
+              ],
+              [
+                "put(2, \"b\")",
+                "-",
+                "2, 1",
+                "cache is full"
+              ],
+              [
+                "get(1)",
+                "\"a\"",
+                "1, 2",
+                "1 becomes most recent"
+              ],
+              [
+                "put(3, \"c\")",
+                "-",
+                "3, 1",
+                "evicts 2, the least recently used"
+              ],
+              [
+                "get(2)",
+                "miss",
+                "3, 1",
+                "2 was evicted"
+              ],
+              [
+                "put(1, \"A\")",
+                "-",
+                "1, 3",
+                "update moves 1 to the front"
+              ],
+              [
+                "put(4, \"d\")",
+                "-",
+                "4, 1",
+                "evicts 3"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "Python implementation from scratch",
+      "body": [
+        "Sentinel head and tail nodes remove the special cases for an empty list: every real node always has a node before and after it.",
+        {
+          "code": "class Node:\n    __slots__ = (\"key\", \"value\", \"prev\", \"next\")\n\n    def __init__(self, key=None, value=None):\n        self.key, self.value = key, value\n        self.prev = self.next = None\n\nclass LRUCache:\n    def __init__(self, capacity):\n        self.capacity = capacity\n        self.map = {}\n        self.head, self.tail = Node(), Node()   # sentinels\n        self.head.next, self.tail.prev = self.tail, self.head\n\n    def _unlink(self, node):\n        node.prev.next, node.next.prev = node.next, node.prev\n\n    def _push_front(self, node):\n        node.prev, node.next = self.head, self.head.next\n        self.head.next.prev = node\n        self.head.next = node\n\n    def get(self, key):\n        node = self.map.get(key)\n        if node is None:\n            return None\n        self._unlink(node)\n        self._push_front(node)\n        return node.value\n\n    def put(self, key, value):\n        if key in self.map:\n            self._unlink(self.map[key])\n        node = self.map[key] = Node(key, value)\n        self._push_front(node)\n        if len(self.map) > self.capacity:\n            lru = self.tail.prev\n            self._unlink(lru)\n            del self.map[lru.key]",
+          "lang": "python"
+        },
+        {
+          "code": "cache = LRUCache(2)\ncache.put(1, \"a\")\ncache.put(2, \"b\")\nprint(cache.get(1))   # a\ncache.put(3, \"c\")     # evicts key 2\nprint(cache.get(2))   # None\ncache.put(1, \"A\")\ncache.put(4, \"d\")     # evicts key 3\nprint(cache.get(3), cache.get(1), cache.get(4))  # None A d",
+          "lang": "python"
+        }
+      ]
+    },
+    {
+      "h": "The short version with OrderedDict",
+      "body": [
+        "`collections.OrderedDict` is itself a hash map combined with a doubly linked list, and `move_to_end` and `popitem(last=False)` are O(1). That makes it the idiomatic choice in Python when you need an LRU cache as an object.",
+        {
+          "code": "from collections import OrderedDict\n\nclass LRU:\n    def __init__(self, capacity):\n        self.capacity = capacity\n        self.data = OrderedDict()\n\n    def get(self, key):\n        if key not in self.data:\n            return None\n        self.data.move_to_end(key)          # mark as most recent\n        return self.data[key]\n\n    def put(self, key, value):\n        self.data[key] = value\n        self.data.move_to_end(key)\n        if len(self.data) > self.capacity:\n            self.data.popitem(last=False)   # drop least recent\n\nc = LRU(2)\nc.put(\"x\", 1)\nc.put(\"y\", 2)\nc.get(\"x\")\nc.put(\"z\", 3)\nprint(list(c.data))  # ['x', 'z']",
+          "lang": "python"
+        }
+      ]
+    },
+    {
+      "h": "Caching function results with functools.lru_cache",
+      "body": [
+        "To cache the return values of a function, use the `functools.lru_cache` decorator. Arguments must be hashable, because they become dictionary keys. `cache_info()` shows hits, misses and the current size.",
+        {
+          "code": "from functools import lru_cache\n\n@lru_cache(maxsize=128)\ndef fib(n):\n    return n if n < 2 else fib(n - 1) + fib(n - 2)\n\nprint(fib(80))           # 23416728348467685\nprint(fib.cache_info())\n# CacheInfo(hits=78, misses=81, maxsize=128, currsize=81)",
+          "lang": "python"
+        },
+        "`maxsize=None` gives an unbounded cache, which is what `functools.cache` (Python 3.9 and later) does. Call `fib.cache_clear()` to empty it."
+      ]
+    },
+    {
+      "h": "Time and space complexity",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Operation",
+              "Time",
+              "Reason"
+            ],
+            "rows": [
+              [
+                "get",
+                "O(1) average",
+                "hash lookup plus unlink and relink of one node"
+              ],
+              [
+                "put (insert or update)",
+                "O(1) average",
+                "hash insert plus a constant number of pointer changes"
+              ],
+              [
+                "Evict",
+                "O(1)",
+                "the least recently used node is always next to the tail sentinel"
+              ],
+              [
+                "Space",
+                "O(capacity)",
+                "one map entry and one list node per cached item"
+              ]
+            ]
+          }
+        },
+        {
+          "note": "A common wrong design keeps keys in a plain Python `list` and calls `list.remove(key)` on every access. That costs O(n) per operation and defeats the purpose of the cache."
+        }
+      ]
+    },
+    {
+      "h": "Variants, mistakes and when to use LRU",
+      "body": [
+        {
+          "ul": [
+            "LFU (least frequently used) evicts the item with the fewest accesses; it protects popular items from one-off scans but is more complex.",
+            "Approximate LRU: systems such as Redis sample a few keys and evict the oldest among them instead of keeping an exact list, which saves memory.",
+            "TTL caches expire entries after a fixed time, often combined with a size limit.",
+            "Forgetting to move an entry to the front on `get`, or on `put` of an existing key, turns LRU into FIFO.",
+            "Forgetting to delete the evicted key from the hash map leaves dangling entries and leaks memory.",
+            "Sharing an LRU cache between threads needs a lock around each operation; `functools.lru_cache` is safe to call from multiple threads."
+          ]
+        },
+        "LRU is a good default when recent use predicts future use. It does poorly when a large one-time scan pushes out frequently used data; workloads like that benefit from LFU or scan-resistant policies. Designing an LRU cache with O(1) operations is also one of the most common coding interview questions, because it tests hash maps and linked lists together."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "What does LRU stand for?",
+      "a": "Least recently used. When the cache is full, it evicts the entry that has gone the longest without being read or written."
+    },
+    {
+      "q": "Why does an LRU cache need a doubly linked list?",
+      "a": "To remove a node from the middle of the list in O(1), you need its previous node. A doubly linked list stores `prev` on every node; a singly linked list would require an O(n) search."
+    },
+    {
+      "q": "Can I implement an LRU cache with a Python dict alone?",
+      "a": "Since Python 3.7, `dict` preserves insertion order, so you can delete and re-insert a key to mark it as recent and evict `next(iter(d))`. `OrderedDict` states the intent more clearly with `move_to_end` and `popitem(last=False)`."
+    },
+    {
+      "q": "What is the difference between lru_cache and cache in functools?",
+      "a": "`functools.cache` is an unbounded cache, equivalent to `lru_cache(maxsize=None)`. `lru_cache` with a number evicts the least recently used results once it reaches that size."
+    },
+    {
+      "q": "Is LRU always the best eviction policy?",
+      "a": "No. It is simple and works well when recent items are likely to be reused, but large sequential scans can flush useful data. LFU, ARC and other policies handle such workloads better."
+    }
+  ]
+}

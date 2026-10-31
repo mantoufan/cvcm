@@ -1,0 +1,218 @@
+{
+  "title": "Clojure入門：構文・コレクション・関数・REPLを解説 — cv.cm",
+  "description": "Clojureをゼロから学べる入門講座。CLIのインストール、Hello worldの書き方、イミュータブルなベクターとマップ、関数の定義、スレッディングマクロ、アトム、エラー処理を解説します。",
+  "h1": "Clojure入門：初心者向けチュートリアル",
+  "answer": "Clojureは、Java仮想マシン(JVM)上で動く動的な関数型Lispです(JavaScript向けにはClojureScriptがあります)。コードはかっこで囲んだリストとして書き、データはデフォルトでイミュータブルで、ベクター、マップ、集合に対する小さな関数を組み合わせてプログラムを作ります。Clojure CLIをインストールし、`clj`でREPLを起動し、`clojure -M hello.clj`でファイルを実行します。",
+  "sections": [
+    {
+      "h": "Clojureとは何か、誰が使うのか",
+      "body": [
+        "Clojureは、Rich Hickeyが作り、2007年に最初にリリースされました。Lispの方言で、すべての式は、最初の要素が関数または演算子であるリストです。たとえば`(+ 1 2)`のようになります。JVMのバイトコードにコンパイルされるので、あらゆるJavaライブラリを直接呼び出せます。ClojureScriptは、同じ言語をブラウザーやNode.js向けにJavaScriptへコンパイルします。",
+        "Clojureは、バックエンドのWebサービス、データ処理パイプライン、社内の業務システムに使われています。特に、イミュータブルなデータとインタラクティブな開発を重視するチームに向いています。開発者はたいてい、エディターにつないだREPL(read-eval-print loop)の中で、プログラムを動かしたまま1つずつ式を評価しながら作業します。"
+      ]
+    },
+    {
+      "h": "Clojureのインストールとhello, worldの実行",
+      "body": [
+        "Javaランタイム(JDK 17以降なら安心です)をインストールし、clojure.orgからClojure CLIツールをインストールします(macOSはHomebrew、Linuxはインストールスクリプト、Windowsはインストーラー)。CLIには2つのコマンドがあります。行編集ができるREPLの`clj`と、プログラムを実行する`clojure`です。",
+        {
+          "code": ";; hello.clj\n(println \"Hello, world!\")",
+          "lang": "clojure"
+        },
+        {
+          "code": "clojure -M hello.clj\n# Hello, world!\nclj\n# user=> (+ 1 2)\n# 3",
+          "lang": "shell"
+        },
+        "実際のプロジェクトでは、依存関係を`deps.edn`ファイルに、コードを`src/`の下に置き、1ファイルにつき1つの名前空間を割り当てます。Leiningen(`lein`)は、`project.clj`ファイルを使う、より古いものの今でも人気のあるビルドツールです。"
+      ]
+    },
+    {
+      "h": "値・型・名前",
+      "body": [
+        "Clojureは動的型付けです。`def`はグローバルな名前(var)を束縛し、`let`はローカルな名前を束縛します。値は作成後に変化しません。代入文はありません。",
+        {
+          "table": {
+            "head": [
+              "型",
+              "例",
+              "補足"
+            ],
+            "rows": [
+              [
+                "Integer",
+                "`42`",
+                "64ビットの`long`。`42N`はBigIntです"
+              ],
+              [
+                "Floating point",
+                "`3.14`",
+                "Javaの`double`"
+              ],
+              [
+                "Ratio",
+                "`(/ 1 3)`",
+                "0.333ではなく、正確な分数`1/3`"
+              ],
+              [
+                "String",
+                "`\"hello\"`",
+                "Javaの`String`。二重引用符のみ"
+              ],
+              [
+                "Character",
+                "`\\a`",
+                "1文字"
+              ],
+              [
+                "Keyword",
+                "`:name`",
+                "高速で自己評価されるラベル。マップのキーによく使います"
+              ],
+              [
+                "Boolean / nil",
+                "`true`, `false`, `nil`",
+                "偽になるのは`false`と`nil`だけです"
+              ]
+            ]
+          }
+        },
+        {
+          "code": "(def pi-approx 3.14159)\n(let [r 2\n      area (* pi-approx r r)]\n  (println \"Area:\" area))\n;; Area: 12.56636\n(str \"a\" 1 :b)   ;; => \"a1:b\"",
+          "lang": "clojure"
+        }
+      ]
+    },
+    {
+      "h": "制御構文",
+      "body": [
+        "Clojureでは、`if`を含めてすべてが値を返す式です。`if`は「then」と「else」の式をちょうど1つずつ取ります。elseのない複数の副作用には`when`を、複数の条件には`cond`を使います。",
+        {
+          "code": "(defn grade [score]\n  (cond\n    (>= score 90) \"A\"\n    (>= score 80) \"B\"\n    :else         \"C\"))\n(println (grade 85))            ;; B\n(when (pos? 5) (println \"positive\") :done)\n(doseq [x [1 2 3]] (println (* x x)))   ;; 1 4 9\n(for [x (range 5) :when (odd? x)] (* x 10))   ;; => (10 30)\n(loop [i 0 acc 0]\n  (if (< i 5) (recur (inc i) (+ acc i)) acc))   ;; => 10",
+          "lang": "clojure"
+        },
+        "書き換えるカウンターを持つ`for`ループはありません。`doseq`は各要素に対して副作用を実行し、`for`は遅延シーケンス(リスト内包表記)を作り、`loop`/`recur`はコールスタックを増やさずに繰り返しを表します。"
+      ]
+    },
+    {
+      "h": "関数",
+      "body": [
+        "名前付き関数は`defn`で定義します。関数は複数のアリティ(引数の数)を持てます。`#(...)`は小さな無名関数の短縮形で、`%`が引数です。",
+        {
+          "code": "(defn greet\n  ([] (greet \"world\"))\n  ([name] (str \"Hello, \" name \"!\")))\n(greet)          ;; => \"Hello, world!\"\n(greet \"Ana\")    ;; => \"Hello, Ana!\"\n(defn sum-all [& nums] (reduce + nums))\n(sum-all 1 2 3)  ;; => 6\n(map #(* % %) [1 2 3])        ;; => (1 4 9)\n(filter even? (range 10))     ;; => (0 2 4 6 8)",
+          "lang": "clojure"
+        },
+        "関数は値です。`map`、`filter`、`reduce`に渡したり、別の関数から返したり、マップに入れたりできます。"
+      ]
+    },
+    {
+      "h": "コレクション：リスト・ベクター・マップ・集合",
+      "body": [
+        "Clojureの4つの中核コレクションは、イミュータブルで永続的です。「変更」すると、古いものと構造の大半を共有する新しいバージョンが返されるので、更新は低コストです。",
+        {
+          "table": {
+            "head": [
+              "コレクション",
+              "リテラル",
+              "主な用途"
+            ],
+            "rows": [
+              [
+                "List",
+                "`'(1 2 3)`",
+                "コードと、先頭に追加する順序付きデータ"
+              ],
+              [
+                "Vector",
+                "`[1 2 3]`",
+                "添字でアクセスできる列。末尾に追加します"
+              ],
+              [
+                "Map",
+                "`{:name \"Ana\" :age 30}`",
+                "キーと値のレコード"
+              ],
+              [
+                "Set",
+                "`#{:red :green}`",
+                "重複のない値、所属の判定"
+              ]
+            ]
+          }
+        },
+        {
+          "code": "(def user {:name \"Ana\" :age 30})\n(:name user)                   ;; => \"Ana\"\n(assoc user :email \"a@x.io\")   ;; new map with :email\n(update user :age inc)         ;; => {:name \"Ana\", :age 31}\n(conj [1 2] 3)                 ;; => [1 2 3]\n(contains? #{:red :green} :red) ;; => true\n(get-in {:a {:b 1}} [:a :b])   ;; => 1\nuser                           ;; unchanged: {:name \"Ana\", :age 30}",
+          "lang": "clojure"
+        }
+      ]
+    },
+    {
+      "h": "特徴的な機能：スレッディングマクロ・アトム・マクロ",
+      "body": [
+        "スレッディングマクロを使うと、データのパイプラインを上から下へ読めます。`->`は前の結果を次の式の第1引数として挿入し、`->>`は最後の引数として挿入します。",
+        {
+          "code": "(->> (range 1 11)\n     (filter odd?)\n     (map #(* % %))\n     (reduce +))   ;; => 165\n(def counter (atom 0))\n(swap! counter inc)\n(swap! counter + 10)\n@counter           ;; => 11\n(defmacro unless [test & body]\n  `(if ~test nil (do ~@body)))\n(unless false (println \"runs\"))",
+          "lang": "clojure"
+        },
+        "アトムは変化しうる状態を保持します。`swap!`は関数をアトミックに適用するため、複数のスレッドから安全に使えます。そのほかの並行処理にはrefとエージェントがあります。コードはデータ(リスト)なので、マクロはコンパイル前にコードを変換できます。`when`、`cond`、`->`もマクロです。"
+      ]
+    },
+    {
+      "h": "エラー処理",
+      "body": [
+        "ClojureはJVMの例外を`try`、`catch`、`finally`で扱います。エラーにデータを付けるには`ex-info`を投げ、`ex-data`でそのデータを取り出します。",
+        {
+          "code": "(defn parse-age [s]\n  (let [n (Long/parseLong s)]\n    (when (neg? n)\n      (throw (ex-info \"Age must not be negative\" {:value n})))\n    n))\n(try\n  (parse-age \"-5\")\n  (catch clojure.lang.ExceptionInfo e\n    (println (ex-message e) (ex-data e)))\n  (catch NumberFormatException _\n    (println \"not a number\")))\n;; Age must not be negative {:value -5}",
+          "lang": "clojure"
+        }
+      ]
+    },
+    {
+      "h": "小さな完成プログラム：単語の出現頻度",
+      "body": [
+        {
+          "code": "(ns wordcount\n  (:require [clojure.string :as str]))\n(defn word-counts [text]\n  (->> (str/split (str/lower-case text) #\"\\W+\")\n       (remove str/blank?)\n       frequencies\n       (sort-by val >)))\n(doseq [[word n] (take 2 (word-counts \"The cat and the hat and the bat\"))]\n  (println word n))\n;; the 3\n;; and 2",
+          "lang": "clojure"
+        },
+        "このプログラムは、テキストを小文字にし、正規表現リテラル`#\"\\W+\"`で単語以外の文字で分割し、`frequencies`(マップを返します)で各単語を数え、回数の多い順にエントリーを並べ替えます。",
+        {
+          "note": "初心者がよくやる間違い：関数をかっこの外に置く(`(println x)`ではなく`print(x)`)、`assoc`や`conj`がコレクションをその場で変更すると思い込む(新しいコレクションを返すので、結果を保持してください)、`map`と`for`が遅延評価であることを忘れる(REPLやスクリプトでは中の副作用が実行されないことがあります。`doseq`か`run!`を使いましょう)、`0`や空文字列を偽として扱う(偽になるのは`false`と`nil`だけです)、などです。"
+        }
+      ]
+    },
+    {
+      "h": "次に学ぶこと",
+      "body": [
+        {
+          "ul": [
+            "clojure.orgの公式ガイド：Getting Started、Learn Clojure、deps.ednガイド。",
+            "リーダー構文、特殊形式、データ構造に関するClojureのリファレンスページ。",
+            "REPLに接続できるエディターを整える(たとえばVS Code向けのCalva、Emacs向けのCIDER、IntelliJ向けのCursive)。",
+            "ブラウザーを対象にしたいなら、ClojureScriptを試す。"
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Clojureは関数型言語ですか？",
+      "a": "はい。Clojureは純粋関数とイミュータブルなデータを重視しますが、実用的でもあります。副作用を許し、アトム、ref、エージェントによって管理された変更可能な状態も提供しています。"
+    },
+    {
+      "q": "Clojureを学ぶのにJavaの知識は必要ですか？",
+      "a": "いいえ。Javaを知らなくても言語は学べますが、Javaランタイムがインストールされている必要があります。スタックトレースを読んだり、Javaライブラリを使ったりするときには、JVMについて少し知っていると役立ちます。"
+    },
+    {
+      "q": "Clojureのリストとベクターの違いは何ですか？",
+      "a": "リスト`'(1 2 3)`は先頭に要素を追加し、主にコードに使われます。ベクター`[1 2 3]`は末尾に追加し、添字による高速なアクセスをサポートします。Clojureのプログラムのデータの大半は、ベクターとマップに保存されます。"
+    },
+    {
+      "q": "Clojureはなぜかっこが多いのですか？",
+      "a": "ClojureのコードはLispのデータ構造として書かれるため、すべての呼び出しがリストになります。この一貫した構文がマクロを可能にしており、構造的な編集に対応したエディターを使えば、かっこの管理は簡単になります。"
+    },
+    {
+      "q": "ClojureとClojureScriptの違いは何ですか？",
+      "a": "同じ言語が異なるホストで動くものです。ClojureはJVM上で動き、ClojureScriptはJavaScriptにコンパイルされます。ホストとの連携は異なりますが、中核の関数とデータ構造は同じです。"
+    }
+  ]
+}

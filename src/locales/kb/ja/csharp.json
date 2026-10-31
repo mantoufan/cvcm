@@ -1,0 +1,191 @@
+{
+  "title": "C#チュートリアル：型・クラス・コレクション・LINQ・非同期処理 — cv.cm",
+  "description": "C#入門を1ページで：.NET SDKでHello worldを実行、型、制御構文、クラス、レコード、ListとDictionary、LINQ、async、例外処理まで解説します。",
+  "h1": "C#入門チュートリアル（初心者向け）",
+  "answer": "C#はMicrosoftが開発した静的型付けのオブジェクト指向言語で、Windows、macOS、Linuxで動く無料のクロスプラットフォーム実行環境 .NET 上で動作します。.NET SDKをインストールして `dotnet new console` と `dotnet run` を実行すると、\"Hello, World!\" が表示されます。クラスとレコード、`List<T>` や `Dictionary<K, V>` などのジェネリックコレクション、LINQクエリ、`async`/`await`、パターンマッチング、例外処理が中心的な内容です。",
+  "sections": [
+    {
+      "h": "C#とは何か、何に使われるか",
+      "body": [
+        "C#（「シーシャープ」と読みます）は、Anders Hejlsbergが率いるチームがMicrosoftで設計し、2002年に最初のバージョンが公開されました。Ecma（ECMA-334）によって標準化されており、.NETとともにオープンに開発されています。WebのAPIやサイト（ASP.NET Core）、Windowsのデスクトップアプリ、クロスプラットフォームのモバイル・デスクトップアプリ（.NET MAUI）、クラウドサービス、ゲームで使われ、UnityエンジンもゲームスクリプトにC#を使っています。構文はC系なので、Java、C++、JavaScriptの開発者にも馴染みやすい言語です。"
+      ]
+    },
+    {
+      "h": ".NETのインストールと Hello, world の実行",
+      "body": [
+        "dot.netから.NET SDKをダウンロードし、`dotnet --version` で確認します。コンソールプロジェクトを作成して実行します。",
+        {
+          "code": "dotnet new console -o HelloApp\ncd HelloApp\ndotnet run\n# Hello, World!",
+          "lang": "shell"
+        },
+        "テンプレートは `Program.cs` を作成します。トップレベルステートメントを使うため、小さなプログラムならクラスも `Main` メソッドも不要です。",
+        {
+          "code": "Console.WriteLine(\"Hello, World!\");",
+          "lang": "csharp"
+        }
+      ]
+    },
+    {
+      "h": "変数と基本の型",
+      "body": [
+        "すべての変数には静的な型があります。`var` を使うと値からコンパイラが型を推論します。値型（数値、`bool`、`struct`）はデータを直接保持し、参照型（`string`、クラス、配列）はオブジェクトを参照します。",
+        {
+          "table": {
+            "head": [
+              "型",
+              "例",
+              "備考"
+            ],
+            "rows": [
+              [
+                "`int`",
+                "`int n = 42;`",
+                "32ビット整数"
+              ],
+              [
+                "`long`",
+                "`long big = 10_000_000_000;`",
+                "64ビット整数"
+              ],
+              [
+                "`double`",
+                "`double x = 3.14;`",
+                "64ビット浮動小数点数"
+              ],
+              [
+                "`decimal`",
+                "`decimal price = 19.99m;`",
+                "10進数。金額の計算に向く"
+              ],
+              [
+                "`bool`",
+                "`bool ok = true;`",
+                "`true` または `false`"
+              ],
+              [
+                "`char`",
+                "`char c = 'A';`",
+                "UTF-16コード単位"
+              ],
+              [
+                "`string`",
+                "`string s = \"hi\";`",
+                "変更できない文字列"
+              ]
+            ]
+          }
+        },
+        {
+          "code": "var name = \"Ada\";\nint count = 7;\ndouble avg = count / 2.0;\nConsole.WriteLine($\"{name} has {count} items, avg {avg}\");  // Ada has 7 items, avg 3.5\nConsole.WriteLine(count / 2);                              // 3 (integer division)\nConsole.WriteLine(int.Parse(\"12\") + 1);                    // 13\nstring? nickname = null;   // ? marks a nullable reference\nConsole.WriteLine(nickname ?? \"none\");                     // none",
+          "lang": "csharp"
+        },
+        "`$\"...\"` は文字列補間です。新しいプロジェクトではnull許容参照型が有効になっており、`null` の可能性がある値をチェックなしで使うとコンパイラが警告します。"
+      ]
+    },
+    {
+      "h": "制御構文とメソッド",
+      "body": [
+        {
+          "code": "int score = 72;\nif (score >= 90) Console.WriteLine(\"A\");\nelse if (score >= 70) Console.WriteLine(\"B\");   // B\nelse Console.WriteLine(\"C\");\n\nfor (int i = 0; i < 3; i++) Console.Write($\"{Square(i)} \");  // 0 1 4\nConsole.WriteLine();\n\nforeach (var fruit in new[] { \"apple\", \"pear\" }) Console.WriteLine(fruit);\n\nstring day = \"SAT\";\nstring kind = day switch\n{\n    \"SAT\" or \"SUN\" => \"weekend\",\n    _ => \"weekday\",\n};\nConsole.WriteLine(kind);   // weekend\nConsole.WriteLine(Greet(\"Lin\"));                // Hello, Lin!\n\nstatic int Square(int x) => x * x;\nstatic string Greet(string name, string greeting = \"Hello\") => $\"{greeting}, {name}!\";",
+          "lang": "csharp"
+        },
+        "`switch` 式と `or` パターンは、C#のパターンマッチングの一部です。メソッドには、引数のデフォルト値、名前付き引数（`Greet(name: \"Lin\")`）、`=>` を使った式形式の本体を持たせられます。"
+      ]
+    },
+    {
+      "h": "クラス、プロパティ、レコード",
+      "body": [
+        "クラスは、フィールド、プロパティ（get と set のロジックを持つフィールド）、メソッドを持ちます。`record` は、等価性が値に基づく型で、不変のデータに最適です。",
+        {
+          "code": "var acc = new Account(\"Ann\");\nacc.Deposit(50);\nConsole.WriteLine($\"{acc.Owner}: {acc.Balance}\");   // Ann: 50\n\nvar p1 = new Point(3, 4);\nvar p2 = p1 with { Y = 5 };                         // copy with one change\nConsole.WriteLine(p1);                              // Point { X = 3, Y = 4 }\nConsole.WriteLine(p1 == new Point(3, 4));           // True\n\npublic class Account\n{\n    public string Owner { get; }\n    public decimal Balance { get; private set; }\n\n    public Account(string owner) => Owner = owner;\n\n    public void Deposit(decimal amount)\n    {\n        if (amount <= 0) throw new ArgumentException(\"amount must be positive\");\n        Balance += amount;\n    }\n}\n\npublic record Point(int X, int Y);",
+          "lang": "csharp"
+        },
+        "型の宣言は、同じファイルではトップレベルステートメントの後に置く必要があります。クラスは単一継承（`class Savings : Account`）で、インターフェースはいくつでも実装できます。"
+      ]
+    },
+    {
+      "h": "コレクションとLINQ",
+      "body": [
+        "`System.Collections.Generic` のジェネリックコレクションは、日常的に使うデータ構造です。LINQ（Language Integrated Query）は、すべてのコレクションに `Where`、`Select`、`OrderBy`、`GroupBy` などのメソッドを追加します。",
+        {
+          "code": "var nums = new List<int> { 3, 1, 2, 5 };\nnums.Add(4);\nnums.Sort();\nConsole.WriteLine(string.Join(\", \", nums));      // 1, 2, 3, 4, 5\n\nvar ages = new Dictionary<string, int> { [\"ann\"] = 31, [\"bob\"] = 25 };\nages[\"cy\"] = 40;\nif (ages.TryGetValue(\"bob\", out int bobAge)) Console.WriteLine(bobAge);  // 25\n\nvar evenSquares = nums.Where(n => n % 2 == 0).Select(n => n * n).ToList();\nConsole.WriteLine(string.Join(\" \", evenSquares)); // 4 16\n\nvar oldest = ages.OrderByDescending(kv => kv.Value).First();\nConsole.WriteLine(oldest.Key);                    // cy",
+          "lang": "csharp"
+        },
+        "そのほかのよく使うコレクションには、重複のない要素を保持する `HashSet<T>`、`Queue<T>`、`Stack<T>`、`int[]` のような固定長配列があります。"
+      ]
+    },
+    {
+      "h": "特徴的な機能：asyncとawait",
+      "body": [
+        "C#は、のちに多くの言語が採用した `async`/`await` モデルを導入しました。`async` メソッドは `Task` を返し、Webリクエストやファイル読み込みのような時間のかかる処理を、スレッドをブロックせずに `await` できます。",
+        {
+          "code": "using System.Net.Http;\n\nusing var http = new HttpClient();\nvar sizes = await Task.WhenAll(\n    GetLengthAsync(http, \"https://example.com\"),\n    GetLengthAsync(http, \"https://example.org\"));\nConsole.WriteLine($\"downloaded {sizes.Sum()} characters\");\n\nstatic async Task<int> GetLengthAsync(HttpClient http, string url)\n{\n    string html = await http.GetStringAsync(url);\n    return html.Length;\n}",
+          "lang": "csharp"
+        },
+        "`Task.WhenAll` は両方のリクエストを同時に実行し、両方の完了を待ちます。`using var` 宣言は、スコープの終わりで `HttpClient` を破棄します。"
+      ]
+    },
+    {
+      "h": "例外処理",
+      "body": [
+        "エラーは例外として扱われます。具体的な型から先に catch し、後始末には `finally` や `using` を使います。`TryParse` パターンを使うと、不正になりやすい入力で例外を避けられます。",
+        {
+          "code": "try\n{\n    int age = int.Parse(\"abc\");\n}\ncatch (FormatException ex)\n{\n    Console.WriteLine($\"not a number: {ex.Message}\");\n}\nfinally\n{\n    Console.WriteLine(\"done\");\n}\n\nif (!int.TryParse(\"41\", out int parsed)) parsed = 0;\nConsole.WriteLine(parsed);   // 41",
+          "lang": "csharp"
+        }
+      ]
+    },
+    {
+      "h": "小さな完成プログラム：単語の出現頻度",
+      "body": [
+        "コンソールプロジェクトの `Program.cs` をこのコードに置き換え、`dotnet run -- notes.txt` を実行します。",
+        {
+          "code": "using System.Text.RegularExpressions;\n\nif (args.Length != 1)\n{\n    Console.Error.WriteLine(\"usage: dotnet run -- FILE\");\n    return 1;\n}\n\ntry\n{\n    string text = File.ReadAllText(args[0]).ToLowerInvariant();\n    var top = Regex.Matches(text, \"[a-z']+\")\n        .GroupBy(m => m.Value)\n        .Select(g => (Word: g.Key, Count: g.Count()))\n        .OrderByDescending(t => t.Count)\n        .Take(5);\n\n    foreach (var (word, count) in top)\n        Console.WriteLine($\"{count,5}  {word}\");\n    return 0;\n}\ncatch (FileNotFoundException)\n{\n    Console.Error.WriteLine($\"file not found: {args[0]}\");\n    return 1;\n}",
+          "lang": "csharp"
+        },
+        "トップレベルステートメントでは、コマンドライン引数 `args` を読み、終了コードを返せます。新しいプロジェクトでは、暗黙的なusingにより `System.IO`、`System.Linq`、`System.Collections.Generic` が自動的にインポートされます。"
+      ]
+    },
+    {
+      "h": "初心者がよくやる間違い",
+      "body": [
+        {
+          "note": "非同期コードを `.Result` や `.Wait()` でブロックしないでください。UIや古いASP.NETアプリではデッドロックを起こすことがあり、それ以外でもスレッドを無駄にします。`await` を最上位まで使いましょう。"
+        },
+        {
+          "ul": [
+            "金額に `double` を使う。2進数の丸め誤差を避けるには `decimal` を使います。",
+            "null許容の警告を無視する。実行時に `NullReferenceException` になります。",
+            "同じリストに対する `foreach` の中で `List<T>` を変更し、`InvalidOperationException` が発生する。",
+            "長時間動くアプリで、リクエストごとに新しい `HttpClient` を作る。1つのインスタンスを再利用するか、`IHttpClientFactory` を使います。",
+            "LINQのクエリが遅延実行されることを忘れる。`ToList()` を呼ばない限り、列挙のたびにクエリが再実行されます。"
+          ]
+        }
+      ]
+    },
+    {
+      "h": "次のステップ",
+      "body": [
+        "Microsoft Learnには、言語のツアーやインタラクティブなチュートリアルを含む、公式のC#ドキュメントがあります。続いて、WebのAPI向けにASP.NET Core、データベース向けにEntity Framework Core、ゲーム向けにUnityを学び、テストにはxUnitまたはNUnitを使いましょう。エディタは、Visual Studio、C# Dev Kitを入れたVS Code、JetBrains Riderがよく使われます。"
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "C#はWindows専用ですか？",
+      "a": "いいえ。現代の.NETはWindows、macOS、Linuxで動作し、C#アプリはLinuxサーバーやコンテナにデプロイできます。WPFやWindows Formsなど、一部のデスクトップUIフレームワークだけがWindows専用です。"
+    },
+    {
+      "q": "C#と.NETの違いは何ですか？",
+      "a": "C#はプログラミング言語です。.NETは、C#のコードをコンパイルして実行するランタイムとライブラリです（F#やVisual Basicも対象です）。"
+    },
+    {
+      "q": "C#はJavaに似ていますか？",
+      "a": "はい、多くの点で似ています。どちらも静的型付けでガベージコレクションを持つ、C系の構文のオブジェクト指向言語です。C#にはプロパティ、LINQ、`async`/`await`、値型の構造体、レコードなどの機能が加わっています。"
+    },
+    {
+      "q": "C#はゲーム開発に向いていますか？",
+      "a": "はい。最も広く使われているゲームエンジンの一つであるUnityはゲームスクリプトにC#を使い、GodotエンジンもC#をサポートしています。"
+    }
+  ]
+}

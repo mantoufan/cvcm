@@ -1,0 +1,193 @@
+{
+  "title": "Algoritmo de backtracking: subconjuntos, permutaciones y N reinas en Python — cv.cm",
+  "description": "Backtracking explicado: elegir, explorar, deshacer. Un ejemplo de N reinas paso a paso, una plantilla reutilizable en Python, subconjuntos, permutaciones, poda y complejidad.",
+  "h1": "Backtracking (vuelta atrás) explicado: cómo funciona, código y ejemplos",
+  "answer": "El backtracking (vuelta atrás) es una forma de buscar entre todas las soluciones posibles construyendo un candidato una elección cada vez y deshaciendo la última elección en cuanto no puede llevar a una solución válida. Es una búsqueda en profundidad sobre un árbol de soluciones parciales que sigue el patrón elegir, explorar, deshacer. El backtracking resuelve rompecabezas y problemas combinatorios como las N reinas, el Sudoku, los subconjuntos y las permutaciones. Su peor caso es exponencial, así que podar pronto las ramas inválidas es lo que lo hace práctico.",
+  "sections": [
+    {
+      "h": "Qué problema resuelve el backtracking",
+      "body": [
+        "Algunos problemas piden todas las disposiciones que cumplen un conjunto de reglas, o una cualquiera de ellas: colocar 8 reinas de modo que ninguna ataque a otra, rellenar una cuadrícula de Sudoku, listar todos los subconjuntos de un conjunto que suman un objetivo, encontrar todas las formas de dividir una cadena en palabras de un diccionario. No hay una fórmula ingeniosa; hay que buscar. Probar a ciegas todas las combinaciones completas es demasiado lento, pero la mayoría de las combinaciones parciales ya son inválidas tras unas pocas elecciones.",
+        "El backtracking comprueba las reglas después de cada elección. Cuando una solución parcial rompe una regla, abandona de inmediato toda esa rama del árbol de búsqueda y vuelve atrás para probar la siguiente opción."
+      ]
+    },
+    {
+      "h": "La idea en palabras sencillas",
+      "body": [
+        {
+          "ol": [
+            "Si la solución parcial actual está completa, regístrala.",
+            "En caso contrario, para cada posible elección siguiente: si la elección está permitida, hazla (elegir).",
+            "Recurre para extender más la solución (explorar).",
+            "Deshaz la elección, para que la siguiente opción parta del mismo estado (deshacer)."
+          ]
+        },
+        "El espacio de búsqueda es un árbol: la raíz es la solución vacía, cada nivel añade una elección y las hojas son candidatos completos. El backtracking es una búsqueda en profundidad sobre este árbol, y podar significa cortar los subárboles que no pueden contener una solución."
+      ]
+    },
+    {
+      "h": "Ejemplo resuelto: 4 reinas",
+      "body": [
+        "Coloca 4 reinas en un tablero de 4 × 4, una por fila, de modo que no haya dos en la misma columna ni en la misma diagonal. Las columnas se numeran de 0 a 3.",
+        {
+          "table": {
+            "head": [
+              "Paso",
+              "Acción",
+              "Reinas hasta ahora (columna por fila)"
+            ],
+            "rows": [
+              [
+                "1",
+                "Fila 0: poner una reina en la columna 0",
+                "0"
+              ],
+              [
+                "2",
+                "Fila 1: las columnas 0 y 1 están atacadas; probar la columna 2",
+                "0, 2"
+              ],
+              [
+                "3",
+                "Fila 2: todas las columnas están atacadas. Retroceder: mover la fila 1 a la columna 3",
+                "0, 3"
+              ],
+              [
+                "4",
+                "Fila 2: la columna 1 es segura",
+                "0, 3, 1"
+              ],
+              [
+                "5",
+                "Fila 3: todas las columnas están atacadas. Retroceder a la fila 2: ninguna otra columna sirve. Retroceder a la fila 1: no quedan columnas. Retroceder a la fila 0: pasar a la columna 1",
+                "1"
+              ],
+              [
+                "6",
+                "Fila 1: la columna 3 es segura",
+                "1, 3"
+              ],
+              [
+                "7",
+                "Fila 2: la columna 0 es segura",
+                "1, 3, 0"
+              ],
+              [
+                "8",
+                "Fila 3: la columna 2 es segura. Solución encontrada",
+                "1, 3, 0, 2"
+              ]
+            ]
+          }
+        },
+        "Si se continúa la búsqueda, aparece la única otra solución, 2, 0, 3, 1, que es la imagen especular de la primera."
+      ]
+    },
+    {
+      "h": "Implementación en Python",
+      "body": [
+        "Mantén conjuntos de columnas y diagonales usadas para que cada comprobación de seguridad sea O(1). En una diagonal `row - col` es constante, y en la otra lo es `row + col`.",
+        {
+          "code": "def solve_n_queens(n):\n    solutions, cols = [], []\n    used_cols, diag1, diag2 = set(), set(), set()\n\n    def place(row):\n        if row == n:\n            solutions.append(cols.copy())   # copy, not the live list\n            return\n        for col in range(n):\n            if col in used_cols or row - col in diag1 or row + col in diag2:\n                continue                    # prune: square is attacked\n            cols.append(col)                # choose\n            used_cols.add(col); diag1.add(row - col); diag2.add(row + col)\n            place(row + 1)                  # explore\n            cols.pop()                      # unchoose\n            used_cols.remove(col); diag1.remove(row - col); diag2.remove(row + col)\n\n    place(0)\n    return solutions\n\nprint(solve_n_queens(4))       # [[1, 3, 0, 2], [2, 0, 3, 1]]\nprint(len(solve_n_queens(8)))  # 92",
+          "lang": "python"
+        },
+        "La misma plantilla genera todos los subconjuntos y todas las permutaciones:",
+        {
+          "code": "def subsets(items):\n    result, current = [], []\n\n    def go(i):\n        if i == len(items):\n            result.append(current.copy())\n            return\n        current.append(items[i]); go(i + 1); current.pop()   # take items[i]\n        go(i + 1)                                            # skip items[i]\n\n    go(0)\n    return result\n\ndef permutations(items):\n    result, current, used = [], [], [False] * len(items)\n\n    def go():\n        if len(current) == len(items):\n            result.append(current.copy())\n            return\n        for i, x in enumerate(items):\n            if not used[i]:\n                used[i] = True; current.append(x)\n                go()\n                used[i] = False; current.pop()\n\n    go()\n    return result\n\nprint(subsets([1, 2, 3]))\n# [[1, 2, 3], [1, 2], [1, 3], [1], [2, 3], [2], [3], []]\nprint(permutations([1, 2, 3]))\n# [[1, 2, 3], [1, 3, 2], [2, 1, 3], [2, 3, 1], [3, 1, 2], [3, 2, 1]]",
+          "lang": "python"
+        },
+        "Para subconjuntos y permutaciones simples en código real, `itertools.combinations` e `itertools.permutations` son más rápidas. Escribe tu propio backtracking cuando necesites podar con reglas específicas del problema."
+      ]
+    },
+    {
+      "h": "Complejidad temporal y espacial",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Problema",
+              "Número de resultados",
+              "Tiempo",
+              "Espacio extra"
+            ],
+            "rows": [
+              [
+                "Todos los subconjuntos de n elementos",
+                "2ⁿ",
+                "O(n × 2ⁿ)",
+                "Profundidad de recursión O(n) más la salida"
+              ],
+              [
+                "Todas las permutaciones de n elementos",
+                "n!",
+                "O(n × n!)",
+                "O(n) más la salida"
+              ],
+              [
+                "N reinas",
+                "varía (92 para n = 8)",
+                "como máximo O(n!), mucho menos con poda",
+                "O(n)"
+              ],
+              [
+                "Sudoku (9 × 9)",
+                "1 para un puzle bien planteado",
+                "exponencial en el número de celdas vacías en el peor caso",
+                "O(celdas)"
+              ]
+            ]
+          }
+        },
+        "El backtracking no puede superar el tamaño de la salida: si debes listar n! permutaciones, necesitas al menos n! pasos. La poda solo ayuda saltándose ramas que no producen nada."
+      ]
+    },
+    {
+      "h": "Variantes y errores comunes",
+      "body": [
+        {
+          "ul": [
+            "Olvidar deshacer: si el estado no se restaura después de la llamada recursiva, las ramas posteriores ven elecciones obsoletas.",
+            "Añadir la lista viva: `result.append(current)` guarda una referencia que cambia después; añade `current.copy()`.",
+            "Duplicados en la entrada: ordena los elementos y omite un elemento igual al anterior a la misma profundidad para evitar subconjuntos o permutaciones duplicados.",
+            "Parar en la primera solución: devuelve `True` desde la recursión y detén los bucles cuando baste una solución, como en un resolutor de Sudoku.",
+            "Mejor ordenación: prueba primero la elección más restringida (en Sudoku, la celda vacía con menos candidatos). Esto suele reducir el árbol de forma drástica."
+          ]
+        },
+        {
+          "note": "El backtracking y la programación dinámica exploran ambos elecciones, pero la DP reutiliza las respuestas de subproblemas repetidos. Si el mismo estado parcial aparece muchas veces y solo se necesita un recuento o un óptimo, añade memoización o cambia a DP. Si necesitas cada solución en sí, el backtracking es la herramienta adecuada."
+        }
+      ]
+    },
+    {
+      "h": "Cuándo usarlo y usos en el mundo real",
+      "body": [
+        {
+          "ul": [
+            "Satisfacción de restricciones: Sudoku, crucigramas, coloreado de mapas, horarios y planificación de exámenes.",
+            "Los resolutores SAT y los motores lógicos al estilo de Prolog se basan en la búsqueda con backtracking y una poda intensa.",
+            "Los motores de expresiones regulares de muchos lenguajes, incluido `re` de Python, usan backtracking; los patrones mal escritos pueden retroceder de forma exponencial (\"catastrophic backtracking\").",
+            "Problemas de entrevista: subconjuntos, permutaciones, suma de combinaciones, N reinas, búsqueda de palabras en una cuadrícula, partición de palíndromos, generar paréntesis, combinaciones de letras de un número de teléfono."
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "¿Cuál es la diferencia entre backtracking y fuerza bruta?",
+      "a": "La fuerza bruta construye y comprueba cada candidato completo. El backtracking comprueba las restricciones después de cada elección y abandona un candidato parcial en cuanto falla, por lo que se salta grupos enteros de candidatos."
+    },
+    {
+      "q": "¿Es el backtracking lo mismo que DFS?",
+      "a": "El backtracking es una búsqueda en profundidad sobre el árbol de soluciones parciales, con la regla adicional de deshacer cada elección y podar las ramas inválidas. DFS en un grafo es la misma idea aplicada a nodos y aristas ya existentes."
+    },
+    {
+      "q": "¿Cuál es la complejidad temporal del backtracking?",
+      "a": "Suele ser exponencial o factorial en el peor caso, por ejemplo O(2ⁿ) para subconjuntos y O(n!) para permutaciones. Una buena poda reduce el trabajo real, pero no la cota del peor caso."
+    },
+    {
+      "q": "¿Cuántas soluciones tiene el puzle de las 8 reinas?",
+      "a": "Tiene 92 soluciones, o 12 si las soluciones que son rotaciones o reflexiones entre sí se cuentan una sola vez."
+    }
+  ]
+}

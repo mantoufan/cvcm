@@ -1,0 +1,210 @@
+{
+  "title": "Học lập trình F# cơ bản: kiểu, khớp mẫu, pipeline và .NET — cv.cm",
+  "description": "Học F# từng bước: cài .NET SDK, chạy script bằng dotnet fsi, dùng let binding, danh sách, record, discriminated union, khớp mẫu và Result.",
+  "h1": "Hướng dẫn học lập trình F# cơ bản cho người mới",
+  "answer": "F# là ngôn ngữ ưu tiên hàm, kiểu tĩnh, dành cho .NET. Nó suy luận hầu hết kiểu giúp bạn, dùng thụt lề thay cho dấu ngoặc nhọn, và coi dữ liệu bất biến, khớp mẫu cùng toán tử pipeline `|>` là cách viết mã thông thường, đồng thời vẫn truy cập đầy đủ các thư viện .NET. Cài .NET SDK và chạy script bằng `dotnet fsi hello.fsx`.",
+  "sections": [
+    {
+      "h": "F# là gì và ai dùng nó",
+      "body": [
+        "F# được Don Syme thiết kế tại Microsoft Research và nay là ngôn ngữ mã nguồn mở do Microsoft và cộng đồng F# Software Foundation duy trì. Nó thuộc họ ngôn ngữ ML (như OCaml) và chạy trên .NET trên Windows, macOS và Linux.",
+        "Các nhóm dùng F# cho mô hình tài chính, phân tích dữ liệu, logic nghiệp vụ nặng về miền, backend web và viết script. Vì biên dịch ra cùng ngôn ngữ trung gian .NET như C#, một dự án F# có thể dùng bất kỳ gói NuGet nào và có thể được gọi từ mã C#."
+      ]
+    },
+    {
+      "h": "Cài F# và chạy Hello, world",
+      "body": [
+        "Cài .NET SDK từ Microsoft. F# đã đi kèm, nên không cần cài riêng. Để thử nhanh, viết một tệp script có đuôi `.fsx` và chạy bằng F# Interactive (`dotnet fsi`).",
+        {
+          "code": "// hello.fsx\nprintfn \"Hello, world!\"",
+          "lang": "fsharp"
+        },
+        {
+          "code": "dotnet fsi hello.fsx\n# Hello, world!\ndotnet new console -lang \"F#\" -o HelloApp\ncd HelloApp\ndotnet run",
+          "lang": "shell"
+        },
+        "Nhóm lệnh thứ hai tạo một dự án console đầy đủ với tệp `.fsproj` và `Program.fs`. Trong dự án, thứ tự các tệp liệt kê trong `.fsproj` rất quan trọng: một tệp chỉ dùng được mã từ các tệp phía trên nó."
+      ]
+    },
+    {
+      "h": "Giá trị và các kiểu dữ liệu cơ bản",
+      "body": [
+        "`let` gắn một tên với một giá trị. Các binding là bất biến trừ khi bạn đánh dấu `mutable`, và khi đó bạn đổi giá trị bằng `<-`, không phải `=`.",
+        {
+          "table": {
+            "head": [
+              "Kiểu",
+              "Ví dụ",
+              "Ghi chú"
+            ],
+            "rows": [
+              [
+                "int",
+                "`42`",
+                "số nguyên 32 bit"
+              ],
+              [
+                "float",
+                "`3.14`",
+                "số thực dấu phẩy động 64 bit (một `double` của .NET)"
+              ],
+              [
+                "decimal",
+                "`19.99m`",
+                "số thập phân chính xác, phù hợp cho tiền"
+              ],
+              [
+                "string",
+                "`\"hello\"`",
+                "chuỗi .NET bất biến"
+              ],
+              [
+                "char",
+                "`'a'`",
+                "một ký tự đơn"
+              ],
+              [
+                "bool",
+                "`true`, `false`",
+                "giá trị logic"
+              ],
+              [
+                "unit",
+                "`()`",
+                "\"không có giá trị\", giống `void`"
+              ]
+            ]
+          }
+        },
+        {
+          "code": "let name = \"Ana\"\nlet age = 30\nlet mutable count = 0\ncount <- count + 1\nprintfn \"%s is %d, count = %d\" name age count\n// Ana is 30, count = 1\nlet total = float age + 0.5   // explicit conversion needed",
+          "lang": "fsharp"
+        },
+        "F# không bao giờ chuyển đổi số ngầm: `1 + 2.0` là lỗi biên dịch. Hãy chuyển đổi bằng các hàm như `float`, `int` và `string`."
+      ]
+    },
+    {
+      "h": "Điều khiển luồng và hàm",
+      "body": [
+        "`if` là biểu thức trả về giá trị, nên cả hai nhánh phải cùng kiểu. Vòng lặp có tồn tại (`for`, `while`), nhưng phần lớn mã dùng các hàm trên collection.",
+        {
+          "code": "let sign n =\n    if n > 0 then \"positive\"\n    elif n < 0 then \"negative\"\n    else \"zero\"\nfor i in 1 .. 3 do\n    printfn \"%d squared is %d\" i (i * i)\nlet add x y = x + y          // int -> int -> int\nlet add5 = add 5             // partial application\nprintfn \"%d\" (add5 10)       // 15\nlet square = fun x -> x * x\n[1; 2; 3; 4]\n|> List.filter (fun x -> x % 2 = 0)\n|> List.map square\n|> printfn \"%A\"              // [4; 16]",
+          "lang": "fsharp"
+        },
+        "Các đối số cách nhau bằng dấu cách chứ không phải dấu phẩy. Mỗi hàm nhận từng đối số một (currying), nên `add 5` trả về một hàm mới. Toán tử pipeline `x |> f` nghĩa là `f x` và cho phép viết các phép biến đổi dữ liệu từ trên xuống dưới. Thụt lề có ý nghĩa cú pháp: thân của hàm hoặc vòng lặp phải được thụt vào dưới nó."
+      ]
+    },
+    {
+      "h": "Collection, record và option",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Collection",
+              "Cú pháp literal",
+              "Ghi chú"
+            ],
+            "rows": [
+              [
+                "List",
+                "`[1; 2; 3]`",
+                "Danh sách liên kết bất biến, lựa chọn mặc định"
+              ],
+              [
+                "Array",
+                "`[| 1; 2; 3 |]`",
+                "Kích thước cố định, phần tử khả biến, truy cập chỉ số nhanh"
+              ],
+              [
+                "Sequence",
+                "`seq { 1 .. 10 }`",
+                "Lười, tính khi cần"
+              ],
+              [
+                "Map",
+                "`Map [\"a\", 1; \"b\", 2]`",
+                "Từ điển bất biến"
+              ],
+              [
+                "Set",
+                "`set [1; 2; 2]`",
+                "Tập hợp bất biến các giá trị duy nhất"
+              ]
+            ]
+          }
+        },
+        {
+          "code": "type Person = { Name: string; Age: int }\nlet ana = { Name = \"Ana\"; Age = 30 }\nlet older = { ana with Age = 31 }       // copy with one change\nlet people = [ ana; { Name = \"Ben\"; Age = 17 } ]\nlet adult = people |> List.tryFind (fun p -> p.Age >= 18)\nmatch adult with\n| Some p -> printfn \"First adult: %s\" p.Name\n| None -> printfn \"No adults\"\n// First adult: Ana",
+          "lang": "fsharp"
+        },
+        "Record là kiểu bất biến có các trường đặt tên và so sánh bằng theo cấu trúc. F# không có null cho kiểu của chính nó; giá trị có thể thiếu là một `Option`: `Some value` hoặc `None`. Các hàm như `List.tryFind` trả về option, và trình biên dịch buộc bạn xử lý cả hai trường hợp."
+      ]
+    },
+    {
+      "h": "Tính năng đặc trưng: discriminated union và khớp mẫu",
+      "body": [
+        "Discriminated union mô tả một giá trị chính xác là một trong vài trường hợp có tên, mỗi trường hợp có dữ liệu riêng. `match` kiểm tra các trường hợp, và trình biên dịch cảnh báo nếu bạn bỏ sót một trường hợp.",
+        {
+          "code": "type Shape =\n    | Circle of radius: float\n    | Rectangle of width: float * height: float\nlet area shape =\n    match shape with\n    | Circle r -> System.Math.PI * r * r\n    | Rectangle (w, h) -> w * h\n[ Circle 1.0; Rectangle (2.0, 3.0) ]\n|> List.map area\n|> List.iter (printfn \"%.2f\")\n// 3.14\n// 6.00",
+          "lang": "fsharp"
+        },
+        "Những tính năng nổi tiếng khác là suy luận kiểu (bạn hiếm khi viết chú thích kiểu), đơn vị đo (`float<m>` không thể cộng với `float<s>`), và computation expression như `task { ... }` và `async { ... }` cho mã bất đồng bộ."
+      ]
+    },
+    {
+      "h": "Xử lý lỗi",
+      "body": [
+        "Với các lỗi có thể đoán trước, F# thành ngữ trả về một `Result`: `Ok value` hoặc `Error info`. Với lỗi bất ngờ, có sẵn ngoại lệ .NET với `try ... with`, `failwith` và `raise`.",
+        {
+          "code": "let parseAge (s: string) =\n    match System.Int32.TryParse(s) with\n    | true, n when n >= 0 -> Ok n\n    | true, _ -> Error \"Age must not be negative\"\n    | false, _ -> Error \"Not a number\"\nmatch parseAge \"abc\" with\n| Ok n -> printfn \"Age %d\" n\n| Error msg -> printfn \"Error: %s\" msg\n// Error: Not a number\nlet safeDivide a b =\n    try Some (a / b)\n    with :? System.DivideByZeroException -> None\nprintfn \"%A\" (safeDivide 10 0)   // None",
+          "lang": "fsharp"
+        },
+        "`TryParse` trong .NET có tham số `out`; F# biến nó thành tuple `(success, value)` mà bạn có thể khớp trực tiếp."
+      ]
+    },
+    {
+      "h": "Một chương trình hoàn chỉnh nhỏ: tần suất từ",
+      "body": [
+        {
+          "code": "let text = \"the cat and the hat and the bat\"\ntext.Split(' ')\n|> Array.countBy id\n|> Array.sortByDescending snd\n|> Array.truncate 2\n|> Array.iter (fun (word, n) -> printfn \"%s %d\" word n)\n// the 3\n// and 2",
+          "lang": "fsharp"
+        },
+        "`Array.countBy id` nhóm các từ giống nhau và trả về các cặp `(word, count)`, `snd` lấy phần tử thứ hai của mỗi cặp để sắp xếp, và kết quả được in bằng một lambda tách tuple.",
+        {
+          "note": "Lỗi thường gặp của người mới: viết `[1, 2, 3]` (đó là danh sách chứa một tuple; hãy dùng dấu chấm phẩy `[1; 2; 3]`); dùng `=` để đổi giá trị khả biến (`=` so sánh, `<-` gán); gọi hàm dạng `add(1, 2)` trong khi nó được định nghĩa là `add x y`; trộn `int` và `float` mà không chuyển đổi; và đặt tệp sai thứ tự trong `.fsproj`."
+        }
+      ]
+    },
+    {
+      "h": "Học tiếp ở đâu",
+      "body": [
+        {
+          "ul": [
+            "Microsoft Learn: tài liệu F#, gồm \"Tour of F#\" và tài liệu tham chiếu ngôn ngữ.",
+            "Luyện tập trong `dotnet fsi`, nơi bạn có thể dán mã và thấy kết quả ngay; kết thúc đầu vào bằng `;;`.",
+            "Học các module `List`, `Array`, `Seq`, `Option` và `Result`; phần lớn mã hằng ngày được xây từ chúng.",
+            "Xem các framework web và thư viện F# trên NuGet khi đã vững kiến thức cơ bản."
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "F# chỉ dành cho Windows thôi sao?",
+      "a": "Không. F# chạy trên .NET vốn đa nền tảng, nên bạn có thể build và chạy chương trình F# trên Windows, macOS và Linux."
+    },
+    {
+      "q": "F# và C# khác nhau thế nào?",
+      "a": "Cả hai chạy trên .NET và dùng được cùng các thư viện. C# trước hết là hướng đối tượng và được bổ sung tính năng hàm, còn F# ưu tiên hàm, với dữ liệu bất biến, suy luận kiểu và khớp mẫu là mặc định."
+    },
+    {
+      "q": "|> nghĩa là gì trong F#?",
+      "a": "`x |> f` là toán tử pipeline và nghĩa là `f x`. Nó truyền giá trị bên trái làm đối số cuối cùng của hàm bên phải, nên chuỗi biến đổi đọc từ trên xuống dưới."
+    },
+    {
+      "q": "F# có liên quan đến OCaml không?",
+      "a": "Có. F# thuộc họ ML và cú pháp lõi gần với OCaml, nhưng nó được xây cho .NET, mặc định dùng thụt lề có ý nghĩa và có các tính năng riêng như computation expression."
+    }
+  ]
+}

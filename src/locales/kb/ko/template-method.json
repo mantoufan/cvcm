@@ -1,0 +1,149 @@
+{
+  "title": "템플릿 메서드 패턴: 고정된 단계, 훅, TypeScript 예제 — cv.cm",
+  "description": "템플릿 메서드 패턴은 알고리즘의 단계를 기반 클래스에 고정하고 일부 단계는 하위 클래스가 채우게 합니다. TypeScript 예제로 훅을 알아봅니다.",
+  "h1": "템플릿 메서드 패턴 예제로 쉽게 이해하기",
+  "answer": "템플릿 메서드(Template Method)는 알고리즘의 뼈대를 기반 클래스의 메서드에 정의하고, 전체 순서를 바꾸지 않은 채 하위 클래스가 특정 단계를 오버라이드하게 하는 행동 패턴입니다. 기반 클래스는 무엇을 언제 할지 결정하고, 하위 클래스는 일부 단계를 어떻게 할지 결정합니다. 기본 구현이 있는 선택적 단계를 훅(hook)이라고 합니다.",
+  "sections": [
+    {
+      "h": "의도와 해결하는 문제",
+      "body": [
+        "의도: 연산 안에 알고리즘의 뼈대를 정의하고 일부 단계는 하위 클래스로 미룹니다. 템플릿 메서드는 알고리즘의 구조를 바꾸지 않고 하위 클래스가 알고리즘의 특정 단계를 재정의하게 합니다. GoF(Gang of Four) 책에 실린 행동 패턴 중 하나입니다.",
+        "데이터를 CSV와 JSON으로 내보내는 보고서 도구를 상상해 봅시다. 두 내보내기 클래스는 같은 순서로 같은 일을 합니다. 행을 불러오고, 행이 있는지 확인하고, 형식을 만들고, 행 수를 담은 푸터를 붙입니다. 서식을 만드는 부분만 다릅니다. 각각 따로 작성하면 공통 단계가 복사되고, 한쪽의 수정(예: 빈 결과 처리 개선)을 다른 쪽에서 쉽게 잊게 됩니다.",
+        "템플릿 메서드에서는 기반 클래스 `Exporter`가 고정된 단계 순서를 가진 `export` 메서드를 포함합니다. 달라지는 단계는 추상 메서드입니다. `CsvExporter`와 `JsonExporter`는 그 단계만 구현합니다."
+      ]
+    },
+    {
+      "h": "구조와 참여자",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "역할",
+              "책임"
+            ],
+            "rows": [
+              [
+                "추상 클래스(Abstract class)",
+                "단계를 고정된 순서로 호출하는 템플릿 메서드를 구현하고, 추상 단계를 선언하며 훅을 제공할 수 있습니다"
+              ],
+              [
+                "템플릿 메서드(Template method)",
+                "알고리즘을 정의하는 공개 메서드로, 보통 오버라이드하지 않도록 의도됩니다"
+              ],
+              [
+                "기본 연산(Primitive operation)",
+                "모든 하위 클래스가 구현해야 하는 추상 단계"
+              ],
+              [
+                "훅(Hook)",
+                "기본(흔히 빈) 구현이 있어 하위 클래스가 오버라이드할 수 있는 단계"
+              ],
+              [
+                "구체 클래스(Concrete class)",
+                "기본 연산을 구현하고 필요에 따라 훅을 오버라이드합니다"
+              ]
+            ]
+          }
+        },
+        "이 설계는 제어를 역전시킵니다. 하위 클래스가 기반 클래스를 호출하는 것이 아니라 기반 클래스가 하위 클래스의 메서드를 호출합니다. 이를 할리우드 원칙(“우리에게 전화하지 마세요, 저희가 연락드리겠습니다”)이라고도 부릅니다."
+      ]
+    },
+    {
+      "h": "TypeScript 구현",
+      "body": [
+        "`export`가 템플릿 메서드입니다. `format`은 하위 클래스가 반드시 구현해야 하는 기본 연산이고, `header`는 빈 기본 구현을 가진 훅입니다.",
+        {
+          "code": "type Row = { name: string; score: number };\n\nabstract class Exporter {\n  // The template method: fixed order of steps\n  export(rows: Row[]): string {\n    if (rows.length === 0) return \"no data\";\n    const lines = [this.header(), this.format(rows), \"rows: \" + rows.length];\n    return lines.filter((line) => line !== \"\").join(\"\\n\");\n  }\n\n  protected abstract format(rows: Row[]): string; // required step\n  protected header(): string { return \"\"; }       // hook: optional step\n}\n\nclass CsvExporter extends Exporter {\n  protected header() { return \"name,score\"; }\n  protected format(rows: Row[]) {\n    return rows.map((r) => r.name + \",\" + r.score).join(\"\\n\");\n  }\n}\n\nclass JsonExporter extends Exporter {\n  protected format(rows: Row[]) {\n    return JSON.stringify(rows);\n  }\n}\n\nconst rows = [{ name: \"Ana\", score: 9 }, { name: \"Ben\", score: 7 }];\nconsole.log(new CsvExporter().export(rows));\n// name,score\n// Ana,9\n// Ben,7\n// rows: 2\nconsole.log(new JsonExporter().export(rows));\n// [{\"name\":\"Ana\",\"score\":9},{\"name\":\"Ben\",\"score\":7}]\n// rows: 2\nconsole.log(new JsonExporter().export([])); // no data",
+          "lang": "typescript"
+        },
+        "빈 데이터 검사와 푸터는 한곳에 있습니다. 새 XML 내보내기 클래스는 `format`만 구현하면 나머지를 그대로 얻습니다.",
+        {
+          "note": "TypeScript에는 `final` 키워드가 없어서 하위 클래스가 `export`를 오버라이드해 고정된 순서를 깨뜨릴 수 있습니다. 템플릿 메서드를 오버라이드하면 안 된다고 문서화하고, 하위 클래스가 올바르게 작성하기 쉽도록 오버라이드 가능한 단계의 수를 적게 유지하세요."
+        }
+      ]
+    },
+    {
+      "h": "합성으로 구현한 같은 발상",
+      "body": [
+        "상속만이 유일한 방법은 아닙니다. 달라지는 단계를 함수로 전달하면 이 패턴이 전략의 가까운 친척이 되어 클래스 계층을 피할 수 있습니다.",
+        {
+          "code": "type Row = { name: string; score: number };\ntype Steps = { format: (rows: Row[]) => string; header?: () => string };\n\nfunction exportRows(rows: Row[], steps: Steps): string {\n  if (rows.length === 0) return \"no data\";\n  const lines = [steps.header?.() ?? \"\", steps.format(rows), \"rows: \" + rows.length];\n  return lines.filter((line) => line !== \"\").join(\"\\n\");\n}\n\nconsole.log(exportRows([{ name: \"Ana\", score: 9 }], { format: (r) => r[0].name }));\n// Ana\n// rows: 1",
+          "lang": "typescript"
+        },
+        "단계가 작고 기반 클래스에 공유 상태가 필요 없을 때, 또는 하나의 내보내기가 여러 출처의 단계를 결합해야 할 때 이 형태를 선호하세요."
+      ]
+    },
+    {
+      "h": "언제 쓰고 언제 쓰지 말아야 할까",
+      "body": [
+        {
+          "ul": [
+            "여러 클래스가 같은 알고리즘을 실행하고 달라지는 단계가 몇 개뿐이라 중복된 부분을 없애고 싶을 때 사용합니다.",
+            "테스트의 setup과 teardown처럼, 사용자가 단계를 커스터마이즈하게 하면서 연산 순서는 직접 제어해야 하는 프레임워크에서 사용합니다.",
+            "모든 하위 클래스에 구현을 강제하지 않고 선택적인 확장 지점을 제공하려면 훅을 사용합니다.",
+            "변형이 크거나 실행 중에 바뀌어야 한다면 사용하지 않습니다. 합성을 쓰는 전략이 더 유연합니다.",
+            "템플릿 메서드의 깊은 계층은 피하세요. 하위 클래스의 하위 클래스가 단계를 오버라이드하면 흐름을 따라가기 어려워집니다."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "실제 사용 사례",
+      "body": [
+        {
+          "ul": [
+            "Java의 `AbstractList`: `get(int)`와 `size()`를 구현하면 기반 클래스가 이를 바탕으로 반복, `indexOf`, `contains` 등의 메서드를 제공합니다.",
+            "Java의 `InputStream`: 하위 클래스가 단일 바이트 `read()`를 구현하면 기반 클래스가 이를 호출해 `read(byte[], int, int)`를 구현합니다(속도를 위해 하위 클래스가 오버라이드할 수 있습니다).",
+            "테스트 프레임워크: JUnit, Python의 `unittest` 등은 `setUp`, 테스트 메서드, `tearDown`을 고정된 순서로 호출하고, 필요한 단계만 오버라이드합니다.",
+            "React 클래스 컴포넌트의 `componentDidMount`처럼 생명주기 메서드가 있는 UI 프레임워크는 자신의 알고리즘의 고정된 지점에서 여러분의 메서드를 호출합니다."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "관련 패턴",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "패턴",
+              "템플릿 메서드 패턴과의 차이"
+            ],
+            "rows": [
+              [
+                "전략",
+                "전략은 실행 중에 합성으로 알고리즘 전체를 교체하고, 템플릿 메서드는 알고리즘을 고정하고 컴파일 시점에 상속으로 일부를 달리합니다."
+              ],
+              [
+                "팩토리 메서드",
+                "팩토리 메서드는 객체를 만드는 단계로서 템플릿 메서드의 단계 중 하나인 경우가 많습니다."
+              ],
+              [
+                "훅 함수와 콜백",
+                "고정된 알고리즘에 콜백을 넘기는 것은 같은 발상의 합성 기반 버전입니다."
+              ]
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "템플릿 메서드 패턴에서 훅이란 무엇인가요?",
+      "a": "훅은 기반 클래스에 기본 구현이 있는 단계로, 대개 아무것도 하지 않습니다. 하위 클래스는 그 지점에 동작을 추가하려고 오버라이드할 수 있지만, 반드시 그럴 필요는 없습니다."
+    },
+    {
+      "q": "템플릿 메서드 패턴과 전략 패턴의 차이는 무엇인가요?",
+      "a": "템플릿 메서드는 상속을 사용합니다. 기반 클래스가 알고리즘을 소유하고 하위 클래스가 단계를 오버라이드합니다. 전략은 합성을 사용합니다. 컨텍스트가 알고리즘 전체를 실행 중에 교체할 수 있는 객체나 함수에 위임합니다."
+    },
+    {
+      "q": "템플릿 메서드 자체는 오버라이드할 수 있어야 하나요?",
+      "a": "아니요. 목적이 단계의 순서를 고정하는 것이기 때문입니다. Java나 C#에서는 `final`이나 비가상 메서드로 표시할 수 있고, TypeScript에는 `final` 키워드가 없으므로 문서화해야 합니다."
+    },
+    {
+      "q": "템플릿 메서드 패턴은 팩토리 메서드 패턴과 어떤 관계인가요?",
+      "a": "팩토리 메서드는 템플릿 메서드의 특수한 형태인 경우가 많습니다. 기반 클래스의 알고리즘에 객체를 만드는 단계가 있고, 어떤 클래스를 만들지는 하위 클래스가 결정합니다."
+    }
+  ]
+}

@@ -1,0 +1,151 @@
+{
+  "title": "Patrón Observer: sujetos, suscriptores y eventos en TypeScript — cv.cm",
+  "description": "El patrón Observer permite que los objetos se suscriban a otro objeto y reciban avisos cuando cambia. Aprende los roles, un ejemplo tipado en TypeScript y las trampas.",
+  "h1": "Patrón Observer explicado con ejemplos",
+  "answer": "Observer es un patrón de diseño de comportamiento en el que un objeto, llamado sujeto, mantiene una lista de dependientes, llamados observadores, y los notifica automáticamente cuando cambia su estado. Los observadores se suscriben y se dan de baja en tiempo de ejecución, y el sujeto no necesita conocer sus clases concretas. Los listeners de eventos del navegador, el `EventEmitter` de Node.js y las bibliotecas reactivas como RxJS se basan en esta idea.",
+  "sections": [
+    {
+      "h": "Intención y el problema que resuelve",
+      "body": [
+        "Intención: definir una dependencia de uno a muchos entre objetos, de modo que cuando un objeto cambia de estado, todos sus dependientes sean notificados y se actualicen automáticamente. Observer es uno de los patrones de comportamiento del libro de la Banda de los Cuatro (Gang of Four, GoF), y también se conoce como publicación-suscripción o patrón listener.",
+        "Imagina un carrito de compras en una tienda web. Cuando se añade un artículo, el icono del carrito en la cabecera debe mostrar el nuevo recuento, la barra lateral debe mostrar el nuevo total y un módulo de analítica debe registrar el evento. Si el carrito llama directamente a cada uno, el módulo del carrito depende de la cabecera, la barra lateral y la analítica. Añadir una cuarta reacción significa editar de nuevo el carrito.",
+        "Con Observer, el carrito solo mantiene una lista de suscriptores y llama a cada uno cuando cambia. La cabecera, la barra lateral y la analítica se suscriben por sí mismas. El carrito no las importa, y nuevas funciones pueden reaccionar a los cambios del carrito sin tocar su código."
+      ]
+    },
+    {
+      "h": "Estructura y participantes",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Rol",
+              "Responsabilidad"
+            ],
+            "rows": [
+              [
+                "Sujeto (publicador)",
+                "Mantiene una lista de observadores y ofrece métodos para suscribirlos y darlos de baja; los notifica cuando algo cambia"
+              ],
+              [
+                "Observador (suscriptor)",
+                "Interfaz con un método de actualización, a menudo solo una función callback"
+              ],
+              [
+                "Sujeto concreto",
+                "Guarda el estado de interés y llama a notify cuando cambia"
+              ],
+              [
+                "Observador concreto",
+                "Reacciona a las notificaciones, por ejemplo redibujando una parte de la interfaz"
+              ]
+            ]
+          }
+        },
+        "Hay dos estilos de notificación. En el modelo push, el sujeto envía los datos cambiados junto con la notificación. En el modelo pull, solo dice \"algo cambió\" y los observadores piden al sujeto los datos que necesitan."
+      ]
+    },
+    {
+      "h": "Implementación en TypeScript",
+      "body": [
+        "Una pequeña clase genérica `Subject` gestiona las suscripciones. Los observadores son funciones simples, que es la forma más común en TypeScript. `subscribe` devuelve una función que cancela la suscripción, así que quien llama no puede olvidar qué listener registró.",
+        {
+          "code": "type Listener<T> = (value: T) => void;\n\nclass Subject<T> {\n  private listeners = new Set<Listener<T>>();\n\n  subscribe(listener: Listener<T>): () => void {\n    this.listeners.add(listener);\n    return () => this.listeners.delete(listener);\n  }\n\n  protected notify(value: T) {\n    for (const listener of [...this.listeners]) listener(value);\n  }\n}\n\ntype CartEvent = { count: number; total: number };\n\nclass Cart extends Subject<CartEvent> {\n  private items: { name: string; price: number }[] = [];\n\n  add(name: string, price: number) {\n    this.items.push({ name, price });\n    const total = this.items.reduce((sum, item) => sum + item.price, 0);\n    this.notify({ count: this.items.length, total });\n  }\n}\n\nconst cart = new Cart();\ncart.subscribe(({ count }) => console.log(\"header: \" + count + \" items\"));\nconst stopAnalytics = cart.subscribe(({ total }) => console.log(\"analytics: total \" + total));\n\ncart.add(\"Book\", 12);\nstopAnalytics(); // unsubscribe\ncart.add(\"Pen\", 3);\n// header: 1 items\n// analytics: total 12\n// header: 2 items",
+          "lang": "typescript"
+        },
+        "`notify` recorre una copia del conjunto (`[...this.listeners]`). De este modo, un listener que se da de baja a sí mismo durante la notificación no altera el bucle.",
+        {
+          "note": "Olvidar darse de baja es el error más común de Observer. El sujeto conserva una referencia a cada listener, así que un componente de interfaz destruido que sigue suscrito permanece en memoria y sigue reaccionando a los eventos. Llama siempre a la función de baja cuando el observador ya no se necesite, por ejemplo en el código de limpieza de un componente."
+        }
+      ]
+    },
+    {
+      "h": "Usar el EventTarget integrado",
+      "body": [
+        "Los navegadores, Node.js y Deno ofrecen `EventTarget`, así que a menudo no necesitas tu propia clase de sujeto:",
+        {
+          "code": "const thermostat = new EventTarget();\n\nthermostat.addEventListener(\"change\", (e) => {\n  console.log(\"new temperature:\", (e as CustomEvent<number>).detail);\n});\n\nthermostat.dispatchEvent(new CustomEvent(\"change\", { detail: 21.5 }));\n// new temperature: 21.5",
+          "lang": "typescript"
+        },
+        "Node.js también tiene la clase `EventEmitter` en el módulo `node:events`, con los métodos `on`, `off` y `emit`."
+      ]
+    },
+    {
+      "h": "Cuándo usarlo y cuándo no",
+      "body": [
+        {
+          "ul": [
+            "Úsalo cuando un cambio en un objeto deba actualizar a otros objetos y no sepas de antemano cuántos ni cuáles.",
+            "Úsalo para mantener un módulo central independiente del código de interfaz, registro o analítica que reacciona a él.",
+            "Úsalo para eventos que ocurren a lo largo del tiempo, como entradas del usuario, mensajes o lecturas de sensores.",
+            "No lo uses cuando hay exactamente un receptor fijo; una llamada directa a un método o un parámetro callback es más fácil de seguir.",
+            "Ten cuidado con las cadenas de observadores que disparan otras notificaciones. Pueden causar bucles de actualización y hacer difícil ver por qué algo cambió.",
+            "No dependas del orden en que se llama a los observadores a menos que el sujeto lo documente."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Usos en el mundo real",
+      "body": [
+        {
+          "ul": [
+            "El DOM: `element.addEventListener(\"click\", handler)` suscribe un observador a un elemento.",
+            "Node.js: `EventEmitter` es la base de los flujos, los servidores HTTP y muchos otros objetos del núcleo.",
+            "Las API de observadores del navegador como `MutationObserver`, `IntersectionObserver` y `ResizeObserver` notifican a callbacks los cambios en la página.",
+            "RxJS modela flujos de valores como observables a los que se suscriben los observadores.",
+            "Java: `java.util.Observable` quedó obsoleta en Java 9; en su lugar se usan las interfaces `java.util.concurrent.Flow` (publicador y suscriptor) y las interfaces de listeners de eventos."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Patrones relacionados",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Patrón",
+              "En qué se diferencia de Observer"
+            ],
+            "rows": [
+              [
+                "Mediator",
+                "Un mediador conoce a los objetos participantes y los coordina; un sujeto simplemente difunde y no sabe qué hacen los observadores."
+              ],
+              [
+                "Publicación-suscripción con un broker",
+                "Los publicadores y los suscriptores no se conocen en absoluto y se comunican a través de un broker de mensajes o un bus de eventos, a menudo entre procesos."
+              ],
+              [
+                "Command",
+                "Una notificación puede llevar un objeto comando; Command trata de una petición, Observer de una notificación de uno a muchos."
+              ],
+              [
+                "Iterator",
+                "Iterator es de tipo pull (el consumidor pide el siguiente valor); Observer es de tipo push (el productor envía los valores cuando ocurren)."
+              ]
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "¿Cuál es la diferencia entre Observer y publicación-suscripción?",
+      "a": "En el patrón Observer clásico, los observadores se registran directamente en el sujeto. En publicación-suscripción, un broker o canal de eventos se sitúa entre ellos, así que publicadores y suscriptores no se conocen. Mucha gente usa los dos nombres de forma laxa para la misma idea."
+    },
+    {
+      "q": "¿Cómo evito fugas de memoria con el patrón Observer?",
+      "a": "Da de baja a los observadores cuando ya no se necesiten. Devolver una función de baja desde `subscribe`, o usar un `AbortSignal` con `addEventListener`, simplifica la limpieza."
+    },
+    {
+      "q": "¿Se llama a los observadores de forma síncrona?",
+      "a": "En el ejemplo anterior y en `EventTarget` y `EventEmitter`, los listeners se ejecutan de forma síncrona en el orden en que se añadieron. Otras bibliotecas pueden entregar las notificaciones de forma asíncrona, así que consulta su documentación."
+    },
+    {
+      "q": "¿Observer es lo mismo que la programación reactiva?",
+      "a": "La programación reactiva se construye sobre Observer. Bibliotecas como RxJS añaden operadores para filtrar, combinar y transformar flujos de notificaciones, además de reglas para errores y finalización."
+    }
+  ]
+}

@@ -1,0 +1,160 @@
+{
+  "title": "Facade pattern: one simple interface to a complex subsystem, TypeScript example — cv.cm",
+  "description": "The Facade design pattern explained: hide a complex subsystem behind one simple interface. TypeScript order-checkout example, when to use it and real uses.",
+  "h1": "Facade pattern explained with examples",
+  "answer": "Facade is a structural design pattern that provides one simple, higher-level interface to a set of interfaces in a complex subsystem. Instead of calling inventory, payment, shipping and email services in the right order, client code calls one method such as `shop.placeOrder()`, and the facade coordinates the subsystem classes. The subsystem still exists and can be used directly when needed; the facade only makes the common case easy.",
+  "sections": [
+    {
+      "h": "Intent",
+      "body": [
+        "Provide a unified interface to a set of interfaces in a subsystem. Facade defines a higher-level interface that makes the subsystem easier to use. It is one of the seven structural patterns in the Gang of Four (GoF) book."
+      ]
+    },
+    {
+      "h": "The problem it solves",
+      "body": [
+        "Imagine an online shop. Placing an order needs several services: check and reserve stock, charge the card, release the stock if the payment fails, create a shipment, and send a confirmation email. Each service has its own API and its own rules.",
+        "If every caller, such as the web checkout, the mobile API and an admin tool, performs these steps itself, the same sequence is copied in many places. Each copy can get the order wrong or forget the rollback, and every caller depends on five services. When one service changes, all callers must change. A facade puts the sequence in one place and gives callers one method."
+      ]
+    },
+    {
+      "h": "Structure and participants",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Participant",
+              "Responsibility",
+              "In the example"
+            ],
+            "rows": [
+              [
+                "Facade",
+                "Knows which subsystem classes handle a request and delegates to them in the right order.",
+                "`OrderFacade`"
+              ],
+              [
+                "Subsystem classes",
+                "Do the real work. They do not know about the facade.",
+                "`Inventory`, `Payments`, `Shipping`, `Mailer`"
+              ],
+              [
+                "Client",
+                "Uses the facade for common tasks; may still use subsystem classes directly for special cases.",
+                "checkout code"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "TypeScript implementation",
+      "body": [
+        {
+          "code": "// Subsystem classes, each with its own API.\nclass Inventory {\n  private stock = new Map([[\"book\", 2]]);\n  reserve(sku: string): boolean {\n    const n = this.stock.get(sku) ?? 0;\n    if (n === 0) return false;\n    this.stock.set(sku, n - 1);\n    return true;\n  }\n  release(sku: string): void { this.stock.set(sku, (this.stock.get(sku) ?? 0) + 1); }\n}\nclass Payments {\n  charge(card: string, cents: number): boolean { return card.startsWith(\"4\") && cents > 0; }\n}\nclass Shipping {\n  createShipment(sku: string, address: string): string { return `SHIP-${sku}-${address.length}`; }\n}\nclass Mailer {\n  send(to: string, text: string): void { console.log(`mail to ${to}: ${text}`); }\n}",
+          "lang": "typescript"
+        },
+        "The facade then runs the whole workflow in the right order behind one method:",
+        {
+          "code": "// Facade: one method that runs the whole workflow in the right order.\nclass OrderFacade {\n  constructor(private inventory = new Inventory(), private payments = new Payments(),\n              private shipping = new Shipping(), private mailer = new Mailer()) {}\n\n  placeOrder(sku: string, card: string, cents: number, email: string, address: string): string {\n    if (!this.inventory.reserve(sku)) return \"out of stock\";\n    if (!this.payments.charge(card, cents)) {\n      this.inventory.release(sku); // roll back the reservation\n      return \"payment declined\";\n    }\n    const shipmentId = this.shipping.createShipment(sku, address);\n    this.mailer.send(email, `Order confirmed, shipment ${shipmentId}`);\n    return \"ok\";\n  }\n}\n\nconst shop = new OrderFacade();\nconsole.log(shop.placeOrder(\"book\", \"4111\", 1999, \"ada@example.com\", \"1 Main St\"));\n// mail to ada@example.com: Order confirmed, shipment SHIP-book-9\n// ok\nconsole.log(shop.placeOrder(\"book\", \"5500\", 1999, \"bob@example.com\", \"2 Side St\")); // payment declined",
+          "lang": "typescript"
+        },
+        "Callers now depend on one class with one method. The rollback rule exists exactly once. The subsystem classes are still available, so an admin tool that only needs to release stock can call `Inventory` directly."
+      ]
+    },
+    {
+      "h": "When to use it, and when not to",
+      "body": [
+        "Use Facade when:",
+        {
+          "ul": [
+            "A subsystem is complex and most clients need only a simple, common subset of what it can do.",
+            "You want to reduce the number of dependencies between client code and many subsystem classes.",
+            "You want to organize a system into layers, with a facade as the entry point to each layer.",
+            "You wrap a large third-party library and want the rest of your code to use only the few operations it needs."
+          ]
+        },
+        "Avoid or limit it when:",
+        {
+          "ul": [
+            "The subsystem is already simple. A facade that forwards each call one to one adds a layer without hiding anything.",
+            "The facade starts to collect unrelated methods and business rules from all over the system. This is the \"god object\" problem: one class that knows and does too much. Split it into several focused facades."
+          ]
+        },
+        {
+          "note": "A facade should simplify, not imprison. Do not make the subsystem private just because a facade exists. Advanced clients often need the full API, and blocking them leads to workarounds."
+        }
+      ]
+    },
+    {
+      "h": "Real-world uses",
+      "body": [
+        {
+          "ul": [
+            "Node.js: `fs.readFile()` opens a file, reads it to the end and closes it in one call. The lower-level `fs.open()`, `fs.read()` and `fs.close()` remain available.",
+            "jQuery became popular largely by putting one short, consistent API in front of the DOM and the browser differences of its time.",
+            "The GoF book's example is a compiler: one `Compiler` class hides the scanner, parser, code generator and other subsystem classes from programs that just want to compile code.",
+            "Service layers and API gateways in back-end applications act as facades over many internal services."
+          ]
+        },
+        {
+          "note": "Laravel, a PHP framework, has a feature called Facades. It is a different idea: static-looking access to objects in the service container. The name is shared, but the intent is not the GoF pattern."
+        }
+      ]
+    },
+    {
+      "h": "Related patterns",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Pattern",
+              "How it differs from Facade"
+            ],
+            "rows": [
+              [
+                "Adapter",
+                "Makes one existing interface match another existing interface. A facade defines a new, simpler interface for many classes."
+              ],
+              [
+                "Mediator",
+                "Also centralizes coordination, but subsystem objects know the mediator and talk through it. With a facade, subsystem classes do not know the facade exists."
+              ],
+              [
+                "Abstract Factory",
+                "Can be used with a facade to create subsystem objects in a platform-independent way."
+              ],
+              [
+                "Singleton",
+                "Facades are often single instances, since one entry point to a subsystem is usually enough."
+              ],
+              [
+                "Proxy",
+                "Has the same interface as one object and controls access to it. A facade has a different, simpler interface over many objects."
+              ]
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "What is the difference between Facade and Adapter?",
+      "a": "An adapter converts one existing interface into another interface the client already expects. A facade invents a new, simpler interface to make a whole subsystem easier to use."
+    },
+    {
+      "q": "Does a facade hide the subsystem completely?",
+      "a": "No. The facade makes common tasks easy, but clients that need more control can still use the subsystem classes directly."
+    },
+    {
+      "q": "Can a system have more than one facade?",
+      "a": "Yes. Large systems often have one facade per subsystem or per use case, which keeps each facade small and focused."
+    },
+    {
+      "q": "Is a service layer a facade?",
+      "a": "Often, yes. A service method that coordinates repositories, external APIs and notifications behind one call plays the facade role for the code that calls it."
+    }
+  ]
+}

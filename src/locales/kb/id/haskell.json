@@ -1,0 +1,179 @@
+{
+  "title": "Tutorial Haskell: tipe, pattern matching, list, dan IO — cv.cm",
+  "description": "Belajar Haskell langkah demi langkah: memasang GHC, Hello, world, tipe dan inferensi, fungsi dan guard, list, tipe data, type class, Maybe, Either, dan IO.",
+  "h1": "Tutorial Haskell untuk pemula",
+  "answer": "Haskell adalah bahasa fungsional murni bertipe statis dengan inferensi tipe dan lazy evaluation. Program disusun dari fungsi murni, algebraic data type, dan pattern matching, sedangkan efek samping dilacak lewat tipe seperti IO. Halaman ini membahas cara memasang GHC, tipe, fungsi dan guard, list dan fungsi tingkat tinggi, tipe data, type class, Maybe dan Either, serta satu contoh lengkap.",
+  "sections": [
+    {
+      "h": "Apa itu Haskell dan untuk apa dipakai",
+      "body": [
+        "Haskell adalah bahasa pemrograman fungsional murni dengan sistem tipe statis yang kuat, inferensi tipe, dan lazy evaluation. Haskell dirancang oleh sebuah komite peneliti dan pertama kali didefinisikan pada 1990; standar saat ini adalah Haskell 2010, dan GHC (Glasgow Haskell Compiler) adalah implementasi utamanya. Di Haskell, fungsi tidak memiliki efek samping kecuali tipenya menyatakan demikian, sehingga program lebih mudah dipahami dan diuji.",
+        "Haskell dipakai di bidang keuangan dan fintech, compiler dan tool bahasa pemrograman (Pandoc dan linter ShellCheck ditulis dalam Haskell), proyek blockchain, backend web, dan riset. Banyak orang juga mempelajarinya karena gagasannya, seperti algebraic data type, type class, dan fungsi murni, telah memengaruhi Rust, Swift, Scala, Kotlin, dan TypeScript."
+      ]
+    },
+    {
+      "h": "Memasang GHC dan menjalankan Hello, world",
+      "body": [
+        "Installer yang direkomendasikan adalah GHCup, yang memasang GHC, build tool Cabal dan Stack, serta Haskell Language Server untuk editor. Setiap program memiliki action `main` bertipe `IO ()`.",
+        {
+          "code": "-- hello.hs\nmain :: IO ()\nmain = putStrLn \"Hello, world!\"",
+          "lang": "haskell"
+        },
+        {
+          "code": "runghc hello.hs          # run without compiling\n# Hello, world!\nghc hello.hs && ./hello  # compile to a native executable\nghci                     # interactive REPL; load a file with :load hello.hs",
+          "lang": "shell"
+        },
+        "Komentar diawali dengan `--`. Di GHCi, `:type expression` (atau `:t`) menampilkan tipe dari ekspresi apa pun, yang merupakan salah satu cara terbaik untuk belajar."
+      ]
+    },
+    {
+      "h": "Nilai, tipe, dan inferensi tipe",
+      "body": [
+        "Nama diikat sekali dan tidak pernah berubah: tidak ada variabel yang dapat diubah (mutable). Type signature ditulis dengan `::` dan bersifat opsional karena compiler dapat menyimpulkannya, tetapi menuliskannya untuk definisi tingkat atas adalah praktik yang baik.",
+        {
+          "code": "name :: String\nname = \"Haskell\"\n\nyear :: Int\nyear = 1990\n\nratio :: Double\nratio = fromIntegral year / 1000   -- convert Int to Double explicitly\n\nmain :: IO ()\nmain = do\n  putStrLn (name ++ \" \" ++ show year)  -- Haskell 1990\n  print ratio                          -- 1.99\n  print (7 `div` 2, 7 `mod` 2)         -- (3,1)\n  print (2 ^ 64 :: Integer)            -- 18446744073709551616",
+          "lang": "haskell"
+        },
+        {
+          "table": {
+            "head": [
+              "Tipe",
+              "Contoh",
+              "Catatan"
+            ],
+            "rows": [
+              [
+                "`Int`",
+                "`42`",
+                "integer berukuran tetap (64-bit dengan GHC di platform umum)"
+              ],
+              [
+                "`Integer`",
+                "`2 ^ 100`",
+                "integer dengan presisi arbitrer"
+              ],
+              [
+                "`Double`",
+                "`3.14`",
+                "floating point 64-bit"
+              ],
+              [
+                "`Bool`",
+                "`True`, `False`",
+                "constructor diawali huruf kapital"
+              ],
+              [
+                "`Char`",
+                "`'h'`",
+                "karakter Unicode"
+              ],
+              [
+                "`String`",
+                "`\"text\"`",
+                "list dari `Char`, yaitu `[Char]`; `Data.Text` lebih cepat"
+              ]
+            ]
+          }
+        },
+        "`show` mengubah sebuah nilai menjadi `String`, dan `print` adalah `putStrLn . show`. Angka tidak pernah dikonversi secara implisit; gunakan `fromIntegral`, `round`, atau `truncate`."
+      ]
+    },
+    {
+      "h": "Fungsi, guard, dan pattern matching",
+      "body": [
+        "Pemanggilan fungsi ditulis dengan spasi, bukan tanda kurung: `add 2 3`. Setiap fungsi menerima satu argumen dan mengembalikan fungsi lain untuk sisanya, fitur yang disebut currying, sehingga `add 2` sendiri adalah sebuah fungsi. Pattern matching dan guard menggantikan sebagian besar rangkaian `if`.",
+        {
+          "code": "add :: Int -> Int -> Int\nadd x y = x + y\n\nfactorial :: Integer -> Integer\nfactorial 0 = 1\nfactorial n = n * factorial (n - 1)\n\ngrade :: Int -> Char\ngrade score\n  | score >= 90 = 'A'\n  | score >= 70 = 'B'\n  | otherwise   = 'C'\n\ndescribe :: [a] -> String\ndescribe []  = \"empty\"\ndescribe [_] = \"one item\"\ndescribe _   = \"many items\"\n\nmain :: IO ()\nmain = do\n  print (add 2 3)                 -- 5\n  print (map (add 10) [1, 2, 3])  -- [11,12,13] (partial application)\n  print (factorial 20)            -- 2432902008176640000\n  print (grade 75)                -- 'B'\n  putStrLn (describe \"hi\")        -- many items\n  print (if even 4 then \"even\" else \"odd\")  -- \"even\"",
+          "lang": "haskell"
+        },
+        "`if` adalah ekspresi dan selalu memerlukan `else`. Tidak ada perulangan: pengulangan dilakukan dengan rekursi atau fungsi tingkat tinggi seperti `map`, `filter`, dan `foldr`."
+      ]
+    },
+    {
+      "h": "List, tuple, dan fungsi tingkat tinggi",
+      "body": [
+        "List menyimpan nilai dengan satu tipe dan merupakan koleksi yang paling umum. Tuple mengelompokkan sejumlah nilai tetap yang tipenya boleh berbeda. List comprehension, range, dan operator komposisi fungsi `.` membuat pengolahan data menjadi ringkas.",
+        {
+          "code": "import Data.List (sortOn)\n\nmain :: IO ()\nmain = do\n  let nums = [5, 3, 8, 1] :: [Int]\n  print (head nums, length nums, sum nums)       -- (5,4,17)\n  print (0 : nums)                               -- [0,5,3,8,1] (prepend)\n  print (filter even nums)                       -- [8]\n  print (foldr (+) 0 [1 .. 10])                  -- 55\n  print [x * x | x <- [1 .. 5], odd x]           -- [1,9,25]\n  print (take 5 [1, 3 ..])                       -- [1,3,5,7,9] (lazy infinite list)\n  let people = [(\"Ann\", 31), (\"Bo\", 25)] :: [(String, Int)]\n  print (map fst (sortOn snd people))            -- [\"Bo\",\"Ann\"]\n  print ((length . filter (> 2)) nums)           -- 3\n  print (zip [1 :: Int ..] \"abc\")                -- [(1,'a'),(2,'b'),(3,'c')]",
+          "lang": "haskell"
+        },
+        "Karena Haskell bersifat lazy, nilai dihitung hanya saat diperlukan. Itulah sebabnya `take 5 [1, 3 ..]` bekerja pada list tak hingga. Kelambanan ini juga bisa menumpuk ekspresi besar yang belum dievaluasi; pilih `foldl'` dari `Data.List` daripada `foldl` untuk menjumlahkan list yang panjang."
+      ]
+    },
+    {
+      "h": "Algebraic data type dan type class",
+      "body": [
+        "Anda mendefinisikan tipe sendiri dengan `data`. Sebuah tipe dapat punya beberapa constructor (sum type), masing-masing dengan field (product type). Type class seperti `Show`, `Eq`, `Ord`, dan `Functor` menggambarkan perilaku bersama, mirip interface; `deriving` membuat instance yang umum secara otomatis.",
+        {
+          "code": "data Shape = Circle Double | Rect Double Double\n  deriving (Show, Eq)\n\narea :: Shape -> Double\narea (Circle r) = pi * r * r\narea (Rect w h) = w * h\n\ndata User = User { userName :: String, userAge :: Int }\n  deriving Show\n\nclass Describable a where\n  describe :: a -> String\n\ninstance Describable Shape where\n  describe (Circle _) = \"a circle\"\n  describe (Rect _ _) = \"a rectangle\"\n\nmain :: IO ()\nmain = do\n  print (map area [Circle 1, Rect 2 3])   -- [3.141592653589793,6.0]\n  putStrLn (describe (Rect 1 1))          -- a rectangle\n  let u = User { userName = \"Ann\", userAge = 31 }\n  print (u { userAge = 32 })              -- User {userName = \"Ann\", userAge = 32}",
+          "lang": "haskell"
+        }
+      ]
+    },
+    {
+      "h": "Maybe, Either, dan IO",
+      "body": [
+        "Haskell tidak punya `null` dan tidak punya exception tanpa pemeriksaan di kode murni. Nilai yang mungkin tidak ada bertipe `Maybe a` (`Just x` atau `Nothing`), dan komputasi yang bisa gagal beserta alasannya bertipe `Either e a` (`Left err` atau `Right x`). Efek samping seperti membaca input berada dalam tipe `IO`, dan notasi `do` mengurutkannya.",
+        {
+          "code": "import Text.Read (readMaybe)\n\nsafeDiv :: Int -> Int -> Either String Int\nsafeDiv _ 0 = Left \"division by zero\"\nsafeDiv x y = Right (x `div` y)\n\nparseAge :: String -> Maybe Int\nparseAge s = case readMaybe s of\n  Just n | n >= 0 -> Just n\n  _               -> Nothing\n\nmain :: IO ()\nmain = do\n  print (safeDiv 10 2)          -- Right 5\n  print (safeDiv 1 0)           -- Left \"division by zero\"\n  print (parseAge \"42\")         -- Just 42\n  print (parseAge \"abc\")        -- Nothing\n  print (fmap (+ 1) (Just 41))  -- Just 42\n  putStrLn \"Your name?\"\n  n <- getLine                  -- an IO action that returns a String\n  putStrLn (\"Hi, \" ++ n)",
+          "lang": "haskell"
+        },
+        {
+          "note": "Fungsi seperti `head`, `tail`, dan `div` dengan nol melempar runtime error pada input yang buruk; misalnya `head []` menyebabkan crash. Lakukan pattern match pada list, atau gunakan alternatif yang mengembalikan `Maybe`, agar program Anda bersifat total. Exception dari `IO` dapat ditangkap dengan `catch` dan `try` dari `Control.Exception`."
+        }
+      ]
+    },
+    {
+      "h": "Program lengkap kecil: frekuensi kata",
+      "body": [
+        "Program ini membaca teks dari standard input, menghitung frekuensi kata dengan `Map`, dan mencetak tiga kata terbanyak. Program ini memakai komposisi fungsi, `Data.Map` dari paket containers yang disertakan bersama GHC, dan pengurutan.",
+        {
+          "code": "import Data.Char (isAlpha, toLower)\nimport Data.List (sortBy)\nimport Data.Ord (comparing, Down (..))\nimport qualified Data.Map.Strict as Map\n\nwordFreq :: String -> [(String, Int)]\nwordFreq =\n  sortBy (comparing (Down . snd) <> comparing fst)\n    . Map.toList\n    . Map.fromListWith (+)\n    . map (\\w -> (w, 1))\n    . words\n    . map (\\c -> if isAlpha c then toLower c else ' ')\n\nmain :: IO ()\nmain = do\n  text <- getContents\n  mapM_ (\\(w, n) -> putStrLn (w ++ \": \" ++ show n)) (take 3 (wordFreq text))",
+          "lang": "haskell"
+        },
+        {
+          "code": "echo \"The cat and the dog. The dog sat, and the cat ran.\" | runghc wordfreq.hs\n# the: 4\n# and: 2\n# cat: 2",
+          "lang": "shell"
+        },
+        {
+          "note": "Kesalahan umum pemula: mencampur tab dan spasi (indentasi bermakna); menulis `f(x, y)` alih-alih `f x y`; lupa bahwa `-1` sebagai argumen memerlukan tanda kurung, seperti `abs (-1)`; memakai `head` pada list yang mungkin kosong; dan mengira `let` di dalam `do` mengubah nilai yang sudah ada, padahal hanya membuat nama baru."
+        }
+      ]
+    },
+    {
+      "h": "Langkah selanjutnya",
+      "body": [
+        {
+          "ul": [
+            "Halaman dokumentasi di haskell.org, yang menaut ke tutorial, buku, dan GHC User's Guide.",
+            "Hackage, repositori paket, dan Hoogle, mesin pencari yang menemukan fungsi berdasarkan nama atau tipe.",
+            "Learn You a Haskell for Great Good! dan Real World Haskell, dua buku yang bisa dibaca gratis.",
+            "Haskell 2010 Language Report untuk definisi bahasa yang presisi."
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Apakah Haskell sulit dipelajari?",
+      "a": "Terasa berbeda karena tidak ada variabel mutable maupun perulangan, dan memakai sistem tipe yang ekspresif. Pemula yang mempelajari rekursi, pattern matching, dan tipe selangkah demi selangkah biasanya menemukan bahwa bahasa intinya kecil dan konsisten."
+    },
+    {
+      "q": "Apa arti fungsional murni?",
+      "a": "Fungsi selalu mengembalikan hasil yang sama untuk input yang sama dan tidak mengubah state atau melakukan input dan output. Efek tetap dimungkinkan, tetapi dinyatakan dalam tipe seperti `IO`."
+    },
+    {
+      "q": "Apa itu monad di Haskell?",
+      "a": "Monad adalah type class untuk tipe seperti `Maybe`, `Either`, dan `IO` yang mendukung perangkaian komputasi dengan `>>=`. Notasi `do` adalah sintaks untuk perangkaian itu."
+    },
+    {
+      "q": "Apa itu lazy evaluation?",
+      "a": "Ekspresi dievaluasi hanya ketika nilainya diperlukan. Ini memungkinkan list tak hingga dan menghindari pekerjaan yang tidak perlu, tetapi dapat membuat penggunaan memori lebih sulit diprediksi."
+    },
+    {
+      "q": "Sebaiknya pakai Stack atau Cabal?",
+      "a": "Keduanya membangun proyek Haskell dan keduanya dipasang oleh GHCup. Cabal adalah build tool standar; Stack menambahkan snapshot paket yang dikurasi. Keduanya cocok untuk pemula."
+    }
+  ]
+}

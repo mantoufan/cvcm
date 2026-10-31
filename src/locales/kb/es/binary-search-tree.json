@@ -1,0 +1,218 @@
+{
+  "title": "Árbol binario de búsqueda: insertar, buscar, eliminar, código en Python y complejidad — cv.cm",
+  "description": "Aprende cómo funciona un árbol binario de búsqueda (BST): la regla de orden, la búsqueda, la inserción y los tres casos de eliminación en Python, y la complejidad O(log n) frente a O(n).",
+  "h1": "Árbol binario de búsqueda explicado: cómo funciona, código y complejidad",
+  "answer": "Un árbol binario de búsqueda (BST) es un árbol binario en el que el subárbol izquierdo de cada nodo solo contiene claves menores y el derecho solo claves mayores. Gracias a esta regla, buscar, insertar y eliminar siguen un único camino desde la raíz y cuestan O(h), donde h es la altura del árbol: O(log n) si el árbol está balanceado, pero O(n) si degenera en una cadena. Un recorrido inorder visita las claves en orden ascendente.",
+  "sections": [
+    {
+      "h": "Qué problema resuelve un árbol binario de búsqueda",
+      "body": [
+        "Un arreglo ordenado permite búsqueda binaria rápida, pero insertar un elemento nuevo desplaza todo lo que sigue. Una tabla hash busca e inserta rápido, pero no mantiene orden, así que no puede responder \"¿cuál es la menor clave mayor que 42?\" ni \"lista todas las claves entre 10 y 20\". Un árbol binario de búsqueda mantiene las claves ordenadas y aun así permite insertar y eliminar con rapidez. Es la base de los mapas y conjuntos ordenados como `TreeMap` de Java y `std::map` de C++, que usan variantes autobalanceadas."
+      ]
+    },
+    {
+      "h": "La regla en palabras sencillas",
+      "body": [
+        "Cada nodo tiene una clave, un hijo izquierdo opcional y un hijo derecho opcional. Para cada nodo: todas las claves de su subárbol izquierdo son menores y todas las de su subárbol derecho son mayores. Para buscar una clave, empieza en la raíz y compara: ve a la izquierda si la clave es menor, a la derecha si es mayor, y detente si es igual o si te sales del árbol.",
+        {
+          "note": "La regla se aplica a subárboles enteros, no solo a los hijos directos. Un árbol en el que cada hijo es correcto respecto a su padre puede ser inválido si, por ejemplo, una clave profunda del subárbol izquierdo es mayor que la raíz."
+        }
+      ]
+    },
+    {
+      "h": "Ejemplo resuelto: construir y buscar en un árbol",
+      "body": [
+        "Inserta 8, 3, 10, 1, 6, 14, 4 en este orden. Cada clave nueva baja desde la raíz y se convierte en hoja donde se sale del árbol.",
+        {
+          "table": {
+            "head": [
+              "Inserción",
+              "Camino recorrido",
+              "Queda como"
+            ],
+            "rows": [
+              [
+                "8",
+                "árbol vacío",
+                "raíz"
+              ],
+              [
+                "3",
+                "8: menor, ir a la izquierda",
+                "hijo izquierdo de 8"
+              ],
+              [
+                "10",
+                "8: mayor, ir a la derecha",
+                "hijo derecho de 8"
+              ],
+              [
+                "1",
+                "8 izquierda, 3 izquierda",
+                "hijo izquierdo de 3"
+              ],
+              [
+                "6",
+                "8 izquierda, 3 derecha",
+                "hijo derecho de 3"
+              ],
+              [
+                "14",
+                "8 derecha, 10 derecha",
+                "hijo derecho de 10"
+              ],
+              [
+                "4",
+                "8 izquierda, 3 derecha, 6 izquierda",
+                "hijo izquierdo de 6"
+              ]
+            ]
+          }
+        },
+        "Buscar el 4 compara con 8, 3, 6 y luego 4: cuatro comparaciones en un árbol de siete claves. Buscar el 7 compara con 8, 3, 6 y luego no encuentra hijo derecho del 6, así que el 7 no está."
+      ]
+    },
+    {
+      "h": "Implementación en Python",
+      "body": [
+        "Insertar y buscar son bucles cortos. Eliminar tiene tres casos: el nodo no tiene hijos (se quita), tiene un hijo (se reemplaza por él) o tiene dos hijos (se copia su sucesor inorder, la clave menor del subárbol derecho, y luego se elimina ese sucesor).",
+        {
+          "code": "class Node:\n    def __init__(self, key):\n        self.key, self.left, self.right = key, None, None\ndef insert(root, key):\n    if root is None:\n        return Node(key)\n    if key < root.key:\n        root.left = insert(root.left, key)\n    elif key > root.key:\n        root.right = insert(root.right, key)\n    return root                      # duplicates are ignored\ndef contains(root, key):\n    while root and root.key != key:\n        root = root.left if key < root.key else root.right\n    return root is not None\ndef delete(root, key):\n    if root is None:\n        return None\n    if key < root.key:\n        root.left = delete(root.left, key)\n    elif key > root.key:\n        root.right = delete(root.right, key)\n    else:\n        if root.left is None:\n            return root.right\n        if root.right is None:\n            return root.left\n        succ = root.right\n        while succ.left:\n            succ = succ.left\n        root.key = succ.key\n        root.right = delete(root.right, succ.key)\n    return root\ndef inorder(root):\n    return inorder(root.left) + [root.key] + inorder(root.right) if root else []",
+          "lang": "python"
+        },
+        {
+          "code": "root = None\nfor k in [8, 3, 10, 1, 6, 14, 4]:\n    root = insert(root, k)\nprint(inorder(root))                 # [1, 3, 4, 6, 8, 10, 14]\nprint(contains(root, 4), contains(root, 7))  # True False\nroot = delete(root, 3)               # node with two children\nprint(inorder(root), root.left.key)  # [1, 4, 6, 8, 10, 14] 4",
+          "lang": "python"
+        }
+      ]
+    },
+    {
+      "h": "Complejidad temporal y espacial",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Operación",
+              "Árbol balanceado",
+              "Peor caso (cadena)",
+              "Motivo"
+            ],
+            "rows": [
+              [
+                "Búsqueda",
+                "O(log n)",
+                "O(n)",
+                "una comparación por nivel"
+              ],
+              [
+                "Inserción",
+                "O(log n)",
+                "O(n)",
+                "bajar hasta una posición de hoja"
+              ],
+              [
+                "Eliminación",
+                "O(log n)",
+                "O(n)",
+                "encontrar el nodo y quizá su sucesor"
+              ],
+              [
+                "Mín / máx",
+                "O(log n)",
+                "O(n)",
+                "seguir los enlaces izquierdos (o derechos) hasta el final"
+              ],
+              [
+                "Recorrido inorder",
+                "O(n)",
+                "O(n)",
+                "cada nodo una vez"
+              ],
+              [
+                "Espacio",
+                "O(n)",
+                "O(n)",
+                "un nodo por clave; la recursión usa O(h) de pila"
+              ]
+            ]
+          }
+        },
+        "El peor caso es real, no teórico: insertar claves ya ordenadas (1, 2, 3, ...) en un BST simple deja a cada nodo solo con hijo derecho, y el árbol se convierte en una lista enlazada. Los órdenes de inserción aleatorios dan una altura esperada de O(log n)."
+      ]
+    },
+    {
+      "h": "Variantes balanceadas y errores comunes",
+      "body": [
+        "Los árboles autobalanceados mantienen la altura en O(log n) reestructurándose con rotaciones tras insertar y eliminar.",
+        {
+          "table": {
+            "head": [
+              "Variante",
+              "Idea de balanceo",
+              "Dónde se usa"
+            ],
+            "rows": [
+              [
+                "Árbol AVL",
+                "las alturas de los dos subárboles difieren como máximo en 1",
+                "cargas con muchas búsquedas"
+              ],
+              [
+                "Árbol rojo-negro",
+                "reglas de color limitan el camino más largo a el doble del más corto",
+                "`TreeMap` de Java, implementaciones típicas de `std::map` de C++, el kernel de Linux"
+              ],
+              [
+                "Árbol B / B+",
+                "muchas claves por nodo, todas las hojas a la misma profundidad",
+                "bases de datos y sistemas de archivos"
+              ],
+              [
+                "Treap, splay tree",
+                "prioridades aleatorias, o mover las claves accedidas a la raíz",
+                "árboles balanceados más simples, cachés"
+              ]
+            ]
+          }
+        },
+        {
+          "ul": [
+            "Validar un BST comprobando solo padre e hijo. Pasa en su lugar un rango válido (low, high) hacia abajo.",
+            "Olvidar devolver la raíz (posiblemente nueva) en la inserción y eliminación recursivas, de modo que los cambios se pierden.",
+            "Recursión profunda en un árbol degenerado: el límite de recursión por defecto de Python es de unos 1000, así que una cadena de 5000 nodos hace fallar el código recursivo. Usa bucles o mantén el árbol balanceado.",
+            "Política de duplicados indefinida: decide si los duplicados se ignoran, se cuentan o van siempre hacia un lado."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Cuándo usar un BST y preguntas típicas de entrevista",
+      "body": [
+        "Usa un BST balanceado cuando necesites datos ordenados con inserciones y eliminaciones frecuentes: consultas por rango, búsquedas floor y ceiling, estadísticos de rango u orden, o iterar en orden. Usa una tabla hash cuando solo necesites buscar una clave exacta. En Python, la biblioteca estándar no trae un mapa en árbol; las opciones comunes son una lista ordenada con el módulo `bisect` para datos pequeños o casi estáticos, o el paquete de terceros `sortedcontainers`.",
+        "Preguntas típicas de entrevista: validar un BST, encontrar el k-ésimo elemento menor (recorrido inorder), ancestro común más bajo, convertir un arreglo ordenado en un BST balanceado (elige el medio como raíz) y hallar el sucesor inorder de un nodo."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "¿Cuál es la diferencia entre un árbol binario y un árbol binario de búsqueda?",
+      "a": "Un árbol binario solo limita cada nodo a dos hijos. Un árbol binario de búsqueda añade la regla de orden: claves menores a la izquierda y mayores a la derecha, en cada subárbol."
+    },
+    {
+      "q": "¿Por qué la búsqueda en un BST es O(log n)?",
+      "a": "Cada comparación baja un nivel y descarta un subárbol. Un árbol balanceado con n nodos tiene unos log2(n) niveles, así que la búsqueda necesita aproximadamente ese número de comparaciones."
+    },
+    {
+      "q": "¿Qué pasa si inserto datos ordenados en un BST?",
+      "a": "Sin balanceo, cada clave nueva pasa a ser hijo derecho de la anterior, la altura se vuelve n y toda operación pasa a ser O(n). Los árboles autobalanceados como AVL y rojo-negro lo evitan."
+    },
+    {
+      "q": "¿Cómo se obtienen las claves de un BST en orden?",
+      "a": "Haz un recorrido inorder: visita el subárbol izquierdo, luego el nodo y luego el subárbol derecho. Toma tiempo O(n)."
+    },
+    {
+      "q": "¿Python tiene un árbol binario de búsqueda integrado?",
+      "a": "No. Python tiene `dict` y `set` (tablas hash) y el módulo `bisect` para listas ordenadas. Los contenedores de árbol ordenado vienen de paquetes de terceros."
+    }
+  ]
+}

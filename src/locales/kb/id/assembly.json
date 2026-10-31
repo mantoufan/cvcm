@@ -1,0 +1,253 @@
+{
+  "title": "Tutorial Assembly: register x86-64, sintaks NASM, syscall, dan fungsi — cv.cm",
+  "description": "Belajar assembly x86-64 di Linux dengan NASM: register, aritmetika, jump dan perulangan, pengalamatan memori, system call, calling convention, dan sintaks AT&T.",
+  "h1": "Tutorial bahasa assembly untuk pemula (x86-64, NASM)",
+  "answer": "Bahasa assembly adalah bentuk instruksi mesin prosesor yang dapat dibaca manusia: setiap baris biasanya menjadi satu instruksi seperti `mov rax, 1` atau `add rax, rbx`. Anda bekerja langsung dengan register, alamat memori, dan stack, tanpa variabel, tipe, atau perulangan selain yang Anda bangun dari jump. Tutorial ini memakai x86-64 di Linux dengan assembler NASM: tulis file `.asm`, assemble dengan `nasm -f elf64`, dan link dengan `ld`.",
+  "sections": [
+    {
+      "h": "Apa itu assembly dan siapa yang memakainya",
+      "body": [
+        "Setiap keluarga prosesor punya set instruksi sendiri dan karena itu bahasa assembly sendiri. x86-64 (juga disebut AMD64) menjalankan sebagian besar PC desktop dan server; ARM (AArch64) menjalankan sebagian besar ponsel, Mac Apple silicon, dan banyak server. Assembler menerjemahkan assembly menjadi kode mesin, dan linker menggabungkan hasilnya menjadi executable.",
+        "Saat ini hanya sedikit program yang ditulis sepenuhnya dalam assembly. Assembly dipakai di kernel sistem operasi dan bootloader, rutin yang kritis performa (kriptografi, codec, library matematika), firmware embedded, pengembangan compiler, riset keamanan, dan reverse engineering. Paling sering, developer membaca assembly untuk memahami apa yang dihasilkan compiler atau untuk men-debug crash."
+      ]
+    },
+    {
+      "h": "Memasang NASM dan menjalankan Hello, world",
+      "body": [
+        "Di Debian atau Ubuntu, pasang tool dengan `sudo apt install nasm binutils` (`binutils` menyediakan linker `ld`). Program ini memanggil kernel Linux langsung lewat system call, sehingga tidak memerlukan library C.",
+        {
+          "code": "; hello.asm - x86-64 Linux, NASM syntax\nsection .data\n    msg     db \"Hello, world!\", 10   ; 10 = newline\n    msglen  equ $ - msg              ; length computed by the assembler\n\nsection .text\n    global _start\n\n_start:\n    mov     rax, 1          ; system call number 1 = write\n    mov     rdi, 1          ; file descriptor 1 = stdout\n    mov     rsi, msg        ; address of the bytes\n    mov     rdx, msglen     ; number of bytes\n    syscall\n\n    mov     rax, 60         ; system call number 60 = exit\n    xor     rdi, rdi        ; exit code 0\n    syscall",
+          "lang": "asm"
+        },
+        {
+          "code": "nasm -f elf64 hello.asm -o hello.o\nld hello.o -o hello\n./hello\n# Hello, world!",
+          "lang": "shell"
+        },
+        "`section .data` berisi data yang sudah diinisialisasi, `section .text` berisi kode, dan `_start` adalah entry point yang dicari `ld`. Komentar diawali dengan `;`. Tanpa system call `exit` di akhir, prosesor akan terus mengeksekusi byte apa pun yang mengikutinya dan program akan crash."
+      ]
+    },
+    {
+      "h": "Register dan ukuran data",
+      "body": [
+        "Register adalah lokasi penyimpanan kecil yang sangat cepat di dalam CPU. x86-64 punya 16 register 64-bit serbaguna. Masing-masing juga dapat dipakai dalam bagian yang lebih kecil.",
+        {
+          "table": {
+            "head": [
+              "Register",
+              "Peran umum",
+              "Bagian yang lebih kecil"
+            ],
+            "rows": [
+              [
+                "`rax`",
+                "Nilai kembalian, nomor system call",
+                "`eax` (32-bit), `ax` (16), `al` (8)"
+              ],
+              [
+                "`rdi`, `rsi`, `rdx`",
+                "Tiga argumen pertama fungsi atau system call",
+                "`edi`, `esi`, `edx`"
+              ],
+              [
+                "`rcx`, `r8`, `r9`",
+                "Argumen keempat sampai keenam fungsi",
+                "`ecx`, `r8d`, `r9d`"
+              ],
+              [
+                "`rbx`, `rbp`, `r12`–`r15`",
+                "Nilai yang harus bertahan melewati pemanggilan fungsi (callee-saved)",
+                "`ebx`, `r12d`"
+              ],
+              [
+                "`rsp`",
+                "Stack pointer: alamat puncak stack",
+                "Jangan dipakai untuk data"
+              ],
+              [
+                "`rip`",
+                "Instruction pointer (hanya berubah oleh jump, call, return)",
+                "Tidak dapat ditulis langsung"
+              ]
+            ]
+          }
+        },
+        "Data di memori dideklarasikan dengan `db` (byte, 8 bit), `dw` (word, 16), `dd` (doubleword, 32), dan `dq` (quadword, 64). Buffer yang belum diinisialisasi ditaruh di `section .bss` dengan `resb`, `resq`, dan seterusnya. Menulis ke register 32-bit seperti `eax` juga mengosongkan 32 bit atas `rax`, itulah sebabnya `xor eax, eax` adalah cara umum untuk mengisi `rax` dengan nol."
+      ]
+    },
+    {
+      "h": "Instruksi dasar dan alur kontrol",
+      "body": [
+        "Sebagian besar instruksi menerima tujuan lebih dulu dan sumber kedua: `add rax, rbx` berarti `rax = rax + rbx`. Tidak ada statement `if` atau `while`; Anda membandingkan nilai dengan `cmp`, yang mengatur flag, lalu memakai conditional jump.",
+        {
+          "table": {
+            "head": [
+              "Instruksi",
+              "Arti"
+            ],
+            "rows": [
+              [
+                "`mov rax, rbx`",
+                "Salin `rbx` ke `rax`"
+              ],
+              [
+                "`add`, `sub`, `imul`, `inc`, `dec`",
+                "Aritmetika integer"
+              ],
+              [
+                "`cmp rax, 10`",
+                "Bandingkan (menghitung `rax - 10` dan hanya mengatur flag)"
+              ],
+              [
+                "`je`, `jne`, `jl`, `jg`, `jle`, `jge`",
+                "Lompat jika sama, tidak sama, kurang, lebih besar... (bertanda)"
+              ],
+              [
+                "`jmp label`",
+                "Lompat tanpa syarat"
+              ],
+              [
+                "`push`, `pop`",
+                "Taruh nilai ke stack, ambil kembali"
+              ],
+              [
+                "`call`, `ret`",
+                "Panggil fungsi, kembali darinya"
+              ]
+            ]
+          }
+        },
+        {
+          "code": "; sum.asm - add 1..10, return the result as the exit code\nsection .text\n    global _start\n\n_start:\n    xor     rax, rax        ; sum = 0\n    mov     rcx, 1          ; i = 1\n.loop:\n    cmp     rcx, 10\n    jg      .done           ; if i > 10, leave the loop\n    add     rax, rcx        ; sum += i\n    inc     rcx             ; i++\n    jmp     .loop\n.done:\n    mov     rdi, rax        ; exit code = sum\n    mov     rax, 60         ; exit\n    syscall",
+          "lang": "asm"
+        },
+        {
+          "code": "nasm -f elf64 sum.asm -o sum.o && ld sum.o -o sum\n./sum; echo $?\n# 55",
+          "lang": "shell"
+        },
+        "Label yang diawali titik, seperti `.loop`, bersifat lokal terhadap label normal sebelumnya. `jl` dan `jg` memperlakukan nilai sebagai bertanda; `jb` dan `ja` adalah versi tak bertanda."
+      ]
+    },
+    {
+      "h": "Pengalamatan memori dan array",
+      "body": [
+        "Tanda kurung siku berarti \"memori pada alamat ini\". Sebuah alamat dapat menggabungkan register basis, register indeks yang dikalikan 1, 2, 4, atau 8, dan konstanta: `[base + index*scale + offset]`. Ini membuat akses array cukup dengan satu instruksi.",
+        {
+          "code": "section .data\n    nums    dq 3, 1, 4, 1, 5         ; five 64-bit integers\n    count   equ ($ - nums) / 8\n\nsection .text\n    global _start\n\n_start:\n    xor     rax, rax                 ; total = 0\n    xor     rcx, rcx                 ; index = 0\n.next:\n    add     rax, [nums + rcx*8]      ; total += nums[index]\n    inc     rcx\n    cmp     rcx, count\n    jl      .next\n    mov     rdi, rax                 ; exit code 14\n    mov     rax, 60\n    syscall",
+          "lang": "asm"
+        },
+        "`mov rax, nums` memuat alamat, sedangkan `mov rax, [nums]` memuat nilai yang tersimpan di sana. `lea rsi, [rbx + 8]` menghitung alamat tanpa membaca memori. Bila ukuran tidak jelas dari register, nyatakan: `mov qword [rbx], 0`."
+      ]
+    },
+    {
+      "h": "Fungsi dan calling convention",
+      "body": [
+        "Di Linux, fungsi mengikuti System V AMD64 ABI. Argumen integer ditaruh di `rdi`, `rsi`, `rdx`, `rcx`, `r8`, `r9`; nilai kembalian ada di `rax`. Fungsi harus menjaga `rbx`, `rbp`, `r12`–`r15`, dan `rsp`, dan `rsp` harus kelipatan 16 tepat sebelum `call`. Mengikuti aturan ini memungkinkan assembly memanggil fungsi C seperti `printf`, dan memungkinkan C memanggil assembly.",
+        {
+          "code": "; square.asm - define a function and call printf from the C library\n    extern  printf\n    global  main\n\nsection .data\n    fmt     db \"%ld squared is %ld\", 10, 0\n\nsection .text\nsquare:                         ; long square(long x)\n    mov     rax, rdi\n    imul    rax, rdi\n    ret\n\nmain:\n    push    rbx                 ; save rbx; also aligns rsp to 16\n    mov     rbx, 7\n    mov     rdi, rbx\n    call    square              ; rax = 49\n    lea     rdi, [rel fmt]      ; argument 1: format string\n    mov     rsi, rbx            ; argument 2\n    mov     rdx, rax            ; argument 3\n    xor     eax, eax            ; varargs: no vector registers used\n    call    printf wrt ..plt\n    xor     eax, eax            ; return 0 from main\n    pop     rbx\n    ret\n\nsection .note.GNU-stack noalloc noexec nowrite progbits",
+          "lang": "asm"
+        },
+        {
+          "code": "nasm -f elf64 square.asm -o square.o\ngcc square.o -o square\n./square\n# 7 squared is 49",
+          "lang": "shell"
+        },
+        "Melakukan link dengan `gcc` menambahkan runtime C, yang memanggil `main`. `[rel fmt]` dan `wrt ..plt` menghasilkan kode position-independent, yang dipakai secara default oleh distribusi Linux modern. Baris terakhir menandai stack sebagai tidak dapat dieksekusi dan menghindari peringatan linker."
+      ]
+    },
+    {
+      "h": "Penanganan error",
+      "body": [
+        "Assembly tidak punya exception. System call Linux yang gagal mengembalikan nomor error negatif di `rax` (misalnya -2, `ENOENT`, \"no such file\"), jadi Anda menguji tandanya setelah setiap pemanggilan. Fungsi library C melaporkan error lewat nilai kembalian dan `errno`. Kesalahan perangkat keras, seperti membaca alamat yang tidak valid atau pembagian dengan nol, menghentikan program dengan sinyal (segmentation fault atau floating point exception).",
+        {
+          "code": "    mov     rax, 2              ; system call 2 = open\n    lea     rdi, [rel path]     ; path is a zero-terminated string\n    xor     esi, esi            ; flags: O_RDONLY\n    syscall\n    test    rax, rax\n    js      .open_failed        ; negative result = -errno\n    mov     r12, rax            ; success: rax is the file descriptor",
+          "lang": "asm"
+        }
+      ]
+    },
+    {
+      "h": "Program lengkap kecil: mencetak angka dalam desimal",
+      "body": [
+        "Mencetak angka berarti mengubahnya menjadi digit sendiri. Program ini menghitung 1 + 2 + ... + 100, membagi berulang kali dengan 10 untuk mendapatkan digit dari kanan ke kiri, lalu menuliskannya dengan satu system call.",
+        {
+          "code": "section .bss\n    buf     resb 32\n\nsection .text\n    global _start\n\n_start:\n    xor     rax, rax\n    mov     rcx, 100\n.sum:\n    add     rax, rcx\n    loop    .sum                ; rcx -= 1, repeat while rcx != 0\n    lea     rsi, [buf + 31]\n    mov     byte [rsi], 10      ; newline at the end of the buffer\n    mov     rbx, 10\n.digit:\n    xor     rdx, rdx            ; div uses rdx:rax as the dividend\n    div     rbx                 ; rax = quotient, rdx = remainder\n    add     dl, '0'             ; remainder to ASCII digit\n    dec     rsi\n    mov     [rsi], dl\n    test    rax, rax\n    jnz     .digit\n    mov     rdx, buf + 32\n    sub     rdx, rsi            ; length = end - start\n    mov     rax, 1              ; write(1, rsi, rdx)\n    mov     rdi, 1\n    syscall\n    mov     rax, 60             ; exit(0)\n    xor     rdi, rdi\n    syscall\n; prints 5050",
+          "lang": "asm"
+        },
+        {
+          "note": "Kesalahan umum pemula: lupa system call `exit`; memakai `div` tanpa mengosongkan `rdx` terlebih dahulu (hasilnya overflow dan program crash); mengira `rcx` dan `r11` bertahan setelah `syscall` (kernel menimpanya); memanggil fungsi C dengan stack yang tidak sejajar; mengacaukan alamat dengan nilai pada alamat itu (`msg` vs `[msg]`); dan mencampuradukkan urutan operand Intel dan AT&T saat membaca contoh."
+        }
+      ]
+    },
+    {
+      "h": "Sintaks AT&T vs Intel, dan ARM",
+      "body": [
+        "Instruksi x86-64 yang sama dapat ditulis dalam dua sintaks. NASM dan sebagian besar dokumentasi Intel dan Microsoft memakai sintaks Intel. GNU assembler (`as`), output GCC, dan `objdump` memakai sintaks AT&T secara default; `objdump -d -M intel` dan `gcc -S -masm=intel` beralih ke sintaks Intel.",
+        {
+          "table": {
+            "head": [
+              "Aspek",
+              "Intel (NASM)",
+              "AT&T (GNU as)"
+            ],
+            "rows": [
+              [
+                "Urutan operand",
+                "`mov rax, 1` (tujuan lebih dulu)",
+                "`movq $1, %rax` (sumber lebih dulu)"
+              ],
+              [
+                "Register dan konstanta",
+                "`rax`, `5`",
+                "`%rax`, `$5`"
+              ],
+              [
+                "Operand memori",
+                "`[rbx + rcx*8 + 16]`",
+                "`16(%rbx,%rcx,8)`"
+              ],
+              [
+                "Ukuran operand",
+                "`mov qword [rbx], 0`",
+                "`movq $0, (%rbx)` (sufiks b, w, l, q)"
+              ]
+            ]
+          }
+        },
+        "Prosesor ARM memakai set instruksi yang berbeda. AArch64 punya 31 register 64-bit serbaguna (`x0`–`x30`), encoding instruksi 32-bit tetap, dan desain load/store: aritmetika hanya bekerja pada register, dan memori diakses dengan `ldr` dan `str`. Di Linux, nomor system call ditaruh di `x8` dan pemanggilan dilakukan dengan `svc #0`.",
+        {
+          "code": "// AArch64 Linux, GNU as syntax: exit(0)\n    mov     x0, #0          // exit status\n    mov     x8, #93         // system call 93 = exit\n    svc     #0",
+          "lang": "asm"
+        }
+      ]
+    },
+    {
+      "h": "Langkah selanjutnya",
+      "body": [
+        {
+          "ul": [
+            "Manual NASM untuk direktif, macro, dan format output.",
+            "Intel 64 and IA-32 Architectures Software Developer's Manuals untuk perilaku persis setiap instruksi.",
+            "Dokumen System V AMD64 ABI untuk calling convention dan tata letak stack.",
+            "Kompilasi fungsi C kecil dengan `gcc -O2 -S -masm=intel` (atau compiler explorer online) dan baca assembly yang dihasilkan."
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Apakah bahasa assembly masih layak dipelajari?",
+      "a": "Ya, untuk memahami cara kerja komputer, men-debug crash, membaca output compiler, pekerjaan keamanan, dan pengembangan embedded. Menulis seluruh aplikasi dalam assembly jarang praktis saat ini."
+    },
+    {
+      "q": "Apakah assembly x86 sama dengan assembly ARM?",
+      "a": "Tidak. Keduanya set instruksi yang berbeda dengan register, instruksi, dan encoding yang berbeda. Konsepnya (register, memori, jump, calling convention) dapat dibawa, tetapi kodenya tidak."
+    },
+    {
+      "q": "Apa perbedaan NASM dan GAS?",
+      "a": "NASM adalah assembler mandiri yang memakai sintaks Intel. GAS, GNU assembler, dipakai oleh GCC dan secara default memakai sintaks AT&T, meski juga menerima sintaks Intel dengan `.intel_syntax noprefix`."
+    },
+    {
+      "q": "Apakah kode ini berjalan di Windows atau macOS?",
+      "a": "Tidak tanpa perubahan. Instruksinya sama di sistem x86-64 mana pun, tetapi nomor system call, format executable, dan calling convention berbeda. Windows memakai calling convention yang berbeda, dan Mac Apple silicon memakai ARM, bukan x86-64."
+    }
+  ]
+}

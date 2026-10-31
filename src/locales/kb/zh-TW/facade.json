@@ -1,0 +1,160 @@
+{
+  "title": "外觀模式：為複雜子系統提供單一簡單介面，附 TypeScript 範例 — cv.cm",
+  "description": "說明外觀（Facade）設計模式：把複雜的子系統藏在單一簡單的介面後面。附 TypeScript 訂單結帳範例、適用時機與實際應用。",
+  "h1": "外觀模式詳解與範例",
+  "answer": "外觀是一種結構型設計模式，它為複雜子系統中的一組介面，提供一個簡單且較高層次的介面。用戶端程式碼不必按照正確順序去呼叫庫存、付款、運送和電子郵件服務，只要呼叫像 `shop.placeOrder()` 這樣的一個方法，由外觀來協調各個子系統類別。子系統仍然存在，需要時也可以直接使用；外觀只是讓常見的情況變得簡單。",
+  "sections": [
+    {
+      "h": "意圖",
+      "body": [
+        "為子系統中的一組介面提供統一的介面。外觀定義一個較高層次的介面，讓子系統更容易使用。它是《設計模式》（Gang of Four，簡稱 GoF）一書中七種結構型模式之一。"
+      ]
+    },
+    {
+      "h": "它解決的問題",
+      "body": [
+        "想像一間網路商店。下一筆訂單需要好幾個服務：檢查並保留庫存、向信用卡收款、付款失敗時釋放庫存、建立出貨單，以及寄出確認電子郵件。每個服務都有自己的 API 和規則。",
+        "如果每個呼叫端（例如網頁結帳、行動 API 和管理工具）都自己執行這些步驟，同一串流程就會複製到許多地方。每一份複製都可能弄錯順序或忘了回復，而且每個呼叫端都依賴五個服務。當其中一個服務改變，所有呼叫端都得跟著改。外觀把流程集中在同一個地方，並給呼叫端一個方法。"
+      ]
+    },
+    {
+      "h": "結構與參與者",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "參與者",
+              "職責",
+              "範例中的對應"
+            ],
+            "rows": [
+              [
+                "外觀（Facade）",
+                "知道哪些子系統類別處理哪種請求，並依正確的順序委派給它們。",
+                "`OrderFacade`"
+              ],
+              [
+                "子系統類別",
+                "負責真正的工作。它們不知道外觀的存在。",
+                "`Inventory`、`Payments`、`Shipping`、`Mailer`"
+              ],
+              [
+                "用戶端",
+                "在常見的工作中使用外觀；遇到特殊情況時仍可直接使用子系統類別。",
+                "結帳程式碼"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "TypeScript 實作",
+      "body": [
+        {
+          "code": "// Subsystem classes, each with its own API.\nclass Inventory {\n  private stock = new Map([[\"book\", 2]]);\n  reserve(sku: string): boolean {\n    const n = this.stock.get(sku) ?? 0;\n    if (n === 0) return false;\n    this.stock.set(sku, n - 1);\n    return true;\n  }\n  release(sku: string): void { this.stock.set(sku, (this.stock.get(sku) ?? 0) + 1); }\n}\nclass Payments {\n  charge(card: string, cents: number): boolean { return card.startsWith(\"4\") && cents > 0; }\n}\nclass Shipping {\n  createShipment(sku: string, address: string): string { return `SHIP-${sku}-${address.length}`; }\n}\nclass Mailer {\n  send(to: string, text: string): void { console.log(`mail to ${to}: ${text}`); }\n}",
+          "lang": "typescript"
+        },
+        "接著，外觀會在單一方法的背後，依正確的順序執行整個工作流程：",
+        {
+          "code": "// Facade: one method that runs the whole workflow in the right order.\nclass OrderFacade {\n  constructor(private inventory = new Inventory(), private payments = new Payments(),\n              private shipping = new Shipping(), private mailer = new Mailer()) {}\n\n  placeOrder(sku: string, card: string, cents: number, email: string, address: string): string {\n    if (!this.inventory.reserve(sku)) return \"out of stock\";\n    if (!this.payments.charge(card, cents)) {\n      this.inventory.release(sku); // roll back the reservation\n      return \"payment declined\";\n    }\n    const shipmentId = this.shipping.createShipment(sku, address);\n    this.mailer.send(email, `Order confirmed, shipment ${shipmentId}`);\n    return \"ok\";\n  }\n}\n\nconst shop = new OrderFacade();\nconsole.log(shop.placeOrder(\"book\", \"4111\", 1999, \"ada@example.com\", \"1 Main St\"));\n// mail to ada@example.com: Order confirmed, shipment SHIP-book-9\n// ok\nconsole.log(shop.placeOrder(\"book\", \"5500\", 1999, \"bob@example.com\", \"2 Side St\")); // payment declined",
+          "lang": "typescript"
+        },
+        "呼叫端現在只依賴一個類別、一個方法。回復的規則也只存在一處。子系統類別仍然可以使用，所以只需要釋放庫存的管理工具，可以直接呼叫 `Inventory`。"
+      ]
+    },
+    {
+      "h": "何時使用、何時不該用",
+      "body": [
+        "在以下情況使用外觀：",
+        {
+          "ul": [
+            "子系統很複雜，而大多數用戶端只需要它功能中簡單、常見的一部分。",
+            "你想減少用戶端程式碼與眾多子系統類別之間的依賴數量。",
+            "你想把系統組織成多個層次，並讓外觀成為每一層的入口。",
+            "你包裝了一個龐大的第三方函式庫，並希望其餘程式碼只使用其中需要的少數幾個操作。"
+          ]
+        },
+        "在以下情況應避免使用或加以限制：",
+        {
+          "ul": [
+            "子系統本來就很簡單。一個一對一轉發每個呼叫的外觀，只是多加一層，卻什麼也沒隱藏。",
+            "外觀開始收集來自系統各處毫不相干的方法和業務規則。這就是「上帝物件」問題：一個類別知道太多、做得太多。請把它拆成幾個各自專注的外觀。"
+          ]
+        },
+        {
+          "note": "外觀應該是簡化，而不是囚禁。不要因為有外觀就把子系統設為私有。進階的用戶端往往需要完整的 API，阻擋它們只會逼出各種變通的做法。"
+        }
+      ]
+    },
+    {
+      "h": "實際應用",
+      "body": [
+        {
+          "ul": [
+            "Node.js：`fs.readFile()` 在一次呼叫中完成開啟檔案、讀到結尾並關閉。較低階的 `fs.open()`、`fs.read()` 和 `fs.close()` 仍然可用。",
+            "jQuery 能流行起來，很大程度上是因為它在 DOM 和當年各瀏覽器的差異之前，放了一套簡短且一致的 API。",
+            "GoF 一書的範例是編譯器：一個 `Compiler` 類別，把掃描器、剖析器、程式碼產生器等其他子系統類別，對只想編譯程式碼的程式隱藏起來。",
+            "後端應用程式中的服務層與 API 閘道，對許多內部服務扮演著外觀的角色。"
+          ]
+        },
+        {
+          "note": "PHP 框架 Laravel 有一個稱為 Facades 的功能。那是不同的概念：以看起來像靜態的方式存取服務容器中的物件。名稱雖然相同，但意圖並不是 GoF 的那個模式。"
+        }
+      ]
+    },
+    {
+      "h": "相關模式",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "模式",
+              "與外觀的差異"
+            ],
+            "rows": [
+              [
+                "轉接器",
+                "讓一個現有的介面符合另一個現有的介面。外觀則是為許多類別定義一個新的、較簡單的介面。"
+              ],
+              [
+                "中介者",
+                "同樣會集中協調，但子系統物件認識中介者，並透過它來溝通。使用外觀時，子系統類別並不知道外觀的存在。"
+              ],
+              [
+                "抽象工廠",
+                "可以搭配外觀，以不依賴平台的方式建立子系統物件。"
+              ],
+              [
+                "單例",
+                "外觀通常只有一個實例，因為子系統通常只需要一個入口。"
+              ],
+              [
+                "代理",
+                "與某一個物件具有相同的介面，並控制對它的存取。外觀則是在許多物件之上，提供一個不同的、較簡單的介面。"
+              ]
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "外觀和轉接器有什麼差別？",
+      "a": "轉接器把一個現有的介面轉換成用戶端已經期待的另一個介面。外觀則是創造一個新的、較簡單的介面，讓整個子系統更容易使用。"
+    },
+    {
+      "q": "外觀會完全隱藏子系統嗎？",
+      "a": "不會。外觀讓常見的工作變得簡單，但需要更多控制的用戶端仍然可以直接使用子系統類別。"
+    },
+    {
+      "q": "一個系統可以有多個外觀嗎？",
+      "a": "可以。大型系統常常為每個子系統或每個使用情境各設一個外觀，讓每個外觀保持精簡而專注。"
+    },
+    {
+      "q": "服務層就是外觀嗎？",
+      "a": "通常是的。一個在單次呼叫後面協調儲存庫、外部 API 與通知的服務方法，對呼叫它的程式碼而言，就扮演著外觀的角色。"
+    }
+  ]
+}

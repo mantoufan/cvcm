@@ -1,0 +1,181 @@
+{
+  "title": "R 기초 강좌: 벡터, 데이터 프레임, 함수, 통계 — cv.cm",
+  "description": "데이터 분석을 위한 R 프로그래밍을 배웁니다. R 설치, 스크립트 실행, 벡터와 타입, if와 반복문, 함수, 리스트, 데이터 프레임, 선형 모델, 그래프, 오류 처리를 다룹니다.",
+  "h1": "입문자를 위한 R 프로그래밍 기초 강좌",
+  "answer": "R은 통계, 데이터 분석, 그래픽을 위한 무료 언어이자 환경입니다. 핵심 개념은 벡터화로, 연산이 벡터 전체와 데이터 프레임 열 전체에 한꺼번에 적용되어 분석 코드가 짧아집니다. 이 페이지에서는 R 설치, 스크립트 실행, 벡터와 타입, 제어 흐름, 함수, 리스트와 데이터 프레임, 통계 모델, 그래프 그리기, 오류 처리를 다룹니다.",
+  "sections": [
+    {
+      "h": "R이란 무엇이고 어디에 쓰는가",
+      "body": [
+        "R은 통계 계산과 그래픽을 위한 무료 오픈 소스 언어이자 환경입니다. 벨 연구소에서 개발한 S 언어에서 유래했으며 R Core Team이 관리합니다. R은 벡터화되어 있어 대부분의 연산이 데이터 벡터 전체에 한 번에 적용되므로 데이터 분석 코드가 짧아집니다.",
+        "R은 통계학자, 데이터 과학자, 생물정보학자, 경제학자, 연구자들이 데이터 정제, 통계 모델링, 시각화, 재현 가능한 보고서를 만드는 데 사용합니다. CRAN(Comprehensive R Archive Network)과 Bioconductor에서 수천 개의 추가 패키지를 받을 수 있습니다."
+      ]
+    },
+    {
+      "h": "R 설치와 Hello, world 실행",
+      "body": [
+        "Windows, macOS, Linux용 R을 CRAN에서 내려받으세요. 에디터, 콘솔, 플롯 뷰어, 도움말 창을 갖춘 IDE인 RStudio나 Positron도 많이 설치합니다. 코드를 R 콘솔에 직접 입력하거나 `.R` 파일에 저장해 실행할 수 있습니다.",
+        {
+          "code": "# hello.R\nprint(\"Hello, world!\")\ncat(\"Hello, world!\\n\")",
+          "lang": "r"
+        },
+        {
+          "code": "Rscript hello.R\n# [1] \"Hello, world!\"\n# Hello, world!",
+          "lang": "shell"
+        },
+        "`print`는 콘솔에 표시되는 방식 그대로 값을 보여 주며 `[1]` 같은 인덱스 접두사가 붙습니다. `cat`은 일반 텍스트를 출력하므로 줄바꿈은 직접 넣어야 합니다."
+      ]
+    },
+    {
+      "h": "변수, 기본 타입, 벡터",
+      "body": [
+        "`<-`(관례적인 방식) 또는 `=`로 값을 할당합니다. R에는 스칼라가 없고, 숫자 하나는 길이가 1인 벡터입니다. `c()`는 값들을 벡터로 묶으며, 산술 연산은 원소별로 적용됩니다.",
+        {
+          "code": "x <- 42                 # numeric (double)\nn <- 7L                 # integer (L suffix)\nname <- \"Ada\"           # character\nok <- TRUE              # logical\nclass(x); class(n); class(name)   # \"numeric\" \"integer\" \"character\"\nv <- c(2, 4, 6, 8)\nv * 10                  # [1] 20 40 60 80\nv[2]                    # [1] 4   (indexing starts at 1)\nv[v > 4]                # [1] 6 8\nlength(v); sum(v); mean(v)        # 4 20 5\n1:5                     # [1] 1 2 3 4 5\nseq(0, 1, by = 0.25)    # [1] 0.00 0.25 0.50 0.75 1.00",
+          "lang": "r"
+        },
+        {
+          "table": {
+            "head": [
+              "타입",
+              "예시",
+              "설명"
+            ],
+            "rows": [
+              [
+                "numeric (double)",
+                "`3.14`, `42`",
+                "숫자의 기본 타입"
+              ],
+              [
+                "integer",
+                "`42L`",
+                "`L` 접미사를 붙인 정수"
+              ],
+              [
+                "character",
+                "`\"text\"`",
+                "문자열"
+              ],
+              [
+                "logical",
+                "`TRUE`, `FALSE`",
+                "`NA`는 결측값을 뜻함"
+              ],
+              [
+                "factor",
+                "`factor(c(\"lo\", \"hi\"))`",
+                "수준이 정해진 범주형 데이터"
+              ]
+            ]
+          }
+        },
+        {
+          "note": "`NA`는 결측값이며 전파됩니다. `mean(c(1, NA, 3))`은 `NA`입니다. 결측값을 무시하려면 `na.rm = TRUE`를 전달하고, 검사는 `x == NA`가 아니라 `is.na(x)`로 하세요."
+        }
+      ]
+    },
+    {
+      "h": "제어 흐름",
+      "body": [
+        "R에는 `if`/`else`, `for`, `while`, `repeat`가 있습니다. 벡터에는 반복문보다 벡터화된 `ifelse()`가 더 나은 경우가 많습니다.",
+        {
+          "code": "temp <- 25\nif (temp > 30) {\n  print(\"hot\")\n} else if (temp > 15) {\n  print(\"mild\")         # [1] \"mild\"\n} else {\n  print(\"cold\")\n}\nfor (i in 1:3) {\n  cat(\"step\", i, \"\\n\")  # step 1 / step 2 / step 3\n}\nscores <- c(45, 80, 62)\nifelse(scores >= 50, \"pass\", \"fail\")\n# [1] \"fail\" \"pass\" \"pass\"",
+          "lang": "r"
+        },
+        "`if`에는 `TRUE` 또는 `FALSE` 하나가 필요합니다. R 4.2 이상에서는 더 긴 벡터를 `if`에 넘기면 오류가 발생하므로 `any()`, `all()`, `ifelse()`를 대신 사용하세요."
+      ]
+    },
+    {
+      "h": "함수",
+      "body": [
+        "함수는 `function`으로 만들어 이름에 할당합니다. 마지막으로 평가된 식이 자동으로 반환되며, `return()`은 중간에 빠져나올 때만 필요합니다. 인자에는 기본값을 줄 수 있고 이름으로 전달할 수 있습니다.",
+        {
+          "code": "bmi <- function(weight_kg, height_m = 1.75) {\n  weight_kg / height_m^2\n}\nbmi(70)                          # [1] 22.85714\nbmi(height_m = 1.6, weight_kg = 60)  # [1] 23.4375\nsquare <- function(x) x^2\nsquare(1:4)                      # [1] 1 4 9 16 (vectorized)\nsapply(c(1, 4, 9), sqrt)         # [1] 1 2 3\n(\\(x) x + 1)(10)                 # [1] 11 (short lambda syntax)",
+          "lang": "r"
+        },
+        "짧은 람다 문법 `\\(x)`와 왼쪽 값을 첫 번째 인자로 넘기는 네이티브 파이프 `|>`는 R 4.1부터 사용할 수 있습니다. `c(1, 4, 9) |> sqrt() |> sum()`은 6을 반환합니다."
+      ]
+    },
+    {
+      "h": "핵심 자료구조: 벡터, 리스트, 데이터 프레임",
+      "body": [
+        "원자 벡터 외에도 R에는 서로 다른 타입의 값을 담을 수 있는 리스트, 행렬, 데이터 프레임이 있습니다. 데이터 프레임은 각 열이 같은 길이의 벡터인 표이며, 데이터 분석의 중심 자료구조입니다.",
+        {
+          "code": "person <- list(name = \"Ann\", age = 31, langs = c(\"R\", \"SQL\"))\nperson$name                 # [1] \"Ann\"\nperson[[\"langs\"]][2]        # [1] \"SQL\"\ndf <- data.frame(\n  name  = c(\"Ann\", \"Bo\", \"Cy\"),\n  age   = c(31, 25, 40),\n  city  = c(\"Oslo\", \"Rome\", \"Oslo\")\n)\nnrow(df)                    # [1] 3\ndf$age                      # [1] 31 25 40\ndf[df$age > 30, \"name\"]     # [1] \"Ann\" \"Cy\"\ndf$senior <- df$age >= 40   # add a column\naggregate(age ~ city, data = df, FUN = mean)\n#   city  age\n# 1 Oslo 35.5\n# 2 Rome 25.0\nstr(df)                     # compact structure summary",
+          "lang": "r"
+        },
+        "`df[rows, columns]`는 위치, 이름, 논리 조건으로 선택합니다. `df[1, ]`처럼 한쪽을 비워 두면 모든 행 또는 모든 열을 뜻합니다."
+      ]
+    },
+    {
+      "h": "통계와 그래프 그리기",
+      "body": [
+        "`summary`, `sd`, `quantile`, `cor`, `t.test`, `lm`(선형 모델) 등 통계 함수가 기본으로 내장되어 있습니다. 기본 그래픽은 함수 한 번 호출로 그래프를 그립니다.",
+        {
+          "code": "set.seed(1)\nx <- 1:20\ny <- 3 * x + rnorm(20, sd = 2)\nmodel <- lm(y ~ x)\nround(coef(model), 2)       # intercept near 0, slope near 3\nsummary(model)$r.squared    # close to 1\nplot(x, y, main = \"y vs x\")\nabline(model, col = \"red\")",
+          "lang": "r"
+        },
+        "수식 문법 `y ~ x`는 「y를 x의 함수로 모델링한다」는 뜻이며 여러 모델링 함수에서 공통으로 쓰입니다. 고급 차트와 데이터 가공에는 대부분 `install.packages(\"tidyverse\")`로 ggplot2, dplyr 같은 tidyverse 패키지를 설치해 사용합니다."
+      ]
+    },
+    {
+      "h": "오류 처리",
+      "body": [
+        "`stop()`으로 오류를, `warning()`으로 경고를 발생시킵니다. `tryCatch()`로 잡을 수 있으며, `error`, `warning` 핸들러 함수와 선택적인 `finally` 블록을 받습니다.",
+        {
+          "code": "safe_log <- function(x) {\n  if (!is.numeric(x)) stop(\"x must be numeric\")\n  if (any(x <= 0)) warning(\"non-positive values give NaN or -Inf\")\n  log(x)\n}\nresult <- tryCatch(\n  safe_log(\"ten\"),\n  error = function(e) {\n    message(\"Caught: \", conditionMessage(e))\n    NA\n  },\n  finally = message(\"done\")\n)\n# Caught: x must be numeric\n# done\nresult                      # [1] NA",
+          "lang": "r"
+        }
+      ]
+    },
+    {
+      "h": "작은 완성 프로그램: 매출 요약",
+      "body": [
+        "이 스크립트는 작은 매출 표를 만들고, 기본 R로 지역별 매출을 계산한 뒤 가장 매출이 높은 지역을 출력합니다.",
+        {
+          "code": "sales <- data.frame(\n  region = c(\"North\", \"South\", \"North\", \"East\", \"South\"),\n  units  = c(10, 4, 6, 8, 12),\n  price  = c(2.5, 3.0, 2.5, 4.0, 3.0)\n)\nsales$revenue <- sales$units * sales$price\nby_region <- aggregate(revenue ~ region, data = sales, FUN = sum)\nby_region <- by_region[order(-by_region$revenue), ]\nprint(by_region, row.names = FALSE)\n#  region revenue\n#   South      48\n#   North      40\n#    East      32\nbest <- by_region$region[1]\ncat(sprintf(\"Best region: %s (%.2f)\\n\", best, max(by_region$revenue)))\n# Best region: South (48.00)",
+          "lang": "r"
+        },
+        {
+          "note": "입문자가 자주 하는 실수: 인덱스가 1부터 시작한다는 점 잊기, `is.na()` 대신 `== NA`로 비교하기, 반복문 안에서 벡터 키우기(미리 할당하거나 벡터화된 코드 사용), `=`와 `<-`를 섞어 쓰기, 리스트에서 `[`(하위 리스트 반환)와 `[[`(원소 하나 반환) 혼동하기."
+        }
+      ]
+    },
+    {
+      "h": "다음 단계",
+      "body": [
+        {
+          "ul": [
+            "CRAN의 공식 매뉴얼 An Introduction to R.",
+            "내장 도움말: 콘솔에서 `?mean` 또는 `help(\"lm\")`을 입력하세요.",
+            "tidyverse 방식을 배울 수 있는 Hadley Wickham 등의 R for Data Science(온라인 무료).",
+            "계량경제학, 머신러닝 같은 분야별로 패키지를 정리한 CRAN Task Views."
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "데이터 분석에는 R과 파이썬 중 무엇이 더 좋은가요?",
+      "a": "둘 다 강력합니다. R은 방대한 통계 기법 라이브러리와 뛰어난 시각화를 갖추고 있어 학계와 생물통계에서 흔히 쓰이고, 파이썬은 더 범용적이며 머신러닝 엔지니어링에서 지배적입니다. 둘 다 배우는 분석가도 많습니다."
+    },
+    {
+      "q": "R에서 <-와 =의 차이는 무엇인가요?",
+      "a": "최상위 수준에서는 둘 다 할당하며 `<-`가 관례적인 방식입니다. 함수 호출 안에서는 `=`가 인자 이름을 지정하므로 `f(x = 1)`은 변수를 만들지 않고 인자를 전달합니다."
+    },
+    {
+      "q": "R은 왜 1부터 세나요?",
+      "a": "R은 선행 언어인 S처럼 수학과 통계의 관례를 따르므로 벡터의 첫 번째 원소는 `v[1]`입니다. 인덱스 0은 오류가 아니라 빈 벡터를 반환합니다."
+    },
+    {
+      "q": "tidyverse란 무엇인가요?",
+      "a": "tidyverse는 dplyr, ggplot2, tidyr 등을 포함한 R 패키지 모음으로, 데이터를 가져오고 정제하고 변환하고 그래프로 그리는 일관된 설계를 공유합니다."
+    },
+    {
+      "q": "R 패키지는 어떻게 설치하나요?",
+      "a": "`install.packages(\"name\")`를 한 번 실행해 CRAN에서 내려받고, 세션마다 `library(name)`으로 불러옵니다."
+    }
+  ]
+}

@@ -1,0 +1,295 @@
+{
+  "title": "Mẫu thiết kế (design pattern): 23 mẫu GoF, các nhóm và cách chọn — cv.cm",
+  "description": "Mẫu thiết kế phần mềm là gì, cuốn sách Gang of Four, bảng đầy đủ 23 mẫu khởi tạo, cấu trúc và hành vi, cách chọn mẫu phù hợp và những hạn chế của chúng.",
+  "h1": "Mẫu thiết kế (design pattern) giải thích: 23 mẫu của Gang of Four",
+  "answer": "Mẫu thiết kế là một lời giải có tên, tái sử dụng được cho một vấn đề liên tục xuất hiện trong thiết kế phần mềm, được mô tả ở mức cao hơn mã cụ thể. Danh mục kinh điển là cuốn sách năm 1994 Design Patterns: Elements of Reusable Object-Oriented Software của Gamma, Helm, Johnson và Vlissides (\"Gang of Four\", GoF), liệt kê 23 mẫu chia thành ba nhóm: 5 mẫu khởi tạo, 7 mẫu cấu trúc và 11 mẫu hành vi. Các mẫu mang lại cho nhóm một vốn từ chung, nhưng chúng là công cụ cho những vấn đề cụ thể, không phải mục tiêu tự thân.",
+  "sections": [
+    {
+      "h": "Mẫu thiết kế là gì",
+      "body": [
+        "Mẫu thiết kế không phải là thư viện hay đoạn mã để sao chép. Nó là mô tả về một vấn đề lặp đi lặp lại, cốt lõi của lời giải và những đánh đổi khi dùng. Bạn vẫn tự viết mã, điều chỉnh theo ngôn ngữ và chương trình của mình.",
+        "Cuốn sách GoF mô tả mỗi mẫu bằng bốn thành phần thiết yếu:",
+        {
+          "ul": [
+            "Tên: một hai từ giúp lập trình viên trao đổi về thiết kế, chẳng hạn \"ta có thể bọc nó bằng mẫu Decorator\".",
+            "Vấn đề: khi nào áp dụng mẫu, và tình huống khiến nó cần thiết.",
+            "Lời giải: các lớp hoặc đối tượng tham gia, trách nhiệm của chúng và cách chúng phối hợp.",
+            "Hệ quả: chi phí và lợi ích, chẳng hạn linh hoạt hơn nhưng đổi lại có thêm nhiều lớp."
+          ]
+        },
+        "Ý tưởng này đến từ kiến trúc. Cuốn A Pattern Language (1977) của Christopher Alexander mô tả các lời giải lặp lại cho công trình và đô thị, và các tác giả GoF áp dụng cùng ý tưởng cho phần mềm hướng đối tượng."
+      ]
+    },
+    {
+      "h": "Cuốn sách Gang of Four",
+      "body": [
+        "Design Patterns: Elements of Reusable Object-Oriented Software được Addison-Wesley xuất bản năm 1994. Ví dụ trong sách dùng C++ và Smalltalk, nhưng các mẫu áp dụng cho mọi ngôn ngữ hướng đối tượng, gồm Java, C#, TypeScript, Python và Kotlin.",
+        "Ngoài danh mục, cuốn sách đề xuất hai nguyên tắc chung xuyên suốt hầu hết các mẫu:",
+        {
+          "ul": [
+            "Lập trình theo interface, không theo cách triển khai. Mã nên phụ thuộc vào việc một đối tượng làm được gì, không phải lớp cụ thể của nó.",
+            "Ưu tiên kết hợp đối tượng (composition) hơn kế thừa lớp. Xây dựng hành vi bằng cách kết hợp các đối tượng thường linh hoạt hơn xây các cây kế thừa sâu."
+          ]
+        },
+        "Cuốn sách cũng phân loại mỗi mẫu theo phạm vi: mẫu lớp dùng kế thừa và cố định lúc biên dịch (Factory Method, Adapter dạng lớp, Interpreter, Template Method), còn mẫu đối tượng dùng composition và có thể thay đổi lúc chạy (tất cả các mẫu còn lại)."
+      ]
+    },
+    {
+      "h": "Cả 23 mẫu GoF theo nhóm",
+      "body": [
+        "Mẫu khởi tạo (creational) lo việc đối tượng được tạo ra thế nào. Mẫu cấu trúc (structural) lo việc ghép lớp và đối tượng thành cấu trúc lớn hơn. Mẫu hành vi (behavioral) lo việc các đối tượng giao tiếp và chia sẻ trách nhiệm ra sao.",
+        {
+          "table": {
+            "head": [
+              "Mẫu",
+              "Nhóm",
+              "Mục đích trong một dòng"
+            ],
+            "rows": [
+              [
+                "Abstract Factory",
+                "Khởi tạo",
+                "Tạo các họ đối tượng liên quan mà không nêu tên lớp cụ thể của chúng."
+              ],
+              [
+                "Builder",
+                "Khởi tạo",
+                "Xây dựng một đối tượng phức tạp từng bước, tách việc xây dựng khỏi cách biểu diễn."
+              ],
+              [
+                "Factory Method",
+                "Khởi tạo",
+                "Để các lớp con quyết định lớp nào sẽ được khởi tạo."
+              ],
+              [
+                "Prototype",
+                "Khởi tạo",
+                "Tạo đối tượng mới bằng cách sao chép một thể hiện có sẵn."
+              ],
+              [
+                "Singleton",
+                "Khởi tạo",
+                "Đảm bảo một lớp chỉ có một thể hiện và cung cấp điểm truy cập toàn cục tới nó."
+              ],
+              [
+                "Adapter",
+                "Cấu trúc",
+                "Chuyển một interface thành interface khác mà máy khách mong đợi."
+              ],
+              [
+                "Bridge",
+                "Cấu trúc",
+                "Tách một abstraction khỏi phần triển khai để cả hai thay đổi độc lập."
+              ],
+              [
+                "Composite",
+                "Cấu trúc",
+                "Đối xử với đối tượng đơn lẻ và cây đối tượng theo cùng một cách."
+              ],
+              [
+                "Decorator",
+                "Cấu trúc",
+                "Thêm trách nhiệm cho một đối tượng một cách động bằng cách bọc nó."
+              ],
+              [
+                "Facade",
+                "Cấu trúc",
+                "Cung cấp một interface đơn giản cho một hệ thống con phức tạp."
+              ],
+              [
+                "Flyweight",
+                "Cấu trúc",
+                "Chia sẻ trạng thái chung để hỗ trợ hiệu quả số lượng lớn đối tượng nhỏ."
+              ],
+              [
+                "Proxy",
+                "Cấu trúc",
+                "Cung cấp một đối tượng thay thế kiểm soát việc truy cập tới đối tượng khác."
+              ],
+              [
+                "Chain of Responsibility",
+                "Hành vi",
+                "Chuyển yêu cầu dọc theo một chuỗi bộ xử lý cho đến khi có bộ xử lý xử lý nó."
+              ],
+              [
+                "Command",
+                "Hành vi",
+                "Biến một yêu cầu thành đối tượng để có thể xếp hàng, ghi nhật ký hoặc hoàn tác."
+              ],
+              [
+                "Interpreter",
+                "Hành vi",
+                "Biểu diễn văn phạm của một ngôn ngữ đơn giản bằng các lớp và đánh giá các câu trong đó."
+              ],
+              [
+                "Iterator",
+                "Hành vi",
+                "Truy cập các phần tử của collection theo thứ tự mà không lộ cấu trúc bên trong."
+              ],
+              [
+                "Mediator",
+                "Hành vi",
+                "Tập trung giao tiếp giữa các đối tượng để chúng không tham chiếu trực tiếp tới nhau."
+              ],
+              [
+                "Memento",
+                "Hành vi",
+                "Ghi lại và khôi phục trạng thái của đối tượng mà không phá vỡ tính đóng gói."
+              ],
+              [
+                "Observer",
+                "Hành vi",
+                "Tự động thông báo cho mọi đối tượng phụ thuộc khi một đối tượng thay đổi."
+              ],
+              [
+                "State",
+                "Hành vi",
+                "Cho phép đối tượng đổi hành vi khi trạng thái bên trong thay đổi."
+              ],
+              [
+                "Strategy",
+                "Hành vi",
+                "Làm cho một họ thuật toán có thể thay thế cho nhau sau một interface."
+              ],
+              [
+                "Template Method",
+                "Hành vi",
+                "Định nghĩa bộ khung của thuật toán và để các lớp con điền vào một số bước."
+              ],
+              [
+                "Visitor",
+                "Hành vi",
+                "Thêm thao tác mới cho một cây kế thừa lớp mà không thay đổi các lớp đó."
+              ]
+            ]
+          }
+        },
+        {
+          "note": "Nhiều mẫu trông giống nhau trong sơ đồ lớp. Adapter, Decorator và Proxy đều bọc một đối tượng; Strategy và State đều ủy thác cho một đối tượng có thể thay thế. Chúng khác nhau ở mục đích, vì vậy hãy học vấn đề mà mỗi mẫu giải quyết, không chỉ hình dạng của nó."
+        }
+      ]
+    },
+    {
+      "h": "Một mẫu trong thực tế: mẫu Strategy bằng TypeScript",
+      "body": [
+        "Đây là một ví dụ nhỏ về mẫu đang hoạt động. Một quy trình thanh toán phải tính phí vận chuyển theo nhiều cách. Thay vì chuỗi `if`/`else` ngày càng dài, mỗi quy tắc trở thành một đối tượng có thể thay thế sau cùng một interface:",
+        {
+          "code": "interface ShippingStrategy {\n  cost(weightKg: number): number;\n}\nclass FlatRate implements ShippingStrategy {\n  cost(): number { return 5; }\n}\nclass PerKilogram implements ShippingStrategy {\n  cost(weightKg: number): number { return 2 * weightKg; }\n}\nclass Checkout {\n  constructor(private shipping: ShippingStrategy) {}\n  setShipping(s: ShippingStrategy): void { this.shipping = s; }\n  total(itemsPrice: number, weightKg: number): number {\n    return itemsPrice + this.shipping.cost(weightKg);\n  }\n}\nconst checkout = new Checkout(new FlatRate());\nconsole.log(checkout.total(40, 3)); // 45\ncheckout.setShipping(new PerKilogram());\nconsole.log(checkout.total(40, 3)); // 46",
+          "lang": "typescript"
+        },
+        "Trong TypeScript, hàm là giá trị, nên cùng thiết kế có thể viết với ít mã hơn. Đây là một chủ đề thường gặp: nhiều mẫu trở nên đơn giản hơn, hoặc biến mất, trong các ngôn ngữ có hàm hạng nhất (first-class function).",
+        {
+          "code": "type Shipping = (weightKg: number) => number;\nconst flatRate: Shipping = () => 5;\nconst perKilogram: Shipping = (w) => 2 * w;\nfunction total(itemsPrice: number, weightKg: number, shipping: Shipping): number {\n  return itemsPrice + shipping(weightKg);\n}\nconsole.log(total(40, 3, flatRate));    // 45\nconsole.log(total(40, 3, perKilogram)); // 46",
+          "lang": "typescript"
+        }
+      ]
+    },
+    {
+      "h": "Cách chọn mẫu",
+      "body": [
+        "Hãy bắt đầu từ vấn đề, đừng bao giờ bắt đầu từ mẫu. Một mẫu chỉ đáng với số lớp thêm vào khi nó gỡ được một nỗi đau thật trong mã của bạn. Những câu hỏi sau chỉ ra các ứng viên thường gặp:",
+        {
+          "table": {
+            "head": [
+              "Nếu vấn đề của bạn là...",
+              "Hãy cân nhắc"
+            ],
+            "rows": [
+              [
+                "Mã không được phụ thuộc vào lớp cụ thể mà nó tạo ra",
+                "Factory Method, Abstract Factory"
+              ],
+              [
+                "Hàm khởi tạo có nhiều tham số tùy chọn",
+                "Builder"
+              ],
+              [
+                "Bạn cần lắp một lớp có sẵn vào một interface khác",
+                "Adapter"
+              ],
+              [
+                "Một thư viện phức tạp cần một điểm vào đơn giản",
+                "Facade"
+              ],
+              [
+                "Bạn muốn thêm tính năng cho đối tượng mà không bùng nổ lớp con",
+                "Decorator"
+              ],
+              [
+                "Bạn làm việc với cây, như menu, tệp hoặc widget giao diện",
+                "Composite, Visitor, Iterator"
+              ],
+              [
+                "Nhiều thành phần phải phản ứng khi một đối tượng thay đổi",
+                "Observer"
+              ],
+              [
+                "Hành vi phụ thuộc vào một chế độ hoặc trạng thái với nhiều nhánh",
+                "State"
+              ],
+              [
+                "Bạn cần các thuật toán hoặc quy tắc có thể thay thế cho nhau",
+                "Strategy"
+              ],
+              [
+                "Các hành động phải được hoàn tác, xếp hàng hoặc ghi nhật ký",
+                "Command, Memento"
+              ]
+            ]
+          }
+        },
+        {
+          "ol": [
+            "Trước hết hãy viết đoạn mã đơn giản nhất mà chạy được.",
+            "Khi cùng một thay đổi cứ gây khó chịu (ví dụ mỗi loại thanh toán mới phải sửa năm tệp), hãy đặt tên cho vấn đề.",
+            "Tra cứu những mẫu giải quyết vấn đề đó và đọc phần hệ quả của chúng.",
+            "Áp dụng phiên bản nhỏ nhất của mẫu đủ gỡ được nỗi đau, rồi dừng lại."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Phê bình và hạn chế",
+      "body": [
+        "Mẫu thiết kế hữu ích, nhưng thường bị dùng sai. Nên biết những lời phê bình phổ biến:",
+        {
+          "ul": [
+            "Lạm dụng: thêm factory, interface và manager \"phòng khi cần\" làm mã đơn giản trở nên khó đọc. Đôi khi điều này được gọi là bệnh mẫu (pattern fever).",
+            "Thiếu tính năng ngôn ngữ: năm 1996 Peter Norvig chỉ ra rằng 16 trong 23 mẫu GoF là vô hình hoặc đơn giản hơn trong các ngôn ngữ động như Lisp và Dylan. Hàm hạng nhất thay cho Strategy và Command, còn iterator tích hợp thay cho Iterator.",
+            "Riêng mẫu Singleton được nhiều người coi là phản mẫu (anti-pattern) khi dùng làm trạng thái toàn cục, vì nó che giấu các phụ thuộc và làm kiểm thử khó hơn.",
+            "Danh mục này có từ năm 1994. Thực tiễn sau đó bổ sung các mẫu nổi tiếng khác không có trong sách, như dependency injection, repository và các biến thể Model-View-Controller."
+          ]
+        },
+        "Giá trị lâu dài của cuốn sách là vốn từ chung và thói quen suy nghĩ về các đánh đổi. Nói \"đây là một Adapter\" cho lập trình viên khác biết rất nhiều chỉ bằng hai từ."
+      ]
+    },
+    {
+      "h": "Các nguyên lý liên quan",
+      "body": [
+        "Các mẫu thường được giải thích cùng các nguyên lý SOLID của thiết kế hướng đối tượng. Ví dụ, Strategy và Decorator là cách trực tiếp để tuân theo nguyên lý đóng/mở (open/closed), còn Abstract Factory là cách thường dùng để áp dụng nguyên lý đảo ngược phụ thuộc (dependency inversion). Học các nguyên lý giúp bạn hiểu vì sao một mẫu có hình dạng như vậy."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Có bao nhiêu mẫu thiết kế?",
+      "a": "Cuốn sách Gang of Four lập danh mục 23 mẫu: 5 mẫu khởi tạo, 7 mẫu cấu trúc và 11 mẫu hành vi. Nhiều mẫu khác đã được mô tả từ đó, ví dụ cho đồng thời, ứng dụng doanh nghiệp và giao diện người dùng."
+    },
+    {
+      "q": "Nên học những mẫu thiết kế nào trước?",
+      "a": "Hãy bắt đầu với những mẫu bạn sẽ gặp nhiều nhất trong mã thực tế: Strategy, Observer, Factory Method, Decorator, Adapter và Facade. Sau đó học Builder, Composite và Command."
+    },
+    {
+      "q": "Mẫu thiết kế còn phù hợp không?",
+      "a": "Có, như một vốn từ chung và như lời giải cho các vấn đề lặp lại. Một số mẫu nay đã được tích hợp vào ngôn ngữ và framework, nên bạn dùng chúng mà không cần viết đầy đủ cấu trúc lớp."
+    },
+    {
+      "q": "Mẫu thiết kế chỉ áp dụng cho ngôn ngữ hướng đối tượng à?",
+      "a": "Các mẫu GoF được viết cho ngôn ngữ hướng đối tượng, nhưng các ý tưởng nền tảng xuất hiện ở khắp nơi. Trong ngôn ngữ hàm, nhiều mẫu trở thành những hàm bậc cao đơn giản."
+    },
+    {
+      "q": "Khác nhau giữa mẫu thiết kế và thuật toán là gì?",
+      "a": "Thuật toán là chuỗi bước chính xác giải một bài toán tính toán, như sắp xếp. Mẫu thiết kế mô tả cách tổ chức mã và trách nhiệm, và được điều chỉnh cho từng chương trình thay vì làm theo từng bước."
+    }
+  ]
+}

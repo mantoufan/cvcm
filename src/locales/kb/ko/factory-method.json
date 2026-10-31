@@ -1,0 +1,168 @@
+{
+  "title": "팩토리 메서드 패턴: 의도, 구조, TypeScript 예제 — cv.cm",
+  "description": "팩토리 메서드 디자인 패턴 설명: 서브클래스가 어떤 객체를 만들지 결정합니다. TypeScript 예제, 사용 시점, 추상 팩토리 패턴과의 차이를 다룹니다.",
+  "h1": "예제로 이해하는 팩토리 메서드 패턴",
+  "answer": "팩토리 메서드 패턴은 객체를 만드는 메서드를 정의하되, 어떤 구체 클래스를 인스턴스화할지는 서브클래스가 결정하게 하는 생성 패턴입니다. 부모 클래스는 제품 인터페이스를 기준으로 로직을 작성하고, `new` 대신 `createTransport()` 같은 팩토리 메서드를 호출합니다. 덕분에 제품을 사용하는 코드를 고치지 않고 서브클래스만 추가해서 새로운 제품 종류를 더할 수 있습니다.",
+  "sections": [
+    {
+      "h": "의도",
+      "body": [
+        "객체를 만들기 위한 인터페이스를 정의하되, 어떤 클래스를 인스턴스화할지는 서브클래스가 결정하게 합니다. 팩토리 메서드 패턴은 클래스가 인스턴스화를 서브클래스에 미루게 해 줍니다. Gang of Four(GoF) 책의 다섯 가지 생성 패턴 중 하나이며, 상속에 의존하므로 생성 패턴 가운데 유일하게 클래스 범위의 패턴입니다."
+      ]
+    },
+    {
+      "h": "해결하는 문제",
+      "body": [
+        "알림 모듈을 떠올려 보세요. 메시지를 포맷하고, 보내고, 결과를 기록합니다. 처음에는 이메일만 보내므로 코드가 `new EmailChannel()`을 직접 호출합니다. 그러다 제품에 SMS가 필요해지고, 이어서 푸시 알림도 필요해집니다. 포맷과 기록 단계는 전혀 바뀌지 않는데도 채널이 하나 늘 때마다 같은 클래스를 고치고 `if` 분기를 하나씩 더 붙여야 합니다.",
+        "전송 흐름은 안정적이고 채널의 종류만 달라집니다. 팩토리 메서드 패턴은 달라지는 단 하나의 결정, 즉 어떤 클래스를 만들지를 오버라이드할 수 있는 하나의 메서드로 옮깁니다."
+      ]
+    },
+    {
+      "h": "구조와 참여자",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "참여자",
+              "역할",
+              "예제에서"
+            ],
+            "rows": [
+              [
+                "Product",
+                "팩토리 메서드가 만드는 객체의 인터페이스.",
+                "`Channel`"
+              ],
+              [
+                "ConcreteProduct",
+                "Product 인터페이스를 구현.",
+                "`EmailChannel`, `SmsChannel`"
+              ],
+              [
+                "Creator",
+                "팩토리 메서드를 선언하고 제품을 사용하는 로직을 담음.",
+                "`Notifier`"
+              ],
+              [
+                "ConcreteCreator",
+                "팩토리 메서드를 오버라이드해 특정 ConcreteProduct를 반환.",
+                "`EmailNotifier`, `SmsNotifier`"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "TypeScript 구현",
+      "body": [
+        {
+          "code": "interface Channel {\n  send(to: string, text: string): string;\n}\n\nclass EmailChannel implements Channel {\n  send(to: string, text: string): string { return `email to ${to}: ${text}`; }\n}\n\nclass SmsChannel implements Channel {\n  send(to: string, text: string): string { return `sms to ${to}: ${text.slice(0, 20)}`; }\n}\n\nabstract class Notifier {\n  // The factory method: subclasses choose the concrete product.\n  protected abstract createChannel(): Channel;\n  // Shared logic that works with any Channel.\n  notify(to: string, text: string): void {\n    const channel = this.createChannel();\n    const result = channel.send(to, text.trim());\n    console.log(\"[log]\", result);\n  }\n}\n\nclass EmailNotifier extends Notifier {\n  protected createChannel(): Channel { return new EmailChannel(); }\n}\n\nclass SmsNotifier extends Notifier {\n  protected createChannel(): Channel { return new SmsChannel(); }\n}\n\nconst notifiers: Notifier[] = [new EmailNotifier(), new SmsNotifier()];\nfor (const n of notifiers) n.notify(\"ada\", \" Your order has shipped today \");\n// [log] email to ada: Your order has shipped today\n// [log] sms to ada: Your order has shipp",
+          "lang": "typescript"
+        },
+        "이제 푸시 알림을 추가하려면 `PushChannel`과 `PushNotifier`를 작성하면 됩니다. `notify` 메서드와 그것을 호출하는 모든 코드는 그대로입니다.",
+        "패턴을 적용하기 전에는 생성 결정이 공통 로직 안에 묻혀 있었습니다.",
+        {
+          "code": "class Notifier {\n  constructor(private kind: \"email\" | \"sms\") {}\n  notify(to: string, text: string): void {\n    // every new channel edits this method\n    const result = this.kind === \"email\"\n      ? `email to ${to}: ${text}`\n      : `sms to ${to}: ${text.slice(0, 20)}`;\n    console.log(\"[log]\", result);\n  }\n}",
+          "lang": "typescript"
+        }
+      ]
+    },
+    {
+      "h": "더 가벼운 대안: 팩토리 함수 전달",
+      "body": [
+        "팩토리 메서드 패턴은 상속을 사용합니다. TypeScript에서는 생성 함수를 생성자에 넘기는 합성(composition)으로 같은 유연성을 얻는 경우가 많습니다. 제품마다 서브클래스를 하나씩 만들지 않아도 됩니다.",
+        {
+          "code": "interface Channel { send(to: string, text: string): string; }\nclass Notifier {\n  constructor(private createChannel: () => Channel) {}\n  notify(to: string, text: string): void {\n    console.log(\"[log]\", this.createChannel().send(to, text));\n  }\n}\nconst push = new Notifier(() => ({ send: (to, text) => `push to ${to}: ${text}` }));\npush.notify(\"ada\", \"Hello\"); // [log] push to ada: Hello",
+          "lang": "typescript"
+        },
+        "각 생성자(creator)가 다른 이유로 이미 자기 클래스를 가지고 있거나 프레임워크가 기반 클래스의 확장을 요구한다면 서브클래스 방식을 쓰세요. 변형들 사이의 유일한 차이가 만드는 객체뿐이라면 함수 방식을 쓰세요."
+      ]
+    },
+    {
+      "h": "언제 쓰고 언제 쓰지 말아야 하나",
+      "body": [
+        "다음과 같을 때 팩토리 메서드 패턴을 사용합니다.",
+        {
+          "ul": [
+            "클래스에 안정적인 알고리즘이 있지만 어떤 구체 객체를 만들어야 할지 미리 알 수 없을 때.",
+            "프레임워크나 라이브러리를 만들면서 사용자가 서브클래싱으로 자신의 제품 클래스를 끼워 넣게 하고 싶을 때.",
+            "한 타입의 생성 로직을 `new` 호출을 흩뿌리지 않고 한곳에 모아 두고 싶을 때."
+          ]
+        },
+        "다음 경우에는 피하세요.",
+        {
+          "ul": [
+            "제품 타입이 하나뿐이고 두 번째가 생길 징후가 없을 때. 직접 `new`를 쓰는 편이 더 명확합니다.",
+            "테스트를 가능하게 하려는 것이 유일한 이유일 때. 생성자로 의존성을 넘기는 편이 더 단순합니다.",
+            "다른 로직 없이 제품과 일대일로 대응하기만 하는 생성자 계층이 병렬로 생길 때."
+          ]
+        },
+        {
+          "note": "`Array.from()`이나 `Promise.resolve()` 같은 \"정적 팩토리 메서드\"는 다른 개념입니다. 인스턴스를 반환하는 이름 있는 정적 함수로 유용하지만, 서브클래스가 메서드를 오버라이드하는 방식에 의존하는 GoF 팩토리 메서드 패턴은 아닙니다."
+        }
+      ]
+    },
+    {
+      "h": "실제 사용 사례",
+      "body": [
+        {
+          "ul": [
+            "Java 컬렉션: `Iterable.iterator()`는 한 번 선언되고, 각 컬렉션 클래스(`ArrayList`, `HashSet` 등)가 이를 오버라이드해 자기 이터레이터 클래스를 반환합니다. GoF 책은 다형적 순회에 쓰이는 이런 방식을 팩토리 메서드 패턴으로 설명합니다.",
+            "JavaScript 이터러블: 모든 이터러블은 해당 컬렉션에 맞는 새 이터레이터를 반환하는 `[Symbol.iterator]()` 메서드를 구현합니다.",
+            "UI 프레임워크는 컴포넌트, 셀, 뷰를 만드는 메서드를 서브클래스가 오버라이드하게 하고, 레이아웃과 생명주기는 부모 클래스가 제어하는 경우가 많습니다."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "관련 패턴",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "패턴",
+              "차이점"
+            ],
+            "rows": [
+              [
+                "추상 팩토리 패턴",
+                "생성 메서드가 여러 개인 객체를 통해 서로 관련된 제품군 전체를 만듭니다. 그 메서드들은 흔히 팩토리 메서드로 구현됩니다."
+              ],
+              [
+                "템플릿 메서드 패턴",
+                "위의 `notify`가 `createChannel`을 호출하듯, 팩토리 메서드는 템플릿 메서드 안에서 자주 호출됩니다."
+              ],
+              [
+                "프로토타입 패턴",
+                "생성자를 서브클래싱하는 대신 인스턴스를 복사해 객체를 만들므로 병렬 생성자 계층이 필요 없습니다."
+              ],
+              [
+                "빌더 패턴",
+                "어떤 클래스를 만들지 고르는 것이 아니라 복잡한 객체 하나를 단계별로 구성하는 데 초점을 둡니다."
+              ]
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "팩토리 메서드 패턴과 추상 팩토리 패턴은 무엇이 다른가요?",
+      "a": "팩토리 메서드는 서브클래스가 오버라이드해 제품 하나를 만드는 단일 메서드입니다. 추상 팩토리는 함께 써야 하는 서로 관련된 제품군을 만드는 여러 생성 메서드를 가진 객체입니다."
+    },
+    {
+      "q": "단순한 팩토리 함수는 팩토리 메서드 패턴과 같은가요?",
+      "a": "정확히는 다릅니다. 안에 switch가 있는 `createShape(kind)` 같은 함수는 흔히 단순 팩토리라고 부릅니다. GoF 팩토리 메서드는 서브클래스가 생성 메서드를 오버라이드하는 데 의존하지만, 둘 다 클라이언트에서 `new`를 숨깁니다."
+    },
+    {
+      "q": "팩토리 메서드 패턴은 개방-폐쇄 원칙을 따르나요?",
+      "a": "네. 새 제품 클래스와 새 creator 서브클래스를 추가하는 것만으로 새 제품을 더할 수 있고, creator의 기존 로직은 바꾸지 않습니다."
+    },
+    {
+      "q": "팩토리 메서드는 반드시 추상 메서드여야 하나요?",
+      "a": "아니요. 부모 클래스가 표준 제품을 반환하는 기본 구현을 제공하고, 다른 것이 필요한 서브클래스만 오버라이드할 수 있습니다."
+    }
+  ]
+}

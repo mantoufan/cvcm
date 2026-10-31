@@ -1,0 +1,229 @@
+{
+  "title": "Julia 入門教學：陣列、函式、多重分派與套件 — cv.cm",
+  "description": "從零開始學 Julia：用 juliaup 安裝、執行 Hello world、使用型別、從 1 開始的陣列、廣播、函式、多重分派、錯誤與套件。",
+  "h1": "Julia 入門教學",
+  "answer": "Julia 是一種高階、動態型別的語言，專為快速的數值與科學運算而設計。它讀起來像 Python 或 MATLAB，但每個函式在第一次被呼叫時就會編譯成原生程式碼，因此迴圈的執行速度可以接近 C。它的核心概念是多重分派：函式會依所有引數的型別來挑選方法。用 juliaup 安裝後，以 `julia hello.jl` 執行檔案。",
+  "sections": [
+    {
+      "h": "Julia 是什麼、誰在使用",
+      "body": [
+        "Julia 由 Jeff Bezanson、Stefan Karpinski、Viral Shah 與 Alan Edelman 創造，2012 年公開。1.0 版於 2018 年推出，1.x 系列持續保持向下相容。Julia 的目標是解決「雙語言問題」：先用緩慢但容易的語言做原型，再把效能關鍵的部分改寫成 C 或 Fortran。",
+        "科學家、工程師與資料分析師使用 Julia 進行模擬、微分方程、最佳化、統計、機器學習與高效能運算。它的套件生態系涵蓋資料框架、繪圖、GPU 運算與自動微分。"
+      ]
+    },
+    {
+      "h": "安裝 Julia 並執行 Hello, world",
+      "body": [
+        "建議使用 juliaup 安裝，它能在 Windows、macOS 與 Linux 上安裝並更新 Julia 版本（見 julialang.org/downloads）。安裝完成後，`julia` 會啟動 REPL，`julia file.jl` 則執行腳本。",
+        {
+          "code": "# hello.jl\nprintln(\"Hello, world!\")",
+          "lang": "julia"
+        },
+        {
+          "code": "julia hello.jl\n# Hello, world!\njulia\n# julia> 1 + 2\n# 3",
+          "lang": "shell"
+        },
+        "在 REPL 中，按 `]` 進入套件模式（例如 `add DataFrames`），按 `?` 查詢某個名稱的說明，按 `;` 進入 shell。按 Backspace 即可回到一般提示字元。"
+      ]
+    },
+    {
+      "h": "變數與基本型別",
+      "body": [
+        "變數不需要宣告，但每個值都有具體的型別，可以用 `typeof` 檢視。需要時，你可以在函式引數與 struct 欄位上加入型別標註。",
+        {
+          "table": {
+            "head": [
+              "型別",
+              "範例",
+              "說明"
+            ],
+            "rows": [
+              [
+                "Int64",
+                "`42`",
+                "64 位元系統上的預設整數；溢位時會繞回"
+              ],
+              [
+                "Float64",
+                "`3.14`, `1e-3`",
+                "預設的浮點數"
+              ],
+              [
+                "Rational",
+                "`1//3`",
+                "精確分數"
+              ],
+              [
+                "String",
+                "`\"hello\"`",
+                "UTF-8；以 `\"$name\"` 插值"
+              ],
+              [
+                "Char",
+                "`'a'`",
+                "單一 Unicode 字元"
+              ],
+              [
+                "Bool",
+                "`true`, `false`",
+                "邏輯值"
+              ],
+              [
+                "Symbol",
+                "`:name`",
+                "駐留（interned）的名稱，常用作鍵或選項"
+              ],
+              [
+                "Nothing",
+                "`nothing`",
+                "「沒有值」，沒有結果的函式會回傳它"
+              ]
+            ]
+          }
+        },
+        {
+          "code": "name = \"Ana\"\nage = 30\nprintln(\"$name is $age, next year $(age + 1)\")\n# Ana is 30, next year 31\ntypeof(age)   # Int64\n7 / 2         # 3.5  (always a float)\n7 ÷ 2         # 3    (integer division, also div(7, 2))\n2^10          # 1024",
+          "lang": "julia"
+        },
+        "Julia 接受 `π` 或 `α` 等 Unicode 名稱；在 REPL 與大多數編輯器中，輸入 `\\pi` 再按 Tab 就能得到 `π`。"
+      ]
+    },
+    {
+      "h": "流程控制",
+      "body": [
+        "區塊以關鍵字 `end` 結束；縮排只是為了可讀性。`if`、`for` 與 `while` 的用法與大多數語言相同，生成式則能一行建出陣列。",
+        {
+          "code": "function sign_name(n)\n    if n > 0\n        \"positive\"\n    elseif n < 0\n        \"negative\"\n    else\n        \"zero\"\n    end\nend\nfor i in 1:3\n    println(\"$i squared is $(i^2)\")\nend\nsquares = [x^2 for x in 1:5 if isodd(x)]   # [1, 9, 25]\nx = 5\nresult = x > 3 ? \"big\" : \"small\"           # \"big\"",
+          "lang": "julia"
+        },
+        "`1:3` 是包含兩端的範圍。函式或 `if` 區塊的最後一個運算式就是它的值，所以 `sign_name(-2)` 不必明確寫 `return` 就會回傳 `\"negative\"`。"
+      ]
+    },
+    {
+      "h": "函式",
+      "body": [
+        {
+          "code": "add(x, y) = x + y                 # one-line definition\nfunction greet(name = \"world\"; punctuation = \"!\")\n    return \"Hello, $name$punctuation\"\nend\ngreet()                           # \"Hello, world!\"\ngreet(\"Ana\", punctuation = \".\")   # \"Hello, Ana.\"\nsquare = x -> x^2                 # anonymous function\nmap(square, [1, 2, 3])            # [1, 4, 9]\nv = [3, 1, 2]\nsort!(v)                          # v is now [1, 2, 3]",
+          "lang": "julia"
+        },
+        "位置引數寫在分號之前，關鍵字引數寫在分號之後。依慣例，名稱以 `!` 結尾的函式會修改它的某個引數，例如 `sort!` 或 `push!`，而 `sort` 則會回傳新陣列。"
+      ]
+    },
+    {
+      "h": "陣列、元組與字典",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "結構",
+              "字面值",
+              "說明"
+            ],
+            "rows": [
+              [
+                "Vector",
+                "`[1, 2, 3]`",
+                "從 1 開始索引、可變，可用 `push!` 擴充"
+              ],
+              [
+                "Matrix",
+                "`[1 2; 3 4]`",
+                "空格分隔欄，`;` 分隔列"
+              ],
+              [
+                "Tuple",
+                "`(1, \"a\")`",
+                "不可變、長度固定"
+              ],
+              [
+                "Named tuple",
+                "`(name = \"Ana\", age = 30)`",
+                "以 `.name` 存取欄位"
+              ],
+              [
+                "Dict",
+                "`Dict(\"a\" => 1)`",
+                "可變的雜湊 map"
+              ],
+              [
+                "Set",
+                "`Set([1, 2, 2])`",
+                "不重複的值"
+              ]
+            ]
+          }
+        },
+        {
+          "code": "v = [10, 20, 30]\nv[1]          # 10   (first element)\nv[end]        # 30\npush!(v, 40)\nA = [1 2; 3 4]\nA * A         # matrix product: [7 10; 15 22]\nA .* A        # element-wise:   [1 4; 9 16]\nv .+ 1        # broadcasting:   [11, 21, 31, 41]\nsqrt.([1, 4, 9])   # [1.0, 2.0, 3.0]",
+          "lang": "julia"
+        },
+        "點語法稱為廣播（broadcasting）：`f.(x)` 會對每個元素套用 `f`，而 `.+`、`.*` 則逐元素運算。Julia 會把一連串帶點的運算融合成單一迴圈。"
+      ]
+    },
+    {
+      "h": "招牌特色：多重分派",
+      "body": [
+        "一個 Julia 函式可以有許多方法。呼叫時，Julia 會依所有引數的型別挑選最具體的方法。這取代了類別方法：型別負責存放資料，行為則透過為它們定義方法來加入，甚至可以來自另一個套件。",
+        {
+          "code": "abstract type Shape end\nstruct Circle <: Shape\n    r::Float64\nend\nstruct Rect <: Shape\n    w::Float64\n    h::Float64\nend\narea(c::Circle) = π * c.r^2\narea(r::Rect) = r.w * r.h\nshapes = [Circle(1.0), Rect(2.0, 3.0)]\nprintln(round.(area.(shapes), digits = 2))   # [3.14, 6.0]",
+          "lang": "julia"
+        },
+        "由於 Julia 會針對看到的引數型別編譯出專門化的函式版本，函式的第一次呼叫較慢（包含編譯時間），之後的呼叫就很快。如果欄位在建立後必須能改變，請使用 `mutable struct`。"
+      ]
+    },
+    {
+      "h": "錯誤處理",
+      "body": [
+        "Julia 使用例外。可以丟出 `ArgumentError` 或 `DomainError` 等內建例外型別，或是定義自己的 struct 並繼承 `Exception`。`tryparse` 不會丟出例外，而是回傳 `nothing`。",
+        {
+          "code": "function parse_age(s)\n    n = tryparse(Int, s)\n    n === nothing && throw(ArgumentError(\"not a number: $s\"))\n    n < 0 && throw(DomainError(n, \"age must not be negative\"))\n    return n\nend\ntry\n    parse_age(\"abc\")\ncatch e\n    if e isa ArgumentError\n        println(\"Error: \", e.msg)\n    else\n        rethrow()\n    end\nend\n# Error: not a number: abc",
+          "lang": "julia"
+        }
+      ]
+    },
+    {
+      "h": "完整的小程式：字詞頻率",
+      "body": [
+        {
+          "code": "text = \"the cat and the hat and the bat\"\ncounts = Dict{String,Int}()\nfor w in split(text)\n    counts[w] = get(counts, w, 0) + 1\nend\ntop = sort(collect(counts), by = last, rev = true)\nfor (word, n) in first(top, 2)\n    println(word, \" \", n)\nend\n# the 3\n# and 2",
+          "lang": "julia"
+        },
+        "`split` 依空白字元切開字串，`get` 對新字詞回傳預設值 0，`collect` 把字典轉成 `word => count` 配對的向量，`by = last` 則依次數排序。",
+        {
+          "note": "新手常見錯誤：從 0 開始索引（`v[0]` 會出錯；第一個元素是 `v[1]`）；以為 `7 / 2` 是整數；把效能關鍵的程式碼寫在腳本的頂層，而不是函式內（全域變數很慢，而且在檔案的頂層迴圈中指派全域變數會觸發作用域警告）；以及只計時第一次呼叫，而它包含了編譯時間。"
+        }
+      ]
+    },
+    {
+      "h": "接下來可以學什麼",
+      "body": [
+        {
+          "ul": [
+            "docs.julialang.org 上的官方 Julia 手冊，從「Getting Started」開始。",
+            "julialang.org 的學習頁面，列出教學、書籍與課程。",
+            "在最佳化程式碼之前，先閱讀手冊的「Performance Tips」章節。",
+            "探索 DataFrames.jl、Plots.jl 與 DifferentialEquations.jl 等套件。"
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Julia 比 Python 快嗎？",
+      "a": "對於含有大量迴圈與數值運算的程式碼，Julia 通常比純 Python 快得多，因為它會編譯成原生程式碼。搭配 NumPy 等函式庫的 Python，在向量化運算上也可以很快，所以差異取決於任務。"
+    },
+    {
+      "q": "為什麼 Julia 從 1 開始計數？",
+      "a": "Julia 遵循數學以及 MATLAB、R 與 Fortran 等語言的慣例，陣列的第一個元素索引為 1。"
+    },
+    {
+      "q": "為什麼我的 Julia 程式第一次執行很慢？",
+      "a": "Julia 在每個函式第一次被呼叫時，會針對引數型別進行編譯。之後的呼叫會重複使用編譯好的程式碼，所以請在暖機呼叫之後，或使用效能測試套件來衡量效能。"
+    },
+    {
+      "q": "Julia 是免費的嗎？",
+      "a": "是的。Julia 是採 MIT 授權的開放原始碼軟體，幾乎所有套件也都是開放原始碼。"
+    }
+  ]
+}

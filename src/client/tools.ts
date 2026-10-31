@@ -682,4 +682,34 @@ export const TOOL_LOADERS: Record<ToolId, ToolLoader> = {
     m.mountCaloriesBurned(host);
     return m.unmountCaloriesBurned;
   },
+  "wheel": async (host, ctx) => {
+    const m = await import("./wheel/ui");
+    if (!ctx.alive()) return undefined;
+    m.mountWheel(host);
+    return m.unmountWheel;
+  },
+  "average": async (host, ctx) => {
+    const m = await import("./average/ui");
+    if (!ctx.alive()) return undefined;
+    m.mountAverage(host);
+    return m.unmountAverage;
+  },
+  "metronome": async (host, ctx) => {
+    const m = await import("./metronome/ui");
+    if (!ctx.alive()) return undefined;
+    m.mountMetronome(host);
+    return m.unmountMetronome;
+  },
+  "keyboard-test": async (host, ctx) => {
+    const m = await import("./keyboard-test/ui");
+    if (!ctx.alive()) return undefined;
+    m.mountKeyboardTest(host);
+    return m.unmountKeyboardTest;
+  },
+  "zodiac": async (host, ctx) => {
+    const m = await import("./zodiac/ui");
+    if (!ctx.alive()) return undefined;
+    m.mountZodiac(host);
+    return m.unmountZodiac;
+  },
 };

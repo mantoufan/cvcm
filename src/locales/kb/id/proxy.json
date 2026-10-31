@@ -1,0 +1,177 @@
+{
+  "title": "Pola Proxy: virtual, protection, dan caching proxy di TypeScript — cv.cm",
+  "description": "Pola Proxy menempatkan objek pengganti di depan objek asli untuk mengontrol akses. Lihat caching, lazy, dan protection proxy di TypeScript dan JS Proxy.",
+  "h1": "Penjelasan pola Proxy beserta contohnya",
+  "answer": "Proxy adalah pola desain struktural yang menyediakan objek pengganti dengan interface yang sama seperti objek asli, sehingga proxy dapat mengontrol akses ke objek asli itu. Klien berbicara dengan proxy seolah-olah itu objek aslinya, dan proxy menentukan kapan serta bagaimana meneruskan setiap panggilan. Jenis yang umum adalah virtual proxy (pembuatan lazy), protection proxy (pemeriksaan akses), caching proxy, dan remote proxy.",
+  "sections": [
+    {
+      "h": "Tujuan dan masalah yang diselesaikan",
+      "body": [
+        "Tujuan: menyediakan pengganti atau placeholder bagi objek lain untuk mengontrol akses ke objek tersebut. Proxy adalah salah satu pola struktural dalam buku Gang of Four (GoF).",
+        "Misalkan sebuah aplikasi memanggil layanan cuaca lewat jaringan. Setiap panggilan memakan ratusan milidetik dan berbiaya, sementara kota yang sama sering diminta berkali-kali per menit. Anda tidak bisa mengubah class layanan itu, dan Anda tidak ingin menambahkan kode caching di setiap tempat yang memanggilnya. Proxy menyelesaikan hal ini: ia mengimplementasikan interface yang sama, menyimpan cache, dan hanya memanggil layanan asli saat cache tidak berisi data. Pemanggil tidak perlu berubah sama sekali.",
+        "Gagasan yang sama mencakup kebutuhan lain: membuat objek yang mahal hanya saat pertama kali dipakai, memeriksa izin sebelum panggilan, mencatat setiap panggilan, atau menyembunyikan fakta bahwa objek aslinya berada di mesin lain."
+      ]
+    },
+    {
+      "h": "Struktur dan peserta",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Peran",
+              "Tanggung jawab"
+            ],
+            "rows": [
+              [
+                "Subject",
+                "Interface yang dipakai bersama oleh objek asli dan proxy, sehingga klien bisa memakai salah satunya"
+              ],
+              [
+                "Real subject",
+                "Objek yang melakukan pekerjaan sebenarnya"
+              ],
+              [
+                "Proxy",
+                "Mengimplementasikan interface subject, menyimpan atau membuat referensi ke real subject, dan menambahkan logika kontrol sebelum atau sesudah meneruskan panggilan"
+              ],
+              [
+                "Client",
+                "Hanya bekerja dengan interface subject dan tidak tahu apakah ia memegang proxy"
+              ]
+            ]
+          }
+        },
+        {
+          "table": {
+            "head": [
+              "Jenis proxy",
+              "Apa yang dikontrol"
+            ],
+            "rows": [
+              [
+                "Virtual proxy",
+                "Menunda pembuatan objek yang mahal sampai objek itu dibutuhkan"
+              ],
+              [
+                "Protection proxy",
+                "Memeriksa apakah pemanggil diizinkan menjalankan suatu operasi"
+              ],
+              [
+                "Caching proxy",
+                "Menyimpan hasil dan mengembalikannya untuk permintaan yang berulang"
+              ],
+              [
+                "Remote proxy",
+                "Mewakili objek di proses atau mesin lain dan menangani komunikasinya"
+              ],
+              [
+                "Logging proxy",
+                "Mencatat panggilan dan argumen tanpa mengubah objek asli"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "Implementasi TypeScript: caching proxy",
+      "body": [
+        "`WeatherService` adalah subject. `CachedWeatherService` adalah proxy: ia punya method yang sama dan hanya meneruskan ke layanan asli saat nilai di cache tidak ada atau sudah terlalu lama.",
+        {
+          "code": "interface WeatherService {\n  getTemperature(city: string): Promise<number>;\n}\nclass RemoteWeatherService implements WeatherService {\n  calls = 0;\n  async getTemperature(city: string): Promise<number> {\n    this.calls++; // imagine a slow HTTP request here\n    return city.length * 3;\n  }\n}\nclass CachedWeatherService implements WeatherService {\n  private cache = new Map<string, { value: number; time: number }>();\n  constructor(private real: WeatherService, private maxAgeMs = 60_000) {}\n  async getTemperature(city: string): Promise<number> {\n    const hit = this.cache.get(city);\n    if (hit && Date.now() - hit.time < this.maxAgeMs) return hit.value;\n    const value = await this.real.getTemperature(city);\n    this.cache.set(city, { value, time: Date.now() });\n    return value;\n  }\n}\nasync function main() {\n  const real = new RemoteWeatherService();\n  const weather: WeatherService = new CachedWeatherService(real);\n  await weather.getTemperature(\"Paris\");\n  await weather.getTemperature(\"Paris\");\n  console.log(await weather.getTemperature(\"Hanoi\"), \"real calls:\", real.calls);\n  // 15 real calls: 2\n}\nmain();",
+          "lang": "typescript"
+        },
+        "Variabel client bertipe `WeatherService`, jadi Anda bisa berganti antara layanan asli dan proxy di satu tempat saja, misalnya dalam konfigurasi dependency injection."
+      ]
+    },
+    {
+      "h": "Virtual dan protection proxy dengan JavaScript Proxy",
+      "body": [
+        "JavaScript punya objek `Proxy` bawaan (ES2015) yang mencegat operasi seperti pembacaan properti, penulisan, dan pemanggilan fungsi lewat fungsi handler yang disebut trap. Ini cara praktis untuk membuat proxy tanpa menulis class untuk setiap interface.",
+        {
+          "code": "type Account = { owner: string; balance: number };\nfunction readOnly<T extends object>(target: T): T {\n  return new Proxy(target, {\n    set(_obj, prop) {\n      throw new Error(\"Cannot change \" + String(prop) + \": read-only\");\n    },\n  });\n}\nconst account = readOnly<Account>({ owner: \"Ana\", balance: 100 });\nconsole.log(account.balance); // 100\ntry {\n  account.balance = 0;\n} catch (e) {\n  console.log((e as Error).message); // Cannot change balance: read-only\n}",
+          "lang": "typescript"
+        },
+        {
+          "note": "`Proxy` JavaScript mencegat operasi pada satu objek, tetapi tidak gratis: setiap operasi yang ditangkap menjalankan sebuah fungsi. Jangan membungkus struktur data yang sering diakses dengan `Proxy` tanpa mengukur biayanya."
+        }
+      ]
+    },
+    {
+      "h": "Kapan dipakai dan kapan tidak",
+      "body": [
+        {
+          "ul": [
+            "Pakai untuk menambahkan lazy loading, kontrol akses, caching, logging, atau akses jarak jauh tanpa mengubah class asli maupun pemanggilnya.",
+            "Pakai bila objek aslinya di luar kendali Anda, seperti class dari library atau klien jaringan.",
+            "Jangan dipakai bila pembungkus fungsi biasa sudah cukup. Untuk satu fungsi, higher-order function seperti `memoize(fn)` lebih sederhana daripada sebuah class.",
+            "Jangan menyembunyikan panggilan jarak jauh yang lambat atau gagal di balik proxy yang tampak lokal. Pemanggil tetap perlu menangani latensi dan error, jadi buat itu terlihat di interface (misalnya dengan mengembalikan `Promise`).",
+            "Hati-hati dengan identitas: proxy adalah objek yang berbeda dari real subject, sehingga `proxy === real` bernilai false."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Penggunaan di dunia nyata",
+      "body": [
+        {
+          "ul": [
+            "Vue 3 membangun sistem reaktivitasnya di atas `Proxy` JavaScript: membaca properti mencatat dependensi dan menulisnya memicu pembaruan.",
+            "Java menyediakan `java.lang.reflect.Proxy` untuk membuat class proxy dinamis saat runtime; framework memakainya untuk menambahkan transaksi, pemeriksaan keamanan, atau panggilan jarak jauh di sekitar interface.",
+            "Object-relational mapper seperti Hibernate mengembalikan lazy proxy untuk entitas terkait dan memuat data aslinya dari database saat pertama kali diakses.",
+            "Library remote procedure call membuat client stub yang tampak seperti objek lokal tetapi mengirim setiap panggilan lewat jaringan."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Pola terkait",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Pola",
+              "Perbedaannya dengan Proxy"
+            ],
+            "rows": [
+              [
+                "Decorator",
+                "Struktur sama, tujuan berbeda: Decorator menambahkan perilaku baru dan sering ditumpuk; Proxy mengontrol akses dan biasanya mengelola siklus hidup objek aslinya."
+              ],
+              [
+                "Adapter",
+                "Adapter memberi objek interface yang berbeda; Proxy mempertahankan interface yang persis sama."
+              ],
+              [
+                "Facade",
+                "Facade menawarkan interface baru yang lebih sederhana untuk seluruh subsistem; Proxy menggantikan satu objek."
+              ],
+              [
+                "Flyweight",
+                "Flyweight membagi objek untuk menghemat memori; virtual proxy menunda pembuatan objek untuk menghemat waktu dan memori."
+              ]
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Apa perbedaan antara Proxy dan Decorator?",
+      "a": "Keduanya membungkus objek dengan interface yang sama. Decorator menambahkan tanggung jawab dan biasanya disusun oleh klien, sedangkan proxy mengontrol akses ke objek asli dan sering membuat atau mengelola objek itu sendiri."
+    },
+    {
+      "q": "Apakah objek Proxy JavaScript sama dengan pola Proxy?",
+      "a": "Itu fitur bahasa yang membuat pola ini mudah diimplementasikan. `Proxy` JavaScript mencegat operasi pada objek target lewat trap, persis seperti yang dilakukan proxy dalam pengertian GoF."
+    },
+    {
+      "q": "Apa itu virtual proxy?",
+      "a": "Virtual proxy menggantikan objek yang mahal untuk dibuat, seperti gambar besar. Ia membuat objek asli hanya saat method yang membutuhkannya pertama kali dipanggil."
+    },
+    {
+      "q": "Apakah reverse proxy server contoh pola Proxy?",
+      "a": "Gagasannya sama di level jaringan: server seperti nginx berada di depan server lain dengan interface HTTP yang sama dan menambahkan caching, kontrol akses, atau load balancing. Pola GoF menjelaskan gagasan yang sama untuk objek dalam satu program."
+    }
+  ]
+}

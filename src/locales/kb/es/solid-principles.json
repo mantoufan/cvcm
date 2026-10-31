@@ -1,0 +1,172 @@
+{
+  "title": "Principios SOLID: las cinco reglas del diseño orientado a objetos con ejemplos — cv.cm",
+  "description": "Los cinco principios SOLID del diseño orientado a objetos explicados uno a uno, con ejemplos en TypeScript de antes y después y cuándo aplicarlos.",
+  "h1": "Principios SOLID explicados con ejemplos",
+  "answer": "SOLID es un acrónimo de cinco principios de diseño orientado a objetos: responsabilidad única (Single responsibility), abierto/cerrado (Open/closed), sustitución de Liskov (Liskov substitution), segregación de interfaces (Interface segregation) e inversión de dependencias (Dependency inversion). Los reunió Robert C. Martin, y el acrónimo lo acuñó Michael Feathers. En conjunto buscan que el código sea más fácil de cambiar: cada clase tiene una sola razón para cambiar, el comportamiento nuevo se añade sin editar código antiguo, los subtipos son sustitutos seguros, las interfaces siguen siendo pequeñas y el código de alto nivel depende de abstracciones.",
+  "sections": [
+    {
+      "h": "Qué significa SOLID",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Letra",
+              "Principio",
+              "Regla breve"
+            ],
+            "rows": [
+              [
+                "S",
+                "Principio de responsabilidad única (SRP)",
+                "Una clase debe tener una sola razón para cambiar."
+              ],
+              [
+                "O",
+                "Principio abierto/cerrado (OCP)",
+                "El software debe estar abierto a la extensión pero cerrado a la modificación."
+              ],
+              [
+                "L",
+                "Principio de sustitución de Liskov (LSP)",
+                "Los subtipos deben poder usarse allí donde se espera su tipo base."
+              ],
+              [
+                "I",
+                "Principio de segregación de interfaces (ISP)",
+                "Los clientes no deben verse obligados a depender de métodos que no usan."
+              ],
+              [
+                "D",
+                "Principio de inversión de dependencias (DIP)",
+                "Depende de abstracciones, no de detalles concretos."
+              ]
+            ]
+          }
+        },
+        "Las ideas son más antiguas que el acrónimo. El principio abierto/cerrado viene del libro de Bertrand Meyer Object-Oriented Software Construction (1988), y el principio de sustitución, de la conferencia magistral de Barbara Liskov de 1987, Data Abstraction and Hierarchy. Robert C. Martin describió los cinco en sus escritos hacia el año 2000, y Michael Feathers los ordenó después en la palabra SOLID."
+      ]
+    },
+    {
+      "h": "S: principio de responsabilidad única",
+      "body": [
+        "Una clase debe tener una sola razón para cambiar, es decir, debe servir a un solo actor o a una sola preocupación. Cuando una clase mezcla reglas de negocio, formato y almacenamiento, un cambio en cualquiera de ellos puede romper los demás.",
+        "Antes: una clase calcula, da formato y guarda un informe.",
+        {
+          "code": "class Report {\n  constructor(private sales: number[]) {}\n  total(): number { return this.sales.reduce((a, b) => a + b, 0); }\n  toHtml(): string { return `<p>Total: ${this.total()}</p>`; }\n  saveToFile(path: string): void { /* write this.toHtml() to disk */ }\n}",
+          "lang": "typescript"
+        },
+        "Después: cada preocupación vive en su propia unidad pequeña, así que un nuevo formato de salida no toca el cálculo.",
+        {
+          "code": "class SalesReport {\n  constructor(private sales: number[]) {}\n  total(): number { return this.sales.reduce((a, b) => a + b, 0); }\n}\nclass HtmlFormatter {\n  format(r: SalesReport): string { return `<p>Total: ${r.total()}</p>`; }\n}\nclass ReportWriter {\n  save(content: string, path: string): void { /* write to disk */ }\n}\nconst html = new HtmlFormatter().format(new SalesReport([10, 20, 5]));\nconsole.log(html); // <p>Total: 35</p>",
+          "lang": "typescript"
+        }
+      ]
+    },
+    {
+      "h": "O: principio abierto/cerrado",
+      "body": [
+        "Debes poder añadir comportamiento nuevo añadiendo código nuevo, no editando código que ya funciona y está probado. La herramienta habitual es una interfaz más polimorfismo.",
+        "Antes: cada forma nueva obliga a editar la función `area`.",
+        {
+          "code": "type Shape = { kind: \"circle\"; r: number } | { kind: \"square\"; side: number };\nfunction area(s: Shape): number {\n  if (s.kind === \"circle\") return Math.PI * s.r ** 2;\n  if (s.kind === \"square\") return s.side ** 2;\n  throw new Error(\"unknown shape\");\n}",
+          "lang": "typescript"
+        },
+        "Después: una forma nueva es una clase nueva; el código existente no cambia.",
+        {
+          "code": "interface Shape { area(): number; }\nclass Circle implements Shape {\n  constructor(private r: number) {}\n  area(): number { return Math.PI * this.r ** 2; }\n}\nclass Square implements Shape {\n  constructor(private side: number) {}\n  area(): number { return this.side ** 2; }\n}\nconst totalArea = (shapes: Shape[]) => shapes.reduce((sum, s) => sum + s.area(), 0);\nconsole.log(totalArea([new Square(2), new Square(3)])); // 13",
+          "lang": "typescript"
+        },
+        {
+          "note": "En TypeScript, un tipo unión con un `switch` exhaustivo también es un diseño válido. Facilita añadir operaciones nuevas y dificulta añadir tipos nuevos, que es la contrapartida opuesta. Elige según qué tipo de cambio sea más probable."
+        }
+      ]
+    },
+    {
+      "h": "L: principio de sustitución de Liskov",
+      "body": [
+        "Si el código funciona con un tipo base, debe seguir funcionando al recibir cualquier subtipo. Un subtipo no debe reforzar las precondiciones, debilitar las garantías ni lanzar errores donde el tipo base no lo hace.",
+        "Antes: el clásico problema del cuadrado y el rectángulo. `Square` extiende `Rectangle` pero rompe la expectativa de que el ancho y el alto son independientes.",
+        {
+          "code": "class Rectangle {\n  constructor(public width: number, public height: number) {}\n  setWidth(w: number): void { this.width = w; }\n  setHeight(h: number): void { this.height = h; }\n  area(): number { return this.width * this.height; }\n}\nclass Square extends Rectangle {\n  setWidth(w: number): void { this.width = w; this.height = w; }\n  setHeight(h: number): void { this.width = h; this.height = h; }\n}\nfunction stretch(r: Rectangle): number {\n  r.setWidth(5);\n  r.setHeight(4);\n  return r.area(); // caller expects 20\n}\nconsole.log(stretch(new Rectangle(1, 1))); // 20\nconsole.log(stretch(new Square(1, 1)));    // 16, surprise",
+          "lang": "typescript"
+        },
+        "Después: no modeles la relación como herencia. Ambos tipos implementan una interfaz común de solo lectura, y nadie espera cambiar de forma independiente los lados de un cuadrado.",
+        {
+          "code": "interface Shape { area(): number; }\nclass Rectangle implements Shape {\n  constructor(readonly width: number, readonly height: number) {}\n  area(): number { return this.width * this.height; }\n}\nclass Square implements Shape {\n  constructor(readonly side: number) {}\n  area(): number { return this.side ** 2; }\n}\nconsole.log([new Rectangle(5, 4), new Square(4)].map((s) => s.area())); // [ 20, 16 ]",
+          "lang": "typescript"
+        }
+      ]
+    },
+    {
+      "h": "I: principio de segregación de interfaces",
+      "body": [
+        "Las interfaces grandes obligan a las clases a implementar métodos que no pueden soportar, normalmente lanzando errores. Divídelas en interfaces pequeñas y específicas, y deja que cada clase implemente solo lo que realmente hace.",
+        "Antes: una impresora simple debe fingir que puede escanear y enviar faxes.",
+        {
+          "code": "interface Machine {\n  print(doc: string): void;\n  scan(): string;\n  fax(doc: string): void;\n}\nclass BasicPrinter implements Machine {\n  print(doc: string): void { console.log(\"print\", doc); }\n  scan(): string { throw new Error(\"not supported\"); }\n  fax(doc: string): void { throw new Error(\"not supported\"); }\n}",
+          "lang": "typescript"
+        },
+        "Después: pequeñas interfaces de rol que pueden combinarse.",
+        {
+          "code": "interface Printer { print(doc: string): void; }\ninterface Scanner { scan(): string; }\nclass BasicPrinter implements Printer {\n  print(doc: string): void { console.log(\"print\", doc); }\n}\nclass OfficeMachine implements Printer, Scanner {\n  print(doc: string): void { console.log(\"print\", doc); }\n  scan(): string { return \"scanned page\"; }\n}\nfunction printAll(p: Printer, docs: string[]): void { docs.forEach((d) => p.print(d)); }\nprintAll(new BasicPrinter(), [\"a.pdf\"]); // print a.pdf",
+          "lang": "typescript"
+        }
+      ]
+    },
+    {
+      "h": "D: principio de inversión de dependencias",
+      "body": [
+        "La política de alto nivel no debe depender de detalles de bajo nivel, como una base de datos o un servicio de correo concretos. Ambos deben depender de una abstracción, y el módulo de alto nivel suele ser el dueño de esa abstracción. En la práctica, pasas las dependencias desde fuera (inyección de dependencias) en lugar de crearlas dentro.",
+        "Antes: el servicio crea un cliente de base de datos concreto, así que no se puede probar ni cambiar.",
+        {
+          "code": "class MySqlUserStore {\n  find(id: string): string { return \"user \" + id; }\n}\nclass UserService {\n  private store = new MySqlUserStore(); // hard-wired detail\n  greet(id: string): string { return \"Hello, \" + this.store.find(id); }\n}",
+          "lang": "typescript"
+        },
+        "Después: el servicio depende de una interfaz; se puede inyectar cualquier implementación, incluida una simulada en las pruebas.",
+        {
+          "code": "interface UserStore { find(id: string): string; }\nclass UserService {\n  constructor(private store: UserStore) {}\n  greet(id: string): string { return \"Hello, \" + this.store.find(id); }\n}\nclass InMemoryUserStore implements UserStore {\n  constructor(private users: Record<string, string>) {}\n  find(id: string): string { return this.users[id] ?? \"unknown\"; }\n}\nconst service = new UserService(new InMemoryUserStore({ u1: \"Ada\" }));\nconsole.log(service.greet(\"u1\")); // Hello, Ada",
+          "lang": "typescript"
+        },
+        {
+          "note": "La inversión de dependencias es un principio de diseño; la inyección de dependencias es una técnica para lograrlo. Un contenedor de inyección o un framework es opcional. Basta con pasar los objetos por el constructor."
+        }
+      ]
+    },
+    {
+      "h": "Cuándo aplicar SOLID y cuándo no",
+      "body": [
+        "Los principios SOLID son pautas para código que cambia a menudo, no leyes. Aplicados a ciegas, producen muchas clases diminutas e interfaces con una sola implementación, lo que dificulta seguir el código.",
+        {
+          "ul": [
+            "Aplícalos cuando sientas el dolor que resuelven: una clase que se rompe cada vez que cambia cualquier cosa, una prueba que necesita una base de datos real o una instrucción switch copiada en muchos sitios.",
+            "No añadas por adelantado una interfaz para cada clase. Extrae una cuando aparezca una segunda implementación o un doble de prueba.",
+            "En scripts pequeños y prototipos, el código simple y directo suele ser mejor.",
+            "Muchos patrones de diseño son aplicaciones concretas de SOLID: el patrón Strategy y el patrón Decorator favorecen el principio abierto/cerrado, el patrón Adapter y el patrón Facade ayudan a aislar detalles, y el patrón Abstract Factory favorece la inversión de dependencias."
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "¿Quién creó los principios SOLID?",
+      "a": "Robert C. Martin reunió y describió los cinco principios, basándose en trabajos anteriores de Bertrand Meyer (abierto/cerrado) y Barbara Liskov (sustitución). Michael Feathers acuñó el acrónimo SOLID."
+    },
+    {
+      "q": "¿SOLID se aplica a la programación funcional?",
+      "a": "Las ideas se trasladan: funciones pequeñas con un único propósito, componer el comportamiento en lugar de editarlo y pasar las dependencias como parámetros. La formulación basada en clases es específica del código orientado a objetos."
+    },
+    {
+      "q": "¿Cuál es la diferencia entre inversión de dependencias e inyección de dependencias?",
+      "a": "La inversión de dependencias es el principio de que el código de alto nivel debe depender de abstracciones. La inyección de dependencias es una técnica que suministra esas dependencias desde fuera, por ejemplo mediante un constructor."
+    },
+    {
+      "q": "¿Cuál es el principio SOLID más importante?",
+      "a": "No existe una clasificación oficial. La responsabilidad única y la inversión de dependencias suelen dar el beneficio más rápido, porque hacen que el código sea más fácil de entender y de probar."
+    },
+    {
+      "q": "¿Es malo romper un principio SOLID?",
+      "a": "No siempre. Todo principio tiene un coste en código adicional. Rómpelo deliberadamente cuando el diseño más simple sea más claro y el cambio del que protege sea poco probable."
+    }
+  ]
+}

@@ -1,0 +1,253 @@
+{
+  "title": "Ký hiệu Big O là gì: độ phức tạp thời gian, các lớp phổ biến và ví dụ — cv.cm",
+  "description": "Ký hiệu Big O mô tả thời gian chạy hoặc bộ nhớ tăng thế nào theo kích thước đầu vào. Học O(1), O(log n), O(n), O(n log n), O(n²) qua ví dụ Python.",
+  "h1": "Ký hiệu Big O (độ phức tạp thuật toán) giải thích qua ví dụ",
+  "answer": "Ký hiệu Big O mô tả thời gian chạy hoặc lượng bộ nhớ của một thuật toán tăng thế nào khi kích thước đầu vào n tăng. Nó chỉ giữ lại số hạng tăng nhanh nhất và bỏ các hằng số, nên 3n² + 5n + 2 bước được viết là O(n²). Các lớp phổ biến, từ nhanh nhất đến chậm nhất, là O(1), O(log n), O(n), O(n log n), O(n²) và O(2ⁿ). Nhờ đó bạn có thể so sánh các thuật toán mà không cần chạy chúng trên một máy cụ thể.",
+  "sections": [
+    {
+      "h": "Big O giải quyết vấn đề gì",
+      "body": [
+        "Đo chương trình bằng giây chỉ cho bạn biết về một máy, một ngôn ngữ và một bộ dữ liệu. Big O trả lời câu hỏi hữu ích hơn: nếu đầu vào lớn gấp 10 lần thì thuật toán phải làm thêm bao nhiêu việc? Thuật toán làm nhiều gấp 10 lần mở rộng khác hẳn thuật toán làm nhiều gấp 100 lần.",
+        "Theo định nghĩa hình thức, f(n) là O(g(n)) nếu tồn tại các hằng số c và n₀ sao cho f(n) ≤ c · g(n) với mọi n ≥ n₀. Nói đơn giản, g là cận trên cho tốc độ tăng của f khi n đủ lớn, bỏ qua các hệ số hằng.",
+        {
+          "ul": [
+            "n là kích thước đầu vào: độ dài danh sách, số ký tự của chuỗi, số nút của đồ thị.",
+            "Độ phức tạp thời gian đếm số bước cơ bản (so sánh, gán, phép tính số học).",
+            "Độ phức tạp không gian đếm lượng bộ nhớ phụ sử dụng, không tính bản thân đầu vào."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Cách rút gọn một biểu thức",
+      "body": [
+        "Đếm số bước dưới dạng hàm của n, rồi áp dụng hai quy tắc: bỏ hệ số hằng và chỉ giữ số hạng trội nhất.",
+        {
+          "table": {
+            "head": [
+              "Số bước chính xác",
+              "Quy tắc áp dụng",
+              "Big O"
+            ],
+            "rows": [
+              [
+                "`5`",
+                "hằng số",
+                "O(1)"
+              ],
+              [
+                "`3n + 10`",
+                "bỏ 3 và 10",
+                "O(n)"
+              ],
+              [
+                "`n²/2 + n/2`",
+                "giữ n², bỏ 1/2",
+                "O(n²)"
+              ],
+              [
+                "`2n log n + 100n`",
+                "n log n tăng nhanh hơn n",
+                "O(n log n)"
+              ],
+              [
+                "`n³ + 2ⁿ`",
+                "2ⁿ tăng nhanh hơn mọi lũy thừa của n",
+                "O(2ⁿ)"
+              ]
+            ]
+          }
+        },
+        "Khi thuật toán có hai đầu vào độc lập, hãy giữ cả hai: duyệt danh sách độ dài n rồi duyệt danh sách độ dài m là O(n + m), còn vòng lặp lồng trong vòng lặp là O(n · m). Cơ số của logarit không quan trọng trong Big O, vì log₂ n và log₁₀ n chỉ khác nhau một hệ số hằng."
+      ]
+    },
+    {
+      "h": "Các lớp độ phức tạp phổ biến",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Lớp",
+              "Tên",
+              "Số bước khi n = 1.000",
+              "Ví dụ điển hình"
+            ],
+            "rows": [
+              [
+                "O(1)",
+                "hằng số",
+                "1",
+                "đọc `items[i]`, tra một khóa trong `dict` (trung bình)"
+              ],
+              [
+                "O(log n)",
+                "logarit",
+                "khoảng 10",
+                "tìm kiếm nhị phân trong danh sách đã sắp xếp"
+              ],
+              [
+                "O(n)",
+                "tuyến tính",
+                "1.000",
+                "tìm giá trị lớn nhất của danh sách"
+              ],
+              [
+                "O(n log n)",
+                "tuyến tính logarit",
+                "khoảng 10.000",
+                "sắp xếp trộn, `sorted()` của Python"
+              ],
+              [
+                "O(n²)",
+                "bậc hai",
+                "1.000.000",
+                "so sánh mọi cặp, sắp xếp nổi bọt"
+              ],
+              [
+                "O(2ⁿ)",
+                "hàm mũ",
+                "số có 302 chữ số",
+                "thử mọi tập con"
+              ],
+              [
+                "O(n!)",
+                "giai thừa",
+                "còn lớn hơn nhiều",
+                "thử mọi hoán vị"
+              ]
+            ]
+          }
+        },
+        "Ước lượng thô: trên máy tính hiện đại, một vòng lặp đơn giản trong Python chạy được vài chục triệu bước cơ bản mỗi giây, còn ngôn ngữ biên dịch nhanh hơn nhiều. Vì vậy O(n log n) vẫn ổn với hàng triệu phần tử, O(n²) bắt đầu chậm ở mức vài chục nghìn, còn O(2ⁿ) vô vọng khi vượt quá khoảng 40 đến 60 phần tử."
+      ]
+    },
+    {
+      "h": "Đọc độ phức tạp từ mã Python",
+      "body": [
+        "Hãy nhìn vào các vòng lặp. Một vòng lặp duyệt đầu vào là O(n). Vòng lặp lồng trong một vòng lặp khác trên cùng đầu vào là O(n²). Vòng lặp mỗi lần giảm một nửa phạm vi còn lại là O(log n).",
+        {
+          "code": "def first(items):            # O(1): one step, whatever the size\n    return items[0]\ndef total(items):            # O(n): touches each item once\n    s = 0\n    for x in items:\n        s += x\n    return s\ndef has_duplicate(items):    # O(n^2): compares every pair\n    for i in range(len(items)):\n        for j in range(i + 1, len(items)):\n            if items[i] == items[j]:\n                return True\n    return False\ndef halvings(n):             # O(log n): n is halved each step\n    steps = 0\n    while n > 1:\n        n //= 2\n        steps += 1\n    return steps\nprint(first([7, 8]), total([1, 2, 3]), has_duplicate([1, 2, 1]), halvings(1024))\n# 7 6 True 10",
+          "lang": "python"
+        },
+        "Các lệnh gọi thư viện cũng có chi phí riêng. `x in some_list` là O(n), `x in some_set` trung bình là O(1), `list.insert(0, x)` là O(n) vì mọi phần tử phải dịch chuyển, còn `sorted()` là O(n log n). Vòng lặp gọi một thao tác O(n) tổng cộng n lần là O(n²), dù trông như chỉ có một vòng lặp.",
+        {
+          "code": "def has_duplicate_fast(items):   # O(n) time, O(n) extra space\n    seen = set()\n    for x in items:\n        if x in seen:            # average O(1) set lookup\n            return True\n        seen.add(x)\n    return False\nprint(has_duplicate_fast([3, 1, 4, 1, 5]))   # True\nprint(has_duplicate_fast(list(range(10))))   # False",
+          "lang": "python"
+        }
+      ]
+    },
+    {
+      "h": "Trường hợp tốt nhất, trung bình và xấu nhất",
+      "body": [
+        "Cùng một thuật toán có thể làm lượng việc khác nhau trên các đầu vào cùng kích thước, nên độ phức tạp thường được nêu cho ba trường hợp.",
+        {
+          "table": {
+            "head": [
+              "Thuật toán",
+              "Tốt nhất",
+              "Trung bình",
+              "Xấu nhất"
+            ],
+            "rows": [
+              [
+                "Tìm kiếm tuyến tính",
+                "O(1), phần tử cần tìm đứng đầu",
+                "O(n)",
+                "O(n), không có phần tử cần tìm"
+              ],
+              [
+                "Sắp xếp chèn",
+                "O(n), đã được sắp xếp",
+                "O(n²)",
+                "O(n²), thứ tự ngược"
+              ],
+              [
+                "Sắp xếp nhanh",
+                "O(n log n)",
+                "O(n log n)",
+                "O(n²), chọn pivot tệ"
+              ],
+              [
+                "Tra cứu bảng băm",
+                "O(1)",
+                "O(1)",
+                "O(n), nhiều va chạm"
+              ]
+            ]
+          }
+        },
+        "Khi người ta chỉ nói “độ phức tạp của X”, thường họ muốn nói trường hợp xấu nhất, hoặc trường hợp trung bình với bảng băm và sắp xếp nhanh. Chi phí khấu hao là ý thứ tư: thêm phần tử vào cuối list của Python đôi khi là O(n) khi list phải mở rộng vùng lưu trữ, nhưng trung bình qua nhiều lần thêm thì là O(1)."
+      ]
+    },
+    {
+      "h": "Big O, Big Omega và Big Theta",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Ký hiệu",
+              "Ý nghĩa",
+              "Ví dụ"
+            ],
+            "rows": [
+              [
+                "O(g)",
+                "cận trên: tăng không nhanh hơn g",
+                "tìm kiếm tuyến tính là O(n)"
+              ],
+              [
+                "Ω(g)",
+                "cận dưới: tăng ít nhất nhanh bằng g",
+                "mọi thuật toán sắp xếp dựa trên so sánh đều là Ω(n log n) ở trường hợp xấu nhất"
+              ],
+              [
+                "Θ(g)",
+                "cận chặt: vừa là O(g) vừa là Ω(g)",
+                "sắp xếp trộn là Θ(n log n)"
+              ]
+            ]
+          }
+        },
+        "Nói chặt chẽ, thuật toán O(n) cũng là O(n²), vì O chỉ là cận trên. Trong thực tế, mọi người viết Big O nhưng ngụ ý cận chặt nhất mà họ biết, đó chính là điều Θ biểu diễn."
+      ]
+    },
+    {
+      "h": "Lỗi thường gặp",
+      "body": [
+        {
+          "note": "Big O ẩn đi các hằng số. Thuật toán O(n) với hằng số lớn có thể chậm hơn thuật toán O(n²) khi n nhỏ. Đó là lý do nhiều hàm sắp xếp nhanh chuyển sang sắp xếp chèn cho các đoạn con ngắn."
+        },
+        {
+          "ul": [
+            "Quên chi phí của các thao tác có sẵn, như `in` trên list hay cắt lát `items[1:]`, vốn sao chép dữ liệu và tốn O(k) cho k phần tử được sao chép.",
+            "Đếm sai số lần gọi đệ quy: hàm tự gọi hai lần với n − 1 là O(2ⁿ), không phải O(n).",
+            "Bỏ qua không gian: tạo list mới kích thước n, hoặc đệ quy sâu n tầng, tốn O(n) bộ nhớ.",
+            "Viết O(2n) hoặc O(n + 5). Cả hai đều rút gọn thành O(n)."
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "O(1) nghĩa là gì?",
+      "a": "O(1) là thời gian hằng số: khối lượng công việc không tăng theo kích thước đầu vào. Đọc phần tử của list theo chỉ số là O(1) dù list có 10 hay 10 triệu phần tử."
+    },
+    {
+      "q": "O(log n) có nhanh hơn O(n) không?",
+      "a": "Có, khi n lớn. Gấp đôi đầu vào chỉ thêm một bước cho thuật toán O(log n) nhưng làm công việc của thuật toán O(n) tăng gấp đôi. Với một triệu phần tử, log₂ n khoảng 20."
+    },
+    {
+      "q": "Độ phức tạp thời gian của sorted() trong Python là gì?",
+      "a": "`sorted()` và `list.sort()` của Python là O(n log n) ở trường hợp xấu nhất và O(n) với đầu vào đã được sắp xếp, và dùng thêm O(n) bộ nhớ."
+    },
+    {
+      "q": "Big O có đo bằng giây không?",
+      "a": "Không. Nó đo công việc tăng thế nào theo kích thước đầu vào. Số giây thực tế phụ thuộc vào máy, ngôn ngữ và các hệ số hằng mà Big O bỏ qua."
+    },
+    {
+      "q": "Khác biệt giữa độ phức tạp thời gian và không gian là gì?",
+      "a": "Độ phức tạp thời gian đếm số bước thuật toán thực hiện; độ phức tạp không gian đếm lượng bộ nhớ phụ cần dùng. Cả hai đều viết bằng Big O, và bạn thường đánh đổi cái này lấy cái kia, ví dụ dùng set để tiết kiệm thời gian."
+    }
+  ]
+}

@@ -1,0 +1,253 @@
+{
+  "title": "Hướng dẫn Assembly: thanh ghi x86-64, cú pháp NASM, syscall và hàm — cv.cm",
+  "description": "Học assembly x86-64 trên Linux với NASM: thanh ghi, số học, lệnh nhảy và vòng lặp, định địa chỉ bộ nhớ, lời gọi hệ thống, quy ước gọi hàm và cú pháp AT&T.",
+  "h1": "Hướng dẫn ngôn ngữ Assembly cho người mới bắt đầu (x86-64, NASM)",
+  "answer": "Hợp ngữ (assembly) là dạng dễ đọc của các lệnh máy của bộ xử lý: mỗi dòng thường trở thành một lệnh như `mov rax, 1` hoặc `add rax, rbx`. Bạn làm việc trực tiếp với thanh ghi, địa chỉ bộ nhớ và ngăn xếp, không có biến, kiểu hay vòng lặp nào ngoài những gì tự xây từ các lệnh nhảy. Bài này dùng x86-64 trên Linux với trình hợp dịch NASM: viết tệp `.asm`, hợp dịch bằng `nasm -f elf64` rồi liên kết bằng `ld`.",
+  "sections": [
+    {
+      "h": "Assembly là gì và ai dùng nó",
+      "body": [
+        "Mỗi họ bộ xử lý có tập lệnh riêng và do đó có hợp ngữ riêng. x86-64 (còn gọi là AMD64) chạy hầu hết máy tính để bàn và máy chủ; ARM (AArch64) chạy hầu hết điện thoại, máy Mac dùng chip Apple và nhiều máy chủ. Trình hợp dịch (assembler) dịch hợp ngữ sang mã máy, còn trình liên kết (linker) ghép kết quả thành tệp thực thi.",
+        "Ngày nay rất ít chương trình được viết hoàn toàn bằng assembly. Nó được dùng trong nhân hệ điều hành và bootloader, các hàm quan trọng về hiệu năng (mật mã, codec, thư viện toán), firmware nhúng, phát triển trình biên dịch, nghiên cứu bảo mật và dịch ngược. Thường gặp nhất là lập trình viên đọc assembly để hiểu trình biên dịch đã tạo ra gì hoặc để gỡ lỗi một vụ treo chương trình."
+      ]
+    },
+    {
+      "h": "Cài NASM và chạy Hello, world",
+      "body": [
+        "Trên Debian hoặc Ubuntu, cài công cụ bằng `sudo apt install nasm binutils` (`binutils` cung cấp trình liên kết `ld`). Chương trình này gọi thẳng nhân Linux qua các lời gọi hệ thống, nên không cần thư viện C.",
+        {
+          "code": "; hello.asm - x86-64 Linux, NASM syntax\nsection .data\n    msg     db \"Hello, world!\", 10   ; 10 = newline\n    msglen  equ $ - msg              ; length computed by the assembler\n\nsection .text\n    global _start\n\n_start:\n    mov     rax, 1          ; system call number 1 = write\n    mov     rdi, 1          ; file descriptor 1 = stdout\n    mov     rsi, msg        ; address of the bytes\n    mov     rdx, msglen     ; number of bytes\n    syscall\n\n    mov     rax, 60         ; system call number 60 = exit\n    xor     rdi, rdi        ; exit code 0\n    syscall",
+          "lang": "asm"
+        },
+        {
+          "code": "nasm -f elf64 hello.asm -o hello.o\nld hello.o -o hello\n./hello\n# Hello, world!",
+          "lang": "shell"
+        },
+        "`section .data` chứa dữ liệu đã khởi tạo, `section .text` chứa mã, và `_start` là điểm vào mà `ld` tìm. Chú thích bắt đầu bằng `;`. Nếu thiếu lời gọi hệ thống `exit` ở cuối, bộ xử lý sẽ tiếp tục thực thi bất kỳ byte nào theo sau và chương trình sẽ bị treo."
+      ]
+    },
+    {
+      "h": "Thanh ghi và kích thước dữ liệu",
+      "body": [
+        "Thanh ghi là các vị trí lưu trữ nhỏ, rất nhanh bên trong CPU. x86-64 có 16 thanh ghi đa dụng 64 bit. Mỗi thanh ghi cũng có thể dùng ở các phần nhỏ hơn.",
+        {
+          "table": {
+            "head": [
+              "Thanh ghi",
+              "Vai trò thường gặp",
+              "Các phần nhỏ hơn"
+            ],
+            "rows": [
+              [
+                "`rax`",
+                "Giá trị trả về, số hiệu lời gọi hệ thống",
+                "`eax` (32 bit), `ax` (16), `al` (8)"
+              ],
+              [
+                "`rdi`, `rsi`, `rdx`",
+                "Ba đối số đầu của hàm hoặc lời gọi hệ thống",
+                "`edi`, `esi`, `edx`"
+              ],
+              [
+                "`rcx`, `r8`, `r9`",
+                "Đối số thứ tư đến thứ sáu của hàm",
+                "`ecx`, `r8d`, `r9d`"
+              ],
+              [
+                "`rbx`, `rbp`, `r12`–`r15`",
+                "Các giá trị phải còn nguyên sau lời gọi hàm (callee-saved)",
+                "`ebx`, `r12d`"
+              ],
+              [
+                "`rsp`",
+                "Con trỏ ngăn xếp: địa chỉ của đỉnh ngăn xếp",
+                "Không dùng để chứa dữ liệu"
+              ],
+              [
+                "`rip`",
+                "Con trỏ lệnh (chỉ thay đổi bởi lệnh nhảy, call, return)",
+                "Không ghi trực tiếp được"
+              ]
+            ]
+          }
+        },
+        "Dữ liệu trong bộ nhớ được khai báo bằng `db` (byte, 8 bit), `dw` (word, 16), `dd` (doubleword, 32) và `dq` (quadword, 64). Vùng đệm chưa khởi tạo đặt trong `section .bss` với `resb`, `resq` và các lệnh tương tự. Ghi vào thanh ghi 32 bit như `eax` cũng xóa 32 bit cao của `rax`, vì vậy `xor eax, eax` là cách thông dụng để đặt `rax` về không."
+      ]
+    },
+    {
+      "h": "Lệnh cơ bản và luồng điều khiển",
+      "body": [
+        "Hầu hết lệnh nhận đích trước, nguồn sau: `add rax, rbx` nghĩa là `rax = rax + rbx`. Không có câu lệnh `if` hay `while`; bạn so sánh giá trị bằng `cmp` (đặt các cờ) rồi dùng lệnh nhảy có điều kiện.",
+        {
+          "table": {
+            "head": [
+              "Lệnh",
+              "Ý nghĩa"
+            ],
+            "rows": [
+              [
+                "`mov rax, rbx`",
+                "Sao chép `rbx` vào `rax`"
+              ],
+              [
+                "`add`, `sub`, `imul`, `inc`, `dec`",
+                "Số học số nguyên"
+              ],
+              [
+                "`cmp rax, 10`",
+                "So sánh (tính `rax - 10` và chỉ đặt cờ)"
+              ],
+              [
+                "`je`, `jne`, `jl`, `jg`, `jle`, `jge`",
+                "Nhảy nếu bằng, khác, nhỏ hơn, lớn hơn... (có dấu)"
+              ],
+              [
+                "`jmp label`",
+                "Nhảy vô điều kiện"
+              ],
+              [
+                "`push`, `pop`",
+                "Đẩy một giá trị lên ngăn xếp, lấy nó ra"
+              ],
+              [
+                "`call`, `ret`",
+                "Gọi một hàm, trả về từ hàm"
+              ]
+            ]
+          }
+        },
+        {
+          "code": "; sum.asm - add 1..10, return the result as the exit code\nsection .text\n    global _start\n\n_start:\n    xor     rax, rax        ; sum = 0\n    mov     rcx, 1          ; i = 1\n.loop:\n    cmp     rcx, 10\n    jg      .done           ; if i > 10, leave the loop\n    add     rax, rcx        ; sum += i\n    inc     rcx             ; i++\n    jmp     .loop\n.done:\n    mov     rdi, rax        ; exit code = sum\n    mov     rax, 60         ; exit\n    syscall",
+          "lang": "asm"
+        },
+        {
+          "code": "nasm -f elf64 sum.asm -o sum.o && ld sum.o -o sum\n./sum; echo $?\n# 55",
+          "lang": "shell"
+        },
+        "Nhãn bắt đầu bằng dấu chấm, như `.loop`, là cục bộ đối với nhãn thường đứng trước nó. `jl` và `jg` coi giá trị là có dấu; `jb` và `ja` là phiên bản không dấu."
+      ]
+    },
+    {
+      "h": "Định địa chỉ bộ nhớ và mảng",
+      "body": [
+        "Dấu ngoặc vuông nghĩa là \"vùng nhớ tại địa chỉ này\". Một địa chỉ có thể kết hợp thanh ghi cơ sở, thanh ghi chỉ số nhân với 1, 2, 4 hoặc 8, và một hằng số: `[base + index*scale + offset]`. Nhờ vậy truy cập mảng chỉ cần một lệnh.",
+        {
+          "code": "section .data\n    nums    dq 3, 1, 4, 1, 5         ; five 64-bit integers\n    count   equ ($ - nums) / 8\n\nsection .text\n    global _start\n\n_start:\n    xor     rax, rax                 ; total = 0\n    xor     rcx, rcx                 ; index = 0\n.next:\n    add     rax, [nums + rcx*8]      ; total += nums[index]\n    inc     rcx\n    cmp     rcx, count\n    jl      .next\n    mov     rdi, rax                 ; exit code 14\n    mov     rax, 60\n    syscall",
+          "lang": "asm"
+        },
+        "`mov rax, nums` nạp địa chỉ, còn `mov rax, [nums]` nạp giá trị lưu ở đó. `lea rsi, [rbx + 8]` tính một địa chỉ mà không đọc bộ nhớ. Khi không thể suy ra kích thước từ thanh ghi, hãy nêu rõ: `mov qword [rbx], 0`."
+      ]
+    },
+    {
+      "h": "Hàm và quy ước gọi hàm",
+      "body": [
+        "Trên Linux, hàm tuân theo System V AMD64 ABI. Đối số nguyên đi vào `rdi`, `rsi`, `rdx`, `rcx`, `r8`, `r9`; giá trị trả về nằm ở `rax`. Hàm phải giữ nguyên `rbx`, `rbp`, `r12`–`r15` và `rsp`, và `rsp` phải là bội số của 16 ngay trước một lệnh `call`. Tuân theo các quy tắc này cho phép assembly gọi hàm C như `printf`, và cho phép C gọi assembly.",
+        {
+          "code": "; square.asm - define a function and call printf from the C library\n    extern  printf\n    global  main\n\nsection .data\n    fmt     db \"%ld squared is %ld\", 10, 0\n\nsection .text\nsquare:                         ; long square(long x)\n    mov     rax, rdi\n    imul    rax, rdi\n    ret\n\nmain:\n    push    rbx                 ; save rbx; also aligns rsp to 16\n    mov     rbx, 7\n    mov     rdi, rbx\n    call    square              ; rax = 49\n    lea     rdi, [rel fmt]      ; argument 1: format string\n    mov     rsi, rbx            ; argument 2\n    mov     rdx, rax            ; argument 3\n    xor     eax, eax            ; varargs: no vector registers used\n    call    printf wrt ..plt\n    xor     eax, eax            ; return 0 from main\n    pop     rbx\n    ret\n\nsection .note.GNU-stack noalloc noexec nowrite progbits",
+          "lang": "asm"
+        },
+        {
+          "code": "nasm -f elf64 square.asm -o square.o\ngcc square.o -o square\n./square\n# 7 squared is 49",
+          "lang": "shell"
+        },
+        "Liên kết bằng `gcc` sẽ thêm runtime C, nơi gọi `main`. `[rel fmt]` và `wrt ..plt` tạo mã độc lập vị trí, thứ mà các bản phân phối Linux hiện đại dùng mặc định. Dòng cuối đánh dấu ngăn xếp là không thực thi được và tránh một cảnh báo của trình liên kết."
+      ]
+    },
+    {
+      "h": "Xử lý lỗi",
+      "body": [
+        "Assembly không có ngoại lệ. Một lời gọi hệ thống Linux thất bại trả về số lỗi âm trong `rax` (ví dụ -2, `ENOENT`, \"không có tệp như vậy\"), nên bạn kiểm tra dấu sau mỗi lời gọi. Hàm thư viện C báo lỗi qua giá trị trả về và `errno`. Lỗi phần cứng, như đọc địa chỉ không hợp lệ hoặc chia cho không, làm dừng chương trình bằng một tín hiệu (segmentation fault hoặc floating point exception).",
+        {
+          "code": "    mov     rax, 2              ; system call 2 = open\n    lea     rdi, [rel path]     ; path is a zero-terminated string\n    xor     esi, esi            ; flags: O_RDONLY\n    syscall\n    test    rax, rax\n    js      .open_failed        ; negative result = -errno\n    mov     r12, rax            ; success: rax is the file descriptor",
+          "lang": "asm"
+        }
+      ]
+    },
+    {
+      "h": "Một chương trình hoàn chỉnh nhỏ: in một số ở dạng thập phân",
+      "body": [
+        "In một số nghĩa là tự chuyển nó thành các chữ số. Chương trình này tính 1 + 2 + ... + 100, chia liên tiếp cho 10 để lấy các chữ số từ phải sang trái, rồi ghi chúng bằng một lời gọi hệ thống.",
+        {
+          "code": "section .bss\n    buf     resb 32\n\nsection .text\n    global _start\n\n_start:\n    xor     rax, rax\n    mov     rcx, 100\n.sum:\n    add     rax, rcx\n    loop    .sum                ; rcx -= 1, repeat while rcx != 0\n    lea     rsi, [buf + 31]\n    mov     byte [rsi], 10      ; newline at the end of the buffer\n    mov     rbx, 10\n.digit:\n    xor     rdx, rdx            ; div uses rdx:rax as the dividend\n    div     rbx                 ; rax = quotient, rdx = remainder\n    add     dl, '0'             ; remainder to ASCII digit\n    dec     rsi\n    mov     [rsi], dl\n    test    rax, rax\n    jnz     .digit\n    mov     rdx, buf + 32\n    sub     rdx, rsi            ; length = end - start\n    mov     rax, 1              ; write(1, rsi, rdx)\n    mov     rdi, 1\n    syscall\n    mov     rax, 60             ; exit(0)\n    xor     rdi, rdi\n    syscall\n; prints 5050",
+          "lang": "asm"
+        },
+        {
+          "note": "Các lỗi thường gặp của người mới: quên lời gọi hệ thống `exit`; dùng `div` mà không xóa `rdx` trước (kết quả tràn và chương trình treo); mong `rcx` và `r11` còn nguyên sau `syscall` (nhân hệ điều hành ghi đè chúng); gọi hàm C khi ngăn xếp không căn chỉnh; nhầm địa chỉ với giá trị tại địa chỉ đó (`msg` so với `[msg]`); và lẫn lộn thứ tự toán hạng Intel và AT&T khi đọc ví dụ."
+        }
+      ]
+    },
+    {
+      "h": "Cú pháp AT&T so với Intel, và ARM",
+      "body": [
+        "Cùng một lệnh x86-64 có thể viết bằng hai cú pháp. NASM và hầu hết tài liệu của Intel và Microsoft dùng cú pháp Intel. Trình hợp dịch GNU (`as`), đầu ra của GCC và `objdump` mặc định dùng cú pháp AT&T; `objdump -d -M intel` và `gcc -S -masm=intel` chuyển sang cú pháp Intel.",
+        {
+          "table": {
+            "head": [
+              "Khía cạnh",
+              "Intel (NASM)",
+              "AT&T (GNU as)"
+            ],
+            "rows": [
+              [
+                "Thứ tự toán hạng",
+                "`mov rax, 1` (đích đứng trước)",
+                "`movq $1, %rax` (nguồn đứng trước)"
+              ],
+              [
+                "Thanh ghi và hằng số",
+                "`rax`, `5`",
+                "`%rax`, `$5`"
+              ],
+              [
+                "Toán hạng bộ nhớ",
+                "`[rbx + rcx*8 + 16]`",
+                "`16(%rbx,%rcx,8)`"
+              ],
+              [
+                "Kích thước toán hạng",
+                "`mov qword [rbx], 0`",
+                "`movq $0, (%rbx)` (hậu tố b, w, l, q)"
+              ]
+            ]
+          }
+        },
+        "Bộ xử lý ARM dùng tập lệnh khác. AArch64 có 31 thanh ghi đa dụng 64 bit (`x0`–`x30`), mã hóa lệnh cố định 32 bit và thiết kế load/store: số học chỉ chạy trên thanh ghi, còn bộ nhớ được truy cập bằng `ldr` và `str`. Trên Linux, số hiệu lời gọi hệ thống đặt trong `x8` và lời gọi được thực hiện bằng `svc #0`.",
+        {
+          "code": "// AArch64 Linux, GNU as syntax: exit(0)\n    mov     x0, #0          // exit status\n    mov     x8, #93         // system call 93 = exit\n    svc     #0",
+          "lang": "asm"
+        }
+      ]
+    },
+    {
+      "h": "Học tiếp ở đâu",
+      "body": [
+        {
+          "ul": [
+            "Sách hướng dẫn NASM về chỉ thị, macro và các định dạng đầu ra.",
+            "Intel 64 and IA-32 Architectures Software Developer's Manuals để biết chính xác hành vi của từng lệnh.",
+            "Tài liệu System V AMD64 ABI về quy ước gọi hàm và bố cục ngăn xếp.",
+            "Biên dịch các hàm C nhỏ bằng `gcc -O2 -S -masm=intel` (hoặc một trình khám phá trình biên dịch trực tuyến) rồi đọc assembly được tạo ra."
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Học hợp ngữ ngày nay có còn đáng không?",
+      "a": "Có, để hiểu máy tính hoạt động ra sao, gỡ lỗi các vụ treo, đọc đầu ra của trình biên dịch, làm bảo mật và phát triển hệ nhúng. Viết cả ứng dụng bằng assembly hiếm khi thực tế ngày nay."
+    },
+    {
+      "q": "Assembly x86 có giống assembly ARM không?",
+      "a": "Không. Chúng là các tập lệnh khác nhau với thanh ghi, lệnh và cách mã hóa khác nhau. Các khái niệm (thanh ghi, bộ nhớ, lệnh nhảy, quy ước gọi hàm) dùng chung được, nhưng mã thì không."
+    },
+    {
+      "q": "Khác nhau giữa NASM và GAS là gì?",
+      "a": "NASM là trình hợp dịch độc lập dùng cú pháp Intel. GAS, trình hợp dịch GNU, được GCC dùng và mặc định là cú pháp AT&T, dù cũng chấp nhận cú pháp Intel với `.intel_syntax noprefix`."
+    },
+    {
+      "q": "Mã này có chạy trên Windows hoặc macOS không?",
+      "a": "Không thể chạy nguyên trạng. Các lệnh giống nhau trên mọi hệ thống x86-64, nhưng số hiệu lời gọi hệ thống, định dạng tệp thực thi và quy ước gọi hàm thì khác. Windows dùng quy ước gọi hàm khác, còn máy Mac chip Apple dùng ARM thay vì x86-64."
+    }
+  ]
+}

@@ -1,0 +1,145 @@
+{
+  "title": "Pola State: class state, transisi, dan contoh TypeScript — cv.cm",
+  "description": "Pola State memungkinkan objek mengubah perilakunya saat state internalnya berubah. Ganti pernyataan switch dengan class state di TypeScript.",
+  "h1": "Penjelasan pola State beserta contohnya",
+  "answer": "State adalah pola desain behavioral yang memungkinkan objek mengubah perilakunya saat state internalnya berubah, sehingga tampak seolah berganti class. Setiap state menjadi class terpisah yang mengimplementasikan interface yang sama, dan objek utama, yang disebut context, mendelegasikan pekerjaannya ke objek state saat ini. Transisi terjadi dengan mengganti objek state itu, yang menghilangkan rantai `switch` atau `if` panjang yang memeriksa field status di setiap method.",
+  "sections": [
+    {
+      "h": "Tujuan dan masalah yang diselesaikan",
+      "body": [
+        "Tujuan: memungkinkan objek mengubah perilakunya saat state internalnya berubah. Objek akan tampak berganti class. State adalah salah satu pola behavioral dalam buku Gang of Four (GoF); contoh klasiknya adalah koneksi TCP yang berperilaku berbeda saat listening, established, atau closed.",
+        "Ambil contoh pesanan online. Pesanan bisa berstatus pending, paid, shipped, atau cancelled. Pembayaran hanya bisa dilakukan saat pending. Pengiriman hanya saat paid. Pembatalan diizinkan saat pending atau paid, tetapi tidak setelah shipped. Versi pertama menyimpan string `status` dan setiap method diawali `switch` pada string itu. Dengan empat aksi dan empat state, ada enam belas kasus yang tersebar di empat method. Menambah state baru, seperti \"refunded\", berarti mengedit setiap method, dan mudah ada yang terlewat.",
+        "Dengan pola State, setiap status menjadi class yang tahu arti setiap aksi pada status itu. Pesanan menyimpan referensi ke objek state saat ini dan meneruskan setiap aksi ke sana."
+      ]
+    },
+    {
+      "h": "Struktur dan peserta",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Peran",
+              "Tanggung jawab"
+            ],
+            "rows": [
+              [
+                "Context",
+                "Objek yang dipakai klien; menyimpan objek state saat ini dan mendelegasikan perilaku spesifik-state kepadanya"
+              ],
+              [
+                "State",
+                "Interface yang mendeklarasikan operasi yang perilakunya bergantung pada state"
+              ],
+              [
+                "Concrete state",
+                "Mengimplementasikan perilaku untuk satu state dan menentukan state berikutnya"
+              ]
+            ]
+          }
+        },
+        "Transisi dapat ditentukan oleh state itu sendiri (setiap state mengatur state berikutnya pada context, seperti di bawah) atau oleh context dengan tabel transisi. Membiarkan state yang menentukan menjaga logika terkait tetap bersama; tabel pusat membuat semua transisi terlihat di satu tempat."
+      ]
+    },
+    {
+      "h": "Implementasi TypeScript",
+      "body": [
+        "Base class menyediakan perilaku default: menolak aksi. Setiap concrete state hanya meng-override aksi yang valid untuknya.",
+        {
+          "code": "abstract class OrderState {\n  abstract readonly name: string;\n  pay(order: Order): void { this.reject(\"pay\"); }\n  ship(order: Order): void { this.reject(\"ship\"); }\n  cancel(order: Order): void { this.reject(\"cancel\"); }\n  protected reject(action: string): never {\n    throw new Error(\"Cannot \" + action + \" an order that is \" + this.name);\n  }\n}\n\nclass Pending extends OrderState {\n  readonly name = \"pending\";\n  pay(order: Order) { order.setState(new Paid()); }\n  cancel(order: Order) { order.setState(new Cancelled()); }\n}\n\nclass Paid extends OrderState {\n  readonly name = \"paid\";\n  ship(order: Order) { order.setState(new Shipped()); }\n  cancel(order: Order) { order.setState(new Cancelled()); } // refund here\n}\n\nclass Shipped extends OrderState { readonly name = \"shipped\"; }\nclass Cancelled extends OrderState { readonly name = \"cancelled\"; }\n\nclass Order {\n  private state: OrderState = new Pending();\n  setState(next: OrderState) { this.state = next; }\n  get status() { return this.state.name; }\n  pay() { this.state.pay(this); }\n  ship() { this.state.ship(this); }\n  cancel() { this.state.cancel(this); }\n}\n\nconst order = new Order();\norder.pay();\norder.ship();\nconsole.log(order.status); // shipped\ntry { order.cancel(); } catch (e) { console.log((e as Error).message); }\n// Cannot cancel an order that is shipped",
+          "lang": "typescript"
+        },
+        "Untuk menambah state \"refunded\", Anda menulis satu class baru dan hanya mengubah state yang bisa mengarah ke sana. `Order` sendiri tidak berubah.",
+        {
+          "note": "Jangan biarkan klien mengganti state dari luar. Di sini `setState` dibuat publik demi keringkasan; di proyek nyata, buat internal (misalnya dengan mendefinisikan state di modul yang sama dan tidak meng-export-nya) agar hanya transisi yang valid yang bisa terjadi."
+        }
+      ]
+    },
+    {
+      "h": "Sebelum dan sesudah",
+      "body": [
+        "Aturan yang sama ditulis dengan field status dan pernyataan `switch`. Ini berhasil untuk beberapa state, tetapi setiap method mengulang daftar lengkapnya:",
+        {
+          "code": "type Status = \"pending\" | \"paid\" | \"shipped\" | \"cancelled\";\n\nclass OrderBefore {\n  status: Status = \"pending\";\n  ship() {\n    switch (this.status) {\n      case \"paid\": this.status = \"shipped\"; break;\n      default: throw new Error(\"Cannot ship an order that is \" + this.status);\n    }\n  }\n  // pay() and cancel() repeat the same switch\n}\n\nconst o = new OrderBefore();\ntry { o.ship(); } catch (e) { console.log((e as Error).message); }\n// Cannot ship an order that is pending",
+          "lang": "typescript"
+        },
+        "Untuk kasus kecil, versi ini sudah baik dan bisa dibilang lebih mudah dibaca. Di TypeScript, union type untuk `Status` membuat compiler memeriksa bahwa setiap kasus tertangani. Pindah ke class state bila perilaku per state tumbuh melebihi satu atau dua baris."
+      ]
+    },
+    {
+      "h": "Kapan dipakai dan kapan tidak",
+      "body": [
+        {
+          "ul": [
+            "Pakai bila objek berperilaku sangat berbeda bergantung pada state-nya, dan pemeriksaan status yang sama muncul di banyak method.",
+            "Pakai bila state dan transisi berubah seiring waktu dan Anda ingin aturan tiap state berada di satu tempat.",
+            "Pakai untuk workflow (pesanan, dokumen, tiket), koneksi protokol, karakter game, dan komponen UI seperti media player.",
+            "Jangan dipakai bila hanya ada dua atau tiga state dengan perilaku sepele; enum atau union type dan `switch` lebih sederhana.",
+            "Untuk mesin kompleks dengan state bersarang atau paralel, pertimbangkan library state machine atau notasi statecharts alih-alih class yang ditulis manual."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Penggunaan di dunia nyata",
+      "body": [
+        {
+          "ul": [
+            "Implementasi protokol jaringan memodelkan state koneksi seperti listening, established, dan closed, yang merupakan contoh di buku GoF.",
+            "XState adalah library JavaScript dan TypeScript untuk state machine dan statecharts, dipakai untuk logika UI dan workflow.",
+            "Spesifikasi W3C SCXML mendefinisikan format XML untuk statecharts.",
+            "Pengembangan game memakai objek state untuk karakter (idle, running, jumping), di mana setiap state menangani input secara berbeda."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "State vs Strategy dan pola lainnya",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Pola",
+              "Perbedaannya dengan State"
+            ],
+            "rows": [
+              [
+                "Strategy",
+                "Struktur class-nya hampir sama. Strategy biasanya dipilih oleh klien dan tidak berubah sendiri; state saling menggantikan sebagai akibat tindakan objek itu sendiri."
+              ],
+              [
+                "Flyweight",
+                "Objek state tanpa field dapat dibagi ke semua context sebagai flyweight atau konstanta."
+              ],
+              [
+                "Singleton",
+                "Objek state yang stateless sering berupa satu instance yang dibagi bersama."
+              ],
+              [
+                "Memento",
+                "Memento menyimpan data objek untuk dipulihkan nanti; State mengubah perilaku mana yang dipakai objek."
+              ]
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Apa perbedaan antara State dan Strategy?",
+      "a": "Keduanya mendelegasikan perilaku ke objek yang dapat ditukar. Pada Strategy, klien biasanya memilih algoritma dan tetap tidak berubah. Pada State, objek state saling mengenal dan mengalihkan context ke state baru sebagai bagian dari operasi normal."
+    },
+    {
+      "q": "Apakah pola State sama dengan finite state machine?",
+      "a": "Pola State adalah salah satu cara mengimplementasikan finite state machine dalam kode berorientasi objek: setiap state adalah class dan setiap transisi mengganti objek state saat ini. Mesin juga dapat diimplementasikan dengan tabel transisi atau library."
+    },
+    {
+      "q": "Siapa yang sebaiknya menentukan state berikutnya: context atau state?",
+      "a": "Keduanya bisa. Bila state yang menentukan, logika tiap state tetap bersama. Bila context atau tabel transisi yang menentukan, semua transisi terlihat di satu tempat dan state tidak perlu saling mengenal."
+    },
+    {
+      "q": "Bisakah objek state dibagi bersama?",
+      "a": "Bisa, bila mereka tidak menyimpan data sendiri. Maka satu instance dari tiap state dapat dibagi oleh semua objek context, yang menghemat alokasi."
+    }
+  ]
+}

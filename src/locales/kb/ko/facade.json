@@ -1,0 +1,160 @@
+{
+  "title": "퍼사드 패턴: 복잡한 하위 시스템을 위한 하나의 단순한 인터페이스, TypeScript 예제 — cv.cm",
+  "description": "퍼사드 디자인 패턴 설명: 복잡한 하위 시스템을 하나의 단순한 인터페이스 뒤에 숨깁니다. TypeScript 주문 결제 예제, 사용 시점, 실제 사용 사례를 다룹니다.",
+  "h1": "예제로 이해하는 퍼사드 패턴",
+  "answer": "퍼사드 패턴은 복잡한 하위 시스템의 여러 인터페이스에 대해 하나의 단순한 상위 수준 인터페이스를 제공하는 구조 패턴입니다. 클라이언트 코드가 재고, 결제, 배송, 이메일 서비스를 올바른 순서로 호출하는 대신 `shop.placeOrder()` 같은 메서드 하나를 호출하면, 퍼사드가 하위 시스템 클래스들을 조율합니다. 하위 시스템은 그대로 존재하며 필요하면 직접 사용할 수 있습니다. 퍼사드는 흔한 경우를 쉽게 만들 뿐입니다.",
+  "sections": [
+    {
+      "h": "의도",
+      "body": [
+        "하위 시스템의 여러 인터페이스에 대해 통합된 인터페이스를 제공합니다. 퍼사드는 하위 시스템을 더 쉽게 쓰게 하는 상위 수준 인터페이스를 정의합니다. Gang of Four(GoF) 책의 일곱 가지 구조 패턴 중 하나입니다."
+      ]
+    },
+    {
+      "h": "해결하는 문제",
+      "body": [
+        "온라인 쇼핑몰을 떠올려 보세요. 주문을 처리하려면 여러 서비스가 필요합니다. 재고 확인과 예약, 카드 결제, 결제 실패 시 재고 해제, 배송 생성, 확인 이메일 발송입니다. 각 서비스는 자체 API와 규칙이 있습니다.",
+        "웹 결제, 모바일 API, 관리자 도구 같은 모든 호출자가 이 단계를 직접 수행하면 같은 순서가 여러 곳에 복사됩니다. 복사본마다 순서를 틀리거나 롤백을 잊을 수 있고, 모든 호출자가 서비스 다섯 개에 의존하게 됩니다. 서비스 하나가 바뀌면 모든 호출자를 고쳐야 합니다. 퍼사드는 그 순서를 한곳에 두고 호출자에게 메서드 하나를 제공합니다."
+      ]
+    },
+    {
+      "h": "구조와 참여자",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "참여자",
+              "역할",
+              "예제에서"
+            ],
+            "rows": [
+              [
+                "Facade",
+                "어떤 하위 시스템 클래스가 요청을 처리하는지 알고 올바른 순서로 위임.",
+                "`OrderFacade`"
+              ],
+              [
+                "하위 시스템 클래스",
+                "실제 작업을 수행. 퍼사드의 존재를 모름.",
+                "`Inventory`, `Payments`, `Shipping`, `Mailer`"
+              ],
+              [
+                "Client",
+                "흔한 작업에는 퍼사드를 사용하고, 특별한 경우에는 하위 시스템 클래스를 직접 쓸 수도 있음.",
+                "결제 코드"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "TypeScript 구현",
+      "body": [
+        {
+          "code": "// Subsystem classes, each with its own API.\nclass Inventory {\n  private stock = new Map([[\"book\", 2]]);\n  reserve(sku: string): boolean {\n    const n = this.stock.get(sku) ?? 0;\n    if (n === 0) return false;\n    this.stock.set(sku, n - 1);\n    return true;\n  }\n  release(sku: string): void { this.stock.set(sku, (this.stock.get(sku) ?? 0) + 1); }\n}\nclass Payments {\n  charge(card: string, cents: number): boolean { return card.startsWith(\"4\") && cents > 0; }\n}\nclass Shipping {\n  createShipment(sku: string, address: string): string { return `SHIP-${sku}-${address.length}`; }\n}\nclass Mailer {\n  send(to: string, text: string): void { console.log(`mail to ${to}: ${text}`); }\n}",
+          "lang": "typescript"
+        },
+        "그러면 퍼사드가 메서드 하나 뒤에서 전체 워크플로를 올바른 순서로 실행합니다.",
+        {
+          "code": "// Facade: one method that runs the whole workflow in the right order.\nclass OrderFacade {\n  constructor(private inventory = new Inventory(), private payments = new Payments(),\n              private shipping = new Shipping(), private mailer = new Mailer()) {}\n\n  placeOrder(sku: string, card: string, cents: number, email: string, address: string): string {\n    if (!this.inventory.reserve(sku)) return \"out of stock\";\n    if (!this.payments.charge(card, cents)) {\n      this.inventory.release(sku); // roll back the reservation\n      return \"payment declined\";\n    }\n    const shipmentId = this.shipping.createShipment(sku, address);\n    this.mailer.send(email, `Order confirmed, shipment ${shipmentId}`);\n    return \"ok\";\n  }\n}\n\nconst shop = new OrderFacade();\nconsole.log(shop.placeOrder(\"book\", \"4111\", 1999, \"ada@example.com\", \"1 Main St\"));\n// mail to ada@example.com: Order confirmed, shipment SHIP-book-9\n// ok\nconsole.log(shop.placeOrder(\"book\", \"5500\", 1999, \"bob@example.com\", \"2 Side St\")); // payment declined",
+          "lang": "typescript"
+        },
+        "이제 호출자는 메서드가 하나인 클래스 하나에 의존합니다. 롤백 규칙은 정확히 한 번만 존재합니다. 하위 시스템 클래스도 여전히 쓸 수 있으므로, 재고 해제만 필요한 관리자 도구는 `Inventory`를 직접 호출할 수 있습니다."
+      ]
+    },
+    {
+      "h": "언제 쓰고 언제 쓰지 말아야 하나",
+      "body": [
+        "다음과 같을 때 퍼사드 패턴을 사용합니다.",
+        {
+          "ul": [
+            "하위 시스템이 복잡하고 대부분의 클라이언트가 그 기능 중 단순하고 흔한 일부만 필요할 때.",
+            "클라이언트 코드와 여러 하위 시스템 클래스 사이의 의존성 수를 줄이고 싶을 때.",
+            "시스템을 계층으로 나누고 각 계층의 진입점으로 퍼사드를 두고 싶을 때.",
+            "큰 서드파티 라이브러리를 감싸서 나머지 코드가 필요한 몇 가지 연산만 쓰게 하고 싶을 때."
+          ]
+        },
+        "다음 경우에는 피하거나 제한하세요.",
+        {
+          "ul": [
+            "하위 시스템이 이미 단순할 때. 호출을 일대일로 전달하기만 하는 퍼사드는 아무것도 숨기지 못하고 계층만 추가합니다.",
+            "퍼사드가 시스템 곳곳의 관련 없는 메서드와 비즈니스 규칙을 모으기 시작할 때. 너무 많이 알고 너무 많은 일을 하는 클래스 하나가 되는 \"god object\" 문제입니다. 초점이 분명한 여러 퍼사드로 나누세요."
+          ]
+        },
+        {
+          "note": "퍼사드는 단순화하는 것이지 가두는 것이 아닙니다. 퍼사드가 있다고 해서 하위 시스템을 비공개로 만들지 마세요. 고급 클라이언트는 전체 API가 필요한 경우가 많고, 막으면 우회책이 생깁니다."
+        }
+      ]
+    },
+    {
+      "h": "실제 사용 사례",
+      "body": [
+        {
+          "ul": [
+            "Node.js: `fs.readFile()`은 한 번의 호출로 파일을 열고, 끝까지 읽고, 닫습니다. 더 낮은 수준의 `fs.open()`, `fs.read()`, `fs.close()`도 그대로 쓸 수 있습니다.",
+            "jQuery는 당시 DOM과 브라우저 간 차이 앞에 짧고 일관된 API 하나를 둔 덕분에 크게 인기를 얻었습니다.",
+            "GoF 책의 예제는 컴파일러입니다. `Compiler` 클래스 하나가 코드를 컴파일하기만 원하는 프로그램에게 스캐너, 파서, 코드 생성기 같은 하위 시스템 클래스를 숨깁니다.",
+            "백엔드 애플리케이션의 서비스 계층과 API 게이트웨이는 많은 내부 서비스 위에서 퍼사드 역할을 합니다."
+          ]
+        },
+        {
+          "note": "PHP 프레임워크인 Laravel에는 Facades라는 기능이 있습니다. 서비스 컨테이너의 객체에 정적인 것처럼 접근하게 해 주는 다른 개념입니다. 이름은 같지만 의도는 GoF 패턴이 아닙니다."
+        }
+      ]
+    },
+    {
+      "h": "관련 패턴",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "패턴",
+              "퍼사드 패턴과의 차이"
+            ],
+            "rows": [
+              [
+                "어댑터 패턴",
+                "기존 인터페이스 하나를 다른 기존 인터페이스에 맞춥니다. 퍼사드는 많은 클래스에 대해 새롭고 더 단순한 인터페이스를 정의합니다."
+              ],
+              [
+                "중재자 패턴",
+                "이것도 조율을 한곳에 모으지만, 하위 시스템 객체가 중재자를 알고 그것을 통해 통신합니다. 퍼사드에서는 하위 시스템 클래스가 퍼사드의 존재를 모릅니다."
+              ],
+              [
+                "추상 팩토리 패턴",
+                "퍼사드와 함께 써서 하위 시스템 객체를 플랫폼에 독립적으로 만들 수 있습니다."
+              ],
+              [
+                "싱글턴 패턴",
+                "하위 시스템의 진입점은 보통 하나면 충분하므로 퍼사드는 단일 인스턴스인 경우가 많습니다."
+              ],
+              [
+                "프록시 패턴",
+                "객체 하나와 같은 인터페이스를 가지며 그 객체에 대한 접근을 제어합니다. 퍼사드는 여러 객체 위에 다르고 더 단순한 인터페이스를 가집니다."
+              ]
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "퍼사드 패턴과 어댑터 패턴은 무엇이 다른가요?",
+      "a": "어댑터는 기존 인터페이스를 클라이언트가 이미 기대하는 다른 인터페이스로 변환합니다. 퍼사드는 하위 시스템 전체를 더 쉽게 쓰도록 새롭고 더 단순한 인터페이스를 고안합니다."
+    },
+    {
+      "q": "퍼사드는 하위 시스템을 완전히 숨기나요?",
+      "a": "아니요. 퍼사드는 흔한 작업을 쉽게 만들 뿐이며, 더 많은 제어가 필요한 클라이언트는 하위 시스템 클래스를 직접 쓸 수 있습니다."
+    },
+    {
+      "q": "시스템에 퍼사드가 둘 이상 있을 수 있나요?",
+      "a": "네. 큰 시스템은 하위 시스템별 또는 유스 케이스별로 퍼사드를 두는 경우가 많으며, 이렇게 하면 각 퍼사드가 작고 초점이 분명하게 유지됩니다."
+    },
+    {
+      "q": "서비스 계층은 퍼사드인가요?",
+      "a": "그런 경우가 많습니다. 리포지토리, 외부 API, 알림을 하나의 호출 뒤에서 조율하는 서비스 메서드는 그것을 호출하는 코드에 대해 퍼사드 역할을 합니다."
+    }
+  ]
+}

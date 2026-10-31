@@ -1,0 +1,144 @@
+{
+  "title": "Patrón Chain of Responsibility: manejadores, middleware y ejemplo en TypeScript — cv.cm",
+  "description": "Chain of Responsibility pasa una petición por una cadena de manejadores hasta que uno la atiende. Aprende su estructura, un ejemplo en TypeScript y usos en middleware.",
+  "h1": "Patrón Chain of Responsibility explicado con ejemplos",
+  "answer": "Chain of Responsibility es un patrón de diseño de comportamiento que pasa una petición a lo largo de una cadena de objetos manejadores. Cada manejador procesa la petición o la reenvía al siguiente manejador de la cadena. El emisor no sabe qué manejador atenderá la petición, así que puedes añadir, quitar o reordenar manejadores sin cambiar el emisor. El middleware web y la propagación de eventos del DOM son ejemplos muy conocidos.",
+  "sections": [
+    {
+      "h": "Intención y el problema que resuelve",
+      "body": [
+        "Intención: evitar acoplar el emisor de una petición con su receptor dando a más de un objeto la oportunidad de atenderla. Encadena los objetos receptores y pasa la petición por la cadena hasta que un objeto la atienda. El patrón es uno de los patrones de comportamiento del libro de la Banda de los Cuatro (Gang of Four, GoF).",
+        "Piensa en el sistema de soporte de una tienda en línea. Una solicitud de reembolso inferior a 50 puede aprobarla un agente de soporte, hasta 500 un jefe de equipo, y cualquier importe mayor necesita a un gerente. Una primera versión suele meter todo esto en una sola función con una larga cadena de `if`/`else`. Cada regla nueva alarga esa función, y el orden de las comprobaciones queda fijado en el código.",
+        "Con Chain of Responsibility, cada nivel se convierte en su propio manejador con una regla. Los manejadores se enlazan entre sí y la petición entra por el primero. Añadir un nuevo nivel de aprobación significa escribir una clase pequeña e insertarla en la cadena."
+      ]
+    },
+    {
+      "h": "Estructura y participantes",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Rol",
+              "Responsabilidad"
+            ],
+            "rows": [
+              [
+                "Manejador",
+                "Declara el método para atender peticiones y guarda una referencia al siguiente manejador"
+              ],
+              [
+                "Manejador concreto",
+                "Atiende las peticiones de las que es responsable; si no, reenvía la petición al siguiente manejador"
+              ],
+              [
+                "Cliente",
+                "Construye la cadena (o la recibe) y envía la petición al primer manejador"
+              ]
+            ]
+          }
+        },
+        "Hay dos variantes habituales. En la forma clásica, el primer manejador que puede procesar la petición detiene la cadena. En la forma de canalización (la que usa la mayoría del middleware), cada manejador puede hacer algo de trabajo y luego decidir si llama al siguiente."
+      ]
+    },
+    {
+      "h": "Implementación en TypeScript",
+      "body": [
+        "Una clase base abstracta guarda el siguiente manejador y ofrece el comportamiento de reenvío por defecto. Cada manejador concreto sobrescribe `handle` y llama a `super.handle` cuando no puede decidir.",
+        {
+          "code": "type Refund = { amount: number };\nabstract class Approver {\n  private next?: Approver;\n  setNext(next: Approver): Approver {\n    this.next = next;\n    return next; // allows a.setNext(b).setNext(c)\n  }\n  handle(req: Refund): string {\n    return this.next ? this.next.handle(req) : \"rejected: no one can approve \" + req.amount;\n  }\n}\nclass Agent extends Approver {\n  handle(req: Refund): string {\n    return req.amount < 50 ? \"agent approved \" + req.amount : super.handle(req);\n  }\n}\nclass TeamLead extends Approver {\n  handle(req: Refund): string {\n    return req.amount <= 500 ? \"team lead approved \" + req.amount : super.handle(req);\n  }\n}\nclass Manager extends Approver {\n  handle(req: Refund): string {\n    return req.amount <= 5000 ? \"manager approved \" + req.amount : super.handle(req);\n  }\n}\nconst chain = new Agent();\nchain.setNext(new TeamLead()).setNext(new Manager());\nfor (const amount of [20, 300, 2000, 9000]) console.log(chain.handle({ amount }));\n// agent approved 20\n// team lead approved 300\n// manager approved 2000\n// rejected: no one can approve 9000",
+          "lang": "typescript"
+        },
+        {
+          "note": "Decide siempre qué ocurre cuando ningún manejador acepta la petición. Aquí la última llamada a la base devuelve un rechazo. Sin un valor por defecto así, una petición puede caerse por el final de la cadena sin avisar."
+        }
+      ]
+    },
+    {
+      "h": "La forma de middleware con funciones simples",
+      "body": [
+        "En TypeScript no necesitas clases. Una lista de funciones, cada una con un callback `next`, forma una cadena. Así funciona el middleware de Express y Koa.",
+        {
+          "code": "type Req = { user?: string; path: string };\ntype Middleware = (req: Req, next: () => string) => string;\nconst auth: Middleware = (req, next) => (req.user ? next() : \"401 Unauthorized\");\nconst log: Middleware = (req, next) => {\n  console.log(\"request\", req.path);\n  return next();\n};\nconst route = (req: Req) => \"200 OK \" + req.path;\nfunction run(chain: Middleware[], req: Req): string {\n  const step = (i: number): string =>\n    i < chain.length ? chain[i](req, () => step(i + 1)) : route(req);\n  return step(0);\n}\nconsole.log(run([log, auth], { path: \"/admin\" }));\nconsole.log(run([log, auth], { user: \"ana\", path: \"/admin\" }));\n// request /admin\n// 401 Unauthorized\n// request /admin\n// 200 OK /admin",
+          "lang": "typescript"
+        }
+      ]
+    },
+    {
+      "h": "Cuándo usarlo y cuándo no",
+      "body": [
+        {
+          "ul": [
+            "Úsalo cuando varios objetos puedan atender una petición y el adecuado se decida en tiempo de ejecución.",
+            "Úsalo cuando el conjunto o el orden de los manejadores deba ser configurable, por ejemplo pasos de validación, niveles de aprobación o middleware HTTP.",
+            "Úsalo cuando quieras cada regla en su propia unidad pequeña que se pueda probar por separado.",
+            "No lo uses para dos o tres comprobaciones fijas que nunca cambian; una simple sentencia `if` es más clara.",
+            "Ten en cuenta que las cadenas largas son más difíciles de depurar, porque desde el punto de llamada no es obvio qué manejador actuó al final. Registrar mensajes dentro de los manejadores ayuda.",
+            "Las cadenas son sensibles al orden. Poner la autenticación después del manejador de la ruta, por ejemplo, anula su propósito."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Usos en el mundo real",
+      "body": [
+        {
+          "ul": [
+            "Middleware de Express y Koa: cada función recibe la petición y una función `next` y decide si continúa.",
+            "Propagación de eventos del DOM: un evento burbujea desde el elemento destino hacia sus ancestros, y cualquier listener puede detenerlo con `event.stopPropagation()`.",
+            "Los filtros de servlets de Java forman una cadena de filtros en la que cada filtro llama a `chain.doFilter` para pasar la petición.",
+            "Los frameworks de registro pasan los registros de log de un logger a sus loggers padre y a sus manejadores."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Patrones relacionados",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Patrón",
+              "En qué se diferencia de Chain of Responsibility"
+            ],
+            "rows": [
+              [
+                "Decorator",
+                "Los decoradores también forman una cadena de envoltorios, pero cada decorador siempre se ejecuta y reenvía; un manejador puede detener la cadena."
+              ],
+              [
+                "Command",
+                "Una petición en la cadena suele ser un objeto comando; Command trata de empaquetar la petición, la cadena trata de encontrar quién la atiende."
+              ],
+              [
+                "Composite",
+                "El padre en un árbol Composite es un siguiente manejador natural, que es como los eventos de la interfaz burbujean por el árbol de componentes."
+              ],
+              [
+                "Mediator",
+                "Mediator encamina los mensajes a través de un objeto central que conoce a los receptores; una cadena pasa la petición de un manejador al siguiente."
+              ]
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "¿Tiene que procesar la petición cada manejador de la cadena?",
+      "a": "No. En la forma clásica el primer manejador que puede procesar la petición detiene la cadena. En la forma de middleware cada manejador puede hacer algo de trabajo y luego llamar al siguiente, así que varios manejadores pueden actuar sobre una misma petición."
+    },
+    {
+      "q": "¿El middleware de Express es un ejemplo de Chain of Responsibility?",
+      "a": "Sí. Cada función de middleware recibe la petición y un callback `next`, y o bien termina la respuesta o llama a `next` para pasar el control al siguiente middleware."
+    },
+    {
+      "q": "¿Qué pasa si ningún manejador atiende la petición?",
+      "a": "Depende de tu diseño. La buena práctica es añadir un valor por defecto al final de la cadena, como devolver un error, lanzar una excepción o registrar un mensaje, para que las peticiones nunca se pierdan en silencio."
+    },
+    {
+      "q": "¿En qué se diferencia de una lista de sentencias if/else?",
+      "a": "La lógica es la misma, pero cada condición se convierte en un objeto o una función aparte. Eso hace la cadena configurable en tiempo de ejecución y permite añadir o reordenar pasos sin editar una función enorme."
+    }
+  ]
+}

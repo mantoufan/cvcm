@@ -1,0 +1,197 @@
+{
+  "title": "Kotlin入門：null安全・関数・コレクション・コルーチンを解説 — cv.cm",
+  "description": "Kotlinの基本を順に学べる入門講座。Hello, worldの実行、valとvar、null安全、when、ラムダ、データクラス、コレクション、コルーチン、エラー処理をコード例付きで解説します。",
+  "h1": "Kotlin入門：初心者向けチュートリアル",
+  "answer": "KotlinはJetBrainsが開発した、静的型付けのモダンな言語です。JVM上で動作し、Android開発の推奨言語になっています。簡潔に書けてJavaと完全な相互運用性があり、型システムによってnullポインタエラーの大半をコンパイル時に防げます。このページでは、環境構築、変数、null安全、制御構文、関数、コレクション、クラス、コルーチン、エラー処理を、実行できる例とともに紹介します。",
+  "sections": [
+    {
+      "h": "Kotlinとは何か、何に使われるのか",
+      "body": [
+        "Kotlinは、JetBrainsが開発した静的型付けの汎用言語です。Java仮想マシン（JVM）上で動作するほか、JavaScript、WebAssembly、ネイティブコードにもコンパイルできます。KotlinはJavaと完全な相互運用性があり、KotlinのファイルからあらゆるJavaライブラリを呼び出せ、JavaのコードからKotlinを呼び出すこともできます。",
+        "Googleは2019年からKotlinをAndroidアプリ開発の推奨言語としており、新しいAndroidのコードの大半はKotlinで書かれています。サーバーサイドでもSpring BootやKtorなどのフレームワークで広く使われています。また、Kotlin Multiplatformを使えば、Android、iOS、デスクトップ、Webの間でビジネスロジックを共有できます。"
+      ]
+    },
+    {
+      "h": "KotlinのインストールとHello, worldの実行",
+      "body": [
+        "最も手軽なのは、Kotlinが組み込まれているIntelliJ IDEAかAndroid Studioを使う方法です。コマンドラインで使う場合は、コンパイラ（SDKMAN!やHomebrewなどで導入）とJavaランタイム（JDK）をインストールします。Kotlinのプログラムはトップレベルの `main` 関数から始まり、クラスは不要です。",
+        {
+          "code": "// hello.kt\nfun main() {\n    println(\"Hello, world!\")\n}",
+          "lang": "kotlin"
+        },
+        {
+          "code": "kotlinc hello.kt -include-runtime -d hello.jar\njava -jar hello.jar\n# Hello, world!",
+          "lang": "shell"
+        },
+        "実際のプロジェクトでは、Gradle（Kotlin DSL）などのビルドツールを使うのが一般的です。インストール不要で試したい場合は、オンラインのKotlin Playgroundも利用できます。"
+      ]
+    },
+    {
+      "h": "変数と基本の型",
+      "body": [
+        "読み取り専用の変数は `val`、変更可能な変数は `var` で宣言します。型はコンパイラが推論しますが、コロンの後ろに明示することもできます。コードの見通しが良くなるため、なるべく `val` を使いましょう。",
+        {
+          "code": "val name = \"Ada\"          // String, cannot be reassigned\nvar count: Int = 0        // explicit type, can change\ncount += 1\nval pi = 3.14159          // Double\nval big = 9_000_000_000L  // Long\nprintln(\"$name has $count item(s), pi is ${\"%.2f\".format(pi)}\")\n// Ada has 1 item(s), pi is 3.14",
+          "lang": "kotlin"
+        },
+        {
+          "table": {
+            "head": [
+              "型",
+              "例",
+              "補足"
+            ],
+            "rows": [
+              [
+                "`Int`",
+                "`42`",
+                "32ビット符号付き整数"
+              ],
+              [
+                "`Long`",
+                "`42L`",
+                "64ビット符号付き整数"
+              ],
+              [
+                "`Double`",
+                "`3.14`",
+                "64ビット浮動小数点数"
+              ],
+              [
+                "`Boolean`",
+                "`true`",
+                "`true` または `false`"
+              ],
+              [
+                "`Char`",
+                "`'k'`",
+                "1文字の文字"
+              ],
+              [
+                "`String`",
+                "`\"text\"`",
+                "変更不可。`$name` のようなテンプレートが使える"
+              ]
+            ]
+          }
+        },
+        "Kotlinには暗黙の数値の拡張変換がなく、`Int` は自動的に `Long` に変換されません。`toLong()`、`toDouble()`、`toString()` を明示的に呼び出してください。"
+      ]
+    },
+    {
+      "h": "null安全",
+      "body": [
+        "null安全はKotlinを代表する機能です。`String` のような通常の型は `null` を保持できません。nullを許可するには `String?` のように `?` を付けます。すると、コンパイラは値を使う前にnullの場合の処理を書くよう強制します。",
+        {
+          "code": "fun greet(name: String?) {\n    // println(name.length)        // compile error: name may be null\n    println(name?.length)           // safe call: prints null if name is null\n    val len = name?.length ?: 0     // Elvis operator: default value\n    if (name != null) {\n        println(name.uppercase())   // smart cast: name is String here\n    }\n    println(\"length = $len\")\n}\nfun main() {\n    greet(\"kotlin\")   // 6, KOTLIN, length = 6\n    greet(null)       // null, length = 0\n}",
+          "lang": "kotlin"
+        },
+        {
+          "note": "非nullアサーション `!!` は、nullable（null許容）な値を非null型として扱い、nullなら `NullPointerException` を投げます。初心者はコンパイラの警告を黙らせるために `!!` を付けがちですが、代わりに `?.`、`?:`、`if` による判定を使ってください。"
+        }
+      ]
+    },
+    {
+      "h": "制御構文：if、when、ループ",
+      "body": [
+        "Kotlinでは `if` と `when` は式なので、値を返します。`when` はJavaやCの `switch` 文に代わるもので、値、範囲、型に対してマッチさせられます。",
+        {
+          "code": "val score = 82\nval grade = if (score >= 50) \"pass\" else \"fail\"\nval letter = when (score) {\n    in 90..100 -> \"A\"\n    in 80..89 -> \"B\"\n    in 70..79 -> \"C\"\n    else -> \"F\"\n}\nprintln(\"$grade $letter\")         // pass B\nfor (i in 1..3) print(\"$i \")      // 1 2 3\nprintln()\nfor (i in 10 downTo 0 step 5) print(\"$i \")  // 10 5 0\nprintln()\nvar n = 3\nwhile (n > 0) { print(n); n-- }   // 321\nprintln()",
+          "lang": "kotlin"
+        },
+        "`1..3` は両端を含む閉区間です。`0 until 3`（または `0..<3`）は終端を含まないので、インデックスの走査には通常こちらが適しています。"
+      ]
+    },
+    {
+      "h": "関数とラムダ",
+      "body": [
+        "関数は `fun` で宣言します。引数にはデフォルト値を指定でき、呼び出し側は名前付き引数を使えます。本体が1つの式だけなら `=` で書けます。",
+        {
+          "code": "fun area(width: Double, height: Double = 1.0): Double = width * height\nfun main() {\n    println(area(3.0, 2.0))          // 6.0\n    println(area(width = 4.0))       // 4.0 (default height)\n    val square = { x: Int -> x * x } // a lambda stored in a variable\n    println(square(5))               // 25\n    val nums = listOf(1, 2, 3, 4, 5)\n    val evensSquared = nums.filter { it % 2 == 0 }.map { it * it }\n    println(evensSquared)            // [4, 16]\n}",
+          "lang": "kotlin"
+        },
+        "ラムダの引数が1つの場合は、`it` で参照できます。関数の最後の引数がラムダなら、丸括弧の外に出して書けます。そのため `filter { ... }` は組み込みのブロック構文のように読めます。"
+      ]
+    },
+    {
+      "h": "コレクションとデータクラス",
+      "body": [
+        "標準ライブラリでは、読み取り専用のコレクションと変更可能なコレクションが区別されています。`listOf`、`setOf`、`mapOf` は読み取り専用、`mutableListOf`、`mutableSetOf`、`mutableMapOf` は変更可能なコレクションを作ります。",
+        {
+          "code": "val fruits = mutableListOf(\"apple\", \"banana\")\nfruits.add(\"cherry\")\nval ages = mapOf(\"Ann\" to 31, \"Bo\" to 25)\nprintln(fruits.size)              // 3\nprintln(ages[\"Ann\"])              // 31\nprintln(ages[\"Zed\"])              // null (map lookups are nullable)\ndata class User(val name: String, val age: Int)\nval u = User(\"Ann\", 31)\nval older = u.copy(age = 32)\nprintln(u)                        // User(name=Ann, age=31)\nprintln(u == User(\"Ann\", 31))     // true (structural equality)\nval (n, a) = older                // destructuring\nprintln(\"$n $a\")                  // Ann 32",
+          "lang": "kotlin"
+        },
+        "`data class` には、`equals`、`hashCode`、`toString`、`copy` と分割代入（デストラクチャリング）が自動的に用意されます。Kotlinの `==` は内容を比較し（`equals` を呼び出します）、`===` は参照を比較します。"
+      ]
+    },
+    {
+      "h": "クラス、拡張関数、コルーチン",
+      "body": [
+        "クラスはデフォルトで継承不可（final）です。継承を許可するには `open` を付けます。拡張関数を使うと、既存の型を変更せずにメソッドを追加できます。`sealed` クラスは閉じた場合分けを表し、`when` で網羅性をチェックできます。",
+        {
+          "code": "fun String.shout(): String = uppercase() + \"!\"\nsealed class Shape\ndata class Circle(val r: Double) : Shape()\ndata class Rect(val w: Double, val h: Double) : Shape()\nfun area(s: Shape): Double = when (s) {\n    is Circle -> Math.PI * s.r * s.r\n    is Rect -> s.w * s.h\n}   // no else needed: the compiler knows all cases\nfun main() {\n    println(\"hi\".shout())                   // HI!\n    println(area(Rect(2.0, 3.0)))           // 6.0\n}",
+          "lang": "kotlin"
+        },
+        "非同期・並行処理には、`kotlinx.coroutines` ライブラリのコルーチンを使います。`suspend` 関数はスレッドをブロックせずに一時停止でき、`launch` や `async` などのビルダーがスコープ内でコルーチンを開始します。Androidアプリがメインスレッドとは別にネットワークI/Oを行うのも、この仕組みです。"
+      ]
+    },
+    {
+      "h": "エラー処理",
+      "body": [
+        "Kotlinには、Javaと同じように `try`、`catch`、`finally` がありますが、例外はすべて非チェック例外で、宣言や捕捉を強制されることはありません。`try` も式として使えます。想定内の失敗には、標準ライブラリの `runCatching` と `Result` を使えるほか、`toIntOrNull()` のように例外を投げずに `null` を返す関数もあります。",
+        {
+          "code": "fun parse(s: String): Int = try {\n    s.toInt()\n} catch (e: NumberFormatException) {\n    -1\n}\nfun main() {\n    println(parse(\"42\"))              // 42\n    println(parse(\"x\"))               // -1\n    println(\"7\".toIntOrNull())        // 7\n    println(\"seven\".toIntOrNull())    // null\n    val r = runCatching { \"abc\".toInt() }\n    println(r.isFailure)              // true\n}",
+          "lang": "kotlin"
+        }
+      ]
+    },
+    {
+      "h": "小さな完成プログラム：単語の出現頻度",
+      "body": [
+        "このプログラムは、テキスト中の各単語の出現回数を数え、上位3つを表示します。文字列の拡張、コレクション関数、データクラスを使っています。",
+        {
+          "code": "data class WordCount(val word: String, val count: Int)\nfun topWords(text: String, n: Int): List<WordCount> =\n    text.lowercase()\n        .split(Regex(\"[^a-z']+\"))\n        .filter { it.isNotBlank() }\n        .groupingBy { it }\n        .eachCount()\n        .map { (w, c) -> WordCount(w, c) }\n        .sortedWith(compareByDescending<WordCount> { it.count }.thenBy { it.word })\n        .take(n)\nfun main() {\n    val text = \"The cat and the dog. The dog sat, and the cat ran.\"\n    for ((word, count) in topWords(text, 3)) {\n        println(\"$word: $count\")\n    }\n}\n// the: 4\n// and: 2\n// cat: 2",
+          "lang": "kotlin"
+        },
+        {
+          "note": "初心者がよくやる間違い：`val` ではなくあらゆる場所で `var` を使う、nullエラーを黙らせるために `!!` を乱用する、`1..n` が `n` を含むことを忘れる、`open` が付いていないクラスを継承しようとする、コルーチン内で `delay` ではなく `Thread.sleep` などのブロッキング処理を呼ぶ。"
+        }
+      ]
+    },
+    {
+      "h": "次のステップ",
+      "body": [
+        {
+          "ul": [
+            "kotlinlang.orgの公式ドキュメント。まずは「Basic syntax」と「Kotlin tour」から始めましょう。",
+            "Kotlin Koans。ブラウザ上で実行できる小さな演習集です。",
+            "AndroidでのKotlinについてはAndroid Developersのガイド、サーバーサイドKotlinについてはKtorやSpringのガイド。",
+            "非同期処理が必要になったら、kotlinx.coroutinesのガイド。"
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "KotlinはJavaより優れていますか？",
+      "a": "Kotlinはより簡潔に書け、null安全、データクラス、コルーチンといった機能が加わっていますが、同じJVM上で動作し、同じライブラリを使います。1つのプロジェクトで両方の言語を併用するチームも多く、選択の基準は能力の差ではなく、書き心地と生産性です。"
+    },
+    {
+      "q": "Kotlinの前にJavaを学ぶ必要はありますか？",
+      "a": "いいえ。最初のJVM言語としてKotlinから学び始められます。ただし、古いAndroidのコードやJavaライブラリのドキュメントを読むときには、Javaの知識が役に立ちます。"
+    },
+    {
+      "q": "valとvarの違いは何ですか？",
+      "a": "`val` は初期化後に再代入できない読み取り専用の参照を宣言し、`var` は再代入できる参照を宣言します。可変リストを指す `val` でも、リストの中身は変更できます。"
+    },
+    {
+      "q": "KotlinでiOSアプリは作れますか？",
+      "a": "はい。Kotlin Multiplatformを使うと、共有のKotlinコードをiOS向けのネイティブコードにコンパイルできます。UIはSwiftで書くことが多いですが、Compose MultiplatformでUIコードを共有することも可能です。"
+    },
+    {
+      "q": "Kotlinの ?: 演算子は何をしますか？",
+      "a": "エルビス演算子です。`a ?: b` は、`a` がnullでなければ `a` を、nullなら `b` を返します。`name?.length ?: 0` のように、セーフコールと組み合わせて使うのが一般的です。"
+    }
+  ]
+}

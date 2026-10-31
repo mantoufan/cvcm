@@ -1,0 +1,211 @@
+{
+  "title": "Sắp xếp tô-pô: thuật toán Kahn và DFS trong Python, kèm ví dụ — cv.cm",
+  "description": "Giải thích sắp xếp tô-pô: xếp các công việc sao cho mọi phụ thuộc đứng trước. Thuật toán Kahn và DFS trong Python, phát hiện chu trình, graphlib và chi phí O(V + E).",
+  "h1": "Sắp xếp tô-pô (topological sort) là gì: cách hoạt động, code và độ phức tạp",
+  "answer": "Sắp xếp tô-pô (topological sort) xếp các nút của đồ thị có hướng không chu trình (DAG) sao cho với mọi cạnh u → v, u đứng trước v. Nó trả lời câu hỏi “tôi có thể làm các việc này theo thứ tự nào nếu một số việc phụ thuộc vào việc khác?” Hai phương pháp chuẩn là thuật toán Kahn, liên tục loại bỏ các nút không có cạnh đi vào, và DFS, xuất các nút theo thứ tự hoàn tất ngược. Cả hai chạy trong thời gian O(V + E) và đều phát hiện được chu trình, vốn khiến việc sắp xếp là không thể.",
+  "sections": [
+    {
+      "h": "Sắp xếp tô-pô giải bài toán gì",
+      "body": [
+        "Nhiều công việc thực tế có điều kiện tiên quyết: một môn học yêu cầu các môn trước, một tệp nguồn phải được biên dịch sau các tệp mà nó import, một gói phải được cài sau các phụ thuộc của nó, một ô bảng tính phải được tính sau các ô mà nó tham chiếu. Hãy vẽ mỗi công việc là một nút và mỗi quy tắc “phải làm trước” là một cạnh có hướng. Thứ tự tô-pô là bất kỳ dãy công việc nào thỏa mọi cạnh.",
+        "Thứ tự tồn tại khi và chỉ khi đồ thị không có chu trình có hướng. Nếu A cần B và B cần A thì không có thứ tự hợp lệ, và một phép sắp xếp tô-pô tốt sẽ báo điều đó thay vì lặp mãi. Một DAG thường có nhiều thứ tự hợp lệ; các thuật toán chỉ trả về một trong số đó."
+      ]
+    },
+    {
+      "h": "Ý tưởng bằng lời đơn giản",
+      "body": [
+        "Thuật toán Kahn (do Arthur Kahn công bố năm 1962) làm việc từ phía trước:",
+        {
+          "ol": [
+            "Đếm số cạnh đi vào (bậc vào, in-degree) của mọi nút.",
+            "Đưa mọi nút có bậc vào bằng 0 vào hàng đợi: các việc này không còn điều kiện tiên quyết nào chưa thỏa.",
+            "Lấy một nút từ hàng đợi và thêm vào kết quả. Với mỗi cạnh đi ra của nó, giảm bậc vào của nút đích đi 1; nếu về 0 thì thêm nút đích vào hàng đợi.",
+            "Khi hàng đợi rỗng, nếu kết quả chứa mọi nút thì đó là một thứ tự tô-pô. Nếu không, các nút còn lại thuộc một chu trình."
+          ]
+        },
+        "Phương pháp DFS làm việc từ phía sau: một nút chỉ hoàn tất sau khi mọi nút nó trỏ tới đã hoàn tất, nên liệt kê các nút theo thứ tự hoàn tất ngược sẽ đặt mỗi nút trước mọi nút kế tiếp của nó."
+      ]
+    },
+    {
+      "h": "Ví dụ từng bước",
+      "body": [
+        "Mặc quần áo: underwear → pants, pants → shoes, socks → shoes, pants → belt, shirt → belt, shirt → tie, tie → jacket, belt → jacket. Thuật toán Kahn, lấy các nút trong hàng đợi theo thứ tự vào trước ra trước:",
+        {
+          "table": {
+            "head": [
+              "Bước",
+              "Lấy ra",
+              "Bậc vào giảm về 0",
+              "Hàng đợi sau đó",
+              "Kết quả hiện tại"
+            ],
+            "rows": [
+              [
+                "Khởi đầu",
+                "—",
+                "underwear, socks, shirt",
+                "underwear, socks, shirt",
+                "—"
+              ],
+              [
+                "1",
+                "underwear",
+                "pants",
+                "socks, shirt, pants",
+                "underwear"
+              ],
+              [
+                "2",
+                "socks",
+                "không có (shoes vẫn chờ pants)",
+                "shirt, pants",
+                "underwear, socks"
+              ],
+              [
+                "3",
+                "shirt",
+                "tie",
+                "pants, tie",
+                "…, shirt"
+              ],
+              [
+                "4",
+                "pants",
+                "shoes, belt",
+                "tie, shoes, belt",
+                "…, pants"
+              ],
+              [
+                "5",
+                "tie",
+                "không có (jacket chờ belt)",
+                "shoes, belt",
+                "…, tie"
+              ],
+              [
+                "6",
+                "shoes",
+                "không có",
+                "belt",
+                "…, shoes"
+              ],
+              [
+                "7",
+                "belt",
+                "jacket",
+                "jacket",
+                "…, belt"
+              ],
+              [
+                "8",
+                "jacket",
+                "không có",
+                "rỗng",
+                "…, jacket"
+              ]
+            ]
+          }
+        },
+        "Thứ tự cuối cùng: underwear, socks, shirt, pants, tie, shoes, belt, jacket. Cả 8 nút đều được xếp, nên không có chu trình."
+      ]
+    },
+    {
+      "h": "Cài đặt bằng Python",
+      "body": [
+        "Thuật toán Kahn với deque:",
+        {
+          "code": "from collections import deque\ndef topo_sort(graph):\n    \"\"\"graph: dict node -> list of nodes that must come after it.\"\"\"\n    indegree = {n: 0 for n in graph}\n    for n in graph:\n        for m in graph[n]:\n            indegree[m] += 1\n    queue = deque(n for n in graph if indegree[n] == 0)\n    order = []\n    while queue:\n        n = queue.popleft()\n        order.append(n)\n        for m in graph[n]:\n            indegree[m] -= 1\n            if indegree[m] == 0:\n                queue.append(m)\n    if len(order) != len(graph):\n        raise ValueError(\"graph has a cycle\")\n    return order\ndress = {\n    \"underwear\": [\"pants\"], \"socks\": [\"shoes\"], \"shirt\": [\"belt\", \"tie\"],\n    \"pants\": [\"shoes\", \"belt\"], \"tie\": [\"jacket\"], \"belt\": [\"jacket\"],\n    \"shoes\": [], \"jacket\": [],\n}\nprint(topo_sort(dress))\n# ['underwear', 'socks', 'shirt', 'pants', 'tie', 'shoes', 'belt', 'jacket']",
+          "lang": "python"
+        },
+        "Phiên bản DFS thêm một nút vào sau khi mọi nút kế tiếp của nó đã xong, rồi đảo ngược danh sách:",
+        {
+          "code": "def topo_sort_dfs(graph):\n    order, state = [], {}             # state: 1 = in progress, 2 = done\n    def visit(n):\n        if state.get(n) == 1:\n            raise ValueError(\"graph has a cycle\")\n        if state.get(n) == 2:\n            return\n        state[n] = 1\n        for m in graph[n]:\n            visit(m)\n        state[n] = 2\n        order.append(n)\n    for n in graph:\n        visit(n)\n    return order[::-1]\nprint(topo_sort_dfs(dress))\n# ['shirt', 'tie', 'socks', 'underwear', 'pants', 'belt', 'jacket', 'shoes']",
+          "lang": "python"
+        },
+        "Cả hai kết quả đều hợp lệ. Từ Python 3.9, thư viện chuẩn cũng có `graphlib.TopologicalSorter`. Lưu ý nó nhận ánh xạ từ mỗi nút tới các nút đứng trước nó, ngược chiều với các dictionary ở trên:",
+        {
+          "code": "from graphlib import TopologicalSorter\nts = TopologicalSorter({\"b\": {\"a\"}, \"c\": {\"a\", \"b\"}})   # node: its prerequisites\nprint(list(ts.static_order()))  # ['a', 'b', 'c']",
+          "lang": "python"
+        }
+      ]
+    },
+    {
+      "h": "Độ phức tạp thời gian và không gian",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Phương pháp",
+              "Thời gian",
+              "Không gian",
+              "Lý do"
+            ],
+            "rows": [
+              [
+                "Thuật toán Kahn",
+                "O(V + E)",
+                "O(V)",
+                "Mỗi nút vào hàng đợi một lần; mỗi cạnh làm giảm một bậc vào đúng một lần."
+              ],
+              [
+                "DFS",
+                "O(V + E)",
+                "O(V)",
+                "Mỗi nút được thăm một lần và mỗi cạnh được đi qua một lần; ngăn xếp đệ quy có thể lên tới V khung."
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "Biến thể và lỗi thường gặp",
+      "body": [
+        {
+          "ul": [
+            "Thứ tự nhỏ nhất trước: thay hàng đợi bằng min-heap (`heapq`) để luôn chọn nút nhỏ nhất đang khả dụng. Cách này cho thứ tự nhỏ nhất theo từ điển trong O((V + E) log V).",
+            "Lập lịch song song: chạy thuật toán Kahn theo từng vòng, lấy cùng lúc mọi nút có bậc vào 0. Mỗi vòng là một lô công việc có thể chạy đồng thời; số vòng bằng độ dài chuỗi phụ thuộc dài nhất. `graphlib.TopologicalSorter` hỗ trợ việc này qua `get_ready()` và `done()`.",
+            "Đường đi dài nhất hoặc ngắn nhất trong DAG: nới lỏng các cạnh theo thứ tự tô-pô để có kết quả trong O(V + E), kể cả với trọng số âm.",
+            "Đếm số thứ tự khác nhau là bài toán khó hơn nhiều; đừng cố liệt kê hết chúng với đồ thị lớn."
+          ]
+        },
+        {
+          "note": "Hãy chú ý chiều của cạnh. “A phụ thuộc B” nghĩa là B phải đứng trước, nên cạnh là B → A. Nhầm chiều sẽ cho thứ tự bị đảo ngược. Ngoài ra, đảm bảo mọi nút đều xuất hiện làm khóa trong dictionary, kể cả nút không có cạnh đi ra, nếu không việc tra bậc vào sẽ gây `KeyError`."
+        },
+        "Phiên bản DFS đệ quy gặp cùng vấn đề giới hạn đệ quy như mọi DFS đệ quy trong Python: với chuỗi hàng nghìn nút, hãy dùng thuật toán Kahn."
+      ]
+    },
+    {
+      "h": "Khi nào dùng và ứng dụng thực tế",
+      "body": [
+        {
+          "ul": [
+            "Công cụ build như Make sắp xếp các target theo phụ thuộc, và trình quản lý gói sắp xếp thứ tự cài đặt theo đồ thị phụ thuộc.",
+            "Bảng tính tính lại các ô theo thứ tự phụ thuộc và báo tham chiếu vòng.",
+            "Bộ lập lịch tác vụ và công cụ workflow, ví dụ các pipeline dữ liệu dạng DAG, chạy tác vụ theo thứ tự tô-pô.",
+            "Trình biên dịch sắp xếp các khai báo và đánh giá đồ thị biểu thức; cơ sở dữ liệu sắp xếp thứ tự tạo hoặc xóa khóa ngoại.",
+            "Bài phỏng vấn: course schedule I và II, alien dictionary (thứ tự chữ cái từ các từ đã sắp xếp), parallel courses, chiều cao tối thiểu của một kế hoạch build."
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Đồ thị có chu trình có sắp xếp tô-pô được không?",
+      "a": "Không. Chu trình nghĩa là có việc phải làm trước chính nó. Thuật toán Kahn phát hiện điều này vì một số nút không bao giờ đạt bậc vào 0, còn phương pháp DFS phát hiện khi chạm tới một nút vẫn đang được xử lý."
+    },
+    {
+      "q": "Thứ tự tô-pô có duy nhất không?",
+      "a": "Thường là không. Nó chỉ duy nhất khi đồ thị chứa một đường đi thăm mọi nút, để mỗi bước chỉ có đúng một nút khả dụng."
+    },
+    {
+      "q": "Nên dùng thuật toán Kahn hay DFS?",
+      "a": "Cả hai đều là O(V + E). Thuật toán Kahn là dạng lặp, báo chu trình một cách tự nhiên và dễ điều chỉnh cho các lô song song hoặc thứ tự nhỏ nhất trước. DFS ngắn hơn nếu bạn đã có sẵn hàm DFS."
+    },
+    {
+      "q": "Python có sắp xếp tô-pô tích hợp sẵn không?",
+      "a": "Có. `graphlib.TopologicalSorter`, được thêm từ Python 3.9, trả về thứ tự bằng `static_order()` và ném `graphlib.CycleError` khi đồ thị có chu trình."
+    }
+  ]
+}

@@ -1,0 +1,253 @@
+{
+  "title": "Penjelasan notasi Big O: kompleksitas waktu, kelas umum, dan contoh — cv.cm",
+  "description": "Notasi Big O menggambarkan pertumbuhan waktu eksekusi atau memori terhadap ukuran input. Pelajari O(1), O(log n), O(n), O(n log n), dan O(n²) dengan contoh Python.",
+  "h1": "Penjelasan notasi Big O dengan contoh",
+  "answer": "Notasi Big O menggambarkan bagaimana waktu eksekusi atau penggunaan memori sebuah algoritma tumbuh seiring bertambahnya ukuran input n. Notasi ini hanya mempertahankan suku yang tumbuh paling cepat dan membuang konstanta, sehingga 3n² + 5n + 2 langkah ditulis O(n²). Kelas yang umum, dari yang tercepat hingga terlambat, adalah O(1), O(log n), O(n), O(n log n), O(n²), dan O(2ⁿ). Dengan Big O, Anda bisa membandingkan algoritma tanpa menjalankannya di mesin tertentu.",
+  "sections": [
+    {
+      "h": "Masalah apa yang diselesaikan Big O",
+      "body": [
+        "Mengukur waktu program dalam detik hanya menggambarkan satu mesin, satu bahasa, dan satu input. Big O menjawab pertanyaan yang lebih berguna: jika input menjadi 10 kali lebih besar, seberapa banyak pekerjaan tambahan yang dilakukan algoritma? Algoritma yang bekerja 10 kali lebih banyak berskala sangat berbeda dari yang bekerja 100 kali lebih banyak.",
+        "Secara formal, f(n) adalah O(g(n)) jika ada konstanta c dan n₀ sehingga f(n) ≤ c · g(n) untuk setiap n ≥ n₀. Dalam bahasa sederhana, g adalah batas atas pertumbuhan f ketika n sudah cukup besar, dengan mengabaikan faktor konstanta.",
+        {
+          "ul": [
+            "n adalah ukuran input: panjang list, jumlah karakter dalam string, atau jumlah node dalam graf.",
+            "Kompleksitas waktu menghitung langkah dasar (perbandingan, assignment, aritmetika).",
+            "Kompleksitas ruang menghitung memori tambahan yang dipakai, tidak termasuk input itu sendiri."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Cara menyederhanakan ekspresi",
+      "body": [
+        "Hitung jumlah langkah sebagai fungsi dari n, lalu terapkan dua aturan: buang faktor konstanta dan pertahankan hanya suku yang dominan.",
+        {
+          "table": {
+            "head": [
+              "Jumlah langkah eksak",
+              "Aturan yang dipakai",
+              "Big O"
+            ],
+            "rows": [
+              [
+                "`5`",
+                "konstanta",
+                "O(1)"
+              ],
+              [
+                "`3n + 10`",
+                "buang 3 dan 10",
+                "O(n)"
+              ],
+              [
+                "`n²/2 + n/2`",
+                "pertahankan n², buang 1/2",
+                "O(n²)"
+              ],
+              [
+                "`2n log n + 100n`",
+                "n log n tumbuh lebih cepat daripada n",
+                "O(n log n)"
+              ],
+              [
+                "`n³ + 2ⁿ`",
+                "2ⁿ tumbuh lebih cepat daripada pangkat n berapa pun",
+                "O(2ⁿ)"
+              ]
+            ]
+          }
+        },
+        "Jika sebuah algoritma punya dua input yang independen, pertahankan keduanya: perulangan atas list sepanjang n lalu atas list sepanjang m adalah O(n + m), dan perulangan di dalam perulangan adalah O(n · m). Basis logaritma tidak berpengaruh dalam Big O, karena log₂ n dan log₁₀ n hanya berbeda oleh faktor konstanta."
+      ]
+    },
+    {
+      "h": "Kelas kompleksitas yang umum",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Kelas",
+              "Nama",
+              "Langkah untuk n = 1.000",
+              "Contoh tipikal"
+            ],
+            "rows": [
+              [
+                "O(1)",
+                "konstan",
+                "1",
+                "membaca `items[i]`, mencari key di `dict` (rata-rata)"
+              ],
+              [
+                "O(log n)",
+                "logaritmik",
+                "sekitar 10",
+                "binary search pada list yang sudah terurut"
+              ],
+              [
+                "O(n)",
+                "linear",
+                "1.000",
+                "mencari nilai maksimum dari sebuah list"
+              ],
+              [
+                "O(n log n)",
+                "linearitmik",
+                "sekitar 10.000",
+                "merge sort, `sorted()` di Python"
+              ],
+              [
+                "O(n²)",
+                "kuadratik",
+                "1.000.000",
+                "membandingkan setiap pasangan, bubble sort"
+              ],
+              [
+                "O(2ⁿ)",
+                "eksponensial",
+                "bilangan 302 digit",
+                "mencoba setiap subset"
+              ],
+              [
+                "O(n!)",
+                "faktorial",
+                "jauh lebih besar lagi",
+                "mencoba setiap urutan"
+              ]
+            ]
+          }
+        },
+        "Sebagai patokan kasar: di komputer modern, perulangan sederhana bisa menjalankan puluhan juta langkah dasar per detik di Python dan jauh lebih banyak di bahasa yang dikompilasi. Jadi O(n log n) aman untuk jutaan item, O(n²) mulai lambat pada puluhan ribu item, dan O(2ⁿ) tidak realistis di atas sekitar 40 sampai 60 item."
+      ]
+    },
+    {
+      "h": "Membaca kompleksitas dari kode Python",
+      "body": [
+        "Perhatikan perulangannya. Satu perulangan atas input adalah O(n). Perulangan yang bersarang di dalam perulangan lain atas input yang sama adalah O(n²). Perulangan yang membagi dua rentang tersisa pada setiap langkah adalah O(log n).",
+        {
+          "code": "def first(items):            # O(1): one step, whatever the size\n    return items[0]\ndef total(items):            # O(n): touches each item once\n    s = 0\n    for x in items:\n        s += x\n    return s\ndef has_duplicate(items):    # O(n^2): compares every pair\n    for i in range(len(items)):\n        for j in range(i + 1, len(items)):\n            if items[i] == items[j]:\n                return True\n    return False\ndef halvings(n):             # O(log n): n is halved each step\n    steps = 0\n    while n > 1:\n        n //= 2\n        steps += 1\n    return steps\nprint(first([7, 8]), total([1, 2, 3]), has_duplicate([1, 2, 1]), halvings(1024))\n# 7 6 True 10",
+          "lang": "python"
+        },
+        "Pemanggilan fungsi pustaka punya biaya sendiri. `x in some_list` adalah O(n), `x in some_set` adalah O(1) rata-rata, `list.insert(0, x)` adalah O(n) karena setiap elemen bergeser, dan `sorted()` adalah O(n log n). Perulangan yang memanggil operasi O(n) sebanyak n kali menjadi O(n²), meskipun tampak seperti satu perulangan biasa.",
+        {
+          "code": "def has_duplicate_fast(items):   # O(n) time, O(n) extra space\n    seen = set()\n    for x in items:\n        if x in seen:            # average O(1) set lookup\n            return True\n        seen.add(x)\n    return False\nprint(has_duplicate_fast([3, 1, 4, 1, 5]))   # True\nprint(has_duplicate_fast(list(range(10))))   # False",
+          "lang": "python"
+        }
+      ]
+    },
+    {
+      "h": "Kasus terbaik, rata-rata, dan terburuk",
+      "body": [
+        "Algoritma yang sama bisa membutuhkan jumlah pekerjaan berbeda pada input berbeda dengan ukuran yang sama, sehingga kompleksitas sering dinyatakan untuk tiga kasus.",
+        {
+          "table": {
+            "head": [
+              "Algoritma",
+              "Terbaik",
+              "Rata-rata",
+              "Terburuk"
+            ],
+            "rows": [
+              [
+                "Linear search",
+                "O(1), target ada di posisi pertama",
+                "O(n)",
+                "O(n), target tidak ada"
+              ],
+              [
+                "Insertion sort",
+                "O(n), sudah terurut",
+                "O(n²)",
+                "O(n²), urutan terbalik"
+              ],
+              [
+                "Quicksort",
+                "O(n log n)",
+                "O(n log n)",
+                "O(n²), pivot buruk"
+              ],
+              [
+                "Pencarian hash table",
+                "O(1)",
+                "O(1)",
+                "O(n), banyak tabrakan (collision)"
+              ]
+            ]
+          }
+        },
+        "Jika orang hanya menyebut “kompleksitas X”, biasanya yang dimaksud adalah kasus terburuk, atau kasus rata-rata untuk hash table dan quicksort. Biaya teramortisasi (amortized) adalah ide keempat: menambah elemen ke list Python kadang O(n) ketika list memperbesar penyimpanannya, tetapi rata-rata O(1) pada banyak operasi append."
+      ]
+    },
+    {
+      "h": "Big O, Big Omega, dan Big Theta",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Notasi",
+              "Arti",
+              "Contoh"
+            ],
+            "rows": [
+              [
+                "O(g)",
+                "batas atas: tumbuh tidak lebih cepat dari g",
+                "linear search adalah O(n)"
+              ],
+              [
+                "Ω(g)",
+                "batas bawah: tumbuh setidaknya secepat g",
+                "setiap comparison sort adalah Ω(n log n) pada kasus terburuk"
+              ],
+              [
+                "Θ(g)",
+                "batas ketat: sekaligus O(g) dan Ω(g)",
+                "merge sort adalah Θ(n log n)"
+              ]
+            ]
+          }
+        },
+        "Secara ketat, algoritma O(n) juga merupakan O(n²), karena O hanyalah batas atas. Dalam praktik sehari-hari, orang menulis Big O tetapi maksudnya batas paling ketat yang mereka ketahui, yaitu yang dinyatakan oleh Θ."
+      ]
+    },
+    {
+      "h": "Kesalahan umum",
+      "body": [
+        {
+          "note": "Big O menyembunyikan konstanta. Algoritma O(n) dengan konstanta besar bisa lebih lambat daripada algoritma O(n²) untuk n kecil. Inilah sebabnya banyak rutin pengurutan cepat beralih ke insertion sort untuk sublist yang pendek."
+        },
+        {
+          "ul": [
+            "Melupakan biaya operasi bawaan, seperti `in` pada list atau slicing `items[1:]`, yang menyalin dan berbiaya O(k) untuk k elemen yang disalin.",
+            "Salah menghitung pemanggilan rekursif: fungsi yang memanggil dirinya sendiri dua kali dengan n − 1 adalah O(2ⁿ), bukan O(n).",
+            "Mengabaikan ruang: membuat list baru berukuran n, atau rekursi sedalam n, memakan memori O(n).",
+            "Menulis O(2n) atau O(n + 5). Keduanya disederhanakan menjadi O(n)."
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Apa arti O(1)?",
+      "a": "O(1) berarti waktu konstan: pekerjaan tidak bertambah seiring ukuran input. Membaca elemen list berdasarkan indeks adalah O(1), baik list berisi 10 maupun 10 juta item."
+    },
+    {
+      "q": "Apakah O(log n) lebih cepat daripada O(n)?",
+      "a": "Ya, untuk n yang besar. Menggandakan input hanya menambah satu langkah pada algoritma O(log n), tetapi melipatduakan pekerjaan algoritma O(n). Untuk sejuta item, log₂ n sekitar 20."
+    },
+    {
+      "q": "Berapa kompleksitas waktu sorted() di Python?",
+      "a": "`sorted()` dan `list.sort()` di Python berkompleksitas O(n log n) pada kasus terburuk dan O(n) pada input yang sudah terurut, serta memakai memori tambahan O(n)."
+    },
+    {
+      "q": "Apakah Big O mengukur detik?",
+      "a": "Tidak. Big O mengukur bagaimana jumlah pekerjaan tumbuh terhadap ukuran input. Waktu dalam detik yang sebenarnya bergantung pada mesin, bahasa, dan faktor konstanta yang diabaikan Big O."
+    },
+    {
+      "q": "Apa perbedaan kompleksitas waktu dan kompleksitas ruang?",
+      "a": "Kompleksitas waktu menghitung langkah yang dijalankan algoritma; kompleksitas ruang menghitung memori tambahan yang dibutuhkan. Keduanya ditulis dalam Big O, dan sering kali Anda menukar yang satu dengan yang lain, misalnya memakai set untuk menghemat waktu."
+    }
+  ]
+}

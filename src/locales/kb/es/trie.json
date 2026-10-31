@@ -1,0 +1,161 @@
+{
+  "title": "Trie (árbol de prefijos): insertar, buscar y autocompletar en Python — cv.cm",
+  "description": "Aprende cómo un trie (árbol de prefijos) guarda cadenas compartiendo prefijos: insertar, buscar, starts-with y autocompletado en Python, con complejidad y variantes.",
+  "h1": "Trie (árbol de prefijos) explicado: cómo funciona, código y complejidad",
+  "answer": "Un trie, o árbol de prefijos, es un árbol que guarda cadenas carácter a carácter: cada arista es un carácter y cada camino desde la raíz deletrea un prefijo. Las palabras que comparten un prefijo comparten los mismos nodos, y una marca indica dónde termina una palabra completa. Insertar o buscar una palabra de longitud m cuesta O(m), sin importar cuántas palabras haya guardadas, y encontrar todas las palabras con un prefijo dado es rápido. Los tries están detrás del autocompletado, los correctores ortográficos y las tablas de enrutamiento IP.",
+  "sections": [
+    {
+      "h": "Qué problema resuelve un trie",
+      "body": [
+        "Un conjunto hash responde rápido a \"¿está guardada esta palabra exacta?\", pero no puede responder \"¿qué palabras guardadas empiezan por `pre`?\" sin revisar todas. Una lista ordenada puede responder consultas de prefijo con búsqueda binaria, pero las inserciones son lentas. Un trie está organizado por prefijos, así que las preguntas de prefijo son su fortaleza natural: autocompletado en un cuadro de búsqueda, juegos de palabras, corrección ortográfica y coincidencia del prefijo más largo en rutas de red."
+      ]
+    },
+    {
+      "h": "La idea en palabras sencillas",
+      "body": [
+        "Piensa en la lista de contactos del teléfono que vas acotando letra a letra. Al escribir `c` aparecen todos los que empiezan por c, al escribir `ca` la lista se reduce, y así sucesivamente. Un trie guarda las palabras exactamente con esa forma. La raíz es el prefijo vacío. Cada nodo tiene un mapa del siguiente carácter a un nodo hijo, más una marca de fin de palabra, porque una palabra como `car` puede ser a la vez una palabra completa y un prefijo de `cart`."
+      ]
+    },
+    {
+      "h": "Ejemplo resuelto: insertar car, cart, cat y dog",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Inserción",
+              "Nodos reutilizados",
+              "Nodos nuevos creados",
+              "Fin de palabra marcado en"
+            ],
+            "rows": [
+              [
+                "`car`",
+                "ninguno",
+                "c, a, r",
+                "r (camino car)"
+              ],
+              [
+                "`cart`",
+                "c, a, r",
+                "t",
+                "t (camino cart)"
+              ],
+              [
+                "`cat`",
+                "c, a",
+                "t (un hijo nuevo de a)",
+                "t (camino cat)"
+              ],
+              [
+                "`dog`",
+                "ninguno",
+                "d, o, g",
+                "g (camino dog)"
+              ]
+            ]
+          }
+        },
+        "Las cuatro palabras suman 13 letras pero necesitan solo 8 nodos bajo la raíz (c, a, r, t, t, d, o, g), porque `car`, `cart` y `cat` comparten `ca`. Buscar `ca` recorre dos nodos y tiene éxito como prefijo, pero `ca` no es una palabra porque su nodo no está marcado como final. Buscar `cow` falla en el segundo paso: el nodo c no tiene hijo o."
+      ]
+    },
+    {
+      "h": "Implementación en Python",
+      "body": [
+        "Cada nodo guarda un `dict` de hijos, que maneja cualquier alfabeto, incluido Unicode. El método `starts_with` reúne todas las palabras bajo un prefijo, que es el núcleo del autocompletado.",
+        {
+          "code": "class TrieNode:\n    __slots__ = (\"children\", \"is_word\")\n    def __init__(self):\n        self.children = {}\n        self.is_word = False\nclass Trie:\n    def __init__(self):\n        self.root = TrieNode()\n    def insert(self, word):\n        node = self.root\n        for ch in word:\n            node = node.children.setdefault(ch, TrieNode())\n        node.is_word = True\n    def _find(self, prefix):\n        node = self.root\n        for ch in prefix:\n            node = node.children.get(ch)\n            if node is None:\n                return None\n        return node\n    def contains(self, word):\n        node = self._find(word)\n        return node is not None and node.is_word\n    def starts_with(self, prefix):\n        node, out = self._find(prefix), []\n        stack = [(node, prefix)] if node else []\n        while stack:\n            node, path = stack.pop()\n            if node.is_word:\n                out.append(path)\n            for ch, child in node.children.items():\n                stack.append((child, path + ch))\n        return sorted(out)",
+          "lang": "python"
+        },
+        {
+          "code": "t = Trie()\nfor w in [\"car\", \"cart\", \"cat\", \"dog\"]:\n    t.insert(w)\nprint(t.contains(\"car\"), t.contains(\"ca\"))  # True False\nprint(t.starts_with(\"ca\"))                  # ['car', 'cart', 'cat']\nprint(t.starts_with(\"x\"))                   # []",
+          "lang": "python"
+        },
+        "`starts_with` ordena su salida para obtener un orden estable. Un autocompletado real también se detendría tras los primeros resultados y los clasificaría, por ejemplo con contadores de popularidad guardados."
+      ]
+    },
+    {
+      "h": "Complejidad temporal y espacial",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Operación",
+              "Tiempo",
+              "Motivo"
+            ],
+            "rows": [
+              [
+                "Insertar una palabra de longitud m",
+                "O(m)",
+                "un paso por carácter"
+              ],
+              [
+                "Buscar una palabra o comprobar un prefijo",
+                "O(m)",
+                "una consulta al diccionario por carácter"
+              ],
+              [
+                "Listar las k palabras bajo un prefijo",
+                "O(m + tamaño del subárbol)",
+                "recorrer hasta el prefijo y luego visitar todos los nodos por debajo"
+              ],
+              [
+                "Eliminar una palabra",
+                "O(m)",
+                "quitar la marca de fin y, opcionalmente, podar los nodos vacíos"
+              ],
+              [
+                "Espacio",
+                "O(total de caracteres guardados)",
+                "en el peor caso un nodo por carácter cuando no se comparte nada"
+              ]
+            ]
+          }
+        },
+        "El tiempo no depende del número de palabras n, que es la principal ventaja frente a un árbol balanceado de cadenas (O(m log n) comparaciones). El costo es la memoria: cada nodo es un objeto independiente con su propio diccionario, así que un trie puede usar muchas veces más memoria que las cadenas en bruto."
+      ]
+    },
+    {
+      "h": "Variantes y errores comunes",
+      "body": [
+        {
+          "ul": [
+            "Hijos en arreglo: usa un arreglo fijo de 26 posiciones para inglés en minúsculas. Es más rápido que un `dict`, pero desperdicia espacio con alfabetos dispersos o grandes.",
+            "Trie comprimido (radix tree, trie de Patricia): fusiona las cadenas de nodos con un solo hijo en una arista etiquetada con una cadena, lo que ahorra mucha memoria. Los radix trees se usan en tablas de enrutamiento IP y en algunos enrutadores HTTP.",
+            "Árbol de búsqueda ternario: cada nodo tiene tres hijos (menor, igual, mayor), lo que usa menos memoria que un arreglo ancho.",
+            "Trie con contadores: guarda un contador en cada nodo para responder \"¿cuántas palabras empiezan por este prefijo?\" en O(m).",
+            "Trie bit a bit: guarda números bit por bit para resolver problemas de XOR máximo."
+          ]
+        },
+        {
+          "note": "El error más común es olvidar la marca de fin de palabra. Sin ella, insertar `cart` hace que `contains(\"car\")` devuelva True aunque `car` nunca se insertó. Un segundo error frecuente es borrar nodos que aún necesitan las palabras más largas."
+        }
+      ]
+    },
+    {
+      "h": "Cuándo usar un trie y problemas típicos de entrevista",
+      "body": [
+        "Usa un trie cuando necesites consultas de prefijo, coincidencia del prefijo más largo o iteración ordenada sobre muchas cadenas con prefijos compartidos. Usa un `set` o un `dict` cuando solo necesites búsquedas de coincidencia exacta: es más simple y usa menos memoria en Python. Para listas de palabras pequeñas y estáticas, una lista ordenada con el módulo `bisect` también responde bien a las consultas de prefijo.",
+        "Problemas típicos: implementar un trie (insert, search, starts-with), buscar palabras en una cuadrícula con muchas palabras objetivo, reemplazar palabras por su raíz más corta, prefijo común más largo, diseñar un sistema de autocompletado de búsqueda y XOR máximo de dos números con un trie bit a bit."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "¿Por qué se llama trie?",
+      "a": "El nombre viene de la parte central de la palabra inglesa retrieval. Edward Fredkin acuñó el término en un artículo de 1960. Mucha gente lo pronuncia como try para distinguirlo de tree."
+    },
+    {
+      "q": "¿Un trie es más rápido que una tabla hash?",
+      "a": "En búsquedas exactas ambos toman un tiempo proporcional a la longitud de la palabra, y un `dict` de Python suele ser más rápido y pequeño. Un trie gana cuando necesitas búsquedas por prefijo, iteración ordenada o coincidencia del prefijo más largo."
+    },
+    {
+      "q": "¿Cuánta memoria usa un trie?",
+      "a": "En el peor caso, un nodo por carácter guardado. Los prefijos compartidos lo reducen, y los tries comprimidos (radix trees) lo reducen aún más al fusionar cadenas de nodos con un solo hijo."
+    },
+    {
+      "q": "¿Cuál es la diferencia entre un trie y un radix tree?",
+      "a": "Un radix tree es un trie comprimido: toda cadena de nodos con un solo hijo se fusiona en un nodo cuya arista guarda una subcadena completa. Las búsquedas funcionan igual pero necesitan menos nodos."
+    }
+  ]
+}

@@ -1,0 +1,191 @@
+{
+  "title": "Tutorial de JavaScript: variables, funciones, arrays, objetos y async — cv.cm",
+  "description": "Aprende JavaScript moderno en una página: Hello world en Node.js o en el navegador, let y const, tipos, bucles, funciones, arrays, objetos, promesas y async.",
+  "h1": "Tutorial de JavaScript para principiantes",
+  "answer": "JavaScript es el lenguaje de programación de la web: todos los navegadores lo ejecutan y Node.js lo ejecuta en servidores y en la línea de comandos. Declara variables con `const` y `let`, escribe funciones como declaraciones o funciones flecha, guarda datos en arrays y objetos, y gestiona tareas lentas, como las peticiones de red, con promesas y `async`/`await`. Para empezar, ejecuta `node hello.js` o abre la consola del navegador.",
+  "sections": [
+    {
+      "h": "Qué es JavaScript y para qué se usa",
+      "body": [
+        "JavaScript es un lenguaje de tipado dinámico estandarizado como ECMAScript. Nació para las páginas web, donde reacciona a los clics, actualiza la página y se comunica con servidores. Hoy también se ejecuta en servidores y herramientas mediante Node.js, Deno y Bun, en aplicaciones de escritorio (Electron) y en aplicaciones móviles (React Native). Lo usan desarrolladores front-end, desarrolladores full-stack y cualquiera que construya para la web. La sintaxis moderna de esta página (`let`, `const`, funciones flecha, clases, módulos) viene de ES2015 y las ediciones posteriores."
+      ]
+    },
+    {
+      "h": "Ejecutar Hello, world",
+      "body": [
+        "Opción 1: abre cualquier página web, pulsa F12 (o Cmd+Option+J en Mac) para abrir la consola de desarrollo y escribe la línea siguiente. Opción 2: instala Node.js desde nodejs.org, guarda la línea como `hello.js` y ejecútala.",
+        {
+          "code": "console.log(\"Hello, world\");",
+          "lang": "javascript"
+        },
+        {
+          "code": "node hello.js\n# Hello, world",
+          "lang": "shell"
+        }
+      ]
+    },
+    {
+      "h": "Variables y tipos básicos",
+      "body": [
+        "Usa `const` para valores que no se reasignan y `let` para los que cambian. Evita el antiguo `var`, que ignora el ámbito de bloque. `typeof` indica el tipo de un valor.",
+        {
+          "table": {
+            "head": [
+              "Tipo",
+              "Ejemplo",
+              "typeof"
+            ],
+            "rows": [
+              [
+                "number",
+                "`42`, `3.14`, `NaN`",
+                "`\"number\"`"
+              ],
+              [
+                "bigint",
+                "`10n`",
+                "`\"bigint\"`"
+              ],
+              [
+                "string",
+                "`\"hi\"`, `'hi'`, `` `hi ${name}` ``",
+                "`\"string\"`"
+              ],
+              [
+                "boolean",
+                "`true`, `false`",
+                "`\"boolean\"`"
+              ],
+              [
+                "undefined",
+                "`undefined`",
+                "`\"undefined\"`"
+              ],
+              [
+                "null",
+                "`null`",
+                "`\"object\"` (una rareza histórica)"
+              ],
+              [
+                "object",
+                "`{}`, `[]`, funciones",
+                "`\"object\"` o `\"function\"`"
+              ]
+            ]
+          }
+        },
+        {
+          "code": "const name = \"Ada\";\nlet count = 1;\ncount += 1;\nconsole.log(`${name} has ${count} items`); // Ada has 2 items\nconsole.log(0.1 + 0.2);                    // 0.30000000000000004\nconsole.log(Number(\"12\") + 1, \"12\" + 1);   // 13 121",
+          "lang": "javascript"
+        }
+      ]
+    },
+    {
+      "h": "Control de flujo: if, bucles e igualdad",
+      "body": [
+        "Compara siempre con `===` y `!==`. El `==` laxo convierte los tipos antes de comparar, así que `0 == \"\"` es `true`.",
+        {
+          "code": "const score = 72;\nif (score >= 90) {\n  console.log(\"A\");\n} else if (score >= 70) {\n  console.log(\"B\"); // B\n} else {\n  console.log(\"C\");\n}\nfor (let i = 0; i < 3; i++) console.log(i); // 0 1 2\nfor (const fruit of [\"apple\", \"pear\"]) console.log(fruit);\nlet n = 10;\nwhile (n > 1) n = Math.floor(n / 2);\nconsole.log(n); // 1",
+          "lang": "javascript"
+        }
+      ]
+    },
+    {
+      "h": "Funciones",
+      "body": [
+        "Las funciones son valores: puedes guardarlas en variables, pasarlas a otras funciones y devolverlas. Las funciones flecha son una forma más corta y son habituales en los callbacks.",
+        {
+          "code": "function greet(name, greeting = \"Hello\") {\n  return `${greeting}, ${name}!`;\n}\nconst square = (x) => x * x;\nconst sum = (...nums) => nums.reduce((a, b) => a + b, 0);\nconsole.log(greet(\"Lin\"));     // Hello, Lin!\nconsole.log(square(5));        // 25\nconsole.log(sum(1, 2, 3, 4));  // 10",
+          "lang": "javascript"
+        }
+      ]
+    },
+    {
+      "h": "Arrays y objetos",
+      "body": [
+        "Los arrays son listas ordenadas; los objetos asocian claves de texto con valores. Ambos se pasan por referencia. `Map` y `Set` son alternativas integradas para cuando las claves no son cadenas o los valores deben ser únicos.",
+        {
+          "code": "const nums = [3, 1, 2];\nnums.push(5);\nconst doubled = nums.map((n) => n * 2);\nconst evens = nums.filter((n) => n % 2 === 0);\nconsole.log(doubled, evens);             // [ 6, 2, 4, 10 ] [ 2 ]\nconsole.log([...nums].sort((a, b) => a - b)); // [ 1, 2, 3, 5 ]\nconst user = { name: \"Ann\", age: 31 };\nuser.city = \"Oslo\";\nconst { name, age } = user;              // destructuring\nconsole.log(name, age, Object.keys(user)); // Ann 31 [ 'name', 'age', 'city' ]\nconsole.log(JSON.stringify(user));       // {\"name\":\"Ann\",\"age\":31,\"city\":\"Oslo\"}",
+          "lang": "javascript"
+        },
+        {
+          "note": "`sort()` sin función de comparación ordena como cadenas, así que `[10, 9, 1].sort()` da `[1, 10, 9]`. Pasa `(a, b) => a - b` para números."
+        }
+      ]
+    },
+    {
+      "h": "Característica distintiva: código asíncrono con promesas",
+      "body": [
+        "JavaScript ejecuta tu código en un solo hilo con un bucle de eventos (event loop). Las operaciones lentas (temporizadores, red, archivos) no bloquean: devuelven una promesa que se resuelve más tarde. Las funciones `async` permiten escribir este código de arriba abajo con `await`.",
+        {
+          "code": "const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));\nasync function main() {\n  console.log(\"start\");\n  await wait(500);\n  console.log(\"half a second later\");\n  const [a, b] = await Promise.all([wait(100).then(() => 1), wait(200).then(() => 2)]);\n  console.log(a + b); // 3\n}\nmain();\nconsole.log(\"main() was called\"); // prints before \"half a second later\"",
+          "lang": "javascript"
+        },
+        "Las clases (`class Dog extends Animal {}`), los módulos (`import` y `export`), el encadenamiento opcional (`user?.address?.city`) y el operador de fusión nula (`value ?? \"default\"`) son otras características modernas que usarás a menudo."
+      ]
+    },
+    {
+      "h": "Manejo de errores",
+      "body": [
+        "Lanza objetos `Error` y captúralos con `try`/`catch`. En las funciones `async`, una promesa rechazada se convierte en una excepción en el `await`.",
+        {
+          "code": "function parseAge(text) {\n  const age = Number(text);\n  if (!Number.isInteger(age) || age < 0) {\n    throw new Error(`invalid age: ${text}`);\n  }\n  return age;\n}\ntry {\n  console.log(parseAge(\"41\"));  // 41\n  console.log(parseAge(\"abc\"));\n} catch (err) {\n  console.log(err.message);     // invalid age: abc\n} finally {\n  console.log(\"done\");\n}",
+          "lang": "javascript"
+        }
+      ]
+    },
+    {
+      "h": "Un programa completo pequeño: descargar y resumir",
+      "body": [
+        "Este script de Node.js (Node 18 o posterior incluye `fetch`) descarga JSON de una API pública e imprime un resumen breve. Guárdalo como `repos.mjs` y ejecuta `node repos.mjs nodejs`.",
+        {
+          "code": "const org = process.argv[2] ?? \"nodejs\";\nasync function topRepos(name, n = 3) {\n  const res = await fetch(`https://api.github.com/orgs/${name}/repos?per_page=100`);\n  if (!res.ok) throw new Error(`HTTP ${res.status}`);\n  const repos = await res.json();\n  return repos\n    .sort((a, b) => b.stargazers_count - a.stargazers_count)\n    .slice(0, n)\n    .map((r) => `${r.stargazers_count}\\t${r.name}`);\n}\ntry {\n  const lines = await topRepos(org);\n  console.log(lines.join(\"\\n\"));\n} catch (err) {\n  console.error(\"failed:\", err.message);\n  process.exitCode = 1;\n}",
+          "lang": "javascript"
+        },
+        "La extensión `.mjs` convierte el archivo en un módulo ES, lo que permite usar `await` en el nivel superior."
+      ]
+    },
+    {
+      "h": "Errores comunes de principiantes",
+      "body": [
+        {
+          "ul": [
+            "Usar `==` en lugar de `===`, lo que provoca conversiones de tipo sorprendentes.",
+            "Olvidar `await`, de modo que obtienes un objeto `Promise` pendiente en lugar del valor.",
+            "Esperar que `const` haga inmutable un objeto. Solo impide la reasignación; `obj.x = 1` sigue funcionando. Usa `Object.freeze` si lo necesitas.",
+            "Comparar objetos o arrays con `===`, que comprueba la identidad, no el contenido.",
+            "Perder `this` al pasar un método como callback. Usa una función flecha o `.bind(obj)`."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Adónde ir después",
+      "body": [
+        "Lee la MDN JavaScript Guide, la referencia gratuita más completa, y practica con el DOM del navegador (`document.querySelector`, eventos). Después aprende npm y los módulos, un framework como React, Vue o Svelte para el front end, o Node.js para servidores. Añadir TypeScript sobre JavaScript te da tipos estáticos y mejor ayuda del editor."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "¿JavaScript es lo mismo que Java?",
+      "a": "No. Son lenguajes sin relación, con nombres parecidos. Java es de tipado estático y se compila a bytecode de la JVM; JavaScript es de tipado dinámico y se ejecuta en navegadores y en Node.js."
+    },
+    {
+      "q": "¿Debo usar let, const o var?",
+      "a": "Usa `const` por defecto y `let` cuando necesites reasignar. Evita `var`, porque tiene ámbito de función y se eleva (hoisting), lo que causa errores."
+    },
+    {
+      "q": "¿Cuál es la diferencia entre null y undefined?",
+      "a": "`undefined` significa que a una variable o propiedad nunca se le dio un valor. `null` es un valor que asignas a propósito para indicar ausencia de valor."
+    },
+    {
+      "q": "¿Por qué 0.1 + 0.2 no es igual a 0.3?",
+      "a": "Los números de JavaScript son de coma flotante binaria de 64 bits, que no puede almacenar 0.1 exactamente. Redondea al mostrar, o usa enteros (por ejemplo, céntimos) para el dinero."
+    },
+    {
+      "q": "¿Necesito Node.js para aprender JavaScript?",
+      "a": "No. Todos los navegadores pueden ejecutar JavaScript en su consola de desarrollo. Node.js es útil cuando quieres ejecutar scripts desde archivos o crear servidores y herramientas."
+    }
+  ]
+}

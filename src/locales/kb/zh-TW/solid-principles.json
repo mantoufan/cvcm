@@ -1,0 +1,172 @@
+{
+  "title": "SOLID 原則：物件導向設計的五大原則與範例 — cv.cm",
+  "description": "逐一說明物件導向設計的五大 SOLID 原則，每項都附上簡短的 TypeScript 改寫前後範例，並說明何時該套用。",
+  "h1": "SOLID 原則詳解與範例",
+  "answer": "SOLID 是五項物件導向設計原則的縮寫：單一職責（Single responsibility）、開放封閉（Open/closed）、里氏替換（Liskov substitution）、介面隔離（Interface segregation）與依賴反轉（Dependency inversion）。這些原則由 Robert C. Martin 整理，縮寫則是 Michael Feathers 取的。它們的共同目標是讓程式碼更容易修改：每個類別只有一個變動的理由，新增行為時不必改動舊程式碼，子型別能安全地取代父型別，介面保持精簡，高層程式碼則依賴抽象。",
+  "sections": [
+    {
+      "h": "SOLID 的意思",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "字母",
+              "原則",
+              "簡短規則"
+            ],
+            "rows": [
+              [
+                "S",
+                "單一職責原則（SRP）",
+                "一個類別應該只有一個變動的理由。"
+              ],
+              [
+                "O",
+                "開放封閉原則（OCP）",
+                "軟體應該對擴充開放，對修改封閉。"
+              ],
+              [
+                "L",
+                "里氏替換原則（LSP）",
+                "凡是預期使用基底型別的地方，都必須能換成它的子型別。"
+              ],
+              [
+                "I",
+                "介面隔離原則（ISP）",
+                "不該強迫使用端依賴它用不到的方法。"
+              ],
+              [
+                "D",
+                "依賴反轉原則（DIP）",
+                "要依賴抽象，而不是依賴具體的細節。"
+              ]
+            ]
+          }
+        },
+        "這些觀念比縮寫本身更早出現。開放封閉原則出自 Bertrand Meyer 的著作 Object-Oriented Software Construction（1988），替換原則則來自 Barbara Liskov 在 1987 年的主題演講 Data Abstraction and Hierarchy。Robert C. Martin 在 2000 年前後的文章中描述了這五項原則，之後 Michael Feathers 把它們排成 SOLID 這個單字。"
+      ]
+    },
+    {
+      "h": "S：單一職責原則",
+      "body": [
+        "一個類別應該只有一個變動的理由，也就是只服務一個角色或一項關注點。當類別同時混著業務規則、格式化與儲存，改動其中任何一項，都可能弄壞其他部分。",
+        "改寫前：一個類別同時負責計算、格式化並儲存報表。",
+        {
+          "code": "class Report {\n  constructor(private sales: number[]) {}\n  total(): number { return this.sales.reduce((a, b) => a + b, 0); }\n  toHtml(): string { return `<p>Total: ${this.total()}</p>`; }\n  saveToFile(path: string): void { /* write this.toHtml() to disk */ }\n}",
+          "lang": "typescript"
+        },
+        "改寫後：每項關注點各自放在小單元裡，新增輸出格式時就不必動到計算邏輯。",
+        {
+          "code": "class SalesReport {\n  constructor(private sales: number[]) {}\n  total(): number { return this.sales.reduce((a, b) => a + b, 0); }\n}\nclass HtmlFormatter {\n  format(r: SalesReport): string { return `<p>Total: ${r.total()}</p>`; }\n}\nclass ReportWriter {\n  save(content: string, path: string): void { /* write to disk */ }\n}\nconst html = new HtmlFormatter().format(new SalesReport([10, 20, 5]));\nconsole.log(html); // <p>Total: 35</p>",
+          "lang": "typescript"
+        }
+      ]
+    },
+    {
+      "h": "O：開放封閉原則",
+      "body": [
+        "你應該能用新增程式碼的方式加入新行為，而不是去修改已經能運作、也測試過的程式碼。常用的工具是介面加上多型。",
+        "改寫前：每多一種形狀，就得修改 `area` 函式。",
+        {
+          "code": "type Shape = { kind: \"circle\"; r: number } | { kind: \"square\"; side: number };\nfunction area(s: Shape): number {\n  if (s.kind === \"circle\") return Math.PI * s.r ** 2;\n  if (s.kind === \"square\") return s.side ** 2;\n  throw new Error(\"unknown shape\");\n}",
+          "lang": "typescript"
+        },
+        "改寫後：新形狀就是一個新類別，既有程式碼保持不變。",
+        {
+          "code": "interface Shape { area(): number; }\nclass Circle implements Shape {\n  constructor(private r: number) {}\n  area(): number { return Math.PI * this.r ** 2; }\n}\nclass Square implements Shape {\n  constructor(private side: number) {}\n  area(): number { return this.side ** 2; }\n}\nconst totalArea = (shapes: Shape[]) => shapes.reduce((sum, s) => sum + s.area(), 0);\nconsole.log(totalArea([new Square(2), new Square(3)])); // 13",
+          "lang": "typescript"
+        },
+        {
+          "note": "在 TypeScript 中，聯合型別搭配窮盡的 `switch` 也是合理的設計。它讓新增操作很容易、新增型別比較難，取捨正好相反。請依照哪一種變動比較可能發生來選擇。"
+        }
+      ]
+    },
+    {
+      "h": "L：里氏替換原則",
+      "body": [
+        "如果程式碼能搭配基底型別運作，換成任何子型別時也必須繼續運作。子型別不可以加強前置條件、削弱保證，也不可以在基底型別不會拋出例外的地方拋出例外。",
+        "改寫前：經典的正方形／長方形問題。`Square` 繼承 `Rectangle`，卻破壞了「寬與高彼此獨立」的預期。",
+        {
+          "code": "class Rectangle {\n  constructor(public width: number, public height: number) {}\n  setWidth(w: number): void { this.width = w; }\n  setHeight(h: number): void { this.height = h; }\n  area(): number { return this.width * this.height; }\n}\nclass Square extends Rectangle {\n  setWidth(w: number): void { this.width = w; this.height = w; }\n  setHeight(h: number): void { this.width = h; this.height = h; }\n}\nfunction stretch(r: Rectangle): number {\n  r.setWidth(5);\n  r.setHeight(4);\n  return r.area(); // caller expects 20\n}\nconsole.log(stretch(new Rectangle(1, 1))); // 20\nconsole.log(stretch(new Square(1, 1)));    // 16, surprise",
+          "lang": "typescript"
+        },
+        "改寫後：不要用繼承來建立這層關係。兩個型別都實作共同的唯讀介面，也就沒有人會期待能獨立調整正方形的邊長。",
+        {
+          "code": "interface Shape { area(): number; }\nclass Rectangle implements Shape {\n  constructor(readonly width: number, readonly height: number) {}\n  area(): number { return this.width * this.height; }\n}\nclass Square implements Shape {\n  constructor(readonly side: number) {}\n  area(): number { return this.side ** 2; }\n}\nconsole.log([new Rectangle(5, 4), new Square(4)].map((s) => s.area())); // [ 20, 16 ]",
+          "lang": "typescript"
+        }
+      ]
+    },
+    {
+      "h": "I：介面隔離原則",
+      "body": [
+        "過大的介面會逼類別去實作它們無法支援的方法，通常只能靠拋出錯誤應付。請把介面拆成小而專注的介面，讓每個類別只實作它真正做得到的部分。",
+        "改寫前：一台單純的印表機被迫假裝自己能掃描和傳真。",
+        {
+          "code": "interface Machine {\n  print(doc: string): void;\n  scan(): string;\n  fax(doc: string): void;\n}\nclass BasicPrinter implements Machine {\n  print(doc: string): void { console.log(\"print\", doc); }\n  scan(): string { throw new Error(\"not supported\"); }\n  fax(doc: string): void { throw new Error(\"not supported\"); }\n}",
+          "lang": "typescript"
+        },
+        "改寫後：拆成小的角色介面，需要時可以組合使用。",
+        {
+          "code": "interface Printer { print(doc: string): void; }\ninterface Scanner { scan(): string; }\nclass BasicPrinter implements Printer {\n  print(doc: string): void { console.log(\"print\", doc); }\n}\nclass OfficeMachine implements Printer, Scanner {\n  print(doc: string): void { console.log(\"print\", doc); }\n  scan(): string { return \"scanned page\"; }\n}\nfunction printAll(p: Printer, docs: string[]): void { docs.forEach((d) => p.print(d)); }\nprintAll(new BasicPrinter(), [\"a.pdf\"]); // print a.pdf",
+          "lang": "typescript"
+        }
+      ]
+    },
+    {
+      "h": "D：依賴反轉原則",
+      "body": [
+        "高層的策略不該依賴低層的細節，例如特定的資料庫或電子郵件服務。兩者都應該依賴一個抽象，而且這個抽象通常由高層模組所擁有。實務上的做法是把依賴從外部傳入（依賴注入），而不是在內部自己建立。",
+        "改寫前：服務自己建立具體的資料庫用戶端，因此無法測試，也無法替換。",
+        {
+          "code": "class MySqlUserStore {\n  find(id: string): string { return \"user \" + id; }\n}\nclass UserService {\n  private store = new MySqlUserStore(); // hard-wired detail\n  greet(id: string): string { return \"Hello, \" + this.store.find(id); }\n}",
+          "lang": "typescript"
+        },
+        "改寫後：服務依賴一個介面，任何實作都可以注入，包括測試中的假物件。",
+        {
+          "code": "interface UserStore { find(id: string): string; }\nclass UserService {\n  constructor(private store: UserStore) {}\n  greet(id: string): string { return \"Hello, \" + this.store.find(id); }\n}\nclass InMemoryUserStore implements UserStore {\n  constructor(private users: Record<string, string>) {}\n  find(id: string): string { return this.users[id] ?? \"unknown\"; }\n}\nconst service = new UserService(new InMemoryUserStore({ u1: \"Ada\" }));\nconsole.log(service.greet(\"u1\")); // Hello, Ada",
+          "lang": "typescript"
+        },
+        {
+          "note": "依賴反轉是一項設計原則；依賴注入則是達成它的其中一種技巧。注入容器或框架並非必要，透過建構函式傳入物件就已足夠。"
+        }
+      ]
+    },
+    {
+      "h": "何時該套用 SOLID，何時不該",
+      "body": [
+        "SOLID 原則是針對常常變動的程式碼所提供的指引，並非鐵律。盲目套用只會產生許多細碎的類別，以及只有單一實作的介面，反而讓程式碼更難閱讀。",
+        {
+          "ul": [
+            "當你真的感受到它們所要解決的痛點時再套用：例如任何東西一變就壞的類別、需要真實資料庫才能跑的測試，或是複製到多處的 switch 敘述。",
+            "不要預先替每個類別都加上介面。等第二個實作或測試替身出現時，再把介面抽出來。",
+            "在小型腳本和原型中，簡單直接的程式碼通常比較好。",
+            "許多設計模式其實是 SOLID 的具體應用：策略與裝飾者支持開放封閉，轉接器與外觀有助於隔離細節，抽象工廠則支持依賴反轉。"
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "SOLID 原則是誰提出的？",
+      "a": "Robert C. Martin 整理並描述了這五項原則，其基礎是 Bertrand Meyer（開放封閉）與 Barbara Liskov（替換）的早期研究。SOLID 這個縮寫則是 Michael Feathers 取的。"
+    },
+    {
+      "q": "SOLID 適用於函數式程式設計嗎？",
+      "a": "這些觀念是可以轉換的：函式只做一件事、用組合行為取代修改行為，並以參數傳入依賴。以類別為基礎的說法則專屬於物件導向程式碼。"
+    },
+    {
+      "q": "依賴反轉和依賴注入有什麼差別？",
+      "a": "依賴反轉是一項原則，主張高層程式碼應該依賴抽象。依賴注入則是從外部提供這些依賴的技巧，例如透過建構函式傳入。"
+    },
+    {
+      "q": "哪一項 SOLID 原則最重要？",
+      "a": "並沒有官方的排名。單一職責與依賴反轉通常最快見效，因為它們能讓程式碼更容易理解，也更容易測試。"
+    },
+    {
+      "q": "違反 SOLID 原則是不好的嗎？",
+      "a": "不一定。每項原則都要付出額外程式碼的代價。當較簡單的設計更清楚，而它所防範的變動又不太可能發生時，可以刻意不遵守。"
+    }
+  ]
+}

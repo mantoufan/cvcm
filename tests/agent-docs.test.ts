@@ -2,7 +2,8 @@ import { readdirSync, readFileSync, statSync } from "node:fs";
 import { join, resolve } from "node:path";
 import { describe, expect, it } from "vitest";
 import worker from "../src/worker";
-import { DATA_HANDLING_GROUPS, agentTools, buildLlmsTxt, buildPoppyJson, buildToolsJson, dataHandling } from "../src/shared/agent-docs";
+import { AI_DETAIL_TOOLS, DATA_HANDLING_GROUPS, agentTools, buildLlmsTxt, buildPoppyJson, buildToolsJson, dataHandling } from "../src/shared/agent-docs";
+import { AI_MODELS, formatMb } from "../src/shared/ai-models";
 import { UNTRACKED_TOOLS } from "../src/shared/analytics";
 import { AGENT_DOC_PATHS, AI_TOOLS, STATIC_FILE, TOOLS, appHref } from "../src/shared/path";
 
@@ -30,7 +31,49 @@ describe("agent discovery files", () => {
     expect(llms).toContain("Not a legal e-sign. Runs in the page.");
     expect(llms).toContain("Text to speech can send text to the voice provider");
     expect(llms.match(/10 views/g)).toHaveLength(1);
-    expect(llms).toMatch(/model once on first use \(model weights of \d+(\.\d)? MB to \d+ MB /);
+    expect(llms).toMatch(/model once on first use \(model weights of \d+(\.\d)? MB to \d+ MB;/);
+  });
+
+  it("lists model downloads and page options for every AI tool, from the model registry", () => {
+    expect([...AI_DETAIL_TOOLS].sort()).toEqual([...AI_TOOLS].sort());
+    const tools = JSON.parse(buildToolsJson()).tools as { id: string; ai?: { models: { model: string; download_bytes: Record<string, number> }[]; options: string } }[];
+    for (const tool of tools) {
+      if (!AI_TOOLS.has(tool.id as never)) {
+        expect(tool.ai, tool.id).toBeUndefined();
+        continue;
+      }
+      expect(tool.ai!.options.length, tool.id).toBeGreaterThan(20);
+      for (const m of tool.ai!.models) {
+        const entry = Object.values(AI_MODELS).find((model) => model.repo === m.model);
+        expect(entry, `${tool.id}: ${m.model} is not in AI_MODELS`).toBeDefined();
+        if (!entry) continue;
+        expect(m.download_bytes).toEqual({ webgpu_fp16: entry.variants.gpu16.bytes, webgpu: entry.variants.gpu.bytes, cpu: entry.variants.cpu.bytes });
+      }
+    }
+    const llms = buildLlmsTxt();
+    expect(llms).toContain(`Model "Accurate" (onnx-community/whisper-small): WebGPU fp16 ${formatMb(AI_MODELS["whisper-small"].variants.gpu16.bytes)}, WebGPU`);
+    expect(llms).toContain('  - Options on the page: Scale: 2× / 4×. Style: "Photo" or "Anime / art"');
+    expect(JSON.parse(buildToolsJson()).ai_backend_note).toContain("webgpu_fp16");
+  });
+
+  it("restates the AI tool pages as they are (UI source)", () => {
+    const ui = (tool: string) => readFileSync(join(root, "src/client", tool, "ui.ts"), "utf8");
+    const tools = JSON.parse(buildToolsJson()).tools as { id: string; ai?: { options: string } }[];
+    const options = (tool: string) => tools.find((t) => t.id === tool)!.ai!.options;
+    for (const tool of ["image-upscaler", "remove-background"]) {
+      expect(ui(tool)).toMatch(/format: "png" as "png" \| "jpeg" \| "webp"/);
+      expect(options(tool)).toContain("PNG / JPG / WebP");
+    }
+    expect(ui("image-upscaler")).toContain("scale: 4 as 2 | 4");
+    expect(ui("image-upscaler")).toContain("MAX_OUTPUT_PIXELS = 16_777_216");
+    const stt = ui("speech-to-text");
+    expect(stt).toMatch(/b !== "gpu16"\) return;\s*setModel\("whisper-small"\)/);
+    expect(stt).toContain('value: "hans"');
+    expect(ui("remove-background")).toContain('if (b !== "transparent" && state.format === "png") state.format = "jpeg";');
+    const accept = stt.match(/accept: "([^"]+)"/)![1];
+    for (const ext of accept.split(",").filter((a) => a.startsWith("."))) {
+      expect(options("speech-to-text").toLowerCase(), ext).toContain(ext.slice(1));
+    }
   });
 
   it("declares data handling per tool", () => {

@@ -1,0 +1,228 @@
+{
+  "title": "Thuật toán KMP: tìm chuỗi Knuth-Morris-Pratt trong Python — cv.cm",
+  "description": "Giải thích thuật toán tìm chuỗi KMP: hàm tiền tố (bảng thất bại), ví dụ từng bước, code Python tìm mọi vị trí khớp trong O(n + m) và các lỗi thường gặp.",
+  "h1": "Thuật toán tìm chuỗi KMP là gì: cách hoạt động, code và độ phức tạp",
+  "answer": "Thuật toán Knuth-Morris-Pratt (KMP) tìm mọi lần xuất hiện của một mẫu độ dài m trong văn bản độ dài n trong thời gian O(n + m). Trước tiên nó xây hàm tiền tố (còn gọi là bảng thất bại) cho mẫu: với mỗi vị trí, đó là độ dài của tiền tố thực sự dài nhất đồng thời là hậu tố. Khi gặp ký tự không khớp, KMP dùng bảng này để dịch mẫu mà không bao giờ phải lùi lại trong văn bản.",
+  "sections": [
+    {
+      "h": "KMP giải bài toán gì",
+      "body": [
+        "Bài toán tìm chuỗi hỏi một mẫu ngắn xuất hiện ở đâu trong một văn bản dài hơn. Cách ngây thơ thử mọi vị trí bắt đầu và so sánh từng ký tự. Trên văn bản thông thường nó nhanh, nhưng trên dữ liệu lặp lại nhiều thì chậm: tìm `aaaab` trong `aaaaaaaaaa` phải so sánh gần hết mẫu ở mỗi vị trí, cho thời gian O(n × m).",
+        "KMP không bao giờ đọc lại một ký tự của văn bản sau khi không khớp. Donald Knuth, James H. Morris và Vaughan Pratt công bố nó năm 1977 trong bài “Fast Pattern Matching in Strings”."
+      ]
+    },
+    {
+      "h": "Ý tưởng bằng lời đơn giản",
+      "body": [
+        "Giả sử bạn tìm mẫu `ABABC`, đã khớp `ABAB`, và ký tự văn bản tiếp theo không phải C. Phần vừa khớp, `ABAB`, kết thúc bằng `AB`, cũng chính là phần đầu của mẫu. Vì vậy bạn đã biết lần thử tiếp theo bắt đầu với 2 ký tự đã khớp, và có thể tiếp tục so sánh từ vị trí 2 của mẫu thay vì bắt đầu lại.",
+        "Hàm tiền tố lưu các con số này. `pi[i]` là độ dài của tiền tố thực sự dài nhất của `pattern[0..i]` đồng thời là hậu tố của nó (thực sự nghĩa là không phải cả chuỗi).",
+        {
+          "table": {
+            "head": [
+              "i",
+              "0",
+              "1",
+              "2",
+              "3",
+              "4",
+              "5",
+              "6"
+            ],
+            "rows": [
+              [
+                "pattern[i]",
+                "A",
+                "B",
+                "A",
+                "B",
+                "A",
+                "C",
+                "A"
+              ],
+              [
+                "pi[i]",
+                "0",
+                "0",
+                "1",
+                "2",
+                "3",
+                "0",
+                "1"
+              ]
+            ]
+          }
+        },
+        "Ví dụ, `pi[4] = 3` vì `ABABA` bắt đầu và kết thúc bằng `ABA`. `pi[5] = 0` vì không tiền tố nào của `ABABAC` kết thúc bằng C."
+      ]
+    },
+    {
+      "h": "Ví dụ từng bước",
+      "body": [
+        "Tìm mẫu `ABABC` (hàm tiền tố 0, 0, 1, 2, 0) trong văn bản `ABABABC`. Biến k đếm số ký tự của mẫu đang khớp.",
+        {
+          "table": {
+            "head": [
+              "Vị trí trong văn bản",
+              "Ký tự văn bản",
+              "k trước",
+              "Hành động",
+              "k sau"
+            ],
+            "rows": [
+              [
+                "0–3",
+                "A B A B",
+                "0",
+                "Bốn ký tự khớp liên tiếp",
+                "4"
+              ],
+              [
+                "4",
+                "A",
+                "4",
+                "Không khớp với pattern[4] = C: đặt k = pi[3] = 2, rồi A khớp pattern[2]",
+                "3"
+              ],
+              [
+                "5",
+                "B",
+                "3",
+                "Khớp pattern[3]",
+                "4"
+              ],
+              [
+                "6",
+                "C",
+                "4",
+                "Khớp pattern[4]: khớp hoàn toàn kết thúc ở vị trí 6, nên bắt đầu từ 6 − 5 + 1 = 2",
+                "5 → pi[4] = 0"
+              ]
+            ]
+          }
+        },
+        "Con trỏ văn bản tiến lên 7 lần và không bao giờ lùi. Cách ngây thơ sẽ bắt đầu lại ở vị trí 1 và so sánh lại một số ký tự."
+      ]
+    },
+    {
+      "h": "Cài đặt bằng Python",
+      "body": [
+        {
+          "code": "def prefix_function(p):\n    pi = [0] * len(p)\n    k = 0\n    for i in range(1, len(p)):\n        while k > 0 and p[i] != p[k]:\n            k = pi[k - 1]          # fall back to a shorter border\n        if p[i] == p[k]:\n            k += 1\n        pi[i] = k\n    return pi\n\ndef kmp_search(text, pattern):\n    \"\"\"Return the start index of every occurrence (overlaps included).\"\"\"\n    if not pattern:\n        return []\n    pi, k, hits = prefix_function(pattern), 0, []\n    for i, ch in enumerate(text):\n        while k > 0 and ch != pattern[k]:\n            k = pi[k - 1]\n        if ch == pattern[k]:\n            k += 1\n        if k == len(pattern):\n            hits.append(i - k + 1)\n            k = pi[k - 1]          # keep going to find overlapping matches\n    return hits\n\nprint(prefix_function(\"ABABACA\"))      # [0, 0, 1, 2, 3, 0, 1]\nprint(kmp_search(\"ABABABC\", \"ABABC\"))  # [2]\nprint(kmp_search(\"AAAAA\", \"AA\"))       # [0, 1, 2, 3]",
+          "lang": "python"
+        }
+      ]
+    },
+    {
+      "h": "Độ phức tạp thời gian và không gian",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Giai đoạn",
+              "Thời gian",
+              "Không gian",
+              "Lý do"
+            ],
+            "rows": [
+              [
+                "Xây hàm tiền tố",
+                "O(m)",
+                "O(m)",
+                "k tăng tối đa một lần mỗi bước và mỗi lần lùi làm nó giảm, nên tổng số lần lùi tối đa là m."
+              ],
+              [
+                "Tìm kiếm",
+                "O(n)",
+                "O(1) thêm",
+                "Cùng lập luận trên văn bản: tối đa n lần tăng, nên tối đa n lần lùi."
+              ],
+              [
+                "Tổng",
+                "O(n + m)",
+                "O(m)",
+                "Trường hợp xấu nhất bằng trường hợp tốt nhất với sai khác một hằng số; không có đầu vào tồi."
+              ]
+            ]
+          }
+        },
+        "Thuật toán ngây thơ là O(n × m) trong trường hợp xấu nhất nhưng thường gần O(n) trên văn bản ngôn ngữ tự nhiên, nên lợi thế của KMP thể hiện chủ yếu trên dữ liệu lặp lại."
+      ]
+    },
+    {
+      "h": "Biến thể và lỗi thường gặp",
+      "body": [
+        {
+          "ul": [
+            "Lệch một đơn vị khi lùi: sau khi không khớp, đặt `k = pi[k - 1]`, không phải `pi[k]`. `pi` được đánh chỉ số theo vị trí khớp cuối cùng.",
+            "Dùng `if` thay vì `while` cho bước lùi: bạn có thể cần lùi nhiều lần liên tiếp trước khi một ký tự khớp.",
+            "Quên đặt lại k sau khi khớp hoàn toàn: đặt `k = pi[k - 1]` để tìm các vị trí khớp chồng nhau, hoặc `k = 0` cho các vị trí không chồng.",
+            "Mẹo nối chuỗi: tính hàm tiền tố của `pattern + separator + text`, dùng một ký tự phân cách không xuất hiện ở cả hai; mọi vị trí có giá trị bằng m là điểm kết thúc của một lần khớp.",
+            "Thuật toán Z tính một mảng có liên quan chặt chẽ và cũng tìm kiếm trong O(n + m)."
+          ]
+        },
+        {
+          "note": "Trong code Python hằng ngày, hãy dùng `str.find` có sẵn, toán tử `in` hoặc `str.count`. Chúng được cài đặt bằng C và nhanh hơn nhiều so với KMP viết bằng Python thuần. Hãy viết KMP khi cần cho phỏng vấn, cho bảng chữ cái tùy biến (danh sách token, không phải chuỗi), hoặc khi bạn cần chính hàm tiền tố."
+        }
+      ]
+    },
+    {
+      "h": "Khi nào dùng và ứng dụng thực tế",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Thuật toán",
+              "Dùng tốt nhất khi"
+            ],
+            "rows": [
+              [
+                "KMP",
+                "Thời gian tuyến tính được đảm bảo cho một mẫu; văn bản dạng luồng, vì nó không bao giờ nhìn lại."
+              ],
+              [
+                "Boyer-Moore and variants",
+                "Mẫu dài trên bảng chữ cái lớn; thường bỏ qua nhiều ký tự, được dùng trong các công cụ như grep."
+              ],
+              [
+                "Rabin-Karp",
+                "Nhiều mẫu cùng độ dài, hoặc phát hiện đạo văn bằng băm cuộn (rolling hash)."
+              ],
+              [
+                "Aho-Corasick",
+                "Nhiều mẫu cùng lúc; nó tổng quát hóa các liên kết thất bại của KMP lên một trie."
+              ],
+              [
+                "Mảng hậu tố hoặc automaton hậu tố",
+                "Nhiều truy vấn khác nhau trên cùng một văn bản cố định."
+              ]
+            ]
+          }
+        },
+        {
+          "ul": [
+            "Bài phỏng vấn: cài đặt `strStr()`, shortest palindrome (hàm tiền tố của `s + \"#\" + reversed(s)`), repeated substring pattern, chu kỳ nhỏ nhất của một chuỗi (`m - pi[m - 1]`).",
+            "Thực tế: tìm kiếm trong chuỗi DNA và luồng gói tin mạng, nơi thời gian tuyến tính trong trường hợp xấu nhất quan trọng."
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Hàm tiền tố hay bảng thất bại trong KMP là gì?",
+      "a": "Với mỗi vị trí i của mẫu, nó lưu độ dài tiền tố thực sự dài nhất của `pattern[0..i]` đồng thời là hậu tố của nó. Khi không khớp, KMP dùng nó để biết còn bao nhiêu ký tự đang khớp."
+    },
+    {
+      "q": "Độ phức tạp thời gian của KMP là bao nhiêu?",
+      "a": "O(n + m): O(m) để xây hàm tiền tố và O(n) để quét văn bản. Nó tuyến tính ngay cả trong trường hợp xấu nhất."
+    },
+    {
+      "q": "KMP có nhanh hơn str.find của Python không?",
+      "a": "Không. `str.find` được cài đặt bằng C với thuật toán tìm kiếm tối ưu và nhanh hơn nhiều trong thực tế. KMP có giá trị nhờ thời gian tuyến tính được đảm bảo, để học tập, và cho các dãy không phải chuỗi."
+    },
+    {
+      "q": "KMP có tìm được các vị trí khớp chồng nhau không?",
+      "a": "Có, nếu sau khi khớp hoàn toàn bạn đặt `k = pi[k - 1]` thay vì 0. Ví dụ, nó tìm thấy `AA` ở các vị trí 0, 1, 2 và 3 trong `AAAAA`."
+    }
+  ]
+}

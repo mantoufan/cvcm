@@ -1,0 +1,149 @@
+{
+  "title": "Pola Builder: konstruksi langkah demi langkah, API fluent, dan contoh TypeScript — cv.cm",
+  "description": "Pola desain Builder dijelaskan: membangun objek kompleks langkah demi langkah dengan API fluent TypeScript, peran Director, dan kapan objek opsi sudah cukup.",
+  "h1": "Pola Builder dijelaskan dengan contoh",
+  "answer": "Builder adalah pola desain creational yang memisahkan konstruksi objek kompleks dari representasi akhirnya, sehingga proses langkah demi langkah yang sama dapat menghasilkan hasil yang berbeda. Dalam kode modern, pola ini biasanya muncul sebagai API fluent: Anda memanggil method seperti `.url()`, `.header()`, dan `.timeout()` pada builder, lalu `.build()` mengembalikan objek jadi yang sudah divalidasi. Pola ini menggantikan konstruktor panjang dengan banyak parameter opsional.",
+  "sections": [
+    {
+      "h": "Tujuan",
+      "body": [
+        "Memisahkan konstruksi objek kompleks dari representasinya agar proses konstruksi yang sama dapat menghasilkan representasi yang berbeda. Pola Builder adalah salah satu dari lima pola creational dalam buku Gang of Four (GoF)."
+      ]
+    },
+    {
+      "h": "Masalah yang diselesaikan",
+      "body": [
+        "Bayangkan objek permintaan HTTP dengan URL, method, sejumlah header, body opsional, timeout, dan jumlah percobaan ulang. Konstruktor untuk semua itu sulit dipanggil dengan benar:",
+        {
+          "code": "class HttpRequest {\n  constructor(\n    readonly url: string,\n    readonly method: string,\n    readonly headers: Record<string, string>,\n    readonly body?: string,\n    readonly timeoutMs?: number,\n    readonly retries?: number,\n  ) {}\n}\n\n// Which argument is which? Easy to swap 3 and 5000 by mistake.\nconst req = new HttpRequest(\"https://api.example.com\", \"POST\", {}, undefined, 3, 5000);",
+          "lang": "typescript"
+        },
+        "Ini disebut telescoping constructor. Konstruktor semacam itu juga tidak punya tempat untuk aturan seperti \"permintaan GET tidak boleh punya body\", dan tidak bisa dibangun bertahap, misalnya ketika header ditambahkan di beberapa tempat sebelum pengiriman."
+      ]
+    },
+    {
+      "h": "Struktur dan peserta",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Peserta",
+              "Tanggung jawab",
+              "Dalam contoh"
+            ],
+            "rows": [
+              [
+                "Builder",
+                "Mendeklarasikan langkah-langkah untuk membuat bagian-bagian produk.",
+                "Method `RequestBuilder`"
+              ],
+              [
+                "ConcreteBuilder",
+                "Mengimplementasikan langkah-langkah, menyimpan state sebagian, dan mengembalikan hasil.",
+                "`RequestBuilder`"
+              ],
+              [
+                "Director",
+                "Opsional. Menjalankan langkah dalam urutan tetap untuk menghasilkan konfigurasi yang umum.",
+                "`jsonPost()`"
+              ],
+              [
+                "Product",
+                "Objek kompleks yang sedang dibangun.",
+                "`HttpRequest`"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "Implementasi TypeScript",
+      "body": [
+        "Setiap langkah menyimpan nilai dan mengembalikan `this`, sehingga pemanggilan bisa dirantai. `build()` memvalidasi kombinasinya dan mengembalikan produk yang immutable:",
+        {
+          "code": "interface HttpRequest {\n  readonly url: string;\n  readonly method: \"GET\" | \"POST\";\n  readonly headers: Readonly<Record<string, string>>;\n  readonly body?: string;\n  readonly timeoutMs: number;\n}\n\nclass RequestBuilder {\n  private method: \"GET\" | \"POST\" = \"GET\";\n  private headers: Record<string, string> = {};\n  private body?: string;\n  private timeoutMs = 10_000;\n\n  constructor(private readonly url: string) {}\n\n  post(body: string): this { this.method = \"POST\"; this.body = body; return this; }\n  header(name: string, value: string): this { this.headers[name] = value; return this; }\n  timeout(ms: number): this { this.timeoutMs = ms; return this; }\n\n  build(): HttpRequest {\n    if (this.timeoutMs <= 0) throw new Error(\"timeout must be positive\");\n    return Object.freeze({\n      url: this.url, method: this.method, headers: { ...this.headers },\n      body: this.body, timeoutMs: this.timeoutMs,\n    });\n  }\n}\n\nconst request = new RequestBuilder(\"https://api.example.com/orders\")\n  .header(\"Accept\", \"application/json\")\n  .timeout(5_000)\n  .build();\nconsole.log(request.method, request.timeoutMs, request.headers);\n// GET 5000 { Accept: 'application/json' }",
+          "lang": "typescript"
+        },
+        "Director hanyalah kode yang tahu resep umum. Di TypeScript, Director sering berupa fungsi biasa yang menggerakkan builder:",
+        {
+          "code": "interface Steps {\n  header(name: string, value: string): this;\n  post(body: string): this;\n}\n\n// Director: a reusable recipe that drives any builder with these steps.\nfunction jsonPost<B extends Steps>(builder: B, data: unknown): B {\n  return builder\n    .header(\"Content-Type\", \"application/json\")\n    .post(JSON.stringify(data));\n}\n\nclass LogBuilder implements Steps {\n  log: string[] = [];\n  header(name: string, value: string): this { this.log.push(`${name}=${value}`); return this; }\n  post(body: string): this { this.log.push(`POST ${body}`); return this; }\n}\n\nconsole.log(jsonPost(new LogBuilder(), { id: 7 }).log);\n// [ 'Content-Type=application/json', 'POST {\"id\":7}' ]",
+          "lang": "typescript"
+        },
+        "Ini menunjukkan gagasan asli GoF: langkah konstruksi yang sama, digerakkan oleh director yang sama, dapat disalurkan ke builder berbeda dan menghasilkan representasi berbeda, di sini berupa log, bukan permintaan."
+      ]
+    },
+    {
+      "h": "Kapan memakainya, dan kapan tidak",
+      "body": [
+        "Gunakan pola Builder ketika:",
+        {
+          "ul": [
+            "Sebuah objek punya banyak bagian opsional, atau bagian yang harus ditambahkan satu per satu.",
+            "Konstruksi punya aturan yang melibatkan beberapa field dan sebaiknya diperiksa sekali saja, di `build()`.",
+            "Anda ingin objek jadi bersifat immutable, tetapi tetap dirakit langkah demi langkah.",
+            "Proses konstruksi yang sama harus menghasilkan representasi berbeda, seperti dokumen yang diekspor sebagai HTML, Markdown, atau PDF."
+          ]
+        },
+        "Hindari ketika:",
+        {
+          "ul": [
+            "Objek hanya punya beberapa field. Konstruktor lebih singkat dan sama jelasnya.",
+            "Bahasa Anda sudah punya parameter bernama atau opsional. Di TypeScript, satu objek opsi sering menghilangkan kebutuhan akan builder sama sekali."
+          ]
+        },
+        {
+          "code": "interface RequestOptions {\n  url: string;\n  method?: \"GET\" | \"POST\";\n  headers?: Record<string, string>;\n  timeoutMs?: number;\n}\n\nfunction createRequest({ url, method = \"GET\", headers = {}, timeoutMs = 10_000 }: RequestOptions) {\n  return { url, method, headers, timeoutMs };\n}\n\nconsole.log(createRequest({ url: \"/orders\", timeoutMs: 5_000 }).method); // GET",
+          "lang": "typescript"
+        },
+        {
+          "note": "Builder yang dipakai ulang setelah `build()` dapat membocorkan state ke objek berikutnya. Salin semua koleksi di `build()`, seperti contoh pada `headers`, atau dokumentasikan bahwa setiap builder hanya membuat satu objek."
+        }
+      ]
+    },
+    {
+      "h": "Pemakaian di dunia nyata",
+      "body": [
+        {
+          "ul": [
+            "Java: `java.net.http.HttpRequest.newBuilder()` mengembalikan `HttpRequest.Builder`; Anda merantai `uri()`, `header()`, dan `timeout()`, lalu memanggil `build()`.",
+            "Java: `Locale.Builder` merakit dan memvalidasi locale dari bagian bahasa, wilayah, dan skrip.",
+            "Java dan C#: `StringBuilder` merakit string dari banyak bagian yang ditambahkan sebelum menghasilkan string akhir yang immutable.",
+            "Banyak query builder SQL dan builder data uji memakai gaya fluent yang sama."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Pola terkait",
+      "body": [
+        {
+          "ul": [
+            "Pola Abstract Factory membuat seluruh keluarga produk dan langsung mengembalikan masing-masing; pola Builder membangun satu produk kompleks langkah demi langkah dan mengembalikannya di akhir.",
+            "Pohon pola Composite sering dibuat dengan builder, karena membangun pohon simpul demi simpul adalah rangkaian langkah yang alami.",
+            "Fluent interface adalah gaya API dengan merantai pemanggilan yang mengembalikan `this`. Pola Builder sering memakainya, tetapi keduanya bukan hal yang sama.",
+            "Pola Prototype bisa menjadi alternatif ketika sebagian besar objek baru hanyalah variasi kecil dari templat yang sudah jadi."
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Mengapa setiap method builder mengembalikan this?",
+      "a": "Mengembalikan builder memungkinkan Anda merantai pemanggilan dalam satu ekspresi, seperti `.header(...).timeout(...).build()`. Mengembalikan `this` di TypeScript juga menjaga tipe yang benar pada subkelas."
+    },
+    {
+      "q": "Apakah saya perlu kelas Director?",
+      "a": "Tidak. Director bersifat opsional dalam deskripsi GoF. Dalam praktiknya, fungsi yang menerapkan urutan langkah yang umum biasanya sudah cukup."
+    },
+    {
+      "q": "Apakah pola Builder masih berguna di TypeScript?",
+      "a": "Kadang-kadang. Objek opsi dengan nilai default mencakup sebagian besar kasus sederhana. Pola Builder tetap berguna ketika objek dirakit bertahap, ketika validasi lintas field diperlukan, atau ketika Anda menginginkan hasil yang immutable."
+    },
+    {
+      "q": "Apa beda pola Builder dan pola Factory Method?",
+      "a": "Factory Method menentukan kelas mana yang diinstansiasi dan mengembalikan objek dalam satu panggilan. Builder membiarkan klien mengendalikan cara satu objek dirakit lewat beberapa panggilan."
+    }
+  ]
+}

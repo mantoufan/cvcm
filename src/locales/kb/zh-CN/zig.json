@@ -1,0 +1,183 @@
+{
+  "title": "Zig 入门教程：类型、切片、错误联合、comptime 与分配器 — cv.cm",
+  "description": "学习 Zig 基础：安装并运行 Hello world、使用 const 和 var、数组与切片、可选类型、带 try 和 catch 的错误联合、defer、comptime 和分配器。",
+  "h1": "Zig 入门教程",
+  "answer": "Zig 是一门通用的系统编程语言兼工具链，定位为 C 的现代替代品。它没有隐藏的控制流，没有垃圾回收器，也没有隐藏的内存分配：你要显式传入分配器，用错误联合和 `try` 处理错误，用 `defer` 做清理。编译期代码执行（`comptime`）取代了宏和泛型。用 `zig run hello.zig` 运行文件。Zig 仍处于 1.0 之前，语言和标准库的细节在不同版本之间会变化。",
+  "sections": [
+    {
+      "h": "Zig 是什么，谁在用",
+      "body": [
+        "Zig 由 Andrew Kelley 创建，由非营利组织 Zig Software Foundation 开发。它面向与 C 相同的工作：操作系统组件、嵌入式固件、游戏引擎、数据库和高速命令行工具。Zig 编译器还能编译 C 和 C++ 代码（`zig cc`），并交叉编译到许多目标平台，所以有些项目只把它当作 C 工具链使用。",
+        "用 Zig 编写的知名项目包括 Bun JavaScript 运行时、TigerBeetle 金融数据库和 Ghostty 终端模拟器。",
+        {
+          "note": "Zig 还没到 1.0。0.x 版本之间语法，尤其是标准库，会发生变化，为旧版本编写的教程可能无法编译。本文只讲已经稳定了好几个版本的基础内容；请务必阅读你所安装版本对应的文档（`zig version`）。"
+        }
+      ]
+    },
+    {
+      "h": "安装 Zig 并运行 Hello, world",
+      "body": [
+        "从 ziglang.org/download 下载适合你系统的预构建压缩包，解压后把文件夹加入 PATH，或者用系统的包管理器安装 Zig。没有单独的安装程序或运行时。",
+        {
+          "code": "// hello.zig\nconst std = @import(\"std\");\npub fn main() void {\n    std.debug.print(\"Hello, world!\\n\", .{});\n}",
+          "lang": "zig"
+        },
+        {
+          "code": "zig run hello.zig         # compile and run\n# Hello, world!\nzig build-exe hello.zig   # produce an executable named hello\nzig init                  # create a project with build.zig",
+          "lang": "shell"
+        },
+        "`std.debug.print` 写入标准错误，是近期所有版本中最简单的打印方式。第二个参数是供格式占位符使用的值元组；`.{}` 是空元组。写入标准输出的 API 在不同版本之间有变化，请查阅你所用版本的标准库文档。"
+      ]
+    },
+    {
+      "h": "变量与基本类型",
+      "body": [
+        "`const` 声明永不改变的值，`var` 声明可变变量。编译器很严格：未使用的局部变量是错误，从未被修改的 `var` 也是错误，所以默认使用 `const`。",
+        {
+          "table": {
+            "head": [
+              "类型",
+              "示例",
+              "说明"
+            ],
+            "rows": [
+              [
+                "有符号整数",
+                "`i8`, `i32`, `i64`",
+                "允许任意位宽，例如 `i7`"
+              ],
+              [
+                "无符号整数",
+                "`u8`, `u32`, `usize`",
+                "`usize` 与指针等宽，用于长度和索引"
+              ],
+              [
+                "浮点数",
+                "`f32`, `f64`",
+                "IEEE 754"
+              ],
+              [
+                "布尔值",
+                "`true`, `false`",
+                "不能从整数隐式转换"
+              ],
+              [
+                "数组",
+                "`[3]u8`",
+                "长度固定，在编译期已知"
+              ],
+              [
+                "切片",
+                "`[]const u8`",
+                "指针加长度；字符串就是字节切片"
+              ],
+              [
+                "可选类型",
+                "`?i32`",
+                "一个值或 `null`"
+              ],
+              [
+                "错误联合",
+                "`!u32`",
+                "一个值或一个错误"
+              ]
+            ]
+          }
+        },
+        {
+          "code": "const std = @import(\"std\");\npub fn main() void {\n    const age: u32 = 30;\n    var count: i32 = 0;\n    count += 1;\n    const name = \"Ana\"; // string literal, coerces to []const u8\n    std.debug.print(\"{s} is {d}, count = {d}\\n\", .{ name, age, count });\n    var maybe: ?i32 = null;\n    maybe = 5;\n    const value = maybe orelse 0;\n    std.debug.print(\"value = {d}\\n\", .{value});\n}",
+          "lang": "zig"
+        },
+        "格式占位符说明如何打印：`{d}` 用于数字，`{s}` 用于字符串，`{c}` 把单个字节按字符打印，`{any}` 用于调试任意值。"
+      ]
+    },
+    {
+      "h": "控制流",
+      "body": [
+        "`if`、`switch`、`while` 和 `for` 都可以用作表达式。`switch` 必须覆盖所有可能的值，所以通常要加一个 `else` 分支。",
+        {
+          "code": "const std = @import(\"std\");\npub fn main() void {\n    const n: i32 = -2;\n    const sign: []const u8 = if (n > 0) \"positive\" else if (n < 0) \"negative\" else \"zero\";\n    const score: u8 = 85;\n    const letter: u8 = switch (score) {\n        90...100 => 'A',\n        80...89 => 'B',\n        else => 'C',\n    };\n    std.debug.print(\"{s} {c}\\n\", .{ sign, letter }); // negative B\n    var i: u32 = 0;\n    while (i < 3) : (i += 1) {\n        std.debug.print(\"{d} \", .{i}); // 0 1 2\n    }\n    const items = [_]u8{ 10, 20, 30 };\n    for (items, 0..) |item, index| {\n        std.debug.print(\"\\n{d}: {d}\", .{ index, item });\n    }\n    std.debug.print(\"\\n\", .{});\n}",
+          "lang": "zig"
+        },
+        "`[_]u8{ ... }` 让编译器自己数出数组长度。`for (items, 0..)` 同时遍历元素和计数器；竖线之间的值称为捕获（capture）。"
+      ]
+    },
+    {
+      "h": "函数与 comptime",
+      "body": [
+        "函数要声明参数类型和返回类型。参数在函数内部是不可变的。泛型代码用 `comptime` 参数编写：类型是编译期存在的值，所以函数可以把类型当作参数。",
+        {
+          "code": "const std = @import(\"std\");\nfn add(a: i32, b: i32) i32 {\n    return a + b;\n}\nfn max(comptime T: type, a: T, b: T) T {\n    return if (a > b) a else b;\n}\npub fn main() void {\n    std.debug.print(\"{d}\\n\", .{add(2, 3)});            // 5\n    std.debug.print(\"{d}\\n\", .{max(i32, 3, 7)});       // 7\n    std.debug.print(\"{d}\\n\", .{max(f64, 1.5, 0.5)});   // 1.5\n}",
+          "lang": "zig"
+        },
+        "编译器会为每种被调用的类型生成一份独立的 `max`。标准库中构建泛型数据结构也用同样的机制：一个接收类型并返回新结构体类型的函数。"
+      ]
+    },
+    {
+      "h": "用错误联合、try 和 defer 处理错误",
+      "body": [
+        "错误就是值。返回类型 `!u32` 表示“一个 `u32` 或一个错误”。`try expr` 在出现错误时把错误返回给调用者；`catch` 则就地处理。错误不能被悄悄忽略。",
+        {
+          "code": "const std = @import(\"std\");\nfn parseAge(s: []const u8) !u32 {\n    const n = try std.fmt.parseInt(i32, s, 10);\n    if (n < 0) return error.Negative;\n    return @intCast(n);\n}\npub fn main() void {\n    const age = parseAge(\"-5\") catch |err| {\n        std.debug.print(\"error: {s}\\n\", .{@errorName(err)});\n        return;\n    };\n    std.debug.print(\"age {d}\\n\", .{age});\n}\n// error: Negative",
+          "lang": "zig"
+        },
+        "`defer` 在当前代码块退出时执行一条语句，`errdefer` 只在代码块因错误退出时执行。它们让清理代码紧挨着获取资源的代码。"
+      ]
+    },
+    {
+      "h": "内存与分配器",
+      "body": [
+        "Zig 没有垃圾回收器，也没有隐藏的全局分配器。任何需要堆内存的函数都要接收一个 `std.mem.Allocator` 参数，由调用者决定内存从哪里来（页分配器、arena、固定缓冲区，或能检测泄漏的调试分配器）。",
+        {
+          "code": "const std = @import(\"std\");\npub fn main() !void {\n    const allocator = std.heap.page_allocator;\n    const buf = try allocator.alloc(u32, 5);\n    defer allocator.free(buf);\n    for (buf, 0..) |*slot, i| {\n        slot.* = @intCast(i * i);\n    }\n    std.debug.print(\"{any}\\n\", .{buf}); // { 0, 1, 4, 9, 16 }\n}",
+          "lang": "zig"
+        },
+        "`|*slot|` 捕获指向每个元素的指针，使循环可以写入它，`slot.*` 则解引用指针。在 Debug 和 ReleaseSafe 构建中，整数溢出和越界索引会以清晰的 panic 终止程序，而不是引发未定义行为。"
+      ]
+    },
+    {
+      "h": "一个完整的小程序：求平均数",
+      "body": [
+        {
+          "code": "const std = @import(\"std\");\nfn average(numbers: []const i64) ?f64 {\n    if (numbers.len == 0) return null;\n    var sum: i64 = 0;\n    for (numbers) |n| sum += n;\n    const total: f64 = @floatFromInt(sum);\n    const len: f64 = @floatFromInt(numbers.len);\n    return total / len;\n}\npub fn main() !void {\n    const allocator = std.heap.page_allocator;\n    const buf = try allocator.alloc(i64, 16);\n    defer allocator.free(buf);\n    var it = std.mem.tokenizeScalar(u8, \"4 8 15 16 23 42\", ' ');\n    var count: usize = 0;\n    while (it.next()) |word| : (count += 1) {\n        buf[count] = try std.fmt.parseInt(i64, word, 10);\n    }\n    if (average(buf[0..count])) |avg| {\n        std.debug.print(\"count={d} avg={d:.2}\\n\", .{ count, avg });\n    }\n}\n// count=6 avg=18.00",
+          "lang": "zig"
+        },
+        "程序按空格拆分字符串，用 `try` 解析每一段，把数字存放在由 `defer` 释放的堆内存中，并返回一个可选的平均值，列表为空时为 `null`。",
+        {
+          "note": "初学者常见错误：留下未使用的局部变量，或声明了从不修改的 `var`（两者都是编译错误）；对字符串使用没有说明符的 `{}`（应使用 `{s}`）；忘记字符串字面量是字节数组，而不是 Unicode 字符；不显式转换（如 `@intCast`）就混用不同的整数类型；以及复制为旧版 Zig 编写的教程代码。"
+        }
+      ]
+    },
+    {
+      "h": "接下来读什么",
+      "body": [
+        {
+          "ul": [
+            "ziglang.org/documentation 上的语言参考，请选择与你所装版本对应的页面。",
+            "ziglang.org 的 Learn 部分，包括“Getting Started”和语言概览。",
+            "Ziglings 是一组需要你逐个修复的小型破损程序，是社区里很受欢迎的练习集。",
+            "阅读标准库的源码：它是用 Zig 写的，是了解当前 API 的最佳参考。"
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Zig 可以用于生产环境了吗？",
+      "a": "有些公司在生产环境中使用 Zig，但这门语言还没到 1.0，所以升级编译器时要预期会有破坏性变更，并预留时间应对。"
+    },
+    {
+      "q": "Zig 是 C 或 Rust 的替代品吗？",
+      "a": "Zig 最接近 C：手动管理内存，但有更好的安全检查、错误处理和编译期代码。Rust 通过所有权系统和借用检查器保证内存安全，Zig 没有这些。"
+    },
+    {
+      "q": "Zig 能使用 C 库吗？",
+      "a": "能。Zig 可以导入 C 头文件并直接调用 C 函数，Zig 编译器也能构建 C 和 C++ 源文件，所以混合使用这几种语言很简单。"
+    },
+    {
+      "q": "Zig 里的 comptime 是什么意思？",
+      "a": "`comptime` 标记在编译期求值的代码或参数。Zig 用它来实现泛型、常量表和编译期检查，而不是另设一套宏语言。"
+    }
+  ]
+}

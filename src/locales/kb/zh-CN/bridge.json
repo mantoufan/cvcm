@@ -1,0 +1,175 @@
+{
+  "title": "桥接模式：分离抽象与实现，含 TypeScript 示例 — cv.cm",
+  "description": "桥接模式（Bridge）详解：把一个类拆成可独立变化的抽象层级与实现层级。含 TypeScript 示例和实际应用。",
+  "h1": "桥接模式详解与示例",
+  "answer": "桥接是一种结构型设计模式，它把一个庞大的类层级拆成抽象和实现两个独立的层级，并通过组合把它们连接起来。抽象（例如各种报表）持有一个实现对象（例如各种输出渲染器）的引用，并把底层工作委托给它。这样两边都可以独立扩展，于是 3 种报表和 3 种渲染器只需 6 个类，而不是 9 个子类组合。",
+  "sections": [
+    {
+      "h": "意图",
+      "body": [
+        "将抽象与它的实现解耦，使两者可以独立变化。桥接是《设计模式》（四人组，GoF）一书中七种结构型模式之一，书中也称其为 Handle/Body（句柄/本体）。"
+      ]
+    },
+    {
+      "h": "它要解决的问题",
+      "body": [
+        "设想一个应用，要通过两种渠道（邮件和短信）发送两类消息（警报和提醒）。如果用继承建模，就会得到 `EmailAlert`、`SmsAlert`、`EmailReminder` 和 `SmsReminder`。再加一个推送渠道和一种摘要消息，就需要九个类。任何一边每多一种类型，总数都会成倍增加。",
+        "真正的问题在于，这个类层级把两个独立的问题混在了一起：消息是什么，以及它怎么送达。桥接把它们分成两个层级，再用一个引用连接起来，于是总数是做加法增长，而不是乘法。",
+        {
+          "table": {
+            "head": [
+              "设计方式",
+              "2 种消息 × 2 种渠道",
+              "3 种消息 × 3 种渠道",
+              "4 种消息 × 4 种渠道"
+            ],
+            "rows": [
+              [
+                "每种组合一个子类",
+                "4 个类",
+                "9 个类",
+                "16 个类"
+              ],
+              [
+                "桥接",
+                "4 个类",
+                "6 个类",
+                "8 个类"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "结构与参与者",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "参与者",
+              "职责",
+              "示例中的对应"
+            ],
+            "rows": [
+              [
+                "抽象（Abstraction）",
+                "客户端使用的高层接口；持有一个实现者的引用。",
+                "`Message`"
+              ],
+              [
+                "扩展抽象（RefinedAbstraction）",
+                "在抽象的基础上扩展出不同的行为。",
+                "`Alert`, `Reminder`"
+              ],
+              [
+                "实现者（Implementor）",
+                "底层操作的接口。",
+                "`Sender`"
+              ],
+              [
+                "具体实现者（ConcreteImplementor）",
+                "为某个平台或技术实现底层操作。",
+                "`EmailSender`, `SmsSender`"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "TypeScript 实现",
+      "body": [
+        {
+          "code": "// Implementor: how a message is delivered.\ninterface Sender {\n  deliver(to: string, subject: string, body: string): string;\n}\n\nclass EmailSender implements Sender {\n  deliver(to: string, subject: string, body: string) { return `email ${to} | ${subject} | ${body}`; }\n}\n\nclass SmsSender implements Sender {\n  deliver(to: string, subject: string, body: string) { return `sms ${to} | ${subject}: ${body}`.slice(0, 40); }\n}\n\n// Abstraction: what the message is. It holds the bridge to a Sender.\nabstract class Message {\n  constructor(protected sender: Sender) {}\n  abstract send(to: string): string;\n}\n\nclass Alert extends Message {\n  constructor(sender: Sender, private problem: string) { super(sender); }\n  send(to: string): string {\n    return this.sender.deliver(to, \"ALERT\", this.problem.toUpperCase());\n  }\n}\n\nclass Reminder extends Message {\n  constructor(sender: Sender, private task: string, private due: string) { super(sender); }\n  send(to: string): string {\n    return this.sender.deliver(to, \"Reminder\", `${this.task} by ${this.due}`);\n  }\n}\n\nconsole.log(new Alert(new SmsSender(), \"disk full\").send(\"+100\")); // sms +100 | ALERT: DISK FULL\nconsole.log(new Reminder(new EmailSender(), \"Pay invoice\", \"Friday\").send(\"ada@example.com\"));\n// email ada@example.com | Reminder | Pay invoice by Friday",
+          "lang": "typescript"
+        },
+        "新增一个 `PushSender` 只需要一个类，它立刻就能配合警报和提醒使用。新增一个 `Digest` 消息也只需要一个类，它立刻就能配合每一种发送器使用。因为发送器只是一个构造函数参数，所以也可以在运行时选择，例如根据用户偏好。"
+      ]
+    },
+    {
+      "h": "何时使用，何时不用",
+      "body": [
+        "以下情况适合使用桥接：",
+        {
+          "ul": [
+            "一个类在两个或更多独立的维度上变化，而用继承会为每种组合都生成一个类。",
+            "你想在运行时切换实现，或者让多个抽象共享同一个实现对象。",
+            "你编写的代码必须在多个平台（操作系统、渲染后端、数据库引擎）上运行，并希望把平台细节放在单独的一个层级里。"
+          ]
+        },
+        "以下情况应避免使用：",
+        {
+          "ul": [
+            "只有一个变化维度。一个带有多个实现的简单接口就足够了。",
+            "你只有一个实现，却“为将来着想”而引入它。多出来的一层让代码更难读，眼下又没有任何好处。"
+          ]
+        },
+        {
+          "note": "桥接是在你知道两边都会变化时预先设计的。如果你是事后要把一个现有的类套进某个接口，需要的是适配器，而不是桥接。"
+        }
+      ]
+    },
+    {
+      "h": "实际应用",
+      "body": [
+        {
+          "ul": [
+            "Java 的 JDBC 是一个著名的例子：应用代码基于 JDBC API 编写，而每个数据库厂商提供实现底层操作的驱动。两边各自独立演进。",
+            "图形和 UI 工具包在平台相关的绘制后端之上，保留一套与平台无关的控件或图形 API。GoF 一书自己的例子是一个 `Window` 抽象，每种窗口系统对应一个单独的 `WindowImp` 实现。",
+            "日志库通常把代码调用的 logger API，与写入文件、控制台或网络服务的处理器（handler 或 appender）分离开。"
+          ]
+        }
+      ]
+    },
+    {
+      "h": "相关模式",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "模式",
+              "与桥接的关系"
+            ],
+            "rows": [
+              [
+                "适配器",
+                "结构相似，但它是在类设计完成之后，让互不相关的现有类能够协同工作。桥接则是在编写类之前就规划好的。"
+              ],
+              [
+                "策略",
+                "同样委托给一个可互换的对象。策略关注的是替换算法；桥接关注的是把整个抽象层级与实现层级分开。"
+              ],
+              [
+                "抽象工厂",
+                "可以为桥接创建并配置合适的实现对象，例如正确的平台后端。"
+              ],
+              [
+                "组合",
+                "桥接同样基于“组合优于继承”，但组合模式讲的是对象构成的树，而不是两个独立的层级。"
+              ]
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "桥接模式中的“实现”是什么意思？",
+      "a": "它不是指类内部的代码，而是指一个独立的对象层级，负责完成底层的、与平台相关的工作，抽象会把任务委托给它。"
+    },
+    {
+      "q": "桥接与策略有什么区别？",
+      "a": "它们的结构几乎相同。策略侧重于替换对象内部的某一个算法，而桥接是把两个完整的层级分开，使每一边都能独立扩展。"
+    },
+    {
+      "q": "桥接与适配器有什么区别？",
+      "a": "桥接是预先设计的，让两边都可以变化。适配器是事后添加的，让一个现有的、不兼容的类适配某个接口。"
+    },
+    {
+      "q": "桥接和依赖注入是一回事吗？",
+      "a": "不是。桥接是组织两个层级的方式。依赖注入是提供实现对象的方式，也是给抽象配上其实现者的自然做法。"
+    }
+  ]
+}

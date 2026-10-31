@@ -1,0 +1,190 @@
+{
+  "title": "Hướng dẫn Visual Basic: cú pháp VB.NET, kiểu dữ liệu, collection và lớp — cv.cm",
+  "description": "Học Visual Basic .NET: tạo dự án, khai báo biến bằng Dim, dùng If, Select Case và vòng lặp, hàm, List, Dictionary, lớp, LINQ và Try.",
+  "h1": "Hướng dẫn Visual Basic .NET cho người mới bắt đầu",
+  "answer": "Visual Basic .NET (VB.NET) là ngôn ngữ hướng đối tượng, kiểu tĩnh, dành cho nền tảng .NET, với từ khóa giống tiếng Anh như `Dim`, `If ... Then ... End If` và `For ... Next`. Nó không phân biệt hoa thường và dùng cùng các thư viện .NET với C#. Tạo dự án bằng `dotnet new console -lang VB` và chạy bằng `dotnet run`. VBA, ngôn ngữ macro bên trong Microsoft Office, là họ hàng cũ hơn với cú pháp tương tự.",
+  "sections": [
+    {
+      "h": "Visual Basic .NET là gì và ai dùng nó",
+      "body": [
+        "VB.NET là bản kế thừa trên .NET của Visual Basic cổ điển (VB6). Nó biên dịch ra cùng ngôn ngữ trung gian với C#, nên hai ngôn ngữ có thể dùng chung thư viện và thậm chí trộn trong một solution. Nó chủ yếu được dùng cho ứng dụng máy tính để bàn Windows (Windows Forms, WPF), công cụ nghiệp vụ nội bộ, ứng dụng web ASP.NET và bảo trì các cơ sở mã VB hiện có.",
+        "Microsoft vẫn hỗ trợ Visual Basic trên .NET hiện đại, nhưng đã cho biết không có kế hoạch phát triển ngôn ngữ với các tính năng mới lớn; các tính năng .NET mới thường xuất hiện ở C# trước. Với dự án mới không có sẵn mã VB, C# là lựa chọn phổ biến hơn, nhưng VB.NET vẫn là ngôn ngữ dễ đọc để học lập trình và viết phần mềm nghiệp vụ."
+      ]
+    },
+    {
+      "h": "Cài đặt và chạy Hello, world",
+      "body": [
+        "Cài .NET SDK (Windows, macOS hoặc Linux). Visual Studio trên Windows cũng có sẵn mẫu Visual Basic và trình thiết kế biểu mẫu trực quan.",
+        {
+          "code": "dotnet new console -lang VB -o HelloVB\ncd HelloVB\ndotnet run\n# Hello, world!",
+          "lang": "shell"
+        },
+        {
+          "code": "' Program.vb\nImports System\n\nModule Program\n    Sub Main(args As String())\n        Console.WriteLine(\"Hello, world!\")\n    End Sub\nEnd Module",
+          "lang": "vb"
+        },
+        "`Module` chứa các thủ tục dùng chung, và `Sub Main` là điểm vào. Chú thích bắt đầu bằng dấu nháy đơn `'`. Mỗi câu lệnh thường kết thúc ở cuối dòng; không có dấu chấm phẩy hay dấu ngoặc nhọn."
+      ]
+    },
+    {
+      "h": "Biến và các kiểu cơ bản",
+      "body": [
+        "Khai báo biến bằng `Dim name As Type`. Với `Option Infer On` (mặc định) bạn có thể bỏ kiểu khi gán giá trị. Hãy đặt `Option Strict On` ở đầu mỗi tệp (hoặc đặt trong dự án) để các chuyển đổi ngầm định rủi ro trở thành lỗi biên dịch.",
+        {
+          "table": {
+            "head": [
+              "Kiểu",
+              "Ví dụ",
+              "Ghi chú"
+            ],
+            "rows": [
+              [
+                "Integer",
+                "`Dim n As Integer = 42`",
+                "32 bit; `Long` là 64 bit"
+              ],
+              [
+                "Double",
+                "`Dim x As Double = 3.14`",
+                "Số dấu phẩy động 64 bit"
+              ],
+              [
+                "Decimal",
+                "`Dim price As Decimal = 19.99D`",
+                "Số thập phân chính xác, phù hợp với tiền bạc"
+              ],
+              [
+                "String",
+                "`Dim s As String = \"hello\"`",
+                "Nối chuỗi bằng `&`"
+              ],
+              [
+                "Char",
+                "`Dim c As Char = \"a\"c`",
+                "Một ký tự đơn, hậu tố `c`"
+              ],
+              [
+                "Boolean",
+                "`Dim ok As Boolean = True`",
+                "`True` / `False`"
+              ],
+              [
+                "Date",
+                "`Dim d As Date = #2026-01-15#`",
+                "Giá trị ngày và giờ"
+              ]
+            ]
+          }
+        },
+        {
+          "code": "Option Strict On\nModule Types\n    Sub Main()\n        Dim name As String = \"Ana\"\n        Dim age = 30                  ' inferred as Integer\n        Console.WriteLine(name & \" is \" & age.ToString())\n        Console.WriteLine($\"Next year {name} is {age + 1}\")\n        Console.WriteLine(7 / 2)      ' 3.5 (always Double)\n        Console.WriteLine(7 \\ 2)      ' 3 (integer division)\n        Console.WriteLine(7 Mod 2)    ' 1\n    End Sub\nEnd Module",
+          "lang": "vb"
+        }
+      ]
+    },
+    {
+      "h": "Luồng điều khiển",
+      "body": [
+        {
+          "code": "Dim score = 85\nIf score >= 90 Then\n    Console.WriteLine(\"A\")\nElseIf score >= 80 Then\n    Console.WriteLine(\"B\")\nElse\n    Console.WriteLine(\"C\")\nEnd If\n\nSelect Case score\n    Case 90 To 100\n        Console.WriteLine(\"excellent\")\n    Case 80 To 89\n        Console.WriteLine(\"good\")\n    Case Else\n        Console.WriteLine(\"keep going\")\nEnd Select\n\nFor i = 1 To 3\n    Console.WriteLine($\"{i} squared is {i * i}\")\nNext\n\nDim n = 3\nDo While n > 0\n    n -= 1\nLoop",
+          "lang": "vb"
+        },
+        "Các câu lệnh này nằm bên trong một `Sub`. `For i = 1 To 3` gồm cả hai đầu; thêm `Step -1` để đếm ngược. `For Each item In collection` lặp qua mọi collection. Dùng `Exit For` hoặc `Exit Do` để thoát vòng lặp sớm. Với điều kiện, nên dùng `AndAlso` và `OrElse`: chúng dừng đánh giá ngay khi biết kết quả, còn `And` và `Or` luôn đánh giá cả hai vế."
+      ]
+    },
+    {
+      "h": "Sub, hàm và lambda",
+      "body": [
+        "`Sub` không trả về giá trị; `Function` thì có. Tham số mặc định được truyền `ByVal` (một bản sao); `ByRef` cho phép thủ tục thay đổi biến của bên gọi. Tham số có thể là `Optional` với giá trị mặc định.",
+        {
+          "code": "Function Add(a As Integer, b As Integer) As Integer\n    Return a + b\nEnd Function\n\nSub Greet(Optional name As String = \"world\")\n    Console.WriteLine($\"Hello, {name}!\")\nEnd Sub\n\nSub Increment(ByRef value As Integer)\n    value += 1\nEnd Sub\n\n' Inside Sub Main:\nDim x = 5\nIncrement(x)                                  ' x is now 6\nGreet()                                       ' Hello, world!\nDim square = Function(n As Integer) n * n     ' lambda\nConsole.WriteLine(square(Add(1, 2)))          ' 9",
+          "lang": "vb"
+        }
+      ]
+    },
+    {
+      "h": "Mảng, List và Dictionary",
+      "body": [
+        {
+          "code": "Dim nums() As Integer = {3, 1, 2}\nDim five(4) As Integer            ' 5 elements, indexes 0 to 4\nArray.Sort(nums)\nConsole.WriteLine(String.Join(\", \", nums))   ' 1, 2, 3\n\nDim names As New List(Of String) From {\"Ana\", \"Ben\"}\nnames.Add(\"Cleo\")\nConsole.WriteLine(names.Count)               ' 3\n\nDim ages As New Dictionary(Of String, Integer)\nages(\"Ana\") = 30\nages(\"Ben\") = 17\nFor Each pair In ages\n    Console.WriteLine($\"{pair.Key}: {pair.Value}\")\nNext",
+          "lang": "vb"
+        },
+        "Mảng và danh sách được đánh chỉ số từ 0 bằng dấu ngoặc đơn: `nums(0)`. Kiểu generic dùng `Of`: `List(Of String)` là dạng VB của `List<string>` trong C#. Lưu ý `Dim five(4)` khai báo cận trên chứ không phải độ dài, nên mảng có năm phần tử."
+      ]
+    },
+    {
+      "h": "Tính năng nổi bật: lớp, thuộc tính và truy vấn LINQ",
+      "body": [
+        "VB.NET hướng đối tượng hoàn toàn: lớp có thuộc tính, phương thức, hàm khởi tạo (`Sub New`), kế thừa (`Inherits`), interface (`Implements`) và sự kiện (`Event`, `RaiseEvent`, `Handles`). Truy vấn LINQ có thể viết bằng cú pháp truy vấn dễ đọc.",
+        {
+          "code": "Public Class Person\n    Public Property Name As String\n    Public Property Age As Integer\n\n    Public Sub New(name As String, age As Integer)\n        Me.Name = name\n        Me.Age = age\n    End Sub\nEnd Class\n\n' Inside Sub Main:\nDim people As New List(Of Person) From {\n    New Person(\"Ana\", 30),\n    New Person(\"Ben\", 17)\n}\nDim adults = From p In people\n             Where p.Age >= 18\n             Select p.Name\nFor Each adultName In adults\n    Console.WriteLine(adultName)   ' Ana\nNext",
+          "lang": "vb"
+        },
+        "Vì VB không phân biệt hoa thường, `Name` và `name` là cùng một định danh; trong hàm khởi tạo, `Me.Name` chỉ thuộc tính còn `name` chỉ tham số. Những tiện ích riêng khác của VB gồm khối `With ... End With`, XML literal và namespace `My` cho các tác vụ thông dụng."
+      ]
+    },
+    {
+      "h": "Xử lý lỗi",
+      "body": [
+        "VB.NET dùng xử lý ngoại lệ có cấu trúc: `Try`, `Catch`, `Finally` và `Throw`. Một `Catch` có thể kèm bộ lọc `When`. Kiểu `On Error GoTo` cũ từ VB6 và VBA vẫn biên dịch được nhưng không nên dùng trong mã .NET mới.",
+        {
+          "code": "Function ParseAge(s As String) As Integer\n    Dim n As Integer\n    If Not Integer.TryParse(s, n) Then\n        Throw New FormatException($\"Not a number: {s}\")\n    End If\n    If n < 0 Then Throw New ArgumentOutOfRangeException(NameOf(s))\n    Return n\nEnd Function\n\n' Inside Sub Main:\nTry\n    Console.WriteLine(ParseAge(\"abc\"))\nCatch ex As FormatException\n    Console.WriteLine(\"Error: \" & ex.Message)   ' Error: Not a number: abc\nFinally\n    Console.WriteLine(\"done\")\nEnd Try",
+          "lang": "vb"
+        }
+      ]
+    },
+    {
+      "h": "Một chương trình hoàn chỉnh nhỏ: tần suất từ",
+      "body": [
+        {
+          "code": "Imports System\nImports System.Collections.Generic\nImports System.Linq\n\nModule WordCount\n    Sub Main()\n        Dim text = \"the cat and the hat and the bat\"\n        Dim counts As New Dictionary(Of String, Integer)\n\n        For Each word In text.Split(\" \"c)\n            If counts.ContainsKey(word) Then\n                counts(word) += 1\n            Else\n                counts(word) = 1\n            End If\n        Next\n\n        Dim top = counts.OrderByDescending(Function(kv) kv.Value).Take(2)\n        For Each kv In top\n            Console.WriteLine($\"{kv.Key} {kv.Value}\")\n        Next\n    End Sub\nEnd Module\n' the 3\n' and 2",
+          "lang": "vb"
+        },
+        {
+          "note": "Các lỗi thường gặp của người mới: nghĩ rằng `Dim a(4)` tạo bốn phần tử (thực ra tạo năm); dùng `And`/`Or` ở chỗ cần `AndAlso`/`OrElse` có đoản mạch, ví dụ `If x IsNot Nothing And x.Length > 0` sẽ lỗi khi `x` là `Nothing`; mong `/` chia số nguyên (hãy dùng `\\`); để `Option Strict Off`, che giấu lỗi kiểu cho đến lúc chạy; và nhầm VB.NET với VBA, vốn có mã và thư viện khác."
+        }
+      ]
+    },
+    {
+      "h": "VBA: Visual Basic bên trong Microsoft Office",
+      "body": [
+        "Visual Basic for Applications (VBA) là ngôn ngữ macro tích hợp trong các ứng dụng Microsoft Office như Excel, Word và Access. Nó dựa trên Visual Basic cổ điển chứ không phải .NET: chạy bên trong ứng dụng Office, dùng mô hình đối tượng của Office (workbook, range, document) và được chỉnh sửa trong trình soạn thảo VBA (Alt+F11 trên Windows). Cú pháp cơ bản của `Dim`, `If`, `For` và `Sub` giống nhau, nên kiến thức VB.NET hữu ích cho VBA.",
+        {
+          "code": "' VBA in Excel: write the squares of 1 to 5 into column A\nSub FillSquares()\n    Dim i As Long\n    For i = 1 To 5\n        Cells(i, 1).Value = i * i\n    Next i\n    MsgBox \"Done\"\nEnd Sub",
+          "lang": "vb"
+        }
+      ]
+    },
+    {
+      "h": "Học tiếp ở đâu",
+      "body": [
+        {
+          "ul": [
+            "Microsoft Learn: tài liệu Visual Basic, gồm hướng dẫn bắt đầu và tài liệu tham khảo ngôn ngữ.",
+            "Học thư viện lớp cơ sở .NET (collection, tệp, LINQ); thư viện này dùng chung với C#.",
+            "Với ứng dụng máy tính để bàn, hãy thử mẫu Windows Forms hoặc WPF trong Visual Studio.",
+            "Để tự động hóa Office, hãy đọc tài liệu tham khảo VBA trên Microsoft Learn cho ứng dụng bạn dùng."
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Visual Basic .NET đã chết chưa?",
+      "a": "Chưa. Nó được hỗ trợ trên các phiên bản .NET hiện tại và trong Visual Studio, nhưng Microsoft không có kế hoạch thêm tính năng ngôn ngữ mới lớn, nên hầu hết dự án .NET mới chọn C#."
+    },
+    {
+      "q": "Khác nhau giữa VB.NET và VBA là gì?",
+      "a": "VB.NET là ngôn ngữ .NET đầy đủ để xây dựng ứng dụng độc lập. VBA là ngôn ngữ macro dựa trên Visual Basic cổ điển, chạy bên trong các ứng dụng Office như Excel; cú pháp tương tự nhưng môi trường chạy và thư viện thì khác."
+    },
+    {
+      "q": "Nên học VB.NET hay C#?",
+      "a": "Nếu bạn bảo trì mã VB hoặc muốn cú pháp rất dễ đọc, VB.NET là ổn. Với dự án mới, cơ hội việc làm và các tính năng .NET mới nhất, C# thường là khoản đầu tư tốt hơn, và các thư viện bạn học dùng chung được giữa hai ngôn ngữ."
+    },
+    {
+      "q": "Visual Basic có phân biệt hoa thường không?",
+      "a": "Không. `Dim Total`, `total` và `TOTAL` đều chỉ cùng một biến, và trình soạn thảo thường tự chuẩn hóa cách viết hoa cho bạn."
+    }
+  ]
+}

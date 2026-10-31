@@ -1,0 +1,223 @@
+{
+  "title": "파이썬 기초 튜토리얼: 문법, 자료형, 함수, 파일 한 페이지 정리 — cv.cm",
+  "description": "파이썬 3를 한 페이지로 배웁니다. 설치와 Hello world 실행, 변수와 자료형, if와 반복문, 함수, 리스트와 딕셔너리, 예외 처리, 파일 다루기, 완성 예제까지 다룹니다.",
+  "h1": "파이썬 기초 입문 튜토리얼",
+  "answer": "파이썬은 중괄호 대신 들여쓰기를 사용하는 읽기 쉬운 문법으로 알려진 범용 인터프리터 언어입니다. 파이썬 3를 설치하고 `hello.py`에 `print(\"Hello, world\")`를 저장한 뒤 `python3 hello.py`로 실행하면 됩니다. 핵심 개념은 동적 타입, `def`로 정의하는 함수, 내장 리스트·딕셔너리·집합, `try`/`except`로 처리하는 예외, 그리고 방대한 표준 라이브러리입니다.",
+  "sections": [
+    {
+      "h": "파이썬이란 무엇이고 어디에 쓰이는가",
+      "body": [
+        "파이썬은 1991년 귀도 반 로섬(Guido van Rossum)이 처음 공개한 고수준 동적 타입 언어입니다. 코드는 인터프리터(대표 구현체는 CPython)가 실행하므로 별도의 컴파일 단계가 없습니다. 데이터 분석과 머신러닝(NumPy, pandas, PyTorch), 웹 백엔드(Django, Flask, FastAPI), 자동화 스크립트, 과학 계산, 프로그래밍 교육 등에 널리 쓰입니다. 파이썬 2는 2020년에 지원이 종료되었으므로 반드시 파이썬 3를 배우세요."
+      ]
+    },
+    {
+      "h": "파이썬 설치와 Hello, world 실행",
+      "body": [
+        "Windows와 macOS에서는 python.org에서 설치 프로그램을 내려받고, Linux에서는 패키지 관리자를 사용합니다. 설치는 `python3 --version`으로 확인합니다(Windows에서는 `py` 또는 `python` 명령인 경우가 많습니다). 다음 파일을 `hello.py`로 저장하세요.",
+        {
+          "code": "print(\"Hello, world\")",
+          "lang": "python"
+        },
+        {
+          "code": "python3 hello.py\n# Hello, world",
+          "lang": "shell"
+        },
+        "파일 없이 `python3`만 실행하면 대화형 프롬프트(REPL)가 열리며, 한 줄씩 시험해 볼 때 유용합니다."
+      ]
+    },
+    {
+      "h": "변수와 기본 자료형",
+      "body": [
+        "변수는 값을 대입하는 순간 만들어집니다. 타입을 선언하지 않으며 값이 타입을 가지고 있고, `type(x)`로 확인할 수 있습니다.",
+        {
+          "table": {
+            "head": [
+              "타입",
+              "예시",
+              "설명"
+            ],
+            "rows": [
+              [
+                "`int`",
+                "`42`, `-7`, `10**20`",
+                "크기 제한 없는 정수"
+              ],
+              [
+                "`float`",
+                "`3.14`, `1e-3`",
+                "64비트 부동소수점"
+              ],
+              [
+                "`bool`",
+                "`True`, `False`",
+                "첫 글자는 대문자"
+              ],
+              [
+                "`str`",
+                "`\"hi\"`, `'hi'`",
+                "변경 불가능한 유니코드 텍스트"
+              ],
+              [
+                "`None`",
+                "`None`",
+                "값이 없음을 나타냄"
+              ]
+            ]
+          }
+        },
+        {
+          "code": "name = \"Ada\"\nage = 36\nheight = 1.65\nprint(f\"{name} is {age} years old\")  # Ada is 36 years old\nprint(7 / 2, 7 // 2, 7 % 2)          # 3.5 3 1\nprint(int(\"12\") + 1)                 # 13",
+          "lang": "python"
+        }
+      ]
+    },
+    {
+      "h": "제어 흐름: if, for, while",
+      "body": [
+        "블록은 콜론으로 시작하며 들여쓰기로 구분합니다(관례상 공백 4칸). `for` 반복문은 모든 시퀀스를 순회할 수 있고, `range(n)`은 0부터 n−1까지의 숫자를 만듭니다.",
+        {
+          "code": "score = 72\nif score >= 90:\n    grade = \"A\"\nelif score >= 70:\n    grade = \"B\"\nelse:\n    grade = \"C\"\nprint(grade)  # B\nfor i in range(3):\n    print(i)  # 0, then 1, then 2\nn = 10\nwhile n > 1:\n    n = n // 2\nprint(n)  # 1",
+          "lang": "python"
+        }
+      ]
+    },
+    {
+      "h": "함수",
+      "body": [
+        "함수는 `def`로 정의합니다. 매개변수에는 기본값을 줄 수 있고, 호출할 때 이름을 지정해 인수를 넘길 수도 있습니다. `return`이 없는 함수는 `None`을 반환합니다.",
+        {
+          "code": "def greet(name, greeting=\"Hello\"):\n    return f\"{greeting}, {name}!\"\nprint(greet(\"Lin\"))                 # Hello, Lin!\nprint(greet(\"Lin\", greeting=\"Hi\"))  # Hi, Lin!\nsquare = lambda x: x * x\nprint(square(5))                    # 25",
+          "lang": "python"
+        },
+        "`def area(w: float, h: float) -> float:` 같은 타입 힌트는 의도를 문서화하고 mypy 같은 도구가 코드를 검사하게 해 주지만, 인터프리터가 강제하지는 않습니다."
+      ]
+    },
+    {
+      "h": "리스트, 튜플, 딕셔너리, 집합",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "타입",
+              "리터럴",
+              "순서 유지",
+              "변경 가능",
+              "대표 용도"
+            ],
+            "rows": [
+              [
+                "`list`",
+                "`[1, 2, 3]`",
+                "예",
+                "예",
+                "내용을 바꾸는 시퀀스"
+              ],
+              [
+                "`tuple`",
+                "`(1, 2)`",
+                "예",
+                "아니요",
+                "고정된 값의 묶음"
+              ],
+              [
+                "`dict`",
+                "`{\"a\": 1}`",
+                "삽입 순서",
+                "예",
+                "키로 값을 찾기"
+              ],
+              [
+                "`set`",
+                "`{1, 2}`",
+                "아니요",
+                "예",
+                "중복 없는 항목, 포함 여부 검사"
+              ]
+            ]
+          }
+        },
+        {
+          "code": "nums = [3, 1, 2]\nnums.append(5)\nnums.sort()\nprint(nums, nums[0], nums[-1], nums[1:3])  # [1, 2, 3, 5] 1 5 [2, 3]\nages = {\"ann\": 31, \"bob\": 25}\nages[\"cy\"] = 40\nfor person, age in ages.items():\n    print(person, age)\nprint(ages.get(\"zed\", 0))  # 0\nsquares = [x * x for x in range(5) if x % 2 == 0]\nprint(squares)  # [0, 4, 16]",
+          "lang": "python"
+        },
+        "마지막 줄은 파이썬의 대표 기능인 리스트 컴프리헨션으로, 반복문과 선택적 조건 필터를 한 표현식으로 리스트를 만듭니다. 딕셔너리와 집합 컴프리헨션도 같은 방식으로 동작합니다."
+      ]
+    },
+    {
+      "h": "대표 기능: 언패킹, with, 제너레이터",
+      "body": [
+        {
+          "code": "a, b = 1, 2\na, b = b, a            # swap without a temporary\nfirst, *rest = [1, 2, 3, 4]\nprint(first, rest)     # 1 [2, 3, 4]\nwith open(\"notes.txt\", \"w\", encoding=\"utf-8\") as f:\n    f.write(\"line one\\n\")   # file is closed automatically\ndef countdown(n):\n    while n > 0:\n        yield n\n        n -= 1\nprint(list(countdown(3)))  # [3, 2, 1]",
+          "lang": "python"
+        },
+        "`with` 문은 준비와 정리 코드를 대신 실행해 줍니다(여기서는 오류가 나도 파일을 닫아 줍니다). `yield`를 쓰는 함수는 제너레이터로, 값을 한 번에 하나씩 필요할 때 만들어 내므로 큰 데이터에서 메모리를 절약할 수 있습니다."
+      ]
+    },
+    {
+      "h": "try와 except로 하는 오류 처리",
+      "body": [
+        "오류는 예외로 발생합니다. 예상되는 구체적인 예외 타입만 잡고, 반드시 실행해야 하는 코드에는 `finally`를 사용하세요.",
+        {
+          "code": "def parse_age(text):\n    try:\n        age = int(text)\n    except ValueError:\n        print(f\"not a number: {text!r}\")\n        return None\n    if age < 0:\n        raise ValueError(\"age cannot be negative\")\n    return age\nprint(parse_age(\"41\"))   # 41\nprint(parse_age(\"abc\"))  # not a number: 'abc', then None",
+          "lang": "python"
+        }
+      ]
+    },
+    {
+      "h": "작은 완성 프로그램: 단어 세기",
+      "body": [
+        "이 스크립트는 명령줄로 받은 텍스트 파일을 읽어 가장 많이 나온 단어 다섯 개를 출력합니다. 표준 라이브러리만 사용합니다.",
+        {
+          "code": "import sys\nfrom collections import Counter\ndef top_words(path, n=5):\n    with open(path, encoding=\"utf-8\") as f:\n        words = f.read().lower().split()\n    cleaned = [w.strip(\".,;:!?\\\"'()\") for w in words]\n    return Counter(w for w in cleaned if w).most_common(n)\nif __name__ == \"__main__\":\n    if len(sys.argv) != 2:\n        sys.exit(\"usage: python3 count.py FILE\")\n    try:\n        for word, count in top_words(sys.argv[1]):\n            print(f\"{count:5}  {word}\")\n    except FileNotFoundError:\n        sys.exit(f\"file not found: {sys.argv[1]}\")",
+          "lang": "python"
+        },
+        "`python3 count.py notes.txt`로 실행합니다. `if __name__ == \"__main__\":` 검사 덕분에 이 파일을 모듈로 import해도 스크립트 부분이 실행되지 않습니다."
+      ]
+    },
+    {
+      "h": "초보자가 자주 하는 실수",
+      "body": [
+        {
+          "note": "가변 값을 기본 인수로 사용하지 마세요. `def add(item, items=[])`는 모든 호출이 하나의 리스트를 공유합니다. `items=None`으로 두고 함수 안에서 리스트를 만드세요."
+        },
+        {
+          "ul": [
+            "탭과 공백을 섞거나 들여쓰기가 일관되지 않으면 `IndentationError`가 발생합니다. 편집기가 공백 4칸을 넣도록 설정하세요.",
+            "`=`는 대입, `==`는 비교입니다. `is`는 `None`을 확인할 때만 사용하세요(`if x is None`).",
+            "`input()`은 항상 문자열을 반환합니다. 계산하기 전에 `int()`나 `float()`로 변환하세요.",
+            "`b = a`는 리스트를 복사하지 않고, 두 이름이 같은 리스트를 가리킵니다. 복사하려면 `b = a.copy()` 또는 `b = list(a)`를 사용하세요.",
+            "패키지는 시스템 파이썬이 아니라 가상 환경(`python3 -m venv .venv`) 안에 설치하세요."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "다음 학습 단계",
+      "body": [
+        "공식 Python Tutorial을 따라 해 본 뒤 Library Reference에서 `pathlib`, `json`, `datetime`, `itertools` 같은 모듈을 살펴보세요. 서드파티 패키지를 쓰려면 `pip`와 가상 환경을 익히고, `unittest`나 pytest로 테스트를 작성하세요. 그다음 웹(Django, FastAPI), 데이터(pandas), 자동화 중 방향을 정하면 됩니다."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "파이썬은 초보자에게 좋은 언어인가요?",
+      "a": "네. 문법이 짧고 일상 영어에 가까우며, 오류 메시지가 명확하고, REPL에서 한 줄씩 실행해 볼 수 있습니다. 업계에서도 널리 쓰이므로 초보 때 익힌 기술이 계속 도움이 됩니다."
+    },
+    {
+      "q": "파이썬은 컴파일 언어인가요, 인터프리터 언어인가요?",
+      "a": "CPython은 소스 코드를 바이트코드로 컴파일한 뒤 그 바이트코드를 해석합니다. 스크립트를 실행하면 이 과정이 자동으로 이루어지므로 별도의 컴파일 단계를 직접 실행할 필요가 없습니다."
+    },
+    {
+      "q": "리스트와 튜플은 무엇이 다른가요?",
+      "a": "리스트는 변경 가능해서 항목을 추가, 삭제, 수정할 수 있습니다. 튜플은 변경 불가능해서 고정된 값의 묶음에 쓰이며 딕셔너리의 키로도 사용할 수 있습니다."
+    },
+    {
+      "q": "내 파이썬 코드가 느린 이유는 무엇인가요?",
+      "a": "순수 파이썬 반복문은 컴파일 언어보다 느립니다. 내장 함수, 컴프리헨션, 그리고 내부 반복을 C로 실행하는 NumPy 같은 라이브러리를 활용하세요."
+    },
+    {
+      "q": "명령줄에서 python과 python3 중 무엇을 써야 하나요?",
+      "a": "macOS와 대부분의 Linux에서는 `python`이 없거나 다른 것을 가리킬 수 있으므로 `python3`를 사용하세요. Windows에서는 보통 `py` 런처를 사용합니다."
+    }
+  ]
+}

@@ -1,0 +1,223 @@
+{
+  "title": "LRU 快取（Least Recently Used）圖解：雜湊表加雙向鏈結串列，O(1) 的 Python 實作 — cv.cm",
+  "description": "LRU（最近最少使用）快取如何運作：以雜湊表加雙向鏈結串列達成 O(1) 的 get 與 put，並介紹 Python 的 OrderedDict 與 functools.lru_cache。",
+  "h1": "LRU 快取教學：原理、程式碼與時間複雜度",
+  "answer": "LRU（least recently used，最近最少使用）快取只保存固定數量的項目，滿了之後就會淘汰最久沒被使用的那一個。經典的設計是結合雜湊表與雙向鏈結串列：雜湊表能在 O(1) 內找到任何鍵，雙向鏈結串列則依最近使用的順序排列，能在 O(1) 內移動或移除任何項目。在 Python 中，`collections.OrderedDict` 只要幾行就能做出 LRU 快取，而 `functools.lru_cache` 則可為任何函式加上快取。",
+  "sections": [
+    {
+      "h": "LRU 快取解決什麼問題",
+      "body": [
+        "快取會保存緩慢操作的結果，例如資料庫查詢、網路請求或昂貴的運算，讓重複的請求能快速得到回應。記憶體有限，所以快取在滿了之後必須決定要丟掉什麼。LRU 賭的是：最近用過的資料很快會再被用到，而很久沒碰的資料大概不會。這個賭注對許多真實的工作負載都很有效，這也是為什麼 CPU 快取、作業系統的分頁快取、資料庫、網頁伺服器與 CDN 中都能看到 LRU 及其近似做法。"
+      ]
+    },
+    {
+      "h": "概念：兩個結構合作",
+      "body": [
+        "我們需要兩件事都很快：找到某個鍵，以及知道哪個鍵是最近最少使用的。只有雜湊表沒有順序，只有串列則搜尋太慢。兩者結合就能兩件事都做到：",
+        {
+          "table": {
+            "head": [
+              "組成部分",
+              "職責",
+              "為什麼是 O(1)"
+            ],
+            "rows": [
+              [
+                "雜湊表",
+                "把每個鍵對應到它在串列中的節點",
+                "平均情況下的雜湊查找"
+              ],
+              [
+                "雙向鏈結串列",
+                "讓節點由最近使用到最久未使用依序排列",
+                "用 `prev` 與 `next` 指標解開一個節點只需要改動四個參考"
+              ],
+              [
+                "頭端",
+                "最近使用的項目",
+                "新增與被存取的項目都會移到這裡"
+              ],
+              [
+                "尾端",
+                "最近最少使用的項目",
+                "快取滿了時，從這裡淘汰"
+              ]
+            ]
+          }
+        },
+        "執行 `get(key)` 時，先在雜湊表中找到節點，把它移到最前面，再回傳它的值。執行 `put(key, value)` 時，更新或建立最前面的節點；如果此時快取超過容量，就移除最後面的節點，並從雜湊表中刪除它的鍵。"
+      ]
+    },
+    {
+      "h": "容量為 2 的實例演練",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "操作",
+              "結果",
+              "之後的順序（最近使用的在前）",
+              "備註"
+            ],
+            "rows": [
+              [
+                "put(1, \"a\")",
+                "-",
+                "1",
+                ""
+              ],
+              [
+                "put(2, \"b\")",
+                "-",
+                "2, 1",
+                "快取已滿"
+              ],
+              [
+                "get(1)",
+                "\"a\"",
+                "1, 2",
+                "1 變成最近使用"
+              ],
+              [
+                "put(3, \"c\")",
+                "-",
+                "3, 1",
+                "淘汰 2，也就是最近最少使用的"
+              ],
+              [
+                "get(2)",
+                "未命中",
+                "3, 1",
+                "2 已被淘汰"
+              ],
+              [
+                "put(1, \"A\")",
+                "-",
+                "1, 3",
+                "更新會把 1 移到最前面"
+              ],
+              [
+                "put(4, \"d\")",
+                "-",
+                "4, 1",
+                "淘汰 3"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "從頭開始的 Python 實作",
+      "body": [
+        "哨兵頭節點與尾節點讓空串列不再有特殊情況：每個真正的節點前後永遠都有節點。",
+        {
+          "code": "class Node:\n    __slots__ = (\"key\", \"value\", \"prev\", \"next\")\n\n    def __init__(self, key=None, value=None):\n        self.key, self.value = key, value\n        self.prev = self.next = None\n\nclass LRUCache:\n    def __init__(self, capacity):\n        self.capacity = capacity\n        self.map = {}\n        self.head, self.tail = Node(), Node()   # sentinels\n        self.head.next, self.tail.prev = self.tail, self.head\n\n    def _unlink(self, node):\n        node.prev.next, node.next.prev = node.next, node.prev\n\n    def _push_front(self, node):\n        node.prev, node.next = self.head, self.head.next\n        self.head.next.prev = node\n        self.head.next = node\n\n    def get(self, key):\n        node = self.map.get(key)\n        if node is None:\n            return None\n        self._unlink(node)\n        self._push_front(node)\n        return node.value\n\n    def put(self, key, value):\n        if key in self.map:\n            self._unlink(self.map[key])\n        node = self.map[key] = Node(key, value)\n        self._push_front(node)\n        if len(self.map) > self.capacity:\n            lru = self.tail.prev\n            self._unlink(lru)\n            del self.map[lru.key]",
+          "lang": "python"
+        },
+        {
+          "code": "cache = LRUCache(2)\ncache.put(1, \"a\")\ncache.put(2, \"b\")\nprint(cache.get(1))   # a\ncache.put(3, \"c\")     # evicts key 2\nprint(cache.get(2))   # None\ncache.put(1, \"A\")\ncache.put(4, \"d\")     # evicts key 3\nprint(cache.get(3), cache.get(1), cache.get(4))  # None A d",
+          "lang": "python"
+        }
+      ]
+    },
+    {
+      "h": "使用 OrderedDict 的簡短版本",
+      "body": [
+        "`collections.OrderedDict` 本身就是雜湊表加雙向鏈結串列，而 `move_to_end` 與 `popitem(last=False)` 都是 O(1)。因此當你需要一個 LRU 快取物件時，這是 Python 中慣用的選擇。",
+        {
+          "code": "from collections import OrderedDict\n\nclass LRU:\n    def __init__(self, capacity):\n        self.capacity = capacity\n        self.data = OrderedDict()\n\n    def get(self, key):\n        if key not in self.data:\n            return None\n        self.data.move_to_end(key)          # mark as most recent\n        return self.data[key]\n\n    def put(self, key, value):\n        self.data[key] = value\n        self.data.move_to_end(key)\n        if len(self.data) > self.capacity:\n            self.data.popitem(last=False)   # drop least recent\n\nc = LRU(2)\nc.put(\"x\", 1)\nc.put(\"y\", 2)\nc.get(\"x\")\nc.put(\"z\", 3)\nprint(list(c.data))  # ['x', 'z']",
+          "lang": "python"
+        }
+      ]
+    },
+    {
+      "h": "用 functools.lru_cache 快取函式結果",
+      "body": [
+        "要快取函式的回傳值，請使用 `functools.lru_cache` 裝飾器。引數必須是可雜湊的，因為它們會變成字典的鍵。`cache_info()` 會顯示命中次數、未命中次數與目前的大小。",
+        {
+          "code": "from functools import lru_cache\n\n@lru_cache(maxsize=128)\ndef fib(n):\n    return n if n < 2 else fib(n - 1) + fib(n - 2)\n\nprint(fib(80))           # 23416728348467685\nprint(fib.cache_info())\n# CacheInfo(hits=78, misses=81, maxsize=128, currsize=81)",
+          "lang": "python"
+        },
+        "`maxsize=None` 代表沒有上限的快取，這正是 `functools.cache`（Python 3.9 及之後）所做的事。呼叫 `fib.cache_clear()` 可清空快取。"
+      ]
+    },
+    {
+      "h": "時間與空間複雜度",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "操作",
+              "時間",
+              "原因"
+            ],
+            "rows": [
+              [
+                "get",
+                "平均 O(1)",
+                "雜湊查找，加上解開並重新連接一個節點"
+              ],
+              [
+                "put（插入或更新）",
+                "平均 O(1)",
+                "雜湊插入，加上常數次指標變更"
+              ],
+              [
+                "淘汰",
+                "O(1)",
+                "最近最少使用的節點永遠緊鄰尾端哨兵節點"
+              ],
+              [
+                "空間",
+                "O(容量)",
+                "每個被快取的項目一筆雜湊表項目和一個串列節點"
+              ]
+            ]
+          }
+        },
+        {
+          "note": "一種常見的錯誤設計，是把鍵放在普通的 Python `list` 裡，並在每次存取時呼叫 `list.remove(key)`。這樣每次操作都要 O(n)，快取就失去意義了。"
+        }
+      ]
+    },
+    {
+      "h": "變體、常見錯誤與何時使用 LRU",
+      "body": [
+        {
+          "ul": [
+            "LFU（least frequently used，最不常使用）會淘汰存取次數最少的項目；它能保護熱門項目不受一次性掃描的影響，但實作較複雜。",
+            "近似 LRU：像 Redis 這類系統會抽樣幾個鍵，並淘汰其中最舊的，而不是維護精確的串列，這樣可以節省記憶體。",
+            "TTL 快取會在固定時間後讓項目過期，通常會搭配大小限制一起使用。",
+            "忘了在 `get` 時，或對既有的鍵執行 `put` 時，把項目移到最前面，會讓 LRU 變成 FIFO。",
+            "忘了從雜湊表中刪除被淘汰的鍵，會留下懸空的項目並造成記憶體洩漏。",
+            "在多個執行緒之間共用 LRU 快取時，每個操作都需要加鎖；`functools.lru_cache` 則可以安全地從多個執行緒呼叫。"
+          ]
+        },
+        "當近期的使用能預測未來的使用時，LRU 是很好的預設選擇。當大量一次性掃描把常用資料擠出去時，它的表現就不好；這類工作負載更適合 LFU 或抗掃描的策略。設計出每個操作都是 O(1) 的 LRU 快取，也是最常見的程式面試題之一，因為它同時考驗雜湊表與鏈結串列。"
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "LRU 是什麼的縮寫？",
+      "a": "Least recently used，最近最少使用。快取滿了時，它會淘汰最久沒有被讀取或寫入的項目。"
+    },
+    {
+      "q": "為什麼 LRU 快取需要雙向鏈結串列？",
+      "a": "要在 O(1) 內從串列中間移除一個節點，你需要知道它的前一個節點。雙向鏈結串列在每個節點上都存有 `prev`；單向鏈結串列則需要 O(n) 的搜尋。"
+    },
+    {
+      "q": "只用 Python 的 dict 就能實作 LRU 快取嗎？",
+      "a": "從 Python 3.7 起，`dict` 會保留插入順序，所以你可以刪除再重新插入某個鍵來標記它為最近使用，並淘汰 `next(iter(d))`。`OrderedDict` 搭配 `move_to_end` 與 `popitem(last=False)`，更能清楚表達意圖。"
+    },
+    {
+      "q": "functools 中的 lru_cache 和 cache 有什麼差別？",
+      "a": "`functools.cache` 是沒有上限的快取，等同於 `lru_cache(maxsize=None)`。指定數字的 `lru_cache` 則會在達到該大小後，淘汰最近最少使用的結果。"
+    },
+    {
+      "q": "LRU 永遠是最佳的淘汰策略嗎？",
+      "a": "不是。它簡單，而且在近期項目很可能被重複使用時效果很好，但大量的循序掃描可能會沖掉有用的資料。LFU、ARC 等其他策略更能處理這類工作負載。"
+    }
+  ]
+}

@@ -85,7 +85,7 @@ export function syncPageJsonLd(
   datasetPage: DatasetId | "hub" | null = null,
   kbPage: KbPage = null,
 ): void {
-  writeJsonLd("article-jsonld", kbPage ? kbArticleJsonLd(locale, kbPage === "hub" ? null : kbPage) : null);
+  writeJsonLd("article-jsonld", kbPage ? kbArticleJsonLd(locale, kbPage) : null);
   if (datasetPage) {
     const id = datasetPage === "hub" ? null : datasetPage;
     for (const key of ["howto-jsonld", "game-jsonld", "software-jsonld"]) writeJsonLd(key, null);
@@ -96,10 +96,9 @@ export function syncPageJsonLd(
   }
   writeJsonLd("dataset-jsonld", null);
   if (kbPage) {
-    const id = kbPage === "hub" ? null : kbPage;
     for (const key of ["howto-jsonld", "game-jsonld", "software-jsonld"]) writeJsonLd(key, null);
-    writeJsonLd("faq-jsonld", kbFaqJsonLd(locale, id));
-    writeJsonLd("breadcrumb-jsonld", kbBreadcrumbJsonLd(locale, id));
+    writeJsonLd("faq-jsonld", kbFaqJsonLd(locale, kbPage));
+    writeJsonLd("breadcrumb-jsonld", kbBreadcrumbJsonLd(locale, kbPage));
     return;
   }
   if (quizPage) {

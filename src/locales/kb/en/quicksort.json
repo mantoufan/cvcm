@@ -1,0 +1,262 @@
+{
+  "title": "Quicksort explained: partitioning, pivots, Python code and complexity — cv.cm",
+  "description": "Quicksort picks a pivot, partitions the list around it and sorts both sides. Lomuto partition trace, Python code, O(n log n) vs O(n²), pivots and stability.",
+  "h1": "Quicksort explained: how it works, code and complexity",
+  "answer": "Quicksort is a divide-and-conquer sorting algorithm. It picks one element as the pivot, rearranges the array so that smaller elements come before the pivot and larger ones after it (partitioning), and then sorts the two sides recursively. It runs in O(n log n) time on average and sorts in place with O(log n) stack space, but degrades to O(n²) when the pivots are consistently bad. It is not stable. With a random or median-of-three pivot, it is one of the fastest general-purpose sorts in practice.",
+  "sections": [
+    {
+      "h": "The idea in plain words",
+      "body": [
+        {
+          "ol": [
+            "Choose a pivot element, for example the last element, or a random one.",
+            "Partition: move every element smaller than the pivot to its left and every larger element to its right. The pivot is now in its final sorted position.",
+            "Recursively sort the part left of the pivot and the part right of it. Nothing needs to be combined afterwards."
+          ]
+        },
+        "Merge sort does easy splitting and hard merging. Quicksort is the opposite: the partition does the work, and joining the halves is free because they are already in the right place in the same array."
+      ]
+    },
+    {
+      "h": "Worked example: one Lomuto partition",
+      "body": [
+        "Partition `[10, 80, 30, 90, 40, 50, 70]` with the last element, 70, as pivot. Index `i` marks the end of the region of elements smaller than the pivot; `j` scans from left to right.",
+        {
+          "table": {
+            "head": [
+              "j",
+              "items[j]",
+              "Smaller than 70?",
+              "Action",
+              "Array after"
+            ],
+            "rows": [
+              [
+                "0",
+                "10",
+                "yes",
+                "i = 0, swap 0↔0",
+                "`[10, 80, 30, 90, 40, 50, 70]`"
+              ],
+              [
+                "1",
+                "80",
+                "no",
+                "none",
+                "`[10, 80, 30, 90, 40, 50, 70]`"
+              ],
+              [
+                "2",
+                "30",
+                "yes",
+                "i = 1, swap 1↔2",
+                "`[10, 30, 80, 90, 40, 50, 70]`"
+              ],
+              [
+                "3",
+                "90",
+                "no",
+                "none",
+                "`[10, 30, 80, 90, 40, 50, 70]`"
+              ],
+              [
+                "4",
+                "40",
+                "yes",
+                "i = 2, swap 2↔4",
+                "`[10, 30, 40, 90, 80, 50, 70]`"
+              ],
+              [
+                "5",
+                "50",
+                "yes",
+                "i = 3, swap 3↔5",
+                "`[10, 30, 40, 50, 80, 90, 70]`"
+              ],
+              [
+                "end",
+                "",
+                "",
+                "put pivot at i + 1 = 4",
+                "`[10, 30, 40, 50, 70, 90, 80]`"
+              ]
+            ]
+          }
+        },
+        "70 is now at index 4, its final position. Quicksort then sorts `[10, 30, 40, 50]` and `[90, 80]` separately."
+      ]
+    },
+    {
+      "h": "Python implementation",
+      "body": [
+        {
+          "code": "import random\n\ndef partition(a, lo, hi):\n    \"\"\"Lomuto partition of a[lo..hi] around a random pivot.\"\"\"\n    r = random.randint(lo, hi)\n    a[r], a[hi] = a[hi], a[r]       # move the pivot to the end\n    pivot = a[hi]\n    i = lo - 1\n    for j in range(lo, hi):\n        if a[j] < pivot:\n            i += 1\n            a[i], a[j] = a[j], a[i]\n    a[i + 1], a[hi] = a[hi], a[i + 1]\n    return i + 1\n\ndef quicksort(a, lo=0, hi=None):\n    \"\"\"Sort list a in place.\"\"\"\n    if hi is None:\n        hi = len(a) - 1\n    while lo < hi:\n        p = partition(a, lo, hi)\n        if p - lo < hi - p:           # recurse on the smaller side\n            quicksort(a, lo, p - 1)\n            lo = p + 1\n        else:\n            quicksort(a, p + 1, hi)\n            hi = p - 1\n    return a\n\nprint(quicksort([10, 80, 30, 90, 40, 50, 70]))   # [10, 30, 40, 50, 70, 80, 90]\nprint(quicksort([3, 3, 3, 1]))                   # [1, 3, 3, 3]",
+          "lang": "python"
+        },
+        "Recursing into the smaller side and looping on the larger side keeps the stack depth at O(log n) even in the worst case. A short, non-in-place version is popular for explaining the idea, but it allocates new lists at each level:",
+        {
+          "code": "def quicksort_simple(items):\n    if len(items) <= 1:\n        return items\n    pivot = items[len(items) // 2]\n    less = [x for x in items if x < pivot]\n    equal = [x for x in items if x == pivot]\n    greater = [x for x in items if x > pivot]\n    return quicksort_simple(less) + equal + quicksort_simple(greater)\n\nprint(quicksort_simple([5, 2, 9, 2, 7]))   # [2, 2, 5, 7, 9]",
+          "lang": "python"
+        }
+      ]
+    },
+    {
+      "h": "Time and space complexity",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Case",
+              "Time",
+              "Reason"
+            ],
+            "rows": [
+              [
+                "Best",
+                "O(n log n)",
+                "every pivot splits the range in half"
+              ],
+              [
+                "Average",
+                "O(n log n)",
+                "random pivots give balanced enough splits, about 1.39 n log₂ n comparisons"
+              ],
+              [
+                "Worst",
+                "O(n²)",
+                "every pivot is the smallest or largest element"
+              ],
+              [
+                "Extra space",
+                "O(log n)",
+                "recursion stack when recursing on the smaller side"
+              ]
+            ]
+          }
+        },
+        "The classic worst case is a fixed first-or-last-element pivot on input that is already sorted or reverse sorted: each partition removes only the pivot, giving n levels of O(n) work. A random pivot makes this extremely unlikely for any input."
+      ]
+    },
+    {
+      "h": "How quicksort compares with other sorts",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Algorithm",
+              "Best",
+              "Average",
+              "Worst",
+              "Extra space",
+              "Stable"
+            ],
+            "rows": [
+              [
+                "Quicksort",
+                "O(n log n)",
+                "O(n log n)",
+                "O(n²)",
+                "O(log n)",
+                "No"
+              ],
+              [
+                "Merge sort",
+                "O(n log n)",
+                "O(n log n)",
+                "O(n log n)",
+                "O(n)",
+                "Yes"
+              ],
+              [
+                "Heapsort",
+                "O(n log n)",
+                "O(n log n)",
+                "O(n log n)",
+                "O(1)",
+                "No"
+              ],
+              [
+                "Insertion sort",
+                "O(n)",
+                "O(n²)",
+                "O(n²)",
+                "O(1)",
+                "Yes"
+              ],
+              [
+                "Bubble sort",
+                "O(n)",
+                "O(n²)",
+                "O(n²)",
+                "O(1)",
+                "Yes"
+              ],
+              [
+                "Selection sort",
+                "O(n²)",
+                "O(n²)",
+                "O(n²)",
+                "O(1)",
+                "No"
+              ],
+              [
+                "Timsort (Python `sorted`)",
+                "O(n)",
+                "O(n log n)",
+                "O(n log n)",
+                "O(n)",
+                "Yes"
+              ]
+            ]
+          }
+        },
+        "Quicksort is not stable: a partition swap can move an element past an equal one. It usually beats merge sort and heapsort on arrays in memory because its inner loop is simple, it works in place and it accesses memory mostly sequentially. Introsort, used by many C++ standard library implementations of `std::sort`, starts with quicksort and switches to heapsort if the recursion gets too deep, which guarantees O(n log n)."
+      ]
+    },
+    {
+      "h": "Pivot choices, variants and common mistakes",
+      "body": [
+        {
+          "ul": [
+            "Pivot choice: first or last element (simple, but O(n²) on sorted input), random element, or median of three (first, middle, last).",
+            "Hoare partition: two indexes move toward each other and swap pairs that are on the wrong side. It does fewer swaps than Lomuto on average.",
+            "Three-way partition (Dutch national flag): splits into less, equal and greater. It makes arrays with many duplicate keys fast; plain Lomuto degrades to O(n²) when all keys are equal.",
+            "Dual-pivot quicksort uses two pivots and three parts; Java uses it to sort arrays of primitive types.",
+            "Quickselect uses one partition and recurses into only one side to find the k-th smallest element in O(n) average time."
+          ]
+        },
+        {
+          "note": "Common bugs: an off-by-one in the partition bounds that leaves the pivot inside a subarray (infinite recursion), recursing on both sides without care so sorted input hits Python's recursion limit of about 1000, and assuming quicksort is stable."
+        }
+      ]
+    },
+    {
+      "h": "When to use quicksort",
+      "body": [
+        "Quicksort is a good default for sorting arrays in memory when stability is not needed. In Python, use `sorted()` or `list.sort()` instead; they use Timsort, which is stable and fast on partially sorted data. Implementing quicksort is a very common interview task, often followed by questions about the worst case, pivot choice, stability, or using quickselect to find the k-th largest element."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Is quicksort stable?",
+      "a": "No. Partitioning swaps elements over long distances, so equal elements can change their relative order. Stable versions exist but need extra memory."
+    },
+    {
+      "q": "What is the worst case of quicksort?",
+      "a": "O(n²), when every pivot is the minimum or maximum of its range, for example a last-element pivot on already sorted input. Random or median-of-three pivots avoid this in practice."
+    },
+    {
+      "q": "Why is quicksort fast in practice?",
+      "a": "It sorts in place, its inner loop is a simple comparison and swap, and it scans memory sequentially, which uses CPU caches well. Its average constant factor is smaller than heapsort's and it needs no buffer like merge sort."
+    },
+    {
+      "q": "What is the difference between quicksort and merge sort?",
+      "a": "Quicksort partitions first and needs no merge; merge sort splits first and does its work in the merge. Quicksort is in place but has an O(n²) worst case and is not stable; merge sort is stable, always O(n log n) and needs O(n) extra space."
+    },
+    {
+      "q": "How much memory does quicksort use?",
+      "a": "It sorts in place. The recursion stack is O(log n) on average, and O(log n) in the worst case too if you always recurse into the smaller side first."
+    }
+  ]
+}

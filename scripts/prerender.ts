@@ -88,7 +88,10 @@ for (const page of sitemapPages()) {
   // Frames (the game player) start loading from the server HTML; leave them empty so only the mounted page loads one.
   app.querySelectorAll("iframe").forEach((el) => el.removeAttribute("src"));
   // Date and time fields default to "now": leave them empty rather than showing the build date.
-  app.querySelectorAll<HTMLInputElement>('input[type="date"], input[type="datetime-local"], input[type="time"]').forEach((el) => { el.value = ""; });
+  // A field with a fixed sample date (data-fixed-date) keeps it, so it matches the results shown under it.
+  app.querySelectorAll<HTMLInputElement>('input[type="date"], input[type="datetime-local"], input[type="time"]').forEach((el) => {
+    if (!el.hasAttribute("data-fixed-date")) el.value = "";
+  });
   // Form state lives in DOM properties; copy it to attributes so the markup shows what the tool shows.
   app.querySelectorAll("textarea").forEach((el) => { el.textContent = el.value; });
   app.querySelectorAll("input").forEach((el) => {

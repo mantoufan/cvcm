@@ -1,0 +1,218 @@
+{
+  "title": "Học lập trình Clojure cơ bản: cú pháp, collection, hàm và REPL — cv.cm",
+  "description": "Học Clojure từ con số không: cài CLI, viết Hello world, dùng vector và map bất biến, định nghĩa hàm, threading macro, atom và xử lý lỗi.",
+  "h1": "Hướng dẫn học lập trình Clojure cơ bản cho người mới",
+  "answer": "Clojure là một Lisp hàm, kiểu động, chạy trên Java Virtual Machine (với ClojureScript cho JavaScript). Mã được viết dưới dạng danh sách trong ngoặc đơn, dữ liệu mặc định là bất biến, và bạn xây chương trình bằng cách kết hợp các hàm nhỏ trên vector, map và set. Bạn cài Clojure CLI, mở REPL bằng `clj`, và chạy một tệp bằng `clojure -M hello.clj`.",
+  "sections": [
+    {
+      "h": "Clojure là gì và ai dùng nó",
+      "body": [
+        "Clojure do Rich Hickey tạo ra và phát hành lần đầu năm 2007. Nó là một phương ngữ Lisp: mọi biểu thức là một danh sách mà phần tử đầu tiên là hàm hoặc toán tử, ví dụ `(+ 1 2)`. Nó biên dịch ra bytecode JVM nên có thể gọi trực tiếp bất kỳ thư viện Java nào. ClojureScript biên dịch cùng ngôn ngữ đó sang JavaScript cho trình duyệt và Node.js.",
+        "Clojure được dùng cho dịch vụ web backend, đường ống xử lý dữ liệu và hệ thống nghiệp vụ nội bộ, nhất là ở nơi các nhóm coi trọng dữ liệu bất biến và phát triển tương tác. Lập trình viên thường làm việc trong REPL (vòng lặp đọc-đánh giá-in) kết nối với trình soạn thảo, đánh giá từng biểu thức một khi chương trình đang chạy."
+      ]
+    },
+    {
+      "h": "Cài Clojure và chạy Hello, world",
+      "body": [
+        "Cài môi trường chạy Java (JDK 17 trở lên là lựa chọn an toàn), rồi cài công cụ Clojure CLI từ clojure.org (Homebrew trên macOS, script cài đặt trên Linux, hoặc trình cài đặt cho Windows). CLI cung cấp hai lệnh: `clj` (REPL có chỉnh sửa dòng) và `clojure` (để chạy chương trình).",
+        {
+          "code": ";; hello.clj\n(println \"Hello, world!\")",
+          "lang": "clojure"
+        },
+        {
+          "code": "clojure -M hello.clj\n# Hello, world!\nclj\n# user=> (+ 1 2)\n# 3",
+          "lang": "shell"
+        },
+        "Dự án thực tế giữ các thư viện phụ thuộc trong tệp `deps.edn` và mã nguồn dưới `src/`, mỗi tệp một namespace. Leiningen (`lein`) là công cụ build cũ hơn nhưng vẫn phổ biến, dùng tệp `project.clj`."
+      ]
+    },
+    {
+      "h": "Giá trị, kiểu và tên",
+      "body": [
+        "Clojure có kiểu động. `def` gắn một tên toàn cục (var) và `let` gắn các tên cục bộ. Giá trị không đổi sau khi được tạo: không có câu lệnh gán.",
+        {
+          "table": {
+            "head": [
+              "Kiểu",
+              "Ví dụ",
+              "Ghi chú"
+            ],
+            "rows": [
+              [
+                "Số nguyên",
+                "`42`",
+                "`long` 64 bit; `42N` là BigInt"
+              ],
+              [
+                "Số thực dấu phẩy động",
+                "`3.14`",
+                "Một `double` của Java"
+              ],
+              [
+                "Tỷ số (Ratio)",
+                "`(/ 1 3)`",
+                "Phân số chính xác `1/3`, không phải 0.333"
+              ],
+              [
+                "Chuỗi",
+                "`\"hello\"`",
+                "Một `String` của Java, chỉ dùng dấu nháy kép"
+              ],
+              [
+                "Ký tự",
+                "`\\a`",
+                "Một ký tự đơn"
+              ],
+              [
+                "Keyword",
+                "`:name`",
+                "Nhãn nhanh, tự đánh giá thành chính nó, thường là khóa của map"
+              ],
+              [
+                "Boolean / nil",
+                "`true`, `false`, `nil`",
+                "Chỉ `false` và `nil` là sai"
+              ]
+            ]
+          }
+        },
+        {
+          "code": "(def pi-approx 3.14159)\n(let [r 2\n      area (* pi-approx r r)]\n  (println \"Area:\" area))\n;; Area: 12.56636\n(str \"a\" 1 :b)   ;; => \"a1:b\"",
+          "lang": "clojure"
+        }
+      ]
+    },
+    {
+      "h": "Điều khiển luồng",
+      "body": [
+        "Trong Clojure mọi thứ là biểu thức trả về giá trị, kể cả `if`. `if` nhận đúng một dạng \"then\" và một dạng \"else\"; dùng `when` cho nhiều hiệu ứng phụ mà không có nhánh else, và `cond` cho nhiều điều kiện.",
+        {
+          "code": "(defn grade [score]\n  (cond\n    (>= score 90) \"A\"\n    (>= score 80) \"B\"\n    :else         \"C\"))\n(println (grade 85))            ;; B\n(when (pos? 5) (println \"positive\") :done)\n(doseq [x [1 2 3]] (println (* x x)))   ;; 1 4 9\n(for [x (range 5) :when (odd? x)] (* x 10))   ;; => (10 30)\n(loop [i 0 acc 0]\n  (if (< i 5) (recur (inc i) (+ acc i)) acc))   ;; => 10",
+          "lang": "clojure"
+        },
+        "Không có vòng lặp `for` với biến đếm mà bạn thay đổi. `doseq` chạy hiệu ứng phụ cho từng phần tử, `for` tạo một dãy lười (list comprehension), và `loop`/`recur` diễn tả phép lặp mà không làm ngăn xếp gọi hàm phình ra."
+      ]
+    },
+    {
+      "h": "Hàm",
+      "body": [
+        "Định nghĩa hàm có tên bằng `defn`. Một hàm có thể có nhiều arity (số đối số khác nhau), và `#(...)` là dạng ngắn cho hàm ẩn danh nhỏ, trong đó `%` là đối số.",
+        {
+          "code": "(defn greet\n  ([] (greet \"world\"))\n  ([name] (str \"Hello, \" name \"!\")))\n(greet)          ;; => \"Hello, world!\"\n(greet \"Ana\")    ;; => \"Hello, Ana!\"\n(defn sum-all [& nums] (reduce + nums))\n(sum-all 1 2 3)  ;; => 6\n(map #(* % %) [1 2 3])        ;; => (1 4 9)\n(filter even? (range 10))     ;; => (0 2 4 6 8)",
+          "lang": "clojure"
+        },
+        "Hàm là giá trị: bạn có thể truyền chúng cho `map`, `filter` và `reduce`, trả về từ hàm khác và lưu trong map."
+      ]
+    },
+    {
+      "h": "Collection: danh sách, vector, map và set",
+      "body": [
+        "Bốn collection lõi của Clojure đều bất biến và bền vững (persistent): \"thay đổi\" một collection sẽ trả về phiên bản mới dùng chung phần lớn cấu trúc với bản cũ, nên cập nhật rất rẻ.",
+        {
+          "table": {
+            "head": [
+              "Collection",
+              "Cú pháp literal",
+              "Cách dùng điển hình"
+            ],
+            "rows": [
+              [
+                "Danh sách",
+                "`'(1 2 3)`",
+                "Mã nguồn và dữ liệu tuần tự, thêm vào đầu"
+              ],
+              [
+                "Vector",
+                "`[1 2 3]`",
+                "Dãy có chỉ số, thêm vào cuối"
+              ],
+              [
+                "Map",
+                "`{:name \"Ana\" :age 30}`",
+                "Bản ghi khóa-giá trị"
+              ],
+              [
+                "Set",
+                "`#{:red :green}`",
+                "Giá trị duy nhất, kiểm tra thành viên"
+              ]
+            ]
+          }
+        },
+        {
+          "code": "(def user {:name \"Ana\" :age 30})\n(:name user)                   ;; => \"Ana\"\n(assoc user :email \"a@x.io\")   ;; new map with :email\n(update user :age inc)         ;; => {:name \"Ana\", :age 31}\n(conj [1 2] 3)                 ;; => [1 2 3]\n(contains? #{:red :green} :red) ;; => true\n(get-in {:a {:b 1}} [:a :b])   ;; => 1\nuser                           ;; unchanged: {:name \"Ana\", :age 30}",
+          "lang": "clojure"
+        }
+      ]
+    },
+    {
+      "h": "Tính năng đặc trưng: threading macro, atom và macro",
+      "body": [
+        "Threading macro giúp đường ống dữ liệu đọc từ trên xuống dưới. `->` chèn kết quả trước đó làm đối số đầu tiên của dạng kế tiếp; `->>` chèn nó làm đối số cuối cùng.",
+        {
+          "code": "(->> (range 1 11)\n     (filter odd?)\n     (map #(* % %))\n     (reduce +))   ;; => 165\n(def counter (atom 0))\n(swap! counter inc)\n(swap! counter + 10)\n@counter           ;; => 11\n(defmacro unless [test & body]\n  `(if ~test nil (do ~@body)))\n(unless false (println \"runs\"))",
+          "lang": "clojure"
+        },
+        "Atom giữ trạng thái có thể thay đổi: `swap!` áp dụng một hàm một cách nguyên tử, nên dùng an toàn từ nhiều luồng. Ref và agent xử lý các trường hợp đồng thời khác. Vì mã là dữ liệu (danh sách), macro có thể biến đổi mã trước khi biên dịch; `when`, `cond` và `->` bản thân cũng là macro."
+      ]
+    },
+    {
+      "h": "Xử lý lỗi",
+      "body": [
+        "Clojure dùng ngoại lệ JVM với `try`, `catch` và `finally`. Để gắn dữ liệu vào lỗi, hãy ném `ex-info` và đọc lại dữ liệu bằng `ex-data`.",
+        {
+          "code": "(defn parse-age [s]\n  (let [n (Long/parseLong s)]\n    (when (neg? n)\n      (throw (ex-info \"Age must not be negative\" {:value n})))\n    n))\n(try\n  (parse-age \"-5\")\n  (catch clojure.lang.ExceptionInfo e\n    (println (ex-message e) (ex-data e)))\n  (catch NumberFormatException _\n    (println \"not a number\")))\n;; Age must not be negative {:value -5}",
+          "lang": "clojure"
+        }
+      ]
+    },
+    {
+      "h": "Một chương trình hoàn chỉnh nhỏ: tần suất từ",
+      "body": [
+        {
+          "code": "(ns wordcount\n  (:require [clojure.string :as str]))\n(defn word-counts [text]\n  (->> (str/split (str/lower-case text) #\"\\W+\")\n       (remove str/blank?)\n       frequencies\n       (sort-by val >)))\n(doseq [[word n] (take 2 (word-counts \"The cat and the hat and the bat\"))]\n  (println word n))\n;; the 3\n;; and 2",
+          "lang": "clojure"
+        },
+        "Chương trình chuyển văn bản sang chữ thường, tách theo ký tự không phải ký tự từ bằng literal biểu thức chính quy `#\"\\W+\"`, đếm từng từ bằng `frequencies` (trả về một map), và sắp xếp các mục theo số lần giảm dần.",
+        {
+          "note": "Lỗi thường gặp của người mới: đặt hàm ra ngoài dấu ngoặc (`print(x)` thay vì `(println x)`); mong `assoc` hoặc `conj` sửa collection tại chỗ (chúng trả về collection mới, nên hãy giữ kết quả); quên rằng `map` và `for` là lười, nên hiệu ứng phụ bên trong có thể không bao giờ chạy tại REPL hoặc trong script (hãy dùng `doseq` hoặc `run!`); và coi `0` hay chuỗi rỗng là sai (chỉ `false` và `nil` là sai)."
+        }
+      ]
+    },
+    {
+      "h": "Học tiếp ở đâu",
+      "body": [
+        {
+          "ul": [
+            "Các hướng dẫn chính thức tại clojure.org: Getting Started, Learn Clojure và hướng dẫn deps.edn.",
+            "Các trang tham chiếu Clojure về cú pháp reader, special form và cấu trúc dữ liệu.",
+            "Thiết lập trình soạn thảo với REPL kết nối (ví dụ Calva cho VS Code, CIDER cho Emacs hoặc Cursive cho IntelliJ).",
+            "Thử ClojureScript nếu bạn muốn nhắm tới trình duyệt."
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Clojure có phải ngôn ngữ hàm không?",
+      "a": "Có. Clojure ưu tiên hàm thuần túy và dữ liệu bất biến, nhưng nó thực dụng: cho phép hiệu ứng phụ và cung cấp trạng thái khả biến được quản lý qua atom, ref và agent."
+    },
+    {
+      "q": "Tôi có cần biết Java để học Clojure không?",
+      "a": "Không. Bạn có thể học ngôn ngữ mà không cần Java, nhưng cần cài môi trường chạy Java, và biết chút ít về JVM sẽ giúp khi đọc stack trace hoặc dùng thư viện Java."
+    },
+    {
+      "q": "Danh sách và vector trong Clojure khác nhau thế nào?",
+      "a": "Danh sách `'(1 2 3)` thêm phần tử vào đầu và chủ yếu dùng cho mã nguồn; vector `[1 2 3]` thêm vào cuối và hỗ trợ truy cập nhanh theo chỉ số. Phần lớn dữ liệu trong chương trình Clojure được lưu trong vector và map."
+    },
+    {
+      "q": "Vì sao Clojure dùng nhiều dấu ngoặc đến vậy?",
+      "a": "Mã Clojure được viết dưới dạng cấu trúc dữ liệu Lisp, nên mỗi lời gọi là một danh sách. Cú pháp đồng nhất này là điều làm cho macro khả thi, và các trình soạn thảo có chỉnh sửa theo cấu trúc giúp quản lý dấu ngoặc dễ dàng."
+    },
+    {
+      "q": "Clojure và ClojureScript khác nhau thế nào?",
+      "a": "Chúng là cùng một ngôn ngữ trên các môi trường chủ khác nhau: Clojure chạy trên JVM, ClojureScript biên dịch sang JavaScript. Phần tương tác với môi trường chủ khác nhau, nhưng các hàm lõi và cấu trúc dữ liệu thì giống nhau."
+    }
+  ]
+}

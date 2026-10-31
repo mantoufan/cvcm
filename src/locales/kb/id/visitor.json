@@ -1,0 +1,154 @@
+{
+  "title": "Pola Visitor: double dispatch dan AST visitor di TypeScript — cv.cm",
+  "description": "Pola Visitor menambah operasi ke hierarki class tanpa mengubah class-nya. Pelajari double dispatch, kode TypeScript, dan alternatif union type.",
+  "h1": "Penjelasan pola Visitor beserta contohnya",
+  "answer": "Visitor adalah pola desain behavioral yang memungkinkan Anda menambah operasi baru ke sekelompok class terkait tanpa mengubah class tersebut. Setiap operasi ditulis sebagai objek visitor dengan satu method per tipe elemen, dan setiap elemen punya method `accept(visitor)` yang memanggil method visitor yang cocok. Teknik ini, yang disebut double dispatch, memilih kode yang dijalankan berdasarkan tipe elemen sekaligus tipe visitor. Compiler, linter, dan code transformer memakai visitor untuk menelusuri syntax tree.",
+  "sections": [
+    {
+      "h": "Tujuan dan masalah yang diselesaikan",
+      "body": [
+        "Tujuan: merepresentasikan operasi yang akan dilakukan pada elemen-elemen struktur objek. Visitor memungkinkan Anda mendefinisikan operasi baru tanpa mengubah class elemen yang dioperasikannya. Ini salah satu pola behavioral dalam buku Gang of Four (GoF).",
+        "Misalkan program menggambar punya tiga class bentuk: `Circle`, `Rectangle`, dan `Group`. Seiring waktu Anda butuh banyak operasi pada mereka: menghitung total luas, ekspor ke SVG, ekspor ke JSON, menghitung jumlah bentuk, memeriksa tumpang tindih. Jika setiap operasi menjadi method di setiap class bentuk, class bentuk membengkak dengan kode yang tidak ada hubungannya dengan menjadi sebuah bentuk, dan setiap operasi baru menyentuh semuanya.",
+        "Dengan Visitor, setiap operasi menjadi satu class (visitor luas, visitor SVG) yang berisi kode untuk setiap tipe bentuk. Bentuk hanya butuh satu method generik, `accept`. Menambah operasi berarti menulis satu visitor baru; class bentuk tidak berubah."
+      ]
+    },
+    {
+      "h": "Struktur dan peserta",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Peran",
+              "Tanggung jawab"
+            ],
+            "rows": [
+              [
+                "Visitor",
+                "Interface dengan satu method visit per tipe elemen konkret, seperti `visitCircle` dan `visitRectangle`"
+              ],
+              [
+                "Concrete visitor",
+                "Mengimplementasikan satu operasi untuk semua tipe elemen dan dapat mengumpulkan hasil"
+              ],
+              [
+                "Element",
+                "Interface dengan method `accept(visitor)`"
+              ],
+              [
+                "Concrete element",
+                "Mengimplementasikan `accept` dengan memanggil method visit untuk tipenya sendiri, sambil mengoper dirinya"
+              ],
+              [
+                "Object structure",
+                "Koleksi atau pohon elemen, seperti dokumen atau syntax tree, yang ditelusuri visitor"
+              ]
+            ]
+          }
+        },
+        "Mengapa `accept` dibutuhkan: di TypeScript, Java, dan C#, pemanggilan method memilih implementasinya dari tipe objek tempat method dipanggil (single dispatch). Pemanggilan `accept` melakukan dispatch pada tipe elemen, dan pemanggilan di dalamnya, seperti `visitor.visitCircle(this)`, melakukan dispatch pada tipe visitor. Keduanya bersama-sama membentuk double dispatch."
+      ]
+    },
+    {
+      "h": "Implementasi TypeScript",
+      "body": [
+        "Interface visitor bersifat generik pada tipe kembaliannya, sehingga satu visitor dapat menghitung angka dan visitor lain dapat menghasilkan string.",
+        {
+          "code": "interface ShapeVisitor<R> {\n  visitCircle(c: Circle): R;\n  visitRectangle(r: Rectangle): R;\n  visitGroup(g: Group): R;\n}\ninterface Shape {\n  accept<R>(visitor: ShapeVisitor<R>): R;\n}\n\nclass Circle implements Shape {\n  constructor(readonly radius: number) {}\n  accept<R>(v: ShapeVisitor<R>) { return v.visitCircle(this); }\n}\nclass Rectangle implements Shape {\n  constructor(readonly width: number, readonly height: number) {}\n  accept<R>(v: ShapeVisitor<R>) { return v.visitRectangle(this); }\n}\nclass Group implements Shape {\n  constructor(readonly children: Shape[]) {}\n  accept<R>(v: ShapeVisitor<R>) { return v.visitGroup(this); }\n}\n\nclass AreaVisitor implements ShapeVisitor<number> {\n  visitCircle(c: Circle) { return Math.PI * c.radius ** 2; }\n  visitRectangle(r: Rectangle) { return r.width * r.height; }\n  visitGroup(g: Group): number {\n    return g.children.reduce((sum, child) => sum + child.accept(this), 0);\n  }\n}\n\nclass SvgVisitor implements ShapeVisitor<string> {\n  visitCircle(c: Circle) { return '<circle r=\"' + c.radius + '\"/>'; }\n  visitRectangle(r: Rectangle) { return '<rect width=\"' + r.width + '\" height=\"' + r.height + '\"/>'; }\n  visitGroup(g: Group): string { return \"<g>\" + g.children.map((c) => c.accept(this)).join(\"\") + \"</g>\"; }\n}\n\nconst drawing = new Group([new Circle(1), new Rectangle(2, 3), new Group([new Rectangle(1, 1)])]);\nconsole.log(drawing.accept(new AreaVisitor()).toFixed(2)); // 10.14\nconsole.log(drawing.accept(new SvgVisitor()));\n// <g><circle r=\"1\"/><rect width=\"2\" height=\"3\"/><g><rect width=\"1\" height=\"1\"/></g></g>",
+          "lang": "typescript"
+        },
+        "Operasi ketiga, seperti menghitung jumlah bentuk, akan menjadi class baru yang mengimplementasikan `ShapeVisitor<number>`. Tidak ada class bentuk yang berubah.",
+        {
+          "note": "Visitor membuat penambahan operasi mudah tetapi penambahan tipe elemen sulit. Class bentuk baru, seperti `Triangle`, membutuhkan method baru di interface visitor dan di setiap visitor yang ada. Pakai pola ini bila kumpulan tipe elemen stabil dan kumpulan operasi terus bertambah."
+        }
+      ]
+    },
+    {
+      "h": "Alternatif TypeScript: union type dan switch",
+      "body": [
+        "Di TypeScript, discriminated union dengan `switch` yang exhaustive memberi banyak manfaat yang sama dengan kode lebih sedikit. Compiler melaporkan error jika ada kasus yang hilang, yang menggantikan keamanan yang diberikan interface visitor:",
+        {
+          "code": "type Shape =\n  | { kind: \"circle\"; radius: number }\n  | { kind: \"rect\"; width: number; height: number }\n  | { kind: \"group\"; children: Shape[] };\n\nfunction area(s: Shape): number {\n  switch (s.kind) {\n    case \"circle\": return Math.PI * s.radius ** 2;\n    case \"rect\": return s.width * s.height;\n    case \"group\": return s.children.reduce((sum, c) => sum + area(c), 0);\n    default: {\n      const unreachable: never = s; // compile error if a kind is not handled\n      return unreachable;\n    }\n  }\n}\n\nconsole.log(area({ kind: \"group\", children: [{ kind: \"rect\", width: 2, height: 3 }] })); // 6",
+          "lang": "typescript"
+        },
+        "Setiap operasi baru adalah fungsi baru. Gaya ini cocok untuk data biasa, seperti JSON atau syntax tree, dan dipakai banyak basis kode TypeScript sebagai pengganti visitor berbasis class."
+      ]
+    },
+    {
+      "h": "Kapan dipakai dan kapan tidak",
+      "body": [
+        {
+          "ul": [
+            "Pakai bila Anda punya kumpulan class elemen yang stabil dan butuh banyak operasi yang tidak berkaitan pada mereka, seperti evaluasi, pencetakan, pengecekan tipe, dan optimasi pada syntax tree.",
+            "Pakai untuk menjaga kode operasi tetap bersama: seluruh ekspor SVG berada di satu visitor, tidak tersebar di banyak class.",
+            "Pakai bila visitor perlu mengakumulasi state saat menelusuri struktur, seperti symbol table atau total berjalan.",
+            "Jangan dipakai bila tipe elemen sering berubah; setiap perubahan merambat ke semua visitor.",
+            "Jangan dipakai bila elemennya sedikit dan operasinya sederhana. Method pada class, atau fungsi dengan `switch`, lebih mudah dibaca.",
+            "Perlu diingat bahwa visitor biasanya butuh akses ke data elemen, yang bisa mendorong Anda menjadikan field publik."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Penggunaan di dunia nyata",
+      "body": [
+        {
+          "ul": [
+            "Plugin Babel adalah visitor: objek dengan method yang dinamai menurut tipe node, seperti `Identifier` atau `CallExpression`, yang dipanggil `@babel/traverse` saat menelusuri syntax tree.",
+            "Aturan ESLint mengembalikan objek berisi method visitor dengan kunci tipe node, dan ESLint memanggilnya selama traversal.",
+            "Class `ast.NodeVisitor` dan `ast.NodeTransformer` di Python memanggil method `visit_` yang dinamai menurut class node, seperti `visit_Name`.",
+            "`java.nio.file.FileVisitor` di Java, dipakai dengan `Files.walkFileTree`, menerima callback untuk setiap direktori dan file dalam pohon file."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Pola terkait",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Pola",
+              "Hubungannya dengan Visitor"
+            ],
+            "rows": [
+              [
+                "Composite",
+                "Visitor sering diterapkan pada struktur Composite; method visit sebuah grup mengunjungi anak-anaknya, seperti pada contoh."
+              ],
+              [
+                "Interpreter",
+                "Interpreter mengevaluasi syntax tree; visitor dapat mengimplementasikan evaluasi itu, ditambah operasi lain pada pohon yang sama."
+              ],
+              [
+                "Iterator",
+                "Iterator menelusuri elemen; visitor mendefinisikan operasi pada setiap elemen. Keduanya dapat digabung."
+              ],
+              [
+                "Strategy",
+                "Strategy memvariasikan satu algoritma untuk satu context; visitor menggabungkan satu operasi untuk banyak tipe elemen."
+              ]
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Apa itu double dispatch?",
+      "a": "Double dispatch berarti kode yang dijalankan bergantung pada tipe dua objek. Pada Visitor, `element.accept(visitor)` memilih tipe elemen, dan `visitor.visitX(this)` di dalamnya memilih tipe visitor."
+    },
+    {
+      "q": "Kapan sebaiknya tidak memakai pola Visitor?",
+      "a": "Hindari bila tipe elemen baru sering ditambahkan, karena setiap tipe baru membutuhkan perubahan di setiap visitor. Pola ini juga menambah seremoni yang tidak sepadan untuk beberapa operasi sederhana."
+    },
+    {
+      "q": "Apakah Visitor berguna di TypeScript?",
+      "a": "Berguna untuk struktur objek berbasis class. Untuk data biasa, discriminated union dengan `switch` yang exhaustive biasanya memberi hasil yang sama dengan kode lebih sedikit dan pengecekan tipe penuh."
+    },
+    {
+      "q": "Mengapa Babel dan ESLint memakai visitor?",
+      "a": "Keduanya bekerja pada syntax tree dengan banyak tipe node dan mendukung banyak plugin atau aturan yang independen. Visitor memungkinkan setiap plugin atau aturan menangani hanya tipe node yang diminatinya, sementara tool menangani traversalnya."
+    }
+  ]
+}

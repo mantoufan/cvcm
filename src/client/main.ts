@@ -32,7 +32,7 @@ import { legalStaticHtml } from "../shared/legal";
 import type { MarketId } from "../shared/markets";
 import { QUIZZES, type QuizId } from "../shared/quiz";
 import { DATASETS, type DatasetId } from "../shared/datasets";
-import { KB_ARTICLES, isKbId, type KbPage } from "../shared/kb";
+import { KNOWLEDGE_ARTICLES, isKbId, kbArticleOf, kbGroupsOf, type KbPage } from "../shared/kb";
 import { BRANDED_TOOLS, hreflangAlternates, pageCanonical, pageDescription, pageTitle } from "../shared/seo";
 import { toolLessonsSection } from "./tool-lessons";
 import { TOOL_LOADERS } from "./tools";
@@ -66,7 +66,7 @@ let legalPage: LegalPageId | null = null;
 let quizPage: QuizId | "hub" | null = null;
 /** A data page: "hub" for /datasets/, else the table id. */
 let datasetPage: DatasetId | "hub" | null = null;
-/** A knowledge page: "hub" for /learn/knowledge/, else the article id. */
+/** A kb page: "hub" for /learn/knowledge/, "code" for /learn/code/, else the article id. */
 let kbPage: KbPage = null;
 const noop = (): void => {};
 let unmountCurrent: () => void = noop;
@@ -232,12 +232,12 @@ function prefetchGamePack(e: Event): void {
   if (target?.closest?.('a[data-nav^="game-"]')) {
     if (!hasPageMessages(loc, true)) loadPageMessages(loc, true).catch(() => {});
   } else {
-    const link = target?.closest?.('a[data-nav^="kb-"], a[data-nav="knowledge"]');
+    const link = target?.closest?.('a[data-nav^="kb-"], a[data-nav="knowledge"], a[data-nav="coding"]');
     if (!link) return;
-    // data-nav is "kb-<article id>" on an article link, "knowledge" on a hub link.
+    // data-nav is "kb-<article id>" on an article link, "knowledge" or "coding" on a hub link.
     const nav = link.getAttribute("data-nav") ?? "";
     const id = nav.startsWith("kb-") ? nav.slice(3) : "";
-    const page: KbPage = isKbId(id) ? id : "hub";
+    const page: KbPage = isKbId(id) ? id : nav === "coding" ? "code" : "hub";
     if (!hasPageMessages(loc, false, false, false, false, page)) loadPageMessages(loc, false, false, false, false, page).catch(() => {});
   }
 }
@@ -483,7 +483,7 @@ export function render(): void {
   }
 
   const seo = kbPage
-    ? { kb: true as const, kbId: kbPage === "hub" ? null : kbPage }
+    ? { kb: true as const, kbId: kbPage }
     : learnHub || tutorial
     ? { learn: true as const, tutorial }
     : gamesHub || gameId
@@ -511,7 +511,7 @@ export function render(): void {
   upsertMeta("property", "og:title", pageTitle(loc, seo));
   upsertMeta("property", "og:description", pageDescription(loc, seo));
   upsertMeta("property", "og:url", pageCanonical(loc, seo));
-  upsertMeta("property", "og:type", (tutorial || gameId || (kbPage && kbPage !== "hub")) ? "article" : "website");
+  upsertMeta("property", "og:type", (tutorial || gameId || kbArticleOf(kbPage)) ? "article" : "website");
   syncHreflang(seo);
   const image = devicePage
     ? DEVICE_COVER
@@ -729,8 +729,16 @@ function toolDirectory(loc: Locale): HTMLElement {
     h("div", { class: "dir-group" },
       h("h2", null, h("a", { href: kbHref(loc), "data-nav": "knowledge" }, t("kb.label"))),
       h("p", null,
-        ...KB_ARTICLES.map((id) =>
+        ...KNOWLEDGE_ARTICLES.map((id) =>
           h("a", { href: kbHref(loc, id), "data-nav": `kb-${id}`, "aria-current": kbPage === id ? "page" : undefined }, t(`kb.${id}.name`)),
+        ),
+      ),
+    ),
+    h("div", { class: "dir-group" },
+      h("h2", null, h("a", { href: kbHref(loc, "code"), "data-nav": "coding" }, t("kb.code.label"))),
+      h("p", null,
+        ...kbGroupsOf("code").map((group) =>
+          h("a", { href: `${kbHref(loc, "code")}#${group.id}`, "data-nav": "coding" }, t(`kb.code.groups.${group.id}`)),
         ),
       ),
     ),
@@ -783,7 +791,7 @@ async function mountPage(main: HTMLElement, loc: Locale): Promise<void> {
   } else if (kbPage) {
     const m = await import("./kb/ui");
     if (!alive()) return;
-    m.mountKb(main, loc, kbPage === "hub" ? null : kbPage);
+    m.mountKb(main, loc, kbPage);
   } else if (legalPage) {
     main.innerHTML = legalStaticHtml(loc, legalPage);
   } else if (marketId || marketsHub) {
@@ -855,7 +863,7 @@ function localeHref(next: Locale): string {
     : datasetPage
     ? withSearch(datasetHref(next, datasetPage === "hub" ? null : datasetPage), location.search)
     : kbPage
-    ? withSearch(kbHref(next, kbPage === "hub" ? null : kbPage), location.search)
+    ? withSearch(kbHref(next, kbPage), location.search)
     : legalPage
     ? withSearch(legalHref(next, legalPage), location.search)
     : learnHub || tutorial

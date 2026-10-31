@@ -1,0 +1,177 @@
+{
+  "title": "代理模式：TypeScript 中的虛擬代理、保護代理與快取代理 — cv.cm",
+  "description": "代理（Proxy）模式在真正的物件前面放一個替身物件來控制存取。了解 TypeScript 中的快取代理、延遲代理與保護代理，以及 JavaScript 的 Proxy。",
+  "h1": "代理模式詳解與範例",
+  "answer": "代理是一種結構型設計模式，它提供一個與真正物件具有相同介面的替代物件，讓代理能夠控制對真正物件的存取。用戶端把代理當成真正的物件來溝通，由代理決定何時、如何轉發每一次呼叫。常見的種類有虛擬代理（延遲建立）、保護代理（存取檢查）、快取代理和遠端代理。",
+  "sections": [
+    {
+      "h": "意圖與它解決的問題",
+      "body": [
+        "意圖：為另一個物件提供替身或佔位物件，以控制對它的存取。代理是《設計模式》（Gang of Four，簡稱 GoF）一書中的結構型模式之一。",
+        "假設某個應用程式透過網路呼叫氣象服務。每次呼叫要花數百毫秒，而且要付費，同一個城市每分鐘常常被查詢許多次。你無法更動這個服務類別，也不想在每個呼叫它的地方都加上快取程式碼。代理可以解決這個問題：它實作相同的介面、保存一份快取，只有在快取未命中時才呼叫真正的服務。呼叫端完全不必更動。",
+        "同樣的概念也能滿足其他需求：只在第一次使用時才建立昂貴的物件、在呼叫之前檢查權限、記錄每一次呼叫，或是隱藏真正的物件位在另一台機器上的事實。"
+      ]
+    },
+    {
+      "h": "結構與參與者",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "角色",
+              "職責"
+            ],
+            "rows": [
+              [
+                "主體（Subject）",
+                "真正的物件與代理共用的介面，讓用戶端可以使用其中任何一個"
+              ],
+              [
+                "真正的主體（Real subject）",
+                "負責實際工作的物件"
+              ],
+              [
+                "代理（Proxy）",
+                "實作主體介面，持有或建立真正主體的參照，並在轉發之前或之後加入控制邏輯"
+              ],
+              [
+                "用戶端",
+                "只使用主體介面，並不知道自己是否拿到的是代理"
+              ]
+            ]
+          }
+        },
+        {
+          "table": {
+            "head": [
+              "代理的種類",
+              "它控制的事項"
+            ],
+            "rows": [
+              [
+                "虛擬代理",
+                "延遲到真正需要時，才建立昂貴的物件"
+              ],
+              [
+                "保護代理",
+                "檢查呼叫者是否被允許執行某項操作"
+              ],
+              [
+                "快取代理",
+                "儲存結果，並在重複的請求時回傳"
+              ],
+              [
+                "遠端代理",
+                "代表位於另一個行程或另一台機器上的物件，並處理通訊"
+              ],
+              [
+                "記錄代理",
+                "在不更動真正物件的前提下，記錄呼叫與引數"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "TypeScript 實作：快取代理",
+      "body": [
+        "`WeatherService` 是主體。`CachedWeatherService` 是代理：它有相同的方法，只有在快取的值不存在或太舊時，才轉發給真正的服務。",
+        {
+          "code": "interface WeatherService {\n  getTemperature(city: string): Promise<number>;\n}\nclass RemoteWeatherService implements WeatherService {\n  calls = 0;\n  async getTemperature(city: string): Promise<number> {\n    this.calls++; // imagine a slow HTTP request here\n    return city.length * 3;\n  }\n}\nclass CachedWeatherService implements WeatherService {\n  private cache = new Map<string, { value: number; time: number }>();\n  constructor(private real: WeatherService, private maxAgeMs = 60_000) {}\n  async getTemperature(city: string): Promise<number> {\n    const hit = this.cache.get(city);\n    if (hit && Date.now() - hit.time < this.maxAgeMs) return hit.value;\n    const value = await this.real.getTemperature(city);\n    this.cache.set(city, { value, time: Date.now() });\n    return value;\n  }\n}\nasync function main() {\n  const real = new RemoteWeatherService();\n  const weather: WeatherService = new CachedWeatherService(real);\n  await weather.getTemperature(\"Paris\");\n  await weather.getTemperature(\"Paris\");\n  console.log(await weather.getTemperature(\"Hanoi\"), \"real calls:\", real.calls);\n  // 15 real calls: 2\n}\nmain();",
+          "lang": "typescript"
+        },
+        "用戶端變數的型別是 `WeatherService`，所以你可以在同一個地方切換真正的服務和代理，例如在依賴注入的設定中。"
+      ]
+    },
+    {
+      "h": "用 JavaScript Proxy 實作虛擬代理與保護代理",
+      "body": [
+        "JavaScript 有內建的 `Proxy` 物件（ES2015），它透過稱為 trap 的處理函式，攔截屬性讀取、寫入與函式呼叫這類操作。這是一種方便的方式，讓你不必為每個介面都寫一個類別，就能建立代理。",
+        {
+          "code": "type Account = { owner: string; balance: number };\nfunction readOnly<T extends object>(target: T): T {\n  return new Proxy(target, {\n    set(_obj, prop) {\n      throw new Error(\"Cannot change \" + String(prop) + \": read-only\");\n    },\n  });\n}\nconst account = readOnly<Account>({ owner: \"Ana\", balance: 100 });\nconsole.log(account.balance); // 100\ntry {\n  account.balance = 0;\n} catch (e) {\n  console.log((e as Error).message); // Cannot change balance: read-only\n}",
+          "lang": "typescript"
+        },
+        {
+          "note": "JavaScript 的 `Proxy` 會攔截對某一個物件的操作，但並非沒有代價：每個被攔截的操作都會執行一個函式。在沒有量測成本之前，不要把效能關鍵的資料結構包進 `Proxy`。"
+        }
+      ]
+    },
+    {
+      "h": "何時使用、何時不該用",
+      "body": [
+        {
+          "ul": [
+            "當你想在不更動真正類別及其呼叫端的情況下，加入延遲載入、存取控制、快取、記錄或遠端存取時，就使用它。",
+            "當真正的物件不在你的掌控之內，例如函式庫的類別或網路用戶端時，就使用它。",
+            "當單純的函式包裝就夠用時，不要使用它。對於單一函式，像 `memoize(fn)` 這樣的高階函式，比一個類別更簡單。",
+            "不要把緩慢或可能失敗的遠端呼叫，藏在看起來像本地的代理後面。呼叫端仍然需要處理延遲與錯誤，所以要在介面上讓這點看得見（例如回傳 `Promise`）。",
+            "要留意物件的身分：代理與真正的主體是不同的物件，所以 `proxy === real` 為 false。"
+          ]
+        }
+      ]
+    },
+    {
+      "h": "實際應用",
+      "body": [
+        {
+          "ul": [
+            "Vue 3 的響應式系統是建立在 JavaScript 的 `Proxy` 之上：讀取屬性時記錄依賴，寫入屬性時觸發更新。",
+            "Java 提供 `java.lang.reflect.Proxy`，可以在執行時期建立動態代理類別；框架會用它在介面外加上交易、安全檢查或遠端呼叫。",
+            "Hibernate 這類物件關聯對映器（ORM）會為相關的實體回傳延遲代理，並在第一次存取時，才從資料庫載入真正的資料。",
+            "遠端程序呼叫（RPC）函式庫會產生看起來像本地物件的用戶端存根（stub），但每一次呼叫都是透過網路送出。"
+          ]
+        }
+      ]
+    },
+    {
+      "h": "相關模式",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "模式",
+              "與代理的差異"
+            ],
+            "rows": [
+              [
+                "裝飾者",
+                "結構相同，目標不同：裝飾者新增行為，且常被堆疊使用；代理則控制存取，且通常自己管理真正物件的生命週期。"
+              ],
+              [
+                "轉接器",
+                "轉接器讓物件具備不同的介面；代理則保持完全相同的介面。"
+              ],
+              [
+                "外觀",
+                "外觀為整個子系統提供一個新的、較簡單的介面；代理則是替單一物件做替身。"
+              ],
+              [
+                "享元",
+                "享元藉由共用物件來節省記憶體；虛擬代理則是延遲建立物件，以節省時間與記憶體。"
+              ]
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "代理和裝飾者有什麼差別？",
+      "a": "兩者都以相同的介面包裝一個物件。裝飾者新增職責，通常由用戶端來組合；代理則控制對真正物件的存取，而且常常自己建立或管理那個物件。"
+    },
+    {
+      "q": "JavaScript 的 Proxy 物件就是代理模式嗎？",
+      "a": "它是讓這個模式容易實作的語言功能。JavaScript 的 `Proxy` 透過 trap 攔截對目標物件的操作，這正是 GoF 所說的代理所做的事。"
+    },
+    {
+      "q": "什麼是虛擬代理？",
+      "a": "虛擬代理是替一個建立成本高昂的物件（例如大型圖片）做替身。只有在第一次呼叫需要它的方法時，才會建立真正的物件。"
+    },
+    {
+      "q": "反向代理伺服器是代理模式的例子嗎？",
+      "a": "它在網路層級上遵循相同的概念：像 nginx 這樣的伺服器，以相同的 HTTP 介面擋在其他伺服器前面，並加入快取、存取控制或負載平衡。GoF 的模式則是為單一程式中的物件描述同樣的概念。"
+    }
+  ]
+}

@@ -1,0 +1,194 @@
+{
+  "title": "COBOL 入門教學：四大 Division、PIC 資料、PERFORM 迴圈與檔案 — cv.cm",
+  "description": "學會 COBOL 基礎：用 GnuCOBOL 編譯 Hello world、認識四大 Division、PIC 子句、IF 與 EVALUATE、PERFORM 迴圈、表格、檔案與錯誤處理。",
+  "h1": "COBOL 入門教學",
+  "answer": "COBOL（Common Business-Oriented Language）是為商業資料處理而設計的編譯式語言，擅長處理記錄、檔案、報表與精確的十進位運算。程式分成四個 Division，資料以 PIC（picture）子句描述，程式碼讀起來像 `ADD AMOUNT TO TOTAL` 這樣的英文句子。它至今仍在銀行、保險公司與政府機關運行核心系統，大多在 IBM 大型主機上。你可以用免費的 GnuCOBOL 編譯器學習：`cobc -x hello.cob`。",
+  "sections": [
+    {
+      "h": "COBOL 是什麼、誰在使用",
+      "body": [
+        "COBOL 由 CODASYL 委員會於 1959 年設計，深受 Grace Hopper 早期 FLOW-MATIC 語言的影響。它由 ISO 標準化；後來的標準加入了結構化程式設計、物件導向及其他特性，最新的修訂版於 2023 年發布。",
+        "COBOL 用於批次處理與交易系統：帳戶處理、薪資、保險理賠、稅務與福利系統。這類程式碼大多運行在 IBM Z 大型主機上，使用 IBM Enterprise COBOL，搭配處理交易的 CICS 與資料庫 Db2。維護並現代化這些系統的工作機會仍然很常見。"
+      ]
+    },
+    {
+      "h": "安裝 GnuCOBOL 並執行 Hello, world",
+      "body": [
+        "GnuCOBOL 是免費的編譯器，會把 COBOL 轉譯成 C，再編譯成原生程式。許多 Linux 發行版都有 `gnucobol` 套件，macOS 可透過 Homebrew 安裝；Windows 使用者可以用 WSL 或預先建置的套件。",
+        {
+          "code": "       IDENTIFICATION DIVISION.\n       PROGRAM-ID. HELLO.\n       PROCEDURE DIVISION.\n           DISPLAY \"Hello, world!\".\n           STOP RUN.",
+          "lang": "cobol"
+        },
+        {
+          "code": "cobc -x hello.cob\n./hello\n# Hello, world!",
+          "lang": "shell"
+        },
+        "這段程式碼採用傳統的固定格式：第 1 到 6 欄用於序號，第 7 欄標示註解（`*`）或接續行，A 區（第 8 到 11 欄）放置 Division、Section 與段落名稱，B 區（第 12 到 72 欄）放置陳述式。GnuCOBOL 也接受自由格式的原始碼，用法是 `cobc -x -free`。選項 `-x` 會建置可執行檔，而不是模組。"
+      ]
+    },
+    {
+      "h": "四大 Division",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Division",
+              "用途"
+            ],
+            "rows": [
+              [
+                "IDENTIFICATION DIVISION",
+                "為程式命名（`PROGRAM-ID`）"
+              ],
+              [
+                "ENVIRONMENT DIVISION",
+                "將程式連接到外部環境，例如它使用哪些檔案"
+              ],
+              [
+                "DATA DIVISION",
+                "宣告所有資料：檔案記錄、工作儲存區、參數"
+              ],
+              [
+                "PROCEDURE DIVISION",
+                "可執行的陳述式，組織成段落"
+              ]
+            ]
+          }
+        },
+        "每個變數在使用前，都必須在 DATA DIVISION 中宣告。WORKING-STORAGE SECTION 存放程式的變數，FILE SECTION 描述檔案記錄，LINKAGE SECTION 則描述呼叫者傳入的參數。"
+      ]
+    },
+    {
+      "h": "資料與 PIC 子句",
+      "body": [
+        "COBOL 以精確的版面配置來描述資料。層級編號表示階層（01 是一筆記錄，05 是其中的欄位），PIC 子句則給出格式：`X` 是任意字元，`9` 是數字，`S` 是正負號，`V` 是隱含的小數點。",
+        {
+          "table": {
+            "head": [
+              "宣告",
+              "意義",
+              "範例值"
+            ],
+            "rows": [
+              [
+                "`PIC X(10)`",
+                "10 個字元，以空格補齊",
+                "`\"Ana       \"`"
+              ],
+              [
+                "`PIC 9(3)`",
+                "無號的 3 位數字",
+                "`030`"
+              ],
+              [
+                "`PIC S9(5)V99`",
+                "有號，小數點前 5 位、後 2 位",
+                "`-01234.50`"
+              ],
+              [
+                "`PIC $ZZ,ZZ9.99`",
+                "編輯後的輸出：貨幣符號，前置的零以空格顯示",
+                "`$ 1,234.50`"
+              ],
+              [
+                "`PIC S9(7)V99 COMP-3`",
+                "緊縮十進位（packed decimal），在大型主機上很常見",
+                "儲存為 5 個位元組"
+              ],
+              [
+                "`88 IS-DONE VALUE \"Y\"`",
+                "條件名稱：對其父欄位做的布林測試",
+                "`IF IS-DONE`"
+              ]
+            ]
+          }
+        },
+        {
+          "code": "       IDENTIFICATION DIVISION.\n       PROGRAM-ID. DATA-DEMO.\n       DATA DIVISION.\n       WORKING-STORAGE SECTION.\n       01  WS-NAME        PIC X(10)      VALUE \"Ana\".\n       01  WS-AGE         PIC 9(3)       VALUE 30.\n       01  WS-PRICE       PIC S9(5)V99   VALUE 1234.50.\n       01  WS-PRICE-OUT   PIC $ZZ,ZZ9.99.\n       01  WS-CUSTOMER.\n           05  WS-FIRST   PIC X(10).\n           05  WS-LAST    PIC X(15).\n       PROCEDURE DIVISION.\n           MOVE WS-PRICE TO WS-PRICE-OUT\n           DISPLAY WS-NAME \"is \" WS-AGE\n           DISPLAY \"Price: \" WS-PRICE-OUT\n           STOP RUN.\n      *> Ana       is 030\n      *> Price: $ 1,234.50",
+          "lang": "cobol"
+        },
+        "數字以十進位儲存，所以 `0.10 + 0.20` 恰好是 `0.30`，這是 COBOL 適合處理金額的原因之一。`WS-CUSTOMER` 是群組項目：可以整個一起搬移，也可以逐欄搬移。"
+      ]
+    },
+    {
+      "h": "流程控制：IF、EVALUATE 與 PERFORM",
+      "body": [
+        {
+          "code": "       IDENTIFICATION DIVISION.\n       PROGRAM-ID. CONTROL-DEMO.\n       DATA DIVISION.\n       WORKING-STORAGE SECTION.\n       01  WS-I        PIC 99.\n       01  WS-TOTAL    PIC 9(4) VALUE 0.\n       01  WS-SCORE    PIC 999  VALUE 85.\n       PROCEDURE DIVISION.\n           PERFORM VARYING WS-I FROM 1 BY 1 UNTIL WS-I > 10\n               ADD WS-I TO WS-TOTAL\n           END-PERFORM\n           DISPLAY \"Total: \" WS-TOTAL\n           EVALUATE TRUE\n               WHEN WS-SCORE >= 90\n                   DISPLAY \"A\"\n               WHEN WS-SCORE >= 80\n                   DISPLAY \"B\"\n               WHEN OTHER\n                   DISPLAY \"C\"\n           END-EVALUATE\n           IF WS-TOTAL > 50\n               DISPLAY \"big\"\n           ELSE\n               DISPLAY \"small\"\n           END-IF\n           STOP RUN.\n      *> Total: 0055\n      *> B\n      *> big",
+          "lang": "cobol"
+        },
+        "`PERFORM VARYING` 是 COBOL 的計數迴圈，`PERFORM UNTIL condition` 則是它的 while 迴圈。`EVALUATE` 是 switch 陳述式。`END-IF` 與 `END-PERFORM` 等範圍終止符會結束各個區塊；句點則結束整個句子。"
+      ]
+    },
+    {
+      "h": "段落、算術與表格",
+      "body": [
+        "COBOL 沒有一般意義上的函式。你把邏輯組織成具名段落，再用 `PERFORM` 執行；較大的單元則成為獨立程式，用 `CALL \"PROG\" USING ...` 呼叫。算術使用動詞（`ADD`、`SUBTRACT`、`MULTIPLY`、`DIVIDE`），或用 `COMPUTE` 搭配公式。陣列稱為表格，以 `OCCURS` 宣告，索引從 1 開始。",
+        {
+          "code": "       IDENTIFICATION DIVISION.\n       PROGRAM-ID. PARA-DEMO.\n       DATA DIVISION.\n       WORKING-STORAGE SECTION.\n       01  WS-PRICES.\n           05  WS-PRICE   PIC 9(3)V99 OCCURS 3 TIMES.\n       01  WS-I           PIC 9.\n       01  WS-SUM         PIC 9(4)V99 VALUE 0.\n       01  WS-SUM-OUT     PIC Z,ZZ9.99.\n       PROCEDURE DIVISION.\n       MAIN-PARA.\n           MOVE 10.50 TO WS-PRICE(1)\n           MOVE 4.25  TO WS-PRICE(2)\n           MOVE 7.00  TO WS-PRICE(3)\n           PERFORM ADD-PRICE VARYING WS-I FROM 1 BY 1 UNTIL WS-I > 3\n           COMPUTE WS-SUM = WS-SUM * 1.1\n           MOVE WS-SUM TO WS-SUM-OUT\n           DISPLAY \"With 10% tax: \" WS-SUM-OUT\n           STOP RUN.\n       ADD-PRICE.\n           ADD WS-PRICE(WS-I) TO WS-SUM.\n      *> With 10% tax:    23.92",
+          "lang": "cobol"
+        },
+        "總和是 21.75；乘以 1.1 為 23.925，COBOL 會截斷到宣告的兩位小數（23.92），除非你寫 `COMPUTE ... ROUNDED`。"
+      ]
+    },
+    {
+      "h": "錯誤處理",
+      "body": [
+        "日常的 COBOL 程式碼沒有例外。取而代之的是，陳述式帶有條件子句：`ON SIZE ERROR` 處理算術溢位或除以零，`AT END` 處理檔案結尾，`INVALID KEY` 處理索引檔，另有 `FILE STATUS` 欄位，會在每次檔案操作後接收兩個字元的代碼（`\"00\"` 代表成功）。",
+        {
+          "code": "           DIVIDE WS-A BY WS-B GIVING WS-C\n               ON SIZE ERROR\n                   DISPLAY \"Division failed\"\n               NOT ON SIZE ERROR\n                   DISPLAY \"Result: \" WS-C\n           END-DIVIDE",
+          "lang": "cobol"
+        }
+      ]
+    },
+    {
+      "h": "完整的小程式：銷售檔案總計",
+      "body": [
+        "從檔案讀取固定格式的記錄，是典型的 COBOL 工作。這個程式讀取 `sales.txt`，其中每一行有 10 個字元的品名，後面接著 7 位數的金額（含兩位隱含小數）。",
+        {
+          "code": "apples    0001250\npears     0000899\nplums     0002000",
+          "lang": "text"
+        },
+        {
+          "code": "       IDENTIFICATION DIVISION.\n       PROGRAM-ID. SALES-TOTAL.\n       ENVIRONMENT DIVISION.\n       INPUT-OUTPUT SECTION.\n       FILE-CONTROL.\n           SELECT SALES-FILE ASSIGN TO \"sales.txt\"\n               ORGANIZATION IS LINE SEQUENTIAL\n               FILE STATUS IS WS-FS.\n       DATA DIVISION.\n       FILE SECTION.\n       FD  SALES-FILE.\n       01  SALES-REC.\n           05  SR-ITEM     PIC X(10).\n           05  SR-AMOUNT   PIC 9(5)V99.\n       WORKING-STORAGE SECTION.\n       01  WS-FS           PIC XX.\n       01  WS-EOF          PIC X VALUE \"N\".\n           88  NO-MORE-RECORDS       VALUE \"Y\".\n       01  WS-TOTAL        PIC 9(7)V99 VALUE 0.\n       01  WS-TOTAL-OUT    PIC Z,ZZZ,ZZ9.99.\n       PROCEDURE DIVISION.\n           OPEN INPUT SALES-FILE\n           IF WS-FS NOT = \"00\"\n               DISPLAY \"Cannot open file, status \" WS-FS\n               STOP RUN\n           END-IF\n           PERFORM UNTIL NO-MORE-RECORDS\n               READ SALES-FILE\n                   AT END SET NO-MORE-RECORDS TO TRUE\n                   NOT AT END ADD SR-AMOUNT TO WS-TOTAL\n               END-READ\n           END-PERFORM\n           CLOSE SALES-FILE\n           MOVE WS-TOTAL TO WS-TOTAL-OUT\n           DISPLAY \"Total sales: \" WS-TOTAL-OUT\n           STOP RUN.",
+          "lang": "cobol"
+        },
+        "執行後會印出 `Total sales:`，後面接著靠右對齊在 12 個字元編輯欄位中的 `41.49`。`LINE SEQUENTIAL` 代表每行一筆記錄的文字檔；GnuCOBOL 與其他 PC 編譯器支援它，而大型主機程式通常讀取 JCL 中定義的固定長度資料集。",
+        {
+          "note": "新手常見錯誤：`IF` 區塊中多餘的句點，會讓整個陳述式提前結束（請使用 `END-IF` 之類的範圍終止符）；固定格式下程式碼寫在第 8 到 72 欄之外；把值搬到太小的欄位時被默默截斷（`MOVE 1234 TO` 一個 `PIC 99` 欄位會存成 34）；把負數結果存進 PIC 中沒有 `S` 的欄位，會丟失正負號；以及忘了 `ON SIZE ERROR` 或檔案狀態的檢查。"
+        }
+      ]
+    },
+    {
+      "h": "接下來可以學什麼",
+      "body": [
+        {
+          "ul": [
+            "GnuCOBOL 專案頁面及其 Programmer's Guide，提供完整的語言參考。",
+            "IBM 的 Enterprise COBOL for z/OS 文件，涵蓋大型主機 COBOL、CICS 與 Db2 的用法。",
+            "練習讀寫檔案、使用 `SORT` 動詞排序，以及產生格式化報表。",
+            "如果想處理正式系統，請學習周邊的大型主機工具（JCL、TSO/ISPF）。"
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "COBOL 現在還有人用嗎？",
+      "a": "有。許多銀行、保險公司與政府機關仍用 COBOL 程式執行核心的批次與交易處理，因此對能維護並現代化這些系統的開發者仍有持續的需求。"
+    },
+    {
+      "q": "COBOL 很難學嗎？",
+      "a": "它的語法冗長但簡單，大多數初學者都能很快寫出可運作的程式。比較難的是它周邊的大型主機環境：JCL、資料集、CICS 與 Db2。"
+    },
+    {
+      "q": "沒有大型主機也能學 COBOL 嗎？",
+      "a": "可以。GnuCOBOL 能在 Linux、macOS 與 Windows 上執行，並支援標準 COBOL，所以你可以先在一般電腦上學這門語言，再轉到大型主機。"
+    },
+    {
+      "q": "為什麼 COBOL 使用十進位數字？",
+      "a": "金額等商業資料必須精確。COBOL 以固定小數位數的十進位數字儲存數值，避免了二進位浮點數的捨入誤差。"
+    }
+  ]
+}

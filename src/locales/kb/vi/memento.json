@@ -1,0 +1,165 @@
+{
+  "title": "Mẫu Memento: ảnh chụp trạng thái và undo với ví dụ TypeScript — cv.cm",
+  "description": "Mẫu Memento lưu và khôi phục trạng thái của đối tượng mà không để lộ phần bên trong. Tìm hiểu originator, memento và caretaker qua mã undo bằng TypeScript.",
+  "h1": "Mẫu Memento (Design Pattern) giải thích kèm ví dụ",
+  "answer": "Memento là một mẫu thiết kế hành vi (behavioral), chụp lại trạng thái bên trong của một đối tượng vào một đối tượng ảnh chụp, gọi là memento, để sau này có thể khôi phục đối tượng về trạng thái đó. Đối tượng sở hữu trạng thái (originator) tạo và khôi phục từ memento, còn một đối tượng khác (caretaker) chỉ lưu giữ chúng và không bao giờ nhìn vào bên trong. Đây là cách chuẩn để cài đặt undo, điểm kiểm tra (checkpoint) và lưu game mà không phá vỡ tính đóng gói.",
+  "sections": [
+    {
+      "h": "Mục đích và vấn đề mà mẫu này giải quyết",
+      "body": [
+        "Mục đích: không vi phạm tính đóng gói, chụp lại và đưa ra ngoài trạng thái bên trong của một đối tượng để sau này có thể khôi phục đối tượng về trạng thái đó. Memento là một trong các mẫu hành vi trong sách Gang of Four (GoF).",
+        "Hãy tưởng tượng một ứng dụng vẽ nơi một hình có vị trí, kích thước, màu sắc và danh sách các giá trị private dẫn xuất dùng để kết xuất. Bạn muốn có nút undo. Trình quản lý undo có thể tự sao chép các trường của hình, nhưng khi đó nó phải biết mọi trường private, và mỗi lần lớp hình thay đổi, trình quản lý undo bị hỏng. Công khai mọi trường chỉ để undo sẽ cho phép bất kỳ đoạn mã nào đưa hình vào trạng thái không hợp lệ.",
+        "Memento giải quyết bằng cách để chính hình tạo ra ảnh chụp. Chỉ hình biết bên trong ảnh chụp có gì và cách khôi phục từ nó. Trình quản lý undo coi ảnh chụp là các đối tượng mờ: nó lưu chúng trong một danh sách và trả lại một cái khi người dùng nhấn undo."
+      ]
+    },
+    {
+      "h": "Cấu trúc và các thành phần",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Vai trò",
+              "Trách nhiệm"
+            ],
+            "rows": [
+              [
+                "Originator",
+                "Đối tượng có trạng thái được lưu; tạo memento về trạng thái hiện tại và tự khôi phục từ một memento"
+              ],
+              [
+                "Memento",
+                "Ảnh chụp bất biến về trạng thái của originator; không để lộ điều gì hữu ích cho các đối tượng khác"
+              ],
+              [
+                "Caretaker",
+                "Quyết định khi nào lưu và khi nào khôi phục, và giữ các memento (ví dụ trong một ngăn xếp), nhưng không bao giờ đọc hay sửa nội dung của chúng"
+              ]
+            ]
+          }
+        },
+        "Ý tưởng then chốt là hai interface: một interface rộng cho originator, có thể đọc trạng thái đã lưu, và một interface hẹp cho mọi đối tượng khác, chỉ có thể giữ memento."
+      ]
+    },
+    {
+      "h": "Cài đặt bằng TypeScript",
+      "body": [
+        "Lớp memento dùng trường private của JavaScript (`#state`), nên caretaker không thể đọc dữ liệu lưu từ đối tượng memento. Việc đọc đi qua phương thức tĩnh `EditorMemento.read`, chỉ editor mới gọi. Trong dự án thực tế, hãy đặt lớp memento cùng module với editor và không export, để các module khác có thể giữ memento nhưng không bao giờ mở được chúng.",
+        {
+          "code": "type EditorState = { text: string; cursor: number };\n\nclass EditorMemento {\n  readonly #state: EditorState;\n  constructor(state: EditorState) {\n    this.#state = { ...state }; // copy, so later edits do not change the snapshot\n  }\n  static read(m: EditorMemento): EditorState {\n    return { ...m.#state };\n  }\n}\n\nclass Editor {\n  private state: EditorState = { text: \"\", cursor: 0 };\n  type(words: string) {\n    const text = this.state.text + words;\n    this.state = { text, cursor: text.length };\n  }\n  get text() { return this.state.text; }\n  save(): EditorMemento { return new EditorMemento(this.state); }\n  restore(m: EditorMemento) { this.state = EditorMemento.read(m); }\n}\n\nclass History {\n  private stack: EditorMemento[] = [];\n  constructor(private editor: Editor) {}\n  backup() { this.stack.push(this.editor.save()); }\n  undo() { const m = this.stack.pop(); if (m) this.editor.restore(m); }\n}\n\nconst editor = new Editor();\nconst history = new History(editor);\nhistory.backup(); editor.type(\"Hello\");\nhistory.backup(); editor.type(\" world\");\nconsole.log(editor.text); // Hello world\nhistory.undo();\nconsole.log(editor.text); // Hello\nhistory.undo();\nconsole.log(JSON.stringify(editor.text)); // \"\"",
+          "lang": "typescript"
+        },
+        "`History` là caretaker. Nó gọi `backup()` trước mỗi thay đổi và `undo()` để quay lại, nhưng không bao giờ thấy `text` hay `cursor`. Nếu sau này bạn thêm một vùng chọn vào `EditorState`, `History` không phải đổi.",
+        {
+          "note": "Memento phải là một bản sao thật. Nếu nó chỉ lưu tham chiếu đến đối tượng hoặc mảng có thể thay đổi của originator, các chỉnh sửa sau đó cũng làm đổi ảnh chụp, và undo khôi phục sai trạng thái. Với dữ liệu lồng nhau, hãy dùng bản sao sâu như `structuredClone(state)`."
+        }
+      ]
+    },
+    {
+      "h": "Memento so với Command cho undo",
+      "body": [
+        "Có hai cách phổ biến để cài đặt undo, và chúng thường được kết hợp:",
+        {
+          "table": {
+            "head": [
+              "Cách tiếp cận",
+              "Thứ được lưu",
+              "Phù hợp khi",
+              "Chi phí"
+            ],
+            "rows": [
+              [
+                "Memento",
+                "Ảnh chụp toàn bộ trạng thái trước mỗi thay đổi",
+                "Thay đổi khó đảo ngược, hoặc trạng thái nhỏ",
+                "Bộ nhớ tăng theo kích thước trạng thái nhân với số bước"
+              ],
+              [
+                "Command",
+                "Thao tác và đủ dữ liệu để đảo ngược nó",
+                "Mỗi thao tác có nghịch đảo đơn giản",
+                "Mỗi command cần logic undo đúng"
+              ]
+            ]
+          }
+        },
+        "Một thỏa hiệp thực tế: lưu command cho đa số bước và một memento đầy đủ sau mỗi N bước, hoặc chỉ lưu phần trạng thái mà command thay đổi."
+      ]
+    },
+    {
+      "h": "Khi nào nên dùng và khi nào không",
+      "body": [
+        {
+          "ul": [
+            "Dùng cho undo, redo, checkpoint, lưu game và nút “hủy” trên biểu mẫu cần hoàn lại các chỉnh sửa.",
+            "Dùng cho giao dịch trong bộ nhớ: chụp trước một thao tác rủi ro và khôi phục nếu nó thất bại.",
+            "Dùng khi caretaker không được phụ thuộc vào các trường nội bộ của originator.",
+            "Đừng dùng khi trạng thái rất lớn và thay đổi thường xuyên, trừ khi bạn giới hạn độ dài lịch sử hoặc chỉ lưu phần khác biệt.",
+            "Đừng làm đầy đủ nghi thức khi trạng thái vốn là một giá trị bất biến thuần túy. Với dữ liệu bất biến, giá trị cũ đã là một ảnh chụp, và giữ một danh sách các giá trị trước đó là đủ."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Ứng dụng thực tế",
+      "body": [
+        {
+          "ul": [
+            "History API của trình duyệt: `history.pushState(state, \"\", url)` lưu một đối tượng trạng thái cho mỗi mục lịch sử, và sự kiện `popstate` trả nó lại khi người dùng điều hướng.",
+            "Redux và các store tương tự giữ các ảnh chụp trạng thái bất biến, mà các công cụ dùng để gỡ lỗi du hành thời gian.",
+            "Cơ sở dữ liệu SQL hỗ trợ `SAVEPOINT` bên trong giao dịch, để có thể hoàn tác công việc về một điểm có tên.",
+            "Trình soạn thảo văn bản, phần mềm đồ họa và game lưu ảnh chụp cho undo, tự động lưu và các ô lưu game."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Các mẫu liên quan",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Mẫu",
+              "Quan hệ với Memento"
+            ],
+            "rows": [
+              [
+                "Command",
+                "Command có thể undo bằng cách đảo ngược một thao tác; nó cũng có thể lưu memento chụp trước khi chạy và khôi phục trong `undo`."
+              ],
+              [
+                "Prototype",
+                "Prototype nhân bản cả đối tượng để tạo đối tượng mới; memento lưu trạng thái để khôi phục chính đối tượng đó sau này."
+              ],
+              [
+                "Iterator",
+                "Iterator có thể đưa vị trí hiện tại của nó ra dưới dạng memento để việc duyệt có thể tiếp tục sau."
+              ],
+              [
+                "State",
+                "State thay đổi hành vi của đối tượng khi trạng thái đổi; Memento chỉ ghi lại và khôi phục dữ liệu."
+              ]
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Originator và caretaker khác nhau thế nào?",
+      "a": "Originator sở hữu trạng thái và là đối tượng duy nhất có thể tạo memento và khôi phục từ nó. Caretaker quyết định khi nào lưu và khôi phục và giữ các memento, nhưng coi chúng là các đối tượng mờ."
+    },
+    {
+      "q": "Memento có phá vỡ tính đóng gói không?",
+      "a": "Không, mục đích của nó là ngược lại. Các trường nội bộ của originator vẫn private, và memento che chúng khỏi caretaker, nên chỉ originator đọc được trạng thái đã lưu."
+    },
+    {
+      "q": "Làm sao giới hạn mức dùng bộ nhớ với Memento?",
+      "a": "Giữ tối đa một số lượng ảnh chụp và bỏ cái cũ nhất, chỉ lưu phần trạng thái thay đổi, hoặc kết hợp memento với command ghi lại các thay đổi nhỏ."
+    },
+    {
+      "q": "Tuần tự hóa JSON có phải là memento không?",
+      "a": "Tuần tự hóa trạng thái ra JSON có thể là định dạng lưu của một memento, và hữu ích để lưu xuống đĩa. Bản thân mẫu nói về ai tạo, giữ và khôi phục ảnh chụp, không phải về định dạng."
+    }
+  ]
+}

@@ -1,0 +1,184 @@
+{
+  "title": "Pola Adapter: membuat interface yang tidak kompatibel bekerja bersama, contoh TypeScript — cv.cm",
+  "description": "Pola desain Adapter dijelaskan: membungkus kelas tidak kompatibel agar bisa dipakai klien. Contoh TypeScript, object vs class adapter.",
+  "h1": "Pola Adapter dijelaskan dengan contoh",
+  "answer": "Adapter adalah pola desain structural yang mengubah interface sebuah kelas yang ada menjadi interface yang diharapkan kode klien. Adapter membungkus objek yang tidak kompatibel dan menerjemahkan setiap panggilan, misalnya mengubah `charge(amountCents)` menjadi `makePayment(\"12.50\")` milik sistem lama. Pola ini memungkinkan Anda memakai ulang komponen pihak ketiga atau legacy tanpa mengubahnya dan tanpa menyebarkan API yang canggung itu ke seluruh kode Anda. Pola ini juga dikenal sebagai Wrapper.",
+  "sections": [
+    {
+      "h": "Tujuan",
+      "body": [
+        "Mengubah interface sebuah kelas menjadi interface lain yang diharapkan klien. Pola Adapter memungkinkan kelas-kelas yang sebelumnya tidak bisa bekerja bersama karena interface tidak kompatibel menjadi dapat bekerja bersama. Pola ini salah satu dari tujuh pola structural dalam buku Gang of Four (GoF)."
+      ]
+    },
+    {
+      "h": "Masalah yang diselesaikan",
+      "body": [
+        "Kode toko Anda bekerja dengan interface kecil `PaymentGateway`: `charge(amountCents, currency)` mengembalikan hasil dengan flag `ok` dan ID transaksi. Sekarang bisnis menandatangani kontrak dengan penyedia pembayaran yang SDK-nya tampak sangat berbeda: jumlah berupa string desimal, mata uang menjadi bagian dari objek permintaan, dan error kembali sebagai kode status numerik.",
+        "Anda tidak bisa mengubah SDK, dan tidak ingin menulis ulang setiap pemanggil agar memakai bentuk baru. Jika gaya SDK merembes ke checkout, refund, dan laporan, berganti penyedia nanti akan mahal. Adapter menjaga penerjemahan di satu kelas."
+      ]
+    },
+    {
+      "h": "Struktur dan peserta",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Peserta",
+              "Tanggung jawab",
+              "Dalam contoh"
+            ],
+            "rows": [
+              [
+                "Target",
+                "Interface yang diharapkan klien.",
+                "`PaymentGateway`"
+              ],
+              [
+                "Adaptee",
+                "Kelas yang sudah ada dengan interface yang tidak kompatibel.",
+                "`LegacyPayClient`"
+              ],
+              [
+                "Adapter",
+                "Mengimplementasikan Target dan menerjemahkan panggilan ke Adaptee.",
+                "`LegacyPayAdapter`"
+              ],
+              [
+                "Klien",
+                "Hanya bekerja dengan interface Target.",
+                "`checkout`"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "Implementasi TypeScript",
+      "body": [
+        {
+          "code": "// Target: what our code expects.\ninterface PaymentGateway {\n  charge(amountCents: number, currency: string): { ok: boolean; id: string };\n}\n\n// Adaptee: a third-party SDK we cannot change.\nclass LegacyPayClient {\n  makePayment(req: { amount: string; curr: string }): { status: number; ref: string } {\n    return { status: req.curr === \"USD\" ? 200 : 422, ref: `TX-${req.amount}` };\n  }\n}\n\n// Adapter: implements the Target by translating to the Adaptee.\nclass LegacyPayAdapter implements PaymentGateway {\n  constructor(private client: LegacyPayClient) {}\n\n  charge(amountCents: number, currency: string) {\n    const res = this.client.makePayment({\n      amount: (amountCents / 100).toFixed(2),\n      curr: currency.toUpperCase(),\n    });\n    return { ok: res.status === 200, id: res.ref };\n  }\n}\n\n// Client code knows nothing about LegacyPayClient.\nfunction checkout(gateway: PaymentGateway, totalCents: number): string {\n  const result = gateway.charge(totalCents, \"usd\");\n  return result.ok ? `paid ${result.id}` : \"payment failed\";\n}\n\nconsole.log(checkout(new LegacyPayAdapter(new LegacyPayClient()), 1250)); // paid TX-12.50",
+          "lang": "typescript"
+        },
+        "Berganti ke penyedia lain nanti berarti menulis satu adapter lagi. `checkout` dan setiap pemanggil lain tetap sama, dan pengujian dapat meneruskan `PaymentGateway` tiruan."
+      ]
+    },
+    {
+      "h": "Object adapter versus class adapter",
+      "body": [
+        "Buku GoF menjelaskan dua bentuk:",
+        {
+          "table": {
+            "head": [
+              "Bentuk",
+              "Cara kerja",
+              "Catatan"
+            ],
+            "rows": [
+              [
+                "Object adapter",
+                "Menyimpan referensi ke adaptee dan mendelegasikan ke sana (composition).",
+                "Bekerja dengan adaptee dan semua subkelasnya. Pilihan umum di TypeScript, Java, dan C#."
+              ],
+              [
+                "Class adapter",
+                "Mewarisi dari adaptee dan mengimplementasikan interface target.",
+                "Membutuhkan inheritance dari adaptee, sehingga hanya mengadaptasi satu kelas itu. Umum di C++ dengan multiple inheritance."
+              ]
+            ]
+          }
+        },
+        "Di TypeScript dan JavaScript, mengadaptasi fungsi sering sudah cukup. Node.js menyertakan adapter kecil semacam itu: `util.promisify()` mengubah fungsi bergaya callback menjadi fungsi yang mengembalikan promise.",
+        {
+          "code": "import { promisify } from \"node:util\";\n\n// Adaptee: old callback style (error first, then result).\nfunction readConfig(name: string, cb: (err: Error | null, value?: string) => void): void {\n  setTimeout(() => cb(null, `config for ${name}`), 10);\n}\n\n// Adapted: the same function, now with a promise-based interface.\nconst readConfigAsync = promisify(readConfig);\nconsole.log(await readConfigAsync(\"app\")); // config for app",
+          "lang": "typescript"
+        }
+      ]
+    },
+    {
+      "h": "Kapan memakainya, dan kapan tidak",
+      "body": [
+        "Gunakan pola Adapter ketika:",
+        {
+          "ul": [
+            "Anda ingin memakai kelas yang sudah ada, tetapi interface-nya tidak cocok dengan yang dibutuhkan kode Anda.",
+            "Anda mengintegrasikan pustaka pihak ketiga atau sistem legacy dan ingin menjaga API-nya di tepi program Anda.",
+            "Anda ingin beberapa implementasi berbeda, seperti dua penyedia pembayaran, di balik satu interface."
+          ]
+        },
+        "Hindari ketika:",
+        {
+          "ul": [
+            "Anda memiliki kedua sisi. Mengubah salah satu interface biasanya lebih sederhana daripada menambah lapisan penerjemah.",
+            "Adapter harus memalsukan bagian besar dari interface target yang sebenarnya tidak bisa didukung adaptee. Itu menyembunyikan ketidakcocokan nyata alih-alih menyelesaikannya."
+          ]
+        },
+        {
+          "note": "Jaga adapter tetap tipis. Adapter sebaiknya menerjemahkan nama, satuan, dan format error, bukan berisi aturan bisnis. Jika adapter membesar, logikanya mungkin seharusnya berada di tempat lain."
+        }
+      ]
+    },
+    {
+      "h": "Pemakaian di dunia nyata",
+      "body": [
+        {
+          "ul": [
+            "Node.js: `util.promisify()` mengadaptasi fungsi berbasis callback ke promise.",
+            "Java: `Arrays.asList()` memungkinkan array dipakai lewat interface `List`, dan `InputStreamReader` memungkinkan `InputStream` berbasis byte dibaca sebagai `Reader` berbasis karakter.",
+            "Pustaka database dan ORM memakai satu adapter atau driver per database, sehingga API query yang sama bekerja dengan PostgreSQL, MySQL, atau SQLite.",
+            "Kode frontend sering membungkus API browser atau SDK analitik di balik interface kecil khusus proyek karena alasan yang sama."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Pola terkait",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Pola",
+              "Perbedaannya dengan Adapter"
+            ],
+            "rows": [
+              [
+                "Decorator",
+                "Mempertahankan interface yang sama dan menambah perilaku. Adapter mengubah interface dan tidak menambah perilaku baru."
+              ],
+              [
+                "Proxy",
+                "Mempertahankan interface yang sama dan mengontrol akses ke objek (lazy loading, caching, izin)."
+              ],
+              [
+                "Facade",
+                "Mendefinisikan interface baru yang lebih sederhana untuk seluruh subsistem berisi banyak kelas. Adapter membuat satu interface yang ada cocok dengan interface lain yang ada."
+              ],
+              [
+                "Bridge",
+                "Dirancang sejak awal agar abstraksi dan implementasinya bisa bervariasi terpisah. Adapter biasanya ditambahkan belakangan agar kelas yang ada cocok."
+              ]
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Apa beda pola Adapter dan pola Facade?",
+      "a": "Adapter membuat satu kelas yang ada cocok dengan interface yang sudah diharapkan klien. Facade membuat interface baru yang lebih sederhana di depan subsistem kompleks berisi banyak kelas."
+    },
+    {
+      "q": "Apa beda pola Adapter dan pola Decorator?",
+      "a": "Keduanya membungkus objek. Decorator mempertahankan interface yang sama dan menambah perilaku; adapter mengubah interface agar objek yang dibungkus bisa dipakai di tempat yang sebelumnya tidak mungkin."
+    },
+    {
+      "q": "Apakah Adapter sama dengan wrapper?",
+      "a": "Wrapper adalah nama lain Adapter dalam buku GoF. Dalam percakapan sehari-hari, \"wrapper\" juga dipakai untuk decorator dan proxy, jadi tujuannya yang menentukan pola mana yang dimaksud."
+    },
+    {
+      "q": "Bisakah satu adapter mengadaptasi beberapa kelas?",
+      "a": "Object adapter dapat bekerja dengan sebuah adaptee dan semua subkelasnya. Mengadaptasi kelas yang tidak berhubungan biasanya berarti satu adapter per kelas, semuanya mengimplementasikan interface target yang sama."
+    }
+  ]
+}

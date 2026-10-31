@@ -1,0 +1,179 @@
+{
+  "title": "Haskell入門：型・パターンマッチ・リスト・IOを解説 — cv.cm",
+  "description": "Haskellの基本を順に学べる入門講座。GHCのインストール、Hello, worldの実行、型と型推論、関数とガード、リスト、データ型、型クラス、Maybe、Either、IOを解説します。",
+  "h1": "Haskell入門：初心者向けチュートリアル",
+  "answer": "Haskellは、型推論と遅延評価を備えた、純粋関数型の静的型付け言語です。プログラムは純粋関数、代数的データ型、パターンマッチで組み立てられ、副作用はIOなどの型で追跡されます。このページでは、GHCのインストール、型、関数とガード、リストと高階関数、データ型、型クラス、MaybeとEither、そして完成したサンプルを扱います。",
+  "sections": [
+    {
+      "h": "Haskellとは何か、何に使うのか",
+      "body": [
+        "Haskellは、強力な静的型システム、型推論、遅延評価を備えた純粋関数型プログラミング言語です。研究者の委員会によって設計され、1990年に最初の仕様が定義されました。現在の標準はHaskell 2010で、主要な実装はGHC(Glasgow Haskell Compiler)です。Haskellでは、型で示されない限り関数に副作用はないため、プログラムの挙動を推論しやすく、テストもしやすくなります。",
+        "Haskellは、金融やフィンテック、コンパイラやプログラミング言語のツール(PandocやリンターのShellCheckはHaskellで書かれています)、ブロックチェーンのプロジェクト、Webバックエンド、研究などで使われています。代数的データ型、型クラス、純粋関数といった考え方が、Rust、Swift、Scala、Kotlin、TypeScriptに影響を与えたことから、学ぶ人も多くいます。"
+      ]
+    },
+    {
+      "h": "GHCのインストールとHello, worldの実行",
+      "body": [
+        "おすすめのインストーラーはGHCupです。GHC、ビルドツールのCabalとStack、エディター向けのHaskell Language Serverをインストールします。すべてのプログラムには、`IO ()`型の`main`アクションがあります。",
+        {
+          "code": "-- hello.hs\nmain :: IO ()\nmain = putStrLn \"Hello, world!\"",
+          "lang": "haskell"
+        },
+        {
+          "code": "runghc hello.hs          # run without compiling\n# Hello, world!\nghc hello.hs && ./hello  # compile to a native executable\nghci                     # interactive REPL; load a file with :load hello.hs",
+          "lang": "shell"
+        },
+        "コメントは`--`で始まります。GHCiでは`:type expression`(または`:t`)で任意の式の型が表示され、これは学習にとても役立ちます。"
+      ]
+    },
+    {
+      "h": "値・型・型推論",
+      "body": [
+        "名前は一度束縛されると変わりません。変更可能な変数はありません。型シグネチャは`::`で書きます。コンパイラが型を推論するので省略できますが、トップレベルの定義には書くのが良い習慣です。",
+        {
+          "code": "name :: String\nname = \"Haskell\"\n\nyear :: Int\nyear = 1990\n\nratio :: Double\nratio = fromIntegral year / 1000   -- convert Int to Double explicitly\n\nmain :: IO ()\nmain = do\n  putStrLn (name ++ \" \" ++ show year)  -- Haskell 1990\n  print ratio                          -- 1.99\n  print (7 `div` 2, 7 `mod` 2)         -- (3,1)\n  print (2 ^ 64 :: Integer)            -- 18446744073709551616",
+          "lang": "haskell"
+        },
+        {
+          "table": {
+            "head": [
+              "型",
+              "例",
+              "補足"
+            ],
+            "rows": [
+              [
+                "`Int`",
+                "`42`",
+                "固定サイズの整数(一般的なプラットフォームのGHCでは64ビット)"
+              ],
+              [
+                "`Integer`",
+                "`2 ^ 100`",
+                "任意精度の整数"
+              ],
+              [
+                "`Double`",
+                "`3.14`",
+                "64ビットの浮動小数点数"
+              ],
+              [
+                "`Bool`",
+                "`True`, `False`",
+                "コンストラクターは大文字で始まります"
+              ],
+              [
+                "`Char`",
+                "`'h'`",
+                "Unicodeの1文字"
+              ],
+              [
+                "`String`",
+                "`\"text\"`",
+                "`Char`のリスト`[Char]`。`Data.Text`のほうが高速です"
+              ]
+            ]
+          }
+        },
+        "`show`は値を`String`に変換し、`print`は`putStrLn . show`です。数値が暗黙に変換されることはありません。`fromIntegral`、`round`、`truncate`を使ってください。"
+      ]
+    },
+    {
+      "h": "関数・ガード・パターンマッチ",
+      "body": [
+        "関数の適用は、かっこではなく空白で書きます：`add 2 3`。どの関数も引数を1つ受け取り、残りを受け取る別の関数を返します。これをカリー化といい、`add 2`自体が関数です。パターンマッチとガードを使うと、`if`の連鎖の大半を置き換えられます。",
+        {
+          "code": "add :: Int -> Int -> Int\nadd x y = x + y\n\nfactorial :: Integer -> Integer\nfactorial 0 = 1\nfactorial n = n * factorial (n - 1)\n\ngrade :: Int -> Char\ngrade score\n  | score >= 90 = 'A'\n  | score >= 70 = 'B'\n  | otherwise   = 'C'\n\ndescribe :: [a] -> String\ndescribe []  = \"empty\"\ndescribe [_] = \"one item\"\ndescribe _   = \"many items\"\n\nmain :: IO ()\nmain = do\n  print (add 2 3)                 -- 5\n  print (map (add 10) [1, 2, 3])  -- [11,12,13] (partial application)\n  print (factorial 20)            -- 2432902008176640000\n  print (grade 75)                -- 'B'\n  putStrLn (describe \"hi\")        -- many items\n  print (if even 4 then \"even\" else \"odd\")  -- \"even\"",
+          "lang": "haskell"
+        },
+        "`if`は式で、必ず`else`が必要です。ループはありません。繰り返しは再帰か、`map`、`filter`、`foldr`といった高階関数で行います。"
+      ]
+    },
+    {
+      "h": "リスト・タプル・高階関数",
+      "body": [
+        "リストは1種類の型の値を保持し、最もよく使うコレクションです。タプルは、異なる型でもよい固定個数の値をまとめます。リスト内包表記、範囲、関数合成演算子`.`を使うと、データ処理を簡潔に書けます。",
+        {
+          "code": "import Data.List (sortOn)\n\nmain :: IO ()\nmain = do\n  let nums = [5, 3, 8, 1] :: [Int]\n  print (head nums, length nums, sum nums)       -- (5,4,17)\n  print (0 : nums)                               -- [0,5,3,8,1] (prepend)\n  print (filter even nums)                       -- [8]\n  print (foldr (+) 0 [1 .. 10])                  -- 55\n  print [x * x | x <- [1 .. 5], odd x]           -- [1,9,25]\n  print (take 5 [1, 3 ..])                       -- [1,3,5,7,9] (lazy infinite list)\n  let people = [(\"Ann\", 31), (\"Bo\", 25)] :: [(String, Int)]\n  print (map fst (sortOn snd people))            -- [\"Bo\",\"Ann\"]\n  print ((length . filter (> 2)) nums)           -- 3\n  print (zip [1 :: Int ..] \"abc\")                -- [(1,'a'),(2,'b'),(3,'c')]",
+          "lang": "haskell"
+        },
+        "Haskellは遅延評価なので、値は必要になったときに初めて計算されます。そのため`take 5 [1, 3 ..]`は無限リストでも動きます。一方で、遅延によって未評価の大きな式がたまることもあります。長いリストの合計には、`foldl`よりも`Data.List`の`foldl'`を使いましょう。"
+      ]
+    },
+    {
+      "h": "代数的データ型と型クラス",
+      "body": [
+        "独自の型は`data`で定義します。型は複数のコンストラクターを持て(直和型)、それぞれがフィールドを持てます(直積型)。`Show`、`Eq`、`Ord`、`Functor`といった型クラスは、インターフェースに似た共通の振る舞いを表し、`deriving`でよく使うインスタンスを自動生成できます。",
+        {
+          "code": "data Shape = Circle Double | Rect Double Double\n  deriving (Show, Eq)\n\narea :: Shape -> Double\narea (Circle r) = pi * r * r\narea (Rect w h) = w * h\n\ndata User = User { userName :: String, userAge :: Int }\n  deriving Show\n\nclass Describable a where\n  describe :: a -> String\n\ninstance Describable Shape where\n  describe (Circle _) = \"a circle\"\n  describe (Rect _ _) = \"a rectangle\"\n\nmain :: IO ()\nmain = do\n  print (map area [Circle 1, Rect 2 3])   -- [3.141592653589793,6.0]\n  putStrLn (describe (Rect 1 1))          -- a rectangle\n  let u = User { userName = \"Ann\", userAge = 31 }\n  print (u { userAge = 32 })              -- User {userName = \"Ann\", userAge = 32}",
+          "lang": "haskell"
+        }
+      ]
+    },
+    {
+      "h": "Maybe・Either・IO",
+      "body": [
+        "Haskellには`null`がなく、純粋なコードには検査なしの例外もありません。値がないかもしれない場合は`Maybe a`型(`Just x`または`Nothing`)、理由付きで失敗するかもしれない計算は`Either e a`型(`Left err`または`Right x`)です。入力の読み取りなどの副作用は`IO`型に置かれ、`do`記法で順番につなげます。",
+        {
+          "code": "import Text.Read (readMaybe)\n\nsafeDiv :: Int -> Int -> Either String Int\nsafeDiv _ 0 = Left \"division by zero\"\nsafeDiv x y = Right (x `div` y)\n\nparseAge :: String -> Maybe Int\nparseAge s = case readMaybe s of\n  Just n | n >= 0 -> Just n\n  _               -> Nothing\n\nmain :: IO ()\nmain = do\n  print (safeDiv 10 2)          -- Right 5\n  print (safeDiv 1 0)           -- Left \"division by zero\"\n  print (parseAge \"42\")         -- Just 42\n  print (parseAge \"abc\")        -- Nothing\n  print (fmap (+ 1) (Just 41))  -- Just 42\n  putStrLn \"Your name?\"\n  n <- getLine                  -- an IO action that returns a String\n  putStrLn (\"Hi, \" ++ n)",
+          "lang": "haskell"
+        },
+        {
+          "note": "`head`、`tail`、ゼロでの`div`などは、不正な入力で実行時エラーを投げます。たとえば`head []`はクラッシュします。プログラムを全域的に保つには、リストにパターンマッチを使うか、`Maybe`を返す代替手段を使ってください。`IO`の例外は、`Control.Exception`の`catch`や`try`で捕捉できます。"
+        }
+      ]
+    },
+    {
+      "h": "小さな完成プログラム：単語の出現頻度",
+      "body": [
+        "このプログラムは、標準入力からテキストを読み、`Map`で単語の出現頻度を数えて、よく出る上位3語を表示します。関数合成、GHCに同梱されているcontainersパッケージの`Data.Map`、並べ替えを使っています。",
+        {
+          "code": "import Data.Char (isAlpha, toLower)\nimport Data.List (sortBy)\nimport Data.Ord (comparing, Down (..))\nimport qualified Data.Map.Strict as Map\n\nwordFreq :: String -> [(String, Int)]\nwordFreq =\n  sortBy (comparing (Down . snd) <> comparing fst)\n    . Map.toList\n    . Map.fromListWith (+)\n    . map (\\w -> (w, 1))\n    . words\n    . map (\\c -> if isAlpha c then toLower c else ' ')\n\nmain :: IO ()\nmain = do\n  text <- getContents\n  mapM_ (\\(w, n) -> putStrLn (w ++ \": \" ++ show n)) (take 3 (wordFreq text))",
+          "lang": "haskell"
+        },
+        {
+          "code": "echo \"The cat and the dog. The dog sat, and the cat ran.\" | runghc wordfreq.hs\n# the: 4\n# and: 2\n# cat: 2",
+          "lang": "shell"
+        },
+        {
+          "note": "初心者がよくやる間違い：タブと空白を混ぜる(インデントには意味があります)、`f x y`の代わりに`f(x, y)`と書く、引数の`-1`はかっこが必要なこと(`abs (-1)`)を忘れる、空かもしれないリストに`head`を使う、`do`の中の`let`が既存の値を変更すると思い込む(実際は新しい名前を作るだけです)、などです。"
+        }
+      ]
+    },
+    {
+      "h": "次に学ぶこと",
+      "body": [
+        {
+          "ul": [
+            "haskell.orgのドキュメントページ。チュートリアル、書籍、GHC User's Guideへのリンクがあります。",
+            "パッケージリポジトリのHackageと、名前や型で関数を探せる検索エンジンのHoogle。",
+            "『Learn You a Haskell for Great Good!』と『Real World Haskell』。どちらも無料で読めます。",
+            "言語の正確な定義であるHaskell 2010 Language Report。"
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Haskellは習得が難しいですか？",
+      "a": "変更可能な変数もループもなく、表現力の高い型システムを使うため、最初は違和感があります。再帰、パターンマッチ、型を一歩ずつ学べば、中核となる言語は小さく一貫していると感じる人が多いです。"
+    },
+    {
+      "q": "純粋関数型とはどういう意味ですか？",
+      "a": "関数は同じ入力に対して常に同じ結果を返し、状態を変えたり入出力を行ったりしません。副作用を扱えないわけではなく、`IO`などの型で表現されます。"
+    },
+    {
+      "q": "Haskellのモナドとは何ですか？",
+      "a": "モナドは、`Maybe`、`Either`、`IO`などの型に対する型クラスで、`>>=`による計算の連鎖をサポートします。`do`記法は、その連鎖のための構文です。"
+    },
+    {
+      "q": "遅延評価とは何ですか？",
+      "a": "式は、その値が必要になったときに初めて評価されます。無限リストを扱え、無駄な計算も避けられますが、メモリ使用量の予測が難しくなることがあります。"
+    },
+    {
+      "q": "StackとCabalのどちらを使うべきですか？",
+      "a": "どちらもHaskellプロジェクトをビルドでき、GHCupでインストールできます。Cabalは標準のビルドツールで、Stackは選別されたパッケージのスナップショットを追加します。初心者はどちらでも問題ありません。"
+    }
+  ]
+}

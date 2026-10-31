@@ -1,0 +1,223 @@
+{
+  "title": "Học Python cơ bản: cú pháp, kiểu dữ liệu, hàm và tệp trong một trang — cv.cm",
+  "description": "Học Python 3 trong một trang: cài đặt và chạy Hello world, biến và kiểu dữ liệu, if và vòng lặp, hàm, list và dict, ngoại lệ, đọc ghi tệp và một ví dụ hoàn chỉnh.",
+  "h1": "Hướng dẫn học Python cơ bản cho người mới",
+  "answer": "Python là ngôn ngữ thông dịch đa dụng, nổi tiếng với cú pháp dễ đọc, dùng thụt lề thay cho dấu ngoặc nhọn. Hãy cài Python 3, lưu `print(\"Hello, world\")` vào `hello.py` rồi chạy `python3 hello.py`. Các ý tưởng cốt lõi gồm kiểu động, hàm khai báo bằng `def`, list, dict và set có sẵn, xử lý ngoại lệ bằng `try`/`except` và một thư viện chuẩn rất phong phú.",
+  "sections": [
+    {
+      "h": "Python là gì và dùng để làm gì",
+      "body": [
+        "Python là ngôn ngữ bậc cao, kiểu động, do Guido van Rossum phát hành lần đầu năm 1991. Mã được chạy bởi trình thông dịch (bản chuẩn là CPython) nên không có bước biên dịch riêng. Python được dùng cho phân tích dữ liệu và học máy (NumPy, pandas, PyTorch), back end web (Django, Flask, FastAPI), script tự động hóa, tính toán khoa học và giảng dạy. Python 2 đã hết vòng đời năm 2020, vì vậy bạn nên học Python 3."
+      ]
+    },
+    {
+      "h": "Cài Python và chạy Hello, world",
+      "body": [
+        "Tải bộ cài từ python.org (Windows, macOS) hoặc dùng trình quản lý gói trên Linux. Kiểm tra bằng `python3 --version` (trên Windows lệnh thường là `py` hoặc `python`). Lưu tệp sau với tên `hello.py`:",
+        {
+          "code": "print(\"Hello, world\")",
+          "lang": "python"
+        },
+        {
+          "code": "python3 hello.py\n# Hello, world",
+          "lang": "shell"
+        },
+        "Chạy `python3` mà không kèm tệp sẽ mở dấu nhắc tương tác (REPL), rất tiện để thử từng dòng một."
+      ]
+    },
+    {
+      "h": "Biến và các kiểu dữ liệu cơ bản",
+      "body": [
+        "Biến được tạo ra khi bạn gán giá trị cho nó. Bạn không khai báo kiểu; chính giá trị mang kiểu, và `type(x)` cho biết đó là kiểu gì.",
+        {
+          "table": {
+            "head": [
+              "Kiểu",
+              "Ví dụ",
+              "Ghi chú"
+            ],
+            "rows": [
+              [
+                "`int`",
+                "`42`, `-7`, `10**20`",
+                "Số nguyên với kích thước bất kỳ"
+              ],
+              [
+                "`float`",
+                "`3.14`, `1e-3`",
+                "Số thực dấu phẩy động 64 bit"
+              ],
+              [
+                "`bool`",
+                "`True`, `False`",
+                "Viết hoa chữ cái đầu"
+              ],
+              [
+                "`str`",
+                "`\"hi\"`, `'hi'`",
+                "Văn bản Unicode bất biến"
+              ],
+              [
+                "`None`",
+                "`None`",
+                "Biểu thị không có giá trị"
+              ]
+            ]
+          }
+        },
+        {
+          "code": "name = \"Ada\"\nage = 36\nheight = 1.65\nprint(f\"{name} is {age} years old\")  # Ada is 36 years old\nprint(7 / 2, 7 // 2, 7 % 2)          # 3.5 3 1\nprint(int(\"12\") + 1)                 # 13",
+          "lang": "python"
+        }
+      ]
+    },
+    {
+      "h": "Điều khiển luồng: if, for và while",
+      "body": [
+        "Khối lệnh bắt đầu bằng dấu hai chấm và được xác định bằng thụt lề (quy ước 4 dấu cách). Vòng lặp `for` duyệt qua mọi chuỗi; `range(n)` cho các số từ 0 đến n−1.",
+        {
+          "code": "score = 72\nif score >= 90:\n    grade = \"A\"\nelif score >= 70:\n    grade = \"B\"\nelse:\n    grade = \"C\"\nprint(grade)  # B\nfor i in range(3):\n    print(i)  # 0, then 1, then 2\nn = 10\nwhile n > 1:\n    n = n // 2\nprint(n)  # 1",
+          "lang": "python"
+        }
+      ]
+    },
+    {
+      "h": "Hàm",
+      "body": [
+        "Khai báo hàm bằng `def`. Tham số có thể có giá trị mặc định, và người gọi có thể truyền đối số theo tên. Hàm không có `return` sẽ trả về `None`.",
+        {
+          "code": "def greet(name, greeting=\"Hello\"):\n    return f\"{greeting}, {name}!\"\nprint(greet(\"Lin\"))                 # Hello, Lin!\nprint(greet(\"Lin\", greeting=\"Hi\"))  # Hi, Lin!\nsquare = lambda x: x * x\nprint(square(5))                    # 25",
+          "lang": "python"
+        },
+        "Gợi ý kiểu như `def area(w: float, h: float) -> float:` ghi rõ ý định và cho phép các công cụ như mypy kiểm tra mã, nhưng trình thông dịch không bắt buộc chúng."
+      ]
+    },
+    {
+      "h": "List, tuple, dict và set",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Kiểu",
+              "Cú pháp",
+              "Có thứ tự",
+              "Thay đổi được",
+              "Dùng điển hình"
+            ],
+            "rows": [
+              [
+                "`list`",
+                "`[1, 2, 3]`",
+                "Có",
+                "Có",
+                "Dãy mà bạn thay đổi được"
+              ],
+              [
+                "`tuple`",
+                "`(1, 2)`",
+                "Có",
+                "Không",
+                "Nhóm giá trị cố định"
+              ],
+              [
+                "`dict`",
+                "`{\"a\": 1}`",
+                "Theo thứ tự thêm vào",
+                "Có",
+                "Tra cứu từ khóa ra giá trị"
+              ],
+              [
+                "`set`",
+                "`{1, 2}`",
+                "Không",
+                "Có",
+                "Phần tử duy nhất, kiểm tra tư cách thành viên"
+              ]
+            ]
+          }
+        },
+        {
+          "code": "nums = [3, 1, 2]\nnums.append(5)\nnums.sort()\nprint(nums, nums[0], nums[-1], nums[1:3])  # [1, 2, 3, 5] 1 5 [2, 3]\nages = {\"ann\": 31, \"bob\": 25}\nages[\"cy\"] = 40\nfor person, age in ages.items():\n    print(person, age)\nprint(ages.get(\"zed\", 0))  # 0\nsquares = [x * x for x in range(5) if x % 2 == 0]\nprint(squares)  # [0, 4, 16]",
+          "lang": "python"
+        },
+        "Dòng cuối là một list comprehension, một trong những tính năng đặc trưng của Python: nó tạo list từ một vòng lặp và bộ lọc tùy chọn chỉ trong một biểu thức. Dict và set comprehension hoạt động tương tự."
+      ]
+    },
+    {
+      "h": "Tính năng đặc trưng: giải nén, with và generator",
+      "body": [
+        {
+          "code": "a, b = 1, 2\na, b = b, a            # swap without a temporary\nfirst, *rest = [1, 2, 3, 4]\nprint(first, rest)     # 1 [2, 3, 4]\nwith open(\"notes.txt\", \"w\", encoding=\"utf-8\") as f:\n    f.write(\"line one\\n\")   # file is closed automatically\ndef countdown(n):\n    while n > 0:\n        yield n\n        n -= 1\nprint(list(countdown(3)))  # [3, 2, 1]",
+          "lang": "python"
+        },
+        "Câu lệnh `with` tự chạy phần chuẩn bị và dọn dẹp cho bạn (ở đây là đóng tệp ngay cả khi có lỗi). Hàm dùng `yield` là một generator: nó sinh giá trị theo kiểu lười, từng giá trị một, giúp tiết kiệm bộ nhớ với dữ liệu lớn."
+      ]
+    },
+    {
+      "h": "Xử lý lỗi với try và except",
+      "body": [
+        "Lỗi được phát ra dưới dạng ngoại lệ. Hãy bắt đúng các loại ngoại lệ bạn dự kiến và dùng `finally` cho đoạn mã luôn phải chạy.",
+        {
+          "code": "def parse_age(text):\n    try:\n        age = int(text)\n    except ValueError:\n        print(f\"not a number: {text!r}\")\n        return None\n    if age < 0:\n        raise ValueError(\"age cannot be negative\")\n    return age\nprint(parse_age(\"41\"))   # 41\nprint(parse_age(\"abc\"))  # not a number: 'abc', then None",
+          "lang": "python"
+        }
+      ]
+    },
+    {
+      "h": "Một chương trình nhỏ hoàn chỉnh: đếm từ",
+      "body": [
+        "Script này đọc một tệp văn bản được cho trên dòng lệnh và in ra năm từ xuất hiện nhiều nhất. Nó chỉ dùng thư viện chuẩn.",
+        {
+          "code": "import sys\nfrom collections import Counter\ndef top_words(path, n=5):\n    with open(path, encoding=\"utf-8\") as f:\n        words = f.read().lower().split()\n    cleaned = [w.strip(\".,;:!?\\\"'()\") for w in words]\n    return Counter(w for w in cleaned if w).most_common(n)\nif __name__ == \"__main__\":\n    if len(sys.argv) != 2:\n        sys.exit(\"usage: python3 count.py FILE\")\n    try:\n        for word, count in top_words(sys.argv[1]):\n            print(f\"{count:5}  {word}\")\n    except FileNotFoundError:\n        sys.exit(f\"file not found: {sys.argv[1]}\")",
+          "lang": "python"
+        },
+        "Chạy bằng `python3 count.py notes.txt`. Phép kiểm tra `if __name__ == \"__main__\":` cho phép nhập tệp như một module mà không chạy phần script."
+      ]
+    },
+    {
+      "h": "Những lỗi thường gặp của người mới",
+      "body": [
+        {
+          "note": "Đừng dùng giá trị khả biến làm đối số mặc định: `def add(item, items=[])` dùng chung một list cho mọi lần gọi. Hãy dùng `items=None` và tạo list bên trong hàm."
+        },
+        {
+          "ul": [
+            "Trộn tab với dấu cách, hoặc thụt lề không nhất quán, gây ra `IndentationError`. Hãy cấu hình trình soạn thảo chèn 4 dấu cách.",
+            "`=` là gán còn `==` là so sánh. Chỉ dùng `is` với `None` (`if x is None`).",
+            "`input()` luôn trả về chuỗi; hãy chuyển bằng `int()` hoặc `float()` trước khi tính toán.",
+            "Sao chép list bằng `b = a` không tạo bản sao; cả hai tên cùng trỏ đến một list. Hãy dùng `b = a.copy()` hoặc `b = list(a)`.",
+            "Hãy cài gói trong môi trường ảo (`python3 -m venv .venv`) thay vì cài vào Python của hệ thống."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Học tiếp ở đâu",
+      "body": [
+        "Hãy đọc hết Python Tutorial chính thức, rồi duyệt Library Reference để học các module như `pathlib`, `json`, `datetime` và `itertools`. Học `pip` và môi trường ảo để dùng gói bên thứ ba, và viết kiểm thử với `unittest` hoặc pytest. Sau đó chọn hướng đi: web (Django hoặc FastAPI), dữ liệu (pandas) hoặc tự động hóa."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Python có phù hợp cho người mới học không?",
+      "a": "Có. Cú pháp ngắn gọn và gần với tiếng Anh thông thường, lỗi được báo rõ ràng và bạn có thể thử từng dòng trong REPL. Python cũng được dùng rộng rãi trong ngành nên kỹ năng của người mới vẫn hữu ích."
+    },
+    {
+      "q": "Python được biên dịch hay thông dịch?",
+      "a": "CPython biên dịch mã nguồn thành bytecode rồi thông dịch bytecode đó, tất cả diễn ra tự động khi bạn chạy script. Bạn không bao giờ phải chạy bước biên dịch riêng."
+    },
+    {
+      "q": "List và tuple khác nhau thế nào?",
+      "a": "List là khả biến: bạn có thể thêm, xóa và đổi phần tử. Tuple là bất biến nên dùng cho các nhóm giá trị cố định và có thể làm khóa của dict."
+    },
+    {
+      "q": "Vì sao mã Python của tôi chạy chậm?",
+      "a": "Vòng lặp Python thuần chậm hơn các ngôn ngữ biên dịch. Hãy dùng hàm dựng sẵn, comprehension và các thư viện như NumPy, vốn chạy vòng lặp bên trong bằng C."
+    },
+    {
+      "q": "Nên dùng python hay python3 trên dòng lệnh?",
+      "a": "Trên macOS và hầu hết hệ thống Linux hãy dùng `python3`, vì `python` có thể không có hoặc trỏ đến thứ khác. Trên Windows, trình khởi chạy `py` là lựa chọn thông dụng."
+    }
+  ]
+}

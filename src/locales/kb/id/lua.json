@@ -1,0 +1,186 @@
+{
+  "title": "Tutorial Lua: tabel, fungsi, metatable, dan penanganan error — cv.cm",
+  "description": "Belajar Lua langkah demi langkah: Hello, world, variabel lokal dan tipe data, perulangan, fungsi dan closure, tabel, metatable, OOP, serta penanganan error dengan pcall.",
+  "h1": "Tutorial Lua untuk pemula",
+  "answer": "Lua adalah bahasa scripting ringan yang bisa disematkan (embeddable) dan dipakai di game, Roblox (lewat dialeknya, Luau), Neovim, Redis, dan perangkat embedded. Sintaksnya kecil dan hanya punya satu struktur data, yaitu tabel, yang berfungsi sebagai array, dictionary, dan objek. Halaman ini membahas cara memasang Lua, variabel dan tipe data, alur kontrol, fungsi, tabel, metatable, penanganan error dengan pcall, dan satu contoh program lengkap.",
+  "sections": [
+    {
+      "h": "Apa itu Lua dan untuk apa dipakai",
+      "body": [
+        "Lua adalah bahasa scripting kecil, cepat, dan bertipe dinamis yang dibuat pada 1993 di PUC-Rio, sebuah universitas di Brasil. Seluruh interpreter-nya berupa library ringkas yang ditulis dalam C, sehingga mudah disematkan ke dalam program yang lebih besar. Lua hanya punya satu struktur data, yaitu tabel, dan sangat sedikit konsep, jadi cepat dipelajari.",
+        "Lua paling sering dipakai sebagai bahasa scripting tersemat: game engine dan game (Roblox memakai dialek Lua bernama Luau; LÖVE dan Defold memakai Lua), editor Neovim, database Redis, perangkat jaringan seperti Nginx dengan OpenResty, dan banyak perangkat embedded. LuaJIT adalah compiler just-in-time populer untuk kode Lua 5.1."
+      ]
+    },
+    {
+      "h": "Memasang Lua dan menjalankan Hello, world",
+      "body": [
+        "Pasang Lua lewat package manager Anda (misalnya `brew install lua` atau `apt install lua5.4`) atau build dari source di lua.org. Jalankan `lua` saja untuk membuka prompt interaktif.",
+        {
+          "code": "-- hello.lua\nprint(\"Hello, world!\")",
+          "lang": "lua"
+        },
+        {
+          "code": "lua hello.lua\n# Hello, world!",
+          "lang": "shell"
+        },
+        "Komentar diawali dengan `--`. Komentar blok ditulis `--[[ ... ]]`. Statement tidak memerlukan titik koma."
+      ]
+    },
+    {
+      "h": "Variabel dan tipe dasar",
+      "body": [
+        "Variabel bersifat global secara default. Selalu deklarasikan dengan `local` kecuali Anda memang menginginkan variabel global. Lua punya delapan tipe dasar; yang dipakai sehari-hari ada di bawah ini.",
+        {
+          "code": "local name = \"Lua\"\nlocal year = 1993              -- integer\nlocal pi = 3.14159             -- float\nlocal ok = true\nlocal nothing = nil\n\nprint(type(name), type(year), type(nothing))  -- string  number  nil\nprint(math.type(year), math.type(pi))         -- integer  float\nprint(name .. \" \" .. year)                    -- Lua 1993 (.. joins strings)\nprint(#name)                                  -- 3 (length)\nprint(7 / 2, 7 // 2, 7 % 2, 2 ^ 10)           -- 3.5  3  1  1024.0\nprint(string.format(\"%.2f\", pi))              -- 3.14\nprint(tonumber(\"42\") + 1, tostring(10))       -- 43  10",
+          "lang": "lua"
+        },
+        {
+          "table": {
+            "head": [
+              "Tipe",
+              "Contoh",
+              "Catatan"
+            ],
+            "rows": [
+              [
+                "nil",
+                "`nil`",
+                "tidak adanya nilai; variabel yang belum diisi bernilai nil"
+              ],
+              [
+                "boolean",
+                "`true`, `false`",
+                "hanya `false` dan `nil` yang dianggap falsy; `0` dan `\"\"` dianggap truthy"
+              ],
+              [
+                "number",
+                "`42`, `3.14`",
+                "subtipe integer dan float sejak Lua 5.3"
+              ],
+              [
+                "string",
+                "`\"hi\"`, `'hi'`, `[[long]]`",
+                "string byte yang tidak dapat diubah (immutable)"
+              ],
+              [
+                "table",
+                "`{1, 2, x = 3}`",
+                "satu-satunya struktur data"
+              ],
+              [
+                "function",
+                "`function() end`",
+                "nilai kelas satu (first-class)"
+              ]
+            ]
+          }
+        },
+        "Operator tidak sama dengan adalah `~=`, bukan `!=`. Operator logika berupa kata `and`, `or`, dan `not`."
+      ]
+    },
+    {
+      "h": "Alur kontrol",
+      "body": [
+        "Blok diakhiri dengan kata kunci `end`. Lua punya `if`/`elseif`/`else`, `while`, `repeat ... until`, `for` numerik, dan `for` generik yang bekerja dengan iterator.",
+        {
+          "code": "local score = 72\nif score >= 90 then\n  print(\"A\")\nelseif score >= 70 then\n  print(\"B\")                   -- B\nelse\n  print(\"C\")\nend\n\nfor i = 1, 3 do                -- 1 to 3, inclusive\n  io.write(i, \" \")             -- 1 2 3\nend\nprint()\n\nfor i = 10, 1, -4 do io.write(i, \" \") end   -- 10 6 2\nprint()\n\nlocal n = 3\nwhile n > 0 do n = n - 1 end\n\nrepeat\n  n = n + 1\nuntil n >= 2\nprint(n)                       -- 2",
+          "lang": "lua"
+        },
+        "Tidak ada statement `continue`; gunakan `goto continue` dengan label `::continue::`, atau susun ulang perulangan dengan `if`."
+      ]
+    },
+    {
+      "h": "Fungsi",
+      "body": [
+        "Fungsi adalah nilai. Fungsi dapat menerima jumlah argumen yang bervariasi dengan `...` dan mengembalikan beberapa nilai sekaligus. Closure menangkap variabel lokal dari scope di sekitarnya.",
+        {
+          "code": "local function add(a, b)\n  return a + b\nend\n\nlocal function minmax(t)\n  local lo, hi = math.huge, -math.huge\n  for _, v in ipairs(t) do\n    lo, hi = math.min(lo, v), math.max(hi, v)\n  end\n  return lo, hi                -- two return values\nend\n\nlocal function counter()\n  local count = 0\n  return function()            -- a closure\n    count = count + 1\n    return count\n  end\nend\n\nprint(add(2, 3))               -- 5\nlocal lo, hi = minmax({4, 9, 1})\nprint(lo, hi)                  -- 1  9\nlocal next_id = counter()\nprint(next_id(), next_id())    -- 1  2\nlocal function sum(...)\n  local total = 0\n  for _, v in ipairs({...}) do total = total + v end\n  return total\nend\nprint(sum(1, 2, 3))            -- 6",
+          "lang": "lua"
+        }
+      ]
+    },
+    {
+      "h": "Tabel: array, dictionary, dan objek",
+      "body": [
+        "Tabel adalah associative array yang dapat diindeks dengan nilai apa pun kecuali `nil`. Struktur yang sama berfungsi sebagai array, dictionary, set, modul, atau objek. Menurut konvensi, array dimulai dari indeks 1.",
+        {
+          "code": "local fruits = {\"apple\", \"banana\"}\ntable.insert(fruits, \"cherry\")\nprint(#fruits, fruits[1])            -- 3  apple\n\nfor i, f in ipairs(fruits) do        -- array part, in order\n  print(i, f)\nend\n\nlocal ages = {ann = 31, bo = 25}\nages[\"cy\"] = 40\nages.bo = nil                        -- remove a key\nfor k, v in pairs(ages) do           -- all keys, order not defined\n  print(k, v)\nend\n\ntable.sort(fruits, function(a, b) return a > b end)\nprint(table.concat(fruits, \", \"))    -- cherry, banana, apple",
+          "lang": "lua"
+        },
+        {
+          "note": "Indeks dimulai dari 1, dan `#t` hanya dapat diandalkan untuk sequence tanpa lubang. Mengatur `t[2] = nil` di tengah array membuat panjangnya tidak terdefinisi; gunakan `table.remove(t, 2)` untuk menghapus sekaligus menggeser elemen."
+        }
+      ]
+    },
+    {
+      "h": "Metatable dan Lua berorientasi objek",
+      "body": [
+        "Metatable adalah fitur khas Lua. Metatable yang dipasang pada sebuah tabel mengubah perilakunya: `__index` menyediakan key yang tidak ada (dipakai untuk pewarisan), dan field seperti `__add`, `__eq`, dan `__tostring` melakukan overload operator. Sintaks titik dua `obj:method()` meneruskan objek sebagai parameter pertama tersembunyi `self`.",
+        {
+          "code": "local Vector = {}\nVector.__index = Vector\n\nfunction Vector.new(x, y)\n  return setmetatable({x = x, y = y}, Vector)\nend\n\nfunction Vector:length()\n  return math.sqrt(self.x ^ 2 + self.y ^ 2)\nend\n\nVector.__add = function(a, b) return Vector.new(a.x + b.x, a.y + b.y) end\nVector.__tostring = function(v) return \"(\" .. v.x .. \", \" .. v.y .. \")\" end\n\nlocal v = Vector.new(3, 4) + Vector.new(0, 0)\nprint(tostring(v))       -- (3, 4)\nprint(v:length())        -- 5.0",
+          "lang": "lua"
+        },
+        "Lua juga punya coroutine (`coroutine.create`, `coroutine.resume`, `coroutine.yield`) yang memungkinkan sebuah fungsi berhenti sejenak dan dilanjutkan nanti. Script game sering memakainya untuk perilaku bertahap yang berlangsung selama beberapa frame."
+      ]
+    },
+    {
+      "h": "Penanganan error",
+      "body": [
+        "Munculkan error dengan `error(message)`. Tangkap dengan `pcall` (protected call), yang mengembalikan `false` beserta errornya alih-alih menghentikan program. Banyak fungsi library mengembalikan `nil` dan pesan error alih-alih memunculkan error, seperti `io.open`.",
+        {
+          "code": "local function divide(a, b)\n  if b == 0 then\n    error(\"division by zero\")\n  end\n  return a / b\nend\n\nlocal ok, result = pcall(divide, 10, 2)\nprint(ok, result)                  -- true  5.0\n\nok, result = pcall(divide, 1, 0)\nprint(ok, result)                  -- false  script.lua:3: division by zero\n\nlocal f, err = io.open(\"missing.txt\", \"r\")\nif not f then print(\"open failed: \" .. err) end",
+          "lang": "lua"
+        },
+        "Nama file dan nomor baris pada pesan error bergantung pada tempat kode dijalankan. `assert(value, message)` memunculkan error ketika `value` adalah `false` atau `nil`, dan merupakan cara singkat untuk memeriksa hasil."
+      ]
+    },
+    {
+      "h": "Program lengkap kecil: penghitung kata",
+      "body": [
+        "Program ini menghitung kata dalam sebuah teks dengan pattern match, mengurutkannya berdasarkan frekuensi, dan mencetak tiga teratas. Program ini memakai string pattern, tabel, pengurutan dengan comparator kustom, dan pemformatan string.",
+        {
+          "code": "local text = [[\nThe cat and the dog. The dog sat,\nand the cat ran.\n]]\n\nlocal counts = {}\nfor word in text:lower():gmatch(\"%a+\") do\n  counts[word] = (counts[word] or 0) + 1\nend\n\nlocal list = {}\nfor word, n in pairs(counts) do\n  list[#list + 1] = {word = word, n = n}\nend\ntable.sort(list, function(a, b)\n  if a.n ~= b.n then return a.n > b.n end\n  return a.word < b.word\nend)\n\nfor i = 1, 3 do\n  print(string.format(\"%-4s %d\", list[i].word, list[i].n))\nend\n-- the  4\n-- and  2\n-- cat  2",
+          "lang": "lua"
+        },
+        {
+          "note": "Kesalahan umum pemula: lupa `local` sehingga tanpa sengaja membuat variabel global; memakai `!=` alih-alih `~=`; mengira array dimulai dari 0; memakai `.` alih-alih `:` saat memanggil method (`obj.method()` tidak meneruskan `self`); dan mengira `pairs` mengembalikan key dengan urutan tetap."
+        }
+      ]
+    },
+    {
+      "h": "Langkah selanjutnya",
+      "body": [
+        {
+          "ul": [
+            "Lua Reference Manual di lua.org, singkat dan lengkap.",
+            "Programming in Lua oleh Roberto Ierusalimschy, salah satu pembuat Lua; edisi pertamanya tersedia gratis secara online.",
+            "Dokumentasi lingkungan host Anda, seperti panduan Lua untuk Neovim, LÖVE, atau dokumentasi Luau milik Roblox.",
+            "LuaRocks, package manager untuk modul Lua."
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Mengapa array Lua dimulai dari 1?",
+      "a": "Perancang Lua memilih pengindeksan berbasis 1 agar sesuai dengan konvensi matematika dan kebiasaan non-programmer. Fungsi library standar seperti `ipairs`, `#`, dan `table.insert` semuanya mengasumsikan sequence dimulai dari 1."
+    },
+    {
+      "q": "Apakah Lua lebih cepat daripada Python?",
+      "a": "Interpreter Lua standar berukuran kecil dan umumnya cepat untuk bahasa dinamis, sedangkan LuaJIT jauh lebih cepat untuk banyak beban kerja. Kecepatan sebenarnya bergantung pada tugasnya, jadi ukurlah kasus Anda sendiri."
+    },
+    {
+      "q": "Apa perbedaan pairs dan ipairs?",
+      "a": "`ipairs` menelusuri bagian array secara berurutan dari indeks 1 sampai `nil` pertama. `pairs` mengunjungi setiap key dalam tabel dengan urutan yang tidak ditentukan."
+    },
+    {
+      "q": "Apa itu Luau?",
+      "a": "Luau adalah bahasa turunan Lua 5.1 yang dikembangkan oleh Roblox. Luau menambahkan gradual typing dan peningkatan performa, dan dipakai untuk game Roblox."
+    },
+    {
+      "q": "Apakah Lua cocok untuk pemula?",
+      "a": "Ya. Sintaksnya kecil dan konsisten dengan sedikit konsep, itulah sebabnya Lua populer untuk modding game dan pengajaran. Standard library-nya minimal, jadi untuk fitur lain Anda mengandalkan program host atau modul."
+    }
+  ]
+}

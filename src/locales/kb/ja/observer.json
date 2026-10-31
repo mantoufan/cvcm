@@ -1,0 +1,151 @@
+{
+  "title": "Observer パターン：TypeScript の Subject・購読者・イベント — cv.cm",
+  "description": "Observer パターンは、あるオブジェクトを購読し、変化があったときに通知を受け取れるようにします。役割、型付きの TypeScript の例、落とし穴を解説します。",
+  "h1": "Observer パターンとは？例でわかりやすく解説",
+  "answer": "Observer は振る舞いに関するデザインパターンで、Subject と呼ばれるオブジェクトが、Observer と呼ばれる依存先のリストを保持し、状態が変わると自動的に通知します。Observer は実行時に購読と購読解除ができ、Subject はその具象クラスを知る必要がありません。ブラウザのイベントリスナー、Node.js の `EventEmitter`、RxJS のようなリアクティブライブラリは、すべてこの考え方に基づいています。",
+  "sections": [
+    {
+      "h": "目的と解決する問題",
+      "body": [
+        "目的：オブジェクト間に一対多の依存関係を定義し、あるオブジェクトの状態が変わったときに、その依存先すべてに自動的に通知して更新することです。Observer は Gang of Four（GoF）の書籍にある振る舞いパターンの 1 つで、publish-subscribe やリスナーパターンとも呼ばれます。",
+        "Web ショップのショッピングカートを考えてみましょう。商品が追加されると、ヘッダーのカートアイコンは新しい個数を表示し、サイドバーは新しい合計を表示し、アナリティクスのモジュールはそのイベントを記録しなければなりません。カートがこれらをそれぞれ直接呼び出すと、カートのモジュールはヘッダー、サイドバー、アナリティクスに依存します。4 つ目の反応を加えるたびに、またカートを編集することになります。",
+        "Observer を使うと、カートは購読者のリストを持ち、変更があったときにそれぞれを呼び出すだけです。ヘッダー、サイドバー、アナリティクスは自分で購読します。カートはそれらをインポートせず、新しい機能はカートのコードに触れずにカートの変更へ反応できます。"
+      ]
+    },
+    {
+      "h": "構造と登場する役割",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "役割",
+              "責務"
+            ],
+            "rows": [
+              [
+                "Subject（発行者）",
+                "Observer のリストを保持し、購読と購読解除のメソッドを提供する。何か変化があったときに通知する"
+              ],
+              [
+                "Observer（購読者）",
+                "update メソッドを持つインターフェース。多くの場合は単なるコールバック関数"
+              ],
+              [
+                "Concrete subject",
+                "関心のある状態を保持し、変化したときに notify を呼ぶ"
+              ],
+              [
+                "Concrete observer",
+                "通知に反応する。たとえば UI の一部を再描画する"
+              ]
+            ]
+          }
+        },
+        "通知には 2 つのスタイルがあります。push モデルでは、Subject が変更後のデータを通知と一緒に送ります。pull モデルでは「何かが変わった」とだけ伝え、Observer が必要なデータを Subject に問い合わせます。"
+      ]
+    },
+    {
+      "h": "TypeScript での実装",
+      "body": [
+        "小さなジェネリックの `Subject` クラスが購読を管理します。Observer はただの関数で、TypeScript では最も一般的な形です。`subscribe` は購読解除の関数を返すので、呼び出し側はどのリスナーを登録したかを忘れずに済みます。",
+        {
+          "code": "type Listener<T> = (value: T) => void;\n\nclass Subject<T> {\n  private listeners = new Set<Listener<T>>();\n\n  subscribe(listener: Listener<T>): () => void {\n    this.listeners.add(listener);\n    return () => this.listeners.delete(listener);\n  }\n\n  protected notify(value: T) {\n    for (const listener of [...this.listeners]) listener(value);\n  }\n}\n\ntype CartEvent = { count: number; total: number };\n\nclass Cart extends Subject<CartEvent> {\n  private items: { name: string; price: number }[] = [];\n\n  add(name: string, price: number) {\n    this.items.push({ name, price });\n    const total = this.items.reduce((sum, item) => sum + item.price, 0);\n    this.notify({ count: this.items.length, total });\n  }\n}\n\nconst cart = new Cart();\ncart.subscribe(({ count }) => console.log(\"header: \" + count + \" items\"));\nconst stopAnalytics = cart.subscribe(({ total }) => console.log(\"analytics: total \" + total));\n\ncart.add(\"Book\", 12);\nstopAnalytics(); // unsubscribe\ncart.add(\"Pen\", 3);\n// header: 1 items\n// analytics: total 12\n// header: 2 items",
+          "lang": "typescript"
+        },
+        "`notify` は、セットのコピー（`[...this.listeners]`）を反復します。こうすれば、通知の最中に自分自身を購読解除するリスナーがいても、ループを乱しません。",
+        {
+          "note": "購読解除を忘れることが、Observer で最も多いバグです。Subject はすべてのリスナーへの参照を保持するので、破棄された UI コンポーネントが購読したままだと、メモリに残り続け、イベントに反応し続けます。Observer が不要になったら、たとえばコンポーネントのクリーンアップ処理で、必ず購読解除の関数を呼びましょう。"
+        }
+      ]
+    },
+    {
+      "h": "組み込みの EventTarget を使う",
+      "body": [
+        "ブラウザ、Node.js、Deno は `EventTarget` を提供しているので、自前の Subject クラスは不要なことがよくあります。",
+        {
+          "code": "const thermostat = new EventTarget();\n\nthermostat.addEventListener(\"change\", (e) => {\n  console.log(\"new temperature:\", (e as CustomEvent<number>).detail);\n});\n\nthermostat.dispatchEvent(new CustomEvent(\"change\", { detail: 21.5 }));\n// new temperature: 21.5",
+          "lang": "typescript"
+        },
+        "Node.js には、`node:events` モジュールの `EventEmitter` クラスもあり、`on`、`off`、`emit` メソッドを持ちます。"
+      ]
+    },
+    {
+      "h": "使うべき場面と避けるべき場面",
+      "body": [
+        {
+          "ul": [
+            "あるオブジェクトの変化がほかのオブジェクトを更新しなければならず、その数や種類が事前にわからないときに使います。",
+            "コアのモジュールを、それに反応する UI、ログ、アナリティクスのコードから独立させておきたいときに使います。",
+            "ユーザー入力、メッセージ、センサーの測定値のように、時間とともに起きるイベントに使います。",
+            "受信者が決まった 1 つだけなら使いません。直接のメソッド呼び出しやコールバック引数のほうがわかりやすいです。",
+            "Observer が別の通知を引き起こす連鎖には注意しましょう。更新のループを招き、なぜ何かが変わったのかを見えにくくします。",
+            "Subject が明記していない限り、Observer が呼ばれる順序に頼らないでください。"
+          ]
+        }
+      ]
+    },
+    {
+      "h": "実際の利用例",
+      "body": [
+        {
+          "ul": [
+            "DOM：`element.addEventListener(\"click\", handler)` は、要素に Observer を購読させます。",
+            "Node.js：`EventEmitter` は、ストリーム、HTTP サーバー、その他多くのコアオブジェクトの基盤です。",
+            "`MutationObserver`、`IntersectionObserver`、`ResizeObserver` などのブラウザの Observer API は、ページの変化をコールバックに通知します。",
+            "RxJS は、値のストリームを Observable としてモデル化し、Observer がそれを購読します。",
+            "Java：`java.util.Observable` は Java 9 で非推奨になりました。代わりに `java.util.concurrent.Flow` インターフェース（パブリッシャーとサブスクライバー）やイベントリスナーのインターフェースが使われます。"
+          ]
+        }
+      ]
+    },
+    {
+      "h": "関連するパターン",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "パターン",
+              "Observer パターンとの違い"
+            ],
+            "rows": [
+              [
+                "Mediator パターン",
+                "Mediator は参加するオブジェクトを知っていて、それらを調整します。Subject は単に一斉通知するだけで、Observer が何をするかは知りません。"
+              ],
+              [
+                "ブローカー付きの Publish-Subscribe",
+                "パブリッシャーとサブスクライバーは互いをまったく知らず、メッセージブローカーやイベントバスを介して、多くの場合プロセス間で通信します。"
+              ],
+              [
+                "Command パターン",
+                "通知は Command オブジェクトを運ぶことがあります。Command は 1 つのリクエストに関するもので、Observer は一対多の通知に関するものです。"
+              ],
+              [
+                "Iterator パターン",
+                "Iterator は pull 型です（利用側が次の値を要求する）。Observer は push 型です（生産側が値の発生時に送る）。"
+              ]
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Observer と publish-subscribe の違いは何ですか？",
+      "a": "古典的な Observer パターンでは、Observer が Subject に直接登録します。publish-subscribe では、ブローカーやイベントチャネルが間に入るので、パブリッシャーとサブスクライバーは互いを知りません。この 2 つの名前は、同じ考え方に対して厳密に区別せず使われることも多いです。"
+    },
+    {
+      "q": "Observer パターンでメモリリークを避けるにはどうすればよいですか？",
+      "a": "Observer が不要になったら購読解除します。`subscribe` が購読解除の関数を返すようにする、あるいは `addEventListener` で `AbortSignal` を使うと、クリーンアップが簡単になります。"
+    },
+    {
+      "q": "Observer は同期的に呼ばれますか？",
+      "a": "上の例や `EventTarget`、`EventEmitter` では、リスナーは追加された順に同期的に実行されます。ほかのライブラリでは通知が非同期で届くこともあるので、ドキュメントを確認してください。"
+    },
+    {
+      "q": "Observer はリアクティブプログラミングと同じですか？",
+      "a": "リアクティブプログラミングは Observer の上に成り立っています。RxJS のようなライブラリは、通知のストリームをフィルタリング・結合・変換するオペレーターに加えて、エラーと完了に関するルールを追加します。"
+    }
+  ]
+}

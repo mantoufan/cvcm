@@ -1,0 +1,229 @@
+{
+  "title": "Julia入門：配列・関数・多重ディスパッチ・パッケージを解説 — cv.cm",
+  "description": "Juliaをゼロから学べる入門講座。juliaupによるインストール、Hello worldの実行、型、1始まりの配列、ブロードキャスト、関数、多重ディスパッチ、エラー処理、パッケージを解説します。",
+  "h1": "Julia入門：初心者向けチュートリアル",
+  "answer": "Juliaは、高速な数値計算・科学技術計算のために設計された、高水準の動的型付け言語です。PythonやMATLABのように読めますが、各関数は最初に呼ばれたときにネイティブコードへコンパイルされるため、ループがCに近い速度で動きます。中心となる考え方は多重ディスパッチで、関数は、すべての引数の型に基づいてメソッドを選びます。juliaupでインストールし、`julia hello.jl`でファイルを実行します。",
+  "sections": [
+    {
+      "h": "Juliaとは何か、誰が使うのか",
+      "body": [
+        "Juliaは、Jeff Bezanson、Stefan Karpinski、Viral Shah、Alan Edelmanが作り、2012年に公開されました。バージョン1.0は2018年に登場し、1.xシリーズは後方互換性を保っています。Juliaは「2言語問題」、つまり遅くて簡単な言語でプロトタイプを作り、その後で処理の重い部分をCやFortranで書き直すという問題の解決を目指しています。",
+        "Juliaは、科学者、エンジニア、データアナリストが、シミュレーション、微分方程式、最適化、統計、機械学習、ハイパフォーマンスコンピューティングに使っています。パッケージのエコシステムは、データフレーム、作図、GPU計算、自動微分をカバーしています。"
+      ]
+    },
+    {
+      "h": "Juliaのインストールとhello, worldの実行",
+      "body": [
+        "おすすめのインストーラーはjuliaupです。Windows、macOS、LinuxでJuliaのバージョンをインストール・更新します(julialang.org/downloadsを参照)。インストール後は、`julia`でREPLが起動し、`julia file.jl`でスクリプトが実行されます。",
+        {
+          "code": "# hello.jl\nprintln(\"Hello, world!\")",
+          "lang": "julia"
+        },
+        {
+          "code": "julia hello.jl\n# Hello, world!\njulia\n# julia> 1 + 2\n# 3",
+          "lang": "shell"
+        },
+        "REPLでは、`]`でパッケージモードに入り(たとえば`add DataFrames`)、`?`で名前のヘルプ、`;`でシェルを使えます。Backspaceを押すと通常のプロンプトに戻ります。"
+      ]
+    },
+    {
+      "h": "変数と基本の型",
+      "body": [
+        "変数の宣言は不要ですが、どの値にも具体的な型があり、`typeof`で調べられます。必要なら、関数の引数や構造体のフィールドに型注釈を付けられます。",
+        {
+          "table": {
+            "head": [
+              "型",
+              "例",
+              "補足"
+            ],
+            "rows": [
+              [
+                "Int64",
+                "`42`",
+                "64ビットシステムでのデフォルトの整数。オーバーフローすると巻き戻ります"
+              ],
+              [
+                "Float64",
+                "`3.14`, `1e-3`",
+                "デフォルトの浮動小数点数"
+              ],
+              [
+                "Rational",
+                "`1//3`",
+                "正確な分数"
+              ],
+              [
+                "String",
+                "`\"hello\"`",
+                "UTF-8。`\"$name\"`で式を埋め込めます"
+              ],
+              [
+                "Char",
+                "`'a'`",
+                "Unicodeの1文字"
+              ],
+              [
+                "Bool",
+                "`true`, `false`",
+                "論理値"
+              ],
+              [
+                "Symbol",
+                "`:name`",
+                "インターンされた名前。キーやオプションによく使います"
+              ],
+              [
+                "Nothing",
+                "`nothing`",
+                "「値なし」。結果を持たない関数が返します"
+              ]
+            ]
+          }
+        },
+        {
+          "code": "name = \"Ana\"\nage = 30\nprintln(\"$name is $age, next year $(age + 1)\")\n# Ana is 30, next year 31\ntypeof(age)   # Int64\n7 / 2         # 3.5  (always a float)\n7 ÷ 2         # 3    (integer division, also div(7, 2))\n2^10          # 1024",
+          "lang": "julia"
+        },
+        "Juliaは`π`や`α`のようなUnicodeの名前を受け付けます。REPLやほとんどのエディターでは、`\\pi`と入力してTabを押すと`π`になります。"
+      ]
+    },
+    {
+      "h": "制御構文",
+      "body": [
+        "ブロックはキーワード`end`で閉じます。インデントは読みやすさのためだけにあります。`if`、`for`、`while`はほとんどの言語と同じように動き、内包表記で配列を1行で作れます。",
+        {
+          "code": "function sign_name(n)\n    if n > 0\n        \"positive\"\n    elseif n < 0\n        \"negative\"\n    else\n        \"zero\"\n    end\nend\nfor i in 1:3\n    println(\"$i squared is $(i^2)\")\nend\nsquares = [x^2 for x in 1:5 if isodd(x)]   # [1, 9, 25]\nx = 5\nresult = x > 3 ? \"big\" : \"small\"           # \"big\"",
+          "lang": "julia"
+        },
+        "`1:3`は両端を含む範囲です。関数や`if`ブロックの最後の式がその値になるので、`sign_name(-2)`は明示的な`return`なしで`\"negative\"`を返します。"
+      ]
+    },
+    {
+      "h": "関数",
+      "body": [
+        {
+          "code": "add(x, y) = x + y                 # one-line definition\nfunction greet(name = \"world\"; punctuation = \"!\")\n    return \"Hello, $name$punctuation\"\nend\ngreet()                           # \"Hello, world!\"\ngreet(\"Ana\", punctuation = \".\")   # \"Hello, Ana.\"\nsquare = x -> x^2                 # anonymous function\nmap(square, [1, 2, 3])            # [1, 4, 9]\nv = [3, 1, 2]\nsort!(v)                          # v is now [1, 2, 3]",
+          "lang": "julia"
+        },
+        "位置引数はセミコロンの前、キーワード引数はセミコロンの後に書きます。慣例として、`sort!`や`push!`のように名前が`!`で終わる関数は引数の1つを変更し、`sort`は新しい配列を返します。"
+      ]
+    },
+    {
+      "h": "配列・タプル・辞書",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "構造",
+              "リテラル",
+              "補足"
+            ],
+            "rows": [
+              [
+                "Vector",
+                "`[1, 2, 3]`",
+                "1始まりで変更可能。`push!`で伸ばせます"
+              ],
+              [
+                "Matrix",
+                "`[1 2; 3 4]`",
+                "空白で列を、`;`で行を区切ります"
+              ],
+              [
+                "Tuple",
+                "`(1, \"a\")`",
+                "イミュータブルで、長さは固定"
+              ],
+              [
+                "Named tuple",
+                "`(name = \"Ana\", age = 30)`",
+                "フィールドには`.name`でアクセスします"
+              ],
+              [
+                "Dict",
+                "`Dict(\"a\" => 1)`",
+                "変更可能なハッシュマップ"
+              ],
+              [
+                "Set",
+                "`Set([1, 2, 2])`",
+                "重複のない値"
+              ]
+            ]
+          }
+        },
+        {
+          "code": "v = [10, 20, 30]\nv[1]          # 10   (first element)\nv[end]        # 30\npush!(v, 40)\nA = [1 2; 3 4]\nA * A         # matrix product: [7 10; 15 22]\nA .* A        # element-wise:   [1 4; 9 16]\nv .+ 1        # broadcasting:   [11, 21, 31, 41]\nsqrt.([1, 4, 9])   # [1.0, 2.0, 3.0]",
+          "lang": "julia"
+        },
+        "ドット構文はブロードキャストと呼ばれます。`f.(x)`は`f`をすべての要素に適用し、`.+`や`.*`は要素ごとに計算します。Juliaは、ドット付きの演算の連なりを1つのループにまとめます。"
+      ]
+    },
+    {
+      "h": "特徴的な機能：多重ディスパッチ",
+      "body": [
+        "Juliaの関数は、多くのメソッドを持てます。呼び出すと、Juliaはすべての引数の型に対して最も具体的なメソッドを選びます。これはクラスのメソッドに代わるものです。型はデータを保持し、振る舞いは型に対するメソッドを定義して加えます。別のパッケージからでもそれができます。",
+        {
+          "code": "abstract type Shape end\nstruct Circle <: Shape\n    r::Float64\nend\nstruct Rect <: Shape\n    w::Float64\n    h::Float64\nend\narea(c::Circle) = π * c.r^2\narea(r::Rect) = r.w * r.h\nshapes = [Circle(1.0), Rect(2.0, 3.0)]\nprintln(round.(area.(shapes), digits = 2))   # [3.14, 6.0]",
+          "lang": "julia"
+        },
+        "Juliaは、見た引数の型に特化した関数のバージョンをコンパイルするため、関数の最初の呼び出しは(コンパイルを含むので)遅く、以降の呼び出しは高速です。作成後にフィールドを変更する必要がある場合は、`mutable struct`を使います。"
+      ]
+    },
+    {
+      "h": "エラー処理",
+      "body": [
+        "Juliaは例外を使います。`ArgumentError`や`DomainError`などの組み込みの例外型を投げるか、`Exception`のサブタイプとなる構造体として独自のものを定義します。`tryparse`は、例外を投げずに`nothing`を返します。",
+        {
+          "code": "function parse_age(s)\n    n = tryparse(Int, s)\n    n === nothing && throw(ArgumentError(\"not a number: $s\"))\n    n < 0 && throw(DomainError(n, \"age must not be negative\"))\n    return n\nend\ntry\n    parse_age(\"abc\")\ncatch e\n    if e isa ArgumentError\n        println(\"Error: \", e.msg)\n    else\n        rethrow()\n    end\nend\n# Error: not a number: abc",
+          "lang": "julia"
+        }
+      ]
+    },
+    {
+      "h": "小さな完成プログラム：単語の出現頻度",
+      "body": [
+        {
+          "code": "text = \"the cat and the hat and the bat\"\ncounts = Dict{String,Int}()\nfor w in split(text)\n    counts[w] = get(counts, w, 0) + 1\nend\ntop = sort(collect(counts), by = last, rev = true)\nfor (word, n) in first(top, 2)\n    println(word, \" \", n)\nend\n# the 3\n# and 2",
+          "lang": "julia"
+        },
+        "`split`は文字列を空白で分割し、`get`は新しい単語に対してデフォルトの0を返し、`collect`は辞書を`word => count`のペアのベクターに変え、`by = last`は回数で並べ替えます。",
+        {
+          "note": "初心者がよくやる間違い：0から添字を数える(`v[0]`はエラーです。最初の要素は`v[1]`です)、`7 / 2`が整数になると思い込む、性能が重要なコードを関数の中ではなくスクリプトのトップレベルに書く(グローバル変数は遅く、ファイルのトップレベルのループ内でグローバルに代入するとスコープの警告が出ます)、コンパイルを含む最初の呼び出しだけを計測する、などです。"
+        }
+      ]
+    },
+    {
+      "h": "次に学ぶこと",
+      "body": [
+        {
+          "ul": [
+            "docs.julialang.orgの公式Juliaマニュアル。「Getting Started」から始めます。",
+            "julialang.orgの学習ページ。チュートリアル、書籍、講座が並んでいます。",
+            "コードを最適化する前に、マニュアルの「Performance Tips」の章を読む。",
+            "DataFrames.jl、Plots.jl、DifferentialEquations.jlなどのパッケージを見てみる。"
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "JuliaはPythonより速いですか？",
+      "a": "ループや数値計算の多いコードでは、ネイティブコードにコンパイルされるため、Juliaは通常、純粋なPythonよりずっと速くなります。NumPyなどのライブラリを使ったPythonは、ベクトル化された演算なら高速になりえるので、差は処理内容によります。"
+    },
+    {
+      "q": "Juliaはなぜ1から数え始めるのですか？",
+      "a": "Juliaは、数学やMATLAB、R、Fortranなどの言語の慣例に従っており、配列の最初の要素の添字は1です。"
+    },
+    {
+      "q": "Juliaのコードの初回実行が遅いのはなぜですか？",
+      "a": "Juliaは、各関数を最初に呼ばれたときに、その引数の型に合わせてコンパイルします。以降の呼び出しはコンパイル済みのコードを再利用するので、性能はウォームアップの呼び出しの後か、ベンチマーク用のパッケージで計測してください。"
+    },
+    {
+      "q": "Juliaは無料ですか？",
+      "a": "はい。JuliaはMITライセンスのオープンソースで、ほぼすべてのパッケージもオープンソースです。"
+    }
+  ]
+}

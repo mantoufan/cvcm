@@ -1,0 +1,181 @@
+{
+  "title": "Hướng dẫn học R: vector, data frame, hàm và thống kê — cv.cm",
+  "description": "Học lập trình R cho phân tích dữ liệu: cài đặt R, chạy script, vector và kiểu dữ liệu, if và vòng lặp, hàm, list, data frame, mô hình tuyến tính, biểu đồ và xử lý lỗi.",
+  "h1": "Học lập trình R cơ bản cho người mới bắt đầu",
+  "answer": "R là ngôn ngữ và môi trường miễn phí cho thống kê, phân tích dữ liệu và đồ họa. Ý tưởng cốt lõi là vector hóa: các phép toán áp dụng lên toàn bộ vector và cột của data frame cùng lúc, nên mã phân tích rất ngắn gọn. Trang này trình bày cài đặt R, chạy script, vector và kiểu dữ liệu, cấu trúc điều khiển, hàm, list và data frame, mô hình thống kê, vẽ biểu đồ và xử lý lỗi.",
+  "sections": [
+    {
+      "h": "R là gì và dùng để làm gì",
+      "body": [
+        "R là ngôn ngữ và môi trường mã nguồn mở, miễn phí cho tính toán thống kê và đồ họa. R bắt nguồn từ ngôn ngữ S do Bell Labs phát triển và do R Core Team duy trì. R được vector hóa: hầu hết phép toán làm việc trên toàn bộ vector dữ liệu cùng lúc, giúp mã phân tích dữ liệu ngắn gọn.",
+        "R được các nhà thống kê, nhà khoa học dữ liệu, chuyên gia tin sinh học, nhà kinh tế và nhà nghiên cứu sử dụng để làm sạch dữ liệu, xây dựng mô hình thống kê, trực quan hóa và tạo báo cáo có thể tái lập. Hàng nghìn gói bổ sung có sẵn trên CRAN (Comprehensive R Archive Network) và Bioconductor."
+      ]
+    },
+    {
+      "h": "Cài đặt R và chạy Hello, world",
+      "body": [
+        "Tải R từ CRAN cho Windows, macOS hoặc Linux. Nhiều người còn cài RStudio hoặc Positron, là các IDE có trình soạn thảo, console, khung xem biểu đồ và khung trợ giúp. Bạn có thể gõ mã trực tiếp trong console R hoặc lưu vào tệp `.R`.",
+        {
+          "code": "# hello.R\nprint(\"Hello, world!\")\ncat(\"Hello, world!\\n\")",
+          "lang": "r"
+        },
+        {
+          "code": "Rscript hello.R\n# [1] \"Hello, world!\"\n# Hello, world!",
+          "lang": "shell"
+        },
+        "`print` hiển thị giá trị giống như console, kèm tiền tố chỉ mục `[1]`. `cat` ghi văn bản thuần, nên bạn tự thêm ký tự xuống dòng."
+      ]
+    },
+    {
+      "h": "Biến, kiểu cơ bản và vector",
+      "body": [
+        "Gán bằng `<-` (phong cách quen dùng) hoặc `=`. R không có giá trị vô hướng: một số đơn là vector độ dài 1. `c()` gộp các giá trị thành vector, và phép toán số học áp dụng theo từng phần tử.",
+        {
+          "code": "x <- 42                 # numeric (double)\nn <- 7L                 # integer (L suffix)\nname <- \"Ada\"           # character\nok <- TRUE              # logical\nclass(x); class(n); class(name)   # \"numeric\" \"integer\" \"character\"\nv <- c(2, 4, 6, 8)\nv * 10                  # [1] 20 40 60 80\nv[2]                    # [1] 4   (indexing starts at 1)\nv[v > 4]                # [1] 6 8\nlength(v); sum(v); mean(v)        # 4 20 5\n1:5                     # [1] 1 2 3 4 5\nseq(0, 1, by = 0.25)    # [1] 0.00 0.25 0.50 0.75 1.00",
+          "lang": "r"
+        },
+        {
+          "table": {
+            "head": [
+              "Kiểu",
+              "Ví dụ",
+              "Ghi chú"
+            ],
+            "rows": [
+              [
+                "numeric (double)",
+                "`3.14`, `42`",
+                "mặc định cho số"
+              ],
+              [
+                "integer",
+                "`42L`",
+                "số nguyên, có hậu tố `L`"
+              ],
+              [
+                "character",
+                "`\"text\"`",
+                "chuỗi"
+              ],
+              [
+                "logical",
+                "`TRUE`, `FALSE`",
+                "`NA` nghĩa là giá trị bị thiếu"
+              ],
+              [
+                "factor",
+                "`factor(c(\"lo\", \"hi\"))`",
+                "dữ liệu phân loại với các mức cố định"
+              ]
+            ]
+          }
+        },
+        {
+          "note": "`NA` là giá trị bị thiếu và nó lan truyền: `mean(c(1, NA, 3))` là `NA`. Truyền `na.rm = TRUE` để bỏ qua giá trị thiếu, và kiểm tra bằng `is.na(x)`, không bao giờ dùng `x == NA`."
+        }
+      ]
+    },
+    {
+      "h": "Cấu trúc điều khiển",
+      "body": [
+        "R có `if`/`else`, `for`, `while` và `repeat`. Với vector, hàm vector hóa `ifelse()` thường tốt hơn vòng lặp.",
+        {
+          "code": "temp <- 25\nif (temp > 30) {\n  print(\"hot\")\n} else if (temp > 15) {\n  print(\"mild\")         # [1] \"mild\"\n} else {\n  print(\"cold\")\n}\nfor (i in 1:3) {\n  cat(\"step\", i, \"\\n\")  # step 1 / step 2 / step 3\n}\nscores <- c(45, 80, 62)\nifelse(scores >= 50, \"pass\", \"fail\")\n# [1] \"fail\" \"pass\" \"pass\"",
+          "lang": "r"
+        },
+        "`if` cần một giá trị `TRUE` hoặc `FALSE` duy nhất. Truyền vector dài hơn vào `if` là lỗi từ R 4.2 trở đi; hãy dùng `any()`, `all()` hoặc `ifelse()`."
+      ]
+    },
+    {
+      "h": "Hàm",
+      "body": [
+        "Hàm được tạo bằng `function` và gán cho một tên. Biểu thức được tính cuối cùng được trả về tự động; `return()` chỉ cần khi thoát sớm. Đối số có thể có giá trị mặc định và có thể truyền theo tên.",
+        {
+          "code": "bmi <- function(weight_kg, height_m = 1.75) {\n  weight_kg / height_m^2\n}\nbmi(70)                          # [1] 22.85714\nbmi(height_m = 1.6, weight_kg = 60)  # [1] 23.4375\nsquare <- function(x) x^2\nsquare(1:4)                      # [1] 1 4 9 16 (vectorized)\nsapply(c(1, 4, 9), sqrt)         # [1] 1 2 3\n(\\(x) x + 1)(10)                 # [1] 11 (short lambda syntax)",
+          "lang": "r"
+        },
+        "Cú pháp lambda ngắn `\\(x)` có từ R 4.1, cùng với pipe gốc `|>` truyền vế trái làm đối số đầu tiên: `c(1, 4, 9) |> sqrt() |> sum()` trả về 6."
+      ]
+    },
+    {
+      "h": "Cấu trúc dữ liệu cốt lõi: vector, list và data frame",
+      "body": [
+        "Ngoài vector nguyên tử, R còn có list (chứa được các giá trị khác kiểu), ma trận và data frame. Data frame là bảng mà mỗi cột là một vector cùng độ dài; đây là cấu trúc trung tâm của phân tích dữ liệu.",
+        {
+          "code": "person <- list(name = \"Ann\", age = 31, langs = c(\"R\", \"SQL\"))\nperson$name                 # [1] \"Ann\"\nperson[[\"langs\"]][2]        # [1] \"SQL\"\ndf <- data.frame(\n  name  = c(\"Ann\", \"Bo\", \"Cy\"),\n  age   = c(31, 25, 40),\n  city  = c(\"Oslo\", \"Rome\", \"Oslo\")\n)\nnrow(df)                    # [1] 3\ndf$age                      # [1] 31 25 40\ndf[df$age > 30, \"name\"]     # [1] \"Ann\" \"Cy\"\ndf$senior <- df$age >= 40   # add a column\naggregate(age ~ city, data = df, FUN = mean)\n#   city  age\n# 1 Oslo 35.5\n# 2 Rome 25.0\nstr(df)                     # compact structure summary",
+          "lang": "r"
+        },
+        "`df[rows, columns]` chọn theo vị trí, tên hoặc điều kiện logic. Để trống một vế, như `df[1, ]`, nghĩa là tất cả hàng hoặc tất cả cột."
+      ]
+    },
+    {
+      "h": "Thống kê và vẽ biểu đồ",
+      "body": [
+        "Các hàm thống kê có sẵn: `summary`, `sd`, `quantile`, `cor`, `t.test` và `lm` (mô hình tuyến tính), cùng nhiều hàm khác. Đồ họa cơ bản vẽ biểu đồ chỉ bằng một lệnh gọi.",
+        {
+          "code": "set.seed(1)\nx <- 1:20\ny <- 3 * x + rnorm(20, sd = 2)\nmodel <- lm(y ~ x)\nround(coef(model), 2)       # intercept near 0, slope near 3\nsummary(model)$r.squared    # close to 1\nplot(x, y, main = \"y vs x\")\nabline(model, col = \"red\")",
+          "lang": "r"
+        },
+        "Cú pháp công thức `y ~ x` nghĩa là “mô hình hóa y như một hàm của x” và được dùng trong nhiều hàm xây dựng mô hình. Với biểu đồ nâng cao và xử lý dữ liệu, hầu hết người dùng cài các gói tidyverse, như ggplot2 và dplyr, bằng `install.packages(\"tidyverse\")`."
+      ]
+    },
+    {
+      "h": "Xử lý lỗi",
+      "body": [
+        "Phát sinh lỗi bằng `stop()` và cảnh báo bằng `warning()`. Bắt chúng bằng `tryCatch()`, hàm nhận các hàm xử lý cho `error`, `warning` và một khối `finally` tùy chọn.",
+        {
+          "code": "safe_log <- function(x) {\n  if (!is.numeric(x)) stop(\"x must be numeric\")\n  if (any(x <= 0)) warning(\"non-positive values give NaN or -Inf\")\n  log(x)\n}\nresult <- tryCatch(\n  safe_log(\"ten\"),\n  error = function(e) {\n    message(\"Caught: \", conditionMessage(e))\n    NA\n  },\n  finally = message(\"done\")\n)\n# Caught: x must be numeric\n# done\nresult                      # [1] NA",
+          "lang": "r"
+        }
+      ]
+    },
+    {
+      "h": "Một chương trình hoàn chỉnh nhỏ: tổng hợp doanh số",
+      "body": [
+        "Script này tạo một bảng doanh số nhỏ, tính doanh thu theo khu vực bằng R cơ bản và in ra khu vực tốt nhất.",
+        {
+          "code": "sales <- data.frame(\n  region = c(\"North\", \"South\", \"North\", \"East\", \"South\"),\n  units  = c(10, 4, 6, 8, 12),\n  price  = c(2.5, 3.0, 2.5, 4.0, 3.0)\n)\nsales$revenue <- sales$units * sales$price\nby_region <- aggregate(revenue ~ region, data = sales, FUN = sum)\nby_region <- by_region[order(-by_region$revenue), ]\nprint(by_region, row.names = FALSE)\n#  region revenue\n#   South      48\n#   North      40\n#    East      32\nbest <- by_region$region[1]\ncat(sprintf(\"Best region: %s (%.2f)\\n\", best, max(by_region$revenue)))\n# Best region: South (48.00)",
+          "lang": "r"
+        },
+        {
+          "note": "Các lỗi thường gặp của người mới: quên rằng chỉ mục bắt đầu từ 1; so sánh bằng `== NA` thay vì `is.na()`; mở rộng vector trong vòng lặp (hãy cấp phát trước hoặc dùng mã vector hóa); dùng `=` và `<-` không nhất quán; và nhầm `[` (trả về list con) với `[[` (trả về một phần tử) trên list."
+        }
+      ]
+    },
+    {
+      "h": "Học tiếp ở đâu",
+      "body": [
+        {
+          "ul": [
+            "An Introduction to R, sổ tay chính thức trên CRAN.",
+            "Trợ giúp tích hợp sẵn: gõ `?mean` hoặc `help(\"lm\")` trong console.",
+            "R for Data Science của Hadley Wickham và cộng sự, miễn phí trực tuyến, theo hướng tidyverse.",
+            "CRAN Task Views, liệt kê các gói theo lĩnh vực như kinh tế lượng hoặc học máy."
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Phân tích dữ liệu nên dùng R hay Python?",
+      "a": "Cả hai đều mạnh. R có kho phương pháp thống kê sâu rộng và vẽ biểu đồ xuất sắc, phổ biến trong học thuật và thống kê sinh học; Python đa dụng hơn và chiếm ưu thế trong kỹ thuật học máy. Nhiều nhà phân tích học cả hai."
+    },
+    {
+      "q": "<- và = trong R khác nhau thế nào?",
+      "a": "Cả hai đều gán ở cấp cao nhất, và `<-` là phong cách quen dùng. Bên trong lời gọi hàm, `=` đặt tên cho đối số, nên `f(x = 1)` truyền một đối số chứ không tạo biến."
+    },
+    {
+      "q": "Vì sao R đếm từ 1?",
+      "a": "R theo quy ước toán học và thống kê, như tiền thân S, nên phần tử đầu tiên của vector là `v[1]`. Chỉ mục 0 trả về vector rỗng chứ không báo lỗi."
+    },
+    {
+      "q": "Tidyverse là gì?",
+      "a": "Tidyverse là tập hợp các gói R, gồm dplyr, ggplot2 và tidyr, có thiết kế nhất quán để nhập, làm sạch, biến đổi và vẽ biểu đồ dữ liệu."
+    },
+    {
+      "q": "Làm sao cài một gói R?",
+      "a": "Chạy `install.packages(\"name\")` một lần để tải từ CRAN, rồi `library(name)` trong mỗi phiên để nạp."
+    }
+  ]
+}

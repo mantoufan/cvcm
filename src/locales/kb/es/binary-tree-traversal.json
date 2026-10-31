@@ -1,0 +1,198 @@
+{
+  "title": "Recorrido de árboles binarios: preorden, inorden, postorden y por niveles en Python — cv.cm",
+  "description": "Recorrido de árboles binarios explicado: preorden, inorden, postorden y por niveles (BFS), con código Python recursivo e iterativo, un ejemplo paso a paso y la complejidad.",
+  "h1": "Recorrido de árboles binarios: preorden, inorden, postorden y por niveles",
+  "answer": "Recorrer un árbol binario significa visitar cada nodo exactamente una vez en un orden fijo. Los tres órdenes en profundidad solo se diferencian en cuándo se visita el nodo: preorden visita nodo, izquierda, derecha; inorden visita izquierda, nodo, derecha; postorden visita izquierda, derecha, nodo. El recorrido por niveles es en anchura y visita el árbol fila por fila con una cola. Los cuatro cuestan O(n) en tiempo.",
+  "sections": [
+    {
+      "h": "Por qué importa el orden del recorrido",
+      "body": [
+        "Un árbol no tiene un único orden natural, así que cada algoritmo elige el que encaja con su tarea. El recorrido inorden de un árbol binario de búsqueda produce las claves en orden. El preorden visita al padre antes que a sus hijos, que es lo que necesitas para copiar un árbol o escribirlo de modo que se pueda reconstruir. El postorden visita a los hijos antes que al padre, que es lo que necesitas para borrar un árbol, calcular tamaños de carpetas o evaluar un árbol de expresiones. El orden por niveles encuentra primero el nodo menos profundo e imprime el árbol fila por fila."
+      ]
+    },
+    {
+      "h": "Los cuatro órdenes en un ejemplo",
+      "body": [
+        "Usamos este árbol: raíz 1 con hijos 2 y 3; el nodo 2 tiene hijos 4 y 5; el nodo 3 tiene un hijo derecho 6.",
+        {
+          "code": "        1\n       / \\\n      2   3\n     / \\   \\\n    4   5   6",
+          "lang": "text"
+        },
+        {
+          "table": {
+            "head": [
+              "Orden",
+              "Regla",
+              "Resultado"
+            ],
+            "rows": [
+              [
+                "Preorden",
+                "nodo, izquierda, derecha",
+                "1 2 4 5 3 6"
+              ],
+              [
+                "Inorden",
+                "izquierda, nodo, derecha",
+                "4 2 5 1 3 6"
+              ],
+              [
+                "Postorden",
+                "izquierda, derecha, nodo",
+                "4 5 2 6 3 1"
+              ],
+              [
+                "Por niveles",
+                "fila por fila, de izquierda a derecha",
+                "1 2 3 4 5 6"
+              ]
+            ]
+          }
+        },
+        "Una forma sencilla de recordar los tres primeros: el nombre dice dónde va el nodo. Pre significa antes de ambos subárboles, in entre ellos y post después de ellos. El subárbol izquierdo siempre se visita antes que el derecho."
+      ]
+    },
+    {
+      "h": "Implementaciones recursivas",
+      "body": [
+        "Las versiones recursivas reflejan directamente las definiciones. Cada función visita el nodo en una línea distinta.",
+        {
+          "code": "class Node:\n    def __init__(self, val, left=None, right=None):\n        self.val, self.left, self.right = val, left, right\ndef preorder(node, out):\n    if node:\n        out.append(node.val)\n        preorder(node.left, out)\n        preorder(node.right, out)\n    return out\ndef inorder(node, out):\n    if node:\n        inorder(node.left, out)\n        out.append(node.val)\n        inorder(node.right, out)\n    return out\ndef postorder(node, out):\n    if node:\n        postorder(node.left, out)\n        postorder(node.right, out)\n        out.append(node.val)\n    return out\nroot = Node(1, Node(2, Node(4), Node(5)), Node(3, None, Node(6)))\nprint(preorder(root, []))   # [1, 2, 4, 5, 3, 6]\nprint(inorder(root, []))    # [4, 2, 5, 1, 3, 6]\nprint(postorder(root, []))  # [4, 5, 2, 6, 3, 1]",
+          "lang": "python"
+        }
+      ]
+    },
+    {
+      "h": "Preorden e inorden iterativos con una pila",
+      "body": [
+        "La recursión usa la pila de llamadas. Para evitar los límites de recursión en árboles profundos, gestiona tú la pila. En preorden, saca un nodo, visítalo y apila el hijo derecho antes que el izquierdo para que el izquierdo se procese primero.",
+        "En inorden, baja por la izquierda tanto como puedas, apilando nodos por el camino. Cuando ya no puedas ir más a la izquierda, saca un nodo, visítalo y pasa a su hijo derecho.",
+        {
+          "code": "def preorder_iter(root):\n    out, stack = [], [root] if root else []\n    while stack:\n        node = stack.pop()\n        out.append(node.val)\n        if node.right:\n            stack.append(node.right)\n        if node.left:\n            stack.append(node.left)\n    return out\ndef inorder_iter(root):\n    out, stack, node = [], [], root\n    while stack or node:\n        while node:              # go as far left as possible\n            stack.append(node)\n            node = node.left\n        node = stack.pop()\n        out.append(node.val)\n        node = node.right\n    return out\nprint(preorder_iter(root))  # [1, 2, 4, 5, 3, 6]\nprint(inorder_iter(root))   # [4, 2, 5, 1, 3, 6]",
+          "lang": "python"
+        }
+      ]
+    },
+    {
+      "h": "Postorden iterativo y orden por niveles",
+      "body": [
+        "El postorden iterativo es el más delicado. Un enfoque limpio usa una marca: apila cada nodo dos veces, la segunda marcado como listo para visitarse después de sus hijos. El orden por niveles usa una cola en lugar de una pila; procesar la cola nivel por nivel también te da la profundidad de cada nodo.",
+        {
+          "code": "from collections import deque\ndef postorder_iter(root):\n    out, stack = [], [(root, False)] if root else []\n    while stack:\n        node, children_done = stack.pop()\n        if children_done:\n            out.append(node.val)\n        else:\n            stack.append((node, True))\n            if node.right:\n                stack.append((node.right, False))\n            if node.left:\n                stack.append((node.left, False))\n    return out\ndef level_order(root):\n    levels, queue = [], deque([root] if root else [])\n    while queue:\n        level = []\n        for _ in range(len(queue)):   # nodes of the current level\n            node = queue.popleft()\n            level.append(node.val)\n            if node.left:\n                queue.append(node.left)\n            if node.right:\n                queue.append(node.right)\n        levels.append(level)\n    return levels\nprint(postorder_iter(root))  # [4, 5, 2, 6, 3, 1]\nprint(level_order(root))     # [[1], [2, 3], [4, 5, 6]]",
+          "lang": "python"
+        },
+        "Otro truco común para el postorden: ejecuta un preorden modificado (nodo, derecha, izquierda) e invierte el resultado."
+      ]
+    },
+    {
+      "h": "Complejidad temporal y espacial",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Recorrido",
+              "Tiempo",
+              "Espacio adicional",
+              "Motivo"
+            ],
+            "rows": [
+              [
+                "Preorden / inorden / postorden (recursivo)",
+                "O(n)",
+                "O(h)",
+                "la pila de llamadas guarda un marco por nivel"
+              ],
+              [
+                "Preorden / inorden / postorden (iterativo)",
+                "O(n)",
+                "O(h)",
+                "la pila explícita guarda como máximo un camino más los hermanos"
+              ],
+              [
+                "Por niveles",
+                "O(n)",
+                "O(w)",
+                "la cola guarda como máximo un nivel completo"
+              ],
+              [
+                "Inorden de Morris",
+                "O(n)",
+                "O(1)",
+                "reconecta temporalmente los enlaces derechos nulos como hilos (threads)"
+              ]
+            ]
+          }
+        },
+        "Aquí n es el número de nodos, h la altura y w el ancho máximo. En un árbol balanceado h es aproximadamente log2(n) y w puede ser cercano a n/2; en un árbol en forma de cadena h es n y w es 1."
+      ]
+    },
+    {
+      "h": "Errores comunes",
+      "body": [
+        {
+          "ul": [
+            "Apilar el hijo izquierdo antes que el derecho en el preorden iterativo. Una pila es LIFO, así que el hijo que quieres primero debe apilarse el último.",
+            "Olvidar el árbol vacío: toda función debe devolver un resultado vacío cuando `root is None`.",
+            "Usar una `list` con `pop(0)` como cola en el orden por niveles. Cuesta O(n) por extracción; usa `collections.deque`.",
+            "Depender de la recursión en árboles muy profundos. Python se detiene en su límite de recursión (unos 1000 por defecto) con `RecursionError`.",
+            "Esperar que un solo recorrido identifique un árbol. El preorden por sí solo es ambiguo; preorden más inorden (con valores distintos) basta para reconstruirlo."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Cuándo usar cada recorrido",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Tarea",
+              "Recorrido"
+            ],
+            "rows": [
+              [
+                "Listar las claves de un BST en orden, validar un BST, k-ésimo menor",
+                "Inorden"
+              ],
+              [
+                "Copiar o serializar un árbol, imprimir el esquema de un directorio",
+                "Preorden"
+              ],
+              [
+                "Borrar un árbol, calcular tamaños o alturas de subárboles, evaluar un árbol de expresiones",
+                "Postorden"
+              ],
+              [
+                "Profundidad mínima, vista del lado derecho, imprimir por niveles, nodo más cercano",
+                "Por niveles"
+              ]
+            ]
+          }
+        },
+        "Preorden, inorden y postorden son formas de búsqueda en profundidad; el orden por niveles es la búsqueda en anchura aplicada a un árbol. Las mismas ideas se extienden a grafos generales, donde además necesitas un conjunto de nodos visitados."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "¿Cuál es la diferencia entre preorden, inorden y postorden?",
+      "a": "Solo la posición en que se visita el nodo. Preorden visita el nodo antes de sus subárboles, inorden entre el subárbol izquierdo y el derecho, y postorden después de ambos."
+    },
+    {
+      "q": "¿Qué recorrido da una salida ordenada en un árbol binario de búsqueda?",
+      "a": "El recorrido inorden. En un BST todas las claves de la izquierda son menores y las de la derecha mayores, así que visitar izquierda, nodo, derecha produce las claves en orden ascendente."
+    },
+    {
+      "q": "¿El recorrido por niveles es lo mismo que BFS?",
+      "a": "Sí. El recorrido por niveles es la búsqueda en anchura sobre un árbol. Usa una cola y visita los nodos por orden de profundidad."
+    },
+    {
+      "q": "¿Por qué usar un recorrido iterativo en lugar de recursión?",
+      "a": "La profundidad de recursión es igual a la altura del árbol, y Python lanza `RecursionError` al pasar su límite de recursión. Una pila explícita no tiene ese límite y facilita pausar o detenerse antes."
+    },
+    {
+      "q": "¿Se puede recorrer un árbol con O(1) de espacio adicional?",
+      "a": "Sí. El recorrido de Morris enlaza temporalmente el predecesor inorden de cada nodo de vuelta a él, así que no hace falta pila, y restaura el árbol antes de terminar. Se ejecuta en tiempo O(n)."
+    }
+  ]
+}

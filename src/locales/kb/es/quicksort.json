@@ -1,0 +1,262 @@
+{
+  "title": "Quicksort explicado: partición, pivotes, código en Python y complejidad — cv.cm",
+  "description": "Quicksort elige un pivote, parte la lista a su alrededor y ordena ambos lados. Traza de la partición de Lomuto, código en Python, O(n log n) frente a O(n²), pivotes y estabilidad.",
+  "h1": "Quicksort (ordenamiento rápido): cómo funciona, código y complejidad",
+  "answer": "Quicksort es un algoritmo de ordenamiento de divide y vencerás. Elige un elemento como pivote, reorganiza el arreglo de modo que los elementos menores queden antes del pivote y los mayores después (partición), y luego ordena los dos lados de forma recursiva. Se ejecuta en tiempo O(n log n) en promedio y ordena in situ con O(log n) de espacio de pila, pero se degrada a O(n²) cuando los pivotes son sistemáticamente malos. No es estable. Con un pivote aleatorio o de mediana de tres, es uno de los ordenamientos de propósito general más rápidos en la práctica.",
+  "sections": [
+    {
+      "h": "La idea en palabras sencillas",
+      "body": [
+        {
+          "ol": [
+            "Elige un elemento pivote, por ejemplo el último elemento o uno aleatorio.",
+            "Partición: mueve a su izquierda todos los elementos menores que el pivote y a su derecha todos los mayores. El pivote queda ya en su posición final ordenada.",
+            "Ordena de forma recursiva la parte a la izquierda del pivote y la parte a su derecha. Después no hace falta combinar nada."
+          ]
+        },
+        "Merge sort divide con facilidad y mezcla con dificultad. Quicksort es lo contrario: la partición hace el trabajo y unir las mitades no cuesta nada, porque ya están en el lugar correcto dentro del mismo arreglo."
+      ]
+    },
+    {
+      "h": "Ejemplo resuelto: una partición de Lomuto",
+      "body": [
+        "Particiona `[10, 80, 30, 90, 40, 50, 70]` con el último elemento, 70, como pivote. El índice `i` marca el final de la región de elementos menores que el pivote; `j` recorre de izquierda a derecha.",
+        {
+          "table": {
+            "head": [
+              "j",
+              "items[j]",
+              "¿Menor que 70?",
+              "Acción",
+              "Arreglo después"
+            ],
+            "rows": [
+              [
+                "0",
+                "10",
+                "sí",
+                "i = 0, intercambio 0↔0",
+                "`[10, 80, 30, 90, 40, 50, 70]`"
+              ],
+              [
+                "1",
+                "80",
+                "no",
+                "ninguna",
+                "`[10, 80, 30, 90, 40, 50, 70]`"
+              ],
+              [
+                "2",
+                "30",
+                "sí",
+                "i = 1, intercambio 1↔2",
+                "`[10, 30, 80, 90, 40, 50, 70]`"
+              ],
+              [
+                "3",
+                "90",
+                "no",
+                "ninguna",
+                "`[10, 30, 80, 90, 40, 50, 70]`"
+              ],
+              [
+                "4",
+                "40",
+                "sí",
+                "i = 2, intercambio 2↔4",
+                "`[10, 30, 40, 90, 80, 50, 70]`"
+              ],
+              [
+                "5",
+                "50",
+                "sí",
+                "i = 3, intercambio 3↔5",
+                "`[10, 30, 40, 50, 80, 90, 70]`"
+              ],
+              [
+                "fin",
+                "",
+                "",
+                "colocar el pivote en i + 1 = 4",
+                "`[10, 30, 40, 50, 70, 90, 80]`"
+              ]
+            ]
+          }
+        },
+        "70 queda ahora en el índice 4, su posición final. Después quicksort ordena `[10, 30, 40, 50]` y `[90, 80]` por separado."
+      ]
+    },
+    {
+      "h": "Implementación en Python",
+      "body": [
+        {
+          "code": "import random\n\ndef partition(a, lo, hi):\n    \"\"\"Lomuto partition of a[lo..hi] around a random pivot.\"\"\"\n    r = random.randint(lo, hi)\n    a[r], a[hi] = a[hi], a[r]       # move the pivot to the end\n    pivot = a[hi]\n    i = lo - 1\n    for j in range(lo, hi):\n        if a[j] < pivot:\n            i += 1\n            a[i], a[j] = a[j], a[i]\n    a[i + 1], a[hi] = a[hi], a[i + 1]\n    return i + 1\n\ndef quicksort(a, lo=0, hi=None):\n    \"\"\"Sort list a in place.\"\"\"\n    if hi is None:\n        hi = len(a) - 1\n    while lo < hi:\n        p = partition(a, lo, hi)\n        if p - lo < hi - p:           # recurse on the smaller side\n            quicksort(a, lo, p - 1)\n            lo = p + 1\n        else:\n            quicksort(a, p + 1, hi)\n            hi = p - 1\n    return a\n\nprint(quicksort([10, 80, 30, 90, 40, 50, 70]))   # [10, 30, 40, 50, 70, 80, 90]\nprint(quicksort([3, 3, 3, 1]))                   # [1, 3, 3, 3]",
+          "lang": "python"
+        },
+        "Recursar sobre el lado más pequeño y iterar sobre el más grande mantiene la profundidad de la pila en O(log n) incluso en el peor caso. Una versión corta, no in situ, es popular para explicar la idea, pero reserva listas nuevas en cada nivel:",
+        {
+          "code": "def quicksort_simple(items):\n    if len(items) <= 1:\n        return items\n    pivot = items[len(items) // 2]\n    less = [x for x in items if x < pivot]\n    equal = [x for x in items if x == pivot]\n    greater = [x for x in items if x > pivot]\n    return quicksort_simple(less) + equal + quicksort_simple(greater)\n\nprint(quicksort_simple([5, 2, 9, 2, 7]))   # [2, 2, 5, 7, 9]",
+          "lang": "python"
+        }
+      ]
+    },
+    {
+      "h": "Complejidad temporal y espacial",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Caso",
+              "Tiempo",
+              "Motivo"
+            ],
+            "rows": [
+              [
+                "Mejor",
+                "O(n log n)",
+                "cada pivote divide el rango por la mitad"
+              ],
+              [
+                "Promedio",
+                "O(n log n)",
+                "los pivotes aleatorios dan divisiones suficientemente equilibradas, unas 1,39 n log₂ n comparaciones"
+              ],
+              [
+                "Peor",
+                "O(n²)",
+                "cada pivote es el menor o el mayor elemento"
+              ],
+              [
+                "Espacio extra",
+                "O(log n)",
+                "pila de recursión al recursar sobre el lado más pequeño"
+              ]
+            ]
+          }
+        },
+        "El peor caso clásico es un pivote fijo en el primer o el último elemento con una entrada ya ordenada o en orden inverso: cada partición elimina solo el pivote, lo que da n niveles de O(n) de trabajo. Un pivote aleatorio hace esto extremadamente improbable con cualquier entrada."
+      ]
+    },
+    {
+      "h": "Cómo se compara quicksort con otros ordenamientos",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Algoritmo",
+              "Mejor",
+              "Promedio",
+              "Peor",
+              "Espacio extra",
+              "Estable"
+            ],
+            "rows": [
+              [
+                "Quicksort",
+                "O(n log n)",
+                "O(n log n)",
+                "O(n²)",
+                "O(log n)",
+                "No"
+              ],
+              [
+                "Merge sort",
+                "O(n log n)",
+                "O(n log n)",
+                "O(n log n)",
+                "O(n)",
+                "Sí"
+              ],
+              [
+                "Heapsort",
+                "O(n log n)",
+                "O(n log n)",
+                "O(n log n)",
+                "O(1)",
+                "No"
+              ],
+              [
+                "Insertion sort",
+                "O(n)",
+                "O(n²)",
+                "O(n²)",
+                "O(1)",
+                "Sí"
+              ],
+              [
+                "Bubble sort",
+                "O(n)",
+                "O(n²)",
+                "O(n²)",
+                "O(1)",
+                "Sí"
+              ],
+              [
+                "Selection sort",
+                "O(n²)",
+                "O(n²)",
+                "O(n²)",
+                "O(1)",
+                "No"
+              ],
+              [
+                "Timsort (`sorted` de Python)",
+                "O(n)",
+                "O(n log n)",
+                "O(n log n)",
+                "O(n)",
+                "Sí"
+              ]
+            ]
+          }
+        },
+        "Quicksort no es estable: un intercambio de la partición puede mover un elemento más allá de otro igual. Normalmente supera a merge sort y a heapsort con arreglos en memoria porque su bucle interno es simple, trabaja in situ y accede a la memoria sobre todo de forma secuencial. Introsort, usado por muchas implementaciones de `std::sort` en la biblioteca estándar de C++, empieza con quicksort y cambia a heapsort si la recursión se hace demasiado profunda, lo que garantiza O(n log n)."
+      ]
+    },
+    {
+      "h": "Elección del pivote, variantes y errores comunes",
+      "body": [
+        {
+          "ul": [
+            "Elección del pivote: primer o último elemento (simple, pero O(n²) con entradas ordenadas), elemento aleatorio o mediana de tres (primero, central y último).",
+            "Partición de Hoare: dos índices avanzan uno hacia el otro e intercambian los pares que están en el lado equivocado. Hace menos intercambios que Lomuto en promedio.",
+            "Partición en tres vías (bandera nacional holandesa): separa en menores, iguales y mayores. Hace rápidos los arreglos con muchas claves duplicadas; Lomuto simple se degrada a O(n²) cuando todas las claves son iguales.",
+            "Dual-pivot quicksort usa dos pivotes y tres partes; Java lo emplea para ordenar arreglos de tipos primitivos.",
+            "Quickselect usa una sola partición y recursa solo en un lado para encontrar el k-ésimo elemento menor en tiempo promedio O(n)."
+          ]
+        },
+        {
+          "note": "Errores frecuentes: un desfase de uno en los límites de la partición que deja el pivote dentro de un subarreglo (recursión infinita), recursar en ambos lados sin cuidado de modo que una entrada ordenada alcance el límite de recursión de Python de unos 1000, y suponer que quicksort es estable."
+        }
+      ]
+    },
+    {
+      "h": "Cuándo usar quicksort",
+      "body": [
+        "Quicksort es una buena opción por defecto para ordenar arreglos en memoria cuando no se necesita estabilidad. En Python, usa mejor `sorted()` o `list.sort()`; emplean Timsort, que es estable y rápido con datos parcialmente ordenados. Implementar quicksort es una tarea de entrevista muy común, a menudo seguida de preguntas sobre el peor caso, la elección del pivote, la estabilidad o el uso de quickselect para encontrar el k-ésimo elemento mayor."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "¿Es estable quicksort?",
+      "a": "No. La partición intercambia elementos a larga distancia, por lo que los elementos iguales pueden cambiar su orden relativo. Existen versiones estables, pero necesitan memoria adicional."
+    },
+    {
+      "q": "¿Cuál es el peor caso de quicksort?",
+      "a": "O(n²), cuando cada pivote es el mínimo o el máximo de su rango, por ejemplo un pivote en el último elemento con una entrada ya ordenada. Los pivotes aleatorios o de mediana de tres lo evitan en la práctica."
+    },
+    {
+      "q": "¿Por qué quicksort es rápido en la práctica?",
+      "a": "Ordena in situ, su bucle interno es una simple comparación e intercambio y recorre la memoria de forma secuencial, lo que aprovecha bien las cachés de la CPU. Su factor constante promedio es menor que el de heapsort y no necesita un búfer como merge sort."
+    },
+    {
+      "q": "¿Cuál es la diferencia entre quicksort y merge sort?",
+      "a": "Quicksort particiona primero y no necesita mezcla; merge sort divide primero y hace su trabajo en la mezcla. Quicksort es in situ, pero tiene un peor caso O(n²) y no es estable; merge sort es estable, siempre O(n log n) y necesita O(n) de espacio extra."
+    },
+    {
+      "q": "¿Cuánta memoria usa quicksort?",
+      "a": "Ordena in situ. La pila de recursión es O(log n) en promedio, y también O(log n) en el peor caso si siempre recursas primero sobre el lado más pequeño."
+    }
+  ]
+}

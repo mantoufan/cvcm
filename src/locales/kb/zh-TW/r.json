@@ -1,0 +1,181 @@
+{
+  "title": "R 語言入門教學：向量、資料框、函式與統計 — cv.cm",
+  "description": "學習用 R 語言做資料分析：安裝 R、執行腳本、向量與型別、if 與迴圈、函式、list、資料框、線性模型、繪圖與錯誤處理。",
+  "h1": "R 語言入門教學",
+  "answer": "R 是免費的統計、資料分析與繪圖語言及環境。它的核心概念是向量化：運算會一次套用到整個向量與資料框的欄位，因此分析程式碼可以保持簡短。本頁涵蓋安裝 R、執行腳本、向量與型別、流程控制、函式、list 與資料框、統計模型、繪圖與錯誤處理。",
+  "sections": [
+    {
+      "h": "R 是什麼、可以拿來做什麼",
+      "body": [
+        "R 是免費開源的統計運算與繪圖語言及環境。它源自貝爾實驗室開發的 S 語言，由 R Core Team 維護。R 是向量化的：大多數運算會一次作用在整個資料向量上，讓資料分析程式碼變得簡短。",
+        "統計學家、資料科學家、生物資訊學家、經濟學家與研究人員會用 R 進行資料清理、統計建模、視覺化與可重現的報告。CRAN（Comprehensive R Archive Network）與 Bioconductor 上有數千個擴充套件可用。"
+      ]
+    },
+    {
+      "h": "安裝 R 並執行 Hello, world",
+      "body": [
+        "請從 CRAN 下載適用於 Windows、macOS 或 Linux 的 R。許多人也會安裝 RStudio 或 Positron，它們是內含編輯器、主控台、圖表檢視器與說明窗格的 IDE。你可以直接在 R 主控台輸入程式碼，也可以存成 `.R` 檔。",
+        {
+          "code": "# hello.R\nprint(\"Hello, world!\")\ncat(\"Hello, world!\\n\")",
+          "lang": "r"
+        },
+        {
+          "code": "Rscript hello.R\n# [1] \"Hello, world!\"\n# Hello, world!",
+          "lang": "shell"
+        },
+        "`print` 會以主控台的方式顯示值，前面帶有 `[1]` 索引。`cat` 輸出純文字，所以換行要自己加。"
+      ]
+    },
+    {
+      "h": "變數、基本型別與向量",
+      "body": [
+        "用 `<-`（慣用風格）或 `=` 指派。R 沒有純量：單一數字就是長度為 1 的向量。`c()` 把多個值組合成向量，算術運算會逐元素進行。",
+        {
+          "code": "x <- 42                 # numeric (double)\nn <- 7L                 # integer (L suffix)\nname <- \"Ada\"           # character\nok <- TRUE              # logical\nclass(x); class(n); class(name)   # \"numeric\" \"integer\" \"character\"\nv <- c(2, 4, 6, 8)\nv * 10                  # [1] 20 40 60 80\nv[2]                    # [1] 4   (indexing starts at 1)\nv[v > 4]                # [1] 6 8\nlength(v); sum(v); mean(v)        # 4 20 5\n1:5                     # [1] 1 2 3 4 5\nseq(0, 1, by = 0.25)    # [1] 0.00 0.25 0.50 0.75 1.00",
+          "lang": "r"
+        },
+        {
+          "table": {
+            "head": [
+              "型別",
+              "範例",
+              "說明"
+            ],
+            "rows": [
+              [
+                "numeric (double)",
+                "`3.14`, `42`",
+                "數字的預設型別"
+              ],
+              [
+                "integer",
+                "`42L`",
+                "加上 `L` 後綴的整數"
+              ],
+              [
+                "character",
+                "`\"text\"`",
+                "字串"
+              ],
+              [
+                "logical",
+                "`TRUE`、`FALSE`",
+                "`NA` 代表缺失值"
+              ],
+              [
+                "factor",
+                "`factor(c(\"lo\", \"hi\"))`",
+                "具有固定水準的類別資料"
+              ]
+            ]
+          }
+        },
+        {
+          "note": "`NA` 是缺失值，而且會擴散：`mean(c(1, NA, 3))` 的結果是 `NA`。傳入 `na.rm = TRUE` 可忽略缺失值，檢查時請用 `is.na(x)`，絕不要寫 `x == NA`。"
+        }
+      ]
+    },
+    {
+      "h": "流程控制",
+      "body": [
+        "R 有 `if`/`else`、`for`、`while` 與 `repeat`。處理向量時，向量化的 `ifelse()` 通常比迴圈更好。",
+        {
+          "code": "temp <- 25\nif (temp > 30) {\n  print(\"hot\")\n} else if (temp > 15) {\n  print(\"mild\")         # [1] \"mild\"\n} else {\n  print(\"cold\")\n}\nfor (i in 1:3) {\n  cat(\"step\", i, \"\\n\")  # step 1 / step 2 / step 3\n}\nscores <- c(45, 80, 62)\nifelse(scores >= 50, \"pass\", \"fail\")\n# [1] \"fail\" \"pass\" \"pass\"",
+          "lang": "r"
+        },
+        "`if` 需要單一的 `TRUE` 或 `FALSE`。在 R 4.2 之後，把較長的向量傳給 `if` 會出錯；請改用 `any()`、`all()` 或 `ifelse()`。"
+      ]
+    },
+    {
+      "h": "函式",
+      "body": [
+        "函式用 `function` 建立並指派給名稱。最後求值的運算式會自動回傳；只有要提前離開時才需要 `return()`。引數可以有預設值，也能以名稱傳入。",
+        {
+          "code": "bmi <- function(weight_kg, height_m = 1.75) {\n  weight_kg / height_m^2\n}\nbmi(70)                          # [1] 22.85714\nbmi(height_m = 1.6, weight_kg = 60)  # [1] 23.4375\nsquare <- function(x) x^2\nsquare(1:4)                      # [1] 1 4 9 16 (vectorized)\nsapply(c(1, 4, 9), sqrt)         # [1] 1 2 3\n(\\(x) x + 1)(10)                 # [1] 11 (short lambda syntax)",
+          "lang": "r"
+        },
+        "簡短的 Lambda 語法 `\\(x)` 自 R 4.1 起可用，原生管線 `|>` 也是，它會把左邊的值當作第一個引數傳入：`c(1, 4, 9) |> sqrt() |> sum()` 會回傳 6。"
+      ]
+    },
+    {
+      "h": "核心資料結構：向量、list 與資料框",
+      "body": [
+        "除了原子向量之外，R 還有 list（可以存放不同型別的值）、矩陣與資料框。資料框是一種表格，每一欄都是長度相同的向量，是資料分析的核心結構。",
+        {
+          "code": "person <- list(name = \"Ann\", age = 31, langs = c(\"R\", \"SQL\"))\nperson$name                 # [1] \"Ann\"\nperson[[\"langs\"]][2]        # [1] \"SQL\"\ndf <- data.frame(\n  name  = c(\"Ann\", \"Bo\", \"Cy\"),\n  age   = c(31, 25, 40),\n  city  = c(\"Oslo\", \"Rome\", \"Oslo\")\n)\nnrow(df)                    # [1] 3\ndf$age                      # [1] 31 25 40\ndf[df$age > 30, \"name\"]     # [1] \"Ann\" \"Cy\"\ndf$senior <- df$age >= 40   # add a column\naggregate(age ~ city, data = df, FUN = mean)\n#   city  age\n# 1 Oslo 35.5\n# 2 Rome 25.0\nstr(df)                     # compact structure summary",
+          "lang": "r"
+        },
+        "`df[rows, columns]` 可依位置、名稱或邏輯條件選取。其中一邊留空（如 `df[1, ]`）代表所有列或所有欄。"
+      ]
+    },
+    {
+      "h": "統計與繪圖",
+      "body": [
+        "內建了許多統計函式：`summary`、`sd`、`quantile`、`cor`、`t.test` 和 `lm`（線性模型）等。基本繪圖只要呼叫一次就能畫出圖表。",
+        {
+          "code": "set.seed(1)\nx <- 1:20\ny <- 3 * x + rnorm(20, sd = 2)\nmodel <- lm(y ~ x)\nround(coef(model), 2)       # intercept near 0, slope near 3\nsummary(model)$r.squared    # close to 1\nplot(x, y, main = \"y vs x\")\nabline(model, col = \"red\")",
+          "lang": "r"
+        },
+        "公式語法 `y ~ x` 表示「把 y 建模為 x 的函數」，在各種建模函式中都會用到。若要進階圖表與資料整理，多數人會用 `install.packages(\"tidyverse\")` 安裝 tidyverse 套件，例如 ggplot2 和 dplyr。"
+      ]
+    },
+    {
+      "h": "錯誤處理",
+      "body": [
+        "用 `stop()` 拋出錯誤、用 `warning()` 發出警告。用 `tryCatch()` 捕捉它們，它可接收 `error`、`warning` 的處理函式，以及選用的 `finally` 區塊。",
+        {
+          "code": "safe_log <- function(x) {\n  if (!is.numeric(x)) stop(\"x must be numeric\")\n  if (any(x <= 0)) warning(\"non-positive values give NaN or -Inf\")\n  log(x)\n}\nresult <- tryCatch(\n  safe_log(\"ten\"),\n  error = function(e) {\n    message(\"Caught: \", conditionMessage(e))\n    NA\n  },\n  finally = message(\"done\")\n)\n# Caught: x must be numeric\n# done\nresult                      # [1] NA",
+          "lang": "r"
+        }
+      ]
+    },
+    {
+      "h": "完整的小程式：銷售摘要",
+      "body": [
+        "這個腳本建立一張小型銷售表，用基本 R 計算各地區的營收，並印出表現最好的地區。",
+        {
+          "code": "sales <- data.frame(\n  region = c(\"North\", \"South\", \"North\", \"East\", \"South\"),\n  units  = c(10, 4, 6, 8, 12),\n  price  = c(2.5, 3.0, 2.5, 4.0, 3.0)\n)\nsales$revenue <- sales$units * sales$price\nby_region <- aggregate(revenue ~ region, data = sales, FUN = sum)\nby_region <- by_region[order(-by_region$revenue), ]\nprint(by_region, row.names = FALSE)\n#  region revenue\n#   South      48\n#   North      40\n#    East      32\nbest <- by_region$region[1]\ncat(sprintf(\"Best region: %s (%.2f)\\n\", best, max(by_region$revenue)))\n# Best region: South (48.00)",
+          "lang": "r"
+        },
+        {
+          "note": "初學者常見的錯誤：忘了索引從 1 開始；用 `== NA` 而不是 `is.na()` 比較；在迴圈內讓向量逐步變長（應預先配置或改用向量化程式碼）；`=` 與 `<-` 混用；以及搞混 list 上的 `[`（回傳子 list）與 `[[`（回傳單一元素）。"
+        }
+      ]
+    },
+    {
+      "h": "接下來可以學什麼",
+      "body": [
+        {
+          "ul": [
+            "An Introduction to R，CRAN 上的官方手冊。",
+            "內建說明：在主控台輸入 `?mean` 或 `help(\"lm\")`。",
+            "R for Data Science（Hadley Wickham 等人著），可免費線上閱讀，介紹 tidyverse 的做法。",
+            "CRAN Task Views，依計量經濟學或機器學習等領域整理套件清單。"
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "資料分析該用 R 還是 Python？",
+      "a": "兩者都很強。R 擁有豐富的統計方法函式庫與出色的繪圖能力，常見於學術界與生物統計；Python 則更通用，在機器學習工程領域佔主導地位。許多分析師兩種都會學。"
+    },
+    {
+      "q": "R 裡的 <- 和 = 有什麼差別？",
+      "a": "兩者在最上層都能指派，而 `<-` 是慣用風格。在函式呼叫內部，`=` 用來指定引數名稱，所以 `f(x = 1)` 是傳入引數，而不是建立變數。"
+    },
+    {
+      "q": "為什麼 R 從 1 開始計數？",
+      "a": "R 沿用數學與統計的慣例（其前身 S 也是如此），所以向量的第一個元素是 `v[1]`。索引 0 會回傳空向量，而不是錯誤。"
+    },
+    {
+      "q": "什麼是 tidyverse？",
+      "a": "tidyverse 是一組 R 套件（包括 dplyr、ggplot2 和 tidyr），在匯入、清理、轉換與繪製資料方面具有一致的設計。"
+    },
+    {
+      "q": "如何安裝 R 套件？",
+      "a": "執行一次 `install.packages(\"name\")` 從 CRAN 下載，之後每次工作階段用 `library(name)` 載入即可。"
+    }
+  ]
+}

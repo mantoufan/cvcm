@@ -1,0 +1,219 @@
+{
+  "title": "Búsqueda en anchura (BFS): algoritmo, código en Python y complejidad — cv.cm",
+  "description": "Búsqueda en anchura (BFS) explicada: cómo recorre un grafo nivel por nivel con una cola, un ejemplo paso a paso, código en Python, caminos más cortos y complejidad O(V + E).",
+  "h1": "Búsqueda en anchura (BFS) explicada: cómo funciona, código y complejidad",
+  "answer": "La búsqueda en anchura (BFS, del inglés breadth-first search) es un recorrido de grafos que visita primero el nodo inicial, después todos sus vecinos, luego los vecinos de estos, y así sucesivamente, un nivel cada vez. Usa una cola de tipo primero en entrar, primero en salir (FIFO) y un conjunto de nodos visitados. En un grafo sin pesos, BFS encuentra el camino más corto (con menos aristas) desde el origen hasta cada nodo alcanzable. Se ejecuta en tiempo O(V + E).",
+  "sections": [
+    {
+      "h": "Qué problema resuelve BFS",
+      "body": [
+        "Muchos problemas son grafos disfrazados: páginas web y enlaces, amigos en una red social, casillas de un tablero, estados de un rompecabezas. BFS responde dos preguntas habituales sobre un grafo así: qué nodos puedo alcanzar desde un nodo inicial y cuál es el número mínimo de pasos para llegar a cada uno.",
+        "Como BFS explora en anillos de distancia creciente, la primera vez que llega a un nodo siempre lo hace por un camino con el menor número de aristas. Por eso es el algoritmo estándar para caminos más cortos cuando todas las aristas tienen el mismo coste."
+      ]
+    },
+    {
+      "h": "La idea en palabras sencillas",
+      "body": [
+        {
+          "ol": [
+            "Pon el nodo inicial en una cola y márcalo como visitado.",
+            "Toma el nodo que está al frente de la cola.",
+            "Para cada vecino que aún no esté visitado, márcalo como visitado y añádelo al final de la cola.",
+            "Repite los pasos 2 y 3 hasta que la cola quede vacía."
+          ]
+        },
+        "Marca un nodo como visitado cuando lo añades a la cola, no cuando lo sacas. De lo contrario, el mismo nodo puede añadirse muchas veces antes de procesarse."
+      ]
+    },
+    {
+      "h": "Ejemplo resuelto, paso a paso",
+      "body": [
+        "Toma este grafo no dirigido: A–B, A–C, B–D, C–D, C–E, D–F. Empieza en A y visita los vecinos en orden alfabético.",
+        {
+          "table": {
+            "head": [
+              "Paso",
+              "Se toma de la cola",
+              "Recién descubiertos",
+              "Cola tras el paso"
+            ],
+            "rows": [
+              [
+                "0",
+                "—",
+                "A (distancia 0)",
+                "A"
+              ],
+              [
+                "1",
+                "A",
+                "B, C (distancia 1)",
+                "B, C"
+              ],
+              [
+                "2",
+                "B",
+                "D (distancia 2)",
+                "C, D"
+              ],
+              [
+                "3",
+                "C",
+                "E (distancia 2)",
+                "D, E"
+              ],
+              [
+                "4",
+                "D",
+                "F (distancia 3)",
+                "E, F"
+              ],
+              [
+                "5",
+                "E",
+                "ninguno",
+                "F"
+              ],
+              [
+                "6",
+                "F",
+                "ninguno",
+                "vacía"
+              ]
+            ]
+          }
+        },
+        "El orden de visita es A, B, C, D, E, F. A D se puede llegar desde B y desde C, pero se descubre una sola vez, desde B, porque en ese momento ya queda marcado como visitado."
+      ]
+    },
+    {
+      "h": "Implementación en Python",
+      "body": [
+        "Usa `collections.deque` para la cola: `popleft()` es O(1), mientras que `list.pop(0)` es O(n). El grafo es un diccionario que asigna a cada nodo una lista de vecinos (una lista de adyacencia).",
+        {
+          "code": "from collections import deque\ndef bfs(graph, start):\n    \"\"\"Return the distance (number of edges) from start to each reachable node.\"\"\"\n    dist = {start: 0}\n    queue = deque([start])\n    while queue:\n        node = queue.popleft()\n        for nxt in graph[node]:\n            if nxt not in dist:          # not visited yet\n                dist[nxt] = dist[node] + 1\n                queue.append(nxt)\n    return dist\ngraph = {\n    \"A\": [\"B\", \"C\"], \"B\": [\"A\", \"D\"], \"C\": [\"A\", \"D\", \"E\"],\n    \"D\": [\"B\", \"C\", \"F\"], \"E\": [\"C\"], \"F\": [\"D\"],\n}\nprint(bfs(graph, \"A\"))  # {'A': 0, 'B': 1, 'C': 1, 'D': 2, 'E': 2, 'F': 3}",
+          "lang": "python"
+        },
+        "Aquí el diccionario `dist` cumple una doble función: es el conjunto de visitados y guarda la respuesta. Para reconstruir el camino real, guarda también el padre de cada nodo y retrocede desde el destino.",
+        {
+          "code": "def shortest_path(graph, start, goal):\n    parent = {start: None}\n    queue = deque([start])\n    while queue:\n        node = queue.popleft()\n        if node == goal:\n            path = []\n            while node is not None:\n                path.append(node)\n                node = parent[node]\n            return path[::-1]\n        for nxt in graph[node]:\n            if nxt not in parent:\n                parent[nxt] = node\n                queue.append(nxt)\n    return None  # goal not reachable\nprint(shortest_path(graph, \"A\", \"F\"))  # ['A', 'B', 'D', 'F']",
+          "lang": "python"
+        }
+      ]
+    },
+    {
+      "h": "Complejidad temporal y espacial",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Medida",
+              "Coste",
+              "Motivo"
+            ],
+            "rows": [
+              [
+                "Tiempo",
+                "O(V + E)",
+                "Cada nodo se encola una vez y cada arista se revisa una vez (dos en un grafo no dirigido)."
+              ],
+              [
+                "Espacio",
+                "O(V)",
+                "El conjunto de visitados, la cola y el mapa de padres guardan como máximo V entradas cada uno."
+              ],
+              [
+                "Cuadrícula de R × C celdas",
+                "O(R × C)",
+                "Cada celda es un nodo con como máximo 4 aristas."
+              ]
+            ]
+          }
+        },
+        "V es el número de vértices (nodos) y E el de aristas. Con una matriz de adyacencia en lugar de listas, el tiempo pasa a ser O(V²), porque encontrar los vecinos de un nodo cuesta O(V)."
+      ]
+    },
+    {
+      "h": "Variantes y errores comunes",
+      "body": [
+        {
+          "ul": [
+            "BFS en cuadrículas: trata cada celda como un nodo y las cuatro (u ocho) celdas vecinas como aristas. Comprueba los límites y las paredes antes de añadir una celda.",
+            "BFS multifuente: pon varios nodos iniciales en la cola con distancia 0. Así obtienes la distancia a la fuente más cercana, por ejemplo la salida más próxima de un laberinto.",
+            "BFS 0-1: cuando los pesos de las aristas solo son 0 o 1, usa una deque y coloca al frente los vecinos de peso 0. Da caminos más cortos en O(V + E).",
+            "BFS bidireccional: busca desde el origen y desde el destino a la vez y detente cuando las dos fronteras se encuentren. A menudo explora muchos menos nodos.",
+            "Procesamiento por niveles: guarda `len(queue)` al inicio de cada ronda y extrae exactamente esa cantidad de nodos para tratar un nivel cada vez."
+          ]
+        },
+        {
+          "note": "Errores frecuentes: marcar los nodos como visitados al sacarlos de la cola (provoca duplicados y recuentos incorrectos), usar `list.pop(0)` (hace que BFS sea cuadrático) y aplicar BFS a grafos con pesos. Con pesos distintos, el camino con menos aristas no es el más barato; usa el algoritmo de Dijkstra."
+        }
+      ]
+    },
+    {
+      "h": "Cuándo usar BFS y usos en el mundo real",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Situación",
+              "Mejor opción"
+            ],
+            "rows": [
+              [
+                "Camino más corto, todas las aristas cuestan lo mismo",
+                "BFS"
+              ],
+              [
+                "Camino más corto, pesos no negativos",
+                "Algoritmo de Dijkstra"
+              ],
+              [
+                "Camino más corto con una buena estimación de la distancia",
+                "Búsqueda A*"
+              ],
+              [
+                "Detección de ciclos, orden topológico, componentes conexas",
+                "DFS (BFS también sirve para componentes)"
+              ],
+              [
+                "Grafos muy profundos con poca memoria",
+                "DFS o profundización iterativa"
+              ]
+            ]
+          }
+        },
+        {
+          "ul": [
+            "Problemas de entrevista: camino más corto en un laberinto o cuadrícula, escalera de palabras, naranjas podridas (BFS multifuente), recorrido por niveles de un árbol binario, número mínimo de movimientos de un caballo.",
+            "Redes: encontrar todos los dispositivos a k saltos, difusión en redes entre pares, \"personas que quizá conozcas\" a distancia 2 en un grafo social.",
+            "Rastreadores web que visitan las páginas por orden de distancia en enlaces desde una página semilla.",
+            "Recolectores de basura (por ejemplo, el recolector de copia de Cheney) y resolutores de rompecabezas que necesitan el menor número de movimientos."
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "¿Qué estructura de datos usa BFS?",
+      "a": "BFS usa una cola FIFO para decidir qué nodo procesar a continuación y un conjunto (o diccionario) para recordar los nodos visitados. En Python, usa `collections.deque` para la cola."
+    },
+    {
+      "q": "¿BFS siempre encuentra el camino más corto?",
+      "a": "Sí, en un grafo sin pesos o cuando todas las aristas pesan lo mismo, BFS encuentra un camino con el menor número de aristas. En un grafo con pesos no es así; usa el algoritmo de Dijkstra o Bellman-Ford."
+    },
+    {
+      "q": "¿Cuál es la diferencia entre BFS y DFS?",
+      "a": "BFS explora nivel por nivel con una cola, por lo que encuentra caminos más cortos en grafos sin pesos. DFS profundiza todo lo posible primero con una pila o recursión, lo que encaja con la detección de ciclos, la ordenación topológica y la búsqueda exhaustiva."
+    },
+    {
+      "q": "¿Por qué mi BFS es lento en Python?",
+      "a": "Las causas habituales son `list.pop(0)`, que desplaza toda la lista en cada llamada, y comprobar los nodos visitados con una lista en lugar de un conjunto. Usa `deque.popleft()` y un conjunto o diccionario."
+    },
+    {
+      "q": "¿BFS funciona en un árbol?",
+      "a": "Sí. En un árbol, BFS es el recorrido por niveles. Un árbol no tiene ciclos, así que puedes omitir el conjunto de visitados si solo avanzas de padre a hijo."
+    }
+  ]
+}

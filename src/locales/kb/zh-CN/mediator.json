@@ -1,0 +1,134 @@
+{
+  "title": "中介者模式：解耦组件，含 TypeScript 示例 — cv.cm",
+  "description": "中介者模式（Mediator）让对象之间的通信都经由一个中心对象转发，彼此不再互相引用。附 TypeScript 表单示例。",
+  "h1": "中介者模式详解与示例",
+  "answer": "中介者是一种行为型设计模式，它让对象通过一个中心的中介者对象来通信，从而减少对象之间的直接依赖。组件不再互相调用，而是告诉中介者发生了什么事，由中介者决定要更新哪些其他组件。这样就把纷乱的多对多引用关系，变成了简单的一对多连接。",
+  "sections": [
+    {
+      "h": "意图与它要解决的问题",
+      "body": [
+        "意图：定义一个对象，封装一组对象之间如何交互。中介者让对象不必显式地互相引用，从而促进松耦合，并允许你独立地改变它们之间的交互。它是《设计模式》（Gang of Four，GoF）一书中的行为型模式之一。",
+        "设想一个注册表单，里面有“企业账号”复选框、公司名称输入框、邮箱输入框和提交按钮。勾选复选框后，公司名称框必须出现并变为必填；只有所有必填项都有效时，提交按钮才能启用。如果每个组件都直接更新其他组件，复选框就要认识公司名称框和按钮，邮箱框要认识按钮，依此类推。每增加一条规则就多出更多交叉引用，而且没有哪个组件能在别的表单中复用。",
+        "使用中介者后，组件只负责上报“我变了”这类事件。作为中介者的表单对象保存着所有关于各字段如何相互影响的规则。组件变得简单、可复用，交互逻辑也集中在一处。"
+      ]
+    },
+    {
+      "h": "结构与参与者",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "角色",
+              "职责"
+            ],
+            "rows": [
+              [
+                "中介者",
+                "带有同事对象用来上报事件的方法的接口，例如 `notify(sender, event)`"
+              ],
+              [
+                "具体中介者",
+                "了解所有同事对象，并实现它们之间的协调规则"
+              ],
+              [
+                "同事",
+                "持有中介者引用的组件，它上报自己的事件，而不是去调用其他同事"
+              ]
+            ]
+          }
+        },
+        "没有中介者时，彼此通信的 n 个组件最多可能需要 n × (n − 1) / 2 条连接。有了中介者，每个组件恰好只有一条连接：通向中介者。"
+      ]
+    },
+    {
+      "h": "TypeScript 实现",
+      "body": [
+        "每个字段都把变化上报给中介者。`SignUpForm` 是具体中介者：它负责显示或隐藏公司名称框，并启用按钮。",
+        {
+          "code": "interface Mediator {\n  notify(sender: Component, event: string): void;\n}\n\nclass Component {\n  constructor(protected mediator: Mediator, readonly name: string) {}\n}\n\nclass Checkbox extends Component {\n  checked = false;\n  toggle() { this.checked = !this.checked; this.mediator.notify(this, \"change\"); }\n}\nclass TextField extends Component {\n  value = \"\";\n  visible = true;\n  type(text: string) { this.value = text; this.mediator.notify(this, \"change\"); }\n}\nclass Button extends Component { enabled = false; }\n\nclass SignUpForm implements Mediator {\n  isCompany = new Checkbox(this, \"isCompany\");\n  company = new TextField(this, \"company\");\n  email = new TextField(this, \"email\");\n  submit = new Button(this, \"submit\");\n  constructor() { this.company.visible = false; }\n\n  notify(sender: Component, event: string) {\n    if (sender === this.isCompany) this.company.visible = this.isCompany.checked;\n    const emailOk = this.email.value.includes(\"@\");\n    const companyOk = !this.company.visible || this.company.value.length > 0;\n    this.submit.enabled = emailOk && companyOk;\n    console.log(sender.name, event, \"-> submit enabled:\", this.submit.enabled);\n  }\n}\n\nconst form = new SignUpForm();\nform.email.type(\"ana@example.com\"); // email change -> submit enabled: true\nform.isCompany.toggle();            // isCompany change -> submit enabled: false\nform.company.type(\"Acme\");          // company change -> submit enabled: true",
+          "lang": "typescript"
+        },
+        "注意，`Checkbox` 和 `TextField` 完全不知道其他字段的存在。只要给它们换一个中介者，就可以在一个完全不同的表单里复用它们。",
+        {
+          "note": "中介者模式的主要风险是中介者本身膨胀成一个什么都知道的庞大类，有时被称为上帝对象。如果一个中介者处理了许多互不相关的规则，就把它拆成几个更小的中介者，每个功能或每块界面区域一个。"
+        }
+      ]
+    },
+    {
+      "h": "何时使用，何时不用",
+      "body": [
+        {
+          "ul": [
+            "当一组对象以复杂但明确的方式通信，且它们之间的依赖难以理清时使用。",
+            "当你想复用目前因为互相引用而无法分离的组件时使用。",
+            "当交互规则经常变化，而你想只在一处修改它们时使用。",
+            "两个对象只是简单地互相调用时不要使用；直接调用更清晰。",
+            "组件只需要把事件广播给任何感兴趣的对象时不要使用。普通的事件发射器（观察者）更轻量。"
+          ]
+        }
+      ]
+    },
+    {
+      "h": "实际应用",
+      "body": [
+        {
+          "ul": [
+            "GUI 框架中的表单和对话框控制器：父组件持有状态，并决定子输入如何相互影响，子组件只抛出事件。在 React 中，把状态“提升”到共同的父组件就遵循了这一思路。",
+            "聊天应用：用户并不直接给对方发消息；聊天室或服务器接收每条消息，再把它投递给正确的成员。",
+            "服务之间的消息代理和事件总线：发送方向代理发布消息，由代理路由给发送方并不认识的接收方。",
+            "空中交通管制是经典的类比：飞机不会与其他每架飞机协商，只与塔台通话。"
+          ]
+        }
+      ]
+    },
+    {
+      "h": "中介者与观察者及其他模式的比较",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "模式",
+              "与中介者的区别"
+            ],
+            "rows": [
+              [
+                "观察者",
+                "观察者是单向广播：主题通知任意数量的监听者，并不知道它们做什么。中介者认识自己的同事并双向协调它们。中介者通常借助观察者来实现。"
+              ],
+              [
+                "外观",
+                "外观为客户端提供子系统的更简单接口，而子系统并不知道外观的存在。同事则认识自己的中介者并与之通信。"
+              ],
+              [
+                "责任链",
+                "责任链把请求沿着一串处理者传递；中介者是单个枢纽，把每个事件发送给正确的组件。"
+              ],
+              [
+                "命令",
+                "同事可以向中介者发送命令对象，再由中介者决定由谁来执行。"
+              ]
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "中介者与观察者有什么区别？",
+      "a": "在观察者模式中，主题把事件广播给它不认识的订阅者，通信是单向的。在中介者模式中，中心对象认识参与的组件，并协调它们如何相互影响。"
+    },
+    {
+      "q": "事件总线是中介者吗？",
+      "a": "只把事件转发给订阅者的事件总线更接近观察者或发布订阅。当它包含了决定组件如何相互响应的规则时，它就成了中介者。"
+    },
+    {
+      "q": "中介者模式会让代码更难理解吗？",
+      "a": "有可能。直接调用容易追踪，而经由中介的调用要绕道中心对象。当替代方案是许多组件互相引用时，这一模式才划算。"
+    },
+    {
+      "q": "一个组件可以有多个中介者吗？",
+      "a": "通常一个组件只有一个中介者，在创建时设定。同一个组件可以在不同场景下配合不同的中介者复用，这正是该模式的主要好处之一。"
+    }
+  ]
+}

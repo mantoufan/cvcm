@@ -1,0 +1,267 @@
+{
+  "title": "Thao tác bit: toán tử bitwise, mẹo và bitmask trong Python — cv.cm",
+  "description": "Giải thích thao tác bit: AND, OR, XOR, NOT và phép dịch bit, các mẹo như x & (x - 1), tập con bằng bitmask, code Python kèm kết quả và các bẫy thường gặp.",
+  "h1": "Thao tác bit là gì: toán tử, mẹo và ví dụ",
+  "answer": "Thao tác bit (bit manipulation) là làm việc trực tiếp với các chữ số nhị phân (bit) của số nguyên bằng toán tử bitwise: AND (`&`), OR (`|`), XOR (`^`), NOT (`~`) và các phép dịch `<<` và `>>`. Với chúng bạn có thể kiểm tra, đặt, xóa và đảo từng bit, lưu một tập các số nhỏ trong một số nguyên (bitmask), và giải các bài toán như đếm bit 1 hoặc tìm số duy nhất không có cặp với bộ nhớ thêm không đổi. Với số nguyên kích thước cố định, mỗi phép toán là một lệnh CPU nhanh.",
+  "sections": [
+    {
+      "h": "Thao tác bit giải bài toán gì",
+      "body": [
+        "Một số nguyên là một dãy bit, và nhiều bài toán thực chất xoay quanh các bit đó: quyền tệp như `rwx`, cờ tính năng, mặt nạ mạng, màu điểm ảnh, tập tùy chọn gọn nhẹ, checksum và hàm băm. Toán tử bitwise cho phép đọc và thay đổi nhiều bit cùng lúc chỉ bằng một phép toán, vừa gọn bộ nhớ vừa rất nhanh.",
+        "Các câu hỏi phỏng vấn cũng dùng mẹo bit vì chúng cho lời giải thanh lịch với bộ nhớ O(1), ví dụ tìm số xuất hiện một lần khi mọi số khác xuất hiện hai lần."
+      ]
+    },
+    {
+      "h": "Các toán tử",
+      "body": [
+        "Các ví dụ dùng `a = 12` (nhị phân `1100`) và `b = 10` (nhị phân `1010`).",
+        {
+          "table": {
+            "head": [
+              "Toán tử",
+              "Tên",
+              "Quy tắc theo từng bit",
+              "Ví dụ",
+              "Kết quả"
+            ],
+            "rows": [
+              [
+                "`a & b`",
+                "AND",
+                "1 nếu cả hai bit đều là 1",
+                "`1100 & 1010`",
+                "`1000` = 8"
+              ],
+              [
+                "`a | b`",
+                "OR",
+                "1 nếu một trong hai bit là 1",
+                "`1100 | 1010`",
+                "`1110` = 14"
+              ],
+              [
+                "`a ^ b`",
+                "XOR",
+                "1 nếu hai bit khác nhau",
+                "`1100 ^ 1010`",
+                "`0110` = 6"
+              ],
+              [
+                "`~a`",
+                "NOT",
+                "đảo mọi bit",
+                "`~12`",
+                "-13 (bù hai)"
+              ],
+              [
+                "`a << n`",
+                "dịch trái",
+                "dịch bit sang trái, điền 0",
+                "`12 << 1`",
+                "24 (nhân với 2ⁿ)"
+              ],
+              [
+                "`a >> n`",
+                "dịch phải",
+                "dịch bit sang phải",
+                "`12 >> 2`",
+                "3 (chia nguyên làm tròn xuống cho 2ⁿ)"
+              ]
+            ]
+          }
+        },
+        {
+          "code": "a, b = 12, 10\nprint(bin(a), bin(b))         # 0b1100 0b1010\nprint(a & b, a | b, a ^ b)    # 8 14 6\nprint(~a, a << 1, a >> 2)     # -13 24 3\nprint(f\"{a ^ b:04b}\")         # 0110\nprint(int(\"1010\", 2))         # 10",
+          "lang": "python"
+        }
+      ]
+    },
+    {
+      "h": "Thao tác trên một bit",
+      "body": [
+        "Vị trí bit được đếm từ 0 ở bên phải (bit có trọng số thấp nhất). Mặt nạ `1 << i` chỉ có bit i được đặt.",
+        {
+          "table": {
+            "head": [
+              "Việc cần làm",
+              "Biểu thức"
+            ],
+            "rows": [
+              [
+                "Kiểm tra bit i",
+                "`(x >> i) & 1` or `x & (1 << i) != 0`"
+              ],
+              [
+                "Đặt bit i",
+                "`x | (1 << i)`"
+              ],
+              [
+                "Xóa bit i",
+                "`x & ~(1 << i)`"
+              ],
+              [
+                "Đảo bit i",
+                "`x ^ (1 << i)`"
+              ],
+              [
+                "Chỉ giữ bit 1 thấp nhất",
+                "`x & -x`"
+              ],
+              [
+                "Xóa bit 1 thấp nhất",
+                "`x & (x - 1)`"
+              ],
+              [
+                "x có phải lũy thừa của hai không? (x > 0)",
+                "`x & (x - 1) == 0`"
+              ]
+            ]
+          }
+        },
+        {
+          "note": "Độ ưu tiên toán tử: trong Python, phép so sánh có độ ưu tiên thấp hơn `&`, nên `x & (x - 1) == 0` hoạt động đúng ý. Trong C, C++, Java và JavaScript, `==` có độ ưu tiên cao hơn `&`, nên cùng biểu thức đó nghĩa là `x & ((x - 1) == 0)`. Hãy luôn thêm dấu ngoặc: `(x & (x - 1)) == 0`."
+        }
+      ]
+    },
+    {
+      "h": "Ví dụ: đếm bit 1",
+      "body": [
+        "Phương pháp của Brian Kernighan xóa bit 1 thấp nhất cho đến khi hết, nên nó lặp một lần cho mỗi bit 1, không phải mỗi vị trí bit. Lần theo x = 44 (nhị phân `101100`):",
+        {
+          "table": {
+            "head": [
+              "Bước",
+              "x (nhị phân)",
+              "x - 1 (nhị phân)",
+              "x & (x - 1)",
+              "Số đếm"
+            ],
+            "rows": [
+              [
+                "1",
+                "`101100`",
+                "`101011`",
+                "`101000`",
+                "1"
+              ],
+              [
+                "2",
+                "`101000`",
+                "`100111`",
+                "`100000`",
+                "2"
+              ],
+              [
+                "3",
+                "`100000`",
+                "`011111`",
+                "`000000`",
+                "3"
+              ]
+            ]
+          }
+        },
+        {
+          "code": "def count_bits(x):\n    count = 0\n    while x:\n        x &= x - 1        # drop the lowest set bit\n        count += 1\n    return count\n\nprint(count_bits(44))     # 3\nprint((44).bit_count())   # 3\nprint((44).bit_length())  # 6",
+          "lang": "python"
+        },
+        "`int.bit_count()` có từ Python 3.10. `int.bit_length()` trả về số bit cần để viết số đó ở dạng nhị phân, không tính dấu."
+      ]
+    },
+    {
+      "h": "Các mẹo kinh điển trong Python",
+      "body": [
+        {
+          "code": "from functools import reduce\nfrom operator import xor\n\n# Every number appears twice except one: pairs cancel out with XOR.\nprint(reduce(xor, [4, 1, 2, 1, 2]))   # 4\n\n# Swap two integers without a temporary variable (for illustration only).\nx, y = 5, 9\nx ^= y; y ^= x; x ^= y\nprint(x, y)                            # 9 5\n\n# Bitmask as a set: enumerate all subsets of 3 items.\nitems = [\"a\", \"b\", \"c\"]\nfor mask in range(1 << len(items)):\n    print(mask, [items[i] for i in range(len(items)) if mask >> i & 1])\n# 0 []\n# 1 ['a']\n# 2 ['b']\n# 3 ['a', 'b']\n# 4 ['c']\n# 5 ['a', 'c']\n# 6 ['b', 'c']\n# 7 ['a', 'b', 'c']",
+          "lang": "python"
+        },
+        "Mask 0 là tập rỗng, 5 (nhị phân `101`) là `['a', 'c']`, và 7 là cả ba phần tử. Quy hoạch động bitmask dùng cùng ý tưởng này, với mask làm trạng thái, cho bài toán trên tối đa khoảng 20 phần tử, như bài toán người bán hàng (traveling salesman) với đầu vào nhỏ.",
+        "Hai mẹo kinh điển nữa: `x & 1` bằng 1 với số lẻ, và XOR của mọi số từ 0 đến n với mọi giá trị trong một list sẽ tìm ra số bị thiếu."
+      ]
+    },
+    {
+      "h": "Độ phức tạp thời gian và không gian",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Phép toán",
+              "Thời gian",
+              "Ghi chú"
+            ],
+            "rows": [
+              [
+                "`&`, `|`, `^`, `~`, phép dịch trên số nguyên cỡ máy",
+                "O(1)",
+                "Một lệnh CPU trong C, Java, Go hoặc Rust."
+              ],
+              [
+                "Cùng các phép toán trên `int` của Python",
+                "O(số bit)",
+                "Số nguyên Python có kích thước không giới hạn; giá trị nhỏ vẫn rất nhanh."
+              ],
+              [
+                "Đếm bit kiểu Kernighan",
+                "O(số bit 1)",
+                "`int.bit_count()` nhanh hơn trong Python 3.10+."
+              ],
+              [
+                "Liệt kê mọi tập con bằng mask",
+                "O(n × 2ⁿ)",
+                "2ⁿ mask, mỗi mask n lần kiểm tra bit."
+              ]
+            ]
+          }
+        },
+        "Bitmask dùng một bit cho mỗi phần tử có thể có, nên một tập 64 cờ nằm gọn trong một số nguyên 64 bit, so với 64 biến boolean riêng hoặc 64 phần tử list."
+      ]
+    },
+    {
+      "h": "Lỗi thường gặp",
+      "body": [
+        {
+          "ul": [
+            "Số âm: số nguyên Python hoạt động như thể có vô hạn bit dấu, nên `~5` là `-6` và `bin(-5)` là `-0b101`, không phải chuỗi bù hai. Để xem mẫu 32 bit, hãy che giá trị bằng mask: `-5 & 0xFFFFFFFF`.",
+            "Dịch phải số âm trong Python là dịch số học: `-8 >> 1` là `-4`, và `-1 >> 10` vẫn là `-1`.",
+            "Tràn số ở các ngôn ngữ có độ rộng cố định: trong Java hoặc C, `1 << 31` trên int 32 bit trở thành số âm hoặc không xác định; hãy dùng kiểu 64 bit và `1L << 40` hoặc `1ULL << 40`.",
+            "Nhầm toán tử logic với toán tử bitwise: `and` và `or` (`&&`, `||` trong các ngôn ngữ họ C) trả về giá trị đúng/sai, còn `&` và `|` làm việc từng bit.",
+            "Khả năng đọc: thay `x * 2` bằng `x << 1` không mang lại lợi ích tốc độ nào với trình biên dịch hiện đại hay trong Python, mà còn làm code khó đọc hơn."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Ứng dụng thực tế",
+      "body": [
+        {
+          "ul": [
+            "Quyền tệp Unix: `chmod 754` đặt ba nhóm 3 bit (rwx = 4 + 2 + 1).",
+            "Mạng: mặt nạ mạng con IPv4, trong đó `ip & mask` cho địa chỉ mạng của một khối CIDR.",
+            "Cờ và tùy chọn: `re.IGNORECASE | re.MULTILINE` của Python và `enum.Flag` kết hợp các tùy chọn bằng OR.",
+            "Đồ họa và màu sắc: một giá trị RGB 24 bit đóng gói đỏ, xanh lục và xanh lam thành `(r << 16) | (g << 8) | b`.",
+            "Cấu trúc dữ liệu và thuật toán: Bloom filter, bitset, cây Fenwick (dùng `i & -i`), băm và checksum.",
+            "Bài phỏng vấn: single number, counting bits, power of two, reverse bits, missing number, tập con bằng bitmask, tổng hai số nguyên không dùng `+`."
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "x & (x - 1) làm gì?",
+      "a": "Nó xóa bit 1 thấp nhất của x. Dùng để đếm bit 1 và kiểm tra x dương có phải lũy thừa của hai không, điều này đúng khi kết quả bằng 0."
+    },
+    {
+      "q": "Vì sao ~5 bằng -6 trong Python?",
+      "a": "Số nguyên dùng biểu diễn bù hai, trong đó `~x` bằng `-x - 1`. Python áp dụng điều này cho số nguyên kích thước không giới hạn, nên đảo mọi bit của 5 cho ra -6."
+    },
+    {
+      "q": "Làm sao đếm số bit 1 của một số trong Python?",
+      "a": "Dùng `x.bit_count()` trong Python 3.10 trở lên, hoặc `bin(x).count(\"1\")` ở các phiên bản cũ hơn. Với số âm, `bit_count()` đếm bit của giá trị tuyệt đối."
+    },
+    {
+      "q": "Thao tác bit có nhanh hơn phép toán số học không?",
+      "a": "Với số nguyên kích thước cố định, phép toán bitwise là một lệnh đơn, nhưng phép cộng và nhân với hằng số sau khi trình biên dịch tối ưu cũng vậy. Lợi ích thực sự là lưu trữ gọn và thuật toán dùng bộ nhớ không đổi, chứ không phải thay thế số học thông thường."
+    }
+  ]
+}

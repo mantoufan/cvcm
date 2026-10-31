@@ -1,0 +1,186 @@
+{
+  "title": "Union-find (conjuntos disjuntos): compresión de caminos, unión por rango, Python — cv.cm",
+  "description": "Union-find (conjuntos disjuntos, DSU) explicado: find y union, compresión de caminos y unión por rango o tamaño, código Python, un ejemplo paso a paso y complejidad.",
+  "h1": "Union-find (conjuntos disjuntos) explicado: cómo funciona, código y complejidad",
+  "answer": "Union-find, también llamado unión de conjuntos disjuntos (DSU), lleva el control de elementos divididos en grupos que no se solapan. Admite dos operaciones: `find(x)` devuelve un representante del grupo de x, y `union(x, y)` fusiona los grupos de x e y. Cada grupo se guarda como un árbol de punteros al padre. Con compresión de caminos y unión por rango o tamaño, cualquier secuencia de operaciones se ejecuta en un tiempo amortizado casi constante por operación.",
+  "sections": [
+    {
+      "h": "Qué problema resuelve union-find",
+      "body": [
+        "Imagina una red de computadoras a la que se añaden cables uno a uno, y tras cada cable debes responder \"¿están conectadas la computadora A y la B?\". Ejecutar una búsqueda en el grafo para cada pregunta cuesta O(n + m) cada vez. Union-find responde cada pregunta en casi O(1) manteniendo los grupos conectados a medida que se añaden cables.",
+        "La misma necesidad aparece en el algoritmo de Kruskal para el árbol de expansión mínima (¿estos dos extremos ya pertenecen al mismo árbol?), en la detección de ciclos en un grafo no dirigido, al agrupar cuentas que comparten un correo electrónico, en simulaciones de percolación y en procesamiento de imágenes para etiquetar regiones conexas."
+      ]
+    },
+    {
+      "h": "La idea en palabras sencillas",
+      "body": [
+        "Cada elemento apunta a un padre. Un elemento que apunta a sí mismo es una raíz, y la raíz es el representante de todo el grupo. Para hallar el grupo de x, sigue los punteros al padre hasta llegar a una raíz. Para fusionar dos grupos, encuentra ambas raíces y haz que una apunte a la otra.",
+        "Dos optimizaciones mantienen los árboles planos:",
+        {
+          "ul": [
+            "Unión por rango (o por tamaño): cuelga el árbol más bajo (o más pequeño) del más alto (o más grande), de modo que la altura solo crece cuando se fusionan dos árboles iguales.",
+            "Compresión de caminos: durante `find`, haz que cada nodo del camino apunte directamente a la raíz, de modo que la siguiente búsqueda sea de un paso."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Ejemplo resuelto: cinco elementos",
+      "body": [
+        "Empieza con los elementos 0 a 4, cada uno en su propio grupo. El arreglo de padres es `[0, 1, 2, 3, 4]`. Usamos unión por tamaño y, cuando los tamaños son iguales, la segunda raíz pasa a ser la hija.",
+        {
+          "table": {
+            "head": [
+              "Operación",
+              "Raíces encontradas",
+              "Arreglo de padres después",
+              "Grupos"
+            ],
+            "rows": [
+              [
+                "inicio",
+                "-",
+                "[0, 1, 2, 3, 4]",
+                "{0} {1} {2} {3} {4}"
+              ],
+              [
+                "union(0, 1)",
+                "0 y 1, mismo tamaño",
+                "[0, 0, 2, 3, 4]",
+                "{0, 1} {2} {3} {4}"
+              ],
+              [
+                "union(2, 3)",
+                "2 y 3, mismo tamaño",
+                "[0, 0, 2, 2, 4]",
+                "{0, 1} {2, 3} {4}"
+              ],
+              [
+                "union(1, 3)",
+                "0 y 2, mismo tamaño",
+                "[0, 0, 0, 2, 4]",
+                "{0, 1, 2, 3} {4}"
+              ],
+              [
+                "find(3)",
+                "3 a 2 a 0, raíz 0",
+                "[0, 0, 0, 0, 4]",
+                "camino comprimido: ahora 3 apunta a 0"
+              ],
+              [
+                "connected(1, 4)",
+                "raíces 0 y 4",
+                "sin cambios",
+                "False, grupos distintos"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "Implementación en Python",
+      "body": [
+        "Esta versión usa unión por tamaño y un `find` iterativo con compresión de caminos, así que no tiene problemas de profundidad de recursión. `union` devuelve False cuando los dos elementos ya estaban en el mismo grupo, lo que es útil para detectar ciclos.",
+        {
+          "code": "class UnionFind:\n    def __init__(self, n):\n        self.parent = list(range(n))\n        self.size = [1] * n\n        self.groups = n\n\n    def find(self, x):\n        root = x\n        while self.parent[root] != root:\n            root = self.parent[root]\n        while self.parent[x] != root:       # path compression\n            self.parent[x], x = root, self.parent[x]\n        return root\n\n    def union(self, a, b):\n        ra, rb = self.find(a), self.find(b)\n        if ra == rb:\n            return False                    # already connected\n        if self.size[ra] < self.size[rb]:\n            ra, rb = rb, ra                 # ra is the larger root\n        self.parent[rb] = ra\n        self.size[ra] += self.size[rb]\n        self.groups -= 1\n        return True\n\n    def connected(self, a, b):\n        return self.find(a) == self.find(b)\n\nuf = UnionFind(5)\nuf.union(0, 1)\nuf.union(2, 3)\nuf.union(1, 3)\nprint(uf.find(3), uf.parent)       # 0 [0, 0, 0, 0, 4]\nprint(uf.connected(1, 4), uf.groups)  # False 2",
+          "lang": "python"
+        },
+        {
+          "note": "En el bucle de compresión de caminos, `self.parent[x], x = root, self.parent[x]` funciona porque Python evalúa primero todo el lado derecho. Separarlo en dos líneas en el orden equivocado pierde el siguiente nodo del camino."
+        }
+      ]
+    },
+    {
+      "h": "Ejemplo: detectar un ciclo en un grafo no dirigido",
+      "body": [
+        "Procesa las aristas una a una. Si ambos extremos de una arista ya tienen la misma raíz, esa arista cierra un ciclo. El algoritmo de Kruskal usa exactamente esta comprobación tras ordenar las aristas por peso.",
+        {
+          "code": "def has_cycle(n, edges):\n    uf = UnionFind(n)\n    for a, b in edges:\n        if not uf.union(a, b):\n            return True\n    return False\n\nprint(has_cycle(4, [(0, 1), (1, 2), (2, 3)]))  # False\nprint(has_cycle(4, [(0, 1), (1, 2), (2, 0)]))  # True",
+          "lang": "python"
+        }
+      ]
+    },
+    {
+      "h": "Complejidad temporal y espacial",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Versión",
+              "find / union (peor caso por operación)",
+              "m operaciones sobre n elementos"
+            ],
+            "rows": [
+              [
+                "Sin optimizaciones",
+                "O(n)",
+                "O(m n), los árboles pueden convertirse en cadenas"
+              ],
+              [
+                "Solo unión por rango o tamaño",
+                "O(log n)",
+                "O(m log n)"
+              ],
+              [
+                "Solo compresión de caminos",
+                "O(log n) amortizado",
+                "O(m log n) amortizado"
+              ],
+              [
+                "Ambas optimizaciones",
+                "O(α(n)) amortizado",
+                "O(m α(n))"
+              ]
+            ]
+          }
+        },
+        "α(n) es la inversa de la función de Ackermann, que crece tan despacio que vale como máximo 4 para cualquier n que quepa en una computadora real. En la práctica esto significa tiempo constante por operación. Robert Tarjan demostró esta cota en 1975. El espacio es O(n) para los arreglos de padres y de tamaños."
+      ]
+    },
+    {
+      "h": "Variantes y errores comunes",
+      "body": [
+        {
+          "ul": [
+            "Comparar elementos en lugar de raíces: `union` debe enlazar `find(a)` y `find(b)`, no `a` y `b` directamente.",
+            "Suponer que `parent[x]` es el representante. Tras varias uniones, solo `find(x)` es correcto; llama a `find` con cada elemento antes de agrupar por padre.",
+            "Un `find` recursivo con entradas grandes y sin unión por rango puede alcanzar el límite de recursión de Python; la versión iterativa de arriba lo evita.",
+            "Elementos que no son enteros de 0 a n-1: asígnalos primero a índices con un `dict`, o guarda los padres en un `dict` y añade los elementos de forma perezosa.",
+            "Union-find no puede dividir grupos. Si se eliminan aristas, necesitas otra estructura o un enfoque offline que procese las eliminaciones en orden inverso.",
+            "El union-find ponderado guarda en cada nodo un desplazamiento respecto a su padre, lo que responde preguntas como \"¿cuánto más pesado es a que b?\"."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Cuándo usarlo y problemas típicos",
+      "body": [
+        "Usa union-find cuando los grupos solo se fusionan y necesitas preguntar si dos elementos están en el mismo grupo, o cuántos grupos hay. Para una sola pregunta de conectividad en un grafo estático, un BFS o DFS simple es más sencillo. Cuando necesites caminos reales, usa búsqueda en grafos, porque union-find solo conoce la pertenencia.",
+        "Problemas típicos: número de componentes conexas, número de islas (con las celdas de la cuadrícula como elementos), conexión redundante (la arista que crea un ciclo), fusión de cuentas, satisfacibilidad de ecuaciones de igualdad como `a == b, b != c` y el árbol de expansión mínima de Kruskal."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "¿Cuál es la diferencia entre union-find y DSU?",
+      "a": "Son dos nombres de la misma estructura de datos. Unión de conjuntos disjuntos (DSU) y bosque de conjuntos disjuntos también son nombres comunes."
+    },
+    {
+      "q": "¿Por qué union-find es casi O(1)?",
+      "a": "Con unión por rango y compresión de caminos, el costo amortizado por operación es O(α(n)), donde α es la inversa de la función de Ackermann. No supera 4 para ningún tamaño de entrada práctico."
+    },
+    {
+      "q": "¿Necesito tanto la unión por rango como la compresión de caminos?",
+      "a": "Cualquiera de las dos por sí sola da un comportamiento O(log n) amortizado, que suele ser suficientemente rápido. Usar ambas da la cota casi constante y solo cuesta unas pocas líneas más."
+    },
+    {
+      "q": "¿Puede union-find decirme los miembros de un grupo?",
+      "a": "No directamente. Puedes llamar a `find` con cada elemento y agruparlos por raíz en O(n α(n)), o mantener una lista de miembros por raíz y fusionar las listas durante la unión."
+    },
+    {
+      "q": "¿Unión por rango o unión por tamaño?",
+      "a": "Ambas dan las mismas cotas asintóticas. A menudo se prefiere la unión por tamaño porque el tamaño de cada grupo es útil por sí mismo."
+    }
+  ]
+}

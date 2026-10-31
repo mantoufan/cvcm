@@ -1,0 +1,193 @@
+{
+  "title": "자바 기초 튜토리얼: 클래스, 자료형, 컬렉션, 예외 처리 — cv.cm",
+  "description": "자바를 한 페이지로 배웁니다. JDK 설치와 Hello world 실행, 기본형, 제어 흐름, 메서드, 클래스, 레코드, 컬렉션, 예외 처리, 완성 예제까지 다룹니다.",
+  "h1": "자바 기초 입문 튜토리얼",
+  "answer": "자바는 바이트코드로 컴파일되어 어떤 운영체제에서든 자바 가상 머신(JVM) 위에서 실행되는 정적 타입 객체지향 언어입니다. JDK를 설치하고 `Hello.java`에 클래스를 저장한 뒤 `java Hello.java`로 실행하면 됩니다. 핵심 개념은 클래스와 객체, 기본형과 참조형, 컬렉션 프레임워크(`List`, `Map`, `Set`), 체크 예외, 그리고 레코드, `var`, 패턴 매칭 같은 최신 기능입니다.",
+  "sections": [
+    {
+      "h": "자바란 무엇이고 어디에 쓰이는가",
+      "body": [
+        "자바는 1995년 Sun Microsystems가 발표했으며, 지금은 Oracle이 주도적 역할을 맡은 오픈 프로젝트 OpenJDK에서 개발됩니다. \"한 번 작성하면 어디서나 실행된다(write once, run anywhere)\"가 핵심 약속입니다. 컴파일러가 바이트코드를 만들고 JVM이 Windows, macOS, Linux에서 이를 실행합니다. 자바는 대규모 기업용 백엔드(주로 Spring Boot), Android 앱(Kotlin과 함께), Apache Kafka와 Hadoop 같은 빅데이터 도구, 그리고 많은 데스크톱 및 임베디드 시스템에 쓰입니다. 새 버전은 6개월마다 나오며, 운영 환경에서는 보통 Java 21 같은 장기 지원(LTS) 버전을 선택합니다."
+      ]
+    },
+    {
+      "h": "JDK 설치와 Hello, world 실행",
+      "body": [
+        "Eclipse Temurin이나 Oracle JDK 같은 OpenJDK 빌드 등 JDK(Java Development Kit)를 설치하세요. `java -version`으로 확인합니다. 모든 자바 프로그램은 클래스 안에 있으며 실행은 `main`에서 시작합니다.",
+        {
+          "code": "public class Hello {\n    public static void main(String[] args) {\n        System.out.println(\"Hello, world\");\n    }\n}",
+          "lang": "java"
+        },
+        {
+          "code": "java Hello.java        # run a single source file directly\n# Hello, world\njavac Hello.java       # or compile to Hello.class first\njava Hello",
+          "lang": "shell"
+        },
+        "파일 이름은 public 클래스 이름과 같아야 합니다(`class Hello`라면 `Hello.java`)."
+      ]
+    },
+    {
+      "h": "변수와 기본 자료형",
+      "body": [
+        "자바에는 값 자체를 저장하는 여덟 가지 기본형(primitive type)과 참조형(`String` 같은 객체와 배열)이 있습니다. 모든 변수는 타입이 고정되어 있으며, 메서드 안에서는 `var`로 초기값을 보고 컴파일러가 타입을 추론하게 할 수 있습니다.",
+        {
+          "table": {
+            "head": [
+              "타입",
+              "크기",
+              "예시"
+            ],
+            "rows": [
+              [
+                "`int`",
+                "32비트",
+                "`int n = 42;`"
+              ],
+              [
+                "`long`",
+                "64비트",
+                "`long big = 10_000_000_000L;`"
+              ],
+              [
+                "`double`",
+                "64비트 부동소수점",
+                "`double pi = 3.14159;`"
+              ],
+              [
+                "`boolean`",
+                "true 또는 false",
+                "`boolean ok = true;`"
+              ],
+              [
+                "`char`",
+                "16비트 UTF-16 단위",
+                "`char c = 'A';`"
+              ],
+              [
+                "`byte`, `short`, `float`",
+                "8, 16, 32비트",
+                "사용 빈도가 낮음"
+              ],
+              [
+                "`String`",
+                "참조형",
+                "`String s = \"hi\";`"
+              ]
+            ]
+          }
+        },
+        {
+          "code": "int count = 7;\ndouble avg = count / 2;          // 3.0, integer division happens first\ndouble avg2 = count / 2.0;       // 3.5\nvar name = \"Ada\";                // inferred as String\nString msg = name + \" has \" + count + \" items\";\nSystem.out.println(msg);         // Ada has 7 items\nSystem.out.println(Integer.parseInt(\"12\") + 1); // 13",
+          "lang": "java"
+        },
+        "이것은 코드 조각입니다. 이런 문장은 `main` 같은 메서드 안에 넣어야 합니다."
+      ]
+    },
+    {
+      "h": "제어 흐름",
+      "body": [
+        {
+          "code": "int score = 72;\nif (score >= 90) {\n    System.out.println(\"A\");\n} else if (score >= 70) {\n    System.out.println(\"B\");     // B\n} else {\n    System.out.println(\"C\");\n}\nfor (int i = 0; i < 3; i++) {\n    System.out.println(i);       // 0, 1, 2\n}\nString day = \"SAT\";\nString kind = switch (day) {     // switch expression\n    case \"SAT\", \"SUN\" -> \"weekend\";\n    default -> \"weekday\";\n};\nSystem.out.println(kind);        // weekend",
+          "lang": "java"
+        },
+        "자바에는 `while`, `do`/`while`, 그리고 배열과 컬렉션을 순회하는 향상된 `for (String s : list)` 반복문도 있습니다."
+      ]
+    },
+    {
+      "h": "메서드, 클래스, 레코드",
+      "body": [
+        "클래스는 필드(데이터)와 메서드(동작)를 묶습니다. `static` 메서드는 클래스 자체에 속하고, 나머지 메서드는 `new`로 만든 객체에서 호출합니다. `record`는 불변 데이터 클래스를 간단히 선언하는 방법으로, 컴파일러가 생성자, 접근자, `equals`, `hashCode`, `toString`을 만들어 줍니다.",
+        {
+          "code": "public class Shapes {\n    static double square(double x) {\n        return x * x;\n    }\n    static class Counter {\n        private int value;\n        void increment() { value++; }\n        int get() { return value; }\n    }\n    record Point(int x, int y) {\n        double distance() { return Math.sqrt(x * x + y * y); }\n    }\n    public static void main(String[] args) {\n        System.out.println(square(4));        // 16.0\n        Counter c = new Counter();\n        c.increment();\n        c.increment();\n        System.out.println(c.get());          // 2\n        Point p = new Point(3, 4);\n        System.out.println(p + \" \" + p.distance()); // Point[x=3, y=4] 5.0\n    }\n}",
+          "lang": "java"
+        },
+        "클래스는 부모 클래스를 하나만 상속(`extends`)할 수 있고 인터페이스는 여러 개 구현(`implements`)할 수 있습니다. 필드는 보통 `private`으로 두고 메서드를 통해 접근합니다."
+      ]
+    },
+    {
+      "h": "컬렉션: List, Map, Set",
+      "body": [
+        "`java.util`의 컬렉션 프레임워크는 크기를 조절할 수 있는 자료구조를 제공합니다. 컬렉션은 객체를 담으므로 기본형은 자동으로 박싱됩니다(`int`는 `Integer`가 됩니다).",
+        {
+          "code": "import java.util.*;\npublic class Collections101 {\n    public static void main(String[] args) {\n        List<Integer> nums = new ArrayList<>(List.of(3, 1, 2));\n        nums.add(5);\n        Collections.sort(nums);\n        System.out.println(nums + \" \" + nums.get(0));  // [1, 2, 3, 5] 1\n        Map<String, Integer> ages = new HashMap<>();\n        ages.put(\"ann\", 31);\n        ages.put(\"bob\", 25);\n        System.out.println(ages.getOrDefault(\"zed\", 0)); // 0\n        Set<String> tags = new TreeSet<>(List.of(\"b\", \"a\", \"b\"));\n        System.out.println(tags);                        // [a, b]\n        List<Integer> evensSquared = nums.stream()\n            .filter(n -> n % 2 == 0)\n            .map(n -> n * n)\n            .toList();\n        System.out.println(evensSquared);                // [4]\n    }\n}",
+          "lang": "java"
+        },
+        "마지막 문장은 컬렉션을 변환하는 함수형 스타일인 스트림과 람다를 사용합니다. `List.of`는 불변 리스트를 만들므로, 변경해야 한다면 `new ArrayList<>(...)`로 감싸세요."
+      ]
+    },
+    {
+      "h": "대표 기능: 정적 타입, 인터페이스, 패턴 매칭",
+      "body": [
+        "인터페이스는 여러 클래스가 구현할 수 있는 계약을 정의하며, 대부분의 자바 설계의 기반입니다. 최신 자바에는 패턴 매칭이 추가되어 `instanceof`와 `switch`가 타입 검사와 변수 바인딩을 한 번에 처리합니다. 봉인된 인터페이스(Java 17 이상)는 허용되는 모든 구현을 나열하므로, 컴파일러가 `switch`가 모든 경우를 다루는지 검사할 수 있습니다.",
+        {
+          "code": "public class Areas {\n    sealed interface Shape permits Circle, Rect {}\n    record Circle(double r) implements Shape {}\n    record Rect(double w, double h) implements Shape {}\n    static double area(Shape s) {\n        return switch (s) {\n            case Circle c -> Math.PI * c.r() * c.r();\n            case Rect r -> r.w() * r.h();\n        };\n    }\n    public static void main(String[] args) {\n        System.out.println(area(new Rect(2, 3)));  // 6.0\n    }\n}",
+          "lang": "java"
+        },
+        "이와 같은 `switch` 패턴 매칭은 Java 21 LTS 이상에서 표준입니다."
+      ]
+    },
+    {
+      "h": "예외 처리",
+      "body": [
+        "오류는 예외입니다. 체크 예외(`IOException` 등)는 반드시 잡거나 `throws`로 선언해야 하고, 언체크 예외(`NullPointerException` 같은 `RuntimeException`의 하위 클래스)는 그럴 필요가 없습니다. `try`-with-resources는 파일과 연결을 자동으로 닫아 줍니다.",
+        {
+          "code": "import java.io.*;\nimport java.nio.file.*;\npublic class ReadFirst {\n    static int parseAge(String text) {\n        int age = Integer.parseInt(text);   // may throw NumberFormatException\n        if (age < 0) throw new IllegalArgumentException(\"negative age\");\n        return age;\n    }\n    public static void main(String[] args) {\n        try {\n            System.out.println(parseAge(\"abc\"));\n        } catch (NumberFormatException e) {\n            System.out.println(\"not a number\");  // not a number\n        }\n        try (BufferedReader in = Files.newBufferedReader(Path.of(\"notes.txt\"))) {\n            System.out.println(in.readLine());\n        } catch (IOException e) {\n            System.out.println(\"cannot read: \" + e.getMessage());\n        }\n    }\n}",
+          "lang": "java"
+        }
+      ]
+    },
+    {
+      "h": "작은 완성 프로그램: 단어 세기",
+      "body": [
+        {
+          "code": "import java.io.IOException;\nimport java.nio.file.*;\nimport java.util.*;\npublic class WordCount {\n    public static void main(String[] args) throws IOException {\n        if (args.length != 1) {\n            System.err.println(\"usage: java WordCount.java FILE\");\n            System.exit(1);\n        }\n        String text = Files.readString(Path.of(args[0])).toLowerCase();\n        Map<String, Integer> counts = new HashMap<>();\n        for (String word : text.split(\"[^a-z']+\")) {\n            if (!word.isEmpty()) counts.merge(word, 1, Integer::sum);\n        }\n        counts.entrySet().stream()\n            .sorted(Map.Entry.<String, Integer>comparingByValue().reversed())\n            .limit(5)\n            .forEach(e -> System.out.printf(\"%5d  %s%n\", e.getValue(), e.getKey()));\n    }\n}",
+          "lang": "java"
+        },
+        "`java WordCount.java notes.txt`로 실행합니다. 가장 많이 나온 단어 다섯 개와 횟수를 출력합니다."
+      ]
+    },
+    {
+      "h": "초보자가 자주 하는 실수",
+      "body": [
+        {
+          "note": "문자열은 `a == b`가 아니라 `a.equals(b)`로 비교하세요. `==` 연산자는 두 참조가 같은 객체를 가리키는지 확인하므로, 내용이 같은 텍스트여도 false가 될 수 있습니다."
+        },
+        {
+          "ul": [
+            "정수 나눗셈: `5 / 2`는 `2`입니다. 한쪽을 `double`로 만들어야 `2.5`를 얻습니다.",
+            "`null`에 메서드를 호출해 발생하는 `NullPointerException`. `null`을 확인하거나, 없을 수 있는 값에는 `Optional`을 사용하세요.",
+            "`List.of`로 만든 리스트를 변경하려다 `UnsupportedOperationException`이 발생하는 경우.",
+            "배열과 `List`의 인덱스가 0부터 시작해 마지막 요소가 `length - 1`에 있다는 점을 잊는 경우."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "다음 학습 단계",
+      "body": [
+        "공식 자바 개발자 사이트 dev.java의 학습 경로를 따라가고, Java SE API 문서를 열어 두고 참고하세요. 빌드 도구(Maven 또는 Gradle), JUnit 단위 테스트를 익힌 뒤 웹 서비스용 Spring Boot 같은 프레임워크로 넘어가세요. 같은 JVM에서 동작하는 Kotlin도 자연스러운 다음 언어입니다."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "자바는 배우기 어려운가요?",
+      "a": "자바는 타입을 선언하고 코드를 클래스 안에 넣어야 하므로 파이썬보다 코드가 장황하지만, 규칙이 일관되고 컴파일러가 실수를 일찍 알려 줍니다. 많은 대학에서 첫 언어로 사용합니다."
+    },
+    {
+      "q": "JDK와 JVM은 무엇이 다른가요?",
+      "a": "JVM은 컴파일된 바이트코드를 실행합니다. JDK는 전체 개발 키트로, JVM에 컴파일러 `javac`, 표준 라이브러리, 도구가 더해진 것입니다. 개발자는 JDK를 설치합니다."
+    },
+    {
+      "q": "어떤 자바 버전을 배워야 하나요?",
+      "a": "Java 21이나 그 이후의 LTS처럼 현재의 장기 지원 버전을 배우세요. 예전 코드도 새 JVM에서 실행되므로 최신 기술은 기존 프로젝트에도 적용됩니다."
+    },
+    {
+      "q": "자바와 자바스크립트는 같은 언어인가요?",
+      "a": "아닙니다. 이름이 비슷할 뿐 타입 시스템, 런타임, 용도가 모두 다른 별개의 언어입니다."
+    },
+    {
+      "q": "자바는 아직도 쓰이나요?",
+      "a": "네. 기업용 백엔드, Android, 데이터 인프라에서 여전히 가장 많이 쓰이는 언어 중 하나입니다."
+    }
+  ]
+}

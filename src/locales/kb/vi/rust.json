@@ -1,0 +1,189 @@
+{
+  "title": "Học lập trình Rust cơ bản: ownership, borrowing, enum và Result — cv.cm",
+  "description": "Học Rust trong một trang: Hello world với Cargo, kiểu dữ liệu, điều khiển luồng, ownership và borrowing, struct, enum và match, Vec, HashMap và Result.",
+  "h1": "Hướng dẫn học lập trình Rust cơ bản cho người mới",
+  "answer": "Rust là ngôn ngữ hệ thống biên dịch, kiểu tĩnh, nhanh như C và C++ nhưng ngăn lỗi bộ nhớ ngay lúc biên dịch, không cần bộ thu gom rác. Cài bằng rustup, rồi chạy `cargo new hello` và `cargo run`. Các ý tưởng cốt lõi là ownership (quyền sở hữu) và borrowing (mượn) được borrow checker kiểm tra, struct và enum với `match`, collection như `Vec` và `HashMap`, và xử lý lỗi với `Result` cùng toán tử `?`.",
+  "sections": [
+    {
+      "h": "Rust là gì và dùng để làm gì",
+      "body": [
+        "Rust khởi đầu là dự án cá nhân của Graydon Hoare, được Mozilla tài trợ và đạt phiên bản 1.0 năm 2015. Hiện nay nó do Rust Foundation quản lý. Rust được dùng ở nơi cần cả tốc độ lẫn độ tin cậy: công cụ dòng lệnh (ripgrep), dịch vụ web, thành phần trình duyệt trong Firefox, một số phần của nhân Linux và Windows, thiết bị nhúng và WebAssembly. Trình biên dịch của nó rất nghiêm ngặt, nhưng đổi lại cả những lớp lỗi như use-after-free và data race không thể xảy ra trong mã Rust an toàn."
+      ]
+    },
+    {
+      "h": "Cài Rust và chạy Hello, world",
+      "body": [
+        "Cài bộ công cụ bằng rustup từ rustup.rs. Nó cung cấp `rustc` (trình biên dịch) và Cargo (công cụ build và trình quản lý gói). Tạo một dự án:",
+        {
+          "code": "cargo new hello\ncd hello\ncargo run\n# Hello, world!",
+          "lang": "shell"
+        },
+        "Cargo sinh ra `src/main.rs`:",
+        {
+          "code": "fn main() {\n    println!(\"Hello, world!\");\n}",
+          "lang": "rust"
+        },
+        "`println!` kết thúc bằng `!` vì nó là macro, không phải hàm. Macro sinh mã lúc biên dịch; ở đây chuỗi định dạng được kiểm tra khi bạn biên dịch."
+      ]
+    },
+    {
+      "h": "Biến và các kiểu dữ liệu cơ bản",
+      "body": [
+        "Biến mặc định là bất biến; thêm `mut` để cho phép thay đổi. Kiểu thường được suy luận, nhưng mỗi giá trị có đúng một kiểu tĩnh, và chuyển đổi số phải tường minh bằng `as`.",
+        {
+          "table": {
+            "head": [
+              "Kiểu",
+              "Ví dụ",
+              "Ghi chú"
+            ],
+            "rows": [
+              [
+                "`i32`, `i64`, `u8`, `usize`",
+                "`let n: i32 = 42;`",
+                "Có dấu (`i`) và không dấu (`u`); `usize` dùng cho chỉ số"
+              ],
+              [
+                "`f64`",
+                "`let x = 3.14;`",
+                "Kiểu số thực mặc định"
+              ],
+              [
+                "`bool`",
+                "`let ok = true;`",
+                "`true` hoặc `false`"
+              ],
+              [
+                "`char`",
+                "`let c = 'é';`",
+                "Một giá trị vô hướng Unicode, 4 byte"
+              ],
+              [
+                "`&str`",
+                "`let s = \"hi\";`",
+                "Lát cắt chuỗi được mượn"
+              ],
+              [
+                "`String`",
+                "`String::from(\"hi\")`",
+                "UTF-8 sở hữu, co giãn được"
+              ],
+              [
+                "Tuple, mảng",
+                "`(1, \"a\")`, `[0; 3]`",
+                "Kích thước cố định"
+              ]
+            ]
+          }
+        },
+        {
+          "code": "fn main() {\n    let name = \"Ada\";\n    let mut count = 7;\n    count += 1;\n    let avg = count as f64 / 2.0;\n    println!(\"{name} has {count} items, avg {avg}\"); // Ada has 8 items, avg 4\n    let parsed: i32 = \"12\".parse().unwrap();\n    println!(\"{}\", parsed + 1); // 13\n}",
+          "lang": "rust"
+        }
+      ]
+    },
+    {
+      "h": "Điều khiển luồng và hàm",
+      "body": [
+        "`if`, `match` và khối lệnh là biểu thức: chúng tạo ra giá trị. Biểu thức cuối của hàm, không có dấu chấm phẩy, là giá trị trả về.",
+        {
+          "code": "fn square(x: i32) -> i32 {\n    x * x\n}\n\nfn main() {\n    let score = 72;\n    let grade = if score >= 90 { \"A\" } else if score >= 70 { \"B\" } else { \"C\" };\n    println!(\"{grade}\"); // B\n\n    for i in 0..3 {\n        print!(\"{} \", square(i)); // 0 1 4\n    }\n    println!();\n\n    let mut n = 10;\n    while n > 1 {\n        n /= 2;\n    }\n    let label = loop {\n        break \"done\"; // loop can return a value with break\n    };\n    println!(\"{n} {label}\"); // 1 done\n}",
+          "lang": "rust"
+        }
+      ]
+    },
+    {
+      "h": "Tính năng đặc trưng: ownership và borrowing",
+      "body": [
+        "Mỗi giá trị có đúng một chủ sở hữu. Khi chủ sở hữu ra khỏi phạm vi, giá trị bị hủy (giải phóng). Gán một giá trị trên heap như `String` cho biến khác sẽ di chuyển (move) nó, và tên cũ không dùng được nữa. Để dùng giá trị mà không lấy quyền sở hữu, hãy mượn nó bằng tham chiếu: tại một thời điểm có thể có bao nhiêu tham chiếu chia sẻ `&T` tùy ý, hoặc đúng một tham chiếu khả biến `&mut T`.",
+        {
+          "code": "fn length(s: &str) -> usize {\n    s.len() // borrows, does not take ownership\n}\n\nfn add_exclamation(s: &mut String) {\n    s.push('!');\n}\n\nfn main() {\n    let a = String::from(\"hello\");\n    let b = a; // ownership moves to b\n    // println!(\"{a}\"); // error: borrow of moved value: `a`\n    let mut c = b.clone(); // explicit deep copy\n    add_exclamation(&mut c);\n    println!(\"{} {} {}\", b, c, length(&c)); // hello hello! 6\n}",
+          "lang": "rust"
+        },
+        "Các quy tắc này được borrow checker thực thi lúc biên dịch, đó là cách Rust đạt an toàn bộ nhớ mà không cần bộ thu gom rác. Kiểu đơn giản như số nguyên cài đặt `Copy`, nên được sao chép thay vì di chuyển."
+      ]
+    },
+    {
+      "h": "Struct, enum và pattern matching",
+      "body": [
+        "Struct gom các trường, và khối `impl` thêm phương thức. Enum có thể mang dữ liệu trong từng biến thể, và `match` phải xử lý mọi biến thể, điều mà trình biên dịch kiểm tra. Enum chuẩn `Option<T>` (`Some(value)` hoặc `None`) thay thế null.",
+        {
+          "code": "#[derive(Debug)]\nstruct Point {\n    x: f64,\n    y: f64,\n}\n\nimpl Point {\n    fn distance(&self) -> f64 {\n        (self.x * self.x + self.y * self.y).sqrt()\n    }\n}\n\nenum Shape {\n    Circle(f64),\n    Rect { w: f64, h: f64 },\n}\n\nfn area(s: &Shape) -> f64 {\n    match s {\n        Shape::Circle(r) => std::f64::consts::PI * r * r,\n        Shape::Rect { w, h } => w * h,\n    }\n}\n\nfn main() {\n    let p = Point { x: 3.0, y: 4.0 };\n    println!(\"{:?} {}\", p, p.distance()); // Point { x: 3.0, y: 4.0 } 5\n    println!(\"{}\", area(&Shape::Rect { w: 2.0, h: 3.0 })); // 6\n    let nums = [10, 20];\n    if let Some(v) = nums.first() {\n        println!(\"first is {v}\"); // first is 10\n    }\n}",
+          "lang": "rust"
+        },
+        "Trait định nghĩa hành vi chung, tương tự interface: `#[derive(Debug)]` yêu cầu trình biên dịch cài đặt trait `Debug` để `{:?}` in được struct."
+      ]
+    },
+    {
+      "h": "Collection: Vec và HashMap",
+      "body": [
+        {
+          "code": "use std::collections::HashMap;\n\nfn main() {\n    let mut nums = vec![3, 1, 2];\n    nums.push(5);\n    nums.sort();\n    println!(\"{:?} {}\", nums, nums.len()); // [1, 2, 3, 5] 4\n\n    let evens: Vec<i32> = nums.iter().filter(|n| *n % 2 == 0).map(|n| n * n).collect();\n    println!(\"{:?}\", evens); // [4]\n\n    let mut ages: HashMap<&str, u32> = HashMap::new();\n    ages.insert(\"ann\", 31);\n    ages.insert(\"bob\", 25);\n    *ages.entry(\"ann\").or_insert(0) += 1;\n    println!(\"{:?} {:?}\", ages.get(\"ann\"), ages.get(\"zed\")); // Some(32) None\n}",
+          "lang": "rust"
+        },
+        "Iterator với closure (`|n| ...`) như `filter`, `map` và `collect` biên dịch ra mã nhanh như vòng lặp viết tay."
+      ]
+    },
+    {
+      "h": "Xử lý lỗi với Result và ?",
+      "body": [
+        "Hàm có thể thất bại trả về `Result<T, E>`: hoặc `Ok(value)` hoặc `Err(error)`. Toán tử `?` trả lỗi về cho bên gọi sớm, nên nhánh lỗi gọn. Lỗi không thể khôi phục dùng `panic!`.",
+        {
+          "code": "use std::num::ParseIntError;\n\nfn parse_age(text: &str) -> Result<u32, ParseIntError> {\n    let age: u32 = text.trim().parse()?; // returns Err early on bad input\n    Ok(age)\n}\n\nfn main() {\n    match parse_age(\"41\") {\n        Ok(age) => println!(\"age {age}\"), // age 41\n        Err(e) => println!(\"error: {e}\"),\n    }\n    match parse_age(\"abc\") {\n        Ok(age) => println!(\"age {age}\"),\n        Err(e) => println!(\"error: {e}\"), // error: invalid digit found in string\n    }\n}",
+          "lang": "rust"
+        }
+      ]
+    },
+    {
+      "h": "Một chương trình nhỏ hoàn chỉnh: tần suất từ",
+      "body": [
+        "Đặt đoạn này vào `src/main.rs` và chạy `cargo run -- notes.txt`.",
+        {
+          "code": "use std::collections::HashMap;\nuse std::{env, fs, process};\n\nfn main() {\n    let path = env::args().nth(1).unwrap_or_else(|| {\n        eprintln!(\"usage: words FILE\");\n        process::exit(1);\n    });\n    let text = match fs::read_to_string(&path) {\n        Ok(t) => t.to_lowercase(),\n        Err(e) => {\n            eprintln!(\"cannot read {path}: {e}\");\n            process::exit(1);\n        }\n    };\n\n    let mut counts: HashMap<&str, usize> = HashMap::new();\n    for word in text.split(|c: char| !c.is_alphanumeric()).filter(|w| !w.is_empty()) {\n        *counts.entry(word).or_insert(0) += 1;\n    }\n\n    let mut top: Vec<(&str, usize)> = counts.into_iter().collect();\n    top.sort_by(|a, b| b.1.cmp(&a.1).then(a.0.cmp(b.0)));\n    for (word, n) in top.iter().take(5) {\n        println!(\"{n:5}  {word}\");\n    }\n}",
+          "lang": "rust"
+        },
+        "`HashMap` lưu các lát cắt `&str` mượn từ `text`, nên không có từ nào bị sao chép; borrow checker đảm bảo `text` sống đủ lâu."
+      ]
+    },
+    {
+      "h": "Những lỗi thường gặp của người mới",
+      "body": [
+        {
+          "note": "Chống lại borrow checker bằng cách thêm `.clone()` khắp nơi hoặc dùng `.unwrap()` cho mọi `Result` khiến mã biên dịch được nhưng che giấu vấn đề. Hãy đọc thông báo của trình biên dịch trước; thường nó nói rõ cần đổi gì."
+        },
+        {
+          "ul": [
+            "Dùng giá trị sau khi nó đã bị di chuyển. Hãy mượn nó (`&value`) hoặc clone có chủ đích.",
+            "Cố lập chỉ mục `String` bằng `s[0]`. Chuỗi là UTF-8, nên hãy dùng `s.chars()` hoặc lát cắt byte tại ranh giới ký tự.",
+            "Giữ tham chiếu vào `Vec` trong khi push vào nó; push có thể cấp phát lại, nên trình biên dịch cấm điều đó.",
+            "Nhầm `String` (sở hữu) với `&str` (mượn). Hãy nhận `&str` trong tham số hàm để chấp nhận cả hai."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Học tiếp ở đâu",
+      "body": [
+        "Hãy đọc \"The Rust Programming Language\" (gọi là the book), có miễn phí trên doc.rust-lang.org, và thử Rust by Example cho các ví dụ ngắn chạy được. Sau đó học sâu về trait và generic, lifetime, kiểm thử với `cargo test`, và các crate từ crates.io như `serde` cho tuần tự hóa và `tokio` cho chương trình bất đồng bộ. Chạy `cargo clippy` để nhận thêm lời khuyên lint."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Rust có khó học không?",
+      "a": "Vài tuần đầu khó hơn hầu hết ngôn ngữ vì ownership và borrowing là những ý tưởng mới. Khi đã quen, trình biên dịch bắt nhiều lỗi từ sớm, và nhiều lập trình viên thấy mã Rust dễ bảo trì hơn."
+    },
+    {
+      "q": "Rust có bộ thu gom rác không?",
+      "a": "Không. Bộ nhớ được giải phóng tự động khi chủ sở hữu ra khỏi phạm vi, do quy tắc ownership quyết định lúc biên dịch. Các kiểu đếm tham chiếu `Rc` và `Arc` có sẵn cho trường hợp sở hữu chung."
+    },
+    {
+      "q": "Rust unsafe là gì?",
+      "a": "Mã trong khối `unsafe` có thể làm những việc trình biên dịch không thể kiểm chứng, như giải tham chiếu con trỏ thô hoặc gọi hàm C. Nó được dùng hạn chế, thường được bọc trong một API an toàn."
+    },
+    {
+      "q": "Rust hay Go: nên học cái nào?",
+      "a": "Go đơn giản và học nhanh hơn, phổ biến cho dịch vụ mạng. Rust cho nhiều quyền kiểm soát và hiệu năng hơn với đảm bảo mạnh hơn, đổi lại đường học dốc hơn."
+    }
+  ]
+}

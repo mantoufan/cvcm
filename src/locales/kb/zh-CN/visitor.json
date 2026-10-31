@@ -1,0 +1,154 @@
+{
+  "title": "访问者模式：双分派与 TypeScript 中的 AST 访问者 — cv.cm",
+  "description": "访问者模式（Visitor）无需修改类层次结构中的类，就能为其增加操作。了解双分派、TypeScript 代码以及联合类型的替代方案。",
+  "h1": "访问者模式详解与示例",
+  "answer": "访问者是一种行为型设计模式，它让你在不修改一组相关类的前提下，为它们添加新操作。每个操作写成一个访问者对象，为每种元素类型提供一个方法；每个元素有一个 `accept(visitor)` 方法，调用相应的访问者方法。这种技术称为双分派，它同时依据元素类型和访问者类型来选择要运行的代码。编译器、代码检查工具（linter）和代码转换器都用访问者来遍历语法树。",
+  "sections": [
+    {
+      "h": "意图与它要解决的问题",
+      "body": [
+        "意图：表示一个作用于某对象结构中各元素的操作。访问者让你可以在不改变各元素的类的前提下，定义作用于这些元素的新操作。它是《设计模式》（Gang of Four，GoF）一书中的行为型模式之一。",
+        "假设一个绘图程序有三个形状类：`Circle`、`Rectangle` 和 `Group`。随着时间推移，你需要对它们做很多操作：计算总面积、导出为 SVG、导出为 JSON、统计形状数量、检查重叠。如果每个操作都变成每个形状类上的方法，形状类就会塞满与“作为形状”毫无关系的代码，而且每增加一个操作都要改动所有这些类。",
+        "使用访问者模式时，每个操作成为一个类（面积访问者、SVG 访问者），其中包含针对每种形状类型的代码。形状只需要一个通用方法 `accept`。添加操作就是写一个新访问者；形状类保持不变。"
+      ]
+    },
+    {
+      "h": "结构与参与者",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "角色",
+              "职责"
+            ],
+            "rows": [
+              [
+                "访问者",
+                "接口，为每种具体元素类型提供一个访问方法，例如 `visitCircle` 和 `visitRectangle`"
+              ],
+              [
+                "具体访问者",
+                "为所有元素类型实现某一个操作，并可以收集结果"
+              ],
+              [
+                "元素",
+                "带有 `accept(visitor)` 方法的接口"
+              ],
+              [
+                "具体元素",
+                "实现 `accept`，调用与自身类型对应的访问方法并把自己传进去"
+              ],
+              [
+                "对象结构",
+                "由元素组成的集合或树，例如文档或语法树，访问者在其上遍历"
+              ]
+            ]
+          }
+        },
+        "为什么需要 `accept`：在 TypeScript、Java 和 C# 中，方法调用根据被调用对象的类型来选择实现（单分派）。`accept` 调用依据元素类型分派，而其内部的调用，例如 `visitor.visitCircle(this)`，则依据访问者类型分派。两者合起来就是双分派。"
+      ]
+    },
+    {
+      "h": "TypeScript 实现",
+      "body": [
+        "访问者接口的返回类型是泛型，因此一个访问者可以计算数字，另一个可以生成字符串。",
+        {
+          "code": "interface ShapeVisitor<R> {\n  visitCircle(c: Circle): R;\n  visitRectangle(r: Rectangle): R;\n  visitGroup(g: Group): R;\n}\ninterface Shape {\n  accept<R>(visitor: ShapeVisitor<R>): R;\n}\n\nclass Circle implements Shape {\n  constructor(readonly radius: number) {}\n  accept<R>(v: ShapeVisitor<R>) { return v.visitCircle(this); }\n}\nclass Rectangle implements Shape {\n  constructor(readonly width: number, readonly height: number) {}\n  accept<R>(v: ShapeVisitor<R>) { return v.visitRectangle(this); }\n}\nclass Group implements Shape {\n  constructor(readonly children: Shape[]) {}\n  accept<R>(v: ShapeVisitor<R>) { return v.visitGroup(this); }\n}\n\nclass AreaVisitor implements ShapeVisitor<number> {\n  visitCircle(c: Circle) { return Math.PI * c.radius ** 2; }\n  visitRectangle(r: Rectangle) { return r.width * r.height; }\n  visitGroup(g: Group): number {\n    return g.children.reduce((sum, child) => sum + child.accept(this), 0);\n  }\n}\n\nclass SvgVisitor implements ShapeVisitor<string> {\n  visitCircle(c: Circle) { return '<circle r=\"' + c.radius + '\"/>'; }\n  visitRectangle(r: Rectangle) { return '<rect width=\"' + r.width + '\" height=\"' + r.height + '\"/>'; }\n  visitGroup(g: Group): string { return \"<g>\" + g.children.map((c) => c.accept(this)).join(\"\") + \"</g>\"; }\n}\n\nconst drawing = new Group([new Circle(1), new Rectangle(2, 3), new Group([new Rectangle(1, 1)])]);\nconsole.log(drawing.accept(new AreaVisitor()).toFixed(2)); // 10.14\nconsole.log(drawing.accept(new SvgVisitor()));\n// <g><circle r=\"1\"/><rect width=\"2\" height=\"3\"/><g><rect width=\"1\" height=\"1\"/></g></g>",
+          "lang": "typescript"
+        },
+        "第三个操作，例如统计形状数量，只需新增一个实现 `ShapeVisitor<number>` 的类。所有形状类都不用改。",
+        {
+          "note": "访问者让添加操作变得容易，却让添加元素类型变得困难。新增一个形状类（如 `Triangle`），就需要在访问者接口和每个现有访问者中新增一个方法。当元素类型的集合稳定、而操作的集合不断增长时，才适合使用该模式。"
+        }
+      ]
+    },
+    {
+      "h": "TypeScript 的替代方案：联合类型加 switch",
+      "body": [
+        "在 TypeScript 中，可辨识联合类型（discriminated union）加上穷尽的 `switch`，用更少的代码就能获得许多同样的好处。缺少分支时编译器会报错，这取代了访问者接口所提供的安全性：",
+        {
+          "code": "type Shape =\n  | { kind: \"circle\"; radius: number }\n  | { kind: \"rect\"; width: number; height: number }\n  | { kind: \"group\"; children: Shape[] };\n\nfunction area(s: Shape): number {\n  switch (s.kind) {\n    case \"circle\": return Math.PI * s.radius ** 2;\n    case \"rect\": return s.width * s.height;\n    case \"group\": return s.children.reduce((sum, c) => sum + area(c), 0);\n    default: {\n      const unreachable: never = s; // compile error if a kind is not handled\n      return unreachable;\n    }\n  }\n}\n\nconsole.log(area({ kind: \"group\", children: [{ kind: \"rect\", width: 2, height: 3 }] })); // 6",
+          "lang": "typescript"
+        },
+        "每个新操作就是一个新函数。这种风格适合 JSON 或语法树这类纯数据，也是许多 TypeScript 代码库用来取代基于类的访问者的做法。"
+      ]
+    },
+    {
+      "h": "何时使用，何时不用",
+      "body": [
+        {
+          "ul": [
+            "当元素类有一个稳定的集合，而你需要对它们做许多互不相关的操作时使用，例如对语法树做求值、打印、类型检查和优化。",
+            "用来把操作代码放在一起：全部 SVG 导出都在一个访问者里，而不是散落在许多类中。",
+            "当访问者需要在遍历结构时累积状态时使用，例如符号表或累计总数。",
+            "元素类型经常变化时不要使用；每次变化都会波及所有访问者。",
+            "元素很少而操作很简单时不要使用。类上的方法，或带 `switch` 的函数，更容易阅读。",
+            "要注意，访问者通常需要访问元素的数据，这可能迫使你把字段设为公开。"
+          ]
+        }
+      ]
+    },
+    {
+      "h": "实际应用",
+      "body": [
+        {
+          "ul": [
+            "Babel 插件就是访问者：一个对象，其方法以节点类型命名，如 `Identifier` 或 `CallExpression`，`@babel/traverse` 在遍历语法树时调用它们。",
+            "ESLint 规则返回一个以节点类型为键的访问者方法对象，ESLint 在遍历期间调用这些方法。",
+            "Python 的 `ast.NodeVisitor` 和 `ast.NodeTransformer` 类会调用以节点类名命名的 `visit_` 方法，例如 `visit_Name`。",
+            "Java 的 `java.nio.file.FileVisitor` 与 `Files.walkFileTree` 配合使用，会为文件树中的每个目录和文件接收回调。"
+          ]
+        }
+      ]
+    },
+    {
+      "h": "相关模式",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "模式",
+              "与访问者的关系"
+            ],
+            "rows": [
+              [
+                "组合",
+                "访问者经常应用于组合结构；分组的访问方法会访问其子节点，如示例所示。"
+              ],
+              [
+                "解释器",
+                "解释器对语法树求值；访问者可以实现这种求值，以及同一棵树上的其他操作。"
+              ],
+              [
+                "迭代器",
+                "迭代器遍历元素；访问者定义对每个元素的操作。两者可以结合使用。"
+              ],
+              [
+                "策略",
+                "策略为一个上下文改变一种算法；访问者为多种元素类型打包一个操作。"
+              ]
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "什么是双分派？",
+      "a": "双分派是指运行哪段代码取决于两个对象的类型。在访问者模式中，`element.accept(visitor)` 选定元素类型，而其内部的 `visitor.visitX(this)` 选定访问者类型。"
+    },
+    {
+      "q": "什么时候不该使用访问者模式？",
+      "a": "元素类型经常新增时应避免使用，因为每增加一种类型，所有访问者都要修改。对于少数简单的操作，它带来的繁琐也不值得。"
+    },
+    {
+      "q": "访问者在 TypeScript 中有用吗？",
+      "a": "对基于类的对象结构有用。对于纯数据，带穷尽 `switch` 的可辨识联合类型通常用更少的代码就能达到同样的效果，并且有完整的类型检查。"
+    },
+    {
+      "q": "为什么 Babel 和 ESLint 使用访问者？",
+      "a": "两者处理的语法树都有许多节点类型，并支持许多独立的插件或规则。访问者让每个插件或规则只处理自己关心的节点类型，遍历则由工具负责。"
+    }
+  ]
+}

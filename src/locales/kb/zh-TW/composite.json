@@ -1,0 +1,163 @@
+{
+  "title": "組合模式：以一致方式處理樹狀結構與單一物件，附 TypeScript 範例 — cv.cm",
+  "description": "說明組合（Composite）設計模式：建立葉節點與群組共用同一介面的樹狀結構。附 TypeScript 檔案系統範例與實際應用。",
+  "h1": "組合模式詳解與範例",
+  "answer": "組合是一種結構型設計模式，讓你把物件組合成樹狀結構，然後以相同的方式處理單一物件與物件群組。葉節點（例如檔案）與組合節點（例如包含檔案和其他資料夾的資料夾）實作同一個介面，例如 `size()`。組合節點透過對它的子節點呼叫同一個操作來完成實作，因此用戶端程式碼可以直接處理整棵樹，而不必檢查節點是哪一種。",
+  "sections": [
+    {
+      "h": "意圖",
+      "body": [
+        "把物件組合成樹狀結構，以表示「部分－整體」的階層。組合讓用戶端能一致地對待單一物件與物件的組合。它是《設計模式》（Gang of Four，簡稱 GoF）一書中七種結構型模式之一。"
+      ]
+    },
+    {
+      "h": "它解決的問題",
+      "body": [
+        "想像一個儲存空間應用程式，必須能顯示任何項目的總大小。檔案有大小；資料夾的大小則是裡面所有東西的總和，而資料夾可以包含檔案和其他資料夾，巢狀的深度不受限制。",
+        "如果沒有共同的介面，每一段走訪這棵樹的程式碼，都必須問「這是檔案還是資料夾？」並分別處理，通常還要一遍又一遍地重寫遞迴。新增一種節點類型，例如捷徑或壓縮檔，就得找出並更新每一處這樣的檢查。組合模式把遞迴放進節點本身。"
+      ]
+    },
+    {
+      "h": "結構與參與者",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "參與者",
+              "職責",
+              "範例中的對應"
+            ],
+            "rows": [
+              [
+                "元件（Component）",
+                "為樹中所有物件宣告共同的介面。",
+                "`FsNode`"
+              ],
+              [
+                "葉節點（Leaf）",
+                "沒有子節點的物件；直接實作操作。",
+                "`FileNode`"
+              ],
+              [
+                "組合節點（Composite）",
+                "儲存子元件，並透過委派給它們來實作操作。",
+                "`Folder`"
+              ],
+              [
+                "用戶端",
+                "透過元件介面處理任何節點。",
+                "`report`"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "TypeScript 實作",
+      "body": [
+        {
+          "code": "interface FsNode {\n  readonly name: string;\n  size(): number;\n  print(indent?: string): string[];\n}\n\nclass FileNode implements FsNode {\n  constructor(readonly name: string, private bytes: number) {}\n  size(): number { return this.bytes; }\n  print(indent = \"\"): string[] { return [`${indent}${this.name} (${this.bytes})`]; }\n}\n\nclass Folder implements FsNode {\n  private children: FsNode[] = [];\n  constructor(readonly name: string) {}\n  add(...nodes: FsNode[]): this { this.children.push(...nodes); return this; }\n  size(): number { return this.children.reduce((sum, c) => sum + c.size(), 0); }\n\n  print(indent = \"\"): string[] {\n    const lines = [`${indent}${this.name}/ (${this.size()})`];\n    for (const child of this.children) lines.push(...child.print(indent + \"  \"));\n    return lines;\n  }\n}\n\nconst root = new Folder(\"project\").add(\n  new FileNode(\"README.md\", 120),\n  new Folder(\"src\").add(new FileNode(\"main.ts\", 900), new FileNode(\"util.ts\", 300)),\n);\n\n// The client treats a single file and a whole tree the same way.\nconst report = (node: FsNode) => console.log(node.print().join(\"\\n\"));\nreport(root);\n// project/ (1320)\n//   README.md (120)\n//   src/ (1200)\n//     main.ts (900)\n//     util.ts (300)\nreport(new FileNode(\"notes.txt\", 42)); // notes.txt (42)",
+          "lang": "typescript"
+        },
+        "`report` 完全不檢查節點的類型。新增一種節點，例如回報大小為零的 `Symlink`，只需要實作 `FsNode` 即可。"
+      ]
+    },
+    {
+      "h": "設計取捨：透明性與安全性",
+      "body": [
+        "像 `add()` 和 `remove()` 這類管理子節點的方法，應該放在哪裡？GoF 一書描述了其中的取捨：",
+        {
+          "table": {
+            "head": [
+              "選擇",
+              "意義",
+              "取捨"
+            ],
+            "rows": [
+              [
+                "安全性",
+                "只有 `Composite` 擁有 `add()` 和 `remove()`，如上面的範例所示。",
+                "型別安全：你無法對檔案新增子節點。但用戶端必須知道自己何時拿到的是組合節點。"
+              ],
+              [
+                "透明性",
+                "`Component` 宣告 `add()` 和 `remove()`，葉節點則拋出例外或忽略它們。",
+                "對用戶端而言所有節點看起來都一樣，但錯誤只會在執行時期才出現。"
+              ]
+            ]
+          }
+        },
+        "在 TypeScript 中，安全性的做法通常效果更好，因為型別檢查器能在編譯時期就抓到錯誤。",
+        {
+          "note": "在大型的樹上，組合節點中的遞迴可能很昂貴。在範例中，`print()` 在每個資料夾都會呼叫 `size()`，這會再次走訪整棵子樹。對大型的樹，請快取結果，或是一次走訪就算出所有大小。另外也要確保節點不能被加進它自己的子樹，否則會造成無限遞迴。"
+        }
+      ]
+    },
+    {
+      "h": "何時使用、何時不該用",
+      "body": [
+        "在以下情況使用組合：",
+        {
+          "ul": [
+            "你的資料本來就是樹狀結構：檔案與資料夾、容器裡的 UI 元件、選單與子選單、組織圖、繪圖的形狀與群組。",
+            "用戶端應該能忽略單一物件與物件群組之間的差別。"
+          ]
+        },
+        "在以下情況應避免使用：",
+        {
+          "ul": [
+            "結構是扁平的，或永遠只有一層。普通的陣列更簡單。",
+            "葉節點與群組需要的操作差異很大。硬把它們塞進同一個介面，會產生對某些節點毫無意義的方法。",
+            "你需要限制組合節點可以持有哪些子節點，例如只允許某些節點類型。統一的介面會讓這類規則更難在型別系統中強制執行。"
+          ]
+        }
+      ]
+    },
+    {
+      "h": "實際應用",
+      "body": [
+        {
+          "ul": [
+            "DOM：每個元素和文字節點都是 `Node`。元素可以包含其他節點，許多操作（例如 `textContent` 或 `cloneNode(true)`）對單一節點與整棵子樹的運作方式都相同。",
+            "React、Vue 和 Angular 這類 UI 元件框架，把介面建構成樹，其中一個元件可以渲染其他元件。",
+            "Java AWT 和 Swing：`Container` 是 `Component` 的子類別，並持有其他元件，所以裝滿按鈕的面板本身也是一個元件。",
+            "編譯器中的抽象語法樹、遊戲引擎中的場景圖，以及巢狀選單，全都遵循同樣的概念。"
+          ]
+        }
+      ]
+    },
+    {
+      "h": "相關模式",
+      "body": [
+        {
+          "ul": [
+            "迭代器：走訪組合節點的各個節點，而不暴露子節點是如何儲存的。",
+            "訪問者：在不修改節點類別的前提下，為組合樹新增操作（匯出、驗證、統計）。",
+            "裝飾者：同樣有元件介面，也會遞迴地包裝物件，但裝飾者恰好只有一個子節點並新增行為，而組合節點有許多子節點並合併它們的結果。",
+            "建造者：常用來一步一步建構複雜的組合樹。",
+            "責任鏈：常會使用組合節點的父節點連結，把請求從子節點往上傳給它的父節點，就像瀏覽器事件沿著 DOM 向上冒泡一樣。"
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "葉節點和組合節點有什麼差別？",
+      "a": "葉節點沒有子節點，自己完成工作。組合節點持有子元件，通常是透過對每個子節點呼叫同一個操作，再合併結果來完成工作。"
+    },
+    {
+      "q": "組合模式只適用於樹嗎？",
+      "a": "它是為樹狀的「部分－整體」階層而設計的。含有循環的一般圖需要額外的處理，例如記錄已走訪的節點，以避免無限遞迴。"
+    },
+    {
+      "q": "組合和裝飾者有什麼差別？",
+      "a": "兩者都使用共同的介面與遞迴的組合。裝飾者只包裝一個物件來新增行為，而組合節點則是把許多子節點集合起來，當成一個來處理。"
+    },
+    {
+      "q": "葉節點類別也應該有 add() 嗎？",
+      "a": "只有在你想要完全的透明性，並接受有人對葉節點新增子節點時會發生執行時期錯誤，才需要這樣做。在有型別的語言中，通常只把 `add()` 放在組合節點上會更安全。"
+    }
+  ]
+}

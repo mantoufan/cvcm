@@ -1,0 +1,168 @@
+{
+  "title": "Patrón Factory Method: intención, estructura y ejemplo en TypeScript — cv.cm",
+  "description": "El patrón de diseño Factory Method explicado: las subclases eligen qué objeto crear. Ejemplo en TypeScript, cuándo usarlo y diferencias con Abstract Factory.",
+  "h1": "Patrón Factory Method explicado con ejemplos",
+  "answer": "Factory Method es un patrón de diseño creacional que define un método para crear un objeto pero deja que las subclases decidan qué clase concreta instanciar. La clase base escribe su lógica contra una interfaz de producto y llama al método de fábrica, como `createTransport()`, en lugar de usar `new`. Así puedes añadir nuevos tipos de producto añadiendo una subclase, sin editar el código que usa los productos.",
+  "sections": [
+    {
+      "h": "Intención",
+      "body": [
+        "Definir una interfaz para crear un objeto, pero dejar que las subclases decidan qué clase instanciar. El patrón Factory Method permite que una clase delegue la instanciación en sus subclases. Es uno de los cinco patrones creacionales del libro de la Banda de los Cuatro (GoF), y el único creacional con ámbito de clase, porque se apoya en la herencia."
+      ]
+    },
+    {
+      "h": "El problema que resuelve",
+      "body": [
+        "Imagina un módulo de notificaciones. Da formato a un mensaje, lo envía y registra el resultado. Al principio solo envía correo electrónico, así que el código llama directamente a `new EmailChannel()`. Luego el producto necesita SMS, y después notificaciones push. Cada canal nuevo obliga a editar la misma clase y a añadir otra rama `if`, aunque los pasos de formato y registro nunca cambian.",
+        "El flujo de envío es estable; solo varía el tipo de canal. El patrón Factory Method traslada la única decisión variable, qué clase crear, a un único método sobrescribible."
+      ]
+    },
+    {
+      "h": "Estructura y participantes",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Participante",
+              "Responsabilidad",
+              "En el ejemplo"
+            ],
+            "rows": [
+              [
+                "Product",
+                "Interfaz de los objetos que crea el método de fábrica.",
+                "`Channel`"
+              ],
+              [
+                "ConcreteProduct",
+                "Implementa la interfaz Product.",
+                "`EmailChannel`, `SmsChannel`"
+              ],
+              [
+                "Creator",
+                "Declara el método de fábrica y contiene la lógica que usa el producto.",
+                "`Notifier`"
+              ],
+              [
+                "ConcreteCreator",
+                "Sobrescribe el método de fábrica para devolver un ConcreteProduct concreto.",
+                "`EmailNotifier`, `SmsNotifier`"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "Implementación en TypeScript",
+      "body": [
+        {
+          "code": "interface Channel {\n  send(to: string, text: string): string;\n}\n\nclass EmailChannel implements Channel {\n  send(to: string, text: string): string { return `email to ${to}: ${text}`; }\n}\n\nclass SmsChannel implements Channel {\n  send(to: string, text: string): string { return `sms to ${to}: ${text.slice(0, 20)}`; }\n}\n\nabstract class Notifier {\n  // The factory method: subclasses choose the concrete product.\n  protected abstract createChannel(): Channel;\n  // Shared logic that works with any Channel.\n  notify(to: string, text: string): void {\n    const channel = this.createChannel();\n    const result = channel.send(to, text.trim());\n    console.log(\"[log]\", result);\n  }\n}\n\nclass EmailNotifier extends Notifier {\n  protected createChannel(): Channel { return new EmailChannel(); }\n}\n\nclass SmsNotifier extends Notifier {\n  protected createChannel(): Channel { return new SmsChannel(); }\n}\n\nconst notifiers: Notifier[] = [new EmailNotifier(), new SmsNotifier()];\nfor (const n of notifiers) n.notify(\"ada\", \" Your order has shipped today \");\n// [log] email to ada: Your order has shipped today\n// [log] sms to ada: Your order has shipp",
+          "lang": "typescript"
+        },
+        "Añadir notificaciones push ahora significa escribir `PushChannel` y `PushNotifier`. El método `notify`, y todos los que lo llaman, no cambia.",
+        "Antes de aplicar el patrón, la decisión de creación estaba enterrada en la lógica compartida:",
+        {
+          "code": "class Notifier {\n  constructor(private kind: \"email\" | \"sms\") {}\n  notify(to: string, text: string): void {\n    // every new channel edits this method\n    const result = this.kind === \"email\"\n      ? `email to ${to}: ${text}`\n      : `sms to ${to}: ${text.slice(0, 20)}`;\n    console.log(\"[log]\", result);\n  }\n}",
+          "lang": "typescript"
+        }
+      ]
+    },
+    {
+      "h": "Una alternativa más ligera: pasar una función de fábrica",
+      "body": [
+        "El patrón Factory Method usa herencia. En TypeScript a menudo obtienes la misma flexibilidad con composición, pasando una función de creación al constructor. Así te ahorras una subclase por producto:",
+        {
+          "code": "interface Channel { send(to: string, text: string): string; }\nclass Notifier {\n  constructor(private createChannel: () => Channel) {}\n  notify(to: string, text: string): void {\n    console.log(\"[log]\", this.createChannel().send(to, text));\n  }\n}\nconst push = new Notifier(() => ({ send: (to, text) => `push to ${to}: ${text}` }));\npush.notify(\"ada\", \"Hello\"); // [log] push to ada: Hello",
+          "lang": "typescript"
+        },
+        "Usa la versión con subclases cuando cada creador ya tenga su propia clase por otras razones, o cuando un framework espere que extiendas una clase base. Usa la versión con función cuando la única diferencia entre las variantes sea el objeto que crean."
+      ]
+    },
+    {
+      "h": "Cuándo usarlo y cuándo no",
+      "body": [
+        "Usa el patrón Factory Method cuando:",
+        {
+          "ul": [
+            "Una clase contenga un algoritmo estable pero no pueda saber de antemano qué objetos concretos debe crear.",
+            "Escribas un framework o una biblioteca y quieras que los usuarios conecten sus propias clases de producto mediante subclases.",
+            "Quieras mantener en un solo lugar la lógica de creación de un tipo en lugar de dispersar llamadas a `new`."
+          ]
+        },
+        "Evítalo cuando:",
+        {
+          "ul": [
+            "Solo haya un tipo de producto y ninguna señal real de un segundo. Un `new` directo es más claro.",
+            "La única razón sea hacer posibles las pruebas. Pasar la dependencia por el constructor es más simple.",
+            "Fueras a crear una jerarquía paralela de creadores que refleje los productos uno a uno sin ninguna otra lógica."
+          ]
+        },
+        {
+          "note": "Un «método de fábrica estático», como `Array.from()` o `Promise.resolve()`, es una idea distinta: una función estática con nombre que devuelve una instancia. Es útil, pero no es el patrón Factory Method de GoF, que depende de que las subclases sobrescriban un método."
+        }
+      ]
+    },
+    {
+      "h": "Usos en el mundo real",
+      "body": [
+        {
+          "ul": [
+            "Colecciones de Java: `Iterable.iterator()` se declara una vez, y cada clase de colección (`ArrayList`, `HashSet` y otras) lo sobrescribe para devolver su propia clase de iterador. El libro GoF describe este uso del patrón Factory Method para la iteración polimórfica.",
+            "Iterables de JavaScript: todo iterable implementa `[Symbol.iterator]()`, un método que devuelve un iterador nuevo adecuado para esa colección.",
+            "Los frameworks de interfaz de usuario suelen permitir que las subclases sobrescriban un método que crea un componente, una celda o una vista, mientras la clase base controla la disposición y el ciclo de vida."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Patrones relacionados",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Patrón",
+              "En qué se diferencia"
+            ],
+            "rows": [
+              [
+                "Abstract Factory",
+                "Crea toda una familia de productos relacionados mediante un objeto con varios métodos de creación. Sus métodos suelen implementarse como métodos de fábrica."
+              ],
+              [
+                "Template Method",
+                "Factory Method suele llamarse desde un método plantilla, como `notify` llama a `createChannel` más arriba."
+              ],
+              [
+                "Prototype",
+                "Crea objetos copiando una instancia en lugar de crear subclases del creador, por lo que no necesita una jerarquía paralela de creadores."
+              ],
+              [
+                "Builder",
+                "Se centra en construir un objeto complejo paso a paso, no en elegir qué clase crear."
+              ]
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "¿Cuál es la diferencia entre el patrón Factory Method y el patrón Abstract Factory?",
+      "a": "Factory Method es un único método que las subclases sobrescriben para crear un producto. Abstract Factory es un objeto con varios métodos de creación que producen una familia de productos relacionados que deben usarse juntos."
+    },
+    {
+      "q": "¿Una función de fábrica simple es lo mismo que el patrón Factory Method?",
+      "a": "No exactamente. Una función como `createShape(kind)` con un switch dentro suele llamarse fábrica simple. El patrón Factory Method de GoF se apoya en que una subclase sobrescriba el método de creación, pero ambos ocultan `new` al cliente."
+    },
+    {
+      "q": "¿El patrón Factory Method sigue el principio abierto/cerrado?",
+      "a": "Sí. Añades un producto nuevo añadiendo una clase de producto y una subclase de creador nuevas, sin cambiar la lógica existente del creador."
+    },
+    {
+      "q": "¿El método de fábrica debe ser abstracto?",
+      "a": "No. La clase base puede ofrecer una implementación por defecto que devuelva un producto estándar, y las subclases la sobrescriben solo cuando necesitan algo distinto."
+    }
+  ]
+}

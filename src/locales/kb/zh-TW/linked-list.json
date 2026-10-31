@@ -1,0 +1,193 @@
+{
+  "title": "鏈結串列（Linked List）圖解：單向與雙向鏈結串列、Python 程式碼與時間複雜度 — cv.cm",
+  "description": "鏈結串列怎麼運作？本文以 Python 說明節點與指標、插入、刪除、反轉與環偵測，並比較鏈結串列與陣列的時間複雜度。",
+  "h1": "鏈結串列（Linked List）教學：原理、程式碼與時間複雜度",
+  "answer": "鏈結串列是由節點串成的序列，每個節點存放一個值，以及指向下一個節點的參考（指標）。與陣列不同，節點在記憶體中並不相鄰，因此在已知位置插入或刪除節點只需 O(1) 時間；但要找第 k 個元素必須從頭節點一路走過去，需要 O(n)。雙向鏈結串列還會多存一個指向前一個節點的指標。",
+  "sections": [
+    {
+      "h": "鏈結串列解決什麼問題",
+      "body": [
+        "陣列（Python 的 `list`）把元素放在一塊連續的記憶體中。讀取 `a[i]` 很快，但在最前面插入時，其餘元素都要往右移一格，成本是 O(n)。鏈結串列避開了這種搬移：每個元素各自存在一個節點裡，節點之間用參考相連，插入時只需改動幾個參考。",
+        "鏈結串列是許多其他資料結構的基礎：堆疊、佇列、雜湊表的桶（鏈結法處理碰撞）、LRU 快取，以及圖的相鄰串列。"
+      ]
+    },
+    {
+      "h": "用白話理解",
+      "body": [
+        "想像一場尋寶遊戲：每條線索都告訴你下一條線索在哪裡。你無法直接跳到第 7 條線索，必須先依序走完第 1 到第 6 條。串列本身只記得第一個節點，稱為頭節點（head）；最後一個節點則不指向任何東西（`None`）。",
+        {
+          "table": {
+            "head": [
+              "類型",
+              "每個節點存放",
+              "常見用途"
+            ],
+            "rows": [
+              [
+                "單向鏈結串列",
+                "值、`next`",
+                "堆疊、簡單佇列、雜湊桶"
+              ],
+              [
+                "雙向鏈結串列",
+                "值、`next`、`prev`",
+                "雙端佇列、LRU 快取、文字編輯器緩衝區"
+              ],
+              [
+                "環狀鏈結串列",
+                "與單向或雙向相同，但尾節點會指回頭節點",
+                "輪詢排程、環形緩衝區"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "實例演練：插入與刪除",
+      "body": [
+        "從串列 `3 -> 7 -> 9` 開始。我們在 3 後面插入 5，再刪除 7。",
+        {
+          "ol": [
+            "建立一個值為 5 的新節點。",
+            "把 `new.next` 設為 3 後面的節點（也就是節點 7）。",
+            "把 `node3.next` 設為新節點。此時串列變成 `3 -> 5 -> 7 -> 9`。",
+            "要刪除 7，先從頭開始走，找到它前面的節點（5）。",
+            "設定 `node5.next = node5.next.next`，就會跳過 7。串列變成 `3 -> 5 -> 9`。Python 的垃圾回收機制會釋放無法再被存取的節點。"
+          ]
+        },
+        {
+          "note": "步驟 2 和步驟 3 的順序很重要。如果先執行 `node3.next = new`，就會失去指向串列其餘部分的唯一參考。"
+        }
+      ]
+    },
+    {
+      "h": "以 Python 實作單向鏈結串列",
+      "body": [
+        "這個類別保存頭節點的參考和一個大小計數器，支援在前端與尾端新增、刪除第一個符合的值，以及迭代走訪。",
+        {
+          "code": "class Node:\n    def __init__(self, value, next=None):\n        self.value = value\n        self.next = next\nclass LinkedList:\n    def __init__(self):\n        self.head = None\n        self.size = 0\n    def push_front(self, value):\n        self.head = Node(value, self.head)\n        self.size += 1\n    def push_back(self, value):\n        node = Node(value)\n        if self.head is None:\n            self.head = node\n        else:\n            cur = self.head\n            while cur.next:\n                cur = cur.next\n            cur.next = node\n        self.size += 1\n    def remove(self, value):\n        prev, cur = None, self.head\n        while cur and cur.value != value:\n            prev, cur = cur, cur.next\n        if cur is None:\n            return False          # not found\n        if prev is None:\n            self.head = cur.next  # removing the head\n        else:\n            prev.next = cur.next\n        self.size -= 1\n        return True\n    def __iter__(self):\n        cur = self.head\n        while cur:\n            yield cur.value\n            cur = cur.next",
+          "lang": "python"
+        },
+        {
+          "code": "items = LinkedList()\nfor x in [3, 7, 9]:\n    items.push_back(x)\nitems.push_front(1)\nitems.remove(7)\nprint(list(items), items.size)  # [1, 3, 9] 3",
+          "lang": "python"
+        },
+        "這裡的 `push_back` 要走過整個串列，所以是 O(n)。多維護一個 `tail` 參考就能降到 O(1)，實際的佇列實作就是這麼做的。"
+      ]
+    },
+    {
+      "h": "經典操作：反轉與環偵測",
+      "body": [
+        "原地反轉串列是鏈結串列最常見的面試題。只要走過串列一次，把每個 `next` 指標轉向即可。",
+        {
+          "code": "def reverse(head):\n    prev = None\n    cur = head\n    while cur:\n        nxt = cur.next     # remember the rest\n        cur.next = prev    # turn the pointer around\n        prev, cur = cur, nxt\n    return prev            # new head\ndef has_cycle(head):\n    slow = fast = head\n    while fast and fast.next:\n        slow = slow.next\n        fast = fast.next.next\n        if slow is fast:\n            return True\n    return False\nhead = Node(1, Node(2, Node(3)))\nhead = reverse(head)\nprint(head.value, head.next.value, head.next.next.value)  # 3 2 1\nprint(has_cycle(head))  # False",
+          "lang": "python"
+        },
+        "`has_cycle` 使用 Floyd 龜兔賽跑演算法：慢指標每次走一步，快指標每次走兩步。如果串列有環，快指標最終會追上慢指標；如果沒有，快指標會走到 `None`。它只需要 O(1) 的額外記憶體。"
+      ]
+    },
+    {
+      "h": "時間與空間複雜度",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "操作",
+              "單向鏈結串列",
+              "Python list（動態陣列）",
+              "原因"
+            ],
+            "rows": [
+              [
+                "存取第 k 個元素",
+                "O(n)",
+                "O(1)",
+                "鏈結串列必須走過 k 個節點"
+              ],
+              [
+                "在最前面插入或刪除",
+                "O(1)",
+                "O(n)",
+                "陣列要搬移每個元素"
+              ],
+              [
+                "在已知節點之後插入或刪除",
+                "O(1)",
+                "O(n)",
+                "只需改動參考"
+              ],
+              [
+                "在尾端附加",
+                "有 tail 指標時為 O(1)",
+                "均攤 O(1)",
+                "兩者都很便宜"
+              ],
+              [
+                "搜尋某個值",
+                "O(n)",
+                "O(n)",
+                "兩者都得逐一掃描元素"
+              ],
+              [
+                "額外記憶體",
+                "每個節點多一到兩個參考",
+                "一些預留的容量",
+                "節點是各自獨立的物件"
+              ]
+            ]
+          }
+        },
+        "實務上，即使某些操作鏈結串列的 Big O 較好，陣列往往還是更快，因為陣列元素在記憶體中相鄰，能充分利用 CPU 快取，而鏈結串列的節點是分散的。"
+      ]
+    },
+    {
+      "h": "變體與常見錯誤",
+      "body": [
+        {
+          "ul": [
+            "忘記處理空串列：讀取 `head.next` 之前，一定要先檢查 `head is None`。",
+            "在儲存 `next` 之前就覆寫它，導致串列其餘部分遺失（見 `reverse` 中的 `nxt`）。",
+            "刪除第一個節點時沒有更新 `head`，或刪除最後一個節點時沒有更新 `tail`。",
+            "對很長的串列使用遞迴：Python 預設的遞迴上限約為 1000 層，用迴圈會更安全。",
+            "使用虛擬（哨兵）頭節點可以省去大部分特殊情況：每個真正的節點之前都會有一個節點。",
+            "在雙向鏈結串列中，每次插入和刪除都必須更新四個參考；漏掉一個就會悄悄破壞串列。"
+          ]
+        }
+      ]
+    },
+    {
+      "h": "什麼時候該用鏈結串列，Python 又該用什麼",
+      "body": [
+        "當你需要在兩端或中間已持有參考的位置插入、刪除，而且很少需要隨機存取時，就適合用鏈結串列。例如：LRU 快取（雙向鏈結串列加雜湊表）、記憶體配置器的空閒串列、復原歷史紀錄，或雜湊表的桶。",
+        "日常的 Python 程式碼很少需要自己寫。要用佇列或雙端佇列，請用 `collections.deque`，兩端的新增與彈出都是 O(1)；一般序列則用 `list`。自己寫鏈結串列適合用來學習、準備面試，以及需要像 LRU 快取那樣以 O(1) 拼接節點的時候。",
+        {
+          "code": "from collections import deque\nq = deque([1, 2, 3])\nq.appendleft(0)\nq.append(4)\nprint(q.popleft(), q.pop(), list(q))  # 0 4 [1, 2, 3]",
+          "lang": "python"
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Python 的 list 是鏈結串列嗎？",
+      "a": "不是。Python 的 `list` 是連續儲存參考的動態陣列，所以索引存取是 O(1)，在最前面插入是 O(n)。若要當佇列使用，最接近鏈結串列的內建型別是 `collections.deque`。"
+    },
+    {
+      "q": "為什麼鏈結串列的存取是 O(n)？",
+      "a": "節點不會存放在可預測的位址。要到達第 k 個節點，唯一的方法是從頭節點出發，沿著 `next` 參考走 k 步。"
+    },
+    {
+      "q": "雙向鏈結串列何時比單向更好？",
+      "a": "當你需要只憑節點的參考就刪除它，或需要往回走的時候。有了 `prev` 指標，刪除是 O(1)，不必再搜尋前一個節點，代價是每個節點多一個參考。"
+    },
+    {
+      "q": "如何一次走訪就找到鏈結串列的中間節點？",
+      "a": "使用兩個指標：一個每次走一步，另一個每次走兩步。當快指標到達尾端時，慢指標就在中間。"
+    },
+    {
+      "q": "什麼是哨兵節點？",
+      "a": "放在第一個真正節點之前（有時也放在最後一個之後）的虛擬節點。它不存資料，但能讓每個真正的節點都有相鄰節點，這樣插入與刪除的程式碼就不必為空串列和頭節點處理那麼多特殊情況。"
+    }
+  ]
+}

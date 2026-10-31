@@ -1,0 +1,149 @@
+{
+  "title": "Pola Template Method: langkah tetap, hook, dan contoh TypeScript — cv.cm",
+  "description": "Pola Template Method menetapkan langkah algoritma di base class dan membiarkan subclass mengisi sebagian langkah. Pelajari hook dengan contoh TypeScript.",
+  "h1": "Penjelasan pola Template Method beserta contohnya",
+  "answer": "Template Method adalah pola desain behavioral yang mendefinisikan kerangka algoritma dalam method base class dan membiarkan subclass meng-override langkah tertentu tanpa mengubah urutan keseluruhan. Base class menentukan apa yang terjadi dan kapan; subclass menentukan bagaimana sebagian langkah dikerjakan. Langkah opsional dengan implementasi default disebut hook.",
+  "sections": [
+    {
+      "h": "Tujuan dan masalah yang diselesaikan",
+      "body": [
+        "Tujuan: mendefinisikan kerangka algoritma dalam sebuah operasi, dengan menunda beberapa langkah ke subclass. Template Method memungkinkan subclass mendefinisikan ulang langkah tertentu dari algoritma tanpa mengubah struktur algoritmanya. Ini salah satu pola behavioral dalam buku Gang of Four (GoF).",
+        "Bayangkan tool pelaporan yang mengekspor data sebagai CSV dan JSON. Kedua exporter melakukan hal yang sama dengan urutan yang sama: memuat baris, memeriksa apakah ada isinya, memformatnya, dan menambahkan footer berisi jumlah baris. Hanya pemformatannya yang berbeda. Jika tiap exporter ditulis terpisah, langkah yang sama disalin, dan perbaikan di satu exporter (misalnya penanganan hasil kosong yang lebih baik) mudah terlupa di yang lain.",
+        "Dengan Template Method, base class `Exporter` berisi method `export` dengan urutan langkah yang tetap. Langkah yang bervariasi berupa abstract method. `CsvExporter` dan `JsonExporter` hanya mengimplementasikan langkah-langkah itu."
+      ]
+    },
+    {
+      "h": "Struktur dan peserta",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Peran",
+              "Tanggung jawab"
+            ],
+            "rows": [
+              [
+                "Abstract class",
+                "Mengimplementasikan template method, yang memanggil langkah dalam urutan tetap; mendeklarasikan langkah abstrak dan dapat menyediakan hook"
+              ],
+              [
+                "Template method",
+                "Method publik yang mendefinisikan algoritma; biasanya tidak untuk di-override"
+              ],
+              [
+                "Primitive operation",
+                "Langkah abstrak yang harus diimplementasikan setiap subclass"
+              ],
+              [
+                "Hook",
+                "Langkah dengan implementasi default (sering kosong) yang boleh di-override subclass"
+              ],
+              [
+                "Concrete class",
+                "Mengimplementasikan primitive operation dan meng-override hook sesuai kebutuhan"
+              ]
+            ]
+          }
+        },
+        "Desain ini membalik kendali: base class memanggil method subclass, bukan sebaliknya. Ini kadang disebut prinsip Hollywood: \"jangan hubungi kami, kami yang akan menghubungi Anda\"."
+      ]
+    },
+    {
+      "h": "Implementasi TypeScript",
+      "body": [
+        "`export` adalah template method. `format` adalah primitive operation yang harus diimplementasikan subclass, dan `header` adalah hook dengan default kosong.",
+        {
+          "code": "type Row = { name: string; score: number };\n\nabstract class Exporter {\n  // The template method: fixed order of steps\n  export(rows: Row[]): string {\n    if (rows.length === 0) return \"no data\";\n    const lines = [this.header(), this.format(rows), \"rows: \" + rows.length];\n    return lines.filter((line) => line !== \"\").join(\"\\n\");\n  }\n\n  protected abstract format(rows: Row[]): string; // required step\n  protected header(): string { return \"\"; }       // hook: optional step\n}\n\nclass CsvExporter extends Exporter {\n  protected header() { return \"name,score\"; }\n  protected format(rows: Row[]) {\n    return rows.map((r) => r.name + \",\" + r.score).join(\"\\n\");\n  }\n}\n\nclass JsonExporter extends Exporter {\n  protected format(rows: Row[]) {\n    return JSON.stringify(rows);\n  }\n}\n\nconst rows = [{ name: \"Ana\", score: 9 }, { name: \"Ben\", score: 7 }];\nconsole.log(new CsvExporter().export(rows));\n// name,score\n// Ana,9\n// Ben,7\n// rows: 2\nconsole.log(new JsonExporter().export(rows));\n// [{\"name\":\"Ana\",\"score\":9},{\"name\":\"Ben\",\"score\":7}]\n// rows: 2\nconsole.log(new JsonExporter().export([])); // no data",
+          "lang": "typescript"
+        },
+        "Pemeriksaan data kosong dan footer berada di satu tempat. Exporter XML baru cukup mengimplementasikan `format` dan mendapatkan sisanya secara gratis.",
+        {
+          "note": "TypeScript tidak punya kata kunci `final`, jadi subclass tetap bisa meng-override `export` dan merusak urutan tetapnya. Dokumentasikan bahwa template method tidak boleh di-override, dan jaga jumlah langkah yang dapat di-override tetap kecil agar subclass mudah ditulis dengan benar."
+        }
+      ]
+    },
+    {
+      "h": "Gagasan yang sama dengan komposisi",
+      "body": [
+        "Pewarisan bukan satu-satunya cara. Anda dapat mengoper langkah yang bervariasi sebagai fungsi, yang membuat pola ini menjadi kerabat dekat Strategy dan menghindari hierarki class:",
+        {
+          "code": "type Row = { name: string; score: number };\ntype Steps = { format: (rows: Row[]) => string; header?: () => string };\n\nfunction exportRows(rows: Row[], steps: Steps): string {\n  if (rows.length === 0) return \"no data\";\n  const lines = [steps.header?.() ?? \"\", steps.format(rows), \"rows: \" + rows.length];\n  return lines.filter((line) => line !== \"\").join(\"\\n\");\n}\n\nconsole.log(exportRows([{ name: \"Ana\", score: 9 }], { format: (r) => r[0].name }));\n// Ana\n// rows: 1",
+          "lang": "typescript"
+        },
+        "Pilih bentuk ini bila langkahnya kecil dan Anda tidak butuh state bersama di base class, atau bila satu exporter harus menggabungkan langkah dari beberapa sumber."
+      ]
+    },
+    {
+      "h": "Kapan dipakai dan kapan tidak",
+      "body": [
+        {
+          "ul": [
+            "Pakai bila beberapa class menjalankan algoritma yang sama dengan hanya sedikit langkah yang berbeda, dan Anda ingin menghilangkan bagian yang terduplikasi.",
+            "Pakai di framework yang harus mengendalikan urutan operasi sambil membiarkan pengguna menyesuaikan langkah, seperti setup dan teardown pada test.",
+            "Pakai hook untuk menawarkan titik perluasan opsional tanpa memaksa setiap subclass mengimplementasikannya.",
+            "Jangan dipakai bila variasinya besar atau perlu berubah saat runtime. Strategy, dengan komposisi, lebih fleksibel.",
+            "Hindari hierarki template method yang dalam. Bila subclass meng-override langkah milik subclass dari subclass, alurnya menjadi sulit diikuti."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Penggunaan di dunia nyata",
+      "body": [
+        {
+          "ul": [
+            "`AbstractList` di Java: Anda mengimplementasikan `get(int)` dan `size()`, dan base class menyediakan iterasi, `indexOf`, `contains`, dan method lain yang dibangun di atasnya.",
+            "`InputStream` di Java: subclass mengimplementasikan `read()` satu byte, dan base class mengimplementasikan `read(byte[], int, int)` dengan memanggilnya (subclass boleh meng-override-nya demi kecepatan).",
+            "Framework test: JUnit, `unittest` Python, dan lainnya memanggil `setUp`, method test, dan `tearDown` dalam urutan tetap, dan Anda meng-override langkah yang dibutuhkan.",
+            "Framework UI dengan method life cycle, seperti `componentDidMount` pada class component React, memanggil method Anda di titik tetap dalam algoritmanya sendiri."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Pola terkait",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Pola",
+              "Perbedaannya dengan Template Method"
+            ],
+            "rows": [
+              [
+                "Strategy",
+                "Strategy mengganti seluruh algoritma lewat komposisi saat runtime; Template Method menetapkan algoritma dan memvariasikan sebagiannya lewat pewarisan saat compile time."
+              ],
+              [
+                "Factory Method",
+                "Factory method sering menjadi salah satu langkah dari template method: langkah yang membuat objek."
+              ],
+              [
+                "Fungsi hook dan callback",
+                "Mengoper callback ke algoritma yang tetap adalah versi berbasis komposisi dari gagasan yang sama."
+              ]
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Apa itu hook dalam pola Template Method?",
+      "a": "Hook adalah langkah yang punya implementasi default di base class, sering tidak melakukan apa pun. Subclass boleh meng-override-nya untuk menambah perilaku di titik itu, tetapi tidak wajib."
+    },
+    {
+      "q": "Apa perbedaan antara Template Method dan Strategy?",
+      "a": "Template Method memakai pewarisan: base class memiliki algoritma dan subclass meng-override langkah. Strategy memakai komposisi: context mendelegasikan seluruh algoritma ke objek atau fungsi yang dapat ditukar saat runtime."
+    },
+    {
+      "q": "Haruskah template method itu sendiri bisa di-override?",
+      "a": "Tidak. Tujuannya adalah menetapkan urutan langkah. Di Java atau C# Anda bisa menandainya `final` atau non-virtual; di TypeScript Anda harus mendokumentasikannya, karena tidak ada kata kunci `final`."
+    },
+    {
+      "q": "Apa hubungan Template Method dengan Factory Method?",
+      "a": "Factory Method sering merupakan spesialisasi Template Method: algoritma base class menyertakan langkah yang membuat objek, dan subclass menentukan class mana yang dibuat."
+    }
+  ]
+}

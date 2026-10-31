@@ -1,0 +1,147 @@
+{
+  "title": "인터프리터 패턴: 문법, 표현식 트리, TypeScript 예제 — cv.cm",
+  "description": "인터프리터 패턴은 문법 규칙 하나를 클래스 하나로 모델링하고 문장을 트리로 평가합니다. TypeScript로 작은 표현식 언어를 만들어 봅니다.",
+  "h1": "인터프리터 패턴 예제로 쉽게 이해하기",
+  "answer": "인터프리터(Interpreter)는 작은 언어의 문법을 표현하는 방법과, 그 언어의 문장을 평가하는 인터프리터를 정의하는 행동 패턴입니다. 각 문법 규칙은 클래스가 되고, 문장은 이 객체들의 트리(추상 구문 트리)가 되며, 문장을 평가한다는 것은 루트에서 `interpret`를 호출해 자식들을 재귀적으로 해석하는 일입니다. 필터, 규칙, 수식처럼 작고 단순한 언어에 적합합니다.",
+  "sections": [
+    {
+      "h": "의도와 해결하는 문제",
+      "body": [
+        "의도: 언어가 주어졌을 때 그 문법의 표현과, 그 표현을 사용해 언어의 문장을 해석하는 인터프리터를 정의합니다. 인터프리터는 GoF(Gang of Four) 책에 실린 행동 패턴 중 하나입니다.",
+        "가격 책정 시스템의 사용자가 `price * 0.9`나 `price - 5` 같은 할인 규칙을 직접 작성하고 싶어 하고, 그 규칙을 데이터베이스에 저장했다가 나중에 평가해야 한다고 가정해 봅시다. 사용자가 계속 새 규칙을 만들기 때문에 규칙을 코드에 하나씩 고정할 수는 없습니다. 작은 언어와 이를 평가하는 방법이 필요합니다.",
+        "인터프리터 패턴은 이 평가 단계를 위한 단순한 설계를 제공합니다. 숫자, 변수, 연산자가 각각 클래스가 됩니다. `price * 0.9` 같은 규칙은 트리가 됩니다. 곱셈 노드에 변수 노드와 숫자 노드가 자식으로 달리는 형태입니다. 결과를 계산하려면 현재 가격을 담은 컨텍스트와 함께 곱셈 노드의 `interpret`를 호출합니다."
+      ]
+    },
+    {
+      "h": "구조와 참여자",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "역할",
+              "책임"
+            ],
+            "rows": [
+              [
+                "추상 표현식(Abstract expression)",
+                "모든 노드가 공유하는 `interpret(context)` 연산을 선언합니다"
+              ],
+              [
+                "터미널 표현식(Terminal expression)",
+                "숫자 리터럴이나 변수 이름 같은 트리의 리프입니다"
+              ],
+              [
+                "논터미널 표현식(Nonterminal expression)",
+                "덧셈이나 곱셈처럼 다른 표현식들로 이루어진 문법 규칙으로, 자식들을 해석해 결과를 합칩니다"
+              ],
+              [
+                "컨텍스트(Context)",
+                "변수 값처럼 해석에 필요한 전역 정보입니다"
+              ],
+              [
+                "클라이언트(Client)",
+                "구문 트리를 (직접 또는 파서로) 만들고 `interpret`를 호출합니다"
+              ]
+            ]
+          }
+        },
+        "아래 예제의 문법을 간단한 표기법으로 나타내면 다음과 같습니다.",
+        {
+          "code": "expression ::= number | variable | expression op expression\nop         ::= \"+\" | \"-\" | \"*\" | \"/\"",
+          "lang": "text"
+        }
+      ]
+    },
+    {
+      "h": "TypeScript 구현",
+      "body": [
+        "각 문법 규칙은 `Expression`을 구현하는 클래스입니다. `parse` 함수는 공백으로 구분된 후위 표기법(연산자가 피연산자 뒤에 오는 표기) 표현식을 트리로 바꾸므로 파서가 짧아집니다.",
+        {
+          "code": "type Context = Record<string, number>;\ninterface Expression {\n  interpret(ctx: Context): number;\n}\nclass Num implements Expression {\n  constructor(private value: number) {}\n  interpret() { return this.value; }\n}\nclass Var implements Expression {\n  constructor(private name: string) {}\n  interpret(ctx: Context) {\n    if (!Object.hasOwn(ctx, this.name)) throw new Error(\"Unknown variable \" + this.name);\n    return ctx[this.name];\n  }\n}\nconst ops = { \"+\": (a: number, b: number) => a + b, \"-\": (a: number, b: number) => a - b,\n  \"*\": (a: number, b: number) => a * b, \"/\": (a: number, b: number) => a / b };\nclass BinaryOp implements Expression {\n  constructor(private op: keyof typeof ops, private left: Expression, private right: Expression) {}\n  interpret(ctx: Context) { return ops[this.op](this.left.interpret(ctx), this.right.interpret(ctx)); }\n}\nfunction parse(source: string): Expression {\n  const stack: Expression[] = [];\n  for (const token of source.trim().split(/\\s+/)) {\n    if (Object.hasOwn(ops, token)) {\n      const right = stack.pop()!, left = stack.pop()!;\n      stack.push(new BinaryOp(token as keyof typeof ops, left, right));\n    } else if (!isNaN(Number(token))) stack.push(new Num(Number(token)));\n    else stack.push(new Var(token));\n  }\n  return stack[0];\n}\nconst rule = parse(\"price 0.9 * 5 -\"); // (price * 0.9) - 5\nconsole.log(rule.interpret({ price: 100 })); // 85\nconsole.log(rule.interpret({ price: 40 })); // 31",
+          "lang": "typescript"
+        },
+        "`price 0.9 * 5 -`의 트리는 뺄셈 노드이며, 왼쪽 자식은 (`price`와 `0.9`를 가진) 곱셈 노드이고 오른쪽 자식은 숫자 `5`입니다. 한 번 파싱하고 나면 같은 트리를 서로 다른 컨텍스트로 여러 번 평가할 수 있습니다.",
+        {
+          "note": "이 패턴은 문장을 표현하고 평가하는 방법을 설명할 뿐, 텍스트를 파싱하는 방법을 다루지 않습니다. 실제 입력에는 오류 메시지를 내는 제대로 된 파서가 필요합니다. 위의 최소 후위 표기 파서는 잘못된 입력을 검증하지 않습니다."
+        }
+      ]
+    },
+    {
+      "h": "언제 쓰고 언제 쓰지 말아야 할까",
+      "body": [
+        {
+          "ul": [
+            "검색 필터, 기능 플래그 규칙, 권한 표현식, 단위 변환, 스프레드시트식 수식처럼 언어가 작고 문법이 단순할 때 사용합니다.",
+            "같은 표현식을 다른 데이터로 여러 번 평가해서 트리를 한 번만 만들어 두는 것이 이득일 때 사용합니다.",
+            "큰 언어에는 사용하지 않습니다. 규칙마다 클래스 하나가 되면 유지보수가 어려워지므로 파서 생성기나 기존 임베디드 언어를 사용하세요.",
+            "성능이 중요할 때는 사용하지 않습니다. 객체 트리를 순회하는 것은 바이트코드나 기계어로 컴파일하는 것보다 느립니다.",
+            "사용자 입력에 `eval`을 쓰는 방식으로 문제를 풀지 마세요. 작은 인터프리터는 직접 정의한 연산만 지원하므로 훨씬 안전합니다."
+          ]
+        },
+        "같은 트리에 보기 좋게 출력하기나 타입 검사 같은 새 연산을 추가하려면, 모든 노드 클래스에 메서드를 더하는 대신 인터프리터와 비지터를 함께 사용하세요."
+      ]
+    },
+    {
+      "h": "실제 사용 사례",
+      "body": [
+        {
+          "ul": [
+            "정규 표현식 엔진은 패턴을 노드 객체의 트리나 그래프로 컴파일하고, 매칭은 이 노드들을 순회합니다. 정규식 문법에 인터프리터 아이디어를 적용한 것입니다.",
+            "언어 도구는 소스 코드를 추상 구문 트리로 표현합니다. Python의 `ast` 모듈과 Babel, ESLint 같은 JavaScript 도구가 쓰는 ESTree 명세는 모든 문법 규칙에 대한 노드 타입을 정의합니다.",
+            "SQL 데이터베이스는 `WHERE` 절을 표현식 트리로 파싱하고 각 행에 대해 평가합니다.",
+            "템플릿 엔진과 규칙 엔진은 템플릿이나 비즈니스 규칙 안의 작은 표현식을 평가합니다."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "관련 패턴",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "패턴",
+              "인터프리터 패턴과의 관계"
+            ],
+            "rows": [
+              [
+                "컴포지트",
+                "구문 트리는 컴포지트입니다. 논터미널 표현식이 다른 표현식을 포함합니다. 인터프리터는 각 노드에 의미를 더합니다."
+              ],
+              [
+                "비지터",
+                "비지터는 연산을 노드 클래스 밖으로 옮기므로, 여러 연산(평가, 출력, 검사)이 하나의 트리를 공유할 수 있습니다."
+              ],
+              [
+                "이터레이터",
+                "이터레이터는 구문 트리의 노드가 어떻게 저장되어 있는지 드러내지 않고 노드를 순회할 수 있습니다."
+              ],
+              [
+                "플라이웨이트",
+                "자주 반복되는 터미널 기호, 예를 들어 흔한 상수는 플라이웨이트로 공유할 수 있습니다."
+              ]
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "터미널 표현식과 논터미널 표현식의 차이는 무엇인가요?",
+      "a": "터미널 표현식은 숫자나 변수처럼 더 이상 나눌 수 없는 리프입니다. 논터미널 표현식은 덧셈처럼 다른 표현식들로 이루어진 규칙을 나타내며, 자식들을 해석해 결과를 만듭니다."
+    },
+    {
+      "q": "인터프리터 패턴에 파서가 포함되나요?",
+      "a": "아니요. 이 패턴은 구문 트리가 이미 있다고 가정합니다. 트리를 직접 만들거나, 작은 파서를 작성하거나, 파서 생성기를 사용할 수 있습니다."
+    },
+    {
+      "q": "인터프리터 패턴을 쓰지 말아야 할 때는 언제인가요?",
+      "a": "복잡한 문법이나 성능이 중요한 코드에서는 피하세요. 큰 언어에는 클래스가 너무 많이 필요하고, 트리 순회 방식의 평가는 컴파일 방식보다 느립니다."
+    },
+    {
+      "q": "인터프리터 패턴은 컴포지트 패턴과 어떤 관계인가요?",
+      "a": "인터프리터의 구문 트리는 컴포지트와 모양이 같습니다. 공통 인터페이스를 가진 리프와, 다른 노드를 포함하는 노드로 이루어집니다. 인터프리터는 이 구조에 언어를 평가한다는 구체적인 의미를 부여합니다."
+    }
+  ]
+}

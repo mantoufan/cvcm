@@ -1,0 +1,184 @@
+{
+  "title": "适配器模式：让不兼容的接口协同工作，含 TypeScript 示例 — cv.cm",
+  "description": "适配器模式（Adapter）详解：包装接口不兼容的类，让客户端能够使用它。含 TypeScript 示例、对象适配器与类适配器的区别及实际应用。",
+  "h1": "适配器模式详解与示例",
+  "answer": "适配器是一种结构型设计模式，它把现有类的接口转换成客户端代码所期望的接口。适配器包装不兼容的对象并翻译每一次调用，例如把 `charge(amountCents)` 转换成遗留的 `makePayment(\"12.50\")`。这样无需修改第三方或遗留组件，也不会让它别扭的 API 扩散到你的代码里，就能复用它。适配器也称为包装器（Wrapper）。",
+  "sections": [
+    {
+      "h": "意图",
+      "body": [
+        "将一个类的接口转换成客户端期望的另一个接口。适配器使原本因接口不兼容而无法一起工作的类可以协同工作。它是《设计模式》（四人组，GoF）一书中七种结构型模式之一。"
+      ]
+    },
+    {
+      "h": "它要解决的问题",
+      "body": [
+        "你的商城代码使用一个很小的 `PaymentGateway` 接口：`charge(amountCents, currency)` 返回包含 `ok` 标志和交易 ID 的结果。现在公司和一家支付服务商签了合同，它的 SDK 完全是另一种风格：金额是十进制字符串，币种属于请求对象的一部分，错误则以数字状态码返回。",
+        "你改不了这个 SDK，也不想把每个调用方都改成新的形式。如果 SDK 的风格渗透到结账、退款和报表中，以后更换服务商的代价就会很高。适配器把这种转换集中在一个类里。"
+      ]
+    },
+    {
+      "h": "结构与参与者",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "参与者",
+              "职责",
+              "示例中的对应"
+            ],
+            "rows": [
+              [
+                "目标（Target）",
+                "客户端所期望的接口。",
+                "`PaymentGateway`"
+              ],
+              [
+                "被适配者（Adaptee）",
+                "接口不兼容的现有类。",
+                "`LegacyPayClient`"
+              ],
+              [
+                "适配器（Adapter）",
+                "实现目标接口，并把调用翻译给被适配者。",
+                "`LegacyPayAdapter`"
+              ],
+              [
+                "客户端（Client）",
+                "只使用目标接口。",
+                "`checkout`"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "TypeScript 实现",
+      "body": [
+        {
+          "code": "// Target: what our code expects.\ninterface PaymentGateway {\n  charge(amountCents: number, currency: string): { ok: boolean; id: string };\n}\n\n// Adaptee: a third-party SDK we cannot change.\nclass LegacyPayClient {\n  makePayment(req: { amount: string; curr: string }): { status: number; ref: string } {\n    return { status: req.curr === \"USD\" ? 200 : 422, ref: `TX-${req.amount}` };\n  }\n}\n\n// Adapter: implements the Target by translating to the Adaptee.\nclass LegacyPayAdapter implements PaymentGateway {\n  constructor(private client: LegacyPayClient) {}\n\n  charge(amountCents: number, currency: string) {\n    const res = this.client.makePayment({\n      amount: (amountCents / 100).toFixed(2),\n      curr: currency.toUpperCase(),\n    });\n    return { ok: res.status === 200, id: res.ref };\n  }\n}\n\n// Client code knows nothing about LegacyPayClient.\nfunction checkout(gateway: PaymentGateway, totalCents: number): string {\n  const result = gateway.charge(totalCents, \"usd\");\n  return result.ok ? `paid ${result.id}` : \"payment failed\";\n}\n\nconsole.log(checkout(new LegacyPayAdapter(new LegacyPayClient()), 1250)); // paid TX-12.50",
+          "lang": "typescript"
+        },
+        "以后换用其他服务商，只需再写一个适配器。`checkout` 和其他所有调用方都保持不变，测试时也可以传入一个假的 `PaymentGateway`。"
+      ]
+    },
+    {
+      "h": "对象适配器与类适配器",
+      "body": [
+        "GoF 一书描述了两种形式：",
+        {
+          "table": {
+            "head": [
+              "形式",
+              "工作方式",
+              "说明"
+            ],
+            "rows": [
+              [
+                "对象适配器",
+                "持有被适配者的引用并委托给它（组合）。",
+                "可以配合被适配者及其所有子类使用。是 TypeScript、Java 和 C# 中常用的选择。"
+              ],
+              [
+                "类适配器",
+                "继承被适配者，并实现目标接口。",
+                "需要继承被适配者，因此只能适配那一个类。常见于支持多重继承的 C++。"
+              ]
+            ]
+          }
+        },
+        "在 TypeScript 和 JavaScript 中，适配一个函数往往就够了。Node.js 自带了一个这类小适配器：`util.promisify()` 能把回调风格的函数转换成返回 promise 的函数。",
+        {
+          "code": "import { promisify } from \"node:util\";\n\n// Adaptee: old callback style (error first, then result).\nfunction readConfig(name: string, cb: (err: Error | null, value?: string) => void): void {\n  setTimeout(() => cb(null, `config for ${name}`), 10);\n}\n\n// Adapted: the same function, now with a promise-based interface.\nconst readConfigAsync = promisify(readConfig);\nconsole.log(await readConfigAsync(\"app\")); // config for app",
+          "lang": "typescript"
+        }
+      ]
+    },
+    {
+      "h": "何时使用，何时不用",
+      "body": [
+        "以下情况适合使用适配器：",
+        {
+          "ul": [
+            "你想使用一个现有的类，但它的接口与你的代码所需要的不匹配。",
+            "你要集成第三方库或遗留系统，并希望把它们的 API 限制在程序的边缘。",
+            "你希望把多个不同的实现（比如两家支付服务商）放在同一个接口之后。"
+          ]
+        },
+        "以下情况应避免使用：",
+        {
+          "ul": [
+            "两边的代码都归你管。修改其中一个接口，通常比增加一层转换更简单。",
+            "适配器要伪造被适配者其实无法支持的大部分目标接口。这样只是掩盖了真正的不匹配，而不是解决它。"
+          ]
+        },
+        {
+          "note": "让适配器保持轻薄。它应该翻译名称、单位和错误格式，而不是包含业务规则。如果适配器越来越庞大，这些逻辑多半应该放在别处。"
+        }
+      ]
+    },
+    {
+      "h": "实际应用",
+      "body": [
+        {
+          "ul": [
+            "Node.js：`util.promisify()` 把基于回调的函数适配成 promise。",
+            "Java：`Arrays.asList()` 让数组可以通过 `List` 接口来使用，`InputStreamReader` 让基于字节的 `InputStream` 可以当作基于字符的 `Reader` 来读取。",
+            "数据库库和 ORM 为每种数据库使用一个适配器或驱动，使同一套查询 API 能用于 PostgreSQL、MySQL 或 SQLite。",
+            "前端代码出于同样的原因，常常把浏览器 API 或统计 SDK 包装在项目自己定义的小接口后面。"
+          ]
+        }
+      ]
+    },
+    {
+      "h": "相关模式",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "模式",
+              "与适配器的区别"
+            ],
+            "rows": [
+              [
+                "装饰",
+                "保持接口不变并增加行为。适配器改变接口，不增加新行为。"
+              ],
+              [
+                "代理",
+                "保持接口不变，并控制对对象的访问（懒加载、缓存、权限）。"
+              ],
+              [
+                "外观",
+                "为由许多类组成的整个子系统定义一个新的、更简单的接口。适配器则是让一个现有接口匹配另一个现有接口。"
+              ],
+              [
+                "桥接",
+                "在设计之初就让抽象与实现可以各自独立变化。适配器通常是事后添加的，用来让现有的类能够配合使用。"
+              ]
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "适配器与外观有什么区别？",
+      "a": "适配器让一个现有的类匹配客户端已经期望的接口。外观则是在由许多类组成的复杂子系统前面，创建一个新的、更简单的接口。"
+    },
+    {
+      "q": "适配器与装饰有什么区别？",
+      "a": "两者都包装一个对象。装饰保持接口不变并增加行为；适配器则改变接口，使被包装的对象能用在原本无法使用的地方。"
+    },
+    {
+      "q": "适配器和包装器是一回事吗？",
+      "a": "在 GoF 一书中，包装器（Wrapper）就是适配器的另一个名字。日常说法里，“包装器”也用来指装饰和代理，所以要靠意图来判断指的是哪个模式。"
+    },
+    {
+      "q": "一个适配器可以适配多个类吗？",
+      "a": "对象适配器可以配合一个被适配者及其所有子类使用。要适配互不相关的类，通常是每个类一个适配器，并且都实现同一个目标接口。"
+    }
+  ]
+}

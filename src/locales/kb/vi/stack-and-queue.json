@@ -1,0 +1,215 @@
+{
+  "title": "Ngăn xếp và hàng đợi (stack, queue): LIFO và FIFO, code Python và độ phức tạp — cv.cm",
+  "description": "Giải thích ngăn xếp (LIFO) và hàng đợi (FIFO) bằng code Python: list làm ngăn xếp, collections.deque làm hàng đợi, ghép cặp ngoặc, BFS và độ phức tạp.",
+  "h1": "Ngăn xếp và hàng đợi: LIFO và FIFO kèm ví dụ Python",
+  "answer": "Ngăn xếp (stack) là một tập hợp trong đó phần tử thêm vào sau cùng được lấy ra đầu tiên (LIFO, last in first out), giống một chồng đĩa. Hàng đợi (queue) là tập hợp trong đó phần tử thêm vào đầu tiên được lấy ra đầu tiên (FIFO, first in first out), giống hàng người xếp ở quầy thanh toán. Cả hai đều thêm và lấy phần tử trong O(1). Trong Python, dùng `list` làm ngăn xếp và `collections.deque` làm hàng đợi.",
+  "sections": [
+    {
+      "h": "Ngăn xếp và hàng đợi giải quyết vấn đề gì",
+      "body": [
+        "Nhiều chương trình cần nhớ các phần tử rồi xử lý sau theo một thứ tự cố định. Ngăn xếp trả về phần tử mới nhất trước, phù hợp với công việc lồng nhau: lời gọi hàm, lịch sử hoàn tác, ghép cặp ngoặc và tìm kiếm theo chiều sâu. Hàng đợi trả về phần tử cũ nhất trước, phù hợp với việc chờ công bằng: hàng chờ in, bộ lập lịch tác vụ, hàng đợi thông điệp và tìm kiếm theo chiều rộng.",
+        "Cả hai đều là kiểu dữ liệu trừu tượng: chúng được định nghĩa bằng các thao tác, không phải bằng cách lưu trữ. Bạn có thể xây dựng chúng trên mảng hoặc danh sách liên kết."
+      ]
+    },
+    {
+      "h": "Các thao tác và tên gọi",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Thao tác",
+              "Ngăn xếp (LIFO)",
+              "Hàng đợi (FIFO)"
+            ],
+            "rows": [
+              [
+                "Thêm một phần tử",
+                "push: đặt lên đỉnh",
+                "enqueue: thêm vào cuối"
+              ],
+              [
+                "Lấy một phần tử ra",
+                "pop: lấy từ đỉnh",
+                "dequeue: lấy từ đầu"
+              ],
+              [
+                "Xem mà không lấy ra",
+                "peek / top",
+                "peek / front"
+              ],
+              [
+                "Kiểu trong Python",
+                "`list` với `append` và `pop`",
+                "`collections.deque` với `append` và `popleft`"
+              ],
+              [
+                "Thứ tự lấy ra với đầu vào 1, 2, 3",
+                "3, 2, 1",
+                "1, 2, 3"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "Ví dụ minh họa: push và pop từng bước",
+      "body": [
+        "Đẩy 1, 2 và 3 vào cả hai cấu trúc, rồi lấy ra hai phần tử.",
+        {
+          "table": {
+            "head": [
+              "Bước",
+              "Nội dung ngăn xếp (đỉnh ở bên phải)",
+              "Nội dung hàng đợi (đầu ở bên trái)"
+            ],
+            "rows": [
+              [
+                "thêm 1",
+                "[1]",
+                "[1]"
+              ],
+              [
+                "thêm 2",
+                "[1, 2]",
+                "[1, 2]"
+              ],
+              [
+                "thêm 3",
+                "[1, 2, 3]",
+                "[1, 2, 3]"
+              ],
+              [
+                "lấy ra",
+                "trả về 3, còn lại [1, 2]",
+                "trả về 1, còn lại [2, 3]"
+              ],
+              [
+                "lấy ra",
+                "trả về 2, còn lại [1]",
+                "trả về 2, còn lại [3]"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "Cài đặt bằng Python",
+      "body": [
+        "`list` của Python đã là một ngăn xếp tốt: `append` và `pop()` làm việc ở cuối danh sách trong O(1) khấu hao. Với hàng đợi, đừng dùng `list.pop(0)`, vì nó dịch mọi phần tử còn lại và tốn O(n). Hãy dùng `collections.deque`, có O(1) ở cả hai đầu.",
+        {
+          "code": "from collections import deque\nstack = []\nstack.append(1)\nstack.append(2)\nstack.append(3)\nprint(stack.pop(), stack[-1])   # 3 2\nqueue = deque()\nqueue.append(\"a\")\nqueue.append(\"b\")\nqueue.append(\"c\")\nprint(queue.popleft(), queue[0])  # a b\nprint(len(stack), len(queue))     # 2 2",
+          "lang": "python"
+        },
+        "Nếu muốn có phương thức đặt tên rõ ràng và thông báo lỗi dễ hiểu, hãy bọc các kiểu dựng sẵn trong một lớp nhỏ:",
+        {
+          "code": "from collections import deque\nclass Queue:\n    def __init__(self):\n        self._items = deque()\n    def enqueue(self, item):\n        self._items.append(item)\n    def dequeue(self):\n        if not self._items:\n            raise IndexError(\"dequeue from empty queue\")\n        return self._items.popleft()\n    def __len__(self):\n        return len(self._items)\nq = Queue()\nq.enqueue(\"job1\")\nq.enqueue(\"job2\")\nprint(q.dequeue(), len(q))  # job1 1",
+          "lang": "python"
+        }
+      ]
+    },
+    {
+      "h": "Bài toán kinh điển của ngăn xếp: ngoặc cân bằng",
+      "body": [
+        "Để kiểm tra mọi dấu ngoặc đều được đóng đúng thứ tự, hãy đẩy từng ngoặc mở vào ngăn xếp. Khi gặp ngoặc đóng, phần tử trên đỉnh ngăn xếp phải là ngoặc mở tương ứng.",
+        {
+          "code": "def is_balanced(text):\n    pairs = {\")\": \"(\", \"]\": \"[\", \"}\": \"{\"}\n    stack = []\n    for ch in text:\n        if ch in \"([{\":\n            stack.append(ch)\n        elif ch in pairs:\n            if not stack or stack.pop() != pairs[ch]:\n                return False\n    return not stack\nprint(is_balanced(\"f(a[1], {b: 2})\"))  # True\nprint(is_balanced(\"(]\"))               # False\nprint(is_balanced(\"((\"))               # False",
+          "lang": "python"
+        },
+        "Cùng ý tưởng này dùng để tính biểu thức ở dạng ký pháp Ba Lan ngược, chuyển đệ quy thành vòng lặp, và là cơ sở của tìm kiếm theo chiều sâu: thay ngăn xếp lời gọi bằng list của riêng bạn."
+      ]
+    },
+    {
+      "h": "Bài toán kinh điển của hàng đợi: tìm kiếm theo chiều rộng",
+      "body": [
+        "Tìm kiếm theo chiều rộng (BFS) duyệt đồ thị từng tầng một. Hàng đợi giúp điều đó xảy ra: node được phát hiện trước sẽ được xử lý trước.",
+        {
+          "code": "from collections import deque\ndef bfs_order(graph, start):\n    seen = {start}\n    queue = deque([start])\n    order = []\n    while queue:\n        node = queue.popleft()\n        order.append(node)\n        for nxt in graph[node]:\n            if nxt not in seen:\n                seen.add(nxt)\n                queue.append(nxt)\n    return order\ngraph = {\"A\": [\"B\", \"C\"], \"B\": [\"D\"], \"C\": [\"D\"], \"D\": []}\nprint(bfs_order(graph, \"A\"))  # ['A', 'B', 'C', 'D']",
+          "lang": "python"
+        }
+      ]
+    },
+    {
+      "h": "Độ phức tạp thời gian và không gian",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Thao tác",
+              "Ngăn xếp (`list`)",
+              "Hàng đợi (`deque`)",
+              "Hàng đợi (`list.pop(0)`)"
+            ],
+            "rows": [
+              [
+                "Thêm",
+                "O(1) khấu hao",
+                "O(1)",
+                "O(1) khấu hao"
+              ],
+              [
+                "Lấy ra",
+                "O(1)",
+                "O(1)",
+                "O(n), các phần tử dịch sang trái"
+              ],
+              [
+                "Xem",
+                "O(1)",
+                "O(1)",
+                "O(1)"
+              ],
+              [
+                "Không gian cho n phần tử",
+                "O(n)",
+                "O(n)",
+                "O(n)"
+              ]
+            ]
+          }
+        },
+        "Khấu hao (amortized) nghĩa là đôi khi một lần `append` phải đổi kích thước mảng bên dưới và tốn O(n), nhưng tính trung bình qua nhiều thao tác thì mỗi thao tác là O(1)."
+      ]
+    },
+    {
+      "h": "Các biến thể và lỗi thường gặp",
+      "body": [
+        {
+          "ul": [
+            "Deque (hàng đợi hai đầu): thêm và lấy ở cả hai đầu. `collections.deque` chính là một deque, và nó có thể đóng vai cả ngăn xếp lẫn hàng đợi.",
+            "Hàng đợi ưu tiên (priority queue): lấy phần tử nhỏ nhất (hoặc lớn nhất) trước, không phải phần tử cũ nhất. Dùng `heapq`; xem trang về heap nhị phân.",
+            "Bộ đệm vòng (circular buffer): hàng đợi kích thước cố định lưu trong mảng với chỉ số quay vòng. `deque(maxlen=n)` loại bỏ phần tử cũ nhất khi đầy.",
+            "Hàng đợi an toàn luồng: `queue.Queue` cho thread và `asyncio.Queue` cho coroutine sẽ chặn (block) khi chờ phần tử.",
+            "Hàng đợi xây từ hai ngăn xếp: push vào ngăn xếp vào, và khi ngăn xếp ra rỗng thì chuyển hết sang. Mỗi phần tử chỉ được chuyển một lần, nên các thao tác là O(1) khấu hao."
+          ]
+        },
+        {
+          "note": "Gọi `pop()` trên `list` rỗng hoặc `popleft()` trên `deque` rỗng sẽ gây `IndexError`. Hãy kiểm tra `if stack:` trước khi pop, hoặc bắt ngoại lệ."
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Ngăn xếp và hàng đợi khác nhau thế nào?",
+      "a": "Ngăn xếp lấy ra phần tử được thêm gần nhất trước (LIFO). Hàng đợi lấy ra phần tử cũ nhất trước (FIFO). Cả hai đều thêm và lấy trong O(1)."
+    },
+    {
+      "q": "Trong Python nên dùng list hay deque làm hàng đợi?",
+      "a": "Dùng `collections.deque`. Lấy ra ở đầu `list` bằng `pop(0)` là O(n) vì mọi phần tử khác phải dịch chuyển; `deque.popleft()` là O(1)."
+    },
+    {
+      "q": "Ngăn xếp được dùng ở đâu trong các chương trình thực tế?",
+      "a": "Ngăn xếp lời gọi lưu các lần gọi hàm, lịch sử hoàn tác và làm lại, nút quay lại của trình duyệt, phân tích biểu thức, ghép cặp ngoặc và tìm kiếm theo chiều sâu."
+    },
+    {
+      "q": "Stack overflow là gì?",
+      "a": "Đó là khi ngăn xếp lời gọi hết chỗ, thường do đệ quy quá sâu hoặc vô hạn. Trong Python, nó hiện ra dưới dạng `RecursionError` khi vượt quá giới hạn đệ quy."
+    },
+    {
+      "q": "queue.Queue có giống collections.deque không?",
+      "a": "Không. `queue.Queue` là hàng đợi an toàn luồng có khóa và các thao tác `get`, `put` có chặn, dùng để chuyển công việc giữa các thread. `collections.deque` là container đa dụng nhanh hơn, không chặn."
+    }
+  ]
+}

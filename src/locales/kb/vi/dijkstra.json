@@ -1,0 +1,234 @@
+{
+  "title": "Thuật toán Dijkstra: tìm đường đi ngắn nhất bằng hàng đợi ưu tiên trong Python — cv.cm",
+  "description": "Giải thích thuật toán Dijkstra: tìm đường đi ngắn nhất trong đồ thị có trọng số, ví dụ từng bước, code Python dùng heapq và chi phí O((V + E) log V).",
+  "h1": "Thuật toán Dijkstra là gì: cách hoạt động, code và độ phức tạp",
+  "answer": "Thuật toán Dijkstra tìm đường đi ngắn nhất từ một nút xuất phát đến mọi nút còn lại trong đồ thị có trọng số cạnh không âm. Nó liên tục chọn nút chưa chốt có khoảng cách tạm thời nhỏ nhất, đánh dấu khoảng cách đó là cuối cùng, rồi nới lỏng (relax) các cạnh đi ra từ nút đó. Với hàng đợi ưu tiên dùng binary heap, thuật toán chạy trong thời gian O((V + E) log V). Nếu có bất kỳ cạnh nào mang trọng số âm thì kết quả sẽ sai.",
+  "sections": [
+    {
+      "h": "Thuật toán Dijkstra giải bài toán gì",
+      "body": [
+        "Duyệt theo chiều rộng tìm đường đi có ít cạnh nhất, nhưng đường bộ, liên kết mạng hay chuyến bay lại có độ dài, chi phí hoặc độ trễ khác nhau. Thuật toán Dijkstra giải bài toán đường đi ngắn nhất từ một nguồn trên các đồ thị có trọng số như vậy: cho một nút xuất phát, tìm tổng chi phí rẻ nhất để đến mọi nút khác, cùng đường đi đạt được chi phí đó.",
+        "Edsger W. Dijkstra công bố thuật toán vào năm 1959 trong bài báo “A note on two problems in connexion with graphs”."
+      ]
+    },
+    {
+      "h": "Ý tưởng bằng lời đơn giản",
+      "body": [
+        {
+          "ol": [
+            "Đặt khoảng cách của nút xuất phát là 0 và khoảng cách của mọi nút khác là vô cùng.",
+            "Chọn nút chưa chốt có khoảng cách nhỏ nhất. Khoảng cách của nó từ giờ là cuối cùng.",
+            "Nới lỏng từng cạnh đi ra u → v có trọng số w: nếu `dist[u] + w < dist[v]` thì gán `dist[v] = dist[u] + w` và ghi nhớ u là nút cha của v.",
+            "Lặp lại bước 2 và 3 cho đến khi mọi nút có thể tới được đều đã chốt."
+          ]
+        },
+        "Vì sao khoảng cách nhỏ nhất là cuối cùng? Mọi đường khác đến nút đó đều phải đi qua một nút có khoảng cách ít nhất bằng nó, và với trọng số không âm, các cạnh còn lại chỉ có thể làm tăng chi phí."
+      ]
+    },
+    {
+      "h": "Ví dụ từng bước",
+      "body": [
+        "Đồ thị có hướng với các cạnh A→B (4), A→C (1), C→B (2), B→D (1), C→D (5), D→E (3). Bắt đầu từ A.",
+        {
+          "table": {
+            "head": [
+              "Bước",
+              "Chốt",
+              "A",
+              "B",
+              "C",
+              "D",
+              "E"
+            ],
+            "rows": [
+              [
+                "Khởi đầu",
+                "—",
+                "0",
+                "∞",
+                "∞",
+                "∞",
+                "∞"
+              ],
+              [
+                "1",
+                "A (0)",
+                "0",
+                "4",
+                "1",
+                "∞",
+                "∞"
+              ],
+              [
+                "2",
+                "C (1)",
+                "0",
+                "3 qua C",
+                "1",
+                "6 qua C",
+                "∞"
+              ],
+              [
+                "3",
+                "B (3)",
+                "0",
+                "3",
+                "1",
+                "4 qua B",
+                "∞"
+              ],
+              [
+                "4",
+                "D (4)",
+                "0",
+                "3",
+                "1",
+                "4",
+                "7"
+              ],
+              [
+                "5",
+                "E (7)",
+                "0",
+                "3",
+                "1",
+                "4",
+                "7"
+              ]
+            ]
+          }
+        },
+        "Đầu tiên B có khoảng cách 4 từ cạnh trực tiếp, sau đó được cải thiện xuống 3 qua C. Đường đi ngắn nhất đến E là A → C → B → D → E với tổng chi phí 1 + 2 + 1 + 3 = 7."
+      ]
+    },
+    {
+      "h": "Cài đặt bằng Python với heapq",
+      "body": [
+        "Module `heapq` của Python cung cấp min-heap nhị phân. Thay vì thao tác “decrease key”, hãy đẩy một cặp `(distance, node)` mới mỗi khi khoảng cách được cải thiện và bỏ qua các cặp đã lỗi thời khi lấy ra. Kỹ thuật này gọi là xóa lười (lazy deletion).",
+        {
+          "code": "import heapq\ndef dijkstra(graph, start):\n    dist = {start: 0}\n    parent = {start: None}\n    heap = [(0, start)]\n    while heap:\n        d, u = heapq.heappop(heap)\n        if d > dist[u]:\n            continue                      # outdated entry\n        for v, w in graph[u]:\n            nd = d + w\n            if nd < dist.get(v, float(\"inf\")):\n                dist[v] = nd\n                parent[v] = u\n                heapq.heappush(heap, (nd, v))\n    return dist, parent\ngraph = {\n    \"A\": [(\"B\", 4), (\"C\", 1)], \"B\": [(\"D\", 1)],\n    \"C\": [(\"B\", 2), (\"D\", 5)], \"D\": [(\"E\", 3)], \"E\": [],\n}\ndist, parent = dijkstra(graph, \"A\")\nprint(dist)  # {'A': 0, 'B': 3, 'C': 1, 'D': 4, 'E': 7}",
+          "lang": "python"
+        },
+        "Để lấy đường đi đến một đích, lần theo các liên kết nút cha ngược về điểm xuất phát:",
+        {
+          "code": "def path_to(parent, target):\n    path = []\n    while target is not None:\n        path.append(target)\n        target = parent[target]\n    return path[::-1]\nprint(path_to(parent, \"E\"))  # ['A', 'C', 'B', 'D', 'E']",
+          "lang": "python"
+        },
+        "Nếu chỉ cần khoảng cách đến một đích, bạn có thể dừng ngay khi đích đó được lấy ra khỏi heap: lúc ấy khoảng cách của nó đã là cuối cùng."
+      ]
+    },
+    {
+      "h": "Độ phức tạp thời gian và không gian",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Hàng đợi ưu tiên",
+              "Thời gian",
+              "Ghi chú"
+            ],
+            "rows": [
+              [
+                "Binary heap (heapq)",
+                "O((V + E) log V)",
+                "Lựa chọn thông dụng. Với xóa lười, heap có thể chứa tới E phần tử, vẫn là O(log V) cho mỗi thao tác vì log E không vượt quá 2 log V."
+              ],
+              [
+                "Mảng thường, quét tìm giá trị nhỏ nhất",
+                "O(V²)",
+                "Tốt hơn cho đồ thị rất dày, khi E gần bằng V²."
+              ],
+              [
+                "Fibonacci heap",
+                "O(E + V log V)",
+                "Tốt nhất về lý thuyết, hiếm khi nhanh hơn trong thực tế vì hằng số lớn."
+              ]
+            ]
+          }
+        },
+        "Không gian là O(V + E) cho đồ thị, các bảng khoảng cách và nút cha, cùng heap."
+      ]
+    },
+    {
+      "h": "Biến thể và lỗi thường gặp",
+      "body": [
+        {
+          "note": "Trọng số cạnh âm làm hỏng thuật toán Dijkstra: một nút có thể đã được chốt rồi sau đó lại rẻ hơn nhờ một cạnh âm. Hãy dùng Bellman-Ford cho đồ thị có trọng số âm. Cộng một hằng số lớn vào mọi cạnh cũng không sửa được, vì nó phạt nặng các đường đi có nhiều cạnh hơn."
+        },
+        {
+          "ul": [
+            "Quên kiểm tra `if d > dist[u]: continue` không làm sai kết quả, nhưng khiến thuật toán xử lý cả các phần tử cũ và có thể chậm đi rất nhiều.",
+            "Chỉ đẩy nút thay vì `(distance, node)` làm thứ tự trong heap trở nên vô nghĩa.",
+            "Nếu các nút là đối tượng không so sánh được, khi khoảng cách bằng nhau `heapq` sẽ so sánh các nút và gây `TypeError`. Hãy đẩy `(distance, counter, node)` với một bộ đếm duy nhất.",
+            "Tìm kiếm A* là Dijkstra có thêm hàm heuristic vào độ ưu tiên; nó duyệt ít nút hơn khi bạn có ước lượng tốt về khoảng cách còn lại.",
+            "Dijkstra hai chiều chạy từ cả điểm xuất phát lẫn điểm đích và dừng khi hai lượt tìm kiếm gặp nhau."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Khi nào dùng và ứng dụng thực tế",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Đồ thị",
+              "Thuật toán"
+            ],
+            "rows": [
+              [
+                "Không trọng số, hoặc mọi trọng số bằng nhau",
+                "BFS, O(V + E)"
+              ],
+              [
+                "Trọng số không âm, một nguồn",
+                "Dijkstra"
+              ],
+              [
+                "Có trọng số âm, không có chu trình âm",
+                "Bellman-Ford, O(V × E)"
+              ],
+              [
+                "Mọi cặp nút, đồ thị nhỏ và dày",
+                "Floyd-Warshall, O(V³)"
+              ],
+              [
+                "Một đích với ước lượng khoảng cách",
+                "Tìm kiếm A*"
+              ]
+            ]
+          }
+        },
+        {
+          "ul": [
+            "Định tuyến: các giao thức định tuyến trạng thái liên kết như OSPF và IS-IS chạy phép tính đường đi ngắn nhất trước (SPF) dựa trên thuật toán Dijkstra.",
+            "Bản đồ và dẫn đường, nơi các hệ thống thực tế bổ sung bước tiền xử lý lên trên tìm kiếm kiểu Dijkstra.",
+            "Bài phỏng vấn: network delay time, cheapest flights (có giới hạn số chặng dừng), path with minimum effort trên lưới, và mọi câu hỏi “tổng chi phí nhỏ nhất” trên đồ thị."
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Thuật toán Dijkstra có dùng được với trọng số âm không?",
+      "a": "Không. Thuật toán giả định rằng khi một nút có khoảng cách tạm thời nhỏ nhất, không đường nào đến sau còn làm nó rẻ hơn, và cạnh âm phá vỡ giả định đó. Hãy dùng Bellman-Ford."
+    },
+    {
+      "q": "Độ phức tạp thời gian của thuật toán Dijkstra là bao nhiêu?",
+      "a": "Với binary heap là O((V + E) log V). Với mảng đơn giản là O(V²), có thể tốt hơn cho đồ thị dày."
+    },
+    {
+      "q": "Thuật toán Dijkstra có phải thuật toán tham lam không?",
+      "a": "Có. Ở mỗi bước nó chọn phương án tốt nhất cục bộ, tức chốt nút chưa chốt gần nhất, và lựa chọn đó được chứng minh là đúng khi mọi trọng số không âm."
+    },
+    {
+      "q": "Dijkstra khác BFS như thế nào?",
+      "a": "BFS dùng hàng đợi thường và đếm số cạnh, nên chỉ đúng khi mọi cạnh có cùng trọng số. Dijkstra dùng hàng đợi ưu tiên sắp theo tổng khoảng cách, nên xử lý được các trọng số không âm khác nhau."
+    },
+    {
+      "q": "Dijkstra có tìm đường đi ngắn nhất giữa mọi cặp nút không?",
+      "a": "Một lần chạy cho đường đi ngắn nhất từ một nguồn. Hãy chạy từ mỗi nút để có mọi cặp, hoặc dùng Floyd-Warshall cho đồ thị nhỏ và dày."
+    }
+  ]
+}

@@ -1,0 +1,198 @@
+{
+  "title": "Traversal binary tree: preorder, inorder, postorder, dan level order di Python — cv.cm",
+  "description": "Penjelasan traversal binary tree: preorder, inorder, postorder, dan level-order (BFS), dengan kode Python rekursif dan iteratif, contoh penelusuran, dan kompleksitas.",
+  "h1": "Traversal binary tree: preorder, inorder, postorder, dan level order",
+  "answer": "Traversal binary tree berarti mengunjungi setiap node tepat satu kali dalam urutan tertentu. Tiga urutan depth-first hanya berbeda pada kapan node itu sendiri dikunjungi: preorder mengunjungi node, kiri, kanan; inorder mengunjungi kiri, node, kanan; postorder mengunjungi kiri, kanan, node. Traversal level-order bersifat breadth-first dan mengunjungi tree baris demi baris memakai queue. Keempatnya butuh waktu O(n).",
+  "sections": [
+    {
+      "h": "Mengapa urutan traversal penting",
+      "body": [
+        "Tree tidak punya satu urutan alami, jadi algoritma memilih yang cocok dengan tugasnya. Traversal inorder pada binary search tree menghasilkan key dalam urutan terurut. Preorder mengunjungi induk sebelum anak-anaknya, yang Anda butuhkan untuk menyalin tree atau menuliskannya agar bisa dibangun kembali. Postorder mengunjungi anak sebelum induk, yang Anda butuhkan untuk menghapus tree, menghitung ukuran folder, atau mengevaluasi expression tree. Level order menemukan node terdangkal lebih dulu dan mencetak tree baris demi baris."
+      ]
+    },
+    {
+      "h": "Keempat urutan pada satu contoh",
+      "body": [
+        "Kita memakai tree ini: root 1 dengan anak 2 dan 3; node 2 punya anak 4 dan 5; node 3 punya anak kanan 6.",
+        {
+          "code": "        1\n       / \\\n      2   3\n     / \\   \\\n    4   5   6",
+          "lang": "text"
+        },
+        {
+          "table": {
+            "head": [
+              "Urutan",
+              "Aturan",
+              "Hasil"
+            ],
+            "rows": [
+              [
+                "Preorder",
+                "node, kiri, kanan",
+                "1 2 4 5 3 6"
+              ],
+              [
+                "Inorder",
+                "kiri, node, kanan",
+                "4 2 5 1 3 6"
+              ],
+              [
+                "Postorder",
+                "kiri, kanan, node",
+                "4 5 2 6 3 1"
+              ],
+              [
+                "Level order",
+                "baris demi baris, dari kiri ke kanan",
+                "1 2 3 4 5 6"
+              ]
+            ]
+          }
+        },
+        "Cara mudah mengingat tiga yang pertama: namanya menunjukkan di mana node berada. Pre berarti sebelum kedua subtree, in berarti di antara keduanya, post berarti setelah keduanya. Subtree kiri selalu dikunjungi sebelum subtree kanan."
+      ]
+    },
+    {
+      "h": "Implementasi rekursif",
+      "body": [
+        "Versi rekursif mencerminkan definisinya secara langsung. Setiap fungsi mengunjungi node pada baris yang berbeda.",
+        {
+          "code": "class Node:\n    def __init__(self, val, left=None, right=None):\n        self.val, self.left, self.right = val, left, right\ndef preorder(node, out):\n    if node:\n        out.append(node.val)\n        preorder(node.left, out)\n        preorder(node.right, out)\n    return out\ndef inorder(node, out):\n    if node:\n        inorder(node.left, out)\n        out.append(node.val)\n        inorder(node.right, out)\n    return out\ndef postorder(node, out):\n    if node:\n        postorder(node.left, out)\n        postorder(node.right, out)\n        out.append(node.val)\n    return out\nroot = Node(1, Node(2, Node(4), Node(5)), Node(3, None, Node(6)))\nprint(preorder(root, []))   # [1, 2, 4, 5, 3, 6]\nprint(inorder(root, []))    # [4, 2, 5, 1, 3, 6]\nprint(postorder(root, []))  # [4, 5, 2, 6, 3, 1]",
+          "lang": "python"
+        }
+      ]
+    },
+    {
+      "h": "Preorder dan inorder iteratif dengan stack",
+      "body": [
+        "Rekursi memakai call stack. Untuk menghindari batas rekursi pada tree yang dalam, kelola stack sendiri. Untuk preorder, pop sebuah node, kunjungi, lalu push anak kanan sebelum anak kiri agar yang kiri diproses lebih dulu.",
+        "Untuk inorder, telusuri ke kiri sejauh mungkin sambil mem-push node di sepanjang jalan. Saat tidak bisa ke kiri lagi, pop sebuah node, kunjungi, lalu pindah ke anak kanannya.",
+        {
+          "code": "def preorder_iter(root):\n    out, stack = [], [root] if root else []\n    while stack:\n        node = stack.pop()\n        out.append(node.val)\n        if node.right:\n            stack.append(node.right)\n        if node.left:\n            stack.append(node.left)\n    return out\ndef inorder_iter(root):\n    out, stack, node = [], [], root\n    while stack or node:\n        while node:              # go as far left as possible\n            stack.append(node)\n            node = node.left\n        node = stack.pop()\n        out.append(node.val)\n        node = node.right\n    return out\nprint(preorder_iter(root))  # [1, 2, 4, 5, 3, 6]\nprint(inorder_iter(root))   # [4, 2, 5, 1, 3, 6]",
+          "lang": "python"
+        }
+      ]
+    },
+    {
+      "h": "Postorder dan level order iteratif",
+      "body": [
+        "Postorder iteratif adalah yang paling rumit. Satu pendekatan yang rapi memakai flag: push setiap node dua kali, yang kedua kali ditandai siap dikunjungi setelah anak-anaknya. Level order memakai queue, bukan stack; memproses queue satu level sekaligus juga memberi tahu kedalaman setiap node.",
+        {
+          "code": "from collections import deque\ndef postorder_iter(root):\n    out, stack = [], [(root, False)] if root else []\n    while stack:\n        node, children_done = stack.pop()\n        if children_done:\n            out.append(node.val)\n        else:\n            stack.append((node, True))\n            if node.right:\n                stack.append((node.right, False))\n            if node.left:\n                stack.append((node.left, False))\n    return out\ndef level_order(root):\n    levels, queue = [], deque([root] if root else [])\n    while queue:\n        level = []\n        for _ in range(len(queue)):   # nodes of the current level\n            node = queue.popleft()\n            level.append(node.val)\n            if node.left:\n                queue.append(node.left)\n            if node.right:\n                queue.append(node.right)\n        levels.append(level)\n    return levels\nprint(postorder_iter(root))  # [4, 5, 2, 6, 3, 1]\nprint(level_order(root))     # [[1], [2, 3], [4, 5, 6]]",
+          "lang": "python"
+        },
+        "Trik umum lain untuk postorder: jalankan preorder yang dimodifikasi (node, kanan, kiri) lalu balik hasilnya."
+      ]
+    },
+    {
+      "h": "Kompleksitas waktu dan ruang",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Traversal",
+              "Waktu",
+              "Ruang tambahan",
+              "Alasan"
+            ],
+            "rows": [
+              [
+                "Preorder / inorder / postorder (rekursif)",
+                "O(n)",
+                "O(h)",
+                "call stack menyimpan satu frame per level"
+              ],
+              [
+                "Preorder / inorder / postorder (iteratif)",
+                "O(n)",
+                "O(h)",
+                "stack eksplisit menyimpan paling banyak satu jalur plus saudara-saudaranya"
+              ],
+              [
+                "Level order",
+                "O(n)",
+                "O(w)",
+                "queue menyimpan paling banyak satu level penuh"
+              ],
+              [
+                "Traversal inorder Morris",
+                "O(n)",
+                "O(1)",
+                "sementara menyambungkan link kanan null menjadi thread"
+              ]
+            ]
+          }
+        },
+        "Di sini n adalah jumlah node, h tinggi tree, dan w lebar maksimum. Untuk tree seimbang h sekitar log2(n) dan w bisa sekitar n/2; untuk tree berbentuk rantai h adalah n dan w adalah 1."
+      ]
+    },
+    {
+      "h": "Kesalahan umum",
+      "body": [
+        {
+          "ul": [
+            "Mem-push anak kiri sebelum anak kanan pada preorder iteratif. Stack itu LIFO, jadi anak yang ingin diproses lebih dulu harus di-push terakhir.",
+            "Lupa menangani tree kosong: setiap fungsi harus mengembalikan hasil kosong untuk `root is None`.",
+            "Memakai `list` dengan `pop(0)` sebagai queue pada level order. Itu O(n) per pop; gunakan `collections.deque`.",
+            "Mengandalkan rekursi untuk tree yang sangat dalam. Python berhenti pada batas rekursinya (sekitar 1000 secara default) dengan `RecursionError`.",
+            "Berharap satu traversal saja bisa mengidentifikasi sebuah tree. Preorder saja ambigu; preorder plus inorder (dengan nilai yang berbeda-beda) cukup untuk membangunnya kembali."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Kapan memakai traversal yang mana",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Tugas",
+              "Traversal"
+            ],
+            "rows": [
+              [
+                "Menampilkan key BST secara terurut, validasi BST, elemen terkecil ke-k",
+                "Inorder"
+              ],
+              [
+                "Menyalin atau men-serialize tree, mencetak outline direktori",
+                "Preorder"
+              ],
+              [
+                "Menghapus tree, menghitung ukuran atau tinggi subtree, mengevaluasi expression tree",
+                "Postorder"
+              ],
+              [
+                "Kedalaman minimum, right-side view, mencetak per level, node terdekat",
+                "Level order"
+              ]
+            ]
+          }
+        },
+        "Preorder, inorder, dan postorder semuanya adalah bentuk depth-first search; level order adalah breadth-first search yang diterapkan pada tree. Ide yang sama berlaku untuk graf umum, di mana Anda juga butuh himpunan node yang sudah dikunjungi."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Apa bedanya preorder, inorder, dan postorder?",
+      "a": "Hanya posisi kunjungan node. Preorder mengunjungi node sebelum subtree-nya, inorder di antara subtree kiri dan kanan, dan postorder setelah kedua subtree."
+    },
+    {
+      "q": "Traversal mana yang menghasilkan output terurut untuk binary search tree?",
+      "a": "Traversal inorder. Pada BST semua key kiri lebih kecil dan semua key kanan lebih besar, jadi mengunjungi kiri, node, kanan menghasilkan key dalam urutan naik."
+    },
+    {
+      "q": "Apakah traversal level-order sama dengan BFS?",
+      "a": "Ya. Traversal level-order adalah breadth-first search pada tree. Ia memakai queue dan mengunjungi node berdasarkan urutan kedalamannya."
+    },
+    {
+      "q": "Mengapa memakai traversal iteratif, bukan rekursi?",
+      "a": "Kedalaman rekursi sama dengan tinggi tree, dan Python memunculkan `RecursionError` setelah melewati batas rekursinya. Stack eksplisit tidak punya batas seperti itu dan memudahkan untuk menjeda atau berhenti lebih awal."
+    },
+    {
+      "q": "Bisakah tree ditelusuri dengan memori tambahan O(1)?",
+      "a": "Bisa. Traversal Morris sementara menautkan in-order predecessor setiap node kembali ke node itu, sehingga tidak perlu stack, dan mengembalikan tree seperti semula sebelum selesai. Waktunya O(n)."
+    }
+  ]
+}

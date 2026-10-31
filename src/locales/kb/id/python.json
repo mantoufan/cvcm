@@ -1,0 +1,223 @@
+{
+  "title": "Tutorial Python untuk pemula: sintaks, tipe data, fungsi, dan file dalam satu halaman — cv.cm",
+  "description": "Belajar Python 3 dalam satu halaman: instal dan jalankan Hello world, variabel dan tipe data, if dan perulangan, fungsi, list dan dict, exception, file, plus contoh lengkap.",
+  "h1": "Tutorial Python untuk pemula",
+  "answer": "Python adalah bahasa pemrograman serbaguna yang diinterpretasikan, dikenal dengan sintaks mudah dibaca yang memakai indentasi, bukan kurung kurawal. Instal Python 3, simpan `print(\"Hello, world\")` di `hello.py`, lalu jalankan `python3 hello.py`. Konsep intinya: tipe dinamis, fungsi yang dibuat dengan `def`, list, dict, dan set bawaan, exception yang ditangani dengan `try`/`except`, serta pustaka standar yang besar.",
+  "sections": [
+    {
+      "h": "Apa itu Python dan untuk apa dipakai",
+      "body": [
+        "Python adalah bahasa tingkat tinggi dengan tipe dinamis yang pertama kali dirilis oleh Guido van Rossum pada 1991. Kode dijalankan oleh interpreter (yang menjadi acuan adalah CPython), sehingga tidak ada langkah kompilasi terpisah. Python dipakai untuk analisis data dan machine learning (NumPy, pandas, PyTorch), back end web (Django, Flask, FastAPI), skrip otomatisasi, komputasi ilmiah, dan pengajaran. Python 2 sudah mencapai akhir masa dukungan pada 2020, jadi pelajari Python 3."
+      ]
+    },
+    {
+      "h": "Instal Python dan jalankan Hello, world",
+      "body": [
+        "Unduh installer dari python.org (Windows, macOS) atau gunakan package manager di Linux. Periksa instalasinya dengan `python3 --version` (di Windows perintahnya sering `py` atau `python`). Simpan file ini sebagai `hello.py`:",
+        {
+          "code": "print(\"Hello, world\")",
+          "lang": "python"
+        },
+        {
+          "code": "python3 hello.py\n# Hello, world",
+          "lang": "shell"
+        },
+        "Menjalankan `python3` tanpa file akan membuka prompt interaktif (REPL), yang berguna untuk mencoba kode satu baris demi satu baris."
+      ]
+    },
+    {
+      "h": "Variabel dan tipe data dasar",
+      "body": [
+        "Variabel dibuat dengan memberinya nilai. Anda tidak perlu mendeklarasikan tipe; nilai itulah yang membawa tipenya, dan `type(x)` memberi tahu tipe tersebut.",
+        {
+          "table": {
+            "head": [
+              "Tipe",
+              "Contoh",
+              "Catatan"
+            ],
+            "rows": [
+              [
+                "`int`",
+                "`42`, `-7`, `10**20`",
+                "Bilangan bulat dengan ukuran berapa pun"
+              ],
+              [
+                "`float`",
+                "`3.14`, `1e-3`",
+                "Floating point 64-bit"
+              ],
+              [
+                "`bool`",
+                "`True`, `False`",
+                "Diawali huruf kapital"
+              ],
+              [
+                "`str`",
+                "`\"hi\"`, `'hi'`",
+                "Teks Unicode yang immutable"
+              ],
+              [
+                "`None`",
+                "`None`",
+                "Tidak adanya nilai"
+              ]
+            ]
+          }
+        },
+        {
+          "code": "name = \"Ada\"\nage = 36\nheight = 1.65\nprint(f\"{name} is {age} years old\")  # Ada is 36 years old\nprint(7 / 2, 7 // 2, 7 % 2)          # 3.5 3 1\nprint(int(\"12\") + 1)                 # 13",
+          "lang": "python"
+        }
+      ]
+    },
+    {
+      "h": "Alur kontrol: if, for, dan while",
+      "body": [
+        "Blok diawali tanda titik dua dan ditentukan oleh indentasi (secara konvensi 4 spasi). Perulangan `for` mengiterasi urutan apa pun; `range(n)` menghasilkan angka 0 sampai n−1.",
+        {
+          "code": "score = 72\nif score >= 90:\n    grade = \"A\"\nelif score >= 70:\n    grade = \"B\"\nelse:\n    grade = \"C\"\nprint(grade)  # B\nfor i in range(3):\n    print(i)  # 0, then 1, then 2\nn = 10\nwhile n > 1:\n    n = n // 2\nprint(n)  # 1",
+          "lang": "python"
+        }
+      ]
+    },
+    {
+      "h": "Fungsi",
+      "body": [
+        "Buat fungsi dengan `def`. Parameter boleh punya nilai default, dan pemanggil dapat mengirim argumen berdasarkan nama. Fungsi tanpa `return` mengembalikan `None`.",
+        {
+          "code": "def greet(name, greeting=\"Hello\"):\n    return f\"{greeting}, {name}!\"\nprint(greet(\"Lin\"))                 # Hello, Lin!\nprint(greet(\"Lin\", greeting=\"Hi\"))  # Hi, Lin!\nsquare = lambda x: x * x\nprint(square(5))                    # 25",
+          "lang": "python"
+        },
+        "Type hint seperti `def area(w: float, h: float) -> float:` mendokumentasikan maksud kode dan memungkinkan alat seperti mypy memeriksanya, tetapi interpreter tidak memaksakannya."
+      ]
+    },
+    {
+      "h": "List, tuple, dict, dan set",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Tipe",
+              "Literal",
+              "Berurutan",
+              "Mutable",
+              "Kegunaan umum"
+            ],
+            "rows": [
+              [
+                "`list`",
+                "`[1, 2, 3]`",
+                "Ya",
+                "Ya",
+                "Urutan yang bisa diubah"
+              ],
+              [
+                "`tuple`",
+                "`(1, 2)`",
+                "Ya",
+                "Tidak",
+                "Sekelompok nilai yang tetap"
+              ],
+              [
+                "`dict`",
+                "`{\"a\": 1}`",
+                "Urutan penyisipan",
+                "Ya",
+                "Pencarian dari key ke value"
+              ],
+              [
+                "`set`",
+                "`{1, 2}`",
+                "Tidak",
+                "Ya",
+                "Item unik, pengecekan keanggotaan"
+              ]
+            ]
+          }
+        },
+        {
+          "code": "nums = [3, 1, 2]\nnums.append(5)\nnums.sort()\nprint(nums, nums[0], nums[-1], nums[1:3])  # [1, 2, 3, 5] 1 5 [2, 3]\nages = {\"ann\": 31, \"bob\": 25}\nages[\"cy\"] = 40\nfor person, age in ages.items():\n    print(person, age)\nprint(ages.get(\"zed\", 0))  # 0\nsquares = [x * x for x in range(5) if x % 2 == 0]\nprint(squares)  # [0, 4, 16]",
+          "lang": "python"
+        },
+        "Baris terakhir adalah list comprehension, salah satu fitur khas Python: membangun list dari perulangan dan filter opsional dalam satu ekspresi. Dict dan set comprehension bekerja dengan cara yang sama."
+      ]
+    },
+    {
+      "h": "Fitur khas: unpacking, with, dan generator",
+      "body": [
+        {
+          "code": "a, b = 1, 2\na, b = b, a            # swap without a temporary\nfirst, *rest = [1, 2, 3, 4]\nprint(first, rest)     # 1 [2, 3, 4]\nwith open(\"notes.txt\", \"w\", encoding=\"utf-8\") as f:\n    f.write(\"line one\\n\")   # file is closed automatically\ndef countdown(n):\n    while n > 0:\n        yield n\n        n -= 1\nprint(list(countdown(3)))  # [3, 2, 1]",
+          "lang": "python"
+        },
+        "Pernyataan `with` menjalankan kode persiapan dan pembersihan untuk Anda (di sini, menutup file meskipun terjadi error). Fungsi yang memakai `yield` adalah generator: ia menghasilkan nilai secara lazy, satu per satu, sehingga hemat memori pada data besar."
+      ]
+    },
+    {
+      "h": "Penanganan error dengan try dan except",
+      "body": [
+        "Error dimunculkan sebagai exception. Tangkap jenis exception spesifik yang Anda harapkan, dan gunakan `finally` untuk kode yang harus selalu dijalankan.",
+        {
+          "code": "def parse_age(text):\n    try:\n        age = int(text)\n    except ValueError:\n        print(f\"not a number: {text!r}\")\n        return None\n    if age < 0:\n        raise ValueError(\"age cannot be negative\")\n    return age\nprint(parse_age(\"41\"))   # 41\nprint(parse_age(\"abc\"))  # not a number: 'abc', then None",
+          "lang": "python"
+        }
+      ]
+    },
+    {
+      "h": "Program kecil yang lengkap: penghitung kata",
+      "body": [
+        "Skrip ini membaca file teks yang diberikan lewat baris perintah dan mencetak lima kata paling sering muncul. Skrip ini hanya memakai pustaka standar.",
+        {
+          "code": "import sys\nfrom collections import Counter\ndef top_words(path, n=5):\n    with open(path, encoding=\"utf-8\") as f:\n        words = f.read().lower().split()\n    cleaned = [w.strip(\".,;:!?\\\"'()\") for w in words]\n    return Counter(w for w in cleaned if w).most_common(n)\nif __name__ == \"__main__\":\n    if len(sys.argv) != 2:\n        sys.exit(\"usage: python3 count.py FILE\")\n    try:\n        for word, count in top_words(sys.argv[1]):\n            print(f\"{count:5}  {word}\")\n    except FileNotFoundError:\n        sys.exit(f\"file not found: {sys.argv[1]}\")",
+          "lang": "python"
+        },
+        "Jalankan dengan `python3 count.py notes.txt`. Pengecekan `if __name__ == \"__main__\":` membuat file bisa diimpor sebagai modul tanpa menjalankan bagian skripnya."
+      ]
+    },
+    {
+      "h": "Kesalahan umum pemula",
+      "body": [
+        {
+          "note": "Jangan memakai nilai mutable sebagai argumen default: `def add(item, items=[])` membuat satu list dipakai bersama oleh semua pemanggilan. Gunakan `items=None` dan buat list di dalam fungsi."
+        },
+        {
+          "ul": [
+            "Mencampur tab dan spasi, atau indentasi yang tidak konsisten, menyebabkan `IndentationError`. Atur editor Anda agar menyisipkan 4 spasi.",
+            "`=` untuk assignment dan `==` untuk perbandingan. Gunakan `is` hanya untuk `None` (`if x is None`).",
+            "`input()` selalu mengembalikan string; ubah dengan `int()` atau `float()` sebelum melakukan perhitungan.",
+            "Menyalin list dengan `b = a` tidak benar-benar menyalinnya; kedua nama menunjuk ke list yang sama. Gunakan `b = a.copy()` atau `b = list(a)`.",
+            "Instal paket di dalam virtual environment (`python3 -m venv .venv`), bukan ke Python sistem."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Langkah selanjutnya",
+      "body": [
+        "Ikuti Tutorial Python resmi, lalu jelajahi Library Reference untuk mempelajari modul seperti `pathlib`, `json`, `datetime`, dan `itertools`. Pelajari `pip` dan virtual environment untuk paket pihak ketiga, lalu tulis tes dengan `unittest` atau pytest. Setelah itu, pilih arah: web (Django atau FastAPI), data (pandas), atau otomatisasi."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Apakah Python cocok untuk pemula?",
+      "a": "Ya. Sintaksnya ringkas dan mirip bahasa Inggris sehari-hari, pesan error-nya jelas, dan Anda bisa mencoba kode baris demi baris di REPL. Python juga banyak dipakai di industri, jadi kemampuan dasar Anda tetap berguna."
+    },
+    {
+      "q": "Apakah Python dikompilasi atau diinterpretasikan?",
+      "a": "CPython mengompilasi kode sumber menjadi bytecode lalu menginterpretasikan bytecode itu, semuanya otomatis saat Anda menjalankan skrip. Anda tidak perlu menjalankan langkah kompilasi terpisah."
+    },
+    {
+      "q": "Apa perbedaan list dan tuple?",
+      "a": "List bersifat mutable: Anda bisa menambah, menghapus, dan mengubah item. Tuple bersifat immutable, sehingga dipakai untuk sekelompok nilai tetap dan bisa menjadi key dict."
+    },
+    {
+      "q": "Mengapa kode Python saya lambat?",
+      "a": "Perulangan Python murni lebih lambat daripada bahasa yang dikompilasi. Gunakan fungsi bawaan, comprehension, dan pustaka seperti NumPy, yang menjalankan perulangan di dalamnya dengan C."
+    },
+    {
+      "q": "Pakai python atau python3 di command line?",
+      "a": "Di macOS dan sebagian besar sistem Linux, gunakan `python3`, karena `python` mungkin tidak ada atau menunjuk ke hal lain. Di Windows, launcher `py` biasanya jadi pilihan."
+    }
+  ]
+}

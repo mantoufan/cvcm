@@ -1,0 +1,175 @@
+{
+  "title": "Mẫu Bridge: tách abstraction khỏi implementation, ví dụ TypeScript — cv.cm",
+  "description": "Giải thích mẫu thiết kế Bridge: tách một lớp thành hai hệ phân cấp abstraction và implementation có thể thay đổi độc lập. Có ví dụ TypeScript và ứng dụng thực tế.",
+  "h1": "Mẫu Bridge (Design Pattern) giải thích kèm ví dụ",
+  "answer": "Bridge là một mẫu thiết kế cấu trúc (structural), tách một hệ phân cấp lớp lớn thành hai hệ phân cấp riêng biệt là abstraction và implementation, nối với nhau bằng composition. Abstraction (ví dụ các loại báo cáo) giữ một tham chiếu đến đối tượng implementation (ví dụ các bộ kết xuất đầu ra) và giao phần việc cấp thấp cho nó. Nhờ vậy hai phía có thể phát triển độc lập: 3 loại báo cáo và 3 bộ kết xuất chỉ cần 6 lớp thay vì 9 lớp con cho từng tổ hợp.",
+  "sections": [
+    {
+      "h": "Mục đích",
+      "body": [
+        "Tách một abstraction khỏi implementation của nó để hai bên có thể thay đổi độc lập. Bridge là một trong bảy mẫu cấu trúc trong sách Gang of Four (GoF), nơi nó còn được gọi là Handle/Body."
+      ]
+    },
+    {
+      "h": "Vấn đề mà mẫu này giải quyết",
+      "body": [
+        "Hãy tưởng tượng một ứng dụng gửi hai loại tin nhắn là cảnh báo và nhắc nhở, qua hai kênh là email và SMS. Nếu mô hình hóa bằng kế thừa, bạn sẽ có `EmailAlert`, `SmsAlert`, `EmailReminder` và `SmsReminder`. Thêm kênh push và loại tin tổng hợp (digest), bạn cần tới chín lớp. Mỗi loại mới ở một phía lại nhân tổng số lớp lên.",
+        "Vấn đề thật sự là hệ phân cấp lớp trộn lẫn hai câu hỏi độc lập: tin nhắn là gì, và nó được gửi đi bằng cách nào. Bridge tách chúng thành hai hệ phân cấp và nối bằng một tham chiếu, nhờ đó tổng số lớp tăng theo phép cộng thay vì phép nhân.",
+        {
+          "table": {
+            "head": [
+              "Thiết kế",
+              "2 loại tin × 2 kênh",
+              "3 loại tin × 3 kênh",
+              "4 loại tin × 4 kênh"
+            ],
+            "rows": [
+              [
+                "Một lớp con cho mỗi tổ hợp",
+                "4 lớp",
+                "9 lớp",
+                "16 lớp"
+              ],
+              [
+                "Bridge",
+                "4 lớp",
+                "6 lớp",
+                "8 lớp"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "Cấu trúc và các thành phần",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Thành phần",
+              "Trách nhiệm",
+              "Trong ví dụ"
+            ],
+            "rows": [
+              [
+                "Abstraction",
+                "Giao diện cấp cao mà client sử dụng; giữ một tham chiếu đến Implementor.",
+                "`Message`"
+              ],
+              [
+                "RefinedAbstraction",
+                "Mở rộng abstraction với các hành vi biến thể.",
+                "`Alert`, `Reminder`"
+              ],
+              [
+                "Implementor",
+                "Giao diện cho các thao tác cấp thấp.",
+                "`Sender`"
+              ],
+              [
+                "ConcreteImplementor",
+                "Cài đặt các thao tác cấp thấp cho một nền tảng hoặc công nghệ cụ thể.",
+                "`EmailSender`, `SmsSender`"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "Cài đặt bằng TypeScript",
+      "body": [
+        {
+          "code": "// Implementor: how a message is delivered.\ninterface Sender {\n  deliver(to: string, subject: string, body: string): string;\n}\n\nclass EmailSender implements Sender {\n  deliver(to: string, subject: string, body: string) { return `email ${to} | ${subject} | ${body}`; }\n}\n\nclass SmsSender implements Sender {\n  deliver(to: string, subject: string, body: string) { return `sms ${to} | ${subject}: ${body}`.slice(0, 40); }\n}\n\n// Abstraction: what the message is. It holds the bridge to a Sender.\nabstract class Message {\n  constructor(protected sender: Sender) {}\n  abstract send(to: string): string;\n}\n\nclass Alert extends Message {\n  constructor(sender: Sender, private problem: string) { super(sender); }\n  send(to: string): string {\n    return this.sender.deliver(to, \"ALERT\", this.problem.toUpperCase());\n  }\n}\n\nclass Reminder extends Message {\n  constructor(sender: Sender, private task: string, private due: string) { super(sender); }\n  send(to: string): string {\n    return this.sender.deliver(to, \"Reminder\", `${this.task} by ${this.due}`);\n  }\n}\n\nconsole.log(new Alert(new SmsSender(), \"disk full\").send(\"+100\")); // sms +100 | ALERT: DISK FULL\nconsole.log(new Reminder(new EmailSender(), \"Pay invoice\", \"Friday\").send(\"ada@example.com\"));\n// email ada@example.com | Reminder | Pay invoice by Friday",
+          "lang": "typescript"
+        },
+        "Thêm `PushSender` chỉ cần một lớp, và nó dùng được ngay với cả cảnh báo lẫn nhắc nhở. Thêm loại tin `Digest` cũng chỉ cần một lớp, và nó dùng được ngay với mọi sender. Vì sender chỉ là một đối số của constructor, bạn cũng có thể chọn nó lúc chạy, chẳng hạn dựa trên tùy chọn của người dùng."
+      ]
+    },
+    {
+      "h": "Khi nào nên dùng và khi nào không",
+      "body": [
+        "Dùng Bridge khi:",
+        {
+          "ul": [
+            "Một lớp thay đổi theo hai hay nhiều chiều độc lập, và kế thừa sẽ tạo ra một lớp cho từng tổ hợp.",
+            "Bạn muốn đổi implementation lúc chạy, hoặc dùng chung một đối tượng implementation cho nhiều abstraction.",
+            "Bạn viết mã phải chạy trên nhiều nền tảng (hệ điều hành, back end kết xuất, hệ quản trị cơ sở dữ liệu) và muốn gom chi tiết nền tảng vào một hệ phân cấp riêng."
+          ]
+        },
+        "Tránh dùng khi:",
+        {
+          "ul": [
+            "Chỉ có một chiều thay đổi. Một interface đơn giản với vài implementation là đủ.",
+            "Bạn thêm nó “để dành” trong khi mới có một implementation. Lớp thừa khiến mã khó đọc hơn mà chưa mang lại lợi ích gì."
+          ]
+        },
+        {
+          "note": "Bridge được thiết kế từ đầu, khi bạn biết cả hai phía sẽ thay đổi. Nếu bạn muốn khớp một lớp có sẵn vào một interface sau khi đã viết xong, bạn cần mẫu Adapter chứ không phải mẫu Bridge."
+        }
+      ]
+    },
+    {
+      "h": "Ứng dụng thực tế",
+      "body": [
+        {
+          "ul": [
+            "JDBC trong Java là ví dụ nổi tiếng: mã ứng dụng được viết dựa trên JDBC API, còn mỗi nhà cung cấp cơ sở dữ liệu cung cấp một driver cài đặt các thao tác cấp thấp. Hai phía phát triển độc lập với nhau.",
+            "Các bộ công cụ đồ họa và giao diện người dùng giữ một API widget hoặc hình vẽ độc lập nền tảng ở trên, và các back end vẽ riêng cho từng nền tảng ở dưới. Ví dụ của sách GoF là abstraction `Window` với một implementation `WindowImp` riêng cho mỗi hệ thống cửa sổ.",
+            "Các thư viện ghi log thường tách API logger mà mã gọi tới khỏi các handler hoặc appender ghi ra tệp, console hay dịch vụ mạng."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Các mẫu liên quan",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Mẫu",
+              "Quan hệ với Bridge"
+            ],
+            "rows": [
+              [
+                "Adapter",
+                "Có hình dạng tương tự, nhưng giúp các lớp có sẵn không liên quan làm việc cùng nhau sau khi chúng đã được thiết kế. Bridge được lên kế hoạch trước khi viết các lớp."
+              ],
+              [
+                "Strategy",
+                "Cũng ủy quyền cho một đối tượng có thể thay thế. Strategy nhằm hoán đổi một thuật toán; Bridge nhằm tách cả một hệ phân cấp abstraction khỏi hệ phân cấp implementation của nó."
+              ],
+              [
+                "Abstract Factory",
+                "Có thể tạo và cấu hình đúng đối tượng implementation cho một bridge, chẳng hạn back end nền tảng phù hợp."
+              ],
+              [
+                "Composite",
+                "Bridge cũng dựa trên nguyên tắc ưu tiên composition hơn kế thừa, nhưng Composite nói về cây các đối tượng, không phải hai hệ phân cấp độc lập."
+              ]
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "“Implementation” nghĩa là gì trong mẫu Bridge?",
+      "a": "Nó không có nghĩa là mã bên trong một lớp. Nó là một hệ phân cấp riêng gồm các đối tượng làm công việc cấp thấp, phụ thuộc nền tảng, mà abstraction giao việc cho."
+    },
+    {
+      "q": "Mẫu Bridge khác mẫu Strategy ở điểm nào?",
+      "a": "Cấu trúc của chúng gần như giống nhau. Strategy tập trung vào việc hoán đổi một thuật toán bên trong một đối tượng, còn Bridge tách hai hệ phân cấp hoàn chỉnh để mỗi bên có thể được mở rộng độc lập."
+    },
+    {
+      "q": "Mẫu Bridge khác mẫu Adapter ở điểm nào?",
+      "a": "Bridge được thiết kế từ trước để hai phía có thể thay đổi. Adapter được thêm vào sau để một lớp có sẵn, không tương thích, khớp được với một interface."
+    },
+    {
+      "q": "Bridge có giống dependency injection không?",
+      "a": "Không. Bridge là cách tổ chức hai hệ phân cấp. Dependency injection là cách cung cấp đối tượng implementation, và đó là cách tự nhiên để đưa implementor cho một abstraction."
+    }
+  ]
+}

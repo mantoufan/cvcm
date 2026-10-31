@@ -1,0 +1,183 @@
+{
+  "title": "PHP 기초 튜토리얼: 변수, 배열, 함수, 클래스, 폼 처리 — cv.cm",
+  "description": "최신 PHP 8을 한 페이지로 배웁니다. Hello world 실행, 변수와 자료형, 제어 흐름, 함수, 배열, 클래스와 열거형, 예외 처리, 간단한 웹 페이지까지 다룹니다.",
+  "h1": "PHP 기초 입문 튜토리얼",
+  "answer": "PHP는 웹을 위해 만들어진 서버 사이드 스크립트 언어입니다. PHP 파일은 서버에서 실행되어 HTML이나 JSON을 브라우저로 보냅니다. PHP를 설치하고 `<?php echo \"Hello, world\";`를 `hello.php`로 저장해 `php hello.php`로 실행하거나, `php -S localhost:8000`으로 로컬 서버를 시작하세요. 핵심 개념은 `$` 변수, 유연한 배열, 타입 선언이 있는 함수, 클래스, 예외, 그리고 사용자 입력의 안전한 처리입니다.",
+  "sections": [
+    {
+      "h": "PHP란 무엇이고 어디에 쓰이는가",
+      "body": [
+        "PHP는 1994년 라스무스 러도프(Rasmus Lerdorf)가 만들었으며, 지금 이름은 \"PHP: Hypertext Preprocessor\"의 약자입니다. 거의 모든 웹 호스팅에서 실행되며 WordPress, Drupal, Wikipedia의 MediaWiki를 비롯해 많은 웹사이트를 움직입니다. 콘텐츠 사이트, 온라인 쇼핑몰, REST API, 그리고 Laravel이나 Symfony 같은 프레임워크를 이용한 본격적인 웹 애플리케이션에 쓰입니다. 최신 PHP 8에는 타입 시스템, JIT 컴파일러, 열거형, 어트리뷰트가 있고 예전 버전보다 성능이 훨씬 좋아졌습니다."
+      ]
+    },
+    {
+      "h": "PHP 설치와 Hello, world 실행",
+      "body": [
+        "php.net이나 패키지 관리자(`brew install php`, `sudo apt install php-cli`, Windows의 XAMPP 같은 번들)로 PHP를 설치하세요. `php -v`로 확인합니다. PHP 코드는 `<?php`와 선택적인 닫는 `?>` 태그 사이에 씁니다.",
+        {
+          "code": "<?php\necho \"Hello, world\\n\";",
+          "lang": "php"
+        },
+        {
+          "code": "php hello.php\n# Hello, world\nphp -S localhost:8000    # serve the current folder at http://localhost:8000",
+          "lang": "shell"
+        },
+        "PHP 코드만 들어 있는 파일에서는 닫는 `?>` 태그를 생략하세요. 그러면 실수로 공백이 브라우저에 전송되는 일이 없습니다."
+      ]
+    },
+    {
+      "h": "변수와 기본 자료형",
+      "body": [
+        "변수 이름은 `$`로 시작합니다. 타입은 동적이지만 매개변수와 반환 타입을 선언할 수 있고, 파일 맨 위의 `declare(strict_types=1);`은 함수 호출에서 자동 형 변환을 막습니다.",
+        {
+          "table": {
+            "head": [
+              "타입",
+              "예시",
+              "설명"
+            ],
+            "rows": [
+              [
+                "`int`",
+                "`$n = 42;`",
+                "대부분의 시스템에서 64비트"
+              ],
+              [
+                "`float`",
+                "`$x = 3.14;`",
+                "배정밀도"
+              ],
+              [
+                "`string`",
+                "`$s = \"hi $name\";`",
+                "큰따옴표는 변수를 치환하고 작은따옴표는 치환하지 않음"
+              ],
+              [
+                "`bool`",
+                "`$ok = true;`",
+                "대소문자를 구분하지 않는 키워드"
+              ],
+              [
+                "`array`",
+                "`$a = [1, 2];`",
+                "순서가 있는 맵: 리스트와 딕셔너리를 하나로"
+              ],
+              [
+                "`null`",
+                "`$v = null;`",
+                "값 없음"
+              ]
+            ]
+          }
+        },
+        {
+          "code": "<?php\n$name = \"Ada\";\n$count = 7;\necho \"$name has $count items\\n\";        // Ada has 7 items\necho 'No $interpolation here' . \"\\n\";   // No $interpolation here\necho intdiv($count, 2), \" \", $count / 2, \"\\n\";  // 3 3.5\nvar_dump((int) \"12\" + 1);                // int(13)",
+          "lang": "php"
+        },
+        "`.` 연산자는 문자열을 이어 붙이고, `+`는 숫자에만 사용합니다."
+      ]
+    },
+    {
+      "h": "제어 흐름",
+      "body": [
+        {
+          "code": "<?php\n$score = 72;\nif ($score >= 90) {\n    echo \"A\\n\";\n} elseif ($score >= 70) {\n    echo \"B\\n\";                   // B\n} else {\n    echo \"C\\n\";\n}\n\nfor ($i = 0; $i < 3; $i++) {\n    echo $i, \" \";                 // 0 1 2\n}\necho \"\\n\";\n\nforeach ([\"apple\", \"pear\"] as $fruit) {\n    echo $fruit, \"\\n\";\n}\n\n$kind = match ($day = \"SAT\") {   // match is strict and returns a value\n    \"SAT\", \"SUN\" => \"weekend\",\n    default => \"weekday\",\n};\necho $kind, \"\\n\";                 // weekend",
+          "lang": "php"
+        },
+        "`match`(PHP 8.0 이상)는 `===`로 비교하고 일치하는 분기가 없으면 오류를 던집니다. 느슨하게 비교하고 `break`가 없으면 다음 case로 넘어가는 예전 `switch`와 다릅니다."
+      ]
+    },
+    {
+      "h": "함수",
+      "body": [
+        {
+          "code": "<?php\ndeclare(strict_types=1);\n\nfunction greet(string $name, string $greeting = \"Hello\"): string\n{\n    return \"$greeting, $name!\";\n}\n\necho greet(\"Lin\"), \"\\n\";                    // Hello, Lin!\necho greet(greeting: \"Hi\", name: \"Lin\"), \"\\n\"; // Hi, Lin!  (named arguments)\n\n$square = fn(int $x): int => $x * $x;       // arrow function\necho $square(5), \"\\n\";                      // 25\n\nfunction total(int ...$nums): int           // variadic\n{\n    return array_sum($nums);\n}\necho total(1, 2, 3), \"\\n\";                  // 6",
+          "lang": "php"
+        }
+      ]
+    },
+    {
+      "h": "대표 기능: 배열",
+      "body": [
+        "PHP 배열은 리스트, 딕셔너리, 스택, 큐로 모두 쓸 수 있는 하나의 유연한 타입입니다. 키는 정수 또는 문자열이며 삽입 순서가 유지됩니다. 배열을 다루는 내장 함수가 많이 준비되어 있습니다.",
+        {
+          "code": "<?php\n$nums = [3, 1, 2];\n$nums[] = 5;                       // append\nsort($nums);\necho implode(\", \", $nums), \"\\n\";   // 1, 2, 3, 5\n\n$ages = [\"ann\" => 31, \"bob\" => 25];\n$ages[\"cy\"] = 40;\nforeach ($ages as $person => $age) {\n    echo \"$person is $age\\n\";\n}\necho $ages[\"zed\"] ?? 0, \"\\n\";      // 0  (null coalescing)\n\n$evens = array_filter($nums, fn($n) => $n % 2 === 0);\n$squares = array_map(fn($n) => $n * $n, $nums);\necho json_encode(array_values($evens)), \" \", json_encode($squares), \"\\n\";  // [2] [1,4,9,25]\necho count($ages), \" \", array_key_exists(\"bob\", $ages) ? \"yes\" : \"no\", \"\\n\"; // 3 yes",
+          "lang": "php"
+        },
+        "배열은 대입할 때 복사됩니다(copy-on-write). 핸들로 전달되는 객체와 다릅니다."
+      ]
+    },
+    {
+      "h": "클래스, 생성자 프로모션, 열거형",
+      "body": [
+        {
+          "code": "<?php\ndeclare(strict_types=1);\n\nenum Role: string\n{\n    case Admin = \"admin\";\n    case Viewer = \"viewer\";\n}\n\nfinal class User\n{\n    public function __construct(\n        public readonly string $name,\n        public readonly Role $role = Role::Viewer,\n    ) {}\n\n    public function label(): string\n    {\n        return \"{$this->name} ({$this->role->value})\";\n    }\n}\n\n$u = new User(\"Ann\", Role::Admin);\necho $u->label(), \"\\n\";               // Ann (admin)\necho Role::from(\"viewer\")->name, \"\\n\"; // Viewer",
+          "lang": "php"
+        },
+        "생성자 프로모션(PHP 8.0)은 생성자 시그니처에서 속성을 선언하고 대입까지 합니다. `readonly` 속성(8.1)은 한 번만 설정할 수 있고, 값을 가진 열거형(8.1)은 case를 문자열이나 정수에 대응시킵니다. 인터페이스, 추상 클래스, 트레이트도 사용할 수 있습니다."
+      ]
+    },
+    {
+      "h": "오류 처리",
+      "body": [
+        "최신 PHP는 대부분의 오류에서 예외를 던집니다. 예상되는 실패에는 `Exception` 하위 클래스를 잡고, `Throwable`은 `TypeError` 같은 엔진 오류까지 포함합니다.",
+        {
+          "code": "<?php\nfunction parseAge(string $text): int\n{\n    if (!ctype_digit($text)) {\n        throw new InvalidArgumentException(\"invalid age: $text\");\n    }\n    return (int) $text;\n}\n\ntry {\n    echo parseAge(\"41\"), \"\\n\";   // 41\n    echo parseAge(\"abc\"), \"\\n\";\n} catch (InvalidArgumentException $e) {\n    echo $e->getMessage(), \"\\n\"; // invalid age: abc\n} finally {\n    echo \"done\\n\";\n}",
+          "lang": "php"
+        }
+      ]
+    },
+    {
+      "h": "작은 완성 프로그램: JSON API 엔드포인트",
+      "body": [
+        "이 코드를 `api.php`로 저장하고 `php -S localhost:8000`을 실행한 뒤 `http://localhost:8000/api.php?name=Ann`을 여세요. 쿼리 매개변수를 읽어 검증하고 JSON을 반환합니다.",
+        {
+          "code": "<?php\ndeclare(strict_types=1);\n\nheader(\"Content-Type: application/json; charset=utf-8\");\n\n$name = trim($_GET[\"name\"] ?? \"\");\nif ($name === \"\" || mb_strlen($name) > 50) {\n    http_response_code(400);\n    echo json_encode([\"error\" => \"name must be 1 to 50 characters\"]);\n    exit;\n}\n\n$response = [\n    \"message\" => \"Hello, $name!\",\n    \"length\" => mb_strlen($name),\n    \"time\" => date(DATE_ATOM),\n];\necho json_encode($response, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);",
+          "lang": "php"
+        },
+        "`$_GET`, `$_POST`, `$_COOKIE`에는 요청 데이터가 들어 있습니다. 그 안의 모든 값은 신뢰할 수 없는 값으로 취급하세요."
+      ]
+    },
+    {
+      "h": "초보자가 자주 하는 실수",
+      "body": [
+        {
+          "note": "사용자 입력을 SQL이나 HTML에 직접 넣지 마세요. SQL 인젝션을 막으려면 PDO 준비된 구문(`$stmt = $pdo->prepare(\"SELECT * FROM users WHERE id = ?\")`)을, 크로스 사이트 스크립팅을 막으려면 HTML에 출력할 때 `htmlspecialchars($value)`를 사용하세요."
+        },
+        {
+          "ul": [
+            "타입을 변환하는 `==`로 비교하는 경우. `===`와 `!==`를 사용하세요.",
+            "변수 이름의 `$`나 문장 끝의 세미콜론을 빠뜨리는 경우.",
+            "`md5`나 `sha1`로 비밀번호를 저장하는 경우. `password_hash`와 `password_verify`를 사용하세요.",
+            "UTF-8 텍스트에 `strlen`을 쓰는 경우. 이 함수는 바이트를 셉니다. 문자 수는 `mb_strlen`을 사용하세요.",
+            "오래된 PHP 버전을 쓰는 경우. 보안 패치와 최신 기능을 위해 지원되는 PHP 8 릴리스를 사용하세요."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "다음 학습 단계",
+      "body": [
+        "php.net의 공식 PHP Manual에는 모든 함수와 언어 레퍼런스, 사용자 노트가 있습니다. 패키지 관리자 Composer와 PSR 코딩 표준을 익힌 뒤 애플리케이션용 Laravel이나 Symfony, 작은 API용 Slim 같은 프레임워크를 써 보세요. PHPUnit은 표준 테스트 도구입니다."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "PHP는 지금도 배울 가치가 있나요?",
+      "a": "네. 웹의 상당 부분과 WordPress 사이트를 움직이고 있으며, Laravel이나 Symfony와 함께 쓰는 최신 PHP 8은 웹 애플리케이션을 생산적으로 만드는 방법입니다. PHP 시스템을 유지보수하고 개발하는 일자리도 흔합니다."
+    },
+    {
+      "q": "PHP는 프런트엔드 언어인가요, 백엔드 언어인가요?",
+      "a": "백엔드입니다. PHP는 서버에서 실행되어 완성된 HTML, JSON, 파일을 브라우저로 보내며, 브라우저는 PHP 코드를 볼 수 없습니다."
+    },
+    {
+      "q": "echo와 print는 무엇이 다른가요?",
+      "a": "둘 다 텍스트를 출력합니다. `echo`는 쉼표로 구분한 여러 인수를 받을 수 있고 아무것도 반환하지 않으며, `print`는 인수 하나를 받고 1을 반환합니다. 실제로는 대부분 `echo`를 씁니다."
+    },
+    {
+      "q": "declare(strict_types=1)은 무슨 일을 하나요?",
+      "a": "그 파일에서 하는 함수 호출에 스칼라 타입 선언을 엄격하게 적용합니다. 그래서 문자열 `\"5\"`를 `int` 매개변수에 넘기면 변환되지 않고 `TypeError`가 발생합니다."
+    }
+  ]
+}

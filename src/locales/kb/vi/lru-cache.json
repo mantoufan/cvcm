@@ -1,0 +1,223 @@
+{
+  "title": "Bộ nhớ đệm LRU: bảng băm cộng danh sách liên kết đôi, code Python O(1) — cv.cm",
+  "description": "Bộ nhớ đệm LRU (least recently used) hoạt động thế nào: get và put O(1) bằng bảng băm và danh sách liên kết đôi, OrderedDict và functools.lru_cache trong Python.",
+  "h1": "Bộ nhớ đệm LRU (LRU cache): cách hoạt động, code và độ phức tạp",
+  "answer": "Bộ nhớ đệm LRU (least recently used - ít được dùng gần đây nhất) giữ một số lượng phần tử cố định và, khi đầy, loại bỏ phần tử được dùng lâu nhất trước đây. Thiết kế kinh điển kết hợp bảng băm, tìm bất kỳ khóa nào trong O(1), với danh sách liên kết đôi sắp xếp theo mức độ dùng gần đây, di chuyển hoặc xóa bất kỳ mục nào trong O(1). Trong Python, `collections.OrderedDict` giúp viết một bộ nhớ đệm LRU chỉ trong vài dòng, và `functools.lru_cache` thêm một bộ nhớ đệm vào bất kỳ hàm nào.",
+  "sections": [
+    {
+      "h": "Bộ nhớ đệm LRU giải quyết vấn đề gì",
+      "body": [
+        "Bộ nhớ đệm giữ kết quả của các thao tác chậm, như truy vấn cơ sở dữ liệu, yêu cầu web hoặc phép tính tốn kém, để các yêu cầu lặp lại được trả lời nhanh. Bộ nhớ có hạn, nên bộ đệm phải quyết định bỏ gì khi đầy. LRU đặt cược rằng dữ liệu vừa dùng gần đây sẽ sớm được dùng lại, còn dữ liệu lâu không đụng tới có lẽ sẽ không. Cược này hiệu quả với nhiều khối lượng công việc thực tế, nên LRU và các xấp xỉ của nó xuất hiện trong cache CPU, page cache của hệ điều hành, cơ sở dữ liệu, máy chủ web và CDN."
+      ]
+    },
+    {
+      "h": "Ý tưởng: hai cấu trúc phối hợp với nhau",
+      "body": [
+        "Ta cần hai việc phải nhanh: tìm một khóa, và biết khóa nào ít được dùng gần đây nhất. Bảng băm một mình không có thứ tự. Danh sách một mình thì tìm chậm. Kết hợp lại thì làm được cả hai:",
+        {
+          "table": {
+            "head": [
+              "Thành phần",
+              "Trách nhiệm",
+              "Vì sao là O(1)"
+            ],
+            "rows": [
+              [
+                "Bảng băm",
+                "ánh xạ mỗi khóa tới node của nó trong danh sách",
+                "tra cứu băm trường hợp trung bình"
+              ],
+              [
+                "Danh sách liên kết đôi",
+                "giữ các node theo thứ tự từ dùng gần đây nhất đến ít nhất",
+                "gỡ một node bằng con trỏ `prev` và `next` chỉ đổi bốn tham chiếu"
+              ],
+              [
+                "Phía đầu (head)",
+                "mục dùng gần đây nhất",
+                "mục mới và mục vừa truy cập được chuyển về đây"
+              ],
+              [
+                "Phía đuôi (tail)",
+                "mục ít được dùng gần đây nhất",
+                "loại bỏ từ đây khi bộ đệm đầy"
+              ]
+            ]
+          }
+        },
+        "Với `get(key)`, tra node trong map, chuyển nó lên đầu và trả về giá trị. Với `put(key, value)`, cập nhật hoặc tạo node ở đầu; nếu bộ đệm giờ vượt dung lượng, xóa node ở cuối và xóa khóa của nó khỏi map."
+      ]
+    },
+    {
+      "h": "Ví dụ minh họa với dung lượng 2",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Thao tác",
+              "Kết quả",
+              "Thứ tự sau đó (mới nhất trước)",
+              "Ghi chú"
+            ],
+            "rows": [
+              [
+                "put(1, \"a\")",
+                "-",
+                "1",
+                ""
+              ],
+              [
+                "put(2, \"b\")",
+                "-",
+                "2, 1",
+                "bộ đệm đã đầy"
+              ],
+              [
+                "get(1)",
+                "\"a\"",
+                "1, 2",
+                "1 trở thành mới nhất"
+              ],
+              [
+                "put(3, \"c\")",
+                "-",
+                "3, 1",
+                "loại bỏ 2, mục ít được dùng gần đây nhất"
+              ],
+              [
+                "get(2)",
+                "miss",
+                "3, 1",
+                "2 đã bị loại bỏ"
+              ],
+              [
+                "put(1, \"A\")",
+                "-",
+                "1, 3",
+                "cập nhật đưa 1 lên đầu"
+              ],
+              [
+                "put(4, \"d\")",
+                "-",
+                "4, 1",
+                "loại bỏ 3"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "Cài đặt từ đầu bằng Python",
+      "body": [
+        "Các node sentinel đầu và đuôi loại bỏ các trường hợp đặc biệt cho danh sách rỗng: mọi node thật luôn có node đứng trước và sau.",
+        {
+          "code": "class Node:\n    __slots__ = (\"key\", \"value\", \"prev\", \"next\")\n\n    def __init__(self, key=None, value=None):\n        self.key, self.value = key, value\n        self.prev = self.next = None\n\nclass LRUCache:\n    def __init__(self, capacity):\n        self.capacity = capacity\n        self.map = {}\n        self.head, self.tail = Node(), Node()   # sentinels\n        self.head.next, self.tail.prev = self.tail, self.head\n\n    def _unlink(self, node):\n        node.prev.next, node.next.prev = node.next, node.prev\n\n    def _push_front(self, node):\n        node.prev, node.next = self.head, self.head.next\n        self.head.next.prev = node\n        self.head.next = node\n\n    def get(self, key):\n        node = self.map.get(key)\n        if node is None:\n            return None\n        self._unlink(node)\n        self._push_front(node)\n        return node.value\n\n    def put(self, key, value):\n        if key in self.map:\n            self._unlink(self.map[key])\n        node = self.map[key] = Node(key, value)\n        self._push_front(node)\n        if len(self.map) > self.capacity:\n            lru = self.tail.prev\n            self._unlink(lru)\n            del self.map[lru.key]",
+          "lang": "python"
+        },
+        {
+          "code": "cache = LRUCache(2)\ncache.put(1, \"a\")\ncache.put(2, \"b\")\nprint(cache.get(1))   # a\ncache.put(3, \"c\")     # evicts key 2\nprint(cache.get(2))   # None\ncache.put(1, \"A\")\ncache.put(4, \"d\")     # evicts key 3\nprint(cache.get(3), cache.get(1), cache.get(4))  # None A d",
+          "lang": "python"
+        }
+      ]
+    },
+    {
+      "h": "Phiên bản ngắn với OrderedDict",
+      "body": [
+        "`collections.OrderedDict` tự nó là bảng băm kết hợp danh sách liên kết đôi, và `move_to_end` cùng `popitem(last=False)` đều O(1). Điều đó làm nó thành lựa chọn đúng chất Python khi bạn cần một bộ nhớ đệm LRU dưới dạng đối tượng.",
+        {
+          "code": "from collections import OrderedDict\n\nclass LRU:\n    def __init__(self, capacity):\n        self.capacity = capacity\n        self.data = OrderedDict()\n\n    def get(self, key):\n        if key not in self.data:\n            return None\n        self.data.move_to_end(key)          # mark as most recent\n        return self.data[key]\n\n    def put(self, key, value):\n        self.data[key] = value\n        self.data.move_to_end(key)\n        if len(self.data) > self.capacity:\n            self.data.popitem(last=False)   # drop least recent\n\nc = LRU(2)\nc.put(\"x\", 1)\nc.put(\"y\", 2)\nc.get(\"x\")\nc.put(\"z\", 3)\nprint(list(c.data))  # ['x', 'z']",
+          "lang": "python"
+        }
+      ]
+    },
+    {
+      "h": "Lưu kết quả hàm bằng functools.lru_cache",
+      "body": [
+        "Để lưu giá trị trả về của một hàm, hãy dùng decorator `functools.lru_cache`. Các đối số phải băm được, vì chúng trở thành khóa của dictionary. `cache_info()` cho biết số hit, miss và kích thước hiện tại.",
+        {
+          "code": "from functools import lru_cache\n\n@lru_cache(maxsize=128)\ndef fib(n):\n    return n if n < 2 else fib(n - 1) + fib(n - 2)\n\nprint(fib(80))           # 23416728348467685\nprint(fib.cache_info())\n# CacheInfo(hits=78, misses=81, maxsize=128, currsize=81)",
+          "lang": "python"
+        },
+        "`maxsize=None` cho bộ đệm không giới hạn, đúng là việc `functools.cache` (Python 3.9 trở lên) làm. Gọi `fib.cache_clear()` để làm rỗng nó."
+      ]
+    },
+    {
+      "h": "Độ phức tạp thời gian và không gian",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Thao tác",
+              "Thời gian",
+              "Lý do"
+            ],
+            "rows": [
+              [
+                "get",
+                "O(1) trung bình",
+                "tra cứu băm cộng gỡ ra và nối lại một node"
+              ],
+              [
+                "put (chèn hoặc cập nhật)",
+                "O(1) trung bình",
+                "chèn vào bảng băm cộng một số hằng các thay đổi con trỏ"
+              ],
+              [
+                "Loại bỏ (evict)",
+                "O(1)",
+                "node ít được dùng gần đây nhất luôn nằm cạnh sentinel đuôi"
+              ],
+              [
+                "Không gian",
+                "O(capacity)",
+                "một mục trong map và một node danh sách cho mỗi phần tử được lưu"
+              ]
+            ]
+          }
+        },
+        {
+          "note": "Một thiết kế sai thường gặp là giữ các khóa trong một `list` Python thường và gọi `list.remove(key)` trên mỗi lần truy cập. Việc đó tốn O(n) mỗi thao tác và làm mất ý nghĩa của bộ nhớ đệm."
+        }
+      ]
+    },
+    {
+      "h": "Biến thể, lỗi và khi nào dùng LRU",
+      "body": [
+        {
+          "ul": [
+            "LFU (least frequently used - ít được dùng thường xuyên nhất) loại bỏ phần tử có ít lượt truy cập nhất; nó bảo vệ các phần tử phổ biến khỏi những lượt quét một lần nhưng phức tạp hơn.",
+            "LRU xấp xỉ: các hệ thống như Redis lấy mẫu vài khóa và loại bỏ khóa cũ nhất trong đó thay vì giữ danh sách chính xác, nhờ vậy tiết kiệm bộ nhớ.",
+            "Bộ đệm TTL cho các mục hết hạn sau một khoảng thời gian cố định, thường kết hợp với giới hạn kích thước.",
+            "Quên chuyển mục lên đầu khi `get`, hoặc khi `put` một khóa đã tồn tại, sẽ biến LRU thành FIFO.",
+            "Quên xóa khóa bị loại bỏ khỏi bảng băm sẽ để lại các mục treo và rò rỉ bộ nhớ.",
+            "Chia sẻ bộ nhớ đệm LRU giữa các luồng cần khóa (lock) quanh mỗi thao tác; `functools.lru_cache` an toàn khi gọi từ nhiều luồng."
+          ]
+        },
+        "LRU là lựa chọn mặc định tốt khi việc dùng gần đây dự đoán được việc dùng trong tương lai. Nó hoạt động kém khi một lượt quét lớn một lần đẩy dữ liệu hay dùng ra ngoài; những khối lượng công việc như vậy hưởng lợi từ LFU hoặc các chính sách chống quét. Thiết kế bộ nhớ đệm LRU với các thao tác O(1) cũng là một trong những câu hỏi phỏng vấn lập trình phổ biến nhất, vì nó kiểm tra cả bảng băm lẫn danh sách liên kết."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "LRU là viết tắt của gì?",
+      "a": "Least recently used (ít được dùng gần đây nhất). Khi bộ đệm đầy, nó loại bỏ mục đã lâu nhất không được đọc hoặc ghi."
+    },
+    {
+      "q": "Tại sao bộ nhớ đệm LRU cần danh sách liên kết đôi?",
+      "a": "Để xóa một node ở giữa danh sách trong O(1), bạn cần node đứng trước nó. Danh sách liên kết đôi lưu `prev` trên mọi node; danh sách liên kết đơn sẽ đòi hỏi một lần tìm O(n)."
+    },
+    {
+      "q": "Có thể cài đặt bộ nhớ đệm LRU chỉ bằng dict của Python không?",
+      "a": "Từ Python 3.7, `dict` giữ thứ tự chèn, nên bạn có thể xóa rồi chèn lại một khóa để đánh dấu nó là mới và loại bỏ `next(iter(d))`. `OrderedDict` thể hiện ý đồ rõ hơn với `move_to_end` và `popitem(last=False)`."
+    },
+    {
+      "q": "lru_cache và cache trong functools khác nhau thế nào?",
+      "a": "`functools.cache` là bộ đệm không giới hạn, tương đương `lru_cache(maxsize=None)`. `lru_cache` với một con số sẽ loại bỏ các kết quả ít được dùng gần đây nhất khi đạt kích thước đó."
+    },
+    {
+      "q": "LRU có luôn là chính sách loại bỏ tốt nhất không?",
+      "a": "Không. Nó đơn giản và hoạt động tốt khi các mục gần đây có khả năng được dùng lại, nhưng các lượt quét tuần tự lớn có thể đẩy mất dữ liệu hữu ích. LFU, ARC và các chính sách khác xử lý những khối lượng công việc đó tốt hơn."
+    }
+  ]
+}

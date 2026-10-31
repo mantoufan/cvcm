@@ -1,0 +1,178 @@
+{
+  "title": "Heap nhị phân và hàng đợi ưu tiên: sift up, sift down và heapq trong Python — cv.cm",
+  "description": "Heap nhị phân hoạt động thế nào: tính chất heap, bố cục mảng, sift up và sift down, heapify O(n), hàng đợi ưu tiên và heapq của Python, kèm code và độ phức tạp.",
+  "h1": "Heap nhị phân: hàng đợi ưu tiên, code và độ phức tạp",
+  "answer": "Heap nhị phân (binary heap) là cây nhị phân đầy đủ (complete) được lưu trong mảng, trong đó mỗi cha nhỏ hơn hoặc bằng các con (min-heap) hoặc lớn hơn hoặc bằng các con (max-heap). Phần tử nhỏ nhất luôn ở chỉ số 0, nên bạn đọc nó trong O(1), và chèn hoặc lấy ra trong O(log n). Heap là cách chuẩn để cài đặt hàng đợi ưu tiên; trong Python, dùng mô-đun `heapq`.",
+  "sections": [
+    {
+      "h": "Heap giải quyết vấn đề gì",
+      "body": [
+        "Nhiều chương trình liên tục cần phần tử khẩn cấp nhất từ một tập thay đổi: sự kiện kế tiếp trong mô phỏng, node chưa thăm gần nhất trong thuật toán Dijkstra, tác vụ có ưu tiên cao nhất, hoặc k giá trị lớn nhất trong một luồng dữ liệu. Sắp xếp lại cả tập sau mỗi lần chèn tốn O(n log n) mỗi lần. Danh sách đã sắp xếp lấy ra rẻ nhưng chèn O(n). Heap làm cả chèn và lấy phần tử nhỏ nhất đều O(log n), đúng thứ hàng đợi ưu tiên cần.",
+        {
+          "note": "Heap chỉ được sắp xếp một phần. Giá trị nhỏ nhất ở trên cùng, nhưng phần còn lại của mảng không được sắp xếp. Đừng mong `heap[1]` là phần tử nhỏ thứ hai."
+        }
+      ]
+    },
+    {
+      "h": "Ý tưởng: một cây lưu trong mảng",
+      "body": [
+        "Heap là cây nhị phân đầy đủ: mọi tầng đều đầy trừ có thể tầng cuối, được lấp từ trái sang. Hình dạng đó cho phép lưu cây trong một list thường mà không cần con trỏ.",
+        {
+          "table": {
+            "head": [
+              "Quan hệ",
+              "Công thức chỉ số (bắt đầu từ 0)"
+            ],
+            "rows": [
+              [
+                "Con trái của i",
+                "`2 * i + 1`"
+              ],
+              [
+                "Con phải của i",
+                "`2 * i + 2`"
+              ],
+              [
+                "Cha của i",
+                "`(i - 1) // 2`"
+              ]
+            ]
+          }
+        },
+        "Hai thao tác sửa chữa giữ tính chất heap. Sift up: sau khi thêm phần tử mới vào cuối, hoán đổi nó với cha chừng nào nó còn nhỏ hơn. Sift down: sau khi chuyển phần tử cuối lên gốc, hoán đổi nó với con nhỏ hơn chừng nào nó còn lớn hơn con đó. Mỗi thao tác đi dọc một đường từ gốc tới lá, nên thực hiện tối đa khoảng log2(n) lần hoán đổi."
+      ]
+    },
+    {
+      "h": "Ví dụ minh họa: push và pop",
+      "body": [
+        "Bắt đầu với min-heap `[2, 5, 3, 9, 6]` (2 là gốc, các con của nó là 5 và 3, và 5 có các con là 9 và 6).",
+        {
+          "ol": [
+            "Push 1: thêm vào cuối, được `[2, 5, 3, 9, 6, 1]`. Chỉ số 5 có cha ở chỉ số 2 (giá trị 3).",
+            "1 nhỏ hơn 3, hoán đổi: `[2, 5, 1, 9, 6, 3]`. Giờ chỉ số 2 có cha ở chỉ số 0 (giá trị 2).",
+            "1 nhỏ hơn 2, hoán đổi: `[1, 5, 2, 9, 6, 3]`. Nó đã lên gốc, dừng.",
+            "Pop: lấy gốc 1 ra, chuyển phần tử cuối 3 lên gốc: `[3, 5, 2, 9, 6]`.",
+            "Các con của gốc là 5 và 2; con nhỏ hơn là 2, và 3 lớn hơn, hoán đổi: `[2, 5, 3, 9, 6]`. Chỉ số 2 không có con, dừng. Lần pop trả về 1."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Cài đặt min-heap bằng Python",
+      "body": [
+        "Lớp này cho thấy cơ chế hoạt động. Trong code thực tế hãy dùng `heapq`, trình bày ở phần sau.",
+        {
+          "code": "class MinHeap:\n    def __init__(self):\n        self.a = []\n    def push(self, x):\n        a = self.a\n        a.append(x)\n        i = len(a) - 1\n        while i > 0 and a[i] < a[(i - 1) // 2]:      # sift up\n            p = (i - 1) // 2\n            a[i], a[p] = a[p], a[i]\n            i = p\n    def pop(self):\n        a = self.a\n        top, last = a[0], a.pop()                   # IndexError if empty\n        if a:\n            a[0], i = last, 0\n            while True:                             # sift down\n                c = 2 * i + 1\n                if c + 1 < len(a) and a[c + 1] < a[c]:\n                    c += 1                          # pick the smaller child\n                if c >= len(a) or a[i] <= a[c]:\n                    break\n                a[i], a[c] = a[c], a[i]\n                i = c\n        return top\nh = MinHeap()\nfor x in [5, 3, 9, 1, 6, 2]:\n    h.push(x)\nprint([h.pop() for _ in range(6)])  # [1, 2, 3, 5, 6, 9]",
+          "lang": "python"
+        }
+      ]
+    },
+    {
+      "h": "Hàng đợi ưu tiên với heapq của Python",
+      "body": [
+        "Mô-đun `heapq` làm việc trên list thông thường và luôn giữ nó là min-heap. `heapify` biến một list có sẵn thành heap tại chỗ trong O(n). Để dùng độ ưu tiên, hãy push các tuple: Python so sánh tuple từng phần tử, nên phần tử đầu là độ ưu tiên. Thêm một bộ đếm làm tiêu chí phân định khi bằng nhau để các phần tử cùng độ ưu tiên không bao giờ phải so sánh trực tiếp.",
+        {
+          "code": "import heapq\nfrom itertools import count\nnums = [7, 2, 9, 4, 1]\nheapq.heapify(nums)\nprint(nums[0], heapq.heappop(nums))      # 1 1\nprint(heapq.nlargest(2, [7, 2, 9, 4]))   # [9, 7]\ntasks, order = [], count()\nheapq.heappush(tasks, (2, next(order), \"write report\"))\nheapq.heappush(tasks, (1, next(order), \"fix outage\"))\nheapq.heappush(tasks, (2, next(order), \"reply to email\"))\nwhile tasks:\n    priority, _, name = heapq.heappop(tasks)\n    print(priority, name)\n# 1 fix outage\n# 2 write report\n# 2 reply to email",
+          "lang": "python"
+        },
+        "Với max-heap, Python 3.14 thêm `heapq.heapify_max`, `heapq.heappush_max` và `heapq.heappop_max`. Trên các phiên bản cũ hơn, mẹo thường dùng là push khóa đã đổi dấu, ví dụ `heapq.heappush(h, -score)`, và đổi dấu lại khi pop."
+      ]
+    },
+    {
+      "h": "Độ phức tạp thời gian và không gian",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Thao tác",
+              "Thời gian",
+              "Lý do"
+            ],
+            "rows": [
+              [
+                "Xem giá trị nhỏ nhất",
+                "O(1)",
+                "luôn ở chỉ số 0"
+              ],
+              [
+                "Push (chèn)",
+                "O(log n)",
+                "sift up dọc một đường"
+              ],
+              [
+                "Pop phần tử nhỏ nhất",
+                "O(log n)",
+                "sift down dọc một đường"
+              ],
+              [
+                "Heapify n phần tử",
+                "O(n)",
+                "đa số node ở gần đáy và chỉ di chuyển một chút"
+              ],
+              [
+                "Tìm một giá trị bất kỳ",
+                "O(n)",
+                "heap không được sắp xếp"
+              ],
+              [
+                "Heapsort",
+                "O(n log n)",
+                "heapify, rồi n lần pop"
+              ],
+              [
+                "Không gian",
+                "O(n)",
+                "một mảng duy nhất, không con trỏ"
+              ]
+            ]
+          }
+        },
+        "Xây heap bằng cách gọi push n lần tốn O(n log n). `heapify` sift down từ cha cuối cùng tới gốc và tốn O(n), nên hãy ưu tiên dùng khi bạn đã có đủ phần tử."
+      ]
+    },
+    {
+      "h": "Các biến thể và lỗi thường gặp",
+      "body": [
+        {
+          "ul": [
+            "Max-heap: cùng code nhưng đảo phép so sánh; trong Python, dùng các hàm `_max` (từ 3.14) hoặc đổi dấu khóa.",
+            "Heap d-ary: mỗi node có d con. Cây nông hơn làm push rẻ hơn và pop đắt hơn một chút.",
+            "Hàng đợi ưu tiên có chỉ mục / decrease-key: `heapq` không thể đổi độ ưu tiên của một phần tử tại chỗ. Cách né thường dùng (trong thuật toán Dijkstra) là push một mục mới và bỏ qua các mục lỗi thời khi chúng được pop ra.",
+            "So sánh các phần tử không so sánh được: push `(priority, dict)` gây `TypeError` khi hai độ ưu tiên bằng nhau, vì khi đó Python so sánh các dict. Hãy thêm bộ đếm làm phần tử thứ hai của tuple.",
+            "Coi list heap là đã sắp xếp. Chỉ `heap[0]` được đảm bảo; hãy dùng `sorted(heap)` nếu cần mọi phần tử theo thứ tự.",
+            "Lỗi lệch một đơn vị khi trộn công thức đánh số từ 1 (con là `2i` và `2i + 1`) trong sách giáo khoa với list Python đánh số từ 0."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Khi nào dùng heap và các bài toán điển hình",
+      "body": [
+        "Dùng heap khi bạn liên tục chỉ cần phần tử nhỏ nhất hoặc lớn nhất từ một tập luôn thay đổi. Dùng danh sách đã sắp xếp hoặc cây cân bằng khi còn cần duyệt theo thứ tự hoặc xóa tùy ý, và dùng `min()` thông thường khi chỉ cần giá trị nhỏ nhất một lần.",
+        "Ứng dụng kinh điển: đường đi ngắn nhất Dijkstra và cây khung nhỏ nhất Prim, gộp k danh sách đã sắp xếp (`heapq.merge`), tìm k phần tử lớn nhất hoặc nhỏ nhất (giữ heap kích thước k, O(n log k)), trung vị chạy (hai heap), bộ lập lịch tác vụ và mô phỏng hướng sự kiện, và heapsort."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Heap và hàng đợi ưu tiên khác nhau thế nào?",
+      "a": "Hàng đợi ưu tiên là một kiểu dữ liệu trừu tượng: chèn phần tử và lấy ra phần tử có ưu tiên cao nhất. Heap nhị phân là cấu trúc dữ liệu phổ biến nhất dùng để cài đặt nó."
+    },
+    {
+      "q": "heapq của Python là min-heap hay max-heap?",
+      "a": "Các hàm chính như `heappush` và `heappop` duy trì min-heap, nên `heappop` trả về phần tử nhỏ nhất. Python 3.14 thêm các hàm `_max` riêng cho max-heap; trên các phiên bản cũ hơn, hãy lưu các số đã đổi dấu."
+    },
+    {
+      "q": "Tại sao heapify là O(n) mà không phải O(n log n)?",
+      "a": "Heapify sift down từng cha, bắt đầu từ đáy. Khoảng một nửa số node là lá và không di chuyển, một phần tư di chuyển tối đa một tầng, và cứ thế; tổng công việc cộng lại là O(n)."
+    },
+    {
+      "q": "Heap nhị phân có giống cây tìm kiếm nhị phân không?",
+      "a": "Không. BST sắp thứ tự cây con trái và phải để bạn tìm bất kỳ khóa nào trong O(log n). Heap chỉ đảm bảo mỗi cha nhỏ hơn các con, nên tìm giá trị nhỏ nhất nhanh nhưng tìm khóa khác là O(n)."
+    },
+    {
+      "q": "Heapsort có ổn định không?",
+      "a": "Không. Các phép hoán đổi khi sift down có thể làm đổi thứ tự các khóa bằng nhau. Nó sắp xếp tại chỗ trong O(n log n) với O(1) không gian phụ."
+    }
+  ]
+}

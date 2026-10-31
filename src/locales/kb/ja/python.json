@@ -1,0 +1,223 @@
+{
+  "title": "Pythonチュートリアル：文法・型・関数・ファイル操作を1ページで学ぶ — cv.cm",
+  "description": "Python入門を1ページで：インストールとHello world、変数と型、if文とループ、関数、リストと辞書、例外処理、ファイル操作、完成サンプルまで解説します。",
+  "h1": "Python入門チュートリアル（初心者向け）",
+  "answer": "Pythonは、波括弧ではなくインデントでブロックを表す読みやすい文法が特徴の、汎用のインタープリタ型言語です。Python 3をインストールし、`print(\"Hello, world\")` を `hello.py` に保存して `python3 hello.py` で実行します。動的型付け、`def` で定義する関数、組み込みのリスト・辞書・集合、`try`/`except` による例外処理、そして充実した標準ライブラリが中心的な要素です。",
+  "sections": [
+    {
+      "h": "Pythonとは何か、何に使われるか",
+      "body": [
+        "Pythonは、1991年にGuido van Rossumが公開した高水準の動的型付け言語です。コードはインタープリタ（標準実装はCPython）で実行されるため、別途コンパイルする手順はありません。データ分析や機械学習（NumPy、pandas、PyTorch）、Webバックエンド（Django、Flask、FastAPI）、自動化スクリプト、科学技術計算、プログラミング教育などに使われています。Python 2は2020年にサポートが終了したので、学ぶならPython 3です。"
+      ]
+    },
+    {
+      "h": "Pythonのインストールと Hello, world の実行",
+      "body": [
+        "Windows・macOSではpython.orgからインストーラーをダウンロードし、Linuxではパッケージマネージャーを使います。インストールは `python3 --version` で確認できます（Windowsでは `py` や `python` コマンドであることが多いです）。次のファイルを `hello.py` として保存します。",
+        {
+          "code": "print(\"Hello, world\")",
+          "lang": "python"
+        },
+        {
+          "code": "python3 hello.py\n# Hello, world",
+          "lang": "shell"
+        },
+        "ファイルを指定せずに `python3` を実行すると対話モード（REPL）が起動し、1行ずつ試すのに便利です。"
+      ]
+    },
+    {
+      "h": "変数と基本の型",
+      "body": [
+        "変数は値を代入すると作られます。型の宣言は不要で、値自体が型を持ち、`type(x)` で確認できます。",
+        {
+          "table": {
+            "head": [
+              "型",
+              "例",
+              "備考"
+            ],
+            "rows": [
+              [
+                "`int`",
+                "`42`, `-7`, `10**20`",
+                "任意の大きさの整数"
+              ],
+              [
+                "`float`",
+                "`3.14`, `1e-3`",
+                "64ビット浮動小数点数"
+              ],
+              [
+                "`bool`",
+                "`True`, `False`",
+                "先頭は大文字"
+              ],
+              [
+                "`str`",
+                "`\"hi\"`, `'hi'`",
+                "変更できないUnicode文字列"
+              ],
+              [
+                "`None`",
+                "`None`",
+                "値がないことを表す"
+              ]
+            ]
+          }
+        },
+        {
+          "code": "name = \"Ada\"\nage = 36\nheight = 1.65\nprint(f\"{name} is {age} years old\")  # Ada is 36 years old\nprint(7 / 2, 7 // 2, 7 % 2)          # 3.5 3 1\nprint(int(\"12\") + 1)                 # 13",
+          "lang": "python"
+        }
+      ]
+    },
+    {
+      "h": "制御構文：if、for、while",
+      "body": [
+        "ブロックはコロンで始まり、インデントで範囲を決めます（慣例では半角スペース4つ）。`for` ループは任意のシーケンスを順に処理し、`range(n)` は0からn−1までの数を返します。",
+        {
+          "code": "score = 72\nif score >= 90:\n    grade = \"A\"\nelif score >= 70:\n    grade = \"B\"\nelse:\n    grade = \"C\"\nprint(grade)  # B\nfor i in range(3):\n    print(i)  # 0, then 1, then 2\nn = 10\nwhile n > 1:\n    n = n // 2\nprint(n)  # 1",
+          "lang": "python"
+        }
+      ]
+    },
+    {
+      "h": "関数",
+      "body": [
+        "関数は `def` で定義します。引数にはデフォルト値を設定でき、呼び出し側は名前を指定して渡せます。`return` のない関数は `None` を返します。",
+        {
+          "code": "def greet(name, greeting=\"Hello\"):\n    return f\"{greeting}, {name}!\"\nprint(greet(\"Lin\"))                 # Hello, Lin!\nprint(greet(\"Lin\", greeting=\"Hi\"))  # Hi, Lin!\nsquare = lambda x: x * x\nprint(square(5))                    # 25",
+          "lang": "python"
+        },
+        "`def area(w: float, h: float) -> float:` のような型ヒントは、意図を明示し、mypyなどのツールでコードを検査できるようにしますが、インタープリタ自体は型を強制しません。"
+      ]
+    },
+    {
+      "h": "リスト、タプル、辞書、集合",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "型",
+              "リテラル",
+              "順序",
+              "変更可能",
+              "主な用途"
+            ],
+            "rows": [
+              [
+                "`list`",
+                "`[1, 2, 3]`",
+                "はい",
+                "はい",
+                "変更していく列"
+              ],
+              [
+                "`tuple`",
+                "`(1, 2)`",
+                "はい",
+                "いいえ",
+                "固定された値のまとまり"
+              ],
+              [
+                "`dict`",
+                "`{\"a\": 1}`",
+                "挿入順",
+                "はい",
+                "キーから値を引く"
+              ],
+              [
+                "`set`",
+                "`{1, 2}`",
+                "いいえ",
+                "はい",
+                "重複のない要素、所属判定"
+              ]
+            ]
+          }
+        },
+        {
+          "code": "nums = [3, 1, 2]\nnums.append(5)\nnums.sort()\nprint(nums, nums[0], nums[-1], nums[1:3])  # [1, 2, 3, 5] 1 5 [2, 3]\nages = {\"ann\": 31, \"bob\": 25}\nages[\"cy\"] = 40\nfor person, age in ages.items():\n    print(person, age)\nprint(ages.get(\"zed\", 0))  # 0\nsquares = [x * x for x in range(5) if x % 2 == 0]\nprint(squares)  # [0, 4, 16]",
+          "lang": "python"
+        },
+        "最後の行は内包表記（リスト内包表記）で、Pythonを代表する機能の一つです。ループと任意の条件を1つの式にまとめてリストを作れます。辞書や集合の内包表記も同じ書き方です。"
+      ]
+    },
+    {
+      "h": "特徴的な機能：アンパック、with、ジェネレータ",
+      "body": [
+        {
+          "code": "a, b = 1, 2\na, b = b, a            # swap without a temporary\nfirst, *rest = [1, 2, 3, 4]\nprint(first, rest)     # 1 [2, 3, 4]\nwith open(\"notes.txt\", \"w\", encoding=\"utf-8\") as f:\n    f.write(\"line one\\n\")   # file is closed automatically\ndef countdown(n):\n    while n > 0:\n        yield n\n        n -= 1\nprint(list(countdown(3)))  # [3, 2, 1]",
+          "lang": "python"
+        },
+        "`with` 文は準備と後始末の処理を代わりに実行します（ここではエラーが起きてもファイルを確実に閉じます）。`yield` を使う関数はジェネレータで、値を1つずつ遅延生成するため、大きなデータでもメモリを節約できます。"
+      ]
+    },
+    {
+      "h": "try と except によるエラー処理",
+      "body": [
+        "エラーは例外として送出されます。想定する例外の種類を指定して捕捉し、必ず実行したい処理には `finally` を使います。",
+        {
+          "code": "def parse_age(text):\n    try:\n        age = int(text)\n    except ValueError:\n        print(f\"not a number: {text!r}\")\n        return None\n    if age < 0:\n        raise ValueError(\"age cannot be negative\")\n    return age\nprint(parse_age(\"41\"))   # 41\nprint(parse_age(\"abc\"))  # not a number: 'abc', then None",
+          "lang": "python"
+        }
+      ]
+    },
+    {
+      "h": "小さな完成プログラム：単語カウンター",
+      "body": [
+        "このスクリプトは、コマンドラインで指定したテキストファイルを読み、出現回数の多い単語を上位5件表示します。標準ライブラリだけを使います。",
+        {
+          "code": "import sys\nfrom collections import Counter\ndef top_words(path, n=5):\n    with open(path, encoding=\"utf-8\") as f:\n        words = f.read().lower().split()\n    cleaned = [w.strip(\".,;:!?\\\"'()\") for w in words]\n    return Counter(w for w in cleaned if w).most_common(n)\nif __name__ == \"__main__\":\n    if len(sys.argv) != 2:\n        sys.exit(\"usage: python3 count.py FILE\")\n    try:\n        for word, count in top_words(sys.argv[1]):\n            print(f\"{count:5}  {word}\")\n    except FileNotFoundError:\n        sys.exit(f\"file not found: {sys.argv[1]}\")",
+          "lang": "python"
+        },
+        "`python3 count.py notes.txt` で実行します。`if __name__ == \"__main__\":` の判定により、このファイルをモジュールとしてimportしても、スクリプト部分は実行されません。"
+      ]
+    },
+    {
+      "h": "初心者がよくやる間違い",
+      "body": [
+        {
+          "note": "ミュータブルな値を引数のデフォルト値にしないでください。`def add(item, items=[])` では、すべての呼び出しで同じリストが共有されます。`items=None` とし、関数の中でリストを作ります。"
+        },
+        {
+          "ul": [
+            "タブと空白の混在や不揃いなインデントは `IndentationError` の原因になります。エディタで半角スペース4つを挿入するよう設定しましょう。",
+            "`=` は代入、`==` は比較です。`is` は `None` との比較（`if x is None`）にだけ使います。",
+            "`input()` は常に文字列を返します。計算の前に `int()` や `float()` で変換してください。",
+            "`b = a` ではリストはコピーされず、両方の名前が同じリストを指します。コピーには `b = a.copy()` か `b = list(a)` を使います。",
+            "パッケージはシステムのPythonではなく、仮想環境（`python3 -m venv .venv`）の中にインストールしましょう。"
+          ]
+        }
+      ]
+    },
+    {
+      "h": "次のステップ",
+      "body": [
+        "公式のPythonチュートリアルを一通り読み、ライブラリリファレンスで `pathlib`、`json`、`datetime`、`itertools` などのモジュールを調べてみましょう。サードパーティのパッケージを使うために `pip` と仮想環境を学び、`unittest` やpytestでテストを書きます。その後は、Web（DjangoまたはFastAPI）、データ分析（pandas）、自動化のいずれかに進みましょう。"
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Pythonは初心者に向いていますか？",
+      "a": "はい。文法が短く自然な英語に近いこと、エラーメッセージが分かりやすいこと、REPLで1行ずつ試せることが理由です。実務でも広く使われているため、身につけたスキルが長く役立ちます。"
+    },
+    {
+      "q": "Pythonはコンパイル言語ですか、インタープリタ言語ですか？",
+      "a": "CPythonはソースコードをバイトコードにコンパイルし、そのバイトコードを解釈実行します。スクリプトを実行すると自動で行われるので、別にコンパイルする手順は不要です。"
+    },
+    {
+      "q": "リストとタプルの違いは何ですか？",
+      "a": "リストは変更可能で、要素の追加・削除・変更ができます。タプルは変更不可なので、固定された値のまとまりに使われ、辞書のキーにもできます。"
+    },
+    {
+      "q": "Pythonのコードが遅いのはなぜですか？",
+      "a": "純粋なPythonのループはコンパイル言語より遅くなります。組み込み関数や内包表記、内部のループをCで実行するNumPyなどのライブラリを使いましょう。"
+    },
+    {
+      "q": "コマンドラインでは python と python3 のどちらを使うべきですか？",
+      "a": "macOSや多くのLinuxでは `python3` を使ってください。`python` は存在しなかったり、別のものを指していたりすることがあります。Windowsでは `py` ランチャーが一般的です。"
+    }
+  ]
+}

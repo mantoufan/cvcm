@@ -1,0 +1,253 @@
+{
+  "title": "Assembly tutorial: x86-64 registers, NASM syntax, syscalls and functions — cv.cm",
+  "description": "Learn x86-64 assembly on Linux with NASM: registers, arithmetic, jumps and loops, memory addressing, system calls, the calling convention and AT&T syntax.",
+  "h1": "Assembly language tutorial for beginners (x86-64, NASM)",
+  "answer": "Assembly language is a human-readable form of a processor's machine instructions: each line usually becomes one instruction such as `mov rax, 1` or `add rax, rbx`. You work directly with registers, memory addresses and the stack, with no variables, types or loops beyond what you build from jumps. This tutorial uses x86-64 on Linux with the NASM assembler: write a `.asm` file, assemble it with `nasm -f elf64`, and link it with `ld`.",
+  "sections": [
+    {
+      "h": "What assembly is and who uses it",
+      "body": [
+        "Every processor family has its own instruction set and therefore its own assembly language. x86-64 (also called AMD64) runs most desktop PCs and servers; ARM (AArch64) runs most phones, Apple silicon Macs and many servers. An assembler translates assembly into machine code, and a linker combines the result into an executable.",
+        "Few programs are written entirely in assembly today. It is used in operating system kernels and bootloaders, performance-critical routines (cryptography, codecs, math libraries), embedded firmware, compiler development, security research and reverse engineering. Most often, developers read assembly to understand what a compiler produced or to debug a crash."
+      ]
+    },
+    {
+      "h": "Install NASM and run Hello, world",
+      "body": [
+        "On Debian or Ubuntu, install the tools with `sudo apt install nasm binutils` (`binutils` provides the linker `ld`). This program calls the Linux kernel directly through system calls, so it needs no C library.",
+        {
+          "code": "; hello.asm - x86-64 Linux, NASM syntax\nsection .data\n    msg     db \"Hello, world!\", 10   ; 10 = newline\n    msglen  equ $ - msg              ; length computed by the assembler\n\nsection .text\n    global _start\n\n_start:\n    mov     rax, 1          ; system call number 1 = write\n    mov     rdi, 1          ; file descriptor 1 = stdout\n    mov     rsi, msg        ; address of the bytes\n    mov     rdx, msglen     ; number of bytes\n    syscall\n\n    mov     rax, 60         ; system call number 60 = exit\n    xor     rdi, rdi        ; exit code 0\n    syscall",
+          "lang": "asm"
+        },
+        {
+          "code": "nasm -f elf64 hello.asm -o hello.o\nld hello.o -o hello\n./hello\n# Hello, world!",
+          "lang": "shell"
+        },
+        "`section .data` holds initialized data, `section .text` holds code, and `_start` is the entry point that `ld` looks for. Comments start with `;`. Without the final `exit` system call, the processor would keep executing whatever bytes follow and the program would crash."
+      ]
+    },
+    {
+      "h": "Registers and data sizes",
+      "body": [
+        "Registers are small, very fast storage locations inside the CPU. x86-64 has 16 general-purpose 64-bit registers. Each can also be used in smaller parts.",
+        {
+          "table": {
+            "head": [
+              "Register",
+              "Common role",
+              "Smaller parts"
+            ],
+            "rows": [
+              [
+                "`rax`",
+                "Return value, system call number",
+                "`eax` (32-bit), `ax` (16), `al` (8)"
+              ],
+              [
+                "`rdi`, `rsi`, `rdx`",
+                "First three function or system call arguments",
+                "`edi`, `esi`, `edx`"
+              ],
+              [
+                "`rcx`, `r8`, `r9`",
+                "Fourth to sixth function arguments",
+                "`ecx`, `r8d`, `r9d`"
+              ],
+              [
+                "`rbx`, `rbp`, `r12`–`r15`",
+                "Values that must survive function calls (callee-saved)",
+                "`ebx`, `r12d`"
+              ],
+              [
+                "`rsp`",
+                "Stack pointer: address of the top of the stack",
+                "Do not use for data"
+              ],
+              [
+                "`rip`",
+                "Instruction pointer (changed only by jumps, calls, returns)",
+                "Not directly writable"
+              ]
+            ]
+          }
+        },
+        "Data in memory is declared with `db` (byte, 8 bits), `dw` (word, 16), `dd` (doubleword, 32) and `dq` (quadword, 64). Uninitialized buffers go in `section .bss` with `resb`, `resq` and so on. Writing to a 32-bit register such as `eax` also clears the upper 32 bits of `rax`, which is why `xor eax, eax` is a common way to set `rax` to zero."
+      ]
+    },
+    {
+      "h": "Basic instructions and control flow",
+      "body": [
+        "Most instructions take a destination first and a source second: `add rax, rbx` means `rax = rax + rbx`. There are no `if` or `while` statements; you compare values with `cmp`, which sets flags, and then use a conditional jump.",
+        {
+          "table": {
+            "head": [
+              "Instruction",
+              "Meaning"
+            ],
+            "rows": [
+              [
+                "`mov rax, rbx`",
+                "Copy `rbx` into `rax`"
+              ],
+              [
+                "`add`, `sub`, `imul`, `inc`, `dec`",
+                "Integer arithmetic"
+              ],
+              [
+                "`cmp rax, 10`",
+                "Compare (computes `rax - 10` and sets flags only)"
+              ],
+              [
+                "`je`, `jne`, `jl`, `jg`, `jle`, `jge`",
+                "Jump if equal, not equal, less, greater... (signed)"
+              ],
+              [
+                "`jmp label`",
+                "Jump unconditionally"
+              ],
+              [
+                "`push`, `pop`",
+                "Put a value on the stack, take it off"
+              ],
+              [
+                "`call`, `ret`",
+                "Call a function, return from it"
+              ]
+            ]
+          }
+        },
+        {
+          "code": "; sum.asm - add 1..10, return the result as the exit code\nsection .text\n    global _start\n\n_start:\n    xor     rax, rax        ; sum = 0\n    mov     rcx, 1          ; i = 1\n.loop:\n    cmp     rcx, 10\n    jg      .done           ; if i > 10, leave the loop\n    add     rax, rcx        ; sum += i\n    inc     rcx             ; i++\n    jmp     .loop\n.done:\n    mov     rdi, rax        ; exit code = sum\n    mov     rax, 60         ; exit\n    syscall",
+          "lang": "asm"
+        },
+        {
+          "code": "nasm -f elf64 sum.asm -o sum.o && ld sum.o -o sum\n./sum; echo $?\n# 55",
+          "lang": "shell"
+        },
+        "Labels starting with a dot, like `.loop`, are local to the previous normal label. `jl` and `jg` treat values as signed; `jb` and `ja` are the unsigned versions."
+      ]
+    },
+    {
+      "h": "Memory addressing and arrays",
+      "body": [
+        "Square brackets mean \"the memory at this address\". An address can combine a base register, an index register multiplied by 1, 2, 4 or 8, and a constant: `[base + index*scale + offset]`. This makes array access a single instruction.",
+        {
+          "code": "section .data\n    nums    dq 3, 1, 4, 1, 5         ; five 64-bit integers\n    count   equ ($ - nums) / 8\n\nsection .text\n    global _start\n\n_start:\n    xor     rax, rax                 ; total = 0\n    xor     rcx, rcx                 ; index = 0\n.next:\n    add     rax, [nums + rcx*8]      ; total += nums[index]\n    inc     rcx\n    cmp     rcx, count\n    jl      .next\n    mov     rdi, rax                 ; exit code 14\n    mov     rax, 60\n    syscall",
+          "lang": "asm"
+        },
+        "`mov rax, nums` loads the address, while `mov rax, [nums]` loads the value stored there. `lea rsi, [rbx + 8]` computes an address without reading memory. When the size is not clear from a register, state it: `mov qword [rbx], 0`."
+      ]
+    },
+    {
+      "h": "Functions and the calling convention",
+      "body": [
+        "On Linux, functions follow the System V AMD64 ABI. Integer arguments go in `rdi`, `rsi`, `rdx`, `rcx`, `r8`, `r9`; the return value is in `rax`. A function must preserve `rbx`, `rbp`, `r12`–`r15` and `rsp`, and `rsp` must be a multiple of 16 just before a `call`. Following these rules lets assembly call C functions such as `printf`, and lets C call assembly.",
+        {
+          "code": "; square.asm - define a function and call printf from the C library\n    extern  printf\n    global  main\n\nsection .data\n    fmt     db \"%ld squared is %ld\", 10, 0\n\nsection .text\nsquare:                         ; long square(long x)\n    mov     rax, rdi\n    imul    rax, rdi\n    ret\n\nmain:\n    push    rbx                 ; save rbx; also aligns rsp to 16\n    mov     rbx, 7\n    mov     rdi, rbx\n    call    square              ; rax = 49\n    lea     rdi, [rel fmt]      ; argument 1: format string\n    mov     rsi, rbx            ; argument 2\n    mov     rdx, rax            ; argument 3\n    xor     eax, eax            ; varargs: no vector registers used\n    call    printf wrt ..plt\n    xor     eax, eax            ; return 0 from main\n    pop     rbx\n    ret\n\nsection .note.GNU-stack noalloc noexec nowrite progbits",
+          "lang": "asm"
+        },
+        {
+          "code": "nasm -f elf64 square.asm -o square.o\ngcc square.o -o square\n./square\n# 7 squared is 49",
+          "lang": "shell"
+        },
+        "Linking with `gcc` adds the C runtime, which calls `main`. `[rel fmt]` and `wrt ..plt` produce position-independent code, which modern Linux distributions use by default. The last line marks the stack as non-executable and avoids a linker warning."
+      ]
+    },
+    {
+      "h": "Error handling",
+      "body": [
+        "Assembly has no exceptions. A Linux system call that fails returns a negative error number in `rax` (for example -2, `ENOENT`, \"no such file\"), so you test the sign after each call. C library functions report errors through their return value and `errno`. Hardware faults, such as reading an invalid address or dividing by zero, stop the program with a signal (segmentation fault or floating point exception).",
+        {
+          "code": "    mov     rax, 2              ; system call 2 = open\n    lea     rdi, [rel path]     ; path is a zero-terminated string\n    xor     esi, esi            ; flags: O_RDONLY\n    syscall\n    test    rax, rax\n    js      .open_failed        ; negative result = -errno\n    mov     r12, rax            ; success: rax is the file descriptor",
+          "lang": "asm"
+        }
+      ]
+    },
+    {
+      "h": "A small complete program: print a number in decimal",
+      "body": [
+        "Printing a number means converting it to digits yourself. This program computes 1 + 2 + ... + 100, divides repeatedly by 10 to get the digits from right to left, and writes them with one system call.",
+        {
+          "code": "section .bss\n    buf     resb 32\n\nsection .text\n    global _start\n\n_start:\n    xor     rax, rax\n    mov     rcx, 100\n.sum:\n    add     rax, rcx\n    loop    .sum                ; rcx -= 1, repeat while rcx != 0\n    lea     rsi, [buf + 31]\n    mov     byte [rsi], 10      ; newline at the end of the buffer\n    mov     rbx, 10\n.digit:\n    xor     rdx, rdx            ; div uses rdx:rax as the dividend\n    div     rbx                 ; rax = quotient, rdx = remainder\n    add     dl, '0'             ; remainder to ASCII digit\n    dec     rsi\n    mov     [rsi], dl\n    test    rax, rax\n    jnz     .digit\n    mov     rdx, buf + 32\n    sub     rdx, rsi            ; length = end - start\n    mov     rax, 1              ; write(1, rsi, rdx)\n    mov     rdi, 1\n    syscall\n    mov     rax, 60             ; exit(0)\n    xor     rdi, rdi\n    syscall\n; prints 5050",
+          "lang": "asm"
+        },
+        {
+          "note": "Common beginner mistakes: forgetting the `exit` system call; using `div` without clearing `rdx` first (the result overflows and the program crashes); expecting `rcx` and `r11` to survive a `syscall` (the kernel overwrites them); calling C functions with a misaligned stack; confusing an address with the value at that address (`msg` vs `[msg]`); and mixing up Intel and AT&T operand order when reading examples."
+        }
+      ]
+    },
+    {
+      "h": "AT&T vs Intel syntax, and ARM",
+      "body": [
+        "The same x86-64 instruction can be written in two syntaxes. NASM and most Intel and Microsoft documentation use Intel syntax. The GNU assembler (`as`), GCC output and `objdump` use AT&T syntax by default; `objdump -d -M intel` and `gcc -S -masm=intel` switch to Intel syntax.",
+        {
+          "table": {
+            "head": [
+              "Aspect",
+              "Intel (NASM)",
+              "AT&T (GNU as)"
+            ],
+            "rows": [
+              [
+                "Operand order",
+                "`mov rax, 1` (destination first)",
+                "`movq $1, %rax` (source first)"
+              ],
+              [
+                "Registers and constants",
+                "`rax`, `5`",
+                "`%rax`, `$5`"
+              ],
+              [
+                "Memory operand",
+                "`[rbx + rcx*8 + 16]`",
+                "`16(%rbx,%rcx,8)`"
+              ],
+              [
+                "Operand size",
+                "`mov qword [rbx], 0`",
+                "`movq $0, (%rbx)` (suffix b, w, l, q)"
+              ]
+            ]
+          }
+        },
+        "ARM processors use a different instruction set. AArch64 has 31 general-purpose 64-bit registers (`x0`–`x30`), fixed 32-bit instruction encodings, and a load/store design: arithmetic works only on registers, and memory is accessed with `ldr` and `str`. On Linux, the system call number goes in `x8` and the call is made with `svc #0`.",
+        {
+          "code": "// AArch64 Linux, GNU as syntax: exit(0)\n    mov     x0, #0          // exit status\n    mov     x8, #93         // system call 93 = exit\n    svc     #0",
+          "lang": "asm"
+        }
+      ]
+    },
+    {
+      "h": "Where to go next",
+      "body": [
+        {
+          "ul": [
+            "The NASM manual for directives, macros and output formats.",
+            "Intel 64 and IA-32 Architectures Software Developer's Manuals for the exact behavior of every instruction.",
+            "The System V AMD64 ABI document for calling conventions and stack layout.",
+            "Compile small C functions with `gcc -O2 -S -masm=intel` (or an online compiler explorer) and read the generated assembly."
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Is assembly language still worth learning?",
+      "a": "Yes, for understanding how computers work, debugging crashes, reading compiler output, security work and embedded development. Writing whole applications in assembly is rarely practical today."
+    },
+    {
+      "q": "Is x86 assembly the same as ARM assembly?",
+      "a": "No. They are different instruction sets with different registers, instructions and encodings. The concepts (registers, memory, jumps, calling conventions) transfer, but the code does not."
+    },
+    {
+      "q": "What is the difference between NASM and GAS?",
+      "a": "NASM is a standalone assembler that uses Intel syntax. GAS, the GNU assembler, is used by GCC and defaults to AT&T syntax, although it also accepts Intel syntax with `.intel_syntax noprefix`."
+    },
+    {
+      "q": "Does this code run on Windows or macOS?",
+      "a": "Not unchanged. The instructions are the same on any x86-64 system, but system call numbers, the executable format and the calling convention differ. Windows uses a different calling convention, and Apple silicon Macs use ARM instead of x86-64."
+    }
+  ]
+}

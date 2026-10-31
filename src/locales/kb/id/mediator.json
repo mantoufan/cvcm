@@ -1,0 +1,134 @@
+{
+  "title": "Pola Mediator: memisahkan komponen dengan contoh TypeScript — cv.cm",
+  "description": "Pola Mediator mengarahkan komunikasi antarobjek lewat satu objek pusat, sehingga mereka tidak saling merujuk. Lihat contoh form di TypeScript.",
+  "h1": "Penjelasan pola Mediator beserta contohnya",
+  "answer": "Mediator adalah pola desain behavioral yang mengurangi ketergantungan langsung antarobjek dengan membuat mereka berkomunikasi lewat objek mediator pusat. Alih-alih setiap komponen memanggil yang lain, sebuah komponen memberi tahu mediator bahwa sesuatu terjadi, dan mediator memutuskan komponen lain mana yang diperbarui. Ini mengubah jaring referensi banyak-ke-banyak yang kusut menjadi hubungan satu-ke-banyak yang sederhana.",
+  "sections": [
+    {
+      "h": "Tujuan dan masalah yang diselesaikan",
+      "body": [
+        "Tujuan: mendefinisikan objek yang membungkus cara sekumpulan objek berinteraksi. Mediator mendorong loose coupling dengan mencegah objek saling merujuk secara eksplisit, dan memungkinkan Anda mengubah interaksi mereka secara mandiri. Ini salah satu pola behavioral dalam buku Gang of Four (GoF).",
+        "Perhatikan form pendaftaran dengan checkbox \"akun perusahaan\", kolom nama perusahaan, kolom email, dan tombol kirim. Saat checkbox dicentang, kolom perusahaan harus muncul dan menjadi wajib. Tombol kirim hanya aktif bila setiap kolom wajib valid. Jika setiap komponen memperbarui yang lain secara langsung, checkbox mengenal kolom perusahaan dan tombol, kolom email mengenal tombol, dan seterusnya. Setiap aturan baru menambah referensi silang, dan tidak ada komponen yang bisa dipakai ulang di form lain.",
+        "Dengan mediator, komponen hanya melaporkan event seperti \"saya berubah\". Objek form, yang bertindak sebagai mediator, menyimpan semua aturan tentang bagaimana kolom saling memengaruhi. Komponen menjadi sederhana dan dapat dipakai ulang, dan logika interaksi berada di satu tempat."
+      ]
+    },
+    {
+      "h": "Struktur dan peserta",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Peran",
+              "Tanggung jawab"
+            ],
+            "rows": [
+              [
+                "Mediator",
+                "Interface dengan method yang dipanggil colleague untuk melaporkan event, seperti `notify(sender, event)`"
+              ],
+              [
+                "Concrete mediator",
+                "Mengenal semua colleague dan mengimplementasikan aturan koordinasi di antara mereka"
+              ],
+              [
+                "Colleague",
+                "Komponen yang menyimpan referensi ke mediator dan melaporkan event-nya alih-alih memanggil colleague lain"
+              ]
+            ]
+          }
+        },
+        "Tanpa mediator, n komponen yang semuanya saling berbicara bisa membutuhkan hingga n × (n − 1) / 2 hubungan. Dengan mediator, setiap komponen hanya punya satu hubungan: ke mediator."
+      ]
+    },
+    {
+      "h": "Implementasi TypeScript",
+      "body": [
+        "Setiap kolom melaporkan perubahan ke mediator. `SignUpForm` adalah concrete mediator: ia menampilkan atau menyembunyikan kolom perusahaan dan mengaktifkan tombol.",
+        {
+          "code": "interface Mediator {\n  notify(sender: Component, event: string): void;\n}\n\nclass Component {\n  constructor(protected mediator: Mediator, readonly name: string) {}\n}\n\nclass Checkbox extends Component {\n  checked = false;\n  toggle() { this.checked = !this.checked; this.mediator.notify(this, \"change\"); }\n}\nclass TextField extends Component {\n  value = \"\";\n  visible = true;\n  type(text: string) { this.value = text; this.mediator.notify(this, \"change\"); }\n}\nclass Button extends Component { enabled = false; }\n\nclass SignUpForm implements Mediator {\n  isCompany = new Checkbox(this, \"isCompany\");\n  company = new TextField(this, \"company\");\n  email = new TextField(this, \"email\");\n  submit = new Button(this, \"submit\");\n  constructor() { this.company.visible = false; }\n\n  notify(sender: Component, event: string) {\n    if (sender === this.isCompany) this.company.visible = this.isCompany.checked;\n    const emailOk = this.email.value.includes(\"@\");\n    const companyOk = !this.company.visible || this.company.value.length > 0;\n    this.submit.enabled = emailOk && companyOk;\n    console.log(sender.name, event, \"-> submit enabled:\", this.submit.enabled);\n  }\n}\n\nconst form = new SignUpForm();\nform.email.type(\"ana@example.com\"); // email change -> submit enabled: true\nform.isCompany.toggle();            // isCompany change -> submit enabled: false\nform.company.type(\"Acme\");          // company change -> submit enabled: true",
+          "lang": "typescript"
+        },
+        "Perhatikan bahwa `Checkbox` dan `TextField` tidak tahu bahwa kolom lain ada. Anda bisa memakainya ulang di form yang sama sekali berbeda dengan memberi mereka mediator yang berbeda.",
+        {
+          "note": "Risiko utama Mediator adalah mediator itu sendiri tumbuh menjadi class besar yang tahu segalanya, kadang disebut god object. Jika satu mediator menangani banyak aturan yang tidak berkaitan, pecah menjadi beberapa mediator yang lebih kecil, satu per fitur atau area layar."
+        }
+      ]
+    },
+    {
+      "h": "Kapan dipakai dan kapan tidak",
+      "body": [
+        {
+          "ul": [
+            "Pakai bila sekelompok objek berkomunikasi dengan cara yang kompleks tetapi terdefinisi dengan baik, dan ketergantungan di antara mereka sulit diikuti.",
+            "Pakai bila Anda ingin memakai ulang komponen yang saat ini tidak bisa dipisahkan karena saling merujuk.",
+            "Pakai bila aturan interaksi sering berubah dan Anda ingin mengeditnya di satu tempat.",
+            "Jangan dipakai untuk dua objek yang cukup saling memanggil; pemanggilan langsung lebih jelas.",
+            "Jangan dipakai bila komponen hanya perlu menyiarkan event ke siapa pun yang berminat. Event emitter biasa (Observer) lebih ringan."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Penggunaan di dunia nyata",
+      "body": [
+        {
+          "ul": [
+            "Controller form dan dialog di framework GUI: komponen induk memegang state dan memutuskan bagaimana input anak saling memengaruhi, sementara anak hanya memunculkan event. Di React, \"lifting state up\" ke induk bersama mengikuti gagasan ini.",
+            "Aplikasi chat: pengguna tidak mengirim pesan langsung satu sama lain; ruang obrolan atau server menerima setiap pesan dan mengirimkannya ke anggota yang tepat.",
+            "Message broker dan event bus antarlayanan: pengirim mempublikasikan ke broker, yang mengarahkan pesan ke penerima yang tidak dikenal pengirimnya.",
+            "Pengatur lalu lintas udara adalah analogi klasik: pesawat tidak bernegosiasi dengan setiap pesawat lain, mereka hanya berbicara dengan menara kontrol."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Mediator vs Observer dan pola lainnya",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Pola",
+              "Perbedaannya dengan Mediator"
+            ],
+            "rows": [
+              [
+                "Observer",
+                "Observer adalah siaran satu arah: subject memberi tahu sejumlah listener dan tidak tahu apa yang mereka lakukan. Mediator mengenal colleague-nya dan mengoordinasikan mereka dua arah. Mediator sering diimplementasikan dengan Observer."
+              ],
+              [
+                "Facade",
+                "Facade memberi klien interface yang lebih sederhana ke sebuah subsistem, dan subsistem itu tidak tahu facade ada. Colleague mengenal mediator mereka dan berbicara dengannya."
+              ],
+              [
+                "Chain of Responsibility",
+                "Rantai meneruskan permintaan sepanjang barisan handler; mediator adalah satu hub yang mengirim setiap event ke komponen yang tepat."
+              ],
+              [
+                "Command",
+                "Colleague dapat mengirim objek command ke mediator, yang kemudian memutuskan siapa yang menjalankannya."
+              ]
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Apa perbedaan antara Mediator dan Observer?",
+      "a": "Pada Observer, subject menyiarkan event ke subscriber yang tidak dikenalnya, dan komunikasinya satu arah. Pada Mediator, objek pusat mengenal komponen yang berpartisipasi dan mengoordinasikan bagaimana mereka saling memengaruhi."
+    },
+    {
+      "q": "Apakah event bus itu mediator?",
+      "a": "Event bus yang hanya meneruskan event ke subscriber lebih dekat ke Observer, atau publish-subscribe. Ia menjadi mediator bila berisi aturan yang menentukan bagaimana komponen bereaksi satu sama lain."
+    },
+    {
+      "q": "Apakah Mediator membuat kode lebih sulit diikuti?",
+      "a": "Bisa. Pemanggilan langsung mudah dilacak, sedangkan pemanggilan lewat mediator melalui objek pusat. Pola ini berguna bila alternatifnya adalah banyak komponen yang saling merujuk."
+    },
+    {
+      "q": "Bisakah sebuah komponen punya lebih dari satu mediator?",
+      "a": "Biasanya komponen punya satu mediator, yang diatur saat komponen dibuat. Sebuah komponen dapat dipakai ulang dengan mediator berbeda di konteks berbeda, yang merupakan salah satu manfaat utama pola ini."
+    }
+  ]
+}

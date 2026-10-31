@@ -1,0 +1,192 @@
+{
+  "title": "Penjelasan Depth-First Search (DFS): kode Python rekursif dan iteratif, kompleksitas — cv.cm",
+  "description": "Pelajari depth-first search (DFS): cara menelusuri graf sedalam mungkin sebelum backtracking, contoh penelusuran, kode Python rekursif dan berbasis stack, deteksi siklus, dan biaya O(V + E).",
+  "h1": "Penjelasan Depth-First Search (DFS): cara kerja, kode, dan kompleksitas",
+  "answer": "Depth-first search (DFS) adalah penelusuran graf yang mengikuti satu jalur sejauh mungkin, lalu mundur ke node terakhir yang masih punya tetangga belum dikunjungi dan melanjutkan dari sana. DFS memakai rekursi atau stack eksplisit ditambah himpunan node yang sudah dikunjungi. DFS mengunjungi setiap node yang dapat dijangkau dalam waktu O(V + E) dan menjadi dasar deteksi siklus, topological sort, komponen terhubung, dan backtracking.",
+  "sections": [
+    {
+      "h": "Masalah yang diselesaikan DFS",
+      "body": [
+        "DFS menjawab pertanyaan \"apa saja yang bisa dicapai dari sini?\" dengan menjelajahi satu cabang sampai tuntas sebelum mencoba cabang berikutnya. Urutan ini berguna ketika struktur jalur lebih penting daripada panjangnya: mencari jalan keluar labirin, memeriksa apakah graf memiliki siklus, mengurutkan tugas yang saling bergantung, atau mendaftar semua solusi sebuah puzzle.",
+        "Berbeda dengan breadth-first search, DFS tidak menemukan jalur terpendek. Kekuatannya: ia hanya menyimpan jalur saat ini di memori dan secara alami mencatat kapan sebuah node dimasuki dan kapan selesai diproses."
+      ]
+    },
+    {
+      "h": "Ide dasar dengan kata-kata sederhana",
+      "body": [
+        {
+          "ol": [
+            "Tandai node saat ini sebagai sudah dikunjungi.",
+            "Untuk setiap tetangga yang belum dikunjungi, pindah ke tetangga itu dan ulangi langkah 1 dari sana.",
+            "Ketika sebuah node tidak punya tetangga yang belum dikunjungi, node itu selesai: kembali ke node asal Anda datang.",
+            "Ketika Anda kembali ke node awal dan ia tidak punya tetangga yang belum dikunjungi, pencarian selesai."
+          ]
+        },
+        "Kembali ke node sebelumnya disebut backtracking. Pada rekursi, call stack yang melakukannya untuk Anda."
+      ]
+    },
+    {
+      "h": "Contoh langkah demi langkah",
+      "body": [
+        "Pakai graf tak berarah yang sama seperti di artikel BFS: A–B, A–C, B–D, C–D, C–E, D–F. Mulai dari A dan coba tetangga sesuai urutan abjad.",
+        {
+          "table": {
+            "head": [
+              "Langkah",
+              "Aksi",
+              "Jalur saat ini (stack)"
+            ],
+            "rows": [
+              [
+                "1",
+                "Kunjungi A",
+                "A"
+              ],
+              [
+                "2",
+                "A → B (tetangga pertama yang belum dikunjungi)",
+                "A, B"
+              ],
+              [
+                "3",
+                "B → D",
+                "A, B, D"
+              ],
+              [
+                "4",
+                "D → C (B sudah dikunjungi)",
+                "A, B, D, C"
+              ],
+              [
+                "5",
+                "C → E (A dan D sudah dikunjungi)",
+                "A, B, D, C, E"
+              ],
+              [
+                "6",
+                "E tidak punya tetangga baru: selesaikan E, kembali ke C; selesaikan C, kembali ke D",
+                "A, B, D"
+              ],
+              [
+                "7",
+                "D → F",
+                "A, B, D, F"
+              ],
+              [
+                "8",
+                "Selesaikan F, D, B, A",
+                "kosong"
+              ]
+            ]
+          }
+        },
+        "Urutan kunjungannya adalah A, B, D, C, E, F. Urutan selesainya adalah E, C, F, D, B, A. Urutan selesai inilah yang dipakai oleh topological sort dan algoritma strongly connected component."
+      ]
+    },
+    {
+      "h": "Implementasi Python",
+      "body": [
+        "Versi rekursif adalah yang paling singkat dan paling dekat dengan idenya:",
+        {
+          "code": "def dfs(graph, node, visited=None):\n    if visited is None:\n        visited = []\n    visited.append(node)\n    for nxt in graph[node]:\n        if nxt not in visited:\n            dfs(graph, nxt, visited)\n    return visited\ngraph = {\n    \"A\": [\"B\", \"C\"], \"B\": [\"A\", \"D\"], \"C\": [\"A\", \"D\", \"E\"],\n    \"D\": [\"B\", \"C\", \"F\"], \"E\": [\"C\"], \"F\": [\"D\"],\n}\nprint(dfs(graph, \"A\"))  # ['A', 'B', 'D', 'C', 'E', 'F']",
+          "lang": "python"
+        },
+        "List membuat contoh mudah dibaca tetapi menjadikan `in` pemeriksaan O(n). Untuk graf besar, simpan `set` terpisah untuk pengecekan keanggotaan. Versi iteratif memakai stack eksplisit dan menghindari batas rekursi Python. Tetangga dimasukkan dalam urutan terbalik agar keluar dalam urutan aslinya:",
+        {
+          "code": "def dfs_iterative(graph, start):\n    visited, order = set(), []\n    stack = [start]\n    while stack:\n        node = stack.pop()\n        if node in visited:\n            continue\n        visited.add(node)\n        order.append(node)\n        for nxt in reversed(graph[node]):\n            if nxt not in visited:\n                stack.append(nxt)\n    return order\nprint(dfs_iterative(graph, \"A\"))  # ['A', 'B', 'D', 'C', 'E', 'F']",
+          "lang": "python"
+        },
+        "Perhatikan perbedaannya dengan BFS: di sini node ditandai saat di-pop, sehingga bisa berada di stack lebih dari sekali. Itu benar untuk DFS dan mempertahankan urutan depth-first yang sebenarnya."
+      ]
+    },
+    {
+      "h": "Mendeteksi siklus pada graf berarah",
+      "body": [
+        "Aplikasi klasik DFS memberi warna pada setiap node: putih (belum terlihat), abu-abu (ada di jalur saat ini), dan hitam (selesai). Mencapai node abu-abu berarti ada edge kembali ke jalur saat ini, yaitu sebuah siklus.",
+        {
+          "code": "def has_cycle(graph):\n    WHITE, GRAY, BLACK = 0, 1, 2\n    color = {node: WHITE for node in graph}\n    def visit(node):\n        color[node] = GRAY\n        for nxt in graph[node]:\n            if color[nxt] == GRAY:\n                return True              # back edge\n            if color[nxt] == WHITE and visit(nxt):\n                return True\n        color[node] = BLACK\n        return False\n    return any(color[n] == WHITE and visit(n) for n in graph)\nprint(has_cycle({\"a\": [\"b\"], \"b\": [\"c\"], \"c\": [\"a\"]}))  # True\nprint(has_cycle({\"a\": [\"b\"], \"b\": [\"c\"], \"c\": []}))     # False",
+          "lang": "python"
+        }
+      ]
+    },
+    {
+      "h": "Kompleksitas waktu dan ruang",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Ukuran",
+              "Biaya",
+              "Alasan"
+            ],
+            "rows": [
+              [
+                "Waktu",
+                "O(V + E)",
+                "Setiap node dikunjungi sekali dan setiap edge diperiksa sekali per arah."
+              ],
+              [
+                "Ruang",
+                "O(V)",
+                "Himpunan visited ditambah rekursi atau stack eksplisit, yang bisa tumbuh sepanjang jalur terpanjang."
+              ],
+              [
+                "Adjacency matrix",
+                "Waktu O(V²)",
+                "Mendaftar tetangga setiap node membutuhkan O(V)."
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "Varian dan kesalahan umum",
+      "body": [
+        {
+          "ul": [
+            "Pre-order dan post-order: catat node saat masuk (pre-order) atau saat selesai (post-order). Reverse post-order pada graf berarah tanpa siklus adalah urutan topologis.",
+            "Komponen terhubung: mulai DFS baru dari setiap node yang masih belum dikunjungi; setiap awal adalah satu komponen.",
+            "Iterative deepening DFS: jalankan DFS dengan batas kedalaman 0, 1, 2, … Ia menemukan jalur terpendek seperti BFS dengan memori rendah seperti DFS.",
+            "Flood fill pada grid (alat paint bucket) adalah DFS atau BFS pada sel-sel bertetangga yang berwarna sama."
+          ]
+        },
+        {
+          "note": "Batas rekursi bawaan Python sekitar 1000 frame (lihat `sys.getrecursionlimit()`). DFS rekursif pada jalur panjang, seperti rantai 2000 node atau grid besar, memunculkan `RecursionError`. Gunakan versi iteratif untuk input besar daripada menaikkan batasnya."
+        },
+        "Bug lain yang sering terjadi: lupa membuat himpunan visited (loop tak berujung pada siklus apa pun), memakai argumen default yang mutable seperti `visited=[]` (dipakai bersama antar pemanggilan), dan menganggap edge tak berarah kembali ke parent sebagai siklus."
+      ]
+    },
+    {
+      "h": "Kapan memakai DFS dan penggunaannya di dunia nyata",
+      "body": [
+        {
+          "ul": [
+            "Gunakan DFS untuk reachability, deteksi siklus, topological sort, komponen terhubung dan strongly connected, bridge dan articulation point, serta pencarian menyeluruh dengan backtracking.",
+            "Gunakan BFS jika Anda butuh langkah paling sedikit, dan Dijkstra atau A* jika edge berbobot.",
+            "Soal wawancara: number of islands, clone a graph, course schedule (deteksi siklus), path sum pada pohon biner, membangkitkan permutasi.",
+            "Dunia nyata: build system dan package manager yang menentukan urutan dependensi, compiler yang menganalisis control flow, pembuatan labirin, dan penelusuran pohon pada sistem file atau dokumen HTML."
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Apakah DFS rekursif atau iteratif?",
+      "a": "Keduanya bisa. Rekursi lebih singkat dan memakai call stack secara implisit; stack eksplisit menghindari batas rekursi di bahasa seperti Python dan menghasilkan urutan kunjungan yang sama jika tetangga dimasukkan dalam urutan terbalik."
+    },
+    {
+      "q": "Apakah DFS menemukan jalur terpendek?",
+      "a": "Tidak. DFS menemukan suatu jalur, belum tentu yang edge-nya paling sedikit. Gunakan BFS untuk graf tak berbobot dan algoritma Dijkstra untuk graf berbobot."
+    },
+    {
+      "q": "Berapa kompleksitas waktu DFS?",
+      "a": "O(V + E) dengan adjacency list, karena setiap node dan edge ditangani sejumlah konstan kali. Dengan adjacency matrix menjadi O(V²)."
+    },
+    {
+      "q": "Apa hubungan pre-order, in-order, dan post-order dengan DFS?",
+      "a": "Ketiganya adalah penelusuran depth-first pada pohon yang hanya berbeda pada kapan node saat ini diproses: sebelum anak-anaknya, di antara anak kiri dan kanan, atau setelah anak-anaknya."
+    }
+  ]
+}

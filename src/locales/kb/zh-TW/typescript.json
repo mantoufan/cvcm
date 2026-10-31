@@ -1,0 +1,183 @@
+{
+  "title": "TypeScript 入門教學：型別、介面、泛型與型別縮小 — cv.cm",
+  "description": "一頁學會 TypeScript：安裝 tsc 並執行 Hello world、基本型別、介面、聯集型別、型別縮小、泛型、錯誤處理與完整範例。",
+  "h1": "TypeScript 入門教學",
+  "answer": "TypeScript 是加上靜態型別的 JavaScript。你可以加入 `let count: number = 0` 這樣的型別標註，編譯器 `tsc` 會先檢查型別，再把程式碼轉成可在任何瀏覽器或 Node.js 執行的純 JavaScript。核心概念包括基本型別、用來描述物件結構的介面（interface）與型別別名（type alias）、搭配型別縮小（narrowing）的聯集型別，以及讓程式碼可重複使用的泛型。型別在執行階段會被移除。",
+  "sections": [
+    {
+      "h": "TypeScript 是什麼，用來做什麼",
+      "body": [
+        "TypeScript 是由 Microsoft 開發的開源語言，於 2012 年首次發布。所有合法的 JavaScript 程式也都是合法的 TypeScript，因此你可以一個檔案一個檔案地逐步導入。型別檢查器能在你輸入時就抓出拼錯屬性名稱或漏掉 `null` 檢查等錯誤，編輯器也會利用型別提供自動完成與安全的重新命名。它廣泛用於大型前端應用（Angular 就是以它撰寫，React、Vue 與 Svelte 也有良好支援）、Node.js 後端與函式庫。"
+      ]
+    },
+    {
+      "h": "安裝並執行 Hello, world",
+      "body": [
+        "先安裝 Node.js，再用 npm 在專案中安裝編譯器。`tsc` 會把 `.ts` 檔編譯成 `.js`。",
+        {
+          "code": "const message: string = \"Hello, world\";\nconsole.log(message);",
+          "lang": "typescript"
+        },
+        {
+          "code": "npm install --save-dev typescript\nnpx tsc --init          # creates tsconfig.json\nnpx tsc hello.ts        # writes hello.js\nnode hello.js\n# Hello, world",
+          "lang": "shell"
+        },
+        "較新版本的 Node.js、Deno 與 Bun 也可以直接執行 `.ts` 檔，做法是移除型別標註。它們不會做型別檢查，所以仍要執行 `npx tsc --noEmit` 來找出型別錯誤。"
+      ]
+    },
+    {
+      "h": "基本型別與型別推論",
+      "body": [
+        "你很少需要把每個型別都寫出來。初始化變數時，TypeScript 會推論其型別：`let n = 5` 就是 `number`。請替函式參數與公開 API 加上型別標註。",
+        {
+          "table": {
+            "head": [
+              "型別",
+              "範例",
+              "說明"
+            ],
+            "rows": [
+              [
+                "`number`",
+                "`let n: number = 3.5`",
+                "整數與浮點數"
+              ],
+              [
+                "`string`",
+                "`let s: string = \"hi\"`",
+                "文字"
+              ],
+              [
+                "`boolean`",
+                "`let ok: boolean = true`",
+                "true 或 false"
+              ],
+              [
+                "陣列",
+                "`number[]` 或 `Array<number>`",
+                "兩種寫法意思相同"
+              ],
+              [
+                "Tuple（元組）",
+                "`[string, number]`",
+                "固定長度與位置"
+              ],
+              [
+                "`unknown`",
+                "`let x: unknown`",
+                "任何值，使用前必須先檢查"
+              ],
+              [
+                "`any`",
+                "`let y: any`",
+                "關閉型別檢查，應避免使用"
+              ],
+              [
+                "`void` / `never`",
+                "函式回傳型別",
+                "不回傳任何東西／永遠不會回傳"
+              ]
+            ]
+          }
+        },
+        {
+          "code": "let count = 0;          // inferred as number\ncount = \"ten\";          // error: Type 'string' is not assignable to type 'number'\nconst names: string[] = [\"Ann\", \"Bo\"];\nconst pair: [string, number] = [\"age\", 31];",
+          "lang": "typescript"
+        },
+        "第二行是刻意寫成的編譯錯誤，用來示範檢查器會回報什麼。"
+      ]
+    },
+    {
+      "h": "函式、流程控制與型別縮小",
+      "body": [
+        "流程控制（`if`、`for`、`while`、`switch`）與 JavaScript 完全相同。TypeScript 多出來的是型別縮小：經過 `typeof x === \"string\"` 這類檢查後，編譯器就知道該分支內更精確的型別。",
+        {
+          "code": "function greet(name: string, greeting = \"Hello\"): string {\n  return `${greeting}, ${name}!`;\n}\nfunction formatId(id: string | number): string {\n  if (typeof id === \"number\") {\n    return id.toFixed(0).padStart(6, \"0\"); // id is number here\n  }\n  return id.toUpperCase();                 // id is string here\n}\nconsole.log(greet(\"Lin\"));    // Hello, Lin!\nconsole.log(formatId(42));    // 000042\nconsole.log(formatId(\"ab7\")); // AB7",
+          "lang": "typescript"
+        },
+        "`string | number` 是聯集型別（union type）：值是所列型別之一。選用參數寫成 `name?: string`，其型別包含 `undefined`。"
+      ]
+    },
+    {
+      "h": "介面與型別別名",
+      "body": [
+        "用 `interface` 或 `type` 別名描述物件的結構。TypeScript 檢查的是結構，而不是名稱：只要物件具備正確的屬性就符合。",
+        {
+          "code": "interface User {\n  id: number;\n  name: string;\n  email?: string;          // optional\n  readonly createdAt: Date;\n}\ntype Role = \"admin\" | \"editor\" | \"viewer\"; // string literal union\nfunction describe(user: User, role: Role): string {\n  const contact = user.email ?? \"no email\";\n  return `${user.name} (${role}, ${contact})`;\n}\nconst ann: User = { id: 1, name: \"Ann\", createdAt: new Date() };\nconsole.log(describe(ann, \"editor\")); // Ann (editor, no email)",
+          "lang": "typescript"
+        }
+      ]
+    },
+    {
+      "h": "招牌特色：泛型與可辨識聯集",
+      "body": [
+        "泛型讓同一個函式或型別能處理多種型別，同時保持型別之間的關聯。可辨識聯集（discriminated union）是由共用同一個字面值欄位的物件型別組成的聯集，因此對該欄位使用 `switch` 就能縮小型別，編譯器也能檢查是否處理了所有情況。",
+        {
+          "code": "function first<T>(items: T[]): T | undefined {\n  return items[0];\n}\nconst n = first([10, 20]);   // n: number | undefined\nconst s = first([\"a\", \"b\"]); // s: string | undefined\ntype Shape =\n  | { kind: \"circle\"; radius: number }\n  | { kind: \"rect\"; width: number; height: number };\nfunction area(shape: Shape): number {\n  switch (shape.kind) {\n    case \"circle\":\n      return Math.PI * shape.radius ** 2;\n    case \"rect\":\n      return shape.width * shape.height;\n  }\n}\nconsole.log(n, s, area({ kind: \"rect\", width: 2, height: 3 })); // 10 a 6",
+          "lang": "typescript"
+        },
+        "內建的工具型別（utility types）可由既有型別衍生出新型別：`Partial<User>` 讓所有屬性變成選用，`Pick<User, \"id\" | \"name\">` 只保留部分屬性，`Record<string, number>` 則描述一個字典。"
+      ]
+    },
+    {
+      "h": "錯誤處理",
+      "body": [
+        "錯誤的運作方式與 JavaScript 相同，使用 `throw` 和 `try`/`catch`。開啟 `strict` 選項後，捕捉到的值型別為 `unknown`，因為任何值都可以被拋出，所以使用前要先檢查。",
+        {
+          "code": "function parseAge(text: string): number {\n  const age = Number(text);\n  if (!Number.isInteger(age) || age < 0) {\n    throw new Error(`invalid age: ${text}`);\n  }\n  return age;\n}\ntry {\n  parseAge(\"abc\");\n} catch (err: unknown) {\n  const message = err instanceof Error ? err.message : String(err);\n  console.log(message); // invalid age: abc\n}",
+          "lang": "typescript"
+        }
+      ]
+    },
+    {
+      "h": "完整的小程式：有型別的庫存管理",
+      "body": [
+        {
+          "code": "interface Item {\n  name: string;\n  price: number;\n  qty: number;\n}\ntype Summary = { total: number; cheapest?: Item; outOfStock: string[] };\nfunction summarize(items: Item[]): Summary {\n  let total = 0;\n  let cheapest: Item | undefined;\n  const outOfStock: string[] = [];\n  for (const item of items) {\n    total += item.price * item.qty;\n    if (item.qty === 0) outOfStock.push(item.name);\n    if (!cheapest || item.price < cheapest.price) cheapest = item;\n  }\n  return { total, cheapest, outOfStock };\n}\nconst result = summarize([\n  { name: \"pen\", price: 1.5, qty: 10 },\n  { name: \"book\", price: 12, qty: 2 },\n  { name: \"bag\", price: 30, qty: 0 },\n]);\nconsole.log(result.total, result.cheapest?.name, result.outOfStock);\n// 39 pen [ 'bag' ]",
+          "lang": "typescript"
+        },
+        "試著把 `qty: 10` 改成 `qty: \"10\"`：編譯器在程式執行之前就會回報錯誤。"
+      ]
+    },
+    {
+      "h": "初學者常見錯誤",
+      "body": [
+        {
+          "note": "型別在執行階段並不存在。對 `JSON.parse` 或 `fetch` 取得的資料加上型別標註，只是你自己做的承諾；對不可信的輸入，請用真正的檢查或結構驗證函式庫來驗證。"
+        },
+        {
+          "ul": [
+            "用 `any` 來消除錯誤。請優先使用 `unknown` 再縮小型別。",
+            "過度使用 `as` 型別斷言，這等於叫編譯器相信你，而不是讓它檢查。",
+            "在 `tsconfig.json` 中沒有開啟 `strict`。新專案請開啟它，它會啟用 `null` 檢查。",
+            "寫出編譯器本來就能推論的型別，只會增加雜訊，並不會增加安全性。"
+          ]
+        }
+      ]
+    },
+    {
+      "h": "接下來學什麼",
+      "body": [
+        "閱讀官方的 TypeScript Handbook，並在 typescriptlang.org 的 TypeScript Playground 上實驗，它會並排顯示編譯後的 JavaScript 與錯誤訊息。接著學習 `tsconfig.json` 的各項選項、函式庫的型別宣告檔（`@types/...` 套件），以及搭配你慣用框架的 TypeScript 用法。"
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "TypeScript 是和 JavaScript 不同的語言嗎？",
+      "a": "它是 JavaScript 的超集（superset）：加入了型別語法與檢查器，再編譯成純 JavaScript。執行階段的行為與它產生的 JavaScript 完全相同。"
+    },
+    {
+      "q": "應該先學 JavaScript 再學 TypeScript 嗎？",
+      "a": "建議先學 JavaScript 基礎（變數、函式、物件、Promise），因為 TypeScript 並不會改變這些。之後再加入 TypeScript；熟悉執行階段的行為後，型別會更容易學。"
+    },
+    {
+      "q": "interface 和 type 有什麼差別？",
+      "a": "兩者都能描述物件結構。interface 可以被擴充，也能透過重複宣告來合併；type 別名還能為聯集、tuple 與其他非物件型別命名。單純描述物件結構時，兩者皆可。"
+    },
+    {
+      "q": "TypeScript 會讓我的程式跑得更快嗎？",
+      "a": "不會。型別在編譯時就被移除，所以輸出的程式執行速度與手寫的 JavaScript 相同。好處是更少的錯誤與更好的開發工具支援。"
+    }
+  ]
+}

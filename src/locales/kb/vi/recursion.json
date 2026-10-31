@@ -1,0 +1,209 @@
+{
+  "title": "Đệ quy là gì: trường hợp cơ sở, ngăn xếp lời gọi và ví dụ Python — cv.cm",
+  "description": "Đệ quy là khi một hàm tự gọi chính nó với đầu vào nhỏ hơn. Tìm hiểu trường hợp cơ sở, ngăn xếp lời gọi, memoization và giới hạn đệ quy qua ví dụ Python.",
+  "h1": "Đệ quy là gì: cách hoạt động, kèm ví dụ Python",
+  "answer": "Đệ quy là kỹ thuật trong đó một hàm giải bài toán bằng cách tự gọi chính nó trên phiên bản nhỏ hơn của cùng bài toán. Mỗi hàm đệ quy cần một trường hợp cơ sở (base case) trả về mà không đệ quy tiếp, và một trường hợp đệ quy tiến dần về trường hợp cơ sở. Mỗi lời gọi chờ trên ngăn xếp lời gọi (call stack) cho đến khi lời gọi nhỏ hơn trả về. Đệ quy phù hợp tự nhiên với cây, dữ liệu lồng nhau và các thuật toán chia để trị như sắp xếp trộn.",
+  "sections": [
+    {
+      "h": "Đệ quy giải quyết vấn đề gì",
+      "body": [
+        "Một số bài toán được định nghĩa theo chính nó. Một thư mục chứa các tệp và các thư mục khác. Một nút cây có các cây con. Giai thừa của n bằng n nhân giai thừa của n − 1. Viết những bài toán này bằng vòng lặp thông thường thường cần một ngăn xếp tường minh chứa công việc đang chờ; đệ quy để ngôn ngữ giữ ngăn xếp đó giúp bạn.",
+        "Một hàm đệ quy có hai phần:",
+        {
+          "ul": [
+            "Trường hợp cơ sở: đầu vào nhỏ nhất, trả lời trực tiếp. Với giai thừa, `0! = 1`.",
+            "Trường hợp đệ quy: thu nhỏ bài toán, gọi hàm trên phần nhỏ hơn và kết hợp kết quả. Với giai thừa, `n! = n × (n − 1)!`."
+          ]
+        },
+        {
+          "code": "def factorial(n):\n    if n == 0:                  # base case\n        return 1\n    return n * factorial(n - 1) # recursive case\nprint(factorial(5))   # 120",
+          "lang": "python"
+        }
+      ]
+    },
+    {
+      "h": "Ngăn xếp lời gọi, theo dõi từng bước",
+      "body": [
+        "Mỗi lời gọi có một khung (frame) riêng trên ngăn xếp lời gọi, chứa bản sao `n` của riêng nó. Các lời gọi đi xuống cho đến trường hợp cơ sở, rồi kết quả quay ngược lên theo thứ tự đảo lại.",
+        {
+          "table": {
+            "head": [
+              "Bước",
+              "Lời gọi",
+              "Trạng thái"
+            ],
+            "rows": [
+              [
+                "1",
+                "`factorial(3)`",
+                "chờ `factorial(2)`"
+              ],
+              [
+                "2",
+                "`factorial(2)`",
+                "chờ `factorial(1)`"
+              ],
+              [
+                "3",
+                "`factorial(1)`",
+                "chờ `factorial(0)`"
+              ],
+              [
+                "4",
+                "`factorial(0)`",
+                "trường hợp cơ sở, trả về 1"
+              ],
+              [
+                "5",
+                "`factorial(1)`",
+                "trả về 1 × 1 = 1"
+              ],
+              [
+                "6",
+                "`factorial(2)`",
+                "trả về 2 × 1 = 2"
+              ],
+              [
+                "7",
+                "`factorial(3)`",
+                "trả về 3 × 2 = 6"
+              ]
+            ]
+          }
+        },
+        "Độ sâu ngăn xếp ở đây là n + 1 khung, nên không gian phụ là O(n) dù không tạo list nào."
+      ]
+    },
+    {
+      "h": "Đệ quy trên dữ liệu lồng nhau",
+      "body": [
+        "Đệ quy hữu ích nhất khi hình dạng của dữ liệu tự nó mang tính đệ quy. Hàm này cộng tất cả các số trong một list có thể chứa các list khác ở độ sâu bất kỳ.",
+        {
+          "code": "def deep_sum(items):\n    total = 0\n    for x in items:\n        if isinstance(x, list):\n            total += deep_sum(x)   # same problem, smaller piece\n        else:\n            total += x\n    return total\nprint(deep_sum([1, [2, 3], [4, [5, [6]]]]))   # 21",
+          "lang": "python"
+        },
+        "Cùng mẫu này dùng để duyệt cây thư mục, tài liệu JSON, DOM của HTML hay cây nhị phân: xử lý nút hiện tại, rồi đệ quy vào từng nút con.",
+        {
+          "code": "def power_set(items):\n    if not items:\n        return [[]]\n    rest = power_set(items[1:])\n    return rest + [[items[0]] + s for s in rest]\nprint(power_set([1, 2, 3]))\n# [[], [3], [2], [2, 3], [1], [1, 3], [1, 2], [1, 2, 3]]",
+          "lang": "python"
+        }
+      ]
+    },
+    {
+      "h": "Độ phức tạp của hàm đệ quy",
+      "body": [
+        "Ước lượng chi phí bằng (số lời gọi) × (công việc mỗi lời gọi). Không gian tối thiểu bằng độ sâu ngăn xếp lớn nhất.",
+        {
+          "table": {
+            "head": [
+              "Hàm",
+              "Số lời gọi",
+              "Thời gian",
+              "Không gian ngăn xếp"
+            ],
+            "rows": [
+              [
+                "factorial(n)",
+                "n + 1",
+                "O(n)",
+                "O(n)"
+              ],
+              [
+                "tìm kiếm nhị phân, đệ quy",
+                "khoảng log₂ n",
+                "O(log n)",
+                "O(log n)"
+              ],
+              [
+                "sắp xếp trộn",
+                "khoảng 2n",
+                "O(n log n)",
+                "O(log n) ngăn xếp, O(n) bộ đệm"
+              ],
+              [
+                "Fibonacci ngây thơ",
+                "khoảng 1.6ⁿ",
+                "cận O(2ⁿ)",
+                "O(n)"
+              ],
+              [
+                "tập lũy thừa (power set)",
+                "n + 1",
+                "O(n · 2ⁿ)",
+                "O(n) ngăn xếp, đầu ra là 2ⁿ list"
+              ]
+            ]
+          }
+        },
+        "Các hệ thức truy hồi chia để trị như T(n) = 2T(n/2) + O(n) của sắp xếp trộn cho kết quả O(n log n). Hàm thực hiện hai lời gọi trên n − 1 sẽ tăng theo hàm mũ."
+      ]
+    },
+    {
+      "h": "Memoization: ngừng lặp lại công việc",
+      "body": [
+        "Hàm Fibonacci ngây thơ tính lại cùng các giá trị nhiều lần: `fib(5)` gọi `fib(3)` hai lần và `fib(2)` ba lần. Lưu kết quả vào bộ nhớ đệm ngay lần tính đầu tiên biến thời gian hàm mũ thành tuyến tính. `functools.lru_cache` của Python (hoặc `functools.cache`, Python 3.9+) làm việc này chỉ bằng một decorator.",
+        {
+          "code": "from functools import lru_cache\ndef fib_slow(n):\n    return n if n < 2 else fib_slow(n - 1) + fib_slow(n - 2)\n@lru_cache(maxsize=None)\ndef fib(n):\n    return n if n < 2 else fib(n - 1) + fib(n - 2)\nprint(fib_slow(20))   # 6765, about 22,000 calls\nprint(fib(90))        # 2880067194370816120, 91 distinct calls",
+          "lang": "python"
+        },
+        "Đệ quy có memoization là dạng từ trên xuống của quy hoạch động. Dạng từ dưới lên điền một bảng bằng vòng lặp."
+      ]
+    },
+    {
+      "h": "Giới hạn đệ quy và chuyển sang vòng lặp",
+      "body": [
+        {
+          "note": "CPython giới hạn độ sâu đệ quy. Giới hạn mặc định là 1000 khung (xem `sys.getrecursionlimit()`); đi sâu hơn sẽ gây `RecursionError`. Python không tối ưu lời gọi đuôi, nên ngay cả hàm đệ quy đuôi cũng dùng một khung cho mỗi lời gọi."
+        },
+        "Bạn có thể nâng giới hạn bằng `sys.setrecursionlimit()`, nhưng đệ quy quá sâu vẫn có thể làm sập trình thông dịch. Với đầu vào có thể rất sâu, như danh sách liên kết một triệu nút hoặc cây suy biến, hãy viết lại hàm bằng vòng lặp và một ngăn xếp tường minh.",
+        {
+          "code": "def deep_sum_iter(items):\n    total, stack = 0, [items]\n    while stack:\n        current = stack.pop()\n        for x in current:\n            if isinstance(x, list):\n                stack.append(x)\n            else:\n                total += x\n    return total\nprint(deep_sum_iter([1, [2, 3], [4, [5, [6]]]]))   # 21",
+          "lang": "python"
+        }
+      ]
+    },
+    {
+      "h": "Lỗi thường gặp",
+      "body": [
+        {
+          "ul": [
+            "Thiếu trường hợp cơ sở hoặc không bao giờ đạt tới nó, ví dụ `factorial(-1)` với đoạn mã trên không bao giờ về 0 và kết thúc bằng `RecursionError`.",
+            "Trường hợp đệ quy không thu nhỏ đầu vào, chẳng hạn gọi `f(n)` từ chính `f(n)`.",
+            "Quên `return` kết quả đệ quy: `factorial(n - 1)` không có `return` sẽ cho `None`.",
+            "Sao chép dữ liệu ở mỗi lời gọi. `items[1:]` sao chép list, nên đệ quy trên các lát cắt của list dài tốn O(n²) thời gian; hãy truyền chỉ số thay vào đó.",
+            "Dùng đối số mặc định có thể thay đổi như `def f(x, seen=[])` để mang trạng thái giữa các lời gọi; cùng một list được chia sẻ cho mọi lời gọi hàm."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Khi nào nên dùng đệ quy",
+      "body": [
+        "Dùng đệ quy khi dữ liệu hoặc bài toán vốn mang tính đệ quy: cây, đồ thị (tìm kiếm theo chiều sâu), cấu trúc lồng nhau, phân tích biểu thức, quay lui (hoán vị, N-Queens, sudoku) và chia để trị (sắp xếp trộn, sắp xếp nhanh, tìm kiếm nhị phân). Dùng vòng lặp khi bài toán chỉ là một dãy đơn giản, hoặc khi độ sâu có thể tăng theo kích thước đầu vào trong Python.",
+        "Trong phỏng vấn, câu hỏi về đệ quy thường kiểm tra việc bạn nêu được trường hợp cơ sở, trường hợp đệ quy, chi phí thời gian và không gian kể cả ngăn xếp, và khi nào memoization có ích."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Trường hợp cơ sở trong đệ quy là gì?",
+      "a": "Trường hợp cơ sở là đầu vào mà hàm đệ quy trả lời trực tiếp, không tự gọi lại. Nó dừng đệ quy; nếu thiếu, hàm sẽ tự gọi cho đến khi tràn ngăn xếp."
+    },
+    {
+      "q": "Đệ quy có chậm hơn vòng lặp không?",
+      "a": "Trong Python thường chậm hơn một chút, vì mỗi lời gọi hàm có chi phí phụ và dùng một khung ngăn xếp. Độ phức tạp thường như nhau; rủi ro thực tế chính là giới hạn độ sâu đệ quy."
+    },
+    {
+      "q": "Độ sâu đệ quy tối đa trong Python là bao nhiêu?",
+      "a": "Giới hạn mặc định của CPython là 1000 khung, bạn có thể đọc bằng `sys.getrecursionlimit()` và đổi bằng `sys.setrecursionlimit()`. Vượt quá sẽ gây `RecursionError`."
+    },
+    {
+      "q": "Đệ quy đuôi là gì?",
+      "a": "Một lời gọi là lời gọi đuôi khi nó là việc cuối cùng hàm làm trước khi trả về. Một số ngôn ngữ tái sử dụng khung ngăn xếp cho lời gọi đuôi, nhưng CPython thì không, nên đệ quy đuôi trong Python vẫn làm ngăn xếp tăng dần."
+    },
+    {
+      "q": "Hàm đệ quy nào cũng viết được thành vòng lặp không?",
+      "a": "Có. Mọi đệ quy đều chuyển được thành vòng lặp quản lý một ngăn xếp tường minh. Với đệ quy tuyến tính đơn giản như giai thừa, một vòng lặp thường với biến tích lũy là đủ."
+    }
+  ]
+}

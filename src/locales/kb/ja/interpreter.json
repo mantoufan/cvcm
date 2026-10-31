@@ -1,0 +1,147 @@
+{
+  "title": "Interpreter パターン：文法・式の木・TypeScript の例 — cv.cm",
+  "description": "Interpreter パターンは、文法規則をクラスで表し、文を木構造として評価します。TypeScript で小さな式言語を作りながら解説します。",
+  "h1": "Interpreter パターンとは？例でわかりやすく解説",
+  "answer": "Interpreter は振る舞いに関するデザインパターンで、小さな言語の文法の表現と、その言語の文を評価するインタープリタを定義します。文法規則はそれぞれクラスになり、文はこれらのオブジェクトの木（抽象構文木）になります。文を評価するとは、根に対して `interpret` を呼ぶことで、根が再帰的に子を評価します。フィルタ、ルール、数式のような、小さくて単純な言語に向いています。",
+  "sections": [
+    {
+      "h": "目的と解決する問題",
+      "body": [
+        "目的：ある言語が与えられたとき、その文法の表現と、その表現を使って言語の文を解釈するインタープリタを定義することです。Interpreter は Gang of Four（GoF）の書籍にある振る舞いパターンの 1 つです。",
+        "価格設定システムの利用者が、`price * 0.9` や `price - 5` のような独自の割引ルールを書きたいとします。ルールはデータベースに保存して後で評価する必要があります。利用者は新しいルールを次々に作るので、ルールごとにコードへ直接書くことはできません。小さな言語と、それを評価する方法が必要です。",
+        "Interpreter パターンは、この評価のための単純な設計を与えてくれます。数値、変数、演算子がそれぞれクラスになります。`price * 0.9` のようなルールは、乗算ノードが変数ノードと数値ノードを子に持つ木になります。結果を計算するには、現在の価格を保持するコンテキストを渡して、乗算ノードの `interpret` を呼びます。"
+      ]
+    },
+    {
+      "h": "構造と登場する役割",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "役割",
+              "責務"
+            ],
+            "rows": [
+              [
+                "Abstract expression",
+                "すべてのノードに共通の `interpret(context)` 操作を宣言する"
+              ],
+              [
+                "Terminal expression",
+                "木の葉。数値リテラルや変数名など"
+              ],
+              [
+                "Nonterminal expression",
+                "ほかの式から成る文法規則。加算や乗算など。子を評価して結果を組み合わせる"
+              ],
+              [
+                "Context",
+                "変数の値のように、評価のための全体的な情報"
+              ],
+              [
+                "Client（クライアント）",
+                "構文木を（手作業またはパーサで）組み立て、`interpret` を呼ぶ"
+              ]
+            ]
+          }
+        },
+        "次の例で使う文法を、簡単な記法で示します。",
+        {
+          "code": "expression ::= number | variable | expression op expression\nop         ::= \"+\" | \"-\" | \"*\" | \"/\"",
+          "lang": "text"
+        }
+      ]
+    },
+    {
+      "h": "TypeScript での実装",
+      "body": [
+        "文法規則はそれぞれ `Expression` を実装するクラスです。`parse` 関数は、空白区切りの後置記法（演算子がオペランドの後ろに来る）の式を木に変換するので、パーサを短く保てます。",
+        {
+          "code": "type Context = Record<string, number>;\ninterface Expression {\n  interpret(ctx: Context): number;\n}\nclass Num implements Expression {\n  constructor(private value: number) {}\n  interpret() { return this.value; }\n}\nclass Var implements Expression {\n  constructor(private name: string) {}\n  interpret(ctx: Context) {\n    if (!Object.hasOwn(ctx, this.name)) throw new Error(\"Unknown variable \" + this.name);\n    return ctx[this.name];\n  }\n}\nconst ops = { \"+\": (a: number, b: number) => a + b, \"-\": (a: number, b: number) => a - b,\n  \"*\": (a: number, b: number) => a * b, \"/\": (a: number, b: number) => a / b };\nclass BinaryOp implements Expression {\n  constructor(private op: keyof typeof ops, private left: Expression, private right: Expression) {}\n  interpret(ctx: Context) { return ops[this.op](this.left.interpret(ctx), this.right.interpret(ctx)); }\n}\nfunction parse(source: string): Expression {\n  const stack: Expression[] = [];\n  for (const token of source.trim().split(/\\s+/)) {\n    if (Object.hasOwn(ops, token)) {\n      const right = stack.pop()!, left = stack.pop()!;\n      stack.push(new BinaryOp(token as keyof typeof ops, left, right));\n    } else if (!isNaN(Number(token))) stack.push(new Num(Number(token)));\n    else stack.push(new Var(token));\n  }\n  return stack[0];\n}\nconst rule = parse(\"price 0.9 * 5 -\"); // (price * 0.9) - 5\nconsole.log(rule.interpret({ price: 100 })); // 85\nconsole.log(rule.interpret({ price: 40 })); // 31",
+          "lang": "typescript"
+        },
+        "`price 0.9 * 5 -` の木は、引き算ノードの左の子が乗算ノード（`price` と `0.9` を持つ）で、右の子が数値 `5` です。一度パースすれば、同じ木をコンテキストを変えて何度でも評価できます。",
+        {
+          "note": "このパターンが説明するのは、文を表現して評価する方法であり、テキストを構文解析する方法ではありません。実際の入力には、エラーメッセージを返す本格的なパーサが必要です。上の最小限の後置記法パーサは、不正な入力の検証を一切行いません。"
+        }
+      ]
+    },
+    {
+      "h": "使うべき場面と避けるべき場面",
+      "body": [
+        {
+          "ul": [
+            "言語が小さく文法が単純なときに使います。検索フィルタ、フィーチャーフラグのルール、権限の式、単位変換、表計算ソフト風の数式などです。",
+            "同じ式を異なるデータで何度も評価する場合に使います。木を一度作れば、その手間に見合います。",
+            "大きな言語には使いません。規則ごとに 1 クラスでは保守が難しくなります。パーサジェネレータや既存の組み込み言語を使いましょう。",
+            "性能が重要な場合には使いません。オブジェクトの木をたどるのは、バイトコードや機械語にコンパイルするより遅くなります。",
+            "ユーザー入力に `eval` を使って問題を解決してはいけません。小さなインタープリタは、自分で定義した操作しかサポートしないので、はるかに安全です。"
+          ]
+        },
+        "同じ木に対して整形出力や型チェックのような新しい操作を加えるときは、すべてのノードクラスにメソッドを足すのではなく、Interpreter と Visitor パターンを組み合わせましょう。"
+      ]
+    },
+    {
+      "h": "実際の利用例",
+      "body": [
+        {
+          "ul": [
+            "正規表現エンジンは、パターンをノードオブジェクトの木またはグラフにコンパイルし、マッチングはそのノードをたどって行います。これは正規表現の文法に適用された Interpreter の考え方です。",
+            "言語ツールはソースコードを抽象構文木で表現します。Python の `ast` モジュールや、Babel や ESLint などの JavaScript ツールが使う ESTree 仕様は、文法規則ごとにノードの種類を定めています。",
+            "SQL データベースは、`WHERE` 句を式の木にパースし、行ごとにそれを評価します。",
+            "テンプレートエンジンやルールエンジンは、テンプレートやビジネスルールの中にある小さな式を評価します。"
+          ]
+        }
+      ]
+    },
+    {
+      "h": "関連するパターン",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "パターン",
+              "Interpreter パターンとの関係"
+            ],
+            "rows": [
+              [
+                "Composite パターン",
+                "構文木は Composite です。Nonterminal expression が、ほかの式を含みます。Interpreter は、各ノードに意味を与えます。"
+              ],
+              [
+                "Visitor パターン",
+                "Visitor は操作をノードクラスの外に出すので、複数の操作（評価、出力、チェック）が 1 つの木を共有できます。"
+              ],
+              [
+                "Iterator パターン",
+                "Iterator は、構文木のノードの保存方法を公開することなく、ノードをたどれます。"
+              ],
+              [
+                "Flyweight パターン",
+                "よく使われる定数のように、頻繁に繰り返される Terminal symbol は、Flyweight として共有できます。"
+              ]
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Terminal expression と Nonterminal expression の違いは何ですか？",
+      "a": "Terminal expression は、数値や変数のように、それ以上分解できない葉です。Nonterminal expression は、加算のようにほかの式から作られる規則を表し、子を評価して結果を出します。"
+    },
+    {
+      "q": "Interpreter パターンにはパーサが含まれますか？",
+      "a": "いいえ。このパターンは、構文木がすでにあることを前提にしています。木は手作業で作っても、小さなパーサを書いても、パーサジェネレータを使っても構いません。"
+    },
+    {
+      "q": "Interpreter パターンを使うべきでないのはどんなときですか？",
+      "a": "複雑な文法や、性能が重要なコードでは避けましょう。大きな言語ではクラスが増えすぎ、木をたどる評価はコンパイルする方式より遅くなります。"
+    },
+    {
+      "q": "Interpreter と Composite の関係は何ですか？",
+      "a": "Interpreter の構文木は、Composite と同じ形をしています。葉と、ほかのノードを含むノードが、共通のインターフェースを持ちます。Interpreter は、この構造に「言語を評価する」という具体的な意味を与えます。"
+    }
+  ]
+}

@@ -1,0 +1,183 @@
+{
+  "title": "Tutorial de PHP: variables, arrays, funciones, clases y formularios — cv.cm",
+  "description": "Aprende PHP 8 moderno en una página: ejecuta Hello world, variables y tipos, control de flujo, funciones, arrays, clases y enums, excepciones y una página web sencilla.",
+  "h1": "Tutorial de PHP para principiantes",
+  "answer": "PHP es un lenguaje de scripting del lado del servidor creado para la web: un archivo PHP se ejecuta en el servidor y envía HTML o JSON al navegador. Instala PHP, guarda `<?php echo \"Hello, world\";` como `hello.php` y ejecuta `php hello.php`, o inicia un servidor local con `php -S localhost:8000`. Las ideas centrales son las variables con `$`, los arrays flexibles, las funciones con declaraciones de tipo, las clases, las excepciones y el tratamiento seguro de los datos del usuario.",
+  "sections": [
+    {
+      "h": "Qué es PHP y para qué se usa",
+      "body": [
+        "PHP fue creado por Rasmus Lerdorf en 1994; hoy el nombre significa «PHP: Hypertext Preprocessor». Funciona en casi todos los hostings web y mueve una gran parte de los sitios, entre ellos WordPress, Drupal y MediaWiki, de Wikipedia. Los desarrolladores lo usan para sitios de contenido, tiendas online, APIs REST y aplicaciones web completas con frameworks como Laravel y Symfony. El PHP 8 moderno tiene un sistema de tipos, un compilador JIT, enums, atributos y un rendimiento mucho mejor que las versiones antiguas."
+      ]
+    },
+    {
+      "h": "Instalar PHP y ejecutar Hello, world",
+      "body": [
+        "Instala PHP desde php.net o con un gestor de paquetes (`brew install php`, `sudo apt install php-cli`, o un paquete como XAMPP en Windows). Compruébalo con `php -v`. El código PHP va entre `<?php` y una etiqueta de cierre `?>` opcional.",
+        {
+          "code": "<?php\necho \"Hello, world\\n\";",
+          "lang": "php"
+        },
+        {
+          "code": "php hello.php\n# Hello, world\nphp -S localhost:8000    # serve the current folder at http://localhost:8000",
+          "lang": "shell"
+        },
+        "En los archivos que solo contienen código PHP, omite la etiqueta de cierre `?>`, para que no se envíe al navegador por accidente ningún espacio en blanco sobrante."
+      ]
+    },
+    {
+      "h": "Variables y tipos básicos",
+      "body": [
+        "Los nombres de variable empiezan con `$`. Los tipos son dinámicos, pero puedes declarar los tipos de parámetros y de retorno, y `declare(strict_types=1);` al principio de un archivo impide las conversiones automáticas en las llamadas a funciones.",
+        {
+          "table": {
+            "head": [
+              "Tipo",
+              "Ejemplo",
+              "Notas"
+            ],
+            "rows": [
+              [
+                "`int`",
+                "`$n = 42;`",
+                "64 bits en la mayoría de los sistemas"
+              ],
+              [
+                "`float`",
+                "`$x = 3.14;`",
+                "Doble precisión"
+              ],
+              [
+                "`string`",
+                "`$s = \"hi $name\";`",
+                "Las comillas dobles interpolan, las simples no"
+              ],
+              [
+                "`bool`",
+                "`$ok = true;`",
+                "Palabra clave que no distingue mayúsculas"
+              ],
+              [
+                "`array`",
+                "`$a = [1, 2];`",
+                "Mapa ordenado: lista y diccionario en uno"
+              ],
+              [
+                "`null`",
+                "`$v = null;`",
+                "Sin valor"
+              ]
+            ]
+          }
+        },
+        {
+          "code": "<?php\n$name = \"Ada\";\n$count = 7;\necho \"$name has $count items\\n\";        // Ada has 7 items\necho 'No $interpolation here' . \"\\n\";   // No $interpolation here\necho intdiv($count, 2), \" \", $count / 2, \"\\n\";  // 3 3.5\nvar_dump((int) \"12\" + 1);                // int(13)",
+          "lang": "php"
+        },
+        "El operador `.` une cadenas; `+` es solo para números."
+      ]
+    },
+    {
+      "h": "Control de flujo",
+      "body": [
+        {
+          "code": "<?php\n$score = 72;\nif ($score >= 90) {\n    echo \"A\\n\";\n} elseif ($score >= 70) {\n    echo \"B\\n\";                   // B\n} else {\n    echo \"C\\n\";\n}\n\nfor ($i = 0; $i < 3; $i++) {\n    echo $i, \" \";                 // 0 1 2\n}\necho \"\\n\";\n\nforeach ([\"apple\", \"pear\"] as $fruit) {\n    echo $fruit, \"\\n\";\n}\n\n$kind = match ($day = \"SAT\") {   // match is strict and returns a value\n    \"SAT\", \"SUN\" => \"weekend\",\n    default => \"weekday\",\n};\necho $kind, \"\\n\";                 // weekend",
+          "lang": "php"
+        },
+        "`match` (PHP 8.0 y posteriores) compara con `===` y lanza un error cuando ninguna rama coincide, a diferencia del antiguo `switch`, que compara de forma laxa y continúa en la siguiente rama sin `break`."
+      ]
+    },
+    {
+      "h": "Funciones",
+      "body": [
+        {
+          "code": "<?php\ndeclare(strict_types=1);\n\nfunction greet(string $name, string $greeting = \"Hello\"): string\n{\n    return \"$greeting, $name!\";\n}\n\necho greet(\"Lin\"), \"\\n\";                    // Hello, Lin!\necho greet(greeting: \"Hi\", name: \"Lin\"), \"\\n\"; // Hi, Lin!  (named arguments)\n\n$square = fn(int $x): int => $x * $x;       // arrow function\necho $square(5), \"\\n\";                      // 25\n\nfunction total(int ...$nums): int           // variadic\n{\n    return array_sum($nums);\n}\necho total(1, 2, 3), \"\\n\";                  // 6",
+          "lang": "php"
+        }
+      ]
+    },
+    {
+      "h": "Característica distintiva: los arrays",
+      "body": [
+        "El array de PHP es un único tipo flexible que sirve como lista, diccionario, pila o cola. Las claves son enteros o cadenas, y se conserva el orden de inserción. Un gran conjunto de funciones integradas trabaja con arrays.",
+        {
+          "code": "<?php\n$nums = [3, 1, 2];\n$nums[] = 5;                       // append\nsort($nums);\necho implode(\", \", $nums), \"\\n\";   // 1, 2, 3, 5\n\n$ages = [\"ann\" => 31, \"bob\" => 25];\n$ages[\"cy\"] = 40;\nforeach ($ages as $person => $age) {\n    echo \"$person is $age\\n\";\n}\necho $ages[\"zed\"] ?? 0, \"\\n\";      // 0  (null coalescing)\n\n$evens = array_filter($nums, fn($n) => $n % 2 === 0);\n$squares = array_map(fn($n) => $n * $n, $nums);\necho json_encode(array_values($evens)), \" \", json_encode($squares), \"\\n\";  // [2] [1,4,9,25]\necho count($ages), \" \", array_key_exists(\"bob\", $ages) ? \"yes\" : \"no\", \"\\n\"; // 3 yes",
+          "lang": "php"
+        },
+        "Los arrays se copian al asignarlos (copy-on-write), a diferencia de los objetos, que se pasan por identificador."
+      ]
+    },
+    {
+      "h": "Clases, promoción de constructor y enums",
+      "body": [
+        {
+          "code": "<?php\ndeclare(strict_types=1);\n\nenum Role: string\n{\n    case Admin = \"admin\";\n    case Viewer = \"viewer\";\n}\n\nfinal class User\n{\n    public function __construct(\n        public readonly string $name,\n        public readonly Role $role = Role::Viewer,\n    ) {}\n\n    public function label(): string\n    {\n        return \"{$this->name} ({$this->role->value})\";\n    }\n}\n\n$u = new User(\"Ann\", Role::Admin);\necho $u->label(), \"\\n\";               // Ann (admin)\necho Role::from(\"viewer\")->name, \"\\n\"; // Viewer",
+          "lang": "php"
+        },
+        "La promoción de constructor (PHP 8.0) declara y asigna propiedades en la firma del constructor. Las propiedades `readonly` (8.1) pueden asignarse una sola vez, y los enums con valor (8.1) asocian casos con cadenas o enteros. También hay interfaces, clases abstractas y traits."
+      ]
+    },
+    {
+      "h": "Manejo de errores",
+      "body": [
+        "El PHP moderno lanza excepciones en la mayoría de los errores. Captura las subclases de `Exception` para los fallos esperados; `Throwable` también cubre los errores del motor como `TypeError`.",
+        {
+          "code": "<?php\nfunction parseAge(string $text): int\n{\n    if (!ctype_digit($text)) {\n        throw new InvalidArgumentException(\"invalid age: $text\");\n    }\n    return (int) $text;\n}\n\ntry {\n    echo parseAge(\"41\"), \"\\n\";   // 41\n    echo parseAge(\"abc\"), \"\\n\";\n} catch (InvalidArgumentException $e) {\n    echo $e->getMessage(), \"\\n\"; // invalid age: abc\n} finally {\n    echo \"done\\n\";\n}",
+          "lang": "php"
+        }
+      ]
+    },
+    {
+      "h": "Un programa completo pequeño: un endpoint de API JSON",
+      "body": [
+        "Guárdalo como `api.php`, ejecuta `php -S localhost:8000` y abre `http://localhost:8000/api.php?name=Ann`. Lee un parámetro de la consulta, lo valida y devuelve JSON.",
+        {
+          "code": "<?php\ndeclare(strict_types=1);\n\nheader(\"Content-Type: application/json; charset=utf-8\");\n\n$name = trim($_GET[\"name\"] ?? \"\");\nif ($name === \"\" || mb_strlen($name) > 50) {\n    http_response_code(400);\n    echo json_encode([\"error\" => \"name must be 1 to 50 characters\"]);\n    exit;\n}\n\n$response = [\n    \"message\" => \"Hello, $name!\",\n    \"length\" => mb_strlen($name),\n    \"time\" => date(DATE_ATOM),\n];\necho json_encode($response, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);",
+          "lang": "php"
+        },
+        "`$_GET`, `$_POST` y `$_COOKIE` contienen los datos de la petición. Trata todos sus valores como no confiables."
+      ]
+    },
+    {
+      "h": "Errores comunes de principiantes",
+      "body": [
+        {
+          "note": "Nunca pongas la entrada del usuario directamente en SQL o HTML. Usa consultas preparadas con PDO (`$stmt = $pdo->prepare(\"SELECT * FROM users WHERE id = ?\")`) para evitar la inyección SQL, y `htmlspecialchars($value)` al imprimir en HTML para evitar el cross-site scripting."
+        },
+        {
+          "ul": [
+            "Comparar con `==`, que convierte los tipos; usa `===` y `!==`.",
+            "Olvidar el `$` en el nombre de una variable, o el punto y coma al final de una instrucción.",
+            "Guardar contraseñas con `md5` o `sha1`. Usa `password_hash` y `password_verify`.",
+            "Usar `strlen` con texto UTF-8; cuenta bytes. Usa `mb_strlen` para contar caracteres.",
+            "Usar una versión antigua de PHP. Usa una versión de PHP 8 con soporte para tener correcciones de seguridad y características modernas."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Adónde ir después",
+      "body": [
+        "El Manual oficial de PHP en php.net documenta cada función, con una referencia del lenguaje y notas de usuarios. Aprende Composer, el gestor de paquetes, y los estándares de código PSR; después prueba un framework: Laravel o Symfony para aplicaciones, o Slim para APIs pequeñas. PHPUnit es la herramienta de pruebas estándar."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "¿Sigue valiendo la pena aprender PHP?",
+      "a": "Sí. Mueve buena parte de la web, incluidos los sitios WordPress, y el PHP 8 moderno con Laravel o Symfony es una forma productiva de crear aplicaciones web. Hay muchos empleos de mantenimiento y desarrollo de sistemas PHP."
+    },
+    {
+      "q": "¿PHP es un lenguaje de frontend o de backend?",
+      "a": "De backend. PHP se ejecuta en el servidor y envía al navegador el HTML, JSON o los archivos ya terminados; el navegador nunca ve el código PHP."
+    },
+    {
+      "q": "¿Cuál es la diferencia entre echo y print?",
+      "a": "Ambos muestran texto. `echo` puede recibir varios argumentos separados por comas y no devuelve nada; `print` recibe un argumento y devuelve 1. En la práctica, la mayoría del código usa `echo`."
+    },
+    {
+      "q": "¿Qué hace declare(strict_types=1)?",
+      "a": "Hace estrictas las declaraciones de tipo escalar para las llamadas a funciones hechas desde ese archivo, de modo que pasar la cadena `\"5\"` a un parámetro `int` lanza un `TypeError` en lugar de convertirse."
+    }
+  ]
+}

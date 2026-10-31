@@ -1,0 +1,236 @@
+{
+  "title": "Merge sort explained: divide and conquer, Python code and complexity — cv.cm",
+  "description": "Merge sort splits a list in half, sorts each half and merges them in O(n log n) time. Trace, Python code, the merge step, stability and when to use it.",
+  "h1": "Merge sort explained: how it works, code and complexity",
+  "answer": "Merge sort is a divide-and-conquer sorting algorithm. It splits the list into two halves, sorts each half recursively, and then merges the two sorted halves into one sorted list by repeatedly taking the smaller front element. It always runs in O(n log n) time, is stable, and needs O(n) extra memory for merging. It is the basis of Timsort, the algorithm behind Python's `sorted()`, and of external sorting for data that does not fit in memory.",
+  "sections": [
+    {
+      "h": "The idea in plain words",
+      "body": [
+        "A list with zero or one element is already sorted. For a longer list:",
+        {
+          "ol": [
+            "Divide: split the list into a left half and a right half.",
+            "Conquer: sort each half with merge sort.",
+            "Combine: merge the two sorted halves. Compare the first element of each, move the smaller one to the output, and repeat until one half is empty; then copy what is left of the other."
+          ]
+        },
+        "All the real work happens in the merge step, and merging two sorted lists of total length n takes only n − 1 comparisons at most."
+      ]
+    },
+    {
+      "h": "Worked example, step by step",
+      "body": [
+        "Sort `[38, 27, 43, 3, 9, 82, 10]`.",
+        {
+          "table": {
+            "head": [
+              "Level",
+              "Sublists"
+            ],
+            "rows": [
+              [
+                "Split 1",
+                "`[38, 27, 43]`  `[3, 9, 82, 10]`"
+              ],
+              [
+                "Split 2",
+                "`[38]` `[27, 43]`  `[3, 9]` `[82, 10]`"
+              ],
+              [
+                "Split 3",
+                "`[38]` `[27]` `[43]`  `[3]` `[9]` `[82]` `[10]`"
+              ],
+              [
+                "Merge 1",
+                "`[38]` `[27, 43]`  `[3, 9]` `[10, 82]`"
+              ],
+              [
+                "Merge 2",
+                "`[27, 38, 43]`  `[3, 9, 10, 82]`"
+              ],
+              [
+                "Merge 3",
+                "`[3, 9, 10, 27, 38, 43, 82]`"
+              ]
+            ]
+          }
+        },
+        "The final merge compares fronts: 27 vs 3 takes 3, 27 vs 9 takes 9, 27 vs 10 takes 10, 27 vs 82 takes 27, 38 vs 82 takes 38, 43 vs 82 takes 43, then 82 is copied. Six comparisons for seven elements."
+      ]
+    },
+    {
+      "h": "Python implementation",
+      "body": [
+        {
+          "code": "def merge(left, right):\n    out, i, j = [], 0, 0\n    while i < len(left) and j < len(right):\n        if left[i] <= right[j]:     # <= takes from left on ties: stable\n            out.append(left[i]); i += 1\n        else:\n            out.append(right[j]); j += 1\n    out.extend(left[i:])            # one of these is empty\n    out.extend(right[j:])\n    return out\ndef merge_sort(items):\n    \"\"\"Return a new sorted list.\"\"\"\n    if len(items) <= 1:\n        return list(items)\n    mid = len(items) // 2\n    return merge(merge_sort(items[:mid]), merge_sort(items[mid:]))\nprint(merge_sort([38, 27, 43, 3, 9, 82, 10]))   # [3, 9, 10, 27, 38, 43, 82]\nprint(merge_sort([]))                           # []",
+          "lang": "python"
+        },
+        "This top-down version is clear but copies slices. A bottom-up version avoids recursion entirely: merge runs of width 1, then 2, then 4, and so on.",
+        {
+          "code": "def merge_sort_bottom_up(items):\n    a = list(items)\n    width = 1\n    while width < len(a):\n        for lo in range(0, len(a), 2 * width):\n            mid, hi = lo + width, lo + 2 * width\n            a[lo:hi] = merge(a[lo:mid], a[mid:hi])\n        width *= 2\n    return a",
+          "lang": "python"
+        },
+        "The bottom-up version reuses `merge` from above. The standard library also has `heapq.merge`, which lazily merges any number of sorted iterables."
+      ]
+    },
+    {
+      "h": "Time and space complexity",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Case",
+              "Time",
+              "Reason"
+            ],
+            "rows": [
+              [
+                "Best",
+                "O(n log n)",
+                "it always splits and merges, whatever the order"
+              ],
+              [
+                "Average",
+                "O(n log n)",
+                "about log₂ n levels, O(n) merge work per level"
+              ],
+              [
+                "Worst",
+                "O(n log n)",
+                "same recursion; no bad inputs"
+              ],
+              [
+                "Extra space",
+                "O(n)",
+                "buffer for merging, plus O(log n) recursion stack"
+              ]
+            ]
+          }
+        },
+        "The recurrence is T(n) = 2T(n/2) + O(n). Each level of the recursion tree does O(n) work in total and there are about log₂ n levels, so the total is O(n log n). For a million items that is about 20 levels."
+      ]
+    },
+    {
+      "h": "How merge sort compares with other sorts",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Algorithm",
+              "Best",
+              "Average",
+              "Worst",
+              "Extra space",
+              "Stable"
+            ],
+            "rows": [
+              [
+                "Merge sort",
+                "O(n log n)",
+                "O(n log n)",
+                "O(n log n)",
+                "O(n)",
+                "Yes"
+              ],
+              [
+                "Quicksort",
+                "O(n log n)",
+                "O(n log n)",
+                "O(n²)",
+                "O(log n)",
+                "No"
+              ],
+              [
+                "Heapsort",
+                "O(n log n)",
+                "O(n log n)",
+                "O(n log n)",
+                "O(1)",
+                "No"
+              ],
+              [
+                "Insertion sort",
+                "O(n)",
+                "O(n²)",
+                "O(n²)",
+                "O(1)",
+                "Yes"
+              ],
+              [
+                "Bubble sort",
+                "O(n)",
+                "O(n²)",
+                "O(n²)",
+                "O(1)",
+                "Yes"
+              ],
+              [
+                "Selection sort",
+                "O(n²)",
+                "O(n²)",
+                "O(n²)",
+                "O(1)",
+                "No"
+              ],
+              [
+                "Timsort (Python `sorted`)",
+                "O(n)",
+                "O(n log n)",
+                "O(n log n)",
+                "O(n)",
+                "Yes"
+              ]
+            ]
+          }
+        },
+        "Merge sort is stable because the merge takes from the left half when two elements are equal, so equal elements keep their order. Compared with quicksort, it has a guaranteed O(n log n) worst case but needs O(n) extra memory and usually more data movement on arrays. Compared with heapsort, it is stable and accesses memory sequentially, which is friendly to caches and disks."
+      ]
+    },
+    {
+      "h": "Variants and common mistakes",
+      "body": [
+        {
+          "ul": [
+            "Natural merge sort detects runs that are already sorted and merges them, giving O(n) on sorted input. Timsort is a refined natural merge sort that uses binary insertion sort for short runs.",
+            "Switch to insertion sort for small sublists (for example, fewer than about 10 to 30 elements) to cut overhead.",
+            "On linked lists, merge sort needs no extra buffer: merging only relinks nodes, so it is the usual choice for sorting a linked list.",
+            "External merge sort sorts chunks that fit in memory, writes them to disk, then performs a k-way merge. Databases and tools such as GNU `sort` use this idea for large files.",
+            "Counting inversions: during the merge, each time an element is taken from the right half, it is smaller than all remaining elements of the left half."
+          ]
+        },
+        {
+          "note": "Common bugs: using `<` instead of `<=` in the merge (breaks stability), forgetting to copy the leftover tail after the loop, and computing `mid` so that one half is empty and the other is the whole list, which recurses forever."
+        }
+      ]
+    },
+    {
+      "h": "When to use merge sort",
+      "body": [
+        "Choose merge sort when you need a stable sort with a guaranteed O(n log n) time, when sorting linked lists, or when data is too large for memory. In Python, simply call `sorted()` or `list.sort()`: they implement Timsort, which is a merge sort variant, so you already get these properties. Writing merge sort by hand is a classic interview task, often extended to counting inversions or merging k sorted lists."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Is merge sort stable?",
+      "a": "Yes, as long as the merge takes from the left half when elements are equal (`<=`). Equal elements then keep their original order."
+    },
+    {
+      "q": "What is the time complexity of merge sort?",
+      "a": "O(n log n) in the best, average and worst case. The list is halved about log₂ n times, and each level of merging costs O(n)."
+    },
+    {
+      "q": "Why does merge sort need extra space?",
+      "a": "Merging two halves of an array in place efficiently is difficult, so the usual implementation writes the merged result into a separate buffer of size n. In-place variants exist but are complex and slower in practice."
+    },
+    {
+      "q": "Is merge sort faster than quicksort?",
+      "a": "Not usually on arrays in memory: quicksort tends to be faster on average because it moves less data and needs no buffer. Merge sort wins when you need stability, a guaranteed worst case, linked lists or external sorting."
+    },
+    {
+      "q": "Does Python use merge sort?",
+      "a": "Python's `sorted()` and `list.sort()` use Timsort, a hybrid of merge sort and insertion sort. Since Python 3.11, the merge strategy is based on powersort."
+    }
+  ]
+}

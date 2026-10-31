@@ -1,0 +1,134 @@
+{
+  "title": "Mẫu Mediator: tách rời các thành phần, ví dụ TypeScript — cv.cm",
+  "description": "Mẫu Mediator định tuyến giao tiếp giữa các đối tượng qua một đối tượng trung tâm để chúng không tham chiếu lẫn nhau. Xem ví dụ biểu mẫu bằng TypeScript.",
+  "h1": "Mẫu Mediator (Design Pattern) giải thích kèm ví dụ",
+  "answer": "Mediator là một mẫu thiết kế hành vi (behavioral), giảm phụ thuộc trực tiếp giữa các đối tượng bằng cách cho chúng giao tiếp qua một đối tượng mediator trung tâm. Thay vì mỗi thành phần gọi các thành phần khác, một thành phần báo cho mediator biết có chuyện xảy ra, và mediator quyết định cập nhật các thành phần nào. Điều này biến mạng lưới tham chiếu nhiều-nhiều rối rắm thành các liên kết một-nhiều đơn giản.",
+  "sections": [
+    {
+      "h": "Mục đích và vấn đề mà mẫu này giải quyết",
+      "body": [
+        "Mục đích: định nghĩa một đối tượng đóng gói cách một tập đối tượng tương tác với nhau. Mediator thúc đẩy liên kết lỏng bằng cách ngăn các đối tượng tham chiếu nhau một cách tường minh, và cho phép bạn thay đổi cách tương tác của chúng một cách độc lập. Đây là một trong các mẫu hành vi trong sách Gang of Four (GoF).",
+        "Hãy xét một biểu mẫu đăng ký có ô chọn “tài khoản công ty”, ô tên công ty, ô email và nút gửi. Khi tick vào ô chọn, ô công ty phải hiện ra và trở thành bắt buộc. Nút gửi chỉ được bật khi mọi ô bắt buộc đều hợp lệ. Nếu mỗi thành phần cập nhật trực tiếp các thành phần khác, ô chọn phải biết ô công ty và nút gửi, ô email phải biết nút gửi, và cứ thế. Mỗi quy tắc mới lại thêm tham chiếu chéo, và không thành phần nào dùng lại được trong biểu mẫu khác.",
+        "Với mediator, các thành phần chỉ báo các sự kiện như “tôi đã thay đổi”. Đối tượng biểu mẫu, đóng vai trò mediator, giữ mọi quy tắc về cách các ô ảnh hưởng lẫn nhau. Các thành phần trở nên đơn giản và dùng lại được, còn logic tương tác nằm ở một chỗ."
+      ]
+    },
+    {
+      "h": "Cấu trúc và các thành phần",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Vai trò",
+              "Trách nhiệm"
+            ],
+            "rows": [
+              [
+                "Mediator",
+                "Interface có phương thức mà các colleague gọi để báo sự kiện, như `notify(sender, event)`"
+              ],
+              [
+                "Concrete mediator",
+                "Biết mọi colleague và cài đặt các quy tắc phối hợp giữa chúng"
+              ],
+              [
+                "Colleague",
+                "Một thành phần giữ tham chiếu đến mediator và báo sự kiện của mình thay vì gọi các colleague khác"
+              ]
+            ]
+          }
+        },
+        "Nếu không có mediator, n thành phần đều nói chuyện với nhau có thể cần tới n × (n − 1) / 2 liên kết. Có mediator, mỗi thành phần chỉ có đúng một liên kết: tới mediator."
+      ]
+    },
+    {
+      "h": "Cài đặt bằng TypeScript",
+      "body": [
+        "Mỗi ô báo thay đổi cho mediator. `SignUpForm` là concrete mediator: nó hiện hoặc ẩn ô công ty và bật nút gửi.",
+        {
+          "code": "interface Mediator {\n  notify(sender: Component, event: string): void;\n}\n\nclass Component {\n  constructor(protected mediator: Mediator, readonly name: string) {}\n}\n\nclass Checkbox extends Component {\n  checked = false;\n  toggle() { this.checked = !this.checked; this.mediator.notify(this, \"change\"); }\n}\nclass TextField extends Component {\n  value = \"\";\n  visible = true;\n  type(text: string) { this.value = text; this.mediator.notify(this, \"change\"); }\n}\nclass Button extends Component { enabled = false; }\n\nclass SignUpForm implements Mediator {\n  isCompany = new Checkbox(this, \"isCompany\");\n  company = new TextField(this, \"company\");\n  email = new TextField(this, \"email\");\n  submit = new Button(this, \"submit\");\n  constructor() { this.company.visible = false; }\n\n  notify(sender: Component, event: string) {\n    if (sender === this.isCompany) this.company.visible = this.isCompany.checked;\n    const emailOk = this.email.value.includes(\"@\");\n    const companyOk = !this.company.visible || this.company.value.length > 0;\n    this.submit.enabled = emailOk && companyOk;\n    console.log(sender.name, event, \"-> submit enabled:\", this.submit.enabled);\n  }\n}\n\nconst form = new SignUpForm();\nform.email.type(\"ana@example.com\"); // email change -> submit enabled: true\nform.isCompany.toggle();            // isCompany change -> submit enabled: false\nform.company.type(\"Acme\");          // company change -> submit enabled: true",
+          "lang": "typescript"
+        },
+        "Lưu ý `Checkbox` và `TextField` không hề biết các ô khác tồn tại. Bạn có thể dùng lại chúng trong một biểu mẫu hoàn toàn khác bằng cách gán cho chúng một mediator khác.",
+        {
+          "note": "Rủi ro chính của Mediator là bản thân mediator phình thành một lớp lớn biết mọi thứ, đôi khi gọi là god object. Nếu một mediator xử lý nhiều quy tắc không liên quan, hãy tách thành nhiều mediator nhỏ hơn, mỗi cái cho một tính năng hoặc một vùng màn hình."
+        }
+      ]
+    },
+    {
+      "h": "Khi nào nên dùng và khi nào không",
+      "body": [
+        {
+          "ul": [
+            "Dùng khi một nhóm đối tượng giao tiếp theo cách phức tạp nhưng xác định rõ, và các phụ thuộc giữa chúng khó theo dõi.",
+            "Dùng khi bạn muốn dùng lại các thành phần hiện không thể tách rời vì chúng tham chiếu lẫn nhau.",
+            "Dùng khi các quy tắc tương tác thay đổi thường xuyên và bạn muốn sửa chúng ở một chỗ.",
+            "Đừng dùng cho hai đối tượng chỉ đơn giản gọi nhau; một lời gọi trực tiếp rõ ràng hơn.",
+            "Đừng dùng khi các thành phần chỉ cần phát sự kiện cho bất kỳ ai quan tâm. Một event emitter thông thường (Observer) nhẹ hơn."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Ứng dụng thực tế",
+      "body": [
+        {
+          "ul": [
+            "Bộ điều khiển biểu mẫu và hộp thoại trong các framework GUI: component cha sở hữu state và quyết định cách các ô nhập con ảnh hưởng lẫn nhau, còn các con chỉ phát sự kiện. Trong React, việc “nâng state lên” component cha chung theo đúng ý tưởng này.",
+            "Ứng dụng chat: người dùng không gửi tin trực tiếp cho nhau; phòng chat hoặc máy chủ nhận từng tin và chuyển cho đúng thành viên.",
+            "Message broker và event bus giữa các dịch vụ: bên gửi publish lên broker, broker định tuyến thông điệp đến các bên nhận mà bên gửi không biết.",
+            "Kiểm soát không lưu là phép so sánh kinh điển: máy bay không thương lượng với mọi máy bay khác, chúng chỉ nói chuyện với tháp kiểm soát."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Mediator so với Observer và các mẫu khác",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Mẫu",
+              "Khác với Mediator ở điểm nào"
+            ],
+            "rows": [
+              [
+                "Observer",
+                "Observer là phát một chiều: subject thông báo cho bao nhiêu listener tùy ý và không biết chúng làm gì. Mediator biết các colleague của mình và điều phối chúng theo cả hai chiều. Mediator thường được cài đặt bằng Observer."
+              ],
+              [
+                "Facade",
+                "Facade cho client một interface đơn giản hơn tới hệ thống con, và hệ thống con không biết facade tồn tại. Các colleague biết mediator của mình và nói chuyện với nó."
+              ],
+              [
+                "Chain of Responsibility",
+                "Chuỗi chuyển yêu cầu dọc một hàng handler; mediator là một trung tâm duy nhất gửi mỗi sự kiện đến đúng các thành phần."
+              ],
+              [
+                "Command",
+                "Các colleague có thể gửi đối tượng command cho mediator, rồi mediator quyết định ai thực hiện chúng."
+              ]
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Mẫu Mediator khác mẫu Observer ở điểm nào?",
+      "a": "Với Observer, subject phát sự kiện cho các subscriber mà nó không biết, và giao tiếp là một chiều. Với Mediator, một đối tượng trung tâm biết các thành phần tham gia và điều phối cách chúng ảnh hưởng lẫn nhau."
+    },
+    {
+      "q": "Event bus có phải là mediator không?",
+      "a": "Event bus chỉ chuyển tiếp sự kiện cho subscriber thì gần với Observer, hay publish-subscribe, hơn. Nó trở thành mediator khi chứa các quy tắc quyết định cách các thành phần phản ứng với nhau."
+    },
+    {
+      "q": "Mediator có làm mã khó theo dõi hơn không?",
+      "a": "Có thể. Lời gọi trực tiếp dễ lần theo, còn lời gọi qua trung gian phải đi qua một đối tượng trung tâm. Mẫu này đáng giá khi phương án thay thế là nhiều thành phần tham chiếu lẫn nhau."
+    },
+    {
+      "q": "Một thành phần có thể có nhiều hơn một mediator không?",
+      "a": "Thường một thành phần có một mediator, được gán khi nó được tạo. Một thành phần có thể được dùng lại với các mediator khác nhau trong các ngữ cảnh khác nhau, đó là một trong những lợi ích chính của mẫu này."
+    }
+  ]
+}

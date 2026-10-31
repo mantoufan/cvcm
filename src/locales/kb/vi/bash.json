@@ -1,0 +1,226 @@
+{
+  "title": "Hướng dẫn học Bash: biến, vòng lặp, hàm và shell script — cv.cm",
+  "description": "Học viết script Bash từng bước: chạy script, biến và dấu nháy, if và case, vòng lặp, hàm, mảng, pipe và chuyển hướng, cùng cách xử lý lỗi an toàn.",
+  "h1": "Học viết script Bash cơ bản cho người mới bắt đầu",
+  "answer": "Bash là shell dòng lệnh Unix và cũng là ngôn ngữ script, được dùng trên máy chủ Linux, terminal macOS và pipeline CI. Một script Bash là tệp văn bản chứa các lệnh shell, kết hợp với biến, điều kiện, vòng lặp, hàm và pipe. Trang này hướng dẫn viết và chạy script, đặt dấu nháy cho biến an toàn, điều khiển luồng, dùng mảng, chuyển hướng đầu ra và xử lý lỗi bằng set -euo pipefail.",
+  "sections": [
+    {
+      "h": "Bash là gì và dùng để làm gì",
+      "body": [
+        "Bash (Bourne Again SHell) là shell dòng lệnh và ngôn ngữ script của Dự án GNU. Bash đọc các lệnh bạn gõ, chạy chương trình và nối chúng bằng pipe và chuyển hướng. Script Bash là tệp văn bản chứa chính những lệnh đó, nên mọi việc bạn làm tay trong terminal đều có thể tự động hóa.",
+        "Bash là shell tương tác mặc định trên hầu hết bản phân phối Linux và có trên macOS (hiện mặc định dùng zsh nhưng vẫn kèm Bash), cũng như trên Windows qua WSL hoặc Git Bash. Lập trình viên, quản trị hệ thống và kỹ sư DevOps dùng Bash cho script build, triển khai, job CI, bảo trì máy chủ và xử lý dữ liệu nhanh với các công cụ như `grep`, `sed`, `awk` và `sort`."
+      ]
+    },
+    {
+      "h": "Viết và chạy Hello, world",
+      "body": [
+        "Script bắt đầu bằng dòng shebang cho hệ thống biết dùng trình thông dịch nào. Cấp quyền thực thi cho tệp bằng `chmod`, rồi chạy nó.",
+        {
+          "code": "#!/usr/bin/env bash\n# hello.sh\necho \"Hello, world!\"",
+          "lang": "shell"
+        },
+        {
+          "code": "chmod +x hello.sh\n./hello.sh\n# Hello, world!\nbash hello.sh       # also works without chmod\nbash --version      # check which version you have",
+          "lang": "shell"
+        },
+        "`#!/usr/bin/env bash` tìm Bash trong `PATH`, di động hơn so với việc ghi cứng `/bin/bash`. Nếu script chỉ dùng tính năng POSIX, có thể dùng `#!/bin/sh`, nhưng khi đó không được dùng cú pháp chỉ có ở Bash như `[[ ]]` và mảng."
+      ]
+    },
+    {
+      "h": "Biến, dấu nháy và khai triển",
+      "body": [
+        "Gán bằng `name=value` và đọc bằng `$name` hoặc `${name}`. Mọi biến đều là chuỗi; Bash chỉ làm số học nguyên bên trong `$(( ))`. Hãy đặt khai triển trong nháy kép để khoảng trắng và ký tự đặc biệt được giữ nguyên.",
+        {
+          "code": "name=\"Ada\"                 # no spaces around =\ncount=3\necho \"Hello, $name\"        # Hello, Ada\necho \"Next: $((count + 1))\"  # Next: 4  (integer arithmetic)\ntoday=$(date +%Y-%m-%d)    # command substitution\necho \"Today is $today\"\nfile=\"my report.txt\"\necho \"${file%.txt}.pdf\"    # my report.pdf  (strip suffix)\necho \"${#name}\"            # 3  (string length)\necho \"${missing:-default}\" # default  (fallback value)",
+          "lang": "shell"
+        },
+        {
+          "table": {
+            "head": [
+              "Cú pháp",
+              "Ý nghĩa"
+            ],
+            "rows": [
+              [
+                "`\"$var\"`",
+                "giá trị của biến, giữ thành một từ"
+              ],
+              [
+                "`'text'`",
+                "văn bản nguyên văn, không khai triển gì cả"
+              ],
+              [
+                "`$(command)`",
+                "đầu ra của một lệnh"
+              ],
+              [
+                "`$((a + b))`",
+                "số học nguyên"
+              ],
+              [
+                "`$1`, `$2`, `$@`, `$#`",
+                "đối số của script hoặc hàm, tất cả đối số, số lượng đối số"
+              ],
+              [
+                "`$?`",
+                "mã thoát của lệnh cuối cùng (0 nghĩa là thành công)"
+              ]
+            ]
+          }
+        },
+        {
+          "note": "Viết `name = value` có khoảng trắng là lỗi phổ biến nhất của người mới: khi đó Bash cố chạy một lệnh tên `name`. Cũng hãy đặt nháy cho mọi khai triển: `rm $file` sẽ hỏng hoặc xóa nhầm tệp khi tên chứa khoảng trắng, còn `rm \"$file\"` thì an toàn."
+        }
+      ]
+    },
+    {
+      "h": "Điều kiện và case",
+      "body": [
+        "`if` chạy một lệnh và kiểm tra mã thoát của nó. Lệnh kiểm tra `[[ ]]` so sánh chuỗi và kiểm tra tệp; `(( ))` so sánh số. `case` so khớp một giá trị với các mẫu glob.",
+        {
+          "code": "#!/usr/bin/env bash\nfile=\"${1:-notes.txt}\"\n\nif [[ -f \"$file\" ]]; then\n  echo \"$file exists\"\nelif [[ -d \"$file\" ]]; then\n  echo \"$file is a directory\"\nelse\n  echo \"$file not found\"\nfi\n\nn=7\nif (( n % 2 == 1 )); then echo \"$n is odd\"; fi\n\ncase \"$file\" in\n  *.txt) echo \"text file\" ;;\n  *.sh)  echo \"shell script\" ;;\n  *)     echo \"something else\" ;;\nesac",
+          "lang": "shell"
+        },
+        {
+          "table": {
+            "head": [
+              "Kiểm tra",
+              "Đúng khi"
+            ],
+            "rows": [
+              [
+                "`[[ -f path ]]`",
+                "đường dẫn là tệp thông thường"
+              ],
+              [
+                "`[[ -d path ]]`",
+                "đường dẫn là thư mục"
+              ],
+              [
+                "`[[ -z \"$s\" ]]`",
+                "chuỗi rỗng"
+              ],
+              [
+                "`[[ \"$a\" == \"$b\" ]]`",
+                "hai chuỗi bằng nhau"
+              ],
+              [
+                "`(( a > b ))`",
+                "số a lớn hơn số b"
+              ],
+              [
+                "`[[ $a -lt $b ]]`",
+                "số a nhỏ hơn số b (kiểu cũ)"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "Vòng lặp",
+      "body": [
+        "Bash có `for` trên danh sách các từ, `for (( ))` kiểu C, `while` và `until`. Đọc tệp từng dòng dùng `while read`.",
+        {
+          "code": "for fruit in apple banana cherry; do\n  echo \"fruit: $fruit\"\ndone\n\nfor (( i = 1; i <= 3; i++ )); do\n  echo \"i = $i\"\ndone\n\nfor f in *.log; do\n  [[ -e \"$f\" ]] || continue   # skip if no .log files match\n  echo \"log file: $f\"\ndone\n\nwhile IFS= read -r line; do\n  echo \"line: $line\"\ndone < input.txt",
+          "lang": "shell"
+        },
+        "`IFS= read -r` đọc mỗi dòng đúng như đã viết: `IFS=` giữ khoảng trắng đầu dòng và `-r` giữ dấu gạch chéo ngược."
+      ]
+    },
+    {
+      "h": "Hàm",
+      "body": [
+        "Định nghĩa hàm bằng `name() { ... }` và gọi như một lệnh. Đối số đến dưới dạng `$1`, `$2`, v.v. Hàm trả về mã thoát (0 đến 255) bằng `return`; để trả dữ liệu, hãy in ra và bắt đầu ra bằng `$( )`.",
+        {
+          "code": "greet() {\n  local name=\"${1:-world}\"   # local variable, default value\n  echo \"Hello, $name!\"\n}\n\nis_even() {\n  (( $1 % 2 == 0 ))          # exit status 0 means true\n}\n\ngreet                         # Hello, world!\ngreet \"Ann\"                   # Hello, Ann!\nmsg=$(greet \"Bo\")             # capture output\necho \"Got: $msg\"              # Got: Hello, Bo!\n\nif is_even 4; then echo \"4 is even\"; fi",
+          "lang": "shell"
+        }
+      ]
+    },
+    {
+      "h": "Mảng và mảng kết hợp",
+      "body": [
+        "Mảng theo chỉ mục chứa danh sách chuỗi. Mảng kết hợp ánh xạ khóa chuỗi sang giá trị và cần Bash 4 trở lên, nên không có trong Bash 3.2 cũ đi kèm macOS.",
+        {
+          "code": "langs=(\"bash\" \"python\" \"go\")\nlangs+=(\"rust\")\necho \"${langs[0]}\"           # bash\necho \"${#langs[@]}\"          # 4\nfor l in \"${langs[@]}\"; do echo \"- $l\"; done\n\n# associative array (Bash 4 or later)\ndeclare -A port\nport[http]=80\nport[https]=443\necho \"${port[https]}\"        # 443\nfor key in \"${!port[@]}\"; do\n  echo \"$key -> ${port[$key]}\"\ndone",
+          "lang": "shell"
+        },
+        "Luôn viết `\"${array[@]}\"` có nháy khi lặp qua các phần tử; cách này giữ mỗi phần tử là một từ ngay cả khi nó chứa khoảng trắng."
+      ]
+    },
+    {
+      "h": "Pipe và chuyển hướng",
+      "body": [
+        "Điểm đặc trưng của Bash là ghép các chương trình nhỏ. Pipe `|` gửi đầu ra của một lệnh sang đầu vào của lệnh kế tiếp. Chuyển hướng gửi đầu ra vào tệp hoặc đọc đầu vào từ tệp. Mô tả tệp 1 là đầu ra chuẩn và 2 là lỗi chuẩn.",
+        {
+          "code": "ls -l > files.txt            # write stdout to a file (overwrite)\necho \"more\" >> files.txt     # append\ngrep error app.log 2> /dev/null   # discard error messages\nmake > build.log 2>&1        # stdout and stderr to the same file\n\n# count the 3 most common words in a file\ntr -cs '[:alpha:]' '\\n' < book.txt | tr '[:upper:]' '[:lower:]' |\n  sort | uniq -c | sort -rn | head -n 3",
+          "lang": "shell"
+        }
+      ]
+    },
+    {
+      "h": "Xử lý lỗi và script an toàn",
+      "body": [
+        "Mặc định Bash vẫn tiếp tục sau khi một lệnh thất bại. Nhiều script mở đầu bằng `set -euo pipefail`: `-e` thoát khi có lỗi không được xử lý, `-u` coi biến chưa đặt là lỗi, và `-o pipefail` khiến pipeline thất bại nếu bất kỳ lệnh nào trong đó thất bại. `trap` chạy mã dọn dẹp khi script thoát.",
+        {
+          "code": "#!/usr/bin/env bash\nset -euo pipefail            # stop on errors, unset vars, pipe failures\n\ntmp=$(mktemp)\ntrap 'rm -f \"$tmp\"' EXIT     # clean up when the script exits\n\nif ! grep -q \"ready\" status.txt; then\n  echo \"status is not ready\" >&2   # errors go to stderr\n  exit 1\nfi\n\ncp config.txt \"$tmp\" || { echo \"copy failed\" >&2; exit 2; }\necho \"ok\"",
+          "lang": "shell"
+        },
+        "Dùng `||` để xử lý lỗi trên một dòng và `&&` để chỉ chạy lệnh khi lệnh trước thành công. `set -e` có ngoại lệ (ví dụ lệnh trong điều kiện `if` không kích hoạt nó), nên hãy kiểm tra tường minh các lệnh quan trọng."
+      ]
+    },
+    {
+      "h": "Một script hoàn chỉnh nhỏ: sao lưu theo ngày",
+      "body": [
+        "Script này nén một thư mục thành tệp `.tar.gz` có dấu thời gian và chỉ giữ năm bản nén mới nhất. Nó dùng đối số, giá trị mặc định, kiểm tra, thay thế lệnh và pipe.",
+        {
+          "code": "#!/usr/bin/env bash\n# backup.sh: copy a directory into a dated .tar.gz archive\nset -euo pipefail\n\nusage() { echo \"usage: $0 SOURCE_DIR [DEST_DIR]\" >&2; exit 1; }\n\n[[ $# -ge 1 ]] || usage\nsrc=\"$1\"\ndest=\"${2:-$HOME/backups}\"\n[[ -d \"$src\" ]] || { echo \"not a directory: $src\" >&2; exit 1; }\n\nmkdir -p \"$dest\"\nstamp=$(date +%Y%m%d-%H%M%S)\narchive=\"$dest/$(basename \"$src\")-$stamp.tar.gz\"\n\ntar -czf \"$archive\" -C \"$(dirname \"$src\")\" \"$(basename \"$src\")\"\nsize=$(du -h \"$archive\" | cut -f1)\necho \"Created $archive ($size)\"\n\n# keep only the 5 newest archives for this source\nls -1t \"$dest\"/\"$(basename \"$src\")\"-*.tar.gz | tail -n +6 | while read -r old; do\n  rm -f -- \"$old\"\n  echo \"Removed $old\"\ndone",
+          "lang": "shell"
+        },
+        {
+          "code": "./backup.sh ~/projects/site\n# Created /home/ann/backups/site-20261031-093000.tar.gz (2.1M)",
+          "lang": "shell"
+        },
+        {
+          "note": "Các lỗi thường gặp của người mới: khoảng trắng quanh `=`; biến không đặt nháy; dùng lẫn `[ ]` và `[[ ]]`; phân tích đầu ra của `ls` trong script phải xử lý tên tệp bất thường; quên `chmod +x`; và ký tự xuống dòng Windows (CRLF) trong script, gây lỗi như `$'\\r': command not found`. Hãy chạy ShellCheck trên script để bắt phần lớn các lỗi này."
+        }
+      ]
+    },
+    {
+      "h": "Học tiếp ở đâu",
+      "body": [
+        {
+          "ul": [
+            "GNU Bash Reference Manual, tài liệu chính thức.",
+            "`man bash` và `help` (ví dụ `help read`) ngay trong terminal.",
+            "ShellCheck, công cụ phân tích tĩnh giải thích các lỗi script phổ biến.",
+            "Đặc tả shell POSIX nếu bạn cần script chạy được cả trong `sh`, `dash` hoặc BusyBox."
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Bash và sh khác nhau thế nào?",
+      "a": "`sh` là chuẩn shell POSIX, được triển khai bởi các chương trình như dash. Bash tương thích với POSIX sh nhưng bổ sung các tính năng như `[[ ]]`, mảng, `(( ))` và khai triển ngoặc nhọn."
+    },
+    {
+      "q": "Bash và zsh khác nhau thế nào?",
+      "a": "Hai shell tương thích với hầu hết lệnh thường ngày. zsh bổ sung nhiều tính năng tương tác và là shell mặc định trên macOS; script viết với shebang `bash` vẫn chạy bằng Bash."
+    },
+    {
+      "q": "Vì sao script báo permission denied?",
+      "a": "Tệp chưa có quyền thực thi. Hãy chạy `chmod +x script.sh`, hoặc khởi chạy bằng `bash script.sh`."
+    },
+    {
+      "q": "Làm sao truyền đối số cho script Bash?",
+      "a": "Viết chúng sau tên script, như `./script.sh one two`. Bên trong script chúng là `$1` và `$2`, `$@` chứa tất cả và `$#` là số lượng."
+    },
+    {
+      "q": "Có nên viết chương trình lớn bằng Bash không?",
+      "a": "Bash phù hợp nhất để kết nối các lệnh với nhau. Khi script trở nên phức tạp, cần cấu trúc dữ liệu hoặc xử lý lỗi cẩn thận, một ngôn ngữ như Python thường dễ bảo trì hơn."
+    }
+  ]
+}

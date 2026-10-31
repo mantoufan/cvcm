@@ -1,0 +1,179 @@
+{
+  "title": "Học lập trình Haskell cơ bản: kiểu, khớp mẫu, danh sách và IO — cv.cm",
+  "description": "Học Haskell từng bước: cài GHC, chạy Hello, world, kiểu và suy luận kiểu, hàm và guard, danh sách, kiểu dữ liệu, type class, Maybe, Either và IO.",
+  "h1": "Hướng dẫn học lập trình Haskell cơ bản cho người mới",
+  "answer": "Haskell là ngôn ngữ hàm thuần túy, kiểu tĩnh, có suy luận kiểu và đánh giá lười. Chương trình được xây dựng từ các hàm thuần túy, kiểu dữ liệu đại số và khớp mẫu, còn hiệu ứng phụ được theo dõi trong kiểu như IO. Trang này bao gồm cài GHC, kiểu dữ liệu, hàm và guard, danh sách và hàm bậc cao, kiểu dữ liệu, type class, Maybe và Either, cùng một ví dụ hoàn chỉnh.",
+  "sections": [
+    {
+      "h": "Haskell là gì và dùng để làm gì",
+      "body": [
+        "Haskell là ngôn ngữ lập trình hàm thuần túy với hệ thống kiểu tĩnh mạnh, suy luận kiểu và đánh giá lười. Nó được một nhóm nhà nghiên cứu thiết kế và xác định lần đầu năm 1990; chuẩn hiện hành là Haskell 2010, và GHC (Glasgow Haskell Compiler) là bản triển khai chính. Trong Haskell, hàm không có hiệu ứng phụ trừ khi kiểu của nó cho biết, nên chương trình dễ suy luận và kiểm thử hơn.",
+        "Haskell được dùng trong tài chính và fintech, trình biên dịch và công cụ cho ngôn ngữ lập trình (Pandoc và trình linter ShellCheck được viết bằng Haskell), các dự án blockchain, backend web và nghiên cứu. Nhiều người cũng học nó vì các ý tưởng như kiểu dữ liệu đại số, type class và hàm thuần túy đã ảnh hưởng đến Rust, Swift, Scala, Kotlin và TypeScript."
+      ]
+    },
+    {
+      "h": "Cài GHC và chạy Hello, world",
+      "body": [
+        "Trình cài đặt được khuyên dùng là GHCup, cài GHC, các công cụ build Cabal và Stack, cùng Haskell Language Server cho trình soạn thảo. Mọi chương trình đều có một action `main` kiểu `IO ()`.",
+        {
+          "code": "-- hello.hs\nmain :: IO ()\nmain = putStrLn \"Hello, world!\"",
+          "lang": "haskell"
+        },
+        {
+          "code": "runghc hello.hs          # run without compiling\n# Hello, world!\nghc hello.hs && ./hello  # compile to a native executable\nghci                     # interactive REPL; load a file with :load hello.hs",
+          "lang": "shell"
+        },
+        "Chú thích bắt đầu bằng `--`. Trong GHCi, `:type expression` (hoặc `:t`) hiển thị kiểu của bất kỳ biểu thức nào, đây là một trong những cách học tốt nhất."
+      ]
+    },
+    {
+      "h": "Giá trị, kiểu và suy luận kiểu",
+      "body": [
+        "Tên chỉ được gắn một lần và không bao giờ thay đổi: không có biến khả biến. Khai báo kiểu viết bằng `::` và là tùy chọn vì trình biên dịch tự suy luận, nhưng viết chúng cho các định nghĩa cấp cao nhất là thói quen tốt.",
+        {
+          "code": "name :: String\nname = \"Haskell\"\n\nyear :: Int\nyear = 1990\n\nratio :: Double\nratio = fromIntegral year / 1000   -- convert Int to Double explicitly\n\nmain :: IO ()\nmain = do\n  putStrLn (name ++ \" \" ++ show year)  -- Haskell 1990\n  print ratio                          -- 1.99\n  print (7 `div` 2, 7 `mod` 2)         -- (3,1)\n  print (2 ^ 64 :: Integer)            -- 18446744073709551616",
+          "lang": "haskell"
+        },
+        {
+          "table": {
+            "head": [
+              "Kiểu",
+              "Ví dụ",
+              "Ghi chú"
+            ],
+            "rows": [
+              [
+                "`Int`",
+                "`42`",
+                "số nguyên kích thước cố định (64 bit với GHC trên các nền tảng phổ biến)"
+              ],
+              [
+                "`Integer`",
+                "`2 ^ 100`",
+                "số nguyên độ chính xác tùy ý"
+              ],
+              [
+                "`Double`",
+                "`3.14`",
+                "số thực dấu phẩy động 64 bit"
+              ],
+              [
+                "`Bool`",
+                "`True`, `False`",
+                "các constructor viết hoa chữ cái đầu"
+              ],
+              [
+                "`Char`",
+                "`'h'`",
+                "một ký tự Unicode"
+              ],
+              [
+                "`String`",
+                "`\"text\"`",
+                "danh sách `Char`, tức `[Char]`; `Data.Text` nhanh hơn"
+              ]
+            ]
+          }
+        },
+        "`show` chuyển một giá trị thành `String`, và `print` là `putStrLn . show`. Số không bao giờ được chuyển đổi ngầm; hãy dùng `fromIntegral`, `round` hoặc `truncate`."
+      ]
+    },
+    {
+      "h": "Hàm, guard và khớp mẫu",
+      "body": [
+        "Lời gọi hàm viết bằng dấu cách chứ không dùng ngoặc: `add 2 3`. Mỗi hàm nhận một đối số và trả về một hàm khác cho phần còn lại, tính năng này gọi là currying, nên `add 2` tự nó là một hàm. Khớp mẫu và guard thay thế hầu hết các chuỗi `if`.",
+        {
+          "code": "add :: Int -> Int -> Int\nadd x y = x + y\n\nfactorial :: Integer -> Integer\nfactorial 0 = 1\nfactorial n = n * factorial (n - 1)\n\ngrade :: Int -> Char\ngrade score\n  | score >= 90 = 'A'\n  | score >= 70 = 'B'\n  | otherwise   = 'C'\n\ndescribe :: [a] -> String\ndescribe []  = \"empty\"\ndescribe [_] = \"one item\"\ndescribe _   = \"many items\"\n\nmain :: IO ()\nmain = do\n  print (add 2 3)                 -- 5\n  print (map (add 10) [1, 2, 3])  -- [11,12,13] (partial application)\n  print (factorial 20)            -- 2432902008176640000\n  print (grade 75)                -- 'B'\n  putStrLn (describe \"hi\")        -- many items\n  print (if even 4 then \"even\" else \"odd\")  -- \"even\"",
+          "lang": "haskell"
+        },
+        "`if` là một biểu thức và luôn cần `else`. Không có vòng lặp: việc lặp được thực hiện bằng đệ quy hoặc các hàm bậc cao như `map`, `filter` và `foldr`."
+      ]
+    },
+    {
+      "h": "Danh sách, tuple và hàm bậc cao",
+      "body": [
+        "Danh sách chứa các giá trị cùng một kiểu và là collection phổ biến nhất. Tuple nhóm một số lượng cố định các giá trị có thể khác kiểu. List comprehension, khoảng giá trị và toán tử hợp thành hàm `.` giúp xử lý dữ liệu ngắn gọn.",
+        {
+          "code": "import Data.List (sortOn)\n\nmain :: IO ()\nmain = do\n  let nums = [5, 3, 8, 1] :: [Int]\n  print (head nums, length nums, sum nums)       -- (5,4,17)\n  print (0 : nums)                               -- [0,5,3,8,1] (prepend)\n  print (filter even nums)                       -- [8]\n  print (foldr (+) 0 [1 .. 10])                  -- 55\n  print [x * x | x <- [1 .. 5], odd x]           -- [1,9,25]\n  print (take 5 [1, 3 ..])                       -- [1,3,5,7,9] (lazy infinite list)\n  let people = [(\"Ann\", 31), (\"Bo\", 25)] :: [(String, Int)]\n  print (map fst (sortOn snd people))            -- [\"Bo\",\"Ann\"]\n  print ((length . filter (> 2)) nums)           -- 3\n  print (zip [1 :: Int ..] \"abc\")                -- [(1,'a'),(2,'b'),(3,'c')]",
+          "lang": "haskell"
+        },
+        "Vì Haskell lười, giá trị chỉ được tính khi cần. Đó là lý do `take 5 [1, 3 ..]` chạy được trên danh sách vô hạn. Tính lười cũng có thể tích tụ những biểu thức lớn chưa được đánh giá; hãy ưu tiên `foldl'` trong `Data.List` hơn `foldl` khi tính tổng danh sách dài."
+      ]
+    },
+    {
+      "h": "Kiểu dữ liệu đại số và type class",
+      "body": [
+        "Bạn tự định nghĩa kiểu bằng `data`. Một kiểu có thể có nhiều constructor (kiểu tổng), mỗi constructor có các trường (kiểu tích). Các type class như `Show`, `Eq`, `Ord` và `Functor` mô tả hành vi dùng chung, tương tự interface; `deriving` tự động sinh các instance phổ biến.",
+        {
+          "code": "data Shape = Circle Double | Rect Double Double\n  deriving (Show, Eq)\n\narea :: Shape -> Double\narea (Circle r) = pi * r * r\narea (Rect w h) = w * h\n\ndata User = User { userName :: String, userAge :: Int }\n  deriving Show\n\nclass Describable a where\n  describe :: a -> String\n\ninstance Describable Shape where\n  describe (Circle _) = \"a circle\"\n  describe (Rect _ _) = \"a rectangle\"\n\nmain :: IO ()\nmain = do\n  print (map area [Circle 1, Rect 2 3])   -- [3.141592653589793,6.0]\n  putStrLn (describe (Rect 1 1))          -- a rectangle\n  let u = User { userName = \"Ann\", userAge = 31 }\n  print (u { userAge = 32 })              -- User {userName = \"Ann\", userAge = 32}",
+          "lang": "haskell"
+        }
+      ]
+    },
+    {
+      "h": "Maybe, Either và IO",
+      "body": [
+        "Haskell không có `null` và không có ngoại lệ không kiểm tra trong mã thuần túy. Giá trị có thể không tồn tại có kiểu `Maybe a` (`Just x` hoặc `Nothing`), và phép tính có thể thất bại kèm lý do có kiểu `Either e a` (`Left err` hoặc `Right x`). Các hiệu ứng phụ như đọc đầu vào nằm trong kiểu `IO`, và cú pháp `do` sắp xếp chúng theo trình tự.",
+        {
+          "code": "import Text.Read (readMaybe)\n\nsafeDiv :: Int -> Int -> Either String Int\nsafeDiv _ 0 = Left \"division by zero\"\nsafeDiv x y = Right (x `div` y)\n\nparseAge :: String -> Maybe Int\nparseAge s = case readMaybe s of\n  Just n | n >= 0 -> Just n\n  _               -> Nothing\n\nmain :: IO ()\nmain = do\n  print (safeDiv 10 2)          -- Right 5\n  print (safeDiv 1 0)           -- Left \"division by zero\"\n  print (parseAge \"42\")         -- Just 42\n  print (parseAge \"abc\")        -- Nothing\n  print (fmap (+ 1) (Just 41))  -- Just 42\n  putStrLn \"Your name?\"\n  n <- getLine                  -- an IO action that returns a String\n  putStrLn (\"Hi, \" ++ n)",
+          "lang": "haskell"
+        },
+        {
+          "note": "Các hàm như `head`, `tail` và `div` cho số chia bằng 0 sẽ ném lỗi lúc chạy với đầu vào xấu; ví dụ `head []` làm chương trình sập. Hãy khớp mẫu trên danh sách, hoặc dùng các lựa chọn thay thế trả về `Maybe`, để chương trình luôn xác định với mọi đầu vào (total). Ngoại lệ từ `IO` có thể bắt bằng `catch` và `try` trong `Control.Exception`."
+        }
+      ]
+    },
+    {
+      "h": "Một chương trình hoàn chỉnh nhỏ: tần suất từ",
+      "body": [
+        "Chương trình này đọc văn bản từ đầu vào chuẩn, đếm tần suất từ bằng `Map` và in ba từ phổ biến nhất. Nó dùng hợp thành hàm, `Data.Map` từ gói containers đi kèm GHC, và sắp xếp.",
+        {
+          "code": "import Data.Char (isAlpha, toLower)\nimport Data.List (sortBy)\nimport Data.Ord (comparing, Down (..))\nimport qualified Data.Map.Strict as Map\n\nwordFreq :: String -> [(String, Int)]\nwordFreq =\n  sortBy (comparing (Down . snd) <> comparing fst)\n    . Map.toList\n    . Map.fromListWith (+)\n    . map (\\w -> (w, 1))\n    . words\n    . map (\\c -> if isAlpha c then toLower c else ' ')\n\nmain :: IO ()\nmain = do\n  text <- getContents\n  mapM_ (\\(w, n) -> putStrLn (w ++ \": \" ++ show n)) (take 3 (wordFreq text))",
+          "lang": "haskell"
+        },
+        {
+          "code": "echo \"The cat and the dog. The dog sat, and the cat ran.\" | runghc wordfreq.hs\n# the: 4\n# and: 2\n# cat: 2",
+          "lang": "shell"
+        },
+        {
+          "note": "Lỗi thường gặp của người mới: trộn tab và dấu cách (thụt lề có ý nghĩa cú pháp); viết `f(x, y)` thay vì `f x y`; quên rằng `-1` làm đối số cần ngoặc, như `abs (-1)`; dùng `head` trên danh sách có thể rỗng; và mong `let` trong `do` thay đổi một giá trị đã có, trong khi nó chỉ tạo ra một tên mới."
+        }
+      ]
+    },
+    {
+      "h": "Học tiếp ở đâu",
+      "body": [
+        {
+          "ul": [
+            "Trang tài liệu tại haskell.org, có liên kết tới hướng dẫn, sách và GHC User's Guide.",
+            "Hackage, kho gói, và Hoogle, công cụ tìm kiếm hàm theo tên hoặc theo kiểu.",
+            "Learn You a Haskell for Great Good! và Real World Haskell, hai cuốn sách đọc miễn phí.",
+            "Haskell 2010 Language Report cho định nghĩa chính xác của ngôn ngữ."
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Haskell có khó học không?",
+      "a": "Nó mang lại cảm giác khác vì không có biến khả biến hay vòng lặp và dùng hệ thống kiểu giàu biểu đạt. Người mới học đệ quy, khớp mẫu và kiểu từng bước thường thấy phần lõi của ngôn ngữ nhỏ gọn và nhất quán."
+    },
+    {
+      "q": "Hàm thuần túy nghĩa là gì?",
+      "a": "Hàm luôn trả về cùng một kết quả cho cùng một đầu vào và không thay đổi trạng thái hay thực hiện nhập xuất. Hiệu ứng vẫn có thể xảy ra, nhưng được thể hiện trong các kiểu như `IO`."
+    },
+    {
+      "q": "Monad trong Haskell là gì?",
+      "a": "Monad là một type class cho các kiểu như `Maybe`, `Either` và `IO`, hỗ trợ nối chuỗi các phép tính bằng `>>=`. Cú pháp `do` là cách viết cho việc nối chuỗi đó."
+    },
+    {
+      "q": "Đánh giá lười là gì?",
+      "a": "Biểu thức chỉ được đánh giá khi cần đến giá trị của nó. Điều này cho phép danh sách vô hạn và tránh công việc không cần thiết, nhưng có thể khiến mức dùng bộ nhớ khó dự đoán hơn."
+    },
+    {
+      "q": "Nên dùng Stack hay Cabal?",
+      "a": "Cả hai đều build dự án Haskell và đều được GHCup cài đặt. Cabal là công cụ build tiêu chuẩn; Stack bổ sung các snapshot gói được chọn lọc. Với người mới, cái nào cũng được."
+    }
+  ]
+}

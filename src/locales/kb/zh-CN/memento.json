@@ -1,0 +1,165 @@
+{
+  "title": "备忘录模式：快照与撤销，含 TypeScript 示例 — cv.cm",
+  "description": "备忘录模式（Memento）在不暴露对象内部细节的前提下保存并恢复其状态。用 TypeScript 撤销代码讲解原发器、备忘录和管理者。",
+  "h1": "备忘录模式详解与示例",
+  "answer": "备忘录是一种行为型设计模式，它把对象的内部状态捕获到一个称为备忘录的快照对象中，以便之后把对象恢复到该状态。拥有状态的对象（原发器）负责创建和恢复备忘录，而另一个对象（管理者）只负责保存，从不查看其内部。这是在不破坏封装的前提下实现撤销、检查点和游戏存档的标准做法。",
+  "sections": [
+    {
+      "h": "意图与它要解决的问题",
+      "body": [
+        "意图：在不违反封装的前提下，捕获并在对象之外保存其内部状态，以便之后将对象恢复到该状态。备忘录是《设计模式》（Gang of Four，GoF）一书中的行为型模式之一。",
+        "设想一个绘图应用，其中图形有位置、大小、颜色，以及一批用于渲染的私有派生值。你想要一个撤销按钮。撤销管理器可以自己复制图形的字段，但这样它必须知道每个私有字段，图形类每次变化，撤销管理器就会出错。仅仅为了撤销而把所有字段设为公开，则会让任何代码都能把图形弄成无效状态。",
+        "备忘录让图形自己生成快照来解决这个问题。只有图形知道快照里有什么，以及如何从中恢复。撤销管理器把快照当作不透明对象：把它们存进列表，用户按下撤销时再交还一个。"
+      ]
+    },
+    {
+      "h": "结构与参与者",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "角色",
+              "职责"
+            ],
+            "rows": [
+              [
+                "原发器",
+                "状态被保存的对象；为当前状态创建备忘录，并能从备忘录恢复自身"
+              ],
+              [
+                "备忘录",
+                "原发器状态的不可变快照；不向其他对象暴露任何有用的内容"
+              ],
+              [
+                "管理者",
+                "决定何时保存、何时恢复，并保管备忘录（例如放在栈中），但从不读取或修改其内容"
+              ]
+            ]
+          }
+        },
+        "关键在于两个接口：一个宽接口供原发器使用，可以读取保存的状态；一个窄接口供其他所有对象使用，只能持有备忘录。"
+      ]
+    },
+    {
+      "h": "TypeScript 实现",
+      "body": [
+        "备忘录类使用 JavaScript 私有字段（`#state`），因此管理者无法从备忘录对象中读取存储的数据。读取要通过静态方法 `EditorMemento.read`，只有编辑器会调用它。在真实项目中，应把备忘录类和编辑器放在同一个模块里且不导出，这样其他模块可以持有备忘录，却无法打开它。",
+        {
+          "code": "type EditorState = { text: string; cursor: number };\n\nclass EditorMemento {\n  readonly #state: EditorState;\n  constructor(state: EditorState) {\n    this.#state = { ...state }; // copy, so later edits do not change the snapshot\n  }\n  static read(m: EditorMemento): EditorState {\n    return { ...m.#state };\n  }\n}\n\nclass Editor {\n  private state: EditorState = { text: \"\", cursor: 0 };\n  type(words: string) {\n    const text = this.state.text + words;\n    this.state = { text, cursor: text.length };\n  }\n  get text() { return this.state.text; }\n  save(): EditorMemento { return new EditorMemento(this.state); }\n  restore(m: EditorMemento) { this.state = EditorMemento.read(m); }\n}\n\nclass History {\n  private stack: EditorMemento[] = [];\n  constructor(private editor: Editor) {}\n  backup() { this.stack.push(this.editor.save()); }\n  undo() { const m = this.stack.pop(); if (m) this.editor.restore(m); }\n}\n\nconst editor = new Editor();\nconst history = new History(editor);\nhistory.backup(); editor.type(\"Hello\");\nhistory.backup(); editor.type(\" world\");\nconsole.log(editor.text); // Hello world\nhistory.undo();\nconsole.log(editor.text); // Hello\nhistory.undo();\nconsole.log(JSON.stringify(editor.text)); // \"\"",
+          "lang": "typescript"
+        },
+        "`History` 是管理者。它在每次修改前调用 `backup()`，要回退时调用 `undo()`，但从不接触 `text` 或 `cursor`。如果之后你给 `EditorState` 加上选区范围，`History` 无需改动。",
+        {
+          "note": "备忘录必须是真正的副本。如果它只保存对原发器可变对象或数组的引用，之后的修改也会改变快照，撤销就会恢复到错误的状态。对于嵌套数据，请使用 `structuredClone(state)` 这样的深拷贝。"
+        }
+      ]
+    },
+    {
+      "h": "用备忘录还是命令来实现撤销",
+      "body": [
+        "实现撤销有两种常见方式，它们也经常结合使用：",
+        {
+          "table": {
+            "head": [
+              "方式",
+              "保存的内容",
+              "适用情形",
+              "代价"
+            ],
+            "rows": [
+              [
+                "备忘录",
+                "每次修改前整个状态的快照",
+                "修改难以逆转，或状态较小",
+                "内存随状态大小乘以步数增长"
+              ],
+              [
+                "命令",
+                "操作以及足以将其逆转的数据",
+                "每个操作都有简单的逆操作",
+                "每个命令都需要正确的撤销逻辑"
+              ]
+            ]
+          }
+        },
+        "一个实用的折中办法：大多数步骤保存命令，每隔 N 步保存一次完整备忘录，或者只保存命令所改变的那部分状态。"
+      ]
+    },
+    {
+      "h": "何时使用，何时不用",
+      "body": [
+        {
+          "ul": [
+            "用于撤销、重做、检查点、游戏存档，以及应当回滚修改的表单“取消”按钮。",
+            "用于内存中的事务：在有风险的操作前做快照，失败时恢复。",
+            "当管理者不应依赖原发器的内部字段时使用。",
+            "当状态很大且频繁变化时不要使用，除非你限制历史长度，或只保存差异。",
+            "如果状态本来就是普通的不可变值，就不必搞全套仪式。有了不可变数据，旧值本身就是快照，保留一个历史值列表就够了。"
+          ]
+        }
+      ]
+    },
+    {
+      "h": "实际应用",
+      "body": [
+        {
+          "ul": [
+            "浏览器 History API：`history.pushState(state, \"\", url)` 为每个历史记录条目保存一个状态对象，用户导航时 `popstate` 事件会把它交还。",
+            "Redux 及类似的存储库保存不可变的状态快照，工具借此实现时间旅行调试。",
+            "SQL 数据库在事务中支持 `SAVEPOINT`，因此可以把工作回滚到某个命名的点。",
+            "文本编辑器、图形程序和游戏会保存快照，用于撤销、自动保存和存档位。"
+          ]
+        }
+      ]
+    },
+    {
+      "h": "相关模式",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "模式",
+              "与备忘录的关系"
+            ],
+            "rows": [
+              [
+                "命令",
+                "命令可以通过反向执行操作来撤销；它也可以保存运行之前取得的备忘录，并在 `undo` 中恢复。"
+              ],
+              [
+                "原型",
+                "原型克隆整个对象来创建新对象；备忘录保存状态，以便之后恢复同一个对象。"
+              ],
+              [
+                "迭代器",
+                "迭代器可以把当前位置作为备忘录暴露出来，使遍历之后能够继续。"
+              ],
+              [
+                "状态",
+                "状态模式在状态改变时改变对象使用的行为；备忘录只记录和恢复数据。"
+              ]
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "原发器和管理者有什么区别？",
+      "a": "原发器拥有状态，并且是唯一能创建备忘录、并从中恢复的对象。管理者决定何时保存和恢复，并保管备忘录，但把它们当作不透明的对象。"
+    },
+    {
+      "q": "备忘录会破坏封装吗？",
+      "a": "不会，这正是它的目的。原发器的内部字段保持私有，备忘录对管理者隐藏它们，因此只有原发器能读取保存的状态。"
+    },
+    {
+      "q": "怎样用备忘录限制内存占用？",
+      "a": "设置快照数量上限并丢弃最旧的，只保存状态中改变的部分，或者把备忘录与记录小改动的命令结合使用。"
+    },
+    {
+      "q": "JSON 序列化算备忘录吗？",
+      "a": "把状态序列化为 JSON 可以作为备忘录的存储格式，对保存到磁盘很有用。该模式关心的是谁来创建、保管和恢复快照，而不是格式。"
+    }
+  ]
+}

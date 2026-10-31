@@ -1,0 +1,189 @@
+{
+  "title": "Rustチュートリアル：所有権・借用・列挙型・Result — cv.cm",
+  "description": "Rust入門を1ページで：CargoでHello world、型、制御構文、所有権と借用、構造体、列挙型とmatch、VecとHashMap、Resultまで解説します。",
+  "h1": "Rust入門チュートリアル（初心者向け）",
+  "answer": "Rustはコンパイル型の静的型付けシステムプログラミング言語で、CやC++と同等に高速でありながら、ガベージコレクタなしにメモリエラーをコンパイル時に防ぎます。rustupでインストールし、`cargo new hello` と `cargo run` を実行します。所有権と借用（借用チェッカーが検査します）、`match` を使う構造体と列挙型、`Vec` や `HashMap` などのコレクション、`Result` と `?` 演算子によるエラー処理が中心的な内容です。",
+  "sections": [
+    {
+      "h": "Rustとは何か、何に使われるか",
+      "body": [
+        "Rustは、Graydon Hoareの個人プロジェクトとして始まり、Mozillaの支援を受けて、2015年にバージョン1.0に到達しました。現在はRust Foundationが運営を担っています。Rustは、速度と信頼性の両方が求められる分野で使われています。コマンドラインツール（ripgrep）、Webサービス、Firefoxのブラウザコンポーネント、LinuxカーネルやWindowsの一部、組み込み機器、WebAssemblyなどです。コンパイラは厳格ですが、その代わりに、解放後使用（use-after-free）やデータ競合といった種類のバグが、安全なRustのコードでは起こりえません。"
+      ]
+    },
+    {
+      "h": "Rustのインストールと Hello, world の実行",
+      "body": [
+        "rustup.rsからrustupでツールチェーンをインストールします。`rustc`（コンパイラ）とCargo（ビルドツール兼パッケージマネージャー）が入ります。プロジェクトを作成します。",
+        {
+          "code": "cargo new hello\ncd hello\ncargo run\n# Hello, world!",
+          "lang": "shell"
+        },
+        "Cargoは `src/main.rs` を生成します。",
+        {
+          "code": "fn main() {\n    println!(\"Hello, world!\");\n}",
+          "lang": "rust"
+        },
+        "`println!` の末尾が `!` なのは、関数ではなくマクロだからです。マクロはコンパイル時にコードを生成します。ここでは、書式文字列がコンパイル時に検査されます。"
+      ]
+    },
+    {
+      "h": "変数と基本の型",
+      "body": [
+        "変数はデフォルトで不変です。変更を許すには `mut` を付けます。型は通常推論されますが、すべての値はちょうど1つの静的な型を持ち、数値の型変換は `as` で明示的に行います。",
+        {
+          "table": {
+            "head": [
+              "型",
+              "例",
+              "備考"
+            ],
+            "rows": [
+              [
+                "`i32`, `i64`, `u8`, `usize`",
+                "`let n: i32 = 42;`",
+                "符号付き（`i`）と符号なし（`u`）。インデックスには `usize`"
+              ],
+              [
+                "`f64`",
+                "`let x = 3.14;`",
+                "デフォルトの浮動小数点型"
+              ],
+              [
+                "`bool`",
+                "`let ok = true;`",
+                "`true` または `false`"
+              ],
+              [
+                "`char`",
+                "`let c = 'é';`",
+                "Unicodeスカラー値（4バイト）"
+              ],
+              [
+                "`&str`",
+                "`let s = \"hi\";`",
+                "借用された文字列スライス"
+              ],
+              [
+                "`String`",
+                "`String::from(\"hi\")`",
+                "所有された、伸縮するUTF-8テキスト"
+              ],
+              [
+                "タプル、配列",
+                "`(1, \"a\")`, `[0; 3]`",
+                "固定サイズ"
+              ]
+            ]
+          }
+        },
+        {
+          "code": "fn main() {\n    let name = \"Ada\";\n    let mut count = 7;\n    count += 1;\n    let avg = count as f64 / 2.0;\n    println!(\"{name} has {count} items, avg {avg}\"); // Ada has 8 items, avg 4\n    let parsed: i32 = \"12\".parse().unwrap();\n    println!(\"{}\", parsed + 1); // 13\n}",
+          "lang": "rust"
+        }
+      ]
+    },
+    {
+      "h": "制御構文と関数",
+      "body": [
+        "`if`、`match`、ブロックは式なので、値を生成します。関数の最後の式にセミコロンを付けなければ、それが戻り値になります。",
+        {
+          "code": "fn square(x: i32) -> i32 {\n    x * x\n}\n\nfn main() {\n    let score = 72;\n    let grade = if score >= 90 { \"A\" } else if score >= 70 { \"B\" } else { \"C\" };\n    println!(\"{grade}\"); // B\n\n    for i in 0..3 {\n        print!(\"{} \", square(i)); // 0 1 4\n    }\n    println!();\n\n    let mut n = 10;\n    while n > 1 {\n        n /= 2;\n    }\n    let label = loop {\n        break \"done\"; // loop can return a value with break\n    };\n    println!(\"{n} {label}\"); // 1 done\n}",
+          "lang": "rust"
+        }
+      ]
+    },
+    {
+      "h": "特徴的な機能：所有権と借用",
+      "body": [
+        "すべての値には、ちょうど1つの所有者がいます。所有者がスコープを抜けると、値はドロップ（解放）されます。`String` のようなヒープ上の値を別の変数に代入するとムーブされ、元の名前は使えなくなります。所有権を取らずに値を使うには、参照で借用します。同時に存在できるのは、共有参照 `&T` がいくつでも、または可変参照 `&mut T` がちょうど1つのどちらかです。",
+        {
+          "code": "fn length(s: &str) -> usize {\n    s.len() // borrows, does not take ownership\n}\n\nfn add_exclamation(s: &mut String) {\n    s.push('!');\n}\n\nfn main() {\n    let a = String::from(\"hello\");\n    let b = a; // ownership moves to b\n    // println!(\"{a}\"); // error: borrow of moved value: `a`\n    let mut c = b.clone(); // explicit deep copy\n    add_exclamation(&mut c);\n    println!(\"{} {} {}\", b, c, length(&c)); // hello hello! 6\n}",
+          "lang": "rust"
+        },
+        "これらの規則は借用チェッカーがコンパイル時に強制します。これが、ガベージコレクタなしでメモリ安全性を実現する仕組みです。整数のような単純な型は `Copy` を実装しているため、ムーブされずにコピーされます。"
+      ]
+    },
+    {
+      "h": "構造体、列挙型、パターンマッチング",
+      "body": [
+        "構造体はフィールドをまとめ、`impl` ブロックでメソッドを追加します。列挙型は各バリアントにデータを持たせられ、`match` はすべてのバリアントを処理する必要があり、これはコンパイラが検査します。標準の `Option<T>` 列挙型（`Some(value)` または `None`）が、nullの代わりになります。",
+        {
+          "code": "#[derive(Debug)]\nstruct Point {\n    x: f64,\n    y: f64,\n}\n\nimpl Point {\n    fn distance(&self) -> f64 {\n        (self.x * self.x + self.y * self.y).sqrt()\n    }\n}\n\nenum Shape {\n    Circle(f64),\n    Rect { w: f64, h: f64 },\n}\n\nfn area(s: &Shape) -> f64 {\n    match s {\n        Shape::Circle(r) => std::f64::consts::PI * r * r,\n        Shape::Rect { w, h } => w * h,\n    }\n}\n\nfn main() {\n    let p = Point { x: 3.0, y: 4.0 };\n    println!(\"{:?} {}\", p, p.distance()); // Point { x: 3.0, y: 4.0 } 5\n    println!(\"{}\", area(&Shape::Rect { w: 2.0, h: 3.0 })); // 6\n    let nums = [10, 20];\n    if let Some(v) = nums.first() {\n        println!(\"first is {v}\"); // first is 10\n    }\n}",
+          "lang": "rust"
+        },
+        "トレイトは、インターフェースに似た共通の振る舞いを定義します。`#[derive(Debug)]` は `Debug` トレイトを実装するようコンパイラに頼むもので、`{:?}` で構造体を表示できるようになります。"
+      ]
+    },
+    {
+      "h": "コレクション：VecとHashMap",
+      "body": [
+        {
+          "code": "use std::collections::HashMap;\n\nfn main() {\n    let mut nums = vec![3, 1, 2];\n    nums.push(5);\n    nums.sort();\n    println!(\"{:?} {}\", nums, nums.len()); // [1, 2, 3, 5] 4\n\n    let evens: Vec<i32> = nums.iter().filter(|n| *n % 2 == 0).map(|n| n * n).collect();\n    println!(\"{:?}\", evens); // [4]\n\n    let mut ages: HashMap<&str, u32> = HashMap::new();\n    ages.insert(\"ann\", 31);\n    ages.insert(\"bob\", 25);\n    *ages.entry(\"ann\").or_insert(0) += 1;\n    println!(\"{:?} {:?}\", ages.get(\"ann\"), ages.get(\"zed\")); // Some(32) None\n}",
+          "lang": "rust"
+        },
+        "`filter`、`map`、`collect` のようなクロージャ（`|n| ...`）を使うイテレータは、手書きのループと同じ速度のコードにコンパイルされます。"
+      ]
+    },
+    {
+      "h": "Resultと?によるエラー処理",
+      "body": [
+        "失敗しうる関数は `Result<T, E>` を返します。`Ok(value)` か `Err(error)` のどちらかです。`?` 演算子はエラーを呼び出し側に早期に返すので、エラー処理のコードが短く保てます。回復できないバグには `panic!` を使います。",
+        {
+          "code": "use std::num::ParseIntError;\n\nfn parse_age(text: &str) -> Result<u32, ParseIntError> {\n    let age: u32 = text.trim().parse()?; // returns Err early on bad input\n    Ok(age)\n}\n\nfn main() {\n    match parse_age(\"41\") {\n        Ok(age) => println!(\"age {age}\"), // age 41\n        Err(e) => println!(\"error: {e}\"),\n    }\n    match parse_age(\"abc\") {\n        Ok(age) => println!(\"age {age}\"),\n        Err(e) => println!(\"error: {e}\"), // error: invalid digit found in string\n    }\n}",
+          "lang": "rust"
+        }
+      ]
+    },
+    {
+      "h": "小さな完成プログラム：単語の出現頻度",
+      "body": [
+        "これを `src/main.rs` に置き、`cargo run -- notes.txt` を実行します。",
+        {
+          "code": "use std::collections::HashMap;\nuse std::{env, fs, process};\n\nfn main() {\n    let path = env::args().nth(1).unwrap_or_else(|| {\n        eprintln!(\"usage: words FILE\");\n        process::exit(1);\n    });\n    let text = match fs::read_to_string(&path) {\n        Ok(t) => t.to_lowercase(),\n        Err(e) => {\n            eprintln!(\"cannot read {path}: {e}\");\n            process::exit(1);\n        }\n    };\n\n    let mut counts: HashMap<&str, usize> = HashMap::new();\n    for word in text.split(|c: char| !c.is_alphanumeric()).filter(|w| !w.is_empty()) {\n        *counts.entry(word).or_insert(0) += 1;\n    }\n\n    let mut top: Vec<(&str, usize)> = counts.into_iter().collect();\n    top.sort_by(|a, b| b.1.cmp(&a.1).then(a.0.cmp(b.0)));\n    for (word, n) in top.iter().take(5) {\n        println!(\"{n:5}  {word}\");\n    }\n}",
+          "lang": "rust"
+        },
+        "`HashMap` は `text` から借用した `&str` スライスを保持するので、単語はコピーされません。`text` が十分長く生きていることは、借用チェッカーが保証します。"
+      ]
+    },
+    {
+      "h": "初心者がよくやる間違い",
+      "body": [
+        {
+          "note": "あらゆる場所に `.clone()` を付けたり、すべての `Result` に `.unwrap()` を使ったりして借用チェッカーと戦うと、コンパイルは通っても問題が隠れてしまいます。まずコンパイラのメッセージを読んでください。たいてい、何を直すべきかが正確に書かれています。"
+        },
+        {
+          "ul": [
+            "ムーブした後の値を使う。借用（`&value`）するか、意図してクローンします。",
+            "`String` を `s[0]` でインデックス指定しようとする。文字列はUTF-8なので、`s.chars()` を使うか、文字の境界でバイトスライスを使います。",
+            "`Vec` への参照を持ったまま、その `Vec` に push する。push で再確保が起こりうるため、コンパイラが禁止します。",
+            "`String`（所有）と `&str`（借用）を混同する。関数の引数では `&str` を受け取ると、両方を渡せます。"
+          ]
+        }
+      ]
+    },
+    {
+      "h": "次のステップ",
+      "body": [
+        "doc.rust-lang.orgで無料公開されている「The Rust Programming Language」（通称「ザ・ブック」）を読み、短く実行できるサンプルが載ったRust by Exampleも試しましょう。その後、トレイトとジェネリクスの詳細、ライフタイム、`cargo test` によるテスト、シリアライズ用の `serde` や非同期プログラム用の `tokio` などcrates.ioのクレートを学びます。`cargo clippy` を実行すると、追加のリント提案が得られます。"
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Rustは習得が難しいですか？",
+      "a": "所有権と借用が新しい考え方なので、最初の数週間はほかの多くの言語より大変です。慣れると、コンパイラが多くのバグを早い段階で捕まえてくれ、Rustのコードは保守しやすいと感じる開発者も多くいます。"
+    },
+    {
+      "q": "Rustにガベージコレクタはありますか？",
+      "a": "いいえ。メモリは、所有者がスコープを抜けたときに自動的に解放されます。これは所有権の規則によってコンパイル時に決まります。共有所有権のための参照カウント型 `Rc` と `Arc` もあります。"
+    },
+    {
+      "q": "unsafe Rustとは何ですか？",
+      "a": "`unsafe` ブロックの中では、生ポインタの参照外しやC関数の呼び出しなど、コンパイラが検証できない操作ができます。使用は最小限にとどめ、通常は安全なAPIで包みます。"
+    },
+    {
+      "q": "RustとGoのどちらを学ぶべきですか？",
+      "a": "Goは学びやすくシンプルで、ネットワークサービスで人気があります。Rustは、学習曲線が急になる代わりに、より強い保証のもとで、より高い制御と性能を得られます。"
+    }
+  ]
+}

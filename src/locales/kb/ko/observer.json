@@ -1,0 +1,151 @@
+{
+  "title": "옵저버 패턴: TypeScript로 보는 서브젝트, 구독자, 이벤트 — cv.cm",
+  "description": "옵저버 패턴은 객체가 다른 객체를 구독해 변경 사항을 통지받게 합니다. 역할 구성, 타입이 있는 TypeScript 예제, 주의할 함정을 알아봅니다.",
+  "h1": "옵저버 패턴 예제로 쉽게 이해하기",
+  "answer": "옵저버(Observer)는 서브젝트라는 객체가 옵저버라 부르는 의존 객체의 목록을 유지하다가, 상태가 바뀌면 이들에게 자동으로 알리는 행동 패턴입니다. 옵저버는 실행 중에 구독하고 구독을 해지하며, 서브젝트는 그들의 구체 클래스를 알 필요가 없습니다. 브라우저의 이벤트 리스너, Node.js의 `EventEmitter`, RxJS 같은 리액티브 라이브러리는 모두 이 발상 위에 만들어졌습니다.",
+  "sections": [
+    {
+      "h": "의도와 해결하는 문제",
+      "body": [
+        "의도: 객체 간에 일대다 의존성을 정의하여, 한 객체의 상태가 바뀌면 그에 의존하는 모든 객체가 통지받고 자동으로 갱신되게 합니다. 옵저버는 GoF(Gang of Four) 책에 실린 행동 패턴 중 하나이며, 발행-구독(publish-subscribe)이나 리스너 패턴이라고도 합니다.",
+        "웹 쇼핑몰의 장바구니를 상상해 봅시다. 상품이 추가되면 헤더의 장바구니 아이콘이 새 개수를 보여 주고, 사이드바가 새 합계를 보여 주고, 분석 모듈이 이벤트를 기록해야 합니다. 장바구니가 이들을 직접 호출하면 장바구니 모듈은 헤더, 사이드바, 분석 모듈에 의존하게 됩니다. 네 번째 반응을 추가하려면 장바구니를 또 고쳐야 합니다.",
+        "옵저버 패턴에서는 장바구니가 구독자 목록만 유지하고 바뀔 때 각각을 호출합니다. 헤더, 사이드바, 분석 모듈이 스스로 구독합니다. 장바구니는 이들을 import하지 않으며, 새 기능이 장바구니 코드를 건드리지 않고도 장바구니 변경에 반응할 수 있습니다."
+      ]
+    },
+    {
+      "h": "구조와 참여자",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "역할",
+              "책임"
+            ],
+            "rows": [
+              [
+                "서브젝트(발행자)",
+                "옵저버 목록을 유지하고 구독 및 구독 해지 메서드를 제공하며, 무언가 바뀌면 통지합니다"
+              ],
+              [
+                "옵저버(구독자)",
+                "업데이트 메서드를 가진 인터페이스로, 흔히 콜백 함수 하나입니다"
+              ],
+              [
+                "구체 서브젝트",
+                "관심 대상인 상태를 가지며, 바뀔 때 notify를 호출합니다"
+              ],
+              [
+                "구체 옵저버",
+                "UI 일부를 다시 그리는 식으로 통지에 반응합니다"
+              ]
+            ]
+          }
+        },
+        "통지 방식에는 두 가지가 있습니다. 푸시 모델에서는 서브젝트가 바뀐 데이터를 통지와 함께 보냅니다. 풀 모델에서는 “뭔가 바뀌었다”고만 알리고, 옵저버가 필요한 데이터를 서브젝트에 요청합니다."
+      ]
+    },
+    {
+      "h": "TypeScript 구현",
+      "body": [
+        "작은 제네릭 `Subject` 클래스가 구독을 처리합니다. 옵저버는 TypeScript에서 가장 흔한 형태인 일반 함수입니다. `subscribe`는 구독을 해지하는 함수를 반환하므로 호출자가 어떤 리스너를 등록했는지 잊을 수 없습니다.",
+        {
+          "code": "type Listener<T> = (value: T) => void;\n\nclass Subject<T> {\n  private listeners = new Set<Listener<T>>();\n\n  subscribe(listener: Listener<T>): () => void {\n    this.listeners.add(listener);\n    return () => this.listeners.delete(listener);\n  }\n\n  protected notify(value: T) {\n    for (const listener of [...this.listeners]) listener(value);\n  }\n}\n\ntype CartEvent = { count: number; total: number };\n\nclass Cart extends Subject<CartEvent> {\n  private items: { name: string; price: number }[] = [];\n\n  add(name: string, price: number) {\n    this.items.push({ name, price });\n    const total = this.items.reduce((sum, item) => sum + item.price, 0);\n    this.notify({ count: this.items.length, total });\n  }\n}\n\nconst cart = new Cart();\ncart.subscribe(({ count }) => console.log(\"header: \" + count + \" items\"));\nconst stopAnalytics = cart.subscribe(({ total }) => console.log(\"analytics: total \" + total));\n\ncart.add(\"Book\", 12);\nstopAnalytics(); // unsubscribe\ncart.add(\"Pen\", 3);\n// header: 1 items\n// analytics: total 12\n// header: 2 items",
+          "lang": "typescript"
+        },
+        "`notify`는 집합의 복사본(`[...this.listeners]`)을 순회합니다. 이렇게 하면 통지 도중 스스로 구독을 해지하는 리스너가 있어도 루프가 흐트러지지 않습니다.",
+        {
+          "note": "구독 해지를 잊는 것이 가장 흔한 옵저버 버그입니다. 서브젝트는 모든 리스너에 대한 참조를 유지하므로, 파괴되었지만 여전히 구독 중인 UI 컴포넌트가 메모리에 남아 계속 이벤트에 반응합니다. 옵저버가 더 이상 필요 없으면 컴포넌트의 정리 코드 등에서 항상 구독 해지 함수를 호출하세요."
+        }
+      ]
+    },
+    {
+      "h": "내장 EventTarget 사용하기",
+      "body": [
+        "브라우저, Node.js, Deno는 `EventTarget`을 제공하므로 직접 서브젝트 클래스를 만들 필요가 없는 경우가 많습니다.",
+        {
+          "code": "const thermostat = new EventTarget();\n\nthermostat.addEventListener(\"change\", (e) => {\n  console.log(\"new temperature:\", (e as CustomEvent<number>).detail);\n});\n\nthermostat.dispatchEvent(new CustomEvent(\"change\", { detail: 21.5 }));\n// new temperature: 21.5",
+          "lang": "typescript"
+        },
+        "Node.js에는 `node:events` 모듈의 `EventEmitter` 클래스도 있으며 `on`, `off`, `emit` 메서드를 가집니다."
+      ]
+    },
+    {
+      "h": "언제 쓰고 언제 쓰지 말아야 할까",
+      "body": [
+        {
+          "ul": [
+            "한 객체의 변경이 다른 객체들을 갱신해야 하는데 그 수나 종류를 미리 알 수 없을 때 사용합니다.",
+            "핵심 모듈이 그에 반응하는 UI, 로깅, 분석 코드에 의존하지 않게 하고 싶을 때 사용합니다.",
+            "사용자 입력, 메시지, 센서 값처럼 시간에 따라 발생하는 이벤트에 사용합니다.",
+            "고정된 수신자가 정확히 하나라면 사용하지 않습니다. 직접 메서드를 호출하거나 콜백 매개변수를 쓰는 편이 따라가기 쉽습니다.",
+            "다른 통지를 일으키는 옵저버 체인을 조심하세요. 업데이트 루프가 생길 수 있고 무엇이 왜 바뀌었는지 파악하기 어려워집니다.",
+            "서브젝트가 문서로 밝히지 않았다면 옵저버가 호출되는 순서에 의존하지 마세요."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "실제 사용 사례",
+      "body": [
+        {
+          "ul": [
+            "DOM: `element.addEventListener(\"click\", handler)`는 요소에 옵저버를 구독시킵니다.",
+            "Node.js: `EventEmitter`는 스트림, HTTP 서버를 비롯한 많은 핵심 객체의 기반입니다.",
+            "`MutationObserver`, `IntersectionObserver`, `ResizeObserver` 같은 브라우저 옵저버 API는 페이지의 변화를 콜백에 알립니다.",
+            "RxJS는 값의 스트림을 옵저버가 구독하는 옵저버블로 모델링합니다.",
+            "Java: `java.util.Observable`은 Java 9에서 사용 중단되었고, 대신 `java.util.concurrent.Flow` 인터페이스(발행자와 구독자)와 이벤트 리스너 인터페이스를 사용합니다."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "관련 패턴",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "패턴",
+              "옵저버 패턴과의 차이"
+            ],
+            "rows": [
+              [
+                "중재자",
+                "중재자는 참여하는 객체들을 알고 조정하지만, 서브젝트는 그저 방송할 뿐 옵저버가 무엇을 하는지 모릅니다."
+              ],
+              [
+                "브로커를 둔 발행-구독",
+                "발행자와 구독자는 서로를 전혀 알지 못하고 메시지 브로커나 이벤트 버스를 통해 통신하며, 프로세스 간에 쓰이는 경우가 많습니다."
+              ],
+              [
+                "커맨드",
+                "통지가 커맨드 객체를 실을 수 있습니다. 커맨드는 하나의 요청에 관한 것이고, 옵저버는 일대다 통지에 관한 것입니다."
+              ],
+              [
+                "이터레이터",
+                "이터레이터는 풀 방식(소비자가 다음 값을 요청)이고, 옵저버는 푸시 방식(생산자가 값이 생길 때 보냄)입니다."
+              ]
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "옵저버 패턴과 발행-구독의 차이는 무엇인가요?",
+      "a": "고전적인 옵저버 패턴에서는 옵저버가 서브젝트에 직접 등록합니다. 발행-구독에서는 브로커나 이벤트 채널이 둘 사이에 있어서 발행자와 구독자가 서로를 모릅니다. 많은 사람이 두 이름을 같은 발상에 느슨하게 섞어 씁니다."
+    },
+    {
+      "q": "옵저버 패턴에서 메모리 누수를 어떻게 피하나요?",
+      "a": "옵저버가 더 필요 없어지면 구독을 해지하세요. `subscribe`에서 구독 해지 함수를 반환하거나 `addEventListener`와 `AbortSignal`을 함께 쓰면 정리가 간단해집니다."
+    },
+    {
+      "q": "옵저버는 동기적으로 호출되나요?",
+      "a": "위 예제와 `EventTarget`, `EventEmitter`에서 리스너는 추가된 순서대로 동기적으로 실행됩니다. 다른 라이브러리는 통지를 비동기로 전달할 수 있으므로 문서를 확인하세요."
+    },
+    {
+      "q": "옵저버는 리액티브 프로그래밍과 같은 것인가요?",
+      "a": "리액티브 프로그래밍은 옵저버 위에 만들어집니다. RxJS 같은 라이브러리는 통지 스트림을 필터링, 결합, 변환하는 연산자와 오류 및 완료 규칙을 더합니다."
+    }
+  ]
+}

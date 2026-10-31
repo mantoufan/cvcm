@@ -1,0 +1,197 @@
+{
+  "title": "Tutorial Ruby: objek, block, array, hash, dan class — cv.cm",
+  "description": "Belajar Ruby dalam satu halaman: jalankan Hello world, variabel dan tipe data, alur kontrol, method, array dan hash, block dan iterator, class, module, dan exception.",
+  "h1": "Tutorial Ruby untuk pemula",
+  "answer": "Ruby adalah bahasa scripting dinamis berorientasi objek yang dirancang agar menyenangkan dibaca dan ditulis. Simpan `puts \"Hello, world\"` di `hello.rb` lalu jalankan `ruby hello.rb`. Semua di Ruby adalah objek, bahkan angka dan `nil`. Konsep intinya: method yang dibuat dengan `def`, array dan hash, block yang dikirim ke iterator seperti `each` dan `map`, class dan module, serta exception yang ditangani dengan `begin`/`rescue`.",
+  "sections": [
+    {
+      "h": "Apa itu Ruby dan untuk apa dipakai",
+      "body": [
+        "Ruby dibuat oleh Yukihiro Matsumoto (\"Matz\") di Jepang dan pertama kali dirilis pada 1995, dengan tujuan membuat programmer bahagia. Ruby dikenal luas lewat Ruby on Rails, framework web di balik situs seperti GitHub dan Shopify. Ruby dipakai untuk aplikasi web, scripting dan otomatisasi, serta tool developer seperti Homebrew dan CocoaPods. Implementasi standarnya adalah CRuby (juga disebut MRI)."
+      ]
+    },
+    {
+      "h": "Instal Ruby dan jalankan Hello, world",
+      "body": [
+        "macOS dan banyak sistem Linux sudah menyertakan Ruby, tetapi sering kali versinya lama; instal Ruby 3 terkini dengan version manager seperti rbenv, asdf, atau mise, atau dengan RubyInstaller di Windows. Periksa dengan `ruby -v`.",
+        {
+          "code": "puts \"Hello, world\"",
+          "lang": "ruby"
+        },
+        {
+          "code": "ruby hello.rb\n# Hello, world\nirb          # interactive Ruby shell",
+          "lang": "shell"
+        },
+        "`puts` mencetak nilai diikuti baris baru. Tanda kurung di sekitar argumen method bersifat opsional bila maknanya jelas."
+      ]
+    },
+    {
+      "h": "Variabel dan tipe data dasar",
+      "body": [
+        "Variabel tidak perlu dideklarasikan dan dapat menampung objek apa pun. Secara konvensi, nama memakai `snake_case`. Konstanta diawali huruf kapital.",
+        {
+          "table": {
+            "head": [
+              "Class",
+              "Contoh",
+              "Catatan"
+            ],
+            "rows": [
+              [
+                "`Integer`",
+                "`42`, `2**100`",
+                "Ukuran berapa pun"
+              ],
+              [
+                "`Float`",
+                "`3.14`",
+                "Presisi ganda"
+              ],
+              [
+                "`String`",
+                "`\"hi #{name}\"`, `'hi'`",
+                "Mutable; tanda kutip ganda melakukan interpolasi"
+              ],
+              [
+                "`Symbol`",
+                "`:name`",
+                "Identifier immutable, umum sebagai key hash"
+              ],
+              [
+                "`true`, `false`",
+                "`true`",
+                "Hanya `false` dan `nil` yang bernilai falsy"
+              ],
+              [
+                "`NilClass`",
+                "`nil`",
+                "Tanpa nilai"
+              ],
+              [
+                "`Array`, `Hash`",
+                "`[1, 2]`, `{a: 1}`",
+                "Collection bawaan"
+              ]
+            ]
+          }
+        },
+        {
+          "code": "name = \"Ada\"\ncount = 7\nputs \"#{name} has #{count} items\"   # Ada has 7 items\nputs count / 2, count / 2.0         # 3, then 3.5\nputs \"12\".to_i + 1                  # 13\nputs 5.class, nil.to_a.inspect      # Integer, then []\nputs 0 ? \"0 is truthy\" : \"falsy\"    # 0 is truthy",
+          "lang": "ruby"
+        }
+      ]
+    },
+    {
+      "h": "Alur kontrol",
+      "body": [
+        {
+          "code": "score = 72\nif score >= 90\n  puts \"A\"\nelsif score >= 70\n  puts \"B\"          # B\nelse\n  puts \"C\"\nend\n\nputs \"pass\" unless score < 50    # statement modifier\n\n3.times { |i| print i, \" \" }     # 0 1 2\nputs\n\nn = 10\nn /= 2 while n > 1\nputs n                           # 1\n\nkind = case \"SAT\"\n       when \"SAT\", \"SUN\" then \"weekend\"\n       else \"weekday\"\n       end\nputs kind                        # weekend",
+          "lang": "ruby"
+        },
+        "Blok diakhiri `end`, bukan kurung kurawal. Kode Ruby biasanya diberi indentasi 2 spasi."
+      ]
+    },
+    {
+      "h": "Method",
+      "body": [
+        "Method mengembalikan nilai dari ekspresi terakhirnya, jadi `return` sering tidak diperlukan. Secara konvensi, method yang mengembalikan boolean berakhiran `?`, dan method yang mengubah receiver di tempat berakhiran `!`.",
+        {
+          "code": "def greet(name, greeting: \"Hello\")\n  \"#{greeting}, #{name}!\"\nend\n\ndef total(*nums)\n  nums.sum\nend\n\nputs greet(\"Lin\")                   # Hello, Lin!\nputs greet(\"Lin\", greeting: \"Hi\")   # Hi, Lin!\nputs total(1, 2, 3)                 # 6\nputs 4.even?, \"abc\".upcase          # true, then ABC\n\ns = \"hello\"\ns.upcase!          # modifies s in place\nputs s             # HELLO",
+          "lang": "ruby"
+        }
+      ]
+    },
+    {
+      "h": "Array dan hash",
+      "body": [
+        {
+          "code": "nums = [3, 1, 2]\nnums << 5\np nums.sort, nums.first, nums.last   # [1, 2, 3, 5] then 3 then 5\np nums.sort[1..2]                    # [2, 3]\n\nages = { \"ann\" => 31, \"bob\" => 25 }\nages[\"cy\"] = 40\nages.each { |person, age| puts \"#{person} is #{age}\" }\np ages.fetch(\"zed\", 0)               # 0\n\nuser = { name: \"Ann\", city: \"Oslo\" } # symbol keys\np user[:name]                        # \"Ann\"",
+          "lang": "ruby"
+        },
+        "`p` mencetak bentuk `inspect` dari suatu nilai, berguna untuk debugging karena menampilkan tanda kutip dan kurung."
+      ]
+    },
+    {
+      "h": "Fitur khas: block dan iterator",
+      "body": [
+        "Block adalah potongan kode yang dikirim ke sebuah method, ditulis dengan `{ ... }` dalam satu baris atau `do ... end` di beberapa baris. Iterasi di Ruby sebagian besar dilakukan lewat block, bukan perulangan `for`, dan method `Enumerable` membuat transformasi data menjadi ringkas.",
+        {
+          "code": "nums = [1, 2, 3, 4, 5]\np nums.map { |n| n * n }               # [1, 4, 9, 16, 25]\np nums.select(&:even?)                 # [2, 4]\np nums.reduce(0) { |sum, n| sum + n }  # 15\np nums.each_slice(2).to_a              # [[1, 2], [3, 4], [5]]\np %w[pear fig apple].sort_by(&:length) # [\"fig\", \"pear\", \"apple\"]\n\ndef twice\n  yield\n  yield\nend\ntwice { puts \"hi\" }   # prints hi two times",
+          "lang": "ruby"
+        },
+        "`&:even?` adalah singkatan dari `{ |n| n.even? }`. Method buatan Anda dapat menerima block dan memanggilnya dengan `yield`."
+      ]
+    },
+    {
+      "h": "Class dan module",
+      "body": [
+        {
+          "code": "module Greeter\n  def hello\n    \"Hello from #{name}\"\n  end\nend\n\nclass Account\n  include Greeter          # mix in module methods\n  attr_reader :name, :balance\n\n  def initialize(name)\n    @name = name           # @ marks an instance variable\n    @balance = 0\n  end\n\n  def deposit(amount)\n    raise ArgumentError, \"amount must be positive\" unless amount.positive?\n    @balance += amount\n    self\n  end\n\n  def to_s = \"#{name}: #{balance}\"\nend\n\nacc = Account.new(\"Ann\")\nacc.deposit(30).deposit(20)\nputs acc        # Ann: 50\nputs acc.hello  # Hello from Ann",
+          "lang": "ruby"
+        },
+        "`attr_reader` menghasilkan method getter. Module mengelompokkan method yang dapat dicampurkan (mix in) ke banyak class, yang dipakai Ruby sebagai pengganti pewarisan ganda. Bentuk satu baris `def to_s = ...` membutuhkan Ruby 3.0 ke atas."
+      ]
+    },
+    {
+      "h": "Penanganan error",
+      "body": [
+        {
+          "code": "def parse_age(text)\n  age = Integer(text)       # raises ArgumentError on bad input\n  raise ArgumentError, \"negative age\" if age.negative?\n  age\nend\n\nbegin\n  puts parse_age(\"41\")      # 41\n  puts parse_age(\"abc\")\nrescue ArgumentError => e\n  puts \"error: #{e.message}\"  # error: invalid value for Integer(): \"abc\"\nensure\n  puts \"done\"\nend",
+          "lang": "ruby"
+        },
+        "`rescue` menangkap exception, dan `ensure` selalu dijalankan. Di dalam method Anda dapat menulis `rescue` langsung tanpa `begin`."
+      ]
+    },
+    {
+      "h": "Program kecil yang lengkap: frekuensi kata",
+      "body": [
+        {
+          "code": "path = ARGV.fetch(0) { abort \"usage: ruby words.rb FILE\" }\n\nbegin\n  text = File.read(path).downcase\nrescue Errno::ENOENT\n  abort \"file not found: #{path}\"\nend\n\ncounts = text.scan(/[a-z']+/).tally\ncounts.max_by(5) { |_word, n| n }.each do |word, n|\n  puts format(\"%5d  %s\", n, word)\nend",
+          "lang": "ruby"
+        },
+        "Jalankan dengan `ruby words.rb notes.txt`. `tally` menghitung item yang sama ke dalam hash, dan `max_by(5)` mengembalikan lima entri dengan jumlah tertinggi."
+      ]
+    },
+    {
+      "h": "Kesalahan umum pemula",
+      "body": [
+        {
+          "note": "Hanya `nil` dan `false` yang falsy. Berbeda dengan Python atau JavaScript, `0`, `\"\"`, dan `[]` semuanya truthy, jadi uji kekosongan dengan `.empty?` atau `.zero?`."
+        },
+        {
+          "ul": [
+            "Lupa `end` untuk menutup blok `if`, `def`, `class`, atau `do`.",
+            "Mencampur key string dan key symbol: `h[\"name\"]` dan `h[:name]` adalah key yang berbeda.",
+            "Memakai kutip tunggal dan mengharapkan interpolasi `#{}` bekerja.",
+            "Memanggil method `!` tanpa sadar bahwa objek aslinya berubah.",
+            "Memakai Ruby sistem yang lama alih-alih versi terkini yang diinstal dengan version manager."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Langkah selanjutnya",
+      "body": [
+        "Mulailah dari halaman dokumentasi di ruby-lang.org, termasuk panduan cepat \"Ruby in Twenty Minutes\", dan gunakan docs.ruby-lang.org untuk referensi pustaka inti dan standar. Pelajari Bundler dan gem untuk dependensi, RSpec atau Minitest untuk tes, lalu Ruby on Rails bila Anda ingin membangun aplikasi web."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Apakah Ruby masih dipakai?",
+      "a": "Ya. Ruby on Rails menjalankan banyak produk web mapan, termasuk GitHub dan Shopify, dan Ruby umum untuk scripting dan tool developer. Untuk proyek baru ia kurang umum dibanding Python atau JavaScript, tetapi tetap aktif dikembangkan."
+    },
+    {
+      "q": "Apa perbedaan Ruby dan Ruby on Rails?",
+      "a": "Ruby adalah bahasa pemrogramannya. Rails adalah framework web yang ditulis dalam Ruby dan menyediakan routing, akses database, dan template halaman."
+    },
+    {
+      "q": "Apa itu symbol di Ruby?",
+      "a": "Symbol seperti `:name` adalah identifier unik yang immutable. Symbol yang sama selalu merupakan objek yang sama, sehingga efisien untuk key hash dan nama opsi."
+    },
+    {
+      "q": "Ruby atau Python untuk pemula?",
+      "a": "Keduanya bahasa pertama yang bagus dengan sintaks mudah dibaca. Python punya jangkauan kegunaan lebih luas, terutama di data science; Ruby sangat ekspresif dan kuat untuk pengembangan web dengan Rails."
+    }
+  ]
+}

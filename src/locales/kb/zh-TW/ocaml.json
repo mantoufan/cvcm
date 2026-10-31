@@ -1,0 +1,203 @@
+{
+  "title": "OCaml 入門教學：型別、variant、模式比對與模組 — cv.cm",
+  "description": "從頭學 OCaml：用 opam 安裝、編譯 Hello world、使用 let 繫結、串列、record、variant、模式比對、模組與 Result 錯誤。",
+  "h1": "OCaml 入門教學",
+  "answer": "OCaml 是 ML 家族中的靜態型別函數式語言。它的編譯器會替你推論型別，在程式執行前就抓出許多錯誤，並產生快速的原生程式碼。程式由不可變的值、variant（帶標籤的聯集）、模式比對與模組組成。用 opam 安裝後，可以用 `ocaml hello.ml` 執行檔案，或用 `ocamlopt` 編譯。",
+  "sections": [
+    {
+      "h": "OCaml 是什麼、誰在使用",
+      "body": [
+        "OCaml 誕生於法國的 Inria，現在由包含 Jane Street 與 Tarides 等公司在內的開放原始碼社群開發。它結合函數式程式設計與可選的命令式特性（可變參照、陣列、迴圈），以及大部分程式碼用不到的物件系統。OCaml 5 透過 domain 與 effect handler 加入了共享記憶體的平行運算。",
+        "OCaml 用於編譯器與程式分析工具、Rocq（前身為 Coq）等證明輔助器、交易系統（Jane Street 是最知名的業界使用者），以及 Meta 的 Flow 與 Infer 等開發者工具。它也是教授函數式程式設計與型別系統的常見語言。"
+      ]
+    },
+    {
+      "h": "安裝 OCaml 並執行 Hello, world",
+      "body": [
+        "安裝 OCaml 的標準方式是 opam，也就是 OCaml 的套件管理工具。安裝 opam 後執行一次 `opam init`，它會設定好編譯器。接著用 `opam install dune utop` 安裝建置工具 dune 與較友善的 REPL utop。",
+        {
+          "code": "(* hello.ml *)\nlet () = print_endline \"Hello, world!\"",
+          "lang": "ocaml"
+        },
+        {
+          "code": "ocaml hello.ml            # run with the interpreter\nocamlopt -o hello hello.ml\n./hello                   # native executable\n# Hello, world!",
+          "lang": "shell"
+        },
+        "`let () = ...` 是撰寫程式進入點的慣用寫法：它會對運算式求值，並檢查其回傳為 `unit`（沒有值）。在 REPL（`utop` 或 `ocaml`）中，每個片段要以 `;;` 結尾；在原始碼檔案中則不需要 `;;`。對於實際的專案，`dune init project myapp` 會建立專案，`dune build` 則負責編譯。"
+      ]
+    },
+    {
+      "h": "值與基本型別",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "型別",
+              "範例",
+              "說明"
+            ],
+            "rows": [
+              [
+                "int",
+                "`42`",
+                "在 64 位元系統上是 63 位元；運算子為 `+ - * / mod`"
+              ],
+              [
+                "float",
+                "`3.14`",
+                "有自己的運算子：`+.` `-.` `*.` `/.`"
+              ],
+              [
+                "string",
+                "`\"hello\"`",
+                "不可變的位元組序列；用 `^` 連接"
+              ],
+              [
+                "char",
+                "`'a'`",
+                "單一位元組"
+              ],
+              [
+                "bool",
+                "`true`, `false`",
+                "`&&`, `||`, `not`"
+              ],
+              [
+                "unit",
+                "`()`",
+                "沒有結果的運算式之值"
+              ]
+            ]
+          }
+        },
+        {
+          "code": "let name = \"Ana\"\nlet age = 30\nlet height = 1.68 *. 100.0\nlet () = Printf.printf \"%s is %d, %.0f cm\\n\" name age height\n(* Ana is 30, 168 cm *)\nlet count = ref 0\nlet () = incr count; Printf.printf \"count = %d\\n\" !count",
+          "lang": "ocaml"
+        },
+        "繫結是不可變的。`ref` 是一個可變的儲存格：`!r` 讀取它，`r := v` 寫入它。OCaml 絕不會在 `int` 與 `float` 之間自動轉換；請使用 `float_of_int` 與 `int_of_float`。"
+      ]
+    },
+    {
+      "h": "流程控制與函式",
+      "body": [
+        "`if` 是運算式。函式用 `let` 定義；遞迴函式需要 `let rec`。引數以空格分隔，而且每個函式都是柯里化的，所以部分套用不需要額外成本。",
+        {
+          "code": "let sign n =\n  if n > 0 then \"positive\"\n  else if n < 0 then \"negative\"\n  else \"zero\"\nlet rec factorial n = if n <= 1 then 1 else n * factorial (n - 1)\nlet add x y = x + y          (* int -> int -> int *)\nlet add5 = add 5\nlet () =\n  for i = 1 to 3 do\n    Printf.printf \"%d squared is %d\\n\" i (i * i)\n  done;\n  Printf.printf \"%s %d %d\\n\" (sign (-2)) (factorial 5) (add5 10)\n(* negative 120 15 *)",
+          "lang": "ocaml"
+        },
+        "請注意 `sign (-2)` 的括號：沒有括號的話，OCaml 會把 `sign - 2` 解讀成減法。要串接回傳 `unit` 的運算式，請使用 `;`。"
+      ]
+    },
+    {
+      "h": "串列、陣列、元組與 record",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "結構",
+              "字面值",
+              "說明"
+            ],
+            "rows": [
+              [
+                "List",
+                "`[1; 2; 3]`",
+                "不可變的單向鏈結串列；`x :: xs` 在前端新增元素"
+              ],
+              [
+                "Array",
+                "`[| 1; 2; 3 |]`",
+                "大小固定、可變，以 `a.(0)` 存取索引"
+              ],
+              [
+                "Tuple",
+                "`(\"Ana\", 30)`",
+                "一組固定的、型別可以不同的值"
+              ],
+              [
+                "Record",
+                "`{ name = \"Ana\"; age = 30 }`",
+                "具名欄位，需先宣告型別"
+              ],
+              [
+                "Hashtbl / Map",
+                "`Hashtbl.create 16`",
+                "可變的雜湊表 / 不可變的平衡樹 map"
+              ]
+            ]
+          }
+        },
+        {
+          "code": "type person = { name : string; age : int }\nlet people = [ { name = \"Ana\"; age = 30 }; { name = \"Ben\"; age = 17 } ]\nlet () =\n  people\n  |> List.filter (fun p -> p.age >= 18)\n  |> List.map (fun p -> p.name)\n  |> List.iter print_endline\n(* Ana *)\nlet older = { (List.hd people) with age = 31 }",
+          "lang": "ocaml"
+        },
+        "管線運算子 `x |> f` 的意思是 `f x`。`List` 模組提供 `map`、`filter`、`fold_left`、`find_opt` 等許多函式。"
+      ]
+    },
+    {
+      "h": "招牌特色：variant、模式比對與模組",
+      "body": [
+        "Variant 型別會列出一個值所有可能的案例。模式比對依案例拆解值，如果漏掉某個案例，編譯器會發出警告，讓重構更安全。",
+        {
+          "code": "type shape =\n  | Circle of float\n  | Rectangle of float * float\nlet area = function\n  | Circle r -> Float.pi *. r *. r\n  | Rectangle (w, h) -> w *. h\nlet () =\n  List.iter (fun s -> Printf.printf \"%.2f\\n\" (area s))\n    [ Circle 1.0; Rectangle (2.0, 3.0) ]\n(* 3.14 then 6.00 *)\nmodule StringMap = Map.Make (String)\nlet ages = StringMap.(empty |> add \"Ana\" 30 |> add \"Ben\" 17)\nlet () = Printf.printf \"%d\\n\" (StringMap.find \"Ana\" ages)   (* 30 *)",
+          "lang": "ocaml"
+        },
+        "模組將型別與函式分組，而且每個檔案都是一個模組（`list.ml` 就是 `List`）。Functor 是從模組到模組的函式：`Map.Make (String)` 會建立一個以字串為鍵的 map 模組。簽章（`.mli` 檔案）則隱藏實作細節。"
+      ]
+    },
+    {
+      "h": "錯誤處理",
+      "body": [
+        "OCaml 有三種工具：`option` 用於可能缺值的值，`result` 用於可能失敗並附帶資訊的操作，例外則用於例外的狀況。",
+        {
+          "code": "let parse_age s =\n  match int_of_string_opt s with\n  | Some n when n >= 0 -> Ok n\n  | Some _ -> Error \"Age must not be negative\"\n  | None -> Error \"Not a number\"\nlet () =\n  match parse_age \"abc\" with\n  | Ok n -> Printf.printf \"Age %d\\n\" n\n  | Error msg -> print_endline (\"Error: \" ^ msg)\n(* Error: Not a number *)\nexception Empty_input\nlet first = function [] -> raise Empty_input | x :: _ -> x\nlet () =\n  try print_int (first []) with Empty_input -> print_endline \"empty list\"",
+          "lang": "ocaml"
+        }
+      ]
+    },
+    {
+      "h": "完整的小程式：字詞頻率",
+      "body": [
+        {
+          "code": "let () =\n  let text = \"the cat and the hat and the bat\" in\n  let counts = Hashtbl.create 16 in\n  String.split_on_char ' ' text\n  |> List.iter (fun w ->\n         let n = Option.value (Hashtbl.find_opt counts w) ~default:0 in\n         Hashtbl.replace counts w (n + 1));\n  Hashtbl.to_seq counts\n  |> List.of_seq\n  |> List.sort (fun (_, a) (_, b) -> compare b a)\n  |> List.filteri (fun i _ -> i < 2)\n  |> List.iter (fun (w, n) -> Printf.printf \"%s %d\\n\" w n)\n(* the 3\n   and 2 *)",
+          "lang": "ocaml"
+        },
+        "這個程式用可變的雜湊表統計字詞，把表轉成 `(word, count)` 配對的串列，依次數由大到小排序，並印出前兩個。`~default:0` 是帶標籤的引數。",
+        {
+          "note": "新手常見錯誤：對浮點數使用 `+`（請用 `+.`）；寫成 `[1, 2, 3]`，那是只含一個元組的串列（請用分號）；遞迴函式忘了加 `rec`；在該用 `=`（結構相等）的地方用了 `==`（實體相等）；以及把 `f (-1)` 寫成 `f -1`。"
+        }
+      ]
+    },
+    {
+      "h": "接下來可以學什麼",
+      "body": [
+        {
+          "ul": [
+            "ocaml.org：安裝指南、「A Tour of OCaml」以及 Docs 底下的其他教學。",
+            "OCaml 手冊，涵蓋完整的語言與標準函式庫參考。",
+            "學習用 dune 建置專案，以及用 opam 安裝函式庫。",
+            "試試免費的線上書籍「Real World OCaml」，裡面有較大型的實用範例。"
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "OCaml 很難學嗎？",
+      "a": "語法本身很精簡，但如果你來自命令式語言，用型別、遞迴與模式比對的方式思考需要一些練習。型別檢查器的錯誤訊息很快就會變得容易閱讀。"
+    },
+    {
+      "q": "為什麼 OCaml 的浮點數有獨立的運算子？",
+      "a": "OCaml 不會多載算術運算子，所以 `+` 只能用於 `int`，`+.` 只能用於 `float`。這讓型別推論保持簡單且可預測。"
+    },
+    {
+      "q": "OCaml 與 F# 有什麼差別？",
+      "a": "F# 衍生自 OCaml，核心語法大多相同，但 F# 運行在 .NET 上並使用具語意的縮排，而 OCaml 則編譯成原生程式碼或位元組碼，且擁有含 functor、功能更強大的模組系統。"
+    },
+    {
+      "q": "OCaml 什麼時候需要 ;;？",
+      "a": "只有在互動式 toplevel（`ocaml` 或 `utop`）中才需要，它是用來告訴 REPL 對你輸入的內容求值。在 `.ml` 原始碼檔案中通常省略。"
+    }
+  ]
+}

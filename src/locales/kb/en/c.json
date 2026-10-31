@@ -1,0 +1,192 @@
+{
+  "title": "C tutorial: types, pointers, arrays, strings and memory — cv.cm",
+  "description": "Learn C in one page: compile Hello world with gcc, types, control flow, functions, arrays, strings, pointers, malloc and free, errors and a full example.",
+  "h1": "C programming tutorial for beginners",
+  "answer": "C is a small, fast, compiled language that gives direct access to memory through pointers. Write `main` in a `.c` file, compile it with `gcc hello.c -o hello`, and run `./hello`. The core ideas are fixed-size types, functions, arrays and null-terminated strings, pointers and addresses, manual memory management with `malloc` and `free`, and error handling through return values.",
+  "sections": [
+    {
+      "h": "What C is and what it is used for",
+      "body": [
+        "C was created by Dennis Ritchie at Bell Labs in the early 1970s to write the Unix operating system. It is standardized by ISO (C99, C11, C17 and C23 are the main editions). C compiles to machine code with very little runtime, so it runs almost everywhere. It is used for operating system kernels (Linux), embedded firmware, databases (SQLite), language runtimes (CPython is written in C) and high-performance libraries. Learning C also teaches how memory and computers really work."
+      ]
+    },
+    {
+      "h": "Install a compiler and run Hello, world",
+      "body": [
+        "On Linux install `gcc` (for example `sudo apt install build-essential`); on macOS run `xcode-select --install` to get `clang` (also available as `gcc`); on Windows use MSYS2, WSL or Visual Studio.",
+        {
+          "code": "#include <stdio.h>\nint main(void) {\n    printf(\"Hello, world\\n\");\n    return 0;\n}",
+          "lang": "c"
+        },
+        {
+          "code": "gcc -Wall -Wextra -std=c17 hello.c -o hello\n./hello\n# Hello, world",
+          "lang": "shell"
+        },
+        "`#include` pulls in declarations from a header file, here the standard input and output library. Returning 0 from `main` means success. Always compile with warnings on (`-Wall -Wextra`)."
+      ]
+    },
+    {
+      "h": "Variables and basic types",
+      "body": [
+        "Every variable has a type that fixes its size and meaning. Sizes depend on the platform, except where the standard says otherwise; `<stdint.h>` provides exact-width types such as `int32_t`.",
+        {
+          "table": {
+            "head": [
+              "Type",
+              "Typical size",
+              "Example",
+              "printf format"
+            ],
+            "rows": [
+              [
+                "`char`",
+                "1 byte",
+                "`char c = 'A';`",
+                "`%c`"
+              ],
+              [
+                "`int`",
+                "4 bytes",
+                "`int n = 42;`",
+                "`%d`"
+              ],
+              [
+                "`long long`",
+                "8 bytes",
+                "`long long big = 1LL << 40;`",
+                "`%lld`"
+              ],
+              [
+                "`double`",
+                "8 bytes",
+                "`double x = 3.14;`",
+                "`%f`"
+              ],
+              [
+                "`bool`",
+                "1 byte",
+                "`bool ok = true;` (C99 `<stdbool.h>`)",
+                "`%d`"
+              ],
+              [
+                "`size_t`",
+                "8 bytes on 64-bit",
+                "`size_t len = sizeof(arr);`",
+                "`%zu`"
+              ]
+            ]
+          }
+        },
+        {
+          "code": "#include <stdio.h>\nint main(void) {\n    int count = 7;\n    double avg = count / 2;     /* 3.0: integer division first */\n    double avg2 = count / 2.0;  /* 3.5 */\n    printf(\"%d %.1f %.1f\\n\", count, avg, avg2);  /* 7 3.0 3.5 */\n    printf(\"%zu\\n\", sizeof(int));                /* 4 on most systems */\n    return 0;\n}",
+          "lang": "c"
+        }
+      ]
+    },
+    {
+      "h": "Control flow and functions",
+      "body": [
+        "A function must be declared before it is used. Arguments are passed by value: the function receives a copy.",
+        {
+          "code": "#include <stdio.h>\nint square(int x) {\n    return x * x;\n}\nint main(void) {\n    int score = 72;\n    if (score >= 90) {\n        printf(\"A\\n\");\n    } else if (score >= 70) {\n        printf(\"B\\n\");              /* B */\n    } else {\n        printf(\"C\\n\");\n    }\n    for (int i = 0; i < 3; i++) {\n        printf(\"%d \", square(i));   /* 0 1 4 */\n    }\n    printf(\"\\n\");\n    int n = 10;\n    while (n > 1) n /= 2;\n    printf(\"%d\\n\", n);              /* 1 */\n    return 0;\n}",
+          "lang": "c"
+        },
+        "C also has `do`/`while`, `switch` with `case` labels (remember `break`), and `goto`, which is mostly used for cleanup in error paths."
+      ]
+    },
+    {
+      "h": "Arrays and strings",
+      "body": [
+        "An array is a fixed number of elements stored next to each other. C does not check bounds and does not store the length, so you pass the length separately. A string is an array of `char` ending with a zero byte `'\\0'`.",
+        {
+          "code": "#include <stdio.h>\n#include <string.h>\nint sum(const int *values, size_t n) {\n    int total = 0;\n    for (size_t i = 0; i < n; i++) total += values[i];\n    return total;\n}\nint main(void) {\n    int nums[] = {3, 1, 2, 5};\n    size_t n = sizeof nums / sizeof nums[0];\n    printf(\"%zu items, sum %d\\n\", n, sum(nums, n));  /* 4 items, sum 11 */\n    char name[16] = \"Ada\";\n    strncat(name, \" Lovelace\", sizeof name - strlen(name) - 1);\n    printf(\"%s (%zu chars)\\n\", name, strlen(name));  /* Ada Lovelace (12 chars) */\n    return 0;\n}",
+          "lang": "c"
+        },
+        "When an array is passed to a function it decays to a pointer to its first element, which is why `sum` takes `const int *` and a length."
+      ]
+    },
+    {
+      "h": "Signature feature: pointers",
+      "body": [
+        "A pointer holds the memory address of another value. `&x` gives the address of `x`, and `*p` reads or writes the value at address `p`. Pointers let functions modify the caller's variables, share large data without copying, and build linked data structures.",
+        {
+          "code": "#include <stdio.h>\nvoid swap(int *a, int *b) {\n    int tmp = *a;\n    *a = *b;\n    *b = tmp;\n}\nint main(void) {\n    int x = 1, y = 2;\n    int *p = &x;\n    *p = 10;                      /* changes x */\n    swap(&x, &y);\n    printf(\"x=%d y=%d\\n\", x, y);  /* x=2 y=10 */\n    int arr[3] = {7, 8, 9};\n    int *q = arr;\n    printf(\"%d %d\\n\", *(q + 1), q[2]);  /* 8 9: pointer arithmetic */\n    return 0;\n}",
+          "lang": "c"
+        }
+      ]
+    },
+    {
+      "h": "Dynamic memory with malloc and free",
+      "body": [
+        "Local variables live on the stack and disappear when the function returns. For data whose size is known only at run time, or that must outlive the function, allocate on the heap with `malloc` and release it with `free`. Every successful `malloc` needs exactly one `free`.",
+        {
+          "code": "#include <stdio.h>\n#include <stdlib.h>\nint main(void) {\n    size_t n = 5;\n    int *squares = malloc(n * sizeof *squares);\n    if (squares == NULL) {\n        fprintf(stderr, \"out of memory\\n\");\n        return 1;\n    }\n    for (size_t i = 0; i < n; i++) squares[i] = (int)(i * i);\n    printf(\"%d\\n\", squares[4]);  /* 16 */\n    free(squares);\n    squares = NULL;              /* avoid using a dangling pointer */\n    return 0;\n}",
+          "lang": "c"
+        },
+        "Related functions are `calloc` (allocates and zeroes) and `realloc` (resizes). Group related values with a `struct`, for example `struct point { int x; int y; };`."
+      ]
+    },
+    {
+      "h": "Error handling",
+      "body": [
+        "C has no exceptions. Functions report errors through return values (often `-1`, `NULL` or a status code), and many library functions also set the global `errno`. Check every return value that can fail.",
+        {
+          "code": "#include <errno.h>\n#include <stdio.h>\n#include <string.h>\nint main(void) {\n    FILE *f = fopen(\"missing.txt\", \"r\");\n    if (f == NULL) {\n        fprintf(stderr, \"cannot open: %s\\n\", strerror(errno));\n        return 1;   /* cannot open: No such file or directory */\n    }\n    fclose(f);\n    return 0;\n}",
+          "lang": "c"
+        }
+      ]
+    },
+    {
+      "h": "A small complete program: line and word counter",
+      "body": [
+        "This program works like a small `wc`: it reads a file named on the command line and prints the number of lines, words and bytes.",
+        {
+          "code": "#include <ctype.h>\n#include <stdio.h>\nint main(int argc, char *argv[]) {\n    if (argc != 2) {\n        fprintf(stderr, \"usage: %s FILE\\n\", argv[0]);\n        return 1;\n    }\n    FILE *f = fopen(argv[1], \"r\");\n    if (f == NULL) {\n        perror(argv[1]);\n        return 1;\n    }\n    long lines = 0, words = 0, bytes = 0;\n    int c, in_word = 0;\n    while ((c = fgetc(f)) != EOF) {\n        bytes++;\n        if (c == '\\n') lines++;\n        if (isspace(c)) {\n            in_word = 0;\n        } else if (!in_word) {\n            in_word = 1;\n            words++;\n        }\n    }\n    fclose(f);\n    printf(\"%ld lines, %ld words, %ld bytes\\n\", lines, words, bytes);\n    return 0;\n}",
+          "lang": "c"
+        },
+        "Compile with `gcc -Wall -Wextra wc.c -o wc` and run `./wc notes.txt`. Note that `c` is an `int`, not a `char`, so it can hold the special value `EOF`."
+      ]
+    },
+    {
+      "h": "Common beginner mistakes",
+      "body": [
+        {
+          "note": "Writing past the end of an array or using memory after `free` is undefined behavior: the program may seem to work, crash later, or become a security hole. Compile with `-fsanitize=address -g` while learning to catch these bugs."
+        },
+        {
+          "ul": [
+            "Using `=` instead of `==` in a condition. Warnings (`-Wall`) catch most cases.",
+            "Forgetting room for the terminating `'\\0'` when sizing a string buffer.",
+            "Using `gets` or an unbounded `scanf(\"%s\", buf)`. Use `fgets(buf, sizeof buf, stdin)` instead.",
+            "Returning a pointer to a local variable, which no longer exists after the function returns.",
+            "Mismatching `printf` formats and types, such as `%d` for a `size_t`."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Where to go next",
+      "body": [
+        "Use cppreference.com's C section as a reference for the language and standard library, and read the ISO working group (WG14) pages for the standard itself. Practice with structs, linked lists, header files and multi-file programs built with `make`. A debugger (`gdb` or `lldb`) and Valgrind or AddressSanitizer will save you hours. Then explore C++ or Rust, which build on the same ideas with more safety."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Is C still worth learning?",
+      "a": "Yes. It is still used for operating systems, embedded devices and performance-critical libraries, and it teaches memory, pointers and how compiled code runs, which helps in every other language."
+    },
+    {
+      "q": "What is the difference between C and C++?",
+      "a": "C++ started as an extension of C and adds classes, templates, references, exceptions and a large standard library. C stays small and procedural. Most C code is close to valid C++, but they are separate standards."
+    },
+    {
+      "q": "Why does my C program crash with a segmentation fault?",
+      "a": "It accessed memory it does not own, usually through a null, uninitialized or freed pointer, or by indexing past the end of an array. Run it in a debugger or with AddressSanitizer to find the exact line."
+    },
+    {
+      "q": "Which C standard should I use?",
+      "a": "C17 is widely supported by current compilers, and C23 is the newest standard. Pass the version explicitly, for example `-std=c17`, so behavior is consistent."
+    }
+  ]
+}

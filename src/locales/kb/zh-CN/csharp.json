@@ -1,0 +1,191 @@
+{
+  "title": "C# 入门教程：类型、类、集合、LINQ 与 async — cv.cm",
+  "description": "一页学会 C#：用 .NET SDK 运行 Hello world，数据类型，流程控制，类，record，List 与 Dictionary，LINQ，async 与异常。",
+  "h1": "C# 入门教程（零基础）",
+  "answer": "C# 是微软推出的静态类型、面向对象语言，运行在 .NET 上；.NET 是免费的跨平台运行时，支持 Windows、macOS 和 Linux。安装 .NET SDK，运行 `dotnet new console`，再 `dotnet run` 就会输出“Hello, World!”。核心概念包括：类与 record、`List<T>` 和 `Dictionary<K, V>` 等泛型集合、LINQ 查询、`async`/`await`、模式匹配和异常。",
+  "sections": [
+    {
+      "h": "C# 是什么，用来做什么",
+      "body": [
+        "C#（读作“C sharp”）由微软以 Anders Hejlsberg 为首的团队设计，2002 年首次发布。它由 Ecma 标准化（ECMA-334），并与 .NET 一起开源开发。C# 用于 Web API 和网站（ASP.NET Core）、Windows 桌面应用、跨平台移动与桌面应用（.NET MAUI）、云服务和游戏：Unity 引擎使用 C# 编写游戏脚本。它的语法属于 C 家族，Java、C++ 和 JavaScript 开发者会觉得很眼熟。"
+      ]
+    },
+    {
+      "h": "安装 .NET 并运行 Hello, world",
+      "body": [
+        "从 dot.net 下载 .NET SDK，并用 `dotnet --version` 检查。创建并运行一个控制台项目：",
+        {
+          "code": "dotnet new console -o HelloApp\ncd HelloApp\ndotnet run\n# Hello, World!",
+          "lang": "shell"
+        },
+        "模板会创建 `Program.cs`，它使用顶级语句，因此小程序不需要类或 `Main` 方法：",
+        {
+          "code": "Console.WriteLine(\"Hello, World!\");",
+          "lang": "csharp"
+        }
+      ]
+    },
+    {
+      "h": "变量与基本类型",
+      "body": [
+        "每个变量都有静态类型。`var` 让编译器根据值推断类型。值类型（数字、`bool`、`struct`）直接保存数据；引用类型（`string`、类、数组）则指向某个对象。",
+        {
+          "table": {
+            "head": [
+              "类型",
+              "示例",
+              "说明"
+            ],
+            "rows": [
+              [
+                "`int`",
+                "`int n = 42;`",
+                "32 位整数"
+              ],
+              [
+                "`long`",
+                "`long big = 10_000_000_000;`",
+                "64 位整数"
+              ],
+              [
+                "`double`",
+                "`double x = 3.14;`",
+                "64 位浮点数"
+              ],
+              [
+                "`decimal`",
+                "`decimal price = 19.99m;`",
+                "十进制，适合表示金额"
+              ],
+              [
+                "`bool`",
+                "`bool ok = true;`",
+                "`true` 或 `false`"
+              ],
+              [
+                "`char`",
+                "`char c = 'A';`",
+                "UTF-16 代码单元"
+              ],
+              [
+                "`string`",
+                "`string s = \"hi\";`",
+                "不可变文本"
+              ]
+            ]
+          }
+        },
+        {
+          "code": "var name = \"Ada\";\nint count = 7;\ndouble avg = count / 2.0;\nConsole.WriteLine($\"{name} has {count} items, avg {avg}\");  // Ada has 7 items, avg 3.5\nConsole.WriteLine(count / 2);                              // 3 (integer division)\nConsole.WriteLine(int.Parse(\"12\") + 1);                    // 13\nstring? nickname = null;   // ? marks a nullable reference\nConsole.WriteLine(nickname ?? \"none\");                     // none",
+          "lang": "csharp"
+        },
+        "`$\"...\"` 是插值字符串。新项目默认启用可为空引用类型，因此当可能为 `null` 的值未经检查就被使用时，编译器会发出警告。"
+      ]
+    },
+    {
+      "h": "流程控制与方法",
+      "body": [
+        {
+          "code": "int score = 72;\nif (score >= 90) Console.WriteLine(\"A\");\nelse if (score >= 70) Console.WriteLine(\"B\");   // B\nelse Console.WriteLine(\"C\");\n\nfor (int i = 0; i < 3; i++) Console.Write($\"{Square(i)} \");  // 0 1 4\nConsole.WriteLine();\n\nforeach (var fruit in new[] { \"apple\", \"pear\" }) Console.WriteLine(fruit);\n\nstring day = \"SAT\";\nstring kind = day switch\n{\n    \"SAT\" or \"SUN\" => \"weekend\",\n    _ => \"weekday\",\n};\nConsole.WriteLine(kind);   // weekend\nConsole.WriteLine(Greet(\"Lin\"));                // Hello, Lin!\n\nstatic int Square(int x) => x * x;\nstatic string Greet(string name, string greeting = \"Hello\") => $\"{greeting}, {name}!\";",
+          "lang": "csharp"
+        },
+        "`switch` 表达式和 `or` 模式属于 C# 的模式匹配。方法可以有参数默认值、命名参数（`Greet(name: \"Lin\")`）以及用 `=>` 书写的表达式体。"
+      ]
+    },
+    {
+      "h": "类、属性与 record",
+      "body": [
+        "类包含字段、属性（带有 get 和 set 逻辑的字段）和方法。`record` 是基于值判断相等的类型，非常适合不可变数据。",
+        {
+          "code": "var acc = new Account(\"Ann\");\nacc.Deposit(50);\nConsole.WriteLine($\"{acc.Owner}: {acc.Balance}\");   // Ann: 50\n\nvar p1 = new Point(3, 4);\nvar p2 = p1 with { Y = 5 };                         // copy with one change\nConsole.WriteLine(p1);                              // Point { X = 3, Y = 4 }\nConsole.WriteLine(p1 == new Point(3, 4));           // True\n\npublic class Account\n{\n    public string Owner { get; }\n    public decimal Balance { get; private set; }\n\n    public Account(string owner) => Owner = owner;\n\n    public void Deposit(decimal amount)\n    {\n        if (amount <= 0) throw new ArgumentException(\"amount must be positive\");\n        Balance += amount;\n    }\n}\n\npublic record Point(int X, int Y);",
+          "lang": "csharp"
+        },
+        "类型声明必须放在同一文件中的顶级语句之后。类支持单继承（`class Savings : Account`），可以实现任意数量的接口。"
+      ]
+    },
+    {
+      "h": "集合与 LINQ",
+      "body": [
+        "`System.Collections.Generic` 中的泛型集合是日常使用的数据结构。LINQ（Language Integrated Query，语言集成查询）为所有集合增加了 `Where`、`Select`、`OrderBy` 和 `GroupBy` 等方法。",
+        {
+          "code": "var nums = new List<int> { 3, 1, 2, 5 };\nnums.Add(4);\nnums.Sort();\nConsole.WriteLine(string.Join(\", \", nums));      // 1, 2, 3, 4, 5\n\nvar ages = new Dictionary<string, int> { [\"ann\"] = 31, [\"bob\"] = 25 };\nages[\"cy\"] = 40;\nif (ages.TryGetValue(\"bob\", out int bobAge)) Console.WriteLine(bobAge);  // 25\n\nvar evenSquares = nums.Where(n => n % 2 == 0).Select(n => n * n).ToList();\nConsole.WriteLine(string.Join(\" \", evenSquares)); // 4 16\n\nvar oldest = ages.OrderByDescending(kv => kv.Value).First();\nConsole.WriteLine(oldest.Key);                    // cy",
+          "lang": "csharp"
+        },
+        "其他常用集合还有：存放不重复元素的 `HashSet<T>`、`Queue<T>`、`Stack<T>`，以及 `int[]` 这样的定长数组。"
+      ]
+    },
+    {
+      "h": "标志性特性：async 与 await",
+      "body": [
+        "C# 首创了 `async`/`await` 模型，后来许多语言都采用了它。`async` 方法返回 `Task`，并且可以 `await` 网络请求或文件读取等耗时操作，而不会阻塞线程。",
+        {
+          "code": "using System.Net.Http;\n\nusing var http = new HttpClient();\nvar sizes = await Task.WhenAll(\n    GetLengthAsync(http, \"https://example.com\"),\n    GetLengthAsync(http, \"https://example.org\"));\nConsole.WriteLine($\"downloaded {sizes.Sum()} characters\");\n\nstatic async Task<int> GetLengthAsync(HttpClient http, string url)\n{\n    string html = await http.GetStringAsync(url);\n    return html.Length;\n}",
+          "lang": "csharp"
+        },
+        "`Task.WhenAll` 会同时发起两个请求并等待它们都完成。`using var` 声明会在作用域结束时释放 `HttpClient`。"
+      ]
+    },
+    {
+      "h": "异常",
+      "body": [
+        "错误以异常表示。先捕获具体的类型，并使用 `finally` 或 `using` 做清理。对于经常无效的输入，`TryParse` 模式可以避免使用异常。",
+        {
+          "code": "try\n{\n    int age = int.Parse(\"abc\");\n}\ncatch (FormatException ex)\n{\n    Console.WriteLine($\"not a number: {ex.Message}\");\n}\nfinally\n{\n    Console.WriteLine(\"done\");\n}\n\nif (!int.TryParse(\"41\", out int parsed)) parsed = 0;\nConsole.WriteLine(parsed);   // 41",
+          "lang": "csharp"
+        }
+      ]
+    },
+    {
+      "h": "一个完整的小程序：词频统计",
+      "body": [
+        "把控制台项目中的 `Program.cs` 替换为这段代码，然后运行 `dotnet run -- notes.txt`。",
+        {
+          "code": "using System.Text.RegularExpressions;\n\nif (args.Length != 1)\n{\n    Console.Error.WriteLine(\"usage: dotnet run -- FILE\");\n    return 1;\n}\n\ntry\n{\n    string text = File.ReadAllText(args[0]).ToLowerInvariant();\n    var top = Regex.Matches(text, \"[a-z']+\")\n        .GroupBy(m => m.Value)\n        .Select(g => (Word: g.Key, Count: g.Count()))\n        .OrderByDescending(t => t.Count)\n        .Take(5);\n\n    foreach (var (word, count) in top)\n        Console.WriteLine($\"{count,5}  {word}\");\n    return 0;\n}\ncatch (FileNotFoundException)\n{\n    Console.Error.WriteLine($\"file not found: {args[0]}\");\n    return 1;\n}",
+          "lang": "csharp"
+        },
+        "顶级语句可以读取命令行 `args` 并返回退出码。新项目通过隐式 using 自动导入 `System.IO`、`System.Linq` 和 `System.Collections.Generic`。"
+      ]
+    },
+    {
+      "h": "新手常见错误",
+      "body": [
+        {
+          "note": "不要用 `.Result` 或 `.Wait()` 阻塞异步代码。这在 UI 和旧版 ASP.NET 应用中可能造成死锁，在其他地方也会浪费线程。请一路使用 `await`。"
+        },
+        {
+          "ul": [
+            "用 `double` 表示金额；应使用 `decimal` 来避免二进制舍入误差。",
+            "忽略可空性警告，它们最终会在运行时变成 `NullReferenceException`。",
+            "在对同一个列表的 `foreach` 中修改 `List<T>`，会抛出 `InvalidOperationException`。",
+            "在长期运行的应用中为每个请求创建新的 `HttpClient`。请复用同一个实例，或使用 `IHttpClientFactory`。",
+            "忘记 LINQ 查询是惰性执行的：除非调用 `ToList()`，否则每次枚举时查询都会重新执行一遍。"
+          ]
+        }
+      ]
+    },
+    {
+      "h": "接下来学什么",
+      "body": [
+        "Microsoft Learn 提供官方的 C# 文档，包括语言导览和交互式教程。之后可以学习用于 Web API 的 ASP.NET Core、用于数据库的 Entity Framework Core，或用于游戏的 Unity，并使用 xUnit 或 NUnit 做测试。Visual Studio、安装了 C# Dev Kit 的 VS Code 以及 JetBrains Rider 是常用的编辑器。"
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "C# 只能用在 Windows 上吗？",
+      "a": "不是。现代 .NET 可运行在 Windows、macOS 和 Linux 上，C# 应用可以部署到 Linux 服务器和容器中。只有 WPF 和 Windows Forms 等部分桌面 UI 框架仅限 Windows。"
+    },
+    {
+      "q": "C# 和 .NET 有什么区别？",
+      "a": "C# 是编程语言。.NET 是编译并运行 C# 代码的运行时和库（同样适用于 F# 和 Visual Basic）。"
+    },
+    {
+      "q": "C# 和 Java 相似吗？",
+      "a": "在许多方面相似：两者都是静态类型、带垃圾回收、面向对象且采用 C 风格语法的语言。C# 增加了属性、LINQ、`async`/`await`、值类型 struct 和 record 等特性。"
+    },
+    {
+      "q": "C# 适合做游戏开发吗？",
+      "a": "适合。使用最广泛的游戏引擎之一 Unity 就用 C# 编写游戏脚本，Godot 引擎也支持 C#。"
+    }
+  ]
+}

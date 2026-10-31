@@ -1,0 +1,229 @@
+{
+  "title": "Penjelasan insertion sort: cara kerja, kode Python, dan kompleksitas — cv.cm",
+  "description": "Insertion sort membangun list terurut satu item demi satu item dengan menggeser item yang lebih besar ke kanan. Penelusuran, kode Python, kasus O(n²) dan O(n), stabilitas, dan kegunaannya.",
+  "h1": "Penjelasan insertion sort: cara kerja, kode, dan kompleksitas",
+  "answer": "Insertion sort membangun hasil terurut satu elemen demi satu elemen. Algoritma ini mengambil elemen berikutnya, menggeser setiap elemen yang lebih besar di bagian terurut satu posisi ke kanan, lalu menjatuhkan elemen itu ke celah yang terbentuk, seperti cara banyak orang mengurutkan kartu remi di tangan. Waktunya O(n²) pada kasus rata-rata dan terburuk, O(n) pada input yang sudah atau hampir terurut, memakai ruang tambahan O(1), dan stabil. Ini sort sederhana tercepat untuk array kecil atau hampir terurut, itulah sebabnya sort hibrida seperti Timsort memakainya.",
+  "sections": [
+    {
+      "h": "Ide dasar dengan kata-kata sederhana",
+      "body": [
+        "Anggap elemen pertama sebagai list terurut dengan panjang satu. Ambil elemen kedua dan sisipkan sebelum atau sesudah elemen pertama. Ambil elemen ketiga dan sisipkan ke tempat yang tepat di antara dua elemen pertama. Lanjutkan sampai semua elemen telah disisipkan.",
+        "Untuk menyisipkan, simpan elemen baru di samping (sebut `key`), lalu telusuri bagian terurut ke kiri. Setiap elemen yang lebih besar dari `key` bergeser satu posisi ke kanan. Ketika sampai pada elemen yang tidak lebih besar, atau awal list, letakkan `key` di slot kosong."
+      ]
+    },
+    {
+      "h": "Contoh langkah demi langkah",
+      "body": [
+        "Urutkan `[12, 11, 13, 5, 6]`. Bagian sebelum garis sudah terurut (tetapi belum final).",
+        {
+          "table": {
+            "head": [
+              "Langkah",
+              "key",
+              "Pergeseran",
+              "List setelah langkah"
+            ],
+            "rows": [
+              [
+                "1",
+                "11",
+                "12 bergeser ke kanan",
+                "`[11, 12 | 13, 5, 6]`"
+              ],
+              [
+                "2",
+                "13",
+                "tidak ada, 12 lebih kecil",
+                "`[11, 12, 13 | 5, 6]`"
+              ],
+              [
+                "3",
+                "5",
+                "13, 12, 11 bergeser ke kanan",
+                "`[5, 11, 12, 13 | 6]`"
+              ],
+              [
+                "4",
+                "6",
+                "13, 12, 11 bergeser ke kanan",
+                "`[5, 6, 11, 12, 13]`"
+              ]
+            ]
+          }
+        },
+        "Perhatikan langkah 2: elemen yang sudah di tempatnya hanya butuh satu perbandingan. Itulah sebabnya insertion sort cepat pada input yang hampir terurut."
+      ]
+    },
+    {
+      "h": "Implementasi Python",
+      "body": [
+        {
+          "code": "def insertion_sort(items):\n    \"\"\"Sort a list in place, ascending. Returns the same list.\"\"\"\n    for i in range(1, len(items)):\n        key = items[i]\n        j = i - 1\n        while j >= 0 and items[j] > key:   # strict >, keeps it stable\n            items[j + 1] = items[j]        # shift right\n            j -= 1\n        items[j + 1] = key                 # drop into the gap\n    return items\nprint(insertion_sort([12, 11, 13, 5, 6]))   # [5, 6, 11, 12, 13]\nprint(insertion_sort([1, 2, 3, 4]))         # [1, 2, 3, 4], 3 comparisons",
+          "lang": "python"
+        },
+        "Menggeser alih-alih menukar menulis setiap elemen yang dipindahkan satu kali, sekitar separuh pekerjaan versi berbasis pertukaran. Anda juga bisa mencari titik penyisipan dengan binary search, seperti di bawah. Ini menurunkan perbandingan menjadi O(n log n) total, tetapi pergeserannya tetap O(n²), sehingga waktu keseluruhan tetap O(n²).",
+        {
+          "code": "from bisect import insort_right\ndef binary_insertion_sort(items):\n    result = []\n    for x in items:\n        insort_right(result, x)   # stable: equal items go after\n    return result\nprint(binary_insertion_sort([3, 1, 2, 1]))   # [1, 1, 2, 3]",
+          "lang": "python"
+        }
+      ]
+    },
+    {
+      "h": "Kompleksitas waktu dan ruang",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Kasus",
+              "Waktu",
+              "Alasan"
+            ],
+            "rows": [
+              [
+                "Terbaik (sudah terurut)",
+                "O(n)",
+                "setiap elemen butuh satu perbandingan dan tanpa pergeseran"
+              ],
+              [
+                "Rata-rata (urutan acak)",
+                "O(n²)",
+                "sekitar n²/4 pergeseran rata-rata"
+              ],
+              [
+                "Terburuk (urutan terbalik)",
+                "O(n²)",
+                "elemen i bergeser melewati semua i elemen sebelumnya"
+              ],
+              [
+                "Ruang tambahan",
+                "O(1)",
+                "mengurutkan di tempat dengan satu nilai sementara"
+              ]
+            ]
+          }
+        },
+        "Lebih tepatnya, waktu eksekusinya O(n + I), dengan I adalah jumlah inversi (pasangan yang urutannya salah). Jika setiap elemen berjarak paling jauh k posisi dari tempat akhirnya, I paling banyak n · k, sehingga insertion sort O(n · k): sangat cepat ketika k kecil."
+      ]
+    },
+    {
+      "h": "Perbandingan insertion sort dengan sort lain",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Algoritma",
+              "Terbaik",
+              "Rata-rata",
+              "Terburuk",
+              "Ruang tambahan",
+              "Stabil"
+            ],
+            "rows": [
+              [
+                "Insertion sort",
+                "O(n)",
+                "O(n²)",
+                "O(n²)",
+                "O(1)",
+                "Ya"
+              ],
+              [
+                "Bubble sort",
+                "O(n)",
+                "O(n²)",
+                "O(n²)",
+                "O(1)",
+                "Ya"
+              ],
+              [
+                "Selection sort",
+                "O(n²)",
+                "O(n²)",
+                "O(n²)",
+                "O(1)",
+                "Tidak"
+              ],
+              [
+                "Merge sort",
+                "O(n log n)",
+                "O(n log n)",
+                "O(n log n)",
+                "O(n)",
+                "Ya"
+              ],
+              [
+                "Quicksort",
+                "O(n log n)",
+                "O(n log n)",
+                "O(n²)",
+                "O(log n)",
+                "Tidak"
+              ],
+              [
+                "Heapsort",
+                "O(n log n)",
+                "O(n log n)",
+                "O(n log n)",
+                "O(1)",
+                "Tidak"
+              ],
+              [
+                "Timsort (`sorted` di Python)",
+                "O(n)",
+                "O(n log n)",
+                "O(n log n)",
+                "O(n)",
+                "Ya"
+              ]
+            ]
+          }
+        },
+        "Insertion sort stabil karena elemen hanya bergerak ke kiri melewati elemen yang benar-benar lebih besar. Algoritma ini juga bersifat online: bisa mengurutkan data saat data datang, dengan prefiks terurut di setiap saat. Untuk list pendek, overhead-nya yang rendah mengalahkan algoritma O(n log n), sehingga Timsort (dipakai Python, dan Java untuk objek) mengurutkan run pendek dengan binary insertion sort, dan banyak implementasi quicksort beralih ke insertion sort di bawah ukuran kecil tertentu."
+      ]
+    },
+    {
+      "h": "Varian dan kesalahan umum",
+      "body": [
+        {
+          "ul": [
+            "Binary insertion sort: binary search untuk mencari posisi, lalu geser. Perbandingan lebih sedikit, yang membantu ketika perbandingan itu mahal.",
+            "Shell sort: jalankan insertion sort pada elemen yang berjarak tertentu (gap), lalu perkecil gap hingga 1. Algoritma ini memindahkan elemen yang jauh dengan cepat dan jauh lebih cepat daripada insertion sort biasa pada array besar.",
+            "Insertion sort pada linked list: tidak perlu menggeser, tetapi mencari posisinya tetap berupa pemindaian linear."
+          ]
+        },
+        {
+          "note": "Bug yang umum: menulis `items[j] >= key` (memindahkan item yang sama dan merusak stabilitas), memeriksa `items[j] > key` sebelum `j >= 0` (di Python, `items[-1]` diam-diam membaca elemen terakhir alih-alih gagal), dan menulis `key` ke `items[j]` alih-alih `items[j + 1]` setelah perulangan."
+        }
+      ]
+    },
+    {
+      "h": "Kapan memakai insertion sort",
+      "body": [
+        "Pakai untuk array kecil (puluhan elemen), untuk data yang hampir terurut, seperti list yang sudah diurutkan lalu ditambah beberapa item, dan ketika Anda butuh sort stabil di tempat yang sederhana. Untuk data acak yang besar, pakai sort O(n log n); di Python itu berarti `sorted()` atau `list.sort()`, yang secara internal sudah menerapkan insertion sort pada run kecil.",
+        "Pertanyaan wawancara sering meminta penelusuran, kasus terbaik dan terburuk, alasan algoritma ini stabil, atau mengapa ia mengalahkan algoritma O(n log n) pada input kecil dan hampir terurut."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Apakah insertion sort stabil?",
+      "a": "Ya. Elemen hanya bergerak ke kiri melewati elemen yang benar-benar lebih besar, sehingga elemen yang sama tetap dalam urutan aslinya."
+    },
+    {
+      "q": "Apa kasus terbaik insertion sort?",
+      "a": "O(n), ketika input sudah terurut: setiap elemen baru dibandingkan sekali dengan tetangga kirinya dan tetap di tempatnya."
+    },
+    {
+      "q": "Mengapa insertion sort dipakai di Timsort?",
+      "a": "Untuk urutan pendek, overhead-nya yang sangat rendah membuatnya lebih cepat daripada merge sort atau quicksort, dan ia stabil. Timsort memakai binary insertion sort untuk memperpanjang run pendek sebelum menggabungkannya."
+    },
+    {
+      "q": "Apakah insertion sort lebih baik daripada bubble sort?",
+      "a": "Ya, dalam praktik. Keduanya O(n²) dan stabil, tetapi insertion sort melakukan lebih sedikit perbandingan dan penulisan serta lebih adaptif terhadap input yang hampir terurut."
+    },
+    {
+      "q": "Apakah binary search membuat insertion sort menjadi O(n log n)?",
+      "a": "Tidak. Binary search menurunkan jumlah perbandingan menjadi O(n log n), tetapi menggeser elemen untuk membuat ruang tetap O(n²) pada kasus terburuk."
+    }
+  ]
+}

@@ -1,0 +1,226 @@
+{
+  "title": "C++ 기초 튜토리얼: 자료형, 클래스, STL 컨테이너, RAII — cv.cm",
+  "description": "현대 C++를 한 페이지로 배웁니다. Hello world 컴파일, 자료형과 auto, 제어 흐름, 함수, 클래스, vector와 map, 스마트 포인터, RAII, 예외 처리까지 다룹니다.",
+  "h1": "C++ 기초 입문 튜토리얼",
+  "answer": "C++는 C의 속도와 저수준 제어에 클래스, 템플릿, 방대한 표준 라이브러리를 결합한 정적 타입 컴파일 언어입니다. `hello.cpp`를 `g++ -std=c++20 hello.cpp -o hello`로 컴파일하고 `./hello`로 실행합니다. 현대 C++ 코드는 날 배열 대신 `std::string`, `std::vector`, `std::map`을, 수동 `delete` 대신 스마트 포인터를 사용하고, 자원이 자동으로 해제되도록 RAII를 따릅니다.",
+  "sections": [
+    {
+      "h": "C++란 무엇이고 어디에 쓰이는가",
+      "body": [
+        "C++는 1979년 Bell Labs의 비야네 스트롤스트룹(Bjarne Stroustrup)이 \"C with Classes\"로 시작해 만들었습니다. ISO에서 표준화하며, C++11이 \"현대 C++\" 시대를 열었고 C++17, C++20, C++23이 뒤를 이었습니다. C++는 게임 엔진(Unreal Engine), 웹 브라우저(Chrome, Firefox), 데이터베이스, 트레이딩 시스템, 임베디드 기기, 컴파일러, 머신러닝 런타임처럼 성능과 제어가 중요한 곳에 쓰입니다. 핵심 철학은 제로 오버헤드 추상화로, 사용하지 않는 기능은 비용이 들지 않습니다."
+      ]
+    },
+    {
+      "h": "컴파일러 설치와 Hello, world 실행",
+      "body": [
+        "Linux와 macOS에서는 GCC(`g++`) 또는 Clang(`clang++`)을, Windows에서는 Visual Studio를 통한 Microsoft Visual C++를 사용하세요. 표준 버전은 명시적으로 지정하세요.",
+        {
+          "code": "#include <iostream>\n\nint main() {\n    std::cout << \"Hello, world\\n\";\n    return 0;\n}",
+          "lang": "cpp"
+        },
+        {
+          "code": "g++ -std=c++20 -Wall -Wextra hello.cpp -o hello\n./hello\n# Hello, world",
+          "lang": "shell"
+        },
+        "`std::cout`은 표준 출력 스트림이고 `<<`로 값을 씁니다. 표준 라이브러리의 모든 요소는 네임스페이스 `std`에 있습니다."
+      ]
+    },
+    {
+      "h": "변수, 자료형, auto",
+      "body": [
+        "C++에는 C와 같은 내장 타입에 더해 키워드인 `bool`, 참조, `std::string` 같은 라이브러리 타입이 있습니다. `auto`는 초기화 식에서 컴파일러가 타입을 추론하게 합니다. 중괄호 초기화 `{}`는 축소 변환을 허용하지 않습니다.",
+        {
+          "table": {
+            "head": [
+              "타입",
+              "예시",
+              "설명"
+            ],
+            "rows": [
+              [
+                "`int`, `long long`",
+                "`int n{42};`",
+                "부호 있는 정수"
+              ],
+              [
+                "`double`",
+                "`double x{3.14};`",
+                "64비트 부동소수점"
+              ],
+              [
+                "`bool`",
+                "`bool ok{true};`",
+                "`true` 또는 `false`"
+              ],
+              [
+                "`char`",
+                "`char c{'A'};`",
+                "1바이트"
+              ],
+              [
+                "`std::string`",
+                "`std::string s{\"hi\"};`",
+                "크기가 늘어나는 텍스트, `<string>` 헤더"
+              ],
+              [
+                "`auto`",
+                "`auto v = 2.5;`",
+                "추론된 타입, 여기서는 `double`"
+              ],
+              [
+                "`T&`",
+                "`int& r = n;`",
+                "참조: `n`의 또 다른 이름"
+              ]
+            ]
+          }
+        },
+        {
+          "code": "#include <iostream>\n#include <string>\n\nint main() {\n    int count{7};\n    auto avg = count / 2.0;          // double, 3.5\n    std::string name{\"Ada\"};\n    name += \" Lovelace\";\n    const int& ref = count;          // read-only alias of count\n    std::cout << name << \" \" << name.size() << \" \" << avg << \" \" << ref << \"\\n\";\n    // Ada Lovelace 12 3.5 7\n}",
+          "lang": "cpp"
+        }
+      ]
+    },
+    {
+      "h": "제어 흐름과 함수",
+      "body": [
+        "제어 흐름은 C와 같고 범위 기반 `for` 반복문이 추가됩니다. 큰 객체는 복사를 피하려고 `const` 참조로 넘기고, 함수가 바꿔야 할 때는 `const`가 아닌 참조로 넘기세요.",
+        {
+          "code": "#include <iostream>\n#include <string>\n#include <vector>\n\nint square(int x) { return x * x; }\n\nvoid addSuffix(std::string& s, const std::string& suffix = \"!\") {\n    s += suffix;\n}\n\nint main() {\n    int score = 72;\n    if (score >= 90) std::cout << \"A\\n\";\n    else if (score >= 70) std::cout << \"B\\n\";   // B\n    else std::cout << \"C\\n\";\n\n    std::vector<int> nums{1, 2, 3};\n    for (int n : nums) std::cout << square(n) << \" \";  // 1 4 9\n    std::cout << \"\\n\";\n\n    std::string word = \"hi\";\n    addSuffix(word);\n    std::cout << word << \"\\n\";                  // hi!\n}",
+          "lang": "cpp"
+        }
+      ]
+    },
+    {
+      "h": "클래스",
+      "body": [
+        "클래스는 데이터 멤버와 멤버 함수를 묶습니다. 생성자는 객체를 초기화하고 `private` 멤버는 외부 코드에서 보이지 않습니다. `struct`는 멤버가 기본적으로 public이라는 점만 빼면 클래스와 같습니다.",
+        {
+          "code": "#include <iostream>\n#include <string>\n#include <utility>\n\nclass Account {\npublic:\n    explicit Account(std::string owner) : owner_(std::move(owner)) {}\n\n    void deposit(double amount) {\n        if (amount > 0) balance_ += amount;\n    }\n    double balance() const { return balance_; }\n    const std::string& owner() const { return owner_; }\n\nprivate:\n    std::string owner_;\n    double balance_ = 0.0;\n};\n\nint main() {\n    Account acc{\"Ann\"};\n    acc.deposit(50);\n    acc.deposit(-5);   // ignored\n    std::cout << acc.owner() << \": \" << acc.balance() << \"\\n\";  // Ann: 50\n}",
+          "lang": "cpp"
+        },
+        "상속(`class Savings : public Account`)과 `virtual` 함수는 런타임 다형성을 제공합니다. 재정의하는 함수에는 컴파일러가 검사하도록 `override`를 붙이세요."
+      ]
+    },
+    {
+      "h": "표준 라이브러리 컨테이너와 알고리즘",
+      "body": [
+        "표준 라이브러리(흔히 STL이라 부릅니다)는 반복자를 통해 함께 동작하는 컨테이너와 알고리즘을 제공합니다.",
+        {
+          "table": {
+            "head": [
+              "컨테이너",
+              "비슷한 것",
+              "용도"
+            ],
+            "rows": [
+              [
+                "`std::vector<T>`",
+                "동적 배열",
+                "기본 시퀀스 컨테이너"
+              ],
+              [
+                "`std::array<T, N>`",
+                "고정 크기 배열",
+                "크기를 컴파일 시점에 아는 경우"
+              ],
+              [
+                "`std::map<K, V>`",
+                "정렬된 딕셔너리",
+                "키가 정렬됨, O(log n) 조회"
+              ],
+              [
+                "`std::unordered_map<K, V>`",
+                "해시 테이블",
+                "평균 O(1)의 빠른 조회"
+              ],
+              [
+                "`std::set<T>`",
+                "정렬된 유일 값 집합",
+                "포함 여부 검사, 정렬된 출력"
+              ]
+            ]
+          }
+        },
+        {
+          "code": "#include <algorithm>\n#include <iostream>\n#include <map>\n#include <string>\n#include <vector>\n\nint main() {\n    std::vector<int> nums{3, 1, 2, 5};\n    std::sort(nums.begin(), nums.end());\n    auto evens = std::count_if(nums.begin(), nums.end(),\n                               [](int n) { return n % 2 == 0; });\n    std::cout << nums.front() << \" \" << nums.back() << \" \" << evens << \"\\n\";  // 1 5 1\n\n    std::map<std::string, int> ages{{\"bob\", 25}, {\"ann\", 31}};\n    ages[\"cy\"] = 40;\n    for (const auto& [name, age] : ages) {     // structured bindings\n        std::cout << name << \"=\" << age << \" \";  // ann=31 bob=25 cy=40\n    }\n    std::cout << \"\\n\";\n}",
+          "lang": "cpp"
+        },
+        "`[](int n) { ... }`는 이름 없는 함수를 코드 안에 바로 쓰는 람다입니다. 템플릿 덕분에 하나의 `std::vector`가 모든 요소 타입에서 동작하며, `template <typename T>`로 직접 만들 수도 있습니다."
+      ]
+    },
+    {
+      "h": "대표 기능: RAII와 스마트 포인터",
+      "body": [
+        "RAII(Resource Acquisition Is Initialization, 자원 획득은 초기화)는 자원을 객체가 소유한다는 뜻입니다. 생성자가 자원을 얻고 소멸자가 해제합니다. 소멸자는 객체가 스코프를 벗어날 때 예외가 던져지더라도 자동으로 실행되므로 메모리, 파일, 락이 누수되지 않습니다. 스마트 포인터는 RAII를 힙 메모리에 적용한 것입니다.",
+        {
+          "code": "#include <iostream>\n#include <memory>\n\nstruct Noisy {\n    int id;\n    explicit Noisy(int i) : id(i) { std::cout << \"create \" << id << \"\\n\"; }\n    ~Noisy() { std::cout << \"destroy \" << id << \"\\n\"; }\n};\n\nint main() {\n    auto a = std::make_unique<Noisy>(1);       // sole owner\n    {\n        auto b = std::make_shared<Noisy>(2);   // shared, reference-counted\n        auto c = b;                            // two owners now\n        std::cout << \"owners: \" << b.use_count() << \"\\n\";\n    }                                          // destroy 2 happens here\n    std::cout << \"end of main\\n\";\n}                                              // destroy 1 happens here",
+          "lang": "cpp"
+        },
+        "출력: `create 1`, `create 2`, `owners: 2`, `destroy 2`, `end of main`, `destroy 1`. 현대 코드에서는 `new`와 `delete`를 직접 쓸 일이 거의 없어야 합니다."
+      ]
+    },
+    {
+      "h": "예외를 이용한 오류 처리",
+      "body": [
+        "예외 객체를 던지고 `const` 참조로 잡으세요. 표준 예외 타입은 `<stdexcept>`에 있습니다. 예외를 던지지 않는 함수에는 `noexcept`를 붙일 수 있습니다.",
+        {
+          "code": "#include <iostream>\n#include <stdexcept>\n#include <string>\n\nint parseAge(const std::string& text) {\n    int age = std::stoi(text);   // throws std::invalid_argument on \"abc\"\n    if (age < 0) throw std::out_of_range(\"negative age\");\n    return age;\n}\n\nint main() {\n    try {\n        std::cout << parseAge(\"41\") << \"\\n\";   // 41\n        std::cout << parseAge(\"abc\") << \"\\n\";\n    } catch (const std::invalid_argument&) {\n        std::cout << \"not a number\\n\";         // not a number\n    } catch (const std::exception& e) {\n        std::cout << \"error: \" << e.what() << \"\\n\";\n    }\n}",
+          "lang": "cpp"
+        },
+        "예상 가능한 실패에는 예외를 던지는 대신 `std::optional<T>`(C++17)나 `std::expected<T, E>`(C++23)를 반환하는 코드베이스가 많습니다."
+      ]
+    },
+    {
+      "h": "작은 완성 프로그램: 단어 빈도 세기",
+      "body": [
+        {
+          "code": "#include <algorithm>\n#include <cctype>\n#include <fstream>\n#include <iostream>\n#include <string>\n#include <unordered_map>\n#include <vector>\n\nint main(int argc, char* argv[]) {\n    if (argc != 2) {\n        std::cerr << \"usage: \" << argv[0] << \" FILE\\n\";\n        return 1;\n    }\n    std::ifstream in(argv[1]);\n    if (!in) {\n        std::cerr << \"cannot open \" << argv[1] << \"\\n\";\n        return 1;\n    }\n    std::unordered_map<std::string, int> counts;\n    std::string word;\n    while (in >> word) {\n        std::string clean;\n        for (unsigned char ch : word)\n            if (std::isalpha(ch)) clean += static_cast<char>(std::tolower(ch));\n        if (!clean.empty()) ++counts[clean];\n    }\n    std::vector<std::pair<std::string, int>> top(counts.begin(), counts.end());\n    std::sort(top.begin(), top.end(),\n              [](const auto& a, const auto& b) { return a.second > b.second; });\n    for (size_t i = 0; i < top.size() && i < 5; ++i)\n        std::cout << top[i].second << \"  \" << top[i].first << \"\\n\";\n}",
+          "lang": "cpp"
+        },
+        "`g++ -std=c++20 -O2 words.cpp -o words`로 컴파일하고 `./words notes.txt`로 실행합니다. `in`이 스코프를 벗어나면 파일이 자동으로 닫히는데, 이것 역시 RAII입니다."
+      ]
+    },
+    {
+      "h": "초보자가 자주 하는 실수",
+      "body": [
+        {
+          "note": "C++는 C의 정의되지 않은 동작을 그대로 물려받았습니다. `[]`로 `std::vector` 끝을 넘어 읽기, 댕글링 참조 사용, 초기화되지 않은 변수 읽기는 처음에는 동작하는 것처럼 보이다가 나중에 실패할 수 있습니다. 배우는 동안에는 `.at(i)`를 쓰고 `-fsanitize=address,undefined -g`로 컴파일하세요."
+        },
+        {
+          "ul": [
+            "헤더 파일에 `using namespace std;`를 쓰는 경우. 그 헤더를 포함하는 모든 파일이 오염됩니다.",
+            "`const&`로 충분한데 `std::vector` 같은 큰 객체를 값으로 넘기는 경우.",
+            "`int i`와 `v.size()`를 비교하는 것처럼 부호 있는 수와 부호 없는 수를 섞어 비교하는 경우. 경고를 켜면 알 수 있습니다.",
+            "`push_back` 이후에도 `std::vector`의 반복자나 참조를 계속 들고 있는 경우. 요소가 이동했을 수 있습니다.",
+            "`std::make_unique`, `std::vector` 등 소유권을 관리하는 타입 대신 날 `new`와 `delete`를 쓰는 경우."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "다음 학습 단계",
+      "body": [
+        "언어와 라이브러리 레퍼런스로 cppreference.com을, 좋은 관행을 위해 C++ Core Guidelines(비야네 스트롤스트룹과 허브 서터가 편집)를 활용하세요. Standard C++ Foundation의 isocpp.org에는 추천 도서가 있는 시작 안내 페이지가 있습니다. 프로젝트 빌드용 CMake를 익힌 뒤 이동 시맨틱스, 템플릿, `constexpr`, `std::thread`를 이용한 동시성으로 넘어가세요."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "C++ 전에 C를 먼저 배워야 하나요?",
+      "a": "필수는 아닙니다. 현대 C++ 교육은 `std::string`, `std::vector`, 클래스로 시작하고 날 포인터와 C 스타일 배열은 나중에 소개합니다. 다만 C를 먼저 배우면 메모리를 이해하는 데 도움이 됩니다."
+    },
+    {
+      "q": "어떤 C++ 표준을 써야 하나요?",
+      "a": "C++17과 C++20은 현재의 GCC, Clang, MSVC에서 잘 지원되며 C++23 지원도 늘고 있습니다. `-std=c++20` 같은 플래그로 명시적으로 선택하세요."
+    },
+    {
+      "q": "포인터와 참조는 무엇이 다른가요?",
+      "a": "참조는 생성할 때 반드시 바인딩해야 하고, 다른 대상으로 바꿀 수 없으며 null일 수 없는 별칭입니다. 포인터는 주소를 저장하고 null일 수 있으며 다른 대상을 가리키도록 바꿀 수 있습니다."
+    },
+    {
+      "q": "C++는 배우기 어려운가요?",
+      "a": "언어의 규모가 크므로 파이썬이나 Go보다 학습 곡선이 길다고 예상하세요. 현대적 기능, 표준 컨테이너, 스마트 포인터를 고수하면 전형적인 함정 대부분을 피할 수 있습니다."
+    }
+  ]
+}

@@ -1,0 +1,218 @@
+{
+  "title": "Hash table: hashing, collision, load factor, dan dict Python — cv.cm",
+  "description": "Cara kerja hash table: fungsi hash, bucket, collision (chaining dan open addressing), resize, lookup O(1) rata-rata, lengkap dengan implementasi Python.",
+  "h1": "Hash table: cara kerja, kode Python, dan kompleksitasnya",
+  "answer": "Hash table menyimpan pasangan key-value dalam array berisi bucket. Fungsi hash mengubah setiap key menjadi angka, dan angka itu modulo ukuran array menentukan bucket-nya, sehingga lookup, insert, dan delete rata-rata butuh waktu O(1). Ketika dua key jatuh ke bucket yang sama (collision), tabel menyimpan list kecil per bucket (chaining) atau mencari slot kosong lain (open addressing). `dict` dan `set` di Python adalah hash table.",
+  "sections": [
+    {
+      "h": "Masalah apa yang diselesaikan hash table",
+      "body": [
+        "Misalkan Anda menyimpan satu juta data pengguna dan perlu mencari satu berdasarkan email. Memindai list itu O(n). Menjaga list tetap terurut memungkinkan binary search O(log n), tetapi insert menjadi lambat. Hash table menemukan data dalam waktu O(1) rata-rata, berapa pun jumlah datanya, dan insert serta delete sama cepatnya.",
+        "Itulah mengapa hash table ada di mana-mana: dictionary dan set di bahasa pemrograman, hash index database, cache, symbol table di compiler, dan deduplikasi."
+      ]
+    },
+    {
+      "h": "Ide dasarnya dengan bahasa sederhana",
+      "body": [
+        "Bayangkan tempat penitipan jaket dengan 100 gantungan bernomor. Alih-alih memeriksa semua gantungan untuk mencari jaket Anda, petugas menghitung nomor gantungan dari nama Anda lalu langsung ke sana. Fungsi yang menghitung nomor itu adalah fungsi hash. Fungsi hash yang baik itu cepat, selalu menghasilkan angka yang sama untuk key yang sama, dan menyebar key yang berbeda secara merata ke seluruh gantungan.",
+        {
+          "ol": [
+            "Hitung `h = hash(key)`.",
+            "Pilih bucket: `index = h % capacity`.",
+            "Cari key hanya di dalam bucket itu."
+          ]
+        },
+        {
+          "note": "Key harus hashable dan tidak boleh berubah selama berada di dalam tabel. Itu sebabnya Python mengizinkan `tuple` dan `str` sebagai key dict tetapi tidak `list`: jika key berubah, hash-nya ikut berubah dan tabel tidak bisa lagi menemukannya."
+        }
+      ]
+    },
+    {
+      "h": "Contoh langkah demi langkah: collision dengan chaining",
+      "body": [
+        "Ambil tabel dengan 4 bucket dan fungsi hash mainan: jumlah posisi huruf (a = 1, b = 2, ...).",
+        {
+          "table": {
+            "head": [
+              "Key",
+              "Hash (jumlah huruf)",
+              "Bucket (hash % 4)",
+              "Isi bucket setelah insert"
+            ],
+            "rows": [
+              [
+                "`cat`",
+                "3 + 1 + 20 = 24",
+                "0",
+                "bucket 0: [cat]"
+              ],
+              [
+                "`dog`",
+                "4 + 15 + 7 = 26",
+                "2",
+                "bucket 2: [dog]"
+              ],
+              [
+                "`act`",
+                "1 + 3 + 20 = 24",
+                "0",
+                "bucket 0: [cat, act]"
+              ],
+              [
+                "`bee`",
+                "2 + 5 + 5 = 12",
+                "0",
+                "bucket 0: [cat, act, bee]"
+              ]
+            ]
+          }
+        },
+        "`act` dan `bee` bertabrakan dengan `cat`. Mencari `bee` sekarang berarti memeriksa tiga entri di bucket 0. Dengan fungsi hash yang buruk (jumlah huruf mengabaikan urutan) atau bucket yang terlalu sedikit, rantai menjadi panjang dan tabel melambat. Fungsi hash yang sebenarnya mencampur semua bit dari key, dan tabel yang sebenarnya membesar saat sudah terlalu penuh."
+      ]
+    },
+    {
+      "h": "Implementasi Python dengan separate chaining",
+      "body": [
+        "Setiap bucket adalah list berisi pasangan `[key, value]`. Ketika jumlah item melebihi 0,75 kali jumlah bucket (load factor), tabel menggandakan kapasitasnya dan memasukkan ulang semuanya.",
+        {
+          "code": "class HashTable:\n    def __init__(self, capacity=8):\n        self.buckets = [[] for _ in range(capacity)]\n        self.size = 0\n    def _bucket(self, key):\n        return self.buckets[hash(key) % len(self.buckets)]\n    def put(self, key, value):\n        bucket = self._bucket(key)\n        for pair in bucket:\n            if pair[0] == key:\n                pair[1] = value        # update existing key\n                return\n        bucket.append([key, value])\n        self.size += 1\n        if self.size > 0.75 * len(self.buckets):\n            self._resize()\n    def get(self, key, default=None):\n        for k, v in self._bucket(key):\n            if k == key:\n                return v\n        return default\n    def delete(self, key):\n        bucket = self._bucket(key)\n        for i, (k, _) in enumerate(bucket):\n            if k == key:\n                bucket.pop(i)\n                self.size -= 1\n                return True\n        return False\n    def _resize(self):\n        old = [pair for bucket in self.buckets for pair in bucket]\n        self.buckets = [[] for _ in range(2 * len(self.buckets))]\n        self.size = 0\n        for k, v in old:\n            self.put(k, v)",
+          "lang": "python"
+        },
+        {
+          "code": "t = HashTable()\nfor i, word in enumerate([\"red\", \"green\", \"blue\", \"cyan\", \"pink\", \"gold\", \"gray\"]):\n    t.put(word, i)\nt.put(\"red\", 100)\nt.delete(\"blue\")\nprint(t.get(\"red\"), t.get(\"blue\"), t.size, len(t.buckets))  # 100 None 6 16",
+          "lang": "python"
+        }
+      ]
+    },
+    {
+      "h": "Perbandingan strategi collision",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Strategi",
+              "Cara kerja",
+              "Kelebihan",
+              "Kekurangan"
+            ],
+            "rows": [
+              [
+                "Separate chaining",
+                "setiap bucket berisi list (atau tree) entri",
+                "sederhana; delete mudah; tahan beban tinggi",
+                "memori tambahan per entri; pointer chasing"
+              ],
+              [
+                "Linear probing",
+                "saat collision, coba slot berikutnya, lalu berikutnya lagi",
+                "ramah cache; padat",
+                "terbentuk cluster; delete butuh tombstone"
+              ],
+              [
+                "Quadratic probing / double hashing",
+                "loncat dengan langkah yang bertambah atau dari hash kedua",
+                "cluster lebih sedikit daripada linear probing",
+                "lebih rumit; tetap butuh tombstone"
+              ]
+            ]
+          }
+        },
+        "`dict` di CPython memakai open addressing dengan urutan probe yang diperturbasi dan, sejak Python 3.7, menjamin iterasi mengikuti urutan penyisipan. `HashMap` di Java memakai chaining dan mengubah rantai yang panjang menjadi balanced tree."
+      ]
+    },
+    {
+      "h": "Kompleksitas waktu dan ruang",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Operasi",
+              "Rata-rata",
+              "Terburuk",
+              "Alasan"
+            ],
+            "rows": [
+              [
+                "Lookup",
+                "O(1)",
+                "O(n)",
+                "kasus terburuk: semua key bertabrakan ke satu bucket"
+              ],
+              [
+                "Insert",
+                "O(1) amortized",
+                "O(n)",
+                "resize sesekali memasukkan ulang setiap item"
+              ],
+              [
+                "Delete",
+                "O(1)",
+                "O(n)",
+                "sama seperti lookup"
+              ],
+              [
+                "Iterasi berurutan (key terurut)",
+                "O(n log n)",
+                "O(n log n)",
+                "hash table tidak menyimpan urutan, Anda harus mengurutkan"
+              ],
+              [
+                "Ruang",
+                "O(n)",
+                "O(n)",
+                "array bucket dijaga lebih besar dari n dengan faktor konstan"
+              ]
+            ]
+          }
+        },
+        "O(1) rata-rata bergantung pada fungsi hash yang baik dan load factor yang terbatas. Python mengacak hash string per proses (hash seeding) agar penyerang tidak mudah mengirim banyak key yang bertabrakan dan memperlambat server menjadi O(n) per request."
+      ]
+    },
+    {
+      "h": "Kesalahan umum",
+      "body": [
+        {
+          "ul": [
+            "Memakai objek mutable sebagai key, atau mendefinisikan `__eq__` pada kelas tanpa `__hash__` yang sesuai. Objek yang sama harus punya hash yang sama.",
+            "Mengharapkan urutan terurut. Hash table memberi lookup cepat, bukan urutan; gunakan sorted list atau balanced tree (binary search tree) ketika Anda butuh range query atau key minimum.",
+            "Mengandalkan nilai `hash()` antar eksekusi: hash string berubah antar proses Python kecuali `PYTHONHASHSEED` ditetapkan. Gunakan `hashlib` untuk hash yang stabil.",
+            "Menganggap hash table sebagai primitif keamanan. Hash table memakai hash cepat non-kriptografis; password butuh fungsi password hashing khusus."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Kapan dipakai dan penggunaan khas di wawancara",
+      "body": [
+        "Gunakan hash table setiap kali Anda perlu menjawab \"sudahkah saya melihat ini?\" atau \"nilai apa yang dimiliki key ini?\" dengan cepat. Gunakan binary search tree atau sorted array ketika Anda juga butuh urutan, rentang, atau key terdekat.",
+        "Soal klasik: two sum (simpan indeks tiap angka, cari `target - x`), menghitung frekuensi (`collections.Counter`), mengelompokkan anagram berdasarkan huruf terurut, mendeteksi duplikat, dan memoization hasil pada dynamic programming.",
+        {
+          "code": "def two_sum(nums, target):\n    seen = {}                      # value -> index\n    for i, x in enumerate(nums):\n        if target - x in seen:\n            return seen[target - x], i\n        seen[x] = i\n    return None\nprint(two_sum([2, 7, 11, 15], 9))  # (0, 1)",
+          "lang": "python"
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Mengapa lookup hash table O(1)?",
+      "a": "Menghitung hash dan indeks bucket butuh waktu konstan, dan dengan fungsi hash yang baik serta load factor yang terbatas, setiap bucket rata-rata hanya berisi beberapa entri, sehingga pencarian di dalam bucket juga berwaktu konstan."
+    },
+    {
+      "q": "Apa itu load factor?",
+      "a": "Jumlah item yang tersimpan dibagi jumlah bucket. Ketika melewati ambang batas (sering antara 0,5 dan 0,75), tabel mengalokasikan array bucket yang lebih besar dan memasukkan ulang semua item."
+    },
+    {
+      "q": "Apakah dict Python itu hash table?",
+      "a": "Ya. `dict` dan `set` adalah hash table yang diimplementasikan di C dengan open addressing. Sejak Python 3.7, `dict` juga mempertahankan urutan penyisipan."
+    },
+    {
+      "q": "Apa bedanya hash table dan hash map?",
+      "a": "Dalam kebanyakan konteks keduanya berarti hal yang sama: struktur key-value berbasis hashing. Beberapa bahasa memakai nama itu untuk kelas tertentu, seperti `HashMap` di Java dan `Hashtable` lama yang tersinkronisasi."
+    },
+    {
+      "q": "Bisakah hash table punya key duplikat?",
+      "a": "Tidak. Memasukkan key yang sudah ada akan menimpa nilainya. Untuk menyimpan beberapa nilai per key, jadikan nilainya sebuah list, atau gunakan `collections.defaultdict(list)`."
+    }
+  ]
+}

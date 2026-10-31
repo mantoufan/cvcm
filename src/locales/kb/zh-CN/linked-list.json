@@ -1,0 +1,193 @@
+{
+  "title": "链表详解：单向链表与双向链表、Python 代码和时间复杂度 — cv.cm",
+  "description": "链表是什么？讲清节点与指针、插入、删除、反转和判环，附 Python 代码，并与数组对比时间复杂度。",
+  "h1": "链表详解：原理、代码与时间复杂度",
+  "answer": "链表是由节点组成的序列，每个节点保存一个值和一个指向下一个节点的引用（指针）。与数组不同，链表的节点在内存中并不相邻，所以在已知位置插入或删除节点只需 O(1) 时间，而查找第 k 个元素需要 O(n)，因为必须从头节点开始逐个遍历。双向链表还会额外保存指向前一个节点的指针。",
+  "sections": [
+    {
+      "h": "链表解决什么问题",
+      "body": [
+        "数组（Python 的 `list`）把元素存放在一整块连续内存中。读取 `a[i]` 是瞬间完成的，但在开头插入元素会让其余所有元素都向右移动一格，代价是 O(n)。链表避免了这种移动：每个元素都放在各自的节点里，节点之间靠引用相连，插入时只需修改几个引用。",
+        "链表是许多其他数据结构的基础：栈、队列、哈希表的桶（拉链法）、LRU 缓存，以及图的邻接表。"
+      ]
+    },
+    {
+      "h": "用大白话理解链表",
+      "body": [
+        "把它想象成寻宝游戏：每条线索都告诉你下一条线索在哪里。你不能直接跳到第 7 条线索，必须先依次找到第 1 到第 6 条。链表本身只记得第一个节点，称为头节点（head）。最后一个节点不指向任何东西（`None`）。",
+        {
+          "table": {
+            "head": [
+              "类型",
+              "每个节点保存",
+              "典型用途"
+            ],
+            "rows": [
+              [
+                "单向链表",
+                "值、`next`",
+                "栈、简单队列、哈希桶"
+              ],
+              [
+                "双向链表",
+                "值、`next`、`prev`",
+                "双端队列、LRU 缓存、文本编辑器缓冲区"
+              ],
+              [
+                "循环链表",
+                "与单向或双向链表类似，但尾节点指回头节点",
+                "轮转调度、环形缓冲区"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "示例演练：插入与删除",
+      "body": [
+        "从链表 `3 -> 7 -> 9` 开始。我们先在 3 后面插入 5，再删除 7。",
+        {
+          "ol": [
+            "创建一个值为 5 的新节点。",
+            "把 `new.next` 指向 3 后面的节点（即节点 7）。",
+            "把 `node3.next` 指向新节点。此时链表变为 `3 -> 5 -> 7 -> 9`。",
+            "要删除 7，先从头节点开始遍历，找到它的前一个节点（5）。",
+            "执行 `node5.next = node5.next.next`，这样就跳过了 7。链表变为 `3 -> 5 -> 9`。Python 的垃圾回收器会释放这个不可达的节点。"
+          ]
+        },
+        {
+          "note": "第 2 步和第 3 步的顺序很重要。如果先执行 `node3.next = new`，就会丢失指向链表其余部分的唯一引用。"
+        }
+      ]
+    },
+    {
+      "h": "用 Python 实现单向链表",
+      "body": [
+        "这个类保存头节点的引用和一个大小计数器，支持在头部和尾部添加、删除第一个匹配的值，以及迭代。",
+        {
+          "code": "class Node:\n    def __init__(self, value, next=None):\n        self.value = value\n        self.next = next\nclass LinkedList:\n    def __init__(self):\n        self.head = None\n        self.size = 0\n    def push_front(self, value):\n        self.head = Node(value, self.head)\n        self.size += 1\n    def push_back(self, value):\n        node = Node(value)\n        if self.head is None:\n            self.head = node\n        else:\n            cur = self.head\n            while cur.next:\n                cur = cur.next\n            cur.next = node\n        self.size += 1\n    def remove(self, value):\n        prev, cur = None, self.head\n        while cur and cur.value != value:\n            prev, cur = cur, cur.next\n        if cur is None:\n            return False          # not found\n        if prev is None:\n            self.head = cur.next  # removing the head\n        else:\n            prev.next = cur.next\n        self.size -= 1\n        return True\n    def __iter__(self):\n        cur = self.head\n        while cur:\n            yield cur.value\n            cur = cur.next",
+          "lang": "python"
+        },
+        {
+          "code": "items = LinkedList()\nfor x in [3, 7, 9]:\n    items.push_back(x)\nitems.push_front(1)\nitems.remove(7)\nprint(list(items), items.size)  # [1, 3, 9] 3",
+          "lang": "python"
+        },
+        "`push_back` 这里要遍历整个链表，所以是 O(n)。额外维护一个 `tail` 引用就能让它变成 O(1)，真实的队列实现正是这么做的。"
+      ]
+    },
+    {
+      "h": "经典操作：反转与判环",
+      "body": [
+        "原地反转链表是最常见的链表面试题。只需遍历一遍，把每个 `next` 指针调转方向。",
+        {
+          "code": "def reverse(head):\n    prev = None\n    cur = head\n    while cur:\n        nxt = cur.next     # remember the rest\n        cur.next = prev    # turn the pointer around\n        prev, cur = cur, nxt\n    return prev            # new head\ndef has_cycle(head):\n    slow = fast = head\n    while fast and fast.next:\n        slow = slow.next\n        fast = fast.next.next\n        if slow is fast:\n            return True\n    return False\nhead = Node(1, Node(2, Node(3)))\nhead = reverse(head)\nprint(head.value, head.next.value, head.next.next.value)  # 3 2 1\nprint(has_cycle(head))  # False",
+          "lang": "python"
+        },
+        "`has_cycle` 用的是 Floyd 的龟兔赛跑算法（tortoise and hare）：慢指针每次走一步，快指针每次走两步。如果存在环，快指针最终会追上慢指针；如果没有环，快指针会走到 `None`。它只需要 O(1) 的额外内存。"
+      ]
+    },
+    {
+      "h": "时间与空间复杂度",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "操作",
+              "单向链表",
+              "Python list（动态数组）",
+              "原因"
+            ],
+            "rows": [
+              [
+                "访问第 k 个元素",
+                "O(n)",
+                "O(1)",
+                "链表必须走过 k 个节点"
+              ],
+              [
+                "在头部插入或删除",
+                "O(1)",
+                "O(n)",
+                "数组要移动每个元素"
+              ],
+              [
+                "在已知节点之后插入或删除",
+                "O(1)",
+                "O(n)",
+                "只需修改引用"
+              ],
+              [
+                "在末尾追加",
+                "有尾指针时 O(1)",
+                "均摊 O(1)",
+                "两者开销都很小"
+              ],
+              [
+                "查找某个值",
+                "O(n)",
+                "O(n)",
+                "都要逐个元素扫描"
+              ],
+              [
+                "额外内存",
+                "每个节点一到两个引用",
+                "一些预留容量",
+                "节点是独立的对象"
+              ]
+            ]
+          }
+        },
+        "在实际运行中，即使某些操作链表的大 O 更优，数组往往还是更快，因为数组元素在内存中紧挨着，能充分利用 CPU 缓存，而链表节点是分散的。"
+      ]
+    },
+    {
+      "h": "变体与常见错误",
+      "body": [
+        {
+          "ul": [
+            "忘记处理空链表：读取 `head.next` 之前，一定要先检查 `head is None`。",
+            "在保存之前就覆盖了 `next`，导致丢失链表的其余部分（见 `reverse` 中的 `nxt`）。",
+            "删除第一个节点时没有更新 `head`，或删除最后一个节点时没有更新 `tail`。",
+            "对很长的链表使用递归：Python 默认递归深度限制约为 1000 层，所以迭代写法更安全。",
+            "使用哑节点（哨兵头节点）可以消除大部分特殊情况：这样每个真实节点都有前驱节点。",
+            "在双向链表中，每次插入和删除都必须更新四个引用；漏掉一个就会悄无声息地破坏链表。"
+          ]
+        }
+      ]
+    },
+    {
+      "h": "何时使用链表，Python 里用什么",
+      "body": [
+        "当你经常在两端或中间已持有引用的位置插入和删除，并且很少需要随机访问时，就适合用链表。例如 LRU 缓存（双向链表加哈希表）、内存分配器的空闲链表、撤销历史，或哈希表的桶。",
+        "日常 Python 代码里很少需要自己写链表。需要队列或双端队列时，用 `collections.deque`，它在两端追加和弹出都是 O(1)。一般的序列用 `list`。自己实现链表适合用于学习、面试，以及需要像 LRU 缓存那样在 O(1) 时间内拼接节点的场景。",
+        {
+          "code": "from collections import deque\nq = deque([1, 2, 3])\nq.appendleft(0)\nq.append(4)\nprint(q.popleft(), q.pop(), list(q))  # 0 4 [1, 2, 3]",
+          "lang": "python"
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Python 的 list 是链表吗？",
+      "a": "不是。Python 的 `list` 是由引用组成的动态数组，连续存放，所以按索引访问是 O(1)，在开头插入是 O(n)。如果要把链表用作队列，`collections.deque` 是最接近链表的内置类型。"
+    },
+    {
+      "q": "为什么链表的访问是 O(n)？",
+      "a": "节点并不存放在可预测的地址上。到达第 k 个节点的唯一办法，是从头节点出发，沿着 `next` 引用走 k 步。"
+    },
+    {
+      "q": "双向链表什么时候比单向链表更好？",
+      "a": "当你需要只凭一个节点的引用就删除它，或者需要向后移动时。有了 `prev` 指针，删除就是 O(1)，无需再去找前一个节点，代价是每个节点多存一个引用。"
+    },
+    {
+      "q": "如何一遍遍历就找到链表的中间节点？",
+      "a": "用两个指针：一个每次走一步，另一个每次走两步。当快指针到达末尾时，慢指针就在中间。"
+    },
+    {
+      "q": "什么是哨兵节点？",
+      "a": "哨兵节点是放在第一个真实节点之前（有时也放在最后一个之后）的哑节点。它不保存数据，但能保证每个真实节点都有相邻节点，使插入和删除代码在处理空链表和头节点时少一些特殊情况。"
+    }
+  ]
+}

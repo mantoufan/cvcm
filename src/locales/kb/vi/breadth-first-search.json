@@ -1,0 +1,219 @@
+{
+  "title": "Thuật toán duyệt theo chiều rộng (BFS): cách hoạt động, code Python và độ phức tạp — cv.cm",
+  "description": "Giải thích thuật toán duyệt theo chiều rộng (BFS): duyệt đồ thị từng tầng bằng hàng đợi, ví dụ từng bước, code Python, đường đi ngắn nhất và độ phức tạp O(V + E).",
+  "h1": "Thuật toán BFS (duyệt theo chiều rộng) là gì: cách hoạt động, code và độ phức tạp",
+  "answer": "BFS (Breadth-first search, duyệt theo chiều rộng) là thuật toán duyệt đồ thị: thăm nút xuất phát trước, rồi đến tất cả nút kề của nó, rồi đến các nút kề của những nút đó, cứ thế từng tầng một. BFS dùng một hàng đợi vào trước ra trước (FIFO) và một tập các nút đã thăm. Trên đồ thị không trọng số, BFS tìm được đường đi ngắn nhất (ít cạnh nhất) từ nút xuất phát đến mọi nút có thể tới được. Thời gian chạy là O(V + E).",
+  "sections": [
+    {
+      "h": "BFS giải bài toán gì",
+      "body": [
+        "Rất nhiều bài toán thực chất là đồ thị: các trang web và liên kết giữa chúng, bạn bè trong mạng xã hội, các ô trên bàn cờ, các trạng thái của một câu đố. BFS trả lời hai câu hỏi thường gặp trên đồ thị như vậy: từ một nút xuất phát có thể đến được những nút nào, và cần tối thiểu bao nhiêu bước để đến từng nút đó?",
+        "Vì BFS lan ra theo các vòng có khoảng cách tăng dần, lần đầu tiên nó chạm tới một nút luôn là theo đường đi có ít cạnh nhất. Vì vậy BFS là thuật toán chuẩn để tìm đường đi ngắn nhất khi mọi cạnh có cùng chi phí."
+      ]
+    },
+    {
+      "h": "Ý tưởng bằng lời đơn giản",
+      "body": [
+        {
+          "ol": [
+            "Đưa nút xuất phát vào hàng đợi và đánh dấu là đã thăm.",
+            "Lấy nút ở đầu hàng đợi ra.",
+            "Với mỗi nút kề chưa được thăm, đánh dấu là đã thăm và thêm vào cuối hàng đợi.",
+            "Lặp lại bước 2 và 3 cho đến khi hàng đợi rỗng."
+          ]
+        },
+        "Hãy đánh dấu nút là đã thăm ngay khi thêm vào hàng đợi, không phải khi lấy ra. Nếu không, cùng một nút có thể bị thêm nhiều lần trước khi được xử lý."
+      ]
+    },
+    {
+      "h": "Ví dụ từng bước",
+      "body": [
+        "Xét đồ thị vô hướng sau: A–B, A–C, B–D, C–D, C–E, D–F. Bắt đầu từ A và thăm các nút kề theo thứ tự bảng chữ cái.",
+        {
+          "table": {
+            "head": [
+              "Bước",
+              "Lấy ra khỏi hàng đợi",
+              "Nút mới phát hiện",
+              "Hàng đợi sau bước"
+            ],
+            "rows": [
+              [
+                "0",
+                "—",
+                "A (khoảng cách 0)",
+                "A"
+              ],
+              [
+                "1",
+                "A",
+                "B, C (khoảng cách 1)",
+                "B, C"
+              ],
+              [
+                "2",
+                "B",
+                "D (khoảng cách 2)",
+                "C, D"
+              ],
+              [
+                "3",
+                "C",
+                "E (khoảng cách 2)",
+                "D, E"
+              ],
+              [
+                "4",
+                "D",
+                "F (khoảng cách 3)",
+                "E, F"
+              ],
+              [
+                "5",
+                "E",
+                "không có",
+                "F"
+              ],
+              [
+                "6",
+                "F",
+                "không có",
+                "rỗng"
+              ]
+            ]
+          }
+        },
+        "Thứ tự thăm là A, B, C, D, E, F. Có thể đến D từ cả B lẫn C, nhưng D chỉ được phát hiện một lần, từ B, vì nó được đánh dấu là đã thăm ngay lúc đó."
+      ]
+    },
+    {
+      "h": "Cài đặt bằng Python",
+      "body": [
+        "Dùng `collections.deque` làm hàng đợi: `popleft()` có độ phức tạp O(1), trong khi `list.pop(0)` là O(n). Đồ thị là một dictionary ánh xạ mỗi nút tới danh sách các nút kề (danh sách kề).",
+        {
+          "code": "from collections import deque\ndef bfs(graph, start):\n    \"\"\"Return the distance (number of edges) from start to each reachable node.\"\"\"\n    dist = {start: 0}\n    queue = deque([start])\n    while queue:\n        node = queue.popleft()\n        for nxt in graph[node]:\n            if nxt not in dist:          # not visited yet\n                dist[nxt] = dist[node] + 1\n                queue.append(nxt)\n    return dist\ngraph = {\n    \"A\": [\"B\", \"C\"], \"B\": [\"A\", \"D\"], \"C\": [\"A\", \"D\", \"E\"],\n    \"D\": [\"B\", \"C\", \"F\"], \"E\": [\"C\"], \"F\": [\"D\"],\n}\nprint(bfs(graph, \"A\"))  # {'A': 0, 'B': 1, 'C': 1, 'D': 2, 'E': 2, 'F': 3}",
+          "lang": "python"
+        },
+        "Ở đây dictionary `dist` làm hai việc: vừa là tập các nút đã thăm, vừa lưu kết quả. Để dựng lại đường đi thực tế, hãy lưu thêm nút cha của mỗi nút rồi lần ngược từ đích.",
+        {
+          "code": "def shortest_path(graph, start, goal):\n    parent = {start: None}\n    queue = deque([start])\n    while queue:\n        node = queue.popleft()\n        if node == goal:\n            path = []\n            while node is not None:\n                path.append(node)\n                node = parent[node]\n            return path[::-1]\n        for nxt in graph[node]:\n            if nxt not in parent:\n                parent[nxt] = node\n                queue.append(nxt)\n    return None  # goal not reachable\nprint(shortest_path(graph, \"A\", \"F\"))  # ['A', 'B', 'D', 'F']",
+          "lang": "python"
+        }
+      ]
+    },
+    {
+      "h": "Độ phức tạp thời gian và không gian",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Đại lượng",
+              "Chi phí",
+              "Lý do"
+            ],
+            "rows": [
+              [
+                "Thời gian",
+                "O(V + E)",
+                "Mỗi nút được đưa vào hàng đợi một lần và mỗi cạnh được kiểm tra một lần (hai lần trong đồ thị vô hướng)."
+              ],
+              [
+                "Không gian",
+                "O(V)",
+                "Tập đã thăm, hàng đợi và bảng nút cha mỗi thứ chứa tối đa V phần tử."
+              ],
+              [
+                "Lưới R × C ô",
+                "O(R × C)",
+                "Mỗi ô là một nút với tối đa 4 cạnh."
+              ]
+            ]
+          }
+        },
+        "V là số đỉnh (nút) và E là số cạnh. Nếu dùng ma trận kề thay cho danh sách kề, thời gian trở thành O(V²) vì tìm các nút kề của một nút tốn O(V)."
+      ]
+    },
+    {
+      "h": "Biến thể và lỗi thường gặp",
+      "body": [
+        {
+          "ul": [
+            "BFS trên lưới: coi mỗi ô là một nút và bốn (hoặc tám) ô lân cận là các cạnh. Hãy kiểm tra biên và tường trước khi thêm ô vào hàng đợi.",
+            "BFS đa nguồn: đưa nhiều nút xuất phát vào hàng đợi với khoảng cách 0. Cách này tìm khoảng cách đến nguồn gần nhất, ví dụ lối thoát gần nhất trong mê cung.",
+            "BFS 0-1: khi trọng số cạnh chỉ là 0 hoặc 1, dùng deque và đẩy các nút kề có trọng số 0 lên đầu. Cách này tìm đường đi ngắn nhất trong O(V + E).",
+            "BFS hai chiều: tìm kiếm đồng thời từ điểm xuất phát và điểm đích, dừng khi hai biên gặp nhau. Cách này thường duyệt ít nút hơn nhiều.",
+            "Xử lý từng tầng: ghi lại `len(queue)` ở đầu mỗi vòng rồi lấy ra đúng chừng đó nút để xử lý một tầng."
+          ]
+        },
+        {
+          "note": "Các lỗi thường gặp: đánh dấu đã thăm khi lấy nút ra khỏi hàng đợi (gây trùng lặp và đếm sai), dùng `list.pop(0)` (khiến BFS có độ phức tạp bậc hai), và dùng BFS cho đồ thị có trọng số. Khi các cạnh có trọng số khác nhau, đường đi có ít cạnh nhất chưa chắc rẻ nhất; hãy dùng thuật toán Dijkstra."
+        }
+      ]
+    },
+    {
+      "h": "Khi nào dùng BFS và ứng dụng thực tế",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Tình huống",
+              "Lựa chọn tốt nhất"
+            ],
+            "rows": [
+              [
+                "Đường đi ngắn nhất, mọi cạnh cùng chi phí",
+                "BFS"
+              ],
+              [
+                "Đường đi ngắn nhất, trọng số không âm",
+                "Thuật toán Dijkstra"
+              ],
+              [
+                "Đường đi ngắn nhất khi có ước lượng khoảng cách tốt",
+                "Tìm kiếm A*"
+              ],
+              [
+                "Phát hiện chu trình, sắp xếp tô-pô, thành phần liên thông",
+                "DFS (BFS cũng dùng được cho thành phần liên thông)"
+              ],
+              [
+                "Đồ thị rất sâu, ít bộ nhớ",
+                "DFS hoặc tìm kiếm sâu dần (iterative deepening)"
+              ]
+            ]
+          }
+        },
+        {
+          "ul": [
+            "Bài phỏng vấn: đường đi ngắn nhất trong mê cung hoặc lưới, word ladder, rotting oranges (BFS đa nguồn), duyệt cây nhị phân theo từng tầng, số nước đi tối thiểu của quân mã.",
+            "Mạng máy tính: tìm mọi thiết bị trong phạm vi k bước nhảy, phát quảng bá trong mạng ngang hàng, gợi ý “những người bạn có thể biết” ở khoảng cách 2 trong đồ thị mạng xã hội.",
+            "Trình thu thập dữ liệu web (web crawler) thăm các trang theo thứ tự khoảng cách liên kết từ một trang gốc.",
+            "Bộ thu gom rác (ví dụ bộ thu gom sao chép của Cheney) và các chương trình giải câu đố cần số nước đi ít nhất."
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "BFS dùng cấu trúc dữ liệu nào?",
+      "a": "BFS dùng hàng đợi FIFO để quyết định nút nào được xử lý tiếp theo và một tập (hoặc dictionary) để ghi nhớ các nút đã thăm. Trong Python, hãy dùng `collections.deque` cho hàng đợi."
+    },
+    {
+      "q": "BFS có luôn tìm ra đường đi ngắn nhất không?",
+      "a": "Có, trên đồ thị không trọng số, hoặc khi mọi cạnh có cùng trọng số, BFS tìm được đường đi có ít cạnh nhất. Trên đồ thị có trọng số thì không; hãy dùng thuật toán Dijkstra hoặc Bellman-Ford."
+    },
+    {
+      "q": "BFS khác DFS như thế nào?",
+      "a": "BFS duyệt từng tầng bằng hàng đợi nên tìm được đường đi ngắn nhất trong đồ thị không trọng số. DFS đi sâu hết mức có thể trước bằng ngăn xếp hoặc đệ quy, phù hợp để phát hiện chu trình, sắp xếp tô-pô và tìm kiếm vét cạn."
+    },
+    {
+      "q": "Vì sao BFS của tôi chạy chậm trong Python?",
+      "a": "Nguyên nhân thường gặp là `list.pop(0)`, vốn dịch chuyển toàn bộ danh sách mỗi lần gọi, và việc kiểm tra nút đã thăm bằng list thay vì set. Hãy dùng `deque.popleft()` và một set hoặc dictionary."
+    },
+    {
+      "q": "BFS có dùng được trên cây không?",
+      "a": "Được. Trên cây, BFS chính là phép duyệt theo từng tầng (level-order). Cây không có chu trình nên bạn có thể bỏ tập đã thăm nếu chỉ đi từ nút cha xuống nút con."
+    }
+  ]
+}

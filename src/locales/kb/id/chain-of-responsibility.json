@@ -1,0 +1,144 @@
+{
+  "title": "Pola Chain of Responsibility: handler, middleware, dan contoh TypeScript — cv.cm",
+  "description": "Chain of Responsibility meneruskan permintaan lewat rantai handler sampai ada yang menanganinya. Pelajari struktur, contoh TypeScript, dan pemakaian middleware.",
+  "h1": "Penjelasan pola Chain of Responsibility beserta contohnya",
+  "answer": "Chain of Responsibility adalah pola desain behavioral yang meneruskan permintaan lewat rantai objek handler. Setiap handler memproses permintaan itu atau meneruskannya ke handler berikutnya dalam rantai. Pengirim tidak tahu handler mana yang akan menanganinya, sehingga Anda bisa menambah, menghapus, atau mengubah urutan handler tanpa mengubah pengirim. Middleware web dan event bubbling di DOM adalah contoh yang terkenal.",
+  "sections": [
+    {
+      "h": "Tujuan dan masalah yang diselesaikan",
+      "body": [
+        "Tujuan: menghindari keterikatan antara pengirim permintaan dan penerimanya dengan memberi lebih dari satu objek kesempatan untuk menangani permintaan. Rantai objek penerima dibentuk, lalu permintaan diteruskan sepanjang rantai sampai ada objek yang menanganinya. Pola ini salah satu pola behavioral dalam buku Gang of Four (GoF).",
+        "Bayangkan sistem dukungan pelanggan sebuah toko online. Permintaan refund di bawah 50 bisa disetujui oleh agen support, sampai 500 oleh team lead, dan yang lebih besar perlu manajer. Versi pertama biasanya memasukkan semua ini ke satu fungsi dengan rantai `if`/`else` yang panjang. Setiap aturan baru membuat fungsi itu makin panjang, dan urutan pemeriksaannya tertanam mati di kode.",
+        "Dengan Chain of Responsibility, setiap tingkat menjadi handler sendiri dengan satu aturan. Handler-handler itu dihubungkan, dan permintaan masuk lewat yang pertama. Menambah tingkat persetujuan baru berarti menulis satu class kecil dan menyisipkannya ke dalam rantai."
+      ]
+    },
+    {
+      "h": "Struktur dan peserta",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Peran",
+              "Tanggung jawab"
+            ],
+            "rows": [
+              [
+                "Handler",
+                "Mendeklarasikan method untuk menangani permintaan dan menyimpan referensi ke handler berikutnya"
+              ],
+              [
+                "Concrete handler",
+                "Menangani permintaan yang menjadi tanggung jawabnya; jika bukan, meneruskan permintaan ke handler berikutnya"
+              ],
+              [
+                "Client",
+                "Membangun rantai (atau menerimanya) dan mengirim permintaan ke handler pertama"
+              ]
+            ]
+          }
+        },
+        "Ada dua variasi yang umum. Pada bentuk klasik, handler pertama yang bisa memproses permintaan menghentikan rantai. Pada bentuk pipeline (dipakai kebanyakan middleware), setiap handler boleh mengerjakan sesuatu lalu memutuskan apakah memanggil handler berikutnya."
+      ]
+    },
+    {
+      "h": "Implementasi TypeScript",
+      "body": [
+        "Sebuah abstract base class menyimpan handler berikutnya dan menyediakan perilaku penerusan default. Setiap concrete handler meng-override `handle` dan memanggil `super.handle` saat tidak bisa memutuskan.",
+        {
+          "code": "type Refund = { amount: number };\nabstract class Approver {\n  private next?: Approver;\n  setNext(next: Approver): Approver {\n    this.next = next;\n    return next; // allows a.setNext(b).setNext(c)\n  }\n  handle(req: Refund): string {\n    return this.next ? this.next.handle(req) : \"rejected: no one can approve \" + req.amount;\n  }\n}\nclass Agent extends Approver {\n  handle(req: Refund): string {\n    return req.amount < 50 ? \"agent approved \" + req.amount : super.handle(req);\n  }\n}\nclass TeamLead extends Approver {\n  handle(req: Refund): string {\n    return req.amount <= 500 ? \"team lead approved \" + req.amount : super.handle(req);\n  }\n}\nclass Manager extends Approver {\n  handle(req: Refund): string {\n    return req.amount <= 5000 ? \"manager approved \" + req.amount : super.handle(req);\n  }\n}\nconst chain = new Agent();\nchain.setNext(new TeamLead()).setNext(new Manager());\nfor (const amount of [20, 300, 2000, 9000]) console.log(chain.handle({ amount }));\n// agent approved 20\n// team lead approved 300\n// manager approved 2000\n// rejected: no one can approve 9000",
+          "lang": "typescript"
+        },
+        {
+          "note": "Selalu tentukan apa yang terjadi bila tidak ada handler yang menerima permintaan. Di sini pemanggilan base terakhir mengembalikan penolakan. Tanpa default seperti itu, permintaan bisa jatuh begitu saja di ujung rantai tanpa terdeteksi."
+        }
+      ]
+    },
+    {
+      "h": "Bentuk middleware dengan fungsi biasa",
+      "body": [
+        "Di TypeScript Anda tidak perlu class. Daftar fungsi, yang masing-masing menerima callback `next`, membentuk sebuah rantai. Begitulah cara kerja middleware Express dan Koa.",
+        {
+          "code": "type Req = { user?: string; path: string };\ntype Middleware = (req: Req, next: () => string) => string;\nconst auth: Middleware = (req, next) => (req.user ? next() : \"401 Unauthorized\");\nconst log: Middleware = (req, next) => {\n  console.log(\"request\", req.path);\n  return next();\n};\nconst route = (req: Req) => \"200 OK \" + req.path;\nfunction run(chain: Middleware[], req: Req): string {\n  const step = (i: number): string =>\n    i < chain.length ? chain[i](req, () => step(i + 1)) : route(req);\n  return step(0);\n}\nconsole.log(run([log, auth], { path: \"/admin\" }));\nconsole.log(run([log, auth], { user: \"ana\", path: \"/admin\" }));\n// request /admin\n// 401 Unauthorized\n// request /admin\n// 200 OK /admin",
+          "lang": "typescript"
+        }
+      ]
+    },
+    {
+      "h": "Kapan dipakai dan kapan tidak",
+      "body": [
+        {
+          "ul": [
+            "Pakai bila beberapa objek mungkin menangani suatu permintaan dan yang tepat ditentukan saat runtime.",
+            "Pakai bila kumpulan atau urutan handler perlu bisa dikonfigurasi, misalnya langkah validasi, tingkat persetujuan, atau middleware HTTP.",
+            "Pakai bila Anda ingin setiap aturan berada di unit kecilnya sendiri yang bisa diuji terpisah.",
+            "Jangan dipakai untuk dua atau tiga pemeriksaan tetap yang tidak pernah berubah; pernyataan `if` sederhana lebih jelas.",
+            "Perlu diingat bahwa rantai yang panjang lebih sulit di-debug, karena dari lokasi pemanggilan tidak jelas handler mana yang akhirnya bertindak. Logging di dalam handler membantu.",
+            "Rantai sensitif terhadap urutan. Menaruh autentikasi setelah route handler, misalnya, menggagalkan tujuannya."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Penggunaan di dunia nyata",
+      "body": [
+        {
+          "ul": [
+            "Middleware Express dan Koa: setiap fungsi menerima request dan fungsi `next`, lalu memutuskan apakah akan melanjutkan.",
+            "Propagasi event DOM: sebuah event naik (bubble) dari elemen target melewati leluhurnya, dan listener mana pun bisa menghentikannya dengan `event.stopPropagation()`.",
+            "Servlet filter di Java membentuk filter chain di mana setiap filter memanggil `chain.doFilter` untuk meneruskan request.",
+            "Framework logging meneruskan log record dari sebuah logger ke logger induknya beserta handler-nya."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Pola terkait",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Pola",
+              "Perbedaannya dengan Chain of Responsibility"
+            ],
+            "rows": [
+              [
+                "Decorator",
+                "Decorator juga membentuk rantai pembungkus, tetapi setiap decorator selalu berjalan dan meneruskan; sebuah handler boleh menghentikan rantai."
+              ],
+              [
+                "Command",
+                "Permintaan dalam rantai sering berupa objek command; Command berkaitan dengan mengemas permintaan, sedangkan rantai berkaitan dengan mencari siapa yang menanganinya."
+              ],
+              [
+                "Composite",
+                "Induk dalam pohon Composite adalah handler berikutnya yang alami, seperti event GUI yang naik melalui pohon komponen."
+              ],
+              [
+                "Mediator",
+                "Mediator mengarahkan pesan lewat satu objek pusat yang mengenal para penerima; rantai meneruskan permintaan dari satu handler ke handler berikutnya."
+              ]
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Apakah setiap handler dalam rantai harus memproses permintaan?",
+      "a": "Tidak. Pada bentuk klasik, handler pertama yang bisa memproses permintaan menghentikan rantai. Pada bentuk middleware, setiap handler boleh mengerjakan sesuatu lalu memanggil yang berikutnya, sehingga beberapa handler bisa bertindak pada satu permintaan."
+    },
+    {
+      "q": "Apakah middleware Express contoh Chain of Responsibility?",
+      "a": "Ya. Setiap fungsi middleware menerima request dan callback `next`, lalu mengakhiri response atau memanggil `next` untuk menyerahkan kendali ke middleware berikutnya."
+    },
+    {
+      "q": "Apa yang terjadi bila tidak ada handler yang menangani permintaan?",
+      "a": "Itu tergantung desain Anda. Praktik yang baik adalah menambahkan default di ujung rantai, seperti mengembalikan error, melempar exception, atau mencatat log, supaya permintaan tidak hilang begitu saja."
+    },
+    {
+      "q": "Apa bedanya dengan daftar pernyataan if/else?",
+      "a": "Logikanya sama, tetapi setiap kondisi menjadi objek atau fungsi terpisah. Dengan begitu rantai bisa dikonfigurasi saat runtime dan Anda dapat menambah atau mengubah urutan langkah tanpa mengedit satu fungsi besar."
+    }
+  ]
+}

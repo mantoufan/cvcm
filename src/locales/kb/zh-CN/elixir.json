@@ -1,0 +1,200 @@
+{
+  "title": "Elixir 入门教程：模式匹配、管道、Enum 与进程 — cv.cm",
+  "description": "一步步学 Elixir：运行脚本、不可变数据与类型、模式匹配、case 与 cond、模块、管道运算符、Enum、进程与错误处理。",
+  "h1": "Elixir 入门教程",
+  "answer": "Elixir 是一门运行在 Erlang 虚拟机（BEAM）上的动态函数式语言，专为可扩展、容错、高并发的系统设计。它的核心思想是不可变数据、模式匹配、管道运算符，以及通过消息通信的轻量级进程。本文涵盖环境搭建、类型、模式匹配、控制流、模块与函数、集合、进程和错误处理。",
+  "sections": [
+    {
+      "h": "Elixir 是什么，用来做什么",
+      "body": [
+        "Elixir 是一门动态函数式语言，由 José Valim 创建，2012 年首次发布。它运行在 Erlang 的虚拟机 BEAM 上，因此继承了 Erlang 的轻量级进程、容错能力和对分布式系统的支持，同时增加了友好的语法、宏和现代化的工具链。",
+        "Elixir 用于基于 Phoenix 框架的 Web 应用和 API、聊天和实时仪表盘这类实时功能（Phoenix LiveView）、消息系统、数据管道、用 Nerves 开发的嵌入式设备，以及用 Nx 做机器学习。需要处理大量并发连接、且部分组件出故障时仍要持续运行的服务，常常选择它。"
+      ]
+    },
+    {
+      "h": "安装 Elixir 并运行 Hello, world",
+      "body": [
+        "从 elixir-lang.org 安装 Elixir（它同时会安装或依赖 Erlang/OTP）。脚本使用 `.exs` 扩展名；编译的项目文件使用 `.ex`。`iex` 会启动交互式 shell。",
+        {
+          "code": "# hello.exs\nIO.puts(\"Hello, world!\")",
+          "lang": "elixir"
+        },
+        {
+          "code": "elixir hello.exs\n# Hello, world!\niex                      # interactive shell; type h(Enum.map) for help\nmix new my_app           # create a new project with Mix, the build tool",
+          "lang": "shell"
+        },
+        "注释以 `#` 开头。很多地方函数参数的括号可以省略，所以 `IO.puts \"hi\"` 也可以运行。"
+      ]
+    },
+    {
+      "h": "基本类型与不可变性",
+      "body": [
+        "Elixir 中的所有数据都是不可变的。用 `=` 重新绑定一个名字，只是让它指向新值，不会改动旧值。字符串是用双引号书写的 UTF-8 二进制，原子（atom）是以冒号开头的具名常量。",
+        {
+          "code": "name = \"Elixir\"\nyear = 2012\nIO.puts(\"#{name} since #{year}\")    # Elixir since 2012\nIO.puts(10 / 4)                     # 2.5 (always a float)\nIO.puts(div(10, 4))                 # 2\nIO.puts(rem(10, 4))                 # 2\nIO.puts(\"ab\" <> \"cd\")               # abcd (string concatenation)\nIO.puts(String.length(\"héllo\"))     # 5 (counts characters, not bytes)\nIO.inspect(:ok)                     # :ok\nIO.inspect(is_atom(true))           # true (booleans are atoms)",
+          "lang": "elixir"
+        },
+        {
+          "table": {
+            "head": [
+              "类型",
+              "示例",
+              "说明"
+            ],
+            "rows": [
+              [
+                "整数",
+                "`42`, `1_000_000`",
+                "任意精度"
+              ],
+              [
+                "浮点数",
+                "`3.14`",
+                "64 位双精度"
+              ],
+              [
+                "原子",
+                "`:ok`, `:error`",
+                "常量；`true`、`false` 和 `nil` 都是原子"
+              ],
+              [
+                "字符串",
+                "`\"hello\"`",
+                "UTF-8 二进制；支持 `#{}` 插值"
+              ],
+              [
+                "列表",
+                "`[1, 2, 3]`",
+                "链表"
+              ],
+              [
+                "元组",
+                "`{:ok, 1}`",
+                "大小固定，连续存储"
+              ],
+              [
+                "映射",
+                "`%{\"a\" => 1}`",
+                "键值存储"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "模式匹配",
+      "body": [
+        "在 Elixir 中，`=` 是匹配运算符。左边是一个模式；如果右边符合它，模式中的变量就会被绑定。模式匹配无处不在：赋值、`case`、函数头和错误处理中都会用到。",
+        {
+          "code": "{:ok, value} = {:ok, 42}\nIO.puts(value)                         # 42\n\n[first | rest] = [1, 2, 3]\nIO.inspect({first, rest})              # {1, [2, 3]}\n\n%{name: n} = %{name: \"Ann\", age: 31}\nIO.puts(n)                             # Ann\n\nresult = {:error, :not_found}\nmessage =\n  case result do\n    {:ok, v} -> \"got #{v}\"\n    {:error, reason} -> \"failed: #{reason}\"\n  end\nIO.puts(message)                       # failed: not_found\n\nx = 1\n^x = 1                                 # pin operator: match the current value",
+          "lang": "elixir"
+        },
+        "如果模式不匹配，Elixir 会抛出 `MatchError`。固定运算符 `^` 的意思是“使用这个变量现有的值”，而不是重新绑定。"
+      ]
+    },
+    {
+      "h": "控制流",
+      "body": [
+        "Elixir 有 `case`、`cond` 和 `if`/`unless`，它们都会返回值。没有那种修改计数器的 `for`/`while` 循环；你需要使用递归、`Enum` 模块或 `for` 推导式。",
+        {
+          "code": "temp = 22\nfeel =\n  cond do\n    temp > 30 -> \"hot\"\n    temp >= 15 -> \"mild\"\n    true -> \"cold\"\n  end\nIO.puts(feel)                                   # mild\n\nIO.puts(if(rem(temp, 2) == 0, do: \"even\", else: \"odd\"))  # even\n\nsquares = for n <- 1..5, rem(n, 2) == 1, do: n * n\nIO.inspect(squares)                             # [1, 9, 25]",
+          "lang": "elixir"
+        },
+        "只有 `false` 和 `nil` 为假；其他一切，包括 `0` 和 `\"\"`，都为真。"
+      ]
+    },
+    {
+      "h": "函数、模块与管道运算符",
+      "body": [
+        "具名函数定义在用 `defmodule` 声明的模块中。一个函数可以有多个子句，由模式匹配和守卫（`when`）来选择。匿名函数写作 `fn ... end`，调用时要加一个点。管道运算符 `|>` 把一个表达式的结果作为下一个调用的第一个参数。",
+        {
+          "code": "defmodule Math do\n  def factorial(0), do: 1\n  def factorial(n) when n > 0, do: n * factorial(n - 1)\n\n  def sign(n) when n < 0, do: :negative\n  def sign(0), do: :zero\n  def sign(_n), do: :positive\nend\n\nIO.puts(Math.factorial(5))          # 120\nIO.inspect(Math.sign(-3))           # :negative\n\ndouble = fn x -> x * 2 end\nIO.puts(double.(21))                # 42 (note the dot)\n\n\"  Elixir is fun  \"\n|> String.trim()\n|> String.upcase()\n|> String.split()\n|> IO.inspect()                     # [\"ELIXIR\", \"IS\", \"FUN\"]",
+          "lang": "elixir"
+        },
+        "函数由名称和元数（参数个数）标识，文档中写作 `String.split/1` 或 `Math.factorial/1`。"
+      ]
+    },
+    {
+      "h": "集合：列表、映射、关键字列表与 Enum",
+      "body": [
+        "`Enum` 模块适用于任何可枚举的集合，提供 `map`、`filter`、`reduce`、`sort_by`、`group_by` 等大量函数。映射是主要的键值结构；关键字列表，例如 `[size: 10, color: :red]`，常用来传递选项。",
+        {
+          "code": "nums = [5, 3, 8, 1]\nIO.inspect(Enum.sort(nums))                      # [1, 3, 5, 8]\nIO.inspect(Enum.map(nums, &(&1 * 10)))           # [50, 30, 80, 10]\nIO.inspect(Enum.filter(nums, fn n -> n > 2 end)) # [5, 3, 8]\nIO.puts(Enum.reduce(nums, 0, &+/2))              # 17\n\nuser = %{name: \"Ann\", age: 31}\nolder = %{user | age: 32}                        # update an existing key\nIO.puts(user.age)                                # 31 (unchanged)\nIO.puts(older.age)                               # 32\nwith_city = Map.put(user, :city, \"Oslo\")\nIO.puts(with_city.city)                          # Oslo\nIO.inspect(Map.get(user, :email, \"none\"))        # \"none\"",
+          "lang": "elixir"
+        },
+        "捕获运算符 `&` 可以创建简短的匿名函数：`&(&1 * 10)` 等价于 `fn x -> x * 10 end`，`&+/2` 指的是带两个参数的 `+` 函数。"
+      ]
+    },
+    {
+      "h": "进程与并发",
+      "body": [
+        "Elixir 的标志性特性是 BEAM 进程：一种非常轻量、相互隔离、拥有自己内存的执行单元。进程之间只通过发送消息通信，一台机器可以运行几十万个进程。监督者会重启崩溃的进程，这是 Elixir“任其崩溃”容错思路的基础。",
+        {
+          "code": "parent = self()\n\nspawn(fn ->\n  send(parent, {:result, 6 * 7})\nend)\n\nreceive do\n  {:result, value} -> IO.puts(\"Got #{value}\")   # Got 42\nafter\n  1_000 -> IO.puts(\"timeout\")\nend\n\ntasks = for n <- 1..3, do: Task.async(fn -> n * n end)\nIO.inspect(Task.await_many(tasks))               # [1, 4, 9]",
+          "lang": "elixir"
+        },
+        "在实际应用中，你很少直接调用 `spawn`，而是使用 OTP 提供的抽象，例如 `Task`、`GenServer`、`Agent` 和 `Supervisor`。"
+      ]
+    },
+    {
+      "h": "错误处理",
+      "body": [
+        "地道的 Elixir 对预期内的失败返回带标签的元组，如 `{:ok, value}` 或 `{:error, reason}`，并用 `case` 或 `with` 处理。名字以 `!` 结尾的函数，如 `File.read!/1`，则会抛出异常。异常可以用 `try`/`rescue` 捕获，但并不常用。",
+        {
+          "code": "case File.read(\"missing.txt\") do\n  {:ok, text} -> IO.puts(text)\n  {:error, reason} -> IO.puts(\"Cannot read: #{reason}\")   # Cannot read: enoent\nend\n\nwith {a, \"\"} <- Integer.parse(\"40\"),\n     {b, \"\"} <- Integer.parse(\"2\") do\n  IO.puts(a + b)                                         # 42\nelse\n  _ -> IO.puts(\"not a whole number\")\nend\n\ntry do\n  String.to_integer(\"abc\")\nrescue\n  e in ArgumentError -> IO.puts(\"Error: #{Exception.message(e)}\")\nend",
+          "lang": "elixir"
+        },
+        "`with` 把多个匹配串在一起，遇到第一个不匹配的就停下，并返回那个值。这样可以避免层层嵌套的 `case` 表达式。"
+      ]
+    },
+    {
+      "h": "一个完整的小程序：词频统计",
+      "body": [
+        "这个脚本统计文本中的单词，并打印出现次数最多的三个。这是典型的由 `String` 和 `Enum` 函数构成的 Elixir 管道。",
+        {
+          "code": "defmodule WordFreq do\n  def top(text, n) do\n    text\n    |> String.downcase()\n    |> String.split(~r/[^a-z']+/, trim: true)\n    |> Enum.frequencies()\n    |> Enum.sort_by(fn {word, count} -> {-count, word} end)\n    |> Enum.take(n)\n  end\nend\n\n\"The cat and the dog. The dog sat, and the cat ran.\"\n|> WordFreq.top(3)\n|> Enum.each(fn {word, count} -> IO.puts(\"#{word}: #{count}\") end)\n# the: 4\n# and: 2\n# cat: 2",
+          "lang": "elixir"
+        },
+        {
+          "note": "初学者常见错误：以为 `=` 像其他语言一样是赋值（它其实是匹配）；试图在循环里修改列表或映射；调用匿名函数时忘了加点（`double.(2)`）；混淆字符串和字符列表，因为 `\"abc\"` 与 `~c\"abc\"` 是不同的类型；以及用 rescue 捕获异常，而不是对 `{:ok, _}` 和 `{:error, _}` 做匹配。"
+        }
+      ]
+    },
+    {
+      "h": "接下来读什么",
+      "body": [
+        {
+          "ul": [
+            "hexdocs.pm 上的官方入门指南（Getting Started）和 elixir-lang.org 网站。",
+            "HexDocs，Elixir 和所有 Hex 包的文档都发布在这里。",
+            "Phoenix 框架的 Web 开发指南。",
+            "社区免费课程 Elixir School，以及用于练习的 Exercism Elixir 路径。"
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Elixir 和 Erlang 有什么区别？",
+      "a": "两者运行在同一个 BEAM 虚拟机上，可以互相调用对方的代码。Elixir 增加了受 Ruby 启发的语法、宏、管道运算符，以及 Mix 和 Hex 等工具，而 Erlang 是更早的语言，OTP 就是用它构建的。"
+    },
+    {
+      "q": "Elixir 适合做 Web 开发吗？",
+      "a": "适合。Phoenix 框架速度快，能处理大量并发连接，LiveView 则让你用服务端渲染的 HTML 和很少的 JavaScript 构建交互式页面。"
+    },
+    {
+      "q": "Elixir 是静态类型的吗？",
+      "a": "Elixir 是动态类型的。较新的版本正在为编译器加入渐进式的集合论类型系统，许多团队也会配合类型规范使用 Dialyzer 来查找类型错误。"
+    },
+    {
+      "q": "Elixir 里的 |> 是什么意思？",
+      "a": "`|>` 是管道运算符。`x |> f(y)` 等同于 `f(x, y)`，所以一连串转换可以从上到下阅读。"
+    },
+    {
+      "q": ".ex 和 .exs 文件是什么？",
+      "a": "`.ex` 文件会作为项目的一部分被编译，而 `.exs` 文件是运行时解释执行的脚本，常用于测试和配置。"
+    }
+  ]
+}

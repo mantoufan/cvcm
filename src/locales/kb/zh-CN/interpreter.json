@@ -1,0 +1,147 @@
+{
+  "title": "解释器模式：文法、表达式树与 TypeScript 示例 — cv.cm",
+  "description": "解释器模式（Interpreter）把每条文法规则建模为一个类，并将句子当作一棵树来求值。用 TypeScript 实现一个迷你表达式语言。",
+  "h1": "解释器模式详解与示例",
+  "answer": "解释器是一种行为型设计模式，它为一门小型语言的文法定义一种表示，并提供一个解释器来对该语言中的句子求值。每条文法规则对应一个类，一个句子就是由这些对象组成的树（抽象语法树），求值就是在根节点上调用 `interpret`，由它递归地解释各个子节点。它适合过滤器、规则和公式这类小而简单的语言。",
+  "sections": [
+    {
+      "h": "意图与它要解决的问题",
+      "body": [
+        "意图：给定一门语言，定义其文法的一种表示，并定义一个解释器，用该表示来解释语言中的句子。解释器是《设计模式》（Gang of Four，GoF）一书中的行为型模式之一。",
+        "假设定价系统的用户想自己编写折扣规则，例如 `price * 0.9` 或 `price - 5`，这些规则要存进数据库，之后再求值。把每条规则写死在代码里是不可能的，因为用户随时会创建新规则。你需要一门小语言，以及对它求值的办法。",
+        "解释器模式为这一求值步骤提供了一个简单的设计：数字、变量和运算符各自成为一个类。像 `price * 0.9` 这样的规则会变成一棵树：一个乘法节点，下面挂着一个变量节点和一个数字节点。要得到结果，只需用保存当前价格的上下文去调用乘法节点的 `interpret`。"
+      ]
+    },
+    {
+      "h": "结构与参与者",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "角色",
+              "职责"
+            ],
+            "rows": [
+              [
+                "抽象表达式",
+                "声明所有节点共有的 `interpret(context)` 操作"
+              ],
+              [
+                "终结符表达式",
+                "树的叶子，例如数字字面量或变量名"
+              ],
+              [
+                "非终结符表达式",
+                "由其他表达式组成的文法规则，例如加法或乘法；它解释自己的子节点并合并结果"
+              ],
+              [
+                "上下文",
+                "解释所需的全局信息，例如变量的值"
+              ],
+              [
+                "客户端",
+                "构建语法树（手工构建或借助解析器），并调用 `interpret`"
+              ]
+            ]
+          }
+        },
+        "下面示例所用的文法，用简单记法写出：",
+        {
+          "code": "expression ::= number | variable | expression op expression\nop         ::= \"+\" | \"-\" | \"*\" | \"/\"",
+          "lang": "text"
+        }
+      ]
+    },
+    {
+      "h": "TypeScript 实现",
+      "body": [
+        "每条文法规则都是实现 `Expression` 的一个类。`parse` 函数把以空格分隔的后缀表达式（运算符在操作数之后）转换成树，这样解析器可以写得很短。",
+        {
+          "code": "type Context = Record<string, number>;\ninterface Expression {\n  interpret(ctx: Context): number;\n}\nclass Num implements Expression {\n  constructor(private value: number) {}\n  interpret() { return this.value; }\n}\nclass Var implements Expression {\n  constructor(private name: string) {}\n  interpret(ctx: Context) {\n    if (!Object.hasOwn(ctx, this.name)) throw new Error(\"Unknown variable \" + this.name);\n    return ctx[this.name];\n  }\n}\nconst ops = { \"+\": (a: number, b: number) => a + b, \"-\": (a: number, b: number) => a - b,\n  \"*\": (a: number, b: number) => a * b, \"/\": (a: number, b: number) => a / b };\nclass BinaryOp implements Expression {\n  constructor(private op: keyof typeof ops, private left: Expression, private right: Expression) {}\n  interpret(ctx: Context) { return ops[this.op](this.left.interpret(ctx), this.right.interpret(ctx)); }\n}\nfunction parse(source: string): Expression {\n  const stack: Expression[] = [];\n  for (const token of source.trim().split(/\\s+/)) {\n    if (Object.hasOwn(ops, token)) {\n      const right = stack.pop()!, left = stack.pop()!;\n      stack.push(new BinaryOp(token as keyof typeof ops, left, right));\n    } else if (!isNaN(Number(token))) stack.push(new Num(Number(token)));\n    else stack.push(new Var(token));\n  }\n  return stack[0];\n}\nconst rule = parse(\"price 0.9 * 5 -\"); // (price * 0.9) - 5\nconsole.log(rule.interpret({ price: 100 })); // 85\nconsole.log(rule.interpret({ price: 40 })); // 31",
+          "lang": "typescript"
+        },
+        "`price 0.9 * 5 -` 对应的树是一个减法节点：左子节点是乘法节点（含 `price` 和 `0.9`），右子节点是数字 `5`。解析完成后，同一棵树可以配合不同的上下文反复求值。",
+        {
+          "note": "该模式描述的是如何表示并计算一个句子，而不是如何解析文本。真实的输入需要带错误提示的正规解析器；上面这个最简后缀解析器不会校验格式错误的输入。"
+        }
+      ]
+    },
+    {
+      "h": "何时使用，何时不用",
+      "body": [
+        {
+          "ul": [
+            "当语言很小、文法很简单时使用：搜索过滤器、功能开关规则、权限表达式、单位换算或电子表格式的公式。",
+            "当同一个表达式要用不同数据反复求值时使用，这样一次构建树就划算了。",
+            "不要用于大型语言。每条规则一个类会变得难以维护；请改用解析器生成器或现成的嵌入式语言。",
+            "性能至关重要时不要使用。遍历对象树比编译成字节码或机器码要慢。",
+            "绝不要对用户输入使用 `eval` 来解决问题。小型解释器只支持你定义的操作，安全得多。"
+          ]
+        },
+        "如果要在同一棵树上添加新操作，例如美化输出或类型检查，请把解释器与访问者结合使用，而不是给每个节点类增加更多方法。"
+      ]
+    },
+    {
+      "h": "实际应用",
+      "body": [
+        {
+          "ul": [
+            "正则表达式引擎会把模式编译成由节点对象组成的树或图，匹配时遍历这些节点，这就是把解释器思想用在正则文法上。",
+            "语言工具把源代码表示为抽象语法树：Python 的 `ast` 模块，以及 Babel、ESLint 等 JavaScript 工具使用的 ESTree 规范，都为每条文法规则描述了节点类型。",
+            "SQL 数据库会把 `WHERE` 子句解析成表达式树，并对每一行求值。",
+            "模板引擎和规则引擎会对模板或业务规则中的小型表达式求值。"
+          ]
+        }
+      ]
+    },
+    {
+      "h": "相关模式",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "模式",
+              "与解释器的关系"
+            ],
+            "rows": [
+              [
+                "组合",
+                "语法树就是一个组合结构：非终结符表达式包含其他表达式。解释器为每个节点赋予了含义。"
+              ],
+              [
+                "访问者",
+                "访问者把操作从节点类中移出，因此多种操作（求值、打印、检查）可以共用一棵树。"
+              ],
+              [
+                "迭代器",
+                "迭代器可以遍历语法树的节点，而不暴露它们的存储方式。"
+              ],
+              [
+                "享元",
+                "经常重复出现的终结符，例如常见常量，可以作为享元共享。"
+              ]
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "终结符表达式和非终结符表达式有什么区别？",
+      "a": "终结符表达式是不能再分解的叶子，例如数字或变量。非终结符表达式表示由其他表达式构成的规则，例如加法，它会解释自己的子节点来得出结果。"
+    },
+    {
+      "q": "解释器模式包含解析器吗？",
+      "a": "不包含。该模式假定你已经有了语法树。你可以手工构建树、编写一个小解析器，或使用解析器生成器。"
+    },
+    {
+      "q": "什么时候不该使用解释器模式？",
+      "a": "文法复杂或对性能敏感的代码应避免使用。大型语言需要太多的类，而且遍历树求值比编译方式慢。"
+    },
+    {
+      "q": "解释器与组合模式有什么关系？",
+      "a": "解释器中的语法树与组合模式形状相同：叶子和包含其他节点的节点，共用同一个接口。解释器为这种结构赋予了具体含义，即对一门语言求值。"
+    }
+  ]
+}

@@ -1,0 +1,218 @@
+{
+  "title": "Binary search tree explained: insert, search, delete, Python code and complexity — cv.cm",
+  "description": "Learn how a binary search tree (BST) works: the ordering rule, search, insert and the three delete cases in Python, plus O(log n) vs O(n) complexity.",
+  "h1": "Binary search tree explained: how it works, code and complexity",
+  "answer": "A binary search tree (BST) is a binary tree where every node's left subtree holds only smaller keys and its right subtree holds only larger keys. Because of this rule, search, insert and delete follow a single path from the root and take O(h) time, where h is the tree height: O(log n) when the tree is balanced, but O(n) when it degenerates into a chain. An in-order traversal visits the keys in sorted order.",
+  "sections": [
+    {
+      "h": "What problem a binary search tree solves",
+      "body": [
+        "A sorted array gives fast binary search, but inserting a new element shifts everything after it. A hash table gives fast lookup and insert, but keeps no order, so it cannot answer \"what is the smallest key larger than 42?\" or \"list all keys between 10 and 20\". A binary search tree keeps keys sorted and still allows fast inserts and deletes. It is the basis of ordered maps and sets such as Java's `TreeMap` and C++'s `std::map`, which use self-balancing variants."
+      ]
+    },
+    {
+      "h": "The rule in plain words",
+      "body": [
+        "Each node has a key, an optional left child and an optional right child. For every node: all keys in its left subtree are smaller, and all keys in its right subtree are larger. To find a key, start at the root and compare: go left if the key is smaller, go right if it is larger, stop if it is equal or if you fall off the tree.",
+        {
+          "note": "The rule applies to whole subtrees, not just direct children. A tree where each child is correct relative to its parent can still be invalid if, for example, a key deep in the left subtree is larger than the root."
+        }
+      ]
+    },
+    {
+      "h": "Worked example: building and searching a tree",
+      "body": [
+        "Insert 8, 3, 10, 1, 6, 14, 4 in this order. Each new key walks down from the root and becomes a leaf where it falls off.",
+        {
+          "table": {
+            "head": [
+              "Insert",
+              "Path taken",
+              "Placed as"
+            ],
+            "rows": [
+              [
+                "8",
+                "empty tree",
+                "root"
+              ],
+              [
+                "3",
+                "8: smaller, go left",
+                "left child of 8"
+              ],
+              [
+                "10",
+                "8: larger, go right",
+                "right child of 8"
+              ],
+              [
+                "1",
+                "8 left, 3 left",
+                "left child of 3"
+              ],
+              [
+                "6",
+                "8 left, 3 right",
+                "right child of 3"
+              ],
+              [
+                "14",
+                "8 right, 10 right",
+                "right child of 10"
+              ],
+              [
+                "4",
+                "8 left, 3 right, 6 left",
+                "left child of 6"
+              ]
+            ]
+          }
+        },
+        "Searching for 4 compares with 8, 3, 6, then 4: four comparisons in a tree of seven keys. Searching for 7 compares with 8, 3, 6 and then finds no right child of 6, so 7 is not present."
+      ]
+    },
+    {
+      "h": "Python implementation",
+      "body": [
+        "Insert and search are short loops. Delete has three cases: the node has no children (remove it), one child (replace it with the child), or two children (copy in its in-order successor, the smallest key of the right subtree, then delete that successor).",
+        {
+          "code": "class Node:\n    def __init__(self, key):\n        self.key, self.left, self.right = key, None, None\ndef insert(root, key):\n    if root is None:\n        return Node(key)\n    if key < root.key:\n        root.left = insert(root.left, key)\n    elif key > root.key:\n        root.right = insert(root.right, key)\n    return root                      # duplicates are ignored\ndef contains(root, key):\n    while root and root.key != key:\n        root = root.left if key < root.key else root.right\n    return root is not None\ndef delete(root, key):\n    if root is None:\n        return None\n    if key < root.key:\n        root.left = delete(root.left, key)\n    elif key > root.key:\n        root.right = delete(root.right, key)\n    else:\n        if root.left is None:\n            return root.right\n        if root.right is None:\n            return root.left\n        succ = root.right\n        while succ.left:\n            succ = succ.left\n        root.key = succ.key\n        root.right = delete(root.right, succ.key)\n    return root\ndef inorder(root):\n    return inorder(root.left) + [root.key] + inorder(root.right) if root else []",
+          "lang": "python"
+        },
+        {
+          "code": "root = None\nfor k in [8, 3, 10, 1, 6, 14, 4]:\n    root = insert(root, k)\nprint(inorder(root))                 # [1, 3, 4, 6, 8, 10, 14]\nprint(contains(root, 4), contains(root, 7))  # True False\nroot = delete(root, 3)               # node with two children\nprint(inorder(root), root.left.key)  # [1, 4, 6, 8, 10, 14] 4",
+          "lang": "python"
+        }
+      ]
+    },
+    {
+      "h": "Time and space complexity",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Operation",
+              "Balanced tree",
+              "Worst case (chain)",
+              "Reason"
+            ],
+            "rows": [
+              [
+                "Search",
+                "O(log n)",
+                "O(n)",
+                "one comparison per level"
+              ],
+              [
+                "Insert",
+                "O(log n)",
+                "O(n)",
+                "walk to a leaf position"
+              ],
+              [
+                "Delete",
+                "O(log n)",
+                "O(n)",
+                "find the node, maybe find its successor"
+              ],
+              [
+                "Min / max",
+                "O(log n)",
+                "O(n)",
+                "follow left (or right) links to the end"
+              ],
+              [
+                "In-order traversal",
+                "O(n)",
+                "O(n)",
+                "every node once"
+              ],
+              [
+                "Space",
+                "O(n)",
+                "O(n)",
+                "one node per key; recursion uses O(h) stack"
+              ]
+            ]
+          }
+        },
+        "The worst case is real, not theoretical: inserting already sorted keys (1, 2, 3, ...) into a plain BST gives every node only a right child, and the tree becomes a linked list. Random insertion orders give an expected height of O(log n)."
+      ]
+    },
+    {
+      "h": "Balanced variants and common mistakes",
+      "body": [
+        "Self-balancing trees keep the height at O(log n) by restructuring with rotations after inserts and deletes.",
+        {
+          "table": {
+            "head": [
+              "Variant",
+              "Balancing idea",
+              "Where it is used"
+            ],
+            "rows": [
+              [
+                "AVL tree",
+                "heights of the two subtrees differ by at most 1",
+                "lookup-heavy workloads"
+              ],
+              [
+                "Red-black tree",
+                "color rules limit the longest path to twice the shortest",
+                "Java `TreeMap`, typical C++ `std::map` implementations, the Linux kernel"
+              ],
+              [
+                "B-tree / B+ tree",
+                "many keys per node, all leaves at the same depth",
+                "databases and file systems"
+              ],
+              [
+                "Treap, splay tree",
+                "random priorities, or moving accessed keys to the root",
+                "simpler balanced trees, caches"
+              ]
+            ]
+          }
+        },
+        {
+          "ul": [
+            "Validating a BST by checking only parent and child. Pass down a valid (low, high) range instead.",
+            "Forgetting to return the (possibly new) root from recursive insert and delete, so changes are lost.",
+            "Deep recursion on a degenerate tree: Python's default recursion limit is about 1000, so a chain of 5000 nodes crashes recursive code. Use loops or keep the tree balanced.",
+            "Undefined duplicate policy: decide whether duplicates are ignored, counted, or always go to one side."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "When to use a BST and typical interview questions",
+      "body": [
+        "Use a balanced BST when you need ordered data with frequent inserts and deletes: range queries, floor and ceiling lookups, rank statistics, or iterating in sorted order. Use a hash table when you only need exact-key lookup. In Python, the standard library has no tree map; common choices are a sorted list with the `bisect` module for small or mostly static data, or the third-party `sortedcontainers` package.",
+        "Typical interview questions: validate a BST, find the k-th smallest element (in-order traversal), lowest common ancestor, convert a sorted array to a balanced BST (pick the middle as the root), and find the in-order successor of a node."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "What is the difference between a binary tree and a binary search tree?",
+      "a": "A binary tree only limits each node to two children. A binary search tree adds the ordering rule: smaller keys on the left, larger keys on the right, for every subtree."
+    },
+    {
+      "q": "Why is BST search O(log n)?",
+      "a": "Each comparison moves one level down and discards one subtree. A balanced tree with n nodes has about log2(n) levels, so search needs about that many comparisons."
+    },
+    {
+      "q": "What happens if I insert sorted data into a BST?",
+      "a": "Without balancing, each new key becomes the right child of the previous one, the height becomes n, and every operation becomes O(n). Self-balancing trees such as AVL and red-black trees prevent this."
+    },
+    {
+      "q": "How do you get the keys of a BST in sorted order?",
+      "a": "Do an in-order traversal: visit the left subtree, then the node, then the right subtree. It takes O(n) time."
+    },
+    {
+      "q": "Does Python have a built-in binary search tree?",
+      "a": "No. Python has `dict` and `set` (hash tables) and the `bisect` module for sorted lists. Ordered tree containers come from third-party packages."
+    }
+  ]
+}

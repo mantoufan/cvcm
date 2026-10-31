@@ -1,0 +1,152 @@
+{
+  "title": "Pola Strategy: algoritma yang dapat ditukar dengan contoh TypeScript — cv.cm",
+  "description": "Pola Strategy menaruh setiap algoritma di objeknya sendiri sehingga bisa ditukar saat runtime. Lihat class vs fungsi di TypeScript dan kapan memakainya.",
+  "h1": "Penjelasan pola Strategy beserta contohnya",
+  "answer": "Strategy adalah pola desain behavioral yang mendefinisikan sekumpulan algoritma, menaruh masing-masing di objek terpisah dengan interface yang sama, dan membuatnya dapat ditukar. Kode yang memakai algoritma, yang disebut context, menyimpan referensi ke sebuah strategy dan memanggilnya tanpa tahu yang mana. Di TypeScript, strategy sering kali hanya berupa fungsi, seperti comparator yang diberikan ke `array.sort()`.",
+  "sections": [
+    {
+      "h": "Tujuan dan masalah yang diselesaikan",
+      "body": [
+        "Tujuan: mendefinisikan sekumpulan algoritma, membungkus masing-masing, dan membuatnya dapat ditukar. Strategy memungkinkan algoritma berubah secara independen dari klien yang memakainya. Ini salah satu pola behavioral dalam buku Gang of Four (GoF), yang juga menyebutnya Policy.",
+        "Misalkan checkout menghitung ongkos kirim. Pengiriman standar berupa biaya tetap, ekspres lebih mahal per kilogram, dan ambil di toko gratis. Versi pertama menaruh ketiga rumus dalam satu method dengan rantai `if`/`else` pada jenis pengiriman. Setiap opsi baru, seperti kurir mitra, berarti mengedit method itu lagi, dan menguji satu rumus berarti melewati semua yang lain.",
+        "Dengan Strategy, setiap rumus menjadi objek atau fungsi sendiri dengan signature yang sama. Checkout menerima strategy yang dipilih dan memanggilnya. Menambah kurir berarti menambah satu strategy baru; checkout tidak berubah."
+      ]
+    },
+    {
+      "h": "Struktur dan peserta",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Peran",
+              "Tanggung jawab"
+            ],
+            "rows": [
+              [
+                "Strategy",
+                "Interface bersama untuk semua versi algoritma"
+              ],
+              [
+                "Concrete strategy",
+                "Satu implementasi algoritma"
+              ],
+              [
+                "Context",
+                "Menyimpan sebuah strategy, memanggilnya saat butuh algoritma, dan dapat membiarkan klien menggantinya"
+              ],
+              [
+                "Client",
+                "Memilih concrete strategy dan memberikannya ke context"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "Implementasi TypeScript",
+      "body": [
+        "Karena fungsi adalah nilai di TypeScript, interface strategy yang paling sederhana adalah tipe fungsi. Context-nya adalah class `Checkout`.",
+        {
+          "code": "type Parcel = { weightKg: number; subtotal: number };\ntype ShippingStrategy = (parcel: Parcel) => number;\n\nconst standard: ShippingStrategy = (p) => (p.subtotal >= 50 ? 0 : 4.99);\nconst express: ShippingStrategy = (p) => 9.99 + 1.5 * p.weightKg;\nconst pickup: ShippingStrategy = () => 0;\n\nclass Checkout {\n  constructor(private shipping: ShippingStrategy) {}\n\n  setShipping(strategy: ShippingStrategy) {\n    this.shipping = strategy;\n  }\n\n  total(parcel: Parcel): number {\n    return Math.round((parcel.subtotal + this.shipping(parcel)) * 100) / 100;\n  }\n}\n\nconst parcel = { weightKg: 2, subtotal: 30 };\nconst checkout = new Checkout(standard);\nconsole.log(checkout.total(parcel)); // 34.99\ncheckout.setShipping(express);\nconsole.log(checkout.total(parcel)); // 42.99\ncheckout.setShipping(pickup);\nconsole.log(checkout.total(parcel)); // 30",
+          "lang": "typescript"
+        },
+        "Jika sebuah strategy butuh konfigurasi atau beberapa method, gunakan interface dan class. Versi ini juga memberi setiap strategy nama yang dapat ditampilkan UI:",
+        {
+          "code": "interface Shipping {\n  readonly label: string;\n  cost(weightKg: number): number;\n}\n\nclass Courier implements Shipping {\n  readonly label: string;\n  constructor(private ratePerKg: number, company: string) {\n    this.label = company + \" courier\";\n  }\n  cost(weightKg: number) { return this.ratePerKg * weightKg; }\n}\n\nconst options: Shipping[] = [new Courier(2, \"North\"), new Courier(3.5, \"Fast\")];\nfor (const o of options) console.log(o.label, o.cost(4));\n// North courier 8\n// Fast courier 14",
+          "lang": "typescript"
+        },
+        {
+          "note": "Klien harus tahu strategy apa saja yang ada untuk memilih salah satu. Simpan pilihan itu di satu tempat, seperti map dari nama pengaturan ke strategy, alih-alih mengulang rantai `if`/`else` yang hendak dihilangkan pola ini."
+        }
+      ]
+    },
+    {
+      "h": "Sebelum dan sesudah",
+      "body": [
+        "Sebelumnya, pilihan algoritma tertanam di dalam method:",
+        {
+          "code": "function shippingCost(type: string, p: Parcel): number {\n  if (type === \"standard\") return p.subtotal >= 50 ? 0 : 4.99;\n  else if (type === \"express\") return 9.99 + 1.5 * p.weightKg;\n  else if (type === \"pickup\") return 0;\n  throw new Error(\"Unknown shipping type \" + type);\n}\n// After: a lookup table of strategies replaces the chain\nconst strategies: Record<string, ShippingStrategy> = { standard, express, pickup };",
+          "lang": "typescript"
+        },
+        "Potongan ini memakai ulang tipe dan fungsi dari contoh pertama. Tabelnya menjadikan kumpulan opsi sebagai data, bukan kode, sehingga bisa dibangun dari konfigurasi atau diperluas oleh plugin."
+      ]
+    },
+    {
+      "h": "Kapan dipakai dan kapan tidak",
+      "body": [
+        {
+          "ul": [
+            "Pakai bila ada beberapa cara mengerjakan tugas yang sama dan pilihannya bergantung pada konfigurasi, input pengguna, atau data.",
+            "Pakai untuk menghilangkan blok kondisional besar yang memilih di antara algoritma.",
+            "Pakai untuk menguji setiap algoritma secara terpisah dan agar kode lain dapat menambah algoritma baru tanpa mengedit context.",
+            "Jangan dipakai bila hanya ada satu algoritma dan tidak ada kebutuhan nyata untuk mengubahnya. Interface tambahan hanya menambah lapisan tanpa manfaat.",
+            "Jangan membuat class bila parameter fungsi sudah cukup. Di TypeScript, mengoper fungsi adalah bentuk Strategy yang ringan."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Penggunaan di dunia nyata",
+      "body": [
+        {
+          "ul": [
+            "`Array.prototype.sort(compareFn)` menerima strategy perbandingan sebagai fungsi, sehingga sort yang sama dapat mengurutkan angka, tanggal, atau nama.",
+            "Interface `Comparator` di Java adalah strategy untuk `Collections.sort` dan `List.sort`.",
+            "Passport.js, middleware autentikasi untuk Node.js, menyebut setiap metode login (password lokal, penyedia OAuth) sebagai strategy dan memungkinkan aplikasi memasangnya.",
+            "Library kompresi dan hashing memungkinkan pemanggil memilih algoritma lewat interface bersama."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Pola terkait",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Pola",
+              "Perbedaannya dengan Strategy"
+            ],
+            "rows": [
+              [
+                "State",
+                "Struktur sama, tetapi state berganti sendiri saat objek berubah; strategy biasanya dipilih klien dan tetap sampai diganti."
+              ],
+              [
+                "Template Method",
+                "Template Method memvariasikan bagian algoritma lewat pewarisan dan menetapkan langkah keseluruhan; Strategy mengganti seluruh algoritma lewat komposisi."
+              ],
+              [
+                "Command",
+                "Command adalah permintaan untuk dijalankan nanti; strategy adalah cara mengerjakan tugas yang dipanggil context saat dibutuhkan."
+              ],
+              [
+                "Decorator",
+                "Decorator mengubah perilaku objek dengan membungkusnya dari luar; strategy mengubah perilaku dari dalam dengan mengganti satu bagian."
+              ]
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Apa perbedaan antara Strategy dan State?",
+      "a": "Strukturnya hampir identik. Strategy dipilih klien untuk menentukan cara tugas dikerjakan, sedangkan objek state mengubah state context saat ini sendiri sebagai akibat tindakannya."
+    },
+    {
+      "q": "Apakah mengoper callback itu pola Strategy?",
+      "a": "Ya, di bahasa dengan fungsi kelas satu, callback yang mengimplementasikan bagian variabel dari algoritma, seperti comparator, adalah pola Strategy dalam bentuk paling sederhana."
+    },
+    {
+      "q": "Apa perbedaan antara Strategy dan Template Method?",
+      "a": "Template Method memakai pewarisan: base class menetapkan langkah dan subclass mengisi sebagian darinya. Strategy memakai komposisi: context menyimpan objek atau fungsi yang bisa diganti saat runtime."
+    },
+    {
+      "q": "Apakah Strategy mengikuti prinsip open/closed?",
+      "a": "Ya. Anda dapat menambah strategy baru tanpa mengubah context, sehingga context terbuka untuk perluasan tetapi tertutup untuk modifikasi."
+    }
+  ]
+}

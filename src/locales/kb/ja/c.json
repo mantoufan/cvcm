@@ -1,0 +1,192 @@
+{
+  "title": "Cチュートリアル：型・ポインタ・配列・文字列・メモリ管理 — cv.cm",
+  "description": "C言語入門を1ページで：gccでHello worldをコンパイル、型、制御構文、関数、配列、文字列、ポインタ、mallocとfree、エラー処理、完成サンプルまで解説します。",
+  "h1": "C言語入門チュートリアル（初心者向け）",
+  "answer": "Cは小さく高速なコンパイル言語で、ポインタを通じてメモリに直接アクセスできます。`.c` ファイルに `main` を書き、`gcc hello.c -o hello` でコンパイルし、`./hello` で実行します。固定サイズの型、関数、配列とヌル終端文字列、ポインタとアドレス、`malloc` と `free` による手動のメモリ管理、戻り値によるエラー処理が中心的な内容です。",
+  "sections": [
+    {
+      "h": "Cとは何か、何に使われるか",
+      "body": [
+        "Cは1970年代初めにBell研究所のDennis RitchieがUNIXオペレーティングシステムを書くために作りました。ISOによって標準化されており、主な版はC99、C11、C17、C23です。Cは実行時のオーバーヘッドがごく小さい機械語にコンパイルされるため、ほぼあらゆる環境で動きます。OSカーネル（Linux）、組み込みファームウェア、データベース（SQLite）、言語処理系（CPythonはCで書かれています）、高性能ライブラリなどで使われています。Cを学ぶと、メモリやコンピュータが実際にどう動くかも理解できます。"
+      ]
+    },
+    {
+      "h": "コンパイラのインストールと Hello, world の実行",
+      "body": [
+        "Linuxでは `gcc` をインストールします（例：`sudo apt install build-essential`）。macOSでは `xcode-select --install` を実行して `clang` を入手します（`gcc` としても使えます）。WindowsではMSYS2、WSL、Visual Studioを使います。",
+        {
+          "code": "#include <stdio.h>\nint main(void) {\n    printf(\"Hello, world\\n\");\n    return 0;\n}",
+          "lang": "c"
+        },
+        {
+          "code": "gcc -Wall -Wextra -std=c17 hello.c -o hello\n./hello\n# Hello, world",
+          "lang": "shell"
+        },
+        "`#include` はヘッダファイルから宣言を取り込みます。ここでは標準入出力ライブラリです。`main` から0を返すと成功を意味します。コンパイルは常に警告を有効にして行いましょう（`-Wall -Wextra`）。"
+      ]
+    },
+    {
+      "h": "変数と基本の型",
+      "body": [
+        "すべての変数には、サイズと意味を決める型があります。標準が定めている場合を除き、サイズは環境に依存します。`<stdint.h>` は `int32_t` のようにサイズが厳密に決まった型を提供します。",
+        {
+          "table": {
+            "head": [
+              "型",
+              "一般的なサイズ",
+              "例",
+              "printf の書式"
+            ],
+            "rows": [
+              [
+                "`char`",
+                "1バイト",
+                "`char c = 'A';`",
+                "`%c`"
+              ],
+              [
+                "`int`",
+                "4バイト",
+                "`int n = 42;`",
+                "`%d`"
+              ],
+              [
+                "`long long`",
+                "8バイト",
+                "`long long big = 1LL << 40;`",
+                "`%lld`"
+              ],
+              [
+                "`double`",
+                "8バイト",
+                "`double x = 3.14;`",
+                "`%f`"
+              ],
+              [
+                "`bool`",
+                "1バイト",
+                "`bool ok = true;` (C99 `<stdbool.h>`)",
+                "`%d`"
+              ],
+              [
+                "`size_t`",
+                "64ビット環境では8バイト",
+                "`size_t len = sizeof(arr);`",
+                "`%zu`"
+              ]
+            ]
+          }
+        },
+        {
+          "code": "#include <stdio.h>\nint main(void) {\n    int count = 7;\n    double avg = count / 2;     /* 3.0: integer division first */\n    double avg2 = count / 2.0;  /* 3.5 */\n    printf(\"%d %.1f %.1f\\n\", count, avg, avg2);  /* 7 3.0 3.5 */\n    printf(\"%zu\\n\", sizeof(int));                /* 4 on most systems */\n    return 0;\n}",
+          "lang": "c"
+        }
+      ]
+    },
+    {
+      "h": "制御構文と関数",
+      "body": [
+        "関数は使う前に宣言しておく必要があります。引数は値渡しで、関数はコピーを受け取ります。",
+        {
+          "code": "#include <stdio.h>\nint square(int x) {\n    return x * x;\n}\nint main(void) {\n    int score = 72;\n    if (score >= 90) {\n        printf(\"A\\n\");\n    } else if (score >= 70) {\n        printf(\"B\\n\");              /* B */\n    } else {\n        printf(\"C\\n\");\n    }\n    for (int i = 0; i < 3; i++) {\n        printf(\"%d \", square(i));   /* 0 1 4 */\n    }\n    printf(\"\\n\");\n    int n = 10;\n    while (n > 1) n /= 2;\n    printf(\"%d\\n\", n);              /* 1 */\n    return 0;\n}",
+          "lang": "c"
+        },
+        "Cには `do`/`while`、`case` ラベルを使う `switch`（`break` を忘れずに）、そして主にエラー時の後始末に使われる `goto` もあります。"
+      ]
+    },
+    {
+      "h": "配列と文字列",
+      "body": [
+        "配列は、決まった数の要素を隣り合わせに格納したものです。Cは範囲チェックをせず、長さも保持しないので、長さは別に渡します。文字列は、ゼロバイト `'\\0'` で終わる `char` の配列です。",
+        {
+          "code": "#include <stdio.h>\n#include <string.h>\nint sum(const int *values, size_t n) {\n    int total = 0;\n    for (size_t i = 0; i < n; i++) total += values[i];\n    return total;\n}\nint main(void) {\n    int nums[] = {3, 1, 2, 5};\n    size_t n = sizeof nums / sizeof nums[0];\n    printf(\"%zu items, sum %d\\n\", n, sum(nums, n));  /* 4 items, sum 11 */\n    char name[16] = \"Ada\";\n    strncat(name, \" Lovelace\", sizeof name - strlen(name) - 1);\n    printf(\"%s (%zu chars)\\n\", name, strlen(name));  /* Ada Lovelace (12 chars) */\n    return 0;\n}",
+          "lang": "c"
+        },
+        "配列を関数に渡すと、先頭要素へのポインタに変換されます。そのため `sum` は `const int *` と長さを受け取ります。"
+      ]
+    },
+    {
+      "h": "特徴的な機能：ポインタ",
+      "body": [
+        "ポインタは、別の値のメモリアドレスを保持します。`&x` は `x` のアドレスを返し、`*p` はアドレス `p` にある値を読み書きします。ポインタにより、関数が呼び出し側の変数を変更したり、大きなデータをコピーせずに共有したり、リンクされたデータ構造を作ったりできます。",
+        {
+          "code": "#include <stdio.h>\nvoid swap(int *a, int *b) {\n    int tmp = *a;\n    *a = *b;\n    *b = tmp;\n}\nint main(void) {\n    int x = 1, y = 2;\n    int *p = &x;\n    *p = 10;                      /* changes x */\n    swap(&x, &y);\n    printf(\"x=%d y=%d\\n\", x, y);  /* x=2 y=10 */\n    int arr[3] = {7, 8, 9};\n    int *q = arr;\n    printf(\"%d %d\\n\", *(q + 1), q[2]);  /* 8 9: pointer arithmetic */\n    return 0;\n}",
+          "lang": "c"
+        }
+      ]
+    },
+    {
+      "h": "mallocとfreeによる動的メモリ",
+      "body": [
+        "ローカル変数はスタックに置かれ、関数が戻ると消えます。サイズが実行時にしか分からないデータや、関数より長く存在させたいデータは、`malloc` でヒープに確保し、`free` で解放します。`malloc` が成功するたびに、`free` をちょうど1回呼ぶ必要があります。",
+        {
+          "code": "#include <stdio.h>\n#include <stdlib.h>\nint main(void) {\n    size_t n = 5;\n    int *squares = malloc(n * sizeof *squares);\n    if (squares == NULL) {\n        fprintf(stderr, \"out of memory\\n\");\n        return 1;\n    }\n    for (size_t i = 0; i < n; i++) squares[i] = (int)(i * i);\n    printf(\"%d\\n\", squares[4]);  /* 16 */\n    free(squares);\n    squares = NULL;              /* avoid using a dangling pointer */\n    return 0;\n}",
+          "lang": "c"
+        },
+        "関連する関数に、`calloc`（確保してゼロクリア）と `realloc`（サイズ変更）があります。関連する値は `struct` でまとめます。例：`struct point { int x; int y; };`"
+      ]
+    },
+    {
+      "h": "エラー処理",
+      "body": [
+        "Cには例外がありません。関数は戻り値（多くは `-1`、`NULL`、ステータスコード）でエラーを報告し、多くのライブラリ関数はグローバル変数 `errno` も設定します。失敗しうる関数の戻り値は、必ずすべて確認してください。",
+        {
+          "code": "#include <errno.h>\n#include <stdio.h>\n#include <string.h>\nint main(void) {\n    FILE *f = fopen(\"missing.txt\", \"r\");\n    if (f == NULL) {\n        fprintf(stderr, \"cannot open: %s\\n\", strerror(errno));\n        return 1;   /* cannot open: No such file or directory */\n    }\n    fclose(f);\n    return 0;\n}",
+          "lang": "c"
+        }
+      ]
+    },
+    {
+      "h": "小さな完成プログラム：行数と単語数のカウンター",
+      "body": [
+        "このプログラムは小さな `wc` のように動作します。コマンドラインで指定したファイルを読み、行数、単語数、バイト数を表示します。",
+        {
+          "code": "#include <ctype.h>\n#include <stdio.h>\nint main(int argc, char *argv[]) {\n    if (argc != 2) {\n        fprintf(stderr, \"usage: %s FILE\\n\", argv[0]);\n        return 1;\n    }\n    FILE *f = fopen(argv[1], \"r\");\n    if (f == NULL) {\n        perror(argv[1]);\n        return 1;\n    }\n    long lines = 0, words = 0, bytes = 0;\n    int c, in_word = 0;\n    while ((c = fgetc(f)) != EOF) {\n        bytes++;\n        if (c == '\\n') lines++;\n        if (isspace(c)) {\n            in_word = 0;\n        } else if (!in_word) {\n            in_word = 1;\n            words++;\n        }\n    }\n    fclose(f);\n    printf(\"%ld lines, %ld words, %ld bytes\\n\", lines, words, bytes);\n    return 0;\n}",
+          "lang": "c"
+        },
+        "`gcc -Wall -Wextra wc.c -o wc` でコンパイルし、`./wc notes.txt` で実行します。`c` は `char` ではなく `int` であることに注意してください。そのため特別な値 `EOF` を保持できます。"
+      ]
+    },
+    {
+      "h": "初心者がよくやる間違い",
+      "body": [
+        {
+          "note": "配列の末尾を越えて書き込んだり、`free` の後でメモリを使ったりすると未定義動作になります。一見動いているように見えたり、後でクラッシュしたり、セキュリティ上の穴になったりします。学習中は `-fsanitize=address -g` を付けてコンパイルし、こうしたバグを検出しましょう。"
+        },
+        {
+          "ul": [
+            "条件式で `==` の代わりに `=` を使う。警告（`-Wall`）でほとんどの場合を検出できます。",
+            "文字列バッファのサイズを決めるときに、終端の `'\\0'` の分を忘れる。",
+            "`gets` や、長さを制限しない `scanf(\"%s\", buf)` を使う。代わりに `fgets(buf, sizeof buf, stdin)` を使います。",
+            "ローカル変数へのポインタを返す。関数から戻った後、その変数はもう存在しません。",
+            "`printf` の書式と型を一致させない。たとえば `size_t` に `%d` を使う。"
+          ]
+        }
+      ]
+    },
+    {
+      "h": "次のステップ",
+      "body": [
+        "言語と標準ライブラリのリファレンスとして、cppreference.comのCのセクションを使い、規格そのものはISOのワーキンググループ（WG14）のページで読みましょう。構造体、連結リスト、ヘッダファイル、`make` でビルドする複数ファイルのプログラムで練習します。デバッガ（`gdb` または `lldb`）とValgrindやAddressSanitizerがあれば、何時間も節約できます。その後は、同じ考え方を土台にしてより安全にしたC++やRustにも進んでみましょう。"
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Cは今でも学ぶ価値がありますか？",
+      "a": "はい。今でもOS、組み込み機器、性能が重要なライブラリで使われています。メモリやポインタ、コンパイル済みコードの動作を学べるので、ほかのどの言語を使うときにも役立ちます。"
+    },
+    {
+      "q": "CとC++の違いは何ですか？",
+      "a": "C++はCの拡張として始まり、クラス、テンプレート、参照、例外、大規模な標準ライブラリを追加しました。Cは小さく手続き型のままです。ほとんどのCコードは有効なC++に近いですが、規格は別々です。"
+    },
+    {
+      "q": "Cのプログラムがセグメンテーション違反でクラッシュするのはなぜですか？",
+      "a": "自分が所有していないメモリにアクセスしたためです。多くは、null、未初期化、解放済みのポインタ経由や、配列の末尾を越えたインデックスが原因です。デバッガやAddressSanitizerで実行すると、正確な行が分かります。"
+    },
+    {
+      "q": "どのC規格を使うべきですか？",
+      "a": "C17は現行のコンパイラで広くサポートされており、C23が最新の規格です。`-std=c17` のようにバージョンを明示すると、動作が一定になります。"
+    }
+  ]
+}

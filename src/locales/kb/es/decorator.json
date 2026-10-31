@@ -1,0 +1,167 @@
+{
+  "title": "Patrón Decorator: añade comportamiento envolviendo objetos, ejemplo en TypeScript — cv.cm",
+  "description": "El patrón de diseño Decorator explicado: añade responsabilidades a los objetos en tiempo de ejecución envolviéndolos. Ejemplo en TypeScript, decoradores de función y usos en Java I/O.",
+  "h1": "Patrón Decorator explicado con ejemplos",
+  "answer": "Decorator es un patrón de diseño estructural que añade responsabilidades a un objeto de forma dinámica envolviéndolo en otro objeto con la misma interfaz. Cada decorador reenvía las llamadas al objeto envuelto y añade su propio comportamiento antes o después, como registro, caché o compresión. Como los decoradores se pueden apilar en cualquier orden, son una alternativa flexible a crear una subclase para cada combinación de funciones.",
+  "sections": [
+    {
+      "h": "Intención",
+      "body": [
+        "Añadir responsabilidades adicionales a un objeto de forma dinámica. Los decoradores ofrecen una alternativa flexible a la herencia para extender la funcionalidad. Decorator es uno de los siete patrones estructurales del libro de la Banda de los Cuatro (Gang of Four, GoF), donde también se conoce como Wrapper."
+      ]
+    },
+    {
+      "h": "El problema que resuelve",
+      "body": [
+        "Imagina un almacén de datos con `get(key)`. Algunos llamadores quieren registro, otros quieren una caché en memoria, otros ambas cosas, y otros quieren reintentos para un back end de red lento. Con herencia tendrías que escribir `LoggingStore`, `CachingStore`, `LoggingCachingStore`, `RetryingCachingStore` y así sucesivamente: una subclase por cada combinación, y las combinaciones quedan fijadas en tiempo de compilación.",
+        "Decorator convierte cada función en una pequeña clase envoltorio. Construyes la combinación que necesitas en tiempo de ejecución envolviendo un objeto dentro de otro, y el código que usa el almacén ve la misma interfaz sin importar cuántas capas haya."
+      ]
+    },
+    {
+      "h": "Estructura y participantes",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Participante",
+              "Responsabilidad",
+              "En el ejemplo"
+            ],
+            "rows": [
+              [
+                "Componente",
+                "La interfaz compartida por los objetos reales y los decoradores.",
+                "`Store`"
+              ],
+              [
+                "Componente concreto",
+                "El objeto original que hace el trabajo principal.",
+                "`SlowStore`"
+              ],
+              [
+                "Decorador",
+                "Mantiene una referencia a un componente e implementa la misma interfaz reenviando las llamadas.",
+                "`StoreDecorator`"
+              ],
+              [
+                "Decorador concreto",
+                "Añade comportamiento antes o después de reenviar.",
+                "`LoggingStore`, `CachingStore`"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "Implementación en TypeScript",
+      "body": [
+        {
+          "code": "interface Store {\n  get(key: string): string;\n}\n\nclass SlowStore implements Store {\n  get(key: string): string { console.log(`  (database read: ${key})`); return key.toUpperCase(); }\n}\n\n// Base decorator: forwards everything to the wrapped store.\nabstract class StoreDecorator implements Store {\n  constructor(protected inner: Store) {}\n  get(key: string): string { return this.inner.get(key); }\n}\n\nclass LoggingStore extends StoreDecorator {\n  get(key: string): string {\n    console.log(`get ${key}`);\n    return super.get(key);\n  }\n}\n\nclass CachingStore extends StoreDecorator {\n  private cache = new Map<string, string>();\n  get(key: string): string {\n    if (!this.cache.has(key)) this.cache.set(key, super.get(key));\n    return this.cache.get(key)!;\n  }\n}\n\n// Stack features in any order at run time.\nconst store: Store = new LoggingStore(new CachingStore(new SlowStore()));\nconsole.log(store.get(\"ada\"));\nconsole.log(store.get(\"ada\"));\n// get ada\n//   (database read: ada)\n// ADA\n// get ada\n// ADA",
+          "lang": "typescript"
+        },
+        "La segunda llamada se registra pero se responde desde la caché, así que la base de datos no se vuelve a leer. Si cambias el orden, `new CachingStore(new LoggingStore(...))`, solo se registran los fallos de caché. El orden de los decoradores cambia el comportamiento, lo que es a la vez una ventaja y una fuente habitual de confusión."
+      ]
+    },
+    {
+      "h": "Decoradores de función en TypeScript",
+      "body": [
+        "Cuando el componente es una sola función, un decorador puede ser una función de orden superior: toma una función y devuelve una nueva función con la misma firma y comportamiento adicional.",
+        {
+          "code": "function withTiming<A extends unknown[], R>(name: string, fn: (...args: A) => R) {\n  return (...args: A): R => {\n    const start = performance.now();\n    try {\n      return fn(...args);\n    } finally {\n      console.log(`${name} took ${(performance.now() - start).toFixed(1)} ms`);\n    }\n  };\n}\n\nconst slowSquare = (n: number) => { for (let i = 0; i < 1e6; i++); return n * n; };\nconst timedSquare = withTiming(\"square\", slowSquare);\nconsole.log(timedSquare(12)); // square took ... ms, then 144",
+          "lang": "typescript"
+        },
+        {
+          "note": "TypeScript también tiene sintaxis de decoradores, `@name`, que se aplica a clases y miembros de clase. Es una característica del lenguaje (TypeScript 5.0 añadió soporte para los decoradores estándar de ECMAScript) que se puede usar para implementar el patrón, pero no es lo mismo: el Decorator de GoF envuelve objetos en tiempo de ejecución, mientras que los decoradores `@` modifican las definiciones de clase."
+        }
+      ]
+    },
+    {
+      "h": "Cuándo usarlo y cuándo no",
+      "body": [
+        "Usa Decorator cuando:",
+        {
+          "ul": [
+            "Quieres añadir funciones como registro, caché, reintentos, validación, compresión o comprobaciones de acceso a objetos individuales, sin afectar a otros objetos de la misma clase.",
+            "Las funciones deben poder combinarse libremente, y la herencia produciría una clase por cada combinación.",
+            "No puedes o no debes cambiar la clase original, por ejemplo porque viene de una biblioteca."
+          ]
+        },
+        "Evítalo cuando:",
+        {
+          "ul": [
+            "Solo necesitas un comportamiento extra fijo. Añadirlo directamente, o usar una sola subclase, es más sencillo.",
+            "El código depende de la identidad del objeto o de su clase concreta. Un objeto decorado es un objeto distinto, así que comprobaciones como `instanceof SlowStore` o comparaciones con `===` fallan.",
+            "Muchas capas pequeñas dificultarían la depuración. Las pilas profundas de envoltorios producen pilas de llamadas largas y hacen poco claro qué capa hizo qué."
+          ]
+        },
+        "El middleware de los frameworks web, como Express o Koa, es una idea relacionada: cada capa recibe una petición, puede actuar sobre ella y la pasa a la siguiente."
+      ]
+    },
+    {
+      "h": "Usos en el mundo real",
+      "body": [
+        {
+          "ul": [
+            "Java I/O: `new BufferedInputStream(new FileInputStream(\"data.bin\"))` envuelve un flujo en otro flujo que añade almacenamiento en búfer, y ambos tienen la interfaz `InputStream`. El propio libro GoF analiza los flujos como un ejemplo típico.",
+            "Colecciones de Java: `Collections.unmodifiableList(list)` y `Collections.synchronizedList(list)` devuelven envoltorios que añaden comportamiento de solo lectura o bloqueo alrededor de una lista existente.",
+            "Python: los decoradores de función como `functools.lru_cache` envuelven una función y añaden caché, y `functools.wraps` ayuda a que un envoltorio conserve el nombre y la docstring de la función envuelta."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Patrones relacionados",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Patrón",
+              "En qué se diferencia de Decorator"
+            ],
+            "rows": [
+              [
+                "Adapter",
+                "Cambia la interfaz de un objeto. Un decorador mantiene la interfaz y añade comportamiento."
+              ],
+              [
+                "Proxy",
+                "Tiene la misma estructura pero un propósito distinto: controla el acceso (creación diferida, acceso remoto, permisos) y normalmente gestiona por sí mismo el ciclo de vida del objeto real."
+              ],
+              [
+                "Composite",
+                "También usa composición recursiva, pero un compuesto contiene muchos hijos; un decorador envuelve exactamente uno."
+              ],
+              [
+                "Strategy",
+                "Cambia el interior de un objeto intercambiando un algoritmo. Un decorador cambia el exterior envolviéndolo."
+              ],
+              [
+                "Chain of Responsibility",
+                "También pasa las peticiones por una serie de objetos, pero cada manejador puede detener la petición; los decoradores normalmente siempre reenvían."
+              ]
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "¿Cuál es la diferencia entre Decorator y la herencia?",
+      "a": "La herencia añade comportamiento a toda una clase en tiempo de compilación. Un decorador añade comportamiento a un objeto en tiempo de ejecución, y varios decoradores pueden combinarse en cualquier orden."
+    },
+    {
+      "q": "¿Cuál es la diferencia entre Decorator y Proxy?",
+      "a": "Tienen la misma forma. Un decorador añade funciones que el cliente elige apilar, mientras que un proxy controla el acceso al objeto real, a menudo creándolo o decidiendo si llamarlo siquiera."
+    },
+    {
+      "q": "¿Los @decorators de TypeScript son el patrón Decorator?",
+      "a": "No exactamente. Los decoradores `@` son una característica del lenguaje que modifica las clases y sus miembros cuando se definen. Pueden usarse para implementar el envoltorio, pero el patrón GoF trata de envolver objetos en tiempo de ejecución."
+    },
+    {
+      "q": "¿Importa el orden de los decoradores?",
+      "a": "Sí. Cada decorador ve las llamadas antes que los objetos que envuelve, así que una caché colocada fuera de un registrador oculta al registrador las llamadas repetidas, mientras que un registrador fuera de la caché ve todas las llamadas."
+    }
+  ]
+}

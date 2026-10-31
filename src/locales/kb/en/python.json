@@ -1,0 +1,223 @@
+{
+  "title": "Python tutorial: syntax, types, functions and files in one page — cv.cm",
+  "description": "Learn Python 3 in one page: install and run Hello world, variables and types, if and loops, functions, lists and dicts, exceptions, files and a full example.",
+  "h1": "Python tutorial for beginners",
+  "answer": "Python is a general-purpose, interpreted language known for readable syntax that uses indentation instead of braces. Install Python 3, save `print(\"Hello, world\")` in `hello.py` and run `python3 hello.py`. The core ideas are dynamic types, functions defined with `def`, built-in lists, dicts and sets, exceptions handled with `try`/`except`, and a large standard library.",
+  "sections": [
+    {
+      "h": "What Python is and what it is used for",
+      "body": [
+        "Python is a high-level, dynamically typed language first released by Guido van Rossum in 1991. Code is run by an interpreter (the reference one is CPython), so there is no separate compile step. It is used for data analysis and machine learning (NumPy, pandas, PyTorch), web back ends (Django, Flask, FastAPI), automation scripts, scientific computing and teaching. Python 2 reached end of life in 2020, so always learn Python 3."
+      ]
+    },
+    {
+      "h": "Install Python and run Hello, world",
+      "body": [
+        "Download an installer from python.org (Windows, macOS) or use your package manager on Linux. Check the install with `python3 --version` (on Windows the command is often `py` or `python`). Save this file as `hello.py`:",
+        {
+          "code": "print(\"Hello, world\")",
+          "lang": "python"
+        },
+        {
+          "code": "python3 hello.py\n# Hello, world",
+          "lang": "shell"
+        },
+        "Running `python3` with no file opens the interactive prompt (REPL), which is useful for trying one line at a time."
+      ]
+    },
+    {
+      "h": "Variables and basic types",
+      "body": [
+        "A variable is created by assigning to it. You do not declare a type; the value carries its type, and `type(x)` tells you what it is.",
+        {
+          "table": {
+            "head": [
+              "Type",
+              "Example",
+              "Notes"
+            ],
+            "rows": [
+              [
+                "`int`",
+                "`42`, `-7`, `10**20`",
+                "Whole numbers of any size"
+              ],
+              [
+                "`float`",
+                "`3.14`, `1e-3`",
+                "64-bit floating point"
+              ],
+              [
+                "`bool`",
+                "`True`, `False`",
+                "Capitalized"
+              ],
+              [
+                "`str`",
+                "`\"hi\"`, `'hi'`",
+                "Immutable Unicode text"
+              ],
+              [
+                "`None`",
+                "`None`",
+                "The absence of a value"
+              ]
+            ]
+          }
+        },
+        {
+          "code": "name = \"Ada\"\nage = 36\nheight = 1.65\nprint(f\"{name} is {age} years old\")  # Ada is 36 years old\nprint(7 / 2, 7 // 2, 7 % 2)          # 3.5 3 1\nprint(int(\"12\") + 1)                 # 13",
+          "lang": "python"
+        }
+      ]
+    },
+    {
+      "h": "Control flow: if, for and while",
+      "body": [
+        "Blocks start with a colon and are defined by indentation (4 spaces by convention). `for` loops iterate over any sequence; `range(n)` gives the numbers 0 to n−1.",
+        {
+          "code": "score = 72\nif score >= 90:\n    grade = \"A\"\nelif score >= 70:\n    grade = \"B\"\nelse:\n    grade = \"C\"\nprint(grade)  # B\nfor i in range(3):\n    print(i)  # 0, then 1, then 2\nn = 10\nwhile n > 1:\n    n = n // 2\nprint(n)  # 1",
+          "lang": "python"
+        }
+      ]
+    },
+    {
+      "h": "Functions",
+      "body": [
+        "Define functions with `def`. Parameters can have default values, and callers can pass arguments by name. A function without `return` returns `None`.",
+        {
+          "code": "def greet(name, greeting=\"Hello\"):\n    return f\"{greeting}, {name}!\"\nprint(greet(\"Lin\"))                 # Hello, Lin!\nprint(greet(\"Lin\", greeting=\"Hi\"))  # Hi, Lin!\nsquare = lambda x: x * x\nprint(square(5))                    # 25",
+          "lang": "python"
+        },
+        "Type hints such as `def area(w: float, h: float) -> float:` document intent and let tools like mypy check your code, but the interpreter does not enforce them."
+      ]
+    },
+    {
+      "h": "Lists, tuples, dicts and sets",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Type",
+              "Literal",
+              "Ordered",
+              "Mutable",
+              "Typical use"
+            ],
+            "rows": [
+              [
+                "`list`",
+                "`[1, 2, 3]`",
+                "Yes",
+                "Yes",
+                "A sequence you change"
+              ],
+              [
+                "`tuple`",
+                "`(1, 2)`",
+                "Yes",
+                "No",
+                "A fixed group of values"
+              ],
+              [
+                "`dict`",
+                "`{\"a\": 1}`",
+                "Insertion order",
+                "Yes",
+                "Key to value lookup"
+              ],
+              [
+                "`set`",
+                "`{1, 2}`",
+                "No",
+                "Yes",
+                "Unique items, membership tests"
+              ]
+            ]
+          }
+        },
+        {
+          "code": "nums = [3, 1, 2]\nnums.append(5)\nnums.sort()\nprint(nums, nums[0], nums[-1], nums[1:3])  # [1, 2, 3, 5] 1 5 [2, 3]\nages = {\"ann\": 31, \"bob\": 25}\nages[\"cy\"] = 40\nfor person, age in ages.items():\n    print(person, age)\nprint(ages.get(\"zed\", 0))  # 0\nsquares = [x * x for x in range(5) if x % 2 == 0]\nprint(squares)  # [0, 4, 16]",
+          "lang": "python"
+        },
+        "The last line is a list comprehension, one of Python's signature features: it builds a list from a loop and an optional filter in one expression. Dict and set comprehensions work the same way."
+      ]
+    },
+    {
+      "h": "Signature features: unpacking, with and generators",
+      "body": [
+        {
+          "code": "a, b = 1, 2\na, b = b, a            # swap without a temporary\nfirst, *rest = [1, 2, 3, 4]\nprint(first, rest)     # 1 [2, 3, 4]\nwith open(\"notes.txt\", \"w\", encoding=\"utf-8\") as f:\n    f.write(\"line one\\n\")   # file is closed automatically\ndef countdown(n):\n    while n > 0:\n        yield n\n        n -= 1\nprint(list(countdown(3)))  # [3, 2, 1]",
+          "lang": "python"
+        },
+        "The `with` statement runs setup and cleanup code for you (here, closing the file even if an error happens). A function that uses `yield` is a generator: it produces values lazily, one at a time, which saves memory on large data."
+      ]
+    },
+    {
+      "h": "Error handling with try and except",
+      "body": [
+        "Errors are raised as exceptions. Catch the specific exception types you expect, and use `finally` for code that must always run.",
+        {
+          "code": "def parse_age(text):\n    try:\n        age = int(text)\n    except ValueError:\n        print(f\"not a number: {text!r}\")\n        return None\n    if age < 0:\n        raise ValueError(\"age cannot be negative\")\n    return age\nprint(parse_age(\"41\"))   # 41\nprint(parse_age(\"abc\"))  # not a number: 'abc', then None",
+          "lang": "python"
+        }
+      ]
+    },
+    {
+      "h": "A small complete program: word counter",
+      "body": [
+        "This script reads a text file given on the command line and prints the five most common words. It uses the standard library only.",
+        {
+          "code": "import sys\nfrom collections import Counter\ndef top_words(path, n=5):\n    with open(path, encoding=\"utf-8\") as f:\n        words = f.read().lower().split()\n    cleaned = [w.strip(\".,;:!?\\\"'()\") for w in words]\n    return Counter(w for w in cleaned if w).most_common(n)\nif __name__ == \"__main__\":\n    if len(sys.argv) != 2:\n        sys.exit(\"usage: python3 count.py FILE\")\n    try:\n        for word, count in top_words(sys.argv[1]):\n            print(f\"{count:5}  {word}\")\n    except FileNotFoundError:\n        sys.exit(f\"file not found: {sys.argv[1]}\")",
+          "lang": "python"
+        },
+        "Run it with `python3 count.py notes.txt`. The `if __name__ == \"__main__\":` check lets the file be imported as a module without running the script part."
+      ]
+    },
+    {
+      "h": "Common beginner mistakes",
+      "body": [
+        {
+          "note": "Do not use a mutable value as a default argument: `def add(item, items=[])` shares one list between all calls. Use `items=None` and create the list inside the function."
+        },
+        {
+          "ul": [
+            "Mixing tabs and spaces, or inconsistent indentation, causes `IndentationError`. Configure your editor to insert 4 spaces.",
+            "`=` assigns and `==` compares. Use `is` only for `None` (`if x is None`).",
+            "`input()` always returns a string; convert with `int()` or `float()` before doing math.",
+            "Copying a list with `b = a` does not copy it; both names point to the same list. Use `b = a.copy()` or `b = list(a)`.",
+            "Install packages inside a virtual environment (`python3 -m venv .venv`) instead of into the system Python."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Where to go next",
+      "body": [
+        "Work through the official Python Tutorial, then browse the Library Reference to learn modules such as `pathlib`, `json`, `datetime` and `itertools`. Learn `pip` and virtual environments for third-party packages, and write tests with `unittest` or pytest. After that, pick a direction: web (Django or FastAPI), data (pandas), or automation."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Is Python good for beginners?",
+      "a": "Yes. Its syntax is short and close to plain English, errors are reported clearly, and you can try code line by line in the REPL. It is also widely used in industry, so beginner skills stay useful."
+    },
+    {
+      "q": "Is Python compiled or interpreted?",
+      "a": "CPython compiles source code to bytecode and then interprets that bytecode, all automatically when you run a script. You never run a separate compile step."
+    },
+    {
+      "q": "What is the difference between a list and a tuple?",
+      "a": "A list is mutable: you can add, remove and change items. A tuple is immutable, so it is used for fixed groups of values and can be a dict key."
+    },
+    {
+      "q": "Why is my Python code slow?",
+      "a": "Pure Python loops are slower than compiled languages. Use built-in functions, comprehensions and libraries such as NumPy, which run their inner loops in C."
+    },
+    {
+      "q": "Should I use python or python3 on the command line?",
+      "a": "On macOS and most Linux systems use `python3`, because `python` may be missing or point to something else. On Windows the `py` launcher is the usual choice."
+    }
+  ]
+}

@@ -1,0 +1,189 @@
+{
+  "title": "Erlang 入门教程：模式匹配、递归、进程与 OTP — cv.cm",
+  "description": "一步步学 Erlang：编译模块、变量与类型、模式匹配、守卫、递归、列表与映射、进程、OTP 以及“任其崩溃”的错误处理。",
+  "h1": "Erlang 入门教程",
+  "answer": "Erlang 是爱立信为必须持续在线的系统（如电话交换机和消息服务器）创建的函数式并发语言。程序以大量轻量级进程的形式运行在 BEAM 虚拟机上，进程之间通过消息通信，出现故障时由监督者重启。本文涵盖编译模块、类型、模式匹配、递归、列表与映射、进程、OTP 和错误处理。",
+  "sections": [
+    {
+      "h": "Erlang 是什么，用来做什么",
+      "body": [
+        "Erlang 是一门函数式、动态类型的语言，20 世纪 80 年代由爱立信为必须不间断运行的电话交换机而设计，1998 年以开源形式发布。Erlang 程序以大量互不共享状态、通过消息通信的轻量级进程运行在 BEAM 虚拟机上，并附带 OTP（Open Telecom Platform），这是一套用于构建容错系统的库和设计原则。",
+        "Erlang 用于电信设备、消息平台（WhatsApp 的后端就是用 Erlang 构建的，这很有名）、RabbitMQ 这样的消息代理、Riak 和 CouchDB 这样的数据库，以及支付和物联网系统。Elixir 和 Gleam 同样运行在 BEAM 上，并且可以直接使用 Erlang 的库。"
+      ]
+    },
+    {
+      "h": "安装 Erlang 并运行 Hello, world",
+      "body": [
+        "从 erlang.org 或用包管理器安装 Erlang/OTP（例如 `brew install erlang` 或 `apt install erlang`）。代码放在模块中；每个文件 `name.erl` 定义模块 `name`，并列出它导出的函数。",
+        {
+          "code": "% hello.erl\n-module(hello).\n-export([main/0]).\n\nmain() ->\n    io:format(\"Hello, world!~n\").",
+          "lang": "erlang"
+        },
+        {
+          "code": "erlc hello.erl                          # compiles to hello.beam\nerl -noshell -s hello main -s init stop\n# Hello, world!\nerl                                     # interactive shell; c(hello). then hello:main().",
+          "lang": "shell"
+        },
+        "注释以 `%` 开头。格式字符串中的 `~n` 是换行，`~p` 会打印任意项（term）。在 shell 中，每个表达式都以句点结尾。"
+      ]
+    },
+    {
+      "h": "标点、变量与基本类型",
+      "body": [
+        "Erlang 的标点符号是初学者最大的意外：逗号分隔表达式，分号分隔子句，句点结束一个函数或一条 shell 命令。变量以大写字母或下划线开头，只能绑定一次。",
+        {
+          "code": "1> Name = \"Erlang\".\n\"Erlang\"\n2> Year = 1986, Next = Year + 1.\n1987\n3> Year = 2000.\n** exception error: no match of right hand side value 2000\n4> 10 / 4.\n2.5\n5> {10 div 4, 10 rem 4}.\n{2,2}\n6> is_atom(ok).\ntrue\n7> <<\"binary string\">>.\n<<\"binary string\">>",
+          "lang": "erlang"
+        },
+        {
+          "table": {
+            "head": [
+              "类型",
+              "示例",
+              "说明"
+            ],
+            "rows": [
+              [
+                "整数",
+                "`42`, `16#FF`",
+                "任意精度；`16#` 表示十六进制"
+              ],
+              [
+                "浮点数",
+                "`3.14`",
+                "64 位双精度"
+              ],
+              [
+                "原子",
+                "`ok`, `error`, `'Hello'`",
+                "具名常量，小写或加引号"
+              ],
+              [
+                "元组",
+                "`{ok, 42}`",
+                "固定大小的一组值"
+              ],
+              [
+                "列表",
+                "`[1, 2, 3]`",
+                "链表；像 `\"abc\"` 这样的字符串是整数列表"
+              ],
+              [
+                "映射",
+                "`#{name => \"Ann\"}`",
+                "键值存储"
+              ],
+              [
+                "二进制",
+                "`<<\"text\">>`",
+                "字节序列，存储文本的高效方式"
+              ]
+            ]
+          }
+        },
+        "`true` 和 `false` 是原子，不是单独的类型。`=` 是匹配而不是赋值，所以第 3 行会失败：`Year` 已经绑定为 1986。"
+      ]
+    },
+    {
+      "h": "模式匹配、case 与守卫",
+      "body": [
+        "模式匹配可以解开元组、列表和映射，并决定执行哪个子句。用 `when` 书写的守卫为子句增加条件。`case` 和 `if` 是会返回值的表达式。",
+        {
+          "code": "-module(match).\n-export([describe/1, grade/1, demo/0]).\n\ndescribe({ok, Value}) -> io_lib:format(\"ok: ~p\", [Value]);\ndescribe({error, Reason}) -> io_lib:format(\"error: ~p\", [Reason]);\ndescribe(_Other) -> \"unknown\".\n\ngrade(Score) when Score >= 90 -> a;\ngrade(Score) when Score >= 70 -> b;\ngrade(_) -> c.\n\ndemo() ->\n    [First | Rest] = [1, 2, 3],\n    #{name := Name} = #{name => \"Ann\", age => 31},\n    Size = case length(Rest) of\n               0 -> empty;\n               N when N < 5 -> small;\n               _ -> large\n           end,\n    io:format(\"~p ~p ~s ~p ~p~n\", [First, Rest, Name, Size, grade(75)]),\n    io:format(\"~s~n\", [describe({error, timeout})]).\n% match:demo() prints:\n% 1 [2,3] Ann small b\n% error: timeout",
+          "lang": "erlang"
+        },
+        "除最后一个子句外，每个子句都以 `;` 结尾，最后一个以 `.` 结尾。如果没有任何子句匹配，进程会抛出 `function_clause` 或 `case_clause` 错误。"
+      ]
+    },
+    {
+      "h": "函数、递归与高阶函数",
+      "body": [
+        "函数由名称和元数标识，写作 `name/Arity`。Erlang 没有循环，重复要靠递归，而尾递归函数运行时占用的栈空间是常数。匿名函数写作 `fun ... end`。",
+        {
+          "code": "-module(fns).\n-export([factorial/1, sum/1, demo/0]).\n\nfactorial(0) -> 1;\nfactorial(N) when N > 0 -> N * factorial(N - 1).\n\nsum(List) -> sum(List, 0).          % public wrapper\nsum([], Acc) -> Acc;                 % tail-recursive helper sum/2\nsum([H | T], Acc) -> sum(T, Acc + H).\n\ndemo() ->\n    Double = fun(X) -> X * 2 end,\n    io:format(\"~p~n\", [factorial(20)]),                    % 2432902008176640000\n    io:format(\"~p~n\", [sum([1, 2, 3, 4])]),                % 10\n    io:format(\"~p~n\", [Double(21)]),                       % 42\n    io:format(\"~p~n\", [lists:map(Double, [1, 2, 3])]),     % [2,4,6]\n    io:format(\"~p~n\", [[X * X || X <- [1, 2, 3, 4, 5], X rem 2 =:= 1]]). % [1,9,25]",
+          "lang": "erlang"
+        },
+        "最后一行用了列表推导式。注意比较运算符：`=:=` 和 `=/=` 测试严格相等与不等，`==` 和 `/=` 按数值比较（所以 `1 == 1.0` 为真），而小于等于写作 `=<`，不是 `<=`。"
+      ]
+    },
+    {
+      "h": "列表、映射与标准库",
+      "body": [
+        "`lists` 模块提供 `map`、`filter`、`foldl`、`sort`、`reverse` 等大量函数；`maps` 用于处理映射；`string` 和 `binary` 处理文本。完整参考见 OTP 文档。",
+        {
+          "code": "1> L = [5, 3, 8, 1].\n[5,3,8,1]\n2> lists:sort(L).\n[1,3,5,8]\n3> lists:filter(fun(X) -> X > 2 end, L).\n[5,3,8]\n4> lists:foldl(fun(X, Acc) -> X + Acc end, 0, L).\n17\n5> M = #{ann => 31, bo => 25}, map_size(M).\n2\n6> M2 = M#{cy => 40}, map_size(M2).\n3\n7> maps:get(bo, M2).\n25\n8> maps:get(zed, M2, none).\nnone",
+          "lang": "erlang"
+        },
+        "`M#{cy => 40}` 会创建一个新映射；`M` 本身不会改变。要更新一个必须已存在的键，请用 `:=` 代替 `=>`。"
+      ]
+    },
+    {
+      "h": "进程与消息传递",
+      "body": [
+        "进程是 Erlang 的标志性特性。`spawn` 启动一个新进程，`!` 发送消息，`receive` 等待消息，并按模式匹配消息。进程开销很小，所以一个系统可以运行非常多的进程。链接（link）和监视器（monitor）让一个进程能察觉另一个进程的死亡，OTP 监督者正是借此自动重启出故障的工作进程。",
+        {
+          "code": "-module(counter).\n-export([start/0, loop/1]).\n\nstart() ->\n    Pid = spawn(counter, loop, [0]),\n    Pid ! {add, 5},\n    Pid ! {add, 10},\n    Pid ! {get, self()},\n    receive\n        {count, N} -> io:format(\"count = ~p~n\", [N])   % count = 15\n    after 1000 ->\n        io:format(\"timeout~n\")\n    end.\n\nloop(Count) ->\n    receive\n        {add, N} -> loop(Count + N);\n        {get, From} -> From ! {count, Count}, loop(Count)\n    end.",
+          "lang": "erlang"
+        },
+        "这个手写的循环，正是 OTP 的 `gen_server` 行为所概括的模式。在生产代码中，你会编写一个 `gen_server` 模块，并把它放在 `supervisor` 之下。"
+      ]
+    },
+    {
+      "h": "错误处理与“任其崩溃”",
+      "body": [
+        "Erlang 有三类异常：`error`、`throw` 和 `exit`。预期内的失败通常以 `{ok, Value}` 或 `{error, Reason}` 元组返回。意料之外的失败往往根本不捕获：进程崩溃，由它的监督者把它重启到已知的良好状态。确实需要捕获时，使用 `try ... catch`。",
+        {
+          "code": "1> file:read_file(\"missing.txt\").\n{error,enoent}\n2> try 1 / 0 catch error:badarith -> division_failed end.\ndivision_failed\n3> try throw(my_reason) catch throw:R -> {caught, R} end.\n{caught,my_reason}\n4> case file:read_file(\"missing.txt\") of {ok, Bin} -> Bin; {error, Why} -> Why end.\nenoent",
+          "lang": "erlang"
+        }
+      ]
+    },
+    {
+      "h": "一个完整的小程序：词频统计",
+      "body": [
+        "这个模块用映射统计字符串中的单词，按次数排序，并打印最常见的三个。它结合了字符串函数、`lists:foldl`、映射和自定义排序。",
+        {
+          "code": "-module(wordfreq).\n-export([top/2, main/0]).\n\ntop(Text, N) ->\n    Words = string:lexemes(string:lowercase(Text), \" .,;:!?\\n\"),\n    Counts = lists:foldl(fun(W, Acc) ->\n                                 maps:update_with(W, fun(C) -> C + 1 end, 1, Acc)\n                         end, #{}, Words),\n    Sorted = lists:sort(fun({W1, C1}, {W2, C2}) ->\n                                {-C1, W1} =< {-C2, W2}\n                        end, maps:to_list(Counts)),\n    lists:sublist(Sorted, N).\n\nmain() ->\n    Text = \"The cat and the dog. The dog sat, and the cat ran.\",\n    [io:format(\"~s: ~p~n\", [W, C]) || {W, C} <- top(Text, 3)],\n    ok.\n% the: 4\n% and: 2\n% cat: 2",
+          "lang": "erlang"
+        },
+        {
+          "note": "初学者常见错误：混淆 `,`、`;` 和 `.`；试图重新绑定变量；把 `=<` 写成 `<=`；该用 `=:=` 的地方用了 `==`；忘记导出函数，或者导出时写错了元数；以及把字符串和二进制弄混（`\"abc\"` 是列表，`<<\"abc\">>` 是二进制）。"
+        }
+      ]
+    },
+    {
+      "h": "接下来读什么",
+      "body": [
+        {
+          "ul": [
+            "erlang.org 上的 Erlang/OTP 文档，包括入门指南（Getting Started）和 OTP 设计原则（OTP Design Principles）。",
+            "《Learn You Some Erlang for Great Good!》，一本免费的在线图书。",
+            "标准构建工具 rebar3，以及与 Elixir 共用的包管理器 Hex。",
+            "开始构建真实服务后，查阅 `gen_server` 和 `supervisor` 的参考页面。"
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Erlang 现在还有人用吗？",
+      "a": "有。Erlang 仍然运行着电信系统、消息服务和 RabbitMQ，而 BEAM 生态通过 Elixir 和 Gleam 持续壮大，它们都可以使用 Erlang 的库。"
+    },
+    {
+      "q": "Erlang 中的 OTP 是什么？",
+      "a": "OTP 是随 Erlang 一起发布的一套库、工具和设计原则。它提供 `gen_server`、`supervisor`、`application` 等行为（behaviour），用来组织容错程序。"
+    },
+    {
+      "q": "应该学 Erlang 还是 Elixir？",
+      "a": "Elixir 的语法更友好，Web 生态也更大；Erlang 更小巧，OTP 和许多核心库就是用它写的。两者运行在同一个虚拟机上，懂其中一个，读另一个就容易了。"
+    },
+    {
+      "q": "“任其崩溃”是什么意思？",
+      "a": "你不必在进程内部处理所有可能的错误，而是让进程失败，依靠监督者把它重启到干净的状态。错误处理代码保持精简，系统也能自动恢复。"
+    },
+    {
+      "q": "为什么 Erlang 的变量是大写的？",
+      "a": "Erlang 用大小写区分变量和原子：`Name` 是变量，而 `name` 是原子，一个常量值。"
+    }
+  ]
+}

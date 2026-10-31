@@ -1,0 +1,175 @@
+{
+  "title": "Bridge パターン：抽象と実装を分離する、TypeScriptの例 — cv.cm",
+  "description": "Bridge パターンを解説。クラスを、独立して変化できる抽象の階層と実装の階層に分ける方法を、TypeScriptの例と実際の利用例とともに紹介します。",
+  "h1": "Bridge パターンを例でわかりやすく解説",
+  "answer": "Bridge パターンは、1つの大きなクラス階層を、抽象と実装という2つの別々の階層に分け、合成でつなぐ構造パターンです。抽象（たとえばレポートの種類）が実装オブジェクト（たとえば出力のレンダラー）への参照を保持し、低レベルの作業をそこに委譲します。これにより両側が独立して成長でき、3種類のレポートと3つのレンダラーなら、サブクラスの組み合わせの9クラスではなく、6クラスで済みます。",
+  "sections": [
+    {
+      "h": "目的",
+      "body": [
+        "抽象をその実装から切り離し、両者が独立して変化できるようにします。Bridge パターンは、Gang of Four（GoF）の書籍にある7つの構造パターンの1つで、同書ではHandle/Bodyとも呼ばれています。"
+      ]
+    },
+    {
+      "h": "解決する問題",
+      "body": [
+        "アラートとリマインダーの2種類のメッセージを、メールとSMSの2つのチャネルで送るアプリを想像してください。継承でモデル化すると、`EmailAlert`、`SmsAlert`、`EmailReminder`、`SmsReminder` ができます。プッシュのチャネルとダイジェストのメッセージを加えると、9クラスが必要になります。どちらの側でも新しい種類を加えるたびに、総数が掛け算で増えていきます。",
+        "本当の問題は、クラス階層が2つの独立した問いを混ぜていることです。メッセージが何であるかと、それをどう配信するかです。Bridge パターンはそれを2つの階層に分けて参照でつなぐので、総数が掛け算ではなく足し算で増えます。",
+        {
+          "table": {
+            "head": [
+              "設計",
+              "2メッセージ × 2チャネル",
+              "3メッセージ × 3チャネル",
+              "4メッセージ × 4チャネル"
+            ],
+            "rows": [
+              [
+                "組み合わせごとにサブクラス",
+                "4クラス",
+                "9クラス",
+                "16クラス"
+              ],
+              [
+                "Bridge パターン",
+                "4クラス",
+                "6クラス",
+                "8クラス"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "構造と登場要素",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "要素",
+              "役割",
+              "例では"
+            ],
+            "rows": [
+              [
+                "Abstraction",
+                "クライアントが使う高レベルのインターフェイスで、Implementorへの参照を保持します。",
+                "`Message`"
+              ],
+              [
+                "RefinedAbstraction",
+                "抽象を拡張して、バリエーションのある振る舞いを加えます。",
+                "`Alert`, `Reminder`"
+              ],
+              [
+                "Implementor",
+                "低レベルの操作のインターフェイスです。",
+                "`Sender`"
+              ],
+              [
+                "ConcreteImplementor",
+                "1つのプラットフォームまたは技術向けに、低レベルの操作を実装します。",
+                "`EmailSender`, `SmsSender`"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "TypeScriptでの実装",
+      "body": [
+        {
+          "code": "// Implementor: how a message is delivered.\ninterface Sender {\n  deliver(to: string, subject: string, body: string): string;\n}\n\nclass EmailSender implements Sender {\n  deliver(to: string, subject: string, body: string) { return `email ${to} | ${subject} | ${body}`; }\n}\n\nclass SmsSender implements Sender {\n  deliver(to: string, subject: string, body: string) { return `sms ${to} | ${subject}: ${body}`.slice(0, 40); }\n}\n\n// Abstraction: what the message is. It holds the bridge to a Sender.\nabstract class Message {\n  constructor(protected sender: Sender) {}\n  abstract send(to: string): string;\n}\n\nclass Alert extends Message {\n  constructor(sender: Sender, private problem: string) { super(sender); }\n  send(to: string): string {\n    return this.sender.deliver(to, \"ALERT\", this.problem.toUpperCase());\n  }\n}\n\nclass Reminder extends Message {\n  constructor(sender: Sender, private task: string, private due: string) { super(sender); }\n  send(to: string): string {\n    return this.sender.deliver(to, \"Reminder\", `${this.task} by ${this.due}`);\n  }\n}\n\nconsole.log(new Alert(new SmsSender(), \"disk full\").send(\"+100\")); // sms +100 | ALERT: DISK FULL\nconsole.log(new Reminder(new EmailSender(), \"Pay invoice\", \"Friday\").send(\"ada@example.com\"));\n// email ada@example.com | Reminder | Pay invoice by Friday",
+          "lang": "typescript"
+        },
+        "`PushSender` の追加は1クラスで済み、アラートとリマインダーの両方でそのまま動作します。`Digest` メッセージの追加も1クラスで、すべての送信者でそのまま動作します。送信者は単なるコンストラクタの引数なので、ユーザーの設定に応じてなど、実行時に選ぶこともできます。"
+      ]
+    },
+    {
+      "h": "使うべきとき、使わないとき",
+      "body": [
+        "次の場合はBridge パターンを使います。",
+        {
+          "ul": [
+            "クラスが2つ以上の独立した次元で変化し、継承だと組み合わせごとにクラスを作ることになる場合。",
+            "実装を実行時に切り替えたい、または1つの実装オブジェクトを複数の抽象で共有したい場合。",
+            "複数のプラットフォーム（OS、レンダリングのバックエンド、データベースエンジン）で動く必要があるコードを作り、プラットフォームの詳細を別の1つの階層にまとめたい場合。"
+          ]
+        },
+        "次の場合は避けます。",
+        {
+          "ul": [
+            "変化の次元が1つだけの場合。実装が複数ある単純なインターフェイスで十分です。",
+            "実装が1つしかないのに「将来のために」導入する場合。余分な層のせいで、まだ利益がないままコードが読みにくくなります。"
+          ]
+        },
+        {
+          "note": "Bridge パターンは、両側が変化することが分かっている段階で、最初から設計するものです。既存のクラスを後からインターフェイスに合わせる場合は、BridgeではなくAdapter パターンが必要です。"
+        }
+      ]
+    },
+    {
+      "h": "実際の利用例",
+      "body": [
+        {
+          "ul": [
+            "JavaのJDBCはよく知られた例です。アプリケーションコードはJDBC APIに対して書かれ、各データベースベンダーが低レベルの操作を実装するドライバーを提供します。両者は独立して進化します。",
+            "グラフィックスやUIのツールキットは、プラットフォームに依存しないウィジェットや図形のAPIを、プラットフォーム固有の描画バックエンドの上に置きます。GoFの書籍自身の例は、ウィンドウシステムごとに別々の `WindowImp` 実装を持つ、`Window` の抽象です。",
+            "ロギングライブラリはよく、コードが呼び出すロガーのAPIと、ファイル、コンソール、ネットワークサービスに書き込むハンドラーやアペンダーを分離しています。"
+          ]
+        }
+      ]
+    },
+    {
+      "h": "関連するパターン",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "パターン",
+              "Bridge パターンとの関係"
+            ],
+            "rows": [
+              [
+                "Adapter パターン",
+                "形は似ていますが、設計済みの無関係な既存クラスを後から協調させるものです。Bridge パターンは、クラスを書く前に計画します。"
+              ],
+              [
+                "Strategy パターン",
+                "こちらも、交換可能なオブジェクトに委譲します。Strategy パターンはアルゴリズムの入れ替えが目的で、Bridge パターンは抽象の階層全体を実装の階層から分離することが目的です。"
+              ],
+              [
+                "Abstract Factory パターン",
+                "Bridgeに適した実装オブジェクト、たとえば正しいプラットフォームのバックエンドを作成して設定できます。"
+              ],
+              [
+                "Composite パターン",
+                "Bridge パターンも継承より合成に基づいていますが、Composite パターンはオブジェクトの木構造に関するもので、2つの独立した階層に関するものではありません。"
+              ]
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Bridge パターンでいう「実装」とは何ですか？",
+      "a": "クラスの中のコードのことではありません。抽象が委譲する、低レベルでプラットフォーム固有の作業を行うオブジェクトの、独立した階層を指します。"
+    },
+    {
+      "q": "Bridge パターンとStrategy パターンの違いは何ですか？",
+      "a": "構造はほぼ同じです。Strategy パターンはオブジェクト内の1つのアルゴリズムを入れ替えることに焦点を当て、Bridge パターンは2つの階層全体を分離して、それぞれを独立に拡張できるようにします。"
+    },
+    {
+      "q": "Bridge パターンとAdapter パターンの違いは何ですか？",
+      "a": "Bridge パターンは、両側が変化できるよう事前に設計します。Adapter パターンは、既存の互換性のないクラスをインターフェイスに合わせるために、後から追加します。"
+    },
+    {
+      "q": "Bridge パターンは依存性の注入と同じですか？",
+      "a": "いいえ。Bridge パターンは2つの階層を構成する方法です。依存性の注入は実装オブジェクトを供給する方法で、抽象にそのImplementorを与える自然な手段です。"
+    }
+  ]
+}

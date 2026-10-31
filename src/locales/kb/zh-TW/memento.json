@@ -1,0 +1,165 @@
+{
+  "title": "備忘錄模式：快照與復原，附 TypeScript 範例 — cv.cm",
+  "description": "備忘錄模式能在不暴露內部細節的情況下儲存並還原物件的狀態。透過 TypeScript 復原程式碼了解原發器、備忘錄與管理者。",
+  "h1": "備忘錄模式（Memento）詳解與範例",
+  "answer": "備忘錄（Memento）是一種行為型設計模式，它把物件的內部狀態擷取成快照物件（稱為備忘錄），讓該物件之後可以還原到那個狀態。擁有狀態的物件（原發器）負責建立與還原備忘錄，另一個物件（管理者）只負責保存，從不查看內容。這是在不破壞封裝的前提下實作復原、檢查點與遊戲存檔的標準做法。",
+  "sections": [
+    {
+      "h": "意圖與要解決的問題",
+      "body": [
+        "意圖：在不違反封裝的前提下，擷取並外部化物件的內部狀態，讓該物件之後可以還原到這個狀態。備忘錄是《設計模式》（Gang of Four，簡稱 GoF）一書中的行為型模式之一。",
+        "想像一個繪圖應用程式，其中圖形有位置、大小、顏色，以及一串用於繪製的私有衍生值。你想要一個復原按鈕。復原管理器可以自己複製圖形的欄位，但這樣它就得知道每一個私有欄位，而且每次圖形類別改變，復原管理器就會壞掉。為了復原而把所有欄位都改成公開，則會讓任何程式碼都能把圖形弄成無效的狀態。",
+        "備忘錄模式的解法是讓圖形自己產生快照。只有圖形知道快照裡有什麼，以及如何從中還原。復原管理器把快照當作不透明的物件：把它們存在清單裡，並在使用者按下復原時交還其中一個。"
+      ]
+    },
+    {
+      "h": "結構與參與者",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "角色",
+              "職責"
+            ],
+            "rows": [
+              [
+                "原發器",
+                "狀態被保存的物件；為目前狀態建立備忘錄，並從備忘錄還原自己"
+              ],
+              [
+                "備忘錄",
+                "原發器狀態的不可變快照；不向其他物件暴露任何有用的內容"
+              ],
+              [
+                "管理者",
+                "決定何時儲存、何時還原，並保管備忘錄（例如放在堆疊中），但從不讀取或更改其內容"
+              ]
+            ]
+          }
+        },
+        "關鍵概念是兩種介面：寬介面給原發器，它能讀取儲存的狀態；窄介面給其他所有人，他們只能持有備忘錄。"
+      ]
+    },
+    {
+      "h": "TypeScript 實作",
+      "body": [
+        "備忘錄類別使用 JavaScript 私有欄位（`#state`），因此管理者無法從備忘錄物件讀取儲存的資料。讀取要透過靜態方法 `EditorMemento.read`，且只有編輯器會呼叫它。在實際專案中，請把備忘錄類別與編輯器放在同一個模組並且不要匯出，這樣其他模組可以持有備忘錄，卻永遠無法打開它。",
+        {
+          "code": "type EditorState = { text: string; cursor: number };\n\nclass EditorMemento {\n  readonly #state: EditorState;\n  constructor(state: EditorState) {\n    this.#state = { ...state }; // copy, so later edits do not change the snapshot\n  }\n  static read(m: EditorMemento): EditorState {\n    return { ...m.#state };\n  }\n}\n\nclass Editor {\n  private state: EditorState = { text: \"\", cursor: 0 };\n  type(words: string) {\n    const text = this.state.text + words;\n    this.state = { text, cursor: text.length };\n  }\n  get text() { return this.state.text; }\n  save(): EditorMemento { return new EditorMemento(this.state); }\n  restore(m: EditorMemento) { this.state = EditorMemento.read(m); }\n}\n\nclass History {\n  private stack: EditorMemento[] = [];\n  constructor(private editor: Editor) {}\n  backup() { this.stack.push(this.editor.save()); }\n  undo() { const m = this.stack.pop(); if (m) this.editor.restore(m); }\n}\n\nconst editor = new Editor();\nconst history = new History(editor);\nhistory.backup(); editor.type(\"Hello\");\nhistory.backup(); editor.type(\" world\");\nconsole.log(editor.text); // Hello world\nhistory.undo();\nconsole.log(editor.text); // Hello\nhistory.undo();\nconsole.log(JSON.stringify(editor.text)); // \"\"",
+          "lang": "typescript"
+        },
+        "`History` 是管理者。它在每次變更前呼叫 `backup()`，要返回時呼叫 `undo()`，但從不接觸 `text` 或 `cursor`。如果之後在 `EditorState` 中加入選取範圍，`History` 不必更動。",
+        {
+          "note": "備忘錄必須是真正的副本。如果它只儲存原發器可變物件或陣列的引用，之後的編輯也會改到快照，復原就會還原到錯誤的狀態。對於巢狀資料，請使用 `structuredClone(state)` 這類深層複製。"
+        }
+      ]
+    },
+    {
+      "h": "備忘錄與命令的復原比較",
+      "body": [
+        "實作復原有兩種常見方式，而且常常結合使用：",
+        {
+          "table": {
+            "head": [
+              "做法",
+              "儲存的內容",
+              "適用時機",
+              "成本"
+            ],
+            "rows": [
+              [
+                "備忘錄",
+                "每次變更前的整個狀態快照",
+                "變更難以反向，或狀態很小",
+                "記憶體用量隨狀態大小乘以步數成長"
+              ],
+              [
+                "命令",
+                "操作，以及足以反向還原的資料",
+                "每個操作都有簡單的反操作",
+                "每個命令都需要正確的復原邏輯"
+              ]
+            ]
+          }
+        },
+        "一個務實的折衷：大多數步驟儲存命令，每 N 步儲存一次完整備忘錄；或只儲存命令所改變的那部分狀態。"
+      ]
+    },
+    {
+      "h": "何時使用、何時不用",
+      "body": [
+        {
+          "ul": [
+            "用於復原、重做、檢查點、遊戲存檔，以及表單上應該回復編輯內容的「取消」按鈕。",
+            "用於記憶體內的交易：在有風險的操作前建立快照，失敗時還原。",
+            "當管理者不應依賴原發器的內部欄位時使用。",
+            "狀態非常龐大且經常改變時不要使用，除非你限制歷史長度或只儲存差異。",
+            "當狀態本來就是單純的不可變值時，不必搞全套儀式。有了不可變資料，舊值本身就是快照，只要保留一份先前值的清單就夠了。"
+          ]
+        }
+      ]
+    },
+    {
+      "h": "實際應用",
+      "body": [
+        {
+          "ul": [
+            "瀏覽器 History API：`history.pushState(state, \"\", url)` 為每個歷史項目儲存一個狀態物件，使用者導覽時，`popstate` 事件會把它交還。",
+            "Redux 及類似的 store 會保留不可變的狀態快照，工具藉此提供時間旅行除錯。",
+            "SQL 資料庫在交易中支援 `SAVEPOINT`，因此可以把工作回復到具名的時間點。",
+            "文字編輯器、繪圖程式和遊戲會儲存快照，用於復原、自動儲存與存檔欄位。"
+          ]
+        }
+      ]
+    },
+    {
+      "h": "相關模式",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "模式",
+              "與備忘錄的關係"
+            ],
+            "rows": [
+              [
+                "命令",
+                "命令可以透過反向操作來復原；它也可以儲存執行前取得的備忘錄，並在 `undo` 中還原。"
+              ],
+              [
+                "原型",
+                "原型複製整個物件來建立新物件；備忘錄則儲存狀態，以便之後還原同一個物件。"
+              ],
+              [
+                "迭代器",
+                "迭代器可以把目前位置以備忘錄的形式公開，讓走訪之後能繼續。"
+              ],
+              [
+                "狀態",
+                "狀態模式會在狀態改變時改變物件的行為；備忘錄只記錄並還原資料。"
+              ]
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "原發器與管理者有什麼不同？",
+      "a": "原發器擁有狀態，是唯一能建立備忘錄並從中還原的物件。管理者決定何時儲存與還原，並保管備忘錄，但把它們當作不透明的物件。"
+    },
+    {
+      "q": "備忘錄會破壞封裝嗎？",
+      "a": "不會，這正是它的目的。原發器的內部欄位維持私有，備忘錄對管理者隱藏它們，因此只有原發器能讀取儲存的狀態。"
+    },
+    {
+      "q": "如何限制備忘錄的記憶體用量？",
+      "a": "保留快照的最大數量並丟棄最舊的、只儲存狀態中有變動的部分，或把備忘錄與記錄小幅變更的命令結合使用。"
+    },
+    {
+      "q": "JSON 序列化算是備忘錄嗎？",
+      "a": "把狀態序列化成 JSON 可以作為備忘錄的儲存格式，也很適合存到磁碟。這個模式本身關心的是誰建立、保管與還原快照，而不是格式。"
+    }
+  ]
+}

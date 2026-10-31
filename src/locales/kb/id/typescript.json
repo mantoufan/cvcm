@@ -1,0 +1,183 @@
+{
+  "title": "Tutorial TypeScript: tipe, interface, generic, dan narrowing — cv.cm",
+  "description": "Belajar TypeScript dalam satu halaman: instal tsc dan jalankan Hello world, tipe dasar, interface, union type, narrowing, generic, penanganan error, plus contoh lengkap.",
+  "h1": "Tutorial TypeScript untuk pemula",
+  "answer": "TypeScript adalah JavaScript dengan tipe statis. Anda menambahkan anotasi tipe seperti `let count: number = 0`, dan compiler `tsc` memeriksanya sebelum mengubah kode menjadi JavaScript biasa yang berjalan di browser mana pun atau di Node.js. Konsep utamanya: tipe dasar, interface dan type alias untuk bentuk objek, union type dengan narrowing, serta generic untuk kode yang dapat dipakai ulang. Tipe dihapus saat runtime.",
+  "sections": [
+    {
+      "h": "Apa itu TypeScript dan untuk apa dipakai",
+      "body": [
+        "TypeScript adalah bahasa open source yang dikembangkan Microsoft dan pertama kali dirilis pada 2012. Setiap program JavaScript yang valid juga valid sebagai TypeScript, jadi Anda bisa mengadopsinya file demi file. Type checker menangkap kesalahan seperti properti yang salah ketik atau pemeriksaan `null` yang terlewat saat Anda mengetik, dan editor memakai tipe untuk autocomplete serta rename yang aman. TypeScript banyak dipakai untuk aplikasi front-end besar (Angular ditulis dengannya, dan React, Vue, serta Svelte mendukungnya dengan baik), back end Node.js, dan pustaka."
+      ]
+    },
+    {
+      "h": "Instal dan jalankan Hello, world",
+      "body": [
+        "Instal Node.js terlebih dahulu, lalu instal compiler di proyek Anda dengan npm. `tsc` mengompilasi file `.ts` menjadi `.js`.",
+        {
+          "code": "const message: string = \"Hello, world\";\nconsole.log(message);",
+          "lang": "typescript"
+        },
+        {
+          "code": "npm install --save-dev typescript\nnpx tsc --init          # creates tsconfig.json\nnpx tsc hello.ts        # writes hello.js\nnode hello.js\n# Hello, world",
+          "lang": "shell"
+        },
+        "Versi terbaru Node.js, Deno, dan Bun juga dapat menjalankan file `.ts` secara langsung dengan membuang anotasi tipe. Mereka tidak melakukan type-check, jadi tetap jalankan `npx tsc --noEmit` untuk menemukan error tipe."
+      ]
+    },
+    {
+      "h": "Tipe dasar dan type inference",
+      "body": [
+        "Anda jarang perlu menulis setiap tipe. Saat menginisialisasi variabel, TypeScript menyimpulkan tipenya: `let n = 5` bertipe `number`. Beri anotasi pada parameter fungsi dan API publik.",
+        {
+          "table": {
+            "head": [
+              "Tipe",
+              "Contoh",
+              "Catatan"
+            ],
+            "rows": [
+              [
+                "`number`",
+                "`let n: number = 3.5`",
+                "Bilangan bulat dan desimal"
+              ],
+              [
+                "`string`",
+                "`let s: string = \"hi\"`",
+                "Teks"
+              ],
+              [
+                "`boolean`",
+                "`let ok: boolean = true`",
+                "true atau false"
+              ],
+              [
+                "Array",
+                "`number[]` atau `Array<number>`",
+                "Kedua bentuk bermakna sama"
+              ],
+              [
+                "Tuple",
+                "`[string, number]`",
+                "Panjang dan posisi tetap"
+              ],
+              [
+                "`unknown`",
+                "`let x: unknown`",
+                "Nilai apa pun, harus diperiksa sebelum dipakai"
+              ],
+              [
+                "`any`",
+                "`let y: any`",
+                "Mematikan pemeriksaan; hindari"
+              ],
+              [
+                "`void` / `never`",
+                "tipe kembalian fungsi",
+                "Tidak mengembalikan apa pun / tidak pernah kembali"
+              ]
+            ]
+          }
+        },
+        {
+          "code": "let count = 0;          // inferred as number\ncount = \"ten\";          // error: Type 'string' is not assignable to type 'number'\nconst names: string[] = [\"Ann\", \"Bo\"];\nconst pair: [string, number] = [\"age\", 31];",
+          "lang": "typescript"
+        },
+        "Baris kedua sengaja berupa error kompilasi, ditampilkan untuk memperlihatkan apa yang dilaporkan checker."
+      ]
+    },
+    {
+      "h": "Fungsi, alur kontrol, dan narrowing",
+      "body": [
+        "Alur kontrol (`if`, `for`, `while`, `switch`) persis sama seperti di JavaScript. Yang ditambahkan TypeScript adalah narrowing: setelah pemeriksaan seperti `typeof x === \"string\"`, compiler tahu tipe yang lebih spesifik di dalam cabang tersebut.",
+        {
+          "code": "function greet(name: string, greeting = \"Hello\"): string {\n  return `${greeting}, ${name}!`;\n}\nfunction formatId(id: string | number): string {\n  if (typeof id === \"number\") {\n    return id.toFixed(0).padStart(6, \"0\"); // id is number here\n  }\n  return id.toUpperCase();                 // id is string here\n}\nconsole.log(greet(\"Lin\"));    // Hello, Lin!\nconsole.log(formatId(42));    // 000042\nconsole.log(formatId(\"ab7\")); // AB7",
+          "lang": "typescript"
+        },
+        "`string | number` adalah union type: nilainya salah satu dari tipe yang tercantum. Parameter opsional ditulis `name?: string`, dan tipenya mencakup `undefined`."
+      ]
+    },
+    {
+      "h": "Interface dan type alias",
+      "body": [
+        "Deskripsikan bentuk objek dengan `interface` atau type alias `type`. TypeScript memeriksa struktur, bukan nama: objek apa pun dengan properti yang tepat dianggap cocok.",
+        {
+          "code": "interface User {\n  id: number;\n  name: string;\n  email?: string;          // optional\n  readonly createdAt: Date;\n}\ntype Role = \"admin\" | \"editor\" | \"viewer\"; // string literal union\nfunction describe(user: User, role: Role): string {\n  const contact = user.email ?? \"no email\";\n  return `${user.name} (${role}, ${contact})`;\n}\nconst ann: User = { id: 1, name: \"Ann\", createdAt: new Date() };\nconsole.log(describe(ann, \"editor\")); // Ann (editor, no email)",
+          "lang": "typescript"
+        }
+      ]
+    },
+    {
+      "h": "Fitur khas: generic dan discriminated union",
+      "body": [
+        "Generic memungkinkan satu fungsi atau tipe bekerja dengan banyak tipe sambil menjaga keterkaitannya. Discriminated union adalah union dari tipe objek yang memiliki field literal yang sama, sehingga `switch` pada field itu mempersempit tipe, dan compiler bisa memeriksa bahwa setiap kasus sudah ditangani.",
+        {
+          "code": "function first<T>(items: T[]): T | undefined {\n  return items[0];\n}\nconst n = first([10, 20]);   // n: number | undefined\nconst s = first([\"a\", \"b\"]); // s: string | undefined\ntype Shape =\n  | { kind: \"circle\"; radius: number }\n  | { kind: \"rect\"; width: number; height: number };\nfunction area(shape: Shape): number {\n  switch (shape.kind) {\n    case \"circle\":\n      return Math.PI * shape.radius ** 2;\n    case \"rect\":\n      return shape.width * shape.height;\n  }\n}\nconsole.log(n, s, area({ kind: \"rect\", width: 2, height: 3 })); // 10 a 6",
+          "lang": "typescript"
+        },
+        "Utility type bawaan membuat tipe baru dari tipe lama: `Partial<User>` membuat setiap properti opsional, `Pick<User, \"id\" | \"name\">` hanya mempertahankan sebagian properti, dan `Record<string, number>` mendeskripsikan dictionary."
+      ]
+    },
+    {
+      "h": "Penanganan error",
+      "body": [
+        "Error bekerja seperti di JavaScript, dengan `throw` dan `try`/`catch`. Dengan opsi `strict` aktif, nilai yang tertangkap bertipe `unknown`, karena nilai apa pun bisa dilempar, jadi periksa dahulu sebelum dipakai.",
+        {
+          "code": "function parseAge(text: string): number {\n  const age = Number(text);\n  if (!Number.isInteger(age) || age < 0) {\n    throw new Error(`invalid age: ${text}`);\n  }\n  return age;\n}\ntry {\n  parseAge(\"abc\");\n} catch (err: unknown) {\n  const message = err instanceof Error ? err.message : String(err);\n  console.log(message); // invalid age: abc\n}",
+          "lang": "typescript"
+        }
+      ]
+    },
+    {
+      "h": "Program kecil yang lengkap: inventaris bertipe",
+      "body": [
+        {
+          "code": "interface Item {\n  name: string;\n  price: number;\n  qty: number;\n}\ntype Summary = { total: number; cheapest?: Item; outOfStock: string[] };\nfunction summarize(items: Item[]): Summary {\n  let total = 0;\n  let cheapest: Item | undefined;\n  const outOfStock: string[] = [];\n  for (const item of items) {\n    total += item.price * item.qty;\n    if (item.qty === 0) outOfStock.push(item.name);\n    if (!cheapest || item.price < cheapest.price) cheapest = item;\n  }\n  return { total, cheapest, outOfStock };\n}\nconst result = summarize([\n  { name: \"pen\", price: 1.5, qty: 10 },\n  { name: \"book\", price: 12, qty: 2 },\n  { name: \"bag\", price: 30, qty: 0 },\n]);\nconsole.log(result.total, result.cheapest?.name, result.outOfStock);\n// 39 pen [ 'bag' ]",
+          "lang": "typescript"
+        },
+        "Coba ubah `qty: 10` menjadi `qty: \"10\"`: compiler melaporkan error sebelum kode dijalankan."
+      ]
+    },
+    {
+      "h": "Kesalahan umum pemula",
+      "body": [
+        {
+          "note": "Tipe tidak ada saat runtime. Anotasi tipe pada data dari `JSON.parse` atau `fetch` hanyalah janji dari Anda; validasi input yang tidak tepercaya dengan pemeriksaan sungguhan atau pustaka skema."
+        },
+        {
+          "ul": [
+            "Memakai `any` untuk membungkam error. Pilih `unknown` lalu persempit.",
+            "Terlalu sering memakai type assertion `as`, yang menyuruh compiler percaya pada Anda alih-alih memeriksa.",
+            "Membiarkan `strict` mati di `tsconfig.json`. Aktifkan di proyek baru; opsi ini mengaktifkan pemeriksaan `null`.",
+            "Menulis tipe yang sebenarnya sudah bisa disimpulkan compiler, sehingga menambah kebisingan tanpa keamanan."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Langkah selanjutnya",
+      "body": [
+        "Baca TypeScript Handbook resmi, dan bereksperimenlah di TypeScript Playground di typescriptlang.org, yang menampilkan JavaScript hasil kompilasi dan error secara berdampingan. Lalu pelajari opsi `tsconfig.json`, file deklarasi tipe untuk pustaka (paket `@types/...`), dan TypeScript dengan framework pilihan Anda."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Apakah TypeScript bahasa yang berbeda dari JavaScript?",
+      "a": "TypeScript adalah superset JavaScript: ia menambahkan sintaks tipe dan sebuah checker, lalu dikompilasi menjadi JavaScript biasa. Perilaku runtime-nya sama dengan JavaScript yang dihasilkan."
+    },
+    {
+      "q": "Perlukah belajar JavaScript sebelum TypeScript?",
+      "a": "Pelajari dasar JavaScript dulu (variabel, fungsi, objek, promise), karena TypeScript tidak mengubahnya. Setelah itu tambahkan TypeScript; tipe lebih mudah dipelajari jika perilaku runtime sudah dikenal."
+    },
+    {
+      "q": "Apa perbedaan interface dan type?",
+      "a": "Keduanya mendeskripsikan bentuk objek. Interface dapat diperluas dan digabung dengan mendeklarasikannya lagi; type alias juga dapat menamai union, tuple, dan tipe non-objek lain. Untuk bentuk objek biasa, keduanya cocok."
+    },
+    {
+      "q": "Apakah TypeScript membuat kode saya lebih cepat?",
+      "a": "Tidak. Tipe dihapus saat kompilasi, sehingga hasilnya berjalan secepat JavaScript yang ditulis tangan. Manfaatnya adalah bug lebih sedikit dan tooling lebih baik."
+    }
+  ]
+}

@@ -1,0 +1,198 @@
+{
+  "title": "最小生成樹：Kruskal 與 Prim 演算法（Python 實作） — cv.cm",
+  "description": "最小生成樹教學：使用 union-find 的 Kruskal 演算法與使用堆積的 Prim 演算法、逐步追蹤範例、Python 程式碼與 O(E log E) 成本。",
+  "h1": "最小生成樹教學：Kruskal 與 Prim 演算法",
+  "answer": "連通、無向、加權圖的最小生成樹（MST）是一組邊，能把所有節點連起來、沒有任何環，且總權重最小。Kruskal 演算法先對所有邊排序，再利用 union-find 逐一加入不會形成環的最便宜邊。Prim 演算法則從起點長出一棵樹，利用優先佇列，每次加入離開這棵樹的最便宜邊。兩者的時間複雜度都是 O(E log E)。",
+  "sections": [
+    {
+      "h": "最小生成樹解決什麼問題",
+      "body": [
+        "假設你要用電纜連接幾棟建築、用道路連接幾個城鎮，或用網路線連接幾台伺服器，而每種可能的連線都有成本。你希望每個地方都（直接或間接）連通，且總成本最低。形成迴圈的多餘連線永遠不需要，所以答案是一棵樹：V 個節點恰好由 V − 1 條邊連接，這棵樹就是最小生成樹。",
+        "MST 不是最短路徑樹。它最小化的是所有邊的總權重，而不是從單一起點到其他節點的距離。"
+      ]
+    },
+    {
+      "h": "為什麼貪婪選擇有效：切割性質",
+      "body": [
+        "把節點分成任意兩組。在跨越兩組的邊之中，最輕的那條屬於某棵最小生成樹。兩種演算法都依賴這個事實：",
+        {
+          "table": {
+            "head": [
+              "演算法",
+              "貪婪規則",
+              "輔助資料結構"
+            ],
+            "rows": [
+              [
+                "Kruskal（1956）",
+                "由輕到重依序取邊；若一條邊連接兩個不同的元件就保留它。",
+                "Union-find（並查集）"
+              ],
+              [
+                "Prim（1957；Jarník 亦於 1930 提出）",
+                "長出一棵樹；反覆加入從樹連到樹外節點的最輕邊。",
+                "最小堆積優先佇列"
+              ]
+            ]
+          }
+        },
+        "如果所有邊的權重都不同，MST 就是唯一的，所以兩種演算法會回傳相同的樹。權重相同時，可能有多棵總權重相同的 MST。"
+      ]
+    },
+    {
+      "h": "逐步範例",
+      "body": [
+        "無向圖有 5 個節點，邊為 A–B 4、A–C 3、B–C 1、B–D 2、C–D 4、D–E 2、C–E 5。",
+        "Kruskal 演算法，邊依權重排序：",
+        {
+          "table": {
+            "head": [
+              "邊",
+              "權重",
+              "決定",
+              "之後的元件"
+            ],
+            "rows": [
+              [
+                "B–C",
+                "1",
+                "加入",
+                "{B, C} {A} {D} {E}"
+              ],
+              [
+                "B–D",
+                "2",
+                "加入",
+                "{B, C, D} {A} {E}"
+              ],
+              [
+                "D–E",
+                "2",
+                "加入",
+                "{B, C, D, E} {A}"
+              ],
+              [
+                "A–C",
+                "3",
+                "加入",
+                "{A, B, C, D, E}：已有 4 條邊，完成"
+              ],
+              [
+                "A–B、C–D、C–E",
+                "4, 4, 5",
+                "不需要（每一條都會形成環）",
+                "—"
+              ]
+            ]
+          }
+        },
+        "從 A 開始的 Prim 演算法：離開 {A} 的最便宜邊是 A–C（3）；從 {A, C} 出發是 C–B（1）；從 {A, B, C} 出發是 B–D（2）；從 {A, B, C, D} 出發是 D–E（2）。得到相同的樹，總權重為 3 + 1 + 2 + 2 = 8。"
+      ]
+    },
+    {
+      "h": "Python 的 Kruskal 演算法",
+      "body": [
+        "Union-find 為每個節點保存一個父節點指標。`find` 回傳節點所屬元件的代表，兩個節點相連，當且僅當它們有相同的代表。",
+        {
+          "code": "def kruskal(nodes, edges):\n    parent = {n: n for n in nodes}\n\n    def find(x):\n        while parent[x] != x:\n            parent[x] = parent[parent[x]]   # path halving\n            x = parent[x]\n        return x\n\n    tree, total = [], 0\n    for w, u, v in sorted(edges):\n        ru, rv = find(u), find(v)\n        if ru != rv:                          # different components: no cycle\n            parent[ru] = rv\n            tree.append((u, v, w))\n            total += w\n    return tree, total\n\nnodes = \"ABCDE\"\nedges = [(4, \"A\", \"B\"), (3, \"A\", \"C\"), (1, \"B\", \"C\"), (2, \"B\", \"D\"),\n         (4, \"C\", \"D\"), (2, \"D\", \"E\"), (5, \"C\", \"E\")]\nprint(kruskal(nodes, edges))\n# ([('B', 'C', 1), ('B', 'D', 2), ('D', 'E', 2), ('A', 'C', 3)], 8)",
+          "lang": "python"
+        },
+        "完整的 union-find 還會使用按秩或按大小合併，讓樹保持扁平。光是路徑減半在實務上就已經很快。當樹已有 V − 1 條邊時，可以提前結束迴圈。"
+      ]
+    },
+    {
+      "h": "Python 的 Prim 演算法",
+      "body": [
+        "Prim 演算法需要鄰接串列。它和 Dijkstra 演算法一樣使用惰性刪除：推入每條離開這棵樹的邊，並略過遠端已在樹中的邊。",
+        {
+          "code": "import heapq\nfrom collections import defaultdict\n\ndef prim(edges, start):\n    graph = defaultdict(list)\n    for w, u, v in edges:\n        graph[u].append((w, u, v))\n        graph[v].append((w, v, u))\n    in_tree = {start}\n    heap = list(graph[start])\n    heapq.heapify(heap)\n    tree, total = [], 0\n    while heap:\n        w, u, v = heapq.heappop(heap)\n        if v in in_tree:\n            continue\n        in_tree.add(v)\n        tree.append((u, v, w))\n        total += w\n        for edge in graph[v]:\n            if edge[2] not in in_tree:\n                heapq.heappush(heap, edge)\n    return tree, total\n\nprint(prim(edges, \"A\"))\n# ([('A', 'C', 3), ('C', 'B', 1), ('B', 'D', 2), ('D', 'E', 2)], 8)",
+          "lang": "python"
+        }
+      ]
+    },
+    {
+      "h": "時間與空間複雜度",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "演算法",
+              "時間",
+              "空間",
+              "最適合"
+            ],
+            "rows": [
+              [
+                "Kruskal",
+                "O(E log E)",
+                "O(V + E)",
+                "稀疏圖，或邊已經以串列形式給定。排序是主要成本；union-find 每次操作幾乎是 O(1)。"
+              ],
+              [
+                "使用二元堆積的 Prim",
+                "O(E log V)",
+                "O(V + E)",
+                "以鄰接串列表示的圖。"
+              ],
+              [
+                "使用陣列（不用堆積）的 Prim",
+                "O(V²)",
+                "O(V)",
+                "稠密圖，例如所有點兩兩相連。"
+              ]
+            ]
+          }
+        },
+        "因為 E 至多為 V²，log E 至多為 2 log V，所以 O(E log E) 與 O(E log V) 是同一個數量級。"
+      ]
+    },
+    {
+      "h": "變化版本與常見錯誤",
+      "body": [
+        {
+          "ul": [
+            "非連通圖：不存在生成樹。這時 Kruskal 會回傳最小生成森林（每個元件一棵樹）；從單一起點執行的 Prim 只會涵蓋該起點所在的元件。請檢查樹是否有 V − 1 條邊。",
+            "最大生成樹：將邊依降序排序（或把權重取負）。這兩種演算法都可以處理負權重。",
+            "有向圖需要另一種演算法（最小樹形圖，Chu-Liu/Edmonds）；Kruskal 和 Prim 不適用。",
+            "分群：執行 Kruskal，剩下 k 個元件時停止。結果就是分成 k 群的單連結分群。",
+            "1926 年的 Borůvka 演算法一次對每個元件加入其最便宜的邊，很適合平行化。"
+          ]
+        },
+        {
+          "note": "Kruskal 的常見錯誤是用節點的已拜訪集合而非 union-find 來檢查環。兩個節點可能都被拜訪過，卻屬於不同的元件，所以它們之間的邊仍然需要。只有「屬於同一個元件」才表示「會形成環」。"
+        }
+      ]
+    },
+    {
+      "h": "何時使用與實際應用",
+      "body": [
+        {
+          "ul": [
+            "網路設計：在任何連通的配置都可接受時，以最便宜的方式用電纜、管線或道路連接各個據點。",
+            "近似演算法：MST 可為度量旅行推銷員問題提供長度至多為最佳解兩倍的路線。",
+            "分群與影像分割：切掉 MST 中最重的邊。",
+            "面試題目：連接所有點的最小成本、以最小成本連接城市、最佳化村莊的供水配置。"
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Kruskal 與 Prim 演算法有什麼差別？",
+      "a": "Kruskal 從全域依由輕到重的順序處理所有邊，並用 union-find 合併元件。Prim 則用優先佇列從單一節點長出一棵樹。兩者都能找到最小生成樹。"
+    },
+    {
+      "q": "最小生成樹是唯一的嗎？",
+      "a": "當所有邊的權重都不同時是唯一的。權重相同時，可能有多棵總權重同為最小的樹。"
+    },
+    {
+      "q": "最小生成樹和最短路徑樹一樣嗎？",
+      "a": "不一樣。MST 最小化所有邊的總和，而最短路徑樹（例如 Dijkstra 演算法產生的）最小化的是從單一起點到每個節點的距離。這兩棵樹常常不同。"
+    },
+    {
+      "q": "生成樹有幾條邊？",
+      "a": "對有 V 個節點的連通圖，恰好是 V − 1 條。更少的邊無法連通所有節點，更多的邊則會形成環。"
+    }
+  ]
+}

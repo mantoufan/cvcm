@@ -1,0 +1,160 @@
+{
+  "title": "Patrón Facade: una interfaz simple para un subsistema complejo, ejemplo en TypeScript — cv.cm",
+  "description": "El patrón de diseño Facade explicado: oculta un subsistema complejo tras una interfaz simple. Ejemplo de pago de un pedido en TypeScript, cuándo usarlo y usos reales.",
+  "h1": "Patrón Facade explicado con ejemplos",
+  "answer": "Facade es un patrón de diseño estructural que ofrece una interfaz simple y de más alto nivel para un conjunto de interfaces de un subsistema complejo. En lugar de llamar a los servicios de inventario, pago, envío y correo en el orden correcto, el código cliente llama a un solo método como `shop.placeOrder()`, y la fachada coordina las clases del subsistema. El subsistema sigue existiendo y puede usarse directamente cuando haga falta; la fachada solo facilita el caso común.",
+  "sections": [
+    {
+      "h": "Intención",
+      "body": [
+        "Proporcionar una interfaz unificada para un conjunto de interfaces de un subsistema. Facade define una interfaz de más alto nivel que hace el subsistema más fácil de usar. Es uno de los siete patrones estructurales del libro de la Banda de los Cuatro (Gang of Four, GoF)."
+      ]
+    },
+    {
+      "h": "El problema que resuelve",
+      "body": [
+        "Imagina una tienda en línea. Hacer un pedido necesita varios servicios: comprobar y reservar existencias, cobrar la tarjeta, liberar las existencias si el pago falla, crear un envío y enviar un correo de confirmación. Cada servicio tiene su propia API y sus propias reglas.",
+        "Si cada llamador, como el pago web, la API móvil y una herramienta de administración, ejecuta estos pasos por sí mismo, la misma secuencia se copia en muchos lugares. Cada copia puede equivocarse en el orden u olvidar la reversión, y cada llamador depende de cinco servicios. Cuando un servicio cambia, todos los llamadores deben cambiar. Una fachada pone la secuencia en un solo lugar y da a los llamadores un único método."
+      ]
+    },
+    {
+      "h": "Estructura y participantes",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Participante",
+              "Responsabilidad",
+              "En el ejemplo"
+            ],
+            "rows": [
+              [
+                "Fachada",
+                "Sabe qué clases del subsistema atienden una petición y delega en ellas en el orden correcto.",
+                "`OrderFacade`"
+              ],
+              [
+                "Clases del subsistema",
+                "Hacen el trabajo real. No saben nada de la fachada.",
+                "`Inventory`, `Payments`, `Shipping`, `Mailer`"
+              ],
+              [
+                "Cliente",
+                "Usa la fachada para las tareas comunes; aún puede usar directamente las clases del subsistema en casos especiales.",
+                "código de pago"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "Implementación en TypeScript",
+      "body": [
+        {
+          "code": "// Subsystem classes, each with its own API.\nclass Inventory {\n  private stock = new Map([[\"book\", 2]]);\n  reserve(sku: string): boolean {\n    const n = this.stock.get(sku) ?? 0;\n    if (n === 0) return false;\n    this.stock.set(sku, n - 1);\n    return true;\n  }\n  release(sku: string): void { this.stock.set(sku, (this.stock.get(sku) ?? 0) + 1); }\n}\nclass Payments {\n  charge(card: string, cents: number): boolean { return card.startsWith(\"4\") && cents > 0; }\n}\nclass Shipping {\n  createShipment(sku: string, address: string): string { return `SHIP-${sku}-${address.length}`; }\n}\nclass Mailer {\n  send(to: string, text: string): void { console.log(`mail to ${to}: ${text}`); }\n}",
+          "lang": "typescript"
+        },
+        "La fachada ejecuta entonces todo el flujo de trabajo en el orden correcto tras un solo método:",
+        {
+          "code": "// Facade: one method that runs the whole workflow in the right order.\nclass OrderFacade {\n  constructor(private inventory = new Inventory(), private payments = new Payments(),\n              private shipping = new Shipping(), private mailer = new Mailer()) {}\n\n  placeOrder(sku: string, card: string, cents: number, email: string, address: string): string {\n    if (!this.inventory.reserve(sku)) return \"out of stock\";\n    if (!this.payments.charge(card, cents)) {\n      this.inventory.release(sku); // roll back the reservation\n      return \"payment declined\";\n    }\n    const shipmentId = this.shipping.createShipment(sku, address);\n    this.mailer.send(email, `Order confirmed, shipment ${shipmentId}`);\n    return \"ok\";\n  }\n}\n\nconst shop = new OrderFacade();\nconsole.log(shop.placeOrder(\"book\", \"4111\", 1999, \"ada@example.com\", \"1 Main St\"));\n// mail to ada@example.com: Order confirmed, shipment SHIP-book-9\n// ok\nconsole.log(shop.placeOrder(\"book\", \"5500\", 1999, \"bob@example.com\", \"2 Side St\")); // payment declined",
+          "lang": "typescript"
+        },
+        "Ahora los llamadores dependen de una clase con un método. La regla de reversión existe exactamente una vez. Las clases del subsistema siguen disponibles, así que una herramienta de administración que solo necesita liberar existencias puede llamar a `Inventory` directamente."
+      ]
+    },
+    {
+      "h": "Cuándo usarlo y cuándo no",
+      "body": [
+        "Usa Facade cuando:",
+        {
+          "ul": [
+            "Un subsistema es complejo y la mayoría de los clientes solo necesitan un subconjunto simple y común de lo que puede hacer.",
+            "Quieres reducir el número de dependencias entre el código cliente y muchas clases del subsistema.",
+            "Quieres organizar un sistema en capas, con una fachada como punto de entrada a cada capa.",
+            "Envuelves una biblioteca de terceros grande y quieres que el resto de tu código use solo las pocas operaciones que necesita."
+          ]
+        },
+        "Evítalo o limítalo cuando:",
+        {
+          "ul": [
+            "El subsistema ya es simple. Una fachada que reenvía cada llamada uno a uno añade una capa sin ocultar nada.",
+            "La fachada empieza a acumular métodos no relacionados y reglas de negocio de todo el sistema. Es el problema del \"objeto dios\": una clase que sabe y hace demasiado. Divídela en varias fachadas enfocadas."
+          ]
+        },
+        {
+          "note": "Una fachada debe simplificar, no aprisionar. No hagas privado el subsistema solo porque exista una fachada. Los clientes avanzados suelen necesitar la API completa, y bloquearlos lleva a soluciones alternativas."
+        }
+      ]
+    },
+    {
+      "h": "Usos en el mundo real",
+      "body": [
+        {
+          "ul": [
+            "Node.js: `fs.readFile()` abre un archivo, lo lee hasta el final y lo cierra en una sola llamada. Las funciones de más bajo nivel `fs.open()`, `fs.read()` y `fs.close()` siguen disponibles.",
+            "jQuery se hizo popular en gran parte por poner una API corta y coherente delante del DOM y de las diferencias entre navegadores de su época.",
+            "El ejemplo del libro GoF es un compilador: una sola clase `Compiler` oculta el analizador léxico, el analizador sintáctico, el generador de código y otras clases del subsistema a los programas que solo quieren compilar código.",
+            "Las capas de servicio y las puertas de enlace de API en las aplicaciones de back end actúan como fachadas sobre muchos servicios internos."
+          ]
+        },
+        {
+          "note": "Laravel, un framework de PHP, tiene una función llamada Facades. Es una idea distinta: acceso de apariencia estática a objetos del contenedor de servicios. El nombre es el mismo, pero la intención no es la del patrón GoF."
+        }
+      ]
+    },
+    {
+      "h": "Patrones relacionados",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Patrón",
+              "En qué se diferencia de Facade"
+            ],
+            "rows": [
+              [
+                "Adapter",
+                "Hace que una interfaz existente coincida con otra interfaz existente. Una fachada define una interfaz nueva y más simple para muchas clases."
+              ],
+              [
+                "Mediator",
+                "También centraliza la coordinación, pero los objetos del subsistema conocen al mediador y se comunican a través de él. Con una fachada, las clases del subsistema no saben que la fachada existe."
+              ],
+              [
+                "Abstract Factory",
+                "Puede usarse con una fachada para crear los objetos del subsistema de forma independiente de la plataforma."
+              ],
+              [
+                "Singleton",
+                "Las fachadas suelen ser instancias únicas, ya que normalmente basta un solo punto de entrada a un subsistema."
+              ],
+              [
+                "Proxy",
+                "Tiene la misma interfaz que un objeto y controla el acceso a él. Una fachada tiene una interfaz distinta y más simple sobre muchos objetos."
+              ]
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "¿Cuál es la diferencia entre Facade y Adapter?",
+      "a": "Un adaptador convierte una interfaz existente en otra interfaz que el cliente ya espera. Una fachada inventa una interfaz nueva y más simple para facilitar el uso de todo un subsistema."
+    },
+    {
+      "q": "¿Una fachada oculta el subsistema por completo?",
+      "a": "No. La fachada facilita las tareas comunes, pero los clientes que necesitan más control todavía pueden usar directamente las clases del subsistema."
+    },
+    {
+      "q": "¿Puede un sistema tener más de una fachada?",
+      "a": "Sí. Los sistemas grandes suelen tener una fachada por subsistema o por caso de uso, lo que mantiene cada fachada pequeña y enfocada."
+    },
+    {
+      "q": "¿Una capa de servicio es una fachada?",
+      "a": "A menudo, sí. Un método de servicio que coordina repositorios, API externas y notificaciones tras una sola llamada cumple el papel de fachada para el código que lo llama."
+    }
+  ]
+}

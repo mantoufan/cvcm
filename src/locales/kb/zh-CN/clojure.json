@@ -1,0 +1,218 @@
+{
+  "title": "Clojure 入门教程：语法、集合、函数与 REPL — cv.cm",
+  "description": "从零学 Clojure：安装 CLI、编写 Hello world、使用不可变的向量和映射、定义函数、线程宏、原子与错误处理。",
+  "h1": "Clojure 入门教程",
+  "answer": "Clojure 是一门运行在 Java 虚拟机（JVM）上的动态函数式 Lisp（ClojureScript 则面向 JavaScript）。代码写成括号中的列表，数据默认不可变，程序由小函数组合处理向量、映射和集合而成。你需要安装 Clojure CLI，用 `clj` 启动 REPL，用 `clojure -M hello.clj` 运行文件。",
+  "sections": [
+    {
+      "h": "Clojure 是什么，谁在用",
+      "body": [
+        "Clojure 由 Rich Hickey 创建，2007 年首次发布。它是 Lisp 的一种方言：每个表达式都是一个列表，第一个元素是函数或运算符，例如 `(+ 1 2)`。它编译为 JVM 字节码，因此可以直接调用任何 Java 库。ClojureScript 则把同一门语言编译成 JavaScript，供浏览器和 Node.js 使用。",
+        "Clojure 用于后端 Web 服务、数据处理管道和企业内部系统，尤其适合看重不可变数据和交互式开发的团队。开发者通常在与编辑器相连的 REPL（读取-求值-输出循环）中工作，程序运行的同时一次求值一个表达式。"
+      ]
+    },
+    {
+      "h": "安装 Clojure 并运行 Hello, world",
+      "body": [
+        "先安装 Java 运行时（JDK 17 或更新版本比较稳妥），再从 clojure.org 安装 Clojure CLI 工具（macOS 用 Homebrew，Linux 用安装脚本，Windows 用安装程序）。CLI 提供两个命令：`clj`（带行编辑的 REPL）和 `clojure`（用于运行程序）。",
+        {
+          "code": ";; hello.clj\n(println \"Hello, world!\")",
+          "lang": "clojure"
+        },
+        {
+          "code": "clojure -M hello.clj\n# Hello, world!\nclj\n# user=> (+ 1 2)\n# 3",
+          "lang": "shell"
+        },
+        "实际项目把依赖写在 `deps.edn` 文件中，代码放在 `src/` 目录下，每个文件一个命名空间。Leiningen（`lein`）是较老但仍然流行的构建工具，使用 `project.clj` 文件。"
+      ]
+    },
+    {
+      "h": "值、类型与名字",
+      "body": [
+        "Clojure 是动态类型的。`def` 绑定全局名字（var），`let` 绑定局部名字。值在创建后不会改变：没有赋值语句。",
+        {
+          "table": {
+            "head": [
+              "类型",
+              "示例",
+              "说明"
+            ],
+            "rows": [
+              [
+                "整数",
+                "`42`",
+                "64 位 `long`；`42N` 是 BigInt"
+              ],
+              [
+                "浮点数",
+                "`3.14`",
+                "Java 的 `double`"
+              ],
+              [
+                "有理数",
+                "`(/ 1 3)`",
+                "精确分数 `1/3`，不是 0.333"
+              ],
+              [
+                "字符串",
+                "`\"hello\"`",
+                "Java 的 `String`，只能用双引号"
+              ],
+              [
+                "字符",
+                "`\\a`",
+                "单个字符"
+              ],
+              [
+                "关键字",
+                "`:name`",
+                "快速、可自求值的标签，常用作映射的键"
+              ],
+              [
+                "布尔值 / nil",
+                "`true`, `false`, `nil`",
+                "只有 `false` 和 `nil` 为假"
+              ]
+            ]
+          }
+        },
+        {
+          "code": "(def pi-approx 3.14159)\n(let [r 2\n      area (* pi-approx r r)]\n  (println \"Area:\" area))\n;; Area: 12.56636\n(str \"a\" 1 :b)   ;; => \"a1:b\"",
+          "lang": "clojure"
+        }
+      ]
+    },
+    {
+      "h": "控制流",
+      "body": [
+        "在 Clojure 中一切都是返回值的表达式，包括 `if`。`if` 恰好接受一个“then”和一个“else”表达式；需要执行多个副作用且没有 else 分支时用 `when`，多个条件时用 `cond`。",
+        {
+          "code": "(defn grade [score]\n  (cond\n    (>= score 90) \"A\"\n    (>= score 80) \"B\"\n    :else         \"C\"))\n(println (grade 85))            ;; B\n(when (pos? 5) (println \"positive\") :done)\n(doseq [x [1 2 3]] (println (* x x)))   ;; 1 4 9\n(for [x (range 5) :when (odd? x)] (* x 10))   ;; => (10 30)\n(loop [i 0 acc 0]\n  (if (< i 5) (recur (inc i) (+ acc i)) acc))   ;; => 10",
+          "lang": "clojure"
+        },
+        "这里没有可以修改计数器的 `for` 循环。`doseq` 对每个元素执行副作用，`for` 构建一个惰性序列（列表推导式），`loop`/`recur` 表达迭代而不增加调用栈。"
+      ]
+    },
+    {
+      "h": "函数",
+      "body": [
+        "用 `defn` 定义具名函数。一个函数可以有多种元数（不同数量的参数），`#(...)` 是小型匿名函数的简写形式，其中 `%` 表示参数。",
+        {
+          "code": "(defn greet\n  ([] (greet \"world\"))\n  ([name] (str \"Hello, \" name \"!\")))\n(greet)          ;; => \"Hello, world!\"\n(greet \"Ana\")    ;; => \"Hello, Ana!\"\n(defn sum-all [& nums] (reduce + nums))\n(sum-all 1 2 3)  ;; => 6\n(map #(* % %) [1 2 3])        ;; => (1 4 9)\n(filter even? (range 10))     ;; => (0 2 4 6 8)",
+          "lang": "clojure"
+        },
+        "函数是值：你可以把它们传给 `map`、`filter` 和 `reduce`，从其他函数中返回，也可以存进映射。"
+      ]
+    },
+    {
+      "h": "集合：列表、向量、映射与集",
+      "body": [
+        "Clojure 的四种核心集合都是不可变且持久化的：“修改”一个集合会返回新版本，它与旧版本共享大部分结构，所以更新的开销很小。",
+        {
+          "table": {
+            "head": [
+              "集合",
+              "字面量",
+              "典型用途"
+            ],
+            "rows": [
+              [
+                "列表",
+                "`'(1 2 3)`",
+                "代码，以及在前端添加的顺序数据"
+              ],
+              [
+                "向量",
+                "`[1 2 3]`",
+                "带索引的序列，在末尾追加"
+              ],
+              [
+                "映射",
+                "`{:name \"Ana\" :age 30}`",
+                "键值记录"
+              ],
+              [
+                "集",
+                "`#{:red :green}`",
+                "唯一值，成员判断"
+              ]
+            ]
+          }
+        },
+        {
+          "code": "(def user {:name \"Ana\" :age 30})\n(:name user)                   ;; => \"Ana\"\n(assoc user :email \"a@x.io\")   ;; new map with :email\n(update user :age inc)         ;; => {:name \"Ana\", :age 31}\n(conj [1 2] 3)                 ;; => [1 2 3]\n(contains? #{:red :green} :red) ;; => true\n(get-in {:a {:b 1}} [:a :b])   ;; => 1\nuser                           ;; unchanged: {:name \"Ana\", :age 30}",
+          "lang": "clojure"
+        }
+      ]
+    },
+    {
+      "h": "标志性特性：线程宏、原子与宏",
+      "body": [
+        "线程宏让数据管道可以从上到下阅读。`->` 把上一步的结果插入为下一个表达式的第一个参数；`->>` 则把它插入为最后一个参数。",
+        {
+          "code": "(->> (range 1 11)\n     (filter odd?)\n     (map #(* % %))\n     (reduce +))   ;; => 165\n(def counter (atom 0))\n(swap! counter inc)\n(swap! counter + 10)\n@counter           ;; => 11\n(defmacro unless [test & body]\n  `(if ~test nil (do ~@body)))\n(unless false (println \"runs\"))",
+          "lang": "clojure"
+        },
+        "原子（atom）保存可以改变的状态：`swap!` 以原子方式应用一个函数，因此可以安全地被多个线程使用。ref 和 agent 覆盖其他并发场景。由于代码就是数据（列表），宏可以在编译之前转换代码；`when`、`cond` 和 `->` 本身就是宏。"
+      ]
+    },
+    {
+      "h": "错误处理",
+      "body": [
+        "Clojure 使用 JVM 异常，配合 `try`、`catch` 和 `finally`。要给错误附带数据，可以抛出 `ex-info`，再用 `ex-data` 读出数据。",
+        {
+          "code": "(defn parse-age [s]\n  (let [n (Long/parseLong s)]\n    (when (neg? n)\n      (throw (ex-info \"Age must not be negative\" {:value n})))\n    n))\n(try\n  (parse-age \"-5\")\n  (catch clojure.lang.ExceptionInfo e\n    (println (ex-message e) (ex-data e)))\n  (catch NumberFormatException _\n    (println \"not a number\")))\n;; Age must not be negative {:value -5}",
+          "lang": "clojure"
+        }
+      ]
+    },
+    {
+      "h": "一个完整的小程序：词频统计",
+      "body": [
+        {
+          "code": "(ns wordcount\n  (:require [clojure.string :as str]))\n(defn word-counts [text]\n  (->> (str/split (str/lower-case text) #\"\\W+\")\n       (remove str/blank?)\n       frequencies\n       (sort-by val >)))\n(doseq [[word n] (take 2 (word-counts \"The cat and the hat and the bat\"))]\n  (println word n))\n;; the 3\n;; and 2",
+          "lang": "clojure"
+        },
+        "程序先把文本转为小写，用正则字面量 `#\"\\W+\"` 按非单词字符拆分，用 `frequencies`（返回一个映射）统计每个单词，再按次数降序排列各条目。",
+        {
+          "note": "初学者常见错误：把函数写在括号外面（写成 `print(x)` 而不是 `(println x)`）；以为 `assoc` 或 `conj` 会原地修改集合（它们返回新集合，要保留结果）；忘记 `map` 和 `for` 是惰性的，所以其中的副作用在 REPL 或脚本里可能根本不会执行（请用 `doseq` 或 `run!`）；以及把 `0` 或空字符串当作假（只有 `false` 和 `nil` 为假）。"
+        }
+      ]
+    },
+    {
+      "h": "接下来读什么",
+      "body": [
+        {
+          "ul": [
+            "clojure.org 上的官方指南：Getting Started、Learn Clojure 和 deps.edn 指南。",
+            "Clojure 参考页面，涵盖读取器语法、特殊形式和数据结构。",
+            "为编辑器配置连接 REPL 的环境（例如 VS Code 的 Calva、Emacs 的 CIDER 或 IntelliJ 的 Cursive）。",
+            "如果想面向浏览器开发，可以试试 ClojureScript。"
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Clojure 是函数式语言吗？",
+      "a": "是。Clojure 倾向于纯函数和不可变数据，但很务实：它允许副作用，并通过原子、ref 和 agent 提供受管理的可变状态。"
+    },
+    {
+      "q": "学 Clojure 需要懂 Java 吗？",
+      "a": "不需要。不懂 Java 也能学这门语言，但需要安装 Java 运行时，而且了解一点 JVM，对阅读堆栈跟踪或使用 Java 库很有帮助。"
+    },
+    {
+      "q": "Clojure 中列表和向量有什么区别？",
+      "a": "列表 `'(1 2 3)` 在前端添加元素，主要用于代码；向量 `[1 2 3]` 在末尾添加元素，并支持按索引快速访问。Clojure 程序中的大多数数据存放在向量和映射里。"
+    },
+    {
+      "q": "为什么 Clojure 有这么多括号？",
+      "a": "Clojure 代码写成 Lisp 数据结构，所以每次调用都是一个列表。这种统一的语法使宏成为可能，而支持结构化编辑的编辑器让括号很容易管理。"
+    },
+    {
+      "q": "Clojure 和 ClojureScript 有什么区别？",
+      "a": "它们是运行在不同宿主上的同一门语言：Clojure 运行在 JVM 上，ClojureScript 编译为 JavaScript。宿主互操作有所不同，但核心函数和数据结构相同。"
+    }
+  ]
+}

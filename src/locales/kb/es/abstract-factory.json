@@ -1,0 +1,182 @@
+{
+  "title": "Patrón Abstract Factory: familias de objetos, ejemplo en TypeScript — cv.cm",
+  "description": "El patrón de diseño Abstract Factory explicado: crea familias de objetos relacionados sin nombrar clases concretas. Ejemplo en TypeScript, usos y trampas.",
+  "h1": "Patrón Abstract Factory explicado con ejemplos",
+  "answer": "Abstract Factory es un patrón de diseño creacional que ofrece una interfaz para crear familias de objetos relacionados sin especificar sus clases concretas. El código cliente recibe un objeto fábrica, como `LightThemeFactory` o `DarkThemeFactory`, y le pide cada producto (un botón, un cuadro de diálogo). Como una sola fábrica crea toda la familia, los productos siempre encajan entre sí, y puedes cambiar de familia pasando otra fábrica.",
+  "sections": [
+    {
+      "h": "Intención",
+      "body": [
+        "Proporcionar una interfaz para crear familias de objetos relacionados o dependientes sin especificar sus clases concretas. El patrón Abstract Factory es uno de los cinco patrones creacionales del libro de la Banda de los Cuatro (GoF), donde también se conoce como Kit."
+      ]
+    },
+    {
+      "h": "El problema que resuelve",
+      "body": [
+        "Imagina una aplicación de informes que puede generar su salida para dos destinos: una página web y un terminal de texto plano. Cada destino necesita sus propias versiones de varios componentes: un encabezado, una tabla y un cuadro de advertencia. El encabezado web no debe mezclarse con la tabla del terminal, o la salida se rompe.",
+        "Si el código del informe llama directamente a `new HtmlHeading()` y `new TextTable()`, queda atado a clases concretas, la elección del destino se reparte por muchas líneas y nada impide que alguien mezcle familias. El patrón Abstract Factory pone toda la creación de una familia detrás de un solo objeto, de modo que la elección se hace en un único lugar."
+      ]
+    },
+    {
+      "h": "Estructura y participantes",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Participante",
+              "Responsabilidad",
+              "En el ejemplo"
+            ],
+            "rows": [
+              [
+                "AbstractFactory",
+                "Declara un método de creación por cada tipo de producto.",
+                "`UiFactory`"
+              ],
+              [
+                "ConcreteFactory",
+                "Implementa los métodos de creación de una familia.",
+                "`HtmlFactory`, `TextFactory`"
+              ],
+              [
+                "AbstractProduct",
+                "Interfaz de un tipo de producto.",
+                "`Heading`, `Alert`"
+              ],
+              [
+                "ConcreteProduct",
+                "Un producto de una familia concreta.",
+                "`HtmlHeading`, `TextAlert`"
+              ],
+              [
+                "Client",
+                "Usa solo las interfaces de la fábrica abstracta y de los productos abstractos.",
+                "`renderReport`"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "Implementación en TypeScript",
+      "body": [
+        {
+          "code": "interface Heading { render(text: string): string; }\ninterface Alert { render(text: string): string; }\n\ninterface UiFactory {\n  createHeading(): Heading;\n  createAlert(): Alert;\n}\n\nclass HtmlFactory implements UiFactory {\n  createHeading(): Heading { return { render: (t) => `<h1>${t}</h1>` }; }\n  createAlert(): Alert { return { render: (t) => `<div class=\"alert\">${t}</div>` }; }\n}\n\nclass TextFactory implements UiFactory {\n  createHeading(): Heading { return { render: (t) => `${t}\\n${\"=\".repeat(t.length)}` }; }\n  createAlert(): Alert { return { render: (t) => `[!] ${t}` }; }\n}\n\n// The client knows only the interfaces.\nfunction renderReport(ui: UiFactory): string {\n  const heading = ui.createHeading();\n  const alert = ui.createAlert();\n  return [heading.render(\"Sales\"), alert.render(\"2 orders failed\")].join(\"\\n\");\n}\n\nconst target: string = \"text\"; // e.g. from a command-line flag\nconst factory: UiFactory = target === \"html\" ? new HtmlFactory() : new TextFactory();\nconsole.log(renderReport(factory));\n// Sales\n// =====\n// [!] 2 orders failed",
+          "lang": "typescript"
+        },
+        "El único lugar que nombra una clase concreta es la línea que elige la fábrica. `renderReport` funciona con cualquier familia y no puede mezclar por accidente piezas HTML y de texto, porque obtiene todos sus productos de la misma fábrica.",
+        "En un programa real, los productos serían normalmente clases con más métodos. Los literales de objeto mantienen corto el ejemplo; la estructura es la misma."
+      ]
+    },
+    {
+      "h": "Cuándo usarlo y cuándo no",
+      "body": [
+        "Usa el patrón Abstract Factory cuando:",
+        {
+          "ul": [
+            "El sistema deba trabajar con varias familias de productos relacionados y los productos de familias distintas no deban combinarse (temas de interfaz, widgets de sistemas operativos, controladores de bases de datos con objetos de conexión y de comando que se correspondan).",
+            "Quieras elegir la familia una sola vez, en el momento de la configuración, y mantener el resto del código independiente de ella.",
+            "Quieras que las pruebas aporten una familia de objetos simulados mediante una sola fábrica."
+          ]
+        },
+        "Evítalo cuando:",
+        {
+          "ul": [
+            "Solo haya una familia. Un `new` directo, o una función de fábrica, es más simple.",
+            "Los tipos de producto cambien a menudo. Añadir un nuevo tipo de producto, como `createTable()`, te obliga a cambiar la interfaz de la fábrica y todas las fábricas concretas. Es la principal debilidad que enumera el libro GoF."
+          ]
+        },
+        {
+          "note": "No confundas «muchas variantes de producto» con «muchas familias». Si solo necesitas elegir una implementación de una interfaz, basta con el patrón Factory Method o con la simple inyección de dependencias."
+        }
+      ]
+    },
+    {
+      "h": "Patrón Abstract Factory frente a patrón Factory Method",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Aspecto",
+              "Factory Method",
+              "Abstract Factory"
+            ],
+            "rows": [
+              [
+                "Crea",
+                "Un producto",
+                "Una familia de productos relacionados"
+              ],
+              [
+                "Mecanismo",
+                "Una subclase sobrescribe un método de creación",
+                "El cliente recibe un objeto fábrica con varios métodos de creación"
+              ],
+              [
+                "Se apoya en",
+                "Herencia",
+                "Composición"
+              ],
+              [
+                "Fácil de añadir",
+                "Una variante de producto nueva (subclase nueva)",
+                "Una familia nueva (clase de fábrica nueva)"
+              ],
+              [
+                "Difícil de añadir",
+                "Casi nada; cada creador es independiente",
+                "Un tipo de producto nuevo (cambian todas las fábricas)"
+              ]
+            ]
+          }
+        },
+        "Los dos suelen combinarse: cada método de creación de una fábrica concreta es en sí mismo un método de fábrica."
+      ]
+    },
+    {
+      "h": "Usos en el mundo real",
+      "body": [
+        {
+          "ul": [
+            "API XML de Java: `DocumentBuilderFactory` y `TransformerFactory` son clases abstractas. `newInstance()` localiza una implementación concreta, y el código que la usa depende solo de los tipos abstractos.",
+            "La API JDBC de Java funciona de forma parecida: un controlador de base de datos aporta implementaciones coherentes de `Connection`, `Statement` y `ResultSet`, y el código de la aplicación usa solo las interfaces.",
+            "El propio ejemplo del libro GoF es un toolkit de interfaz de usuario que admite varios estándares de aspecto y comportamiento (look-and-feel), con una fábrica por estándar que crea barras de desplazamiento, ventanas y botones coherentes."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Patrones relacionados",
+      "body": [
+        {
+          "ul": [
+            "Patrón Factory Method: las fábricas concretas suelen implementar sus métodos de creación como métodos de fábrica.",
+            "Patrón Prototype: una fábrica puede configurarse con objetos prototipo y crear productos copiándolos, lo que evita una subclase de fábrica por familia.",
+            "Patrón Singleton: una aplicación normalmente solo necesita una instancia de cada fábrica concreta.",
+            "Patrón Builder: también oculta la construcción, pero construye un objeto complejo paso a paso, mientras que Abstract Factory devuelve productos terminados de inmediato.",
+            "Patrón Bridge: una fábrica abstracta puede crear y configurar el lado de implementación de un puente."
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "¿Qué es una familia de productos?",
+      "a": "Un conjunto de objetos diseñados para usarse juntos, como el botón, el menú y el cuadro de diálogo de un mismo tema de interfaz. Mezclar productos de familias distintas daría resultados incoherentes o rotos."
+    },
+    {
+      "q": "¿Cómo añado un nuevo tipo de producto a un Abstract Factory?",
+      "a": "Añades un método de creación a la interfaz de la fábrica y lo implementas en cada fábrica concreta. Por eso el patrón encaja mejor cuando el conjunto de tipos de producto es estable."
+    },
+    {
+      "q": "¿El patrón Abstract Factory es lo mismo que la inyección de dependencias?",
+      "a": "No, pero funcionan bien juntos. La inyección de dependencias suministra un objeto desde fuera; Abstract Factory es un tipo de objeto que puedes inyectar cuando el cliente necesita crear él mismo varios objetos relacionados."
+    },
+    {
+      "q": "¿Un Abstract Factory puede ser una función en lugar de una clase?",
+      "a": "Sí. En TypeScript una fábrica puede ser un simple objeto de funciones de creación que cumpla la interfaz de la fábrica. El patrón trata de la interfaz y de las familias, no de las clases."
+    }
+  ]
+}

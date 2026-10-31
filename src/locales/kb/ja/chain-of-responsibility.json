@@ -1,0 +1,144 @@
+{
+  "title": "Chain of Responsibility パターン：ハンドラ・ミドルウェア・TypeScript の例 — cv.cm",
+  "description": "Chain of Responsibility パターンは、リクエストをハンドラの連鎖に沿って渡し、処理できるものが見つかるまで進めます。構造、TypeScript の例、ミドルウェアでの利用を解説します。",
+  "h1": "Chain of Responsibility パターンとは？例でわかりやすく解説",
+  "answer": "Chain of Responsibility は振る舞いに関するデザインパターンで、リクエストをハンドラオブジェクトの連鎖に沿って渡します。各ハンドラは、リクエストを自分で処理するか、連鎖の次のハンドラに転送します。送信側はどのハンドラが処理するかを知らないので、送信側を変更せずにハンドラを追加・削除・並べ替えできます。Web のミドルウェアや DOM のイベントバブリングが有名な例です。",
+  "sections": [
+    {
+      "h": "目的と解決する問題",
+      "body": [
+        "目的：リクエストを処理する機会を複数のオブジェクトに与えることで、リクエストの送信者と受信者の結合を避けることです。受信するオブジェクトを連鎖させ、あるオブジェクトが処理するまでリクエストを連鎖に沿って渡します。このパターンは Gang of Four（GoF）の書籍にある振る舞いパターンの 1 つです。",
+        "オンラインショップのサポートシステムを考えてみましょう。50 未満の返金リクエストはサポート担当者が、500 まではチームリーダーが承認でき、それより大きい金額はマネージャーの承認が必要です。最初の実装では、これをすべて 1 つの関数にまとめ、長い `if`/`else` の連鎖にすることがよくあります。ルールが増えるたびに関数は長くなり、チェックの順序もコードに固定されてしまいます。",
+        "Chain of Responsibility では、各レベルがルールを 1 つ持つ独立したハンドラになります。ハンドラはつなぎ合わされ、リクエストは最初のハンドラから入ります。新しい承認レベルを追加するには、小さなクラスを 1 つ書いて連鎖に挿入するだけです。"
+      ]
+    },
+    {
+      "h": "構造と登場する役割",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "役割",
+              "責務"
+            ],
+            "rows": [
+              [
+                "Handler",
+                "リクエストを処理するメソッドを宣言し、次のハンドラへの参照を保持する"
+              ],
+              [
+                "Concrete handler",
+                "自分が担当するリクエストを処理し、そうでなければ次のハンドラに転送する"
+              ],
+              [
+                "Client（クライアント）",
+                "連鎖を組み立て（または受け取り）、最初のハンドラにリクエストを送る"
+              ]
+            ]
+          }
+        },
+        "よく使われるバリエーションが 2 つあります。古典的な形では、リクエストを処理できた最初のハンドラで連鎖が止まります。パイプライン形式（ほとんどのミドルウェアが採用）では、すべてのハンドラが何らかの処理を行い、そのうえで次を呼ぶかどうかを決めます。"
+      ]
+    },
+    {
+      "h": "TypeScript での実装",
+      "body": [
+        "抽象基底クラスが次のハンドラを保持し、デフォルトの転送動作を提供します。各 Concrete handler は `handle` をオーバーライドし、自分で判断できないときは `super.handle` を呼びます。",
+        {
+          "code": "type Refund = { amount: number };\nabstract class Approver {\n  private next?: Approver;\n  setNext(next: Approver): Approver {\n    this.next = next;\n    return next; // allows a.setNext(b).setNext(c)\n  }\n  handle(req: Refund): string {\n    return this.next ? this.next.handle(req) : \"rejected: no one can approve \" + req.amount;\n  }\n}\nclass Agent extends Approver {\n  handle(req: Refund): string {\n    return req.amount < 50 ? \"agent approved \" + req.amount : super.handle(req);\n  }\n}\nclass TeamLead extends Approver {\n  handle(req: Refund): string {\n    return req.amount <= 500 ? \"team lead approved \" + req.amount : super.handle(req);\n  }\n}\nclass Manager extends Approver {\n  handle(req: Refund): string {\n    return req.amount <= 5000 ? \"manager approved \" + req.amount : super.handle(req);\n  }\n}\nconst chain = new Agent();\nchain.setNext(new TeamLead()).setNext(new Manager());\nfor (const amount of [20, 300, 2000, 9000]) console.log(chain.handle({ amount }));\n// agent approved 20\n// team lead approved 300\n// manager approved 2000\n// rejected: no one can approve 9000",
+          "lang": "typescript"
+        },
+        {
+          "note": "どのハンドラもリクエストを受け付けなかったときの動作は、必ず決めておきましょう。ここでは、最後の基底クラスの呼び出しが拒否を返します。このようなデフォルトがないと、リクエストが連鎖の末尾から黙って消えてしまうことがあります。"
+        }
+      ]
+    },
+    {
+      "h": "通常の関数によるミドルウェア形式",
+      "body": [
+        "TypeScript ではクラスは必須ではありません。`next` コールバックを受け取る関数のリストが、そのまま連鎖になります。Express や Koa のミドルウェアはこの仕組みで動いています。",
+        {
+          "code": "type Req = { user?: string; path: string };\ntype Middleware = (req: Req, next: () => string) => string;\nconst auth: Middleware = (req, next) => (req.user ? next() : \"401 Unauthorized\");\nconst log: Middleware = (req, next) => {\n  console.log(\"request\", req.path);\n  return next();\n};\nconst route = (req: Req) => \"200 OK \" + req.path;\nfunction run(chain: Middleware[], req: Req): string {\n  const step = (i: number): string =>\n    i < chain.length ? chain[i](req, () => step(i + 1)) : route(req);\n  return step(0);\n}\nconsole.log(run([log, auth], { path: \"/admin\" }));\nconsole.log(run([log, auth], { user: \"ana\", path: \"/admin\" }));\n// request /admin\n// 401 Unauthorized\n// request /admin\n// 200 OK /admin",
+          "lang": "typescript"
+        }
+      ]
+    },
+    {
+      "h": "使うべき場面と避けるべき場面",
+      "body": [
+        {
+          "ul": [
+            "リクエストを処理できるオブジェクトが複数あり、どれが適切かを実行時に決めるときに使います。",
+            "検証ステップ、承認レベル、HTTP ミドルウェアのように、ハンドラの集合や順序を設定で変えたいときに使います。",
+            "各ルールを、単独でテストできる小さな単位に分けたいときに使います。",
+            "変わらない 2、3 個の固定チェックには使いません。単純な `if` 文のほうが明快です。",
+            "連鎖が長いとデバッグが難しくなる点に注意してください。呼び出し箇所からは、最終的にどのハンドラが動作したのかがわかりにくいためです。ハンドラ内でログを出すと役立ちます。",
+            "連鎖は順序に敏感です。たとえば認証をルートハンドラの後に置くと、認証の意味がなくなります。"
+          ]
+        }
+      ]
+    },
+    {
+      "h": "実際の利用例",
+      "body": [
+        {
+          "ul": [
+            "Express と Koa のミドルウェア：各関数がリクエストと `next` 関数を受け取り、続行するかどうかを決めます。",
+            "DOM のイベント伝播：イベントは対象要素から祖先要素へとバブリングし、どのリスナーも `event.stopPropagation()` で止められます。",
+            "Java のサーブレットフィルタは、フィルタチェーンを構成します。各フィルタは `chain.doFilter` を呼んでリクエストを先へ渡します。",
+            "ロギングフレームワークは、ログレコードをロガーから親ロガーとそのハンドラへ渡します。"
+          ]
+        }
+      ]
+    },
+    {
+      "h": "関連するパターン",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "パターン",
+              "Chain of Responsibility パターンとの違い"
+            ],
+            "rows": [
+              [
+                "Decorator パターン",
+                "Decorator もラッパーの連鎖を作りますが、すべての Decorator が必ず実行して転送します。ハンドラは連鎖を止めることができます。"
+              ],
+              [
+                "Command パターン",
+                "連鎖の中を流れるリクエストは、Command オブジェクトであることがよくあります。Command はリクエストをパッケージ化するもので、連鎖は誰が処理するかを見つけるためのものです。"
+              ],
+              [
+                "Composite パターン",
+                "Composite ツリーの親は、自然な次のハンドラになります。GUI のイベントがコンポーネントツリーを上へバブリングするのは、この仕組みです。"
+              ],
+              [
+                "Mediator パターン",
+                "Mediator は受信者を知っている 1 つの中心オブジェクトを通してメッセージを中継します。連鎖はリクエストをハンドラからハンドラへと順に渡します。"
+              ]
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "連鎖内のすべてのハンドラがリクエストを処理する必要がありますか？",
+      "a": "いいえ。古典的な形では、リクエストを処理できた最初のハンドラで連鎖が止まります。ミドルウェア形式では、各ハンドラが何らかの処理をしてから次を呼ぶので、1 つのリクエストに複数のハンドラが作用できます。"
+    },
+    {
+      "q": "Express のミドルウェアは Chain of Responsibility の例ですか？",
+      "a": "はい。各ミドルウェア関数はリクエストと `next` コールバックを受け取り、レスポンスを終了するか、`next` を呼んで次のミドルウェアに制御を渡します。"
+    },
+    {
+      "q": "どのハンドラもリクエストを処理しなかったらどうなりますか？",
+      "a": "設計次第です。連鎖の最後にデフォルト処理を置くのがよい方法です。たとえばエラーを返す、例外を投げる、ログに記録するなどして、リクエストが黙って失われないようにします。"
+    },
+    {
+      "q": "if/else の並びとはどう違うのですか？",
+      "a": "ロジックは同じですが、各条件が独立したオブジェクトや関数になります。そのため連鎖を実行時に設定でき、大きな関数を編集せずにステップを追加したり並べ替えたりできます。"
+    }
+  ]
+}

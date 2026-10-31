@@ -1,0 +1,167 @@
+{
+  "title": "Mẫu Flyweight: mục đích, cấu trúc và ví dụ TypeScript — cv.cm",
+  "description": "Mẫu Flyweight chia sẻ trạng thái chung giữa nhiều đối tượng tương tự để tiết kiệm bộ nhớ. Tìm hiểu trạng thái nội tại và ngoại tại qua ví dụ TypeScript.",
+  "h1": "Mẫu Flyweight (Design Pattern) giải thích kèm ví dụ",
+  "answer": "Flyweight là một mẫu thiết kế cấu trúc (structural), cho phép chương trình hỗ trợ một số lượng rất lớn đối tượng tương tự bằng cách chia sẻ những phần chung giữa chúng. Mỗi đối tượng được tách thành trạng thái nội tại (intrinsic: dùng chung, bất biến, chỉ lưu một lần trong flyweight) và trạng thái ngoại tại (extrinsic: riêng cho mỗi lần dùng, do bên gọi truyền vào). Một factory lưu đệm các flyweight để cùng một trạng thái nội tại không bao giờ bị lưu hai lần.",
+  "sections": [
+    {
+      "h": "Mục đích và vấn đề mà mẫu này giải quyết",
+      "body": [
+        "Mục đích: dùng chia sẻ để hỗ trợ hiệu quả số lượng lớn các đối tượng nhỏ, chi tiết. Mẫu này đến từ sách Gang of Four (GoF) và thuộc nhóm cấu trúc.",
+        "Hãy tưởng tượng một bản đồ vẽ một triệu cây. Mỗi cây có vị trí (x, y) và một loại: tên loài, màu sắc và ảnh texture vài kilobyte. Nếu mỗi đối tượng cây giữ bản sao texture riêng, bộ nhớ tăng theo số cây và chương trình có thể hết bộ nhớ. Nhưng chỉ có vài loài. Texture, tên và màu giống nhau ở mọi cây sồi.",
+        "Flyweight chuyển dữ liệu lặp lại vào một số ít đối tượng dùng chung. Khi đó mỗi cây chỉ lưu vị trí của nó cùng một tham chiếu đến loại cây dùng chung. Một triệu cây với năm loài chỉ cần năm bản texture thay vì một triệu."
+      ]
+    },
+    {
+      "h": "Trạng thái nội tại và ngoại tại",
+      "body": [
+        "Bước then chốt là tách dữ liệu của mỗi đối tượng thành hai loại:",
+        {
+          "table": {
+            "head": [
+              "Trạng thái",
+              "Ý nghĩa",
+              "Ví dụ cây"
+            ],
+            "rows": [
+              [
+                "Nội tại (Intrinsic)",
+                "Không phụ thuộc ngữ cảnh, giống nhau ở nhiều đối tượng, lưu bên trong flyweight và không bao giờ thay đổi",
+                "Tên loài, màu, texture"
+              ],
+              [
+                "Ngoại tại (Extrinsic)",
+                "Phụ thuộc ngữ cảnh, khác nhau mỗi lần dùng, do client giữ và truyền vào các phương thức của flyweight",
+                "Vị trí x và y"
+              ]
+            ]
+          }
+        },
+        "Vì flyweight được chia sẻ nên nó phải bất biến. Nếu một client có thể đổi màu của loại sồi dùng chung, mọi cây sồi trên bản đồ sẽ đổi theo."
+      ]
+    },
+    {
+      "h": "Cấu trúc và các thành phần",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Vai trò",
+              "Trách nhiệm"
+            ],
+            "rows": [
+              [
+                "Flyweight",
+                "Giữ trạng thái nội tại và cung cấp các thao tác nhận trạng thái ngoại tại làm tham số"
+              ],
+              [
+                "Flyweight factory",
+                "Tạo và lưu đệm các flyweight; trả về flyweight có sẵn khi cùng trạng thái nội tại được yêu cầu lại"
+              ],
+              [
+                "Context",
+                "Lưu trạng thái ngoại tại cùng một tham chiếu đến flyweight (một context cho mỗi đối tượng thực tế)"
+              ],
+              [
+                "Client",
+                "Yêu cầu flyweight từ factory và giữ hoặc tính trạng thái ngoại tại"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "Cài đặt bằng TypeScript",
+      "body": [
+        "Factory dùng một `Map` với khóa là các giá trị nội tại. `TreeType` là flyweight, `Tree` là context, và `Forest` là client.",
+        {
+          "code": "class TreeType {\n  constructor(\n    readonly name: string,\n    readonly color: string,\n    readonly texture: Uint8Array, // large, shared data\n  ) {}\n  draw(x: number, y: number): string {\n    return this.name + \" (\" + this.color + \") at \" + x + \",\" + y;\n  }\n}\nclass TreeTypeFactory {\n  private static cache = new Map<string, TreeType>();\n  static get(name: string, color: string): TreeType {\n    const key = name + \"|\" + color;\n    let type = this.cache.get(key);\n    if (!type) {\n      type = new TreeType(name, color, new Uint8Array(4096));\n      this.cache.set(key, type);\n    }\n    return type;\n  }\n}\nclass Tree {\n  constructor(readonly x: number, readonly y: number, readonly type: TreeType) {}\n  draw(): string {\n    return this.type.draw(this.x, this.y);\n  }\n}\nconst forest: Tree[] = [];\nfor (let i = 0; i < 100_000; i++) {\n  const [name, color] = i % 2 === 0 ? [\"Oak\", \"green\"] : [\"Birch\", \"white\"];\n  forest.push(new Tree(i, i * 2, TreeTypeFactory.get(name, color)));\n}\nconst types = new Set(forest.map((t) => t.type));\nconsole.log(forest.length, \"trees,\", types.size, \"tree types\");\nconsole.log(forest[3].draw());\n// 100000 trees, 2 tree types\n// Birch (white) at 3,6",
+          "lang": "typescript"
+        },
+        "Không có factory, chương trình sẽ cấp phát 100.000 bộ đệm texture. Có factory, chỉ có hai. Các đối tượng `Tree` vẫn tồn tại, nhưng mỗi đối tượng chỉ giữ hai số và một tham chiếu.",
+        {
+          "note": "Flyweight chỉ tiết kiệm bộ nhớ khi nhiều đối tượng thật sự chia sẻ cùng trạng thái nội tại. Nếu hầu như mọi đối tượng có tổ hợp riêng, bộ nhớ đệm chỉ thêm chi phí tra cứu mà không tiết kiệm được gì."
+        }
+      ]
+    },
+    {
+      "h": "Khi nào nên dùng và khi nào không",
+      "body": [
+        "Dùng Flyweight khi tất cả điều sau đều đúng:",
+        {
+          "ul": [
+            "Chương trình tạo ra một số lượng rất lớn đối tượng tương tự.",
+            "Mức dùng bộ nhớ là vấn đề đã được đo đạc, không phải phỏng đoán.",
+            "Phần lớn trạng thái của mỗi đối tượng có thể được biến thành ngoại tại hoặc dùng chung.",
+            "Chương trình không phụ thuộc vào danh tính đối tượng (hai context dùng cùng flyweight được phép chia sẻ nó)."
+          ]
+        },
+        "Tránh dùng khi số đối tượng nhỏ, khi các đối tượng cần thay đổi dữ liệu dùng chung một cách độc lập, hoặc khi độ phức tạp tăng thêm do phải truyền trạng thái ngoại tại khiến mã khó đọc hơn lượng bộ nhớ tiết kiệm được. Nhiều khi có cách đơn giản hơn: lưu dữ liệu trong các mảng song song hoặc typed array, hoặc intern các chuỗi lặp trong một `Map`.",
+        "Đánh đổi: Flyweight đổi bộ nhớ lấy thời gian CPU. Trạng thái ngoại tại có thể phải tính lại hoặc tra cứu mỗi lần gọi phương thức."
+      ]
+    },
+    {
+      "h": "Ứng dụng thực tế",
+      "body": [
+        {
+          "ul": [
+            "Java: `Integer.valueOf(int)` trả về các đối tượng `Integer` được lưu đệm cho giá trị từ -128 đến 127, nên việc boxing số nhỏ không cấp phát đối tượng mới mỗi lần.",
+            "Java: `String.intern()` trả về bản sao chuẩn dùng chung của một chuỗi từ string pool.",
+            "Trình soạn thảo văn bản và trình duyệt kết xuất glyph từ bộ nhớ đệm phông chữ dùng chung: mỗi ký tự trên màn hình lưu vị trí của nó, còn hình dạng glyph chỉ lưu một lần cho mỗi phông và cỡ chữ.",
+            "Game engine dùng instanced rendering: một mesh và một material được dùng chung, và chỉ dữ liệu theo từng thể hiện như vị trí và góc quay được gửi cho mỗi bản sao."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Các mẫu liên quan",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Mẫu",
+              "Khác với Flyweight ở điểm nào"
+            ],
+            "rows": [
+              [
+                "Singleton",
+                "Singleton đảm bảo một thể hiện của một lớp; Flyweight giữ một thể hiện cho mỗi trạng thái nội tại khác nhau, nên có thể có nhiều thể hiện."
+              ],
+              [
+                "Factory Method",
+                "Flyweight factory là một factory có bộ nhớ đệm; Factory Method là để lớp con chọn lớp nào sẽ được tạo."
+              ],
+              [
+                "Composite",
+                "Các nút lá của cây Composite thường được cài đặt như flyweight để các lá lặp lại dùng chung bộ nhớ."
+              ],
+              [
+                "Prototype",
+                "Prototype sao chép một đối tượng để tạo đối tượng mới; Flyweight tránh sao chép bằng cách chia sẻ một đối tượng."
+              ]
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Trạng thái nội tại và ngoại tại khác nhau thế nào?",
+      "a": "Trạng thái nội tại được chia sẻ và giống nhau ở nhiều đối tượng, nên nằm bên trong flyweight và không bao giờ đổi. Trạng thái ngoại tại khác nhau cho mỗi lần dùng, nên client giữ nó và truyền vào các phương thức của flyweight."
+    },
+    {
+      "q": "Flyweight có giống caching không?",
+      "a": "Nó dùng bộ nhớ đệm, nhưng mục tiêu khác. Cache tránh tính lại một kết quả, còn Flyweight tránh lưu cùng một dữ liệu bất biến nhiều lần bằng cách cho nhiều nơi dùng chung một đối tượng."
+    },
+    {
+      "q": "Tại sao flyweight phải bất biến?",
+      "a": "Nhiều context cùng giữ tham chiếu đến một flyweight. Nếu một context thay đổi nó, thay đổi sẽ hiện ra ở mọi context khác đang dùng chung."
+    },
+    {
+      "q": "Flyweight có hữu ích trong JavaScript và TypeScript không?",
+      "a": "Có, khi bạn tạo hàng trăm nghìn đối tượng, ví dụ hạt (particle), ô bản đồ hay ô lưới. Đối tượng trong JavaScript có chi phí riêng cho từng đối tượng, nên chia sẻ dữ liệu lặp lại có thể giảm bộ nhớ và công việc của bộ dọn rác."
+    }
+  ]
+}

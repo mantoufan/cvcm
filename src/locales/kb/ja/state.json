@@ -1,0 +1,145 @@
+{
+  "title": "State パターン：状態クラス・遷移・TypeScript の例 — cv.cm",
+  "description": "State パターンは、内部状態が変わるとオブジェクトの振る舞いも変わるようにします。TypeScript で switch 文を状態クラスに置き換える方法を解説します。",
+  "h1": "State パターンとは？例でわかりやすく解説",
+  "answer": "State は振る舞いに関するデザインパターンで、内部状態が変わるとオブジェクトの振る舞いが変わり、まるでクラスが変わったように見えるようにします。各状態は同じインターフェースを実装する独立したクラスになり、Context と呼ばれる主役のオブジェクトは、作業を現在の State オブジェクトに委譲します。遷移は、その State オブジェクトを差し替えることで起こり、すべてのメソッドで status フィールドを調べる長い `switch` や `if` の連鎖がなくなります。",
+  "sections": [
+    {
+      "h": "目的と解決する問題",
+      "body": [
+        "目的：内部状態が変わったときに、オブジェクトが振る舞いを変えられるようにすることです。オブジェクトは、クラスが変わったように見えます。State は Gang of Four（GoF）の書籍にある振る舞いパターンの 1 つで、古典的な例は、リッスン中、接続確立済み、クローズ済みで振る舞いが異なる TCP 接続です。",
+        "オンラインの注文を考えてみましょう。注文は、保留中、支払い済み、発送済み、キャンセル済みのいずれかになります。支払いができるのは保留中のときだけです。発送ができるのは支払い済みのときだけです。キャンセルは保留中か支払い済みのときは許可されますが、発送後はできません。最初の実装では、`status` 文字列を保持し、すべてのメソッドが、それに対する `switch` から始まります。4 つの操作と 4 つの状態なら、4 つのメソッドに 16 個の case が散らばります。「返金済み」のような新しい状態を追加するには、すべてのメソッドを編集しなければならず、どれかを見落としやすくなります。",
+        "State パターンでは、各ステータスが、そのステータスで各操作が何を意味するかを知っているクラスになります。注文は現在の State オブジェクトへの参照を持ち、すべての操作をそれに転送します。"
+      ]
+    },
+    {
+      "h": "構造と登場する役割",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "役割",
+              "責務"
+            ],
+            "rows": [
+              [
+                "Context",
+                "クライアントが使うオブジェクト。現在の State オブジェクトを保持し、状態に依存する振る舞いをそれに委譲する"
+              ],
+              [
+                "State",
+                "状態によって振る舞いが変わる操作を宣言するインターフェース"
+              ],
+              [
+                "Concrete state",
+                "1 つの状態の振る舞いを実装し、次にどの状態になるかを決める"
+              ]
+            ]
+          }
+        },
+        "遷移は、状態自身が決める（下の例のように、各状態が Context に次の状態を設定する）ことも、Context が遷移表を使って決めることもできます。状態に決めさせると、関連するロジックがまとまります。中央の表を使うと、すべての遷移が 1 か所で見えるようになります。"
+      ]
+    },
+    {
+      "h": "TypeScript での実装",
+      "body": [
+        "基底クラスが、デフォルトの振る舞い（操作を拒否する）を提供します。各 Concrete state は、その状態で有効な操作だけをオーバーライドします。",
+        {
+          "code": "abstract class OrderState {\n  abstract readonly name: string;\n  pay(order: Order): void { this.reject(\"pay\"); }\n  ship(order: Order): void { this.reject(\"ship\"); }\n  cancel(order: Order): void { this.reject(\"cancel\"); }\n  protected reject(action: string): never {\n    throw new Error(\"Cannot \" + action + \" an order that is \" + this.name);\n  }\n}\n\nclass Pending extends OrderState {\n  readonly name = \"pending\";\n  pay(order: Order) { order.setState(new Paid()); }\n  cancel(order: Order) { order.setState(new Cancelled()); }\n}\n\nclass Paid extends OrderState {\n  readonly name = \"paid\";\n  ship(order: Order) { order.setState(new Shipped()); }\n  cancel(order: Order) { order.setState(new Cancelled()); } // refund here\n}\n\nclass Shipped extends OrderState { readonly name = \"shipped\"; }\nclass Cancelled extends OrderState { readonly name = \"cancelled\"; }\n\nclass Order {\n  private state: OrderState = new Pending();\n  setState(next: OrderState) { this.state = next; }\n  get status() { return this.state.name; }\n  pay() { this.state.pay(this); }\n  ship() { this.state.ship(this); }\n  cancel() { this.state.cancel(this); }\n}\n\nconst order = new Order();\norder.pay();\norder.ship();\nconsole.log(order.status); // shipped\ntry { order.cancel(); } catch (e) { console.log((e as Error).message); }\n// Cannot cancel an order that is shipped",
+          "lang": "typescript"
+        },
+        "「返金済み」の状態を追加するには、新しいクラスを 1 つ書き、そこへ遷移できる状態だけを変更します。`Order` 自体は変わりません。",
+        {
+          "note": "クライアントが外から状態を差し替えられるようにしないでください。ここでは簡潔さのために `setState` を公開していますが、実際のプロジェクトでは、有効な遷移だけが起こるよう、これを内部に留めておきましょう（たとえば、状態を同じモジュールで定義してエクスポートしない）。"
+        }
+      ]
+    },
+    {
+      "h": "導入前と導入後",
+      "body": [
+        "同じルールを、status フィールドと `switch` 文で書いた例です。状態が少ないうちはこれでも動作しますが、すべてのメソッドが、状態の一覧を丸ごと繰り返しています。",
+        {
+          "code": "type Status = \"pending\" | \"paid\" | \"shipped\" | \"cancelled\";\n\nclass OrderBefore {\n  status: Status = \"pending\";\n  ship() {\n    switch (this.status) {\n      case \"paid\": this.status = \"shipped\"; break;\n      default: throw new Error(\"Cannot ship an order that is \" + this.status);\n    }\n  }\n  // pay() and cancel() repeat the same switch\n}\n\nconst o = new OrderBefore();\ntry { o.ship(); } catch (e) { console.log((e as Error).message); }\n// Cannot ship an order that is pending",
+          "lang": "typescript"
+        },
+        "小さなケースなら、この書き方で全く問題なく、むしろ読みやすいくらいです。TypeScript では、`Status` を union 型にすれば、すべての case が処理されているかをコンパイラがチェックできます。状態ごとの振る舞いが 1、2 行を超えて増えてきたら、状態クラスに移行しましょう。"
+      ]
+    },
+    {
+      "h": "使うべき場面と避けるべき場面",
+      "body": [
+        {
+          "ul": [
+            "オブジェクトが状態によって大きく異なる振る舞いをし、同じステータスチェックが多くのメソッドに現れるときに使います。",
+            "状態と遷移が時間とともに変わり、各状態のルールを 1 か所にまとめたいときに使います。",
+            "注文、文書、チケットのようなワークフロー、プロトコルの接続、ゲームのキャラクター、メディアプレーヤーのような UI コンポーネントに使います。",
+            "状態が 2、3 個しかなく、振る舞いも単純なら使いません。enum や union 型と `switch` のほうが簡単です。",
+            "入れ子や並列の状態を持つ複雑なマシンには、手書きのクラスの代わりに、ステートマシンのライブラリやステートチャートの記法を検討してください。"
+          ]
+        }
+      ]
+    },
+    {
+      "h": "実際の利用例",
+      "body": [
+        {
+          "ul": [
+            "ネットワークプロトコルの実装は、GoF の書籍で使われている例と同じく、リッスン中、確立済み、クローズ済みのような接続状態をモデル化します。",
+            "XState は、ステートマシンとステートチャート用の JavaScript / TypeScript ライブラリで、UI ロジックやワークフローに使われます。",
+            "W3C の SCXML 仕様は、ステートチャートのための XML 形式を定義しています。",
+            "ゲーム開発では、キャラクター（待機、走る、ジャンプ）に State オブジェクトを使い、各状態が入力を異なる方法で処理します。"
+          ]
+        }
+      ]
+    },
+    {
+      "h": "State と Strategy などのパターンの違い",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "パターン",
+              "State パターンとの違い"
+            ],
+            "rows": [
+              [
+                "Strategy パターン",
+                "クラスの構造はほぼ同じです。Strategy は通常クライアントが選び、自分では変わりません。State は、オブジェクト自身の動作の結果として、互いに入れ替わります。"
+              ],
+              [
+                "Flyweight パターン",
+                "フィールドを持たない State オブジェクトは、Flyweight や定数として、すべての Context で共有できます。"
+              ],
+              [
+                "Singleton パターン",
+                "状態を持たない State オブジェクトは、共有される 1 つのインスタンスであることがよくあります。"
+              ],
+              [
+                "Memento パターン",
+                "Memento は、後で復元するためにオブジェクトのデータを保存します。State は、オブジェクトがどの振る舞いを使うかを変えます。"
+              ]
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "State と Strategy の違いは何ですか？",
+      "a": "どちらも、差し替え可能なオブジェクトに振る舞いを委譲します。Strategy では、通常クライアントがアルゴリズムを選び、それは固定されたままです。State では、State オブジェクトが互いを知っており、通常の動作の一部として Context を新しい状態に切り替えます。"
+    },
+    {
+      "q": "State パターンは有限状態機械と同じですか？",
+      "a": "State パターンは、オブジェクト指向のコードで有限状態機械を実装する方法の 1 つです。各状態がクラスになり、各遷移が現在の State オブジェクトを差し替えます。マシンは、遷移表やライブラリを使って実装することもできます。"
+    },
+    {
+      "q": "次の状態は、Context と State のどちらが決めるべきですか？",
+      "a": "どちらでも構いません。状態が決める場合は、各状態のロジックがまとまります。Context や遷移表が決める場合は、すべての遷移が 1 か所で見え、状態同士が互いを知る必要がなくなります。"
+    },
+    {
+      "q": "State オブジェクトは共有できますか？",
+      "a": "はい、自前のデータを持たなければ可能です。その場合、各状態のインスタンスを 1 つずつ、すべての Context オブジェクトで共有でき、メモリの確保を節約できます。"
+    }
+  ]
+}

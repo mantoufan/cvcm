@@ -1,12 +1,22 @@
+import type { Locale } from "./locale";
 import type { ToolId, TutorialId } from "./path";
+import { CODE_ARTICLES, CODE_GROUPS, CODE_TOOLS, type CodeId } from "./kb-code";
+import { KB_MINUTES, KB_UPDATED } from "../locales/kb/meta";
+
+export { CODE_ARTICLES };
 
 /**
- * Knowledge articles: plain explanations of the formats, encodings and numbers the tools work with,
- * under `/{locale}/learn/knowledge/{id}/`. Tutorials say how; these say what and why.
+ * Two shelves of articles under the tutorials, rendered the same way:
+ * - knowledge: plain explanations of the formats, encodings and numbers the tools work with, `/{locale}/learn/knowledge/{id}/`.
+ *   Tutorials say how; these say what and why.
+ * - code: programming languages, design patterns, data structures and algorithms, `/{locale}/learn/code/{id}/` (src/shared/kb-code.ts).
  */
 export const KB_SEGMENT = "knowledge";
+export const CODE_SEGMENT = "code";
 
-export const KB_ARTICLES = [
+export type KbShelf = "knowledge" | "code";
+
+export const KNOWLEDGE_ARTICLES = [
   "what-is-heic",
   "jpg-vs-png-vs-webp",
   "what-is-exif",
@@ -27,18 +37,32 @@ export const KB_ARTICLES = [
   "margin-vs-markup",
 ] as const;
 
-export type KbId = (typeof KB_ARTICLES)[number];
+export type KnowledgeId = (typeof KNOWLEDGE_ARTICLES)[number];
+export type { CodeId };
+export type KbId = KnowledgeId | CodeId;
 
-/** A knowledge page: the hub, one article, or none. */
-export type KbPage = KbId | "hub" | null;
+/** Every article of both shelves, knowledge first, each shelf in hub order. */
+export const KB_ARTICLES: readonly KbId[] = [...KNOWLEDGE_ARTICLES, ...CODE_ARTICLES];
 
-export type KbGroupId = "files" | "data" | "time" | "money";
+/** A shelf hub: "hub" is the knowledge hub, "code" the coding hub. */
+export type KbHub = "hub" | "code";
 
-export const KB_GROUPS: readonly { id: KbGroupId; articles: readonly KbId[] }[] = [
+/** A kb page: a hub, one article, or none. */
+export type KbPage = KbId | KbHub | null;
+
+export type CodeGroupId = "languages" | "patterns" | "structures" | "algorithms";
+export type KbGroupId = "files" | "data" | "time" | "money" | CodeGroupId;
+
+const KNOWLEDGE_GROUPS: readonly { id: KbGroupId; articles: readonly KbId[] }[] = [
   { id: "files", articles: ["what-is-heic", "jpg-vs-png-vs-webp", "what-is-exif", "dpi-vs-ppi", "aspect-ratios", "why-pdf-files-are-large"] },
   { id: "data", articles: ["what-is-base64", "unicode-and-utf-8", "url-encoding", "json-vs-yaml-vs-xml", "md5-vs-sha-256", "password-strength", "what-is-uuid"] },
   { id: "time", articles: ["unix-timestamp", "iso-8601", "utc-and-time-zones"] },
   { id: "money", articles: ["apr-vs-apy", "margin-vs-markup"] },
+];
+
+export const KB_GROUPS: readonly { id: KbGroupId; shelf: KbShelf; articles: readonly KbId[] }[] = [
+  ...KNOWLEDGE_GROUPS.map((group) => ({ ...group, shelf: "knowledge" as const })),
+  ...CODE_GROUPS.map((group) => ({ ...group, shelf: "code" as const })),
 ];
 
 export type KbSource = { title: string; href: string };
@@ -46,7 +70,7 @@ export type KbSource = { title: string; href: string };
 export type KbMeta = {
   /** ISO date first published. Last-changed dates per locale come from `npm run kb:sync` (src/locales/kb/meta.ts). */
   published: string;
-  /** Tools that put the article to work, first one is the main call to action. */
+  /** Tools that put the article to work, first one is the main call to action (coding articles may have none). */
   tools: ToolId[];
   tutorials: TutorialId[];
   related: KbId[];
@@ -56,7 +80,7 @@ export type KbMeta = {
 
 const D = "2026-10-14";
 
-export const KB_META: Record<KbId, KbMeta> = {
+const KNOWLEDGE_META: Record<KnowledgeId, KbMeta> = {
   "what-is-heic": {
     published: D,
     tools: ["convert", "image-pdf", "resize"],
@@ -244,15 +268,78 @@ export const KB_META: Record<KbId, KbMeta> = {
   },
 };
 
+type CodeShelf = {
+  meta: Record<CodeId, KbMeta>;
+  updated: Record<CodeId, Record<Locale, string>>;
+  minutes: Record<CodeId, Record<Locale, number>>;
+};
+
+let codeShelf: CodeShelf | null = null;
+
+/** Called by src/shared/kb-code-meta.ts, which loads with the kb packs (and in the Worker, build scripts and tests). */
+export function registerCodeShelf(shelf: CodeShelf): void {
+  codeShelf = shelf;
+}
+
+function code(): CodeShelf {
+  if (!codeShelf) throw new Error("coding shelf meta not loaded: import src/shared/kb-code-meta");
+  return codeShelf;
+}
+
+/** Sources, links and publish date; coding articles need the kb pack (kb-code-meta) loaded. */
+export function kbMeta(id: KbId): KbMeta {
+  return isCodeId(id) ? code().meta[id] : KNOWLEDGE_META[id];
+}
+
+/** When this locale's page last changed (from `npm run kb:sync`). */
+export function kbUpdatedOn(id: KbId, locale: Locale): string {
+  return isCodeId(id) ? code().updated[id][locale] : KB_UPDATED[id][locale];
+}
+
+/** Reading time in minutes (from `npm run kb:sync`). */
+export function kbMinutesOf(id: KbId, locale: Locale): number {
+  return isCodeId(id) ? code().minutes[id][locale] : KB_MINUTES[id][locale];
+}
+
+const PLACE = new Map<string, { group: KbGroupId; shelf: KbShelf }>(
+  KB_GROUPS.flatMap((group) => group.articles.map((id) => [id, { group: group.id, shelf: group.shelf }] as const)),
+);
+
+function isCodeId(id: KbId): id is CodeId {
+  return PLACE.get(id)!.shelf === "code";
+}
+
 export function isKbId(value: string): value is KbId {
-  return (KB_ARTICLES as readonly string[]).includes(value);
+  return PLACE.has(value);
 }
 
 export function kbGroupOf(id: KbId): KbGroupId {
-  return KB_GROUPS.find((group) => group.articles.includes(id))!.id;
+  return PLACE.get(id)!.group;
 }
 
-/** Articles that use this tool, in hub order: tool pages link to them. */
-export function kbForTool(tool: ToolId): KbId[] {
-  return KB_ARTICLES.filter((id) => KB_META[id].tools.includes(tool));
+export function kbShelfOf(id: KbId): KbShelf {
+  return PLACE.get(id)!.shelf;
+}
+
+/** The article a page shows, or null on a hub. */
+export function kbArticleOf(page: KbPage): KbId | null {
+  return page === null || page === "hub" || page === "code" ? null : page;
+}
+
+/** The shelf a page belongs to (null and "hub" are the knowledge hub). */
+export function kbShelfOfPage(page: KbPage): KbShelf {
+  if (page === "code") return "code";
+  const id = kbArticleOf(page);
+  return id ? kbShelfOf(id) : "knowledge";
+}
+
+export function kbGroupsOf(shelf: KbShelf): readonly { id: KbGroupId; shelf: KbShelf; articles: readonly KbId[] }[] {
+  return KB_GROUPS.filter((group) => group.shelf === shelf);
+}
+
+/** Articles of a shelf that use this tool, in hub order: tool pages link to them. */
+export function kbForTool(tool: ToolId, shelf: KbShelf = "knowledge"): KbId[] {
+  return shelf === "code"
+    ? CODE_ARTICLES.filter((id) => CODE_TOOLS[id]?.includes(tool))
+    : KNOWLEDGE_ARTICLES.filter((id) => KNOWLEDGE_META[id].tools.includes(tool));
 }

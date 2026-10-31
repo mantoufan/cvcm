@@ -1,0 +1,179 @@
+{
+  "title": "Haskell 入門教學：型別、模式比對、串列與 IO 一頁搞懂 — cv.cm",
+  "description": "一步步學會 Haskell：安裝 GHC、執行 Hello, world、型別與型別推論、函式與 guard、串列、資料型別、型別類別、Maybe、Either 與 IO。",
+  "h1": "Haskell 入門教學",
+  "answer": "Haskell 是一種純函數式、靜態型別的語言，具備型別推論與惰性求值。程式由純函式、代數資料型別與模式比對組成，副作用則透過 IO 等型別在型別層級被追蹤。本頁涵蓋安裝 GHC、型別、函式與 guard、串列與高階函式、資料型別、型別類別、Maybe 與 Either，以及一個完整範例。",
+  "sections": [
+    {
+      "h": "Haskell 是什麼、可以用來做什麼",
+      "body": [
+        "Haskell 是一種純函數式程式語言，擁有強大的靜態型別系統、型別推論與惰性求值。它由一群研究人員組成的委員會設計，於 1990 年首度定義；目前的標準是 Haskell 2010，主要的實作則是 GHC（Glasgow Haskell Compiler）。在 Haskell 中，除非型別明確標示，否則函式不會有副作用，因此程式更容易推理與測試。",
+        "Haskell 應用於金融與金融科技、編譯器與程式語言工具（Pandoc 與 ShellCheck 靜態檢查工具都是用 Haskell 寫的）、區塊鏈專案、網頁後端與學術研究。許多人學它，也是因為代數資料型別、型別類別與純函式等概念，影響了 Rust、Swift、Scala、Kotlin 與 TypeScript。"
+      ]
+    },
+    {
+      "h": "安裝 GHC 並執行 Hello, world",
+      "body": [
+        "建議使用 GHCup 安裝，它會一併裝好 GHC、建置工具 Cabal 與 Stack，以及供編輯器使用的 Haskell Language Server。每個程式都有一個型別為 `IO ()` 的 `main` 動作。",
+        {
+          "code": "-- hello.hs\nmain :: IO ()\nmain = putStrLn \"Hello, world!\"",
+          "lang": "haskell"
+        },
+        {
+          "code": "runghc hello.hs          # run without compiling\n# Hello, world!\nghc hello.hs && ./hello  # compile to a native executable\nghci                     # interactive REPL; load a file with :load hello.hs",
+          "lang": "shell"
+        },
+        "註解以 `--` 開頭。在 GHCi 中，`:type expression`（或 `:t`）可以顯示任何運算式的型別，是學習 Haskell 最好的方式之一。"
+      ]
+    },
+    {
+      "h": "值、型別與型別推論",
+      "body": [
+        "名稱只會綁定一次，之後不會改變：Haskell 沒有可變變數。型別簽章以 `::` 撰寫，是選擇性的，因為編譯器能自行推論，但替頂層定義加上型別簽章是良好習慣。",
+        {
+          "code": "name :: String\nname = \"Haskell\"\n\nyear :: Int\nyear = 1990\n\nratio :: Double\nratio = fromIntegral year / 1000   -- convert Int to Double explicitly\n\nmain :: IO ()\nmain = do\n  putStrLn (name ++ \" \" ++ show year)  -- Haskell 1990\n  print ratio                          -- 1.99\n  print (7 `div` 2, 7 `mod` 2)         -- (3,1)\n  print (2 ^ 64 :: Integer)            -- 18446744073709551616",
+          "lang": "haskell"
+        },
+        {
+          "table": {
+            "head": [
+              "型別",
+              "範例",
+              "說明"
+            ],
+            "rows": [
+              [
+                "`Int`",
+                "`42`",
+                "固定大小的整數（在常見平台上，GHC 為 64 位元）"
+              ],
+              [
+                "`Integer`",
+                "`2 ^ 100`",
+                "任意精度整數"
+              ],
+              [
+                "`Double`",
+                "`3.14`",
+                "64 位元浮點數"
+              ],
+              [
+                "`Bool`",
+                "`True`, `False`",
+                "建構子首字母大寫"
+              ],
+              [
+                "`Char`",
+                "`'h'`",
+                "一個 Unicode 字元"
+              ],
+              [
+                "`String`",
+                "`\"text\"`",
+                "由 `Char` 組成的串列 `[Char]`；`Data.Text` 速度更快"
+              ]
+            ]
+          }
+        },
+        "`show` 會把值轉成 `String`，而 `print` 就是 `putStrLn . show`。數字不會被隱含轉換，請使用 `fromIntegral`、`round` 或 `truncate`。"
+      ]
+    },
+    {
+      "h": "函式、guard 與模式比對",
+      "body": [
+        "呼叫函式時用空格而非括號：`add 2 3`。每個函式都只接收一個引數，並回傳另一個函式來處理其餘引數，這項特性稱為柯里化（currying），所以 `add 2` 本身就是一個函式。模式比對與 guard 可以取代大部分的 `if` 串接。",
+        {
+          "code": "add :: Int -> Int -> Int\nadd x y = x + y\n\nfactorial :: Integer -> Integer\nfactorial 0 = 1\nfactorial n = n * factorial (n - 1)\n\ngrade :: Int -> Char\ngrade score\n  | score >= 90 = 'A'\n  | score >= 70 = 'B'\n  | otherwise   = 'C'\n\ndescribe :: [a] -> String\ndescribe []  = \"empty\"\ndescribe [_] = \"one item\"\ndescribe _   = \"many items\"\n\nmain :: IO ()\nmain = do\n  print (add 2 3)                 -- 5\n  print (map (add 10) [1, 2, 3])  -- [11,12,13] (partial application)\n  print (factorial 20)            -- 2432902008176640000\n  print (grade 75)                -- 'B'\n  putStrLn (describe \"hi\")        -- many items\n  print (if even 4 then \"even\" else \"odd\")  -- \"even\"",
+          "lang": "haskell"
+        },
+        "`if` 是運算式，而且一定要有 `else`。Haskell 沒有迴圈：重複的工作要靠遞迴，或是 `map`、`filter`、`foldr` 等高階函式來完成。"
+      ]
+    },
+    {
+      "h": "串列、元組與高階函式",
+      "body": [
+        "串列存放同一種型別的值，是最常見的集合。元組則把固定數量、型別可能不同的值組在一起。串列生成式、範圍與函式合成運算子 `.` 能讓資料處理寫得簡潔。",
+        {
+          "code": "import Data.List (sortOn)\n\nmain :: IO ()\nmain = do\n  let nums = [5, 3, 8, 1] :: [Int]\n  print (head nums, length nums, sum nums)       -- (5,4,17)\n  print (0 : nums)                               -- [0,5,3,8,1] (prepend)\n  print (filter even nums)                       -- [8]\n  print (foldr (+) 0 [1 .. 10])                  -- 55\n  print [x * x | x <- [1 .. 5], odd x]           -- [1,9,25]\n  print (take 5 [1, 3 ..])                       -- [1,3,5,7,9] (lazy infinite list)\n  let people = [(\"Ann\", 31), (\"Bo\", 25)] :: [(String, Int)]\n  print (map fst (sortOn snd people))            -- [\"Bo\",\"Ann\"]\n  print ((length . filter (> 2)) nums)           -- 3\n  print (zip [1 :: Int ..] \"abc\")                -- [(1,'a'),(2,'b'),(3,'c')]",
+          "lang": "haskell"
+        },
+        "由於 Haskell 是惰性的，值只在需要時才會計算，所以 `take 5 [1, 3 ..]` 才能對無限串列運作。惰性也可能累積出龐大且尚未求值的運算式；對長串列求和時，請優先使用 `Data.List` 的 `foldl'`，而不是 `foldl`。"
+      ]
+    },
+    {
+      "h": "代數資料型別與型別類別",
+      "body": [
+        "用 `data` 定義自己的型別。一個型別可以有多個建構子（和型別），每個建構子可帶有欄位（積型別）。`Show`、`Eq`、`Ord`、`Functor` 等型別類別描述共通行為，類似介面；`deriving` 可以自動產生常見的實例。",
+        {
+          "code": "data Shape = Circle Double | Rect Double Double\n  deriving (Show, Eq)\n\narea :: Shape -> Double\narea (Circle r) = pi * r * r\narea (Rect w h) = w * h\n\ndata User = User { userName :: String, userAge :: Int }\n  deriving Show\n\nclass Describable a where\n  describe :: a -> String\n\ninstance Describable Shape where\n  describe (Circle _) = \"a circle\"\n  describe (Rect _ _) = \"a rectangle\"\n\nmain :: IO ()\nmain = do\n  print (map area [Circle 1, Rect 2 3])   -- [3.141592653589793,6.0]\n  putStrLn (describe (Rect 1 1))          -- a rectangle\n  let u = User { userName = \"Ann\", userAge = 31 }\n  print (u { userAge = 32 })              -- User {userName = \"Ann\", userAge = 32}",
+          "lang": "haskell"
+        }
+      ]
+    },
+    {
+      "h": "Maybe、Either 與 IO",
+      "body": [
+        "Haskell 沒有 `null`，純函式程式碼中也沒有未受檢查的例外。可能缺值的值型別為 `Maybe a`（`Just x` 或 `Nothing`），可能失敗並附帶原因的運算則是 `Either e a`（`Left err` 或 `Right x`）。讀取輸入等副作用則放在 `IO` 型別中，並以 `do` 記法串接。",
+        {
+          "code": "import Text.Read (readMaybe)\n\nsafeDiv :: Int -> Int -> Either String Int\nsafeDiv _ 0 = Left \"division by zero\"\nsafeDiv x y = Right (x `div` y)\n\nparseAge :: String -> Maybe Int\nparseAge s = case readMaybe s of\n  Just n | n >= 0 -> Just n\n  _               -> Nothing\n\nmain :: IO ()\nmain = do\n  print (safeDiv 10 2)          -- Right 5\n  print (safeDiv 1 0)           -- Left \"division by zero\"\n  print (parseAge \"42\")         -- Just 42\n  print (parseAge \"abc\")        -- Nothing\n  print (fmap (+ 1) (Just 41))  -- Just 42\n  putStrLn \"Your name?\"\n  n <- getLine                  -- an IO action that returns a String\n  putStrLn (\"Hi, \" ++ n)",
+          "lang": "haskell"
+        },
+        {
+          "note": "`head`、`tail` 這類函式，以及用 `div` 除以零，遇到不合法的輸入會丟出執行期錯誤；例如 `head []` 會當掉。請對串列做模式比對，或使用回傳 `Maybe` 的替代函式，讓程式保持全域有定義（total）。`IO` 引發的例外則可用 `Control.Exception` 的 `catch` 與 `try` 攔截。"
+        }
+      ]
+    },
+    {
+      "h": "完整的小程式：字詞頻率統計",
+      "body": [
+        "這個程式從標準輸入讀取文字，用 `Map` 統計每個字詞出現的次數，並印出最常見的三個字詞。它用到函式合成、GHC 隨附的 containers 套件中的 `Data.Map`，以及排序。",
+        {
+          "code": "import Data.Char (isAlpha, toLower)\nimport Data.List (sortBy)\nimport Data.Ord (comparing, Down (..))\nimport qualified Data.Map.Strict as Map\n\nwordFreq :: String -> [(String, Int)]\nwordFreq =\n  sortBy (comparing (Down . snd) <> comparing fst)\n    . Map.toList\n    . Map.fromListWith (+)\n    . map (\\w -> (w, 1))\n    . words\n    . map (\\c -> if isAlpha c then toLower c else ' ')\n\nmain :: IO ()\nmain = do\n  text <- getContents\n  mapM_ (\\(w, n) -> putStrLn (w ++ \": \" ++ show n)) (take 3 (wordFreq text))",
+          "lang": "haskell"
+        },
+        {
+          "code": "echo \"The cat and the dog. The dog sat, and the cat ran.\" | runghc wordfreq.hs\n# the: 4\n# and: 2\n# cat: 2",
+          "lang": "shell"
+        },
+        {
+          "note": "新手常見錯誤：混用 Tab 與空格（縮排具有語意）；寫成 `f(x, y)` 而不是 `f x y`；忘了作為引數的 `-1` 要加括號，如 `abs (-1)`；對可能為空的串列使用 `head`；以及以為 `do` 裡的 `let` 能改變既有的值，事實上它只是建立一個新名稱。"
+        }
+      ]
+    },
+    {
+      "h": "接下來可以學什麼",
+      "body": [
+        {
+          "ul": [
+            "haskell.org 的文件頁面，內有教學、書籍與 GHC User's Guide 的連結。",
+            "Hackage 套件庫，以及 Hoogle，可依名稱或型別搜尋函式的搜尋引擎。",
+            "Learn You a Haskell for Great Good! 與 Real World Haskell，兩本可免費線上閱讀的書。",
+            "Haskell 2010 Language Report，提供精確的語言定義。"
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Haskell 很難學嗎？",
+      "a": "它確實給人不太一樣的感覺，因為沒有可變變數與迴圈，且使用表達力很強的型別系統。只要循序漸進學會遞迴、模式比對與型別，初學者通常會發現核心語言其實小而一致。"
+    },
+    {
+      "q": "純函數式是什麼意思？",
+      "a": "函式對相同輸入永遠回傳相同結果，也不會改變狀態或進行輸入輸出。副作用仍然做得到，但會以 `IO` 等型別表達出來。"
+    },
+    {
+      "q": "Haskell 的 monad 是什麼？",
+      "a": "Monad 是一種型別類別，適用於 `Maybe`、`Either`、`IO` 這類支援以 `>>=` 串接運算的型別。`do` 記法就是這種串接的語法糖。"
+    },
+    {
+      "q": "什麼是惰性求值？",
+      "a": "運算式只在需要其值時才會求值。這讓無限串列成為可能，也避免不必要的運算，但記憶體用量會比較難預測。"
+    },
+    {
+      "q": "該用 Stack 還是 Cabal？",
+      "a": "兩者都能建置 Haskell 專案，也都能透過 GHCup 安裝。Cabal 是標準建置工具；Stack 則多了精選的套件快照。初學者用哪個都可以。"
+    }
+  ]
+}

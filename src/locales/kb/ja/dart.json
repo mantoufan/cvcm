@@ -1,0 +1,193 @@
+{
+  "title": "Dart入門：null安全・関数・コレクション・非同期処理を解説 — cv.cm",
+  "description": "Dartを基礎から学べる入門講座。Hello, worldの実行、変数と型、健全なnull安全、switchのパターン、関数、リストとマップ、レコード、クラス、async/awaitを解説します。",
+  "h1": "Dart入門：初心者向けチュートリアル",
+  "answer": "DartはGoogleが開発した、静的型付けのオブジェクト指向言語で、アプリフレームワークFlutterの言語として知られています。健全なnull安全を備え、ネイティブコードやJavaScript、WebAssemblyにコンパイルでき、開発中は高速なホットリロードが使えます。このページでは、環境構築、型、null安全、制御構文、関数、コレクション、クラス、非同期処理、エラー処理を順に解説します。",
+  "sections": [
+    {
+      "h": "Dartとは何か、何に使われるのか",
+      "body": [
+        "Dartは、Googleが開発したクライアント向けに最適化されたプログラミング言語です。型推論を備えた静的型付けで、健全なnull安全を持ち、ネイティブの機械語（モバイル、デスクトップ、サーバー向け）にも、JavaScriptやWebAssembly（Web向け）にもコンパイルできます。開発中は仮想マシン上でホットリロードが働くため、実行中のアプリに変更が数秒で反映されます。",
+        "多くの人がDartを学ぶ目的は、Flutterでアプリを作ることです。FlutterはGoogleのUIツールキットで、1つのコードベースからAndroid、iOS、Web、Windows、macOS、Linux向けに開発できます。Dartはコマンドラインツールやバックエンドサービスにも使われます。"
+      ]
+    },
+    {
+      "h": "DartのインストールとHello, worldの実行",
+      "body": [
+        "dart.devからDart SDKをインストールします（Dartが同梱されたFlutterをインストールしても構いません）。Dartのプログラムは、トップレベルの `main` 関数から始まります。",
+        {
+          "code": "// hello.dart\nvoid main() {\n  print('Hello, world!');\n}",
+          "lang": "dart"
+        },
+        {
+          "code": "dart run hello.dart\n# Hello, world!\ndart compile exe hello.dart   # builds a native executable\ndart create my_app            # creates a new console project",
+          "lang": "shell"
+        },
+        "このページのすべての例は、dartpad.devにあるブラウザ上のエディタ「DartPad」でも試せます。"
+      ]
+    },
+    {
+      "h": "変数と基本の型",
+      "body": [
+        "型をコンパイラに推論させるには `var`、一度だけ代入する変数には `final`、コンパイル時定数には `const` を使います。型を明示して書くこともできます。",
+        {
+          "code": "void main() {\n  var name = 'Dart';        // inferred as String\n  int year = 2011;          // explicit type\n  final now = DateTime.now(); // set once, at run time\n  const pi = 3.14159;       // compile-time constant\n  double ratio = 2;         // int literal becomes 2.0\n  bool ok = year > 2000;\n  print('$name since $year, pi=${pi.toStringAsFixed(2)}, ok=$ok, ratio=$ratio');\n  // Dart since 2011, pi=3.14, ok=true, ratio=2.0\n  print(now.year > 2000);   // true\n}",
+          "lang": "dart"
+        },
+        {
+          "table": {
+            "head": [
+              "型",
+              "例",
+              "補足"
+            ],
+            "rows": [
+              [
+                "`int`",
+                "`42`",
+                "整数。ネイティブ環境では64ビット"
+              ],
+              [
+                "`double`",
+                "`3.14`",
+                "64ビット浮動小数点数"
+              ],
+              [
+                "`num`",
+                "`7` または `7.5`",
+                "`int` と `double` のスーパータイプ"
+              ],
+              [
+                "`bool`",
+                "`true`",
+                "条件式に使えるのは `true` と `false` だけ"
+              ],
+              [
+                "`String`",
+                "`'hi'`",
+                "UTF-16。`$x` や `${expr}` による文字列補間が使える"
+              ],
+              [
+                "`dynamic`",
+                "何でも入る",
+                "静的チェックを無効にする。ほとんどのコードでは避ける"
+              ]
+            ]
+          }
+        },
+        "Webでは `int` の値がJavaScriptの数値として表現されるため、非常に大きな整数では精度が失われることがあります。"
+      ]
+    },
+    {
+      "h": "健全なnull安全",
+      "body": [
+        "Dart 3以降、すべてのDartコードで健全なnull安全が使われます。`String` 型の変数は決してnullにならず、nullを許可するには `String?` と書きます。コンパイラがすべての使用箇所を検査するので、nullエラーはプログラムを実行する前に検出されます。",
+        {
+          "code": "int lengthOf(String? s) {\n  // return s.length;         // compile error: s might be null\n  if (s == null) return 0;\n  return s.length;            // promoted to String after the check\n}\nvoid main() {\n  String? nickname;\n  print(nickname?.length);    // null (null-aware access)\n  print(nickname ?? 'guest'); // guest (default if null)\n  nickname ??= 'dee';         // assign only if null\n  print(lengthOf(nickname));  // 3\n  late String config;         // initialized later, checked at run time\n  config = 'loaded';\n  print(config);              // loaded\n}",
+          "lang": "dart"
+        },
+        {
+          "note": "`!` 演算子（例：`s!.length`）は、値がnullでないとコンパイラに伝えるもので、間違っていれば実行時に例外を投げます。nullチェックや `??` を優先しましょう。また、`late` はチェックを実行時に先送りするため、代入前に `late` 変数を読み取るとエラーになる点にも注意してください。"
+        }
+      ]
+    },
+    {
+      "h": "制御構文",
+      "body": [
+        "Dartには、おなじみの `if`、`for`、`while`、`do-while` があり、あらゆるイテラブルを走査する `for-in` ループも使えます。Dart 3以降は、`switch` がパターンマッチに対応し、式としても使えます。",
+        {
+          "code": "void main() {\n  var scores = [72, 95, 48];\n  for (var s in scores) {\n    if (s >= 90) {\n      print('$s excellent');\n    } else if (s >= 50) {\n      print('$s pass');\n    } else {\n      print('$s fail');\n    }\n  }\n  for (var i = 0; i < 3; i++) {\n    print('i = $i');\n  }\n  var day = 6;\n  var kind = switch (day) {\n    6 || 7 => 'weekend',\n    >= 1 && <= 5 => 'weekday',\n    _ => 'invalid',\n  };\n  print(kind); // weekend\n}",
+          "lang": "dart"
+        }
+      ]
+    },
+    {
+      "h": "関数",
+      "body": [
+        "関数はファーストクラスのオブジェクトです。引数は位置引数、`[]` で囲むオプションの位置引数、`{}` で囲む名前付き引数にできます。名前付き引数は、`required` を付けない限り省略可能です。アロー構文 `=>` は、1つの式を返す関数の省略記法です。",
+        {
+          "code": "int add(int a, int b) => a + b;\nString greet(String name, {String greeting = 'Hello', required bool loud}) {\n  var text = '$greeting, $name';\n  return loud ? text.toUpperCase() : text;\n}\nString label(String text, [int? width]) =>\n    width == null ? text : text.padRight(width, '.');\nvoid main() {\n  print(add(2, 3));                              // 5\n  print(greet('Ana', loud: false));              // Hello, Ana\n  print(greet('Ana', greeting: 'Hi', loud: true)); // HI, ANA\n  print(label('id', 5));                         // id...\n  var twice = (int x) => x * 2;                  // anonymous function\n  print([1, 2, 3].map(twice).toList());          // [2, 4, 6]\n}",
+          "lang": "dart"
+        }
+      ]
+    },
+    {
+      "h": "コレクション：List、Set、Map、レコード",
+      "body": [
+        "基本のコレクションは、`List`（順序あり）、`Set`（重複なし）、`Map`（キーと値のペア）です。コレクションリテラルでは、`if`、`for`、スプレッド演算子 `...` が使えます。Dart 3で追加されたレコードは、クラスを宣言せずに複数の値をまとめられます。",
+        {
+          "code": "void main() {\n  var nums = [3, 1, 2];               // List<int>\n  nums.add(4);\n  nums.sort();\n  print(nums);                        // [1, 2, 3, 4]\n  var tags = {'dart', 'flutter', 'dart'};\n  print(tags.length);                 // 2\n  var ages = {'Ann': 31, 'Bo': 25};   // Map<String, int>\n  ages['Cy'] = 40;\n  print(ages['Bo']);                  // 25\n  var showAll = false;\n  var menu = ['Home', if (showAll) 'Admin', for (var n in nums) 'Item $n'];\n  print(menu);  // [Home, Item 1, Item 2, Item 3, Item 4]\n  (String, int) pair = ('Ann', 31);   // a record\n  var (who, age) = pair;              // destructuring\n  print('$who is $age');              // Ann is 31\n}",
+          "lang": "dart"
+        }
+      ]
+    },
+    {
+      "h": "クラスとasync/await",
+      "body": [
+        "Dartはオブジェクト指向で、すべての値がオブジェクトです。クラスでは、初期化フォーマルパラメータ（`this.x`）付きのコンストラクタ、名前付きコンストラクタ、ゲッター、ミックスイン、インターフェースが使えます。非同期処理には `Future` と `Stream` を `async`・`await` とともに使い、ファイルやネットワークの待ち時間でもFlutterアプリの応答性を保てます。",
+        {
+          "code": "class Point {\n  final double x, y;\n  const Point(this.x, this.y);\n  Point.origin() : x = 0, y = 0;     // named constructor\n  double get sum => x + y;           // getter\n  @override\n  String toString() => 'Point($x, $y)';\n}\nFuture<String> fetchUser() async {\n  await Future.delayed(Duration(milliseconds: 100));\n  return 'ana';\n}\nFuture<void> main() async {\n  print(Point(1, 2).sum);            // 3.0\n  print(Point.origin());             // Point(0.0, 0.0)\n  var user = await fetchUser();\n  print('user: $user');              // user: ana\n}",
+          "lang": "dart"
+        }
+      ]
+    },
+    {
+      "h": "エラー処理",
+      "body": [
+        "例外は `throw` で投げ、`try`、`on`、`catch`、`finally` で処理します。特定の型だけを捕捉するには `on SomeType` を使います。Dartでは、`Exception`（プログラムが対処できる想定内の問題）と、`Error`（アサーションの失敗や範囲エラーなどのバグ）を区別しており、`Error` は通常、捕捉すべきではありません。",
+        {
+          "code": "int parseAge(String s) {\n  var n = int.tryParse(s);            // null instead of throwing\n  if (n == null || n < 0) {\n    throw FormatException('Not a valid age: $s');\n  }\n  return n;\n}\nvoid main() {\n  for (var input in ['42', 'abc']) {\n    try {\n      print(parseAge(input));\n    } on FormatException catch (e) {\n      print('Error: ${e.message}');\n    } finally {\n      print('checked $input');\n    }\n  }\n}\n// 42 / checked 42 / Error: Not a valid age: abc / checked abc",
+          "lang": "dart"
+        }
+      ]
+    },
+    {
+      "h": "小さな完成プログラム：ショッピングカートの合計",
+      "body": [
+        "このプログラムは、クラスで商品を表現し、カートをマップに保持してレシートを表示します。クラス、マップ、文字列の書式設定、コレクションのメソッドを組み合わせています。",
+        {
+          "code": "class Product {\n  final String name;\n  final double price;\n  const Product(this.name, this.price);\n}\nvoid main() {\n  const apple = Product('Apple', 0.5);\n  const bread = Product('Bread', 2.25);\n  final cart = <Product, int>{apple: 6, bread: 2};\n  var total = 0.0;\n  cart.forEach((product, qty) {\n    final line = product.price * qty;\n    total += line;\n    print('${product.name.padRight(6)} x$qty  ${line.toStringAsFixed(2)}');\n  });\n  final count = cart.values.reduce((a, b) => a + b);\n  print('$count items, total ${total.toStringAsFixed(2)}');\n}\n// Apple  x6  3.00\n// Bread  x2  4.50\n// 8 items, total 7.50",
+          "lang": "dart"
+        },
+        {
+          "note": "初心者がよくやる間違い：`await` を忘れる（値ではなく `Future` が返ってきます）、`dynamic` を使う、または型を `Object` のままにしてコンパイル時チェックを失う、`!` や `late` を乱用する、`final`（一度だけ代入）と `const`（コンパイル時に確定）を混同する、イテレーション中にリストを変更する。"
+        }
+      ]
+    },
+    {
+      "h": "次のステップ",
+      "body": [
+        {
+          "ul": [
+            "dart.devのDart言語ツアーとチュートリアル。",
+            "公式のスタイル・設計ガイド「Effective Dart」。",
+            "アプリを作りたい場合は、flutter.devのFlutterドキュメント。",
+            "DartとFlutterのパッケージリポジトリ、pub.dev。"
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "DartはFlutter専用の言語ですか？",
+      "a": "いいえ。Dartは汎用言語で、コマンドラインツール、サーバー、Webアプリも作れます。Flutterは、Dartを学ぶ最も人気のある理由というだけです。"
+    },
+    {
+      "q": "Dartはコンパイル言語ですか、インタプリタ言語ですか？",
+      "a": "どちらの方式もあります。開発中はVM上でJIT（実行時）コンパイルとホットリロードが働き、リリース時にはAOT（事前）コンパイルでネイティブの機械語に、Web向けにはJavaScriptやWebAssemblyにコンパイルされます。"
+    },
+    {
+      "q": "Dartのfinalとconstの違いは何ですか？",
+      "a": "`final` 変数は一度だけ代入され、その値は実行時に決まっても構いません。`const` の値はコンパイル時に確定している必要があり、深い不変性を持つため、Flutterは定数ウィジェットを再利用できます。"
+    },
+    {
+      "q": "DartはJavaやJavaScriptに似ていますか？",
+      "a": "Cスタイルの構文とクラスは、Java、C#、JavaScriptの開発者には馴染みやすいものです。JavaScriptと違い、Dartは静的型付けで、健全なnull安全を備えています。"
+    },
+    {
+      "q": "Dartの ?? 演算子は何をしますか？",
+      "a": "`a ?? b` は、`a` がnullでなければ `a` を、nullなら `b` を返します。関連する `a ??= b` は、`a` がnullの場合にだけ `b` を `a` に代入します。"
+    }
+  ]
+}

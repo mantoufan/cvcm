@@ -1,0 +1,154 @@
+{
+  "title": "Visitor パターン：ダブルディスパッチと TypeScript の AST ビジター — cv.cm",
+  "description": "Visitor パターンは、クラスを変更せずにクラス階層へ操作を追加します。ダブルディスパッチ、TypeScript のコード、union 型による代替案を解説します。",
+  "h1": "Visitor パターンとは？例でわかりやすく解説",
+  "answer": "Visitor は振る舞いに関するデザインパターンで、関連するクラス群を変更せずに、新しい操作を追加できるようにします。各操作は、要素の型ごとに 1 つのメソッドを持つ Visitor オブジェクトとして書かれ、各要素は、対応する Visitor のメソッドを呼ぶ `accept(visitor)` メソッドを持ちます。ダブルディスパッチと呼ばれるこの手法は、要素の型と Visitor の型の両方に基づいて、実行するコードを選びます。コンパイラ、リンター、コードトランスフォーマーは、構文木をたどるために Visitor を使います。",
+  "sections": [
+    {
+      "h": "目的と解決する問題",
+      "body": [
+        "目的：オブジェクト構造の要素に対して行う操作を表現することです。Visitor は、操作の対象となる要素のクラスを変更せずに、新しい操作を定義できるようにします。Gang of Four（GoF）の書籍にある振る舞いパターンの 1 つです。",
+        "描画プログラムに、`Circle`、`Rectangle`、`Group` の 3 つの図形クラスがあるとします。時間がたつにつれて、それらに対して多くの操作が必要になります。合計面積の計算、SVG への出力、JSON への出力、図形の数のカウント、重なりのチェックなどです。すべての操作を各図形クラスのメソッドにすると、図形クラスが、図形であることとは無関係なコードで肥大化し、新しい操作を足すたびにすべてのクラスに手を入れることになります。",
+        "Visitor を使うと、各操作が 1 つのクラス（面積の Visitor、SVG の Visitor）になり、そこにすべての図形の型に対するコードが入ります。図形に必要なのは、汎用的なメソッド `accept` 1 つだけです。操作を追加するには新しい Visitor を 1 つ書くだけで、図形クラスは変わりません。"
+      ]
+    },
+    {
+      "h": "構造と登場する役割",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "役割",
+              "責務"
+            ],
+            "rows": [
+              [
+                "Visitor",
+                "`visitCircle` や `visitRectangle` のように、Concrete element の型ごとに 1 つの visit メソッドを持つインターフェース"
+              ],
+              [
+                "Concrete visitor",
+                "すべての要素の型に対する 1 つの操作を実装し、結果を集めることもある"
+              ],
+              [
+                "Element",
+                "`accept(visitor)` メソッドを持つインターフェース"
+              ],
+              [
+                "Concrete element",
+                "自分の型に対応する visit メソッドに自分自身を渡して呼び出すことで、`accept` を実装する"
+              ],
+              [
+                "Object structure",
+                "Visitor がたどる、ドキュメントや構文木のような要素のコレクションまたは木"
+              ]
+            ]
+          }
+        },
+        "`accept` が必要な理由：TypeScript、Java、C# では、メソッド呼び出しは、呼び出された対象のオブジェクトの型から実装を選びます（シングルディスパッチ）。`accept` の呼び出しは要素の型でディスパッチし、その内側の `visitor.visitCircle(this)` のような呼び出しは、Visitor の型でディスパッチします。この 2 つを合わせたものがダブルディスパッチです。"
+      ]
+    },
+    {
+      "h": "TypeScript での実装",
+      "body": [
+        "Visitor のインターフェースは戻り値の型についてジェネリックなので、ある Visitor は数値を計算し、別の Visitor は文字列を生成できます。",
+        {
+          "code": "interface ShapeVisitor<R> {\n  visitCircle(c: Circle): R;\n  visitRectangle(r: Rectangle): R;\n  visitGroup(g: Group): R;\n}\ninterface Shape {\n  accept<R>(visitor: ShapeVisitor<R>): R;\n}\n\nclass Circle implements Shape {\n  constructor(readonly radius: number) {}\n  accept<R>(v: ShapeVisitor<R>) { return v.visitCircle(this); }\n}\nclass Rectangle implements Shape {\n  constructor(readonly width: number, readonly height: number) {}\n  accept<R>(v: ShapeVisitor<R>) { return v.visitRectangle(this); }\n}\nclass Group implements Shape {\n  constructor(readonly children: Shape[]) {}\n  accept<R>(v: ShapeVisitor<R>) { return v.visitGroup(this); }\n}\n\nclass AreaVisitor implements ShapeVisitor<number> {\n  visitCircle(c: Circle) { return Math.PI * c.radius ** 2; }\n  visitRectangle(r: Rectangle) { return r.width * r.height; }\n  visitGroup(g: Group): number {\n    return g.children.reduce((sum, child) => sum + child.accept(this), 0);\n  }\n}\n\nclass SvgVisitor implements ShapeVisitor<string> {\n  visitCircle(c: Circle) { return '<circle r=\"' + c.radius + '\"/>'; }\n  visitRectangle(r: Rectangle) { return '<rect width=\"' + r.width + '\" height=\"' + r.height + '\"/>'; }\n  visitGroup(g: Group): string { return \"<g>\" + g.children.map((c) => c.accept(this)).join(\"\") + \"</g>\"; }\n}\n\nconst drawing = new Group([new Circle(1), new Rectangle(2, 3), new Group([new Rectangle(1, 1)])]);\nconsole.log(drawing.accept(new AreaVisitor()).toFixed(2)); // 10.14\nconsole.log(drawing.accept(new SvgVisitor()));\n// <g><circle r=\"1\"/><rect width=\"2\" height=\"3\"/><g><rect width=\"1\" height=\"1\"/></g></g>",
+          "lang": "typescript"
+        },
+        "図形の数を数えるような 3 つ目の操作は、`ShapeVisitor<number>` を実装する新しいクラスになります。図形クラスは何も変わりません。",
+        {
+          "note": "Visitor を使うと、操作の追加は簡単ですが、要素の型の追加は難しくなります。`Triangle` のような新しい図形クラスには、Visitor のインターフェースと、既存のすべての Visitor に新しいメソッドが必要です。要素の型の集合が安定していて、操作の集合が増え続ける場合にこのパターンを使いましょう。"
+        }
+      ]
+    },
+    {
+      "h": "TypeScript での代替案：union 型と switch",
+      "body": [
+        "TypeScript では、判別可能な union 型と網羅的な `switch` を使えば、少ないコードで同じ利点の多くが得られます。case が不足していればコンパイラがエラーを報告するので、Visitor のインターフェースが提供する安全性の代わりになります。",
+        {
+          "code": "type Shape =\n  | { kind: \"circle\"; radius: number }\n  | { kind: \"rect\"; width: number; height: number }\n  | { kind: \"group\"; children: Shape[] };\n\nfunction area(s: Shape): number {\n  switch (s.kind) {\n    case \"circle\": return Math.PI * s.radius ** 2;\n    case \"rect\": return s.width * s.height;\n    case \"group\": return s.children.reduce((sum, c) => sum + area(c), 0);\n    default: {\n      const unreachable: never = s; // compile error if a kind is not handled\n      return unreachable;\n    }\n  }\n}\n\nconsole.log(area({ kind: \"group\", children: [{ kind: \"rect\", width: 2, height: 3 }] })); // 6",
+          "lang": "typescript"
+        },
+        "新しい操作は、新しい関数になります。このスタイルは JSON や構文木のような単純なデータに向いていて、多くの TypeScript のコードベースが、クラスベースの Visitor の代わりに採用しています。"
+      ]
+    },
+    {
+      "h": "使うべき場面と避けるべき場面",
+      "body": [
+        {
+          "ul": [
+            "要素クラスの集合が安定していて、構文木に対する評価、出力、型チェック、最適化のように、互いに無関係な多数の操作が必要なときに使います。",
+            "操作のコードをまとめておきたいときに使います。SVG への出力のすべてが、多くのクラスに散らばらず、1 つの Visitor にあります。",
+            "シンボルテーブルや累計のように、構造をたどりながら状態を蓄積する Visitor が必要なときに使います。",
+            "要素の型が頻繁に変わる場合は使いません。変更のたびに、すべての Visitor に影響が及びます。",
+            "要素が少なく、操作も単純な場合は使いません。クラスのメソッドや、`switch` を使った関数のほうが読みやすくなります。",
+            "Visitor は通常、要素のデータにアクセスする必要があるため、フィールドを公開せざるを得なくなる場合がある点に注意してください。"
+          ]
+        }
+      ]
+    },
+    {
+      "h": "実際の利用例",
+      "body": [
+        {
+          "ul": [
+            "Babel のプラグインは Visitor です。`Identifier` や `CallExpression` のようにノードの型にちなんだ名前のメソッドを持つオブジェクトで、`@babel/traverse` が構文木をたどりながらそれを呼び出します。",
+            "ESLint のルールは、ノードの型をキーにした Visitor メソッドのオブジェクトを返し、ESLint が走査中にそれらを呼び出します。",
+            "Python の `ast.NodeVisitor` と `ast.NodeTransformer` クラスは、`visit_Name` のようにノードのクラス名にちなんだ `visit_` メソッドを呼び出します。",
+            "Java の `java.nio.file.FileVisitor` は、`Files.walkFileTree` と一緒に使われ、ファイルツリー内の各ディレクトリとファイルについてコールバックを受け取ります。"
+          ]
+        }
+      ]
+    },
+    {
+      "h": "関連するパターン",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "パターン",
+              "Visitor パターンとの関係"
+            ],
+            "rows": [
+              [
+                "Composite パターン",
+                "Visitor は、Composite 構造に適用されることがよくあります。例にあるように、グループの visit メソッドは、その子を訪問します。"
+              ],
+              [
+                "Interpreter パターン",
+                "インタープリタは構文木を評価します。Visitor はその評価に加えて、同じ木に対するほかの操作も実装できます。"
+              ],
+              [
+                "Iterator パターン",
+                "Iterator は要素をたどり、Visitor は各要素に対する操作を定義します。両者を組み合わせることもできます。"
+              ],
+              [
+                "Strategy パターン",
+                "Strategy は 1 つの Context に対する 1 つのアルゴリズムを変えます。Visitor は、多数の要素の型に対する 1 つの操作をまとめます。"
+              ]
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "ダブルディスパッチとは何ですか？",
+      "a": "ダブルディスパッチとは、実行されるコードが 2 つのオブジェクトの型に依存することです。Visitor では、`element.accept(visitor)` が要素の型を選び、その内側の `visitor.visitX(this)` が Visitor の型を選びます。"
+    },
+    {
+      "q": "Visitor パターンを使うべきでないのはどんなときですか？",
+      "a": "新しい要素の型が頻繁に追加される場合は避けましょう。新しい型のたびに、すべての Visitor を変更する必要があるからです。また、少数の単純な操作に対しては、割に合わない儀式的な手間も増えます。"
+    },
+    {
+      "q": "Visitor は TypeScript で役に立ちますか？",
+      "a": "クラスベースのオブジェクト構造には役立ちます。単純なデータであれば、判別可能な union 型と網羅的な `switch` のほうが、通常は少ないコードで同じ結果を得られ、型チェックも万全です。"
+    },
+    {
+      "q": "Babel と ESLint はなぜ Visitor を使うのですか？",
+      "a": "どちらも、多くのノードの型を持つ構文木を扱い、独立した多数のプラグインやルールをサポートします。Visitor を使えば、各プラグインやルールは関心のあるノードの型だけを処理し、走査はツール側が担当できます。"
+    }
+  ]
+}

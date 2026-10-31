@@ -1,0 +1,218 @@
+{
+  "title": "Binary search tree: insert, search, delete, kode Python, dan kompleksitas — cv.cm",
+  "description": "Pelajari cara kerja binary search tree (BST): aturan urutan, search, insert, dan tiga kasus delete di Python, plus kompleksitas O(log n) vs O(n).",
+  "h1": "Binary search tree: cara kerja, kode Python, dan kompleksitasnya",
+  "answer": "Binary search tree (BST) adalah binary tree di mana subtree kiri setiap node hanya berisi key yang lebih kecil dan subtree kanannya hanya berisi key yang lebih besar. Karena aturan ini, search, insert, dan delete mengikuti satu jalur dari root dan butuh waktu O(h), dengan h adalah tinggi tree: O(log n) jika tree seimbang, tetapi O(n) jika berubah menjadi rantai. Traversal in-order mengunjungi key dalam urutan terurut.",
+  "sections": [
+    {
+      "h": "Masalah apa yang diselesaikan binary search tree",
+      "body": [
+        "Sorted array memberi binary search yang cepat, tetapi menyisipkan elemen baru menggeser semua yang ada setelahnya. Hash table memberi lookup dan insert yang cepat, tetapi tidak menyimpan urutan, sehingga tidak bisa menjawab \"key terkecil yang lebih besar dari 42 itu apa?\" atau \"tampilkan semua key antara 10 dan 20\". Binary search tree menjaga key tetap terurut dan tetap memungkinkan insert dan delete yang cepat. Ini adalah dasar dari ordered map dan set seperti `TreeMap` di Java dan `std::map` di C++, yang memakai varian self-balancing."
+      ]
+    },
+    {
+      "h": "Aturannya dengan bahasa sederhana",
+      "body": [
+        "Setiap node punya sebuah key, anak kiri opsional, dan anak kanan opsional. Untuk setiap node: semua key di subtree kirinya lebih kecil, dan semua key di subtree kanannya lebih besar. Untuk mencari key, mulai dari root lalu bandingkan: ke kiri jika key lebih kecil, ke kanan jika lebih besar, berhenti jika sama atau jika sudah keluar dari tree.",
+        {
+          "note": "Aturan ini berlaku untuk seluruh subtree, bukan hanya anak langsung. Tree di mana tiap anak benar terhadap induknya tetap bisa tidak valid jika, misalnya, ada key di dalam subtree kiri yang lebih besar dari root."
+        }
+      ]
+    },
+    {
+      "h": "Contoh langkah demi langkah: membangun dan mencari di tree",
+      "body": [
+        "Insert 8, 3, 10, 1, 6, 14, 4 dengan urutan ini. Setiap key baru turun dari root dan menjadi leaf di tempat ia keluar dari tree.",
+        {
+          "table": {
+            "head": [
+              "Insert",
+              "Jalur yang ditempuh",
+              "Ditempatkan sebagai"
+            ],
+            "rows": [
+              [
+                "8",
+                "tree kosong",
+                "root"
+              ],
+              [
+                "3",
+                "8: lebih kecil, ke kiri",
+                "anak kiri dari 8"
+              ],
+              [
+                "10",
+                "8: lebih besar, ke kanan",
+                "anak kanan dari 8"
+              ],
+              [
+                "1",
+                "8 kiri, 3 kiri",
+                "anak kiri dari 3"
+              ],
+              [
+                "6",
+                "8 kiri, 3 kanan",
+                "anak kanan dari 3"
+              ],
+              [
+                "14",
+                "8 kanan, 10 kanan",
+                "anak kanan dari 10"
+              ],
+              [
+                "4",
+                "8 kiri, 3 kanan, 6 kiri",
+                "anak kiri dari 6"
+              ]
+            ]
+          }
+        },
+        "Mencari 4 membandingkan dengan 8, 3, 6, lalu 4: empat perbandingan pada tree berisi tujuh key. Mencari 7 membandingkan dengan 8, 3, 6, lalu tidak menemukan anak kanan dari 6, jadi 7 tidak ada."
+      ]
+    },
+    {
+      "h": "Implementasi Python",
+      "body": [
+        "Insert dan search berupa loop pendek. Delete punya tiga kasus: node tanpa anak (hapus saja), satu anak (ganti dengan anaknya), atau dua anak (salin in-order successor-nya, yaitu key terkecil di subtree kanan, lalu hapus successor itu).",
+        {
+          "code": "class Node:\n    def __init__(self, key):\n        self.key, self.left, self.right = key, None, None\ndef insert(root, key):\n    if root is None:\n        return Node(key)\n    if key < root.key:\n        root.left = insert(root.left, key)\n    elif key > root.key:\n        root.right = insert(root.right, key)\n    return root                      # duplicates are ignored\ndef contains(root, key):\n    while root and root.key != key:\n        root = root.left if key < root.key else root.right\n    return root is not None\ndef delete(root, key):\n    if root is None:\n        return None\n    if key < root.key:\n        root.left = delete(root.left, key)\n    elif key > root.key:\n        root.right = delete(root.right, key)\n    else:\n        if root.left is None:\n            return root.right\n        if root.right is None:\n            return root.left\n        succ = root.right\n        while succ.left:\n            succ = succ.left\n        root.key = succ.key\n        root.right = delete(root.right, succ.key)\n    return root\ndef inorder(root):\n    return inorder(root.left) + [root.key] + inorder(root.right) if root else []",
+          "lang": "python"
+        },
+        {
+          "code": "root = None\nfor k in [8, 3, 10, 1, 6, 14, 4]:\n    root = insert(root, k)\nprint(inorder(root))                 # [1, 3, 4, 6, 8, 10, 14]\nprint(contains(root, 4), contains(root, 7))  # True False\nroot = delete(root, 3)               # node with two children\nprint(inorder(root), root.left.key)  # [1, 4, 6, 8, 10, 14] 4",
+          "lang": "python"
+        }
+      ]
+    },
+    {
+      "h": "Kompleksitas waktu dan ruang",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Operasi",
+              "Tree seimbang",
+              "Kasus terburuk (rantai)",
+              "Alasan"
+            ],
+            "rows": [
+              [
+                "Search",
+                "O(log n)",
+                "O(n)",
+                "satu perbandingan per level"
+              ],
+              [
+                "Insert",
+                "O(log n)",
+                "O(n)",
+                "turun ke posisi leaf"
+              ],
+              [
+                "Delete",
+                "O(log n)",
+                "O(n)",
+                "cari node, mungkin cari successor-nya"
+              ],
+              [
+                "Min / max",
+                "O(log n)",
+                "O(n)",
+                "ikuti link kiri (atau kanan) sampai ujung"
+              ],
+              [
+                "Traversal in-order",
+                "O(n)",
+                "O(n)",
+                "setiap node sekali"
+              ],
+              [
+                "Ruang",
+                "O(n)",
+                "O(n)",
+                "satu node per key; rekursi memakai stack O(h)"
+              ]
+            ]
+          }
+        },
+        "Kasus terburuk itu nyata, bukan sekadar teori: memasukkan key yang sudah terurut (1, 2, 3, ...) ke BST biasa membuat setiap node hanya punya anak kanan, dan tree menjadi linked list. Urutan insert acak memberi tinggi yang diharapkan O(log n)."
+      ]
+    },
+    {
+      "h": "Varian seimbang dan kesalahan umum",
+      "body": [
+        "Self-balancing tree menjaga tinggi tetap O(log n) dengan menyusun ulang lewat rotasi setelah insert dan delete.",
+        {
+          "table": {
+            "head": [
+              "Varian",
+              "Ide penyeimbangan",
+              "Dipakai di"
+            ],
+            "rows": [
+              [
+                "AVL tree",
+                "tinggi kedua subtree berbeda paling banyak 1",
+                "beban kerja yang banyak lookup"
+              ],
+              [
+                "Red-black tree",
+                "aturan warna membatasi jalur terpanjang maksimal dua kali jalur terpendek",
+                "`TreeMap` Java, implementasi `std::map` C++ yang umum, kernel Linux"
+              ],
+              [
+                "B-tree / B+ tree",
+                "banyak key per node, semua leaf berada di kedalaman yang sama",
+                "database dan file system"
+              ],
+              [
+                "Treap, splay tree",
+                "prioritas acak, atau memindahkan key yang diakses ke root",
+                "balanced tree yang lebih sederhana, cache"
+              ]
+            ]
+          }
+        },
+        {
+          "ul": [
+            "Memvalidasi BST hanya dengan memeriksa induk dan anak. Teruskan rentang (low, high) yang valid ke bawah.",
+            "Lupa mengembalikan root (yang mungkin baru) dari insert dan delete rekursif, sehingga perubahan hilang.",
+            "Rekursi yang dalam pada tree yang merosot: batas rekursi default Python sekitar 1000, jadi rantai 5000 node membuat kode rekursif crash. Pakai loop atau jaga tree tetap seimbang.",
+            "Kebijakan duplikat yang tidak jelas: putuskan apakah duplikat diabaikan, dihitung, atau selalu masuk ke satu sisi."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Kapan memakai BST dan pertanyaan wawancara yang khas",
+      "body": [
+        "Gunakan balanced BST ketika Anda butuh data terurut dengan insert dan delete yang sering: range query, pencarian floor dan ceiling, statistik peringkat, atau iterasi dalam urutan terurut. Gunakan hash table jika Anda hanya butuh lookup key yang tepat. Di Python, pustaka standar tidak punya tree map; pilihan umumnya adalah sorted list dengan modul `bisect` untuk data kecil atau yang jarang berubah, atau paket pihak ketiga `sortedcontainers`.",
+        "Pertanyaan wawancara yang khas: validasi BST, mencari elemen terkecil ke-k (traversal in-order), lowest common ancestor, mengubah sorted array menjadi BST seimbang (pilih elemen tengah sebagai root), dan mencari in-order successor dari sebuah node."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Apa bedanya binary tree dan binary search tree?",
+      "a": "Binary tree hanya membatasi setiap node maksimal dua anak. Binary search tree menambahkan aturan urutan: key lebih kecil di kiri, lebih besar di kanan, untuk setiap subtree."
+    },
+    {
+      "q": "Mengapa search BST O(log n)?",
+      "a": "Setiap perbandingan turun satu level dan membuang satu subtree. Tree seimbang dengan n node punya sekitar log2(n) level, jadi search butuh sekitar sebanyak itu perbandingan."
+    },
+    {
+      "q": "Apa yang terjadi jika saya memasukkan data terurut ke BST?",
+      "a": "Tanpa penyeimbangan, setiap key baru menjadi anak kanan dari key sebelumnya, tinggi menjadi n, dan setiap operasi menjadi O(n). Self-balancing tree seperti AVL dan red-black tree mencegah hal ini."
+    },
+    {
+      "q": "Bagaimana mendapatkan key BST dalam urutan terurut?",
+      "a": "Lakukan traversal in-order: kunjungi subtree kiri, lalu node, lalu subtree kanan. Butuh waktu O(n)."
+    },
+    {
+      "q": "Apakah Python punya binary search tree bawaan?",
+      "a": "Tidak. Python punya `dict` dan `set` (hash table) serta modul `bisect` untuk sorted list. Container tree terurut berasal dari paket pihak ketiga."
+    }
+  ]
+}

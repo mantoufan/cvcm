@@ -1,0 +1,149 @@
+{
+  "title": "Builder パターン：段階的な構築、流れるようなAPI、TypeScriptの例 — cv.cm",
+  "description": "Builder パターンを解説。TypeScriptの流れるようなAPIで複雑なオブジェクトを段階的に構築する方法、Directorの役割、オプションオブジェクトで足りる場合を紹介します。",
+  "h1": "Builder パターンを例でわかりやすく解説",
+  "answer": "Builder パターンは、複雑なオブジェクトの構築とその最終的な表現を分離し、同じ段階的な手順から異なる結果を作れるようにする生成パターンです。現代のコードでは、多くの場合、流れるようなAPI（fluent API）として現れます。ビルダーに対して `.url()`、`.header()`、`.timeout()` などのメソッドを呼び、最後に `.build()` が検証済みの完成したオブジェクトを返します。多数のオプション引数を持つ長いコンストラクタの代わりになります。",
+  "sections": [
+    {
+      "h": "目的",
+      "body": [
+        "複雑なオブジェクトの構築をその表現から分離し、同じ構築プロセスから異なる表現を作れるようにします。Builder パターンは、Gang of Four（GoF）の書籍にある5つの生成パターンの1つです。"
+      ]
+    },
+    {
+      "h": "解決する問題",
+      "body": [
+        "URL、メソッド、任意の数のヘッダー、省略可能なボディ、タイムアウト、リトライ回数を持つHTTPリクエストのオブジェクトを想像してください。これらすべてを受け取るコンストラクタは、正しく呼び出すのが困難です。",
+        {
+          "code": "class HttpRequest {\n  constructor(\n    readonly url: string,\n    readonly method: string,\n    readonly headers: Record<string, string>,\n    readonly body?: string,\n    readonly timeoutMs?: number,\n    readonly retries?: number,\n  ) {}\n}\n\n// Which argument is which? Easy to swap 3 and 5000 by mistake.\nconst req = new HttpRequest(\"https://api.example.com\", \"POST\", {}, undefined, 3, 5000);",
+          "lang": "typescript"
+        },
+        "これはテレスコーピングコンストラクタと呼ばれます。「GETリクエストにボディは付けられない」といったルールを置く場所もなく、送信前に複数の場所でヘッダーを追加していくような、段階的な構築もできません。"
+      ]
+    },
+    {
+      "h": "構造と登場要素",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "要素",
+              "役割",
+              "例では"
+            ],
+            "rows": [
+              [
+                "Builder",
+                "製品の各部分を作成するステップを宣言します。",
+                "`RequestBuilder` のメソッド"
+              ],
+              [
+                "ConcreteBuilder",
+                "ステップを実装し、途中の状態を保持し、結果を返します。",
+                "`RequestBuilder`"
+              ],
+              [
+                "Director",
+                "省略可能です。ステップを決まった順序で実行して、よく使う構成を生み出します。",
+                "`jsonPost()`"
+              ],
+              [
+                "Product",
+                "構築される複雑なオブジェクトです。",
+                "`HttpRequest`"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "TypeScriptでの実装",
+      "body": [
+        "各ステップは値を保存して `this` を返すので、呼び出しをチェーンできます。`build()` は組み合わせを検証し、不変の製品を返します。",
+        {
+          "code": "interface HttpRequest {\n  readonly url: string;\n  readonly method: \"GET\" | \"POST\";\n  readonly headers: Readonly<Record<string, string>>;\n  readonly body?: string;\n  readonly timeoutMs: number;\n}\n\nclass RequestBuilder {\n  private method: \"GET\" | \"POST\" = \"GET\";\n  private headers: Record<string, string> = {};\n  private body?: string;\n  private timeoutMs = 10_000;\n\n  constructor(private readonly url: string) {}\n\n  post(body: string): this { this.method = \"POST\"; this.body = body; return this; }\n  header(name: string, value: string): this { this.headers[name] = value; return this; }\n  timeout(ms: number): this { this.timeoutMs = ms; return this; }\n\n  build(): HttpRequest {\n    if (this.timeoutMs <= 0) throw new Error(\"timeout must be positive\");\n    return Object.freeze({\n      url: this.url, method: this.method, headers: { ...this.headers },\n      body: this.body, timeoutMs: this.timeoutMs,\n    });\n  }\n}\n\nconst request = new RequestBuilder(\"https://api.example.com/orders\")\n  .header(\"Accept\", \"application/json\")\n  .timeout(5_000)\n  .build();\nconsole.log(request.method, request.timeoutMs, request.headers);\n// GET 5000 { Accept: 'application/json' }",
+          "lang": "typescript"
+        },
+        "Directorは、よく使うレシピを知っているコードにすぎません。TypeScriptでは、ビルダーを操作する単なる関数であることがよくあります。",
+        {
+          "code": "interface Steps {\n  header(name: string, value: string): this;\n  post(body: string): this;\n}\n\n// Director: a reusable recipe that drives any builder with these steps.\nfunction jsonPost<B extends Steps>(builder: B, data: unknown): B {\n  return builder\n    .header(\"Content-Type\", \"application/json\")\n    .post(JSON.stringify(data));\n}\n\nclass LogBuilder implements Steps {\n  log: string[] = [];\n  header(name: string, value: string): this { this.log.push(`${name}=${value}`); return this; }\n  post(body: string): this { this.log.push(`POST ${body}`); return this; }\n}\n\nconsole.log(jsonPost(new LogBuilder(), { id: 7 }).log);\n// [ 'Content-Type=application/json', 'POST {\"id\":7}' ]",
+          "lang": "typescript"
+        },
+        "ここにGoFの元の考え方が表れています。同じDirectorが操作する同じ構築ステップで、異なるビルダーに入力し、異なる表現（ここではリクエストの代わりにログ）を生み出せます。"
+      ]
+    },
+    {
+      "h": "使うべきとき、使わないとき",
+      "body": [
+        "次の場合はBuilder パターンを使います。",
+        {
+          "ul": [
+            "オブジェクトに多くの省略可能な部分があるか、部分を1つずつ追加する必要がある場合。",
+            "構築に複数のフィールドにまたがるルールがあり、`build()` で1度だけ検査すべき場合。",
+            "完成したオブジェクトは不変にしつつ、段階的に組み立てたい場合。",
+            "HTML、Markdown、PDFとして書き出す文書のように、同じ構築プロセスから異なる表現を作る必要がある場合。"
+          ]
+        },
+        "次の場合は避けます。",
+        {
+          "ul": [
+            "オブジェクトのフィールドが少ない場合。コンストラクタのほうが短く、同じくらい明快です。",
+            "言語がすでに名前付き引数や省略可能な引数を備えている場合。TypeScriptでは、単一のオプションオブジェクトで、ビルダーが完全に不要になることがよくあります。"
+          ]
+        },
+        {
+          "code": "interface RequestOptions {\n  url: string;\n  method?: \"GET\" | \"POST\";\n  headers?: Record<string, string>;\n  timeoutMs?: number;\n}\n\nfunction createRequest({ url, method = \"GET\", headers = {}, timeoutMs = 10_000 }: RequestOptions) {\n  return { url, method, headers, timeoutMs };\n}\n\nconsole.log(createRequest({ url: \"/orders\", timeoutMs: 5_000 }).method); // GET",
+          "lang": "typescript"
+        },
+        {
+          "note": "`build()` の後で再利用したビルダーは、次のオブジェクトに状態を漏らすことがあります。例が `headers` で行っているように `build()` ですべてのコレクションをコピーするか、各ビルダーは1つのオブジェクトだけを作ると明記します。"
+        }
+      ]
+    },
+    {
+      "h": "実際の利用例",
+      "body": [
+        {
+          "ul": [
+            "Java：`java.net.http.HttpRequest.newBuilder()` は `HttpRequest.Builder` を返します。`uri()`、`header()`、`timeout()` をチェーンして、`build()` を呼びます。",
+            "Java：`Locale.Builder` は、言語、地域、スクリプトの各部分からロケールを組み立てて検証します。",
+            "JavaとC#：`StringBuilder` は、多くの断片を追加して文字列を組み立ててから、最終的な不変の文字列を生成します。",
+            "多くのSQLクエリビルダーやテストデータビルダーが、同じ流れるようなスタイルを使っています。"
+          ]
+        }
+      ]
+    },
+    {
+      "h": "関連するパターン",
+      "body": [
+        {
+          "ul": [
+            "Abstract Factory パターンは製品のファミリー全体を作り、それぞれをすぐに返します。Builder パターンは1つの複雑な製品を段階的に構築し、最後に返します。",
+            "Composite パターンの木構造は、ビルダーで作られることがよくあります。ノードを1つずつ木に組み上げる作業は、自然な一連のステップだからです。",
+            "fluent interfaceは、`this` を返す呼び出しをつなげるAPIのスタイルです。Builder パターンはそれをよく使いますが、両者は同じものではありません。",
+            "新しいオブジェクトの大半が、既製のテンプレートのわずかな変形である場合は、代わりにPrototype パターンも選択肢になります。"
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "ビルダーの各メソッドがthisを返すのはなぜですか？",
+      "a": "ビルダーを返すことで、`.header(...).timeout(...).build()` のように、1つの式で呼び出しをチェーンできます。TypeScriptで `this` を返すと、サブクラスでも正しい型が保たれます。"
+    },
+    {
+      "q": "Directorクラスは必要ですか？",
+      "a": "いいえ。GoFの説明でも、Directorは省略可能です。実際には、よく使う一連のステップを適用する関数があれば通常は十分です。"
+    },
+    {
+      "q": "TypeScriptでもBuilder パターンは役に立ちますか？",
+      "a": "場合によります。既定値付きのオプションオブジェクトで、単純なケースの大半はカバーできます。オブジェクトを段階的に組み立てる場合、フィールドをまたぐ検証が必要な場合、不変の結果が欲しい場合には、Builder パターンが今でも役立ちます。"
+    },
+    {
+      "q": "Builder パターンとFactory Method パターンの違いは何ですか？",
+      "a": "Factory Method パターンは、どのクラスをインスタンス化するかを決め、1回の呼び出しでオブジェクトを返します。Builder パターンは、1つのオブジェクトをどう組み立てるかを、複数回の呼び出しにわたってクライアントが制御できるようにします。"
+    }
+  ]
+}

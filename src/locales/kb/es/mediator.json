@@ -1,0 +1,134 @@
+{
+  "title": "Patrón Mediator: desacoplar componentes con un ejemplo en TypeScript — cv.cm",
+  "description": "El patrón Mediator encamina la comunicación entre objetos a través de un objeto central, para que dejen de referenciarse entre sí. Mira un ejemplo de formulario en TypeScript.",
+  "h1": "Patrón Mediator explicado con ejemplos",
+  "answer": "Mediator es un patrón de diseño de comportamiento que reduce las dependencias directas entre objetos haciendo que se comuniquen a través de un objeto mediador central. En lugar de que cada componente llame a los demás, un componente avisa al mediador de que algo ocurrió, y el mediador decide qué otros componentes actualizar. Así, una maraña de referencias de muchos a muchos se convierte en simples enlaces de uno a muchos.",
+  "sections": [
+    {
+      "h": "Intención y el problema que resuelve",
+      "body": [
+        "Intención: definir un objeto que encapsule cómo interactúan un conjunto de objetos. Mediator promueve el acoplamiento débil al evitar que los objetos se refieran explícitamente unos a otros, y permite variar su interacción de forma independiente. Es uno de los patrones de comportamiento del libro de la Banda de los Cuatro (Gang of Four, GoF).",
+        "Considera un formulario de registro con una casilla \"cuenta de empresa\", un campo de nombre de empresa, un campo de correo y un botón de envío. Cuando se marca la casilla, el campo de empresa debe aparecer y volverse obligatorio. El botón de envío solo debe estar habilitado cuando todos los campos obligatorios sean válidos. Si cada componente actualiza directamente a los otros, la casilla conoce el campo de empresa y el botón, el campo de correo conoce el botón, y así sucesivamente. Cada regla nueva añade más referencias cruzadas, y ningún componente se puede reutilizar en otro formulario.",
+        "Con un mediador, los componentes solo informan de eventos como \"he cambiado\". El objeto formulario, que actúa como mediador, contiene todas las reglas sobre cómo se afectan los campos entre sí. Los componentes se vuelven simples y reutilizables, y la lógica de interacción queda en un solo lugar."
+      ]
+    },
+    {
+      "h": "Estructura y participantes",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Rol",
+              "Responsabilidad"
+            ],
+            "rows": [
+              [
+                "Mediador",
+                "Interfaz con un método al que llaman los colegas para informar de eventos, como `notify(sender, event)`"
+              ],
+              [
+                "Mediador concreto",
+                "Conoce a todos los colegas e implementa las reglas de coordinación entre ellos"
+              ],
+              [
+                "Colega",
+                "Un componente que guarda una referencia al mediador e informa de sus eventos en lugar de llamar a otros colegas"
+              ]
+            ]
+          }
+        },
+        "Sin un mediador, n componentes que se hablan todos entre sí pueden necesitar hasta n × (n − 1) / 2 enlaces. Con un mediador, cada componente tiene exactamente un enlace: el del mediador."
+      ]
+    },
+    {
+      "h": "Implementación en TypeScript",
+      "body": [
+        "Cada campo informa de sus cambios al mediador. `SignUpForm` es el mediador concreto: muestra u oculta el campo de empresa y habilita el botón.",
+        {
+          "code": "interface Mediator {\n  notify(sender: Component, event: string): void;\n}\n\nclass Component {\n  constructor(protected mediator: Mediator, readonly name: string) {}\n}\n\nclass Checkbox extends Component {\n  checked = false;\n  toggle() { this.checked = !this.checked; this.mediator.notify(this, \"change\"); }\n}\nclass TextField extends Component {\n  value = \"\";\n  visible = true;\n  type(text: string) { this.value = text; this.mediator.notify(this, \"change\"); }\n}\nclass Button extends Component { enabled = false; }\n\nclass SignUpForm implements Mediator {\n  isCompany = new Checkbox(this, \"isCompany\");\n  company = new TextField(this, \"company\");\n  email = new TextField(this, \"email\");\n  submit = new Button(this, \"submit\");\n  constructor() { this.company.visible = false; }\n\n  notify(sender: Component, event: string) {\n    if (sender === this.isCompany) this.company.visible = this.isCompany.checked;\n    const emailOk = this.email.value.includes(\"@\");\n    const companyOk = !this.company.visible || this.company.value.length > 0;\n    this.submit.enabled = emailOk && companyOk;\n    console.log(sender.name, event, \"-> submit enabled:\", this.submit.enabled);\n  }\n}\n\nconst form = new SignUpForm();\nform.email.type(\"ana@example.com\"); // email change -> submit enabled: true\nform.isCompany.toggle();            // isCompany change -> submit enabled: false\nform.company.type(\"Acme\");          // company change -> submit enabled: true",
+          "lang": "typescript"
+        },
+        "Fíjate en que `Checkbox` y `TextField` no tienen idea de que existan otros campos. Podrías reutilizarlos en un formulario completamente distinto dándoles otro mediador.",
+        {
+          "note": "El principal riesgo de Mediator es que el propio mediador crezca hasta ser una clase grande que lo sabe todo, a veces llamada objeto dios. Si un mediador maneja muchas reglas no relacionadas, divídelo en varios mediadores más pequeños, uno por función o área de pantalla."
+        }
+      ]
+    },
+    {
+      "h": "Cuándo usarlo y cuándo no",
+      "body": [
+        {
+          "ul": [
+            "Úsalo cuando un grupo de objetos se comunica de formas complejas pero bien definidas, y las dependencias entre ellos son difíciles de seguir.",
+            "Úsalo cuando quieras reutilizar componentes que ahora no se pueden separar porque se referencian entre sí.",
+            "Úsalo cuando las reglas de interacción cambian a menudo y quieres editarlas en un solo lugar.",
+            "No lo uses para dos objetos que simplemente se llaman entre sí; una llamada directa es más clara.",
+            "No lo uses cuando los componentes solo necesitan difundir eventos a quien esté interesado. Un emisor de eventos simple (Observer) es más ligero."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Usos en el mundo real",
+      "body": [
+        {
+          "ul": [
+            "Controladores de formularios y diálogos en frameworks de interfaz: un componente padre posee el estado y decide cómo se afectan entre sí las entradas hijas, mientras que los hijos solo lanzan eventos. En React, \"elevar el estado\" a un padre común sigue esta idea.",
+            "Aplicaciones de chat: los usuarios no se envían mensajes directamente entre sí; una sala de chat o un servidor recibe cada mensaje y lo entrega a los miembros adecuados.",
+            "Brokers de mensajes y buses de eventos entre servicios: los emisores publican en el broker, que encamina los mensajes a receptores que los emisores no conocen.",
+            "El control de tráfico aéreo es la analogía clásica: los aviones no negocian con todos los demás aviones, hablan solo con la torre de control."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Mediator frente a Observer y otros patrones",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Patrón",
+              "En qué se diferencia de Mediator"
+            ],
+            "rows": [
+              [
+                "Observer",
+                "Observer es una difusión en un solo sentido: un sujeto notifica a cualquier número de oyentes y no sabe qué hacen. Un mediador conoce a sus colegas y los coordina en ambos sentidos. Los mediadores suelen implementarse con Observer."
+              ],
+              [
+                "Facade",
+                "Facade da a los clientes una interfaz más simple a un subsistema, y el subsistema no sabe que la fachada existe. Los colegas conocen a su mediador y hablan con él."
+              ],
+              [
+                "Chain of Responsibility",
+                "Una cadena pasa una petición por una línea de manejadores; un mediador es un único centro que envía cada evento a los componentes adecuados."
+              ],
+              [
+                "Command",
+                "Los colegas pueden enviar objetos comando al mediador, que decide quién los ejecuta."
+              ]
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "¿Cuál es la diferencia entre Mediator y Observer?",
+      "a": "Con Observer, un sujeto difunde eventos a suscriptores que no conoce, y la comunicación es en un solo sentido. Con Mediator, un objeto central conoce a los componentes participantes y coordina cómo se afectan entre sí."
+    },
+    {
+      "q": "¿Un bus de eventos es un mediador?",
+      "a": "Un bus de eventos que solo reenvía eventos a suscriptores se acerca más a Observer, o a publicación-suscripción. Se convierte en mediador cuando contiene las reglas que deciden cómo reaccionan los componentes entre sí."
+    },
+    {
+      "q": "¿Mediator hace el código más difícil de seguir?",
+      "a": "Puede hacerlo. Las llamadas directas son fáciles de rastrear, mientras que las llamadas mediadas pasan por un objeto central. El patrón compensa cuando la alternativa son muchos componentes que se referencian entre sí."
+    },
+    {
+      "q": "¿Puede un componente tener más de un mediador?",
+      "a": "Normalmente un componente tiene un mediador, asignado al crearlo. Un componente puede reutilizarse con distintos mediadores en distintos contextos, que es uno de los principales beneficios del patrón."
+    }
+  ]
+}

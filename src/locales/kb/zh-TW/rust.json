@@ -1,0 +1,189 @@
+{
+  "title": "Rust 入門教學：所有權、借用、列舉與 Result — cv.cm",
+  "description": "一頁學會 Rust：用 Cargo 執行 Hello world、型別、流程控制、所有權與借用、struct、enum 與 match、Vec、HashMap 與 Result。",
+  "h1": "Rust 入門教學",
+  "answer": "Rust 是編譯式、靜態型別的系統程式語言，速度與 C、C++ 相當，卻能在編譯期防止記憶體錯誤，而且不需要垃圾回收。用 rustup 安裝後，執行 `cargo new hello` 與 `cargo run`。核心概念包括所有權與借用（由借用檢查器負責檢查）、搭配 `match` 的 struct 與 enum、`Vec` 和 `HashMap` 等集合，以及使用 `Result` 與 `?` 運算子的錯誤處理。",
+  "sections": [
+    {
+      "h": "Rust 是什麼，用來做什麼",
+      "body": [
+        "Rust 起初是 Graydon Hoare 的個人專案，後來由 Mozilla 贊助，並於 2015 年發布 1.0 版，現在由 Rust Foundation 維護。Rust 用於速度與可靠性都重要的地方：命令列工具（ripgrep）、網路服務、Firefox 的瀏覽器元件、Linux 核心與 Windows 的部分模組、嵌入式裝置與 WebAssembly。它的編譯器很嚴格，但換來的是：在安全的 Rust 程式碼中，use-after-free 與資料競爭等整類錯誤都不可能發生。"
+      ]
+    },
+    {
+      "h": "安裝 Rust 並執行 Hello, world",
+      "body": [
+        "從 rustup.rs 使用 rustup 安裝工具鏈。它會提供 `rustc`（編譯器）與 Cargo（建置工具和套件管理工具）。建立專案：",
+        {
+          "code": "cargo new hello\ncd hello\ncargo run\n# Hello, world!",
+          "lang": "shell"
+        },
+        "Cargo 會產生 `src/main.rs`：",
+        {
+          "code": "fn main() {\n    println!(\"Hello, world!\");\n}",
+          "lang": "rust"
+        },
+        "`println!` 以 `!` 結尾，因為它是巨集（macro）而不是函式。巨集在編譯期產生程式碼；這裡的格式字串會在編譯時被檢查。"
+      ]
+    },
+    {
+      "h": "變數與基本型別",
+      "body": [
+        "變數預設是不可變的；加上 `mut` 才允許修改。型別通常可以推論，但每個值都只有一個靜態型別，數值轉換則要用 `as` 明確指定。",
+        {
+          "table": {
+            "head": [
+              "型別",
+              "範例",
+              "說明"
+            ],
+            "rows": [
+              [
+                "`i32`, `i64`, `u8`, `usize`",
+                "`let n: i32 = 42;`",
+                "有號（`i`）與無號（`u`）；索引使用 `usize`"
+              ],
+              [
+                "`f64`",
+                "`let x = 3.14;`",
+                "預設的浮點數型別"
+              ],
+              [
+                "`bool`",
+                "`let ok = true;`",
+                "`true` 或 `false`"
+              ],
+              [
+                "`char`",
+                "`let c = 'é';`",
+                "一個 Unicode 純量值，4 位元組"
+              ],
+              [
+                "`&str`",
+                "`let s = \"hi\";`",
+                "借用的字串切片"
+              ],
+              [
+                "`String`",
+                "`String::from(\"hi\")`",
+                "擁有所有權、可增長的 UTF-8 文字"
+              ],
+              [
+                "Tuple、陣列",
+                "`(1, \"a\")`, `[0; 3]`",
+                "固定大小"
+              ]
+            ]
+          }
+        },
+        {
+          "code": "fn main() {\n    let name = \"Ada\";\n    let mut count = 7;\n    count += 1;\n    let avg = count as f64 / 2.0;\n    println!(\"{name} has {count} items, avg {avg}\"); // Ada has 8 items, avg 4\n    let parsed: i32 = \"12\".parse().unwrap();\n    println!(\"{}\", parsed + 1); // 13\n}",
+          "lang": "rust"
+        }
+      ]
+    },
+    {
+      "h": "流程控制與函式",
+      "body": [
+        "`if`、`match` 與區塊都是運算式：它們會產生值。函式最後一個沒有分號的運算式就是它的回傳值。",
+        {
+          "code": "fn square(x: i32) -> i32 {\n    x * x\n}\n\nfn main() {\n    let score = 72;\n    let grade = if score >= 90 { \"A\" } else if score >= 70 { \"B\" } else { \"C\" };\n    println!(\"{grade}\"); // B\n\n    for i in 0..3 {\n        print!(\"{} \", square(i)); // 0 1 4\n    }\n    println!();\n\n    let mut n = 10;\n    while n > 1 {\n        n /= 2;\n    }\n    let label = loop {\n        break \"done\"; // loop can return a value with break\n    };\n    println!(\"{n} {label}\"); // 1 done\n}",
+          "lang": "rust"
+        }
+      ]
+    },
+    {
+      "h": "招牌特色：所有權與借用",
+      "body": [
+        "每個值都恰好有一個擁有者。擁有者離開作用域時，值就會被釋放（drop）。把 `String` 這類堆積上的值指派給另一個變數，會將它移動（move），舊的名稱就不能再使用。若要在不取得所有權的情況下使用某個值，就用參考來借用它：同一時間可以有任意數量的共享參考 `&T`，或恰好一個可變參考 `&mut T`。",
+        {
+          "code": "fn length(s: &str) -> usize {\n    s.len() // borrows, does not take ownership\n}\n\nfn add_exclamation(s: &mut String) {\n    s.push('!');\n}\n\nfn main() {\n    let a = String::from(\"hello\");\n    let b = a; // ownership moves to b\n    // println!(\"{a}\"); // error: borrow of moved value: `a`\n    let mut c = b.clone(); // explicit deep copy\n    add_exclamation(&mut c);\n    println!(\"{} {} {}\", b, c, length(&c)); // hello hello! 6\n}",
+          "lang": "rust"
+        },
+        "這些規則由借用檢查器在編譯期強制執行，這就是 Rust 不靠垃圾回收也能達成記憶體安全的方式。整數等簡單型別實作了 `Copy`，所以是被複製而不是被移動。"
+      ]
+    },
+    {
+      "h": "Struct、enum 與模式比對",
+      "body": [
+        "struct 把欄位組合起來，`impl` 區塊則加入方法。enum 的每個變體都可以攜帶資料，而 `match` 必須處理每個變體，這由編譯器檢查。標準的 `Option<T>` enum（`Some(value)` 或 `None`）取代了 null。",
+        {
+          "code": "#[derive(Debug)]\nstruct Point {\n    x: f64,\n    y: f64,\n}\n\nimpl Point {\n    fn distance(&self) -> f64 {\n        (self.x * self.x + self.y * self.y).sqrt()\n    }\n}\n\nenum Shape {\n    Circle(f64),\n    Rect { w: f64, h: f64 },\n}\n\nfn area(s: &Shape) -> f64 {\n    match s {\n        Shape::Circle(r) => std::f64::consts::PI * r * r,\n        Shape::Rect { w, h } => w * h,\n    }\n}\n\nfn main() {\n    let p = Point { x: 3.0, y: 4.0 };\n    println!(\"{:?} {}\", p, p.distance()); // Point { x: 3.0, y: 4.0 } 5\n    println!(\"{}\", area(&Shape::Rect { w: 2.0, h: 3.0 })); // 6\n    let nums = [10, 20];\n    if let Some(v) = nums.first() {\n        println!(\"first is {v}\"); // first is 10\n    }\n}",
+          "lang": "rust"
+        },
+        "trait 定義共用的行為，類似介面：`#[derive(Debug)]` 請編譯器實作 `Debug` trait，這樣就能用 `{:?}` 印出該 struct。"
+      ]
+    },
+    {
+      "h": "集合：Vec 與 HashMap",
+      "body": [
+        {
+          "code": "use std::collections::HashMap;\n\nfn main() {\n    let mut nums = vec![3, 1, 2];\n    nums.push(5);\n    nums.sort();\n    println!(\"{:?} {}\", nums, nums.len()); // [1, 2, 3, 5] 4\n\n    let evens: Vec<i32> = nums.iter().filter(|n| *n % 2 == 0).map(|n| n * n).collect();\n    println!(\"{:?}\", evens); // [4]\n\n    let mut ages: HashMap<&str, u32> = HashMap::new();\n    ages.insert(\"ann\", 31);\n    ages.insert(\"bob\", 25);\n    *ages.entry(\"ann\").or_insert(0) += 1;\n    println!(\"{:?} {:?}\", ages.get(\"ann\"), ages.get(\"zed\")); // Some(32) None\n}",
+          "lang": "rust"
+        },
+        "搭配閉包（`|n| ...`）的迭代器，例如 `filter`、`map` 和 `collect`，編譯後的程式碼與手寫迴圈一樣快。"
+      ]
+    },
+    {
+      "h": "使用 Result 與 ? 處理錯誤",
+      "body": [
+        "可能失敗的函式會回傳 `Result<T, E>`：不是 `Ok(value)` 就是 `Err(error)`。`?` 運算子會提早把錯誤回傳給呼叫端，讓錯誤處理路徑保持簡短。無法復原的錯誤則使用 `panic!`。",
+        {
+          "code": "use std::num::ParseIntError;\n\nfn parse_age(text: &str) -> Result<u32, ParseIntError> {\n    let age: u32 = text.trim().parse()?; // returns Err early on bad input\n    Ok(age)\n}\n\nfn main() {\n    match parse_age(\"41\") {\n        Ok(age) => println!(\"age {age}\"), // age 41\n        Err(e) => println!(\"error: {e}\"),\n    }\n    match parse_age(\"abc\") {\n        Ok(age) => println!(\"age {age}\"),\n        Err(e) => println!(\"error: {e}\"), // error: invalid digit found in string\n    }\n}",
+          "lang": "rust"
+        }
+      ]
+    },
+    {
+      "h": "完整的小程式：單字頻率統計",
+      "body": [
+        "將這段程式碼放進 `src/main.rs`，然後執行 `cargo run -- notes.txt`。",
+        {
+          "code": "use std::collections::HashMap;\nuse std::{env, fs, process};\n\nfn main() {\n    let path = env::args().nth(1).unwrap_or_else(|| {\n        eprintln!(\"usage: words FILE\");\n        process::exit(1);\n    });\n    let text = match fs::read_to_string(&path) {\n        Ok(t) => t.to_lowercase(),\n        Err(e) => {\n            eprintln!(\"cannot read {path}: {e}\");\n            process::exit(1);\n        }\n    };\n\n    let mut counts: HashMap<&str, usize> = HashMap::new();\n    for word in text.split(|c: char| !c.is_alphanumeric()).filter(|w| !w.is_empty()) {\n        *counts.entry(word).or_insert(0) += 1;\n    }\n\n    let mut top: Vec<(&str, usize)> = counts.into_iter().collect();\n    top.sort_by(|a, b| b.1.cmp(&a.1).then(a.0.cmp(b.0)));\n    for (word, n) in top.iter().take(5) {\n        println!(\"{n:5}  {word}\");\n    }\n}",
+          "lang": "rust"
+        },
+        "`HashMap` 儲存的是向 `text` 借用的 `&str` 切片，所以不會複製任何單字；借用檢查器保證 `text` 的存活時間夠長。"
+      ]
+    },
+    {
+      "h": "初學者常見錯誤",
+      "body": [
+        {
+          "note": "為了對抗借用檢查器而到處加 `.clone()`，或對每個 `Result` 都使用 `.unwrap()`，雖然能通過編譯，卻會隱藏問題。請先讀編譯器的訊息，它通常會明確告訴你該改什麼。"
+        },
+        {
+          "ul": [
+            "在值被移動之後還繼續使用它。請借用它（`&value`），或刻意複製（clone）它。",
+            "試圖用 `s[0]` 對 `String` 做索引。字串是 UTF-8，所以請使用 `s.chars()`，或在字元邊界上使用位元組切片。",
+            "在持有指向 `Vec` 內部的參考時對它做 push；push 可能重新配置記憶體，所以編譯器會禁止這種做法。",
+            "搞混 `String`（擁有所有權）與 `&str`（借用）。函式參數接受 `&str` 就能同時支援兩者。"
+          ]
+        }
+      ]
+    },
+    {
+      "h": "接下來學什麼",
+      "body": [
+        "閱讀「The Rust Programming Language」（俗稱 the book），可在 doc.rust-lang.org 免費取得，並用 Rust by Example 來看簡短且可執行的範例。接著深入學習 trait 與泛型、生命週期、使用 `cargo test` 的測試，以及 crates.io 上的套件，例如用於序列化的 `serde` 與用於非同步程式的 `tokio`。執行 `cargo clippy` 可以獲得額外的程式碼檢查建議。"
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Rust 很難學嗎？",
+      "a": "最初幾週會比多數語言更困難，因為所有權與借用是全新的概念。熟悉之後，編譯器會及早抓出許多錯誤，許多開發者也覺得 Rust 程式碼更容易維護。"
+    },
+    {
+      "q": "Rust 有垃圾回收嗎？",
+      "a": "沒有。記憶體會在擁有者離開作用域時自動釋放，這在編譯期由所有權規則決定。需要共享所有權時，則有參考計數型別 `Rc` 與 `Arc`。"
+    },
+    {
+      "q": "什麼是 unsafe Rust？",
+      "a": "`unsafe` 區塊內的程式碼可以做編譯器無法驗證的事，例如解參考原始指標或呼叫 C 函式。它只應少量使用，通常會包裝在安全的 API 之內。"
+    },
+    {
+      "q": "Rust 還是 Go：該學哪一個？",
+      "a": "Go 更簡單、學得更快，在網路服務上很受歡迎。Rust 提供更多控制力與效能以及更強的保證，代價是學習曲線更陡。"
+    }
+  ]
+}

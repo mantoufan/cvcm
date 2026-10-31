@@ -1,0 +1,237 @@
+{
+  "title": "Counting sort explained: how it works, Python code and complexity — cv.cm",
+  "description": "Counting sort sorts integers in a small range in O(n + k) time by counting each value, with no comparisons. Trace, stable Python code and when to use it.",
+  "h1": "Counting sort explained: how it works, code and complexity",
+  "answer": "Counting sort is a non-comparison sorting algorithm for integers (or keys that map to integers) in a known, small range of size k. It counts how many times each value occurs, turns the counts into starting positions with a running sum, and places every element directly at its position. It runs in O(n + k) time and uses O(n + k) extra space. The prefix-sum version is stable, which makes it the building block of radix sort.",
+  "sections": [
+    {
+      "h": "What problem counting sort solves",
+      "body": [
+        "Any sort that only compares pairs of elements needs Ω(n log n) comparisons in the worst case. Counting sort avoids this limit by not comparing at all: it uses the key itself as an array index. When the keys are small integers, such as exam scores from 0 to 100, ages, bytes from 0 to 255 or star ratings, this is faster than any comparison sort.",
+        "The price is memory proportional to the range of keys. Sorting a handful of 64-bit integers that are spread across the whole range would need an impossibly large count array."
+      ]
+    },
+    {
+      "h": "The idea and a worked example",
+      "body": [
+        "Sort `[4, 2, 2, 8, 3, 3, 1]`, whose values lie in the range 0 to 8 (k = 9).",
+        {
+          "ol": [
+            "Count each value: `count[v]` is the number of times v appears.",
+            "Prefix sums: replace each count with the number of elements less than or equal to that value. Then `count[v]` is one past the last position where v belongs.",
+            "Place elements: walk the input from right to left; for each value v, decrease `count[v]` and write v at that position. Walking right to left keeps equal values in their original order."
+          ]
+        },
+        {
+          "table": {
+            "head": [
+              "Value",
+              "0",
+              "1",
+              "2",
+              "3",
+              "4",
+              "5",
+              "6",
+              "7",
+              "8"
+            ],
+            "rows": [
+              [
+                "Count",
+                "0",
+                "1",
+                "2",
+                "2",
+                "1",
+                "0",
+                "0",
+                "0",
+                "1"
+              ],
+              [
+                "Prefix sum",
+                "0",
+                "1",
+                "3",
+                "5",
+                "6",
+                "6",
+                "6",
+                "6",
+                "7"
+              ]
+            ]
+          }
+        },
+        "So the 1 goes to index 0, the two 2s to indexes 1 and 2, the two 3s to 3 and 4, the 4 to index 5 and the 8 to index 6. Result: `[1, 2, 2, 3, 3, 4, 8]`."
+      ]
+    },
+    {
+      "h": "Python implementation",
+      "body": [
+        "This stable version sorts any objects by an integer key between 0 and `k - 1`.",
+        {
+          "code": "def counting_sort(items, k, key=lambda x: x):\n    \"\"\"Stable sort of items by integer key in range(k).\"\"\"\n    count = [0] * k\n    for x in items:\n        count[key(x)] += 1\n    for v in range(1, k):                # prefix sums\n        count[v] += count[v - 1]\n    out = [None] * len(items)\n    for x in reversed(items):            # right to left: stable\n        count[key(x)] -= 1\n        out[count[key(x)]] = x\n    return out\n\nprint(counting_sort([4, 2, 2, 8, 3, 3, 1], k=9))\n# [1, 2, 2, 3, 3, 4, 8]\npeople = [(\"Ana\", 3), (\"Bo\", 1), (\"Cy\", 3), (\"Di\", 2)]\nprint(counting_sort(people, k=4, key=lambda p: p[1]))\n# [('Bo', 1), ('Di', 2), ('Ana', 3), ('Cy', 3)]",
+          "lang": "python"
+        },
+        "When you only sort plain integers and do not need stability, a simpler version rebuilds the output from the counts. This variant also handles negative numbers by shifting by the minimum:",
+        {
+          "code": "def counting_sort_ints(nums):\n    if not nums:\n        return []\n    lo, hi = min(nums), max(nums)\n    count = [0] * (hi - lo + 1)\n    for x in nums:\n        count[x - lo] += 1\n    out = []\n    for offset, c in enumerate(count):\n        out.extend([offset + lo] * c)\n    return out\n\nprint(counting_sort_ints([3, -1, 2, -1, 0]))   # [-1, -1, 0, 2, 3]",
+          "lang": "python"
+        }
+      ]
+    },
+    {
+      "h": "Time and space complexity",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Measure",
+              "Value",
+              "Reason"
+            ],
+            "rows": [
+              [
+                "Time, every case",
+                "O(n + k)",
+                "one pass over the input, one over the count array, one to place"
+              ],
+              [
+                "Extra space",
+                "O(n + k)",
+                "the count array of size k and the output array of size n"
+              ],
+              [
+                "Comparisons",
+                "0",
+                "keys are used as indexes, not compared"
+              ]
+            ]
+          }
+        },
+        "Counting sort is linear when k is O(n). If k is much larger than n, for example 1,000 values in the range 0 to 10⁹, the count array dominates and a comparison sort or radix sort is better."
+      ]
+    },
+    {
+      "h": "How counting sort compares with other sorts",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Algorithm",
+              "Best",
+              "Average",
+              "Worst",
+              "Extra space",
+              "Stable"
+            ],
+            "rows": [
+              [
+                "Counting sort",
+                "O(n + k)",
+                "O(n + k)",
+                "O(n + k)",
+                "O(n + k)",
+                "Yes"
+              ],
+              [
+                "Radix sort (LSD)",
+                "O(d · (n + b))",
+                "O(d · (n + b))",
+                "O(d · (n + b))",
+                "O(n + b)",
+                "Yes"
+              ],
+              [
+                "Merge sort",
+                "O(n log n)",
+                "O(n log n)",
+                "O(n log n)",
+                "O(n)",
+                "Yes"
+              ],
+              [
+                "Quicksort",
+                "O(n log n)",
+                "O(n log n)",
+                "O(n²)",
+                "O(log n)",
+                "No"
+              ],
+              [
+                "Heapsort",
+                "O(n log n)",
+                "O(n log n)",
+                "O(n log n)",
+                "O(1)",
+                "No"
+              ],
+              [
+                "Insertion sort",
+                "O(n)",
+                "O(n²)",
+                "O(n²)",
+                "O(1)",
+                "Yes"
+              ],
+              [
+                "Timsort (Python `sorted`)",
+                "O(n)",
+                "O(n log n)",
+                "O(n log n)",
+                "O(n)",
+                "Yes"
+              ]
+            ]
+          }
+        },
+        "Here k is the size of the key range, d the number of digits and b the base used by radix sort. Counting sort is stable when elements are placed using prefix sums from right to left. The simple rebuild-from-counts version produces the same result for plain integers but cannot carry other data along with the key."
+      ]
+    },
+    {
+      "h": "Variants and common mistakes",
+      "body": [
+        {
+          "ul": [
+            "Radix sort runs a stable counting sort once per digit, which extends the idea to large integers and fixed-length strings.",
+            "Bucket sort spreads values over buckets by range and sorts each bucket; it is fast when values are uniformly distributed.",
+            "Counting without sorting: often you only need the counts, for example to build a histogram or to find the mode. `collections.Counter` does that directly."
+          ]
+        },
+        {
+          "note": "Common bugs: walking the input left to right in the placement loop (still sorted, but no longer stable, which breaks radix sort), forgetting to shift negative keys, allocating the count array from the number of elements instead of the key range, and using counting sort on floats or arbitrary strings, which have no small integer range."
+        }
+      ]
+    },
+    {
+      "h": "When to use counting sort",
+      "body": [
+        "Use it when keys are integers in a small range compared with the number of elements: grades, ages, days of the month, bytes, color channel values from 0 to 255, or small enum values. It is also the inner step of radix sort and of suffix-array construction algorithms. In interviews, it appears in questions such as sort colors (values 0, 1, 2), sorting by frequency, and the H-index, and in the classic question of how to beat the O(n log n) bound for comparison sorts."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Is counting sort stable?",
+      "a": "Yes, the standard version that uses prefix sums and places elements from right to left is stable. That property is what lets radix sort use it for each digit."
+    },
+    {
+      "q": "What is the time complexity of counting sort?",
+      "a": "O(n + k), where n is the number of elements and k is the size of the key range. It is the same in the best, average and worst case."
+    },
+    {
+      "q": "Why is counting sort faster than O(n log n)?",
+      "a": "The Ω(n log n) lower bound applies only to comparison sorts. Counting sort never compares elements; it uses each key as an array index, so it is not subject to that bound."
+    },
+    {
+      "q": "Can counting sort handle negative numbers?",
+      "a": "Yes. Subtract the minimum value from every key so the smallest key maps to index 0, and add it back when writing the output."
+    },
+    {
+      "q": "When should I not use counting sort?",
+      "a": "When the key range k is much larger than n, when keys are floating-point numbers or arbitrary strings, or when memory is tight. A comparison sort such as `sorted()` is then the better choice."
+    }
+  ]
+}

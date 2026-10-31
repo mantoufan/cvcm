@@ -1,0 +1,165 @@
+{
+  "title": "Memento pattern: snapshots and undo with a TypeScript example — cv.cm",
+  "description": "The Memento pattern saves and restores an object's state without exposing its internals. Learn originator, memento and caretaker with TypeScript undo code.",
+  "h1": "Memento pattern explained with examples",
+  "answer": "Memento is a behavioral design pattern that captures an object's internal state in a snapshot object, called a memento, so that the object can be restored to that state later. The object that owns the state (the originator) creates and restores mementos, while another object (the caretaker) only stores them and never looks inside. It is the standard way to implement undo, checkpoints and save games without breaking encapsulation.",
+  "sections": [
+    {
+      "h": "Intent and the problem it solves",
+      "body": [
+        "Intent: without violating encapsulation, capture and externalize an object's internal state so that the object can be restored to this state later. Memento is one of the behavioral patterns in the Gang of Four (GoF) book.",
+        "Imagine a drawing app where a shape has a position, size, color and a list of private, derived values used for rendering. You want an undo button. The undo manager could copy the shape's fields itself, but then it must know every private field, and every time the shape class changes, the undo manager breaks. Making all fields public just for undo would let any code put the shape into an invalid state.",
+        "Memento solves this by letting the shape itself produce a snapshot. Only the shape knows what is inside the snapshot and how to restore from it. The undo manager treats snapshots as opaque objects: it stores them in a list and hands one back when the user presses undo."
+      ]
+    },
+    {
+      "h": "Structure and participants",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Role",
+              "Responsibility"
+            ],
+            "rows": [
+              [
+                "Originator",
+                "The object whose state is saved; creates a memento of its current state and restores itself from a memento"
+              ],
+              [
+                "Memento",
+                "An immutable snapshot of the originator's state; exposes nothing useful to other objects"
+              ],
+              [
+                "Caretaker",
+                "Decides when to save and when to restore, and keeps the mementos (for example in a stack), but never reads or changes their contents"
+              ]
+            ]
+          }
+        },
+        "The key idea is two interfaces: a wide one for the originator, which can read the saved state, and a narrow one for everyone else, which can only hold the memento."
+      ]
+    },
+    {
+      "h": "TypeScript implementation",
+      "body": [
+        "The memento class uses JavaScript private fields (`#state`), so the caretaker cannot read the stored data from the memento object. Reading goes through the static method `EditorMemento.read`, which only the editor calls. In a real project, put the memento class in the same module as the editor and do not export it, so other modules can hold mementos but never open them.",
+        {
+          "code": "type EditorState = { text: string; cursor: number };\n\nclass EditorMemento {\n  readonly #state: EditorState;\n  constructor(state: EditorState) {\n    this.#state = { ...state }; // copy, so later edits do not change the snapshot\n  }\n  static read(m: EditorMemento): EditorState {\n    return { ...m.#state };\n  }\n}\n\nclass Editor {\n  private state: EditorState = { text: \"\", cursor: 0 };\n  type(words: string) {\n    const text = this.state.text + words;\n    this.state = { text, cursor: text.length };\n  }\n  get text() { return this.state.text; }\n  save(): EditorMemento { return new EditorMemento(this.state); }\n  restore(m: EditorMemento) { this.state = EditorMemento.read(m); }\n}\n\nclass History {\n  private stack: EditorMemento[] = [];\n  constructor(private editor: Editor) {}\n  backup() { this.stack.push(this.editor.save()); }\n  undo() { const m = this.stack.pop(); if (m) this.editor.restore(m); }\n}\n\nconst editor = new Editor();\nconst history = new History(editor);\nhistory.backup(); editor.type(\"Hello\");\nhistory.backup(); editor.type(\" world\");\nconsole.log(editor.text); // Hello world\nhistory.undo();\nconsole.log(editor.text); // Hello\nhistory.undo();\nconsole.log(JSON.stringify(editor.text)); // \"\"",
+          "lang": "typescript"
+        },
+        "`History` is the caretaker. It calls `backup()` before each change and `undo()` to go back, but it never sees `text` or `cursor`. If you later add a selection range to `EditorState`, `History` does not change.",
+        {
+          "note": "A memento must be a real copy. If it only stores a reference to the originator's mutable object or array, later edits change the snapshot too, and undo restores the wrong state. For nested data, use a deep copy such as `structuredClone(state)`."
+        }
+      ]
+    },
+    {
+      "h": "Memento vs Command for undo",
+      "body": [
+        "There are two common ways to implement undo, and they are often combined:",
+        {
+          "table": {
+            "head": [
+              "Approach",
+              "What is stored",
+              "Good when",
+              "Cost"
+            ],
+            "rows": [
+              [
+                "Memento",
+                "A snapshot of the whole state before each change",
+                "Changes are hard to reverse, or state is small",
+                "Memory grows with the size of the state times the number of steps"
+              ],
+              [
+                "Command",
+                "The operation and enough data to reverse it",
+                "Each operation has a simple inverse",
+                "Each command needs correct undo logic"
+              ]
+            ]
+          }
+        },
+        "A practical compromise: store commands for most steps and a full memento every N steps, or store only the part of the state that a command changes."
+      ]
+    },
+    {
+      "h": "When to use it and when not to",
+      "body": [
+        {
+          "ul": [
+            "Use it for undo, redo, checkpoints, save games and \"cancel\" buttons on forms that should roll back edits.",
+            "Use it for transactions in memory: snapshot before a risky operation and restore if it fails.",
+            "Use it when the caretaker must not depend on the originator's internal fields.",
+            "Do not use it when the state is very large and changes often, unless you limit the history length or store only differences.",
+            "Do not add the full ceremony when the state is already a plain immutable value. With immutable data, an old value is already a snapshot, and keeping a list of previous values is enough."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Real-world uses",
+      "body": [
+        {
+          "ul": [
+            "The browser History API: `history.pushState(state, \"\", url)` stores a state object for each history entry, and the `popstate` event hands it back when the user navigates.",
+            "Redux and similar stores keep immutable state snapshots, which tools use for time-travel debugging.",
+            "SQL databases support `SAVEPOINT` inside a transaction, so work can be rolled back to a named point.",
+            "Text editors, graphics programs and games save snapshots for undo, autosave and save slots."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Related patterns",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Pattern",
+              "How it relates to Memento"
+            ],
+            "rows": [
+              [
+                "Command",
+                "Command can undo by reversing an operation; it can also store a memento taken before it ran and restore it in `undo`."
+              ],
+              [
+                "Prototype",
+                "Prototype clones a whole object to create a new one; a memento stores state to restore the same object later."
+              ],
+              [
+                "Iterator",
+                "An iterator can expose its current position as a memento so a traversal can resume later."
+              ],
+              [
+                "State",
+                "State changes the object's behavior when its state changes; Memento only records and restores the data."
+              ]
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "What is the difference between originator and caretaker?",
+      "a": "The originator owns the state and is the only object that can create a memento and restore from it. The caretaker decides when to save and restore and keeps the mementos, but treats them as opaque."
+    },
+    {
+      "q": "Does Memento break encapsulation?",
+      "a": "No, that is its purpose. The originator's internal fields stay private, and the memento hides them from the caretaker, so only the originator can read the saved state."
+    },
+    {
+      "q": "How do I limit memory use with Memento?",
+      "a": "Keep a maximum number of snapshots and drop the oldest, store only the changed part of the state, or combine mementos with commands that record small changes."
+    },
+    {
+      "q": "Is JSON serialization a memento?",
+      "a": "Serializing state to JSON can be the storage format of a memento, and it is useful for saving to disk. The pattern itself is about who creates, keeps and restores the snapshot, not the format."
+    }
+  ]
+}

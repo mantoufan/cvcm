@@ -1,0 +1,192 @@
+{
+  "title": "C 語言入門教學：型別、指標、陣列、字串與記憶體 — cv.cm",
+  "description": "一頁學會 C 語言：用 gcc 編譯 Hello world、型別、流程控制、函式、陣列、字串、指標、malloc 與 free、錯誤處理與完整範例。",
+  "h1": "C 語言入門教學",
+  "answer": "C 是小巧、快速的編譯式語言，能透過指標直接存取記憶體。在 `.c` 檔中撰寫 `main`，用 `gcc hello.c -o hello` 編譯，再執行 `./hello`。核心概念包括固定大小的型別、函式、陣列與以空字元結尾的字串、指標與位址、以 `malloc` 和 `free` 手動管理記憶體，以及透過回傳值處理錯誤。",
+  "sections": [
+    {
+      "h": "C 語言是什麼，用來做什麼",
+      "body": [
+        "C 由 Dennis Ritchie 於 1970 年代初在貝爾實驗室創造，用來撰寫 Unix 作業系統。它由 ISO 標準化（主要版本有 C99、C11、C17 與 C23）。C 編譯成機器碼，幾乎不需要執行階段支援，因此幾乎在所有平台上都能執行。它用於作業系統核心（Linux）、嵌入式韌體、資料庫（SQLite）、語言執行環境（CPython 就是以 C 寫成）與高效能函式庫。學習 C 也能讓你了解記憶體與電腦真正的運作方式。"
+      ]
+    },
+    {
+      "h": "安裝編譯器並執行 Hello, world",
+      "body": [
+        "Linux 上安裝 `gcc`（例如 `sudo apt install build-essential`）；macOS 上執行 `xcode-select --install` 取得 `clang`（也能以 `gcc` 呼叫）；Windows 上可使用 MSYS2、WSL 或 Visual Studio。",
+        {
+          "code": "#include <stdio.h>\nint main(void) {\n    printf(\"Hello, world\\n\");\n    return 0;\n}",
+          "lang": "c"
+        },
+        {
+          "code": "gcc -Wall -Wextra -std=c17 hello.c -o hello\n./hello\n# Hello, world",
+          "lang": "shell"
+        },
+        "`#include` 會引入標頭檔中的宣告，這裡引入的是標準輸入輸出函式庫。`main` 回傳 0 代表成功。編譯時請務必開啟警告（`-Wall -Wextra`）。"
+      ]
+    },
+    {
+      "h": "變數與基本型別",
+      "body": [
+        "每個變數都有決定其大小與意義的型別。大小取決於平台，除非標準另有規定；`<stdint.h>` 提供 `int32_t` 這類固定寬度的型別。",
+        {
+          "table": {
+            "head": [
+              "型別",
+              "常見大小",
+              "範例",
+              "printf 格式"
+            ],
+            "rows": [
+              [
+                "`char`",
+                "1 位元組",
+                "`char c = 'A';`",
+                "`%c`"
+              ],
+              [
+                "`int`",
+                "4 位元組",
+                "`int n = 42;`",
+                "`%d`"
+              ],
+              [
+                "`long long`",
+                "8 位元組",
+                "`long long big = 1LL << 40;`",
+                "`%lld`"
+              ],
+              [
+                "`double`",
+                "8 位元組",
+                "`double x = 3.14;`",
+                "`%f`"
+              ],
+              [
+                "`bool`",
+                "1 位元組",
+                "`bool ok = true;`（C99 的 `<stdbool.h>`）",
+                "`%d`"
+              ],
+              [
+                "`size_t`",
+                "64 位元平台上為 8 位元組",
+                "`size_t len = sizeof(arr);`",
+                "`%zu`"
+              ]
+            ]
+          }
+        },
+        {
+          "code": "#include <stdio.h>\nint main(void) {\n    int count = 7;\n    double avg = count / 2;     /* 3.0: integer division first */\n    double avg2 = count / 2.0;  /* 3.5 */\n    printf(\"%d %.1f %.1f\\n\", count, avg, avg2);  /* 7 3.0 3.5 */\n    printf(\"%zu\\n\", sizeof(int));                /* 4 on most systems */\n    return 0;\n}",
+          "lang": "c"
+        }
+      ]
+    },
+    {
+      "h": "流程控制與函式",
+      "body": [
+        "函式必須在使用之前宣告。引數以傳值方式傳遞：函式收到的是副本。",
+        {
+          "code": "#include <stdio.h>\nint square(int x) {\n    return x * x;\n}\nint main(void) {\n    int score = 72;\n    if (score >= 90) {\n        printf(\"A\\n\");\n    } else if (score >= 70) {\n        printf(\"B\\n\");              /* B */\n    } else {\n        printf(\"C\\n\");\n    }\n    for (int i = 0; i < 3; i++) {\n        printf(\"%d \", square(i));   /* 0 1 4 */\n    }\n    printf(\"\\n\");\n    int n = 10;\n    while (n > 1) n /= 2;\n    printf(\"%d\\n\", n);              /* 1 */\n    return 0;\n}",
+          "lang": "c"
+        },
+        "C 還有 `do`/`while`、帶有 `case` 標籤的 `switch`（記得寫 `break`），以及 `goto`，後者多半用於錯誤路徑中的清理工作。"
+      ]
+    },
+    {
+      "h": "陣列與字串",
+      "body": [
+        "陣列是彼此相鄰儲存的固定數量元素。C 不會檢查邊界，也不會儲存長度，所以長度要另外傳入。字串是以零位元組 `'\\0'` 結尾的 `char` 陣列。",
+        {
+          "code": "#include <stdio.h>\n#include <string.h>\nint sum(const int *values, size_t n) {\n    int total = 0;\n    for (size_t i = 0; i < n; i++) total += values[i];\n    return total;\n}\nint main(void) {\n    int nums[] = {3, 1, 2, 5};\n    size_t n = sizeof nums / sizeof nums[0];\n    printf(\"%zu items, sum %d\\n\", n, sum(nums, n));  /* 4 items, sum 11 */\n    char name[16] = \"Ada\";\n    strncat(name, \" Lovelace\", sizeof name - strlen(name) - 1);\n    printf(\"%s (%zu chars)\\n\", name, strlen(name));  /* Ada Lovelace (12 chars) */\n    return 0;\n}",
+          "lang": "c"
+        },
+        "陣列傳入函式時會退化（decay）成指向第一個元素的指標，這就是 `sum` 接收 `const int *` 與長度的原因。"
+      ]
+    },
+    {
+      "h": "招牌特色：指標",
+      "body": [
+        "指標存放另一個值的記憶體位址。`&x` 取得 `x` 的位址，`*p` 則讀取或寫入位址 `p` 上的值。指標讓函式能修改呼叫端的變數、不必複製就能共用大型資料，也能用來建立鏈結式資料結構。",
+        {
+          "code": "#include <stdio.h>\nvoid swap(int *a, int *b) {\n    int tmp = *a;\n    *a = *b;\n    *b = tmp;\n}\nint main(void) {\n    int x = 1, y = 2;\n    int *p = &x;\n    *p = 10;                      /* changes x */\n    swap(&x, &y);\n    printf(\"x=%d y=%d\\n\", x, y);  /* x=2 y=10 */\n    int arr[3] = {7, 8, 9};\n    int *q = arr;\n    printf(\"%d %d\\n\", *(q + 1), q[2]);  /* 8 9: pointer arithmetic */\n    return 0;\n}",
+          "lang": "c"
+        }
+      ]
+    },
+    {
+      "h": "使用 malloc 與 free 的動態記憶體",
+      "body": [
+        "區域變數存在堆疊（stack）上，函式返回時就會消失。若資料大小要到執行階段才知道，或必須比函式活得更久，就要用 `malloc` 在堆積（heap）上配置，並用 `free` 釋放。每一次成功的 `malloc` 都要剛好對應一次 `free`。",
+        {
+          "code": "#include <stdio.h>\n#include <stdlib.h>\nint main(void) {\n    size_t n = 5;\n    int *squares = malloc(n * sizeof *squares);\n    if (squares == NULL) {\n        fprintf(stderr, \"out of memory\\n\");\n        return 1;\n    }\n    for (size_t i = 0; i < n; i++) squares[i] = (int)(i * i);\n    printf(\"%d\\n\", squares[4]);  /* 16 */\n    free(squares);\n    squares = NULL;              /* avoid using a dangling pointer */\n    return 0;\n}",
+          "lang": "c"
+        },
+        "相關函式還有 `calloc`（配置並清零）與 `realloc`（調整大小）。可以用 `struct` 把相關的值組合在一起，例如 `struct point { int x; int y; };`。"
+      ]
+    },
+    {
+      "h": "錯誤處理",
+      "body": [
+        "C 沒有例外機制。函式透過回傳值回報錯誤（通常是 `-1`、`NULL` 或狀態碼），許多函式庫函式也會設定全域變數 `errno`。每個可能失敗的回傳值都要檢查。",
+        {
+          "code": "#include <errno.h>\n#include <stdio.h>\n#include <string.h>\nint main(void) {\n    FILE *f = fopen(\"missing.txt\", \"r\");\n    if (f == NULL) {\n        fprintf(stderr, \"cannot open: %s\\n\", strerror(errno));\n        return 1;   /* cannot open: No such file or directory */\n    }\n    fclose(f);\n    return 0;\n}",
+          "lang": "c"
+        }
+      ]
+    },
+    {
+      "h": "完整的小程式：行數與單字計數器",
+      "body": [
+        "這個程式的功能類似小型的 `wc`：讀取命令列指定的檔案，並印出行數、單字數與位元組數。",
+        {
+          "code": "#include <ctype.h>\n#include <stdio.h>\nint main(int argc, char *argv[]) {\n    if (argc != 2) {\n        fprintf(stderr, \"usage: %s FILE\\n\", argv[0]);\n        return 1;\n    }\n    FILE *f = fopen(argv[1], \"r\");\n    if (f == NULL) {\n        perror(argv[1]);\n        return 1;\n    }\n    long lines = 0, words = 0, bytes = 0;\n    int c, in_word = 0;\n    while ((c = fgetc(f)) != EOF) {\n        bytes++;\n        if (c == '\\n') lines++;\n        if (isspace(c)) {\n            in_word = 0;\n        } else if (!in_word) {\n            in_word = 1;\n            words++;\n        }\n    }\n    fclose(f);\n    printf(\"%ld lines, %ld words, %ld bytes\\n\", lines, words, bytes);\n    return 0;\n}",
+          "lang": "c"
+        },
+        "以 `gcc -Wall -Wextra wc.c -o wc` 編譯，再執行 `./wc notes.txt`。請注意 `c` 是 `int` 而不是 `char`，這樣才能容納特殊值 `EOF`。"
+      ]
+    },
+    {
+      "h": "初學者常見錯誤",
+      "body": [
+        {
+          "note": "寫到陣列結尾之後，或在 `free` 之後繼續使用記憶體，都屬於未定義行為：程式可能看起來正常、稍後才當掉，或成為安全漏洞。學習時請使用 `-fsanitize=address -g` 編譯，以便抓出這類錯誤。"
+        },
+        {
+          "ul": [
+            "在條件中使用 `=` 而不是 `==`。警告選項（`-Wall`）能抓到大多數情況。",
+            "設定字串緩衝區大小時，忘了替結尾的 `'\\0'` 預留空間。",
+            "使用 `gets` 或沒有長度限制的 `scanf(\"%s\", buf)`。請改用 `fgets(buf, sizeof buf, stdin)`。",
+            "回傳指向區域變數的指標，該變數在函式返回後就不存在了。",
+            "`printf` 的格式與型別不一致，例如對 `size_t` 使用 `%d`。"
+          ]
+        }
+      ]
+    },
+    {
+      "h": "接下來學什麼",
+      "body": [
+        "可以把 cppreference.com 的 C 區當作語言與標準函式庫的參考，並閱讀 ISO 工作小組（WG14）的頁面來了解標準本身。多練習 struct、鏈結串列、標頭檔，以及用 `make` 建置的多檔案程式。除錯器（`gdb` 或 `lldb`）與 Valgrind 或 AddressSanitizer 能替你省下大量時間。之後可以探索 C++ 或 Rust，它們建立在相同的概念之上，並提供更多安全性。"
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "現在還值得學 C 嗎？",
+      "a": "值得。C 仍用於作業系統、嵌入式裝置與效能關鍵的函式庫，而且能讓你了解記憶體、指標與編譯後程式的執行方式，對學習其他語言都有幫助。"
+    },
+    {
+      "q": "C 和 C++ 有什麼差別？",
+      "a": "C++ 最初是 C 的擴充，加入了類別、樣板、參考、例外與龐大的標準函式庫。C 則保持精簡並採程序式風格。大多數 C 程式碼接近合法的 C++，但兩者是各自獨立的標準。"
+    },
+    {
+      "q": "為什麼我的 C 程式會因 segmentation fault 當掉？",
+      "a": "程式存取了不屬於它的記憶體，通常是透過 null、未初始化或已釋放的指標，或是索引超出陣列結尾。在除錯器中執行，或搭配 AddressSanitizer，就能找出確切的那一行。"
+    },
+    {
+      "q": "該使用哪個 C 標準？",
+      "a": "目前的編譯器普遍支援 C17，而 C23 是最新的標準。請明確指定版本，例如 `-std=c17`，讓行為保持一致。"
+    }
+  ]
+}

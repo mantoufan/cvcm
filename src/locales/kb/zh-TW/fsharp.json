@@ -1,0 +1,210 @@
+{
+  "title": "F# 入門教學：型別、模式比對、管線運算與 .NET — cv.cm",
+  "description": "一步步學會 F#：安裝 .NET SDK、用 dotnet fsi 執行腳本、使用 let 繫結、串列、record、判別聯集、模式比對與 Result。",
+  "h1": "F# 入門教學",
+  "answer": "F# 是以函數式為優先、靜態型別的 .NET 語言。它會替你推論大部分型別，用縮排而非大括號，並把不可變資料、模式比對與管線運算子 `|>` 當成撰寫程式碼的常態，同時仍能完整使用 .NET 函式庫。安裝 .NET SDK 後，用 `dotnet fsi hello.fsx` 即可執行腳本。",
+  "sections": [
+    {
+      "h": "F# 是什麼、誰在使用",
+      "body": [
+        "F# 由 Microsoft Research 的 Don Syme 設計，現在是由 Microsoft 與 F# Software Foundation 社群共同維護的開放原始碼語言。它屬於 ML 語言家族（與 OCaml 類似），運行在 Windows、macOS 與 Linux 的 .NET 上。",
+        "團隊使用 F# 進行金融建模、資料分析、領域邏輯繁重的業務邏輯、網頁後端與腳本撰寫。因為它與 C# 編譯成同樣的 .NET 中介語言，F# 專案可以使用任何 NuGet 套件，也能被 C# 程式碼呼叫。"
+      ]
+    },
+    {
+      "h": "安裝 F# 並執行 Hello, world",
+      "body": [
+        "從 Microsoft 安裝 .NET SDK。F# 已包含在內，不需另外安裝。若只是快速實驗，可以寫一個副檔名為 `.fsx` 的腳本檔，用 F# Interactive（`dotnet fsi`）執行。",
+        {
+          "code": "// hello.fsx\nprintfn \"Hello, world!\"",
+          "lang": "fsharp"
+        },
+        {
+          "code": "dotnet fsi hello.fsx\n# Hello, world!\ndotnet new console -lang \"F#\" -o HelloApp\ncd HelloApp\ndotnet run",
+          "lang": "shell"
+        },
+        "第二組指令會建立一個完整的主控台專案，包含 `.fsproj` 檔案與 `Program.fs`。在專案中，`.fsproj` 裡列出的檔案順序很重要：一個檔案只能使用排在它前面的檔案中的程式碼。"
+      ]
+    },
+    {
+      "h": "值與基本型別",
+      "body": [
+        "`let` 把名稱繫結到一個值。除非標記為 `mutable`，否則繫結是不可變的；標記後要用 `<-` 而不是 `=` 來修改。",
+        {
+          "table": {
+            "head": [
+              "型別",
+              "範例",
+              "說明"
+            ],
+            "rows": [
+              [
+                "int",
+                "`42`",
+                "32 位元整數"
+              ],
+              [
+                "float",
+                "`3.14`",
+                "64 位元浮點數（.NET 的 `double`）"
+              ],
+              [
+                "decimal",
+                "`19.99m`",
+                "精確的十進位數，適合處理金額"
+              ],
+              [
+                "string",
+                "`\"hello\"`",
+                "不可變的 .NET 字串"
+              ],
+              [
+                "char",
+                "`'a'`",
+                "單一字元"
+              ],
+              [
+                "bool",
+                "`true`, `false`",
+                "邏輯值"
+              ],
+              [
+                "unit",
+                "`()`",
+                "「沒有值」，類似 `void`"
+              ]
+            ]
+          }
+        },
+        {
+          "code": "let name = \"Ana\"\nlet age = 30\nlet mutable count = 0\ncount <- count + 1\nprintfn \"%s is %d, count = %d\" name age count\n// Ana is 30, count = 1\nlet total = float age + 0.5   // explicit conversion needed",
+          "lang": "fsharp"
+        },
+        "F# 絕不會隱含轉換數字：`1 + 2.0` 是編譯錯誤。請用 `float`、`int`、`string` 等函式轉換。"
+      ]
+    },
+    {
+      "h": "流程控制與函式",
+      "body": [
+        "`if` 是會回傳值的運算式，所以兩個分支必須有相同的型別。迴圈（`for`、`while`）雖然存在，但大部分程式碼改用集合函式。",
+        {
+          "code": "let sign n =\n    if n > 0 then \"positive\"\n    elif n < 0 then \"negative\"\n    else \"zero\"\nfor i in 1 .. 3 do\n    printfn \"%d squared is %d\" i (i * i)\nlet add x y = x + y          // int -> int -> int\nlet add5 = add 5             // partial application\nprintfn \"%d\" (add5 10)       // 15\nlet square = fun x -> x * x\n[1; 2; 3; 4]\n|> List.filter (fun x -> x % 2 = 0)\n|> List.map square\n|> printfn \"%A\"              // [4; 16]",
+          "lang": "fsharp"
+        },
+        "引數以空格分隔，而不是逗號。每個函式一次只接收一個引數（柯里化），所以 `add 5` 會回傳一個新函式。管線運算子 `x |> f` 的意思是 `f x`，讓你能由上往下撰寫資料轉換。縮排具有語意：函式或迴圈的主體必須縮排在它的下方。"
+      ]
+    },
+    {
+      "h": "集合、record 與 option",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "集合",
+              "字面值",
+              "說明"
+            ],
+            "rows": [
+              [
+                "List",
+                "`[1; 2; 3]`",
+                "不可變的鏈結串列，預設的選擇"
+              ],
+              [
+                "Array",
+                "`[| 1; 2; 3 |]`",
+                "大小固定、元素可變、索引存取快速"
+              ],
+              [
+                "Sequence",
+                "`seq { 1 .. 10 }`",
+                "惰性，按需計算"
+              ],
+              [
+                "Map",
+                "`Map [\"a\", 1; \"b\", 2]`",
+                "不可變的字典"
+              ],
+              [
+                "Set",
+                "`set [1; 2; 2]`",
+                "由不重複值組成的不可變集合"
+              ]
+            ]
+          }
+        },
+        {
+          "code": "type Person = { Name: string; Age: int }\nlet ana = { Name = \"Ana\"; Age = 30 }\nlet older = { ana with Age = 31 }       // copy with one change\nlet people = [ ana; { Name = \"Ben\"; Age = 17 } ]\nlet adult = people |> List.tryFind (fun p -> p.Age >= 18)\nmatch adult with\n| Some p -> printfn \"First adult: %s\" p.Name\n| None -> printfn \"No adults\"\n// First adult: Ana",
+          "lang": "fsharp"
+        },
+        "Record 是具有具名欄位與結構相等性的不可變型別。F# 自己的型別沒有 null；缺值以 `Option` 表示：`Some value` 或 `None`。`List.tryFind` 這類函式會回傳 option，編譯器會強制你處理兩種情況。"
+      ]
+    },
+    {
+      "h": "招牌特色：判別聯集與模式比對",
+      "body": [
+        "判別聯集描述一個恰好屬於數個具名案例之一的值，每個案例各有自己的資料。`match` 會檢查各個案例，如果漏掉其中一個，編譯器會發出警告。",
+        {
+          "code": "type Shape =\n    | Circle of radius: float\n    | Rectangle of width: float * height: float\nlet area shape =\n    match shape with\n    | Circle r -> System.Math.PI * r * r\n    | Rectangle (w, h) -> w * h\n[ Circle 1.0; Rectangle (2.0, 3.0) ]\n|> List.map area\n|> List.iter (printfn \"%.2f\")\n// 3.14\n// 6.00",
+          "lang": "fsharp"
+        },
+        "其他知名特色包括型別推論（你很少需要寫型別標註）、度量單位（`float<m>` 不能與 `float<s>` 相加），以及用於非同步程式碼的計算運算式，如 `task { ... }` 與 `async { ... }`。"
+      ]
+    },
+    {
+      "h": "錯誤處理",
+      "body": [
+        "對於可預期的失敗，慣用的 F# 會回傳 `Result`：`Ok value` 或 `Error info`。對於非預期的失敗，則可使用 .NET 例外，搭配 `try ... with`、`failwith` 與 `raise`。",
+        {
+          "code": "let parseAge (s: string) =\n    match System.Int32.TryParse(s) with\n    | true, n when n >= 0 -> Ok n\n    | true, _ -> Error \"Age must not be negative\"\n    | false, _ -> Error \"Not a number\"\nmatch parseAge \"abc\" with\n| Ok n -> printfn \"Age %d\" n\n| Error msg -> printfn \"Error: %s\" msg\n// Error: Not a number\nlet safeDivide a b =\n    try Some (a / b)\n    with :? System.DivideByZeroException -> None\nprintfn \"%A\" (safeDivide 10 0)   // None",
+          "lang": "fsharp"
+        },
+        "`TryParse` 在 .NET 中有一個 `out` 參數；F# 把它轉成元組 `(success, value)`，可以直接比對。"
+      ]
+    },
+    {
+      "h": "完整的小程式：字詞頻率",
+      "body": [
+        {
+          "code": "let text = \"the cat and the hat and the bat\"\ntext.Split(' ')\n|> Array.countBy id\n|> Array.sortByDescending snd\n|> Array.truncate 2\n|> Array.iter (fun (word, n) -> printfn \"%s %d\" word n)\n// the 3\n// and 2",
+          "lang": "fsharp"
+        },
+        "`Array.countBy id` 會把相同的字詞分組，並回傳 `(word, count)` 配對；`snd` 取出每個配對的第二個元素來排序；最後以拆解元組的 lambda 印出結果。",
+        {
+          "note": "新手常見錯誤：寫成 `[1, 2, 3]`（那是只含一個元組的串列；請用分號 `[1; 2; 3]`）；用 `=` 修改可變的值（`=` 是比較，`<-` 才是賦值）；函式定義為 `add x y` 卻用 `add(1, 2)` 呼叫；未經轉換就混用 `int` 與 `float`；以及在 `.fsproj` 中把檔案順序放錯。"
+        }
+      ]
+    },
+    {
+      "h": "接下來可以學什麼",
+      "body": [
+        {
+          "ul": [
+            "Microsoft Learn：F# 文件，包括「Tour of F#」與語言參考。",
+            "在 `dotnet fsi` 中練習，可以貼上程式碼並立即看到結果；輸入以 `;;` 結束。",
+            "學習 `List`、`Array`、`Seq`、`Option` 與 `Result` 模組；日常的大部分程式碼都是用它們組成的。",
+            "基礎熟悉後，可以看看 NuGet 上的 F# 網頁框架與函式庫。"
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "F# 只能用在 Windows 嗎？",
+      "a": "不是。F# 運行在跨平台的 .NET 上，所以你可以在 Windows、macOS 與 Linux 上建置並執行 F# 程式。"
+    },
+    {
+      "q": "F# 與 C# 有什麼差別？",
+      "a": "兩者都運行在 .NET 上，也能使用相同的函式庫。C# 以物件導向為優先，再加入函數式特性；F# 則以函數式為優先，預設就是不可變資料、型別推論與模式比對。"
+    },
+    {
+      "q": "F# 中的 |> 是什麼意思？",
+      "a": "`x |> f` 是管線運算子，意思是 `f x`。它會把左邊的值當成右邊函式的最後一個引數傳入，所以一連串的轉換可以由上往下閱讀。"
+    },
+    {
+      "q": "F# 和 OCaml 有關係嗎？",
+      "a": "有。F# 屬於 ML 家族，核心語法與 OCaml 相近，但它是為 .NET 打造的，預設使用具語意的縮排，並有自己的特色，例如計算運算式。"
+    }
+  ]
+}

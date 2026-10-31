@@ -1,0 +1,191 @@
+{
+  "title": "Tutorial C#: tipe data, class, collection, LINQ, dan async — cv.cm",
+  "description": "Belajar C# dalam satu halaman: jalankan Hello world dengan .NET SDK, tipe data, alur kontrol, class, record, List dan Dictionary, LINQ, async, dan exception.",
+  "h1": "Tutorial C# untuk pemula",
+  "answer": "C# adalah bahasa berorientasi objek dengan tipe statis dari Microsoft yang berjalan di .NET, runtime gratis lintas platform untuk Windows, macOS, dan Linux. Instal .NET SDK, jalankan `dotnet new console`, lalu `dotnet run` mencetak \"Hello, World!\". Konsep intinya: class dan record, collection generik seperti `List<T>` dan `Dictionary<K, V>`, query LINQ, `async`/`await`, pattern matching, dan exception.",
+  "sections": [
+    {
+      "h": "Apa itu C# dan untuk apa dipakai",
+      "body": [
+        "C# (dibaca \"C sharp\") dirancang di Microsoft oleh tim yang dipimpin Anders Hejlsberg dan pertama kali dirilis pada 2002. C# distandarkan oleh Ecma (ECMA-334) dan dikembangkan secara terbuka bersama .NET. C# dipakai untuk web API dan situs (ASP.NET Core), aplikasi desktop Windows, aplikasi mobile dan desktop lintas platform (.NET MAUI), layanan cloud, serta game: engine Unity memakai C# untuk skrip game. Sintaksnya termasuk keluarga C, sehingga terasa akrab bagi developer Java, C++, dan JavaScript."
+      ]
+    },
+    {
+      "h": "Instal .NET dan jalankan Hello, world",
+      "body": [
+        "Unduh .NET SDK dari dot.net dan periksa dengan `dotnet --version`. Buat dan jalankan proyek console:",
+        {
+          "code": "dotnet new console -o HelloApp\ncd HelloApp\ndotnet run\n# Hello, World!",
+          "lang": "shell"
+        },
+        "Template ini membuat `Program.cs`, yang memakai top-level statement, jadi tidak perlu class atau method `Main` untuk program kecil:",
+        {
+          "code": "Console.WriteLine(\"Hello, World!\");",
+          "lang": "csharp"
+        }
+      ]
+    },
+    {
+      "h": "Variabel dan tipe data dasar",
+      "body": [
+        "Setiap variabel punya tipe statis. `var` membuat compiler menyimpulkannya dari nilai. Value type (angka, `bool`, `struct`) menyimpan datanya langsung; reference type (`string`, class, array) merujuk ke sebuah objek.",
+        {
+          "table": {
+            "head": [
+              "Tipe",
+              "Contoh",
+              "Catatan"
+            ],
+            "rows": [
+              [
+                "`int`",
+                "`int n = 42;`",
+                "Bilangan bulat 32-bit"
+              ],
+              [
+                "`long`",
+                "`long big = 10_000_000_000;`",
+                "Bilangan bulat 64-bit"
+              ],
+              [
+                "`double`",
+                "`double x = 3.14;`",
+                "Floating point 64-bit"
+              ],
+              [
+                "`decimal`",
+                "`decimal price = 19.99m;`",
+                "Basis 10, cocok untuk uang"
+              ],
+              [
+                "`bool`",
+                "`bool ok = true;`",
+                "`true` atau `false`"
+              ],
+              [
+                "`char`",
+                "`char c = 'A';`",
+                "Code unit UTF-16"
+              ],
+              [
+                "`string`",
+                "`string s = \"hi\";`",
+                "Teks immutable"
+              ]
+            ]
+          }
+        },
+        {
+          "code": "var name = \"Ada\";\nint count = 7;\ndouble avg = count / 2.0;\nConsole.WriteLine($\"{name} has {count} items, avg {avg}\");  // Ada has 7 items, avg 3.5\nConsole.WriteLine(count / 2);                              // 3 (integer division)\nConsole.WriteLine(int.Parse(\"12\") + 1);                    // 13\nstring? nickname = null;   // ? marks a nullable reference\nConsole.WriteLine(nickname ?? \"none\");                     // none",
+          "lang": "csharp"
+        },
+        "`$\"...\"` adalah interpolated string. Proyek baru mengaktifkan nullable reference type, sehingga compiler memberi peringatan saat nilai yang mungkin `null` dipakai tanpa pemeriksaan."
+      ]
+    },
+    {
+      "h": "Alur kontrol dan method",
+      "body": [
+        {
+          "code": "int score = 72;\nif (score >= 90) Console.WriteLine(\"A\");\nelse if (score >= 70) Console.WriteLine(\"B\");   // B\nelse Console.WriteLine(\"C\");\n\nfor (int i = 0; i < 3; i++) Console.Write($\"{Square(i)} \");  // 0 1 4\nConsole.WriteLine();\n\nforeach (var fruit in new[] { \"apple\", \"pear\" }) Console.WriteLine(fruit);\n\nstring day = \"SAT\";\nstring kind = day switch\n{\n    \"SAT\" or \"SUN\" => \"weekend\",\n    _ => \"weekday\",\n};\nConsole.WriteLine(kind);   // weekend\nConsole.WriteLine(Greet(\"Lin\"));                // Hello, Lin!\n\nstatic int Square(int x) => x * x;\nstatic string Greet(string name, string greeting = \"Hello\") => $\"{greeting}, {name}!\";",
+          "lang": "csharp"
+        },
+        "Ekspresi `switch` dan pola `or` adalah bagian dari pattern matching C#. Method bisa punya nilai parameter default, named argument (`Greet(name: \"Lin\")`), dan expression body dengan `=>`."
+      ]
+    },
+    {
+      "h": "Class, property, dan record",
+      "body": [
+        "Class memiliki field, property (field dengan logika get dan set), dan method. `record` adalah tipe yang kesetaraannya berdasarkan nilai, ideal untuk data immutable.",
+        {
+          "code": "var acc = new Account(\"Ann\");\nacc.Deposit(50);\nConsole.WriteLine($\"{acc.Owner}: {acc.Balance}\");   // Ann: 50\n\nvar p1 = new Point(3, 4);\nvar p2 = p1 with { Y = 5 };                         // copy with one change\nConsole.WriteLine(p1);                              // Point { X = 3, Y = 4 }\nConsole.WriteLine(p1 == new Point(3, 4));           // True\n\npublic class Account\n{\n    public string Owner { get; }\n    public decimal Balance { get; private set; }\n\n    public Account(string owner) => Owner = owner;\n\n    public void Deposit(decimal amount)\n    {\n        if (amount <= 0) throw new ArgumentException(\"amount must be positive\");\n        Balance += amount;\n    }\n}\n\npublic record Point(int X, int Y);",
+          "lang": "csharp"
+        },
+        "Deklarasi tipe harus berada setelah top-level statement dalam file yang sama. Class mendukung pewarisan tunggal (`class Savings : Account`) dan sejumlah interface."
+      ]
+    },
+    {
+      "h": "Collection dan LINQ",
+      "body": [
+        "Collection generik di `System.Collections.Generic` adalah struktur data sehari-hari. LINQ (Language Integrated Query) menambahkan method seperti `Where`, `Select`, `OrderBy`, dan `GroupBy` ke setiap collection.",
+        {
+          "code": "var nums = new List<int> { 3, 1, 2, 5 };\nnums.Add(4);\nnums.Sort();\nConsole.WriteLine(string.Join(\", \", nums));      // 1, 2, 3, 4, 5\n\nvar ages = new Dictionary<string, int> { [\"ann\"] = 31, [\"bob\"] = 25 };\nages[\"cy\"] = 40;\nif (ages.TryGetValue(\"bob\", out int bobAge)) Console.WriteLine(bobAge);  // 25\n\nvar evenSquares = nums.Where(n => n % 2 == 0).Select(n => n * n).ToList();\nConsole.WriteLine(string.Join(\" \", evenSquares)); // 4 16\n\nvar oldest = ages.OrderByDescending(kv => kv.Value).First();\nConsole.WriteLine(oldest.Key);                    // cy",
+          "lang": "csharp"
+        },
+        "Collection umum lainnya adalah `HashSet<T>` untuk item unik, `Queue<T>`, `Stack<T>`, dan array berukuran tetap seperti `int[]`."
+      ]
+    },
+    {
+      "h": "Fitur khas: async dan await",
+      "body": [
+        "C# memperkenalkan model `async`/`await` yang kemudian diadopsi banyak bahasa. Method `async` mengembalikan `Task` dan dapat `await` operasi lambat, seperti request web atau pembacaan file, tanpa memblokir thread.",
+        {
+          "code": "using System.Net.Http;\n\nusing var http = new HttpClient();\nvar sizes = await Task.WhenAll(\n    GetLengthAsync(http, \"https://example.com\"),\n    GetLengthAsync(http, \"https://example.org\"));\nConsole.WriteLine($\"downloaded {sizes.Sum()} characters\");\n\nstatic async Task<int> GetLengthAsync(HttpClient http, string url)\n{\n    string html = await http.GetStringAsync(url);\n    return html.Length;\n}",
+          "lang": "csharp"
+        },
+        "`Task.WhenAll` menjalankan kedua request secara bersamaan dan menunggu keduanya. Deklarasi `using var` membuang (dispose) `HttpClient` di akhir scope."
+      ]
+    },
+    {
+      "h": "Exception",
+      "body": [
+        "Error berupa exception. Tangkap tipe yang spesifik terlebih dahulu, dan gunakan `finally` atau `using` untuk pembersihan. Pola `TryParse` menghindari exception untuk input yang sering tidak valid.",
+        {
+          "code": "try\n{\n    int age = int.Parse(\"abc\");\n}\ncatch (FormatException ex)\n{\n    Console.WriteLine($\"not a number: {ex.Message}\");\n}\nfinally\n{\n    Console.WriteLine(\"done\");\n}\n\nif (!int.TryParse(\"41\", out int parsed)) parsed = 0;\nConsole.WriteLine(parsed);   // 41",
+          "lang": "csharp"
+        }
+      ]
+    },
+    {
+      "h": "Program kecil yang lengkap: frekuensi kata",
+      "body": [
+        "Ganti `Program.cs` di proyek console dengan kode ini, lalu jalankan `dotnet run -- notes.txt`.",
+        {
+          "code": "using System.Text.RegularExpressions;\n\nif (args.Length != 1)\n{\n    Console.Error.WriteLine(\"usage: dotnet run -- FILE\");\n    return 1;\n}\n\ntry\n{\n    string text = File.ReadAllText(args[0]).ToLowerInvariant();\n    var top = Regex.Matches(text, \"[a-z']+\")\n        .GroupBy(m => m.Value)\n        .Select(g => (Word: g.Key, Count: g.Count()))\n        .OrderByDescending(t => t.Count)\n        .Take(5);\n\n    foreach (var (word, count) in top)\n        Console.WriteLine($\"{count,5}  {word}\");\n    return 0;\n}\ncatch (FileNotFoundException)\n{\n    Console.Error.WriteLine($\"file not found: {args[0]}\");\n    return 1;\n}",
+          "lang": "csharp"
+        },
+        "Top-level statement dapat membaca `args` baris perintah dan mengembalikan exit code. `System.IO`, `System.Linq`, dan `System.Collections.Generic` diimpor otomatis lewat implicit usings di proyek baru."
+      ]
+    },
+    {
+      "h": "Kesalahan umum pemula",
+      "body": [
+        {
+          "note": "Jangan memblokir kode asinkron dengan `.Result` atau `.Wait()`. Hal ini dapat menyebabkan deadlock di aplikasi UI dan ASP.NET lama, dan memboroskan thread di tempat lain. Gunakan `await` sampai ke atas."
+        },
+        {
+          "ul": [
+            "Memakai `double` untuk uang; gunakan `decimal` untuk menghindari kesalahan pembulatan biner.",
+            "Mengabaikan peringatan nullable, yang kemudian menjadi `NullReferenceException` saat runtime.",
+            "Mengubah `List<T>` di dalam `foreach` atas list yang sama, yang melempar `InvalidOperationException`.",
+            "Membuat `HttpClient` baru untuk setiap request di aplikasi yang berjalan lama. Pakai ulang satu instance atau gunakan `IHttpClientFactory`.",
+            "Lupa bahwa query LINQ berjalan secara lazy: query dijalankan lagi setiap kali dienumerasi kecuali Anda memanggil `ToList()`."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Langkah selanjutnya",
+      "body": [
+        "Microsoft Learn memiliki dokumentasi C# resmi, termasuk tur bahasa dan tutorial interaktif. Setelah itu pelajari ASP.NET Core untuk web API, Entity Framework Core untuk database, atau Unity untuk game, dan gunakan xUnit atau NUnit untuk tes. Visual Studio, VS Code dengan C# Dev Kit, dan JetBrains Rider adalah editor yang umum dipakai."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Apakah C# hanya untuk Windows?",
+      "a": "Tidak. .NET modern berjalan di Windows, macOS, dan Linux, dan aplikasi C# bisa di-deploy ke server Linux dan container. Hanya beberapa framework UI desktop, seperti WPF dan Windows Forms, yang khusus Windows."
+    },
+    {
+      "q": "Apa perbedaan C# dan .NET?",
+      "a": "C# adalah bahasa pemrograman. .NET adalah runtime dan pustaka yang mengompilasi dan menjalankan kode C# (juga F# dan Visual Basic)."
+    },
+    {
+      "q": "Apakah C# mirip Java?",
+      "a": "Ya, dalam banyak hal: keduanya bahasa berorientasi objek dengan tipe statis, garbage collection, dan sintaks gaya C. C# menambahkan fitur seperti property, LINQ, `async`/`await`, struct value type, dan record."
+    },
+    {
+      "q": "Apakah C# bagus untuk pengembangan game?",
+      "a": "Ya. Unity, salah satu game engine yang paling banyak dipakai, menggunakan C# untuk skrip game, dan engine Godot juga mendukung C#."
+    }
+  ]
+}

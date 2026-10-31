@@ -1,0 +1,151 @@
+{
+  "title": "观察者模式：主题、订阅者与 TypeScript 事件 — cv.cm",
+  "description": "观察者模式（Observer）让对象订阅另一个对象，并在它变化时收到通知。了解其角色，附带类型化的 TypeScript 示例和常见陷阱。",
+  "h1": "观察者模式详解与示例",
+  "answer": "观察者是一种行为型设计模式：一个称为主题的对象维护着一个依赖者列表，这些依赖者称为观察者，主题的状态变化时会自动通知它们。观察者可以在运行时订阅和取消订阅，主题无需知道它们的具体类。浏览器中的事件监听器、Node.js 的 `EventEmitter`，以及 RxJS 等响应式库，都建立在这一思想之上。",
+  "sections": [
+    {
+      "h": "意图与它要解决的问题",
+      "body": [
+        "意图：定义对象之间的一对多依赖关系，使得当一个对象的状态改变时，所有依赖于它的对象都得到通知并自动更新。观察者是《设计模式》（Gang of Four，GoF）一书中的行为型模式之一，也称为发布订阅或监听器模式。",
+        "设想网店里的购物车。添加商品时，页头的购物车图标要显示新的数量，侧边栏要显示新的合计，分析模块要记录这一事件。如果购物车直接调用这些模块，购物车模块就依赖页头、侧边栏和分析模块。再加第四种响应，就得再改一次购物车。",
+        "使用观察者模式时，购物车只保存一个订阅者列表，变化时调用其中每一个。页头、侧边栏和分析模块自行订阅。购物车不需要导入它们，新功能也可以在不碰购物车代码的情况下响应购物车的变化。"
+      ]
+    },
+    {
+      "h": "结构与参与者",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "角色",
+              "职责"
+            ],
+            "rows": [
+              [
+                "主题（发布者）",
+                "保存观察者列表，提供订阅和取消订阅的方法；有变化时通知它们"
+              ],
+              [
+                "观察者（订阅者）",
+                "带有更新方法的接口，通常就是一个回调函数"
+              ],
+              [
+                "具体主题",
+                "保存关注的状态，状态变化时调用通知"
+              ],
+              [
+                "具体观察者",
+                "对通知作出反应，例如重绘界面的一部分"
+              ]
+            ]
+          }
+        },
+        "通知有两种风格。在推模型中，主题把变化后的数据随通知一起发送。在拉模型中，它只说“有东西变了”，由观察者向主题索取所需的数据。"
+      ]
+    },
+    {
+      "h": "TypeScript 实现",
+      "body": [
+        "一个小型泛型 `Subject` 类负责处理订阅。观察者是普通函数，这是 TypeScript 中最常见的形式。`subscribe` 返回一个用于取消订阅的函数，调用方因此不会忘记自己注册了哪个监听器。",
+        {
+          "code": "type Listener<T> = (value: T) => void;\n\nclass Subject<T> {\n  private listeners = new Set<Listener<T>>();\n\n  subscribe(listener: Listener<T>): () => void {\n    this.listeners.add(listener);\n    return () => this.listeners.delete(listener);\n  }\n\n  protected notify(value: T) {\n    for (const listener of [...this.listeners]) listener(value);\n  }\n}\n\ntype CartEvent = { count: number; total: number };\n\nclass Cart extends Subject<CartEvent> {\n  private items: { name: string; price: number }[] = [];\n\n  add(name: string, price: number) {\n    this.items.push({ name, price });\n    const total = this.items.reduce((sum, item) => sum + item.price, 0);\n    this.notify({ count: this.items.length, total });\n  }\n}\n\nconst cart = new Cart();\ncart.subscribe(({ count }) => console.log(\"header: \" + count + \" items\"));\nconst stopAnalytics = cart.subscribe(({ total }) => console.log(\"analytics: total \" + total));\n\ncart.add(\"Book\", 12);\nstopAnalytics(); // unsubscribe\ncart.add(\"Pen\", 3);\n// header: 1 items\n// analytics: total 12\n// header: 2 items",
+          "lang": "typescript"
+        },
+        "`notify` 遍历的是集合的副本（`[...this.listeners]`）。这样，监听器在通知过程中取消订阅自己，不会扰乱循环。",
+        {
+          "note": "忘记取消订阅是观察者模式最常见的 bug。主题保留着对每个监听器的引用，因此一个已销毁但仍在订阅的界面组件会一直留在内存中，并继续响应事件。观察者不再需要时务必调用取消订阅函数，例如放在组件的清理代码里。"
+        }
+      ]
+    },
+    {
+      "h": "使用内置的 EventTarget",
+      "body": [
+        "浏览器、Node.js 和 Deno 都提供 `EventTarget`，所以你往往不需要自己写主题类：",
+        {
+          "code": "const thermostat = new EventTarget();\n\nthermostat.addEventListener(\"change\", (e) => {\n  console.log(\"new temperature:\", (e as CustomEvent<number>).detail);\n});\n\nthermostat.dispatchEvent(new CustomEvent(\"change\", { detail: 21.5 }));\n// new temperature: 21.5",
+          "lang": "typescript"
+        },
+        "Node.js 还在 `node:events` 模块中提供 `EventEmitter` 类，带有 `on`、`off` 和 `emit` 方法。"
+      ]
+    },
+    {
+      "h": "何时使用，何时不用",
+      "body": [
+        {
+          "ul": [
+            "当一个对象的变化必须更新其他对象，而你事先不知道有多少个、是哪些对象时使用。",
+            "用来让核心模块独立于响应它的界面、日志或分析代码。",
+            "用于随时间发生的事件，例如用户输入、消息或传感器读数。",
+            "只有一个固定接收者时不要使用；直接调用方法或传入回调参数更容易理解。",
+            "要小心观察者链：它们会触发其他通知，可能造成更新循环，让人很难看出某个东西为何改变。",
+            "除非主题的文档有说明，否则不要依赖观察者被调用的顺序。"
+          ]
+        }
+      ]
+    },
+    {
+      "h": "实际应用",
+      "body": [
+        {
+          "ul": [
+            "DOM：`element.addEventListener(\"click\", handler)` 就是给元素订阅一个观察者。",
+            "Node.js：`EventEmitter` 是流、HTTP 服务器和许多其他核心对象的基础。",
+            "浏览器的观察者 API，如 `MutationObserver`、`IntersectionObserver` 和 `ResizeObserver`，会把页面变化通知给回调。",
+            "RxJS 把值的流建模为可观察对象（observable），由观察者订阅。",
+            "Java：`java.util.Observable` 在 Java 9 中已弃用；现在改用 `java.util.concurrent.Flow` 接口（发布者和订阅者）以及事件监听器接口。"
+          ]
+        }
+      ]
+    },
+    {
+      "h": "相关模式",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "模式",
+              "与观察者的区别"
+            ],
+            "rows": [
+              [
+                "中介者",
+                "中介者认识参与的对象并协调它们；主题只是广播，并不知道观察者做什么。"
+              ],
+              [
+                "带代理的发布订阅",
+                "发布者和订阅者彼此完全不认识，通过消息代理或事件总线通信，通常跨进程。"
+              ],
+              [
+                "命令",
+                "通知可以携带一个命令对象；命令关注的是一次请求，观察者关注的是一对多的通知。"
+              ],
+              [
+                "迭代器",
+                "迭代器是拉取式的（消费者索取下一个值）；观察者是推送式的（生产者在值出现时发送）。"
+              ]
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "观察者和发布订阅有什么区别？",
+      "a": "在经典的观察者模式中，观察者直接向主题注册。在发布订阅中，它们之间隔着一个代理或事件通道，发布者和订阅者互不知晓。很多人把这两个名称混用，指的是同一个思想。"
+    },
+    {
+      "q": "如何避免观察者模式造成内存泄漏？",
+      "a": "观察者不再需要时就取消订阅。让 `subscribe` 返回取消订阅函数，或在 `addEventListener` 中使用 `AbortSignal`，都能让清理变得简单。"
+    },
+    {
+      "q": "观察者是同步调用的吗？",
+      "a": "在上面的示例以及 `EventTarget` 和 `EventEmitter` 中，监听器按添加顺序同步运行。其他库可能异步投递通知，请查看它们的文档。"
+    },
+    {
+      "q": "观察者就是响应式编程吗？",
+      "a": "响应式编程建立在观察者之上。RxJS 等库增加了用于过滤、组合和转换通知流的操作符，以及错误和完成的规则。"
+    }
+  ]
+}

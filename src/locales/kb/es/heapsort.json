@@ -1,0 +1,250 @@
+{
+  "title": "Heapsort explicado: montículos binarios, sift-down, código en Python y complejidad — cv.cm",
+  "description": "Heapsort construye un montículo máximo y mueve repetidamente el mayor elemento al final, en tiempo O(n log n) y O(1) de espacio. Traza, código en Python, heapq y estabilidad.",
+  "h1": "Heapsort (ordenamiento por montículo): cómo funciona, código y complejidad",
+  "answer": "Heapsort es un ordenamiento por comparación que primero organiza el arreglo en un montículo máximo (max-heap), un árbol binario almacenado en el arreglo en el que cada padre es al menos tan grande como sus hijos. Después intercambia repetidamente el mayor elemento (la raíz) con el final del arreglo, reduce el montículo en uno y restablece la propiedad del montículo hundiendo la nueva raíz (sift-down). Se ejecuta en tiempo O(n log n) en todos los casos y ordena in situ con O(1) de espacio extra, pero no es estable y en la práctica suele ser más lento que quicksort.",
+  "sections": [
+    {
+      "h": "La idea en palabras sencillas",
+      "body": [
+        "Heapsort es selection sort con una forma más rápida de encontrar el máximo. Selection sort recorre toda la parte sin ordenar, O(n) cada vez. Heapsort mantiene la parte sin ordenar como un montículo, de modo que el máximo siempre está en el índice 0 y restablecer el orden tras extraerlo cuesta solo O(log n).",
+        "Un montículo binario se almacena en un arreglo simple, sin punteros. Para el elemento del índice `i`:",
+        {
+          "ul": [
+            "el hijo izquierdo está en `2*i + 1` y el hijo derecho en `2*i + 2`;",
+            "el padre está en `(i - 1) // 2`;",
+            "en un montículo máximo, cada padre es mayor o igual que sus hijos, así que el mayor elemento está en el índice 0."
+          ]
+        },
+        {
+          "ol": [
+            "Construye un montículo máximo a partir del arreglo hundiendo cada nodo que no sea hoja, empezando por el último y avanzando hasta el índice 0.",
+            "Intercambia la raíz (el máximo) con el último elemento del montículo. Ese elemento queda ya en su posición final.",
+            "Reduce el montículo en uno y hunde la nueva raíz hasta que vuelva a cumplirse la propiedad del montículo.",
+            "Repite los pasos 2 y 3 hasta que el montículo tenga un solo elemento."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Ejemplo resuelto, paso a paso",
+      "body": [
+        "Ordena `[4, 10, 3, 5, 1]`. Los elementos posteriores a la barra están ordenados y son definitivos.",
+        {
+          "table": {
+            "head": [
+              "Paso",
+              "Acción",
+              "Arreglo"
+            ],
+            "rows": [
+              [
+                "Inicio",
+                "",
+                "`[4, 10, 3, 5, 1]`"
+              ],
+              [
+                "Construcción 1",
+                "hundir el índice 1 (10): es mayor que sus hijos 5 y 1, sin cambios",
+                "`[4, 10, 3, 5, 1]`"
+              ],
+              [
+                "Construcción 2",
+                "hundir el índice 0 (4): se intercambia con 10 y luego con 5",
+                "`[10, 5, 3, 4, 1]`  montículo máximo"
+              ],
+              [
+                "Extracción 1",
+                "10 pasa al final, se hunde 1: se intercambia con 5 y luego con 4",
+                "`[5, 4, 3, 1 | 10]`"
+              ],
+              [
+                "Extracción 2",
+                "5 pasa al final, se hunde 1: se intercambia con 4",
+                "`[4, 1, 3 | 5, 10]`"
+              ],
+              [
+                "Extracción 3",
+                "4 pasa al final, se hunde 3: ningún hijo es mayor",
+                "`[3, 1 | 4, 5, 10]`"
+              ],
+              [
+                "Extracción 4",
+                "3 pasa al final",
+                "`[1 | 3, 4, 5, 10]`  ordenado"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "Implementación en Python",
+      "body": [
+        {
+          "code": "def sift_down(a, root, end):\n    \"\"\"Restore the max-heap property for a[root..end-1].\"\"\"\n    while True:\n        child = 2 * root + 1\n        if child >= end:\n            return\n        if child + 1 < end and a[child + 1] > a[child]:\n            child += 1                      # pick the larger child\n        if a[root] >= a[child]:\n            return\n        a[root], a[child] = a[child], a[root]\n        root = child\n\ndef heapsort(a):\n    \"\"\"Sort list a in place, ascending.\"\"\"\n    n = len(a)\n    for i in range(n // 2 - 1, -1, -1):     # build the max-heap\n        sift_down(a, i, n)\n    for end in range(n - 1, 0, -1):\n        a[0], a[end] = a[end], a[0]         # move the max to the end\n        sift_down(a, 0, end)\n    return a\n\nprint(heapsort([4, 10, 3, 5, 1]))   # [1, 3, 4, 5, 10]\nprint(heapsort([2, 2, 1]))          # [1, 2, 2]",
+          "lang": "python"
+        },
+        "El módulo `heapq` de Python ofrece un montículo mínimo sobre una lista simple. Extraer todos los elementos da una lista ordenada, que es un heapsort corto (no in situ):",
+        {
+          "code": "import heapq\n\ndef heapsort_heapq(items):\n    h = list(items)\n    heapq.heapify(h)                       # O(n)\n    return [heapq.heappop(h) for _ in range(len(h))]\n\nprint(heapsort_heapq([4, 10, 3, 5, 1]))     # [1, 3, 4, 5, 10]\nprint(heapq.nlargest(2, [4, 10, 3, 5, 1]))  # [10, 5]",
+          "lang": "python"
+        }
+      ]
+    },
+    {
+      "h": "Complejidad temporal y espacial",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Caso",
+              "Tiempo",
+              "Motivo"
+            ],
+            "rows": [
+              [
+                "Construir el montículo",
+                "O(n)",
+                "la mayoría de los nodos están cerca del fondo y solo se hunden una distancia corta"
+              ],
+              [
+                "Mejor",
+                "O(n log n)",
+                "n − 1 extracciones, cada hundimiento de hasta log₂ n niveles (claves distintas)"
+              ],
+              [
+                "Promedio",
+                "O(n log n)",
+                "el mismo trabajo sea cual sea el orden"
+              ],
+              [
+                "Peor",
+                "O(n log n)",
+                "la altura del árbol es siempre de unos log₂ n"
+              ],
+              [
+                "Espacio extra",
+                "O(1)",
+                "el montículo vive dentro del arreglo de entrada y el hundimiento es un bucle"
+              ]
+            ]
+          }
+        },
+        "Construir el montículo de abajo arriba es O(n), no O(n log n), porque la suma de las alturas de los nodos de un árbol binario completo es O(n). La fase de extracción domina el total."
+      ]
+    },
+    {
+      "h": "Cómo se compara heapsort con otros ordenamientos",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Algoritmo",
+              "Mejor",
+              "Promedio",
+              "Peor",
+              "Espacio extra",
+              "Estable"
+            ],
+            "rows": [
+              [
+                "Heapsort",
+                "O(n log n)",
+                "O(n log n)",
+                "O(n log n)",
+                "O(1)",
+                "No"
+              ],
+              [
+                "Quicksort",
+                "O(n log n)",
+                "O(n log n)",
+                "O(n²)",
+                "O(log n)",
+                "No"
+              ],
+              [
+                "Merge sort",
+                "O(n log n)",
+                "O(n log n)",
+                "O(n log n)",
+                "O(n)",
+                "Sí"
+              ],
+              [
+                "Selection sort",
+                "O(n²)",
+                "O(n²)",
+                "O(n²)",
+                "O(1)",
+                "No"
+              ],
+              [
+                "Insertion sort",
+                "O(n)",
+                "O(n²)",
+                "O(n²)",
+                "O(1)",
+                "Sí"
+              ],
+              [
+                "Timsort (`sorted` de Python)",
+                "O(n)",
+                "O(n log n)",
+                "O(n log n)",
+                "O(n)",
+                "Sí"
+              ]
+            ]
+          }
+        },
+        "Heapsort no es estable: intercambiar la raíz con el final puede llevar un elemento más allá de otros con la misma clave. Sus principales fortalezas son un peor caso O(n log n) garantizado junto con O(1) de espacio extra, una combinación que no ofrecen ni quicksort ni merge sort. Su debilidad es el acceso a memoria: saltar entre el índice `i` y `2*i + 1` aprovecha mal las cachés de la CPU, por lo que suele ser más lento que un quicksort bien implementado. Introsort usa heapsort como respaldo cuando quicksort recursa demasiado profundo."
+      ]
+    },
+    {
+      "h": "Variantes y errores comunes",
+      "body": [
+        {
+          "ul": [
+            "Ordenamiento parcial: para obtener solo los k mayores, construye el montículo y extrae k veces, O(n + k log n). En Python, `heapq.nlargest` y `heapq.nsmallest` lo hacen.",
+            "Top-k de un flujo de datos: mantén un montículo mínimo de tamaño k e inserta o reemplaza cada elemento nuevo, O(n log k) de tiempo y O(k) de memoria.",
+            "Heapsort ascendente (bottom-up) hunde primero el hueco hasta una hoja y luego lo sube, lo que ahorra comparaciones.",
+            "Smoothsort, una variante basada en montículos de Dijkstra, se ejecuta en O(n) con entradas ya ordenadas, pero se usa poco por su complejidad."
+          ]
+        },
+        {
+          "note": "Errores frecuentes: usar un montículo mínimo in situ y obtener orden descendente, empezar el bucle de construcción en el índice `n // 2` con fórmulas de hijos basadas en 1 sobre un arreglo basado en 0, olvidar reducir el montículo (`end`) tras cada intercambio y comparar solo con el hijo izquierdo durante el hundimiento."
+        }
+      ]
+    },
+    {
+      "h": "Cuándo usar heapsort",
+      "body": [
+        "Usa heapsort cuando necesites un peor caso O(n log n) garantizado sin memoria adicional, por ejemplo en sistemas embebidos o de tiempo real, o como respaldo de seguridad dentro de otro ordenamiento. En el código Python de uso diario, usa `sorted()`, que es estable y más rápido con datos típicos. El propio montículo es más útil que el ordenamiento: colas de prioridad, caminos mínimos de Dijkstra, planificadores, mezcla de k listas ordenadas (`heapq.merge`) y búsqueda de los k mayores valores se basan en él. Las entrevistas suelen preguntar por las fórmulas de índices del montículo, por qué construirlo es O(n) y por el problema del top-k."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "¿Es estable heapsort?",
+      "a": "No. Mover la raíz al final y hundir elementos puede cambiar el orden relativo de claves iguales."
+    },
+    {
+      "q": "¿Cuál es la complejidad temporal de heapsort?",
+      "a": "O(n log n) en el mejor caso, en el promedio y en el peor. Construir el montículo es O(n) y cada una de las n − 1 extracciones cuesta O(log n)."
+    },
+    {
+      "q": "¿Es heapsort in situ?",
+      "a": "Sí. El montículo se almacena dentro del arreglo que se ordena y la parte ordenada crece desde el final, por lo que solo se necesita O(1) de espacio extra."
+    },
+    {
+      "q": "¿Por qué heapsort es más lento que quicksort en la práctica?",
+      "a": "Ambos son O(n log n) en promedio, pero heapsort salta entre posiciones distantes del arreglo, lo que causa más fallos de caché, y hace más comparaciones por elemento que quicksort."
+    },
+    {
+      "q": "¿Cómo se ordena con heapq en Python?",
+      "a": "Llama a `heapq.heapify(list)` y luego a `heapq.heappop` repetidamente, o usa `heapq.nsmallest(k, items)` para obtener los k menores. Para un ordenamiento completo, `sorted()` es más simple y más rápido."
+    }
+  ]
+}

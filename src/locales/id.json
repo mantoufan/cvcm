@@ -437,7 +437,17 @@
     "titleRemovePhotoBackground": "Cara hapus background foto gratis | cv.cm",
     "descRemovePhotoBackground": "Taruh foto JPG, PNG, WebP, atau HEIC, biarkan AI memotong objek di browser Anda, pilih latar transparan, putih, warna, atau buram, lalu unduh PNG atau ZIP. Foto tidak pernah diunggah.",
     "titleTestRegex": "Cara menguji ekspresi reguler | cv.cm",
-    "descTestRegex": "Ketik pola, atur flag g, i, m, s, dan u, tempel teks, lalu lihat setiap kecocokan dan grup tangkap, plus pratinjau penggantian dengan $& dan $1. Tidak ada unggahan."
+    "descTestRegex": "Ketik pola, atur flag g, i, m, s, dan u, tempel teks, lalu lihat setiap kecocokan dan grup tangkap, plus pratinjau penggantian dengan $& dan $1. Tidak ada unggahan.",
+    "titleWheel": "Roda putar acak — spin wheel untuk nama dan pilihan — cv.cm",
+    "descWheel": "Ketik nama atau pilihan, satu per baris, lalu putar roda yang adil untuk memilih satu secara acak. Hapus pemenang, acak urutan, dan simpan riwayat. Memakai Web Crypto. Tidak ada unggahan.",
+    "titleAverage": "Kalkulator rata-rata — mean, median, modus, simpangan baku — cv.cm",
+    "descAverage": "Tempel daftar angka untuk mendapatkan rata-rata, median, modus, jumlah, jangkauan, simpangan baku sampel dan populasi, varians, dan rata-rata geometrik. Tidak ada unggahan.",
+    "titleMetronome": "Metronom online — BPM, birama, dan tap tempo — cv.cm",
+    "descMetronome": "Metronom online gratis dari 20 sampai 300 BPM dengan ketukan pertama beraksen, 1–12 ketukan per birama, subdivisi not 1/8 dan 1/16, serta tap tempo. Berjalan di browser Anda.",
+    "titleKeyboardTest": "Tes keyboard — cek semua tombol online — cv.cm",
+    "descKeyboardTest": "Tekan tombol untuk melihat mana yang berfungsi: peta keyboard lengkap menyalakan tiap tombol, menampilkan key, code, dan keyCode, serta menghitung berapa tombol yang bisa ditahan sekaligus. Tidak ada unggahan.",
+    "titleZodiac": "Cek zodiak dan shio dari tanggal lahir — cv.cm",
+    "descZodiac": "Masukkan tanggal lahir untuk mengetahui zodiak, rentang tanggal dan elemennya, serta shio, elemen, dan nama tahunnya, dengan memperhitungkan tanggal Imlek."
   },
   "brand": "cv.cm",
   "nav": {
@@ -934,6 +944,26 @@
     "depth-map": {
       "name": "Pembuat depth map",
       "blurb": "Ubah foto jadi depth map AI untuk 3D, parallax, ControlNet."
+    },
+    "wheel": {
+      "name": "Roda putar acak",
+      "blurb": "Pilih nama atau opsi secara acak. Tidak ada unggahan."
+    },
+    "average": {
+      "name": "Kalkulator rata-rata",
+      "blurb": "Rata-rata, median, modus, dan simpangan baku. Tidak ada unggahan."
+    },
+    "metronome": {
+      "name": "Metronom",
+      "blurb": "BPM, ketukan per birama, dan tap tempo. Berjalan di browser Anda."
+    },
+    "keyboard-test": {
+      "name": "Tes keyboard",
+      "blurb": "Lihat tombol mana yang berfungsi. Tidak ada unggahan."
+    },
+    "zodiac": {
+      "name": "Cek zodiak dan shio",
+      "blurb": "Zodiak dan shio dari tanggal lahir."
     }
   },
   "watermark": {
@@ -3682,6 +3712,66 @@
       "a4": "Bisa. Unduh PNG grayscale untuk input depth ControlNet, displacement map Blender, atau efek foto 3D.",
       "q5": "Apakah kedalamannya dalam meter?",
       "a5": "Tidak. Ini kedalaman relatif: urutan mana yang lebih dekat atau jauh, bukan jarak terukur."
+    },
+    "wheel": {
+      "q1": "Apakah rodanya benar-benar acak?",
+      "a1": "Ya. Pemenang diundi dengan Web Crypto sebelum roda berputar, dan setiap entri punya peluang yang sama. Putarannya hanya menampilkan hasil.",
+      "q2": "Bagaimana cara menambah nama?",
+      "a2": "Ketik satu nama atau pilihan per baris di daftar. Maksimal 100 entri; ulangi satu baris untuk memberinya bagian yang lebih besar.",
+      "q3": "Bisakah pemenang dihapus?",
+      "a3": "Centang “Hapus pemenang setiap selesai putar” untuk mengundi nama satu per satu tanpa pengulangan, misalnya untuk menentukan urutan bicara.",
+      "q4": "Apakah ada yang diunggah?",
+      "a4": "Tidak. Daftar dan undiannya tetap di tab ini.",
+      "q5": "Bisakah dipakai untuk giveaway?",
+      "a5": "Bisa, untuk undian santai. Bagikan layar Anda saat memutar. Untuk undian yang diatur hukum, ikuti aturan yang berlaku di tempat Anda."
+    },
+    "average": {
+      "q1": "Apa beda rata-rata, median, dan modus?",
+      "a1": "Rata-rata (mean) adalah jumlah dibagi banyak data. Median adalah nilai tengah setelah diurutkan (rata-rata dua nilai tengah jika banyak datanya genap). Modus adalah nilai yang paling sering muncul.",
+      "q2": "Simpangan baku sampel atau populasi?",
+      "a2": "Gunakan nilai sampel (dibagi n − 1) jika angka Anda adalah sampel dari kelompok yang lebih besar, dan nilai populasi (dibagi n) jika angka itu adalah seluruh kelompok.",
+      "q3": "Bagaimana cara memasukkan angka?",
+      "a3": "Pisahkan dengan spasi, baris baru, atau titik koma. Dengan tanda desimal koma, tulis 3,5; dengan titik (3.5), koma juga memisahkan angka. Anda bisa menempelkan satu kolom dari spreadsheet.",
+      "q4": "Kenapa tidak ada modus?",
+      "a4": "Jika setiap nilai muncul sama banyak, misalnya semuanya berbeda, tidak ada nilai yang menjadi modus.",
+      "q5": "Apakah ada yang diunggah?",
+      "a5": "Tidak. Angkanya tetap di tab ini."
+    },
+    "metronome": {
+      "q1": "Bagaimana cara memakai metronom?",
+      "a1": "Atur BPM, pilih ketukan per birama, lalu tekan Mulai. Ketukan pertama tiap birama berbunyi lebih tinggi jika aksen aktif.",
+      "q2": "Apa itu tap tempo?",
+      "a2": "Tekan Ketuk mengikuti irama lagu empat kali atau lebih; BPM mengikuti rata-rata ketukan terakhir Anda. Jeda dua detik akan memulai dari awal.",
+      "q3": "Apakah akurat?",
+      "a3": "Bunyi klik dijadwalkan dengan jam Web Audio, bukan timer, jadi tetap stabil meski halaman sedang sibuk.",
+      "q4": "Kenapa tidak ada suara?",
+      "a4": "Periksa slider volume, volume perangkat, dan tombol senyap di ponsel. Beberapa browser menjeda audio di tab latar belakang.",
+      "q5": "Apa arti Andante dan Allegro?",
+      "a5": "Itu tanda tempo berbahasa Italia. Andante adalah tempo orang berjalan (sekitar 76–108 BPM), Allegro adalah cepat (sekitar 120–156 BPM)."
+    },
+    "keyboard-test": {
+      "q1": "Bagaimana cara mengetes keyboard?",
+      "a1": "Klik gambar keyboard, lalu tekan semua tombol. Tombol yang berfungsi berubah merah muda; tombol yang sedang ditahan berubah gelap.",
+      "q2": "Ada tombol yang tidak menyala. Apakah rusak?",
+      "a2": "Belum tentu. Fn, beberapa tombol media, dan tombol yang dipakai sistem (seperti Print Screen di sebagian komputer) tidak pernah sampai ke browser. Coba juga tombol itu di kolom teks.",
+      "q3": "Apa itu key rollover?",
+      "a3": "Berapa banyak tombol yang bisa dilaporkan keyboard sekaligus. Tahan beberapa tombol bersamaan; “terbanyak sekaligus” menunjukkan angka tertinggi yang terlihat.",
+      "q4": "Apa arti key, code, dan keyCode?",
+      "a4": "key adalah karakter atau nama yang dihasilkan tombol, code adalah posisi fisik tombol, dan keyCode adalah kode angka lama yang masih dipakai banyak game.",
+      "q5": "Apakah ada yang direkam?",
+      "a5": "Tidak. Tekanan tombol hanya ditampilkan di tab ini dan tidak dikirim ke mana pun."
+    },
+    "zodiac": {
+      "q1": "Apa zodiak saya?",
+      "a1": "Masukkan tanggal lahir Anda. Alat ini menampilkan zodiak (zodiak Barat), rentang tanggal, dan elemennya.",
+      "q2": "Apa shio saya?",
+      "a2": "Shio mengikuti tahun lunar yang dimulai saat Imlek, antara 21 Januari dan 20 Februari. Jika Anda lahir sebelum hari itu, shio Anda adalah shio tahun sebelumnya.",
+      "q3": "Kenapa tanggal zodiak berbeda di tiap situs?",
+      "a3": "Matahari masuk ke tiap rasi pada waktu yang sedikit berbeda setiap tahun, jadi hari pertamanya bisa bergeser satu hari. Jika Anda lahir di perbatasan, cek efemeris untuk tahun lahir Anda.",
+      "q4": "Apa itu lima elemen?",
+      "a4": "Dalam kalender Tionghoa setiap tahun punya elemen (kayu, api, tanah, logam, atau air) dan bersifat yin atau yang; bersama shio, keduanya membentuk siklus 60 tahun, misalnya 甲辰 (Naga Kayu) untuk 2024.",
+      "q5": "Apakah ada yang diunggah?",
+      "a5": "Tidak. Tanggalnya tetap di tab ini."
     }
   },
   "qr": {
@@ -3863,7 +3953,12 @@
       "codes": "Kode",
       "files": "Berkas",
       "audio": "Audio",
-      "text": "Teks"
+      "text": "Teks",
+      "dev": "Pengembang & web",
+      "time": "Tanggal & waktu",
+      "money": "Uang & belanja",
+      "health": "Kesehatan & olahraga",
+      "math": "Matematika & belajar"
     },
     "hub": {
       "kicker": "Pelajaran hari ini",
@@ -7445,6 +7540,399 @@
     "margin-vs-markup": {
       "name": "Margin vs markup",
       "blurb": "Dua cara menyatakan laba, cara mengonversinya, dan tabel ringkas."
+    },
+    "code": {
+      "label": "Pemrograman",
+      "lead": "Tutorial satu halaman untuk bahasa pemrograman, pola desain, struktur data, dan algoritme: jawaban singkat dulu, lalu kode yang bisa dijalankan dan tautan ke dokumentasi resmi.",
+      "all": "Semua tutorial pemrograman",
+      "groups": {
+        "languages": "Bahasa pemrograman",
+        "patterns": "Pola desain",
+        "structures": "Struktur data",
+        "algorithms": "Algoritme"
+      },
+      "blurbs": {
+        "languages": "Python, JavaScript, Java, C++, Go, Rust, dan banyak lagi, mulai dari Hello World",
+        "patterns": "Ke-23 pola Gang of Four plus SOLID, dengan contoh TypeScript",
+        "structures": "Linked list, hash table, tree, heap, dan trie, dengan kode Python",
+        "algorithms": "Pengurutan, pencarian, graf, dan pemrograman dinamis, dengan kompleksitas"
+      }
+    },
+    "linked-list": {
+      "name": "Linked list",
+      "blurb": "Linked list tunggal dan ganda: insert, delete, reverse, deteksi siklus, dan kompleksitas"
+    },
+    "stack-and-queue": {
+      "name": "Stack dan queue",
+      "blurb": "Stack LIFO dan queue FIFO di Python: list, deque, pencocokan kurung, BFS, dan kompleksitas"
+    },
+    "hash-table": {
+      "name": "Hash table",
+      "blurb": "Fungsi hash, bucket, collision, load factor, dan resizing, dengan kode Python"
+    },
+    "binary-search-tree": {
+      "name": "Binary search tree",
+      "blurb": "Aturan urutan BST, search, insert, delete di Python, penyeimbangan, dan kompleksitas"
+    },
+    "binary-tree-traversal": {
+      "name": "Traversal binary tree",
+      "blurb": "Preorder, inorder, postorder, dan level order, kode Python rekursif dan iteratif"
+    },
+    "binary-heap": {
+      "name": "Binary heap",
+      "blurb": "Properti heap, sift up/down, heapify, priority queue, dan heapq Python"
+    },
+    "trie": {
+      "name": "Trie (prefix tree)",
+      "blurb": "Prefix tree: insert, search, starts-with, dan autocomplete di Python, dengan kompleksitas"
+    },
+    "union-find": {
+      "name": "Union-find (disjoint set union)",
+      "blurb": "Disjoint set union: find, union, path compression, union by rank dan size di Python"
+    },
+    "lru-cache": {
+      "name": "LRU cache",
+      "blurb": "Cache least recently used dengan hash map dan doubly linked list, OrderedDict, lru_cache"
+    },
+    "big-o-notation": {
+      "name": "Notasi Big O",
+      "blurb": "Kompleksitas waktu dan ruang, kelas yang umum, dan cara membacanya dari kode"
+    },
+    "recursion": {
+      "name": "Rekursi",
+      "blurb": "Base case, call stack, memoization, dan batas rekursi di Python"
+    },
+    "binary-search": {
+      "name": "Binary search",
+      "blurb": "Cara binary search membagi dua rentang terurut, kode Python, bisect, varian, dan jebakan"
+    },
+    "two-pointers": {
+      "name": "Two pointers dan sliding window",
+      "blurb": "Pola dua ujung, cepat-lambat, dan sliding window dengan kode Python dan jejak langkah"
+    },
+    "bubble-sort": {
+      "name": "Bubble sort",
+      "blurb": "Cara bubble sort menukar tetangga, jejak per putaran, kode Python, dan kompleksitas"
+    },
+    "selection-sort": {
+      "name": "Selection sort",
+      "blurb": "Cara selection sort memilih nilai minimum, jejak, Python, dan stabilitas"
+    },
+    "insertion-sort": {
+      "name": "Insertion sort",
+      "blurb": "Insertion sort menggeser elemen ke tempatnya: jejak, Python, stabilitas, kasus terbaik"
+    },
+    "merge-sort": {
+      "name": "Merge sort",
+      "blurb": "Merge sort divide and conquer: jejak, Python, langkah merge, stabilitas, dan kompleksitas"
+    },
+    "quicksort": {
+      "name": "Quicksort",
+      "blurb": "Pivot, jejak partisi Lomuto, kode Python, kasus terburuk, stabilitas, dan quickselect"
+    },
+    "heapsort": {
+      "name": "Heapsort",
+      "blurb": "Max-heap, sift-down, jejak langkah demi langkah, kode Python, heapq, dan kompleksitas"
+    },
+    "counting-sort": {
+      "name": "Counting sort",
+      "blurb": "Counting sort linear untuk kunci bilangan bulat kecil: jejak, Python stabil, kompleksitas"
+    },
+    "radix-sort": {
+      "name": "Radix sort",
+      "blurb": "Radix sort LSD dan MSD: jejak digit demi digit, kode Python, stabilitas, dan kompleksitas"
+    },
+    "python": {
+      "name": "Python",
+      "blurb": "Sintaks, tipe data, alur kontrol, fungsi, koleksi, error, dan file dalam satu halaman"
+    },
+    "javascript": {
+      "name": "JavaScript",
+      "blurb": "Variabel, tipe, fungsi, array, objek, promise, dan async/await dalam satu halaman"
+    },
+    "typescript": {
+      "name": "TypeScript",
+      "blurb": "Tipe, interface, union, narrowing, generic, dan penanganan error dalam satu halaman"
+    },
+    "java": {
+      "name": "Java",
+      "blurb": "Tipe, class, record, koleksi, exception, dan pattern matching dalam satu halaman"
+    },
+    "c": {
+      "name": "C",
+      "blurb": "Tipe, fungsi, array, string, pointer, malloc/free, dan penanganan error dalam satu halaman"
+    },
+    "cpp": {
+      "name": "C++",
+      "blurb": "Tipe, class, container STL, lambda, RAII, smart pointer, dan exception dalam satu halaman"
+    },
+    "csharp": {
+      "name": "C#",
+      "blurb": "Tipe, class, record, koleksi, LINQ, async/await, dan exception dalam satu halaman"
+    },
+    "go": {
+      "name": "Go",
+      "blurb": "Tipe, slice, map, struct, interface, goroutine, channel, dan error dalam satu halaman"
+    },
+    "rust": {
+      "name": "Rust",
+      "blurb": "Ownership, borrowing, struct, enum, match, koleksi, dan Result dalam satu halaman"
+    },
+    "php": {
+      "name": "PHP",
+      "blurb": "Variabel, array, fungsi, class, enum, exception, dan endpoint JSON dalam satu halaman"
+    },
+    "ruby": {
+      "name": "Ruby",
+      "blurb": "Tipe, method, array, hash, block, class, module, dan exception dalam satu halaman"
+    },
+    "swift": {
+      "name": "Swift",
+      "blurb": "Tipe, optional, closure, koleksi, struct, enum, protocol, dan error dalam satu halaman"
+    },
+    "kotlin": {
+      "name": "Kotlin",
+      "blurb": "Null safety, alur kontrol, fungsi, data class, dan coroutine dalam satu halaman"
+    },
+    "dart": {
+      "name": "Dart",
+      "blurb": "Null safety, fungsi, koleksi, class, dan async/await untuk Flutter"
+    },
+    "scala": {
+      "name": "Scala",
+      "blurb": "Sintaks Scala 3, pattern matching, koleksi, case class, dan Option dalam satu halaman"
+    },
+    "r": {
+      "name": "R",
+      "blurb": "Vektor, data frame, fungsi, statistik, dan plot di R dalam satu halaman"
+    },
+    "sql": {
+      "name": "SQL",
+      "blurb": "SELECT, JOIN, GROUP BY, CTE, transaksi, serta PostgreSQL vs MySQL vs SQLite"
+    },
+    "bash": {
+      "name": "Bash",
+      "blurb": "Skrip shell, variabel, quoting, loop, fungsi, pipe, dan set -euo pipefail"
+    },
+    "powershell": {
+      "name": "PowerShell",
+      "blurb": "Cmdlet, pipeline objek, variabel, fungsi, hashtable, dan try/catch"
+    },
+    "lua": {
+      "name": "Lua",
+      "blurb": "Variabel, table, fungsi, metatable, dan pcall di Lua dalam satu halaman"
+    },
+    "perl": {
+      "name": "Perl",
+      "blurb": "Skalar, array, hash, subroutine, regular expression, dan error di Perl"
+    },
+    "haskell": {
+      "name": "Haskell",
+      "blurb": "Fungsi murni, tipe, pattern matching, list, Maybe, dan IO di Haskell"
+    },
+    "elixir": {
+      "name": "Elixir",
+      "blurb": "Pattern matching, pipe, Enum, proses, dan penanganan error {:ok, value}"
+    },
+    "erlang": {
+      "name": "Erlang",
+      "blurb": "Pattern matching, rekursi, proses, OTP, dan penanganan error let-it-crash"
+    },
+    "clojure": {
+      "name": "Clojure",
+      "blurb": "Sintaks, koleksi immutable, fungsi, macro, atom, dan error dalam satu halaman"
+    },
+    "fsharp": {
+      "name": "F#",
+      "blurb": "Tipe, record, union, pattern matching, pipeline, dan Result dalam satu halaman"
+    },
+    "ocaml": {
+      "name": "OCaml",
+      "blurb": "Tipe, record, variant, pattern matching, modul, dan error dalam satu halaman"
+    },
+    "julia": {
+      "name": "Julia",
+      "blurb": "Tipe, array, broadcasting, fungsi, multiple dispatch, dan error dalam satu halaman"
+    },
+    "zig": {
+      "name": "Zig",
+      "blurb": "Tipe, slice, optional, error union, comptime, defer, dan allocator dalam satu halaman"
+    },
+    "fortran": {
+      "name": "Fortran",
+      "blurb": "Sintaks modern, tipe, loop, prosedur, modul, array, dan iostat dalam satu halaman"
+    },
+    "cobol": {
+      "name": "COBOL",
+      "blurb": "Division, data PIC, IF/EVALUATE, loop PERFORM, tabel, file, dan error"
+    },
+    "assembly": {
+      "name": "Assembly (x86-64)",
+      "blurb": "Register, instruksi, loop, memori, syscall, pemanggilan fungsi x86-64 NASM, sintaks AT&T"
+    },
+    "visual-basic": {
+      "name": "Visual Basic .NET",
+      "blurb": "Sintaks VB.NET, tipe, loop, fungsi, koleksi, class, LINQ, dan VBA dalam satu halaman"
+    },
+    "objective-c": {
+      "name": "Objective-C",
+      "blurb": "Message, class, property, koleksi Foundation, block, ARC, dan NSError dalam satu halaman"
+    },
+    "matlab": {
+      "name": "MATLAB",
+      "blurb": "Matriks, indeks, loop, fungsi, struct, cell, error, plot, dan Octave dalam satu halaman"
+    },
+    "design-patterns": {
+      "name": "Design pattern",
+      "blurb": "Apa itu design pattern, 23 pola GoF per kategori, dan cara memilihnya"
+    },
+    "solid-principles": {
+      "name": "Prinsip SOLID",
+      "blurb": "Lima prinsip desain SOLID, masing-masing dengan contoh TypeScript sebelum dan sesudah"
+    },
+    "singleton": {
+      "name": "Pola Singleton",
+      "blurb": "Satu instance saja: contoh TypeScript, varian async, jebakan, dan alternatifnya"
+    },
+    "factory-method": {
+      "name": "Pola Factory Method",
+      "blurb": "Biarkan subclass memilih objek yang dibuat: contoh TypeScript dan kapan memakainya"
+    },
+    "abstract-factory": {
+      "name": "Pola Abstract Factory",
+      "blurb": "Membuat keluarga objek terkait tanpa menyebut class konkretnya"
+    },
+    "builder": {
+      "name": "Pola Builder",
+      "blurb": "Membangun objek kompleks langkah demi langkah dengan API fluent, plus peran Director"
+    },
+    "prototype": {
+      "name": "Pola Prototype",
+      "blurb": "Membuat objek dengan mengkloning instance: clone() di TypeScript, deep vs shallow copy"
+    },
+    "adapter": {
+      "name": "Pola Adapter",
+      "blurb": "Interface tak kompatibel bisa bekerja sama: contoh TypeScript, object vs class adapter"
+    },
+    "bridge": {
+      "name": "Pola Bridge",
+      "blurb": "Memisahkan abstraksi dari implementasinya agar keduanya dapat berubah secara independen"
+    },
+    "composite": {
+      "name": "Pola Composite",
+      "blurb": "Memperlakukan objek tunggal dan pohon objek secara sama: contoh sistem file TypeScript"
+    },
+    "decorator": {
+      "name": "Pola Decorator",
+      "blurb": "Menambah perilaku objek saat runtime dengan membungkusnya: decorator class dan fungsi"
+    },
+    "facade": {
+      "name": "Pola Facade",
+      "blurb": "Beri subsistem yang kompleks satu pintu masuk sederhana: contoh checkout TypeScript"
+    },
+    "flyweight": {
+      "name": "Pola Flyweight",
+      "blurb": "Berbagi state intrinsik antar banyak objek demi hemat memori, dengan contoh TypeScript"
+    },
+    "proxy": {
+      "name": "Pola Proxy",
+      "blurb": "Mengontrol akses ke objek dengan proxy cache, lazy, proteksi, dan remote"
+    },
+    "chain-of-responsibility": {
+      "name": "Pola Chain of Responsibility",
+      "blurb": "Teruskan permintaan lewat rangkaian handler sampai ada yang menangani, plus middleware"
+    },
+    "command": {
+      "name": "Pola Command",
+      "blurb": "Ubah permintaan menjadi objek untuk antrean, log, undo, dan redo di TypeScript"
+    },
+    "interpreter": {
+      "name": "Pola Interpreter",
+      "blurb": "Memodelkan bahasa kecil sebagai class dan mengevaluasi pohon ekspresi di TypeScript"
+    },
+    "iterator": {
+      "name": "Pola Iterator",
+      "blurb": "Menelusuri koleksi tanpa membuka penyimpanannya, dengan Symbol.iterator dan generator"
+    },
+    "mediator": {
+      "name": "Pola Mediator",
+      "blurb": "Mengoordinasikan komponen lewat satu objek pusat, bukan referensi langsung"
+    },
+    "memento": {
+      "name": "Pola Memento",
+      "blurb": "Menyimpan dan memulihkan state objek tanpa membuka internalnya, untuk undo dan checkpoint"
+    },
+    "observer": {
+      "name": "Pola Observer",
+      "blurb": "Memberi tahu subscriber otomatis saat subjek berubah, dengan kode TypeScript bertipe"
+    },
+    "state": {
+      "name": "Pola State",
+      "blurb": "Mengubah perilaku objek sesuai state dengan class state, bukan switch"
+    },
+    "strategy": {
+      "name": "Pola Strategy",
+      "blurb": "Menukar algoritma saat runtime, memakai fungsi atau class di TypeScript"
+    },
+    "template-method": {
+      "name": "Pola Template Method",
+      "blurb": "Tetapkan langkah algoritma di base class dan biarkan subclass mengisi detailnya"
+    },
+    "visitor": {
+      "name": "Pola Visitor",
+      "blurb": "Menambah operasi pada hierarki class dengan double dispatch, plus alternatif union type"
+    },
+    "breadth-first-search": {
+      "name": "Breadth-first search (BFS)",
+      "blurb": "BFS dengan queue: contoh berjejak, kode Python, jalur terpendek, dan biaya O(V + E)"
+    },
+    "depth-first-search": {
+      "name": "Depth-first search (DFS)",
+      "blurb": "DFS rekursif dan iteratif di Python, contoh berjejak, deteksi siklus, dan biaya O(V + E)"
+    },
+    "dijkstra": {
+      "name": "Algoritma Dijkstra",
+      "blurb": "Jalur terpendek dengan priority queue: contoh, kode Python heapq, dan kompleksitas"
+    },
+    "bellman-ford": {
+      "name": "Algoritma Bellman-Ford",
+      "blurb": "Jalur terpendek dengan bobot negatif, deteksi siklus negatif, dan kode Python"
+    },
+    "floyd-warshall": {
+      "name": "Algoritma Floyd-Warshall",
+      "blurb": "Jalur terpendek semua pasangan: contoh matriks, kode Python, rekonstruksi jalur, dan O(V³)"
+    },
+    "a-star-search": {
+      "name": "Pencarian A*",
+      "blurb": "Pencarian jalur heuristik dengan f = g + h: heuristik admissible, contoh grid, kode Python"
+    },
+    "topological-sort": {
+      "name": "Topological sort",
+      "blurb": "Mengurutkan tugas menurut dependensi: algoritma Kahn, DFS, graphlib, dan deteksi siklus"
+    },
+    "minimum-spanning-tree": {
+      "name": "Minimum spanning tree",
+      "blurb": "Algoritma Kruskal dan Prim: contoh berjejak, kode Python, union-find, dan heap"
+    },
+    "dynamic-programming": {
+      "name": "Dynamic programming",
+      "blurb": "Memoization vs tabulation, coin change dan LCS berjejak, kode Python, dan kompleksitas"
+    },
+    "greedy-algorithms": {
+      "name": "Algoritma greedy",
+      "blurb": "Pilihan lokal terbaik di tiap langkah: interval scheduling, kode Python, contoh tandingan"
+    },
+    "backtracking": {
+      "name": "Backtracking",
+      "blurb": "Pilih, jelajahi, batalkan: N-Queens berjejak, subset, permutasi, dan pruning di Python"
+    },
+    "kmp-string-search": {
+      "name": "Pencarian string KMP",
+      "blurb": "Knuth-Morris-Pratt: prefix function, pencarian berjejak, kode Python, dan biaya O(n + m)"
+    },
+    "bit-manipulation": {
+      "name": "Bit manipulation",
+      "blurb": "Operator bitwise, trik satu bit, penghitungan bit, dan bitmask dengan contoh Python"
     }
   },
   "dice": {
@@ -8066,5 +8554,153 @@
     "note": "Kedalaman relatif, bukan meter. PNG seukuran foto.",
     "empty": "Tambahkan foto dulu.",
     "errorDecode": "Gambar tidak bisa dibaca."
+  },
+  "wheel": {
+    "title": "Roda putar acak",
+    "back": "Semua alat",
+    "privacyNote": "Undian terjadi di tab ini dengan Web Crypto. Tidak ada unggahan.",
+    "entries": "Entri, satu per baris",
+    "sample": "Nasi goreng\nSate ayam\nBakso\nMie ayam\nGado-gado\nRendang",
+    "count": "{n} entri (maksimal {max})",
+    "remove": "Hapus pemenang setiap selesai putar",
+    "shuffle": "Acak urutan",
+    "sort": "Urutkan",
+    "spin": "Putar",
+    "spinning": "Berputar…",
+    "winner": "Pemenang: {name}",
+    "needTwo": "Tambahkan minimal dua entri.",
+    "history": "Riwayat",
+    "copy": "Salin pemenang",
+    "copied": "Tersalin",
+    "copyFailed": "Gagal menyalin"
+  },
+  "average": {
+    "title": "Kalkulator rata-rata",
+    "back": "Semua alat",
+    "privacyNote": "Perhitungan berjalan di tab ini. Tidak ada unggahan.",
+    "numbers": "Angka",
+    "decimal": "Tanda desimal",
+    "inputHint": "Pisahkan dengan spasi, baris baru, atau titik koma. Jika tanda desimal titik, koma juga memisahkan. Maksimal {max} angka.",
+    "result": "Hasil",
+    "mean": "Rata-rata (mean)",
+    "median": "Median",
+    "mode": "Modus",
+    "noMode": "Tidak ada",
+    "count": "Banyak data",
+    "sum": "Jumlah",
+    "min": "Minimum",
+    "max": "Maksimum",
+    "range": "Jangkauan",
+    "sampleSd": "Simpangan baku (sampel)",
+    "populationSd": "Simpangan baku (populasi)",
+    "sampleVariance": "Varians (sampel)",
+    "populationVariance": "Varians (populasi)",
+    "geometric": "Rata-rata geometrik",
+    "empty": "Ketik atau tempel beberapa angka.",
+    "skipped": "{n} item yang bukan angka dilewati: {list}",
+    "truncated": "Hanya {max} angka pertama yang dihitung; {n} angka lainnya tidak disertakan.",
+    "copy": "Salin",
+    "clear": "Hapus",
+    "copied": "Tersalin",
+    "copyFailed": "Gagal menyalin"
+  },
+  "metronome": {
+    "title": "Metronom",
+    "back": "Semua alat",
+    "privacyNote": "Bunyi klik dibuat di browser Anda. Tidak ada unggahan.",
+    "options": "Tempo",
+    "bpm": "Ketukan per menit (BPM)",
+    "beats": "Ketukan per birama",
+    "subdivision": "Klik per ketukan",
+    "sub1": "Not 1/4 (1)",
+    "sub2": "Not 1/8 (2)",
+    "sub3": "Triol (3)",
+    "sub4": "Not 1/16 (4)",
+    "accent": "Beri aksen pada ketukan pertama",
+    "volume": "Volume",
+    "start": "Mulai",
+    "stop": "Berhenti",
+    "tap": "Ketuk",
+    "hint": "Tekan Ketuk mengikuti irama musik untuk mengatur BPM. Perubahan berlaku mulai klik berikutnya."
+  },
+  "keyboardTest": {
+    "title": "Tes keyboard",
+    "back": "Semua alat",
+    "privacyNote": "Tekanan tombol hanya ditampilkan di tab ini. Tidak ada yang direkam atau diunggah.",
+    "focusHint": "Klik keyboard, lalu tekan tombol. Klik di tempat lain untuk berhenti.",
+    "board": "Peta keyboard. Tekan tombol untuk mengetesnya.",
+    "last": "Tombol terakhir",
+    "key": "key",
+    "code": "code",
+    "location": "Lokasi",
+    "loc_standard": "Standar",
+    "loc_left": "Kiri",
+    "loc_right": "Kanan",
+    "loc_numpad": "Numpad",
+    "modifiers": "Tombol pengubah",
+    "count": "Teruji {n} dari {total} tombol · ditahan sekarang {held} · terbanyak sekaligus {max}",
+    "reset": "Atur ulang",
+    "log": "Log tombol",
+    "hint": "Fn dan beberapa tombol media atau sistem tidak pernah sampai ke browser, jadi tidak bisa dites di sini. Tab akan pindah fokus setelah dites sekali."
+  },
+  "zodiac": {
+    "title": "Zodiak dan shio",
+    "back": "Semua alat",
+    "privacyNote": "Dihitung di tab ini. Tidak ada unggahan.",
+    "options": "Tanggal lahir",
+    "birthday": "Tanggal lahir",
+    "result": "Zodiak dan shio Anda",
+    "sign": "Zodiak",
+    "dates": "Tanggal",
+    "element": "Elemen",
+    "animal": "Shio",
+    "fiveElement": "Elemen tahun",
+    "ganzhi": "Nama tahun (Ganzhi)",
+    "newYear": "Imlek {year}",
+    "yin": "Yin",
+    "yang": "Yang",
+    "beforeNewYear": "Lahir sebelum Imlek, jadi shionya adalah {animal} dari tahun lunar yang dimulai pada {year}.",
+    "uncertain": "Browser ini tidak punya kalender Tionghoa. Sekitar akhir Januari dan Februari, shionya bisa {prev}, bukan {animal}; cek tanggal Imlek.",
+    "invalid": "Masukkan tanggal antara 1900 dan 2100.",
+    "signsTable": "Tanggal zodiak",
+    "animalsTable": "Tahun shio",
+    "years": "Tahun",
+    "tableHint": "Setiap tahun shio dimulai saat Imlek, jadi ulang tahun di Januari dan awal Februari bisa masuk tahun sebelumnya. Tanggal zodiak bisa bergeser satu hari di beberapa tahun.",
+    "copy": "Salin",
+    "copied": "Tersalin",
+    "copyFailed": "Gagal menyalin",
+    "s_aries": "Aries",
+    "s_taurus": "Taurus",
+    "s_gemini": "Gemini",
+    "s_cancer": "Cancer",
+    "s_leo": "Leo",
+    "s_virgo": "Virgo",
+    "s_libra": "Libra",
+    "s_scorpio": "Scorpio",
+    "s_sagittarius": "Sagitarius",
+    "s_capricorn": "Capricorn",
+    "s_aquarius": "Aquarius",
+    "s_pisces": "Pisces",
+    "e_fire": "Api",
+    "e_earth": "Tanah",
+    "e_air": "Udara",
+    "e_water": "Air",
+    "a_rat": "Tikus",
+    "a_ox": "Kerbau",
+    "a_tiger": "Macan",
+    "a_rabbit": "Kelinci",
+    "a_dragon": "Naga",
+    "a_snake": "Ular",
+    "a_horse": "Kuda",
+    "a_goat": "Kambing",
+    "a_monkey": "Monyet",
+    "a_rooster": "Ayam",
+    "a_dog": "Anjing",
+    "a_pig": "Babi",
+    "el_wood": "Kayu",
+    "el_fire": "Api",
+    "el_earth": "Tanah",
+    "el_metal": "Logam",
+    "el_water": "Air"
   }
 }

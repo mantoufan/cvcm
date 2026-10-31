@@ -1,0 +1,218 @@
+{
+  "title": "哈希表详解：哈希函数、冲突、负载因子与 Python dict — cv.cm",
+  "description": "哈希表如何工作：哈希函数、桶、冲突处理（拉链法与开放寻址）、扩容、平均 O(1) 查找，附 Python 实现。",
+  "h1": "哈希表详解：原理、代码与时间复杂度",
+  "answer": "哈希表把键值对存放在一个桶数组中。哈希函数把每个键转换成一个数字，该数字对数组大小取模后就确定了所在的桶，因此查找、插入和删除的平均时间都是 O(1)。当两个键落入同一个桶（即冲突）时，哈希表要么在每个桶里保存一个小列表（拉链法），要么探测另一个空闲位置（开放寻址）。Python 的 `dict` 和 `set` 就是哈希表。",
+  "sections": [
+    {
+      "h": "哈希表解决什么问题",
+      "body": [
+        "假设你保存了一百万条用户记录，需要按邮箱查找其中一条。扫描列表是 O(n)。把列表排好序可以用二分查找做到 O(log n)，但插入会变慢。哈希表无论有多少条记录，查找记录的平均时间都是 O(1)，插入和删除同样快。",
+        "这就是哈希表无处不在的原因：编程语言中的字典和集合、数据库的哈希索引、缓存、编译器中的符号表，以及去重。"
+      ]
+    },
+    {
+      "h": "用大白话理解哈希表",
+      "body": [
+        "想象一个有 100 个编号挂钩的衣帽间。管理员不会在所有挂钩里找你的外套，而是根据你的名字算出一个挂钩编号，直接走过去。计算这个编号的函数就是哈希函数。好的哈希函数速度快，同一个键总是得到同一个数字，并且能把不同的键均匀分散到各个挂钩上。",
+        {
+          "ol": [
+            "计算 `h = hash(key)`。",
+            "确定桶：`index = h % capacity`。",
+            "只在这个桶里查找该键。"
+          ]
+        },
+        {
+          "note": "键必须是可哈希的，并且在表中时不能改变。这就是为什么 Python 允许 `tuple` 和 `str` 作为 dict 的键，却不允许 `list`：如果键变了，它的哈希值也会变，哈希表就再也找不到它。"
+        }
+      ]
+    },
+    {
+      "h": "示例演练：拉链法处理冲突",
+      "body": [
+        "取一个有 4 个桶的哈希表，并使用一个玩具哈希函数：字母序号之和（a = 1，b = 2，……）。",
+        {
+          "table": {
+            "head": [
+              "键",
+              "哈希值（字母之和）",
+              "桶（hash % 4）",
+              "插入后的桶内容"
+            ],
+            "rows": [
+              [
+                "`cat`",
+                "3 + 1 + 20 = 24",
+                "0",
+                "桶 0：[cat]"
+              ],
+              [
+                "`dog`",
+                "4 + 15 + 7 = 26",
+                "2",
+                "桶 2：[dog]"
+              ],
+              [
+                "`act`",
+                "1 + 3 + 20 = 24",
+                "0",
+                "桶 0：[cat, act]"
+              ],
+              [
+                "`bee`",
+                "2 + 5 + 5 = 12",
+                "0",
+                "桶 0：[cat, act, bee]"
+              ]
+            ]
+          }
+        },
+        "`act` 和 `bee` 与 `cat` 发生了冲突。现在查找 `bee` 就要检查桶 0 中的三个条目。如果哈希函数很差（字母之和忽略了顺序）或桶太少，链就会变长，哈希表也会变慢。真实的哈希函数会混合键的所有位，真实的哈希表在装得太满时会扩容。"
+      ]
+    },
+    {
+      "h": "用 Python 实现拉链法",
+      "body": [
+        "每个桶是一个由 `[key, value]` 对组成的列表。当元素数量超过桶数的 0.75 倍（即负载因子）时，哈希表会把容量翻倍并重新插入所有元素。",
+        {
+          "code": "class HashTable:\n    def __init__(self, capacity=8):\n        self.buckets = [[] for _ in range(capacity)]\n        self.size = 0\n    def _bucket(self, key):\n        return self.buckets[hash(key) % len(self.buckets)]\n    def put(self, key, value):\n        bucket = self._bucket(key)\n        for pair in bucket:\n            if pair[0] == key:\n                pair[1] = value        # update existing key\n                return\n        bucket.append([key, value])\n        self.size += 1\n        if self.size > 0.75 * len(self.buckets):\n            self._resize()\n    def get(self, key, default=None):\n        for k, v in self._bucket(key):\n            if k == key:\n                return v\n        return default\n    def delete(self, key):\n        bucket = self._bucket(key)\n        for i, (k, _) in enumerate(bucket):\n            if k == key:\n                bucket.pop(i)\n                self.size -= 1\n                return True\n        return False\n    def _resize(self):\n        old = [pair for bucket in self.buckets for pair in bucket]\n        self.buckets = [[] for _ in range(2 * len(self.buckets))]\n        self.size = 0\n        for k, v in old:\n            self.put(k, v)",
+          "lang": "python"
+        },
+        {
+          "code": "t = HashTable()\nfor i, word in enumerate([\"red\", \"green\", \"blue\", \"cyan\", \"pink\", \"gold\", \"gray\"]):\n    t.put(word, i)\nt.put(\"red\", 100)\nt.delete(\"blue\")\nprint(t.get(\"red\"), t.get(\"blue\"), t.size, len(t.buckets))  # 100 None 6 16",
+          "lang": "python"
+        }
+      ]
+    },
+    {
+      "h": "冲突处理策略对比",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "策略",
+              "工作方式",
+              "优点",
+              "缺点"
+            ],
+            "rows": [
+              [
+                "拉链法",
+                "每个桶保存一个条目列表（或树）",
+                "实现简单；删除容易；能容忍高负载",
+                "每个条目有额外内存开销；需要追踪指针"
+              ],
+              [
+                "线性探测",
+                "冲突时尝试下一个位置，再下一个",
+                "对缓存友好；结构紧凑",
+                "容易形成聚集；删除需要墓碑标记"
+              ],
+              [
+                "二次探测 / 双重哈希",
+                "按递增步长或第二个哈希值跳跃",
+                "比线性探测的聚集更少",
+                "更复杂；仍然需要墓碑标记"
+              ]
+            ]
+          }
+        },
+        "CPython 的 `dict` 使用开放寻址，探测序列带扰动，并且从 Python 3.7 起保证遍历顺序与插入顺序一致。Java 的 `HashMap` 使用拉链法，并把过长的链转换成平衡树。"
+      ]
+    },
+    {
+      "h": "时间与空间复杂度",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "操作",
+              "平均",
+              "最坏",
+              "原因"
+            ],
+            "rows": [
+              [
+                "查找",
+                "O(1)",
+                "O(n)",
+                "最坏情况：所有键都冲突到同一个桶"
+              ],
+              [
+                "插入",
+                "均摊 O(1)",
+                "O(n)",
+                "偶尔的扩容会重新插入每个元素"
+              ],
+              [
+                "删除",
+                "O(1)",
+                "O(n)",
+                "与查找相同"
+              ],
+              [
+                "有序遍历（按键排序）",
+                "O(n log n)",
+                "O(n log n)",
+                "哈希表不保持排序，必须自己排序"
+              ],
+              [
+                "空间",
+                "O(n)",
+                "O(n)",
+                "桶数组始终比 n 大一个常数倍"
+              ]
+            ]
+          }
+        },
+        "平均 O(1) 取决于良好的哈希函数和受控的负载因子。Python 会为每个进程随机化字符串哈希（哈希种子），这样攻击者就很难发送大量相互冲突的键，把服务器拖慢到每个请求 O(n)。"
+      ]
+    },
+    {
+      "h": "常见错误",
+      "body": [
+        {
+          "ul": [
+            "用可变对象做键，或者在类上定义了 `__eq__` 却没有对应的 `__hash__`。相等的对象必须有相等的哈希值。",
+            "期望得到有序结果。哈希表提供的是快速查找，而不是顺序；需要范围查询或最小键时，请使用有序列表或平衡树（二叉搜索树）。",
+            "跨运行依赖 `hash()` 的值：除非固定 `PYTHONHASHSEED`，字符串哈希在不同 Python 进程之间会变化。需要稳定的哈希请用 `hashlib`。",
+            "把哈希表当作安全原语。哈希表使用快速的非加密哈希；密码需要专用的密码哈希函数。"
+          ]
+        }
+      ]
+    },
+    {
+      "h": "何时使用，以及典型的面试题",
+      "body": [
+        "只要你需要快速回答“我见过这个吗？”或“这个键对应什么值？”，就用哈希表。如果还需要顺序、范围或最近的键，请使用二叉搜索树或有序数组。",
+        "经典问题：两数之和（保存每个数的下标，查找 `target - x`）、统计频率（`collections.Counter`）、按排序后的字母对字母异位词分组、检测重复，以及在动态规划中做记忆化。",
+        {
+          "code": "def two_sum(nums, target):\n    seen = {}                      # value -> index\n    for i, x in enumerate(nums):\n        if target - x in seen:\n            return seen[target - x], i\n        seen[x] = i\n    return None\nprint(two_sum([2, 7, 11, 15], 9))  # (0, 1)",
+          "lang": "python"
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "为什么哈希表的查找是 O(1)？",
+      "a": "计算哈希值和桶下标只需常数时间；在良好的哈希函数和受控的负载因子下，每个桶平均只有少量条目，所以桶内搜索也是常数时间。"
+    },
+    {
+      "q": "什么是负载因子？",
+      "a": "已存储的元素数量除以桶的数量。当它超过某个阈值（通常在 0.5 到 0.75 之间）时，哈希表会分配更大的桶数组，并重新插入所有元素。"
+    },
+    {
+      "q": "Python 的 dict 是哈希表吗？",
+      "a": "是的。`dict` 和 `set` 是用 C 实现、采用开放寻址的哈希表。从 Python 3.7 起，`dict` 还会保留插入顺序。"
+    },
+    {
+      "q": "哈希表和哈希映射有什么区别？",
+      "a": "在大多数场合它们是一回事：基于哈希的键值结构。有些语言会用这些名字指代特定的类，例如 Java 的 `HashMap` 和较老的同步版本 `Hashtable`。"
+    },
+    {
+      "q": "哈希表可以有重复的键吗？",
+      "a": "不可以。插入已存在的键会替换它的值。如果要为一个键存多个值，可以把值设为列表，或者使用 `collections.defaultdict(list)`。"
+    }
+  ]
+}

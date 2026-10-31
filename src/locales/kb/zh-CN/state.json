@@ -1,0 +1,145 @@
+{
+  "title": "状态模式：状态类、状态转换与 TypeScript 示例 — cv.cm",
+  "description": "状态模式（State）让对象在内部状态改变时改变自身行为。用 TypeScript 的状态类取代 switch 语句。",
+  "h1": "状态模式详解与示例",
+  "answer": "状态是一种行为型设计模式，它让对象在内部状态改变时改变其行为，看起来就像换了一个类。每个状态都成为实现同一接口的独立类，主对象（称为上下文）把工作委托给当前的状态对象。状态转换通过替换该状态对象完成，从而省去了在每个方法里检查状态字段的冗长 `switch` 或 `if` 链。",
+  "sections": [
+    {
+      "h": "意图与它要解决的问题",
+      "body": [
+        "意图：允许对象在其内部状态改变时改变它的行为，对象看起来像是修改了它的类。状态是《设计模式》（Gang of Four，GoF）一书中的行为型模式之一；其经典例子是 TCP 连接，它在监听、已建立和已关闭时表现各不相同。",
+        "以网上订单为例。它可以是待付款、已付款、已发货或已取消。只有待付款时才能付款，只有已付款时才能发货，待付款或已付款时可以取消，发货之后则不行。第一个版本保存一个 `status` 字符串，每个方法都以对它的 `switch` 开头。四个动作、四种状态，就是分散在四个方法里的十六个分支。新增“已退款”这样的状态，意味着要修改每一个方法，而且很容易漏掉一个。",
+        "使用状态模式后，每种状态成为一个类，它知道每个动作在该状态下意味着什么。订单持有对当前状态对象的引用，并把每个动作转发给它。"
+      ]
+    },
+    {
+      "h": "结构与参与者",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "角色",
+              "职责"
+            ],
+            "rows": [
+              [
+                "上下文",
+                "客户端使用的对象；持有当前状态对象，并把与状态相关的行为委托给它"
+              ],
+              [
+                "状态",
+                "声明其行为依赖于状态的各个操作的接口"
+              ],
+              [
+                "具体状态",
+                "实现某一种状态的行为，并决定下一个状态是什么"
+              ]
+            ]
+          }
+        },
+        "状态转换可以由各个状态自己决定（每个状态在上下文上设置下一个状态，如下面所示），也可以由上下文借助转换表决定。让状态自己决定能把相关逻辑放在一起；集中的转换表则能让所有转换在一处一目了然。"
+      ]
+    },
+    {
+      "h": "TypeScript 实现",
+      "body": [
+        "基类提供默认行为：拒绝该动作。每个具体状态只重写对它有效的动作。",
+        {
+          "code": "abstract class OrderState {\n  abstract readonly name: string;\n  pay(order: Order): void { this.reject(\"pay\"); }\n  ship(order: Order): void { this.reject(\"ship\"); }\n  cancel(order: Order): void { this.reject(\"cancel\"); }\n  protected reject(action: string): never {\n    throw new Error(\"Cannot \" + action + \" an order that is \" + this.name);\n  }\n}\n\nclass Pending extends OrderState {\n  readonly name = \"pending\";\n  pay(order: Order) { order.setState(new Paid()); }\n  cancel(order: Order) { order.setState(new Cancelled()); }\n}\n\nclass Paid extends OrderState {\n  readonly name = \"paid\";\n  ship(order: Order) { order.setState(new Shipped()); }\n  cancel(order: Order) { order.setState(new Cancelled()); } // refund here\n}\n\nclass Shipped extends OrderState { readonly name = \"shipped\"; }\nclass Cancelled extends OrderState { readonly name = \"cancelled\"; }\n\nclass Order {\n  private state: OrderState = new Pending();\n  setState(next: OrderState) { this.state = next; }\n  get status() { return this.state.name; }\n  pay() { this.state.pay(this); }\n  ship() { this.state.ship(this); }\n  cancel() { this.state.cancel(this); }\n}\n\nconst order = new Order();\norder.pay();\norder.ship();\nconsole.log(order.status); // shipped\ntry { order.cancel(); } catch (e) { console.log((e as Error).message); }\n// Cannot cancel an order that is shipped",
+          "lang": "typescript"
+        },
+        "要添加“已退款”状态，只需写一个新类，并只修改可以通向它的那些状态。`Order` 本身不用改。",
+        {
+          "note": "不要让客户端从外部替换状态。这里为简洁起见把 `setState` 设为公开；在真实项目中应把它保持在内部（例如把状态定义在同一模块里且不导出），这样就只会发生合法的转换。"
+        }
+      ]
+    },
+    {
+      "h": "改造前后对比",
+      "body": [
+        "用状态字段和 `switch` 语句写出的同样规则。状态不多时这样可行，但每个方法都要重复完整的列表：",
+        {
+          "code": "type Status = \"pending\" | \"paid\" | \"shipped\" | \"cancelled\";\n\nclass OrderBefore {\n  status: Status = \"pending\";\n  ship() {\n    switch (this.status) {\n      case \"paid\": this.status = \"shipped\"; break;\n      default: throw new Error(\"Cannot ship an order that is \" + this.status);\n    }\n  }\n  // pay() and cancel() repeat the same switch\n}\n\nconst o = new OrderBefore();\ntry { o.ship(); } catch (e) { console.log((e as Error).message); }\n// Cannot ship an order that is pending",
+          "lang": "typescript"
+        },
+        "对于小规模的情况，这个版本完全没问题，可以说还更易读。在 TypeScript 中，为 `Status` 使用联合类型，可以让编译器检查每个分支是否都处理了。当每个状态的行为增长到超过一两行时，再改用状态类。"
+      ]
+    },
+    {
+      "h": "何时使用，何时不用",
+      "body": [
+        {
+          "ul": [
+            "当对象在不同状态下行为差异很大，并且许多方法里反复出现同样的状态检查时使用。",
+            "当状态和转换会随时间变化，而你想把每个状态的规则放在一处时使用。",
+            "用于工作流（订单、文档、工单）、协议连接、游戏角色，以及媒体播放器之类的界面组件。",
+            "只有两三个状态且行为简单时不要使用；枚举或联合类型加 `switch` 更简单。",
+            "对于带有嵌套或并行状态的复杂状态机，请考虑状态机库或状态图（statecharts）记法，而不是手写类。"
+          ]
+        }
+      ]
+    },
+    {
+      "h": "实际应用",
+      "body": [
+        {
+          "ul": [
+            "网络协议的实现会为连接状态建模，如监听、已建立和已关闭，这也是 GoF 书中使用的例子。",
+            "XState 是用于状态机和状态图的 JavaScript 与 TypeScript 库，用于界面逻辑和工作流。",
+            "W3C 的 SCXML 规范定义了一种描述状态图的 XML 格式。",
+            "游戏开发用状态对象表示角色（待机、奔跑、跳跃），每种状态对输入的处理方式不同。"
+          ]
+        }
+      ]
+    },
+    {
+      "h": "状态与策略及其他模式的比较",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "模式",
+              "与状态的区别"
+            ],
+            "rows": [
+              [
+                "策略",
+                "类结构几乎相同。策略通常由客户端选定，自己不会改变；状态则会因对象自身的动作而相互替换。"
+              ],
+              [
+                "享元",
+                "没有字段的状态对象可以作为享元或常量，在所有上下文之间共享。"
+              ],
+              [
+                "单例",
+                "无状态的状态对象通常是单个共享实例。"
+              ],
+              [
+                "备忘录",
+                "备忘录保存对象的数据以便之后恢复；状态改变对象所使用的行为。"
+              ]
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "状态和策略有什么区别？",
+      "a": "两者都把行为委托给一个可互换的对象。在策略中，通常由客户端选择算法，之后保持不变。在状态中，状态对象彼此了解，并在正常运行过程中把上下文切换到新的状态。"
+    },
+    {
+      "q": "状态模式就是有限状态机吗？",
+      "a": "状态模式是在面向对象代码中实现有限状态机的一种方式：每个状态是一个类，每次转换就是替换当前的状态对象。状态机也可以用转换表或库来实现。"
+    },
+    {
+      "q": "下一个状态应该由上下文还是状态来决定？",
+      "a": "两种都可以。由状态决定时，每个状态的逻辑集中在一起。由上下文或转换表决定时，所有转换都在一处可见，状态之间也不需要互相了解。"
+    },
+    {
+      "q": "状态对象可以共享吗？",
+      "a": "可以，只要它们自己不保存数据。这样所有上下文对象可以共用每种状态的一个实例，减少内存分配。"
+    }
+  ]
+}

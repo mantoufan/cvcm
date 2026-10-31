@@ -1,0 +1,218 @@
+{
+  "title": "Tabla hash: hashing, colisiones, factor de carga y dict de Python — cv.cm",
+  "description": "Cómo funciona una tabla hash: funciones hash, cubos, colisiones (encadenamiento y direccionamiento abierto), redimensionado, búsquedas O(1) promedio e implementación en Python.",
+  "h1": "Tabla hash explicada: cómo funciona, código y complejidad",
+  "answer": "Una tabla hash guarda pares clave-valor en un arreglo de cubos (buckets). Una función hash convierte cada clave en un número, y ese número módulo el tamaño del arreglo elige el cubo, así que buscar, insertar y eliminar cuestan O(1) en promedio. Cuando dos claves caen en el mismo cubo (una colisión), la tabla mantiene una pequeña lista por cubo (encadenamiento) o busca otra posición libre (direccionamiento abierto). El `dict` y el `set` de Python son tablas hash.",
+  "sections": [
+    {
+      "h": "Qué problema resuelve una tabla hash",
+      "body": [
+        "Imagina que guardas un millón de registros de usuarios y necesitas encontrar uno por su correo. Recorrer una lista es O(n). Mantenerla ordenada permite búsqueda binaria en O(log n), pero las inserciones se vuelven lentas. Una tabla hash encuentra el registro en O(1) promedio, sin importar cuántos registros haya, y insertar y eliminar son igual de rápidos.",
+        "Por eso las tablas hash están por todas partes: diccionarios y conjuntos en los lenguajes de programación, índices hash en bases de datos, cachés, tablas de símbolos en compiladores y deduplicación."
+      ]
+    },
+    {
+      "h": "La idea en palabras sencillas",
+      "body": [
+        "Imagina un guardarropa con 100 ganchos numerados. En lugar de revisar todos los ganchos para encontrar tu abrigo, el encargado calcula un número de gancho a partir de tu nombre y va directo a él. La función que calcula ese número es la función hash. Una buena función hash es rápida, siempre da el mismo número para la misma clave y reparte las claves distintas de forma uniforme entre los ganchos.",
+        {
+          "ol": [
+            "Calcula `h = hash(key)`.",
+            "Elige el cubo: `index = h % capacity`.",
+            "Busca la clave solo en ese cubo."
+          ]
+        },
+        {
+          "note": "Las claves deben ser hashables y no deben cambiar mientras estén en la tabla. Por eso Python permite `tuple` y `str` como claves de un dict pero no `list`: si una clave cambiara, su hash cambiaría y la tabla ya no podría encontrarla."
+        }
+      ]
+    },
+    {
+      "h": "Ejemplo resuelto: colisiones con encadenamiento",
+      "body": [
+        "Toma una tabla con 4 cubos y una función hash de juguete: la suma de las posiciones de las letras (a = 1, b = 2, ...).",
+        {
+          "table": {
+            "head": [
+              "Clave",
+              "Hash (suma de letras)",
+              "Cubo (hash % 4)",
+              "Contenido del cubo tras insertar"
+            ],
+            "rows": [
+              [
+                "`cat`",
+                "3 + 1 + 20 = 24",
+                "0",
+                "cubo 0: [cat]"
+              ],
+              [
+                "`dog`",
+                "4 + 15 + 7 = 26",
+                "2",
+                "cubo 2: [dog]"
+              ],
+              [
+                "`act`",
+                "1 + 3 + 20 = 24",
+                "0",
+                "cubo 0: [cat, act]"
+              ],
+              [
+                "`bee`",
+                "2 + 5 + 5 = 12",
+                "0",
+                "cubo 0: [cat, act, bee]"
+              ]
+            ]
+          }
+        },
+        "`act` y `bee` colisionan con `cat`. Ahora buscar `bee` implica revisar tres entradas del cubo 0. Con una función hash pobre (las sumas de letras ignoran el orden) o con muy pocos cubos, las cadenas crecen y la tabla se vuelve lenta. Las funciones hash reales mezclan todos los bits de la clave, y las tablas reales crecen cuando se llenan demasiado."
+      ]
+    },
+    {
+      "h": "Implementación en Python con encadenamiento separado",
+      "body": [
+        "Cada cubo es una lista de pares `[key, value]`. Cuando el número de elementos supera 0,75 veces el número de cubos (el factor de carga), la tabla duplica su capacidad y vuelve a insertar todo.",
+        {
+          "code": "class HashTable:\n    def __init__(self, capacity=8):\n        self.buckets = [[] for _ in range(capacity)]\n        self.size = 0\n    def _bucket(self, key):\n        return self.buckets[hash(key) % len(self.buckets)]\n    def put(self, key, value):\n        bucket = self._bucket(key)\n        for pair in bucket:\n            if pair[0] == key:\n                pair[1] = value        # update existing key\n                return\n        bucket.append([key, value])\n        self.size += 1\n        if self.size > 0.75 * len(self.buckets):\n            self._resize()\n    def get(self, key, default=None):\n        for k, v in self._bucket(key):\n            if k == key:\n                return v\n        return default\n    def delete(self, key):\n        bucket = self._bucket(key)\n        for i, (k, _) in enumerate(bucket):\n            if k == key:\n                bucket.pop(i)\n                self.size -= 1\n                return True\n        return False\n    def _resize(self):\n        old = [pair for bucket in self.buckets for pair in bucket]\n        self.buckets = [[] for _ in range(2 * len(self.buckets))]\n        self.size = 0\n        for k, v in old:\n            self.put(k, v)",
+          "lang": "python"
+        },
+        {
+          "code": "t = HashTable()\nfor i, word in enumerate([\"red\", \"green\", \"blue\", \"cyan\", \"pink\", \"gold\", \"gray\"]):\n    t.put(word, i)\nt.put(\"red\", 100)\nt.delete(\"blue\")\nprint(t.get(\"red\"), t.get(\"blue\"), t.size, len(t.buckets))  # 100 None 6 16",
+          "lang": "python"
+        }
+      ]
+    },
+    {
+      "h": "Comparación de estrategias de colisión",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Estrategia",
+              "Cómo funciona",
+              "Ventajas",
+              "Desventajas"
+            ],
+            "rows": [
+              [
+                "Encadenamiento separado",
+                "cada cubo guarda una lista (o árbol) de entradas",
+                "simple; eliminar es fácil; tolera cargas altas",
+                "memoria extra por entrada; salto entre punteros"
+              ],
+              [
+                "Sondeo lineal",
+                "ante una colisión, prueba la siguiente posición, y luego la siguiente",
+                "amigable con la caché; compacto",
+                "se forman agrupamientos; eliminar requiere marcas de borrado (tombstones)"
+              ],
+              [
+                "Sondeo cuadrático / doble hash",
+                "salta con un paso creciente o dado por un segundo hash",
+                "menos agrupamientos que el sondeo lineal",
+                "más complejo; aún necesita tombstones"
+              ]
+            ]
+          }
+        },
+        "El `dict` de CPython usa direccionamiento abierto con una secuencia de sondeo perturbada y, desde Python 3.7, garantiza que la iteración siga el orden de inserción. El `HashMap` de Java usa encadenamiento y convierte las cadenas largas en árboles balanceados."
+      ]
+    },
+    {
+      "h": "Complejidad temporal y espacial",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Operación",
+              "Promedio",
+              "Peor caso",
+              "Motivo"
+            ],
+            "rows": [
+              [
+                "Búsqueda",
+                "O(1)",
+                "O(n)",
+                "peor caso: todas las claves colisionan en un solo cubo"
+              ],
+              [
+                "Inserción",
+                "O(1) amortizado",
+                "O(n)",
+                "un redimensionado ocasional vuelve a insertar todos los elementos"
+              ],
+              [
+                "Eliminación",
+                "O(1)",
+                "O(n)",
+                "igual que la búsqueda"
+              ],
+              [
+                "Iteración ordenada (claves ordenadas)",
+                "O(n log n)",
+                "O(n log n)",
+                "una tabla hash no mantiene orden, hay que ordenar"
+              ],
+              [
+                "Espacio",
+                "O(n)",
+                "O(n)",
+                "el arreglo de cubos se mantiene un factor constante mayor que n"
+              ]
+            ]
+          }
+        },
+        "El O(1) promedio depende de una buena función hash y de un factor de carga acotado. Python aleatoriza los hashes de las cadenas en cada proceso (hash seeding) para que un atacante no pueda enviar fácilmente muchas claves que colisionen y ralenticen un servidor a O(n) por petición."
+      ]
+    },
+    {
+      "h": "Errores comunes",
+      "body": [
+        {
+          "ul": [
+            "Usar un objeto mutable como clave, o definir `__eq__` en una clase sin el `__hash__` correspondiente. Los objetos iguales deben tener hashes iguales.",
+            "Esperar un orden. Una tabla hash da búsquedas rápidas, no orden; usa una lista ordenada o un árbol balanceado (un árbol binario de búsqueda) cuando necesites consultas por rango o la clave mínima.",
+            "Confiar en los valores de `hash()` entre ejecuciones: los hashes de cadenas cambian entre procesos de Python salvo que se fije `PYTHONHASHSEED`. Usa `hashlib` para hashes estables.",
+            "Tratar una tabla hash como una primitiva de seguridad. Las tablas hash usan hashes rápidos no criptográficos; las contraseñas necesitan funciones de hash de contraseñas específicas."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Cuándo usarla y usos típicos en entrevistas",
+      "body": [
+        "Usa una tabla hash siempre que necesites responder rápido a \"¿he visto esto antes?\" o \"¿qué valor corresponde a esta clave?\". Usa un árbol binario de búsqueda o un arreglo ordenado cuando además necesites orden, rangos o las claves más cercanas.",
+        "Problemas clásicos: two sum (guarda el índice de cada número y busca `target - x`), contar frecuencias (`collections.Counter`), agrupar anagramas por letras ordenadas, detectar duplicados y memoizar resultados en programación dinámica.",
+        {
+          "code": "def two_sum(nums, target):\n    seen = {}                      # value -> index\n    for i, x in enumerate(nums):\n        if target - x in seen:\n            return seen[target - x], i\n        seen[x] = i\n    return None\nprint(two_sum([2, 7, 11, 15], 9))  # (0, 1)",
+          "lang": "python"
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "¿Por qué la búsqueda en una tabla hash es O(1)?",
+      "a": "Calcular el hash y el índice del cubo toma tiempo constante, y con una buena función hash y un factor de carga acotado cada cubo contiene solo unas pocas entradas en promedio, por lo que la búsqueda dentro del cubo también es de tiempo constante."
+    },
+    {
+      "q": "¿Qué es el factor de carga?",
+      "a": "El número de elementos almacenados dividido entre el número de cubos. Cuando supera un umbral (a menudo entre 0,5 y 0,75), la tabla reserva un arreglo de cubos mayor y vuelve a insertar todos los elementos."
+    },
+    {
+      "q": "¿Un dict de Python es una tabla hash?",
+      "a": "Sí. `dict` y `set` son tablas hash implementadas en C con direccionamiento abierto. Desde Python 3.7, `dict` también conserva el orden de inserción."
+    },
+    {
+      "q": "¿Cuál es la diferencia entre una tabla hash y un hash map?",
+      "a": "En la mayoría de los contextos significan lo mismo: una estructura clave-valor basada en hashing. Algunos lenguajes usan los nombres para clases concretas, como el `HashMap` de Java y el antiguo `Hashtable` sincronizado."
+    },
+    {
+      "q": "¿Puede una tabla hash tener claves duplicadas?",
+      "a": "No. Insertar una clave existente reemplaza su valor. Para guardar varios valores por clave, haz que el valor sea una lista o usa `collections.defaultdict(list)`."
+    }
+  ]
+}

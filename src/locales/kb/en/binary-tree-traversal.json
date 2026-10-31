@@ -1,0 +1,198 @@
+{
+  "title": "Binary tree traversal: preorder, inorder, postorder and level order in Python — cv.cm",
+  "description": "Binary tree traversal explained: preorder, inorder, postorder and level-order (BFS), with recursive and iterative Python code, a traced example and complexity.",
+  "h1": "Binary tree traversal explained: preorder, inorder, postorder and level order",
+  "answer": "Traversing a binary tree means visiting every node exactly once in a fixed order. The three depth-first orders differ only in when the node itself is visited: preorder visits node, left, right; inorder visits left, node, right; postorder visits left, right, node. Level-order traversal is breadth-first and visits the tree row by row using a queue. All four take O(n) time.",
+  "sections": [
+    {
+      "h": "Why traversal order matters",
+      "body": [
+        "A tree has no single natural order, so algorithms choose the one that fits the task. Inorder traversal of a binary search tree yields the keys in sorted order. Preorder visits a parent before its children, which is what you need to copy a tree or write it out so it can be rebuilt. Postorder visits children before the parent, which is what you need to delete a tree, compute folder sizes, or evaluate an expression tree. Level order finds the shallowest node first and prints a tree row by row."
+      ]
+    },
+    {
+      "h": "The four orders on one example",
+      "body": [
+        "We use this tree: root 1 with children 2 and 3; node 2 has children 4 and 5; node 3 has a right child 6.",
+        {
+          "code": "        1\n       / \\\n      2   3\n     / \\   \\\n    4   5   6",
+          "lang": "text"
+        },
+        {
+          "table": {
+            "head": [
+              "Order",
+              "Rule",
+              "Result"
+            ],
+            "rows": [
+              [
+                "Preorder",
+                "node, left, right",
+                "1 2 4 5 3 6"
+              ],
+              [
+                "Inorder",
+                "left, node, right",
+                "4 2 5 1 3 6"
+              ],
+              [
+                "Postorder",
+                "left, right, node",
+                "4 5 2 6 3 1"
+              ],
+              [
+                "Level order",
+                "row by row, left to right",
+                "1 2 3 4 5 6"
+              ]
+            ]
+          }
+        },
+        "A simple way to remember the first three: the name says where the node goes. Pre means before both subtrees, in means between them, post means after them. The left subtree is always visited before the right one."
+      ]
+    },
+    {
+      "h": "Recursive implementations",
+      "body": [
+        "The recursive versions mirror the definitions directly. Each function visits the node at a different line.",
+        {
+          "code": "class Node:\n    def __init__(self, val, left=None, right=None):\n        self.val, self.left, self.right = val, left, right\ndef preorder(node, out):\n    if node:\n        out.append(node.val)\n        preorder(node.left, out)\n        preorder(node.right, out)\n    return out\ndef inorder(node, out):\n    if node:\n        inorder(node.left, out)\n        out.append(node.val)\n        inorder(node.right, out)\n    return out\ndef postorder(node, out):\n    if node:\n        postorder(node.left, out)\n        postorder(node.right, out)\n        out.append(node.val)\n    return out\nroot = Node(1, Node(2, Node(4), Node(5)), Node(3, None, Node(6)))\nprint(preorder(root, []))   # [1, 2, 4, 5, 3, 6]\nprint(inorder(root, []))    # [4, 2, 5, 1, 3, 6]\nprint(postorder(root, []))  # [4, 5, 2, 6, 3, 1]",
+          "lang": "python"
+        }
+      ]
+    },
+    {
+      "h": "Iterative preorder and inorder with a stack",
+      "body": [
+        "Recursion uses the call stack. To avoid recursion limits on deep trees, manage the stack yourself. For preorder, pop a node, visit it, then push the right child before the left child so that the left one is processed first.",
+        "For inorder, walk left as far as possible, pushing nodes on the way. When you cannot go further left, pop a node, visit it, and move to its right child.",
+        {
+          "code": "def preorder_iter(root):\n    out, stack = [], [root] if root else []\n    while stack:\n        node = stack.pop()\n        out.append(node.val)\n        if node.right:\n            stack.append(node.right)\n        if node.left:\n            stack.append(node.left)\n    return out\ndef inorder_iter(root):\n    out, stack, node = [], [], root\n    while stack or node:\n        while node:              # go as far left as possible\n            stack.append(node)\n            node = node.left\n        node = stack.pop()\n        out.append(node.val)\n        node = node.right\n    return out\nprint(preorder_iter(root))  # [1, 2, 4, 5, 3, 6]\nprint(inorder_iter(root))   # [4, 2, 5, 1, 3, 6]",
+          "lang": "python"
+        }
+      ]
+    },
+    {
+      "h": "Iterative postorder and level order",
+      "body": [
+        "Iterative postorder is the trickiest. One clean approach uses a flag: push each node twice, the second time marked as ready to visit after its children. Level order uses a queue instead of a stack; processing the queue one level at a time also tells you the depth of each node.",
+        {
+          "code": "from collections import deque\ndef postorder_iter(root):\n    out, stack = [], [(root, False)] if root else []\n    while stack:\n        node, children_done = stack.pop()\n        if children_done:\n            out.append(node.val)\n        else:\n            stack.append((node, True))\n            if node.right:\n                stack.append((node.right, False))\n            if node.left:\n                stack.append((node.left, False))\n    return out\ndef level_order(root):\n    levels, queue = [], deque([root] if root else [])\n    while queue:\n        level = []\n        for _ in range(len(queue)):   # nodes of the current level\n            node = queue.popleft()\n            level.append(node.val)\n            if node.left:\n                queue.append(node.left)\n            if node.right:\n                queue.append(node.right)\n        levels.append(level)\n    return levels\nprint(postorder_iter(root))  # [4, 5, 2, 6, 3, 1]\nprint(level_order(root))     # [[1], [2, 3], [4, 5, 6]]",
+          "lang": "python"
+        },
+        "Another common trick for postorder: run a modified preorder (node, right, left) and reverse the result."
+      ]
+    },
+    {
+      "h": "Time and space complexity",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Traversal",
+              "Time",
+              "Extra space",
+              "Reason"
+            ],
+            "rows": [
+              [
+                "Preorder / inorder / postorder (recursive)",
+                "O(n)",
+                "O(h)",
+                "the call stack holds one frame per level"
+              ],
+              [
+                "Preorder / inorder / postorder (iterative)",
+                "O(n)",
+                "O(h)",
+                "the explicit stack holds at most one path plus siblings"
+              ],
+              [
+                "Level order",
+                "O(n)",
+                "O(w)",
+                "the queue holds at most one full level"
+              ],
+              [
+                "Morris inorder traversal",
+                "O(n)",
+                "O(1)",
+                "temporarily rewires null right links into threads"
+              ]
+            ]
+          }
+        },
+        "Here n is the number of nodes, h the height and w the maximum width. For a balanced tree h is about log2(n) and w can be about n/2; for a chain-shaped tree h is n and w is 1."
+      ]
+    },
+    {
+      "h": "Common mistakes",
+      "body": [
+        {
+          "ul": [
+            "Pushing the left child before the right child in iterative preorder. A stack is LIFO, so the child you want first must be pushed last.",
+            "Forgetting the empty tree: every function should return an empty result for `root is None`.",
+            "Using a `list` with `pop(0)` as the queue in level order. It is O(n) per pop; use `collections.deque`.",
+            "Relying on recursion for very deep trees. Python stops at its recursion limit (about 1000 by default) with `RecursionError`.",
+            "Expecting a single traversal to identify a tree. Preorder alone is ambiguous; preorder plus inorder (with distinct values) is enough to rebuild it."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "When to use which traversal",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Task",
+              "Traversal"
+            ],
+            "rows": [
+              [
+                "List BST keys in sorted order, validate a BST, k-th smallest",
+                "Inorder"
+              ],
+              [
+                "Copy or serialize a tree, print a directory outline",
+                "Preorder"
+              ],
+              [
+                "Delete a tree, compute subtree sizes or heights, evaluate an expression tree",
+                "Postorder"
+              ],
+              [
+                "Minimum depth, right-side view, print by level, nearest node",
+                "Level order"
+              ]
+            ]
+          }
+        },
+        "Preorder, inorder and postorder are all forms of depth-first search; level order is breadth-first search applied to a tree. The same ideas extend to general graphs, where you also need a set of visited nodes."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "What is the difference between preorder, inorder and postorder?",
+      "a": "Only the position of the node visit. Preorder visits the node before its subtrees, inorder between the left and right subtree, and postorder after both subtrees."
+    },
+    {
+      "q": "Which traversal gives sorted output for a binary search tree?",
+      "a": "Inorder traversal. In a BST all left keys are smaller and all right keys are larger, so visiting left, node, right produces keys in ascending order."
+    },
+    {
+      "q": "Is level-order traversal the same as BFS?",
+      "a": "Yes. Level-order traversal is breadth-first search on a tree. It uses a queue and visits nodes in order of their depth."
+    },
+    {
+      "q": "Why use an iterative traversal instead of recursion?",
+      "a": "Recursion depth equals tree height, and Python raises `RecursionError` past its recursion limit. An explicit stack has no such limit and makes it easy to pause or stop early."
+    },
+    {
+      "q": "Can you traverse a tree with O(1) extra space?",
+      "a": "Yes. Morris traversal temporarily links each node's in-order predecessor back to it, so no stack is needed, and it restores the tree before finishing. It runs in O(n) time."
+    }
+  ]
+}

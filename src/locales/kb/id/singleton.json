@@ -1,0 +1,157 @@
+{
+  "title": "Pola Singleton: tujuan, contoh TypeScript, jebakan, dan alternatifnya — cv.cm",
+  "description": "Pola desain Singleton dijelaskan: cara memastikan satu instance di TypeScript, varian lazy dan async, mengapa menyulitkan pengujian, dan alternatif yang lebih baik.",
+  "h1": "Pola Singleton dijelaskan dengan contoh",
+  "answer": "Singleton adalah pola desain creational yang memastikan sebuah kelas hanya punya satu instance dan menyediakan satu titik akses global ke instance itu. Di TypeScript, Anda mengimplementasikannya dengan konstruktor private dan method static yang membuat instance saat pertama kali dipakai lalu mengembalikan objek yang sama sesudahnya. Pola ini berguna untuk sumber daya yang benar-benar unik, seperti objek konfigurasi atau connection pool, tetapi bertindak seperti state global, sehingga banyak tim lebih memilih meneruskan satu instance bersama secara eksplisit.",
+  "sections": [
+    {
+      "h": "Tujuan",
+      "body": [
+        "Memastikan sebuah kelas hanya punya satu instance, dan menyediakan satu titik akses global ke instance itu. Pola Singleton adalah salah satu dari lima pola creational dalam buku Gang of Four (GoF)."
+      ]
+    },
+    {
+      "h": "Masalah yang diselesaikan",
+      "body": [
+        "Beberapa objek harus ada tepat satu kali dalam program. Bayangkan konfigurasi aplikasi yang dimuat dari environment variable, cache dalam proses, atau pool koneksi database. Jika setiap modul memanggil `new Config()`, masing-masing akan membaca environment lagi, cache terpecah menjadi banyak salinan, dan batas pool menjadi tidak berarti.",
+        "Anda butuh dua hal: jaminan bahwa instance kedua tidak bisa terbuat secara tidak sengaja, dan cara mudah bagi kode mana pun untuk menjangkau satu instance itu."
+      ]
+    },
+    {
+      "h": "Struktur dan peserta",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Peserta",
+              "Tanggung jawab"
+            ],
+            "rows": [
+              [
+                "Kelas Singleton",
+                "Menyembunyikan konstruktornya agar kode lain tidak bisa memanggil `new` secara langsung."
+              ],
+              [
+                "Field instance static",
+                "Menyimpan satu-satunya instance setelah dibuat."
+              ],
+              [
+                "Method akses static (sering bernama `getInstance`)",
+                "Membuat instance pada panggilan pertama (lazy initialization) dan mengembalikan objek yang sama pada setiap panggilan."
+              ],
+              [
+                "Klien",
+                "Mendapatkan instance hanya lewat method akses."
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "Implementasi TypeScript",
+      "body": [
+        "Konstruktor private membuat `new AppConfig()` menjadi error saat kompilasi di luar kelas. Method static membuat objeknya secara lazy:",
+        {
+          "code": "class AppConfig {\n  private static instance: AppConfig | undefined;\n  readonly settings: Record<string, string>;\n  private constructor() {\n    console.log(\"loading config once\");\n    this.settings = { mode: \"production\", region: \"eu\" };\n  }\n  static getInstance(): AppConfig {\n    if (!AppConfig.instance) {\n      AppConfig.instance = new AppConfig();\n    }\n    return AppConfig.instance;\n  }\n}\nconst a = AppConfig.getInstance(); // loading config once\nconst b = AppConfig.getInstance();\nconsole.log(a === b);          // true\nconsole.log(a.settings.mode);  // production\n// new AppConfig(); // error: constructor is private",
+          "lang": "typescript"
+        },
+        {
+          "note": "`private` di TypeScript hanya diperiksa saat kompilasi. Kode JavaScript biasa masih bisa memanggil konstruktor. Jika Anda butuh jaminan saat runtime, lempar error di konstruktor ketika instance sudah ada, atau pakai instance tingkat modul seperti ditunjukkan di bawah."
+        },
+        "Di JavaScript dan TypeScript, modul ES dievaluasi sekali per program, jadi mengekspor instance dari sebuah modul adalah singleton paling sederhana. Setiap `import` menerima objek yang sama:",
+        {
+          "code": "// logger.ts\nclass Logger {\n  private lines: string[] = [];\n  log(msg: string): void { this.lines.push(msg); console.log(msg); }\n  count(): number { return this.lines.length; }\n}\nexport const logger = new Logger();\n// elsewhere: import { logger } from \"./logger\";\nlogger.log(\"started\");      // started\nconsole.log(logger.count()); // 1",
+          "lang": "typescript"
+        }
+      ]
+    },
+    {
+      "h": "Inisialisasi async",
+      "body": [
+        "Jika pembuatan instance bersifat asinkron, seperti membuka koneksi database, dua pemanggil bisa sama-sama melihat \"belum ada instance\" dan memulai dua koneksi sebelum yang pertama selesai. Cache promise-nya, bukan hasilnya:",
+        {
+          "code": "class Database {\n  private static ready: Promise<Database> | undefined;\n  private constructor(readonly url: string) {}\n  static get(): Promise<Database> {\n    if (!Database.ready) {\n      Database.ready = (async () => {\n        await new Promise((r) => setTimeout(r, 10)); // simulate connecting\n        console.log(\"connected once\");\n        return new Database(\"db://main\");\n      })();\n    }\n    return Database.ready;\n  }\n}\nconst [x, y] = await Promise.all([Database.get(), Database.get()]);\nconsole.log(x === y); // true",
+          "lang": "typescript"
+        },
+        "Pada bahasa multi-thread seperti Java dan C#, pembuatan lazy membutuhkan sinkronisasi karena alasan yang sama. Solusi umumnya adalah inisialisasi eager di field static, kelas lazy holder, atau, di Java, `enum` dengan satu elemen."
+      ]
+    },
+    {
+      "h": "Kapan memakainya, dan kapan tidak",
+      "body": [
+        "Gunakan pola Singleton ketika:",
+        {
+          "ul": [
+            "Harus ada tepat satu instance demi kebenaran, bukan sekadar kenyamanan (satu perangkat keras, satu registry tingkat proses).",
+            "Pembuatannya mahal dan objeknya stateless atau thread-safe setelah dibuat."
+          ]
+        },
+        "Hindari, atau batasi, ketika:",
+        {
+          "ul": [
+            "Anda terutama menginginkan akses global yang nyaman. Singleton adalah state global yang bisa diubah dengan nama yang lebih bagus: kode mana pun dapat mengubahnya, dan dependensinya tersembunyi dari signature fungsi.",
+            "Anda butuh pengujian. Tes yang berbagi singleton saling memengaruhi, dan sulit mengganti instance asli dengan tiruan.",
+            "Aturan \"satu instance\" mungkin berubah nanti, misalnya ketika Anda butuh satu cache per tenant."
+          ]
+        },
+        "Alternatif yang umum adalah dependency injection: buat satu instance di awal program (composition root) dan teruskan ke kelas yang membutuhkannya. Anda tetap punya satu instance, tetapi dependensinya terlihat dan dapat diganti.",
+        {
+          "code": "class Cache {\n  private data = new Map<string, string>();\n  get(key: string): string | undefined { return this.data.get(key); }\n  set(key: string, value: string): void { this.data.set(key, value); }\n}\nclass UserService {\n  constructor(private cache: Cache) {} // dependency is explicit\n  remember(id: string, name: string): void { this.cache.set(id, name); }\n}\nconst sharedCache = new Cache(); // the single instance, created once\nconst users = new UserService(sharedCache);\nusers.remember(\"u1\", \"Ada\");\nconsole.log(sharedCache.get(\"u1\")); // Ada",
+          "lang": "typescript"
+        }
+      ]
+    },
+    {
+      "h": "Pemakaian di dunia nyata",
+      "body": [
+        {
+          "ul": [
+            "Java: `Runtime.getRuntime()` mengembalikan satu objek `Runtime` untuk aplikasi Java yang berjalan.",
+            "Node.js men-cache modul setelah pemuatan pertama, sehingga objek yang diekspor sebuah modul dipakai bersama oleh setiap file yang me-require atau meng-import-nya.",
+            "Browser menyediakan objek global unik seperti `window` dan `document` untuk setiap halaman.",
+            "Framework dengan dependency injection, seperti Angular dan Spring, membuat service \"singleton-scoped\" secara default: satu instance per injector atau container, tanpa bagian akses static dari pola ini."
+          ]
+        },
+        {
+          "note": "Node.js men-cache modul berdasarkan path file hasil resolusi. Jika dua salinan paket yang sama terinstal di folder `node_modules` yang berbeda, Anda mendapat dua \"singleton\" yang terpisah."
+        }
+      ]
+    },
+    {
+      "h": "Pola terkait",
+      "body": [
+        {
+          "ul": [
+            "Objek pola Abstract Factory, pola Builder, dan pola Prototype sering diimplementasikan sebagai singleton, karena satu factory sudah cukup.",
+            "Objek pola Facade sering berupa instance tunggal, karena satu pintu masuk ke subsistem biasanya sudah cukup.",
+            "Pola Flyweight juga berbagi objek, tetapi mengelola banyak instance bersama yang dikunci berdasarkan state-nya, sedangkan pola Singleton hanya punya satu.",
+            "Dependency injection, yang bukan pola GoF, adalah pengganti pola Singleton yang paling umum dalam kode modern."
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Apakah Singleton anti-pattern?",
+      "a": "Sering disebut demikian, karena memperkenalkan state global tersembunyi dan mempersulit pengujian. Memiliki satu instance tidak masalah; masalahnya ada pada akses globalnya. Membuat satu instance dan meneruskannya secara eksplisit menghindari sebagian besar masalah."
+    },
+    {
+      "q": "Bagaimana membuat singleton di TypeScript?",
+      "a": "Gunakan konstruktor private, field static private untuk instance, dan method static yang membuat instance pada panggilan pertama. Mengekspor satu instance dari sebuah modul adalah alternatif yang lebih sederhana."
+    },
+    {
+      "q": "Apakah modul JavaScript itu singleton?",
+      "a": "Secara efektif ya. Modul dievaluasi sekali dan ekspornya dipakai bersama oleh setiap pengimpor dalam program yang sama, kecuali kode yang sama dimuat dari dua path berbeda."
+    },
+    {
+      "q": "Bagaimana menguji kode yang memakai singleton?",
+      "a": "Buat singleton mengimplementasikan interface dan teruskan ke kode yang diuji, sehingga tes dapat memberikan tiruan. Jika desainnya tidak bisa diubah, tambahkan method reset yang hanya dipakai dalam pengujian."
+    },
+    {
+      "q": "Apa beda singleton dengan kelas static?",
+      "a": "Singleton adalah objek sungguhan: dapat mengimplementasikan interface, diteruskan sebagai parameter, dan dibuat secara lazy. Kelas yang hanya berisi anggota static tidak dapat digantikan atau diteruskan sebagai objek."
+    }
+  ]
+}

@@ -1,0 +1,205 @@
+{
+  "title": "Tìm kiếm nhị phân: cách hoạt động, mã Python và độ phức tạp — cv.cm",
+  "description": "Tìm kiếm nhị phân tìm giá trị trong danh sách đã sắp xếp với O(log n) bước nhờ chia đôi phạm vi. Ví dụ từng bước, mã Python, bisect và lỗi lệch một.",
+  "h1": "Thuật toán tìm kiếm nhị phân: cách hoạt động, mã và độ phức tạp",
+  "answer": "Tìm kiếm nhị phân tìm một mục tiêu trong mảng đã sắp xếp bằng cách liên tục kiểm tra phần tử ở giữa và loại bỏ nửa không thể chứa mục tiêu. Mỗi bước chia đôi phạm vi tìm kiếm, nên cần tối đa khoảng log₂ n + 1 phép so sánh: 20 với một triệu phần tử. Thuật toán chạy trong O(log n) thời gian và O(1) bộ nhớ phụ, nhưng chỉ dùng được với dữ liệu đã sắp xếp (hoặc tổng quát hơn là có tính đơn điệu).",
+  "sections": [
+    {
+      "h": "Tìm kiếm nhị phân giải quyết vấn đề gì",
+      "body": [
+        "Tìm kiếm tuyến tính kiểm tra từng phần tử và cần tới n phép so sánh. Nếu dữ liệu đã sắp xếp, bạn làm tốt hơn nhiều: so sánh mục tiêu với phần tử giữa là biết ngay nên giữ nửa nào. Đây cũng là cách bạn tra một từ trong từ điển giấy.",
+        "Tìm kiếm nhị phân còn dùng được cho mọi thứ có tính đơn điệu, không chỉ mảng. Nếu một điều kiện đúng/sai là sai với mọi giá trị nhỏ và đúng với mọi giá trị lớn, tìm kiếm nhị phân sẽ tìm ra ranh giới. Kỹ thuật này gọi là tìm kiếm nhị phân trên đáp án."
+      ]
+    },
+    {
+      "h": "Ví dụ minh họa từng bước",
+      "body": [
+        "Tìm 23 trong danh sách đã sắp xếp `[2, 5, 8, 12, 16, 23, 38, 56, 72, 91]` (chỉ số từ 0 đến 9). Giữ hai chỉ số `lo` và `hi` giới hạn phạm vi còn phải kiểm tra.",
+        {
+          "table": {
+            "head": [
+              "Bước",
+              "lo",
+              "hi",
+              "mid",
+              "items[mid]",
+              "Quyết định"
+            ],
+            "rows": [
+              [
+                "1",
+                "0",
+                "9",
+                "4",
+                "16",
+                "16 < 23, tìm bên phải: lo = 5"
+              ],
+              [
+                "2",
+                "5",
+                "9",
+                "7",
+                "56",
+                "56 > 23, tìm bên trái: hi = 6"
+              ],
+              [
+                "3",
+                "5",
+                "6",
+                "5",
+                "23",
+                "tìm thấy tại chỉ số 5"
+              ]
+            ]
+          }
+        },
+        "Ba phép so sánh thay vì sáu của duyệt tuyến tính. Với danh sách một triệu phần tử, tìm kiếm nhị phân cần tối đa 20 phép."
+      ]
+    },
+    {
+      "h": "Cài đặt bằng Python",
+      "body": [
+        "Phiên bản lặp dưới đây dùng đoạn đóng `[lo, hi]`: cả hai đầu vẫn là ứng viên. Vòng lặp chạy khi đoạn chưa rỗng.",
+        {
+          "code": "def binary_search(items, target):\n    lo, hi = 0, len(items) - 1\n    while lo <= hi:\n        mid = (lo + hi) // 2\n        if items[mid] == target:\n            return mid\n        if items[mid] < target:\n            lo = mid + 1          # target is in the right half\n        else:\n            hi = mid - 1          # target is in the left half\n    return -1                     # not found\ndata = [2, 5, 8, 12, 16, 23, 38, 56, 72, 91]\nprint(binary_search(data, 23))   # 5\nprint(binary_search(data, 7))    # -1",
+          "lang": "python"
+        },
+        "Trong mã Python thực tế, hãy dùng module thư viện chuẩn `bisect`. `bisect_left` trả về vị trí ngoài cùng bên trái nơi có thể chèn mục tiêu mà vẫn giữ list đã sắp xếp, qua đó cũng cho biết mục tiêu có tồn tại hay không.",
+        {
+          "code": "from bisect import bisect_left, bisect_right, insort\ndata = [1, 3, 3, 3, 7, 9]\ni = bisect_left(data, 3)\nprint(i, bisect_right(data, 3))   # 1 4  (3 occupies indexes 1..3)\nprint(i < len(data) and data[i] == 3)   # True: 3 is present\nprint(bisect_left(data, 5))       # 4: insertion point for 5\ninsort(data, 5)\nprint(data)                       # [1, 3, 3, 3, 5, 7, 9]",
+          "lang": "python"
+        }
+      ]
+    },
+    {
+      "h": "Độ phức tạp thời gian và không gian",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Trường hợp",
+              "Thời gian",
+              "Lý do"
+            ],
+            "rows": [
+              [
+                "Tốt nhất",
+                "O(1)",
+                "phần tử giữa đầu tiên chính là mục tiêu"
+              ],
+              [
+                "Trung bình",
+                "O(log n)",
+                "phạm vi giảm một nửa ở mỗi bước"
+              ],
+              [
+                "Xấu nhất",
+                "O(log n)",
+                "khoảng log₂ n + 1 bước cho đến khi phạm vi rỗng"
+              ],
+              [
+                "Không gian, bản lặp",
+                "O(1)",
+                "chỉ cần hai hoặc ba chỉ số"
+              ],
+              [
+                "Không gian, bản đệ quy",
+                "O(log n)",
+                "một khung ngăn xếp cho mỗi lần chia đôi"
+              ]
+            ]
+          }
+        },
+        {
+          "note": "Tìm kiếm nhị phân đòi hỏi mảng đã sắp xếp và truy cập theo chỉ số O(1). Với danh sách liên kết, đi tới phần tử giữa tốn O(n), làm mất lợi ích. Sắp xếp trước tốn O(n log n), nên với một lần tra cứu trên dữ liệu chưa sắp xếp, duyệt tuyến tính rẻ hơn."
+        }
+      ]
+    },
+    {
+      "h": "Các biến thể: đầu tiên, cuối cùng và tìm kiếm nhị phân trên đáp án",
+      "body": [
+        "Nhiều bài không hỏi giá trị có tồn tại không mà hỏi ranh giới ở đâu: chỉ số đầu tiên có giá trị không nhỏ hơn x, lần xuất hiện cuối cùng của x, hoặc số nhỏ nhất thỏa một điều kiện. Hãy dùng đoạn nửa mở `[lo, hi)` và đừng bao giờ dừng sớm.",
+        {
+          "code": "def first_true(lo, hi, ok):\n    \"\"\"Smallest x in [lo, hi) with ok(x) True, or hi if none.\n    ok must be False...False True...True over the range.\"\"\"\n    while lo < hi:\n        mid = (lo + hi) // 2\n        if ok(mid):\n            hi = mid          # mid may be the answer, keep it\n        else:\n            lo = mid + 1      # mid is too small\n    return lo\ndata = [1, 3, 3, 3, 7, 9]\nprint(first_true(0, len(data), lambda i: data[i] >= 3))   # 1\n# Integer square root of 200: largest x with x*x <= 200\nprint(first_true(0, 201, lambda x: x * x > 200) - 1)      # 14",
+          "lang": "python"
+        },
+        {
+          "ul": [
+            "Cận dưới (chỉ số đầu tiên có giá trị ≥ x): `bisect_left`.",
+            "Cận trên (chỉ số đầu tiên có giá trị > x): `bisect_right`.",
+            "Số lần x xuất hiện trong list đã sắp xếp: `bisect_right(a, x) - bisect_left(a, x)`.",
+            "Tìm trong mảng đã sắp xếp bị xoay, tìm đỉnh và cực tiểu hóa giá trị lớn nhất (ví dụ sức chứa nhỏ nhất để chở hết hàng trong D ngày) là các biến thể phỏng vấn kinh điển."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Lỗi thường gặp",
+      "body": [
+        {
+          "ul": [
+            "Trộn lẫn quy ước phạm vi. Với đoạn đóng dùng `lo <= hi` và `hi = mid - 1`; với đoạn nửa mở dùng `lo < hi` và `hi = mid`. Trộn lẫn gây vòng lặp vô hạn hoặc bỏ sót phần tử.",
+            "Viết `lo = mid` thay vì `lo = mid + 1`. Khi `hi = lo + 1`, mid bằng lo và vòng lặp không bao giờ kết thúc.",
+            "Chạy tìm kiếm nhị phân trên dữ liệu chưa sắp xếp. Nó trả về đáp án sai mà không báo lỗi.",
+            "Tràn số nguyên trong `(lo + hi) / 2` ở các ngôn ngữ có số nguyên kích thước cố định như Java, C và C++. Hãy dùng `lo + (hi - lo) / 2`. Số nguyên của Python không tràn, nên `(lo + hi) // 2` an toàn.",
+            "Trả về kết quả khớp đầu tiên tìm thấy khi đề yêu cầu lần xuất hiện đầu tiên trong các giá trị trùng."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Khi nào nên dùng tìm kiếm nhị phân",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Tình huống",
+              "Lựa chọn tốt hơn"
+            ],
+            "rows": [
+              [
+                "Nhiều lần tra cứu trong dữ liệu ít thay đổi",
+                "sắp xếp một lần rồi tìm kiếm nhị phân"
+              ],
+              [
+                "Chỉ tra cứu khớp chính xác, dữ liệu thay đổi thường xuyên",
+                "bảng băm (`set`, `dict`), O(1) trung bình"
+              ],
+              [
+                "Dữ liệu đã sắp xếp với nhiều lần chèn và truy vấn khoảng",
+                "cây tìm kiếm nhị phân cân bằng hoặc B-tree"
+              ],
+              [
+                "Một lần tra cứu trong dữ liệu chưa sắp xếp",
+                "tìm kiếm tuyến tính, O(n)"
+              ]
+            ]
+          }
+        },
+        "Ứng dụng thực tế gồm chỉ mục của cơ sở dữ liệu và hệ thống tệp (B-tree tổng quát hóa ý tưởng này), `git bisect` để tìm commit gây ra lỗi, tra giá trị trong bảng khoảng đã sắp xếp như các dải IP, và nhiều bài toán số học cần tìm một ngưỡng."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Độ phức tạp thời gian của tìm kiếm nhị phân là gì?",
+      "a": "O(log n) ở trường hợp trung bình và xấu nhất, O(1) ở trường hợp tốt nhất. Mỗi phép so sánh chia đôi phạm vi còn lại, nên 1.000.000 phần tử cần tối đa 20 phép so sánh."
+    },
+    {
+      "q": "Tìm kiếm nhị phân có cần mảng đã sắp xếp không?",
+      "a": "Có. Mảng phải được sắp xếp theo đúng thứ tự dùng để so sánh, hoặc điều kiện bạn kiểm tra phải đơn điệu. Với dữ liệu chưa sắp xếp, kết quả không đáng tin."
+    },
+    {
+      "q": "bisect trong Python làm gì?",
+      "a": "Module `bisect` thực hiện tìm kiếm nhị phân trên list đã sắp xếp. `bisect_left` và `bisect_right` trả về điểm chèn, còn `insort` chèn mà vẫn giữ list đã sắp xếp (phần tìm là O(log n), bản thân việc chèn là O(n))."
+    },
+    {
+      "q": "Tìm kiếm nhị phân đệ quy hay lặp tốt hơn?",
+      "a": "Bản lặp thường được ưa chuộng vì dùng O(1) không gian và tránh chi phí đệ quy. Bản đệ quy cũng đúng và dùng O(log n) không gian ngăn xếp."
+    },
+    {
+      "q": "Vì sao tìm kiếm nhị phân dùng lo + (hi - lo) / 2?",
+      "a": "Ở các ngôn ngữ có số nguyên kích thước cố định, `lo + hi` có thể tràn khi cả hai đều lớn. `lo + (hi - lo) / 2` cho cùng điểm giữa mà không tràn. Trong Python không cần cách này."
+    }
+  ]
+}

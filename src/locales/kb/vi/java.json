@@ -1,0 +1,193 @@
+{
+  "title": "Học Java cơ bản: lớp, kiểu dữ liệu, collection và ngoại lệ — cv.cm",
+  "description": "Học Java trong một trang: cài JDK và chạy Hello world, kiểu nguyên thủy, điều khiển luồng, phương thức, lớp, record, collection, ngoại lệ và một ví dụ hoàn chỉnh.",
+  "h1": "Hướng dẫn học Java cơ bản cho người mới",
+  "answer": "Java là ngôn ngữ hướng đối tượng kiểu tĩnh, biên dịch thành bytecode và chạy trên Máy ảo Java (JVM) trên mọi hệ điều hành. Hãy cài JDK, lưu một lớp vào `Hello.java` rồi chạy `java Hello.java`. Các ý tưởng cốt lõi là lớp và đối tượng, kiểu nguyên thủy và kiểu tham chiếu, bộ khung collection (`List`, `Map`, `Set`), ngoại lệ checked, cùng các tính năng mới như record, `var` và pattern matching.",
+  "sections": [
+    {
+      "h": "Java là gì và dùng để làm gì",
+      "body": [
+        "Java do Sun Microsystems phát hành năm 1995 và hiện được phát triển trong dự án mở OpenJDK, với Oracle là bên quản lý chính. Lời hứa của nó là \"viết một lần, chạy ở mọi nơi\": trình biên dịch sinh ra bytecode, và JVM chạy bytecode đó trên Windows, macOS và Linux. Java được dùng cho back end doanh nghiệp lớn (thường với Spring Boot), ứng dụng Android (cùng với Kotlin), công cụ dữ liệu lớn như Apache Kafka và Hadoop, cùng nhiều hệ thống máy tính để bàn và nhúng. Cứ sáu tháng lại có một phiên bản mới, và các phiên bản hỗ trợ dài hạn (LTS) như Java 21 là lựa chọn thông thường cho môi trường production."
+      ]
+    },
+    {
+      "h": "Cài JDK và chạy Hello, world",
+      "body": [
+        "Hãy cài một JDK (Java Development Kit), ví dụ một bản OpenJDK như Eclipse Temurin hoặc JDK của Oracle. Kiểm tra bằng `java -version`. Mọi chương trình Java đều nằm trong một lớp, và quá trình thực thi bắt đầu từ `main`.",
+        {
+          "code": "public class Hello {\n    public static void main(String[] args) {\n        System.out.println(\"Hello, world\");\n    }\n}",
+          "lang": "java"
+        },
+        {
+          "code": "java Hello.java        # run a single source file directly\n# Hello, world\njavac Hello.java       # or compile to Hello.class first\njava Hello",
+          "lang": "shell"
+        },
+        "Tên tệp phải khớp với tên lớp public (`Hello.java` cho `class Hello`)."
+      ]
+    },
+    {
+      "h": "Biến và các kiểu dữ liệu cơ bản",
+      "body": [
+        "Java có tám kiểu nguyên thủy, lưu trực tiếp dưới dạng giá trị, và các kiểu tham chiếu (đối tượng như `String` và mảng). Mỗi biến có kiểu cố định; `var` cho phép trình biên dịch suy luận kiểu từ giá trị khởi tạo bên trong phương thức.",
+        {
+          "table": {
+            "head": [
+              "Kiểu",
+              "Kích thước",
+              "Ví dụ"
+            ],
+            "rows": [
+              [
+                "`int`",
+                "32 bit",
+                "`int n = 42;`"
+              ],
+              [
+                "`long`",
+                "64 bit",
+                "`long big = 10_000_000_000L;`"
+              ],
+              [
+                "`double`",
+                "Số thực 64 bit",
+                "`double pi = 3.14159;`"
+              ],
+              [
+                "`boolean`",
+                "true/false",
+                "`boolean ok = true;`"
+              ],
+              [
+                "`char`",
+                "Đơn vị UTF-16 16 bit",
+                "`char c = 'A';`"
+              ],
+              [
+                "`byte`, `short`, `float`",
+                "8, 16, 32 bit",
+                "Ít dùng hơn"
+              ],
+              [
+                "`String`",
+                "tham chiếu",
+                "`String s = \"hi\";`"
+              ]
+            ]
+          }
+        },
+        {
+          "code": "int count = 7;\ndouble avg = count / 2;          // 3.0, integer division happens first\ndouble avg2 = count / 2.0;       // 3.5\nvar name = \"Ada\";                // inferred as String\nString msg = name + \" has \" + count + \" items\";\nSystem.out.println(msg);         // Ada has 7 items\nSystem.out.println(Integer.parseInt(\"12\") + 1); // 13",
+          "lang": "java"
+        },
+        "Đây là một đoạn mã: hãy đặt các câu lệnh như thế này bên trong một phương thức như `main`."
+      ]
+    },
+    {
+      "h": "Điều khiển luồng",
+      "body": [
+        {
+          "code": "int score = 72;\nif (score >= 90) {\n    System.out.println(\"A\");\n} else if (score >= 70) {\n    System.out.println(\"B\");     // B\n} else {\n    System.out.println(\"C\");\n}\nfor (int i = 0; i < 3; i++) {\n    System.out.println(i);       // 0, 1, 2\n}\nString day = \"SAT\";\nString kind = switch (day) {     // switch expression\n    case \"SAT\", \"SUN\" -> \"weekend\";\n    default -> \"weekday\";\n};\nSystem.out.println(kind);        // weekend",
+          "lang": "java"
+        },
+        "Java còn có `while`, `do`/`while` và vòng lặp `for (String s : list)` nâng cao để duyệt mảng và collection."
+      ]
+    },
+    {
+      "h": "Phương thức, lớp và record",
+      "body": [
+        "Lớp gộp các trường (dữ liệu) và phương thức (hành vi). Phương thức `static` thuộc về chính lớp; các phương thức khác được gọi trên một đối tượng tạo bằng `new`. `record` là cách ngắn gọn để khai báo lớp dữ liệu bất biến: trình biên dịch tự sinh constructor, các accessor, `equals`, `hashCode` và `toString`.",
+        {
+          "code": "public class Shapes {\n    static double square(double x) {\n        return x * x;\n    }\n    static class Counter {\n        private int value;\n        void increment() { value++; }\n        int get() { return value; }\n    }\n    record Point(int x, int y) {\n        double distance() { return Math.sqrt(x * x + y * y); }\n    }\n    public static void main(String[] args) {\n        System.out.println(square(4));        // 16.0\n        Counter c = new Counter();\n        c.increment();\n        c.increment();\n        System.out.println(c.get());          // 2\n        Point p = new Point(3, 4);\n        System.out.println(p + \" \" + p.distance()); // Point[x=3, y=4] 5.0\n    }\n}",
+          "lang": "java"
+        },
+        "Lớp có thể kế thừa một lớp cha (`extends`) và triển khai nhiều interface (`implements`). Các trường thường là `private`, truy cập thông qua phương thức."
+      ]
+    },
+    {
+      "h": "Collection: List, Map và Set",
+      "body": [
+        "Bộ khung collection trong `java.util` cung cấp các cấu trúc dữ liệu co giãn được. Collection chứa đối tượng, nên kiểu nguyên thủy được đóng hộp tự động (`int` thành `Integer`).",
+        {
+          "code": "import java.util.*;\npublic class Collections101 {\n    public static void main(String[] args) {\n        List<Integer> nums = new ArrayList<>(List.of(3, 1, 2));\n        nums.add(5);\n        Collections.sort(nums);\n        System.out.println(nums + \" \" + nums.get(0));  // [1, 2, 3, 5] 1\n        Map<String, Integer> ages = new HashMap<>();\n        ages.put(\"ann\", 31);\n        ages.put(\"bob\", 25);\n        System.out.println(ages.getOrDefault(\"zed\", 0)); // 0\n        Set<String> tags = new TreeSet<>(List.of(\"b\", \"a\", \"b\"));\n        System.out.println(tags);                        // [a, b]\n        List<Integer> evensSquared = nums.stream()\n            .filter(n -> n % 2 == 0)\n            .map(n -> n * n)\n            .toList();\n        System.out.println(evensSquared);                // [4]\n    }\n}",
+          "lang": "java"
+        },
+        "Câu lệnh cuối dùng stream và lambda, một phong cách hàm để biến đổi collection. `List.of` tạo list bất biến; hãy bọc nó trong `new ArrayList<>(...)` khi bạn cần thay đổi."
+      ]
+    },
+    {
+      "h": "Tính năng đặc trưng: kiểu tĩnh, interface và pattern matching",
+      "body": [
+        "Interface định nghĩa một hợp đồng mà nhiều lớp có thể triển khai, đó là nền tảng của phần lớn thiết kế Java. Java hiện đại thêm pattern matching: `instanceof` và `switch` có thể kiểm tra kiểu và gán biến chỉ trong một bước. Sealed interface (Java 17 trở lên) liệt kê mọi cách triển khai được phép, nên trình biên dịch có thể kiểm tra rằng `switch` bao phủ mọi trường hợp.",
+        {
+          "code": "public class Areas {\n    sealed interface Shape permits Circle, Rect {}\n    record Circle(double r) implements Shape {}\n    record Rect(double w, double h) implements Shape {}\n    static double area(Shape s) {\n        return switch (s) {\n            case Circle c -> Math.PI * c.r() * c.r();\n            case Rect r -> r.w() * r.h();\n        };\n    }\n    public static void main(String[] args) {\n        System.out.println(area(new Rect(2, 3)));  // 6.0\n    }\n}",
+          "lang": "java"
+        },
+        "Pattern matching cho `switch` như thế này là chuẩn trong Java 21 LTS trở lên."
+      ]
+    },
+    {
+      "h": "Ngoại lệ",
+      "body": [
+        "Lỗi là các ngoại lệ. Ngoại lệ checked (như `IOException`) phải được bắt hoặc khai báo bằng `throws`; ngoại lệ unchecked (lớp con của `RuntimeException`, như `NullPointerException`) thì không bắt buộc. `try`-with-resources tự động đóng tệp và kết nối.",
+        {
+          "code": "import java.io.*;\nimport java.nio.file.*;\npublic class ReadFirst {\n    static int parseAge(String text) {\n        int age = Integer.parseInt(text);   // may throw NumberFormatException\n        if (age < 0) throw new IllegalArgumentException(\"negative age\");\n        return age;\n    }\n    public static void main(String[] args) {\n        try {\n            System.out.println(parseAge(\"abc\"));\n        } catch (NumberFormatException e) {\n            System.out.println(\"not a number\");  // not a number\n        }\n        try (BufferedReader in = Files.newBufferedReader(Path.of(\"notes.txt\"))) {\n            System.out.println(in.readLine());\n        } catch (IOException e) {\n            System.out.println(\"cannot read: \" + e.getMessage());\n        }\n    }\n}",
+          "lang": "java"
+        }
+      ]
+    },
+    {
+      "h": "Một chương trình nhỏ hoàn chỉnh: đếm từ",
+      "body": [
+        {
+          "code": "import java.io.IOException;\nimport java.nio.file.*;\nimport java.util.*;\npublic class WordCount {\n    public static void main(String[] args) throws IOException {\n        if (args.length != 1) {\n            System.err.println(\"usage: java WordCount.java FILE\");\n            System.exit(1);\n        }\n        String text = Files.readString(Path.of(args[0])).toLowerCase();\n        Map<String, Integer> counts = new HashMap<>();\n        for (String word : text.split(\"[^a-z']+\")) {\n            if (!word.isEmpty()) counts.merge(word, 1, Integer::sum);\n        }\n        counts.entrySet().stream()\n            .sorted(Map.Entry.<String, Integer>comparingByValue().reversed())\n            .limit(5)\n            .forEach(e -> System.out.printf(\"%5d  %s%n\", e.getValue(), e.getKey()));\n    }\n}",
+          "lang": "java"
+        },
+        "Chạy bằng `java WordCount.java notes.txt`. Chương trình in ra năm từ phổ biến nhất cùng số lần xuất hiện."
+      ]
+    },
+    {
+      "h": "Những lỗi thường gặp của người mới",
+      "body": [
+        {
+          "note": "So sánh chuỗi bằng `a.equals(b)`, không dùng `a == b`. Toán tử `==` kiểm tra xem hai tham chiếu có trỏ đến cùng một đối tượng không, và có thể cho kết quả false với hai chuỗi giống nhau."
+        },
+        {
+          "ul": [
+            "Phép chia nguyên: `5 / 2` bằng `2`. Hãy biến một vế thành `double` để được `2.5`.",
+            "`NullPointerException` khi gọi phương thức trên `null`. Hãy kiểm tra `null`, hoặc dùng `Optional` cho giá trị có thể thiếu.",
+            "Cố thay đổi list tạo bằng `List.of`, sẽ ném `UnsupportedOperationException`.",
+            "Quên rằng chỉ số của mảng và `List` bắt đầu từ 0, nên phần tử cuối nằm ở `length - 1`."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Học tiếp ở đâu",
+      "body": [
+        "Hãy theo các lộ trình học trên dev.java, trang chính thức dành cho nhà phát triển Java, và để tài liệu Java SE API mở bên cạnh làm tham chiếu. Học một công cụ build (Maven hoặc Gradle), kiểm thử đơn vị với JUnit, rồi một framework như Spring Boot cho dịch vụ web. Kotlin, cũng chạy trên JVM, là ngôn ngữ tiếp theo tự nhiên."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Java có khó học không?",
+      "a": "Java dài dòng hơn Python vì bạn phải khai báo kiểu và đặt mã trong lớp, nhưng quy tắc của nó nhất quán và trình biên dịch giải thích lỗi từ sớm. Nhiều trường đại học dùng nó làm ngôn ngữ đầu tiên."
+    },
+    {
+      "q": "JDK và JVM khác nhau thế nào?",
+      "a": "JVM chạy bytecode đã biên dịch. JDK là bộ công cụ phát triển đầy đủ: JVM cùng trình biên dịch `javac`, thư viện chuẩn và các công cụ. Lập trình viên cài JDK."
+    },
+    {
+      "q": "Nên học phiên bản Java nào?",
+      "a": "Hãy học một phiên bản hỗ trợ dài hạn hiện hành, như Java 21 hoặc LTS mới hơn. Mã cũ vẫn chạy trên JVM mới, nên kỹ năng hiện đại cũng áp dụng được cho các dự án có sẵn."
+    },
+    {
+      "q": "Java có giống JavaScript không?",
+      "a": "Không. Dù tên gần giống nhau, chúng là hai ngôn ngữ riêng biệt với hệ thống kiểu, môi trường chạy và mục đích sử dụng khác nhau."
+    },
+    {
+      "q": "Java còn được dùng không?",
+      "a": "Có. Nó vẫn là một trong những ngôn ngữ được dùng nhiều nhất cho back end doanh nghiệp, Android và hạ tầng dữ liệu."
+    }
+  ]
+}

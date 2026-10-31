@@ -1,0 +1,197 @@
+{
+  "title": "Tutorial de Kotlin: null safety, funciones, colecciones y corrutinas — cv.cm",
+  "description": "Aprende Kotlin paso a paso: instalación y Hello, world, val y var, null safety, when, lambdas, data classes, colecciones, corrutinas y manejo de errores.",
+  "h1": "Tutorial de Kotlin para principiantes",
+  "answer": "Kotlin es un lenguaje moderno de tipado estático creado por JetBrains que se ejecuta en la JVM y es el lenguaje preferido para el desarrollo en Android. Es conciso, totalmente interoperable con Java y su sistema de tipos evita en tiempo de compilación la mayoría de los errores de puntero nulo. Esta página cubre la instalación, las variables, la null safety, el control de flujo, las funciones, las colecciones, las clases, las corrutinas y el manejo de errores con ejemplos ejecutables.",
+  "sections": [
+    {
+      "h": "Qué es Kotlin y para qué se usa",
+      "body": [
+        "Kotlin es un lenguaje de propósito general con tipado estático creado por JetBrains. Se ejecuta en la máquina virtual de Java (JVM) y también puede compilarse a JavaScript, WebAssembly y código máquina nativo. Kotlin es totalmente interoperable con Java: un archivo Kotlin puede llamar a cualquier biblioteca de Java, y el código Java puede llamar a Kotlin.",
+        "Desde 2019 Google recomienda Kotlin como lenguaje preferido para las apps de Android, así que la mayor parte del código nuevo de Android está en Kotlin. También es habitual en el servidor con frameworks como Spring Boot y Ktor, y Kotlin Multiplatform permite a los equipos compartir la lógica de negocio entre Android, iOS, escritorio y web."
+      ]
+    },
+    {
+      "h": "Instalar Kotlin y ejecutar Hello, world",
+      "body": [
+        "La forma más sencilla de empezar es IntelliJ IDEA o Android Studio, que ya incluyen Kotlin. Para la línea de comandos, instala el compilador (por ejemplo con SDKMAN! o Homebrew) y un entorno de ejecución de Java (JDK). Un programa Kotlin empieza en una función `main` de nivel superior; no hace falta ninguna clase.",
+        {
+          "code": "// hello.kt\nfun main() {\n    println(\"Hello, world!\")\n}",
+          "lang": "kotlin"
+        },
+        {
+          "code": "kotlinc hello.kt -include-runtime -d hello.jar\njava -jar hello.jar\n# Hello, world!",
+          "lang": "shell"
+        },
+        "Para proyectos reales, lo normal es usar herramientas de compilación como Gradle (con Kotlin DSL). También puedes probar código sin instalar nada en el Kotlin Playground en línea."
+      ]
+    },
+    {
+      "h": "Variables y tipos básicos",
+      "body": [
+        "Declara una variable de solo lectura con `val` y una mutable con `var`. El compilador infiere el tipo, pero puedes escribirlo después de dos puntos. Prefiere `val`: hace que el código sea más fácil de razonar.",
+        {
+          "code": "val name = \"Ada\"          // String, cannot be reassigned\nvar count: Int = 0        // explicit type, can change\ncount += 1\nval pi = 3.14159          // Double\nval big = 9_000_000_000L  // Long\nprintln(\"$name has $count item(s), pi is ${\"%.2f\".format(pi)}\")\n// Ada has 1 item(s), pi is 3.14",
+          "lang": "kotlin"
+        },
+        {
+          "table": {
+            "head": [
+              "Tipo",
+              "Ejemplo",
+              "Notas"
+            ],
+            "rows": [
+              [
+                "`Int`",
+                "`42`",
+                "entero de 32 bits con signo"
+              ],
+              [
+                "`Long`",
+                "`42L`",
+                "entero de 64 bits con signo"
+              ],
+              [
+                "`Double`",
+                "`3.14`",
+                "punto flotante de 64 bits"
+              ],
+              [
+                "`Boolean`",
+                "`true`",
+                "`true` o `false`"
+              ],
+              [
+                "`Char`",
+                "`'k'`",
+                "un solo carácter"
+              ],
+              [
+                "`String`",
+                "`\"text\"`",
+                "inmutable; admite plantillas `$name`"
+              ]
+            ]
+          }
+        },
+        "Kotlin no amplía los números de forma implícita: un `Int` no se convierte automáticamente en `Long`. Llama explícitamente a `toLong()`, `toDouble()` o `toString()`."
+      ]
+    },
+    {
+      "h": "Null safety",
+      "body": [
+        "La null safety (seguridad frente a nulos) es la característica estrella de Kotlin. Un tipo normal como `String` nunca puede contener `null`. Para permitirlo añades `?`, como en `String?`, y el compilador te obliga a tratar el caso nulo antes de usar el valor.",
+        {
+          "code": "fun greet(name: String?) {\n    // println(name.length)        // compile error: name may be null\n    println(name?.length)           // safe call: prints null if name is null\n    val len = name?.length ?: 0     // Elvis operator: default value\n    if (name != null) {\n        println(name.uppercase())   // smart cast: name is String here\n    }\n    println(\"length = $len\")\n}\nfun main() {\n    greet(\"kotlin\")   // 6, KOTLIN, length = 6\n    greet(null)       // null, length = 0\n}",
+          "lang": "kotlin"
+        },
+        {
+          "note": "El operador de aserción de no nulo `!!` convierte un valor anulable en uno no nulo y lanza `NullPointerException` si es nulo. Los principiantes suelen añadir `!!` para silenciar al compilador; usa mejor `?.`, `?:` o una comprobación con `if`."
+        }
+      ]
+    },
+    {
+      "h": "Control de flujo: if, when y bucles",
+      "body": [
+        "En Kotlin `if` y `when` son expresiones, por lo que devuelven un valor. `when` sustituye a la instrucción `switch` de Java y C y puede comparar valores, rangos y tipos.",
+        {
+          "code": "val score = 82\nval grade = if (score >= 50) \"pass\" else \"fail\"\nval letter = when (score) {\n    in 90..100 -> \"A\"\n    in 80..89 -> \"B\"\n    in 70..79 -> \"C\"\n    else -> \"F\"\n}\nprintln(\"$grade $letter\")         // pass B\nfor (i in 1..3) print(\"$i \")      // 1 2 3\nprintln()\nfor (i in 10 downTo 0 step 5) print(\"$i \")  // 10 5 0\nprintln()\nvar n = 3\nwhile (n > 0) { print(n); n-- }   // 321\nprintln()",
+          "lang": "kotlin"
+        },
+        "`1..3` es un rango cerrado que incluye ambos extremos; `0 until 3` (o `0..<3`) excluye el final, que es lo que normalmente quieres para los índices."
+      ]
+    },
+    {
+      "h": "Funciones y lambdas",
+      "body": [
+        "Las funciones se declaran con `fun`. Los parámetros pueden tener valores por defecto, quien llama puede usar argumentos con nombre, y una función cuyo cuerpo es una sola expresión puede usar `=`.",
+        {
+          "code": "fun area(width: Double, height: Double = 1.0): Double = width * height\nfun main() {\n    println(area(3.0, 2.0))          // 6.0\n    println(area(width = 4.0))       // 4.0 (default height)\n    val square = { x: Int -> x * x } // a lambda stored in a variable\n    println(square(5))               // 25\n    val nums = listOf(1, 2, 3, 4, 5)\n    val evensSquared = nums.filter { it % 2 == 0 }.map { it * it }\n    println(evensSquared)            // [4, 16]\n}",
+          "lang": "kotlin"
+        },
+        "Cuando una lambda tiene un solo parámetro, puedes referirte a él como `it`. Cuando el último argumento de una función es una lambda, puede ir fuera de los paréntesis, por eso `filter { ... }` parece un bloque integrado en el lenguaje."
+      ]
+    },
+    {
+      "h": "Colecciones y data classes",
+      "body": [
+        "La biblioteca estándar separa las colecciones de solo lectura de las mutables: `listOf`, `setOf` y `mapOf` crean colecciones de solo lectura, mientras que `mutableListOf`, `mutableSetOf` y `mutableMapOf` se pueden modificar.",
+        {
+          "code": "val fruits = mutableListOf(\"apple\", \"banana\")\nfruits.add(\"cherry\")\nval ages = mapOf(\"Ann\" to 31, \"Bo\" to 25)\nprintln(fruits.size)              // 3\nprintln(ages[\"Ann\"])              // 31\nprintln(ages[\"Zed\"])              // null (map lookups are nullable)\ndata class User(val name: String, val age: Int)\nval u = User(\"Ann\", 31)\nval older = u.copy(age = 32)\nprintln(u)                        // User(name=Ann, age=31)\nprintln(u == User(\"Ann\", 31))     // true (structural equality)\nval (n, a) = older                // destructuring\nprintln(\"$n $a\")                  // Ann 32",
+          "lang": "kotlin"
+        },
+        "Una `data class` obtiene automáticamente `equals`, `hashCode`, `toString`, `copy` y desestructuración. En Kotlin `==` compara el contenido (llama a `equals`); `===` compara referencias."
+      ]
+    },
+    {
+      "h": "Clases, funciones de extensión y corrutinas",
+      "body": [
+        "Las clases son finales por defecto; marca una clase como `open` para permitir la herencia. Las funciones de extensión añaden métodos a tipos existentes sin modificarlos, y las clases `sealed` modelan un conjunto cerrado de casos que `when` puede comprobar de forma exhaustiva.",
+        {
+          "code": "fun String.shout(): String = uppercase() + \"!\"\nsealed class Shape\ndata class Circle(val r: Double) : Shape()\ndata class Rect(val w: Double, val h: Double) : Shape()\nfun area(s: Shape): Double = when (s) {\n    is Circle -> Math.PI * s.r * s.r\n    is Rect -> s.w * s.h\n}   // no else needed: the compiler knows all cases\nfun main() {\n    println(\"hi\".shout())                   // HI!\n    println(area(Rect(2.0, 3.0)))           // 6.0\n}",
+          "lang": "kotlin"
+        },
+        "Para el código asíncrono y concurrente, Kotlin usa las corrutinas de la biblioteca `kotlinx.coroutines`. Una función `suspend` puede pausarse sin bloquear un hilo, y constructores como `launch` y `async` inician corrutinas dentro de un ámbito. Así hacen las apps de Android las llamadas de red fuera del hilo principal."
+      ]
+    },
+    {
+      "h": "Manejo de errores",
+      "body": [
+        "Kotlin tiene `try`, `catch` y `finally` como Java, pero todas las excepciones son no comprobadas: nunca estás obligado a declararlas ni a capturarlas. `try` también es una expresión. Para los fallos esperados, la biblioteca estándar ofrece `runCatching` y `Result`, y funciones como `toIntOrNull()` devuelven `null` en lugar de lanzar una excepción.",
+        {
+          "code": "fun parse(s: String): Int = try {\n    s.toInt()\n} catch (e: NumberFormatException) {\n    -1\n}\nfun main() {\n    println(parse(\"42\"))              // 42\n    println(parse(\"x\"))               // -1\n    println(\"7\".toIntOrNull())        // 7\n    println(\"seven\".toIntOrNull())    // null\n    val r = runCatching { \"abc\".toInt() }\n    println(r.isFailure)              // true\n}",
+          "lang": "kotlin"
+        }
+      ]
+    },
+    {
+      "h": "Un programa completo y pequeño: frecuencia de palabras",
+      "body": [
+        "Este programa cuenta cuántas veces aparece cada palabra en un texto e imprime las tres primeras. Usa una extensión de String, funciones de colección y una data class.",
+        {
+          "code": "data class WordCount(val word: String, val count: Int)\nfun topWords(text: String, n: Int): List<WordCount> =\n    text.lowercase()\n        .split(Regex(\"[^a-z']+\"))\n        .filter { it.isNotBlank() }\n        .groupingBy { it }\n        .eachCount()\n        .map { (w, c) -> WordCount(w, c) }\n        .sortedWith(compareByDescending<WordCount> { it.count }.thenBy { it.word })\n        .take(n)\nfun main() {\n    val text = \"The cat and the dog. The dog sat, and the cat ran.\"\n    for ((word, count) in topWords(text, 3)) {\n        println(\"$word: $count\")\n    }\n}\n// the: 4\n// and: 2\n// cat: 2",
+          "lang": "kotlin"
+        },
+        {
+          "note": "Errores habituales de los principiantes: usar `var` en todas partes en lugar de `val`; esparcir `!!` para silenciar errores de nulos; olvidar que `1..n` incluye `n`; intentar heredar de una clase que no está marcada como `open`; y llamar a código bloqueante (como `Thread.sleep`) dentro de una corrutina en lugar de `delay`."
+        }
+      ]
+    },
+    {
+      "h": "Siguientes pasos",
+      "body": [
+        {
+          "ul": [
+            "La documentación oficial de Kotlin en kotlinlang.org, empezando por Basic syntax y el Kotlin tour.",
+            "Kotlin Koans, un conjunto de ejercicios cortos que se ejecutan en el navegador.",
+            "Las guías de Android Developers para Kotlin en Android, o las guías de Ktor y Spring para Kotlin en el servidor.",
+            "La guía de kotlinx.coroutines cuando necesites código asíncrono."
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "¿Es Kotlin mejor que Java?",
+      "a": "Kotlin es más conciso y añade null safety, data classes y corrutinas, pero se ejecuta en la misma JVM y usa las mismas bibliotecas. Muchos equipos mezclan ambos lenguajes en un mismo proyecto, así que la elección es cuestión de estilo y productividad, no de capacidad."
+    },
+    {
+      "q": "¿Necesito aprender Java antes que Kotlin?",
+      "a": "No. Puedes aprender Kotlin como tu primer lenguaje para la JVM. Conocer algo de Java ayuda al leer código antiguo de Android o la documentación de bibliotecas de Java."
+    },
+    {
+      "q": "¿Cuál es la diferencia entre val y var?",
+      "a": "`val` declara una referencia de solo lectura que no se puede reasignar tras la inicialización, y `var` declara una que sí se puede reasignar. Si un `val` apunta a una lista mutable, su contenido aún se puede modificar."
+    },
+    {
+      "q": "¿Se puede usar Kotlin para apps de iOS?",
+      "a": "Sí, mediante Kotlin Multiplatform, que compila el código Kotlin compartido a código nativo para iOS. La interfaz de usuario suele escribirse todavía en Swift, aunque Compose Multiplatform también permite compartir código de UI."
+    },
+    {
+      "q": "¿Qué hace el operador ?: en Kotlin?",
+      "a": "Es el operador Elvis: `a ?: b` devuelve `a` si no es nulo y, en caso contrario, devuelve `b`. Se combina con frecuencia con las llamadas seguras, como en `name?.length ?: 0`."
+    }
+  ]
+}

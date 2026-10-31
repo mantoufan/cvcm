@@ -1,0 +1,149 @@
+{
+  "title": "Mẫu Template Method: các bước cố định, hook và ví dụ TypeScript — cv.cm",
+  "description": "Mẫu Template Method cố định các bước của thuật toán trong lớp cơ sở và để lớp con điền vào một số bước. Tìm hiểu hook qua ví dụ TypeScript.",
+  "h1": "Mẫu Template Method (Template Method pattern) giải thích kèm ví dụ",
+  "answer": "Template Method là một mẫu thiết kế hành vi (behavioral design pattern): nó định nghĩa bộ khung của một thuật toán trong một phương thức của lớp cơ sở và cho phép lớp con ghi đè từng bước cụ thể mà không đổi thứ tự chung. Lớp cơ sở quyết định điều gì xảy ra và khi nào; lớp con quyết định một số bước được làm như thế nào. Những bước tùy chọn có cách triển khai mặc định được gọi là hook.",
+  "sections": [
+    {
+      "h": "Mục đích và vấn đề cần giải quyết",
+      "body": [
+        "Mục đích: định nghĩa bộ khung của một thuật toán trong một thao tác, hoãn một số bước cho các lớp con. Mẫu Template Method cho phép lớp con định nghĩa lại một số bước của thuật toán mà không thay đổi cấu trúc của nó. Đây là một trong các mẫu hành vi trong cuốn sách của nhóm Gang of Four (GoF).",
+        "Hãy hình dung một công cụ báo cáo xuất dữ liệu ra CSV và JSON. Cả hai bộ xuất làm cùng những việc theo cùng thứ tự: tải các dòng dữ liệu, kiểm tra xem có dòng nào không, định dạng chúng và thêm phần chân trang với số dòng. Chỉ phần định dạng là khác nhau. Nếu viết riêng từng bộ xuất, các bước chung bị sao chép, và một lần sửa ở bộ này (ví dụ xử lý tốt hơn kết quả rỗng) rất dễ bị quên ở bộ kia.",
+        "Với mẫu Template Method, lớp cơ sở `Exporter` chứa phương thức `export` với chuỗi bước cố định. Các bước thay đổi là phương thức trừu tượng. `CsvExporter` và `JsonExporter` chỉ cần triển khai những bước đó."
+      ]
+    },
+    {
+      "h": "Cấu trúc và các thành phần tham gia",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Vai trò",
+              "Trách nhiệm"
+            ],
+            "rows": [
+              [
+                "Abstract class (lớp trừu tượng)",
+                "Triển khai template method, gọi các bước theo thứ tự cố định; khai báo các bước trừu tượng và có thể cung cấp hook"
+              ],
+              [
+                "Template method (phương thức khuôn mẫu)",
+                "Phương thức công khai định nghĩa thuật toán; thường không dành để ghi đè"
+              ],
+              [
+                "Primitive operation (thao tác nguyên thủy)",
+                "Một bước trừu tượng mà mọi lớp con đều phải triển khai"
+              ],
+              [
+                "Hook",
+                "Một bước có cách triển khai mặc định (thường để trống) mà lớp con có thể ghi đè"
+              ],
+              [
+                "Concrete class (lớp cụ thể)",
+                "Triển khai các thao tác nguyên thủy và ghi đè hook khi cần"
+              ]
+            ]
+          }
+        },
+        "Thiết kế này đảo ngược quyền điều khiển: lớp cơ sở gọi các phương thức của lớp con, chứ không phải ngược lại. Đôi khi người ta gọi đây là nguyên lý Hollywood: \"đừng gọi chúng tôi, chúng tôi sẽ gọi bạn\"."
+      ]
+    },
+    {
+      "h": "Triển khai bằng TypeScript",
+      "body": [
+        "`export` là template method. `format` là một thao tác nguyên thủy mà lớp con phải triển khai, còn `header` là một hook có mặc định để trống.",
+        {
+          "code": "type Row = { name: string; score: number };\n\nabstract class Exporter {\n  // The template method: fixed order of steps\n  export(rows: Row[]): string {\n    if (rows.length === 0) return \"no data\";\n    const lines = [this.header(), this.format(rows), \"rows: \" + rows.length];\n    return lines.filter((line) => line !== \"\").join(\"\\n\");\n  }\n\n  protected abstract format(rows: Row[]): string; // required step\n  protected header(): string { return \"\"; }       // hook: optional step\n}\n\nclass CsvExporter extends Exporter {\n  protected header() { return \"name,score\"; }\n  protected format(rows: Row[]) {\n    return rows.map((r) => r.name + \",\" + r.score).join(\"\\n\");\n  }\n}\n\nclass JsonExporter extends Exporter {\n  protected format(rows: Row[]) {\n    return JSON.stringify(rows);\n  }\n}\n\nconst rows = [{ name: \"Ana\", score: 9 }, { name: \"Ben\", score: 7 }];\nconsole.log(new CsvExporter().export(rows));\n// name,score\n// Ana,9\n// Ben,7\n// rows: 2\nconsole.log(new JsonExporter().export(rows));\n// [{\"name\":\"Ana\",\"score\":9},{\"name\":\"Ben\",\"score\":7}]\n// rows: 2\nconsole.log(new JsonExporter().export([])); // no data",
+          "lang": "typescript"
+        },
+        "Việc kiểm tra dữ liệu rỗng và phần chân trang nằm ở một chỗ duy nhất. Một bộ xuất XML mới chỉ cần triển khai `format` là có sẵn phần còn lại.",
+        {
+          "note": "TypeScript không có từ khóa `final`, nên lớp con vẫn có thể ghi đè `export` và phá vỡ thứ tự cố định. Hãy ghi rõ trong tài liệu rằng template method không được ghi đè, và giữ số bước có thể ghi đè ở mức nhỏ để lớp con dễ viết đúng."
+        }
+      ]
+    },
+    {
+      "h": "Cùng ý tưởng bằng kết hợp (composition)",
+      "body": [
+        "Kế thừa không phải là cách duy nhất. Bạn có thể truyền các bước thay đổi dưới dạng hàm, khiến mẫu này trở thành họ hàng gần của mẫu Strategy và tránh được cây phân cấp lớp:",
+        {
+          "code": "type Row = { name: string; score: number };\ntype Steps = { format: (rows: Row[]) => string; header?: () => string };\n\nfunction exportRows(rows: Row[], steps: Steps): string {\n  if (rows.length === 0) return \"no data\";\n  const lines = [steps.header?.() ?? \"\", steps.format(rows), \"rows: \" + rows.length];\n  return lines.filter((line) => line !== \"\").join(\"\\n\");\n}\n\nconsole.log(exportRows([{ name: \"Ana\", score: 9 }], { format: (r) => r[0].name }));\n// Ana\n// rows: 1",
+          "lang": "typescript"
+        },
+        "Nên dùng dạng này khi các bước nhỏ và bạn không cần trạng thái dùng chung trong lớp cơ sở, hoặc khi một bộ xuất cần kết hợp các bước từ nhiều nguồn."
+      ]
+    },
+    {
+      "h": "Khi nào nên dùng và khi nào không",
+      "body": [
+        {
+          "ul": [
+            "Nên dùng khi nhiều lớp chạy cùng một thuật toán và chỉ khác nhau ở vài bước, và bạn muốn loại bỏ phần mã trùng lặp.",
+            "Nên dùng trong các framework cần kiểm soát thứ tự thao tác nhưng vẫn cho người dùng tùy biến từng bước, như setup và teardown trong kiểm thử.",
+            "Nên dùng hook để cung cấp các điểm mở rộng tùy chọn mà không bắt mọi lớp con phải triển khai.",
+            "Không nên dùng khi các biến thể lớn hoặc cần thay đổi lúc chạy. Mẫu Strategy, dùng kết hợp, linh hoạt hơn.",
+            "Tránh cây phân cấp template method quá sâu. Khi lớp con ghi đè các bước của lớp con của lớp con, luồng chạy trở nên khó theo dõi."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Ứng dụng trong thực tế",
+      "body": [
+        {
+          "ul": [
+            "`AbstractList` của Java: bạn triển khai `get(int)` và `size()`, còn lớp cơ sở cung cấp việc duyệt, `indexOf`, `contains` và nhiều phương thức khác xây dựng trên hai phương thức đó.",
+            "`InputStream` của Java: lớp con triển khai `read()` đọc từng byte, còn lớp cơ sở triển khai `read(byte[], int, int)` bằng cách gọi nó (lớp con có thể ghi đè để chạy nhanh hơn).",
+            "Các framework kiểm thử: JUnit, `unittest` của Python và những framework khác gọi `setUp`, phương thức kiểm thử và `tearDown` theo thứ tự cố định, và bạn ghi đè những bước mình cần.",
+            "Các framework giao diện có phương thức vòng đời, như `componentDidMount` trong lớp component của React, gọi các phương thức của bạn tại những thời điểm cố định trong thuật toán của chúng."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Các mẫu liên quan",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Mẫu",
+              "Khác với mẫu Template Method như thế nào"
+            ],
+            "rows": [
+              [
+                "Strategy",
+                "Strategy thay cả thuật toán bằng kết hợp lúc chạy; Template Method giữ cố định thuật toán và thay đổi từng phần của nó qua kế thừa lúc biên dịch."
+              ],
+              [
+                "Factory Method",
+                "Factory method thường là một trong các bước của template method: bước tạo ra một đối tượng."
+              ],
+              [
+                "Hook function và callback",
+                "Truyền callback vào một thuật toán cố định là phiên bản dựa trên kết hợp của cùng ý tưởng này."
+              ]
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Hook trong mẫu Template Method là gì?",
+      "a": "Hook là một bước có cách triển khai mặc định trong lớp cơ sở, thường không làm gì cả. Lớp con có thể ghi đè để thêm hành vi tại điểm đó, nhưng không bắt buộc."
+    },
+    {
+      "q": "Mẫu Template Method khác mẫu Strategy ở điểm nào?",
+      "a": "Template Method dùng kế thừa: lớp cơ sở sở hữu thuật toán và lớp con ghi đè các bước. Strategy dùng kết hợp: context giao cả thuật toán cho một đối tượng hoặc hàm có thể hoán đổi lúc chạy."
+    },
+    {
+      "q": "Bản thân template method có nên cho ghi đè không?",
+      "a": "Không. Mục đích của nó là cố định thứ tự các bước. Trong Java hoặc C#, bạn có thể đánh dấu nó là `final` hoặc non-virtual; trong TypeScript bạn phải ghi chú trong tài liệu vì không có từ khóa `final`."
+    },
+    {
+      "q": "Mẫu Template Method liên quan thế nào đến mẫu Factory Method?",
+      "a": "Factory Method thường là một dạng chuyên biệt của Template Method: thuật toán của lớp cơ sở có một bước tạo đối tượng, và lớp con quyết định tạo lớp nào."
+    }
+  ]
+}

@@ -16,6 +16,7 @@
   ],
   "url_pattern": "https://cv.cm/{locale}/{tool}/",
   "docs": "https://cv.cm/llms.txt",
+  "ai_backend_note": "The page uses WebGPU with 16-bit floats when the GPU supports them (webgpu_fp16), WebGPU otherwise (webgpu), and WebAssembly on the CPU without WebGPU (cpu). Sizes are model weights; the first AI tool used also loads the ONNX Runtime WebAssembly engine (tens of MB, cached). If a WebGPU run fails, the page retries on the CPU, which also downloads the cpu weights when they are a different file.",
   "categories": [
     {
       "id": "share",
@@ -73,7 +74,22 @@
       "description": "AI cut-out for people, products and pets. Transparent PNG.",
       "category": "ai",
       "url": "https://cv.cm/en/remove-background/",
-      "data_handling": "Downloads an AI model once and runs it on the device. Files are not uploaded."
+      "data_handling": "Downloads an AI model once and runs it on the device. Files are not uploaded.",
+      "ai": {
+        "models": [
+          {
+            "option": null,
+            "model": "cvcm/birefnet-lite-1024",
+            "license": "MIT",
+            "download_bytes": {
+              "webgpu_fp16": 101615014,
+              "webgpu": 180826341,
+              "cpu": 101615014
+            }
+          }
+        ],
+        "options": "Background: Transparent / White / Color / Blur. Format: PNG / JPG / WebP (PNG and WebP keep transparency; JPG has none, so a transparent background exports as white. Picking a non-transparent background while PNG is set switches the format to JPG.) Several photos at once, with Download all (ZIP). No edge, quality or brush controls."
+      }
     },
     {
       "id": "image-upscaler",
@@ -81,7 +97,32 @@
       "description": "Enlarge photos and anime art 2× or 4× with AI.",
       "category": "ai",
       "url": "https://cv.cm/en/image-upscaler/",
-      "data_handling": "Downloads an AI model once and runs it on the device. Files are not uploaded."
+      "data_handling": "Downloads an AI model once and runs it on the device. Files are not uploaded.",
+      "ai": {
+        "models": [
+          {
+            "option": "Style \"Photo\"",
+            "model": "cvcm/realesrgan-general-x4v3",
+            "license": "BSD-3-Clause",
+            "download_bytes": {
+              "webgpu_fp16": 2445084,
+              "webgpu": 4866457,
+              "cpu": 4866457
+            }
+          },
+          {
+            "option": "Style \"Anime / art\"",
+            "model": "cvcm/realesrgan-anime-x4v3",
+            "license": "BSD-3-Clause",
+            "download_bytes": {
+              "webgpu_fp16": 1253243,
+              "webgpu": 2492937,
+              "cpu": 2492937
+            }
+          }
+        ],
+        "options": "Scale: 2× / 4×. Style: \"Photo\" or \"Anime / art\" (Anime / art keeps flat colors and clean lines.) Format: PNG / JPG / WebP. Output is capped at 16 MP."
+      }
     },
     {
       "id": "speech-to-text",
@@ -89,7 +130,32 @@
       "description": "Transcribe audio and video with Whisper. TXT, SRT and VTT.",
       "category": "ai",
       "url": "https://cv.cm/en/speech-to-text/",
-      "data_handling": "Downloads an AI model once and runs it on the device. Files are not uploaded."
+      "data_handling": "Downloads an AI model once and runs it on the device. Files are not uploaded.",
+      "ai": {
+        "models": [
+          {
+            "option": "Model \"Fast\"",
+            "model": "onnx-community/whisper-base",
+            "license": "Apache-2.0",
+            "download_bytes": {
+              "webgpu_fp16": 187195896,
+              "webgpu": 206070497,
+              "cpu": 136161393
+            }
+          },
+          {
+            "option": "Model \"Accurate\"",
+            "model": "onnx-community/whisper-small",
+            "license": "Apache-2.0",
+            "download_bytes": {
+              "webgpu_fp16": 409757083,
+              "webgpu": 585975197,
+              "cpu": 249077005
+            }
+          }
+        ],
+        "options": "Model: \"Fast\" or \"Accurate\" (better for Chinese, Japanese and Korean); the default is \"Accurate\" on a GPU with 16-bit float support and \"Fast\" otherwise. Spoken language: Detect automatically or a chosen language. Output: Same language / Translate to English. Chinese characters (shown only for Chinese audio with \"Same language\"): 简体中文 / 繁體中文 / As written. Export TXT, SRT or VTT. Records from the microphone too. Accepts MP3, WAV, M4A, AAC, OGG, Opus, FLAC, WebM, MP4, MOV and MKV."
+      }
     },
     {
       "id": "depth-map",
@@ -97,7 +163,22 @@
       "description": "Turn a photo into an AI depth map for 3D, parallax and ControlNet.",
       "category": "ai",
       "url": "https://cv.cm/en/depth-map/",
-      "data_handling": "Downloads an AI model once and runs it on the device. Files are not uploaded."
+      "data_handling": "Downloads an AI model once and runs it on the device. Files are not uploaded.",
+      "ai": {
+        "models": [
+          {
+            "option": null,
+            "model": "onnx-community/depth-anything-v2-small",
+            "license": "Apache-2.0",
+            "download_bytes": {
+              "webgpu_fp16": 49642442,
+              "webgpu": 99060839,
+              "cpu": 27258801
+            }
+          }
+        ],
+        "options": "Style: Grayscale / Turbo / Magma. Invert (near = dark). Show the photo beside it. Relative depth, not meters. The PNG matches the photo's size."
+      }
     },
     {
       "id": "watermark",
@@ -889,6 +970,46 @@
       "description": "Calories for 16 activities by weight and time.",
       "category": "text",
       "url": "https://cv.cm/en/calories-burned/",
+      "data_handling": "Runs in the page. Inputs are not uploaded."
+    },
+    {
+      "id": "wheel",
+      "name": "Spin the wheel",
+      "description": "Pick a name or option at random.",
+      "category": "text",
+      "url": "https://cv.cm/en/wheel/",
+      "data_handling": "Runs in the page. Inputs are not uploaded."
+    },
+    {
+      "id": "average",
+      "name": "Average calculator",
+      "description": "Mean, median, mode and standard deviation.",
+      "category": "text",
+      "url": "https://cv.cm/en/average/",
+      "data_handling": "Runs in the page. Inputs are not uploaded."
+    },
+    {
+      "id": "metronome",
+      "name": "Metronome",
+      "description": "BPM, beats per bar and tap tempo.",
+      "category": "text",
+      "url": "https://cv.cm/en/metronome/",
+      "data_handling": "Runs in the page. Inputs are not uploaded."
+    },
+    {
+      "id": "keyboard-test",
+      "name": "Keyboard tester",
+      "description": "See which keys work.",
+      "category": "text",
+      "url": "https://cv.cm/en/keyboard-test/",
+      "data_handling": "Runs in the page. Inputs are not uploaded."
+    },
+    {
+      "id": "zodiac",
+      "name": "Zodiac sign finder",
+      "description": "Star sign and Chinese zodiac from a birthday.",
+      "category": "text",
+      "url": "https://cv.cm/en/zodiac/",
       "data_handling": "Runs in the page. Inputs are not uploaded."
     },
     {

@@ -1,0 +1,154 @@
+{
+  "title": "Visitor pattern: double dispatch and AST visitors in TypeScript — cv.cm",
+  "description": "The Visitor pattern adds operations to a class hierarchy without changing its classes. Learn double dispatch, TypeScript code and the union-type alternative.",
+  "h1": "Visitor pattern explained with examples",
+  "answer": "Visitor is a behavioral design pattern that lets you add new operations to a group of related classes without changing those classes. Each operation is written as a visitor object with one method per element type, and each element has an `accept(visitor)` method that calls the matching visitor method. This technique, called double dispatch, picks the code to run based on both the element type and the visitor type. Compilers, linters and code transformers use visitors to walk syntax trees.",
+  "sections": [
+    {
+      "h": "Intent and the problem it solves",
+      "body": [
+        "Intent: represent an operation to be performed on the elements of an object structure. Visitor lets you define a new operation without changing the classes of the elements on which it operates. It is one of the behavioral patterns in the Gang of Four (GoF) book.",
+        "Suppose a drawing program has three shape classes: `Circle`, `Rectangle` and `Group`. Over time you need many operations on them: compute the total area, export to SVG, export to JSON, count the shapes, check for overlaps. If every operation becomes a method on every shape class, the shape classes grow with code that has nothing to do with being a shape, and every new operation touches all of them.",
+        "With Visitor, each operation becomes one class (an area visitor, an SVG visitor) that contains the code for every shape type. The shapes only need one generic method, `accept`. Adding an operation means writing one new visitor; the shape classes stay unchanged."
+      ]
+    },
+    {
+      "h": "Structure and participants",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Role",
+              "Responsibility"
+            ],
+            "rows": [
+              [
+                "Visitor",
+                "Interface with one visit method per concrete element type, such as `visitCircle` and `visitRectangle`"
+              ],
+              [
+                "Concrete visitor",
+                "Implements one operation for all element types and may collect a result"
+              ],
+              [
+                "Element",
+                "Interface with an `accept(visitor)` method"
+              ],
+              [
+                "Concrete element",
+                "Implements `accept` by calling the visit method for its own type, passing itself"
+              ],
+              [
+                "Object structure",
+                "A collection or tree of elements, such as a document or a syntax tree, that visitors walk over"
+              ]
+            ]
+          }
+        },
+        "Why `accept` is needed: in TypeScript, Java and C#, a method call chooses its implementation from the type of the object it is called on (single dispatch). The `accept` call dispatches on the element type, and the call inside it, such as `visitor.visitCircle(this)`, dispatches on the visitor type. Together they form double dispatch."
+      ]
+    },
+    {
+      "h": "TypeScript implementation",
+      "body": [
+        "The visitor interface is generic in its return type, so one visitor can compute numbers and another can produce strings.",
+        {
+          "code": "interface ShapeVisitor<R> {\n  visitCircle(c: Circle): R;\n  visitRectangle(r: Rectangle): R;\n  visitGroup(g: Group): R;\n}\ninterface Shape {\n  accept<R>(visitor: ShapeVisitor<R>): R;\n}\n\nclass Circle implements Shape {\n  constructor(readonly radius: number) {}\n  accept<R>(v: ShapeVisitor<R>) { return v.visitCircle(this); }\n}\nclass Rectangle implements Shape {\n  constructor(readonly width: number, readonly height: number) {}\n  accept<R>(v: ShapeVisitor<R>) { return v.visitRectangle(this); }\n}\nclass Group implements Shape {\n  constructor(readonly children: Shape[]) {}\n  accept<R>(v: ShapeVisitor<R>) { return v.visitGroup(this); }\n}\n\nclass AreaVisitor implements ShapeVisitor<number> {\n  visitCircle(c: Circle) { return Math.PI * c.radius ** 2; }\n  visitRectangle(r: Rectangle) { return r.width * r.height; }\n  visitGroup(g: Group): number {\n    return g.children.reduce((sum, child) => sum + child.accept(this), 0);\n  }\n}\n\nclass SvgVisitor implements ShapeVisitor<string> {\n  visitCircle(c: Circle) { return '<circle r=\"' + c.radius + '\"/>'; }\n  visitRectangle(r: Rectangle) { return '<rect width=\"' + r.width + '\" height=\"' + r.height + '\"/>'; }\n  visitGroup(g: Group): string { return \"<g>\" + g.children.map((c) => c.accept(this)).join(\"\") + \"</g>\"; }\n}\n\nconst drawing = new Group([new Circle(1), new Rectangle(2, 3), new Group([new Rectangle(1, 1)])]);\nconsole.log(drawing.accept(new AreaVisitor()).toFixed(2)); // 10.14\nconsole.log(drawing.accept(new SvgVisitor()));\n// <g><circle r=\"1\"/><rect width=\"2\" height=\"3\"/><g><rect width=\"1\" height=\"1\"/></g></g>",
+          "lang": "typescript"
+        },
+        "A third operation, such as counting shapes, would be a new class implementing `ShapeVisitor<number>`. None of the shape classes would change.",
+        {
+          "note": "Visitor makes adding operations easy but adding element types hard. A new shape class, such as `Triangle`, requires a new method in the visitor interface and in every existing visitor. Use the pattern when the set of element types is stable and the set of operations keeps growing."
+        }
+      ]
+    },
+    {
+      "h": "The TypeScript alternative: union types and switch",
+      "body": [
+        "In TypeScript, a discriminated union with an exhaustive `switch` gives many of the same benefits with less code. The compiler reports an error if a case is missing, which replaces the safety that the visitor interface provides:",
+        {
+          "code": "type Shape =\n  | { kind: \"circle\"; radius: number }\n  | { kind: \"rect\"; width: number; height: number }\n  | { kind: \"group\"; children: Shape[] };\n\nfunction area(s: Shape): number {\n  switch (s.kind) {\n    case \"circle\": return Math.PI * s.radius ** 2;\n    case \"rect\": return s.width * s.height;\n    case \"group\": return s.children.reduce((sum, c) => sum + area(c), 0);\n    default: {\n      const unreachable: never = s; // compile error if a kind is not handled\n      return unreachable;\n    }\n  }\n}\n\nconsole.log(area({ kind: \"group\", children: [{ kind: \"rect\", width: 2, height: 3 }] })); // 6",
+          "lang": "typescript"
+        },
+        "Each new operation is a new function. This style fits plain data, such as JSON or syntax trees, and is what many TypeScript code bases use instead of class-based visitors."
+      ]
+    },
+    {
+      "h": "When to use it and when not to",
+      "body": [
+        {
+          "ul": [
+            "Use it when you have a stable set of element classes and need many unrelated operations on them, such as evaluation, printing, type checking and optimization on a syntax tree.",
+            "Use it to keep operation code together: all of the SVG export lives in one visitor, not spread over many classes.",
+            "Use it when a visitor needs to accumulate state while walking a structure, such as a symbol table or a running total.",
+            "Do not use it when element types change often; every change ripples through all visitors.",
+            "Do not use it when the elements are few and the operations are simple. Methods on the classes, or a function with a `switch`, are easier to read.",
+            "Be aware that visitors usually need access to element data, which can push you to make fields public."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Real-world uses",
+      "body": [
+        {
+          "ul": [
+            "Babel plugins are visitors: an object with methods named after node types, such as `Identifier` or `CallExpression`, which `@babel/traverse` calls while walking the syntax tree.",
+            "ESLint rules return an object of visitor methods keyed by node type, and ESLint calls them during traversal.",
+            "Python's `ast.NodeVisitor` and `ast.NodeTransformer` classes call `visit_` methods named after the node class, such as `visit_Name`.",
+            "Java's `java.nio.file.FileVisitor`, used with `Files.walkFileTree`, receives callbacks for each directory and file in a file tree."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Related patterns",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Pattern",
+              "How it relates to Visitor"
+            ],
+            "rows": [
+              [
+                "Composite",
+                "Visitors are often applied to Composite structures; a group's visit method visits its children, as in the example."
+              ],
+              [
+                "Interpreter",
+                "An interpreter evaluates a syntax tree; a visitor can implement that evaluation, plus other operations on the same tree."
+              ],
+              [
+                "Iterator",
+                "An iterator walks the elements; a visitor defines the operation on each element. They can be combined."
+              ],
+              [
+                "Strategy",
+                "A strategy varies one algorithm for one context; a visitor bundles one operation for many element types."
+              ]
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "What is double dispatch?",
+      "a": "Double dispatch means the code that runs depends on the types of two objects. In Visitor, `element.accept(visitor)` selects the element type, and `visitor.visitX(this)` inside it selects the visitor type."
+    },
+    {
+      "q": "When should I not use the Visitor pattern?",
+      "a": "Avoid it when new element types are added often, because each new type requires changes in every visitor. It also adds ceremony that is not worth it for a few simple operations."
+    },
+    {
+      "q": "Is Visitor useful in TypeScript?",
+      "a": "It is useful for class-based object structures. For plain data, a discriminated union with an exhaustive `switch` usually achieves the same result with less code and full type checking."
+    },
+    {
+      "q": "Why do Babel and ESLint use visitors?",
+      "a": "Both work on syntax trees with many node types and support many independent plugins or rules. Visitors let each plugin or rule handle only the node types it cares about, while the tool handles the traversal."
+    }
+  ]
+}

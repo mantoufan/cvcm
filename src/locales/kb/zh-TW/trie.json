@@ -1,0 +1,161 @@
+{
+  "title": "字典樹（Trie，前綴樹）圖解：插入、搜尋與 Python 自動完成 — cv.cm",
+  "description": "字典樹（前綴樹）如何以共用前綴儲存字串：以 Python 實作插入、搜尋、starts-with 與自動完成，並說明複雜度與變體。",
+  "h1": "字典樹（Trie，前綴樹）教學：原理、程式碼與時間複雜度",
+  "answer": "字典樹（trie），又稱前綴樹，是一種逐字元儲存字串的樹：每條邊代表一個字元，從根節點出發的每條路徑都拼出一個前綴。共用前綴的單字會共用相同的節點，並以一個旗標標記完整單字的結尾。插入或查找長度為 m 的單字只需 O(m) 時間，與已儲存的單字數量無關，而且要找出所有具有某個前綴的單字也很快。字典樹是自動完成、拼字檢查與 IP 路由表的核心。",
+  "sections": [
+    {
+      "h": "字典樹解決什麼問題",
+      "body": [
+        "雜湊集合能快速回答「這個單字是否被儲存？」，但如果不逐一檢查每個單字，就無法回答「哪些已儲存的單字以 `pre` 開頭？」。排序串列可以用二分搜尋回答前綴查詢，但插入很慢。字典樹是依前綴組織的，所以前綴相關的問題正是它的強項：搜尋框的自動完成、文字遊戲、拼字檢查，以及網路路由的最長前綴匹配。"
+      ]
+    },
+    {
+      "h": "用白話理解",
+      "body": [
+        "想像手機通訊錄，你一次輸入一個字母來縮小範圍。輸入 `c` 會顯示所有 c 開頭的人，輸入 `ca` 再縮小範圍，依此類推。字典樹儲存單字的形狀正是如此。根節點代表空前綴。每個節點都有一個從下一個字元對應到子節點的映射，外加一個單字結尾旗標，因為像 `car` 這樣的單字，既可以是完整的單字，也可以是 `cart` 的前綴。"
+      ]
+    },
+    {
+      "h": "實例演練：插入 car、cart、cat 與 dog",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "插入",
+              "重複使用的節點",
+              "新建立的節點",
+              "標記單字結尾的位置"
+            ],
+            "rows": [
+              [
+                "`car`",
+                "無",
+                "c, a, r",
+                "r（路徑 car）"
+              ],
+              [
+                "`cart`",
+                "c, a, r",
+                "t",
+                "t（路徑 cart）"
+              ],
+              [
+                "`cat`",
+                "c, a",
+                "t（a 的新子節點）",
+                "t（路徑 cat）"
+              ],
+              [
+                "`dog`",
+                "無",
+                "d, o, g",
+                "g（路徑 dog）"
+              ]
+            ]
+          }
+        },
+        "這四個單字共有 13 個字母，但根節點底下只需要 8 個節點（c, a, r, t, t, d, o, g），因為 `car`、`cart` 和 `cat` 共用了 `ca`。搜尋 `ca` 會走過兩個節點，作為前綴是成功的，但 `ca` 不是單字，因為它的節點沒有被標記為結尾。搜尋 `cow` 會在第二步失敗：節點 c 沒有子節點 o。"
+      ]
+    },
+    {
+      "h": "Python 實作",
+      "body": [
+        "每個節點保存一個子節點的 `dict`，能處理包括 Unicode 在內的任何字母表。`starts_with` 方法會收集某個前綴底下的所有單字，這是自動完成的核心。",
+        {
+          "code": "class TrieNode:\n    __slots__ = (\"children\", \"is_word\")\n    def __init__(self):\n        self.children = {}\n        self.is_word = False\nclass Trie:\n    def __init__(self):\n        self.root = TrieNode()\n    def insert(self, word):\n        node = self.root\n        for ch in word:\n            node = node.children.setdefault(ch, TrieNode())\n        node.is_word = True\n    def _find(self, prefix):\n        node = self.root\n        for ch in prefix:\n            node = node.children.get(ch)\n            if node is None:\n                return None\n        return node\n    def contains(self, word):\n        node = self._find(word)\n        return node is not None and node.is_word\n    def starts_with(self, prefix):\n        node, out = self._find(prefix), []\n        stack = [(node, prefix)] if node else []\n        while stack:\n            node, path = stack.pop()\n            if node.is_word:\n                out.append(path)\n            for ch, child in node.children.items():\n                stack.append((child, path + ch))\n        return sorted(out)",
+          "lang": "python"
+        },
+        {
+          "code": "t = Trie()\nfor w in [\"car\", \"cart\", \"cat\", \"dog\"]:\n    t.insert(w)\nprint(t.contains(\"car\"), t.contains(\"ca\"))  # True False\nprint(t.starts_with(\"ca\"))                  # ['car', 'cart', 'cat']\nprint(t.starts_with(\"x\"))                   # []",
+          "lang": "python"
+        },
+        "`starts_with` 會將輸出排序，以得到穩定的順序。真正的自動完成還會在前幾筆結果之後就停止並加以排名，例如依儲存的熱門程度計數排序。"
+      ]
+    },
+    {
+      "h": "時間與空間複雜度",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "操作",
+              "時間",
+              "原因"
+            ],
+            "rows": [
+              [
+                "插入長度為 m 的單字",
+                "O(m)",
+                "每個字元一步"
+              ],
+              [
+                "搜尋單字或檢查前綴",
+                "O(m)",
+                "每個字元一次字典查找"
+              ],
+              [
+                "列出某前綴底下的全部 k 個單字",
+                "O(m + 子樹大小)",
+                "先走到該前綴，再拜訪它底下的每個節點"
+              ],
+              [
+                "刪除單字",
+                "O(m)",
+                "取消結尾標記，再視需要修剪空節點"
+              ],
+              [
+                "空間",
+                "O(儲存的字元總數)",
+                "最差情況是完全沒有共用時每個字元一個節點"
+              ]
+            ]
+          }
+        },
+        "時間與單字數量 n 無關，這是它相對於字串平衡樹（O(m log n) 次比較）的主要優勢。代價是記憶體：每個節點都是帶有自己字典的獨立物件，所以字典樹的記憶體用量可能是原始字串的許多倍。"
+      ]
+    },
+    {
+      "h": "變體與常見錯誤",
+      "body": [
+        {
+          "ul": [
+            "陣列式子節點：針對小寫英文字母使用固定的 26 格陣列。比 `dict` 快，但對稀疏或大型字母表很浪費。",
+            "壓縮字典樹（基數樹 radix tree、Patricia trie）：把單一子節點的連續鏈合併成一條以字串標示的邊，能省下大量記憶體。基數樹被用在 IP 路由表和某些 HTTP 路由器中。",
+            "三元搜尋樹（ternary search tree）：每個節點有三個子節點（小於、等於、大於），比寬陣列更省記憶體。",
+            "計數字典樹：在每個節點存放計數器，就能在 O(m) 內回答「有多少單字以這個前綴開頭？」。",
+            "位元字典樹：逐位元儲存數字，用來解決最大 XOR 的問題。"
+          ]
+        },
+        {
+          "note": "最常見的 bug 是忘了單字結尾旗標。少了它，插入 `cart` 後 `contains(\"car\")` 就會回傳 True，即使從未插入過 `car`。第二個常見的 bug 是刪除了仍被較長單字需要的節點。"
+        }
+      ]
+    },
+    {
+      "h": "何時使用字典樹，以及常見的面試題",
+      "body": [
+        "當你需要前綴查詢、最長前綴匹配，或要對許多帶有共用前綴的字串做有序迭代時，請使用字典樹。如果只需要精確比對的查找，請用 `set` 或 `dict`：在 Python 中它更簡單，也更省記憶體。對於小型、不變動的單字清單，搭配 `bisect` 模組的排序串列也能很好地回答前綴查詢。",
+        "常見題目：實作字典樹（插入、搜尋、starts-with）、在網格中搜尋多個目標單字、把單字替換成它最短的字根、最長共同前綴、設計搜尋自動完成系統，以及用位元字典樹求兩數的最大 XOR。"
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "為什麼叫 trie？",
+      "a": "這個名稱取自 retrieval（檢索）這個字的中間部分。Edward Fredkin 在 1960 年的一篇論文中創造了這個詞。許多人把它唸成 try，以便與 tree 區分。"
+    },
+    {
+      "q": "字典樹比雜湊表快嗎？",
+      "a": "對於精確查找，兩者的時間都與單字長度成正比，而 Python 的 `dict` 通常更快也更小。需要前綴搜尋、排序迭代或最長前綴匹配時，字典樹才佔優勢。"
+    },
+    {
+      "q": "字典樹會用掉多少記憶體？",
+      "a": "最差情況是每個儲存的字元一個節點。共用前綴能減少用量，而壓縮字典樹（基數樹）透過合併單一子節點的鏈，可以進一步減少。"
+    },
+    {
+      "q": "字典樹和基數樹有什麼差別？",
+      "a": "基數樹是壓縮過的字典樹：任何只有單一子節點的節點鏈都會被合併成一個節點，其邊上保存整個子字串。查找的方式相同，但需要的節點更少。"
+    }
+  ]
+}

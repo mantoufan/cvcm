@@ -1,0 +1,210 @@
+{
+  "title": "F#入門：型・パターンマッチ・パイプライン・.NETを解説 — cv.cm",
+  "description": "F#の基本を順に学べる入門講座。.NET SDKのインストール、dotnet fsiによるスクリプトの実行、let束縛、リスト、レコード、判別共用体、パターンマッチ、Resultを解説します。",
+  "h1": "F#入門：初心者向けチュートリアル",
+  "answer": "F#は、.NET向けの関数型を第一とする静的型付け言語です。ほとんどの型を推論してくれ、波かっこの代わりにインデントを使い、イミュータブルなデータ、パターンマッチ、パイプライン演算子`|>`を普通の書き方としつつ、.NETライブラリにもすべてアクセスできます。.NET SDKをインストールし、`dotnet fsi hello.fsx`でスクリプトを実行します。",
+  "sections": [
+    {
+      "h": "F#とは何か、誰が使うのか",
+      "body": [
+        "F#はMicrosoft ResearchのDon Symeが設計した言語で、現在はMicrosoftとF# Software Foundationのコミュニティが保守するオープンソースの言語です。(OCamlなどと同じ)ML系の言語に属し、Windows、macOS、Linuxの.NET上で動きます。",
+        "F#は、金融モデリング、データ分析、ドメインの比重が大きい業務ロジック、Webバックエンド、スクリプトに使われています。C#と同じ.NETの中間言語にコンパイルされるため、F#のプロジェクトはどのNuGetパッケージも使え、C#のコードから呼び出すこともできます。"
+      ]
+    },
+    {
+      "h": "F#のインストールとhello, worldの実行",
+      "body": [
+        "Microsoftから.NET SDKをインストールします。F#は含まれているので、別にインストールする必要はありません。ちょっと試すだけなら、拡張子`.fsx`のスクリプトファイルを書き、F# Interactive(`dotnet fsi`)で実行します。",
+        {
+          "code": "// hello.fsx\nprintfn \"Hello, world!\"",
+          "lang": "fsharp"
+        },
+        {
+          "code": "dotnet fsi hello.fsx\n# Hello, world!\ndotnet new console -lang \"F#\" -o HelloApp\ncd HelloApp\ndotnet run",
+          "lang": "shell"
+        },
+        "2つ目のコマンド群は、`.fsproj`ファイルと`Program.fs`を持つ本格的なコンソールプロジェクトを作ります。プロジェクトでは、`.fsproj`に列挙するファイルの順序が重要です。ファイルは、それより上にあるファイルのコードしか使えません。"
+      ]
+    },
+    {
+      "h": "値と基本の型",
+      "body": [
+        "`let`は名前を値に束縛します。束縛は、`mutable`と指定しない限りイミュータブルです。変更可能にした場合は、`=`ではなく`<-`で変更します。",
+        {
+          "table": {
+            "head": [
+              "型",
+              "例",
+              "補足"
+            ],
+            "rows": [
+              [
+                "int",
+                "`42`",
+                "32ビット整数"
+              ],
+              [
+                "float",
+                "`3.14`",
+                "64ビット浮動小数点数(.NETの`double`)"
+              ],
+              [
+                "decimal",
+                "`19.99m`",
+                "正確な10進数。金額に向いています"
+              ],
+              [
+                "string",
+                "`\"hello\"`",
+                "変更できない.NETの文字列"
+              ],
+              [
+                "char",
+                "`'a'`",
+                "1文字"
+              ],
+              [
+                "bool",
+                "`true`, `false`",
+                "論理値"
+              ],
+              [
+                "unit",
+                "`()`",
+                "「値なし」。`void`のようなもの"
+              ]
+            ]
+          }
+        },
+        {
+          "code": "let name = \"Ana\"\nlet age = 30\nlet mutable count = 0\ncount <- count + 1\nprintfn \"%s is %d, count = %d\" name age count\n// Ana is 30, count = 1\nlet total = float age + 0.5   // explicit conversion needed",
+          "lang": "fsharp"
+        },
+        "F#は数値を暗黙に変換しません。`1 + 2.0`はコンパイルエラーです。`float`、`int`、`string`などの関数で変換してください。"
+      ]
+    },
+    {
+      "h": "制御構文と関数",
+      "body": [
+        "`if`は値を返す式なので、2つの分岐は同じ型でなければなりません。ループ(`for`、`while`)もありますが、ほとんどのコードはコレクションの関数を使います。",
+        {
+          "code": "let sign n =\n    if n > 0 then \"positive\"\n    elif n < 0 then \"negative\"\n    else \"zero\"\nfor i in 1 .. 3 do\n    printfn \"%d squared is %d\" i (i * i)\nlet add x y = x + y          // int -> int -> int\nlet add5 = add 5             // partial application\nprintfn \"%d\" (add5 10)       // 15\nlet square = fun x -> x * x\n[1; 2; 3; 4]\n|> List.filter (fun x -> x % 2 = 0)\n|> List.map square\n|> printfn \"%A\"              // [4; 16]",
+          "lang": "fsharp"
+        },
+        "引数はカンマではなく空白で区切ります。どの関数も一度に1つの引数を受け取り(カリー化)、`add 5`は新しい関数を返します。パイプライン演算子`x |> f`は`f x`を意味し、データの変換を上から下へ書けます。インデントには意味があります。関数やループの本体は、その下にインデントして書かなければなりません。"
+      ]
+    },
+    {
+      "h": "コレクション・レコード・オプション",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "コレクション",
+              "リテラル",
+              "補足"
+            ],
+            "rows": [
+              [
+                "List",
+                "`[1; 2; 3]`",
+                "イミュータブルな連結リスト。デフォルトの選択肢です"
+              ],
+              [
+                "Array",
+                "`[| 1; 2; 3 |]`",
+                "固定サイズで、要素は変更可能。添字アクセスが高速です"
+              ],
+              [
+                "Sequence",
+                "`seq { 1 .. 10 }`",
+                "遅延評価で、必要になったときに計算されます"
+              ],
+              [
+                "Map",
+                "`Map [\"a\", 1; \"b\", 2]`",
+                "イミュータブルな辞書"
+              ],
+              [
+                "Set",
+                "`set [1; 2; 2]`",
+                "重複のない値のイミュータブルな集合"
+              ]
+            ]
+          }
+        },
+        {
+          "code": "type Person = { Name: string; Age: int }\nlet ana = { Name = \"Ana\"; Age = 30 }\nlet older = { ana with Age = 31 }       // copy with one change\nlet people = [ ana; { Name = \"Ben\"; Age = 17 } ]\nlet adult = people |> List.tryFind (fun p -> p.Age >= 18)\nmatch adult with\n| Some p -> printfn \"First adult: %s\" p.Name\n| None -> printfn \"No adults\"\n// First adult: Ana",
+          "lang": "fsharp"
+        },
+        "レコードは、名前付きフィールドと構造的等価性を持つイミュータブルな型です。F#は、自前の型にnullを持ちません。値がない場合は`Option`で表し、`Some value`か`None`です。`List.tryFind`などの関数はオプションを返し、コンパイラが両方のケースの処理を強制します。"
+      ]
+    },
+    {
+      "h": "特徴的な機能：判別共用体とパターンマッチ",
+      "body": [
+        "判別共用体は、名前付きの複数のケースのうちちょうど1つであり、各ケースが独自のデータを持つ値を表します。`match`でケースを調べ、書き忘れがあるとコンパイラが警告します。",
+        {
+          "code": "type Shape =\n    | Circle of radius: float\n    | Rectangle of width: float * height: float\nlet area shape =\n    match shape with\n    | Circle r -> System.Math.PI * r * r\n    | Rectangle (w, h) -> w * h\n[ Circle 1.0; Rectangle (2.0, 3.0) ]\n|> List.map area\n|> List.iter (printfn \"%.2f\")\n// 3.14\n// 6.00",
+          "lang": "fsharp"
+        },
+        "ほかによく知られた機能に、型推論(型注釈をほとんど書きません)、単位の扱い(`float<m>`は`float<s>`に足せません)、非同期コード向けの`task { ... }`や`async { ... }`といった計算式があります。"
+      ]
+    },
+    {
+      "h": "エラー処理",
+      "body": [
+        "想定内の失敗には、F#らしく`Result`(`Ok value`または`Error info`)を返します。想定外の失敗には、`try ... with`、`failwith`、`raise`で.NETの例外が使えます。",
+        {
+          "code": "let parseAge (s: string) =\n    match System.Int32.TryParse(s) with\n    | true, n when n >= 0 -> Ok n\n    | true, _ -> Error \"Age must not be negative\"\n    | false, _ -> Error \"Not a number\"\nmatch parseAge \"abc\" with\n| Ok n -> printfn \"Age %d\" n\n| Error msg -> printfn \"Error: %s\" msg\n// Error: Not a number\nlet safeDivide a b =\n    try Some (a / b)\n    with :? System.DivideByZeroException -> None\nprintfn \"%A\" (safeDivide 10 0)   // None",
+          "lang": "fsharp"
+        },
+        "`TryParse`は.NETでは`out`パラメーターを持ちますが、F#ではタプル`(success, value)`に変換されるので、直接マッチできます。"
+      ]
+    },
+    {
+      "h": "小さな完成プログラム：単語の出現頻度",
+      "body": [
+        {
+          "code": "let text = \"the cat and the hat and the bat\"\ntext.Split(' ')\n|> Array.countBy id\n|> Array.sortByDescending snd\n|> Array.truncate 2\n|> Array.iter (fun (word, n) -> printfn \"%s %d\" word n)\n// the 3\n// and 2",
+          "lang": "fsharp"
+        },
+        "`Array.countBy id`は同じ単語をまとめて`(word, count)`のペアを返します。`snd`は並べ替えのために各ペアの2番目の要素を取り出し、結果はタプルを分解するラムダで出力されます。",
+        {
+          "note": "初心者がよくやる間違い：`[1, 2, 3]`と書く(これはタプルを1つ含むリストです。`[1; 2; 3]`とセミコロンを使います)、変更可能な値の変更に`=`を使う(`=`は比較で、`<-`が代入です)、`add x y`と定義した関数を`add(1, 2)`で呼ぶ、変換せずに`int`と`float`を混ぜる、`.fsproj`でファイルの順序を間違える、などです。"
+        }
+      ]
+    },
+    {
+      "h": "次に学ぶこと",
+      "body": [
+        {
+          "ul": [
+            "Microsoft Learn：「Tour of F#」と言語リファレンスを含むF#のドキュメント。",
+            "`dotnet fsi`で練習する。コードを貼り付けるとすぐに結果が見えます。入力の終わりは`;;`です。",
+            "`List`、`Array`、`Seq`、`Option`、`Result`の各モジュールを覚える。日常のコードの大半はこれらで作られます。",
+            "基本に慣れたら、NuGetにあるF#のWebフレームワークやライブラリを見てみる。"
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "F#はWindows専用ですか？",
+      "a": "いいえ。F#はクロスプラットフォームの.NET上で動くので、Windows、macOS、Linuxでプログラムをビルドして実行できます。"
+    },
+    {
+      "q": "F#とC#の違いは何ですか？",
+      "a": "どちらも.NET上で動き、同じライブラリを使えます。C#はオブジェクト指向を第一に関数型の機能を加えた言語で、F#は関数型を第一に、イミュータブルなデータ、型推論、パターンマッチをデフォルトにした言語です。"
+    },
+    {
+      "q": "F#の|>は何を意味しますか？",
+      "a": "`x |> f`はパイプライン演算子で、`f x`を意味します。左の値を右の関数の最後の引数として渡すので、変換の連なりを上から下へ読めます。"
+    },
+    {
+      "q": "F#はOCamlと関係がありますか？",
+      "a": "はい。F#はML系に属し、中核の構文はOCamlに近いのですが、.NET向けに作られていて、デフォルトでインデントに意味があり、計算式などの独自の機能を持ちます。"
+    }
+  ]
+}

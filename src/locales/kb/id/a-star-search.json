@@ -1,0 +1,201 @@
+{
+  "title": "Algoritma A* search: heuristik, pathfinding pada grid, dan kode Python — cv.cm",
+  "description": "Pelajari A* search: cara f = g + h mengarahkan pathfinding ke tujuan, heuristik admissible, contoh grid, kode Python heapq, dan kompleksitas.",
+  "h1": "Penjelasan algoritma A* search: cara kerja, kode, dan kompleksitas",
+  "answer": "A* search menemukan jalur terpendek dari node awal ke satu node tujuan dengan menggabungkan biaya sejauh ini, g(n), dengan estimasi biaya yang tersisa, h(n). Ia selalu memperluas node dengan f(n) = g(n) + h(n) terkecil. Jika heuristiknya tidak pernah melebihi biaya sisa yang sebenarnya, A* dijamin menghasilkan jalur optimal, dan heuristik yang baik membuatnya menjelajah jauh lebih sedikit node daripada algoritma Dijkstra.",
+  "sections": [
+    {
+      "h": "Masalah yang diselesaikan A*",
+      "body": [
+        "Algoritma Dijkstra memperluas node dalam lingkaran jarak yang makin besar ke segala arah, termasuk arah yang menjauhi tujuan. Bila Anda tahu letak tujuan, itu kerja yang sia-sia. A* menambahkan heuristik, yaitu estimasi jarak yang masih harus ditempuh, sehingga pencarian tertarik ke arah tujuan. Inilah algoritma standar untuk pathfinding di game, robotika, dan peta.",
+        "A* dijelaskan oleh Peter Hart, Nils Nilsson, dan Bertram Raphael pada 1968 dalam \"A Formal Basis for the Heuristic Determination of Minimum Cost Paths\"."
+      ]
+    },
+    {
+      "h": "Ide dasar dengan kata-kata sederhana",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Simbol",
+              "Arti"
+            ],
+            "rows": [
+              [
+                "g(n)",
+                "Biaya jalur terbaik yang diketahui dari node awal ke n."
+              ],
+              [
+                "h(n)",
+                "Estimasi heuristik biaya dari n ke tujuan."
+              ],
+              [
+                "f(n) = g(n) + h(n)",
+                "Estimasi biaya jalur penuh termurah yang melewati n. Open set diurutkan berdasarkan f."
+              ]
+            ]
+          }
+        },
+        {
+          "ol": [
+            "Masukkan node awal ke priority queue (open set) dengan g = 0 dan f = h(start).",
+            "Ambil node dengan f terkecil. Jika itu tujuan, rekonstruksi jalur dan berhenti.",
+            "Untuk setiap tetangga, hitung g sementara = g(current) + biaya edge. Jika lebih baik daripada g tetangga yang diketahui, catat, set parent, lalu masukkan tetangga dengan f = g + h.",
+            "Jika open set menjadi kosong, tidak ada jalur."
+          ]
+        },
+        "Dengan h(n) = 0 untuk setiap node, A* persis menjadi algoritma Dijkstra. Dengan heuristik sempurna, ia berjalan lurus mengikuti jalur optimal."
+      ]
+    },
+    {
+      "h": "Memilih heuristik",
+      "body": [
+        "Heuristik disebut admissible jika tidak pernah melebihi biaya sisa yang sebenarnya. Heuristik disebut consistent (atau monotone) jika `h(n) <= cost(n, m) + h(m)` untuk setiap edge n → m. Heuristik consistent juga admissible, dan dengannya setiap node hanya perlu diperluas sekali.",
+        {
+          "table": {
+            "head": [
+              "Gerakan",
+              "Heuristik",
+              "Rumus"
+            ],
+            "rows": [
+              [
+                "4 arah pada grid, biaya 1",
+                "Jarak Manhattan",
+                "`abs(dx) + abs(dy)`"
+              ],
+              [
+                "8 arah, diagonal berbiaya 1",
+                "Jarak Chebyshev",
+                "`max(abs(dx), abs(dy))`"
+              ],
+              [
+                "8 arah, diagonal berbiaya √2",
+                "Jarak octile",
+                "`max(dx, dy) + (sqrt(2) - 1) * min(dx, dy)` dengan dx, dy bernilai absolut"
+              ],
+              [
+                "Arah bebas, garis lurus",
+                "Jarak Euclidean",
+                "`sqrt(dx * dx + dy * dy)`"
+              ]
+            ]
+          }
+        },
+        {
+          "note": "Heuristik yang melebihi biaya sebenarnya, misalnya jarak Manhattan pada grid yang mengizinkan gerakan diagonal, dapat membuat A* mengembalikan jalur yang bukan terpendek. Mengalikan h dengan bobot lebih dari 1 (weighted A*) kadang sengaja dilakukan: lebih cepat tetapi hanya menjamin jalur yang paling banyak sepanjang faktor itu dari optimal."
+        }
+      ]
+    },
+    {
+      "h": "Implementasi Python pada grid",
+      "body": [
+        "Grid di bawah ini punya 5 baris dan 7 kolom; `#` menandai dinding di kolom 5. Sel ditulis `(row, column)`. Gerakan ke atas, bawah, kiri, dan kanan dengan biaya 1, sehingga jarak Manhattan admissible dan consistent.",
+        {
+          "code": "import heapq\ndef a_star(grid, start, goal):\n    rows, cols = len(grid), len(grid[0])\n    h = lambda p: abs(p[0] - goal[0]) + abs(p[1] - goal[1])\n    g = {start: 0}\n    parent = {start: None}\n    open_heap = [(h(start), start)]\n    while open_heap:\n        f, cur = heapq.heappop(open_heap)\n        if cur == goal:\n            path = []\n            while cur is not None:\n                path.append(cur)\n                cur = parent[cur]\n            return path[::-1]\n        if f > g[cur] + h(cur):\n            continue                      # outdated entry\n        r, c = cur\n        for nb in ((r + 1, c), (r - 1, c), (r, c + 1), (r, c - 1)):\n            if 0 <= nb[0] < rows and 0 <= nb[1] < cols and grid[nb[0]][nb[1]] != \"#\":\n                ng = g[cur] + 1\n                if ng < g.get(nb, float(\"inf\")):\n                    g[nb] = ng\n                    parent[nb] = cur\n                    heapq.heappush(open_heap, (ng + h(nb), nb))\n    return None\ngrid = [\".......\",\n        \".....#.\",\n        \".....#.\",\n        \".....#.\",\n        \".......\"]\npath = a_star(grid, (2, 3), (2, 6))\nprint(len(path) - 1, path)\n# 7 [(2, 3), (2, 4), (1, 4), (0, 4), (0, 5), (0, 6), (1, 6), (2, 6)]",
+          "lang": "python"
+        }
+      ]
+    },
+    {
+      "h": "Contoh langkah demi langkah",
+      "body": [
+        "Pada grid di atas, titik awal (2, 3) berjarak 3 langkah dari tujuan (2, 6) dalam garis lurus, sehingga f pertama adalah 0 + 3 = 3. Dinding menghalangi garis itu, dan jalur terpendek sebenarnya berjumlah 7 langkah. A* menemukannya bertahap: ia memperluas semua sel dengan f terkecil, dan ketika habis, f terkecil berikutnya.",
+        {
+          "table": {
+            "head": [
+              "Nilai f",
+              "Sel yang diperluas (berurutan)",
+              "Yang terjadi"
+            ],
+            "rows": [
+              [
+                "3",
+                "(2, 3), (2, 4)",
+                "Lurus ke tujuan sampai dinding."
+              ],
+              [
+                "5",
+                "(1, 3), (1, 4), (2, 2), (3, 3), (3, 4)",
+                "Satu langkah ke samping atau mundur menambah biaya 2; masih terhalang."
+              ],
+              [
+                "7",
+                "(0, 3), (0, 4), (0, 5), (0, 6), (1, 2), (1, 6), (2, 1), (2, 6)",
+                "Mengitari bagian atas dinding; tujuan di-pop dengan f = 7."
+              ]
+            ]
+          }
+        },
+        "A* memperluas 15 dari 32 sel terbuka. Algoritma Dijkstra (A* dengan h = 0) memperluas semua 32, karena setiap sel terbuka berjarak paling jauh 7 langkah dari awal. Pada peta terbuka yang besar, penghematannya jauh lebih besar."
+      ]
+    },
+    {
+      "h": "Kompleksitas waktu dan ruang",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Ukuran",
+              "Biaya",
+              "Alasan"
+            ],
+            "rows": [
+              [
+                "Waktu kasus terburuk",
+                "O((V + E) log V)",
+                "Sama seperti Dijkstra: heuristik yang tidak berguna seperti h = 0 tidak memberi arahan."
+              ],
+              [
+                "Waktu tipikal",
+                "jauh lebih kecil daripada Dijkstra",
+                "Sepenuhnya bergantung pada kualitas heuristik; h yang sempurna hanya memperluas node pada jalur."
+              ],
+              [
+                "Ruang",
+                "O(V)",
+                "Heap terbuka, nilai g, dan parent. Memori sering menjadi batas sebenarnya pada peta yang sangat besar."
+              ]
+            ]
+          }
+        },
+        "Varian hemat memori mencakup IDA* (iterative deepening A*), yang hanya menyimpan jalur saat ini, dengan konsekuensi mengunjungi ulang node."
+      ]
+    },
+    {
+      "h": "Kapan memakai A* dan penggunaannya di dunia nyata",
+      "body": [
+        {
+          "ul": [
+            "Gunakan A* bila ada satu tujuan dan estimasi biaya sisa yang murah dan admissible, seperti jarak geometris pada peta.",
+            "Gunakan Dijkstra bila Anda butuh jarak ke banyak atau semua node, atau bila tidak ada heuristik yang berguna. Gunakan BFS untuk graf tak berbobot yang heuristiknya sedikit membantu.",
+            "Video game: pergerakan unit pada tile map dan navigation mesh.",
+            "Robotika dan perencanaan rute, sering digabung dengan landmark atau hierarki yang dihitung di muka.",
+            "Pemecahan puzzle: 8-puzzle dan 15-puzzle dengan jarak Manhattan ubin sebagai heuristik."
+          ]
+        },
+        {
+          "note": "Kesalahan umum: mengembalikan hasil begitu tujuan dimasukkan alih-alih saat di-pop (bisa menghasilkan jalur yang lebih panjang), tanpa sengaja memakai heuristik yang tidak admissible, dan mencampur satuan, seperti heuristik dalam meter dengan biaya edge dalam detik."
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Apakah A* selalu optimal?",
+      "a": "A* menghasilkan jalur optimal bila heuristiknya admissible, artinya tidak pernah melebihi biaya sisa. Dengan heuristik yang melebihi biaya sisa, ia bisa mengembalikan jalur yang lebih panjang."
+    },
+    {
+      "q": "Apa perbedaan A* dan algoritma Dijkstra?",
+      "a": "Dijkstra mengurutkan node berdasarkan biaya sejauh ini, g(n). A* mengurutkannya berdasarkan g(n) + h(n), dengan h mengestimasi biaya sisa ke tujuan. A* dengan h = 0 adalah Dijkstra."
+    },
+    {
+      "q": "Heuristik apa yang sebaiknya dipakai pada grid?",
+      "a": "Gunakan jarak Manhattan untuk gerakan 4 arah, jarak Chebyshev atau octile untuk gerakan 8 arah tergantung biaya diagonal, dan jarak Euclidean untuk gerakan bebas."
+    },
+    {
+      "q": "Apa itu greedy best-first search?",
+      "a": "Algoritma ini mengurutkan node hanya berdasarkan h(n) dan mengabaikan biaya sejauh ini. Sering cepat, tetapi tidak menjamin jalur terpendek."
+    }
+  ]
+}

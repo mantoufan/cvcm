@@ -1,0 +1,210 @@
+{
+  "title": "F# 튜토리얼: 타입, 패턴 매칭, 파이프라인, .NET — cv.cm",
+  "description": "F#을 단계별로 배웁니다. .NET SDK 설치, dotnet fsi로 스크립트 실행, let 바인딩, 리스트, 레코드, 판별 공용체, 패턴 매칭, Result까지 다룹니다.",
+  "h1": "초보자를 위한 F# 기초 튜토리얼",
+  "answer": "F#은 .NET용 함수형 우선 정적 타입 언어입니다. 대부분의 타입을 추론해 주고, 중괄호 대신 들여쓰기를 사용하며, 불변 데이터, 패턴 매칭, 파이프라인 연산자 `|>`를 일반적인 코드 작성 방식으로 삼으면서도 .NET 라이브러리를 모두 사용할 수 있습니다. .NET SDK를 설치하고 `dotnet fsi hello.fsx`로 스크립트를 실행합니다.",
+  "sections": [
+    {
+      "h": "F#이란 무엇이며 누가 쓰는가",
+      "body": [
+        "F#은 Microsoft Research의 Don Syme가 설계했으며, 지금은 Microsoft와 F# Software Foundation 커뮤니티가 관리하는 오픈 소스 언어입니다. (OCaml과 같은) ML 계열 언어에 속하며 Windows, macOS, Linux의 .NET에서 실행됩니다.",
+        "팀들은 F#을 금융 모델링, 데이터 분석, 도메인 비중이 큰 비즈니스 로직, 웹 백엔드, 스크립팅에 사용합니다. C#과 같은 .NET 중간 언어로 컴파일되므로 F# 프로젝트에서 모든 NuGet 패키지를 쓸 수 있고 C# 코드에서 호출할 수도 있습니다."
+      ]
+    },
+    {
+      "h": "F# 설치와 Hello, world 실행",
+      "body": [
+        "Microsoft에서 .NET SDK를 설치합니다. F#이 포함되어 있어서 별도 설치는 필요 없습니다. 빠르게 실험하려면 `.fsx` 확장자의 스크립트 파일을 만들어 F# Interactive(`dotnet fsi`)로 실행하세요.",
+        {
+          "code": "// hello.fsx\nprintfn \"Hello, world!\"",
+          "lang": "fsharp"
+        },
+        {
+          "code": "dotnet fsi hello.fsx\n# Hello, world!\ndotnet new console -lang \"F#\" -o HelloApp\ncd HelloApp\ndotnet run",
+          "lang": "shell"
+        },
+        "두 번째 명령 묶음은 `.fsproj` 파일과 `Program.fs`가 있는 전체 콘솔 프로젝트를 만듭니다. 프로젝트에서는 `.fsproj`에 나열한 파일 순서가 중요합니다. 파일은 위에 있는 파일의 코드만 사용할 수 있습니다."
+      ]
+    },
+    {
+      "h": "값과 기본 타입",
+      "body": [
+        "`let`은 이름을 값에 바인딩합니다. 바인딩은 `mutable`로 표시하지 않으면 불변이며, 표시한 경우에는 `=`가 아니라 `<-`로 값을 바꿉니다.",
+        {
+          "table": {
+            "head": [
+              "타입",
+              "예시",
+              "설명"
+            ],
+            "rows": [
+              [
+                "int",
+                "`42`",
+                "32비트 정수"
+              ],
+              [
+                "float",
+                "`3.14`",
+                "64비트 부동소수점(.NET `double`)"
+              ],
+              [
+                "decimal",
+                "`19.99m`",
+                "정확한 10진수로, 금액에 적합"
+              ],
+              [
+                "string",
+                "`\"hello\"`",
+                "변경할 수 없는 .NET 문자열"
+              ],
+              [
+                "char",
+                "`'a'`",
+                "문자 하나"
+              ],
+              [
+                "bool",
+                "`true`, `false`",
+                "논리 값"
+              ],
+              [
+                "unit",
+                "`()`",
+                "`void`처럼 값이 없음을 나타냄"
+              ]
+            ]
+          }
+        },
+        {
+          "code": "let name = \"Ana\"\nlet age = 30\nlet mutable count = 0\ncount <- count + 1\nprintfn \"%s is %d, count = %d\" name age count\n// Ana is 30, count = 1\nlet total = float age + 0.5   // explicit conversion needed",
+          "lang": "fsharp"
+        },
+        "F#은 숫자를 암묵적으로 변환하지 않습니다. `1 + 2.0`은 컴파일 오류입니다. `float`, `int`, `string` 같은 함수로 변환하세요."
+      ]
+    },
+    {
+      "h": "제어 흐름과 함수",
+      "body": [
+        "`if`는 값을 반환하는 표현식이므로 두 분기의 타입이 같아야 합니다. 반복문(`for`, `while`)도 있지만 대부분의 코드는 컬렉션 함수를 씁니다.",
+        {
+          "code": "let sign n =\n    if n > 0 then \"positive\"\n    elif n < 0 then \"negative\"\n    else \"zero\"\nfor i in 1 .. 3 do\n    printfn \"%d squared is %d\" i (i * i)\nlet add x y = x + y          // int -> int -> int\nlet add5 = add 5             // partial application\nprintfn \"%d\" (add5 10)       // 15\nlet square = fun x -> x * x\n[1; 2; 3; 4]\n|> List.filter (fun x -> x % 2 = 0)\n|> List.map square\n|> printfn \"%A\"              // [4; 16]",
+          "lang": "fsharp"
+        },
+        "인자는 쉼표가 아니라 공백으로 구분합니다. 모든 함수는 한 번에 인자 하나를 받으므로(커링) `add 5`는 새 함수를 반환합니다. 파이프라인 연산자 `x |> f`는 `f x`를 뜻하며 데이터 변환을 위에서 아래로 쓸 수 있게 해 줍니다. 들여쓰기는 의미가 있어서 함수나 반복문의 본문은 그 아래에 들여써야 합니다."
+      ]
+    },
+    {
+      "h": "컬렉션, 레코드, 옵션",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "컬렉션",
+              "리터럴",
+              "설명"
+            ],
+            "rows": [
+              [
+                "List",
+                "`[1; 2; 3]`",
+                "변경할 수 없는 연결 리스트로, 기본 선택"
+              ],
+              [
+                "Array",
+                "`[| 1; 2; 3 |]`",
+                "고정 크기, 요소 변경 가능, 빠른 인덱싱"
+              ],
+              [
+                "Sequence",
+                "`seq { 1 .. 10 }`",
+                "지연 평가로 필요할 때 계산"
+              ],
+              [
+                "Map",
+                "`Map [\"a\", 1; \"b\", 2]`",
+                "변경할 수 없는 딕셔너리"
+              ],
+              [
+                "Set",
+                "`set [1; 2; 2]`",
+                "고유한 값으로 이루어진 변경할 수 없는 집합"
+              ]
+            ]
+          }
+        },
+        {
+          "code": "type Person = { Name: string; Age: int }\nlet ana = { Name = \"Ana\"; Age = 30 }\nlet older = { ana with Age = 31 }       // copy with one change\nlet people = [ ana; { Name = \"Ben\"; Age = 17 } ]\nlet adult = people |> List.tryFind (fun p -> p.Age >= 18)\nmatch adult with\n| Some p -> printfn \"First adult: %s\" p.Name\n| None -> printfn \"No adults\"\n// First adult: Ana",
+          "lang": "fsharp"
+        },
+        "레코드는 이름 있는 필드와 구조적 동등성을 가진 불변 타입입니다. F#은 자체 타입에 null이 없으며, 값이 없을 때는 `Option`인 `Some value` 또는 `None`을 씁니다. `List.tryFind` 같은 함수는 옵션을 반환하고, 컴파일러가 두 경우를 모두 처리하도록 강제합니다."
+      ]
+    },
+    {
+      "h": "대표 기능: 판별 공용체와 패턴 매칭",
+      "body": [
+        "판별 공용체는 각자 데이터를 가진 이름 있는 여러 경우 중 정확히 하나인 값을 나타냅니다. `match`가 경우를 검사하며, 하나라도 빠뜨리면 컴파일러가 경고합니다.",
+        {
+          "code": "type Shape =\n    | Circle of radius: float\n    | Rectangle of width: float * height: float\nlet area shape =\n    match shape with\n    | Circle r -> System.Math.PI * r * r\n    | Rectangle (w, h) -> w * h\n[ Circle 1.0; Rectangle (2.0, 3.0) ]\n|> List.map area\n|> List.iter (printfn \"%.2f\")\n// 3.14\n// 6.00",
+          "lang": "fsharp"
+        },
+        "그 밖의 잘 알려진 기능으로는 타입 추론(타입 주석을 거의 쓰지 않습니다), 측정 단위(`float<m>`는 `float<s>`와 더할 수 없습니다), 비동기 코드를 위한 `task { ... }`와 `async { ... }` 같은 계산 식이 있습니다."
+      ]
+    },
+    {
+      "h": "오류 처리",
+      "body": [
+        "예상되는 실패에는 F#다운 방식으로 `Result`(`Ok value` 또는 `Error info`)를 반환합니다. 예상치 못한 실패에는 `try ... with`, `failwith`, `raise`로 .NET 예외를 쓸 수 있습니다.",
+        {
+          "code": "let parseAge (s: string) =\n    match System.Int32.TryParse(s) with\n    | true, n when n >= 0 -> Ok n\n    | true, _ -> Error \"Age must not be negative\"\n    | false, _ -> Error \"Not a number\"\nmatch parseAge \"abc\" with\n| Ok n -> printfn \"Age %d\" n\n| Error msg -> printfn \"Error: %s\" msg\n// Error: Not a number\nlet safeDivide a b =\n    try Some (a / b)\n    with :? System.DivideByZeroException -> None\nprintfn \"%A\" (safeDivide 10 0)   // None",
+          "lang": "fsharp"
+        },
+        "`TryParse`는 .NET에서 `out` 매개변수를 가지는데, F#은 이를 바로 매칭할 수 있는 튜플 `(success, value)`로 바꿔 줍니다."
+      ]
+    },
+    {
+      "h": "작은 완성 프로그램: 단어 빈도",
+      "body": [
+        {
+          "code": "let text = \"the cat and the hat and the bat\"\ntext.Split(' ')\n|> Array.countBy id\n|> Array.sortByDescending snd\n|> Array.truncate 2\n|> Array.iter (fun (word, n) -> printfn \"%s %d\" word n)\n// the 3\n// and 2",
+          "lang": "fsharp"
+        },
+        "`Array.countBy id`는 같은 단어끼리 묶어 `(word, count)` 쌍을 반환하고, `snd`는 정렬을 위해 각 쌍의 두 번째 요소를 가져오며, 결과는 튜플을 분해하는 람다로 출력합니다.",
+        {
+          "note": "초보자가 자주 하는 실수: `[1, 2, 3]`으로 쓰는 것(튜플 하나가 든 리스트가 되며, 세미콜론을 써서 `[1; 2; 3]`으로 써야 합니다), `=`로 변경 가능한 값을 바꾸려는 것(`=`는 비교이고 `<-`가 대입입니다), `add x y`로 정의한 함수를 `add(1, 2)`로 호출하는 것, 변환 없이 `int`와 `float`를 섞는 것, `.fsproj`에서 파일 순서를 잘못 두는 것입니다."
+        }
+      ]
+    },
+    {
+      "h": "다음 단계",
+      "body": [
+        {
+          "ul": [
+            "Microsoft Learn의 F# 문서. Tour of F#과 언어 레퍼런스가 있습니다.",
+            "`dotnet fsi`에서 연습하세요. 코드를 붙여 넣으면 바로 결과를 볼 수 있으며, 입력은 `;;`로 끝냅니다.",
+            "`List`, `Array`, `Seq`, `Option`, `Result` 모듈을 익히세요. 일상적인 코드 대부분이 이것들로 만들어집니다.",
+            "기초에 익숙해지면 NuGet의 F# 웹 프레임워크와 라이브러리를 살펴보세요."
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "F#은 Windows 전용인가요?",
+      "a": "아니요. F#은 크로스 플랫폼인 .NET에서 실행되므로 Windows, macOS, Linux에서 F# 프로그램을 빌드하고 실행할 수 있습니다."
+    },
+    {
+      "q": "F#과 C#의 차이는 무엇인가요?",
+      "a": "둘 다 .NET에서 실행되며 같은 라이브러리를 쓸 수 있습니다. C#은 객체지향이 우선이고 함수형 기능이 추가되었으며, F#은 함수형이 우선이고 불변 데이터, 타입 추론, 패턴 매칭이 기본입니다."
+    },
+    {
+      "q": "F#의 |>는 무슨 뜻인가요?",
+      "a": "`x |> f`는 파이프라인 연산자이며 `f x`를 뜻합니다. 왼쪽 값을 오른쪽 함수의 마지막 인자로 넘기므로 변환 과정을 위에서 아래로 읽을 수 있습니다."
+    },
+    {
+      "q": "F#은 OCaml과 관련이 있나요?",
+      "a": "네. F#은 ML 계열에 속하며 핵심 문법이 OCaml과 가깝습니다. 다만 .NET용으로 만들어졌고, 기본적으로 들여쓰기가 의미를 가지며, 계산 식 같은 고유 기능이 있습니다."
+    }
+  ]
+}

@@ -1,0 +1,169 @@
+{
+  "title": "Tutorial de Fortran: sintaxis moderna, arreglos, módulos y procedimientos — cv.cm",
+  "description": "Aprende Fortran moderno: compila Hola mundo con gfortran, declara variables con tipo, usa bucles, funciones, subrutinas, módulos, operaciones sobre arreglos completos e iostat.",
+  "h1": "Tutorial de Fortran para principiantes",
+  "answer": "Fortran es un lenguaje compilado y de tipado estático creado para el cálculo numérico y científico. El Fortran moderno (Fortran 90 y los estándares posteriores) tiene código fuente de formato libre, módulos, arreglos dinámicos y potentes operaciones sobre arreglos completos, y los compiladores lo convierten en código máquina muy rápido. Instala el compilador gratuito gfortran, guarda el código en un archivo `.f90` y compílalo con `gfortran hello.f90 -o hello`.",
+  "sections": [
+    {
+      "h": "Qué es Fortran y quién lo usa",
+      "body": [
+        "Fortran («formula translation») lo desarrolló en IBM un equipo dirigido por John Backus en la década de 1950 y es uno de los lenguajes de programación más antiguos que siguen en uso activo. Está estandarizado por ISO; entre las revisiones principales están Fortran 90, 95, 2003, 2008, 2018 y 2023. El antiguo estilo de formato fijo (`FORTRAN 77` en mayúsculas, con el código empezando en la columna 7) todavía se compila, pero el código nuevo usa la sintaxis de formato libre que se muestra aquí.",
+        "Fortran se usa donde importa el cálculo numérico intensivo: modelos del tiempo y del clima, dinámica de fluidos computacional, simulaciones de física y química, y muchos programas que se ejecutan en supercomputadoras. Las versiones de referencia de las bibliotecas de álgebra lineal BLAS y LAPACK, que se usan por debajo de herramientas como NumPy y MATLAB, están escritas en Fortran."
+      ]
+    },
+    {
+      "h": "Instala un compilador y ejecuta Hola, mundo",
+      "body": [
+        "gfortran, parte de GCC, es gratuito y está disponible en Linux (paquete `gfortran`), macOS (`gcc` de Homebrew) y Windows (MSYS2 o WSL). ifx de Intel y LLVM Flang son otros compiladores. El Fortran Package Manager (`fpm`) puede crear y compilar proyectos.",
+        {
+          "code": "program hello\n  implicit none\n  print *, \"Hello, world!\"\nend program hello",
+          "lang": "fortran"
+        },
+        {
+          "code": "gfortran hello.f90 -o hello\n./hello\n#  Hello, world!",
+          "lang": "shell"
+        },
+        "`print *` usa salida dirigida por lista, que elige el espaciado por ti (fíjate en el espacio inicial). Fortran no distingue mayúsculas de minúsculas: `PRINT`, `Print` y `print` son lo mismo."
+      ]
+    },
+    {
+      "h": "Variables y tipos básicos",
+      "body": [
+        "Todas las declaraciones van al principio de una unidad de programa, antes de las instrucciones ejecutables. Escribe siempre `implicit none`: sin ello, los nombres no declarados que empiezan por I a N son enteros de forma silenciosa y todos los demás son reales.",
+        {
+          "table": {
+            "head": [
+              "Tipo",
+              "Declaración de ejemplo",
+              "Notas"
+            ],
+            "rows": [
+              [
+                "integer",
+                "`integer :: count = 3`",
+                "Normalmente de 32 bits; `integer(int64)` para 64 bits"
+              ],
+              [
+                "real",
+                "`real :: x`",
+                "Normalmente de precisión simple"
+              ],
+              [
+                "real(real64)",
+                "`real(real64) :: y`",
+                "Doble precisión, la opción habitual en ciencia"
+              ],
+              [
+                "complex",
+                "`complex :: z = (1.0, 2.0)`",
+                "Números complejos integrados"
+              ],
+              [
+                "logical",
+                "`logical :: done = .false.`",
+                "`.true.` / `.false.`, operadores `.and.`, `.or.`, `.not.`"
+              ],
+              [
+                "character",
+                "`character(len=20) :: name`",
+                "Cadena de longitud fija, rellenada con espacios"
+              ]
+            ]
+          }
+        },
+        {
+          "code": "program types\n  use, intrinsic :: iso_fortran_env, only: int64, real64\n  implicit none\n  integer :: count = 3\n  integer(int64) :: big = 9000000000_int64\n  real(real64) :: third\n  logical :: done = .false.\n  character(len=:), allocatable :: name\n\n  third = 1.0_real64 / 3.0_real64\n  name = \"Ana\"\n  print *, count, big, third, done, name\nend program types",
+          "lang": "fortran"
+        },
+        "El sufijo `_real64` establece el kind (precisión) de un literal. Sin él, `1.0` es una constante de precisión simple, que pierde dígitos al asignarse a una variable de doble precisión."
+      ]
+    },
+    {
+      "h": "Control de flujo",
+      "body": [
+        {
+          "code": "program control\n  implicit none\n  integer :: i, total, score\n\n  total = 0\n  do i = 1, 10\n    if (mod(i, 2) == 0) cycle   ! skip even numbers\n    total = total + i\n  end do\n  print *, \"sum of odd numbers:\", total   ! 25\n\n  score = 85\n  if (score >= 90) then\n    print *, \"A\"\n  else if (score >= 80) then\n    print *, \"B\"\n  else\n    print *, \"C\"\n  end if\n\n  select case (score)\n  case (90:)\n    print *, \"excellent\"\n  case (80:89)\n    print *, \"good\"\n  case default\n    print *, \"keep going\"\n  end select\nend program control",
+          "lang": "fortran"
+        },
+        "`do i = 1, 10` incluye ambos extremos, y un tercer valor opcional establece el paso (`do i = 10, 1, -1`). `cycle` salta a la siguiente iteración y `exit` sale del bucle. También están disponibles `do while (condition)` y un `do` simple con `exit`. Los comentarios empiezan con `!`."
+      ]
+    },
+    {
+      "h": "Funciones, subrutinas y módulos",
+      "body": [
+        "Fortran tiene dos tipos de procedimientos: una función devuelve un valor y se usa en expresiones; una subrutina se llama con `call` y devuelve resultados mediante sus argumentos. Pon los procedimientos en un módulo para que el compilador pueda comprobar cada llamada.",
+        {
+          "code": "module geometry\n  implicit none\ncontains\n  function circle_area(r) result(a)\n    real, intent(in) :: r\n    real :: a\n    a = 3.14159 * r**2\n  end function circle_area\n\n  subroutine swap(a, b)\n    integer, intent(inout) :: a, b\n    integer :: tmp\n    tmp = a\n    a = b\n    b = tmp\n  end subroutine swap\nend module geometry\n\nprogram demo\n  use geometry\n  implicit none\n  integer :: x, y\n  x = 1\n  y = 2\n  print *, circle_area(2.0)   ! about 12.566\n  call swap(x, y)\n  print *, x, y               ! 2 1\nend program demo",
+          "lang": "fortran"
+        },
+        "Los argumentos se pasan por referencia, así que un procedimiento puede cambiar las variables de quien lo llama. `intent(in)`, `intent(out)` e `intent(inout)` documentan y hacen cumplir lo que puede hacer cada argumento. `**` es el operador de potencia."
+      ]
+    },
+    {
+      "h": "Arreglos: la característica distintiva de Fortran",
+      "body": [
+        "Los arreglos son centrales en Fortran. Los índices empiezan en 1 por defecto (se permite cualquier límite inferior), la aritmética funciona sobre arreglos completos sin bucles, los slices usan `a(start:end)` y muchas funciones intrínsecas operan directamente sobre arreglos.",
+        {
+          "code": "program arrays\n  implicit none\n  integer :: i\n  real :: a(5), b(5)\n  real, allocatable :: c(:)\n  integer :: m(2, 3)\n\n  a = [(real(i), i = 1, 5)]   ! 1.0 2.0 3.0 4.0 5.0\n  b = 2.0 * a + 1.0           ! whole-array arithmetic\n  print *, b(2:4)             ! 5.0 7.0 9.0\n  print *, sum(a), maxval(b)  ! 15.0 11.0\n\n  allocate(c(10))\n  c = 0.0\n  print *, size(c)            ! 10\n  deallocate(c)\n\n  m = reshape([1, 2, 3, 4, 5, 6], [2, 3])\n  print *, m(2, 1)            ! 2 (column-major order)\nend program arrays",
+          "lang": "fortran"
+        },
+        "Los arreglos multidimensionales se almacenan en orden de columnas: el primer índice cambia más rápido en memoria, lo contrario que en C. Para ir más rápido, haz que el bucle más interno recorra el primer índice. Otras funciones intrínsecas útiles son `matmul`, `dot_product`, `transpose`, `minval` y `count`. El Fortran moderno ofrece además bucles `do concurrent` y coarrays para programas paralelos."
+      ]
+    },
+    {
+      "h": "Manejo de errores",
+      "body": [
+        "Fortran no tiene excepciones. Las instrucciones que pueden fallar aceptan un argumento de estado: `iostat` para entrada y salida, `stat` para `allocate`. Comprueba el valor y reacciona; si lo omites, un error detiene el programa. `error stop` termina el programa con un error.",
+        {
+          "code": "program parse\n  implicit none\n  character(len=20) :: text\n  integer :: n, ios\n\n  text = \"abc\"\n  read(text, *, iostat=ios) n\n  if (ios /= 0) then\n    print *, \"not a number: \", trim(text)\n  else\n    print *, \"n =\", n\n  end if\nend program parse",
+          "lang": "fortran"
+        },
+        "Leer de una variable de tipo carácter, como arriba, se llama lectura interna y es la forma habitual de convertir una cadena en un número."
+      ]
+    },
+    {
+      "h": "Un programa pequeño y completo: media y desviación estándar",
+      "body": [
+        {
+          "code": "module stats\n  implicit none\n  integer, parameter :: dp = kind(1.0d0)\ncontains\n  pure function mean(x) result(m)\n    real(dp), intent(in) :: x(:)\n    real(dp) :: m\n    m = sum(x) / size(x)\n  end function mean\n\n  pure function std_dev(x) result(s)\n    real(dp), intent(in) :: x(:)\n    real(dp) :: s\n    s = sqrt(sum((x - mean(x))**2) / (size(x) - 1))\n  end function std_dev\nend module stats\n\nprogram main\n  use stats\n  implicit none\n  real(dp) :: values(5)\n  values = [2.0_dp, 4.0_dp, 4.0_dp, 5.0_dp, 7.0_dp]\n  print '(a, f6.3)', \"mean    = \", mean(values)\n  print '(a, f6.3)', \"std dev = \", std_dev(values)\nend program main\n! mean    =  4.400\n! std dev =  1.817",
+          "lang": "fortran"
+        },
+        "La declaración `x(:)` es un arreglo de forma supuesta, por lo que las funciones aceptan arreglos de cualquier longitud. `pure` promete que una función no tiene efectos secundarios. El formato `'(a, f6.3)'` imprime una cadena seguida de un número real de 6 caracteres de ancho con 3 decimales.",
+        {
+          "note": "Errores habituales de principiantes: olvidar `implicit none`; la división entera (`1 / 2` es 0, escribe `1.0 / 2.0`); literales de precisión simple en código de doble precisión (`0.1` en lugar de `0.1_dp`); inicializar una variable local en su declaración dentro de un procedimiento, lo que le da el atributo `save` y hace que conserve su valor entre llamadas; y recorrer el último índice en el bucle más interno, lo que es lento por el orden de columnas."
+        }
+      ]
+    },
+    {
+      "h": "Siguientes pasos",
+      "body": [
+        {
+          "ul": [
+            "fortran-lang.org: la sección Learn, con un tutorial de inicio rápido y buenas prácticas.",
+            "El manual de GNU Fortran (gfortran), para las opciones del compilador y los procedimientos intrínsecos.",
+            "Prueba el Fortran Package Manager (fpm) para crear proyectos y usar bibliotecas como la biblioteca estándar de Fortran (stdlib).",
+            "Compila con advertencias y comprobaciones en tiempo de ejecución mientras aprendes, por ejemplo `gfortran -Wall -fcheck=all`."
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "¿Fortran se sigue usando hoy?",
+      "a": "Sí. Fortran sigue muy usado en computación científica y de alto rendimiento, sobre todo en simulaciones de clima, tiempo, física e ingeniería, y el estándar del lenguaje se sigue actualizando."
+    },
+    {
+      "q": "¿Cuál es la diferencia entre los archivos .f y .f90?",
+      "a": "Por convención, los archivos `.f` y `.for` usan el antiguo formato fijo de FORTRAN 77, en el que las columnas importan, mientras que los archivos `.f90` usan código fuente de formato libre. La extensión `.f90` se usa para código de formato libre de cualquier estándar moderno, no solo de Fortran 90."
+    },
+    {
+      "q": "¿Por qué Fortran es rápido?",
+      "a": "El lenguaje se diseñó para el trabajo numérico: los arreglos están integrados, las reglas de aliasing permiten a los compiladores optimizar de forma agresiva y décadas de trabajo en compiladores lo respaldan. Un C o C++ bien escrito puede alcanzar una velocidad similar."
+    },
+    {
+      "q": "¿Los arreglos de Fortran empiezan en 0 o en 1?",
+      "a": "Empiezan en 1 por defecto, pero puedes elegir cualquier límite inferior; por ejemplo, `real :: a(0:9)` declara diez elementos indexados de 0 a 9."
+    }
+  ]
+}

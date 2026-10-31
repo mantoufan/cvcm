@@ -1,0 +1,253 @@
+{
+  "title": "組合語言入門教學：x86-64 暫存器、NASM 語法、系統呼叫與函式 — cv.cm",
+  "description": "在 Linux 上用 NASM 學 x86-64 組合語言：暫存器、算術、跳躍與迴圈、記憶體定址、系統呼叫、呼叫慣例，以及 AT&T 語法。",
+  "h1": "組合語言入門教學（x86-64、NASM）",
+  "answer": "組合語言是處理器機器指令的人類可讀形式：每一行通常會變成一條指令，例如 `mov rax, 1` 或 `add rax, rbx`。你直接操作暫存器、記憶體位址與堆疊，沒有變數、型別，也沒有迴圈，除非你用跳躍自己組出來。本教學在 Linux 上使用 x86-64 與 NASM 組譯器：寫一個 `.asm` 檔案，用 `nasm -f elf64` 組譯，再用 `ld` 連結。",
+  "sections": [
+    {
+      "h": "組合語言是什麼、誰在使用",
+      "body": [
+        "每個處理器家族都有自己的指令集，因此也有自己的組合語言。x86-64（又稱 AMD64）驅動大多數桌上型電腦與伺服器；ARM（AArch64）則驅動大多數手機、Apple silicon Mac 與許多伺服器。組譯器會把組合語言翻譯成機器碼，連結器再把結果組合成可執行檔。",
+        "如今很少有程式完全以組合語言撰寫。它用於作業系統核心與開機載入程式、效能關鍵的常式（密碼學、編解碼器、數學函式庫）、嵌入式韌體、編譯器開發、資安研究與逆向工程。更常見的情況是，開發者閱讀組合語言，以了解編譯器產出了什麼，或是除錯當機問題。"
+      ]
+    },
+    {
+      "h": "安裝 NASM 並執行 Hello, world",
+      "body": [
+        "在 Debian 或 Ubuntu 上，用 `sudo apt install nasm binutils` 安裝工具（`binutils` 提供連結器 `ld`）。這個程式透過系統呼叫直接呼叫 Linux 核心，所以不需要 C 函式庫。",
+        {
+          "code": "; hello.asm - x86-64 Linux, NASM syntax\nsection .data\n    msg     db \"Hello, world!\", 10   ; 10 = newline\n    msglen  equ $ - msg              ; length computed by the assembler\n\nsection .text\n    global _start\n\n_start:\n    mov     rax, 1          ; system call number 1 = write\n    mov     rdi, 1          ; file descriptor 1 = stdout\n    mov     rsi, msg        ; address of the bytes\n    mov     rdx, msglen     ; number of bytes\n    syscall\n\n    mov     rax, 60         ; system call number 60 = exit\n    xor     rdi, rdi        ; exit code 0\n    syscall",
+          "lang": "asm"
+        },
+        {
+          "code": "nasm -f elf64 hello.asm -o hello.o\nld hello.o -o hello\n./hello\n# Hello, world!",
+          "lang": "shell"
+        },
+        "`section .data` 存放已初始化的資料，`section .text` 存放程式碼，`_start` 則是 `ld` 尋找的進入點。註解以 `;` 開頭。如果沒有最後的 `exit` 系統呼叫，處理器會繼續執行後面的任何位元組，程式就會當機。"
+      ]
+    },
+    {
+      "h": "暫存器與資料大小",
+      "body": [
+        "暫存器是 CPU 內部小而極快的儲存位置。x86-64 有 16 個 64 位元的通用暫存器，每個也可以只使用其中較小的部分。",
+        {
+          "table": {
+            "head": [
+              "暫存器",
+              "常見用途",
+              "較小的部分"
+            ],
+            "rows": [
+              [
+                "`rax`",
+                "回傳值、系統呼叫編號",
+                "`eax`（32 位元）、`ax`（16 位元）、`al`（8 位元）"
+              ],
+              [
+                "`rdi`, `rsi`, `rdx`",
+                "函式或系統呼叫的前三個引數",
+                "`edi`, `esi`, `edx`"
+              ],
+              [
+                "`rcx`, `r8`, `r9`",
+                "函式的第四到第六個引數",
+                "`ecx`, `r8d`, `r9d`"
+              ],
+              [
+                "`rbx`, `rbp`, `r12`–`r15`",
+                "必須在函式呼叫之間保留的值（由被呼叫者保存）",
+                "`ebx`, `r12d`"
+              ],
+              [
+                "`rsp`",
+                "堆疊指標：堆疊頂端的位址",
+                "不要用來存資料"
+              ],
+              [
+                "`rip`",
+                "指令指標（只會被跳躍、呼叫、返回改變）",
+                "無法直接寫入"
+              ]
+            ]
+          }
+        },
+        "記憶體中的資料用 `db`（位元組，8 位元）、`dw`（word，16 位元）、`dd`（doubleword，32 位元）與 `dq`（quadword，64 位元）宣告。未初始化的緩衝區放在 `section .bss`，使用 `resb`、`resq` 等。寫入 `eax` 這類 32 位元暫存器時，也會清除 `rax` 的高 32 位元，所以 `xor eax, eax` 是把 `rax` 設為零的常見方式。"
+      ]
+    },
+    {
+      "h": "基本指令與流程控制",
+      "body": [
+        "大多數指令先寫目的地、再寫來源：`add rax, rbx` 的意思是 `rax = rax + rbx`。沒有 `if` 或 `while` 陳述式；你用 `cmp` 比較數值並設定旗標，再使用條件跳躍。",
+        {
+          "table": {
+            "head": [
+              "指令",
+              "意義"
+            ],
+            "rows": [
+              [
+                "`mov rax, rbx`",
+                "把 `rbx` 複製到 `rax`"
+              ],
+              [
+                "`add`, `sub`, `imul`, `inc`, `dec`",
+                "整數算術"
+              ],
+              [
+                "`cmp rax, 10`",
+                "比較（計算 `rax - 10`，只設定旗標）"
+              ],
+              [
+                "`je`, `jne`, `jl`, `jg`, `jle`, `jge`",
+                "相等、不相等、小於、大於等情況下跳躍（有號）"
+              ],
+              [
+                "`jmp label`",
+                "無條件跳躍"
+              ],
+              [
+                "`push`, `pop`",
+                "把值放上堆疊、從堆疊取下"
+              ],
+              [
+                "`call`, `ret`",
+                "呼叫函式、從函式返回"
+              ]
+            ]
+          }
+        },
+        {
+          "code": "; sum.asm - add 1..10, return the result as the exit code\nsection .text\n    global _start\n\n_start:\n    xor     rax, rax        ; sum = 0\n    mov     rcx, 1          ; i = 1\n.loop:\n    cmp     rcx, 10\n    jg      .done           ; if i > 10, leave the loop\n    add     rax, rcx        ; sum += i\n    inc     rcx             ; i++\n    jmp     .loop\n.done:\n    mov     rdi, rax        ; exit code = sum\n    mov     rax, 60         ; exit\n    syscall",
+          "lang": "asm"
+        },
+        {
+          "code": "nasm -f elf64 sum.asm -o sum.o && ld sum.o -o sum\n./sum; echo $?\n# 55",
+          "lang": "shell"
+        },
+        "以點開頭的標籤（如 `.loop`）屬於前一個一般標籤的區域範圍。`jl` 與 `jg` 把值視為有號數；`jb` 與 `ja` 則是無號數的版本。"
+      ]
+    },
+    {
+      "h": "記憶體定址與陣列",
+      "body": [
+        "方括號表示「位於此位址的記憶體」。位址可以結合基底暫存器、乘以 1、2、4 或 8 的索引暫存器，以及一個常數：`[base + index*scale + offset]`。這讓存取陣列只需一條指令。",
+        {
+          "code": "section .data\n    nums    dq 3, 1, 4, 1, 5         ; five 64-bit integers\n    count   equ ($ - nums) / 8\n\nsection .text\n    global _start\n\n_start:\n    xor     rax, rax                 ; total = 0\n    xor     rcx, rcx                 ; index = 0\n.next:\n    add     rax, [nums + rcx*8]      ; total += nums[index]\n    inc     rcx\n    cmp     rcx, count\n    jl      .next\n    mov     rdi, rax                 ; exit code 14\n    mov     rax, 60\n    syscall",
+          "lang": "asm"
+        },
+        "`mov rax, nums` 載入的是位址，而 `mov rax, [nums]` 載入的是儲存在該處的值。`lea rsi, [rbx + 8]` 只計算位址，不讀取記憶體。當無法從暫存器判斷大小時，請明確指定：`mov qword [rbx], 0`。"
+      ]
+    },
+    {
+      "h": "函式與呼叫慣例",
+      "body": [
+        "在 Linux 上，函式遵循 System V AMD64 ABI。整數引數依序放在 `rdi`、`rsi`、`rdx`、`rcx`、`r8`、`r9`；回傳值在 `rax`。函式必須保留 `rbx`、`rbp`、`r12`–`r15` 與 `rsp`，而且在 `call` 之前，`rsp` 必須是 16 的倍數。遵守這些規則，組合語言就能呼叫 `printf` 等 C 函式，C 也能呼叫組合語言。",
+        {
+          "code": "; square.asm - define a function and call printf from the C library\n    extern  printf\n    global  main\n\nsection .data\n    fmt     db \"%ld squared is %ld\", 10, 0\n\nsection .text\nsquare:                         ; long square(long x)\n    mov     rax, rdi\n    imul    rax, rdi\n    ret\n\nmain:\n    push    rbx                 ; save rbx; also aligns rsp to 16\n    mov     rbx, 7\n    mov     rdi, rbx\n    call    square              ; rax = 49\n    lea     rdi, [rel fmt]      ; argument 1: format string\n    mov     rsi, rbx            ; argument 2\n    mov     rdx, rax            ; argument 3\n    xor     eax, eax            ; varargs: no vector registers used\n    call    printf wrt ..plt\n    xor     eax, eax            ; return 0 from main\n    pop     rbx\n    ret\n\nsection .note.GNU-stack noalloc noexec nowrite progbits",
+          "lang": "asm"
+        },
+        {
+          "code": "nasm -f elf64 square.asm -o square.o\ngcc square.o -o square\n./square\n# 7 squared is 49",
+          "lang": "shell"
+        },
+        "改用 `gcc` 連結會加入 C 執行環境，由它呼叫 `main`。`[rel fmt]` 與 `wrt ..plt` 會產生位置無關的程式碼，這是現代 Linux 發行版預設使用的。最後一行把堆疊標記為不可執行，並避免連結器警告。"
+      ]
+    },
+    {
+      "h": "錯誤處理",
+      "body": [
+        "組合語言沒有例外。失敗的 Linux 系統呼叫會在 `rax` 中回傳負的錯誤編號（例如 -2，即 `ENOENT`，「沒有這個檔案」），所以每次呼叫後都要檢查正負號。C 函式庫的函式則透過回傳值與 `errno` 回報錯誤。硬體錯誤，例如讀取無效位址或除以零，會以訊號（segmentation fault 或 floating point exception）終止程式。",
+        {
+          "code": "    mov     rax, 2              ; system call 2 = open\n    lea     rdi, [rel path]     ; path is a zero-terminated string\n    xor     esi, esi            ; flags: O_RDONLY\n    syscall\n    test    rax, rax\n    js      .open_failed        ; negative result = -errno\n    mov     r12, rax            ; success: rax is the file descriptor",
+          "lang": "asm"
+        }
+      ]
+    },
+    {
+      "h": "完整的小程式：以十進位印出數字",
+      "body": [
+        "印出數字意味著你得自己把它轉成數字字元。這個程式計算 1 + 2 + ... + 100，反覆除以 10 以從右到左取得各位數字，再用一次系統呼叫把它們寫出。",
+        {
+          "code": "section .bss\n    buf     resb 32\n\nsection .text\n    global _start\n\n_start:\n    xor     rax, rax\n    mov     rcx, 100\n.sum:\n    add     rax, rcx\n    loop    .sum                ; rcx -= 1, repeat while rcx != 0\n    lea     rsi, [buf + 31]\n    mov     byte [rsi], 10      ; newline at the end of the buffer\n    mov     rbx, 10\n.digit:\n    xor     rdx, rdx            ; div uses rdx:rax as the dividend\n    div     rbx                 ; rax = quotient, rdx = remainder\n    add     dl, '0'             ; remainder to ASCII digit\n    dec     rsi\n    mov     [rsi], dl\n    test    rax, rax\n    jnz     .digit\n    mov     rdx, buf + 32\n    sub     rdx, rsi            ; length = end - start\n    mov     rax, 1              ; write(1, rsi, rdx)\n    mov     rdi, 1\n    syscall\n    mov     rax, 60             ; exit(0)\n    xor     rdi, rdi\n    syscall\n; prints 5050",
+          "lang": "asm"
+        },
+        {
+          "note": "新手常見錯誤：忘了 `exit` 系統呼叫；使用 `div` 前沒有先清除 `rdx`（結果會溢位，程式當機）；以為 `rcx` 與 `r11` 在 `syscall` 之後仍會保留（核心會覆寫它們）；以未對齊的堆疊呼叫 C 函式；混淆位址與該位址上的值（`msg` 與 `[msg]`）；以及閱讀範例時搞混 Intel 與 AT&T 的運算元順序。"
+        }
+      ]
+    },
+    {
+      "h": "AT&T 與 Intel 語法，以及 ARM",
+      "body": [
+        "同一條 x86-64 指令可以用兩種語法書寫。NASM 與大多數 Intel 和 Microsoft 文件使用 Intel 語法。GNU 組譯器（`as`）、GCC 輸出與 `objdump` 預設使用 AT&T 語法；`objdump -d -M intel` 與 `gcc -S -masm=intel` 可切換成 Intel 語法。",
+        {
+          "table": {
+            "head": [
+              "面向",
+              "Intel（NASM）",
+              "AT&T（GNU as）"
+            ],
+            "rows": [
+              [
+                "運算元順序",
+                "`mov rax, 1`（目的地在前）",
+                "`movq $1, %rax`（來源在前）"
+              ],
+              [
+                "暫存器與常數",
+                "`rax`, `5`",
+                "`%rax`, `$5`"
+              ],
+              [
+                "記憶體運算元",
+                "`[rbx + rcx*8 + 16]`",
+                "`16(%rbx,%rcx,8)`"
+              ],
+              [
+                "運算元大小",
+                "`mov qword [rbx], 0`",
+                "`movq $0, (%rbx)`（後綴 b、w、l、q）"
+              ]
+            ]
+          }
+        },
+        "ARM 處理器使用不同的指令集。AArch64 有 31 個 64 位元通用暫存器（`x0`–`x30`）、固定 32 位元的指令編碼，以及載入／儲存（load/store）的設計：算術只作用於暫存器，記憶體則以 `ldr` 與 `str` 存取。在 Linux 上，系統呼叫編號放在 `x8`，並以 `svc #0` 發出呼叫。",
+        {
+          "code": "// AArch64 Linux, GNU as syntax: exit(0)\n    mov     x0, #0          // exit status\n    mov     x8, #93         // system call 93 = exit\n    svc     #0",
+          "lang": "asm"
+        }
+      ]
+    },
+    {
+      "h": "接下來可以學什麼",
+      "body": [
+        {
+          "ul": [
+            "NASM 手冊，涵蓋指示詞、巨集與輸出格式。",
+            "Intel 64 and IA-32 Architectures Software Developer's Manuals，提供每條指令的確切行為。",
+            "System V AMD64 ABI 文件，說明呼叫慣例與堆疊配置。",
+            "用 `gcc -O2 -S -masm=intel`（或線上的編譯器瀏覽工具）編譯小型 C 函式，並閱讀產生的組合語言。"
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "組合語言還值得學嗎？",
+      "a": "值得，可用於理解電腦的運作方式、除錯當機問題、閱讀編譯器輸出、資安工作與嵌入式開發。如今很少有實際需要用組合語言寫完整的應用程式。"
+    },
+    {
+      "q": "x86 組合語言和 ARM 組合語言一樣嗎？",
+      "a": "不一樣。它們是不同的指令集，暫存器、指令與編碼都不同。概念（暫存器、記憶體、跳躍、呼叫慣例）可以互通，但程式碼不能。"
+    },
+    {
+      "q": "NASM 與 GAS 有什麼差別？",
+      "a": "NASM 是獨立的組譯器，使用 Intel 語法。GAS 是 GNU 組譯器，被 GCC 使用，預設採 AT&T 語法，不過也能用 `.intel_syntax noprefix` 接受 Intel 語法。"
+    },
+    {
+      "q": "這段程式碼能在 Windows 或 macOS 上執行嗎？",
+      "a": "不能原封不動地執行。指令在任何 x86-64 系統上都相同，但系統呼叫編號、可執行檔格式與呼叫慣例並不相同。Windows 使用不同的呼叫慣例，而 Apple silicon Mac 使用的是 ARM 而非 x86-64。"
+    }
+  ]
+}

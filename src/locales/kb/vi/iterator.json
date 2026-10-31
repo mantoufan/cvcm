@@ -1,0 +1,153 @@
+{
+  "title": "Mẫu Iterator: duyệt, generator và Symbol.iterator trong TypeScript — cv.cm",
+  "description": "Mẫu Iterator cho phép lặp qua một tập hợp mà không cần biết nó được lưu thế nào. Tìm hiểu các vai trò, Symbol.iterator và generator trong TypeScript.",
+  "h1": "Mẫu Iterator (Design Pattern) giải thích kèm ví dụ",
+  "answer": "Iterator là một mẫu thiết kế hành vi (behavioral), cung cấp cách truy cập lần lượt các phần tử của một tập hợp mà không để lộ cách tập hợp được lưu. Logic duyệt nằm trong một đối tượng iterator riêng với phương thức như `next()`, nên một tập hợp có thể cung cấp nhiều thứ tự duyệt và mã client lặp qua mảng, cây và luồng theo cùng một cách. Trong TypeScript và JavaScript, mẫu này được tích hợp sẵn vào ngôn ngữ qua `Symbol.iterator` và `for...of`.",
+  "sections": [
+    {
+      "h": "Mục đích và vấn đề mà mẫu này giải quyết",
+      "body": [
+        "Mục đích: cung cấp cách truy cập tuần tự các phần tử của một đối tượng tổng hợp mà không để lộ biểu diễn bên trong. Iterator là một trong các mẫu hành vi trong sách Gang of Four (GoF).",
+        "Hãy tưởng tượng một lớp lưu sơ đồ tổ chức của công ty dưới dạng cây. Các phần khác nhau của chương trình cần liệt kê mọi nhân viên: một báo cáo đi theo từng cấp, báo cáo khác cần thứ tự theo chiều sâu. Nếu mỗi báo cáo tự duyệt cây, mọi báo cáo đều phụ thuộc các trường nội bộ của cây, và đổi cây sang cách lưu khác sẽ làm hỏng tất cả.",
+        "Với Iterator, cây cung cấp các đối tượng iterator. Báo cáo yêu cầu một iterator và gọi `next()` cho đến khi xong. Báo cáo không biết dữ liệu là cây, mảng hay các dòng được lấy từ cơ sở dữ liệu theo từng trang."
+      ]
+    },
+    {
+      "h": "Cấu trúc và các thành phần",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Vai trò",
+              "Trách nhiệm"
+            ],
+            "rows": [
+              [
+                "Iterator",
+                "Interface để duyệt, thường là `next()` trả về phần tử kế tiếp và một cờ cho biết việc duyệt đã kết thúc chưa"
+              ],
+              [
+                "Concrete iterator",
+                "Cài đặt việc duyệt cho một tập hợp và nhớ vị trí hiện tại"
+              ],
+              [
+                "Aggregate (iterable)",
+                "Interface có phương thức tạo iterator"
+              ],
+              [
+                "Concrete aggregate",
+                "Tập hợp; trả về một concrete iterator mới mỗi lần được yêu cầu"
+              ],
+              [
+                "Client",
+                "Dùng iterator để thăm các phần tử mà không biết cấu trúc của tập hợp"
+              ]
+            ]
+          }
+        },
+        "Trong JavaScript các vai trò này có tên chuẩn, được định nghĩa bởi các giao thức lặp trong ES2015. Một iterable có phương thức `[Symbol.iterator]()`. Một iterator có phương thức `next()` trả về `{ value, done }`. Mọi vòng lặp `for...of`, spread `[...x]` và phép gán destructuring đều dùng các giao thức này."
+      ]
+    },
+    {
+      "h": "Cài đặt bằng TypeScript: iterator viết tay",
+      "body": [
+        "Lớp range này chỉ lưu điểm đầu, điểm cuối và bước nhảy, không lưu danh sách các số. Iterator của nó tính từng giá trị theo yêu cầu.",
+        {
+          "code": "class Range implements Iterable<number> {\n  constructor(private start: number, private end: number, private step = 1) {}\n\n  [Symbol.iterator](): Iterator<number> {\n    let current = this.start;\n    const { end, step } = this;\n    return {\n      next(): IteratorResult<number> {\n        if (current >= end) return { value: undefined, done: true };\n        const value = current;\n        current += step;\n        return { value, done: false };\n      },\n    };\n  }\n}\n\nconst evens = new Range(0, 10, 2);\nfor (const n of evens) console.log(n); // 0 2 4 6 8 (one per line)\nconsole.log([...evens]); // [ 0, 2, 4, 6, 8 ]\nconsole.log(Math.max(...new Range(1, 4))); // 3",
+          "lang": "typescript"
+        },
+        "Mỗi lần gọi `[Symbol.iterator]()` trả về một iterator mới với vị trí `current` riêng. Vì vậy `evens` có thể được lặp hai lần. Nếu tập hợp trả về cùng một iterator mỗi lần, vòng lặp thứ hai sẽ không thấy phần tử nào."
+      ]
+    },
+    {
+      "h": "Generator: iterator với ít mã hơn",
+      "body": [
+        "Hàm generator, viết bằng `function*`, tự động tạo một iterator. Mỗi `yield` tạo ra giá trị kế tiếp, và hàm tạm dừng cho đến khi `next()` được gọi lại. Ở đây một cây nhị phân cung cấp cách duyệt in-order mà không để lộ các nút của nó:",
+        {
+          "code": "class TreeNode<T> {\n  constructor(public value: T, public left?: TreeNode<T>, public right?: TreeNode<T>) {}\n}\n\nclass BinaryTree<T> implements Iterable<T> {\n  constructor(private root?: TreeNode<T>) {}\n\n  *[Symbol.iterator](): Generator<T> {\n    yield* inOrder(this.root);\n  }\n}\n\nfunction* inOrder<T>(node?: TreeNode<T>): Generator<T> {\n  if (!node) return;\n  yield* inOrder(node.left);\n  yield node.value;\n  yield* inOrder(node.right);\n}\n\nconst tree = new BinaryTree(\n  new TreeNode(5, new TreeNode(3, new TreeNode(1)), new TreeNode(8)),\n);\nconsole.log([...tree]); // [ 1, 3, 5, 8 ]\n\nfor (const value of tree) {\n  if (value > 3) break; // stops early; the rest is never computed\n  console.log(value); // 1, then 3\n}",
+          "lang": "typescript"
+        },
+        {
+          "note": "Đừng thêm hoặc xóa phần tử của tập hợp trong khi lặp qua nó, trừ khi tập hợp ghi rõ điều đó an toàn. Iterator của `ArrayList` trong Java ném `ConcurrentModificationException`, còn trong JavaScript thay đổi mảng giữa vòng lặp có thể bỏ sót hoặc lặp lại phần tử."
+        }
+      ]
+    },
+    {
+      "h": "Khi nào nên dùng và khi nào không",
+      "body": [
+        {
+          "ul": [
+            "Dùng khi tập hợp có cấu trúc nội bộ phức tạp (cây, đồ thị, API phân trang) và bạn muốn client lặp qua nó một cách đơn giản.",
+            "Dùng để cung cấp nhiều thứ tự duyệt trên cùng dữ liệu, như theo chiều sâu và theo chiều rộng.",
+            "Dùng cho các dãy lười hoặc vô hạn, nơi giá trị chỉ được tính khi được yêu cầu.",
+            "Dùng để cho các tập hợp khác nhau một interface vòng lặp thống nhất.",
+            "Đừng viết iterator tùy chỉnh cho dữ liệu vốn đã là mảng. Hãy trả về mảng (hoặc bản sao chỉ đọc) và để nơi gọi dùng cách lặp có sẵn.",
+            "Đừng dùng iterator lười khi nơi gọi cần truy cập ngẫu nhiên theo chỉ số hoặc cần biết trước độ dài; mảng phù hợp hơn."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Ứng dụng thực tế",
+      "body": [
+        {
+          "ul": [
+            "JavaScript: `Array`, `Map`, `Set` và `String` là các iterable, còn `map.entries()` hoặc `set.values()` trả về iterator.",
+            "Java: interface `java.util.Iterator` với `hasNext()` và `next()`, được vòng lặp `for` nâng cao dùng trên mọi `Iterable`.",
+            "Python: giao thức iterator với `__iter__` và `__next__`, cùng các hàm generator dùng `yield`.",
+            "Cơ sở dữ liệu và API: con trỏ (cursor) trên kết quả truy vấn và API HTTP phân trang trả kết quả từng trang một, để client lặp qua kết quả rất lớn mà không phải tải tất cả vào bộ nhớ."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Các mẫu liên quan",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Mẫu",
+              "Quan hệ với Iterator"
+            ],
+            "rows": [
+              [
+                "Composite",
+                "Iterator thường được dùng để duyệt cây Composite mà không để lộ các nút của chúng."
+              ],
+              [
+                "Visitor",
+                "Iterator duyệt các phần tử; Visitor định nghĩa việc cần làm với mỗi phần tử. Chúng thường được dùng cùng nhau."
+              ],
+              [
+                "Factory Method",
+                "Phương thức tạo iterator, như `[Symbol.iterator]()`, là một factory method: mỗi tập hợp trả về lớp iterator của riêng nó."
+              ],
+              [
+                "Memento",
+                "Iterator có thể lưu vị trí của nó dưới dạng memento để việc duyệt có thể tiếp tục sau."
+              ]
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Iterable và iterator khác nhau thế nào?",
+      "a": "Iterable là đối tượng có thể tạo ra một iterator, thông qua `[Symbol.iterator]()` trong JavaScript. Iterator là đối tượng giữ vị trí hiện tại và trả về từng phần tử một qua `next()`."
+    },
+    {
+      "q": "Generator có phải là iterator không?",
+      "a": "Có. Gọi một hàm generator trả về đối tượng generator, vừa là iterator (có `next()`) vừa là iterable (trả về chính nó từ `[Symbol.iterator]()`)."
+    },
+    {
+      "q": "Tại sao không đơn giản là công khai mảng bên trong?",
+      "a": "Công khai mảng ràng buộc mọi nơi gọi vào lựa chọn lưu trữ đó và cho phép họ sửa đổi nó. Iterator che giấu cấu trúc, nên bạn có thể đổi nó sau này hoặc tính phần tử một cách lười mà không phải sửa nơi gọi."
+    },
+    {
+      "q": "Internal iterator là gì?",
+      "a": "Internal iterator là phương thức nhận một callback và chạy nó cho từng phần tử, như `array.forEach(fn)`. Tập hợp kiểm soát vòng lặp. External iterator, như `next()`, cho client tự kiểm soát khi nào tiến tiếp và khi nào dừng."
+    }
+  ]
+}
