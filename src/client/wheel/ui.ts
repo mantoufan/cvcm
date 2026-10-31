@@ -102,7 +102,7 @@ function paint(): void {
   drawDial(list);
   // The last winner stays visible, also when removing it leaves fewer than two entries.
   if (!spinning && outEl) {
-    outEl.textContent = [lastWinner ? t("wheel.winner", { name: lastWinner }) : "", lastPlace ? t("wheel.lastPlace", { name: lastPlace }) : "", list.length < 2 ? t("wheel.needTwo") : ""].filter(Boolean).join(" ");
+    outEl.textContent = [lastWinner ? t("wheel.winner", { name: lastWinner }) : "", lastPlace ? t("wheel.lastPlace", { name: lastPlace }) : "", list.length < 2 ? t("wheel.needTwo") : ""].filter(Boolean).join(" · ");
   }
 }
 
@@ -183,11 +183,9 @@ function land(list: string[], index: number): void {
   lastWinner = winner;
   history.push(winner);
   if (removeEl?.checked && entriesEl) {
-    // Drop one copy of the winner; the dial redraws without it (the pointer then sits on a neighbour, which is fine).
-    const lines = entriesEl.value.split(/\r?\n/);
-    const at = lines.findIndex((line) => normalizeEntry(line) === winner);
-    if (at >= 0) lines.splice(at, 1);
-    entriesEl.value = lines.join("\n");
+    // Drop every copy of the winner, so a name repeated for better odds still appears once in the order.
+    // The dial redraws without it (the pointer then sits on a neighbour, which is fine).
+    entriesEl.value = entriesEl.value.split(/\r?\n/).filter((line) => normalizeEntry(line) !== winner).join("\n");
     // One name left cannot be spun: it takes the last place, so History holds the whole order. It stays in the list;
     // the next draw (after adding names) starts a new round.
     const left = entries();

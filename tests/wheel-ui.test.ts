@@ -53,6 +53,16 @@ describe("wheel history", () => {
     expect(new Set(history())).toEqual(new Set(["X", "Y"]));
   });
 
+  it("removes every copy of a winner during an elimination", () => {
+    setList("A\nA\nB");
+    const box = field<HTMLInputElement>("[data-field=remove]");
+    box.checked = true;
+    box.dispatchEvent(new Event("change"));
+    spin(1);
+    expect(new Set(history())).toEqual(new Set(["A", "B"]));
+    expect(history()).toHaveLength(2);
+  });
+
   it("starts fresh when remove-winner is ticked", () => {
     spin(2);
     expect(history()).toHaveLength(2);
