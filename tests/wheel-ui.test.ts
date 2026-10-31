@@ -43,7 +43,8 @@ describe("wheel history", () => {
     const order = history();
     expect(order).toHaveLength(5);
     expect(new Set(order)).toEqual(new Set(["A", "B", "C", "D", "E"]));
-    expect(field<HTMLTextAreaElement>("textarea").value).toBe("");
+    expect(field<HTMLTextAreaElement>("textarea").value).toBe(order[4]);
+    expect(field(".wheel-winner").textContent).toContain(`Last place: ${order[4]}`);
     expect(field<HTMLButtonElement>("[data-action=spin]").disabled).toBe(true);
     // A new list after a finished round starts a new order.
     setList("X\nY");
