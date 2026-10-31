@@ -11,10 +11,11 @@ import { isMarketId, type MarketId } from "./markets";
 import { isQuizId, type QuizId } from "./quiz";
 import { DATASET_SEGMENT, isDatasetId, type DatasetId } from "./datasets";
 import { CODE_SEGMENT, KB_SEGMENT, isKbId, kbArticleOf, kbShelfOf, kbShelfOfPage, type KbId, type KbPage, type KbShelf } from "./kb";
+import { REF_SEGMENT, isRefId, type RefId } from "./ref";
 import { localePath, parseLocale, type Locale } from "./locale";
 
 /** Child sitemaps listed by `/sitemap.xml` (`/sitemaps/<section>.xml`), so Search Console reports indexing per section. */
-export const SITEMAP_SECTIONS = ["pages", "learn", "games", "tests", "datasets"] as const;
+export const SITEMAP_SECTIONS = ["pages", "learn", "games", "tests", "datasets", "reference"] as const;
 
 /** Agent discovery files (`src/shared/agent-docs.ts`): static, and readable from any origin (the Worker adds CORS). */
 export const AGENT_DOC_PATHS = ["/llms.txt", "/tools.json", "/.well-known/poppy.json"] as const;
@@ -378,6 +379,7 @@ export type AppPath =
   | { kind: "bare-quiz"; quiz: QuizId | null }
   | { kind: "bare-dataset"; dataset: DatasetId | null }
   | { kind: "bare-kb"; article: KbArticlePath }
+  | { kind: "bare-ref"; entry: RefId | null }
   | { kind: "app"; locale: Locale; tool: ToolId | null; clipId?: string; convertJob?: ConvertJobId; resizeJob?: ResizeJobId }
   | { kind: "learn"; locale: Locale; tutorial: TutorialId | null }
   | ({ kind: "games"; locale: Locale } & GamesPath)
@@ -387,6 +389,7 @@ export type AppPath =
   | { kind: "quiz"; locale: Locale; quiz: QuizId | null }
   | { kind: "dataset"; locale: Locale; dataset: DatasetId | null }
   | { kind: "kb"; locale: Locale; article: KbArticlePath }
+  | { kind: "ref"; locale: Locale; entry: RefId | null }
   | { kind: "clip"; id: string }
   | { kind: "unknown" };
 
@@ -485,6 +488,12 @@ export function parseAppPath(pathname: string): AppPath {
       if (isDatasetId(third)) return { kind: "dataset", locale, dataset: third };
       return { kind: "unknown" };
     }
+    if (second === REF_SEGMENT) {
+      if (rest.length > 0) return { kind: "unknown" };
+      if (!third) return { kind: "ref", locale, entry: null };
+      if (isRefId(third)) return { kind: "ref", locale, entry: third };
+      return { kind: "unknown" };
+    }
     if (isLegalPageId(second)) {
       if (third || rest.length > 0) return { kind: "unknown" };
       return { kind: "legal", locale, page: second };
@@ -541,6 +550,11 @@ export function parseAppPath(pathname: string): AppPath {
     if (isDatasetId(second) && !third) return { kind: "bare-dataset", dataset: second };
     return { kind: "unknown" };
   }
+  if (first === REF_SEGMENT) {
+    if (!second) return { kind: "bare-ref", entry: null };
+    if (isRefId(second) && !third) return { kind: "bare-ref", entry: second };
+    return { kind: "unknown" };
+  }
   if (isLegalPageId(first) && !second) return { kind: "bare-legal", page: first };
   if (isToolId(first) && !second) return { kind: "bare", tool: first };
   if (first === "convert" && second && !third && isConvertJobId(second)) {
@@ -588,6 +602,12 @@ export function quizHref(locale: Locale, quiz: QuizId | null = null): string {
 export function datasetHref(locale: Locale, dataset: DatasetId | null = null): string {
   const base = `/${localePath(locale)}/${DATASET_SEGMENT}`;
   return dataset ? `${base}/${dataset}/` : `${base}/`;
+}
+
+/** The pose and style reference: `/{locale}/reference/` (hub) and `/{locale}/reference/{id}/`. */
+export function refHref(locale: Locale, entry: RefId | null = null): string {
+  const base = `/${localePath(locale)}/${REF_SEGMENT}`;
+  return entry ? `${base}/${entry}/` : `${base}/`;
 }
 
 export function legalHref(locale: Locale, page: LegalPageId): string {

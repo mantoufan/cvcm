@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import { QUIZZES } from "../src/shared/quiz";
 import { DATASETS } from "../src/shared/datasets";
 import { KB_ARTICLES } from "../src/shared/kb";
+import { REF_ENTRIES } from "../src/shared/ref";
 import { ALGO_SNIPPETS, TUTORIAL_DIAGRAMS, TUTORIAL_META, lessonsForTool, tutorialSteps } from "../src/shared/learn";
 import { GAME_CONSOLES, GAMES } from "../src/shared/games";
 import { DEVICE_PAGES } from "../src/shared/device";
@@ -199,7 +200,7 @@ describe("learn SEO", () => {
 describe("learn sitemap", () => {
   it("lists published lessons and omits unpublished ones", () => {
     const xml = buildSitemapXml();
-    const extra = 1 + FEATURED_TUTORIALS.length + 1 + GAME_CONSOLES.length + GAMES.length + DEVICE_PAGES.length + LEGAL_PAGES.length + 1 + QUIZZES.length + 1 + DATASETS.length + 2 + KB_ARTICLES.length;
+    const extra = 1 + FEATURED_TUTORIALS.length + 1 + GAME_CONSOLES.length + GAMES.length + DEVICE_PAGES.length + LEGAL_PAGES.length + 1 + QUIZZES.length + 1 + DATASETS.length + 2 + KB_ARTICLES.length + 1 + REF_ENTRIES.length;
     expect(sitemapPages().length).toBe(LOCALES.length * (1 + TOOLS.length + CONVERT_JOBS.length + RESIZE_JOBS.length + extra));
     expect(xml).toContain("https://cv.cm/en/resize/compress-image/");
     expect(xml).toContain("https://cv.cm/en/convert/heic-to-jpg/");

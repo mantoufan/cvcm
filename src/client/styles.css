@@ -601,6 +601,19 @@ input[type="color"] { width: 2.6rem; height: 2.2rem; padding: 0; border: 1px sol
 .kb-note p { margin: 0; }
 .kb-sources li { font-size: 0.9rem; }
 .kb-about { margin-top: 2rem; color: var(--ink-soft); }
+/* Reference pages: photos are content (hotlinked from s1.mtf6.com), plain grid, no shadows. */
+.ref-aka { margin: 0.3rem 0 0; color: var(--ink-soft); font-size: 0.9rem; }
+.ref-photos { margin-top: 2rem; }
+.ref-photos > h2 { margin: 0 0 0.5rem; font-size: 1.2rem; }
+.ref-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.75rem; align-items: start; }
+@media (min-width: 720px) { .ref-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+.ref-grid figure { margin: 0; }
+.ref-grid a { display: block; border-radius: 8px; overflow: hidden; border: 1px solid var(--line); background: var(--pink-soft); }
+.ref-grid img { display: block; max-width: 100%; width: 100%; height: auto; }
+.ref-grid figcaption { margin-top: 0.25rem; color: var(--ink-soft); font-size: 0.75rem; line-height: 1.4; overflow-wrap: anywhere; }
+.ref-note { color: var(--ink-soft); font-size: 0.85rem; }
+.ref-tags { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 0.4rem; }
+.ref-names th[scope="row"] { font-weight: 400; color: var(--ink-soft); }
 .game-official { margin: 0.4rem 0 0.6rem; padding-left: 1.2rem; }
 .game-official li { margin: 0.3rem 0; }
 

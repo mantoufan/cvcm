@@ -27,6 +27,8 @@ import { datasetBreadcrumbJsonLd, datasetFaqJsonLd, datasetJsonLd } from "../sha
 import type { DatasetId } from "../shared/datasets";
 import { kbArticleJsonLd, kbBreadcrumbJsonLd, kbFaqJsonLd } from "../shared/kb-i18n";
 import type { KbPage } from "../shared/kb";
+import { refArticleJsonLd, refBreadcrumbJsonLd, refFaqJsonLd } from "../shared/ref-i18n";
+import type { RefPage } from "../shared/ref";
 import type { DevicePageId } from "../shared/device";
 import { legalBreadcrumbJsonLd } from "../shared/legal";
 import type { ConvertJobId, LegalPageId, ResizeJobId, ToolId, TutorialId } from "../shared/path";
@@ -84,8 +86,10 @@ export function syncPageJsonLd(
   quizPage: QuizId | "hub" | null = null,
   datasetPage: DatasetId | "hub" | null = null,
   kbPage: KbPage = null,
+  refPage: RefPage = null,
 ): void {
-  writeJsonLd("article-jsonld", kbPage ? kbArticleJsonLd(locale, kbPage) : null);
+  const refId = refPage === "hub" ? null : refPage;
+  writeJsonLd("article-jsonld", kbPage ? kbArticleJsonLd(locale, kbPage) : refPage ? refArticleJsonLd(locale, refId) : null);
   if (datasetPage) {
     const id = datasetPage === "hub" ? null : datasetPage;
     for (const key of ["howto-jsonld", "game-jsonld", "software-jsonld"]) writeJsonLd(key, null);
@@ -95,6 +99,12 @@ export function syncPageJsonLd(
     return;
   }
   writeJsonLd("dataset-jsonld", null);
+  if (refPage) {
+    for (const key of ["howto-jsonld", "game-jsonld", "software-jsonld"]) writeJsonLd(key, null);
+    writeJsonLd("faq-jsonld", refFaqJsonLd(locale, refId));
+    writeJsonLd("breadcrumb-jsonld", refBreadcrumbJsonLd(locale, refId));
+    return;
+  }
   if (kbPage) {
     for (const key of ["howto-jsonld", "game-jsonld", "software-jsonld"]) writeJsonLd(key, null);
     writeJsonLd("faq-jsonld", kbFaqJsonLd(locale, kbPage));
