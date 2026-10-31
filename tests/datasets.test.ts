@@ -6,7 +6,7 @@ import countries from "../src/data/countries.json";
 import { LOCALES } from "../src/shared/locale";
 import { datasetMessages } from "../src/shared/messages";
 import { STATIC_FILE, datasetHref, parseAppPath } from "../src/shared/path";
-import { DATASETS, DATASET_FILES, INDICATORS, csvHref, datasetMeta, isIndicator, type CountryRow, type DatasetId, type DatasetRows, type IndicatorRow } from "../src/shared/datasets";
+import { DATASETS, DATASET_FILES, INDICATORS, INDICATOR_SPEC, csvHref, datasetMeta, isIndicator, type CountryRow, type DatasetId, type DatasetRows, type IndicatorRow } from "../src/shared/datasets";
 import { datasetJsonLd, datasetPageCopy, datasetStaticHtml, datasetTable, datasetTitle, regionName, utcOffset } from "../src/shared/datasets-i18n";
 import { applyHtmlSeo, pageCanonical } from "../src/shared/seo";
 import { buildSitemapXml } from "../src/shared/sitemap";
@@ -144,6 +144,25 @@ describe("data pages: tables", () => {
     expect(table.rows[0][1].text).toBe("India");
     const sorts = table.rows.map((r) => r[2].sort as number);
     expect(sorts).toEqual([...sorts].sort((a, b) => b - a));
+  });
+
+  it("gives every indicator a known format, a row file and a reason for each data filter", () => {
+    for (const id of INDICATORS) {
+      const spec = INDICATOR_SPEC[id];
+      expect([undefined, "usd", "usd-compact"], id).toContain(spec.format);
+      expect(Number.isInteger(spec.decimals), id).toBe(true);
+      if (spec.maxAge !== undefined || spec.floor !== undefined || spec.skip) expect(spec.why, id).toBeTruthy();
+    }
+    for (const id of DATASETS) for (const file of DATASET_FILES[id]) expect(existsSync(`src/data/${file}.json`), file).toBe(true);
+  });
+
+  it("shows a share only next to the world total of the same year and names every country tied for last", () => {
+    const exports = datasetTable("en", "exports", rows("exports"));
+    const worldYear = datasetMeta("exports").world![1];
+    for (const row of exports.rows) expect(row[3].text === "–", row[1].text).toBe(Number(row[4].text) !== worldYear);
+    const forest = rows("forest-area") as IndicatorRow[];
+    const zeros = forest.filter((r) => r[2] === forest[forest.length - 1][2]).length;
+    expect(datasetMeta("forest-area").bottom!.length).toBe(Math.min(zeros, 3));
   });
 
   it("places every indicator from indicators.json in exactly one group", () => {

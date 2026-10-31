@@ -145,7 +145,7 @@ export function datasetVars(locale: Locale, id: DatasetId): Record<string, strin
   if (!isIndicator(id)) return vars;
   const m = indicatorMeta(id);
   vars.from = m.from;
-  vars.to = m.to;
+  vars.to = m.asOf;
   if (m.world) {
     vars.world = formatIndicator(locale, id, m.world[0]);
     vars.worldYear = m.world[1];
@@ -155,9 +155,11 @@ export function datasetVars(locale: Locale, id: DatasetId): Record<string, strin
     vars[`v${index + 1}`] = formatIndicator(locale, id, value);
     vars[`year${index + 1}`] = year;
   });
-  const [code, value, en] = m.bottom[0];
-  vars.last = regionName(locale, code, en);
-  vars.vlast = formatIndicator(locale, id, value);
+  const list = memo(`lfc:${locale}`, () => new Intl.ListFormat(locale, { type: "conjunction" }));
+  const names = m.bottom.map(([code, , en]) => regionName(locale, code, en));
+  if (m.tiedLast > names.length) names.push(fill(datasetUi(locale).others, { n: m.tiedLast - names.length }));
+  vars.last = list.format(names);
+  vars.vlast = formatIndicator(locale, id, m.bottom[0][1]);
   return vars;
 }
 
@@ -243,7 +245,8 @@ export function datasetTable(locale: Locale, id: DatasetId, data: DatasetRows, c
         cell(ranks[index]),
         cell(regionName(locale, code, en)),
         cell(formatIndicator(locale, id, value), value),
-        ...(share ? [cell(formatShare(locale, value / world[0]), value)] : []),
+        // A share needs the world total of the same year (exports: the US reports a year later than China).
+        ...(share ? [year === world[1] ? cell(formatShare(locale, value / world[0]), value) : cell("–", -1)] : []),
         cell(year),
       ]),
     };

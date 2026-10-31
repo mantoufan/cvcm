@@ -42,7 +42,6 @@ export function isIndicator(id: DatasetId): id is DatasetId & IndicatorId {
   return id in INDICATOR_SPEC;
 }
 
-export const WB_CODE = Object.fromEntries(INDICATORS.map((id) => [id, INDICATOR_SPEC[id].code])) as Record<IndicatorId, string>;
 
 export type DatasetSource = { name: string; url: string; license: string; licenseUrl: string };
 
@@ -55,7 +54,7 @@ const WORLD_BANK = (code: string): DatasetSource => ({
 const PUBLIC_DOMAIN = "https://opendatacommons.org/licenses/pddl/1-0/";
 
 export const DATASET_SOURCE: Record<DatasetId, DatasetSource> = {
-  ...(Object.fromEntries(INDICATORS.map((id) => [id, WORLD_BANK(WB_CODE[id])])) as Record<IndicatorId, DatasetSource>),
+  ...(Object.fromEntries(INDICATORS.map((id) => [id, WORLD_BANK(INDICATOR_SPEC[id].code)])) as Record<IndicatorId, DatasetSource>),
   "country-codes": { name: "ISO 3166-1 (via datahub.io core/country-codes)", url: "https://www.iso.org/iso-3166-country-codes.html", license: "ODC-PDDL", licenseUrl: PUBLIC_DOMAIN },
   "calling-codes": { name: "ITU-T E.164 (via datahub.io core/country-codes)", url: "https://www.itu.int/pub/T-SP-E.164D", license: "ODC-PDDL", licenseUrl: PUBLIC_DOMAIN },
   "currency-codes": { name: "ISO 4217 (via datahub.io core/currency-codes)", url: "https://www.iso.org/iso-4217-currency-codes.html", license: "ODC-PDDL", licenseUrl: PUBLIC_DOMAIN },
@@ -106,6 +105,8 @@ export const DATASET_TOOLS: Partial<Record<DatasetId, readonly ToolId[]>> = {
 /** Summary of the snapshot: row counts, years, top and bottom rows. Small enough for the Worker's head tags. */
 export type IndicatorMeta = {
   rows: number;
+  /** The year most rows are from: the year the page heading names. */
+  asOf: number;
   from: number;
   to: number;
   sourceUpdated: string;
@@ -113,6 +114,8 @@ export type IndicatorMeta = {
   /** [iso2, value, English name, year] */
   top: [string, number, string, number][];
   bottom: [string, number, string, number][];
+  /** How many rows share the last value; `bottom` names up to three of them. */
+  tiedLast: number;
 };
 /** `west` / `east`: the extreme UTC offsets in minutes (time zones only). */
 export type DatasetMeta = { rows: number; year?: number; tzdata?: string | null; west?: number; east?: number } & Partial<IndicatorMeta>;

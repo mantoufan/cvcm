@@ -105,8 +105,12 @@ for (const [id, spec] of Object.entries(WB)) {
     to: Math.max(...years),
     sourceUpdated: info.lastupdated,
     world: world ? [Number(world.value.toFixed(2)), Number(world.date)] : null,
+    // The year most rows are from heads the page; a few early reporters should not date the whole table.
+    asOf: mode(years),
     top: rows.slice(0, 3).map((r) => [r[0], r[2], r[4], r[3]]),
-    bottom: rows.slice(-1).map((r) => [r[0], r[2], r[4], r[3]]),
+    // Everyone tied for last (forest area: several at 0.0), up to three by name plus how many in all.
+    bottom: rows.filter((r) => r[2] === rows[rows.length - 1][2]).slice(0, 3).map((r) => [r[0], r[2], r[4], r[3]]),
+    tiedLast: rows.filter((r) => r[2] === rows[rows.length - 1][2]).length,
   };
   // Equal values share a rank, as on the page.
   const ranks = [];
@@ -244,6 +248,12 @@ writeCsv("ascii", ["decimal", "hex", "octal", "binary", "char", "name"],
 
 writeJson("meta.json", meta);
 console.log("wrote src/data and public/datasets");
+
+function mode(values) {
+  const counts = new Map();
+  for (const v of values) counts.set(v, (counts.get(v) ?? 0) + 1);
+  return [...counts].sort((a, b) => b[1] - a[1] || b[0] - a[0])[0][0];
+}
 
 function writeCsv(id, head, rows) {
   const dir = join(root, "public/datasets");
