@@ -6,7 +6,7 @@ import countries from "../src/data/countries.json";
 import { LOCALES } from "../src/shared/locale";
 import { datasetMessages } from "../src/shared/messages";
 import { STATIC_FILE, datasetHref, parseAppPath } from "../src/shared/path";
-import { DATASETS, DATASET_FILES, csvHref, datasetMeta, isIndicator, type CountryRow, type DatasetId, type DatasetRows, type IndicatorRow } from "../src/shared/datasets";
+import { DATASETS, DATASET_FILES, INDICATORS, csvHref, datasetMeta, isIndicator, type CountryRow, type DatasetId, type DatasetRows, type IndicatorRow } from "../src/shared/datasets";
 import { datasetJsonLd, datasetPageCopy, datasetStaticHtml, datasetTable, datasetTitle, regionName, utcOffset } from "../src/shared/datasets-i18n";
 import { applyHtmlSeo, pageCanonical } from "../src/shared/seo";
 import { buildSitemapXml } from "../src/shared/sitemap";
@@ -144,6 +144,11 @@ describe("data pages: tables", () => {
     expect(table.rows[0][1].text).toBe("India");
     const sorts = table.rows.map((r) => r[2].sort as number);
     expect(sorts).toEqual([...sorts].sort((a, b) => b - a));
+  });
+
+  it("places every indicator from indicators.json in exactly one group", () => {
+    for (const id of INDICATORS) expect(DATASETS.filter((d) => d === id).length, id).toBe(1);
+    expect(DATASETS.filter(isIndicator).length).toBe(INDICATORS.length);
   });
 
   it("keeps one latest row per country in every indicator", () => {

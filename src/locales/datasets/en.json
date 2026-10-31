@@ -2,7 +2,7 @@
   "crumbHome": "Home",
   "hub": {
     "title": "Free Public Data Tables: Population, GDP, Country Codes and More | cv.cm",
-    "description": "Open data tables you can search, sort and download as CSV: population, GDP, inflation, unemployment, life expectancy, birth rates, land area, CO2 emissions, internet use, ISO country and currency codes, calling codes, time zones, paper sizes and ASCII.",
+    "description": "Open data tables you can search, sort and download as CSV: population, GDP, exports, inflation, unemployment, life expectancy for men and women, birth and death rates, land and forest area, CO2 emissions, renewable energy, internet use, ISO country and currency codes, calling codes, time zones, paper sizes and ASCII.",
     "h1": "Public data",
     "lede": "Plain tables of public data from the World Bank, ISO and IANA. Search, sort by any column, or download the CSV. Every table names its source and licence.",
     "groups": {
@@ -455,6 +455,248 @@
         { "q": "Which countries have the highest access to electricity?", "a": "{top1} ({v1}%), {top2} ({v2}%) and {top3} ({v3}%) lead the list in {year1}. Ties share a rank." },
         { "q": "What share of the world has electricity?", "a": "{world}% of the world's population in {worldYear}." },
         { "q": "Which country has the lowest access to electricity?", "a": "In this list, {last}, where {vlast}% of people have electricity." }
+      ]
+    },
+    "population-growth": {
+      "name": "Population growth rate by country",
+      "title": "Population Growth Rate by Country {to}: {rows} Countries Ranked | cv.cm",
+      "description": "Annual population growth for {rows} countries, ranked from fastest to slowest. World population grew {world}% in {worldYear}. World Bank data, CSV download.",
+      "h1": "Population growth rate by country, {to} (annual %)",
+      "lede": "How much each country's population grew or shrank in its latest year, for {rows} countries and areas. Negative values mean the population fell. Source: World Bank, from UN estimates.",
+      "value": "Population growth (%)",
+      "facts": [
+        "World population growth: {world}% ({worldYear}).",
+        "Fastest growing: {top1} ({v1}%), {top2} ({v2}%) and {top3} ({v3}%).",
+        "Slowest in the list: {last} ({vlast}%)."
+      ],
+      "about": [
+        "Population growth counts births minus deaths plus people moving in minus people moving out. In small countries and in the Gulf states, migration moves the figure far more than births do.",
+        "Many countries in Europe and East Asia now shrink every year because deaths outnumber births and few migrants arrive."
+      ],
+      "faq": [
+        { "q": "Which country has the fastest growing population?", "a": "{top1}, where the population grew {v1}% in {year1}, followed by {top2} ({v2}%)." },
+        { "q": "How fast is the world population growing?", "a": "{world}% in {worldYear}, less than half the peak rate of the late 1960s." },
+        { "q": "Which country's population is shrinking the fastest?", "a": "In this list, {last}, at {vlast}% a year." }
+      ]
+    },
+    "death-rate": {
+      "name": "Death rate by country",
+      "title": "Death Rate by Country {to}: Deaths per 1,000 People in {rows} Countries | cv.cm",
+      "description": "Crude death rate, deaths per 1,000 people a year, for {rows} countries, ranked. World {world} ({worldYear}). World Bank / UN data, CSV download.",
+      "h1": "Death rate by country, {to} (deaths per 1,000 people)",
+      "lede": "Deaths in a year for every 1,000 people, for {rows} countries and areas, ranked from highest to lowest. Source: World Bank, from UN population estimates.",
+      "value": "Deaths per 1,000",
+      "facts": [
+        "World: {world} deaths per 1,000 people ({worldYear}).",
+        "Highest: {top1} ({v1}), {top2} ({v2}) and {top3} ({v3}).",
+        "Lowest in the list: {last} ({vlast})."
+      ],
+      "about": [
+        "The crude death rate depends mostly on age, not on health care. Countries with many old people, such as those in Eastern Europe, have high rates even where people live long lives.",
+        "Gulf states have the lowest rates because most residents are young working-age migrants. To compare health, use life expectancy instead."
+      ],
+      "faq": [
+        { "q": "Which country has the highest death rate?", "a": "{top1}, with {v1} deaths per 1,000 people in {year1}, followed by {top2} ({v2})." },
+        { "q": "What is the world death rate?", "a": "{world} deaths per 1,000 people in {worldYear}." },
+        { "q": "Which country has the lowest death rate?", "a": "In this list, {last}, with {vlast} deaths per 1,000 people." }
+      ]
+    },
+    "life-expectancy-male": {
+      "name": "Male life expectancy by country",
+      "title": "Male Life Expectancy by Country {to}: {rows} Countries Ranked | cv.cm",
+      "description": "Life expectancy at birth for men in {rows} countries, ranked. World average for men {world} years ({worldYear}). World Bank data, CSV download.",
+      "h1": "Male life expectancy at birth by country, {to}",
+      "lede": "How many years a newborn boy would live if current death rates held, for {rows} countries and areas, ranked from highest to lowest. Source: World Bank, from UN estimates.",
+      "value": "Male life expectancy (years)",
+      "facts": [
+        "World average for men: {world} years ({worldYear}).",
+        "Highest: {top1} ({v1}), {top2} ({v2}) and {top3} ({v3}).",
+        "Lowest in the list: {last} ({vlast})."
+      ],
+      "about": [
+        "Life expectancy at birth is the average number of years a newborn would live if the death rates of its birth year stayed the same for its whole life. It summarises current health, not a forecast.",
+        "Men die younger than women almost everywhere, by about five years on average. The gap is widest in Eastern Europe, where heavy drinking and smoking among men are common."
+      ],
+      "faq": [
+        { "q": "Which country has the highest male life expectancy?", "a": "{top1}, at {v1} years in {year1}, followed by {top2} ({v2})." },
+        { "q": "What is the average life expectancy for men in the world?", "a": "{world} years in {worldYear}." },
+        { "q": "Which country has the lowest male life expectancy?", "a": "In this list, {last}, at {vlast} years." }
+      ]
+    },
+    "life-expectancy-female": {
+      "name": "Female life expectancy by country",
+      "title": "Female Life Expectancy by Country {to}: {rows} Countries Ranked | cv.cm",
+      "description": "Life expectancy at birth for women in {rows} countries, ranked. World average for women {world} years ({worldYear}). World Bank data, CSV download.",
+      "h1": "Female life expectancy at birth by country, {to}",
+      "lede": "How many years a newborn girl would live if current death rates held, for {rows} countries and areas, ranked from highest to lowest. Source: World Bank, from UN estimates.",
+      "value": "Female life expectancy (years)",
+      "facts": [
+        "World average for women: {world} years ({worldYear}).",
+        "Highest: {top1} ({v1}), {top2} ({v2}) and {top3} ({v3}).",
+        "Lowest in the list: {last} ({vlast})."
+      ],
+      "about": [
+        "Life expectancy at birth is the average number of years a newborn would live if the death rates of its birth year stayed the same for its whole life. It summarises current health, not a forecast.",
+        "Women outlive men in almost every country. Part of the gap is biological and part comes from men's higher rates of smoking, drinking, accidents and violence."
+      ],
+      "faq": [
+        { "q": "Which country has the highest female life expectancy?", "a": "{top1}, at {v1} years in {year1}, followed by {top2} ({v2})." },
+        { "q": "What is the average life expectancy for women in the world?", "a": "{world} years in {worldYear}." },
+        { "q": "Which country has the lowest female life expectancy?", "a": "In this list, {last}, at {vlast} years." }
+      ]
+    },
+    "maternal-mortality": {
+      "name": "Maternal mortality by country",
+      "title": "Maternal Mortality Ratio by Country {to}: {rows} Countries Ranked | cv.cm",
+      "description": "Maternal deaths per 100,000 live births in {rows} countries, ranked, using UN modelled estimates. World {world} ({worldYear}). World Bank data, CSV download.",
+      "h1": "Maternal mortality ratio by country, {to} (per 100,000 live births)",
+      "lede": "How many women die from pregnancy or childbirth for every 100,000 babies born alive, for {rows} countries and areas, ranked from highest to lowest. Source: World Bank, from UN MMEIG estimates.",
+      "value": "Deaths per 100,000 births",
+      "facts": [
+        "World: {world} maternal deaths per 100,000 live births ({worldYear}).",
+        "Highest: {top1} ({v1}), {top2} ({v2}) and {top3} ({v3}).",
+        "Lowest in the list: {last} ({vlast})."
+      ],
+      "about": [
+        "A maternal death is the death of a woman while pregnant or within 42 days of the end of a pregnancy, from causes related to it. Severe bleeding, infections and high blood pressure cause most of them, and most can be prevented with skilled care at birth.",
+        "These are modelled estimates from the UN Maternal Mortality Estimation Inter-Agency Group (MMEIG), which fills gaps where countries do not register every death."
+      ],
+      "faq": [
+        { "q": "Which country has the highest maternal mortality rate?", "a": "{top1}, with {v1} maternal deaths per 100,000 live births in {year1}, followed by {top2} ({v2})." },
+        { "q": "What is the world maternal mortality ratio?", "a": "{world} per 100,000 live births in {worldYear}. The UN goal for 2030 is below 70." },
+        { "q": "Which country has the lowest maternal mortality?", "a": "In this list, {last}, at {vlast} per 100,000 live births." }
+      ]
+    },
+    "exports": {
+      "name": "Exports by country",
+      "title": "Exports by Country {to}: Largest Exporters in US$ | cv.cm",
+      "description": "Exports of goods and services for {rows} economies in current US dollars, ranked, with share of world exports. World exports {world} ({worldYear}). World Bank data, CSV download.",
+      "h1": "Exports of goods and services by country, {to} (current US$)",
+      "lede": "Value of everything each economy sold to the rest of the world, goods and services together, for {rows} countries and areas, ranked, with each one's share of the world total. Source: World Bank.",
+      "value": "Exports (US$)",
+      "facts": [
+        "World exports: {world} ({worldYear}).",
+        "Largest exporters: {top1} ({v1}), {top2} ({v2}) and {top3} ({v3}).",
+        "Smallest in the list: {last} ({vlast})."
+      ],
+      "about": [
+        "Exports include goods such as cars, phones and oil, and services such as tourism, shipping, software and finance. Values are in current US dollars, so exchange rate swings move them as well as trade does.",
+        "Each row shows the latest year the country reported, within the last four years. Re-exports through trade hubs such as Singapore and Hong Kong are counted where they leave."
+      ],
+      "faq": [
+        { "q": "Which country exports the most?", "a": "{top1}, with exports of {v1} in {year1}, followed by {top2} ({v2}) and {top3} ({v3})." },
+        { "q": "How much does the world export?", "a": "{world} of goods and services in {worldYear}." },
+        { "q": "Do exports include services?", "a": "Yes. This table counts goods and services together, so countries with large tourism, finance or software sectors rank higher than on a goods-only list." }
+      ]
+    },
+    "imports": {
+      "name": "Imports by country",
+      "title": "Imports by Country {to}: Largest Importers in US$ | cv.cm",
+      "description": "Imports of goods and services for {rows} economies in current US dollars, ranked, with share of world imports. World imports {world} ({worldYear}). World Bank data, CSV download.",
+      "h1": "Imports of goods and services by country, {to} (current US$)",
+      "lede": "Value of everything each economy bought from the rest of the world, goods and services together, for {rows} countries and areas, ranked, with each one's share of the world total. Source: World Bank.",
+      "value": "Imports (US$)",
+      "facts": [
+        "World imports: {world} ({worldYear}).",
+        "Largest importers: {top1} ({v1}), {top2} ({v2}) and {top3} ({v3}).",
+        "Smallest in the list: {last} ({vlast})."
+      ],
+      "about": [
+        "Imports include goods such as fuel, food and machinery and services such as travel abroad, transport and licences. Values are in current US dollars.",
+        "A country that imports more than it exports runs a trade deficit. Compare this table with the exports table to see each country's balance."
+      ],
+      "faq": [
+        { "q": "Which country imports the most?", "a": "{top1}, with imports of {v1} in {year1}, followed by {top2} ({v2}) and {top3} ({v3})." },
+        { "q": "How much does the world import?", "a": "{world} of goods and services in {worldYear}. World imports and exports should match but differ because of timing and reporting gaps." },
+        { "q": "Which country imports the least?", "a": "In this list, {last}, at {vlast}." }
+      ]
+    },
+    "health-spending-per-capita": {
+      "name": "Health spending per capita by country",
+      "title": "Health Spending per Capita by Country {to}: {rows} Countries in US$ | cv.cm",
+      "description": "Current health expenditure per person in US dollars for {rows} countries, ranked. World average {world} ({worldYear}). World Bank / WHO data, CSV download.",
+      "h1": "Health spending per capita by country, {to} (current US$)",
+      "lede": "How much is spent on health care for each resident in a year, by governments, insurers and households together, for {rows} countries and areas, ranked. Source: World Bank, from the WHO Global Health Expenditure Database.",
+      "value": "Health spending per person (US$)",
+      "facts": [
+        "World average: {world} per person ({worldYear}).",
+        "Highest: {top1} ({v1}), {top2} ({v2}) and {top3} ({v3}).",
+        "Lowest in the list: {last} ({vlast})."
+      ],
+      "about": [
+        "Current health expenditure covers health goods and services used in the year: hospital and doctor visits, medicines, prevention and administration. Spending on new hospitals and equipment is not included.",
+        "Values are at market exchange rates, so high-wage countries look more expensive than the care they buy. Spending more does not always buy longer lives: compare with the life expectancy table."
+      ],
+      "faq": [
+        { "q": "Which country spends the most on health care per person?", "a": "{top1}, at {v1} per person in {year1}, followed by {top2} ({v2})." },
+        { "q": "How much does the world spend on health per person?", "a": "About {world} per person in {worldYear}." },
+        { "q": "Which country spends the least on health care?", "a": "In this list, {last}, at {vlast} per person." }
+      ]
+    },
+    "female-labor-force": {
+      "name": "Female labour force participation by country",
+      "title": "Female Labor Force Participation Rate by Country {to} | cv.cm",
+      "description": "Share of women aged 15+ who work or are looking for work in {rows} countries, ranked, using ILO modelled estimates. World {world}% ({worldYear}). World Bank data, CSV download.",
+      "h1": "Female labour force participation rate by country, {to} (% of women 15+)",
+      "lede": "Share of women aged 15 and over who have a job or are looking for one, for {rows} countries and areas, ranked from highest to lowest. Source: World Bank, from ILO estimates.",
+      "value": "Women in the labour force (%)",
+      "facts": [
+        "World: {world}% of women are in the labour force ({worldYear}).",
+        "Highest: {top1} ({v1}%), {top2} ({v2}%) and {top3} ({v3}%).",
+        "Lowest in the list: {last} ({vlast}%)."
+      ],
+      "about": [
+        "The labour force counts everyone who works for pay or profit, including farming and family businesses, plus people looking for work. Unpaid housework and care are not counted.",
+        "Some of the highest rates are in low-income countries where most women farm. Rates are lowest in parts of the Middle East and South Asia. These are ILO modelled estimates that use one definition for every country."
+      ],
+      "faq": [
+        { "q": "Which country has the highest female labour force participation?", "a": "{top1}, where {v1}% of women were in the labour force in {year1}, followed by {top2} ({v2}%)." },
+        { "q": "What share of women in the world work?", "a": "{world}% of women aged 15 and over were working or looking for work in {worldYear}." },
+        { "q": "Which country has the lowest female labour force participation?", "a": "In this list, {last}, at {vlast}%." }
+      ]
+    },
+    "forest-area": {
+      "name": "Forest area by country",
+      "title": "Forest Cover by Country {to}: % of Land Area in {rows} Countries | cv.cm",
+      "description": "Forest area as a share of land area for {rows} countries, ranked from most to least forested. World {world}% ({worldYear}). World Bank / FAO data, CSV download.",
+      "h1": "Forest area by country, {to} (% of land area)",
+      "lede": "Share of each country's land covered by forest, for {rows} countries and areas, ranked from most to least forested. Source: World Bank, from the FAO Global Forest Resources Assessment.",
+      "value": "Forest area (% of land)",
+      "facts": [
+        "World: {world}% of land is forest ({worldYear}).",
+        "Most forested: {top1} ({v1}%), {top2} ({v2}%) and {top3} ({v3}%).",
+        "Least forested in the list: {last} ({vlast}%)."
+      ],
+      "about": [
+        "The FAO counts land as forest if it covers more than half a hectare with trees taller than 5 metres and a canopy over 10% of the ground. Plantations count; fruit orchards and city parks do not.",
+        "Small tropical countries top the list by share. By total area, Russia, Brazil, Canada, the United States and China hold more than half of the world's forest."
+      ],
+      "faq": [
+        { "q": "Which country has the most forest cover?", "a": "{top1}, where forest covers {v1}% of the land in {year1}, followed by {top2} ({v2}%)." },
+        { "q": "How much of the world is covered by forest?", "a": "{world}% of the world's land area in {worldYear}." },
+        { "q": "Which country has the least forest?", "a": "In this list, {last}, at {vlast}% of its land." }
+      ]
+    },
+    "renewable-energy": {
+      "name": "Renewable energy share by country",
+      "title": "Renewable Energy Share by Country {to}: % of Energy Use | cv.cm",
+      "description": "Renewable energy as a share of total final energy consumption in {rows} countries, ranked. World {world}% ({worldYear}). World Bank / IEA data, CSV download.",
+      "h1": "Renewable energy share by country, {to} (% of final energy use)",
+      "lede": "Share of the energy people and businesses use that comes from renewable sources, for {rows} countries and areas, ranked from highest to lowest. Source: World Bank, from IEA, IRENA and UN data.",
+      "value": "Renewable share (%)",
+      "facts": [
+        "World: {world}% of energy use is renewable ({worldYear}).",
+        "Highest: {top1} ({v1}%), {top2} ({v2}%) and {top3} ({v3}%).",
+        "Lowest in the list: {last} ({vlast}%)."
+      ],
+      "about": [
+        "This counts all final energy use, including heating and transport, not only electricity. Renewables are hydro, wind, solar, geothermal, modern biofuels and traditional biomass such as firewood.",
+        "Many of the highest shares are in low-income countries where most households cook with wood, not in countries with the most wind and solar power. The data lags by a few years."
+      ],
+      "faq": [
+        { "q": "Which country uses the most renewable energy?", "a": "By share, {top1}, where {v1}% of energy use was renewable in {year1}, mostly from firewood and hydropower." },
+        { "q": "What share of the world's energy is renewable?", "a": "{world}% of final energy consumption in {worldYear}." },
+        { "q": "Which country uses the least renewable energy?", "a": "In this list, {last}, at {vlast}%." }
       ]
     },
     "country-codes": {

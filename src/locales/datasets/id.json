@@ -2,7 +2,7 @@
   "crumbHome": "Beranda",
   "hub": {
     "title": "Tabel Data Publik Gratis: Penduduk, PDB, Kode Negara | cv.cm",
-    "description": "Tabel data terbuka yang bisa dicari, diurutkan, dan diunduh sebagai CSV: jumlah penduduk, PDB, inflasi, pengangguran, angka harapan hidup, angka kelahiran, luas daratan, emisi CO2, pengguna internet, kode negara dan mata uang ISO, kode telepon, zona waktu, ukuran kertas, dan ASCII.",
+    "description": "Tabel data terbuka yang bisa dicari, diurutkan, dan diunduh sebagai CSV: jumlah penduduk, PDB, ekspor, inflasi, pengangguran, angka harapan hidup laki-laki dan perempuan, angka kelahiran dan kematian, luas daratan dan hutan, emisi CO2, energi terbarukan, pengguna internet, kode negara dan mata uang ISO, kode telepon, zona waktu, ukuran kertas, dan ASCII.",
     "h1": "Data publik",
     "lede": "Tabel sederhana berisi data publik dari Bank Dunia, ISO, dan IANA. Cari, urutkan berdasarkan kolom apa pun, atau unduh CSV-nya. Setiap tabel mencantumkan sumber dan lisensinya.",
     "groups": {
@@ -455,6 +455,248 @@
         { "q": "Negara mana yang akses listriknya tertinggi?", "a": "{top1} ({v1}%), {top2} ({v2}%) dan {top3} ({v3}%) memimpin daftar pada {year1}. Nilai yang sama berbagi peringkat." },
         { "q": "Berapa persen penduduk dunia yang memiliki listrik?", "a": "{world}% penduduk dunia pada {worldYear}." },
         { "q": "Negara mana yang akses listriknya terendah?", "a": "Dalam daftar ini, {last}, di mana {vlast}% penduduknya memiliki listrik." }
+      ]
+    },
+    "population-growth": {
+      "name": "Laju pertumbuhan penduduk per negara",
+      "title": "Laju Pertumbuhan Penduduk per Negara {to}: Peringkat {rows} Negara | cv.cm",
+      "description": "Pertumbuhan penduduk tahunan {rows} negara, diurutkan dari tercepat hingga paling lambat. Penduduk dunia tumbuh {world}% pada {worldYear}. Data Bank Dunia, unduh CSV.",
+      "h1": "Laju pertumbuhan penduduk per negara, {to} (% per tahun)",
+      "lede": "Seberapa besar penduduk setiap negara bertambah atau berkurang pada tahun terakhirnya, untuk {rows} negara dan wilayah. Nilai negatif berarti jumlah penduduk menurun. Sumber: Bank Dunia, dari perkiraan PBB.",
+      "value": "Pertumbuhan penduduk (%)",
+      "facts": [
+        "Pertumbuhan penduduk dunia: {world}% ({worldYear}).",
+        "Tercepat: {top1} ({v1}%), {top2} ({v2}%) dan {top3} ({v3}%).",
+        "Paling lambat dalam daftar: {last} ({vlast}%)."
+      ],
+      "about": [
+        "Pertumbuhan penduduk dihitung dari kelahiran dikurangi kematian, ditambah orang yang datang dikurangi orang yang pindah ke luar negeri. Di negara kecil dan negara-negara Teluk, migrasi jauh lebih memengaruhi angka ini daripada kelahiran.",
+        "Banyak negara di Eropa dan Asia Timur kini menyusut setiap tahun karena jumlah kematian melebihi kelahiran dan hanya sedikit migran yang datang."
+      ],
+      "faq": [
+        { "q": "Negara mana yang pertumbuhan penduduknya paling cepat?", "a": "{top1}, di mana penduduknya tumbuh {v1}% pada {year1}, disusul {top2} ({v2}%)." },
+        { "q": "Seberapa cepat penduduk dunia bertambah?", "a": "{world}% pada {worldYear}, kurang dari separuh laju puncaknya pada akhir 1960-an." },
+        { "q": "Negara mana yang penduduknya paling cepat menyusut?", "a": "Dalam daftar ini, {last}, yaitu {vlast}% per tahun." }
+      ]
+    },
+    "death-rate": {
+      "name": "Angka kematian kasar per negara",
+      "title": "Angka Kematian per Negara {to}: Kematian per 1.000 Penduduk di {rows} Negara | cv.cm",
+      "description": "Angka kematian kasar, yaitu kematian per 1.000 penduduk per tahun, di {rows} negara, diurutkan. Dunia {world} ({worldYear}). Data Bank Dunia / PBB, unduh CSV.",
+      "h1": "Angka kematian kasar per negara, {to} (kematian per 1.000 penduduk)",
+      "lede": "Kematian dalam setahun untuk setiap 1.000 penduduk, untuk {rows} negara dan wilayah, diurutkan dari tertinggi ke terendah. Sumber: Bank Dunia, dari perkiraan penduduk PBB.",
+      "value": "Kematian per 1.000",
+      "facts": [
+        "Dunia: {world} kematian per 1.000 penduduk ({worldYear}).",
+        "Tertinggi: {top1} ({v1}), {top2} ({v2}) dan {top3} ({v3}).",
+        "Terendah dalam daftar: {last} ({vlast})."
+      ],
+      "about": [
+        "Angka kematian kasar terutama bergantung pada struktur usia, bukan pada layanan kesehatan. Negara dengan banyak penduduk lanjut usia, seperti di Eropa Timur, memiliki angka tinggi meskipun penduduknya berumur panjang.",
+        "Negara-negara Teluk memiliki angka terendah karena sebagian besar penduduknya adalah migran muda usia kerja. Untuk membandingkan tingkat kesehatan, gunakan angka harapan hidup."
+      ],
+      "faq": [
+        { "q": "Negara mana yang angka kematiannya tertinggi?", "a": "{top1}, dengan {v1} kematian per 1.000 penduduk pada {year1}, disusul {top2} ({v2})." },
+        { "q": "Berapa angka kematian dunia?", "a": "{world} kematian per 1.000 penduduk pada {worldYear}." },
+        { "q": "Negara mana yang angka kematiannya terendah?", "a": "Dalam daftar ini, {last}, dengan {vlast} kematian per 1.000 penduduk." }
+      ]
+    },
+    "life-expectancy-male": {
+      "name": "Angka harapan hidup laki-laki per negara",
+      "title": "Angka Harapan Hidup Laki-laki per Negara {to}: {rows} Negara | cv.cm",
+      "description": "Angka harapan hidup saat lahir untuk laki-laki di {rows} negara, diurutkan. Rata-rata dunia untuk laki-laki {world} tahun ({worldYear}). Data Bank Dunia, unduh CSV.",
+      "h1": "Angka harapan hidup laki-laki saat lahir per negara, {to}",
+      "lede": "Berapa tahun bayi laki-laki yang baru lahir akan hidup jika angka kematian saat ini tetap, untuk {rows} negara dan wilayah, diurutkan dari tertinggi ke terendah. Sumber: Bank Dunia, dari perkiraan PBB.",
+      "value": "Harapan hidup laki-laki (tahun)",
+      "facts": [
+        "Rata-rata dunia untuk laki-laki: {world} tahun ({worldYear}).",
+        "Tertinggi: {top1} ({v1}), {top2} ({v2}) dan {top3} ({v3}).",
+        "Terendah dalam daftar: {last} ({vlast})."
+      ],
+      "about": [
+        "Angka harapan hidup saat lahir adalah rata-rata tahun hidup seorang bayi jika angka kematian pada tahun kelahirannya berlaku sepanjang hidupnya. Ini gambaran kesehatan saat ini, bukan ramalan.",
+        "Hampir di mana pun, laki-laki meninggal lebih muda daripada perempuan, rata-rata sekitar lima tahun. Selisihnya paling lebar di Eropa Timur, tempat kebiasaan minum alkohol berat dan merokok umum di kalangan laki-laki."
+      ],
+      "faq": [
+        { "q": "Negara mana yang angka harapan hidup laki-lakinya tertinggi?", "a": "{top1}, yaitu {v1} tahun pada {year1}, disusul {top2} ({v2})." },
+        { "q": "Berapa rata-rata angka harapan hidup laki-laki di dunia?", "a": "{world} tahun pada {worldYear}." },
+        { "q": "Negara mana yang angka harapan hidup laki-lakinya terendah?", "a": "Dalam daftar ini, {last}, yaitu {vlast} tahun." }
+      ]
+    },
+    "life-expectancy-female": {
+      "name": "Angka harapan hidup perempuan per negara",
+      "title": "Angka Harapan Hidup Perempuan per Negara {to}: {rows} Negara | cv.cm",
+      "description": "Angka harapan hidup saat lahir untuk perempuan di {rows} negara, diurutkan. Rata-rata dunia untuk perempuan {world} tahun ({worldYear}). Data Bank Dunia, unduh CSV.",
+      "h1": "Angka harapan hidup perempuan saat lahir per negara, {to}",
+      "lede": "Berapa tahun bayi perempuan yang baru lahir akan hidup jika angka kematian saat ini tetap, untuk {rows} negara dan wilayah, diurutkan dari tertinggi ke terendah. Sumber: Bank Dunia, dari perkiraan PBB.",
+      "value": "Harapan hidup perempuan (tahun)",
+      "facts": [
+        "Rata-rata dunia untuk perempuan: {world} tahun ({worldYear}).",
+        "Tertinggi: {top1} ({v1}), {top2} ({v2}) dan {top3} ({v3}).",
+        "Terendah dalam daftar: {last} ({vlast})."
+      ],
+      "about": [
+        "Angka harapan hidup saat lahir adalah rata-rata tahun hidup seorang bayi jika angka kematian pada tahun kelahirannya berlaku sepanjang hidupnya. Ini gambaran kesehatan saat ini, bukan ramalan.",
+        "Di hampir semua negara, perempuan hidup lebih lama daripada laki-laki. Sebagian selisihnya bersifat biologis, dan sebagian lagi karena laki-laki lebih banyak merokok, minum alkohol, mengalami kecelakaan, dan terlibat kekerasan."
+      ],
+      "faq": [
+        { "q": "Negara mana yang angka harapan hidup perempuannya tertinggi?", "a": "{top1}, yaitu {v1} tahun pada {year1}, disusul {top2} ({v2})." },
+        { "q": "Berapa rata-rata angka harapan hidup perempuan di dunia?", "a": "{world} tahun pada {worldYear}." },
+        { "q": "Negara mana yang angka harapan hidup perempuannya terendah?", "a": "Dalam daftar ini, {last}, yaitu {vlast} tahun." }
+      ]
+    },
+    "maternal-mortality": {
+      "name": "Angka kematian ibu per negara",
+      "title": "Angka Kematian Ibu (AKI) per Negara {to}: Peringkat {rows} Negara | cv.cm",
+      "description": "Kematian ibu per 100.000 kelahiran hidup di {rows} negara, diurutkan, berdasarkan estimasi model PBB. Dunia {world} ({worldYear}). Data Bank Dunia, unduh CSV.",
+      "h1": "Angka kematian ibu per negara, {to} (per 100.000 kelahiran hidup)",
+      "lede": "Berapa banyak perempuan yang meninggal karena kehamilan atau persalinan untuk setiap 100.000 bayi yang lahir hidup, untuk {rows} negara dan wilayah, diurutkan dari tertinggi ke terendah. Sumber: Bank Dunia, dari estimasi MMEIG PBB.",
+      "value": "Kematian per 100.000 kelahiran",
+      "facts": [
+        "Dunia: {world} kematian ibu per 100.000 kelahiran hidup ({worldYear}).",
+        "Tertinggi: {top1} ({v1}), {top2} ({v2}) dan {top3} ({v3}).",
+        "Terendah dalam daftar: {last} ({vlast})."
+      ],
+      "about": [
+        "Kematian ibu adalah kematian seorang perempuan selama hamil atau dalam 42 hari setelah kehamilan berakhir, karena sebab yang berkaitan dengan kehamilan tersebut. Sebagian besar disebabkan oleh perdarahan hebat, infeksi, dan tekanan darah tinggi, dan sebagian besar bisa dicegah dengan pertolongan persalinan oleh tenaga terlatih.",
+        "Ini adalah estimasi model dari Kelompok Antar-Lembaga PBB untuk Estimasi Kematian Ibu (MMEIG), yang mengisi kekosongan data di negara yang tidak mencatat setiap kematian."
+      ],
+      "faq": [
+        { "q": "Negara mana yang angka kematian ibunya tertinggi?", "a": "{top1}, dengan {v1} kematian ibu per 100.000 kelahiran hidup pada {year1}, disusul {top2} ({v2})." },
+        { "q": "Berapa angka kematian ibu dunia?", "a": "{world} per 100.000 kelahiran hidup pada {worldYear}. Target PBB untuk 2030 adalah di bawah 70." },
+        { "q": "Negara mana yang angka kematian ibunya terendah?", "a": "Dalam daftar ini, {last}, yaitu {vlast} per 100.000 kelahiran hidup." }
+      ]
+    },
+    "exports": {
+      "name": "Ekspor per negara",
+      "title": "Ekspor per Negara {to}: Negara Eksportir Terbesar dalam US$ | cv.cm",
+      "description": "Ekspor barang dan jasa {rows} perekonomian dalam dolar AS berlaku, diurutkan, beserta porsinya dari ekspor dunia. Ekspor dunia {world} ({worldYear}). Data Bank Dunia, unduh CSV.",
+      "h1": "Ekspor barang dan jasa per negara, {to} (US$ berlaku)",
+      "lede": "Nilai semua yang dijual setiap perekonomian ke negara lain, barang dan jasa sekaligus, untuk {rows} negara dan wilayah, diurutkan, beserta porsi masing-masing dari total dunia. Sumber: Bank Dunia.",
+      "value": "Ekspor (US$)",
+      "facts": [
+        "Ekspor dunia: {world} ({worldYear}).",
+        "Eksportir terbesar: {top1} ({v1}), {top2} ({v2}) dan {top3} ({v3}).",
+        "Terkecil dalam daftar: {last} ({vlast})."
+      ],
+      "about": [
+        "Ekspor mencakup barang seperti mobil, ponsel, dan minyak, serta jasa seperti pariwisata, pelayaran, perangkat lunak, dan keuangan. Nilainya dalam dolar AS berlaku, sehingga gejolak kurs ikut mengubahnya, selain perdagangan itu sendiri.",
+        "Setiap baris menampilkan tahun terakhir yang dilaporkan negara tersebut, dalam empat tahun terakhir. Re-ekspor melalui pusat perdagangan seperti Singapura dan Hong Kong dihitung di tempat barang itu keluar."
+      ],
+      "faq": [
+        { "q": "Negara mana yang ekspornya paling besar?", "a": "{top1}, dengan ekspor {v1} pada {year1}, disusul {top2} ({v2}) dan {top3} ({v3})." },
+        { "q": "Berapa total ekspor dunia?", "a": "{world} barang dan jasa pada {worldYear}." },
+        { "q": "Apakah ekspor termasuk jasa?", "a": "Ya. Tabel ini menghitung barang dan jasa sekaligus, sehingga negara dengan sektor pariwisata, keuangan, atau perangkat lunak yang besar berperingkat lebih tinggi daripada di daftar yang hanya menghitung barang." }
+      ]
+    },
+    "imports": {
+      "name": "Impor per negara",
+      "title": "Impor per Negara {to}: Negara Importir Terbesar dalam US$ | cv.cm",
+      "description": "Impor barang dan jasa {rows} perekonomian dalam dolar AS berlaku, diurutkan, beserta porsinya dari impor dunia. Impor dunia {world} ({worldYear}). Data Bank Dunia, unduh CSV.",
+      "h1": "Impor barang dan jasa per negara, {to} (US$ berlaku)",
+      "lede": "Nilai semua yang dibeli setiap perekonomian dari negara lain, barang dan jasa sekaligus, untuk {rows} negara dan wilayah, diurutkan, beserta porsi masing-masing dari total dunia. Sumber: Bank Dunia.",
+      "value": "Impor (US$)",
+      "facts": [
+        "Impor dunia: {world} ({worldYear}).",
+        "Importir terbesar: {top1} ({v1}), {top2} ({v2}) dan {top3} ({v3}).",
+        "Terkecil dalam daftar: {last} ({vlast})."
+      ],
+      "about": [
+        "Impor mencakup barang seperti bahan bakar, pangan, dan mesin, serta jasa seperti perjalanan ke luar negeri, transportasi, dan lisensi. Nilainya dalam dolar AS berlaku.",
+        "Negara yang mengimpor lebih banyak daripada yang diekspornya mengalami defisit perdagangan. Bandingkan tabel ini dengan tabel ekspor untuk melihat neraca setiap negara."
+      ],
+      "faq": [
+        { "q": "Negara mana yang impornya paling besar?", "a": "{top1}, dengan impor {v1} pada {year1}, disusul {top2} ({v2}) dan {top3} ({v3})." },
+        { "q": "Berapa total impor dunia?", "a": "{world} barang dan jasa pada {worldYear}. Impor dan ekspor dunia seharusnya sama, tetapi berbeda karena perbedaan waktu dan celah pelaporan." },
+        { "q": "Negara mana yang impornya paling kecil?", "a": "Dalam daftar ini, {last}, yaitu {vlast}." }
+      ]
+    },
+    "health-spending-per-capita": {
+      "name": "Belanja kesehatan per kapita per negara",
+      "title": "Belanja Kesehatan per Kapita per Negara {to}: {rows} Negara dalam US$ | cv.cm",
+      "description": "Belanja kesehatan berjalan per orang dalam dolar AS di {rows} negara, diurutkan. Rata-rata dunia {world} ({worldYear}). Data Bank Dunia / WHO, unduh CSV.",
+      "h1": "Belanja kesehatan per kapita per negara, {to} (US$ berlaku)",
+      "lede": "Berapa banyak yang dibelanjakan untuk layanan kesehatan setiap penduduk dalam setahun, oleh pemerintah, asuransi, dan rumah tangga sekaligus, untuk {rows} negara dan wilayah, diurutkan. Sumber: Bank Dunia, dari Global Health Expenditure Database WHO.",
+      "value": "Belanja kesehatan per orang (US$)",
+      "facts": [
+        "Rata-rata dunia: {world} per orang ({worldYear}).",
+        "Tertinggi: {top1} ({v1}), {top2} ({v2}) dan {top3} ({v3}).",
+        "Terendah dalam daftar: {last} ({vlast})."
+      ],
+      "about": [
+        "Belanja kesehatan berjalan mencakup barang dan jasa kesehatan yang dipakai dalam tahun tersebut: rawat inap dan kunjungan dokter, obat-obatan, pencegahan, dan administrasi. Belanja untuk rumah sakit dan peralatan baru tidak termasuk.",
+        "Nilainya memakai kurs pasar, sehingga negara berupah tinggi tampak lebih mahal daripada layanan yang sebenarnya didapat. Belanja lebih besar tidak selalu berarti hidup lebih panjang: bandingkan dengan tabel angka harapan hidup."
+      ],
+      "faq": [
+        { "q": "Negara mana yang belanja kesehatan per orangnya paling besar?", "a": "{top1}, yaitu {v1} per orang pada {year1}, disusul {top2} ({v2})." },
+        { "q": "Berapa belanja kesehatan dunia per orang?", "a": "Sekitar {world} per orang pada {worldYear}." },
+        { "q": "Negara mana yang belanja kesehatannya paling kecil?", "a": "Dalam daftar ini, {last}, yaitu {vlast} per orang." }
+      ]
+    },
+    "female-labor-force": {
+      "name": "Partisipasi angkatan kerja perempuan per negara",
+      "title": "Tingkat Partisipasi Angkatan Kerja Perempuan per Negara {to} | cv.cm",
+      "description": "Persentase perempuan usia 15+ yang bekerja atau sedang mencari kerja di {rows} negara, diurutkan, berdasarkan estimasi model ILO. Dunia {world}% ({worldYear}). Data Bank Dunia, unduh CSV.",
+      "h1": "Tingkat partisipasi angkatan kerja perempuan per negara, {to} (% perempuan 15+)",
+      "lede": "Persentase perempuan berusia 15 tahun ke atas yang memiliki pekerjaan atau sedang mencarinya, untuk {rows} negara dan wilayah, diurutkan dari tertinggi ke terendah. Sumber: Bank Dunia, dari estimasi ILO.",
+      "value": "Perempuan dalam angkatan kerja (%)",
+      "facts": [
+        "Dunia: {world}% perempuan termasuk angkatan kerja ({worldYear}).",
+        "Tertinggi: {top1} ({v1}%), {top2} ({v2}%) dan {top3} ({v3}%).",
+        "Terendah dalam daftar: {last} ({vlast}%)."
+      ],
+      "about": [
+        "Angkatan kerja mencakup semua orang yang bekerja untuk mendapat upah atau keuntungan, termasuk bertani dan usaha keluarga, ditambah orang yang sedang mencari kerja. Pekerjaan rumah tangga dan pengasuhan yang tidak dibayar tidak dihitung.",
+        "Beberapa angka tertinggi ada di negara berpenghasilan rendah tempat sebagian besar perempuan bertani. Angka terendah ada di sebagian Timur Tengah dan Asia Selatan. Ini adalah estimasi model ILO yang memakai satu definisi untuk semua negara."
+      ],
+      "faq": [
+        { "q": "Negara mana yang partisipasi angkatan kerja perempuannya tertinggi?", "a": "{top1}, di mana {v1}% perempuan termasuk angkatan kerja pada {year1}, disusul {top2} ({v2}%)." },
+        { "q": "Berapa persen perempuan di dunia yang bekerja?", "a": "{world}% perempuan berusia 15 tahun ke atas bekerja atau sedang mencari kerja pada {worldYear}." },
+        { "q": "Negara mana yang partisipasi angkatan kerja perempuannya terendah?", "a": "Dalam daftar ini, {last}, yaitu {vlast}%." }
+      ]
+    },
+    "forest-area": {
+      "name": "Luas hutan per negara",
+      "title": "Tutupan Hutan per Negara {to}: % Luas Daratan di {rows} Negara | cv.cm",
+      "description": "Luas hutan sebagai persentase luas daratan di {rows} negara, diurutkan dari yang paling berhutan hingga paling sedikit. Dunia {world}% ({worldYear}). Data Bank Dunia / FAO, unduh CSV.",
+      "h1": "Luas hutan per negara, {to} (% luas daratan)",
+      "lede": "Persentase daratan setiap negara yang tertutup hutan, untuk {rows} negara dan wilayah, diurutkan dari yang paling berhutan hingga paling sedikit. Sumber: Bank Dunia, dari Global Forest Resources Assessment FAO.",
+      "value": "Luas hutan (% daratan)",
+      "facts": [
+        "Dunia: {world}% daratan berupa hutan ({worldYear}).",
+        "Paling berhutan: {top1} ({v1}%), {top2} ({v2}%) dan {top3} ({v3}%).",
+        "Paling sedikit hutan dalam daftar: {last} ({vlast}%)."
+      ],
+      "about": [
+        "FAO menggolongkan lahan sebagai hutan jika luasnya lebih dari setengah hektare dengan pohon setinggi lebih dari 5 meter dan tajuk yang menutupi lebih dari 10% permukaan tanah. Hutan tanaman termasuk; kebun buah dan taman kota tidak.",
+        "Negara tropis kecil menduduki puncak daftar berdasarkan persentase. Berdasarkan luas total, Rusia, Brasil, Kanada, Amerika Serikat, dan Tiongkok memiliki lebih dari separuh hutan dunia."
+      ],
+      "faq": [
+        { "q": "Negara mana yang tutupan hutannya paling luas?", "a": "{top1}, di mana hutan menutupi {v1}% daratannya pada {year1}, disusul {top2} ({v2}%)." },
+        { "q": "Berapa persen daratan dunia yang tertutup hutan?", "a": "{world}% luas daratan dunia pada {worldYear}." },
+        { "q": "Negara mana yang hutannya paling sedikit?", "a": "Dalam daftar ini, {last}, yaitu {vlast}% daratannya." }
+      ]
+    },
+    "renewable-energy": {
+      "name": "Porsi energi terbarukan per negara",
+      "title": "Porsi Energi Terbarukan per Negara {to}: % Penggunaan Energi | cv.cm",
+      "description": "Energi terbarukan sebagai persentase total konsumsi energi final di {rows} negara, diurutkan. Dunia {world}% ({worldYear}). Data Bank Dunia / IEA, unduh CSV.",
+      "h1": "Porsi energi terbarukan per negara, {to} (% penggunaan energi final)",
+      "lede": "Persentase energi yang dipakai masyarakat dan dunia usaha yang berasal dari sumber terbarukan, untuk {rows} negara dan wilayah, diurutkan dari tertinggi ke terendah. Sumber: Bank Dunia, dari data IEA, IRENA, dan PBB.",
+      "value": "Porsi terbarukan (%)",
+      "facts": [
+        "Dunia: {world}% penggunaan energi berasal dari sumber terbarukan ({worldYear}).",
+        "Tertinggi: {top1} ({v1}%), {top2} ({v2}%) dan {top3} ({v3}%).",
+        "Terendah dalam daftar: {last} ({vlast}%)."
+      ],
+      "about": [
+        "Angka ini menghitung seluruh penggunaan energi final, termasuk pemanas dan transportasi, bukan hanya listrik. Energi terbarukan meliputi tenaga air, angin, surya, panas bumi, biofuel modern, dan biomassa tradisional seperti kayu bakar.",
+        "Banyak porsi tertinggi ada di negara berpenghasilan rendah tempat sebagian besar rumah tangga memasak dengan kayu, bukan di negara dengan tenaga angin dan surya terbanyak. Datanya tertinggal beberapa tahun."
+      ],
+      "faq": [
+        { "q": "Negara mana yang paling banyak memakai energi terbarukan?", "a": "Berdasarkan porsi, {top1}, di mana {v1}% penggunaan energinya berasal dari sumber terbarukan pada {year1}, sebagian besar dari kayu bakar dan tenaga air." },
+        { "q": "Berapa persen energi dunia yang terbarukan?", "a": "{world}% konsumsi energi final pada {worldYear}." },
+        { "q": "Negara mana yang paling sedikit memakai energi terbarukan?", "a": "Dalam daftar ini, {last}, yaitu {vlast}%." }
       ]
     },
     "country-codes": {
