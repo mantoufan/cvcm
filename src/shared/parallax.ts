@@ -94,6 +94,7 @@ function aspectRatio(aspect: Exclude<Aspect, "original">): number {
   return w / h;
 }
 
+/** Down to an even number (encoders need even sizes), so the output never asks for more pixels than the source has. */
 function even(n: number): number {
-  return Math.max(2, Math.round(n / 2) * 2);
+  return Math.max(2, Math.floor(n / 2 + 1e-9) * 2);
 }

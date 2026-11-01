@@ -66,6 +66,8 @@ let playBtn: HTMLButtonElement | null = null;
 let downloadBtn: HTMLButtonElement | null = null;
 let frame = 0;
 let clock = 0;
+/** Where on the camera path (0–1) the preview last drew: a paused or mid-export preview redraws there. */
+let shownT = 0;
 let alive = false;
 /** Bumped per picked file and on unmount, so a slow decode never replaces a newer file or lands in a later mount. */
 let pick = 0;
@@ -161,11 +163,11 @@ function controls(): HTMLElement {
       chips(MOTIONS, () => state.motion, (m) => t(`v.motion_${m}`), (m) => (state.motion = m), restart),
     ),
     group(t("v.strength"),
-      chips(STRENGTH_IDS, () => state.strength, (s) => t(`v.strength_${s}`), (s) => (state.strength = s), redrawPaused),
+      chips(STRENGTH_IDS, () => state.strength, (s) => t(`v.strength_${s}`), (s) => (state.strength = s), redrawStill),
     ),
     group(t("v.duration"),
       chips(DURATIONS, () => state.duration, (d) => t("v.seconds", { n: d }), (d) => (state.duration = d), () => {
-        layout();
+        updateHint();
         restart();
       }),
     ),
@@ -224,7 +226,7 @@ async function setFile(file: File | undefined): Promise<void> {
   try {
     decoded = await decodeImage(file);
   } catch {
-    status.error(t("v.errorDecode"));
+    if (alive && ticket === pick) status.error(t("v.errorDecode"));
     return;
   }
   // Unmounted or a newer file was picked while this one decoded. An export that started meanwhile gets it next.
@@ -285,7 +287,7 @@ async function run(): Promise<void> {
     if (!alive || state.photo !== source) return;
     state.depth = { data: prepareDepth(result.mask, result.width, result.height), width: result.width, height: result.height };
     renderer?.setDepth(state.depth);
-    redrawPaused();
+    redrawStill();
     status.done(t("v.ready", { s: formatSeconds(seconds), device: deviceLabel(backend) }));
   } catch (err) {
     if (!alive || state.photo !== source) return;
@@ -310,23 +312,38 @@ function layout(): void {
   preview.width = Math.round(out.width * scale);
   preview.height = Math.round(out.height * scale);
   renderer.setCrop(cropRect(state.width, state.height, state.aspect));
-  if (hintEl) hintEl.textContent = t("v.output", { w: out.width, h: out.height, s: state.duration });
-  redrawPaused();
+  updateHint();
+  // Resizing cleared the canvas; the animation loop repaints on its own, a still preview does not.
+  redrawStill();
 }
 
-/** While paused the preview shows the first frame; redraw it after a setting or the depth changes. */
-function redrawPaused(): void {
-  if (!state.playing) drawAt(0);
+function updateHint(): void {
+  if (!hintEl || !state.photo) return;
+  const out = outputSize(state.width, state.height, state.aspect, state.size);
+  hintEl.textContent = t("v.output", { w: out.width, h: out.height, s: state.duration });
+}
+
+/** A paused preview, or one frozen during an export, stays on its frame; redraw it after a setting or the depth changes. */
+function redrawStill(): void {
+  if (!state.playing || state.exporting) drawAt(shownT);
 }
 
 function drawAt(t01: number): void {
+  shownT = t01;
   renderer?.draw(cameraAt(state.motion, STRENGTHS[state.strength], t01, state.loop));
 }
 
+/** Back to the start of the path (a new photo, move, length or loop setting). */
 function restart(): void {
-  clock = performance.now();
-  if (state.playing) loop();
-  else drawAt(0);
+  shownT = 0;
+  play();
+}
+
+/** Run the animation from `shownT`, or just draw it when paused. */
+function play(): void {
+  clock = performance.now() - shownT * state.duration * 1000;
+  if (state.playing && !state.exporting) loop();
+  else drawAt(shownT);
 }
 
 function loop(): void {
@@ -343,7 +360,7 @@ function loop(): void {
 function togglePlay(): void {
   state.playing = !state.playing;
   if (playBtn) playBtn.textContent = state.playing ? t("v.pause") : t("v.play");
-  if (state.playing && state.photo) restart();
+  if (state.playing && state.photo) play();
   else cancelAnimationFrame(frame);
 }
 
@@ -362,13 +379,19 @@ async function download(): Promise<void> {
     return;
   }
   const source = state.photo;
+  const file = state.file;
+  const panel = status;
+  const mine = mountId;
   const out = outputSize(state.width, state.height, state.aspect, state.size);
   const canvas = h("canvas", { width: out.width, height: out.height });
+  // A lost GPU context draws nothing: fail the export rather than encode blank frames.
+  let lost = false;
+  canvas.addEventListener("webglcontextlost", () => (lost = true));
   let exporter: ParallaxRenderer;
   try {
     exporter = new ParallaxRenderer(canvas, { keepFrame: true });
   } catch {
-    status.error(t("v.errorGl"));
+    panel.error(t("v.errorGl"));
     return;
   }
   exporter.setPhoto(source);
@@ -386,26 +409,31 @@ async function download(): Promise<void> {
       frames,
       fps: FPS,
       // The clip ends on the frame before the start, so a looped clip repeats without a stutter.
-      draw: (i) => exporter.draw(cameraAt(motion, strength, looped ? i / frames : i / (frames - 1), looped)),
-      onProgress: (f) => status?.working(t("v.exporting", { pct: Math.floor(f * 100) }), f),
-      cancelled: () => !alive || state.photo !== source,
+      draw: (i) => {
+        if (lost || exporter.lost()) throw new Error("webgl context lost");
+        exporter.draw(cameraAt(motion, strength, looped ? i / frames : i / (frames - 1), looped));
+      },
+      onProgress: (f) => panel.working(t("v.exporting", { pct: Math.floor(f * 100) }), f),
+      cancelled: () => !alive || mine !== mountId || state.photo !== source,
     });
-    if (!alive) return;
-    downloadBlob(blob, outputFilename(state.file.name, blob.type, `-${motion}`));
-    status.done(t("v.exported", { s: formatSeconds((performance.now() - started) / 1000), w: out.width, h: out.height }));
+    if (!alive || mine !== mountId) return;
+    downloadBlob(blob, outputFilename(file.name, blob.type, `-${motion}`));
+    panel.done(t("v.exported", { s: formatSeconds((performance.now() - started) / 1000), w: out.width, h: out.height }));
   } catch (err) {
-    if (!alive) return;
+    if (!alive || mine !== mountId) return;
     if (err instanceof Error && err.message === "cancelled") {
-      status.idle();
+      panel.idle();
       return;
     }
     console.error(err);
-    status.error(t("v.errorEncode"));
+    panel.error(t("v.errorEncode"));
   } finally {
     exporter.dispose();
+    // An export from an earlier mount must not touch this mount's flags, button or queue.
+    if (mine !== mountId) return;
     state.exporting = false;
     if (downloadBtn) downloadBtn.disabled = false;
-    if (alive && state.playing) restart();
+    if (alive) play();
     const next = state.queued;
     state.queued = null;
     if (alive && next) void setFile(next);

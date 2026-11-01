@@ -182,8 +182,9 @@ describe("photo to video (/v/)", () => {
     expect(outputSize(4000, 3000, "9:16", 1080)).toEqual({ width: 1080, height: 1920 });
     expect(outputSize(4000, 1000, "original", 1080)).toEqual({ width: 1920, height: 480 });
     expect(outputSize(640, 481, "1:1", 1080)).toEqual({ width: 480, height: 480 });
-    // A crop never asks for more pixels than it has: 16:9 of a 1080 square is 1080 × 608 source pixels.
-    expect(outputSize(1080, 1080, "16:9", 1080)).toEqual({ width: 1080, height: 608 });
+    // A crop never asks for more pixels than it has: 16:9 of a 1080 square is 1080 × 607.5 source pixels.
+    expect(outputSize(1080, 1080, "16:9", 1080)).toEqual({ width: 1080, height: 606 });
+    expect(outputSize(962, 962, "original", 1080)).toEqual({ width: 962, height: 962 });
     expect(cropRect(4000, 3000, "1:1")).toEqual({ x: 0.125, y: 0, w: 0.75, h: 1 });
     expect(cropRect(1000, 2000, "16:9").h).toBeCloseTo(9 / 32, 9);
   });

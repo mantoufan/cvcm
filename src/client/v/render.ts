@@ -128,6 +128,11 @@ export class ParallaxRenderer {
     gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
   }
 
+  /** The GPU dropped this context (memory pressure, driver reset): draws do nothing until it is rebuilt. */
+  lost(): boolean {
+    return this.gl.isContextLost();
+  }
+
   dispose(): void {
     this.gl.getExtension("WEBGL_lose_context")?.loseContext();
   }
