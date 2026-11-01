@@ -7,7 +7,7 @@ import { TOUCH_COLS, TOUCH_ROWS, cellAt, cellsAlong, coveragePercent } from "../
 
 describe("webcam-test", () => {
   it("builds constraints and names frame sizes", () => {
-    expect(videoConstraints("auto", "")).toEqual({});
+    expect(videoConstraints("auto", "")).toEqual({ width: { ideal: 1920 }, height: { ideal: 1080 } });
     expect(videoConstraints("1080p", "cam1")).toEqual({ deviceId: { exact: "cam1" }, width: { ideal: 1920 }, height: { ideal: 1080 } });
     expect(resolutionName(1280, 720)).toBe("720p");
     expect(resolutionName(720, 1280)).toBe("720p");

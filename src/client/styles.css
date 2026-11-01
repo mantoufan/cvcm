@@ -718,7 +718,7 @@ input[type="color"] { width: 2.6rem; height: 2.2rem; padding: 0; border: 1px sol
 .mic-player { width: 100%; }
 .btn[hidden], .chip[hidden] { display: none; }
 .cam-stage, .gp-stage, .dp-stage, .rr-stage, .touch-stage { display: grid; gap: 0.6rem; align-content: start; }
-.cam-frame { display: grid; place-items: center; aspect-ratio: 16 / 9; overflow: hidden; border: 1px solid var(--line); border-radius: var(--radius); background: #1d1418; }
+.cam-frame { display: grid; place-items: center; aspect-ratio: 16 / 9; max-height: 75vh; margin-inline: auto; max-width: 100%; overflow: hidden; border: 1px solid var(--line); border-radius: var(--radius); background: #1d1418; }
 .cam-video { width: 100%; height: 100%; object-fit: contain; }
 .cam-video.mirror { transform: scaleX(-1); }
 .cam-shot { max-width: 100%; border: 1px solid var(--line); border-radius: var(--radius); }
@@ -751,8 +751,8 @@ input[type="color"] { width: 2.6rem; height: 2.2rem; padding: 0; border: 1px sol
 .dp-screen { position: relative; width: 100%; height: 100%; cursor: none; outline: none; touch-action: manipulation; -webkit-user-select: none; user-select: none; }
 .dp-screen[hidden] { display: none; }
 .dp-screen.covering { position: fixed; inset: 0; z-index: 1000; width: auto; height: auto; }
-.dp-label { position: absolute; left: 50%; bottom: 1.5rem; transform: translateX(-50%); padding: 0.3rem 0.7rem; border: 1px solid currentColor; border-radius: 999px; color: var(--dp-ink, #fff); font-size: 0.9rem; white-space: nowrap; transition: opacity 0.3s; }
-.dp-exit { position: absolute; top: 1rem; right: 1rem; width: 2.6rem; height: 2.6rem; border: 1px solid var(--dp-ink, #fff); border-radius: 50%; background: transparent; color: var(--dp-ink, #fff); font-size: 1.4rem; line-height: 1; cursor: pointer; transition: opacity 0.3s; }
+.dp-label { position: absolute; left: 50%; bottom: max(1.5rem, calc(env(safe-area-inset-bottom) + 0.5rem)); transform: translateX(-50%); padding: 0.3rem 0.7rem; border: 1px solid currentColor; border-radius: 999px; color: var(--dp-ink, #fff); font-size: 0.9rem; white-space: nowrap; transition: opacity 0.3s; }
+.dp-exit { position: absolute; top: max(1rem, env(safe-area-inset-top)); right: max(1rem, env(safe-area-inset-right)); width: 2.6rem; height: 2.6rem; border: 1px solid var(--dp-ink, #fff); border-radius: 50%; background: transparent; color: var(--dp-ink, #fff); font-size: 1.4rem; line-height: 1; cursor: pointer; transition: opacity 0.3s; }
 .dp-screen:not(.idle) { cursor: default; }
 .dp-screen.idle .dp-label, .dp-screen.idle .dp-exit { opacity: 0; }
 html.dp-lock, html.dp-lock body { overflow: hidden; }
@@ -773,3 +773,4 @@ html.dp-lock, html.dp-lock body { overflow: hidden; }
 .touch-start { position: absolute; inset: 0; display: grid; place-items: center; padding: 1rem; text-align: center; font-size: 1.2rem; font-weight: 700; color: var(--ink-soft); pointer-events: none; }
 .touch-pad.used .touch-start { display: none; }
 .dp-screen.idle .dp-exit { pointer-events: none; }
+.cam-actions { display: flex; gap: 0.5rem; }

@@ -8,6 +8,7 @@ import { AUTO_ADVANCE, SCREEN_COLORS, labelInk, stepColor } from "../../shared/d
 const LABEL_MS = 2500;
 
 let previewEl: HTMLElement | null = null;
+let startBtn: HTMLButtonElement | null = null;
 let previewName: HTMLElement | null = null;
 let autoEl: HTMLSelectElement | null = null;
 let chips: HTMLButtonElement[] = [];
@@ -61,7 +62,7 @@ export function mountDeadPixel(host: HTMLElement): void {
           h("label", { class: "field" }, h("span", null, t("deadPixel.auto")), autoEl),
         ),
         h("div", { class: "stage-actions" },
-          h("button", { type: "button", class: "btn", "data-action": "start", onClick: () => void openScreen() }, t("deadPixel.start")),
+          startBtn = h("button", { type: "button", class: "btn", "data-action": "start", onClick: () => void openScreen() }, t("deadPixel.start")),
         ),
         h("p", { class: "hint" }, t("deadPixel.hint")),
       ),
@@ -88,6 +89,7 @@ export function unmountDeadPixel(): void {
   document.removeEventListener("webkitfullscreenchange", onFullscreenChange);
   document.removeEventListener("keydown", onDocKey, true);
   previewEl = previewName = null;
+  startBtn = null;
   autoEl = null;
   chips = [];
   screenEl = screenLabel = null;
@@ -153,6 +155,8 @@ function close(): void {
   document.documentElement.classList.remove("dp-lock");
   covering = false;
   if (el && fullscreenElement() === el) exitFullscreen();
+  // Keyboard users continue from the button that opened the test.
+  startBtn?.focus({ preventScroll: true });
 }
 
 function onFullscreenChange(): void {

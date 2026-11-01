@@ -1,8 +1,11 @@
 import { aspectOf } from "./aspect";
 
-/** Resolutions the webcam test can ask for. "auto" lets the browser pick. */
+/**
+ * Resolutions the webcam test can ask for. "auto" asks for up to 1080p: with no size at all, browsers open
+ * every camera at 640 × 480, which would make an HD webcam look low-res.
+ */
 export const WEBCAM_RESOLUTIONS = [
-  { id: "auto", width: 0, height: 0 },
+  { id: "auto", width: 1920, height: 1080 },
   { id: "480p", width: 640, height: 480 },
   { id: "720p", width: 1280, height: 720 },
   { id: "1080p", width: 1920, height: 1080 },

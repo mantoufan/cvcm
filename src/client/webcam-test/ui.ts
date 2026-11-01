@@ -14,6 +14,7 @@ let photoBtn: HTMLButtonElement | null = null;
 let statusEl: HTMLElement | null = null;
 let infoEl: HTMLElement | null = null;
 let videoEl: HTMLVideoElement | null = null;
+let frameEl: HTMLElement | null = null;
 let shotEl: HTMLImageElement | null = null;
 let saveEl: HTMLAnchorElement | null = null;
 let stream: MediaStream | null = null;
@@ -88,10 +89,10 @@ export function mountWebcamTest(host: HTMLElement): void {
         infoEl,
       ),
       h("div", { class: "rail cam-stage" },
-        h("div", { class: "cam-frame" }, videoEl),
+        frameEl = h("div", { class: "cam-frame" }, videoEl),
         h("p", { class: "hint" }, t("webcamTest.hint")),
         shotEl,
-        h("div", { class: "stage-actions" }, saveEl),
+        h("div", { class: "cam-actions" }, saveEl),
       ),
     ),
   );
@@ -111,6 +112,7 @@ export function unmountWebcamTest(): void {
   startBtn = photoBtn = null;
   statusEl = infoEl = null;
   videoEl = null;
+  frameEl = null;
   shotEl = null;
   saveEl = null;
 }
@@ -257,6 +259,8 @@ function paintInfo(): void {
   // The frames actually shown, not the asked-for size: a camera that cannot do 1080p shows its nearest mode here.
   const w = videoEl?.videoWidth || set.width || 0;
   const hgt = videoEl?.videoHeight || set.height || 0;
+  // The frame takes the video's shape, so portrait phone video is not a strip in a wide box.
+  if (frameEl && w > 0 && hgt > 0) frameEl.style.aspectRatio = `${w} / ${hgt}`;
   const rows: Array<[string, string]> = [
     [t("webcamTest.name"), track?.label || "—"],
     [t("webcamTest.size"), sizeText(w, hgt)],
