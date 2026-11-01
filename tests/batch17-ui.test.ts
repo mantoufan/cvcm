@@ -119,4 +119,23 @@ describe("tally-counter ui", () => {
     vi.advanceTimersByTime(9000);
     expect(undo.hidden).toBe(true);
   });
+
+  it("undoes only the counters that were reset", () => {
+    mountTallyCounter(host);
+    q<HTMLButtonElement>("[data-action=add]").click();
+    const pluses = () => host.querySelectorAll<HTMLButtonElement>("[data-action=plus]");
+    for (let i = 0; i < 5; i++) pluses()[0].click();
+    pluses()[1].click();
+    const counts = () => [...host.querySelectorAll("[data-out=count]")].map((el) => el.textContent);
+    host.querySelectorAll<HTMLButtonElement>("[data-action=reset]")[0].click();
+    pluses()[1].click();
+    expect(counts()).toEqual(["0", "2"]);
+    q<HTMLButtonElement>("[data-action=undo]").click();
+    expect(counts()).toEqual(["5", "2"]);
+    // A second reset while Undo is offered keeps the first values.
+    q<HTMLButtonElement>("[data-action=reset-all]").click();
+    q<HTMLButtonElement>("[data-action=reset-all]").click();
+    q<HTMLButtonElement>("[data-action=undo]").click();
+    expect(counts()).toEqual(["5", "2"]);
+  });
 });

@@ -14,8 +14,10 @@ let negEl: HTMLInputElement | null = null;
 let addBtn: HTMLButtonElement | null = null;
 let copyBtn: HTMLButtonElement | null = null;
 let undoBtn: HTMLButtonElement | null = null;
-/** Counts before the last reset, offered back for a few seconds. */
-let undoCounts: number[] | null = null;
+/** Counts before the last reset, by counter index, offered back for a few seconds. */
+let undoCounts: Map<number, number> | null = null;
+/** Time of the last pointer press in the tool, to tell a mouse-ticked checkbox from a keyboard one. */
+let lastPointerAt = -Infinity;
 let undoTimer = 0;
 const UNDO_MS = 8000;
 let state: TallyState = fresh();
@@ -30,7 +32,7 @@ export function mountTallyCounter(host: HTMLElement): void {
   state = load() ?? fresh();
   active = 0;
   stepEl = h("input", { type: "number", min: "1", max: String(MAX_STEP), step: "1", inputmode: "numeric", value: String(state.step), "data-field": "step", onInput: () => typedStep(), onChange: () => setStep() });
-  negEl = h("input", { type: "checkbox", checked: state.allowNegative, "data-field": "negative", onChange: () => setNegative() });
+  negEl = h("input", { type: "checkbox", checked: state.allowNegative, "data-field": "negative", onChange: (e: Event) => { setNegative(); leaveIfClicked(e); } });
   listEl = h("div", { class: "tally-list" });
   totalEl = h("p", { class: "hint", "data-out": "total" });
   host.append(
@@ -40,7 +42,7 @@ export function mountTallyCounter(host: HTMLElement): void {
       h("p", { class: "lede" }, t("tallyCounter.privacyNote")),
     ),
     // A mouse click does not move focus onto the tool's buttons, so Space keeps counting instead of pressing the last one clicked.
-    rootEl = h("div", { class: "data-tool", onMousedown: (e: MouseEvent) => keepKeysForCounting(e) },
+    rootEl = h("div", { class: "data-tool", onMousedown: (e: MouseEvent) => keepKeysForCounting(e), onPointerdown: (e: PointerEvent) => { lastPointerAt = e.timeStamp; } },
       h("aside", { class: "rail controls" },
         h("fieldset", null,
           h("legend", null, t("tallyCounter.options")),
@@ -86,6 +88,8 @@ function onStorage(e: StorageEvent): void {
   if (e.key !== STORE_KEY) return;
   const next = parseTally(e.newValue);
   if (!next) return;
+  // The other tab's counts are newer than anything Undo would bring back.
+  dropUndo();
   state = next;
   active = Math.min(active, state.counters.length - 1);
   if (stepEl && document.activeElement !== stepEl) stepEl.value = String(state.step);
@@ -111,6 +115,8 @@ function save(): void {
 }
 
 function change(i: number, sign: 1 | -1): void {
+  // Counting again on a counter that was just reset means the reset stands.
+  if (undoCounts?.has(i)) dropUndo();
   const c = state.counters[i];
   if (!c) return;
   c.count = bump(c.count, sign * state.step, state.allowNegative);
@@ -170,8 +176,15 @@ function keepKeysForCounting(e: MouseEvent): void {
   if (focused && focused !== document.body && rootEl?.contains(focused)) focused.blur();
 }
 
-function offerUndo(): void {
-  undoCounts = state.counters.map((c) => c.count);
+/** A checkbox ticked with the mouse gives focus back to the page, so Space counts instead of unticking it. */
+function leaveIfClicked(e: Event): void {
+  if (e.timeStamp - lastPointerAt < 1000) (e.target as HTMLElement | null)?.blur();
+}
+
+/** Remembers the counts about to be reset; a second reset while Undo is offered keeps the first values. */
+function offerUndo(indices: number[]): void {
+  undoCounts ??= new Map();
+  for (const i of indices) if (!undoCounts.has(i)) undoCounts.set(i, state.counters[i].count);
   if (undoBtn) undoBtn.hidden = false;
   window.clearTimeout(undoTimer);
   undoTimer = window.setTimeout(dropUndo, UNDO_MS);
@@ -184,11 +197,9 @@ function dropUndo(): void {
 }
 
 function undo(): void {
-  if (!undoCounts || undoCounts.length !== state.counters.length) {
-    dropUndo();
-    return;
-  }
-  undoCounts.forEach((n, i) => { state.counters[i].count = n; });
+  if (!undoCounts) return;
+  // Only the counters that were reset come back; counts added to the others since then stay.
+  for (const [i, n] of undoCounts) if (state.counters[i]) state.counters[i].count = n;
   dropUndo();
   save();
   paint();
@@ -197,14 +208,14 @@ function undo(): void {
 function resetOne(i: number): void {
   const c = state.counters[i];
   if (!c) return;
-  offerUndo();
+  offerUndo([i]);
   c.count = 0;
   save();
   paint(i);
 }
 
 function resetAll(): void {
-  offerUndo();
+  offerUndo(state.counters.map((_, i) => i));
   for (const c of state.counters) c.count = 0;
   save();
   paint();

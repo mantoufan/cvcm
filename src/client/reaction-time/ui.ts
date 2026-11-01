@@ -29,7 +29,8 @@ export function mountReactionTime(host: HTMLElement): void {
       h("h1", null, t("reactionTime.title")),
       h("p", { class: "lede" }, t("reactionTime.privacyNote")),
     ),
-    h("div", { class: "data-tool" },
+    // A mouse click does not leave focus on Reset or Copy, so Space and Enter keep starting the test.
+    h("div", { class: "data-tool", onMousedown: (e: MouseEvent) => { if ((e.target as HTMLElement | null)?.closest("button")) e.preventDefault(); } },
       h("div", { class: "rail reaction-stage" }, padEl, h("p", { class: "hint" }, t("reactionTime.hint", { n: REACTION_TRIES }))),
       h("aside", { class: "rail controls" },
         h("h2", null, t("reactionTime.results")),
