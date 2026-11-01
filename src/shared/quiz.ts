@@ -3,13 +3,14 @@
 // `src/locales/quiz/<locale>.json`, with items in the same order. Scoring runs in the page; answers never leave it.
 
 export const QUIZ_GROUPS = [
-  { id: "personality", quizzes: ["mbti", "big-five", "introvert", "enneagram"] },
-  { id: "love", quizzes: ["love-language", "attachment", "marriage", "conflict-style"] },
-  { id: "career", quizzes: ["career", "work-style", "money"] },
+  { id: "personality", quizzes: ["mbti", "big-five", "introvert", "enneagram", "eq"] },
+  { id: "love", quizzes: ["love-language", "attachment", "love-style", "marriage", "conflict-style"] },
+  { id: "career", quizzes: ["career", "work-style", "leadership", "money"] },
   { id: "games", quizzes: ["pokemon", "genshin", "sonic", "dnd-class"] },
-  { id: "anime", quizzes: ["naruto", "demon-slayer", "jujutsu-kaisen", "avatar-element", "anime"] },
+  { id: "anime", quizzes: ["naruto", "one-piece", "demon-slayer", "jujutsu-kaisen", "avatar-element", "anime"] },
+  { id: "books", quizzes: ["hogwarts"] },
   { id: "fun", quizzes: ["chronotype", "pet", "face-shape"] },
-  { id: "wellbeing", quizzes: ["self-esteem", "anxiety", "depression"] },
+  { id: "wellbeing", quizzes: ["wellbeing-index", "self-esteem", "anxiety", "depression"] },
 ] as const;
 
 export type QuizGroupId = (typeof QUIZ_GROUPS)[number]["id"];
@@ -27,10 +28,11 @@ export function quizGroupOf(id: QuizId): QuizGroupId {
 
 /**
  * Answer scales, left to right. `agree5` and `agree4` run from "strongly disagree" (0) to "strongly agree";
- * `freq4` is the PHQ/GAD "not at all" (0) to "nearly every day" (3).
+ * `freq4` is the PHQ/GAD "not at all" (0) to "nearly every day" (3); `time6` is the WHO-5 "at no time" (0) to
+ * "all of the time" (5).
  */
-export type Scale = "agree5" | "agree4" | "freq4";
-export const SCALE_POINTS: Record<Scale, number> = { agree5: 5, agree4: 4, freq4: 4 };
+export type Scale = "agree5" | "agree4" | "freq4" | "time6";
+export const SCALE_POINTS: Record<Scale, number> = { agree5: 5, agree4: 4, freq4: 4, time6: 6 };
 
 /** A statement scored on the scale: it adds to `dim`, reversed when `rev`. */
 export type LikertItem = { dim: string; rev?: boolean };
@@ -136,6 +138,30 @@ const WORK = likert(`
   remote+ team+ structure+ variety+  remote- team- structure- variety-  remote+ team+ structure+ variety+
   remote- team- structure- variety-  remote+ team+ structure+ variety+
 `);
+
+/**
+ * Emotional intelligence in the four areas of Goleman's model: knowing your own feelings, managing them, reading
+ * other people's and handling relationships. Five original statements each, two reversed.
+ */
+const EQ = likert(`
+  self+ regulate+ empathy+ social+  self- regulate- empathy- social-  self+ regulate+ empathy+ social+
+  self- regulate- empathy- social-  self+ regulate+ empathy+ social+
+`);
+
+/** John Alan Lee's six love styles, four original statements each. */
+const LOVE_STYLE = likert(`
+  eros+ ludus+ storge+ pragma+ mania+ agape+  eros+ ludus+ storge+ pragma+ mania+ agape+
+  eros+ ludus+ storge+ pragma+ mania+ agape+  eros+ ludus+ storge+ pragma+ mania+ agape+
+`);
+
+/** Goleman's six leadership styles, four original statements each. */
+const LEADERSHIP = likert(`
+  visionary+ coaching+ affiliative+ democratic+ pacesetting+ commanding+  visionary+ coaching+ affiliative+ democratic+ pacesetting+ commanding+
+  visionary+ coaching+ affiliative+ democratic+ pacesetting+ commanding+  visionary+ coaching+ affiliative+ democratic+ pacesetting+ commanding+
+`);
+
+/** WHO-5 Well-Being Index (WHO Regional Office for Europe, 1998; free to use). Total 0–25; times 4 gives the 0–100 percentage. */
+const WHO5 = likert("who+ who+ who+ who+ who+");
 
 /** Rosenberg Self-Esteem Scale: items 2, 5, 6, 8 and 9 are reverse-scored. Total 0–30. */
 const ROSENBERG = likert("se+ se- se+ se+ se- se- se+ se- se- se+");
@@ -354,6 +380,41 @@ const AVATAR: ChoiceItem[] = [
   { options: [{ air: 2 }, { fire: 2 }, { water: 2 }, { earth: 2 }] },
 ];
 
+/**
+ * Eight Straw Hat Pirates from One Piece. Each question offers four, so each pirate appears in six; the questions come
+ * in pairs that split the crew in two, and the six splits mix who appears alongside whom.
+ */
+const ONE_PIECE: ChoiceItem[] = [
+  { options: [{ luffy: 2 }, { zoro: 2 }, { nami: 2 }, { usopp: 2 }] },
+  { options: [{ robin: 2 }, { franky: 2 }, { sanji: 2 }, { chopper: 2 }] },
+  { options: [{ sanji: 2 }, { luffy: 2 }, { robin: 2 }, { nami: 2 }] },
+  { options: [{ usopp: 2 }, { franky: 2 }, { zoro: 2 }, { chopper: 2 }] },
+  { options: [{ chopper: 2 }, { luffy: 2 }, { sanji: 2 }, { zoro: 2 }] },
+  { options: [{ franky: 2 }, { nami: 2 }, { usopp: 2 }, { robin: 2 }] },
+  { options: [{ robin: 2 }, { chopper: 2 }, { luffy: 2 }, { usopp: 2 }] },
+  { options: [{ nami: 2 }, { sanji: 2 }, { franky: 2 }, { zoro: 2 }] },
+  { options: [{ franky: 2 }, { robin: 2 }, { zoro: 2 }, { luffy: 2 }] },
+  { options: [{ sanji: 2 }, { usopp: 2 }, { chopper: 2 }, { nami: 2 }] },
+  { options: [{ nami: 2 }, { franky: 2 }, { luffy: 2 }, { chopper: 2 }] },
+  { options: [{ robin: 2 }, { zoro: 2 }, { usopp: 2 }, { sanji: 2 }] },
+];
+
+/** The four Hogwarts houses; every question offers all four, each house three times in each position. */
+const HOGWARTS: ChoiceItem[] = [
+  { options: [{ gryffindor: 2 }, { hufflepuff: 2 }, { ravenclaw: 2 }, { slytherin: 2 }] },
+  { options: [{ ravenclaw: 2 }, { slytherin: 2 }, { hufflepuff: 2 }, { gryffindor: 2 }] },
+  { options: [{ hufflepuff: 2 }, { ravenclaw: 2 }, { gryffindor: 2 }, { slytherin: 2 }] },
+  { options: [{ slytherin: 2 }, { gryffindor: 2 }, { hufflepuff: 2 }, { ravenclaw: 2 }] },
+  { options: [{ gryffindor: 2 }, { ravenclaw: 2 }, { slytherin: 2 }, { hufflepuff: 2 }] },
+  { options: [{ slytherin: 2 }, { hufflepuff: 2 }, { ravenclaw: 2 }, { gryffindor: 2 }] },
+  { options: [{ ravenclaw: 2 }, { slytherin: 2 }, { gryffindor: 2 }, { hufflepuff: 2 }] },
+  { options: [{ hufflepuff: 2 }, { gryffindor: 2 }, { ravenclaw: 2 }, { slytherin: 2 }] },
+  { options: [{ gryffindor: 2 }, { slytherin: 2 }, { hufflepuff: 2 }, { ravenclaw: 2 }] },
+  { options: [{ hufflepuff: 2 }, { ravenclaw: 2 }, { slytherin: 2 }, { gryffindor: 2 }] },
+  { options: [{ slytherin: 2 }, { hufflepuff: 2 }, { gryffindor: 2 }, { ravenclaw: 2 }] },
+  { options: [{ ravenclaw: 2 }, { gryffindor: 2 }, { slytherin: 2 }, { hufflepuff: 2 }] },
+];
+
 export const QUIZ_DEFS: Record<QuizId, QuizDef> = {
   mbti: { id: "mbti", type: "likert", scale: "agree5", dims: ["EI", "SN", "TF", "JP"], items: TYPES, result: { kind: "types" } },
   "big-five": { id: "big-five", type: "likert", scale: "agree5", dims: ["O", "C", "E", "A", "N"], items: BIG_FIVE, result: { kind: "profile" } },
@@ -366,6 +427,7 @@ export const QUIZ_DEFS: Record<QuizId, QuizDef> = {
     // 40% and 60% of 0–80 are 32 and 48: below 32 is introvert, above 48 extrovert (the `traitLevel` split).
     result: { kind: "band", bands: [{ max: 31, key: "introvert" }, { max: 48, key: "ambivert" }, { max: 80, key: "extrovert" }] },
   },
+  eq: { id: "eq", type: "likert", scale: "agree5", dims: ["self", "regulate", "empathy", "social"], items: EQ, result: { kind: "profile" } },
   enneagram: { id: "enneagram", type: "likert", scale: "agree5", dims: ["1", "2", "3", "4", "5", "6", "7", "8", "9"], items: ENNEAGRAM, result: { kind: "top" } },
   "love-language": { id: "love-language", type: "likert", scale: "agree5", dims: ["words", "time", "gifts", "service", "touch"], items: LOVE, result: { kind: "top" } },
   attachment: {
@@ -375,6 +437,15 @@ export const QUIZ_DEFS: Record<QuizId, QuizDef> = {
     dims: ["anx", "avo"],
     items: ATTACHMENT,
     result: { kind: "quadrant", x: "anx", y: "avo", results: { lowLow: "secure", highLow: "anxious", lowHigh: "avoidant", highHigh: "fearful" } },
+  },
+  "love-style": {
+    id: "love-style",
+    type: "likert",
+    scale: "agree5",
+    // Ties go to the earlier style, so a flat profile reads as friendship love, never as obsessive love.
+    dims: ["storge", "agape", "pragma", "eros", "ludus", "mania"],
+    items: LOVE_STYLE,
+    result: { kind: "top" },
   },
   marriage: {
     id: "marriage",
@@ -395,6 +466,15 @@ export const QUIZ_DEFS: Record<QuizId, QuizDef> = {
   },
   career: { id: "career", type: "likert", scale: "agree5", dims: ["R", "I", "A", "S", "E", "C"], items: RIASEC, result: { kind: "code" } },
   "work-style": { id: "work-style", type: "likert", scale: "agree5", dims: ["remote", "team", "structure", "variety"], items: WORK, result: { kind: "profile" } },
+  leadership: {
+    id: "leadership",
+    type: "likert",
+    scale: "agree5",
+    // Ties go to the earlier style, so a flat profile reads as democratic, never as commanding.
+    dims: ["democratic", "coaching", "affiliative", "visionary", "pacesetting", "commanding"],
+    items: LEADERSHIP,
+    result: { kind: "top" },
+  },
   money: { id: "money", type: "likert", scale: "agree5", dims: ["saver", "spender", "investor", "avoider", "giver"], items: MONEY, result: { kind: "top" } },
   chronotype: {
     id: "chronotype",
@@ -423,6 +503,15 @@ export const QUIZ_DEFS: Record<QuizId, QuizDef> = {
     dims: ["oval", "round", "square", "heart", "oblong", "diamond", "triangle"],
     items: FACE,
     result: { kind: "top" },
+  },
+  "wellbeing-index": {
+    id: "wellbeing-index",
+    type: "likert",
+    scale: "time6",
+    dims: ["who"],
+    items: WHO5,
+    // Below 13 (52%) is poor well-being and a reason to screen for depression; 7 or less (28% or less) suggests it.
+    result: { kind: "band", bands: [{ max: 7, key: "low" }, { max: 12, key: "reduced" }, { max: 25, key: "good" }] },
   },
   "self-esteem": {
     id: "self-esteem",
@@ -486,6 +575,13 @@ export const QUIZ_DEFS: Record<QuizId, QuizDef> = {
     items: NARUTO,
     result: { kind: "top", tie: "spread" },
   },
+  "one-piece": {
+    id: "one-piece",
+    type: "choice",
+    dims: ["luffy", "zoro", "nami", "usopp", "sanji", "chopper", "robin", "franky"],
+    items: ONE_PIECE,
+    result: { kind: "top", tie: "spread" },
+  },
   "demon-slayer": {
     id: "demon-slayer",
     type: "choice",
@@ -505,6 +601,13 @@ export const QUIZ_DEFS: Record<QuizId, QuizDef> = {
     type: "choice",
     dims: ["water", "earth", "fire", "air"],
     items: AVATAR,
+    result: { kind: "top", tie: "spread" },
+  },
+  hogwarts: {
+    id: "hogwarts",
+    type: "choice",
+    dims: ["gryffindor", "hufflepuff", "ravenclaw", "slytherin"],
+    items: HOGWARTS,
     result: { kind: "top", tie: "spread" },
   },
 };

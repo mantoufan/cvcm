@@ -5,13 +5,15 @@
     "scaleHint": {
       "agree5": "How well does each statement describe you? Answer as you usually are, not as you would like to be.",
       "agree4": "How much do you agree with each statement about yourself?",
-      "freq4": "Over the last 2 weeks, how often have you been bothered by each of the following?"
+      "freq4": "Over the last 2 weeks, how often have you been bothered by each of the following?",
+      "time6": "Over the last two weeks, how much of the time has each statement been true for you?"
     },
     "choiceHint": "Pick the answer closest to you. There are no wrong answers.",
     "scale": {
       "agree5": ["Strongly disagree", "Disagree", "Neutral", "Agree", "Strongly agree"],
       "agree4": ["Strongly disagree", "Disagree", "Agree", "Strongly agree"],
-      "freq4": ["Not at all", "Several days", "More than half the days", "Nearly every day"]
+      "freq4": ["Not at all", "Several days", "More than half the days", "Nearly every day"],
+      "time6": ["At no time", "Some of the time", "Less than half of the time", "More than half of the time", "Most of the time", "All of the time"]
     },
     "progress": "{n} of {total} answered",
     "submit": "See my result",
@@ -38,10 +40,10 @@
     "crisisLines": "United States: call or text 988. United Kingdom and Ireland: Samaritans 116 123."
   },
   "hub": {
-    "title": "Free personality tests: MBTI, Big Five, love and career — cv.cm",
-    "description": "Free personality and psychology tests: 16 types (MBTI-style), Big Five, introvert or extrovert, Enneagram, love language, attachment, conflict style, career, work style, money, chronotype, pet match, face shape, self-esteem, anxiety and depression, plus game and anime fan quizzes: Pokémon, Genshin Impact, Sonic, D&D, Naruto, Demon Slayer, Jujutsu Kaisen, Avatar and anime archetypes. No sign-up; answers stay in your browser.",
+    "title": "Free personality tests: MBTI, Big Five, EQ, love and career — cv.cm",
+    "description": "Free personality and psychology tests: 16 types (MBTI-style), Big Five, introvert or extrovert, Enneagram, emotional intelligence, love language, attachment, love style, conflict style, career, work style, leadership, money, chronotype, pet match, face shape, well-being (WHO-5), self-esteem, anxiety and depression, plus fan quizzes: Hogwarts house, Pokémon, Genshin Impact, Sonic, D&D, Naruto, One Piece, Demon Slayer, Jujutsu Kaisen, Avatar and anime archetypes. No sign-up; answers stay in your browser.",
     "h1": "Personality and psychology tests",
-    "lede": "Twenty-six free tests, from 16 personality types and the Big Five to love languages, career interests, Pokémon and Naruto fan quizzes and quick mental health self-checks. No sign-up, no email. Your answers are scored in your browser and never uploaded.",
+    "lede": "Thirty-two free tests, from 16 personality types, the Big Five and emotional intelligence to love styles, leadership, your Hogwarts house, One Piece and Naruto fan quizzes and quick mental health self-checks. No sign-up, no email. Your answers are scored in your browser and never uploaded.",
     "groups": {
       "personality": "Personality",
       "love": "Love and relationships",
@@ -49,11 +51,12 @@
       "fun": "Just for fun",
       "wellbeing": "Wellbeing self-checks",
       "games": "Games",
-      "anime": "Anime and animation"
+      "anime": "Anime and animation",
+      "books": "Books and film"
     },
     "about": [
       "Each test lists all of its questions on one page. Answer them, press the button, and the result appears under the questions with a short explanation and a chart of your scores.",
-      "The wellbeing checks use published screening questionnaires (Rosenberg, GAD-7, PHQ-9). The Big Five and the introvert–extrovert test use the public-domain IPIP item pool. The other tests are written for cv.cm from well-known models, and their results are a starting point for reflection, not a verdict. The game and anime quizzes are unofficial fan quizzes, just for fun."
+      "The wellbeing checks use published screening questionnaires (WHO-5, Rosenberg, GAD-7, PHQ-9). The Big Five and the introvert–extrovert test use the public-domain IPIP item pool. The other tests are written for cv.cm from well-known models, and their results are a starting point for reflection, not a verdict. The game, anime and book quizzes are unofficial fan quizzes, just for fun."
     ],
     "faq": [
       { "q": "Are these tests free?", "a": "Yes. Every test is free, with no sign-up, no email, and no paywall in front of the result." },
@@ -375,6 +378,84 @@
         "9": { "name": "Type 9 · The Peacemaker", "body": "Easygoing, receptive and reassuring. You want inner and outer peace, and you fear conflict and separation. Growth comes from voicing your own priorities and acting on them." }
       }
     },
+    "eq": {
+      "title": "Free emotional intelligence test (EQ test) with scores for 4 skills — cv.cm",
+      "description": "Free EQ test online. Rate 20 statements to score your self-awareness, self-management, empathy and relationship skills, with what each score means and how to build it. No sign-up.",
+      "h1": "Emotional intelligence (EQ) test",
+      "lede": "Emotional intelligence is the skill of noticing, understanding and handling emotions, your own and other people's. Rate 20 statements and see your score in each of its four areas.",
+      "about": [
+        "This test follows the four areas of Daniel Goleman's model of emotional intelligence: self-awareness (knowing what you feel and why), self-management (handling those feelings), social awareness (reading other people) and relationship management (getting along, influencing and resolving conflict).",
+        "The statements were written for cv.cm. It is a self-report check, not the licensed EQ-i or MSCEIT, and a self-report shows how you see yourself. Each area is scored from 0 to 100: below 40 is low, above 60 high. Unlike IQ, these are skills, and they improve with practice."
+      ],
+      "faq": [
+        {
+          "q": "What is a good EQ score?",
+          "a": "There is no pass mark here. A score above 60 in an area means you see that skill as a strength; below 40 marks the area most worth practising. Look at the balance between the four areas rather than one number."
+        },
+        {
+          "q": "Can you improve emotional intelligence?",
+          "a": "Yes. Naming your feelings, pausing before you react, asking people how they see a situation and listening without planning your answer are skills that grow with practice."
+        },
+        {
+          "q": "Is EQ more important than IQ?",
+          "a": "They measure different things. IQ tests reasoning; EQ is about handling emotions and people. Both matter, and EQ matters most in work that depends on teamwork, leadership and service."
+        },
+        {
+          "q": "How accurate is a self-report EQ test?",
+          "a": "It shows how you see yourself, which can differ from how others see you. For a fuller picture, ask a few people who know you well to answer the questions about you."
+        }
+      ],
+      "items": [
+        "I can usually name exactly what I'm feeling, not just \"good\" or \"bad\".",
+        "When I'm upset, I can calm myself down before I say something I regret.",
+        "I often notice how someone feels before they say anything.",
+        "I can tell someone they're wrong without damaging our relationship.",
+        "My mood often changes and I can't tell why.",
+        "When something annoys me, it tends to ruin the rest of my day.",
+        "I find it hard to see a situation from someone else's side when I disagree.",
+        "Conflicts with people tend to get worse once I'm involved.",
+        "I know which situations tend to make me anxious or angry.",
+        "I can stay calm and think clearly under pressure.",
+        "People often tell me I'm a good listener.",
+        "I find it easy to make people feel comfortable around me.",
+        "I'm often surprised by how strongly I react to things.",
+        "I act on impulse and then wish I had waited.",
+        "I miss it when friends are going through a hard time until they tell me.",
+        "I avoid difficult conversations even when they need to happen.",
+        "I understand how my feelings affect the way I work and treat others.",
+        "After a setback, I can pick myself up and keep going.",
+        "I can tell when someone says they're fine but isn't.",
+        "When two people disagree, I can help them find common ground."
+      ],
+      "dims": {
+        "self": "Self-awareness",
+        "regulate": "Self-management",
+        "empathy": "Empathy",
+        "social": "Relationship skills"
+      },
+      "levels": {
+        "self": {
+          "low": "Your feelings often take you by surprise. Try naming your emotion a few times a day, as precisely as you can (\"irritated\", \"disappointed\", \"nervous\"), and noticing what set it off.",
+          "mid": "You usually know what you feel, though strong or mixed emotions can still catch you out. Keep checking in with yourself in busy or tense moments.",
+          "high": "You know your emotions well, what triggers them and how they shape what you do. That self-knowledge is the base for every other emotional skill."
+        },
+        "regulate": {
+          "low": "Strong feelings tend to drive what you do. A pause of a few slow breaths, or a rule to sleep on angry replies, gives you room to choose your response.",
+          "mid": "You keep your cool most of the time, but stress or tiredness can tip you over. Notice your early warning signs and act on them sooner.",
+          "high": "You stay steady under pressure, recover from setbacks and rarely act on impulse. People can rely on you when things get tense."
+        },
+        "empathy": {
+          "low": "Other people's feelings can be hard for you to read. Ask more questions (\"How are you finding this?\") and watch faces and tone, not just words.",
+          "mid": "You pick up on how people feel when you pay attention, but you can miss quieter signals when you're busy or disagree.",
+          "high": "You read people well and understand their point of view, even when you disagree. People feel heard around you."
+        },
+        "social": {
+          "low": "Handling conflict and difficult conversations is a growth area for you. Start small: give honest, kind feedback about one thing, and say what you need clearly.",
+          "mid": "You get along well with most people. Practising the harder parts, like conflict, feedback and bringing people together, will make you even stronger.",
+          "high": "You build trust, handle conflict calmly and help people work together. Teams and friends often count on you to keep things running smoothly."
+        }
+      }
+    },
     "love-language": {
       "title": "Free love language test: find your love language — cv.cm",
       "description": "Free love language quiz. Rate 25 statements to see how you most like to receive love: words of affirmation, quality time, gifts, acts of service or physical touch. No sign-up.",
@@ -474,6 +555,94 @@
         "anxious": { "name": "Anxious (preoccupied)", "body": "You want closeness and worry about losing it, so you may seek reassurance or read a lot into small signals. Naming your needs directly, and soothing yourself before reacting, makes relationships feel calmer." },
         "avoidant": { "name": "Avoidant (dismissive)", "body": "You value independence and feel uneasy when others get too close or depend on you. You may pull back when things get serious. Practising small steps of openness lets people support you without taking your freedom." },
         "fearful": { "name": "Fearful-avoidant (disorganized)", "body": "You want closeness but also fear it, so you may swing between reaching out and pulling away. This often comes from painful experiences. Patience, a steady partner, and support from a therapist can help a lot." }
+      }
+    },
+    "love-style": {
+      "title": "Free love style test: Lee's six styles of love (Eros, Storge, Agape…) — cv.cm",
+      "description": "Free love style quiz based on John Alan Lee's six styles: passionate (Eros), playful (Ludus), friendship (Storge), practical (Pragma), possessive (Mania) and selfless (Agape). Rate 24 statements, no sign-up.",
+      "h1": "Love style test: how do you love?",
+      "lede": "Do you fall fast and hard, or does love grow slowly from friendship? Rate 24 statements to find your main love style among the six described by sociologist John Alan Lee.",
+      "about": [
+        "In 1973 the sociologist John Alan Lee described six styles of loving, named with Greek and Latin words: Eros (passionate), Ludus (playful), Storge (friendship), Pragma (practical), Mania (possessive) and Agape (selfless). Most people mix several, and the mix can change with age and with each relationship.",
+        "The statements here were written for cv.cm and are inspired by Lee's model; this is not the published Love Attitudes Scale. Your result names your strongest style and shows your scores for all six. Different styles can work well together once partners understand each other."
+      ],
+      "faq": [
+        {
+          "q": "What are the six love styles?",
+          "a": "Eros (passionate, romantic love), Ludus (love as a playful game), Storge (love that grows from friendship), Pragma (practical, well-matched love), Mania (intense, anxious love) and Agape (selfless, giving love)."
+        },
+        {
+          "q": "Is one love style the best?",
+          "a": "No single style is best. Studies link Eros and Agape with more satisfying relationships and Mania with more jealousy and worry, but what matters most is that partners understand each other's style."
+        },
+        {
+          "q": "Is this the same as love languages?",
+          "a": "No. Love languages are about how you like to give and receive affection. Love styles are about how you approach love itself: how fast you fall, what you look for and how intense it feels."
+        },
+        {
+          "q": "Can my love style change?",
+          "a": "Yes. Lee saw the styles as attitudes, not fixed traits. They shift with experience, age and the partner you're with."
+        }
+      ],
+      "items": [
+        "I felt a strong attraction to my partner (or crush) almost at once.",
+        "I like to keep my options open rather than commit to one person.",
+        "My favourite relationships grew slowly out of a friendship.",
+        "Before I get serious with someone, I think about whether our lives fit together.",
+        "When I'm in love, I can't stop thinking about the other person.",
+        "I would rather suffer myself than let the person I love suffer.",
+        "My partner and I have a special chemistry.",
+        "Love is more fun when it's light and doesn't get too serious.",
+        "The best love is a deep friendship that has turned into something more.",
+        "Shared values and goals matter more to me than romance.",
+        "If my partner doesn't reply for a while, I start to worry.",
+        "I'd give up my own plans to help the person I love reach theirs.",
+        "I believe in falling in love at first sight.",
+        "I've enjoyed flirting with more than one person at the same time.",
+        "I trust a love that has had time to grow more than one that starts with fireworks.",
+        "I'd like a partner who would be a good parent and a reliable teammate.",
+        "I get jealous easily, even when I know I shouldn't.",
+        "I care for my partner without expecting anything back.",
+        "Physical closeness and romance are at the heart of love for me.",
+        "Some things about my love life are better kept to myself.",
+        "I want my partner to be my best friend.",
+        "I'd think carefully about how a partner would fit with my family and career.",
+        "When a relationship is going badly, I can't eat or sleep properly.",
+        "Loving someone means accepting them completely, faults and all."
+      ],
+      "dims": {
+        "eros": "Eros (passionate)",
+        "ludus": "Ludus (playful)",
+        "storge": "Storge (friendship)",
+        "pragma": "Pragma (practical)",
+        "mania": "Mania (possessive)",
+        "agape": "Agape (selfless)"
+      },
+      "results": {
+        "eros": {
+          "name": "Eros: passionate love",
+          "body": "You love with your whole heart and trust chemistry: attraction, romance and closeness come first. Passion gives your relationships energy. Keep curiosity and small romantic gestures alive as the first spark settles into something steadier."
+        },
+        "ludus": {
+          "name": "Ludus: playful love",
+          "body": "You see love as fun, light and full of possibility, and you don't like to be tied down too early. You make dating exciting. Be clear with people about what you're looking for, so nobody gets hurt by different expectations."
+        },
+        "storge": {
+          "name": "Storge: friendship love",
+          "body": "Your love grows slowly from friendship, shared interests and trust. It's calm, loyal and built to last. You may not feel fireworks at first, and that's fine: your strength is a partner who is also your closest friend."
+        },
+        "pragma": {
+          "name": "Pragma: practical love",
+          "body": "You choose with your head as well as your heart, looking for shared values, goals and a life that fits together. That makes for stable partnerships. Leave room for spontaneity and feeling, too, not just the checklist."
+        },
+        "mania": {
+          "name": "Mania: possessive love",
+          "body": "You love intensely, and that can come with highs, lows, worry and jealousy. Your devotion is real. Building your own sense of security, through friends, interests and honest talks with your partner, helps love feel calmer."
+        },
+        "agape": {
+          "name": "Agape: selfless love",
+          "body": "You love by giving: caring, forgiving and putting the other person first without keeping score. It's a rare gift. Make sure your own needs matter too, and choose partners who give back."
+        }
       }
     },
     "marriage": {
@@ -759,6 +928,94 @@
           "low": "Deep focus: you do your best work in long, uninterrupted blocks. Book two- or three-hour focus blocks, turn off notifications, and look for roles that value depth such as research, engineering or editing.",
           "mid": "Balanced: some variety keeps you fresh, but too much switching wears you down. Group similar tasks together and give each day one main focus.",
           "high": "Variety: new problems and a fast pace energize you, and routine bores you. Roles in operations, client work, events or startups fit; keep a simple list so many threads don't slip."
+        }
+      }
+    },
+    "leadership": {
+      "title": "Free leadership style test: which of the 6 styles are you? — cv.cm",
+      "description": "Free leadership style quiz based on Goleman's six styles: visionary, coaching, affiliative, democratic, pacesetting and commanding. Rate 24 statements to see your main style and when to use the others.",
+      "h1": "Leadership style test",
+      "lede": "How do you lead when it's your call? Rate 24 statements to find your main style among the six described by Daniel Goleman, and when each style helps or hurts a team.",
+      "about": [
+        "In 2000 the psychologist Daniel Goleman described six leadership styles based on research with thousands of managers: visionary, coaching, affiliative, democratic, pacesetting and commanding. The best leaders don't stick to one; they switch styles to fit the situation, as a golfer picks a club.",
+        "The statements here were written for cv.cm and are inspired by Goleman's model. Your result shows your strongest style and your scores for all six. You don't need a manager's title to use it: leading a project, a club or a group of friends counts."
+      ],
+      "faq": [
+        {
+          "q": "What are the six leadership styles?",
+          "a": "Visionary (sets a direction and lets people find the way), coaching (develops people), affiliative (puts people and harmony first), democratic (builds agreement), pacesetting (sets high standards by example) and commanding (gives clear orders)."
+        },
+        {
+          "q": "Which leadership style is best?",
+          "a": "Goleman's research found that visionary, coaching, affiliative and democratic styles usually improve a team's climate, while pacesetting and commanding work in short bursts, such as a crisis or a skilled team on a deadline, but wear people down if overused."
+        },
+        {
+          "q": "I'm not a manager. Is this test for me?",
+          "a": "Yes. Answer as you act when you lead anything: a school project, a team at work, an event or a trip with friends."
+        },
+        {
+          "q": "How can I widen my range?",
+          "a": "Pick the style you scored lowest that would help your team, and try it on purpose for a few weeks: for example, ask for ideas before you decide, or set aside time to coach one person."
+        }
+      ],
+      "items": [
+        "I like to paint a clear picture of where we're heading and why it matters.",
+        "I enjoy helping people discover their strengths and grow.",
+        "Keeping the team happy and connected comes first for me.",
+        "Before I decide, I ask everyone for their ideas.",
+        "I set high standards and expect others to keep up with me.",
+        "In a crisis, I take charge and tell people exactly what to do.",
+        "I give people a goal and let them work out how to get there.",
+        "I'd spend time teaching someone even if doing it myself were faster.",
+        "When there's tension, I focus on repairing relationships before anything else.",
+        "Decisions are better when the people affected have a say.",
+        "If someone is slow, I'd rather take the work over myself.",
+        "I expect instructions to be followed without much debate.",
+        "People tell me I inspire them with big ideas.",
+        "I give feedback that helps people reach their long-term goals.",
+        "I praise people often and make sure they feel valued.",
+        "I'd rather take longer and reach agreement than push a decision through.",
+        "I lead by example: I work fast and expect the same from others.",
+        "Clear rules and firm control get the best results.",
+        "I explain how each person's work fits the bigger goal.",
+        "I ask people what they want to achieve in their careers.",
+        "I'd rather keep the peace than win an argument.",
+        "I run meetings where everyone gets to speak.",
+        "I get frustrated when work isn't done to my standard.",
+        "When I've decided, I don't like being questioned."
+      ],
+      "dims": {
+        "visionary": "Visionary",
+        "coaching": "Coaching",
+        "affiliative": "Affiliative",
+        "democratic": "Democratic",
+        "pacesetting": "Pacesetting",
+        "commanding": "Commanding"
+      },
+      "results": {
+        "visionary": {
+          "name": "Visionary leader",
+          "body": "You lead by giving people a clear direction and a reason to care, then trusting them to find the way. It works best when a team needs a new direction. Remember that an expert team may need input, not just inspiration."
+        },
+        "coaching": {
+          "name": "Coaching leader",
+          "body": "You lead by developing people: you ask about their goals, give useful feedback and make time to teach. It builds strong, loyal teams over time. It works less well when people don't want to learn, or when the deadline is tomorrow."
+        },
+        "affiliative": {
+          "name": "Affiliative leader",
+          "body": "You lead by putting people first, building harmony, trust and team spirit. It's ideal for healing a team after conflict or keeping morale up under stress. Pair it with clear goals and honest feedback, so poor work doesn't go unaddressed."
+        },
+        "democratic": {
+          "name": "Democratic leader",
+          "body": "You lead by listening and building agreement, so people feel ownership of decisions. It works well when you need fresh ideas or buy-in. In a crisis, or when the team is stuck in endless meetings, be ready to make the call."
+        },
+        "pacesetting": {
+          "name": "Pacesetting leader",
+          "body": "You lead by example and set high standards for speed and quality. It gets fast results from a skilled, motivated team. Used too long it can overwhelm people, so explain the why, share the load and recognise effort."
+        },
+        "commanding": {
+          "name": "Commanding leader",
+          "body": "You lead by taking control and giving clear instructions. In a real emergency or a turnaround, that decisiveness is exactly what's needed. Used every day it can stifle people, so loosen control once things are stable and ask for input."
         }
       }
     },
@@ -1263,6 +1520,56 @@
         "oblong": { "name": "Oblong face", "body": "Clearly longer than wide, with forehead, cheeks and jaw of similar width. Add width: bangs, waves and volume at the sides; oversized or deep frames. Avoid very long straight hair and tall styling on top." },
         "diamond": { "name": "Diamond face", "body": "Wide, high cheekbones with a narrower forehead and jaw. Show off the cheekbones: side-swept fringes, tucked-behind-the-ear styles and chin-length cuts; oval or cat-eye glasses." },
         "triangle": { "name": "Triangle (pear) face", "body": "Jaw wider than the forehead. Add width up top: volume at the crown and temples, layered cuts, side bangs; frames that are bold on top, like browline glasses. Keep beards short at the sides." }
+      }
+    },
+    "wellbeing-index": {
+      "title": "Free well-being test (WHO-5 Well-Being Index): score 0–100 — cv.cm",
+      "description": "Free WHO-5 well-being test online. Answer 5 questions about the last two weeks to get your well-being score from 0 to 100 and what it means. Private: nothing leaves your browser.",
+      "h1": "Well-being test (WHO-5)",
+      "lede": "The WHO-5 Well-Being Index asks 5 short questions about how you have felt over the last two weeks. It takes under a minute and gives a score from 0 to 100.",
+      "about": [
+        "The WHO-5 was published by the World Health Organization Regional Office for Europe in 1998 and is one of the most widely used well-being questionnaires in the world. It is free to use. Each answer scores 0 to 5; the total (0–25) is multiplied by 4 to give a percentage from 0 (worst possible) to 100 (best possible).",
+        "A score below 52 suggests poor well-being, and doctors use it as a reason to check for depression; a score of 28 or less often goes with depression. This test is a self-check, not a diagnosis."
+      ],
+      "faq": [
+        {
+          "q": "What does my WHO-5 score mean?",
+          "a": "Multiply the raw score (0–25) by 4. 52 or more is in the normal range of well-being. Below 52 suggests poor well-being. 28 or less is a sign that depression may be present and should be checked by a professional."
+        },
+        {
+          "q": "Is the WHO-5 a depression test?",
+          "a": "It measures positive well-being, not depression symptoms, but a low score is a good reason to screen for depression, for example with the PHQ-9 test on this site, and to talk to a doctor."
+        },
+        {
+          "q": "How often can I take it?",
+          "a": "It asks about the last two weeks, so retaking it every two weeks or so is a simple way to track how you're doing. A change of 10 points or more is considered meaningful."
+        },
+        {
+          "q": "What can improve my well-being?",
+          "a": "Regular sleep, daylight and movement, time with people you like, and doing things that interest you help many people. If a low mood lasts, talk to a doctor or counselor."
+        }
+      ],
+      "items": [
+        "I have felt cheerful and in good spirits.",
+        "I have felt calm and relaxed.",
+        "I have felt active and vigorous.",
+        "I woke up feeling fresh and rested.",
+        "My daily life has been filled with things that interest me."
+      ],
+      "scoreLabel": "Raw score (×4 = percentage)",
+      "results": {
+        "low": {
+          "name": "Low well-being (0–7, or 0–28%)",
+          "body": "Your answers suggest your well-being has been low over the last two weeks. Scores this low often go with depression, so please talk to a doctor or mental health professional soon. You can also take the PHQ-9 depression check here. You don't have to handle this alone, and effective help exists."
+        },
+        "reduced": {
+          "name": "Reduced well-being (8–12, or 32–48%)",
+          "body": "Your well-being has been below the usual range lately. It's worth checking for depression (the PHQ-9 test on this site is one way) and talking to a doctor if this has gone on for a while. Small steps like regular sleep, daylight, movement and time with people you trust can help."
+        },
+        "good": {
+          "name": "Good well-being (13–25, or 52–100%)",
+          "body": "Your well-being is in the normal range. Keep up the habits and people that help you feel this way, and retake the check in a few weeks to see how it holds up."
+        }
       }
     },
     "self-esteem": {
@@ -2326,6 +2633,188 @@
         }
       }
     },
+    "one-piece": {
+      "title": "Which One Piece character are you? Straw Hat Pirates quiz — cv.cm",
+      "description": "Free One Piece quiz: answer 12 questions to find which Straw Hat Pirate you are: Luffy, Zoro, Nami, Usopp, Sanji, Chopper, Robin or Franky. No sign-up, unofficial fan quiz.",
+      "h1": "Which Straw Hat Pirate are you?",
+      "lede": "Captain, swordsman, navigator or cook? Answer 12 questions about your dreams, habits and weak spots, and find out which member of Luffy's crew you'd be in One Piece.",
+      "about": [
+        "Every Straw Hat joined the crew chasing a dream of their own, and that dream says a lot about who they are: Luffy wants the most freedom on the sea, Zoro to be the world's greatest swordsman, Nami to map the whole world. This quiz matches your dreams, habits and quirks to eight of the crew.",
+        "Your result names your Straw Hat and shows your scores for all eight. This is an unofficial fan quiz written for cv.cm. It is not affiliated with or endorsed by Eiichiro Oda, Shueisha or Toei Animation; the names belong to their owners."
+      ],
+      "faq": [
+        {
+          "q": "Which characters can I get?",
+          "a": "Eight of the Straw Hat Pirates: Monkey D. Luffy, Roronoa Zoro, Nami, Usopp, Sanji, Tony Tony Chopper, Nico Robin and Franky."
+        },
+        {
+          "q": "Why aren't Brook and Jinbe in the quiz?",
+          "a": "Keeping eight results keeps the quiz short and every result equally easy to get. They may join in a later update."
+        },
+        {
+          "q": "Is one result rarer than the others?",
+          "a": "No. Every character appears in the same number of answers, so each one is equally likely."
+        },
+        {
+          "q": "Is this quiz official?",
+          "a": "No. It is a free fan quiz, and your answers stay in your browser."
+        }
+      ],
+      "items": [
+        {
+          "q": "Your dream sounds most like…",
+          "options": [
+            "Being the freest person on the sea",
+            "Being the best in the world at one thing",
+            "Drawing a map of the whole world",
+            "Becoming a brave warrior everyone looks up to"
+          ]
+        },
+        {
+          "q": "Your ideal job on the ship:",
+          "options": [
+            "Historian",
+            "Shipwright",
+            "Cook",
+            "Doctor"
+          ]
+        },
+        {
+          "q": "A free afternoon on a new island. You…",
+          "options": [
+            "Find the market and try the local ingredients",
+            "Run straight for the most dangerous-looking thing",
+            "Look for old ruins or a library",
+            "Go shopping, and check what treasure sells for"
+          ]
+        },
+        {
+          "q": "Your biggest weakness:",
+          "options": [
+            "You talk big, then get scared",
+            "You get carried away with your own projects",
+            "No sense of direction at all",
+            "You melt the moment someone praises you"
+          ]
+        },
+        {
+          "q": "What makes you happiest?",
+          "options": [
+            "Helping someone get better",
+            "A huge feast with your friends",
+            "Watching people enjoy food you made",
+            "A nap after a good, hard training session"
+          ]
+        },
+        {
+          "q": "Pick a skill:",
+          "options": [
+            "Building anything from scrap",
+            "Reading the weather",
+            "Hitting any target from far away",
+            "Reading ancient languages"
+          ]
+        },
+        {
+          "q": "In a group, you're…",
+          "options": [
+            "The calm one who knows more than they say",
+            "The sweet one who'd fight for everyone",
+            "The one who decides, on instinct",
+            "The storyteller"
+          ]
+        },
+        {
+          "q": "How do you handle money?",
+          "options": [
+            "Every coin counted, with interest",
+            "Spend it on good food and the people you like",
+            "Spend it all on parts and tools",
+            "Always broke, and fine with it"
+          ]
+        },
+        {
+          "q": "Pick a motto:",
+          "options": [
+            "Do everything big and with style",
+            "The truth is worth any risk",
+            "A promise is never broken",
+            "If I want to do it, I'll do it"
+          ]
+        },
+        {
+          "q": "What scares you most?",
+          "options": [
+            "Letting someone go hungry",
+            "Honestly, almost everything, but you show up anyway",
+            "Not being able to save someone",
+            "Losing your home and the people in it"
+          ]
+        },
+        {
+          "q": "Pick a snack:",
+          "options": [
+            "Tangerines",
+            "An ice-cold cola",
+            "Meat on the bone",
+            "Cotton candy"
+          ]
+        },
+        {
+          "q": "How do you get better at things?",
+          "options": [
+            "Read everything you can find",
+            "Train for hours every day, alone",
+            "Invent new tricks and gadgets",
+            "Practise until it's perfect, and taste as you go"
+          ]
+        }
+      ],
+      "dims": {
+        "luffy": "Luffy",
+        "zoro": "Zoro",
+        "nami": "Nami",
+        "usopp": "Usopp",
+        "sanji": "Sanji",
+        "chopper": "Chopper",
+        "robin": "Robin",
+        "franky": "Franky"
+      },
+      "results": {
+        "luffy": {
+          "name": "Monkey D. Luffy",
+          "body": "Free, fearless and impossible to stop once you've decided something. You follow your gut, you'd fight anyone for your friends, and people end up following you without quite knowing why. Just don't forget to eat something other than meat."
+        },
+        "zoro": {
+          "name": "Roronoa Zoro",
+          "body": "Focused, loyal and tough as steel. You've picked your goal and you train for it every day, and you never break a promise to a friend. You're calm in a crisis… just maybe let someone else hold the map."
+        },
+        "nami": {
+          "name": "Nami",
+          "body": "Smart, sharp and always three steps ahead, especially where money's involved. You plan the route everyone else follows, and under the tough exterior you'd do anything for the people you call home."
+        },
+        "usopp": {
+          "name": "Usopp",
+          "body": "Creative, funny and braver than you think. You'd admit you're scared, then show up anyway, and that's real courage. Your stories, your aim and your ideas get the crew out of more trouble than anyone knows."
+        },
+        "sanji": {
+          "name": "Sanji",
+          "body": "Generous, stylish and fiercely caring. You show love with good food and you'll never let anyone go hungry. You hold yourself to a strict code, and you'd risk everything for your crew."
+        },
+        "chopper": {
+          "name": "Tony Tony Chopper",
+          "body": "Kind, curious and a little shy, with a huge heart. You want to help and heal everyone, and you're stronger than you look. When someone praises you, you pretend you don't care… and you're terrible at hiding it."
+        },
+        "robin": {
+          "name": "Nico Robin",
+          "body": "Calm, clever and endlessly curious, with a dry sense of humour. You read everything, notice everything and say little. After a lot of life, you've learned what it means to find people who truly have your back."
+        },
+        "franky": {
+          "name": "Franky",
+          "body": "Loud, inventive and full of heart. You can build anything, you do everything big, and you're not shy about how great it is. Under all the style is someone who cries at happy endings and protects the crew like family."
+        }
+      }
+    },
     "demon-slayer": {
       "title": "Which Demon Slayer breathing style are you? Demon Slayer quiz — cv.cm",
       "description": "Free Demon Slayer quiz: answer 12 questions to find your Breathing style (Water, Flame, Thunder, Beast, Insect, Wind, Mist, Love, Sound or Stone) and the Demon Slayer character who shares it. No sign-up.",
@@ -2859,6 +3348,168 @@
         "air": {
           "name": "Airbender",
           "body": "Free-spirited, playful and peaceful. You'd rather find another way than fight, you value your freedom and you bring lightness to everyone around you. Fellow Airbenders: Aang and Jinora."
+        }
+      }
+    },
+    "hogwarts": {
+      "title": "Which Hogwarts house are you? Free Harry Potter sorting quiz — cv.cm",
+      "description": "Free Hogwarts house quiz: answer 12 questions to find out whether you belong in Gryffindor, Hufflepuff, Ravenclaw or Slytherin, with famous members of your house. No sign-up, unofficial fan quiz.",
+      "h1": "Which Hogwarts house are you?",
+      "lede": "Brave, loyal, clever or ambitious? Answer 12 questions about what you value and how you act, and find out where the Sorting Hat might put you.",
+      "about": [
+        "In the Harry Potter books, every new student at Hogwarts is sorted into one of four houses: Gryffindor values courage, Hufflepuff loyalty and hard work, Ravenclaw wit and learning, and Slytherin ambition and cunning. Each question here offers one answer for each house.",
+        "Your result names your house, a few famous members and your scores for all four. This is an unofficial fan quiz written for cv.cm. It is not affiliated with or endorsed by J.K. Rowling, Warner Bros. or Wizarding World; the names belong to their owners."
+      ],
+      "faq": [
+        {
+          "q": "What are the four Hogwarts houses?",
+          "a": "Gryffindor (courage and nerve), Hufflepuff (loyalty, fairness and hard work), Ravenclaw (intelligence, wit and curiosity) and Slytherin (ambition, cunning and resourcefulness)."
+        },
+        {
+          "q": "Is Slytherin the bad house?",
+          "a": "No. Slytherin has had its villains, but it is also the house of ambition and resourcefulness, and Merlin and Severus Snape were Slytherins. Every house has its heroes."
+        },
+        {
+          "q": "What if I get two houses close together?",
+          "a": "That makes you a \"hatstall\", someone the Sorting Hat would think hard about. The Hat takes your choice into account, so pick the house that feels right."
+        },
+        {
+          "q": "Is this the official sorting quiz?",
+          "a": "No. It is a free fan quiz, and your answers stay in your browser."
+        }
+      ],
+      "items": [
+        {
+          "q": "Which quality matters most to you?",
+          "options": [
+            "Courage",
+            "Loyalty",
+            "Curiosity",
+            "Ambition"
+          ]
+        },
+        {
+          "q": "Pick a place to spend an afternoon:",
+          "options": [
+            "A tower library with a view",
+            "A lakeside room lit green by the water",
+            "A warm kitchen with friends",
+            "A sports field on match day"
+          ]
+        },
+        {
+          "q": "A friend breaks a rule and you find out. You…",
+          "options": [
+            "Stand by them and help put it right",
+            "Ask whether the rule made sense in the first place",
+            "Tell them to their face that it was wrong",
+            "Keep quiet: they'll owe you one"
+          ]
+        },
+        {
+          "q": "What would you most like to be remembered for?",
+          "options": [
+            "Achieving great things",
+            "Doing the right thing when it was hard",
+            "Being kind to everyone",
+            "An idea that changed how people think"
+          ]
+        },
+        {
+          "q": "Pick a class:",
+          "options": [
+            "Defence Against the Dark Arts",
+            "Charms",
+            "Potions",
+            "Herbology"
+          ]
+        },
+        {
+          "q": "Your biggest flaw:",
+          "options": [
+            "You'll bend the rules to win",
+            "You find it hard to say no",
+            "You overthink everything",
+            "You act before you think"
+          ]
+        },
+        {
+          "q": "A dragon blocks your path. You…",
+          "options": [
+            "Study it to find a weakness",
+            "Strike a deal with someone who can handle it",
+            "Charge",
+            "Get everyone to safety first, then work it out together"
+          ]
+        },
+        {
+          "q": "Pick an animal companion:",
+          "options": [
+            "A badger",
+            "A lion cub",
+            "An eagle",
+            "A snake"
+          ]
+        },
+        {
+          "q": "Pick a magical object:",
+          "options": [
+            "A broomstick faster than any other",
+            "A wand that never loses a duel",
+            "A cup that never runs empty, for sharing",
+            "A book that answers any question"
+          ]
+        },
+        {
+          "q": "How do you prepare for a big exam?",
+          "options": [
+            "Steady work every day, with a study group",
+            "Reading far beyond the syllabus, for fun",
+            "Working out what the examiners want and focusing on that",
+            "A late night before, and trusting your nerve"
+          ]
+        },
+        {
+          "q": "Which would you hate to be called?",
+          "options": [
+            "Ordinary",
+            "Unfair",
+            "A coward",
+            "Ignorant"
+          ]
+        },
+        {
+          "q": "Pick a motto for your friends:",
+          "options": [
+            "Question everything",
+            "Fortune favours the bold",
+            "Aim higher than anyone expects",
+            "Nobody gets left behind"
+          ]
+        }
+      ],
+      "dims": {
+        "gryffindor": "Gryffindor",
+        "hufflepuff": "Hufflepuff",
+        "ravenclaw": "Ravenclaw",
+        "slytherin": "Slytherin"
+      },
+      "results": {
+        "gryffindor": {
+          "name": "Gryffindor",
+          "body": "Brave, bold and quick to stand up for what's right. You act when others hesitate and you'd walk into danger for a friend. Just count to three before you charge. Famous Gryffindors: Harry Potter, Hermione Granger, Ron Weasley and Albus Dumbledore."
+        },
+        "hufflepuff": {
+          "name": "Hufflepuff",
+          "body": "Loyal, fair and hard-working, the friend everyone can count on. You treat people kindly, you never cut corners and you don't need the spotlight. Famous Hufflepuffs: Cedric Diggory, Newt Scamander and Nymphadora Tonks."
+        },
+        "ravenclaw": {
+          "name": "Ravenclaw",
+          "body": "Curious, clever and original. You love ideas for their own sake, ask questions nobody else thinks of and don't mind being a little different. Famous Ravenclaws: Luna Lovegood, Cho Chang and Filius Flitwick."
+        },
+        "slytherin": {
+          "name": "Slytherin",
+          "body": "Ambitious, resourceful and determined. You know what you want and find clever ways to get it, and you're fiercely loyal to your own people. Famous Slytherins: Merlin, Severus Snape and Horace Slughorn."
         }
       }
     }

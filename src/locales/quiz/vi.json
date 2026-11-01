@@ -5,13 +5,15 @@
     "scaleHint": {
       "agree5": "Mỗi câu mô tả đúng về bạn đến mức nào? Hãy trả lời theo con người bạn thường ngày, không phải người bạn muốn trở thành.",
       "agree4": "Bạn đồng ý với mỗi nhận định về bản thân ở mức nào?",
-      "freq4": "Trong 2 tuần qua, bạn có thường bị phiền muộn bởi những vấn đề sau đây không?"
+      "freq4": "Trong 2 tuần qua, bạn có thường bị phiền muộn bởi những vấn đề sau đây không?",
+      "time6": "Trong hai tuần qua, mỗi câu dưới đây đúng với bạn trong khoảng bao nhiêu thời gian?"
     },
     "choiceHint": "Chọn đáp án gần với bạn nhất. Không có câu trả lời nào là sai.",
     "scale": {
       "agree5": ["Hoàn toàn không đồng ý", "Không đồng ý", "Trung lập", "Đồng ý", "Hoàn toàn đồng ý"],
       "agree4": ["Hoàn toàn không đồng ý", "Không đồng ý", "Đồng ý", "Hoàn toàn đồng ý"],
-      "freq4": ["Không ngày nào", "Vài ngày", "Hơn một nửa số ngày", "Gần như mỗi ngày"]
+      "freq4": ["Không ngày nào", "Vài ngày", "Hơn một nửa số ngày", "Gần như mỗi ngày"],
+      "time6": ["Không lúc nào", "Thỉnh thoảng", "Ít hơn một nửa thời gian", "Hơn một nửa thời gian", "Phần lớn thời gian", "Mọi lúc"]
     },
     "progress": "Đã trả lời {n}/{total}",
     "submit": "Xem kết quả",
@@ -38,10 +40,10 @@
     "crisisLines": "Việt Nam: gọi cấp cứu 115 khi khẩn cấp. Tìm đường dây hỗ trợ miễn phí tại findahelpline.com."
   },
   "hub": {
-    "title": "Trắc nghiệm tính cách miễn phí: MBTI, Big Five, tình yêu — cv.cm",
-    "description": "Trắc nghiệm tính cách, tâm lý miễn phí: MBTI 16 nhóm, Big Five, hướng nội hướng ngoại, Enneagram, ngôn ngữ tình yêu, kiểu gắn bó, xử lý mâu thuẫn, hướng nghiệp, phong cách làm việc, tiền bạc, nhịp sinh học, thú cưng, khuôn mặt, lòng tự trọng, lo âu, trầm cảm, cùng các trắc nghiệm fan game và anime: Pokémon, Genshin Impact, Sonic, D&D, Naruto, Kimetsu no Yaiba, Jujutsu Kaisen, Avatar và kiểu nhân vật anime. Không cần đăng ký, câu trả lời chỉ nằm trong trình duyệt.",
+    "title": "Trắc nghiệm tính cách miễn phí: MBTI, Big Five, EQ, tình yêu, nghề nghiệp — cv.cm",
+    "description": "Trắc nghiệm tính cách, tâm lý miễn phí: MBTI 16 nhóm, Big Five, hướng nội hướng ngoại, Enneagram, trí tuệ cảm xúc EQ, ngôn ngữ tình yêu, kiểu gắn bó, kiểu yêu, xử lý mâu thuẫn, hướng nghiệp, phong cách làm việc, phong cách lãnh đạo, tiền bạc, nhịp sinh học, thú cưng, khuôn mặt, mức độ hạnh phúc (WHO-5), lòng tự trọng, lo âu, trầm cảm, cùng các trắc nghiệm fan: nhà Hogwarts, Pokémon, Genshin Impact, Sonic, D&D, Naruto, One Piece, Kimetsu no Yaiba, Jujutsu Kaisen, Avatar và kiểu nhân vật anime. Không cần đăng ký, câu trả lời chỉ nằm trong trình duyệt.",
     "h1": "Trắc nghiệm tính cách và tâm lý",
-    "lede": "Hai mươi sáu bài trắc nghiệm miễn phí, từ 16 nhóm tính cách và Big Five đến ngôn ngữ tình yêu, sở thích nghề nghiệp, trắc nghiệm fan Pokémon, Naruto và bài tự kiểm tra sức khỏe tinh thần nhanh. Không cần đăng ký, không cần email. Câu trả lời được chấm điểm trong trình duyệt và không bao giờ được tải lên.",
+    "lede": "Ba mươi hai bài trắc nghiệm miễn phí, từ 16 nhóm tính cách, Big Five và trí tuệ cảm xúc đến kiểu yêu, phong cách lãnh đạo, nhà Hogwarts của bạn, trắc nghiệm fan One Piece, Naruto và bài tự kiểm tra sức khỏe tinh thần nhanh. Không cần đăng ký, không cần email. Câu trả lời được chấm điểm trong trình duyệt và không bao giờ được tải lên.",
     "groups": {
       "personality": "Tính cách",
       "love": "Tình yêu và các mối quan hệ",
@@ -49,11 +51,12 @@
       "fun": "Cho vui",
       "wellbeing": "Tự kiểm tra sức khỏe tinh thần",
       "games": "Game",
-      "anime": "Anime và hoạt hình"
+      "anime": "Anime và hoạt hình",
+      "books": "Sách và phim"
     },
     "about": [
       "Mỗi bài trắc nghiệm hiển thị toàn bộ câu hỏi trên một trang. Trả lời xong, nhấn nút, kết quả sẽ hiện ngay bên dưới kèm lời giải thích ngắn và biểu đồ điểm số.",
-      "Các bài tự kiểm tra sức khỏe tinh thần dùng bảng hỏi sàng lọc đã được công bố (Rosenberg, GAD-7, PHQ-9). Bài Big Five và bài hướng nội – hướng ngoại dùng bộ câu hỏi IPIP thuộc phạm vi công cộng. Các bài còn lại được cv.cm biên soạn dựa trên những mô hình nổi tiếng, và kết quả là điểm khởi đầu để suy ngẫm, không phải phán quyết. Các trắc nghiệm game và anime là trắc nghiệm fan không chính thức, chỉ để cho vui."
+      "Các bài tự kiểm tra sức khỏe tinh thần dùng bảng hỏi sàng lọc đã được công bố (WHO-5, Rosenberg, GAD-7, PHQ-9). Bài Big Five và bài hướng nội – hướng ngoại dùng bộ câu hỏi IPIP thuộc phạm vi công cộng. Các bài còn lại được cv.cm biên soạn dựa trên những mô hình nổi tiếng, và kết quả là điểm khởi đầu để suy ngẫm, không phải phán quyết. Các trắc nghiệm game, anime và sách là trắc nghiệm fan không chính thức, chỉ để cho vui."
     ],
     "faq": [
       { "q": "Các bài trắc nghiệm này có miễn phí không?", "a": "Có. Mọi bài đều miễn phí, không cần đăng ký, không cần email và không phải trả tiền để xem kết quả." },
@@ -375,6 +378,84 @@
         "9": { "name": "Nhóm 9 · Người hòa giải", "body": "Dễ tính, cởi mở và khiến người khác yên tâm. Bạn muốn bình yên trong lòng và bên ngoài, và sợ xung đột, chia ly. Bạn trưởng thành khi nói ra những ưu tiên của mình và hành động vì chúng." }
       }
     },
+    "eq": {
+      "title": "Trắc nghiệm EQ miễn phí: kiểm tra trí tuệ cảm xúc qua 4 kỹ năng — cv.cm",
+      "description": "Test EQ online miễn phí. Chấm 20 nhận định để đo khả năng tự nhận thức, tự chủ, đồng cảm và kỹ năng quan hệ, kèm ý nghĩa từng mức điểm và cách rèn luyện. Không cần đăng ký.",
+      "h1": "Trắc nghiệm trí tuệ cảm xúc (EQ)",
+      "lede": "Trí tuệ cảm xúc là khả năng nhận ra, hiểu và điều tiết cảm xúc của chính mình lẫn của người khác. Chấm 20 nhận định để xem điểm của bạn ở bốn khía cạnh của nó.",
+      "about": [
+        "Bài trắc nghiệm theo bốn khía cạnh trong mô hình trí tuệ cảm xúc của Daniel Goleman: tự nhận thức (biết mình đang cảm thấy gì và vì sao), tự quản lý (điều tiết những cảm xúc đó), nhận thức xã hội (hiểu người khác) và quản lý quan hệ (hòa hợp, tạo ảnh hưởng và giải quyết mâu thuẫn).",
+        "Các nhận định do cv.cm biên soạn. Đây là bài tự đánh giá, không phải bài EQ-i hay MSCEIT có bản quyền, và bài tự đánh giá cho thấy cách bạn nhìn nhận bản thân. Mỗi khía cạnh được chấm từ 0 đến 100: dưới 40 là thấp, trên 60 là cao. Khác với IQ, đây là những kỹ năng và sẽ tiến bộ khi được rèn luyện."
+      ],
+      "faq": [
+        {
+          "q": "Điểm EQ bao nhiêu là tốt?",
+          "a": "Ở đây không có điểm đạt hay trượt. Trên 60 ở một khía cạnh nghĩa là bạn xem kỹ năng đó là thế mạnh; dưới 40 là khía cạnh đáng rèn luyện nhất. Hãy nhìn sự cân bằng giữa bốn khía cạnh thay vì một con số."
+        },
+        {
+          "q": "Có thể nâng cao trí tuệ cảm xúc không?",
+          "a": "Có. Gọi tên cảm xúc, dừng lại một nhịp trước khi phản ứng, hỏi người khác nhìn nhận tình huống ra sao và lắng nghe mà không vội nghĩ câu đáp là những kỹ năng tiến bộ dần khi luyện tập."
+        },
+        {
+          "q": "EQ có quan trọng hơn IQ không?",
+          "a": "Hai chỉ số đo những thứ khác nhau. IQ đo khả năng suy luận; EQ là cách xử lý cảm xúc và con người. Cả hai đều quan trọng, và EQ quan trọng nhất trong công việc cần làm việc nhóm, lãnh đạo và phục vụ."
+        },
+        {
+          "q": "Bài tự đánh giá EQ chính xác đến đâu?",
+          "a": "Bài cho thấy cách bạn nhìn nhận bản thân, có thể khác với cách người khác nhìn bạn. Để có bức tranh đầy đủ hơn, hãy nhờ vài người hiểu bạn trả lời các câu hỏi về bạn."
+        }
+      ],
+      "items": [
+        "Tôi thường gọi đúng tên cảm xúc của mình, chứ không chỉ là “vui” hay “buồn”.",
+        "Khi bực bội, tôi có thể tự trấn tĩnh trước khi lỡ nói điều mình sẽ hối hận.",
+        "Tôi thường nhận ra người khác đang cảm thấy thế nào trước cả khi họ nói ra.",
+        "Tôi có thể nói ai đó sai mà không làm sứt mẻ mối quan hệ.",
+        "Tâm trạng tôi hay thay đổi mà tôi không biết vì sao.",
+        "Khi có chuyện làm tôi khó chịu, cả ngày hôm đó thường bị phá hỏng.",
+        "Khi bất đồng, tôi khó đặt mình vào vị trí của người kia.",
+        "Mâu thuẫn giữa mọi người thường căng thẳng hơn khi tôi tham gia vào.",
+        "Tôi biết những tình huống nào hay khiến mình lo lắng hoặc tức giận.",
+        "Tôi có thể giữ bình tĩnh và suy nghĩ sáng suốt khi chịu áp lực.",
+        "Mọi người hay bảo tôi là người biết lắng nghe.",
+        "Tôi dễ khiến người khác cảm thấy thoải mái khi ở cạnh mình.",
+        "Tôi thường bất ngờ vì mình phản ứng mạnh đến thế.",
+        "Tôi hay hành động bốc đồng rồi ước gì mình đã chờ thêm.",
+        "Tôi không nhận ra bạn bè đang gặp khó khăn cho đến khi họ kể.",
+        "Tôi né những cuộc nói chuyện khó, kể cả khi chúng cần diễn ra.",
+        "Tôi hiểu cảm xúc của mình ảnh hưởng thế nào đến cách tôi làm việc và đối xử với người khác.",
+        "Sau một lần vấp ngã, tôi có thể đứng dậy và đi tiếp.",
+        "Tôi nhận ra khi ai đó nói “mình ổn” nhưng thật ra không ổn.",
+        "Khi hai người bất đồng, tôi có thể giúp họ tìm điểm chung."
+      ],
+      "dims": {
+        "self": "Tự nhận thức",
+        "regulate": "Tự quản lý",
+        "empathy": "Đồng cảm",
+        "social": "Kỹ năng quan hệ"
+      },
+      "levels": {
+        "self": {
+          "low": "Cảm xúc thường khiến bạn bất ngờ. Hãy thử gọi tên cảm xúc vài lần mỗi ngày, càng cụ thể càng tốt (“bực mình”, “thất vọng”, “hồi hộp”), và để ý điều gì đã gây ra nó.",
+          "mid": "Bạn thường biết mình đang cảm thấy gì, dù cảm xúc mạnh hay lẫn lộn vẫn có thể khiến bạn bất ngờ. Hãy tiếp tục lắng nghe bản thân trong những lúc bận rộn hay căng thẳng.",
+          "high": "Bạn hiểu rõ cảm xúc của mình, điều gì kích hoạt chúng và chúng chi phối hành động của bạn ra sao. Sự hiểu mình đó là nền tảng cho mọi kỹ năng cảm xúc khác."
+        },
+        "regulate": {
+          "low": "Cảm xúc mạnh thường dẫn dắt hành động của bạn. Dừng lại vài nhịp thở chậm, hoặc tự đặt quy tắc để qua một đêm rồi mới trả lời khi đang giận, sẽ cho bạn khoảng trống để chọn cách phản ứng.",
+          "mid": "Phần lớn thời gian bạn giữ được bình tĩnh, nhưng căng thẳng hay mệt mỏi có thể khiến bạn mất kiểm soát. Hãy để ý những dấu hiệu cảnh báo sớm và xử lý sớm hơn.",
+          "high": "Bạn vững vàng trước áp lực, nhanh hồi phục sau thất bại và hiếm khi hành động bốc đồng. Mọi người có thể dựa vào bạn khi tình hình căng thẳng."
+        },
+        "empathy": {
+          "low": "Bạn có thể thấy khó đoán cảm xúc của người khác. Hãy hỏi nhiều hơn (“Bạn thấy chuyện này thế nào?”) và để ý nét mặt, giọng điệu, không chỉ lời nói.",
+          "mid": "Bạn nhận ra cảm xúc của người khác khi chú ý, nhưng có thể bỏ lỡ những tín hiệu kín đáo khi bận rộn hoặc đang bất đồng.",
+          "high": "Bạn hiểu người khác rất tốt và nắm được quan điểm của họ, kể cả khi bạn không đồng ý. Ở cạnh bạn, mọi người cảm thấy được lắng nghe."
+        },
+        "social": {
+          "low": "Xử lý mâu thuẫn và những cuộc nói chuyện khó là điều bạn có thể phát triển thêm. Hãy bắt đầu từ việc nhỏ: góp ý thẳng thắn mà tử tế về một chuyện, và nói rõ điều mình cần.",
+          "mid": "Bạn hòa hợp với hầu hết mọi người. Luyện thêm những phần khó hơn như xử lý mâu thuẫn, góp ý và kết nối mọi người sẽ giúp bạn mạnh hơn nữa.",
+          "high": "Bạn tạo dựng được lòng tin, xử lý mâu thuẫn điềm tĩnh và giúp mọi người làm việc cùng nhau. Đội nhóm và bạn bè thường trông cậy vào bạn để mọi việc trôi chảy."
+        }
+      }
+    },
     "love-language": {
       "title": "Trắc nghiệm ngôn ngữ tình yêu miễn phí — cv.cm",
       "description": "Trắc nghiệm ngôn ngữ tình yêu miễn phí. Đánh giá 25 câu để biết bạn cảm nhận tình yêu qua lời nói, thời gian, quà tặng, hành động hay đụng chạm.",
@@ -474,6 +555,94 @@
         "anxious": { "name": "Lo âu (bận tâm)", "body": "Bạn muốn sự gần gũi và lo sợ mất nó, nên bạn có thể tìm kiếm sự trấn an hoặc suy diễn nhiều từ những tín hiệu nhỏ. Nói thẳng nhu cầu của mình và tự trấn tĩnh trước khi phản ứng sẽ giúp các mối quan hệ êm đềm hơn." },
         "avoidant": { "name": "Né tránh (xa cách)", "body": "Bạn coi trọng sự độc lập và thấy không yên khi người khác đến quá gần hoặc dựa dẫm vào bạn. Bạn có thể rút lui khi mọi chuyện trở nên nghiêm túc. Tập cởi mở từng bước nhỏ giúp người khác hỗ trợ bạn mà không lấy đi tự do của bạn." },
         "fearful": { "name": "Sợ hãi-né tránh (hỗn loạn)", "body": "Bạn muốn sự gần gũi nhưng cũng sợ nó, nên bạn có thể dao động giữa tiến lại gần và rút lui. Điều này thường bắt nguồn từ những trải nghiệm đau buồn. Sự kiên nhẫn, một người bạn đời vững vàng và sự hỗ trợ từ nhà trị liệu có thể giúp ích rất nhiều." }
+      }
+    },
+    "love-style": {
+      "title": "Trắc nghiệm kiểu yêu miễn phí: sáu kiểu yêu của Lee (Eros, Storge, Agape…) — cv.cm",
+      "description": "Trắc nghiệm kiểu yêu miễn phí theo sáu kiểu yêu của John Alan Lee: đam mê (Eros), chơi đùa (Ludus), tình bạn (Storge), thực tế (Pragma), chiếm hữu (Mania) và vị tha (Agape). Chấm 24 nhận định, không cần đăng ký.",
+      "h1": "Trắc nghiệm kiểu yêu: bạn yêu theo cách nào?",
+      "lede": "Bạn yêu nhanh và mãnh liệt, hay tình yêu lớn dần từ tình bạn? Chấm 24 nhận định để tìm kiểu yêu chính của bạn trong sáu kiểu do nhà xã hội học John Alan Lee mô tả.",
+      "about": [
+        "Năm 1973, nhà xã hội học John Alan Lee mô tả sáu kiểu yêu, đặt tên bằng các từ Hy Lạp và Latinh: Eros (đam mê), Ludus (chơi đùa), Storge (tình bạn), Pragma (thực tế), Mania (chiếm hữu) và Agape (vị tha). Phần lớn mọi người là sự pha trộn của vài kiểu, và tỷ lệ pha trộn có thể đổi theo tuổi tác và từng mối quan hệ.",
+        "Các nhận định ở đây do cv.cm biên soạn, lấy cảm hứng từ mô hình của Lee; đây không phải Thang đo thái độ tình yêu (Love Attitudes Scale) đã công bố. Kết quả cho biết kiểu yêu nổi bật nhất và điểm của bạn ở cả sáu kiểu. Những kiểu yêu khác nhau vẫn có thể hợp nhau khi hai người hiểu nhau."
+      ],
+      "faq": [
+        {
+          "q": "Sáu kiểu yêu là gì?",
+          "a": "Eros (tình yêu đam mê, lãng mạn), Ludus (tình yêu như một trò chơi), Storge (tình yêu lớn lên từ tình bạn), Pragma (tình yêu thực tế, môn đăng hộ đối), Mania (tình yêu mãnh liệt, đầy lo âu) và Agape (tình yêu vị tha, cho đi)."
+        },
+        {
+          "q": "Có kiểu yêu nào tốt nhất không?",
+          "a": "Không có kiểu nào tốt nhất. Các nghiên cứu cho thấy Eros và Agape gắn với những mối quan hệ viên mãn hơn, còn Mania gắn với ghen tuông và lo lắng nhiều hơn, nhưng điều quan trọng nhất là hai người hiểu kiểu yêu của nhau."
+        },
+        {
+          "q": "Đây có giống ngôn ngữ tình yêu không?",
+          "a": "Không. Ngôn ngữ tình yêu nói về cách bạn thích cho và nhận yêu thương. Kiểu yêu nói về cách bạn tiếp cận chính tình yêu: bạn yêu nhanh đến đâu, tìm kiếm điều gì và cảm xúc mãnh liệt ra sao."
+        },
+        {
+          "q": "Kiểu yêu của tôi có thể thay đổi không?",
+          "a": "Có. Lee xem các kiểu yêu là thái độ, không phải tính cách cố định. Chúng thay đổi theo trải nghiệm, tuổi tác và người bạn đang yêu."
+        }
+      ],
+      "items": [
+        "Tôi bị người yêu (hoặc crush) thu hút mạnh mẽ gần như ngay lập tức.",
+        "Tôi thích để ngỏ các lựa chọn hơn là gắn bó với một người.",
+        "Những mối tình tôi trân trọng nhất đều lớn dần từ một tình bạn.",
+        "Trước khi nghiêm túc với ai đó, tôi nghĩ xem cuộc sống của hai người có hợp nhau không.",
+        "Khi yêu, tôi không thể ngừng nghĩ về người kia.",
+        "Tôi thà mình chịu khổ còn hơn để người mình yêu chịu khổ.",
+        "Tôi và người yêu có một sự “hóa học” đặc biệt.",
+        "Tình yêu vui hơn khi nhẹ nhàng và không quá nghiêm trọng.",
+        "Tình yêu đẹp nhất là một tình bạn sâu sắc đã trở thành điều gì đó hơn thế.",
+        "Giá trị và mục tiêu chung quan trọng với tôi hơn sự lãng mạn.",
+        "Nếu người yêu một lúc lâu không trả lời tin nhắn, tôi bắt đầu lo lắng.",
+        "Tôi sẵn sàng gác lại kế hoạch của mình để giúp người mình yêu đạt được kế hoạch của họ.",
+        "Tôi tin vào tình yêu sét đánh.",
+        "Tôi từng thích thú khi thả thính nhiều người cùng lúc.",
+        "Tôi tin một tình yêu có thời gian vun đắp hơn một tình yêu bắt đầu bằng pháo hoa.",
+        "Tôi muốn một người bạn đời sẽ là cha mẹ tốt và là đồng đội đáng tin cậy.",
+        "Tôi dễ ghen, kể cả khi biết mình không nên.",
+        "Tôi chăm sóc người yêu mà không mong được đáp lại.",
+        "Gần gũi thể xác và lãng mạn là cốt lõi của tình yêu đối với tôi.",
+        "Có những chuyện trong đời sống tình cảm của tôi tốt nhất nên giữ cho riêng mình.",
+        "Tôi muốn người yêu cũng là người bạn thân nhất của mình.",
+        "Tôi sẽ cân nhắc kỹ xem người yêu có hợp với gia đình và sự nghiệp của mình không.",
+        "Khi chuyện tình cảm trục trặc, tôi ăn không ngon, ngủ không yên.",
+        "Yêu một người là chấp nhận họ hoàn toàn, cả những khuyết điểm."
+      ],
+      "dims": {
+        "eros": "Eros (đam mê)",
+        "ludus": "Ludus (chơi đùa)",
+        "storge": "Storge (tình bạn)",
+        "pragma": "Pragma (thực tế)",
+        "mania": "Mania (chiếm hữu)",
+        "agape": "Agape (vị tha)"
+      },
+      "results": {
+        "eros": {
+          "name": "Eros: tình yêu đam mê",
+          "body": "Bạn yêu bằng cả trái tim và tin vào “phản ứng hóa học”: sự thu hút, lãng mạn và gần gũi được đặt lên hàng đầu. Đam mê tiếp thêm năng lượng cho các mối quan hệ của bạn. Hãy giữ sự tò mò và những cử chỉ lãng mạn nhỏ khi tia lửa ban đầu lắng lại thành điều gì đó bền vững hơn."
+        },
+        "ludus": {
+          "name": "Ludus: tình yêu chơi đùa",
+          "body": "Với bạn, tình yêu vui vẻ, nhẹ nhàng và đầy khả năng, và bạn không thích bị ràng buộc quá sớm. Bạn khiến chuyện hẹn hò trở nên thú vị. Hãy nói rõ với người kia điều bạn đang tìm kiếm, để không ai bị tổn thương vì kỳ vọng khác nhau."
+        },
+        "storge": {
+          "name": "Storge: tình yêu từ tình bạn",
+          "body": "Tình yêu của bạn lớn dần từ tình bạn, sở thích chung và sự tin tưởng. Nó bình yên, chung thủy và bền lâu. Có thể ban đầu bạn không thấy pháo hoa, và điều đó không sao: thế mạnh của bạn là một người bạn đời cũng là người bạn thân nhất."
+        },
+        "pragma": {
+          "name": "Pragma: tình yêu thực tế",
+          "body": "Bạn chọn bằng cả lý trí lẫn trái tim, tìm kiếm giá trị, mục tiêu chung và một cuộc sống hòa hợp. Điều đó tạo nên những mối quan hệ vững vàng. Hãy chừa chỗ cho sự ngẫu hứng và cảm xúc nữa, đừng chỉ dựa vào danh sách tiêu chí."
+        },
+        "mania": {
+          "name": "Mania: tình yêu chiếm hữu",
+          "body": "Bạn yêu mãnh liệt, và điều đó có thể đi kèm những lúc thăng trầm, lo lắng và ghen tuông. Sự tận tụy của bạn là thật. Xây dựng cảm giác an toàn cho chính mình, qua bạn bè, sở thích và những cuộc trò chuyện thẳng thắn với người yêu, sẽ giúp tình yêu bình yên hơn."
+        },
+        "agape": {
+          "name": "Agape: tình yêu vị tha",
+          "body": "Bạn yêu bằng cách cho đi: quan tâm, tha thứ và đặt người kia lên trước mà không tính toán thiệt hơn. Đó là một món quà hiếm có. Hãy nhớ nhu cầu của chính bạn cũng quan trọng, và chọn người biết đáp lại."
+        }
       }
     },
     "marriage": {
@@ -759,6 +928,94 @@
           "low": "Tập trung sâu: bạn làm tốt nhất trong những khoảng dài không bị ngắt quãng. Hãy đặt lịch các khối tập trung hai đến ba tiếng, tắt thông báo, và tìm vai trò coi trọng chiều sâu như nghiên cứu, kỹ thuật hay biên tập.",
           "mid": "Cân bằng: một chút đa dạng giúp bạn luôn tươi mới, nhưng chuyển việc quá nhiều sẽ làm bạn mệt. Hãy gom các việc giống nhau lại và cho mỗi ngày một trọng tâm chính.",
           "high": "Đa dạng: vấn đề mới và nhịp độ nhanh tiếp thêm năng lượng cho bạn, còn sự lặp lại khiến bạn chán. Các vai trò vận hành, làm việc với khách hàng, tổ chức sự kiện hay startup rất hợp; hãy giữ một danh sách việc đơn giản để không sót đầu việc nào."
+        }
+      }
+    },
+    "leadership": {
+      "title": "Trắc nghiệm phong cách lãnh đạo miễn phí: bạn thuộc kiểu nào trong 6 kiểu? — cv.cm",
+      "description": "Trắc nghiệm phong cách lãnh đạo miễn phí theo sáu phong cách của Goleman: tầm nhìn, huấn luyện, gắn kết, dân chủ, làm gương và mệnh lệnh. Chấm 24 nhận định để biết phong cách chính của bạn và khi nào nên dùng các phong cách khác.",
+      "h1": "Trắc nghiệm phong cách lãnh đạo",
+      "lede": "Khi bạn là người quyết định, bạn dẫn dắt thế nào? Chấm 24 nhận định để tìm phong cách chính của bạn trong sáu phong cách do Daniel Goleman mô tả, và khi nào mỗi phong cách giúp ích hay gây hại cho đội nhóm.",
+      "about": [
+        "Năm 2000, nhà tâm lý học Daniel Goleman mô tả sáu phong cách lãnh đạo dựa trên nghiên cứu với hàng nghìn nhà quản lý: tầm nhìn, huấn luyện, gắn kết, dân chủ, làm gương và mệnh lệnh. Những nhà lãnh đạo giỏi nhất không chỉ dùng một kiểu; họ đổi phong cách cho hợp tình huống, như người chơi golf chọn gậy.",
+        "Các nhận định ở đây do cv.cm biên soạn, lấy cảm hứng từ mô hình của Goleman. Kết quả cho biết phong cách nổi bật nhất và điểm của bạn ở cả sáu phong cách. Bạn không cần chức danh quản lý mới dùng được: dẫn dắt một dự án, một câu lạc bộ hay một nhóm bạn đều tính."
+      ],
+      "faq": [
+        {
+          "q": "Sáu phong cách lãnh đạo là gì?",
+          "a": "Tầm nhìn (vạch hướng đi và để mọi người tự tìm cách), huấn luyện (phát triển con người), gắn kết (đặt con người và sự hòa hợp lên trước), dân chủ (xây dựng đồng thuận), làm gương (đặt chuẩn cao bằng chính hành động của mình) và mệnh lệnh (ra chỉ thị rõ ràng)."
+        },
+        {
+          "q": "Phong cách lãnh đạo nào tốt nhất?",
+          "a": "Nghiên cứu của Goleman cho thấy các phong cách tầm nhìn, huấn luyện, gắn kết và dân chủ thường cải thiện bầu không khí của đội nhóm, còn làm gương và mệnh lệnh hiệu quả trong thời gian ngắn, như lúc khủng hoảng hay khi đội giỏi chạy deadline, nhưng sẽ làm mọi người kiệt sức nếu lạm dụng."
+        },
+        {
+          "q": "Tôi không phải quản lý. Bài này có dành cho tôi không?",
+          "a": "Có. Hãy trả lời theo cách bạn hành động khi dẫn dắt bất cứ điều gì: một dự án ở trường, một nhóm ở chỗ làm, một sự kiện hay một chuyến đi cùng bạn bè."
+        },
+        {
+          "q": "Làm sao để mở rộng phong cách của mình?",
+          "a": "Chọn phong cách bạn có điểm thấp nhất mà lại có ích cho đội, và chủ động thử nó trong vài tuần: chẳng hạn hỏi ý kiến trước khi quyết định, hoặc dành thời gian kèm cặp một người."
+        }
+      ],
+      "items": [
+        "Tôi thích vẽ ra một bức tranh rõ ràng về nơi chúng ta đang hướng tới và vì sao điều đó quan trọng.",
+        "Tôi thích giúp mọi người khám phá thế mạnh của họ và phát triển.",
+        "Giữ cho cả đội vui vẻ và gắn bó là ưu tiên hàng đầu của tôi.",
+        "Trước khi quyết định, tôi hỏi ý kiến của mọi người.",
+        "Tôi đặt tiêu chuẩn cao và mong người khác theo kịp mình.",
+        "Khi khủng hoảng, tôi nắm quyền và bảo mọi người chính xác phải làm gì.",
+        "Tôi giao mục tiêu cho mọi người và để họ tự tìm cách đạt được.",
+        "Tôi sẵn sàng dành thời gian dạy ai đó, dù tự làm sẽ nhanh hơn.",
+        "Khi có căng thẳng, tôi tập trung hàn gắn các mối quan hệ trước tiên.",
+        "Quyết định sẽ tốt hơn khi những người bị ảnh hưởng được lên tiếng.",
+        "Nếu ai đó làm chậm, tôi thà tự làm thay.",
+        "Tôi mong chỉ thị được thực hiện mà không cần tranh luận nhiều.",
+        "Mọi người bảo tôi truyền cảm hứng cho họ bằng những ý tưởng lớn.",
+        "Tôi góp ý theo cách giúp mọi người đạt được mục tiêu dài hạn của họ.",
+        "Tôi thường khen ngợi và để mọi người cảm thấy mình được trân trọng.",
+        "Tôi thà mất thêm thời gian để đạt đồng thuận còn hơn ép thông qua một quyết định.",
+        "Tôi làm gương: tôi làm việc nhanh và mong người khác cũng vậy.",
+        "Quy tắc rõ ràng và kiểm soát chặt chẽ mang lại kết quả tốt nhất.",
+        "Tôi giải thích công việc của mỗi người góp phần vào mục tiêu lớn như thế nào.",
+        "Tôi hỏi mọi người muốn đạt được điều gì trong sự nghiệp.",
+        "Tôi thà giữ hòa khí còn hơn thắng một cuộc tranh cãi.",
+        "Trong các cuộc họp tôi điều hành, ai cũng được lên tiếng.",
+        "Tôi bực bội khi công việc không đạt chuẩn của mình.",
+        "Khi đã quyết định, tôi không thích bị chất vấn."
+      ],
+      "dims": {
+        "visionary": "Tầm nhìn",
+        "coaching": "Huấn luyện",
+        "affiliative": "Gắn kết",
+        "democratic": "Dân chủ",
+        "pacesetting": "Làm gương",
+        "commanding": "Mệnh lệnh"
+      },
+      "results": {
+        "visionary": {
+          "name": "Nhà lãnh đạo tầm nhìn",
+          "body": "Bạn dẫn dắt bằng cách cho mọi người một hướng đi rõ ràng và lý do để quan tâm, rồi tin tưởng để họ tự tìm cách. Phong cách này hiệu quả nhất khi đội cần một hướng đi mới. Hãy nhớ một đội toàn chuyên gia có thể cần được góp ý, không chỉ cần cảm hứng."
+        },
+        "coaching": {
+          "name": "Nhà lãnh đạo huấn luyện",
+          "body": "Bạn dẫn dắt bằng cách phát triển con người: hỏi về mục tiêu của họ, góp ý hữu ích và dành thời gian chỉ dạy. Lâu dài, điều đó xây nên những đội vững mạnh, gắn bó. Phong cách này kém hiệu quả hơn khi người ta không muốn học, hoặc khi hạn chót là ngày mai."
+        },
+        "affiliative": {
+          "name": "Nhà lãnh đạo gắn kết",
+          "body": "Bạn dẫn dắt bằng cách đặt con người lên trước, xây dựng sự hòa hợp, lòng tin và tinh thần đồng đội. Phong cách này lý tưởng để hàn gắn một đội sau mâu thuẫn hay giữ tinh thần khi áp lực. Hãy kết hợp với mục tiêu rõ ràng và góp ý thẳng thắn, để việc làm chưa tốt không bị bỏ qua."
+        },
+        "democratic": {
+          "name": "Nhà lãnh đạo dân chủ",
+          "body": "Bạn dẫn dắt bằng cách lắng nghe và xây dựng đồng thuận, để mọi người thấy quyết định là của mình. Phong cách này hiệu quả khi cần ý tưởng mới hoặc sự ủng hộ. Khi khủng hoảng, hay khi cả đội sa lầy trong những cuộc họp bất tận, hãy sẵn sàng tự quyết."
+        },
+        "pacesetting": {
+          "name": "Nhà lãnh đạo làm gương",
+          "body": "Bạn dẫn dắt bằng chính hành động và đặt chuẩn cao về tốc độ lẫn chất lượng. Với một đội giỏi, có động lực, phong cách này mang lại kết quả nhanh. Kéo dài quá lâu có thể khiến mọi người quá tải, vì vậy hãy giải thích lý do, chia sẻ khối lượng việc và ghi nhận nỗ lực."
+        },
+        "commanding": {
+          "name": "Nhà lãnh đạo mệnh lệnh",
+          "body": "Bạn dẫn dắt bằng cách nắm quyền kiểm soát và đưa ra chỉ thị rõ ràng. Trong tình huống khẩn cấp thật sự hay khi cần xoay chuyển cục diện, sự quyết đoán đó chính là điều cần thiết. Dùng hằng ngày có thể khiến mọi người ngột ngạt, nên hãy nới lỏng khi mọi thứ đã ổn định và hỏi ý kiến mọi người."
         }
       }
     },
@@ -1263,6 +1520,56 @@
         "oblong": { "name": "Mặt dài", "body": "Dài hơn rộng rõ rệt, trán, gò má và hàm rộng tương đương. Thêm chiều rộng: để mái, tóc gợn sóng và phồng hai bên; gọng kính to hoặc bản cao. Tránh tóc thẳng quá dài và kiểu tóc dựng cao trên đỉnh." },
         "diamond": { "name": "Mặt kim cương", "body": "Gò má cao, rộng, trán và hàm hẹp hơn. Hãy khoe gò má: mái lệch, kiểu vén tóc sau tai và tóc ngang cằm; kính oval hoặc mắt mèo." },
         "triangle": { "name": "Mặt tam giác (quả lê)", "body": "Hàm rộng hơn trán. Thêm chiều rộng phía trên: phồng ở đỉnh đầu và thái dương, tóc tỉa tầng, mái lệch; gọng đậm phần trên như kính browline. Giữ râu hai bên ngắn." }
+      }
+    },
+    "wellbeing-index": {
+      "title": "Kiểm tra mức độ hạnh phúc miễn phí (Chỉ số WHO-5): điểm 0–100 — cv.cm",
+      "description": "Bài kiểm tra WHO-5 online miễn phí. Trả lời 5 câu về hai tuần qua để nhận điểm hạnh phúc, an lạc từ 0 đến 100 kèm ý nghĩa. Riêng tư: không có gì rời khỏi trình duyệt của bạn.",
+      "h1": "Kiểm tra mức độ hạnh phúc, an lạc (WHO-5)",
+      "lede": "Chỉ số hạnh phúc WHO-5 gồm 5 câu hỏi ngắn về cảm nhận của bạn trong hai tuần qua. Chưa đến một phút, điểm từ 0 đến 100.",
+      "about": [
+        "WHO-5 được Văn phòng khu vực châu Âu của Tổ chức Y tế Thế giới công bố năm 1998 và là một trong những bảng hỏi về sức khỏe tinh thần tích cực được dùng rộng rãi nhất thế giới. Bảng hỏi được sử dụng miễn phí. Mỗi câu được 0 đến 5 điểm; tổng điểm (0–25) nhân với 4 ra phần trăm từ 0 (tệ nhất) đến 100 (tốt nhất).",
+        "Điểm dưới 52 cho thấy mức độ hạnh phúc, an lạc thấp, và bác sĩ dùng đó làm lý do để sàng lọc trầm cảm; điểm từ 28 trở xuống thường đi kèm trầm cảm. Đây là bài tự kiểm tra, không phải chẩn đoán."
+      ],
+      "faq": [
+        {
+          "q": "Điểm WHO-5 của tôi có nghĩa là gì?",
+          "a": "Nhân điểm thô (0–25) với 4. Từ 52 trở lên nằm trong mức bình thường. Dưới 52 cho thấy mức độ hạnh phúc, an lạc thấp. Từ 28 trở xuống là dấu hiệu có thể có trầm cảm và nên được chuyên gia kiểm tra."
+        },
+        {
+          "q": "WHO-5 có phải bài test trầm cảm không?",
+          "a": "Nó đo trạng thái tinh thần tích cực, không đo triệu chứng trầm cảm, nhưng điểm thấp là lý do chính đáng để sàng lọc trầm cảm, chẳng hạn bằng bài PHQ-9 trên trang này, và trao đổi với bác sĩ."
+        },
+        {
+          "q": "Tôi có thể làm bài bao lâu một lần?",
+          "a": "Bài hỏi về hai tuần qua, nên làm lại khoảng hai tuần một lần là cách đơn giản để theo dõi tình trạng của bạn. Thay đổi từ 10 điểm trở lên được xem là có ý nghĩa."
+        },
+        {
+          "q": "Điều gì giúp cải thiện sức khỏe tinh thần?",
+          "a": "Ngủ đều đặn, ra ngoài ánh sáng ban ngày, vận động, dành thời gian với người mình quý và làm những việc mình hứng thú giúp ích cho nhiều người. Nếu tâm trạng chán nản kéo dài, hãy nói chuyện với bác sĩ hoặc chuyên gia tư vấn."
+        }
+      ],
+      "items": [
+        "Tôi cảm thấy vui vẻ và tinh thần phấn chấn.",
+        "Tôi cảm thấy bình tĩnh và thư thái.",
+        "Tôi cảm thấy năng động và tràn đầy sinh lực.",
+        "Tôi thức dậy với cảm giác sảng khoái và được nghỉ ngơi đầy đủ.",
+        "Cuộc sống hằng ngày của tôi có nhiều điều khiến tôi hứng thú."
+      ],
+      "scoreLabel": "Điểm thô (×4 = phần trăm)",
+      "results": {
+        "low": {
+          "name": "Mức hạnh phúc thấp (0–7, hay 0–28%)",
+          "body": "Câu trả lời cho thấy trạng thái tinh thần của bạn ở mức thấp trong hai tuần qua. Điểm thấp như vậy thường đi kèm trầm cảm, vì thế hãy sớm trao đổi với bác sĩ hoặc chuyên gia sức khỏe tâm thần. Bạn cũng có thể làm bài kiểm tra trầm cảm PHQ-9 tại đây. Bạn không phải tự mình đối mặt với chuyện này, và luôn có sự hỗ trợ hiệu quả."
+        },
+        "reduced": {
+          "name": "Mức hạnh phúc giảm sút (8–12, hay 32–48%)",
+          "body": "Gần đây trạng thái tinh thần của bạn thấp hơn mức thông thường. Bạn nên sàng lọc trầm cảm (bài PHQ-9 trên trang này là một cách) và trao đổi với bác sĩ nếu tình trạng này đã kéo dài một thời gian. Những bước nhỏ như ngủ đều đặn, ra ngoài ánh sáng ban ngày, vận động và dành thời gian với người bạn tin tưởng có thể giúp ích."
+        },
+        "good": {
+          "name": "Mức hạnh phúc tốt (13–25, hay 52–100%)",
+          "body": "Trạng thái tinh thần của bạn nằm trong mức bình thường. Hãy duy trì những thói quen và những người giúp bạn cảm thấy như vậy, và làm lại bài sau vài tuần để xem tình trạng có được giữ vững không."
+        }
       }
     },
     "self-esteem": {
@@ -2326,6 +2633,188 @@
         }
       }
     },
+    "one-piece": {
+      "title": "Bạn là nhân vật One Piece nào? Trắc nghiệm băng hải tặc Mũ Rơm — cv.cm",
+      "description": "Trắc nghiệm One Piece (Đảo Hải Tặc) miễn phí: trả lời 12 câu hỏi để biết bạn là thành viên nào của băng hải tặc Mũ Rơm: Luffy, Zoro, Nami, Usopp, Sanji, Chopper, Robin hay Franky. Không cần đăng ký, trắc nghiệm fan không chính thức.",
+      "h1": "Bạn là thành viên nào của băng Mũ Rơm?",
+      "lede": "Thuyền trưởng, kiếm sĩ, hoa tiêu hay đầu bếp? Trả lời 12 câu hỏi về ước mơ, thói quen và điểm yếu của bạn để biết bạn sẽ là ai trong băng của Luffy ở One Piece.",
+      "about": [
+        "Mỗi thành viên băng Mũ Rơm lên thuyền để theo đuổi giấc mơ của riêng mình, và giấc mơ đó nói lên rất nhiều về con người họ: Luffy muốn là người tự do nhất trên biển, Zoro muốn thành kiếm sĩ mạnh nhất thế giới, Nami muốn vẽ bản đồ toàn thế giới. Bài trắc nghiệm ghép ước mơ, thói quen và tính cách của bạn với tám thành viên trong băng.",
+        "Kết quả cho biết thành viên Mũ Rơm hợp với bạn và điểm của bạn với cả tám người. Đây là bài trắc nghiệm fan không chính thức do cv.cm biên soạn. Bài không liên kết với, cũng không được Eiichiro Oda, Shueisha hay Toei Animation bảo trợ; các tên gọi thuộc về chủ sở hữu tương ứng."
+      ],
+      "faq": [
+        {
+          "q": "Tôi có thể ra những nhân vật nào?",
+          "a": "Tám thành viên băng hải tặc Mũ Rơm: Monkey D. Luffy, Roronoa Zoro, Nami, Usopp, Sanji, Tony Tony Chopper, Nico Robin và Franky."
+        },
+        {
+          "q": "Sao Brook và Jinbe không có trong bài?",
+          "a": "Giữ tám kết quả giúp bài trắc nghiệm ngắn gọn và mỗi kết quả đều dễ ra như nhau. Họ có thể được thêm vào trong lần cập nhật sau."
+        },
+        {
+          "q": "Có kết quả nào hiếm hơn không?",
+          "a": "Không. Mỗi nhân vật xuất hiện trong số đáp án bằng nhau, nên khả năng ra mỗi người là như nhau."
+        },
+        {
+          "q": "Bài trắc nghiệm này có chính thức không?",
+          "a": "Không. Đây là bài trắc nghiệm fan miễn phí, và câu trả lời của bạn chỉ nằm trong trình duyệt."
+        }
+      ],
+      "items": [
+        {
+          "q": "Ước mơ của bạn giống nhất với…",
+          "options": [
+            "Trở thành người tự do nhất trên biển",
+            "Trở thành người giỏi nhất thế giới ở một lĩnh vực",
+            "Vẽ bản đồ toàn thế giới",
+            "Trở thành chiến binh dũng cảm được mọi người ngưỡng mộ"
+          ]
+        },
+        {
+          "q": "Công việc lý tưởng của bạn trên tàu:",
+          "options": [
+            "Nhà sử học",
+            "Thợ đóng tàu",
+            "Đầu bếp",
+            "Bác sĩ"
+          ]
+        },
+        {
+          "q": "Một buổi chiều rảnh rỗi trên hòn đảo mới. Bạn…",
+          "options": [
+            "Tìm chợ và nếm thử nguyên liệu địa phương",
+            "Lao ngay tới thứ trông nguy hiểm nhất",
+            "Đi tìm tàn tích cổ hoặc thư viện",
+            "Đi mua sắm, và dò xem kho báu bán được bao nhiêu"
+          ]
+        },
+        {
+          "q": "Điểm yếu lớn nhất của bạn:",
+          "options": [
+            "Nói khoác thật to, rồi sợ run",
+            "Mải mê với dự án của mình đến quên trời đất",
+            "Hoàn toàn không có khả năng định hướng",
+            "Tan chảy ngay khi được ai đó khen"
+          ]
+        },
+        {
+          "q": "Điều gì khiến bạn hạnh phúc nhất?",
+          "options": [
+            "Giúp ai đó khỏe lại",
+            "Một bữa tiệc thật lớn cùng bạn bè",
+            "Nhìn mọi người thưởng thức món mình nấu",
+            "Một giấc ngủ trưa sau buổi tập luyện thật nặng"
+          ]
+        },
+        {
+          "q": "Chọn một kỹ năng:",
+          "options": [
+            "Chế tạo mọi thứ từ đồ phế liệu",
+            "Đọc được thời tiết",
+            "Bắn trúng mọi mục tiêu từ xa",
+            "Đọc được ngôn ngữ cổ"
+          ]
+        },
+        {
+          "q": "Trong nhóm, bạn là…",
+          "options": [
+            "Người điềm tĩnh biết nhiều hơn những gì mình nói",
+            "Người dễ thương nhưng sẵn sàng chiến đấu vì mọi người",
+            "Người quyết định, theo bản năng",
+            "Người kể chuyện"
+          ]
+        },
+        {
+          "q": "Bạn quản lý tiền thế nào?",
+          "options": [
+            "Đếm từng đồng, tính cả lãi",
+            "Tiêu vào đồ ăn ngon và những người mình quý",
+            "Tiêu hết vào linh kiện và dụng cụ",
+            "Lúc nào cũng cháy túi, và vẫn thấy ổn"
+          ]
+        },
+        {
+          "q": "Chọn một phương châm:",
+          "options": [
+            "Làm gì cũng phải hoành tráng và thật chất",
+            "Sự thật đáng để đánh đổi mọi rủi ro",
+            "Lời hứa thì không bao giờ được phá",
+            "Muốn làm là làm"
+          ]
+        },
+        {
+          "q": "Bạn sợ điều gì nhất?",
+          "options": [
+            "Để ai đó phải chịu đói",
+            "Nói thật thì gần như mọi thứ, nhưng bạn vẫn có mặt",
+            "Không thể cứu được ai đó",
+            "Mất đi mái nhà và những người trong đó"
+          ]
+        },
+        {
+          "q": "Chọn một món ăn vặt:",
+          "options": [
+            "Quýt",
+            "Một chai cola lạnh buốt",
+            "Thịt nguyên xương",
+            "Kẹo bông gòn"
+          ]
+        },
+        {
+          "q": "Bạn tiến bộ bằng cách nào?",
+          "options": [
+            "Đọc mọi thứ có thể tìm được",
+            "Tập luyện hàng giờ mỗi ngày, một mình",
+            "Phát minh chiêu mới và đồ nghề mới",
+            "Luyện đến khi hoàn hảo, vừa làm vừa nếm thử"
+          ]
+        }
+      ],
+      "dims": {
+        "luffy": "Luffy",
+        "zoro": "Zoro",
+        "nami": "Nami",
+        "usopp": "Usopp",
+        "sanji": "Sanji",
+        "chopper": "Chopper",
+        "robin": "Robin",
+        "franky": "Franky"
+      },
+      "results": {
+        "luffy": {
+          "name": "Monkey D. Luffy",
+          "body": "Tự do, không biết sợ và không ai cản nổi khi đã quyết. Bạn làm theo bản năng, sẵn sàng đánh với bất kỳ ai vì bạn bè, và mọi người cứ thế đi theo bạn mà không rõ vì sao. Chỉ cần nhớ ăn thứ gì đó ngoài thịt nữa nhé."
+        },
+        "zoro": {
+          "name": "Roronoa Zoro",
+          "body": "Tập trung, trung thành và cứng như thép. Bạn đã chọn mục tiêu và rèn luyện vì nó mỗi ngày, và không bao giờ thất hứa với bạn bè. Bạn điềm tĩnh khi khủng hoảng… chỉ là có lẽ nên để người khác cầm bản đồ."
+        },
+        "nami": {
+          "name": "Nami",
+          "body": "Thông minh, sắc sảo và luôn đi trước ba bước, nhất là khi dính đến tiền. Bạn vạch ra lộ trình mà cả nhóm đi theo, và dưới vẻ ngoài cứng rắn, bạn sẵn sàng làm mọi thứ vì những người bạn xem là nhà."
+        },
+        "usopp": {
+          "name": "Usopp",
+          "body": "Sáng tạo, hài hước và dũng cảm hơn bạn nghĩ. Bạn dám thừa nhận mình sợ, rồi vẫn có mặt, và đó mới là can đảm thật sự. Những câu chuyện, tài bắn và ý tưởng của bạn đã cứu cả băng khỏi rắc rối nhiều hơn ai biết."
+        },
+        "sanji": {
+          "name": "Sanji",
+          "body": "Hào phóng, phong cách và hết lòng quan tâm. Bạn thể hiện tình cảm bằng những món ăn ngon và không bao giờ để ai phải đói. Bạn sống theo nguyên tắc nghiêm khắc của riêng mình, và sẵn sàng đánh đổi tất cả vì đồng đội."
+        },
+        "chopper": {
+          "name": "Tony Tony Chopper",
+          "body": "Tốt bụng, tò mò và hơi nhút nhát, với một trái tim thật lớn. Bạn muốn giúp đỡ và chữa lành cho mọi người, và bạn mạnh hơn vẻ ngoài. Khi được khen, bạn giả vờ không quan tâm… và giấu dở tệ."
+        },
+        "robin": {
+          "name": "Nico Robin",
+          "body": "Điềm tĩnh, thông minh và tò mò không ngừng, với khiếu hài hước kiểu tỉnh bơ. Bạn đọc mọi thứ, để ý mọi thứ và ít nói. Sau nhiều trải nghiệm, bạn đã hiểu thế nào là tìm được những người thật sự luôn đứng về phía mình."
+        },
+        "franky": {
+          "name": "Franky",
+          "body": "Ồn ào, sáng tạo và giàu tình cảm. Bạn chế tạo được mọi thứ, làm gì cũng hoành tráng và chẳng ngại khoe nó tuyệt cỡ nào. Dưới vẻ phong cách ấy là một người khóc trước những cái kết có hậu và bảo vệ đồng đội như người nhà."
+        }
+      }
+    },
     "demon-slayer": {
       "title": "Bạn hợp Hơi thở nào? Test Kimetsu no Yaiba (Thanh gươm diệt quỷ) — cv.cm",
       "description": "Test Kimetsu no Yaiba miễn phí: trả lời 12 câu hỏi để biết Hơi thở hợp với bạn (Nước, Lửa, Sấm, Thú, Côn trùng, Gió, Sương mù, Tình yêu, Âm thanh hay Đá) và nhân vật Thanh gươm diệt quỷ có cùng Hơi thở. Không cần đăng ký.",
@@ -2859,6 +3348,168 @@
         "air": {
           "name": "Khí thuật sư (Airbender)",
           "body": "Phóng khoáng, tinh nghịch và ôn hòa. Bạn thà tìm cách khác còn hơn đánh nhau, coi trọng tự do và mang sự nhẹ nhàng đến cho mọi người xung quanh. Cùng điều khiển Khí: Aang và Jinora."
+        }
+      }
+    },
+    "hogwarts": {
+      "title": "Bạn thuộc nhà nào ở Hogwarts? Trắc nghiệm phân loại Harry Potter miễn phí — cv.cm",
+      "description": "Trắc nghiệm nhà Hogwarts miễn phí: trả lời 12 câu hỏi để biết bạn thuộc nhà Gryffindor, Hufflepuff, Ravenclaw hay Slytherin, kèm những thành viên nổi tiếng của nhà. Không cần đăng ký, trắc nghiệm fan không chính thức.",
+      "h1": "Bạn thuộc nhà nào ở Hogwarts?",
+      "lede": "Dũng cảm, trung thành, thông minh hay tham vọng? Trả lời 12 câu hỏi về điều bạn coi trọng và cách bạn hành động để biết Chiếc Nón Phân loại có thể xếp bạn vào nhà nào.",
+      "about": [
+        "Trong bộ truyện Harry Potter, mỗi học sinh mới ở Hogwarts đều được phân vào một trong bốn nhà: Gryffindor đề cao lòng dũng cảm, Hufflepuff sự trung thành và chăm chỉ, Ravenclaw trí tuệ và học thức, còn Slytherin tham vọng và mưu mẹo. Mỗi câu hỏi ở đây có một đáp án cho mỗi nhà.",
+        "Kết quả cho biết nhà của bạn, vài thành viên nổi tiếng và điểm của bạn ở cả bốn nhà. Đây là bài trắc nghiệm fan không chính thức do cv.cm biên soạn. Bài không liên kết với, cũng không được J.K. Rowling, Warner Bros. hay Wizarding World bảo trợ; các tên gọi thuộc về chủ sở hữu tương ứng."
+      ],
+      "faq": [
+        {
+          "q": "Bốn nhà ở Hogwarts là gì?",
+          "a": "Gryffindor (lòng dũng cảm và gan dạ), Hufflepuff (trung thành, công bằng và chăm chỉ), Ravenclaw (trí tuệ, sắc sảo và ham hiểu biết) và Slytherin (tham vọng, mưu mẹo và tháo vát)."
+        },
+        {
+          "q": "Slytherin có phải là nhà xấu không?",
+          "a": "Không. Slytherin từng có những kẻ phản diện, nhưng đó cũng là nhà của tham vọng và sự tháo vát, và Merlin lẫn Severus Snape đều thuộc Slytherin. Nhà nào cũng có những người hùng của mình."
+        },
+        {
+          "q": "Nếu tôi có hai nhà sát điểm nhau thì sao?",
+          "a": "Khi đó bạn là một “hatstall”, người mà Chiếc Nón Phân loại phải đắn đo rất lâu. Chiếc Nón có xét đến lựa chọn của bạn, nên hãy chọn nhà mà bạn thấy hợp nhất."
+        },
+        {
+          "q": "Đây có phải bài phân loại chính thức không?",
+          "a": "Không. Đây là bài trắc nghiệm fan miễn phí, và câu trả lời của bạn chỉ nằm trong trình duyệt."
+        }
+      ],
+      "items": [
+        {
+          "q": "Phẩm chất nào quan trọng nhất với bạn?",
+          "options": [
+            "Lòng dũng cảm",
+            "Sự trung thành",
+            "Sự tò mò",
+            "Tham vọng"
+          ]
+        },
+        {
+          "q": "Chọn một nơi để dành cả buổi chiều:",
+          "options": [
+            "Thư viện trên tháp có cửa sổ nhìn xa",
+            "Căn phòng bên hồ ánh xanh lục từ làn nước",
+            "Gian bếp ấm áp cùng bạn bè",
+            "Sân đấu vào ngày thi đấu"
+          ]
+        },
+        {
+          "q": "Bạn phát hiện một người bạn phạm luật. Bạn…",
+          "options": [
+            "Đứng về phía họ và giúp sửa sai",
+            "Tự hỏi liệu điều luật đó có hợp lý ngay từ đầu không",
+            "Nói thẳng với họ rằng như vậy là sai",
+            "Im lặng: họ sẽ nợ bạn một lần"
+          ]
+        },
+        {
+          "q": "Bạn muốn được nhớ đến nhất vì điều gì?",
+          "options": [
+            "Làm nên những điều lớn lao",
+            "Làm điều đúng đắn khi điều đó thật khó",
+            "Tử tế với tất cả mọi người",
+            "Một ý tưởng thay đổi cách mọi người suy nghĩ"
+          ]
+        },
+        {
+          "q": "Chọn một môn học:",
+          "options": [
+            "Phòng chống Nghệ thuật Hắc ám",
+            "Bùa chú",
+            "Độc dược",
+            "Thảo dược học"
+          ]
+        },
+        {
+          "q": "Khuyết điểm lớn nhất của bạn:",
+          "options": [
+            "Sẵn sàng lách luật để thắng",
+            "Khó nói lời từ chối",
+            "Nghĩ quá nhiều về mọi thứ",
+            "Hành động trước khi suy nghĩ"
+          ]
+        },
+        {
+          "q": "Một con rồng chặn đường bạn. Bạn…",
+          "options": [
+            "Quan sát nó để tìm điểm yếu",
+            "Thỏa thuận với một người có thể xử lý nó",
+            "Xông lên",
+            "Đưa mọi người tới nơi an toàn trước, rồi cùng nhau tìm cách"
+          ]
+        },
+        {
+          "q": "Chọn một con vật đồng hành:",
+          "options": [
+            "Con lửng",
+            "Sư tử con",
+            "Đại bàng",
+            "Con rắn"
+          ]
+        },
+        {
+          "q": "Chọn một vật phẩm phép thuật:",
+          "options": [
+            "Cây chổi bay nhanh hơn mọi cây chổi khác",
+            "Cây đũa phép không bao giờ thua trong một trận đấu tay đôi",
+            "Chiếc cốc không bao giờ cạn, để chia sẻ với mọi người",
+            "Cuốn sách trả lời được mọi câu hỏi"
+          ]
+        },
+        {
+          "q": "Bạn ôn thi cho một kỳ thi lớn thế nào?",
+          "options": [
+            "Học đều đặn mỗi ngày, cùng nhóm học",
+            "Đọc vượt xa giáo trình, vì thích",
+            "Tìm hiểu giám khảo muốn gì và tập trung vào đó",
+            "Thức khuya đêm trước, và tin vào bản lĩnh của mình"
+          ]
+        },
+        {
+          "q": "Bạn ghét bị gọi là gì nhất?",
+          "options": [
+            "Tầm thường",
+            "Bất công",
+            "Kẻ hèn nhát",
+            "Dốt nát"
+          ]
+        },
+        {
+          "q": "Chọn một phương châm cho nhóm bạn:",
+          "options": [
+            "Đặt câu hỏi cho mọi thứ",
+            "Vận may mỉm cười với người dũng cảm",
+            "Nhắm cao hơn bất kỳ ai mong đợi",
+            "Không bỏ lại ai phía sau"
+          ]
+        }
+      ],
+      "dims": {
+        "gryffindor": "Gryffindor",
+        "hufflepuff": "Hufflepuff",
+        "ravenclaw": "Ravenclaw",
+        "slytherin": "Slytherin"
+      },
+      "results": {
+        "gryffindor": {
+          "name": "Gryffindor",
+          "body": "Dũng cảm, táo bạo và luôn nhanh chóng đứng lên vì lẽ phải. Bạn hành động khi người khác còn do dự và sẵn sàng lao vào nguy hiểm vì bạn bè. Chỉ cần đếm đến ba trước khi xông lên. Những người Gryffindor nổi tiếng: Harry Potter, Hermione Granger, Ron Weasley và Albus Dumbledore."
+        },
+        "hufflepuff": {
+          "name": "Hufflepuff",
+          "body": "Trung thành, công bằng và chăm chỉ, người bạn mà ai cũng có thể trông cậy. Bạn đối xử tử tế với mọi người, không bao giờ làm ẩu và không cần ánh hào quang. Những người Hufflepuff nổi tiếng: Cedric Diggory, Newt Scamander và Nymphadora Tonks."
+        },
+        "ravenclaw": {
+          "name": "Ravenclaw",
+          "body": "Tò mò, thông minh và độc đáo. Bạn yêu ý tưởng vì chính bản thân chúng, đặt ra những câu hỏi không ai nghĩ tới và chẳng ngại khác người một chút. Những người Ravenclaw nổi tiếng: Luna Lovegood, Cho Chang và Filius Flitwick."
+        },
+        "slytherin": {
+          "name": "Slytherin",
+          "body": "Tham vọng, tháo vát và quyết tâm. Bạn biết mình muốn gì và tìm ra những cách khôn khéo để đạt được, và bạn hết mực trung thành với người của mình. Những người Slytherin nổi tiếng: Merlin, Severus Snape và Horace Slughorn."
         }
       }
     }

@@ -56,7 +56,7 @@ function randomInts(seed: number): (n: number) => number {
   };
 }
 
-const GAME_ANIME = ["pokemon", "genshin", "sonic", "dnd-class", "naruto", "demon-slayer", "jujutsu-kaisen", "avatar-element"] as const;
+const GAME_ANIME = ["pokemon", "genshin", "sonic", "dnd-class", "naruto", "one-piece", "demon-slayer", "jujutsu-kaisen", "avatar-element", "hogwarts"] as const;
 
 describe("test pages: routes", () => {
   it("parses locale and bare paths", () => {
@@ -221,7 +221,48 @@ describe("test pages: scoring", () => {
     expect(scoreQuiz("depression", all("depression", 3)).key).toBe("severe");
   });
 
+  it("uses the WHO-5 cut-offs: below 13 (52%) poor, 7 or less (28%) low", () => {
+    expect(maxTotal("wellbeing-index")).toBe(25);
+    expect(scoreQuiz("wellbeing-index", all("wellbeing-index", 0))).toMatchObject({ total: 0, key: "low" });
+    expect(scoreQuiz("wellbeing-index", all("wellbeing-index", 5))).toMatchObject({ total: 25, key: "good" });
+    expect(scoreQuiz("wellbeing-index", [2, 2, 2, 1, 0]).key).toBe("low");
+    expect(scoreQuiz("wellbeing-index", [2, 2, 2, 2, 0]).key).toBe("reduced");
+    expect(scoreQuiz("wellbeing-index", [3, 3, 3, 3, 0]).key).toBe("reduced");
+    expect(scoreQuiz("wellbeing-index", [3, 3, 3, 3, 1]).key).toBe("good");
+    expect(isComplete("wellbeing-index", all("wellbeing-index", 5))).toBe(true);
+    expect(isComplete("wellbeing-index", all("wellbeing-index", 6))).toBe(false);
+  });
+
+  it("lets every love and leadership style win, and reads flat answers as the gentlest style", () => {
+    for (const id of ["love-style", "leadership"] as const) {
+      const def = QUIZ_DEFS[id];
+      if (def.type !== "likert") throw new Error();
+      for (const dim of def.dims) {
+        expect(def.items.filter((i) => i.dim === dim), `${id} ${dim}`).toHaveLength(4);
+        expect(scoreQuiz(id, lean(id, [dim])).key, `${id} ${dim}`).toBe(dim);
+      }
+    }
+    for (const answer of [0, 2, 4]) {
+      expect(scoreQuiz("love-style", all("love-style", answer)).key).toBe("storge");
+      expect(scoreQuiz("leadership", all("leadership", answer)).key).toBe("democratic");
+    }
+  });
+
+  it("scores the four EQ areas as a profile", () => {
+    const def = QUIZ_DEFS.eq;
+    if (def.type !== "likert") throw new Error();
+    for (const dim of def.dims) {
+      expect(def.items.filter((i) => i.dim === dim), dim).toHaveLength(5);
+      expect(def.items.filter((i) => i.dim === dim && i.rev), dim).toHaveLength(2);
+    }
+    const result = scoreQuiz("eq", lean("eq", ["self", "empathy"]));
+    expect(result.key).toBe("profile");
+    expect(result.scores.map((s) => s.pct)).toEqual([100, 0, 100, 0]);
+    expect(scoreQuiz("eq", all("eq", 2)).scores.every((s) => s.pct === 50)).toBe(true);
+  });
+
   it("keeps mental health self-checks out of analytics", () => {
+    expect(isTrackedPath("/en/tests/wellbeing-index/")).toBe(false);
     expect(isTrackedPath("/en/tests/depression/")).toBe(false);
     expect(isTrackedPath("/zh-cn/tests/anxiety/")).toBe(false);
     expect(isTrackedPath("/tests/self-esteem/")).toBe(false);
@@ -409,14 +450,18 @@ describe("test pages: scoring", () => {
       const best = def.dims.map((dim) => def.items.reduce((sum, item) => sum + Math.max(0, ...item.options.map((o) => o[dim] ?? 0)), 0));
       expect(new Set(best).size, id).toBe(1);
     }
-    // Avatar offers all four elements in every question; each element sits in each position three times.
-    const avatar = QUIZ_DEFS["avatar-element"];
-    if (avatar.type !== "choice") throw new Error();
-    for (const dim of avatar.dims) {
-      for (let position = 0; position < 4; position++) {
-        expect(avatar.items.filter((item) => (item.options[position][dim] ?? 0) > 0), `${dim} ${position}`).toHaveLength(3);
+    // Avatar and Hogwarts offer every result in every question; each sits in each position three times.
+    for (const id of ["avatar-element", "hogwarts"] as const) {
+      const def = QUIZ_DEFS[id];
+      if (def.type !== "choice") throw new Error();
+      for (const dim of def.dims) {
+        for (let position = 0; position < 4; position++) {
+          expect(def.items.filter((item) => (item.options[position][dim] ?? 0) > 0), `${id} ${dim} ${position}`).toHaveLength(3);
+        }
       }
     }
+    const avatar = QUIZ_DEFS["avatar-element"];
+    if (avatar.type !== "choice") throw new Error();
     // A water/earth tie is settled by the answers, not by list order: across different tied answer sets both
     // elements win, and the same answers always give the same result.
     const pick = (dims: string[]): number[] => avatar.items.map((item, i) => item.options.findIndex((o) => (o[dims[i]] ?? 0) > 0));

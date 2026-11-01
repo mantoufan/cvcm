@@ -5,13 +5,15 @@
     "scaleHint": {
       "agree5": "Seberapa tepat setiap pernyataan menggambarkan dirimu? Jawablah sesuai dirimu yang biasanya, bukan yang kamu inginkan.",
       "agree4": "Seberapa setuju kamu dengan setiap pernyataan tentang dirimu?",
-      "freq4": "Dalam 2 minggu terakhir, seberapa sering kamu terganggu oleh hal-hal berikut?"
+      "freq4": "Dalam 2 minggu terakhir, seberapa sering kamu terganggu oleh hal-hal berikut?",
+      "time6": "Dalam dua minggu terakhir, seberapa sering setiap pernyataan berikut sesuai dengan keadaanmu?"
     },
     "choiceHint": "Pilih jawaban yang paling mendekati dirimu. Tidak ada jawaban yang salah.",
     "scale": {
       "agree5": ["Sangat tidak setuju", "Tidak setuju", "Netral", "Setuju", "Sangat setuju"],
       "agree4": ["Sangat tidak setuju", "Tidak setuju", "Setuju", "Sangat setuju"],
-      "freq4": ["Tidak sama sekali", "Beberapa hari", "Lebih dari separuh hari", "Hampir setiap hari"]
+      "freq4": ["Tidak sama sekali", "Beberapa hari", "Lebih dari separuh hari", "Hampir setiap hari"],
+      "time6": ["Tidak pernah", "Kadang-kadang", "Kurang dari separuh waktu", "Lebih dari separuh waktu", "Hampir sepanjang waktu", "Sepanjang waktu"]
     },
     "progress": "{n} dari {total} terjawab",
     "submit": "Lihat hasil saya",
@@ -38,10 +40,10 @@
     "crisisLines": "Indonesia: layanan SEJIWA 119 ekstensi 8; dalam keadaan darurat hubungi 112."
   },
   "hub": {
-    "title": "Tes kepribadian gratis: MBTI, Big Five, cinta & karier — cv.cm",
-    "description": "Tes kepribadian dan psikologi online gratis: MBTI, Big Five, introvert ekstrovert, Enneagram, bahasa cinta, kelekatan, gaya konflik, minat bakat, gaya kerja, keuangan, kronotipe, hewan peliharaan, bentuk wajah, harga diri, kecemasan, dan depresi, plus kuis penggemar game dan anime: Pokémon, Genshin Impact, Sonic, D&D, Naruto, Demon Slayer, Jujutsu Kaisen, Avatar, dan arketipe anime. Tanpa daftar; jawaban tetap di browsermu.",
+    "title": "Tes kepribadian gratis: MBTI, Big Five, EQ, cinta & karier — cv.cm",
+    "description": "Tes kepribadian dan psikologi online gratis: 16 kepribadian (gaya MBTI), Big Five, introvert ekstrovert, Enneagram, kecerdasan emosional (EQ), bahasa cinta, kelekatan, gaya cinta, gaya konflik, minat karier, gaya kerja, kepemimpinan, keuangan, kronotipe, hewan peliharaan, bentuk wajah, kesejahteraan (WHO-5), harga diri, kecemasan, dan depresi, plus kuis penggemar: asrama Hogwarts, Pokémon, Genshin Impact, Sonic, D&D, Naruto, One Piece, Demon Slayer, Jujutsu Kaisen, Avatar, dan arketipe anime. Tanpa daftar; jawaban tetap di browsermu.",
     "h1": "Tes kepribadian dan psikologi",
-    "lede": "Dua puluh enam tes gratis, dari 16 tipe kepribadian dan Big Five hingga bahasa cinta, minat karier, kuis penggemar Pokémon dan Naruto, dan pemeriksaan mandiri kesehatan mental singkat. Tanpa daftar, tanpa email. Jawabanmu dinilai di browser dan tidak pernah diunggah.",
+    "lede": "Tiga puluh dua tes gratis, dari 16 tipe kepribadian, Big Five, dan kecerdasan emosional hingga gaya cinta, kepemimpinan, asrama Hogwarts-mu, kuis penggemar One Piece dan Naruto, dan pemeriksaan mandiri kesehatan mental singkat. Tanpa daftar, tanpa email. Jawabanmu dinilai di browser dan tidak pernah diunggah.",
     "groups": {
       "personality": "Kepribadian",
       "love": "Cinta dan hubungan",
@@ -49,11 +51,12 @@
       "fun": "Seru-seruan",
       "wellbeing": "Cek kesehatan mental",
       "games": "Game",
-      "anime": "Anime dan animasi"
+      "anime": "Anime dan animasi",
+      "books": "Buku dan film"
     },
     "about": [
       "Setiap tes menampilkan semua pertanyaannya dalam satu halaman. Jawab semuanya, tekan tombol, dan hasilnya muncul di bawah pertanyaan beserta penjelasan singkat dan grafik skormu.",
-      "Pemeriksaan kesehatan mental memakai kuesioner skrining yang telah dipublikasikan (Rosenberg, GAD-7, PHQ-9). Big Five dan tes introvert–ekstrovert memakai kumpulan butir IPIP yang berstatus domain publik. Tes lainnya disusun untuk cv.cm berdasarkan model yang dikenal luas, dan hasilnya adalah titik awal untuk refleksi, bukan vonis. Kuis game dan anime adalah kuis penggemar tidak resmi, sekadar untuk seru-seruan."
+      "Pemeriksaan kesehatan mental memakai kuesioner skrining yang telah dipublikasikan (WHO-5, Rosenberg, GAD-7, PHQ-9). Big Five dan tes introvert–ekstrovert memakai kumpulan butir IPIP yang berstatus domain publik. Tes lainnya disusun untuk cv.cm berdasarkan model yang dikenal luas, dan hasilnya adalah titik awal untuk refleksi, bukan vonis. Kuis game, anime, dan buku adalah kuis penggemar tidak resmi, sekadar untuk seru-seruan."
     ],
     "faq": [
       { "q": "Apakah tes ini gratis?", "a": "Ya. Semua tes gratis, tanpa daftar, tanpa email, dan tanpa bayar untuk melihat hasil." },
@@ -375,6 +378,84 @@
         "9": { "name": "Tipe 9 · Sang Pendamai", "body": "Santai, mudah menerima, dan menenangkan. Kamu menginginkan kedamaian batin dan lahir, dan kamu takut pada konflik dan perpisahan. Pertumbuhan datang dari menyuarakan prioritasmu sendiri dan bertindak atasnya." }
       }
     },
+    "eq": {
+      "title": "Tes EQ gratis: tes kecerdasan emosional dengan skor 4 keterampilan — cv.cm",
+      "description": "Tes EQ online gratis. Nilai 20 pernyataan untuk mengukur kesadaran diri, pengelolaan diri, empati, dan keterampilan membangun hubungan, beserta arti setiap skor dan cara mengembangkannya. Tanpa daftar.",
+      "h1": "Tes kecerdasan emosional (EQ)",
+      "lede": "Kecerdasan emosional adalah kemampuan mengenali, memahami, dan mengelola emosi, baik emosimu sendiri maupun emosi orang lain. Nilai 20 pernyataan dan lihat skormu di keempat bidangnya.",
+      "about": [
+        "Tes ini mengikuti empat bidang dalam model kecerdasan emosional Daniel Goleman: kesadaran diri (tahu apa yang kamu rasakan dan mengapa), pengelolaan diri (mengendalikan perasaan itu), kesadaran sosial (membaca orang lain), dan pengelolaan hubungan (bergaul, memengaruhi, dan menyelesaikan konflik).",
+        "Pernyataannya disusun untuk cv.cm. Ini pemeriksaan laporan diri, bukan EQ-i atau MSCEIT berlisensi, dan laporan diri menunjukkan bagaimana kamu melihat dirimu. Setiap bidang dinilai dari 0 sampai 100: di bawah 40 tergolong rendah, di atas 60 tinggi. Berbeda dengan IQ, ini adalah keterampilan, dan bisa makin baik dengan latihan."
+      ],
+      "faq": [
+        {
+          "q": "Berapa skor EQ yang bagus?",
+          "a": "Di sini tidak ada batas lulus. Skor di atas 60 pada satu bidang berarti kamu melihat keterampilan itu sebagai kekuatanmu; di bawah 40 menandai bidang yang paling perlu dilatih. Perhatikan keseimbangan keempat bidang, bukan satu angka saja."
+        },
+        {
+          "q": "Bisakah kecerdasan emosional ditingkatkan?",
+          "a": "Bisa. Menamai perasaanmu, berhenti sejenak sebelum bereaksi, menanyakan bagaimana orang lain melihat suatu situasi, dan mendengarkan tanpa sibuk menyiapkan jawaban adalah keterampilan yang tumbuh dengan latihan."
+        },
+        {
+          "q": "Apakah EQ lebih penting daripada IQ?",
+          "a": "Keduanya mengukur hal yang berbeda. IQ menguji kemampuan bernalar; EQ soal mengelola emosi dan menghadapi orang. Keduanya penting, dan EQ paling berperan dalam pekerjaan yang bergantung pada kerja tim, kepemimpinan, dan pelayanan."
+        },
+        {
+          "q": "Seberapa akurat tes EQ laporan diri?",
+          "a": "Tes ini menunjukkan bagaimana kamu melihat dirimu, yang bisa berbeda dari cara orang lain melihatmu. Untuk gambaran yang lebih lengkap, minta beberapa orang yang mengenalmu dengan baik menjawab pertanyaannya tentang dirimu."
+        }
+      ],
+      "items": [
+        "Aku biasanya bisa menyebut dengan tepat apa yang kurasakan, bukan sekadar \"baik\" atau \"buruk\".",
+        "Saat kesal, aku bisa menenangkan diri sebelum mengucapkan sesuatu yang kusesali.",
+        "Aku sering menyadari perasaan seseorang sebelum dia mengatakan apa pun.",
+        "Aku bisa mengatakan bahwa seseorang keliru tanpa merusak hubungan kami.",
+        "Suasana hatiku sering berubah dan aku tidak tahu sebabnya.",
+        "Kalau ada yang membuatku jengkel, biasanya seharian suasana hatiku jadi rusak.",
+        "Aku sulit melihat situasi dari sudut pandang orang lain saat aku tidak setuju.",
+        "Konflik dengan orang lain cenderung memburuk begitu aku ikut terlibat.",
+        "Aku tahu situasi apa yang biasanya membuatku cemas atau marah.",
+        "Aku bisa tetap tenang dan berpikir jernih di bawah tekanan.",
+        "Orang sering bilang aku pendengar yang baik.",
+        "Aku mudah membuat orang merasa nyaman di dekatku.",
+        "Aku sering kaget sendiri betapa kuatnya reaksiku terhadap sesuatu.",
+        "Aku bertindak impulsif lalu menyesal kenapa tidak menunggu dulu.",
+        "Aku baru sadar teman sedang mengalami masa sulit setelah dia memberitahuku.",
+        "Aku menghindari obrolan yang sulit, bahkan ketika obrolan itu perlu terjadi.",
+        "Aku paham bagaimana perasaanku memengaruhi caraku bekerja dan memperlakukan orang lain.",
+        "Setelah mengalami kegagalan, aku bisa bangkit dan terus melangkah.",
+        "Aku bisa tahu ketika seseorang bilang dirinya baik-baik saja padahal tidak.",
+        "Saat dua orang berselisih, aku bisa membantu mereka menemukan titik temu."
+      ],
+      "dims": {
+        "self": "Kesadaran diri",
+        "regulate": "Pengelolaan diri",
+        "empathy": "Empati",
+        "social": "Keterampilan hubungan"
+      },
+      "levels": {
+        "self": {
+          "low": "Perasaanmu sering datang tanpa kamu sadari. Cobalah menamai emosimu beberapa kali sehari, setepat mungkin (\"jengkel\", \"kecewa\", \"gugup\"), dan perhatikan apa pemicunya.",
+          "mid": "Kamu biasanya tahu apa yang kamu rasakan, meski emosi yang kuat atau campur aduk masih bisa membuatmu lengah. Teruslah memeriksa perasaanmu di saat sibuk atau tegang.",
+          "high": "Kamu mengenal emosimu dengan baik, apa pemicunya, dan bagaimana emosi itu membentuk tindakanmu. Pengenalan diri ini adalah dasar bagi semua keterampilan emosional lainnya."
+        },
+        "regulate": {
+          "low": "Perasaan yang kuat cenderung mengendalikan tindakanmu. Jeda beberapa tarikan napas pelan, atau aturan untuk menunda membalas pesan saat marah sampai besok, memberimu ruang untuk memilih responsmu.",
+          "mid": "Kamu bisa menjaga ketenangan hampir sepanjang waktu, tetapi stres atau lelah bisa membuatmu lepas kendali. Kenali tanda-tanda awalnya dan bertindaklah lebih cepat.",
+          "high": "Kamu tetap stabil di bawah tekanan, cepat pulih dari kegagalan, dan jarang bertindak impulsif. Orang bisa mengandalkanmu saat suasana memanas."
+        },
+        "empathy": {
+          "low": "Perasaan orang lain mungkin sulit kamu baca. Lebih sering bertanya (\"Bagaimana menurutmu sejauh ini?\") dan perhatikan ekspresi wajah serta nada bicara, bukan hanya kata-katanya.",
+          "mid": "Kamu menangkap perasaan orang lain kalau sedang memperhatikan, tetapi bisa melewatkan sinyal yang lebih halus saat sibuk atau sedang tidak sependapat.",
+          "high": "Kamu pandai membaca orang dan memahami sudut pandang mereka, bahkan saat tidak setuju. Orang merasa didengarkan saat bersamamu."
+        },
+        "social": {
+          "low": "Menghadapi konflik dan obrolan yang sulit adalah bidang yang bisa kamu kembangkan. Mulailah dari yang kecil: berikan masukan yang jujur dan baik tentang satu hal, dan sampaikan kebutuhanmu dengan jelas.",
+          "mid": "Kamu bisa akur dengan kebanyakan orang. Melatih bagian yang lebih sulit, seperti konflik, memberi masukan, dan menyatukan orang, akan membuatmu makin kuat.",
+          "high": "Kamu membangun kepercayaan, menghadapi konflik dengan tenang, dan membantu orang bekerja sama. Tim dan teman-temanmu sering mengandalkanmu agar semuanya berjalan lancar."
+        }
+      }
+    },
     "love-language": {
       "title": "Tes bahasa cinta gratis: apa bahasa cintamu? — cv.cm",
       "description": "Tes bahasa cinta gratis. Nilai 25 pernyataan untuk tahu cara kamu paling suka dicintai: afirmasi, waktu berkualitas, hadiah, pelayanan, atau sentuhan.",
@@ -474,6 +555,94 @@
         "anxious": { "name": "Anxious (cemas)", "body": "Kamu menginginkan kedekatan dan khawatir kehilangannya, sehingga mungkin sering mencari kepastian atau terlalu memaknai sinyal kecil. Menyampaikan kebutuhanmu secara langsung, dan menenangkan diri sebelum bereaksi, membuat hubungan terasa lebih tenang." },
         "avoidant": { "name": "Avoidant (menghindar)", "body": "Kamu menghargai kemandirian dan merasa tidak nyaman saat orang lain terlalu dekat atau bergantung padamu. Kamu mungkin menarik diri saat hubungan mulai serius. Berlatih terbuka sedikit demi sedikit membuat orang bisa mendukungmu tanpa merenggut kebebasanmu." },
         "fearful": { "name": "Fearful-avoidant (takut-menghindar)", "body": "Kamu menginginkan kedekatan tetapi juga takut padanya, sehingga mungkin berayun antara mendekat dan menjauh. Ini sering berasal dari pengalaman menyakitkan. Kesabaran, pasangan yang stabil, dan dukungan terapis bisa sangat membantu." }
+      }
+    },
+    "love-style": {
+      "title": "Tes gaya cinta gratis: enam gaya cinta Lee (Eros, Storge, Agape…) — cv.cm",
+      "description": "Kuis gaya cinta gratis berdasarkan enam gaya cinta John Alan Lee: penuh gairah (Eros), main-main (Ludus), persahabatan (Storge), praktis (Pragma), posesif (Mania), dan tanpa pamrih (Agape). Nilai 24 pernyataan, tanpa daftar.",
+      "h1": "Tes gaya cinta: bagaimana caramu mencintai?",
+      "lede": "Apakah kamu jatuh cinta dengan cepat dan dalam, atau cintamu tumbuh perlahan dari persahabatan? Nilai 24 pernyataan untuk menemukan gaya cinta utamamu di antara enam gaya yang dijelaskan sosiolog John Alan Lee.",
+      "about": [
+        "Pada 1973, sosiolog John Alan Lee menggambarkan enam gaya mencintai yang dinamai dengan kata Yunani dan Latin: Eros (penuh gairah), Ludus (main-main), Storge (persahabatan), Pragma (praktis), Mania (posesif), dan Agape (tanpa pamrih). Kebanyakan orang memadukan beberapa gaya, dan perpaduannya bisa berubah seiring usia dan di setiap hubungan.",
+        "Pernyataan di sini disusun untuk cv.cm dan terinspirasi dari model Lee; ini bukan Love Attitudes Scale yang telah dipublikasikan. Hasilmu menyebut gaya terkuatmu dan menampilkan skormu untuk keenam gaya. Gaya yang berbeda bisa berjalan baik bersama asalkan pasangan saling memahami."
+      ],
+      "faq": [
+        {
+          "q": "Apa saja enam gaya cinta itu?",
+          "a": "Eros (cinta romantis yang penuh gairah), Ludus (cinta sebagai permainan), Storge (cinta yang tumbuh dari persahabatan), Pragma (cinta yang praktis dan serasi), Mania (cinta yang intens dan penuh cemas), dan Agape (cinta yang tanpa pamrih dan memberi)."
+        },
+        {
+          "q": "Apakah ada satu gaya cinta yang terbaik?",
+          "a": "Tidak ada satu gaya yang paling baik. Penelitian mengaitkan Eros dan Agape dengan hubungan yang lebih memuaskan, dan Mania dengan rasa cemburu dan khawatir yang lebih besar, tetapi yang paling penting adalah pasangan memahami gaya satu sama lain."
+        },
+        {
+          "q": "Apakah ini sama dengan bahasa cinta?",
+          "a": "Tidak. Bahasa cinta membahas bagaimana kamu suka memberi dan menerima kasih sayang. Gaya cinta membahas caramu memandang cinta itu sendiri: seberapa cepat kamu jatuh cinta, apa yang kamu cari, dan seberapa intens rasanya."
+        },
+        {
+          "q": "Bisakah gaya cintaku berubah?",
+          "a": "Bisa. Lee memandang gaya-gaya ini sebagai sikap, bukan sifat yang tetap. Gaya cinta bergeser seiring pengalaman, usia, dan pasangan yang sedang bersamamu."
+        }
+      ],
+      "items": [
+        "Aku langsung merasa sangat tertarik pada pasanganku (atau gebetanku) hampir sejak awal.",
+        "Aku lebih suka membiarkan pilihanku tetap terbuka daripada berkomitmen pada satu orang.",
+        "Hubungan favoritku tumbuh perlahan dari persahabatan.",
+        "Sebelum serius dengan seseorang, aku memikirkan apakah hidup kami cocok satu sama lain.",
+        "Saat jatuh cinta, aku tidak bisa berhenti memikirkan orang itu.",
+        "Aku lebih rela menderita sendiri daripada membiarkan orang yang kucintai menderita.",
+        "Aku dan pasanganku punya chemistry yang istimewa.",
+        "Cinta lebih seru kalau santai dan tidak terlalu serius.",
+        "Cinta terbaik adalah persahabatan yang dalam yang berubah menjadi sesuatu yang lebih.",
+        "Nilai dan tujuan yang sama lebih penting bagiku daripada romansa.",
+        "Kalau pasanganku lama tidak membalas, aku mulai khawatir.",
+        "Aku rela mengorbankan rencanaku sendiri untuk membantu orang yang kucintai meraih rencananya.",
+        "Aku percaya pada cinta pada pandangan pertama.",
+        "Aku pernah menikmati menggoda lebih dari satu orang dalam waktu yang sama.",
+        "Aku lebih percaya pada cinta yang sempat tumbuh daripada cinta yang dimulai dengan letupan kembang api.",
+        "Aku ingin pasangan yang bisa menjadi orang tua yang baik dan rekan yang bisa diandalkan.",
+        "Aku mudah cemburu, meski tahu seharusnya tidak.",
+        "Aku menyayangi pasanganku tanpa mengharapkan balasan apa pun.",
+        "Kedekatan fisik dan romansa adalah inti cinta bagiku.",
+        "Ada hal-hal dalam kehidupan cintaku yang lebih baik kusimpan sendiri.",
+        "Aku ingin pasanganku menjadi sahabat terbaikku.",
+        "Aku akan mempertimbangkan dengan cermat bagaimana pasangan cocok dengan keluarga dan karierku.",
+        "Saat hubungan sedang memburuk, aku tidak bisa makan atau tidur dengan nyenyak.",
+        "Mencintai seseorang berarti menerimanya sepenuhnya, lengkap dengan segala kekurangannya."
+      ],
+      "dims": {
+        "eros": "Eros (penuh gairah)",
+        "ludus": "Ludus (main-main)",
+        "storge": "Storge (persahabatan)",
+        "pragma": "Pragma (praktis)",
+        "mania": "Mania (posesif)",
+        "agape": "Agape (tanpa pamrih)"
+      },
+      "results": {
+        "eros": {
+          "name": "Eros: cinta yang penuh gairah",
+          "body": "Kamu mencintai dengan sepenuh hati dan percaya pada chemistry: ketertarikan, romansa, dan kedekatan adalah yang utama. Gairah memberi energi pada hubunganmu. Jaga rasa ingin tahu dan gestur romantis kecil tetap hidup saat percikan pertama berubah menjadi sesuatu yang lebih stabil."
+        },
+        "ludus": {
+          "name": "Ludus: cinta yang main-main",
+          "body": "Kamu melihat cinta sebagai sesuatu yang seru, ringan, dan penuh kemungkinan, dan kamu tidak suka terikat terlalu cepat. Kamu membuat masa pendekatan terasa seru. Jelaskan kepada orang lain apa yang kamu cari, agar tidak ada yang terluka karena harapan yang berbeda."
+        },
+        "storge": {
+          "name": "Storge: cinta persahabatan",
+          "body": "Cintamu tumbuh perlahan dari persahabatan, minat yang sama, dan kepercayaan. Cintamu tenang, setia, dan dibangun untuk bertahan lama. Mungkin kamu tidak merasakan kembang api di awal, dan itu tidak apa-apa: kekuatanmu adalah pasangan yang sekaligus sahabat terdekatmu."
+        },
+        "pragma": {
+          "name": "Pragma: cinta yang praktis",
+          "body": "Kamu memilih dengan kepala sekaligus hati, mencari nilai, tujuan, dan kehidupan yang selaras. Itu membuat hubunganmu stabil. Sisakan juga ruang untuk spontanitas dan perasaan, bukan hanya daftar kriteria."
+        },
+        "mania": {
+          "name": "Mania: cinta yang posesif",
+          "body": "Kamu mencintai dengan intens, dan itu bisa datang bersama naik-turun perasaan, kekhawatiran, dan cemburu. Pengabdianmu tulus. Membangun rasa amanmu sendiri, lewat teman, minat, dan obrolan jujur dengan pasangan, membantu cinta terasa lebih tenang."
+        },
+        "agape": {
+          "name": "Agape: cinta tanpa pamrih",
+          "body": "Kamu mencintai dengan memberi: peduli, memaafkan, dan mendahulukan orang lain tanpa menghitung-hitung. Itu anugerah yang langka. Pastikan kebutuhanmu sendiri juga diperhatikan, dan pilihlah pasangan yang juga mau memberi."
+        }
       }
     },
     "marriage": {
@@ -759,6 +928,94 @@
           "low": "Fokus mendalam: kamu bekerja paling baik dalam blok waktu panjang tanpa gangguan. Jadwalkan blok fokus dua atau tiga jam, matikan notifikasi, dan cari peran yang menghargai kedalaman seperti riset, engineering, atau editing.",
           "mid": "Seimbang: sedikit variasi membuatmu tetap segar, tapi terlalu sering berganti tugas melelahkanmu. Kelompokkan tugas yang mirip dan beri setiap hari satu fokus utama.",
           "high": "Variasi: masalah baru dan tempo cepat memberimu energi, sementara rutinitas membuatmu bosan. Peran di operasional, layanan klien, event, atau startup cocok; simpan daftar sederhana agar banyak urusan tidak terlewat."
+        }
+      }
+    },
+    "leadership": {
+      "title": "Tes gaya kepemimpinan gratis: kamu yang mana dari 6 gaya? — cv.cm",
+      "description": "Kuis gaya kepemimpinan gratis berdasarkan enam gaya Goleman: visioner, pembina (coaching), afiliatif, demokratis, penentu tempo (pacesetting), dan komando. Nilai 24 pernyataan untuk melihat gaya utamamu dan kapan memakai gaya lainnya.",
+      "h1": "Tes gaya kepemimpinan",
+      "lede": "Bagaimana caramu memimpin saat keputusan ada di tanganmu? Nilai 24 pernyataan untuk menemukan gaya utamamu di antara enam gaya yang dijelaskan Daniel Goleman, dan kapan setiap gaya membantu atau justru merugikan tim.",
+      "about": [
+        "Pada 2000, psikolog Daniel Goleman menggambarkan enam gaya kepemimpinan berdasarkan penelitian terhadap ribuan manajer: visioner, pembina, afiliatif, demokratis, penentu tempo, dan komando. Pemimpin terbaik tidak terpaku pada satu gaya; mereka berganti gaya sesuai situasi, seperti pegolf memilih stik.",
+        "Pernyataan di sini disusun untuk cv.cm dan terinspirasi dari model Goleman. Hasilmu menunjukkan gaya terkuatmu dan skormu untuk keenam gaya. Kamu tidak perlu jabatan manajer untuk memakainya: memimpin proyek, klub, atau sekelompok teman juga terhitung."
+      ],
+      "faq": [
+        {
+          "q": "Apa saja enam gaya kepemimpinan itu?",
+          "a": "Visioner (menetapkan arah dan membiarkan orang menemukan jalannya), pembina (mengembangkan orang), afiliatif (mendahulukan orang dan keharmonisan), demokratis (membangun kesepakatan), penentu tempo (menetapkan standar tinggi lewat teladan), dan komando (memberi perintah yang jelas)."
+        },
+        {
+          "q": "Gaya kepemimpinan mana yang terbaik?",
+          "a": "Penelitian Goleman menemukan bahwa gaya visioner, pembina, afiliatif, dan demokratis biasanya memperbaiki iklim tim, sedangkan gaya penentu tempo dan komando efektif dalam waktu singkat, misalnya saat krisis atau untuk tim terampil yang dikejar tenggat, tetapi membuat orang kelelahan jika dipakai berlebihan."
+        },
+        {
+          "q": "Aku bukan manajer. Apakah tes ini cocok untukku?",
+          "a": "Ya. Jawablah sesuai caramu bertindak saat memimpin apa pun: proyek sekolah, tim di kantor, acara, atau liburan bersama teman."
+        },
+        {
+          "q": "Bagaimana cara memperluas gaya kepemimpinanku?",
+          "a": "Pilih gaya dengan skor terendahmu yang akan membantu timmu, lalu coba terapkan dengan sengaja selama beberapa minggu: misalnya, minta ide sebelum memutuskan, atau sisihkan waktu untuk membina satu orang."
+        }
+      ],
+      "items": [
+        "Aku suka menggambarkan dengan jelas ke mana kita menuju dan mengapa itu penting.",
+        "Aku senang membantu orang menemukan kekuatan mereka dan berkembang.",
+        "Menjaga tim tetap senang dan kompak adalah yang utama bagiku.",
+        "Sebelum memutuskan, aku meminta ide dari semua orang.",
+        "Aku menetapkan standar tinggi dan berharap orang lain bisa mengimbangiku.",
+        "Saat krisis, aku mengambil alih dan memberi tahu orang persis apa yang harus dilakukan.",
+        "Aku memberi orang tujuan dan membiarkan mereka mencari sendiri cara mencapainya.",
+        "Aku mau meluangkan waktu untuk mengajari seseorang meski mengerjakannya sendiri lebih cepat.",
+        "Saat ada ketegangan, aku fokus memperbaiki hubungan sebelum hal lainnya.",
+        "Keputusan lebih baik kalau orang yang terdampak ikut bersuara.",
+        "Kalau ada yang lambat, aku lebih suka mengambil alih pekerjaannya sendiri.",
+        "Aku berharap instruksi diikuti tanpa banyak perdebatan.",
+        "Orang bilang aku menginspirasi mereka dengan ide-ide besar.",
+        "Aku memberi masukan yang membantu orang mencapai tujuan jangka panjang mereka.",
+        "Aku sering memuji orang dan memastikan mereka merasa dihargai.",
+        "Aku lebih suka butuh waktu lebih lama tapi mencapai kesepakatan daripada memaksakan keputusan.",
+        "Aku memimpin dengan teladan: aku bekerja cepat dan mengharapkan hal yang sama dari orang lain.",
+        "Aturan yang jelas dan kendali yang tegas memberikan hasil terbaik.",
+        "Aku menjelaskan bagaimana pekerjaan setiap orang berkaitan dengan tujuan yang lebih besar.",
+        "Aku menanyakan apa yang ingin dicapai orang dalam karier mereka.",
+        "Aku lebih suka menjaga kedamaian daripada memenangkan perdebatan.",
+        "Aku memimpin rapat di mana semua orang dapat kesempatan bicara.",
+        "Aku frustrasi kalau pekerjaan tidak sesuai standarku.",
+        "Kalau aku sudah memutuskan, aku tidak suka dipertanyakan."
+      ],
+      "dims": {
+        "visionary": "Visioner",
+        "coaching": "Pembina",
+        "affiliative": "Afiliatif",
+        "democratic": "Demokratis",
+        "pacesetting": "Penentu tempo",
+        "commanding": "Komando"
+      },
+      "results": {
+        "visionary": {
+          "name": "Pemimpin visioner",
+          "body": "Kamu memimpin dengan memberi orang arah yang jelas dan alasan untuk peduli, lalu memercayai mereka menemukan jalannya. Gaya ini paling efektif saat tim membutuhkan arah baru. Ingat, tim yang berisi para ahli mungkin butuh masukan, bukan sekadar inspirasi."
+        },
+        "coaching": {
+          "name": "Pemimpin pembina (coaching)",
+          "body": "Kamu memimpin dengan mengembangkan orang: kamu menanyakan tujuan mereka, memberi masukan yang berguna, dan meluangkan waktu untuk mengajar. Gaya ini membangun tim yang kuat dan setia dari waktu ke waktu. Kurang efektif saat orang tidak mau belajar, atau saat tenggatnya besok."
+        },
+        "affiliative": {
+          "name": "Pemimpin afiliatif",
+          "body": "Kamu memimpin dengan mendahulukan orang, membangun keharmonisan, kepercayaan, dan semangat tim. Gaya ini ideal untuk memulihkan tim setelah konflik atau menjaga semangat di bawah tekanan. Padukan dengan tujuan yang jelas dan masukan yang jujur, agar pekerjaan yang buruk tidak dibiarkan begitu saja."
+        },
+        "democratic": {
+          "name": "Pemimpin demokratis",
+          "body": "Kamu memimpin dengan mendengarkan dan membangun kesepakatan, sehingga orang merasa ikut memiliki keputusan. Gaya ini efektif saat kamu butuh ide segar atau dukungan. Saat krisis, atau saat tim terjebak dalam rapat tanpa ujung, bersiaplah mengambil keputusan."
+        },
+        "pacesetting": {
+          "name": "Pemimpin penentu tempo (pacesetting)",
+          "body": "Kamu memimpin dengan teladan dan menetapkan standar tinggi untuk kecepatan dan kualitas. Gaya ini memberi hasil cepat dari tim yang terampil dan bersemangat. Jika dipakai terlalu lama, orang bisa kewalahan, jadi jelaskan alasannya, bagi bebannya, dan hargai usaha mereka."
+        },
+        "commanding": {
+          "name": "Pemimpin komando",
+          "body": "Kamu memimpin dengan mengambil kendali dan memberi instruksi yang jelas. Dalam keadaan darurat sungguhan atau saat membalikkan keadaan, ketegasan itulah yang dibutuhkan. Jika dipakai setiap hari, orang bisa merasa terkekang, jadi longgarkan kendali begitu keadaan stabil dan mintalah masukan."
         }
       }
     },
@@ -1263,6 +1520,56 @@
         "oblong": { "name": "Wajah lonjong", "body": "Jelas lebih panjang daripada lebar, dengan dahi, pipi, dan rahang yang lebarnya mirip. Tambahkan lebar: poni, gelombang, dan volume di sisi; bingkai besar atau tinggi. Hindari rambut lurus yang sangat panjang dan tatanan yang menjulang di atas." },
         "diamond": { "name": "Wajah berlian", "body": "Tulang pipi lebar dan tinggi dengan dahi serta rahang yang lebih sempit. Tonjolkan tulang pipimu: poni samping, gaya rambut diselipkan ke belakang telinga, dan potongan sepanjang dagu; kacamata oval atau cat-eye." },
         "triangle": { "name": "Wajah segitiga (pir)", "body": "Rahang lebih lebar dari dahi. Tambahkan lebar di atas: volume di ubun-ubun dan pelipis, potongan layer, poni samping; bingkai yang tegas di bagian atas, seperti kacamata browline. Jaga jenggot tetap pendek di sisi." }
+      }
+    },
+    "wellbeing-index": {
+      "title": "Tes kesejahteraan gratis (Indeks Kesejahteraan WHO-5): skor 0–100 — cv.cm",
+      "description": "Tes kesejahteraan WHO-5 online gratis. Jawab 5 pertanyaan tentang dua minggu terakhir untuk mendapatkan skor kesejahteraanmu dari 0 sampai 100 beserta artinya. Privat: tidak ada data yang keluar dari browsermu.",
+      "h1": "Tes kesejahteraan (WHO-5)",
+      "lede": "Indeks Kesejahteraan WHO-5 berisi 5 pertanyaan singkat tentang perasaanmu selama dua minggu terakhir. Kurang dari satu menit, dengan skor 0 sampai 100.",
+      "about": [
+        "WHO-5 diterbitkan oleh Kantor Regional Eropa Organisasi Kesehatan Dunia (WHO) pada 1998 dan merupakan salah satu kuesioner kesejahteraan yang paling banyak digunakan di dunia. Kuesioner ini gratis digunakan. Setiap jawaban bernilai 0 sampai 5; totalnya (0–25) dikalikan 4 sehingga menjadi persentase dari 0 (terburuk) sampai 100 (terbaik).",
+        "Skor di bawah 52 menunjukkan kesejahteraan yang buruk, dan dokter menjadikannya alasan untuk memeriksa kemungkinan depresi; skor 28 atau kurang sering menyertai depresi. Tes ini adalah pemeriksaan mandiri, bukan diagnosis."
+      ],
+      "faq": [
+        {
+          "q": "Apa arti skor WHO-5-ku?",
+          "a": "Kalikan skor mentah (0–25) dengan 4. Skor 52 atau lebih berada dalam rentang kesejahteraan normal. Di bawah 52 menunjukkan kesejahteraan yang buruk. Skor 28 atau kurang adalah tanda kemungkinan depresi dan sebaiknya diperiksa oleh tenaga profesional."
+        },
+        {
+          "q": "Apakah WHO-5 tes depresi?",
+          "a": "WHO-5 mengukur kesejahteraan positif, bukan gejala depresi, tetapi skor rendah adalah alasan yang baik untuk melakukan skrining depresi, misalnya dengan tes PHQ-9 di situs ini, dan berbicara dengan dokter."
+        },
+        {
+          "q": "Seberapa sering aku boleh mengerjakannya?",
+          "a": "Tes ini menanyakan dua minggu terakhir, jadi mengulanginya kira-kira setiap dua minggu adalah cara mudah untuk memantau keadaanmu. Perubahan 10 poin atau lebih dianggap bermakna."
+        },
+        {
+          "q": "Apa yang bisa meningkatkan kesejahteraanku?",
+          "a": "Tidur teratur, cahaya matahari dan bergerak aktif, waktu bersama orang yang kamu sukai, dan melakukan hal-hal yang menarik minatmu membantu banyak orang. Jika suasana hati yang murung terus berlanjut, bicaralah dengan dokter atau konselor."
+        }
+      ],
+      "items": [
+        "Saya merasa ceria dan bersemangat.",
+        "Saya merasa tenang dan santai.",
+        "Saya merasa aktif dan bertenaga.",
+        "Saya bangun tidur dengan perasaan segar dan cukup istirahat.",
+        "Kehidupan saya sehari-hari dipenuhi hal-hal yang menarik minat saya."
+      ],
+      "scoreLabel": "Skor mentah (×4 = persentase)",
+      "results": {
+        "low": {
+          "name": "Kesejahteraan rendah (0–7, atau 0–28%)",
+          "body": "Jawabanmu menunjukkan kesejahteraanmu rendah selama dua minggu terakhir. Skor serendah ini sering menyertai depresi, jadi segeralah bicara dengan dokter atau tenaga profesional kesehatan mental. Kamu juga bisa mengikuti pemeriksaan depresi PHQ-9 di sini. Kamu tidak harus menghadapi ini sendirian, dan bantuan yang efektif itu ada."
+        },
+        "reduced": {
+          "name": "Kesejahteraan menurun (8–12, atau 32–48%)",
+          "body": "Kesejahteraanmu belakangan berada di bawah rentang biasanya. Ada baiknya memeriksa kemungkinan depresi (tes PHQ-9 di situs ini salah satu caranya) dan berbicara dengan dokter jika keadaan ini sudah berlangsung cukup lama. Langkah kecil seperti tidur teratur, cahaya matahari, bergerak aktif, dan waktu bersama orang yang kamu percayai bisa membantu."
+        },
+        "good": {
+          "name": "Kesejahteraan baik (13–25, atau 52–100%)",
+          "body": "Kesejahteraanmu berada dalam rentang normal. Pertahankan kebiasaan dan orang-orang yang membuatmu merasa seperti ini, dan ulangi pemeriksaan ini beberapa minggu lagi untuk melihat apakah tetap stabil."
+        }
       }
     },
     "self-esteem": {
@@ -2326,6 +2633,188 @@
         }
       }
     },
+    "one-piece": {
+      "title": "Kamu karakter One Piece yang mana? Kuis Bajak Laut Topi Jerami — cv.cm",
+      "description": "Kuis One Piece gratis: jawab 12 soal untuk mengetahui kamu anggota Bajak Laut Topi Jerami yang mana: Luffy, Zoro, Nami, Usopp, Sanji, Chopper, Robin, atau Franky. Tanpa daftar, kuis penggemar tidak resmi.",
+      "h1": "Kamu anggota Bajak Laut Topi Jerami yang mana?",
+      "lede": "Kapten, pendekar pedang, navigator, atau koki? Jawab 12 soal tentang mimpi, kebiasaan, dan titik lemahmu, lalu cari tahu kamu akan jadi anggota kru Luffy yang mana di One Piece.",
+      "about": [
+        "Setiap anggota Topi Jerami bergabung dengan kru demi mengejar mimpinya sendiri, dan mimpi itu banyak menggambarkan siapa mereka: Luffy ingin menjadi yang paling bebas di lautan, Zoro ingin menjadi pendekar pedang terhebat di dunia, Nami ingin memetakan seluruh dunia. Kuis ini mencocokkan mimpi, kebiasaan, dan keunikanmu dengan delapan anggota kru.",
+        "Hasilmu menyebut anggota Topi Jerami-mu dan menampilkan skormu untuk kedelapan karakter. Ini kuis penggemar tidak resmi yang dibuat untuk cv.cm. Kuis ini tidak berafiliasi dengan atau didukung oleh Eiichiro Oda, Shueisha, atau Toei Animation; semua nama adalah milik pemiliknya masing-masing."
+      ],
+      "faq": [
+        {
+          "q": "Karakter siapa saja yang bisa kudapat?",
+          "a": "Delapan anggota Bajak Laut Topi Jerami: Monkey D. Luffy, Roronoa Zoro, Nami, Usopp, Sanji, Tony Tony Chopper, Nico Robin, dan Franky."
+        },
+        {
+          "q": "Kenapa Brook dan Jinbe tidak ada di kuis ini?",
+          "a": "Delapan hasil membuat kuis tetap singkat dan setiap hasil sama mudahnya untuk didapat. Mereka mungkin ditambahkan di pembaruan berikutnya."
+        },
+        {
+          "q": "Apakah ada hasil yang lebih langka?",
+          "a": "Tidak. Setiap karakter muncul di jumlah jawaban yang sama, jadi peluang masing-masing sama besar."
+        },
+        {
+          "q": "Apakah kuis ini resmi?",
+          "a": "Bukan. Ini kuis penggemar gratis, dan jawabanmu tetap di browsermu."
+        }
+      ],
+      "items": [
+        {
+          "q": "Mimpimu paling mirip dengan…",
+          "options": [
+            "Menjadi orang paling bebas di lautan",
+            "Menjadi yang terbaik di dunia dalam satu hal",
+            "Menggambar peta seluruh dunia",
+            "Menjadi pejuang pemberani yang dikagumi semua orang"
+          ]
+        },
+        {
+          "q": "Pekerjaan idamanmu di kapal:",
+          "options": [
+            "Sejarawan",
+            "Tukang kapal",
+            "Koki",
+            "Dokter"
+          ]
+        },
+        {
+          "q": "Sore yang bebas di pulau baru. Kamu…",
+          "options": [
+            "Mencari pasar dan mencoba bahan makanan lokal",
+            "Langsung berlari ke hal yang kelihatan paling berbahaya",
+            "Mencari reruntuhan kuno atau perpustakaan",
+            "Belanja, sambil mengecek berapa harga jual harta karun"
+          ]
+        },
+        {
+          "q": "Kelemahan terbesarmu:",
+          "options": [
+            "Omong besar, lalu ketakutan",
+            "Keasyikan sendiri dengan proyekmu",
+            "Sama sekali tidak tahu arah",
+            "Langsung meleleh begitu ada yang memujimu"
+          ]
+        },
+        {
+          "q": "Apa yang paling membuatmu bahagia?",
+          "options": [
+            "Membantu seseorang pulih",
+            "Pesta makan besar bersama teman-teman",
+            "Melihat orang menikmati masakanmu",
+            "Tidur siang setelah latihan berat yang memuaskan"
+          ]
+        },
+        {
+          "q": "Pilih satu keahlian:",
+          "options": [
+            "Membuat apa saja dari barang rongsokan",
+            "Membaca cuaca",
+            "Mengenai sasaran apa pun dari jauh",
+            "Membaca bahasa kuno"
+          ]
+        },
+        {
+          "q": "Dalam kelompok, kamu adalah…",
+          "options": [
+            "Yang tenang dan tahu lebih banyak daripada yang diucapkan",
+            "Yang manis tapi rela bertarung demi semua orang",
+            "Yang mengambil keputusan, berdasarkan naluri",
+            "Si tukang cerita"
+          ]
+        },
+        {
+          "q": "Bagaimana caramu mengatur uang?",
+          "options": [
+            "Setiap koin dihitung, lengkap dengan bunganya",
+            "Dihabiskan untuk makanan enak dan orang-orang yang kamu sukai",
+            "Dihabiskan semua untuk suku cadang dan perkakas",
+            "Selalu bokek, dan santai saja"
+          ]
+        },
+        {
+          "q": "Pilih satu semboyan:",
+          "options": [
+            "Lakukan semuanya secara besar-besaran dan penuh gaya",
+            "Kebenaran layak diperjuangkan apa pun risikonya",
+            "Janji tidak pernah boleh diingkari",
+            "Kalau aku mau melakukannya, akan kulakukan"
+          ]
+        },
+        {
+          "q": "Apa yang paling kamu takutkan?",
+          "options": [
+            "Membiarkan seseorang kelaparan",
+            "Jujur, hampir semuanya, tapi kamu tetap maju",
+            "Tidak bisa menyelamatkan seseorang",
+            "Kehilangan rumahmu dan orang-orang di dalamnya"
+          ]
+        },
+        {
+          "q": "Pilih camilan:",
+          "options": [
+            "Jeruk mandarin",
+            "Cola sedingin es",
+            "Daging bertulang",
+            "Permen kapas"
+          ]
+        },
+        {
+          "q": "Bagaimana caramu menjadi lebih jago?",
+          "options": [
+            "Membaca semua yang bisa kamu temukan",
+            "Berlatih berjam-jam setiap hari, sendirian",
+            "Menciptakan trik dan alat baru",
+            "Berlatih sampai sempurna, sambil terus mencicipi"
+          ]
+        }
+      ],
+      "dims": {
+        "luffy": "Luffy",
+        "zoro": "Zoro",
+        "nami": "Nami",
+        "usopp": "Usopp",
+        "sanji": "Sanji",
+        "chopper": "Chopper",
+        "robin": "Robin",
+        "franky": "Franky"
+      },
+      "results": {
+        "luffy": {
+          "name": "Monkey D. Luffy",
+          "body": "Bebas, tak kenal takut, dan mustahil dihentikan begitu sudah memutuskan sesuatu. Kamu mengikuti naluri, rela bertarung melawan siapa pun demi teman-temanmu, dan orang-orang akhirnya mengikutimu tanpa benar-benar tahu kenapa. Jangan lupa makan sesuatu selain daging, ya."
+        },
+        "zoro": {
+          "name": "Roronoa Zoro",
+          "body": "Fokus, setia, dan sekuat baja. Kamu sudah memilih tujuanmu dan berlatih untuk itu setiap hari, dan kamu tak pernah mengingkari janji pada teman. Kamu tenang saat krisis… tapi mungkin biarkan orang lain yang memegang peta."
+        },
+        "nami": {
+          "name": "Nami",
+          "body": "Cerdas, tajam, dan selalu tiga langkah di depan, apalagi kalau menyangkut uang. Kamu merencanakan rute yang diikuti semua orang, dan di balik sikapmu yang galak, kamu rela melakukan apa saja demi orang-orang yang kamu anggap rumah."
+        },
+        "usopp": {
+          "name": "Usopp",
+          "body": "Kreatif, lucu, dan lebih berani dari yang kamu kira. Kamu mau mengaku takut, lalu tetap maju, dan itulah keberanian sejati. Cerita, bidikan, dan idemu menyelamatkan kru dari lebih banyak masalah daripada yang orang tahu."
+        },
+        "sanji": {
+          "name": "Sanji",
+          "body": "Murah hati, gaya, dan sangat peduli. Kamu menunjukkan kasih sayang lewat makanan enak dan tak akan pernah membiarkan siapa pun kelaparan. Kamu memegang prinsip yang ketat, dan rela mempertaruhkan segalanya demi krumu."
+        },
+        "chopper": {
+          "name": "Tony Tony Chopper",
+          "body": "Baik hati, penuh rasa ingin tahu, dan agak pemalu, dengan hati yang sangat besar. Kamu ingin menolong dan menyembuhkan semua orang, dan kamu lebih kuat daripada kelihatannya. Saat dipuji, kamu pura-pura tidak peduli… dan kamu payah sekali menyembunyikannya."
+        },
+        "robin": {
+          "name": "Nico Robin",
+          "body": "Tenang, cerdas, dan rasa ingin tahunya tak ada habisnya, dengan selera humor yang kering. Kamu membaca segalanya, memperhatikan segalanya, dan sedikit bicara. Setelah banyak asam garam kehidupan, kamu belajar artinya menemukan orang-orang yang benar-benar selalu ada untukmu."
+        },
+        "franky": {
+          "name": "Franky",
+          "body": "Heboh, penuh akal, dan berhati besar. Kamu bisa membangun apa saja, melakukan semuanya secara besar-besaran, dan tidak malu menyebut betapa kerennya hasilnya. Di balik semua gaya itu ada seseorang yang menangis melihat akhir bahagia dan melindungi kru seperti keluarga."
+        }
+      }
+    },
     "demon-slayer": {
       "title": "Tes Demon Slayer: pernapasan apa yang cocok untukmu? Kuis Kimetsu no Yaiba — cv.cm",
       "description": "Tes Demon Slayer gratis: jawab 12 soal untuk menemukan teknik pernapasanmu (Air, Api, Petir, Binatang Buas, Serangga, Angin, Kabut, Cinta, Suara, atau Batu) dan karakter Demon Slayer yang memakainya. Tanpa daftar.",
@@ -2859,6 +3348,168 @@
         "air": {
           "name": "Pengendali Udara",
           "body": "Berjiwa bebas, jenaka, dan cinta damai. Kamu lebih suka mencari cara lain daripada bertarung, menghargai kebebasanmu, dan membawa keceriaan bagi semua orang di sekitarmu. Sesama pengendali udara: Aang dan Jinora."
+        }
+      }
+    },
+    "hogwarts": {
+      "title": "Kamu masuk asrama Hogwarts yang mana? Tes asrama Harry Potter gratis — cv.cm",
+      "description": "Kuis asrama Hogwarts gratis: jawab 12 soal untuk mengetahui apakah kamu masuk Gryffindor, Hufflepuff, Ravenclaw, atau Slytherin, beserta anggota terkenal asramamu. Tanpa daftar, kuis penggemar tidak resmi.",
+      "h1": "Kamu masuk asrama Hogwarts yang mana?",
+      "lede": "Berani, setia, cerdas, atau ambisius? Jawab 12 soal tentang hal yang kamu junjung dan caramu bertindak, lalu cari tahu di asrama mana Topi Seleksi mungkin menempatkanmu.",
+      "about": [
+        "Dalam buku-buku Harry Potter, setiap murid baru di Hogwarts diseleksi ke salah satu dari empat asrama: Gryffindor menjunjung keberanian, Hufflepuff kesetiaan dan kerja keras, Ravenclaw kecerdasan dan ilmu, dan Slytherin ambisi dan kelicikan. Setiap pertanyaan di sini punya satu jawaban untuk tiap asrama.",
+        "Hasilmu menyebut asramamu, beberapa anggota terkenalnya, dan skormu untuk keempat asrama. Ini kuis penggemar tidak resmi yang dibuat untuk cv.cm. Kuis ini tidak berafiliasi dengan atau didukung oleh J.K. Rowling, Warner Bros., atau Wizarding World; semua nama adalah milik pemiliknya masing-masing."
+      ],
+      "faq": [
+        {
+          "q": "Apa saja empat asrama Hogwarts?",
+          "a": "Gryffindor (keberanian dan nyali), Hufflepuff (kesetiaan, keadilan, dan kerja keras), Ravenclaw (kecerdasan, akal, dan rasa ingin tahu), dan Slytherin (ambisi, kelicikan, dan banyak akal)."
+        },
+        {
+          "q": "Apakah Slytherin asrama yang jahat?",
+          "a": "Bukan. Slytherin memang punya penjahatnya, tetapi juga asrama ambisi dan kecerdikan, dan Merlin serta Severus Snape adalah anggota Slytherin. Setiap asrama punya pahlawannya."
+        },
+        {
+          "q": "Bagaimana kalau dua asrama skornya berdekatan?",
+          "a": "Itu membuatmu seorang \"hatstall\", murid yang membuat Topi Seleksi berpikir keras. Topi Seleksi mempertimbangkan pilihanmu, jadi pilihlah asrama yang terasa paling pas."
+        },
+        {
+          "q": "Apakah ini kuis seleksi asrama resmi?",
+          "a": "Bukan. Ini kuis penggemar gratis, dan jawabanmu tetap di browsermu."
+        }
+      ],
+      "items": [
+        {
+          "q": "Sifat mana yang paling penting bagimu?",
+          "options": [
+            "Keberanian",
+            "Kesetiaan",
+            "Rasa ingin tahu",
+            "Ambisi"
+          ]
+        },
+        {
+          "q": "Pilih tempat untuk menghabiskan sore:",
+          "options": [
+            "Perpustakaan di menara dengan pemandangan indah",
+            "Ruangan di tepi danau yang diterangi cahaya hijau dari air",
+            "Dapur hangat bersama teman-teman",
+            "Lapangan olahraga di hari pertandingan"
+          ]
+        },
+        {
+          "q": "Seorang teman melanggar aturan dan kamu mengetahuinya. Kamu…",
+          "options": [
+            "Tetap mendukungnya dan membantu memperbaikinya",
+            "Mempertanyakan apakah aturannya masuk akal sejak awal",
+            "Mengatakan langsung padanya bahwa itu salah",
+            "Diam saja: dia jadi berutang budi padamu"
+          ]
+        },
+        {
+          "q": "Kamu paling ingin dikenang karena apa?",
+          "options": [
+            "Meraih hal-hal besar",
+            "Melakukan hal yang benar meski sulit",
+            "Bersikap baik kepada semua orang",
+            "Sebuah gagasan yang mengubah cara orang berpikir"
+          ]
+        },
+        {
+          "q": "Pilih satu pelajaran:",
+          "options": [
+            "Pertahanan terhadap Ilmu Hitam",
+            "Mantra",
+            "Ramuan",
+            "Herbologi"
+          ]
+        },
+        {
+          "q": "Kekuranganmu yang terbesar:",
+          "options": [
+            "Kamu mau melanggar aturan demi menang",
+            "Kamu sulit menolak",
+            "Kamu terlalu memikirkan segala hal",
+            "Kamu bertindak sebelum berpikir"
+          ]
+        },
+        {
+          "q": "Seekor naga menghalangi jalanmu. Kamu…",
+          "options": [
+            "Mempelajarinya untuk menemukan kelemahannya",
+            "Membuat kesepakatan dengan seseorang yang bisa menanganinya",
+            "Langsung menyerbu",
+            "Membawa semua orang ke tempat aman dulu, lalu mencari jalan keluar bersama"
+          ]
+        },
+        {
+          "q": "Pilih hewan pendamping:",
+          "options": [
+            "Seekor luak",
+            "Seekor anak singa",
+            "Seekor elang",
+            "Seekor ular"
+          ]
+        },
+        {
+          "q": "Pilih benda ajaib:",
+          "options": [
+            "Sapu terbang yang lebih cepat dari sapu mana pun",
+            "Tongkat sihir yang tak pernah kalah dalam duel",
+            "Piala yang tak pernah kosong, untuk dibagi bersama",
+            "Buku yang bisa menjawab pertanyaan apa pun"
+          ]
+        },
+        {
+          "q": "Bagaimana caramu bersiap untuk ujian besar?",
+          "options": [
+            "Belajar teratur setiap hari, bersama kelompok belajar",
+            "Membaca jauh melampaui materi pelajaran, untuk kesenangan",
+            "Mencari tahu apa yang diinginkan penguji dan fokus ke situ",
+            "Begadang semalam sebelumnya, dan mengandalkan nyali"
+          ]
+        },
+        {
+          "q": "Sebutan mana yang paling tidak kamu sukai?",
+          "options": [
+            "Biasa-biasa saja",
+            "Tidak adil",
+            "Pengecut",
+            "Bodoh"
+          ]
+        },
+        {
+          "q": "Pilih semboyan untuk teman-temanmu:",
+          "options": [
+            "Pertanyakan segalanya",
+            "Keberuntungan berpihak pada yang berani",
+            "Bidik lebih tinggi daripada yang diharapkan siapa pun",
+            "Tidak ada yang ditinggalkan"
+          ]
+        }
+      ],
+      "dims": {
+        "gryffindor": "Gryffindor",
+        "hufflepuff": "Hufflepuff",
+        "ravenclaw": "Ravenclaw",
+        "slytherin": "Slytherin"
+      },
+      "results": {
+        "gryffindor": {
+          "name": "Gryffindor",
+          "body": "Berani, nekat, dan cepat membela apa yang benar. Kamu bertindak saat orang lain ragu dan rela menghadapi bahaya demi teman. Hitung saja sampai tiga sebelum menyerbu. Anggota Gryffindor terkenal: Harry Potter, Hermione Granger, Ron Weasley, dan Albus Dumbledore."
+        },
+        "hufflepuff": {
+          "name": "Hufflepuff",
+          "body": "Setia, adil, dan pekerja keras, teman yang bisa diandalkan semua orang. Kamu memperlakukan orang dengan baik, tak pernah mengambil jalan pintas, dan tidak butuh sorotan. Anggota Hufflepuff terkenal: Cedric Diggory, Newt Scamander, dan Nymphadora Tonks."
+        },
+        "ravenclaw": {
+          "name": "Ravenclaw",
+          "body": "Penuh rasa ingin tahu, cerdas, dan orisinal. Kamu mencintai gagasan demi gagasan itu sendiri, mengajukan pertanyaan yang tak terpikirkan orang lain, dan tidak keberatan sedikit berbeda. Anggota Ravenclaw terkenal: Luna Lovegood, Cho Chang, dan Filius Flitwick."
+        },
+        "slytherin": {
+          "name": "Slytherin",
+          "body": "Ambisius, banyak akal, dan bertekad kuat. Kamu tahu apa yang kamu mau dan menemukan cara cerdik untuk meraihnya, dan kamu sangat setia pada orang-orangmu sendiri. Anggota Slytherin terkenal: Merlin, Severus Snape, dan Horace Slughorn."
         }
       }
     }

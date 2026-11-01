@@ -5,13 +5,15 @@
     "scaleHint": {
       "agree5": "¿Hasta qué punto te describe cada afirmación? Responde según cómo eres normalmente, no cómo te gustaría ser.",
       "agree4": "¿Cuánto estás de acuerdo con cada afirmación sobre ti?",
-      "freq4": "Durante las últimas 2 semanas, ¿con qué frecuencia te han molestado los siguientes problemas?"
+      "freq4": "Durante las últimas 2 semanas, ¿con qué frecuencia te han molestado los siguientes problemas?",
+      "time6": "Durante las últimas dos semanas, ¿cuánto tiempo se ha cumplido en tu caso cada afirmación?"
     },
     "choiceHint": "Elige la respuesta que más se parezca a ti. No hay respuestas incorrectas.",
     "scale": {
       "agree5": ["Muy en desacuerdo", "En desacuerdo", "Neutral", "De acuerdo", "Muy de acuerdo"],
       "agree4": ["Muy en desacuerdo", "En desacuerdo", "De acuerdo", "Muy de acuerdo"],
-      "freq4": ["Nunca", "Varios días", "Más de la mitad de los días", "Casi todos los días"]
+      "freq4": ["Nunca", "Varios días", "Más de la mitad de los días", "Casi todos los días"],
+      "time6": ["Nunca", "De vez en cuando", "Menos de la mitad del tiempo", "Más de la mitad del tiempo", "La mayor parte del tiempo", "Todo el tiempo"]
     },
     "progress": "{n} de {total} respondidas",
     "submit": "Ver mi resultado",
@@ -38,10 +40,10 @@
     "crisisLines": "España: Línea 024 (atención a la conducta suicida, 24 h). México: Línea de la Vida 800 911 2000. En una emergencia, llama al 112 o al 911."
   },
   "hub": {
-    "title": "Tests de personalidad gratis: MBTI, Big Five, amor — cv.cm",
-    "description": "Tests de personalidad gratis: MBTI, Big Five, introvertido o extrovertido, eneagrama, lenguajes del amor, apego, conflicto, vocacional, estilo de trabajo, dinero, cronotipo, mascota, forma de cara, autoestima, ansiedad y depresión, además de tests de fans de videojuegos y anime: Pokémon, Genshin Impact, Sonic, D&D, Naruto, Demon Slayer, Jujutsu Kaisen, Avatar y arquetipos de anime. Sin registro; tus respuestas no salen del navegador.",
+    "title": "Tests de personalidad gratis: MBTI, Big Five, inteligencia emocional y amor — cv.cm",
+    "description": "Tests de personalidad y psicología gratis: 16 personalidades (estilo MBTI), Big Five, introvertido o extrovertido, eneagrama, inteligencia emocional, lenguajes del amor, apego, estilos de amor, conflicto, vocacional, estilo de trabajo, liderazgo, dinero, cronotipo, mascota, forma de cara, bienestar (WHO-5), autoestima, ansiedad y depresión, además de tests de fans: casa de Hogwarts, Pokémon, Genshin Impact, Sonic, D&D, Naruto, One Piece, Demon Slayer, Jujutsu Kaisen, Avatar y arquetipos de anime. Sin registro; tus respuestas no salen del navegador.",
     "h1": "Tests de personalidad y psicología",
-    "lede": "Veintiséis tests gratuitos, desde los 16 tipos de personalidad y el Big Five hasta los lenguajes del amor, los intereses profesionales, tests de fans de Pokémon y Naruto y breves autoevaluaciones de salud mental. Sin registro ni correo. Tus respuestas se puntúan en tu navegador y nunca se suben.",
+    "lede": "Treinta y dos tests gratuitos, desde los 16 tipos de personalidad, el Big Five y la inteligencia emocional hasta los estilos de amor, el liderazgo, tu casa de Hogwarts, tests de fans de One Piece y Naruto y breves autoevaluaciones de salud mental. Sin registro ni correo. Tus respuestas se puntúan en tu navegador y nunca se suben.",
     "groups": {
       "personality": "Personalidad",
       "love": "Amor y relaciones",
@@ -49,11 +51,12 @@
       "fun": "Por diversión",
       "wellbeing": "Autoevaluaciones de bienestar",
       "games": "Videojuegos",
-      "anime": "Anime y animación"
+      "anime": "Anime y animación",
+      "books": "Libros y cine"
     },
     "about": [
       "Cada test muestra todas sus preguntas en una sola página. Respóndelas, pulsa el botón y el resultado aparece debajo con una breve explicación y un gráfico de tus puntuaciones.",
-      "Las autoevaluaciones de bienestar usan cuestionarios de cribado publicados (Rosenberg, GAD-7, PHQ-9). El Big Five y el test de introvertido o extrovertido usan el banco de ítems IPIP, de dominio público. Los demás tests se han escrito para cv.cm a partir de modelos conocidos, y sus resultados son un punto de partida para reflexionar, no un veredicto. Los tests de videojuegos y anime son tests de fans no oficiales, solo por diversión."
+      "Las autoevaluaciones de bienestar usan cuestionarios de cribado publicados (WHO-5, Rosenberg, GAD-7, PHQ-9). El Big Five y el test de introvertido o extrovertido usan el banco de ítems IPIP, de dominio público. Los demás tests se han escrito para cv.cm a partir de modelos conocidos, y sus resultados son un punto de partida para reflexionar, no un veredicto. Los tests de videojuegos, anime y libros son tests de fans no oficiales, solo por diversión."
     ],
     "faq": [
       { "q": "¿Son gratis estos tests?", "a": "Sí. Todos los tests son gratuitos, sin registro, sin correo y sin pagar para ver el resultado." },
@@ -375,6 +378,84 @@
         "9": { "name": "Tipo 9 · El Pacificador", "body": "Tranquilo, receptivo y tranquilizador. Quieres paz interior y exterior, y temes el conflicto y la separación. Creces al expresar tus propias prioridades y actuar en consecuencia." }
       }
     },
+    "eq": {
+      "title": "Test de inteligencia emocional gratis (test de EQ) con puntuación en 4 habilidades — cv.cm",
+      "description": "Test de inteligencia emocional online gratis. Valora 20 afirmaciones y mide tu autoconocimiento, autocontrol, empatía y habilidades sociales, con lo que significa cada puntuación y cómo mejorarla. Sin registro.",
+      "h1": "Test de inteligencia emocional (EQ)",
+      "lede": "La inteligencia emocional es la capacidad de notar, entender y manejar las emociones, tanto las propias como las de los demás. Valora 20 afirmaciones y ve tu puntuación en cada una de sus cuatro áreas.",
+      "about": [
+        "Este test sigue las cuatro áreas del modelo de inteligencia emocional de Daniel Goleman: autoconocimiento (saber qué sientes y por qué), autocontrol (manejar esas emociones), conciencia social (entender a los demás) y gestión de las relaciones (llevarte bien con la gente, influir y resolver conflictos).",
+        "Las afirmaciones se han escrito para cv.cm. Es una autoevaluación, no el EQ-i ni el MSCEIT con licencia, y una autoevaluación muestra cómo te ves a ti. Cada área se puntúa de 0 a 100: menos de 40 es bajo y más de 60, alto. A diferencia del CI, son habilidades, y mejoran con la práctica."
+      ],
+      "faq": [
+        {
+          "q": "¿Qué es una buena puntuación de inteligencia emocional?",
+          "a": "Aquí no hay nota de aprobado. Una puntuación de más de 60 en un área significa que ves esa habilidad como un punto fuerte; por debajo de 40 marca el área que más vale la pena practicar. Fíjate en el equilibrio entre las cuatro áreas más que en un solo número."
+        },
+        {
+          "q": "¿Se puede mejorar la inteligencia emocional?",
+          "a": "Sí. Ponerle nombre a lo que sientes, hacer una pausa antes de reaccionar, preguntar a los demás cómo ven una situación y escuchar sin preparar tu respuesta son habilidades que crecen con la práctica."
+        },
+        {
+          "q": "¿Es más importante el EQ que el CI?",
+          "a": "Miden cosas distintas. El CI evalúa el razonamiento; el EQ tiene que ver con manejar emociones y personas. Los dos importan, y el EQ pesa más en trabajos que dependen del trabajo en equipo, el liderazgo y la atención a las personas."
+        },
+        {
+          "q": "¿Qué tan preciso es un test de EQ de autoevaluación?",
+          "a": "Muestra cómo te ves, que puede no coincidir con cómo te ven los demás. Para tener una imagen más completa, pide a algunas personas que te conozcan bien que respondan las preguntas pensando en ti."
+        }
+      ],
+      "items": [
+        "Normalmente puedo nombrar con exactitud lo que siento, no solo «bien» o «mal».",
+        "Cuando estoy alterado, puedo calmarme antes de decir algo de lo que me arrepienta.",
+        "A menudo noto cómo se siente alguien antes de que diga nada.",
+        "Puedo decirle a alguien que se equivoca sin dañar nuestra relación.",
+        "Mi estado de ánimo cambia a menudo y no sé por qué.",
+        "Cuando algo me molesta, suele arruinarme el resto del día.",
+        "Me cuesta ver una situación desde el punto de vista del otro cuando no estoy de acuerdo.",
+        "Los conflictos con la gente suelen empeorar cuando me meto.",
+        "Sé qué situaciones suelen ponerme ansioso o enojado.",
+        "Puedo mantener la calma y pensar con claridad bajo presión.",
+        "La gente me dice a menudo que sé escuchar.",
+        "Me resulta fácil hacer que la gente se sienta cómoda conmigo.",
+        "A menudo me sorprende lo fuerte que reacciono ante las cosas.",
+        "Actúo por impulso y luego desearía haber esperado.",
+        "No me doy cuenta de que mis amigos lo están pasando mal hasta que me lo dicen.",
+        "Evito las conversaciones difíciles aunque sean necesarias.",
+        "Entiendo cómo mis emociones afectan a mi forma de trabajar y de tratar a los demás.",
+        "Después de un tropiezo, puedo levantarme y seguir adelante.",
+        "Me doy cuenta cuando alguien dice que está bien pero no lo está.",
+        "Cuando dos personas no están de acuerdo, puedo ayudarlas a encontrar puntos en común."
+      ],
+      "dims": {
+        "self": "Autoconocimiento",
+        "regulate": "Autocontrol",
+        "empathy": "Empatía",
+        "social": "Habilidades sociales"
+      },
+      "levels": {
+        "self": {
+          "low": "Tus emociones a menudo te toman por sorpresa. Prueba a nombrar lo que sientes varias veces al día, con la mayor precisión posible («irritación», «decepción», «nervios»), y a fijarte en qué lo provocó.",
+          "mid": "Por lo general sabes lo que sientes, aunque las emociones fuertes o mezcladas todavía pueden pillarte desprevenido. Sigue revisando cómo estás en los momentos de prisa o tensión.",
+          "high": "Conoces bien tus emociones, qué las desencadena y cómo influyen en lo que haces. Ese conocimiento de ti es la base de todas las demás habilidades emocionales."
+        },
+        "regulate": {
+          "low": "Las emociones fuertes suelen dirigir lo que haces. Una pausa de unas cuantas respiraciones lentas, o la regla de consultar con la almohada antes de responder enojado, te da margen para elegir cómo reaccionar.",
+          "mid": "Mantienes la calma la mayor parte del tiempo, pero el estrés o el cansancio pueden desbordarte. Detecta tus primeras señales de alarma y actúa antes.",
+          "high": "Te mantienes firme bajo presión, te recuperas de los tropiezos y rara vez actúas por impulso. La gente puede contar contigo cuando las cosas se ponen tensas."
+        },
+        "empathy": {
+          "low": "Te puede costar leer las emociones de los demás. Haz más preguntas («¿Cómo lo estás llevando?») y fíjate en las caras y el tono, no solo en las palabras.",
+          "mid": "Captas cómo se siente la gente cuando prestas atención, pero se te pueden escapar las señales más sutiles cuando estás ocupado o no estás de acuerdo.",
+          "high": "Lees bien a las personas y entiendes su punto de vista, incluso cuando no lo compartes. A tu lado, la gente se siente escuchada."
+        },
+        "social": {
+          "low": "Manejar conflictos y conversaciones difíciles es un área en la que puedes crecer. Empieza poco a poco: da una opinión sincera y amable sobre una sola cosa, y di con claridad lo que necesitas.",
+          "mid": "Te llevas bien con la mayoría de la gente. Practicar lo más difícil, como los conflictos, dar retroalimentación y unir a las personas, te hará todavía más fuerte.",
+          "high": "Generas confianza, manejas los conflictos con calma y ayudas a que la gente trabaje unida. Equipos y amigos suelen contar contigo para que todo marche bien."
+        }
+      }
+    },
     "love-language": {
       "title": "Test de lenguajes del amor gratis: descubre el tuyo — cv.cm",
       "description": "Test de lenguajes del amor gratis: valora 25 afirmaciones y descubre cómo prefieres recibir amor: palabras, tiempo, regalos, actos de servicio o contacto físico.",
@@ -474,6 +555,94 @@
         "anxious": { "name": "Ansioso (preocupado)", "body": "Buscas la cercanía y te preocupa perderla, así que puedes pedir confirmación o dar mucha importancia a pequeñas señales. Expresar tus necesidades directamente y calmarte antes de reaccionar hace que las relaciones se vivan con más tranquilidad." },
         "avoidant": { "name": "Evitativo (desapegado)", "body": "Valoras la independencia y te incomoda que otros se acerquen demasiado o dependan de ti. Puedes retirarte cuando las cosas se ponen serias. Practicar pequeños pasos de apertura permite que te apoyen sin quitarte libertad." },
         "fearful": { "name": "Temeroso-evitativo (desorganizado)", "body": "Deseas la cercanía, pero también la temes, así que puedes oscilar entre buscar a los demás y alejarte. Esto suele venir de experiencias dolorosas. La paciencia, una pareja estable y el apoyo de un terapeuta pueden ayudar mucho." }
+      }
+    },
+    "love-style": {
+      "title": "Test de estilos de amor gratis: los seis estilos de Lee (Eros, Storge, Ágape…) — cv.cm",
+      "description": "Test de estilos de amor gratis basado en los seis estilos de John Alan Lee: pasional (Eros), lúdico (Ludus), amistoso (Storge), pragmático (Pragma), posesivo (Manía) y altruista (Ágape). Valora 24 afirmaciones, sin registro.",
+      "h1": "Test de estilos de amor: ¿cómo amas?",
+      "lede": "¿Te enamoras rápido y con todo, o el amor te crece despacio a partir de una amistad? Valora 24 afirmaciones y descubre tu estilo de amor principal entre los seis que describió el sociólogo John Alan Lee.",
+      "about": [
+        "En 1973 el sociólogo John Alan Lee describió seis estilos de amar, con nombres griegos y latinos: Eros (pasional), Ludus (lúdico), Storge (amistoso), Pragma (pragmático), Manía (posesivo) y Ágape (altruista). La mayoría de la gente combina varios, y la combinación puede cambiar con la edad y con cada relación.",
+        "Las afirmaciones se han escrito para cv.cm y se inspiran en el modelo de Lee; no es la Love Attitudes Scale publicada. Tu resultado indica tu estilo más fuerte y muestra tus puntuaciones en los seis. Estilos distintos pueden funcionar muy bien juntos cuando la pareja se entiende."
+      ],
+      "faq": [
+        {
+          "q": "¿Cuáles son los seis estilos de amor?",
+          "a": "Eros (amor pasional y romántico), Ludus (el amor como un juego), Storge (amor que nace de la amistad), Pragma (amor práctico y compatible), Manía (amor intenso y ansioso) y Ágape (amor altruista y entregado)."
+        },
+        {
+          "q": "¿Hay un estilo de amor mejor que otro?",
+          "a": "Ningún estilo es el mejor. Los estudios relacionan Eros y Ágape con relaciones más satisfactorias, y Manía con más celos y preocupación, pero lo que más importa es que cada miembro de la pareja entienda el estilo del otro."
+        },
+        {
+          "q": "¿Es lo mismo que los lenguajes del amor?",
+          "a": "No. Los lenguajes del amor tratan de cómo te gusta dar y recibir cariño. Los estilos de amor tratan de cómo vives el amor en sí: qué tan rápido te enamoras, qué buscas y con qué intensidad lo sientes."
+        },
+        {
+          "q": "¿Puede cambiar mi estilo de amor?",
+          "a": "Sí. Lee veía los estilos como actitudes, no como rasgos fijos. Cambian con la experiencia, la edad y la pareja con la que estás."
+        }
+      ],
+      "items": [
+        "Sentí una atracción fuerte por mi pareja (o por quien me gusta) casi de inmediato.",
+        "Prefiero mantener mis opciones abiertas antes que comprometerme con una sola persona.",
+        "Mis relaciones favoritas nacieron poco a poco de una amistad.",
+        "Antes de ponerme serio con alguien, pienso si nuestras vidas encajan.",
+        "Cuando estoy enamorado, no puedo dejar de pensar en la otra persona.",
+        "Prefiero sufrir yo antes que dejar que sufra la persona que amo.",
+        "Mi pareja y yo tenemos una química especial.",
+        "El amor es más divertido cuando es ligero y no se pone demasiado serio.",
+        "El mejor amor es una amistad profunda que se convirtió en algo más.",
+        "Los valores y las metas en común me importan más que el romance.",
+        "Si mi pareja tarda en responderme, empiezo a preocuparme.",
+        "Dejaría de lado mis planes para ayudar a la persona que amo a cumplir los suyos.",
+        "Creo en el amor a primera vista.",
+        "He disfrutado coqueteando con más de una persona a la vez.",
+        "Confío más en un amor que ha tenido tiempo de crecer que en uno que empieza con fuegos artificiales.",
+        "Me gustaría una pareja que fuera buen padre o buena madre y un compañero de equipo confiable.",
+        "Me pongo celoso con facilidad, aunque sepa que no debería.",
+        "Cuido a mi pareja sin esperar nada a cambio.",
+        "Para mí, la cercanía física y el romance son el corazón del amor.",
+        "Hay cosas de mi vida amorosa que es mejor guardarme.",
+        "Quiero que mi pareja sea mi mejor amigo o amiga.",
+        "Pensaría con cuidado cómo encajaría una pareja con mi familia y mi carrera.",
+        "Cuando una relación va mal, no puedo comer ni dormir bien.",
+        "Amar a alguien es aceptarlo por completo, con sus defectos."
+      ],
+      "dims": {
+        "eros": "Eros (pasional)",
+        "ludus": "Ludus (lúdico)",
+        "storge": "Storge (amistoso)",
+        "pragma": "Pragma (pragmático)",
+        "mania": "Manía (posesivo)",
+        "agape": "Ágape (altruista)"
+      },
+      "results": {
+        "eros": {
+          "name": "Eros: amor pasional",
+          "body": "Amas con todo el corazón y confías en la química: la atracción, el romance y la cercanía van primero. La pasión les da energía a tus relaciones. Mantén viva la curiosidad y los pequeños gestos románticos cuando la chispa inicial se vuelva algo más estable."
+        },
+        "ludus": {
+          "name": "Ludus: amor lúdico",
+          "body": "Ves el amor como algo divertido, ligero y lleno de posibilidades, y no te gusta atarte demasiado pronto. Haces que salir con alguien sea emocionante. Deja claro qué buscas, para que nadie salga herido por tener expectativas distintas."
+        },
+        "storge": {
+          "name": "Storge: amor amistoso",
+          "body": "Tu amor crece despacio a partir de la amistad, los intereses en común y la confianza. Es tranquilo, leal y hecho para durar. Puede que al principio no sientas fuegos artificiales, y está bien: tu fuerza es una pareja que también es tu mejor amistad."
+        },
+        "pragma": {
+          "name": "Pragma: amor pragmático",
+          "body": "Eliges con la cabeza además de con el corazón, y buscas valores y metas en común y una vida que encaje. Eso da lugar a relaciones estables. Deja espacio también a la espontaneidad y al sentimiento, no solo a la lista de requisitos."
+        },
+        "mania": {
+          "name": "Manía: amor posesivo",
+          "body": "Amas con intensidad, y eso puede traer altibajos, preocupación y celos. Tu entrega es real. Construir tu propia seguridad, con amistades, intereses y conversaciones sinceras con tu pareja, ayuda a que el amor se sienta más tranquilo."
+        },
+        "agape": {
+          "name": "Ágape: amor altruista",
+          "body": "Amas dando: cuidas, perdonas y pones primero a la otra persona sin llevar la cuenta. Es un don poco común. Asegúrate de que tus necesidades también cuenten, y elige parejas que te correspondan."
+        }
       }
     },
     "marriage": {
@@ -759,6 +928,94 @@
           "low": "Concentración profunda: das lo mejor de ti en bloques largos y sin interrupciones. Reserva bloques de concentración de dos o tres horas, desactiva las notificaciones y busca puestos que valoren la profundidad, como investigación, ingeniería o edición.",
           "mid": "Equilibrio: algo de variedad te mantiene fresco, pero cambiar demasiado de tarea te desgasta. Agrupa las tareas parecidas y dale a cada día un foco principal.",
           "high": "Variedad: los problemas nuevos y el ritmo rápido te dan energía, y la rutina te aburre. Encajas en operaciones, atención a clientes, eventos o startups; lleva una lista sencilla para que no se te escape ninguno de tus muchos frentes."
+        }
+      }
+    },
+    "leadership": {
+      "title": "Test de estilo de liderazgo gratis: ¿cuál de los 6 estilos es el tuyo? — cv.cm",
+      "description": "Test de estilos de liderazgo gratis basado en los seis estilos de Goleman: visionario, coach, afiliativo, democrático, timonel y autoritario. Valora 24 afirmaciones y descubre tu estilo principal y cuándo usar los demás.",
+      "h1": "Test de estilo de liderazgo",
+      "lede": "¿Cómo lideras cuando la decisión es tuya? Valora 24 afirmaciones y descubre tu estilo principal entre los seis que describió Daniel Goleman, y cuándo cada estilo ayuda o perjudica a un equipo.",
+      "about": [
+        "En 2000 el psicólogo Daniel Goleman describió seis estilos de liderazgo a partir de una investigación con miles de directivos: visionario, coach, afiliativo, democrático, timonel y autoritario. Los mejores líderes no se quedan en uno; cambian de estilo según la situación, como un golfista elige el palo.",
+        "Las afirmaciones se han escrito para cv.cm y se inspiran en el modelo de Goleman. Tu resultado muestra tu estilo más fuerte y tus puntuaciones en los seis. No necesitas un cargo de jefe para aprovecharlo: liderar un proyecto, un club o un grupo de amigos también cuenta."
+      ],
+      "faq": [
+        {
+          "q": "¿Cuáles son los seis estilos de liderazgo?",
+          "a": "Visionario (marca un rumbo y deja que la gente encuentre el camino), coach (desarrolla a las personas), afiliativo (pone primero a las personas y la armonía), democrático (busca el consenso), timonel (fija estándares altos con el ejemplo) y autoritario (da órdenes claras)."
+        },
+        {
+          "q": "¿Cuál es el mejor estilo de liderazgo?",
+          "a": "La investigación de Goleman encontró que los estilos visionario, coach, afiliativo y democrático suelen mejorar el clima de un equipo, mientras que el timonel y el autoritario funcionan en momentos puntuales, como una crisis o un equipo experto con una fecha límite, pero desgastan a la gente si se abusa de ellos."
+        },
+        {
+          "q": "No soy jefe. ¿Este test es para mí?",
+          "a": "Sí. Responde según cómo actúas cuando lideras cualquier cosa: un proyecto escolar, un equipo en el trabajo, un evento o un viaje con amigos."
+        },
+        {
+          "q": "¿Cómo puedo ampliar mi repertorio?",
+          "a": "Elige el estilo en el que sacaste menos puntos y que ayudaría a tu equipo, y pruébalo a propósito durante unas semanas: por ejemplo, pide ideas antes de decidir o reserva tiempo para acompañar a una persona."
+        }
+      ],
+      "items": [
+        "Me gusta dibujar una imagen clara de hacia dónde vamos y por qué importa.",
+        "Disfruto ayudando a la gente a descubrir sus fortalezas y a crecer.",
+        "Para mí, lo primero es que el equipo esté contento y unido.",
+        "Antes de decidir, le pido ideas a todo el mundo.",
+        "Pongo el listón alto y espero que los demás sigan mi ritmo.",
+        "En una crisis, tomo el mando y le digo a la gente exactamente qué hacer.",
+        "Le doy a la gente una meta y dejo que encuentre cómo llegar.",
+        "Dedicaría tiempo a enseñarle a alguien aunque hacerlo yo fuera más rápido.",
+        "Cuando hay tensión, me centro en reparar las relaciones antes que nada.",
+        "Las decisiones son mejores cuando las personas afectadas tienen voz.",
+        "Si alguien va lento, prefiero hacerme cargo del trabajo yo.",
+        "Espero que se sigan las instrucciones sin mucho debate.",
+        "La gente me dice que la inspiro con grandes ideas.",
+        "Doy retroalimentación que ayuda a las personas a alcanzar sus metas a largo plazo.",
+        "Elogio a la gente a menudo y me aseguro de que se sienta valorada.",
+        "Prefiero tardar más y llegar a un acuerdo que imponer una decisión.",
+        "Lidero con el ejemplo: trabajo rápido y espero lo mismo de los demás.",
+        "Las reglas claras y un control firme dan los mejores resultados.",
+        "Explico cómo encaja el trabajo de cada persona en la meta general.",
+        "Le pregunto a la gente qué quiere lograr en su carrera.",
+        "Prefiero mantener la paz antes que ganar una discusión.",
+        "Dirijo reuniones en las que todos pueden hablar.",
+        "Me frustro cuando el trabajo no se hace a mi nivel de exigencia.",
+        "Cuando ya decidí, no me gusta que me cuestionen."
+      ],
+      "dims": {
+        "visionary": "Visionario",
+        "coaching": "Coach",
+        "affiliative": "Afiliativo",
+        "democratic": "Democrático",
+        "pacesetting": "Timonel",
+        "commanding": "Autoritario"
+      },
+      "results": {
+        "visionary": {
+          "name": "Líder visionario",
+          "body": "Lideras dando a la gente un rumbo claro y una razón para que le importe, y luego confías en que encuentre el camino. Funciona mejor cuando un equipo necesita una nueva dirección. Recuerda que un equipo experto puede necesitar que lo escuches, no solo inspiración."
+        },
+        "coaching": {
+          "name": "Líder coach",
+          "body": "Lideras desarrollando a las personas: preguntas por sus metas, das retroalimentación útil y te tomas el tiempo de enseñar. Con el tiempo forma equipos fuertes y leales. Funciona peor cuando la gente no quiere aprender o cuando la entrega es mañana."
+        },
+        "affiliative": {
+          "name": "Líder afiliativo",
+          "body": "Lideras poniendo primero a las personas, construyendo armonía, confianza y espíritu de equipo. Es ideal para sanar un equipo tras un conflicto o mantener la moral alta bajo estrés. Combínalo con metas claras y retroalimentación sincera, para que el trabajo flojo no pase de largo."
+        },
+        "democratic": {
+          "name": "Líder democrático",
+          "body": "Lideras escuchando y construyendo acuerdos, para que la gente sienta suyas las decisiones. Funciona bien cuando necesitas ideas nuevas o compromiso. En una crisis, o cuando el equipo se atasca en reuniones interminables, prepárate para tomar la decisión."
+        },
+        "pacesetting": {
+          "name": "Líder timonel",
+          "body": "Lideras con el ejemplo y fijas estándares altos de velocidad y calidad. Logra resultados rápidos con un equipo capacitado y motivado. Si dura demasiado puede agobiar a la gente, así que explica el porqué, reparte la carga y reconoce el esfuerzo."
+        },
+        "commanding": {
+          "name": "Líder autoritario",
+          "body": "Lideras tomando el control y dando instrucciones claras. En una emergencia real o en un cambio de rumbo urgente, esa determinación es justo lo que hace falta. Usado a diario puede asfixiar a la gente, así que afloja el control cuando las cosas se estabilicen y pide opiniones."
         }
       }
     },
@@ -1263,6 +1520,56 @@
         "oblong": { "name": "Cara alargada", "body": "Claramente más larga que ancha, con frente, pómulos y mandíbula de ancho similar. Añade anchura: flequillo, ondas y volumen a los lados; monturas grandes o altas. Evita el pelo muy largo y liso y los peinados con mucha altura arriba." },
         "diamond": { "name": "Cara de diamante", "body": "Pómulos anchos y altos, con la frente y la mandíbula más estrechas. Luce los pómulos: flequillos de lado, peinados con el pelo detrás de la oreja y cortes a la altura de la barbilla; gafas ovaladas o de ojo de gato." },
         "triangle": { "name": "Cara triangular (pera)", "body": "Mandíbula más ancha que la frente. Añade anchura arriba: volumen en la coronilla y las sienes, cortes en capas, flequillo de lado; monturas marcadas en la parte superior, como las browline. Mantén la barba corta en los laterales." }
+      }
+    },
+    "wellbeing-index": {
+      "title": "Test de bienestar gratis (Índice de Bienestar WHO-5): puntuación de 0 a 100 — cv.cm",
+      "description": "Test de bienestar WHO-5 online gratis. Responde 5 preguntas sobre las últimas dos semanas y obtén tu puntuación de bienestar de 0 a 100 y qué significa. Privado: nada sale de tu navegador.",
+      "h1": "Test de bienestar (WHO-5)",
+      "lede": "El Índice de Bienestar WHO-5 hace 5 preguntas breves sobre cómo te has sentido durante las últimas dos semanas. Se tarda menos de un minuto y da una puntuación de 0 a 100.",
+      "about": [
+        "El WHO-5 lo publicó la Oficina Regional para Europa de la Organización Mundial de la Salud en 1998 y es uno de los cuestionarios de bienestar más usados del mundo. Es de uso libre. Cada respuesta vale de 0 a 5; el total (0–25) se multiplica por 4 para obtener un porcentaje de 0 (el peor posible) a 100 (el mejor posible).",
+        "Una puntuación por debajo de 52 sugiere un bienestar bajo, y los médicos la usan como motivo para evaluar una posible depresión; una puntuación de 28 o menos suele ir asociada a la depresión. Este test es una autoevaluación, no un diagnóstico."
+      ],
+      "faq": [
+        {
+          "q": "¿Qué significa mi puntuación del WHO-5?",
+          "a": "Multiplica la puntuación bruta (0–25) por 4. 52 o más está en el rango normal de bienestar. Por debajo de 52 sugiere un bienestar bajo. 28 o menos es señal de que podría haber depresión y conviene que lo evalúe un profesional."
+        },
+        {
+          "q": "¿El WHO-5 es un test de depresión?",
+          "a": "Mide el bienestar positivo, no los síntomas de depresión, pero una puntuación baja es un buen motivo para hacer un cribado de depresión, por ejemplo con el test PHQ-9 de este sitio, y para hablar con un médico."
+        },
+        {
+          "q": "¿Cada cuánto puedo hacerlo?",
+          "a": "Pregunta por las últimas dos semanas, así que repetirlo más o menos cada dos semanas es una forma sencilla de seguir cómo estás. Un cambio de 10 puntos o más se considera significativo."
+        },
+        {
+          "q": "¿Qué puede mejorar mi bienestar?",
+          "a": "Dormir con regularidad, la luz del día y el movimiento, pasar tiempo con personas que te caen bien y hacer cosas que te interesan ayudan a mucha gente. Si el ánimo bajo se prolonga, habla con un médico o un psicólogo."
+        }
+      ],
+      "items": [
+        "Me he sentido alegre y de buen humor.",
+        "Me he sentido tranquilo y relajado.",
+        "Me he sentido activo y enérgico.",
+        "Me he despertado fresco y descansado.",
+        "Mi vida diaria ha estado llena de cosas que me interesan."
+      ],
+      "scoreLabel": "Puntuación bruta (×4 = porcentaje)",
+      "results": {
+        "low": {
+          "name": "Bienestar bajo (0–7, o 0–28%)",
+          "body": "Tus respuestas sugieren que tu bienestar ha sido bajo durante las últimas dos semanas. Las puntuaciones así de bajas suelen ir asociadas a la depresión, así que habla pronto con un médico o un profesional de la salud mental. También puedes hacer aquí el test de depresión PHQ-9. No tienes que enfrentarlo solo: existe ayuda eficaz."
+        },
+        "reduced": {
+          "name": "Bienestar reducido (8–12, o 32–48%)",
+          "body": "Últimamente tu bienestar ha estado por debajo del rango habitual. Vale la pena hacer un cribado de depresión (el test PHQ-9 de este sitio es una opción) y hablar con un médico si esto dura desde hace tiempo. Pequeños pasos como dormir con regularidad, la luz del día, el movimiento y el tiempo con personas de confianza pueden ayudar."
+        },
+        "good": {
+          "name": "Buen bienestar (13–25, o 52–100%)",
+          "body": "Tu bienestar está en el rango normal. Mantén los hábitos y las personas que te ayudan a sentirte así, y repite el test dentro de unas semanas para ver cómo se mantiene."
+        }
       }
     },
     "self-esteem": {
@@ -2326,6 +2633,188 @@
         }
       }
     },
+    "one-piece": {
+      "title": "¿Qué personaje de One Piece eres? Test de los Piratas del Sombrero de Paja — cv.cm",
+      "description": "Test de One Piece gratis: responde 12 preguntas y descubre qué Pirata del Sombrero de Paja eres: Luffy, Zoro, Nami, Usopp, Sanji, Chopper, Robin o Franky. Sin registro, test de fans no oficial.",
+      "h1": "¿Qué Pirata del Sombrero de Paja eres?",
+      "lede": "¿Capitán, espadachín, navegante o cocinero? Responde 12 preguntas sobre tus sueños, tus costumbres y tus puntos débiles, y descubre qué miembro de la tripulación de Luffy serías en One Piece.",
+      "about": [
+        "Cada Sombrero de Paja se unió a la tripulación persiguiendo un sueño propio, y ese sueño dice mucho de quién es: Luffy quiere ser el más libre del mar; Zoro, el mejor espadachín del mundo; Nami, dibujar el mapa del mundo entero. Este test relaciona tus sueños, tus costumbres y tus manías con ocho miembros de la tripulación.",
+        "Tu resultado indica tu Sombrero de Paja y muestra tus puntuaciones en los ocho. Este es un test de fans no oficial escrito para cv.cm. No está afiliado a Eiichiro Oda, Shueisha ni Toei Animation, ni cuenta con su respaldo; los nombres pertenecen a sus respectivos dueños."
+      ],
+      "faq": [
+        {
+          "q": "¿Qué personajes me pueden salir?",
+          "a": "Ocho de los Piratas del Sombrero de Paja: Monkey D. Luffy, Roronoa Zoro, Nami, Usopp, Sanji, Tony Tony Chopper, Nico Robin y Franky."
+        },
+        {
+          "q": "¿Por qué no están Brook y Jinbe en el test?",
+          "a": "Con ocho resultados el test se mantiene corto y todos los resultados son igual de fáciles de obtener. Puede que se sumen en una próxima actualización."
+        },
+        {
+          "q": "¿Hay algún resultado más raro que los demás?",
+          "a": "No. Cada personaje aparece en el mismo número de respuestas, así que todos son igual de probables."
+        },
+        {
+          "q": "¿Es un test oficial?",
+          "a": "No. Es un test de fans gratuito y tus respuestas no salen de tu navegador."
+        }
+      ],
+      "items": [
+        {
+          "q": "Tu sueño se parece más a…",
+          "options": [
+            "Ser la persona más libre del mar",
+            "Ser el mejor del mundo en una cosa",
+            "Dibujar un mapa del mundo entero",
+            "Convertirte en un guerrero valiente al que todos admiren"
+          ]
+        },
+        {
+          "q": "Tu puesto ideal en el barco:",
+          "options": [
+            "Historiador",
+            "Carpintero",
+            "Cocinero",
+            "Médico"
+          ]
+        },
+        {
+          "q": "Una tarde libre en una isla nueva. Tú…",
+          "options": [
+            "Buscas el mercado y pruebas los ingredientes locales",
+            "Corres directo hacia lo que parezca más peligroso",
+            "Buscas ruinas antiguas o una biblioteca",
+            "Te vas de compras y averiguas cuánto pagan por un tesoro"
+          ]
+        },
+        {
+          "q": "Tu mayor debilidad:",
+          "options": [
+            "Hablas con mucha seguridad y luego te da miedo",
+            "Te dejas llevar por tus propios proyectos",
+            "No tienes ningún sentido de la orientación",
+            "Te derrites en cuanto alguien te elogia"
+          ]
+        },
+        {
+          "q": "¿Qué te hace más feliz?",
+          "options": [
+            "Ayudar a alguien a curarse",
+            "Un banquete enorme con tus amigos",
+            "Ver a la gente disfrutar de la comida que preparaste",
+            "Una siesta después de un buen entrenamiento duro"
+          ]
+        },
+        {
+          "q": "Elige una habilidad:",
+          "options": [
+            "Construir cualquier cosa con chatarra",
+            "Leer el clima",
+            "Dar en cualquier blanco desde lejos",
+            "Leer lenguas antiguas"
+          ]
+        },
+        {
+          "q": "En un grupo, eres…",
+          "options": [
+            "Quien mantiene la calma y sabe más de lo que dice",
+            "Quien es un amor y pelearía por todos",
+            "Quien decide, por instinto",
+            "Quien cuenta las historias"
+          ]
+        },
+        {
+          "q": "¿Cómo manejas el dinero?",
+          "options": [
+            "Cada moneda contada, con intereses",
+            "Lo gastas en buena comida y en la gente que quieres",
+            "Lo gastas todo en piezas y herramientas",
+            "Siempre sin un peso, y tan tranquilo"
+          ]
+        },
+        {
+          "q": "Elige un lema:",
+          "options": [
+            "Todo a lo grande y con estilo",
+            "La verdad vale cualquier riesgo",
+            "Una promesa nunca se rompe",
+            "Si quiero hacerlo, lo hago"
+          ]
+        },
+        {
+          "q": "¿Qué es lo que más miedo te da?",
+          "options": [
+            "Dejar a alguien con hambre",
+            "La verdad, casi todo, pero igual das la cara",
+            "No poder salvar a alguien",
+            "Perder tu hogar y a la gente que vive en él"
+          ]
+        },
+        {
+          "q": "Elige un antojo:",
+          "options": [
+            "Mandarinas",
+            "Una cola bien helada",
+            "Carne con hueso",
+            "Algodón de azúcar"
+          ]
+        },
+        {
+          "q": "¿Cómo mejoras en lo que haces?",
+          "options": [
+            "Leyendo todo lo que encuentras",
+            "Entrenando horas cada día, a solas",
+            "Inventando trucos y artefactos nuevos",
+            "Practicando hasta que sale perfecto, y probando sobre la marcha"
+          ]
+        }
+      ],
+      "dims": {
+        "luffy": "Luffy",
+        "zoro": "Zoro",
+        "nami": "Nami",
+        "usopp": "Usopp",
+        "sanji": "Sanji",
+        "chopper": "Chopper",
+        "robin": "Robin",
+        "franky": "Franky"
+      },
+      "results": {
+        "luffy": {
+          "name": "Monkey D. Luffy",
+          "body": "Libre, sin miedo e imposible de detener cuando ya decidiste algo. Sigues tu instinto, pelearías contra quien sea por tus amigos y la gente termina siguiéndote sin saber muy bien por qué. Eso sí, no te olvides de comer algo que no sea carne."
+        },
+        "zoro": {
+          "name": "Roronoa Zoro",
+          "body": "Enfocado, leal y duro como el acero. Elegiste tu meta, entrenas para ella cada día y nunca rompes una promesa hecha a un amigo. Mantienes la calma en una crisis… aunque mejor deja que otra persona lleve el mapa."
+        },
+        "nami": {
+          "name": "Nami",
+          "body": "Lista, astuta y siempre tres pasos por delante, sobre todo cuando hay dinero de por medio. Trazas la ruta que siguen los demás, y bajo esa fachada dura harías cualquier cosa por las personas que consideras tu hogar."
+        },
+        "usopp": {
+          "name": "Usopp",
+          "body": "Creativo, gracioso y más valiente de lo que crees. Admites que tienes miedo y aun así das la cara, y eso es valor de verdad. Tus historias, tu puntería y tus ideas sacan a la tripulación de más líos de los que nadie imagina."
+        },
+        "sanji": {
+          "name": "Sanji",
+          "body": "Generoso, con estilo y entregado hasta el extremo. Demuestras cariño con buena comida y nunca dejarás que nadie pase hambre. Te riges por un código estricto, y lo arriesgarías todo por tu tripulación."
+        },
+        "chopper": {
+          "name": "Tony Tony Chopper",
+          "body": "Amable, curioso y un poco tímido, con un corazón enorme. Quieres ayudar y curar a todo el mundo, y eres más fuerte de lo que pareces. Cuando alguien te elogia, finges que no te importa… y se te nota muchísimo."
+        },
+        "robin": {
+          "name": "Nico Robin",
+          "body": "Serena, inteligente y con una curiosidad infinita, con un humor seco. Lo lees todo, lo notas todo y hablas poco. Después de mucho vivir, aprendiste lo que significa encontrar a personas que de verdad te cubren la espalda."
+        },
+        "franky": {
+          "name": "Franky",
+          "body": "Ruidoso, ingenioso y con un corazón enorme. Puedes construir cualquier cosa, todo lo haces a lo grande y no te da vergüenza decir lo genial que es. Debajo de tanto estilo hay alguien que llora con los finales felices y protege a la tripulación como a su familia."
+        }
+      }
+    },
     "demon-slayer": {
       "title": "¿Qué respiración de Demon Slayer eres? Test de Kimetsu no Yaiba — cv.cm",
       "description": "Test de Demon Slayer gratis: responde 12 preguntas y descubre tu respiración (Agua, Llama, Trueno, Bestia, Insecto, Viento, Niebla, Amor, Sonido o Piedra) y el personaje de Kimetsu no Yaiba que la comparte. Sin registro.",
@@ -2859,6 +3348,168 @@
         "air": {
           "name": "Maestro Aire",
           "body": "Espíritu libre, juguetón y pacífico. Prefieres buscar otro camino antes que pelear, valoras tu libertad y llevas ligereza a todos los que te rodean. Otros Maestros Aire: Aang y Jinora."
+        }
+      }
+    },
+    "hogwarts": {
+      "title": "¿A qué casa de Hogwarts perteneces? Test del Sombrero Seleccionador de Harry Potter gratis — cv.cm",
+      "description": "Test de casas de Hogwarts gratis: responde 12 preguntas y descubre si perteneces a Gryffindor, Hufflepuff, Ravenclaw o Slytherin, con miembros famosos de tu casa. Sin registro, test de fans no oficial.",
+      "h1": "¿A qué casa de Hogwarts perteneces?",
+      "lede": "¿Valiente, leal, inteligente o ambicioso? Responde 12 preguntas sobre lo que valoras y cómo actúas, y descubre dónde te pondría el Sombrero Seleccionador.",
+      "about": [
+        "En los libros de Harry Potter, cada estudiante nuevo de Hogwarts es seleccionado para una de cuatro casas: Gryffindor valora el valor; Hufflepuff, la lealtad y el trabajo duro; Ravenclaw, el ingenio y el saber; y Slytherin, la ambición y la astucia. Cada pregunta ofrece una respuesta para cada casa.",
+        "Tu resultado indica tu casa, algunos miembros famosos y tus puntuaciones en las cuatro. Este es un test de fans no oficial escrito para cv.cm. No está afiliado a J.K. Rowling, Warner Bros. ni Wizarding World, ni cuenta con su respaldo; los nombres pertenecen a sus respectivos dueños."
+      ],
+      "faq": [
+        {
+          "q": "¿Cuáles son las cuatro casas de Hogwarts?",
+          "a": "Gryffindor (valor y coraje), Hufflepuff (lealtad, justicia y trabajo duro), Ravenclaw (inteligencia, ingenio y curiosidad) y Slytherin (ambición, astucia e ingenio práctico)."
+        },
+        {
+          "q": "¿Slytherin es la casa de los malos?",
+          "a": "No. Slytherin ha tenido sus villanos, pero también es la casa de la ambición y los recursos, y Merlín y Severus Snape fueron de Slytherin. Todas las casas tienen sus héroes."
+        },
+        {
+          "q": "¿Y si me salen dos casas muy parejas?",
+          "a": "Eso te convierte en un caso que el Sombrero Seleccionador tendría que pensarse mucho (en inglés, un «hatstall»). El Sombrero tiene en cuenta tu elección, así que quédate con la casa que sientas tuya."
+        },
+        {
+          "q": "¿Es el test de selección oficial?",
+          "a": "No. Es un test de fans gratuito y tus respuestas no salen de tu navegador."
+        }
+      ],
+      "items": [
+        {
+          "q": "¿Qué cualidad es la más importante para ti?",
+          "options": [
+            "El valor",
+            "La lealtad",
+            "La curiosidad",
+            "La ambición"
+          ]
+        },
+        {
+          "q": "Elige un lugar para pasar la tarde:",
+          "options": [
+            "Una biblioteca en una torre, con vistas",
+            "Una sala junto al lago, iluminada de verde por el agua",
+            "Una cocina cálida con tus amigos",
+            "Un campo de deporte en día de partido"
+          ]
+        },
+        {
+          "q": "Un amigo rompe una regla y te enteras. Tú…",
+          "options": [
+            "Lo apoyas y lo ayudas a arreglarlo",
+            "Te preguntas si la regla tenía sentido en primer lugar",
+            "Le dices a la cara que estuvo mal",
+            "Te callas: te deberá un favor"
+          ]
+        },
+        {
+          "q": "¿Por qué te gustaría que te recordaran?",
+          "options": [
+            "Por lograr grandes cosas",
+            "Por hacer lo correcto cuando era difícil",
+            "Por ser amable con todo el mundo",
+            "Por una idea que cambió la forma de pensar de la gente"
+          ]
+        },
+        {
+          "q": "Elige una asignatura:",
+          "options": [
+            "Defensa Contra las Artes Oscuras",
+            "Encantamientos",
+            "Pociones",
+            "Herbología"
+          ]
+        },
+        {
+          "q": "Tu mayor defecto:",
+          "options": [
+            "Te saltas las reglas con tal de ganar",
+            "Te cuesta decir que no",
+            "Le das demasiadas vueltas a todo",
+            "Actúas antes de pensar"
+          ]
+        },
+        {
+          "q": "Un dragón te bloquea el paso. Tú…",
+          "options": [
+            "Lo estudias para encontrar su punto débil",
+            "Haces un trato con alguien que sepa manejarlo",
+            "Cargas contra él",
+            "Primero pones a todos a salvo y luego lo resuelven juntos"
+          ]
+        },
+        {
+          "q": "Elige un animal compañero:",
+          "options": [
+            "Un tejón",
+            "Un cachorro de león",
+            "Un águila",
+            "Una serpiente"
+          ]
+        },
+        {
+          "q": "Elige un objeto mágico:",
+          "options": [
+            "Una escoba más rápida que cualquier otra",
+            "Una varita que nunca pierde un duelo",
+            "Una copa que nunca se vacía, para compartir",
+            "Un libro que responde cualquier pregunta"
+          ]
+        },
+        {
+          "q": "¿Cómo te preparas para un examen importante?",
+          "options": [
+            "Trabajo constante cada día, con un grupo de estudio",
+            "Leyendo mucho más allá del temario, por gusto",
+            "Averiguando qué quieren los examinadores y centrándote en eso",
+            "Desvelándote la noche anterior y confiando en tus nervios de acero"
+          ]
+        },
+        {
+          "q": "¿Qué odiarías que te llamaran?",
+          "options": [
+            "Del montón",
+            "Injusto",
+            "Cobarde",
+            "Ignorante"
+          ]
+        },
+        {
+          "q": "Elige un lema para tu grupo de amigos:",
+          "options": [
+            "Cuestiónalo todo",
+            "La fortuna favorece a los audaces",
+            "Apunta más alto de lo que nadie espera",
+            "Aquí no se deja a nadie atrás"
+          ]
+        }
+      ],
+      "dims": {
+        "gryffindor": "Gryffindor",
+        "hufflepuff": "Hufflepuff",
+        "ravenclaw": "Ravenclaw",
+        "slytherin": "Slytherin"
+      },
+      "results": {
+        "gryffindor": {
+          "name": "Gryffindor",
+          "body": "Valiente, audaz y siempre listo para defender lo correcto. Actúas cuando otros dudan y te meterías en peligro por un amigo. Eso sí, cuenta hasta tres antes de lanzarte. Gryffindors famosos: Harry Potter, Hermione Granger, Ron Weasley y Albus Dumbledore."
+        },
+        "hufflepuff": {
+          "name": "Hufflepuff",
+          "body": "Leal, justo y trabajador: la persona con la que todos pueden contar. Tratas bien a la gente, nunca tomas atajos y no necesitas ser el centro de atención. Hufflepuffs famosos: Cedric Diggory, Newt Scamander y Nymphadora Tonks."
+        },
+        "ravenclaw": {
+          "name": "Ravenclaw",
+          "body": "Curioso, inteligente y original. Te encantan las ideas por sí mismas, haces preguntas que a nadie más se le ocurren y no te importa ser un poco diferente. Ravenclaws famosos: Luna Lovegood, Cho Chang y Filius Flitwick."
+        },
+        "slytherin": {
+          "name": "Slytherin",
+          "body": "Ambicioso, ingenioso y decidido. Sabes lo que quieres y encuentras formas astutas de conseguirlo, y eres ferozmente leal con los tuyos. Slytherins famosos: Merlín, Severus Snape y Horace Slughorn."
         }
       }
     }
