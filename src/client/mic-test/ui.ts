@@ -269,7 +269,7 @@ function draw(now: number): void {
   const pct = meterPercent(level);
   if (meterFill) {
     meterFill.style.width = `${pct}%`;
-    meterFill.classList.toggle("hot", levelVerdict(peakDb) === "loud");
+    meterFill.classList.toggle("hot", levelVerdict(holdDb) === "loud");
     // Screen readers hear the meter in steps of 10, not every frame.
     const stepped = Math.round(pct / 10) * 10;
     if (stepped !== lastPct) {

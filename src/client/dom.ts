@@ -56,3 +56,23 @@ export function downloadBlob(blob: Blob, filename: string): void {
   a.click();
   window.setTimeout(() => URL.revokeObjectURL(url), 4_000);
 }
+
+/** Whether any part of `el` is inside the viewport (page-wide shortcuts only act on a tool the user can see). */
+export function onScreen(el: Element | null): boolean {
+  if (!el) return false;
+  const r = el.getBoundingClientRect();
+  // No layout at all (an empty box at 0,0) cannot tell; treat it as visible.
+  if (r.width === 0 && r.height === 0 && r.top === 0) return true;
+  return r.bottom > 0 && r.top < window.innerHeight;
+}
+
+/**
+ * Mousedown on a tool's buttons: keep focus off them and drop focus held anywhere else (a field, a FAQ toggle, a link),
+ * so the tool's Space and arrow shortcuts work after a mouse click.
+ */
+export function keepShortcutsOnClick(e: MouseEvent): void {
+  if (!(e.target as HTMLElement | null)?.closest("button")) return;
+  e.preventDefault();
+  const focused = document.activeElement as HTMLElement | null;
+  if (focused && focused !== document.body) focused.blur();
+}

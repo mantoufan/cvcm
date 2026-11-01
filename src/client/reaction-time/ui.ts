@@ -1,5 +1,5 @@
 import { copyWithFlash } from "../copy";
-import { h } from "../dom";
+import { h, keepShortcutsOnClick, onScreen } from "../dom";
 import { locale, t } from "../i18n";
 import { appHref } from "../../shared/path";
 import { MIN_REACTION_MS, REACTION_TRIES, reactionBand, summarize, waitMs } from "../../shared/reaction";
@@ -30,7 +30,7 @@ export function mountReactionTime(host: HTMLElement): void {
       h("p", { class: "lede" }, t("reactionTime.privacyNote")),
     ),
     // A mouse click does not leave focus on Reset or Copy, so Space and Enter keep starting the test.
-    h("div", { class: "data-tool", onMousedown: (e: MouseEvent) => { if ((e.target as HTMLElement | null)?.closest("button")) e.preventDefault(); } },
+    h("div", { class: "data-tool", onMousedown: (e: MouseEvent) => keepShortcutsOnClick(e) },
       h("div", { class: "rail reaction-stage" }, padEl, h("p", { class: "hint" }, t("reactionTime.hint", { n: REACTION_TRIES }))),
       h("aside", { class: "rail controls" },
         h("h2", null, t("reactionTime.results")),
@@ -86,7 +86,8 @@ function key(e: KeyboardEvent): void {
   if (e.key !== " " && e.key !== "Enter") return;
   if (e.ctrlKey || e.metaKey || e.altKey) return;
   const target = e.target as HTMLElement | null;
-  const onPage = !target || target === document.body || target === document.documentElement || target === padEl;
+  // Scrolled away from the pad, Space scrolls the page as usual.
+  const onPage = target === padEl || ((!target || target === document.body || target === document.documentElement) && onScreen(padEl));
   if (!onPage) return;
   e.preventDefault();
   if (!e.repeat) hit(e.timeStamp);

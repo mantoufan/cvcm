@@ -1,5 +1,5 @@
 import { copyWithFlash } from "../copy";
-import { h } from "../dom";
+import { h, keepShortcutsOnClick, onScreen } from "../dom";
 import { locale, t } from "../i18n";
 import { appHref } from "../../shared/path";
 import { MAX_COUNTERS, MAX_NAME, MAX_STEP, bump, clampStep, parseTally, total, type TallyState } from "../../shared/tally";
@@ -42,7 +42,7 @@ export function mountTallyCounter(host: HTMLElement): void {
       h("p", { class: "lede" }, t("tallyCounter.privacyNote")),
     ),
     // A mouse click does not move focus onto the tool's buttons, so Space keeps counting instead of pressing the last one clicked.
-    rootEl = h("div", { class: "data-tool", onMousedown: (e: MouseEvent) => keepKeysForCounting(e), onPointerdown: (e: PointerEvent) => { lastPointerAt = e.timeStamp; } },
+    rootEl = h("div", { class: "data-tool", onMousedown: (e: MouseEvent) => keepShortcutsOnClick(e), onPointerdown: (e: PointerEvent) => { lastPointerAt = e.timeStamp; } },
       h("aside", { class: "rail controls" },
         h("fieldset", null,
           h("legend", null, t("tallyCounter.options")),
@@ -165,17 +165,6 @@ function remove(i: number): void {
   paint();
 }
 
-/**
- * A mouse click does not move focus onto the tool's buttons, and leaves any field it was in, so Space and the arrows
- * keep counting (instead of pressing the last button clicked, or typing into the step or a name).
- */
-function keepKeysForCounting(e: MouseEvent): void {
-  if (!(e.target as HTMLElement | null)?.closest("button")) return;
-  e.preventDefault();
-  const focused = document.activeElement as HTMLElement | null;
-  if (focused && focused !== document.body && rootEl?.contains(focused)) focused.blur();
-}
-
 /** A checkbox ticked with the mouse gives focus back to the page, so Space counts instead of unticking it. */
 function leaveIfClicked(e: Event): void {
   if (e.timeStamp - lastPointerAt < 1000) (e.target as HTMLElement | null)?.blur();
@@ -233,7 +222,8 @@ function onKey(e: KeyboardEvent): void {
   if (e.ctrlKey || e.metaKey || e.altKey || e.repeat) return;
   const target = e.target as HTMLElement | null;
   // Only when nothing else has focus, or focus is on the counter's own buttons: links, FAQ toggles and fields keep their keys.
-  const onPage = !target || target === document.body || target === document.documentElement;
+  // Scrolled away to the how-to or FAQ, the keys scroll the page as usual.
+  const onPage = (!target || target === document.body || target === document.documentElement) && onScreen(listEl);
   const onButton = target?.tagName === "BUTTON" && !!rootEl?.contains(target);
   if (!onPage && !onButton) return;
   // On a focused button, Space and Enter press that button.
