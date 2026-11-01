@@ -32,6 +32,8 @@ import { ParallaxRenderer, prepareDepth } from "./render";
  * of a 4K landscape still has the 1215 px it needs for a sharp 1080 × 1920 clip.
  */
 const PHOTO_MAX = 4096;
+/** The depth worker scales its input to this long side (bitmapToRaw in ai/worker.ts). */
+const DEPTH_INPUT_MAX = 1536;
 /** Preview canvas long side, in CSS-independent pixels. */
 const PREVIEW_MAX = 960;
 
@@ -61,7 +63,7 @@ let client: AiClient | null = null;
 let status: Status | null = null;
 let preview: HTMLCanvasElement | null = null;
 let renderer: ParallaxRenderer | null = null;
-let hintEl: HTMLElement | null = null;
+let sizeEl: HTMLElement | null = null;
 let playBtn: HTMLButtonElement | null = null;
 let downloadBtn: HTMLButtonElement | null = null;
 let frame = 0;
@@ -107,7 +109,7 @@ export function unmountV(): void {
   Object.assign(state, { file: null, photo: null, depth: null, running: false, again: false, depthFailed: false, exporting: false, queued: null, playing: true });
   status = null;
   preview = null;
-  hintEl = null;
+  sizeEl = null;
   playBtn = null;
   downloadBtn = null;
 }
@@ -134,13 +136,14 @@ function stagePane(): HTMLElement {
   // Phones drop GPU contexts under memory pressure or in the background: rebuild the preview when it comes back.
   preview.addEventListener("webglcontextlost", (e) => e.preventDefault());
   preview.addEventListener("webglcontextrestored", rebuildPreview);
-  hintEl = h("p", { class: "hint" }, t("v.hint"));
+  sizeEl = h("p", { class: "hint" });
   playBtn = h("button", { type: "button", class: "btn ghost", onClick: togglePlay }, t("v.pause"));
   downloadBtn = h("button", { type: "button", class: "btn", onClick: () => void download() }, t("v.download"));
   return h("section", { class: "stage" },
     h("div", { class: "stage-frame" }, preview),
     status!.el,
-    hintEl,
+    h("p", { class: "hint" }, t("v.hint")),
+    sizeEl,
     h("div", { class: "stage-actions" }, playBtn, downloadBtn),
   );
 }
@@ -201,25 +204,34 @@ function onPaste(e: ClipboardEvent): void {
 }
 
 function rebuildPreview(): void {
-  if (!alive || !preview || !state.photo) return;
-  try {
-    renderer = new ParallaxRenderer(preview);
-  } catch {
-    renderer = null;
-    status?.error(t("v.errorGl"));
-    return;
+  if (!alive || !preview) return;
+  renderer = null;
+  if (state.photo) {
+    try {
+      renderer = new ParallaxRenderer(preview);
+    } catch {
+      status?.error(t("v.errorGl"));
+      return;
+    }
+    renderer.setPhoto(state.photo);
+    renderer.setDepth(state.depth);
+    layout();
+    restart();
   }
-  renderer.setPhoto(state.photo);
-  renderer.setDepth(state.depth);
-  layout();
-  restart();
+  // A photo picked while the context was gone loads now.
+  const next = state.queued;
+  if (next && !state.exporting) {
+    state.queued = null;
+    void setFile(next);
+  }
 }
 
 async function setFile(file: File | undefined): Promise<void> {
   if (!file || !status) return;
   // A newer pick also makes any decode still in flight stale.
   const ticket = ++pick;
-  if (state.exporting) {
+  // Mid-export, or the GPU context is gone until the browser restores it: load this photo after that.
+  if (state.exporting || renderer?.lost()) {
     state.queued = file;
     return;
   }
@@ -289,7 +301,13 @@ async function run(): Promise<void> {
       client,
       status,
       async () => {
-        const bitmap = await createImageBitmap(source);
+        // The worker reads at most 1536 px; send that, not a full 4096 px copy.
+        const fit = Math.min(1, DEPTH_INPUT_MAX / Math.max(source.width, source.height));
+        const bitmap = await createImageBitmap(source, {
+          resizeWidth: Math.max(1, Math.round(source.width * fit)),
+          resizeHeight: Math.max(1, Math.round(source.height * fit)),
+          resizeQuality: "high",
+        });
         return { body: { type: "depth", bitmap }, transfer: [bitmap] };
       },
     );
@@ -328,9 +346,9 @@ function layout(): void {
 }
 
 function updateHint(): void {
-  if (!hintEl || !state.photo) return;
+  if (!sizeEl || !state.photo) return;
   const out = outputSize(state.width, state.height, state.aspect, state.size);
-  hintEl.textContent = t("v.output", { w: out.width, h: out.height, s: state.duration });
+  sizeEl.textContent = t("v.output", { w: out.width, h: out.height, s: state.duration, fps: FPS });
 }
 
 /** A paused preview, or one frozen during an export, stays on its frame; redraw it after a setting or the depth changes. */

@@ -455,9 +455,6 @@ const LEGACY_LOCALES = new Map<string, Locale>([
   ["zh-hant", "zh-TW"],
 ]);
 
-/** Pages of the old AI video studio under `/v/` (`/v/agent`, `/en/v/canvas/<project>`): they now open the photo-to-video tool. */
-const LEGACY_V_PAGES: ReadonlySet<string> = new Set(["agent", "canvas", "director"]);
-
 export function parseAppPath(pathname: string): AppPath {
   const raw = pathname.split("?")[0] || "/";
   if (STATIC_FILE.test(raw)) return { kind: "static" };
@@ -525,7 +522,8 @@ export function parseAppPath(pathname: string): AppPath {
       if (third || rest.length > 0) return { kind: "unknown" };
       return { kind: "legal", locale, page: second };
     }
-    if (second === "v" && third && LEGACY_V_PAGES.has(third)) {
+    // Any page of the old AI video studio under /v/ (/en/v/canvas/<project>) opens the photo-to-video tool.
+    if (second === "v" && third) {
       return { kind: "app", locale, tool: "v" };
     }
     if (rest.length > 0) return { kind: "unknown" };
@@ -587,7 +585,7 @@ export function parseAppPath(pathname: string): AppPath {
   }
   if (isLegalPageId(first) && !second) return { kind: "bare-legal", page: first };
   if (isToolId(first) && !second) return { kind: "bare", tool: first };
-  if (first === "v" && second && LEGACY_V_PAGES.has(second)) return { kind: "bare", tool: "v" };
+  if (first === "v" && second) return { kind: "bare", tool: "v" };
   if (first === "convert" && second && !third && isConvertJobId(second)) {
     return { kind: "bare", tool: "convert", convertJob: second };
   }

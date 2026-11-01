@@ -40,6 +40,10 @@ float surface(float layer) {
 }
 
 void main() {
+  // Mip level from the flat (no-parallax) mapping: the hit point jumps at occlusion edges, its own derivatives
+  // would pick a blurry level there. The photo is often 2–4× the frame, so without mips fine detail shimmers.
+  vec2 gx = dFdx(vUv) * uCrop.zw / uZoom;
+  vec2 gy = dFdy(vUv) * uCrop.zw / uZoom;
   const int STEPS = 48;
   float above = 1.0;
   float layer = 1.0;
@@ -55,7 +59,7 @@ void main() {
     if (surface(mid) >= mid) lo = mid; else hi = mid;
   }
   // Video has no alpha: transparent parts of a PNG or WebP become white, in the preview and the MP4 alike.
-  vec4 c = texture(uPhoto, photoUv(project(lo)));
+  vec4 c = textureGrad(uPhoto, photoUv(project(lo)), gx, gy);
   outColor = vec4(mix(vec3(1.0), c.rgb, c.a), 1.0);
 }`;
 
@@ -76,7 +80,8 @@ export class ParallaxRenderer {
     const gl = canvas.getContext("webgl2", { alpha: false, antialias: false, premultipliedAlpha: false, preserveDrawingBuffer: opts.keepFrame ?? false });
     if (!gl) throw new Error("webgl2");
     this.gl = gl;
-    this.maxTexture = gl.getParameter(gl.MAX_TEXTURE_SIZE) as number;
+    // Null on a context lost during setup; 2048 is the WebGL2 minimum.
+    this.maxTexture = (gl.getParameter(gl.MAX_TEXTURE_SIZE) as number | null) || 2048;
     this.program = link(gl, VERT, FRAG);
     gl.useProgram(this.program);
     for (const name of ["uPhoto", "uDepth", "uOffset", "uZoom", "uDolly", "uFocus", "uScale", "uCrop"]) {
@@ -102,6 +107,8 @@ export class ParallaxRenderer {
     gl.bindTexture(gl.TEXTURE_2D, this.photo);
     gl.pixelStorei(gl.UNPACK_ALIGNMENT, 4);
     gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA8, gl.RGBA, gl.UNSIGNED_BYTE, source);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR_MIPMAP_LINEAR);
+    gl.generateMipmap(gl.TEXTURE_2D);
   }
 
   /** Depth bytes, 0 = far … 255 = near. Null is a flat plane at the focus (no parallax, zoom only). */
