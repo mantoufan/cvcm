@@ -87,9 +87,11 @@ describe("tally-counter ui", () => {
     add.click();
     add.click();
     const counts = () => [...host.querySelectorAll("[data-out=count]")].map((el) => el.textContent);
-    // Highlight the second counter, then remove the first: keys still change the same counter.
+    // Highlight the second counter, then remove the first with the mouse: keys still change the same counter.
     host.querySelectorAll<HTMLButtonElement>("[data-action=plus]")[1].click();
-    host.querySelectorAll<HTMLButtonElement>("[data-action=remove]")[0].click();
+    const x = host.querySelectorAll<HTMLButtonElement>("[data-action=remove]")[0];
+    press(x);
+    x.click();
     document.body.dispatchEvent(new KeyboardEvent("keydown", { key: "ArrowUp", bubbles: true }));
     expect(counts()).toEqual(["2", "0"]);
     document.body.dispatchEvent(new KeyboardEvent("keydown", { key: " ", repeat: true, bubbles: true }));

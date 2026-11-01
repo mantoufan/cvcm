@@ -31,9 +31,8 @@ let lastVerdict = "";
 let lastPct = -1;
 let frame = 0;
 let peakDb = -Infinity;
-/** Loudest frame of the last few seconds, so the verdict does not turn "quiet" at every pause in speech. */
-let holdDb = -Infinity;
-let holdAt = 0;
+/** Frame peaks of the last few seconds; the verdict uses their loudest, so pauses in speech do not read as quiet. */
+let recent: Array<{ at: number; db: number }> = [];
 const HOLD_MS = 3000;
 let lastFrame = 0;
 let recorder: MediaRecorder | null = null;
@@ -166,7 +165,8 @@ async function start(): Promise<void> {
   }
   const style = waveEl ? getComputedStyle(waveEl) : null;
   waveColor = style?.getPropertyValue("--pink-deep").trim() || "#a13f6c";
-  peakDb = holdDb = -Infinity;
+  peakDb = -Infinity;
+  recent = [];
   lastFrame = performance.now();
   frame = window.requestAnimationFrame(draw);
   if (startBtn) startBtn.textContent = t("micTest.stop");
@@ -262,10 +262,10 @@ function draw(now: number): void {
   const dt = Math.max(0, (now - lastFrame) / 1000);
   lastFrame = now;
   peakDb = Math.max(framePeak, peakDb - PEAK_FALL_DB * dt);
-  if (framePeak >= holdDb || now - holdAt > HOLD_MS) {
-    holdDb = framePeak;
-    holdAt = now;
-  }
+  recent.push({ at: now, db: framePeak });
+  while (recent.length && recent[0].at < now - HOLD_MS) recent.shift();
+  let holdDb = -Infinity;
+  for (const r of recent) holdDb = Math.max(holdDb, r.db);
   const pct = meterPercent(level);
   if (meterFill) {
     meterFill.style.width = `${pct}%`;

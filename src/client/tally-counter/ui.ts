@@ -263,7 +263,12 @@ function paint(only?: number): void {
 
 function row(name: string, count: number, i: number): HTMLElement {
   const nameEl = h("input", { type: "text", maxlength: String(MAX_NAME), value: name, "aria-label": t("tallyCounter.name"), "data-field": "name", onInput: () => rename(i, nameEl.value), onFocus: () => { active = i; paint(i); } });
-  return h("div", { class: i === active ? "tally-row active" : "tally-row", onPointerdown: () => { if (active !== i) { active = i; paint(i); } } },
+  return h("div", { class: i === active ? "tally-row active" : "tally-row", onPointerdown: (e: PointerEvent) => {
+    // The row's buttons decide for themselves (− and + highlight their counter; × and Reset leave the highlight alone).
+    if ((e.target as HTMLElement | null)?.closest("button") || active === i) return;
+    active = i;
+    paint(i);
+  } },
     h("div", { class: "tally-head" },
       nameEl,
       h("button", { type: "button", class: "chip", "data-action": "reset", onClick: () => resetOne(i) }, t("tallyCounter.reset")),
