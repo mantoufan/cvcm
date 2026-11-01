@@ -206,17 +206,20 @@ function previewCanvas(): HTMLCanvasElement {
 }
 
 /**
- * A renderer that can draw now. If the old context is lost (and may never be restored), swap in a new canvas:
- * a new canvas gets a new context.
+ * A renderer that can draw now. A renderer from before a context loss is never reused (its GL objects are gone);
+ * if the canvas has no usable context (lost and not restored, maybe never), a new canvas gets a new one.
  */
 function liveRenderer(): ParallaxRenderer {
   if (renderer && !renderer.lost()) return renderer;
-  if (renderer && preview) {
+  renderer = null;
+  try {
+    renderer = new ParallaxRenderer(preview!);
+  } catch {
     const fresh = previewCanvas();
-    preview.replaceWith(fresh);
+    preview!.replaceWith(fresh);
     preview = fresh;
+    renderer = new ParallaxRenderer(fresh);
   }
-  renderer = new ParallaxRenderer(preview!);
   return renderer;
 }
 
@@ -257,6 +260,7 @@ async function setFile(file: File | undefined): Promise<void> {
     state.queued = file;
     return;
   }
+
   let decoded;
   try {
     decoded = await decodeImage(file);
@@ -305,6 +309,12 @@ async function setFile(file: File | undefined): Promise<void> {
     small.close();
     status.error(t("v.errorGl"));
     return;
+  }
+  // Depth for the previous photo is now wasted work: stop it, so this photo's run starts right away
+  // (the stopped run sees a different photo and stays quiet; its finally starts the new run).
+  if (state.running && client) {
+    state.again = true;
+    client.dispose();
   }
   state.photo?.close();
   state.small?.close();

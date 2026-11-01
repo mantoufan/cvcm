@@ -522,8 +522,8 @@ export function parseAppPath(pathname: string): AppPath {
       if (third || rest.length > 0) return { kind: "unknown" };
       return { kind: "legal", locale, page: second };
     }
-    // Any page of the old AI video studio under /v/ (/en/v/canvas/<project>) opens the photo-to-video tool.
-    if (second === "v" && third) {
+    // Pages of the old AI video studio under /v/ (/en/v/canvas, /en/v/canvas/<project>) open the photo-to-video tool.
+    if (second === "v" && third && rest.length <= 1) {
       return { kind: "app", locale, tool: "v" };
     }
     if (rest.length > 0) return { kind: "unknown" };
@@ -585,7 +585,7 @@ export function parseAppPath(pathname: string): AppPath {
   }
   if (isLegalPageId(first) && !second) return { kind: "bare-legal", page: first };
   if (isToolId(first) && !second) return { kind: "bare", tool: first };
-  if (first === "v" && second) return { kind: "bare", tool: "v" };
+  if (first === "v" && second && rest.length === 0) return { kind: "bare", tool: "v" };
   if (first === "convert" && second && !third && isConvertJobId(second)) {
     return { kind: "bare", tool: "convert", convertJob: second };
   }

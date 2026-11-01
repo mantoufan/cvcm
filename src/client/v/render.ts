@@ -31,8 +31,9 @@ vec2 project(float layer) {
   return 0.5 + c + uOffset * d * uScale;
 }
 
+// Clamped to the photo, not the crop: a 9:16 crop of a landscape shows real pixels past its edges as it moves.
 vec2 photoUv(vec2 p) {
-  return uCrop.xy + clamp(p, 0.0, 1.0) * uCrop.zw;
+  return clamp(uCrop.xy + p * uCrop.zw, 0.0, 1.0);
 }
 
 float surface(float layer) {
@@ -74,14 +75,17 @@ export class ParallaxRenderer {
   private depth: WebGLTexture;
   private loc: Record<string, WebGLUniformLocation | null> = {};
   private crop: Crop = { x: 0, y: 0, w: 1, h: 1 };
+  /** Set once the context is lost: even if the browser restores it, this renderer's GL objects are gone. */
+  private dead = false;
   /** Largest texture side this GPU accepts (WebGL2 only promises 2048). */
   readonly maxTexture: number;
 
   /** Throws if the browser has no WebGL2. */
   constructor(readonly canvas: HTMLCanvasElement, opts: { keepFrame?: boolean } = {}) {
     const gl = canvas.getContext("webgl2", { alpha: false, antialias: false, premultipliedAlpha: false, preserveDrawingBuffer: opts.keepFrame ?? false });
-    if (!gl) throw new Error("webgl2");
+    if (!gl || gl.isContextLost()) throw new Error("webgl2");
     this.gl = gl;
+    canvas.addEventListener("webglcontextlost", () => (this.dead = true), { once: true });
     // Null on a context lost during setup; 2048 is the WebGL2 minimum.
     this.maxTexture = (gl.getParameter(gl.MAX_TEXTURE_SIZE) as number | null) || 2048;
     this.program = link(gl, VERT, FRAG);
@@ -95,7 +99,9 @@ export class ParallaxRenderer {
     const pos = gl.getAttribLocation(this.program, "aPos");
     gl.enableVertexAttribArray(pos);
     gl.vertexAttribPointer(pos, 2, gl.FLOAT, false, 0, 0);
+    gl.activeTexture(gl.TEXTURE0);
     this.photo = texture(gl);
+    gl.activeTexture(gl.TEXTURE1);
     this.depth = texture(gl);
     gl.uniform1i(this.loc.uPhoto, 0);
     gl.uniform1i(this.loc.uDepth, 1);
@@ -143,7 +149,7 @@ export class ParallaxRenderer {
 
   /** The GPU dropped this context (memory pressure, driver reset): draws do nothing until it is rebuilt. */
   lost(): boolean {
-    return this.gl.isContextLost();
+    return this.dead || this.gl.isContextLost();
   }
 
   dispose(): void {
