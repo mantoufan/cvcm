@@ -7,7 +7,7 @@ import { DATASETS, csvHref } from "./datasets";
 import { CODE_ARTICLES } from "./kb";
 import { REF_ENTRIES } from "./ref";
 import { LOCALES, localePath } from "./locale";
-import { ASPECTS, DURATIONS, FPS, MOTIONS, SIZES, STRENGTHS, type Strength } from "./parallax";
+import { ASPECTS, DURATIONS, FPS, MOTIONS, SIZES, STRENGTH_IDS } from "./parallax";
 import { AI_TOOLS, CATEGORIES, appHref, datasetHref, gamesHref, kbHref, learnHref, quizHref, refHref, type CategoryId, type ToolId } from "./path";
 import { SITE_ORIGIN } from "./sitemap";
 
@@ -84,7 +84,7 @@ const AI_DETAILS: Partial<Record<ToolId, AiToolDetails>> = {
   },
   v: {
     models: [{ option: null, model: "depth" }],
-    options: `${en.v.motion}: ${MOTIONS.map((m) => en.v[`motion_${m}`]).join(" / ")}. ${en.v.strength}: ${(Object.keys(STRENGTHS) as Strength[]).map((s) => en.v[`strength_${s}`]).join(" / ")}. ${en.v.duration}: ${DURATIONS.map((d) => `${d} s`).join(" / ")}. ${en.v.aspect}: ${en.v.aspect_original} / ${ASPECTS.filter((a) => a !== "original").join(" / ")}. ${en.v.size}: ${SIZES.map((s) => `${s}p`).join(" / ")}. ${en.v.loop}. Exports an MP4 (H.264, or VP9 / AV1 where the browser cannot encode H.264) at ${FPS} fps with WebCodecs. ${en.v.note}`,
+    options: `${en.v.motion}: ${MOTIONS.map((m) => en.v[`motion_${m}`]).join(" / ")}. ${en.v.strength}: ${STRENGTH_IDS.map((s) => en.v[`strength_${s}`]).join(" / ")}. ${en.v.duration}: ${DURATIONS.map((d) => `${d} s`).join(" / ")}. ${en.v.aspect}: ${en.v.aspect_original} / ${ASPECTS.filter((a) => a !== "original").join(" / ")}. ${en.v.size}: ${SIZES.map((s) => `${s}p`).join(" / ")}. ${en.v.loop}. Exports an MP4 (H.264, or VP9 / AV1 where the browser cannot encode H.264) at ${FPS} fps with WebCodecs. ${en.v.note}`,
   },
 };
 

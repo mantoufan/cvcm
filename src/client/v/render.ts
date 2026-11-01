@@ -54,7 +54,9 @@ void main() {
     float mid = 0.5 * (lo + hi);
     if (surface(mid) >= mid) lo = mid; else hi = mid;
   }
-  outColor = texture(uPhoto, photoUv(project(lo)));
+  // Video has no alpha: transparent parts of a PNG or WebP become white, in the preview and the MP4 alike.
+  vec4 c = texture(uPhoto, photoUv(project(lo)));
+  outColor = vec4(mix(vec3(1.0), c.rgb, c.a), 1.0);
 }`;
 
 export type Crop = { x: number; y: number; w: number; h: number };
@@ -69,7 +71,7 @@ export class ParallaxRenderer {
 
   /** Throws if the browser has no WebGL2. */
   constructor(readonly canvas: HTMLCanvasElement, opts: { keepFrame?: boolean } = {}) {
-    const gl = canvas.getContext("webgl2", { antialias: false, premultipliedAlpha: false, preserveDrawingBuffer: opts.keepFrame ?? false });
+    const gl = canvas.getContext("webgl2", { alpha: false, antialias: false, premultipliedAlpha: false, preserveDrawingBuffer: opts.keepFrame ?? false });
     if (!gl) throw new Error("webgl2");
     this.gl = gl;
     this.program = link(gl, VERT, FRAG);
@@ -160,31 +162,23 @@ function link(gl: WebGL2RenderingContext, vs: string, fs: string): WebGLProgram 
  * without this the blended rim stays behind on the background as a ghost outline when the camera moves.
  */
 export function prepareDepth(src: Uint8ClampedArray, width: number, height: number): Uint8Array {
-  const grown = new Uint8Array(src.length);
-  const r = 2;
-  for (let y = 0; y < height; y++) {
-    for (let x = 0; x < width; x++) {
-      let m = 0;
-      for (let dy = -r; dy <= r; dy++) {
-        const yy = Math.min(height - 1, Math.max(0, y + dy));
-        for (let dx = -r; dx <= r; dx++) {
-          const v = src[yy * width + Math.min(width - 1, Math.max(0, x + dx))];
-          if (v > m) m = v;
-        }
-      }
-      grown[y * width + x] = m;
+  const grown = pass(pass(src, width, height, "row", 2, "max"), width, height, "col", 2, "max");
+  return pass(pass(grown, width, height, "row", 1, "mean"), width, height, "col", 1, "mean");
+}
+
+/** One separable filter pass along rows or columns, `r` pixels each side, edges clamped. */
+function pass(src: ArrayLike<number>, width: number, height: number, axis: "row" | "col", r: number, op: "max" | "mean"): Uint8Array {
+  const out = new Uint8Array(width * height);
+  const step = axis === "row" ? 1 : width;
+  const along = axis === "row" ? width : height;
+  for (let i = 0; i < out.length; i++) {
+    const pos = axis === "row" ? i % width : Math.floor(i / width);
+    let acc = 0;
+    for (let k = -r; k <= r; k++) {
+      const v = src[i + (Math.min(along - 1, Math.max(0, pos + k)) - pos) * step];
+      acc = op === "max" ? (v > acc ? v : acc) : acc + v;
     }
-  }
-  const out = new Uint8Array(src.length);
-  for (let y = 0; y < height; y++) {
-    for (let x = 0; x < width; x++) {
-      let sum = 0;
-      for (let dy = -1; dy <= 1; dy++) {
-        const yy = Math.min(height - 1, Math.max(0, y + dy));
-        for (let dx = -1; dx <= 1; dx++) sum += grown[yy * width + Math.min(width - 1, Math.max(0, x + dx))];
-      }
-      out[y * width + x] = Math.round(sum / 9);
-    }
+    out[i] = op === "max" ? acc : Math.round(acc / (2 * r + 1));
   }
   return out;
 }

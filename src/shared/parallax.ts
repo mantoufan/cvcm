@@ -5,6 +5,8 @@ export type Motion = (typeof MOTIONS)[number];
 
 export const STRENGTHS = { subtle: 0.6, normal: 1, strong: 1.6 } as const;
 export type Strength = keyof typeof STRENGTHS;
+/** Strengths in the order the page lists them. */
+export const STRENGTH_IDS: readonly Strength[] = ["subtle", "normal", "strong"];
 
 export const DURATIONS = [3, 5, 8] as const;
 export type Duration = (typeof DURATIONS)[number];

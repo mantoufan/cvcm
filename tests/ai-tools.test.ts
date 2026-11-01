@@ -4,6 +4,7 @@ import { AI_MODELS, formatMb, mirrorFiles, modelFileUrl, type AiModelId } from "
 import { AI_TOOLS, appHref, isAiToolPath, parseAppPath } from "../src/shared/path";
 import { cleanSegments, shortClock, toSrt, toText, toVtt } from "../src/shared/subtitles";
 import { isTrackedPath } from "../src/shared/analytics";
+import { prepareDepth } from "../src/client/v/render";
 import { MOTIONS, STRENGTHS, cameraAt, cropRect, frameCount, outputSize } from "../src/shared/parallax";
 
 const html = {
@@ -185,5 +186,12 @@ describe("photo to video (/v/)", () => {
     expect(outputSize(1080, 1080, "16:9", 1080)).toEqual({ width: 1080, height: 608 });
     expect(cropRect(4000, 3000, "1:1")).toEqual({ x: 0.125, y: 0, w: 0.75, h: 1 });
     expect(cropRect(1000, 2000, "16:9").h).toBeCloseTo(9 / 32, 9);
+  });
+
+  it("grows near depth by two pixels, then softens it", () => {
+    const row = new Uint8ClampedArray([0, 0, 0, 255, 0, 0, 0]);
+    expect([...prepareDepth(row, 7, 1)]).toEqual([85, 170, 255, 255, 255, 170, 85]);
+    const col = prepareDepth(new Uint8ClampedArray([0, 0, 0, 255, 0, 0, 0]), 1, 7);
+    expect([...col]).toEqual([85, 170, 255, 255, 255, 170, 85]);
   });
 });

@@ -51,7 +51,13 @@ export async function encodeMp4(opts: {
   });
   let failure: Error | null = null;
   const encoder = new VideoEncoder({
-    output: (chunk, meta) => muxer.addVideoChunk(chunk, meta),
+    output: (chunk, meta) => {
+      try {
+        muxer.addVideoChunk(chunk, meta);
+      } catch (e) {
+        failure ??= e instanceof Error ? e : new Error(String(e));
+      }
+    },
     error: (e) => {
       failure = e instanceof Error ? e : new Error(String(e));
     },
@@ -66,8 +72,11 @@ export async function encodeMp4(opts: {
       while (encoder.encodeQueueSize > 6) await new Promise((r) => setTimeout(r, 4));
       opts.draw(i);
       const frame = new VideoFrame(canvas, { timestamp: Math.round(i * usPerFrame), duration: Math.round(usPerFrame) });
-      encoder.encode(frame, { keyFrame: i % (fps * 2) === 0 });
-      frame.close();
+      try {
+        encoder.encode(frame, { keyFrame: i % (fps * 2) === 0 });
+      } finally {
+        frame.close();
+      }
       opts.onProgress((i + 1) / frames);
       // Let the page paint the progress bar.
       if (i % 5 === 4) await new Promise((r) => setTimeout(r, 0));

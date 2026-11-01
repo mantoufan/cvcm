@@ -6,6 +6,7 @@ import {
   MOTIONS,
   SIZES,
   STRENGTHS,
+  STRENGTH_IDS,
   cameraAt,
   cropRect,
   frameCount,
@@ -26,8 +27,11 @@ import { locale, t } from "../i18n";
 import { canEncode, encodeMp4 } from "./encode";
 import { ParallaxRenderer, prepareDepth } from "./render";
 
-/** The photo is kept at most this size on its long side: enough for 1080p video with room to zoom. */
-const PHOTO_MAX = 2560;
+/**
+ * The photo is kept at most this size on its long side (a WebGL texture every GPU accepts). A 9:16 crop of a
+ * 4K landscape still has the 1215 px it needs for a sharp 1080 × 1920 clip.
+ */
+const PHOTO_MAX = 4096;
 /** Preview canvas long side, in CSS-independent pixels. */
 const PREVIEW_MAX = 960;
 
@@ -46,7 +50,11 @@ const state = {
   playing: true,
   running: false,
   again: false,
+  /** Depth failed for this photo: export a zoom-only clip instead of waiting forever. */
+  depthFailed: false,
   exporting: false,
+  /** A photo dropped during an export, loaded when it ends. */
+  queued: null as File | null,
 };
 
 let client: AiClient | null = null;
@@ -59,11 +67,14 @@ let downloadBtn: HTMLButtonElement | null = null;
 let frame = 0;
 let clock = 0;
 let alive = false;
-/** Bumped per picked file, so a slow decode never replaces a file picked after it. */
+/** Bumped per picked file and on unmount, so a slow decode never replaces a newer file or lands in a later mount. */
 let pick = 0;
+/** Bumped per mount, so a depth run from an earlier mount leaves the current one's flags alone. */
+let mountId = 0;
 
 export async function mountV(host: HTMLElement): Promise<void> {
   alive = true;
+  mountId++;
   client = new AiClient();
   status = statusPanel("Depth Anything V2", "depth");
   host.append(
@@ -83,6 +94,7 @@ export async function mountV(host: HTMLElement): Promise<void> {
 
 export function unmountV(): void {
   alive = false;
+  pick++;
   window.removeEventListener("paste", onPaste);
   cancelAnimationFrame(frame);
   client?.dispose();
@@ -90,7 +102,7 @@ export function unmountV(): void {
   renderer?.dispose();
   renderer = null;
   state.photo?.close();
-  Object.assign(state, { file: null, photo: null, depth: null, running: false, again: false, exporting: false, playing: true });
+  Object.assign(state, { file: null, photo: null, depth: null, running: false, again: false, depthFailed: false, exporting: false, queued: null, playing: true });
   status = null;
   preview = null;
   hintEl = null;
@@ -117,6 +129,9 @@ function filesRail(): HTMLElement {
 
 function stagePane(): HTMLElement {
   preview = h("canvas", { class: "preview", width: 800, height: 560 });
+  // Phones drop GPU contexts under memory pressure or in the background: rebuild the preview when it comes back.
+  preview.addEventListener("webglcontextlost", (e) => e.preventDefault());
+  preview.addEventListener("webglcontextrestored", rebuildPreview);
   hintEl = h("p", { class: "hint" }, t("v.hint"));
   playBtn = h("button", { type: "button", class: "btn ghost", onClick: togglePlay }, t("v.pause"));
   downloadBtn = h("button", { type: "button", class: "btn", onClick: () => void download() }, t("v.download"));
@@ -146,7 +161,7 @@ function controls(): HTMLElement {
       chips(MOTIONS, () => state.motion, (m) => t(`v.motion_${m}`), (m) => (state.motion = m), restart),
     ),
     group(t("v.strength"),
-      chips(Object.keys(STRENGTHS) as Strength[], () => state.strength, (s) => t(`v.strength_${s}`), (s) => (state.strength = s), redrawPaused),
+      chips(STRENGTH_IDS, () => state.strength, (s) => t(`v.strength_${s}`), (s) => (state.strength = s), redrawPaused),
     ),
     group(t("v.duration"),
       chips(DURATIONS, () => state.duration, (d) => t("v.seconds", { n: d }), (d) => (state.duration = d), () => {
@@ -183,8 +198,27 @@ function onPaste(e: ClipboardEvent): void {
   }
 }
 
+function rebuildPreview(): void {
+  if (!alive || !preview || !state.photo) return;
+  try {
+    renderer = new ParallaxRenderer(preview);
+  } catch {
+    renderer = null;
+    status?.error(t("v.errorGl"));
+    return;
+  }
+  renderer.setPhoto(state.photo);
+  renderer.setDepth(state.depth);
+  layout();
+  restart();
+}
+
 async function setFile(file: File | undefined): Promise<void> {
-  if (!file || !status || state.exporting) return;
+  if (!file || !status) return;
+  if (state.exporting) {
+    state.queued = file;
+    return;
+  }
   const ticket = ++pick;
   let decoded;
   try {
@@ -193,9 +227,10 @@ async function setFile(file: File | undefined): Promise<void> {
     status.error(t("v.errorDecode"));
     return;
   }
-  // Unmounted, a newer file was picked, or an export started while this one decoded.
+  // Unmounted or a newer file was picked while this one decoded. An export that started meanwhile gets it next.
   if (!alive || ticket !== pick || state.exporting) {
     decoded.bitmap.close();
+    if (alive && ticket === pick) state.queued = file;
     return;
   }
   const scale = Math.min(1, PHOTO_MAX / Math.max(decoded.width, decoded.height));
@@ -210,6 +245,7 @@ async function setFile(file: File | undefined): Promise<void> {
   }
   if (!alive || ticket !== pick || state.exporting) {
     photo.close();
+    if (alive && ticket === pick) state.queued = file;
     return;
   }
   try {
@@ -220,7 +256,7 @@ async function setFile(file: File | undefined): Promise<void> {
     return;
   }
   state.photo?.close();
-  Object.assign(state, { file, photo, width: photo.width, height: photo.height, depth: null });
+  Object.assign(state, { file, photo, width: photo.width, height: photo.height, depth: null, depthFailed: false });
   renderer.setPhoto(photo);
   renderer.setDepth(null);
   layout();
@@ -236,6 +272,7 @@ async function run(): Promise<void> {
     return;
   }
   state.running = true;
+  const mine = mountId;
   try {
     const { result, backend, seconds } = await runJob<Extract<AiResponse, { type: "mask" }>>(
       client,
@@ -253,8 +290,10 @@ async function run(): Promise<void> {
   } catch (err) {
     if (!alive || state.photo !== source) return;
     console.error(err);
+    state.depthFailed = true;
     status.error(t("ai.errorRun"));
   } finally {
+    if (mine !== mountId) return;
     state.running = false;
     if (state.again && alive) {
       state.again = false;
@@ -314,7 +353,7 @@ async function download(): Promise<void> {
     status.error(t("v.empty"));
     return;
   }
-  if (!state.depth) {
+  if (!state.depth && !state.depthFailed) {
     status.error(t("v.waitDepth"));
     return;
   }
@@ -367,5 +406,8 @@ async function download(): Promise<void> {
     state.exporting = false;
     if (downloadBtn) downloadBtn.disabled = false;
     if (alive && state.playing) restart();
+    const next = state.queued;
+    state.queued = null;
+    if (alive && next) void setFile(next);
   }
 }
