@@ -713,3 +713,4 @@ input[type="color"] { width: 2.6rem; height: 2.2rem; padding: 0; border: 1px sol
 .mic-verdict { min-height: 1.4em; margin: 0; font-weight: 700; color: var(--pink-deep); }
 .mic-wave { width: 100%; height: auto; }
 .mic-player { width: 100%; }
+.btn[hidden], .chip[hidden] { display: none; }

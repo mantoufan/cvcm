@@ -148,7 +148,11 @@ function setNegative(): void {
 function add(): void {
   if (state.counters.length >= MAX_COUNTERS) return;
   dropUndo();
-  state.counters.push({ name: t("tallyCounter.defaultName", { n: state.counters.length + 1 }), count: 0 });
+  // The lowest number not already used, so removing Counter 2 and adding one does not give two Counter 3s.
+  const names = new Set(state.counters.map((c) => c.name));
+  let n = 1;
+  while (names.has(t("tallyCounter.defaultName", { n }))) n++;
+  state.counters.push({ name: t("tallyCounter.defaultName", { n }), count: 0 });
   active = state.counters.length - 1;
   save();
   paint();
@@ -218,8 +222,8 @@ function rename(i: number, name: string): void {
 }
 
 function onKey(e: KeyboardEvent): void {
-  // Leave shortcuts with modifiers and held-down (repeating) keys alone: one press is one count.
-  if (e.ctrlKey || e.metaKey || e.altKey || e.repeat) return;
+  // Leave shortcuts with modifiers alone.
+  if (e.ctrlKey || e.metaKey || e.altKey) return;
   const target = e.target as HTMLElement | null;
   // Only when nothing else has focus, or focus is on the counter's own buttons: links, FAQ toggles and fields keep their keys.
   // Scrolled away to the how-to or FAQ, the keys scroll the page as usual.
@@ -228,13 +232,11 @@ function onKey(e: KeyboardEvent): void {
   if (!onPage && !onButton) return;
   // On a focused button, Space and Enter press that button.
   if (onButton && (e.key === " " || e.key === "Enter")) return;
-  if (e.key === " " || e.key === "ArrowUp" || e.key === "+" || e.key === "=") {
-    e.preventDefault();
-    change(active, 1);
-  } else if (e.key === "ArrowDown" || e.key === "-") {
-    e.preventDefault();
-    change(active, -1);
-  }
+  const sign = e.key === " " || e.key === "ArrowUp" || e.key === "+" || e.key === "=" ? 1 : e.key === "ArrowDown" || e.key === "-" ? -1 : 0;
+  if (!sign) return;
+  // A held key neither counts again nor scrolls: one press is one count.
+  e.preventDefault();
+  if (!e.repeat) change(active, sign);
 }
 
 /** Repaints all counters, or only the count of one (so its name field keeps focus while clicking + quickly). */

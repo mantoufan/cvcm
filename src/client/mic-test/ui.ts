@@ -148,20 +148,25 @@ async function start(): Promise<void> {
   }
   asking = false;
   stream = s;
-  try {
-    source = audio.createMediaStreamSource(s);
-    analyser = audio.createAnalyser();
-    analyser.fftSize = 2048;
-    samples = new Float32Array(analyser.fftSize);
-    // Some WebKit builds only run nodes the destination pulls on: route the analyser there through a silent gain.
-    sink = audio.createGain();
-    sink.gain.value = 0;
-    source.connect(analyser).connect(sink).connect(audio.destination);
-  } catch {
-    // Firefox throws when the microphone's sample rate differs from the AudioContext's.
-    stop();
-    say("failed");
-    return;
+  if (!buildGraph(audio, s)) {
+    // Firefox throws when the microphone's sample rate differs from the AudioContext's: retry at the microphone's rate.
+    const rate = s.getAudioTracks()[0]?.getSettings().sampleRate;
+    let retried = false;
+    if (rate && rate !== audio.sampleRate) {
+      void audio.close().catch(() => undefined);
+      try {
+        audio = new AudioContext({ sampleRate: rate });
+        if (audio.state === "suspended") void audio.resume().catch(() => undefined);
+        retried = buildGraph(audio, s);
+      } catch {
+        audio = null;
+      }
+    }
+    if (!retried) {
+      stop();
+      say("failed");
+      return;
+    }
   }
   const style = waveEl ? getComputedStyle(waveEl) : null;
   waveColor = style?.getPropertyValue("--pink-deep").trim() || "#a13f6c";
@@ -181,6 +186,26 @@ async function start(): Promise<void> {
   });
   paintInfo(track);
   void listDevices(track?.getSettings().deviceId);
+}
+
+/** Microphone → analyser → silent gain → output. Returns false when the browser refuses the stream. */
+function buildGraph(ctx: AudioContext, s: MediaStream): boolean {
+  try {
+    source = ctx.createMediaStreamSource(s);
+    analyser = ctx.createAnalyser();
+    analyser.fftSize = 2048;
+    samples = new Float32Array(analyser.fftSize);
+    // Some WebKit builds only run nodes the destination pulls on: route the analyser there through a silent gain.
+    sink = ctx.createGain();
+    sink.gain.value = 0;
+    source.connect(analyser).connect(sink).connect(ctx.destination);
+    return true;
+  } catch {
+    source = null;
+    analyser = null;
+    sink = null;
+    return false;
+  }
 }
 
 function stop(): void {

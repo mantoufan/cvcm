@@ -140,4 +140,14 @@ describe("tally-counter ui", () => {
     q<HTMLButtonElement>("[data-action=undo]").click();
     expect(counts()).toEqual(["5", "2"]);
   });
+
+  it("names a new counter with the lowest free number", () => {
+    mountTallyCounter(host);
+    const add = q<HTMLButtonElement>("[data-action=add]");
+    add.click();
+    add.click();
+    host.querySelectorAll<HTMLButtonElement>("[data-action=remove]")[1].click();
+    add.click();
+    expect([...host.querySelectorAll<HTMLInputElement>("[data-field=name]")].map((el) => el.value)).toEqual(["Counter 1", "Counter 3", "Counter 2"]);
+  });
 });
