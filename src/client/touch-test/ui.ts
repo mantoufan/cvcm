@@ -7,7 +7,8 @@ import { TOUCH_COLS, TOUCH_ROWS, cellsAlong, coveragePercent } from "../../share
 /** One colour per finger, in the order they touch. */
 const COLORS = ["#c83f79", "#2f7bd6", "#1f9a5b", "#e08a1e", "#7a4fd1", "#d23c3c", "#1aa3a3", "#8a6d3b", "#d0479b", "#4a5bd6"];
 
-type Touch = { x: number; y: number; color: string; n: number };
+/** `stale`: the pad was resized since the last point, so the next point starts a new stroke. */
+type Touch = { x: number; y: number; color: string; n: number; stale?: boolean };
 
 let padEl: HTMLElement | null = null;
 let canvasEl: HTMLCanvasElement | null = null;
@@ -98,7 +99,8 @@ function clearState(): void {
 
 function clearAll(): void {
   clearState();
-  active.clear();
+  // Fingers still on the pad keep drawing; the most-at-once count restarts from them.
+  maxAtOnce = active.size;
   cells.forEach((c) => c.classList.remove("hit"));
   padEl?.classList.remove("used");
   const ctx = canvasEl?.getContext("2d");
@@ -115,6 +117,8 @@ function fitCanvas(): void {
   if (canvasEl.width === w && canvasEl.height === hgt) return;
   canvasEl.width = w;
   canvasEl.height = hgt;
+  // Fingers still down keep coordinates from the old layout (rotation, full screen): restart their strokes.
+  for (const touch of active.values()) touch.stale = true;
 }
 
 type Box = { left: number; top: number; w: number; h: number };
@@ -159,6 +163,11 @@ function move(e: PointerEvent): void {
   const b = box();
   for (const ev of events.length ? events : [e]) {
     const p = point(ev, b);
+    if (touch.stale) {
+      touch.stale = false;
+      touch.x = p.x;
+      touch.y = p.y;
+    }
     mark(cellsAlong(touch.x, touch.y, p.x, p.y, p.w, p.h));
     line(touch, p.x, p.y, p.w);
     touch.x = p.x;

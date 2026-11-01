@@ -153,7 +153,15 @@ function onFullscreenChange(): void {
   // Esc (or the browser's own exit) leaves full screen: close the test screen with it. While the request is still
   // pending (covering not yet decided) the element is not in full screen yet, so only act once it has been.
   if (open && !covering && entered && fullscreenElement() !== screenEl) close();
-  if (open && fullscreenElement() === screenEl) entered = true;
+  if (open && fullscreenElement() === screenEl) {
+    entered = true;
+    // Full screen arrived after the request was given up on (a slow WebKit animation): stop covering, so leaving it closes.
+    if (covering) {
+      covering = false;
+      screenEl?.classList.remove("covering");
+      document.documentElement.classList.remove("dp-lock");
+    }
+  }
 }
 
 function next(by: number): void {
@@ -173,7 +181,7 @@ function tap(e: PointerEvent): void {
 
 function key(e: KeyboardEvent): void {
   // Enter and Space on the × button press it.
-  if ((e.target as HTMLElement | null)?.closest?.("[data-action=exit]") && e.key !== "Escape") return;
+  if ((e.target as HTMLElement | null)?.closest?.("[data-action=exit]") && (e.key === "Enter" || e.key === " ")) return;
   // A held key repeats about 30 times a second: one press moves one colour, so the screen never flashes.
   if (e.repeat) {
     if (e.key !== "Escape") e.preventDefault();

@@ -23,6 +23,8 @@ let frameHandle = 0;
 let frameTimes: number[] = [];
 /** When frames started being counted; the rate shows once a full window has passed. */
 let countingSince = 0;
+/** facingMode of the last camera opened, so Mirror is set again only when it changes. */
+let lastFacing = "";
 const FPS_WINDOW_MS = 2000;
 /** Bumped on every start/stop, so a slow permission prompt that resolves late is dropped. */
 let run = 0;
@@ -138,8 +140,10 @@ async function start(): Promise<void> {
   stream = s;
   videoEl.srcObject = s;
   // A front camera is mirrored like a mirror; a back camera shows the scene the right way round.
-  const facing = s.getVideoTracks()[0]?.getSettings().facingMode;
-  if (mirrorEl && facing) mirrorEl.checked = facing !== "environment";
+  // Only when the facing changes (another camera), so a resolution change keeps the user's own choice.
+  const facing = s.getVideoTracks()[0]?.getSettings().facingMode ?? "";
+  if (mirrorEl && facing && facing !== lastFacing) mirrorEl.checked = facing !== "environment";
+  lastFacing = facing;
   paintMirror();
   void videoEl.play().catch(() => undefined);
   if (startBtn) startBtn.textContent = t("webcamTest.stop");
@@ -166,10 +170,11 @@ async function start(): Promise<void> {
 /** Counts the frames the video element actually shows, where the browser can tell (requestVideoFrameCallback). */
 function watchFrames(video: HTMLVideoElement): void {
   if (typeof video.requestVideoFrameCallback !== "function") return;
-  countingSince = performance.now();
   const mine = run;
   const onFrame = (now: number) => {
     if (mine !== run || !stream) return;
+    // Count from the first frame, so the camera's warm-up does not lower the first reading.
+    if (!countingSince) countingSince = now;
     frameTimes.push(now);
     while (frameTimes.length && frameTimes[0] < now - FPS_WINDOW_MS) frameTimes.shift();
     frameHandle = video.requestVideoFrameCallback(onFrame);
@@ -197,13 +202,15 @@ function stop(): void {
 /** Camera names are only readable after permission, so the list fills in once the camera is on. */
 async function listDevices(currentId: string | undefined): Promise<void> {
   if (!deviceEl || !navigator.mediaDevices?.enumerateDevices) return;
+  const mine = run;
   let inputs: MediaDeviceInfo[];
   try {
     inputs = (await navigator.mediaDevices.enumerateDevices()).filter((d) => d.kind === "videoinput" && d.deviceId);
   } catch {
     return;
   }
-  if (!deviceEl || !inputs.length) return;
+  // Another camera was picked meanwhile: its own listing will fill the select.
+  if (mine !== run || !deviceEl || !inputs.length) return;
   const known = !!currentId && inputs.some((d) => d.deviceId === currentId);
   // When the live camera is not in the list (no deviceId reported), keep "Default camera" selected so a restart
   // (another resolution) opens the same camera instead of the first one listed.
@@ -231,7 +238,7 @@ function paintInfo(): void {
   if (countingSince && now - countingSince >= FPS_WINDOW_MS) {
     // Frames the page actually received; a frozen camera reads 0.
     rows.push([t("webcamTest.fps"), t("webcamTest.fpsValue", { n: framesPerSecond(frameTimes, now, FPS_WINDOW_MS).toFixed(1) })]);
-  } else if (!countingSince && set.frameRate) rows.push([t("webcamTest.fps"), t("webcamTest.fpsSetting", { n: Math.round(set.frameRate) })]);
+  } else if (typeof videoEl?.requestVideoFrameCallback !== "function" && set.frameRate) rows.push([t("webcamTest.fps"), t("webcamTest.fpsSetting", { n: Math.round(set.frameRate) })]);
   if (set.facingMode) rows.push([t("webcamTest.facing"), t(`webcamTest.facing_${set.facingMode === "environment" ? "back" : "front"}`)]);
   infoEl.replaceChildren(...rows.flatMap(([k, v]) => [h("dt", null, k), h("dd", null, v)]));
 }

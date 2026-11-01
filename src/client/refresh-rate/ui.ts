@@ -143,11 +143,10 @@ function paint(): void {
   if (samplesEl) samplesEl.textContent = String(intervals.length);
   drawGraph();
   if (intervals.length < MIN_SAMPLES) return;
-  const median = medianInterval(intervals);
   const frameMs = steadyInterval(intervals);
   const hz = hzFromInterval(frameMs);
   const near = nearestStandardRate(hz);
-  const skipped = countSkipped(intervals, median);
+  const skipped = countSkipped(intervals);
   if (hzEl) hzEl.textContent = String(Math.round(hz));
   if (frameMsEl) frameMsEl.textContent = t("refreshRate.ms", { n: frameMs.toFixed(2) });
   if (skippedEl) skippedEl.textContent = String(skipped);

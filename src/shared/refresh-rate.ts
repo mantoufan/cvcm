@@ -1,12 +1,6 @@
 /** Refresh rates displays commonly run at, in Hz. */
 export const STANDARD_RATES = [24, 30, 48, 50, 60, 72, 75, 85, 90, 100, 120, 144, 165, 170, 175, 180, 200, 240, 280, 300, 360, 480, 500, 540] as const;
 
-/**
- * An interval this many times the median is a skipped frame (the screen showed the previous one again, ~2×).
- * Not 1.5×: with frame times rounded to whole ms, a 480 Hz screen (2.08 ms) gives 2 and 3 ms intervals, and 3 is 1.5× 2.
- */
-export const SKIP_FACTOR = 1.75;
-
 /** Frame gaps longer than this (ms) are pauses (a hidden tab, a busy page), not frames. */
 export const MAX_FRAME_MS = 250;
 
@@ -18,16 +12,32 @@ export function medianInterval(intervals: readonly number[]): number {
   return v.length % 2 ? v[mid] : (v[mid - 1] + v[mid]) / 2;
 }
 
+function mean(v: readonly number[]): number {
+  return v.length ? v.reduce((a, b) => a + b, 0) / v.length : 0;
+}
+
 /**
- * Mean of the steady frame intervals (from half the median up to SKIP_FACTOR times it), in ms; 0 when there are none.
- * The mean, not the median, because many browsers round frame times to whole ms: at 240 Hz (4.17 ms) the
- * intervals read 4, 4, 5, 4, … and only their average gives the true rate.
+ * Intervals at or above this (ms) are skipped frames: the screen showed the previous frame again (about 2×).
+ * It is 1.5× a first mean of the normal-looking intervals, not of the median, because many browsers round frame times
+ * to whole ms: at 360 Hz (2.78 ms) the median reads 3 and a skipped frame (5.56 ms) can read 5.
+ */
+export function skipThreshold(intervals: readonly number[]): number {
+  const median = medianInterval(intervals);
+  if (!median) return 0;
+  const rough = mean(intervals.filter((x) => x >= median * 0.5 && x < median * 1.75));
+  return (rough || median) * 1.5;
+}
+
+/**
+ * Mean of the steady frame intervals (from half the median up to the skip threshold), in ms; 0 when there are none.
+ * The mean, not the median, because rounded frame times at 240 Hz (4.17 ms) read 4, 4, 5, 4, … and only their
+ * average gives the true rate.
  */
 export function steadyInterval(intervals: readonly number[]): number {
   const median = medianInterval(intervals);
   if (!median) return 0;
-  const steady = intervals.filter((x) => x >= median * 0.5 && x < median * SKIP_FACTOR);
-  return steady.length ? steady.reduce((a, b) => a + b, 0) / steady.length : median;
+  const limit = skipThreshold(intervals);
+  return mean(intervals.filter((x) => x >= median * 0.5 && x < limit)) || median;
 }
 
 /** Frames per second for a frame interval, to one decimal. */
@@ -46,8 +56,9 @@ export function nearestStandardRate(hz: number): number | null {
   return best;
 }
 
-/** Frames that took SKIP_FACTOR intervals or more: the screen showed the previous frame again (a skipped frame). */
-export function countSkipped(intervals: readonly number[], median: number): number {
-  if (!(median > 0)) return 0;
-  return intervals.filter((x) => x >= median * SKIP_FACTOR && x <= MAX_FRAME_MS).length;
+/** Skipped frames: intervals at or above the skip threshold (pauses past MAX_FRAME_MS are not frames). */
+export function countSkipped(intervals: readonly number[]): number {
+  const limit = skipThreshold(intervals);
+  if (!(limit > 0)) return 0;
+  return intervals.filter((x) => x >= limit && x <= MAX_FRAME_MS).length;
 }
