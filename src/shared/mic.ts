@@ -20,10 +20,10 @@ export function meterPercent(db: number): number {
   return Math.round(((Math.min(0, Math.max(METER_FLOOR_DB, db)) - METER_FLOOR_DB) / -METER_FLOOR_DB) * 100);
 }
 
-/** What the level says about the microphone: nothing, quiet, good or too loud (clipping). */
+/** What the peak says about the microphone: nothing, quiet (below −20 dBFS), good, or too loud (from −3 dBFS, close to clipping). */
 export function levelVerdict(peakDb: number): "silent" | "quiet" | "good" | "loud" {
   if (peakDb <= -55) return "silent";
-  if (peakDb < -30) return "quiet";
-  if (peakDb >= -1) return "loud";
+  if (peakDb < -20) return "quiet";
+  if (peakDb >= -3) return "loud";
   return "good";
 }

@@ -148,6 +148,7 @@ function paint(): void {
   if (!s) {
     outEl.replaceChildren(h("p", { class: "muted" }, t("reactionTime.empty")));
     last = "";
+    if (copyBtn) copyBtn.disabled = true;
     return;
   }
   const rows: Array<[string, string]> = [
@@ -160,6 +161,7 @@ function paint(): void {
   outEl.replaceChildren(...rows.flatMap(([k, v]) => [h("dt", null, k), h("dd", null, v)]));
   if (band) outEl.append(h("p", { class: "hint" }, band));
   last = `${times.map((ms, i) => `${i + 1}. ${t("reactionTime.ms", { n: ms })}`).join("\n")}\n${rows.map(([k, v]) => `${k}: ${v}`).join("\n")}${band ? `\n${band}` : ""}`;
+  if (copyBtn) copyBtn.disabled = false;
 }
 
 async function copyOut(): Promise<void> {

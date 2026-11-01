@@ -82,6 +82,7 @@ function reset(): void {
   state = "idle";
   clicks = 0;
   last = "";
+  if (copyBtn) copyBtn.disabled = true;
   padEl?.classList.remove("running", "done");
   if (padEl) padEl.textContent = t("clickTest.start");
   if (resultEl) resultEl.textContent = "";
@@ -157,6 +158,7 @@ function finish(): void {
   const band = t(`clickTest.band_${cpsBand(cps)}`);
   if (resultEl) resultEl.textContent = `${line} ${band}`;
   last = `${line}\n${band}`;
+  if (copyBtn) copyBtn.disabled = false;
   paintBest();
 }
 

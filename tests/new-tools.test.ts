@@ -1509,6 +1509,6 @@ describe("mic-test", () => {
     expect(toDbfs(1)).toBe(0);
     expect(toDbfs(0.1)).toBeCloseTo(-20, 5);
     expect([meterPercent(-60), meterPercent(-30), meterPercent(0), meterPercent(5)]).toEqual([0, 50, 100, 100]);
-    expect([levelVerdict(-60), levelVerdict(-40), levelVerdict(-12), levelVerdict(-0.5)]).toEqual(["silent", "quiet", "good", "loud"]);
+    expect([levelVerdict(-60), levelVerdict(-25), levelVerdict(-20), levelVerdict(-12), levelVerdict(-3.5), levelVerdict(-3)]).toEqual(["silent", "quiet", "good", "good", "good", "loud"]);
   });
 });

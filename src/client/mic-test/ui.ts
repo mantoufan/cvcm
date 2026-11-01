@@ -26,6 +26,9 @@ let analyser: AnalyserNode | null = null;
 let sink: GainNode | null = null;
 let waveColor = "#a13f6c";
 let samples: Float32Array<ArrayBuffer> | null = null;
+let bytes: Uint8Array<ArrayBuffer> | null = null;
+let lastVerdict = "";
+let lastPct = -1;
 let frame = 0;
 let peakDb = -Infinity;
 let lastFrame = 0;
@@ -41,7 +44,7 @@ export function mountMicTest(host: HTMLElement): void {
   deviceEl = h("select", { "data-field": "device", disabled: true, onChange: () => { if (stream || asking) void start(); } },
     h("option", { value: "" }, t("micTest.defaultDevice")),
   );
-  startBtn = h("button", { type: "button", class: "btn", "data-action": "start", onClick: () => (stream ? stop() : void start()) }, t("micTest.start"));
+  startBtn = h("button", { type: "button", class: "btn", "data-action": "start", onClick: () => (stream || asking ? stop() : void start()) }, t("micTest.start"));
   recordBtn = h("button", { type: "button", class: "btn ghost", "data-action": "record", disabled: true, onClick: () => record() }, t("micTest.record", { n: RECORD_MS / 1000 }));
   statusEl = h("p", { class: "hint", "aria-live": "polite", "data-out": "status" }, t("micTest.idle"));
   meterFill = h("span", { class: "mic-fill" });
@@ -113,6 +116,8 @@ async function start(): Promise<void> {
     return;
   }
   say("asking");
+  // While the prompt is open the button cancels, so a second click does not open a second prompt.
+  if (startBtn) startBtn.textContent = t("micTest.stop");
   const id = deviceEl?.value;
   let s: MediaStream;
   asking = true;
@@ -122,6 +127,7 @@ async function start(): Promise<void> {
   } catch (err) {
     if (mine !== run) return;
     asking = false;
+    if (startBtn) startBtn.textContent = t("micTest.start");
     const name = (err as { name?: string })?.name;
     say(name === "NotAllowedError" || name === "SecurityError" ? "denied" : name === "NotFoundError" || name === "OverconstrainedError" ? "notFound" : name === "NotReadableError" ? "busy" : "failed");
     return;
@@ -196,6 +202,9 @@ function stop(): void {
   if (levelEl) levelEl.textContent = "—";
   if (peakEl) peakEl.textContent = "—";
   if (verdictEl) verdictEl.textContent = "";
+  lastVerdict = "";
+  lastPct = -1;
+  bytes = null;
   waveEl?.getContext("2d")?.clearRect(0, 0, waveEl.width, waveEl.height);
   say("idle");
 }
@@ -227,7 +236,13 @@ function paintInfo(track: MediaStreamTrack | undefined): void {
 
 function draw(now: number): void {
   if (!analyser || !samples) return;
-  analyser.getFloatTimeDomainData(samples);
+  // Safari before 14.1 has only the byte version.
+  if (typeof analyser.getFloatTimeDomainData === "function") analyser.getFloatTimeDomainData(samples);
+  else {
+    bytes ??= new Uint8Array(analyser.fftSize);
+    analyser.getByteTimeDomainData(bytes);
+    for (let i = 0; i < samples.length; i++) samples[i] = (bytes[i] - 128) / 128;
+  }
   let peak = 0;
   for (let i = 0; i < samples.length; i++) peak = Math.max(peak, Math.abs(samples[i]));
   const level = toDbfs(rms(samples));
@@ -239,11 +254,20 @@ function draw(now: number): void {
   if (meterFill) {
     meterFill.style.width = `${pct}%`;
     meterFill.classList.toggle("hot", peakDb >= -1);
-    meterFill.parentElement?.setAttribute("aria-valuenow", String(pct));
+    // Screen readers hear the meter in steps of 10, not every frame.
+    const stepped = Math.round(pct / 10) * 10;
+    if (stepped !== lastPct) {
+      lastPct = stepped;
+      meterFill.parentElement?.setAttribute("aria-valuenow", String(stepped));
+    }
   }
   if (levelEl) levelEl.textContent = `${level.toFixed(0)} dBFS`;
   if (peakEl) peakEl.textContent = `${peakDb.toFixed(0)} dBFS`;
-  if (verdictEl) verdictEl.textContent = t(`micTest.verdict_${levelVerdict(peakDb)}`);
+  const verdict = levelVerdict(peakDb);
+  if (verdictEl && verdict !== lastVerdict) {
+    lastVerdict = verdict;
+    verdictEl.textContent = t(`micTest.verdict_${verdict}`);
+  }
   drawWave();
   frame = window.requestAnimationFrame(draw);
 }
@@ -295,8 +319,13 @@ function record(): void {
     playerEl.hidden = false;
     if (stream) say("recorded");
   };
+  try {
+    rec.start();
+  } catch {
+    say("recordFailed");
+    return;
+  }
   recorder = rec;
-  rec.start();
   if (recordBtn) {
     recordBtn.disabled = true;
     recordBtn.textContent = t("micTest.recording");

@@ -24,7 +24,7 @@ function fresh(): TallyState {
 export function mountTallyCounter(host: HTMLElement): void {
   state = load() ?? fresh();
   active = 0;
-  stepEl = h("input", { type: "number", min: "1", max: String(MAX_STEP), step: "1", inputmode: "numeric", value: String(state.step), "data-field": "step", onChange: () => setStep() });
+  stepEl = h("input", { type: "number", min: "1", max: String(MAX_STEP), step: "1", inputmode: "numeric", value: String(state.step), "data-field": "step", onInput: () => typedStep(), onChange: () => setStep() });
   negEl = h("input", { type: "checkbox", checked: state.allowNegative, "data-field": "negative", onChange: () => setNegative() });
   listEl = h("div", { class: "tally-list" });
   totalEl = h("p", { class: "hint", "data-out": "total" });
@@ -82,6 +82,17 @@ function onStorage(e: StorageEvent): void {
   active = Math.min(active, state.counters.length - 1);
   if (stepEl) stepEl.value = String(state.step);
   if (negEl) negEl.checked = state.allowNegative;
+  const rows = listEl?.children;
+  // While a name is being typed here, update the numbers in place so the field keeps focus.
+  if (rows && rows.length === state.counters.length && listEl?.contains(document.activeElement)) {
+    state.counters.forEach((c, i) => {
+      const input = rows[i].querySelector<HTMLInputElement>("[data-field='name']");
+      if (input && input !== document.activeElement) input.value = c.name;
+      else if (input) c.name = input.value.slice(0, MAX_NAME);
+      paint(i);
+    });
+    return;
+  }
   paint();
 }
 
@@ -103,6 +114,14 @@ function change(i: number, sign: 1 | -1): void {
 function setStep(): void {
   state.step = clampStep(Number(stepEl?.value));
   if (stepEl) stepEl.value = String(state.step);
+  save();
+}
+
+/** A typed step counts at once (a click on + does not blur the field); the field is tidied up on change. */
+function typedStep(): void {
+  const v = Number(stepEl?.value);
+  if (!stepEl?.value.trim() || !Number.isFinite(v) || v < 1) return;
+  state.step = clampStep(v);
   save();
 }
 
