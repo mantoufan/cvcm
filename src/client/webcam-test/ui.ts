@@ -137,6 +137,9 @@ async function start(): Promise<void> {
   asking = false;
   stream = s;
   videoEl.srcObject = s;
+  // A front camera is mirrored like a mirror; a back camera shows the scene the right way round.
+  const facing = s.getVideoTracks()[0]?.getSettings().facingMode;
+  if (mirrorEl && facing) mirrorEl.checked = facing !== "environment";
   paintMirror();
   void videoEl.play().catch(() => undefined);
   if (startBtn) startBtn.textContent = t("webcamTest.stop");
@@ -201,9 +204,15 @@ async function listDevices(currentId: string | undefined): Promise<void> {
     return;
   }
   if (!deviceEl || !inputs.length) return;
-  deviceEl.replaceChildren(...inputs.map((d, i) => h("option", { value: d.deviceId }, d.label || t("webcamTest.unnamed", { n: i + 1 }))));
-  if (currentId && inputs.some((d) => d.deviceId === currentId)) deviceEl.value = currentId;
-  deviceEl.disabled = inputs.length < 2;
+  const known = !!currentId && inputs.some((d) => d.deviceId === currentId);
+  // When the live camera is not in the list (no deviceId reported), keep "Default camera" selected so a restart
+  // (another resolution) opens the same camera instead of the first one listed.
+  deviceEl.replaceChildren(
+    ...(known ? [] : [h("option", { value: "" }, t("webcamTest.defaultDevice"))]),
+    ...inputs.map((d, i) => h("option", { value: d.deviceId }, d.label || t("webcamTest.unnamed", { n: i + 1 }))),
+  );
+  deviceEl.value = known ? currentId! : "";
+  deviceEl.disabled = inputs.length < (known ? 2 : 1);
 }
 
 function paintInfo(): void {

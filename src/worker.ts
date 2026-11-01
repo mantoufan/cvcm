@@ -3,7 +3,7 @@ import { handleClipApi } from "./clip-api";
 import { d1Store, type D1Database } from "./clip-store";
 import { cookieValue, DEFAULT_LOCALE, LOCALE_COOKIE, negotiateLocale, type Locale } from "./shared/locale";
 import { isIpAddress } from "./shared/device";
-import { appHref, datasetHref, deviceHref, gamesHref, isAgentDocPath, isAiToolPath, isCameraToolPath, isMicToolPath, isPublishedTutorial, kbHref, learnHref, legalHref, parseAppPath, quizHref, refHref, STATIC_FILE, toolJob } from "./shared/path";
+import { appHref, datasetHref, deviceHref, gamesHref, isAgentDocPath, devicePolicyOf, isAiToolPath, isPublishedTutorial, kbHref, learnHref, legalHref, parseAppPath, quizHref, refHref, STATIC_FILE, toolJob } from "./shared/path";
 import { GA_CONNECT_HOSTS, GA_SCRIPT_HOST, isTrackedPath } from "./shared/analytics";
 import { thumbOriginal } from "./shared/covers";
 import { preloadLocalePack, preloadPageChunk } from "./shared/locale-preload";
@@ -523,10 +523,12 @@ function withHeaders(res: Response, pathname: string): Response {
   const aiPage = isAiToolPath(pathname);
   const script = pathname.startsWith("/assets/") && /\.m?js$/.test(pathname);
   if (aiPage || script || pathname.startsWith("/ai/")) headers.set("Cross-Origin-Embedder-Policy", "credentialless");
+  // Same list the client compares before navigating, so headers and in-app links agree.
+  const devices = devicePolicyOf(pathname).split(" ");
   headers.set(
     "Permissions-Policy",
     // Speech to text and the mic test can record from the microphone, the webcam test can use the camera; every other page keeps them off.
-    `camera=(${isCameraToolPath(pathname) ? "self" : ""}), microphone=(${isMicToolPath(pathname) ? "self" : ""}), geolocation=(), interest-cohort=(), usb=()`,
+    `camera=(${devices.includes("camera") ? "self" : ""}), microphone=(${devices.includes("microphone") ? "self" : ""}), geolocation=(), interest-cohort=(), usb=()`,
   );
   headers.set("Content-Security-Policy", player ? EMU_CSP : aiPage || script ? CSP_AI : isTrackedPath(pathname) ? CSP_ANALYTICS : CSP);
   if (pathname === "/api/device/ip") {

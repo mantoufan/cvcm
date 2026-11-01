@@ -64,6 +64,10 @@ describe("refresh-rate", () => {
     expect(medianInterval(rounded)).toBe(4);
     expect(nearestStandardRate(hzFromInterval(steadyInterval(rounded)))).toBe(240);
     expect(steadyInterval([16.7, 16.7, 33.4])).toBeCloseTo(16.7, 5);
+    // 480 Hz rounded to whole ms: 2 and 3 ms intervals average to 2.08 ms, and none is a skipped frame.
+    const r480 = Array.from({ length: 480 }, (_, i) => Math.round((i + 1) * (1000 / 480)) - Math.round(i * (1000 / 480)));
+    expect(nearestStandardRate(hzFromInterval(steadyInterval(r480)))).toBe(480);
+    expect(countSkipped(r480, medianInterval(r480))).toBe(0);
     expect(countSkipped([6.9, 6.9, 13.9, 20.8, 7], 6.9)).toBe(2);
   });
 });

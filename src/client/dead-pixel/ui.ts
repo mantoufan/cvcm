@@ -1,4 +1,5 @@
 import { h } from "../dom";
+import { enterFullscreen, exitFullscreen, fullscreenElement } from "../fullscreen";
 import { locale, t } from "../i18n";
 import { appHref } from "../../shared/path";
 import { AUTO_ADVANCE, SCREEN_COLORS, labelInk, stepColor } from "../../shared/dead-pixel";
@@ -16,6 +17,8 @@ let index = 0;
 let open = false;
 /** The page has no Fullscreen API (iPhone Safari): the test screen covers the window instead. */
 let covering = false;
+/** The test screen has been in full screen during this opening. */
+let entered = false;
 let autoTimer = 0;
 let labelTimer = 0;
 
@@ -89,14 +92,6 @@ export function unmountDeadPixel(): void {
   screenEl = screenLabel = null;
 }
 
-type FsElement = HTMLElement & { webkitRequestFullscreen?: () => Promise<void> | void };
-type FsDocument = Document & { webkitFullscreenElement?: Element | null; webkitExitFullscreen?: () => Promise<void> | void };
-
-function fullscreenElement(): Element | null {
-  const d = document as FsDocument;
-  return d.fullscreenElement ?? d.webkitFullscreenElement ?? null;
-}
-
 function pick(i: number): void {
   index = stepColor(i, 0);
   paint();
@@ -119,22 +114,20 @@ function paint(): void {
 }
 
 async function openScreen(): Promise<void> {
-  const el = screenEl as FsElement | null;
+  const el = screenEl;
   if (!el || open) return;
   open = true;
+  entered = false;
   el.hidden = false;
   covering = false;
-  const request = el.requestFullscreen ?? el.webkitRequestFullscreen;
-  try {
-    if (!request) throw new Error("no fullscreen");
-    await request.call(el);
-  } catch {
+  const full = await enterFullscreen(el);
+  if (!open) return;
+  if (!full) {
     // No Fullscreen API (iPhone) or refused: cover the window instead.
     covering = true;
     el.classList.add("covering");
     document.documentElement.classList.add("dp-lock");
   }
-  if (!open) return;
   el.focus({ preventScroll: true });
   paint();
   showLabel();
@@ -153,16 +146,14 @@ function close(): void {
   }
   document.documentElement.classList.remove("dp-lock");
   covering = false;
-  if (el && fullscreenElement() === el) {
-    const d = document as FsDocument;
-    const exit = d.exitFullscreen ?? d.webkitExitFullscreen;
-    void Promise.resolve(exit?.call(d)).catch(() => undefined);
-  }
+  if (el && fullscreenElement() === el) exitFullscreen();
 }
 
 function onFullscreenChange(): void {
-  // Esc (or the browser's own exit) leaves full screen: close the test screen with it.
-  if (open && !covering && fullscreenElement() !== screenEl) close();
+  // Esc (or the browser's own exit) leaves full screen: close the test screen with it. While the request is still
+  // pending (covering not yet decided) the element is not in full screen yet, so only act once it has been.
+  if (open && !covering && entered && fullscreenElement() !== screenEl) close();
+  if (open && fullscreenElement() === screenEl) entered = true;
 }
 
 function next(by: number): void {

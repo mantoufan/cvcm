@@ -1,4 +1,5 @@
 import { h } from "../dom";
+import { canFullscreen, enterFullscreen } from "../fullscreen";
 import { locale, t } from "../i18n";
 import { appHref } from "../../shared/path";
 import { TOUCH_COLS, TOUCH_ROWS, cellsAlong, coveragePercent } from "../../shared/touch";
@@ -46,8 +47,6 @@ export function mountTouchTest(host: HTMLElement): void {
   pressureEl = h("dd", { "data-out": "pressure" }, "—");
   coverEl = h("dd", { "data-out": "coverage" }, "0%");
   fullBtn = h("button", { type: "button", class: "btn ghost", "data-action": "fullscreen", onClick: () => void fullScreen() }, t("touchTest.fullscreen"));
-  const pad = padEl as HTMLElement & { webkitRequestFullscreen?: unknown };
-  fullBtn.hidden = typeof pad.requestFullscreen !== "function" && typeof pad.webkitRequestFullscreen !== "function";
   host.append(
     h("header", { class: "tool-head" },
       h("a", { class: "back", href: appHref(locale(), null), "data-nav": "home" }, t("touchTest.back")),
@@ -236,12 +235,11 @@ function paintStats(e: PointerEvent | null): void {
 }
 
 async function fullScreen(): Promise<void> {
-  const el = padEl as (HTMLElement & { webkitRequestFullscreen?: () => Promise<void> | void }) | null;
-  if (!el) return;
-  try {
-    await (el.requestFullscreen ?? el.webkitRequestFullscreen)?.call(el);
-  } catch {
-    // Refused (not from a click, or blocked): the pad stays in the page.
+  if (!padEl) return;
+  // Shown in the page's HTML for every browser; one without full screen (iPhone) hides it once tapped.
+  if (!canFullscreen(padEl)) {
+    if (fullBtn) fullBtn.hidden = true;
+    return;
   }
+  await enterFullscreen(padEl);
 }
-

@@ -48,13 +48,15 @@ export function mountGamepadTest(host: HTMLElement): void {
   );
   window.addEventListener("gamepadconnected", onConnect);
   window.addEventListener("gamepaddisconnected", onConnect);
+  say("waiting");
   if (typeof navigator.getGamepads !== "function") {
+    // Every current browser has the Gamepad API; the build-time prerender does not, so keep this out of the page's HTML.
+    statusEl.dataset.volatile = "";
     say("unsupported");
     return;
   }
-  say("waiting");
-  // Pads already connected show up once a button is pressed; poll until then.
-  frame = window.requestAnimationFrame(loop);
+  // A pad already announced to this page (a button pressed before) shows at once.
+  onConnect();
 }
 
 export function unmountGamepadTest(): void {
@@ -75,8 +77,11 @@ function say(key: string, vars?: Record<string, string | number>): void {
   if (statusEl) statusEl.textContent = t(`gamepadTest.${key}`, vars);
 }
 
+/** Browsers announce a pad (even one already plugged in) on its first button press; poll each frame while one is connected. */
 function onConnect(): void {
   poll();
+  window.cancelAnimationFrame(frame);
+  if (pads().length) frame = window.requestAnimationFrame(loop);
 }
 
 function pads(): Gamepad[] {
@@ -91,7 +96,8 @@ function pads(): Gamepad[] {
 function loop(): void {
   if (!mounted) return;
   poll();
-  frame = window.requestAnimationFrame(loop);
+  // Stop polling once the last pad is gone; the next gamepadconnected starts it again.
+  if (drawn !== "none") frame = window.requestAnimationFrame(loop);
 }
 
 function poll(): void {
