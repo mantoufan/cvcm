@@ -1,0 +1,203 @@
+{
+  "meta": {
+    "titleTestClickSpeed": "How to test your click speed (CPS) and click faster | cv.cm",
+    "descTestClickSpeed": "CPS = clicks ÷ seconds. Run a 5-second CPS test, read your score (5–8 is typical, 8–11 fast) and practise jitter or butterfly clicking safely. Nothing is uploaded.",
+    "titleTestReactionTime": "How to test your reaction time online | cv.cm",
+    "descTestReactionTime": "Click when the screen turns green, five times, and read your average and median in ms. Most people score 200–300 ms. Tips for a fair test. Nothing is uploaded.",
+    "titleGenerateTestTone": "How to play a test tone to check speakers and headphones | cv.cm",
+    "descGenerateTestTone": "Play a 440 Hz or 1 kHz sine tone, send it to the left or right speaker, sweep from 20 Hz to 20 kHz and find rattles or hearing limits — safely, at low volume.",
+    "titleTestMicrophone": "How to test your microphone online | cv.cm",
+    "descTestMicrophone": "Allow the microphone, watch the level meter (aim for peaks of −20 to −6 dBFS), record 5 seconds and play it back. Fixes for a silent or clipping mic. Nothing is uploaded.",
+    "titleUseTallyCounter": "How to use an online tally counter | cv.cm",
+    "descUseTallyCounter": "Count people, laps, stitches or votes with big + and − buttons or the keyboard, name several counters, set a step and read the total. Counts stay in your browser."
+  },
+  "lessons": {
+    "test-click-speed": {
+      "copy": {
+        "name": "How to test your click speed (CPS)",
+        "blurb": "Click as fast as you can for 5 seconds, read your clicks per second and compare it with typical scores. Nothing is uploaded.",
+        "title": "How to test your click speed (CPS)",
+        "lead": "You want to know how fast you click, for a game or just for fun. You will run a timed CPS test, read the score and try a faster clicking technique. Clicks are counted in your browser; nothing is uploaded.",
+        "result": "Your clicks per second for the chosen length, your total clicks and your best score this session.",
+        "note": "Use the mouse you play with. Take short breaks: fast clicking for long stretches strains the hand and wrist.",
+        "s1t": "Know what CPS means",
+        "s1b": "CPS is clicks per second: total clicks divided by the seconds of the test. 35 clicks in 5 seconds is 7 CPS. Most people click 5–8 CPS with one finger.",
+        "s2t": "Open CPS test on cv.cm",
+        "s2b": "The big pad below the options says “Click here to start”. Length is set to 5 seconds, the usual test.",
+        "s3t": "Pick a length",
+        "s3b": "Choose 1 second for a short burst or 30–60 seconds to test how long you keep the pace. Your best score is kept per length.",
+        "s4t": "Click as fast as you can",
+        "s4b": "The timer starts with your first click. Time left, Clicks and Clicks per second update live. Clicks after time runs out do not count.",
+        "s5t": "Read your score",
+        "s5b": "You get your CPS and total clicks with a speed band: under 5 relaxed, 5–8 typical, 8–11 fast, 11+ very fast. Copy result puts it on the clipboard.",
+        "s6t": "Try to click faster",
+        "s6b": "Jitter clicking tenses the forearm so the finger vibrates; butterfly clicking alternates two fingers on one button. Both can reach 10–15 CPS. Rest if your hand hurts.",
+        "diagram1": "CPS = clicks ÷ seconds: 35 clicks in 5 s = 7 CPS.",
+        "diagram2": "5–8 typical · 8–11 fast · 11+ jitter or butterfly."
+      },
+      "faq": {
+        "q1": "What is a good CPS score?",
+        "a1": "5–8 CPS is typical with one finger, 8–11 is fast, and above 11 usually takes jitter or butterfly clicking.",
+        "q2": "How long is a CPS test?",
+        "a2": "Usually 5 seconds. cv.cm also offers 1, 10, 30 and 60 seconds.",
+        "q3": "Does a gaming mouse help?",
+        "a3": "A light mouse with a short, crisp switch helps a little; technique matters more.",
+        "q4": "Is jitter clicking bad for you?",
+        "a4": "Long sessions can strain the wrist and forearm. Keep tries short and stop if it hurts.",
+        "q5": "Does cv.cm upload my clicks?",
+        "a5": "No. Clicks are counted in the tab, and the best score is forgotten when you close it."
+      }
+    },
+    "test-reaction-time": {
+      "copy": {
+        "name": "How to test your reaction time",
+        "blurb": "Click as soon as the screen turns green, five times, and read your average and median reaction time in milliseconds. Nothing is uploaded.",
+        "title": "How to test your reaction time",
+        "lead": "You want to measure how quickly you respond to something you see — for gaming, sport or curiosity. You will run five tries, avoid false starts and read a fair average. Timing happens in your browser; nothing is uploaded.",
+        "result": "Five reaction times in ms with the average, median, best and worst, and how they compare with a typical score.",
+        "note": "Close heavy apps and tabs, sit as you normally would and use the same device each time you compare results.",
+        "s1t": "Know what you measure",
+        "s1b": "Reaction time is the delay between a signal and your response. For a visual signal and a click, most people score about 200–300 ms; under 200 ms is fast.",
+        "s2t": "Open Reaction time test on cv.cm",
+        "s2b": "The big pad says “Click to start”. Mouse, touch, Space or Enter all work.",
+        "s3t": "Wait for green",
+        "s3b": "After you click, the pad turns red and shows “Wait for green…”. The wait is random, 1.5 to 4.5 seconds, so you cannot guess it.",
+        "s4t": "Click on green",
+        "s4b": "When the pad turns green and says “Click!”, click at once. Your time appears in ms. If you click while it is red you see “Too soon” and the try does not count.",
+        "s5t": "Finish five tries",
+        "s5b": "Click again for each try. After five, Results shows the average, median, best and worst. The median ignores one unusually slow or fast try.",
+        "s6t": "Compare fairly",
+        "s6b": "Screens, mice and browsers add a few to tens of ms, so compare on the same device. Rest, warm up with a few tries, and take the median of several rounds.",
+        "diagram1": "Red → random 1.5–4.5 s → green → click = your time.",
+        "diagram2": "Typical 200–300 ms · under 200 ms fast."
+      },
+      "faq": {
+        "q1": "What is a good reaction time?",
+        "a1": "Around 200–300 ms is typical for a visual signal; under 200 ms is fast.",
+        "q2": "Why is my score slower on my phone?",
+        "a2": "Touch screens and some displays add latency. Compare results on the same device.",
+        "q3": "Can I improve my reaction time?",
+        "a3": "Sleep, warm-up and practice help a little; most of the gain is consistency, not raw speed.",
+        "q4": "What does Too soon mean?",
+        "a4": "You clicked while the pad was red. That try does not count; click to retry it.",
+        "q5": "Is anything uploaded?",
+        "a5": "No. The times are measured and kept in the tab."
+      }
+    },
+    "generate-test-tone": {
+      "copy": {
+        "name": "How to play a test tone",
+        "blurb": "Play a pure tone at any frequency, send it to the left or right speaker and sweep the range to test speakers, headphones and your hearing. Runs in your browser.",
+        "title": "How to play a test tone to check speakers and headphones",
+        "lead": "You want to check that both speakers work, find a rattle, tune to A4 or see how high you can hear. You will play a sine tone, change its frequency and send it to one side at a time. The sound is made in your browser; nothing is uploaded.",
+        "result": "A steady tone at the frequency you choose, on the left, right or both speakers, with its nearest musical note.",
+        "note": "Turn the device volume down before you press Play, especially with headphones. High tones can be unpleasant even when quiet.",
+        "s1t": "Know frequency and hearing range",
+        "s1b": "Frequency is vibrations per second, in hertz (Hz). People hear roughly 20 Hz to 20 kHz; the top end falls with age, often to 15–17 kHz for adults. 440 Hz is the note A4.",
+        "s2t": "Open Tone generator on cv.cm",
+        "s2b": "It is set to 440 Hz, a sine wave, both speakers and 20% volume. Press Play and raise the volume slowly; press Stop to end it.",
+        "s3t": "Set the frequency",
+        "s3b": "Type a value, drag the slider, use −1/+1 for small steps or ÷2/×2 to move an octave. Presets give 440 Hz, middle C, 1000 Hz and more.",
+        "s4t": "Test left and right",
+        "s4b": "Under Speaker pick Left, then Right. Each side should play alone; if both play, check that the speakers are not set to mono.",
+        "s5t": "Sweep for rattles and limits",
+        "s5b": "Slowly move the slider from 50 Hz up. A buzz at one frequency points to a loose part; where a tone fades out is your speaker's (or hearing's) limit.",
+        "s6t": "Try other waveforms",
+        "s6b": "Square, triangle and sawtooth add harmonics and sound buzzier. Use sine for measurements and the others to hear the difference.",
+        "diagram1": "20 Hz ← hearing range → 20 kHz · A4 = 440 Hz.",
+        "diagram2": "Left only · both · right only."
+      },
+      "faq": {
+        "q1": "What frequency should I use to test speakers?",
+        "a1": "Start with 440 Hz or 1000 Hz for level, then sweep from 50 Hz to 15 kHz.",
+        "q2": "How do I test left and right channels?",
+        "a2": "Pick Left or Right under Speaker and check that only that side plays.",
+        "q3": "Why can't I hear 18 kHz?",
+        "a3": "Hearing above 15–17 kHz fades with age, and many speakers cannot play it.",
+        "q4": "Can a tone damage my speakers?",
+        "a4": "At low volume, no. Very loud low or high tones can harm small speakers and your ears.",
+        "q5": "Is the tone generator free?",
+        "a5": "Yes. It runs in your browser with no sign-up."
+      }
+    },
+    "test-microphone": {
+      "copy": {
+        "name": "How to test your microphone",
+        "blurb": "Allow the microphone, check the level meter, record five seconds and play it back. Fixes for a silent or clipping mic. Nothing is uploaded.",
+        "title": "How to test your microphone online",
+        "lead": "Before a call, a stream or a recording you want to know that your microphone works and sounds right. You will allow access, check the level, record a sample and fix common problems. The sound stays in your browser; nothing is uploaded.",
+        "result": "A working microphone with speech peaks in a good range, and a short recording that shows how you sound.",
+        "note": "Plug in the microphone or headset first. Close other apps that use it, such as call apps.",
+        "s1t": "Know what a good level is",
+        "s1b": "Levels are in dBFS: 0 is the loudest a recording can hold. Speech peaks between −20 and −6 dBFS are good; near 0 the sound clips and distorts, below −20 it is too quiet.",
+        "s2t": "Open Mic test on cv.cm",
+        "s2b": "Press Start microphone. The browser asks for permission; allow it.",
+        "s3t": "Watch the meter",
+        "s3b": "Speak or clap. The meter, Level, Peak and the waveform should move. The line under the meter says whether the level is good, quiet or too loud.",
+        "s4t": "Pick the right device",
+        "s4b": "Once access is allowed, Input device lists your microphones by name. Pick another one if the meter does not move.",
+        "s5t": "Record and play back",
+        "s5b": "Press Record 5 s and speak normally. When it stops, a player appears: listen for echo, hum or a muffled sound.",
+        "s6t": "Fix common problems",
+        "s6b": "No movement: check mute switches and the system input volume, and that no other app holds the mic. Too loud: move back or lower the input gain. Blocked: allow the microphone in the site settings.",
+        "diagram1": "−20 to −6 dBFS good · near 0 clips · below −20 quiet.",
+        "diagram2": "Start → allow → speak → Record 5 s → play."
+      },
+      "faq": {
+        "q1": "How can I test my mic online?",
+        "a1": "Open Mic test, press Start microphone, allow access and speak; the meter should move. Record 5 seconds to hear yourself.",
+        "q2": "Why does my mic show no sound?",
+        "a2": "It may be muted, the wrong device may be picked, or another app may be using it.",
+        "q3": "Is my recording uploaded?",
+        "a3": "No. It stays in the tab and is gone when you close it.",
+        "q4": "What does dBFS mean?",
+        "a4": "Decibels relative to full scale: 0 is the loudest digital level, so speech levels are negative numbers.",
+        "q5": "How do I allow a blocked microphone?",
+        "a5": "Click the site icon next to the address bar, set Microphone to Allow and reload the page."
+      }
+    },
+    "use-tally-counter": {
+      "copy": {
+        "name": "How to use an online tally counter",
+        "blurb": "Count people, laps, stitches or votes with big buttons or the keyboard, keep several named counters and read the total. Counts stay in your browser.",
+        "title": "How to use an online tally counter",
+        "lead": "You need to count something as it happens — visitors at a door, laps, rows of knitting or votes. You will count with buttons or keys, add a counter for each thing and copy the totals. Counts are kept in your browser; nothing is uploaded.",
+        "result": "One or more named counters with their counts and a total, saved in this browser.",
+        "note": "On a phone, keep the screen on while counting. Private windows may forget the counts when closed.",
+        "s1t": "Plan what to count",
+        "s1b": "Decide how many things you count at once — for example adults and children, or votes for each option. You will need one counter for each.",
+        "s2t": "Open Tally counter on cv.cm",
+        "s2b": "One counter, “Counter 1”, starts at 0. Click its name to rename it.",
+        "s3t": "Count",
+        "s3b": "Press + to add and − to subtract. On a keyboard, Space, ↑ or + adds and ↓ or − subtracts on the highlighted counter.",
+        "s4t": "Add more counters",
+        "s4b": "Press Add counter for each extra thing (up to 12). Click a counter to highlight it for the keyboard. The total of all counters appears underneath.",
+        "s5t": "Set the step",
+        "s5b": "To count in twos or tens, set Step. Tick “Allow negative numbers” only if a count may go below zero, such as a score.",
+        "s6t": "Copy and reset",
+        "s6b": "Copy counts puts each name and count on the clipboard. Reset clears one counter; Reset all clears them all.",
+        "diagram1": "+ adds · − subtracts · Space ↑ ↓ on the keyboard.",
+        "diagram2": "Adults 23 + Children 9 = total 32."
+      },
+      "faq": {
+        "q1": "Is there a free online tally counter?",
+        "a1": "Yes. cv.cm's tally counter runs in your browser with no sign-up.",
+        "q2": "Can I count with the keyboard?",
+        "a2": "Yes: Space, ↑ or + adds and ↓ or − subtracts on the highlighted counter.",
+        "q3": "Are my counts saved?",
+        "a3": "Yes, in this browser's local storage. Private windows may forget them.",
+        "q4": "How many counters can I have?",
+        "a4": "Up to 12, each with its own name, plus a total.",
+        "q5": "Can I count by 5 or 10?",
+        "a5": "Yes. Set Step to the amount each press should add."
+      }
+    }
+  },
+  "svg": {
+    "test-click-speed": { "title": "How to test your click speed", "a": "35 clicks ÷ 5 s = 7 CPS", "b": "5–8 typical · 8–11 fast · 11+ very fast", "cap": "The timer starts with your first click." },
+    "test-reaction-time": { "title": "How to test your reaction time", "a": "Red → wait 1.5–4.5 s → green → click", "b": "Typical 200–300 ms", "cap": "Clicking on red does not count." },
+    "generate-test-tone": { "title": "How to play a test tone", "a": "20 Hz — 440 Hz (A4) — 20 kHz", "b": "Left · Both · Right", "cap": "Start at a low volume." },
+    "test-microphone": { "title": "How to test your microphone", "a": "Good: −20 to −6 dBFS", "b": "Start → allow → Record 5 s → play", "cap": "Near 0 dBFS the sound clips." },
+    "use-tally-counter": { "title": "How to use a tally counter", "a": "+ adds · − subtracts", "b": "23 + 9 = total 32", "cap": "Space, ↑ and ↓ work on the keyboard." }
+  }
+}

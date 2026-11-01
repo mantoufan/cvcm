@@ -1,0 +1,203 @@
+{
+  "meta": {
+    "titleTestClickSpeed": "Test de CPS: cómo medir su velocidad de clic y hacer clic más rápido | cv.cm",
+    "descTestClickSpeed": "CPS = clics ÷ segundos. Haga un test de CPS de 5 segundos, lea su puntuación (5–8 es lo típico, 8–11 rápido) y practique el jitter o el butterfly click con cuidado. No se sube nada.",
+    "titleTestReactionTime": "Test de tiempo de reacción online: cómo medirlo | cv.cm",
+    "descTestReactionTime": "Haga clic cuando la pantalla se ponga verde, cinco veces, y lea su media y su mediana en ms. La mayoría saca 200–300 ms. Consejos para un test justo. No se sube nada.",
+    "titleGenerateTestTone": "Tono de prueba para altavoces y auriculares: cómo usarlo | cv.cm",
+    "descGenerateTestTone": "Reproduzca un tono senoidal de 440 Hz o 1 kHz, envíelo al altavoz izquierdo o derecho, haga un barrido de 20 Hz a 20 kHz y encuentre vibraciones o límites de audición, con seguridad y a volumen bajo.",
+    "titleTestMicrophone": "Test de micrófono online: cómo probar su micrófono | cv.cm",
+    "descTestMicrophone": "Permita el micrófono, mire el medidor de nivel (picos de −20 a −6 dBFS), grabe 5 segundos y escúchelo. Soluciones para un micrófono mudo o saturado. No se sube nada.",
+    "titleUseTallyCounter": "Contador online: cómo usar un contador de clics | cv.cm",
+    "descUseTallyCounter": "Cuente personas, vueltas, puntos de punto o votos con botones + y − grandes o con el teclado, nombre varios contadores, fije el paso y lea el total. Las cuentas se quedan en su navegador."
+  },
+  "lessons": {
+    "test-click-speed": {
+      "copy": {
+        "name": "Cómo medir su velocidad de clic (CPS)",
+        "blurb": "Haga clic lo más rápido que pueda durante 5 segundos, lea sus clics por segundo y compárelos con las puntuaciones típicas. No se sube nada.",
+        "title": "Cómo medir su velocidad de clic (CPS)",
+        "lead": "Quiere saber qué tan rápido hace clic, para un juego o por diversión. Hará un test de CPS cronometrado, leerá la puntuación y probará una técnica de clic más rápida. Los clics se cuentan en su navegador; no se sube nada.",
+        "result": "Sus clics por segundo para la duración elegida, el total de clics y su mejor puntuación de la sesión.",
+        "note": "Use el ratón con el que juega. Haga pausas cortas: hacer clic muy rápido durante mucho tiempo fuerza la mano y la muñeca.",
+        "s1t": "Entienda qué significa CPS",
+        "s1b": "CPS son los clics por segundo: el total de clics dividido entre los segundos del test. 35 clics en 5 segundos son 7 CPS. La mayoría hace 5–8 CPS con un dedo.",
+        "s2t": "Abra Test de CPS en cv.cm",
+        "s2b": "El panel grande bajo las opciones dice «Haz clic aquí para empezar». Duración está en 5 segundos, el test habitual.",
+        "s3t": "Elija la duración",
+        "s3b": "Elija 1 segundo para una ráfaga corta o 30–60 segundos para ver cuánto tiempo mantiene el ritmo. La mejor puntuación se guarda por duración.",
+        "s4t": "Haga clic lo más rápido que pueda",
+        "s4b": "El cronómetro empieza con su primer clic. Tiempo restante, Clics y Clics por segundo se actualizan en vivo. Los clics después de que se acabe el tiempo no cuentan.",
+        "s5t": "Lea su puntuación",
+        "s5b": "Obtiene sus CPS y el total de clics con un nivel de velocidad: menos de 5 tranquilo, 5–8 típico, 8–11 rápido, 11+ muy rápido. Copiar resultado lo copia al portapapeles.",
+        "s6t": "Intente hacer clic más rápido",
+        "s6b": "El jitter click tensa el antebrazo para que el dedo vibre; el butterfly click alterna dos dedos sobre un botón. Con ambos se llega a 10–15 CPS. Descanse si le duele la mano.",
+        "diagram1": "CPS = clics ÷ segundos: 35 clics en 5 s = 7 CPS.",
+        "diagram2": "5–8 típico · 8–11 rápido · 11+ jitter o butterfly."
+      },
+      "faq": {
+        "q1": "¿Qué es una buena puntuación de CPS?",
+        "a1": "5–8 CPS es lo típico con un dedo, 8–11 es rápido, y pasar de 11 suele requerir jitter o butterfly click.",
+        "q2": "¿Cuánto dura un test de CPS?",
+        "a2": "Normalmente 5 segundos. cv.cm también ofrece 1, 10, 30 y 60 segundos.",
+        "q3": "¿Ayuda un ratón gaming?",
+        "a3": "Un ratón ligero con un interruptor corto y nítido ayuda un poco; la técnica importa más.",
+        "q4": "¿Es malo el jitter click?",
+        "a4": "Las sesiones largas pueden forzar la muñeca y el antebrazo. Haga intentos cortos y pare si le duele.",
+        "q5": "¿cv.cm sube mis clics?",
+        "a5": "No. Los clics se cuentan en la pestaña, y la mejor puntuación se olvida al cerrarla."
+      }
+    },
+    "test-reaction-time": {
+      "copy": {
+        "name": "Cómo medir su tiempo de reacción",
+        "blurb": "Haga clic en cuanto la pantalla se ponga verde, cinco veces, y lea su tiempo de reacción medio y mediano en milisegundos. No se sube nada.",
+        "title": "Cómo medir su tiempo de reacción",
+        "lead": "Quiere medir lo rápido que responde a algo que ve: para jugar, para el deporte o por curiosidad. Hará cinco intentos, evitará las salidas en falso y leerá una media justa. El tiempo se mide en su navegador; no se sube nada.",
+        "result": "Cinco tiempos de reacción en ms con la media, la mediana, el mejor y el peor, y cómo se comparan con una puntuación típica.",
+        "note": "Cierre las apps y pestañas pesadas, siéntese como lo hace normalmente y use el mismo dispositivo cada vez que compare resultados.",
+        "s1t": "Entienda qué se mide",
+        "s1b": "El tiempo de reacción es el retraso entre una señal y su respuesta. Con una señal visual y un clic, la mayoría saca unos 200–300 ms; menos de 200 ms es rápido.",
+        "s2t": "Abra Test de tiempo de reacción en cv.cm",
+        "s2b": "El panel grande dice «Haz clic para empezar». Funcionan el ratón, la pantalla táctil, Espacio y Enter.",
+        "s3t": "Espere al verde",
+        "s3b": "Tras hacer clic, el panel se pone rojo y muestra «Espera al verde…». La espera es aleatoria, de 1,5 a 4,5 segundos, así que no se puede adivinar.",
+        "s4t": "Haga clic en verde",
+        "s4b": "Cuando el panel se ponga verde y diga «¡Clic!», haga clic enseguida. Su tiempo aparece en ms. Si hace clic mientras está rojo verá «Demasiado pronto» y el intento no cuenta.",
+        "s5t": "Termine los cinco intentos",
+        "s5b": "Haga clic de nuevo para cada intento. Tras cinco, Resultados muestra la media, la mediana, el mejor y el peor. La mediana ignora un intento inusualmente lento o rápido.",
+        "s6t": "Compare con justicia",
+        "s6b": "Las pantallas, los ratones y los navegadores añaden de unos pocos a decenas de ms, así que compare en el mismo dispositivo. Descanse, caliente con unos intentos y tome la mediana de varias rondas.",
+        "diagram1": "Rojo → 1,5–4,5 s aleatorios → verde → clic = su tiempo.",
+        "diagram2": "Típico 200–300 ms · menos de 200 ms rápido."
+      },
+      "faq": {
+        "q1": "¿Qué es un buen tiempo de reacción?",
+        "a1": "Unos 200–300 ms es lo típico ante una señal visual; menos de 200 ms es rápido.",
+        "q2": "¿Por qué mi puntuación es más lenta en el móvil?",
+        "a2": "Las pantallas táctiles y algunas pantallas añaden latencia. Compare resultados en el mismo dispositivo.",
+        "q3": "¿Puedo mejorar mi tiempo de reacción?",
+        "a3": "Dormir bien, calentar y practicar ayudan un poco; la mayor ganancia es la constancia, no la velocidad pura.",
+        "q4": "¿Qué significa Demasiado pronto?",
+        "a4": "Hizo clic mientras el panel estaba rojo. Ese intento no cuenta; haga clic para repetirlo.",
+        "q5": "¿Se sube algo?",
+        "a5": "No. Los tiempos se miden y se guardan en la pestaña."
+      }
+    },
+    "generate-test-tone": {
+      "copy": {
+        "name": "Cómo reproducir un tono de prueba",
+        "blurb": "Reproduzca un tono puro de cualquier frecuencia, envíelo al altavoz izquierdo o derecho y recorra el rango para probar altavoces, auriculares y su oído. Funciona en su navegador.",
+        "title": "Cómo reproducir un tono de prueba para revisar altavoces y auriculares",
+        "lead": "Quiere comprobar que ambos altavoces funcionan, encontrar una vibración, afinar en La4 (A4) o ver hasta dónde oye. Reproducirá un tono senoidal, cambiará su frecuencia y lo enviará a un lado cada vez. El sonido se genera en su navegador; no se sube nada.",
+        "result": "Un tono estable en la frecuencia que elija, en el altavoz izquierdo, el derecho o ambos, con su nota musical más cercana.",
+        "note": "Baje el volumen del dispositivo antes de pulsar Reproducir, sobre todo con auriculares. Los tonos agudos pueden molestar incluso a volumen bajo.",
+        "s1t": "Entienda la frecuencia y el rango auditivo",
+        "s1b": "La frecuencia son las vibraciones por segundo, en hercios (Hz). Las personas oyen aproximadamente de 20 Hz a 20 kHz; el límite superior baja con la edad, a menudo a 15–17 kHz en adultos. 440 Hz es la nota La4 (A4).",
+        "s2t": "Abra Generador de tonos en cv.cm",
+        "s2b": "Está en 440 Hz, onda senoidal, ambos altavoces y volumen al 20 %. Pulse Reproducir y suba el volumen poco a poco; pulse Parar para terminar.",
+        "s3t": "Ajuste la frecuencia",
+        "s3b": "Escriba un valor, arrastre el control deslizante, use −1/+1 para pasos pequeños o ÷2/×2 para moverse una octava. Ajustes rápidos ofrece 440 Hz, do central, 1000 Hz y más.",
+        "s4t": "Pruebe izquierda y derecha",
+        "s4b": "En Altavoz elija Izquierdo y luego Derecho. Cada lado debe sonar solo; si suenan los dos, compruebe que los altavoces no estén en modo mono.",
+        "s5t": "Haga un barrido para vibraciones y límites",
+        "s5b": "Mueva despacio el control desde 50 Hz hacia arriba. Un zumbido en una frecuencia indica una pieza suelta; donde el tono se desvanece está el límite de su altavoz (o de su oído).",
+        "s6t": "Pruebe otras formas de onda",
+        "s6b": "Cuadrada, triangular y diente de sierra añaden armónicos y suenan más ásperas. Use la senoidal para medir y las demás para oír la diferencia.",
+        "diagram1": "20 Hz ← rango auditivo → 20 kHz · A4 = 440 Hz.",
+        "diagram2": "Solo izquierdo · ambos · solo derecho."
+      },
+      "faq": {
+        "q1": "¿Qué frecuencia uso para probar altavoces?",
+        "a1": "Empiece con 440 Hz o 1000 Hz para el nivel y luego haga un barrido de 50 Hz a 15 kHz.",
+        "q2": "¿Cómo pruebo los canales izquierdo y derecho?",
+        "a2": "Elija Izquierdo o Derecho en Altavoz y compruebe que solo suena ese lado.",
+        "q3": "¿Por qué no oigo 18 kHz?",
+        "a3": "La audición por encima de 15–17 kHz se pierde con la edad, y muchos altavoces no pueden reproducirlos.",
+        "q4": "¿Un tono puede dañar mis altavoces?",
+        "a4": "A volumen bajo, no. Los tonos graves o agudos muy fuertes pueden dañar altavoces pequeños y sus oídos.",
+        "q5": "¿El generador de tonos es gratis?",
+        "a5": "Sí. Funciona en su navegador sin registrarse."
+      }
+    },
+    "test-microphone": {
+      "copy": {
+        "name": "Cómo probar su micrófono",
+        "blurb": "Permita el micrófono, revise el medidor de nivel, grabe cinco segundos y escúchelo. Soluciones para un micrófono mudo o saturado. No se sube nada.",
+        "title": "Cómo probar su micrófono online",
+        "lead": "Antes de una llamada, un directo o una grabación quiere saber que su micrófono funciona y suena bien. Permitirá el acceso, revisará el nivel, grabará una muestra y resolverá problemas comunes. El sonido se queda en su navegador; no se sube nada.",
+        "result": "Un micrófono que funciona con picos de voz en un buen rango y una grabación corta que muestra cómo suena.",
+        "note": "Conecte primero el micrófono o los auriculares. Cierre otras apps que lo usen, como las de llamadas.",
+        "s1t": "Entienda qué es un buen nivel",
+        "s1b": "Los niveles se miden en dBFS: 0 es lo más fuerte que admite una grabación. Los picos de voz entre −20 y −6 dBFS son buenos; cerca de 0 el sonido satura y se distorsiona, por debajo de −20 es demasiado bajo.",
+        "s2t": "Abra Test de micrófono en cv.cm",
+        "s2b": "Pulse Iniciar micrófono. El navegador pide permiso; permítalo.",
+        "s3t": "Mire el medidor",
+        "s3b": "Hable o aplauda. El medidor, Nivel, Pico y la forma de onda deberían moverse. La línea bajo el medidor indica si el nivel es bueno, bajo o demasiado alto.",
+        "s4t": "Elija el dispositivo correcto",
+        "s4b": "Una vez permitido el acceso, Dispositivo de entrada muestra sus micrófonos por nombre. Elija otro si el medidor no se mueve.",
+        "s5t": "Grabe y escuche",
+        "s5b": "Pulse Grabar 5 s y hable con normalidad. Al terminar aparece un reproductor: escuche si hay eco, zumbido o un sonido apagado.",
+        "s6t": "Resuelva problemas comunes",
+        "s6b": "Sin movimiento: revise los interruptores de silencio y el volumen de entrada del sistema, y que ninguna otra app tenga el micrófono. Demasiado alto: aléjese o baje la ganancia de entrada. Bloqueado: permita el micrófono en la configuración del sitio.",
+        "diagram1": "−20 a −6 dBFS bien · cerca de 0 satura · bajo −20 flojo.",
+        "diagram2": "Iniciar → permitir → hablar → Grabar 5 s → escuchar."
+      },
+      "faq": {
+        "q1": "¿Cómo puedo probar mi micrófono online?",
+        "a1": "Abra Test de micrófono, pulse Iniciar micrófono, permita el acceso y hable; el medidor debería moverse. Grabe 5 segundos para oírse.",
+        "q2": "¿Por qué mi micrófono no muestra sonido?",
+        "a2": "Puede estar silenciado, puede estar elegido el dispositivo equivocado o puede que otra app lo esté usando.",
+        "q3": "¿Se sube mi grabación?",
+        "a3": "No. Se queda en la pestaña y desaparece al cerrarla.",
+        "q4": "¿Qué significa dBFS?",
+        "a4": "Decibelios relativos a la escala completa: 0 es el nivel digital más fuerte, así que los niveles de voz son números negativos.",
+        "q5": "¿Cómo permito un micrófono bloqueado?",
+        "a5": "Haga clic en el icono del sitio junto a la barra de direcciones, ponga Micrófono en Permitir y recargue la página."
+      }
+    },
+    "use-tally-counter": {
+      "copy": {
+        "name": "Cómo usar un contador online",
+        "blurb": "Cuente personas, vueltas, puntos de punto o votos con botones grandes o con el teclado, tenga varios contadores con nombre y lea el total. Las cuentas se quedan en su navegador.",
+        "title": "Cómo usar un contador online",
+        "lead": "Necesita contar algo mientras ocurre: visitantes en una puerta, vueltas, filas de punto o votos. Contará con botones o teclas, añadirá un contador para cada cosa y copiará los totales. Las cuentas se guardan en su navegador; no se sube nada.",
+        "result": "Uno o varios contadores con nombre, con sus cuentas y un total, guardados en este navegador.",
+        "note": "En el móvil, mantenga la pantalla encendida mientras cuenta. Las ventanas privadas pueden olvidar las cuentas al cerrarse.",
+        "s1t": "Planee qué contar",
+        "s1b": "Decida cuántas cosas cuenta a la vez, por ejemplo adultos y niños, o votos para cada opción. Necesitará un contador para cada una.",
+        "s2t": "Abra Contador de clics en cv.cm",
+        "s2b": "Un contador, «Contador 1», empieza en 0. Haga clic en su nombre para cambiarlo.",
+        "s3t": "Cuente",
+        "s3b": "Pulse + para sumar y − para restar. Con teclado, Espacio, ↑ o + suma y ↓ o − resta en el contador resaltado.",
+        "s4t": "Añada más contadores",
+        "s4b": "Pulse Añadir contador para cada cosa extra (hasta 12). Haga clic en un contador para resaltarlo para el teclado. El total de todos los contadores aparece debajo.",
+        "s5t": "Fije el paso",
+        "s5b": "Para contar de dos en dos o de diez en diez, ajuste Paso. Marque «Permitir números negativos» solo si una cuenta puede bajar de cero, como una puntuación.",
+        "s6t": "Copie y reinicie",
+        "s6b": "Copiar cuentas copia cada nombre y su cuenta al portapapeles. Reiniciar borra un contador; Reiniciar todo los borra todos.",
+        "diagram1": "+ suma · − resta · Espacio ↑ ↓ en el teclado.",
+        "diagram2": "Adultos 23 + Niños 9 = total 32."
+      },
+      "faq": {
+        "q1": "¿Hay un contador online gratis?",
+        "a1": "Sí. El contador de cv.cm funciona en su navegador sin registrarse.",
+        "q2": "¿Puedo contar con el teclado?",
+        "a2": "Sí: Espacio, ↑ o + suma y ↓ o − resta en el contador resaltado.",
+        "q3": "¿Se guardan mis cuentas?",
+        "a3": "Sí, en el almacenamiento local de este navegador. Las ventanas privadas pueden olvidarlas.",
+        "q4": "¿Cuántos contadores puedo tener?",
+        "a4": "Hasta 12, cada uno con su nombre, más un total.",
+        "q5": "¿Puedo contar de 5 en 5 o de 10 en 10?",
+        "a5": "Sí. Ajuste Paso a la cantidad que debe sumar cada pulsación."
+      }
+    }
+  },
+  "svg": {
+    "test-click-speed": { "title": "Cómo medir su velocidad de clic", "a": "35 clics ÷ 5 s = 7 CPS", "b": "5–8 típico · 8–11 rápido · 11+ muy rápido", "cap": "El tiempo empieza con el primer clic." },
+    "test-reaction-time": { "title": "Cómo medir su tiempo de reacción", "a": "Rojo → espera 1,5–4,5 s → verde → clic", "b": "Típico 200–300 ms", "cap": "Hacer clic en rojo no cuenta." },
+    "generate-test-tone": { "title": "Cómo reproducir un tono de prueba", "a": "20 Hz — 440 Hz (A4) — 20 kHz", "b": "Izquierdo · Ambos · Derecho", "cap": "Empiece con volumen bajo." },
+    "test-microphone": { "title": "Cómo probar su micrófono", "a": "Bien: −20 a −6 dBFS", "b": "Iniciar → permitir → Grabar 5 s → oír", "cap": "Cerca de 0 dBFS el sonido satura." },
+    "use-tally-counter": { "title": "Cómo usar un contador", "a": "+ suma · − resta", "b": "23 + 9 = total 32", "cap": "Espacio, ↑ y ↓ funcionan en el teclado." }
+  }
+}

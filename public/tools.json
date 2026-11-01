@@ -1013,6 +1013,46 @@
       "data_handling": "Runs in the page. Inputs are not uploaded."
     },
     {
+      "id": "click-test",
+      "name": "CPS test",
+      "description": "Clicks per second in 1–60 seconds.",
+      "category": "text",
+      "url": "https://cv.cm/en/click-test/",
+      "data_handling": "Runs in the page. Inputs are not uploaded."
+    },
+    {
+      "id": "reaction-time",
+      "name": "Reaction time test",
+      "description": "Click when it turns green. Five tries, in ms.",
+      "category": "text",
+      "url": "https://cv.cm/en/reaction-time/",
+      "data_handling": "Runs in the page. Inputs are not uploaded."
+    },
+    {
+      "id": "tone-generator",
+      "name": "Tone generator",
+      "description": "Play any frequency from 20 Hz to 20 kHz.",
+      "category": "text",
+      "url": "https://cv.cm/en/tone-generator/",
+      "data_handling": "Runs in the page. Inputs are not uploaded."
+    },
+    {
+      "id": "tally-counter",
+      "name": "Tally counter",
+      "description": "Count with big buttons or the keyboard.",
+      "category": "text",
+      "url": "https://cv.cm/en/tally-counter/",
+      "data_handling": "Runs in the page. Inputs are not uploaded."
+    },
+    {
+      "id": "mic-test",
+      "name": "Mic test",
+      "description": "Level meter and playback.",
+      "category": "text",
+      "url": "https://cv.cm/en/mic-test/",
+      "data_handling": "Runs in the page. Inputs are not uploaded."
+    },
+    {
       "id": "gold",
       "name": "Gold weight",
       "description": "Troy ounce, gram, and tael.",

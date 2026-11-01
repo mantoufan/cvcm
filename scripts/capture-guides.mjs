@@ -121,6 +121,11 @@ const STEPS = {
   "metronome": 3,
   "keyboard-test": 3,
   "zodiac": 3,
+  "click-test": 3,
+  "reaction-time": 3,
+  "tone-generator": 3,
+  "tally-counter": 3,
+  "mic-test": 3,
   gold: 3,
   silver: 3,
   platinum: 3,
@@ -1843,6 +1848,64 @@ async function runTool(send, id, fx) {
       return true;
     })()`);
     await sleep(200);
+    await snap(2);
+    await snap(3);
+    return;
+  }
+
+  if (id === "click-test") {
+    await snap(1);
+    await evalValue(send, `(() => {
+      const p = document.querySelector("[data-action=pad]"); if (!p) return false;
+      for (let i = 0; i < 12; i++) p.dispatchEvent(new PointerEvent("pointerdown", { button: 0, bubbles: true }));
+      return true;
+    })()`);
+    await sleep(1200);
+    await snap(2);
+    await sleep(4200);
+    await snap(3);
+    return;
+  }
+
+  if (id === "reaction-time") {
+    await snap(1);
+    await evalValue(send, `(() => { document.querySelector("[data-action=pad]")?.dispatchEvent(new PointerEvent("pointerdown", { button: 0, bubbles: true })); return true; })()`);
+    await sleep(300);
+    await snap(2);
+    await sleep(4600);
+    await evalValue(send, `(() => { document.querySelector("[data-action=pad]")?.dispatchEvent(new PointerEvent("pointerdown", { button: 0, bubbles: true })); return true; })()`);
+    await sleep(200);
+    await snap(3);
+    return;
+  }
+
+  if (id === "tone-generator") {
+    await snap(1);
+    await evalValue(send, `(() => { document.querySelector("[data-preset='1000']")?.click(); return true; })()`);
+    await sleep(200);
+    await snap(2);
+    await evalValue(send, `(() => {
+      { const e = document.querySelector("[data-field=waveform]"); if (e) { e.value = "square"; e.dispatchEvent(new Event("change", { bubbles: true })); } }
+      return true;
+    })()`);
+    await sleep(200);
+    await snap(3);
+    return;
+  }
+
+  if (id === "tally-counter") {
+    await snap(1);
+    await evalValue(send, `(() => { const b = document.querySelector("[data-action=plus]"); for (let i = 0; i < 7; i++) b?.click(); return true; })()`);
+    await sleep(200);
+    await snap(2);
+    await evalValue(send, `(() => { document.querySelector("[data-action=add]")?.click(); const b = document.querySelectorAll("[data-action=plus]")[1]; for (let i = 0; i < 4; i++) b?.click(); return true; })()`);
+    await sleep(200);
+    await snap(3);
+    return;
+  }
+
+  if (id === "mic-test") {
+    await snap(1);
     await snap(2);
     await snap(3);
     return;

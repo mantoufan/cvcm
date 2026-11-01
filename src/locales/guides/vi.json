@@ -1065,6 +1065,51 @@
       "s2b": "Chọn ngày sinh. Cung hoàng đạo, nguyên tố, con giáp, hành của năm và Can Chi sẽ cập nhật.",
       "s3t": "Kiểm tra Tết Âm lịch",
       "s3b": "Với sinh nhật tháng 1 và tháng 2, công cụ so ngày sinh với Tết Âm lịch và cho biết khi nào con giáp là của năm trước."
+    },
+    "click-test": {
+      "lead": "Đo xem bạn click được bao nhiêu lần mỗi giây. Không tải lên.",
+      "s1t": "Mở Kiểm tra CPS",
+      "s1b": "Thời lượng mặc định là 5 giây. Chọn 1, 10, 30 hoặc 60 giây ở mục Thời lượng.",
+      "s2t": "Click vào ô",
+      "s2b": "Đồng hồ chạy từ lần click đầu tiên. Click nhanh nhất có thể; số click và CPS cập nhật trực tiếp.",
+      "s3t": "Xem điểm",
+      "s3b": "Khi hết giờ, bạn nhận được CPS và tổng số click. Điểm cao nhất của mỗi thời lượng được giữ cho đến khi bạn đóng thẻ."
+    },
+    "reaction-time": {
+      "lead": "Đo thời gian phản ứng thị giác của bạn bằng mili giây. Không tải lên.",
+      "s1t": "Mở Kiểm tra phản xạ",
+      "s1b": "Click vào ô để bắt đầu một lượt.",
+      "s2t": "Chờ màu xanh",
+      "s2b": "Ô chuyển đỏ. Đừng click vội; click quá sớm sẽ không được tính.",
+      "s3t": "Click khi chuyển xanh",
+      "s3b": "Click ngay khi ô chuyển xanh. Sau năm lượt, bạn sẽ thấy trung bình, trung vị, nhanh nhất và chậm nhất."
+    },
+    "tone-generator": {
+      "lead": "Phát âm thuần ở mọi tần số từ 20 Hz đến 20 kHz. Không tải lên.",
+      "s1t": "Mở Tạo âm thanh tần số",
+      "s1b": "Mặc định là 440 Hz (A4), sóng sin, cả hai loa, âm lượng 20%. Bấm Phát.",
+      "s2t": "Đặt tần số",
+      "s2b": "Nhập giá trị, kéo thanh trượt, dùng ÷2/×2 để dịch một quãng tám hoặc chọn mức có sẵn như 1000 Hz.",
+      "s3t": "Đổi âm thanh",
+      "s3b": "Chọn dạng sóng và đưa âm ra loa trái, loa phải hoặc cả hai để kiểm tra từng loa."
+    },
+    "tally-counter": {
+      "lead": "Đếm mọi thứ bằng nút lớn hoặc bàn phím. Số đếm được lưu trong trình duyệt này.",
+      "s1t": "Mở Bộ đếm",
+      "s1b": "Một bộ đếm bắt đầu từ 0. Đặt tên nếu bạn muốn.",
+      "s2t": "Đếm",
+      "s2b": "Bấm + để cộng và − để trừ, hoặc dùng Space, ↑ và ↓ trên bàn phím.",
+      "s3t": "Thêm bộ đếm",
+      "s3b": "Bấm Thêm bộ đếm để đếm nhiều thứ cùng lúc; tổng của tất cả bộ đếm hiển thị bên dưới."
+    },
+    "mic-test": {
+      "lead": "Kiểm tra micro có hoạt động không và nghe ra sao. Không tải lên.",
+      "s1t": "Mở Kiểm tra micro",
+      "s1b": "Bấm Bật micro và cho phép truy cập khi trình duyệt hỏi.",
+      "s2t": "Nói và xem đồng hồ mức âm",
+      "s2b": "Đồng hồ mức âm và dạng sóng chuyển động theo giọng bạn. Hãy để đỉnh nằm trong khoảng −20 đến −6 dBFS.",
+      "s3t": "Ghi âm và nghe lại",
+      "s3b": "Bấm Ghi 5 s, nói, rồi phát bản ghi để nghe âm thanh gốc của micro, trước khi ứng dụng gọi xử lý."
     }
   }
 }

@@ -9,6 +9,7 @@ import {
   appHref,
   gamesHref,
   isAiToolPath,
+  isMicToolPath,
   isPublishedTutorial,
   kbHref,
   learnHref,
@@ -276,6 +277,8 @@ function onClick(e: MouseEvent): void {
   if (analyticsActive() && !isTrackedPath(a.pathname)) return;
   // AI tool pages are cross-origin isolated by their response headers: entering or leaving one loads a new document.
   if (isAiToolPath(a.pathname) !== isAiToolPath(location.pathname)) return;
+  // The microphone is allowed only by a mic tool page's own response headers: entering or leaving one loads a new document.
+  if (isMicToolPath(a.pathname) !== isMicToolPath(location.pathname)) return;
   if (parseAppPath(a.pathname).kind === "static") return;
   e.preventDefault();
   history.pushState(null, "", a.href);

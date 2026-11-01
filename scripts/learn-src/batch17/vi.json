@@ -1,0 +1,203 @@
+{
+  "meta": {
+    "titleTestClickSpeed": "Test CPS: cách kiểm tra tốc độ click chuột và click nhanh hơn | cv.cm",
+    "descTestClickSpeed": "CPS = số click ÷ số giây. Chạy bài test CPS 5 giây, đọc điểm (5–8 là bình thường, 8–11 là nhanh) và tập jitter click hoặc butterfly click an toàn. Không tải lên.",
+    "titleTestReactionTime": "Test phản xạ online: cách đo thời gian phản ứng | cv.cm",
+    "descTestReactionTime": "Click khi màn hình chuyển xanh, năm lần, rồi đọc trung bình và trung vị theo ms. Phần lớn mọi người đạt 200–300 ms. Mẹo để bài test công bằng. Không tải lên.",
+    "titleGenerateTestTone": "Âm thanh test loa và tai nghe trái phải: cách phát âm thử | cv.cm",
+    "descGenerateTestTone": "Phát âm sin 440 Hz hoặc 1 kHz, chuyển sang loa trái hoặc phải, quét từ 20 Hz đến 20 kHz để tìm tiếng rè hoặc giới hạn thính giác — an toàn, ở âm lượng nhỏ.",
+    "titleTestMicrophone": "Test micro online: cách kiểm tra micro trên máy tính và điện thoại | cv.cm",
+    "descTestMicrophone": "Cho phép micro, xem đồng hồ mức âm (đỉnh nên ở −20 đến −6 dBFS), ghi 5 giây rồi nghe lại. Cách sửa micro không có tiếng hoặc bị vỡ tiếng. Không tải lên.",
+    "titleUseTallyCounter": "Cách dùng bộ đếm số online | cv.cm",
+    "descUseTallyCounter": "Đếm người, vòng chạy, mũi đan hay phiếu bầu bằng nút + và − lớn hoặc bàn phím, đặt tên cho nhiều bộ đếm, chỉnh bước đếm và xem tổng. Số đếm nằm trong trình duyệt của bạn."
+  },
+  "lessons": {
+    "test-click-speed": {
+      "copy": {
+        "name": "Cách kiểm tra tốc độ click (CPS)",
+        "blurb": "Click nhanh nhất có thể trong 5 giây, đọc số click mỗi giây và so với mức điểm thường gặp. Không tải lên.",
+        "title": "Cách kiểm tra tốc độ click (CPS)",
+        "lead": "Bạn muốn biết mình click nhanh đến đâu, để chơi game hoặc chỉ cho vui. Bạn sẽ chạy một bài test CPS có tính giờ, đọc điểm và thử một kỹ thuật click nhanh hơn. Số click được đếm trong trình duyệt; không tải lên.",
+        "result": "Số click mỗi giây cho thời lượng đã chọn, tổng số click và điểm cao nhất của bạn trong phiên này.",
+        "note": "Dùng con chuột bạn hay chơi game. Nghỉ ngắn giữa các lượt: click nhanh liên tục lâu sẽ gây mỏi tay và cổ tay.",
+        "s1t": "Hiểu CPS là gì",
+        "s1b": "CPS là số click mỗi giây: tổng số click chia cho số giây của bài test. 35 click trong 5 giây là 7 CPS. Phần lớn mọi người click 5–8 CPS bằng một ngón.",
+        "s2t": "Mở Kiểm tra CPS trên cv.cm",
+        "s2b": "Ô lớn bên dưới phần tùy chọn ghi “Click vào đây để bắt đầu”. Thời lượng đặt sẵn 5 giây, mức test phổ biến.",
+        "s3t": "Chọn thời lượng",
+        "s3b": "Chọn 1 giây để thử một loạt ngắn, hoặc 30–60 giây để xem bạn giữ nhịp được bao lâu. Điểm cao nhất được lưu riêng cho từng thời lượng.",
+        "s4t": "Click nhanh nhất có thể",
+        "s4b": "Đồng hồ chạy từ lần click đầu tiên. Thời gian còn lại, Số click và Click mỗi giây cập nhật trực tiếp. Click sau khi hết giờ không được tính.",
+        "s5t": "Đọc điểm của bạn",
+        "s5b": "Bạn nhận được CPS và tổng số click kèm mức tốc độ: dưới 5 thong thả, 5–8 bình thường, 8–11 nhanh, 11+ rất nhanh. Sao chép kết quả đưa nó vào bộ nhớ tạm.",
+        "s6t": "Thử click nhanh hơn",
+        "s6b": "Jitter click gồng cẳng tay để ngón tay rung; butterfly click luân phiên hai ngón trên một nút. Cả hai có thể đạt 10–15 CPS. Hãy nghỉ nếu tay bị đau.",
+        "diagram1": "CPS = số click ÷ số giây: 35 click trong 5 s = 7 CPS.",
+        "diagram2": "5–8 bình thường · 8–11 nhanh · 11+ jitter hoặc butterfly."
+      },
+      "faq": {
+        "q1": "Điểm CPS bao nhiêu là tốt?",
+        "a1": "5–8 CPS là bình thường với một ngón, 8–11 là nhanh, còn trên 11 thường cần jitter hoặc butterfly click.",
+        "q2": "Bài test CPS kéo dài bao lâu?",
+        "a2": "Thường là 5 giây. cv.cm cũng có 1, 10, 30 và 60 giây.",
+        "q3": "Chuột gaming có giúp ích không?",
+        "a3": "Chuột nhẹ với switch ngắn, nảy giúp một chút; kỹ thuật quan trọng hơn.",
+        "q4": "Jitter click có hại không?",
+        "a4": "Click lâu có thể gây mỏi cổ tay và cẳng tay. Mỗi lượt nên ngắn và dừng lại nếu thấy đau.",
+        "q5": "cv.cm có tải số click của tôi lên không?",
+        "a5": "Không. Số click được đếm trong thẻ, và điểm cao nhất mất đi khi bạn đóng thẻ."
+      }
+    },
+    "test-reaction-time": {
+      "copy": {
+        "name": "Cách kiểm tra thời gian phản xạ",
+        "blurb": "Click ngay khi màn hình chuyển xanh, năm lần, rồi đọc thời gian phản xạ trung bình và trung vị theo mili giây. Không tải lên.",
+        "title": "Cách kiểm tra thời gian phản xạ",
+        "lead": "Bạn muốn đo mình phản ứng nhanh đến đâu với thứ mình nhìn thấy — để chơi game, chơi thể thao hay vì tò mò. Bạn sẽ làm năm lượt, tránh click sớm và đọc một mức trung bình công bằng. Thời gian được đo trong trình duyệt; không tải lên.",
+        "result": "Năm thời gian phản xạ theo ms kèm trung bình, trung vị, nhanh nhất và chậm nhất, cùng so sánh với mức thường gặp.",
+        "note": "Đóng ứng dụng và thẻ nặng, ngồi như bình thường và dùng cùng một thiết bị mỗi lần so sánh kết quả.",
+        "s1t": "Hiểu mình đang đo gì",
+        "s1b": "Thời gian phản xạ là độ trễ giữa tín hiệu và phản hồi của bạn. Với tín hiệu hình ảnh và một cú click, phần lớn mọi người đạt khoảng 200–300 ms; dưới 200 ms là nhanh.",
+        "s2t": "Mở Kiểm tra phản xạ trên cv.cm",
+        "s2b": "Ô lớn ghi “Click để bắt đầu”. Dùng chuột, chạm, Space hoặc Enter đều được.",
+        "s3t": "Chờ màu xanh",
+        "s3b": "Sau khi bạn click, ô chuyển đỏ và hiện “Chờ màu xanh…”. Thời gian chờ là ngẫu nhiên, từ 1,5 đến 4,5 giây, nên bạn không thể đoán trước.",
+        "s4t": "Click khi chuyển xanh",
+        "s4b": "Khi ô chuyển xanh và hiện “Bấm!”, hãy click ngay. Thời gian của bạn hiện theo ms. Nếu click khi ô còn đỏ, bạn sẽ thấy “Quá sớm” và lượt đó không được tính.",
+        "s5t": "Hoàn thành năm lượt",
+        "s5b": "Click lại cho mỗi lượt. Sau năm lượt, Kết quả hiện trung bình, trung vị, nhanh nhất và chậm nhất. Trung vị bỏ qua một lượt chậm hay nhanh bất thường.",
+        "s6t": "So sánh công bằng",
+        "s6b": "Màn hình, chuột và trình duyệt cộng thêm từ vài đến vài chục ms, nên hãy so sánh trên cùng thiết bị. Nghỉ ngơi, khởi động bằng vài lượt và lấy trung vị của nhiều vòng.",
+        "diagram1": "Đỏ → ngẫu nhiên 1,5–4,5 s → xanh → click = thời gian của bạn.",
+        "diagram2": "Bình thường 200–300 ms · dưới 200 ms là nhanh."
+      },
+      "faq": {
+        "q1": "Thời gian phản xạ bao nhiêu là tốt?",
+        "a1": "Khoảng 200–300 ms là bình thường với tín hiệu hình ảnh; dưới 200 ms là nhanh.",
+        "q2": "Sao điểm của tôi trên điện thoại chậm hơn?",
+        "a2": "Màn hình cảm ứng và một số màn hình cộng thêm độ trễ. Hãy so sánh kết quả trên cùng thiết bị.",
+        "q3": "Tôi có cải thiện được phản xạ không?",
+        "a3": "Ngủ đủ, khởi động và luyện tập giúp một chút; phần cải thiện lớn nhất là sự ổn định, không phải tốc độ thuần.",
+        "q4": "Quá sớm nghĩa là gì?",
+        "a4": "Bạn đã click khi ô còn đỏ. Lượt đó không được tính; click để làm lại lượt đó.",
+        "q5": "Có gì được tải lên không?",
+        "a5": "Không. Thời gian được đo và lưu trong thẻ."
+      }
+    },
+    "generate-test-tone": {
+      "copy": {
+        "name": "Cách phát âm thanh test",
+        "blurb": "Phát một âm thuần ở tần số bất kỳ, chuyển sang loa trái hoặc phải và quét dải tần để kiểm tra loa, tai nghe và thính giác. Chạy trong trình duyệt.",
+        "title": "Cách phát âm thanh test để kiểm tra loa và tai nghe",
+        "lead": "Bạn muốn kiểm tra cả hai loa đều kêu, tìm tiếng rè, lên dây theo A4 hoặc xem tai mình nghe cao được đến đâu. Bạn sẽ phát một âm sin, đổi tần số và chuyển nó sang từng bên một. Âm thanh được tạo trong trình duyệt; không tải lên.",
+        "result": "Một âm ổn định ở tần số bạn chọn, trên loa trái, phải hoặc cả hai, kèm nốt nhạc gần nhất.",
+        "note": "Giảm âm lượng thiết bị trước khi bấm Phát, nhất là khi dùng tai nghe. Âm cao có thể khó chịu dù nhỏ tiếng.",
+        "s1t": "Hiểu tần số và dải nghe",
+        "s1b": "Tần số là số dao động mỗi giây, đơn vị hertz (Hz). Con người nghe được khoảng 20 Hz đến 20 kHz; ngưỡng trên giảm dần theo tuổi, ở người lớn thường còn 15–17 kHz. 440 Hz là nốt A4 (La4).",
+        "s2t": "Mở Tạo âm thanh tần số trên cv.cm",
+        "s2b": "Mặc định là 440 Hz, sóng sin, cả hai loa và âm lượng 20%. Bấm Phát rồi tăng âm lượng từ từ; bấm Dừng để tắt.",
+        "s3t": "Đặt tần số",
+        "s3b": "Gõ giá trị, kéo thanh trượt, dùng −1/+1 cho bước nhỏ hoặc ÷2/×2 để dịch một quãng tám. Mức có sẵn có 440 Hz, Đô giữa, 1000 Hz và nhiều mức khác.",
+        "s4t": "Kiểm tra trái và phải",
+        "s4b": "Ở mục Loa chọn Trái, rồi Phải. Mỗi bên phải kêu riêng; nếu cả hai cùng kêu, hãy kiểm tra loa có đang để chế độ mono không.",
+        "s5t": "Quét tìm tiếng rè và giới hạn",
+        "s5b": "Kéo thanh trượt chậm từ 50 Hz lên. Tiếng rè ở một tần số cho thấy có bộ phận bị lỏng; nơi âm tắt dần là giới hạn của loa (hoặc tai) bạn.",
+        "s6t": "Thử dạng sóng khác",
+        "s6b": "Vuông, tam giác và răng cưa thêm hài âm nên nghe gắt hơn. Dùng sin để đo, các dạng khác để nghe sự khác biệt.",
+        "diagram1": "20 Hz ← dải nghe → 20 kHz · A4 = 440 Hz.",
+        "diagram2": "Chỉ trái · cả hai · chỉ phải."
+      },
+      "faq": {
+        "q1": "Nên dùng tần số nào để test loa?",
+        "a1": "Bắt đầu với 440 Hz hoặc 1000 Hz để chỉnh mức, rồi quét từ 50 Hz đến 15 kHz.",
+        "q2": "Làm sao kiểm tra kênh trái và phải?",
+        "a2": "Chọn Trái hoặc Phải ở mục Loa và kiểm tra chỉ bên đó kêu.",
+        "q3": "Sao tôi không nghe được 18 kHz?",
+        "a3": "Khả năng nghe trên 15–17 kHz giảm theo tuổi, và nhiều loa không phát được dải đó.",
+        "q4": "Âm test có làm hỏng loa không?",
+        "a4": "Ở âm lượng nhỏ thì không. Âm trầm hoặc cao quá to có thể làm hỏng loa nhỏ và tai bạn.",
+        "q5": "Công cụ tạo âm thanh tần số có miễn phí không?",
+        "a5": "Có. Nó chạy trong trình duyệt, không cần đăng ký."
+      }
+    },
+    "test-microphone": {
+      "copy": {
+        "name": "Cách kiểm tra micro",
+        "blurb": "Cho phép micro, xem đồng hồ mức âm, ghi năm giây rồi nghe lại. Cách sửa micro không có tiếng hoặc bị vỡ tiếng. Không tải lên.",
+        "title": "Cách kiểm tra micro online",
+        "lead": "Trước cuộc gọi, buổi livestream hay bản ghi âm, bạn muốn biết micro hoạt động và tiếng nghe ổn. Bạn sẽ cho phép truy cập, kiểm tra mức âm, ghi một đoạn mẫu và sửa các lỗi thường gặp. Âm thanh ở lại trong trình duyệt; không tải lên.",
+        "result": "Một micro hoạt động với đỉnh giọng nói ở mức tốt, và một đoạn ghi ngắn cho thấy giọng bạn nghe thế nào.",
+        "note": "Cắm micro hoặc tai nghe trước. Đóng các ứng dụng khác đang dùng micro, như ứng dụng gọi điện.",
+        "s1t": "Hiểu thế nào là mức âm tốt",
+        "s1b": "Mức âm tính bằng dBFS: 0 là mức to nhất mà bản ghi chứa được. Đỉnh giọng nói từ −20 đến −6 dBFS là tốt; gần 0 thì tiếng bị vỡ và méo, dưới −20 là quá nhỏ.",
+        "s2t": "Mở Kiểm tra micro trên cv.cm",
+        "s2b": "Bấm Bật micro. Trình duyệt sẽ hỏi quyền; hãy cho phép.",
+        "s3t": "Xem đồng hồ đo",
+        "s3b": "Nói hoặc vỗ tay. Đồng hồ, Mức âm, Đỉnh và dạng sóng sẽ chuyển động. Dòng dưới đồng hồ cho biết mức âm tốt, nhỏ hay quá to.",
+        "s4t": "Chọn đúng thiết bị",
+        "s4b": "Sau khi cho phép truy cập, Thiết bị đầu vào liệt kê micro theo tên. Chọn micro khác nếu đồng hồ không chuyển động.",
+        "s5t": "Ghi và nghe lại",
+        "s5b": "Bấm Ghi 5 s và nói bình thường. Khi ghi xong, một trình phát hiện ra: hãy nghe xem có tiếng vọng, tiếng ù hay tiếng bị bí không.",
+        "s6t": "Sửa lỗi thường gặp",
+        "s6b": "Không chuyển động: kiểm tra công tắc tắt tiếng và âm lượng đầu vào của hệ thống, và không có ứng dụng nào khác đang giữ micro. Quá to: lùi ra xa hoặc giảm gain đầu vào. Bị chặn: cho phép micro trong cài đặt trang web.",
+        "diagram1": "−20 đến −6 dBFS tốt · gần 0 vỡ tiếng · dưới −20 nhỏ.",
+        "diagram2": "Bật → cho phép → nói → Ghi 5 s → nghe lại."
+      },
+      "faq": {
+        "q1": "Làm sao test micro online?",
+        "a1": "Mở Kiểm tra micro, bấm Bật micro, cho phép truy cập và nói; đồng hồ sẽ chuyển động. Ghi 5 giây để nghe lại giọng mình.",
+        "q2": "Sao micro của tôi không có tiếng?",
+        "a2": "Có thể micro đang tắt tiếng, chọn sai thiết bị, hoặc ứng dụng khác đang dùng nó.",
+        "q3": "Bản ghi của tôi có bị tải lên không?",
+        "a3": "Không. Nó ở lại trong thẻ và mất đi khi bạn đóng thẻ.",
+        "q4": "dBFS nghĩa là gì?",
+        "a4": "Decibel so với toàn thang: 0 là mức số to nhất, nên mức giọng nói là số âm.",
+        "q5": "Làm sao cho phép micro đang bị chặn?",
+        "a5": "Bấm biểu tượng trang web cạnh thanh địa chỉ, đặt Micro thành Cho phép rồi tải lại trang."
+      }
+    },
+    "use-tally-counter": {
+      "copy": {
+        "name": "Cách dùng bộ đếm online",
+        "blurb": "Đếm người, vòng chạy, mũi đan hay phiếu bầu bằng nút lớn hoặc bàn phím, giữ nhiều bộ đếm có tên và xem tổng. Số đếm nằm trong trình duyệt của bạn.",
+        "title": "Cách dùng bộ đếm online",
+        "lead": "Bạn cần đếm thứ gì đó ngay khi nó diễn ra — khách qua cửa, số vòng, hàng đan hay phiếu bầu. Bạn sẽ đếm bằng nút hoặc phím, thêm một bộ đếm cho mỗi thứ và sao chép tổng. Số đếm được lưu trong trình duyệt; không tải lên.",
+        "result": "Một hoặc nhiều bộ đếm có tên kèm số đếm và tổng, được lưu trong trình duyệt này.",
+        "note": "Trên điện thoại, giữ màn hình sáng khi đếm. Cửa sổ ẩn danh có thể quên số đếm khi đóng.",
+        "s1t": "Lên kế hoạch đếm gì",
+        "s1b": "Quyết định bạn đếm bao nhiêu thứ cùng lúc — ví dụ người lớn và trẻ em, hoặc phiếu cho từng lựa chọn. Mỗi thứ cần một bộ đếm.",
+        "s2t": "Mở Bộ đếm trên cv.cm",
+        "s2b": "Một bộ đếm, “Bộ đếm 1”, bắt đầu từ 0. Click vào tên để đổi tên.",
+        "s3t": "Đếm",
+        "s3b": "Bấm + để cộng và − để trừ. Trên bàn phím, Space, ↑ hoặc + để cộng, ↓ hoặc − để trừ ở bộ đếm đang được tô sáng.",
+        "s4t": "Thêm bộ đếm",
+        "s4b": "Bấm Thêm bộ đếm cho mỗi thứ cần đếm thêm (tối đa 12). Click vào một bộ đếm để tô sáng nó cho bàn phím. Tổng của mọi bộ đếm hiện bên dưới.",
+        "s5t": "Đặt bước đếm",
+        "s5b": "Để đếm theo hai hoặc theo mười, chỉnh Bước đếm. Chỉ đánh dấu “Cho phép số âm” nếu số đếm có thể xuống dưới 0, như điểm số.",
+        "s6t": "Sao chép và đặt lại",
+        "s6b": "Sao chép số đếm đưa từng tên và số đếm vào bộ nhớ tạm. Đặt lại xóa một bộ đếm; Đặt lại tất cả xóa toàn bộ.",
+        "diagram1": "+ cộng · − trừ · Space ↑ ↓ trên bàn phím.",
+        "diagram2": "Người lớn 23 + Trẻ em 9 = tổng 32."
+      },
+      "faq": {
+        "q1": "Có bộ đếm online miễn phí không?",
+        "a1": "Có. Bộ đếm của cv.cm chạy trong trình duyệt, không cần đăng ký.",
+        "q2": "Tôi đếm bằng bàn phím được không?",
+        "a2": "Được: Space, ↑ hoặc + để cộng, ↓ hoặc − để trừ ở bộ đếm đang được tô sáng.",
+        "q3": "Số đếm có được lưu không?",
+        "a3": "Có, trong bộ nhớ cục bộ của trình duyệt này. Cửa sổ ẩn danh có thể quên chúng.",
+        "q4": "Tôi có thể có bao nhiêu bộ đếm?",
+        "a4": "Tối đa 12, mỗi bộ có tên riêng, cộng thêm một tổng.",
+        "q5": "Có đếm theo 5 hoặc 10 được không?",
+        "a5": "Được. Đặt Bước đếm bằng số cần cộng cho mỗi lần bấm."
+      }
+    }
+  },
+  "svg": {
+    "test-click-speed": { "title": "Cách kiểm tra tốc độ click", "a": "35 click ÷ 5 s = 7 CPS", "b": "5–8 thường · 8–11 nhanh · 11+ rất nhanh", "cap": "Đồng hồ chạy từ lần click đầu tiên." },
+    "test-reaction-time": { "title": "Cách kiểm tra phản xạ", "a": "Đỏ → chờ 1,5–4,5 s → xanh → click", "b": "Bình thường 200–300 ms", "cap": "Click khi còn đỏ không được tính." },
+    "generate-test-tone": { "title": "Cách phát âm thanh test", "a": "20 Hz — 440 Hz (A4) — 20 kHz", "b": "Trái · Cả hai · Phải", "cap": "Bắt đầu ở âm lượng nhỏ." },
+    "test-microphone": { "title": "Cách kiểm tra micro", "a": "Tốt: −20 đến −6 dBFS", "b": "Bật → cho phép → Ghi 5 s → nghe lại", "cap": "Gần 0 dBFS thì tiếng bị vỡ." },
+    "use-tally-counter": { "title": "Cách dùng bộ đếm", "a": "+ cộng · − trừ", "b": "23 + 9 = tổng 32", "cap": "Space, ↑ và ↓ dùng được trên bàn phím." }
+  }
+}

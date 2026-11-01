@@ -1065,6 +1065,51 @@
       "s2b": "Pick the date of birth. The star sign, element, Chinese zodiac animal, year element and year name update.",
       "s3t": "Check Lunar New Year",
       "s3b": "For January and February birthdays the tool compares the date with Lunar New Year and says when the animal is the previous year’s."
+    },
+    "click-test": {
+      "lead": "Measure how many times you can click per second. Nothing is uploaded.",
+      "s1t": "Open CPS test",
+      "s1b": "The test length is 5 seconds by default. Pick 1, 10, 30 or 60 seconds in Length.",
+      "s2t": "Click the pad",
+      "s2b": "The timer starts with your first click. Click as fast as you can; clicks and CPS update live.",
+      "s3t": "Read your score",
+      "s3b": "When time runs out you get your CPS and total clicks. Your best score for each length is kept until you close the tab."
+    },
+    "reaction-time": {
+      "lead": "Measure your visual reaction time in milliseconds. Nothing is uploaded.",
+      "s1t": "Open Reaction time test",
+      "s1b": "Click the pad to start a try.",
+      "s2t": "Wait for green",
+      "s2b": "The pad turns red. Do not click yet; clicking too soon does not count.",
+      "s3t": "Click on green",
+      "s3b": "Click as soon as it turns green. After five tries you see the average, median, best and worst."
+    },
+    "tone-generator": {
+      "lead": "Play a pure tone at any frequency from 20 Hz to 20 kHz. Nothing is uploaded.",
+      "s1t": "Open Tone generator",
+      "s1b": "It is set to 440 Hz (A4), a sine wave, both speakers, at 20% volume. Press Play.",
+      "s2t": "Set the frequency",
+      "s2b": "Type a value, drag the slider, use ÷2/×2 for an octave or pick a preset such as 1000 Hz.",
+      "s3t": "Change the sound",
+      "s3b": "Pick a waveform and send the tone to the left, right or both speakers to test them one at a time."
+    },
+    "tally-counter": {
+      "lead": "Count anything with big buttons or the keyboard. Counts are kept in this browser.",
+      "s1t": "Open Tally counter",
+      "s1b": "One counter starts at 0. Give it a name if you like.",
+      "s2t": "Count",
+      "s2b": "Press + to add and − to subtract, or use Space, ↑ and ↓ on the keyboard.",
+      "s3t": "Add more counters",
+      "s3b": "Press Add counter to count several things at once; the total of all counters is shown underneath."
+    },
+    "mic-test": {
+      "lead": "Check that your microphone works and how it sounds. Nothing is uploaded.",
+      "s1t": "Open Mic test",
+      "s1b": "Press Start microphone and allow access when the browser asks.",
+      "s2t": "Speak and watch the meter",
+      "s2b": "The level meter and waveform move with your voice. Aim for peaks between −20 and −6 dBFS.",
+      "s3t": "Record and play back",
+      "s3b": "Press Record 5 s, speak, then play the recording to hear how the microphone itself sounds, before any call app filters."
     }
   }
 }

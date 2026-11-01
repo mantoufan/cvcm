@@ -1065,6 +1065,51 @@
       "s2b": "Elige la fecha de nacimiento. Se actualizan el signo zodiacal, el elemento, el animal del horóscopo chino, el elemento del año y el nombre del año.",
       "s3t": "Revisa el Año Nuevo Lunar",
       "s3b": "Para cumpleaños de enero y febrero, la herramienta compara la fecha con el Año Nuevo Lunar y avisa cuando el animal es el del año anterior."
+    },
+    "click-test": {
+      "lead": "Mide cuántas veces puedes hacer clic por segundo. No se sube nada.",
+      "s1t": "Abre Test de CPS",
+      "s1b": "La prueba dura 5 segundos por defecto. Elige 1, 10, 30 o 60 segundos en Duración.",
+      "s2t": "Haz clic en el panel",
+      "s2b": "El cronómetro empieza con tu primer clic. Haz clic lo más rápido que puedas; los clics y los CPS se actualizan en directo.",
+      "s3t": "Mira tu marca",
+      "s3b": "Al acabar el tiempo ves tus CPS y el total de clics. Tu mejor marca para cada duración se guarda hasta que cierres la pestaña."
+    },
+    "reaction-time": {
+      "lead": "Mide tu tiempo de reacción visual en milisegundos. No se sube nada.",
+      "s1t": "Abre Test de tiempo de reacción",
+      "s1b": "Haz clic en el panel para empezar un intento.",
+      "s2t": "Espera al verde",
+      "s2b": "El panel se pone rojo. No hagas clic todavía; si haces clic demasiado pronto no cuenta.",
+      "s3t": "Haz clic con el verde",
+      "s3b": "Haz clic en cuanto se ponga verde. Tras cinco intentos verás la media, la mediana, el mejor y el peor."
+    },
+    "tone-generator": {
+      "lead": "Reproduce un tono puro de cualquier frecuencia entre 20 Hz y 20 kHz. No se sube nada.",
+      "s1t": "Abre Generador de tonos",
+      "s1b": "Está en 440 Hz (A4), onda senoidal, ambos altavoces, al 20 % de volumen. Pulsa Reproducir.",
+      "s2t": "Fija la frecuencia",
+      "s2b": "Escribe un valor, arrastra el control, usa ÷2/×2 para una octava o elige un ajuste rápido como 1000 Hz.",
+      "s3t": "Cambia el sonido",
+      "s3b": "Elige una forma de onda y envía el tono al altavoz izquierdo, derecho o a ambos para probarlos uno a uno."
+    },
+    "tally-counter": {
+      "lead": "Cuenta lo que sea con botones grandes o con el teclado. Las cuentas se guardan en este navegador.",
+      "s1t": "Abre Contador de clics",
+      "s1b": "Un contador empieza en 0. Ponle nombre si quieres.",
+      "s2t": "Cuenta",
+      "s2b": "Pulsa + para sumar y − para restar, o usa Espacio, ↑ y ↓ en el teclado.",
+      "s3t": "Añade más contadores",
+      "s3b": "Pulsa Añadir contador para contar varias cosas a la vez; el total de todos los contadores aparece debajo."
+    },
+    "mic-test": {
+      "lead": "Comprueba que tu micrófono funciona y cómo suena. No se sube nada.",
+      "s1t": "Abre Test de micrófono",
+      "s1b": "Pulsa Iniciar micrófono y permite el acceso cuando el navegador lo pida.",
+      "s2t": "Habla y mira el medidor",
+      "s2b": "El medidor de nivel y la forma de onda se mueven con tu voz. Busca picos entre −20 y −6 dBFS.",
+      "s3t": "Graba y escucha",
+      "s3b": "Pulsa Grabar 5 s, habla y luego reproduce la grabación para oír el sonido original del micrófono, antes de que lo procese una app de llamadas."
     }
   }
 }
