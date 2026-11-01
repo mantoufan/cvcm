@@ -110,18 +110,24 @@ function clearAll(): void {
 /** Canvas pixels follow the pad's size and the screen's pixel ratio; a resize clears the trails (the grid keeps its marks). */
 function fitCanvas(): void {
   if (!canvasEl || !padEl) return;
-  const r = padEl.getBoundingClientRect();
   const dpr = Math.min(3, window.devicePixelRatio || 1);
-  const w = Math.max(1, Math.round(r.width * dpr));
-  const hgt = Math.max(1, Math.round(r.height * dpr));
+  const w = Math.max(1, Math.round(padEl.clientWidth * dpr));
+  const hgt = Math.max(1, Math.round(padEl.clientHeight * dpr));
   if (canvasEl.width === w && canvasEl.height === hgt) return;
   canvasEl.width = w;
   canvasEl.height = hgt;
 }
 
-function point(e: PointerEvent): { x: number; y: number; w: number; h: number } {
+type Box = { left: number; top: number; w: number; h: number };
+
+/** The pad's inner box (inside its border, where the grid and canvas are), in client coordinates. Read once per event. */
+function box(): Box {
   const r = padEl!.getBoundingClientRect();
-  return { x: e.clientX - r.left, y: e.clientY - r.top, w: r.width, h: r.height };
+  return { left: r.left + padEl!.clientLeft, top: r.top + padEl!.clientTop, w: padEl!.clientWidth, h: padEl!.clientHeight };
+}
+
+function point(e: PointerEvent, b: Box): { x: number; y: number; w: number; h: number } {
+  return { x: e.clientX - b.left, y: e.clientY - b.top, w: b.w, h: b.h };
 }
 
 function down(e: PointerEvent): void {
@@ -135,7 +141,7 @@ function down(e: PointerEvent): void {
     // Some browsers refuse capture for a pointer that has already ended.
   }
   padEl.classList.add("used");
-  const p = point(e);
+  const p = point(e, box());
   const touch: Touch = { x: p.x, y: p.y, color: COLORS[nextColor % COLORS.length], n: nextColor + 1 };
   nextColor++;
   active.set(e.pointerId, touch);
@@ -151,8 +157,9 @@ function move(e: PointerEvent): void {
   e.preventDefault();
   // Coalesced events give every point the screen reported between two frames, so fast strokes stay smooth.
   const events = typeof e.getCoalescedEvents === "function" ? e.getCoalescedEvents() : [];
+  const b = box();
   for (const ev of events.length ? events : [e]) {
-    const p = point(ev);
+    const p = point(ev, b);
     mark(cellsAlong(touch.x, touch.y, p.x, p.y, p.w, p.h));
     line(touch, p.x, p.y, p.w);
     touch.x = p.x;

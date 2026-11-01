@@ -58,6 +58,12 @@ describe("gamepad-test ui", () => {
     expect(a.classList.contains("down")).toBe(false);
     expect(a.classList.contains("done")).toBe(true);
     expect((q<HTMLButtonElement>("[data-action=rumble]")).disabled).toBe(true);
+    // A second pad connecting keeps the first pad's tested buttons.
+    const other = { ...fakePad(Array(17).fill(false), [0, 0, 0, 0]), index: 1, id: "Other pad" } as Gamepad;
+    Object.defineProperty(navigator, "getGamepads", { value: () => [pad, other], configurable: true });
+    window.dispatchEvent(new Event("gamepadconnected"));
+    expect(q("[data-button='0']").classList.contains("done")).toBe(true);
+    expect(host.querySelectorAll("[data-field=pad] option")).toHaveLength(2);
     delete (navigator as { getGamepads?: unknown }).getGamepads;
   });
 });
@@ -75,6 +81,9 @@ describe("dead-pixel ui", () => {
     expect(screen.querySelector(".dp-label")!.textContent).toMatch(/^Black/);
     screen.dispatchEvent(new KeyboardEvent("keydown", { key: "ArrowRight", bubbles: true }));
     expect(screen.querySelector(".dp-label")!.textContent).toMatch(/^White/);
+    // A held key does not cycle colours.
+    for (let i = 0; i < 5; i++) screen.dispatchEvent(new KeyboardEvent("keydown", { key: "ArrowRight", repeat: true, bubbles: true }));
+    expect(screen.querySelector(".dp-label")!.textContent).toMatch(/^White/);
     screen.dispatchEvent(new KeyboardEvent("keydown", { key: "ArrowLeft", bubbles: true }));
     screen.dispatchEvent(new KeyboardEvent("keydown", { key: "ArrowLeft", bubbles: true }));
     expect(screen.querySelector(".dp-label")!.textContent).toMatch(/^Gray/);
@@ -88,6 +97,8 @@ describe("touch-test ui", () => {
   it("counts fingers at once and the area touched", () => {
     mountTouchTest(host);
     const pad = q("[data-action=pad]");
+    Object.defineProperty(pad, "clientWidth", { value: 800, configurable: true });
+    Object.defineProperty(pad, "clientHeight", { value: 1200, configurable: true });
     vi.spyOn(pad, "getBoundingClientRect").mockReturnValue({ left: 0, top: 0, width: 800, height: 1200, right: 800, bottom: 1200, x: 0, y: 0, toJSON: () => ({}) } as DOMRect);
     const ev = (type: string, id: number, x: number, y: number) =>
       pad.dispatchEvent(new PointerEvent(type, { pointerId: id, pointerType: "touch", clientX: x, clientY: y, button: 0, bubbles: true }));

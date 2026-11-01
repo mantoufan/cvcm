@@ -12,6 +12,18 @@ export function medianInterval(intervals: readonly number[]): number {
   return v.length % 2 ? v[mid] : (v[mid - 1] + v[mid]) / 2;
 }
 
+/**
+ * Mean of the steady frame intervals (within half and 1.5 times the median), in ms; 0 when there are none.
+ * The mean, not the median, because many browsers round frame times to whole ms: at 240 Hz (4.17 ms) the
+ * intervals read 4, 4, 5, 4, … and only their average gives the true rate.
+ */
+export function steadyInterval(intervals: readonly number[]): number {
+  const median = medianInterval(intervals);
+  if (!median) return 0;
+  const steady = intervals.filter((x) => x >= median * 0.5 && x < median * 1.5);
+  return steady.length ? steady.reduce((a, b) => a + b, 0) / steady.length : median;
+}
+
 /** Frames per second for a frame interval, to one decimal. */
 export function hzFromInterval(ms: number): number {
   if (!(ms > 0)) return 0;

@@ -46,14 +46,12 @@ export function aspectText(width: number, height: number): string {
   return a.ratio;
 }
 
-/** Frames per second from frame times (ms, ascending) over the last `windowMs`; 0 with fewer than two frames. */
-export function framesPerSecond(times: readonly number[], windowMs = 1000): number {
-  if (times.length < 2) return 0;
-  const end = times[times.length - 1];
-  let first = times.length - 1;
-  while (first > 0 && end - times[first - 1] <= windowMs) first--;
-  const span = end - times[first];
-  const frames = times.length - 1 - first;
-  if (!(span > 0) || frames < 1) return 0;
-  return Math.round((frames * 1000) / span * 10) / 10;
+/**
+ * Frames per second from frame times (ms, ascending) in the `windowMs` before `now`, to one decimal.
+ * Counting up to now (not to the last frame) makes a frozen feed read 0 instead of its last rate.
+ */
+export function framesPerSecond(times: readonly number[], now: number, windowMs = 2000): number {
+  if (!(windowMs > 0)) return 0;
+  const frames = times.filter((x) => x > now - windowMs && x <= now).length;
+  return Math.round(((frames * 1000) / windowMs) * 10) / 10;
 }

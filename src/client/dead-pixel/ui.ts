@@ -181,6 +181,13 @@ function tap(e: PointerEvent): void {
 }
 
 function key(e: KeyboardEvent): void {
+  // Enter and Space on the × button press it.
+  if ((e.target as HTMLElement | null)?.closest?.("[data-action=exit]") && e.key !== "Escape") return;
+  // A held key repeats about 30 times a second: one press moves one colour, so the screen never flashes.
+  if (e.repeat) {
+    if (e.key !== "Escape") e.preventDefault();
+    return;
+  }
   if (e.key === " " || e.key === "Enter" || e.key === "ArrowRight" || e.key === "ArrowDown" || e.key === "PageDown") {
     e.preventDefault();
     next(1);

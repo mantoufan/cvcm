@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 import { aspectText, framesPerSecond, resolutionName, sizeText, videoConstraints } from "../src/shared/webcam";
 import { axisText, buttonLabel, restVerdict, stickDistance } from "../src/shared/gamepad";
 import { SCREEN_COLORS, labelInk, stepColor } from "../src/shared/dead-pixel";
-import { countSkipped, hzFromInterval, medianInterval, nearestStandardRate } from "../src/shared/refresh-rate";
+import { countSkipped, hzFromInterval, medianInterval, nearestStandardRate, steadyInterval } from "../src/shared/refresh-rate";
 import { TOUCH_COLS, TOUCH_ROWS, cellAt, cellsAlong, coveragePercent } from "../src/shared/touch";
 
 describe("webcam-test", () => {
@@ -17,9 +17,11 @@ describe("webcam-test", () => {
     expect([aspectText(1280, 720), aspectText(640, 480), aspectText(1366, 768), aspectText(1000, 300)]).toEqual(["16:9", "4:3", "16:9", "10:3"]);
   });
   it("measures frames per second over the last second", () => {
-    expect(framesPerSecond([])).toBe(0);
+    expect(framesPerSecond([], 5000)).toBe(0);
     const times = Array.from({ length: 61 }, (_, i) => 1000 + i * (1000 / 30));
-    expect(framesPerSecond(times)).toBe(30);
+    expect(framesPerSecond(times, 3000)).toBe(30);
+    // The camera froze two seconds ago: no frames in the window.
+    expect(framesPerSecond(times, 5100)).toBe(0);
   });
 });
 
@@ -57,6 +59,11 @@ describe("refresh-rate", () => {
     expect(nearestStandardRate(143.6)).toBe(144);
     expect(nearestStandardRate(59.9)).toBe(60);
     expect(nearestStandardRate(110)).toBeNull();
+    // Frame times rounded to whole ms at 240 Hz: the median says 4 ms (250 Hz), the steady mean 4.17 ms.
+    const rounded = Array.from({ length: 240 }, (_, i) => Math.round((i + 1) * (1000 / 240)) - Math.round(i * (1000 / 240)));
+    expect(medianInterval(rounded)).toBe(4);
+    expect(nearestStandardRate(hzFromInterval(steadyInterval(rounded)))).toBe(240);
+    expect(steadyInterval([16.7, 16.7, 33.4])).toBeCloseTo(16.7, 5);
     expect(countSkipped([6.9, 6.9, 13.9, 20.8, 7], 6.9)).toBe(2);
   });
 });

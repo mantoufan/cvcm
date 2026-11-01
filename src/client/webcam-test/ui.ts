@@ -21,6 +21,9 @@ let shotUrl = "";
 let readoutTimer = 0;
 let frameHandle = 0;
 let frameTimes: number[] = [];
+/** When frames started being counted; the rate shows once a full window has passed. */
+let countingSince = 0;
+const FPS_WINDOW_MS = 2000;
 /** Bumped on every start/stop, so a slow permission prompt that resolves late is dropped. */
 let run = 0;
 /** A permission prompt is open (start() is waiting for getUserMedia). */
@@ -160,11 +163,12 @@ async function start(): Promise<void> {
 /** Counts the frames the video element actually shows, where the browser can tell (requestVideoFrameCallback). */
 function watchFrames(video: HTMLVideoElement): void {
   if (typeof video.requestVideoFrameCallback !== "function") return;
+  countingSince = performance.now();
   const mine = run;
   const onFrame = (now: number) => {
     if (mine !== run || !stream) return;
     frameTimes.push(now);
-    if (frameTimes.length > 240) frameTimes.splice(0, frameTimes.length - 240);
+    while (frameTimes.length && frameTimes[0] < now - FPS_WINDOW_MS) frameTimes.shift();
     frameHandle = video.requestVideoFrameCallback(onFrame);
   };
   frameHandle = video.requestVideoFrameCallback(onFrame);
@@ -177,6 +181,7 @@ function stop(): void {
   if (frameHandle && videoEl && typeof videoEl.cancelVideoFrameCallback === "function") videoEl.cancelVideoFrameCallback(frameHandle);
   frameHandle = 0;
   frameTimes = [];
+  countingSince = 0;
   stream?.getTracks().forEach((tr) => tr.stop());
   stream = null;
   if (videoEl) videoEl.srcObject = null;
@@ -213,9 +218,11 @@ function paintInfo(): void {
     [t("webcamTest.size"), sizeText(w, hgt)],
     [t("webcamTest.aspect"), aspectText(w, hgt)],
   ];
-  const measured = framesPerSecond(frameTimes);
-  if (measured > 0) rows.push([t("webcamTest.fps"), t("webcamTest.fpsValue", { n: measured.toFixed(1) })]);
-  else if (set.frameRate) rows.push([t("webcamTest.fps"), t("webcamTest.fpsSetting", { n: Math.round(set.frameRate) })]);
+  const now = performance.now();
+  if (countingSince && now - countingSince >= FPS_WINDOW_MS) {
+    // Frames the page actually received; a frozen camera reads 0.
+    rows.push([t("webcamTest.fps"), t("webcamTest.fpsValue", { n: framesPerSecond(frameTimes, now, FPS_WINDOW_MS).toFixed(1) })]);
+  } else if (!countingSince && set.frameRate) rows.push([t("webcamTest.fps"), t("webcamTest.fpsSetting", { n: Math.round(set.frameRate) })]);
   if (set.facingMode) rows.push([t("webcamTest.facing"), t(`webcamTest.facing_${set.facingMode === "environment" ? "back" : "front"}`)]);
   infoEl.replaceChildren(...rows.flatMap(([k, v]) => [h("dt", null, k), h("dd", null, v)]));
 }

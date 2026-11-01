@@ -369,6 +369,11 @@ export function isCameraToolPath(pathname: string): boolean {
   return (parsed.kind === "app" || parsed.kind === "bare") && parsed.tool !== null && CAMERA_TOOLS.has(parsed.tool);
 }
 
+/** The devices a page's Permissions-Policy allows ("", "microphone", "camera"); pages with different ones need a fresh document. */
+export function devicePolicyOf(pathname: string): string {
+  return [isMicToolPath(pathname) && "microphone", isCameraToolPath(pathname) && "camera"].filter(Boolean).join(" ");
+}
+
 export function categoryOf(tool: ToolId): CategoryId {
   for (const cat of CATEGORIES) {
     if ((cat.tools as readonly string[]).includes(tool)) return cat.id;

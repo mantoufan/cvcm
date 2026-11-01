@@ -2,7 +2,7 @@ import { copyWithFlash } from "../copy";
 import { h } from "../dom";
 import { locale, t } from "../i18n";
 import { appHref } from "../../shared/path";
-import { MAX_FRAME_MS, countSkipped, hzFromInterval, medianInterval, nearestStandardRate } from "../../shared/refresh-rate";
+import { MAX_FRAME_MS, countSkipped, hzFromInterval, medianInterval, nearestStandardRate, steadyInterval } from "../../shared/refresh-rate";
 
 /** Frame intervals kept for the estimate and the graph. */
 const KEEP = 240;
@@ -144,15 +144,16 @@ function paint(): void {
   drawGraph();
   if (intervals.length < MIN_SAMPLES) return;
   const median = medianInterval(intervals);
-  const hz = hzFromInterval(median);
+  const frameMs = steadyInterval(intervals);
+  const hz = hzFromInterval(frameMs);
   const near = nearestStandardRate(hz);
   const skipped = countSkipped(intervals, median);
   if (hzEl) hzEl.textContent = String(Math.round(hz));
-  if (frameMsEl) frameMsEl.textContent = t("refreshRate.ms", { n: median.toFixed(2) });
+  if (frameMsEl) frameMsEl.textContent = t("refreshRate.ms", { n: frameMs.toFixed(2) });
   if (skippedEl) skippedEl.textContent = String(skipped);
   const line = near ? t("refreshRate.near", { n: near }) : t("refreshRate.unusual", { n: hz.toFixed(1) });
   if (nearEl && nearEl.textContent !== line) nearEl.textContent = line;
-  last = `${t("refreshRate.result", { n: Math.round(hz), ms: median.toFixed(2) })}\n${line}`;
+  last = `${t("refreshRate.result", { n: Math.round(hz), ms: frameMs.toFixed(2) })}\n${line}`;
   if (copyBtn) copyBtn.disabled = false;
 }
 

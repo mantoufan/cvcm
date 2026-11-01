@@ -99,13 +99,15 @@ function poll(): void {
   const list = pads();
   const want = padEl.value;
   // Keep the select in step with the connected pads.
-  const ids = list.map((g) => String(g.index)).join(",");
+  // Index and name, so a different controller taking a freed slot is relabelled too. The board is rebuilt only when
+  // the shown pad itself changes (see `key` below), so a second pad connecting keeps the first one's tested buttons.
+  const ids = list.map((g) => `${g.index}:${g.id}`).join("\n");
   if (padEl.dataset.ids !== ids) {
     padEl.dataset.ids = ids;
     padEl.replaceChildren(...list.map((g) => h("option", { value: String(g.index) }, `${g.index + 1}. ${g.id || t("gamepadTest.unnamed")}`)));
     if (list.some((g) => String(g.index) === want)) padEl.value = want;
     padEl.disabled = list.length < 2;
-    drawn = "";
+    if (statusEl && drawn && drawn !== "none") say(list.length > 1 ? "connectedMany" : "connected", { n: list.length });
   }
   const pad = list.find((g) => String(g.index) === padEl!.value) ?? list[0];
   if (!pad) {
