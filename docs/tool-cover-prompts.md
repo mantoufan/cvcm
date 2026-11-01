@@ -205,3 +205,13 @@ Codex, refs `due-date-sweet.jpg` + `reading-time-sweet.jpg`. Same character and 
 - `image-upscaler`: a pink magnifying glass over a small flower photo that is crisp inside the lens, a tiny sparkle wand.
 - `speech-to-text`: a pink retro microphone with a heart grille, a cream speech bubble with blank wavy lines, a lined notebook.
 - `depth-map`: a layered paper diorama of hills and a cottage from cream to deep pink, heart-shaped 3D glasses.
+
+## Webcam test, gamepad tester, dead pixel test, refresh rate test, touch screen test (2026-11-01)
+
+Codex (`codex exec`, built-in image tool), refs `click-test-sweet.jpg` + `mic-test-sweet.jpg`. Same character and room, no words, letters, numerals, logo or watermark. Save `public/covers/<id>-sweet.jpg`, `sips -z 720 1280`.
+
+- `webcam-test`: she waves at a small round pastel pink webcam with a heart-shaped lens ring clipped on a cream laptop; the laptop screen shows a soft blurred mirror image of her.
+- `gamepad-test`: she holds a pastel pink game controller with blank round buttons in both hands, thumbs on the sticks, a few buttons glowing pink.
+- `dead-pixel`: she peers through a small pink magnifying glass at a cream monitor whose screen is split into soft solid colour bands (white, red, green, blue), one tiny sparkle on the screen.
+- `refresh-rate`: she watches a cream monitor where a small pink heart glides smoothly across the screen leaving soft motion trail copies; a tiny blank pink stopwatch on the desk.
+- `touch-test`: she touches a pastel pink tablet with several fingers of both hands; colourful soft dotted trails and little circles bloom where her fingertips touch.

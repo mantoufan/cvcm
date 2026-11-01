@@ -1110,6 +1110,51 @@
       "s2b": "Đồng hồ mức âm và dạng sóng chuyển động theo giọng bạn. Hãy để đỉnh nằm trong khoảng −20 đến −6 dBFS.",
       "s3t": "Ghi âm và nghe lại",
       "s3b": "Bấm Ghi 5 s, nói, rồi phát bản ghi để nghe âm thanh gốc của micro, trước khi ứng dụng gọi xử lý."
+    },
+    "webcam-test": {
+      "lead": "Kiểm tra webcam có hoạt động không và xem độ phân giải, tốc độ khung hình thật. Không tải lên.",
+      "s1t": "Bật camera",
+      "s1b": "Bấm Bật camera và cho phép truy cập khi trình duyệt hỏi. Khung xem trước hiện hình bạn, lật như soi gương.",
+      "s2t": "Xem thông số",
+      "s2b": "Bảng thông tin hiện tên camera, độ phân giải nó thực sự gửi, tỉ lệ khung và tốc độ khung hình đo được. Chọn camera hoặc độ phân giải khác để so sánh.",
+      "s3t": "Chụp một ảnh",
+      "s3b": "Bấm Chụp ảnh để xem độ nét và màu sắc, rồi Lưu ảnh để giữ lại. Ảnh không bao giờ rời khỏi thiết bị của bạn."
+    },
+    "gamepad-test": {
+      "lead": "Kiểm tra mọi nút, cò và cần analog của tay cầm, và xem có bị trôi analog không. Không tải lên.",
+      "s1t": "Kết nối và bấm một nút",
+      "s1b": "Cắm tay cầm vào hoặc ghép nối qua Bluetooth, rồi bấm một nút bất kỳ. Trình duyệt chỉ hiện tay cầm sau khi có nút được bấm.",
+      "s2t": "Bấm từng nút",
+      "s2b": "Mỗi nút được tô khi đang bấm (cò được tô một phần theo độ nhấn) và giữ viền đánh dấu khi đã hoạt động, nên bạn dễ thấy nút nào bị liệt.",
+      "s3t": "Kiểm tra cần analog",
+      "s3b": "Gạt cả hai cần ra sát mép rồi buông tay. Khi nghỉ, cần nên đọc gần 0.00; từ 0.15 trở lên là bị trôi."
+    },
+    "dead-pixel": {
+      "lead": "Phủ màn hình bằng màu trơn để tìm điểm chết, điểm kẹt hoặc điểm sáng. Không tải lên.",
+      "s1t": "Lau sạch màn hình",
+      "s1b": "Lau màn hình trước để không nhầm bụi với điểm ảnh lỗi. Xem trước một màu bằng các ô màu.",
+      "s2t": "Bắt đầu test toàn màn hình",
+      "s2b": "Bấm Bắt đầu test toàn màn hình. Click, Space hoặc → để sang màu tiếp theo; ← để quay lại.",
+      "s3t": "Nhìn kỹ từng màu",
+      "s3b": "Nhìn kỹ từng màu: chấm nào luôn đen, trắng hoặc một màu là điểm ảnh lỗi. Esc hoặc × đóng bài test."
+    },
+    "refresh-rate": {
+      "lead": "Xem tần số quét mà màn hình và trình duyệt của bạn thực sự chạy. Không tải lên.",
+      "s1t": "Giữ thẻ ở phía trước",
+      "s1b": "Bài test tự bắt đầu. Để thẻ ở phía trước vài giây trong lúc nó đếm khung hình.",
+      "s2t": "Đọc tần số",
+      "s2b": "Con số lớn là tần số quét tính bằng Hz, kèm mức chuẩn gần nhất, thời gian khung hình và số khung bị bỏ.",
+      "s3t": "Xem thử chuyển động",
+      "s3b": "Khối di chuyển theo tốc độ đã chọn. Ở Hz cao hơn nó trông mượt hơn; khối giật kèm các đỉnh nhọn trên biểu đồ nghĩa là có khung bị bỏ."
+    },
+    "touch-test": {
+      "lead": "Xem màn hình cảm ứng nhận bao nhiêu ngón và tìm vùng chết. Không tải lên.",
+      "s1t": "Chạm vào bảng",
+      "s1b": "Đặt một hoặc nhiều ngón lên bảng và vẽ. Mỗi ngón có màu và số riêng.",
+      "s2t": "Đếm số ngón",
+      "s2b": "Đang chạm hiện số ngón trên màn hình; Nhiều nhất cùng lúc giữ con số cao nhất.",
+      "s3t": "Tìm vùng chết",
+      "s3b": "Vuốt khắp bảng, hoặc bấm Toàn màn hình để chạm tới các cạnh. Ô nào không bao giờ được tô là vùng chết."
     }
   }
 }

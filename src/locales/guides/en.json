@@ -1110,6 +1110,51 @@
       "s2b": "The level meter and waveform move with your voice. Aim for peaks between −20 and −6 dBFS.",
       "s3t": "Record and play back",
       "s3b": "Press Record 5 s, speak, then play the recording to hear how the microphone itself sounds, before any call app filters."
+    },
+    "webcam-test": {
+      "lead": "Check that your webcam works and see its real resolution and frame rate. Nothing is uploaded.",
+      "s1t": "Start the camera",
+      "s1b": "Press Start camera and allow access in the browser prompt. The preview shows you, mirrored like a mirror.",
+      "s2t": "Read the details",
+      "s2b": "The panel shows the camera's name, the resolution it really sends, the aspect ratio and the measured frame rate. Pick another camera or resolution to compare.",
+      "s3t": "Take a photo",
+      "s3b": "Press Take photo to check sharpness and colour, then Save photo to keep it. It never leaves your device."
+    },
+    "gamepad-test": {
+      "lead": "Test every button, trigger and stick of a controller and check for stick drift. Nothing is uploaded.",
+      "s1t": "Connect and press a button",
+      "s1b": "Plug in the controller or pair it by Bluetooth, then press any button. Browsers only show a controller after a press.",
+      "s2t": "Press every button",
+      "s2b": "Each button fills while pressed (triggers fill part way) and stays outlined once it has worked, so you can spot a dead one.",
+      "s3t": "Check the sticks",
+      "s3b": "Move both sticks to the edges, then let go. A resting stick should read near 0.00; 0.15 or more is drift."
+    },
+    "dead-pixel": {
+      "lead": "Fill the screen with solid colours to find dead, stuck or hot pixels. Nothing is uploaded.",
+      "s1t": "Clean the screen",
+      "s1b": "Wipe the screen first so dust is not mistaken for a pixel. Preview a colour with the swatches.",
+      "s2t": "Start the full screen test",
+      "s2b": "Press Start full screen test. Click, Space or → moves to the next colour; ← goes back.",
+      "s3t": "Look at every colour",
+      "s3b": "Look closely at each colour: a dot that stays black, white or one colour is a bad pixel. Esc or × closes the test."
+    },
+    "refresh-rate": {
+      "lead": "See the refresh rate your screen and browser really run at. Nothing is uploaded.",
+      "s1t": "Keep the tab in front",
+      "s1b": "The test starts by itself. Leave the tab in front for a few seconds while it counts frames.",
+      "s2t": "Read the rate",
+      "s2b": "The big number is your refresh rate in Hz, with the nearest standard rate, the frame time and skipped frames.",
+      "s3t": "Watch the motion test",
+      "s3b": "The block moves at the chosen speed. At higher Hz it looks smoother; a jerky block with spikes in the graph means skipped frames."
+    },
+    "touch-test": {
+      "lead": "Check how many fingers your touch screen tracks and find dead zones. Nothing is uploaded.",
+      "s1t": "Touch the pad",
+      "s1b": "Put one or more fingers on the pad and draw. Each finger gets its own colour and number.",
+      "s2t": "Count your fingers",
+      "s2b": "Touching now shows the fingers on the screen; Most at once keeps the highest count.",
+      "s3t": "Find dead zones",
+      "s3b": "Swipe over the whole pad, or press Full screen to reach the edges. Cells that never fill in mark a dead zone."
     }
   }
 }

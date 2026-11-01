@@ -1,0 +1,203 @@
+{
+  "meta": {
+    "titleTestWebcam": "Test webcam online: cách kiểm tra camera (độ phân giải, fps, cách sửa) | cv.cm",
+    "descTestWebcam": "Kiểm tra webcam trong trình duyệt: xem trực tiếp, độ phân giải và fps thật, chụp ảnh thử, và cách xử lý khi camera bị đen hoặc không tìm thấy. Không tải lên.",
+    "titleTestGamepad": "Cách test tay cầm chơi game và kiểm tra trôi analog | cv.cm",
+    "descTestGamepad": "Test mọi nút, cò và cần analog của tay cầm Xbox, PlayStation, Switch Pro trong trình duyệt, đọc độ trôi (0.05 nhẹ, 0.15 trôi) và thử rung.",
+    "titleCheckDeadPixels": "Cách kiểm tra điểm chết (dead pixel) trên màn hình | cv.cm",
+    "descCheckDeadPixels": "Chạy test màu toàn màn hình để tìm điểm chết, điểm kẹt và điểm sáng, phân biệt với bụi và biết nên làm gì tiếp. Dùng cho màn hình rời, laptop và điện thoại.",
+    "titleCheckRefreshRate": "Cách kiểm tra tần số quét màn hình (Hz) | cv.cm",
+    "descCheckRefreshRate": "Đo tần số quét trình duyệt thực sự vẽ, đọc thời gian khung hình và số khung bị bỏ, và sửa màn hình 144 Hz bị kẹt ở 60 Hz.",
+    "titleTestTouchScreen": "Cách test cảm ứng màn hình: tìm vùng chết và kiểm tra đa điểm | cv.cm",
+    "descTestTouchScreen": "Vẽ trên lưới để tìm vùng chết cảm ứng, đếm số ngón màn hình nhận cùng lúc và kiểm tra lực nhấn của bút. Không tải lên."
+  },
+  "lessons": {
+    "test-webcam": {
+      "copy": {
+        "name": "Cách kiểm tra webcam",
+        "blurb": "Xem khung hình trực tiếp, độ phân giải và tốc độ khung hình thật, và chụp ảnh thử. Không tải lên.",
+        "title": "Cách kiểm tra webcam",
+        "lead": "Bạn sắp có cuộc gọi video, hoặc vừa mua webcam mới, và muốn biết nó có chạy không, hình lên đẹp đến đâu. Bạn sẽ bật camera, xem nó thực sự gửi gì và xử lý các lỗi thường gặp. Video ở lại trong trình duyệt; không tải lên.",
+        "result": "Khung xem trước hoạt động, độ phân giải, tỉ lệ khung và tốc độ khung hình thật của camera, cùng một ảnh thử trên thiết bị của bạn.",
+        "note": "Ứng dụng gọi video có thể hạ độ phân giải xuống để tiết kiệm băng thông; bài test này cho thấy chính camera gửi được tới mức nào.",
+        "s1t": "Biết cần kiểm tra gì",
+        "s1b": "Bốn thứ quyết định bạn trông thế nào khi gọi: độ phân giải (720p hoặc 1080p), tốc độ khung hình (30 fps là mượt), lấy nét và ánh sáng. Bài test hiện hai thứ đầu bằng con số; ảnh chụp cho thấy phần còn lại.",
+        "s2t": "Mở Kiểm tra webcam trên cv.cm",
+        "s2b": "Bấm Bật camera và cho phép truy cập khi được hỏi. Bạn thấy mình trong khung xem trước, lật như soi gương; bỏ chọn Lật gương khung xem trước để thấy hình người khác nhìn thấy.",
+        "s3t": "Chọn camera và độ phân giải",
+        "s3b": "Nếu có nhiều camera, chọn trong danh sách Camera. Chọn 720p hoặc 1080p ở Độ phân giải; bảng thông tin hiện kích thước bạn thực sự nhận được, có thể thấp hơn nếu camera không hỗ trợ.",
+        "s4t": "Đọc tốc độ khung hình",
+        "s4b": "Tốc độ khung hình được đo từ các khung thực sự hiển thị. 30 fps là mượt; 15 fps trở xuống thường do phòng quá tối và camera phải phơi sáng lâu hơn.",
+        "s5t": "Sửa camera bị đen hoặc không tìm thấy",
+        "s5b": "Đóng các ứng dụng khác đang dùng camera, mở nắp che hoặc nhấn phím camera, cho phép trình duyệt dùng camera trong cài đặt hệ thống, và thử cổng USB khác.",
+        "s6t": "Chụp ảnh thử",
+        "s6b": "Bấm Chụp ảnh để xem độ nét và màu sắc, và Lưu ảnh để giữ lại. Hãy ngồi quay mặt về cửa sổ hoặc đèn, đừng để nguồn sáng sau lưng.",
+        "diagram1": "Độ phân giải · tốc độ khung hình · lấy nét · ánh sáng.",
+        "diagram2": "Hình đen: ứng dụng khác · nắp che · quyền · cổng USB."
+      },
+      "faq": {
+        "q1": "Webcam nên có độ phân giải bao nhiêu?",
+        "a1": "720p là đủ cho phần lớn cuộc gọi; 1080p nét hơn khi ứng dụng gửi đúng mức đó. Webcam 4K chủ yếu có lợi khi cắt khung và phóng to.",
+        "q2": "Sao webcam của tôi bị mờ?",
+        "a2": "Lau ống kính, chiếu sáng từ phía trước, và kiểm tra camera đã lấy nét chưa (webcam lấy nét cố định nét từ khoảng 50 cm).",
+        "q3": "Sao webcam của tôi bị giật, chậm?",
+        "a3": "Thiếu sáng làm giảm tốc độ khung hình; hub USB quá tải hoặc cổng USB 2.0 cũ có thể giới hạn 1080p. Thử thêm ánh sáng, chọn 720p hoặc cắm cổng khác.",
+        "q4": "Kiểm tra webcam có an toàn không?",
+        "a4": "Có. Video ở lại trong thẻ trình duyệt và ảnh được tạo trên thiết bị của bạn. Không tải lên.",
+        "q5": "Sao khung xem trước bị lật ngược trái phải?",
+        "a5": "Để khi bạn nghiêng sang trái thì hình cũng sang trái, như soi gương. Người khác thấy bạn không bị lật; bỏ chọn Lật gương khung xem trước để xem góc nhìn đó."
+      }
+    },
+    "test-gamepad": {
+      "copy": {
+        "name": "Cách test tay cầm và kiểm tra trôi analog",
+        "blurb": "Bấm từng nút, đọc cả hai cần analog và phát hiện trôi trước khi nó làm bạn thua trận. Không tải lên.",
+        "title": "Cách test tay cầm và kiểm tra trôi analog",
+        "lead": "Nhân vật của bạn cứ tự đi, hoặc có nút bấm như bị liệt. Bạn sẽ kết nối tay cầm với trình duyệt, test từng nút và cò, rồi đọc cần analog lúc buông tay để xem có bị trôi không. Không tải lên.",
+        "result": "Mọi nút được đánh dấu là hoạt động hay không, hành trình của cò, vị trí cả hai cần analog và chỉ số trôi lúc nghỉ.",
+        "note": "Game che độ trôi nhỏ bằng vùng chết (dead zone), nên 0.05–0.15 có thể không ảnh hưởng; nhưng độ trôi thường tăng dần khi cần analog bị mòn.",
+        "s1t": "Kết nối tay cầm",
+        "s1b": "Cắm bằng USB hoặc ghép nối qua Bluetooth. Xbox, PlayStation, Switch Pro và phần lớn tay cầm phổ thông chạy được trên Chrome, Edge và Firefox.",
+        "s2t": "Mở Test tay cầm và bấm một nút",
+        "s2b": "Trình duyệt chỉ hiện tay cầm sau khi có nút được bấm, nên hãy bấm một nút bất kỳ. Bảng thông tin hiện tên, bố cục và số nút, số trục của tay cầm.",
+        "s3t": "Bấm từng nút",
+        "s3b": "Mỗi nút được tô khi đang giữ và giữ viền đánh dấu khi đã hoạt động. Bóp cò thật chậm: cò được tô dần theo độ nhấn, cho thấy toàn bộ hành trình.",
+        "s4t": "Kiểm tra cần analog có bị trôi không",
+        "s4b": "Xoay từng cần quanh mép rồi buông tay. Khi nghỉ, cần nên đọc gần 0.00. Trên 0.05 là trôi nhẹ; từ 0.15 trở lên thường lộ ra khi chơi.",
+        "s5t": "Thử rung",
+        "s5b": "Bấm Thử rung. Cả hai động cơ sẽ rung chưa tới một giây. Cần Chrome hoặc Edge, và một số kết nối Bluetooth không truyền được tín hiệu rung.",
+        "s6t": "Quyết định xử lý thế nào",
+        "s6b": "Trôi nhẹ thì tăng vùng chết trong cài đặt của game. Trôi nặng hoặc nút bị liệt thường cần vệ sinh, thay cụm cần analog hoặc mang đi sửa.",
+        "diagram1": "Bố cục chuẩn: A/✕ B/○ X/□ Y/△, nút vai, cò, cần analog, D-pad.",
+        "diagram2": "Lúc nghỉ: dưới 0.05 ổn · 0.05–0.15 nhẹ · 0.15+ trôi."
+      },
+      "faq": {
+        "q1": "Trôi analog (stick drift) là gì?",
+        "a1": "Là khi cần analog báo có chuyển động dù không ai chạm vào, thường do cảm biến bên trong bị mòn hoặc dính bụi bẩn.",
+        "q2": "Đọc độ trôi trong công cụ thế nào?",
+        "a2": "Buông cần và đọc khoảng cách hiện bên dưới: gần 0.00 là ở giữa, trên 0.05 là trôi nhẹ, từ 0.15 trở lên là trôi.",
+        "q3": "Sao tay cầm của tôi không hiện lên?",
+        "a3": "Bấm một nút sau khi kết nối; trình duyệt ẩn tay cầm cho tới lúc đó. Đồng thời tắt lớp nhập liệu của Steam hoặc công cụ đổi phím khác nếu chúng chiếm tay cầm.",
+        "q4": "Có dùng được với Joy-Con của Switch không?",
+        "a4": "Thường là hai tay cầm riêng, bố cục không chuẩn với nút đánh số. Tay cầm Switch Pro hiện bố cục chuẩn trên phần lớn trình duyệt.",
+        "q5": "Có gì bị tải lên không?",
+        "a5": "Không. Công cụ đọc tay cầm trong thẻ trình duyệt bằng Gamepad API."
+      }
+    },
+    "check-dead-pixels": {
+      "copy": {
+        "name": "Cách kiểm tra điểm chết trên màn hình",
+        "blurb": "Hiện màu trơn toàn màn hình để tìm điểm chết, điểm kẹt hoặc điểm sáng, và phân biệt chúng với bụi.",
+        "title": "Cách kiểm tra điểm chết hoặc điểm kẹt trên màn hình",
+        "lead": "Bạn có màn hình, laptop hay điện thoại mới, hoặc mua lại đồ cũ, và muốn chắc mọi điểm ảnh đều hoạt động. Bạn sẽ phủ màn hình bằng các màu trơn và tìm những chấm không đổi màu. Không tải lên.",
+        "result": "Các điểm chết, điểm kẹt hoặc điểm sáng tìm được, và biết rõ một chấm là điểm ảnh lỗi hay bụi.",
+        "note": "Hãy kiểm tra trong thời gian được đổi trả: nhiều cửa hàng và hãng chỉ chấp nhận màn hình có số điểm ảnh lỗi nhất định trong vài ngày hoặc vài tuần đầu.",
+        "s1t": "Biết ba loại điểm ảnh lỗi",
+        "s1b": "Điểm chết luôn đen (dễ thấy nhất trên nền trắng), điểm kẹt luôn đỏ, lục hoặc lam, còn điểm sáng luôn trắng (dễ thấy nhất trên nền đen).",
+        "s2t": "Lau màn hình và giảm ánh sáng phòng",
+        "s2b": "Lau màn hình bằng khăn sợi nhỏ khô, rồi mở Test điểm chết trên cv.cm. Đèn mờ giúp dễ thấy các chấm nhỏ hơn.",
+        "s3t": "Bắt đầu test toàn màn hình",
+        "s3b": "Bấm Bắt đầu test toàn màn hình. Màn hình chuyển đen, rồi trắng, đỏ, lục, lam và xám mỗi khi bạn click, nhấn Space hoặc →. ← để quay lại.",
+        "s4t": "Quét màn hình thật chậm",
+        "s4b": "Nhìn gần từng vùng của mỗi màu, cả các góc và cạnh. Đặt Màu tiếp theo thành mỗi 5 giây nếu muốn rảnh tay.",
+        "s5t": "Loại trừ bụi",
+        "s5b": "Nếu thấy một chấm, lau chỗ đó và nhìn từ góc khác. Bụi sẽ di chuyển hoặc nhòe đi; điểm ảnh lỗi vẫn sắc nét ở đúng chỗ cũ.",
+        "s6t": "Quyết định xử lý thế nào",
+        "s6b": "Ghi lại vị trí từng điểm và nó hiện trên màu nào. Điểm kẹt có thể tự hết sau vài giờ sử dụng; điểm chết hiếm khi hết, nên hãy đổi trả hoặc bảo hành nếu nó làm bạn khó chịu.",
+        "diagram1": "Điểm chết = chấm đen · điểm kẹt = chấm màu · điểm sáng = chấm trắng.",
+        "diagram2": "Đen · trắng · đỏ · lục · lam · xám."
+      },
+      "faq": {
+        "q1": "Điểm chết và điểm kẹt khác nhau thế nào?",
+        "a1": "Điểm chết không được cấp điện nên luôn đen. Điểm kẹt có một hoặc hai điểm ảnh con luôn sáng, nên nó hiện một màu cố định.",
+        "q2": "Có sửa được điểm kẹt không?",
+        "a2": "Đôi khi nó tự hết sau vài giờ dùng bình thường. Có những video nháy màu nhanh để “chữa”, nhưng chúng có thể gây co giật và thường không hiệu quả, nên bài test này không nháy màu.",
+        "q3": "Bao nhiêu điểm chết là chấp nhận được?",
+        "a3": "Tùy chính sách điểm ảnh của hãng: nhiều hãng cho phép vài điểm trên màn hình mới; một số cam kết không có điểm nào. Hãy xem điều khoản bảo hành.",
+        "q4": "Có dùng được với màn hình OLED không?",
+        "a4": "Có. Trên OLED, hãy xem thêm nền xám và trắng để tìm hiện tượng burn-in: những hình mờ còn lại từ hình ảnh tĩnh.",
+        "q5": "Có gì bị tải lên không?",
+        "a5": "Không. Bài test chỉ vẽ màu trong trình duyệt của bạn."
+      }
+    },
+    "check-refresh-rate": {
+      "copy": {
+        "name": "Cách kiểm tra tần số quét màn hình",
+        "blurb": "Đo số Hz trình duyệt thực sự vẽ, và sửa màn hình tần số cao bị kẹt ở 60 Hz.",
+        "title": "Cách kiểm tra tần số quét màn hình (Hz)",
+        "lead": "Bạn mua màn hình 120, 144 hay 240 Hz và muốn chắc nó chạy đúng tốc độ đó. Bạn sẽ đo tần số trong trình duyệt, đọc thời gian khung hình và số khung bị bỏ, rồi kiểm tra các cài đặt hay kìm tần số lại. Không tải lên.",
+        "result": "Tần số quét đo được, mức chuẩn gần nhất, thời gian khung hình theo ms và số khung bị bỏ.",
+        "note": "Trình duyệt vẽ một lần mỗi lần màn hình làm mới, nên kết quả là mức bạn thực sự nhận được, kể cả khi bị giới hạn bởi cài đặt hoặc chế độ tiết kiệm điện.",
+        "s1t": "Hiểu tần số quét là gì",
+        "s1b": "Tần số quét là số lần mỗi giây màn hình hiện một hình mới. 60 Hz là một khung mới mỗi 16.7 ms, 144 Hz mỗi 6.9 ms, 240 Hz mỗi 4.2 ms.",
+        "s2t": "Mở Kiểm tra tần số quét trên cv.cm",
+        "s2b": "Bài test tự bắt đầu. Giữ thẻ ở phía trước và cửa sổ nằm trên màn hình bạn muốn kiểm tra trong vài giây.",
+        "s3t": "Đọc kết quả",
+        "s3b": "Con số lớn là tần số đo được theo Hz, bên dưới là mức chuẩn gần nhất. Thời gian khung hình là trung vị khoảng cách giữa các khung.",
+        "s4t": "Xem khung bị bỏ và chuyển động",
+        "s4b": "Các đỉnh nhọn trên biểu đồ là khung bị bỏ. Xem khối chuyển động ở các tốc độ khác nhau: tần số càng cao, khối đi từng bước càng nhỏ và trông càng mượt.",
+        "s5t": "Sửa màn hình bị kẹt ở 60 Hz",
+        "s5b": "Đặt tần số trong cài đặt màn hình của hệ thống, dùng cáp và cổng hỗ trợ mức đó (DisplayPort hoặc HDMI 2.0 trở lên), tắt tiết kiệm pin và cắm sạc cho laptop.",
+        "s6t": "Đo lại",
+        "s6b": "Bấm Đo lại sau mỗi lần thay đổi. Với hai màn hình, kéo cửa sổ sang màn hình kia và đo ở đó nữa.",
+        "diagram1": "60 Hz = 16.7 ms · 120 Hz = 8.3 ms · 144 Hz = 6.9 ms · 240 Hz = 4.2 ms.",
+        "diagram2": "Kẹt ở 60: cài đặt · cáp · tiết kiệm pin · màn hình."
+      },
+      "faq": {
+        "q1": "Đo trong trình duyệt có chính xác không?",
+        "a1": "Chính xác với tần số trình duyệt vẽ, cũng là tần số của màn hình trừ khi có gì đó giới hạn nó. Chênh lệch nhỏ (143.9 thay vì 144) là bình thường.",
+        "q2": "Sao màn hình 144 Hz của tôi chỉ hiện 60 Hz?",
+        "a2": "Cài đặt hệ thống vẫn để 60 Hz, cáp hoặc cổng không tải được hơn, đang bật tiết kiệm pin, hoặc cửa sổ đang nằm trên một màn hình 60 Hz khác.",
+        "q3": "Thời gian khung hình là gì?",
+        "a3": "Là khoảng thời gian giữa hai khung hình tính bằng mili giây: 1000 chia cho tần số quét.",
+        "q4": "Tần số quét cao có ích ngoài chơi game không?",
+        "a4": "Cuộn trang, di chuột và video trông mượt hơn, chuyển động nhanh cũng dễ theo dõi hơn.",
+        "q5": "Có gì bị tải lên không?",
+        "a5": "Không. Khung hình được đếm trong thẻ trình duyệt của bạn."
+      }
+    },
+    "test-touch-screen": {
+      "copy": {
+        "name": "Cách test cảm ứng màn hình",
+        "blurb": "Tìm vùng chết, đếm số ngón màn hình nhận được và kiểm tra lực nhấn của bút. Không tải lên.",
+        "title": "Cách test cảm ứng màn hình: tìm vùng chết và kiểm tra đa điểm",
+        "lead": "Chạm vào một vùng trên màn hình mà không có phản ứng gì, hoặc bạn muốn kiểm tra điện thoại, máy tính bảng trước khi mua. Bạn sẽ vẽ khắp lưới để tìm vùng chết, đếm số ngón màn hình nhận và kiểm tra bút. Không tải lên.",
+        "result": "Một lưới cho thấy mọi phần màn hình có phản hồi, số ngón tối đa nhận cùng lúc và màn hình có báo lực nhấn hay không.",
+        "note": "Miếng dán màn hình, ngón tay ướt hoặc củ sạc tiếp đất kém có thể làm cảm ứng nhảy lung tung; nếu thấy bất thường, hãy test lại khi không có chúng.",
+        "s1t": "Bỏ những thứ gây cản trở",
+        "s1b": "Tháo găng tay dày, lau khô ngón tay và, nếu cảm ứng chập chờn, rút sạc ra. Lau sạch màn hình.",
+        "s2t": "Mở Test cảm ứng trên cv.cm",
+        "s2b": "Bảng hiện một lưới. Bấm Toàn màn hình để bảng phủ kín màn hình, giúp bạn chạm tới mọi cạnh.",
+        "s3t": "Vuốt khắp lưới",
+        "s3b": "Vẽ những đường chậm qua bảng, từng hàng một, tới tận các cạnh và góc. Ô nào bạn chạm sẽ được tô; ô nào vẫn trống là vùng chết.",
+        "s4t": "Đếm số ngón",
+        "s4b": "Đặt cùng lúc càng nhiều ngón càng tốt. Đang chạm hiện số ngón; Nhiều nhất cùng lúc giữ con số cao nhất. Mỗi ngón vẽ một màu riêng.",
+        "s5t": "Kiểm tra bút",
+        "s5b": "Vẽ bằng bút cảm ứng. Đầu vào hiện Bút, và Lực nhấn thay đổi khi bạn ấn mạnh hơn nếu bút có báo lực nhấn.",
+        "s6t": "Xóa và làm lại",
+        "s6b": "Bấm Xóa và test lại để xác nhận vùng chết. Nếu các ô đó không bao giờ phản hồi, lỗi nằm ở màn hình hoặc tấm cảm ứng, không phải ở ứng dụng.",
+        "diagram1": "Vuốt mọi hàng: ô trống = vùng chết.",
+        "diagram2": "Điện thoại và máy tính bảng: 5–10 ngón · nhiều laptop: 2."
+      },
+      "faq": {
+        "q1": "Vùng chết cảm ứng là gì?",
+        "a1": "Là vùng màn hình không nhận được lần chạm, thường do tấm cảm ứng bị hỏng hoặc màn hình bị nứt.",
+        "q2": "Điện thoại của tôi nhận được bao nhiêu điểm chạm?",
+        "a2": "Phần lớn điện thoại và máy tính bảng nhận 5–10 ngón. Đặt càng nhiều ngón càng tốt rồi xem Nhiều nhất cùng lúc.",
+        "q3": "Sao cảm ứng của tôi bị nhảy lung tung?",
+        "a3": "Hơi ẩm, miếng dán màn hình hoặc củ sạc tiếp đất kém là những nguyên nhân thường gặp. Hãy test lại khi không có chúng.",
+        "q4": "Có test bằng chuột được không?",
+        "a4": "Được, giữ chuột trái và vẽ, nhưng chuột không thể kiểm tra đa điểm hay vùng chết trên chính màn hình.",
+        "q5": "Có gì bị tải lên không?",
+        "a5": "Không. Các lần chạm chỉ được vẽ trong thẻ trình duyệt của bạn."
+      }
+    }
+  },
+  "svg": {
+    "test-webcam": { "title": "Kiểm tra webcam", "a": "Độ phân giải · fps · lấy nét · ánh sáng", "b": "Đen? Ứng dụng khác · nắp che · quyền · USB", "cap": "Bảng thông tin hiện đúng mức camera thực sự gửi." },
+    "test-gamepad": { "title": "Test tay cầm", "a": "A/✕  B/○  X/□  Y/△ · nút vai · cò · cần", "b": "Nghỉ: < 0.05 ổn · 0.05–0.15 nhẹ · 0.15+ trôi", "cap": "Bấm một nút trước: trình duyệt ẩn tay cầm tới lúc đó." },
+    "check-dead-pixels": { "title": "Kiểm tra điểm chết", "a": "Chết = đen · kẹt = màu · sáng = trắng", "b": "Đen · trắng · đỏ · lục · lam · xám", "cap": "Lau trước: bụi di chuyển, điểm ảnh thì không." },
+    "check-refresh-rate": { "title": "Tần số quét", "a": "60 Hz 16.7 ms · 144 Hz 6.9 ms · 240 Hz 4.2 ms", "b": "Kẹt ở 60? Cài đặt · cáp · tiết kiệm pin", "cap": "Thời gian khung hình = 1000 ÷ Hz." },
+    "test-touch-screen": { "title": "Test cảm ứng", "a": "Vuốt mọi hàng: ô trống = vùng chết", "b": "Điện thoại 5–10 ngón · laptop thường 2 ngón", "cap": "Toàn màn hình giúp chạm tới các cạnh." }
+  }
+}
