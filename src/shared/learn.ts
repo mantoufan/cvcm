@@ -513,6 +513,36 @@ export const TUTORIAL_META: Record<TutorialId, TutorialMeta> = {
     openAt: 2,
     related: ["tally-counter", "dice", "wheel"],
   },
+  "test-webcam": {
+    minutes: 5,
+    steps: 6,
+    openAt: 2,
+    related: ["webcam-test", "mic-test", "screenshot"],
+  },
+  "test-gamepad": {
+    minutes: 5,
+    steps: 6,
+    openAt: 2,
+    related: ["gamepad-test", "keyboard-test", "reaction-time"],
+  },
+  "check-dead-pixels": {
+    minutes: 5,
+    steps: 6,
+    openAt: 2,
+    related: ["dead-pixel", "refresh-rate", "touch-test"],
+  },
+  "check-refresh-rate": {
+    minutes: 5,
+    steps: 6,
+    openAt: 2,
+    related: ["refresh-rate", "dead-pixel", "reaction-time"],
+  },
+  "test-touch-screen": {
+    minutes: 5,
+    steps: 6,
+    openAt: 2,
+    related: ["touch-test", "dead-pixel", "click-test"],
+  },
   "electricity-cost": {
     minutes: 6,
     steps: 6,
@@ -1007,6 +1037,26 @@ export const TUTORIAL_DIAGRAMS: Partial<Record<TutorialId, { step: number; src: 
   "use-tally-counter": [
     { step: 3, src: "/covers/tutorials/use-tally-counter-keys.svg" },
     { step: 4, src: "/covers/tutorials/use-tally-counter-total.svg" },
+  ],
+  "test-webcam": [
+    { step: 1, src: "/covers/tutorials/test-webcam-checks.svg" },
+    { step: 5, src: "/covers/tutorials/test-webcam-fix.svg" },
+  ],
+  "test-gamepad": [
+    { step: 3, src: "/covers/tutorials/test-gamepad-layout.svg" },
+    { step: 4, src: "/covers/tutorials/test-gamepad-drift.svg" },
+  ],
+  "check-dead-pixels": [
+    { step: 1, src: "/covers/tutorials/check-dead-pixels-types.svg" },
+    { step: 3, src: "/covers/tutorials/check-dead-pixels-colors.svg" },
+  ],
+  "check-refresh-rate": [
+    { step: 1, src: "/covers/tutorials/check-refresh-rate-hz.svg" },
+    { step: 5, src: "/covers/tutorials/check-refresh-rate-fix.svg" },
+  ],
+  "test-touch-screen": [
+    { step: 3, src: "/covers/tutorials/test-touch-screen-grid.svg" },
+    { step: 4, src: "/covers/tutorials/test-touch-screen-multi.svg" },
   ],
   "electricity-cost": [
     { step: 1, src: "/covers/tutorials/electricity-cost-formula.svg" },

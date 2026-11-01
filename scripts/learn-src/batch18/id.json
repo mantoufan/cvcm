@@ -1,0 +1,203 @@
+{
+  "meta": {
+    "titleTestWebcam": "Cara tes webcam online (resolusi, fps, solusi) | cv.cm",
+    "descTestWebcam": "Cek webcam di browser: pratinjau langsung, resolusi dan frame rate asli, foto tes, dan solusi saat kamera hitam atau tidak terdeteksi. Tidak ada unggahan.",
+    "titleTestGamepad": "Cara tes stik gamepad dan cek analog drift | cv.cm",
+    "descTestGamepad": "Tes semua tombol, trigger, dan analog stik Xbox, PlayStation, atau Switch Pro di browser, baca analog drift (0.05 ringan, 0.15 drift), dan coba getaran.",
+    "titleCheckDeadPixels": "Cara cek dead pixel dan stuck pixel di layar | cv.cm",
+    "descCheckDeadPixels": "Jalankan tes warna layar penuh untuk menemukan dead, stuck, dan hot pixel, membedakannya dari debu, dan tahu langkah berikutnya. Untuk monitor, laptop, dan HP.",
+    "titleCheckRefreshRate": "Cara cek refresh rate monitor (Hz) | cv.cm",
+    "descCheckRefreshRate": "Ukur refresh rate yang benar-benar digambar browser, baca frame time dan frame terlewat, dan atasi layar 144 Hz yang tertahan di 60 Hz.",
+    "titleTestTouchScreen": "Cara tes layar sentuh: dead zone dan multi-touch | cv.cm",
+    "descTestTouchScreen": "Gambar di grid untuk menemukan dead zone layar sentuh, hitung berapa jari terbaca sekaligus, dan cek tekanan pena. Tidak ada unggahan."
+  },
+  "lessons": {
+    "test-webcam": {
+      "copy": {
+        "name": "Cara mengetes webcam",
+        "blurb": "Cek pratinjau, resolusi dan frame rate asli, lalu ambil foto tes. Tidak ada unggahan.",
+        "title": "Cara mengetes webcam",
+        "lead": "Sebentar lagi ada video call, atau Anda baru membeli webcam, dan ingin tahu kameranya berfungsi dan seberapa bagus hasilnya. Anda akan menyalakan kamera, membaca apa yang benar-benar dikirim, dan mengatasi masalah umum. Video tetap di browser Anda; tidak ada unggahan.",
+        "result": "Pratinjau yang berfungsi, resolusi asli kamera, rasio aspek, frame rate, dan foto tes di perangkat Anda.",
+        "note": "Aplikasi video bisa menurunkan resolusi lagi untuk menghemat bandwidth; tes ini menunjukkan apa yang bisa dikirim kamera itu sendiri.",
+        "s1t": "Pahami apa yang dicek",
+        "s1b": "Empat hal menentukan tampilan Anda di video call: resolusi (720p atau 1080p), frame rate (30 fps sudah mulus), fokus, dan cahaya. Tes menampilkan dua yang pertama sebagai angka; foto menunjukkan sisanya.",
+        "s2t": "Buka Tes webcam di cv.cm",
+        "s2b": "Tekan Nyalakan kamera dan izinkan akses di prompt. Anda melihat diri sendiri di pratinjau, terbalik seperti di cermin; hapus centang Cerminkan pratinjau untuk melihat apa yang dilihat orang lain.",
+        "s3t": "Pilih kamera dan resolusi",
+        "s3b": "Jika ada lebih dari satu kamera, pilih di daftar Kamera. Pilih 720p atau 1080p di Resolusi; panel menampilkan ukuran yang benar-benar Anda dapat, yang bisa lebih rendah jika kamera tidak mampu.",
+        "s4t": "Baca frame rate",
+        "s4b": "Frame rate diukur dari frame yang benar-benar tampil. 30 fps sudah mulus; 15 fps atau kurang biasanya berarti ruangan terlalu gelap dan kamera memperlama pencahayaan.",
+        "s5t": "Atasi kamera hitam atau tidak terdeteksi",
+        "s5b": "Tutup aplikasi lain yang memakai kamera, buka penutup privasi atau tekan tombol kamera, izinkan akses kamera untuk browser di pengaturan sistem, dan coba port USB lain.",
+        "s6t": "Ambil foto tes",
+        "s6b": "Tekan Ambil foto untuk mengecek ketajaman dan warna, lalu Simpan foto untuk menyimpannya. Hadapkan wajah ke jendela atau lampu, jangan membelakanginya.",
+        "diagram1": "Resolusi · frame rate · fokus · cahaya.",
+        "diagram2": "Pratinjau hitam: aplikasi lain · penutup · izin · port USB."
+      },
+      "faq": {
+        "q1": "Webcam sebaiknya beresolusi berapa?",
+        "a1": "720p cukup untuk kebanyakan video call; 1080p terlihat lebih tajam jika aplikasinya mengirim 1080p. Webcam 4K terutama membantu untuk crop dan zoom.",
+        "q2": "Kenapa webcam saya buram?",
+        "a2": "Bersihkan lensa, beri cahaya dari depan, dan pastikan kamera sudah fokus (webcam fixed-focus tajam mulai sekitar 50 cm).",
+        "q3": "Kenapa webcam saya patah-patah?",
+        "a3": "Cahaya redup menurunkan frame rate; hub USB yang sibuk atau port USB 2.0 lama bisa membatasi 1080p. Coba tambah cahaya, pilih 720p, atau pakai port lain.",
+        "q4": "Apakah tes webcam ini aman?",
+        "a4": "Ya. Video tetap di tab browser Anda dan foto dibuat di perangkat Anda. Tidak ada unggahan.",
+        "q5": "Kenapa pratinjaunya terbalik seperti cermin?",
+        "a5": "Agar saat Anda bergerak ke kiri, gambar di layar juga ke kiri, seperti cermin. Orang lain melihat Anda tidak terbalik; hapus centang Cerminkan pratinjau untuk melihat tampilan itu."
+      }
+    },
+    "test-gamepad": {
+      "copy": {
+        "name": "Cara mengetes stik dan cek analog drift",
+        "blurb": "Tekan semua tombol, baca kedua analog, dan temukan drift sebelum membuat Anda kalah. Tidak ada unggahan.",
+        "title": "Cara mengetes stik dan cek analog drift",
+        "lead": "Karakter Anda terus berjalan sendiri, atau ada tombol yang terasa mati. Anda akan menyambungkan stik ke browser, mengetes setiap tombol dan trigger, dan membaca analog saat dilepas untuk melihat apakah ada drift. Tidak ada unggahan.",
+        "result": "Setiap tombol ditandai berfungsi atau tidak, jarak tekan trigger, posisi kedua analog, dan angka drift saat dilepas.",
+        "note": "Game menutupi drift kecil dengan dead zone, jadi 0.05–0.15 mungkin tidak terasa; biasanya makin besar seiring analog aus.",
+        "s1t": "Sambungkan stik",
+        "s1b": "Colokkan lewat USB atau pasangkan lewat Bluetooth. Xbox, PlayStation, Switch Pro, dan kebanyakan gamepad generik bisa dipakai di Chrome, Edge, dan Firefox.",
+        "s2t": "Buka Tes gamepad dan tekan tombol",
+        "s2b": "Browser baru menampilkan stik setelah ada tombol yang ditekan, jadi tekan tombol apa saja. Panel menampilkan nama, tata letak, dan jumlah tombol serta sumbunya.",
+        "s3t": "Tekan semua tombol",
+        "s3b": "Setiap tombol terisi saat ditahan dan tetap bergaris tepi setelah berfungsi. Tekan trigger perlahan: trigger terisi sebagian, menunjukkan seluruh jarak tekannya.",
+        "s4t": "Cek analog drift",
+        "s4b": "Putar setiap analog sampai ke tepi, lalu lepaskan. Saat diam, angkanya seharusnya mendekati 0.00. Di atas 0.05 berarti drift ringan; 0.15 atau lebih biasanya terasa di game.",
+        "s5t": "Coba getaran",
+        "s5b": "Tekan Tes getaran. Kedua motor seharusnya bergetar kurang dari sedetik. Butuh Chrome atau Edge, dan sebagian koneksi Bluetooth tidak meneruskannya.",
+        "s6t": "Tentukan langkah berikutnya",
+        "s6b": "Untuk drift ringan, naikkan dead zone di pengaturan game. Drift parah atau tombol mati biasanya perlu dibersihkan, ganti modul analog, atau diservis.",
+        "diagram1": "Tata letak standar: A/✕ B/○ X/□ Y/△, bumper, trigger, analog, D-pad.",
+        "diagram2": "Saat diam: di bawah 0.05 aman · 0.05–0.15 ringan · 0.15+ drift."
+      },
+      "faq": {
+        "q1": "Apa itu analog drift?",
+        "a1": "Analog yang melaporkan gerakan padahal tidak disentuh, biasanya karena sensor di dalamnya sudah aus atau kotor.",
+        "q2": "Bagaimana membaca drift di tes ini?",
+        "a2": "Lepaskan analog dan baca angka di bawahnya: mendekati 0.00 berarti di tengah, di atas 0.05 drift ringan, 0.15 atau lebih drift.",
+        "q3": "Kenapa stik saya tidak muncul?",
+        "a3": "Tekan tombol setelah menyambungkan; browser menyembunyikan stik sampai saat itu. Tutup juga lapisan input Steam atau aplikasi remap lain jika mengambil alih stik.",
+        "q4": "Apakah bisa untuk Joy-Con Switch?",
+        "a4": "Biasanya terbaca sebagai dua stik tidak standar terpisah dengan tombol bernomor. Stik Switch Pro tampil dengan tata letak standar di kebanyakan browser.",
+        "q5": "Apakah ada yang diunggah?",
+        "a5": "Tidak. Tes membaca stik di tab browser Anda dengan Gamepad API."
+      }
+    },
+    "check-dead-pixels": {
+      "copy": {
+        "name": "Cara cek dead pixel di layar",
+        "blurb": "Tampilkan warna polos layar penuh, temukan dead, stuck, atau hot pixel, dan bedakan dari debu.",
+        "title": "Cara cek dead pixel dan stuck pixel di layar",
+        "lead": "Anda punya monitor, laptop, atau HP baru, atau membeli bekas, dan ingin memastikan semua pikselnya berfungsi. Anda akan mengisi layar dengan warna polos dan mencari titik yang tidak berubah. Tidak ada unggahan.",
+        "result": "Dead, stuck, atau hot pixel yang ditemukan, dan kepastian apakah sebuah titik itu piksel atau debu.",
+        "note": "Cek selama masa retur: banyak toko dan produsen hanya menerima layar dengan sejumlah piksel rusak di hari atau minggu pertama.",
+        "s1t": "Kenali tiga jenis piksel rusak",
+        "s1b": "Dead pixel tetap hitam (paling terlihat di putih), stuck pixel tetap merah, hijau, atau biru, dan hot pixel tetap putih (paling terlihat di hitam).",
+        "s2t": "Bersihkan layar dan redupkan ruangan",
+        "s2b": "Lap layar dengan kain mikrofiber kering, lalu buka Tes dead pixel di cv.cm. Lampu redup membuat titik kecil lebih mudah terlihat.",
+        "s3t": "Mulai tes layar penuh",
+        "s3b": "Tekan Mulai tes layar penuh. Layar menjadi hitam, lalu putih, merah, hijau, biru, dan abu-abu setiap kali Anda klik, tekan Spasi, atau →. ← untuk kembali.",
+        "s4t": "Pindai layar perlahan",
+        "s4b": "Amati setiap warna bagian demi bagian dari dekat, termasuk sudut dan tepi. Atur Warna berikutnya ke setiap 5 detik jika ingin tangan bebas.",
+        "s5t": "Pastikan bukan debu",
+        "s5b": "Jika melihat titik, lap bagian itu dan lihat dari sudut lain. Debu bergeser atau kabur; piksel tetap tajam di tempat yang sama.",
+        "s6t": "Tentukan langkah berikutnya",
+        "s6b": "Catat letak setiap piksel dan di warna apa ia terlihat. Stuck pixel bisa pulih setelah beberapa jam dipakai; dead pixel jarang pulih, jadi manfaatkan retur atau garansi jika mengganggu.",
+        "diagram1": "Dead = titik hitam · stuck = titik berwarna · hot = titik putih.",
+        "diagram2": "Hitam · putih · merah · hijau · biru · abu-abu."
+      },
+      "faq": {
+        "q1": "Apa beda dead pixel dan stuck pixel?",
+        "a1": "Dead pixel tidak mendapat daya dan tetap hitam. Stuck pixel punya satu atau dua subpiksel yang selalu menyala, jadi menampilkan warna tetap.",
+        "q2": "Apakah stuck pixel bisa diperbaiki?",
+        "a2": "Kadang pulih setelah beberapa jam pemakaian biasa. Ada video perbaikan yang berkedip cepat, tapi bisa memicu kejang dan sering tidak membantu, jadi tes ini tidak berkedip.",
+        "q3": "Berapa dead pixel yang masih wajar?",
+        "a3": "Tergantung kebijakan piksel produsen: banyak yang membolehkan beberapa di monitor baru; sebagian menjamin nol. Cek syarat garansinya.",
+        "q4": "Apakah bisa untuk layar OLED?",
+        "a4": "Bisa. Di OLED, lihat juga warna abu-abu dan putih untuk burn-in: bayangan samar sisa gambar statis.",
+        "q5": "Apakah ada yang diunggah?",
+        "a5": "Tidak. Tes ini hanya menggambar warna di browser Anda."
+      }
+    },
+    "check-refresh-rate": {
+      "copy": {
+        "name": "Cara cek refresh rate monitor",
+        "blurb": "Ukur Hz yang benar-benar digambar browser, dan atasi layar cepat yang tertahan di 60 Hz.",
+        "title": "Cara cek refresh rate monitor (Hz)",
+        "lead": "Anda membeli layar 120, 144, atau 240 Hz dan ingin memastikan layarnya berjalan secepat itu. Anda akan mengukur refresh rate di browser, membaca frame time dan frame terlewat, dan mengecek pengaturan yang biasa menahannya. Tidak ada unggahan.",
+        "result": "Refresh rate terukur, angka standar terdekat, frame time dalam ms, dan jumlah frame terlewat.",
+        "note": "Browser menggambar sekali per refresh layar, jadi tes ini mengukur apa yang benar-benar Anda dapat, termasuk batasan dari pengaturan atau mode hemat daya.",
+        "s1t": "Pahami arti refresh rate",
+        "s1b": "Refresh rate adalah berapa kali per detik layar menampilkan gambar baru. 60 Hz berarti frame baru setiap 16.7 ms, 144 Hz setiap 6.9 ms, 240 Hz setiap 4.2 ms.",
+        "s2t": "Buka Tes refresh rate di cv.cm",
+        "s2b": "Tes mulai otomatis. Biarkan tab di depan dan jendela di layar yang ingin dites selama beberapa detik.",
+        "s3t": "Baca hasilnya",
+        "s3b": "Angka besar adalah refresh rate terukur dalam Hz, dengan angka standar terdekat di bawahnya. Frame time adalah median jeda antar-frame.",
+        "s4t": "Cek frame terlewat dan gerakan",
+        "s4b": "Lonjakan di grafik adalah frame terlewat. Perhatikan balok bergerak di berbagai kecepatan: pada refresh rate lebih tinggi, balok bergerak dengan langkah lebih kecil dan terlihat lebih mulus.",
+        "s5t": "Atasi layar yang tertahan di 60 Hz",
+        "s5b": "Atur refresh rate di pengaturan layar sistem, pakai kabel dan port yang mendukungnya (DisplayPort atau HDMI 2.0+), matikan hemat baterai, dan colokkan charger laptop.",
+        "s6t": "Ukur lagi",
+        "s6b": "Tekan Ukur ulang setelah setiap perubahan. Dengan dua layar, seret jendela ke layar lain dan ukur juga di sana.",
+        "diagram1": "60 Hz = 16.7 ms · 120 Hz = 8.3 ms · 144 Hz = 6.9 ms · 240 Hz = 4.2 ms.",
+        "diagram2": "Tertahan di 60: pengaturan · kabel · hemat baterai · layar."
+      },
+      "faq": {
+        "q1": "Apakah pengukuran di browser akurat?",
+        "a1": "Akurat untuk refresh rate yang digambar browser, yaitu refresh rate layar kecuali ada yang membatasinya. Selisih kecil (143.9, bukan 144) itu wajar.",
+        "q2": "Kenapa monitor 144 Hz saya terbaca 60 Hz?",
+        "a2": "Pengaturan sistem masih 60 Hz, kabel atau port tidak mendukung lebih tinggi, hemat baterai aktif, atau jendela ada di layar lain yang 60 Hz.",
+        "q3": "Apa itu frame time?",
+        "a3": "Jeda antara dua frame dalam milidetik: 1000 dibagi refresh rate.",
+        "q4": "Apakah refresh rate tinggi berguna di luar game?",
+        "a4": "Scroll, gerakan kursor, dan video terlihat lebih mulus, dan gerakan cepat lebih mudah diikuti.",
+        "q5": "Apakah ada yang diunggah?",
+        "a5": "Tidak. Frame dihitung di tab browser Anda."
+      }
+    },
+    "test-touch-screen": {
+      "copy": {
+        "name": "Cara mengetes layar sentuh",
+        "blurb": "Temukan dead zone, hitung berapa jari yang terbaca layar, dan cek tekanan pena. Tidak ada unggahan.",
+        "title": "Cara mengetes layar sentuh: dead zone dan multi-touch",
+        "lead": "Ketukan di satu bagian layar tidak berpengaruh, atau Anda ingin mengecek HP atau tablet sebelum membelinya. Anda akan menggambar di atas grid untuk menemukan dead zone, menghitung berapa jari yang terbaca, dan mengecek pena. Tidak ada unggahan.",
+        "result": "Grid yang menunjukkan setiap bagian layar yang merespons, jumlah jari terbanyak yang terbaca sekaligus, dan apakah tekanan dilaporkan.",
+        "note": "Pelindung layar, jari basah, atau charger dengan grounding buruk bisa membuat sentuhan meloncat-loncat; tes tanpa itu jika ada yang aneh.",
+        "s1t": "Singkirkan penghalang",
+        "s1b": "Lepas sarung tangan tebal, keringkan jari, dan jika sentuhan tidak stabil, cabut charger. Bersihkan layar.",
+        "s2t": "Buka Tes layar sentuh di cv.cm",
+        "s2b": "Area tes menampilkan grid. Tekan Layar penuh agar area tes menutupi seluruh layar sehingga Anda bisa menjangkau setiap tepi.",
+        "s3t": "Usap seluruh grid",
+        "s3b": "Gambar garis perlahan di area tes, baris demi baris, sampai ke tepi dan sudut. Setiap kotak yang disentuh terisi; kotak yang tetap kosong menandakan dead zone.",
+        "s4t": "Hitung jari Anda",
+        "s4b": "Letakkan sebanyak mungkin jari sekaligus. Sentuhan saat ini menunjukkan jumlahnya; Terbanyak sekaligus menyimpan yang tertinggi. Setiap jari menggambar dengan warnanya sendiri.",
+        "s5t": "Cek pena",
+        "s5b": "Gambar dengan stylus. Input menampilkan Pena, dan Tekanan berubah saat Anda menekan lebih kuat jika pena melaporkannya.",
+        "s6t": "Hapus dan ulangi",
+        "s6b": "Tekan Hapus dan tes lagi untuk memastikan dead zone. Jika kotak yang sama tidak pernah merespons, masalahnya di layar atau digitizer, bukan aplikasinya.",
+        "diagram1": "Usap setiap baris: kotak kosong = dead zone.",
+        "diagram2": "HP dan tablet: 5–10 jari · banyak laptop: 2."
+      },
+      "faq": {
+        "q1": "Apa itu dead zone layar sentuh?",
+        "a1": "Area yang tidak mendeteksi sentuhan, sering karena digitizer rusak atau layar retak.",
+        "q2": "Berapa titik sentuh yang didukung HP saya?",
+        "a2": "Kebanyakan HP dan tablet membaca 5–10 jari. Letakkan sebanyak mungkin jari dan baca Terbanyak sekaligus.",
+        "q3": "Kenapa layar sentuh saya meloncat-loncat?",
+        "a3": "Kelembapan, pelindung layar, atau charger tanpa grounding yang baik adalah penyebab umum. Tes lagi tanpa itu.",
+        "q4": "Bisakah saya mengetes dengan mouse?",
+        "a4": "Bisa, tahan tombol kiri dan gambar, tapi mouse tidak bisa mengetes multi-touch atau dead zone di layarnya sendiri.",
+        "q5": "Apakah ada yang diunggah?",
+        "a5": "Tidak. Sentuhan hanya digambar di tab browser Anda."
+      }
+    }
+  },
+  "svg": {
+    "test-webcam": { "title": "Cara mengetes webcam", "a": "Resolusi · frame rate · fokus · cahaya", "b": "Hitam? Aplikasi lain · penutup · izin · USB", "cap": "Panel menampilkan yang benar-benar dikirim kamera." },
+    "test-gamepad": { "title": "Cara mengetes stik", "a": "A/✕  B/○  X/□  Y/△ · bumper · trigger · analog", "b": "Diam: < 0.05 aman · 0.05–0.15 ringan · 0.15+ drift", "cap": "Tekan tombol dulu: browser baru menampilkan stik." },
+    "check-dead-pixels": { "title": "Cara cek dead pixel", "a": "Dead = hitam · stuck = warna · hot = putih", "b": "Hitam · putih · merah · hijau · biru · abu-abu", "cap": "Lap dulu: debu bergeser, piksel tidak." },
+    "check-refresh-rate": { "title": "Cara cek refresh rate", "a": "60 Hz 16.7 ms · 144 Hz 6.9 ms · 240 Hz 4.2 ms", "b": "Tertahan di 60? Pengaturan · kabel · baterai", "cap": "Frame time = 1000 ÷ Hz." },
+    "test-touch-screen": { "title": "Cara mengetes layar sentuh", "a": "Usap setiap baris: kotak kosong = dead zone", "b": "HP dan tablet 5–10 jari · laptop sering 2", "cap": "Layar penuh menjangkau tepi layar." }
+  }
+}

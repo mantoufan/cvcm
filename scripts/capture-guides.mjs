@@ -126,6 +126,11 @@ const STEPS = {
   "tone-generator": 3,
   "tally-counter": 3,
   "mic-test": 3,
+  "webcam-test": 3,
+  "gamepad-test": 3,
+  "dead-pixel": 3,
+  "refresh-rate": 3,
+  "touch-test": 3,
   gold: 3,
   silver: 3,
   platinum: 3,
@@ -1906,6 +1911,36 @@ async function runTool(send, id, fx) {
 
   if (id === "mic-test") {
     await snap(1);
+    await snap(2);
+    await snap(3);
+    return;
+  }
+
+  if (id === "webcam-test" || id === "gamepad-test" || id === "dead-pixel") {
+    await snap(1);
+    await snap(2);
+    await snap(3);
+    return;
+  }
+
+  if (id === "refresh-rate") {
+    await snap(1);
+    await sleep(2000);
+    await snap(2);
+    await snap(3);
+    return;
+  }
+
+  if (id === "touch-test") {
+    await snap(1);
+    await evalValue(send, `(() => {
+      const p = document.querySelector("[data-action=pad]"); if (!p) return false;
+      const r = p.getBoundingClientRect();
+      const ev = (type, id, x, y) => p.dispatchEvent(new PointerEvent(type, { pointerId: id, pointerType: "touch", clientX: r.left + x, clientY: r.top + y, button: 0, bubbles: true }));
+      ev("pointerdown", 1, 20, 20); ev("pointermove", 1, r.width - 20, 20); ev("pointerdown", 2, r.width / 2, r.height / 2);
+      return true;
+    })()`);
+    await sleep(200);
     await snap(2);
     await snap(3);
     return;

@@ -1111,6 +1111,51 @@
       "s3t": "Rekam dan putar ulang",
       "s3b": "Tekan Rekam 5 s, bicaralah, lalu putar rekamannya untuk mendengar suara asli mikrofon, sebelum diproses aplikasi panggilan."
     },
+    "webcam-test": {
+      "lead": "Cek apakah webcam Anda berfungsi dan lihat resolusi serta frame rate aslinya. Tidak ada unggahan.",
+      "s1t": "Nyalakan kamera",
+      "s1b": "Tekan Nyalakan kamera dan izinkan akses di prompt browser. Pratinjau menampilkan Anda, terbalik seperti cermin.",
+      "s2t": "Baca detailnya",
+      "s2b": "Panel menampilkan nama kamera, resolusi yang benar-benar dikirim, rasio aspek, dan frame rate terukur. Pilih kamera atau resolusi lain untuk membandingkan.",
+      "s3t": "Ambil foto",
+      "s3b": "Tekan Ambil foto untuk mengecek ketajaman dan warna, lalu Simpan foto untuk menyimpannya. Foto tidak pernah keluar dari perangkat Anda."
+    },
+    "gamepad-test": {
+      "lead": "Tes setiap tombol, trigger, dan analog stik Anda serta cek analog drift. Tidak ada unggahan.",
+      "s1t": "Sambungkan dan tekan tombol",
+      "s1b": "Colokkan stik atau pasangkan lewat Bluetooth, lalu tekan tombol apa saja. Browser baru menampilkan stik setelah ada tombol yang ditekan.",
+      "s2t": "Tekan semua tombol",
+      "s2b": "Setiap tombol terisi saat ditekan (trigger terisi sebagian) dan tetap bergaris tepi setelah berfungsi, jadi tombol mati mudah terlihat.",
+      "s3t": "Cek analog",
+      "s3b": "Gerakkan kedua analog ke tepi, lalu lepaskan. Analog yang diam seharusnya mendekati 0.00; 0.15 atau lebih berarti drift."
+    },
+    "dead-pixel": {
+      "lead": "Isi layar dengan warna polos untuk menemukan dead pixel, stuck pixel, atau hot pixel. Tidak ada unggahan.",
+      "s1t": "Bersihkan layar",
+      "s1b": "Lap layar dulu agar debu tidak dikira piksel. Pratinjau warna lewat kotak-kotak warna.",
+      "s2t": "Mulai tes layar penuh",
+      "s2b": "Tekan Mulai tes layar penuh. Klik, Spasi, atau → pindah ke warna berikutnya; ← kembali.",
+      "s3t": "Amati setiap warna",
+      "s3b": "Amati setiap warna dari dekat: titik yang tetap hitam, putih, atau satu warna adalah piksel rusak. Esc atau × menutup tes."
+    },
+    "refresh-rate": {
+      "lead": "Lihat refresh rate yang benar-benar dijalankan layar dan browser Anda. Tidak ada unggahan.",
+      "s1t": "Biarkan tab di depan",
+      "s1b": "Tes mulai otomatis. Biarkan tab di depan selama beberapa detik saat frame dihitung.",
+      "s2t": "Baca angkanya",
+      "s2b": "Angka besar adalah refresh rate Anda dalam Hz, dengan angka standar terdekat, frame time, dan frame terlewat.",
+      "s3t": "Perhatikan tes gerakan",
+      "s3b": "Balok bergerak dengan kecepatan yang dipilih. Pada Hz lebih tinggi, gerakannya lebih mulus; balok yang patah-patah dengan lonjakan di grafik berarti ada frame terlewat."
+    },
+    "touch-test": {
+      "lead": "Cek berapa jari yang terbaca layar sentuh Anda dan temukan dead zone. Tidak ada unggahan.",
+      "s1t": "Sentuh area tes",
+      "s1b": "Letakkan satu jari atau lebih di area tes dan gambar. Setiap jari mendapat warna dan nomornya sendiri.",
+      "s2t": "Hitung jari Anda",
+      "s2b": "Sentuhan saat ini menunjukkan jari di layar; Terbanyak sekaligus menyimpan jumlah tertinggi.",
+      "s3t": "Temukan dead zone",
+      "s3b": "Usap seluruh area, atau tekan Layar penuh untuk menjangkau tepi. Kotak yang tidak pernah terisi menandakan dead zone."
+    },
     "v": {
       "lead": "Buat video 3D pendek dari satu foto di tab ini.",
       "s1t": "Tambahkan foto",

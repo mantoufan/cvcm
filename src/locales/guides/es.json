@@ -1111,6 +1111,51 @@
       "s3t": "Graba y escucha",
       "s3b": "Pulsa Grabar 5 s, habla y luego reproduce la grabación para oír el sonido original del micrófono, antes de que lo procese una app de llamadas."
     },
+    "webcam-test": {
+      "lead": "Comprueba que tu webcam funciona y mira su resolución y fps reales. No se sube nada.",
+      "s1t": "Inicia la cámara",
+      "s1b": "Pulsa Iniciar cámara y permite el acceso cuando el navegador lo pida. La vista previa te muestra invertido, como en un espejo.",
+      "s2t": "Lee los datos",
+      "s2b": "El panel muestra el nombre de la cámara, la resolución que envía de verdad, la relación de aspecto y los fps medidos. Elige otra cámara u otra resolución para comparar.",
+      "s3t": "Haz una foto",
+      "s3b": "Pulsa Hacer foto para comprobar la nitidez y el color, y luego Guardar foto para conservarla. Nunca sale de tu dispositivo."
+    },
+    "gamepad-test": {
+      "lead": "Prueba cada botón, gatillo y joystick de un mando y comprueba si hay drift. No se sube nada.",
+      "s1t": "Conecta y pulsa un botón",
+      "s1b": "Conecta el mando por cable o emparéjalo por Bluetooth y pulsa cualquier botón. Los navegadores solo muestran un mando después de pulsar algo.",
+      "s2t": "Pulsa todos los botones",
+      "s2b": "Cada botón se rellena mientras lo pulsas (los gatillos, en parte) y queda marcado cuando ha funcionado, así ves si alguno no responde.",
+      "s3t": "Revisa los joysticks",
+      "s3b": "Mueve ambos joysticks hasta los bordes y suéltalos. En reposo deberían marcar cerca de 0.00; a partir de 0.15 hay drift."
+    },
+    "dead-pixel": {
+      "lead": "Llena la pantalla de colores lisos para encontrar píxeles muertos, atascados o encendidos. No se sube nada.",
+      "s1t": "Limpia la pantalla",
+      "s1b": "Limpia primero la pantalla para no confundir el polvo con un píxel. Previsualiza un color con las muestras.",
+      "s2t": "Inicia el test a pantalla completa",
+      "s2b": "Pulsa Iniciar test a pantalla completa. Clic, Espacio o → pasa al siguiente color; ← vuelve atrás.",
+      "s3t": "Mira cada color",
+      "s3b": "Mira de cerca cada color: un punto que se queda negro, blanco o de un solo color es un píxel dañado. Esc o × cierra el test."
+    },
+    "refresh-rate": {
+      "lead": "Mira a qué frecuencia de actualización funcionan de verdad tu pantalla y tu navegador. No se sube nada.",
+      "s1t": "Deja la pestaña delante",
+      "s1b": "El test empieza solo. Deja la pestaña delante unos segundos mientras cuenta los fotogramas.",
+      "s2t": "Lee la frecuencia",
+      "s2b": "El número grande es tu frecuencia de actualización en Hz, con la frecuencia estándar más cercana, el tiempo de fotograma y los fotogramas saltados.",
+      "s3t": "Mira el test de movimiento",
+      "s3b": "El bloque se mueve a la velocidad elegida. Con más Hz se ve más fluido; un bloque a tirones con picos en la gráfica indica fotogramas saltados."
+    },
+    "touch-test": {
+      "lead": "Comprueba cuántos dedos detecta tu pantalla táctil y encuentra zonas muertas. No se sube nada.",
+      "s1t": "Toca el panel",
+      "s1b": "Pon uno o más dedos en el panel y dibuja. Cada dedo tiene su propio color y número.",
+      "s2t": "Cuenta los dedos",
+      "s2b": "Tocando ahora muestra los dedos que hay en la pantalla; Máximo a la vez guarda la cifra más alta.",
+      "s3t": "Encuentra zonas muertas",
+      "s3b": "Desliza por todo el panel o pulsa Pantalla completa para llegar a los bordes. Las celdas que nunca se rellenan marcan una zona muerta."
+    },
     "v": {
       "lead": "Crea un video 3D corto a partir de una foto en esta pestaña.",
       "s1t": "Añade una foto",

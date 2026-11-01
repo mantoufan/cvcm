@@ -748,4 +748,34 @@ export const TOOL_LOADERS: Record<ToolId, ToolLoader> = {
     m.mountMicTest(host);
     return m.unmountMicTest;
   },
+  "webcam-test": async (host, ctx) => {
+    const m = await import("./webcam-test/ui");
+    if (!ctx.alive()) return undefined;
+    m.mountWebcamTest(host);
+    return m.unmountWebcamTest;
+  },
+  "gamepad-test": async (host, ctx) => {
+    const m = await import("./gamepad-test/ui");
+    if (!ctx.alive()) return undefined;
+    m.mountGamepadTest(host);
+    return m.unmountGamepadTest;
+  },
+  "dead-pixel": async (host, ctx) => {
+    const m = await import("./dead-pixel/ui");
+    if (!ctx.alive()) return undefined;
+    m.mountDeadPixel(host);
+    return m.unmountDeadPixel;
+  },
+  "refresh-rate": async (host, ctx) => {
+    const m = await import("./refresh-rate/ui");
+    if (!ctx.alive()) return undefined;
+    m.mountRefreshRate(host);
+    return m.unmountRefreshRate;
+  },
+  "touch-test": async (host, ctx) => {
+    const m = await import("./touch-test/ui");
+    if (!ctx.alive()) return undefined;
+    m.mountTouchTest(host);
+    return m.unmountTouchTest;
+  },
 };

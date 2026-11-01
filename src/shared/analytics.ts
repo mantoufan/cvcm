@@ -20,7 +20,7 @@ export const UNTRACKED_TOOLS: ReadonlySet<ToolId> = new Set<ToolId>([
   "watermark", "mosaic", "collage", "portrait-sim", "convert", "image-pdf", "resize", "crop", "rotate",
   "exif", "meme", "signature", "favicon", "screenshot", "pdf-jpg", "merge-pdf", "compress-pdf",
   "split-pdf", "invoice", "audio", "audio-cutter", "audio-joiner", "image-colors",
-  "remove-background", "image-upscaler", "speech-to-text", "depth-map", "v", "mic-test",
+  "remove-background", "image-upscaler", "speech-to-text", "depth-map", "v", "mic-test", "webcam-test",
 ]);
 
 /**
