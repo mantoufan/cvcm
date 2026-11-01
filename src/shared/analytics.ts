@@ -1,5 +1,5 @@
 import { parseAppPath, type ToolId } from "./path";
-import { QUIZ_GROUPS, type QuizId } from "./quiz";
+import type { QuizId } from "./quiz";
 
 /** GA4 property 538063843 (cv.cm). */
 export const GA_ID = "G-5X2J6QT5KK";
@@ -23,8 +23,11 @@ export const UNTRACKED_TOOLS: ReadonlySet<ToolId> = new Set<ToolId>([
   "remove-background", "image-upscaler", "speech-to-text", "depth-map",
 ]);
 
-/** Mental health self-checks: a visit is health information, so these pages send nothing to GA (or its ad links). */
-export const UNTRACKED_QUIZZES: ReadonlySet<QuizId> = new Set<QuizId>(QUIZ_GROUPS.find((group) => group.id === "wellbeing")!.quizzes);
+/**
+ * Mental health self-checks: a visit is health information, so these pages send nothing to GA (or its ad links).
+ * Kept apart from the page groups on purpose; a test checks every quiz in the wellbeing group is listed.
+ */
+export const UNTRACKED_QUIZZES: ReadonlySet<QuizId> = new Set<QuizId>(["wellbeing-index", "self-esteem", "anxiety", "depression"]);
 
 /** Whether this page may report to GA. A clip URL is its own access key, so clip notes are never reported. */
 export function isTrackedPath(pathname: string): boolean {

@@ -8,6 +8,7 @@ import {
   QUIZ_DEFS,
   QUIZ_GROUPS,
   QUIZZES,
+  SCALE_POINTS,
   isComplete,
   maxTotal,
   resultKeys,
@@ -139,6 +140,11 @@ describe("test pages: copy", () => {
         }
         const keys = resultKeys(id);
         for (const key of keys) expect(copy.results?.[key]?.name, `${where} result ${key}`).toBeTruthy();
+        if (def.type === "likert") {
+          const ui = quizMessages(locale).ui;
+          expect(ui.scale[def.scale], `${where} scale`).toHaveLength(SCALE_POINTS[def.scale]);
+          expect(ui.scaleHint[def.scale], `${where} hint`).toBeTruthy();
+        }
         if (def.result.kind !== "band" && def.result.kind !== "types") {
           for (const dim of def.dims) expect(copy.dims?.[dim], `${where} dim ${dim}`).toBeTruthy();
         }
@@ -235,9 +241,6 @@ describe("test pages: scoring", () => {
     expect(scoreQuiz("wellbeing-index", [3, 3, 3, 3, 1]).key).toBe("good");
     expect(isComplete("wellbeing-index", all("wellbeing-index", 5))).toBe(true);
     expect(isComplete("wellbeing-index", all("wellbeing-index", 6))).toBe(false);
-    // The lowest band, which often goes with depression, shows the crisis-line box.
-    expect(scoreQuiz("wellbeing-index", [2, 2, 2, 1, 0]).safety).toBe(true);
-    expect(scoreQuiz("wellbeing-index", [2, 2, 2, 2, 0]).safety).toBe(false);
   });
 
   it("lets every love and leadership style win, and spreads ties between styles", () => {
@@ -255,14 +258,24 @@ describe("test pages: scoring", () => {
       const def = QUIZ_DEFS[id];
       const counts = new Map<string, number>();
       const runs = 12000;
+      // Ties at the top: how often each style was in one, weighted by 1 / tie size, and how often it won.
+      const tiedIn = new Map<string, number>();
+      const tiedWon = new Map<string, number>();
       for (let n = 0; n < runs; n++) {
-        const key = scoreQuiz(id, def.items.map(() => next(5))).key;
-        counts.set(key, (counts.get(key) ?? 0) + 1);
+        const result = scoreQuiz(id, def.items.map(() => next(5)));
+        counts.set(result.key, (counts.get(result.key) ?? 0) + 1);
+        const tied = result.ranked.filter((s) => s.raw === result.ranked[0].raw);
+        if (tied.length < 2) continue;
+        for (const s of tied) tiedIn.set(s.dim, (tiedIn.get(s.dim) ?? 0) + 1 / tied.length);
+        tiedWon.set(result.key, (tiedWon.get(result.key) ?? 0) + 1);
       }
       for (const dim of def.dims) {
         const share = ((counts.get(dim) ?? 0) * def.dims.length) / runs;
         expect(share, `${id} ${dim}`).toBeGreaterThan(0.85);
         expect(share, `${id} ${dim}`).toBeLessThan(1.15);
+        const fair = (tiedWon.get(dim) ?? 0) / (tiedIn.get(dim) ?? 1);
+        expect(fair, `${id} ${dim} ties`).toBeGreaterThan(0.85);
+        expect(fair, `${id} ${dim} ties`).toBeLessThan(1.15);
       }
       // The same answers always give the same style.
       const flat = all(id, 2);
@@ -284,6 +297,9 @@ describe("test pages: scoring", () => {
   });
 
   it("keeps mental health self-checks out of analytics", () => {
+    for (const id of QUIZ_GROUPS.find((group) => group.id === "wellbeing")!.quizzes) {
+      expect(isTrackedPath(`/en/tests/${id}/`), id).toBe(false);
+    }
     expect(isTrackedPath("/en/tests/wellbeing-index/")).toBe(false);
     expect(isTrackedPath("/en/tests/depression/")).toBe(false);
     expect(isTrackedPath("/zh-cn/tests/anxiety/")).toBe(false);
@@ -509,7 +525,7 @@ describe("test pages: scoring", () => {
     }
   });
 
-  // 160k scorings: about a second locally, more than the default 5 s on a slow CI runner.
+  // 200k scorings: about two seconds locally, more than the default 5 s on a slow CI runner.
   it("lets no game or anime result dominate random answers", () => {
     const next = randomInts(42);
     for (const id of FAN_QUIZZES) {

@@ -612,11 +612,11 @@ export const QUIZ_DEFS: Record<QuizId, QuizDef> = {
 
 /**
  * When a result shows the crisis-line box: PHQ-9 item 9 (thoughts of self-harm) above "not at all", whatever the
- * total, and the severe PHQ-9 band; WHO-5's lowest band, which often goes with depression.
+ * total, and the severe PHQ-9 band. (The box is about self-harm, which the WHO-5 does not ask about: its low band
+ * points to a doctor and the PHQ-9 in its own copy.)
  */
-export const SAFETY: Partial<Record<QuizId, { item?: number; bands: readonly string[] }>> = {
+export const SAFETY: Partial<Record<QuizId, { item: number; bands: readonly string[] }>> = {
   depression: { item: 8, bands: ["severe"] },
-  "wellbeing-index": { bands: ["low"] },
 };
 
 export function questionCount(id: QuizId): number {
@@ -760,7 +760,7 @@ export function scoreQuiz(id: QuizId, answers: readonly number[]): QuizResult {
   const overall = pct(sumRaw, 0, sumMax);
   const key = resultKey(rule, scores, ranked, total, overall);
   const watch = SAFETY[id];
-  const safety = Boolean(watch && ((watch.item !== undefined && (answers[watch.item] ?? 0) > 0) || watch.bands.includes(key)));
+  const safety = Boolean(watch && ((answers[watch.item] ?? 0) > 0 || watch.bands.includes(key)));
   const weakest = rule.kind === "areas" ? lowest(scores).dim : undefined;
   return { key, scores, total, ranked, excluded: [...excluded], overall, safety, ...(weakest ? { weakest } : {}) };
 }

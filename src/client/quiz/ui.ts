@@ -195,9 +195,13 @@ export function mountQuiz(host: HTMLElement, locale: Locale, id: QuizId): void {
   );
 
   const group = quizGroupOf(id);
-  const siblings = QUIZ_GROUPS.flatMap((g) => g.quizzes).filter((q) => q !== id)
-    // Same group first, then the rest.
-    .sort((a, b) => Number(quizGroupOf(b) === group) - Number(quizGroupOf(a) === group));
+  // Same group first, then the other fan-quiz groups for a fan quiz (Hogwarts is alone in its group), then the rest.
+  const FAN = ["games", "anime", "books"];
+  const near = (q: QuizId): number => {
+    const g = quizGroupOf(q);
+    return g === group ? 2 : FAN.includes(g) && FAN.includes(group) ? 1 : 0;
+  };
+  const siblings = QUIZ_GROUPS.flatMap((g) => [...g.quizzes]).filter((q) => q !== id).sort((a, b) => near(b) - near(a));
 
   host.append(
     crumb(locale, id),
