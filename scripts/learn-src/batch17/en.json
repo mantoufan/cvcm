@@ -129,7 +129,7 @@
         "result": "A working microphone with speech peaks in a good range, and a short recording that shows how you sound.",
         "note": "Plug in the microphone or headset first. Close other apps that use it, such as call apps.",
         "s1t": "Know what a good level is",
-        "s1b": "Levels are in dBFS: 0 is the loudest a recording can hold. Speech peaks between −20 and −6 dBFS are good; near 0 the sound clips and distorts, below −30 it is too quiet.",
+        "s1b": "Levels are in dBFS: 0 is the loudest a recording can hold. Speech peaks between −20 and −6 dBFS are good; near 0 the sound clips and distorts, below −20 it is too quiet.",
         "s2t": "Open Mic test on cv.cm",
         "s2b": "Press Start microphone. The browser asks for permission; allow it.",
         "s3t": "Watch the meter",
@@ -140,7 +140,7 @@
         "s5b": "Press Record 5 s and speak normally. When it stops, a player appears: listen for echo, hum or a muffled sound.",
         "s6t": "Fix common problems",
         "s6b": "No movement: check mute switches and the system input volume, and that no other app holds the mic. Too loud: move back or lower the input gain. Blocked: allow the microphone in the site settings.",
-        "diagram1": "−20 to −6 dBFS good · near 0 clips · below −30 quiet.",
+        "diagram1": "−20 to −6 dBFS good · near 0 clips · below −20 quiet.",
         "diagram2": "Start → allow → speak → Record 5 s → play."
       },
       "faq": {

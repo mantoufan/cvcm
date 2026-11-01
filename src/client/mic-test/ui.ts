@@ -129,6 +129,13 @@ async function start(): Promise<void> {
     asking = false;
     if (startBtn) startBtn.textContent = t("micTest.start");
     const name = (err as { name?: string })?.name;
+    // The saved device is gone (unplugged, or back with a new id): reset the list and open the default microphone.
+    if (id && (name === "NotFoundError" || name === "OverconstrainedError") && deviceEl) {
+      deviceEl.replaceChildren(h("option", { value: "" }, t("micTest.defaultDevice")));
+      deviceEl.disabled = true;
+      void start();
+      return;
+    }
     say(name === "NotAllowedError" || name === "SecurityError" ? "denied" : name === "NotFoundError" || name === "OverconstrainedError" ? "notFound" : name === "NotReadableError" ? "busy" : "failed");
     return;
   }
@@ -206,6 +213,7 @@ function stop(): void {
   lastPct = -1;
   bytes = null;
   waveEl?.getContext("2d")?.clearRect(0, 0, waveEl.width, waveEl.height);
+  infoEl?.replaceChildren();
   say("idle");
 }
 
@@ -253,7 +261,7 @@ function draw(now: number): void {
   const pct = meterPercent(level);
   if (meterFill) {
     meterFill.style.width = `${pct}%`;
-    meterFill.classList.toggle("hot", peakDb >= -1);
+    meterFill.classList.toggle("hot", levelVerdict(peakDb) === "loud");
     // Screen readers hear the meter in steps of 10, not every frame.
     const stepped = Math.round(pct / 10) * 10;
     if (stepped !== lastPct) {
@@ -261,8 +269,8 @@ function draw(now: number): void {
       meterFill.parentElement?.setAttribute("aria-valuenow", String(stepped));
     }
   }
-  if (levelEl) levelEl.textContent = `${level.toFixed(0)} dBFS`;
-  if (peakEl) peakEl.textContent = `${peakDb.toFixed(0)} dBFS`;
+  if (levelEl) levelEl.textContent = dbText(level);
+  if (peakEl) peakEl.textContent = dbText(peakDb);
   const verdict = levelVerdict(peakDb);
   if (verdictEl && verdict !== lastVerdict) {
     lastVerdict = verdict;
@@ -270,6 +278,11 @@ function draw(now: number): void {
   }
   drawWave();
   frame = window.requestAnimationFrame(draw);
+}
+
+/** Whole dB, with −0 shown as 0. */
+function dbText(db: number): string {
+  return `${Math.round(db) || 0} dBFS`;
 }
 
 function drawWave(): void {

@@ -3998,7 +3998,7 @@
       "q2": "Meternya tidak bergerak. Lalu bagaimana?",
       "a2": "Pilih perangkat lain di daftar, pastikan mikrofon tidak di-mute (beberapa headset punya sakelar), dan tutup aplikasi lain yang memakainya. Di laptop, periksa volume input sistem.",
       "q3": "Berapa level yang bagus?",
-      "a3": "Puncak suara bicara sekitar −20 sampai −6 dBFS sudah bagus. Mendekati 0 dBFS suara akan pecah (clipping); di bawah −30 terlalu pelan.",
+      "a3": "Puncak suara bicara sekitar −20 sampai −6 dBFS sudah bagus. Mendekati 0 dBFS suara akan pecah (clipping); di bawah −20 terlalu pelan.",
       "q4": "Apakah suara saya diunggah?",
       "a4": "Tidak. Audio dan rekaman tes tetap di tab ini dan hilang saat Anda menutupnya.",
       "q5": "Kenapa browser meminta izin?",
@@ -6127,7 +6127,7 @@
       "result": "Mikrofon yang berfungsi dengan puncak suara di rentang yang baik, dan rekaman singkat yang menunjukkan bagaimana suara Anda terdengar.",
       "note": "Colokkan mikrofon atau headset lebih dulu. Tutup aplikasi lain yang memakainya, seperti aplikasi panggilan.",
       "s1t": "Pahami level yang baik",
-      "s1b": "Level diukur dalam dBFS: 0 adalah suara paling keras yang bisa ditampung rekaman. Puncak suara bicara antara −20 dan −6 dBFS sudah baik; mendekati 0 suaranya pecah dan terdistorsi, di bawah −30 terlalu pelan.",
+      "s1b": "Level diukur dalam dBFS: 0 adalah suara paling keras yang bisa ditampung rekaman. Puncak suara bicara antara −20 dan −6 dBFS sudah baik; mendekati 0 suaranya pecah dan terdistorsi, di bawah −20 terlalu pelan.",
       "s2t": "Buka Tes mikrofon di cv.cm",
       "s2b": "Tekan Mulai mikrofon. Browser meminta izin; izinkan.",
       "s3t": "Perhatikan meter",
@@ -6138,7 +6138,7 @@
       "s5b": "Tekan Rekam 5 s dan bicara seperti biasa. Setelah selesai, pemutar muncul: dengarkan apakah ada gema, dengung, atau suara teredam.",
       "s6t": "Perbaiki masalah umum",
       "s6b": "Tidak bergerak: cek tombol mute dan volume input sistem, serta pastikan tidak ada aplikasi lain yang memakai mic. Terlalu keras: menjauh atau turunkan gain input. Diblokir: izinkan mikrofon di pengaturan situs.",
-      "diagram1": "−20 s.d. −6 dBFS bagus · dekat 0 pecah · di bawah −30 pelan.",
+      "diagram1": "−20 s.d. −6 dBFS bagus · dekat 0 pecah · di bawah −20 pelan.",
       "diagram2": "Mulai → izinkan → bicara → Rekam 5 s → putar."
     },
     "use-tally-counter": {

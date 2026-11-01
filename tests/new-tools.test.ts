@@ -1485,6 +1485,8 @@ describe("tally-counter", () => {
     expect(bump(0, -1, false)).toBe(0);
     expect(bump(0, -1, true)).toBe(-1);
     expect(bump(5, 3, false)).toBe(8);
+    expect(bump(-3, -1, false)).toBe(-3);
+    expect(bump(-3, 1, false)).toBe(-2);
     expect(clampStep(0)).toBe(1);
     expect(clampStep(2.6)).toBe(3);
     expect(clampStep(1e9)).toBe(1000);
@@ -1493,7 +1495,7 @@ describe("tally-counter", () => {
     expect(parseTally("{bad")).toBeNull();
     expect(parseTally(JSON.stringify({ counters: [] }))).toBeNull();
     expect(parseTally(JSON.stringify({ counters: [{ name: "x", count: -3 }, { name: 4, count: 1 }, { name: "y", count: 1.5 }], step: 0 }))).toEqual({
-      counters: [{ name: "x", count: 0 }],
+      counters: [{ name: "x", count: -3 }],
       step: 1,
       allowNegative: false,
     });

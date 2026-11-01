@@ -3998,7 +3998,7 @@
       "q2": "El medidor no se mueve. ¿Qué hago?",
       "a2": "Elige otro dispositivo de la lista, comprueba que el micrófono no esté silenciado (algunos auriculares tienen un interruptor) y cierra otras apps que lo usen. En un portátil, revisa el volumen de entrada del sistema.",
       "q3": "¿Cuál es un buen nivel?",
-      "a3": "Picos de voz de −20 a −6 dBFS son buenos. Cerca de 0 dBFS el sonido satura; por debajo de −30 es bajo.",
+      "a3": "Picos de voz de −20 a −6 dBFS son buenos. Cerca de 0 dBFS el sonido satura; por debajo de −20 es bajo.",
       "q4": "¿Se sube mi voz?",
       "a4": "No. El audio y la grabación de prueba se quedan en esta pestaña y desaparecen al cerrarla.",
       "q5": "¿Por qué el navegador pide permiso?",
@@ -6127,7 +6127,7 @@
       "result": "Un micrófono que funciona con picos de voz en un buen rango y una grabación corta que muestra cómo suena.",
       "note": "Conecte primero el micrófono o los auriculares. Cierre otras apps que lo usen, como las de llamadas.",
       "s1t": "Entienda qué es un buen nivel",
-      "s1b": "Los niveles se miden en dBFS: 0 es lo más fuerte que admite una grabación. Los picos de voz entre −20 y −6 dBFS son buenos; cerca de 0 el sonido satura y se distorsiona, por debajo de −30 es demasiado bajo.",
+      "s1b": "Los niveles se miden en dBFS: 0 es lo más fuerte que admite una grabación. Los picos de voz entre −20 y −6 dBFS son buenos; cerca de 0 el sonido satura y se distorsiona, por debajo de −20 es demasiado bajo.",
       "s2t": "Abra Test de micrófono en cv.cm",
       "s2b": "Pulse Iniciar micrófono. El navegador pide permiso; permítalo.",
       "s3t": "Mire el medidor",
@@ -6138,7 +6138,7 @@
       "s5b": "Pulse Grabar 5 s y hable con normalidad. Al terminar aparece un reproductor: escuche si hay eco, zumbido o un sonido apagado.",
       "s6t": "Resuelva problemas comunes",
       "s6b": "Sin movimiento: revise los interruptores de silencio y el volumen de entrada del sistema, y que ninguna otra app tenga el micrófono. Demasiado alto: aléjese o baje la ganancia de entrada. Bloqueado: permita el micrófono en la configuración del sitio.",
-      "diagram1": "−20 a −6 dBFS bien · cerca de 0 satura · bajo −30 flojo.",
+      "diagram1": "−20 a −6 dBFS bien · cerca de 0 satura · bajo −20 flojo.",
       "diagram2": "Iniciar → permitir → hablar → Grabar 5 s → escuchar."
     },
     "use-tally-counter": {

@@ -88,7 +88,7 @@
       "q2": "The meter does not move. What now?",
       "a2": "Pick another device in the list, check that the microphone is not muted (some headsets have a switch), and close other apps that use it. On a laptop, check the system's input volume.",
       "q3": "What is a good level?",
-      "a3": "Speech peaks around −20 to −6 dBFS are good. Near 0 dBFS the sound clips; below −30 it is quiet.",
+      "a3": "Speech peaks around −20 to −6 dBFS are good. Near 0 dBFS the sound clips; below −20 it is quiet.",
       "q4": "Is my voice uploaded?",
       "a4": "No. The audio and the test recording stay in this tab and are gone when you close it.",
       "q5": "Why does the browser ask for permission?",
@@ -274,7 +274,7 @@
       "s2t": "Speak and watch the meter",
       "s2b": "The level meter and waveform move with your voice. Aim for peaks between −20 and −6 dBFS.",
       "s3t": "Record and play back",
-      "s3b": "Press Record 5 s, speak, then play the recording to hear exactly what others will hear."
+      "s3b": "Press Record 5 s, speak, then play the recording to hear how the microphone itself sounds, before any call app filters."
     }
   }
 }

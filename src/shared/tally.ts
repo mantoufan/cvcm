@@ -12,10 +12,10 @@ export function clampStep(value: number): number {
   return Math.min(MAX_STEP, Math.max(1, Math.round(value)));
 }
 
-/** Adds delta to count; without allowNegative the count stops at zero. */
+/** Adds delta to count; without allowNegative it does not go below zero (or below a count already under zero). */
 export function bump(count: number, delta: number, allowNegative: boolean): number {
   const next = count + delta;
-  const floor = allowNegative ? -MAX_COUNT : 0;
+  const floor = allowNegative ? -MAX_COUNT : Math.min(0, count);
   return Math.min(MAX_COUNT, Math.max(floor, next));
 }
 
@@ -34,11 +34,10 @@ export function parseTally(raw: string | null): TallyState | null {
       .slice(0, MAX_COUNTERS)
       .map((c) => ({ name: c.name.slice(0, MAX_NAME), count: c.count }));
     if (!counters.length) return null;
-    const allowNegative = data.allowNegative === true;
     return {
-      counters: allowNegative ? counters : counters.map((c) => ({ ...c, count: Math.max(0, c.count) })),
+      counters,
       step: clampStep(Number(data.step)),
-      allowNegative,
+      allowNegative: data.allowNegative === true,
     };
   } catch {
     return null;

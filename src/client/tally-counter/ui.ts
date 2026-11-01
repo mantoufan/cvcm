@@ -80,7 +80,7 @@ function onStorage(e: StorageEvent): void {
   if (!next) return;
   state = next;
   active = Math.min(active, state.counters.length - 1);
-  if (stepEl) stepEl.value = String(state.step);
+  if (stepEl && document.activeElement !== stepEl) stepEl.value = String(state.step);
   if (negEl) negEl.checked = state.allowNegative;
   const rows = listEl?.children;
   // While a name is being typed here, update the numbers in place so the field keeps focus.
@@ -126,10 +126,9 @@ function typedStep(): void {
 }
 
 function setNegative(): void {
+  // Unticking keeps counts already below zero; from then on − stops at zero.
   state.allowNegative = !!negEl?.checked;
-  if (!state.allowNegative) for (const c of state.counters) c.count = Math.max(0, c.count);
   save();
-  paint();
 }
 
 function add(): void {
