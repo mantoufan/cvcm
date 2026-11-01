@@ -20,7 +20,7 @@ let last = "";
 export function mountReactionTime(host: HTMLElement): void {
   padTitle = h("strong", null);
   padSub = h("span", null);
-  padEl = h("button", { type: "button", class: "reaction-pad", "data-action": "pad", "aria-live": "assertive", onPointerdown: (e: PointerEvent) => press(e), onKeydown: (e: KeyboardEvent) => key(e), onClick: (e: MouseEvent) => e.preventDefault() }, padTitle, padSub);
+  padEl = h("button", { type: "button", class: "reaction-pad", "data-action": "pad", "aria-live": "assertive", onPointerdown: (e: PointerEvent) => press(e), onClick: (e: MouseEvent) => e.preventDefault() }, padTitle, padSub);
   listEl = h("ol", { class: "reaction-list" });
   outEl = h("dl", { class: "stats-grid" });
   host.append(
@@ -42,10 +42,12 @@ export function mountReactionTime(host: HTMLElement): void {
       ),
     ),
   );
+  document.addEventListener("keydown", key);
   reset();
 }
 
 export function unmountReactionTime(): void {
+  document.removeEventListener("keydown", key);
   window.clearTimeout(waitTimer);
   window.cancelAnimationFrame(frame);
   padEl = copyBtn = null;
@@ -78,8 +80,13 @@ function press(e: PointerEvent): void {
   hit(e.timeStamp);
 }
 
+/** Space and Enter work from anywhere on the page (not only with the pad focused), except on other controls. */
 function key(e: KeyboardEvent): void {
   if (e.key !== " " && e.key !== "Enter") return;
+  if (e.ctrlKey || e.metaKey || e.altKey) return;
+  const target = e.target as HTMLElement | null;
+  const onPage = !target || target === document.body || target === document.documentElement || target === padEl;
+  if (!onPage) return;
   e.preventDefault();
   if (!e.repeat) hit(e.timeStamp);
 }

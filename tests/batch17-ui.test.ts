@@ -103,4 +103,20 @@ describe("tally-counter ui", () => {
     expect(counts()).toEqual(["2", "0"]);
     link.remove();
   });
+
+  it("offers to undo a reset for a few seconds", () => {
+    mountTallyCounter(host);
+    const plus = q<HTMLButtonElement>("[data-action=plus]");
+    for (let i = 0; i < 4; i++) plus.click();
+    q<HTMLButtonElement>("[data-action=reset-all]").click();
+    expect(q("[data-out=count]").textContent).toBe("0");
+    const undo = q<HTMLButtonElement>("[data-action=undo]");
+    expect(undo.hidden).toBe(false);
+    undo.click();
+    expect(q("[data-out=count]").textContent).toBe("4");
+    expect(undo.hidden).toBe(true);
+    q<HTMLButtonElement>("[data-action=reset-all]").click();
+    vi.advanceTimersByTime(9000);
+    expect(undo.hidden).toBe(true);
+  });
 });

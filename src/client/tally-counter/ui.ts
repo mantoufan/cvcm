@@ -13,6 +13,11 @@ let stepEl: HTMLInputElement | null = null;
 let negEl: HTMLInputElement | null = null;
 let addBtn: HTMLButtonElement | null = null;
 let copyBtn: HTMLButtonElement | null = null;
+let undoBtn: HTMLButtonElement | null = null;
+/** Counts before the last reset, offered back for a few seconds. */
+let undoCounts: number[] | null = null;
+let undoTimer = 0;
+const UNDO_MS = 8000;
 let state: TallyState = fresh();
 /** The counter the keyboard shortcuts change. */
 let active = 0;
@@ -35,7 +40,7 @@ export function mountTallyCounter(host: HTMLElement): void {
       h("p", { class: "lede" }, t("tallyCounter.privacyNote")),
     ),
     // A mouse click does not move focus onto the tool's buttons, so Space keeps counting instead of pressing the last one clicked.
-    rootEl = h("div", { class: "data-tool", onMousedown: (e: MouseEvent) => { if ((e.target as HTMLElement | null)?.closest("button")) e.preventDefault(); } },
+    rootEl = h("div", { class: "data-tool", onMousedown: (e: MouseEvent) => keepKeysForCounting(e) },
       h("aside", { class: "rail controls" },
         h("fieldset", null,
           h("legend", null, t("tallyCounter.options")),
@@ -45,6 +50,7 @@ export function mountTallyCounter(host: HTMLElement): void {
         h("div", { class: "stage-actions" },
           addBtn = h("button", { type: "button", class: "btn ghost", "data-action": "add", onClick: () => add() }, t("tallyCounter.add")),
           h("button", { type: "button", class: "btn ghost", "data-action": "reset-all", onClick: () => resetAll() }, t("tallyCounter.resetAll")),
+          undoBtn = h("button", { type: "button", class: "btn ghost", "data-action": "undo", hidden: true, onClick: () => undo() }, t("tallyCounter.undo")),
           copyBtn = h("button", { type: "button", class: "btn ghost", onClick: () => void copyOut() }, t("tallyCounter.copy")),
         ),
         h("p", { class: "hint" }, t("tallyCounter.hint")),
@@ -62,7 +68,9 @@ export function unmountTallyCounter(): void {
   window.removeEventListener("storage", onStorage);
   rootEl = listEl = totalEl = null;
   stepEl = negEl = null;
-  addBtn = copyBtn = null;
+  addBtn = copyBtn = undoBtn = null;
+  window.clearTimeout(undoTimer);
+  undoCounts = null;
 }
 
 function load(): TallyState | null {
@@ -133,6 +141,7 @@ function setNegative(): void {
 
 function add(): void {
   if (state.counters.length >= MAX_COUNTERS) return;
+  dropUndo();
   state.counters.push({ name: t("tallyCounter.defaultName", { n: state.counters.length + 1 }), count: 0 });
   active = state.counters.length - 1;
   save();
@@ -141,6 +150,7 @@ function add(): void {
 
 function remove(i: number): void {
   if (state.counters.length <= 1) return;
+  dropUndo();
   state.counters.splice(i, 1);
   // Keep the keyboard on the same counter when one above it goes away.
   if (i < active) active--;
@@ -149,15 +159,52 @@ function remove(i: number): void {
   paint();
 }
 
+/**
+ * A mouse click does not move focus onto the tool's buttons, and leaves any field it was in, so Space and the arrows
+ * keep counting (instead of pressing the last button clicked, or typing into the step or a name).
+ */
+function keepKeysForCounting(e: MouseEvent): void {
+  if (!(e.target as HTMLElement | null)?.closest("button")) return;
+  e.preventDefault();
+  const focused = document.activeElement as HTMLElement | null;
+  if (focused && focused !== document.body && rootEl?.contains(focused)) focused.blur();
+}
+
+function offerUndo(): void {
+  undoCounts = state.counters.map((c) => c.count);
+  if (undoBtn) undoBtn.hidden = false;
+  window.clearTimeout(undoTimer);
+  undoTimer = window.setTimeout(dropUndo, UNDO_MS);
+}
+
+function dropUndo(): void {
+  window.clearTimeout(undoTimer);
+  undoCounts = null;
+  if (undoBtn) undoBtn.hidden = true;
+}
+
+function undo(): void {
+  if (!undoCounts || undoCounts.length !== state.counters.length) {
+    dropUndo();
+    return;
+  }
+  undoCounts.forEach((n, i) => { state.counters[i].count = n; });
+  dropUndo();
+  save();
+  paint();
+}
+
 function resetOne(i: number): void {
   const c = state.counters[i];
   if (!c) return;
+  offerUndo();
   c.count = 0;
   save();
   paint(i);
 }
 
 function resetAll(): void {
+  offerUndo();
   for (const c of state.counters) c.count = 0;
   save();
   paint();
