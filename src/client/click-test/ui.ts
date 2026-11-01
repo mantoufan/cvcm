@@ -111,7 +111,8 @@ function hit(at: number): void {
   }
   if (state === "idle") {
     state = "running";
-    startedAt = now;
+    // Start from the first click itself, on the same clock as the later clicks' time stamps.
+    startedAt = Math.min(at > 0 ? at : now, now);
     clicks = 0;
     padEl?.classList.add("running");
     endTimer = window.setTimeout(finish, duration() * 1000);
@@ -135,7 +136,8 @@ function paint(elapsed: number): void {
   const left = Math.max(0, total - elapsed);
   if (timeEl) timeEl.textContent = t("clickTest.secondsShort", { n: (left / 1000).toFixed(1) });
   if (clicksEl) clicksEl.textContent = String(clicks);
-  if (cpsEl) cpsEl.textContent = clicksPerSecond(clicks, Math.min(elapsed, total)).toFixed(2);
+  // Divide by at least one second, so the first frames of a run do not show a huge rate.
+  if (cpsEl) cpsEl.textContent = clicksPerSecond(clicks, Math.min(Math.max(elapsed, 1000), total)).toFixed(2);
 }
 
 function finish(): void {

@@ -34,7 +34,8 @@ export function mountTallyCounter(host: HTMLElement): void {
       h("h1", null, t("tallyCounter.title")),
       h("p", { class: "lede" }, t("tallyCounter.privacyNote")),
     ),
-    rootEl = h("div", { class: "data-tool" },
+    // A mouse click does not move focus onto the tool's buttons, so Space keeps counting instead of pressing the last one clicked.
+    rootEl = h("div", { class: "data-tool", onMousedown: (e: MouseEvent) => { if ((e.target as HTMLElement | null)?.closest("button")) e.preventDefault(); } },
       h("aside", { class: "rail controls" },
         h("fieldset", null,
           h("legend", null, t("tallyCounter.options")),
@@ -52,11 +53,13 @@ export function mountTallyCounter(host: HTMLElement): void {
     ),
   );
   document.addEventListener("keydown", onKey);
+  window.addEventListener("storage", onStorage);
   paint();
 }
 
 export function unmountTallyCounter(): void {
   document.removeEventListener("keydown", onKey);
+  window.removeEventListener("storage", onStorage);
   rootEl = listEl = totalEl = null;
   stepEl = negEl = null;
   addBtn = copyBtn = null;
@@ -68,6 +71,18 @@ function load(): TallyState | null {
   } catch {
     return null;
   }
+}
+
+/** Another tab changed the counts: take them over, so a later save here does not overwrite them with older ones. */
+function onStorage(e: StorageEvent): void {
+  if (e.key !== STORE_KEY) return;
+  const next = parseTally(e.newValue);
+  if (!next) return;
+  state = next;
+  active = Math.min(active, state.counters.length - 1);
+  if (stepEl) stepEl.value = String(state.step);
+  if (negEl) negEl.checked = state.allowNegative;
+  paint();
 }
 
 function save(): void {

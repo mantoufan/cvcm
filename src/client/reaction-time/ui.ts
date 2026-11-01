@@ -2,7 +2,7 @@ import { copyWithFlash } from "../copy";
 import { h } from "../dom";
 import { locale, t } from "../i18n";
 import { appHref } from "../../shared/path";
-import { REACTION_TRIES, reactionBand, summarize, waitMs } from "../../shared/reaction";
+import { MIN_REACTION_MS, REACTION_TRIES, reactionBand, summarize, waitMs } from "../../shared/reaction";
 
 let padEl: HTMLButtonElement | null = null;
 let padTitle: HTMLElement | null = null;
@@ -98,24 +98,31 @@ function hit(at: number): void {
       arm();
       return;
     case "waiting":
-      window.clearTimeout(waitTimer);
-      window.cancelAnimationFrame(frame);
-      show("early", t("reactionTime.earlyTitle"), t("reactionTime.earlySub"));
+      early();
       return;
     case "go": {
-      // goAt is 0 until the green frame is on screen; a press before that is too early.
-      if (!goAt) return;
-      const ms = Math.round(now - goAt);
+      // goAt is 0 until the green frame is on screen. A press before that, or too fast to be a reaction, is too soon.
+      const ms = goAt ? Math.round(now - goAt) : -1;
+      if (ms < MIN_REACTION_MS) {
+        early();
+        return;
+      }
       times.push(ms);
       paint();
-      if (times.length >= REACTION_TRIES) {
-        const s = summarize(times)!;
+      const s = summarize(times);
+      if (times.length >= REACTION_TRIES && s) {
         show("done", t("reactionTime.ms", { n: s.average }), t("reactionTime.doneSub"));
       } else {
         show("shown", t("reactionTime.ms", { n: ms }), t("reactionTime.nextSub", { i: times.length, n: REACTION_TRIES }));
       }
     }
   }
+}
+
+function early(): void {
+  window.clearTimeout(waitTimer);
+  window.cancelAnimationFrame(frame);
+  show("early", t("reactionTime.earlyTitle"), t("reactionTime.earlySub"));
 }
 
 function arm(): void {

@@ -2,6 +2,8 @@
 export const REACTION_TRIES = 5;
 export const MIN_WAIT_MS = 1500;
 export const MAX_WAIT_MS = 4500;
+/** Faster than this is a guess, not a reaction (visual reactions take well over 100 ms), so it counts as too soon. */
+export const MIN_REACTION_MS = 80;
 
 /** Random wait before the pad turns green, from a uniform 0–1 value (Web Crypto in the page, fixed in tests). */
 export function waitMs(unit: number): number {

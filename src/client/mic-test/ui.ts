@@ -34,9 +34,11 @@ let recordTimer = 0;
 let playbackUrl = "";
 /** Bumped on every start/stop, so a slow permission prompt that resolves late is dropped. */
 let run = 0;
+/** A permission prompt is open (start() is waiting for getUserMedia). */
+let asking = false;
 
 export function mountMicTest(host: HTMLElement): void {
-  deviceEl = h("select", { "data-field": "device", disabled: true, onChange: () => { if (stream) void start(); } },
+  deviceEl = h("select", { "data-field": "device", disabled: true, onChange: () => { if (stream || asking) void start(); } },
     h("option", { value: "" }, t("micTest.defaultDevice")),
   );
   startBtn = h("button", { type: "button", class: "btn", "data-action": "start", onClick: () => (stream ? stop() : void start()) }, t("micTest.start"));
@@ -113,11 +115,13 @@ async function start(): Promise<void> {
   say("asking");
   const id = deviceEl?.value;
   let s: MediaStream;
+  asking = true;
   try {
     // Raw input: no echo cancellation, noise suppression or auto gain, so the meter shows what the microphone hears.
     s = await navigator.mediaDevices.getUserMedia({ audio: { deviceId: id ? { exact: id } : undefined, echoCancellation: false, noiseSuppression: false, autoGainControl: false } });
   } catch (err) {
     if (mine !== run) return;
+    asking = false;
     const name = (err as { name?: string })?.name;
     say(name === "NotAllowedError" || name === "SecurityError" ? "denied" : name === "NotFoundError" || name === "OverconstrainedError" ? "notFound" : name === "NotReadableError" ? "busy" : "failed");
     return;
@@ -126,6 +130,7 @@ async function start(): Promise<void> {
     s.getTracks().forEach((tr) => tr.stop());
     return;
   }
+  asking = false;
   stream = s;
   try {
     source = audio.createMediaStreamSource(s);
@@ -163,6 +168,7 @@ async function start(): Promise<void> {
 
 function stop(): void {
   run++;
+  asking = false;
   window.cancelAnimationFrame(frame);
   window.clearTimeout(recordTimer);
   if (recorder && recorder.state !== "inactive") recorder.stop();
@@ -270,11 +276,14 @@ function record(): void {
     return;
   }
   const chunks: Blob[] = [];
+  const mine = run;
   rec.ondataavailable = (e) => {
     if (e.data.size) chunks.push(e.data);
   };
   rec.onstop = () => {
     if (recorder === rec) recorder = null;
+    // Cut short by Stop or a device change: the microphone (and maybe a new one) has moved on, so drop this clip.
+    if (mine !== run) return;
     if (recordBtn) {
       recordBtn.textContent = t("micTest.record", { n: RECORD_MS / 1000 });
       recordBtn.disabled = !stream;
