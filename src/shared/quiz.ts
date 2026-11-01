@@ -616,7 +616,7 @@ export const QUIZ_DEFS: Record<QuizId, QuizDef> = {
 /**
  * When a result shows the crisis-line box: PHQ-9 item 9 (thoughts of self-harm) above "not at all", whatever the
  * total, and the severe PHQ-9 band. (The box is about self-harm, which the WHO-5 does not ask about: its low band
- * points to a doctor and the PHQ-9 in its own copy.)
+ * gets the gentler `SUPPORT` box and a PHQ-9 link instead.)
  */
 export const SAFETY: Partial<Record<QuizId, { item: number; bands: readonly string[] }>> = {
   depression: { item: 8, bands: ["severe"] },
