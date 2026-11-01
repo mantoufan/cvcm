@@ -105,6 +105,36 @@ describe("test page UI", () => {
     expect(work.querySelectorAll("#result .quiz-trait")).toHaveLength(4);
   });
 
+  it("shows the WHO-5 as a score out of 100 with six answers a question", () => {
+    const main = mount("wellbeing-index");
+    expect(main.querySelectorAll(".quiz-q")[0].querySelectorAll("input")).toHaveLength(6);
+    answer(main, (i) => (i < 4 ? 2 : 0));
+    submit(main);
+    const result = main.querySelector<HTMLElement>("#result")!;
+    expect(result.textContent).toContain("32 / 100");
+    expect(result.textContent).toContain("Reduced well-being (32–48)");
+    // The copy suggests the PHQ-9: the result links it.
+    expect(result.querySelector('a[href="/en/tests/depression/"]')).not.toBeNull();
+    expect(result.querySelector(".quiz-crisis")).toBeNull();
+    expect(result.querySelector("p.muted")).not.toBeNull();
+  });
+
+  it("links no follow-up test under a good WHO-5 result", () => {
+    const main = mount("wellbeing-index");
+    answer(main, () => 4);
+    submit(main);
+    const result = main.querySelector<HTMLElement>("#result")!;
+    expect(result.textContent).toContain("80 / 100");
+    expect(result.querySelector('a[href="/en/tests/depression/"]')).toBeNull();
+  });
+
+  it("suggests other fan quizzes after the Hogwarts quiz", () => {
+    const main = mount("hogwarts");
+    const more = [...main.querySelectorAll<HTMLAnchorElement>('a[href^="/en/tests/"]')].map((a) => a.getAttribute("href"));
+    expect(more).toContain("/en/tests/pokemon/");
+    expect(more).not.toContain("/en/tests/mbti/");
+  });
+
   it("names the pets the answers ruled out", () => {
     const main = mount("pet");
     // Fur allergy (question 5, option 2): only fish and reptiles stay possible.

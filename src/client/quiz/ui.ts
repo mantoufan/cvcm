@@ -3,8 +3,11 @@ import { linkList } from "../links";
 import type { Locale } from "../../shared/locale";
 import { appHref, quizHref } from "../../shared/path";
 import {
+  FAN_GROUPS,
+  FOLLOW_UP,
   QUIZ_DEFS,
   QUIZ_GROUPS,
+  QUIZZES,
   SCALE_POINTS,
   isComplete,
   maxTotal,
@@ -195,9 +198,13 @@ export function mountQuiz(host: HTMLElement, locale: Locale, id: QuizId): void {
   );
 
   const group = quizGroupOf(id);
-  const siblings = QUIZ_GROUPS.flatMap((g) => g.quizzes).filter((q) => q !== id)
-    // Same group first, then the rest.
-    .sort((a, b) => Number(quizGroupOf(b) === group) - Number(quizGroupOf(a) === group));
+  // Same group first, then the other fan-quiz groups for a fan quiz (Hogwarts is alone in its group), then the rest.
+  const fan = FAN_GROUPS.includes(group);
+  const near = new Map(QUIZZES.map((q) => {
+    const g = quizGroupOf(q);
+    return [q, g === group ? 2 : fan && FAN_GROUPS.includes(g) ? 1 : 0];
+  }));
+  const siblings = QUIZZES.filter((q) => q !== id).sort((a, b) => near.get(b)! - near.get(a)!);
 
   host.append(
     crumb(locale, id),
@@ -345,13 +352,17 @@ function resultView(locale: Locale, id: QuizId, copy: QuizCopy, result: QuizResu
     }
     case "band": {
       const max = maxTotal(id);
+      // WHO-5 and the like are read as a share of 100 (its cut-offs are 28 and 52), not as the raw total.
+      const shown = def.result.percent ? `${Math.round((result.total / max) * 100)} / 100` : `${result.total} / ${max}`;
       const nodes = [
         ...headline(results[result.key]),
-        bar(copy.scoreLabel ?? ui.score, (result.total / max) * 100, `${result.total} / ${max}`),
+        bar(copy.scoreLabel ?? ui.score, (result.total / max) * 100, shown),
       ];
+      const next = FOLLOW_UP[id];
+      if (next?.bands.includes(result.key)) nodes.push(testLinks(locale, [next.quiz]));
       if (quizGroupOf(id) === "wellbeing") nodes.push(h("p", { class: "muted" }, ui.notDiagnosis));
       if (result.safety) nodes.unshift(crisisBox(locale));
-      return { nodes, summary: `${results[result.key]?.name ?? result.key}, ${result.total} / ${max}` };
+      return { nodes, summary: `${results[result.key]?.name ?? result.key}, ${shown}` };
     }
   }
 }

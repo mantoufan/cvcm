@@ -5,8 +5,11 @@ import { LOCALES } from "../src/shared/locale";
 import { quizMessages } from "../src/shared/messages";
 import { parseAppPath, quizHref } from "../src/shared/path";
 import {
+  FAN_GROUPS,
   QUIZ_DEFS,
+  QUIZ_GROUPS,
   QUIZZES,
+  SCALE_POINTS,
   isComplete,
   maxTotal,
   resultKeys,
@@ -56,7 +59,10 @@ function randomInts(seed: number): (n: number) => number {
   };
 }
 
-const GAME_ANIME = ["pokemon", "genshin", "sonic", "dnd-class", "naruto", "demon-slayer", "jujutsu-kaisen", "avatar-element"] as const;
+/** Unofficial fan quizzes: the games, anime and books groups, without the anime archetype quiz. */
+const FAN_QUIZZES: QuizId[] = QUIZ_GROUPS.filter((group) => FAN_GROUPS.includes(group.id))
+  .flatMap((group) => [...group.quizzes])
+  .filter((id) => id !== "anime");
 
 describe("test pages: routes", () => {
   it("parses locale and bare paths", () => {
@@ -135,6 +141,11 @@ describe("test pages: copy", () => {
         }
         const keys = resultKeys(id);
         for (const key of keys) expect(copy.results?.[key]?.name, `${where} result ${key}`).toBeTruthy();
+        if (def.type === "likert") {
+          const ui = quizMessages(locale).ui;
+          expect(ui.scale[def.scale], `${where} scale`).toHaveLength(SCALE_POINTS[def.scale]);
+          expect(ui.scaleHint[def.scale], `${where} hint`).toBeTruthy();
+        }
         if (def.result.kind !== "band" && def.result.kind !== "types") {
           for (const dim of def.dims) expect(copy.dims?.[dim], `${where} dim ${dim}`).toBeTruthy();
         }
@@ -221,7 +232,72 @@ describe("test pages: scoring", () => {
     expect(scoreQuiz("depression", all("depression", 3)).key).toBe("severe");
   });
 
+  it("uses the WHO-5 cut-offs: below 13 (52%) poor, 7 or less (28%) low", () => {
+    expect(maxTotal("wellbeing-index")).toBe(25);
+    expect(scoreQuiz("wellbeing-index", all("wellbeing-index", 0))).toMatchObject({ total: 0, key: "low" });
+    expect(scoreQuiz("wellbeing-index", all("wellbeing-index", 5))).toMatchObject({ total: 25, key: "good" });
+    expect(scoreQuiz("wellbeing-index", [2, 2, 2, 1, 0]).key).toBe("low");
+    expect(scoreQuiz("wellbeing-index", [2, 2, 2, 2, 0]).key).toBe("reduced");
+    expect(scoreQuiz("wellbeing-index", [3, 3, 3, 3, 0]).key).toBe("reduced");
+    expect(scoreQuiz("wellbeing-index", [3, 3, 3, 3, 1]).key).toBe("good");
+    expect(isComplete("wellbeing-index", all("wellbeing-index", 5))).toBe(true);
+    expect(isComplete("wellbeing-index", all("wellbeing-index", 6))).toBe(false);
+  });
+
+  it("lets every love and leadership style win, and spreads ties between styles", () => {
+    for (const id of ["love-style", "leadership"] as const) {
+      const def = QUIZ_DEFS[id];
+      if (def.type !== "likert") throw new Error();
+      for (const dim of def.dims) {
+        expect(def.items.filter((i) => i.dim === dim), `${id} ${dim}`).toHaveLength(4);
+        expect(scoreQuiz(id, lean(id, [dim])).key, `${id} ${dim}`).toBe(dim);
+      }
+    }
+    // Six styles scored 0–16 tie often: random answers must not favor the first style in the list.
+    const next = randomInts(11);
+    for (const id of ["love-style", "leadership"] as const) {
+      const def = QUIZ_DEFS[id];
+      const counts = new Map<string, number>();
+      const runs = 12000;
+      // Ties at the top: how often each style was in one, weighted by 1 / tie size, and how often it won.
+      const tiedIn = new Map<string, number>();
+      const tiedWon = new Map<string, number>();
+      for (let n = 0; n < runs; n++) {
+        const result = scoreQuiz(id, def.items.map(() => next(5)));
+        counts.set(result.key, (counts.get(result.key) ?? 0) + 1);
+        const tied = result.ranked.filter((s) => s.raw === result.ranked[0].raw);
+        if (tied.length < 2) continue;
+        for (const s of tied) tiedIn.set(s.dim, (tiedIn.get(s.dim) ?? 0) + 1 / tied.length);
+        tiedWon.set(result.key, (tiedWon.get(result.key) ?? 0) + 1);
+      }
+      for (const dim of def.dims) {
+        const share = ((counts.get(dim) ?? 0) * def.dims.length) / runs;
+        expect(share, `${id} ${dim}`).toBeGreaterThan(0.85);
+        expect(share, `${id} ${dim}`).toBeLessThan(1.15);
+        const fair = (tiedWon.get(dim) ?? 0) / (tiedIn.get(dim) ?? 1);
+        expect(fair, `${id} ${dim} ties`).toBeGreaterThan(0.85);
+        expect(fair, `${id} ${dim} ties`).toBeLessThan(1.15);
+      }
+    }
+  });
+
+  it("scores the four EQ areas as a profile", () => {
+    const def = QUIZ_DEFS.eq;
+    if (def.type !== "likert") throw new Error();
+    for (const dim of def.dims) {
+      expect(def.items.filter((i) => i.dim === dim), dim).toHaveLength(5);
+      expect(def.items.filter((i) => i.dim === dim && i.rev), dim).toHaveLength(2);
+    }
+    const result = scoreQuiz("eq", lean("eq", ["self", "empathy"]));
+    expect(result.key).toBe("profile");
+    expect(result.scores.map((s) => s.pct)).toEqual([100, 0, 100, 0]);
+    expect(scoreQuiz("eq", all("eq", 2)).scores.every((s) => s.pct === 50)).toBe(true);
+  });
+
   it("keeps mental health self-checks out of analytics", () => {
+    for (const id of QUIZ_GROUPS.find((group) => group.id === "wellbeing")!.quizzes) {
+      expect(isTrackedPath(`/en/tests/${id}/`), id).toBe(false);
+    }
     expect(isTrackedPath("/en/tests/depression/")).toBe(false);
     expect(isTrackedPath("/zh-cn/tests/anxiety/")).toBe(false);
     expect(isTrackedPath("/tests/self-esteem/")).toBe(false);
@@ -375,7 +451,7 @@ describe("test pages: scoring", () => {
     expect(scoreQuiz("face-shape", [2, 3, 0, 2, 2, 3]).key).toBe("square");
     expect(scoreQuiz("face-shape", [1, 0, 2, 0, 0, 0]).key).toBe("heart");
     expect(scoreQuiz("face-shape", [0, 3, 0, 2, 2, 3]).key).toBe("oblong");
-    for (const id of ["face-shape", "anime", "pet", ...GAME_ANIME] as const) {
+    for (const id of ["face-shape", "anime", "pet", ...FAN_QUIZZES] as QuizId[]) {
       const quiz = QUIZ_DEFS[id];
       if (quiz.type !== "choice") throw new Error();
       // For each result, the answers that favor it most must make it win.
@@ -397,26 +473,25 @@ describe("test pages: scoring", () => {
   });
 
   it("gives every game and anime result the same best score and spreads ties evenly", () => {
-    // The tie hash reads which questions scored each result, so it only makes sense on choice quizzes.
-    for (const id of QUIZZES) {
-      const def = QUIZ_DEFS[id];
-      if (def.result.kind === "top" && def.result.tie === "spread") expect(def.type, id).toBe("choice");
-    }
-    for (const id of GAME_ANIME) {
+    for (const id of FAN_QUIZZES) {
       const def = QUIZ_DEFS[id];
       if (def.type !== "choice") throw new Error();
       // Highest possible score per result: equal, so no result is easier to reach.
       const best = def.dims.map((dim) => def.items.reduce((sum, item) => sum + Math.max(0, ...item.options.map((o) => o[dim] ?? 0)), 0));
       expect(new Set(best).size, id).toBe(1);
     }
-    // Avatar offers all four elements in every question; each element sits in each position three times.
-    const avatar = QUIZ_DEFS["avatar-element"];
-    if (avatar.type !== "choice") throw new Error();
-    for (const dim of avatar.dims) {
-      for (let position = 0; position < 4; position++) {
-        expect(avatar.items.filter((item) => (item.options[position][dim] ?? 0) > 0), `${dim} ${position}`).toHaveLength(3);
+    // Avatar and Hogwarts offer every result in every question; each sits in each position three times.
+    for (const id of ["avatar-element", "hogwarts"] as const) {
+      const def = QUIZ_DEFS[id];
+      if (def.type !== "choice") throw new Error();
+      for (const dim of def.dims) {
+        for (let position = 0; position < 4; position++) {
+          expect(def.items.filter((item) => (item.options[position][dim] ?? 0) > 0), `${id} ${dim} ${position}`).toHaveLength(3);
+        }
       }
     }
+    const avatar = QUIZ_DEFS["avatar-element"];
+    if (avatar.type !== "choice") throw new Error();
     // A water/earth tie is settled by the answers, not by list order: across different tied answer sets both
     // elements win, and the same answers always give the same result.
     const pick = (dims: string[]): number[] => avatar.items.map((item, i) => item.options.findIndex((o) => (o[dims[i]] ?? 0) > 0));
@@ -447,10 +522,10 @@ describe("test pages: scoring", () => {
     }
   });
 
-  // 160k scorings: about a second locally, more than the default 5 s on a slow CI runner.
+  // 200k scorings: about two seconds locally, more than the default 5 s on a slow CI runner.
   it("lets no game or anime result dominate random answers", () => {
     const next = randomInts(42);
-    for (const id of GAME_ANIME) {
+    for (const id of FAN_QUIZZES) {
       const def = QUIZ_DEFS[id];
       if (def.type !== "choice") throw new Error();
       const counts = new Map<string, number>();
