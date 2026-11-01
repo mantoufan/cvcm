@@ -3,9 +3,11 @@ import { linkList } from "../links";
 import type { Locale } from "../../shared/locale";
 import { appHref, quizHref } from "../../shared/path";
 import {
+  FAN_GROUPS,
   FOLLOW_UP,
   QUIZ_DEFS,
   QUIZ_GROUPS,
+  QUIZZES,
   SCALE_POINTS,
   isComplete,
   maxTotal,
@@ -197,12 +199,12 @@ export function mountQuiz(host: HTMLElement, locale: Locale, id: QuizId): void {
 
   const group = quizGroupOf(id);
   // Same group first, then the other fan-quiz groups for a fan quiz (Hogwarts is alone in its group), then the rest.
-  const FAN = ["games", "anime", "books"];
-  const near = (q: QuizId): number => {
+  const fan = FAN_GROUPS.includes(group);
+  const near = new Map(QUIZZES.map((q) => {
     const g = quizGroupOf(q);
-    return g === group ? 2 : FAN.includes(g) && FAN.includes(group) ? 1 : 0;
-  };
-  const siblings = QUIZ_GROUPS.flatMap((g) => [...g.quizzes]).filter((q) => q !== id).sort((a, b) => near(b) - near(a));
+    return [q, g === group ? 2 : fan && FAN_GROUPS.includes(g) ? 1 : 0];
+  }));
+  const siblings = QUIZZES.filter((q) => q !== id).sort((a, b) => near.get(b)! - near.get(a)!);
 
   host.append(
     crumb(locale, id),

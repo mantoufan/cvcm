@@ -22,6 +22,9 @@ export function isQuizId(value: string): value is QuizId {
   return (QUIZZES as readonly string[]).includes(value);
 }
 
+/** Groups of unofficial fan quizzes (the anime group also holds the original anime archetype quiz). */
+export const FAN_GROUPS: readonly QuizGroupId[] = ["games", "anime", "books"];
+
 export function quizGroupOf(id: QuizId): QuizGroupId {
   return QUIZ_GROUPS.find((group) => (group.quizzes as readonly string[]).includes(id))!.id;
 }
@@ -619,7 +622,7 @@ export const SAFETY: Partial<Record<QuizId, { item: number; bands: readonly stri
   depression: { item: 8, bands: ["severe"] },
 };
 
-/** Band results whose copy sends the reader to another test: the page links it under the result. */
+/** Band results whose copy sends the reader to another test: the page links it under the result (band quizzes only). */
 export const FOLLOW_UP: Partial<Record<QuizId, { bands: readonly string[]; quiz: QuizId }>> = {
   "wellbeing-index": { bands: ["low", "reduced"], quiz: "depression" },
 };

@@ -5,6 +5,7 @@ import { LOCALES } from "../src/shared/locale";
 import { quizMessages } from "../src/shared/messages";
 import { parseAppPath, quizHref } from "../src/shared/path";
 import {
+  FAN_GROUPS,
   QUIZ_DEFS,
   QUIZ_GROUPS,
   QUIZZES,
@@ -59,7 +60,7 @@ function randomInts(seed: number): (n: number) => number {
 }
 
 /** Unofficial fan quizzes: the games, anime and books groups, without the anime archetype quiz. */
-const FAN_QUIZZES: QuizId[] = QUIZ_GROUPS.filter((group) => ["games", "anime", "books"].includes(group.id))
+const FAN_QUIZZES: QuizId[] = QUIZ_GROUPS.filter((group) => FAN_GROUPS.includes(group.id))
   .flatMap((group) => [...group.quizzes])
   .filter((id) => id !== "anime");
 
