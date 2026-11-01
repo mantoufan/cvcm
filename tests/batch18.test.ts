@@ -82,6 +82,8 @@ describe("touch-test", () => {
     expect(cellAt(800, 1200, 800, 1200)).toBe(TOUCH_COLS * TOUCH_ROWS - 1);
     expect(cellAt(-1, 5, 800, 1200)).toBe(-1);
     expect(cellsAlong(0, 50, 800, 50, 800, 1200)).toHaveLength(TOUCH_COLS);
+    // A diagonal that clips the corner of cell 9 (column 1, row 1) on a 400 × 600 pad still marks it.
+    expect(cellsAlong(15, 100, 100, 15, 400, 600)).toContain(9);
     expect(coveragePercent(48)).toBe(50);
     expect(coveragePercent(500)).toBe(100);
   });

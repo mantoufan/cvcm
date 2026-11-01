@@ -150,6 +150,11 @@ function close(): void {
 }
 
 function onFullscreenChange(): void {
+  // Full screen that arrives after the test was closed (a slow request): leave it again.
+  if (!open && screenEl && fullscreenElement() === screenEl) {
+    exitFullscreen();
+    return;
+  }
   // Esc (or the browser's own exit) leaves full screen: close the test screen with it. While the request is still
   // pending (covering not yet decided) the element is not in full screen yet, so only act once it has been.
   if (open && !covering && entered && fullscreenElement() !== screenEl) close();
@@ -172,7 +177,8 @@ function next(by: number): void {
 }
 
 function tap(e: PointerEvent): void {
-  if (e.button !== 0) return;
+  // One step per tap: a second finger or a palm on the screen does not skip colours.
+  if (e.button !== 0 || e.isPrimary === false) return;
   // Left third goes back, the rest forward.
   const left = (e.currentTarget as HTMLElement).getBoundingClientRect().left;
   const width = (e.currentTarget as HTMLElement).clientWidth || window.innerWidth;

@@ -43,6 +43,7 @@ export function mountWebcamTest(host: HTMLElement): void {
   );
   mirrorEl = h("input", { type: "checkbox", "data-field": "mirror", checked: true, onChange: () => paintMirror() });
   startBtn = h("button", { type: "button", class: "btn", "data-action": "start", onClick: () => (stream || asking ? stop() : void start()) }, t("webcamTest.start"));
+  document.addEventListener("visibilitychange", onVisibility);
   photoBtn = h("button", { type: "button", class: "btn ghost", "data-action": "photo", disabled: true, onClick: () => void takePhoto() }, t("webcamTest.photo"));
   statusEl = h("p", { class: "hint", "aria-live": "polite", "data-out": "status" }, t("webcamTest.idle"));
   infoEl = h("dl", { class: "stats-grid", "data-out": "info" });
@@ -81,6 +82,7 @@ export function mountWebcamTest(host: HTMLElement): void {
 }
 
 export function unmountWebcamTest(): void {
+  document.removeEventListener("visibilitychange", onVisibility);
   stop();
   if (navigator.mediaDevices) navigator.mediaDevices.ondevicechange = null;
   if (shotUrl) URL.revokeObjectURL(shotUrl);
@@ -92,6 +94,13 @@ export function unmountWebcamTest(): void {
   videoEl = null;
   shotEl = null;
   saveEl = null;
+}
+
+/** Hidden tabs get no video frames: count afresh when the tab comes back, so a working camera does not read as frozen. */
+function onVisibility(): void {
+  if (document.visibilityState !== "visible") return;
+  frameTimes = [];
+  countingSince = 0;
 }
 
 function say(key: string): void {

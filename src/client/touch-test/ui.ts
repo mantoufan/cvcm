@@ -99,8 +99,9 @@ function clearState(): void {
 
 function clearAll(): void {
   clearState();
-  // Fingers still on the pad keep drawing; the most-at-once count restarts from them.
+  // Fingers still on the pad keep drawing; the most-at-once count restarts from them, and new fingers get new numbers.
   maxAtOnce = active.size;
+  for (const touch of active.values()) nextColor = Math.max(nextColor, touch.n);
   cells.forEach((c) => c.classList.remove("hit"));
   padEl?.classList.remove("used");
   const ctx = canvasEl?.getContext("2d");

@@ -26,6 +26,9 @@ let lastTime = 0;
 let lastPaint = 0;
 let frame = 0;
 let blockX = 0;
+/** Room the block can travel (track width minus block), measured on resize so no frame forces a layout. */
+let blockSpan = 0;
+let resizeObs: ResizeObserver | null = null;
 let ink = "#a13f6c";
 let soft = "#f2d9e5";
 let last = "";
@@ -78,12 +81,23 @@ export function mountRefreshRate(host: HTMLElement): void {
   ink = style.getPropertyValue("--pink-deep").trim() || ink;
   soft = style.getPropertyValue("--line").trim() || soft;
   document.addEventListener("visibilitychange", onVisibility);
+  const measure = () => {
+    if (trackEl && blockEl) blockSpan = trackEl.clientWidth - blockEl.offsetWidth;
+  };
+  measure();
+  if (typeof ResizeObserver === "function") {
+    resizeObs = new ResizeObserver(measure);
+    resizeObs.observe(trackEl);
+  }
   reset();
 }
 
 export function unmountRefreshRate(): void {
   window.cancelAnimationFrame(frame);
   document.removeEventListener("visibilitychange", onVisibility);
+  resizeObs?.disconnect();
+  resizeObs = null;
+  blockSpan = 0;
   hzEl = nearEl = frameMsEl = skippedEl = samplesEl = null;
   graphEl = null;
   trackEl = blockEl = null;
@@ -133,7 +147,7 @@ function tick(now: number): void {
 
 function moveBlock(dt: number): void {
   if (!trackEl || !blockEl || !(dt > 0)) return;
-  const span = trackEl.clientWidth - blockEl.offsetWidth;
+  const span = blockSpan;
   if (span <= 0) return;
   blockX = (blockX + ((Number(speedEl?.value) || 960) * dt) / 1000) % span;
   blockEl.style.transform = `translateX(${blockX}px)`;

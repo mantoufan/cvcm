@@ -10,10 +10,9 @@ export function cellAt(x: number, y: number, width: number, height: number, cols
   return r * cols + c;
 }
 
-/** Cells crossed by a straight stroke from (x0, y0) to (x1, y1), so a fast swipe leaves no gaps. */
+/** Cells crossed by a straight stroke from (x0, y0) to (x1, y1), so a fast swipe leaves no gaps (sampled every pixel, so a clipped corner counts). */
 export function cellsAlong(x0: number, y0: number, x1: number, y1: number, width: number, height: number, cols = TOUCH_COLS, rows = TOUCH_ROWS): number[] {
-  const step = Math.min(width / cols, height / rows) / 2;
-  const n = step > 0 ? Math.min(1000, Math.ceil(Math.hypot(x1 - x0, y1 - y0) / step)) : 0;
+  const n = width > 0 && height > 0 ? Math.min(5000, Math.ceil(Math.hypot(x1 - x0, y1 - y0))) : 0;
   const out = new Set<number>();
   for (let i = 0; i <= n; i++) {
     const f = n ? i / n : 1;
