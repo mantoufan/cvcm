@@ -371,9 +371,9 @@ function resultView(locale: Locale, id: QuizId, copy: QuizCopy, result: QuizResu
       ];
       const next = FOLLOW_UP[id];
       if (next?.bands.includes(result.key)) nodes.push(testLinks(locale, [next.quiz]));
+      if (!result.safety && SUPPORT[id]?.includes(result.key)) nodes.push(supportBox(locale));
       if (quizGroupOf(id) === "wellbeing") nodes.push(h("p", { class: "muted" }, ui.notDiagnosis));
       if (result.safety) nodes.unshift(crisisBox(locale));
-      else if (SUPPORT[id]?.includes(result.key)) nodes.push(supportBox(locale));
       return { nodes, summary: `${results[result.key]?.name ?? result.key}, ${shown}` };
     }
   }
