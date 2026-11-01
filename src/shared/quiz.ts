@@ -622,6 +622,14 @@ export const SAFETY: Partial<Record<QuizId, { item: number; bands: readonly stri
   depression: { item: 8, bands: ["severe"] },
 };
 
+/**
+ * Band results that show the gentler support box (helplines, "you don't have to wait for a crisis") when the crisis
+ * box does not apply: WHO-5 scores of 28 or less often go with depression, but the WHO-5 asks nothing about self-harm.
+ */
+export const SUPPORT: Partial<Record<QuizId, readonly string[]>> = {
+  "wellbeing-index": ["low"],
+};
+
 /** Band results whose copy sends the reader to another test: the page links it under the result (band quizzes only). */
 export const FOLLOW_UP: Partial<Record<QuizId, { bands: readonly string[]; quiz: QuizId }>> = {
   "wellbeing-index": { bands: ["low", "reduced"], quiz: "depression" },

@@ -9,6 +9,7 @@ import {
   QUIZ_GROUPS,
   QUIZZES,
   SCALE_POINTS,
+  SUPPORT,
   isComplete,
   maxTotal,
   questionCount,
@@ -253,6 +254,16 @@ function crisisBox(locale: Locale): HTMLElement {
   );
 }
 
+/** Helplines for a low score that is not a crisis (see `SUPPORT`): same numbers, no self-harm framing. */
+function supportBox(locale: Locale): HTMLElement {
+  const ui = quizUi(locale);
+  return h("div", { class: "quiz-support", role: "note" },
+    h("strong", null, ui.supportTitle),
+    h("p", null, ui.supportBody),
+    h("p", null, ui.crisisLines),
+  );
+}
+
 /** The result block for one test, plus a one-line summary for "Copy result". */
 /** "A, B and C" in the page language; plain commas where Intl.ListFormat is missing (Safari before 14.1). */
 function listNames(locale: Locale, names: string[]): string {
@@ -362,6 +373,7 @@ function resultView(locale: Locale, id: QuizId, copy: QuizCopy, result: QuizResu
       if (next?.bands.includes(result.key)) nodes.push(testLinks(locale, [next.quiz]));
       if (quizGroupOf(id) === "wellbeing") nodes.push(h("p", { class: "muted" }, ui.notDiagnosis));
       if (result.safety) nodes.unshift(crisisBox(locale));
+      else if (SUPPORT[id]?.includes(result.key)) nodes.push(supportBox(locale));
       return { nodes, summary: `${results[result.key]?.name ?? result.key}, ${shown}` };
     }
   }

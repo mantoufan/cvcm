@@ -116,7 +116,20 @@ describe("test page UI", () => {
     // The copy suggests the PHQ-9: the result links it.
     expect(result.querySelector('a[href="/en/tests/depression/"]')).not.toBeNull();
     expect(result.querySelector(".quiz-crisis")).toBeNull();
+    // Reduced, not low: no helpline box.
+    expect(result.querySelector(".quiz-support")).toBeNull();
     expect(result.querySelector("p.muted")).not.toBeNull();
+  });
+
+  it("shows the gentler helpline box, not the crisis box, under a low WHO-5 result", () => {
+    const main = mount("wellbeing-index", "zh-CN");
+    answer(main, () => 0);
+    submit(main);
+    const result = main.querySelector<HTMLElement>("#result")!;
+    expect(result.textContent).toContain("0 / 100");
+    expect(result.querySelector(".quiz-crisis")).toBeNull();
+    expect(result.querySelector(".quiz-support")?.textContent).toContain("12356");
+    expect(result.querySelector('a[href="/zh-cn/tests/depression/"]')).not.toBeNull();
   });
 
   it("links no follow-up test under a good WHO-5 result", () => {
