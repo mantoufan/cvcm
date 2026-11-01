@@ -90,6 +90,7 @@ export function mountMicTest(host: HTMLElement): void {
 
 export function unmountMicTest(): void {
   stop();
+  if (navigator.mediaDevices) navigator.mediaDevices.ondevicechange = null;
   if (audio) void audio.close().catch(() => undefined);
   audio = null;
   if (playbackUrl) URL.revokeObjectURL(playbackUrl);
@@ -152,10 +153,11 @@ async function start(): Promise<void> {
     // Firefox throws when the microphone's sample rate differs from the AudioContext's: retry at the microphone's rate.
     const rate = s.getAudioTracks()[0]?.getSettings().sampleRate;
     let retried = false;
-    if (rate && rate !== audio.sampleRate) {
+    // Firefox may not report the rate; then a fresh default context is the next best try.
+    if (rate !== audio.sampleRate) {
       void audio.close().catch(() => undefined);
       try {
-        audio = new AudioContext({ sampleRate: rate });
+        audio = new AudioContext(rate ? { sampleRate: rate } : undefined);
         if (audio.state === "suspended") void audio.resume().catch(() => undefined);
         retried = buildGraph(audio, s);
       } catch {
@@ -186,6 +188,10 @@ async function start(): Promise<void> {
   });
   paintInfo(track);
   void listDevices(track?.getSettings().deviceId);
+  // A microphone plugged in (or removed) while testing shows up in the list.
+  navigator.mediaDevices.ondevicechange = () => {
+    if (stream === s) void listDevices(s.getAudioTracks()[0]?.getSettings().deviceId);
+  };
 }
 
 /** Microphone → analyser → silent gain → output. Returns false when the browser refuses the stream. */

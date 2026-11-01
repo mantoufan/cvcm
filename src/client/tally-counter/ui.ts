@@ -90,8 +90,11 @@ function onStorage(e: StorageEvent): void {
   if (!next) return;
   // The other tab's counts are newer than anything Undo would bring back.
   dropUndo();
+  // Keep the keyboard on the same counter (by name) when the other tab added or removed some.
+  const activeName = state.counters[active]?.name;
   state = next;
-  active = Math.min(active, state.counters.length - 1);
+  const same = state.counters.findIndex((c) => c.name === activeName);
+  active = same >= 0 ? same : Math.min(active, state.counters.length - 1);
   if (stepEl && document.activeElement !== stepEl) stepEl.value = String(state.step);
   if (negEl) negEl.checked = state.allowNegative;
   const rows = listEl?.children;
