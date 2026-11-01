@@ -18,7 +18,7 @@ import {
 } from "../../shared/parallax";
 import { appHref } from "../../shared/path";
 import { AiClient } from "../ai/client";
-import { deviceLabel, dropZone, formatSeconds, prewarm, runJob, statusPanel, type Status } from "../ai/kit";
+import { chipRow, deviceLabel, dropZone, formatSeconds, prewarm, runJob, statusPanel, syncChips, type Status } from "../ai/kit";
 import type { AiResponse } from "../ai/protocol";
 import { decodeImage } from "../decode";
 import { downloadBlob, h } from "../dom";
@@ -59,6 +59,8 @@ let downloadBtn: HTMLButtonElement | null = null;
 let frame = 0;
 let clock = 0;
 let alive = false;
+/** Bumped per picked file, so a slow decode never replaces a file picked after it. */
+let pick = 0;
 
 export async function mountV(host: HTMLElement): Promise<void> {
   alive = true;
@@ -126,23 +128,13 @@ function stagePane(): HTMLElement {
   );
 }
 
-/** One row of chips; `onPick` runs after the chip state updates. */
-function chips<T extends string | number>(values: readonly T[], current: () => T, label: (v: T) => string, onPick: (v: T) => void): HTMLElement {
-  const els = values.map((v) =>
-    h("button", {
-      type: "button",
-      class: "chip" + (current() === v ? " on" : ""),
-      "aria-pressed": String(current() === v),
-      onClick: () => {
-        onPick(v);
-        els.forEach((el, i) => {
-          const on = values[i] === v;
-          el.classList.toggle("on", on);
-          el.setAttribute("aria-pressed", String(on));
-        });
-      },
-    }, label(v)),
-  );
+/** A chip row wired to one setting: highlight follows the click, then `after` runs. */
+function chips<T extends string | number>(values: readonly T[], current: () => T, label: (v: T) => string, set: (v: T) => void, after: () => void): HTMLElement {
+  const els: HTMLButtonElement[] = chipRow(values, current, label, (v) => {
+    set(v);
+    syncChips(els, String(v));
+    after();
+  });
   return h("div", { class: "convert-chips" }, ...els);
 }
 
@@ -151,36 +143,26 @@ function controls(): HTMLElement {
     h("fieldset", null, h("legend", null, legend), ...body);
   return h("aside", { class: "rail controls" },
     group(t("v.motion"),
-      chips(MOTIONS, () => state.motion, (m) => t(`v.motion_${m}`), (m) => {
-        state.motion = m;
-        restart();
-      }),
+      chips(MOTIONS, () => state.motion, (m) => t(`v.motion_${m}`), (m) => (state.motion = m), restart),
     ),
     group(t("v.strength"),
-      chips(Object.keys(STRENGTHS) as Strength[], () => state.strength, (s) => t(`v.strength_${s}`), (s) => {
-        state.strength = s;
-      }),
+      chips(Object.keys(STRENGTHS) as Strength[], () => state.strength, (s) => t(`v.strength_${s}`), (s) => (state.strength = s), redrawPaused),
     ),
     group(t("v.duration"),
-      chips(DURATIONS, () => state.duration, (d) => t("v.seconds", { n: d }), (d) => {
-        state.duration = d;
+      chips(DURATIONS, () => state.duration, (d) => t("v.seconds", { n: d }), (d) => (state.duration = d), () => {
+        layout();
         restart();
       }),
     ),
     group(t("v.aspect"),
-      chips(ASPECTS, () => state.aspect, (a) => (a === "original" ? t("v.aspect_original") : a), (a) => {
-        state.aspect = a;
-        layout();
-      }),
+      chips(ASPECTS, () => state.aspect, (a) => (a === "original" ? t("v.aspect_original") : a), (a) => (state.aspect = a), layout),
     ),
     group(t("v.size"),
-      chips(SIZES, () => state.size, (s) => `${s}p`, (s) => {
-        state.size = s;
-        layout();
-      }),
+      chips(SIZES, () => state.size, (s) => `${s}p`, (s) => (state.size = s), layout),
       h("label", { class: "check" },
         h("input", {
           type: "checkbox",
+          checked: state.loop,
           onChange: (e: Event) => {
             state.loop = (e.target as HTMLInputElement).checked;
             restart();
@@ -203,6 +185,7 @@ function onPaste(e: ClipboardEvent): void {
 
 async function setFile(file: File | undefined): Promise<void> {
   if (!file || !status || state.exporting) return;
+  const ticket = ++pick;
   let decoded;
   try {
     decoded = await decodeImage(file);
@@ -210,7 +193,8 @@ async function setFile(file: File | undefined): Promise<void> {
     status.error(t("v.errorDecode"));
     return;
   }
-  if (!alive) {
+  // Unmounted, a newer file was picked, or an export started while this one decoded.
+  if (!alive || ticket !== pick || state.exporting) {
     decoded.bitmap.close();
     return;
   }
@@ -224,7 +208,7 @@ async function setFile(file: File | undefined): Promise<void> {
     });
     decoded.bitmap.close();
   }
-  if (!alive) {
+  if (!alive || ticket !== pick || state.exporting) {
     photo.close();
     return;
   }
@@ -264,6 +248,7 @@ async function run(): Promise<void> {
     if (!alive || state.photo !== source) return;
     state.depth = { data: prepareDepth(result.mask, result.width, result.height), width: result.width, height: result.height };
     renderer?.setDepth(state.depth);
+    redrawPaused();
     status.done(t("v.ready", { s: formatSeconds(seconds), device: deviceLabel(backend) }));
   } catch (err) {
     if (!alive || state.photo !== source) return;
@@ -287,6 +272,11 @@ function layout(): void {
   preview.height = Math.round(out.height * scale);
   renderer.setCrop(cropRect(state.width, state.height, state.aspect));
   if (hintEl) hintEl.textContent = t("v.output", { w: out.width, h: out.height, s: state.duration });
+  redrawPaused();
+}
+
+/** While paused the preview shows the first frame; redraw it after a setting or the depth changes. */
+function redrawPaused(): void {
   if (!state.playing) drawAt(0);
 }
 
@@ -365,7 +355,11 @@ async function download(): Promise<void> {
     downloadBlob(blob, outputFilename(state.file.name, blob.type, `-${motion}`));
     status.done(t("v.exported", { s: formatSeconds((performance.now() - started) / 1000), w: out.width, h: out.height }));
   } catch (err) {
-    if (!alive || (err instanceof Error && err.message === "cancelled")) return;
+    if (!alive) return;
+    if (err instanceof Error && err.message === "cancelled") {
+      status.idle();
+      return;
+    }
     console.error(err);
     status.error(t("v.errorEncode"));
   } finally {

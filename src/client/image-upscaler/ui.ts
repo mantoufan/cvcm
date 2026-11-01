@@ -1,7 +1,7 @@
 import { outputFilename } from "../../shared/filename";
 import { appHref } from "../../shared/path";
 import { AiClient } from "../ai/client";
-import { deviceLabel, dropZone, formatSeconds, prewarm, runJob, statusPanel, type Status } from "../ai/kit";
+import { chipRow, deviceLabel, dropZone, formatSeconds, prewarm, runJob, statusPanel, syncChips, type Status } from "../ai/kit";
 import type { AiResponse } from "../ai/protocol";
 import { canvasToBlob, decodeImage } from "../decode";
 import { downloadBlob, h } from "../dom";
@@ -137,26 +137,6 @@ function stagePane(): HTMLElement {
       h("button", { type: "button", class: "btn ghost", onClick: () => void download() }, t("upscaler.download")),
     ),
   );
-}
-
-function chipRow<T extends string | number>(values: T[], current: () => T, label: (v: T) => string, set: (v: T) => void): HTMLButtonElement[] {
-  return values.map((v) =>
-    h("button", {
-      type: "button",
-      class: "chip" + (current() === v ? " on" : ""),
-      "aria-pressed": String(current() === v),
-      dataset: { value: String(v) },
-      onClick: () => set(v),
-    }, label(v)),
-  );
-}
-
-function syncChips(list: HTMLButtonElement[], value: string): void {
-  for (const chip of list) {
-    const on = chip.dataset.value === value;
-    chip.classList.toggle("on", on);
-    chip.setAttribute("aria-pressed", String(on));
-  }
 }
 
 function controls(): HTMLElement {

@@ -4,7 +4,7 @@ import { AI_MODELS, formatMb, mirrorFiles, modelFileUrl, type AiModelId } from "
 import { AI_TOOLS, appHref, isAiToolPath, parseAppPath } from "../src/shared/path";
 import { cleanSegments, shortClock, toSrt, toText, toVtt } from "../src/shared/subtitles";
 import { isTrackedPath } from "../src/shared/analytics";
-import { MOTIONS, cameraAt, cropRect, frameCount, outputSize } from "../src/shared/parallax";
+import { MOTIONS, STRENGTHS, cameraAt, cropRect, frameCount, outputSize } from "../src/shared/parallax";
 
 const html = {
   fetch: async () => new Response("<!doctype html><title>cv.cm</title>", { headers: { "Content-Type": "text/html; charset=utf-8" } }),
@@ -157,8 +157,19 @@ describe("photo to video (/v/)", () => {
       const a = cameraAt(m, 1, 0, true);
       const b = cameraAt(m, 1, 1, true);
       for (const k of ["ox", "oy", "zoom", "dolly"] as const) expect(b[k]).toBeCloseTo(a[k], 9);
-      // Zoom always covers the edges the shift reveals.
-      for (let t = 0; t <= 1; t += 0.05) expect(cameraAt(m, 1.6, t, false).zoom).toBeGreaterThan(1);
+      // Every depth layer (focus ± 0.5) still covers the frame: shift plus half the visible width stays inside the photo.
+      for (const strength of Object.values(STRENGTHS)) {
+        for (let t = 0; t <= 1; t += 0.05) {
+          for (const loop of [false, true]) {
+            const c = cameraAt(m, strength, t, loop);
+            for (const d of [-0.5, 0.5]) {
+              const half = 0.5 / (c.zoom * (1 + c.dolly * d));
+              expect(Math.abs(c.ox * d) + half, `${m} ${strength} ${t}`).toBeLessThanOrEqual(0.5);
+              expect(Math.abs(c.oy * d) + half, `${m} ${strength} ${t}`).toBeLessThanOrEqual(0.5);
+            }
+          }
+        }
+      }
     }
     expect(cameraAt("push", 1, 1, false).zoom).toBeGreaterThan(cameraAt("push", 1, 0, false).zoom);
     expect(cameraAt("pull", 1, 1, false).zoom).toBeLessThan(cameraAt("pull", 1, 0, false).zoom);
@@ -169,7 +180,9 @@ describe("photo to video (/v/)", () => {
     expect(outputSize(4000, 3000, "original", 1080)).toEqual({ width: 1440, height: 1080 });
     expect(outputSize(4000, 3000, "9:16", 1080)).toEqual({ width: 1080, height: 1920 });
     expect(outputSize(4000, 1000, "original", 1080)).toEqual({ width: 1920, height: 480 });
-    expect(outputSize(640, 481, "1:1", 1080)).toEqual({ width: 482, height: 482 });
+    expect(outputSize(640, 481, "1:1", 1080)).toEqual({ width: 480, height: 480 });
+    // A crop never asks for more pixels than it has: 16:9 of a 1080 square is 1080 × 608 source pixels.
+    expect(outputSize(1080, 1080, "16:9", 1080)).toEqual({ width: 1080, height: 608 });
     expect(cropRect(4000, 3000, "1:1")).toEqual({ x: 0.125, y: 0, w: 0.75, h: 1 });
     expect(cropRect(1000, 2000, "16:9").h).toBeCloseTo(9 / 32, 9);
   });

@@ -20,7 +20,7 @@ uniform vec2 uOffset;
 uniform float uZoom;
 uniform float uDolly;
 uniform float uFocus;
-uniform float uAspect;
+uniform vec2 uScale;
 uniform vec4 uCrop;
 in vec2 vUv;
 out vec4 outColor;
@@ -28,7 +28,7 @@ out vec4 outColor;
 vec2 project(float layer) {
   float d = layer - uFocus;
   vec2 c = (vUv - 0.5) / (uZoom * (1.0 + uDolly * d));
-  return 0.5 + c + uOffset * d * vec2(1.0, uAspect);
+  return 0.5 + c + uOffset * d * uScale;
 }
 
 vec2 photoUv(vec2 p) {
@@ -74,7 +74,7 @@ export class ParallaxRenderer {
     this.gl = gl;
     this.program = link(gl, VERT, FRAG);
     gl.useProgram(this.program);
-    for (const name of ["uPhoto", "uDepth", "uOffset", "uZoom", "uDolly", "uFocus", "uAspect", "uCrop"]) {
+    for (const name of ["uPhoto", "uDepth", "uOffset", "uZoom", "uDolly", "uFocus", "uScale", "uCrop"]) {
       this.loc[name] = gl.getUniformLocation(this.program, name);
     }
     const buf = gl.createBuffer();
@@ -120,7 +120,8 @@ export class ParallaxRenderer {
     gl.uniform2f(this.loc.uOffset, cam.ox, cam.oy);
     gl.uniform1f(this.loc.uZoom, cam.zoom);
     gl.uniform1f(this.loc.uDolly, cam.dolly);
-    gl.uniform1f(this.loc.uAspect, width / height);
+    // Offsets are in short-side lengths: the same move on a wide and a tall frame, never past the zoom margin.
+    gl.uniform2f(this.loc.uScale, Math.min(1, height / width), Math.min(1, width / height));
     gl.uniform4f(this.loc.uCrop, this.crop.x, this.crop.y, this.crop.w, this.crop.h);
     gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
   }

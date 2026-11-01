@@ -19,7 +19,7 @@ export const FPS = 30;
 
 /**
  * Where the virtual camera is at one moment.
- * `ox` / `oy`: sideways shift in frame widths per unit of depth away from the focus plane.
+ * `ox` / `oy`: sideways shift in lengths of the frame's short side, per unit of depth away from the focus plane.
  * `zoom`: overall scale (above 1 hides the edges the shift would reveal).
  * `dolly`: extra scale for near layers, so moving forward makes the subject grow faster than the background.
  */
@@ -58,13 +58,14 @@ export function frameCount(seconds: number): number {
   return Math.round(seconds * FPS);
 }
 
-/** Output size in even pixels: the short side is `size` (never upscaling past the photo), cropped to `aspect`. */
+/** Output size in even pixels: the short side is `size` (never more than the cropped part of the photo), shaped as `aspect`. */
 export function outputSize(photoW: number, photoH: number, aspect: Aspect, size: number): { width: number; height: number } {
   const ratio = aspect === "original" ? photoW / photoH : aspectRatio(aspect);
-  const short = Math.min(size, Math.max(2, Math.min(photoW, photoH)));
+  const crop = cropRect(photoW, photoH, aspect);
+  const short = Math.min(size, Math.max(2, Math.min(photoW * crop.w, photoH * crop.h)));
   let width = ratio >= 1 ? short * ratio : short;
   let height = ratio >= 1 ? short : short / ratio;
-  // H.264 level 4.2 tops out near 1920 on the long side for 30 fps.
+  // The encoder's first choice, H.264 level 4.0 (avc1.640028), covers 1920 × 1080 at 30 fps.
   const cap = 1920 / Math.max(width, height);
   if (cap < 1) {
     width *= cap;
