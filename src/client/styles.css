@@ -533,11 +533,10 @@ input[type="color"] { width: 2.6rem; height: 2.2rem; padding: 0; border: 1px sol
 .quiz-trait { margin: 0.4rem 0 0.9rem; }
 .quiz-trait > p { margin: 0.25rem 0 0; color: var(--ink-soft); font-size: 0.9rem; line-height: 1.6; }
 .quiz-actions { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1rem; }
-.quiz-crisis { margin: 0 0 1rem; padding: 0.8rem 0.9rem; border: 2px solid var(--pink-deep); border-radius: 10px; background: var(--white); }
-.quiz-crisis strong { color: var(--pink-deep); }
-.quiz-crisis p { margin: 0.35rem 0 0; line-height: 1.6; }
-.quiz-support { margin: 1rem 0 0; padding: 0.8rem 0.9rem; border: 1px solid var(--pink-deep); border-radius: 10px; background: var(--white); }
-.quiz-support p { margin: 0.35rem 0 0; line-height: 1.6; }
+.quiz-crisis, .quiz-support { margin: 0 0 1rem; padding: 0.8rem 0.9rem; border: 2px solid var(--pink-deep); border-radius: 10px; background: var(--white); }
+.quiz-support { margin: 1rem 0 0; border-width: 1px; }
+.quiz-crisis strong, .quiz-support strong { color: var(--pink-deep); }
+.quiz-crisis p, .quiz-support p { margin: 0.35rem 0 0; line-height: 1.6; }
 .quiz-about { margin-top: 1.75rem; }
 .quiz-about p { line-height: 1.75; }
 @media (max-width: 640px) {

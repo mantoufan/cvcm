@@ -97,11 +97,15 @@ describe("test page UI", () => {
     expect(gad.querySelector(".quiz-support")).not.toBeNull();
   });
 
-  it("has support box copy in every language, apart from the crisis lines", () => {
+  it("has support box copy in every language, without emergency numbers", () => {
+    // The crisis box's "in an emergency call …" numbers, as whole numbers: not Línea de la Vida 800 911 2000, and not
+    // SEJIWA, Indonesia's mental health line, which is extension 8 of 119.
+    const emergency = /(^|[^\d ])\s*(110|112|115|119|120|911)(?![\d -]*\d| ekstensi)/;
     for (const locale of LOCALES) {
       const ui = quizUi(locale);
       for (const text of [ui.supportTitle, ui.supportBody, ui.supportLines]) expect(text?.trim(), locale).toBeTruthy();
-      expect(ui.supportLines, locale).not.toBe(ui.crisisLines);
+      expect(ui.supportLines, locale).not.toMatch(emergency);
+      expect(ui.crisisLines === ui.supportLines, locale).toBe(false);
     }
   });
 

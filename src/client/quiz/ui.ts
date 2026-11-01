@@ -246,8 +246,9 @@ function headline(result: QuizResultCopy | undefined, code?: string): HTMLElemen
 }
 
 /**
- * A boxed note with helplines: `crisis` for self-harm (see `SAFETY`), `support` for a low score that is not a crisis
- * (see `SUPPORT`), which names general support lines only, no suicide or emergency services.
+ * A boxed note with helplines: `crisis` for self-harm (see `SAFETY`), `support` for a worrying score that is not a
+ * crisis (see `SUPPORT`). The lines can be the same services (most take anyone who is struggling); the support box
+ * leaves out the self-harm wording and the emergency numbers.
  */
 function helpBox(locale: Locale, kind: "crisis" | "support"): HTMLElement {
   const ui = quizUi(locale);
@@ -358,15 +359,17 @@ function resultView(locale: Locale, id: QuizId, copy: QuizCopy, result: QuizResu
       const max = maxTotal(id);
       // WHO-5 and the like are read as a share of 100 (its cut-offs are 28 and 52), not as the raw total.
       const shown = def.result.percent ? `${Math.round((result.total / max) * 100)} / 100` : `${result.total} / ${max}`;
+      // At most one help box: the crisis box leads the result, the support box follows the advice.
+      const help = result.safety ? "crisis" : SUPPORT[id]?.includes(result.key) ? "support" : undefined;
       const nodes = [
+        ...(help === "crisis" ? [helpBox(locale, "crisis")] : []),
         ...headline(results[result.key]),
         bar(copy.scoreLabel ?? ui.score, (result.total / max) * 100, shown),
       ];
       const next = FOLLOW_UP[id];
       if (next?.bands.includes(result.key)) nodes.push(testLinks(locale, [next.quiz]));
-      if (!result.safety && SUPPORT[id]?.includes(result.key)) nodes.push(helpBox(locale, "support"));
+      if (help === "support") nodes.push(helpBox(locale, "support"));
       if (quizGroupOf(id) === "wellbeing") nodes.push(h("p", { class: "muted" }, ui.notDiagnosis));
-      if (result.safety) nodes.unshift(helpBox(locale, "crisis"));
       return { nodes, summary: `${results[result.key]?.name ?? result.key}, ${shown}` };
     }
   }
