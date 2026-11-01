@@ -6,6 +6,7 @@ import { quizMessages } from "../src/shared/messages";
 import { parseAppPath, quizHref } from "../src/shared/path";
 import {
   QUIZ_DEFS,
+  QUIZ_GROUPS,
   QUIZZES,
   isComplete,
   maxTotal,
@@ -56,7 +57,10 @@ function randomInts(seed: number): (n: number) => number {
   };
 }
 
-const GAME_ANIME = ["pokemon", "genshin", "sonic", "dnd-class", "naruto", "one-piece", "demon-slayer", "jujutsu-kaisen", "avatar-element", "hogwarts"] as const;
+/** Unofficial fan quizzes: the games, anime and books groups, without the anime archetype quiz. */
+const FAN_QUIZZES: QuizId[] = QUIZ_GROUPS.filter((group) => ["games", "anime", "books"].includes(group.id))
+  .flatMap((group) => [...group.quizzes])
+  .filter((id) => id !== "anime");
 
 describe("test pages: routes", () => {
   it("parses locale and bare paths", () => {
@@ -231,9 +235,12 @@ describe("test pages: scoring", () => {
     expect(scoreQuiz("wellbeing-index", [3, 3, 3, 3, 1]).key).toBe("good");
     expect(isComplete("wellbeing-index", all("wellbeing-index", 5))).toBe(true);
     expect(isComplete("wellbeing-index", all("wellbeing-index", 6))).toBe(false);
+    // The lowest band, which often goes with depression, shows the crisis-line box.
+    expect(scoreQuiz("wellbeing-index", [2, 2, 2, 1, 0]).safety).toBe(true);
+    expect(scoreQuiz("wellbeing-index", [2, 2, 2, 2, 0]).safety).toBe(false);
   });
 
-  it("lets every love and leadership style win, and reads flat answers as the gentlest style", () => {
+  it("lets every love and leadership style win, and spreads ties between styles", () => {
     for (const id of ["love-style", "leadership"] as const) {
       const def = QUIZ_DEFS[id];
       if (def.type !== "likert") throw new Error();
@@ -242,9 +249,24 @@ describe("test pages: scoring", () => {
         expect(scoreQuiz(id, lean(id, [dim])).key, `${id} ${dim}`).toBe(dim);
       }
     }
-    for (const answer of [0, 2, 4]) {
-      expect(scoreQuiz("love-style", all("love-style", answer)).key).toBe("storge");
-      expect(scoreQuiz("leadership", all("leadership", answer)).key).toBe("democratic");
+    // Six styles scored 0–16 tie often: random answers must not favor the first style in the list.
+    const next = randomInts(11);
+    for (const id of ["love-style", "leadership"] as const) {
+      const def = QUIZ_DEFS[id];
+      const counts = new Map<string, number>();
+      const runs = 12000;
+      for (let n = 0; n < runs; n++) {
+        const key = scoreQuiz(id, def.items.map(() => next(5))).key;
+        counts.set(key, (counts.get(key) ?? 0) + 1);
+      }
+      for (const dim of def.dims) {
+        const share = ((counts.get(dim) ?? 0) * def.dims.length) / runs;
+        expect(share, `${id} ${dim}`).toBeGreaterThan(0.85);
+        expect(share, `${id} ${dim}`).toBeLessThan(1.15);
+      }
+      // The same answers always give the same style.
+      const flat = all(id, 2);
+      expect(scoreQuiz(id, flat).key).toBe(scoreQuiz(id, flat).key);
     }
   });
 
@@ -416,7 +438,7 @@ describe("test pages: scoring", () => {
     expect(scoreQuiz("face-shape", [2, 3, 0, 2, 2, 3]).key).toBe("square");
     expect(scoreQuiz("face-shape", [1, 0, 2, 0, 0, 0]).key).toBe("heart");
     expect(scoreQuiz("face-shape", [0, 3, 0, 2, 2, 3]).key).toBe("oblong");
-    for (const id of ["face-shape", "anime", "pet", ...GAME_ANIME] as const) {
+    for (const id of ["face-shape", "anime", "pet", ...FAN_QUIZZES] as QuizId[]) {
       const quiz = QUIZ_DEFS[id];
       if (quiz.type !== "choice") throw new Error();
       // For each result, the answers that favor it most must make it win.
@@ -438,12 +460,7 @@ describe("test pages: scoring", () => {
   });
 
   it("gives every game and anime result the same best score and spreads ties evenly", () => {
-    // The tie hash reads which questions scored each result, so it only makes sense on choice quizzes.
-    for (const id of QUIZZES) {
-      const def = QUIZ_DEFS[id];
-      if (def.result.kind === "top" && def.result.tie === "spread") expect(def.type, id).toBe("choice");
-    }
-    for (const id of GAME_ANIME) {
+    for (const id of FAN_QUIZZES) {
       const def = QUIZ_DEFS[id];
       if (def.type !== "choice") throw new Error();
       // Highest possible score per result: equal, so no result is easier to reach.
@@ -495,7 +512,7 @@ describe("test pages: scoring", () => {
   // 160k scorings: about a second locally, more than the default 5 s on a slow CI runner.
   it("lets no game or anime result dominate random answers", () => {
     const next = randomInts(42);
-    for (const id of GAME_ANIME) {
+    for (const id of FAN_QUIZZES) {
       const def = QUIZ_DEFS[id];
       if (def.type !== "choice") throw new Error();
       const counts = new Map<string, number>();

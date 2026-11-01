@@ -499,6 +499,7 @@ input[type="color"] { width: 2.6rem; height: 2.2rem; padding: 0; border: 1px sol
 .quiz-scale { display: grid; gap: 0.35rem; }
 .quiz-scale.n5 { grid-template-columns: repeat(5, minmax(0, 1fr)); }
 .quiz-scale.n4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.quiz-scale.n6 { grid-template-columns: repeat(6, minmax(0, 1fr)); }
 .quiz-options { display: grid; gap: 0.35rem; }
 .quiz-opt { position: relative; display: flex; align-items: center; justify-content: center; min-height: 44px; padding: 0.4rem 0.45rem; border: 1px solid var(--line); border-radius: 10px; background: var(--white); color: var(--ink-soft); font-size: 0.8rem; line-height: 1.25; text-align: center; cursor: pointer; }
 .quiz-options .quiz-opt { justify-content: flex-start; text-align: left; font-size: 0.92rem; color: var(--ink); padding: 0.55rem 0.8rem; }
@@ -539,6 +540,8 @@ input[type="color"] { width: 2.6rem; height: 2.2rem; padding: 0; border: 1px sol
 .quiz-about p { line-height: 1.75; }
 @media (max-width: 640px) {
   .quiz-scale.n5 { gap: 0.25rem; }
+  /* Six long WHO-5 labels do not fit one phone row: two rows of three. */
+  .quiz-scale.n6 { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0.25rem; }
   .quiz-scale .quiz-opt { font-size: 0.7rem; padding: 0.3rem 0.2rem; }
 }
 

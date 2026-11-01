@@ -345,13 +345,15 @@ function resultView(locale: Locale, id: QuizId, copy: QuizCopy, result: QuizResu
     }
     case "band": {
       const max = maxTotal(id);
+      // WHO-5 and the like are read as a share of 100 (its cut-offs are 28 and 52), not as the raw total.
+      const shown = def.result.percent ? `${Math.round((result.total / max) * 100)} / 100` : `${result.total} / ${max}`;
       const nodes = [
         ...headline(results[result.key]),
-        bar(copy.scoreLabel ?? ui.score, (result.total / max) * 100, `${result.total} / ${max}`),
+        bar(copy.scoreLabel ?? ui.score, (result.total / max) * 100, shown),
       ];
       if (quizGroupOf(id) === "wellbeing") nodes.push(h("p", { class: "muted" }, ui.notDiagnosis));
       if (result.safety) nodes.unshift(crisisBox(locale));
-      return { nodes, summary: `${results[result.key]?.name ?? result.key}, ${result.total} / ${max}` };
+      return { nodes, summary: `${results[result.key]?.name ?? result.key}, ${shown}` };
     }
   }
 }

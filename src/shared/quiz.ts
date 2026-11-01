@@ -48,22 +48,22 @@ export type ChoiceItem = { options: Record<string, number>[]; exclude?: readonly
  * top      — the highest dimension wins; all dimensions shown ranked. A tie goes to the earlier dimension, or with
  *            `tie: "spread"` to one picked by a hash of the answers that scored the tied results: with many results
  *            scored by small whole numbers, ties are common, and any fixed order would favor some results. The same
- *            answers always give the same result.
+ *            answers always give the same result. (Likert quizzes hash which statements scored and how much.)
  * code     — like top, but the result is the first three letters (Holland RIASEC).
  * quadrant — two dimensions, each high or low, give one of four results (attachment).
  * areas    — overall percentage picks a band (a band's `floor` also needs the weakest area that high);
  *            the lowest area gets a tip (marriage readiness).
  * band     — the raw total picks a band (Rosenberg, GAD-7, PHQ-9; extraversion; chronotype, where choice options
- *            add their weights to the total).
+ *            add their weights to the total). With `percent`, the page shows the total as a share of 100 (WHO-5).
  */
 export type ResultRule =
   | { kind: "profile" }
   | { kind: "types" }
-  | { kind: "top"; /** Choice quizzes only. */ tie?: "spread" }
+  | { kind: "top"; tie?: "spread" }
   | { kind: "code" }
   | { kind: "quadrant"; x: string; y: string; results: { lowLow: string; highLow: string; lowHigh: string; highHigh: string } }
   | { kind: "areas"; bands: readonly { min: number; key: string; floor?: number }[] }
-  | { kind: "band"; bands: readonly { max: number; key: string }[] };
+  | { kind: "band"; bands: readonly { max: number; key: string }[]; percent?: true };
 
 export type QuizDef =
   | { id: QuizId; type: "likert"; scale: Scale; dims: readonly string[]; items: readonly LikertItem[]; result: ResultRule }
@@ -442,10 +442,9 @@ export const QUIZ_DEFS: Record<QuizId, QuizDef> = {
     id: "love-style",
     type: "likert",
     scale: "agree5",
-    // Ties go to the earlier style, so a flat profile reads as friendship love, never as obsessive love.
-    dims: ["storge", "agape", "pragma", "eros", "ludus", "mania"],
+    dims: ["eros", "ludus", "storge", "pragma", "mania", "agape"],
     items: LOVE_STYLE,
-    result: { kind: "top" },
+    result: { kind: "top", tie: "spread" },
   },
   marriage: {
     id: "marriage",
@@ -470,10 +469,9 @@ export const QUIZ_DEFS: Record<QuizId, QuizDef> = {
     id: "leadership",
     type: "likert",
     scale: "agree5",
-    // Ties go to the earlier style, so a flat profile reads as democratic, never as commanding.
-    dims: ["democratic", "coaching", "affiliative", "visionary", "pacesetting", "commanding"],
+    dims: ["visionary", "coaching", "affiliative", "democratic", "pacesetting", "commanding"],
     items: LEADERSHIP,
-    result: { kind: "top" },
+    result: { kind: "top", tie: "spread" },
   },
   money: { id: "money", type: "likert", scale: "agree5", dims: ["saver", "spender", "investor", "avoider", "giver"], items: MONEY, result: { kind: "top" } },
   chronotype: {
@@ -511,7 +509,7 @@ export const QUIZ_DEFS: Record<QuizId, QuizDef> = {
     dims: ["who"],
     items: WHO5,
     // Below 13 (52%) is poor well-being and a reason to screen for depression; 7 or less (28% or less) suggests it.
-    result: { kind: "band", bands: [{ max: 7, key: "low" }, { max: 12, key: "reduced" }, { max: 25, key: "good" }] },
+    result: { kind: "band", bands: [{ max: 7, key: "low" }, { max: 12, key: "reduced" }, { max: 25, key: "good" }], percent: true },
   },
   "self-esteem": {
     id: "self-esteem",
@@ -614,10 +612,11 @@ export const QUIZ_DEFS: Record<QuizId, QuizDef> = {
 
 /**
  * When a result shows the crisis-line box: PHQ-9 item 9 (thoughts of self-harm) above "not at all", whatever the
- * total, and the severe PHQ-9 band.
+ * total, and the severe PHQ-9 band; WHO-5's lowest band, which often goes with depression.
  */
-export const SAFETY: Partial<Record<QuizId, { item: number; bands: readonly string[] }>> = {
+export const SAFETY: Partial<Record<QuizId, { item?: number; bands: readonly string[] }>> = {
   depression: { item: 8, bands: ["severe"] },
+  "wellbeing-index": { bands: ["low"] },
 };
 
 export function questionCount(id: QuizId): number {
@@ -715,8 +714,14 @@ export function scoreQuiz(id: QuizId, answers: readonly number[]): QuizResult {
   let total = 0;
   const excluded = new Set<string>();
   const rule = def.result;
-  // `tie: "spread"` (choice quizzes): which questions, and weights, scored each dimension.
-  const hits = rule.kind === "top" && rule.tie === "spread" && def.type === "choice" ? new Map<string, string[]>() : undefined;
+  // `tie: "spread"`: which questions, and weights, scored each dimension.
+  const hits = rule.kind === "top" && rule.tie === "spread" ? new Map<string, string[]>() : undefined;
+  const hit = (dim: string, i: number, weight: number): void => {
+    if (!hits || weight <= 0) return;
+    const list = hits.get(dim) ?? [];
+    list.push(`${i}:${weight}`);
+    hits.set(dim, list);
+  };
 
   if (def.type === "likert") {
     const top = SCALE_POINTS[def.scale] - 1;
@@ -726,6 +731,7 @@ export function scoreQuiz(id: QuizId, answers: readonly number[]): QuizResult {
       s.raw += points;
       s.max += top;
       total += points;
+      hit(item.dim, i, points);
     });
   } else {
     def.items.forEach((item, i) => {
@@ -740,11 +746,7 @@ export function scoreQuiz(id: QuizId, answers: readonly number[]): QuizResult {
         if (!s) continue;
         s.raw += weight;
         total += weight;
-        if (hits && weight > 0) {
-          const list = hits.get(dim) ?? [];
-          list.push(`${i}:${weight}`);
-          hits.set(dim, list);
-        }
+        hit(dim, i, weight);
       }
       for (const dim of item.exclude?.[answer] ?? []) excluded.add(dim);
     });
@@ -758,7 +760,7 @@ export function scoreQuiz(id: QuizId, answers: readonly number[]): QuizResult {
   const overall = pct(sumRaw, 0, sumMax);
   const key = resultKey(rule, scores, ranked, total, overall);
   const watch = SAFETY[id];
-  const safety = Boolean(watch && ((answers[watch.item] ?? 0) > 0 || watch.bands.includes(key)));
+  const safety = Boolean(watch && ((watch.item !== undefined && (answers[watch.item] ?? 0) > 0) || watch.bands.includes(key)));
   const weakest = rule.kind === "areas" ? lowest(scores).dim : undefined;
   return { key, scores, total, ranked, excluded: [...excluded], overall, safety, ...(weakest ? { weakest } : {}) };
 }
