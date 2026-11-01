@@ -205,3 +205,7 @@ Codex, refs `due-date-sweet.jpg` + `reading-time-sweet.jpg`. Same character and 
 - `image-upscaler`: a pink magnifying glass over a small flower photo that is crisp inside the lens, a tiny sparkle wand.
 - `speech-to-text`: a pink retro microphone with a heart grille, a cream speech bubble with blank wavy lines, a lined notebook.
 - `depth-map`: a layered paper diorama of hills and a cottage from cream to deep pink, heart-shaped 3D glasses.
+
+## AI photo to video (2026-11-01)
+
+Codex, refs `due-date-sweet.jpg` + `reading-time-sweet.jpg`. Same character and room. `v`: she holds a pearlescent pink vintage film camera with a heart-shaped lens; a framed cottage-on-a-hill photo pops out as a layered 3D paper diorama with a curved sparkle motion trail; a cream film strip with blank frames curls on the desk. No words, letters, numerals, logo or watermark.

@@ -69,6 +69,29 @@
       "data_handling": "Runs in the page. Inputs are not uploaded."
     },
     {
+      "id": "v",
+      "name": "AI photo to video",
+      "description": "One picture becomes an MP4 with a 3D camera move.",
+      "category": "ai",
+      "url": "https://cv.cm/en/v/",
+      "data_handling": "Downloads an AI model once and runs it on the device. Files are not uploaded.",
+      "ai": {
+        "models": [
+          {
+            "option": null,
+            "model": "onnx-community/depth-anything-v2-small",
+            "license": "Apache-2.0",
+            "download_bytes": {
+              "webgpu_fp16": 49642442,
+              "webgpu": 99060839,
+              "cpu": 27258801
+            }
+          }
+        ],
+        "options": "Camera move: Push in / Pull out / Orbit / Pan / Rise. Strength: Subtle / Normal / Strong. Length: 3 s / 5 s / 8 s. Shape: Photo / 9:16 / 1:1 / 16:9. Quality: 720p / 1080p. Seamless loop (ends where it starts). Exports an MP4 (H.264, or VP9 / AV1 where the browser cannot encode H.264) at 30 fps with WebCodecs. The camera moves, not the people in the photo."
+      }
+    },
+    {
       "id": "remove-background",
       "name": "Remove background",
       "description": "AI cut-out for people, products and pets. Transparent PNG.",

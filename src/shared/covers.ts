@@ -126,6 +126,7 @@ export const TOOL_COVER: Record<ToolId, string> = {
   "image-upscaler": "/covers/image-upscaler-sweet.jpg?v=1",
   "speech-to-text": "/covers/speech-to-text-sweet.jpg?v=1",
   "depth-map": "/covers/depth-map-sweet.jpg?v=1",
+  v: "/covers/v-sweet.jpg?v=1",
 };
 
 export const MARKET_COVER: Record<MarketId, string> = {

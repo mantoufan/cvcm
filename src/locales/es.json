@@ -477,7 +477,9 @@
     "titleTestMicrophone": "Test de micrófono online: cómo probar su micrófono | cv.cm",
     "descTestMicrophone": "Permita el micrófono, mire el medidor de nivel (picos de −20 a −6 dBFS), grabe 5 segundos y escúchelo. Soluciones para un micrófono mudo o saturado. No se sube nada.",
     "titleUseTallyCounter": "Contador online: cómo usar un contador de clics | cv.cm",
-    "descUseTallyCounter": "Cuente personas, vueltas, puntos de punto o votos con botones + y − grandes o con el teclado, nombre varios contadores, fije el paso y lea el total. Las cuentas se quedan en su navegador."
+    "descUseTallyCounter": "Cuente personas, vueltas, puntos de punto o votos con botones + y − grandes o con el teclado, nombre varios contadores, fije el paso y lea el total. Las cuentas se quedan en su navegador.",
+    "titleV": "IA de foto a video — movimiento 3D desde una imagen, gratis — cv.cm",
+    "descV": "Convierte una foto en un video 3D en movimiento: la profundidad con IA se calcula en tu navegador, la cámara se acerca, gira o hace paneo y descargas un MP4. Gratis, sin registro, sin marca de agua y sin subir la foto."
   },
   "brand": "cv.cm",
   "nav": {
@@ -1015,6 +1017,10 @@
     "mic-test": {
       "name": "Test de micrófono",
       "blurb": "Medidor de nivel y reproducción. No se sube nada."
+    },
+    "v": {
+      "name": "IA de foto a video",
+      "blurb": "Una imagen se convierte en un MP4 con movimiento de cámara 3D."
     }
   },
   "watermark": {
@@ -4003,6 +4009,18 @@
       "a4": "No. El audio y la grabación de prueba se quedan en esta pestaña y desaparecen al cerrarla.",
       "q5": "¿Por qué el navegador pide permiso?",
       "a5": "Los navegadores solo dan el micrófono a una página después de que lo permitas. Puedes retirar el permiso en la configuración del sitio en cualquier momento."
+    },
+    "v": {
+      "q1": "¿Cómo funciona convertir una foto en video?",
+      "a1": "Un modelo de IA (Depth Anything V2) estima a qué distancia está cada parte de la imagen. Una cámara virtual se mueve a través de esa profundidad: lo cercano se desplaza más que el fondo, como una toma 3D corta.",
+      "q2": "¿Se sube mi foto?",
+      "a2": "No. El modelo se descarga una vez (unos 25–100 MB, según tu dispositivo) y se ejecuta en esta pestaña. El video también se codifica en el navegador.",
+      "q3": "¿Puede crear un video a partir de texto?",
+      "a3": "No. Anima una imagen que ya tienes: una foto, un dibujo o una imagen de IA. Las personas y los objetos no se mueven solos; se mueve la cámara.",
+      "q4": "¿Qué formato y tamaño tiene el video?",
+      "a4": "MP4 a 30 fps, de 3, 5 u 8 segundos, en 720p o 1080p, con la forma de la foto o recortado a 9:16, 1:1 o 16:9. Se reproduce en el móvil y se puede subir a TikTok, Reels y Shorts.",
+      "q5": "¿Por qué los bordes se ven estirados?",
+      "a5": "La cámara deja ver un poco de lo que estaba oculto detrás de los objetos cercanos, y la herramienta lo rellena con píxeles vecinos. Elige Suave, o una foto con un sujeto claro y un fondo sencillo."
     }
   },
   "qr": {
@@ -9356,5 +9374,44 @@
     "verdict_loud": "Demasiado alto: casi satura.",
     "hint": "La cancelación de eco y la supresión de ruido están desactivadas, así que oyes el micrófono sin procesar.",
     "recordingStatus": "Grabando durante {n} segundos…"
+  },
+  "v": {
+    "back": "Todas las herramientas",
+    "title": "IA de foto a video",
+    "privacyNote": "La profundidad con IA y la codificación del video se hacen en esta pestaña. Tu foto nunca se sube.",
+    "filesTitle": "Foto",
+    "dropTitle": "Suelta una foto",
+    "dropHint": "O pégala. La vista previa empieza a moverse al instante.",
+    "dropTypes": "JPG, PNG, WebP, HEIC",
+    "hint": "La cámara se mueve por la profundidad IA de la foto.",
+    "output": "{w} × {h} · {s} s · 30 fps",
+    "ready": "Profundidad 3D lista en {s} s ({device}).",
+    "play": "Reproducir",
+    "pause": "Pausa",
+    "download": "Descargar MP4",
+    "exporting": "Creando el video… {pct} %",
+    "exported": "MP4 de {w} × {h} guardado en {s} s.",
+    "motion": "Movimiento de cámara",
+    "motion_push": "Acercar",
+    "motion_pull": "Alejar",
+    "motion_orbit": "Girar alrededor",
+    "motion_pan": "Paneo",
+    "motion_rise": "Subir",
+    "strength": "Intensidad",
+    "strength_subtle": "Suave",
+    "strength_normal": "Normal",
+    "strength_strong": "Fuerte",
+    "duration": "Duración",
+    "seconds": "{n} s",
+    "aspect": "Formato",
+    "aspect_original": "Como la foto",
+    "size": "Calidad",
+    "loop": "Bucle continuo (termina donde empieza)",
+    "note": "Se mueve la cámara, no las personas de la foto.",
+    "empty": "Primero añade una foto.",
+    "waitDepth": "Espera un momento: la profundidad 3D aún se está calculando.",
+    "errorDecode": "No se pudo leer esa imagen.",
+    "errorGl": "Este navegador no admite WebGL 2, necesario para la vista previa 3D.",
+    "errorEncode": "Este navegador no puede codificar video. Prueba un Chrome, Edge o Safari reciente."
   }
 }

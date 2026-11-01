@@ -477,7 +477,9 @@
     "titleTestMicrophone": "Tes mikrofon online: cara cek mic di laptop dan HP | cv.cm",
     "descTestMicrophone": "Izinkan mikrofon, lihat meter level (targetkan puncak −20 sampai −6 dBFS), rekam 5 detik lalu putar ulang. Solusi untuk mic yang diam atau pecah. Tidak ada unggahan.",
     "titleUseTallyCounter": "Cara memakai penghitung online (tally counter) | cv.cm",
-    "descUseTallyCounter": "Hitung orang, putaran, tusukan rajut, atau suara dengan tombol + dan − besar atau keyboard, beri nama beberapa penghitung, atur langkah, dan baca totalnya. Hitungan tetap di browser Anda."
+    "descUseTallyCounter": "Hitung orang, putaran, tusukan rajut, atau suara dengan tombol + dan − besar atau keyboard, beri nama beberapa penghitung, atur langkah, dan baca totalnya. Hitungan tetap di browser Anda.",
+    "titleV": "AI foto jadi video — gerakan 3D dari satu gambar, gratis — cv.cm",
+    "descV": "Ubah satu foto menjadi video 3D bergerak: kedalaman AI dihitung di browser, kamera maju, mengitari atau menyapu, lalu unduh MP4. Gratis, tanpa daftar, tanpa watermark, foto tidak diunggah."
   },
   "brand": "cv.cm",
   "nav": {
@@ -1015,6 +1017,10 @@
     "mic-test": {
       "name": "Tes mikrofon",
       "blurb": "Meter level dan putar ulang. Tidak ada unggahan."
+    },
+    "v": {
+      "name": "AI foto jadi video",
+      "blurb": "Satu gambar jadi MP4 dengan gerakan kamera 3D."
     }
   },
   "watermark": {
@@ -4003,6 +4009,18 @@
       "a4": "Tidak. Audio dan rekaman tes tetap di tab ini dan hilang saat Anda menutupnya.",
       "q5": "Kenapa browser meminta izin?",
       "a5": "Browser hanya memberi akses mikrofon ke halaman setelah Anda mengizinkannya. Anda bisa mencabut izin itu di pengaturan situs kapan saja."
+    },
+    "v": {
+      "q1": "Bagaimana foto diubah menjadi video?",
+      "a1": "Model AI (Depth Anything V2) memperkirakan jarak setiap bagian gambar. Kamera virtual lalu bergerak melalui kedalaman itu, sehingga benda dekat bergeser lebih banyak daripada latar, seperti cuplikan 3D singkat.",
+      "q2": "Apakah foto saya diunggah?",
+      "a2": "Tidak. Model diunduh sekali (sekitar 25–100 MB, tergantung perangkat) dan berjalan di tab ini. Video juga dienkode di browser.",
+      "q3": "Bisakah membuat video dari teks?",
+      "a3": "Tidak. Alat ini menggerakkan gambar yang sudah Anda punya: foto, gambar ilustrasi atau gambar AI. Orang dan benda tidak bergerak sendiri; kameranya yang bergerak.",
+      "q4": "Apa format dan ukuran videonya?",
+      "a4": "MP4 30 fps, durasi 3, 5 atau 8 detik, 720p atau 1080p, sesuai bentuk foto atau dipotong 9:16, 1:1, 16:9. Bisa diputar di ponsel dan diunggah ke TikTok, Reels, Shorts.",
+      "q5": "Mengapa tepi terlihat melar?",
+      "a5": "Saat kamera bergerak, sedikit area yang tadinya tertutup benda dekat terlihat, dan alat mengisinya dengan piksel sekitar. Pilih Halus, atau gunakan foto dengan subjek jelas dan latar polos."
     }
   },
   "qr": {
@@ -9356,5 +9374,44 @@
     "verdict_loud": "Terlalu keras — hampir clipping.",
     "hint": "Peredam gema dan peredam bising dimatikan, jadi Anda mendengar suara mikrofon apa adanya.",
     "recordingStatus": "Merekam selama {n} detik…"
+  },
+  "v": {
+    "back": "Semua alat",
+    "title": "AI foto jadi video",
+    "privacyNote": "Kedalaman AI dan enkode video berjalan di tab ini. Foto Anda tidak pernah diunggah.",
+    "filesTitle": "Foto",
+    "dropTitle": "Letakkan foto",
+    "dropHint": "Atau tempel. Pratinjau langsung bergerak.",
+    "dropTypes": "JPG, PNG, WebP, HEIC",
+    "hint": "Kamera bergerak melalui kedalaman AI foto.",
+    "output": "{w} × {h} · {s} dtk · 30 fps",
+    "ready": "Kedalaman 3D siap dalam {s} dtk ({device}).",
+    "play": "Putar",
+    "pause": "Jeda",
+    "download": "Unduh MP4",
+    "exporting": "Membuat video… {pct}%",
+    "exported": "MP4 {w} × {h} tersimpan dalam {s} dtk.",
+    "motion": "Gerakan kamera",
+    "motion_push": "Maju",
+    "motion_pull": "Mundur",
+    "motion_orbit": "Mengitari",
+    "motion_pan": "Menyapu",
+    "motion_rise": "Naik",
+    "strength": "Kekuatan",
+    "strength_subtle": "Halus",
+    "strength_normal": "Normal",
+    "strength_strong": "Kuat",
+    "duration": "Durasi",
+    "seconds": "{n} dtk",
+    "aspect": "Bentuk",
+    "aspect_original": "Sesuai foto",
+    "size": "Kualitas",
+    "loop": "Loop mulus (akhir kembali ke awal)",
+    "note": "Yang bergerak kamera, bukan orang di foto.",
+    "empty": "Tambahkan foto dulu.",
+    "waitDepth": "Tunggu sebentar: kedalaman 3D masih dihitung.",
+    "errorDecode": "Gambar itu tidak bisa dibaca.",
+    "errorGl": "Browser ini tidak mendukung WebGL 2 yang dibutuhkan pratinjau 3D.",
+    "errorEncode": "Browser ini tidak bisa mengenkode video. Coba Chrome, Edge atau Safari terbaru."
   }
 }

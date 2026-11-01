@@ -477,7 +477,9 @@
     "titleTestMicrophone": "How to test your microphone online | cv.cm",
     "descTestMicrophone": "Allow the microphone, watch the level meter (aim for peaks of −20 to −6 dBFS), record 5 seconds and play it back. Fixes for a silent or clipping mic. Nothing is uploaded.",
     "titleUseTallyCounter": "How to use an online tally counter | cv.cm",
-    "descUseTallyCounter": "Count people, laps, stitches or votes with big + and − buttons or the keyboard, name several counters, set a step and read the total. Counts stay in your browser."
+    "descUseTallyCounter": "Count people, laps, stitches or votes with big + and − buttons or the keyboard, name several counters, set a step and read the total. Counts stay in your browser.",
+    "titleV": "AI photo to video — 3D motion from one picture, free — cv.cm",
+    "descV": "Turn one photo into a moving 3D video: AI depth runs in your browser, the camera pushes in, orbits or pans, and you download an MP4. Free, no sign-up, no watermark, nothing is uploaded."
   },
   "brand": "cv.cm",
   "nav": {
@@ -3014,6 +3016,10 @@
     "mic-test": {
       "name": "Mic test",
       "blurb": "Level meter and playback. Nothing is uploaded."
+    },
+    "v": {
+      "name": "AI photo to video",
+      "blurb": "One picture becomes an MP4 with a 3D camera move."
     }
   },
   "watermark": {
@@ -6002,6 +6008,18 @@
       "a4": "No. The audio and the test recording stay in this tab and are gone when you close it.",
       "q5": "Why does the browser ask for permission?",
       "a5": "Browsers only give a page the microphone after you allow it. You can take the permission back in the site settings at any time."
+    },
+    "v": {
+      "q1": "How does photo to video work?",
+      "a1": "An AI model (Depth Anything V2) estimates how far each part of the picture is. A virtual camera then moves through that depth, so near things shift more than the background, like a short 3D shot.",
+      "q2": "Is my photo uploaded?",
+      "a2": "No. The model downloads once (about 25–100 MB, depending on your device) and runs in this tab. The video is encoded in the browser too.",
+      "q3": "Can it make a video from text?",
+      "a3": "No. It animates a picture you already have: a photo, a drawing or an AI image. People and objects do not move on their own; the camera moves.",
+      "q4": "Which format and size is the video?",
+      "a4": "MP4 at 30 fps, 3, 5 or 8 seconds, 720p or 1080p, in the photo's shape or cropped to 9:16, 1:1 or 16:9. It plays on phones and uploads to TikTok, Reels and Shorts.",
+      "q5": "Why do edges look stretched?",
+      "a5": "The camera reveals a little of what was hidden behind near objects, and the tool fills it from nearby pixels. Pick Subtle, or a photo with a clear subject and a plain background."
     }
   },
   "qr": {
@@ -9356,5 +9374,44 @@
     "verdict_loud": "Too loud — close to clipping.",
     "hint": "Echo cancellation and noise suppression are off, so you hear the raw microphone.",
     "recordingStatus": "Recording for {n} seconds…"
+  },
+  "v": {
+    "back": "All tools",
+    "title": "AI photo to video",
+    "privacyNote": "AI depth and video encoding run in this tab. Your photo is never uploaded.",
+    "filesTitle": "Photo",
+    "dropTitle": "Drop a photo",
+    "dropHint": "Or paste. The preview starts moving at once.",
+    "dropTypes": "JPG, PNG, WebP, HEIC",
+    "hint": "The camera moves through the photo's AI depth.",
+    "output": "{w} × {h} · {s} s · 30 fps",
+    "ready": "3D depth ready in {s} s ({device}).",
+    "play": "Play",
+    "pause": "Pause",
+    "download": "Download MP4",
+    "exporting": "Making the video… {pct}%",
+    "exported": "Saved a {w} × {h} MP4 in {s} s.",
+    "motion": "Camera move",
+    "motion_push": "Push in",
+    "motion_pull": "Pull out",
+    "motion_orbit": "Orbit",
+    "motion_pan": "Pan",
+    "motion_rise": "Rise",
+    "strength": "Strength",
+    "strength_subtle": "Subtle",
+    "strength_normal": "Normal",
+    "strength_strong": "Strong",
+    "duration": "Length",
+    "seconds": "{n} s",
+    "aspect": "Shape",
+    "aspect_original": "Photo",
+    "size": "Quality",
+    "loop": "Seamless loop (ends where it starts)",
+    "note": "The camera moves, not the people in the photo.",
+    "empty": "Add a photo first.",
+    "waitDepth": "Wait a moment: the 3D depth is still being made.",
+    "errorDecode": "Could not read that image.",
+    "errorGl": "This browser cannot draw WebGL 2, which the 3D preview needs.",
+    "errorEncode": "This browser cannot encode video. Try a recent Chrome, Edge or Safari."
   }
 }

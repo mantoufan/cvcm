@@ -477,7 +477,9 @@
     "titleTestMicrophone": "Test micro online: cách kiểm tra micro trên máy tính và điện thoại | cv.cm",
     "descTestMicrophone": "Cho phép micro, xem đồng hồ mức âm (đỉnh nên ở −20 đến −6 dBFS), ghi 5 giây rồi nghe lại. Cách sửa micro không có tiếng hoặc bị vỡ tiếng. Không tải lên.",
     "titleUseTallyCounter": "Cách dùng bộ đếm số online | cv.cm",
-    "descUseTallyCounter": "Đếm người, vòng chạy, mũi đan hay phiếu bầu bằng nút + và − lớn hoặc bàn phím, đặt tên cho nhiều bộ đếm, chỉnh bước đếm và xem tổng. Số đếm nằm trong trình duyệt của bạn."
+    "descUseTallyCounter": "Đếm người, vòng chạy, mũi đan hay phiếu bầu bằng nút + và − lớn hoặc bàn phím, đặt tên cho nhiều bộ đếm, chỉnh bước đếm và xem tổng. Số đếm nằm trong trình duyệt của bạn.",
+    "titleV": "AI biến ảnh thành video — chuyển động 3D từ một bức ảnh, miễn phí — cv.cm",
+    "descV": "Biến một bức ảnh thành video 3D chuyển động: AI ước lượng độ sâu ngay trong trình duyệt, máy quay tiến vào, xoay quanh hoặc lia ngang, rồi tải MP4. Miễn phí, không cần đăng ký, không watermark, ảnh không bị tải lên."
   },
   "brand": "cv.cm",
   "nav": {
@@ -1015,6 +1017,10 @@
     "mic-test": {
       "name": "Kiểm tra micro",
       "blurb": "Đồng hồ mức âm và nghe lại. Không tải lên."
+    },
+    "v": {
+      "name": "AI biến ảnh thành video",
+      "blurb": "Một bức ảnh thành MP4 có chuyển động máy quay 3D."
     }
   },
   "watermark": {
@@ -4003,6 +4009,18 @@
       "a4": "Không. Âm thanh và bản ghi thử ở lại trong thẻ này và biến mất khi bạn đóng thẻ.",
       "q5": "Sao trình duyệt lại xin quyền?",
       "a5": "Trình duyệt chỉ cấp micro cho trang web sau khi bạn cho phép. Bạn có thể thu hồi quyền trong cài đặt trang web bất cứ lúc nào."
+    },
+    "v": {
+      "q1": "Biến ảnh thành video hoạt động thế nào?",
+      "a1": "Mô hình AI (Depth Anything V2) ước lượng khoảng cách của từng phần trong ảnh. Một máy quay ảo di chuyển qua độ sâu đó, vật ở gần dịch chuyển nhiều hơn nền, giống một cảnh quay 3D ngắn.",
+      "q2": "Ảnh của tôi có bị tải lên không?",
+      "a2": "Không. Mô hình chỉ tải về một lần (khoảng 25–100 MB tùy thiết bị) và chạy trong tab này. Video cũng được mã hóa trong trình duyệt.",
+      "q3": "Có tạo video từ chữ được không?",
+      "a3": "Không. Công cụ làm chuyển động một hình bạn đã có: ảnh chụp, tranh vẽ hoặc ảnh AI. Người và vật không tự cử động; máy quay di chuyển.",
+      "q4": "Video có định dạng và kích thước gì?",
+      "a4": "MP4 30 fps, dài 3, 5 hoặc 8 giây, 720p hoặc 1080p, giữ tỉ lệ ảnh hoặc cắt 9:16, 1:1, 16:9. Phát được trên điện thoại và đăng TikTok, Reels, Shorts.",
+      "q5": "Vì sao mép ảnh trông bị kéo giãn?",
+      "a5": "Khi máy quay di chuyển sẽ lộ ra một chút phần bị vật ở gần che khuất, công cụ lấp bằng điểm ảnh lân cận. Hãy chọn Nhẹ, hoặc dùng ảnh có chủ thể rõ và nền đơn giản."
     }
   },
   "qr": {
@@ -9356,5 +9374,44 @@
     "verdict_loud": "Quá to — sắp bị méo tiếng (clipping).",
     "hint": "Khử tiếng vang và khử ồn đã tắt, nên bạn nghe được âm thanh gốc của micro.",
     "recordingStatus": "Đang ghi trong {n} giây…"
+  },
+  "v": {
+    "back": "Tất cả công cụ",
+    "title": "AI biến ảnh thành video",
+    "privacyNote": "Ước lượng độ sâu AI và mã hóa video chạy trong tab này. Ảnh không bao giờ bị tải lên.",
+    "filesTitle": "Ảnh",
+    "dropTitle": "Thả ảnh vào đây",
+    "dropHint": "Hoặc dán. Bản xem trước chuyển động ngay.",
+    "dropTypes": "JPG, PNG, WebP, HEIC",
+    "hint": "Máy quay di chuyển theo độ sâu AI của ảnh.",
+    "output": "{w} × {h} · {s} giây · 30 fps",
+    "ready": "Độ sâu 3D sẵn sàng sau {s} giây ({device}).",
+    "play": "Phát",
+    "pause": "Tạm dừng",
+    "download": "Tải MP4",
+    "exporting": "Đang tạo video… {pct}%",
+    "exported": "Đã lưu MP4 {w} × {h} trong {s} giây.",
+    "motion": "Chuyển động máy quay",
+    "motion_push": "Tiến vào",
+    "motion_pull": "Lùi ra",
+    "motion_orbit": "Xoay quanh",
+    "motion_pan": "Lia ngang",
+    "motion_rise": "Nâng lên",
+    "strength": "Mức độ",
+    "strength_subtle": "Nhẹ",
+    "strength_normal": "Vừa",
+    "strength_strong": "Mạnh",
+    "duration": "Độ dài",
+    "seconds": "{n} giây",
+    "aspect": "Tỉ lệ",
+    "aspect_original": "Theo ảnh",
+    "size": "Chất lượng",
+    "loop": "Lặp liền mạch (kết thúc nối về đầu)",
+    "note": "Máy quay di chuyển, người trong ảnh không cử động.",
+    "empty": "Hãy thêm một bức ảnh trước.",
+    "waitDepth": "Chờ một chút: độ sâu 3D vẫn đang được tính.",
+    "errorDecode": "Không đọc được ảnh này.",
+    "errorGl": "Trình duyệt này không hỗ trợ WebGL 2 cần cho bản xem trước 3D.",
+    "errorEncode": "Trình duyệt này không mã hóa được video. Hãy thử Chrome, Edge hoặc Safari bản mới."
   }
 }
