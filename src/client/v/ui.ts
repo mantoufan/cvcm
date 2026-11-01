@@ -25,7 +25,6 @@ import type { AiResponse } from "../ai/protocol";
 import { decodeImage } from "../decode";
 import { downloadBlob, h } from "../dom";
 import { locale, t } from "../i18n";
-import { canEncode, encodeMp4 } from "./encode";
 import { ParallaxRenderer, prepareDepth } from "./render";
 
 /**
@@ -200,7 +199,8 @@ function previewCanvas(): HTMLCanvasElement {
   const canvas = h("canvas", { class: "preview", width: 800, height: 560 });
   canvas.addEventListener("webglcontextlost", (e) => e.preventDefault());
   canvas.addEventListener("webglcontextrestored", () => {
-    if (canvas === preview) rebuildPreview();
+    // A photo picked meanwhile may already have rebuilt it on this context.
+    if (canvas === preview && (!renderer || renderer.lost())) rebuildPreview();
   });
   return canvas;
 }
@@ -223,7 +223,8 @@ function liveRenderer(): ParallaxRenderer {
   return renderer;
 }
 
-function rebuildPreview(): void {
+/** `resume`: restart the animation afterwards (not when called from inside a frame, which keeps its own loop). */
+function rebuildPreview(resume = true): void {
   if (!alive || !state.small) return;
   renderer = null;
   try {
@@ -235,7 +236,7 @@ function rebuildPreview(): void {
   renderer!.setPhoto(state.small);
   renderer!.setDepth(state.depth);
   layout();
-  play();
+  if (resume) play();
 }
 
 /**
@@ -341,13 +342,13 @@ async function run(): Promise<void> {
       client,
       status,
       async () => {
-        // The worker reads at most 1536 px; send that, not a full 4096 px copy.
-        const fit = Math.min(1, DEPTH_INPUT_MAX / Math.max(source.width, source.height));
-        const bitmap = await createImageBitmap(source, {
-          resizeWidth: Math.max(1, Math.round(source.width * fit)),
-          resizeHeight: Math.max(1, Math.round(source.height * fit)),
-          resizeQuality: "high",
-        });
+        // The worker reads at most DEPTH_INPUT_MAX px; send that, not a full 4096 px copy.
+        const bitmap = await fitted(source, DEPTH_INPUT_MAX);
+        // A newer photo arrived while this copy was made: do not start a job nobody will see.
+        if (state.photo !== source) {
+          bitmap.close();
+          throw new Error("cancelled");
+        }
         return { body: { type: "depth", bitmap }, transfer: [bitmap] };
       },
     );
@@ -398,6 +399,11 @@ function redrawStill(): void {
 
 function drawAt(t01: number): void {
   shownT = t01;
+  // The context went away and no restore event came (iOS after backgrounding): rebuild on a new canvas.
+  if (renderer?.lost()) {
+    rebuildPreview(false);
+    if (!renderer || renderer.lost()) return;
+  }
   renderer?.draw(cameraAt(state.motion, STRENGTHS[state.strength], t01, state.loop));
 }
 
@@ -410,6 +416,7 @@ function restart(): void {
 /** Run the animation from `shownT`, or just draw it when paused. */
 function play(): void {
   clock = performance.now() - shownT * state.duration * 1000;
+  if (!state.photo) return;
   if (state.playing && !state.exporting) loop();
   else drawAt(shownT);
 }
@@ -448,10 +455,6 @@ async function download(): Promise<void> {
     if (!state.running) status.error(t("v.waitDepth"));
     return;
   }
-  if (!canEncode()) {
-    status.error(t("v.errorEncode"));
-    return;
-  }
   // Everything the clip needs, read now: settings may change while it renders.
   const source = state.photo;
   const file = state.file;
@@ -477,6 +480,9 @@ async function download(): Promise<void> {
   let exporter: ParallaxRenderer | null = null;
   const started = performance.now();
   try {
+    // Loaded on first export: most visits only preview.
+    const { canEncode, encodeMp4 } = await import("./encode");
+    if (!canEncode()) throw new Error("codec");
     const texture = await fitted(source, need);
     try {
       exporter = new ParallaxRenderer(canvas, { keepFrame: true });
@@ -509,8 +515,9 @@ async function download(): Promise<void> {
       return;
     }
     console.error(err);
-    // The renderer throws "webgl2" when the browser has no WebGL 2 context to give.
-    panel.error(t(err instanceof Error && err.message === "webgl2" ? "v.errorGl" : "v.errorEncode"));
+    const message = err instanceof Error ? err.message : "";
+    // "webgl2": no WebGL 2 context to give; "webgl context lost": the GPU dropped it mid-export (try again).
+    panel.error(t(message === "webgl2" ? "v.errorGl" : message === "webgl context lost" ? "v.errorGpuReset" : "v.errorEncode"));
   } finally {
     exporter?.dispose();
     panel.busy = false;
