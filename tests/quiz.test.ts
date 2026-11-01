@@ -6,10 +6,13 @@ import { quizMessages } from "../src/shared/messages";
 import { parseAppPath, quizHref } from "../src/shared/path";
 import {
   FAN_GROUPS,
+  FOLLOW_UP,
   QUIZ_DEFS,
   QUIZ_GROUPS,
   QUIZZES,
+  SAFETY,
   SCALE_POINTS,
+  SUPPORT,
   isComplete,
   maxTotal,
   resultKeys,
@@ -164,6 +167,20 @@ describe("test pages: copy", () => {
 });
 
 describe("test pages: scoring", () => {
+  it("names only real bands in the help and follow-up tables", () => {
+    const bands = (id: QuizId): string[] => {
+      const rule = QUIZ_DEFS[id].result;
+      return rule.kind === "band" ? rule.bands.map((b) => b.key) : [];
+    };
+    const tables = [SUPPORT, FOLLOW_UP, SAFETY] as Partial<Record<QuizId, readonly string[] | { bands: readonly string[] }>>[];
+    for (const table of tables) {
+      for (const [id, entry] of Object.entries(table) as [QuizId, readonly string[] | { bands: readonly string[] }][]) {
+        const keys = Array.isArray(entry) ? entry : (entry as { bands: readonly string[] }).bands;
+        for (const key of keys) expect(bands(id), `${id} ${key}`).toContain(key);
+      }
+    }
+  });
+
   it("needs every question answered with a real option", () => {
     expect(isComplete("anxiety", all("anxiety", 0))).toBe(true);
     const missing: (number | null)[] = all("anxiety", 1);

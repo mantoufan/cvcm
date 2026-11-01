@@ -258,7 +258,6 @@ function helpBox(locale: Locale, kind: "crisis" | "support"): HTMLElement {
   return h("div", { class: `quiz-${kind}`, role: "note" }, h("strong", null, title), h("p", null, body), h("p", null, lines));
 }
 
-/** The result block for one test, plus a one-line summary for "Copy result". */
 /** "A, B and C" in the page language; plain commas where Intl.ListFormat is missing (Safari before 14.1). */
 function listNames(locale: Locale, names: string[]): string {
   try {
@@ -268,6 +267,7 @@ function listNames(locale: Locale, names: string[]): string {
   }
 }
 
+/** The result block for one test, plus a one-line summary for "Copy result". */
 function resultView(locale: Locale, id: QuizId, copy: QuizCopy, result: QuizResult): { nodes: HTMLElement[]; summary: string } {
   const ui = quizUi(locale);
   const def = QUIZ_DEFS[id];
