@@ -103,6 +103,10 @@ describe("AI page headers", () => {
     expect(mic.headers.get("Cross-Origin-Embedder-Policy")).toBeNull();
     const lesson = await worker.fetch(new Request("https://cv.cm/en/learn/test-microphone/"), { ASSETS: html });
     expect(lesson.headers.get("Permissions-Policy")).toContain("microphone=()");
+    expect(mic.headers.get("Permissions-Policy")).toContain("camera=()");
+    const cam = await worker.fetch(new Request("https://cv.cm/en/webcam-test/"), { ASSETS: html });
+    expect(cam.headers.get("Permissions-Policy")).toContain("camera=(self)");
+    expect(cam.headers.get("Permissions-Policy")).toContain("microphone=()");
     const other = await worker.fetch(new Request("https://cv.cm/en/json/"), { ASSETS: html });
     expect(other.headers.get("Permissions-Policy")).toContain("microphone=()");
     expect(other.headers.get("Cross-Origin-Embedder-Policy")).toBeNull();

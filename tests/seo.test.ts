@@ -157,6 +157,14 @@ describe("seo helpers", () => {
     expect(pageTitle("zh-CN", "tone-generator")).toMatch(/频率|音频/);
     expect(pageTitle("zh-CN", "tally-counter")).toMatch(/计数/);
     expect(pageTitle("zh-CN", "mic-test")).toMatch(/麦克风/);
+    expect(pageTitle("en", "webcam-test")).toMatch(/webcam/i);
+    expect(pageTitle("en", "gamepad-test")).toMatch(/gamepad|controller/i);
+    expect(pageTitle("en", "dead-pixel")).toMatch(/dead pixel/i);
+    expect(pageTitle("en", "refresh-rate")).toMatch(/refresh rate/i);
+    expect(pageTitle("en", "touch-test")).toMatch(/touch/i);
+    expect(pageTitle("zh-CN", "webcam-test")).toMatch(/摄像头/);
+    expect(pageTitle("zh-CN", "dead-pixel")).toMatch(/坏点/);
+    expect(pageTitle("zh-CN", "touch-test")).toMatch(/触摸/);
     expect(pageTitle("en", "portrait-sim")).toMatch(/Portrait camera simulator/i);
     expect(pageTitle("en", "watermark")).toMatch(/watermark/i);
     expect(pageTitle("en", "watermark")).toMatch(/ID copies/i);
@@ -180,7 +188,7 @@ describe("seo helpers", () => {
 
   it("builds five FAQ items and FAQPage JSON-LD per tool", () => {
     const tools = [
-      "clip", "qr", "barcode", "watermark", "mosaic", "collage", "portrait-sim", "resize", "crop", "rotate", "exif", "meme", "signature", "favicon", "screenshot", "convert", "image-pdf", "pdf-jpg", "merge-pdf", "compress-pdf", "split-pdf", "invoice", "audio", "audio-cutter", "audio-joiner", "data", "xml-json", "yaml-json", "password", "word-count", "color", "hex-rgb", "names", "timezone", "timestamp", "lorem", "units", "text-to-speech", "diff", "uuid", "hash", "regex", "case", "jwt", "percent", "random", "html", "cron", "slug", "age", "bmi", "binary", "tip", "morse", "roman", "discount", "countdown", "loan", "stopwatch", "compound", "vat", "reverse", "url-encode", "text-hex", "json", "base64", "days", "sort", "replace", "words", "add-days", "week", "aspect", "workdays", "fraction", "hourly", "margin", "radix", "duration", "tdee", "cidr", "chmod", "typing", "image-colors", "dice", "gpa", "pomodoro", "sleep", "body-fat", "contrast", "pace", "grade", "due-date", "ideal-weight", "water-intake", "fuel-cost", "reading-time", "time-card", "electricity", "ovulation", "macro", "calories-burned", "wheel", "average", "metronome", "keyboard-test", "zodiac", "click-test", "reaction-time", "tone-generator", "tally-counter", "mic-test",
+      "clip", "qr", "barcode", "watermark", "mosaic", "collage", "portrait-sim", "resize", "crop", "rotate", "exif", "meme", "signature", "favicon", "screenshot", "convert", "image-pdf", "pdf-jpg", "merge-pdf", "compress-pdf", "split-pdf", "invoice", "audio", "audio-cutter", "audio-joiner", "data", "xml-json", "yaml-json", "password", "word-count", "color", "hex-rgb", "names", "timezone", "timestamp", "lorem", "units", "text-to-speech", "diff", "uuid", "hash", "regex", "case", "jwt", "percent", "random", "html", "cron", "slug", "age", "bmi", "binary", "tip", "morse", "roman", "discount", "countdown", "loan", "stopwatch", "compound", "vat", "reverse", "url-encode", "text-hex", "json", "base64", "days", "sort", "replace", "words", "add-days", "week", "aspect", "workdays", "fraction", "hourly", "margin", "radix", "duration", "tdee", "cidr", "chmod", "typing", "image-colors", "dice", "gpa", "pomodoro", "sleep", "body-fat", "contrast", "pace", "grade", "due-date", "ideal-weight", "water-intake", "fuel-cost", "reading-time", "time-card", "electricity", "ovulation", "macro", "calories-burned", "wheel", "average", "metronome", "keyboard-test", "zodiac", "click-test", "reaction-time", "tone-generator", "tally-counter", "mic-test", "webcam-test", "gamepad-test", "dead-pixel", "refresh-rate", "touch-test",
     ] as const;
     for (const tool of tools) {
       const items = faqItems("en", tool);

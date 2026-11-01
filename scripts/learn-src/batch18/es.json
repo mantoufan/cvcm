@@ -1,0 +1,228 @@
+{
+  "meta": {
+    "titleTestWebcam": "Cómo probar su webcam online (resolución, fps, soluciones) | cv.cm",
+    "descTestWebcam": "Pruebe su webcam en el navegador: vista previa, resolución y fps reales, una foto de prueba y qué hacer si la cámara sale negra o no aparece. No se sube nada.",
+    "titleTestGamepad": "Cómo probar un mando y detectar el drift de los joysticks | cv.cm",
+    "descTestGamepad": "Pruebe cada botón, gatillo y joystick de un mando de Xbox, PlayStation o Switch Pro en el navegador, lea el drift (0.05 leve, 0.15 drift) y pruebe la vibración.",
+    "titleCheckDeadPixels": "Cómo detectar píxeles muertos o atascados en la pantalla | cv.cm",
+    "descCheckDeadPixels": "Test de colores a pantalla completa para encontrar píxeles muertos, atascados y encendidos y distinguirlos del polvo. Monitores, portátiles y móviles.",
+    "titleCheckRefreshRate": "Cómo ver la frecuencia de actualización (Hz) de su monitor | cv.cm",
+    "descCheckRefreshRate": "Mida a qué frecuencia dibuja de verdad su navegador, lea el tiempo de fotograma y los fotogramas saltados, y arregle una pantalla de 144 Hz atascada en 60 Hz.",
+    "titleTestTouchScreen": "Cómo probar una pantalla táctil: zonas muertas y multitáctil | cv.cm",
+    "descTestTouchScreen": "Dibuje sobre una cuadrícula para encontrar zonas muertas, cuente cuántos dedos detecta la pantalla a la vez y compruebe la presión del lápiz. No se sube nada."
+  },
+  "lessons": {
+    "test-webcam": {
+      "copy": {
+        "name": "Cómo probar su webcam",
+        "blurb": "Revise la vista previa, la resolución y los fps reales, y haga una foto de prueba. No se sube nada.",
+        "title": "Cómo probar su webcam",
+        "lead": "Tiene una videollamada pronto, o una webcam nueva, y quiere saber que funciona y cómo se ve. Abrirá la cámara, leerá lo que envía de verdad y resolverá los problemas habituales. El vídeo se queda en su navegador; no se sube nada.",
+        "result": "Una vista previa que funciona, la resolución, la relación de aspecto y los fps reales de la cámara, y una foto de prueba en su dispositivo.",
+        "note": "Las apps de vídeo pueden volver a bajar la resolución para ahorrar ancho de banda; este test muestra lo que la propia cámara puede enviar.",
+        "s1t": "Sepa qué revisar",
+        "s1b": "Cuatro cosas deciden cómo se le ve en una llamada: la resolución (720p o 1080p), los fps (30 fps es fluido), el enfoque y la luz. El test muestra las dos primeras como números; una foto muestra el resto.",
+        "s2t": "Abra Test de webcam en cv.cm",
+        "s2b": "Pulse Iniciar cámara y permita el acceso cuando se lo pidan. Se verá en la vista previa, invertido como en un espejo; desmarque Vista previa en espejo para ver lo que ven los demás.",
+        "s3t": "Elija la cámara y la resolución",
+        "s3b": "Si tiene más de una cámara, elíjala en la lista Cámara. Elija 720p o 1080p en Resolución; el panel muestra el tamaño que recibe de verdad, que puede ser menor si la cámara no lo admite.",
+        "s4t": "Lea los fps",
+        "s4b": "Los fps se miden a partir de los fotogramas que se muestran de verdad. 30 fps es fluido; 15 fps o menos suele significar que la habitación está demasiado oscura y la cámara expone más tiempo.",
+        "s5t": "Arregle una cámara negra o que no aparece",
+        "s5b": "Cierre otras apps que usen la cámara, abra la tapa de privacidad o pulse la tecla de cámara, permita el acceso a la cámara para el navegador en la configuración del sistema y pruebe otro puerto USB.",
+        "s6t": "Haga una foto de prueba",
+        "s6b": "Pulse Hacer foto para comprobar la nitidez y el color, y Guardar foto para conservarla. Póngase de cara a una ventana o una lámpara en lugar de tenerla detrás.",
+        "diagram1": "Resolución · fps · enfoque · luz.",
+        "diagram2": "Vista previa negra: otra app · tapa · permiso · puerto USB."
+      },
+      "faq": {
+        "q1": "¿Qué resolución debería tener mi webcam?",
+        "a1": "720p basta para la mayoría de las llamadas; 1080p se ve más nítido cuando la app lo envía. Una webcam 4K ayuda sobre todo a recortar y hacer zoom.",
+        "q2": "¿Por qué mi webcam se ve borrosa?",
+        "a2": "Limpie la lente, ilumínese de frente y compruebe que la cámara ha enfocado (las webcams de enfoque fijo son nítidas desde unos 50 cm).",
+        "q3": "¿Por qué mi webcam va a tirones?",
+        "a3": "Con poca luz bajan los fps; un hub USB saturado o un puerto USB 2.0 antiguo pueden limitar el 1080p. Pruebe con más luz, 720p u otro puerto.",
+        "q4": "¿Es seguro el test de webcam?",
+        "a4": "Sí. El vídeo se queda en la pestaña del navegador y las fotos se crean en su dispositivo. No se sube nada.",
+        "q5": "¿Por qué la vista previa está en espejo?",
+        "a5": "Para que al moverse a la izquierda la imagen también vaya a la izquierda, como en un espejo. Los demás le ven sin invertir; desmarque Vista previa en espejo para ver esa imagen."
+      }
+    },
+    "test-gamepad": {
+      "copy": {
+        "name": "Cómo probar un mando y detectar el drift",
+        "blurb": "Pulse cada botón, lea ambos joysticks y detecte el drift antes de que le cueste una partida. No se sube nada.",
+        "title": "Cómo probar un mando y detectar el drift de los joysticks",
+        "lead": "Su personaje camina solo, o un botón parece no responder. Conectará el mando al navegador, probará cada botón y gatillo y leerá los joysticks en reposo para ver si tienen drift. No se sube nada.",
+        "result": "Cada botón marcado como funcional o no, el recorrido de los gatillos, la posición de ambos joysticks y una lectura de drift en reposo.",
+        "note": "Los juegos ocultan el drift leve con una zona muerta, así que 0.05–0.15 puede no importar; suele crecer a medida que el joystick se desgasta.",
+        "s1t": "Conecte el mando",
+        "s1b": "Conéctelo por USB o emparéjelo por Bluetooth. Los mandos de Xbox, PlayStation, Switch Pro y la mayoría de los genéricos funcionan en Chrome, Edge y Firefox.",
+        "s2t": "Abra Test de mando y pulse un botón",
+        "s2b": "Los navegadores solo muestran un mando después de pulsar un botón, así que pulse cualquiera. El panel muestra su nombre, su distribución y cuántos botones y ejes tiene.",
+        "s3t": "Pulse todos los botones",
+        "s3b": "Cada botón se rellena mientras lo mantiene pulsado y queda marcado cuando ha funcionado. Apriete los gatillos despacio: se rellenan poco a poco y muestran todo su recorrido.",
+        "s4t": "Revise el drift de los joysticks",
+        "s4b": "Gire cada joystick por el borde y suéltelo. En reposo debería marcar cerca de 0.00. Por encima de 0.05 hay un drift leve; a partir de 0.15 suele notarse en los juegos.",
+        "s5t": "Pruebe la vibración",
+        "s5b": "Pulse Probar vibración. Ambos motores deberían vibrar menos de un segundo. Necesita Chrome o Edge, y algunas conexiones Bluetooth no la transmiten.",
+        "s6t": "Decida qué hacer",
+        "s6b": "Si el drift es leve, aumente la zona muerta en los ajustes del juego. Un drift fuerte o un botón muerto suelen requerir limpieza, un módulo de joystick nuevo o una reparación.",
+        "diagram1": "Distribución estándar: A/✕ B/○ X/□ Y/△, botones superiores, gatillos, joysticks, cruceta.",
+        "diagram2": "En reposo: menos de 0.05 bien · 0.05–0.15 leve · 0.15+ drift."
+      },
+      "faq": {
+        "q1": "¿Qué es el drift de un joystick?",
+        "a1": "Un joystick que indica movimiento sin que nadie lo toque, normalmente porque el sensor interno se ha desgastado o ha acumulado suciedad.",
+        "q2": "¿Cómo leo el drift en el test?",
+        "a2": "Suelte el joystick y lea la distancia que aparece debajo: cerca de 0.00 está centrado, por encima de 0.05 hay drift leve, y a partir de 0.15 hay drift.",
+        "q3": "¿Por qué no aparece mi mando?",
+        "a3": "Pulse un botón después de conectarlo; los navegadores ocultan los mandos hasta entonces. Cierre también la capa de entrada de Steam u otras herramientas de reasignación si lo acaparan.",
+        "q4": "¿Funciona con los Joy-Con de Switch?",
+        "a4": "Normalmente como dos mandos no estándar separados con botones numerados. Un mando Switch Pro muestra la distribución estándar en la mayoría de los navegadores.",
+        "q5": "¿Se sube algo?",
+        "a5": "No. El test lee el mando en la pestaña del navegador con la Gamepad API."
+      }
+    },
+    "check-dead-pixels": {
+      "copy": {
+        "name": "Cómo buscar píxeles muertos en una pantalla",
+        "blurb": "Muestre colores lisos a pantalla completa, encuentre píxeles muertos, atascados o encendidos y distíngalos del polvo.",
+        "title": "Cómo detectar píxeles muertos o atascados en una pantalla",
+        "lead": "Tiene un monitor, portátil o móvil nuevo, o lo ha comprado de segunda mano, y quiere asegurarse de que todos los píxeles funcionan. Llenará la pantalla de colores lisos y buscará puntos que no cambian. No se sube nada.",
+        "result": "Los píxeles muertos, atascados o encendidos que haya, y una idea clara de si una mancha es un píxel o polvo.",
+        "note": "Compruébelo dentro del plazo de devolución: muchas tiendas y fabricantes aceptan una pantalla con cierto número de píxeles dañados solo en los primeros días o semanas.",
+        "s1t": "Conozca los tres tipos de píxel dañado",
+        "s1b": "Un píxel muerto se queda negro (se ve mejor sobre blanco), uno atascado se queda rojo, verde o azul, y uno encendido se queda blanco (se ve mejor sobre negro).",
+        "s2t": "Limpie la pantalla y baje la luz",
+        "s2b": "Limpie la pantalla con un paño de microfibra seco y abra Test de píxeles muertos en cv.cm. Con la luz baja se ven mejor los puntos pequeños.",
+        "s3t": "Inicie el test a pantalla completa",
+        "s3b": "Pulse Iniciar test a pantalla completa. La pantalla se pone negra y luego blanca, roja, verde, azul y gris cada vez que hace clic o pulsa Espacio o →. ← vuelve atrás.",
+        "s4t": "Recorra la pantalla despacio",
+        "s4b": "Mire cada color por zonas y de cerca, incluidas las esquinas y los bordes. Ponga Siguiente color en cada 5 segundos si quiere tener las manos libres.",
+        "s5t": "Descarte el polvo",
+        "s5b": "Si ve un punto, limpie esa zona y mírelo desde otro ángulo. El polvo se mueve o se difumina; un píxel sigue nítido en el mismo sitio.",
+        "s6t": "Decida qué hacer",
+        "s6b": "Anote dónde está cada píxel y en qué colores aparece. Un píxel atascado puede recuperarse tras unas horas de uso; uno muerto rara vez lo hace, así que use la devolución o la garantía si le molesta.",
+        "diagram1": "Muerto = punto negro · atascado = punto de color · encendido = punto blanco.",
+        "diagram2": "Negro · blanco · rojo · verde · azul · gris."
+      },
+      "faq": {
+        "q1": "¿Qué diferencia hay entre un píxel muerto y uno atascado?",
+        "a1": "Un píxel muerto no recibe corriente y se queda negro. Uno atascado tiene uno o dos subpíxeles siempre encendidos, así que muestra un color fijo.",
+        "q2": "¿Puedo arreglar un píxel atascado?",
+        "a2": "A veces se recupera tras horas de uso normal. Hay vídeos que parpadean rápido para arreglarlos, pero pueden provocar crisis epilépticas y a menudo no sirven, así que este test no parpadea.",
+        "q3": "¿Cuántos píxeles muertos son aceptables?",
+        "a3": "Depende de la política de píxeles del fabricante: muchos permiten unos pocos en un monitor nuevo; algunos prometen cero. Revise las condiciones de la garantía.",
+        "q4": "¿Funciona en pantallas OLED?",
+        "a4": "Sí. En OLED, mire también el gris y el blanco en busca de quemado: formas tenues que dejan las imágenes estáticas.",
+        "q5": "¿Se sube algo?",
+        "a5": "No. El test solo dibuja colores en su navegador."
+      }
+    },
+    "check-refresh-rate": {
+      "copy": {
+        "name": "Cómo ver la frecuencia de actualización de su monitor",
+        "blurb": "Mida los Hz a los que dibuja de verdad su navegador y arregle una pantalla rápida atascada en 60 Hz.",
+        "title": "Cómo ver la frecuencia de actualización (Hz) de su monitor",
+        "lead": "Ha comprado una pantalla de 120, 144 o 240 Hz y quiere asegurarse de que va así de rápido. Medirá la frecuencia en el navegador, leerá el tiempo de fotograma y los fotogramas saltados, y revisará los ajustes que suelen limitarla. No se sube nada.",
+        "result": "Su frecuencia de actualización medida, la frecuencia estándar más cercana, el tiempo de fotograma en ms y el número de fotogramas saltados.",
+        "note": "El navegador dibuja una vez por cada refresco de pantalla, así que esto mide lo que obtiene de verdad, incluidos los límites de los ajustes o del ahorro de energía.",
+        "s1t": "Entienda qué es la frecuencia de actualización",
+        "s1b": "Es cuántas veces por segundo muestra la pantalla una imagen nueva. 60 Hz es un fotograma nuevo cada 16,7 ms, 144 Hz cada 6,9 ms y 240 Hz cada 4,2 ms.",
+        "s2t": "Abra Test de frecuencia de actualización en cv.cm",
+        "s2b": "El test empieza solo. Deje la pestaña delante y la ventana en la pantalla que quiere probar durante unos segundos.",
+        "s3t": "Lea el resultado",
+        "s3b": "El número grande es la frecuencia medida en Hz, con la frecuencia estándar más cercana debajo. El tiempo de fotograma es la mediana del tiempo entre fotogramas.",
+        "s4t": "Revise los fotogramas saltados y el movimiento",
+        "s4b": "Los picos en la gráfica son fotogramas saltados. Mire el bloque en movimiento a distintas velocidades: a mayor frecuencia avanza en pasos más pequeños y se ve más fluido.",
+        "s5t": "Arregle una pantalla atascada en 60 Hz",
+        "s5b": "Ajuste la frecuencia en la configuración de pantalla del sistema, use un cable y un puerto que la admitan (DisplayPort o HDMI 2.0+), desactive el ahorro de batería y enchufe el portátil.",
+        "s6t": "Mida de nuevo",
+        "s6b": "Pulse Medir de nuevo tras cada cambio. Con dos pantallas, arrastre la ventana a la otra y mida también allí.",
+        "diagram1": "60 Hz = 16,7 ms · 120 Hz = 8,3 ms · 144 Hz = 6,9 ms · 240 Hz = 4,2 ms.",
+        "diagram2": "Atascada en 60: ajustes · cable · ahorro de batería · pantalla."
+      },
+      "faq": {
+        "q1": "¿Es precisa la medición del navegador?",
+        "a1": "Es precisa respecto a la frecuencia a la que dibuja el navegador, que es la de la pantalla salvo que algo la limite. Las pequeñas diferencias (143,9 en lugar de 144) son normales.",
+        "q2": "¿Por qué mi monitor de 144 Hz marca 60 Hz?",
+        "a2": "El sistema sigue en 60 Hz, el cable o el puerto no admiten más, el ahorro de batería está activado o la ventana está en otra pantalla de 60 Hz.",
+        "q3": "¿Qué es el tiempo de fotograma?",
+        "a3": "El tiempo entre dos fotogramas en milisegundos: 1000 dividido entre la frecuencia de actualización.",
+        "q4": "¿Importa una frecuencia alta fuera de los juegos?",
+        "a4": "El desplazamiento, el cursor y el vídeo se ven más fluidos, y es más fácil seguir el movimiento rápido.",
+        "q5": "¿Se sube algo?",
+        "a5": "No. Los fotogramas se cuentan en la pestaña del navegador."
+      }
+    },
+    "test-touch-screen": {
+      "copy": {
+        "name": "Cómo probar una pantalla táctil",
+        "blurb": "Encuentre zonas muertas, cuente cuántos dedos detecta la pantalla y compruebe la presión del lápiz. No se sube nada.",
+        "title": "Cómo probar una pantalla táctil: zonas muertas y multitáctil",
+        "lead": "Los toques en una parte de la pantalla no hacen nada, o quiere revisar un móvil o una tableta antes de comprarlo. Dibujará sobre una cuadrícula para encontrar zonas muertas, contará cuántos dedos detecta la pantalla y probará un lápiz. No se sube nada.",
+        "result": "Una cuadrícula que muestra cada parte de la pantalla que responde, el máximo de dedos detectados a la vez y si se indica la presión.",
+        "note": "Un protector de pantalla, los dedos mojados o un cargador con mala toma de tierra pueden volver errático el táctil; si algo parece raro, pruebe sin ellos.",
+        "s1t": "Quite lo que estorba",
+        "s1b": "Quítese los guantes gruesos, séquese los dedos y, si el táctil falla, desenchufe el cargador. Limpie la pantalla.",
+        "s2t": "Abra Test de pantalla táctil en cv.cm",
+        "s2b": "El panel muestra una cuadrícula. Pulse Pantalla completa para que el panel cubra toda la pantalla y pueda llegar a todos los bordes.",
+        "s3t": "Deslice por toda la cuadrícula",
+        "s3b": "Trace líneas lentas por el panel, fila a fila, hasta los bordes y las esquinas. Cada celda que toca se rellena; las que quedan vacías marcan una zona muerta.",
+        "s4t": "Cuente los dedos",
+        "s4b": "Ponga todos los dedos que pueda a la vez. Tocando ahora muestra la cifra; Máximo a la vez guarda la más alta. Cada dedo dibuja en su propio color.",
+        "s5t": "Pruebe un lápiz",
+        "s5b": "Dibuje con un lápiz óptico. Entrada muestra Lápiz, y Presión cambia al apretar más si el lápiz la indica.",
+        "s6t": "Borre y repita",
+        "s6b": "Pulse Borrar y vuelva a probar para confirmar una zona muerta. Si las mismas celdas nunca responden, el fallo es de la pantalla o del digitalizador, no de la app.",
+        "diagram1": "Deslice por cada fila: celdas vacías = zona muerta.",
+        "diagram2": "Móviles y tabletas: 5–10 dedos · muchos portátiles: 2."
+      },
+      "faq": {
+        "q1": "¿Qué es una zona muerta en una pantalla táctil?",
+        "a1": "Una zona donde no se detectan los toques, a menudo por un digitalizador dañado o una pantalla rota.",
+        "q2": "¿Cuántos puntos táctiles admite mi móvil?",
+        "a2": "La mayoría de los móviles y tabletas detectan 5–10 dedos. Ponga todos los que pueda y mire Máximo a la vez.",
+        "q3": "¿Por qué mi pantalla táctil responde de forma errática?",
+        "a3": "La humedad, un protector de pantalla o un cargador sin buena toma de tierra son causas comunes. Vuelva a probar sin ellos.",
+        "q4": "¿Puedo probarla con un ratón?",
+        "a4": "Sí, mantenga pulsado el botón izquierdo y dibuje, pero un ratón no puede probar el multitáctil ni las zonas muertas de la propia pantalla.",
+        "q5": "¿Se sube algo?",
+        "a5": "No. Los toques solo se dibujan en la pestaña del navegador."
+      }
+    }
+  },
+  "svg": {
+    "test-webcam": {
+      "title": "Test de webcam",
+      "a": "Resolución · fps · enfoque · luz",
+      "b": "¿Negra? Otra app · tapa · permiso · USB",
+      "cap": "El panel muestra lo que la cámara envía de verdad."
+    },
+    "test-gamepad": {
+      "title": "Test de mando",
+      "a": "A/✕  B/○  X/□  Y/△ · gatillos · joysticks",
+      "b": "<0.05 bien · 0.05–0.15 leve · 0.15+ drift",
+      "cap": "Pulse un botón: el navegador oculta el mando hasta entonces."
+    },
+    "check-dead-pixels": {
+      "title": "Píxeles muertos",
+      "a": "Muerto negro · atascado color · encendido blanco",
+      "b": "Negro · blanco · rojo · verde · azul · gris",
+      "cap": "Limpie antes: el polvo se mueve, los píxeles no."
+    },
+    "check-refresh-rate": {
+      "title": "Frecuencia de actualización",
+      "a": "60 Hz 16,7 ms · 144 Hz 6,9 ms · 240 Hz 4,2 ms",
+      "b": "¿Atascada en 60? Ajustes · cable · batería",
+      "cap": "Tiempo de fotograma = 1000 ÷ Hz."
+    },
+    "test-touch-screen": {
+      "title": "Test de pantalla táctil",
+      "a": "Deslice por cada fila: vacía = zona muerta",
+      "b": "Móviles y tabletas 5–10 dedos · portátiles 2",
+      "cap": "Pantalla completa llega a los bordes."
+    }
+  }
+}

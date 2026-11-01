@@ -183,6 +183,11 @@ describe("learn SEO", () => {
     expect(lessonsForTool("tone-generator")).toEqual(["generate-test-tone"]);
     expect(lessonsForTool("mic-test")).toEqual(["test-microphone"]);
     expect(lessonsForTool("tally-counter")).toEqual(["use-tally-counter"]);
+    expect(lessonsForTool("webcam-test")).toEqual(["test-webcam"]);
+    expect(lessonsForTool("gamepad-test")).toEqual(["test-gamepad"]);
+    expect(lessonsForTool("dead-pixel")).toEqual(["check-dead-pixels"]);
+    expect(lessonsForTool("refresh-rate")).toEqual(["check-refresh-rate"]);
+    expect(lessonsForTool("touch-test")).toEqual(["test-touch-screen"]);
     expect(lessonsForTool("ovulation")).toEqual(["find-fertile-window"]);
     expect(lessonsForTool("macro")).toEqual(["calculate-macros"]);
     expect(lessonsForTool("calories-burned")).toEqual(["calories-burned-exercise"]);
@@ -215,7 +220,7 @@ describe("learn sitemap", () => {
     expect(xml).toContain("https://cv.cm/en/resize/compress-image/");
     expect(xml).toContain("https://cv.cm/en/convert/heic-to-jpg/");
     expect(xml).toContain("https://cv.cm/zh-cn/convert/png-to-webp/");
-    expect(FEATURED_TUTORIALS).toHaveLength(89);
+    expect(FEATURED_TUTORIALS).toHaveLength(94);
     expect(xml).toContain("https://cv.cm/en/learn/make-qr/");
     expect(xml).toContain("https://cv.cm/en/learn/format-json/");
     expect(xml).toContain("https://cv.cm/zh-cn/learn/read-jwt/");

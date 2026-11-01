@@ -41,7 +41,7 @@ export const CATEGORIES = [
   { id: "ai", tools: ["remove-background", "image-upscaler", "speech-to-text", "depth-map"] },
   { id: "image", tools: ["watermark", "mosaic", "collage", "portrait-sim", "resize", "crop", "rotate", "exif", "meme", "signature", "favicon", "screenshot", "image-colors"] },
   { id: "convert", tools: ["convert", "image-pdf", "pdf-jpg", "merge-pdf", "compress-pdf", "split-pdf", "invoice", "audio", "audio-cutter", "audio-joiner", "data", "xml-json", "yaml-json", "json", "base64"] },
-  { id: "text", tools: ["password", "word-count", "color", "hex-rgb", "names", "timezone", "timestamp", "lorem", "units", "text-to-speech", "diff", "uuid", "hash", "regex", "case", "jwt", "percent", "random", "html", "cron", "slug", "age", "bmi", "binary", "tip", "morse", "roman", "discount", "countdown", "loan", "stopwatch", "compound", "vat", "reverse", "url-encode", "text-hex", "days", "sort", "replace", "words", "add-days", "week", "aspect", "workdays", "fraction", "hourly", "margin", "radix", "duration", "tdee", "cidr", "chmod", "typing", "dice", "gpa", "pomodoro", "sleep", "body-fat", "contrast", "pace", "grade", "due-date", "ideal-weight", "water-intake", "fuel-cost", "reading-time", "time-card", "electricity", "ovulation", "macro", "calories-burned", "wheel", "average", "metronome", "keyboard-test", "zodiac", "click-test", "reaction-time", "tone-generator", "tally-counter", "mic-test"] },
+  { id: "text", tools: ["password", "word-count", "color", "hex-rgb", "names", "timezone", "timestamp", "lorem", "units", "text-to-speech", "diff", "uuid", "hash", "regex", "case", "jwt", "percent", "random", "html", "cron", "slug", "age", "bmi", "binary", "tip", "morse", "roman", "discount", "countdown", "loan", "stopwatch", "compound", "vat", "reverse", "url-encode", "text-hex", "days", "sort", "replace", "words", "add-days", "week", "aspect", "workdays", "fraction", "hourly", "margin", "radix", "duration", "tdee", "cidr", "chmod", "typing", "dice", "gpa", "pomodoro", "sleep", "body-fat", "contrast", "pace", "grade", "due-date", "ideal-weight", "water-intake", "fuel-cost", "reading-time", "time-card", "electricity", "ovulation", "macro", "calories-burned", "wheel", "average", "metronome", "keyboard-test", "zodiac", "click-test", "reaction-time", "tone-generator", "tally-counter", "mic-test", "webcam-test", "gamepad-test", "dead-pixel", "refresh-rate", "touch-test"] },
   { id: "assets", tools: ["gold", "silver", "platinum", "palladium", "oil", "stocks"] },
 ] as const;
 
@@ -160,6 +160,11 @@ export const TOOLS = [
   "tone-generator",
   "tally-counter",
   "mic-test",
+  "webcam-test",
+  "gamepad-test",
+  "dead-pixel",
+  "refresh-rate",
+  "touch-test",
   "gold",
   "silver",
   "platinum",
@@ -295,6 +300,11 @@ export const TUTORIALS = [
   "generate-test-tone",
   "test-microphone",
   "use-tally-counter",
+  "test-webcam",
+  "test-gamepad",
+  "check-dead-pixels",
+  "check-refresh-rate",
+  "test-touch-screen",
   "portrait",
   "algorithms",
   "phone-photos",
@@ -320,7 +330,7 @@ export const TUTORIAL_GROUPS: readonly {
   { id: "files", tutorials: ["merge-pdf", "compress-pdf", "split-pdf", "heic-to-jpg", "jpg-to-pdf", "pdf-to-jpg", "webp-to-png", "png-to-jpg", "jpg-to-png", "avif-to-jpg", "png-to-webp", "make-invoice"] },
   { id: "photo", tutorials: ["crop-photo", "rotate-photo", "resize-image", "add-watermark", "watermark-id-copy", "mosaic-photo", "remove-exif", "make-collage", "make-meme", "make-favicon", "make-signature", "annotate-screenshot", "remove-photo-background"] },
   { id: "audio", tutorials: ["trim-audio", "mp3-to-wav", "join-audio", "use-metronome", "generate-test-tone", "test-microphone"] },
-  { id: "dev", tutorials: ["format-json", "decode-base64", "encode-url", "read-jwt", "unix-time", "convert-base", "read-cron", "hash-text", "generate-uuid", "test-regex", "make-password", "check-contrast", "test-keyboard", "test-click-speed", "test-reaction-time"] },
+  { id: "dev", tutorials: ["format-json", "decode-base64", "encode-url", "read-jwt", "unix-time", "convert-base", "read-cron", "hash-text", "generate-uuid", "test-regex", "make-password", "check-contrast", "test-keyboard", "test-click-speed", "test-reaction-time", "test-webcam", "test-gamepad", "check-dead-pixels", "check-refresh-rate", "test-touch-screen"] },
   { id: "text", tutorials: ["count-words", "compare-text", "estimate-reading-time"] },
   { id: "time", tutorials: ["days-between", "shift-date", "count-workdays", "add-duration", "calculate-age", "iso-week", "convert-timezone", "calculate-work-hours", "use-pomodoro", "find-zodiac-sign"] },
   { id: "money", tutorials: ["calculate-percent", "percent-off", "vat-price", "split-tip", "profit-margin", "hourly-pay", "loan-payment", "compound-interest", "trip-fuel-cost", "electricity-cost"] },
@@ -349,6 +359,19 @@ export const MIC_TOOLS: ReadonlySet<ToolId> = new Set<ToolId>(["speech-to-text",
 export function isMicToolPath(pathname: string): boolean {
   const parsed = parseAppPath(pathname);
   return (parsed.kind === "app" || parsed.kind === "bare") && parsed.tool !== null && MIC_TOOLS.has(parsed.tool);
+}
+
+/** Tools that use the camera. Only their pages allow it (Permissions-Policy), so links into one load a fresh document. */
+export const CAMERA_TOOLS: ReadonlySet<ToolId> = new Set<ToolId>(["webcam-test"]);
+
+export function isCameraToolPath(pathname: string): boolean {
+  const parsed = parseAppPath(pathname);
+  return (parsed.kind === "app" || parsed.kind === "bare") && parsed.tool !== null && CAMERA_TOOLS.has(parsed.tool);
+}
+
+/** The devices a page's Permissions-Policy allows ("", "microphone", "camera"); pages with different ones need a fresh document. */
+export function devicePolicyOf(pathname: string): string {
+  return [isMicToolPath(pathname) && "microphone", isCameraToolPath(pathname) && "camera"].filter(Boolean).join(" ");
 }
 
 export function categoryOf(tool: ToolId): CategoryId {
