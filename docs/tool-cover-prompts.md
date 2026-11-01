@@ -187,6 +187,16 @@ Codex (`codex exec`, built-in image tool), refs `due-date-sweet.jpg` + `reading-
 - `keyboard-test`: she presses keys on a small pastel pink mechanical keyboard with blank cream keycaps, a few keys glowing pink.
 - `zodiac`: she holds a round cream star chart with tiny constellation dots and a small pink dragon plush beside her; little gold stars sparkle.
 
+## CPS test, reaction time, tone generator, tally counter, mic test (2026-11-01)
+
+Codex (`codex exec`, built-in image tool), refs `due-date-sweet.jpg` + `reading-time-sweet.jpg`. Same character and room, no words, letters, numerals, logo or watermark. Save `public/covers/<id>-sweet.jpg`, `sips -z 720 1280`.
+
+- `click-test`: she rapidly clicks a small pastel pink computer mouse with a heart-shaped button, little motion lines and tiny sparkle bursts around the mouse.
+- `reaction-time`: she raises one hand quickly toward a big round cream button that glows soft green, with a small pink stopwatch with a blank face on the desk.
+- `tone-generator`: she listens with pink over-ear headphones with lace bows, holding a small cream tuning fork; a smooth pink sine wave ribbon flows across the air.
+- `tally-counter`: she clicks a shiny pastel pink handheld tally counter with a heart button; on the desk a few small cream counters and tiny heart tokens.
+- `mic-test`: she speaks into a pink desk microphone on a small stand with a heart grille; beside it a cream level meter with a few glowing pink bars.
+
 ## AI tools (2026-10-29, were missing in production)
 
 Codex, refs `due-date-sweet.jpg` + `reading-time-sweet.jpg`. Same character and room, no words, letters, numerals, logo or watermark.

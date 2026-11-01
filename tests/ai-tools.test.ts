@@ -95,9 +95,14 @@ describe("AI page headers", () => {
     expect(script.headers.get("Content-Security-Policy")).toContain("script-src 'self' 'wasm-unsafe-eval' blob:");
   });
 
-  it("allows the microphone on speech to text only", async () => {
+  it("allows the microphone on speech to text and the mic test only", async () => {
     const stt = await worker.fetch(new Request("https://cv.cm/ko/speech-to-text/"), { ASSETS: html });
     expect(stt.headers.get("Permissions-Policy")).toContain("microphone=(self)");
+    const mic = await worker.fetch(new Request("https://cv.cm/zh-cn/mic-test/"), { ASSETS: html });
+    expect(mic.headers.get("Permissions-Policy")).toContain("microphone=(self)");
+    expect(mic.headers.get("Cross-Origin-Embedder-Policy")).toBeNull();
+    const lesson = await worker.fetch(new Request("https://cv.cm/en/learn/test-microphone/"), { ASSETS: html });
+    expect(lesson.headers.get("Permissions-Policy")).toContain("microphone=()");
     const other = await worker.fetch(new Request("https://cv.cm/en/json/"), { ASSETS: html });
     expect(other.headers.get("Permissions-Policy")).toContain("microphone=()");
     expect(other.headers.get("Cross-Origin-Embedder-Policy")).toBeNull();

@@ -1,0 +1,203 @@
+{
+  "meta": {
+    "titleTestClickSpeed": "Tes CPS: cara mengecek kecepatan klik dan klik lebih cepat | cv.cm",
+    "descTestClickSpeed": "CPS = klik ÷ detik. Jalankan tes CPS 5 detik, baca skor Anda (5–8 umum, 8–11 cepat), dan latih jitter atau butterfly click dengan aman. Tidak ada unggahan.",
+    "titleTestReactionTime": "Tes waktu reaksi online: cara mengukur refleks | cv.cm",
+    "descTestReactionTime": "Klik saat layar berubah hijau, lima kali, lalu baca rata-rata dan median dalam ms. Kebanyakan orang mendapat 200–300 ms. Tips agar tesnya adil. Tidak ada unggahan.",
+    "titleGenerateTestTone": "Nada tes untuk cek speaker dan headphone kiri kanan | cv.cm",
+    "descGenerateTestTone": "Putar nada sinus 440 Hz atau 1 kHz, kirim ke speaker kiri atau kanan, sapu dari 20 Hz sampai 20 kHz, dan temukan getaran atau batas pendengaran — aman, dengan volume pelan.",
+    "titleTestMicrophone": "Tes mikrofon online: cara cek mic di laptop dan HP | cv.cm",
+    "descTestMicrophone": "Izinkan mikrofon, lihat meter level (targetkan puncak −20 sampai −6 dBFS), rekam 5 detik lalu putar ulang. Solusi untuk mic yang diam atau pecah. Tidak ada unggahan.",
+    "titleUseTallyCounter": "Cara memakai penghitung online (tally counter) | cv.cm",
+    "descUseTallyCounter": "Hitung orang, putaran, tusukan rajut, atau suara dengan tombol + dan − besar atau keyboard, beri nama beberapa penghitung, atur langkah, dan baca totalnya. Hitungan tetap di browser Anda."
+  },
+  "lessons": {
+    "test-click-speed": {
+      "copy": {
+        "name": "Cara mengetes kecepatan klik (CPS)",
+        "blurb": "Klik secepat mungkin selama 5 detik, baca klik per detik Anda, dan bandingkan dengan skor umum. Tidak ada unggahan.",
+        "title": "Cara mengetes kecepatan klik (CPS)",
+        "lead": "Anda ingin tahu seberapa cepat Anda mengklik, untuk game atau sekadar iseng. Anda akan menjalankan tes CPS berwaktu, membaca skornya, dan mencoba teknik klik yang lebih cepat. Klik dihitung di browser Anda; tidak ada unggahan.",
+        "result": "Klik per detik untuk durasi yang dipilih, total klik, dan skor terbaik Anda di sesi ini.",
+        "note": "Pakai mouse yang biasa Anda gunakan untuk bermain. Istirahat sebentar-sebentar: klik cepat dalam waktu lama membebani tangan dan pergelangan.",
+        "s1t": "Pahami arti CPS",
+        "s1b": "CPS adalah klik per detik: total klik dibagi jumlah detik tes. 35 klik dalam 5 detik berarti 7 CPS. Kebanyakan orang mengklik 5–8 CPS dengan satu jari.",
+        "s2t": "Buka Tes CPS di cv.cm",
+        "s2b": "Area di kanan bertuliskan “Klik di sini untuk mulai”. Durasi diatur ke 5 detik, tes yang paling umum.",
+        "s3t": "Pilih durasi",
+        "s3b": "Pilih 1 detik untuk ledakan singkat atau 30–60 detik untuk menguji berapa lama Anda bisa menjaga tempo. Skor terbaik disimpan per durasi.",
+        "s4t": "Klik secepat mungkin",
+        "s4b": "Timer mulai saat klik pertama. Sisa waktu, Klik, dan Klik per detik diperbarui langsung. Klik setelah waktu habis tidak dihitung.",
+        "s5t": "Baca skor Anda",
+        "s5b": "Anda mendapat CPS dan total klik beserta kategori kecepatan: di bawah 5 santai, 5–8 umum, 8–11 cepat, 11+ sangat cepat. Salin hasil menyalinnya ke clipboard.",
+        "s6t": "Coba klik lebih cepat",
+        "s6b": "Jitter click menegangkan lengan bawah agar jari bergetar; butterfly click bergantian memakai dua jari di satu tombol. Keduanya bisa mencapai 10–15 CPS. Istirahat jika tangan terasa sakit.",
+        "diagram1": "CPS = klik ÷ detik: 35 klik dalam 5 s = 7 CPS.",
+        "diagram2": "5–8 umum · 8–11 cepat · 11+ jitter atau butterfly."
+      },
+      "faq": {
+        "q1": "Berapa skor CPS yang bagus?",
+        "a1": "5–8 CPS umum dengan satu jari, 8–11 tergolong cepat, dan di atas 11 biasanya butuh jitter atau butterfly click.",
+        "q2": "Berapa lama tes CPS?",
+        "a2": "Biasanya 5 detik. cv.cm juga menyediakan 1, 10, 30, dan 60 detik.",
+        "q3": "Apakah mouse gaming membantu?",
+        "a3": "Mouse ringan dengan switch pendek dan tegas sedikit membantu; teknik lebih berpengaruh.",
+        "q4": "Apakah jitter click berbahaya?",
+        "a4": "Sesi panjang bisa membebani pergelangan dan lengan bawah. Buat percobaan singkat dan berhenti jika terasa sakit.",
+        "q5": "Apakah cv.cm mengunggah klik saya?",
+        "a5": "Tidak. Klik dihitung di tab, dan skor terbaik hilang saat tab ditutup."
+      }
+    },
+    "test-reaction-time": {
+      "copy": {
+        "name": "Cara mengetes waktu reaksi",
+        "blurb": "Klik begitu layar berubah hijau, lima kali, lalu baca rata-rata dan median waktu reaksi dalam milidetik. Tidak ada unggahan.",
+        "title": "Cara mengetes waktu reaksi",
+        "lead": "Anda ingin mengukur seberapa cepat Anda merespons sesuatu yang dilihat — untuk game, olahraga, atau rasa penasaran. Anda akan melakukan lima percobaan, menghindari start palsu, dan membaca rata-rata yang adil. Pengukuran dilakukan di browser Anda; tidak ada unggahan.",
+        "result": "Lima waktu reaksi dalam ms dengan rata-rata, median, terbaik, dan terburuk, serta perbandingannya dengan skor umum.",
+        "note": "Tutup aplikasi dan tab yang berat, duduk seperti biasa, dan pakai perangkat yang sama setiap kali membandingkan hasil.",
+        "s1t": "Pahami apa yang diukur",
+        "s1b": "Waktu reaksi adalah jeda antara sinyal dan respons Anda. Untuk sinyal visual dan klik, kebanyakan orang mendapat sekitar 200–300 ms; di bawah 200 ms tergolong cepat.",
+        "s2t": "Buka Tes waktu reaksi di cv.cm",
+        "s2b": "Area besar bertuliskan “Klik untuk mulai”. Mouse, sentuhan, Spasi, atau Enter semuanya bisa.",
+        "s3t": "Tunggu hijau",
+        "s3b": "Setelah Anda klik, area berubah merah dan menampilkan “Tunggu hijau…”. Waktu tunggunya acak, 1,5 sampai 4,5 detik, jadi tidak bisa ditebak.",
+        "s4t": "Klik saat hijau",
+        "s4b": "Saat area berubah hijau dan bertuliskan “Klik!”, segera klik. Waktu Anda muncul dalam ms. Jika Anda klik saat masih merah, muncul “Terlalu cepat” dan percobaan itu tidak dihitung.",
+        "s5t": "Selesaikan lima percobaan",
+        "s5b": "Klik lagi untuk setiap percobaan. Setelah lima kali, Hasil menampilkan rata-rata, median, terbaik, dan terburuk. Median mengabaikan satu percobaan yang luar biasa lambat atau cepat.",
+        "s6t": "Bandingkan dengan adil",
+        "s6b": "Layar, mouse, dan browser menambah beberapa hingga puluhan ms, jadi bandingkan di perangkat yang sama. Istirahat, pemanasan dengan beberapa percobaan, dan ambil median dari beberapa ronde.",
+        "diagram1": "Merah → acak 1,5–4,5 s → hijau → klik = waktu Anda.",
+        "diagram2": "Umum 200–300 ms · di bawah 200 ms cepat."
+      },
+      "faq": {
+        "q1": "Berapa waktu reaksi yang bagus?",
+        "a1": "Sekitar 200–300 ms umum untuk sinyal visual; di bawah 200 ms tergolong cepat.",
+        "q2": "Kenapa skor saya lebih lambat di HP?",
+        "a2": "Layar sentuh dan sebagian layar menambah latensi. Bandingkan hasil di perangkat yang sama.",
+        "q3": "Bisakah waktu reaksi ditingkatkan?",
+        "a3": "Tidur cukup, pemanasan, dan latihan sedikit membantu; peningkatan terbesar ada pada konsistensi, bukan kecepatan murni.",
+        "q4": "Apa arti Terlalu cepat?",
+        "a4": "Anda mengklik saat area masih merah. Percobaan itu tidak dihitung; klik untuk mengulanginya.",
+        "q5": "Apakah ada yang diunggah?",
+        "a5": "Tidak. Waktu diukur dan disimpan di tab."
+      }
+    },
+    "generate-test-tone": {
+      "copy": {
+        "name": "Cara memutar nada tes",
+        "blurb": "Putar nada murni di frekuensi apa pun, kirim ke speaker kiri atau kanan, dan sapu rentangnya untuk menguji speaker, headphone, dan pendengaran Anda. Berjalan di browser Anda.",
+        "title": "Cara memutar nada tes untuk mengecek speaker dan headphone",
+        "lead": "Anda ingin memastikan kedua speaker berfungsi, menemukan bunyi bergetar, menyetem ke A4, atau melihat setinggi apa Anda bisa mendengar. Anda akan memutar nada sinus, mengubah frekuensinya, dan mengirimnya ke satu sisi bergantian. Suara dibuat di browser Anda; tidak ada unggahan.",
+        "result": "Nada stabil di frekuensi pilihan Anda, di speaker kiri, kanan, atau keduanya, beserta not musik terdekatnya.",
+        "note": "Kecilkan volume perangkat sebelum menekan Putar, terutama dengan headphone. Nada tinggi bisa tidak nyaman meski pelan.",
+        "s1t": "Pahami frekuensi dan rentang pendengaran",
+        "s1b": "Frekuensi adalah getaran per detik, dalam hertz (Hz). Manusia mendengar kira-kira 20 Hz sampai 20 kHz; batas atasnya turun seiring usia, sering ke 15–17 kHz pada orang dewasa. 440 Hz adalah not A4.",
+        "s2t": "Buka Generator nada di cv.cm",
+        "s2b": "Pengaturannya 440 Hz, gelombang sinus, kedua speaker, dan volume 20%. Tekan Putar lalu naikkan volume perlahan; tekan Berhenti untuk menghentikannya.",
+        "s3t": "Atur frekuensi",
+        "s3b": "Ketik nilai, geser slider, pakai −1/+1 untuk langkah kecil atau ÷2/×2 untuk pindah satu oktaf. Preset menyediakan 440 Hz, C tengah, 1000 Hz, dan lainnya.",
+        "s4t": "Tes kiri dan kanan",
+        "s4b": "Di Pengeras suara pilih Kiri, lalu Kanan. Setiap sisi harus berbunyi sendiri; jika keduanya berbunyi, pastikan speaker tidak diatur ke mono.",
+        "s5t": "Sapu untuk mencari getaran dan batas",
+        "s5b": "Geser slider perlahan dari 50 Hz ke atas. Dengung di satu frekuensi menandakan ada bagian yang longgar; titik nada menghilang adalah batas speaker (atau pendengaran) Anda.",
+        "s6t": "Coba bentuk gelombang lain",
+        "s6b": "Kotak, segitiga, dan gigi gergaji menambah harmonik dan terdengar lebih kasar. Pakai sinus untuk pengukuran dan yang lain untuk mendengar perbedaannya.",
+        "diagram1": "20 Hz ← rentang pendengaran → 20 kHz · A4 = 440 Hz.",
+        "diagram2": "Kiri saja · keduanya · kanan saja."
+      },
+      "faq": {
+        "q1": "Frekuensi berapa untuk mengetes speaker?",
+        "a1": "Mulai dengan 440 Hz atau 1000 Hz untuk level, lalu sapu dari 50 Hz sampai 15 kHz.",
+        "q2": "Bagaimana cara mengetes kanal kiri dan kanan?",
+        "a2": "Pilih Kiri atau Kanan di Pengeras suara dan pastikan hanya sisi itu yang berbunyi.",
+        "q3": "Kenapa saya tidak bisa mendengar 18 kHz?",
+        "a3": "Pendengaran di atas 15–17 kHz menurun seiring usia, dan banyak speaker tidak bisa memutarnya.",
+        "q4": "Bisakah nada merusak speaker?",
+        "a4": "Dengan volume pelan, tidak. Nada rendah atau tinggi yang sangat keras bisa merusak speaker kecil dan telinga Anda.",
+        "q5": "Apakah generator nada ini gratis?",
+        "a5": "Ya. Berjalan di browser Anda tanpa perlu daftar."
+      }
+    },
+    "test-microphone": {
+      "copy": {
+        "name": "Cara mengetes mikrofon",
+        "blurb": "Izinkan mikrofon, cek meter level, rekam lima detik, lalu putar ulang. Solusi untuk mic yang diam atau pecah. Tidak ada unggahan.",
+        "title": "Cara mengetes mikrofon secara online",
+        "lead": "Sebelum panggilan, siaran langsung, atau rekaman, Anda ingin tahu bahwa mikrofon berfungsi dan suaranya bagus. Anda akan mengizinkan akses, mengecek level, merekam contoh, dan memperbaiki masalah umum. Suara tetap di browser Anda; tidak ada unggahan.",
+        "result": "Mikrofon yang berfungsi dengan puncak suara di rentang yang baik, dan rekaman singkat yang menunjukkan bagaimana suara Anda terdengar.",
+        "note": "Colokkan mikrofon atau headset lebih dulu. Tutup aplikasi lain yang memakainya, seperti aplikasi panggilan.",
+        "s1t": "Pahami level yang baik",
+        "s1b": "Level diukur dalam dBFS: 0 adalah suara paling keras yang bisa ditampung rekaman. Puncak suara bicara antara −20 dan −6 dBFS sudah baik; mendekati 0 suaranya pecah dan terdistorsi, di bawah −30 terlalu pelan.",
+        "s2t": "Buka Tes mikrofon di cv.cm",
+        "s2b": "Tekan Mulai mikrofon. Browser meminta izin; izinkan.",
+        "s3t": "Perhatikan meter",
+        "s3b": "Bicara atau tepuk tangan. Meter, Level, Puncak, dan bentuk gelombang seharusnya bergerak. Baris di bawah meter memberi tahu apakah level bagus, pelan, atau terlalu keras.",
+        "s4t": "Pilih perangkat yang tepat",
+        "s4b": "Setelah akses diizinkan, Perangkat input menampilkan mikrofon Anda berdasarkan nama. Pilih yang lain jika meter tidak bergerak.",
+        "s5t": "Rekam dan putar ulang",
+        "s5b": "Tekan Rekam 5 s dan bicara seperti biasa. Setelah selesai, pemutar muncul: dengarkan apakah ada gema, dengung, atau suara teredam.",
+        "s6t": "Perbaiki masalah umum",
+        "s6b": "Tidak bergerak: cek tombol mute dan volume input sistem, serta pastikan tidak ada aplikasi lain yang memakai mic. Terlalu keras: menjauh atau turunkan gain input. Diblokir: izinkan mikrofon di pengaturan situs.",
+        "diagram1": "−20 s.d. −6 dBFS bagus · dekat 0 pecah · di bawah −30 pelan.",
+        "diagram2": "Mulai → izinkan → bicara → Rekam 5 s → putar."
+      },
+      "faq": {
+        "q1": "Bagaimana cara tes mic secara online?",
+        "a1": "Buka Tes mikrofon, tekan Mulai mikrofon, izinkan akses, lalu bicara; meter seharusnya bergerak. Rekam 5 detik untuk mendengar suara Anda.",
+        "q2": "Kenapa mic saya tidak menunjukkan suara?",
+        "a2": "Mungkin di-mute, perangkat yang salah terpilih, atau aplikasi lain sedang memakainya.",
+        "q3": "Apakah rekaman saya diunggah?",
+        "a3": "Tidak. Rekaman tetap di tab dan hilang saat tab ditutup.",
+        "q4": "Apa arti dBFS?",
+        "a4": "Desibel relatif terhadap skala penuh: 0 adalah level digital paling keras, jadi level suara bicara berupa angka negatif.",
+        "q5": "Bagaimana cara mengizinkan mikrofon yang diblokir?",
+        "a5": "Klik ikon situs di samping bilah alamat, atur Mikrofon ke Izinkan, lalu muat ulang halaman."
+      }
+    },
+    "use-tally-counter": {
+      "copy": {
+        "name": "Cara memakai penghitung online",
+        "blurb": "Hitung orang, putaran, tusukan rajut, atau suara dengan tombol besar atau keyboard, simpan beberapa penghitung bernama, dan baca totalnya. Hitungan tetap di browser Anda.",
+        "title": "Cara memakai penghitung online (tally counter)",
+        "lead": "Anda perlu menghitung sesuatu saat sedang terjadi — pengunjung di pintu, putaran, baris rajutan, atau suara. Anda akan menghitung dengan tombol atau keyboard, menambah penghitung untuk tiap hal, dan menyalin totalnya. Hitungan disimpan di browser Anda; tidak ada unggahan.",
+        "result": "Satu atau beberapa penghitung bernama dengan hitungannya dan total, tersimpan di browser ini.",
+        "note": "Di HP, biarkan layar tetap menyala selama menghitung. Jendela pribadi bisa melupakan hitungan saat ditutup.",
+        "s1t": "Rencanakan apa yang dihitung",
+        "s1b": "Tentukan berapa hal yang Anda hitung sekaligus — misalnya dewasa dan anak-anak, atau suara untuk tiap pilihan. Anda butuh satu penghitung untuk masing-masing.",
+        "s2t": "Buka Penghitung (tally counter) di cv.cm",
+        "s2b": "Satu penghitung, “Penghitung 1”, mulai dari 0. Klik namanya untuk mengganti nama.",
+        "s3t": "Hitung",
+        "s3b": "Tekan + untuk menambah dan − untuk mengurangi. Di keyboard, Spasi, ↑, atau + menambah dan ↓ atau − mengurangi pada penghitung yang disorot.",
+        "s4t": "Tambah penghitung",
+        "s4b": "Tekan Tambah penghitung untuk setiap hal tambahan (maksimal 12). Klik penghitung untuk menyorotnya bagi keyboard. Total semua penghitung muncul di bawahnya.",
+        "s5t": "Atur langkah",
+        "s5b": "Untuk menghitung per dua atau per sepuluh, atur Langkah. Centang “Izinkan angka negatif” hanya jika hitungan bisa di bawah nol, seperti skor.",
+        "s6t": "Salin dan atur ulang",
+        "s6b": "Salin hitungan menyalin setiap nama dan hitungannya ke clipboard. Atur ulang mengosongkan satu penghitung; Atur ulang semua mengosongkan semuanya.",
+        "diagram1": "+ menambah · − mengurangi · Spasi ↑ ↓ di keyboard.",
+        "diagram2": "Dewasa 23 + Anak 9 = total 32."
+      },
+      "faq": {
+        "q1": "Adakah penghitung online yang gratis?",
+        "a1": "Ada. Penghitung di cv.cm berjalan di browser Anda tanpa perlu daftar.",
+        "q2": "Bisakah menghitung dengan keyboard?",
+        "a2": "Bisa: Spasi, ↑, atau + menambah dan ↓ atau − mengurangi pada penghitung yang disorot.",
+        "q3": "Apakah hitungan saya tersimpan?",
+        "a3": "Ya, di penyimpanan lokal browser ini. Jendela pribadi bisa melupakannya.",
+        "q4": "Berapa banyak penghitung yang bisa dibuat?",
+        "a4": "Maksimal 12, masing-masing dengan nama sendiri, ditambah total.",
+        "q5": "Bisakah menghitung per 5 atau per 10?",
+        "a5": "Bisa. Atur Langkah ke jumlah yang ditambahkan setiap kali tekan."
+      }
+    }
+  },
+  "svg": {
+    "test-click-speed": { "title": "Cara mengetes kecepatan klik", "a": "35 klik ÷ 5 s = 7 CPS", "b": "5–8 umum · 8–11 cepat · 11+ sangat cepat", "cap": "Timer mulai saat klik pertama." },
+    "test-reaction-time": { "title": "Cara mengetes waktu reaksi", "a": "Merah → tunggu 1,5–4,5 s → hijau → klik", "b": "Umum 200–300 ms", "cap": "Klik saat merah tidak dihitung." },
+    "generate-test-tone": { "title": "Cara memutar nada tes", "a": "20 Hz — 440 Hz (A4) — 20 kHz", "b": "Kiri · Keduanya · Kanan", "cap": "Mulai dengan volume pelan." },
+    "test-microphone": { "title": "Cara mengetes mikrofon", "a": "Bagus: −20 s.d. −6 dBFS", "b": "Mulai → izinkan → Rekam 5 s → putar", "cap": "Mendekati 0 dBFS suaranya pecah." },
+    "use-tally-counter": { "title": "Cara memakai penghitung", "a": "+ menambah · − mengurangi", "b": "23 + 9 = total 32", "cap": "Keyboard: Spasi, ↑, dan ↓ juga bisa." }
+  }
+}

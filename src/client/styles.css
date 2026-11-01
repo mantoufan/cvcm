@@ -687,3 +687,29 @@ input[type="color"] { width: 2.6rem; height: 2.2rem; padding: 0; border: 1px sol
 .kbt-extra { margin-top: 0.4rem; padding-top: 0.4rem; border-top: 1px dashed var(--line); }
 .kbt-extra .kbt-row { justify-content: flex-start; }
 .kbt-extra .kbt-key { flex-grow: 0 !important; }
+.click-stage, .reaction-stage, .mic-stage { display: grid; gap: 0.6rem; align-content: start; }
+.click-pad, .reaction-pad { display: grid; place-items: center; align-content: center; gap: 0.4rem; width: 100%; min-height: 16rem; padding: 1rem; border: 2px dashed var(--pink); border-radius: var(--radius); background: var(--pink-soft); color: var(--ink); font: inherit; font-size: 1.6rem; font-weight: 700; cursor: pointer; user-select: none; -webkit-user-select: none; touch-action: manipulation; }
+.click-pad.running { border-style: solid; background: var(--white); color: var(--pink-deep); font-size: 3rem; }
+.click-pad.done { border-style: solid; }
+.click-pad:focus-visible, .reaction-pad:focus-visible { outline: 2px solid var(--pink-deep); outline-offset: 3px; }
+.click-result { min-height: 1.6em; margin: 0; font-size: 1.15rem; font-weight: 700; color: var(--pink-deep); }
+.reaction-pad strong { font-size: 2rem; }
+.reaction-pad span { font-size: 1rem; font-weight: 400; }
+.reaction-pad[data-state="waiting"] { border-style: solid; border-color: #b4233c; background: #b4233c; color: #fff; }
+.reaction-pad[data-state="go"] { border-style: solid; border-color: #1f7a4d; background: #1f7a4d; color: #fff; }
+.reaction-pad[data-state="early"] { border-style: solid; background: var(--white); }
+.reaction-list { margin: 0; padding-left: 1.4rem; line-height: 1.7; }
+.tally-list { display: grid; gap: 0.8rem; }
+.tally-row { display: grid; gap: 0.5rem; padding: 0.8rem; border: 1px solid var(--line); border-radius: var(--radius); background: var(--white); }
+.tally-row.active { border-color: var(--pink-deep); }
+.tally-head { display: flex; gap: 0.4rem; align-items: center; }
+.tally-head input { flex: 1; min-width: 0; padding: 0.35rem 0.5rem; border: 1px solid var(--line); border-radius: 8px; font: inherit; }
+.tally-body { display: grid; grid-template-columns: 4rem 1fr 4rem; gap: 0.6rem; align-items: center; }
+.tally-body .btn { min-height: 3.4rem; font-size: 1.8rem; padding: 0; touch-action: manipulation; }
+.tally-count { font-size: 3rem; font-weight: 700; text-align: center; font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
+.mic-meter { position: relative; height: 1.4rem; overflow: hidden; border: 1px solid var(--line); border-radius: 999px; background: var(--gray); }
+.mic-fill { position: absolute; inset: 0 auto 0 0; width: 0; background: var(--pink); transition: width 60ms linear; }
+.mic-fill.hot { background: #b4233c; }
+.mic-verdict { min-height: 1.4em; margin: 0; font-weight: 700; color: var(--pink-deep); }
+.mic-wave { width: 100%; height: auto; }
+.mic-player { width: 100%; }

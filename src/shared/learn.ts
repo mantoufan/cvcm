@@ -483,6 +483,36 @@ export const TUTORIAL_META: Record<TutorialId, TutorialMeta> = {
     openAt: 2,
     related: ["zodiac", "age", "days"],
   },
+  "test-click-speed": {
+    minutes: 5,
+    steps: 6,
+    openAt: 2,
+    related: ["click-test", "reaction-time", "keyboard-test"],
+  },
+  "test-reaction-time": {
+    minutes: 5,
+    steps: 6,
+    openAt: 2,
+    related: ["reaction-time", "click-test", "stopwatch"],
+  },
+  "generate-test-tone": {
+    minutes: 5,
+    steps: 6,
+    openAt: 2,
+    related: ["tone-generator", "metronome", "mic-test"],
+  },
+  "test-microphone": {
+    minutes: 5,
+    steps: 6,
+    openAt: 2,
+    related: ["mic-test", "speech-to-text", "tone-generator"],
+  },
+  "use-tally-counter": {
+    minutes: 5,
+    steps: 6,
+    openAt: 2,
+    related: ["tally-counter", "dice", "wheel"],
+  },
   "electricity-cost": {
     minutes: 6,
     steps: 6,
@@ -957,6 +987,26 @@ export const TUTORIAL_DIAGRAMS: Partial<Record<TutorialId, { step: number; src: 
   "find-zodiac-sign": [
     { step: 1, src: "/covers/tutorials/find-zodiac-sign-sign.svg" },
     { step: 4, src: "/covers/tutorials/find-zodiac-sign-lunar.svg" },
+  ],
+  "test-click-speed": [
+    { step: 1, src: "/covers/tutorials/test-click-speed-cps.svg" },
+    { step: 5, src: "/covers/tutorials/test-click-speed-bands.svg" },
+  ],
+  "test-reaction-time": [
+    { step: 3, src: "/covers/tutorials/test-reaction-time-flow.svg" },
+    { step: 6, src: "/covers/tutorials/test-reaction-time-typical.svg" },
+  ],
+  "generate-test-tone": [
+    { step: 1, src: "/covers/tutorials/generate-test-tone-range.svg" },
+    { step: 4, src: "/covers/tutorials/generate-test-tone-channels.svg" },
+  ],
+  "test-microphone": [
+    { step: 1, src: "/covers/tutorials/test-microphone-levels.svg" },
+    { step: 5, src: "/covers/tutorials/test-microphone-steps.svg" },
+  ],
+  "use-tally-counter": [
+    { step: 3, src: "/covers/tutorials/use-tally-counter-keys.svg" },
+    { step: 4, src: "/covers/tutorials/use-tally-counter-total.svg" },
   ],
   "electricity-cost": [
     { step: 1, src: "/covers/tutorials/electricity-cost-formula.svg" },

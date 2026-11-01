@@ -85,6 +85,11 @@ import { parseNumbers, stats } from "../src/shared/average";
 import { clampBpm, clickInterval, tapBpm, tempoName } from "../src/shared/metronome";
 import { ALL_CODES, EXTRA_CODES } from "../src/shared/keyboard";
 import { lunarNewYear, westernSign, zodiacFor } from "../src/shared/zodiac";
+import { clicksPerSecond, cpsBand } from "../src/shared/click-test";
+import { reactionBand, summarize, waitMs } from "../src/shared/reaction";
+import { clampFreq, freqToSlider, nearestNote, sliderToFreq, wavelength } from "../src/shared/tone";
+import { bump, clampStep, parseTally, total } from "../src/shared/tally";
+import { levelVerdict, meterPercent, rms, toDbfs } from "../src/shared/mic";
 import { appHref, parseAppPath, withSearch } from "../src/shared/path";
 
 describe("qr", () => {
@@ -1432,5 +1437,78 @@ describe("new routes", () => {
     expect(withSearch("/en/crop/", "?lens=85")).toBe("/en/crop/?lens=85");
     expect(withSearch("/en/crop/", "")).toBe("/en/crop/");
     expect(withSearch("/en/crop/", "?")).toBe("/en/crop/");
+  });
+});
+
+describe("click-test", () => {
+  it("counts clicks per second", () => {
+    expect(clicksPerSecond(35, 5000)).toBe(7);
+    expect(clicksPerSecond(10, 3000)).toBe(3.33);
+    expect(clicksPerSecond(0, 5000)).toBe(0);
+    expect(clicksPerSecond(5, 0)).toBe(0);
+    expect([cpsBand(4.9), cpsBand(5), cpsBand(8), cpsBand(11)]).toEqual(["slow", "typical", "fast", "veryFast"]);
+  });
+});
+
+describe("reaction-time", () => {
+  it("waits a random time and summarises the tries", () => {
+    expect(waitMs(0)).toBe(1500);
+    expect(waitMs(1)).toBe(4500);
+    expect(waitMs(Number.NaN)).toBe(1500);
+    expect(summarize([])).toBeNull();
+    expect(summarize([250, 200, 300, 220, 280])).toEqual({ average: 250, median: 250, best: 200, worst: 300 });
+    expect(summarize([200, 301])!.median).toBe(251);
+    expect([reactionBand(199), reactionBand(250), reactionBand(301)]).toEqual(["fast", "typical", "slow"]);
+  });
+});
+
+describe("tone-generator", () => {
+  it("clamps, maps the log slider and names notes", () => {
+    expect(clampFreq(5)).toBe(20);
+    expect(clampFreq(30000)).toBe(20000);
+    expect(clampFreq(Number.NaN)).toBe(440);
+    expect(clampFreq(261.6256)).toBe(261.63);
+    expect(sliderToFreq(0)).toBe(20);
+    expect(sliderToFreq(1000)).toBe(20000);
+    for (const f of [20, 440, 1000, 15000]) expect(Math.abs(sliderToFreq(freqToSlider(f)) - f) / f).toBeLessThan(0.01);
+    expect(nearestNote(440)).toEqual({ name: "A4", cents: 0 });
+    expect(nearestNote(261.63)).toEqual({ name: "C4", cents: 0 });
+    expect(nearestNote(445).name).toBe("A4");
+    expect(nearestNote(445).cents).toBe(20);
+    expect(nearestNote(27.5).name).toBe("A0");
+    expect(wavelength(343)).toBe(1);
+  });
+});
+
+describe("tally-counter", () => {
+  it("bumps within limits and reads saved state", () => {
+    expect(bump(0, -1, false)).toBe(0);
+    expect(bump(0, -1, true)).toBe(-1);
+    expect(bump(5, 3, false)).toBe(8);
+    expect(clampStep(0)).toBe(1);
+    expect(clampStep(2.6)).toBe(3);
+    expect(clampStep(1e9)).toBe(1000);
+    expect(total([{ name: "a", count: 2 }, { name: "b", count: 5 }])).toBe(7);
+    expect(parseTally(null)).toBeNull();
+    expect(parseTally("{bad")).toBeNull();
+    expect(parseTally(JSON.stringify({ counters: [] }))).toBeNull();
+    expect(parseTally(JSON.stringify({ counters: [{ name: "x", count: -3 }, { name: 4, count: 1 }, { name: "y", count: 1.5 }], step: 0 }))).toEqual({
+      counters: [{ name: "x", count: 0 }],
+      step: 1,
+      allowNegative: false,
+    });
+    expect(parseTally(JSON.stringify({ counters: [{ name: "x", count: -3 }], step: 5, allowNegative: true }))!.counters[0].count).toBe(-3);
+  });
+});
+
+describe("mic-test", () => {
+  it("turns samples into a dBFS level", () => {
+    expect(rms([])).toBe(0);
+    expect(rms([0.5, -0.5])).toBe(0.5);
+    expect(toDbfs(0)).toBe(-60);
+    expect(toDbfs(1)).toBe(0);
+    expect(toDbfs(0.1)).toBeCloseTo(-20, 5);
+    expect([meterPercent(-60), meterPercent(-30), meterPercent(0), meterPercent(5)]).toEqual([0, 50, 100, 100]);
+    expect([levelVerdict(-60), levelVerdict(-40), levelVerdict(-12), levelVerdict(-0.5)]).toEqual(["silent", "quiet", "good", "loud"]);
   });
 });

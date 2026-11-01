@@ -712,4 +712,34 @@ export const TOOL_LOADERS: Record<ToolId, ToolLoader> = {
     m.mountZodiac(host);
     return m.unmountZodiac;
   },
+  "click-test": async (host, ctx) => {
+    const m = await import("./click-test/ui");
+    if (!ctx.alive()) return undefined;
+    m.mountClickTest(host);
+    return m.unmountClickTest;
+  },
+  "reaction-time": async (host, ctx) => {
+    const m = await import("./reaction-time/ui");
+    if (!ctx.alive()) return undefined;
+    m.mountReactionTime(host);
+    return m.unmountReactionTime;
+  },
+  "tone-generator": async (host, ctx) => {
+    const m = await import("./tone-generator/ui");
+    if (!ctx.alive()) return undefined;
+    m.mountToneGenerator(host);
+    return m.unmountToneGenerator;
+  },
+  "tally-counter": async (host, ctx) => {
+    const m = await import("./tally-counter/ui");
+    if (!ctx.alive()) return undefined;
+    m.mountTallyCounter(host);
+    return m.unmountTallyCounter;
+  },
+  "mic-test": async (host, ctx) => {
+    const m = await import("./mic-test/ui");
+    if (!ctx.alive()) return undefined;
+    m.mountMicTest(host);
+    return m.unmountMicTest;
+  },
 };
