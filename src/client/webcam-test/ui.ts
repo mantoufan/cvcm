@@ -25,6 +25,9 @@ let frameTimes: number[] = [];
 let countingSince = 0;
 /** facingMode of the last camera opened, so Mirror is set again only when it changes. */
 let lastFacing = "";
+/** Whether the preview is on screen: browsers stop handing over frames for a video nobody can see. */
+let videoSeen = true;
+let seenObs: IntersectionObserver | null = null;
 const FPS_WINDOW_MS = 2000;
 /** Bumped on every start/stop, so a slow permission prompt that resolves late is dropped. */
 let run = 0;
@@ -51,6 +54,19 @@ export function mountWebcamTest(host: HTMLElement): void {
   // iOS only plays inline (not full screen) with the property set, not just the attribute.
   videoEl.playsInline = true;
   videoEl.muted = true;
+  videoSeen = true;
+  if (typeof IntersectionObserver === "function") {
+    seenObs = new IntersectionObserver((entries) => {
+      const seen = entries.some((e) => e.isIntersecting);
+      // Count afresh once it is back in view, so the gap does not read as a frozen camera.
+      if (seen && !videoSeen) {
+        frameTimes = [];
+        countingSince = 0;
+      }
+      videoSeen = seen;
+    });
+    seenObs.observe(videoEl);
+  }
   shotEl = h("img", { class: "cam-shot", alt: t("webcamTest.photoAlt"), hidden: true });
   saveEl = h("a", { class: "btn ghost", "data-action": "save", hidden: true }, t("webcamTest.save"));
   host.append(
@@ -83,6 +99,9 @@ export function mountWebcamTest(host: HTMLElement): void {
 
 export function unmountWebcamTest(): void {
   document.removeEventListener("visibilitychange", onVisibility);
+  seenObs?.disconnect();
+  seenObs = null;
+  lastFacing = "";
   stop();
   if (navigator.mediaDevices) navigator.mediaDevices.ondevicechange = null;
   if (shotUrl) URL.revokeObjectURL(shotUrl);
@@ -244,7 +263,7 @@ function paintInfo(): void {
     [t("webcamTest.aspect"), aspectText(w, hgt)],
   ];
   const now = performance.now();
-  if (countingSince && now - countingSince >= FPS_WINDOW_MS) {
+  if (videoSeen && countingSince && now - countingSince >= FPS_WINDOW_MS) {
     // Frames the page actually received; a frozen camera reads 0.
     rows.push([t("webcamTest.fps"), t("webcamTest.fpsValue", { n: framesPerSecond(frameTimes, now, FPS_WINDOW_MS).toFixed(1) })]);
   } else if (set.frameRate) rows.push([t("webcamTest.fps"), t("webcamTest.fpsSetting", { n: Math.round(set.frameRate) })]);

@@ -21,7 +21,8 @@ export async function enterFullscreen(el: HTMLElement): Promise<boolean> {
   const request = e.requestFullscreen ?? e.webkitRequestFullscreen;
   if (!request) return false;
   try {
-    await request.call(e);
+    // A request that never settles (a WebView that ignores it) counts as refused after a second.
+    await Promise.race([request.call(e), new Promise((resolve) => window.setTimeout(resolve, 1000))]);
   } catch {
     return false;
   }

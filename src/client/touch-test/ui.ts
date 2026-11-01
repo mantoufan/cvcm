@@ -251,5 +251,6 @@ async function fullScreen(): Promise<void> {
     if (fullBtn) fullBtn.hidden = true;
     return;
   }
-  await enterFullscreen(padEl);
+  // Refused (some in-app browsers): hide the button rather than leave one that does nothing.
+  if (!(await enterFullscreen(padEl)) && fullBtn) fullBtn.hidden = true;
 }
