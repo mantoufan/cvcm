@@ -43,10 +43,9 @@ export function mountDeadPixel(host: HTMLElement): void {
     "data-out": "screen",
     onPointerdown: (e: PointerEvent) => tap(e),
     onPointermove: () => showLabel(),
-    onKeydown: (e: KeyboardEvent) => key(e),
   },
     screenLabel,
-    h("button", { type: "button", class: "dp-exit", "data-action": "exit", "aria-label": t("deadPixel.exit"), onPointerdown: (e: PointerEvent) => e.stopPropagation(), onClick: () => close() }, "×"),
+    h("button", { type: "button", class: "dp-exit", "data-action": "exit", tabindex: "-1", "aria-label": t("deadPixel.exit"), onPointerdown: (e: PointerEvent) => e.stopPropagation(), onClick: () => close() }, "×"),
   );
   host.append(
     h("header", { class: "tool-head" },
@@ -79,6 +78,7 @@ export function mountDeadPixel(host: HTMLElement): void {
   );
   document.addEventListener("fullscreenchange", onFullscreenChange);
   document.addEventListener("webkitfullscreenchange", onFullscreenChange);
+  document.addEventListener("keydown", onDocKey, true);
   paint();
 }
 
@@ -86,6 +86,7 @@ export function unmountDeadPixel(): void {
   close();
   document.removeEventListener("fullscreenchange", onFullscreenChange);
   document.removeEventListener("webkitfullscreenchange", onFullscreenChange);
+  document.removeEventListener("keydown", onDocKey, true);
   previewEl = previewName = null;
   autoEl = null;
   chips = [];
@@ -134,6 +135,11 @@ async function openScreen(): Promise<void> {
   restartAuto();
 }
 
+/** While the test is open its keys work wherever focus is (Tab cannot lead them away to the page underneath). */
+function onDocKey(e: KeyboardEvent): void {
+  if (open) key(e);
+}
+
 function close(): void {
   if (!open) return;
   open = false;
@@ -179,13 +185,22 @@ function next(by: number): void {
 function tap(e: PointerEvent): void {
   // One step per tap: a second finger or a palm on the screen does not skip colours.
   if (e.button !== 0 || e.isPrimary === false) return;
-  // Left third goes back, the rest forward.
+  // On touch screens the left third goes back, the rest forward; a mouse click always goes forward (as the hint says).
+  if (e.pointerType !== "touch") {
+    next(1);
+    return;
+  }
   const left = (e.currentTarget as HTMLElement).getBoundingClientRect().left;
   const width = (e.currentTarget as HTMLElement).clientWidth || window.innerWidth;
   next(e.clientX - left < width / 3 ? -1 : 1);
 }
 
 function key(e: KeyboardEvent): void {
+  // Tab stays on the test screen.
+  if (e.key === "Tab") {
+    e.preventDefault();
+    return;
+  }
   // Enter and Space on the × button press it.
   if ((e.target as HTMLElement | null)?.closest?.("[data-action=exit]") && (e.key === "Enter" || e.key === " ")) return;
   // A held key repeats about 30 times a second: one press moves one colour, so the screen never flashes.
