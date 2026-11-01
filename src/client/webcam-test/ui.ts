@@ -247,7 +247,7 @@ function paintInfo(): void {
   if (countingSince && now - countingSince >= FPS_WINDOW_MS) {
     // Frames the page actually received; a frozen camera reads 0.
     rows.push([t("webcamTest.fps"), t("webcamTest.fpsValue", { n: framesPerSecond(frameTimes, now, FPS_WINDOW_MS).toFixed(1) })]);
-  } else if (typeof videoEl?.requestVideoFrameCallback !== "function" && set.frameRate) rows.push([t("webcamTest.fps"), t("webcamTest.fpsSetting", { n: Math.round(set.frameRate) })]);
+  } else if (set.frameRate) rows.push([t("webcamTest.fps"), t("webcamTest.fpsSetting", { n: Math.round(set.frameRate) })]);
   if (set.facingMode) rows.push([t("webcamTest.facing"), t(`webcamTest.facing_${set.facingMode === "environment" ? "back" : "front"}`)]);
   infoEl.replaceChildren(...rows.flatMap(([k, v]) => [h("dt", null, k), h("dd", null, v)]));
 }
