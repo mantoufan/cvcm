@@ -215,3 +215,7 @@ Codex (`codex exec`, built-in image tool), refs `click-test-sweet.jpg` + `mic-te
 - `dead-pixel`: she peers through a small pink magnifying glass at a cream monitor whose screen is split into soft solid colour bands (white, red, green, blue), one tiny sparkle on the screen.
 - `refresh-rate`: she watches a cream monitor where a small pink heart glides smoothly across the screen leaving soft motion trail copies; a tiny blank pink stopwatch on the desk.
 - `touch-test`: she touches a pastel pink tablet with several fingers of both hands; colourful soft dotted trails and little circles bloom where her fingertips touch.
+
+## AI photo to video (2026-11-01)
+
+Codex, refs `due-date-sweet.jpg` + `reading-time-sweet.jpg`. Same character and room. `v`: she holds a pearlescent pink vintage film camera with a heart-shaped lens; a framed cottage-on-a-hill photo pops out as a layered 3D paper diorama with a curved sparkle motion trail; a cream film strip with blank frames curls on the desk. No words, letters, numerals, logo or watermark.

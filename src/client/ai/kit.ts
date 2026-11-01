@@ -232,3 +232,34 @@ export async function prewarm(client: AiClient, model: AiModelId, status: Status
     },
   }).then(quiet, quiet);
 }
+
+/** A row of option chips; `set` runs on click, then call `syncChips` to move the highlight. */
+export function chipRow<T extends string | number>(values: readonly T[], current: () => T, label: (v: T) => string, set: (v: T) => void): HTMLButtonElement[] {
+  return values.map((v) =>
+    h("button", {
+      type: "button",
+      class: "chip" + (current() === v ? " on" : ""),
+      "aria-pressed": String(current() === v),
+      dataset: { value: String(v) },
+      onClick: () => set(v),
+    }, label(v)),
+  );
+}
+
+export function syncChips(list: HTMLButtonElement[], value: string): void {
+  for (const chip of list) {
+    const on = chip.dataset.value === value;
+    chip.classList.toggle("on", on);
+    chip.setAttribute("aria-pressed", String(on));
+  }
+}
+
+/** A chip row in its `.convert-chips` box, wired to one setting: the highlight follows the click, then `after` runs. */
+export function chipGroup<T extends string | number>(values: readonly T[], current: () => T, label: (v: T) => string, set: (v: T) => void, after: () => void): HTMLElement {
+  const chips: HTMLButtonElement[] = chipRow(values, current, label, (v) => {
+    set(v);
+    syncChips(chips, String(v));
+    after();
+  });
+  return h("div", { class: "convert-chips" }, ...chips);
+}

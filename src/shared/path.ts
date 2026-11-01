@@ -38,7 +38,7 @@ export const QUIZ_SEGMENT = "tests";
 export const CATEGORIES = [
   { id: "share", tools: ["clip", "qr", "barcode"] },
   // In-browser AI (Transformers.js / ONNX Runtime): models download once from /ai/models/ and run on the GPU or CPU.
-  { id: "ai", tools: ["remove-background", "image-upscaler", "speech-to-text", "depth-map"] },
+  { id: "ai", tools: ["v", "remove-background", "image-upscaler", "speech-to-text", "depth-map"] },
   { id: "image", tools: ["watermark", "mosaic", "collage", "portrait-sim", "resize", "crop", "rotate", "exif", "meme", "signature", "favicon", "screenshot", "image-colors"] },
   { id: "convert", tools: ["convert", "image-pdf", "pdf-jpg", "merge-pdf", "compress-pdf", "split-pdf", "invoice", "audio", "audio-cutter", "audio-joiner", "data", "xml-json", "yaml-json", "json", "base64"] },
   { id: "text", tools: ["password", "word-count", "color", "hex-rgb", "names", "timezone", "timestamp", "lorem", "units", "text-to-speech", "diff", "uuid", "hash", "regex", "case", "jwt", "percent", "random", "html", "cron", "slug", "age", "bmi", "binary", "tip", "morse", "roman", "discount", "countdown", "loan", "stopwatch", "compound", "vat", "reverse", "url-encode", "text-hex", "days", "sort", "replace", "words", "add-days", "week", "aspect", "workdays", "fraction", "hourly", "margin", "radix", "duration", "tdee", "cidr", "chmod", "typing", "dice", "gpa", "pomodoro", "sleep", "body-fat", "contrast", "pace", "grade", "due-date", "ideal-weight", "water-intake", "fuel-cost", "reading-time", "time-card", "electricity", "ovulation", "macro", "calories-burned", "wheel", "average", "metronome", "keyboard-test", "zodiac", "click-test", "reaction-time", "tone-generator", "tally-counter", "mic-test", "webcam-test", "gamepad-test", "dead-pixel", "refresh-rate", "touch-test"] },
@@ -175,6 +175,7 @@ export const TOOLS = [
   "image-upscaler",
   "speech-to-text",
   "depth-map",
+  "v",
 ] as const;
 export type ToolId = (typeof TOOLS)[number];
 
@@ -477,6 +478,12 @@ const LEGACY_LOCALES = new Map<string, Locale>([
   ["zh-hant", "zh-TW"],
 ]);
 
+/**
+ * Pages of the old AI video studio under `/v/`, optionally with a project id (`/v/agent`, `/en/v/canvas/<id>`):
+ * they open the photo-to-video tool. Anything else under `/v/` is a real 404.
+ */
+const LEGACY_V_PAGES: ReadonlySet<string> = new Set(["agent", "canvas", "director"]);
+
 export function parseAppPath(pathname: string): AppPath {
   const raw = pathname.split("?")[0] || "/";
   if (STATIC_FILE.test(raw)) return { kind: "static" };
@@ -544,6 +551,9 @@ export function parseAppPath(pathname: string): AppPath {
       if (third || rest.length > 0) return { kind: "unknown" };
       return { kind: "legal", locale, page: second };
     }
+    if (second === "v" && third && LEGACY_V_PAGES.has(third) && rest.length <= 1) {
+      return { kind: "app", locale, tool: "v" };
+    }
     if (rest.length > 0) return { kind: "unknown" };
     if (!isToolId(second)) return { kind: "unknown" };
     if (!third) return { kind: "app", locale, tool: second };
@@ -603,6 +613,7 @@ export function parseAppPath(pathname: string): AppPath {
   }
   if (isLegalPageId(first) && !second) return { kind: "bare-legal", page: first };
   if (isToolId(first) && !second) return { kind: "bare", tool: first };
+  if (first === "v" && second && LEGACY_V_PAGES.has(second) && rest.length === 0) return { kind: "bare", tool: "v" };
   if (first === "convert" && second && !third && isConvertJobId(second)) {
     return { kind: "bare", tool: "convert", convertJob: second };
   }

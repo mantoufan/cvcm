@@ -18,7 +18,7 @@ import {
   type ProgressInfo,
 } from "@huggingface/transformers";
 import * as ort from "onnxruntime-web/webgpu";
-import { AI_MODELS, AI_ORT_PREFIX, modelFileUrl, type AiBackend, type AiModelId } from "../../shared/ai-models";
+import { AI_MODELS, AI_ORT_PREFIX, DEPTH_INPUT_MAX, modelFileUrl, type AiBackend, type AiModelId } from "../../shared/ai-models";
 import { detectBackend } from "./gpu";
 import { CACHE_NAME, MODEL_HOST } from "./host";
 import type { AiRequest, AiResponse, AsrChunk } from "./protocol";
@@ -241,7 +241,7 @@ async function estimateDepth(id: number, bitmap: ImageBitmap, force?: AiBackend)
   const { model, processor, backend } = await load("depth", id, force);
   post({ type: "stage", id, stage: "run", backend });
   // The processor resizes to ~518 px anyway; a smaller copy keeps preprocessing cheap.
-  const image = bitmapToRaw(bitmap, 1536);
+  const image = bitmapToRaw(bitmap, DEPTH_INPUT_MAX);
   bitmap.close();
   const inputs = await processor!(image);
   const { predicted_depth } = (await model!(inputs)) as { predicted_depth: Tensor };

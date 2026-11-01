@@ -574,6 +574,12 @@ export const TOOL_LOADERS: Record<ToolId, ToolLoader> = {
     await m.mountDepthMap(host);
     return m.unmountDepthMap;
   },
+  "v": async (host, ctx) => {
+    const m = await import("./v/ui");
+    if (!ctx.alive()) return undefined;
+    await m.mountV(host);
+    return m.unmountV;
+  },
   "dice": async (host, ctx) => {
     const m = await import("./dice/ui");
     if (!ctx.alive()) return undefined;

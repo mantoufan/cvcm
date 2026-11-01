@@ -1,0 +1,80 @@
+{
+  "meta": {
+    "titleV": "AI biến ảnh thành video — chuyển động 3D từ một bức ảnh, miễn phí — cv.cm",
+    "descV": "Biến một bức ảnh thành video 3D chuyển động: AI ước lượng độ sâu ngay trong trình duyệt, máy quay tiến vào, xoay quanh hoặc lia ngang, rồi tải MP4. Miễn phí, không cần đăng ký, không watermark, ảnh không bị tải lên."
+  },
+  "tools": {
+    "v": {
+      "name": "AI biến ảnh thành video",
+      "blurb": "Một bức ảnh thành MP4 có chuyển động máy quay 3D."
+    }
+  },
+  "faq": {
+    "v": {
+      "q1": "Biến ảnh thành video hoạt động thế nào?",
+      "a1": "Mô hình AI (Depth Anything V2) ước lượng khoảng cách của từng phần trong ảnh. Một máy quay ảo di chuyển qua độ sâu đó, vật ở gần dịch chuyển nhiều hơn nền, giống một cảnh quay 3D ngắn.",
+      "q2": "Ảnh của tôi có bị tải lên không?",
+      "a2": "Không. Mô hình chỉ tải về một lần (khoảng 25–100 MB tùy thiết bị) và chạy trong tab này. Video cũng được mã hóa trong trình duyệt.",
+      "q3": "Có tạo video từ chữ được không?",
+      "a3": "Không. Công cụ làm chuyển động một hình bạn đã có: ảnh chụp, tranh vẽ hoặc ảnh AI. Người và vật không tự cử động; máy quay di chuyển.",
+      "q4": "Video có định dạng và kích thước gì?",
+      "a4": "MP4 30 fps, dài 3, 5 hoặc 8 giây, 720p hoặc 1080p (không vượt quá số điểm ảnh của ảnh gốc), giữ tỉ lệ ảnh hoặc cắt 9:16, 1:1, 16:9. Phát được trên điện thoại và đăng TikTok, Reels, Shorts.",
+      "q5": "Vì sao mép ảnh trông bị kéo giãn?",
+      "a5": "Khi máy quay di chuyển sẽ lộ ra một chút phần bị vật ở gần che khuất, công cụ lấp bằng điểm ảnh lân cận. Hãy chọn Nhẹ, hoặc dùng ảnh có chủ thể rõ và nền đơn giản."
+    }
+  },
+  "ui": {
+    "v": {
+      "back": "Tất cả công cụ",
+      "title": "AI biến ảnh thành video",
+      "privacyNote": "Ước lượng độ sâu AI và mã hóa video chạy trong tab này. Ảnh không bao giờ bị tải lên.",
+      "filesTitle": "Ảnh",
+      "dropTitle": "Thả ảnh vào đây",
+      "dropHint": "Hoặc dán. Bản xem trước chuyển động ngay.",
+      "dropTypes": "JPG, PNG, WebP, HEIC",
+      "hint": "Máy quay di chuyển theo độ sâu AI của ảnh.",
+      "output": "{w} × {h} · {s} giây · {fps} fps",
+      "ready": "Độ sâu 3D sẵn sàng sau {s} giây ({device}).",
+      "play": "Phát",
+      "pause": "Tạm dừng",
+      "download": "Tải MP4",
+      "exporting": "Đang tạo video… {pct}%",
+      "exported": "Đã lưu MP4 {w} × {h} trong {s} giây.",
+      "motion": "Chuyển động máy quay",
+      "motion_push": "Tiến vào",
+      "motion_pull": "Lùi ra",
+      "motion_orbit": "Xoay quanh",
+      "motion_pan": "Lia ngang",
+      "motion_rise": "Nâng lên",
+      "strength": "Mức độ",
+      "strength_subtle": "Nhẹ",
+      "strength_normal": "Vừa",
+      "strength_strong": "Mạnh",
+      "duration": "Độ dài",
+      "seconds": "{n} giây",
+      "aspect": "Tỉ lệ",
+      "aspect_original": "Theo ảnh",
+      "size": "Chất lượng",
+      "loop": "Lặp liền mạch (kết thúc nối về đầu)",
+      "note": "Máy quay di chuyển, người trong ảnh không cử động.",
+      "empty": "Hãy thêm một bức ảnh trước.",
+      "waitDepth": "Chờ một chút: độ sâu 3D vẫn đang được tính.",
+      "depthFailed": "Không tạo được độ sâu 3D trên thiết bị này. Vẫn tải được video, nhưng chỉ có hiệu ứng thu phóng.",
+      "errorDecode": "Không đọc được ảnh này.",
+      "errorGl": "Trình duyệt này không hỗ trợ WebGL 2 cần cho bản xem trước 3D.",
+      "errorEncode": "Trình duyệt này không mã hóa được video. Hãy thử Chrome, Edge hoặc Safari bản mới.",
+      "errorGpuReset": "Card đồ họa bị đặt lại trong lúc xuất. Hãy thử lại."
+    }
+  },
+  "guides": {
+    "v": {
+      "lead": "Tạo một video 3D ngắn từ một bức ảnh ngay trong tab này.",
+      "s1t": "Thêm ảnh",
+      "s1b": "Thả hoặc dán ảnh. AI tính độ sâu trong vài giây và bản xem trước bắt đầu chuyển động.",
+      "s2t": "Chọn chuyển động",
+      "s2b": "Tiến vào, lùi ra, xoay quanh, lia ngang hoặc nâng lên. Chọn mức độ, độ dài, tỉ lệ (9:16 cho Reels và Shorts) và chất lượng.",
+      "s3t": "Tải MP4",
+      "s3b": "Video được mã hóa trong trình duyệt và lưu thành MP4 để đăng ở bất cứ đâu."
+    }
+  }
+}

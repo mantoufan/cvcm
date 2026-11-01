@@ -191,6 +191,7 @@ const TITLE: Record<ToolId, string> = {
   "image-upscaler": "meta.titleUpscaler",
   "speech-to-text": "meta.titleStt",
   "depth-map": "meta.titleDepthMap",
+  v: "meta.titleV",
 };
 
 const CONVERT_JOB_TITLE: Record<ConvertJobId, string> = {
@@ -346,6 +347,7 @@ const DESC: Record<ToolId, string> = {
   "image-upscaler": "meta.descUpscaler",
   "speech-to-text": "meta.descStt",
   "depth-map": "meta.descDepthMap",
+  v: "meta.descV",
 };
 
 const LEARN_TITLE: Record<TutorialId, string> = {

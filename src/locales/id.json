@@ -497,7 +497,9 @@
     "titleCheckRefreshRate": "Cara cek refresh rate monitor (Hz) | cv.cm",
     "descCheckRefreshRate": "Ukur refresh rate yang benar-benar digambar browser, baca frame time dan frame terlewat, dan atasi layar 144 Hz yang tertahan di 60 Hz.",
     "titleTestTouchScreen": "Cara tes layar sentuh: dead zone dan multi-touch | cv.cm",
-    "descTestTouchScreen": "Gambar di grid untuk menemukan dead zone layar sentuh, hitung berapa jari terbaca sekaligus, dan cek tekanan pena. Tidak ada unggahan."
+    "descTestTouchScreen": "Gambar di grid untuk menemukan dead zone layar sentuh, hitung berapa jari terbaca sekaligus, dan cek tekanan pena. Tidak ada unggahan.",
+    "titleV": "AI foto jadi video — gerakan 3D dari satu gambar, gratis — cv.cm",
+    "descV": "Ubah satu foto menjadi video 3D bergerak: kedalaman AI dihitung di browser, kamera maju, mengitari atau menyapu, lalu unduh MP4. Gratis, tanpa daftar, tanpa watermark, foto tidak diunggah."
   },
   "brand": "cv.cm",
   "nav": {
@@ -1055,6 +1057,10 @@
     "touch-test": {
       "name": "Tes layar sentuh",
       "blurb": "Jumlah multi-touch dan dead zone."
+    },
+    "v": {
+      "name": "AI foto jadi video",
+      "blurb": "Satu gambar jadi MP4 dengan gerakan kamera 3D."
     }
   },
   "watermark": {
@@ -4163,6 +4169,18 @@
       "a4": "Tekan Layar penuh agar area tes memenuhi layar, lalu usap sepanjang setiap tepi dan sudut.",
       "q5": "Apakah ada yang diunggah?",
       "a5": "Tidak. Sentuhan digambar di tab ini dan dilupakan saat Anda menghapus atau menutupnya."
+    },
+    "v": {
+      "q1": "Bagaimana foto diubah menjadi video?",
+      "a1": "Model AI (Depth Anything V2) memperkirakan jarak setiap bagian gambar. Kamera virtual lalu bergerak melalui kedalaman itu, sehingga benda dekat bergeser lebih banyak daripada latar, seperti cuplikan 3D singkat.",
+      "q2": "Apakah foto saya diunggah?",
+      "a2": "Tidak. Model diunduh sekali (sekitar 25–100 MB, tergantung perangkat) dan berjalan di tab ini. Video juga dienkode di browser.",
+      "q3": "Bisakah membuat video dari teks?",
+      "a3": "Tidak. Alat ini menggerakkan gambar yang sudah Anda punya: foto, gambar ilustrasi atau gambar AI. Orang dan benda tidak bergerak sendiri; kameranya yang bergerak.",
+      "q4": "Apa format dan ukuran videonya?",
+      "a4": "MP4 30 fps, durasi 3, 5 atau 8 detik, 720p atau 1080p (tidak melebihi piksel foto asli), sesuai bentuk foto atau dipotong 9:16, 1:1, 16:9. Bisa diputar di ponsel dan diunggah ke TikTok, Reels, Shorts.",
+      "q5": "Mengapa tepi terlihat melar?",
+      "a5": "Saat kamera bergerak, sedikit area yang tadinya tertutup benda dekat terlihat, dan alat mengisinya dengan piksel sekitar. Pilih Halus, atau gunakan foto dengan subjek jelas dan latar polos."
     }
   },
   "qr": {
@@ -9760,5 +9778,46 @@
     "clear": "Hapus",
     "fullscreen": "Layar penuh",
     "hint": "Usap seluruh area: kotak yang tetap kosong menandakan dead zone. Esc keluar dari layar penuh."
+  },
+  "v": {
+    "back": "Semua alat",
+    "title": "AI foto jadi video",
+    "privacyNote": "Kedalaman AI dan enkode video berjalan di tab ini. Foto Anda tidak pernah diunggah.",
+    "filesTitle": "Foto",
+    "dropTitle": "Letakkan foto",
+    "dropHint": "Atau tempel. Pratinjau langsung bergerak.",
+    "dropTypes": "JPG, PNG, WebP, HEIC",
+    "hint": "Kamera bergerak melalui kedalaman AI foto.",
+    "output": "{w} × {h} · {s} dtk · {fps} fps",
+    "ready": "Kedalaman 3D siap dalam {s} dtk ({device}).",
+    "play": "Putar",
+    "pause": "Jeda",
+    "download": "Unduh MP4",
+    "exporting": "Membuat video… {pct}%",
+    "exported": "MP4 {w} × {h} tersimpan dalam {s} dtk.",
+    "motion": "Gerakan kamera",
+    "motion_push": "Maju",
+    "motion_pull": "Mundur",
+    "motion_orbit": "Mengitari",
+    "motion_pan": "Menyapu",
+    "motion_rise": "Naik",
+    "strength": "Kekuatan",
+    "strength_subtle": "Halus",
+    "strength_normal": "Normal",
+    "strength_strong": "Kuat",
+    "duration": "Durasi",
+    "seconds": "{n} dtk",
+    "aspect": "Bentuk",
+    "aspect_original": "Sesuai foto",
+    "size": "Kualitas",
+    "loop": "Loop mulus (akhir kembali ke awal)",
+    "note": "Yang bergerak kamera, bukan orang di foto.",
+    "empty": "Tambahkan foto dulu.",
+    "waitDepth": "Tunggu sebentar: kedalaman 3D masih dihitung.",
+    "depthFailed": "Kedalaman 3D gagal di perangkat ini. Unduhan tetap membuat video, hanya dengan efek zoom.",
+    "errorDecode": "Gambar itu tidak bisa dibaca.",
+    "errorGl": "Browser ini tidak mendukung WebGL 2 yang dibutuhkan pratinjau 3D.",
+    "errorEncode": "Browser ini tidak bisa mengenkode video. Coba Chrome, Edge atau Safari terbaru.",
+    "errorGpuReset": "Kartu grafis direset saat ekspor. Coba lagi."
   }
 }

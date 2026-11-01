@@ -4,6 +4,8 @@ import { AI_MODELS, formatMb, mirrorFiles, modelFileUrl, type AiModelId } from "
 import { AI_TOOLS, appHref, isAiToolPath, parseAppPath } from "../src/shared/path";
 import { cleanSegments, shortClock, toSrt, toText, toVtt } from "../src/shared/subtitles";
 import { isTrackedPath } from "../src/shared/analytics";
+import { prepareDepth } from "../src/client/v/render";
+import { MOTIONS, STRENGTHS, cameraAt, cropRect, frameCount, outputSize } from "../src/shared/parallax";
 
 const html = {
   fetch: async () => new Response("<!doctype html><title>cv.cm</title>", { headers: { "Content-Type": "text/html; charset=utf-8" } }),
@@ -16,7 +18,7 @@ describe("AI tool routes", () => {
       expect(appHref("zh-CN", tool)).toBe(`/zh-cn/${tool}/`);
       expect(isAiToolPath(`/ja/${tool}/`)).toBe(true);
     }
-    expect([...AI_TOOLS]).toEqual(["remove-background", "image-upscaler", "speech-to-text", "depth-map"]);
+    expect([...AI_TOOLS]).toEqual(["v", "remove-background", "image-upscaler", "speech-to-text", "depth-map"]);
     expect(isAiToolPath("/en/json/")).toBe(false);
     expect(isAiToolPath("/en/")).toBe(false);
   });
@@ -135,5 +137,70 @@ describe("AI page headers", () => {
     const bad = await worker.fetch(new Request("https://cv.cm/ai/models/a//b.onnx"), { ASSETS: html });
     expect(bad.status).toBe(400);
     expect(seen).toHaveLength(2);
+  });
+});
+
+describe("photo to video (/v/)", () => {
+  it("keeps the old AI studio URLs: /v and its pages open the tool", async () => {
+    expect(parseAppPath("/v")).toEqual({ kind: "bare", tool: "v" });
+    expect(parseAppPath("/v/agent")).toEqual({ kind: "bare", tool: "v" });
+    expect(parseAppPath("/en/v/canvas/")).toEqual({ kind: "app", locale: "en", tool: "v" });
+    expect(parseAppPath("/zh-cn/v/director/xyz")).toEqual({ kind: "app", locale: "zh-CN", tool: "v" });
+    expect(parseAppPath("/v/canvas/abc123")).toEqual({ kind: "bare", tool: "v" });
+    expect(parseAppPath("/v/wp-login.php")).toEqual({ kind: "unknown" });
+    expect(parseAppPath("/en/v/xyz")).toEqual({ kind: "unknown" });
+    expect(parseAppPath("/en/v/canvas/a/b")).toEqual({ kind: "unknown" });
+    const bare = await worker.fetch(new Request("https://cv.cm/v/director", { headers: { "Accept-Language": "ja" } }), { ASSETS: html });
+    expect(bare.status).toBe(302);
+    expect(new URL(bare.headers.get("Location")!).pathname).toBe("/ja/v/");
+    const old = await worker.fetch(new Request("https://cv.cm/zh-cn/v/agent"), { ASSETS: html });
+    expect(old.status).toBe(301);
+    expect(new URL(old.headers.get("Location")!).pathname).toBe("/zh-cn/v/");
+    const page = await worker.fetch(new Request("https://cv.cm/en/v/"), { ASSETS: html });
+    expect(page.status).toBe(200);
+    expect(page.headers.get("Cross-Origin-Embedder-Policy")).toBe("credentialless");
+  });
+
+  it("moves the camera on closed or eased paths", () => {
+    for (const m of MOTIONS) {
+      const a = cameraAt(m, 1, 0, true);
+      const b = cameraAt(m, 1, 1, true);
+      for (const k of ["ox", "oy", "zoom", "dolly"] as const) expect(b[k]).toBeCloseTo(a[k], 9);
+      // Every depth layer (focus ± 0.5) still covers the frame: shift plus half the visible width stays inside the photo.
+      for (const strength of Object.values(STRENGTHS)) {
+        for (let t = 0; t <= 1; t += 0.05) {
+          for (const loop of [false, true]) {
+            const c = cameraAt(m, strength, t, loop);
+            for (const d of [-0.5, 0.5]) {
+              const half = 0.5 / (c.zoom * (1 + c.dolly * d));
+              expect(Math.abs(c.ox * d) + half, `${m} ${strength} ${t}`).toBeLessThanOrEqual(0.5);
+              expect(Math.abs(c.oy * d) + half, `${m} ${strength} ${t}`).toBeLessThanOrEqual(0.5);
+            }
+          }
+        }
+      }
+    }
+    expect(cameraAt("push", 1, 1, false).zoom).toBeGreaterThan(cameraAt("push", 1, 0, false).zoom);
+    expect(cameraAt("pull", 1, 1, false).zoom).toBeLessThan(cameraAt("pull", 1, 0, false).zoom);
+    expect(frameCount(5)).toBe(150);
+  });
+
+  it("sizes and crops the video in even pixels", () => {
+    expect(outputSize(4000, 3000, "original", 1080)).toEqual({ width: 1440, height: 1080 });
+    expect(outputSize(4000, 3000, "9:16", 1080)).toEqual({ width: 1080, height: 1920 });
+    expect(outputSize(4000, 1000, "original", 1080)).toEqual({ width: 1920, height: 480 });
+    expect(outputSize(640, 481, "1:1", 1080)).toEqual({ width: 480, height: 480 });
+    // A crop never asks for more pixels than it has: 16:9 of a 1080 square is 1080 × 607.5 source pixels.
+    expect(outputSize(1080, 1080, "16:9", 1080)).toEqual({ width: 1080, height: 606 });
+    expect(outputSize(962, 962, "original", 1080)).toEqual({ width: 962, height: 962 });
+    expect(cropRect(4000, 3000, "1:1")).toEqual({ x: 0.125, y: 0, w: 0.75, h: 1 });
+    expect(cropRect(1000, 2000, "16:9").h).toBeCloseTo(9 / 32, 9);
+  });
+
+  it("grows near depth by two pixels, then softens it", () => {
+    const row = new Uint8ClampedArray([0, 0, 0, 255, 0, 0, 0]);
+    expect([...prepareDepth(row, 7, 1)]).toEqual([85, 170, 255, 255, 255, 170, 85]);
+    const col = prepareDepth(new Uint8ClampedArray([0, 0, 0, 255, 0, 0, 0]), 1, 7);
+    expect([...col]).toEqual([85, 170, 255, 255, 255, 170, 85]);
   });
 });

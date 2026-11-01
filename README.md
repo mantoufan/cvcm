@@ -13,6 +13,7 @@ Browser tools plus a tiny cloud clipboard.
 - **AI image upscaler** / AI 图片放大 — 2× / 4×, photo or anime. [Open](https://cv.cm/en/image-upscaler/)
 - **Speech to text** / 语音转文字 — Whisper in the browser, 99 languages, SRT / VTT. [Open](https://cv.cm/en/speech-to-text/)
 - **Depth map generator** / 深度图生成. [Open](https://cv.cm/en/depth-map/)
+- **AI photo to video** / AI 照片转视频 (3D camera move → MP4). [Open](https://cv.cm/en/v/)
 - **Photo collage** / 图片拼图 — combine photos with layouts. [Open](https://cv.cm/en/collage/)
 - **Portrait camera sim** / 人像相机模拟 — aperture, shutter, ISO, lenses and filters on photoreal adult sitters. [Open](https://cv.cm/en/portrait-sim/)
 - **Image formats** / 图片格式 — PNG, JPG, WebP, AVIF, GIF, BMP, ICO. [Open](https://cv.cm/en/convert/)

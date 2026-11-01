@@ -21,7 +21,9 @@ export function outputFilename(
   const ext =
     mime === "application/pdf"
       ? "pdf"
-      : mime === "audio/wav" || mime === "audio/x-wav"
+      : mime === "video/mp4"
+        ? "mp4"
+        : mime === "audio/wav" || mime === "audio/x-wav"
         ? "wav"
         : mime === "image/jpeg"
           ? "jpg"

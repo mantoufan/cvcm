@@ -1,0 +1,80 @@
+{
+  "meta": {
+    "titleV": "IA de foto a video — movimiento 3D desde una imagen, gratis — cv.cm",
+    "descV": "Convierte una foto en un video 3D en movimiento: la profundidad con IA se calcula en tu navegador, la cámara se acerca, gira o hace paneo y descargas un MP4. Gratis, sin registro, sin marca de agua y sin subir la foto."
+  },
+  "tools": {
+    "v": {
+      "name": "IA de foto a video",
+      "blurb": "Una imagen se convierte en un MP4 con movimiento de cámara 3D."
+    }
+  },
+  "faq": {
+    "v": {
+      "q1": "¿Cómo funciona convertir una foto en video?",
+      "a1": "Un modelo de IA (Depth Anything V2) estima a qué distancia está cada parte de la imagen. Una cámara virtual se mueve a través de esa profundidad: lo cercano se desplaza más que el fondo, como una toma 3D corta.",
+      "q2": "¿Se sube mi foto?",
+      "a2": "No. El modelo se descarga una vez (unos 25–100 MB, según tu dispositivo) y se ejecuta en esta pestaña. El video también se codifica en el navegador.",
+      "q3": "¿Puede crear un video a partir de texto?",
+      "a3": "No. Anima una imagen que ya tienes: una foto, un dibujo o una imagen de IA. Las personas y los objetos no se mueven solos; se mueve la cámara.",
+      "q4": "¿Qué formato y tamaño tiene el video?",
+      "a4": "MP4 a 30 fps, de 3, 5 u 8 segundos, en 720p o 1080p (nunca más píxeles que la foto), con la forma de la foto o recortado a 9:16, 1:1 o 16:9. Se reproduce en el móvil y se puede subir a TikTok, Reels y Shorts.",
+      "q5": "¿Por qué los bordes se ven estirados?",
+      "a5": "La cámara deja ver un poco de lo que estaba oculto detrás de los objetos cercanos, y la herramienta lo rellena con píxeles vecinos. Elige Suave, o una foto con un sujeto claro y un fondo sencillo."
+    }
+  },
+  "ui": {
+    "v": {
+      "back": "Todas las herramientas",
+      "title": "IA de foto a video",
+      "privacyNote": "La profundidad con IA y la codificación del video se hacen en esta pestaña. Tu foto nunca se sube.",
+      "filesTitle": "Foto",
+      "dropTitle": "Suelta una foto",
+      "dropHint": "O pégala. La vista previa empieza a moverse al instante.",
+      "dropTypes": "JPG, PNG, WebP, HEIC",
+      "hint": "La cámara se mueve por la profundidad IA de la foto.",
+      "output": "{w} × {h} · {s} s · {fps} fps",
+      "ready": "Profundidad 3D lista en {s} s ({device}).",
+      "play": "Reproducir",
+      "pause": "Pausa",
+      "download": "Descargar MP4",
+      "exporting": "Creando el video… {pct} %",
+      "exported": "MP4 de {w} × {h} guardado en {s} s.",
+      "motion": "Movimiento de cámara",
+      "motion_push": "Acercar",
+      "motion_pull": "Alejar",
+      "motion_orbit": "Girar alrededor",
+      "motion_pan": "Paneo",
+      "motion_rise": "Subir",
+      "strength": "Intensidad",
+      "strength_subtle": "Suave",
+      "strength_normal": "Normal",
+      "strength_strong": "Fuerte",
+      "duration": "Duración",
+      "seconds": "{n} s",
+      "aspect": "Formato",
+      "aspect_original": "Como la foto",
+      "size": "Calidad",
+      "loop": "Bucle continuo (termina donde empieza)",
+      "note": "Se mueve la cámara, no las personas de la foto.",
+      "empty": "Primero añade una foto.",
+      "waitDepth": "Espera un momento: la profundidad 3D aún se está calculando.",
+      "depthFailed": "La profundidad 3D no funcionó en este dispositivo. Puedes descargar el video, pero solo con zoom.",
+      "errorDecode": "No se pudo leer esa imagen.",
+      "errorGl": "Este navegador no admite WebGL 2, necesario para la vista previa 3D.",
+      "errorEncode": "Este navegador no puede codificar video. Prueba un Chrome, Edge o Safari reciente.",
+      "errorGpuReset": "La tarjeta gráfica se reinició durante la exportación. Vuelve a intentarlo."
+    }
+  },
+  "guides": {
+    "v": {
+      "lead": "Crea un video 3D corto a partir de una foto en esta pestaña.",
+      "s1t": "Añade una foto",
+      "s1b": "Suelta o pega una imagen. La IA calcula su profundidad en unos segundos y la vista previa empieza a moverse.",
+      "s2t": "Elige el movimiento",
+      "s2b": "Acercar, alejar, girar alrededor, paneo o subir. Ajusta la intensidad, la duración, el formato (9:16 para Reels y Shorts) y la calidad.",
+      "s3t": "Descarga el MP4",
+      "s3b": "El video se codifica en el navegador y se guarda como MP4 para publicarlo donde quieras."
+    }
+  }
+}

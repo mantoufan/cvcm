@@ -131,6 +131,7 @@ export const GUIDE_STEP_COUNT: Record<ToolId, number> = {
   "image-upscaler": 3,
   "speech-to-text": 3,
   "depth-map": 3,
+  v: 3,
 };
 
 export function guideSteps(tool: ToolId): number {

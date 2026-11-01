@@ -1,15 +1,22 @@
-"""Merge scripts/tools-src/batch17/<locale>.json into the locale packs (meta, tools, faq, tool UI) and guides."""
+"""Merge scripts/tools-src/<dir>/<locale>.json into the locale packs (meta, tools, faq, tool UI) and guides.
+
+    python3 scripts/merge-tool-copy.py v          # or batch16, batch17
+"""
 import json
+import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-SRC = ROOT / "scripts/tools-src/batch17"
 LOCALES = ["en", "es", "id", "ja", "ko", "vi", "zh-CN", "zh-TW"]
 
 
 def write(path: Path, data: dict) -> None:
     path.write_text(json.dumps(data, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 
+
+if len(sys.argv) != 2:
+    sys.exit("usage: python3 scripts/merge-tool-copy.py <tools-src folder>")
+SRC = ROOT / "scripts/tools-src" / sys.argv[1]
 
 for loc in LOCALES:
     src_path = SRC / f"{loc}.json"
