@@ -36,7 +36,8 @@ vec2 photoUv(vec2 p) {
 }
 
 float surface(float layer) {
-  return texture(uDepth, photoUv(project(layer))).r;
+  // Explicit LOD: this runs in a loop with a data-dependent break, where implicit derivatives are undefined.
+  return textureLod(uDepth, photoUv(project(layer)), 0.0).r;
 }
 
 void main() {

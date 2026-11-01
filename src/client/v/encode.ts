@@ -34,17 +34,24 @@ async function isSupported(config: VideoEncoderConfig): Promise<boolean> {
  * Hand the event loop back so the progress bar paints. A hidden tab throttles timers to about one a second,
  * so there a message-channel task (not throttled) keeps the export at full speed.
  */
+let channel: MessageChannel | null = null;
+
 function yieldToPage(): Promise<void> {
   if (document.visibilityState === "visible") return new Promise((r) => setTimeout(r, 0));
+  channel ??= new MessageChannel();
+  const port = channel.port1;
   return new Promise((r) => {
-    const ch = new MessageChannel();
-    ch.port1.onmessage = () => r();
-    ch.port2.postMessage(null);
+    port.onmessage = () => r();
+    channel!.port2.postMessage(null);
   });
 }
 
+/** Chrome 106+, Safari 16.4+, Firefox 130+ fire "dequeue"; older encoders are polled. */
+const HAS_DEQUEUE = typeof VideoEncoder !== "undefined" && "ondequeue" in VideoEncoder.prototype;
+
 /** Resolves when the encoder takes a frame off its queue, or after `ms` (the caller checks for a stall). */
 function dequeued(encoder: VideoEncoder, ms: number): Promise<void> {
+  if (!HAS_DEQUEUE) return yieldToPage();
   return new Promise((r) => {
     const done = (): void => {
       clearTimeout(timer);
@@ -54,6 +61,21 @@ function dequeued(encoder: VideoEncoder, ms: number): Promise<void> {
     const timer = setTimeout(done, ms);
     encoder.addEventListener("dequeue", done);
   });
+}
+
+/** `promise`, or a rejection after `ms`; the timer is cleared either way. */
+async function within<T>(promise: Promise<T>, ms: number): Promise<T> {
+  let timer = 0;
+  try {
+    return await Promise.race([
+      promise,
+      new Promise<never>((_, reject) => {
+        timer = window.setTimeout(() => reject(new Error("encoder stalled")), ms);
+      }),
+    ]);
+  } finally {
+    clearTimeout(timer);
+  }
 }
 
 type Job = {
@@ -127,7 +149,7 @@ async function encodeWith(job: Job, config: VideoEncoderConfig, mux: MuxCodec): 
       let waitedSince = performance.now();
       let queued = encoder.encodeQueueSize;
       while (encoder.encodeQueueSize > 6) {
-        await dequeued(encoder, 500);
+        await dequeued(encoder, STALL_MS);
         if (job.cancelled()) throw new Error("cancelled");
         if (failure) throw failure;
         if (encoder.encodeQueueSize < queued) {
@@ -151,10 +173,7 @@ async function encodeWith(job: Job, config: VideoEncoderConfig, mux: MuxCodec): 
     }
     try {
       // A stalled encoder never settles flush(): give up on it after the same wait.
-      await Promise.race([
-        encoder.flush(),
-        new Promise((_, reject) => setTimeout(() => reject(new Error("encoder stalled")), STALL_MS)),
-      ]);
+      await within(encoder.flush(), STALL_MS);
     } catch (e) {
       fail(e);
     }

@@ -253,3 +253,13 @@ export function syncChips(list: HTMLButtonElement[], value: string): void {
     chip.setAttribute("aria-pressed", String(on));
   }
 }
+
+/** A chip row in its `.convert-chips` box, wired to one setting: the highlight follows the click, then `after` runs. */
+export function chipGroup<T extends string | number>(values: readonly T[], current: () => T, label: (v: T) => string, set: (v: T) => void, after: () => void): HTMLElement {
+  const chips: HTMLButtonElement[] = chipRow(values, current, label, (v) => {
+    set(v);
+    syncChips(chips, String(v));
+    after();
+  });
+  return h("div", { class: "convert-chips" }, ...chips);
+}

@@ -1,7 +1,7 @@
 import { outputFilename } from "../../shared/filename";
 import { appHref } from "../../shared/path";
 import { AiClient } from "../ai/client";
-import { chipRow, deviceLabel, dropZone, formatSeconds, prewarm, runJob, statusPanel, syncChips, type Status } from "../ai/kit";
+import { chipGroup, deviceLabel, dropZone, formatSeconds, prewarm, runJob, statusPanel, type Status } from "../ai/kit";
 import type { AiResponse } from "../ai/protocol";
 import { canvasToBlob, decodeImage } from "../decode";
 import { downloadBlob, h } from "../dom";
@@ -32,8 +32,6 @@ let status: Status | null = null;
 let preview: HTMLCanvasElement | null = null;
 let hintEl: HTMLElement | null = null;
 let splitEl: HTMLInputElement | null = null;
-let scaleChips: HTMLButtonElement[] = [];
-let styleChips: HTMLButtonElement[] = [];
 let alive = false;
 let retired: ImageBitmap[] = [];
 
@@ -79,8 +77,6 @@ export function unmountImageUpscaler(): void {
   preview = null;
   hintEl = null;
   splitEl = null;
-  scaleChips = [];
-  styleChips = [];
 }
 
 function filesRail(): HTMLElement {
@@ -140,24 +136,14 @@ function stagePane(): HTMLElement {
 }
 
 function controls(): HTMLElement {
-  scaleChips = chipRow<2 | 4>([2, 4], () => state.scale, (v) => `${v}×`, (v) => {
-    state.scale = v;
-    syncChips(scaleChips, String(v));
-    updateHint();
-  });
-  styleChips = chipRow<"photo" | "anime">(["photo", "anime"], () => state.style, (v) => t(`upscaler.style_${v}`), (v) => {
-    state.style = v;
-    syncChips(styleChips, v);
-    status?.setModel(model());
-  });
   return h("aside", { class: "rail controls" },
     h("fieldset", null,
       h("legend", null, t("upscaler.scale")),
-      h("div", { class: "convert-chips" }, ...scaleChips),
+      chipGroup<2 | 4>([2, 4], () => state.scale, (v) => `${v}×`, (v) => (state.scale = v), updateHint),
     ),
     h("fieldset", null,
       h("legend", null, t("upscaler.style")),
-      h("div", { class: "convert-chips" }, ...styleChips),
+      chipGroup<"photo" | "anime">(["photo", "anime"], () => state.style, (v) => t(`upscaler.style_${v}`), (v) => (state.style = v), () => status?.setModel(model())),
       h("p", { class: "muted" }, t("upscaler.styleNote")),
     ),
     h("fieldset", null,

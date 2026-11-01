@@ -33,6 +33,9 @@ const WHISPER_CONFIGS = [
   "tokenizer_config.json",
 ] as const;
 
+/** Long side of the copy the depth model's processor reads (it resizes to about 518 px itself). */
+export const DEPTH_INPUT_MAX = 1536;
+
 export const AI_MODELS = {
   // BiRefNet lite (MIT), re-exported from ZhengPeng7/BiRefNet_lite with ONNX's native DeformConv
   // (scripts/ai/export-birefnet.py). The public ONNX export unrolls deformable convolution into GatherND

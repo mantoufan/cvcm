@@ -17,9 +17,10 @@ import {
   type Size,
   type Strength,
 } from "../../shared/parallax";
+import { DEPTH_INPUT_MAX } from "../../shared/ai-models";
 import { appHref } from "../../shared/path";
 import { AiClient } from "../ai/client";
-import { chipRow, deviceLabel, dropZone, formatSeconds, prewarm, runJob, statusPanel, syncChips, type Status } from "../ai/kit";
+import { chipGroup, deviceLabel, dropZone, formatSeconds, prewarm, runJob, statusPanel, type Status } from "../ai/kit";
 import type { AiResponse } from "../ai/protocol";
 import { decodeImage } from "../decode";
 import { downloadBlob, h } from "../dom";
@@ -32,8 +33,6 @@ import { ParallaxRenderer, prepareDepth } from "./render";
  * of a 4K landscape still has the 1215 px it needs for a sharp 1080 × 1920 clip.
  */
 const PHOTO_MAX = 4096;
-/** The depth worker scales its input to this long side (bitmapToRaw in ai/worker.ts). */
-const DEPTH_INPUT_MAX = 1536;
 /** Preview canvas long side, in CSS-independent pixels. */
 const PREVIEW_MAX = 960;
 /** The preview's texture: twice the canvas is plenty, and it keeps a second full-size copy off the GPU. */
@@ -138,10 +137,7 @@ function filesRail(): HTMLElement {
 }
 
 function stagePane(): HTMLElement {
-  preview = h("canvas", { class: "preview", width: 800, height: 560 });
-  // Phones drop GPU contexts under memory pressure or in the background: rebuild the preview when it comes back.
-  preview.addEventListener("webglcontextlost", (e) => e.preventDefault());
-  preview.addEventListener("webglcontextrestored", rebuildPreview);
+  preview = previewCanvas();
   sizeEl = h("p", { class: "hint" });
   playBtn = h("button", { type: "button", class: "btn ghost", onClick: togglePlay }, t("v.pause"));
   downloadBtn = h("button", { type: "button", class: "btn", onClick: () => void download() }, t("v.download"));
@@ -154,37 +150,27 @@ function stagePane(): HTMLElement {
   );
 }
 
-/** A chip row wired to one setting: highlight follows the click, then `after` runs. */
-function chips<T extends string | number>(values: readonly T[], current: () => T, label: (v: T) => string, set: (v: T) => void, after: () => void): HTMLElement {
-  const els: HTMLButtonElement[] = chipRow(values, current, label, (v) => {
-    set(v);
-    syncChips(els, String(v));
-    after();
-  });
-  return h("div", { class: "convert-chips" }, ...els);
-}
-
 function controls(): HTMLElement {
   const group = (legend: string, ...body: (HTMLElement | null)[]): HTMLElement =>
     h("fieldset", null, h("legend", null, legend), ...body);
   return h("aside", { class: "rail controls" },
     group(t("v.motion"),
-      chips(MOTIONS, () => state.motion, (m) => t(`v.motion_${m}`), (m) => (state.motion = m), restart),
+      chipGroup(MOTIONS, () => state.motion, (m) => t(`v.motion_${m}`), (m) => (state.motion = m), restart),
     ),
     group(t("v.strength"),
-      chips(STRENGTH_IDS, () => state.strength, (s) => t(`v.strength_${s}`), (s) => (state.strength = s), redrawStill),
+      chipGroup(STRENGTH_IDS, () => state.strength, (s) => t(`v.strength_${s}`), (s) => (state.strength = s), redrawStill),
     ),
     group(t("v.duration"),
-      chips(DURATIONS, () => state.duration, (d) => t("v.seconds", { n: d }), (d) => (state.duration = d), () => {
+      chipGroup(DURATIONS, () => state.duration, (d) => t("v.seconds", { n: d }), (d) => (state.duration = d), () => {
         updateHint();
         restart();
       }),
     ),
     group(t("v.aspect"),
-      chips(ASPECTS, () => state.aspect, (a) => (a === "original" ? t("v.aspect_original") : a), (a) => (state.aspect = a), layout),
+      chipGroup(ASPECTS, () => state.aspect, (a) => (a === "original" ? t("v.aspect_original") : a), (a) => (state.aspect = a), layout),
     ),
     group(t("v.size"),
-      chips(SIZES, () => state.size, (s) => `${s}p`, (s) => (state.size = s), layout),
+      chipGroup(SIZES, () => state.size, (s) => `${s}p`, (s) => (state.size = s), layout),
       h("label", { class: "check" },
         h("input", {
           type: "checkbox",
@@ -209,28 +195,44 @@ function onPaste(e: ClipboardEvent): void {
   }
 }
 
+/** Phones drop GPU contexts under memory pressure or in the background: the preview rebuilds when it comes back. */
+function previewCanvas(): HTMLCanvasElement {
+  const canvas = h("canvas", { class: "preview", width: 800, height: 560 });
+  canvas.addEventListener("webglcontextlost", (e) => e.preventDefault());
+  canvas.addEventListener("webglcontextrestored", () => {
+    if (canvas === preview) rebuildPreview();
+  });
+  return canvas;
+}
+
+/**
+ * A renderer that can draw now. If the old context is lost (and may never be restored), swap in a new canvas:
+ * a new canvas gets a new context.
+ */
+function liveRenderer(): ParallaxRenderer {
+  if (renderer && !renderer.lost()) return renderer;
+  if (renderer && preview) {
+    const fresh = previewCanvas();
+    preview.replaceWith(fresh);
+    preview = fresh;
+  }
+  renderer = new ParallaxRenderer(preview!);
+  return renderer;
+}
+
 function rebuildPreview(): void {
-  if (!alive || !preview) return;
+  if (!alive || !state.small) return;
   renderer = null;
-  if (state.photo) {
-    try {
-      renderer = new ParallaxRenderer(preview);
-    } catch {
-      status?.error(t("v.errorGl"));
-      return;
-    }
-    renderer.setPhoto(state.small ?? state.photo);
-    renderer.setDepth(state.depth);
-    layout();
-    restart();
-    status?.idle();
+  try {
+    liveRenderer();
+  } catch {
+    status?.error(t("v.errorGl"));
+    return;
   }
-  // A photo picked while the context was gone loads now.
-  const next = state.queued;
-  if (next && !state.exporting) {
-    state.queued = null;
-    void setFile(next);
-  }
+  renderer!.setPhoto(state.small);
+  renderer!.setDepth(state.depth);
+  layout();
+  play();
 }
 
 /**
@@ -251,10 +253,8 @@ async function setFile(file: File | undefined): Promise<void> {
   if (!file || !status) return;
   // A newer pick also makes any decode still in flight stale.
   const ticket = ++pick;
-  // Mid-export, or the GPU context is gone until the browser restores it: load this photo after that.
-  if (state.exporting || renderer?.lost()) {
+  if (state.exporting) {
     state.queued = file;
-    if (!state.exporting) status.working(t("v.gpuLost"));
     return;
   }
   let decoded;
@@ -270,36 +270,47 @@ async function setFile(file: File | undefined): Promise<void> {
     if (alive && ticket === pick) state.queued = file;
     return;
   }
+  let gl: ParallaxRenderer;
   try {
-    if (!renderer || renderer.lost()) renderer = new ParallaxRenderer(preview!);
+    gl = liveRenderer();
   } catch {
     renderer = null;
     decoded.bitmap.close();
     status.error(t("v.errorGl"));
     return;
   }
-  let photo: ImageBitmap;
+  let photo: ImageBitmap | null = null;
   let small: ImageBitmap;
   try {
-    photo = await fitted(decoded.bitmap, Math.min(PHOTO_MAX, renderer.maxTexture));
+    photo = await fitted(decoded.bitmap, Math.min(PHOTO_MAX, gl.maxTexture));
     small = await fitted(photo, PREVIEW_PHOTO_MAX);
   } catch {
+    photo?.close();
     if (alive && ticket === pick) status.error(t("v.errorDecode"));
     return;
   } finally {
     decoded.bitmap.close();
   }
-  if (!alive || ticket !== pick || state.exporting || !renderer) {
+  if (!alive || ticket !== pick || state.exporting) {
     photo.close();
     small.close();
     if (alive && ticket === pick && state.exporting) state.queued = file;
     return;
   }
+  // The context may have been lost or restored while this photo decoded.
+  try {
+    gl = liveRenderer();
+  } catch {
+    photo.close();
+    small.close();
+    status.error(t("v.errorGl"));
+    return;
+  }
   state.photo?.close();
   state.small?.close();
   Object.assign(state, { file, photo, small, width: photo.width, height: photo.height, depth: null, depthFailed: false });
-  renderer.setPhoto(small);
-  renderer.setDepth(null);
+  gl.setPhoto(small);
+  gl.setDepth(null);
   layout();
   restart();
   void run();
@@ -431,25 +442,17 @@ async function download(): Promise<void> {
     status.error(t("v.errorEncode"));
     return;
   }
+  // Everything the clip needs, read now: settings may change while it renders.
   const source = state.photo;
   const file = state.file;
+  const depth = state.depth;
   const panel = status;
   const mine = mountId;
   const out = outputSize(state.width, state.height, state.aspect, state.size);
-  const canvas = h("canvas", { width: out.width, height: out.height });
-  // A lost GPU context draws nothing: fail the export rather than encode blank frames.
-  let lost = false;
-  canvas.addEventListener("webglcontextlost", () => (lost = true));
-  let exporter: ParallaxRenderer;
-  try {
-    exporter = new ParallaxRenderer(canvas, { keepFrame: true });
-  } catch {
-    panel.error(t("v.errorGl"));
-    return;
-  }
-  exporter.setPhoto(source);
-  exporter.setDepth(state.depth);
-  exporter.setCrop(cropRect(state.width, state.height, state.aspect));
+  const crop = cropRect(state.width, state.height, state.aspect);
+  // Enough photo for the output at the deepest zoom (about 1.3×) and no more: a 720p clip of a 4096 px photo
+  // uploads a texture a fraction of the size.
+  const need = Math.ceil(Math.max(state.width, state.height) * 1.5 * Math.max(out.width / (state.width * crop.w), out.height / (state.height * crop.h)));
   const { motion, loop: looped } = state;
   const strength = STRENGTHS[state.strength];
   const frames = frameCount(state.duration);
@@ -457,16 +460,31 @@ async function download(): Promise<void> {
   // Busy keeps a background model warm-up (hovering the drop zone) from clearing the export's progress line.
   panel.busy = true;
   syncDownload();
+  const canvas = h("canvas", { width: out.width, height: out.height });
+  // A lost GPU context draws nothing: fail the export rather than encode blank frames.
+  let lost = false;
+  canvas.addEventListener("webglcontextlost", () => (lost = true));
+  let exporter: ParallaxRenderer | null = null;
   const started = performance.now();
   try {
+    const texture = await fitted(source, need);
+    try {
+      exporter = new ParallaxRenderer(canvas, { keepFrame: true });
+      exporter.setPhoto(texture);
+    } finally {
+      texture.close();
+    }
+    exporter.setDepth(depth);
+    exporter.setCrop(crop);
+    const gl = exporter;
     const blob = await encodeMp4({
       canvas,
       frames,
       fps: FPS,
       // The clip ends on the frame before the start, so a looped clip repeats without a stutter.
       draw: (i) => {
-        if (lost || exporter.lost()) throw new Error("webgl context lost");
-        exporter.draw(cameraAt(motion, strength, looped ? i / frames : i / (frames - 1), looped));
+        if (lost || gl.lost()) throw new Error("webgl context lost");
+        gl.draw(cameraAt(motion, strength, looped ? i / frames : i / (frames - 1), looped));
       },
       onProgress: (f) => panel.working(t("v.exporting", { pct: Math.floor(f * 100) }), f),
       cancelled: () => !alive || mine !== mountId || state.photo !== source,
@@ -481,9 +499,10 @@ async function download(): Promise<void> {
       return;
     }
     console.error(err);
-    panel.error(t("v.errorEncode"));
+    // The renderer throws "webgl2" when the browser has no WebGL 2 context to give.
+    panel.error(t(err instanceof Error && err.message === "webgl2" ? "v.errorGl" : "v.errorEncode"));
   } finally {
-    exporter.dispose();
+    exporter?.dispose();
     panel.busy = false;
     // An export from an earlier mount must not touch this mount's flags, button or queue.
     if (mine !== mountId) return;
