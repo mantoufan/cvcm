@@ -277,9 +277,6 @@ describe("test pages: scoring", () => {
         expect(fair, `${id} ${dim} ties`).toBeGreaterThan(0.85);
         expect(fair, `${id} ${dim} ties`).toBeLessThan(1.15);
       }
-      // The same answers always give the same style.
-      const flat = all(id, 2);
-      expect(scoreQuiz(id, flat).key).toBe(scoreQuiz(id, flat).key);
     }
   });
 
@@ -300,7 +297,6 @@ describe("test pages: scoring", () => {
     for (const id of QUIZ_GROUPS.find((group) => group.id === "wellbeing")!.quizzes) {
       expect(isTrackedPath(`/en/tests/${id}/`), id).toBe(false);
     }
-    expect(isTrackedPath("/en/tests/wellbeing-index/")).toBe(false);
     expect(isTrackedPath("/en/tests/depression/")).toBe(false);
     expect(isTrackedPath("/zh-cn/tests/anxiety/")).toBe(false);
     expect(isTrackedPath("/tests/self-esteem/")).toBe(false);

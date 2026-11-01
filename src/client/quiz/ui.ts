@@ -3,6 +3,7 @@ import { linkList } from "../links";
 import type { Locale } from "../../shared/locale";
 import { appHref, quizHref } from "../../shared/path";
 import {
+  FOLLOW_UP,
   QUIZ_DEFS,
   QUIZ_GROUPS,
   SCALE_POINTS,
@@ -355,6 +356,8 @@ function resultView(locale: Locale, id: QuizId, copy: QuizCopy, result: QuizResu
         ...headline(results[result.key]),
         bar(copy.scoreLabel ?? ui.score, (result.total / max) * 100, shown),
       ];
+      const next = FOLLOW_UP[id];
+      if (next?.bands.includes(result.key)) nodes.push(testLinks(locale, [next.quiz]));
       if (quizGroupOf(id) === "wellbeing") nodes.push(h("p", { class: "muted" }, ui.notDiagnosis));
       if (result.safety) nodes.unshift(crisisBox(locale));
       return { nodes, summary: `${results[result.key]?.name ?? result.key}, ${shown}` };

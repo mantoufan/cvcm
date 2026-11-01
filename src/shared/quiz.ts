@@ -619,6 +619,11 @@ export const SAFETY: Partial<Record<QuizId, { item: number; bands: readonly stri
   depression: { item: 8, bands: ["severe"] },
 };
 
+/** Band results whose copy sends the reader to another test: the page links it under the result. */
+export const FOLLOW_UP: Partial<Record<QuizId, { bands: readonly string[]; quiz: QuizId }>> = {
+  "wellbeing-index": { bands: ["low", "reduced"], quiz: "depression" },
+};
+
 export function questionCount(id: QuizId): number {
   return QUIZ_DEFS[id].items.length;
 }

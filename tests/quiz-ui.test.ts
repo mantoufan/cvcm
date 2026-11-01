@@ -113,8 +113,19 @@ describe("test page UI", () => {
     const result = main.querySelector<HTMLElement>("#result")!;
     expect(result.textContent).toContain("32 / 100");
     expect(result.textContent).toContain("Reduced well-being (32–48)");
+    // The copy suggests the PHQ-9: the result links it.
+    expect(result.querySelector('a[href="/en/tests/depression/"]')).not.toBeNull();
     expect(result.querySelector(".quiz-crisis")).toBeNull();
     expect(result.querySelector("p.muted")).not.toBeNull();
+  });
+
+  it("links no follow-up test under a good WHO-5 result", () => {
+    const main = mount("wellbeing-index");
+    answer(main, () => 4);
+    submit(main);
+    const result = main.querySelector<HTMLElement>("#result")!;
+    expect(result.textContent).toContain("80 / 100");
+    expect(result.querySelector('a[href="/en/tests/depression/"]')).toBeNull();
   });
 
   it("suggests other fan quizzes after the Hogwarts quiz", () => {
