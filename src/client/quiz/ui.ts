@@ -9,6 +9,7 @@ import {
   QUIZ_GROUPS,
   QUIZZES,
   SCALE_POINTS,
+  SUPPORT,
   isComplete,
   maxTotal,
   questionCount,
@@ -244,16 +245,19 @@ function headline(result: QuizResultCopy | undefined, code?: string): HTMLElemen
   ];
 }
 
-function crisisBox(locale: Locale): HTMLElement {
+/**
+ * A boxed note with helplines: `crisis` for self-harm (see `SAFETY`), `support` for a worrying score that is not a
+ * crisis (see `SUPPORT`). The lines can be the same services (most take anyone who is struggling); the support box
+ * leaves out the self-harm wording and the emergency numbers.
+ */
+function helpBox(locale: Locale, kind: "crisis" | "support"): HTMLElement {
   const ui = quizUi(locale);
-  return h("div", { class: "quiz-crisis", role: "note" },
-    h("strong", null, ui.crisisTitle),
-    h("p", null, ui.crisisBody),
-    h("p", null, ui.crisisLines),
-  );
+  const [title, body, lines] = kind === "crisis"
+    ? [ui.crisisTitle, ui.crisisBody, ui.crisisLines]
+    : [ui.supportTitle, ui.supportBody, ui.supportLines];
+  return h("div", { class: `quiz-${kind}`, role: "note" }, h("strong", null, title), h("p", null, body), h("p", null, lines));
 }
 
-/** The result block for one test, plus a one-line summary for "Copy result". */
 /** "A, B and C" in the page language; plain commas where Intl.ListFormat is missing (Safari before 14.1). */
 function listNames(locale: Locale, names: string[]): string {
   try {
@@ -263,6 +267,7 @@ function listNames(locale: Locale, names: string[]): string {
   }
 }
 
+/** The result block for one test, plus a one-line summary for "Copy result". */
 function resultView(locale: Locale, id: QuizId, copy: QuizCopy, result: QuizResult): { nodes: HTMLElement[]; summary: string } {
   const ui = quizUi(locale);
   const def = QUIZ_DEFS[id];
@@ -354,14 +359,17 @@ function resultView(locale: Locale, id: QuizId, copy: QuizCopy, result: QuizResu
       const max = maxTotal(id);
       // WHO-5 and the like are read as a share of 100 (its cut-offs are 28 and 52), not as the raw total.
       const shown = def.result.percent ? `${Math.round((result.total / max) * 100)} / 100` : `${result.total} / ${max}`;
+      // At most one help box: the crisis box leads the result, the support box follows the advice.
+      const help = result.safety ? "crisis" : SUPPORT[id]?.includes(result.key) ? "support" : undefined;
       const nodes = [
+        ...(help === "crisis" ? [helpBox(locale, "crisis")] : []),
         ...headline(results[result.key]),
         bar(copy.scoreLabel ?? ui.score, (result.total / max) * 100, shown),
       ];
       const next = FOLLOW_UP[id];
       if (next?.bands.includes(result.key)) nodes.push(testLinks(locale, [next.quiz]));
+      if (help === "support") nodes.push(helpBox(locale, "support"));
       if (quizGroupOf(id) === "wellbeing") nodes.push(h("p", { class: "muted" }, ui.notDiagnosis));
-      if (result.safety) nodes.unshift(crisisBox(locale));
       return { nodes, summary: `${results[result.key]?.name ?? result.key}, ${shown}` };
     }
   }

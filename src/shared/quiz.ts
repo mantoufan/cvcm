@@ -616,10 +616,21 @@ export const QUIZ_DEFS: Record<QuizId, QuizDef> = {
 /**
  * When a result shows the crisis-line box: PHQ-9 item 9 (thoughts of self-harm) above "not at all", whatever the
  * total, and the severe PHQ-9 band. (The box is about self-harm, which the WHO-5 does not ask about: its low band
- * points to a doctor and the PHQ-9 in its own copy.)
+ * gets the gentler `SUPPORT` box and a PHQ-9 link instead.)
  */
 export const SAFETY: Partial<Record<QuizId, { item: number; bands: readonly string[] }>> = {
   depression: { item: 8, bands: ["severe"] },
+};
+
+/**
+ * Band results that show the gentler support box (helplines, "you don't have to wait for a crisis") when the crisis box
+ * does not apply: results whose copy recommends seeing a doctor now, not "if it doesn't improve". WHO-5 scores of 28 or
+ * less often go with depression, but the WHO-5 asks nothing about self-harm. Where both apply, the crisis box wins.
+ */
+export const SUPPORT: Partial<Record<QuizId, readonly string[]>> = {
+  "wellbeing-index": ["low"],
+  depression: ["moderate", "modsevere", "severe"],
+  anxiety: ["moderate", "severe"],
 };
 
 /** Band results whose copy sends the reader to another test: the page links it under the result (band quizzes only). */
