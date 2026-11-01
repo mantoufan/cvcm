@@ -80,4 +80,27 @@ describe("tally-counter ui", () => {
     mountTallyCounter(host);
     expect([...host.querySelectorAll("[data-out=count]")].map((el) => el.textContent)).toEqual(["1", "2"]);
   });
+
+  it("keeps the keyboard on the same counter and leaves other controls and held keys alone", () => {
+    mountTallyCounter(host);
+    const add = q<HTMLButtonElement>("[data-action=add]");
+    add.click();
+    add.click();
+    const counts = () => [...host.querySelectorAll("[data-out=count]")].map((el) => el.textContent);
+    // Highlight the second counter, then remove the first: keys still change the same counter.
+    host.querySelectorAll<HTMLButtonElement>("[data-action=plus]")[1].click();
+    host.querySelectorAll<HTMLButtonElement>("[data-action=remove]")[0].click();
+    document.body.dispatchEvent(new KeyboardEvent("keydown", { key: "ArrowUp", bubbles: true }));
+    expect(counts()).toEqual(["2", "0"]);
+    document.body.dispatchEvent(new KeyboardEvent("keydown", { key: " ", repeat: true, bubbles: true }));
+    expect(counts()).toEqual(["2", "0"]);
+    const link = document.createElement("a");
+    link.href = "#faq";
+    document.body.append(link);
+    const space = new KeyboardEvent("keydown", { key: " ", bubbles: true, cancelable: true });
+    link.dispatchEvent(space);
+    expect(space.defaultPrevented).toBe(false);
+    expect(counts()).toEqual(["2", "0"]);
+    link.remove();
+  });
 });

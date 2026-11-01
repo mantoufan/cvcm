@@ -23,6 +23,8 @@ let audio: AudioContext | null = null;
 let stream: MediaStream | null = null;
 let source: MediaStreamAudioSourceNode | null = null;
 let analyser: AnalyserNode | null = null;
+let sink: GainNode | null = null;
+let waveColor = "#a13f6c";
 let samples: Float32Array<ArrayBuffer> | null = null;
 let frame = 0;
 let peakDb = -Infinity;
@@ -125,11 +127,23 @@ async function start(): Promise<void> {
     return;
   }
   stream = s;
-  source = audio.createMediaStreamSource(s);
-  analyser = audio.createAnalyser();
-  analyser.fftSize = 2048;
-  samples = new Float32Array(analyser.fftSize);
-  source.connect(analyser);
+  try {
+    source = audio.createMediaStreamSource(s);
+    analyser = audio.createAnalyser();
+    analyser.fftSize = 2048;
+    samples = new Float32Array(analyser.fftSize);
+    // Some WebKit builds only run nodes the destination pulls on: route the analyser there through a silent gain.
+    sink = audio.createGain();
+    sink.gain.value = 0;
+    source.connect(analyser).connect(sink).connect(audio.destination);
+  } catch {
+    // Firefox throws when the microphone's sample rate differs from the AudioContext's.
+    stop();
+    say("failed");
+    return;
+  }
+  const style = waveEl ? getComputedStyle(waveEl) : null;
+  waveColor = style?.getPropertyValue("--pink-deep").trim() || "#a13f6c";
   peakDb = -Infinity;
   lastFrame = performance.now();
   frame = window.requestAnimationFrame(draw);
@@ -155,7 +169,10 @@ function stop(): void {
   recorder = null;
   source?.disconnect();
   source = null;
+  analyser?.disconnect();
   analyser = null;
+  sink?.disconnect();
+  sink = null;
   samples = null;
   stream?.getTracks().forEach((tr) => tr.stop());
   stream = null;
@@ -164,8 +181,16 @@ function stop(): void {
     recordBtn.disabled = true;
     recordBtn.textContent = t("micTest.record", { n: RECORD_MS / 1000 });
   }
-  if (meterFill) meterFill.style.width = "0%";
-  meterFill?.parentElement?.setAttribute("aria-valuenow", "0");
+  if (meterFill) {
+    meterFill.style.width = "0%";
+    meterFill.classList.remove("hot");
+    meterFill.parentElement?.setAttribute("aria-valuenow", "0");
+  }
+  // Clear the last live readings so a stopped meter does not look live.
+  if (levelEl) levelEl.textContent = "—";
+  if (peakEl) peakEl.textContent = "—";
+  if (verdictEl) verdictEl.textContent = "";
+  waveEl?.getContext("2d")?.clearRect(0, 0, waveEl.width, waveEl.height);
   say("idle");
 }
 
@@ -221,9 +246,8 @@ function drawWave(): void {
   const c = waveEl;
   const ctx = c?.getContext("2d");
   if (!c || !ctx || !samples) return;
-  const style = getComputedStyle(c);
   ctx.clearRect(0, 0, c.width, c.height);
-  ctx.strokeStyle = style.getPropertyValue("--pink-deep").trim() || "#a13f6c";
+  ctx.strokeStyle = waveColor;
   ctx.lineWidth = 2;
   ctx.beginPath();
   const mid = c.height / 2;

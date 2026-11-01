@@ -1,3 +1,4 @@
+import { copyWithFlash } from "../copy";
 import { h } from "../dom";
 import { locale, t } from "../i18n";
 import { appHref } from "../../shared/path";
@@ -74,17 +75,18 @@ function reset(): void {
 function press(e: PointerEvent): void {
   if (e.button !== 0) return;
   e.preventDefault();
-  hit();
+  hit(e.timeStamp);
 }
 
 function key(e: KeyboardEvent): void {
   if (e.key !== " " && e.key !== "Enter") return;
   e.preventDefault();
-  if (!e.repeat) hit();
+  if (!e.repeat) hit(e.timeStamp);
 }
 
-function hit(): void {
-  const now = performance.now();
+/** `at` is the event's own time stamp, so time spent waiting for the main thread is not added to the result. */
+function hit(at: number): void {
+  const now = Math.min(at > 0 ? at : performance.now(), performance.now());
   switch (state) {
     case "idle":
     case "early":
@@ -154,12 +156,5 @@ function paint(): void {
 }
 
 async function copyOut(): Promise<void> {
-  if (!last) return;
-  try {
-    await navigator.clipboard.writeText(last);
-    if (copyBtn) copyBtn.textContent = t("reactionTime.copied");
-    window.setTimeout(() => {
-      if (copyBtn) copyBtn.textContent = t("reactionTime.copy");
-    }, 1200);
-  } catch { /* ignore */ }
+  await copyWithFlash(copyBtn, last, { done: t("reactionTime.copied"), failed: t("reactionTime.copyFailed") });
 }

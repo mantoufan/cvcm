@@ -1,3 +1,4 @@
+import { copyWithFlash } from "../copy";
 import { h } from "../dom";
 import { locale, t } from "../i18n";
 import { appHref } from "../../shared/path";
@@ -5,6 +6,7 @@ import { MAX_COUNTERS, MAX_NAME, MAX_STEP, bump, clampStep, parseTally, total, t
 
 const STORE_KEY = "cvcm.tally.v1";
 
+let rootEl: HTMLElement | null = null;
 let listEl: HTMLElement | null = null;
 let totalEl: HTMLElement | null = null;
 let stepEl: HTMLInputElement | null = null;
@@ -32,7 +34,7 @@ export function mountTallyCounter(host: HTMLElement): void {
       h("h1", null, t("tallyCounter.title")),
       h("p", { class: "lede" }, t("tallyCounter.privacyNote")),
     ),
-    h("div", { class: "data-tool" },
+    rootEl = h("div", { class: "data-tool" },
       h("aside", { class: "rail controls" },
         h("fieldset", null,
           h("legend", null, t("tallyCounter.options")),
@@ -55,7 +57,7 @@ export function mountTallyCounter(host: HTMLElement): void {
 
 export function unmountTallyCounter(): void {
   document.removeEventListener("keydown", onKey);
-  listEl = totalEl = null;
+  rootEl = listEl = totalEl = null;
   stepEl = negEl = null;
   addBtn = copyBtn = null;
 }
@@ -107,6 +109,8 @@ function add(): void {
 function remove(i: number): void {
   if (state.counters.length <= 1) return;
   state.counters.splice(i, 1);
+  // Keep the keyboard on the same counter when one above it goes away.
+  if (i < active) active--;
   active = Math.min(active, state.counters.length - 1);
   save();
   paint();
@@ -134,12 +138,15 @@ function rename(i: number, name: string): void {
 }
 
 function onKey(e: KeyboardEvent): void {
-  // Leave typing in fields and shortcuts with modifiers alone.
-  if (e.ctrlKey || e.metaKey || e.altKey) return;
+  // Leave shortcuts with modifiers and held-down (repeating) keys alone: one press is one count.
+  if (e.ctrlKey || e.metaKey || e.altKey || e.repeat) return;
   const target = e.target as HTMLElement | null;
-  if (target && (target.tagName === "INPUT" || target.tagName === "TEXTAREA" || target.tagName === "SELECT" || target.isContentEditable)) return;
+  // Only when nothing else has focus, or focus is on the counter's own buttons: links, FAQ toggles and fields keep their keys.
+  const onPage = !target || target === document.body || target === document.documentElement;
+  const onButton = target?.tagName === "BUTTON" && !!rootEl?.contains(target);
+  if (!onPage && !onButton) return;
   // On a focused button, Space and Enter press that button.
-  if ((e.key === " " || e.key === "Enter") && target?.tagName === "BUTTON") return;
+  if (onButton && (e.key === " " || e.key === "Enter")) return;
   if (e.key === " " || e.key === "ArrowUp" || e.key === "+" || e.key === "=") {
     e.preventDefault();
     change(active, 1);
@@ -182,11 +189,5 @@ function row(name: string, count: number, i: number): HTMLElement {
 async function copyOut(): Promise<void> {
   const lines = state.counters.map((c) => `${c.name}: ${c.count}`);
   if (state.counters.length > 1) lines.push(t("tallyCounter.total", { n: total(state.counters) }));
-  try {
-    await navigator.clipboard.writeText(lines.join("\n"));
-    if (copyBtn) copyBtn.textContent = t("tallyCounter.copied");
-    window.setTimeout(() => {
-      if (copyBtn) copyBtn.textContent = t("tallyCounter.copy");
-    }, 1200);
-  } catch { /* ignore */ }
+  await copyWithFlash(copyBtn, lines.join("\n"), { done: t("tallyCounter.copied"), failed: t("tallyCounter.copyFailed") });
 }

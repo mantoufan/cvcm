@@ -1,3 +1,4 @@
+import { copyWithFlash } from "../copy";
 import { h } from "../dom";
 import { locale, t } from "../i18n";
 import { appHref } from "../../shared/path";
@@ -165,12 +166,5 @@ function paintBest(): void {
 }
 
 async function copyOut(): Promise<void> {
-  if (!last) return;
-  try {
-    await navigator.clipboard.writeText(last);
-    if (copyBtn) copyBtn.textContent = t("clickTest.copied");
-    window.setTimeout(() => {
-      if (copyBtn) copyBtn.textContent = t("clickTest.copy");
-    }, 1200);
-  } catch { /* ignore */ }
+  await copyWithFlash(copyBtn, last, { done: t("clickTest.copied"), failed: t("clickTest.copyFailed") });
 }
