@@ -1,7 +1,9 @@
 // @vitest-environment happy-dom
 import { describe, expect, it } from "vitest";
 import { mountQuiz, mountQuizHub } from "../src/client/quiz/ui";
+import { LOCALES } from "../src/shared/locale";
 import { QUIZ_DEFS, QUIZZES } from "../src/shared/quiz";
+import { quizUi } from "../src/shared/quiz-i18n";
 
 function mount(id: Parameters<typeof mountQuiz>[2], locale: Parameters<typeof mountQuiz>[1] = "en"): HTMLElement {
   document.body.innerHTML = "";
@@ -73,6 +75,34 @@ describe("test page UI", () => {
     answer(main, () => 0);
     submit(main);
     expect(main.querySelector(".quiz-crisis")).toBeNull();
+    expect(main.querySelector(".quiz-support")).toBeNull();
+  });
+
+  it("shows the support box, not the crisis box, for moderate PHQ-9 and severe GAD-7 results", () => {
+    const phq = mount("depression");
+    answer(phq, (i) => (i < 6 ? 2 : 0));
+    submit(phq);
+    expect(phq.querySelector("#result")!.textContent).toContain("12 / 27");
+    expect(phq.querySelector(".quiz-support")).not.toBeNull();
+    expect(phq.querySelector(".quiz-crisis")).toBeNull();
+    // Item 9 turns it into the crisis box alone.
+    const item9 = phq.querySelectorAll(".quiz-q")[8].querySelectorAll<HTMLInputElement>("input")[1];
+    item9.checked = true;
+    item9.dispatchEvent(new Event("change", { bubbles: true }));
+    expect(phq.querySelector(".quiz-crisis")).not.toBeNull();
+    expect(phq.querySelector(".quiz-support")).toBeNull();
+    const gad = mount("anxiety");
+    answer(gad, () => 3);
+    submit(gad);
+    expect(gad.querySelector(".quiz-support")).not.toBeNull();
+  });
+
+  it("has support box copy in every language, apart from the crisis lines", () => {
+    for (const locale of LOCALES) {
+      const ui = quizUi(locale);
+      for (const text of [ui.supportTitle, ui.supportBody, ui.supportLines]) expect(text?.trim(), locale).toBeTruthy();
+      expect(ui.supportLines, locale).not.toBe(ui.crisisLines);
+    }
   });
 
   it("renders a result for every test and resets on start over", () => {

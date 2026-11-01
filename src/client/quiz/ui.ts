@@ -245,23 +245,16 @@ function headline(result: QuizResultCopy | undefined, code?: string): HTMLElemen
   ];
 }
 
-function crisisBox(locale: Locale): HTMLElement {
+/**
+ * A boxed note with helplines: `crisis` for self-harm (see `SAFETY`), `support` for a low score that is not a crisis
+ * (see `SUPPORT`), which names general support lines only, no suicide or emergency services.
+ */
+function helpBox(locale: Locale, kind: "crisis" | "support"): HTMLElement {
   const ui = quizUi(locale);
-  return h("div", { class: "quiz-crisis", role: "note" },
-    h("strong", null, ui.crisisTitle),
-    h("p", null, ui.crisisBody),
-    h("p", null, ui.crisisLines),
-  );
-}
-
-/** Helplines for a low score that is not a crisis (see `SUPPORT`): same numbers, no self-harm framing. */
-function supportBox(locale: Locale): HTMLElement {
-  const ui = quizUi(locale);
-  return h("div", { class: "quiz-support", role: "note" },
-    h("strong", null, ui.supportTitle),
-    h("p", null, ui.supportBody),
-    h("p", null, ui.crisisLines),
-  );
+  const [title, body, lines] = kind === "crisis"
+    ? [ui.crisisTitle, ui.crisisBody, ui.crisisLines]
+    : [ui.supportTitle, ui.supportBody, ui.supportLines];
+  return h("div", { class: `quiz-${kind}`, role: "note" }, h("strong", null, title), h("p", null, body), h("p", null, lines));
 }
 
 /** The result block for one test, plus a one-line summary for "Copy result". */
@@ -371,9 +364,9 @@ function resultView(locale: Locale, id: QuizId, copy: QuizCopy, result: QuizResu
       ];
       const next = FOLLOW_UP[id];
       if (next?.bands.includes(result.key)) nodes.push(testLinks(locale, [next.quiz]));
-      if (!result.safety && SUPPORT[id]?.includes(result.key)) nodes.push(supportBox(locale));
+      if (!result.safety && SUPPORT[id]?.includes(result.key)) nodes.push(helpBox(locale, "support"));
       if (quizGroupOf(id) === "wellbeing") nodes.push(h("p", { class: "muted" }, ui.notDiagnosis));
-      if (result.safety) nodes.unshift(crisisBox(locale));
+      if (result.safety) nodes.unshift(helpBox(locale, "crisis"));
       return { nodes, summary: `${results[result.key]?.name ?? result.key}, ${shown}` };
     }
   }
