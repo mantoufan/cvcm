@@ -19,19 +19,41 @@ export function canEncode(): boolean {
   return typeof VideoEncoder !== "undefined" && typeof VideoFrame !== "undefined";
 }
 
-/** Every codec the browser says it can encode at this size, best first. */
-async function supportedCodecs(width: number, height: number, bitrate: number, fps: number): Promise<{ config: VideoEncoderConfig; mux: MuxCodec }[]> {
-  const out: { config: VideoEncoderConfig; mux: MuxCodec }[] = [];
-  for (const { codec, mux } of CODECS) {
-    const config: VideoEncoderConfig = { codec, width, height, bitrate, framerate: fps };
-    if (mux === "avc") config.avc = { format: "avc" };
-    try {
-      if ((await VideoEncoder.isConfigSupported(config)).supported) out.push({ config, mux });
-    } catch {
-      /* try the next one */
-    }
+/** An encoder that takes no frames off its queue for this long has stalled: give up on that codec. */
+const STALL_MS = 10_000;
+
+async function isSupported(config: VideoEncoderConfig): Promise<boolean> {
+  try {
+    return (await VideoEncoder.isConfigSupported(config)).supported === true;
+  } catch {
+    return false;
   }
-  return out;
+}
+
+/**
+ * Hand the event loop back so the progress bar paints. A hidden tab throttles timers to about one a second,
+ * so there a message-channel task (not throttled) keeps the export at full speed.
+ */
+function yieldToPage(): Promise<void> {
+  if (document.visibilityState === "visible") return new Promise((r) => setTimeout(r, 0));
+  return new Promise((r) => {
+    const ch = new MessageChannel();
+    ch.port1.onmessage = () => r();
+    ch.port2.postMessage(null);
+  });
+}
+
+/** Resolves when the encoder takes a frame off its queue, or after `ms` (the caller checks for a stall). */
+function dequeued(encoder: VideoEncoder, ms: number): Promise<void> {
+  return new Promise((r) => {
+    const done = (): void => {
+      clearTimeout(timer);
+      encoder.removeEventListener("dequeue", done);
+      r();
+    };
+    const timer = setTimeout(done, ms);
+    encoder.addEventListener("dequeue", done);
+  });
 }
 
 type Job = {
@@ -51,14 +73,17 @@ type Job = {
 export async function encodeMp4(job: Job): Promise<Blob> {
   const { width, height } = job.canvas;
   const bitrate = Math.round(width * height * job.fps * 0.15);
-  const codecs = await supportedCodecs(width, height, bitrate, job.fps);
   let last: Error = new Error("codec");
-  for (const codec of codecs) {
+  // Probed one at a time: the first supported codec usually works, so the rest are never asked.
+  for (const { codec, mux } of CODECS) {
+    const config: VideoEncoderConfig = { codec, width, height, bitrate, framerate: job.fps };
+    if (mux === "avc") config.avc = { format: "avc" };
+    if (!(await isSupported(config))) continue;
     try {
-      return await encodeWith(job, codec.config, codec.mux);
+      return await encodeWith(job, config, mux);
     } catch (err) {
       if (!(err instanceof CodecError)) throw err;
-      console.warn(`${codec.config.codec} failed, trying the next codec:`, err.message);
+      console.warn(`${codec} failed, trying the next codec:`, err.message);
       last = err;
     }
   }
@@ -99,7 +124,19 @@ async function encodeWith(job: Job, config: VideoEncoderConfig, mux: MuxCodec): 
       if (job.cancelled()) throw new Error("cancelled");
       if (failure) throw failure;
       // Keep the queue short so memory stays flat on long or large clips.
-      while (encoder.encodeQueueSize > 6) await new Promise((r) => setTimeout(r, 4));
+      let waitedSince = performance.now();
+      let queued = encoder.encodeQueueSize;
+      while (encoder.encodeQueueSize > 6) {
+        await dequeued(encoder, 500);
+        if (job.cancelled()) throw new Error("cancelled");
+        if (failure) throw failure;
+        if (encoder.encodeQueueSize < queued) {
+          queued = encoder.encodeQueueSize;
+          waitedSince = performance.now();
+        } else if (performance.now() - waitedSince > STALL_MS) {
+          throw new CodecError("encoder stalled");
+        }
+      }
       job.draw(i);
       const frame = new VideoFrame(canvas, { timestamp: Math.round(i * usPerFrame), duration: Math.round(usPerFrame) });
       try {
@@ -110,11 +147,14 @@ async function encodeWith(job: Job, config: VideoEncoderConfig, mux: MuxCodec): 
         frame.close();
       }
       job.onProgress((i + 1) / frames);
-      // Let the page paint the progress bar.
-      if (i % 5 === 4) await new Promise((r) => setTimeout(r, 0));
+      if (i % 5 === 4) await yieldToPage();
     }
     try {
-      await encoder.flush();
+      // A stalled encoder never settles flush(): give up on it after the same wait.
+      await Promise.race([
+        encoder.flush(),
+        new Promise((_, reject) => setTimeout(() => reject(new Error("encoder stalled")), STALL_MS)),
+      ]);
     } catch (e) {
       fail(e);
     }

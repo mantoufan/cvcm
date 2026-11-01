@@ -1,8 +1,6 @@
 """Merge scripts/tools-src/<dir>/<locale>.json into the locale packs (meta, tools, faq, tool UI) and guides.
 
-    python3 scripts/merge-tool-copy.py v
-
-Same merge as tools_batch16.py / tools_batch17.py, with the source folder as an argument.
+    python3 scripts/merge-tool-copy.py v          # or batch16, batch17
 """
 import json
 import sys

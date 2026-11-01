@@ -9410,8 +9410,10 @@
     "note": "The camera moves, not the people in the photo.",
     "empty": "Add a photo first.",
     "waitDepth": "Wait a moment: the 3D depth is still being made.",
+    "depthFailed": "3D depth did not work on this device. Download still makes a video, with a zoom only.",
     "errorDecode": "Could not read that image.",
     "errorGl": "This browser cannot draw WebGL 2, which the 3D preview needs.",
+    "gpuLost": "The graphics card is busy. Your photo loads as soon as it is back.",
     "errorEncode": "This browser cannot encode video. Try a recent Chrome, Edge or Safari."
   }
 }

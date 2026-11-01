@@ -59,8 +59,9 @@ void main() {
     if (surface(mid) >= mid) lo = mid; else hi = mid;
   }
   // Video has no alpha: transparent parts of a PNG or WebP become white, in the preview and the MP4 alike.
+  // The photo is premultiplied (see fitted() in ui.ts), so "over white" is rgb + (1 - a).
   vec4 c = textureGrad(uPhoto, photoUv(project(lo)), gx, gy);
-  outColor = vec4(mix(vec3(1.0), c.rgb, c.a), 1.0);
+  outColor = vec4(c.rgb + (1.0 - c.a), 1.0);
 }`;
 
 export type Crop = { x: number; y: number; w: number; h: number };
@@ -101,7 +102,8 @@ export class ParallaxRenderer {
     this.setDepth(null);
   }
 
-  setPhoto(source: TexImageSource): void {
+  /** An ImageBitmap made with premultiplyAlpha "premultiply" (WebGL ignores the unpack flag for bitmaps). */
+  setPhoto(source: ImageBitmap): void {
     const gl = this.gl;
     gl.activeTexture(gl.TEXTURE0);
     gl.bindTexture(gl.TEXTURE_2D, this.photo);

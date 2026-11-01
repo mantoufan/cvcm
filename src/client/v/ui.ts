@@ -36,10 +36,15 @@ const PHOTO_MAX = 4096;
 const DEPTH_INPUT_MAX = 1536;
 /** Preview canvas long side, in CSS-independent pixels. */
 const PREVIEW_MAX = 960;
+/** The preview's texture: twice the canvas is plenty, and it keeps a second full-size copy off the GPU. */
+const PREVIEW_PHOTO_MAX = 2 * PREVIEW_MAX;
 
 const state = {
   file: null as File | null,
+  /** Full photo (premultiplied alpha), drawn by the export. */
   photo: null as ImageBitmap | null,
+  /** Smaller copy drawn by the preview. */
+  small: null as ImageBitmap | null,
   width: 0,
   height: 0,
   depth: null as { data: Uint8Array; width: number; height: number } | null,
@@ -106,7 +111,8 @@ export function unmountV(): void {
   renderer?.dispose();
   renderer = null;
   state.photo?.close();
-  Object.assign(state, { file: null, photo: null, depth: null, running: false, again: false, depthFailed: false, exporting: false, queued: null, playing: true });
+  state.small?.close();
+  Object.assign(state, { file: null, photo: null, small: null, depth: null, running: false, again: false, depthFailed: false, exporting: false, queued: null, playing: true });
   status = null;
   preview = null;
   sizeEl = null;
@@ -213,10 +219,11 @@ function rebuildPreview(): void {
       status?.error(t("v.errorGl"));
       return;
     }
-    renderer.setPhoto(state.photo);
+    renderer.setPhoto(state.small ?? state.photo);
     renderer.setDepth(state.depth);
     layout();
     restart();
+    status?.idle();
   }
   // A photo picked while the context was gone loads now.
   const next = state.queued;
@@ -226,6 +233,20 @@ function rebuildPreview(): void {
   }
 }
 
+/**
+ * A copy at most `max` px on its long side, with premultiplied alpha set explicitly: the shader composites
+ * transparent areas over white as premultiplied color, and filtering premultiplied texels leaves no dark fringe.
+ */
+function fitted(source: ImageBitmap, max: number): Promise<ImageBitmap> {
+  const scale = Math.min(1, max / Math.max(source.width, source.height));
+  return createImageBitmap(source, {
+    resizeWidth: Math.max(1, Math.floor(source.width * scale)),
+    resizeHeight: Math.max(1, Math.floor(source.height * scale)),
+    resizeQuality: "high",
+    premultiplyAlpha: "premultiply",
+  });
+}
+
 async function setFile(file: File | undefined): Promise<void> {
   if (!file || !status) return;
   // A newer pick also makes any decode still in flight stale.
@@ -233,6 +254,7 @@ async function setFile(file: File | undefined): Promise<void> {
   // Mid-export, or the GPU context is gone until the browser restores it: load this photo after that.
   if (state.exporting || renderer?.lost()) {
     state.queued = file;
+    if (!state.exporting) status.working(t("v.gpuLost"));
     return;
   }
   let decoded;
@@ -256,30 +278,27 @@ async function setFile(file: File | undefined): Promise<void> {
     status.error(t("v.errorGl"));
     return;
   }
-  const scale = Math.min(1, Math.min(PHOTO_MAX, renderer.maxTexture) / Math.max(decoded.width, decoded.height));
-  let photo = decoded.bitmap;
-  if (scale < 1) {
-    try {
-      photo = await createImageBitmap(decoded.bitmap, {
-        resizeWidth: Math.max(1, Math.floor(decoded.width * scale)),
-        resizeHeight: Math.max(1, Math.floor(decoded.height * scale)),
-        resizeQuality: "high",
-      });
-    } catch {
-      if (alive && ticket === pick) status.error(t("v.errorDecode"));
-      return;
-    } finally {
-      decoded.bitmap.close();
-    }
+  let photo: ImageBitmap;
+  let small: ImageBitmap;
+  try {
+    photo = await fitted(decoded.bitmap, Math.min(PHOTO_MAX, renderer.maxTexture));
+    small = await fitted(photo, PREVIEW_PHOTO_MAX);
+  } catch {
+    if (alive && ticket === pick) status.error(t("v.errorDecode"));
+    return;
+  } finally {
+    decoded.bitmap.close();
   }
   if (!alive || ticket !== pick || state.exporting || !renderer) {
     photo.close();
+    small.close();
     if (alive && ticket === pick && state.exporting) state.queued = file;
     return;
   }
   state.photo?.close();
-  Object.assign(state, { file, photo, width: photo.width, height: photo.height, depth: null, depthFailed: false });
-  renderer.setPhoto(photo);
+  state.small?.close();
+  Object.assign(state, { file, photo, small, width: photo.width, height: photo.height, depth: null, depthFailed: false });
+  renderer.setPhoto(small);
   renderer.setDepth(null);
   layout();
   restart();
@@ -320,7 +339,7 @@ async function run(): Promise<void> {
     if (!alive || state.photo !== source) return;
     console.error(err);
     state.depthFailed = true;
-    status.error(t("ai.errorRun"));
+    status.error(t("v.depthFailed"));
   } finally {
     if (mine !== mountId) return;
     state.running = false;
