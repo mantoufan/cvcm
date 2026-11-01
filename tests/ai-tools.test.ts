@@ -141,6 +141,8 @@ describe("photo to video (/v/)", () => {
     expect(parseAppPath("/v")).toEqual({ kind: "bare", tool: "v" });
     expect(parseAppPath("/v/agent")).toEqual({ kind: "bare", tool: "v" });
     expect(parseAppPath("/en/v/canvas/")).toEqual({ kind: "app", locale: "en", tool: "v" });
+    expect(parseAppPath("/v/canvas/abc123")).toEqual({ kind: "bare", tool: "v" });
+    expect(parseAppPath("/zh-cn/v/director/xyz")).toEqual({ kind: "app", locale: "zh-CN", tool: "v" });
     expect(parseAppPath("/v/unknown")).toEqual({ kind: "unknown" });
     const bare = await worker.fetch(new Request("https://cv.cm/v/director", { headers: { "Accept-Language": "ja" } }), { ASSETS: html });
     expect(bare.status).toBe(302);

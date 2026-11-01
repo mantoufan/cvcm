@@ -68,12 +68,15 @@ export class ParallaxRenderer {
   private depth: WebGLTexture;
   private loc: Record<string, WebGLUniformLocation | null> = {};
   private crop: Crop = { x: 0, y: 0, w: 1, h: 1 };
+  /** Largest texture side this GPU accepts (WebGL2 only promises 2048). */
+  readonly maxTexture: number;
 
   /** Throws if the browser has no WebGL2. */
   constructor(readonly canvas: HTMLCanvasElement, opts: { keepFrame?: boolean } = {}) {
     const gl = canvas.getContext("webgl2", { alpha: false, antialias: false, premultipliedAlpha: false, preserveDrawingBuffer: opts.keepFrame ?? false });
     if (!gl) throw new Error("webgl2");
     this.gl = gl;
+    this.maxTexture = gl.getParameter(gl.MAX_TEXTURE_SIZE) as number;
     this.program = link(gl, VERT, FRAG);
     gl.useProgram(this.program);
     for (const name of ["uPhoto", "uDepth", "uOffset", "uZoom", "uDolly", "uFocus", "uScale", "uCrop"]) {

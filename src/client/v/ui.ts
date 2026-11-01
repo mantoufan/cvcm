@@ -28,8 +28,8 @@ import { canEncode, encodeMp4 } from "./encode";
 import { ParallaxRenderer, prepareDepth } from "./render";
 
 /**
- * The photo is kept at most this size on its long side (a WebGL texture every GPU accepts). A 9:16 crop of a
- * 4K landscape still has the 1215 px it needs for a sharp 1080 × 1920 clip.
+ * The photo is kept at most this size on its long side (lower if the GPU's texture limit is lower). A 9:16 crop
+ * of a 4K landscape still has the 1215 px it needs for a sharp 1080 × 1920 clip.
  */
 const PHOTO_MAX = 4096;
 /** Preview canvas long side, in CSS-independent pixels. */
@@ -217,11 +217,12 @@ function rebuildPreview(): void {
 
 async function setFile(file: File | undefined): Promise<void> {
   if (!file || !status) return;
+  // A newer pick also makes any decode still in flight stale.
+  const ticket = ++pick;
   if (state.exporting) {
     state.queued = file;
     return;
   }
-  const ticket = ++pick;
   let decoded;
   try {
     decoded = await decodeImage(file);
@@ -235,26 +236,33 @@ async function setFile(file: File | undefined): Promise<void> {
     if (alive && ticket === pick) state.queued = file;
     return;
   }
-  const scale = Math.min(1, PHOTO_MAX / Math.max(decoded.width, decoded.height));
-  let photo = decoded.bitmap;
-  if (scale < 1) {
-    photo = await createImageBitmap(decoded.bitmap, {
-      resizeWidth: Math.round(decoded.width * scale),
-      resizeHeight: Math.round(decoded.height * scale),
-      resizeQuality: "high",
-    });
+  try {
+    if (!renderer || renderer.lost()) renderer = new ParallaxRenderer(preview!);
+  } catch {
+    renderer = null;
     decoded.bitmap.close();
-  }
-  if (!alive || ticket !== pick || state.exporting) {
-    photo.close();
-    if (alive && ticket === pick) state.queued = file;
+    status.error(t("v.errorGl"));
     return;
   }
-  try {
-    renderer ??= new ParallaxRenderer(preview!);
-  } catch {
+  const scale = Math.min(1, Math.min(PHOTO_MAX, renderer.maxTexture) / Math.max(decoded.width, decoded.height));
+  let photo = decoded.bitmap;
+  if (scale < 1) {
+    try {
+      photo = await createImageBitmap(decoded.bitmap, {
+        resizeWidth: Math.max(1, Math.floor(decoded.width * scale)),
+        resizeHeight: Math.max(1, Math.floor(decoded.height * scale)),
+        resizeQuality: "high",
+      });
+    } catch {
+      if (alive && ticket === pick) status.error(t("v.errorDecode"));
+      return;
+    } finally {
+      decoded.bitmap.close();
+    }
+  }
+  if (!alive || ticket !== pick || state.exporting || !renderer) {
     photo.close();
-    status.error(t("v.errorGl"));
+    if (alive && ticket === pick && state.exporting) state.queued = file;
     return;
   }
   state.photo?.close();
@@ -274,6 +282,7 @@ async function run(): Promise<void> {
     return;
   }
   state.running = true;
+  syncDownload();
   const mine = mountId;
   try {
     const { result, backend, seconds } = await runJob<Extract<AiResponse, { type: "mask" }>>(
@@ -297,6 +306,7 @@ async function run(): Promise<void> {
   } finally {
     if (mine !== mountId) return;
     state.running = false;
+    syncDownload();
     if (state.again && alive) {
       state.again = false;
       void run();
@@ -364,6 +374,11 @@ function togglePlay(): void {
   else cancelAnimationFrame(frame);
 }
 
+/** Download waits for the depth run and for the export in progress. */
+function syncDownload(): void {
+  if (downloadBtn) downloadBtn.disabled = state.running || state.exporting;
+}
+
 async function download(): Promise<void> {
   if (!status || state.exporting) return;
   if (!state.photo || !state.file) {
@@ -371,7 +386,8 @@ async function download(): Promise<void> {
     return;
   }
   if (!state.depth && !state.depthFailed) {
-    status.error(t("v.waitDepth"));
+    // The button is disabled while depth runs; this covers a click that raced it.
+    if (!state.running) status.error(t("v.waitDepth"));
     return;
   }
   if (!canEncode()) {
@@ -401,7 +417,9 @@ async function download(): Promise<void> {
   const strength = STRENGTHS[state.strength];
   const frames = frameCount(state.duration);
   state.exporting = true;
-  if (downloadBtn) downloadBtn.disabled = true;
+  // Busy keeps a background model warm-up (hovering the drop zone) from clearing the export's progress line.
+  panel.busy = true;
+  syncDownload();
   const started = performance.now();
   try {
     const blob = await encodeMp4({
@@ -429,10 +447,11 @@ async function download(): Promise<void> {
     panel.error(t("v.errorEncode"));
   } finally {
     exporter.dispose();
+    panel.busy = false;
     // An export from an earlier mount must not touch this mount's flags, button or queue.
     if (mine !== mountId) return;
     state.exporting = false;
-    if (downloadBtn) downloadBtn.disabled = false;
+    syncDownload();
     if (alive) play();
     const next = state.queued;
     state.queued = null;
