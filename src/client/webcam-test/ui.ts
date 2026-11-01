@@ -223,6 +223,7 @@ function stop(): void {
   stream?.getTracks().forEach((tr) => tr.stop());
   stream = null;
   if (videoEl) videoEl.srcObject = null;
+  if (frameEl) frameEl.style.aspectRatio = "";
   if (startBtn) startBtn.textContent = t("webcamTest.start");
   if (photoBtn) photoBtn.disabled = true;
   infoEl?.replaceChildren();
