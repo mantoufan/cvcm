@@ -801,10 +801,10 @@ function toolDirectory(loc: Locale): HTMLElement {
       ),
     ),
     h("div", { class: "dir-group" },
-      h("h2", null, h("a", { href: kbHref(loc, "ai"), "data-nav": "ai-learn" }, t("kb.ai.label"))),
+      h("h2", null, h("a", { href: kbHref(loc, "ai"), "data-nav": KB_SHELVES.ai.nav }, t("kb.ai.label"))),
       h("p", null,
         ...kbGroupsOf("ai").map((group) =>
-          h("a", { href: `${kbHref(loc, "ai")}#${group.id}`, "data-nav": "ai-learn" }, t(`kb.ai.groups.${group.id}`)),
+          h("a", { href: `${kbHref(loc, "ai")}#${group.id}`, "data-nav": KB_SHELVES.ai.nav }, t(`kb.ai.groups.${group.id}`)),
         ),
       ),
     ),

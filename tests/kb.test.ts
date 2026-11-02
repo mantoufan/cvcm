@@ -110,6 +110,24 @@ describe("knowledge: routes", () => {
     expect(html).toContain('<pre class="kb-code"><code data-lang="python">');
   });
 
+  it("serves the AI hub and articles, and redirects bare paths", async () => {
+    const assets = { fetch: async () => new Response(SHELL, { headers: { "Content-Type": "text/html; charset=utf-8" } }) };
+    const bare = await worker.fetch(new Request("https://cv.cm/learn/ai/image-prompts/", { headers: { "Accept-Language": "ja" } }), { ASSETS: assets });
+    expect(bare.status).toBe(302);
+    expect(bare.headers.get("Location")).toBe("https://cv.cm/ja/learn/ai/image-prompts/");
+    const hub = await worker.fetch(new Request("https://cv.cm/vi/learn/ai/"), { ASSETS: assets });
+    expect(hub.status).toBe(200);
+    const hubHtml = await hub.text();
+    expect(hubHtml).toContain(`<title>${pageTitle("vi", { kb: true, kbId: "ai" })}</title>`);
+    expect(hubHtml).toContain('<meta property="og:type" content="website" />');
+    const page = await worker.fetch(new Request("https://cv.cm/en/learn/ai/call-an-llm-api/"), { ASSETS: assets });
+    expect(page.status).toBe(200);
+    const html = await page.text();
+    expect(html).toContain('<link rel="canonical" href="https://cv.cm/en/learn/ai/call-an-llm-api/"');
+    expect(html).toContain('<meta property="og:type" content="article" />');
+    expect((await worker.fetch(new Request("https://cv.cm/en/learn/ai/nope/"), { ASSETS: assets })).status).toBe(404);
+  });
+
   it("redirects bare paths, adds the slash, 404s unknown articles and serves the page", async () => {
     const assets = { fetch: async () => new Response(SHELL, { headers: { "Content-Type": "text/html; charset=utf-8" } }) };
     const bare = await worker.fetch(new Request("https://cv.cm/learn/knowledge/what-is-uuid/", { headers: { "Accept-Language": "vi" } }), { ASSETS: assets });

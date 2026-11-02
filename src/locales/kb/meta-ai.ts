@@ -567,14 +567,14 @@ export const AI_MINUTES = {
     "es": 9
   },
   "call-an-llm-api": {
-    "en": 8,
+    "en": 9,
     "zh-CN": 11,
     "zh-TW": 11,
-    "ja": 14,
-    "ko": 12,
+    "ja": 15,
+    "ko": 13,
     "vi": 10,
     "id": 8,
-    "es": 9
+    "es": 10
   },
   "ai-copyright-and-commercial-use": {
     "en": 7,

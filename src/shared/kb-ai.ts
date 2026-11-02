@@ -63,5 +63,5 @@ export const AI_ARTICLE_TOOLS: Partial<Record<AiId, readonly ToolId[]>> = {
   "run-ai-in-the-browser": ["remove-background", "speech-to-text", "ai-image-generator"],
   "call-an-llm-api": ["json"],
   "ai-short-drama-workflow": ["speech-to-text"],
-  "c2pa-and-ai-watermarks": ["watermark", "exif"],
+  "c2pa-and-ai-watermarks": ["exif", "watermark"],
 };
