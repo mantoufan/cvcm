@@ -50,12 +50,10 @@ export const AI_GROUPS: readonly { id: AiGroupId; articles: readonly AiId[] }[] 
 /** Tools an AI article puts to work (first is its call to action); tool pages list these, so they ship with the ids. */
 export const AI_ARTICLE_TOOLS: Partial<Record<AiId, readonly ToolId[]>> = {
   "what-is-generative-ai": ["ai-image-generator", "v", "speech-to-text"],
-  "tokens-and-context-window": ["word-count"],
-  "how-diffusion-models-work": ["ai-image-generator"],
   "image-prompts": ["ai-image-generator"],
   "camera-movement-terms": ["v"],
   "text-to-image": ["ai-image-generator", "image-upscaler"],
-  "image-to-image": ["remove-background", "image-upscaler"],
+  "image-to-image": ["depth-map", "image-upscaler"],
   "how-ai-upscaling-works": ["image-upscaler"],
   "how-ai-background-removal-works": ["remove-background"],
   "what-is-a-depth-map": ["depth-map", "v"],

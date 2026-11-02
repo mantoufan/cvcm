@@ -1,16 +1,16 @@
 import { h } from "./dom";
 import { t } from "./i18n";
 import { lessonsForTool } from "../shared/learn";
-import { kbForTool } from "../shared/kb";
+import { KB_SHELVES, kbForTool } from "../shared/kb";
 import type { Locale } from "../shared/locale";
 import { kbHref, learnHref, type ToolId } from "../shared/path";
 
 export function toolLessonsSection(loc: Locale, tool: ToolId): HTMLElement | null {
   const ids = lessonsForTool(tool);
   const shelves = [
-    { page: "hub" as const, nav: "knowledge", label: t("kb.label"), articles: kbForTool(tool) },
-    { page: "code" as const, nav: "coding", label: t("kb.code.label"), articles: kbForTool(tool, "code") },
-    { page: "ai" as const, nav: "ai-learn", label: t("kb.ai.label"), articles: kbForTool(tool, "ai") },
+    { page: "hub" as const, nav: KB_SHELVES.knowledge.nav, label: t("kb.label"), articles: kbForTool(tool) },
+    { page: "code" as const, nav: KB_SHELVES.code.nav, label: t("kb.code.label"), articles: kbForTool(tool, "code") },
+    { page: "ai" as const, nav: KB_SHELVES.ai.nav, label: t("kb.ai.label"), articles: kbForTool(tool, "ai") },
   ].filter((shelf) => shelf.articles.length);
   if (ids.length === 0 && shelves.length === 0) return null;
   return h("section", { class: "learn-related tool-lessons" },
