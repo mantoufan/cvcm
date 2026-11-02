@@ -737,7 +737,8 @@ function shell(loc: Locale): { page: HTMLElement; ready: Promise<void> } {
         h("a", { href: legalHref(loc, "privacy"), "data-nav": "privacy" }, t("footer.privacyLink")),
         h("a", { href: legalHref(loc, "terms"), "data-nav": "terms" }, t("footer.termsLink")),
       ),
-      langLinks(loc),
+      // Clip notes are private and count views: no extra links for crawlers to follow.
+      clipId ? null : langLinks(loc),
     ),
   );
   return { page, ready };
@@ -907,9 +908,11 @@ function langSwitch(current: Locale): HTMLElement {
 
 /** This page in every language as plain links: crawlers do not follow the picker's options. */
 function langLinks(current: Locale): HTMLElement {
-  return h("nav", { class: "foot-links foot-langs", "aria-label": t("lang.label") },
+  return h("nav", { class: "foot-links foot-langs", "aria-label": t("lang.links") },
     ...LOCALES.map((code) => h("a", {
-      href: new URL(localeHref(code), location.origin).pathname,
+      // Crawlers get the clean page URL; a click carries the page's current query along, like the picker.
+      href: localeHref(code).split("?")[0],
+      onClick: (e: Event) => { (e.currentTarget as HTMLAnchorElement).href = localeHref(code); },
       hreflang: HREFLANG[code],
       lang: HREFLANG[code],
       "aria-current": code === current ? "page" : undefined,
