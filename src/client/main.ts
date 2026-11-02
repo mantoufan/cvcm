@@ -271,6 +271,7 @@ function onClick(e: MouseEvent): void {
   const target = e.target as HTMLElement | null;
   const a = target?.closest("a");
   if (!a || a.target === "_blank" || a.hasAttribute("download") || a.origin !== location.origin) return;
+  if (a.hasAttribute("data-keep-search")) a.search = location.search;
   // An in-page anchor (#tools) is the browser's job.
   if (a.hash && a.pathname === location.pathname && a.search === location.search) return;
   // With gtag running, open file tools and clip notes as a fresh page: their CSP has no GA hosts,
@@ -910,9 +911,9 @@ function langSwitch(current: Locale): HTMLElement {
 function langLinks(current: Locale): HTMLElement {
   return h("nav", { class: "foot-links foot-langs", "aria-label": t("lang.links") },
     ...LOCALES.map((code) => h("a", {
-      // Crawlers get the clean page URL; a click carries the page's current query along, like the picker.
+      // Crawlers get the clean page URL; onClick() carries the page's current query along, like the picker.
       href: localeHref(code).split("?")[0],
-      onClick: (e: Event) => { (e.currentTarget as HTMLAnchorElement).href = localeHref(code); },
+      "data-keep-search": true,
       hreflang: HREFLANG[code],
       lang: HREFLANG[code],
       "aria-current": code === current ? "page" : undefined,
