@@ -61,7 +61,11 @@ export async function vary(seeds: Sequence[], bars: MusicBars, temperature: numb
   const near = async (seq: Sequence): Promise<Sequence> => (await model.similar(seq, 1, 0.8, temperature))[0];
   const a = await near(seeds[0]);
   let b: Sequence | null = null;
-  const second = async (): Promise<Sequence> => (b = await near(seeds[seeds.length - 1]));
+  // With a single seed (a 4- or 8-bar piece), a looser variation of it stands in for the far end.
+  const second = async (): Promise<Sequence> =>
+    (b = seeds.length > 1 ? await near(seeds[1]) : (await model.similar(seeds[0], 1, 0.6, temperature))[0]);
   const parts = await arrange(model, a, second, bars, temperature);
-  return { notes: notesOf(parts), seeds: b ? [a, b] : [a] };
+  // Keep a second idea for a later 16-bar "More like this", even when this piece did not need one.
+  const far = b ?? seeds[1];
+  return { notes: notesOf(parts), seeds: far ? [a, far] : [a] };
 }

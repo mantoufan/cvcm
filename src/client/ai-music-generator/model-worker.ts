@@ -8,18 +8,23 @@ import "./worker-shim";
 import type { MusicBars, Note } from "../../shared/music-gen";
 import { compose, vary, type Sequence } from "./model";
 
-export type MusicRequest = { id: number; type: "compose" | "vary"; bars: MusicBars; temperature: number };
+/** `base`: the job whose piece "More like this" varies (the one the page is showing). */
+export type MusicRequest = { id: number; type: "compose" | "vary"; base?: number; bars: MusicBars; temperature: number };
 export type MusicResponse = { id: number; notes: Note[] } | { id: number; error: string };
 
 declare const self: DedicatedWorkerGlobalScope;
 
-let seeds: Sequence[] | null = null;
+/** Seeds of recent pieces by job id; the page may still be showing an older one if a newer render failed. */
+const seedsByJob = new Map<number, Sequence[]>();
+const KEEP = 8;
 
 self.onmessage = async (e: MessageEvent<MusicRequest>) => {
-  const { id, type, bars, temperature } = e.data;
+  const { id, type, base, bars, temperature } = e.data;
   try {
-    const piece = type === "vary" && seeds ? await vary(seeds, bars, temperature) : await compose(bars, temperature);
-    seeds = piece.seeds;
+    const from = base === undefined ? undefined : seedsByJob.get(base);
+    const piece = type === "vary" && from ? await vary(from, bars, temperature) : await compose(bars, temperature);
+    seedsByJob.set(id, piece.seeds);
+    for (const old of [...seedsByJob.keys()].slice(0, -KEEP)) seedsByJob.delete(old);
     self.postMessage({ id, notes: piece.notes } satisfies MusicResponse);
   } catch (err) {
     self.postMessage({ id, error: err instanceof Error ? err.message : String(err) } satisfies MusicResponse);

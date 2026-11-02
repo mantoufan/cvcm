@@ -44,7 +44,23 @@ export async function renderPiece(notes: readonly Note[], bars: number, preset: 
     else if (n.part === "bass") tone(ctx, master, n.pitch, t, dur, vel * preset.bass.gain, preset.bass.wave, preset.bass.cutoff, 0.005, 0.08);
     else tone(ctx, leadBus, n.pitch, t, dur, vel * preset.lead.gain, preset.lead.wave, preset.lead.cutoff, preset.lead.attack, preset.lead.release);
   }
-  return ctx.startRendering();
+  // The compressor tames the mix but is not a brick wall: keep the WAV itself under full scale too.
+  return normalize(await ctx.startRendering());
+}
+
+/** Scales the buffer down (in place) when its peak is past just under full scale. */
+function normalize(audio: AudioBuffer): AudioBuffer {
+  let peak = 0;
+  for (let c = 0; c < audio.numberOfChannels; c++) {
+    for (const v of audio.getChannelData(c)) peak = Math.max(peak, Math.abs(v));
+  }
+  if (peak > 0.99) {
+    for (let c = 0; c < audio.numberOfChannels; c++) {
+      const data = audio.getChannelData(c);
+      for (let i = 0; i < data.length; i++) data[i] *= 0.99 / peak;
+    }
+  }
+  return audio;
 }
 
 /** Long enough for the last release and for the echo to fall below -60 dB (capped for very long feedback). */
@@ -158,16 +174,6 @@ export function loopBuffer(audio: AudioBuffer, loopSeconds: number): AudioBuffer
     out.set(src.subarray(0, length));
     for (let i = length; i < src.length; i++) out[(i - length) % length] += src[i];
   }
-  // The tail lands on the first beats after the limiter: scale back down if the sum went past full scale.
-  let peak = 0;
-  for (let c = 0; c < loop.numberOfChannels; c++) {
-    for (const v of loop.getChannelData(c)) peak = Math.max(peak, Math.abs(v));
-  }
-  if (peak > 0.99) {
-    for (let c = 0; c < loop.numberOfChannels; c++) {
-      const data = loop.getChannelData(c);
-      for (let i = 0; i < data.length; i++) data[i] *= 0.99 / peak;
-    }
-  }
-  return loop;
+  // The tail lands on the first beats: scale back down if the sum went past full scale.
+  return normalize(loop);
 }

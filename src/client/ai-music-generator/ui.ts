@@ -21,12 +21,17 @@ import { downloadBlob, h } from "../dom";
 import { locale, t } from "../i18n";
 import type { MusicRequest, MusicResponse } from "./model-worker";
 
-type Piece = { notes: Note[]; style: MusicStyle; bars: MusicBars; audio: AudioBuffer; loop: AudioBuffer };
+/** `job`: the worker job that wrote it, which "More like this" varies. */
+type Piece = { notes: Note[]; style: MusicStyle; bars: MusicBars; audio: AudioBuffer; loop: AudioBuffer; job: number };
 
 /** The model worker, started on the first Generate; terminating it frees TensorFlow.js and the weights. */
 class MusicModel {
   private worker = new Worker(new URL("./model-worker.ts", import.meta.url), { type: "module", name: "cvcm-music" });
   private seq = 0;
+  /** The worker failed to start or crashed: make a new one for the next run. */
+  dead = false;
+  /** The checkpoint is in: the next runs compose without downloading. */
+  loaded = false;
   private pending = new Map<number, { resolve: (notes: Note[]) => void; reject: (err: Error) => void }>();
 
   constructor() {
@@ -35,19 +40,25 @@ class MusicModel {
       if (!job) return;
       this.pending.delete(e.data.id);
       if ("error" in e.data) job.reject(new Error(e.data.error));
-      else job.resolve(e.data.notes);
+      else {
+        this.loaded = true;
+        job.resolve(e.data.notes);
+      }
     };
     this.worker.onerror = (e) => {
       e.preventDefault();
+      this.dead = true;
       this.fail(new Error(e.message || "worker"));
+      this.worker.terminate();
     };
   }
 
-  run(type: MusicRequest["type"], bars: MusicBars, temperature: number): Promise<Note[]> {
+  /** Resolves with the notes and the job id (pass it back as `base` to vary that piece). */
+  run(type: MusicRequest["type"], bars: MusicBars, temperature: number, base?: number): Promise<{ notes: Note[]; job: number }> {
     const id = ++this.seq;
     return new Promise((resolve, reject) => {
-      this.pending.set(id, { resolve, reject });
-      this.worker.postMessage({ id, type, bars, temperature } satisfies MusicRequest);
+      this.pending.set(id, { resolve: (notes) => resolve({ notes, job: id }), reject });
+      this.worker.postMessage({ id, type, base, bars, temperature } satisfies MusicRequest);
     });
   }
 
@@ -202,26 +213,28 @@ async function generate(more: boolean): Promise<void> {
   const stale = (): boolean => !alive || mine !== mountId;
   state.running = true;
   setBusy(true);
-  // Created and resumed inside the click: Safari only lets audio start with the user's gesture, and the piece is
-  // ready seconds later.
-  ctx ??= new AudioContext();
-  void ctx.resume().catch(() => {});
   const started = performance.now();
   try {
-    // The first run also downloads the model (about 18 MB) inside the worker.
-    panel.working(t(model ? "musicGen.composing" : "musicGen.loading"));
-    model ??= new MusicModel();
+    // Created and resumed inside the click (before any await): Safari only lets audio start with the user's
+    // gesture, and the piece is ready seconds later.
+    ctx ??= new AudioContext();
+    void ctx.resume().catch(() => {});
+    if (!model || model.dead) model = new MusicModel();
+    // Until a run succeeds, a run also downloads the model (about 18 MB) inside the worker.
+    panel.working(t(model.loaded ? "musicGen.composing" : "musicGen.loading"));
     // "More like this" keeps the last piece's ideas and takes the style and length now selected.
     const { style, bars } = state;
     const preset = STYLE_PRESETS[style];
     const temperature = preset.temperature * SURPRISE[state.surprise];
-    const notes = await model.run(more && piece ? "vary" : "compose", bars, temperature);
+    const { notes, job } = more && piece
+      ? await model.run("vary", bars, temperature, piece.job)
+      : await model.run("compose", bars, temperature);
     if (stale()) return;
     panel.working(t("musicGen.rendering"));
     const { renderPiece, loopBuffer } = await import("./synth");
     const audio = await renderPiece(notes, bars, preset);
     if (stale()) return;
-    piece = { notes, style, bars, audio, loop: loopBuffer(audio, pieceSeconds(bars, preset.bpm)) };
+    piece = { notes, style, bars, audio, loop: loopBuffer(audio, pieceSeconds(bars, preset.bpm)), job };
     serial++;
     drawRoll(notes, bars);
     if (infoEl) infoEl.textContent = t("musicGen.info", { style: t(`musicGen.style_${style}`), bars, bpm: preset.bpm, s: formatSeconds(pieceSeconds(bars, preset.bpm)) });

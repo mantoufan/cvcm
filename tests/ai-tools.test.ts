@@ -286,5 +286,12 @@ describe("AI music generator", () => {
     // the first note ends right there (note-off first at that tick), not at step 8 over it.
     expect(bytes).toContain([0x90, 60, 90, 0x81, 0x0a, 0x80, 60, 0, 0, 0x90, 60, 90].join(","));
     expect(toNotes([{ pitch: null, quantizedStartStep: 0, quantizedEndStep: 1 }])).toEqual([]);
+    // Two notes of one pitch on one step: written once, at the longer length (8 steps = 960 ticks, 0x87 0x40).
+    const dup = [...toMidi([
+      { part: "bass", pitch: 40, start: 0, end: 2, velocity: 80 },
+      { part: "bass", pitch: 40, start: 0, end: 8, velocity: 80 },
+    ], 120)].join(",");
+    expect(dup).toContain([0, 0x91, 40, 80, 0x87, 0x40, 0x81, 40, 0].join(","));
+    expect(dup.split(`${0x91},40,80`).length - 1).toBe(1);
   });
 });

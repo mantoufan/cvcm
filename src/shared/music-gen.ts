@@ -187,10 +187,26 @@ export function toMidi(notes: readonly Note[], bpm: number, swing = 0): Uint8Arr
   ];
   for (const { part, channel, program } of parts) {
     const events: { tick: number; data: number[] }[] = part === "drums" ? [] : [{ tick: 0, data: [0xc0 | channel, program] }];
-    const own = notes.filter((n) => n.part === part).sort((a, b) => a.start - b.start);
+    // One note per pitch and start (the longest), in time order; then each note ends where the next one of its
+    // pitch starts, if that is sooner. Built in one backward pass.
+    const byKey = new Map<string, Note>();
+    for (const n of notes) {
+      if (n.part !== part) continue;
+      const key = `${n.pitch}:${n.start}`;
+      const seen = byKey.get(key);
+      if (!seen || n.end > seen.end) byKey.set(key, n);
+    }
+    const own = [...byKey.values()].sort((a, b) => a.start - b.start);
+    const nextStart = new Map<number, number>();
+    const ends = new Array<number>(own.length);
+    for (let i = own.length - 1; i >= 0; i--) {
+      const n = own[i];
+      const next = nextStart.get(n.pitch);
+      ends[i] = next !== undefined && next < n.end ? next : n.end;
+      nextStart.set(n.pitch, n.start);
+    }
     own.forEach((n, i) => {
-      const next = own.slice(i + 1).find((m) => m.pitch === n.pitch && m.start >= n.start);
-      const end = next && next.start < n.end ? Math.max(n.start + 1, next.start) : n.end;
+      const end = ends[i];
       const vel = Math.max(1, Math.min(127, Math.round(n.velocity)));
       events.push({ tick: tickOf(n.start, swing), data: [0x90 | channel, n.pitch, vel] });
       // Note-offs sort before note-ons at the same tick (rank), so repeated notes do not cut each other.
