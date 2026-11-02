@@ -31,19 +31,23 @@ function looksEnglish(text: string): boolean {
   return new Set((text.match(ENGLISH_WORDS) ?? []).map((w) => w.toLowerCase())).size >= 2;
 }
 
-/** Share of the prompt's letters outside basic Latin: Chinese is all of them; "café" or "girl’s" barely any. */
-function foreignShare(text: string): number {
-  const letters = [...text].filter((c) => /\p{L}/u.test(c));
-  if (!letters.length) return 0;
-  return letters.filter((c) => c.charCodeAt(0) > 0x7f).length / letters.length;
-}
+/** Languages a prompt can be drawn from: English as typed, Chinese via Janus, the rest via OPUS-MT. */
+export const PROMPT_LANGS = ["en", "zh", "ja", "ko", "vi", "id", "es"] as const;
+export type PromptLang = (typeof PROMPT_LANGS)[number];
+
+/** Letters of Vietnamese beyond Latin-1 (ă â đ ê ô ơ ư and the tone marks of Latin Extended Additional). */
+const VIETNAMESE = /[ăđĩũơưĂĐĨŨƠƯ\u1EA0-\u1EF9]/;
 
 /**
- * Whether a prompt needs translating to English before drawing. Text mostly in other scripts always does; Latin text does only
- * on pages whose language is written in Latin letters without them (Spanish, Indonesian, unaccented Vietnamese)
- * and only when it has no English words, so an English prompt on any page is drawn as typed.
+ * The language to translate a prompt from. The script decides when it can (Hangul, kana, Chinese characters,
+ * Vietnamese letters); Latin text counts as English unless the page is Spanish, Indonesian or Vietnamese and the
+ * prompt has no English function words. Accents of English loanwords ("crème brûlée", "Pokémon") stay English.
  */
-export function needsTranslation(text: string, locale: string): boolean {
-  if (foreignShare(text) >= 0.1) return true;
-  return (locale === "es" || locale === "id" || locale === "vi") && !looksEnglish(text);
+export function promptLanguage(text: string, locale: string): PromptLang {
+  if (/\p{Script=Hangul}/u.test(text)) return "ko";
+  if (/[\p{Script=Hiragana}\p{Script=Katakana}]/u.test(text)) return "ja";
+  if (/\p{Script=Han}/u.test(text)) return locale === "ja" ? "ja" : "zh";
+  if (VIETNAMESE.test(text)) return "vi";
+  if ((locale === "es" || locale === "id" || locale === "vi") && !looksEnglish(text)) return locale;
+  return "en";
 }

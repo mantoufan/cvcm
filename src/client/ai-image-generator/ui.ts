@@ -4,7 +4,8 @@ import {
   IMAGE_STYLES,
   IMAGE_STYLE_SUFFIX,
   PROMPT_MAX,
-  needsTranslation,
+  promptLanguage,
+  type PromptLang,
   type ImageCount,
   type ImageSize,
   type ImageStyle,
@@ -168,7 +169,8 @@ async function warm(): Promise<void> {
 
 async function generate(): Promise<void> {
   if (!client || !status || !promptEl || state.running) return;
-  const text = promptEl.value.trim().slice(0, PROMPT_MAX);
+  // Chat-template control tags typed or pasted into a prompt would break the model's input: drop them.
+  const text = promptEl.value.replace(/<\|?[\w\s|｜▁-]{1,40}\|?>/g, " ").replace(/\s+/g, " ").trim().slice(0, PROMPT_MAX);
   if (!text) {
     status.error(t("imageGen.empty"));
     promptEl.focus();
@@ -177,6 +179,7 @@ async function generate(): Promise<void> {
   // Claimed before the first await, so a double click or a repeated Ctrl+Enter cannot start a second run.
   state.running = true;
   if (generateBtn) generateBtn.disabled = true;
+  if (englishEl) englishEl.hidden = true;
   const panel = status;
   const runner = client;
   const mine = mountId;
@@ -192,16 +195,15 @@ async function generate(): Promise<void> {
   const suffix = IMAGE_STYLE_SUFFIX[state.style];
   // Translated once, by the first picture's job; the rest reuse the English it sends back.
   let prompt = text;
-  let translate = needsTranslation(text, locale());
-  if (translate && lastEnglish?.text === text) {
+  let from: PromptLang = promptLanguage(text, locale());
+  if (from !== "en" && lastEnglish?.text === text) {
     prompt = lastEnglish.english;
-    translate = false;
+    from = "en";
     showEnglish(prompt);
   }
   // Anime pictures are enlarged with the anime model, like the image upscaler does for line art.
   const upscaleStyle = state.style === "anime" ? "anime" : "photo";
   const { count, size } = state;
-  if (englishEl) englishEl.hidden = true;
   const started = performance.now();
   let device = "";
   try {
@@ -210,18 +212,14 @@ async function generate(): Promise<void> {
       const { result, backend } = await runJob<Extract<AiResponse, { type: "image" }>>(
         runner,
         panel,
-        async () => ({ body: { type: "text-to-image", prompt, translate, suffix } }),
+        async () => ({ body: { type: "text-to-image", prompt, from, suffix } }),
         {
           // 576 sequential steps of a 1B model are not a job for the CPU: a GPU failure is reported, not retried there.
           gpuOnly: true,
-          // The first picture's job translates before it draws: say so, the bar has nothing to count yet.
-          onRun: () => {
-            if (translate) panel.working(t("imageGen.translating") + label);
-          },
           onTiles: (done, total) => panel.working(t("imageGen.drawing", { pct: Math.floor((done / total) * 100) }) + label, done / total),
           onText: (english) => {
             prompt = english;
-            translate = false;
+            from = "en";
             lastEnglish = { text, english };
             if (!stale()) showEnglish(english);
           },
@@ -245,6 +243,9 @@ async function generate(): Promise<void> {
     if (client === runner) {
       runner.dispose();
       client = new AiClient();
+      // Let the jobs dispose() cancelled (a warm-up) settle first: their handlers reset the status line.
+      await new Promise((r) => setTimeout(r, 0));
+      if (stale()) return;
     }
     // "webgpu": the worker found no GPU adapter even though the page did.
     panel.error(t(err instanceof Error && err.message === "webgpu" ? "imageGen.needsGpu" : "imageGen.errorRun"));
@@ -273,7 +274,11 @@ async function upscale(
       const bitmap = await createImageBitmap(new ImageData(image.data, image.width, image.height));
       return { body: { type: "upscale", bitmap, scale, style }, transfer: [bitmap] };
     },
-    { onTiles: (done, total) => panel.working(t("imageGen.upscaling", { pct: Math.floor((done / total) * 100) }) + label, done / total) },
+    {
+      // Same worker as Janus: a GPU failure here means the device is gone, not a reason to grind on the CPU.
+      gpuOnly: true,
+      onTiles: (done, total) => panel.working(t("imageGen.upscaling", { pct: Math.floor((done / total) * 100) }) + label, done / total),
+    },
   );
   return result;
 }

@@ -1,4 +1,5 @@
 import type { AiBackend, AiModelId } from "../../shared/ai-models";
+import type { PromptLang } from "../../shared/image-gen";
 
 export type AsrChunk = { start: number; end: number; text: string };
 
@@ -7,8 +8,8 @@ export type AiRequest =
   | { type: "warm"; id: number; model: AiModelId; backend?: AiBackend }
   | { type: "remove-background"; id: number; bitmap: ImageBitmap; backend?: AiBackend }
   | { type: "depth"; id: number; bitmap: ImageBitmap; backend?: AiBackend }
-  /** `translate`: put the prompt into English first. `suffix`: English style words, added after that. */
-  | { type: "text-to-image"; id: number; prompt: string; translate: boolean; suffix: string; backend?: AiBackend }
+  /** `from`: the prompt's language ("en" = draw as typed). `suffix`: English style words, added after translating. */
+  | { type: "text-to-image"; id: number; prompt: string; from: PromptLang; suffix: string; backend?: AiBackend }
   | { type: "upscale"; id: number; bitmap: ImageBitmap; scale: 2 | 4; style: "photo" | "anime"; backend?: AiBackend }
   | {
     type: "transcribe";

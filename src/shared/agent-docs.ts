@@ -92,8 +92,9 @@ const AI_DETAILS: Partial<Record<ToolId, AiToolDetails>> = {
       { option: null, model: "janus" },
       { option: `${en.imageGen.size} "${en.imageGen.size_768}" / "${en.imageGen.size_1536}"`, model: "esrgan-photo" },
       { option: `${en.imageGen.size} "${en.imageGen.size_768}" / "${en.imageGen.size_1536}" with ${en.imageGen.style} "${en.imageGen.style_anime}"`, model: "esrgan-anime" },
+      ...(["zh", "ja", "ko", "vi", "id", "es"] as const).map((lang) => ({ option: `Prompts in ${new Intl.DisplayNames("en", { type: "language" }).of(lang)} (translated to English first)`, model: `opus-${lang}` as const })),
     ],
-    options: `Text prompt up to ${PROMPT_MAX} characters; prompts in other languages are translated to English by the same model first. ${en.imageGen.style}: ${IMAGE_STYLES.map((s) => en.imageGen[`style_${s}`]).join(" / ")}. ${en.imageGen.count}: ${IMAGE_COUNTS.join(" / ")}. ${en.imageGen.size}: ${IMAGE_SIZES.map((s) => en.imageGen[`size_${s}`]).join(" / ")}. Downloads PNG. Needs WebGPU (no CPU fallback: 576 sequential model steps per image). ${en.imageGen.note}`,
+    options: `Text prompt up to ${PROMPT_MAX} characters; prompts in Chinese, Japanese, Korean, Vietnamese, Indonesian or Spanish are first translated to English by that language's OPUS-MT model (Helsinki-NLP) on the CPU, downloaded when first needed, and the page shows the English it drew from. ${en.imageGen.style}: ${IMAGE_STYLES.map((s) => en.imageGen[`style_${s}`]).join(" / ")}. ${en.imageGen.count}: ${IMAGE_COUNTS.join(" / ")}. ${en.imageGen.size}: ${IMAGE_SIZES.map((s) => en.imageGen[`size_${s}`]).join(" / ")}. Downloads PNG. Needs WebGPU (no CPU fallback: 576 sequential model steps per image). ${en.imageGen.note}`,
   },
 };
 

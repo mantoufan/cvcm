@@ -6299,7 +6299,7 @@
     },
     "ai-image-generator": {
       "q1": "How does the AI image generator work?",
-      "a1": "Janus-Pro-1B, an open model from DeepSeek, reads your text and draws a 384 × 384 picture token by token. Real-ESRGAN can then enlarge it to 768 or 1536 px. Both run in this tab.",
+      "a1": "Janus-Pro-1B, an open model from DeepSeek, reads your text and draws a 384 × 384 picture token by token. Real-ESRGAN can then enlarge it to 768 or 1536 px. Both run in this tab. Prompts in other languages are first translated to English by OPUS-MT (Helsinki-NLP, CC BY 4.0 / Apache-2.0), about 110 MB per language, also in this tab.",
       "q2": "Is it free? Is there a watermark?",
       "a2": "Free, no account, no daily limit and no watermark: the work runs on your own device, so there is no server cost to charge for.",
       "q3": "Can I use the images commercially?",
@@ -9869,7 +9869,6 @@
     "size_1536": "1536 px (AI upscale)",
     "note": "Ctrl/⌘ + Enter also generates. Commercial use is allowed; uses the DeepSeek Model License forbids are not.",
     "drawing": "Drawing… {pct}%",
-    "translating": "Translating your words into English…",
     "upscaling": "Sharpening… {pct}%",
     "translated": "Drawn from the English: “{text}” Not right? Type the description in English.",
     "empty": "Describe the picture first.",

@@ -144,7 +144,7 @@ Browser toolkit on a Cloudflare Worker (Pages advanced mode `_worker.js`).
 - `src/client/speech-to-text/` — speech to text (Whisper base / small, auto language, mic, TXT / SRT / VTT)
 - `src/client/depth-map/` — depth map generator (Depth Anything V2 small)
 - `src/client/v/` — AI photo to video at `/v/` (the old AI studio's URL; `/v/agent|canvas|director` fold into it): Depth Anything V2 depth → WebGL2 parallax ray-march (`render.ts`) along camera paths in `src/shared/parallax.ts` → MP4 with WebCodecs + `mp4-muxer` (`encode.ts`). No text-to-video: the camera moves, not the subject
-- `src/client/ai-image-generator/` — AI image generator (the old studio's `/ai-image-generator/` URL): Janus-Pro-1B text → 384 px image in the AI worker (`textToImage`), optional Real-ESRGAN 2×/4×; non-English prompts are first translated to English by the same model (shown to the user); WebGPU only (no CPU run). Session dtypes/devices are explained at the `janus` entry in `ai-models.ts`
+- `src/client/ai-image-generator/` — AI image generator (the old studio's `/ai-image-generator/` URL): Janus-Pro-1B text → 384 px image in the AI worker (`textToImage`), optional Real-ESRGAN 2×/4×; non-English prompts are first translated to English by a per-language OPUS-MT model on the CPU (`opus-*` in `ai-models.ts`, shown to the user); WebGPU only (no CPU run). Session dtypes/devices are explained at the `janus` entry in `ai-models.ts`
 - `scripts/ai/` — model pipeline: `export-birefnet.py` (native DeformConv re-export + fp16), `export-realesrgan.py`, `mirror.mjs` (stage + upload to `files/ai/`), `gen-zh-chars.py`
 - `src/client/guide.ts` — text how-to above FAQ
 - `src/locales/guides/` — 8-locale how-to copy

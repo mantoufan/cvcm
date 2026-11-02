@@ -4190,7 +4190,7 @@
     },
     "ai-image-generator": {
       "q1": "¿Cómo funciona el generador de imágenes con IA?",
-      "a1": "Janus-Pro-1B, un modelo abierto de DeepSeek, lee tu texto y dibuja una imagen de 384 × 384 token a token. Después Real-ESRGAN puede ampliarla a 768 o 1536 px. Ambos funcionan en esta pestaña.",
+      "a1": "Janus-Pro-1B, un modelo abierto de DeepSeek, lee tu texto y dibuja una imagen de 384 × 384 token a token. Después Real-ESRGAN puede ampliarla a 768 o 1536 px. Ambos funcionan en esta pestaña. Las descripciones en otros idiomas las traduce antes al inglés OPUS-MT (Helsinki-NLP, CC BY 4.0 / Apache-2.0), unos 110 MB por idioma, también en esta pestaña.",
       "q2": "¿Es gratis? ¿Tiene marca de agua?",
       "a2": "Gratis, sin cuenta, sin límite diario y sin marca de agua: el trabajo se hace en tu propio dispositivo, así que no hay coste de servidor que cobrar.",
       "q3": "¿Puedo usar las imágenes con fines comerciales?",
@@ -9869,7 +9869,6 @@
     "size_1536": "1536 px (ampliado con IA)",
     "note": "Ctrl/⌘ + Intro también genera. Se permite el uso comercial; los usos que prohíbe la licencia del modelo de DeepSeek, no.",
     "drawing": "Dibujando… {pct} %",
-    "translating": "Traduciendo tu descripción al inglés…",
     "upscaling": "Mejorando nitidez… {pct} %",
     "translated": "Dibujado a partir del inglés: «{text}» ¿No es correcto? Escribe la descripción en inglés.",
     "empty": "Primero describe la imagen.",

@@ -129,9 +129,69 @@
               "webgpu": 2492937,
               "cpu": 2492937
             }
+          },
+          {
+            "option": "Prompts in Chinese (translated to English first)",
+            "model": "Xenova/opus-mt-zh-en",
+            "license": "CC-BY-4.0",
+            "download_bytes": {
+              "webgpu_fp16": 113112546,
+              "webgpu": 113112546,
+              "cpu": 113112546
+            }
+          },
+          {
+            "option": "Prompts in Japanese (translated to English first)",
+            "model": "Xenova/opus-mt-ja-en",
+            "license": "Apache-2.0",
+            "download_bytes": {
+              "webgpu_fp16": 108707566,
+              "webgpu": 108707566,
+              "cpu": 108707566
+            }
+          },
+          {
+            "option": "Prompts in Korean (translated to English first)",
+            "model": "Xenova/opus-mt-ko-en",
+            "license": "Apache-2.0",
+            "download_bytes": {
+              "webgpu_fp16": 113112544,
+              "webgpu": 113112544,
+              "cpu": 113112544
+            }
+          },
+          {
+            "option": "Prompts in Vietnamese (translated to English first)",
+            "model": "Xenova/opus-mt-vi-en",
+            "license": "Apache-2.0",
+            "download_bytes": {
+              "webgpu_fp16": 101535208,
+              "webgpu": 101535208,
+              "cpu": 101535208
+            }
+          },
+          {
+            "option": "Prompts in Indonesian (translated to English first)",
+            "model": "Xenova/opus-mt-id-en",
+            "license": "Apache-2.0",
+            "download_bytes": {
+              "webgpu_fp16": 102621806,
+              "webgpu": 102621806,
+              "cpu": 102621806
+            }
+          },
+          {
+            "option": "Prompts in Spanish (translated to English first)",
+            "model": "Xenova/opus-mt-es-en",
+            "license": "Apache-2.0",
+            "download_bytes": {
+              "webgpu_fp16": 113112546,
+              "webgpu": 113112546,
+              "cpu": 113112546
+            }
           }
         ],
-        "options": "Text prompt up to 500 characters; prompts in other languages are translated to English by the same model first. Style: As written / Photo / Anime / Watercolor / 3D. Pictures: 1 / 2 / 4. Size: 384 px / 768 px (AI upscale) / 1536 px (AI upscale). Downloads PNG. Needs WebGPU (no CPU fallback: 576 sequential model steps per image). Ctrl/⌘ + Enter also generates. Commercial use is allowed; uses the DeepSeek Model License forbids are not."
+        "options": "Text prompt up to 500 characters; prompts in Chinese, Japanese, Korean, Vietnamese, Indonesian or Spanish are first translated to English by that language's OPUS-MT model (Helsinki-NLP) on the CPU, downloaded when first needed, and the page shows the English it drew from. Style: As written / Photo / Anime / Watercolor / 3D. Pictures: 1 / 2 / 4. Size: 384 px / 768 px (AI upscale) / 1536 px (AI upscale). Downloads PNG. Needs WebGPU (no CPU fallback: 576 sequential model steps per image). Ctrl/⌘ + Enter also generates. Commercial use is allowed; uses the DeepSeek Model License forbids are not."
       }
     },
     {

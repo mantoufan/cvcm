@@ -12,7 +12,7 @@
   "faq": {
     "ai-image-generator": {
       "q1": "Bagaimana AI pembuat gambar bekerja?",
-      "a1": "Janus-Pro-1B, model terbuka dari DeepSeek, membaca teks Anda dan menggambar gambar 384 × 384 token demi token. Lalu Real-ESRGAN bisa memperbesarnya ke 768 atau 1536 px. Keduanya berjalan di tab ini.",
+      "a1": "Janus-Pro-1B, model terbuka dari DeepSeek, membaca teks Anda dan menggambar gambar 384 × 384 token demi token. Lalu Real-ESRGAN bisa memperbesarnya ke 768 atau 1536 px. Keduanya berjalan di tab ini. Deskripsi dalam bahasa lain diterjemahkan dulu ke bahasa Inggris oleh OPUS-MT (Helsinki-NLP, CC BY 4.0 / Apache-2.0), sekitar 110 MB per bahasa, juga di tab ini.",
       "q2": "Apakah gratis? Ada watermark?",
       "a2": "Gratis, tanpa akun, tanpa batas harian, dan tanpa watermark: prosesnya berjalan di perangkat Anda sendiri, jadi tidak ada biaya server.",
       "q3": "Bolehkah gambar dipakai untuk komersial?",
@@ -55,7 +55,6 @@
       "size_1536": "1536 px (diperbesar AI)",
       "note": "Ctrl/⌘ + Enter juga membuat gambar. Boleh dipakai komersial; penggunaan yang dilarang Lisensi Model DeepSeek tidak boleh.",
       "drawing": "Menggambar… {pct}%",
-      "translating": "Menerjemahkan deskripsi ke bahasa Inggris…",
       "upscaling": "Mempertajam… {pct}%",
       "translated": "Digambar dari bahasa Inggris: “{text}” Kurang tepat? Ketik deskripsinya dalam bahasa Inggris.",
       "empty": "Deskripsikan gambarnya dulu.",

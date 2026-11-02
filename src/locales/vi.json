@@ -4190,7 +4190,7 @@
     },
     "ai-image-generator": {
       "q1": "AI tạo ảnh hoạt động thế nào?",
-      "a1": "Janus-Pro-1B, mô hình mở của DeepSeek, đọc mô tả và vẽ ảnh 384 × 384 từng phần một. Sau đó Real-ESRGAN có thể phóng to lên 768 hoặc 1536 px. Cả hai chạy trong tab này.",
+      "a1": "Janus-Pro-1B, mô hình mở của DeepSeek, đọc mô tả và vẽ ảnh 384 × 384 từng phần một. Sau đó Real-ESRGAN có thể phóng to lên 768 hoặc 1536 px. Cả hai chạy trong tab này. Mô tả bằng ngôn ngữ khác được OPUS-MT (Helsinki-NLP, CC BY 4.0 / Apache-2.0) dịch sang tiếng Anh trước, khoảng 110 MB mỗi ngôn ngữ, cũng chạy trong tab này.",
       "q2": "Có miễn phí không? Có watermark không?",
       "a2": "Miễn phí, không cần tài khoản, không giới hạn mỗi ngày và không watermark: mọi việc chạy trên thiết bị của bạn nên không tốn chi phí máy chủ.",
       "q3": "Có dùng ảnh cho mục đích thương mại được không?",
@@ -9869,7 +9869,6 @@
     "size_1536": "1536 px (AI phóng to)",
     "note": "Ctrl/⌘ + Enter cũng tạo ảnh. Được dùng thương mại; các mục đích bị Giấy phép mô hình DeepSeek cấm thì không.",
     "drawing": "Đang vẽ… {pct}%",
-    "translating": "Đang dịch mô tả sang tiếng Anh…",
     "upscaling": "Đang làm nét… {pct}%",
     "translated": "Vẽ theo bản tiếng Anh: “{text}” Chưa đúng? Hãy gõ mô tả bằng tiếng Anh.",
     "empty": "Hãy mô tả bức ảnh trước.",

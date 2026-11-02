@@ -5,7 +5,7 @@ import { AI_TOOLS, appHref, isAiToolPath, parseAppPath } from "../src/shared/pat
 import { cleanSegments, shortClock, toSrt, toText, toVtt } from "../src/shared/subtitles";
 import { isTrackedPath } from "../src/shared/analytics";
 import { prepareDepth } from "../src/client/v/render";
-import { needsTranslation } from "../src/shared/image-gen";
+import { promptLanguage } from "../src/shared/image-gen";
 import { MOTIONS, STRENGTHS, cameraAt, cropRect, frameCount, outputSize } from "../src/shared/parallax";
 
 const html = {
@@ -207,19 +207,18 @@ describe("photo to video (/v/)", () => {
 });
 
 describe("AI image generator", () => {
-  it("translates only prompts that are not English", () => {
-    expect(needsTranslation("雨中撑伞的女孩", "en")).toBe(true);
-    expect(needsTranslation("夕暮れの灯台", "ja")).toBe(true);
-    expect(needsTranslation("a red fox in snow, watercolor", "zh-CN")).toBe(false);
-    expect(needsTranslation("a girl with an umbrella in the rain", "es")).toBe(false);
-    expect(needsTranslation("un gato con sueter rosa", "es")).toBe(true);
-    expect(needsTranslation("kucing di jendela pada pagi hari", "id")).toBe(true);
-    expect(needsTranslation("una niña con paraguas", "en")).toBe(false);
-    expect(needsTranslation("girl’s umbrella — café at night", "en")).toBe(false);
-    expect(needsTranslation("a red fox in the snow, watercolor", "es")).toBe(false);
-    expect(needsTranslation("mèo trắng trên mái nhà dưới ánh trăng", "vi")).toBe(true);
-    expect(needsTranslation("kucing lucu di jendela, anime style", "id")).toBe(true);
-    expect(needsTranslation("Chú chó corgi phi hành gia dễ thương lơ lửng giữa không gian, sao", "en")).toBe(true);
+  it("picks the language a prompt is translated from", () => {
+    expect(promptLanguage("雨中撑伞的女孩", "en")).toBe("zh");
+    expect(promptLanguage("雨の中の少女", "ja")).toBe("ja");
+    expect(promptLanguage("東京の夜", "ja")).toBe("ja");
+    expect(promptLanguage("해 질 녘 등대가 있는 작은 섬", "en")).toBe("ko");
+    expect(promptLanguage("Hòn đảo nhỏ có ngọn hải đăng", "en")).toBe("vi");
+    expect(promptLanguage("a red fox in snow, watercolor", "zh-CN")).toBe("en");
+    expect(promptLanguage("a red fox in the snow, watercolor", "es")).toBe("en");
+    expect(promptLanguage("un gato con sueter rosa", "es")).toBe("es");
+    expect(promptLanguage("kucing lucu di jendela, anime style", "id")).toBe("id");
+    expect(promptLanguage("girl’s umbrella — café at night", "en")).toBe("en");
+    expect(promptLanguage("crème brûlée on a plate", "en")).toBe("en");
   });
 
   it("lists every Janus file the page can load, for each backend", () => {
