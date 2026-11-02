@@ -119,6 +119,16 @@
               "webgpu": 4866457,
               "cpu": 4866457
             }
+          },
+          {
+            "option": "Size \"768 px (AI upscale)\" / \"1536 px (AI upscale)\" with Style \"Anime\"",
+            "model": "cvcm/realesrgan-anime-x4v3",
+            "license": "BSD-3-Clause",
+            "download_bytes": {
+              "webgpu_fp16": 1253243,
+              "webgpu": 2492937,
+              "cpu": 2492937
+            }
           }
         ],
         "options": "Text prompt up to 500 characters; prompts in other languages are translated to English by the same model first. Style: As written / Photo / Anime / Watercolor / 3D. Pictures: 1 / 2 / 4. Size: 384 px / 768 px (AI upscale) / 1536 px (AI upscale). Downloads PNG. Needs WebGPU (no CPU fallback: 576 sequential model steps per image). Ctrl/⌘ + Enter also generates. Commercial use is allowed; uses the DeepSeek Model License forbids are not."

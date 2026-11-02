@@ -368,7 +368,8 @@ async function toEnglish(model: MultiModalityCausalLM, janus: JanusProcessor, pr
   const inputs = await janus([
     { role: "<|User|>", content: "Translate into English, word for word, keeping every object, color and time of day:\n月光下屋顶上戴蓝色围巾的白色猫头鹰" },
     { role: "<|Assistant|>", content: "A white owl in a blue scarf on a rooftop under the moonlight" },
-    { role: "<|User|>", content: `Translate into English, word for word, keeping every object, color and time of day:\n${prompt}` },
+    // One line in, one line out: only the answer's first line is kept.
+    { role: "<|User|>", content: `Translate into English, word for word, keeping every object, color and time of day:\n${prompt.replace(/\s*\n\s*/g, ", ")}` },
   ]);
   const start = (inputs.input_ids as Tensor).dims[1];
   // English needs about one token per CJK character or per short word; 500 characters fit in 384.
@@ -391,13 +392,8 @@ async function textToImage(id: number, prompt: string, translate: boolean, suffi
   if ((await pickBackend(force)) === "cpu") throw new Error("webgpu");
   const { model, processor, backend } = await load("janus", id, force);
   post({ type: "stage", id, stage: "run", backend });
-  try {
-    await drawImage(id, model as unknown as MultiModalityCausalLM, processor as JanusProcessor, prompt, translate, suffix);
-  } catch (err) {
-    // A lost or out-of-memory device leaves sessions that fail every later run: load fresh next time.
-    loaded.delete(`janus:${backend}`);
-    throw err;
-  }
+  // After a failure the page replaces this whole worker: a lost or exhausted GPU device is per worker.
+  await drawImage(id, model as unknown as MultiModalityCausalLM, processor as JanusProcessor, prompt, translate, suffix);
 }
 
 async function drawImage(

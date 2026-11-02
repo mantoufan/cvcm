@@ -21,8 +21,15 @@ export type ImageSize = (typeof IMAGE_SIZES)[number];
 
 export const PROMPT_MAX = 500;
 
-/** Words that English prompts use and Spanish, Indonesian or Vietnamese ones do not ("a" and "en" are Spanish too). */
-const ENGLISH_WORDS = /\b(the|an|in|on|at|with|and|of|from|under|over|by|is|are|for|wearing|holding|night|light|style)\b/i;
+/**
+ * Function words of English that Spanish, Indonesian and plain-ASCII Vietnamese do not use ("a", "an", "en" do
+ * occur there). Loanwords like "style" or "light" turn up in any language's prompt, so they are not listed.
+ */
+const ENGLISH_WORDS = /\b(the|in|on|at|with|and|of|from|under|over|by|is|are|for|wearing|holding)\b/gi;
+
+function looksEnglish(text: string): boolean {
+  return new Set((text.match(ENGLISH_WORDS) ?? []).map((w) => w.toLowerCase())).size >= 2;
+}
 
 /** Share of the prompt's letters outside basic Latin: Chinese is all of them; "café" or "girl’s" barely any. */
 function foreignShare(text: string): number {
@@ -37,6 +44,6 @@ function foreignShare(text: string): number {
  * and only when it has no English words, so an English prompt on any page is drawn as typed.
  */
 export function needsTranslation(text: string, locale: string): boolean {
-  if (foreignShare(text) > 0.2) return true;
-  return (locale === "es" || locale === "id" || locale === "vi") && !ENGLISH_WORDS.test(text);
+  if (foreignShare(text) >= 0.1) return true;
+  return (locale === "es" || locale === "id" || locale === "vi") && !looksEnglish(text);
 }

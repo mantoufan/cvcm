@@ -91,6 +91,7 @@ const AI_DETAILS: Partial<Record<ToolId, AiToolDetails>> = {
     models: [
       { option: null, model: "janus" },
       { option: `${en.imageGen.size} "${en.imageGen.size_768}" / "${en.imageGen.size_1536}"`, model: "esrgan-photo" },
+      { option: `${en.imageGen.size} "${en.imageGen.size_768}" / "${en.imageGen.size_1536}" with ${en.imageGen.style} "${en.imageGen.style_anime}"`, model: "esrgan-anime" },
     ],
     options: `Text prompt up to ${PROMPT_MAX} characters; prompts in other languages are translated to English by the same model first. ${en.imageGen.style}: ${IMAGE_STYLES.map((s) => en.imageGen[`style_${s}`]).join(" / ")}. ${en.imageGen.count}: ${IMAGE_COUNTS.join(" / ")}. ${en.imageGen.size}: ${IMAGE_SIZES.map((s) => en.imageGen[`size_${s}`]).join(" / ")}. Downloads PNG. Needs WebGPU (no CPU fallback: 576 sequential model steps per image). ${en.imageGen.note}`,
   },

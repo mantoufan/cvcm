@@ -216,8 +216,10 @@ describe("AI image generator", () => {
     expect(needsTranslation("kucing di jendela pada pagi hari", "id")).toBe(true);
     expect(needsTranslation("una niña con paraguas", "en")).toBe(false);
     expect(needsTranslation("girl’s umbrella — café at night", "en")).toBe(false);
-    expect(needsTranslation("red fox in snow, watercolor", "es")).toBe(false);
+    expect(needsTranslation("a red fox in the snow, watercolor", "es")).toBe(false);
     expect(needsTranslation("mèo trắng trên mái nhà dưới ánh trăng", "vi")).toBe(true);
+    expect(needsTranslation("kucing lucu di jendela, anime style", "id")).toBe(true);
+    expect(needsTranslation("Chú chó corgi phi hành gia dễ thương lơ lửng giữa không gian, sao", "en")).toBe(true);
   });
 
   it("lists every Janus file the page can load, for each backend", () => {

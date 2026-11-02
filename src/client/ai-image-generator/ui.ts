@@ -44,6 +44,8 @@ let alive = false;
 let warmed = false;
 /** Numbers results for their file names; never reused within a mount. */
 let serial = 0;
+/** The last prompt's English, so generating again from the same words does not translate them again. */
+let lastEnglish: { text: string; english: string } | null = null;
 /** Bumped on unmount, so a run from an earlier mount stops at its next step. */
 let mountId = 0;
 
@@ -51,6 +53,7 @@ export async function mountImageGenerator(host: HTMLElement): Promise<void> {
   alive = true;
   warmed = false;
   serial = 0;
+  lastEnglish = null;
   mountId++;
   client = new AiClient();
   status = statusPanel("Janus-Pro-1B", "janus");
@@ -190,6 +193,13 @@ async function generate(): Promise<void> {
   // Translated once, by the first picture's job; the rest reuse the English it sends back.
   let prompt = text;
   let translate = needsTranslation(text, locale());
+  if (translate && lastEnglish?.text === text) {
+    prompt = lastEnglish.english;
+    translate = false;
+    showEnglish(prompt);
+  }
+  // Anime pictures are enlarged with the anime model, like the image upscaler does for line art.
+  const upscaleStyle = state.style === "anime" ? "anime" : "photo";
   const { count, size } = state;
   if (englishEl) englishEl.hidden = true;
   const started = performance.now();
@@ -212,10 +222,8 @@ async function generate(): Promise<void> {
           onText: (english) => {
             prompt = english;
             translate = false;
-            if (!stale() && englishEl) {
-              englishEl.textContent = t("imageGen.translated", { text: english });
-              englishEl.hidden = false;
-            }
+            lastEnglish = { text, english };
+            if (!stale()) showEnglish(english);
           },
         },
       );
@@ -223,7 +231,7 @@ async function generate(): Promise<void> {
       device = deviceLabel(backend);
       let image = result;
       if (size > result.width) {
-        image = await upscale(runner, panel, result, size / result.width === 4 ? 4 : 2, label);
+        image = await upscale(runner, panel, result, size / result.width === 4 ? 4 : 2, upscaleStyle, label);
         if (stale()) return;
       }
       await addResult(image, text, size, stale);
@@ -233,6 +241,11 @@ async function generate(): Promise<void> {
   } catch (err) {
     if (stale() || (err instanceof Error && err.message === "cancelled")) return;
     console.error(err);
+    // A lost or exhausted GPU device belongs to the worker: start the next run in a fresh one.
+    if (client === runner) {
+      runner.dispose();
+      client = new AiClient();
+    }
     // "webgpu": the worker found no GPU adapter even though the page did.
     panel.error(t(err instanceof Error && err.message === "webgpu" ? "imageGen.needsGpu" : "imageGen.errorRun"));
   } finally {
@@ -243,12 +256,13 @@ async function generate(): Promise<void> {
   }
 }
 
-/** Real-ESRGAN (photo model) on the drawn image: the AI tool next door, run on the same worker. */
+/** Real-ESRGAN on the drawn image: the image upscaler's models, run on the same worker. */
 async function upscale(
   runner: AiClient,
   panel: Status,
   image: Extract<AiResponse, { type: "image" }>,
   scale: 2 | 4,
+  style: "photo" | "anime",
   label: string,
 ): Promise<Extract<AiResponse, { type: "image" }>> {
   const { result } = await runJob<Extract<AiResponse, { type: "image" }>>(
@@ -257,7 +271,7 @@ async function upscale(
     async () => {
       // The drawn image is not used again, so its buffer goes straight in.
       const bitmap = await createImageBitmap(new ImageData(image.data, image.width, image.height));
-      return { body: { type: "upscale", bitmap, scale, style: "photo" }, transfer: [bitmap] };
+      return { body: { type: "upscale", bitmap, scale, style }, transfer: [bitmap] };
     },
     { onTiles: (done, total) => panel.working(t("imageGen.upscaling", { pct: Math.floor((done / total) * 100) }) + label, done / total) },
   );
@@ -274,6 +288,12 @@ async function addResult(image: Extract<AiResponse, { type: "image" }>, prompt: 
   for (const old of results.splice(KEEP)) URL.revokeObjectURL(old.url);
   show(result);
   renderGallery();
+}
+
+function showEnglish(english: string): void {
+  if (!englishEl) return;
+  englishEl.textContent = t("imageGen.translated", { text: english });
+  englishEl.hidden = false;
 }
 
 function show(result: Result): void {
@@ -299,6 +319,8 @@ function renderGallery(): void {
 }
 
 function fileName(r: Result): string {
-  const words = r.prompt.toLowerCase().replace(/[^\p{L}\p{N}]+/gu, "-").slice(0, 40).replace(/^-+|-+$/g, "") || "image";
+  const slug = r.prompt.toLowerCase().replace(/[^\p{L}\p{N}]+/gu, "-").replace(/^-+|-+$/g, "");
+  // Cut by code points, so an emoji or rare CJK character is never split in half.
+  const words = [...slug].slice(0, 40).join("").replace(/-+$/, "") || "image";
   return `${words}-${r.size}px-${r.n}.png`;
 }
