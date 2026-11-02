@@ -25,6 +25,40 @@ export type AiModel = {
   variants: Record<AiBackend, AiVariant>;
 };
 
+/** Janus on a GPU without 16-bit floats (and the CPU entry): image_decode in fp32, the rest as on gpu16. */
+const JANUS_FP32: AiVariant = {
+  dtype: { prepare_inputs_embeds: "q8", language_model: "q4", lm_head: "q4", gen_head: "q4", gen_img_embeds: "q4", image_decode: "fp32" },
+  files: [
+    "onnx/prepare_inputs_embeds_quantized.onnx",
+    "onnx/language_model_q4.onnx",
+    "onnx/lm_head_q4.onnx",
+    "onnx/gen_head_q4.onnx",
+    "onnx/gen_img_embeds_q4.onnx",
+    "onnx/image_decode.onnx",
+  ],
+  bytes: 523_040_991 + 779_633_963 + 131_072_477 + 23_669_258 + 3_205_586 + 170_460_651,
+};
+
+/**
+ * OPUS-MT (Helsinki-NLP) <lang> → English, int8, for the image generator's prompts: Janus draws well only from
+ * English, and its own translations were lossy (and copied a few-shot example) outside Chinese. Small
+ * encoder–decoders that run on the CPU, one per language, downloaded only when a prompt in it is drawn.
+ */
+function opusMt(lang: string, revision: string, encoder: number, decoder: number, license = "Apache-2.0"): AiModel {
+  const variant: AiVariant = {
+    dtype: "q8",
+    files: ["onnx/encoder_model_quantized.onnx", "onnx/decoder_model_merged_quantized.onnx"],
+    bytes: encoder + decoder,
+  };
+  return {
+    repo: `Xenova/opus-mt-${lang}-en`,
+    revision,
+    license,
+    configs: ["config.json", "generation_config.json", "tokenizer.json", "tokenizer_config.json"],
+    variants: { gpu16: variant, gpu: variant, cpu: variant },
+  };
+}
+
 const WHISPER_CONFIGS = [
   "config.json",
   "generation_config.json",
@@ -87,6 +121,52 @@ export const AI_MODELS = {
       cpu: { dtype: "fp32", files: ["onnx/model.onnx"], bytes: 2_492_937 },
     },
   },
+  // Janus-Pro-1B (DeepSeek Model License: royalty-free, commercial use allowed, with the use restrictions of its
+  // Attachment A passed on to users). Text to a 384 × 384 image, 576 image tokens; prompts in other languages are
+  // translated by OPUS-MT first. Choices that are not obvious:
+  // - prepare_inputs_embeds also holds the image-understanding encoder, whose Conv fails on WebGPU even for
+  //   text-only input: that session runs on the CPU (int8, once per prompt; JANUS_DEVICES).
+  // - The q4 language model keeps fp32 activations, which the q4 heads expect; the q4f16 one emits fp16 hidden
+  //   states that only the (larger) fp16 heads accept. lm_head (text answers) never runs here but is loaded.
+  janus: {
+    repo: "onnx-community/Janus-Pro-1B-ONNX",
+    revision: "04efdf2e36cb07a034b0d94f7322356b292f0418",
+    license: "DeepSeek Model License",
+    configs: [
+      "config.json",
+      "generation_config.json",
+      "preprocessor_config.json",
+      "processor_config.json",
+      "special_tokens_map.json",
+      "tokenizer.json",
+      "tokenizer_config.json",
+    ],
+    variants: {
+      gpu16: {
+        dtype: { prepare_inputs_embeds: "q8", language_model: "q4", lm_head: "q4", gen_head: "q4", gen_img_embeds: "q4", image_decode: "fp16" },
+        files: [
+          "onnx/prepare_inputs_embeds_quantized.onnx",
+          "onnx/language_model_q4.onnx",
+          "onnx/lm_head_q4.onnx",
+          "onnx/gen_head_q4.onnx",
+          "onnx/gen_img_embeds_q4.onnx",
+          "onnx/image_decode_fp16.onnx",
+        ],
+        bytes: 523_040_991 + 779_633_963 + 131_072_477 + 23_669_258 + 3_205_586 + 85_297_169,
+      },
+      gpu: JANUS_FP32,
+      // 576 sequential steps of a 1B model take many minutes on a CPU: the page asks for WebGPU instead.
+      // Listed so the catalog stays complete.
+      cpu: JANUS_FP32,
+    },
+  },
+  // CC BY 4.0: credited on the page (FAQ) and in the agent docs.
+  "opus-zh": opusMt("zh", "39d480d52a9ea3065a1f117adfe4dbc55de10e6f", 52_899_742, 60_212_804, "CC-BY-4.0"),
+  "opus-ja": opusMt("ja", "1a906cfaaf7c8f4193f67f5885c082aa6dbd9d16", 50_705_822, 58_001_744),
+  "opus-ko": opusMt("ko", "d9fa1ac6008242100fecb4fff9b0a5917a1be81f", 52_899_741, 60_212_803),
+  "opus-vi": opusMt("vi", "541dfd72ec07e8f1563795e0224408ad8d729e80", 47_133_597, 54_401_611),
+  "opus-id": opusMt("id", "c38ef36c843b71177da903442835c3c870975fd6", 47_674_782, 54_947_024),
+  "opus-es": opusMt("es", "eadfd7c658a9d8929ac3b8e996b68a68e2c7d480", 52_899_742, 60_212_804),
   "whisper-base": {
     repo: "onnx-community/whisper-base",
     revision: "1846881b6b3a3024392c1eea3ad983695bc23925",
@@ -136,6 +216,16 @@ export const AI_MODELS = {
 } as const satisfies Record<string, AiModel>;
 
 export type AiModelId = keyof typeof AI_MODELS;
+
+/** Where each Janus session runs on a GPU backend (see the janus entry); on the CPU backend all run on wasm. */
+export const JANUS_DEVICES = {
+  prepare_inputs_embeds: "wasm",
+  language_model: "webgpu",
+  lm_head: "webgpu",
+  gen_head: "webgpu",
+  gen_img_embeds: "webgpu",
+  image_decode: "webgpu",
+} as const;
 
 /** Same-origin path the Worker proxies to s3.cv.cm. */
 export const AI_MODEL_PREFIX = "/ai/models/";

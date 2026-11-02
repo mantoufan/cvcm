@@ -102,6 +102,8 @@ export type RunHooks = {
   onTiles?: (done: number, total: number) => void;
   onText?: (text: string) => void;
   onLanguage?: (code: string) => void;
+  /** Report a GPU failure instead of running the job again on the CPU (jobs far too slow there). */
+  gpuOnly?: boolean;
 };
 
 /**
@@ -143,7 +145,7 @@ export async function runJob<T extends AiResponse>(
     return await attempt();
   } catch (err) {
     const message = err instanceof Error ? err.message : String(err);
-    if (message === "cancelled" || (await guessBackend()) === "cpu") throw err;
+    if (message === "cancelled" || hooks.gpuOnly || (await guessBackend()) === "cpu") throw err;
     console.warn("GPU run failed, retrying on the CPU:", message);
     return await attempt("cpu");
   } finally {

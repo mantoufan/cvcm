@@ -5,6 +5,7 @@ import { AI_TOOLS, appHref, isAiToolPath, parseAppPath } from "../src/shared/pat
 import { cleanSegments, shortClock, toSrt, toText, toVtt } from "../src/shared/subtitles";
 import { isTrackedPath } from "../src/shared/analytics";
 import { prepareDepth } from "../src/client/v/render";
+import { promptLanguage } from "../src/shared/image-gen";
 import { MOTIONS, STRENGTHS, cameraAt, cropRect, frameCount, outputSize } from "../src/shared/parallax";
 
 const html = {
@@ -18,7 +19,7 @@ describe("AI tool routes", () => {
       expect(appHref("zh-CN", tool)).toBe(`/zh-cn/${tool}/`);
       expect(isAiToolPath(`/ja/${tool}/`)).toBe(true);
     }
-    expect([...AI_TOOLS]).toEqual(["v", "remove-background", "image-upscaler", "speech-to-text", "depth-map"]);
+    expect([...AI_TOOLS]).toEqual(["v", "ai-image-generator", "remove-background", "image-upscaler", "speech-to-text", "depth-map"]);
     expect(isAiToolPath("/en/json/")).toBe(false);
     expect(isAiToolPath("/en/")).toBe(false);
   });
@@ -202,5 +203,33 @@ describe("photo to video (/v/)", () => {
     expect([...prepareDepth(row, 7, 1)]).toEqual([85, 170, 255, 255, 255, 170, 85]);
     const col = prepareDepth(new Uint8ClampedArray([0, 0, 0, 255, 0, 0, 0]), 1, 7);
     expect([...col]).toEqual([85, 170, 255, 255, 255, 170, 85]);
+  });
+});
+
+describe("AI image generator", () => {
+  it("picks the language a prompt is translated from", () => {
+    expect(promptLanguage("雨中撑伞的女孩", "en")).toBe("zh");
+    expect(promptLanguage("雨の中の少女", "ja")).toBe("ja");
+    expect(promptLanguage("東京の夜", "ja")).toBe("ja");
+    expect(promptLanguage("해 질 녘 등대가 있는 작은 섬", "en")).toBe("ko");
+    expect(promptLanguage("Hòn đảo nhỏ có ngọn hải đăng", "en")).toBe("vi");
+    expect(promptLanguage("a red fox in snow, watercolor", "zh-CN")).toBe("en");
+    expect(promptLanguage("a red fox in the snow, watercolor", "es")).toBe("en");
+    expect(promptLanguage("un gato con sueter rosa", "es")).toBe("es");
+    expect(promptLanguage("kucing lucu di jendela, anime style", "id")).toBe("id");
+    expect(promptLanguage("girl’s umbrella — café at night", "en")).toBe("en");
+    expect(promptLanguage("crème brûlée on a plate", "en")).toBe("en");
+    expect(promptLanguage("cute corgi astronaut floating in space", "es")).toBe("en");
+    expect(promptLanguage("cat wearing a hat", "id")).toBe("en");
+    expect(promptLanguage("co gai an kem", "vi")).toBe("vi");
+  });
+
+  it("lists every Janus file the page can load, for each backend", () => {
+    const files = mirrorFiles("janus");
+    for (const variant of Object.values(AI_MODELS.janus.variants)) {
+      expect(variant.files).toHaveLength(6);
+      for (const f of variant.files) expect(files).toContain(f);
+    }
+    expect(AI_MODELS.janus.variants.gpu16.bytes).toBe(1_545_919_444);
   });
 });

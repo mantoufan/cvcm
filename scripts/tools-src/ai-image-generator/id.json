@@ -1,0 +1,76 @@
+{
+  "meta": {
+    "titleImageGen": "AI pembuat gambar — teks jadi gambar gratis di browser — cv.cm",
+    "descImageGen": "Ketik deskripsi, dapatkan gambar: AI Janus-Pro berjalan di kartu grafis Anda sendiri di tab ini. Gratis, tanpa daftar, tanpa watermark, tanpa antre, tidak ada yang diunggah. Perbesar hingga 1536 px."
+  },
+  "tools": {
+    "ai-image-generator": {
+      "name": "AI pembuat gambar",
+      "blurb": "Ketik deskripsi, dapatkan gambar. Berjalan di GPU Anda."
+    }
+  },
+  "faq": {
+    "ai-image-generator": {
+      "q1": "Bagaimana AI pembuat gambar bekerja?",
+      "a1": "Janus-Pro-1B, model terbuka dari DeepSeek, membaca teks Anda dan menggambar gambar 384 × 384 token demi token. Lalu Real-ESRGAN bisa memperbesarnya ke 768 atau 1536 px. Keduanya berjalan di tab ini. Deskripsi dalam bahasa lain diterjemahkan dulu ke bahasa Inggris oleh OPUS-MT (Helsinki-NLP, CC BY 4.0 / Apache-2.0), sekitar 110 MB per bahasa, juga di tab ini.",
+      "q2": "Apakah gratis? Ada watermark?",
+      "a2": "Gratis, tanpa akun, tanpa batas harian, dan tanpa watermark: prosesnya berjalan di perangkat Anda sendiri, jadi tidak ada biaya server.",
+      "q3": "Bolehkah gambar dipakai untuk komersial?",
+      "a3": "Boleh. Lisensi Model DeepSeek mengizinkan penggunaan komersial. Lisensi itu melarang beberapa penggunaan, seperti konten ilegal, konten yang merugikan anak, disinformasi, dan pelecehan, jadi di sini juga tidak diizinkan.",
+      "q4": "Kenapa gambar pertama lambat?",
+      "a4": "Model diunduh sekali (sekitar 1,5 GB) dan disimpan di browser. Setelah itu satu gambar butuh beberapa detik hingga sekitar satu menit, tergantung kartu grafis.",
+      "q5": "Kenapa butuh WebGPU?",
+      "a5": "Menggambar butuh kartu grafis lewat WebGPU (Chrome, Edge, atau Safari terbaru). Dengan CPU saja satu gambar butuh banyak menit, jadi halaman tidak memulainya."
+    }
+  },
+  "ui": {
+    "imageGen": {
+      "back": "Semua alat",
+      "title": "AI pembuat gambar",
+      "privacyNote": "AI berjalan di kartu grafis Anda di tab ini. Teks dan gambar Anda tidak pernah diunggah.",
+      "promptLabel": "Deskripsikan gambarnya",
+      "promptPlaceholder": "Kucing bersweter merah muda membaca buku di dekat jendela, cahaya pagi",
+      "examplesLabel": "Coba salah satu:",
+      "example1": "Pondok hangat di hutan bersalju pada malam hari, jendela menyala",
+      "example2": "Astronot corgi lucu melayang di luar angkasa, bintang",
+      "example3": "Semangkuk ramen beruap, tampak atas, foto makanan",
+      "example4": "Gadis berpayung berjalan di hujan Tokyo, lampu neon",
+      "example5": "Pulau kecil dengan mercusuar saat matahari terbenam",
+      "example6": "Lukisan cat air bunga sakura merah muda di tepi sungai",
+      "generate": "Buat",
+      "hint": "Gambar Anda muncul di sini.",
+      "resultsTitle": "Hasil",
+      "show": "Lihat gambar ini",
+      "download": "Unduh PNG",
+      "style": "Gaya",
+      "style_none": "Sesuai teks",
+      "style_photo": "Foto",
+      "style_anime": "Anime",
+      "style_watercolor": "Cat air",
+      "style_3d": "3D",
+      "count": "Jumlah",
+      "size": "Ukuran",
+      "size_384": "384 px",
+      "size_768": "768 px (diperbesar AI)",
+      "size_1536": "1536 px (diperbesar AI)",
+      "note": "Ctrl/⌘ + Enter juga membuat gambar. Boleh dipakai komersial; penggunaan yang dilarang Lisensi Model DeepSeek tidak boleh.",
+      "drawing": "Menggambar… {pct}%",
+      "upscaling": "Mempertajam… {pct}%",
+      "translated": "Digambar dari bahasa Inggris: “{text}” Kurang tepat? Ketik deskripsinya dalam bahasa Inggris.",
+      "empty": "Deskripsikan gambarnya dulu.",
+      "needsGpu": "Browser ini tidak punya WebGPU, jadi menggambar dengan CPU butuh banyak menit. Gunakan Chrome, Edge, atau Safari terbaru.",
+      "errorRun": "Gagal menggambar. Muat ulang halaman lalu coba lagi."
+    }
+  },
+  "guides": {
+    "ai-image-generator": {
+      "lead": "Buat gambar dari deskripsi teks di tab ini.",
+      "s1t": "Deskripsikan",
+      "s1b": "Tulis apa yang ada di gambar, atau ketuk contoh. Kata subjek, tempat, cahaya, dan gaya membantu.",
+      "s2t": "Pilih gaya dan ukuran",
+      "s2b": "Pilih gaya, jumlah gambar, dan 768 atau 1536 px jika ingin AI memperbesarnya.",
+      "s3t": "Buat dan unduh",
+      "s3b": "Pertama kali model diunduh sekali. Klik hasil untuk melihatnya besar, lalu simpan sebagai PNG."
+    }
+  }
+}

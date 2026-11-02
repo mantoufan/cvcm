@@ -1,0 +1,76 @@
+{
+  "meta": {
+    "titleImageGen": "AI image generator — free text to image in your browser — cv.cm",
+    "descImageGen": "Type a description and get a picture: Janus-Pro AI runs on your own GPU in this tab. Free, no sign-up, no watermark, no queue, nothing is uploaded. Upscale to 1536 px."
+  },
+  "tools": {
+    "ai-image-generator": {
+      "name": "AI image generator",
+      "blurb": "Type a description, get a picture. Runs on your GPU."
+    }
+  },
+  "faq": {
+    "ai-image-generator": {
+      "q1": "How does the AI image generator work?",
+      "a1": "Janus-Pro-1B, an open model from DeepSeek, reads your text and draws a 384 × 384 picture token by token. Real-ESRGAN can then enlarge it to 768 or 1536 px. Both run in this tab. Prompts in other languages are first translated to English by OPUS-MT (Helsinki-NLP, CC BY 4.0 / Apache-2.0), about 110 MB per language, also in this tab.",
+      "q2": "Is it free? Is there a watermark?",
+      "a2": "Free, no account, no daily limit and no watermark: the work runs on your own device, so there is no server cost to charge for.",
+      "q3": "Can I use the images commercially?",
+      "a3": "Yes. The DeepSeek Model License allows commercial use. It forbids some uses, such as illegal content, content that harms minors, disinformation and harassment, so those are not allowed here either.",
+      "q4": "Why is the first image slow?",
+      "a4": "The model downloads once (about 1.5 GB) and is kept in your browser. After that, an image takes from a few seconds to about a minute, depending on your graphics card.",
+      "q5": "Why does it say WebGPU is needed?",
+      "a5": "Drawing needs a graphics card through WebGPU (recent Chrome, Edge or Safari). On the CPU alone one image would take many minutes, so the page does not start it."
+    }
+  },
+  "ui": {
+    "imageGen": {
+      "back": "All tools",
+      "title": "AI image generator",
+      "privacyNote": "The AI runs on your graphics card in this tab. Your words and pictures are never uploaded.",
+      "promptLabel": "Describe the picture",
+      "promptPlaceholder": "A cat in a pink sweater reading a book by the window, morning light",
+      "examplesLabel": "Try one:",
+      "example1": "A cozy cabin in a snowy forest at night, warm windows",
+      "example2": "A cute corgi astronaut floating in space, stars",
+      "example3": "A bowl of ramen with steam, top view, food photo",
+      "example4": "A girl with an umbrella walking in rain in Tokyo, neon",
+      "example5": "A tiny island with a lighthouse at sunset",
+      "example6": "A watercolor of pink cherry blossoms by a river",
+      "generate": "Generate",
+      "hint": "Your pictures appear here.",
+      "resultsTitle": "Results",
+      "show": "Show this picture",
+      "download": "Download PNG",
+      "style": "Style",
+      "style_none": "As written",
+      "style_photo": "Photo",
+      "style_anime": "Anime",
+      "style_watercolor": "Watercolor",
+      "style_3d": "3D",
+      "count": "Pictures",
+      "size": "Size",
+      "size_384": "384 px",
+      "size_768": "768 px (AI upscale)",
+      "size_1536": "1536 px (AI upscale)",
+      "note": "Ctrl/⌘ + Enter also generates. Commercial use is allowed; uses the DeepSeek Model License forbids are not.",
+      "drawing": "Drawing… {pct}%",
+      "upscaling": "Sharpening… {pct}%",
+      "translated": "Drawn from the English: “{text}” Not right? Type the description in English.",
+      "empty": "Describe the picture first.",
+      "needsGpu": "This browser has no WebGPU, so drawing would take many minutes on the CPU. Use a recent Chrome, Edge or Safari.",
+      "errorRun": "Drawing failed. Reload the page and try again."
+    }
+  },
+  "guides": {
+    "ai-image-generator": {
+      "lead": "Make a picture from a text description in this tab.",
+      "s1t": "Describe it",
+      "s1b": "Write what should be in the picture, or tap an example. Subject, place, light and style words help.",
+      "s2t": "Pick style and size",
+      "s2b": "Choose a style, how many pictures, and 768 or 1536 px if you want the AI to enlarge the result.",
+      "s3t": "Generate and download",
+      "s3b": "The first run downloads the model once. Click a result to view it large, then save it as PNG."
+    }
+  }
+}

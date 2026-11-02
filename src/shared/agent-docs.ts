@@ -7,6 +7,7 @@ import { DATASETS, csvHref } from "./datasets";
 import { CODE_ARTICLES } from "./kb";
 import { REF_ENTRIES } from "./ref";
 import { LOCALES, localePath } from "./locale";
+import { IMAGE_COUNTS, IMAGE_SIZES, IMAGE_STYLES, PROMPT_MAX } from "./image-gen";
 import { ASPECTS, DURATIONS, FPS, MOTIONS, SIZES, STRENGTH_IDS } from "./parallax";
 import { AI_TOOLS, CATEGORIES, appHref, datasetHref, gamesHref, kbHref, learnHref, quizHref, refHref, type CategoryId, type ToolId } from "./path";
 import { SITE_ORIGIN } from "./sitemap";
@@ -85,6 +86,15 @@ const AI_DETAILS: Partial<Record<ToolId, AiToolDetails>> = {
   v: {
     models: [{ option: null, model: "depth" }],
     options: `${en.v.motion}: ${MOTIONS.map((m) => en.v[`motion_${m}`]).join(" / ")}. ${en.v.strength}: ${STRENGTH_IDS.map((s) => en.v[`strength_${s}`]).join(" / ")}. ${en.v.duration}: ${DURATIONS.map((d) => `${d} s`).join(" / ")}. ${en.v.aspect}: ${en.v.aspect_original} / ${ASPECTS.filter((a) => a !== "original").join(" / ")}. ${en.v.size}: ${SIZES.map((s) => `${s}p`).join(" / ")}. ${en.v.loop}. Exports an MP4 (H.264, or VP9 / AV1 where the browser cannot encode H.264) at ${FPS} fps with WebCodecs. ${en.v.note}`,
+  },
+  "ai-image-generator": {
+    models: [
+      { option: null, model: "janus" },
+      { option: `${en.imageGen.size} "${en.imageGen.size_768}" / "${en.imageGen.size_1536}"`, model: "esrgan-photo" },
+      { option: `${en.imageGen.size} "${en.imageGen.size_768}" / "${en.imageGen.size_1536}" with ${en.imageGen.style} "${en.imageGen.style_anime}"`, model: "esrgan-anime" },
+      ...(["zh", "ja", "ko", "vi", "id", "es"] as const).map((lang) => ({ option: `Prompts in ${new Intl.DisplayNames("en", { type: "language" }).of(lang)} (translated to English first)`, model: `opus-${lang}` as const })),
+    ],
+    options: `Text prompt up to ${PROMPT_MAX} characters; prompts in Chinese, Japanese, Korean, Vietnamese, Indonesian or Spanish are first translated to English by that language's OPUS-MT model (Helsinki-NLP) on the CPU, downloaded when first needed, and the page shows the English it drew from. ${en.imageGen.style}: ${IMAGE_STYLES.map((s) => en.imageGen[`style_${s}`]).join(" / ")}. ${en.imageGen.count}: ${IMAGE_COUNTS.join(" / ")}. ${en.imageGen.size}: ${IMAGE_SIZES.map((s) => en.imageGen[`size_${s}`]).join(" / ")}. Downloads PNG. Needs WebGPU (no CPU fallback: 576 sequential model steps per image). ${en.imageGen.note}`,
   },
 };
 

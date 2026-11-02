@@ -616,6 +616,16 @@ input[type="color"] { width: 2.6rem; height: 2.2rem; padding: 0; border: 1px sol
 .ref-grid img { display: block; max-width: 100%; width: 100%; height: auto; }
 .ref-grid figcaption { margin-top: 0.25rem; color: var(--ink-soft); font-size: 0.75rem; line-height: 1.4; overflow-wrap: anywhere; }
 .ref-note { color: var(--ink-soft); font-size: 0.85rem; }
+/* AI image generator: latest result large, earlier ones as a plain thumbnail grid. */
+.gen-main { display: block; width: 100%; max-width: 640px; height: auto; margin: 0 auto; image-rendering: auto; }
+.gen-title { margin: 1rem 0 0.5rem; font-size: 1rem; }
+.gen-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0.6rem; }
+@media (min-width: 720px) { .gen-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+.gen-grid figure { margin: 0; }
+.gen-thumb { display: block; width: 100%; padding: 0; border: 1px solid var(--line); border-radius: 8px; overflow: hidden; background: var(--pink-soft); cursor: pointer; }
+.gen-thumb img { display: block; width: 100%; height: auto; }
+.gen-grid figcaption { margin-top: 0.3rem; }
+.gen-grid figcaption .btn { width: 100%; }
 .ref-tags { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 0.4rem; }
 .ref-names th[scope="row"] { font-weight: 400; color: var(--ink-soft); }
 .game-official { margin: 0.4rem 0 0.6rem; padding-left: 1.2rem; }

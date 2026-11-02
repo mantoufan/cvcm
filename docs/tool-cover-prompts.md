@@ -219,3 +219,7 @@ Codex (`codex exec`, built-in image tool), refs `click-test-sweet.jpg` + `mic-te
 ## AI photo to video (2026-11-01)
 
 Codex, refs `due-date-sweet.jpg` + `reading-time-sweet.jpg`. Same character and room. `v`: she holds a pearlescent pink vintage film camera with a heart-shaped lens; a framed cottage-on-a-hill photo pops out as a layered 3D paper diorama with a curved sparkle motion trail; a cream film strip with blank frames curls on the desk. No words, letters, numerals, logo or watermark.
+
+## AI image generator (2026-11-02)
+
+Codex, refs `due-date-sweet.jpg` + `reading-time-sweet.jpg`. Same character and room. `ai-image-generator`: she holds a pearlescent pink paintbrush like a wand; a ribbon of sparkles flows from a blank cream speech-bubble card into a canvas on an easel where a pastel castle on a cloud appears, half sketch lines and half color; a few blank cards float. No words, letters, numerals, logo or watermark.

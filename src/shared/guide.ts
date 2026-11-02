@@ -132,6 +132,7 @@ export const GUIDE_STEP_COUNT: Record<ToolId, number> = {
   "speech-to-text": 3,
   "depth-map": 3,
   v: 3,
+  "ai-image-generator": 3,
 };
 
 export function guideSteps(tool: ToolId): number {

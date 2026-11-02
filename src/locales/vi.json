@@ -499,7 +499,9 @@
     "titleTestTouchScreen": "Cách test cảm ứng màn hình: tìm vùng chết và kiểm tra đa điểm | cv.cm",
     "descTestTouchScreen": "Vẽ trên lưới để tìm vùng chết cảm ứng, đếm số ngón màn hình nhận cùng lúc và kiểm tra lực nhấn của bút. Không tải lên.",
     "titleV": "AI biến ảnh thành video — chuyển động 3D từ một bức ảnh, miễn phí — cv.cm",
-    "descV": "Biến một bức ảnh thành video 3D chuyển động: AI ước lượng độ sâu ngay trong trình duyệt, máy quay tiến vào, xoay quanh hoặc lia ngang, rồi tải MP4. Miễn phí, không cần đăng ký, không watermark, ảnh không bị tải lên."
+    "descV": "Biến một bức ảnh thành video 3D chuyển động: AI ước lượng độ sâu ngay trong trình duyệt, máy quay tiến vào, xoay quanh hoặc lia ngang, rồi tải MP4. Miễn phí, không cần đăng ký, không watermark, ảnh không bị tải lên.",
+    "titleImageGen": "AI tạo ảnh — tạo ảnh từ chữ miễn phí ngay trong trình duyệt — cv.cm",
+    "descImageGen": "Gõ mô tả là có ảnh: AI Janus-Pro chạy bằng card đồ họa của bạn ngay trong tab này. Miễn phí, không đăng ký, không watermark, không xếp hàng, không tải gì lên. Phóng to tới 1536 px."
   },
   "brand": "cv.cm",
   "nav": {
@@ -1061,6 +1063,10 @@
     "v": {
       "name": "AI biến ảnh thành video",
       "blurb": "Một bức ảnh thành MP4 có chuyển động máy quay 3D."
+    },
+    "ai-image-generator": {
+      "name": "AI tạo ảnh",
+      "blurb": "Gõ mô tả, nhận một bức ảnh. Chạy trên GPU của bạn."
     }
   },
   "watermark": {
@@ -4181,6 +4187,18 @@
       "a4": "MP4 30 fps, dài 3, 5 hoặc 8 giây, 720p hoặc 1080p (không vượt quá số điểm ảnh của ảnh gốc), giữ tỉ lệ ảnh hoặc cắt 9:16, 1:1, 16:9. Phát được trên điện thoại và đăng TikTok, Reels, Shorts.",
       "q5": "Vì sao mép ảnh trông bị kéo giãn?",
       "a5": "Khi máy quay di chuyển sẽ lộ ra một chút phần bị vật ở gần che khuất, công cụ lấp bằng điểm ảnh lân cận. Hãy chọn Nhẹ, hoặc dùng ảnh có chủ thể rõ và nền đơn giản."
+    },
+    "ai-image-generator": {
+      "q1": "AI tạo ảnh hoạt động thế nào?",
+      "a1": "Janus-Pro-1B, mô hình mở của DeepSeek, đọc mô tả và vẽ ảnh 384 × 384 từng phần một. Sau đó Real-ESRGAN có thể phóng to lên 768 hoặc 1536 px. Cả hai chạy trong tab này. Mô tả bằng ngôn ngữ khác được OPUS-MT (Helsinki-NLP, CC BY 4.0 / Apache-2.0) dịch sang tiếng Anh trước, khoảng 110 MB mỗi ngôn ngữ, cũng chạy trong tab này.",
+      "q2": "Có miễn phí không? Có watermark không?",
+      "a2": "Miễn phí, không cần tài khoản, không giới hạn mỗi ngày và không watermark: mọi việc chạy trên thiết bị của bạn nên không tốn chi phí máy chủ.",
+      "q3": "Có dùng ảnh cho mục đích thương mại được không?",
+      "a3": "Được. Giấy phép mô hình DeepSeek cho phép dùng thương mại, nhưng cấm một số mục đích như nội dung phạm pháp, nội dung gây hại cho trẻ vị thành niên, tin sai lệch và quấy rối; ở đây cũng không được phép.",
+      "q4": "Vì sao ảnh đầu tiên chậm?",
+      "a4": "Mô hình chỉ tải một lần (khoảng 1,5 GB) và được lưu trong trình duyệt. Sau đó mỗi ảnh mất từ vài giây đến khoảng một phút tùy card đồ họa.",
+      "q5": "Vì sao báo cần WebGPU?",
+      "a5": "Vẽ ảnh cần card đồ họa qua WebGPU (Chrome, Edge hoặc Safari bản mới). Chỉ dùng CPU thì một ảnh mất nhiều phút, nên trang không chạy."
     }
   },
   "qr": {
@@ -9819,5 +9837,42 @@
     "errorGl": "Trình duyệt này không hỗ trợ WebGL 2 cần cho bản xem trước 3D.",
     "errorEncode": "Trình duyệt này không mã hóa được video. Hãy thử Chrome, Edge hoặc Safari bản mới.",
     "errorGpuReset": "Card đồ họa bị đặt lại trong lúc xuất. Hãy thử lại."
+  },
+  "imageGen": {
+    "back": "Tất cả công cụ",
+    "title": "AI tạo ảnh",
+    "privacyNote": "AI chạy trên card đồ họa của bạn trong tab này. Chữ và ảnh của bạn không bao giờ bị tải lên.",
+    "promptLabel": "Mô tả bức ảnh",
+    "promptPlaceholder": "Chú mèo mặc áo len hồng đọc sách bên cửa sổ, nắng sớm",
+    "examplesLabel": "Thử một mẫu:",
+    "example1": "Căn nhà gỗ ấm áp trong rừng tuyết ban đêm, cửa sổ sáng đèn",
+    "example2": "Chú chó corgi phi hành gia dễ thương lơ lửng giữa không gian, sao",
+    "example3": "Bát mì ramen bốc khói, chụp từ trên xuống, ảnh món ăn",
+    "example4": "Cô gái cầm ô đi dưới mưa ở Tokyo, đèn neon",
+    "example5": "Hòn đảo nhỏ có ngọn hải đăng lúc hoàng hôn",
+    "example6": "Tranh màu nước hoa anh đào hồng bên sông",
+    "generate": "Tạo ảnh",
+    "hint": "Ảnh của bạn sẽ hiện ở đây.",
+    "resultsTitle": "Kết quả",
+    "show": "Xem ảnh này",
+    "download": "Tải PNG",
+    "style": "Phong cách",
+    "style_none": "Theo mô tả",
+    "style_photo": "Ảnh chụp",
+    "style_anime": "Anime",
+    "style_watercolor": "Màu nước",
+    "style_3d": "3D",
+    "count": "Số ảnh",
+    "size": "Kích thước",
+    "size_384": "384 px",
+    "size_768": "768 px (AI phóng to)",
+    "size_1536": "1536 px (AI phóng to)",
+    "note": "Ctrl/⌘ + Enter cũng tạo ảnh. Được dùng thương mại; các mục đích bị Giấy phép mô hình DeepSeek cấm thì không.",
+    "drawing": "Đang vẽ… {pct}%",
+    "upscaling": "Đang làm nét… {pct}%",
+    "translated": "Vẽ theo bản tiếng Anh: “{text}” Chưa đúng? Hãy gõ mô tả bằng tiếng Anh.",
+    "empty": "Hãy mô tả bức ảnh trước.",
+    "needsGpu": "Trình duyệt này không có WebGPU, vẽ bằng CPU sẽ mất nhiều phút. Hãy dùng Chrome, Edge hoặc Safari bản mới.",
+    "errorRun": "Vẽ không thành công. Hãy tải lại trang và thử lại."
   }
 }
