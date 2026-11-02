@@ -1,4 +1,4 @@
-/** Plays the model's notes with plain Web Audio synths, rendered offline so playback and the WAV are the same audio. */
+/** Plays the model's notes with plain Web Audio synths, rendered offline: playback and the WAV are the same render. */
 import { drumKind, midiToHz, pieceSeconds, stepSeconds, stepTime, type Note, type StylePreset } from "../../shared/music-gen";
 
 const SAMPLE_RATE = 44_100;
@@ -131,4 +131,20 @@ function drum(ctx: BaseAudioContext, out: AudioNode, noise: AudioBuffer, kind: R
     case "cymbal":
       noiseHit(ctx, out, noise, t, 0.12 * vel, 0.9, "highpass", 5000);
   }
+}
+
+/**
+ * The loop for playback: the piece cut at the last bar line with its tail (releases, echo) added back onto the
+ * start, as it would ring over the next repeat. The WAV keeps the tail at the end instead.
+ */
+export function loopBuffer(audio: AudioBuffer, loopSeconds: number): AudioBuffer {
+  const length = Math.min(audio.length, Math.round(loopSeconds * audio.sampleRate));
+  const loop = new AudioBuffer({ length, numberOfChannels: audio.numberOfChannels, sampleRate: audio.sampleRate });
+  for (let c = 0; c < audio.numberOfChannels; c++) {
+    const src = audio.getChannelData(c);
+    const out = loop.getChannelData(c);
+    out.set(src.subarray(0, length));
+    for (let i = length; i < src.length; i++) out[(i - length) % length] += src[i];
+  }
+  return loop;
 }

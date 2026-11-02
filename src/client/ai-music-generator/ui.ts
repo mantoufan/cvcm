@@ -6,6 +6,7 @@ import {
   STYLE_PRESETS,
   SURPRISE,
   SURPRISE_IDS,
+  STEPS_PER_BAR,
   pieceSeconds,
   toMidi,
   type MusicBars,
@@ -14,12 +15,48 @@ import {
   type Surprise,
 } from "../../shared/music-gen";
 import { appHref } from "../../shared/path";
-import { chipGroup, formatSeconds, statusPanel, type Status } from "../ai/kit";
+import { AI_MODELS, formatMb, modelBytes } from "../../shared/ai-models";
+import { chipGroup, formatSeconds } from "../ai/kit";
 import { downloadBlob, h } from "../dom";
 import { locale, t } from "../i18n";
+import type { Sequence } from "./model";
 
 type Model = typeof import("./model");
-type Piece = { notes: Note[]; seeds: unknown[]; style: MusicStyle; bars: MusicBars; audio: AudioBuffer };
+type Piece = { notes: Note[]; seeds: Sequence[]; style: MusicStyle; bars: MusicBars; audio: AudioBuffer; loop: AudioBuffer };
+
+/**
+ * The model line and one status line. Not the AI tools' statusPanel: that one reads the Transformers.js cache and
+ * the WebGPU check, which say nothing about TensorFlow.js (it caches through the browser's HTTP cache, runs on WebGL).
+ */
+type Panel = { el: HTMLElement; working(label: string): void; done(label: string): void; error(label: string): void };
+
+function musicPanel(): Panel {
+  const bar = h("progress", { class: "ai-bar", hidden: true });
+  const line = h("p", { class: "status ai-status", "aria-live": "polite" });
+  const el = h("div", { class: "ai-panel" },
+    h("p", { class: "ai-model" },
+      h("strong", null, "MusicVAE trio"),
+      h("span", null, ` · ${AI_MODELS.trio.license} · ${formatMb(modelBytes("trio", "gpu"))}`),
+    ),
+    bar,
+    line,
+  );
+  return {
+    el,
+    working(label) {
+      bar.hidden = false;
+      line.textContent = label;
+    },
+    done(label) {
+      bar.hidden = true;
+      line.textContent = label;
+    },
+    error(label) {
+      bar.hidden = true;
+      line.textContent = label;
+    },
+  };
+}
 
 const state = {
   style: "lofi" as MusicStyle,
@@ -28,7 +65,7 @@ const state = {
   running: false,
 };
 
-let status: Status | null = null;
+let status: Panel | null = null;
 let model: Model | null = null;
 let piece: Piece | null = null;
 let ctx: AudioContext | null = null;
@@ -46,7 +83,7 @@ export async function mountMusicGenerator(host: HTMLElement): Promise<void> {
   alive = true;
   mountId++;
   serial = 0;
-  status = statusPanel("MusicVAE trio", "trio");
+  status = musicPanel();
   host.append(
     h("header", { class: "tool-head" },
       h("a", { class: "back", href: appHref(locale(), null), "data-nav": "home" }, t("musicGen.back")),
@@ -127,6 +164,10 @@ async function generate(more: boolean): Promise<void> {
   const stale = (): boolean => !alive || mine !== mountId;
   state.running = true;
   setBusy(true);
+  // Created and resumed inside the click: Safari only lets audio start with the user's gesture, and the piece is
+  // ready seconds later.
+  ctx ??= new AudioContext();
+  void ctx.resume().catch(() => {});
   const started = performance.now();
   try {
     if (!model) {
@@ -138,18 +179,19 @@ async function generate(more: boolean): Promise<void> {
     await model.loadModel();
     if (stale()) return;
     panel.working(t("musicGen.composing"));
-    const { style, bars } = more && piece ? piece : state;
+    // "More like this" keeps the last piece's ideas and takes the style and length now selected.
+    const { style, bars } = state;
     const preset = STYLE_PRESETS[style];
     const temperature = preset.temperature * SURPRISE[state.surprise];
     const { notes, seeds } = more && piece
-      ? await model.vary(piece.seeds as never, bars, temperature)
+      ? await model.vary(piece.seeds, bars, temperature)
       : await model.compose(bars, temperature);
     if (stale()) return;
     panel.working(t("musicGen.rendering"));
-    const { renderPiece } = await import("./synth");
+    const { renderPiece, loopBuffer } = await import("./synth");
     const audio = await renderPiece(notes, bars, preset);
     if (stale()) return;
-    piece = { notes, seeds, style, bars, audio };
+    piece = { notes, seeds, style, bars, audio, loop: loopBuffer(audio, pieceSeconds(bars, preset.bpm)) };
     serial++;
     drawRoll(notes, bars);
     if (infoEl) infoEl.textContent = t("musicGen.info", { style: t(`musicGen.style_${style}`), bars, bpm: preset.bpm, s: formatSeconds(pieceSeconds(bars, preset.bpm)) });
@@ -191,9 +233,8 @@ function play(): void {
   ctx ??= new AudioContext();
   void ctx.resume();
   const src = ctx.createBufferSource();
-  src.buffer = piece.audio;
+  src.buffer = piece.loop;
   src.loop = true;
-  src.loopEnd = pieceSeconds(piece.bars, STYLE_PRESETS[piece.style].bpm);
   src.connect(ctx.destination);
   src.start();
   source = src;
@@ -230,7 +271,7 @@ function drawRoll(notes: readonly Note[], bars: number): void {
   const w = roll.width;
   const hgt = roll.height;
   c.clearRect(0, 0, w, hgt);
-  const steps = bars * 16;
+  const steps = bars * STEPS_PER_BAR;
   const tonal = notes.filter((n) => n.part !== "drums");
   const lo = Math.min(...tonal.map((n) => n.pitch), 48) - 1;
   const hi = Math.max(...tonal.map((n) => n.pitch), 72) + 1;
@@ -238,7 +279,7 @@ function drawRoll(notes: readonly Note[], bars: number): void {
   const rowH = (hgt - drumBand - 8) / (hi - lo);
   c.strokeStyle = "rgba(0,0,0,0.08)";
   for (let b = 0; b <= bars; b++) {
-    const x = (b * 16 * w) / steps;
+    const x = (b * STEPS_PER_BAR * w) / steps;
     c.beginPath();
     c.moveTo(x, 0);
     c.lineTo(x, hgt);
