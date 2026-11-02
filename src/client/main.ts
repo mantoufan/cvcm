@@ -37,6 +37,7 @@ import { DATASETS, type DatasetId } from "../shared/datasets";
 import { KNOWLEDGE_ARTICLES, isKbId, kbArticleOf, kbGroupsOf, type KbPage } from "../shared/kb";
 import { isRefId, type RefId, type RefPage } from "../shared/ref";
 import { BRANDED_TOOLS, hreflangAlternates, pageCanonical, pageDescription, pageTitle } from "../shared/seo";
+import { HREFLANG } from "../shared/sitemap";
 import { toolLessonsSection } from "./tool-lessons";
 import { TOOL_LOADERS } from "./tools";
 import { analyticsActive, gateAnalytics, trackPageView } from "./analytics";
@@ -736,6 +737,7 @@ function shell(loc: Locale): { page: HTMLElement; ready: Promise<void> } {
         h("a", { href: legalHref(loc, "privacy"), "data-nav": "privacy" }, t("footer.privacyLink")),
         h("a", { href: legalHref(loc, "terms"), "data-nav": "terms" }, t("footer.termsLink")),
       ),
+      langLinks(loc),
     ),
   );
   return { page, ready };
@@ -890,7 +892,8 @@ function syncHreflang(seo: Parameters<typeof hreflangAlternates>[0]): void {
 }
 
 function langSwitch(current: Locale): HTMLElement {
-  const sel = h("select", {
+  // Options go in as children so h() syncs the selected one; appended later, the prerendered HTML marked another locale.
+  return h("select", {
     class: "lang",
     "aria-label": t("lang.label"),
     onChange: (e: Event) => {
@@ -899,16 +902,19 @@ function langSwitch(current: Locale): HTMLElement {
       history.pushState(null, "", localeHref(next));
       render();
     },
-  });
-  for (const code of LOCALES) {
-    sel.append(
-      h("option", {
-        value: code,
-        selected: code === current,
-      }, t(`lang.${code}`)),
-    );
-  }
-  return sel;
+  }, ...LOCALES.map((code) => h("option", { value: code, selected: code === current }, t(`lang.${code}`))));
+}
+
+/** This page in every language as plain links: crawlers do not follow the picker's options. */
+function langLinks(current: Locale): HTMLElement {
+  return h("nav", { class: "foot-links foot-langs", "aria-label": t("lang.label") },
+    ...LOCALES.map((code) => h("a", {
+      href: new URL(localeHref(code), location.origin).pathname,
+      hreflang: HREFLANG[code],
+      lang: HREFLANG[code],
+      "aria-current": code === current ? "page" : undefined,
+    }, t(`lang.${code}`))),
+  );
 }
 
 function localeHref(next: Locale): string {
