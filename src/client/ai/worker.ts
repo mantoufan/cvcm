@@ -375,7 +375,8 @@ async function toEnglish(model: MultiModalityCausalLM, janus: JanusProcessor, pr
   const budget = Math.min(384, 32 + prompt.length * 2);
   const out = (await model.generate({ ...inputs, max_new_tokens: budget, do_sample: false } as never)) as Tensor;
   const ids = (out.tolist() as bigint[][])[0].slice(start).map(Number);
-  const text = janus.tokenizer!.decode(ids, { skip_special_tokens: true }).trim().replace(/^["'“]+|["'”]+$/g, "");
+  // Only the first line: anything after it is the model going on talking, not the translation.
+  const text = janus.tokenizer!.decode(ids, { skip_special_tokens: true }).trim().split("\n")[0].trim().replace(/^["“]+|["”]+$/g, "");
   return text || prompt;
 }
 
@@ -386,10 +387,27 @@ async function toEnglish(model: MultiModalityCausalLM, janus: JanusProcessor, pr
  * vertical stripes. Unguided images follow the prompt well and take 15 s instead of 25 s on an Apple GPU.
  */
 async function textToImage(id: number, prompt: string, translate: boolean, suffix: string, force?: AiBackend): Promise<void> {
+  // The page checks too, but the worker's own adapter decides: never start 576 sequential 1B steps on wasm.
+  if ((await pickBackend(force)) === "cpu") throw new Error("webgpu");
   const { model, processor, backend } = await load("janus", id, force);
   post({ type: "stage", id, stage: "run", backend });
-  const janus = processor as JanusProcessor;
-  const mm = model as unknown as MultiModalityCausalLM;
+  try {
+    await drawImage(id, model as unknown as MultiModalityCausalLM, processor as JanusProcessor, prompt, translate, suffix);
+  } catch (err) {
+    // A lost or out-of-memory device leaves sessions that fail every later run: load fresh next time.
+    loaded.delete(`janus:${backend}`);
+    throw err;
+  }
+}
+
+async function drawImage(
+  id: number,
+  mm: MultiModalityCausalLM,
+  janus: JanusProcessor,
+  prompt: string,
+  translate: boolean,
+  suffix: string,
+): Promise<void> {
   let english = prompt;
   if (translate) {
     english = await toEnglish(mm, janus, prompt);

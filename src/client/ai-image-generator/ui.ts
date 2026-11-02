@@ -21,7 +21,7 @@ const EXAMPLES = 6;
 /** Results kept on the page; older ones are dropped (and their object URLs freed). */
 const KEEP = 12;
 
-type Result = { url: string; blob: Blob; prompt: string; size: number };
+type Result = { url: string; blob: Blob; prompt: string; size: number; n: number };
 
 const state = {
   style: "none" as ImageStyle,
@@ -41,11 +41,16 @@ let englishEl: HTMLElement | null = null;
 let gallery: HTMLElement | null = null;
 let results: Result[] = [];
 let alive = false;
+let warmed = false;
+/** Numbers results for their file names; never reused within a mount. */
+let serial = 0;
 /** Bumped on unmount, so a run from an earlier mount stops at its next step. */
 let mountId = 0;
 
 export async function mountImageGenerator(host: HTMLElement): Promise<void> {
   alive = true;
+  warmed = false;
+  serial = 0;
   mountId++;
   client = new AiClient();
   status = statusPanel("Janus-Pro-1B", "janus");
@@ -87,7 +92,7 @@ function promptRail(): HTMLElement {
     maxlength: String(PROMPT_MAX),
     placeholder: t("imageGen.promptPlaceholder"),
     "data-field": "prompt",
-    onFocusin: warm,
+    onFocusin: () => void warm(),
     onKeydown: (e: KeyboardEvent) => {
       if (e.key === "Enter" && (e.metaKey || e.ctrlKey)) {
         e.preventDefault();
@@ -150,8 +155,12 @@ function controls(): HTMLElement {
 }
 
 /** Start loading the model while the visitor types (only if it is already cached: it is a large download). */
-function warm(): void {
-  if (client && status) void prewarm(client, "janus", status);
+/** Once per mount, and only with a GPU: the page never runs Janus on the CPU, so it should not load it there. */
+async function warm(): Promise<void> {
+  if (warmed || !client || !status) return;
+  warmed = true;
+  if ((await guessBackend()) === "cpu" || !client || !status) return;
+  void prewarm(client, "janus", status);
 }
 
 async function generate(): Promise<void> {
@@ -195,6 +204,10 @@ async function generate(): Promise<void> {
         {
           // 576 sequential steps of a 1B model are not a job for the CPU: a GPU failure is reported, not retried there.
           gpuOnly: true,
+          // The first picture's job translates before it draws: say so, the bar has nothing to count yet.
+          onRun: () => {
+            if (translate) panel.working(t("imageGen.translating") + label);
+          },
           onTiles: (done, total) => panel.working(t("imageGen.drawing", { pct: Math.floor((done / total) * 100) }) + label, done / total),
           onText: (english) => {
             prompt = english;
@@ -220,7 +233,8 @@ async function generate(): Promise<void> {
   } catch (err) {
     if (stale() || (err instanceof Error && err.message === "cancelled")) return;
     console.error(err);
-    panel.error(t("imageGen.errorRun"));
+    // "webgpu": the worker found no GPU adapter even though the page did.
+    panel.error(t(err instanceof Error && err.message === "webgpu" ? "imageGen.needsGpu" : "imageGen.errorRun"));
   } finally {
     if (!stale()) {
       state.running = false;
@@ -241,7 +255,8 @@ async function upscale(
     runner,
     panel,
     async () => {
-      const bitmap = await createImageBitmap(new ImageData(new Uint8ClampedArray(image.data), image.width, image.height));
+      // The drawn image is not used again, so its buffer goes straight in.
+      const bitmap = await createImageBitmap(new ImageData(image.data, image.width, image.height));
       return { body: { type: "upscale", bitmap, scale, style: "photo" }, transfer: [bitmap] };
     },
     { onTiles: (done, total) => panel.working(t("imageGen.upscaling", { pct: Math.floor((done / total) * 100) }) + label, done / total) },
@@ -254,7 +269,7 @@ async function addResult(image: Extract<AiResponse, { type: "image" }>, prompt: 
   canvas.getContext("2d")!.putImageData(new ImageData(image.data, image.width, image.height), 0, 0);
   const blob = await canvasToBlob(canvas, "image/png", 1);
   if (stale() || !gallery || !mainImg) return;
-  const result: Result = { url: URL.createObjectURL(blob), blob, prompt, size };
+  const result: Result = { url: URL.createObjectURL(blob), blob, prompt, size, n: ++serial };
   results.unshift(result);
   for (const old of results.splice(KEEP)) URL.revokeObjectURL(old.url);
   show(result);
@@ -271,19 +286,19 @@ function show(result: Result): void {
 
 function renderGallery(): void {
   if (!gallery) return;
-  gallery.replaceChildren(...results.map((r, i) =>
+  gallery.replaceChildren(...results.map((r) =>
     h("figure", null,
       h("button", { type: "button", class: "gen-thumb", "aria-label": t("imageGen.show"), onClick: () => show(r) },
         h("img", { src: r.url, alt: r.prompt, loading: "lazy" }),
       ),
       h("figcaption", null,
-        h("button", { type: "button", class: "btn ghost", onClick: () => downloadBlob(r.blob, fileName(r, i)) }, t("imageGen.download")),
+        h("button", { type: "button", class: "btn ghost", onClick: () => downloadBlob(r.blob, fileName(r)) }, t("imageGen.download")),
       ),
     ),
   ));
 }
 
-function fileName(r: Result, i: number): string {
-  const words = r.prompt.toLowerCase().replace(/[^\p{L}\p{N}]+/gu, "-").replace(/^-+|-+$/g, "").slice(0, 40) || "image";
-  return `${words}-${r.size}px-${results.length - i}.png`;
+function fileName(r: Result): string {
+  const words = r.prompt.toLowerCase().replace(/[^\p{L}\p{N}]+/gu, "-").slice(0, 40).replace(/^-+|-+$/g, "") || "image";
+  return `${words}-${r.size}px-${r.n}.png`;
 }

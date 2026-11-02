@@ -214,7 +214,10 @@ describe("AI image generator", () => {
     expect(needsTranslation("a girl with an umbrella in the rain", "es")).toBe(false);
     expect(needsTranslation("un gato con sueter rosa", "es")).toBe(true);
     expect(needsTranslation("kucing di jendela pada pagi hari", "id")).toBe(true);
-    expect(needsTranslation("una niña con paraguas", "en")).toBe(true);
+    expect(needsTranslation("una niña con paraguas", "en")).toBe(false);
+    expect(needsTranslation("girl’s umbrella — café at night", "en")).toBe(false);
+    expect(needsTranslation("red fox in snow, watercolor", "es")).toBe(false);
+    expect(needsTranslation("mèo trắng trên mái nhà dưới ánh trăng", "vi")).toBe(true);
   });
 
   it("lists every Janus file the page can load, for each backend", () => {
