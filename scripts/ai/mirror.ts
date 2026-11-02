@@ -13,7 +13,7 @@ import { execFileSync } from "node:child_process";
 import { createHash } from "node:crypto";
 import { copyFile, mkdir, readFile, stat, writeFile } from "node:fs/promises";
 import { dirname, join, resolve } from "node:path";
-import { AI_MODELS, mirrorFiles, type AiModelId } from "../../src/shared/ai-models";
+import { AI_MODELS, mirrorFiles, modelFileUrl, type AiModelId } from "../../src/shared/ai-models";
 import { presignS3Put, type S3Config } from "../../src/s3-sign";
 
 const args = process.argv.slice(2);
@@ -64,7 +64,7 @@ async function stage(): Promise<string[]> {
       }
       if ((await size(dest)) > 0) continue;
       console.log("download", rel);
-      await download(`https://huggingface.co/${repo}/resolve/${revision}/${file}`, dest);
+      await download(modelFileUrl(id, file, null, "https://cv.cm"), dest);
     }
   }
   const ortPkg = JSON.parse(await readFile(join(root, "node_modules/onnxruntime-web/package.json"), "utf8")) as { version: string };

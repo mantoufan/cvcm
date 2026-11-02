@@ -133,6 +133,7 @@ export const TOOL_COVER: Record<ToolId, string> = {
   "depth-map": "/covers/depth-map-sweet.jpg?v=1",
   v: "/covers/v-sweet.jpg?v=1",
   "ai-image-generator": "/covers/ai-image-generator-sweet.jpg?v=1",
+  "ai-music-generator": "/covers/ai-music-generator-sweet.jpg?v=1",
 };
 
 export const MARKET_COVER: Record<MarketId, string> = {

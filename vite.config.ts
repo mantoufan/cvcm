@@ -1,9 +1,27 @@
 import { dirname, resolve } from "node:path";
+import type { Plugin } from "vite";
 import { defineConfig } from "vitest/config";
 import { NAMES_FILTER, gameNamesSource, namesJsonPath } from "./scripts/game-names.mjs";
 
 // Virtual id without a .json ending, so Vite's JSON plugin leaves the generated module alone.
 const NAMES_ID = "\0game-names:";
+
+/**
+ * seedrandom (under TensorFlow.js 2, used by the music generator) finds the global object with `(0, eval)('this')`,
+ * which the AI pages' CSP forbids (no 'unsafe-eval'). globalThis is the same object. If a copy still has eval after
+ * the replacement, fail the build rather than ship a model that cannot load.
+ */
+const seedrandomNoEval: Plugin = {
+  name: "seedrandom-no-eval",
+  transform(code, id) {
+    if (!/[\\/]seedrandom[\\/]seedrandom\.js$/.test(id)) return null;
+    // Older copies (nested under some TF.js packages) never used eval: leave those alone.
+    if (!/\beval\b/.test(code)) return null;
+    const out = code.replace(/\(0,\s*eval\)\(\s*['"]this['"]\s*\)/, "globalThis");
+    if (/\beval\b/.test(out)) this.error(`seedrandom-no-eval: eval left in ${id}`);
+    return out;
+  },
+};
 
 export default defineConfig({
   plugins: [{
@@ -19,7 +37,7 @@ export default defineConfig({
       this.addWatchFile(file);
       return `export default ${gameNamesSource(file)};`;
     },
-  }],
+  }, seedrandomNoEval],
   resolve: {
     alias: [
       // ONNX Runtime's default web bundle pulls its 27 MB .wasm into dist/ (over Pages' 25 MiB file limit).
@@ -27,7 +45,8 @@ export default defineConfig({
       { find: /^onnxruntime-web\/webgpu$/, replacement: resolve("node_modules/onnxruntime-web/dist/ort.webgpu.min.mjs") },
     ],
   },
-  worker: { format: "es" },
+  // The music generator's model worker bundles TensorFlow.js too: same transform there.
+  worker: { format: "es", plugins: () => [seedrandomNoEval] },
   publicDir: "public",
   build: {
     outDir: "dist",
@@ -37,6 +56,13 @@ export default defineConfig({
     assetsInlineLimit: 0,
     // Read by scripts/build-worker.mjs to preload the page locale's string pack.
     manifest: true,
+    rollupOptions: {
+      output: {
+        // The music generator's page and its lazy model / synth chunks share this module. Left to Rollup it is
+        // folded into the page chunk, which then loses its own manifest entry (build-worker needs it to preload).
+        manualChunks: (id) => (id.endsWith("/src/shared/music-gen.ts") ? "music-gen" : undefined),
+      },
+    },
   },
   server: {
     port: 5173,

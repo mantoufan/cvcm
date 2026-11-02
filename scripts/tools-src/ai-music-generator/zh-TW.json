@@ -1,0 +1,71 @@
+{
+  "meta": {
+    "titleMusicGen": "AI 音樂產生器 — 免費免版稅背景音樂，在瀏覽器裡產生 — cv.cm",
+    "descMusicGen": "用 AI 創作原創器樂 loop：旋律、貝斯和鼓，支援 Lo-fi、流行、晶片音樂、氛圍、舞曲風格。免費、免註冊、可商用，下載 WAV 和 MIDI。"
+  },
+  "tools": {
+    "ai-music-generator": {
+      "name": "AI 音樂產生器",
+      "blurb": "原創器樂 loop：旋律、貝斯和鼓，可下載 WAV 和 MIDI。"
+    }
+  },
+  "faq": {
+    "ai-music-generator": {
+      "q1": "AI 音樂產生器是怎麼運作的？",
+      "a1": "Google Magenta 專案的開源模型 MusicVAE 每次寫出 4 小節的旋律、貝斯和鼓；更長的曲子會從一個樂思逐漸過渡到另一個。頁面再用內建的合成器把這些音符演奏出來。",
+      "q2": "產生的音樂能用在影片裡或商用嗎？",
+      "a2": "可以。每段音樂都是新產生的，模型採用 Apache-2.0 授權，也沒有取樣任何現有歌曲。可用於影片、遊戲、Podcast 或產品，無需標示出處。",
+      "q3": "能產生有人聲的歌嗎？",
+      "a3": "不能。它產生的是器樂：主旋律、貝斯線和鼓。下載 MIDI 檔後，可以在 GarageBand、FL Studio 等音樂軟體裡換成其他樂器演奏同樣的音符。",
+      "q4": "會上傳什麼嗎？",
+      "a4": "不會。模型只下載一次（約 18 MB），在本頁執行，音訊也在瀏覽器裡合成。",
+      "q5": "怎樣得到喜歡的音樂？",
+      "a5": "多產生幾次，留下喜歡的那段，再按「再來一段類似的」取得變化版本。「平穩」讓音樂簡單重複，「大膽」會嘗試更多新點子。"
+    }
+  },
+  "ui": {
+    "musicGen": {
+      "back": "所有工具",
+      "title": "AI 音樂產生器",
+      "privacyNote": "AI 在本頁作曲，不上傳任何內容，產生的音樂歸你使用。",
+      "styleTitle": "風格",
+      "style_lofi": "Lo-fi",
+      "style_pop": "流行",
+      "style_chiptune": "晶片音樂",
+      "style_ambient": "氛圍",
+      "style_dance": "舞曲",
+      "generate": "產生音樂",
+      "more": "再來一段類似的",
+      "moreHint": "「再來一段類似的」會保留上一段的感覺，改變細節。",
+      "hint": "旋律、貝斯和鼓會顯示在這裡。",
+      "play": "播放",
+      "stop": "停止",
+      "downloadWav": "下載 WAV",
+      "downloadMidi": "下載 MIDI",
+      "length": "長度",
+      "bars": "{n} 小節",
+      "surprise": "驚喜程度",
+      "surprise_calm": "平穩",
+      "surprise_normal": "正常",
+      "surprise_wild": "大膽",
+      "note": "只有器樂，沒有人聲。允許商用。",
+      "loading": "正在載入 AI 模型…",
+      "composing": "正在作曲…",
+      "rendering": "正在混音…",
+      "info": "{style} · {bars} 小節 · {bpm} BPM · 循環 {s} 秒",
+      "done": "完成，用時 {s} 秒。",
+      "errorRun": "作曲失敗。請重新整理頁面後再試。"
+    }
+  },
+  "guides": {
+    "ai-music-generator": {
+      "lead": "在本頁產生一段原創器樂 loop。",
+      "s1t": "選擇風格",
+      "s1b": "選擇 Lo-fi、流行、晶片音樂、氛圍或舞曲，長度 4、8 或 16 小節，以及驚喜程度。",
+      "s2t": "產生並試聽",
+      "s2b": "模型只下載一次，之後一秒左右寫出旋律、貝斯和鼓並循環播放。按「再來一段類似的」取得變化版本。",
+      "s3t": "下載",
+      "s3b": "儲存 WAV 用於影片和 Podcast，或儲存 MIDI 在音樂軟體裡更換樂器。"
+    }
+  }
+}

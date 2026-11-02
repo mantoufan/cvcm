@@ -22,6 +22,8 @@ export type AiModel = {
   license: string;
   /** Small JSON / tokenizer files every variant needs. */
   configs: readonly string[];
+  /** Where the files come from when they are not on Hugging Face (the mirror's source, and dev without a mirror). */
+  source?: string;
   variants: Record<AiBackend, AiVariant>;
 };
 
@@ -58,6 +60,9 @@ function opusMt(lang: string, revision: string, encoder: number, decoder: number
     variants: { gpu16: variant, gpu: variant, cpu: variant },
   };
 }
+
+const TRIO_SHARDS = [1, 2, 3, 4, 5].map((i) => `group1-shard${i}of5`);
+const TRIO_BYTES = 4 * 4_194_304 + 859_316;
 
 const WHISPER_CONFIGS = [
   "config.json",
@@ -167,6 +172,20 @@ export const AI_MODELS = {
   "opus-vi": opusMt("vi", "541dfd72ec07e8f1563795e0224408ad8d729e80", 47_133_597, 54_401_611),
   "opus-id": opusMt("id", "c38ef36c843b71177da903442835c3c870975fd6", 47_674_782, 54_947_024),
   "opus-es": opusMt("es", "eadfd7c658a9d8929ac3b8e996b68a68e2c7d480", 52_899_742, 60_212_804),
+  // Magenta MusicVAE trio_4bar (Apache-2.0): 4 bars of melody, bass and drums at once. TensorFlow.js weights from
+  // Magenta's checkpoint bucket, pinned by the @magenta/music release that lists them (the bucket has no versions).
+  trio: {
+    repo: "magenta/music_vae-trio_4bar",
+    revision: "v1.23.1",
+    license: "Apache-2.0",
+    source: "https://storage.googleapis.com/magentadata/js/checkpoints/music_vae/trio_4bar",
+    configs: ["config.json", "weights_manifest.json"],
+    variants: {
+      gpu16: { dtype: "fp32", files: TRIO_SHARDS, bytes: TRIO_BYTES },
+      gpu: { dtype: "fp32", files: TRIO_SHARDS, bytes: TRIO_BYTES },
+      cpu: { dtype: "fp32", files: TRIO_SHARDS, bytes: TRIO_BYTES },
+    },
+  },
   "whisper-base": {
     repo: "onnx-community/whisper-base",
     revision: "1846881b6b3a3024392c1eea3ad983695bc23925",
@@ -238,9 +257,9 @@ export const AI_ORT_PREFIX = "/ai/ort/";
  */
 export function modelFileUrl(id: AiModelId, file: string, host: string | null | undefined, origin: string): string {
   const { repo, revision } = AI_MODELS[id];
-  return host
-    ? `${new URL(host, origin).href}${repo}/${revision}/${file}`
-    : `https://huggingface.co/${repo}/resolve/${revision}/${file}`;
+  const { source } = AI_MODELS[id] as AiModel;
+  if (host) return `${new URL(host, origin).href}${repo}/${revision}/${file}`;
+  return source ? `${source}/${file}` : `https://huggingface.co/${repo}/resolve/${revision}/${file}`;
 }
 
 export function modelBytes(id: AiModelId, backend: AiBackend): number {

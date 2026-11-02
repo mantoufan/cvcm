@@ -6,6 +6,7 @@ import { cleanSegments, shortClock, toSrt, toText, toVtt } from "../src/shared/s
 import { isTrackedPath } from "../src/shared/analytics";
 import { prepareDepth } from "../src/client/v/render";
 import { promptLanguage } from "../src/shared/image-gen";
+import { MUSIC_BARS, MUSIC_STYLES, STYLE_PRESETS, drumKind, pieceSeconds, samplesFor, stepSeconds, stepTime, toMidi, toNotes } from "../src/shared/music-gen";
 import { MOTIONS, STRENGTHS, cameraAt, cropRect, frameCount, outputSize } from "../src/shared/parallax";
 
 const html = {
@@ -19,7 +20,7 @@ describe("AI tool routes", () => {
       expect(appHref("zh-CN", tool)).toBe(`/zh-cn/${tool}/`);
       expect(isAiToolPath(`/ja/${tool}/`)).toBe(true);
     }
-    expect([...AI_TOOLS]).toEqual(["v", "ai-image-generator", "remove-background", "image-upscaler", "speech-to-text", "depth-map"]);
+    expect([...AI_TOOLS]).toEqual(["v", "ai-image-generator", "ai-music-generator", "remove-background", "image-upscaler", "speech-to-text", "depth-map"]);
     expect(isAiToolPath("/en/json/")).toBe(false);
     expect(isAiToolPath("/en/")).toBe(false);
   });
@@ -231,5 +232,66 @@ describe("AI image generator", () => {
       for (const f of variant.files) expect(files).toContain(f);
     }
     expect(AI_MODELS.janus.variants.gpu16.bytes).toBe(1_545_919_444);
+  });
+});
+
+describe("AI music generator", () => {
+  it("turns trio samples into lead, bass and drum notes, offset per sample", () => {
+    const notes = toNotes([
+      { pitch: 72, quantizedStartStep: 0, quantizedEndStep: 4, instrument: 0, velocity: 100 },
+      { pitch: 40, quantizedStartStep: 0, quantizedEndStep: 8, instrument: 1 },
+      { pitch: 36, quantizedStartStep: 0, quantizedEndStep: 1, instrument: 2, isDrum: true },
+      { quantizedStartStep: 3 },
+    ], 64);
+    expect(notes).toEqual([
+      { part: "lead", pitch: 72, start: 64, end: 68, velocity: 100 },
+      { part: "bass", pitch: 40, start: 64, end: 72, velocity: 80 },
+      { part: "drums", pitch: 36, start: 64, end: 65, velocity: 80 },
+    ]);
+    expect(MUSIC_BARS.map(samplesFor)).toEqual([1, 2, 4]);
+  });
+
+  it("times steps with swing and maps drums", () => {
+    expect(stepSeconds(120)).toBeCloseTo(0.125, 9);
+    expect(stepTime(2, 120, 0.3)).toBeCloseTo(0.25, 9);
+    expect(stepTime(3, 120, 0.3)).toBeCloseTo(0.375 + 0.01875, 9);
+    expect(pieceSeconds(8, 80)).toBeCloseTo(24, 9);
+    expect([36, 38, 42, 46, 45, 49].map(drumKind)).toEqual(["kick", "snare", "hat", "openhat", "tom", "cymbal"]);
+    for (const style of MUSIC_STYLES) expect(STYLE_PRESETS[style].bpm).toBeGreaterThan(60);
+  });
+
+  it("writes a standard MIDI file: tempo track, then lead, bass and drums", () => {
+    const midi = toMidi([
+      { part: "lead", pitch: 60, start: 0, end: 4, velocity: 90 },
+      { part: "drums", pitch: 36, start: 4, end: 5, velocity: 200 },
+    ], 120);
+    const text = (from: number, n: number) => String.fromCharCode(...midi.slice(from, from + n));
+    expect(text(0, 4)).toBe("MThd");
+    expect([midi[9], midi[11], (midi[12] << 8) | midi[13]]).toEqual([1, 4, 480]);
+    // Tempo track: 500000 µs per quarter at 120 BPM.
+    expect([...midi.slice(14 + 8, 14 + 8 + 7)]).toEqual([0, 0xff, 0x51, 3, 0x07, 0xa1, 0x20]);
+    const bytes = [...midi];
+    // Lead on channel 1 (program 80), note 60 for 4 steps = 480 ticks; drum velocity clamped to 127 on channel 10.
+    expect(bytes.join(",")).toContain([0, 0xc0, 80, 0, 0x90, 60, 90, 0x83, 0x60, 0x80, 60, 0].join(","));
+    expect(bytes.join(",")).toContain([0x99, 36, 127].join(","));
+  });
+
+  it("swings MIDI like the audio, cuts same-pitch overlaps and skips notes without a pitch", () => {
+    const notes = [
+      { part: "lead" as const, pitch: 60, start: 0, end: 8, velocity: 90 },
+      { part: "lead" as const, pitch: 60, start: 1, end: 3, velocity: 90 },
+    ];
+    const bytes = [...toMidi(notes, 120, 0.3)].join(",");
+    // The second note starts on the swung off-beat (120 + round(0.3 × 0.5 × 120) = 138 ticks, delta 0x81 0x0a), and
+    // the first note ends right there (note-off first at that tick), not at step 8 over it.
+    expect(bytes).toContain([0x90, 60, 90, 0x81, 0x0a, 0x80, 60, 0, 0, 0x90, 60, 90].join(","));
+    expect(toNotes([{ pitch: null, quantizedStartStep: 0, quantizedEndStep: 1 }])).toEqual([]);
+    // Two notes of one pitch on one step: written once, at the longer length (8 steps = 960 ticks, 0x87 0x40).
+    const dup = [...toMidi([
+      { part: "bass", pitch: 40, start: 0, end: 2, velocity: 80 },
+      { part: "bass", pitch: 40, start: 0, end: 8, velocity: 80 },
+    ], 120)].join(",");
+    expect(dup).toContain([0, 0x91, 40, 80, 0x87, 0x40, 0x81, 40, 0].join(","));
+    expect(dup.split(`${0x91},40,80`).length - 1).toBe(1);
   });
 });

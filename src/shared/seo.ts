@@ -193,6 +193,7 @@ const TITLE: Record<ToolId, string> = {
   "depth-map": "meta.titleDepthMap",
   v: "meta.titleV",
   "ai-image-generator": "meta.titleImageGen",
+  "ai-music-generator": "meta.titleMusicGen",
 };
 
 const CONVERT_JOB_TITLE: Record<ConvertJobId, string> = {
@@ -350,6 +351,7 @@ const DESC: Record<ToolId, string> = {
   "depth-map": "meta.descDepthMap",
   v: "meta.descV",
   "ai-image-generator": "meta.descImageGen",
+  "ai-music-generator": "meta.descMusicGen",
 };
 
 const LEARN_TITLE: Record<TutorialId, string> = {

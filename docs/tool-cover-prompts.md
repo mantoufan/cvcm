@@ -223,3 +223,7 @@ Codex, refs `due-date-sweet.jpg` + `reading-time-sweet.jpg`. Same character and 
 ## AI image generator (2026-11-02)
 
 Codex, refs `due-date-sweet.jpg` + `reading-time-sweet.jpg`. Same character and room. `ai-image-generator`: she holds a pearlescent pink paintbrush like a wand; a ribbon of sparkles flows from a blank cream speech-bubble card into a canvas on an easel where a pastel castle on a cloud appears, half sketch lines and half color; a few blank cards float. No words, letters, numerals, logo or watermark.
+
+## AI music generator (2026-11-02)
+
+Codex, refs `tone-generator-sweet.jpg` + `reading-time-sweet.jpg`. Same character and room. `ai-music-generator`: pink over-ear headphones with lace bows, she presses glowing pads on a small pearlescent pink keyboard synthesizer; pastel musical notes and a soft wave of little bars rise from it; a cream drum pad with heart buttons beside. No words, letters, numerals, logo or watermark.
