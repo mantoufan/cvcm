@@ -7,6 +7,7 @@ import { DATASETS, csvHref } from "./datasets";
 import { CODE_ARTICLES } from "./kb";
 import { REF_ENTRIES } from "./ref";
 import { LOCALES, localePath } from "./locale";
+import { IMAGE_COUNTS, IMAGE_SIZES, IMAGE_STYLES, PROMPT_MAX } from "./image-gen";
 import { ASPECTS, DURATIONS, FPS, MOTIONS, SIZES, STRENGTH_IDS } from "./parallax";
 import { AI_TOOLS, CATEGORIES, appHref, datasetHref, gamesHref, kbHref, learnHref, quizHref, refHref, type CategoryId, type ToolId } from "./path";
 import { SITE_ORIGIN } from "./sitemap";
@@ -91,7 +92,7 @@ const AI_DETAILS: Partial<Record<ToolId, AiToolDetails>> = {
       { option: null, model: "janus" },
       { option: `${en.imageGen.size} "${en.imageGen.size_768}" / "${en.imageGen.size_1536}"`, model: "esrgan-photo" },
     ],
-    options: `Text prompt up to 500 characters. ${en.imageGen.style}: ${["none", "photo", "anime", "watercolor", "3d"].map((s) => en.imageGen[`style_${s}` as keyof typeof en.imageGen]).join(" / ")}. ${en.imageGen.count}: 1 / 2 / 4. ${en.imageGen.size}: ${en.imageGen.size_384} / ${en.imageGen.size_768} / ${en.imageGen.size_1536}. Downloads PNG. Needs WebGPU (no CPU fallback: 576 sequential model steps per image). ${en.imageGen.note}`,
+    options: `Text prompt up to ${PROMPT_MAX} characters; prompts in other languages are translated to English by the same model first. ${en.imageGen.style}: ${IMAGE_STYLES.map((s) => en.imageGen[`style_${s}`]).join(" / ")}. ${en.imageGen.count}: ${IMAGE_COUNTS.join(" / ")}. ${en.imageGen.size}: ${IMAGE_SIZES.map((s) => en.imageGen[`size_${s}`]).join(" / ")}. Downloads PNG. Needs WebGPU (no CPU fallback: 576 sequential model steps per image). ${en.imageGen.note}`,
   },
 };
 

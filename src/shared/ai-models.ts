@@ -25,6 +25,20 @@ export type AiModel = {
   variants: Record<AiBackend, AiVariant>;
 };
 
+/** Janus on a GPU without 16-bit floats (and the CPU entry): image_decode in fp32, the rest as on gpu16. */
+const JANUS_FP32: AiVariant = {
+  dtype: { prepare_inputs_embeds: "q8", language_model: "q4", lm_head: "q4", gen_head: "q4", gen_img_embeds: "q4", image_decode: "fp32" },
+  files: [
+    "onnx/prepare_inputs_embeds_quantized.onnx",
+    "onnx/language_model_q4.onnx",
+    "onnx/lm_head_q4.onnx",
+    "onnx/gen_head_q4.onnx",
+    "onnx/gen_img_embeds_q4.onnx",
+    "onnx/image_decode.onnx",
+  ],
+  bytes: 523_040_991 + 779_633_963 + 131_072_477 + 23_669_258 + 3_205_586 + 170_460_651,
+};
+
 const WHISPER_CONFIGS = [
   "config.json",
   "generation_config.json",
@@ -120,32 +134,10 @@ export const AI_MODELS = {
         ],
         bytes: 523_040_991 + 779_633_963 + 131_072_477 + 23_669_258 + 3_205_586 + 85_297_169,
       },
-      gpu: {
-        dtype: { prepare_inputs_embeds: "q8", language_model: "q4", lm_head: "q4", gen_head: "q4", gen_img_embeds: "q4", image_decode: "fp32" },
-        files: [
-          "onnx/prepare_inputs_embeds_quantized.onnx",
-          "onnx/language_model_q4.onnx",
-          "onnx/lm_head_q4.onnx",
-          "onnx/gen_head_q4.onnx",
-          "onnx/gen_img_embeds_q4.onnx",
-          "onnx/image_decode.onnx",
-        ],
-        bytes: 523_040_991 + 779_633_963 + 131_072_477 + 23_669_258 + 3_205_586 + 170_460_651,
-      },
+      gpu: JANUS_FP32,
       // 576 sequential steps of a 1B model take many minutes on a CPU: the page asks for WebGPU instead.
-      // Listed so the catalog stays complete; it is the same set as the plain WebGPU variant.
-      cpu: {
-        dtype: { prepare_inputs_embeds: "q8", language_model: "q4", lm_head: "q4", gen_head: "q4", gen_img_embeds: "q4", image_decode: "fp32" },
-        files: [
-          "onnx/prepare_inputs_embeds_quantized.onnx",
-          "onnx/language_model_q4.onnx",
-          "onnx/lm_head_q4.onnx",
-          "onnx/gen_head_q4.onnx",
-          "onnx/gen_img_embeds_q4.onnx",
-          "onnx/image_decode.onnx",
-        ],
-        bytes: 523_040_991 + 779_633_963 + 131_072_477 + 23_669_258 + 3_205_586 + 170_460_651,
-      },
+      // Listed so the catalog stays complete.
+      cpu: JANUS_FP32,
     },
   },
   "whisper-base": {

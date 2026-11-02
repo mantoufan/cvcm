@@ -369,16 +369,22 @@ async function toEnglish(model: MultiModalityCausalLM, janus: JanusProcessor, pr
     { role: "<|User|>", content: "Translate into English, word for word, keeping every object, color and time of day:\n月光下屋顶上戴蓝色围巾的白色猫头鹰" },
     { role: "<|Assistant|>", content: "A white owl in a blue scarf on a rooftop under the moonlight" },
     { role: "<|User|>", content: `Translate into English, word for word, keeping every object, color and time of day:\n${prompt}` },
-    { role: "<|Assistant|>", content: "" },
   ]);
   const start = (inputs.input_ids as Tensor).dims[1];
-  const out = (await model.generate({ ...inputs, max_new_tokens: 96, do_sample: false } as never)) as Tensor;
+  // English needs about one token per CJK character or per short word; 500 characters fit in 384.
+  const budget = Math.min(384, 32 + prompt.length * 2);
+  const out = (await model.generate({ ...inputs, max_new_tokens: budget, do_sample: false } as never)) as Tensor;
   const ids = (out.tolist() as bigint[][])[0].slice(start).map(Number);
   const text = janus.tokenizer!.decode(ids, { skip_special_tokens: true }).trim().replace(/^["'“]+|["'”]+$/g, "");
   return text || prompt;
 }
 
-/** Janus-Pro: prompt → 384 × 384 image, one image token at a time (the model applies its own guidance). */
+/**
+ * Janus-Pro: prompt → 384 × 384 image, one image token at a time.
+ * No classifier-free guidance: Transformers.js 4.3 builds the unconditional row from pad tokens with an all-zero
+ * attention mask (DeepSeek's reference keeps the start tokens and a full mask), so guidance_scale > 1 draws
+ * vertical stripes. Unguided images follow the prompt well and take 15 s instead of 25 s on an Apple GPU.
+ */
 async function textToImage(id: number, prompt: string, translate: boolean, suffix: string, force?: AiBackend): Promise<void> {
   const { model, processor, backend } = await load("janus", id, force);
   post({ type: "stage", id, stage: "run", backend });

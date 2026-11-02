@@ -1,3 +1,14 @@
+import {
+  IMAGE_COUNTS,
+  IMAGE_SIZES,
+  IMAGE_STYLES,
+  IMAGE_STYLE_SUFFIX,
+  PROMPT_MAX,
+  needsTranslation,
+  type ImageCount,
+  type ImageSize,
+  type ImageStyle,
+} from "../../shared/image-gen";
 import { appHref } from "../../shared/path";
 import { AiClient, guessBackend } from "../ai/client";
 import { chipGroup, deviceLabel, formatSeconds, prewarm, runJob, statusPanel, type Status } from "../ai/kit";
@@ -6,39 +17,16 @@ import { canvasToBlob } from "../decode";
 import { downloadBlob, h } from "../dom";
 import { locale, t } from "../i18n";
 
-const STYLES = ["none", "photo", "anime", "watercolor", "3d"] as const;
-type Style = (typeof STYLES)[number];
-
-/** Appended to the prompt in English: the model follows English style words most reliably. */
-const STYLE_SUFFIX: Record<Style, string> = {
-  none: "",
-  photo: ", realistic photo, natural light, high detail",
-  anime: ", anime illustration, clean line art, soft colors",
-  watercolor: ", watercolor painting, soft edges, paper texture",
-  "3d": ", 3D render, soft studio lighting, clay style",
-};
-
-/** Letters outside basic Latin: Chinese, Japanese, Korean, Vietnamese, accented Spanish… */
-const NON_ASCII = /[^\x00-\x7F]/;
-
-const COUNTS = [1, 2, 4] as const;
-type Count = (typeof COUNTS)[number];
-
-/** Output long side: the model draws 384 px; 768 and 1536 run Real-ESRGAN on the result. */
-const SIZES = [384, 768, 1536] as const;
-type Size = (typeof SIZES)[number];
-
 const EXAMPLES = 6;
-const PROMPT_MAX = 500;
 /** Results kept on the page; older ones are dropped (and their object URLs freed). */
 const KEEP = 12;
 
 type Result = { url: string; blob: Blob; prompt: string; size: number };
 
 const state = {
-  style: "none" as Style,
-  count: 1 as Count,
-  size: 768 as Size,
+  style: "none" as ImageStyle,
+  count: 1 as ImageCount,
+  size: 768 as ImageSize,
   running: false,
 };
 
@@ -147,15 +135,15 @@ function controls(): HTMLElement {
   return h("aside", { class: "rail controls" },
     h("fieldset", null,
       h("legend", null, t("imageGen.style")),
-      chipGroup(STYLES, () => state.style, (s) => t(`imageGen.style_${s}`), (s) => (state.style = s), () => {}),
+      chipGroup(IMAGE_STYLES, () => state.style, (s) => t(`imageGen.style_${s}`), (s) => (state.style = s), () => {}),
     ),
     h("fieldset", null,
       h("legend", null, t("imageGen.count")),
-      chipGroup(COUNTS, () => state.count, (n) => String(n), (n) => (state.count = n), () => {}),
+      chipGroup(IMAGE_COUNTS, () => state.count, (n) => String(n), (n) => (state.count = n), () => {}),
     ),
     h("fieldset", null,
       h("legend", null, t("imageGen.size")),
-      chipGroup(SIZES, () => state.size, (s) => t(`imageGen.size_${s}`), (s) => (state.size = s), () => {}),
+      chipGroup(IMAGE_SIZES, () => state.size, (s) => t(`imageGen.size_${s}`), (s) => (state.size = s), () => {}),
       h("p", { class: "muted" }, t("imageGen.note")),
     ),
   );
@@ -174,20 +162,26 @@ async function generate(): Promise<void> {
     promptEl.focus();
     return;
   }
-  if ((await guessBackend()) === "cpu") {
-    status.error(t("imageGen.needsGpu"));
-    return;
-  }
-  const suffix = STYLE_SUFFIX[state.style];
-  // The model draws from English. Indonesian or unaccented Spanish is plain ASCII, so the page language decides too.
-  const translate = locale() !== "en" || NON_ASCII.test(text);
-  const { count, size } = state;
+  // Claimed before the first await, so a double click or a repeated Ctrl+Enter cannot start a second run.
+  state.running = true;
+  if (generateBtn) generateBtn.disabled = true;
   const panel = status;
   const runner = client;
   const mine = mountId;
   const stale = (): boolean => !alive || mine !== mountId;
-  state.running = true;
-  if (generateBtn) generateBtn.disabled = true;
+  if ((await guessBackend()) === "cpu") {
+    if (!stale()) {
+      panel.error(t("imageGen.needsGpu"));
+      state.running = false;
+      if (generateBtn) generateBtn.disabled = false;
+    }
+    return;
+  }
+  const suffix = IMAGE_STYLE_SUFFIX[state.style];
+  // Translated once, by the first picture's job; the rest reuse the English it sends back.
+  let prompt = text;
+  let translate = needsTranslation(text, locale());
+  const { count, size } = state;
   if (englishEl) englishEl.hidden = true;
   const started = performance.now();
   let device = "";
@@ -197,10 +191,14 @@ async function generate(): Promise<void> {
       const { result, backend } = await runJob<Extract<AiResponse, { type: "image" }>>(
         runner,
         panel,
-        async () => ({ body: { type: "text-to-image", prompt: text, translate, suffix } }),
+        async () => ({ body: { type: "text-to-image", prompt, translate, suffix } }),
         {
+          // 576 sequential steps of a 1B model are not a job for the CPU: a GPU failure is reported, not retried there.
+          gpuOnly: true,
           onTiles: (done, total) => panel.working(t("imageGen.drawing", { pct: Math.floor((done / total) * 100) }) + label, done / total),
           onText: (english) => {
+            prompt = english;
+            translate = false;
             if (!stale() && englishEl) {
               englishEl.textContent = t("imageGen.translated", { text: english });
               englishEl.hidden = false;
@@ -215,7 +213,7 @@ async function generate(): Promise<void> {
         image = await upscale(runner, panel, result, size / result.width === 4 ? 4 : 2, label);
         if (stale()) return;
       }
-      await addResult(image, text, size);
+      await addResult(image, text, size, stale);
     }
     if (stale()) return;
     panel.done(t("ai.doneIn", { s: formatSeconds((performance.now() - started) / 1000), device }));
@@ -251,11 +249,11 @@ async function upscale(
   return result;
 }
 
-async function addResult(image: Extract<AiResponse, { type: "image" }>, prompt: string, size: number): Promise<void> {
+async function addResult(image: Extract<AiResponse, { type: "image" }>, prompt: string, size: number, stale: () => boolean): Promise<void> {
   const canvas = h("canvas", { width: image.width, height: image.height });
   canvas.getContext("2d")!.putImageData(new ImageData(image.data, image.width, image.height), 0, 0);
   const blob = await canvasToBlob(canvas, "image/png", 1);
-  if (!alive || !gallery || !mainImg) return;
+  if (stale() || !gallery || !mainImg) return;
   const result: Result = { url: URL.createObjectURL(blob), blob, prompt, size };
   results.unshift(result);
   for (const old of results.splice(KEEP)) URL.revokeObjectURL(old.url);

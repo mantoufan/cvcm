@@ -5,6 +5,7 @@ import { AI_TOOLS, appHref, isAiToolPath, parseAppPath } from "../src/shared/pat
 import { cleanSegments, shortClock, toSrt, toText, toVtt } from "../src/shared/subtitles";
 import { isTrackedPath } from "../src/shared/analytics";
 import { prepareDepth } from "../src/client/v/render";
+import { needsTranslation } from "../src/shared/image-gen";
 import { MOTIONS, STRENGTHS, cameraAt, cropRect, frameCount, outputSize } from "../src/shared/parallax";
 
 const html = {
@@ -202,5 +203,26 @@ describe("photo to video (/v/)", () => {
     expect([...prepareDepth(row, 7, 1)]).toEqual([85, 170, 255, 255, 255, 170, 85]);
     const col = prepareDepth(new Uint8ClampedArray([0, 0, 0, 255, 0, 0, 0]), 1, 7);
     expect([...col]).toEqual([85, 170, 255, 255, 255, 170, 85]);
+  });
+});
+
+describe("AI image generator", () => {
+  it("translates only prompts that are not English", () => {
+    expect(needsTranslation("雨中撑伞的女孩", "en")).toBe(true);
+    expect(needsTranslation("夕暮れの灯台", "ja")).toBe(true);
+    expect(needsTranslation("a red fox in snow, watercolor", "zh-CN")).toBe(false);
+    expect(needsTranslation("a girl with an umbrella in the rain", "es")).toBe(false);
+    expect(needsTranslation("un gato con sueter rosa", "es")).toBe(true);
+    expect(needsTranslation("kucing di jendela pada pagi hari", "id")).toBe(true);
+    expect(needsTranslation("una niña con paraguas", "en")).toBe(true);
+  });
+
+  it("lists every Janus file the page can load, for each backend", () => {
+    const files = mirrorFiles("janus");
+    for (const variant of Object.values(AI_MODELS.janus.variants)) {
+      expect(variant.files).toHaveLength(6);
+      for (const f of variant.files) expect(files).toContain(f);
+    }
+    expect(AI_MODELS.janus.variants.gpu16.bytes).toBe(1_545_919_444);
   });
 });
