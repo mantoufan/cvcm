@@ -1,0 +1,183 @@
+{
+  "title": "IA de imagen a imagen: fuerza, inpainting y ControlNet — cv.cm",
+  "description": "Cómo funciona la IA de imagen a imagen: fuerza de eliminación de ruido, imágenes de referencia, transferencia de estilo, inpainting, outpainting y control con ControlNet por profundidad, pose y bordes.",
+  "h1": "¿Cómo funciona la IA de imagen a imagen?",
+  "answer": "La IA de imagen a imagen parte de tu imagen en lugar de ruido puro. Añade una cantidad elegida de ruido y luego lo elimina siguiendo un prompt, de modo que una fuerza baja conserva el original y una fuerza alta lo cambia. Las máscaras limitan el cambio a una zona (inpainting) o a un borde nuevo (outpainting), y las imágenes de control, como mapas de profundidad, poses o bordes, fijan la disposición mientras cambia el estilo.",
+  "sections": [
+    {
+      "h": "La idea central: ruido parcial y después eliminación de ruido",
+      "body": [
+        "Un modelo de difusión normalmente construye una imagen eliminando ruido de la aleatoriedad pura. La imagen a imagen se salta la primera parte de ese recorrido. Toma tu imagen, le añade ruido hasta que queda parcialmente oculta y después ejecuta los pasos de eliminación de ruido restantes con tu prompt. Este método se describió en el artículo de SDEdit, que mostró que un modelo de difusión puede convertir un boceto tosco o una foto editada en una imagen realista sin ningún entrenamiento adicional.",
+        "La cantidad de ruido es el ajuste más importante. Se llama fuerza (strength), denoise o peso de la imagen según la herramienta. Con poco ruido, solo puede cambiar la textura fina. Con mucho ruido, las formas casi han desaparecido y el modelo inventa una imagen nueva que solo sigue vagamente los colores y la disposición anteriores.",
+        "En muchas implementaciones, la fuerza también determina cuántos pasos se ejecutan realmente. Si la herramienta está configurada con 50 pasos y la fuerza es 0,8, se añade ruido equivalente a unos 40 pasos y luego se elimina durante esos 40 pasos."
+      ]
+    },
+    {
+      "h": "Cómo elegir el valor de fuerza",
+      "body": [
+        "Las cifras exactas varían según el modelo, pero los rangos de abajo son un buen punto de partida para las herramientas con una escala de 0 a 1. Las herramientas con una escala de peso de imagen suelen funcionar al revés: un peso mayor conserva más del original.",
+        {
+          "table": {
+            "head": [
+              "Fuerza",
+              "Qué se conserva de tu imagen",
+              "Ideal para"
+            ],
+            "rows": [
+              [
+                "0,1 a 0,3",
+                "Casi todo: formas, rostros, colores",
+                "Retoques ligeros, añadir grano, pequeños cambios de textura"
+              ],
+              [
+                "0,3 a 0,5",
+                "La composición y la mayoría de los detalles",
+                "Cambiar la iluminación o la gradación de color, un cambio de estilo suave"
+              ],
+              [
+                "0,5 a 0,7",
+                "La disposición y las formas principales; los detalles se vuelven a dibujar",
+                "De foto a ilustración, de boceto a obra terminada"
+              ],
+              [
+                "0,7 a 0,9",
+                "Bloques de color aproximados y su ubicación",
+                "Usar la imagen solo como una pista vaga de disposición"
+              ],
+              [
+                "1,0",
+                "Casi nada",
+                "Igual que texto a imagen"
+              ]
+            ]
+          }
+        },
+        "Sube la fuerza en pequeños saltos de unos 0,1 y mantén fija la semilla, para ver el efecto de la fuerza por sí sola. Si el rostro de una persona cambia demasiado antes de que el estilo cambie lo suficiente, la fuerza por sí sola no es la herramienta adecuada: añade una imagen de control o usa inpainting solo en el fondo."
+      ]
+    },
+    {
+      "h": "Imágenes de referencia y transferencia de estilo",
+      "body": [
+        "No toda imagen que le das a un modelo es un punto de partida. Muchas herramientas también aceptan una imagen de referencia que guía el resultado sin que se le añada ruido. Se convierte en características que trabajan junto con el prompt de texto. IP-Adapter es un método abierto muy conocido: añade un pequeño módulo a un modelo de texto a imagen congelado, con capas de atención separadas para las características de la imagen, de modo que puedes dar un prompt de imagen y un prompt de texto a la vez. Las herramientas alojadas suelen llamarlo prompt de imagen, referencia de estilo o referencia de personaje.",
+        "Hay dos formas habituales de cambiar el estilo de una imagen:",
+        {
+          "ul": [
+            "Imagen a imagen con un prompt de estilo. Tu foto es la imagen inicial y el prompt nombra el nuevo estilo, por ejemplo `watercolor illustration, loose brush strokes, white paper`. Es sencillo, pero los rostros y los detalles pequeños se desvían con una fuerza alta.",
+            "Estructura de una imagen, estilo de otra. Una imagen de control (profundidad o bordes) conserva la disposición de tu foto, mientras que una referencia de estilo o un prompt define el aspecto. Así la composición se mantiene estable incluso con una fuerza alta."
+          ]
+        },
+        {
+          "code": "Start image: photo of a street market at dusk\nStrength:    0.55\nPrompt:      gouache painting of a street market at dusk, flat shapes,\n             warm lantern light, limited palette of orange, teal and cream\nNegative:    photo, text, watermark",
+          "lang": "text"
+        },
+        "Describe la imagen como quieres que se vea, no como una orden. `Gouache painting of a street market` funciona mejor que `make this a painting`, porque el prompt se compara con descripciones de imágenes, no se obedece como un comando. Algunos modelos nuevos entrenados con pares de edición sí entienden instrucciones; comprueba qué espera tu herramienta."
+      ]
+    },
+    {
+      "h": "Inpainting y outpainting",
+      "body": [
+        "El inpainting cambia solo una zona enmascarada. Pintas una máscara sobre la región que quieres reemplazar, normalmente blanco para cambiar y negro para conservar, y el modelo la rellena para que encaje con el prompt y con los píxeles circundantes. RePaint mostró que incluso un modelo de difusión corriente puede hacer inpainting si se vuelven a colocar los píxeles conocidos en cada paso de eliminación de ruido; los modelos de inpainting específicos, entrenados con máscaras, suelen integrarse con más limpieza.",
+        {
+          "ol": [
+            "Enmascara un poco más grande que el objeto, para que el modelo pueda fundir el borde.",
+            "Suaviza el borde de la máscara (difuminado o desenfoque) para evitar una costura visible.",
+            "Escribe el prompt para la zona enmascarada y su contexto, por ejemplo `empty wooden bench in a park`, y no solo `remove person`.",
+            "Usa una fuerza de media a alta para reemplazar y baja para reparar.",
+            "Si la zona es pequeña dentro de una imagen grande, usa una opción de recorte y ampliación (a veces llamada only masked o mask crop) para que el modelo trabaje a mayor resolución."
+          ]
+        },
+        "El outpainting amplía una imagen más allá de su borde. Se agranda el lienzo, se enmascara la nueva zona vacía y el modelo la rellena para continuar la escena. Es útil para convertir una foto cuadrada en un banner 16:9. Amplía en pasos de entre un cuarto y la mitad de la imagen cada vez; los saltos muy grandes tienden a repetir objetos o perder la perspectiva.",
+        {
+          "note": "Los modelos de inpainting pueden alterar ligeramente los píxeles fuera de la máscara, sobre todo cuando la imagen se vuelve a codificar. Si la zona intacta debe quedar exactamente igual, pega el original sobre todo lo que queda fuera de la máscara después de generar."
+        }
+      ]
+    },
+    {
+      "h": "Condicionamiento tipo ControlNet: profundidad, pose y bordes",
+      "body": [
+        "ControlNet añade una copia entrenable de parte de un modelo de imágenes congelado que lee una imagen de control adicional. La imagen de control fija la estructura; el prompt decide de qué está hecha esa estructura. El artículo original mostró el control mediante bordes, profundidad, mapas de segmentación y pose humana, y la misma idea existe hoy para muchas familias de modelos.",
+        {
+          "table": {
+            "head": [
+              "Tipo de control",
+              "Entrada",
+              "Qué fija",
+              "Uso típico"
+            ],
+            "rows": [
+              [
+                "Bordes (Canny, line art)",
+                "Una imagen de contorno en blanco y negro",
+                "Contornos y formas finas",
+                "Mantener exacto un producto o un edificio mientras cambian el material y la luz"
+              ],
+              [
+                "Profundidad",
+                "Un mapa de profundidad en escala de grises, lo cercano claro y lo lejano oscuro",
+                "La disposición 3D y qué está delante de qué",
+                "Cambiar el estilo de una habitación o un paisaje conservando su espacio"
+              ],
+              [
+                "Pose (tipo OpenPose)",
+                "Un esqueleto de articulaciones con figuras de palo",
+                "La posición del cuerpo, las extremidades y la dirección de la cabeza",
+                "Colocar a un personaje nuevo en una pose exacta"
+              ],
+              [
+                "Segmentación",
+                "Regiones de colores, un color por clase",
+                "Dónde van el cielo, la carretera, las personas y los objetos",
+                "Organizar una escena por regiones"
+              ],
+              [
+                "Garabato / boceto",
+                "Un dibujo a mano alzada",
+                "Una composición aproximada",
+                "Convertir un garabato en una obra terminada"
+              ]
+            ]
+          }
+        },
+        "La mayoría de las herramientas dan a cada control un peso (por ejemplo, una escala de condicionamiento) y a veces un punto de inicio y fin dentro de los pasos de eliminación de ruido. Un peso demasiado alto copia la imagen de control de forma demasiado literal, por ejemplo cuando el ruido de los bordes se convierte en líneas duras; demasiado bajo, y se ignora. Un valor intermedio con una imagen de control clara suele funcionar mejor. También puedes combinar dos controles, como profundidad más pose, dando a cada uno un peso menor.",
+        "Para crear un mapa de profundidad a partir de una foto puedes usar un modelo de estimación de profundidad. Por ejemplo, la herramienta de mapa de profundidad de cv.cm convierte una foto en una imagen de profundidad en escala de grises dentro del navegador, que puedes usar como control de profundidad."
+      ]
+    },
+    {
+      "h": "Problemas frecuentes y soluciones",
+      "body": [
+        {
+          "ul": [
+            "El rostro cambia de identidad. Baja la fuerza, haz inpainting solo en el fondo o usa una referencia de rostro o de personaje.",
+            "Los colores se mantienen demasiado cerca del original incluso con una fuerza alta. La imagen inicial sigue aportando su color general. Cambia antes los colores en un editor, o apóyate en una imagen de control y una fuerza mayor.",
+            "Costuras visibles tras el inpainting. Agranda y difumina la máscara, e incluye algo de contexto en el prompt.",
+            "Objetos duplicados o deformados tras el outpainting. Amplía en pasos más pequeños y repite la descripción de la escena en el prompt.",
+            "El resultado es borroso. La fuerza puede ser demasiado baja para añadir detalle, o la imagen es demasiado pequeña. Amplía primero o usa una opción de recorte de máscara.",
+            "Derechos. Cambiar el estilo de una foto que no es tuya no la convierte en tuya; los derechos originales siguen importando."
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "¿Qué es la fuerza de eliminación de ruido en imagen a imagen?",
+      "a": "Es cuánto ruido se añade a tu imagen antes de que el modelo la redibuje. Una fuerza baja deja el original casi intacto; una fuerza alta permite que el modelo reemplace la mayor parte."
+    },
+    {
+      "q": "¿Qué diferencia hay entre imagen a imagen e inpainting?",
+      "a": "La imagen a imagen puede cambiar toda la imagen. El inpainting cambia solo la zona que enmascaras y trata de conservar el resto tal como estaba."
+    },
+    {
+      "q": "¿Necesito ControlNet para transferir un estilo?",
+      "a": "No para un cambio de estilo sencillo con una fuerza baja o media. Una imagen de control ayuda cuando quieres un cambio de estilo marcado pero debes conservar exactamente la disposición, la pose o el contorno."
+    },
+    {
+      "q": "¿Por qué el outpainting repite objetos en el borde?",
+      "a": "El modelo rellena el espacio nuevo con lo que es más probable junto al borde, que a menudo es más de lo mismo. Amplía en pasos más pequeños y describe lo que debería aparecer en la zona nueva."
+    },
+    {
+      "q": "¿Puedo usar una foto de una persona real como entrada de imagen a imagen?",
+      "a": "Técnicamente sí, pero necesitas el derecho a usar la foto y, en muchos lugares, el consentimiento de la persona. Muchos servicios también bloquean las ediciones de personas reales que puedan engañar o causar daño."
+    }
+  ]
+}

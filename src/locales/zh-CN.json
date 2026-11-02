@@ -8759,6 +8759,149 @@
     "bit-manipulation": {
       "name": "位运算",
       "blurb": "位运算符、单比特技巧、统计位数与位掩码，附 Python 示例"
+    },
+    "what-is-generative-ai": {
+      "name": "生成式AI是什么",
+      "blurb": "模型如何从数据中学习生成文字、图片、视频和音频，以及它容易出错的地方"
+    },
+    "how-llms-work": {
+      "name": "大语言模型原理",
+      "blurb": "跟着一条提示词，看 token、注意力和下一个词预测如何得出回答"
+    },
+    "tokens-and-context-window": {
+      "name": "token与上下文窗口",
+      "blurb": "六种语言的真实 token 计数，什么会占满上下文窗口，以及如何省空间"
+    },
+    "ai-hallucination": {
+      "name": "AI幻觉",
+      "blurb": "AI为什么会编造事实和引用，哪些提示词能减少幻觉，以及如何核查答案"
+    },
+    "how-diffusion-models-work": {
+      "name": "扩散模型原理",
+      "blurb": "噪声如何变成图片，以及步数、种子和 CFG 引导系数各改变了什么"
+    },
+    "what-are-ai-agents": {
+      "name": "AI智能体是什么",
+      "blurb": "智能体如何在循环中调用工具，一段真实执行记录、MCP 以及要提防的风险"
+    },
+    "ai-glossary": {
+      "name": "AI术语表",
+      "blurb": "60个生成式AI名词的通俗解释，从 token、LoRA 到 CFG、C2PA 和深度伪造"
+    },
+    "prompt-engineering-basics": {
+      "name": "提示词工程入门",
+      "blurb": "好提示词的六个组成部分，改写前后对比、示例写法与测试方法"
+    },
+    "image-prompts": {
+      "name": "AI绘画提示词怎么写",
+      "blurb": "提示词公式、从弱到强的改写、关键词表与反向提示词"
+    },
+    "video-prompts": {
+      "name": "AI视频提示词怎么写",
+      "blurb": "七要素结构、一镜一动作、节拍计时，附完整改写示例"
+    },
+    "camera-movement-terms": {
+      "name": "AI视频运镜术语",
+      "blurb": "推、拉、摇、移、环绕、升降、希区柯克变焦等：每种镜头的效果与提示词写法"
+    },
+    "storyboard-prompts": {
+      "name": "分镜提示词",
+      "blurb": "把剧本拆成镜头，为每个镜头写提示词，附15秒完整示例"
+    },
+    "text-to-image": {
+      "name": "文生图原理与使用方法",
+      "blurb": "提示词如何变成图片、关键参数，以及从草稿到成图的流程"
+    },
+    "image-to-image": {
+      "name": "图生图原理与使用方法",
+      "blurb": "重绘幅度、参考图与风格迁移、局部重绘、扩图和 ControlNet"
+    },
+    "consistent-ai-characters": {
+      "name": "AI角色一致性",
+      "blurb": "设定表、参考图、固定描述词、种子与 LoRA，让同一角色出现在多张图里"
+    },
+    "how-ai-upscaling-works": {
+      "name": "AI图片放大原理",
+      "blurb": "超分辨率怎么脑补细节、2倍还是4倍、照片与动漫模型怎么选"
+    },
+    "how-ai-background-removal-works": {
+      "name": "AI抠图原理",
+      "blurb": "蒙版与 Alpha 抠像的区别，头发和玻璃为什么抠不好，以及为什么必须存成 PNG"
+    },
+    "what-is-a-depth-map": {
+      "name": "深度图是什么？",
+      "blurb": "AI如何从一张照片估计深度、近远灰度含义，以及在 3D 和 ControlNet 中的用途"
+    },
+    "text-to-video": {
+      "name": "文生视频原理与用法",
+      "blurb": "提示词如何变成视频、关键设置，以及15秒分镜规划"
+    },
+    "image-to-video": {
+      "name": "图生视频原理与用法",
+      "blurb": "怎么选首帧图、写只含运动的提示词，以及何时用2.5D视差就够了"
+    },
+    "first-last-frame-video": {
+      "name": "首尾帧视频",
+      "blurb": "关键帧插值、两帧怎么设计，以及哪些过渡有效、哪些会失败"
+    },
+    "multi-shot-ai-video": {
+      "name": "AI视频多镜头一致性",
+      "blurb": "让人脸、服装、场景和光线在多个AI视频镜头之间保持一致"
+    },
+    "ai-short-drama-workflow": {
+      "name": "AI短剧制作流程",
+      "blurb": "从钩子、剧本到带标识的 9:16 成片，附 20 秒分镜表范例。"
+    },
+    "how-speech-to-text-works": {
+      "name": "语音转文字原理",
+      "blurb": "从频谱图到文字、Whisper 的训练方式、词错误率，以及干净字幕的做法"
+    },
+    "text-to-speech": {
+      "name": "文字转语音原理",
+      "blurb": "神经TTS与浏览器语音的区别、用SSML控制停顿和读音，以及声音克隆的授权"
+    },
+    "run-ai-in-the-browser": {
+      "name": "在浏览器里运行AI",
+      "blurb": "WebGPU 与 WASM、ONNX Runtime Web、Transformers.js、模型体积、缓存和手机限制"
+    },
+    "call-an-llm-api": {
+      "name": "大模型API怎么调用",
+      "blurb": "用 curl、Python、JS 发起可用的API请求，并讲解流式输出、JSON、重试和成本"
+    },
+    "ai-copyright-and-commercial-use": {
+      "name": "AI生成内容的版权与商用",
+      "blurb": "中美欧AI输出归谁所有，以及出售前要检查什么。"
+    },
+    "labeling-ai-content": {
+      "name": "AI生成内容怎么标识",
+      "blurb": "中国办法下的显式与隐式标识、欧盟《人工智能法》和平台政策。"
+    },
+    "c2pa-and-ai-watermarks": {
+      "name": "C2PA与AI水印",
+      "blurb": "内容凭证、SynthID 和 IPTC 标签，元数据为什么会消失，以及检测的局限"
+    },
+    "ai": {
+      "label": "AI教程",
+      "lead": "附来源的生成式AI指南：大语言模型和扩散模型的原理、图片与视频提示词写作、AI绘画、视频与音频工作流、在浏览器中运行模型，以及AI版权与标识。",
+      "all": "全部AI教程",
+      "groups": {
+        "basics": "AI基础",
+        "prompts": "提示词写作",
+        "image": "AI绘画",
+        "video": "AI视频",
+        "audio": "AI音频",
+        "dev": "开发者AI",
+        "trust": "版权与安全"
+      },
+      "blurbs": {
+        "basics": "大语言模型与扩散模型原理、token、幻觉、智能体和术语表",
+        "prompts": "文本、图片和视频的提示词公式，运镜与分镜",
+        "image": "文生图、图生图、角色一致性、图片放大与抠图",
+        "video": "文生视频、图生视频、关键帧、多镜头连贯与AI短剧",
+        "audio": "语音转文字与文字转语音的原理及其局限",
+        "dev": "在浏览器中运行模型，调用大语言模型 API",
+        "trust": "AI生成内容归谁所有、标识规则、C2PA 与AI水印"
+      }
     }
   },
   "dice": {

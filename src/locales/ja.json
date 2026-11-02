@@ -8759,6 +8759,149 @@
     "bit-manipulation": {
       "name": "ビット演算",
       "blurb": "ビット演算子・1ビット技・ビット数え・ビットマスク（Python）"
+    },
+    "what-is-generative-ai": {
+      "name": "生成AIとは？",
+      "blurb": "AIがデータから学んでテキスト・画像・動画・音声を作る仕組みと、苦手なこと"
+    },
+    "how-llms-work": {
+      "name": "大規模言語モデル（LLM）の仕組み",
+      "blurb": "トークン、アテンション、次トークン予測と学習の流れをたどる"
+    },
+    "tokens-and-context-window": {
+      "name": "AIのトークンとコンテキストウィンドウ",
+      "blurb": "トークンの数え方、言語ごとの違い、ウィンドウに収めるコツ"
+    },
+    "ai-hallucination": {
+      "name": "AIのハルシネーション",
+      "blurb": "AIが事実や出典を作り話する理由と、減らし方・確かめ方"
+    },
+    "how-diffusion-models-work": {
+      "name": "拡散モデルの仕組み",
+      "blurb": "ノイズから画像ができる流れと、ステップ数・CFG・シードの効果"
+    },
+    "what-are-ai-agents": {
+      "name": "AIエージェントとは",
+      "blurb": "ツールを呼びながらタスクをこなすループの仕組みと、ワークフローとの違い、リスク"
+    },
+    "ai-glossary": {
+      "name": "AI用語集",
+      "blurb": "生成AIの用語60個を、意味と例つきでやさしく解説"
+    },
+    "prompt-engineering-basics": {
+      "name": "プロンプトエンジニアリングの基本",
+      "blurb": "良いプロンプトの6要素、書き換え例、フューショット、テストの方法"
+    },
+    "image-prompts": {
+      "name": "画像生成AIのプロンプトの書き方",
+      "blurb": "プロンプトの型、弱い例から強い例への書き直し、キーワード表、ネガティブプロンプト"
+    },
+    "video-prompts": {
+      "name": "動画生成AIのプロンプトの書き方",
+      "blurb": "7要素の構成、1ショット1アクション、ビート単位のタイミング、書き直しの実例"
+    },
+    "camera-movement-terms": {
+      "name": "カメラワーク用語集",
+      "blurb": "ドリー、パン、オービットなどの見え方と、プロンプトでの書き方"
+    },
+    "storyboard-prompts": {
+      "name": "AI動画のストーリーボード用プロンプト",
+      "blurb": "台本をビートとショットに分け、ショットカードで15秒のシーンを組み立てる"
+    },
+    "text-to-image": {
+      "name": "テキストから画像の仕組み",
+      "blurb": "プロンプトから絵になるまで、ステップ・ガイダンス・シード・サイズ、ドラフトから完成までの流れ"
+    },
+    "image-to-image": {
+      "name": "画像から画像の仕組み",
+      "blurb": "強度、参照画像、スタイル変換、インペイント、深度・ポーズ・エッジ制御"
+    },
+    "consistent-ai-characters": {
+      "name": "一貫したAIキャラクター",
+      "blurb": "キャラクターシート、参照画像、シード、固定の記述、LoRA、連続性チェックリスト"
+    },
+    "how-ai-upscaling-works": {
+      "name": "AIアップスケールの仕組み",
+      "blurb": "バイキュービックがぼける理由、GANとReal-ESRGANがディテールを作る仕組み、失敗する場面"
+    },
+    "how-ai-background-removal-works": {
+      "name": "AI背景除去の仕組み",
+      "blurb": "マスクとアルファマットの違い、髪やガラスが苦手な理由、切り抜きをPNGで保存すべき理由。"
+    },
+    "what-is-a-depth-map": {
+      "name": "深度マップとは？",
+      "blurb": "AIが1枚の写真から深度を推定する仕組み、近い・遠いの濃淡、3DやControlNetでの使い方。"
+    },
+    "text-to-video": {
+      "name": "テキストから動画の仕組み",
+      "blurb": "プロンプトがクリップになる流れ、重要な設定、15秒のショット計画"
+    },
+    "image-to-video": {
+      "name": "画像から動画の仕組み",
+      "blurb": "開始画像の選び方、動きだけのプロンプト、2.5D視差で足りる場面"
+    },
+    "first-last-frame-video": {
+      "name": "最初と最後のフレームで作る動画",
+      "blurb": "キーフレーム補間、2枚のフレームの設計、うまくいく遷移と失敗する遷移"
+    },
+    "multi-shot-ai-video": {
+      "name": "AI動画のマルチショットと一貫性",
+      "blurb": "キャラクター・衣装・場所・光をそろえる参照画像とフレームの引き継ぎ"
+    },
+    "ai-short-drama-workflow": {
+      "name": "AIショートドラマの作り方",
+      "blurb": "フックと脚本から、AI表示つきの9:16エピソードまで。20秒のカット割りの例つき。"
+    },
+    "how-speech-to-text-works": {
+      "name": "音声認識（文字起こし）の仕組み",
+      "blurb": "スペクトログラムから文字へ、Whisperの学習方法、単語誤り率、きれいな字幕の作り方。"
+    },
+    "text-to-speech": {
+      "name": "音声合成（TTS）の仕組み",
+      "blurb": "ニューラルTTSとブラウザ音声の違い、SSMLで間や名前を制御、声のクローンの同意。"
+    },
+    "run-ai-in-the-browser": {
+      "name": "ブラウザでAIを動かす",
+      "blurb": "WebGPUとWASM、ONNX Runtime Web、Transformers.js、モデルサイズ、キャッシュ、スマホの制約。"
+    },
+    "call-an-llm-api": {
+      "name": "LLM APIの呼び出し方",
+      "blurb": "curl、Python、JSで動くAPIリクエストに加え、ストリーミング、JSON、リトライ、コスト。"
+    },
+    "ai-copyright-and-commercial-use": {
+      "name": "AIの著作権と商用利用",
+      "blurb": "米国・中国・EUでAI生成物は誰のものか、販売前に確認すべきこと。"
+    },
+    "labeling-ai-content": {
+      "name": "AIコンテンツの表示方法",
+      "blurb": "中国の規則、EU AI法、プラットフォームのポリシーにおける明示標識と暗示標識。"
+    },
+    "c2pa-and-ai-watermarks": {
+      "name": "C2PAとAI透かし",
+      "blurb": "コンテンツ認証情報、SynthID、IPTCラベル、メタデータが消える理由、検出の限界。"
+    },
+    "ai": {
+      "label": "AIチュートリアル",
+      "lead": "生成AIの出典付きガイド。LLMや拡散モデルの仕組み、画像・動画のプロンプトの書き方、AI画像・動画・音声の制作フロー、ブラウザでのモデル実行、AIの著作権と表示ルールを扱います。",
+      "all": "AIチュートリアル一覧",
+      "groups": {
+        "basics": "AIの基礎",
+        "prompts": "プロンプトの書き方",
+        "image": "AI画像",
+        "video": "AI動画",
+        "audio": "AI音声",
+        "dev": "開発者向けAI",
+        "trust": "著作権と安全"
+      },
+      "blurbs": {
+        "basics": "LLMと拡散モデルの仕組み、トークン、ハルシネーション、エージェント、用語集",
+        "prompts": "文章・画像・動画のプロンプトの型、カメラワーク、絵コンテ",
+        "image": "テキストから画像、画像から画像、キャラクターの一貫性、アップスケール、切り抜き",
+        "video": "テキストから動画、画像から動画、キーフレーム、複数ショットの連続性、AIショートドラマ",
+        "audio": "音声認識と音声合成の仕組みと限界",
+        "dev": "ブラウザでモデルを動かす方法とLLM APIの呼び出し",
+        "trust": "AI出力の権利、表示ルール、C2PA、AIウォーターマーク"
+      }
     }
   },
   "dice": {

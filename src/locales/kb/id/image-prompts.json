@@ -1,0 +1,205 @@
+{
+  "title": "Cara Membuat Prompt Gambar AI: Rumus dan Contoh — cv.cm",
+  "description": "Cara membuat prompt gambar AI dengan rumus yang bisa dipakai ulang, contoh prompt lemah jadi kuat, kata kunci gaya, cahaya, dan lensa, serta negative prompt yang efektif.",
+  "h1": "Bagaimana cara menulis prompt gambar AI yang bagus?",
+  "answer": "Prompt gambar yang bagus menyebut satu subjek yang jelas, apa yang dilakukannya dan di mana, lalu menambahkan gaya, pencahayaan, kamera, dan komposisi dengan kata-kata sederhana. Taruh ide terpenting di awal, gambarkan apa yang kamu mau (bukan yang tidak kamu mau), dan pakai satu ide per frasa. Gunakan negative prompt hanya untuk masalah spesifik yang terlihat, seperti teks atau jari berlebih.",
+  "sections": [
+    {
+      "h": "Mengapa pilihan kata dalam prompt itu penting",
+      "body": [
+        "Model gambar tidak membaca promptmu seperti manusia. Text encoder mengubah kata-kata menjadi angka, dan generator gambar dilatih untuk membuat gambar yang cocok dengan angka-angka itu. Kata yang sering muncul bersama jenis gambar tertentu dalam caption pelatihan akan menarik hasil ke arah gambar-gambar tersebut. Kata `golden hour`, misalnya, begitu sering muncul bersama sinar matahari hangat bersudut rendah sehingga berfungsi hampir seperti pengaturan pencahayaan.",
+        "Ada dua konsekuensi. Pertama, kata visual yang konkret mengalahkan kata abstrak: `wet cobblestone street` memberi model sesuatu untuk digambar, sedangkan `a sad mood` membuatnya menebak. Kedua, model memberi bobot pada setiap kata, jadi kata pengisi seperti `very`, `beautiful`, atau `amazing` memakan ruang tanpa menambah informasi. Sebagian besar alat juga membatasi seberapa banyak teks yang dibaca encoder; kata di luar batas itu dipotong atau kurang berpengaruh, sehingga bagian awal prompt memegang bobot terbesar.",
+        "Banyak generator juga memakai guidance: membandingkan gambar yang dibuat dengan promptmu dan yang tanpa prompt, lalu mendorong hasil ke arah selisihnya. Guidance yang lebih tinggi mengikuti kata-kata dengan lebih ketat, tetapi bisa terlihat kasar atau terlalu jenuh. Karena itu prompt yang jelas dengan guidance sedang biasanya tampil lebih baik daripada prompt kabur dengan guidance dinaikkan."
+      ]
+    },
+    {
+      "h": "Rumus prompt yang bisa dipakai ulang",
+      "body": [
+        "Kebanyakan prompt yang bagus menjawab enam pertanyaan yang sama. Tulis dengan urutan ini, karena model cenderung menganggap kata-kata awal lebih penting.",
+        {
+          "code": "[subject + key details], [action or pose], [setting + time],\n[style or medium], [lighting], [camera / lens / framing], [color + mood]",
+          "lang": "text"
+        },
+        {
+          "ol": [
+            "Subjek: siapa atau apa, dengan dua atau tiga detail yang penting (rentang usia, pakaian, bahan, warna).",
+            "Aksi: apa yang sedang dilakukan subjek. Kata kerja memberi model pose untuk digambar.",
+            "Latar: di mana dan kapan. Satu tempat dan satu waktu sudah cukup.",
+            "Gaya atau medium: foto, cat air, render 3D, sketsa tinta, vektor datar, anime cel shading.",
+            "Pencahayaan: pengungkit terkuat untuk suasana. Sebutkan sumber cahaya dan arahnya.",
+            "Kamera dan komposisi: ukuran shot, sudut, lensa, depth of field, posisi subjek di frame."
+          ]
+        },
+        "Kamu tidak perlu keenamnya setiap kali. Foto produk boleh melewatkan aksi; pola abstrak boleh melewatkan kamera. Tetapi memeriksa daftar ini sebelum menekan generate menangkap celah yang paling sering terjadi, yaitu prompt yang hanya menggambarkan subjek dan tidak ada yang lain."
+      ]
+    },
+    {
+      "h": "Dari lemah ke kuat: contoh penulisan ulang",
+      "body": [
+        "Ini contoh percobaan pertama yang umum. Isinya subjek dan satu kata sifat, tanpa keterangan bagaimana gambar harus terlihat.",
+        {
+          "code": "a beautiful cat in a cafe, high quality, 8k, masterpiece",
+          "lang": "text"
+        },
+        "Hasilnya biasanya kucing generik di tengah gambar dengan interior yang buram. `8k` dan `masterpiece` tidak menambah detail di sebagian besar model saat ini; keduanya hanya mendorong ke tampilan stock foto yang rapi. Versi tulis ulang di bawah mempertahankan ide yang sama tetapi menjawab keenam pertanyaan.",
+        {
+          "code": "an orange tabby cat with a white chest, sitting on a wooden windowsill\ninside a small cafe, looking out at the rain, late afternoon,\n35mm film photograph, soft window light from the left, warm interior lamps\nin the background, medium close-up at eye level, shallow depth of field,\nmuted warm colors, quiet and cozy",
+          "lang": "text"
+        },
+        {
+          "table": {
+            "head": [
+              "Bagian",
+              "Teks dalam prompt",
+              "Fungsinya"
+            ],
+            "rows": [
+              [
+                "Subjek",
+                "orange tabby cat with a white chest",
+                "Mengunci tampilan agar hasil berulang tetap mirip"
+              ],
+              [
+                "Aksi",
+                "sitting on a wooden windowsill, looking out",
+                "Memberi pose dan arah pandangan"
+              ],
+              [
+                "Latar",
+                "small cafe, rain, late afternoon",
+                "Satu tempat dan satu waktu, sehingga cahaya konsisten"
+              ],
+              [
+                "Gaya",
+                "35mm film photograph",
+                "Menentukan grain, respons warna, dan realisme"
+              ],
+              [
+                "Pencahayaan",
+                "soft window light from the left, warm lamps behind",
+                "Menciptakan key light dan pendar hangat di latar belakang"
+              ],
+              [
+                "Kamera",
+                "medium close-up, eye level, shallow depth of field",
+                "Mengatur framing dan memburamkan latar secara sengaja"
+              ],
+              [
+                "Suasana",
+                "muted warm colors, quiet and cozy",
+                "Mengarahkan color grading ke satu arah"
+              ]
+            ]
+          }
+        },
+        "Kalau versi kedua masih belum pas, ubah satu bagian dalam satu waktu dan biarkan sisanya tetap. Mengubah lima hal sekaligus membuat kamu tidak bisa tahu kata mana yang menyebabkan perubahan."
+      ]
+    },
+    {
+      "h": "Kata kunci untuk gaya, cahaya, lensa, dan komposisi",
+      "body": [
+        "Istilah-istilah ini dipahami luas oleh model gambar karena umum dalam caption foto, deskripsi karya seni, dan bahasa film. Pakai satu atau dua dari setiap baris, jangan semuanya.",
+        {
+          "table": {
+            "head": [
+              "Kategori",
+              "Kata kunci",
+              "Yang biasanya terlihat"
+            ],
+            "rows": [
+              [
+                "Gaya / medium",
+                "35mm film photo, studio product photo, watercolor, gouache, ink line art, flat vector illustration, isometric 3D render, anime cel shading, oil painting, paper cutout",
+                "Tampilan keseluruhan, tekstur, dan tingkat realisme"
+              ],
+              [
+                "Pencahayaan",
+                "golden hour, blue hour, overcast soft light, hard noon sun, rim light, backlit, softbox key light, neon signs at night, candlelight, volumetric light through fog",
+                "Suasana, kontras, dan arah bayangan"
+              ],
+              [
+                "Lensa / kamera",
+                "wide-angle 24mm, 50mm standard, 85mm portrait, macro, telephoto compression, fisheye, shallow depth of field, deep focus, motion blur, long exposure",
+                "Distorsi perspektif, keburaman latar, dan kesan dekat-jauh"
+              ],
+              [
+                "Ukuran shot / sudut",
+                "extreme close-up, close-up, medium shot, full body, wide establishing shot, low angle, high angle, overhead flat lay, eye level, Dutch tilt",
+                "Seberapa banyak subjek yang tampak dan seberapa kuat kesannya"
+              ],
+              [
+                "Komposisi",
+                "rule of thirds, centered symmetrical, negative space on the right, leading lines, framed by a doorway, foreground blur, subject small in a large landscape",
+                "Posisi subjek dan ke mana mata tertuju"
+              ],
+              [
+                "Warna / suasana",
+                "muted earth tones, pastel palette, high contrast black and white, teal and orange, monochrome red, warm and nostalgic, cold and clinical",
+                "Color grading dan nada emosi"
+              ]
+            ]
+          }
+        },
+        {
+          "note": "Menyebut nama seniman yang masih hidup untuk meniru gayanya menimbulkan masalah hukum dan etika, dan sebagian layanan memblokirnya. Menggambarkan ciri visual yang kamu suka (sapuan kuas tebal, palet terbatas, bayangan datar) lebih aman dan sering lebih tepat."
+        }
+      ]
+    },
+    {
+      "h": "Negative prompt: fungsi dan kapan memakainya",
+      "body": [
+        "Negative prompt adalah kolom teks kedua yang memberi tahu model apa yang harus dijauhi. Di alat berbasis Stable Diffusion atau FLUX biasanya berupa kotak terpisah atau parameter `negative_prompt`; Midjourney memakai parameter `--no`. Beberapa alat gambar berbasis chat tidak punya kolom negatif sama sekali, dan di sana kamu sebaiknya menulis permintaan secara positif (`a clean, empty wall` alih-alih `no text on the wall`).",
+        "Negative prompt paling efektif untuk hal yang spesifik dan terlihat:",
+        {
+          "code": "Prompt:   a clean product photo of a ceramic mug on a white table\nNegative: text, logo, watermark, extra handles, cluttered background",
+          "lang": "text"
+        },
+        {
+          "ul": [
+            "Target yang baik: teks dan watermark, jari berlebih, orang kedua, objek tertentu yang terus muncul, warna yang tidak diinginkan.",
+            "Target yang lemah: daftar panjang kata kualitas seperti `ugly, bad, worst quality`. Di sebagian model lama ini membantu sedikit, tetapi juga mendorong semua gambar ke tampilan yang sama.",
+            "Jangan menaruh satu ide di kedua kolom. Kucing di prompt dan `cat` di negative akan saling meniadakan dan membingungkan hasil.",
+            "Menulis `no` di dalam prompt utama sering berbalik arah: `a room with no windows` menyebut jendela, dan model mungkin menggambarkannya."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Kesalahan umum dan batas yang perlu diketahui",
+      "body": [
+        {
+          "ul": [
+            "Terlalu banyak subjek. Tiga orang dengan tiga pakaian dan tiga aksi sering tercampur: pakaian bertukar, tangan menyatu. Buat subjek utama dulu lalu tambahkan yang lain lewat editing atau inpainting.",
+            "Meminta teks yang persis. Banyak model masih salah mengeja atau mengarang huruf, terutama pada aksara non-Latin. Buat teks singkat, taruh dalam tanda kutip, atau tambahkan nanti di editor.",
+            "Tangan, jumlah, dan posisi. `Five apples` atau `the cup to the left of the book` tidak selalu dipatuhi. Periksa hasilnya dan generate ulang atau edit, jangan menambah kata.",
+            "Kata gaya yang bertentangan. `photorealistic watercolor anime` menarik ke tiga arah. Pilih satu medium.",
+            "Menyalin prompt antarmodel. Prompt yang disetel untuk satu alat bisa berperilaku lain di alat lain, karena masing-masing memakai text encoder dan data pelatihan berbeda. Coba beberapa kali sebelum mengandalkannya."
+          ]
+        },
+        "Prompt non-Inggris berfungsi di banyak alat, tetapi sebagian model dilatih terutama dengan caption bahasa Inggris. Misalnya, generator gambar AI cv.cm menerjemahkan prompt non-Inggris ke bahasa Inggris sebelum menjalankan model, sehingga frasa pendek dan harfiah diterjemahkan lebih andal daripada idiom."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Seberapa panjang prompt gambar AI sebaiknya?",
+      "a": "Biasanya satu sampai empat kalimat, atau sekitar 20 sampai 75 kata. Prompt yang lebih pendek menyerahkan lebih banyak ke keberuntungan; prompt yang jauh lebih panjang bisa melewati batas baca text encoder, sehingga kata-kata di belakang kurang berpengaruh."
+    },
+    {
+      "q": "Apakah kata seperti 4k, 8k, atau masterpiece meningkatkan gambar?",
+      "a": "Di sebagian besar model saat ini pengaruhnya kecil. Kata-kata itu bisa mendorong gambar ke gaya stock yang rapi, tetapi menggambarkan pencahayaan, lensa, dan bahan jauh lebih berpengaruh pada kualitas."
+    },
+    {
+      "q": "Apakah urutan kata penting dalam prompt gambar?",
+      "a": "Ya, di sebagian besar model. Kata di awal cenderung lebih berpengaruh, jadi taruh subjek dan detail terpenting di depan dan sentuhan akhir di belakang."
+    },
+    {
+      "q": "Bisakah menulis prompt gambar dalam bahasa Indonesia?",
+      "a": "Banyak alat menerima bahasa lain, tetapi hasilnya sering lebih baik dalam bahasa Inggris karena sebagian besar caption pelatihan berbahasa Inggris. Kalau alatnya menerjemahkan untukmu, pakai frasa pendek dan harfiah."
+    },
+    {
+      "q": "Apa bedanya prompt dengan negative prompt?",
+      "a": "Prompt menggambarkan apa yang ingin kamu lihat. Negative prompt mendaftar hal spesifik yang harus dijauhi model, seperti teks, watermark, atau jari berlebih."
+    }
+  ]
+}

@@ -1,0 +1,174 @@
+{
+  "title": "Apa Itu Depth Map? Cara AI Memperkirakan Kedalaman Foto — cv.cm",
+  "description": "Apa itu depth map, cara AI memperkirakan kedalaman dari satu foto, depth relatif vs metrik, arti terang dan gelap, serta pemakaiannya untuk efek parallax dan ControlNet.",
+  "h1": "Apa itu depth map dan bagaimana AI membuatnya dari sebuah foto?",
+  "answer": "Depth map adalah gambar grayscale yang kecerahan tiap pikselnya menyatakan jarak dari kamera, bukan warna. Model AI seperti Depth Anything memperkirakannya dari satu foto dengan mengenali bentuk, perspektif, dan oklusi. Kebanyakan model memberi depth relatif (bagian mana yang lebih dekat), bukan meter sebenarnya, dan itu sudah cukup untuk parallax 3D, blur background, dan ControlNet.",
+  "sections": [
+    {
+      "h": "Depth map dalam satu gambar",
+      "body": [
+        "Ambil foto seseorang yang berdiri di depan sebuah gedung. Depth map foto itu punya lebar dan tinggi yang sama, tetapi setiap pikselnya menyimpan satu angka: seberapa jauh titik itu dari kamera. Jika ditampilkan sebagai gambar, orang itu berada di satu tingkat kecerahan, gedung di tingkat lain, dan langit di tingkat yang paling ekstrem.",
+        "Tidak ada satu aturan baku untuk tingkat kecerahan yang berarti dekat. Periksa konvensi di setiap alat yang Anda pakai:",
+        {
+          "table": {
+            "head": [
+              "Konvensi",
+              "Objek dekat tampak",
+              "Objek jauh tampak",
+              "Di mana ditemui"
+            ],
+            "rows": [
+              [
+                "Inverse depth (mirip disparity)",
+                "Terang",
+                "Gelap",
+                "Kebanyakan estimator depth AI, depth map ControlNet"
+              ],
+              [
+                "Jarak (z-depth)",
+                "Gelap",
+                "Terang",
+                "Render pass 3D, efek kabut, sebagian game engine"
+              ],
+              [
+                "Depth metrik",
+                "Angka kecil (meter)",
+                "Angka besar",
+                "Robotika, AR, LiDAR, file 16-bit atau float"
+              ],
+              [
+                "Color map (Turbo, Magma)",
+                "Satu ujung palet",
+                "Ujung palet lainnya",
+                "Hanya untuk pratinjau visual, bukan untuk diproses lebih lanjut"
+              ]
+            ]
+          }
+        },
+        "Kalau efek 3D tampak terbalik, dengan background seolah menonjol ke arah Anda, berarti depth map memakai konvensi yang berlawanan. Membalik gambar (putih jadi hitam) biasanya memperbaikinya."
+      ]
+    },
+    {
+      "h": "Cara AI memperkirakan kedalaman dari satu foto",
+      "body": [
+        "Ponsel dengan dua kamera atau sensor LiDAR bisa mengukur kedalaman. Satu foto biasa tidak bisa: gambar yang sama bisa menunjukkan mobil mainan kecil dari dekat atau mobil sungguhan dari jauh. Estimasi depth monokular mengatasinya seperti manusia, yaitu memakai petunjuk yang dipelajari.",
+        {
+          "ul": [
+            "Perspektif: garis sejajar seperti jalan dan rel bertemu di kejauhan.",
+            "Ukuran yang diketahui: wajah, pintu, atau mobil punya ukuran lazim, sehingga ukurannya di gambar memberi petunjuk jarak.",
+            "Oklusi: objek yang menutupi objek lain berada di depannya.",
+            "Kerapatan tekstur dan kabut: rumput dan ubin tampak lebih halus, dan warna tampak lebih pucat, jika lebih jauh.",
+            "Shading dan blur fokus, yang memberi petunjuk tentang bentuk permukaan."
+          ]
+        },
+        "Jaringan depth dilatih pada jutaan gambar yang jawabannya diketahui atau diperkirakan. Depth Anything V2, yang dipakai banyak alat saat artikel ini ditulis, belajar lebih dulu dari gambar sintetis (hasil render) yang presisi, lalu dari kumpulan besar foto nyata yang dilabeli oleh model guru yang lebih besar. Para penulisnya memilih data sintetis sebagian karena sensor depth sungguhan tidak bisa mengukur permukaan transparan dan reflektif dengan benar, sehingga label nyata bernoda tepat di bagian yang sulit bagi foto.",
+        "Model bekerja pada salinan gambar yang diubah ukurannya (Depth Anything V2 dilatih dengan sisi terpendek 518 piksel) dan menghasilkan satu nilai per piksel. Alat kemudian menskalakannya kembali ke ukuran foto dan memetakan nilainya ke 0 sampai 255 untuk gambar 8-bit."
+      ]
+    },
+    {
+      "h": "Depth relatif vs depth metrik",
+      "body": [
+        "Kebanyakan model depth serbaguna memprediksi depth relatif. Model dasar Depth Anything V2, misalnya, memprediksi inverse depth yang affine-invariant. Singkatnya, urutan dan proporsinya bermakna, tetapi skala dan offset-nya tidak diketahui. Peta itu bisa memberi tahu bahwa orang berada di depan gedung; ia tidak bisa mengatakan bahwa orang itu berjarak 3,2 meter.",
+        "Rancangan ini berasal dari pelatihan pada banyak dataset dengan kamera dan satuan yang berbeda. Penelitian MiDaS menunjukkan bahwa fungsi loss yang mengabaikan skala memungkinkan model belajar dari semuanya sekaligus, sehingga jauh lebih tangguh pada foto acak dari internet.",
+        "Model depth metrik adalah versi hasil fine-tuning yang dilatih untuk meter, biasanya untuk satu jenis pemandangan (ruangan dalam atau jalan raya). Pakai untuk pengukuran atau robotika. Untuk pekerjaan kreatif, depth relatif yang Anda butuhkan, karena lebih mudah digeneralisasi dan efeknya hanya perlu urutan yang benar."
+      ]
+    },
+    {
+      "h": "Yang bisa dilakukan dengan depth map",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Pemakaian",
+              "Cara depth dipakai",
+              "Tips"
+            ],
+            "rows": [
+              [
+                "Video parallax 2.5D",
+                "Piksel yang dekat bergerak lebih jauh daripada yang jauh saat kamera virtual bergerak",
+                "Buat gerakan kamera kecil agar tepi yang meregang tersamar"
+              ],
+              [
+                "Blur ala mode potret",
+                "Blur makin kuat seiring jarak dari bidang fokus",
+                "Haluskan tepinya; rambut sering ikut terburamkan bersama background"
+              ],
+              [
+                "ControlNet depth",
+                "Peta memandu tata letak gambar yang baru dibuat",
+                "Pakai peta yang dekat = terang; turunkan bobot kontrol agar lebih bebas"
+              ],
+              [
+                "3D dan AR",
+                "Piksel didorong keluar menjadi mesh atau point cloud",
+                "Depth relatif memberi bentuk, bukan ukuran sebenarnya"
+              ],
+              [
+                "Kabut, relighting, compositing",
+                "Depth berfungsi sebagai mask untuk efek berbasis jarak",
+                "Pakai ekspor 16-bit jika alatnya menyediakan"
+              ]
+            ]
+          }
+        },
+        "Misalnya, alat depth-map di cv.cm mengubah foto menjadi peta grayscale (dekat = terang) atau pratinjau berwarna di browser, dan alat photo-to-video di cv.cm memakai jenis peta yang sama untuk menggerakkan kamera virtual melewati foto diam. Pada kasus kedua, kameranya yang bergerak sementara subjek tetap diam: itu parallax, bukan model yang menganimasikan orang.",
+        "ControlNet menunjukkan bahwa model diffusion bisa diarahkan dengan kondisi seperti tepi, pose, segmentasi, dan depth. Kondisi depth menjaga komposisi (letak latar depan dan background) sementara prompt mengubah gaya, pencahayaan, atau material."
+      ]
+    },
+    {
+      "h": "Di mana depth AI sering keliru",
+      "body": [
+        {
+          "ul": [
+            "Kaca, cermin, dan air: model bisa memberi kedalaman bayangan atau benda di balik kaca.",
+            "Langit dan area yang sangat jauh: semuanya jatuh di ujung terjauh, sehingga parallax di sana datar.",
+            "Struktur tipis: rambut, pagar, ranting, dan kabel menyatu dengan background pada resolusi kerja model.",
+            "Lukisan, poster, dan layar: foto sebuah gambar bisa diberi kedalaman 3D palsu, karena isinya tampak seperti pemandangan.",
+            "Sudut pandang tak lazim: foto drone lurus ke bawah, foto makro, dan gambar fish-eye lebih jarang ada di data latih.",
+            "Tepi antara yang dekat dan yang jauh: peta di situ mulus, sehingga efek parallax meregangkan piksel menjadi pita yang seperti karet."
+          ]
+        },
+        {
+          "note": "Depth map dari foto hanyalah perkiraan. Jangan memakai depth map relatif untuk mengukur jarak, ukuran, atau kecepatan yang sebenarnya."
+        }
+      ]
+    },
+    {
+      "h": "Mendapatkan depth map yang lebih baik",
+      "body": [
+        {
+          "ol": [
+            "Pilih foto dengan latar depan, bidang tengah, dan background yang jelas. Pemandangan datar, misalnya wajah yang memenuhi frame di depan dinding, hanya memberi sedikit kedalaman untuk diolah.",
+            "Hindari pantulan kuat dan jendela besar di area yang Anda pentingkan.",
+            "Pastikan alat berikutnya membaca konvensi yang sama. Kalau yang dekat gelap padahal seharusnya terang, balik petanya.",
+            "Pertahankan peta pada ukuran dan pemangkasan yang sama dengan foto. Depth map yang dipangkas atau diubah ukurannya secara berbeda tidak akan sejajar.",
+            "Blur atau perluas peta sedikit sebelum parallax untuk mengurangi sobekan di tepi, dan buat gerakan kamera tetap lembut."
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Apakah depth map sama dengan normal map?",
+      "a": "Bukan. Depth map menyimpan jarak per piksel. Normal map menyimpan arah hadap tiap permukaan sebagai warna RGB dan dipakai untuk pencahayaan. Normal bisa diturunkan secara kasar dari depth map, tetapi tidak sebaliknya tanpa kehilangan skala."
+    },
+    {
+      "q": "Bisakah AI membuat depth map dari foto apa saja?",
+      "a": "Bisa, model monokular akan selalu menghasilkan peta, tetapi kualitasnya bergantung pada pemandangan. Lapisan objek dekat dan jauh yang jelas berhasil dengan baik; kaca, cermin, dinding datar, dan foto dari gambar tidak."
+    },
+    {
+      "q": "Apa bedanya depth map dengan disparity map?",
+      "a": "Disparity adalah pergeseran sebuah titik antara dua gambar stereo, dan nilainya lebih besar untuk objek dekat, sehingga berperilaku seperti inverse depth. Banyak model AI menghasilkan inverse depth mirip disparity, itulah sebabnya objek dekat tampak terang."
+    },
+    {
+      "q": "Kenapa video parallax saya meregang di sekitar tepi subjek?",
+      "a": "Saat kamera virtual bergerak, ia memperlihatkan background yang tersembunyi di balik subjek pada foto asli. Di sana tidak ada piksel, jadi renderer meregangkan piksel tetangganya. Gerakan kamera yang lebih kecil dan tepi depth yang dihaluskan mengurangi hal ini."
+    },
+    {
+      "q": "Apakah mode potret iPhone memakai depth map?",
+      "a": "Ya. Ponsel dengan kamera ganda atau sensor kedalaman merekam peta depth atau disparity dan memakainya untuk mengaburkan background; banyak yang juga memakai machine learning untuk memperhalusnya. Depth itu bisa disimpan di dalam file foto bersama gambarnya."
+    }
+  ]
+}

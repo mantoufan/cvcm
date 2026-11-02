@@ -1,0 +1,215 @@
+{
+  "title": "How to Call an LLM API: Request, Streaming, JSON, Retries — cv.cm",
+  "description": "How to call an LLM API: a working chat completions request in curl, Python and JavaScript, plus streaming, JSON output, retries, rate limits and token costs.",
+  "h1": "How do you call an LLM API?",
+  "answer": "Send an HTTPS POST request with your API key in a header and a JSON body that names the model and lists the messages. The reply is JSON with the generated text and a token count. Many providers accept the OpenAI-style chat completions format, while Anthropic and Gemini also have their own formats. Keep the key on your server and pay per token.",
+  "sections": [
+    {
+      "h": "What happens in one API call",
+      "body": [
+        "An LLM API is a web service. Your program sends text, the provider's servers run the model, and the result comes back as JSON. There is no memory between calls: every request must include the whole conversation that the model should see.",
+        "You need three things: an account with an API key, the URL of the endpoint, and a model ID from the provider's model list. In the examples below, `MODEL_ID` is a placeholder. Model names change often, so copy the current ID from the provider's documentation instead of from a blog post."
+      ]
+    },
+    {
+      "h": "A minimal request in curl, Python and JavaScript",
+      "body": [
+        "The chat completions format, first published by OpenAI, is the most widely copied request shape. Many other providers and local servers accept it, sometimes with only a different base URL. Here is the smallest useful request:",
+        {
+          "code": "curl https://api.openai.com/v1/chat/completions \\\n  -H \"Content-Type: application/json\" \\\n  -H \"Authorization: Bearer $OPENAI_API_KEY\" \\\n  -d '{\n    \"model\": \"MODEL_ID\",\n    \"messages\": [\n      {\"role\": \"system\", \"content\": \"You answer in one short paragraph.\"},\n      {\"role\": \"user\", \"content\": \"What is a context window?\"}\n    ]\n  }'",
+          "lang": "bash"
+        },
+        "The `messages` list holds the conversation. Each message has a `role` and `content`. The `system` message sets rules for the reply (OpenAI's newer models also accept the name `developer` for this role). `user` messages are the requests, and `assistant` messages are earlier replies, which you send back to continue a conversation. A shortened response looks like this:",
+        {
+          "code": "{\n  \"id\": \"chatcmpl-...\",\n  \"object\": \"chat.completion\",\n  \"model\": \"MODEL_ID\",\n  \"choices\": [\n    {\n      \"index\": 0,\n      \"message\": {\"role\": \"assistant\", \"content\": \"A context window is ...\"},\n      \"finish_reason\": \"stop\"\n    }\n  ],\n  \"usage\": {\"prompt_tokens\": 27, \"completion_tokens\": 64, \"total_tokens\": 91}\n}",
+          "lang": "json"
+        },
+        "The text is in `choices[0].message.content`. The `usage` object counts the tokens you are billed for. `finish_reason` tells you why the model stopped: `stop` means it finished, while `length` means it hit your token limit and the answer is cut off.",
+        "In Python, the same call with a timeout and retries looks like this. It uses the common `requests` library. Official SDKs from each provider do the same work and add retries for you.",
+        {
+          "code": "import os, random, time\nimport requests\n\nURL = \"https://api.openai.com/v1/chat/completions\"\nAPI_KEY = os.environ[\"OPENAI_API_KEY\"]   # read from the server environment\n\ndef chat(messages, model=\"MODEL_ID\", max_attempts=5):\n    body = {\"model\": model, \"messages\": messages,\n            \"max_completion_tokens\": 500}   # many compatible APIs: \"max_tokens\"\n    headers = {\"Authorization\": f\"Bearer {API_KEY}\"}\n    for attempt in range(max_attempts):\n        r = requests.post(URL, headers=headers, json=body, timeout=60)\n        if r.status_code == 429 or r.status_code >= 500:\n            backoff = 2 ** attempt + random.random()      # exponential + jitter\n            try:\n                wait = max(float(r.headers.get(\"Retry-After\", 0)), backoff)\n            except ValueError:\n                wait = backoff\n            time.sleep(wait)\n            continue\n        r.raise_for_status()                # 400, 401, 403: fix the request, do not retry\n        data = r.json()\n        return data[\"choices\"][0][\"message\"][\"content\"], data[\"usage\"]\n    raise RuntimeError(\"API still failing after retries\")\n\ntext, usage = chat([{\"role\": \"user\", \"content\": \"What is a context window?\"}])\nprint(text)\nprint(usage[\"prompt_tokens\"], \"in /\", usage[\"completion_tokens\"], \"out\")",
+          "lang": "python"
+        }
+      ]
+    },
+    {
+      "h": "Providers differ: OpenAI-compatible, Anthropic and Gemini",
+      "body": [
+        "The chat completions shape is common but not universal. Anthropic's Messages API and Google's Gemini API have their own native formats. Both providers also publish compatibility options, but their native APIs expose all features first. The main differences:",
+        {
+          "table": {
+            "head": [
+              "Item",
+              "OpenAI-style chat completions",
+              "Anthropic Messages API",
+              "Gemini API (native)"
+            ],
+            "rows": [
+              [
+                "Endpoint",
+                "`POST /v1/chat/completions`",
+                "`POST /v1/messages`",
+                "`POST /v1beta/models/{model}:generateContent`"
+              ],
+              [
+                "API key header",
+                "`Authorization: Bearer <key>`",
+                "`x-api-key` plus a required `anthropic-version` date header",
+                "`x-goog-api-key`"
+              ],
+              [
+                "System instructions",
+                "A `system` or `developer` message",
+                "A top-level `system` field",
+                "A top-level `systemInstruction` field"
+              ],
+              [
+                "Required fields",
+                "`model`, `messages`",
+                "`model`, `max_tokens`, `messages`",
+                "`contents` (model is in the URL)"
+              ],
+              [
+                "Reply text",
+                "`choices[0].message.content`",
+                "Text blocks in the `content` array",
+                "`candidates[0].content.parts[].text`"
+              ],
+              [
+                "Streaming",
+                "`\"stream\": true`, server-sent events ending with `[DONE]`",
+                "`\"stream\": true`, named server-sent events",
+                "The `streamGenerateContent` method with `alt=sse`"
+              ]
+            ]
+          }
+        },
+        "Gemini offers an OpenAI-compatible base URL, and many other providers, including DeepSeek and several Chinese and open-model hosts, accept the chat completions format. Compatibility is usually partial: advanced features such as structured output, tool calling or image input may differ. Read each provider's compatibility page before switching with only a URL change."
+      ]
+    },
+    {
+      "h": "Keep the API key on the server",
+      "body": [
+        "Anyone who has your API key can spend your money. Never put it in browser JavaScript, a mobile app, a public repository or a front-end environment file that gets bundled into the page. All of these can be read by users.",
+        {
+          "ol": [
+            "Store the key in an environment variable or a secret manager on your server.",
+            "Have your web or mobile app call your own backend endpoint.",
+            "On the backend, check the user (login, rate limit per user, input length), then call the LLM API with the key.",
+            "Return only the result to the client.",
+            "Set a monthly spending limit in the provider's dashboard, use separate keys per project, and rotate a key immediately if it leaks."
+          ]
+        },
+        {
+          "note": "Your own backend endpoint is now a public door to a paid service. Limit request size and requests per user, or one script can run up a large bill."
+        }
+      ]
+    },
+    {
+      "h": "Streaming: show the answer as it is written",
+      "body": [
+        "A long answer can take many seconds. With `\"stream\": true`, the server sends small pieces as server-sent events, so your interface can show text as it appears. Each event line starts with `data: ` and holds a chunk with a `delta`. The OpenAI format ends with `data: [DONE]`. This example runs on a Node.js server:",
+        {
+          "code": "// Node.js 18+ (server side). Prints the reply as it arrives.\nconst res = await fetch(\"https://api.openai.com/v1/chat/completions\", {\n  method: \"POST\",\n  headers: {\n    \"Content-Type\": \"application/json\",\n    Authorization: `Bearer ${process.env.OPENAI_API_KEY}`,\n  },\n  body: JSON.stringify({\n    model: \"MODEL_ID\",\n    stream: true,\n    messages: [{ role: \"user\", content: \"Write a haiku about rain.\" }],\n  }),\n});\nif (!res.ok) throw new Error(`HTTP ${res.status}: ${await res.text()}`);\n\nconst decoder = new TextDecoder();\nlet buffer = \"\";\nfor await (const chunk of res.body) {\n  buffer += decoder.decode(chunk, { stream: true });\n  const lines = buffer.split(\"\\n\");\n  buffer = lines.pop();                       // keep a partial line for later\n  for (const line of lines) {\n    if (!line.startsWith(\"data: \")) continue;\n    const data = line.slice(6);\n    if (data === \"[DONE]\") continue;          // end of stream\n    const delta = JSON.parse(data).choices[0]?.delta?.content;\n    if (delta) process.stdout.write(delta);\n  }\n}",
+          "lang": "javascript"
+        },
+        "To show the stream in a browser, forward the chunks from your server to the page. Do not call the provider from the browser with your key. In the OpenAI format, usage is not included in streamed chunks unless you set `stream_options` with `include_usage`, so turn that on if you need token counts for billing."
+      ]
+    },
+    {
+      "h": "Getting JSON instead of prose",
+      "body": [
+        "When code will read the answer, ask for JSON. There are two levels. JSON mode (`\"response_format\": {\"type\": \"json_object\"}`) promises valid JSON, but not which fields. Structured output with a JSON Schema makes the model follow your exact fields and types, on models that support it:",
+        {
+          "code": "{\n  \"model\": \"MODEL_ID\",\n  \"messages\": [\n    {\"role\": \"user\", \"content\": \"Extract the total and currency: 'Amount due: 1.250,00 EUR'\"}\n  ],\n  \"response_format\": {\n    \"type\": \"json_schema\",\n    \"json_schema\": {\n      \"name\": \"invoice_total\",\n      \"strict\": true,\n      \"schema\": {\n        \"type\": \"object\",\n        \"properties\": {\n          \"total\": {\"type\": \"number\"},\n          \"currency\": {\"type\": \"string\"}\n        },\n        \"required\": [\"total\", \"currency\"],\n        \"additionalProperties\": false\n      }\n    }\n  }\n}",
+          "lang": "json"
+        },
+        "Even with a schema, validate the parsed result in your code. The values can still be wrong, for example a misread number, even when the shape is right. Anthropic and Gemini support schemas and tool definitions in their own formats. When you debug long JSON replies, a formatter such as cv.cm's json tool makes nested output easier to read."
+      ]
+    },
+    {
+      "h": "Rate limits, retries and errors",
+      "body": [
+        "Providers limit both requests per minute (RPM) and tokens per minute (TPM), and whichever you hit first applies. When you exceed a limit, you get HTTP status 429. Handle errors by type:",
+        {
+          "table": {
+            "head": [
+              "Status",
+              "Meaning",
+              "What to do"
+            ],
+            "rows": [
+              [
+                "400",
+                "Bad request: wrong field, too many tokens",
+                "Fix the request. Do not retry."
+              ],
+              [
+                "401 / 403",
+                "Missing, wrong or unauthorized key",
+                "Check the key and permissions. Do not retry."
+              ],
+              [
+                "429",
+                "Rate limit, or sometimes quota used up",
+                "Wait and retry with backoff. If it says quota or billing, stop and fix the account."
+              ],
+              [
+                "500 / 503",
+                "Server error or overload",
+                "Retry with backoff."
+              ],
+              [
+                "Timeout",
+                "No reply in time",
+                "Retry once or twice. Use streaming for long answers."
+              ]
+            ]
+          }
+        },
+        "Retry with exponential backoff: wait about 1 second, then 2, 4, 8, plus a small random delay (jitter) so many clients do not retry at the same moment. If the response has a `Retry-After` header, wait at least that long. Cap the number of attempts. Failed requests can also count toward your limit, so retrying instantly in a tight loop makes things worse. If you use an official SDK, remember it already retries some errors."
+      ]
+    },
+    {
+      "h": "Cost is counted in tokens",
+      "body": [
+        "You pay for input tokens (everything you send, including the system prompt and the whole conversation history) and output tokens (what the model writes). Output tokens are usually priced higher than input tokens. The formula is simple:",
+        {
+          "code": "cost = input_tokens  / 1,000,000 * input_price_per_million\n     + output_tokens / 1,000,000 * output_price_per_million\n\nExample with made-up prices (2.00 in, 8.00 out per million tokens):\n  27 input + 64 output tokens\n  = 0.000054 + 0.000512 = 0.000566 per call\n  x 100,000 calls a month = about 56.60",
+          "lang": "text"
+        },
+        {
+          "ul": [
+            "Read real counts from `usage` in each response and log them. Do not estimate from word counts.",
+            "Cap the length of each reply: `max_completion_tokens` on OpenAI (the older `max_tokens` is deprecated there), `max_tokens` on Anthropic and many compatible APIs.",
+            "Chat history grows with every turn, so the 20th message costs more than the first. Trim or summarize old turns.",
+            "Use a smaller model for simple tasks such as classification, and a larger one only where quality needs it.",
+            "Some providers discount repeated prompt prefixes (prompt caching) or offer cheaper batch processing for jobs that can wait."
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Can I call an LLM API directly from the browser?",
+      "a": "Not safely with your own key, because any visitor can read it from the page. Call your own server, which adds the key. The exception is a key the user enters for their own account, or a model that runs fully in the browser."
+    },
+    {
+      "q": "Why does the API forget what I said earlier?",
+      "a": "The API is stateless. Each request must include the earlier messages you want the model to see. Chat apps store the history and resend it each time."
+    },
+    {
+      "q": "What does temperature do, and should I set it?",
+      "a": "Temperature controls how random the word choice is: lower is more predictable, higher is more varied. Some providers and newer models restrict or remove sampling parameters, so check the API reference before you set it."
+    },
+    {
+      "q": "Why does my answer stop in the middle?",
+      "a": "The reply reached the token limit you set, or the model's maximum output. Check `finish_reason` (or `stop_reason` on Anthropic). Raise the limit or ask for a shorter answer."
+    },
+    {
+      "q": "Is there a free LLM API?",
+      "a": "Several providers offer free tiers or trial credits with low rate limits, and open models can run on your own machine behind an OpenAI-compatible local server. Free tiers and their terms change often, so check the provider's current page."
+    }
+  ]
+}

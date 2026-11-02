@@ -1,0 +1,197 @@
+{
+  "title": "AI Hallucination: Why AI Makes Things Up and How to Check — cv.cm",
+  "description": "What is AI hallucination? Why chatbots invent facts and citations, which tasks are most at risk, prompts that reduce it, and a checklist to verify any answer.",
+  "h1": "What is AI hallucination, and how do you stop it?",
+  "answer": "AI hallucination is when a model states false or invented information as if it were true, such as a fake citation, a wrong date or a quote nobody said. It happens because language models generate the most plausible text, not checked facts. You cannot remove it fully, but you can reduce it by giving the model sources, allowing it to say it does not know, and verifying key details.",
+  "sections": [
+    {
+      "h": "What counts as a hallucination",
+      "body": [
+        "The US National Institute of Standards and Technology calls this confabulation: generative AI producing confidently stated but erroneous or false content. The word hallucination is the common name. It also covers answers that contradict the material you supplied, or contradict what the model said earlier in the same chat.",
+        {
+          "table": {
+            "head": [
+              "Type",
+              "Example",
+              "Why it is risky"
+            ],
+            "rows": [
+              [
+                "Invented fact",
+                "A wrong founding year, population or price",
+                "Looks precise, so people trust it"
+              ],
+              [
+                "Fake citation",
+                "A real-sounding paper title, journal and DOI that do not exist",
+                "Hard to spot without opening the link"
+              ],
+              [
+                "Fake quote",
+                "Words attributed to a real person who never said them",
+                "Can damage reputations"
+              ],
+              [
+                "Unfaithful summary",
+                "A summary that adds a claim not in the source document",
+                "You assume the source said it"
+              ],
+              [
+                "Invented code",
+                "A function or library option that does not exist",
+                "Code fails or behaves unexpectedly"
+              ],
+              [
+                "Outdated answer",
+                "Describes a rule or product as it was before the training cutoff",
+                "Correct once, wrong now"
+              ]
+            ]
+          }
+        },
+        "In images and video, odd details such as extra fingers or melting objects are sometimes also called hallucinations. They are a quality problem rather than a false claim. In creative work, inventing things that do not exist is often the goal. Hallucination is a problem when you need facts."
+      ]
+    },
+    {
+      "h": "Why language models hallucinate",
+      "body": [
+        "A language model writes by predicting the next token, a small piece of text, from the text so far. It is trained to produce text that is likely, not text that is true. Most of the time likely and true overlap, which is why models are useful. The failures come where they do not overlap.",
+        {
+          "ul": [
+            "No built-in fact check. Nothing in next-token prediction compares the output with the real world.",
+            "Rare facts are weakly learned. A fact that appeared only a few times in training is easy to blur with similar facts, for example the birth year of a minor public figure.",
+            "Guessing is rewarded. Research published in 2025 argues that common training and benchmark scoring give credit for a confident guess but none for saying I do not know, so models learn to guess.",
+            "Imitating common mistakes. Models trained on human text can repeat popular misconceptions, which the TruthfulQA benchmark was designed to measure.",
+            "Pressure from the prompt. A question that assumes something false, such as asking for the 2019 sequel to a film that has no sequel, invites the model to play along.",
+            "Long or messy context. Details in the middle of a long input are easier to miss or mix up.",
+            "Knowledge cutoff. The model knows nothing after its training data ends unless search or documents are added."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Which tasks are most at risk",
+      "body": [
+        "The risk depends less on the model and more on what you ask it to do.",
+        {
+          "table": {
+            "head": [
+              "Task",
+              "Hallucination risk",
+              "Why"
+            ],
+            "rows": [
+              [
+                "Rewrite, translate or shorten text you provide",
+                "Low",
+                "The facts are in the prompt"
+              ],
+              [
+                "Summarize a document you attach",
+                "Low to medium",
+                "May add or merge details, especially in long files"
+              ],
+              [
+                "Explain a well-known concept",
+                "Low to medium",
+                "Common knowledge is well learned"
+              ],
+              [
+                "Specific numbers, dates, names, statistics",
+                "High",
+                "Small details are easy to blur"
+              ],
+              [
+                "Lists of sources, papers, court cases, links",
+                "Very high",
+                "Plausible titles are easy to generate"
+              ],
+              [
+                "Recent events or current prices",
+                "Very high without search",
+                "Not in the training data"
+              ],
+              [
+                "Niche topics, local laws, small companies",
+                "High",
+                "Little training data"
+              ]
+            ]
+          }
+        },
+        "Legal research is a well-known danger area. Courts have sanctioned lawyers for filing documents that cited court cases invented by chatbots."
+      ]
+    },
+    {
+      "h": "Prompts that reduce hallucination",
+      "body": [
+        "The most effective method is grounding: give the model the source material and tell it to answer only from that material. This is also the idea behind retrieval-augmented generation (RAG), where a system searches documents first and puts the best passages into the prompt.",
+        {
+          "code": "Weak prompt:\nWhat is the refund period in our store policy?\n\nGrounded prompt:\nAnswer using only the policy text below.\nIf the answer is not in the text, reply: Not stated in the policy.\nQuote the exact sentence you used.\n\nPolicy:\n<paste the policy text here>\n\nQuestion: What is the refund period?",
+          "lang": "text"
+        },
+        "Each line of the grounded prompt has a job. Only the policy text limits the source. The fallback sentence gives the model a safe answer other than guessing. Quote the exact sentence lets you check the answer in seconds.",
+        "Other habits that help:",
+        {
+          "ol": [
+            "Ask narrow questions. One fact per question is easier to get right than a long list.",
+            "Allow uncertainty. Add a line such as: If you are not sure, say so and explain what would confirm it.",
+            "Turn on search or browsing for current facts, then open the links the answer cites.",
+            "Ask for the reasoning or steps on multi-part problems, and check each step.",
+            "Do not ask for sources from memory. Ask it to find sources with a search tool, or find them yourself and paste them in.",
+            "For code, give the library version and paste relevant documentation, then run the code."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "How to check an AI answer",
+      "body": [
+        "Use this checklist before you rely on or publish anything factual:",
+        {
+          "ol": [
+            "Open every link and DOI. Confirm the page exists and says what the answer claims.",
+            "Search exact quotes. If a quote cannot be found in a primary source, do not use it.",
+            "Check every number against a primary source, such as an official statistics site, a standard or the original paper.",
+            "Look for warning signs: very precise figures with no source, author lists that look generic, references you cannot find, and answers that change when you ask again.",
+            "Get a second, independent source for any claim that matters, not a second chatbot.",
+            "For legal, medical or financial questions, have a qualified person review the result."
+          ]
+        },
+        {
+          "note": "Asking the model whether it is sure is a weak check. Models sometimes defend a wrong answer, and sometimes abandon a correct one because the question sounds like a hint. Check against a source instead."
+        }
+      ]
+    },
+    {
+      "h": "Limits of the fixes",
+      "body": [
+        "No current method removes hallucination completely. Grounding and RAG cut the rate sharply for questions the documents can answer, but a model can still misread a passage, merge two passages, or fill a gap the documents leave. Search tools can return poor pages, and the model may trust them.",
+        "Lowering the temperature makes answers more repeatable, not more accurate. If the most likely answer is wrong, the model will repeat the same wrong answer consistently.",
+        "Newer models often hallucinate less on common questions, and some are trained to admit uncertainty more often. Rates still differ by topic and language, so test a model on your own kind of question before you rely on it, and keep a human check where errors are costly."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Can AI hallucinations be completely eliminated?",
+      "a": "Not with current methods. Grounding in sources, search tools and better training reduce them a lot, but because models generate likely text rather than checked facts, some errors remain. Verification is still needed."
+    },
+    {
+      "q": "Why does ChatGPT make up references and citations?",
+      "a": "A reference is a pattern of author names, a title, a journal and a year, which the model can generate fluently without having a real paper in mind. Unless the app looks the source up with a search tool, the citation may not exist."
+    },
+    {
+      "q": "Which AI hallucinates the least?",
+      "a": "Rankings change with every model release and differ by topic and language. Test a few models on questions from your own work where you know the answers, and prefer tools that show their sources."
+    },
+    {
+      "q": "Is an AI hallucination the same as lying?",
+      "a": "No. Lying means knowingly saying something false. A model has no intent; it produces the continuation that looks most plausible. The effect on the reader can be the same, which is why checking matters."
+    },
+    {
+      "q": "Does web search stop AI from hallucinating?",
+      "a": "It helps for current and specific facts, because the answer can be based on retrieved pages. The model can still misread or misquote those pages, so open the cited links for anything important."
+    }
+  ]
+}

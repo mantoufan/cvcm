@@ -6,7 +6,7 @@ declare const __LOCALE_PACKS__: Record<string, string[]> | undefined;
 const LOCALE_PACKS: Record<string, string[]> = typeof __LOCALE_PACKS__ === "undefined" ? {} : __LOCALE_PACKS__;
 
 /**
- * Fetch the page's strings (plus the game, quiz, dataset, kb or ref pack on those pages; `kb` is "hub", "code" or the
+ * Fetch the page's strings (plus the game, quiz, dataset, kb or ref pack on those pages; `kb` is "hub", "code", "ai" or the
  * article id, `ref` "hub" or the entry id) in parallel with the entry script instead of after it runs.
  */
 export function preloadLocalePack(html: string, locale: Locale, game = false, packs: Record<string, string[]> = LOCALE_PACKS, quiz = false, dataset = false, kb: string | null = null, ref: string | null = null): string {
@@ -16,7 +16,7 @@ export function preloadLocalePack(html: string, locale: Locale, game = false, pa
     ...(quiz ? packs[`quiz-${locale}`] ?? [] : []),
     ...(dataset ? packs[`datasets-${locale}`] ?? [] : []),
     ...(kb ? packs[`kb-${locale}`] ?? [] : []),
-    ...(kb && kb !== "hub" && kb !== "code" ? [...(packs[`kb-${locale}/loaders`] ?? []), ...(packs[`kb-${locale}/${kb}`] ?? [])] : []),
+    ...(kb && kb !== "hub" && kb !== "code" && kb !== "ai" ? [...(packs[`kb-${locale}/loaders`] ?? []), ...(packs[`kb-${locale}/${kb}`] ?? [])] : []),
     ...(ref ? packs[`ref-${locale}`] ?? [] : []),
     ...(ref && ref !== "hub" ? [...(packs[`ref-${locale}/loaders`] ?? []), ...(packs[`ref-${locale}/${ref}`] ?? [])] : []),
   ])];

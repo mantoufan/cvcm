@@ -1,0 +1,235 @@
+{
+  "title": "Tokens y ventana de contexto en IA: qué son, con ejemplos reales — cv.cm",
+  "description": "¿Qué es un token en IA y qué es la ventana de contexto? Recuentos reales de tokens en español, inglés, chino y japonés, qué llena la ventana y cómo no pasarte del límite.",
+  "h1": "¿Qué son los tokens y la ventana de contexto en IA?",
+  "answer": "Un token es la unidad de texto que lee y escribe un modelo de lenguaje: una palabra corta entera, parte de una palabra larga, un signo de puntuación o unos pocos caracteres. La ventana de contexto es el número máximo de tokens que el modelo puede considerar a la vez, contando tus instrucciones, el historial del chat, los archivos adjuntos y la respuesta que escribe. Pasado ese límite, el contenido más antiguo se descarta o la petición falla.",
+  "sections": [
+    {
+      "h": "Qué aspecto tiene un token",
+      "body": [
+        "Los modelos de lenguaje no leen letras ni palabras enteras. Primero, un tokenizador corta el texto en piezas de un vocabulario fijo y cada pieza se convierte en un número. El modelo solo ve esos números.",
+        "Los ejemplos de abajo se contaron con la biblioteca de código abierto de OpenAI `tiktoken`, con la codificación `o200k_base`. Otros modelos usan otros tokenizadores, así que sus cifras difieren, pero el patrón es parecido.",
+        {
+          "table": {
+            "head": [
+              "Texto",
+              "Tokens",
+              "Cómo se divide"
+            ],
+            "rows": [
+              [
+                "The cat sat on the mat.",
+                "7",
+                "The | cat | sat | on | the | mat | ."
+              ],
+              [
+                "Tokenization is surprisingly unintuitive.",
+                "7",
+                "Token | ization | is | surprisingly | unint | uitive | ."
+              ],
+              [
+                "unbelievable",
+                "3",
+                "un | bel | ievable"
+              ],
+              [
+                "strawberry",
+                "3",
+                "st | raw | berry"
+              ],
+              [
+                "2026-11-02",
+                "6",
+                "202 | 6 | - | 11 | - | 02"
+              ],
+              [
+                "ChatGPT",
+                "2",
+                "Chat | GPT"
+              ],
+              [
+                "我喜欢吃苹果。",
+                "5",
+                "我 | 喜欢 | 吃 | 苹果 | 。"
+              ]
+            ]
+          }
+        },
+        "Las palabras comunes son un solo token, normalmente con el espacio que las precede. Las palabras raras o largas se parten en trozos. Los números y las fechas se dividen de maneras que no se corresponden con su significado, y esa es una de las razones por las que los modelos se equivocan en aritmética. Y como strawberry llega en tres trozos, el modelo nunca ve directamente cuántas letras r tiene."
+      ]
+    },
+    {
+      "h": "Por qué los modelos usan tokens de subpalabra",
+      "body": [
+        "Un vocabulario de palabras enteras sería enorme y aun así no cubriría palabras nuevas, nombres ni erratas. Un vocabulario de caracteres sueltos haría que cualquier texto fuera larguísimo. Los tokens de subpalabra son el punto medio.",
+        "La mayoría de los tokenizadores actuales usan la codificación por pares de bytes (BPE, byte pair encoding) o una variante cercana. El método parte de bytes o caracteres sueltos y fusiona repetidamente el par que más aparece en el texto de entrenamiento en un token nuevo. Tras muchas fusiones, las palabras frecuentes pasan a ser un solo token, mientras que las raras siguen pudiendo construirse con piezas menores. Nada queda nunca fuera del vocabulario.",
+        "Cada familia de modelos entrena su propio tokenizador, así que la misma frase da recuentos distintos en modelos distintos. El número de tokens sirve para hacer estimaciones y presupuestos, no como unidad universal."
+      ]
+    },
+    {
+      "h": "La misma frase en distintos idiomas",
+      "body": [
+        "Los tokenizadores se entrenan sobre todo con los idiomas más comunes en sus datos de entrenamiento. Los idiomas con menos datos, o con otros sistemas de escritura, suelen necesitar más tokens para el mismo significado. Esta es una instrucción, Please summarize this article in three bullet points (resume este artículo en tres viñetas), traducida y contada con un tokenizador anterior, `cl100k_base`, y con uno más reciente, `o200k_base`:",
+        {
+          "table": {
+            "head": [
+              "Idioma",
+              "Caracteres",
+              "Tokens (cl100k_base)",
+              "Tokens (o200k_base)"
+            ],
+            "rows": [
+              [
+                "Inglés",
+                "53",
+                "9",
+                "9"
+              ],
+              [
+                "Español",
+                "36",
+                "7",
+                "7"
+              ],
+              [
+                "Chino (simplificado)",
+                "13",
+                "13",
+                "10"
+              ],
+              [
+                "Japonés",
+                "20",
+                "15",
+                "12"
+              ],
+              [
+                "Coreano",
+                "24",
+                "19",
+                "13"
+              ],
+              [
+                "Vietnamita",
+                "42",
+                "21",
+                "14"
+              ]
+            ]
+          }
+        },
+        "Destacan dos cosas. El tokenizador más nuevo, con un vocabulario mayor, es mucho más eficiente para chino, japonés, coreano y vietnamita. Y aun así, en este ejemplo esos idiomas siguen usando más tokens por idea que el inglés. Como los precios de las API y los límites de contexto se cuentan en tokens, la misma tarea puede costar más y llenar antes la ventana en algunos idiomas.",
+        {
+          "note": "Con prosa inglesa normal medimos entre 1,2 y 1,3 tokens por palabra con los dos tokenizadores anteriores, de modo que 1.000 palabras en inglés daban unos 1.200 a 1.300 tokens. El código, las URL, las tablas y los números usan más tokens por palabra."
+        }
+      ]
+    },
+    {
+      "h": "Qué es la ventana de contexto",
+      "body": [
+        "La ventana de contexto es la memoria de trabajo del modelo para una petición. Es independiente de lo que el modelo aprendió en el entrenamiento. Todo lo que el modelo pueda usar para escribir su respuesta tiene que caber dentro, y la propia respuesta también cuenta.",
+        "En una aplicación de chat, cada mensaje nuevo se envía junto con la conversación anterior, así que la ventana se va llenando a medida que el chat crece. En una petición típica cuentan todas estas partes:",
+        {
+          "ul": [
+            "El prompt de sistema, las instrucciones ocultas de la aplicación o del desarrollador.",
+            "Todos los mensajes anteriores del usuario y las respuestas del asistente en la conversación.",
+            "Los documentos adjuntos, el texto pegado, las imágenes y el texto extraído de ellas.",
+            "Las definiciones de herramientas y sus resultados, como los de una búsqueda web.",
+            "La respuesta nueva, incluidos los tokens ocultos de razonamiento o pensamiento que el modelo escribe antes."
+          ]
+        },
+        "El tamaño de la ventana varía mucho entre modelos y cambia a menudo: va desde unos pocos miles de tokens en modelos locales pequeños hasta un millón o más en algunos grandes modelos alojados, en el momento de escribir este artículo. Consulta la documentación del modelo que uses."
+      ]
+    },
+    {
+      "h": "Qué pasa cuando la ventana se llena",
+      "body": [
+        "Cada producto gestiona el límite a su manera:",
+        {
+          "table": {
+            "head": [
+              "Situación",
+              "Qué suele pasar",
+              "Qué notas"
+            ],
+            "rows": [
+              [
+                "La petición a la API es mayor que la ventana",
+                "La petición se rechaza con un error",
+                "Un mensaje de que el prompt es demasiado largo"
+              ],
+              [
+                "La respuesta llega al límite de salida",
+                "La generación se detiene antes de tiempo",
+                "La respuesta termina a mitad de frase o de lista"
+              ],
+              [
+                "Chat largo en una aplicación",
+                "Los turnos más antiguos se descartan o se sustituyen por un resumen",
+                "El asistente olvida detalles del principio"
+              ],
+              [
+                "Contexto muy largo que todavía cabe",
+                "El modelo lo conserva todo, pero lo aprovecha peor",
+                "Se pasan por alto datos del medio de una entrada larga"
+              ]
+            ]
+          }
+        },
+        "La última fila es la que más importa en el día a día. Se ha comprobado que los modelos suelen aprovechar mejor la información del principio y del final de una entrada larga que la del medio. Además, los proveedores señalan que la precisión y la capacidad de recuperar datos pueden bajar a medida que crece el número de tokens. Una ventana mayor permite incluir más, pero no garantiza que el modelo use todo bien."
+      ]
+    },
+    {
+      "h": "Cómo estimar y ahorrar tokens",
+      "body": [
+        {
+          "ol": [
+            "Estima primero. En inglés, multiplica las palabras por 1,3 aproximadamente. En chino o japonés, cuenta los caracteres y espera aproximadamente un token, o algo menos, por carácter con los tokenizadores nuevos. Un contador de palabras, como la herramienta de contar palabras de cv.cm, te da palabras y caracteres al instante.",
+            "Cuenta con exactitud cuando importe. Usa el tokenizador o el endpoint de recuento de tokens del modelo que llamas, porque los recuentos cambian de un modelo a otro.",
+            "Envía solo lo necesario. Pega la sección relevante del documento, no el archivo entero. Quita encabezados, pies de página y texto repetitivo.",
+            "Pon las instrucciones clave al principio o al final de un prompt largo, no enterradas en el medio.",
+            "Abre un chat nuevo para cada tema. Los mensajes antiguos siguen ocupando espacio y pueden distraer al modelo.",
+            "Deja espacio para la respuesta. Si la entrada casi llena la ventana, la respuesta será corta o se cortará.",
+            "En tareas largas, pide un resumen de las decisiones tomadas hasta ahora y continúa en un chat nuevo con ese resumen."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Errores comunes",
+      "body": [
+        {
+          "ul": [
+            "Tratar los tokens como palabras. Un documento de 1.000 palabras no son 1.000 tokens, y en muchos idiomas son bastantes más.",
+            "Suponer que el modelo lo leyó todo. Incluso dentro de la ventana, los detalles del medio de una entrada larga pueden ignorarse. Pide al modelo que cite el pasaje en el que se apoyó.",
+            "Esperar memoria entre chats. Una conversación nueva empieza con la ventana vacía, salvo que la aplicación inserte notas guardadas.",
+            "Olvidar el contenido oculto. Los prompts de sistema, las definiciones de herramientas y los tokens de razonamiento usan la ventana aunque no los veas.",
+            "Comparar límites entre modelos de forma directa. Un límite de 100.000 tokens en un modelo y en otro puede contener cantidades distintas de texto porque sus tokenizadores son diferentes."
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "¿Cuántos tokens son 1.000 palabras?",
+      "a": "Para prosa inglesa normal con los tokenizadores modernos habituales, unos 1.200 a 1.300 tokens. El código, los números, las URL y muchos idiomas distintos del inglés necesitan más."
+    },
+    {
+      "q": "¿Los espacios y los signos de puntuación cuentan como tokens?",
+      "a": "Sí. Los signos de puntuación suelen ser tokens propios, y un solo espacio normalmente se fusiona con el comienzo de la palabra siguiente. Los espacios extra, los saltos de línea y la sangría pueden añadir tokens."
+    },
+    {
+      "q": "¿Las imágenes usan tokens?",
+      "a": "Sí. Los modelos que aceptan imágenes convierten cada imagen en cierto número de tokens que cuentan para la ventana de contexto. Las imágenes más grandes o detalladas suelen usar más, y la regla exacta depende del modelo."
+    },
+    {
+      "q": "¿Por qué ChatGPT u otro chatbot olvida lo que dije antes?",
+      "a": "En una conversación larga, la aplicación puede descartar o resumir los mensajes antiguos para mantenerse dentro de la ventana de contexto. Aunque los mensajes antiguos sigan ahí, el modelo puede prestarles menos atención. Repetir los datos clave o abrir un chat nuevo con un resumen breve ayuda."
+    },
+    {
+      "q": "¿Una ventana de contexto mayor es siempre mejor?",
+      "a": "No siempre. Permite incluir más material, pero cuesta más y puede hacer que el modelo sea más lento y menos preciso con los detalles. Enviar un contexto más corto y bien elegido suele dar mejores respuestas."
+    }
+  ]
+}

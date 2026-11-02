@@ -1,0 +1,205 @@
+{
+  "title": "How to Write AI Image Prompts: Formula and Examples — cv.cm",
+  "description": "Learn to write AI image prompts with a reusable formula, a weak-to-strong rewrite, style, lighting and lens keywords, and negative prompts that work.",
+  "h1": "How do you write a good AI image prompt?",
+  "answer": "A good image prompt names one clear subject, says what it is doing and where, then adds style, lighting, camera and composition in plain words. Put the most important idea first, describe what you want instead of what you do not want, and keep one idea per phrase. Use a negative prompt only for specific, visible problems such as text or extra fingers.",
+  "sections": [
+    {
+      "h": "Why the wording of a prompt matters",
+      "body": [
+        "An image model does not read your prompt like a person. A text encoder turns the words into numbers, and the image generator is trained to make pictures that match those numbers. Words that often appeared next to certain kinds of images in the training captions pull the result toward those images. The word `golden hour`, for example, shows up beside warm, low-angle sunlight so often that it works almost like a lighting setting.",
+        "Two consequences follow. First, concrete visual words beat abstract ones: `wet cobblestone street` gives the model something to draw, while `a sad mood` leaves it guessing. Second, the model weighs every word, so filler such as `very`, `beautiful` or `amazing` takes space without adding information. Most tools also have a limit on how much text the encoder reads; words past that limit are cut or matter less, so the first part of the prompt carries the most weight.",
+        "Many generators also use guidance: they compare an image made with your prompt to one made without it and push the result in the direction of the difference. Higher guidance follows the words more strictly but can look harsh or oversaturated. This is why a clear prompt with moderate guidance usually looks better than a vague prompt with guidance turned up."
+      ]
+    },
+    {
+      "h": "A reusable prompt formula",
+      "body": [
+        "Most good prompts answer the same six questions. Write them in this order, because the model tends to treat early words as more important.",
+        {
+          "code": "[subject + key details], [action or pose], [setting + time],\n[style or medium], [lighting], [camera / lens / framing], [color + mood]",
+          "lang": "text"
+        },
+        {
+          "ol": [
+            "Subject: who or what, with two or three details that matter (age range, clothing, material, color).",
+            "Action: what the subject is doing. A verb gives the model a pose to draw.",
+            "Setting: where and when. One place and one time of day is enough.",
+            "Style or medium: photo, watercolor, 3D render, ink sketch, flat vector, anime cel shading.",
+            "Lighting: the single strongest lever on mood. Name the light source and its direction.",
+            "Camera and composition: shot size, angle, lens, depth of field, where the subject sits in the frame."
+          ]
+        },
+        "You do not need all six every time. A product shot may skip the action; an abstract pattern may skip the camera. But checking the list before you press generate catches the most common gap, which is a prompt that describes the subject and nothing else."
+      ]
+    },
+    {
+      "h": "Weak to strong: a worked rewrite",
+      "body": [
+        "Here is a typical first attempt. It gives the model a subject and an adjective, and nothing about how the picture should look.",
+        {
+          "code": "a beautiful cat in a cafe, high quality, 8k, masterpiece",
+          "lang": "text"
+        },
+        "The result is usually a generic, centered cat with a blurry interior. `8k` and `masterpiece` do not add detail on most current models; they only nudge toward a polished stock look. The rewrite below keeps the same idea but answers the six questions.",
+        {
+          "code": "an orange tabby cat with a white chest, sitting on a wooden windowsill\ninside a small cafe, looking out at the rain, late afternoon,\n35mm film photograph, soft window light from the left, warm interior lamps\nin the background, medium close-up at eye level, shallow depth of field,\nmuted warm colors, quiet and cozy",
+          "lang": "text"
+        },
+        {
+          "table": {
+            "head": [
+              "Part",
+              "Text in the prompt",
+              "What it does"
+            ],
+            "rows": [
+              [
+                "Subject",
+                "orange tabby cat with a white chest",
+                "Fixes the look so repeated runs stay similar"
+              ],
+              [
+                "Action",
+                "sitting on a wooden windowsill, looking out",
+                "Gives a pose and a direction for the eyes"
+              ],
+              [
+                "Setting",
+                "small cafe, rain, late afternoon",
+                "One place and one time, so the light is consistent"
+              ],
+              [
+                "Style",
+                "35mm film photograph",
+                "Sets grain, color response and realism"
+              ],
+              [
+                "Lighting",
+                "soft window light from the left, warm lamps behind",
+                "Creates a key light and a warm background glow"
+              ],
+              [
+                "Camera",
+                "medium close-up, eye level, shallow depth of field",
+                "Controls framing and blurs the background on purpose"
+              ],
+              [
+                "Mood",
+                "muted warm colors, quiet and cozy",
+                "Pulls color grading in one direction"
+              ]
+            ]
+          }
+        },
+        "If the second version is still not right, change one part at a time and keep the rest fixed. Changing five things at once makes it impossible to tell which word caused the change."
+      ]
+    },
+    {
+      "h": "Keywords for style, lighting, lens and composition",
+      "body": [
+        "These terms are widely understood by image models because they are common in photo captions, art descriptions and film language. Use one or two from each row, not all of them.",
+        {
+          "table": {
+            "head": [
+              "Category",
+              "Keywords",
+              "What you will usually see"
+            ],
+            "rows": [
+              [
+                "Style / medium",
+                "35mm film photo, studio product photo, watercolor, gouache, ink line art, flat vector illustration, isometric 3D render, anime cel shading, oil painting, paper cutout",
+                "Overall look, texture and level of realism"
+              ],
+              [
+                "Lighting",
+                "golden hour, blue hour, overcast soft light, hard noon sun, rim light, backlit, softbox key light, neon signs at night, candlelight, volumetric light through fog",
+                "Mood, contrast and the direction of shadows"
+              ],
+              [
+                "Lens / camera",
+                "wide-angle 24mm, 50mm standard, 85mm portrait, macro, telephoto compression, fisheye, shallow depth of field, deep focus, motion blur, long exposure",
+                "Perspective distortion, background blur and how close things feel"
+              ],
+              [
+                "Shot size / angle",
+                "extreme close-up, close-up, medium shot, full body, wide establishing shot, low angle, high angle, overhead flat lay, eye level, Dutch tilt",
+                "How much of the subject is shown and how powerful it looks"
+              ],
+              [
+                "Composition",
+                "rule of thirds, centered symmetrical, negative space on the right, leading lines, framed by a doorway, foreground blur, subject small in a large landscape",
+                "Where the subject sits and where the eye goes"
+              ],
+              [
+                "Color / mood",
+                "muted earth tones, pastel palette, high contrast black and white, teal and orange, monochrome red, warm and nostalgic, cold and clinical",
+                "Color grading and emotional tone"
+              ]
+            ]
+          }
+        },
+        {
+          "note": "Naming a living artist to copy their style raises legal and ethical questions, and some services block it. Describing the visual traits you like (thick brush strokes, limited palette, flat shadows) is safer and often more precise."
+        }
+      ]
+    },
+    {
+      "h": "Negative prompts: what they do and when to use them",
+      "body": [
+        "A negative prompt is a second text field that tells the model what to move away from. In tools based on Stable Diffusion or FLUX it is usually a separate box or a `negative_prompt` parameter; Midjourney uses a `--no` parameter. Some chat-style image tools have no negative field at all, and there you should write the request positively (`a clean, empty wall` instead of `no text on the wall`).",
+        "Negative prompts work best for specific, visible things:",
+        {
+          "code": "Prompt:   a clean product photo of a ceramic mug on a white table\nNegative: text, logo, watermark, extra handles, cluttered background",
+          "lang": "text"
+        },
+        {
+          "ul": [
+            "Good targets: text and watermarks, extra fingers, a second person, a specific object you keep getting, a color you do not want.",
+            "Weak targets: long lists of quality words such as `ugly, bad, worst quality`. They help a little on some older models, but they also push every image toward the same look.",
+            "Do not put an idea in both fields. A cat in the prompt and `cat` in the negative cancel out and confuse the result.",
+            "Writing `no` inside the main prompt often backfires: `a room with no windows` mentions windows, and the model may draw them."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Common mistakes and honest limits",
+      "body": [
+        {
+          "ul": [
+            "Too many subjects. Three people with three outfits and three actions often get mixed: clothes swap, hands merge. Generate the main subject first and add others with editing or inpainting.",
+            "Asking for exact text. Many models still misspell words or invent letters, especially in non-Latin scripts. Keep text short, put it in quotes, or add it later in an editor.",
+            "Hands, counts and positions. `Five apples` or `the cup to the left of the book` is not always respected. Check the result and regenerate or edit instead of adding more words.",
+            "Conflicting style words. `photorealistic watercolor anime` pulls in three directions. Pick one medium.",
+            "Copying a prompt between models. A prompt tuned for one tool can behave differently in another, because each uses a different text encoder and training data. Test a few runs before you rely on it."
+          ]
+        },
+        "Non-English prompts work in many tools, but some models were trained mostly on English captions. For example, cv.cm's AI image generator translates a non-English prompt to English before it runs the model, so short, literal phrases translate more reliably than idioms."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "How long should an AI image prompt be?",
+      "a": "Usually one to four sentences, or about 20 to 75 words. Shorter prompts leave more to chance; much longer prompts can exceed what the text encoder reads, and later words then matter less."
+    },
+    {
+      "q": "Do words like 4k, 8k or masterpiece improve the image?",
+      "a": "On most current models they add little. They can nudge the image toward a polished stock style, but describing the lighting, lens and material does far more for quality."
+    },
+    {
+      "q": "Does word order matter in an image prompt?",
+      "a": "Yes, in most models. Words near the start tend to have more influence, so put the subject and the most important detail first and the finishing touches last."
+    },
+    {
+      "q": "Can I write image prompts in Chinese, Japanese or Spanish?",
+      "a": "Many tools accept other languages, but results are often better in English because most training captions are English. If a tool translates for you, use short, literal phrases."
+    },
+    {
+      "q": "What is the difference between a prompt and a negative prompt?",
+      "a": "The prompt describes what you want to see. The negative prompt lists specific things the model should move away from, such as text, watermarks or extra fingers."
+    }
+  ]
+}

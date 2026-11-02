@@ -1,0 +1,235 @@
+{
+  "title": "Token dan Context Window AI: Penjelasan dengan Hitungan Nyata — cv.cm",
+  "description": "Apa itu token dalam AI dan apa itu context window? Hitungan token nyata untuk bahasa Inggris, Mandarin, Jepang, dan lainnya, apa saja yang memenuhi window, dan cara agar tetap muat.",
+  "h1": "Apa itu token dan context window dalam AI?",
+  "answer": "Token adalah satuan teks yang dibaca dan ditulis model bahasa: satu kata pendek utuh, bagian dari kata yang lebih panjang, tanda baca, atau beberapa karakter. Context window adalah jumlah maksimum token yang bisa dipertimbangkan model sekaligus, mencakup instruksi Anda, riwayat chat, file terlampir, dan jawaban yang ditulisnya. Lewat batas itu, konten lama dibuang atau permintaan gagal.",
+  "sections": [
+    {
+      "h": "Seperti apa wujud token",
+      "body": [
+        "Model bahasa tidak membaca huruf atau kata utuh. Tokenizer lebih dulu memotong teks menjadi potongan dari kosakata tetap, dan tiap potongan menjadi sebuah angka. Model hanya melihat angka-angka ini.",
+        "Contoh di bawah dihitung dengan pustaka tokenizer sumber terbuka milik OpenAI, `tiktoken`, memakai encoding `o200k_base`. Model lain memakai tokenizer lain sehingga hitungannya berbeda, tetapi polanya mirip.",
+        {
+          "table": {
+            "head": [
+              "Teks",
+              "Token",
+              "Cara dipecah"
+            ],
+            "rows": [
+              [
+                "The cat sat on the mat.",
+                "7",
+                "The | cat | sat | on | the | mat | ."
+              ],
+              [
+                "Tokenization is surprisingly unintuitive.",
+                "7",
+                "Token | ization | is | surprisingly | unint | uitive | ."
+              ],
+              [
+                "unbelievable",
+                "3",
+                "un | bel | ievable"
+              ],
+              [
+                "strawberry",
+                "3",
+                "st | raw | berry"
+              ],
+              [
+                "2026-11-02",
+                "6",
+                "202 | 6 | - | 11 | - | 02"
+              ],
+              [
+                "ChatGPT",
+                "2",
+                "Chat | GPT"
+              ],
+              [
+                "我喜欢吃苹果。",
+                "5",
+                "我 | 喜欢 | 吃 | 苹果 | 。"
+              ]
+            ]
+          }
+        },
+        "Kata yang umum biasanya satu token, biasanya termasuk spasi di depannya. Kata yang jarang atau panjang dipecah menjadi potongan. Angka dan tanggal dipecah dengan cara yang tidak sesuai maknanya, dan ini salah satu alasan model keliru berhitung. Karena strawberry datang sebagai tiga potong, model tidak pernah melihat langsung berapa huruf r di dalamnya."
+      ]
+    },
+    {
+      "h": "Mengapa model memakai token subkata",
+      "body": [
+        "Kosakata berisi kata utuh akan sangat besar dan tetap melewatkan kata baru, nama, dan salah ketik. Kosakata berisi huruf tunggal akan membuat setiap teks sangat panjang. Token subkata adalah jalan tengahnya.",
+        "Sebagian besar tokenizer saat ini memakai byte pair encoding (BPE) atau turunannya. Metodenya dimulai dari byte atau karakter tunggal, lalu berulang kali menggabungkan pasangan yang paling sering muncul di teks pelatihan menjadi token baru. Setelah banyak penggabungan, kata yang sering muncul menjadi satu token, sementara kata yang jarang tetap bisa disusun dari potongan lebih kecil. Tidak ada yang benar-benar di luar kosakata.",
+        "Setiap keluarga model melatih tokenizer-nya sendiri, sehingga kalimat yang sama menghasilkan hitungan berbeda di model berbeda. Jumlah token berguna untuk perkiraan dan anggaran, bukan sebagai satuan universal."
+      ]
+    },
+    {
+      "h": "Kalimat yang sama dalam bahasa berbeda",
+      "body": [
+        "Tokenizer dilatih terutama pada bahasa yang paling banyak ada di data pelatihannya. Bahasa dengan data lebih sedikit, atau aksara yang berbeda, sering memerlukan lebih banyak token untuk makna yang sama. Berikut satu instruksi, Please summarize this article in three bullet points, yang diterjemahkan lalu dihitung dengan tokenizer lama, `cl100k_base`, dan yang lebih baru, `o200k_base`:",
+        {
+          "table": {
+            "head": [
+              "Bahasa",
+              "Karakter",
+              "Token (cl100k_base)",
+              "Token (o200k_base)"
+            ],
+            "rows": [
+              [
+                "Inggris",
+                "53",
+                "9",
+                "9"
+              ],
+              [
+                "Spanyol",
+                "36",
+                "7",
+                "7"
+              ],
+              [
+                "Mandarin (Sederhana)",
+                "13",
+                "13",
+                "10"
+              ],
+              [
+                "Jepang",
+                "20",
+                "15",
+                "12"
+              ],
+              [
+                "Korea",
+                "24",
+                "19",
+                "13"
+              ],
+              [
+                "Vietnam",
+                "42",
+                "21",
+                "14"
+              ]
+            ]
+          }
+        },
+        "Ada dua hal yang menonjol. Tokenizer yang lebih baru dengan kosakata lebih besar jauh lebih efisien untuk bahasa Mandarin, Jepang, Korea, dan Vietnam. Dan meski begitu, bahasa-bahasa ini masih memakai lebih banyak token per gagasan daripada bahasa Inggris dalam contoh ini. Karena harga API dan batas konteks dihitung dalam token, tugas yang sama bisa lebih mahal dan lebih cepat memenuhi window di sebagian bahasa.",
+        {
+          "note": "Untuk prosa bahasa Inggris biasa, kami mengukur sekitar 1,2 hingga 1,3 token per kata dengan kedua tokenizer di atas, jadi 1.000 kata bahasa Inggris menjadi sekitar 1.200 sampai 1.300 token. Kode, URL, tabel, dan angka memakai lebih banyak token per kata."
+        }
+      ]
+    },
+    {
+      "h": "Apa itu context window",
+      "body": [
+        "Context window adalah memori kerja model untuk satu permintaan. Ia terpisah dari apa yang dipelajari model saat pelatihan. Semua yang bisa dipakai model untuk menulis jawabannya harus muat di dalamnya, dan jawabannya sendiri juga dihitung.",
+        "Di aplikasi chat, setiap pesan baru dikirim bersama percakapan sebelumnya. Jadi window terisi seiring chat bertambah panjang. Dalam permintaan umum, bagian-bagian ini semuanya dihitung:",
+        {
+          "ul": [
+            "System prompt, yaitu instruksi tersembunyi dari aplikasi atau pengembang.",
+            "Setiap pesan pengguna dan balasan asisten sebelumnya dalam percakapan.",
+            "Dokumen terlampir, teks yang ditempel, gambar, dan teks hasil ekstraksinya.",
+            "Definisi alat dan hasil alat, seperti hasil pencarian web.",
+            "Jawaban baru, termasuk token penalaran atau berpikir tersembunyi yang ditulis model sebelum menjawab."
+          ]
+        },
+        "Ukuran window sangat bervariasi antar model dan sering berubah, dari beberapa ribu token pada model lokal kecil hingga sejuta token atau lebih pada beberapa model besar yang di-host saat tulisan ini dibuat. Periksa dokumentasi model yang Anda pakai."
+      ]
+    },
+    {
+      "h": "Apa yang terjadi saat window penuh",
+      "body": [
+        "Produk yang berbeda menangani batas ini dengan cara berbeda:",
+        {
+          "table": {
+            "head": [
+              "Situasi",
+              "Yang biasanya terjadi",
+              "Yang Anda lihat"
+            ],
+            "rows": [
+              [
+                "Permintaan API lebih besar dari window",
+                "Permintaan ditolak dengan error",
+                "Pesan bahwa prompt terlalu panjang"
+              ],
+              [
+                "Jawaban mencapai batas keluaran",
+                "Generasi berhenti lebih awal",
+                "Balasan berakhir di tengah kalimat atau daftar"
+              ],
+              [
+                "Chat panjang di aplikasi",
+                "Giliran paling lama dibuang atau diganti ringkasan",
+                "Asisten lupa detail dari awal percakapan"
+              ],
+              [
+                "Konteks sangat panjang yang masih muat",
+                "Model menyimpan semuanya tetapi memakainya kurang baik",
+                "Fakta di bagian tengah masukan panjang terlewat"
+              ]
+            ]
+          }
+        },
+        "Baris terakhir paling penting dalam pemakaian sehari-hari. Riset menunjukkan model sering memakai informasi di awal dan akhir masukan panjang lebih baik daripada informasi di tengah. Penyedia model juga mencatat bahwa akurasi dan recall bisa turun seiring jumlah token bertambah. Window yang lebih besar memungkinkan Anda memasukkan lebih banyak, tetapi tidak menjamin model akan memakai semuanya dengan baik."
+      ]
+    },
+    {
+      "h": "Cara memperkirakan dan menghemat token",
+      "body": [
+        {
+          "ol": [
+            "Perkirakan dulu. Untuk bahasa Inggris, kalikan jumlah kata dengan sekitar 1,3. Untuk bahasa Mandarin atau Jepang, hitung karakternya, dan perkirakan kira-kira satu token atau sedikit kurang per karakter dengan tokenizer yang lebih baru. Penghitung kata, misalnya alat hitung kata di cv.cm, memberi Anda jumlah kata dan karakter dengan cepat.",
+            "Hitung secara tepat saat itu penting. Pakai tokenizer atau endpoint penghitung token milik model yang Anda panggil, karena hitungan berbeda antar model.",
+            "Kirim hanya yang diperlukan. Tempel bagian dokumen yang relevan, bukan seluruh file. Hapus header, footer, dan teks boilerplate yang berulang.",
+            "Taruh instruksi kunci di awal atau akhir prompt panjang, jangan terkubur di tengah.",
+            "Mulai chat baru untuk topik baru. Pesan lama terus memakai ruang dan bisa mengalihkan perhatian model.",
+            "Sisakan ruang untuk jawaban. Jika masukan hampir memenuhi window, balasannya akan pendek atau terpotong.",
+            "Untuk tugas panjang, minta ringkasan keputusan sejauh ini, lalu lanjutkan di chat baru dengan ringkasan itu."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Kesalahan umum",
+      "body": [
+        {
+          "ul": [
+            "Menganggap token sama dengan kata. Dokumen 1.000 kata bukan 1.000 token, dan di banyak bahasa jumlahnya jauh lebih banyak.",
+            "Mengira model membaca semuanya. Bahkan di dalam window, detail di tengah masukan panjang bisa diabaikan. Minta model mengutip bagian yang menjadi dasar jawabannya.",
+            "Mengharapkan memori antar chat. Percakapan baru dimulai dengan window kosong kecuali aplikasi menyisipkan catatan tersimpan.",
+            "Melupakan konten tersembunyi. System prompt, definisi alat, dan token penalaran memakai window meski tidak terlihat oleh Anda.",
+            "Membandingkan batas antar model secara langsung. Batas 100.000 token di satu model dan di model lain bisa memuat jumlah teks yang berbeda karena tokenizer-nya berbeda."
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "1.000 kata itu berapa token?",
+      "a": "Untuk prosa bahasa Inggris biasa dengan tokenizer modern yang umum, sekitar 1.200 sampai 1.300 token. Kode, angka, URL, dan banyak bahasa non-Inggris memerlukan lebih banyak."
+    },
+    {
+      "q": "Apakah spasi dan tanda baca dihitung sebagai token?",
+      "a": "Ya. Tanda baca biasanya menjadi token sendiri, dan satu spasi biasanya digabung ke awal kata berikutnya. Spasi tambahan, baris baru, dan indentasi bisa menambah token."
+    },
+    {
+      "q": "Apakah gambar memakai token?",
+      "a": "Ya. Model yang menerima gambar mengubah setiap gambar menjadi sejumlah token yang dihitung dalam context window. Gambar yang lebih besar atau lebih detail biasanya memakai lebih banyak token, dan aturan pastinya bergantung pada model."
+    },
+    {
+      "q": "Mengapa ChatGPT atau chatbot lain lupa apa yang saya katakan sebelumnya?",
+      "a": "Dalam percakapan panjang, aplikasi bisa membuang atau meringkas pesan lama agar tetap di dalam context window. Bahkan ketika pesan lama masih ada, model mungkin kurang memperhatikannya. Mengulang fakta kunci atau memulai chat baru dengan ringkasan singkat akan membantu."
+    },
+    {
+      "q": "Apakah context window yang lebih besar selalu lebih baik?",
+      "a": "Tidak selalu. Window besar memungkinkan Anda memasukkan lebih banyak materi, tetapi biayanya lebih mahal dan bisa membuat model lebih lambat serta kurang teliti soal detail. Mengirim konteks yang lebih pendek dan dipilih dengan baik sering memberi jawaban yang lebih baik."
+    }
+  ]
+}

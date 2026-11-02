@@ -1,0 +1,143 @@
+{
+  "title": "Cómo funciona la transcripción de voz a texto con IA: Whisper y WER — cv.cm",
+  "description": "Cómo funciona el reconocimiento de voz con IA: del audio al espectrograma y a las palabras, cómo se entrenó Whisper, la tasa de error por palabra, por qué alucina y cómo obtener subtítulos SRT limpios.",
+  "h1": "¿Cómo funciona la transcripción de voz a texto con IA?",
+  "answer": "El reconocimiento de voz a texto (reconocimiento automático del habla, ASR) convierte el sonido en un espectrograma, una imagen de qué frecuencias suenan fuerte a lo largo del tiempo. Una red neuronal lee esa imagen y escribe el texto más probable, un token cada vez. Modelos como Whisper aprendieron esto con cientos de miles de horas de audio transcrito, así que manejan muchos idiomas y ruido, pero aún pueden entender mal los nombres e inventar texto en los silencios.",
+  "sections": [
+    {
+      "h": "De la onda sonora al texto en cuatro pasos",
+      "body": [
+        "Un reconocedor moderno como Whisper sigue siempre el mismo proceso cada vez que le das un archivo:",
+        {
+          "ol": [
+            "Remuestreo. El audio se convierte a un solo canal a 16 000 muestras por segundo. Es suficiente para la voz, que concentra casi toda su información por debajo de 8 kHz.",
+            "Espectrograma. La señal se corta en ventanas cortas que se solapan (Whisper usa ventanas de 25 ms cada 10 ms) y cada ventana se convierte en 80 números en la escala Mel, que espacia las frecuencias como lo hace el oído humano. El resultado es una imagen: el tiempo en un eje y las bandas de tono en el otro.",
+            "Codificación. Un codificador Transformer lee el espectrograma y construye una representación de lo que se dijo, incluido qué sonidos son voz y cuáles son ruido.",
+            "Decodificación. Un decodificador Transformer escribe la transcripción un token cada vez, eligiendo en cada paso un token siguiente probable a partir del audio y del texto escrito hasta ese momento. Unos tokens especiales le indican el idioma, la tarea (transcribir o traducir al inglés) y dónde colocar las marcas de tiempo."
+          ]
+        },
+        "Whisper procesa el audio en ventanas de 30 segundos. Un archivo de una hora se trata como una secuencia de ventanas deslizantes, y las marcas de tiempo predichas le indican al programa dónde empezar la siguiente ventana. Las marcas de tiempo se predicen en pasos de 20 ms, por eso los tiempos de los subtítulos de Whisper son buenos pero no exactos al fotograma."
+      ]
+    },
+    {
+      "h": "Cómo aprendió el modelo: supervisión débil a gran escala",
+      "body": [
+        "Los sistemas más antiguos combinaban piezas separadas: un modelo acústico para los sonidos, un diccionario de pronunciación y un modelo de lenguaje para el orden de las palabras. Cada pieza necesitaba datos cuidadosamente etiquetados en cada idioma.",
+        "Whisper siguió otro camino. Sus autores reunieron 680 000 horas de audio emparejadas con transcripciones encontradas en internet. Unas 117 000 horas correspondían a 96 idiomas distintos del inglés, y 125 000 horas eran voz en otros idiomas emparejada con texto en inglés, lo que enseñó al modelo a traducir. Las etiquetas eran imperfectas (esa es la parte débil de la supervisión débil), pero la escala hizo que el modelo fuera robusto frente a acentos, ruido de fondo y calidad de grabación sin necesidad de ajustarlo para cada conjunto de pruebas.",
+        "La misma idea explica sus puntos débiles. Los idiomas con pocos datos en esa colección se reconocen con menos precisión, y el modelo adquirió las costumbres de los subtítulos de internet, como añadir frases que suelen aparecer al final de los videos."
+      ]
+    },
+    {
+      "h": "Medir la precisión: tasa de error por palabra",
+      "body": [
+        "La precisión del ASR se mide con la tasa de error por palabra (WER, word error rate): el número de palabras sustituidas, eliminadas e insertadas, dividido entre el número de palabras de la transcripción correcta. Cuanto más baja, mejor, y puede superar el 100 % si el modelo inserta mucho texto.",
+        {
+          "code": "Reference:  the meeting moved to three thirty on friday   (8 words)\nModel:      the meeting moved to tree  thirty    friday\n\nSubstitutions: three -> tree        1\nDeletions:     on                   1\nInsertions:                         0\nWER = (1 + 1 + 0) / 8 = 25%",
+          "lang": "text"
+        },
+        "Antes de comparar, los investigadores normalizan ambos textos: pasan a minúsculas, quitan la puntuación, expanden las contracciones y escriben los números de la misma manera. Sin ese paso, “3:30” frente a “tres y media” contaría como error aunque ambos sean correctos. Cuando un proveedor cita una WER, pregunta con qué audio se midió; el habla leída y limpia y una llamada telefónica con ruido pueden diferir muchas veces.",
+        "Para el chino, el japonés y el tailandés, que no separan las palabras con espacios, se usa en su lugar la tasa de error por carácter (CER)."
+      ]
+    },
+    {
+      "h": "Tipos de reconocedores de voz",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Tipo",
+              "Cómo funciona",
+              "Puntos fuertes",
+              "Puntos débiles"
+            ],
+            "rows": [
+              [
+                "Codificador-decodificador (estilo Whisper)",
+                "Lee un fragmento de audio y luego escribe el texto con un decodificador",
+                "Alta precisión, puntuación, muchos idiomas, traducción",
+                "Trabaja por fragmentos, así que los subtítulos en directo se retrasan; puede alucinar"
+              ],
+              [
+                "Modelos CTC y transductores",
+                "Predicen una etiqueta para cada fotograma corto de audio y las combinan",
+                "Baja latencia, buenos para subtítulos en directo, rara vez inventan texto",
+                "Requieren más trabajo para la puntuación y las mayúsculas"
+              ],
+              [
+                "Servicios de voz de la plataforma",
+                "Tu navegador o teléfono envía el audio al servicio de su proveedor, o ejecuta un modelo en el dispositivo",
+                "No hay que configurar nada; la Web Speech API lo expone a las páginas web",
+                "El comportamiento varía según el navegador y el dispositivo; puede hacer falta red"
+              ]
+            ]
+          }
+        },
+        "La interfaz `SpeechRecognition` de la Web Speech API permite que una página web pida a la plataforma reconocimiento en directo desde el micrófono. De forma predeterminada usa un servicio que ofrece el navegador o el sistema operativo; algunos navegadores también pueden ejecutarlo en el propio dispositivo. Una página que ejecuta Whisper por sí misma, como la herramienta de voz a texto de cv.cm, que ejecuta Whisper en el navegador y exporta TXT, SRT o VTT, no depende de ese servicio, pero necesita descargar el modelo una vez."
+      ]
+    },
+    {
+      "h": "Dónde falla la transcripción de voz a texto",
+      "body": [
+        {
+          "ul": [
+            "Nombres, marcas y jerga. El decodificador prefiere las palabras comunes, así que un apellido poco frecuente se convierte en uno corriente. Corrígelos a mano o da un prompt breve con la ortografía correcta si tu herramienta lo admite.",
+            "Alucinación en el silencio o la música. El artículo de Whisper indica que la transcripción de audios largos puede quedarse atascada en bucles de repetición, omitir las primeras o últimas palabras de un segmento o producir texto sin relación con el audio. Las introducciones en silencio, los aplausos y la música de fondo son desencadenantes habituales.",
+            "Acentos y cambio de idioma. Los hablantes que mezclan dos idiomas en una misma frase, o los acentos regionales marcados con pocos datos de entrenamiento, aumentan la tasa de error.",
+            "Hablantes que se solapan. La mayoría de los reconocedores escriben un único flujo de texto y no dicen quién habló. Las etiquetas de hablante (diarización) son un paso aparte.",
+            "Chino tradicional frente a simplificado. Un modelo puede devolver cualquiera de las dos escrituras para el mandarín; convierte la transcripción después si necesitas una sola.",
+            "Idioma detectado incorrectamente. La detección automática mira el comienzo del audio. Si los primeros segundos son música u otro idioma, elige el idioma manualmente."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Flujo de trabajo práctico para subtítulos limpios",
+      "body": [
+        {
+          "ol": [
+            "Empieza con el mejor audio que tengas. Usa el archivo original, no una regrabación desde altavoces. Reduce la música bajo la voz si puedes.",
+            "Recorta los silencios largos y la música del principio, que provocan una detección de idioma errónea y líneas inventadas.",
+            "Fija el idioma manualmente cuando lo conozcas.",
+            "Elige un modelo más grande para los subtítulos finales y uno más pequeño para notas rápidas. Los modelos grandes son más lentos pero cometen menos errores con nombres y acentos.",
+            "Exporta SRT o VTT y luego lee el archivo entero una vez mientras ves el video. Corrige nombres, números y cualquier línea que se repita.",
+            "Divide los subtítulos largos. Un subtítulo legible tiene unas dos líneas y permanece en pantalla al menos un segundo."
+          ]
+        },
+        "Los dos formatos de subtítulos más comunes se diferencian solo en pequeños detalles:",
+        {
+          "code": "SRT:\n1\n00:00:01,000 --> 00:00:04,000\nWelcome to the lesson.\n\nVTT:\nWEBVTT\n\n00:00:01.000 --> 00:00:04.000\nWelcome to the lesson.",
+          "lang": "text"
+        },
+        "SRT numera cada subtítulo y usa una coma antes de los milisegundos. WebVTT, el formato del W3C que usa el elemento de video de HTML, empieza con la cabecera `WEBVTT` y usa un punto."
+      ]
+    },
+    {
+      "h": "Privacidad y consentimiento",
+      "body": [
+        "Las grabaciones de reuniones, llamadas y entrevistas contienen datos personales, y en muchos países grabar a una persona requiere su consentimiento. Antes de usar un servicio de transcripción en la nube, comprueba dónde se almacena el audio y si se utiliza para entrenar modelos. Ejecutar un modelo en local, en una aplicación o en el navegador, mantiene el audio en tu dispositivo, que a menudo es la forma más sencilla de cumplir un requisito de privacidad."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "¿Qué precisión tiene la transcripción con IA?",
+      "a": "Con audio claro de un solo hablante en un idioma muy hablado, los modelos actuales cometen solo unos pocos errores por cada cien palabras. La precisión baja con ruido, hablantes que se solapan, acentos marcados, idiomas poco frecuentes y vocabulario especializado, así que revisa siempre los nombres y los números."
+    },
+    {
+      "q": "¿Por qué Whisper escribe palabras que nunca se dijeron?",
+      "a": "Es un generador de texto condicionado por el audio. En el silencio, la música o el ruido puede continuar con texto que es probable en general, como líneas repetidas o frases comunes al final de los videos en línea. Recortar los silencios y fijar el idioma lo reduce."
+    },
+    {
+      "q": "¿Puede la transcripción de voz a texto saber quién habla?",
+      "a": "No por sí sola. Identificar a los hablantes se llama diarización y suele ser un modelo aparte que etiqueta los segmentos como Hablante 1, Hablante 2, etc. Después una persona debe asociar esas etiquetas con nombres reales."
+    },
+    {
+      "q": "¿Cuál es la diferencia entre SRT y VTT?",
+      "a": "Ambos son archivos de subtítulos de texto plano con hora de inicio y de fin. SRT usa una coma en las marcas de tiempo y numera cada subtítulo. VTT empieza con una línea WEBVTT, usa un punto y es el formato que los navegadores leen de forma nativa para el video HTML."
+    },
+    {
+      "q": "¿Puedo transcribir audio sin conexión?",
+      "a": "Sí. Los modelos abiertos como Whisper pueden ejecutarse en un ordenador o en un navegador moderno sin enviar el audio a un servidor. La primera ejecución descarga el modelo; después, la transcripción funciona sin subir tus archivos."
+    }
+  ]
+}

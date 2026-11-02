@@ -1,0 +1,235 @@
+{
+  "title": "Token và cửa sổ ngữ cảnh (context window) trong AI: giải thích kèm số liệu thực — cv.cm",
+  "description": "Token trong AI là gì, cửa sổ ngữ cảnh là gì? Số token thực tế của tiếng Anh, Trung, Nhật, Việt và các ngôn ngữ khác, thứ gì lấp đầy cửa sổ và cách tiết kiệm.",
+  "h1": "Token và cửa sổ ngữ cảnh trong AI là gì?",
+  "answer": "Token là đơn vị văn bản mà mô hình ngôn ngữ đọc và viết: một từ ngắn nguyên vẹn, một phần của từ dài, một dấu câu hoặc vài ký tự. Cửa sổ ngữ cảnh (context window) là số token tối đa mô hình xem xét được cùng lúc, tính cả chỉ dẫn của bạn, lịch sử trò chuyện, tệp đính kèm và câu trả lời nó viết ra. Vượt giới hạn này, nội dung cũ bị bỏ đi hoặc yêu cầu bị lỗi.",
+  "sections": [
+    {
+      "h": "Token trông như thế nào",
+      "body": [
+        "Mô hình ngôn ngữ không đọc từng chữ cái hay từng từ nguyên vẹn. Trước hết, một bộ tokenizer cắt văn bản thành các mảnh lấy từ một bộ từ vựng cố định, và mỗi mảnh trở thành một con số. Mô hình chỉ nhìn thấy những con số này.",
+        "Các ví dụ dưới đây được đếm bằng thư viện tokenizer mã nguồn mở của OpenAI là `tiktoken`, với bảng mã `o200k_base`. Các mô hình khác dùng tokenizer khác nên số đếm sẽ khác, nhưng quy luật tương tự.",
+        {
+          "table": {
+            "head": [
+              "Văn bản",
+              "Token",
+              "Cách tách"
+            ],
+            "rows": [
+              [
+                "The cat sat on the mat.",
+                "7",
+                "The | cat | sat | on | the | mat | ."
+              ],
+              [
+                "Tokenization is surprisingly unintuitive.",
+                "7",
+                "Token | ization | is | surprisingly | unint | uitive | ."
+              ],
+              [
+                "unbelievable",
+                "3",
+                "un | bel | ievable"
+              ],
+              [
+                "strawberry",
+                "3",
+                "st | raw | berry"
+              ],
+              [
+                "2026-11-02",
+                "6",
+                "202 | 6 | - | 11 | - | 02"
+              ],
+              [
+                "ChatGPT",
+                "2",
+                "Chat | GPT"
+              ],
+              [
+                "我喜欢吃苹果。",
+                "5",
+                "我 | 喜欢 | 吃 | 苹果 | 。"
+              ]
+            ]
+          }
+        },
+        "Từ thông dụng là một token, thường kèm dấu cách đứng trước. Từ hiếm hoặc dài bị tách thành nhiều mảnh. Số và ngày tháng bị tách theo cách không khớp với ý nghĩa của chúng, đây là một lý do mô hình tính nhầm. Và vì strawberry đến dưới dạng ba mảnh, mô hình không bao giờ trực tiếp thấy nó có bao nhiêu chữ r."
+      ]
+    },
+    {
+      "h": "Vì sao mô hình dùng token theo từng phần của từ",
+      "body": [
+        "Bộ từ vựng gồm toàn từ nguyên vẹn sẽ rất khổng lồ mà vẫn bỏ sót từ mới, tên riêng và lỗi gõ. Bộ từ vựng chỉ có từng ký tự thì làm mọi văn bản dài ra rất nhiều. Token theo từng phần của từ (subword) là giải pháp dung hòa.",
+        "Phần lớn tokenizer hiện nay dùng mã hóa cặp byte (byte pair encoding, BPE) hoặc biến thể gần giống. Phương pháp bắt đầu từ từng byte hoặc ký tự, rồi liên tục gộp cặp xuất hiện nhiều nhất trong văn bản huấn luyện thành một token mới. Sau nhiều lần gộp, từ thường gặp thành một token, còn từ hiếm vẫn ghép được từ các mảnh nhỏ hơn. Không có gì nằm ngoài bộ từ vựng.",
+        "Mỗi dòng mô hình huấn luyện tokenizer riêng, nên cùng một câu cho số đếm khác nhau ở các mô hình khác nhau. Số token hữu ích để ước tính và lập ngân sách, chứ không phải đơn vị chung cho mọi nơi."
+      ]
+    },
+    {
+      "h": "Cùng một câu ở các ngôn ngữ khác nhau",
+      "body": [
+        "Tokenizer chủ yếu được huấn luyện trên những ngôn ngữ phổ biến nhất trong dữ liệu. Ngôn ngữ có ít dữ liệu hơn hoặc dùng hệ chữ viết khác thường cần nhiều token hơn cho cùng một nội dung. Dưới đây là một chỉ dẫn, Please summarize this article in three bullet points, được dịch và đếm bằng tokenizer cũ `cl100k_base` và tokenizer mới `o200k_base`:",
+        {
+          "table": {
+            "head": [
+              "Ngôn ngữ",
+              "Số ký tự",
+              "Token (cl100k_base)",
+              "Token (o200k_base)"
+            ],
+            "rows": [
+              [
+                "Tiếng Anh",
+                "53",
+                "9",
+                "9"
+              ],
+              [
+                "Tiếng Tây Ban Nha",
+                "36",
+                "7",
+                "7"
+              ],
+              [
+                "Tiếng Trung (giản thể)",
+                "13",
+                "13",
+                "10"
+              ],
+              [
+                "Tiếng Nhật",
+                "20",
+                "15",
+                "12"
+              ],
+              [
+                "Tiếng Hàn",
+                "24",
+                "19",
+                "13"
+              ],
+              [
+                "Tiếng Việt",
+                "42",
+                "21",
+                "14"
+              ]
+            ]
+          }
+        },
+        "Có hai điều đáng chú ý. Tokenizer mới với bộ từ vựng lớn hơn hiệu quả hơn nhiều cho tiếng Trung, Nhật, Hàn và Việt. Dù vậy, trong ví dụ này các ngôn ngữ đó vẫn dùng nhiều token hơn tiếng Anh cho cùng một ý. Vì giá API và giới hạn ngữ cảnh đều tính theo token, cùng một việc có thể tốn kém hơn và làm đầy cửa sổ nhanh hơn ở một số ngôn ngữ.",
+        {
+          "note": "Với văn xuôi tiếng Anh thông thường, chúng tôi đo được khoảng 1,2 đến 1,3 token mỗi từ với cả hai tokenizer trên, nên 1.000 từ tiếng Anh vào khoảng 1.200 đến 1.300 token. Mã nguồn, URL, bảng và số dùng nhiều token hơn trên mỗi từ."
+        }
+      ]
+    },
+    {
+      "h": "Cửa sổ ngữ cảnh là gì",
+      "body": [
+        "Cửa sổ ngữ cảnh là bộ nhớ làm việc của mô hình cho một yêu cầu. Nó tách biệt với những gì mô hình đã học khi huấn luyện. Mọi thứ mô hình có thể dùng để viết câu trả lời phải nằm gọn trong đó, và bản thân câu trả lời cũng được tính.",
+        "Trong ứng dụng chat, mỗi tin nhắn mới được gửi kèm toàn bộ cuộc trò chuyện trước đó. Vì vậy cửa sổ đầy dần khi cuộc trò chuyện dài ra. Trong một yêu cầu điển hình, các phần sau đều được tính:",
+        {
+          "ul": [
+            "System prompt, tức chỉ dẫn ẩn từ ứng dụng hoặc nhà phát triển.",
+            "Mọi tin nhắn của người dùng và câu trả lời của trợ lý trước đó trong cuộc hội thoại.",
+            "Tài liệu đính kèm, văn bản dán vào, hình ảnh và phần văn bản trích ra từ chúng.",
+            "Định nghĩa công cụ và kết quả công cụ, chẳng hạn kết quả tìm kiếm web.",
+            "Câu trả lời mới, kể cả các token suy luận hoặc suy nghĩ ẩn mà mô hình viết ra trước đó."
+          ]
+        },
+        "Kích thước cửa sổ chênh lệch rất nhiều giữa các mô hình và thay đổi thường xuyên: từ vài nghìn token ở các mô hình nhỏ chạy cục bộ đến một triệu token hoặc hơn ở một số mô hình lớn chạy trên đám mây vào thời điểm viết bài. Hãy xem tài liệu của mô hình bạn dùng."
+      ]
+    },
+    {
+      "h": "Chuyện gì xảy ra khi cửa sổ đầy",
+      "body": [
+        "Mỗi sản phẩm xử lý giới hạn theo một cách:",
+        {
+          "table": {
+            "head": [
+              "Tình huống",
+              "Thường xảy ra gì",
+              "Bạn nhận thấy gì"
+            ],
+            "rows": [
+              [
+                "Yêu cầu API lớn hơn cửa sổ",
+                "Yêu cầu bị từ chối kèm lỗi",
+                "Thông báo prompt quá dài"
+              ],
+              [
+                "Câu trả lời chạm giới hạn đầu ra",
+                "Việc sinh dừng sớm",
+                "Câu trả lời kết thúc giữa câu hoặc giữa danh sách"
+              ],
+              [
+                "Cuộc trò chuyện dài trong ứng dụng",
+                "Những lượt cũ nhất bị bỏ hoặc được thay bằng bản tóm tắt",
+                "Trợ lý quên các chi tiết từ đầu cuộc trò chuyện"
+              ],
+              [
+                "Ngữ cảnh rất dài nhưng vẫn vừa",
+                "Mô hình giữ lại tất cả nhưng dùng kém hiệu quả hơn",
+                "Sự kiện ở giữa đầu vào dài bị bỏ sót"
+              ]
+            ]
+          }
+        },
+        "Dòng cuối quan trọng nhất trong sử dụng hằng ngày. Nghiên cứu cho thấy mô hình thường dùng tốt hơn thông tin ở đầu và cuối của một đầu vào dài so với thông tin ở giữa. Các nhà cung cấp mô hình cũng lưu ý rằng độ chính xác và khả năng ghi nhớ có thể giảm khi số token tăng. Cửa sổ lớn hơn cho phép bạn đưa vào nhiều hơn, nhưng không đảm bảo mô hình dùng hết tốt."
+      ]
+    },
+    {
+      "h": "Cách ước tính và tiết kiệm token",
+      "body": [
+        {
+          "ol": [
+            "Ước tính trước. Với tiếng Anh, nhân số từ với khoảng 1,3. Với tiếng Trung hoặc Nhật, đếm số ký tự, và với tokenizer mới thì kỳ vọng khoảng một token hoặc ít hơn một chút cho mỗi ký tự. Công cụ đếm từ, ví dụ công cụ đếm từ của cv.cm, cho bạn số từ và số ký tự nhanh chóng.",
+            "Đếm chính xác khi cần. Dùng tokenizer hoặc endpoint đếm token của mô hình bạn gọi, vì số đếm khác nhau giữa các mô hình.",
+            "Chỉ gửi những gì cần thiết. Dán phần liên quan của tài liệu, không dán cả tệp. Bỏ tiêu đề đầu trang, chân trang và văn bản lặp.",
+            "Đặt chỉ dẫn quan trọng ở đầu hoặc cuối prompt dài, đừng chôn ở giữa.",
+            "Mở cuộc trò chuyện mới cho chủ đề mới. Tin nhắn cũ vẫn chiếm chỗ và có thể làm mô hình xao nhãng.",
+            "Chừa chỗ cho câu trả lời. Nếu đầu vào gần lấp đầy cửa sổ, câu trả lời sẽ ngắn hoặc bị cắt.",
+            "Với việc dài, hãy yêu cầu tóm tắt các quyết định đến lúc này, rồi tiếp tục trong cuộc trò chuyện mới với bản tóm tắt đó."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Những lỗi thường gặp",
+      "body": [
+        {
+          "ul": [
+            "Coi token là từ. Tài liệu 1.000 từ không phải 1.000 token, và ở nhiều ngôn ngữ thì nhiều hơn rất nhiều.",
+            "Cho rằng mô hình đã đọc hết. Ngay cả trong cửa sổ, chi tiết ở giữa một đầu vào dài vẫn có thể bị bỏ qua. Hãy yêu cầu mô hình trích đoạn văn nó dựa vào.",
+            "Mong có trí nhớ giữa các cuộc trò chuyện. Cuộc trò chuyện mới bắt đầu với cửa sổ trống, trừ khi ứng dụng chèn ghi chú đã lưu.",
+            "Quên nội dung ẩn. System prompt, định nghĩa công cụ và token suy luận chiếm cửa sổ dù bạn không thấy chúng.",
+            "So sánh giới hạn giữa các mô hình một cách trực tiếp. Giới hạn 100.000 token ở mô hình này và ở mô hình khác có thể chứa lượng văn bản khác nhau vì tokenizer khác nhau."
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "1.000 từ là bao nhiêu token?",
+      "a": "Với văn xuôi tiếng Anh thông thường và các tokenizer hiện đại phổ biến, khoảng 1.200 đến 1.300 token. Mã nguồn, số, URL và nhiều ngôn ngữ không phải tiếng Anh cần nhiều hơn."
+    },
+    {
+      "q": "Dấu cách và dấu câu có được tính là token không?",
+      "a": "Có. Dấu câu thường là token riêng, còn một dấu cách thường được gộp vào đầu từ kế tiếp. Dấu cách thừa, ngắt dòng và thụt lề có thể làm tăng số token."
+    },
+    {
+      "q": "Hình ảnh có tốn token không?",
+      "a": "Có. Mô hình nhận hình ảnh sẽ đổi mỗi ảnh thành một số lượng token và số này tính vào cửa sổ ngữ cảnh. Ảnh lớn hoặc chi tiết hơn thường tốn nhiều token hơn, và quy tắc chính xác phụ thuộc vào mô hình."
+    },
+    {
+      "q": "Vì sao ChatGPT hay chatbot khác quên điều tôi đã nói trước đó?",
+      "a": "Trong cuộc trò chuyện dài, ứng dụng có thể bỏ hoặc tóm tắt tin nhắn cũ để nằm trong cửa sổ ngữ cảnh. Ngay cả khi tin nhắn cũ còn đó, mô hình có thể chú ý đến chúng ít hơn. Nhắc lại các thông tin chính hoặc mở cuộc trò chuyện mới với một bản tóm tắt ngắn sẽ giúp ích."
+    },
+    {
+      "q": "Cửa sổ ngữ cảnh lớn hơn có phải lúc nào cũng tốt hơn?",
+      "a": "Không phải lúc nào. Nó cho phép bạn đưa vào nhiều tài liệu hơn, nhưng tốn kém hơn và có thể làm mô hình chậm hơn, kém chính xác hơn về chi tiết. Gửi một ngữ cảnh ngắn hơn, chọn lọc kỹ thường cho câu trả lời tốt hơn."
+    }
+  ]
+}

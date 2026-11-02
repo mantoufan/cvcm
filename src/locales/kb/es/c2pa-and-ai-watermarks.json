@@ -1,0 +1,183 @@
+{
+  "title": "Qué es C2PA y las marcas de agua de IA: Content Credentials y SynthID — cv.cm",
+  "description": "Cómo las credenciales de contenido C2PA, las marcas de agua SynthID y los metadatos IPTC etiquetan las imágenes de IA, por qué eliminar los metadatos las borra y cuáles son los límites de la detección.",
+  "h1": "¿Qué son las credenciales de contenido C2PA y las marcas de agua de IA?",
+  "answer": "Las credenciales de contenido (Content Credentials) de C2PA son un registro firmado que se adjunta a un archivo y dice quién lo creó, con qué herramienta y cómo se editó, incluido si lo generó una IA. Las marcas de agua invisibles, como SynthID, ocultan una señal en los propios píxeles o en el audio. Los metadatos pueden perderse con una captura de pantalla o al volver a subir el archivo; las marcas de agua resisten más ediciones, pero ninguna de las dos demuestra por sí sola que un contenido sea real o falso.",
+  "sections": [
+    {
+      "h": "Cuatro capas de etiquetado de IA",
+      "body": [
+        "El contenido de IA puede etiquetarse de varias formas independientes. Resuelven problemas distintos, y la mayoría de los sistemas serios usan más de una.",
+        {
+          "table": {
+            "head": [
+              "Capa",
+              "Dónde está",
+              "Quién puede leerla",
+              "¿Sobrevive a una captura de pantalla?"
+            ],
+            "rows": [
+              [
+                "Etiqueta visible",
+                "Texto o icono en la imagen, el video o el pie",
+                "Todo el mundo",
+                "Sí, salvo que se recorte"
+              ],
+              [
+                "Metadatos (EXIF, XMP, IPTC)",
+                "Campos en la cabecera del archivo",
+                "Cualquier visor de metadatos",
+                "No"
+              ],
+              [
+                "Manifiesto C2PA (Content Credentials)",
+                "Un bloque de datos firmado dentro del archivo o en un almacén en línea",
+                "Validadores de C2PA",
+                "No, salvo que se recupere mediante un vínculo blando (soft binding)"
+              ],
+              [
+                "Marca de agua invisible",
+                "Pequeños cambios en los píxeles, las muestras o la elección de palabras",
+                "Solo el detector correspondiente",
+                "A menudo sí, dentro de unos límites"
+              ]
+            ]
+          }
+        },
+        "Las medidas de etiquetado de China, en vigor desde el 1 de septiembre de 2025, nombran directamente dos de ellas: las etiquetas explícitas que las personas pueden ver o escuchar, y las etiquetas implícitas en los metadatos del archivo, con las marcas de agua digitales como práctica recomendada. El artículo 50 del Reglamento de IA de la UE exige de forma similar a los proveedores de IA generativa que marquen los resultados sintéticos de manera legible por máquina y detectable."
+      ]
+    },
+    {
+      "h": "Cómo funciona un manifiesto C2PA",
+      "body": [
+        "C2PA (Coalition for Content Provenance and Authenticity, Coalición para la Procedencia y Autenticidad del Contenido) publica una especificación técnica abierta. El nombre de cara al público de sus datos es Content Credentials. Un manifiesto se compone de tres partes:",
+        {
+          "ol": [
+            "Aserciones: declaraciones sobre el archivo, como la herramienta de creación, las acciones realizadas (creado, recortado, color ajustado), una miniatura y los ingredientes (archivos anteriores a partir de los que se hizo).",
+            "Una declaración (claim): una lista que apunta a esas aserciones, con hashes para que ninguna pueda cambiarse después.",
+            "Una firma de la declaración: una firma digital hecha con la clave privada del firmante e identificada por un certificado X.509, el mismo tipo de sistema de certificados que usa HTTPS."
+          ]
+        },
+        "El manifiesto contiene además un vínculo duro (hard binding): un hash criptográfico de los datos de la imagen o del video. Si cambia aunque sea un solo píxel después de la firma, el hash deja de coincidir y un validador informa de que el contenido fue alterado. Cuando un editor compatible con C2PA hace un cambio, añade un nuevo manifiesto que incluye el anterior como ingrediente, lo que forma una cadena de ediciones.",
+        "En formatos habituales como JPEG, PNG y MP4, los manifiestos se almacenan en cajas JUMBF dentro del archivo. Un archivo también puede llevar solo un enlace a un manifiesto almacenado en otro lugar.",
+        {
+          "code": "Content Credentials (simplified view)\n  Signed by:     Example Camera Co. (certificate valid)\n  Created with:  Example Image Generator\n  Actions:       c2pa.created\n    digitalSourceType: trainedAlgorithmicMedia\n  Then:          c2pa.cropped, c2pa.color_adjustments (Example Editor)\n  Ingredients:   1 earlier file\n  Hash check:    content matches signature",
+          "lang": "text"
+        },
+        "La explicación de C2PA es clara sobre su alcance: la procedencia te dice de dónde vino un contenido y cómo cambió. No dice si el contenido es verdadero. Una foto firmada de una escena escenificada sigue siendo una escena escenificada."
+      ]
+    },
+    {
+      "h": "Tipo de fuente digital de IPTC: el campo de IA en los metadatos",
+      "body": [
+        "El IPTC, el organismo de normalización de los metadatos de los medios de comunicación, mantiene un vocabulario llamado digital source type (tipo de fuente digital). Los mismos términos se usan en los metadatos fotográficos de IPTC y dentro de las aserciones de acción de C2PA. Los términos más relevantes para la IA son:",
+        {
+          "table": {
+            "head": [
+              "Término",
+              "Etiqueta",
+              "Significado"
+            ],
+            "rows": [
+              [
+                "trainedAlgorithmicMedia",
+                "Created using Generative AI",
+                "Creado por un modelo de IA entrenado con contenido capturado"
+              ],
+              [
+                "compositeWithTrainedAlgorithmicMedia",
+                "Edited using Generative AI",
+                "Contenido real modificado con IA generativa, por ejemplo con inpainting u outpainting"
+              ],
+              [
+                "algorithmicMedia",
+                "Pure algorithmic media",
+                "Creado por un algoritmo sin datos de entrenamiento, como un patrón procedural"
+              ],
+              [
+                "digitalCapture",
+                "Digital capture",
+                "Capturado de la vida real con una cámara o grabadora digital"
+              ]
+            ]
+          }
+        },
+        "Las plataformas leen estos valores para decidir cuándo mostrar etiquetas como “Made with AI” o “AI info”. Por sí solo, un campo IPTC no está firmado, así que cualquiera puede escribirlo o quitarlo. Dentro de un manifiesto C2PA, el mismo valor queda cubierto por la firma."
+      ]
+    },
+    {
+      "h": "Por qué eliminar los metadatos elimina las credenciales",
+      "body": [
+        "Los metadatos y los manifiestos incrustados viven junto a los datos de la imagen, no dentro de ellos. Todo lo que escribe un archivo nuevo solo a partir de los píxeles los descarta:",
+        {
+          "ul": [
+            "Hacer una captura de pantalla o una grabación de pantalla.",
+            "Subir el archivo a una plataforma que recodifica las imágenes y elimina los metadatos por privacidad o por tamaño.",
+            "Convertir el formato, por ejemplo de PNG a JPEG, con una herramienta que no copia los metadatos.",
+            "Usar un eliminador de metadatos, diseñado para borrar bloques EXIF, GPS, XMP y similares.",
+            "Copiar y pegar una imagen entre aplicaciones a través del portapapeles."
+          ]
+        },
+        "Este es el comportamiento esperado, no un fallo de una herramienta concreta. Eliminar los datos de ubicación antes de compartir una foto es una buena práctica de privacidad; por ejemplo, la herramienta EXIF de cv.cm elimina los datos EXIF y GPS en el navegador, y con ellos eliminará también las credenciales incrustadas. Si necesitas demostrar de dónde procede una imagen, conserva el archivo firmado original y compártelo sin cambios.",
+        "La respuesta de C2PA son las credenciales de contenido duraderas: combinar el vínculo duro con un vínculo blando, es decir, una marca de agua invisible o una huella perceptual. Un validador que encuentra la marca de agua o la huella puede buscar el manifiesto original en un repositorio de manifiestos incluso después de que se hayan eliminado los metadatos del archivo.",
+        {
+          "note": "Eliminar las etiquetas puede tener consecuencias legales. Las medidas de etiquetado de China (artículo 10) prohíben eliminar, alterar, falsificar u ocultar de forma malintencionada las etiquetas de IA, y prohíben ofrecer herramientas para que otros lo hagan. Eliminar metadatos por privacidad es distinto de quitar las etiquetas para hacer pasar contenido de IA por real. Esto es información general, no asesoramiento jurídico."
+        }
+      ]
+    },
+    {
+      "h": "Marcas de agua invisibles como SynthID",
+      "body": [
+        "Una marca de agua invisible modifica el propio contenido de una forma que las personas no notan pero que un detector puede encontrar. SynthID, de Google DeepMind, por ejemplo, se describe como una tecnología que abarca imágenes, video, audio y texto. En imágenes y video está diseñada para sobrevivir a recortes, filtros, cambios de frecuencia de fotogramas y compresión con pérdida; en audio, al ruido añadido, a la compresión MP3 y a los cambios de velocidad. En el texto, ajusta ligeramente las probabilidades de las palabras que elige el modelo.",
+        "Hay límites importantes que se aplican a toda marca de agua de este tipo:",
+        {
+          "ul": [
+            "Solo el detector correspondiente puede leerla. Una comprobación de SynthID no dice nada de las imágenes de un modelo que use otra marca de agua o ninguna.",
+            "Robusta no significa permanente. Las ediciones intensas, regenerar la imagen con otro modelo o reescribir el texto pueden debilitar o eliminar la señal.",
+            "Las marcas de agua en texto son más débiles en los pasajes cortos y en el texto que se ha traducido o parafraseado.",
+            "Una marca de agua demuestra que un proveedor colaborador generó o editó el contenido. No muestra qué partes se cambiaron ni si la escena es verdadera."
+          ]
+        },
+        "Las marcas de agua invisibles personales son otra herramienta para otro trabajo. Una marca que ocultas en tu propia foto, por ejemplo con la herramienta de marca de agua de cv.cm, te ayuda a demostrar más adelante que una copia procede de tu archivo. No es una etiqueta de IA y ninguna plataforma la lee."
+      ]
+    },
+    {
+      "h": "Los límites de la detección de IA",
+      "body": [
+        "Ningún método puede mirar un archivo cualquiera y decir de forma fiable “IA” o “real”. Ten presentes estas reglas:",
+        {
+          "ol": [
+            "Una credencial válida te dice quién firmó y qué declaró. La confianza depende de si confías en ese firmante.",
+            "La ausencia de credenciales no demuestra nada. La mayoría de las fotos reales en línea no las tienen, porque las plataformas las eliminan y la mayoría de las cámaras no firman.",
+            "Encontrar una marca de agua es una prueba sólida a favor del modelo de ese proveedor. No encontrarla es una prueba débil de cualquier cosa.",
+            "Los detectores de IA de tipo clasificador, que adivinan a partir de patrones visuales o estadísticos, tienen falsos positivos y falsos negativos. No los uses solos para acusar a alguien.",
+            "Combina señales: credenciales, marcas de agua, la cuenta de origen, la primera subida y comprobaciones habituales como la búsqueda inversa de imágenes y la búsqueda de errores físicos."
+          ]
+        },
+        "Para los creadores, la regla práctica es sencilla: conserva los archivos originales de tu generador con sus credenciales, añade una etiqueta visible donde tu plataforma o la ley la exijan y no intentes eliminar las marcas de IA del contenido que publiques."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "¿Cómo puedo comprobar si una imagen tiene credenciales de contenido?",
+      "a": "Ábrela en un visor compatible con C2PA, como un sitio oficial de verificación, un editor compatible o una plataforma que muestre una insignia CR o “AI info”. Si el archivo se volvió a guardar o se capturó en pantalla, las credenciales pueden haber desaparecido aunque existieran originalmente."
+    },
+    {
+      "q": "¿Se pueden falsificar las credenciales de contenido de C2PA?",
+      "a": "Cualquiera puede crear un manifiesto, pero no puede firmarlo con el certificado de otra organización. Los validadores comprueban la firma y el hash del contenido, así que la verdadera cuestión es si confías en el firmante que se muestra."
+    },
+    {
+      "q": "¿Eliminar los datos EXIF elimina la etiqueta de IA?",
+      "a": "Elimina las etiquetas de metadatos y los manifiestos C2PA incrustados. No elimina una etiqueta visible ni una marca de agua invisible en los píxeles, y un vínculo blando aún puede permitir a un validador recuperar el manifiesto original."
+    },
+    {
+      "q": "¿SynthID es lo mismo que C2PA?",
+      "a": "No. SynthID es una marca de agua dentro del contenido, que lee el detector de Google. C2PA es un estándar abierto para registros de procedencia firmados que se adjuntan a un archivo. Se complementan, y C2PA puede usar una marca de agua como vínculo blando."
+    },
+    {
+      "q": "¿Los generadores de imágenes con IA añaden C2PA automáticamente?",
+      "a": "Muchos grandes proveedores añaden credenciales de contenido o metadatos IPTC, una marca de agua invisible, o ambas cosas, pero la práctica difiere según el producto y cambia con el tiempo. Consulta la documentación del proveedor e inspecciona un archivo de muestra."
+    }
+  ]
+}

@@ -1,0 +1,204 @@
+{
+  "title": "Cómo crear personajes de IA coherentes entre imágenes — cv.cm",
+  "description": "Mantén el mismo personaje de IA entre imágenes y planos: hojas de personaje, imágenes de referencia, semillas, descriptores fijos, entrenamiento de LoRA y una lista de comprobación de continuidad.",
+  "h1": "¿Cómo se mantiene coherente un personaje de IA entre imágenes?",
+  "answer": "Escribe una descripción fija del personaje y reutilízala palabra por palabra; después diseña una hoja de personaje clara (frente, perfil, espalda, expresiones) y úsala como imagen de referencia en cada nueva generación. Las semillas solo ayudan dentro de una misma configuración. Para un proyecto largo, entrena un LoRA pequeño con un conjunto variado de imágenes aprobadas. Revisa cada imagen nueva con una lista de comprobación de continuidad antes de usarla.",
+  "sections": [
+    {
+      "h": "Por qué los personajes se desvían",
+      "body": [
+        "Un modelo de imágenes no tiene memoria entre ejecuciones. Cada generación parte de un ruido aleatorio nuevo y lee tu prompt desde cero. Palabras como `a young woman with short black hair` describen millones de rostros posibles, y el modelo elige uno distinto cada vez. Los pequeños cambios de redacción, de pose o de ángulo de cámara alejan más el resultado.",
+        "Así que la coherencia no viene de que el modelo recuerde. Viene de que tú le des la misma información cada vez, en tantas formas como acepte la herramienta: las mismas palabras, las mismas imágenes de referencia y, en proyectos grandes, un pequeño complemento entrenado que ha aprendido al personaje. Los métodos de abajo van del más barato al que requiere más trabajo. La mayoría de los proyectos combinan dos o tres."
+      ]
+    },
+    {
+      "h": "Paso 1: escribe un bloque fijo del personaje",
+      "body": [
+        "Escribe la descripción una vez, guárdala en un archivo de texto y pégala sin cambios en cada prompt. Ordena los detalles de los más visibles a los menos visibles e incluye solo lo que un espectador pueda ver.",
+        {
+          "code": "MEI (character block, paste unchanged)\nadult woman in her late 20s, East Asian, oval face, straight black hair\nin a chin-length bob with blunt bangs, dark brown eyes, small mole under\nthe left eye, slim build, wearing a mustard-yellow raincoat over a white\nT-shirt, dark blue jeans, white sneakers, round silver earrings",
+          "lang": "text"
+        },
+        "Después, construye cada prompt como bloque del personaje más escena. Solo cambia la escena:",
+        {
+          "code": "[MEI block], standing at a bus stop in the rain, holding a clear umbrella,\nnight, neon reflections on the wet road, medium shot, 35mm photo",
+          "lang": "text"
+        },
+        {
+          "ul": [
+            "Elige anclas distintivas: un color poco común, un accesorio, una marca en el rostro. `Mustard raincoat` y `mole under the left eye` son más fáciles de comprobar y reproducir que `pretty`.",
+            "Evita palabras que cambian de significado de una ejecución a otra, como `stylish outfit` o `cute`.",
+            "Deja las palabras de estilo fuera del bloque, para poder cambiar una escena de foto a ilustración sin tocar al personaje.",
+            "Dale un nombre al personaje en tus notas, pero no confíes en el nombre dentro del prompt; un nombre inventado no significa nada para el modelo a menos que lo entrenes."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Paso 2: crea una hoja de personaje",
+      "body": [
+        "Una hoja de personaje es una imagen, o un pequeño conjunto, que muestra con claridad al personaje desde varios ángulos sobre un fondo liso. Se convierte en la referencia a la que vuelves en cada plano posterior.",
+        {
+          "ol": [
+            "Genera muchos candidatos a partir del bloque del personaje sobre un fondo liso gris claro, con luz neutra y cuerpo entero.",
+            "Elige el rostro que más te guste. Ese es ahora el rostro canónico; no sigas explorando.",
+            "Crea vistas de giro de ese personaje: frontal, de tres cuartos, de perfil y de espaldas. Usa la imagen elegida como referencia, o un control de pose para cada ángulo.",
+            "Añade una fila de expresiones (neutra, sonrisa, sorpresa, enfado) y un primer plano del rostro y de cualquier accesorio.",
+            "Corrige los errores con inpainting y guarda la hoja a resolución completa con el bloque del personaje escrito al lado."
+          ]
+        },
+        {
+          "code": "character turnaround sheet of [MEI block], front view, three-quarter view,\nside view and back view, full body, standing in a neutral pose,\nplain light gray background, even soft studio light, clean illustration",
+          "lang": "text"
+        },
+        "Mantén la hoja limpia. Un fondo recargado o una luz dramática en la referencia se copian a las imágenes posteriores junto con el rostro."
+      ]
+    },
+    {
+      "h": "Paso 3: usa imágenes de referencia en cada generación",
+      "body": [
+        "La mayoría de las herramientas actuales aceptan al menos una imagen como referencia. Las herramientas alojadas lo llaman referencia de personaje, referencia de sujeto o simplemente imagen subida; los flujos de código abierto usan adaptadores como IP-Adapter, que convierte la imagen de referencia en características que guían al modelo junto con el texto. Dale al modelo el primer plano del rostro y una vista de cuerpo entero de la hoja, y describe la escena nueva con texto.",
+        {
+          "ul": [
+            "Usa un recorte que encaje con el plano: una referencia de rostro para los primeros planos y una de cuerpo entero para los planos generales.",
+            "Baja el peso de la referencia si todas las imágenes copian la pose y el fondo de la referencia; súbelo si el rostro se desvía.",
+            "No encadenes referencias a partir de la última imagen generada. Los errores se acumulan. Vuelve siempre a la hoja aprobada.",
+            "Para una pose que debe coincidir exactamente, añade también una imagen de control de pose. Consulta la guía de imagen a imagen."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Semillas: útiles, pero limitadas",
+      "body": [
+        "Una semilla fija el ruido aleatorio de partida. Con el mismo modelo, los mismos ajustes y el mismo prompt, la misma semilla da una imagen casi idéntica, así que es excelente para hacer pequeñas variaciones de un mismo plano: cambia la expresión o la iluminación y conserva todo lo demás.",
+        "Una semilla no mantiene a un personaje entre escenas distintas. Si cambias la pose, el fondo o el encuadre, la misma semilla produce otra disposición y a menudo otro rostro. Además deja de funcionar al cambiar de modelo, de versión de la herramienta, de hardware o de muestreador. Trata la semilla como una forma de repetir una imagen, no como la identidad de un personaje."
+      ]
+    },
+    {
+      "h": "Paso 4 para proyectos largos: LoRA y ajuste fino",
+      "body": [
+        "Para un cómic, una serie o una mascota de marca que aparece en cientos de imágenes, la opción más sólida es enseñarle el personaje al modelo. Tres métodos son habituales en las herramientas de código abierto:",
+        {
+          "table": {
+            "head": [
+              "Método",
+              "Qué se entrena",
+              "Qué necesitas",
+              "Notas"
+            ],
+            "rows": [
+              [
+                "Inversión textual (textual inversion)",
+                "Solo una nueva incrustación de palabra; el modelo permanece congelado",
+                "Pocas imágenes, a menudo de tres a cinco",
+                "Archivo pequeño, identidad más débil; sirve para un estilo o un objeto"
+              ],
+              [
+                "DreamBooth",
+                "El propio modelo, vinculado a una palabra identificadora poco común",
+                "Un puñado de imágenes del sujeto",
+                "Identidad fuerte; archivo grande; puede sobreajustarse y olvidar otras cosas"
+              ],
+              [
+                "LoRA",
+                "Pequeñas matrices complementarias de rango bajo; el modelo base permanece congelado",
+                "Normalmente de 15 a 30 imágenes variadas",
+                "Archivo pequeño, fácil de subir o bajar su intensidad; la opción más popular"
+              ]
+            ]
+          }
+        },
+        "Los datos de entrenamiento importan más que los ajustes. Usa imágenes del mismo personaje procedentes de la hoja y de planos aprobados, con ángulos, expresiones, luz y fondos variados, y añade una descripción a cada una. Si todas las imágenes de entrenamiento tienen el mismo fondo o la misma pose, el LoRA también aprende eso. Los servicios alojados que ofrecen personajes personalizados hacen algo parecido entre bastidores.",
+        {
+          "note": "Entrenar con el rostro de una persona real, o con el personaje de otro artista, puede infringir normas de privacidad, de imagen o de derechos de autor según el país y la plataforma. Usa personajes que hayas creado tú o para los que tengas permiso."
+        }
+      ]
+    },
+    {
+      "h": "Lista de comprobación de continuidad",
+      "body": [
+        "Antes de incorporar una imagen nueva al proyecto, compárala lado a lado con la hoja de personaje. Corrige o vuelve a generar todo lo que no coincida.",
+        {
+          "table": {
+            "head": [
+              "Comprobación",
+              "Qué comparar",
+              "Fallo común"
+            ],
+            "rows": [
+              [
+                "Forma del rostro",
+                "Mandíbula, forma y separación de los ojos, nariz",
+                "El rostro se vuelve más redondo o más genérico"
+              ],
+              [
+                "Pelo",
+                "Largo, flequillo, color, raya",
+                "El flequillo desaparece; cambia el largo"
+              ],
+              [
+                "Marcas",
+                "Lunares, cicatrices, pecas, tatuajes y su lado",
+                "La marca pasa al otro lado o desaparece"
+              ],
+              [
+                "Ojos",
+                "Color y forma",
+                "El color de los ojos cambia con la luz de color"
+              ],
+              [
+                "Atuendo",
+                "Cada prenda, color, logotipo, capas",
+                "El impermeable se convierte en chaqueta; los colores se intercambian"
+              ],
+              [
+                "Accesorios",
+                "Pendientes, gafas, bolso, reloj",
+                "Falta el accesorio o está en la otra mano"
+              ],
+              [
+                "Proporciones",
+                "Altura respecto a otras personas y objetos",
+                "El personaje crece o se encoge entre planos"
+              ],
+              [
+                "Manos",
+                "Número de dedos y qué sostiene cada mano",
+                "El objeto cambia de mano entre planos"
+              ],
+              [
+                "Estilo",
+                "Medio, grosor de línea, gradación de color",
+                "Una foto mezclada en una serie ilustrada"
+              ]
+            ]
+          }
+        },
+        "Lleva un registro sencillo de cada plano: prompt, semilla, referencia usada, modelo y correcciones hechas. Cuando un personaje se desvíe más adelante en el proyecto, el registro te dirá qué cambio lo causó. En video se aplican las mismas reglas plano a plano; la guía de video de varios planos explica cómo llevar a un personaje a través del movimiento."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "¿Puedo mantener el mismo personaje solo reutilizando la semilla?",
+      "a": "Solo para imágenes muy parecidas. Una pose, un fondo o un encuadre nuevos cambian el resultado incluso con la misma semilla, así que combina una descripción fija con imágenes de referencia."
+    },
+    {
+      "q": "¿Cuántas imágenes necesito para entrenar un LoRA de personaje?",
+      "a": "Muchos creadores usan entre 15 y 30 imágenes buenas y variadas. La calidad y la variedad importan más que la cantidad, y todas las imágenes deben mostrar el mismo diseño aprobado."
+    },
+    {
+      "q": "¿Por qué el atuendo de mi personaje cambia continuamente?",
+      "a": "El atuendo se describe de forma demasiado vaga o la descripción cambia entre prompts. Nombra cada prenda con su color, mantén la redacción idéntica e incluye el atuendo en la imagen de referencia."
+    },
+    {
+      "q": "¿Es legal crear un personaje de IA coherente de una persona real?",
+      "a": "Depende de dónde estés y de cómo lo uses. Muchos países protegen la imagen de una persona y exigen su consentimiento, y muchas plataformas lo prohíben. Esto es información general, no asesoramiento jurídico."
+    },
+    {
+      "q": "¿Funcionan las referencias de personaje entre distintas herramientas de IA?",
+      "a": "El método sí, pero los resultados difieren. Cada herramienta interpreta las referencias a su manera, así que prueba tu hoja en la herramienta nueva y ajusta el peso de la referencia antes de empezar un proyecto."
+    }
+  ]
+}

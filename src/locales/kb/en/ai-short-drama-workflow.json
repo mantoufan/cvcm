@@ -1,0 +1,279 @@
+{
+  "title": "AI Short Drama Workflow: From Idea to 9:16 Episode — cv.cm",
+  "description": "The full AI short drama workflow: hook, script, character sheets, shot list, generation, voice, music, subtitles, 9:16 edit and AI labels, with a sample shot list.",
+  "h1": "How do you make an AI short drama from idea to finished episode?",
+  "answer": "Work in a fixed order: write a hook that lands in the first three seconds, a short script, character and location sheets, and a shot list. Generate still keyframes, then animate them. Record or generate the dialogue, add licensed music and subtitles, edit in 9:16 vertical, and label the AI content as each platform requires. Each step fixes decisions so the next step does not drift.",
+  "sections": [
+    {
+      "h": "The pipeline at a glance",
+      "body": [
+        "A vertical micro-drama is a series of very short episodes made for phone screens, where each episode ends on a question that makes the viewer watch the next one. With AI, you do the work of a writer, a casting director, a camera crew and an editor. The order below matters, because every step locks something the later steps depend on.",
+        {
+          "table": {
+            "head": [
+              "Stage",
+              "Output",
+              "What it locks"
+            ],
+            "rows": [
+              [
+                "1. Hook and premise",
+                "One sentence and the first 3 seconds",
+                "Genre, conflict, tone"
+              ],
+              [
+                "2. Script",
+                "Scenes with dialogue and actions",
+                "Story beats and timing"
+              ],
+              [
+                "3. Characters and locations",
+                "Reference sheets",
+                "Faces, costumes, places"
+              ],
+              [
+                "4. Shot list",
+                "One row per shot",
+                "Framing, action, duration"
+              ],
+              [
+                "5. Keyframes",
+                "One still per shot",
+                "The look of every shot"
+              ],
+              [
+                "6. Video generation",
+                "Clips with handles",
+                "Motion and camera"
+              ],
+              [
+                "7. Voice",
+                "Dialogue audio per line",
+                "Performance and timing"
+              ],
+              [
+                "8. Music and sound",
+                "Score, effects, ambience",
+                "Mood and rhythm"
+              ],
+              [
+                "9. Subtitles",
+                "SRT or burned-in captions",
+                "Readability without sound"
+              ],
+              [
+                "10. Edit and export",
+                "9:16 master file",
+                "Pacing and final look"
+              ],
+              [
+                "11. Label and publish",
+                "Platform upload with AI disclosure",
+                "Compliance and trust"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "Hook and script: win the first three seconds",
+      "body": [
+        "People scroll fast. The first three seconds must show a person, a conflict and a question. Do not open on scenery or a slow title. Open in the middle of the action: a slap, a ring thrown on the floor, a stranger who knows a secret, a line of dialogue that changes everything.",
+        {
+          "ul": [
+            "Write the premise as one sentence with a want and an obstacle: \"A delivery rider finds out the customer is the father who left her.\"",
+            "Write the first line of dialogue before anything else. It should be understandable without context.",
+            "Plan each episode as setup, turn and cliffhanger. Even a 30-second episode needs a turn.",
+            "Keep the cast small. Two or three characters per episode are much easier to keep consistent.",
+            "Write visible actions, not inner thoughts. The model can show a hand shaking; it cannot show \"she remembers her childhood\" without a flashback shot."
+          ]
+        },
+        "Use a script format that also works as a shot plan: a scene heading, short action lines, and dialogue with the speaker name. A chatbot can help draft or tighten scenes, but read every line aloud and cut anything that does not move the story."
+      ]
+    },
+    {
+      "h": "Characters, locations and the shot list",
+      "body": [
+        "Before generating any video, make a character sheet for each main role: front, three-quarter and side views of the face, a full-body view in the costume for this episode, and a fixed text description you will paste into every prompt. Make one reference still per location. Keep the wardrobe the same within a scene unless the story changes it.",
+        "Then turn the script into a shot list. Below is a worked example for a 20-second opening episode, with seven shots.",
+        "Premise: Lin, a young waitress, serves a rich customer who is rude to her. He drops his card. She sees the name on it: her own family name.",
+        {
+          "table": {
+            "head": [
+              "Shot",
+              "Time",
+              "Size and camera",
+              "Action and sound",
+              "On-screen text"
+            ],
+            "rows": [
+              [
+                "1",
+                "0–2 s",
+                "Close-up, static",
+                "A glass of water splashes into Lin's face. Gasp from nearby tables.",
+                "None"
+              ],
+              [
+                "2",
+                "2–5 s",
+                "Medium, slight push-in",
+                "The customer, a man in his 50s in a dark suit, says: \"Bring me a clean glass.\"",
+                "Subtitle"
+              ],
+              [
+                "3",
+                "5–8 s",
+                "Close-up on Lin, static",
+                "Water drips from her hair. She holds back tears and says: \"Yes, sir.\"",
+                "Subtitle"
+              ],
+              [
+                "4",
+                "8–11 s",
+                "Medium, static",
+                "He stands up to leave; a black card falls from his wallet to the floor.",
+                "None"
+              ],
+              [
+                "5",
+                "11–14 s",
+                "Insert, top-down",
+                "Lin's hand picks up the card. The name is not readable yet.",
+                "None"
+              ],
+              [
+                "6",
+                "14–17 s",
+                "Extreme close-up",
+                "Her eyes widen. Music stops.",
+                "Name added as a graphic"
+              ],
+              [
+                "7",
+                "17–20 s",
+                "Medium, slow push-in",
+                "She looks toward the door where he left. Low, rising tone.",
+                "\"To be continued\""
+              ]
+            ]
+          }
+        },
+        "Shot 1 is the hook: a face, an action and a question in under two seconds. The name on the card is added in the edit as a graphic because many video models render text poorly. Shot 7 ends on a question, which is the reason to watch episode 2."
+      ]
+    },
+    {
+      "h": "Generation: keyframes first, then motion",
+      "body": [
+        {
+          "ol": [
+            "Generate one keyframe per shot at 9:16 using the character and location references. Check all seven side by side.",
+            "Animate each keyframe with image-to-video. Describe only the motion, the camera move and the sound.",
+            "Ask for a little more length than you need, so you can trim the slow start and the drifting end.",
+            "Generate two or three takes of the important shots, especially the hook and the last shot, and choose the best.",
+            "Save the keyframe, prompt and settings of every accepted clip so you can redo one later."
+          ]
+        },
+        "Expect problems with hands, objects in contact (a card passing between fingers, water hitting a face) and fast movement. Frame those moments tighter, split them into two shots, or show the result instead of the process. A splash can be suggested by the reaction and a wet face rather than the water itself."
+      ]
+    },
+    {
+      "h": "Voice, music and subtitles",
+      "body": [
+        "Dialogue carries a micro-drama, so treat it as its own track. You can record actors, use a text-to-speech or voice model, or keep the audio that a video model generates. For a series, one fixed voice per character matters more than perfect quality. Only clone a voice if the owner of that voice has given clear permission.",
+        {
+          "ul": [
+            "Record or generate each line as a separate file, then place it on the timeline. This makes timing and replacement easy.",
+            "Use music you have a license for: the platform's own music library, a royalty-free library, or music you generated with a tool whose terms allow commercial use.",
+            "Add a quiet room tone under every scene. Silence between lines sounds broken.",
+            "Make subtitles for every line. Many viewers watch without sound. Keep lines short, one or two lines on screen, and place them above the lower area where platform buttons and captions sit."
+          ]
+        },
+        "To create subtitles, transcribe the final dialogue track and fix the text by hand. For example, cv.cm's speech-to-text runs Whisper in the browser and exports SRT or VTT. YouTube accepts both SRT and WebVTT caption files, but burned-in subtitles are safer for platforms where viewers rarely turn captions on."
+      ]
+    },
+    {
+      "h": "Edit and export for 9:16",
+      "body": [
+        "Edit for pace. Cut every pause that does not carry meaning, start each shot as late as possible and end it as early as possible, and cut on action. Put the strongest image in the first frame of the episode, because viewers decide whether to keep watching before the first line ends.",
+        {
+          "table": {
+            "head": [
+              "Setting",
+              "Common choice",
+              "Why"
+            ],
+            "rows": [
+              [
+                "Aspect ratio",
+                "9:16 vertical",
+                "Fills a phone screen held upright"
+              ],
+              [
+                "Resolution",
+                "1080 × 1920 pixels",
+                "The standard vertical full-HD frame"
+              ],
+              [
+                "Frame rate",
+                "Keep the rate of your source clips, often 24, 25 or 30 fps",
+                "Mixing rates causes stutter"
+              ],
+              [
+                "Safe area",
+                "Keep faces and text away from the top, bottom and right edge",
+                "Platform buttons and captions cover those areas"
+              ],
+              [
+                "Audio",
+                "Dialogue clearly louder than music",
+                "Most viewers listen on phone speakers"
+              ]
+            ]
+          }
+        },
+        "Check the length rules of each platform before you plan an episode. For example, YouTube treats square or vertical videos up to three minutes long as Shorts. Rules like these change, so read the current help page of each platform when you publish."
+      ]
+    },
+    {
+      "h": "Label AI content and follow platform rules",
+      "body": [
+        "Realistic AI people and scenes usually need a disclosure. YouTube requires creators to disclose realistic AI-generated or altered content. TikTok's Community Guidelines ask creators to label AI-generated or significantly edited content that shows realistic-looking scenes or people. In China, the Measures for Labeling AI-Generated Synthetic Content, in force since 1 September 2025, require users who publish AI-generated content to declare it and use the platform's labeling function.",
+        {
+          "ul": [
+            "Turn on the platform's AI label when you upload.",
+            "Do not use the face or voice of a real person without permission, and do not make a real public figure appear to say or do something.",
+            "Keep the metadata labels that generation tools add to files; do not strip them on purpose.",
+            "Keep your project files and prompts, in case a platform or buyer asks how the episode was made."
+          ]
+        },
+        {
+          "note": "Platform rules and laws change. This page is general information, not legal advice. See the labeling article on this shelf for details by country and platform."
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "How long should an AI short drama episode be?",
+      "a": "Many vertical micro-drama episodes run from about 30 seconds to a few minutes. Start with short episodes: they are cheaper to make, easier to keep consistent and easier to test with an audience."
+    },
+    {
+      "q": "Can one person make an AI short drama alone?",
+      "a": "Yes. One person can write, generate, voice and edit a short episode. The limiting factor is usually time spent on retries and consistency checks, not skills."
+    },
+    {
+      "q": "What is the hardest part of making an AI drama?",
+      "a": "Keeping the same characters across many shots and episodes, and making hands and physical contact look right. Strong reference sheets and tight framing reduce both problems."
+    },
+    {
+      "q": "Can I monetize an AI-generated short drama?",
+      "a": "Platforms generally allow monetization of AI content that follows their rules and is labeled where required, but each program sets its own criteria. Check the current partner program rules and make sure you have rights to all music, voices and faces."
+    },
+    {
+      "q": "Do I need to label an animated or cartoon-style AI drama?",
+      "a": "It depends on the platform. YouTube and Meta focus their disclosure rules on realistic content, while Chinese rules cover AI-generated content in general. When in doubt, label it."
+    }
+  ]
+}

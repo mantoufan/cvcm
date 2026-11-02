@@ -1,0 +1,205 @@
+{
+  "title": "AI绘画提示词怎么写？万能公式与示例 — cv.cm",
+  "description": "AI绘画提示词怎么写：一个可反复套用的提示词公式、从弱到强的改写示例，以及风格、光线、镜头关键词和反向提示词的正确用法。",
+  "h1": "AI绘画提示词怎么写才好？",
+  "answer": "好的AI绘画提示词先点明一个清晰的主体，说明它在做什么、在哪里，再用平实的词补上风格、光线、镜头和构图。最重要的想法放在最前面，描述你想要的而不是不想要的，每个短语只表达一个意思。反向提示词只用来处理具体而可见的问题，比如文字或多出来的手指。",
+  "sections": [
+    {
+      "h": "为什么提示词的措辞很重要",
+      "body": [
+        "图像模型读提示词的方式和人不一样。文本编码器把词语变成数字，图像生成器经过训练，会生成与这些数字相匹配的图片。训练字幕里经常和某类图片一起出现的词，会把结果拉向那类图片。比如 `golden hour`（黄金时刻）总是和暖色低角度阳光一起出现，所以它几乎相当于一个光线设置。",
+        "由此得出两点。第一，具体的视觉词胜过抽象词：`wet cobblestone street` 给了模型可画的东西，而 `a sad mood` 只会让它瞎猜。第二，模型会掂量每一个词，所以 `very`、`beautiful`、`amazing` 这类填充词只占位置，不增加信息。大多数工具对文本编码器能读取的长度也有限制，超出的部分会被截掉或影响变弱，所以提示词的前半部分分量最重。",
+        "许多生成器还会使用引导（guidance）：把带提示词生成的图和不带提示词生成的图作对比，把结果往两者的差异方向推。引导强度越高，越严格遵循文字，但画面可能显得生硬或过饱和。这就是为什么清晰的提示词配中等引导，通常比含糊的提示词配高引导更好看。"
+      ]
+    },
+    {
+      "h": "一个可反复套用的提示词公式",
+      "body": [
+        "大多数好提示词回答的都是同样六个问题。按这个顺序写，因为模型往往把靠前的词看得更重要。",
+        {
+          "code": "[subject + key details], [action or pose], [setting + time],\n[style or medium], [lighting], [camera / lens / framing], [color + mood]",
+          "lang": "text"
+        },
+        {
+          "ol": [
+            "主体：是谁或是什么，加上两三个重要细节（年龄段、服装、材质、颜色）。",
+            "动作：主体在做什么。动词会给模型一个可画的姿势。",
+            "场景：在哪里、什么时候。一个地点加一个时间段就够了。",
+            "风格或媒介：照片、水彩、3D渲染、墨水速写、扁平矢量、动漫赛璐璐上色。",
+            "光线：对氛围影响最大的一个因素。写明光源和方向。",
+            "镜头与构图：景别、角度、镜头焦段、景深，以及主体在画面中的位置。"
+          ]
+        },
+        "不必每次都写满六项。产品图可以省掉动作，抽象图案可以省掉镜头。但在点击生成之前对照一遍清单，能抓住最常见的漏洞：提示词只描述了主体，别的什么都没写。"
+      ]
+    },
+    {
+      "h": "从弱到强：一次完整的改写",
+      "body": [
+        "下面是典型的初稿。它给了模型一个主体和一个形容词，对画面应该是什么样子却只字未提。",
+        {
+          "code": "a beautiful cat in a cafe, high quality, 8k, masterpiece",
+          "lang": "text"
+        },
+        "结果通常是一只居中的普通猫，背景是模糊的室内。在目前大多数模型上，`8k` 和 `masterpiece` 并不会增加细节，只会把画面推向光鲜的图库风格。下面的改写保留同一个构思，但回答了那六个问题。",
+        {
+          "code": "an orange tabby cat with a white chest, sitting on a wooden windowsill\ninside a small cafe, looking out at the rain, late afternoon,\n35mm film photograph, soft window light from the left, warm interior lamps\nin the background, medium close-up at eye level, shallow depth of field,\nmuted warm colors, quiet and cozy",
+          "lang": "text"
+        },
+        {
+          "table": {
+            "head": [
+              "部分",
+              "提示词里的文字",
+              "作用"
+            ],
+            "rows": [
+              [
+                "主体",
+                "orange tabby cat with a white chest",
+                "固定外观，多次生成结果也相近"
+              ],
+              [
+                "动作",
+                "sitting on a wooden windowsill, looking out",
+                "给出姿势和视线方向"
+              ],
+              [
+                "场景",
+                "small cafe, rain, late afternoon",
+                "一个地点、一个时间，光线才一致"
+              ],
+              [
+                "风格",
+                "35mm film photograph",
+                "决定颗粒感、色彩表现和写实程度"
+              ],
+              [
+                "光线",
+                "soft window light from the left, warm lamps behind",
+                "形成主光和温暖的背景光晕"
+              ],
+              [
+                "镜头",
+                "medium close-up, eye level, shallow depth of field",
+                "控制构图，并有意虚化背景"
+              ],
+              [
+                "氛围",
+                "muted warm colors, quiet and cozy",
+                "把色调往同一个方向拉"
+              ]
+            ]
+          }
+        },
+        "如果第二版还是不对，一次只改一处，其余保持不变。一次改五处，你就没法知道是哪个词带来了变化。"
+      ]
+    },
+    {
+      "h": "风格、光线、镜头与构图关键词",
+      "body": [
+        "这些词汇图像模型普遍能理解，因为它们常见于照片说明、艺术描述和影视用语。每一行选一两个用，不要全用。",
+        {
+          "table": {
+            "head": [
+              "类别",
+              "关键词",
+              "通常会看到什么"
+            ],
+            "rows": [
+              [
+                "风格 / 媒介",
+                "35mm film photo, studio product photo, watercolor, gouache, ink line art, flat vector illustration, isometric 3D render, anime cel shading, oil painting, paper cutout",
+                "整体观感、质感和写实程度"
+              ],
+              [
+                "光线",
+                "golden hour, blue hour, overcast soft light, hard noon sun, rim light, backlit, softbox key light, neon signs at night, candlelight, volumetric light through fog",
+                "氛围、对比度和阴影方向"
+              ],
+              [
+                "镜头 / 相机",
+                "wide-angle 24mm, 50mm standard, 85mm portrait, macro, telephoto compression, fisheye, shallow depth of field, deep focus, motion blur, long exposure",
+                "透视变形、背景虚化，以及远近感"
+              ],
+              [
+                "景别 / 角度",
+                "extreme close-up, close-up, medium shot, full body, wide establishing shot, low angle, high angle, overhead flat lay, eye level, Dutch tilt",
+                "主体露出多少，以及显得多有气势"
+              ],
+              [
+                "构图",
+                "rule of thirds, centered symmetrical, negative space on the right, leading lines, framed by a doorway, foreground blur, subject small in a large landscape",
+                "主体的位置和视线的走向"
+              ],
+              [
+                "色彩 / 氛围",
+                "muted earth tones, pastel palette, high contrast black and white, teal and orange, monochrome red, warm and nostalgic, cold and clinical",
+                "调色和情绪基调"
+              ]
+            ]
+          }
+        },
+        {
+          "note": "点名某位在世艺术家来模仿其风格，会带来法律和伦理问题，一些服务也会拦截。改为描述你喜欢的视觉特征（粗笔触、有限的色板、扁平的阴影）更稳妥，通常也更精确。"
+        }
+      ]
+    },
+    {
+      "h": "反向提示词：作用与使用时机",
+      "body": [
+        "反向提示词（negative prompt）是第二个文本框，告诉模型要避开什么。在基于 Stable Diffusion 或 FLUX 的工具里，它通常是单独的输入框或 `negative_prompt` 参数；Midjourney 则用 `--no` 参数。有些对话式的图像工具根本没有反向框，这时要正面表述需求（写 `a clean, empty wall`，而不是 `no text on the wall`）。",
+        "反向提示词最适合处理具体、可见的东西：",
+        {
+          "code": "Prompt:   a clean product photo of a ceramic mug on a white table\nNegative: text, logo, watermark, extra handles, cluttered background",
+          "lang": "text"
+        },
+        {
+          "ul": [
+            "好的对象：文字和水印、多余的手指、多出来的第二个人、你总是反复得到的某个物体、你不想要的颜色。",
+            "效果弱的对象：一长串质量词，比如 `ugly, bad, worst quality`。它们在某些老模型上有一点帮助，但也会把每张图都推向同一种样子。",
+            "不要把同一个想法放进两个框里。提示词里写了猫，反向里又写 `cat`，两者会互相抵消并搞乱结果。",
+            "在主提示词里写 `no` 往往适得其反：`a room with no windows` 提到了窗户，模型可能就把窗户画出来。"
+          ]
+        }
+      ]
+    },
+    {
+      "h": "常见错误与实际局限",
+      "body": [
+        {
+          "ul": [
+            "主体太多。三个人、三套衣服、三个动作，经常会混在一起：衣服互换、手糊在一起。先生成主要主体，再用编辑或局部重绘（inpainting）添加其他的。",
+            "要求精确的文字。许多模型仍会拼错单词或编造字母，非拉丁文字尤其如此。文字要短、用引号括起来，或者之后在编辑器里加。",
+            "手、数量和位置。`Five apples` 或 `the cup to the left of the book` 不一定会被遵守。检查结果后重新生成或编辑，而不是添加更多词。",
+            "风格词互相冲突。`photorealistic watercolor anime` 往三个方向拉扯。选定一种媒介。",
+            "在不同模型之间照搬提示词。为某个工具调好的提示词，换到另一个工具可能表现不同，因为各自的文本编码器和训练数据不同。依赖它之前，先多测几次。"
+          ]
+        },
+        "许多工具支持中文等非英语提示词，但有些模型主要用英文字幕训练。例如，cv.cm 的AI图片生成器会先把非英语提示词翻译成英文再运行模型，所以简短、直白的短语比成语和俗语翻得更准。"
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "AI绘画提示词多长合适？",
+      "a": "通常是一到四句话，或者大约 20 到 75 个英文单词。太短会把更多交给运气；太长则可能超出文本编码器能读取的范围，后面的词就不那么重要了。"
+    },
+    {
+      "q": "4k、8k、masterpiece 这类词能提升画质吗？",
+      "a": "在大多数当前模型上作用不大。它们可以把画面推向光鲜的图库风格，但描述光线、镜头和材质，对画质的帮助要大得多。"
+    },
+    {
+      "q": "提示词里的词序有影响吗？",
+      "a": "有，大多数模型都是这样。靠前的词往往影响更大，所以把主体和最重要的细节放前面，收尾的修饰放最后。"
+    },
+    {
+      "q": "可以用中文、日语或西班牙语写图片提示词吗？",
+      "a": "很多工具接受其他语言，但因为训练字幕大多是英文，用英文效果往往更好。如果工具会替你翻译，就用简短、直白的短语。"
+    },
+    {
+      "q": "提示词和反向提示词有什么区别？",
+      "a": "提示词描述你想看到的内容；反向提示词列出模型应该避开的具体东西，比如文字、水印或多余的手指。"
+    }
+  ]
+}

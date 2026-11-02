@@ -1,0 +1,143 @@
+{
+  "title": "How Speech-to-Text Works: Whisper, WER and Subtitles — cv.cm",
+  "description": "How AI speech-to-text works: audio to spectrogram to words, how Whisper was trained, word error rate, why it hallucinates, and how to get clean SRT subtitles.",
+  "h1": "How does AI speech-to-text work?",
+  "answer": "Speech-to-text (automatic speech recognition, ASR) turns sound into a spectrogram, a picture of which frequencies are loud over time. A neural network reads that picture and writes the most likely text, one token at a time. Models like Whisper learned this from hundreds of thousands of hours of transcribed audio, so they handle many languages and noise, but they can still mishear names and invent text in silence.",
+  "sections": [
+    {
+      "h": "From sound wave to text in four steps",
+      "body": [
+        "A modern recognizer such as Whisper follows the same pipeline every time you give it a file:",
+        {
+          "ol": [
+            "Resample. The audio is converted to one channel at 16,000 samples per second. This is enough for speech, which carries most of its information below 8 kHz.",
+            "Make a spectrogram. The signal is cut into short overlapping windows (Whisper uses 25 ms windows every 10 ms) and each window becomes 80 numbers on the Mel scale, which spaces frequencies the way human hearing does. The result is an image: time on one axis, pitch bands on the other.",
+            "Encode. A Transformer encoder reads the spectrogram and builds a representation of what was said, including which sounds are speech and which are noise.",
+            "Decode. A Transformer decoder writes the transcript one token at a time, each time picking a likely next token given the audio and the text so far. Special tokens tell it the language, the task (transcribe or translate to English) and where to put timestamps."
+          ]
+        },
+        "Whisper processes audio in 30-second windows. A one-hour file is handled as a sliding sequence of windows, and the predicted timestamps tell the program where to start the next window. Timestamps are predicted in steps of 20 ms, which is why subtitle timings from Whisper are good but not frame-exact."
+      ]
+    },
+    {
+      "h": "How the model learned: weak supervision at scale",
+      "body": [
+        "Older systems combined separate parts: an acoustic model for sounds, a pronunciation dictionary and a language model for word order. Each part needed carefully labeled data in each language.",
+        "Whisper took a different route. Its authors collected 680,000 hours of audio paired with transcripts found on the internet. About 117,000 hours covered 96 languages other than English, and 125,000 hours were non-English speech paired with English text, which taught the model to translate. The labels were imperfect (that is the weak part of weak supervision), but the scale made the model robust to accents, background noise and recording quality without fine-tuning for each test set.",
+        "The same idea explains its weak points. Languages with little data in that collection are recognized less accurately, and the model learned habits of internet captions, such as adding phrases that often appear at the end of videos."
+      ]
+    },
+    {
+      "h": "Measuring accuracy: word error rate",
+      "body": [
+        "ASR accuracy is reported as word error rate (WER): the number of substituted, deleted and inserted words, divided by the number of words in the correct transcript. Lower is better, and it can exceed 100 percent if the model inserts a lot of text.",
+        {
+          "code": "Reference:  the meeting moved to three thirty on friday   (8 words)\nModel:      the meeting moved to tree  thirty    friday\n\nSubstitutions: three -> tree        1\nDeletions:     on                   1\nInsertions:                         0\nWER = (1 + 1 + 0) / 8 = 25%",
+          "lang": "text"
+        },
+        "Before comparing, researchers normalize both texts: lower case, remove punctuation, expand contractions, and write numbers the same way. Without that step, \"3:30\" versus \"three thirty\" would count as errors even though both are correct. When a vendor quotes a WER, ask what audio it was measured on; clean read speech and a noisy phone call can differ by many times.",
+        "For Chinese, Japanese and Thai, which do not separate words with spaces, character error rate (CER) is used instead."
+      ]
+    },
+    {
+      "h": "Types of speech recognizers",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Type",
+              "How it works",
+              "Strengths",
+              "Weaknesses"
+            ],
+            "rows": [
+              [
+                "Encoder-decoder (Whisper style)",
+                "Reads a chunk of audio, then writes text with a decoder",
+                "High accuracy, punctuation, many languages, translation",
+                "Works in chunks, so live captions lag; can hallucinate"
+              ],
+              [
+                "CTC and transducer models",
+                "Predict a label for each short audio frame and merge them",
+                "Low latency, good for live captions, rarely invent text",
+                "Need more work for punctuation and casing"
+              ],
+              [
+                "Platform speech services",
+                "Your browser or phone sends audio to its vendor's service, or runs an on-device model",
+                "No setup; the Web Speech API exposes it to web pages",
+                "Behavior differs by browser and device; network may be needed"
+              ]
+            ]
+          }
+        },
+        "The Web Speech API's `SpeechRecognition` interface lets a web page ask the platform for live recognition from the microphone. By default it uses a service provided by the browser or operating system; some browsers can also run it on the device. A page that runs Whisper itself, for example cv.cm's speech-to-text tool, which runs Whisper in the browser and exports TXT, SRT or VTT, does not depend on that service, but needs to download the model once."
+      ]
+    },
+    {
+      "h": "Where speech-to-text fails",
+      "body": [
+        {
+          "ul": [
+            "Names, brands and jargon. The decoder prefers common words, so a rare surname becomes a common one. Correct these by hand, or give a short prompt with the right spellings if your tool supports one.",
+            "Hallucination in silence or music. The Whisper paper reports that long-form transcription can get stuck in repeat loops, skip the first or last words of a segment, or produce text unrelated to the audio. Silent intros, applause and background music are common triggers.",
+            "Accents and code-switching. Speakers who mix two languages in one sentence, or strong regional accents with little training data, raise error rates.",
+            "Overlapping speakers. Most recognizers write one stream of text and do not say who spoke. Speaker labels (diarization) are a separate step.",
+            "Traditional vs Simplified Chinese. A model may output either script for Mandarin; convert the transcript afterwards if you need one script.",
+            "Wrong language detected. Auto-detection looks at the start of the audio. If the first seconds are music or another language, choose the language manually."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Practical workflow for clean subtitles",
+      "body": [
+        {
+          "ol": [
+            "Start with the best audio you have. Use the original file, not a re-recording from speakers. Reduce music under speech if you can.",
+            "Trim long silences and music at the start, which cause wrong language detection and invented lines.",
+            "Set the language manually when you know it.",
+            "Choose a larger model for final subtitles and a smaller one for quick notes. Larger models are slower but make fewer errors on names and accents.",
+            "Export SRT or VTT, then read the whole file once while watching the video. Fix names, numbers and any line that repeats.",
+            "Split long cues. A readable subtitle is about two lines and stays on screen for at least one second."
+          ]
+        },
+        "The two common subtitle formats differ only in small details:",
+        {
+          "code": "SRT:\n1\n00:00:01,000 --> 00:00:04,000\nWelcome to the lesson.\n\nVTT:\nWEBVTT\n\n00:00:01.000 --> 00:00:04.000\nWelcome to the lesson.",
+          "lang": "text"
+        },
+        "SRT numbers each cue and uses a comma before the milliseconds. WebVTT, the W3C format used by the HTML video element, starts with the `WEBVTT` header and uses a period."
+      ]
+    },
+    {
+      "h": "Privacy and consent",
+      "body": [
+        "Recordings of meetings, calls and interviews contain personal data, and in many countries recording a person needs their consent. Before using a cloud transcription service, check where the audio is stored and whether it is used for training. Running a model locally, in an app or in the browser, keeps the audio on your device, which is often the simplest way to meet a privacy requirement."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "How accurate is AI transcription?",
+      "a": "On clear, single-speaker audio in a widely spoken language, modern models make only a few errors per hundred words. Accuracy drops with noise, overlapping speakers, strong accents, rare languages and specialist vocabulary, so always proofread names and numbers."
+    },
+    {
+      "q": "Why does Whisper write words that were never said?",
+      "a": "It is a text generator conditioned on audio. In silence, music or noise it can continue with text that is likely in general, such as repeated lines or phrases common at the end of online videos. Trimming silence and setting the language reduce this."
+    },
+    {
+      "q": "Can speech-to-text tell who is speaking?",
+      "a": "Not by itself. Identifying speakers is called diarization and is usually a separate model that labels segments as Speaker 1, Speaker 2 and so on. The labels then need to be matched to real names by a person."
+    },
+    {
+      "q": "What is the difference between SRT and VTT?",
+      "a": "Both are plain-text subtitle files with start and end times. SRT uses a comma in timestamps and numbers each cue. VTT starts with a WEBVTT line, uses a period, and is the format browsers read natively for HTML video."
+    },
+    {
+      "q": "Can I transcribe audio offline?",
+      "a": "Yes. Open models such as Whisper can run on a computer or in a modern browser without sending audio to a server. The first run downloads the model; after that, transcription works without uploading your files."
+    }
+  ]
+}

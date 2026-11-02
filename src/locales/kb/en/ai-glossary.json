@@ -1,0 +1,462 @@
+{
+  "title": "AI Glossary: 60 Generative AI Terms Explained Simply — cv.cm",
+  "description": "An AI glossary of 60 essential terms, from tokens, LoRA and RAG to diffusion, CFG, voice cloning, C2PA and deepfakes, each with a plain meaning and an example.",
+  "h1": "AI glossary: generative AI terms explained",
+  "answer": "This glossary explains about 60 terms you meet when using generative AI, grouped by topic: models and training, text and LLMs, image and video generation, audio, and safety and law. Each entry gives a plain meaning and a short example, so you can decode a model card, a settings panel or a news story without a technical background.",
+  "sections": [
+    {
+      "h": "Models and training",
+      "body": [
+        "These terms describe what a model is and how it gets built. They apply to text, image, video and audio models alike.",
+        {
+          "table": {
+            "head": [
+              "Term",
+              "Meaning",
+              "Example"
+            ],
+            "rows": [
+              [
+                "Artificial intelligence (AI)",
+                "Software that performs tasks that normally need human intelligence",
+                "Translation, face unlock, a chat assistant"
+              ],
+              [
+                "Machine learning",
+                "AI that learns patterns from examples instead of following hand-written rules",
+                "A spam filter trained on labeled emails"
+              ],
+              [
+                "Neural network",
+                "A model made of many layers of simple connected units whose strengths are learned",
+                "The core of every modern image or language model"
+              ],
+              [
+                "Model",
+                "The trained network itself, a file of learned numbers plus the code to run it",
+                "An app such as a chatbot runs one or more models"
+              ],
+              [
+                "Parameters (weights)",
+                "The numbers inside a model that training adjusts",
+                "A 7B model has about 7 billion parameters"
+              ],
+              [
+                "Training data",
+                "The examples a model learns from",
+                "Web text, licensed books, image and caption pairs"
+              ],
+              [
+                "Pretraining",
+                "The first, largest training stage on broad data",
+                "Learning to predict the next token on web-scale text"
+              ],
+              [
+                "Fine-tuning",
+                "Further training of an existing model on a smaller, focused dataset",
+                "Training a base model on customer-support answers"
+              ],
+              [
+                "LoRA",
+                "Low-rank adaptation: a small add-on file that fine-tunes a model cheaply without changing the original weights",
+                "A style or character LoRA for an image model"
+              ],
+              [
+                "Foundation model",
+                "A large general model that many products and fine-tunes are built on",
+                "One LLM powering chat, search and coding tools"
+              ],
+              [
+                "Open-weight model",
+                "A model whose weights can be downloaded and run yourself; the license may still limit use",
+                "Running an open model on your own computer"
+              ],
+              [
+                "Inference",
+                "Running a trained model to get an output",
+                "Each time you press Generate"
+              ],
+              [
+                "Quantization",
+                "Storing weights with fewer bits to make a model smaller and faster, with a small quality loss",
+                "A 4-bit version of a model that fits on a laptop"
+              ],
+              [
+                "Multimodal model",
+                "A model that handles more than one type of data, such as text and images",
+                "Asking a question about a photo"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "Text and large language models",
+      "body": [
+        "Terms you see in chat apps, API settings and articles about LLMs.",
+        {
+          "table": {
+            "head": [
+              "Term",
+              "Meaning",
+              "Example"
+            ],
+            "rows": [
+              [
+                "Large language model (LLM)",
+                "A large neural network trained to predict the next token of text",
+                "The model behind ChatGPT, Claude, Gemini, DeepSeek, Qwen"
+              ],
+              [
+                "Token",
+                "The unit of text a model reads and writes: a word, part of a word or a symbol",
+                "unbelievable can be 3 tokens: un, bel, ievable"
+              ],
+              [
+                "Context window",
+                "The maximum number of tokens a model can consider at once, input plus output",
+                "A long chat that starts forgetting its beginning"
+              ],
+              [
+                "Transformer",
+                "The neural network design, based on attention, used by almost all LLMs",
+                "GPT means Generative Pre-trained Transformer"
+              ],
+              [
+                "Attention",
+                "The step that lets each token weigh which earlier tokens matter to it",
+                "Linking it to trophy in a sentence about a suitcase"
+              ],
+              [
+                "Embedding",
+                "A list of numbers that represents meaning, so similar texts get similar numbers",
+                "Finding documents similar to a question"
+              ],
+              [
+                "Prompt",
+                "The input you give a model",
+                "Summarize this email in two sentences"
+              ],
+              [
+                "System prompt",
+                "Hidden instructions set by the app or developer before the conversation",
+                "You are a polite support agent for a bike shop"
+              ],
+              [
+                "Temperature",
+                "A setting that controls randomness in the output",
+                "Low for data extraction, higher for brainstorming"
+              ],
+              [
+                "Hallucination",
+                "A confident but false or invented statement from a model",
+                "A citation to a paper that does not exist"
+              ],
+              [
+                "RAG (retrieval-augmented generation)",
+                "Searching documents first and putting the best passages in the prompt",
+                "A help bot that answers from your manuals"
+              ],
+              [
+                "Knowledge cutoff",
+                "The date after which the model has no training data",
+                "It does not know about last month's events"
+              ],
+              [
+                "Reasoning mode",
+                "A mode where the model writes intermediate steps before the final answer",
+                "Shown as thinking in some chat apps"
+              ],
+              [
+                "Tool use (function calling)",
+                "The model asks the app to run a tool and reads the result",
+                "Calling a calculator or web search"
+              ],
+              [
+                "AI agent",
+                "A system where a model plans and takes several tool actions toward a goal",
+                "Researching and booking options across websites"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "Image and video generation",
+      "body": [
+        "Settings and techniques that appear in image and video tools such as Midjourney, Stable Diffusion, FLUX, Veo, Kling, Runway and Seedance. Names differ slightly between tools.",
+        {
+          "table": {
+            "head": [
+              "Term",
+              "Meaning",
+              "Example"
+            ],
+            "rows": [
+              [
+                "Diffusion model",
+                "A model that creates an image by removing noise step by step from random noise",
+                "Most text-to-image tools"
+              ],
+              [
+                "Latent space",
+                "A compressed internal representation where the model works instead of on raw pixels",
+                "Latent diffusion generates a small latent, then decodes it to an image"
+              ],
+              [
+                "Text-to-image",
+                "Generating an image from a text prompt",
+                "A red bicycle against a blue wall at sunset"
+              ],
+              [
+                "Image-to-image",
+                "Generating a new image guided by an input image",
+                "Turning a sketch into a finished illustration"
+              ],
+              [
+                "Inpainting",
+                "Regenerating only a masked area of an image",
+                "Replacing a coffee cup on a table with a plant"
+              ],
+              [
+                "Negative prompt",
+                "Text describing what to avoid",
+                "blurry, extra fingers, watermark"
+              ],
+              [
+                "Seed",
+                "The starting random number; the same seed and settings give a similar result",
+                "Reusing a seed to make small prompt changes"
+              ],
+              [
+                "Guidance scale (CFG)",
+                "How strongly the output follows the prompt versus looking natural",
+                "Too high gives harsh colors and artifacts"
+              ],
+              [
+                "ControlNet",
+                "An add-on that guides a diffusion model with a pose, edge or depth image",
+                "Keeping a character's exact pose"
+              ],
+              [
+                "Depth map",
+                "A grayscale image where brightness shows distance from the camera",
+                "Used for parallax video and ControlNet"
+              ],
+              [
+                "Upscaling",
+                "Enlarging an image with a model that adds plausible detail",
+                "A 512-pixel image enlarged 4 times"
+              ],
+              [
+                "Text-to-video",
+                "Generating a video clip from a text prompt",
+                "A paper boat drifting down a rainy street"
+              ],
+              [
+                "Image-to-video",
+                "Animating a still image into a clip",
+                "Making a product photo slowly rotate"
+              ],
+              [
+                "First and last frame",
+                "Giving a start image and an end image and letting the model fill the motion between",
+                "A door closed in the first frame and open in the last"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "Audio and speech",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Term",
+              "Meaning",
+              "Example"
+            ],
+            "rows": [
+              [
+                "Speech-to-text (ASR)",
+                "Automatic speech recognition: turning spoken audio into text",
+                "Transcribing a meeting or a video"
+              ],
+              [
+                "Whisper",
+                "A widely used open speech recognition model family from OpenAI",
+                "Making subtitles in many languages"
+              ],
+              [
+                "Text-to-speech (TTS)",
+                "Turning text into spoken audio",
+                "Reading an article aloud"
+              ],
+              [
+                "Voice cloning",
+                "A TTS model that imitates a specific person's voice from a sample",
+                "A voiceover in the creator's own voice, with consent"
+              ],
+              [
+                "Speaker diarization",
+                "Labeling who spoke when in a recording",
+                "Speaker 1 and Speaker 2 in an interview transcript"
+              ],
+              [
+                "Word error rate (WER)",
+                "The share of words a transcript gets wrong, used to measure ASR quality",
+                "A WER of 5 percent means about 1 wrong word in 20"
+              ],
+              [
+                "SRT and VTT",
+                "Plain-text subtitle formats with timestamps for each line",
+                "Uploading captions to a video platform"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "Safety, labeling and law",
+      "body": [
+        "Rules differ by country and change often. This section is general information, not legal advice.",
+        {
+          "table": {
+            "head": [
+              "Term",
+              "Meaning",
+              "Example"
+            ],
+            "rows": [
+              [
+                "Deepfake",
+                "Realistic AI-generated or AI-altered media that shows people or events that are not real",
+                "A video of a politician saying words they never said"
+              ],
+              [
+                "Content credentials (C2PA)",
+                "An open standard that attaches signed information about how a file was made and edited",
+                "A photo showing it was edited with an AI tool"
+              ],
+              [
+                "Invisible watermark",
+                "A hidden signal embedded in pixels or audio that software can detect later",
+                "A generator marking every image it makes"
+              ],
+              [
+                "Explicit and implicit labels",
+                "In China's labeling rules: a visible label people can see, and a hidden label in metadata or a watermark",
+                "An AI-generated tag on a video plus a metadata field"
+              ],
+              [
+                "EU AI Act transparency duties",
+                "EU rules that people must be told when they talk to an AI, and that AI content and deepfakes must be identifiable",
+                "A chatbot disclosing it is a bot"
+              ],
+              [
+                "Training data copyright",
+                "The legal question of whether training on copyrighted works is allowed, which differs by country",
+                "Lawsuits and policy reports in several countries"
+              ],
+              [
+                "Guardrails",
+                "Rules and filters that block harmful requests or outputs",
+                "Refusing to give instructions for weapons"
+              ],
+              [
+                "Jailbreak",
+                "A prompt crafted to make a model ignore its safety rules",
+                "A role-play trick to bypass refusals"
+              ],
+              [
+                "Prompt injection",
+                "Hidden instructions in a web page or file that hijack an AI that reads it",
+                "A page that tells an AI agent to send your data elsewhere"
+              ],
+              [
+                "Bias",
+                "Systematic unfairness in outputs, often learned from skewed training data",
+                "Images of a profession that show only one gender"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "Terms people often mix up",
+      "body": [
+        "Several pairs of terms are confused in news stories and product pages. The difference usually changes what you should do.",
+        {
+          "table": {
+            "head": [
+              "Pair",
+              "Difference",
+              "Why it matters"
+            ],
+            "rows": [
+              [
+                "Model vs app",
+                "The model generates; the app adds the interface, system prompt, tools and storage",
+                "Two apps on the same model can behave differently"
+              ],
+              [
+                "Token vs word",
+                "A word can be one token or several; counts differ by language",
+                "Prices and limits are counted in tokens"
+              ],
+              [
+                "Parameters vs context window",
+                "Parameters are what the model learned; the context window is what it can see right now",
+                "A huge model can still forget the start of a long chat"
+              ],
+              [
+                "Fine-tuning vs RAG",
+                "Fine-tuning changes the model; RAG gives it documents at question time",
+                "For facts that change often, RAG is usually easier"
+              ],
+              [
+                "Open-weight vs open-source",
+                "Open weights can be downloaded; open source also means the training code and data are open under an open license",
+                "Read the license before commercial use"
+              ],
+              [
+                "Watermark vs label",
+                "A watermark is a technical signal; a label is a disclosure people can read",
+                "Some laws require both"
+              ]
+            ]
+          }
+        },
+        "For a deeper explanation of any term, see the related articles in this section, such as how LLMs work, tokens and the context window, and how diffusion models work."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "What is the difference between AI, machine learning and deep learning?",
+      "a": "AI is the whole field. Machine learning is the part of AI that learns from examples. Deep learning is the part of machine learning that uses many-layered neural networks, which is what modern generative models are."
+    },
+    {
+      "q": "What is the difference between an LLM and a chatbot?",
+      "a": "An LLM is the model that generates text. A chatbot is an app built around one or more models, adding a chat interface, instructions, memory features and tools such as web search."
+    },
+    {
+      "q": "What does open source mean for AI models?",
+      "a": "It is used loosely. Often it means only that the weights can be downloaded. A fully open model also shares training code and data details under an open license. Check the license for commercial use and attribution rules."
+    },
+    {
+      "q": "What does 7B or 70B mean in a model name?",
+      "a": "It is the approximate number of parameters, in billions. A larger number usually means more capability but also more memory and computing power to run it."
+    },
+    {
+      "q": "Is prompt engineering a real skill?",
+      "a": "Yes, in the practical sense of writing clear, specific instructions, giving examples and supplying the right context. Models keep improving at understanding plain requests, but clear input still gives more reliable output."
+    }
+  ]
+}

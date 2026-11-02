@@ -55,7 +55,7 @@ export type SeoInput = {
   /** A data table under /datasets/; `datasetId` null is the hub. */
   dataset?: boolean;
   datasetId?: DatasetId | null;
-  /** A kb page under /learn/knowledge/ or /learn/code/; `kbId` null is the knowledge hub, "code" the coding hub. */
+  /** A kb page under /learn/knowledge/, /learn/code/ or /learn/ai/; `kbId` null is the knowledge hub, "code" the coding hub, "ai" the AI hub. */
   kb?: boolean;
   kbId?: KbPage;
   /** The pose and style reference under /reference/; `refId` null is the hub. */
@@ -1109,6 +1109,7 @@ function staticPageHtml(
     const kbHubs = [
       { href: kbHref(locale), text: linkText(pageTitle(locale, { kb: true })) },
       { href: kbHref(locale, "code"), text: linkText(pageTitle(locale, { kb: true, kbId: "code" })) },
+      { href: kbHref(locale, "ai"), text: linkText(pageTitle(locale, { kb: true, kbId: "ai" })) },
     ];
     parts.push(linkList(seo.tutorial ? [{ href: learnHref(locale, null), text: linkText(pageTitle(locale, { learn: true })) }, ...kbHubs, ...tutorials] : [...kbHubs, ...tutorials]));
   } else if (seo.games || seo.markets) {
@@ -1128,6 +1129,7 @@ function staticPageHtml(
       { href: datasetHref(locale), text: linkText(pageTitle(locale, { dataset: true })) },
       { href: kbHref(locale), text: linkText(pageTitle(locale, { kb: true })) },
       { href: kbHref(locale, "code"), text: linkText(pageTitle(locale, { kb: true, kbId: "code" })) },
+      { href: kbHref(locale, "ai"), text: linkText(pageTitle(locale, { kb: true, kbId: "ai" })) },
       { href: refHref(locale), text: linkText(pageTitle(locale, { ref: true })) },
       { href: legalHref(locale, "privacy"), text: linkText(pageTitle(locale, { legalPage: "privacy" })) },
       { href: legalHref(locale, "terms"), text: linkText(pageTitle(locale, { legalPage: "terms" })) },

@@ -1,10 +1,11 @@
 // `npm run kb:sync [-- --touch <id>...]`: after editing knowledge copy or sources, refresh src/locales/kb/meta.json
-// (fingerprint, last-changed date and reading time per article and locale) and the generated meta.ts, meta-code.ts, all.ts and loaders/<locale>.ts.
+// (fingerprint, last-changed date and reading time per article and locale) and the generated meta.ts, meta-code.ts, meta-ai.ts, all.ts and loaders/<locale>.ts.
 // `--touch <id>` marks an article as re-checked today in every locale even when nothing changed.
 import { mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { resolve } from "node:path";
 import "../src/shared/kb-code-meta";
-import { CODE_ARTICLES, KB_ARTICLES, KNOWLEDGE_ARTICLES, isKbId, kbMeta } from "../src/shared/kb";
+import "../src/shared/kb-ai-meta";
+import { AI_ARTICLES, CODE_ARTICLES, KB_ARTICLES, KNOWLEDGE_ARTICLES, isKbId, kbMeta } from "../src/shared/kb";
 import type { KbArticleCopy } from "../src/shared/kb-i18n";
 import { syncEntry, type KbSyncEntry } from "../src/shared/kb-sync";
 import { LOCALES, type Locale } from "../src/shared/locale";
@@ -46,7 +47,7 @@ const typeImports = [
 ];
 
 // Only what pages show: dates and reading times (fingerprints stay in meta.json for the script and tests).
-// Knowledge dates ship with kb.ts; coding dates in meta-code.ts ride in the kb packs (src/shared/kb-code-meta.ts).
+// Knowledge dates ship with kb.ts; coding and AI dates in meta-code.ts and meta-ai.ts ride in the kb packs (src/shared/kb-code-meta.ts, kb-ai-meta.ts).
 const datesModule = (ids: readonly string[], prefix: string, type: string): string => [
   header,
   `import type { ${type} } from "../../shared/kb";`,
@@ -59,6 +60,7 @@ const datesModule = (ids: readonly string[], prefix: string, type: string): stri
 ].join("\n");
 writeFileSync(resolve(dir, "meta.ts"), datesModule(KNOWLEDGE_ARTICLES, "KB", "KnowledgeId"));
 writeFileSync(resolve(dir, "meta-code.ts"), datesModule(CODE_ARTICLES, "CODE", "CodeId"));
+writeFileSync(resolve(dir, "meta-ai.ts"), datesModule(AI_ARTICLES, "AI", "AiId"));
 
 const name = (locale: string, id: string): string => `${locale.replace("-", "")}_${id.replace(/-/g, "_")}`;
 writeFileSync(resolve(dir, "all.ts"), [

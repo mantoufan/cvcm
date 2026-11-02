@@ -1,0 +1,205 @@
+{
+  "title": "AI 繪圖提示詞怎麼寫？公式、關鍵字與範例 — cv.cm",
+  "description": "AI 繪圖提示詞（prompt）怎麼寫：可重複使用的公式、弱到強的改寫範例、風格／光線／鏡頭關鍵字，以及真正有用的負面提示詞用法。",
+  "h1": "AI 繪圖提示詞該怎麼寫？",
+  "answer": "好的圖片提示詞會點明一個清楚的主體，說明它在做什麼、在哪裡，再用平實的詞補上風格、光線、鏡頭與構圖。最重要的概念放最前面，描述你想要的而不是不想要的，一個詞組只放一個概念。負面提示詞只用來處理具體、看得見的問題，例如文字或多出來的手指。",
+  "sections": [
+    {
+      "h": "為什麼提示詞的用字很重要",
+      "body": [
+        "圖片模型不會像人一樣閱讀你的提示詞。文字編碼器會把字詞轉換成數字，而圖片生成器經過訓練，會產出與這些數字相符的畫面。在訓練說明文字中經常與某類圖片一起出現的詞，會把結果拉向那類圖片。例如 `golden hour` 太常和溫暖、低角度的陽光一起出現，幾乎可以當作光線設定來用。",
+        "由此得出兩個結論。第一，具體的視覺用詞勝過抽象用詞：`wet cobblestone street` 讓模型有東西可畫，`a sad mood` 則讓它只能猜。第二，模型會衡量每一個詞，所以 `very`、`beautiful`、`amazing` 這類贅詞只佔位置、不增加資訊。多數工具也限制文字編碼器能讀取的長度；超出的字詞會被截掉或影響變小，所以提示詞的前段分量最重。",
+        "許多生成器還會使用引導（guidance）：把依你的提示詞生成的圖，與沒有提示詞生成的圖相比較，再把結果推向兩者差異的方向。引導值越高，越嚴格遵循文字，但畫面可能顯得生硬或過度飽和。這就是為什麼清楚的提示詞搭配適中的引導值，通常比含糊的提示詞加高引導值好看。"
+      ]
+    },
+    {
+      "h": "可重複使用的提示詞公式",
+      "body": [
+        "多數好的提示詞都回答同樣六個問題。請依這個順序寫，因為模型傾向把前面的詞看得更重要。",
+        {
+          "code": "[subject + key details], [action or pose], [setting + time],\n[style or medium], [lighting], [camera / lens / framing], [color + mood]",
+          "lang": "text"
+        },
+        {
+          "ol": [
+            "主體：是誰或是什麼，附上兩三個重要細節（年齡層、服裝、材質、顏色）。",
+            "動作：主體在做什麼。動詞會給模型一個可畫的姿勢。",
+            "場景：在哪裡、什麼時候。一個地點、一個時段就夠了。",
+            "風格或媒材：照片、水彩、3D 渲染、墨水速寫、平面向量、動漫賽璐珞上色。",
+            "光線：影響氛圍最強的一個槓桿。寫出光源和方向。",
+            "鏡頭與構圖：景別、角度、焦段、景深，以及主體在畫面中的位置。"
+          ]
+        },
+        "不必每次都六項齊全。產品照可以省略動作，抽象圖案可以省略鏡頭。但按下生成前對照一遍清單，就能抓出最常見的缺漏：提示詞只描述了主體，其他什麼都沒寫。"
+      ]
+    },
+    {
+      "h": "從弱到強：完整改寫示範",
+      "body": [
+        "下面是典型的第一次嘗試。它只給了模型一個主體和一個形容詞，完全沒說畫面該長什麼樣子。",
+        {
+          "code": "a beautiful cat in a cafe, high quality, 8k, masterpiece",
+          "lang": "text"
+        },
+        "結果通常是一隻置中的普通貓，背景是模糊的室內。在現今多數模型上，`8k` 和 `masterpiece` 並不會增加細節，只會讓畫面往光鮮的圖庫風格靠。下面的改寫保留同一個構想，但回答了那六個問題。",
+        {
+          "code": "an orange tabby cat with a white chest, sitting on a wooden windowsill\ninside a small cafe, looking out at the rain, late afternoon,\n35mm film photograph, soft window light from the left, warm interior lamps\nin the background, medium close-up at eye level, shallow depth of field,\nmuted warm colors, quiet and cozy",
+          "lang": "text"
+        },
+        {
+          "table": {
+            "head": [
+              "部分",
+              "提示詞中的文字",
+              "作用"
+            ],
+            "rows": [
+              [
+                "主體",
+                "orange tabby cat with a white chest",
+                "固定外觀，重複生成時結果才會相近"
+              ],
+              [
+                "動作",
+                "sitting on a wooden windowsill, looking out",
+                "給出姿勢和視線方向"
+              ],
+              [
+                "場景",
+                "small cafe, rain, late afternoon",
+                "一個地點、一個時段，光線才一致"
+              ],
+              [
+                "風格",
+                "35mm film photograph",
+                "決定顆粒感、色彩表現與寫實程度"
+              ],
+              [
+                "光線",
+                "soft window light from the left, warm lamps behind",
+                "形成主光，以及溫暖的背景光暈"
+              ],
+              [
+                "鏡頭",
+                "medium close-up, eye level, shallow depth of field",
+                "控制構圖，並刻意讓背景模糊"
+              ],
+              [
+                "氛圍",
+                "muted warm colors, quiet and cozy",
+                "讓色調往同一個方向走"
+              ]
+            ]
+          }
+        },
+        "如果第二個版本還是不理想，一次只改一個部分，其餘保持不變。一次改五處，就分不出是哪個詞造成了變化。"
+      ]
+    },
+    {
+      "h": "風格、光線、鏡頭與構圖關鍵字",
+      "body": [
+        "這些詞彙廣為圖片模型所理解，因為它們常見於照片說明、藝術描述和電影用語。每一列挑一兩個用即可，不要全部都用。",
+        {
+          "table": {
+            "head": [
+              "類別",
+              "關鍵字",
+              "通常會看到什麼"
+            ],
+            "rows": [
+              [
+                "風格／媒材",
+                "35mm film photo, studio product photo, watercolor, gouache, ink line art, flat vector illustration, isometric 3D render, anime cel shading, oil painting, paper cutout",
+                "整體外觀、質感與寫實程度"
+              ],
+              [
+                "光線",
+                "golden hour, blue hour, overcast soft light, hard noon sun, rim light, backlit, softbox key light, neon signs at night, candlelight, volumetric light through fog",
+                "氛圍、對比與陰影方向"
+              ],
+              [
+                "鏡頭／相機",
+                "wide-angle 24mm, 50mm standard, 85mm portrait, macro, telephoto compression, fisheye, shallow depth of field, deep focus, motion blur, long exposure",
+                "透視變形、背景模糊，以及物體給人的遠近感"
+              ],
+              [
+                "景別／角度",
+                "extreme close-up, close-up, medium shot, full body, wide establishing shot, low angle, high angle, overhead flat lay, eye level, Dutch tilt",
+                "主體呈現多少，以及看起來多有氣勢"
+              ],
+              [
+                "構圖",
+                "rule of thirds, centered symmetrical, negative space on the right, leading lines, framed by a doorway, foreground blur, subject small in a large landscape",
+                "主體的位置，以及視線的流向"
+              ],
+              [
+                "色彩／氛圍",
+                "muted earth tones, pastel palette, high contrast black and white, teal and orange, monochrome red, warm and nostalgic, cold and clinical",
+                "調色與情緒基調"
+              ]
+            ]
+          }
+        },
+        {
+          "note": "指名在世藝術家來模仿其風格，會引發法律與倫理問題，有些服務也會封鎖。改為描述你喜歡的視覺特徵（粗獷筆觸、有限色盤、平面陰影），既安全，往往也更精準。"
+        }
+      ]
+    },
+    {
+      "h": "負面提示詞：作用與使用時機",
+      "body": [
+        "負面提示詞是第二個文字欄位，告訴模型要遠離什麼。在以 Stable Diffusion 或 FLUX 為基礎的工具中，它通常是獨立的輸入框或 `negative_prompt` 參數；Midjourney 則使用 `--no` 參數。有些對話式圖片工具根本沒有負面欄位，這時就要把需求改成正面寫法（用 `a clean, empty wall`，而不是 `no text on the wall`）。",
+        "負面提示詞最適合處理具體、看得見的東西：",
+        {
+          "code": "Prompt:   a clean product photo of a ceramic mug on a white table\nNegative: text, logo, watermark, extra handles, cluttered background",
+          "lang": "text"
+        },
+        {
+          "ul": [
+            "適合的目標：文字與浮水印、多出來的手指、多出的第二個人、一直出現的特定物件、你不想要的顏色。",
+            "效果有限的目標：一長串品質用詞，例如 `ugly, bad, worst quality`。它們在某些較舊的模型上有點幫助，但也會把每張圖推向同樣的外觀。",
+            "不要把同一個概念放進兩個欄位。提示詞裡寫貓、負面欄位又寫 `cat`，兩者會互相抵銷並讓結果混亂。",
+            "在主提示詞裡寫 `no` 常會適得其反：`a room with no windows` 提到了窗戶，模型可能就把窗戶畫出來。"
+          ]
+        }
+      ]
+    },
+    {
+      "h": "常見錯誤與誠實的限制",
+      "body": [
+        {
+          "ul": [
+            "主體太多。三個人、三套服裝、三個動作，往往會混在一起：衣服互換、手黏在一起。先生成主要主體，再用編輯或局部重繪（inpainting）加入其他人。",
+            "要求精確的文字。許多模型仍會拼錯字或編造字母，非拉丁文字尤其明顯。文字保持簡短、放進引號，或之後在編輯器裡再加。",
+            "手、數量與位置。`Five apples` 或 `the cup to the left of the book` 不一定會被遵守。檢查結果後重新生成或編輯，而不是繼續加字。",
+            "風格詞互相衝突。`photorealistic watercolor anime` 會往三個方向拉扯。只選一種媒材。",
+            "把提示詞原封不動搬到別的模型。為某個工具調好的提示詞，在另一個工具裡表現可能不同，因為各自使用不同的文字編碼器與訓練資料。先測試幾次再依賴它。"
+          ]
+        },
+        "許多工具可以用非英文寫提示詞，但有些模型主要用英文說明文字訓練。例如 cv.cm 的 AI 圖片生成器，會先把非英文提示詞翻成英文再執行模型，所以簡短、直白的句子比成語和俚語翻譯得更可靠。"
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "AI 繪圖提示詞要寫多長？",
+      "a": "通常一到四句，約 20 到 75 個英文單字。太短會讓結果更靠運氣；太長則可能超過文字編碼器能讀取的範圍，後面的字詞就影響較小。"
+    },
+    {
+      "q": "加上 4k、8k 或 masterpiece 這類詞，畫質會變好嗎？",
+      "a": "在現今多數模型上幫助不大。它們可能把畫面推向光鮮的圖庫風格，但描述光線、鏡頭與材質，對品質的幫助大得多。"
+    },
+    {
+      "q": "圖片提示詞的字詞順序重要嗎？",
+      "a": "重要，大多數模型都是如此。靠前的字詞影響力往往較大，所以把主體和最重要的細節放前面，修飾性的收尾放最後。"
+    },
+    {
+      "q": "可以用中文、日文或西班牙文寫圖片提示詞嗎？",
+      "a": "許多工具接受其他語言，但因為多數訓練說明文字是英文，用英文的結果常常更好。如果工具會幫你翻譯，請使用簡短、直白的句子。"
+    },
+    {
+      "q": "提示詞和負面提示詞有什麼不同？",
+      "a": "提示詞描述你想看到什麼。負面提示詞則列出模型應該遠離的具體事物，例如文字、浮水印或多餘的手指。"
+    }
+  ]
+}

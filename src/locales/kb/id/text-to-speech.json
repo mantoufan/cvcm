@@ -1,0 +1,203 @@
+{
+  "title": "Cara Kerja Text-to-Speech: Neural TTS, SSML, Kloning Suara — cv.cm",
+  "description": "Cara kerja text-to-speech: neural TTS vs suara bawaan perangkat, Web Speech API, SSML untuk jeda dan pelafalan, serta aturan persetujuan untuk kloning suara.",
+  "h1": "Bagaimana cara kerja text-to-speech, dan apa itu neural TTS?",
+  "answer": "Text-to-speech (TTS) mengubah teks tertulis menjadi audio dalam tiga tahap: menormalkan teks (angka, tanggal, singkatan), mengubahnya menjadi bunyi, lalu menghasilkan gelombang suara. Neural TTS memakai jaringan yang dilatih pada rekaman ucapan untuk ritme dan nada yang alami. Suara yang ditawarkan browser lewat Web Speech API berasal dari perangkat atau vendornya, jadi berbeda antara ponsel dan komputer.",
+  "sections": [
+    {
+      "h": "Tiga tahap sistem TTS",
+      "body": [
+        {
+          "ol": [
+            "Normalisasi teks. Sistem menulis ulang teks menjadi kata-kata yang bisa diucapkan. \"Dr. Lee paid $25 on 3/4\" harus menjadi sesuatu seperti \"Doctor Lee paid twenty-five dollars on March fourth\" (atau \"the third of April\", tergantung lokal). Banyak salah ucap terjadi di tahap ini, bukan di suaranya.",
+            "Analisis linguistik. Kata diubah menjadi fonem, satuan bunyi suatu bahasa, dan sistem memprediksi tekanan, pemenggalan frasa, dan intonasi. Kata yang ejaannya sama tetapi diucapkan berbeda, seperti \"read\" dalam bentuk sekarang dan lampau, atau aksara Mandarin dengan lebih dari satu bacaan, butuh konteks untuk ditentukan.",
+            "Pembangkitan gelombang suara. Bunyi beserta waktunya diubah menjadi sampel audio. Sistem lama menyambung potongan rekaman (concatenative synthesis) atau memakai model formant, yang terdengar seperti robot. Sistem neural memprediksi audionya dengan jaringan."
+          ]
+        },
+        "Rancangan neural klasik, Tacotron 2, memperlihatkan pembagian modern dengan jelas: satu jaringan memetakan teks ke mel spektrogram (gambar waktu-frekuensi dari ucapan), dan jaringan kedua, vocoder, mengubah gambar itu menjadi gelombang suara. Dalam uji dengar para penulisnya, skornya mendekati rekaman profesional. Sistem yang lebih baru sering menggabungkan tahapan atau membangkitkan token audio terkompresi dengan jaringan bergaya model bahasa, yang memungkinkannya meniru suara pembicara dari contoh singkat."
+      ]
+    },
+    {
+      "h": "Neural TTS vs suara sistem di browser Anda",
+      "body": [
+        "Halaman web bisa berbicara lewat Web Speech API tanpa model sendiri. Objek `speechSynthesis` membacakan `SpeechSynthesisUtterance` dengan salah satu suara yang disediakan platform.",
+        {
+          "table": {
+            "head": [
+              "",
+              "Suara sistem browser (Web Speech API)",
+              "Layanan atau model neural TTS"
+            ],
+            "rows": [
+              [
+                "Asal suara",
+                "Sistem operasi atau vendor browser; sebagian lokal, sebagian jarak jauh",
+                "Model yang Anda jalankan atau API cloud yang Anda panggil"
+              ],
+              [
+                "Pilihan suara",
+                "Apa pun yang terpasang; berbeda di Windows, macOS, Android, iOS",
+                "Katalog tetap, suara kustom, kadang kloning"
+              ],
+              [
+                "Kualitas",
+                "Dari seperti robot sampai cukup alami, tergantung perangkat",
+                "Biasanya alami, dengan ritme dan emosi yang lebih baik"
+              ],
+              [
+                "Biaya dan pengaturan",
+                "Gratis, tanpa key, berjalan offline untuk suara lokal",
+                "API key dan harga per karakter, atau unduhan model besar"
+              ],
+              [
+                "Mendapatkan file audio",
+                "Bukan bagian dari API; suara diputar lewat speaker",
+                "Biasanya menghasilkan MP3, WAV, atau sejenisnya"
+              ],
+              [
+                "Kloning",
+                "Tidak",
+                "Sebagian layanan, dengan pemeriksaan persetujuan"
+              ]
+            ]
+          }
+        },
+        "Setiap suara melaporkan flag `localService`. Spesifikasi menyebutkan nilainya true untuk synthesizer lokal dan false untuk layanan jarak jauh; suara jarak jauh mungkin butuh jaringan dan bisa menambah jeda.",
+        {
+          "code": "const u = new SpeechSynthesisUtterance(\"Your order has shipped.\");\nu.lang = \"en-GB\";\nu.rate = 0.9;   // 1 is normal; spec allows 0.1 to 10\nu.pitch = 1.0;  // 0 to 2, 1 is the voice default\nu.volume = 1.0; // 0 to 1\nconst voices = speechSynthesis.getVoices();\nu.voice = voices.find(v => v.lang === \"en-GB\") || null;\nspeechSynthesis.speak(u);",
+          "lang": "javascript"
+        },
+        "Suara sering dimuat setelah halaman dimulai, sehingga `getVoices()` bisa mengembalikan daftar kosong pada awalnya; dengarkan event `voiceschanged`. Misalnya, alat text-to-speech di cv.cm memakai tepat suara bawaan ini dengan kontrol kecepatan dan nada. Alat ini cara cepat untuk mendengarkan draf, bukan generator suara neural, dan daftar suaranya bergantung pada perangkat Anda."
+      ]
+    },
+    {
+      "h": "SSML: mengatur jeda dan pelafalan",
+      "body": [
+        "Speech Synthesis Markup Language (SSML), standar W3C, adalah XML yang memberi tahu mesin TTS cara membaca teks. Kebanyakan layanan TTS cloud menerimanya. Spesifikasi Web Speech mengizinkan SSML dalam utterance, tetapi mesin yang tidak mendukung sebagian tag harus membuangnya dan membaca teks yang tersisa, sehingga dukungan di browser tidak konsisten.",
+        {
+          "code": "<speak>\n  Your code is <say-as interpret-as=\"characters\">A7K</say-as>.\n  <break time=\"500ms\"/>\n  Please call <sub alias=\"World Health Organization\">WHO</sub>\n  before <prosody rate=\"90%\" pitch=\"+2st\">Friday at noon</prosody>.\n  The word is <phoneme alphabet=\"ipa\" ph=\"təˈmɑːtoʊ\">tomato</phoneme>,\n  and it is <emphasis level=\"strong\">not</emphasis> optional.\n</speak>",
+          "lang": "text"
+        },
+        {
+          "table": {
+            "head": [
+              "Elemen",
+              "Fungsi",
+              "Contoh nilai"
+            ],
+            "rows": [
+              [
+                "break",
+                "Menyisipkan jeda",
+                "time 250ms atau 2s; strength dari weak sampai x-strong"
+              ],
+              [
+                "prosody",
+                "Mengubah kecepatan, nada, volume",
+                "rate 90% atau slow; pitch +2st atau high; volume +6dB atau soft"
+              ],
+              [
+                "emphasis",
+                "Menekankan sebuah kata",
+                "level strong, moderate, reduced"
+              ],
+              [
+                "say-as",
+                "Membaca sebagai huruf per huruf, tanggal, atau angka",
+                "nilai interpret-as bergantung pada mesin"
+              ],
+              [
+                "sub",
+                "Membaca alias, bukan teks yang tertulis",
+                "WHO dibaca sebagai World Health Organization"
+              ],
+              [
+                "phoneme",
+                "Memberi pelafalan yang tepat",
+                "alphabet ipa; dukungannya opsional"
+              ],
+              [
+                "voice, lang",
+                "Berganti suara atau bahasa di tengah teks",
+                "Judul asing yang dikutip di dalam kalimat bahasa Inggris"
+              ]
+            ]
+          }
+        },
+        "Jika layanan mengabaikan SSML, Anda tetap bisa mengarahkannya dengan teks biasa: koma dan titik untuk jeda, angka yang dieja, dan penulisan ulang secara fonetik untuk nama yang sulit."
+      ]
+    },
+    {
+      "h": "Menulis teks yang enak didengar saat diucapkan",
+      "body": [
+        {
+          "ul": [
+            "Pakai kalimat pendek. Klausa panjang membuat suara kehabisan titik napas yang alami.",
+            "Tulis angka sesuai cara pengucapannya bila itu penting: \"two thousand twenty-six\" atau \"twenty twenty-six\".",
+            "Uraikan singkatan dan satuan yang perlu didengar pendengar: \"km/h\" mungkin dibaca huruf demi huruf.",
+            "Atur bahasa dan wilayah yang benar. Suara en-US yang membaca nama Spanyol, atau suara zh-CN yang membaca bahasa Inggris, akan memakai sistem bunyi yang salah.",
+            "Dengarkan seluruh hasilnya sekali sebelum memublikasikan. Periksa nama, angka, dan kata yang punya dua pelafalan."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Kloning suara: persetujuan dan hukum",
+      "body": [
+        "Model modern bisa meniru suara dari rekaman singkat. Itu berguna untuk mendubbing video Anda sendiri atau mengembalikan suara bagi orang yang kehilangannya, dan juga dipakai untuk penipuan, misalnya panggilan yang menirukan kerabat atau direktur perusahaan. Perlakukan setiap suara sebagai data pribadi milik si pembicara.",
+        {
+          "table": {
+            "head": [
+              "Wilayah",
+              "Isi aturan (ringkasan)",
+              "Status"
+            ],
+            "rows": [
+              [
+                "Tiongkok",
+                "Layanan yang menyunting wajah atau suara harus meminta pengguna memberi tahu orang yang bersangkutan dan memperoleh persetujuan terpisah darinya (Deep Synthesis Provisions, Pasal 14). Suara sintetis dan peniruan suara yang dapat menyesatkan harus diberi label yang menonjol (Pasal 17). Peraturan pelabelan 2025 menambahkan label eksplisit dan label metadata serta melarang penghapusannya.",
+                "Berlaku sejak 10 Januari 2023; peraturan pelabelan sejak 1 September 2025"
+              ],
+              [
+                "Uni Eropa",
+                "Pasal 50 EU AI Act: penyedia harus menandai audio sintetis dengan cara yang dapat dibaca mesin, dan orang yang memublikasikan audio atau video deepfake harus mengungkapkan bahwa itu buatan. Aturan data pribadi juga berlaku untuk rekaman suara.",
+                "Berlaku mulai 2 Agustus 2026 menurut Pasal 113; periksa kemungkinan amandemen berikutnya"
+              ],
+              [
+                "Amerika Serikat",
+                "Tidak ada satu undang-undang nasional tentang kloning suara saat artikel ini ditulis. Perlindungan berasal dari hukum right of publicity dan privasi di tingkat negara bagian serta aturan penipuan dan perlindungan konsumen yang sudah ada.",
+                "Beragam per negara bagian"
+              ]
+            ]
+          }
+        },
+        {
+          "note": "Ini informasi umum, bukan nasihat hukum. Sebelum mengkloning suara untuk penggunaan komersial, dapatkan persetujuan tertulis dari pembicara yang menyebutkan tujuan, platform, dan durasinya, lalu beri label hasilnya sebagai buatan AI bila diwajibkan oleh platform atau hukum Anda."
+        },
+        "Layanan kloning yang bereputasi baik meminta pembicara merekam pernyataan persetujuan sebelum suara dibuat. Jika sebuah alat membiarkan Anda mengkloning suara siapa pun dari klip apa pun tanpa pemeriksaan seperti itu, jangan pakai untuk apa pun yang Anda publikasikan."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Kenapa halaman web yang sama terdengar berbeda di ponsel dan laptop saya?",
+      "a": "Web Speech API memakai suara yang terpasang di tiap perangkat atau disediakan vendornya. Windows, macOS, Android, dan iOS membawa suara yang berbeda, sehingga kode yang sama menghasilkan audio yang berbeda."
+    },
+    {
+      "q": "Bisakah saya mengunduh MP3 dari Web Speech API?",
+      "a": "Tidak secara langsung. API ini memutar ucapan lewat speaker dan tidak mengembalikan data audio. Untuk mendapat file, Anda butuh layanan atau model TTS yang menghasilkan audio, atau perekam layar atau audio."
+    },
+    {
+      "q": "Apakah legal mengkloning suara selebritas?",
+      "a": "Di sebagian besar tempat, memakai suara orang yang dapat dikenali tanpa izin untuk iklan, produk, atau konten yang dapat menyesatkan pendengar menimbulkan risiko hukum berdasarkan aturan publisitas, privasi, perlindungan konsumen, atau deep synthesis. Dapatkan izin dan beri label pada hasilnya."
+    },
+    {
+      "q": "Apa bedanya TTS dan voice conversion?",
+      "a": "TTS membuat ucapan dari teks. Voice conversion mengambil rekaman satu orang berbicara dan mengubahnya agar terdengar seperti suara lain, dengan mempertahankan waktu dan emosi aslinya."
+    },
+    {
+      "q": "Kenapa TTS salah mengucapkan nama?",
+      "a": "Model menebak pelafalan dari ejaan dan data latihnya. Nama yang jarang, kata serapan, dan aksara dengan beberapa bacaan sering salah ditebak. Pakai tag phoneme atau sub SSML, atau tulis ulang nama itu secara fonetik."
+    }
+  ]
+}

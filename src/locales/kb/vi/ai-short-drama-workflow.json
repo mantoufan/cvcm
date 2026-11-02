@@ -1,0 +1,279 @@
+{
+  "title": "Cách làm phim ngắn bằng AI: quy trình từ ý tưởng đến tập 9:16 — cv.cm",
+  "description": "Quy trình làm phim ngắn AI trọn vẹn: hook, kịch bản, bảng nhân vật, shot list, tạo video, lồng tiếng, nhạc, phụ đề, dựng 9:16 và gắn nhãn AI, kèm shot list mẫu.",
+  "h1": "Làm phim ngắn AI từ ý tưởng đến tập hoàn chỉnh như thế nào?",
+  "answer": "Hãy làm theo một thứ tự cố định: viết hook gây chú ý ngay trong ba giây đầu, một kịch bản ngắn, bảng nhân vật và bối cảnh, rồi shot list. Sau đó tạo các khung hình tĩnh (keyframe) và làm chúng chuyển động. Thu hoặc tạo lời thoại, thêm nhạc có bản quyền hợp lệ và phụ đề, dựng dọc 9:16, rồi gắn nhãn nội dung AI theo yêu cầu của từng nền tảng. Mỗi bước chốt sẵn các quyết định để bước sau không bị lệch.",
+  "sections": [
+    {
+      "h": "Tổng quan quy trình",
+      "body": [
+        "Phim ngắn dọc (micro-drama) là loạt tập rất ngắn làm cho màn hình điện thoại, mỗi tập kết thúc bằng một câu hỏi khiến người xem muốn bấm tập tiếp theo. Với AI, bạn đảm nhận cả vai biên kịch, đạo diễn chọn diễn viên, ê-kíp quay và người dựng phim. Thứ tự dưới đây rất quan trọng, vì mỗi bước đều khóa lại thứ mà các bước sau phụ thuộc vào.",
+        {
+          "table": {
+            "head": [
+              "Giai đoạn",
+              "Sản phẩm",
+              "Điều được chốt"
+            ],
+            "rows": [
+              [
+                "1. Hook và tiền đề",
+                "Một câu và 3 giây đầu",
+                "Thể loại, xung đột, tông truyện"
+              ],
+              [
+                "2. Kịch bản",
+                "Các cảnh có lời thoại và hành động",
+                "Nhịp truyện và thời lượng"
+              ],
+              [
+                "3. Nhân vật và bối cảnh",
+                "Bảng tham chiếu",
+                "Khuôn mặt, trang phục, địa điểm"
+              ],
+              [
+                "4. Shot list",
+                "Mỗi shot một dòng",
+                "Khung hình, hành động, thời lượng"
+              ],
+              [
+                "5. Keyframe",
+                "Một ảnh tĩnh cho mỗi shot",
+                "Diện mạo của từng shot"
+              ],
+              [
+                "6. Tạo video",
+                "Clip có dư đầu dư đuôi",
+                "Chuyển động và máy quay"
+              ],
+              [
+                "7. Giọng nói",
+                "Âm thanh cho từng câu thoại",
+                "Diễn xuất và thời gian"
+              ],
+              [
+                "8. Nhạc và âm thanh",
+                "Nhạc nền, hiệu ứng, âm thanh môi trường",
+                "Cảm xúc và nhịp điệu"
+              ],
+              [
+                "9. Phụ đề",
+                "File SRT hoặc phụ đề chèn cứng",
+                "Đọc được khi không bật tiếng"
+              ],
+              [
+                "10. Dựng và xuất file",
+                "File gốc 9:16",
+                "Nhịp phim và diện mạo cuối"
+              ],
+              [
+                "11. Gắn nhãn và đăng",
+                "Tải lên nền tảng kèm khai báo AI",
+                "Tuân thủ quy định và niềm tin"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "Hook và kịch bản: thắng ngay trong ba giây đầu",
+      "body": [
+        "Người xem lướt rất nhanh. Ba giây đầu phải có một con người, một xung đột và một câu hỏi. Đừng mở bằng phong cảnh hay tiêu đề chậm rãi. Hãy mở giữa hành động: một cái tát, chiếc nhẫn bị ném xuống sàn, một người lạ biết bí mật, một câu thoại làm đảo lộn tất cả.",
+        {
+          "ul": [
+            "Viết tiền đề thành một câu có mong muốn và trở ngại: “Cô shipper phát hiện vị khách chính là người cha đã bỏ rơi mình.”",
+            "Viết câu thoại đầu tiên trước mọi thứ khác. Câu đó phải hiểu được mà không cần bối cảnh.",
+            "Lên kế hoạch mỗi tập theo ba nhịp: mở đầu, bước ngoặt và cliffhanger. Ngay cả tập 30 giây cũng cần một bước ngoặt.",
+            "Giữ dàn nhân vật nhỏ. Hai hoặc ba nhân vật mỗi tập dễ giữ nhất quán hơn nhiều.",
+            "Viết hành động nhìn thấy được, không viết suy nghĩ nội tâm. Mô hình có thể diễn tả bàn tay run rẩy, nhưng không thể diễn tả “cô nhớ lại tuổi thơ” nếu không có một shot hồi tưởng."
+          ]
+        },
+        "Dùng định dạng kịch bản có thể dùng luôn làm kế hoạch shot: tiêu đề cảnh, vài dòng hành động ngắn, và lời thoại kèm tên người nói. Chatbot có thể giúp soạn hoặc rút gọn cảnh, nhưng hãy đọc to từng câu và cắt mọi thứ không đẩy câu chuyện đi tiếp."
+      ]
+    },
+    {
+      "h": "Nhân vật, bối cảnh và shot list",
+      "body": [
+        "Trước khi tạo bất kỳ video nào, hãy làm bảng nhân vật cho mỗi vai chính: khuôn mặt nhìn chính diện, góc ba phần tư và nhìn nghiêng, ảnh toàn thân trong trang phục của tập này, và một đoạn mô tả cố định để dán vào mọi prompt. Làm một ảnh tham chiếu cho mỗi bối cảnh. Giữ nguyên trang phục trong cùng một cảnh, trừ khi cốt truyện thay đổi nó.",
+        "Sau đó chuyển kịch bản thành shot list. Dưới đây là ví dụ cho tập mở đầu dài 20 giây, gồm bảy shot.",
+        "Tiền đề: Lin, một cô phục vụ trẻ, phục vụ vị khách giàu có và thô lỗ với cô. Ông làm rơi tấm thẻ. Cô nhìn thấy cái tên trên đó: chính là họ của gia đình cô.",
+        {
+          "table": {
+            "head": [
+              "Shot",
+              "Thời gian",
+              "Cỡ cảnh và máy quay",
+              "Hành động và âm thanh",
+              "Chữ trên màn hình"
+            ],
+            "rows": [
+              [
+                "1",
+                "0–2 giây",
+                "Cận cảnh, máy tĩnh",
+                "Ly nước hắt vào mặt Lin. Các bàn xung quanh há hốc kinh ngạc.",
+                "Không"
+              ],
+              [
+                "2",
+                "2–5 giây",
+                "Trung cảnh, đẩy nhẹ vào",
+                "Vị khách, một người đàn ông ngoài 50 tuổi mặc vest sẫm, nói: “Mang cho tôi ly sạch.”",
+                "Phụ đề"
+              ],
+              [
+                "3",
+                "5–8 giây",
+                "Cận cảnh Lin, máy tĩnh",
+                "Nước nhỏ giọt từ tóc cô. Cô cố nén nước mắt và nói: “Vâng, thưa ông.”",
+                "Phụ đề"
+              ],
+              [
+                "4",
+                "8–11 giây",
+                "Trung cảnh, máy tĩnh",
+                "Ông đứng dậy ra về; một tấm thẻ đen rơi từ ví xuống sàn.",
+                "Không"
+              ],
+              [
+                "5",
+                "11–14 giây",
+                "Cảnh chèn, quay từ trên xuống",
+                "Tay Lin nhặt tấm thẻ lên. Chưa đọc được cái tên.",
+                "Không"
+              ],
+              [
+                "6",
+                "14–17 giây",
+                "Đại cận cảnh",
+                "Mắt cô mở to. Nhạc tắt.",
+                "Cái tên được thêm vào bằng đồ họa"
+              ],
+              [
+                "7",
+                "17–20 giây",
+                "Trung cảnh, đẩy chậm vào",
+                "Cô nhìn về phía cửa nơi ông vừa rời đi. Một âm trầm dâng lên.",
+                "“Còn tiếp”"
+              ]
+            ]
+          }
+        },
+        "Shot 1 là hook: một khuôn mặt, một hành động và một câu hỏi trong chưa đến hai giây. Cái tên trên thẻ được thêm lúc dựng bằng đồ họa, vì nhiều mô hình video render chữ rất kém. Shot 7 kết thúc bằng một câu hỏi, đó chính là lý do để xem tập 2."
+      ]
+    },
+    {
+      "h": "Tạo video: keyframe trước, chuyển động sau",
+      "body": [
+        {
+          "ol": [
+            "Tạo một keyframe cho mỗi shot ở tỷ lệ 9:16, dùng các ảnh tham chiếu nhân vật và bối cảnh. Xem cả bảy ảnh cạnh nhau để kiểm tra.",
+            "Làm mỗi keyframe chuyển động bằng image-to-video (ảnh thành video). Chỉ mô tả chuyển động, động tác máy quay và âm thanh.",
+            "Yêu cầu dài hơn một chút so với nhu cầu, để bạn cắt được đoạn mở đầu chậm và đoạn cuối bị trôi.",
+            "Tạo hai hoặc ba lần cho các shot quan trọng, nhất là hook và shot cuối, rồi chọn bản tốt nhất.",
+            "Lưu keyframe, prompt và thiết lập của mọi clip đã chọn để sau này có thể làm lại riêng clip đó."
+          ]
+        },
+        "Hãy chuẩn bị tinh thần gặp lỗi ở bàn tay, các vật thể tiếp xúc nhau (tấm thẻ lướt qua kẽ ngón tay, nước hắt vào mặt) và chuyển động nhanh. Với những khoảnh khắc đó, hãy lấy khung hình chặt hơn, tách thành hai shot, hoặc chiếu kết quả thay vì quá trình. Cú hắt nước có thể được gợi ý bằng phản ứng và gương mặt ướt thay vì chính dòng nước."
+      ]
+    },
+    {
+      "h": "Giọng nói, nhạc và phụ đề",
+      "body": [
+        "Lời thoại là xương sống của phim ngắn, nên hãy coi nó là một track riêng. Bạn có thể thu âm diễn viên, dùng mô hình chuyển văn bản thành giọng nói (text-to-speech) hay mô hình giọng nói, hoặc giữ nguyên âm thanh do mô hình video tạo ra. Với một series, mỗi nhân vật có một giọng cố định quan trọng hơn chất lượng hoàn hảo. Chỉ nhân bản giọng khi chủ nhân của giọng đó đã cho phép rõ ràng.",
+        {
+          "ul": [
+            "Thu hoặc tạo từng câu thoại thành một file riêng, rồi đặt lên timeline. Cách này giúp chỉnh thời gian và thay thế dễ dàng.",
+            "Dùng nhạc mà bạn có giấy phép: thư viện nhạc của chính nền tảng, thư viện nhạc miễn phí bản quyền, hoặc nhạc tạo bằng công cụ có điều khoản cho phép dùng thương mại.",
+            "Thêm tiếng phòng yên tĩnh (room tone) dưới mọi cảnh. Khoảng lặng tuyệt đối giữa các câu thoại nghe rất gượng.",
+            "Làm phụ đề cho mọi câu thoại. Nhiều người xem khi không bật tiếng. Giữ dòng ngắn, trên màn hình chỉ một hoặc hai dòng, và đặt phía trên vùng dưới nơi có nút bấm và chú thích của nền tảng."
+          ]
+        },
+        "Để tạo phụ đề, hãy chuyển giọng nói của track thoại cuối cùng thành văn bản rồi sửa lại bằng tay. Chẳng hạn, công cụ speech-to-text của cv.cm chạy Whisper ngay trong trình duyệt và xuất file SRT hoặc VTT. YouTube nhận cả SRT lẫn WebVTT, nhưng phụ đề chèn cứng an toàn hơn trên những nền tảng mà người xem hiếm khi bật phụ đề."
+      ]
+    },
+    {
+      "h": "Dựng và xuất file 9:16",
+      "body": [
+        "Dựng theo nhịp. Cắt mọi khoảng lặng không mang ý nghĩa, bắt đầu mỗi shot muộn nhất có thể và kết thúc sớm nhất có thể, và cắt theo hành động. Đặt hình ảnh mạnh nhất vào khung hình đầu tiên của tập, vì người xem quyết định có xem tiếp hay không trước khi câu thoại đầu kết thúc.",
+        {
+          "table": {
+            "head": [
+              "Thiết lập",
+              "Lựa chọn phổ biến",
+              "Lý do"
+            ],
+            "rows": [
+              [
+                "Tỷ lệ khung hình",
+                "9:16 dọc",
+                "Lấp đầy màn hình điện thoại cầm thẳng đứng"
+              ],
+              [
+                "Độ phân giải",
+                "1080 × 1920 pixel",
+                "Khung dọc full-HD chuẩn"
+              ],
+              [
+                "Tốc độ khung hình",
+                "Giữ nguyên tốc độ của clip nguồn, thường là 24, 25 hoặc 30 fps",
+                "Trộn nhiều tốc độ gây giật hình"
+              ],
+              [
+                "Vùng an toàn",
+                "Giữ khuôn mặt và chữ cách xa mép trên, mép dưới và mép phải",
+                "Nút bấm và chú thích của nền tảng che các vùng đó"
+              ],
+              [
+                "Âm thanh",
+                "Lời thoại to rõ hơn nhạc",
+                "Phần lớn người xem nghe bằng loa điện thoại"
+              ]
+            ]
+          }
+        },
+        "Hãy kiểm tra quy định về thời lượng của từng nền tảng trước khi lên kế hoạch cho một tập. Ví dụ, YouTube coi video vuông hoặc dọc dài tối đa ba phút là Shorts. Những quy định như vậy thay đổi, nên hãy đọc trang trợ giúp hiện hành của từng nền tảng khi bạn đăng."
+      ]
+    },
+    {
+      "h": "Gắn nhãn nội dung AI và tuân thủ quy định nền tảng",
+      "body": [
+        "Người và cảnh AI chân thực thường cần được khai báo. YouTube yêu cầu nhà sáng tạo khai báo nội dung chân thực do AI tạo ra hoặc chỉnh sửa. Nguyên tắc cộng đồng của TikTok yêu cầu nhà sáng tạo gắn nhãn nội dung do AI tạo ra hoặc chỉnh sửa đáng kể có cảnh hoặc người trông chân thực. Tại Trung Quốc, Biện pháp gắn nhãn nội dung tổng hợp do trí tuệ nhân tạo tạo ra, có hiệu lực từ ngày 1 tháng 9 năm 2025, yêu cầu người dùng đăng nội dung do AI tạo ra phải khai báo và sử dụng chức năng gắn nhãn của nền tảng.",
+        {
+          "ul": [
+            "Bật nhãn AI của nền tảng khi tải lên.",
+            "Không dùng khuôn mặt hoặc giọng nói của người thật khi chưa được phép, và không làm cho nhân vật công chúng có thật trông như đang nói hay làm điều gì đó.",
+            "Giữ nguyên các nhãn siêu dữ liệu (metadata) mà công cụ tạo thêm vào file; đừng cố tình xóa chúng.",
+            "Lưu lại file dự án và prompt, phòng khi nền tảng hoặc bên mua hỏi tập phim được làm ra như thế nào."
+          ]
+        },
+        {
+          "note": "Quy định của nền tảng và pháp luật thay đổi. Trang này chỉ là thông tin chung, không phải tư vấn pháp lý. Xem bài về gắn nhãn trong chuyên mục này để biết chi tiết theo quốc gia và nền tảng."
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Một tập phim ngắn AI nên dài bao lâu?",
+      "a": "Nhiều tập phim ngắn dọc dài từ khoảng 30 giây đến vài phút. Hãy bắt đầu bằng các tập ngắn: chúng rẻ hơn, dễ giữ nhất quán hơn và dễ thử nghiệm với khán giả hơn."
+    },
+    {
+      "q": "Một người có thể tự làm phim ngắn AI không?",
+      "a": "Có. Một người có thể viết, tạo, lồng tiếng và dựng một tập ngắn. Yếu tố giới hạn thường là thời gian dành cho việc tạo lại và kiểm tra tính nhất quán, chứ không phải kỹ năng."
+    },
+    {
+      "q": "Phần khó nhất khi làm phim AI là gì?",
+      "a": "Giữ nguyên nhân vật qua nhiều shot và nhiều tập, và làm cho bàn tay cùng các cảnh tiếp xúc vật lý trông đúng. Bảng tham chiếu chắc chắn và khung hình chặt giúp giảm cả hai vấn đề này."
+    },
+    {
+      "q": "Tôi có thể kiếm tiền từ phim ngắn do AI tạo ra không?",
+      "a": "Các nền tảng nhìn chung cho phép kiếm tiền từ nội dung AI tuân thủ quy định của họ và được gắn nhãn khi cần, nhưng mỗi chương trình có tiêu chí riêng. Hãy kiểm tra quy định hiện hành của chương trình đối tác và bảo đảm bạn có quyền với toàn bộ nhạc, giọng nói và khuôn mặt."
+    },
+    {
+      "q": "Phim AI hoạt hình có cần gắn nhãn không?",
+      "a": "Tùy nền tảng. YouTube và Meta tập trung quy tắc khai báo vào nội dung chân thực, còn quy định của Trung Quốc áp dụng cho nội dung do AI tạo ra nói chung. Khi không chắc, hãy gắn nhãn."
+    }
+  ]
+}

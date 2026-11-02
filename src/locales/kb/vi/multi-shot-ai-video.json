@@ -1,0 +1,167 @@
+{
+  "title": "Video AI nhiều cảnh: giữ nhân vật nhất quán giữa các cảnh — cv.cm",
+  "description": "Cách làm video AI nhiều cảnh luôn nhất quán: khóa nhân vật, trang phục, địa điểm và ánh sáng, nối cảnh bằng khung hình, và che sự lệch khi dựng phim.",
+  "h1": "Làm sao giữ video AI nhất quán qua nhiều cảnh quay?",
+  "answer": "Hãy cố định mọi thứ không được thay đổi trước khi tạo: một ảnh tham chiếu nhân vật, một mô tả trang phục và địa điểm, một thiết lập ánh sáng và một tông màu. Sau đó tạo từng cảnh từ các tham chiếu đó, nối các cảnh bằng cách dùng khung hình cuối của clip này làm khung hình đầu của clip sau, và dùng kỹ thuật dựng như cắt theo hành động để che những khác biệt nhỏ còn lại.",
+  "sections": [
+    {
+      "h": "Vì sao các cảnh bị lệch nhau",
+      "body": [
+        "Mô hình video tạo mỗi clip bằng cách xuất phát từ nhiễu ngẫu nhiên và biến nó thành các khung hình khớp với prompt. Hai lần tạo từ cùng một prompt bắt đầu từ nhiễu khác nhau, nên ra khuôn mặt hơi khác, cúc áo khoác khác, ô cửa sổ sau lưng diễn viên khác. Trong một clip, mô hình giữ mọi thứ ổn định vì nó thấy tất cả khung hình cùng nhau. Giữa hai clip riêng biệt, nó hoàn toàn không có trí nhớ.",
+        "Các nhà nghiên cứu mô tả cùng khoảng trống đó. Bài báo Long Context Tuning for Video Generation (2025) ghi nhận rằng các mô hình tạo được cảnh đơn dài vẫn gặp khó khi tạo cảnh nhiều góc mạch lạc, và đề xuất mở rộng attention của mô hình ra tất cả các cảnh quay trong một đoạn để nó học tính nhất quán ở cấp độ cả cảnh. Một số mô hình thương mại hiện quảng cáo khả năng tạo nhiều cảnh gốc; ví dụ báo cáo kỹ thuật Seedance 1.0 liệt kê tính mạch lạc tự sự nhiều cảnh với chủ thể nhất quán là một tính năng.",
+        "Các tính năng nhiều cảnh gốc có ích, nhưng tại thời điểm viết bài chúng chỉ giới hạn ở chuỗi ngắn trong một lần tạo. Một phim ngắn hay một tập phim vẫn được dựng từ nhiều lần tạo, nên các phương pháp dưới đây vẫn là cốt lõi của công việc."
+      ]
+    },
+    {
+      "h": "Điều gì phải giữ nguyên: bảng liên tục (continuity sheet)",
+      "body": [
+        "Đoàn làm phim giữ ghi chú liên tục (continuity) để một cảnh quay trong nhiều ngày trông như một khoảnh khắc. Hãy làm tương tự trước khi viết bất kỳ prompt nào. Mỗi dòng dưới đây là một khối văn bản cố định ngắn hoặc một ảnh tham chiếu mà bạn dùng lại nguyên vẹn.",
+        {
+          "table": {
+            "head": [
+              "Yếu tố",
+              "Cách khóa",
+              "Lỗi thường gặp"
+            ],
+            "rows": [
+              [
+                "Khuôn mặt và thân hình",
+                "Một ảnh tham chiếu cộng một khối văn bản cố định (tuổi, tóc, vóc dáng)",
+                "Khuôn mặt đổi hình dạng hoặc tuổi giữa các cảnh"
+              ],
+              [
+                "Trang phục",
+                "Chính xác từng món và màu, dùng lại từng chữ",
+                "Màu áo khoác hoặc cổ áo thay đổi"
+              ],
+              [
+                "Đạo cụ",
+                "Đặt tên và mô tả mỗi đạo cụ một lần; giữ nó ở cùng một tay",
+                "Điện thoại đổi tay hoặc biến mất"
+              ],
+              [
+                "Địa điểm",
+                "Một ảnh tham chiếu địa điểm và mô tả cố định",
+                "Đồ nội thất hoặc cửa sổ bị dời chỗ"
+              ],
+              [
+                "Ánh sáng",
+                "Một câu: nguồn sáng chính, hướng, thời điểm trong ngày",
+                "Cảnh này ban ngày, cảnh sau buổi tối"
+              ],
+              [
+                "Tông màu",
+                "Một mô tả chỉnh màu, rồi chỉnh màu cuối trong phần mềm dựng",
+                "Một cảnh ấm, cảnh kế tiếp lạnh"
+              ],
+              [
+                "Hướng trên màn hình",
+                "Ghi chú mỗi nhân vật quay mặt và di chuyển về phía nào",
+                "Nhân vật đổi bên sau một lần cắt"
+              ],
+              [
+                "Giọng nói và âm thanh",
+                "Một giọng cho mỗi nhân vật, một lớp âm nền cho mỗi địa điểm",
+                "Âm sắc giọng hoặc âm thanh phòng thay đổi"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "Cách 1: dùng tham chiếu thay vì mô tả",
+      "body": [
+        "Chỉ riêng văn bản là mỏ neo yếu. “A woman with short black hair” khớp với hàng triệu khuôn mặt. Ảnh tham chiếu là mỏ neo mạnh hơn nhiều vì nó cố định một khuôn mặt. Nhiều công cụ tại thời điểm viết bài nhận ảnh tham chiếu chủ thể hoặc nhân vật: ví dụ tài liệu Veo của Google mô tả một chế độ tham chiếu dùng từ một đến ba ảnh về một người, nhân vật hoặc sản phẩm để giữ nguyên diện mạo của chủ thể trong kết quả.",
+        "Hãy làm các tham chiếu trước, bằng ảnh tĩnh, nơi thử lại rất nhanh:",
+        {
+          "ol": [
+            "Một bảng nhân vật (character sheet): cùng một người nhìn chính diện, ba phần tư và nghiêng, cộng một góc toàn thân trong trang phục cuối cùng, trên nền trơn.",
+            "Một ảnh tĩnh địa điểm cho mỗi nơi trong cảnh, ở tỷ lệ khung hình cuối cùng.",
+            "Một bảng đạo cụ chính nếu có vật quan trọng với câu chuyện."
+          ]
+        },
+        "Dùng ánh sáng đều, đơn giản cho bảng nhân vật. Ánh sáng màu mạnh trong ảnh tham chiếu có xu hướng bị chép vào mọi cảnh, rồi xung đột với ánh sáng của từng cảnh."
+      ]
+    },
+    {
+      "h": "Cách 2: nối cảnh bằng khung hình",
+      "body": [
+        "Khi hai cảnh phải chảy vào nhau, như một hành động liên tục bị chia đôi, hãy nối chúng bằng khung hình thay vì văn bản.",
+        {
+          "ul": [
+            "Nối bằng khung hình cuối: xuất khung hình cuối của cảnh A và dùng nó làm khung hình đầu của cảnh B trong image-to-video. Phần đầu của B khi đó khớp chính xác với phần cuối của A.",
+            "Khung hình đầu và cuối: nếu công cụ hỗ trợ cả hai, hãy đưa khung hình cảnh phải bắt đầu và khung hình cảnh phải kết thúc, rồi để mô hình điền chuyển động. Cách này hữu ích khi cảnh C phải đến đúng một keyframe đã lên kế hoạch.",
+            "Phân cảnh bằng keyframe: làm tất cả keyframe từ cùng các tham chiếu trước, kiểm tra chúng cùng nhau, rồi mới làm chuyển động cho từng cái."
+          ]
+        },
+        "Cách nối có cái giá của nó. Lỗi nhỏ cộng dồn: một khuôn mặt hơi mềm hơn ở cuối cảnh A thành khuôn mặt xuất phát của cảnh B, và sau vài mắt xích nhân vật có thể bị lệch. Hãy neo lại sau mỗi vài cảnh bằng cách bắt đầu từ một keyframe mới làm từ ảnh tham chiếu gốc, không từ khung hình cuối."
+      ]
+    },
+    {
+      "h": "Cách 3: viết prompt dùng chung các khối",
+      "body": [
+        "Hãy coi prompt là các khối cố định cộng một khối thay đổi. Chỉ khối cảnh quay thay đổi từ cảnh này sang cảnh khác.",
+        {
+          "code": "[CHARACTER] Leo, a man in his 20s, curly brown hair, round glasses,\nmustard-yellow knit sweater, dark blue jeans.\n[LOCATION] Small bookshop interior, tall wooden shelves, one large front window.\n[LIGHT] Late afternoon sun through the front window from screen right, warm tones.\n[SHOT] Medium shot, eye level. Leo pulls a red book from the shelf and opens it,\nfacing screen left. Slow push-in.",
+          "lang": "text"
+        },
+        "Với cảnh kế tiếp, sao chép nguyên ba khối đầu và chỉ thay khối [SHOT]. Nếu câu chuyện chuyển sang nơi mới hoặc thời điểm khác trong ngày, hãy viết một khối [LOCATION] hoặc [LIGHT] mới một lần rồi dùng lại khối đó từ đó về sau."
+      ]
+    },
+    {
+      "h": "Cách 4: che những gì không sửa được khi dựng",
+      "body": [
+        "Dù có tham chiếu, vẫn còn vài khác biệt. Giới dựng phim từ lâu dùng những kỹ thuật làm cho các sai lệch nhỏ trở nên vô hình:",
+        {
+          "ul": [
+            "Cắt theo hành động. Cắt giữa chừng một chuyển động; mắt theo chuyển động và bỏ lỡ chi tiết.",
+            "Đổi cỡ cảnh ở mỗi lần cắt. Toàn cảnh rồi cận cảnh che được phông nền khác nhau; hai trung cảnh liền nhau sẽ làm lộ ra.",
+            "Dùng cảnh chèn và cảnh cắt ngang (cutaway). Một cảnh bàn tay, một vật hay địa điểm cho người xem nghỉ giữa hai cảnh khuôn mặt.",
+            "Chỉnh màu cả chuỗi cùng nhau. Áp một lần chỉnh màu lên tất cả clip để ánh sáng có cảm giác nhất quán.",
+            "Đặt một lớp âm thanh liên tục dưới các điểm cắt. Âm thanh phòng hoặc nhạc chạy xuyên qua nhiều cảnh khiến chúng như một khoảnh khắc."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Kiểm tra chất lượng trước khi đăng",
+      "body": [
+        "Xem chuỗi cảnh ba lần, mỗi lần tìm một loại vấn đề:",
+        {
+          "ol": [
+            "Nhận dạng: dừng hình ở từng khuôn mặt và so với ảnh tham chiếu. Kiểm tra tuổi, màu mắt, đường chân tóc, kính và sẹo.",
+            "Đồ vật: theo dõi từng đạo cụ và trang phục từ cảnh này sang cảnh khác. Kiểm tra tay nào cầm gì.",
+            "Không gian và thời gian: kiểm tra hướng trên màn hình, hướng ánh sáng và thời tiết ngoài cửa sổ."
+          ]
+        },
+        "Chỉ tạo lại các cảnh hỏng. Ghi lại ảnh tham chiếu, prompt và cài đặt của mỗi cảnh đã chấp nhận, để sau này bạn làm được bản thay thế khớp.",
+        {
+          "note": "Giới hạn tại thời điểm viết bài: đám đông, cặp song sinh giống hệt, hai nhân vật chạm vào nhau và chữ trên quần áo là những nơi sự nhất quán hay vỡ nhất. Hãy để nhân vật phụ ở hậu cảnh hoặc ngoài tiêu cự, và tránh chữ viết trên trang phục."
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Tôi có thể dùng số seed để giữ các cảnh nhất quán không?",
+      "a": "Seed cố định với prompt cố định có thể tái tạo kết quả tương tự trong cùng công cụ, nhưng khi prompt đổi cho cảnh mới thì kết quả cũng đổi. Seed giúp cho việc thử lại, không giúp cho sự nhất quán giữa các cảnh khác nhau."
+    },
+    {
+      "q": "Nên tạo một clip dài hay nhiều clip ngắn?",
+      "a": "Một clip đơn giữ mọi thứ nhất quán bên trong nó nhưng cho bạn ít kiểm soát hơn. Nhiều clip ngắn dễ chỉ đạo và dễ sửa từng cái hơn. Hầu hết công việc kể chuyện dùng clip ngắn ghép trong phần mềm dựng."
+    },
+    {
+      "q": "Làm sao giữ hai nhân vật nhất quán trong cùng một cảnh?",
+      "a": "Làm một tham chiếu riêng cho mỗi nhân vật và cho họ dáng hình và màu sắc khác biệt rõ ràng. Giữ họ tách nhau trong khung hình khi có thể, và dùng cảnh đơn của từng người cho cận cảnh."
+    },
+    {
+      "q": "Vì sao giọng nhân vật của tôi đổi giữa các clip?",
+      "a": "Mô hình tạo âm thanh sẽ sinh một giọng mới cho mỗi clip, trừ khi bạn đưa tham chiếu giọng. Để kết quả đáng tin cậy, hãy thu hoặc tạo riêng lời thoại bằng một giọng cố định và thêm vào khi dựng."
+    },
+    {
+      "q": "Tôi có cần LoRA hay mô hình tùy chỉnh để nhất quán không?",
+      "a": "Không cần với hầu hết dự án ngắn. Ảnh tham chiếu và các khối prompt cố định là đủ. Một mô hình nhân vật đã huấn luyện có thể giúp ích cho series dài với mô hình mở, nhưng tốn thời gian và phải tuân theo giấy phép của mô hình."
+    }
+  ]
+}

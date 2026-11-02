@@ -1,0 +1,177 @@
+{
+  "title": "Cara Kerja Hapus Background Foto dengan AI: Mask, Matte, PNG — cv.cm",
+  "description": "Cara kerja AI hapus background foto: segmentasi vs matting, alpha mask halus, kenapa rambut, bulu, dan kaca sering gagal, serta alasan hasil potongan harus disimpan sebagai PNG.",
+  "h1": "Bagaimana cara kerja AI menghapus background foto?",
+  "answer": "Penghapus background AI menjalankan jaringan segmentasi yang memberi skor pada setiap piksel dari 0 (background) sampai 1 (subjek). Peta skor itu menjadi kanal alpha gambar: buram penuh di bagian subjek, transparan di tempat lain, dan setengah transparan di tepi lembut seperti rambut. Hasilnya harus disimpan dalam format yang mendukung alpha, biasanya PNG, kalau tidak background-nya akan muncul lagi.",
+  "sections": [
+    {
+      "h": "Singkatnya: mask berubah menjadi kanal alpha",
+      "body": [
+        "Sebuah foto punya tiga kanal warna: merah, hijau, dan biru. Gambar hasil potongan butuh kanal keempat bernama alpha, yang menyatakan seberapa buram tiap piksel. Menghapus background berarti mengisi kanal alpha itu secara otomatis.",
+        "Model tidak pernah melukis background baru dan tidak memindahkan piksel. Ia hanya menjawab satu pertanyaan untuk setiap piksel: seberapa besar bagian piksel ini milik subjek? Nilai warna foto tetap seperti semula. Saat Anda membuka hasilnya di atas pola kotak-kotak atau background baru, nilai alpha-lah yang menentukan apa yang tembus terlihat.",
+        {
+          "ol": [
+            "Foto diubah ukurannya ke ukuran kerja model. Banyak model bekerja pada persegi berukuran tetap; BiRefNet, misalnya, dilatih dan diuji pada 1024 × 1024.",
+            "Jaringan menghasilkan satu angka per piksel. Langkah sigmoid terakhir menekannya ke rentang 0 sampai 1.",
+            "Peta skor diskalakan kembali ke ukuran foto asli.",
+            "Skor itu menjadi kanal alpha (0 sampai 255 pada gambar 8-bit), lalu file disandikan dengan alpha."
+          ]
+        },
+        "Karena langkah 3 memperbesar mask yang dihitung pada ukuran lebih kecil, tepi halus pada foto yang sangat besar selalu berupa perkiraan. Inilah salah satu alasan foto produk 6.000 piksel bisa tampak tajam di tengah tetapi sedikit lembek di garis tepinya."
+      ]
+    },
+    {
+      "h": "Segmentasi vs matting",
+      "body": [
+        "Dua bidang riset bertemu dalam penghapusan background, dan perbedaannya menjelaskan sebagian besar masalah di tepi.",
+        {
+          "table": {
+            "head": [
+              "",
+              "Segmentasi",
+              "Matting"
+            ],
+            "rows": [
+              [
+                "Pertanyaan yang dijawab",
+                "Apakah piksel ini subjek atau background?",
+                "Berapa bagian piksel ini yang merupakan subjek?"
+              ],
+              [
+                "Keluaran umum",
+                "Mask yang sebagian besar bernilai 0 atau 1",
+                "Alpha matte kontinu dari 0 sampai 1"
+              ],
+              [
+                "Masukan tambahan",
+                "Biasanya tidak ada",
+                "Metode klasik butuh trimap: pasti subjek, pasti background, pita tidak pasti"
+              ],
+              [
+                "Unggul pada",
+                "Objek utuh, produk, garis tepi bersih",
+                "Rambut, bulu, asap, motion blur, kerudung tipis"
+              ],
+              [
+                "Kegagalan khas",
+                "Tepi keras seperti kertas gunting",
+                "Lambat; butuh tebakan awal bentuk yang bagus"
+              ]
+            ]
+          }
+        },
+        "Segmentasi menentukan di mana objek berada. Matting menentukan bagaimana tepinya menyatu. Piksel di ujung sehelai rambut bisa 30 persen rambut dan 70 persen langit, jadi alpha yang tepat sekitar 0,3, bukan 0 atau 1. Metode matting deep learning klasik, Deep Image Matting, menerima gambar plus trimap buatan tangan dan memprediksi nilai pecahan itu di dalam pita tidak pasti.",
+        "Penghapus satu klik melewati trimap. Model dari keluarga dichotomous image segmentation, seperti IS-Net dan BiRefNet, dilatih pada gambar beresolusi tinggi dengan garis tepi sangat detail, sehingga mampu mengikuti struktur tipis tanpa masukan dari pengguna. Keluarannya tetap skor segmentasi, bukan matte fisik yang sebenarnya, tetapi karena skornya kontinu, hasilnya berupa tepi lembut yang pada kebanyakan foto mendekati hasil matting.",
+        {
+          "note": "Model mental yang berguna: peta skor menunjukkan seberapa yakin model bahwa sebuah piksel adalah subjek. Di tepi, keyakinan dan cakupan sebenarnya sering mirip, tetapi tidak sama. Selisih itulah sumber halo dan rambut yang hilang."
+        }
+      ]
+    },
+    {
+      "h": "Kenapa hasilnya harus PNG (atau WebP)",
+      "body": [
+        "JPEG tidak punya kanal alpha. Kalau Anda menyimpan hasil potongan sebagai JPEG, setiap piksel transparan harus diberi warna, dan alat biasanya mengisinya dengan putih atau hitam. Background yang baru saja dihapus pun diganti dengan background polos.",
+        {
+          "table": {
+            "head": [
+              "Format",
+              "Kanal alpha",
+              "Kompresi",
+              "Dipakai untuk"
+            ],
+            "rows": [
+              [
+                "PNG",
+                "Ya, 8 atau 16 bit",
+                "Lossless",
+                "Hasil potongan yang akan diedit lagi, dicetak, atau untuk file desain"
+              ],
+              [
+                "WebP",
+                "Ya",
+                "Lossy atau lossless",
+                "Hasil potongan yang lebih kecil untuk web"
+              ],
+              [
+                "JPEG",
+                "Tidak",
+                "Lossy",
+                "Gambar akhir yang sudah diberi background polos"
+              ],
+              [
+                "AVIF",
+                "Ya",
+                "Lossy atau lossless",
+                "Pengiriman ke web jika didukung"
+              ]
+            ]
+          }
+        },
+        "Spesifikasi PNG menyimpan alpha secara unassociated (bukan premultiplied): warna piksel setengah transparan tetap disimpan dengan kekuatan penuh, sedangkan alpha disimpan terpisah. Itu menjadikan PNG salinan master yang aman. Anda bisa menaruhnya di background apa pun nanti tanpa pinggiran gelap akibat pencampuran sebelumnya.",
+        "Kalau Anda butuh JPEG untuk marketplace yang mewajibkan background putih, terapkan background putih di alatnya lebih dulu, baru ekspor ke JPEG. Simpan PNG sebagai master."
+      ]
+    },
+    {
+      "h": "Kasus sulit: rambut, bulu, kaca, bayangan",
+      "body": [
+        {
+          "ul": [
+            "Rambut dan bulu. Helai tunggal lebih tipis dari satu piksel pada ukuran kerja model, jadi sebagian sudah hilang sebelum model melihatnya. Harapkan gumpalan rambut bertahan dan helai-helai yang mencuat memudar. Memotret di depan dinding polos yang kontras lebih membantu daripada pengaturan apa pun.",
+            "Warna yang mirip. Anjing hitam di sofa hitam, atau kemeja putih di dinding putih, nyaris tidak memberi jaringan tepi untuk dicari. Ia akan mengandalkan pengetahuan bentuk dan bisa memotong ke dalam subjek.",
+            "Kaca, air, dan kain tipis. Gelas anggur sebagian besar adalah background yang terlihat tembus darinya. Model segmentasi harus memilih: mempertahankan gelas (beserta background lama di dalamnya) atau membuangnya. Keduanya tidak benar secara fisik; transparansi sungguhan butuh matte plus warna kaca yang asli, dan satu foto tidak bisa memberikannya.",
+            "Bayangan dan pantulan. Bayangan kontak produk milik lantai, jadi kebanyakan penghapus membuangnya, dan produk tampak melayang. Banyak foto toko online terlihat lebih bagus kalau bayangan lembut ditambahkan kembali belakangan.",
+            "Lubang. Celah antara lengan dan badan, atau di dalam pegangan dan roda sepeda, adalah background. Model beresolusi tinggi yang bagus menangkapnya; model yang lebih lemah mengisinya.",
+            "Pantulan warna. Cahaya hijau atau berwarna yang memantul ke tepi subjek tetap ada di nilai RGB setelah background hilang. Di background baru, ia tampak sebagai pinggiran berwarna."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Cara mendapatkan potongan yang lebih bersih",
+      "body": [
+        "Sebagian besar kualitas datang dari foto, bukan dari alatnya. Daftar periksa singkat:",
+        {
+          "ol": [
+            "Potret dengan kontras jelas antara subjek dan background, dalam warna maupun kecerahan.",
+            "Jaga subjek tetap tajam. Motion blur dan fokus tipis di tepi berubah menjadi alpha yang tidak pasti.",
+            "Penuhi frame. Subjek yang menutupi bagian besar gambar mempertahankan lebih banyak detail setelah diubah ke ukuran masukan model.",
+            "Periksa hasilnya di atas background gelap dan terang. Halo yang tersembunyi di putih akan terlihat di hitam, dan sebaliknya.",
+            "Perbaiki area yang membandel secara manual di editor dengan penghapus lembut atau kuas mask, dengan bekerja pada master PNG.",
+            "Untuk potret berambut yang harus sempurna, pakai alat matting dengan trimap atau kuas refine-edge setelah pemotongan otomatis."
+          ]
+        },
+        "Untuk langkah klik di alat tertentu, lihat tutorial langkah demi langkah tentang menghapus background foto. Misalnya, alat remove-background di cv.cm menjalankan BiRefNet di browser, sehingga foto tidak diunggah, dan memungkinkan Anda mengekspor PNG transparan atau menaruh subjek di atas putih, warna tertentu, atau salinan asli yang diburamkan."
+      ]
+    },
+    {
+      "h": "Batasan dan ekspektasi yang jujur",
+      "body": [
+        "Penghapusan otomatis kini cukup baik untuk kebanyakan katalog produk, foto profil, dan slide presentasi. Ia bukan pengganti masking yang teliti untuk pekerjaan iklan atau film. Model hanya tahu apa yang dipelajarinya dari data latih: objek yang tidak lazim, orang yang saling tumpang tindih, atau subjek yang tidak jelas (dari tiga orang, siapa subjeknya?) bisa menghasilkan mask yang mengejutkan.",
+        "Model juga tidak tahu apa yang ingin Anda pertahankan. Kalau Anda hanya ingin cangkirnya dan bukan tangan yang memegangnya, pemotongan otomatis biasanya mempertahankan keduanya, karena data latih menganggap tangan dan cangkir sebagai satu latar depan. Pangkas dulu, atau hapus bagian tambahan itu sesudahnya.",
+        "Terakhir, menghapus background tidak menghapus informasi lain. Data EXIF seperti lokasi GPS mungkin masih ada di file asli. Kalau Anda membagikan hasil potongan ke publik, ekspor file baru dan hapus metadata bila perlu."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Kenapa hasil potongan saya punya garis tepi putih atau abu-abu?",
+      "a": "Piksel tepi masih membawa sebagian warna background lama, dan alpha di sana sebagian buram. Periksa hasilnya di atas background gelap, lalu kecilkan atau lembutkan sedikit tepinya di editor, atau potret ulang dengan background yang warnanya lebih dekat dengan background baru."
+    },
+    {
+      "q": "Kenapa background-nya jadi hitam atau putih setelah gambar disimpan?",
+      "a": "File disimpan dalam format tanpa kanal alpha, biasanya JPEG. Simpan sebagai PNG atau WebP agar transparansinya tetap ada."
+    },
+    {
+      "q": "Bisakah AI menghapus background dari kaca atau botol transparan?",
+      "a": "Hanya secara kasar. Satu foto tidak memberi tahu model seberapa transparan kacanya, sehingga ia mempertahankan kaca dengan background lama yang masih terlihat di dalamnya atau membuang terlalu banyak. Untuk pekerjaan katalog, potret kaca di background terang polos dan edit secara manual."
+    },
+    {
+      "q": "Apakah hapus background dengan AI sama dengan green screen?",
+      "a": "Tidak. Green screen (chroma key) menghapus satu warna yang sudah diketahui, dan ini andal bila pencahayaan merata. Penghapusan dengan AI tidak punya warna yang diketahui dan harus mengenali subjek, sehingga bisa dipakai di background apa pun tetapi kurang bisa diprediksi di tepi yang halus."
+    },
+    {
+      "q": "Apakah kualitas gambar turun saat background dihapus?",
+      "a": "Piksel subjek mempertahankan warna aslinya bila Anda mengekspor PNG. Hanya alpha yang berubah. Penurunan kualitas terjadi di tepi, tempat mask dihitung pada ukuran lebih kecil lalu diperbesar, dan bila Anda mengekspor ke format lossy."
+    }
+  ]
+}

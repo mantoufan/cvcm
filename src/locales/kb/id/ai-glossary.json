@@ -1,0 +1,462 @@
+{
+  "title": "Glosarium AI: 60 Istilah Generative AI dengan Penjelasan Sederhana — cv.cm",
+  "description": "Glosarium AI berisi 60 istilah penting, dari token, LoRA, dan RAG hingga diffusion, CFG, kloning suara, C2PA, dan deepfake, masing-masing dengan arti sederhana dan contoh.",
+  "h1": "Glosarium AI: istilah generative AI dijelaskan",
+  "answer": "Glosarium ini menjelaskan sekitar 60 istilah yang Anda temui saat memakai generative AI, dikelompokkan menurut topik: model dan pelatihan, teks dan LLM, pembuatan gambar dan video, audio, serta keamanan dan hukum. Setiap entri memberi arti sederhana dan contoh singkat, sehingga Anda bisa memahami model card, panel pengaturan, atau berita tanpa latar belakang teknis.",
+  "sections": [
+    {
+      "h": "Model dan pelatihan",
+      "body": [
+        "Istilah-istilah ini menjelaskan apa itu model dan bagaimana model dibuat. Berlaku untuk model teks, gambar, video, dan audio.",
+        {
+          "table": {
+            "head": [
+              "Istilah",
+              "Arti",
+              "Contoh"
+            ],
+            "rows": [
+              [
+                "Kecerdasan buatan (AI)",
+                "Perangkat lunak yang mengerjakan tugas yang biasanya memerlukan kecerdasan manusia",
+                "Terjemahan, buka kunci dengan wajah, asisten chat"
+              ],
+              [
+                "Machine learning",
+                "AI yang belajar pola dari contoh, bukan mengikuti aturan yang ditulis tangan",
+                "Filter spam yang dilatih dengan email berlabel"
+              ],
+              [
+                "Jaringan saraf (neural network)",
+                "Model yang terdiri dari banyak lapisan unit sederhana yang saling terhubung dan kekuatannya dipelajari",
+                "Inti dari setiap model gambar atau bahasa modern"
+              ],
+              [
+                "Model",
+                "Jaringan yang sudah dilatih itu sendiri, berupa file angka hasil belajar plus kode untuk menjalankannya",
+                "Aplikasi seperti chatbot menjalankan satu model atau lebih"
+              ],
+              [
+                "Parameter (bobot/weights)",
+                "Angka-angka di dalam model yang disesuaikan oleh pelatihan",
+                "Model 7B punya sekitar 7 miliar parameter"
+              ],
+              [
+                "Data pelatihan",
+                "Contoh-contoh yang dipelajari model",
+                "Teks web, buku berlisensi, pasangan gambar dan keterangan"
+              ],
+              [
+                "Pretraining",
+                "Tahap pelatihan pertama dan terbesar pada data yang luas",
+                "Belajar memprediksi token berikutnya pada teks sebesar web"
+              ],
+              [
+                "Fine-tuning",
+                "Pelatihan lanjutan model yang sudah ada pada dataset yang lebih kecil dan terfokus",
+                "Melatih model dasar dengan jawaban layanan pelanggan"
+              ],
+              [
+                "LoRA",
+                "Low-rank adaptation: file tambahan kecil yang menyetel model dengan murah tanpa mengubah bobot aslinya",
+                "LoRA gaya atau karakter untuk model gambar"
+              ],
+              [
+                "Foundation model",
+                "Model umum yang besar tempat banyak produk dan fine-tune dibangun",
+                "Satu LLM yang menggerakkan alat chat, pencarian, dan coding"
+              ],
+              [
+                "Model open-weight",
+                "Model yang bobotnya bisa diunduh dan dijalankan sendiri; lisensinya mungkin tetap membatasi penggunaan",
+                "Menjalankan model terbuka di komputer sendiri"
+              ],
+              [
+                "Inferensi (inference)",
+                "Menjalankan model yang sudah dilatih untuk mendapat keluaran",
+                "Setiap kali Anda menekan Generate"
+              ],
+              [
+                "Kuantisasi (quantization)",
+                "Menyimpan bobot dengan lebih sedikit bit agar model lebih kecil dan cepat, dengan sedikit penurunan kualitas",
+                "Versi 4-bit sebuah model yang muat di laptop"
+              ],
+              [
+                "Model multimodal",
+                "Model yang menangani lebih dari satu jenis data, seperti teks dan gambar",
+                "Bertanya tentang sebuah foto"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "Teks dan large language model",
+      "body": [
+        "Istilah yang Anda lihat di aplikasi chat, pengaturan API, dan artikel tentang LLM.",
+        {
+          "table": {
+            "head": [
+              "Istilah",
+              "Arti",
+              "Contoh"
+            ],
+            "rows": [
+              [
+                "Large language model (LLM)",
+                "Jaringan saraf besar yang dilatih untuk memprediksi token teks berikutnya",
+                "Model di balik ChatGPT, Claude, Gemini, DeepSeek, Qwen"
+              ],
+              [
+                "Token",
+                "Satuan teks yang dibaca dan ditulis model: satu kata, bagian kata, atau simbol",
+                "unbelievable bisa menjadi 3 token: un, bel, ievable"
+              ],
+              [
+                "Context window",
+                "Jumlah maksimum token yang bisa dipertimbangkan model sekaligus, masukan ditambah keluaran",
+                "Chat panjang yang mulai melupakan bagian awalnya"
+              ],
+              [
+                "Transformer",
+                "Rancangan jaringan saraf berbasis attention yang dipakai hampir semua LLM",
+                "GPT berarti Generative Pre-trained Transformer"
+              ],
+              [
+                "Attention",
+                "Langkah yang membuat tiap token menimbang token sebelumnya mana yang penting baginya",
+                "Mengaitkan it dengan trophy dalam kalimat tentang koper"
+              ],
+              [
+                "Embedding",
+                "Daftar angka yang mewakili makna, sehingga teks yang mirip mendapat angka yang mirip",
+                "Mencari dokumen yang mirip dengan sebuah pertanyaan"
+              ],
+              [
+                "Prompt",
+                "Masukan yang Anda berikan ke model",
+                "Ringkas email ini dalam dua kalimat"
+              ],
+              [
+                "System prompt",
+                "Instruksi tersembunyi yang ditetapkan aplikasi atau pengembang sebelum percakapan",
+                "Kamu adalah staf dukungan yang sopan untuk toko sepeda"
+              ],
+              [
+                "Temperature",
+                "Pengaturan yang mengendalikan keacakan keluaran",
+                "Rendah untuk ekstraksi data, lebih tinggi untuk brainstorming"
+              ],
+              [
+                "Halusinasi (hallucination)",
+                "Pernyataan model yang yakin tetapi salah atau dikarang",
+                "Sitasi ke makalah yang tidak ada"
+              ],
+              [
+                "RAG (retrieval-augmented generation)",
+                "Mencari dokumen lebih dulu lalu menaruh kutipan terbaik di prompt",
+                "Bot bantuan yang menjawab dari buku panduan Anda"
+              ],
+              [
+                "Knowledge cutoff",
+                "Tanggal setelah itu model tidak punya data pelatihan",
+                "Ia tidak tahu peristiwa bulan lalu"
+              ],
+              [
+                "Mode penalaran (reasoning mode)",
+                "Mode ketika model menulis langkah-langkah antara sebelum jawaban akhir",
+                "Tampil sebagai thinking di sebagian aplikasi chat"
+              ],
+              [
+                "Tool use (function calling)",
+                "Model meminta aplikasi menjalankan sebuah tool dan membaca hasilnya",
+                "Memanggil kalkulator atau pencarian web"
+              ],
+              [
+                "AI agent",
+                "Sistem tempat model merencanakan dan mengambil beberapa tindakan tool menuju sebuah tujuan",
+                "Meriset dan memesan pilihan di berbagai situs web"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "Pembuatan gambar dan video",
+      "body": [
+        "Pengaturan dan teknik yang muncul di alat gambar dan video seperti Midjourney, Stable Diffusion, FLUX, Veo, Kling, Runway, dan Seedance. Namanya sedikit berbeda antar alat.",
+        {
+          "table": {
+            "head": [
+              "Istilah",
+              "Arti",
+              "Contoh"
+            ],
+            "rows": [
+              [
+                "Model difusi (diffusion model)",
+                "Model yang membuat gambar dengan menghilangkan noise selangkah demi selangkah dari noise acak",
+                "Sebagian besar alat text-to-image"
+              ],
+              [
+                "Latent space",
+                "Representasi internal yang dipadatkan tempat model bekerja, bukan pada piksel mentah",
+                "Latent diffusion membuat latent kecil, lalu men-decode-nya menjadi gambar"
+              ],
+              [
+                "Text-to-image",
+                "Membuat gambar dari prompt teks",
+                "Sepeda merah di depan dinding biru saat matahari terbenam"
+              ],
+              [
+                "Image-to-image",
+                "Membuat gambar baru yang dipandu oleh gambar masukan",
+                "Mengubah sketsa menjadi ilustrasi jadi"
+              ],
+              [
+                "Inpainting",
+                "Membuat ulang hanya area gambar yang di-mask",
+                "Mengganti cangkir kopi di meja dengan tanaman"
+              ],
+              [
+                "Negative prompt",
+                "Teks yang menjelaskan apa yang harus dihindari",
+                "blurry, extra fingers, watermark"
+              ],
+              [
+                "Seed",
+                "Angka acak awal; seed dan pengaturan yang sama memberi hasil yang mirip",
+                "Memakai ulang seed untuk perubahan prompt kecil"
+              ],
+              [
+                "Guidance scale (CFG)",
+                "Seberapa kuat keluaran mengikuti prompt dibandingkan tampil alami",
+                "Terlalu tinggi menghasilkan warna keras dan artefak"
+              ],
+              [
+                "ControlNet",
+                "Tambahan yang memandu model difusi dengan gambar pose, tepi, atau kedalaman",
+                "Mempertahankan pose karakter yang persis"
+              ],
+              [
+                "Peta kedalaman (depth map)",
+                "Gambar skala abu-abu yang kecerahannya menunjukkan jarak dari kamera",
+                "Dipakai untuk video parallax dan ControlNet"
+              ],
+              [
+                "Upscaling",
+                "Memperbesar gambar dengan model yang menambahkan detail yang masuk akal",
+                "Gambar 512 piksel diperbesar 4 kali"
+              ],
+              [
+                "Text-to-video",
+                "Membuat klip video dari prompt teks",
+                "Perahu kertas hanyut di jalan yang diguyur hujan"
+              ],
+              [
+                "Image-to-video",
+                "Menganimasikan gambar diam menjadi klip",
+                "Membuat foto produk berputar pelan"
+              ],
+              [
+                "Frame awal dan akhir",
+                "Memberikan gambar awal dan gambar akhir lalu membiarkan model mengisi gerakan di antaranya",
+                "Pintu tertutup di frame pertama dan terbuka di frame terakhir"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "Audio dan suara",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Istilah",
+              "Arti",
+              "Contoh"
+            ],
+            "rows": [
+              [
+                "Speech-to-text (ASR)",
+                "Automatic speech recognition: mengubah audio ucapan menjadi teks",
+                "Mentranskripsikan rapat atau video"
+              ],
+              [
+                "Whisper",
+                "Keluarga model pengenalan suara terbuka yang banyak dipakai dari OpenAI",
+                "Membuat subtitle dalam banyak bahasa"
+              ],
+              [
+                "Text-to-speech (TTS)",
+                "Mengubah teks menjadi audio ucapan",
+                "Membacakan artikel dengan suara"
+              ],
+              [
+                "Kloning suara (voice cloning)",
+                "Model TTS yang meniru suara orang tertentu dari sebuah sampel",
+                "Voice-over dengan suara kreatornya sendiri, dengan persetujuan"
+              ],
+              [
+                "Speaker diarization",
+                "Melabeli siapa yang berbicara kapan dalam sebuah rekaman",
+                "Pembicara 1 dan Pembicara 2 dalam transkrip wawancara"
+              ],
+              [
+                "Word error rate (WER)",
+                "Persentase kata yang salah dalam transkrip, dipakai untuk mengukur kualitas ASR",
+                "WER 5 persen berarti sekitar 1 kata salah dari 20"
+              ],
+              [
+                "SRT dan VTT",
+                "Format subtitle teks biasa dengan stempel waktu untuk tiap baris",
+                "Mengunggah caption ke platform video"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "Keamanan, pelabelan, dan hukum",
+      "body": [
+        "Aturan berbeda di tiap negara dan sering berubah. Bagian ini adalah informasi umum, bukan nasihat hukum.",
+        {
+          "table": {
+            "head": [
+              "Istilah",
+              "Arti",
+              "Contoh"
+            ],
+            "rows": [
+              [
+                "Deepfake",
+                "Media realistis buatan atau hasil ubahan AI yang menampilkan orang atau peristiwa yang tidak nyata",
+                "Video politikus yang mengucapkan kata-kata yang tidak pernah ia katakan"
+              ],
+              [
+                "Content credentials (C2PA)",
+                "Standar terbuka yang menyematkan informasi bertanda tangan tentang cara file dibuat dan disunting",
+                "Foto yang menunjukkan bahwa ia disunting dengan alat AI"
+              ],
+              [
+                "Watermark tak terlihat",
+                "Sinyal tersembunyi yang disematkan di piksel atau audio dan bisa dideteksi perangkat lunak nanti",
+                "Generator yang menandai setiap gambar yang dibuatnya"
+              ],
+              [
+                "Label eksplisit dan implisit",
+                "Dalam aturan pelabelan Tiongkok: label terlihat yang bisa dilihat orang, dan label tersembunyi di metadata atau watermark",
+                "Tag buatan AI pada video plus satu field metadata"
+              ],
+              [
+                "Kewajiban transparansi EU AI Act",
+                "Aturan Uni Eropa bahwa orang harus diberi tahu saat berbicara dengan AI, dan bahwa konten AI serta deepfake harus dapat dikenali",
+                "Chatbot yang menyatakan dirinya bot"
+              ],
+              [
+                "Hak cipta data pelatihan",
+                "Pertanyaan hukum apakah melatih dengan karya berhak cipta diperbolehkan, yang berbeda di tiap negara",
+                "Gugatan dan laporan kebijakan di beberapa negara"
+              ],
+              [
+                "Guardrails",
+                "Aturan dan filter yang memblokir permintaan atau keluaran berbahaya",
+                "Menolak memberi petunjuk pembuatan senjata"
+              ],
+              [
+                "Jailbreak",
+                "Prompt yang dirancang agar model mengabaikan aturan keamanannya",
+                "Trik role-play untuk menerobos penolakan"
+              ],
+              [
+                "Prompt injection",
+                "Instruksi tersembunyi di halaman web atau file yang membajak AI yang membacanya",
+                "Halaman yang menyuruh AI agent mengirim data Anda ke tempat lain"
+              ],
+              [
+                "Bias",
+                "Ketidakadilan sistematis dalam keluaran, sering dipelajari dari data pelatihan yang miring",
+                "Gambar suatu profesi yang hanya menampilkan satu gender"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "Istilah yang sering tertukar",
+      "body": [
+        "Beberapa pasang istilah sering dikacaukan dalam berita dan halaman produk. Perbedaannya biasanya mengubah apa yang sebaiknya Anda lakukan.",
+        {
+          "table": {
+            "head": [
+              "Pasangan",
+              "Perbedaan",
+              "Mengapa penting"
+            ],
+            "rows": [
+              [
+                "Model vs aplikasi",
+                "Model yang menghasilkan; aplikasi menambahkan antarmuka, system prompt, tool, dan penyimpanan",
+                "Dua aplikasi pada model yang sama bisa berperilaku berbeda"
+              ],
+              [
+                "Token vs kata",
+                "Satu kata bisa satu token atau beberapa; hitungannya berbeda tiap bahasa",
+                "Harga dan batas dihitung dalam token"
+              ],
+              [
+                "Parameter vs context window",
+                "Parameter adalah apa yang dipelajari model; context window adalah apa yang bisa dilihatnya sekarang",
+                "Model yang sangat besar tetap bisa lupa awal chat yang panjang"
+              ],
+              [
+                "Fine-tuning vs RAG",
+                "Fine-tuning mengubah model; RAG memberinya dokumen saat pertanyaan diajukan",
+                "Untuk fakta yang sering berubah, RAG biasanya lebih mudah"
+              ],
+              [
+                "Open-weight vs open-source",
+                "Open weight bisa diunduh; open source juga berarti kode pelatihan dan datanya terbuka dengan lisensi terbuka",
+                "Baca lisensinya sebelum penggunaan komersial"
+              ],
+              [
+                "Watermark vs label",
+                "Watermark adalah sinyal teknis; label adalah pengungkapan yang bisa dibaca orang",
+                "Beberapa undang-undang mewajibkan keduanya"
+              ]
+            ]
+          }
+        },
+        "Untuk penjelasan lebih dalam tentang istilah apa pun, lihat artikel terkait di bagian ini, seperti cara kerja LLM, token dan context window, serta cara kerja model difusi."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Apa bedanya AI, machine learning, dan deep learning?",
+      "a": "AI adalah seluruh bidangnya. Machine learning adalah bagian AI yang belajar dari contoh. Deep learning adalah bagian machine learning yang memakai jaringan saraf berlapis banyak, dan itulah model generatif modern."
+    },
+    {
+      "q": "Apa bedanya LLM dan chatbot?",
+      "a": "LLM adalah model yang menghasilkan teks. Chatbot adalah aplikasi yang dibangun di sekitar satu model atau lebih, dengan tambahan antarmuka chat, instruksi, fitur memori, dan tool seperti pencarian web."
+    },
+    {
+      "q": "Apa arti open source untuk model AI?",
+      "a": "Istilah ini dipakai dengan longgar. Sering kali artinya hanya bobotnya bisa diunduh. Model yang benar-benar terbuka juga membagikan kode pelatihan dan rincian data dengan lisensi terbuka. Periksa lisensi untuk penggunaan komersial dan aturan atribusi."
+    },
+    {
+      "q": "Apa arti 7B atau 70B dalam nama model?",
+      "a": "Itu perkiraan jumlah parameter, dalam miliar. Angka yang lebih besar biasanya berarti kemampuan lebih tinggi, tetapi juga memerlukan lebih banyak memori dan daya komputasi untuk menjalankannya."
+    },
+    {
+      "q": "Apakah prompt engineering benar-benar keterampilan?",
+      "a": "Ya, dalam arti praktis menulis instruksi yang jelas dan spesifik, memberi contoh, dan menyediakan konteks yang tepat. Model terus membaik dalam memahami permintaan biasa, tetapi masukan yang jelas tetap memberi keluaran yang lebih andal."
+    }
+  ]
+}

@@ -1,0 +1,188 @@
+{
+  "title": "First and Last Frame AI Video: Keyframes That Work — cv.cm",
+  "description": "How first and last frame AI video works: keyframe interpolation, how to design the two frames, and which transitions work or fail, with prompt examples.",
+  "h1": "How does first and last frame AI video work?",
+  "answer": "First and last frame video gives the model two images, the opening and closing frame, and asks it to generate the motion between them. It is keyframe interpolation with a generative model. It works best when the two frames show the same scene with one clear change, such as a pose, an expression or a camera position, and fails when they differ too much.",
+  "sections": [
+    {
+      "h": "What keyframe interpolation means",
+      "body": [
+        "In animation, a keyframe is a drawing that fixes an important moment, and the frames between keyframes are called in-betweens. First-and-last-frame video applies the same idea: you draw or generate the two keyframes, and the model makes the in-betweens.",
+        "Classic frame interpolation, such as the FILM method from Google Research, fills frames between two photos taken a moment apart. It estimates how pixels moved and blends along that motion. It is good for smoothing slow motion, but it cannot invent new content, so large changes look like a morph.",
+        "Generative interpolation goes further. A video diffusion model is conditioned on both images and generates a full clip whose first frame matches one and whose last frame matches the other. The 2024 paper Generative Inbetweening adapted an image-to-video model for this: it runs one pass forward from the first frame and one backward from the last, and merges them. Products such as Veo, Kling, Runway and Seedance offer the same idea as a start frame and end frame option, and Google's Veo documentation describes it as specifying the first and last frames plus a prompt."
+      ]
+    },
+    {
+      "h": "When to use it",
+      "body": [
+        {
+          "ul": [
+            "You need the clip to end on an exact pose, product angle or composition, for example a logo reveal or a product turning to face the camera.",
+            "You are joining shots: the last frame of shot A becomes the first frame of shot B, so the cut is invisible.",
+            "You want a controlled transformation, such as day to night, closed flower to open flower, empty plate to served dish.",
+            "You want a camera move with a fixed destination, such as a wide shot that ends on a close-up of a door."
+          ]
+        },
+        "If you only care how the clip starts, plain image-to-video is simpler and gives the model more freedom."
+      ]
+    },
+    {
+      "h": "How to design the two frames",
+      "body": [
+        "The model has to find a believable path from frame A to frame B in a few seconds. Your job is to make that path short and obvious.",
+        {
+          "ol": [
+            "Make both frames from the same source. Generate frame A, then make frame B by editing frame A (change the pose, expression or light) rather than generating a new image from scratch. Same character, same clothes, same background, same lens.",
+            "Change one main thing. One pose change, or one camera change, or one lighting change. Two changes at once often produce a blend that is neither.",
+            "Keep the size of the change reasonable for the length. A head turn fits in a few seconds; walking across a room and sitting down needs a longer clip or two shots.",
+            "Keep the same aspect ratio and resolution for both images. Google's documentation, for example, uses 16:9 or 9:16 for both.",
+            "Check that the path is physically possible. If the left hand is raised in frame A and in a pocket in frame B, the hand must travel somewhere the camera can see.",
+            "Write a prompt that describes the change. Google's example pairs a first frame of cookies with a last frame of cookies and milk, and the prompt describes the action that connects them."
+          ]
+        },
+        {
+          "code": "First frame: a woman at a desk, looking down at a laptop, office at dusk.\nLast frame: the same woman, same desk, now looking up at the camera, smiling.\n\nPrompt:\nShe slowly lifts her head from the laptop, notices the camera, and smiles.\nCamera static, medium shot. Soft warm desk lamp light. Audio: quiet keyboard\nclicks, then silence.",
+          "lang": "text"
+        }
+      ]
+    },
+    {
+      "h": "Transitions that work and transitions that fail",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Transition",
+              "Usually works?",
+              "Why"
+            ],
+            "rows": [
+              [
+                "Expression change (neutral to smile)",
+                "Yes",
+                "Small, local change; face stays in place"
+              ],
+              [
+                "Head or body turn of up to about 90 degrees",
+                "Yes",
+                "The model has seen many such turns"
+              ],
+              [
+                "Camera push from wide to medium on the same scene",
+                "Yes",
+                "Clear path; content stays visible"
+              ],
+              [
+                "Lighting change (day to dusk, lamp on)",
+                "Mostly",
+                "Same geometry; only color and shadows change"
+              ],
+              [
+                "Object appears in hand",
+                "Sometimes",
+                "Needs a visible path: reaching, picking up"
+              ],
+              [
+                "Full 180-degree turn around a person",
+                "Often fails",
+                "The model must invent the back and keep identity"
+              ],
+              [
+                "Different location in frame B",
+                "Often fails",
+                "No real path; you get a morph or a cross-fade"
+              ],
+              [
+                "Different person or outfit",
+                "Usually fails",
+                "Faces and clothes melt into each other"
+              ],
+              [
+                "Large move across the room in a short clip",
+                "Often fails",
+                "Motion becomes a slide or a jump"
+              ]
+            ]
+          }
+        },
+        "When you want a deliberate morph, such as a seed turning into a tree or one style turning into another, a failed path can become the effect. Say so in the prompt: 'smooth magical transformation' tells the model a morph is intended, and it will usually look cleaner than an accidental one."
+      ]
+    },
+    {
+      "h": "Chaining clips with shared frames",
+      "body": [
+        "First-and-last-frame tools are also a continuity tool for longer sequences. Plan a list of keyframes, then generate each clip between two neighbors.",
+        {
+          "table": {
+            "head": [
+              "Clip",
+              "First frame",
+              "Last frame",
+              "Motion"
+            ],
+            "rows": [
+              [
+                "1",
+                "K1: hero at the gate, back to camera",
+                "K2: hero halfway up the path",
+                "Walks forward, camera follows"
+              ],
+              [
+                "2",
+                "K2",
+                "K3: hero at the door, hand on handle",
+                "Climbs steps, reaches for the door"
+              ],
+              [
+                "3",
+                "K3",
+                "K4: door open, warm light on his face",
+                "Opens the door slowly"
+              ]
+            ]
+          }
+        },
+        "Because clip 2 starts on the exact frame that clip 1 ends on, the joins are seamless. Colors and sharpness can still shift slightly at each join, so color-match the clips in the edit, and keep the motion direction consistent so the cuts feel natural."
+      ]
+    },
+    {
+      "h": "Limits and fixes",
+      "body": [
+        {
+          "ul": [
+            "Ease-in and stall. Models sometimes hold the first frame, then rush to the last. Describe the pace: 'moves steadily over the whole clip'.",
+            "Hidden cross-fade. If the frames are too different, the model may dissolve between them. Bring the two frames closer together, or add a middle keyframe.",
+            "Identity drift in the middle. The ends match, but the face changes halfway. Use closer framing, a shorter clip, and frames made from the same source image.",
+            "Last frame not exact. Some tools treat the last frame as a strong hint rather than a hard rule. Trim or hold the final frame in the edit if needed.",
+            "Text and logos in motion. Keep them still, or add them in the edit."
+          ]
+        },
+        {
+          "note": "Generate several takes for each pair. The two frames fix the ends, but the path between them still varies from run to run."
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "What is the difference between first-last frame and image-to-video?",
+      "a": "Image-to-video fixes only the opening frame and lets the model decide where the clip ends. First-last frame fixes both ends, so you control the final pose or composition."
+    },
+    {
+      "q": "Can I make a looping video with first and last frames?",
+      "a": "Yes, use the same image as both frames and describe a motion that returns to the start, such as a slow sway. Small, cyclic motion loops best."
+    },
+    {
+      "q": "Why does my first-last frame video look like a morph?",
+      "a": "The two images are probably too different for a believable path, for example a new location or a changed outfit. Make frame B by editing frame A, and change only one thing."
+    },
+    {
+      "q": "How many seconds should a first-last frame clip be?",
+      "a": "Match the length to the size of the change: a few seconds for an expression or a head turn, longer for walking or big camera moves. Very short clips force rushed motion."
+    },
+    {
+      "q": "Is first-last frame the same as frame interpolation for slow motion?",
+      "a": "They are related. Slow-motion interpolation fills frames between two nearby photos, while generative first-last frame invents seconds of new motion between two distant moments."
+    }
+  ]
+}

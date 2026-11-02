@@ -1,0 +1,164 @@
+{
+  "title": "How to Label AI-Generated Content: China, EU and Platforms — cv.cm",
+  "description": "How to label AI-generated content: China's labeling measures (explicit and implicit labels), EU AI Act Article 50, YouTube, TikTok and Meta rules, and a checklist.",
+  "h1": "How do you label AI-generated content correctly?",
+  "answer": "Use two kinds of labels. An explicit label is a visible or audible notice, such as \"AI-generated\" text on an image or video. An implicit label is machine-readable data inside the file, such as metadata. China has required both from AI services since 1 September 2025, the EU AI Act adds similar duties from 2 August 2026, and YouTube, TikTok and Meta ask creators to disclose realistic AI content.",
+  "sections": [
+    {
+      "h": "Explicit and implicit labels",
+      "body": [
+        "China's Measures for Labeling AI-Generated Synthetic Content define the two types clearly, and the same split is useful everywhere. An explicit label is added to the content or the interface and presented as text, sound or graphics that people can clearly perceive. An implicit label is added to the file data by technical means and is not easy for people to notice.",
+        {
+          "table": {
+            "head": [
+              "Type",
+              "Examples",
+              "Who reads it",
+              "Weakness"
+            ],
+            "rows": [
+              [
+                "Explicit",
+                "\"AI-generated\" text in a corner, a spoken notice, a platform tag next to a post",
+                "People",
+                "Can be cropped, covered or cut out"
+              ],
+              [
+                "Implicit: metadata",
+                "Fields in the file that state the content is AI-generated, plus the provider and an ID",
+                "Software and platforms",
+                "Lost when a file is re-encoded, screenshotted or stripped of metadata"
+              ],
+              [
+                "Implicit: watermark",
+                "An invisible signal inside the pixels or audio",
+                "Detection software",
+                "May weaken after heavy edits or compression"
+              ]
+            ]
+          }
+        },
+        "Neither type is enough alone. Visible labels inform viewers; machine-readable labels let platforms add their own notices automatically. Good practice is to use both and keep them intact when you edit."
+      ]
+    },
+    {
+      "h": "China: the Measures for Labeling AI-Generated Synthetic Content",
+      "body": [
+        "The Cyberspace Administration of China, with the Ministry of Industry and Information Technology, the Ministry of Public Security and the National Radio and Television Administration, issued the Measures in March 2025. They took effect on 1 September 2025. They apply to AI services already covered by China's rules on algorithm recommendation, deep synthesis and generative AI services.",
+        {
+          "ul": [
+            "Explicit labels (Article 4): text gets a notice or symbol at the start, end or a suitable middle position, or in the interface; audio gets a voice or sound cue; images get a prominent mark in a suitable place; video gets a prominent mark on the opening frame and around the playback area; virtual scenes get one on the opening screen. Downloaded, copied or exported files must keep the explicit label.",
+            "Implicit labels (Article 5): providers add metadata with the content's attributes, the provider's name or code, and a content number. Digital watermarks are encouraged.",
+            "Platforms that distribute content (Article 6): if the metadata shows the content is AI-generated, the platform adds a prominent notice; if there is no metadata but the user declares it, the notice says it may be AI-generated; if neither, but the platform detects traces, it marks it as suspected AI-generated. Platforms must also offer a labeling function and remind users to declare.",
+            "Unlabeled output (Article 9): a provider may give a user content without an explicit label only after the user agrees to take on the labeling responsibility, and must keep logs for at least six months.",
+            "Users (Article 10): when you publish AI-generated content, you must declare it and use the platform's labeling function. Nobody may maliciously delete, alter, forge or hide the labels, or offer tools to do so."
+          ]
+        },
+        "Article 11 adds that labeling must also meet relevant laws, regulations and mandatory national standards, so providers need to follow the technical standards as well as the Measures."
+      ]
+    },
+    {
+      "h": "European Union: AI Act Article 50",
+      "body": [
+        "Article 50 of the EU AI Act (Regulation (EU) 2024/1689) sets transparency duties. Under Article 113 it applies from 2 August 2026.",
+        {
+          "ul": [
+            "Chatbots (50(1)): people must be told they are interacting with an AI system, unless that is obvious.",
+            "Machine-readable marking (50(2)): providers of systems that generate synthetic audio, image, video or text must mark the outputs in a machine-readable format so they can be detected as artificially generated or manipulated, as far as technically feasible. Assistive editing that does not substantially change the input is excluded.",
+            "Emotion recognition and biometric categorisation (50(3)): deployers must inform the people exposed.",
+            "Deepfakes (50(4)): deployers who publish image, audio or video deepfakes must disclose that the content is artificially generated or manipulated. For evidently artistic, creative, satirical or fictional work, the disclosure can be limited so it does not spoil the work. AI-generated text published to inform the public on matters of public interest must also be disclosed, unless a person or organisation holds editorial responsibility for it after human review."
+          ]
+        },
+        "A transitional rule in Article 111(4), added by a later amendment, gives providers whose systems were placed on the market before 2 August 2026 until 2 December 2026 to comply with Article 50(2)."
+      ]
+    },
+    {
+      "h": "Platform rules: YouTube, TikTok and Meta",
+      "body": [
+        "Platforms apply their own rules worldwide, on top of local law. At a general level, at the time of writing:",
+        {
+          "table": {
+            "head": [
+              "Platform",
+              "What creators must disclose",
+              "Automatic labels"
+            ],
+            "rows": [
+              [
+                "YouTube",
+                "Realistic content made or altered with AI: a real person saying or doing something they did not, altered footage of real events or places, realistic scenes that never happened, and AI music that is the main focus",
+                "YouTube may add labels itself; repeated failure to disclose can lead to penalties"
+              ],
+              [
+                "TikTok",
+                "AI-generated or significantly edited content that shows realistic-looking scenes or people",
+                "Content made with TikTok AI effects, and content carrying C2PA Content Credentials, can be labeled automatically"
+              ],
+              [
+                "Meta (Facebook, Instagram, Threads)",
+                "Photorealistic video and realistic-sounding audio created or altered with AI; images do not require a self-label",
+                "Content made with Meta AI tools, or detected through industry-standard signals, can get an \"AI info\" label"
+              ]
+            ]
+          }
+        },
+        "YouTube does not require disclosure for clearly unrealistic content, minor edits such as color correction or filters, or AI help with scripts, titles and captions, and it says that disclosure alone does not limit a video's audience or monetization. TikTok says a label does not make harmful or misleading content acceptable."
+      ]
+    },
+    {
+      "h": "How to label in practice",
+      "body": [
+        {
+          "ol": [
+            "Keep the generator's metadata. Export from the AI tool in a format that keeps metadata, and check that your editor does not discard it on export.",
+            "Add a visible label that survives cropping. For video, put it on the opening frame and keep a small corner mark; for images, place it inside the picture, not only in the caption.",
+            "For audio-only content, say it at the start, for example: \"This audio was generated with AI.\"",
+            "Turn on the platform's AI disclosure setting when you upload, even if the file already has metadata.",
+            "Write a plain caption line such as \"Made with AI\" or \"AI-generated video\" so viewers see it in every app.",
+            "Keep a record of the tools, prompts and source files for each published piece."
+          ]
+        },
+        "Be careful with privacy tools. Removing EXIF and GPS data, for example with cv.cm's exif tool, protects your location in photos you took yourself, but the same step also removes metadata labels from AI files. For AI-generated content, add a visible label before you share it, and do not remove labels that a law or platform requires."
+      ]
+    },
+    {
+      "h": "Common mistakes",
+      "body": [
+        {
+          "ul": [
+            "Labeling only in the post text. Captions are lost when the file is reposted or downloaded.",
+            "Placing a tiny label at the very edge where platform buttons or cropping remove it.",
+            "Converting or screen-recording an AI video, which removes its metadata, and then publishing it without a visible label.",
+            "Thinking a cartoon style needs no label everywhere. Western platforms focus on realistic content, but China's Measures apply to AI-generated content in general.",
+            "Labeling real footage as AI to avoid responsibility. China's Measures forbid using improper labels to harm the rights of others, and a label never makes misleading content acceptable."
+          ]
+        },
+        {
+          "note": "This page is general information, not legal advice. Laws and platform policies change; check the current official text before you rely on a detail."
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Do I have to label AI-generated images on Instagram?",
+      "a": "Meta says it may require a label for photorealistic video and realistic audio, not for images. It may still add an \"AI info\" label to images when its systems detect AI signals."
+    },
+    {
+      "q": "What happens if I do not label AI content on YouTube?",
+      "a": "YouTube may add a label itself. Creators who repeatedly fail to disclose can face penalties such as content removal or suspension from the YouTube Partner Program."
+    },
+    {
+      "q": "Does using AI for a script or subtitles need a label?",
+      "a": "On YouTube, no: production help such as scripts, titles, thumbnails and captions does not need disclosure. Other platforms and laws focus on the generated media itself."
+    },
+    {
+      "q": "Is a watermark the same as an AI label?",
+      "a": "A visible watermark can serve as an explicit label if it clearly says the content is AI-generated. An invisible watermark is an implicit label that software can detect but people cannot see."
+    },
+    {
+      "q": "Can I remove the AI watermark from content I generated?",
+      "a": "In China the rules forbid maliciously deleting, altering or hiding required labels. Elsewhere, the tool's terms and platform rules may also forbid it. Keep the labels when you publish."
+    }
+  ]
+}

@@ -1,0 +1,188 @@
+{
+  "title": "IA de texto a imagen: cómo funciona, ajustes y flujo de trabajo — cv.cm",
+  "description": "Cómo la IA de texto a imagen convierte un prompt en una imagen, qué hacen los pasos, la guía, la semilla y el tamaño, y un flujo de trabajo paso a paso del primer borrador a la imagen final.",
+  "h1": "¿Cómo funciona la IA de texto a imagen y cómo se usa bien?",
+  "answer": "La IA de texto a imagen convierte tu prompt en números y luego un generador construye una imagen que coincide con ellos, normalmente eliminando ruido paso a paso desde un punto de partida aleatorio. Controlas el resultado con el prompt, el tamaño de la imagen, el número de pasos, la fuerza de la guía y la semilla. Un buen flujo de trabajo consiste en hacer muchos borradores pequeños y rápidos, fijar una semilla, afinar el prompt y, por último, editar y ampliar la mejor imagen.",
+  "sections": [
+    {
+      "h": "Qué ocurre entre el prompt y la imagen",
+      "body": [
+        "La mayoría de los sistemas de texto a imagen tienen tres partes. Un codificador de texto convierte el prompt en una lista de números que recoge su significado. Un generador de imágenes crea una imagen condicionada por esos números. Un decodificador convierte la representación interna del generador en píxeles reales.",
+        "El tipo de generador más habitual en el momento de escribir esto es el modelo de difusión. Parte de ruido aleatorio puro y, a lo largo de una serie de pasos, predice y elimina un poco de ruido cada vez, guiado por el texto. Los modelos de difusión latente, la familia en la que se basa Stable Diffusion, hacen esto en un espacio comprimido en lugar de sobre píxeles a tamaño completo, lo que los hace mucho más baratos de ejecutar. Otros sistemas son autorregresivos: producen la imagen como una secuencia de tokens, uno tras otro, de forma parecida a como un modelo de lenguaje escribe palabras. Janus-Pro, por ejemplo, funciona así. Ambos tipos reciben de ti las mismas entradas, así que el flujo de trabajo de abajo sirve para los dos.",
+        {
+          "ol": [
+            "Tu prompt se divide en tokens y se codifica.",
+            "A partir de la semilla se crea un punto de partida aleatorio.",
+            "El generador refina ese punto de partida durante un número fijado de pasos, y cada paso se acerca más al prompt.",
+            "El decodificador produce la imagen final con el tamaño elegido."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Los ajustes que importan",
+      "body": [
+        "Los nombres cambian de una herramienta a otra, y muchos servicios alojados ocultan algunos de estos ajustes. Cuando puedas verlos, merece la pena conocer estos.",
+        {
+          "table": {
+            "head": [
+              "Ajuste",
+              "Qué controla",
+              "Consejo práctico"
+            ],
+            "rows": [
+              [
+                "Prompt",
+                "Lo que el modelo intenta dibujar",
+                "Primero el sujeto, luego el escenario, el estilo, la iluminación y la cámara. Consulta la guía de prompts de imagen."
+              ],
+              [
+                "Prompt negativo",
+                "De qué se aleja el modelo",
+                "Breve y concreto: texto, marca de agua, dedos de más. Déjalo vacío si no tienes nada específico."
+              ],
+              [
+                "Tamaño / relación de aspecto",
+                "Píxeles y forma de la salida",
+                "Usa los tamaños con los que se entrenó el modelo. Tamaños mucho mayores pueden duplicar sujetos; amplía después en su lugar."
+              ],
+              [
+                "Pasos (steps)",
+                "Cuántas pasadas de refinamiento",
+                "Más pasos añaden detalle hasta cierto punto y luego solo cuestan tiempo. Empieza con el valor por defecto de la herramienta."
+              ],
+              [
+                "Guía (escala CFG)",
+                "Cuán estrictamente sigue la imagen el prompt",
+                "Los valores bajos se alejan del prompt; los muy altos se ven duros o sobresaturados. Empieza con el valor por defecto."
+              ],
+              [
+                "Semilla (seed)",
+                "El punto de partida aleatorio",
+                "La misma semilla, prompt y ajustes en la misma configuración dan una imagen casi idéntica. Fíjala mientras afinas el prompt."
+              ],
+              [
+                "Muestreador / planificador (sampler / scheduler)",
+                "El cálculo usado para eliminar el ruido",
+                "Afecta un poco a la velocidad y la textura. Cámbialo al final, si acaso."
+              ],
+              [
+                "Tamaño de lote (batch)",
+                "Imágenes por ejecución",
+                "Genera varias a la vez y elige; es más rápido que repetir de una en una."
+              ]
+            ]
+          }
+        },
+        "La guía funciona comparando dos predicciones en cada paso, una con tu prompt y otra sin él, y empujando el resultado todavía más hacia la diferencia. Por eso la escala se siente como un mando de intensidad del prompt, y por eso ponerla demasiado alta exagera todo."
+      ]
+    },
+    {
+      "h": "Un flujo de trabajo de la idea a la imagen final",
+      "body": [
+        {
+          "ol": [
+            "Escribe el encargo en una frase: para qué sirve la imagen, su forma (publicación cuadrada, banner 16:9, fondo de móvil 9:16) y lo único que debe mostrar.",
+            "Redacta un prompt con sujeto, acción, escenario, estilo, iluminación y encuadre.",
+            "Genera un lote de cuatro a ocho imágenes pequeñas con semillas aleatorias. Fíjate en la composición, no en el detalle.",
+            "Elige la mejor y anota su semilla. A partir de ahora, mantén la semilla fija.",
+            "Cambia una sola cosa a la vez en el prompt (iluminación, objetivo, color) y compara. Con una semilla fija, las diferencias proceden de tus palabras.",
+            "Cuando la composición sea la correcta, corrige los problemas locales con inpainting o imagen a imagen en lugar de regenerar desde cero.",
+            "Amplía la imagen final al tamaño que necesites y luego revisa los rostros, las manos y cualquier texto a tamaño completo.",
+            "Guarda el prompt, la semilla, el modelo y los ajustes junto al archivo para poder hacer variaciones más adelante."
+          ]
+        },
+        "Aquí tienes un pequeño ejemplo del paso 5. La semilla se mantiene; entre una ejecución y otra solo cambia la frase de iluminación.",
+        {
+          "code": "seed 1234\nA: a lighthouse on a rocky coast, wide shot, overcast soft light\nB: a lighthouse on a rocky coast, wide shot, golden hour, warm rim light\nC: a lighthouse on a rocky coast, wide shot, blue hour, lamp glowing",
+          "lang": "text"
+        },
+        "Como el ruido de partida es el mismo, A, B y C conservan una disposición parecida, así que puedes juzgar solo la iluminación. Con una semilla nueva cada vez estarías comparando composiciones distintas."
+      ]
+    },
+    {
+      "h": "Cómo elegir el tamaño y la resolución",
+      "body": [
+        "Cada modelo se entrena en torno a ciertos tamaños. Los primeros modelos de Stable Diffusion se entrenaron sobre todo a 512 por 512 píxeles; los más recientes, en torno a 1024 por 1024 y varias relaciones de aspecto. Pedir una imagen mucho mayor que el tamaño de entrenamiento suele producir sujetos repetidos, como dos cabezas o un horizonte duplicado, porque el modelo llena el espacio extra con más de lo que conoce.",
+        "El patrón más seguro es generar al tamaño nativo y luego ampliar con un escalador de IA. Por ejemplo, el generador de imágenes con IA de cv.cm crea una imagen de 384 píxeles en tu propia GPU con un modelo autorregresivo y después puede ampliarla 2x o 4x con Real-ESRGAN. El escalador afina bordes y texturas, pero no puede añadir objetos ni arreglar una mala composición, así que acierta primero con la disposición."
+      ]
+    },
+    {
+      "h": "Lo que el texto a imagen sigue haciendo mal",
+      "body": [
+        {
+          "ul": [
+            "Texto dentro de la imagen. Las letras pueden salir mal escritas o inventadas, sobre todo en frases largas y en alfabetos no latinos. Añade el texto después en un editor cuando deba ser correcto.",
+            "Manos y cantidades. Los dedos de más o fusionados son menos frecuentes que antes, pero siguen apareciendo. Las cantidades exactas (siete pájaros) y las relaciones espaciales (a la izquierda de, detrás de) suelen salir mal.",
+            "Varias personas distintas. Los detalles de una persona se filtran a otra. Construye la escena por etapas o usa imágenes de referencia.",
+            "El mismo personaje dos veces. Una nueva ejecución es una persona nueva, salvo que uses imágenes de referencia, descriptores fijos o ajuste fino. Consulta la guía de personajes coherentes.",
+            "Sesgo hacia los aspectos más comunes. Sin detalles, los modelos recurren a los rostros, lugares y estilos más frecuentes en sus datos de entrenamiento. Sé explícito sobre la edad, la región, la complexión y el escenario.",
+            "Personas reales, marcas y logotipos. Muchos servicios los bloquean, y usarlos puede crear riesgos legales incluso donde una herramienta lo permita."
+          ]
+        },
+        {
+          "note": "Las semillas solo son reproducibles con el mismo modelo, los mismos ajustes y, a menudo, el mismo hardware y la misma versión de software. Cambiar de herramienta o de GPU puede alterar el resultado incluso con la misma semilla."
+        }
+      ]
+    },
+    {
+      "h": "¿Servicio alojado o modelo local?",
+      "body": [
+        "Las herramientas alojadas, como Midjourney, GPT image, Imagen o los servicios en línea de Stable Diffusion y FLUX, son fáciles para empezar y ejecutan modelos grandes, pero envías tu prompt a un servidor y sigues sus reglas de contenido y sus términos. Las herramientas locales ejecutan un modelo en tu propia GPU: nada sale de tu dispositivo y puedes ver todos los ajustes, pero el modelo debe caber en memoria y suele ser más pequeño.",
+        {
+          "table": {
+            "head": [
+              "Pregunta",
+              "Servicio alojado",
+              "Modelo local o en el navegador"
+            ],
+            "rows": [
+              [
+                "Privacidad",
+                "El prompt y las imágenes van al proveedor",
+                "Se quedan en tu dispositivo"
+              ],
+              [
+                "Calidad de imagen",
+                "Normalmente modelos más grandes y potentes",
+                "Modelos más pequeños; depende de tu hardware"
+              ],
+              [
+                "Control",
+                "Algunos ajustes ocultos",
+                "Todos los ajustes visibles"
+              ],
+              [
+                "Coste",
+                "Plan gratuito o suscripción",
+                "Gratis tras la descarga; consume tu energía y tu GPU"
+              ]
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "¿La IA de texto a imagen es lo mismo que un modelo de difusión?",
+      "a": "No siempre. La difusión es el método más común en el momento de escribir esto, pero algunos modelos de texto a imagen son autorregresivos y generan la imagen como una secuencia de tokens. Ambos se usan de la misma manera."
+    },
+    {
+      "q": "¿Por qué obtengo una imagen distinta cada vez con el mismo prompt?",
+      "a": "Cada ejecución parte de un ruido aleatorio nuevo, elegido por la semilla. Fija la semilla, junto con el modelo y los ajustes, para obtener la misma imagen o una muy parecida."
+    },
+    {
+      "q": "¿Qué CFG o escala de guía debo usar?",
+      "a": "Empieza con el valor por defecto de la herramienta. Súbelo un poco si la imagen ignora partes de tu prompt y bájalo si los colores se ven duros o los detalles parecen pasados de rosca."
+    },
+    {
+      "q": "¿Puedo usar imágenes generadas con IA con fines comerciales?",
+      "a": "Depende de los términos de la herramienta y de la ley de tu país. Muchos servicios permiten el uso comercial, pero la protección por derechos de autor de las imágenes creadas solo con IA es limitada en algunos países. Consulta los términos y la guía de derechos de autor."
+    },
+    {
+      "q": "¿Por qué las imágenes de IA suelen ser cuadradas y pequeñas?",
+      "a": "Los modelos se entrenan con tamaños concretos y generar imágenes grandes cuesta mucha memoria y tiempo. Genera al tamaño nativo y usa después un escalador de IA para la resolución final."
+    }
+  ]
+}

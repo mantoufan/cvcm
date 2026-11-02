@@ -10,6 +10,7 @@ export function toolLessonsSection(loc: Locale, tool: ToolId): HTMLElement | nul
   const shelves = [
     { page: "hub" as const, nav: "knowledge", label: t("kb.label"), articles: kbForTool(tool) },
     { page: "code" as const, nav: "coding", label: t("kb.code.label"), articles: kbForTool(tool, "code") },
+    { page: "ai" as const, nav: "ai-learn", label: t("kb.ai.label"), articles: kbForTool(tool, "ai") },
   ].filter((shelf) => shelf.articles.length);
   if (ids.length === 0 && shelves.length === 0) return null;
   return h("section", { class: "learn-related tool-lessons" },

@@ -1,0 +1,206 @@
+{
+  "title": "Image-to-video AI: ảnh mở đầu, prompt chuyển động, parallax — cv.cm",
+  "description": "Image-to-video AI làm ảnh chuyển động thế nào: chọn ảnh mở đầu, viết prompt chỉ tả chuyển động và phương pháp parallax 2.5D chỉ di chuyển máy quay, không di chuyển chủ thể.",
+  "h1": "Image-to-video AI hoạt động như thế nào?",
+  "answer": "Image-to-video AI lấy bức ảnh của bạn làm khung hình đầu tiên và tạo các khung hình tiếp theo, dẫn hướng bởi một prompt ngắn về chuyển động. Vẻ ngoài đến từ ảnh, nên prompt chỉ cần nói cái gì chuyển động và máy quay di chuyển ra sao. Một phương pháp đơn giản hơn, parallax 2.5D, ước lượng độ sâu rồi di chuyển một máy quay ảo, nên cảnh trở nên có chiều sâu 3D nhưng không có gì trong đó tự cử động.",
+  "sections": [
+    {
+      "h": "Khác text-to-video ở điểm nào",
+      "body": [
+        "Trong text-to-video, mô hình tự bịa mọi thứ: khuôn mặt, quần áo, căn phòng, ánh sáng và chuyển động. Trong image-to-video, bạn cung cấp khung hình đầu, và mô hình chỉ phải bịa ra điều xảy ra tiếp theo. Tài liệu Veo của Google mô tả đây là dùng một ảnh có sẵn làm khung hình đầu của video mới; hướng dẫn Sora của OpenAI gọi là neo khung hình đầu.",
+        "Điều này thay đổi mục đích của prompt. Bức ảnh đã trả lời ai, ở đâu và phong cách gì. Prompt trả lời cái gì chuyển động, theo hướng nào, nhanh hay chậm, và máy quay làm gì.",
+        {
+          "table": {
+            "head": [
+              "Khía cạnh",
+              "Text-to-video",
+              "Image-to-video"
+            ],
+            "rows": [
+              [
+                "Nguồn của vẻ ngoài",
+                "Prompt",
+                "Ảnh của bạn"
+              ],
+              [
+                "Prompt mô tả gì",
+                "Chủ thể, cảnh, phong cách, chuyển động, máy quay, âm thanh",
+                "Chủ yếu chuyển động, máy quay và âm thanh"
+              ],
+              [
+                "Độ nhất quán của khuôn mặt hoặc sản phẩm",
+                "Thay đổi giữa các bản",
+                "Mạnh ở đầu clip, có thể trôi về sau"
+              ],
+              [
+                "Chuẩn bị",
+                "Không cần",
+                "Tạo hoặc chọn một ảnh mở đầu tốt"
+              ],
+              [
+                "Dùng điển hình",
+                "Khám phá ý tưởng",
+                "Làm động một vẻ ngoài đã định, ảnh sản phẩm, nhân vật xuyên suốt các cảnh"
+              ]
+            ]
+          }
+        },
+        "Bên trong mô hình, ảnh mở đầu được mã hóa và đưa vào như một điều kiện, cùng với văn bản. Stable Video Diffusion, một mô hình mở, được phát hành với cả biến thể text-to-video lẫn image-to-video xây trên cùng một nền khuếch tán video latent."
+      ]
+    },
+    {
+      "h": "Chọn ảnh mở đầu",
+      "body": [
+        "Ảnh mở đầu quyết định nhiều hơn prompt. Phần lớn clip image-to-video hỏng có thể truy về một ảnh mở đầu không chừa chỗ cho chuyển động.",
+        {
+          "ul": [
+            "Khớp tỷ lệ khung hình đầu ra. Nếu công cụ xuất 16:9 hoặc 9:16, hãy đưa ảnh đúng dạng đó; kích thước khác có thể bị cắt hoặc đổi cỡ. Tài liệu Veo của Google khuyên dùng ảnh đầu vào tối thiểu 720p ở tỷ lệ 16:9 hoặc 9:16.",
+            "Chừa chỗ cho chuyển động. Nếu người sẽ đi sang phải, hãy chừa khoảng trống bên phải. Nếu máy quay sẽ đẩy vào, khuôn mặt không nên đã chiếm đầy khung hình.",
+            "Tạo dáng cho phần đầu của hành động. Với 'cô ấy quay lại nhìn máy quay', hãy bắt đầu khi cô ấy đang nhìn đi chỗ khác.",
+            "Chủ thể rõ và sắc nét. Khuôn mặt mờ hoặc quá nhỏ sẽ tệ hơn khi được làm động.",
+            "Bàn tay đơn giản. Bàn tay được giấu, thả lỏng hoặc không cầm gì sẽ chuyển động sạch hơn.",
+            "Không có chữ cần giữ nguyên. Logo và biển hiệu có thể méo khi khung hình bắt đầu chuyển động."
+          ]
+        },
+        "Nếu bạn tạo ảnh mở đầu bằng mô hình ảnh, hãy tạo cho cảnh quay chứ không phải một tấm poster hoàn chỉnh: tư thế tự nhiên, nguồn sáng hợp lý và khoảng trống quanh chủ thể."
+      ]
+    },
+    {
+      "h": "Viết prompt chuyển động",
+      "body": [
+        "Chỉ mô tả những gì thay đổi. Lặp lại mô tả của bức ảnh chỉ thêm chữ mà mô hình không cần và có thể khiến nó đứng yên. Các ví dụ trong tài liệu image-to-video của Google là những dòng chuyển động ngắn, như một con vật di chuyển tự nhiên hay những bông hoa đung đưa nhẹ nhàng.",
+        {
+          "code": "Weak:\nA beautiful woman with long red hair in a green dress standing in a field\nof flowers at sunset, highly detailed.\n\nStrong:\nShe slowly turns her head toward the camera and smiles. A light breeze\nmoves her hair and the flowers. Slow dolly in. Audio: wind, distant birds.",
+          "lang": "text"
+        },
+        {
+          "ol": [
+            "Chuyển động của chủ thể: một hành động, có tốc độ và điểm kết thúc.",
+            "Chuyển động phụ: những thứ nhỏ làm cảnh sống động, như tóc, lá, hơi nước, nước.",
+            "Máy quay: một chuyển động hoặc cố định. Xem hướng dẫn thuật ngữ chuyển động máy quay.",
+            "Âm thanh, nếu mô hình tạo âm thanh."
+          ]
+        },
+        "Giữ chuyển động khả thi về mặt vật lý từ tư thế bắt đầu. Một người đang ngồi trong ảnh không thể chạy ngay trong hai giây một cách gọn gàng. Nếu hành động lớn, hãy dùng công cụ khung hình đầu và cuối và đưa thêm tư thế kết thúc."
+      ]
+    },
+    {
+      "h": "Phương pháp parallax 2.5D: bản đồ độ sâu cộng chuyển động máy",
+      "body": [
+        "Có một cách thứ hai, đơn giản hơn nhiều, để làm một bức ảnh chuyển động, và nó hoàn toàn không phải video sinh tạo. Nó thường được gọi là hiệu ứng 3D Ken Burns, theo bài báo năm 2019 của Niklaus và cộng sự.",
+        {
+          "ol": [
+            "Ước lượng độ sâu. Một mô hình độ sâu, như Depth Anything V2, dự đoán cho từng điểm ảnh khoảng cách của nó tới máy quay.",
+            "Biến ảnh thành một lớp 3D. Mỗi điểm ảnh bị đẩy lùi theo độ sâu của nó, nên bức ảnh trở thành một phù điêu nông thay vì một tấm phẳng.",
+            "Di chuyển máy quay ảo. Máy đẩy vào, kéo ra, quay vòng hoặc lia. Điểm ảnh ở gần dịch chuyển nhiều hơn điểm ở xa, đó là parallax (thị sai), và não bộ đọc nó như chiều sâu.",
+            "Lấp khoảng trống. Khi máy quay di chuyển, nó có thể thấy những vùng vốn bị chủ thể che khuất. Công cụ đơn giản kéo giãn các điểm ảnh lân cận hoặc phóng nhẹ để che mép; các hệ thống nghiên cứu như bài báo 3D Ken Burns thì vẽ bù (inpaint) những vùng bị che."
+          ]
+        },
+        "Đây là phương pháp công cụ `v` của cv.cm sử dụng. Nó chạy Depth Anything V2 ngay trong trình duyệt, dựng parallax bằng GPU theo quỹ đạo đẩy, kéo, quay vòng, lia hoặc nâng, rồi xuất ra MP4. Máy quay di chuyển; chủ thể không chớp mắt, đi lại hay nói. Bạn cũng có thể xem trước chính bản đồ độ sâu bằng công cụ `depth-map` của cv.cm.",
+        {
+          "table": {
+            "head": [
+              "Khía cạnh",
+              "Image-to-video sinh tạo",
+              "Parallax 2.5D"
+            ],
+            "rows": [
+              [
+                "Cái gì chuyển động",
+                "Chủ thể, cảnh và máy quay",
+                "Chỉ máy quay"
+              ],
+              [
+                "Độ trung thực với ảnh",
+                "Có thể đổi khuôn mặt và chi tiết",
+                "Mọi điểm ảnh đều từ ảnh của bạn"
+              ],
+              [
+                "Vấn đề thường gặp",
+                "Biến hình, vật lý kỳ quặc, trôi",
+                "Mép bị kéo giãn quanh chủ thể nếu chuyển động lớn"
+              ],
+              [
+                "Phần cứng",
+                "Thường là dịch vụ đám mây",
+                "Có thể chạy trong trình duyệt"
+              ],
+              [
+                "Phù hợp cho",
+                "Cảnh sống động, nhân vật diễn xuất",
+                "Chân dung, phong cảnh, ảnh sản phẩm, trình chiếu ảnh"
+              ]
+            ]
+          }
+        },
+        "Parallax hiệu quả nhất với ảnh có các lớp độ sâu rõ ràng: người đứng trước hậu cảnh xa, sản phẩm đặt trên bàn, con phố lùi dần vào xa. Nó kém hiệu quả với chủ thể phẳng, như tài liệu hay bức tường, vì không có độ sâu nào để máy quay hé lộ."
+      ]
+    },
+    {
+      "h": "Vấn đề thường gặp và cách khắc phục",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Vấn đề",
+              "Nguyên nhân có thể",
+              "Cách sửa"
+            ],
+            "rows": [
+              [
+                "Gần như không có gì chuyển động",
+                "Prompt tả bức ảnh chứ không tả chuyển động",
+                "Chỉ viết chuyển động và dùng động từ mạnh"
+              ],
+              [
+                "Khuôn mặt đổi dần về cuối",
+                "Chuyển động lớn hoặc clip dài",
+                "Clip ngắn hơn, hành động nhỏ hơn, khung hình mở đầu gần hơn"
+              ],
+              [
+                "Cơ thể bị cong hoặc méo",
+                "Hành động bất khả thi từ tư thế bắt đầu",
+                "Đổi tư thế bắt đầu hoặc thêm khung hình cuối"
+              ],
+              [
+                "Mép bị nhòe trong parallax",
+                "Chuyển động máy quá mạnh so với độ sâu",
+                "Dùng chuyển động nhẹ hơn hoặc ảnh có hậu cảnh sạch hơn"
+              ],
+              [
+                "Sai tỷ lệ khung hình, chủ thể bị cắt",
+                "Hình dạng đầu vào khác đầu ra",
+                "Cắt ảnh mở đầu theo tỷ lệ đầu ra trước"
+              ]
+            ]
+          }
+        },
+        {
+          "note": "Chỉ làm động những bức ảnh bạn có quyền sử dụng, và đừng làm động người thật khi chưa có sự đồng ý của họ. Một khuôn mặt chuyển động thuyết phục hơn nhiều so với ảnh tĩnh, điều này khiến việc lạm dụng dễ dàng hơn."
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Tôi có thể biến ảnh thành video miễn phí không?",
+      "a": "Có, với công cụ parallax chạy trong trình duyệt, nó di chuyển một máy quay xuyên qua bức ảnh. Các công cụ sinh tạo cũng có gói miễn phí, nhưng thường giới hạn số clip bạn có thể tạo."
+    },
+    {
+      "q": "Vì sao clip image-to-video của tôi làm thay đổi khuôn mặt người trong ảnh?",
+      "a": "Mô hình tạo lại mọi khung hình sau khung đầu, và danh tính bị trôi khi chuyển động tăng lên. Hãy dùng ảnh mở đầu rõ nét nhìn thẳng, clip ngắn và chuyển động nhỏ."
+    },
+    {
+      "q": "Image-to-video có cần prompt không?",
+      "a": "Nhiều công cụ chấp nhận prompt trống và tự chọn một chuyển động nhẹ nhàng. Một prompt chuyển động ngắn cho bạn quyền kiểm soát cái gì chuyển động và máy quay cư xử ra sao."
+    },
+    {
+      "q": "Image-to-video khác hiệu ứng Ken Burns thế nào?",
+      "a": "Hiệu ứng Ken Burns cổ điển lia và phóng ảnh phẳng. Phiên bản 3D thêm độ sâu, nên phần gần và phần xa di chuyển khác nhau. Image-to-video sinh tạo đi xa hơn và làm chính chủ thể chuyển động."
+    },
+    {
+      "q": "Image-to-video có thể làm ai đó nói chuyện không?",
+      "a": "Một số mô hình sinh tạo và công cụ talking-head chuyên dụng có thể làm môi cử động theo âm thanh. Công cụ parallax thì không, vì chúng chỉ di chuyển máy quay."
+    }
+  ]
+}

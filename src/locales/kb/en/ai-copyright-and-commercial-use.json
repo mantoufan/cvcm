@@ -1,0 +1,185 @@
+{
+  "title": "Who Owns AI Art? Copyright and Commercial Use of AI Output — cv.cm",
+  "description": "Who owns AI-generated images, video and text, and can you use them commercially? US Copyright Office, China's Li v. Liu case, the EU, and a practical checklist.",
+  "h1": "Who owns AI-generated content, and can you use it commercially?",
+  "answer": "It depends on the country and on how much a human shaped the result. The US Copyright Office says prompts alone are not enough for copyright, but human selection, arrangement and edits can be protected. A Beijing court in 2023 found an AI image to be the user's work because of the user's creative choices. Commercial use also depends on the tool's terms, trademarks and likeness rights.",
+  "sections": [
+    {
+      "h": "The short answer by region",
+      "body": [
+        "Copyright law is national, and courts and offices are still deciding new cases. The table summarises official positions that were published at the time of writing. It is general information, not legal advice.",
+        {
+          "table": {
+            "head": [
+              "Region",
+              "Can AI output be protected?",
+              "Key official source"
+            ],
+            "rows": [
+              [
+                "United States",
+                "Only the parts where a human determined the expressive elements; prompts alone are not enough",
+                "Copyright Office registration guidance (March 2023) and Part 2 report (January 2025)"
+              ],
+              [
+                "China",
+                "A court has protected an AI image as the user's work where the user made creative choices; decided case by case",
+                "Beijing Internet Court, Li v. Liu, judgment of 27 November 2023"
+              ],
+              [
+                "European Union",
+                "The AI Act does not decide who owns outputs; ownership is left to copyright law",
+                "AI Act Article 53 sets copyright duties for model providers, not for output ownership"
+              ]
+            ]
+          }
+        },
+        "Two separate questions are often mixed up. First: can anyone own the output, so that you can stop others from copying it? Second: are you allowed to use it, given the tool's terms and other people's rights? You can be allowed to use an image commercially even if nobody can own its copyright."
+      ]
+    },
+    {
+      "h": "United States: human authorship is required",
+      "body": [
+        "In March 2023 the US Copyright Office published registration guidance for works that contain AI-generated material. Applicants must disclose AI-generated material that is more than de minimis, with a brief explanation of the human author's contributions, and exclude the AI-generated material from the claim.",
+        "On 29 January 2025 the Office published Part 2 of its report on copyright and artificial intelligence, on copyrightability. Its main conclusions:",
+        {
+          "ul": [
+            "Copyright protects AI-assisted works only where a human author has determined sufficient expressive elements.",
+            "The mere provision of prompts is not enough to make the user the author of the output.",
+            "Human-authored material that remains perceptible in the output, such as your own drawing used as input, can be protected.",
+            "Creative selection, arrangement or modification of AI output by a human can be protected.",
+            "Using AI as a tool, or including AI material in a larger human work, does not make the whole work unprotectable.",
+            "The Office did not find a case for new legislation to protect AI-generated outputs."
+          ]
+        },
+        "In practice, a single image generated from a prompt is unlikely to be registrable in the US, but a comic, film or book where a person wrote the story, chose and arranged the images and edited them can be registered for those human contributions."
+      ]
+    },
+    {
+      "h": "China: the Li v. Liu AI image case",
+      "body": [
+        "In Li v. Liu, case (2023) Jing 0491 Min Chu No. 11279, the Beijing Internet Court decided on 27 November 2023 that an image the plaintiff generated with Stable Diffusion was a protected work. The plaintiff had chosen the model, written positive and negative prompts, set parameters and selected the result. The defendant used the image to illustrate an article and removed the plaintiff's watermark.",
+        {
+          "ul": [
+            "The court found the image showed originality because it reflected the plaintiff's intellectual input and personal choices.",
+            "It said an AI model is not a legal subject and cannot be an author, and that the model's designer was not the author either.",
+            "It held that the plaintiff, who set up the model and selected the image, was the author and owned the copyright.",
+            "It also said the plaintiff should prominently indicate the use of AI technology."
+          ]
+        },
+        "The court stressed that whether an AI-generated image is a work must be judged in each case. It is a first-instance judgment from one court, so it does not settle the question for every AI output in China."
+      ]
+    },
+    {
+      "h": "Training data and model providers",
+      "body": [
+        "A separate question is whether training a model on copyrighted works is lawful. This is about the model maker, but it can affect users if outputs copy protected material.",
+        {
+          "ul": [
+            "United States: the Copyright Office released a pre-publication version of Part 3 of its report, on generative AI training, on 9 May 2025. Several lawsuits about training data were still open at the time of writing.",
+            "European Union: under Article 53 of the AI Act, providers of general-purpose AI models must have a policy to comply with EU copyright law, including respecting text-and-data-mining opt-outs made under Article 4(3) of Directive (EU) 2019/790, and must publish a sufficiently detailed summary of the content used for training. These duties apply from 2 August 2025."
+          ]
+        },
+        "For users, the practical risk is output that closely copies an existing work, character or style signature. Prompts that name a living artist, a film character or a brand make close copies more likely."
+      ]
+    },
+    {
+      "h": "Terms of service and model licenses",
+      "body": [
+        "Even where copyright law is unclear, the contract with the tool provider decides a lot. Read these parts of the terms before commercial use:",
+        {
+          "table": {
+            "head": [
+              "Clause",
+              "What to look for"
+            ],
+            "rows": [
+              [
+                "Output ownership",
+                "Whether the provider assigns any rights in outputs to you, keeps rights, or makes no claim"
+              ],
+              [
+                "Commercial use",
+                "Whether free plans, trial credits or education plans allow commercial use"
+              ],
+              [
+                "Usage policy",
+                "Banned content and uses, such as political ads, impersonation or medical claims"
+              ],
+              [
+                "Indemnity",
+                "Whether the provider defends paying customers against copyright claims, and on what conditions"
+              ],
+              [
+                "Open-weight license",
+                "For downloaded models: commercial limits, required notices, user caps and acceptable-use rules"
+              ],
+              [
+                "Input rights",
+                "That you have rights to the images, voices and text you upload as references"
+              ]
+            ]
+          }
+        },
+        "Terms change. Save a copy or screenshot of the terms that applied on the day you generated important assets."
+      ]
+    },
+    {
+      "h": "Trademarks, likeness and voices",
+      "body": [
+        "Copyright is only one layer. Other rights apply to AI output in the same way they apply to photos and videos:",
+        {
+          "ul": [
+            "Trademarks: logos, brand names and distinctive packaging in your output can suggest a false endorsement. Remove them from commercial work.",
+            "Likeness and personality rights: using a real person's face or voice without permission can break privacy, publicity or personality rights in many countries, even if the image is fully synthetic.",
+            "Digital replicas: the US Copyright Office's Part 1 report (July 2024) on digital replicas recommended a new federal law against unauthorised replicas of a person's voice or appearance.",
+            "Labeling: in China, rules on AI content labeling apply when you publish AI-generated content, and platforms worldwide have their own disclosure rules."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "A commercial-use checklist",
+      "body": [
+        {
+          "ol": [
+            "Check that your plan in the tool's terms allows commercial use, and save a copy of those terms.",
+            "Make sure you have rights to every input: reference photos, voices, scripts and music.",
+            "Avoid prompts that name living artists, brands or copyrighted characters.",
+            "Search for close matches: run a reverse image search on key images and compare logos and characters.",
+            "Remove trademarks and recognisable real people unless you have written permission.",
+            "Add meaningful human work: writing, selection, arrangement, editing. This helps in places where human authorship decides protection.",
+            "Keep records: prompts, settings, reference files, drafts and edit history.",
+            "Label AI content where the law or the platform requires it.",
+            "For high-value uses such as logos, packaging or ad campaigns, ask a lawyer in your country."
+          ]
+        },
+        {
+          "note": "A logo made only from a prompt may be hard to register or defend as your own work in places that require human authorship. For a brand mark, use AI for ideas and have a designer create the final version."
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Can I sell AI-generated art?",
+      "a": "Usually yes, if the tool's terms allow commercial use and the image does not copy protected works, trademarks or real people. Whether you can stop others from copying it is a separate copyright question."
+    },
+    {
+      "q": "Can I copyright a book or comic made with AI images?",
+      "a": "In the US you can register the human parts, such as the text and the selection and arrangement of images, and must disclose the AI-generated material. Other countries may judge the work differently."
+    },
+    {
+      "q": "Does the AI company own what I generate?",
+      "a": "That depends on the terms of service. Many providers say they do not claim ownership of outputs, but the exact wording differs, and some free plans limit use. Read the output and commercial-use clauses."
+    },
+    {
+      "q": "Is it legal to use AI in the style of a famous artist?",
+      "a": "Style alone is generally not protected by copyright, but outputs that copy specific works or characters can infringe, and naming living artists raises legal and reputational risk. Avoid it in commercial work."
+    },
+    {
+      "q": "Do I have to say that my content was made with AI?",
+      "a": "In some places and on many platforms, yes. China requires labels on AI-generated content, the EU AI Act adds transparency duties, and YouTube, TikTok and Meta ask creators to disclose realistic AI content."
+    }
+  ]
+}

@@ -1,0 +1,307 @@
+{
+  "title": "Istilah Gerakan Kamera untuk Video AI: Dolly, Orbit, Crane — cv.cm",
+  "description": "Istilah gerakan kamera untuk prompt video AI: dolly, truck, pedestal, orbit, crane, dolly zoom, rack focus dan lainnya, lengkap dengan tampilannya dan cara menulisnya.",
+  "h1": "Apa saja istilah gerakan kamera untuk prompt video AI?",
+  "answer": "Istilah gerakan kamera adalah kosakata kru film tentang cara kamera bergerak: pan dan tilt memutar kamera di tempat, dolly menggerakkannya maju atau mundur, truck menggesernya ke samping, pedestal menaik-turunkannya, dan orbit mengelilingi subjek. Model video mempelajari kata-kata ini dari rekaman yang diberi keterangan, sehingga menyebut satu gerakan standar memberi kendali jauh lebih besar daripada sekadar 'cinematic camera'.",
+  "sections": [
+    {
+      "h": "Mengapa kata yang tepat itu penting",
+      "body": [
+        "Model video mempelajari bahasa kamera dari keterangan (caption) yang ditulis untuk rekaman nyata. Ketika caption berbunyi 'slow dolly in on her face', model mengaitkan frasa itu dengan pola gerak tertentu: subjek membesar di frame dan latar bergeser sedikit di belakangnya. Frasa kabur seperti 'dynamic camera' terkait dengan segalanya sekaligus, sehingga hasilnya campuran acak.",
+        "Istilah di bawah ini dipakai kru film, dan sebagian besar muncul di panduan prompt Veo dari Google. Para peneliti juga memperlakukan gerakan kamera sebagai sinyal kontrol tersendiri: Stable Video Diffusion terbukti bisa bekerja dengan modul gerakan kamera, dan CameraCtrl menambahkan jalur kamera yang presisi ke model text-to-video. Penelitian itu ada karena teks saja hanya memberi kendali kasar. Gunakan kata yang tepat, batasi satu gerakan per shot, dan bersiaplah membuat beberapa take.",
+        "Dua pasangan mudah tertukar. Pan dan tilt memutar kamera di tempat, seperti menoleh. Truck dan pedestal menggerakkan seluruh kamera ke samping atau naik-turun, seperti melangkah ke samping atau berdiri. Memutar menghasilkan sapuan datar; bergerak menghasilkan paralaks, yaitu benda dekat bergeser lebih cepat daripada benda jauh."
+      ]
+    },
+    {
+      "h": "Gerakan kamera: tabel lengkap",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Gerakan",
+              "Tampilan di layar",
+              "Efek emosional",
+              "Cara menulisnya"
+            ],
+            "rows": [
+              [
+                "Static (locked-off)",
+                "Frame tidak bergerak; hanya subjek yang bergerak",
+                "Tenang, observasional, membiarkan akting membawa shot",
+                "`static shot, locked-off camera on a tripod`"
+              ],
+              [
+                "Pan",
+                "Kamera berputar ke kiri atau kanan di tempat; pemandangan tersapu ke samping",
+                "Memperlihatkan ruang, mengikuti tatapan atau gerakan",
+                "`slow pan left across the harbor`"
+              ],
+              [
+                "Tilt",
+                "Kamera berputar ke atas atau bawah di tempat",
+                "Ke atas menunjukkan skala atau kekuatan; ke bawah menunjukkan penemuan",
+                "`tilt up from her shoes to her face`"
+              ],
+              [
+                "Dolly in / dolly out",
+                "Kamera bergerak mendekati atau menjauhi subjek; latar mengalami paralaks",
+                "Dolly in membangun fokus dan ketegangan; dolly out menciptakan jarak atau kesepian",
+                "`slow dolly in toward the man at the desk`"
+              ],
+              [
+                "Truck (kiri / kanan)",
+                "Kamera bergeser ke samping, sejajar dengan adegan",
+                "Halus, mengamati, seperti berjalan melewati sesuatu",
+                "`camera trucks right along the market stalls`"
+              ],
+              [
+                "Pedestal (naik / turun)",
+                "Kamera naik atau turun lurus tanpa tilt",
+                "Pengungkapan lembut dari atas atau bawah sebuah objek",
+                "`pedestal up from behind the counter to reveal the room`"
+              ],
+              [
+                "Zoom in / out",
+                "Lensa mengubah panjang fokus; gambar membesar tanpa paralaks",
+                "Datar, observasional, kadang terasa janggal",
+                "`slow zoom in, camera stays in place`"
+              ],
+              [
+                "Push-in",
+                "Dolly in yang pelan dan stabil, biasanya menuju wajah",
+                "Emosi yang tumbuh atau momen menyadari sesuatu",
+                "`slow push-in on her eyes as she understands`"
+              ],
+              [
+                "Pull-back reveal",
+                "Kamera mundur untuk menampilkan hal yang tadinya di luar frame",
+                "Kejutan, konteks, keterasingan",
+                "`pull back to reveal he is alone on a huge empty stage`"
+              ],
+              [
+                "Orbit / arc",
+                "Kamera mengitari subjek yang tetap berada di tengah",
+                "Penekanan, momen heroik atau seperti mimpi",
+                "`camera orbits slowly around the dancer, half circle`"
+              ],
+              [
+                "Crane / jib",
+                "Kamera naik atau turun dalam lengkung besar, sering di ketinggian",
+                "Pembuka atau penutup yang megah, kesan skala",
+                "`crane shot rising up over the crowd to a wide view`"
+              ],
+              [
+                "Tracking / follow",
+                "Kamera bergerak bersama subjek yang berjalan, dengan jarak tetap",
+                "Momentum, terasa menemani karakter",
+                "`tracking shot following her from behind as she runs`"
+              ],
+              [
+                "Handheld",
+                "Goyangan kecil dan melayang, seperti dipegang orang",
+                "Realisme, urgensi, nuansa dokumenter",
+                "`handheld camera, slight natural shake`"
+              ],
+              [
+                "Whip pan",
+                "Pan sangat cepat dengan motion blur",
+                "Energi, perpindahan perhatian yang cepat, transisi",
+                "`fast whip pan to the door`"
+              ],
+              [
+                "Dolly zoom (vertigo effect)",
+                "Ukuran subjek tetap sama sementara latar meregang atau menyusut",
+                "Kejut, pusing, dunia yang bergeser",
+                "`dolly zoom on his face, background stretches away`"
+              ],
+              [
+                "Rack focus",
+                "Fokus berpindah dari satu kedalaman ke kedalaman lain; kamera tidak bergerak",
+                "Memindahkan perhatian, menghubungkan dua subjek",
+                "`rack focus from the ring in the foreground to her face`"
+              ],
+              [
+                "Dutch angle",
+                "Kamera dimiringkan ke satu sisi; garis horizon miring",
+                "Gelisah, ada yang tidak beres",
+                "`dutch angle, horizon tilted 20 degrees`"
+              ],
+              [
+                "POV",
+                "Kita melihat apa yang dilihat karakter, sering dengan tangan di frame",
+                "Imersi, rasa menjadi karakter itu",
+                "`first-person POV, his hands on the steering wheel`"
+              ],
+              [
+                "FPV drone",
+                "Terbang cepat, rendah, meliuk melewati ruang",
+                "Kecepatan, sensasi, perjalanan yang tak terputus",
+                "`FPV drone shot diving off the cliff and skimming the waves`"
+              ]
+            ]
+          }
+        },
+        "Catatan untuk gerakan yang sulit. Zoom dan dolly in bisa berakhir di framing yang sama, tetapi hanya dolly yang menunjukkan paralaks, sehingga terasa seperti bergerak menembus ruang. Dolly zoom menggabungkan keduanya sekaligus dalam arah berlawanan dan sulit bagi model; minta secara terpisah, pada subjek sederhana, dan buat beberapa take. Dutch angle dan POV lebih tepat disebut pilihan framing daripada gerakan, tetapi penulisannya di prompt berada di tempat yang sama."
+      ]
+    },
+    {
+      "h": "Ukuran shot",
+      "body": [
+        "Ukuran shot menentukan seberapa banyak subjek mengisi frame. Ini hal pertama yang perlu ditetapkan dalam prompt, karena menentukan detail apa yang harus digambar model.",
+        {
+          "table": {
+            "head": [
+              "Ukuran shot",
+              "Yang mengisi frame",
+              "Cocok untuk"
+            ],
+            "rows": [
+              [
+                "Extreme wide / establishing",
+                "Seluruh lokasi; orang tampak sangat kecil",
+                "Membuka adegan, skala, geografi"
+              ],
+              [
+                "Wide (full) shot",
+                "Seluruh tubuh dari kepala sampai kaki, beserta sekitarnya",
+                "Gerakan, tari, aksi, kostum"
+              ],
+              [
+                "Medium shot",
+                "Dari pinggang ke atas",
+                "Percakapan, gestur, sebagian besar dialog"
+              ],
+              [
+                "Medium close-up",
+                "Dari dada ke atas",
+                "Emosi dengan sedikit bahasa tubuh"
+              ],
+              [
+                "Close-up",
+                "Wajah atau satu objek",
+                "Reaksi, emosi, properti penting"
+              ],
+              [
+                "Extreme close-up",
+                "Satu detail: mata, ujung jari, setetes air",
+                "Intensitas, tekstur, petunjuk"
+              ],
+              [
+                "Over-the-shoulder",
+                "Dari belakang satu orang, menghadap orang lain",
+                "Dialog dua orang"
+              ]
+            ]
+          }
+        },
+        "Untuk video AI, close-up wajah biasanya lebih stabil daripada wide shot keramaian, karena model punya lebih sedikit sosok kecil yang harus dijaga konsistensinya. Tangan dan jari paling baik di close-up dengan gerakan sederhana, atau sebagian disembunyikan dari frame."
+      ]
+    },
+    {
+      "h": "Sudut kamera",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Sudut",
+              "Posisi kamera",
+              "Efek"
+            ],
+            "rows": [
+              [
+                "Eye level",
+                "Setinggi mata subjek",
+                "Netral, jujur"
+              ],
+              [
+                "Low angle",
+                "Di bawah, menatap ke atas",
+                "Kekuatan, ancaman, kepahlawanan"
+              ],
+              [
+                "High angle",
+                "Di atas, menatap ke bawah",
+                "Kelemahan, kerentanan, gambaran umum"
+              ],
+              [
+                "Bird's-eye / top-down",
+                "Lurus ke bawah dari atas",
+                "Pola, seperti peta, berjarak"
+              ],
+              [
+                "Worm's-eye",
+                "Setinggi tanah, menatap tajam ke atas",
+                "Skala raksasa, dramatis"
+              ],
+              [
+                "Dutch (canted)",
+                "Dimiringkan ke satu sisi",
+                "Tegang, disorientasi"
+              ]
+            ]
+          }
+        },
+        "Sudut bisa digabung dengan gerakan. 'Low angle, slow tracking shot' adalah instruksi yang jelas; sudut menentukan posisi dan gerakan menentukan jalur."
+      ]
+    },
+    {
+      "h": "Cara memasukkan gerakan kamera ke prompt",
+      "body": [
+        {
+          "ol": [
+            "Mulai dengan baris kamera: ukuran shot, sudut, gerakan, kecepatan. Contoh: `Medium close-up, eye level, slow push-in.`",
+            "Sebutkan target gerakan: push in ke apa, orbit mengelilingi siapa, pan dari mana ke mana.",
+            "Beri gerakan itu kecepatan dan titik akhir: 'slowly', 'over the full clip', 'stops on her face'.",
+            "Gambarkan aksi subjek secara terpisah, dan buat tetap kecil kalau gerakan kameranya besar.",
+            "Tambahkan kata lensa hanya jika penting: `shallow depth of field`, `wide-angle lens`, `telephoto compression`."
+          ]
+        },
+        {
+          "code": "Wide shot, low angle, slow crane up.\nA lighthouse on a rocky coast at sunset; waves break on the rocks below.\nThe camera rises from the rocks to above the lighthouse lamp, ending on a\nwide view of the sea. Warm orange light, long shadows, light sea mist.\nAudio: waves, wind, seagulls.",
+          "lang": "text"
+        },
+        "Kalau kamu bekerja dari satu foto, gerakan kamera juga bisa dibuat tanpa model video. Misalnya, alat `v` dari cv.cm memperkirakan kedalaman dari foto dan merender gerakan 3D yang nyata: push, pull, orbit, pan, atau naik. Kameranya yang bergerak; subjeknya diam. Ini cara cepat untuk melihat tampilan tiap gerakan pada gambarmu sendiri."
+      ]
+    },
+    {
+      "h": "Kesalahan yang sering dilakukan model",
+      "body": [
+        {
+          "ul": [
+            "Gerakan gabungan: 'orbit while craning up and zooming' biasanya menghasilkan jalur yang terdistorsi atau goyang. Pakai satu gerakan.",
+            "Kecepatan: gerakan 'fast' bisa membuat wajah blur atau berubah bentuk. Gerakan cepat lebih cocok untuk pemandangan dan ruang kosong.",
+            "Zoom vs dolly: banyak model menganggap keduanya sama-sama 'mendekat'. Kalau perlu paralaks, tulis 'camera moves forward' selain 'dolly in'.",
+            "Orbit penuh: orbit 360 derajat memaksa model mengarang bagian belakang semua benda. Setengah lingkaran atau busur pendek lebih aman.",
+            "Rack focus dan dolly zoom: keduanya efek optik, dan hasilnya berbeda antarmodel saat artikel ini ditulis. Uji dulu sebelum merencanakan satu sekuens di sekitarnya.",
+            "Handheld: sebagian model menambahkan guncangan berlebihan. Tulis 'slight' atau 'subtle'."
+          ]
+        },
+        {
+          "note": "Kalau alat menyediakan kontrol kamera berupa slider atau preset, pakai itu daripada teks. Kontrol numerik diikuti lebih persis daripada kata."
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Apa bedanya pan dan truck?",
+      "a": "Pan memutar kamera ke kiri atau kanan dari satu titik tetap. Truck menggeser seluruh kamera ke samping, sehingga benda dekat dan jauh bergeser dengan kecepatan berbeda."
+    },
+    {
+      "q": "Apa bedanya zoom dan dolly?",
+      "a": "Zoom mengubah lensa dan membesarkan gambar tanpa menggerakkan kamera, sehingga tidak ada paralaks. Dolly menggerakkan kamera menembus ruang, jadi latar bergeser relatif terhadap subjek."
+    },
+    {
+      "q": "Dolly zoom dipakai untuk apa?",
+      "a": "Efek ini menjaga ukuran subjek tetap sama sementara latar tampak meregang atau menyusut, untuk menunjukkan keterkejutan atau kesadaran mendadak. Disebut juga vertigo effect."
+    },
+    {
+      "q": "Gerakan kamera apa yang membuat adegan terasa tegang?",
+      "a": "Push-in pelan ke arah wajah membangun ketegangan, sedangkan guncangan handheld atau Dutch angle menambah rasa gelisah. Jaga aksi subjek tetap kecil agar gerakan kamera yang membawa perasaannya."
+    },
+    {
+      "q": "Apa arti FPV pada video drone?",
+      "a": "FPV berarti first-person view: pilot menerbangkan drone dengan kacamata khusus, sehingga rekamannya cepat, rendah, dan meliuk. Di prompt, 'FPV drone shot' meminta gaya itu, berbeda dari bidikan udara tinggi yang mulus."
+    }
+  ]
+}

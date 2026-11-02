@@ -1,0 +1,183 @@
+{
+  "title": "Image-to-image AI: strength, inpainting và ControlNet — cv.cm",
+  "description": "Image-to-image AI hoạt động ra sao: denoising strength, ảnh tham chiếu, chuyển phong cách, inpainting, outpainting và ControlNet điều khiển bằng độ sâu, tư thế, đường viền.",
+  "h1": "Image-to-image AI hoạt động như thế nào?",
+  "answer": "Image-to-image AI bắt đầu từ bức ảnh của bạn thay vì nhiễu thuần. Nó thêm một lượng nhiễu đã chọn rồi gỡ nhiễu đi theo prompt, nên strength thấp giữ được bản gốc còn strength cao thay đổi nhiều. Mặt nạ giới hạn thay đổi trong một vùng (inpainting) hoặc một vùng viền mới (outpainting), còn ảnh điều khiển như bản đồ độ sâu, tư thế hoặc đường viền khóa bố cục trong khi phong cách thay đổi.",
+  "sections": [
+    {
+      "h": "Ý tưởng cốt lõi: nhiễu một phần, rồi gỡ nhiễu",
+      "body": [
+        "Mô hình khuếch tán thường dựng ảnh bằng cách gỡ nhiễu từ sự ngẫu nhiên thuần túy. Image-to-image bỏ qua chặng đầu của hành trình đó. Nó lấy ảnh của bạn, thêm nhiễu cho đến khi bức ảnh bị che một phần, rồi chạy các bước gỡ nhiễu còn lại cùng với prompt. Phương pháp này được mô tả trong bài báo SDEdit, cho thấy một mô hình khuếch tán có thể biến bản phác thô hoặc ảnh đã chỉnh sửa thành ảnh chân thực mà không cần huấn luyện thêm.",
+        "Lượng nhiễu là cài đặt quan trọng nhất. Tùy công cụ, nó được gọi là strength, denoise hoặc image weight. Với ít nhiễu, chỉ kết cấu mịn có thể thay đổi. Với nhiều nhiễu, các hình khối gần như mất hết và mô hình bịa ra một bức ảnh mới chỉ lỏng lẻo bám theo màu và bố cục cũ.",
+        "Trong nhiều bản triển khai, strength còn quyết định số bước thực sự chạy. Nếu công cụ đặt 50 bước và strength là 0,8, ảnh được thêm nhiễu tương đương khoảng 40 bước rồi gỡ nhiễu trong 40 bước đó."
+      ]
+    },
+    {
+      "h": "Chọn giá trị strength",
+      "body": [
+        "Con số chính xác khác nhau theo mô hình, nhưng các khoảng dưới đây là điểm khởi đầu hữu ích cho công cụ dùng thang 0 đến 1. Công cụ dùng thang image weight thường ngược lại: weight càng cao càng giữ nhiều bản gốc.",
+        {
+          "table": {
+            "head": [
+              "Strength",
+              "Giữ lại gì từ ảnh của bạn",
+              "Phù hợp cho"
+            ],
+            "rows": [
+              [
+                "0,1 đến 0,3",
+                "Gần như tất cả: hình khối, khuôn mặt, màu sắc",
+                "Dọn nhẹ, thêm hạt, đổi chút kết cấu"
+              ],
+              [
+                "0,3 đến 0,5",
+                "Bố cục và hầu hết chi tiết",
+                "Đổi ánh sáng hoặc chỉnh màu, đổi phong cách nhẹ nhàng"
+              ],
+              [
+                "0,5 đến 0,7",
+                "Bố cục và hình khối chính; chi tiết được vẽ lại",
+                "Từ ảnh chụp sang minh họa, từ phác thảo sang tác phẩm hoàn chỉnh"
+              ],
+              [
+                "0,7 đến 0,9",
+                "Các mảng màu thô và vị trí",
+                "Chỉ dùng ảnh làm gợi ý bố cục lỏng"
+              ],
+              [
+                "1,0",
+                "Gần như không còn gì",
+                "Giống text-to-image"
+              ]
+            ]
+          }
+        },
+        "Hãy tăng strength theo từng bước nhỏ khoảng 0,1 và giữ seed cố định, để thấy tác dụng của riêng strength. Nếu khuôn mặt người thay đổi quá nhiều trước khi phong cách đổi đủ, thì strength đơn thuần là công cụ sai: hãy thêm ảnh điều khiển hoặc chỉ inpaint phần hậu cảnh."
+      ]
+    },
+    {
+      "h": "Ảnh tham chiếu và chuyển phong cách",
+      "body": [
+        "Không phải ảnh nào đưa cho mô hình cũng là điểm xuất phát. Nhiều công cụ còn nhận ảnh tham chiếu để dẫn hướng kết quả mà không bị thêm nhiễu. Nó được chuyển thành các đặc trưng làm việc song song với prompt văn bản. IP-Adapter là một phương pháp mở nổi tiếng: nó thêm một mô-đun nhỏ vào mô hình text-to-image đã đóng băng, với các lớp attention riêng cho đặc trưng ảnh, nên bạn có thể đưa cả image prompt lẫn text prompt. Các công cụ trực tuyến thường gọi đây là image prompt, style reference hoặc character reference.",
+        "Có hai cách phổ biến để đổi phong cách một bức ảnh:",
+        {
+          "ul": [
+            "Image-to-image với prompt phong cách. Ảnh của bạn là ảnh xuất phát và prompt nêu phong cách mới, ví dụ `watercolor illustration, loose brush strokes, white paper`. Đơn giản, nhưng khuôn mặt và chi tiết nhỏ bị lệch khi strength cao.",
+            "Cấu trúc từ một ảnh, phong cách từ ảnh khác. Ảnh điều khiển (độ sâu hoặc đường viền) giữ bố cục của ảnh bạn, trong khi ảnh tham chiếu phong cách hoặc prompt đặt vẻ ngoài. Cách này giữ bố cục ổn định ngay cả ở strength cao."
+          ]
+        },
+        {
+          "code": "Start image: photo of a street market at dusk\nStrength:    0.55\nPrompt:      gouache painting of a street market at dusk, flat shapes,\n             warm lantern light, limited palette of orange, teal and cream\nNegative:    photo, text, watermark",
+          "lang": "text"
+        },
+        "Hãy mô tả bức ảnh như bạn muốn nó trông ra sao, chứ không phải dưới dạng mệnh lệnh. `Gouache painting of a street market` hiệu quả hơn `make this a painting`, vì prompt được so khớp với chú thích ảnh chứ không được làm theo như một lệnh. Một số mô hình mới hơn được huấn luyện trên các cặp chỉnh sửa thì hiểu được chỉ dẫn; hãy kiểm tra công cụ của bạn mong đợi gì."
+      ]
+    },
+    {
+      "h": "Inpainting và outpainting",
+      "body": [
+        "Inpainting chỉ thay đổi vùng được tô mặt nạ. Bạn tô mặt nạ lên vùng cần thay, thường trắng là thay đổi và đen là giữ, và mô hình lấp đầy sao cho khớp cả prompt lẫn các điểm ảnh xung quanh. RePaint cho thấy ngay cả một mô hình khuếch tán thông thường cũng có thể inpaint bằng cách đặt lại các điểm ảnh đã biết ở mỗi bước gỡ nhiễu; các mô hình inpainting chuyên dụng được huấn luyện với mặt nạ thường hòa trộn mượt hơn.",
+        {
+          "ol": [
+            "Tô mặt nạ rộng hơn vật thể một chút, để mô hình hòa trộn phần viền.",
+            "Làm mềm mép mặt nạ (feather hoặc blur) để tránh đường nối lộ ra.",
+            "Viết prompt cho vùng được tô mặt nạ và bối cảnh của nó, ví dụ `empty wooden bench in a park`, chứ không chỉ `remove person`.",
+            "Dùng strength vừa đến cao để thay thế, strength thấp để sửa chữa.",
+            "Nếu vùng nhỏ trong ảnh lớn, hãy dùng tùy chọn cắt và phóng to (đôi khi gọi là only masked hoặc mask crop) để mô hình làm việc ở độ phân giải cao hơn."
+          ]
+        },
+        "Outpainting mở rộng ảnh ra ngoài đường viền. Canvas được nới ra, vùng trống mới được tô mặt nạ, và mô hình lấp nó để nối tiếp cảnh. Cách này hữu ích để biến ảnh vuông thành banner 16:9. Hãy mở rộng từng bước một phần tư đến một nửa ảnh; những bước nhảy quá lớn dễ lặp vật thể hoặc mất phối cảnh.",
+        {
+          "note": "Mô hình inpainting có thể làm thay đổi nhẹ các điểm ảnh ngoài mặt nạ, nhất là khi ảnh bị mã hóa lại. Khi vùng không đụng đến phải giữ nguyên tuyệt đối, hãy dán ảnh gốc lên mọi thứ nằm ngoài mặt nạ sau khi tạo."
+        }
+      ]
+    },
+    {
+      "h": "Điều kiện kiểu ControlNet: độ sâu, tư thế và đường viền",
+      "body": [
+        "ControlNet thêm một bản sao có thể huấn luyện của một phần mô hình ảnh đã đóng băng để đọc thêm một ảnh điều khiển. Ảnh điều khiển cố định cấu trúc; prompt quyết định cấu trúc đó làm bằng gì. Bài báo gốc cho thấy việc điều khiển từ đường viền, độ sâu, bản đồ phân đoạn và tư thế người, và cùng ý tưởng này nay có cho nhiều họ mô hình.",
+        {
+          "table": {
+            "head": [
+              "Loại điều khiển",
+              "Đầu vào",
+              "Khóa điều gì",
+              "Dùng điển hình"
+            ],
+            "rows": [
+              [
+                "Đường viền (Canny, line art)",
+                "Ảnh phác đường nét đen trắng",
+                "Đường viền và hình khối nhỏ",
+                "Giữ nguyên sản phẩm hoặc công trình trong khi đổi chất liệu và ánh sáng"
+              ],
+              [
+                "Độ sâu",
+                "Bản đồ độ sâu thang xám, gần sáng và xa tối",
+                "Bố cục 3D và vật nào ở trước vật nào",
+                "Đổi phong cách căn phòng hay phong cảnh mà giữ nguyên không gian"
+              ],
+              [
+                "Tư thế (kiểu OpenPose)",
+                "Bộ xương que gồm các khớp",
+                "Vị trí cơ thể, tay chân, hướng đầu",
+                "Đặt một nhân vật mới vào đúng tư thế"
+              ],
+              [
+                "Phân đoạn",
+                "Các vùng màu, mỗi lớp một màu",
+                "Nơi đặt bầu trời, đường, người và vật thể",
+                "Dàn cảnh theo từng vùng"
+              ],
+              [
+                "Nét nguệch ngoạc / phác thảo",
+                "Bản vẽ tay thô",
+                "Bố cục lỏng",
+                "Biến nét vẽ nguệch ngoạc thành tác phẩm hoàn chỉnh"
+              ]
+            ]
+          }
+        },
+        "Hầu hết công cụ cho mỗi điều khiển một trọng số (ví dụ conditioning scale) và đôi khi một điểm bắt đầu và kết thúc trong các bước gỡ nhiễu. Trọng số quá cao sẽ sao chép ảnh điều khiển quá nguyên văn, chẳng hạn nhiễu viền thành các đường cứng; quá thấp thì bị bỏ qua. Giá trị trung bình với ảnh điều khiển rõ ràng thường hiệu quả nhất. Bạn cũng có thể kết hợp hai điều khiển, như độ sâu cộng tư thế, bằng cách cho mỗi cái trọng số thấp hơn.",
+        "Để tạo bản đồ độ sâu từ ảnh, bạn có thể dùng mô hình ước lượng độ sâu. Ví dụ, công cụ bản đồ độ sâu của cv.cm biến ảnh thành ảnh độ sâu thang xám ngay trong trình duyệt, và bạn có thể dùng nó làm điều khiển độ sâu."
+      ]
+    },
+    {
+      "h": "Vấn đề thường gặp và cách khắc phục",
+      "body": [
+        {
+          "ul": [
+            "Khuôn mặt đổi danh tính. Giảm strength, chỉ inpaint phần hậu cảnh, hoặc dùng ảnh tham chiếu khuôn mặt hay nhân vật.",
+            "Màu vẫn quá gần bản gốc dù strength cao. Ảnh xuất phát vẫn mang màu tổng thể của nó. Hãy chuyển màu trước trong phần mềm chỉnh sửa, hoặc dựa vào ảnh điều khiển và strength cao hơn.",
+            "Đường nối lộ ra sau inpainting. Mở rộng và làm mềm mặt nạ, và đưa thêm bối cảnh vào prompt.",
+            "Vật thể bị nhân đôi hoặc méo sau outpainting. Mở rộng từng bước nhỏ hơn và lặp lại mô tả cảnh trong prompt.",
+            "Kết quả bị mờ. Strength có thể quá thấp để thêm chi tiết, hoặc ảnh quá nhỏ. Hãy phóng to trước hoặc dùng tùy chọn mask crop.",
+            "Quyền sở hữu. Đổi phong cách một bức ảnh không thuộc về bạn không biến nó thành của bạn; quyền của ảnh gốc vẫn có giá trị."
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Denoising strength trong image-to-image là gì?",
+      "a": "Đó là lượng nhiễu được thêm vào ảnh của bạn trước khi mô hình vẽ lại. Strength thấp giữ bản gốc gần như không đổi; strength cao để mô hình thay thế phần lớn."
+    },
+    {
+      "q": "Image-to-image và inpainting khác nhau thế nào?",
+      "a": "Image-to-image có thể thay đổi cả bức ảnh. Inpainting chỉ thay đổi vùng bạn tô mặt nạ và cố giữ phần còn lại như cũ."
+    },
+    {
+      "q": "Chuyển phong cách có cần ControlNet không?",
+      "a": "Không cần cho việc đổi phong cách đơn giản ở strength thấp đến vừa. Ảnh điều khiển hữu ích khi bạn muốn đổi phong cách mạnh nhưng phải giữ đúng bố cục, tư thế hoặc đường viền."
+    },
+    {
+      "q": "Vì sao outpainting lặp lại vật thể ở mép ảnh?",
+      "a": "Mô hình lấp vùng mới bằng thứ có khả năng nhất nằm cạnh đường viền, thường là thêm nhiều cái giống vậy. Hãy mở rộng từng bước nhỏ hơn và mô tả thứ nên xuất hiện ở vùng mới."
+    },
+    {
+      "q": "Tôi có thể dùng ảnh người thật làm đầu vào image-to-image không?",
+      "a": "Về mặt kỹ thuật là được, nhưng bạn cần có quyền dùng ảnh đó và ở nhiều nơi cần cả sự đồng ý của người trong ảnh. Nhiều dịch vụ cũng chặn việc chỉnh sửa người thật có thể gây hiểu lầm hoặc tổn hại."
+    }
+  ]
+}

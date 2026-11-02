@@ -1,0 +1,143 @@
+{
+  "title": "Chuyển giọng nói thành văn bản hoạt động thế nào: Whisper, WER — cv.cm",
+  "description": "AI chuyển giọng nói thành văn bản ra sao: từ âm thanh qua spectrogram đến chữ, cách Whisper được huấn luyện, tỷ lệ lỗi từ (WER), ảo giác và cách có phụ đề SRT sạch.",
+  "h1": "AI chuyển giọng nói thành văn bản (speech-to-text) hoạt động như thế nào?",
+  "answer": "Speech-to-text (nhận dạng giọng nói tự động, ASR) biến âm thanh thành spectrogram, một bức tranh cho thấy tần số nào lớn theo thời gian. Mạng nơ-ron đọc bức tranh đó và viết ra văn bản có khả năng nhất, từng token một. Các mô hình như Whisper học điều này từ hàng trăm nghìn giờ âm thanh đã có phụ đề, nên xử lý được nhiều ngôn ngữ và tiếng ồn, nhưng vẫn có thể nghe nhầm tên riêng và bịa ra chữ khi gặp khoảng lặng.",
+  "sections": [
+    {
+      "h": "Từ sóng âm đến chữ trong bốn bước",
+      "body": [
+        "Một bộ nhận dạng hiện đại như Whisper đi theo cùng một quy trình mỗi khi bạn đưa vào một file:",
+        {
+          "ol": [
+            "Lấy mẫu lại. Âm thanh được chuyển thành một kênh với 16.000 mẫu mỗi giây. Vậy là đủ cho giọng nói, vì phần lớn thông tin của lời nói nằm dưới 8 kHz.",
+            "Tạo spectrogram. Tín hiệu được cắt thành các cửa sổ ngắn chồng lên nhau (Whisper dùng cửa sổ 25 ms cách nhau 10 ms) và mỗi cửa sổ trở thành 80 con số trên thang Mel, thang chia tần số theo cách tai người nghe. Kết quả là một bức ảnh: một trục là thời gian, trục kia là các dải cao độ.",
+            "Mã hóa. Bộ mã hóa (encoder) Transformer đọc spectrogram và xây dựng biểu diễn về những gì đã được nói, gồm cả âm nào là lời nói và âm nào là tiếng ồn.",
+            "Giải mã. Bộ giải mã (decoder) Transformer viết bản chép lời từng token một, mỗi lần chọn token tiếp theo có khả năng nhất dựa trên âm thanh và phần văn bản đã có. Các token đặc biệt cho nó biết ngôn ngữ, nhiệm vụ (chép lời hoặc dịch sang tiếng Anh) và chỗ đặt mốc thời gian."
+          ]
+        },
+        "Whisper xử lý âm thanh theo cửa sổ 30 giây. File dài một giờ được xử lý như một chuỗi cửa sổ trượt, và các mốc thời gian dự đoán cho chương trình biết nơi bắt đầu cửa sổ tiếp theo. Mốc thời gian được dự đoán theo bước 20 ms, vì vậy thời gian phụ đề từ Whisper tốt nhưng không chính xác đến từng khung hình."
+      ]
+    },
+    {
+      "h": "Mô hình học thế nào: giám sát yếu ở quy mô lớn",
+      "body": [
+        "Các hệ thống cũ ghép nhiều phần riêng biệt: mô hình âm học cho âm thanh, từ điển phát âm và mô hình ngôn ngữ cho trật tự từ. Mỗi phần cần dữ liệu được gán nhãn cẩn thận cho từng ngôn ngữ.",
+        "Whisper đi một hướng khác. Các tác giả thu thập 680.000 giờ âm thanh đi kèm bản chép lời tìm thấy trên internet. Khoảng 117.000 giờ phủ 96 ngôn ngữ ngoài tiếng Anh, và 125.000 giờ là lời nói không phải tiếng Anh đi cùng văn bản tiếng Anh, giúp mô hình học dịch. Nhãn không hoàn hảo (đó là chữ “yếu” trong giám sát yếu), nhưng quy mô làm mô hình chịu được giọng vùng miền, tiếng ồn nền và chất lượng ghi âm mà không cần tinh chỉnh cho từng bộ kiểm thử.",
+        "Cùng ý tưởng đó giải thích điểm yếu của nó. Những ngôn ngữ có ít dữ liệu trong bộ sưu tập sẽ được nhận dạng kém chính xác hơn, và mô hình học cả thói quen của phụ đề trên internet, chẳng hạn thêm những cụm từ thường xuất hiện ở cuối video."
+      ]
+    },
+    {
+      "h": "Đo độ chính xác: tỷ lệ lỗi từ",
+      "body": [
+        "Độ chính xác của ASR được báo cáo bằng tỷ lệ lỗi từ (word error rate, WER): số từ bị thay, bị xóa và bị chèn thêm, chia cho số từ trong bản chép lời đúng. Càng thấp càng tốt, và có thể vượt 100 phần trăm nếu mô hình chèn thêm nhiều chữ.",
+        {
+          "code": "Reference:  the meeting moved to three thirty on friday   (8 words)\nModel:      the meeting moved to tree  thirty    friday\n\nSubstitutions: three -> tree        1\nDeletions:     on                   1\nInsertions:                         0\nWER = (1 + 1 + 0) / 8 = 25%",
+          "lang": "text"
+        },
+        "Trước khi so sánh, các nhà nghiên cứu chuẩn hóa cả hai văn bản: chữ thường, bỏ dấu câu, khai triển dạng viết tắt và viết số theo cùng một cách. Nếu không có bước đó, “3:30” và “three thirty” sẽ bị tính là lỗi dù cả hai đều đúng. Khi một nhà cung cấp nêu WER, hãy hỏi nó được đo trên âm thanh nào; giọng đọc sạch và một cuộc gọi điện thoại ồn có thể chênh nhau nhiều lần.",
+        "Với tiếng Trung, tiếng Nhật và tiếng Thái, vốn không tách từ bằng dấu cách, người ta dùng tỷ lệ lỗi ký tự (character error rate, CER) thay thế."
+      ]
+    },
+    {
+      "h": "Các loại bộ nhận dạng giọng nói",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Loại",
+              "Cách hoạt động",
+              "Điểm mạnh",
+              "Điểm yếu"
+            ],
+            "rows": [
+              [
+                "Encoder-decoder (kiểu Whisper)",
+                "Đọc một đoạn âm thanh rồi viết văn bản bằng bộ giải mã",
+                "Độ chính xác cao, có dấu câu, nhiều ngôn ngữ, dịch được",
+                "Làm việc theo đoạn nên phụ đề trực tiếp bị trễ; có thể bị ảo giác"
+              ],
+              [
+                "Mô hình CTC và transducer",
+                "Dự đoán nhãn cho từng khung âm thanh ngắn rồi gộp lại",
+                "Độ trễ thấp, hợp phụ đề trực tiếp, hiếm khi bịa chữ",
+                "Cần thêm công sức cho dấu câu và viết hoa"
+              ],
+              [
+                "Dịch vụ giọng nói của nền tảng",
+                "Trình duyệt hoặc điện thoại gửi âm thanh tới dịch vụ của nhà cung cấp, hoặc chạy mô hình trên thiết bị",
+                "Không cần cài đặt; Web Speech API đưa nó đến các trang web",
+                "Hành vi khác nhau theo trình duyệt và thiết bị; có thể cần mạng"
+              ]
+            ]
+          }
+        },
+        "Giao diện `SpeechRecognition` của Web Speech API cho phép trang web yêu cầu nền tảng nhận dạng trực tiếp từ micro. Mặc định nó dùng dịch vụ do trình duyệt hoặc hệ điều hành cung cấp; một số trình duyệt còn có thể chạy ngay trên thiết bị. Trang tự chạy Whisper, ví dụ công cụ speech-to-text của cv.cm chạy Whisper trong trình duyệt và xuất TXT, SRT hoặc VTT, không phụ thuộc vào dịch vụ đó, nhưng cần tải mô hình một lần."
+      ]
+    },
+    {
+      "h": "Speech-to-text thất bại ở đâu",
+      "body": [
+        {
+          "ul": [
+            "Tên riêng, thương hiệu và thuật ngữ chuyên ngành. Bộ giải mã ưu tiên từ phổ biến, nên một họ hiếm biến thành họ thông dụng. Hãy sửa tay, hoặc đưa một prompt ngắn có cách viết đúng nếu công cụ hỗ trợ.",
+            "Ảo giác trong khoảng lặng hoặc nhạc. Bài báo về Whisper ghi nhận rằng khi chép lời dài, mô hình có thể mắc kẹt trong vòng lặp lặp lại, bỏ qua những từ đầu hoặc cuối của một đoạn, hoặc tạo ra văn bản không liên quan đến âm thanh. Phần mở đầu im lặng, tiếng vỗ tay và nhạc nền là những tác nhân thường gặp.",
+            "Giọng vùng miền và chuyển mã. Người nói trộn hai ngôn ngữ trong một câu, hoặc giọng địa phương mạnh có ít dữ liệu huấn luyện, làm tăng tỷ lệ lỗi.",
+            "Nhiều người nói chồng lên nhau. Hầu hết bộ nhận dạng viết ra một dòng văn bản duy nhất và không cho biết ai nói. Gắn nhãn người nói (diarization) là một bước riêng.",
+            "Chữ Hán phồn thể và giản thể. Mô hình có thể xuất một trong hai kiểu chữ cho tiếng Quan Thoại; hãy chuyển đổi bản chép lời sau đó nếu bạn cần một kiểu chữ.",
+            "Nhận sai ngôn ngữ. Tự động phát hiện chỉ nhìn phần đầu âm thanh. Nếu vài giây đầu là nhạc hoặc ngôn ngữ khác, hãy chọn ngôn ngữ thủ công."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Quy trình thực tế để có phụ đề sạch",
+      "body": [
+        {
+          "ol": [
+            "Bắt đầu với âm thanh tốt nhất bạn có. Dùng file gốc, đừng ghi lại từ loa. Giảm nhạc dưới giọng nói nếu có thể.",
+            "Cắt các đoạn im lặng dài và nhạc ở phần đầu, vì chúng gây nhận sai ngôn ngữ và chữ bịa.",
+            "Đặt ngôn ngữ thủ công khi bạn đã biết.",
+            "Chọn mô hình lớn hơn cho phụ đề cuối cùng và mô hình nhỏ hơn cho ghi chú nhanh. Mô hình lớn chậm hơn nhưng ít sai hơn với tên riêng và giọng vùng miền.",
+            "Xuất SRT hoặc VTT, rồi đọc toàn bộ file một lần trong khi xem video. Sửa tên, số và mọi dòng bị lặp.",
+            "Tách các cue dài. Một phụ đề dễ đọc dài khoảng hai dòng và hiện trên màn hình ít nhất một giây."
+          ]
+        },
+        "Hai định dạng phụ đề phổ biến chỉ khác nhau ở vài chi tiết nhỏ:",
+        {
+          "code": "SRT:\n1\n00:00:01,000 --> 00:00:04,000\nWelcome to the lesson.\n\nVTT:\nWEBVTT\n\n00:00:01.000 --> 00:00:04.000\nWelcome to the lesson.",
+          "lang": "text"
+        },
+        "SRT đánh số từng cue và dùng dấu phẩy trước phần mili giây. WebVTT, định dạng của W3C được phần tử video HTML sử dụng, bắt đầu bằng dòng tiêu đề `WEBVTT` và dùng dấu chấm."
+      ]
+    },
+    {
+      "h": "Quyền riêng tư và sự đồng ý",
+      "body": [
+        "Bản ghi cuộc họp, cuộc gọi và phỏng vấn chứa dữ liệu cá nhân, và ở nhiều quốc gia việc ghi âm một người cần có sự đồng ý của họ. Trước khi dùng dịch vụ chép lời đám mây, hãy kiểm tra âm thanh được lưu ở đâu và có được dùng để huấn luyện hay không. Chạy mô hình cục bộ, trong ứng dụng hoặc trong trình duyệt, giữ âm thanh trên thiết bị của bạn, thường là cách đơn giản nhất để đáp ứng yêu cầu về quyền riêng tư."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Chép lời bằng AI chính xác đến đâu?",
+      "a": "Với âm thanh rõ, một người nói, bằng ngôn ngữ phổ biến, các mô hình hiện đại chỉ sai vài lỗi trên một trăm từ. Độ chính xác giảm khi có tiếng ồn, nhiều người nói chồng lên nhau, giọng vùng miền mạnh, ngôn ngữ hiếm và từ vựng chuyên ngành, vì vậy luôn kiểm tra lại tên và con số."
+    },
+    {
+      "q": "Vì sao Whisper viết ra những từ chưa từng được nói?",
+      "a": "Nó là bộ sinh văn bản có điều kiện theo âm thanh. Trong khoảng lặng, nhạc hoặc tiếng ồn, nó có thể tiếp tục bằng văn bản có khả năng xảy ra nói chung, như các dòng lặp lại hoặc cụm từ thường có ở cuối video trực tuyến. Cắt khoảng lặng và đặt ngôn ngữ sẽ giảm hiện tượng này."
+    },
+    {
+      "q": "Speech-to-text có biết ai đang nói không?",
+      "a": "Tự bản thân thì không. Nhận diện người nói gọi là diarization và thường là một mô hình riêng gán nhãn các đoạn là Người nói 1, Người nói 2, v.v. Sau đó cần người ghép các nhãn với tên thật."
+    },
+    {
+      "q": "SRT và VTT khác nhau thế nào?",
+      "a": "Cả hai đều là file phụ đề văn bản thuần có thời gian bắt đầu và kết thúc. SRT dùng dấu phẩy trong mốc thời gian và đánh số từng cue. VTT bắt đầu bằng dòng WEBVTT, dùng dấu chấm, và là định dạng trình duyệt đọc trực tiếp cho video HTML."
+    },
+    {
+      "q": "Tôi có thể chép lời âm thanh ngoại tuyến không?",
+      "a": "Có. Các mô hình mở như Whisper có thể chạy trên máy tính hoặc trong trình duyệt hiện đại mà không gửi âm thanh lên máy chủ. Lần chạy đầu tiên tải mô hình về; sau đó việc chép lời hoạt động mà không cần tải file của bạn lên."
+    }
+  ]
+}

@@ -1,0 +1,212 @@
+{
+  "title": "Cara Kerja Text-to-Video AI dan Tips Memakainya — cv.cm",
+  "description": "Cara kerja text-to-video AI mengubah prompt jadi klip, pengaturan yang penting, rencana shot 15 detik, dan batasannya: fisika, tangan, teks, dan wajah yang berubah.",
+  "h1": "Bagaimana cara kerja text-to-video AI?",
+  "answer": "Text-to-video AI dimulai dari noise acak berbentuk klip pendek, lalu membuang noise itu langkah demi langkah, dipandu prompt, sampai setiap frame menjadi gambar yang utuh dan antarframe konsisten dari waktu ke waktu. Karena membuat seluruh klip sekaligus, cara ini paling cocok untuk shot tunggal yang pendek dengan satu aksi yang jelas.",
+  "sections": [
+    {
+      "h": "Apa yang terjadi saat kamu menekan generate",
+      "body": [
+        "Sebagian besar sistem text-to-video adalah model difusi (diffusion model) yang diperluas dari gambar ke video. Makalah Video Diffusion Models tahun 2022 oleh Ho dan rekan-rekan menunjukkan ide dasarnya: anggap klip sebagai blok frame, tambahkan noise ke klip asli saat pelatihan, lalu ajari jaringan untuk menghilangkan noise itu. Saat generate, model memulai dari noise murni untuk setiap frame dan membersihkannya bersamaan, sehingga gerakan dan tampilan diputuskan bersama.",
+        "Tiga ide membuat cara ini praktis dalam skala besar.",
+        {
+          "ul": [
+            "Ruang laten (latent space). Model bekerja pada versi video yang dikompresi, bukan piksel mentah. Dekoder terpisah mengubah hasilnya menjadi frame. Stable Video Diffusion adalah contoh terbuka dari pendekatan laten ini.",
+            "Ruang dan waktu sekaligus. Jaringan melihat antarframe, bukan hanya di dalam satu frame, sehingga wajah di frame 1 dan frame 40 dianggap wajah yang sama. Laporan Sora dari OpenAI menjelaskan pemotongan video menjadi spacetime patch untuk transformer.",
+            "Pengondisian teks. Encoder bahasa mengubah promptmu menjadi angka yang mengarahkan setiap langkah pembersihan noise. Sebagian sistem juga menulis caption yang lebih kaya dari promptmu sebelum generate."
+          ]
+        },
+        "Imagen Video dari Google menambahkan sistem bertingkat: buat dulu klip kecil, pendek, dengan frame rate rendah, lalu naikkan resolusi dan frame rate-nya dengan model-model lanjutan. Banyak produk masih memakai versi dari ide dua tahap ini, itulah sebabnya mode draf biasanya lebih cepat dan berkualitas lebih rendah daripada render akhir."
+      ]
+    },
+    {
+      "h": "Alur kerja dari ide sampai klip yang bisa dipakai",
+      "body": [
+        {
+          "ol": [
+            "Tentukan shot-nya. Satu subjek, satu aksi, satu gerakan kamera. Kalau butuh lebih, rencanakan beberapa shot.",
+            "Tulis prompt berisi subjek, aksi dan timing, kamera, latar dan cahaya, gaya, serta audio. Lihat panduan prompt video untuk strukturnya.",
+            "Atur opsi teknis di antarmuka: durasi, rasio aspek, resolusi, dan audio aktif atau tidak.",
+            "Buat 2 sampai 4 take dari prompt yang sama. Hasilnya sangat bervariasi antarseed.",
+            "Pilih take terbaik, lalu ubah satu hal di prompt kalau masih perlu diperbaiki.",
+            "Kalau wajah atau produk harus tampil persis, beralih ke image-to-video dan beri model frame awal.",
+            "Potong klip di editor. Buang beberapa frame awal dan akhir kalau goyang."
+          ]
+        },
+        "Kesalahan yang paling boros adalah memperbaiki shot yang jelek dengan prompt yang makin panjang. Kalau tiga percobaan gagal, kemungkinan shot itu terlalu rumit untuk modelnya. Sederhanakan aksinya atau pecah jadi beberapa shot."
+      ]
+    },
+    {
+      "h": "Pengaturan yang penting",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Pengaturan",
+              "Yang dikendalikan",
+              "Saran praktis"
+            ],
+            "rows": [
+              [
+                "Durasi",
+                "Berapa detik yang dibuat model",
+                "Klip yang lebih pendek lebih patuh pada prompt; gabungkan shot pendek saat editing"
+              ],
+              [
+                "Rasio aspek",
+                "16:9, 9:16, 1:1, dan sejenisnya",
+                "Pilih rasio platform tujuan sejak awal; memotong belakangan membuat framing hilang"
+              ],
+              [
+                "Resolusi",
+                "Ukuran output",
+                "Pakai setelan draf rendah untuk menguji prompt, resolusi tinggi hanya untuk take terpilih"
+              ],
+              [
+                "Seed",
+                "Noise awal",
+                "Gunakan seed yang sama agar perbandingan perubahan prompt adil, jika alatnya mengizinkan"
+              ],
+              [
+                "Negative prompt",
+                "Hal yang dihindari",
+                "Tulis objek atau artefak secara lugas, tanpa kata 'no'"
+              ],
+              [
+                "Audio",
+                "Suara yang dibuat bersama gambar",
+                "Matikan kalau kamu akan menambahkan musik dan suara saat editing"
+              ],
+              [
+                "Penulisan ulang prompt",
+                "Alat memperluas promptmu secara otomatis",
+                "Matikan kalau kamu butuh kata-kata yang diikuti persis"
+              ]
+            ]
+          }
+        },
+        "Batas durasi, resolusi, dan harga sering berubah dan berbeda di tiap alat, jadi periksa dokumentasi terbaru dari alat yang kamu pakai."
+      ]
+    },
+    {
+      "h": "Contoh: klip 15 detik sebagai tiga shot",
+      "body": [
+        "Daripada meminta satu klip 15 detik tentang rutinitas pagi, rencanakan tiga shot dengan durasi sekitar lima detik. Setiap shot punya satu tugas, dan baris gaya yang sama menjaga ketiganya serasi.",
+        {
+          "table": {
+            "head": [
+              "Shot",
+              "Durasi",
+              "Kamera",
+              "Aksi"
+            ],
+            "rows": [
+              [
+                "1",
+                "5 dtk",
+                "Wide shot, statis",
+                "Sinar matahari masuk ke kamar tidur kecil; jam weker berbunyi di meja samping tempat tidur"
+              ],
+              [
+                "2",
+                "5 dtk",
+                "Medium close-up, slow push-in",
+                "Seorang pemuda duduk di tempat tidur, mengucek mata, dan menoleh ke jendela"
+              ],
+              [
+                "3",
+                "5 dtk",
+                "Close-up, statis",
+                "Ia menuang kopi ke mug putih; uap mengepul"
+              ]
+            ]
+          }
+        },
+        {
+          "code": "Shot 2 of 3. Medium close-up, eye level, slow push-in.\nA young man with messy short brown hair, grey T-shirt, sits up in bed.\nHe rubs his eyes with one hand, then turns his head toward the window\nand holds still. Soft warm morning light from the left, white sheets.\nStyle: natural live-action, 35mm film look, warm muted colors.\nAudio: birds outside, a quiet room. No music.",
+          "lang": "text"
+        },
+        "Mengulang deskripsi subjek dan baris gaya persis sama di setiap shot adalah alat kontinuitas paling sederhana. Untuk konsistensi yang lebih kuat, buat dulu satu gambar diam karakternya lalu pakai sebagai frame awal."
+      ]
+    },
+    {
+      "h": "Text-to-video atau image-to-video?",
+      "body": [
+        "Text-to-video memutuskan segalanya dari kata-kata. Ini bagus untuk menjelajahi ide dan adegan yang tampilan persisnya tidak penting. Image-to-video berangkat dari gambar yang kamu berikan, sehingga tampilannya sudah tetap dan prompt hanya perlu menggambarkan gerakan.",
+        {
+          "table": {
+            "head": [
+              "Kebutuhan",
+              "Pilihan yang lebih baik",
+              "Alasan"
+            ],
+            "rows": [
+              [
+                "Ide dan suasana cepat",
+                "Text-to-video",
+                "Cepat; tidak perlu menyiapkan gambar"
+              ],
+              [
+                "Wajah, produk, atau logo tertentu",
+                "Image-to-video",
+                "Frame pertama menjaga tampilan persis"
+              ],
+              [
+                "Karakter yang sama di banyak shot",
+                "Image-to-video atau gambar referensi",
+                "Teks saja akan bergeser antarshot"
+              ],
+              [
+                "Pose awal dan akhir yang ditentukan",
+                "First and last frame",
+                "Model mengisi gerakan di antara dua gambar"
+              ]
+            ]
+          }
+        },
+        "Cara gabungan yang umum adalah membuat gambar diam dengan model gambar, lalu menganimasikannya. Misalnya, `ai-image-generator` dari cv.cm bisa membuat gambar draf 384 px di GPU-mu sendiri; model video penuh kemudian menganimasikan versi yang lebih besar dari gambar itu."
+      ]
+    },
+    {
+      "h": "Batasan yang perlu diantisipasi",
+      "body": [
+        "Text-to-video berkembang pesat, tetapi sebagian kelemahannya bersifat struktural. Saat artikel ini ditulis, antisipasi hal-hal berikut:",
+        {
+          "ul": [
+            "Fisika. Menuang, memecahkan, tabrakan, dan kain sering terlihat janggal. Laporan Sora sendiri memberi contoh kaca pecah sebagai fisika yang belum dikuasai modelnya. Buat peristiwa fisik tetap sederhana atau tampilkan di luar layar.",
+            "Tangan dan benda kecil. Jari menyatu, benda menembus tangan. Buat aksi tangan sederhana dan hindari close-up pekerjaan jari yang halus.",
+            "Teks di layar. Papan dan teks sering keluar berantakan. Tambahkan teks saat editing.",
+            "Identitas yang bergeser. Wajah bisa berubah antara awal dan akhir klip, apalagi antarklip. Pakai gambar awal atau gambar referensi.",
+            "Menghitung dan keramaian. 'Three dogs' bisa jadi dua atau empat; orang dalam kerumunan bisa menyatu.",
+            "Take panjang. Kualitas dan kepatuhan pada prompt menurun seiring klip makin panjang. Gabungkan shot pendek saat editing."
+          ]
+        },
+        {
+          "note": "Banyak platform dan sebagian undang-undang mewajibkan video buatan AI diberi label, terutama yang menampilkan orang atau peristiwa yang tampak nyata. Periksa aturan platform tempat kamu mempublikasikan."
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Berapa lama waktu yang dibutuhkan untuk membuat video AI?",
+      "a": "Dari kurang dari satu menit sampai beberapa menit per klip di alat cloud, tergantung durasi, resolusi, dan antrean. Mode draf lebih cepat daripada render kualitas penuh."
+    },
+    {
+      "q": "Bisakah saya menjalankan text-to-video di komputer sendiri?",
+      "a": "Ada model terbuka, tetapi kebanyakan membutuhkan kartu grafis kuat dengan memori video besar. Browser belum bisa menjalankan model text-to-video penuh dengan nyaman di perangkat biasa."
+    },
+    {
+      "q": "Mengapa prompt yang sama menghasilkan video berbeda?",
+      "a": "Setiap proses dimulai dari noise acak yang berbeda, yang disebut seed. Mengunci seed, jika alatnya mengizinkan, membuat hasil bisa diulang untuk perbandingan."
+    },
+    {
+      "q": "Mengapa video AI terlihat seperti slow motion?",
+      "a": "Model cenderung memilih gerakan lambat yang aman ketika prompt tidak menentukan tempo. Tulis kecepatan dan timing aksi, misalnya 'in one quick motion' atau 'runs fast'."
+    },
+    {
+      "q": "Bisakah AI membuat film utuh dari satu prompt?",
+      "a": "Belum dengan andal. Model saat ini membuat klip pendek; karya yang lebih panjang disusun dari banyak shot yang direncanakan, lalu disunting bersama suara, musik, dan judul."
+    }
+  ]
+}

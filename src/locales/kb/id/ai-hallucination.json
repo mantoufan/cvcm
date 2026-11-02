@@ -1,0 +1,197 @@
+{
+  "title": "Halusinasi AI: Mengapa AI Mengarang dan Cara Memeriksanya — cv.cm",
+  "description": "Apa itu halusinasi AI? Mengapa chatbot mengarang fakta dan sitasi, tugas mana yang paling berisiko, prompt yang menguranginya, dan daftar periksa untuk memverifikasi jawaban.",
+  "h1": "Apa itu halusinasi AI, dan bagaimana mencegahnya?",
+  "answer": "Halusinasi AI terjadi ketika model menyatakan informasi yang salah atau karangan seolah-olah benar, seperti sitasi palsu, tanggal yang keliru, atau kutipan yang tidak pernah diucapkan siapa pun. Ini terjadi karena model bahasa menghasilkan teks yang paling masuk akal, bukan fakta yang sudah dicek. Halusinasi tidak bisa dihilangkan sepenuhnya, tetapi bisa dikurangi dengan memberi model sumber, mengizinkannya berkata tidak tahu, dan memverifikasi detail penting.",
+  "sections": [
+    {
+      "h": "Apa yang dihitung sebagai halusinasi",
+      "body": [
+        "Lembaga standar AS, National Institute of Standards and Technology, menyebutnya konfabulasi: generative AI menghasilkan konten yang keliru atau salah tetapi dinyatakan dengan yakin. Halusinasi adalah nama yang lebih umum. Istilah ini juga mencakup jawaban yang bertentangan dengan materi yang Anda berikan, atau bertentangan dengan ucapan model sebelumnya di chat yang sama.",
+        {
+          "table": {
+            "head": [
+              "Jenis",
+              "Contoh",
+              "Mengapa berisiko"
+            ],
+            "rows": [
+              [
+                "Fakta karangan",
+                "Tahun berdiri, jumlah penduduk, atau harga yang salah",
+                "Tampak presisi sehingga orang percaya"
+              ],
+              [
+                "Sitasi palsu",
+                "Judul makalah, jurnal, dan DOI yang terdengar nyata tetapi tidak ada",
+                "Sulit dikenali tanpa membuka tautannya"
+              ],
+              [
+                "Kutipan palsu",
+                "Ucapan yang dikaitkan dengan orang sungguhan yang tidak pernah mengatakannya",
+                "Bisa merusak reputasi"
+              ],
+              [
+                "Ringkasan tidak setia",
+                "Ringkasan yang menambahkan klaim yang tidak ada di dokumen sumber",
+                "Anda mengira sumbernya yang mengatakan itu"
+              ],
+              [
+                "Kode karangan",
+                "Fungsi atau opsi pustaka yang tidak ada",
+                "Kode gagal atau berperilaku tak terduga"
+              ],
+              [
+                "Jawaban usang",
+                "Menjelaskan aturan atau produk seperti sebelum batas pengetahuan pelatihan",
+                "Dulu benar, sekarang salah"
+              ]
+            ]
+          }
+        },
+        "Pada gambar dan video, detail aneh seperti jari berlebih atau objek yang meleleh kadang juga disebut halusinasi. Itu masalah kualitas, bukan klaim yang salah. Dalam karya kreatif, mengarang hal yang tidak ada justru sering menjadi tujuan. Halusinasi baru menjadi masalah saat Anda membutuhkan fakta."
+      ]
+    },
+    {
+      "h": "Mengapa model bahasa berhalusinasi",
+      "body": [
+        "Model bahasa menulis dengan memprediksi token berikutnya, potongan kecil teks, dari teks sejauh ini. Ia dilatih untuk menghasilkan teks yang mungkin, bukan teks yang benar. Sering kali yang mungkin dan yang benar bertumpang tindih, dan itulah mengapa model berguna. Kegagalan muncul di tempat keduanya tidak bertumpang tindih.",
+        {
+          "ul": [
+            "Tidak ada pengecekan fakta bawaan. Tidak ada bagian dari prediksi token berikutnya yang membandingkan keluaran dengan dunia nyata.",
+            "Fakta yang jarang dipelajari dengan lemah. Fakta yang hanya muncul beberapa kali dalam pelatihan mudah tercampur dengan fakta serupa, misalnya tahun lahir tokoh publik yang kurang terkenal.",
+            "Menebak diberi ganjaran. Riset yang terbit pada 2025 berpendapat bahwa pelatihan dan penilaian benchmark yang umum memberi poin untuk tebakan yang yakin tetapi tidak untuk jawaban tidak tahu, sehingga model belajar menebak.",
+            "Meniru kesalahan umum. Model yang dilatih dengan teks manusia bisa mengulang kesalahpahaman populer, hal yang memang diukur oleh benchmark TruthfulQA.",
+            "Tekanan dari prompt. Pertanyaan yang mengandaikan hal salah, seperti meminta sekuel tahun 2019 dari film yang tidak punya sekuel, mengundang model ikut bermain.",
+            "Konteks panjang atau berantakan. Detail di tengah masukan panjang lebih mudah terlewat atau tertukar.",
+            "Batas pengetahuan. Model tidak tahu apa pun setelah data pelatihannya berakhir kecuali pencarian atau dokumen ditambahkan."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Tugas mana yang paling berisiko",
+      "body": [
+        "Risikonya lebih bergantung pada apa yang Anda minta daripada pada modelnya.",
+        {
+          "table": {
+            "head": [
+              "Tugas",
+              "Risiko halusinasi",
+              "Alasan"
+            ],
+            "rows": [
+              [
+                "Menulis ulang, menerjemahkan, atau memperpendek teks yang Anda berikan",
+                "Rendah",
+                "Faktanya ada di prompt"
+              ],
+              [
+                "Meringkas dokumen yang Anda lampirkan",
+                "Rendah sampai sedang",
+                "Bisa menambah atau menggabungkan detail, terutama pada file panjang"
+              ],
+              [
+                "Menjelaskan konsep yang terkenal",
+                "Rendah sampai sedang",
+                "Pengetahuan umum dipelajari dengan baik"
+              ],
+              [
+                "Angka, tanggal, nama, dan statistik yang spesifik",
+                "Tinggi",
+                "Detail kecil mudah kabur"
+              ],
+              [
+                "Daftar sumber, makalah, kasus pengadilan, tautan",
+                "Sangat tinggi",
+                "Judul yang tampak meyakinkan mudah dibuat"
+              ],
+              [
+                "Peristiwa terbaru atau harga saat ini",
+                "Sangat tinggi tanpa pencarian",
+                "Tidak ada di data pelatihan"
+              ],
+              [
+                "Topik khusus, hukum daerah, perusahaan kecil",
+                "Tinggi",
+                "Data pelatihan sedikit"
+              ]
+            ]
+          }
+        },
+        "Riset hukum adalah area bahaya yang terkenal. Pengadilan telah menjatuhkan sanksi kepada pengacara yang mengajukan dokumen berisi kasus pengadilan karangan chatbot."
+      ]
+    },
+    {
+      "h": "Prompt yang mengurangi halusinasi",
+      "body": [
+        "Metode paling efektif adalah grounding: berikan materi sumber kepada model dan suruh ia menjawab hanya dari materi itu. Ini juga gagasan di balik retrieval-augmented generation (RAG), saat sistem mencari dokumen lebih dulu lalu menaruh kutipan terbaik ke dalam prompt.",
+        {
+          "code": "Weak prompt:\nWhat is the refund period in our store policy?\n\nGrounded prompt:\nAnswer using only the policy text below.\nIf the answer is not in the text, reply: Not stated in the policy.\nQuote the exact sentence you used.\n\nPolicy:\n<paste the policy text here>\n\nQuestion: What is the refund period?",
+          "lang": "text"
+        },
+        "Setiap baris pada prompt grounded punya tugas. Hanya teks kebijakan di bawah membatasi sumber. Kalimat cadangan memberi model jawaban aman selain menebak. Kutip kalimat persisnya membuat Anda bisa memeriksa jawaban dalam hitungan detik.",
+        "Kebiasaan lain yang membantu:",
+        {
+          "ol": [
+            "Ajukan pertanyaan sempit. Satu fakta per pertanyaan lebih mudah dijawab benar daripada daftar panjang.",
+            "Izinkan ketidakpastian. Tambahkan baris seperti: Kalau kamu tidak yakin, katakan dan jelaskan apa yang bisa memastikannya.",
+            "Aktifkan pencarian atau penelusuran web untuk fakta terkini, lalu buka tautan yang dikutip jawabannya.",
+            "Minta penalaran atau langkah-langkah untuk masalah bertahap, dan periksa tiap langkah.",
+            "Jangan meminta sumber dari ingatan. Minta model mencari sumber dengan alat pencarian, atau cari sendiri lalu tempelkan.",
+            "Untuk kode, sebutkan versi pustaka dan tempelkan dokumentasi yang relevan, lalu jalankan kodenya."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Cara memeriksa jawaban AI",
+      "body": [
+        "Gunakan daftar periksa ini sebelum Anda mengandalkan atau memublikasikan apa pun yang berisi fakta:",
+        {
+          "ol": [
+            "Buka setiap tautan dan DOI. Pastikan halamannya ada dan isinya sesuai dengan klaim jawaban.",
+            "Cari kutipan persis. Jika kutipan tidak ditemukan di sumber primer, jangan dipakai.",
+            "Cek setiap angka ke sumber primer, seperti situs statistik resmi, standar, atau makalah aslinya.",
+            "Waspadai tanda bahaya: angka sangat presisi tanpa sumber, daftar penulis yang terkesan generik, referensi yang tidak bisa ditemukan, dan jawaban yang berubah saat ditanya ulang.",
+            "Cari sumber kedua yang independen untuk klaim yang penting, bukan chatbot kedua.",
+            "Untuk pertanyaan hukum, medis, atau keuangan, minta orang yang berkualifikasi meninjau hasilnya."
+          ]
+        },
+        {
+          "note": "Menanyakan apakah model yakin adalah pemeriksaan yang lemah. Model kadang membela jawaban yang salah, dan kadang meninggalkan jawaban yang benar karena pertanyaannya terdengar seperti petunjuk. Periksalah ke sumber."
+        }
+      ]
+    },
+    {
+      "h": "Batas dari solusi-solusi ini",
+      "body": [
+        "Tidak ada metode saat ini yang menghilangkan halusinasi sepenuhnya. Grounding dan RAG menurunkan angkanya tajam untuk pertanyaan yang bisa dijawab dokumen, tetapi model masih bisa salah membaca kutipan, menggabungkan dua kutipan, atau mengisi celah yang ditinggalkan dokumen. Alat pencarian bisa mengembalikan halaman berkualitas buruk, dan model bisa memercayainya.",
+        "Menurunkan temperature membuat jawaban lebih mudah diulang, bukan lebih akurat. Jika jawaban yang paling mungkin itu salah, model akan mengulang jawaban salah yang sama secara konsisten.",
+        "Model yang lebih baru sering berhalusinasi lebih sedikit pada pertanyaan umum, dan sebagian dilatih agar lebih sering mengakui ketidakpastian. Angkanya tetap berbeda menurut topik dan bahasa, jadi uji model dengan jenis pertanyaan Anda sendiri sebelum mengandalkannya, dan pertahankan pemeriksaan manusia di tempat kesalahan berbiaya mahal."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Bisakah halusinasi AI dihilangkan sepenuhnya?",
+      "a": "Tidak dengan metode saat ini. Grounding pada sumber, alat pencarian, dan pelatihan yang lebih baik menguranginya banyak, tetapi karena model menghasilkan teks yang mungkin, bukan fakta yang sudah dicek, sebagian kesalahan tetap ada. Verifikasi tetap diperlukan."
+    },
+    {
+      "q": "Mengapa ChatGPT mengarang referensi dan sitasi?",
+      "a": "Referensi adalah pola nama penulis, judul, jurnal, dan tahun, yang bisa dihasilkan model dengan lancar tanpa punya makalah nyata dalam pikirannya. Kecuali aplikasi mencari sumbernya dengan alat pencarian, sitasi itu mungkin tidak ada."
+    },
+    {
+      "q": "AI mana yang paling jarang berhalusinasi?",
+      "a": "Peringkat berubah di setiap rilis model dan berbeda menurut topik dan bahasa. Uji beberapa model dengan pertanyaan dari pekerjaan Anda sendiri yang jawabannya Anda ketahui, dan pilih alat yang menampilkan sumbernya."
+    },
+    {
+      "q": "Apakah halusinasi AI sama dengan berbohong?",
+      "a": "Tidak. Berbohong berarti sengaja mengatakan hal yang salah. Model tidak punya niat; ia menghasilkan kelanjutan yang tampak paling masuk akal. Dampaknya bagi pembaca bisa sama, dan karena itulah pengecekan penting."
+    },
+    {
+      "q": "Apakah pencarian web menghentikan halusinasi AI?",
+      "a": "Membantu untuk fakta yang terkini dan spesifik, karena jawabannya bisa didasarkan pada halaman yang diambil. Model masih bisa salah membaca atau salah mengutip halaman itu, jadi buka tautan yang dikutip untuk hal yang penting."
+    }
+  ]
+}

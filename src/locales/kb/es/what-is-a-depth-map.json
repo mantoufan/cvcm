@@ -1,0 +1,174 @@
+{
+  "title": "Qué es un mapa de profundidad y cómo lo genera la IA — cv.cm",
+  "description": "Qué es un mapa de profundidad, cómo estima la IA la profundidad a partir de una sola foto, profundidad relativa frente a métrica, qué tono significa cerca y cómo usarlo para paralaje y ControlNet.",
+  "h1": "¿Qué es un mapa de profundidad y cómo lo crea la IA a partir de una foto?",
+  "answer": "Un mapa de profundidad es una imagen en escala de grises en la que el brillo de cada píxel representa la distancia a la cámara en lugar del color. Modelos de IA como Depth Anything lo estiman a partir de una sola foto reconociendo formas, perspectiva y oclusión. La mayoría ofrece profundidad relativa (qué partes están más cerca), no metros reales, y eso basta para el paralaje 3D, el desenfoque de fondo y ControlNet.",
+  "sections": [
+    {
+      "h": "Un mapa de profundidad en una imagen",
+      "body": [
+        "Imagina una foto de una persona de pie delante de un edificio. El mapa de profundidad de esa foto tiene el mismo ancho y alto, pero cada píxel contiene un solo número: la distancia de ese punto a la cámara. Mostrado como imagen, la persona tiene un tono, el edificio otro y el cielo el más extremo.",
+        "No existe una regla única sobre qué tono significa cerca. Comprueba la convención de cada herramienta que uses:",
+        {
+          "table": {
+            "head": [
+              "Convención",
+              "Los objetos cercanos se ven",
+              "Los objetos lejanos se ven",
+              "Dónde te la encuentras"
+            ],
+            "rows": [
+              [
+                "Profundidad inversa (tipo disparidad)",
+                "Claros",
+                "Oscuros",
+                "La mayoría de los estimadores de profundidad con IA, mapas de profundidad de ControlNet"
+              ],
+              [
+                "Distancia (z-depth)",
+                "Oscuros",
+                "Claros",
+                "Pases de render 3D, efectos de niebla, algunos motores de juegos"
+              ],
+              [
+                "Profundidad métrica",
+                "Número pequeño (metros)",
+                "Número grande",
+                "Robótica, RA, LiDAR, archivos de 16 bits o de coma flotante"
+              ],
+              [
+                "Mapa de color (Turbo, Magma)",
+                "Un extremo de la paleta",
+                "El otro extremo",
+                "Solo para vistas previas, no para procesar después"
+              ]
+            ]
+          }
+        },
+        "Si un efecto 3D se ve del revés, con el fondo saltando hacia ti, el mapa está en la convención contraria. Invertir la imagen (el blanco pasa a negro) suele solucionarlo."
+      ]
+    },
+    {
+      "h": "Cómo estima la IA la profundidad a partir de una sola foto",
+      "body": [
+        "Un teléfono con dos cámaras o con sensor LiDAR puede medir la profundidad. Una sola foto normal no: la misma imagen podría mostrar un coche de juguete de cerca o un coche real lejos. La estimación monocular de profundidad resuelve esto como lo hacemos las personas, mediante indicios aprendidos.",
+        {
+          "ul": [
+            "Perspectiva: las líneas paralelas, como carreteras y vías, se juntan en la distancia.",
+            "Tamaños conocidos: una cara, una puerta o un coche tienen un tamaño típico, de modo que su tamaño en la imagen sugiere la distancia.",
+            "Oclusión: un objeto que tapa a otro está delante de él.",
+            "Densidad de textura y neblina: la hierba y las baldosas se ven más finas, y los colores más pálidos, cuanto más lejos están.",
+            "Sombreado y desenfoque de enfoque, que dan pistas sobre la forma de las superficies."
+          ]
+        },
+        "Una red de profundidad se entrena con millones de imágenes en las que la respuesta es conocida o estimada. Depth Anything V2, que usan muchas herramientas en el momento de escribir esto, aprendió primero de imágenes sintéticas (renderizadas) precisas y después de un conjunto muy grande de fotos reales etiquetadas por un modelo maestro mayor. Sus autores eligieron datos sintéticos en parte porque los sensores de profundidad reales no miden bien las superficies transparentes y reflectantes, de modo que las etiquetas reales son ruidosas justo donde las fotos son difíciles.",
+        "El modelo trabaja con una copia redimensionada de la imagen (Depth Anything V2 se entrenó con el lado más corto a 518 píxeles) y devuelve un valor por píxel. La herramienta lo escala después al tamaño de la foto y asigna los valores de 0 a 255 para una imagen de 8 bits."
+      ]
+    },
+    {
+      "h": "Profundidad relativa frente a profundidad métrica",
+      "body": [
+        "La mayoría de los modelos de profundidad de uso general predicen profundidad relativa. Los modelos base de Depth Anything V2, por ejemplo, predicen profundidad inversa invariante afín. Dicho de forma sencilla, el orden y las proporciones tienen sentido, pero hay una escala y un desplazamiento desconocidos. El mapa puede decirte que la persona está delante del edificio; no puede decirte que está a 3,2 metros.",
+        "Este diseño surgió de entrenar con muchos conjuntos de datos con cámaras y unidades distintas. El trabajo de MiDaS demostró que una función de pérdida que ignora la escala permite al modelo aprender de todos ellos a la vez, lo que lo hizo mucho más robusto con fotos cualesquiera de internet.",
+        "Los modelos de profundidad métrica son versiones ajustadas (fine-tuned) y entrenadas para dar metros, normalmente para un solo tipo de escena (interiores o conducción por la calle). Úsalos para medir o en robótica. Para el trabajo creativo, lo que quieres es la profundidad relativa, porque generaliza mejor y el efecto solo necesita un orden correcto."
+      ]
+    },
+    {
+      "h": "Qué puedes hacer con un mapa de profundidad",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Uso",
+              "Cómo se usa la profundidad",
+              "Consejo"
+            ],
+            "rows": [
+              [
+                "Video con paralaje 2.5D",
+                "Los píxeles cercanos se mueven más que los lejanos cuando se mueve una cámara virtual",
+                "Mantén los movimientos de cámara pequeños para disimular los bordes estirados"
+              ],
+              [
+                "Desenfoque estilo retrato",
+                "El desenfoque aumenta con la distancia al plano de enfoque",
+                "Suaviza el borde; el pelo suele desenfocarse junto con el fondo"
+              ],
+              [
+                "Profundidad con ControlNet",
+                "El mapa guía la composición de una imagen recién generada",
+                "Usa un mapa con lo cercano claro; baja el peso del control para tener más libertad"
+              ],
+              [
+                "3D y RA",
+                "Los píxeles se extruyen en una malla o en una nube de puntos",
+                "La profundidad relativa da la forma, no el tamaño real"
+              ],
+              [
+                "Niebla, reiluminación, composición",
+                "La profundidad actúa como máscara para efectos basados en la distancia",
+                "Exporta en 16 bits si la herramienta lo ofrece"
+              ]
+            ]
+          }
+        },
+        "Por ejemplo, la herramienta de mapa de profundidad de cv.cm convierte una foto en un mapa en escala de grises (lo cercano, claro) o en una vista previa en color dentro del navegador, y la herramienta de foto a video de cv.cm usa el mismo tipo de mapa para mover una cámara virtual a través de una foto fija. En este segundo caso se mueve la cámara y el sujeto permanece quieto: es paralaje, no un modelo que anima personas.",
+        "ControlNet demostró que un modelo de difusión puede guiarse con condiciones como bordes, pose, segmentación y profundidad. Una condición de profundidad mantiene la composición (dónde están el primer plano y el fondo) mientras el prompt cambia el estilo, la iluminación o los materiales."
+      ]
+    },
+    {
+      "h": "Dónde falla la profundidad con IA",
+      "body": [
+        {
+          "ul": [
+            "Cristal, espejos y agua: el modelo puede dar la profundidad del reflejo o de lo que hay detrás del cristal.",
+            "Cielo y zonas muy lejanas: todo cae en el extremo lejano, así que el paralaje ahí es plano.",
+            "Estructuras finas: el pelo, las vallas, las ramas y los cables se funden con el fondo a la resolución de trabajo del modelo.",
+            "Cuadros, pósteres y pantallas: una foto de una imagen puede recibir una falsa profundidad 3D, porque el contenido parece una escena.",
+            "Vistas poco habituales: tomas de dron en vertical hacia abajo, fotos macro e imágenes de ojo de pez son menos frecuentes en los datos de entrenamiento.",
+            "Bordes entre cerca y lejos: el mapa es suave en esa zona, así que un efecto de paralaje estira los píxeles formando una banda como de goma."
+          ]
+        },
+        {
+          "note": "Los mapas de profundidad obtenidos de fotos son estimaciones. No uses un mapa de profundidad relativa para medir distancias, tamaños o velocidades reales."
+        }
+      ]
+    },
+    {
+      "h": "Cómo conseguir un mejor mapa de profundidad",
+      "body": [
+        {
+          "ol": [
+            "Elige fotos con un primer plano, un plano medio y un fondo claros. Las escenas planas, como un rostro que llena el encuadre ante una pared, dan poca profundidad con la que trabajar.",
+            "Evita reflejos intensos y ventanas grandes en la zona que te interesa.",
+            "Asegúrate de que tu siguiente herramienta lee la misma convención. Si lo cercano es oscuro donde debería ser claro, invierte el mapa.",
+            "Mantén el mapa con el mismo tamaño y recorte que la foto. Un mapa de profundidad recortado o redimensionado de otra forma no encajará.",
+            "Desenfoca o expande ligeramente el mapa antes del paralaje para reducir los desgarros en los bordes, y mantén suaves los movimientos de cámara."
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "¿Un mapa de profundidad es lo mismo que un mapa de normales?",
+      "a": "No. Un mapa de profundidad guarda la distancia de cada píxel. Un mapa de normales guarda la dirección hacia la que mira cada superficie, como colores RGB, y se usa para la iluminación. Puedes obtener normales de forma aproximada a partir de un mapa de profundidad, pero no al revés sin perder la escala."
+    },
+    {
+      "q": "¿Puede la IA crear un mapa de profundidad de cualquier foto?",
+      "a": "Sí, un modelo monocular siempre producirá un mapa, pero la calidad depende de la escena. Las capas claras de objetos cercanos y lejanos funcionan bien; el cristal, los espejos, las paredes lisas y las fotos de cuadros no."
+    },
+    {
+      "q": "¿Cuál es la diferencia entre un mapa de profundidad y un mapa de disparidad?",
+      "a": "La disparidad es el desplazamiento de un punto entre dos imágenes estéreo y es mayor en los objetos cercanos, de modo que se comporta como una profundidad inversa. Muchos modelos de IA devuelven una profundidad inversa parecida a la disparidad, y por eso los objetos cercanos aparecen claros."
+    },
+    {
+      "q": "¿Por qué mi video con paralaje se estira alrededor de los bordes del sujeto?",
+      "a": "Cuando la cámara virtual se mueve, deja al descubierto fondo que estaba oculto detrás del sujeto en la foto original. Ahí no existe ningún píxel, así que el renderizador estira los vecinos. Movimientos de cámara más pequeños y un borde de profundidad suavizado lo reducen."
+    },
+    {
+      "q": "¿El modo retrato del iPhone usa un mapa de profundidad?",
+      "a": "Sí. Los teléfonos con doble cámara o con sensores de profundidad registran un mapa de profundidad o de disparidad y lo usan para desenfocar el fondo; muchos aplican además aprendizaje automático para refinarlo. La profundidad puede guardarse en el archivo de la foto junto con la imagen."
+    }
+  ]
+}

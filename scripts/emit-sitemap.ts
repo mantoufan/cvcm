@@ -1,6 +1,7 @@
 import { mkdirSync, rmSync, writeFileSync } from "node:fs";
 import { resolve } from "node:path";
 import "../src/shared/kb-code-meta";
+import "../src/shared/kb-ai-meta";
 import { buildLlmsTxt, buildPoppyJson, buildToolsJson } from "../src/shared/agent-docs";
 import { buildSectionSitemaps, buildSitemapIndexXml, SITEMAP_SECTIONS } from "../src/shared/sitemap";
 

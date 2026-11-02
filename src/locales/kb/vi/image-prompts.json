@@ -1,0 +1,205 @@
+{
+  "title": "Cách viết prompt tạo ảnh AI: công thức và ví dụ — cv.cm",
+  "description": "Học cách viết prompt tạo ảnh AI với công thức dùng lại được, ví dụ viết lại từ prompt yếu thành prompt tốt, từ khóa phong cách, ánh sáng, ống kính và negative prompt hiệu quả.",
+  "h1": "Viết prompt tạo ảnh AI thế nào cho tốt?",
+  "answer": "Một prompt ảnh tốt nêu một chủ thể rõ ràng, nói nó đang làm gì và ở đâu, rồi thêm phong cách, ánh sáng, máy ảnh và bố cục bằng từ ngữ đơn giản. Hãy đặt ý quan trọng nhất lên đầu, mô tả điều bạn muốn thay vì điều bạn không muốn, và mỗi cụm từ chỉ chứa một ý. Chỉ dùng negative prompt cho những lỗi cụ thể, nhìn thấy được như chữ hoặc thừa ngón tay.",
+  "sections": [
+    {
+      "h": "Vì sao cách diễn đạt của prompt quan trọng",
+      "body": [
+        "Mô hình ảnh không đọc prompt như con người. Một bộ mã hóa văn bản biến các từ thành con số, và bộ tạo ảnh được huấn luyện để tạo ra những bức ảnh khớp với các con số đó. Những từ thường xuất hiện cạnh một kiểu ảnh nhất định trong chú thích huấn luyện sẽ kéo kết quả về phía những ảnh đó. Chẳng hạn cụm `golden hour` xuất hiện cạnh ánh nắng ấm, thấp góc nhiều đến mức nó gần như hoạt động như một thiết lập ánh sáng.",
+        "Từ đó rút ra hai điều. Thứ nhất, từ hình ảnh cụ thể thắng từ trừu tượng: `wet cobblestone street` cho mô hình thứ để vẽ, còn `a sad mood` khiến nó phải đoán. Thứ hai, mô hình cân nhắc mọi từ, nên những từ đệm như `very`, `beautiful` hay `amazing` chiếm chỗ mà không thêm thông tin. Hầu hết công cụ cũng giới hạn lượng văn bản bộ mã hóa đọc; từ vượt quá giới hạn bị cắt hoặc ít tác dụng hơn, nên phần đầu của prompt có trọng lượng lớn nhất.",
+        "Nhiều bộ tạo ảnh còn dùng guidance (dẫn hướng): chúng so sánh ảnh tạo với prompt của bạn và ảnh tạo không có prompt, rồi đẩy kết quả theo hướng của sự khác biệt. Guidance cao bám chữ chặt hơn nhưng có thể trông gắt hoặc quá bão hòa. Vì vậy một prompt rõ ràng với guidance vừa phải thường đẹp hơn một prompt mơ hồ với guidance tăng cao."
+      ]
+    },
+    {
+      "h": "Công thức prompt dùng lại được",
+      "body": [
+        "Hầu hết prompt tốt trả lời cùng sáu câu hỏi. Hãy viết theo thứ tự này, vì mô hình có xu hướng coi các từ đứng trước là quan trọng hơn.",
+        {
+          "code": "[subject + key details], [action or pose], [setting + time],\n[style or medium], [lighting], [camera / lens / framing], [color + mood]",
+          "lang": "text"
+        },
+        {
+          "ol": [
+            "Chủ thể: ai hoặc cái gì, kèm hai ba chi tiết quan trọng (độ tuổi, trang phục, chất liệu, màu sắc).",
+            "Hành động: chủ thể đang làm gì. Một động từ cho mô hình một tư thế để vẽ.",
+            "Bối cảnh: ở đâu và khi nào. Một địa điểm và một thời điểm trong ngày là đủ.",
+            "Phong cách hoặc chất liệu: ảnh chụp, màu nước, dựng 3D, phác thảo mực, vector phẳng, tô bóng cel kiểu anime.",
+            "Ánh sáng: đòn bẩy mạnh nhất cho không khí. Nêu nguồn sáng và hướng sáng.",
+            "Máy ảnh và bố cục: cỡ cảnh, góc chụp, ống kính, độ sâu trường ảnh, vị trí của chủ thể trong khung hình."
+          ]
+        },
+        "Không phải lần nào cũng cần đủ sáu phần. Ảnh sản phẩm có thể bỏ hành động; một họa tiết trừu tượng có thể bỏ máy ảnh. Nhưng rà danh sách trước khi bấm tạo sẽ bắt được lỗ hổng phổ biến nhất: một prompt chỉ mô tả chủ thể và không gì khác."
+      ]
+    },
+    {
+      "h": "Từ yếu đến mạnh: một ví dụ viết lại",
+      "body": [
+        "Đây là lần thử đầu tiên điển hình. Nó cho mô hình một chủ thể và một tính từ, không nói gì về việc bức ảnh nên trông thế nào.",
+        {
+          "code": "a beautiful cat in a cafe, high quality, 8k, masterpiece",
+          "lang": "text"
+        },
+        "Kết quả thường là một con mèo chung chung nằm giữa khung với nội thất mờ nhòe. `8k` và `masterpiece` không thêm chi tiết trên hầu hết mô hình hiện nay; chúng chỉ đẩy nhẹ về phía vẻ bóng bẩy của ảnh stock. Bản viết lại dưới đây giữ nguyên ý tưởng nhưng trả lời đủ sáu câu hỏi.",
+        {
+          "code": "an orange tabby cat with a white chest, sitting on a wooden windowsill\ninside a small cafe, looking out at the rain, late afternoon,\n35mm film photograph, soft window light from the left, warm interior lamps\nin the background, medium close-up at eye level, shallow depth of field,\nmuted warm colors, quiet and cozy",
+          "lang": "text"
+        },
+        {
+          "table": {
+            "head": [
+              "Phần",
+              "Chữ trong prompt",
+              "Tác dụng"
+            ],
+            "rows": [
+              [
+                "Chủ thể",
+                "orange tabby cat with a white chest",
+                "Cố định vẻ ngoài để các lần chạy lặp lại giống nhau"
+              ],
+              [
+                "Hành động",
+                "sitting on a wooden windowsill, looking out",
+                "Cho một tư thế và hướng nhìn của mắt"
+              ],
+              [
+                "Bối cảnh",
+                "small cafe, rain, late afternoon",
+                "Một nơi và một thời điểm, nên ánh sáng nhất quán"
+              ],
+              [
+                "Phong cách",
+                "35mm film photograph",
+                "Đặt hạt phim, phản ứng màu và độ chân thực"
+              ],
+              [
+                "Ánh sáng",
+                "soft window light from the left, warm lamps behind",
+                "Tạo đèn chính và quầng sáng ấm ở hậu cảnh"
+              ],
+              [
+                "Máy ảnh",
+                "medium close-up, eye level, shallow depth of field",
+                "Điều khiển khung hình và làm mờ hậu cảnh có chủ ý"
+              ],
+              [
+                "Không khí",
+                "muted warm colors, quiet and cozy",
+                "Kéo chỉnh màu về một hướng"
+              ]
+            ]
+          }
+        },
+        "Nếu bản thứ hai vẫn chưa ổn, hãy đổi từng phần một và giữ nguyên phần còn lại. Đổi năm thứ cùng lúc khiến bạn không thể biết từ nào gây ra thay đổi."
+      ]
+    },
+    {
+      "h": "Từ khóa cho phong cách, ánh sáng, ống kính và bố cục",
+      "body": [
+        "Những thuật ngữ này được mô hình ảnh hiểu rộng rãi vì chúng phổ biến trong chú thích ảnh, mô tả nghệ thuật và ngôn ngữ điện ảnh. Hãy dùng một hai từ mỗi hàng, đừng dùng hết.",
+        {
+          "table": {
+            "head": [
+              "Nhóm",
+              "Từ khóa",
+              "Thường thấy gì"
+            ],
+            "rows": [
+              [
+                "Phong cách / chất liệu",
+                "35mm film photo, studio product photo, watercolor, gouache, ink line art, flat vector illustration, isometric 3D render, anime cel shading, oil painting, paper cutout",
+                "Vẻ tổng thể, chất liệu bề mặt và mức độ chân thực"
+              ],
+              [
+                "Ánh sáng",
+                "golden hour, blue hour, overcast soft light, hard noon sun, rim light, backlit, softbox key light, neon signs at night, candlelight, volumetric light through fog",
+                "Không khí, độ tương phản và hướng của bóng đổ"
+              ],
+              [
+                "Ống kính / máy ảnh",
+                "wide-angle 24mm, 50mm standard, 85mm portrait, macro, telephoto compression, fisheye, shallow depth of field, deep focus, motion blur, long exposure",
+                "Méo phối cảnh, độ mờ hậu cảnh và cảm giác gần xa của vật"
+              ],
+              [
+                "Cỡ cảnh / góc chụp",
+                "extreme close-up, close-up, medium shot, full body, wide establishing shot, low angle, high angle, overhead flat lay, eye level, Dutch tilt",
+                "Chủ thể hiện ra bao nhiêu và trông mạnh mẽ đến đâu"
+              ],
+              [
+                "Bố cục",
+                "rule of thirds, centered symmetrical, negative space on the right, leading lines, framed by a doorway, foreground blur, subject small in a large landscape",
+                "Chủ thể nằm ở đâu và mắt nhìn đi đâu"
+              ],
+              [
+                "Màu sắc / không khí",
+                "muted earth tones, pastel palette, high contrast black and white, teal and orange, monochrome red, warm and nostalgic, cold and clinical",
+                "Chỉnh màu và tông cảm xúc"
+              ]
+            ]
+          }
+        },
+        {
+          "note": "Gọi tên một nghệ sĩ còn sống để bắt chước phong cách của họ đặt ra vấn đề pháp lý và đạo đức, và một số dịch vụ chặn việc này. Mô tả các đặc điểm thị giác bạn thích (nét cọ dày, bảng màu hạn chế, bóng đổ phẳng) an toàn hơn và thường chính xác hơn."
+        }
+      ]
+    },
+    {
+      "h": "Negative prompt: tác dụng và khi nào dùng",
+      "body": [
+        "Negative prompt là ô văn bản thứ hai cho mô hình biết cần tránh xa điều gì. Trong các công cụ dựa trên Stable Diffusion hoặc FLUX, nó thường là một ô riêng hoặc tham số `negative_prompt`; Midjourney dùng tham số `--no`. Một số công cụ ảnh kiểu trò chuyện không có ô negative, và ở đó bạn nên viết yêu cầu theo hướng khẳng định (`a clean, empty wall` thay vì `no text on the wall`).",
+        "Negative prompt hiệu quả nhất với những thứ cụ thể, nhìn thấy được:",
+        {
+          "code": "Prompt:   a clean product photo of a ceramic mug on a white table\nNegative: text, logo, watermark, extra handles, cluttered background",
+          "lang": "text"
+        },
+        {
+          "ul": [
+            "Mục tiêu tốt: chữ và watermark, thừa ngón tay, người thứ hai, một vật cụ thể cứ xuất hiện mãi, một màu bạn không muốn.",
+            "Mục tiêu yếu: danh sách dài các từ chất lượng như `ugly, bad, worst quality`. Chúng giúp được chút ít trên một số mô hình cũ hơn, nhưng cũng đẩy mọi ảnh về cùng một vẻ ngoài.",
+            "Đừng đặt một ý ở cả hai ô. Một con mèo trong prompt và `cat` trong negative sẽ triệt tiêu nhau và làm rối kết quả.",
+            "Viết `no` trong prompt chính thường phản tác dụng: `a room with no windows` nhắc đến cửa sổ, và mô hình có thể vẽ chúng ra."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Lỗi thường gặp và giới hạn thực tế",
+      "body": [
+        {
+          "ul": [
+            "Quá nhiều chủ thể. Ba người với ba bộ đồ và ba hành động thường bị trộn lẫn: quần áo đổi chỗ, bàn tay dính vào nhau. Hãy tạo chủ thể chính trước rồi thêm người khác bằng chỉnh sửa hoặc inpainting.",
+            "Đòi chữ chính xác. Nhiều mô hình vẫn viết sai chính tả hoặc bịa chữ cái, nhất là với chữ không phải Latin. Giữ chữ ngắn, đặt trong dấu ngoặc kép, hoặc thêm sau trong phần mềm chỉnh sửa.",
+            "Bàn tay, số lượng và vị trí. `Five apples` hoặc `the cup to the left of the book` không phải lúc nào cũng được tuân thủ. Hãy kiểm tra kết quả rồi tạo lại hoặc chỉnh sửa thay vì thêm chữ.",
+            "Từ phong cách mâu thuẫn. `photorealistic watercolor anime` kéo về ba hướng. Hãy chọn một chất liệu.",
+            "Chép prompt giữa các mô hình. Prompt được tinh chỉnh cho một công cụ có thể hoạt động khác ở công cụ khác, vì mỗi nơi dùng bộ mã hóa văn bản và dữ liệu huấn luyện khác nhau. Hãy chạy thử vài lần trước khi dựa vào nó."
+          ]
+        },
+        "Prompt không phải tiếng Anh dùng được trong nhiều công cụ, nhưng một số mô hình được huấn luyện chủ yếu trên chú thích tiếng Anh. Chẳng hạn, công cụ tạo ảnh AI của cv.cm dịch prompt không phải tiếng Anh sang tiếng Anh trước khi chạy mô hình, nên cụm từ ngắn, sát nghĩa được dịch đáng tin cậy hơn thành ngữ."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Prompt tạo ảnh AI nên dài bao nhiêu?",
+      "a": "Thường từ một đến bốn câu, hay khoảng 20 đến 75 từ. Prompt ngắn hơn để lại nhiều thứ cho may rủi; prompt dài hơn nhiều có thể vượt quá lượng bộ mã hóa văn bản đọc, và các từ về sau sẽ ít tác dụng hơn."
+    },
+    {
+      "q": "Các từ như 4k, 8k hay masterpiece có làm ảnh đẹp hơn không?",
+      "a": "Trên hầu hết mô hình hiện nay chúng đóng góp rất ít. Chúng có thể đẩy ảnh về kiểu stock bóng bẩy, nhưng mô tả ánh sáng, ống kính và chất liệu giúp chất lượng nhiều hơn hẳn."
+    },
+    {
+      "q": "Thứ tự từ trong prompt ảnh có quan trọng không?",
+      "a": "Có, ở hầu hết mô hình. Các từ gần đầu thường có ảnh hưởng lớn hơn, nên hãy đặt chủ thể và chi tiết quan trọng nhất trước, những nét hoàn thiện sau cùng."
+    },
+    {
+      "q": "Tôi có thể viết prompt ảnh bằng tiếng Việt không?",
+      "a": "Nhiều công cụ chấp nhận ngôn ngữ khác, nhưng kết quả thường tốt hơn bằng tiếng Anh vì phần lớn chú thích huấn luyện là tiếng Anh. Nếu công cụ dịch giúp bạn, hãy dùng cụm từ ngắn, sát nghĩa."
+    },
+    {
+      "q": "Prompt và negative prompt khác nhau thế nào?",
+      "a": "Prompt mô tả điều bạn muốn thấy. Negative prompt liệt kê những thứ cụ thể mô hình nên tránh xa, như chữ, watermark hoặc thừa ngón tay."
+    }
+  ]
+}

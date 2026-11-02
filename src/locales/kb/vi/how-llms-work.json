@@ -1,0 +1,211 @@
+{
+  "title": "LLM hoạt động như thế nào? Giải thích từng bước — cv.cm",
+  "description": "Mô hình ngôn ngữ lớn (LLM) hoạt động như thế nào? Theo một prompt qua token, attention và dự đoán token tiếp theo, rồi xem huấn luyện và temperature ảnh hưởng câu trả lời ra sao.",
+  "h1": "Mô hình ngôn ngữ lớn (LLM) hoạt động như thế nào?",
+  "answer": "Mô hình ngôn ngữ lớn là một mạng nơ-ron được huấn luyện để dự đoán token tiếp theo, tức một mẩu văn bản nhỏ, từ tất cả các token đứng trước. Để trả lời bạn, nó tách prompt thành token, chấm điểm mọi token có thể đứng tiếp theo, chọn một token, nối vào văn bản rồi lặp lại cho đến khi dừng. Việc huấn luyện thêm bằng chỉ dẫn và phản hồi của con người biến bộ dự đoán này thành một trợ lý hữu ích.",
+  "sections": [
+    {
+      "h": "Tóm gọn: một cỗ máy đoán từ tiếp theo rất giỏi",
+      "body": [
+        "LLM chỉ làm một việc, lặp đi lặp lại. Nó nhìn văn bản đã có và ước lượng xác suất của từng mẩu văn bản có thể đứng tiếp theo. Rồi nó chọn một mẩu, nối vào, và nhìn lại. Một câu trả lời 300 từ là vài trăm bước nhỏ như vậy.",
+        "Nghe thì quá đơn giản để viết ra bài luận, mã nguồn hay bản dịch. Sức mạnh đến từ quy mô. Mô hình có hàng tỷ tham số, tức những con số được điều chỉnh trong lúc huấn luyện, và được huấn luyện trên lượng văn bản rất lớn. Muốn dự đoán từ tiếp theo tốt trên chừng ấy văn bản, nó buộc phải nắm được ngữ pháp, kiến thức, cách lập luận và cấu trúc của mã nguồn.",
+        "Các trợ lý trò chuyện như ChatGPT, Claude, Gemini, DeepSeek và Qwen là sản phẩm xây quanh LLM. Sản phẩm bổ sung giao diện chat, system prompt ẩn, quy tắc an toàn và thường cả công cụ như tìm kiếm web. Lõi vẫn là dự đoán token tiếp theo."
+      ]
+    },
+    {
+      "h": "Tin nhắn của bạn được xử lý từng bước ra sao",
+      "body": [
+        "Lấy prompt `The capital of France is`. Mô hình xử lý nó như sau:",
+        {
+          "ol": [
+            "Tách token (tokenize): văn bản được cắt thành token. Với một bộ tokenizer phổ biến, prompt này thành năm token: The, capital, of, France, is (hầu hết mang theo dấu cách đứng trước).",
+            "Nhúng (embed): mỗi token được thay bằng một dãy số dài, gọi là embedding, đặt nó vào một không gian nơ-ron nơi các nghĩa liên quan nằm gần nhau.",
+            "Chú ý (attend): các embedding đi qua hàng chục lớp transformer. Ở mỗi lớp, bước attention cho phép mỗi token nhìn các token trước đó và lấy về phần liên quan.",
+            "Chấm điểm (score): lớp cuối cho ra điểm cho từng token trong bộ từ vựng, thường có từ 100.000 mục trở lên. Các điểm này được đổi thành xác suất.",
+            "Lấy mẫu (sample): một token được chọn theo các xác suất đó và theo cài đặt lấy mẫu.",
+            "Lặp lại: token vừa chọn được nối vào văn bản, và cả quy trình chạy lại cho token kế tiếp, cho đến khi mô hình xuất token dừng hoặc chạm giới hạn độ dài."
+          ]
+        },
+        "Xác suất của token tiếp theo có thể trông như sau. Các con số chỉ mang tính minh họa, không lấy từ mô hình thật:",
+        {
+          "table": {
+            "head": [
+              "Token tiếp theo ứng viên",
+              "Xác suất minh họa",
+              "Nhận xét"
+            ],
+            "rows": [
+              [
+                " Paris",
+                "0,92",
+                "Đáp án mong đợi"
+              ],
+              [
+                " a",
+                "0,03",
+                "Có thể tiếp tục thành a city of ..."
+              ],
+              [
+                " the",
+                "0,02",
+                "Có thể tiếp tục thành the city of ..."
+              ],
+              [
+                " located",
+                "0,01",
+                "Đúng ngữ pháp nhưng hiếm gặp"
+              ],
+              [
+                " Lyon",
+                "0,001",
+                "Sai, nhưng vẫn có thể bị lấy mẫu trúng"
+              ]
+            ]
+          }
+        },
+        "Từ bảng này rút ra hai bài học. Thứ nhất, mô hình không tra một mục trong cơ sở dữ liệu. Nó tạo ra phần tiếp theo có khả năng cao nhất. Thứ hai, một token sai luôn có một xác suất nào đó, và đây là một lý do mô hình đôi khi nói điều sai."
+      ]
+    },
+    {
+      "h": "Attention: cách mô hình theo dõi ý nghĩa",
+      "body": [
+        "Attention là ý tưởng cốt lõi của kiến trúc transformer, công bố năm 2017. Với mỗi token, mô hình tính xem nên cân nhắc mỗi token đứng trước nặng nhẹ ra sao khi dựng nghĩa cho nó.",
+        "Hãy xét câu: `The trophy did not fit in the suitcase because it was too big.` Để hiểu `it` chỉ cái gì, mô hình phải nối nó với trophy (chiếc cúp), không phải suitcase (chiếc vali). Đổi big thành small thì `it` lại chỉ chiếc vali. Attention giúp mô hình tạo liên kết này từ các từ xung quanh, qua nhiều lớp, mỗi lớp làm bức tranh rõ hơn.",
+        "Vì attention so sánh mỗi token với các token trước đó, chi phí tăng rất nhanh khi văn bản dài ra. Đó là lý do mọi mô hình đều có cửa sổ ngữ cảnh (context window), tức số token tối đa nó xem xét được cùng lúc."
+      ]
+    },
+    {
+      "h": "LLM được huấn luyện thế nào: ba giai đoạn",
+      "body": [
+        "Một bộ dự đoán token thô chưa phải trợ lý hữu ích. Nếu bạn đặt câu hỏi, nó có thể viết tiếp bằng thêm nhiều câu hỏi, vì điều đó cũng giống văn bản trên internet. Các trợ lý hiện đại trải qua nhiều giai đoạn huấn luyện.",
+        {
+          "table": {
+            "head": [
+              "Giai đoạn",
+              "Dữ liệu huấn luyện",
+              "Mô hình học được gì",
+              "Kết quả"
+            ],
+            "rows": [
+              [
+                "Tiền huấn luyện (pretraining)",
+                "Lượng rất lớn văn bản và mã nguồn công khai",
+                "Ngôn ngữ, kiến thức, quy luật, cách lập luận",
+                "Mô hình nền, viết tiếp được mọi văn bản"
+              ],
+              [
+                "Tinh chỉnh theo chỉ dẫn (instruction tuning)",
+                "Các prompt mẫu kèm câu trả lời tốt do con người viết",
+                "Định dạng làm theo một chỉ dẫn",
+                "Mô hình biết trả lời thay vì nói lan man"
+              ],
+              [
+                "Tinh chỉnh theo ưu tiên (ví dụ RLHF)",
+                "Con người hoặc mô hình xếp hạng nhiều câu trả lời",
+                "Con người thích câu trả lời nào: hữu ích, trung thực, an toàn",
+                "Trợ lý có phong cách nhất quán và biết từ chối"
+              ]
+            ]
+          }
+        },
+        "Nghiên cứu về InstructGPT cho thấy một mô hình nhỏ hơn được huấn luyện theo cách này được người dùng ưa thích hơn một mô hình lớn hơn nhiều chỉ có tiền huấn luyện. Đến thời điểm viết bài, nhiều mô hình còn được huấn luyện thêm để giải bài toán từng bước trước khi trả lời, thường hiện trong sản phẩm dưới dạng chế độ suy nghĩ hay suy luận.",
+        "Huấn luyện chỉ làm một lần, với chi phí rất lớn, trước khi phát hành. Khi bạn trò chuyện với mô hình, tham số của nó không thay đổi. Nó không học từ cuộc trò chuyện ngay lúc đó, dù nhà cung cấp có thể dùng hội thoại để huấn luyện các phiên bản sau nếu chính sách cho phép."
+      ]
+    },
+    {
+      "h": "Cài đặt lấy mẫu làm thay đổi câu trả lời",
+      "body": [
+        "Cùng một prompt có thể cho câu trả lời khác nhau vì mô hình lấy mẫu từ các xác suất. Nếu dùng API, bạn có thể điều khiển việc này. Khoảng giá trị và mặc định cụ thể khác nhau tùy nhà cung cấp.",
+        {
+          "table": {
+            "head": [
+              "Cài đặt",
+              "Tác dụng",
+              "Khi nào nên đổi"
+            ],
+            "rows": [
+              [
+                "`temperature`",
+                "Giá trị thấp làm lựa chọn đứng đầu có khả năng cao hơn; giá trị cao làm phẳng xác suất và tăng sự đa dạng",
+                "Hạ thấp khi trích xuất và viết mã, tăng lên khi động não ý tưởng"
+              ],
+              [
+                "`top_p`",
+                "Chỉ lấy mẫu từ tập token nhỏ nhất có tổng xác suất đạt p",
+                "Thường chỉ chỉnh cái này hoặc temperature, không chỉnh cả hai"
+              ],
+              [
+                "`max_tokens`",
+                "Giới hạn độ dài đầu ra",
+                "Tăng lên nếu câu trả lời bị cắt giữa chừng"
+              ],
+              [
+                "Chuỗi dừng (stop sequences)",
+                "Đoạn văn bản khi xuất hiện sẽ kết thúc việc sinh",
+                "Đầu ra có cấu trúc, mẫu biểu"
+              ],
+              [
+                "System prompt",
+                "Chỉ dẫn ẩn đặt trước cuộc hội thoại",
+                "Đặt vai trò, giọng điệu, định dạng và quy tắc một lần"
+              ]
+            ]
+          }
+        },
+        "Temperature thấp làm câu trả lời nhất quán hơn. Nó không làm câu trả lời đúng hơn. Nếu phần tiếp theo có khả năng cao nhất lại sai thì temperature thấp khiến mô hình sai lặp đi lặp lại."
+      ]
+    },
+    {
+      "h": "LLM không làm những gì",
+      "body": [
+        "Nhiều lỗi gây ngạc nhiên trở nên dễ hiểu khi bạn nhớ đến cơ chế:",
+        {
+          "ul": [
+            "Chúng không nhìn thấy chữ cái. Mô hình thấy token, nên một từ như strawberry có thể đến dưới dạng ba mảnh như st, raw và berry. Vì vậy đếm chữ cái hay đảo ngược từ là việc khó.",
+            "Chúng tự không nhớ các cuộc trò chuyện cũ. Tính năng bộ nhớ trong ứng dụng hoạt động bằng cách lưu ghi chú rồi chèn vào prompt.",
+            "Chúng không biết sự kiện gần đây trừ khi ứng dụng thêm kết quả tìm kiếm hoặc tài liệu vào ngữ cảnh.",
+            "Chúng không kiểm chứng sự thật. Không có gì trong việc dự đoán token so đầu ra với thực tế, nên văn bản trôi chảy vẫn có thể sai.",
+            "Chúng không chạy mã hay tính toán chính xác trừ khi gọi công cụ. Phép nhân dài thuần bằng văn bản rất dễ sai."
+          ]
+        },
+        "Sản phẩm tốt bù các khoảng trống này bằng công cụ: máy tính, trình chạy mã, tìm kiếm web hoặc truy xuất từ tài liệu của bạn. Khi biết khoảng trống tồn tại, bạn biết lúc nào nên yêu cầu dùng công cụ hoặc tự kiểm tra lại đáp án."
+      ]
+    },
+    {
+      "h": "Mẹo thực tế rút ra từ cách LLM hoạt động",
+      "body": [
+        {
+          "ul": [
+            "Đưa tài liệu vào prompt. Nếu muốn hỏi về một văn bản, hãy dán phần liên quan. Mô hình lập luận tốt hơn nhiều trên văn bản nó nhìn thấy so với những ký ức mơ hồ từ lúc huấn luyện.",
+            "Nêu cụ thể đầu ra. Hãy nói rõ định dạng, độ dài, đối tượng đọc và ngôn ngữ. Mô hình lấp chỗ trống bằng lựa chọn phổ biến nhất.",
+            "Yêu cầu làm từng bước với bài khó. Viết các bước trung gian cho mô hình thêm token để làm việc trước khi chốt đáp án.",
+            "Mở cuộc trò chuyện mới cho việc mới. Các tin nhắn cũ không liên quan vẫn nằm trong ngữ cảnh và có thể kéo câu trả lời lệch hướng.",
+            "Kiểm chứng tên, số liệu, trích dẫn và liên kết. Đây là những chi tiết dễ bị bịa nhất."
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Mô hình ngôn ngữ lớn có hiểu điều chúng nói không?",
+      "a": "Chúng xây dựng các biểu diễn nội tại phong phú về ý nghĩa, giúp trả lời, dịch và lập luận trong nhiều trường hợp. Chúng không có trải nghiệm hay mục tiêu, và có thể sai ở những việc đơn giản mà con người thấy hiển nhiên, nên việc đó có được gọi là hiểu hay không vẫn còn tranh luận."
+    },
+    {
+      "q": "Vì sao AI trả lời khác nhau cho cùng một câu hỏi?",
+      "a": "Mô hình lấy mẫu token tiếp theo từ một phân phối xác suất, nên những lựa chọn ngẫu nhiên nhỏ ở đầu câu trả lời dẫn đến cách diễn đạt khác ở đoạn sau. Temperature thấp hơn làm câu trả lời lặp lại được nhiều hơn."
+    },
+    {
+      "q": "GPT là viết tắt của gì?",
+      "a": "GPT là Generative Pre-trained Transformer: một mô hình transformer, được tiền huấn luyện trên lượng lớn văn bản, dùng để tạo ra văn bản."
+    },
+    {
+      "q": "LLM có kết nối internet không?",
+      "a": "Bản thân mô hình thì không. Nó chỉ biết dữ liệu huấn luyện đến một mốc thời gian nhất định. Một số ứng dụng thêm công cụ tìm kiếm web và dán kết quả vào ngữ cảnh, nhờ vậy chúng nhắc được các sự kiện gần đây."
+    },
+    {
+      "q": "Tham số (parameter) trong LLM là gì?",
+      "a": "Tham số là một trong những con số bên trong mạng mà quá trình huấn luyện điều chỉnh. Mô hình có hàng tỷ tham số, và cùng nhau chúng mã hóa những gì mô hình đã học. Nhiều tham số hơn chứa được nhiều quy luật hơn nhưng chạy tốn kém hơn."
+    }
+  ]
+}

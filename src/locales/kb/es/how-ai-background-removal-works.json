@@ -1,0 +1,177 @@
+{
+  "title": "Cómo funciona la eliminación de fondo con IA: máscaras y PNG — cv.cm",
+  "description": "Cómo funciona la eliminación de fondo con IA: segmentación frente a matting, máscaras alfa suaves, por qué fallan el pelo, el vello y el cristal, y por qué hay que guardar el recorte en PNG.",
+  "h1": "¿Cómo funciona la eliminación de fondo con IA?",
+  "answer": "Un quitafondos con IA ejecuta una red de segmentación que puntúa cada píxel de 0 (fondo) a 1 (sujeto). Ese mapa de puntuaciones se convierte en el canal alfa de la imagen: opaco donde está el sujeto, transparente en el resto y parcialmente transparente en los bordes suaves, como el pelo. El resultado debe guardarse en un formato con alfa, normalmente PNG; si no, el fondo vuelve a aparecer.",
+  "sections": [
+    {
+      "h": "La versión corta: una máscara se convierte en canal alfa",
+      "body": [
+        "Una foto tiene tres canales de color: rojo, verde y azul. Un recorte necesita un cuarto canal, llamado alfa, que indica lo opaco que es cada píxel. Quitar el fondo consiste en rellenar ese canal alfa de forma automática.",
+        "El modelo nunca pinta un fondo nuevo ni mueve píxeles. Solo responde a una pregunta para cada píxel: ¿cuánto de este píxel pertenece al sujeto? Los valores de color de la foto se quedan como estaban. Cuando abres el resultado sobre un tablero de ajedrez o un fondo nuevo, los valores alfa deciden qué se ve a través.",
+        {
+          "ol": [
+            "La foto se redimensiona al tamaño de trabajo del modelo. Muchos modelos trabajan con un cuadrado fijo; BiRefNet, por ejemplo, se entrenó y probó a 1024 × 1024.",
+            "La red devuelve un número por píxel. Un paso final de sigmoide lo comprime al rango de 0 a 1.",
+            "El mapa de puntuaciones se escala de nuevo al tamaño de la foto original.",
+            "Las puntuaciones pasan a ser el canal alfa (de 0 a 255 en una imagen de 8 bits) y el archivo se codifica con alfa."
+          ]
+        },
+        "Como el paso 3 amplía una máscara calculada a menor tamaño, los bordes finos de una foto muy grande son siempre una estimación. Es una de las razones por las que la foto de un producto de 6000 píxeles puede verse nítida en el centro y algo blanda en el contorno."
+      ]
+    },
+    {
+      "h": "Segmentación frente a matting",
+      "body": [
+        "En la eliminación de fondo se juntan dos campos de investigación, y la diferencia entre ellos explica la mayoría de los problemas en los bordes.",
+        {
+          "table": {
+            "head": [
+              "",
+              "Segmentación",
+              "Matting"
+            ],
+            "rows": [
+              [
+                "Pregunta que responde",
+                "¿Este píxel es sujeto o fondo?",
+                "¿Qué fracción de este píxel es sujeto?"
+              ],
+              [
+                "Resultado típico",
+                "Una máscara que casi siempre vale 0 o 1",
+                "Una matriz alfa continua de 0 a 1"
+              ],
+              [
+                "Entrada adicional",
+                "Normalmente ninguna",
+                "Los métodos clásicos necesitan un trimap: sujeto seguro, fondo seguro y una franja desconocida"
+              ],
+              [
+                "Se le da bien",
+                "Objetos completos, productos, contornos limpios",
+                "Pelo, vello, humo, desenfoque de movimiento, velos"
+              ],
+              [
+                "Fallo típico",
+                "Bordes duros, como recortados con tijeras",
+                "Es lento; necesita una buena primera estimación de la forma"
+              ]
+            ]
+          }
+        },
+        "La segmentación decide dónde está el objeto. El matting decide cómo se funde el borde. Un píxel en la punta de un mechón de pelo puede ser 30 % pelo y 70 % cielo, así que el alfa correcto es de aproximadamente 0,3, no 0 ni 1. El método clásico de matting con aprendizaje profundo, Deep Image Matting, toma la imagen más un trimap dibujado a mano y predice ese valor fraccionario dentro de la franja desconocida.",
+        "Los quitafondos de un clic prescinden del trimap. Los modelos de la familia de segmentación dicotómica de imágenes, como IS-Net y BiRefNet, se entrenan con imágenes de alta resolución y contornos muy detallados, de modo que pueden seguir estructuras finas sin intervención del usuario. Su salida sigue siendo una puntuación de segmentación y no una matriz física real, pero como la puntuación es continua da bordes suaves que, en la mayoría de las fotos, se parecen mucho a los del matting.",
+        {
+          "note": "Un modelo mental útil: el mapa de puntuaciones indica cuánta confianza tiene el modelo en que un píxel es sujeto. En un borde, la confianza y la cobertura real suelen ser parecidas, pero no son lo mismo. Esa diferencia es el origen de los halos y del pelo que desaparece."
+        }
+      ]
+    },
+    {
+      "h": "Por qué la salida debe ser PNG (o WebP)",
+      "body": [
+        "JPEG no tiene canal alfa. Si guardas un recorte como JPEG, cada píxel transparente tiene que recibir algún color, y las herramientas lo rellenan de blanco o de negro. El fondo que acabas de quitar se sustituye por uno sólido.",
+        {
+          "table": {
+            "head": [
+              "Formato",
+              "Canal alfa",
+              "Compresión",
+              "Úsalo para"
+            ],
+            "rows": [
+              [
+                "PNG",
+                "Sí, de 8 o 16 bits",
+                "Sin pérdida",
+                "Recortes que vayas a seguir editando, impresión, archivos de diseño"
+              ],
+              [
+                "WebP",
+                "Sí",
+                "Con o sin pérdida",
+                "Recortes más ligeros para la web"
+              ],
+              [
+                "JPEG",
+                "No",
+                "Con pérdida",
+                "Imágenes finales con un fondo sólido ya aplicado"
+              ],
+              [
+                "AVIF",
+                "Sí",
+                "Con o sin pérdida",
+                "Publicación web donde sea compatible"
+              ]
+            ]
+          }
+        },
+        "La especificación PNG almacena el alfa sin premultiplicar: el color de un píxel semitransparente se conserva a plena intensidad y el alfa se guarda aparte. Eso hace del PNG una copia maestra segura. Puedes colocarlo después sobre cualquier fondo sin los bordes oscuros que provoca una mezcla previa.",
+        "Si necesitas un JPEG para un marketplace que exige fondo blanco, aplica primero el fondo blanco en la herramienta y luego exporta a JPEG. Conserva el PNG como copia maestra."
+      ]
+    },
+    {
+      "h": "Casos difíciles: pelo, vello, cristal, sombras",
+      "body": [
+        {
+          "ul": [
+            "Pelo y vello. Los pelos sueltos son más finos que un píxel al tamaño de trabajo del modelo, así que se pierden en parte antes de que el modelo llegue a verlos. Es normal que los mechones se conserven y los pelos sueltos se difuminen. Fotografiar contra una pared lisa y de color contrastado ayuda más que cualquier ajuste.",
+            "Colores parecidos. Un perro negro sobre un sofá negro, o una camisa blanca ante una pared blanca, apenas le dan a la red un borde que encontrar. Recurre entonces a su conocimiento de las formas y puede recortar parte del sujeto.",
+            "Cristal, agua y velos. Una copa de vino es en gran parte el fondo visto a través de ella. Un modelo de segmentación tiene que elegir: conservar la copa (con el fondo antiguo dentro) o descartarla. Ninguna de las dos opciones es físicamente correcta; la transparencia real exigiría una matriz alfa más el color verdadero del cristal, algo que una sola foto no puede dar.",
+            "Sombras y reflejos. La sombra de contacto de un producto pertenece al suelo, así que la mayoría de los quitafondos la eliminan y el producto parece flotar. Muchas fotos de tienda quedan mejor si luego se añade una sombra suave.",
+            "Huecos. El espacio entre un brazo y el cuerpo, o dentro de un asa o de la rueda de una bicicleta, es fondo. Los buenos modelos de alta resolución los detectan; los más débiles los rellenan.",
+            "Contaminación de color. La luz verde o de color que rebota en los bordes del sujeto sigue en los valores RGB cuando el fondo ya no está. Sobre un fondo nuevo se nota como un borde de color."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Cómo conseguir un recorte más limpio",
+      "body": [
+        "La mayor parte de la calidad depende de la foto, no de la herramienta. Una lista breve:",
+        {
+          "ol": [
+            "Fotografía con un contraste claro entre el sujeto y el fondo, tanto de color como de brillo.",
+            "Mantén el sujeto nítido. El desenfoque de movimiento y la poca profundidad de campo en los bordes se convierten en un alfa incierto.",
+            "Llena el encuadre. Un sujeto que ocupa gran parte de la imagen conserva más detalle al reducirse al tamaño de entrada del modelo.",
+            "Revisa el resultado sobre un fondo oscuro y sobre uno claro. Los halos que se ocultan sobre blanco se ven sobre negro, y al revés.",
+            "Corrige a mano las zonas rebeldes en un editor, con una goma suave o un pincel de máscara, trabajando sobre el PNG maestro.",
+            "Para retratos con pelo que deban quedar perfectos, usa una herramienta de matting con trimap o un pincel de refinar bordes después del recorte automático."
+          ]
+        },
+        "Para saber en qué hacer clic en una herramienta concreta, consulta el tutorial paso a paso sobre cómo quitar el fondo de una foto. Por ejemplo, la herramienta de quitar fondo de cv.cm ejecuta BiRefNet en el navegador, de modo que la foto no se sube a ningún servidor, y permite exportar un PNG transparente o colocar el sujeto sobre blanco, sobre un color o sobre una copia desenfocada del original."
+      ]
+    },
+    {
+      "h": "Límites y expectativas realistas",
+      "body": [
+        "La eliminación automática ya es suficientemente buena para la mayoría de los anuncios de productos, las fotos de perfil y las presentaciones. No sustituye al enmascarado cuidadoso en publicidad o cine. El modelo solo sabe lo que aprendió de sus datos de entrenamiento: objetos poco habituales, personas que se solapan o un sujeto poco claro (¿cuál de las tres personas es el sujeto?) pueden dar máscaras sorprendentes.",
+        "El modelo tampoco sabe qué querías conservar. Si solo quieres la taza y no la mano que la sostiene, un recorte automático conservará normalmente las dos, porque los datos de entrenamiento trataban la mano y la taza como un único primer plano. Recorta antes la foto o borra después la parte sobrante.",
+        "Por último, quitar el fondo no elimina el resto de la información. Los datos EXIF, como la ubicación GPS, pueden seguir dentro del archivo original. Si vas a compartir el recorte públicamente, exporta un archivo nuevo y elimina los metadatos si es necesario."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "¿Por qué mi recorte tiene un contorno blanco o gris?",
+      "a": "Los píxeles del borde todavía conservan parte del color del fondo antiguo y el alfa en esa zona es parcialmente opaco. Revisa el recorte sobre un fondo oscuro y luego reduce o suaviza un poco el borde en un editor, o vuelve a fotografiar con un fondo más parecido en color al nuevo."
+    },
+    {
+      "q": "¿Por qué el fondo es negro o blanco después de guardar la imagen?",
+      "a": "El archivo se guardó en un formato sin canal alfa, normalmente JPEG. Guarda en PNG o WebP para conservar la transparencia."
+    },
+    {
+      "q": "¿Puede la IA quitar el fondo de un cristal o una botella transparentes?",
+      "a": "Solo de forma aproximada. Una sola foto no le dice al modelo lo transparente que es el cristal, así que o conserva el cristal con el fondo antiguo visible en su interior o quita demasiado. Para trabajo de catálogo, fotografía el cristal sobre un fondo claro y liso y edítalo a mano."
+    },
+    {
+      "q": "¿Quitar el fondo con IA es lo mismo que usar una pantalla verde?",
+      "a": "No. Una pantalla verde (croma) elimina un único color conocido, algo fiable cuando la iluminación es uniforme. La IA no conoce ningún color y tiene que reconocer el sujeto, así que funciona con cualquier fondo, pero es menos predecible en los bordes finos."
+    },
+    {
+      "q": "¿La imagen pierde calidad al quitar el fondo?",
+      "a": "Los píxeles del sujeto conservan sus colores originales si exportas en PNG. Solo cambia el alfa. La pérdida de calidad se produce en los bordes, donde la máscara se calculó a menor tamaño y se amplió, y si exportas a un formato con pérdida."
+    }
+  ]
+}

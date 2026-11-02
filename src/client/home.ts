@@ -72,6 +72,11 @@ export function mountHome(host: HTMLElement, locale: Locale): () => void {
       h("p", { class: "more" }, h("a", { href: kbHref(locale, "code"), "data-nav": "coding" }, t("kb.code.all"))),
     ),
     h("section", { class: "wall" },
+      h("h2", null, h("a", { href: kbHref(locale, "ai"), "data-nav": "ai-learn" }, t("kb.ai.label"))),
+      linkList(kbGroupsOf("ai").map((group) => ({ href: `${kbHref(locale, "ai")}#${group.id}`, name: t(`kb.ai.groups.${group.id}`), blurb: t(`kb.ai.blurbs.${group.id}`), nav: "ai-learn" }))),
+      h("p", { class: "more" }, h("a", { href: kbHref(locale, "ai"), "data-nav": "ai-learn" }, t("kb.ai.all"))),
+    ),
+    h("section", { class: "wall" },
       h("h2", null, t("nav.games")),
       linkList(GAMES.slice(0, 8).map((game) => {
         const copy = gameName(locale, game.id);

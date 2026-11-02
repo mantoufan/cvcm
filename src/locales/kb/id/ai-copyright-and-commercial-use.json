@@ -1,0 +1,185 @@
+{
+  "title": "Siapa Pemilik Karya Seni AI? Hak Cipta dan Pemakaian Komersial — cv.cm",
+  "description": "Siapa pemilik gambar, video, dan teks buatan AI, dan bolehkah dipakai secara komersial? US Copyright Office, kasus Li v. Liu di Tiongkok, Uni Eropa, plus daftar periksa praktis.",
+  "h1": "Siapa pemilik konten buatan AI, dan bolehkah dipakai secara komersial?",
+  "answer": "Tergantung negara dan seberapa besar peran manusia dalam membentuk hasilnya. US Copyright Office menyatakan prompt saja tidak cukup untuk hak cipta, tetapi pemilihan, penataan, dan penyuntingan oleh manusia dapat dilindungi. Pengadilan di Beijing pada 2023 memutuskan bahwa sebuah gambar AI adalah karya pengguna karena pilihan kreatif pengguna itu. Pemakaian komersial juga bergantung pada ketentuan alat, merek dagang, dan hak atas citra diri.",
+  "sections": [
+    {
+      "h": "Jawaban singkat per wilayah",
+      "body": [
+        "Hukum hak cipta bersifat nasional, dan pengadilan serta kantor hak cipta masih memutuskan kasus-kasus baru. Tabel ini merangkum posisi resmi yang telah dipublikasikan saat artikel ini ditulis. Ini informasi umum, bukan nasihat hukum.",
+        {
+          "table": {
+            "head": [
+              "Wilayah",
+              "Apakah keluaran AI dapat dilindungi?",
+              "Sumber resmi utama"
+            ],
+            "rows": [
+              [
+                "Amerika Serikat",
+                "Hanya bagian yang unsur ekspresifnya ditentukan manusia; prompt saja tidak cukup",
+                "Panduan pendaftaran Copyright Office (Maret 2023) dan laporan Part 2 (Januari 2025)"
+              ],
+              [
+                "Tiongkok",
+                "Pengadilan pernah melindungi sebuah gambar AI sebagai karya pengguna karena pengguna membuat pilihan kreatif; diputuskan kasus per kasus",
+                "Pengadilan Internet Beijing, Li v. Liu, putusan 27 November 2023"
+              ],
+              [
+                "Uni Eropa",
+                "AI Act tidak menentukan siapa pemilik keluaran; kepemilikan diserahkan pada hukum hak cipta",
+                "Pasal 53 AI Act menetapkan kewajiban hak cipta bagi penyedia model, bukan soal kepemilikan keluaran"
+              ]
+            ]
+          }
+        },
+        "Dua pertanyaan terpisah sering tercampur. Pertama: apakah ada pihak yang bisa memiliki keluaran itu, sehingga Anda dapat melarang orang lain menyalinnya? Kedua: apakah Anda boleh memakainya, mengingat ketentuan alat dan hak orang lain? Anda bisa saja boleh memakai sebuah gambar secara komersial meskipun tidak ada yang dapat memiliki hak ciptanya."
+      ]
+    },
+    {
+      "h": "Amerika Serikat: wajib ada kepengarangan manusia",
+      "body": [
+        "Pada Maret 2023, US Copyright Office menerbitkan panduan pendaftaran untuk karya yang memuat materi buatan AI. Pemohon harus mengungkapkan materi buatan AI yang lebih dari de minimis, dengan penjelasan singkat tentang kontribusi pencipta manusia, dan mengecualikan materi buatan AI itu dari klaim.",
+        "Pada 29 Januari 2025, Copyright Office menerbitkan Part 2 laporannya tentang hak cipta dan kecerdasan buatan, mengenai dapat tidaknya karya dilindungi hak cipta. Kesimpulan utamanya:",
+        {
+          "ul": [
+            "Hak cipta melindungi karya yang dibantu AI hanya jika pencipta manusia telah menentukan unsur ekspresif yang memadai.",
+            "Sekadar memberikan prompt tidak cukup untuk menjadikan pengguna sebagai pencipta keluaran tersebut.",
+            "Materi buatan manusia yang masih terlihat dalam keluaran, seperti gambar Anda sendiri yang dipakai sebagai masukan, dapat dilindungi.",
+            "Pemilihan, penataan, atau modifikasi kreatif atas keluaran AI oleh manusia dapat dilindungi.",
+            "Memakai AI sebagai alat, atau memasukkan materi AI ke dalam karya manusia yang lebih besar, tidak membuat seluruh karya menjadi tidak dapat dilindungi.",
+            "Copyright Office tidak menemukan dasar untuk undang-undang baru yang melindungi keluaran buatan AI."
+          ]
+        },
+        "Dalam praktiknya, satu gambar yang dibuat dari sebuah prompt kecil kemungkinannya dapat didaftarkan di AS, tetapi komik, film, atau buku yang ceritanya ditulis seseorang, gambarnya dipilih dan ditata serta disunting olehnya, dapat didaftarkan untuk kontribusi manusia tersebut."
+      ]
+    },
+    {
+      "h": "Tiongkok: kasus gambar AI Li v. Liu",
+      "body": [
+        "Dalam Li v. Liu, perkara (2023) Jing 0491 Min Chu No. 11279, Pengadilan Internet Beijing memutuskan pada 27 November 2023 bahwa gambar yang dibuat penggugat dengan Stable Diffusion adalah karya yang dilindungi. Penggugat telah memilih model, menulis prompt positif dan negatif, mengatur parameter, dan memilih hasilnya. Tergugat memakai gambar itu untuk mengilustrasikan sebuah artikel dan menghapus watermark penggugat.",
+        {
+          "ul": [
+            "Pengadilan menilai gambar itu menunjukkan orisinalitas karena mencerminkan masukan intelektual dan pilihan pribadi penggugat.",
+            "Pengadilan menyatakan model AI bukan subjek hukum dan tidak dapat menjadi pencipta, dan perancang model juga bukan penciptanya.",
+            "Pengadilan memutuskan bahwa penggugat, yang menyiapkan model dan memilih gambar, adalah pencipta dan pemegang hak cipta.",
+            "Pengadilan juga menyatakan bahwa penggugat harus secara mencolok mencantumkan penggunaan teknologi AI."
+          ]
+        },
+        "Pengadilan menegaskan bahwa apakah sebuah gambar buatan AI merupakan karya harus dinilai dalam setiap kasus. Ini adalah putusan tingkat pertama dari satu pengadilan, sehingga tidak menyelesaikan pertanyaan itu untuk semua keluaran AI di Tiongkok."
+      ]
+    },
+    {
+      "h": "Data pelatihan dan penyedia model",
+      "body": [
+        "Pertanyaan terpisah adalah apakah melatih model dengan karya berhak cipta itu sah. Ini menyangkut pembuat model, tetapi bisa memengaruhi pengguna jika keluarannya menyalin materi yang dilindungi.",
+        {
+          "ul": [
+            "Amerika Serikat: Copyright Office merilis versi pra-publikasi Part 3 laporannya, tentang pelatihan AI generatif, pada 9 Mei 2025. Beberapa gugatan tentang data pelatihan masih berjalan saat artikel ini ditulis.",
+            "Uni Eropa: menurut Pasal 53 AI Act, penyedia model AI serbaguna harus memiliki kebijakan untuk mematuhi hukum hak cipta UE, termasuk menghormati opt-out untuk text-and-data-mining yang dibuat berdasarkan Pasal 4(3) Direktif (UE) 2019/790, dan harus menerbitkan ringkasan yang cukup rinci tentang konten yang dipakai untuk pelatihan. Kewajiban ini berlaku mulai 2 Agustus 2025."
+          ]
+        },
+        "Bagi pengguna, risiko praktisnya adalah keluaran yang sangat mirip dengan karya, karakter, atau ciri gaya yang sudah ada. Prompt yang menyebut seniman yang masih hidup, karakter film, atau merek membuat salinan yang mirip lebih mungkin terjadi."
+      ]
+    },
+    {
+      "h": "Ketentuan layanan dan lisensi model",
+      "body": [
+        "Meski hukum hak cipta belum jelas, kontrak dengan penyedia alat sangat menentukan. Baca bagian-bagian ketentuan ini sebelum pemakaian komersial:",
+        {
+          "table": {
+            "head": [
+              "Klausul",
+              "Yang perlu dicari"
+            ],
+            "rows": [
+              [
+                "Kepemilikan keluaran",
+                "Apakah penyedia mengalihkan hak atas keluaran kepada Anda, menahan hak, atau tidak mengklaim apa pun"
+              ],
+              [
+                "Pemakaian komersial",
+                "Apakah paket gratis, kredit percobaan, atau paket pendidikan mengizinkan pemakaian komersial"
+              ],
+              [
+                "Kebijakan penggunaan",
+                "Konten dan penggunaan yang dilarang, seperti iklan politik, peniruan identitas, atau klaim medis"
+              ],
+              [
+                "Ganti rugi (indemnity)",
+                "Apakah penyedia membela pelanggan berbayar dari klaim hak cipta, dan dengan syarat apa"
+              ],
+              [
+                "Lisensi open-weight",
+                "Untuk model yang diunduh: batasan komersial, pemberitahuan yang diwajibkan, batas jumlah pengguna, dan aturan penggunaan yang dapat diterima"
+              ],
+              [
+                "Hak atas masukan",
+                "Bahwa Anda memiliki hak atas gambar, suara, dan teks yang Anda unggah sebagai referensi"
+              ]
+            ]
+          }
+        },
+        "Ketentuan bisa berubah. Simpan salinan atau tangkapan layar ketentuan yang berlaku pada hari Anda membuat aset penting."
+      ]
+    },
+    {
+      "h": "Merek dagang, citra diri, dan suara",
+      "body": [
+        "Hak cipta hanyalah satu lapisan. Hak-hak lain berlaku pada keluaran AI sama seperti pada foto dan video:",
+        {
+          "ul": [
+            "Merek dagang: logo, nama merek, dan kemasan khas dalam keluaran Anda dapat menimbulkan kesan dukungan palsu. Hapus dari karya komersial.",
+            "Hak atas citra diri dan kepribadian: memakai wajah atau suara orang sungguhan tanpa izin dapat melanggar hak privasi, publisitas, atau kepribadian di banyak negara, meskipun gambarnya sepenuhnya sintetis.",
+            "Replika digital: laporan Part 1 US Copyright Office (Juli 2024) tentang replika digital merekomendasikan undang-undang federal baru yang melarang replika suara atau penampilan seseorang tanpa izin.",
+            "Pelabelan: di Tiongkok, aturan pelabelan konten AI berlaku saat Anda memublikasikan konten buatan AI, dan platform di seluruh dunia punya aturan pengungkapan masing-masing."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Daftar periksa pemakaian komersial",
+      "body": [
+        {
+          "ol": [
+            "Pastikan paket Anda dalam ketentuan alat mengizinkan pemakaian komersial, dan simpan salinan ketentuan itu.",
+            "Pastikan Anda punya hak atas setiap masukan: foto referensi, suara, naskah, dan musik.",
+            "Hindari prompt yang menyebut seniman yang masih hidup, merek, atau karakter berhak cipta.",
+            "Cari kemiripan: lakukan pencarian gambar terbalik untuk gambar-gambar kunci dan bandingkan logo serta karakter.",
+            "Hapus merek dagang dan orang nyata yang dapat dikenali kecuali Anda punya izin tertulis.",
+            "Tambahkan kerja manusia yang bermakna: penulisan, pemilihan, penataan, penyuntingan. Ini membantu di tempat yang menjadikan kepengarangan manusia sebagai penentu perlindungan.",
+            "Simpan catatan: prompt, pengaturan, file referensi, draf, dan riwayat penyuntingan.",
+            "Beri label konten AI bila hukum atau platform mewajibkannya.",
+            "Untuk pemakaian bernilai tinggi seperti logo, kemasan, atau kampanye iklan, tanyakan kepada pengacara di negara Anda."
+          ]
+        },
+        {
+          "note": "Logo yang dibuat hanya dari prompt mungkin sulit didaftarkan atau dipertahankan sebagai karya Anda sendiri di tempat yang mensyaratkan kepengarangan manusia. Untuk tanda merek, pakai AI untuk ide dan minta desainer membuat versi finalnya."
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Bolehkah saya menjual karya seni buatan AI?",
+      "a": "Biasanya boleh, asalkan ketentuan alat mengizinkan pemakaian komersial dan gambarnya tidak menyalin karya yang dilindungi, merek dagang, atau orang nyata. Apakah Anda dapat melarang orang lain menyalinnya adalah pertanyaan hak cipta yang terpisah."
+    },
+    {
+      "q": "Bisakah saya mendaftarkan hak cipta buku atau komik yang dibuat dengan gambar AI?",
+      "a": "Di AS Anda dapat mendaftarkan bagian buatan manusia, seperti teks serta pemilihan dan penataan gambar, dan harus mengungkapkan materi buatan AI. Negara lain mungkin menilai karya itu secara berbeda."
+    },
+    {
+      "q": "Apakah perusahaan AI memiliki apa yang saya buat?",
+      "a": "Itu bergantung pada ketentuan layanan. Banyak penyedia menyatakan tidak mengklaim kepemilikan atas keluaran, tetapi redaksinya berbeda-beda, dan sebagian paket gratis membatasi pemakaian. Baca klausul keluaran dan pemakaian komersialnya."
+    },
+    {
+      "q": "Apakah legal memakai AI dengan gaya seniman terkenal?",
+      "a": "Gaya saja umumnya tidak dilindungi hak cipta, tetapi keluaran yang menyalin karya atau karakter tertentu dapat melanggar, dan menyebut seniman yang masih hidup menambah risiko hukum dan reputasi. Hindari dalam karya komersial."
+    },
+    {
+      "q": "Haruskah saya menyatakan bahwa konten saya dibuat dengan AI?",
+      "a": "Di sejumlah tempat dan di banyak platform, ya. Tiongkok mewajibkan label pada konten buatan AI, EU AI Act menambah kewajiban transparansi, dan YouTube, TikTok, serta Meta meminta kreator mengungkapkan konten AI yang realistis."
+    }
+  ]
+}

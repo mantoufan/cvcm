@@ -1,0 +1,177 @@
+{
+  "title": "AI xóa nền ảnh hoạt động thế nào: mask, matte, PNG — cv.cm",
+  "description": "AI tách nền ảnh hoạt động ra sao: segmentation và matting, mặt nạ alpha mềm, vì sao tóc, lông và kính hay lỗi, và vì sao ảnh tách nền phải lưu dạng PNG.",
+  "h1": "AI xóa nền ảnh hoạt động như thế nào?",
+  "answer": "Công cụ AI xóa nền chạy một mạng phân vùng (segmentation) chấm điểm từng pixel từ 0 (nền) đến 1 (chủ thể). Bản đồ điểm đó trở thành kênh alpha của ảnh: đục ở chỗ có chủ thể, trong suốt ở những chỗ còn lại, và trong suốt một phần dọc các cạnh mềm như tóc. Kết quả phải được lưu ở định dạng có alpha, thường là PNG, nếu không phần nền sẽ quay lại.",
+  "sections": [
+    {
+      "h": "Tóm tắt: mặt nạ trở thành kênh alpha",
+      "body": [
+        "Một bức ảnh có ba kênh màu: đỏ, xanh lục và xanh lam. Ảnh tách nền cần thêm kênh thứ tư gọi là alpha, cho biết mỗi pixel đục đến mức nào. Xóa nền chính là việc tự động điền vào kênh alpha đó.",
+        "Mô hình không bao giờ vẽ nền mới và không di chuyển pixel. Nó chỉ trả lời một câu hỏi cho từng pixel: bao nhiêu phần của pixel này thuộc về chủ thể? Giá trị màu của ảnh giữ nguyên. Khi bạn mở kết quả trên nền ô vuông caro hoặc một nền mới, giá trị alpha quyết định phần nào hiện ra.",
+        {
+          "ol": [
+            "Ảnh được đổi kích thước về cỡ làm việc của mô hình. Nhiều mô hình dùng một hình vuông cố định; ví dụ BiRefNet được huấn luyện và thử nghiệm ở 1024 × 1024.",
+            "Mạng xuất ra một con số cho mỗi pixel. Bước sigmoid cuối cùng nén con số đó vào khoảng từ 0 đến 1.",
+            "Bản đồ điểm được phóng trở lại kích thước của ảnh gốc.",
+            "Các điểm số trở thành kênh alpha (0 đến 255 trong ảnh 8 bit), và file được mã hóa kèm alpha."
+          ]
+        },
+        "Vì bước 3 phóng to một mặt nạ đã được tính ở kích thước nhỏ hơn, các cạnh mảnh trên ảnh rất lớn luôn chỉ là ước lượng. Đây là một lý do khiến ảnh sản phẩm 6000 pixel có thể sắc nét ở giữa nhưng hơi mềm ở đường viền."
+      ]
+    },
+    {
+      "h": "Segmentation và matting",
+      "body": [
+        "Hai lĩnh vực nghiên cứu gặp nhau trong việc xóa nền, và sự khác biệt giữa chúng giải thích hầu hết lỗi ở cạnh.",
+        {
+          "table": {
+            "head": [
+              "",
+              "Segmentation (phân vùng)",
+              "Matting (tách nền mịn)"
+            ],
+            "rows": [
+              [
+                "Câu hỏi nó trả lời",
+                "Pixel này là chủ thể hay nền?",
+                "Bao nhiêu phần của pixel này là chủ thể?"
+              ],
+              [
+                "Đầu ra điển hình",
+                "Mặt nạ phần lớn là 0 hoặc 1",
+                "Alpha matte liên tục từ 0 đến 1"
+              ],
+              [
+                "Đầu vào bổ sung",
+                "Thường không có",
+                "Phương pháp cổ điển cần trimap: vùng chắc chắn là chủ thể, vùng chắc chắn là nền, dải chưa xác định"
+              ],
+              [
+                "Làm tốt",
+                "Cả vật thể, sản phẩm, đường viền gọn",
+                "Tóc, lông, khói, nhòe chuyển động, voan"
+              ],
+              [
+                "Lỗi điển hình",
+                "Cạnh cứng như cắt giấy",
+                "Chậm; cần hình dạng ước lượng ban đầu tốt"
+              ]
+            ]
+          }
+        },
+        "Segmentation quyết định vật thể nằm ở đâu. Matting quyết định cạnh hòa trộn ra sao. Một pixel ở đầu sợi tóc có thể là 30 phần trăm tóc và 70 phần trăm bầu trời, nên alpha đúng là khoảng 0,3 chứ không phải 0 hay 1. Phương pháp matting học sâu cổ điển, Deep Image Matting, nhận ảnh cộng với trimap vẽ tay và dự đoán giá trị phân số đó trong dải chưa xác định.",
+        "Các công cụ xóa nền một chạm bỏ qua trimap. Những mô hình thuộc họ phân vùng ảnh nhị phân chi tiết (dichotomous image segmentation) như IS-Net và BiRefNet được huấn luyện trên ảnh độ phân giải cao với đường viền rất chi tiết, nên bám được các cấu trúc mảnh mà không cần người dùng chỉ dẫn. Đầu ra của chúng vẫn là điểm phân vùng chứ không phải matte vật lý thật, nhưng vì điểm số liên tục nên cho cạnh mềm gần giống matting ở đa số ảnh.",
+        {
+          "note": "Một cách hình dung hữu ích: bản đồ điểm cho biết mô hình tự tin đến đâu rằng pixel là chủ thể. Dọc theo cạnh, độ tự tin và độ phủ thực tế thường gần nhau nhưng không phải một. Khoảng chênh đó là nguồn gốc của quầng sáng và tóc bị mất."
+        }
+      ]
+    },
+    {
+      "h": "Vì sao đầu ra phải là PNG (hoặc WebP)",
+      "body": [
+        "JPEG không có kênh alpha. Nếu bạn lưu ảnh tách nền thành JPEG, mọi pixel trong suốt đều phải có một màu nào đó, và công cụ sẽ điền màu trắng hoặc đen. Nền bạn vừa xóa bị thay bằng một nền đặc.",
+        {
+          "table": {
+            "head": [
+              "Định dạng",
+              "Kênh alpha",
+              "Nén",
+              "Dùng cho"
+            ],
+            "rows": [
+              [
+                "PNG",
+                "Có, 8 hoặc 16 bit",
+                "Không mất dữ liệu",
+                "Ảnh tách nền để chỉnh tiếp, in ấn, file thiết kế"
+              ],
+              [
+                "WebP",
+                "Có",
+                "Có mất dữ liệu hoặc không",
+                "Ảnh tách nền nhẹ hơn cho web"
+              ],
+              [
+                "JPEG",
+                "Không",
+                "Có mất dữ liệu",
+                "Ảnh cuối đã áp sẵn nền đặc"
+              ],
+              [
+                "AVIF",
+                "Có",
+                "Có mất dữ liệu hoặc không",
+                "Phân phối trên web ở nơi được hỗ trợ"
+              ]
+            ]
+          }
+        },
+        "Đặc tả PNG lưu alpha ở dạng không nhân trước (unassociated, không premultiplied): màu của pixel nửa trong suốt được giữ nguyên cường độ, còn alpha được lưu riêng. Nhờ vậy PNG là bản gốc an toàn. Sau này bạn có thể đặt nó lên bất kỳ nền nào mà không bị viền tối do một lần hòa trộn trước đó.",
+        "Nếu bạn cần JPEG cho sàn thương mại điện tử yêu cầu nền trắng, hãy áp nền trắng trong công cụ trước rồi mới xuất JPEG. Giữ PNG làm bản gốc."
+      ]
+    },
+    {
+      "h": "Các trường hợp khó: tóc, lông, kính, bóng đổ",
+      "body": [
+        {
+          "ul": [
+            "Tóc và lông. Từng sợi mảnh hơn một pixel ở cỡ làm việc của mô hình, nên một phần đã mất trước cả khi mô hình nhìn thấy. Hãy chờ đợi các lọn tóc còn lại và những sợi tóc bay mờ dần. Chụp trước một bức tường trơn, tương phản sẽ giúp nhiều hơn mọi thiết lập.",
+            "Màu tương tự. Chú chó đen trên ghế sofa đen, hay áo trắng trên tường trắng, gần như không cho mạng cạnh nào để bắt. Nó quay về dựa vào kiến thức về hình dạng và có thể cắt lẹm vào chủ thể.",
+            "Kính, nước và voan. Ly rượu phần lớn là phần nền nhìn xuyên qua nó. Mô hình phân vùng phải chọn: giữ ly (cùng nền cũ bên trong) hoặc bỏ ly. Cả hai đều không đúng về mặt vật lý; trong suốt thật cần một matte cộng với màu kính thật, điều mà một bức ảnh không cung cấp được.",
+            "Bóng đổ và phản chiếu. Bóng tiếp xúc của sản phẩm thuộc về mặt sàn, nên hầu hết công cụ xóa nó, và sản phẩm trông như lơ lửng. Nhiều ảnh bán hàng đẹp hơn khi thêm lại một bóng mềm sau đó.",
+            "Lỗ hổng. Khoảng hở giữa cánh tay và thân người, hoặc bên trong quai xách hay bánh xe đạp, là nền. Các mô hình độ phân giải cao tốt sẽ bắt được những chỗ này; mô hình yếu hơn sẽ lấp đầy chúng.",
+            "Tràn màu. Ánh sáng xanh lục hoặc có màu hắt lên viền chủ thể vẫn nằm trong giá trị RGB sau khi nền đã mất. Trên nền mới, nó hiện ra thành viền màu."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Cách có ảnh tách nền sạch hơn",
+      "body": [
+        "Phần lớn chất lượng đến từ bức ảnh chứ không phải từ công cụ. Một danh sách kiểm tra ngắn:",
+        {
+          "ol": [
+            "Chụp với độ tương phản rõ giữa chủ thể và nền, cả về màu lẫn độ sáng.",
+            "Giữ chủ thể sắc nét. Nhòe chuyển động và tiêu cự nông ở mép biến thành alpha không chắc chắn.",
+            "Lấp đầy khung hình. Chủ thể chiếm phần lớn bức ảnh sẽ giữ được nhiều chi tiết hơn sau khi thu nhỏ về cỡ đầu vào của mô hình.",
+            "Kiểm tra kết quả trên nền tối và nền sáng. Quầng sáng ẩn trên nền trắng sẽ lộ ra trên nền đen và ngược lại.",
+            "Sửa các vùng cứng đầu bằng tay trong trình chỉnh sửa, dùng cục tẩy mềm hoặc cọ mặt nạ, làm việc trên bản gốc PNG.",
+            "Với ảnh chân dung tóc phải hoàn hảo, hãy dùng công cụ matting có trimap hoặc cọ tinh chỉnh cạnh (refine edge) sau lần cắt tự động."
+          ]
+        },
+        "Muốn biết các bước bấm trong một công cụ cụ thể, xem hướng dẫn từng bước về xóa nền ảnh. Chẳng hạn, công cụ remove-background của cv.cm chạy BiRefNet ngay trong trình duyệt nên ảnh không bị tải lên, và cho phép xuất PNG trong suốt hoặc đặt chủ thể lên nền trắng, nền màu hay bản sao làm mờ của ảnh gốc."
+      ]
+    },
+    {
+      "h": "Giới hạn và kỳ vọng thực tế",
+      "body": [
+        "Xóa nền tự động hiện đã đủ tốt cho đa số ảnh sản phẩm, ảnh đại diện và slide. Nó không thay thế được việc tạo mặt nạ tỉ mỉ trong quảng cáo hay phim. Mô hình chỉ biết những gì nó học từ dữ liệu huấn luyện: vật thể lạ, người chồng lên nhau, hay chủ thể không rõ ràng (ai trong ba người là chủ thể?) có thể cho ra mặt nạ gây bất ngờ.",
+        "Mô hình cũng không biết bạn định giữ gì. Nếu bạn chỉ muốn cái cốc mà không phải bàn tay cầm nó, lần cắt tự động thường sẽ giữ cả hai, vì dữ liệu huấn luyện coi bàn tay và cái cốc là một tiền cảnh. Hãy cắt khung trước, hoặc xóa phần thừa sau đó.",
+        "Cuối cùng, xóa nền không xóa các thông tin khác. Dữ liệu EXIF như vị trí GPS vẫn có thể nằm trong file gốc. Nếu chia sẻ ảnh tách nền công khai, hãy xuất file mới và xóa metadata nếu cần."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Vì sao ảnh tách nền của tôi có viền trắng hoặc xám?",
+      "a": "Các pixel ở cạnh vẫn còn chút màu nền cũ, và alpha ở đó còn đục một phần. Hãy xem ảnh trên nền tối, rồi co hoặc làm mềm cạnh một chút trong trình chỉnh sửa, hoặc chụp lại trên nền có màu gần với nền mới hơn."
+    },
+    {
+      "q": "Vì sao sau khi lưu ảnh nền lại thành đen hoặc trắng?",
+      "a": "File được lưu ở định dạng không có kênh alpha, thường là JPEG. Hãy lưu dưới dạng PNG hoặc WebP để giữ độ trong suốt."
+    },
+    {
+      "q": "AI có xóa nền được ly thủy tinh hay chai trong suốt không?",
+      "a": "Chỉ ở mức tương đối. Một bức ảnh không cho mô hình biết kính trong suốt đến đâu, nên nó hoặc giữ ly kèm nền cũ nhìn thấy bên trong, hoặc xóa quá tay. Với ảnh danh mục sản phẩm, hãy chụp kính trên nền sáng trơn rồi chỉnh tay."
+    },
+    {
+      "q": "Xóa nền bằng AI có giống phông xanh không?",
+      "a": "Không. Phông xanh (chroma key) xóa một màu đã biết, đáng tin cậy khi ánh sáng đều. AI xóa nền không có màu biết trước mà phải nhận ra chủ thể, nên dùng được trên mọi nền nhưng khó đoán hơn ở các cạnh mảnh."
+    },
+    {
+      "q": "Ảnh có bị giảm chất lượng khi xóa nền không?",
+      "a": "Pixel của chủ thể giữ nguyên màu gốc nếu bạn xuất PNG. Chỉ có alpha thay đổi. Chất lượng giảm ở các cạnh, nơi mặt nạ được tính ở kích thước nhỏ hơn rồi phóng lên, và khi bạn xuất sang định dạng có nén mất dữ liệu."
+    }
+  ]
+}

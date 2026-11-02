@@ -1,0 +1,235 @@
+{
+  "title": "AI Tokens and Context Window Explained, With Real Counts — cv.cm",
+  "description": "What is a token in AI, and what is a context window? Real token counts for English, Chinese, Japanese and more, what fills the window, and how to stay in it.",
+  "h1": "What are tokens and the context window in AI?",
+  "answer": "A token is the unit of text a language model reads and writes: a whole short word, part of a longer word, a punctuation mark or a few characters. The context window is the maximum number of tokens the model can consider at once, counting your instructions, the chat history, any attached files and the answer it writes. Past that limit, older content is dropped or the request fails.",
+  "sections": [
+    {
+      "h": "What a token looks like",
+      "body": [
+        "Language models do not read letters or whole words. A tokenizer first cuts the text into pieces from a fixed vocabulary, and each piece becomes a number. The model only ever sees these numbers.",
+        "The examples below were counted with OpenAI's open-source tokenizer library `tiktoken`, using the `o200k_base` encoding. Other models use other tokenizers, so their counts differ, but the pattern is similar.",
+        {
+          "table": {
+            "head": [
+              "Text",
+              "Tokens",
+              "How it is split"
+            ],
+            "rows": [
+              [
+                "The cat sat on the mat.",
+                "7",
+                "The | cat | sat | on | the | mat | ."
+              ],
+              [
+                "Tokenization is surprisingly unintuitive.",
+                "7",
+                "Token | ization | is | surprisingly | unint | uitive | ."
+              ],
+              [
+                "unbelievable",
+                "3",
+                "un | bel | ievable"
+              ],
+              [
+                "strawberry",
+                "3",
+                "st | raw | berry"
+              ],
+              [
+                "2026-11-02",
+                "6",
+                "202 | 6 | - | 11 | - | 02"
+              ],
+              [
+                "ChatGPT",
+                "2",
+                "Chat | GPT"
+              ],
+              [
+                "我喜欢吃苹果。",
+                "5",
+                "我 | 喜欢 | 吃 | 苹果 | 。"
+              ]
+            ]
+          }
+        },
+        "Common words are a single token, usually including the space before them. Rare or long words are split into pieces. Numbers and dates are split in ways that do not match their meaning, which is one reason models make arithmetic slips. And because strawberry arrives as three chunks, the model never directly sees how many letters r it has."
+      ]
+    },
+    {
+      "h": "Why models use subword tokens",
+      "body": [
+        "A vocabulary of whole words would be enormous and would still miss new words, names and typos. A vocabulary of single characters would make every text very long. Subword tokens are the compromise.",
+        "Most tokenizers today use byte pair encoding (BPE) or a close relative. The method starts with single bytes or characters and repeatedly merges the pair that appears most often in the training text into a new token. After many merges, frequent words become single tokens, while rare words can still be built from smaller pieces. Nothing is ever out of vocabulary.",
+        "Each model family trains its own tokenizer, so the same sentence gives different counts in different models. Token counts are useful for estimates and budgets, not as a universal unit."
+      ]
+    },
+    {
+      "h": "The same sentence in different languages",
+      "body": [
+        "Tokenizers are trained mostly on the languages that are most common in their training data. Languages with less data, or with different scripts, often need more tokens for the same meaning. Here is one instruction, Please summarize this article in three bullet points, translated and counted with an older tokenizer, `cl100k_base`, and a newer one, `o200k_base`:",
+        {
+          "table": {
+            "head": [
+              "Language",
+              "Characters",
+              "Tokens (cl100k_base)",
+              "Tokens (o200k_base)"
+            ],
+            "rows": [
+              [
+                "English",
+                "53",
+                "9",
+                "9"
+              ],
+              [
+                "Spanish",
+                "36",
+                "7",
+                "7"
+              ],
+              [
+                "Chinese (Simplified)",
+                "13",
+                "13",
+                "10"
+              ],
+              [
+                "Japanese",
+                "20",
+                "15",
+                "12"
+              ],
+              [
+                "Korean",
+                "24",
+                "19",
+                "13"
+              ],
+              [
+                "Vietnamese",
+                "42",
+                "21",
+                "14"
+              ]
+            ]
+          }
+        },
+        "Two things stand out. The newer tokenizer with a larger vocabulary is much more efficient for Chinese, Japanese, Korean and Vietnamese. And even so, these languages still use more tokens per idea than English in this example. Because API prices and context limits are counted in tokens, the same task can cost more and fill the window faster in some languages.",
+        {
+          "note": "For ordinary English prose, we measured about 1.2 to 1.3 tokens per word with both tokenizers above, so 1,000 English words came to roughly 1,200 to 1,300 tokens. Code, URLs, tables and numbers use more tokens per word."
+        }
+      ]
+    },
+    {
+      "h": "What the context window is",
+      "body": [
+        "The context window is the model's working memory for one request. It is separate from what the model learned in training. Everything the model can use to write its answer must fit inside it, and the answer itself counts too.",
+        "In a chat app, each new message is sent together with the earlier conversation. So the window fills up as the chat grows. In a typical request, these parts all count:",
+        {
+          "ul": [
+            "The system prompt, the hidden instructions from the app or developer.",
+            "Every earlier user message and assistant reply in the conversation.",
+            "Attached documents, pasted text, images and their extracted text.",
+            "Tool definitions and tool results, such as web search results.",
+            "The new answer, including any hidden reasoning or thinking tokens the model writes before it."
+          ]
+        },
+        "Window sizes vary a lot between models and change often, from a few thousand tokens in small local models to a million or more in some large hosted models at the time of writing. Check the documentation of the model you use."
+      ]
+    },
+    {
+      "h": "What happens when the window is full",
+      "body": [
+        "Different products handle the limit in different ways:",
+        {
+          "table": {
+            "head": [
+              "Situation",
+              "What usually happens",
+              "What you notice"
+            ],
+            "rows": [
+              [
+                "API request is larger than the window",
+                "The request is rejected with an error",
+                "A message that the prompt is too long"
+              ],
+              [
+                "Answer reaches the output limit",
+                "Generation stops early",
+                "The reply ends mid-sentence or mid-list"
+              ],
+              [
+                "Long chat in an app",
+                "The oldest turns are dropped or replaced by a summary",
+                "The assistant forgets details from the start"
+              ],
+              [
+                "Very long context that still fits",
+                "The model keeps everything but uses it less well",
+                "Facts in the middle of a long input are missed"
+              ]
+            ]
+          }
+        },
+        "The last row matters most in daily use. Research has shown that models often use information at the start and end of a long input better than information in the middle. Model providers also note that accuracy and recall can drop as the token count grows. A bigger window lets you include more, but it does not guarantee the model will use all of it well."
+      ]
+    },
+    {
+      "h": "How to estimate and save tokens",
+      "body": [
+        {
+          "ol": [
+            "Estimate first. For English, multiply words by about 1.3. For Chinese or Japanese, count characters, and expect roughly one token or a bit less per character with newer tokenizers. A word counter, for example cv.cm's word count tool, gives you words and characters quickly.",
+            "Count exactly when it matters. Use the tokenizer or token-counting endpoint of the model you call, since counts differ between models.",
+            "Send only what is needed. Paste the relevant section of a document, not the whole file. Remove repeated headers, footers and boilerplate.",
+            "Put key instructions at the start or end of a long prompt, not buried in the middle.",
+            "Start a new chat for a new topic. Old messages keep using space and can distract the model.",
+            "Leave room for the answer. If the input nearly fills the window, the reply will be short or cut off.",
+            "For long tasks, ask for a summary of decisions so far, then continue in a fresh chat with that summary."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Common mistakes",
+      "body": [
+        {
+          "ul": [
+            "Treating tokens as words. A 1,000-word document is not 1,000 tokens, and in many languages it is far more.",
+            "Assuming the model read everything. Even inside the window, details in the middle of a long input can be ignored. Ask the model to quote the passage it relied on.",
+            "Expecting memory across chats. A new conversation starts with an empty window unless the app inserts saved notes.",
+            "Forgetting hidden content. System prompts, tool definitions and reasoning tokens use the window even though you do not see them.",
+            "Comparing limits between models directly. A 100,000-token limit in one model and in another model can hold different amounts of text because their tokenizers differ."
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "How many tokens is 1,000 words?",
+      "a": "For ordinary English prose with common modern tokenizers, about 1,200 to 1,300 tokens. Code, numbers, URLs and many non-English languages need more."
+    },
+    {
+      "q": "Do spaces and punctuation count as tokens?",
+      "a": "Yes. Punctuation marks are usually their own tokens, and a single space is normally merged into the start of the next word. Extra spaces, line breaks and indentation can add tokens."
+    },
+    {
+      "q": "Do images use tokens?",
+      "a": "Yes. Models that accept images convert each image into a number of tokens that counts toward the context window. Larger or more detailed images usually use more tokens, and the exact rule depends on the model."
+    },
+    {
+      "q": "Why does ChatGPT or another chatbot forget what I said earlier?",
+      "a": "In a long conversation the app may drop or summarize old messages to stay inside the context window. Even when old messages remain, the model may pay less attention to them. Repeating key facts or starting a new chat with a short summary helps."
+    },
+    {
+      "q": "Is a bigger context window always better?",
+      "a": "Not always. It lets you include more material, but costs more and can make the model slower and less precise about details. Sending a shorter, well-chosen context often gives better answers."
+    }
+  ]
+}

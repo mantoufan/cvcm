@@ -1,0 +1,211 @@
+{
+  "title": "How Do Large Language Models Work? A Step-by-Step Guide — cv.cm",
+  "description": "How do large language models work? Follow one prompt through tokens, attention and next-token prediction, then see how training and temperature shape answers.",
+  "h1": "How do large language models (LLMs) work?",
+  "answer": "A large language model is a neural network trained to predict the next token, a small piece of text, from all the tokens before it. To answer you, it splits your prompt into tokens, scores every possible next token, picks one, adds it to the text, and repeats until it stops. Extra training on instructions and human feedback turns this predictor into a helpful assistant.",
+  "sections": [
+    {
+      "h": "The short version: a very good next-word guesser",
+      "body": [
+        "An LLM does one thing over and over. It looks at the text so far and estimates how likely each possible next piece of text is. Then it chooses one piece, appends it, and looks again. A 300-word answer is a few hundred of these small steps.",
+        "This sounds too simple to produce essays, code and translations. The power comes from scale. The model has billions of parameters, which are numbers adjusted during training, and it was trained on a very large amount of text. To predict the next word well across that much text, it has to pick up grammar, facts, styles of reasoning, and the structure of code.",
+        "Chat assistants such as ChatGPT, Claude, Gemini, DeepSeek and Qwen are products built around LLMs. The product adds a chat interface, a hidden system prompt, safety rules, and often tools such as web search. The core is still next-token prediction."
+      ]
+    },
+    {
+      "h": "What happens to your message, step by step",
+      "body": [
+        "Take the prompt `The capital of France is`. Here is what the model does with it:",
+        {
+          "ol": [
+            "Tokenize: the text is split into tokens. With one common tokenizer this prompt becomes five tokens: The, capital, of, France, is (most carry their leading space).",
+            "Embed: each token is replaced by a long list of numbers, an embedding, that places it in a space where related meanings sit close together.",
+            "Attend: the embeddings pass through dozens of transformer layers. In each layer, an attention step lets every token look at the earlier tokens and pull in what is relevant.",
+            "Score: the last layer produces a score for every token in the vocabulary, often 100,000 or more entries. The scores are turned into probabilities.",
+            "Sample: one token is chosen according to those probabilities and the sampling settings.",
+            "Repeat: the chosen token is added to the text, and the whole process runs again for the next token, until the model outputs a stop token or reaches a length limit."
+          ]
+        },
+        "The probabilities for the next token might look like this. The numbers are illustrative, not from a real model:",
+        {
+          "table": {
+            "head": [
+              "Candidate next token",
+              "Illustrative probability",
+              "Comment"
+            ],
+            "rows": [
+              [
+                " Paris",
+                "0.92",
+                "The expected answer"
+              ],
+              [
+                " a",
+                "0.03",
+                "Could continue as a city of ..."
+              ],
+              [
+                " the",
+                "0.02",
+                "Could continue as the city of ..."
+              ],
+              [
+                " located",
+                "0.01",
+                "Grammatical but unusual"
+              ],
+              [
+                " Lyon",
+                "0.001",
+                "Wrong, but not impossible to sample"
+              ]
+            ]
+          }
+        },
+        "Two lessons follow from this table. First, the model is not looking up a database entry. It is producing the most likely continuation. Second, a wrong token always has some probability, which is one reason models sometimes state false things."
+      ]
+    },
+    {
+      "h": "Attention: how the model keeps track of meaning",
+      "body": [
+        "Attention is the main idea of the transformer architecture, published in 2017. For each token, the model computes how much it should weigh every earlier token when building its meaning.",
+        "Consider: `The trophy did not fit in the suitcase because it was too big.` To understand what `it` refers to, the model must link it to trophy, not suitcase. Change big to small, and `it` now means the suitcase. Attention lets the model make this link from the surrounding words, across many layers, each refining the picture.",
+        "Because attention compares each token with the earlier ones, the cost grows quickly as text gets longer. That is why every model has a context window, a maximum number of tokens it can consider at once."
+      ]
+    },
+    {
+      "h": "How LLMs are trained: three stages",
+      "body": [
+        "A raw next-token predictor is not yet a useful assistant. If you ask it a question, it may continue with more questions, because that also looks like text from the internet. Modern assistants go through several stages of training.",
+        {
+          "table": {
+            "head": [
+              "Stage",
+              "Training data",
+              "What the model learns",
+              "Result"
+            ],
+            "rows": [
+              [
+                "Pretraining",
+                "Very large amounts of public text and code",
+                "Language, facts, patterns, reasoning styles",
+                "A base model that continues any text"
+              ],
+              [
+                "Instruction tuning",
+                "Example prompts with good answers written by people",
+                "The format of following an instruction",
+                "A model that answers instead of rambling"
+              ],
+              [
+                "Preference tuning (for example RLHF)",
+                "People or models rank several answers",
+                "Which answers people prefer: helpful, honest, safe",
+                "An assistant with a consistent style and refusals"
+              ]
+            ]
+          }
+        },
+        "Research on InstructGPT showed that a smaller model trained this way was preferred by users over a much larger model that only had pretraining. At the time of writing, many models also receive extra training to work through problems step by step before answering, often shown in products as a thinking or reasoning mode.",
+        "Training is done once, at great cost, before release. When you chat with a model, its parameters do not change. It does not learn from your conversation in the moment, although a provider may use conversations to train later versions if its policy allows."
+      ]
+    },
+    {
+      "h": "Sampling settings that change the answer",
+      "body": [
+        "The same prompt can give different answers because the model samples from probabilities. If you use an API, you can control how this happens. Exact ranges and defaults differ by provider.",
+        {
+          "table": {
+            "head": [
+              "Setting",
+              "What it does",
+              "When to change it"
+            ],
+            "rows": [
+              [
+                "`temperature`",
+                "Low values make the top choice more likely; high values flatten the odds and add variety",
+                "Lower for extraction and code, higher for brainstorming"
+              ],
+              [
+                "`top_p`",
+                "Samples only from the smallest set of tokens whose probabilities add up to p",
+                "Usually adjust this or temperature, not both"
+              ],
+              [
+                "`max_tokens`",
+                "Caps the length of the output",
+                "Raise it if answers are cut off mid-sentence"
+              ],
+              [
+                "Stop sequences",
+                "Text that ends generation when it appears",
+                "Structured output, templates"
+              ],
+              [
+                "System prompt",
+                "Hidden instructions placed before the conversation",
+                "Set role, tone, format and rules once"
+              ]
+            ]
+          }
+        },
+        "A low temperature makes answers more consistent. It does not make them more true. If the most likely continuation is wrong, a low temperature makes the model wrong every time."
+      ]
+    },
+    {
+      "h": "What LLMs do not do",
+      "body": [
+        "Many surprising failures make sense once you remember the mechanism:",
+        {
+          "ul": [
+            "They do not see letters. A model sees tokens, so a word like strawberry may arrive as three pieces such as st, raw and berry. Counting letters or reversing words is hard for that reason.",
+            "They do not remember past chats by themselves. Memory features in apps work by saving notes and inserting them into the prompt.",
+            "They do not know recent events unless the app adds search results or documents to the context.",
+            "They do not check facts. Nothing in next-token prediction compares the output with reality, so fluent text can be false.",
+            "They do not run code or do exact arithmetic unless they call a tool. Long multiplication in pure text is error-prone."
+          ]
+        },
+        "Good products cover these gaps with tools: a calculator, a code runner, web search, or retrieval from your own documents. When you know the gap exists, you know when to ask for a tool or check the answer yourself."
+      ]
+    },
+    {
+      "h": "Practical tips that follow from how LLMs work",
+      "body": [
+        {
+          "ul": [
+            "Put the material in the prompt. If you want an answer about a document, paste the relevant part. The model reasons much better over text it can see than over vague memories from training.",
+            "Be specific about the output. Say the format, length, audience and language. The model fills gaps with the most typical choice.",
+            "Ask for steps on hard problems. Writing intermediate steps gives the model more tokens to work with before it commits to an answer.",
+            "Start a new chat for a new task. Old, unrelated messages still sit in the context and can pull the answer off course.",
+            "Verify names, numbers, quotes and links. These are the details most likely to be invented."
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Do large language models understand what they say?",
+      "a": "They build rich internal representations of meaning that let them answer, translate and reason in many cases. They do not have experiences or goals, and they can fail on simple tasks a person would find obvious, so whether this counts as understanding is still debated."
+    },
+    {
+      "q": "Why does an AI give a different answer to the same question?",
+      "a": "The model samples the next token from a probability distribution, so small random choices early in the answer lead to different wording later. A lower temperature makes answers more repeatable."
+    },
+    {
+      "q": "What does GPT stand for?",
+      "a": "GPT stands for Generative Pre-trained Transformer: a transformer model, pretrained on a large amount of text, that generates text."
+    },
+    {
+      "q": "Are LLMs connected to the internet?",
+      "a": "The model itself is not. It only knows its training data up to a cutoff date. Some apps add a web search tool and paste the results into the context, which is how they can mention recent events."
+    },
+    {
+      "q": "What is a parameter in an LLM?",
+      "a": "A parameter is one of the numbers inside the network that training adjusts. Models have billions of them, and together they encode what the model learned. More parameters can hold more patterns but cost more to run."
+    }
+  ]
+}

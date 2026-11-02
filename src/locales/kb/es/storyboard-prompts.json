@@ -1,0 +1,219 @@
+{
+  "title": "Storyboard para video con IA: de guion a planos con prompts — cv.cm",
+  "description": "Cómo escribir prompts de storyboard para video con IA: divide el guion en planos, rellena una ficha por plano y escribe el prompt de cada clip. Con un ejemplo práctico de 15 segundos.",
+  "h1": "¿Cómo se convierte un guion en prompts de storyboard para video con IA?",
+  "answer": "Divide el guion en beats, asigna un plano a cada beat y escribe un prompt por plano. Cada prompt de plano indica el encuadre, el sujeto y su única acción, el escenario, el movimiento de cámara, la luz y la duración. Guarda una ficha de plano para cada clip, de modo que el personaje, el vestuario y la dirección en pantalla se mantengan igual cuando generes los planos uno a uno.",
+  "sections": [
+    {
+      "h": "Qué es un prompt de storyboard",
+      "body": [
+        "Un prompt de storyboard es el texto que envías a un modelo de video para un plano de una secuencia mayor. Un prompt de video describe un único clip; un prompt de storyboard describe un clip que debe encajar bien con el clip anterior y con el siguiente. Ese trabajo extra cambia la forma de escribirlo.",
+        "La mayoría de las herramientas de video con IA producen clips cortos a partir de un solo prompt. Por eso, una escena con principio, nudo y desenlace se construye con varias generaciones que luego se unen en un editor. El storyboard es el plan que las conecta: decide qué muestra cada plano, cuánto dura y qué debe coincidir entre planos.",
+        "Piensa en el storyboard como dos capas. La primera es para ti: número de plano, propósito, duración y la línea de diálogo que cubre. La segunda es el texto del prompt que el modelo realmente lee. Mantener las dos capas en una sola tabla agiliza las revisiones, porque cuando cambia el guion ves qué prompts también tienen que cambiar."
+      ]
+    },
+    {
+      "h": "Paso 1: divide el guion en beats y planos",
+      "body": [
+        "Un beat es el cambio más pequeño de la historia: una mirada, una decisión, una revelación, una reacción. Lee el guion y marca cada beat. Después asigna a cada beat su propio plano. Dos reglas prácticas facilitan que el modelo los renderice:",
+        {
+          "ul": [
+            "Una acción principal por plano. “Abre la carta y se echa a llorar” son dos acciones; dale al llanto su propio primer plano.",
+            "Una idea de cámara por plano. Un travelling de aproximación lento o un encuadre fijo funcionan; un travelling que se convierte en órbita y luego en grúa suele fallar.",
+            "Duraciones cortas. Planifica la mayoría de los planos en pocos segundos. Un plano de reacción puede ser más corto que un clip completo; lo recortas en el montaje.",
+            "Nombra el propósito de cada plano: situar el lugar, mostrar la acción, mostrar la reacción o mostrar un detalle en el que el público debe fijarse."
+          ]
+        },
+        "Varía los tamaños de plano. Una secuencia de cinco planos medios resulta plana. Un patrón habitual es plano general (dónde estamos), plano medio (quién hace qué), primer plano (cómo se siente), plano detalle (el objeto importante) y luego un plano más abierto para cerrar o pasar a la escena siguiente."
+      ]
+    },
+    {
+      "h": "Paso 2: rellena una ficha de plano para cada plano",
+      "body": [
+        "Una ficha de plano es una lista fija de campos. Rellenar los mismos campos cada vez evita que olvides los detalles que provocan errores de continuidad. El prompt es entonces la ficha escrita en frases.",
+        {
+          "table": {
+            "head": [
+              "Campo",
+              "Qué escribir",
+              "Ejemplo"
+            ],
+            "rows": [
+              [
+                "Tamaño y ángulo de plano",
+                "General, medio, primer plano, plano detalle; a la altura de los ojos, contrapicado, picado",
+                "Primer plano, a la altura de los ojos"
+              ],
+              [
+                "Sujeto",
+                "Quién, con la misma descripción fija en todos los planos",
+                "Una mujer de unos 30 años, pelo corto negro, abrigo de lana gris"
+              ],
+              [
+                "Acción",
+                "Un verbo, con cómo ocurre",
+                "baja despacio el teléfono desde la oreja"
+              ],
+              [
+                "Escenario",
+                "Lugar, hora del día, clima",
+                "andén de tren vacío de noche, lluvia ligera"
+              ],
+              [
+                "Cámara",
+                "Fija o un solo movimiento, con velocidad",
+                "cámara fija"
+              ],
+              [
+                "Luz y color",
+                "Fuente de luz principal y ambiente",
+                "luz fluorescente fría desde arriba, tonos azul verdoso"
+              ],
+              [
+                "Dirección en pantalla",
+                "Hacia dónde mira o se mueve el sujeto",
+                "mira hacia la izquierda de la pantalla"
+              ],
+              [
+                "Sonido",
+                "Diálogo, efectos o ambiente, si el modelo genera audio",
+                "anuncio lejano de tren, lluvia"
+              ],
+              [
+                "Duración y entrada/salida",
+                "Duración prevista y cómo empieza y termina",
+                "3 s, termina cuando cierra los ojos"
+              ]
+            ]
+          }
+        },
+        "Guarda la descripción fija del sujeto en una nota aparte y pégala sin cambios en todos los prompts. Pequeños cambios de redacción, como “abrigo gris” en un plano y “chaqueta oscura” en el siguiente, son una causa frecuente de que un personaje cambie entre cortes."
+      ]
+    },
+    {
+      "h": "Ejemplo práctico: una escena de 15 segundos en cinco planos",
+      "body": [
+        "Guion: “Noche. Un andén de tren. MAYA termina una llamada. Mira el panel de salidas. Su tren está cancelado. Se ríe una vez, cansada, y se sienta sobre su maleta”.",
+        "Tiene cinco beats, así que lleva cinco planos. Las duraciones previstas suman 15 segundos.",
+        {
+          "table": {
+            "head": [
+              "Plano",
+              "Tamaño",
+              "Beat",
+              "Segundos"
+            ],
+            "rows": [
+              [
+                "1",
+                "General",
+                "Situar el andén vacío y a Maya al teléfono",
+                "3"
+              ],
+              [
+                "2",
+                "Primer plano",
+                "Baja el teléfono",
+                "3"
+              ],
+              [
+                "3",
+                "Plano detalle",
+                "El panel de salidas cambia a CANCELLED",
+                "2"
+              ],
+              [
+                "4",
+                "Primer plano corto",
+                "Una risa cansada",
+                "3"
+              ],
+              [
+                "5",
+                "General",
+                "Se sienta sobre su maleta",
+                "4"
+              ]
+            ]
+          }
+        },
+        "Estos son los prompts de los planos 1, 2 y 3. Fíjate en que la línea del personaje y la de la luz son idénticas en cada uno.",
+        {
+          "code": "Shot 1 (wide, 3 s)\nWide shot of an empty train platform at night, light rain beyond the roof edge.\nMaya, a woman in her 30s with short black hair and a grey wool coat, stands\nnear the edge talking on a phone, facing screen left, a small red suitcase beside her.\nCold fluorescent light from above, blue-green tones, wet reflective floor.\nStatic camera. Ambient sound: rain and a distant announcement.\n\nShot 2 (close-up, 3 s)\nClose-up at eye level of Maya, a woman in her 30s with short black hair\nand a grey wool coat, facing screen left. She slowly lowers the phone from her ear\nand looks up and to the left. Cold fluorescent light from above, blue-green tones.\nStatic camera, shallow depth of field, platform blurred behind her.\n\nShot 3 (insert, 2 s)\nInsert shot of an old split-flap departure board on a train platform at night.\nThe top line flips and stops on a single word. Cold fluorescent light,\nblue-green tones. Static camera. Sound: clicking split-flap letters.",
+          "lang": "text"
+        },
+        "Hay dos detalles importantes. En el plano 2 ella mira hacia arriba y a la izquierda, y en el plano 3 vemos el panel: la línea de mirada de un plano prepara el contenido del siguiente. Y la palabra del panel no está en el prompt como texto que renderizar, porque muchos modelos todavía dibujan mal las letras. Genera el panel sin texto legible y añade la palabra CANCELLED como gráfico en el montaje."
+      ]
+    },
+    {
+      "h": "Paso 3: crea fotogramas clave antes del movimiento",
+      "body": [
+        "Generar video es más lento y más caro que generar una imagen fija. Un flujo de trabajo fiable consiste en crear primero un fotograma clave fijo por plano, revisar todo el storyboard como una fila de imágenes y solo entonces animar cada imagen con imagen a video.",
+        {
+          "ol": [
+            "Genera una imagen de referencia del personaje y otra del lugar.",
+            "Genera un fotograma clave por plano, usando esas referencias, con la relación de aspecto final.",
+            "Coloca los fotogramas clave uno al lado del otro y revisa caras, ropa, objetos y luz.",
+            "Anima cada fotograma clave con un prompt de movimiento breve que describa solo lo que se mueve.",
+            "Donde dos planos deban unirse con fluidez, usa un modo de primer y último fotograma para que el final de un clip coincida con el comienzo del siguiente."
+          ]
+        },
+        "Cuando animas un fotograma clave, la imagen ya fija el aspecto, así que el prompt debe describir el movimiento y la cámara, y no repetir cada detalle visual. Las guías oficiales de los modelos, como la guía de prompts de Veo de Google, también recomiendan describir lo que quieres ver en el encuadre en lugar de escribir instrucciones con “no”."
+      ]
+    },
+    {
+      "h": "Paso 4: escribe cada plano pensando en el corte",
+      "body": [
+        "Cada plano quedará entre otros dos, así que escribe su comienzo y su final a propósito. Algunas reglas de montaje del cine de acción real funcionan igual con el video de IA:",
+        {
+          "ul": [
+            "Mantén la dirección en pantalla. Si Maya mira hacia la izquierda en el plano 1, que siga mirando a la izquierda hasta que la historia la haga girar. Invertir la dirección entre cortes confunde al espectador.",
+            "Usa la regla de los 180 grados en los diálogos. Mantén la cámara en un lado de la línea entre dos personajes que hablan para que sus posiciones no se inviertan.",
+            "Corta sobre la acción. Termina el plano 4 cuando ella empieza a sentarse y comienza el plano 5 a mitad del movimiento. El movimiento disimula las pequeñas diferencias entre los clips.",
+            "Planifica márgenes. Pide algo más de duración de la que necesitas para poder recortar el inicio lento o el final errático que tienen muchas generaciones.",
+            "Iguala la luz. Mantén una sola descripción de luz para toda la escena y cámbiala solo cuando la historia cambie la hora o el lugar."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Errores comunes y límites",
+      "body": [
+        {
+          "ul": [
+            "Escribir toda la escena en un solo prompt. El modelo comprime u omite beats. Un plano por prompt es más fácil de controlar y de corregir.",
+            "Describir sentimientos sin acciones visibles. “Se siente desesperada” es vago; “deja caer el teléfono a su costado y mira fijamente al suelo” se puede filmar.",
+            "Pedir carteles, rótulos o logotipos legibles dentro del plano. Añade el texto en el editor.",
+            "Cambiar la descripción del personaje entre planos. Pega el mismo bloque cada vez.",
+            "Planificar en un solo plano trabajo complejo con las manos, peleas rápidas o física de objetos. Los modelos de video aún tienen dificultades con las manos, el contacto y la causa y el efecto. Divide la acción, encuádrala más cerca o muestra el resultado en lugar del proceso."
+          ]
+        },
+        {
+          "note": "La sintaxis de los prompts, la duración de los clips y las funciones de referencia varían entre herramientas y cambian a menudo. El método de la ficha de plano sirve con cualquiera de ellas; adapta la redacción a la guía de la herramienta que uses."
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "¿Cuántos planos necesito para un video de IA de 15 segundos?",
+      "a": "Normalmente de tres a seis. Con menos planos se siente lento, y con muchos planos muy cortos cuesta mantener la coherencia. Planifica por beats, no por un número fijo."
+    },
+    {
+      "q": "¿Puedo escribir un prompt de storyboard para varios planos a la vez?",
+      "a": "Algunos modelos nuevos aceptan una descripción multiplano en un solo prompt y hacen los cortes dentro del clip. Puede funcionar en escenas sencillas, pero pierdes el control de cada plano. Para todo lo que quieras corregir después, genera plano a plano."
+    },
+    {
+      "q": "¿Debo dibujar el storyboard o basta con escribirlo?",
+      "a": "Una lista de planos escrita basta para empezar. Generar un fotograma clave fijo por plano te da rápidamente un storyboard visual y te permite corregir problemas antes de gastar tiempo en el video."
+    },
+    {
+      "q": "¿Un chatbot de IA puede convertir mi guion en una lista de planos?",
+      "a": "Sí, un chatbot como ChatGPT, Claude, Gemini o DeepSeek puede redactar una lista de planos si le das los campos de la ficha de plano. Revísala tú mismo: los chatbots suelen añadir acciones que el guion no tiene u olvidar la dirección en pantalla."
+    },
+    {
+      "q": "¿Por qué mi personaje se ve distinto en cada plano?",
+      "a": "Cada generación muestrea una cara y una ropa nuevas si nada las mantiene fijas. Usa el mismo texto de descripción, una imagen de referencia del personaje y fotogramas clave creados a partir de esa referencia."
+    }
+  ]
+}

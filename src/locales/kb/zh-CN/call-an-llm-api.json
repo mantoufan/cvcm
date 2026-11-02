@@ -1,0 +1,215 @@
+{
+  "title": "大模型API怎么调用：请求、流式输出、JSON与重试 — cv.cm",
+  "description": "大模型（LLM）API调用入门：用 curl、Python、JavaScript 发起一次可用的 chat completions 请求，并讲解流式输出、JSON 输出、重试、限流和 token 计费。",
+  "h1": "大模型API怎么调用？",
+  "answer": "发送一个 HTTPS POST 请求：API 密钥放在请求头里，JSON 请求体写明模型名和消息列表。返回的是包含生成文本和 token 数的 JSON。许多服务商兼容 OpenAI 风格的 chat completions 格式，Anthropic 和 Gemini 也有各自的原生格式。密钥要放在服务端，按 token 付费。",
+  "sections": [
+    {
+      "h": "一次API调用发生了什么",
+      "body": [
+        "大模型API就是一个网络服务。你的程序发送文本，服务商的服务器运行模型，结果以 JSON 返回。调用之间没有记忆：每个请求都必须包含你希望模型看到的整段对话。",
+        "你需要三样东西：带有API密钥的账号、接口的URL，以及服务商模型列表里的模型 ID。下面示例中的 `MODEL_ID` 只是占位符。模型名称更新很频繁，请从服务商的文档里复制当前的 ID，而不是从博客文章里抄。"
+      ]
+    },
+    {
+      "h": "用 curl、Python 和 JavaScript 发起最简请求",
+      "body": [
+        "最早由 OpenAI 发布的 chat completions 格式，是被仿用得最广泛的请求形态。许多其他服务商和本地服务器都兼容它，有时只需换一个基础URL。下面是最小而有用的请求：",
+        {
+          "code": "curl https://api.openai.com/v1/chat/completions \\\n  -H \"Content-Type: application/json\" \\\n  -H \"Authorization: Bearer $OPENAI_API_KEY\" \\\n  -d '{\n    \"model\": \"MODEL_ID\",\n    \"messages\": [\n      {\"role\": \"system\", \"content\": \"You answer in one short paragraph.\"},\n      {\"role\": \"user\", \"content\": \"What is a context window?\"}\n    ]\n  }'",
+          "lang": "bash"
+        },
+        "`messages` 列表保存对话。每条消息有 `role` 和 `content`。`system` 消息为回复设定规则（OpenAI 较新的模型也接受用 `developer` 这个名字来表示这个角色）。`user` 消息是请求，`assistant` 消息是之前的回复，需要继续对话时要把它们一起发回去。精简后的响应如下：",
+        {
+          "code": "{\n  \"id\": \"chatcmpl-...\",\n  \"object\": \"chat.completion\",\n  \"model\": \"MODEL_ID\",\n  \"choices\": [\n    {\n      \"index\": 0,\n      \"message\": {\"role\": \"assistant\", \"content\": \"A context window is ...\"},\n      \"finish_reason\": \"stop\"\n    }\n  ],\n  \"usage\": {\"prompt_tokens\": 27, \"completion_tokens\": 64, \"total_tokens\": 91}\n}",
+          "lang": "json"
+        },
+        "文本在 `choices[0].message.content` 里。`usage` 对象统计了你被计费的 token 数。`finish_reason` 说明模型为什么停下来：`stop` 表示正常结束，`length` 表示碰到了你设置的 token 上限，回答被截断。",
+        "在 Python 中，带超时和重试的同一个调用如下。它使用常见的 `requests` 库。各服务商的官方 SDK 做的是同样的事，而且会替你加好重试。",
+        {
+          "code": "import os, random, time\nimport requests\n\nURL = \"https://api.openai.com/v1/chat/completions\"\nAPI_KEY = os.environ[\"OPENAI_API_KEY\"]   # read from the server environment\n\ndef chat(messages, model=\"MODEL_ID\", max_attempts=5):\n    body = {\"model\": model, \"messages\": messages,\n            \"max_completion_tokens\": 500}   # many compatible APIs: \"max_tokens\"\n    headers = {\"Authorization\": f\"Bearer {API_KEY}\"}\n    for attempt in range(max_attempts):\n        r = requests.post(URL, headers=headers, json=body, timeout=60)\n        if r.status_code == 429 or r.status_code >= 500:\n            backoff = 2 ** attempt + random.random()      # exponential + jitter\n            try:\n                wait = max(float(r.headers.get(\"Retry-After\", 0)), backoff)\n            except ValueError:\n                wait = backoff\n            time.sleep(wait)\n            continue\n        r.raise_for_status()                # 400, 401, 403: fix the request, do not retry\n        data = r.json()\n        return data[\"choices\"][0][\"message\"][\"content\"], data[\"usage\"]\n    raise RuntimeError(\"API still failing after retries\")\n\ntext, usage = chat([{\"role\": \"user\", \"content\": \"What is a context window?\"}])\nprint(text)\nprint(usage[\"prompt_tokens\"], \"in /\", usage[\"completion_tokens\"], \"out\")",
+          "lang": "python"
+        }
+      ]
+    },
+    {
+      "h": "各家服务商的差异：OpenAI 兼容、Anthropic 与 Gemini",
+      "body": [
+        "chat completions 的形态很常见，但并不通用。Anthropic 的 Messages API 和 Google 的 Gemini API 都有自己的原生格式。两家也提供了兼容选项，但新功能总是先在原生 API 上开放。主要差异如下：",
+        {
+          "table": {
+            "head": [
+              "项目",
+              "OpenAI 风格 chat completions",
+              "Anthropic Messages API",
+              "Gemini API（原生）"
+            ],
+            "rows": [
+              [
+                "接口",
+                "`POST /v1/chat/completions`",
+                "`POST /v1/messages`",
+                "`POST /v1beta/models/{model}:generateContent`"
+              ],
+              [
+                "API 密钥请求头",
+                "`Authorization: Bearer <key>`",
+                "`x-api-key`，另需必填的日期型头 `anthropic-version`",
+                "`x-goog-api-key`"
+              ],
+              [
+                "系统指令",
+                "`system` 或 `developer` 消息",
+                "顶层的 `system` 字段",
+                "顶层的 `systemInstruction` 字段"
+              ],
+              [
+                "必填字段",
+                "`model`、`messages`",
+                "`model`、`max_tokens`、`messages`",
+                "`contents`（模型写在 URL 里）"
+              ],
+              [
+                "回复文本位置",
+                "`choices[0].message.content`",
+                "`content` 数组中的文本块",
+                "`candidates[0].content.parts[].text`"
+              ],
+              [
+                "流式输出",
+                "`\"stream\": true`，服务器发送事件（SSE），以 `[DONE]` 结束",
+                "`\"stream\": true`，带事件名的 SSE",
+                "使用 `streamGenerateContent` 方法并加 `alt=sse`"
+              ]
+            ]
+          }
+        },
+        "Gemini 提供了兼容 OpenAI 的基础URL，其他许多服务商，包括 DeepSeek 以及一些国内和开源模型托管方，也接受 chat completions 格式。兼容通常是部分的：结构化输出、工具调用或图像输入等高级功能可能不同。只改 URL 就切换服务商之前，请先读该服务商的兼容性说明页面。"
+      ]
+    },
+    {
+      "h": "API密钥要放在服务端",
+      "body": [
+        "谁拿到了你的API密钥，谁就能花你的钱。绝不要把它放进浏览器 JavaScript、手机 App、公开仓库，或者会被打包进页面的前端环境变量文件，这些地方用户都读得到。",
+        {
+          "ol": [
+            "把密钥存在服务器的环境变量或密钥管理服务里。",
+            "让你的网页或手机应用调用你自己的后端接口。",
+            "在后端先检查用户（登录、按用户限速、输入长度），再带着密钥调用大模型API。",
+            "只把结果返回给客户端。",
+            "在服务商后台设置每月消费上限，每个项目用单独的密钥，一旦泄露立即轮换。"
+          ]
+        },
+        {
+          "note": "你自己的后端接口现在成了一扇通往付费服务的公开大门。要限制请求大小和每个用户的请求次数，否则一个脚本就能刷出一大笔账单。"
+        }
+      ]
+    },
+    {
+      "h": "流式输出：边写边显示答案",
+      "body": [
+        "长回答可能要花好几秒。加上 `\"stream\": true`，服务器会以服务器发送事件的形式分小段推送，界面就能在文字出现时随即显示。每个事件行以 `data: ` 开头，带有一个含 `delta` 的数据块。OpenAI 格式以 `data: [DONE]` 结束。下面的例子在 Node.js 服务器上运行：",
+        {
+          "code": "// Node.js 18+ (server side). Prints the reply as it arrives.\nconst res = await fetch(\"https://api.openai.com/v1/chat/completions\", {\n  method: \"POST\",\n  headers: {\n    \"Content-Type\": \"application/json\",\n    Authorization: `Bearer ${process.env.OPENAI_API_KEY}`,\n  },\n  body: JSON.stringify({\n    model: \"MODEL_ID\",\n    stream: true,\n    messages: [{ role: \"user\", content: \"Write a haiku about rain.\" }],\n  }),\n});\nif (!res.ok) throw new Error(`HTTP ${res.status}: ${await res.text()}`);\n\nconst decoder = new TextDecoder();\nlet buffer = \"\";\nfor await (const chunk of res.body) {\n  buffer += decoder.decode(chunk, { stream: true });\n  const lines = buffer.split(\"\\n\");\n  buffer = lines.pop();                       // keep a partial line for later\n  for (const line of lines) {\n    if (!line.startsWith(\"data: \")) continue;\n    const data = line.slice(6);\n    if (data === \"[DONE]\") continue;          // end of stream\n    const delta = JSON.parse(data).choices[0]?.delta?.content;\n    if (delta) process.stdout.write(delta);\n  }\n}",
+          "lang": "javascript"
+        },
+        "要在浏览器里显示流，请把数据块从你的服务器转发给页面，不要带着你的密钥直接在浏览器里调用服务商。在 OpenAI 格式中，除非在 `stream_options` 里设置 `include_usage`，否则流式数据块不包含用量，所以如果需要 token 数用于计费，请打开它。"
+      ]
+    },
+    {
+      "h": "要JSON，不要散文",
+      "body": [
+        "当代码要读取答案时，就要求返回 JSON。有两个层次。JSON 模式（`\"response_format\": {\"type\": \"json_object\"}`）保证返回合法的 JSON，但不保证有哪些字段。使用 JSON Schema 的结构化输出，则能让模型严格遵循你规定的字段和类型，前提是模型支持：",
+        {
+          "code": "{\n  \"model\": \"MODEL_ID\",\n  \"messages\": [\n    {\"role\": \"user\", \"content\": \"Extract the total and currency: 'Amount due: 1.250,00 EUR'\"}\n  ],\n  \"response_format\": {\n    \"type\": \"json_schema\",\n    \"json_schema\": {\n      \"name\": \"invoice_total\",\n      \"strict\": true,\n      \"schema\": {\n        \"type\": \"object\",\n        \"properties\": {\n          \"total\": {\"type\": \"number\"},\n          \"currency\": {\"type\": \"string\"}\n        },\n        \"required\": [\"total\", \"currency\"],\n        \"additionalProperties\": false\n      }\n    }\n  }\n}",
+          "lang": "json"
+        },
+        "即使有 schema，也要在代码里校验解析后的结果。结构对了，值仍可能出错，比如读错一个数字。Anthropic 和 Gemini 在各自的格式中支持 schema 和工具定义。调试很长的 JSON 回复时，用 cv.cm 的 json 工具这样的格式化器，能让嵌套的输出更容易读。"
+      ]
+    },
+    {
+      "h": "限流、重试与错误处理",
+      "body": [
+        "服务商既限制每分钟请求数（RPM），也限制每分钟 token 数（TPM），先触到哪个就按哪个。超限时会收到 HTTP 状态码 429。按类型处理错误：",
+        {
+          "table": {
+            "head": [
+              "状态码",
+              "含义",
+              "怎么做"
+            ],
+            "rows": [
+              [
+                "400",
+                "请求有误：字段错误、token 太多",
+                "修正请求，不要重试。"
+              ],
+              [
+                "401 / 403",
+                "密钥缺失、错误或无权限",
+                "检查密钥和权限，不要重试。"
+              ],
+              [
+                "429",
+                "触发限流，有时是额度用完",
+                "等待并按退避策略重试。如果提示是额度或账单问题，就停下来处理账户。"
+              ],
+              [
+                "500 / 503",
+                "服务器错误或过载",
+                "按退避策略重试。"
+              ],
+              [
+                "超时",
+                "未在时限内返回",
+                "重试一两次。长回答请使用流式输出。"
+              ]
+            ]
+          }
+        },
+        "用指数退避来重试：先等约 1 秒，再 2、4、8 秒，外加一点随机延迟（抖动），避免许多客户端在同一时刻重试。如果响应带有 `Retry-After` 头，至少等那么久。要限制重试次数。失败的请求也可能计入限额，所以在紧凑的循环里立刻重试只会更糟。如果你使用官方 SDK，别忘了它已经会重试某些错误。"
+      ]
+    },
+    {
+      "h": "成本按 token 计算",
+      "body": [
+        "你为输入 token（你发送的一切，包括系统提示词和整个对话历史）和输出 token（模型写出的内容）付费。输出 token 通常比输入 token 贵。公式很简单：",
+        {
+          "code": "cost = input_tokens  / 1,000,000 * input_price_per_million\n     + output_tokens / 1,000,000 * output_price_per_million\n\nExample with made-up prices (2.00 in, 8.00 out per million tokens):\n  27 input + 64 output tokens\n  = 0.000054 + 0.000512 = 0.000566 per call\n  x 100,000 calls a month = about 56.60",
+          "lang": "text"
+        },
+        {
+          "ul": [
+            "从每次响应的 `usage` 读取真实的计数并记录下来，不要用字数去估算。",
+            "限制每次回复的长度：OpenAI 用 `max_completion_tokens`（较老的 `max_tokens` 在那里已弃用），Anthropic 和许多兼容 API 用 `max_tokens`。",
+            "对话历史每轮都在增长，所以第 20 条消息比第一条更贵。要裁剪或总结旧的轮次。",
+            "分类等简单任务用较小的模型，只在质量确实需要的地方用较大的模型。",
+            "有些服务商对重复的提示词前缀给折扣（提示词缓存），或者为可以等待的任务提供更便宜的批处理。"
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "可以直接从浏览器调用大模型API吗？",
+      "a": "用你自己的密钥不安全，因为任何访客都能从页面里读到。应该调用你自己的服务器，由服务器加上密钥。例外情况是用户输入自己账号的密钥，或者模型完全在浏览器里运行。"
+    },
+    {
+      "q": "为什么API会忘记我之前说过的话？",
+      "a": "API 是无状态的。每个请求都必须带上你希望模型看到的之前的消息。聊天应用会保存历史记录，并在每次请求时重新发送。"
+    },
+    {
+      "q": "temperature 有什么用，需要设置吗？",
+      "a": "temperature 控制用词的随机程度：越低越可预测，越高越多样。有些服务商和较新的模型会限制或移除采样参数，设置之前请先查看 API 参考文档。"
+    },
+    {
+      "q": "为什么回答说到一半就停了？",
+      "a": "回复达到了你设置的 token 上限，或者模型的最大输出长度。请检查 `finish_reason`（Anthropic 是 `stop_reason`），然后调高上限，或者要求更简短的回答。"
+    },
+    {
+      "q": "有免费的大模型API吗？",
+      "a": "有几家服务商提供免费额度或试用金，但限速很低；开源模型也可以在你自己的机器上运行，通过兼容 OpenAI 的本地服务器来调用。免费额度及其条款经常变化，请查看服务商当前的页面。"
+    }
+  ]
+}

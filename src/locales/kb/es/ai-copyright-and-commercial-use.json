@@ -1,0 +1,185 @@
+{
+  "title": "¿De quién son los derechos de autor del contenido de IA? Uso comercial — cv.cm",
+  "description": "¿Quién es el dueño de las imágenes, el video y el texto generados con IA y se pueden usar comercialmente? Oficina de Derechos de Autor de EE. UU., el caso Li v. Liu en China, la UE y una lista práctica.",
+  "h1": "¿Quién es el dueño del contenido generado con IA y se puede usar comercialmente?",
+  "answer": "Depende del país y de cuánto haya moldeado una persona el resultado. La Oficina de Derechos de Autor de EE. UU. dice que los prompts por sí solos no bastan para tener derechos de autor, pero la selección, la disposición y las ediciones humanas sí pueden protegerse. Un tribunal de Pekín determinó en 2023 que una imagen de IA era obra del usuario por sus decisiones creativas. El uso comercial depende también de las condiciones de la herramienta, las marcas y los derechos de imagen.",
+  "sections": [
+    {
+      "h": "La respuesta corta por región",
+      "body": [
+        "El derecho de autor es nacional, y los tribunales y las oficinas aún están resolviendo casos nuevos. La tabla resume las posiciones oficiales publicadas en el momento de escribir esto. Es información general, no asesoramiento jurídico.",
+        {
+          "table": {
+            "head": [
+              "Región",
+              "¿Se puede proteger el resultado de la IA?",
+              "Fuente oficial principal"
+            ],
+            "rows": [
+              [
+                "Estados Unidos",
+                "Solo las partes en las que una persona determinó los elementos expresivos; los prompts por sí solos no bastan",
+                "Guía de registro de la Oficina de Derechos de Autor (marzo de 2023) e informe, Parte 2 (enero de 2025)"
+              ],
+              [
+                "China",
+                "Un tribunal ha protegido una imagen de IA como obra del usuario cuando este tomó decisiones creativas; se decide caso por caso",
+                "Tribunal de Internet de Pekín, Li v. Liu, sentencia del 27 de noviembre de 2023"
+              ],
+              [
+                "Unión Europea",
+                "El Reglamento de IA no decide quién es el titular de los resultados; la titularidad se deja al derecho de autor",
+                "El artículo 53 del Reglamento de IA fija obligaciones de derechos de autor para los proveedores de modelos, no sobre la titularidad de los resultados"
+              ]
+            ]
+          }
+        },
+        "A menudo se mezclan dos preguntas distintas. Primera: ¿puede alguien ser titular del resultado, de modo que pueda impedir que otros lo copien? Segunda: ¿tienes permiso para usarlo, teniendo en cuenta las condiciones de la herramienta y los derechos de terceros? Puede estar permitido usar una imagen comercialmente aunque nadie pueda ser titular de sus derechos de autor."
+      ]
+    },
+    {
+      "h": "Estados Unidos: se exige autoría humana",
+      "body": [
+        "En marzo de 2023, la Oficina de Derechos de Autor de EE. UU. publicó una guía de registro para obras que contienen material generado por IA. Quienes soliciten el registro deben declarar el material generado por IA que sea más que de minimis, con una breve explicación de las aportaciones del autor humano, y excluir ese material de la solicitud.",
+        "El 29 de enero de 2025, la Oficina publicó la Parte 2 de su informe sobre derechos de autor e inteligencia artificial, dedicada a la protección por derechos de autor. Sus conclusiones principales:",
+        {
+          "ul": [
+            "Los derechos de autor protegen las obras asistidas por IA solo cuando un autor humano ha determinado suficientes elementos expresivos.",
+            "El mero hecho de proporcionar prompts no basta para convertir al usuario en autor del resultado.",
+            "El material de autoría humana que sigue siendo perceptible en el resultado, como un dibujo propio usado como entrada, puede estar protegido.",
+            "La selección, disposición o modificación creativas de un resultado de IA por parte de una persona pueden estar protegidas.",
+            "Usar la IA como herramienta, o incluir material de IA en una obra humana más amplia, no hace que toda la obra quede sin protección.",
+            "La Oficina no encontró motivos para una nueva legislación que proteja los resultados generados por IA."
+          ]
+        },
+        "En la práctica, es poco probable que una única imagen generada a partir de un prompt pueda registrarse en EE. UU., pero un cómic, una película o un libro en los que una persona escribió la historia, eligió y dispuso las imágenes y las editó pueden registrarse por esas aportaciones humanas."
+      ]
+    },
+    {
+      "h": "China: el caso de la imagen de IA Li v. Liu",
+      "body": [
+        "En Li v. Liu, caso (2023) Jing 0491 Min Chu n.º 11279, el Tribunal de Internet de Pekín decidió el 27 de noviembre de 2023 que una imagen que el demandante generó con Stable Diffusion era una obra protegida. El demandante había elegido el modelo, escrito prompts positivos y negativos, establecido parámetros y seleccionado el resultado. El demandado utilizó la imagen para ilustrar un artículo y eliminó la marca de agua del demandante.",
+        {
+          "ul": [
+            "El tribunal consideró que la imagen mostraba originalidad porque reflejaba la aportación intelectual y las decisiones personales del demandante.",
+            "Afirmó que un modelo de IA no es un sujeto jurídico y no puede ser autor, y que el diseñador del modelo tampoco era el autor.",
+            "Sostuvo que el demandante, que configuró el modelo y seleccionó la imagen, era el autor y titular de los derechos de autor.",
+            "Dijo también que el demandante debía indicar de forma destacada el uso de tecnología de IA."
+          ]
+        },
+        "El tribunal subrayó que si una imagen generada por IA es una obra debe juzgarse en cada caso. Es una sentencia de primera instancia de un solo tribunal, por lo que no zanja la cuestión para todos los resultados de IA en China."
+      ]
+    },
+    {
+      "h": "Datos de entrenamiento y proveedores de modelos",
+      "body": [
+        "Una cuestión distinta es si es lícito entrenar un modelo con obras protegidas por derechos de autor. Atañe a quien crea el modelo, pero puede afectar a los usuarios si los resultados copian material protegido.",
+        {
+          "ul": [
+            "Estados Unidos: la Oficina de Derechos de Autor publicó el 9 de mayo de 2025 una versión previa a la publicación de la Parte 3 de su informe, sobre el entrenamiento de la IA generativa. Varias demandas sobre datos de entrenamiento seguían abiertas en el momento de escribir esto.",
+            "Unión Europea: según el artículo 53 del Reglamento de IA, los proveedores de modelos de IA de uso general deben contar con una política para cumplir la legislación de la UE sobre derechos de autor, incluido el respeto de las reservas de derechos para la minería de textos y datos formuladas con arreglo al artículo 4, apartado 3, de la Directiva (UE) 2019/790, y deben publicar un resumen suficientemente detallado del contenido utilizado para el entrenamiento. Estas obligaciones se aplican desde el 2 de agosto de 2025."
+          ]
+        },
+        "Para los usuarios, el riesgo práctico es un resultado que copie de cerca una obra, un personaje o la firma de un estilo ya existentes. Los prompts que nombran a un artista vivo, a un personaje de cine o a una marca hacen más probables las copias cercanas."
+      ]
+    },
+    {
+      "h": "Condiciones de servicio y licencias de modelos",
+      "body": [
+        "Incluso donde el derecho de autor no está claro, el contrato con el proveedor de la herramienta decide mucho. Lee estas partes de las condiciones antes del uso comercial:",
+        {
+          "table": {
+            "head": [
+              "Cláusula",
+              "Qué buscar"
+            ],
+            "rows": [
+              [
+                "Titularidad de los resultados",
+                "Si el proveedor te cede algún derecho sobre los resultados, se los reserva o no reclama nada"
+              ],
+              [
+                "Uso comercial",
+                "Si los planes gratuitos, los créditos de prueba o los planes educativos permiten el uso comercial"
+              ],
+              [
+                "Política de uso",
+                "Contenidos y usos prohibidos, como anuncios políticos, suplantación de identidad o afirmaciones médicas"
+              ],
+              [
+                "Indemnización",
+                "Si el proveedor defiende a los clientes de pago frente a reclamaciones por derechos de autor y en qué condiciones"
+              ],
+              [
+                "Licencia de pesos abiertos",
+                "Para modelos descargados: límites comerciales, avisos obligatorios, topes de usuarios y reglas de uso aceptable"
+              ],
+              [
+                "Derechos sobre las entradas",
+                "Que tienes derechos sobre las imágenes, voces y textos que subes como referencia"
+              ]
+            ]
+          }
+        },
+        "Las condiciones cambian. Guarda una copia o una captura de pantalla de las condiciones vigentes el día que generaste los recursos importantes."
+      ]
+    },
+    {
+      "h": "Marcas, imagen y voces",
+      "body": [
+        "El derecho de autor es solo una capa. Otros derechos se aplican a los resultados de la IA igual que a las fotos y los videos:",
+        {
+          "ul": [
+            "Marcas: los logotipos, los nombres de marca y los envases distintivos que aparezcan en tu resultado pueden sugerir un respaldo falso. Elimínalos del trabajo comercial.",
+            "Derechos de imagen y de la personalidad: usar el rostro o la voz de una persona real sin permiso puede vulnerar derechos de privacidad, de imagen o de la personalidad en muchos países, aunque la imagen sea totalmente sintética.",
+            "Réplicas digitales: el informe, Parte 1 (julio de 2024), de la Oficina de Derechos de Autor de EE. UU. sobre réplicas digitales recomendó una nueva ley federal contra las réplicas no autorizadas de la voz o la apariencia de una persona.",
+            "Etiquetado: en China, las normas sobre el etiquetado de contenido de IA se aplican cuando publicas contenido generado por IA, y las plataformas de todo el mundo tienen sus propias normas de aviso."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Lista de comprobación para el uso comercial",
+      "body": [
+        {
+          "ol": [
+            "Comprueba que tu plan, según las condiciones de la herramienta, permite el uso comercial, y guarda una copia de esas condiciones.",
+            "Asegúrate de tener derechos sobre cada entrada: fotos de referencia, voces, guiones y música.",
+            "Evita los prompts que nombren a artistas vivos, marcas o personajes protegidos por derechos de autor.",
+            "Busca coincidencias cercanas: haz una búsqueda inversa de imágenes de las imágenes clave y compara logotipos y personajes.",
+            "Elimina las marcas y las personas reales reconocibles, salvo que tengas permiso por escrito.",
+            "Añade trabajo humano significativo: redacción, selección, disposición, edición. Esto ayuda en los lugares donde la autoría humana decide la protección.",
+            "Conserva registros: prompts, ajustes, archivos de referencia, borradores e historial de ediciones.",
+            "Etiqueta el contenido de IA cuando la ley o la plataforma lo exijan.",
+            "Para usos de alto valor, como logotipos, envases o campañas publicitarias, consulta a un abogado de tu país."
+          ]
+        },
+        {
+          "note": "Un logotipo hecho únicamente a partir de un prompt puede ser difícil de registrar o de defender como obra propia en los lugares que exigen autoría humana. Para una marca, usa la IA para obtener ideas y encarga la versión final a un diseñador."
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "¿Puedo vender arte generado con IA?",
+      "a": "Normalmente sí, si las condiciones de la herramienta permiten el uso comercial y la imagen no copia obras protegidas, marcas ni personas reales. Si puedes impedir que otros la copien es una cuestión distinta, de derechos de autor."
+    },
+    {
+      "q": "¿Puedo registrar los derechos de autor de un libro o un cómic hecho con imágenes de IA?",
+      "a": "En EE. UU. puedes registrar las partes humanas, como el texto y la selección y disposición de las imágenes, y debes declarar el material generado por IA. Otros países pueden juzgar la obra de otra manera."
+    },
+    {
+      "q": "¿La empresa de IA es dueña de lo que genero?",
+      "a": "Depende de las condiciones de servicio. Muchos proveedores dicen que no reclaman la titularidad de los resultados, pero la redacción exacta varía y algunos planes gratuitos limitan el uso. Lee las cláusulas sobre resultados y uso comercial."
+    },
+    {
+      "q": "¿Es legal usar la IA al estilo de un artista famoso?",
+      "a": "El estilo por sí solo no suele estar protegido por los derechos de autor, pero los resultados que copian obras o personajes concretos pueden infringirlos, y nombrar a artistas vivos supone un riesgo legal y de reputación. Evítalo en el trabajo comercial."
+    },
+    {
+      "q": "¿Tengo que decir que mi contenido se hizo con IA?",
+      "a": "En algunos lugares y en muchas plataformas, sí. China exige etiquetas en el contenido generado por IA, el Reglamento de IA de la UE añade obligaciones de transparencia, y YouTube, TikTok y Meta piden a los creadores que revelen el contenido realista de IA."
+    }
+  ]
+}

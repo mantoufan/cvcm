@@ -1,7 +1,7 @@
 import type { Locale } from "./locale";
 import { escapeHtml } from "./device-i18n";
 import { fill } from "./fill";
-import { kbArticleOf, kbGroupOf, kbGroupsOf, kbMeta, kbMinutesOf, kbShelfOf, kbShelfOfPage, kbUpdatedOn, type KbId, type KbPage, type KbShelf } from "./kb";
+import { KB_SHELVES, kbArticleOf, kbGroupOf, kbGroupsOf, kbMeta, kbMinutesOf, kbShelfOf, kbShelfOfPage, kbUpdatedOn, type KbId, type KbPage, type KbShelf } from "./kb";
 import { kbArticleMessages, kbMessages, messages, type KbMessages } from "./messages";
 import { HREFLANG } from "./sitemap";
 import { appHref, kbHref, learnHref, type ToolId } from "./path";
@@ -35,10 +35,10 @@ export function kbUi(locale: Locale): KbUi {
   return kbMessages(locale).ui;
 }
 
-/** Hub copy of a shelf: `hub` for knowledge, `codeHub` for coding. */
+/** Hub copy of a shelf: `hub` for knowledge, `codeHub` for coding, `aiHub` for AI. */
 export function kbHub(locale: Locale, shelf: KbShelf = "knowledge"): KbHubCopy {
   const m = kbMessages(locale);
-  return shelf === "code" ? m.codeHub : m.hub;
+  return shelf === "code" ? m.codeHub : shelf === "ai" ? m.aiHub : m.hub;
 }
 
 export function kbCopy(locale: Locale, id: KbId): KbArticleCopy {
@@ -96,11 +96,11 @@ export function blockHtml(block: KbBlock): string {
 
 /** data-nav of a shelf's hub links (main.ts prefetches the kb pack on hover). */
 export function kbHubNav(shelf: KbShelf): string {
-  return shelf === "code" ? "coding" : "knowledge";
+  return KB_SHELVES[shelf].nav;
 }
 
 function hubOf(shelf: KbShelf): KbPage {
-  return shelf === "code" ? "code" : "hub";
+  return KB_SHELVES[shelf].hub;
 }
 
 function crumbHtml(locale: Locale, page: KbPage): string {

@@ -1,0 +1,174 @@
+{
+  "title": "Bản đồ độ sâu (depth map) là gì? AI ước lượng độ sâu ảnh — cv.cm",
+  "description": "Depth map là gì, AI ước lượng độ sâu từ một ảnh thế nào, độ sâu tương đối và độ sâu mét, tông nào là gần, và cách dùng cho parallax, ControlNet.",
+  "h1": "Bản đồ độ sâu là gì và AI tạo nó từ ảnh như thế nào?",
+  "answer": "Bản đồ độ sâu (depth map) là ảnh xám trong đó độ sáng của mỗi pixel biểu thị khoảng cách tới máy ảnh thay vì màu sắc. Các mô hình AI như Depth Anything ước lượng nó từ một bức ảnh duy nhất bằng cách nhận ra hình dạng, phối cảnh và sự che khuất. Phần lớn cho độ sâu tương đối (phần nào gần hơn), không phải mét thực, và vậy là đủ cho parallax 3D, làm mờ nền và ControlNet.",
+  "sections": [
+    {
+      "h": "Bản đồ độ sâu qua một bức ảnh",
+      "body": [
+        "Hãy chụp một người đứng trước tòa nhà. Bản đồ độ sâu của ảnh đó có cùng chiều rộng và chiều cao, nhưng mỗi pixel chứa một con số: điểm đó cách máy ảnh bao xa. Khi hiển thị thành ảnh, người là một tông, tòa nhà là tông khác, và bầu trời là tông cực đoan nhất.",
+        "Không có quy tắc duy nhất cho việc tông nào nghĩa là gần. Hãy kiểm tra quy ước của từng công cụ bạn dùng:",
+        {
+          "table": {
+            "head": [
+              "Quy ước",
+              "Vật gần trông như",
+              "Vật xa trông như",
+              "Bạn gặp ở đâu"
+            ],
+            "rows": [
+              [
+                "Độ sâu nghịch đảo (giống disparity)",
+                "Sáng",
+                "Tối",
+                "Hầu hết bộ ước lượng độ sâu AI, depth map của ControlNet"
+              ],
+              [
+                "Khoảng cách (z-depth)",
+                "Tối",
+                "Sáng",
+                "Lớp render 3D, hiệu ứng sương mù, một số game engine"
+              ],
+              [
+                "Độ sâu mét",
+                "Số nhỏ (mét)",
+                "Số lớn",
+                "Robot, AR, LiDAR, file 16 bit hoặc float"
+              ],
+              [
+                "Bảng màu (Turbo, Magma)",
+                "Một đầu của bảng màu",
+                "Đầu còn lại",
+                "Chỉ để xem trước, không dùng để xử lý tiếp"
+              ]
+            ]
+          }
+        },
+        "Nếu hiệu ứng 3D trông bị ngược, với phần nền lồi về phía bạn, thì bản đồ đang theo quy ước ngược lại. Đảo ngược ảnh (trắng thành đen) thường sửa được lỗi này."
+      ]
+    },
+    {
+      "h": "AI ước lượng độ sâu từ một ảnh như thế nào",
+      "body": [
+        "Điện thoại có hai camera hoặc cảm biến LiDAR có thể đo độ sâu. Một bức ảnh thường thì không: cùng một hình có thể là chiếc xe đồ chơi nhỏ ở gần hoặc chiếc xe thật ở xa. Ước lượng độ sâu từ một ảnh (monocular depth estimation) giải quyết việc này giống con người, bằng các manh mối đã học.",
+        {
+          "ul": [
+            "Phối cảnh: các đường song song như đường bộ và đường ray gặp nhau ở phía xa.",
+            "Kích thước đã biết: khuôn mặt, cánh cửa hay chiếc xe có kích thước điển hình, nên kích thước của chúng trong ảnh gợi ý khoảng cách.",
+            "Che khuất: vật che vật khác thì nằm phía trước vật đó.",
+            "Mật độ kết cấu và sương mù: ở xa, cỏ và gạch trông mịn hơn, màu nhạt hơn.",
+            "Đổ bóng và nhòe do lấy nét, cho gợi ý về hình dạng bề mặt."
+          ]
+        },
+        "Mạng độ sâu được huấn luyện trên hàng triệu ảnh có đáp án đã biết hoặc được ước lượng. Depth Anything V2, được nhiều công cụ dùng tại thời điểm viết bài, học trước từ ảnh tổng hợp (render) chính xác, rồi từ một tập rất lớn ảnh thật được một mô hình thầy lớn hơn gán nhãn. Các tác giả chọn dữ liệu tổng hợp một phần vì cảm biến độ sâu thật không đo đúng bề mặt trong suốt và phản chiếu, nên nhãn thật bị nhiễu đúng ở những chỗ ảnh vốn khó.",
+        "Mô hình làm việc trên bản sao đã đổi kích thước của ảnh (Depth Anything V2 được huấn luyện với cạnh ngắn là 518 pixel) và xuất một giá trị cho mỗi pixel. Sau đó công cụ phóng nó về kích thước ảnh và ánh xạ các giá trị sang 0 đến 255 cho ảnh 8 bit."
+      ]
+    },
+    {
+      "h": "Độ sâu tương đối và độ sâu mét",
+      "body": [
+        "Hầu hết mô hình độ sâu đa dụng dự đoán độ sâu tương đối. Chẳng hạn, các mô hình cơ sở của Depth Anything V2 dự đoán độ sâu nghịch đảo bất biến affine. Nói đơn giản, thứ tự và tỷ lệ có ý nghĩa, nhưng tỉ lệ và độ lệch thì chưa biết. Bản đồ cho bạn biết người đứng trước tòa nhà; nó không cho biết người đó cách 3,2 mét.",
+        "Thiết kế này xuất phát từ việc huấn luyện trên nhiều bộ dữ liệu với camera và đơn vị khác nhau. Công trình MiDaS cho thấy một hàm mất mát bỏ qua tỉ lệ giúp mô hình học từ tất cả cùng lúc, nhờ đó vững hơn nhiều trên ảnh internet ngẫu nhiên.",
+        "Mô hình độ sâu mét là các phiên bản tinh chỉnh được huấn luyện theo mét, thường cho một loại cảnh (phòng trong nhà hoặc đường phố khi lái xe). Hãy dùng chúng để đo đạc hoặc cho robot. Với công việc sáng tạo, độ sâu tương đối là thứ bạn cần, vì nó tổng quát hóa tốt hơn và hiệu ứng chỉ cần thứ tự đúng."
+      ]
+    },
+    {
+      "h": "Bạn làm được gì với bản đồ độ sâu",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Mục đích",
+              "Độ sâu được dùng thế nào",
+              "Mẹo"
+            ],
+            "rows": [
+              [
+                "Video parallax 2.5D",
+                "Pixel gần dịch chuyển nhiều hơn pixel xa khi camera ảo di chuyển",
+                "Giữ chuyển động camera nhỏ để giấu cạnh bị kéo giãn"
+              ],
+              [
+                "Làm mờ kiểu chân dung",
+                "Độ mờ tăng theo khoảng cách tới mặt phẳng lấy nét",
+                "Làm mềm cạnh; tóc thường bị mờ theo nền"
+              ],
+              [
+                "ControlNet depth",
+                "Bản đồ dẫn dắt bố cục của ảnh mới tạo",
+                "Dùng bản đồ gần là sáng; giảm trọng số điều khiển để có thêm tự do"
+              ],
+              [
+                "3D và AR",
+                "Pixel được đẩy ra thành lưới (mesh) hoặc đám mây điểm",
+                "Độ sâu tương đối cho hình dạng, không cho kích thước thật"
+              ],
+              [
+                "Sương mù, chiếu sáng lại, ghép cảnh",
+                "Độ sâu đóng vai trò mặt nạ cho hiệu ứng theo khoảng cách",
+                "Dùng file xuất 16 bit nếu công cụ có"
+              ]
+            ]
+          }
+        },
+        "Chẳng hạn, công cụ depth-map của cv.cm biến ảnh thành bản đồ xám (gần là sáng) hoặc bản xem trước nhiều màu ngay trong trình duyệt, còn công cụ photo-to-video của cv.cm dùng cùng loại bản đồ để di chuyển camera ảo xuyên qua một bức ảnh tĩnh. Trong trường hợp thứ hai, camera chuyển động còn chủ thể đứng yên: đó là parallax, không phải mô hình làm người cử động.",
+        "ControlNet cho thấy một mô hình khuếch tán (diffusion) có thể được điều khiển bằng các điều kiện như cạnh, tư thế, phân vùng và độ sâu. Điều kiện độ sâu giữ nguyên bố cục (tiền cảnh và hậu cảnh nằm ở đâu) trong khi prompt thay đổi phong cách, ánh sáng hay chất liệu."
+      ]
+    },
+    {
+      "h": "AI ước lượng độ sâu sai ở đâu",
+      "body": [
+        {
+          "ul": [
+            "Kính, gương và nước: mô hình có thể cho độ sâu của hình phản chiếu hoặc của vật phía sau kính.",
+            "Bầu trời và vùng rất xa: tất cả rơi vào đầu xa, nên parallax ở đó phẳng.",
+            "Cấu trúc mảnh: tóc, hàng rào, cành cây và dây điện nhòe vào nền ở độ phân giải làm việc của mô hình.",
+            "Tranh, poster và màn hình: ảnh chụp một bức tranh có thể bị gán độ sâu 3D giả, vì nội dung bên trong trông như một cảnh thật.",
+            "Góc nhìn lạ: ảnh drone chụp thẳng xuống, ảnh macro và ảnh mắt cá ít gặp hơn trong dữ liệu huấn luyện.",
+            "Cạnh giữa vật gần và vật xa: bản đồ ở đó mượt, nên hiệu ứng parallax kéo giãn pixel thành một dải như cao su."
+          ]
+        },
+        {
+          "note": "Bản đồ độ sâu từ ảnh chỉ là ước lượng. Đừng dùng bản đồ độ sâu tương đối để đo khoảng cách, kích thước hay tốc độ thực."
+        }
+      ]
+    },
+    {
+      "h": "Cách có bản đồ độ sâu tốt hơn",
+      "body": [
+        {
+          "ol": [
+            "Chọn ảnh có tiền cảnh, trung cảnh và hậu cảnh rõ ràng. Cảnh phẳng, như khuôn mặt tràn khung trước bức tường, ít có độ sâu để khai thác.",
+            "Tránh phản chiếu mạnh và cửa sổ lớn ở vùng bạn quan tâm.",
+            "Bảo đảm công cụ tiếp theo đọc cùng quy ước. Nếu chỗ cần sáng lại tối, hãy đảo ngược bản đồ.",
+            "Giữ bản đồ cùng kích thước và cùng khung cắt với ảnh. Bản đồ độ sâu bị cắt hoặc đổi kích thước khác đi sẽ không khớp.",
+            "Làm mờ hoặc nở bản đồ một chút trước khi làm parallax để giảm rách ở cạnh, và giữ chuyển động camera nhẹ nhàng."
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Bản đồ độ sâu có giống normal map không?",
+      "a": "Không. Bản đồ độ sâu lưu khoảng cách trên mỗi pixel. Normal map lưu hướng mà mỗi bề mặt quay về, dưới dạng màu RGB, và dùng để tính ánh sáng. Bạn có thể suy ra gần đúng normal từ bản đồ độ sâu, nhưng chiều ngược lại thì mất tỉ lệ."
+    },
+    {
+      "q": "AI có tạo được bản đồ độ sâu từ mọi bức ảnh không?",
+      "a": "Có, mô hình đơn mắt luôn tạo ra một bản đồ, nhưng chất lượng phụ thuộc vào cảnh. Cảnh có các lớp gần xa rõ ràng cho kết quả tốt; kính, gương, tường phẳng và ảnh chụp tranh thì không."
+    },
+    {
+      "q": "Bản đồ độ sâu khác bản đồ disparity thế nào?",
+      "a": "Disparity là độ lệch của một điểm giữa hai ảnh lập thể, và lớn hơn với vật gần, nên nó hoạt động như độ sâu nghịch đảo. Nhiều mô hình AI xuất độ sâu nghịch đảo giống disparity, vì vậy vật gần hiện ra sáng."
+    },
+    {
+      "q": "Vì sao video parallax của tôi bị kéo giãn quanh mép chủ thể?",
+      "a": "Khi camera ảo di chuyển, nó để lộ phần nền vốn bị chủ thể che trong ảnh gốc. Ở đó không có pixel nào, nên trình render kéo giãn các pixel lân cận. Chuyển động camera nhỏ hơn và cạnh độ sâu được làm mềm sẽ giảm hiện tượng này."
+    },
+    {
+      "q": "Chế độ chân dung của iPhone có dùng bản đồ độ sâu không?",
+      "a": "Có. Điện thoại có hai camera hoặc cảm biến độ sâu ghi lại bản đồ độ sâu hoặc disparity và dùng nó để làm mờ nền; nhiều máy còn áp dụng học máy để tinh chỉnh. Độ sâu có thể được lưu trong file ảnh cùng với hình."
+    }
+  ]
+}

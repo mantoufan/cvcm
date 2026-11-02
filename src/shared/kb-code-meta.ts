@@ -1,5 +1,5 @@
 import { CODE_ARTICLES, CODE_TOOLS, type CodeId } from "./kb-code";
-import { registerCodeShelf, type KbMeta } from "./kb";
+import { registerShelf, type KbMeta } from "./kb";
 import { CODE_MINUTES, CODE_UPDATED } from "../locales/kb/meta-code";
 
 /**
@@ -919,7 +919,7 @@ const META: Record<CodeId, Omit<KbMeta, "tools">> = {
   },
 };
 
-registerCodeShelf({
+registerShelf("code", {
   meta: Object.fromEntries(CODE_ARTICLES.map((id) => [id, { ...META[id], tools: [...(CODE_TOOLS[id] ?? [])] }])) as Record<CodeId, KbMeta>,
   updated: CODE_UPDATED,
   minutes: CODE_MINUTES,

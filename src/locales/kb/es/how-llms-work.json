@@ -1,0 +1,211 @@
+{
+  "title": "Cómo funcionan los grandes modelos de lenguaje (LLM), paso a paso — cv.cm",
+  "description": "¿Cómo funcionan los LLM? Sigue un prompt a través de los tokens, la atención y la predicción del siguiente token, y descubre cómo el entrenamiento y la temperatura moldean las respuestas.",
+  "h1": "¿Cómo funcionan los grandes modelos de lenguaje (LLM)?",
+  "answer": "Un gran modelo de lenguaje es una red neuronal entrenada para predecir el siguiente token, un fragmento pequeño de texto, a partir de todos los tokens anteriores. Para responderte, divide tu prompt en tokens, puntúa todos los tokens posibles, elige uno, lo añade al texto y repite hasta que se detiene. Un entrenamiento adicional con instrucciones y valoraciones humanas convierte ese predictor en un asistente útil.",
+  "sections": [
+    {
+      "h": "La versión corta: un adivinador de palabras muy bueno",
+      "body": [
+        "Un LLM hace una sola cosa una y otra vez. Mira el texto hasta ese momento y estima la probabilidad de cada posible fragmento siguiente. Luego elige uno, lo añade y vuelve a mirar. Una respuesta de 300 palabras son unos cientos de estos pasos pequeños.",
+        "Parece demasiado simple para producir ensayos, código y traducciones. La potencia viene de la escala. El modelo tiene miles de millones de parámetros, que son números que se ajustan durante el entrenamiento, y se entrenó con una cantidad enorme de texto. Para predecir bien la siguiente palabra en tanto texto, tiene que captar la gramática, los datos, los estilos de razonamiento y la estructura del código.",
+        "Los asistentes de chat como ChatGPT, Claude, Gemini, DeepSeek y Qwen son productos construidos alrededor de LLM. El producto añade una interfaz de chat, un prompt de sistema oculto, reglas de seguridad y, a menudo, herramientas como la búsqueda web. El núcleo sigue siendo la predicción del siguiente token."
+      ]
+    },
+    {
+      "h": "Qué ocurre con tu mensaje, paso a paso",
+      "body": [
+        "Toma el prompt `The capital of France is`. Esto es lo que hace el modelo con él:",
+        {
+          "ol": [
+            "Tokenizar: el texto se divide en tokens. Con un tokenizador habitual, este prompt se convierte en cinco tokens: The, capital, of, France, is (casi todos llevan el espacio inicial).",
+            "Incrustar: cada token se sustituye por una lista larga de números, un embedding, que lo coloca en un espacio donde los significados relacionados quedan cerca.",
+            "Atender: los embeddings pasan por decenas de capas del transformer. En cada capa, un paso de atención deja que cada token mire a los anteriores y recoja lo que le sirve.",
+            "Puntuar: la última capa produce una puntuación para cada token del vocabulario, que suele tener 100.000 entradas o más. Las puntuaciones se convierten en probabilidades.",
+            "Muestrear: se elige un token según esas probabilidades y los ajustes de muestreo.",
+            "Repetir: el token elegido se añade al texto y todo el proceso se ejecuta de nuevo para el siguiente token, hasta que el modelo emite un token de parada o llega al límite de longitud."
+          ]
+        },
+        "Las probabilidades del siguiente token podrían ser así. Los números son ilustrativos y no proceden de un modelo real:",
+        {
+          "table": {
+            "head": [
+              "Token siguiente candidato",
+              "Probabilidad ilustrativa",
+              "Comentario"
+            ],
+            "rows": [
+              [
+                " Paris",
+                "0,92",
+                "La respuesta esperada"
+              ],
+              [
+                " a",
+                "0,03",
+                "Podría continuar como a city of ..."
+              ],
+              [
+                " the",
+                "0,02",
+                "Podría continuar como the city of ..."
+              ],
+              [
+                " located",
+                "0,01",
+                "Gramatical, pero poco habitual"
+              ],
+              [
+                " Lyon",
+                "0,001",
+                "Incorrecto, pero no imposible de muestrear"
+              ]
+            ]
+          }
+        },
+        "De esta tabla se sacan dos lecciones. Primera: el modelo no consulta una entrada de una base de datos, sino que produce la continuación más probable. Segunda: un token incorrecto siempre tiene alguna probabilidad, y esa es una de las razones por las que los modelos a veces dicen cosas falsas."
+      ]
+    },
+    {
+      "h": "La atención: cómo el modelo sigue el hilo del significado",
+      "body": [
+        "La atención es la idea central de la arquitectura transformer, publicada en 2017. Para cada token, el modelo calcula cuánto peso debe dar a cada token anterior al construir su significado.",
+        "Fíjate en esta frase: `The trophy did not fit in the suitcase because it was too big.` Para entender a qué se refiere `it`, el modelo debe vincularlo con el trofeo (trophy) y no con la maleta (suitcase). Si cambias big por small, `it` pasa a significar la maleta. La atención permite al modelo establecer ese vínculo a partir de las palabras que rodean, a lo largo de muchas capas que van afinando el resultado.",
+        "Como la atención compara cada token con los anteriores, el coste crece rápido cuando el texto se alarga. Por eso todos los modelos tienen una ventana de contexto: un máximo de tokens que pueden considerar a la vez."
+      ]
+    },
+    {
+      "h": "Cómo se entrenan los LLM: tres etapas",
+      "body": [
+        "Un predictor de tokens en bruto todavía no es un asistente útil. Si le haces una pregunta, puede continuar con más preguntas, porque eso también parece texto de internet. Los asistentes actuales pasan por varias etapas de entrenamiento.",
+        {
+          "table": {
+            "head": [
+              "Etapa",
+              "Datos de entrenamiento",
+              "Qué aprende el modelo",
+              "Resultado"
+            ],
+            "rows": [
+              [
+                "Preentrenamiento",
+                "Cantidades enormes de texto y código públicos",
+                "Lenguaje, datos, patrones, estilos de razonamiento",
+                "Un modelo base que continúa cualquier texto"
+              ],
+              [
+                "Ajuste por instrucciones",
+                "Ejemplos de prompts con buenas respuestas escritas por personas",
+                "El formato de seguir una instrucción",
+                "Un modelo que responde en lugar de divagar"
+              ],
+              [
+                "Ajuste por preferencias (por ejemplo, RLHF)",
+                "Personas o modelos ordenan varias respuestas",
+                "Qué respuestas prefiere la gente: útiles, honestas, seguras",
+                "Un asistente con un estilo coherente y capaz de negarse"
+              ]
+            ]
+          }
+        },
+        "La investigación sobre InstructGPT mostró que los usuarios preferían un modelo más pequeño entrenado así antes que un modelo mucho mayor que solo tenía preentrenamiento. En el momento de escribir este artículo, muchos modelos reciben además un entrenamiento extra para resolver los problemas paso a paso antes de responder, algo que los productos suelen mostrar como un modo de pensamiento o razonamiento.",
+        "El entrenamiento se hace una vez, con un coste enorme, antes del lanzamiento. Cuando chateas con un modelo, sus parámetros no cambian. No aprende de tu conversación en ese momento, aunque un proveedor puede usar las conversaciones para entrenar versiones posteriores si su política lo permite."
+      ]
+    },
+    {
+      "h": "Ajustes de muestreo que cambian la respuesta",
+      "body": [
+        "El mismo prompt puede dar respuestas distintas porque el modelo muestrea a partir de probabilidades. Si usas una API, puedes controlar cómo ocurre. Los rangos y valores por defecto exactos dependen del proveedor.",
+        {
+          "table": {
+            "head": [
+              "Ajuste",
+              "Qué hace",
+              "Cuándo cambiarlo"
+            ],
+            "rows": [
+              [
+                "`temperature`",
+                "Los valores bajos hacen más probable la mejor opción; los altos aplanan las probabilidades y añaden variedad",
+                "Bájalo para extraer datos y para código, súbelo para generar ideas"
+              ],
+              [
+                "`top_p`",
+                "Muestrea solo entre el conjunto más pequeño de tokens cuyas probabilidades suman p",
+                "Normalmente se ajusta este o la temperatura, no los dos"
+              ],
+              [
+                "`max_tokens`",
+                "Limita la longitud de la salida",
+                "Súbelo si las respuestas se cortan a mitad de frase"
+              ],
+              [
+                "Secuencias de parada",
+                "Texto que termina la generación cuando aparece",
+                "Salida estructurada, plantillas"
+              ],
+              [
+                "Prompt de sistema",
+                "Instrucciones ocultas colocadas antes de la conversación",
+                "Define rol, tono, formato y reglas de una vez"
+              ]
+            ]
+          }
+        },
+        "Una temperatura baja hace las respuestas más consistentes, pero no más verdaderas. Si la continuación más probable es incorrecta, con temperatura baja el modelo se equivoca siempre."
+      ]
+    },
+    {
+      "h": "Lo que los LLM no hacen",
+      "body": [
+        "Muchos fallos sorprendentes tienen sentido en cuanto recuerdas el mecanismo:",
+        {
+          "ul": [
+            "No ven letras. Un modelo ve tokens, así que una palabra como strawberry puede llegar en tres trozos, por ejemplo st, raw y berry. Por eso es difícil contar letras o escribir palabras al revés.",
+            "No recuerdan por sí solos los chats anteriores. Las funciones de memoria de las aplicaciones guardan notas y las insertan en el prompt.",
+            "No conocen los acontecimientos recientes, a menos que la aplicación añada resultados de búsqueda o documentos al contexto.",
+            "No comprueban los datos. Nada en la predicción del siguiente token compara la salida con la realidad, así que un texto fluido puede ser falso.",
+            "No ejecutan código ni hacen aritmética exacta si no llaman a una herramienta. Las multiplicaciones largas hechas solo con texto son propensas a errores."
+          ]
+        },
+        "Los buenos productos cubren estas carencias con herramientas: una calculadora, un ejecutor de código, la búsqueda web o la recuperación desde tus propios documentos. Si sabes que la carencia existe, sabes cuándo pedir una herramienta o comprobar tú mismo la respuesta."
+      ]
+    },
+    {
+      "h": "Consejos prácticos que se derivan de cómo funcionan los LLM",
+      "body": [
+        {
+          "ul": [
+            "Pon el material en el prompt. Si quieres una respuesta sobre un documento, pega la parte relevante. El modelo razona mucho mejor sobre el texto que ve que a partir de recuerdos vagos del entrenamiento.",
+            "Sé específico con la salida. Indica el formato, la longitud, el público y el idioma. El modelo rellena los huecos con la opción más típica.",
+            "Pide pasos en los problemas difíciles. Escribir pasos intermedios le da al modelo más tokens con los que trabajar antes de comprometerse con una respuesta.",
+            "Abre un chat nuevo para una tarea nueva. Los mensajes antiguos y sin relación siguen en el contexto y pueden desviar la respuesta.",
+            "Verifica nombres, cifras, citas y enlaces. Son los detalles con más probabilidad de ser inventados."
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "¿Los grandes modelos de lenguaje entienden lo que dicen?",
+      "a": "Construyen representaciones internas ricas del significado que les permiten responder, traducir y razonar en muchos casos. No tienen experiencias ni objetivos y pueden fallar en tareas sencillas que a una persona le parecerían obvias, así que si eso cuenta como entender sigue siendo un debate abierto."
+    },
+    {
+      "q": "¿Por qué una IA da una respuesta distinta a la misma pregunta?",
+      "a": "El modelo muestrea el siguiente token a partir de una distribución de probabilidad, de modo que pequeñas elecciones aleatorias al principio de la respuesta llevan a redacciones distintas después. Una temperatura más baja hace las respuestas más repetibles."
+    },
+    {
+      "q": "¿Qué significa GPT?",
+      "a": "GPT significa Generative Pre-trained Transformer (transformer generativo preentrenado): un modelo transformer, preentrenado con una gran cantidad de texto, que genera texto."
+    },
+    {
+      "q": "¿Los LLM están conectados a internet?",
+      "a": "El modelo en sí, no. Solo conoce sus datos de entrenamiento hasta una fecha de corte. Algunas aplicaciones añaden una herramienta de búsqueda web y pegan los resultados en el contexto, y así pueden mencionar acontecimientos recientes."
+    },
+    {
+      "q": "¿Qué es un parámetro en un LLM?",
+      "a": "Un parámetro es uno de los números de la red que el entrenamiento ajusta. Los modelos tienen miles de millones, y juntos codifican lo que el modelo aprendió. Más parámetros pueden guardar más patrones, pero cuesta más ejecutarlos."
+    }
+  ]
+}

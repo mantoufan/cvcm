@@ -1,0 +1,219 @@
+{
+  "title": "Storyboard Prompts: Turn a Script into AI Video Shots — cv.cm",
+  "description": "How to write storyboard prompts for AI video: split a script into shots, fill a shot card, and prompt each clip. Includes a 15-second worked example.",
+  "h1": "How do you turn a script into storyboard prompts for AI video?",
+  "answer": "Split the script into beats, give each beat one shot, and write one prompt per shot. Each shot prompt names the framing, the subject and its single action, the setting, the camera move, the light and the duration. Keep a shot card for every clip so that character, wardrobe and screen direction stay the same when you generate the shots one by one.",
+  "sections": [
+    {
+      "h": "What a storyboard prompt is",
+      "body": [
+        "A storyboard prompt is the text you send to a video model for one shot of a larger sequence. A video prompt describes a single clip; a storyboard prompt describes a clip that must cut cleanly into the clip before it and the clip after it. That extra job changes how you write it.",
+        "Most AI video tools produce short clips from one prompt. A scene with a beginning, a middle and an end is therefore built from several generations, then joined in an editor. The storyboard is the plan that connects them: it decides what each shot shows, how long it lasts, and what must match between shots.",
+        "Think of the storyboard as two layers. The first layer is for you: shot number, purpose, duration and the line of dialogue it covers. The second layer is the prompt text the model actually reads. Keeping both layers in one table makes revisions fast, because when the script changes you can see which prompts must change too."
+      ]
+    },
+    {
+      "h": "Step 1: break the script into beats and shots",
+      "body": [
+        "A beat is the smallest change in the story: a look, a decision, a reveal, a reaction. Read the script and mark every beat. Then give each beat its own shot. Two practical rules keep the shots easy for a model to render:",
+        {
+          "ul": [
+            "One main action per shot. \"She opens the letter and starts crying\" is two actions; give the crying its own close-up.",
+            "One camera idea per shot. A slow push-in or a static frame works; a push-in that becomes an orbit and then a crane usually breaks.",
+            "Short durations. Plan most shots at a few seconds. A reaction shot can be shorter than a full clip; you trim it in the edit.",
+            "Name the purpose of each shot: establish the place, show the action, show the reaction, or show a detail the audience must notice."
+          ]
+        },
+        "Vary the shot sizes. A sequence of five medium shots feels flat. A common pattern is wide (where are we), medium (who is doing what), close-up (how they feel), insert (the important object), then a wider shot to end or to move to the next scene."
+      ]
+    },
+    {
+      "h": "Step 2: fill a shot card for every shot",
+      "body": [
+        "A shot card is a fixed list of fields. Filling the same fields every time stops you from forgetting the details that cause continuity errors. The prompt is then just the card written as sentences.",
+        {
+          "table": {
+            "head": [
+              "Field",
+              "What to write",
+              "Example"
+            ],
+            "rows": [
+              [
+                "Shot size and angle",
+                "Wide, medium, close-up, insert; eye level, low, high",
+                "Close-up, eye level"
+              ],
+              [
+                "Subject",
+                "Who, with the same fixed description in every shot",
+                "A woman in her 30s, short black hair, grey wool coat"
+              ],
+              [
+                "Action",
+                "One verb, with how it happens",
+                "slowly lowers the phone from her ear"
+              ],
+              [
+                "Setting",
+                "Place, time of day, weather",
+                "empty train platform at night, light rain"
+              ],
+              [
+                "Camera",
+                "Static or one move, with speed",
+                "static camera"
+              ],
+              [
+                "Light and color",
+                "Main light source and mood",
+                "cold fluorescent light from above, blue-green tones"
+              ],
+              [
+                "Screen direction",
+                "Which way the subject faces or moves",
+                "faces screen left"
+              ],
+              [
+                "Sound",
+                "Dialogue, effects or ambience, if the model makes audio",
+                "distant train announcement, rain"
+              ],
+              [
+                "Duration and in/out",
+                "Planned length and how it starts and ends",
+                "3 s, ends on her eyes closing"
+              ]
+            ]
+          }
+        },
+        "Put the fixed subject description in a separate note and paste it unchanged into every prompt. Small wording changes such as \"grey coat\" in one shot and \"dark jacket\" in the next are a common cause of a character changing between cuts."
+      ]
+    },
+    {
+      "h": "Worked example: a 15-second scene in five shots",
+      "body": [
+        "Script: \"Night. A train platform. MAYA ends a phone call. She looks at the departure board. Her train is cancelled. She laughs once, tired, and sits down on her suitcase.\"",
+        "This has five beats, so it gets five shots. The planned lengths add up to 15 seconds.",
+        {
+          "table": {
+            "head": [
+              "Shot",
+              "Size",
+              "Beat",
+              "Seconds"
+            ],
+            "rows": [
+              [
+                "1",
+                "Wide",
+                "Establish the empty platform and Maya on the phone",
+                "3"
+              ],
+              [
+                "2",
+                "Close-up",
+                "She lowers the phone",
+                "3"
+              ],
+              [
+                "3",
+                "Insert",
+                "Departure board flips to CANCELLED",
+                "2"
+              ],
+              [
+                "4",
+                "Medium close-up",
+                "One tired laugh",
+                "3"
+              ],
+              [
+                "5",
+                "Wide",
+                "She sits down on her suitcase",
+                "4"
+              ]
+            ]
+          }
+        },
+        "Here are the prompts for shots 1, 2 and 3. Notice that the character line and the light line are identical in each one.",
+        {
+          "code": "Shot 1 (wide, 3 s)\nWide shot of an empty train platform at night, light rain beyond the roof edge.\nMaya, a woman in her 30s with short black hair and a grey wool coat, stands\nnear the edge talking on a phone, facing screen left, a small red suitcase beside her.\nCold fluorescent light from above, blue-green tones, wet reflective floor.\nStatic camera. Ambient sound: rain and a distant announcement.\n\nShot 2 (close-up, 3 s)\nClose-up at eye level of Maya, a woman in her 30s with short black hair\nand a grey wool coat, facing screen left. She slowly lowers the phone from her ear\nand looks up and to the left. Cold fluorescent light from above, blue-green tones.\nStatic camera, shallow depth of field, platform blurred behind her.\n\nShot 3 (insert, 2 s)\nInsert shot of an old split-flap departure board on a train platform at night.\nThe top line flips and stops on a single word. Cold fluorescent light,\nblue-green tones. Static camera. Sound: clicking split-flap letters.",
+          "lang": "text"
+        },
+        "Two details matter here. In shot 2 she looks up and to the left, and in shot 3 we see the board: the eyeline of one shot sets up the content of the next. And the word on the board is not in the prompt as text to render, because many models still draw letters badly. Generate the board without readable text and add the word CANCELLED as a graphic in the edit."
+      ]
+    },
+    {
+      "h": "Step 3: make keyframes before you make motion",
+      "body": [
+        "Generating video is slower and costs more than generating a still image. A reliable workflow is to make one still keyframe per shot first, check the whole storyboard as a row of pictures, and only then animate each still with image-to-video.",
+        {
+          "ol": [
+            "Generate a character reference image and a location reference image.",
+            "Generate one keyframe per shot, using those references, at the final aspect ratio.",
+            "Lay the keyframes side by side and check faces, clothes, props and light.",
+            "Animate each keyframe with a short motion prompt that describes only what moves.",
+            "Where two shots must join smoothly, use a first-and-last-frame mode so the end of one clip matches the start of the next."
+          ]
+        },
+        "When you animate a keyframe, the image already fixes the look, so the prompt should describe motion and camera, not repeat every visual detail. Official model guides, such as Google's Veo prompt guide, also suggest describing what you want in the frame rather than writing \"no\" or \"don't\" instructions."
+      ]
+    },
+    {
+      "h": "Step 4: write each shot for the cut",
+      "body": [
+        "Each shot will sit between two others, so write its start and its end on purpose. A few editing rules from live-action film work the same way with AI video:",
+        {
+          "ul": [
+            "Keep screen direction. If Maya faces screen left in shot 1, keep her facing left until the story turns her around. Flipping direction between cuts confuses viewers.",
+            "Use the 180-degree rule in dialogue. Keep the camera on one side of the line between two speakers so their positions do not swap.",
+            "Cut on action. End shot 4 as she starts to sit, and start shot 5 halfway down. The motion hides small differences between the clips.",
+            "Plan handles. Ask for a little more time than you need so you can trim the slow start or the drifting end that many generations have.",
+            "Match light. Keep one light description for the whole scene and change it only when the story changes the time or the place."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Common mistakes and limits",
+      "body": [
+        {
+          "ul": [
+            "Writing the whole scene in one prompt. The model compresses or skips beats. One shot per prompt is easier to control and to fix.",
+            "Describing feelings without visible actions. \"She feels hopeless\" is vague; \"she lets the phone drop to her side and stares at the floor\" can be filmed.",
+            "Asking for readable signs, captions or logos inside the shot. Add text in the editor instead.",
+            "Changing the character description between shots. Paste the same block every time.",
+            "Planning complex hand work, fast fights or object physics in one shot. Video models still struggle with hands, contact and cause and effect. Split the action, frame it tighter, or show the result instead of the process."
+          ]
+        },
+        {
+          "note": "Prompt syntax, clip length and reference features differ between tools and change often. The shot card method works with any of them; adapt the wording to the guide of the tool you use."
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "How many shots do I need for a 15-second AI video?",
+      "a": "Usually three to six. Fewer shots feel slow, and many very short shots are hard to keep consistent. Plan by beats, not by a fixed number."
+    },
+    {
+      "q": "Can I write a storyboard prompt for several shots at once?",
+      "a": "Some newer models accept a multi-shot description in one prompt and cut inside the clip. It can work for simple scenes, but you lose control of each shot. For anything you need to fix later, generate shot by shot."
+    },
+    {
+      "q": "Should I draw the storyboard or just write it?",
+      "a": "A written shot list is enough to start. Generating one still keyframe per shot gives you a visual storyboard quickly and lets you fix problems before you spend time on video."
+    },
+    {
+      "q": "Can an AI chatbot turn my script into a shot list?",
+      "a": "Yes, a chatbot such as ChatGPT, Claude, Gemini or DeepSeek can draft a shot list if you give it the shot card fields. Check it yourself: chatbots often add actions the script does not have or forget screen direction."
+    },
+    {
+      "q": "Why does my character look different in every shot?",
+      "a": "Each generation samples a new face and new clothes unless something holds them fixed. Use the same description text, a reference image of the character, and keyframes made from that reference."
+    }
+  ]
+}

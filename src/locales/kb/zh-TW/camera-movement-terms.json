@@ -1,0 +1,307 @@
+{
+  "title": "AI 影片運鏡術語大全：推軌、環繞、升降 — cv.cm",
+  "description": "AI 影片提示詞常用運鏡術語：推軌、橫移、升降、環繞、搖臂、希區考克變焦、移焦等，說明每種運鏡的畫面效果與提示詞寫法。",
+  "h1": "AI 影片提示詞有哪些運鏡術語？",
+  "answer": "運鏡術語是攝影組描述鏡頭怎麼動的行話：搖攝（pan）與俯仰（tilt）是鏡頭原地轉動，推軌（dolly）是前後移動，橫移（truck）是左右移動，升降（pedestal）是上下移動，環繞（orbit）則是繞著主體轉圈。影片模型從附有文字說明的影片學會這些詞，所以指名一種標準運鏡，比寫「電影感鏡頭」好控制得多。",
+  "sections": [
+    {
+      "h": "為什麼用詞要精準",
+      "body": [
+        "影片模型是從描述真實影片的文字說明中學會運鏡語言的。當說明寫著「slow dolly in on her face」，模型就會把這句話和特定的動態對應起來：主體在畫面中變大，背景在後方微微位移。而「dynamic camera」這類含糊的說法對應到所有東西，結果就是隨機混搭。",
+        "下面的術語都是攝影組實際使用的，其中大多數也出現在 Google 的 Veo 提示詞指南裡。研究界也把鏡頭運動視為獨立的控制訊號：Stable Video Diffusion 已證實可搭配鏡頭運動模組，CameraCtrl 則為文字生成影片模型加入精確的鏡頭路徑。這些研究之所以存在，正是因為光靠文字只能做到粗略控制。用對詞，每個鏡頭只選一種運鏡，並預期要多試幾次。",
+        "有兩組詞很容易搞混。搖攝與俯仰是鏡頭原地轉動，就像轉頭；橫移與升降是整台攝影機左右或上下移動，就像側跨一步或站起身。轉動會得到平面的掃視，移動則產生視差（parallax），近處物體會比遠處滑過得更快。"
+      ]
+    },
+    {
+      "h": "運鏡完整對照表",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "運鏡",
+              "畫面上看起來如何",
+              "情緒效果",
+              "提示詞寫法"
+            ],
+            "rows": [
+              [
+                "固定鏡頭（static / locked-off）",
+                "畫面不動，只有主體在動",
+                "平靜、客觀，讓演技撐起鏡頭",
+                "`static shot, locked-off camera on a tripod`"
+              ],
+              [
+                "搖攝（pan）",
+                "鏡頭原地左右轉動，場景橫向掃過",
+                "展現空間，跟隨視線或動作",
+                "`slow pan left across the harbor`"
+              ],
+              [
+                "俯仰（tilt）",
+                "鏡頭原地上下轉動",
+                "向上顯示規模或氣勢，向下帶出發現",
+                "`tilt up from her shoes to her face`"
+              ],
+              [
+                "推軌前進／後退（dolly in / out）",
+                "鏡頭朝主體前進或後退，背景出現視差",
+                "前進聚焦並增加張力，後退製造距離感或孤獨",
+                "`slow dolly in toward the man at the desk`"
+              ],
+              [
+                "橫移（truck left / right）",
+                "鏡頭與場景平行，向側面滑動",
+                "流暢、觀察式，像走過去",
+                "`camera trucks right along the market stalls`"
+              ],
+              [
+                "升降（pedestal up / down）",
+                "鏡頭筆直上升或下降，不做俯仰",
+                "從物體上方或下方溫和地揭露",
+                "`pedestal up from behind the counter to reveal the room`"
+              ],
+              [
+                "變焦拉近／拉遠（zoom in / out）",
+                "鏡頭焦距改變，畫面放大但沒有視差",
+                "平面、客觀，有時顯得突兀",
+                "`slow zoom in, camera stays in place`"
+              ],
+              [
+                "推進（push-in）",
+                "緩慢穩定的推軌前進，通常朝向臉部",
+                "情緒漸強或恍然大悟",
+                "`slow push-in on her eyes as she understands`"
+              ],
+              [
+                "拉開揭示（pull-back reveal）",
+                "鏡頭後退，露出原本在畫面外的東西",
+                "驚訝、交代背景、孤立感",
+                "`pull back to reveal he is alone on a huge empty stage`"
+              ],
+              [
+                "環繞（orbit / arc）",
+                "鏡頭繞著主體轉圈，主體維持在中央",
+                "重要性，英雄式或夢幻的時刻",
+                "`camera orbits slowly around the dancer, half circle`"
+              ],
+              [
+                "搖臂（crane / jib）",
+                "鏡頭沿大弧線升起或下降，常在高處",
+                "壯闊的開場或收尾，規模感",
+                "`crane shot rising up over the crowd to a wide view`"
+              ],
+              [
+                "跟拍（tracking / follow）",
+                "鏡頭與移動中的主體保持同樣距離一起移動",
+                "動能，與角色同行",
+                "`tracking shot following her from behind as she runs`"
+              ],
+              [
+                "手持（handheld）",
+                "輕微晃動與漂移，像有人扛著機器拍",
+                "真實感、急迫感、紀錄片風格",
+                "`handheld camera, slight natural shake`"
+              ],
+              [
+                "甩鏡（whip pan）",
+                "非常快速的搖攝，帶動態模糊",
+                "能量、注意力快速轉移、轉場",
+                "`fast whip pan to the door`"
+              ],
+              [
+                "希區考克變焦（dolly zoom / vertigo effect）",
+                "主體大小不變，背景被拉長或壓縮",
+                "震驚、暈眩、世界在位移",
+                "`dolly zoom on his face, background stretches away`"
+              ],
+              [
+                "移焦（rack focus）",
+                "焦點從一個景深移到另一個，鏡頭不動",
+                "轉移注意力，連結兩個主體",
+                "`rack focus from the ring in the foreground to her face`"
+              ],
+              [
+                "傾斜構圖（Dutch angle）",
+                "鏡頭向一側翻轉，地平線傾斜",
+                "不安，有事不對勁",
+                "`dutch angle, horizon tilted 20 degrees`"
+              ],
+              [
+                "主觀視角（POV）",
+                "看到的就是角色所見，畫面中常有雙手",
+                "沉浸感、代入感",
+                "`first-person POV, his hands on the steering wheel`"
+              ],
+              [
+                "FPV 空拍機",
+                "快速、低空、俯衝穿梭的飛行",
+                "速度、刺激、連續的旅程",
+                "`FPV drone shot diving off the cliff and skimming the waves`"
+              ]
+            ]
+          }
+        },
+        "幾種較難的運鏡補充說明。變焦拉近與推軌前進可能停在相同的構圖，但只有推軌會產生視差，感覺像是穿越空間。希區考克變焦是兩者同時以相反方向進行，對模型來說很困難；請單獨使用、選簡單的主體，並多生成幾次。傾斜構圖和主觀視角屬於取景選擇而非運鏡，但在提示詞裡寫在同一個位置。"
+      ]
+    },
+    {
+      "h": "景別",
+      "body": [
+        "景別決定主體在畫面中佔多大。它是提示詞中最先要定下來的項目，因為它決定了模型要畫出多少細節。",
+        {
+          "table": {
+            "head": [
+              "景別",
+              "畫面內容",
+              "適合用於"
+            ],
+            "rows": [
+              [
+                "大遠景／定場鏡頭（extreme wide / establishing）",
+                "整個場地，人物很小",
+                "開場、規模感、地理位置"
+              ],
+              [
+                "遠景／全身景（wide / full shot）",
+                "從頭到腳的全身，帶周圍環境",
+                "動作、舞蹈、打鬥、服裝"
+              ],
+              [
+                "中景（medium shot）",
+                "腰部以上",
+                "對話、手勢、大部分對白"
+              ],
+              [
+                "中近景（medium close-up）",
+                "胸部以上",
+                "情緒加上一些肢體語言"
+              ],
+              [
+                "特寫（close-up）",
+                "臉部或單一物件",
+                "反應、情緒、重要道具"
+              ],
+              [
+                "大特寫（extreme close-up）",
+                "單一細節：眼睛、指尖、一滴水",
+                "強度、質感、線索"
+              ],
+              [
+                "過肩鏡頭（over-the-shoulder）",
+                "越過一人的肩膀看向另一人",
+                "雙人對話"
+              ]
+            ]
+          }
+        },
+        "對 AI 影片來說，臉部的近景通常比人群的遠景更穩定，因為模型需要維持一致的小人物比較少。手和手指在動作簡單的特寫中看起來最好，或讓它們只露出一部分。"
+      ]
+    },
+    {
+      "h": "鏡頭角度",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "角度",
+              "攝影機位置",
+              "效果"
+            ],
+            "rows": [
+              [
+                "平視（eye level）",
+                "與主體眼睛同高",
+                "中性、誠實"
+              ],
+              [
+                "仰角（low angle）",
+                "從下方往上拍",
+                "力量、威脅、英雄感"
+              ],
+              [
+                "俯角（high angle）",
+                "從上方往下拍",
+                "弱小、脆弱、俯瞰全局"
+              ],
+              [
+                "鳥瞰／正上方（bird's-eye / top-down）",
+                "從正上方垂直向下",
+                "圖案感、像地圖、疏離"
+              ],
+              [
+                "蟲眼視角（worm's-eye）",
+                "貼著地面陡峭地往上拍",
+                "巨大的規模、戲劇性"
+              ],
+              [
+                "傾斜角度（Dutch / canted）",
+                "向一側翻轉",
+                "緊張、失去方向感"
+              ]
+            ]
+          }
+        },
+        "角度可以和運鏡組合。「Low angle, slow tracking shot」是清楚的指令：角度決定位置，運鏡決定路徑。"
+      ]
+    },
+    {
+      "h": "怎麼把運鏡寫進提示詞",
+      "body": [
+        {
+          "ol": [
+            "從鏡頭這一行開頭：景別、角度、運鏡、速度。例如：`Medium close-up, eye level, slow push-in.`",
+            "指名運鏡的目標：推向什麼、繞著誰轉、從哪裡搖到哪裡。",
+            "給運鏡速度和終點：「緩慢地」「貫穿整個片段」「停在她的臉上」。",
+            "主體動作另外描述；如果運鏡幅度大，動作就保持小。",
+            "只在有影響時才加鏡頭用語：`shallow depth of field`、`wide-angle lens`、`telephoto compression`。"
+          ]
+        },
+        {
+          "code": "Wide shot, low angle, slow crane up.\nA lighthouse on a rocky coast at sunset; waves break on the rocks below.\nThe camera rises from the rocks to above the lighthouse lamp, ending on a\nwide view of the sea. Warm orange light, long shadows, light sea mist.\nAudio: waves, wind, seagulls.",
+          "lang": "text"
+        },
+        "如果手上只有一張照片，也可以不靠影片模型做出運鏡。例如 cv.cm 的 `v` 工具會從照片估算深度，渲染出真正的 3D 推、拉、環繞、搖攝或升起。移動的是鏡頭，主體保持不動。這是在你自己的照片上快速看清各種運鏡效果的好方法。"
+      ]
+    },
+    {
+      "h": "模型常犯的錯",
+      "body": [
+        {
+          "ul": [
+            "複合運鏡：「orbit while craning up and zooming」通常會得到扭曲或搖晃的路徑。只用一種運鏡。",
+            "速度：「fast」的運鏡可能讓臉部模糊或變形。快速運鏡更適合風景和空曠的空間。",
+            "變焦與推軌：許多模型把兩者都當成「靠近一點」。如果需要視差，除了「dolly in」之外，也要寫「camera moves forward」。",
+            "完整環繞：360 度環繞等於要求模型憑空編造每樣東西的背面。半圈或短弧線比較保險。",
+            "移焦與希區考克變焦：這些是光學效果，截至撰寫時各模型的結果不一。在圍繞它們規劃整個段落之前，先測試看看。",
+            "手持：有些模型會加太多晃動。請寫「slight」或「subtle」。"
+          ]
+        },
+        {
+          "note": "如果工具提供滑桿或預設的鏡頭控制，就用它們取代文字。數值控制比一個詞更能被精準遵循。"
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "搖攝和橫移有什麼不同？",
+      "a": "搖攝是鏡頭固定在一個位置左右轉動；橫移是整台攝影機往側面移動，所以近處和遠處的物體會以不同速度滑過。"
+    },
+    {
+      "q": "變焦和推軌有什麼不同？",
+      "a": "變焦是改變鏡頭焦距來放大畫面，攝影機本身不動，所以沒有視差。推軌是讓攝影機穿越空間，所以背景會相對主體位移。"
+    },
+    {
+      "q": "希區考克變焦用在什麼場合？",
+      "a": "它讓主體大小不變，背景卻像被拉長或壓縮，用來表現震驚或突然的領悟。也稱為暈眩效果（vertigo effect）。"
+    },
+    {
+      "q": "什麼運鏡能營造緊張感？",
+      "a": "朝臉部緩慢推進能累積張力，手持晃動或傾斜構圖則增添不安。主體動作保持小，讓運鏡負責傳達情緒。"
+    },
+    {
+      "q": "空拍影片中的 FPV 是什麼意思？",
+      "a": "FPV 是第一人稱視角（first-person view）：飛手戴著護目鏡操控，所以畫面快速、低空、俯衝穿梭。提示詞裡的「FPV drone shot」就是要這種風格，和平穩的高空俯拍不同。"
+    }
+  ]
+}

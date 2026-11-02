@@ -1,0 +1,206 @@
+{
+  "title": "IA de imagen a video: fotograma inicial, prompts de movimiento y paralaje — cv.cm",
+  "description": "Cómo la IA de imagen a video anima una foto: elegir la imagen inicial, escribir prompts solo de movimiento y el método de paralaje 2.5D, que mueve la cámara y no el sujeto.",
+  "h1": "¿Cómo funciona la IA de imagen a video?",
+  "answer": "La IA de imagen a video toma tu imagen como primer fotograma y genera los siguientes, guiada por un prompt breve sobre el movimiento. El aspecto viene de la imagen, así que el prompt solo debe decir qué se mueve y cómo se mueve la cámara. Un método más sencillo, el paralaje 2.5D, estima la profundidad y mueve una cámara virtual: la escena se vuelve 3D, pero nada dentro de ella se mueve.",
+  "sections": [
+    {
+      "h": "En qué se diferencia del texto a video",
+      "body": [
+        "En el texto a video el modelo se inventa todo: el rostro, la ropa, la habitación, la luz y el movimiento. En la imagen a video tú pones el primer fotograma y el modelo solo tiene que inventar lo que ocurre después. La documentación de Veo de Google lo describe como usar una imagen existente como primer fotograma de un video nuevo; la guía de Sora de OpenAI habla de anclar el primer fotograma.",
+        "Esto cambia para qué sirve el prompt. La imagen ya responde a quién, dónde y en qué estilo. El prompt responde a qué se mueve, en qué dirección, a qué velocidad y qué hace la cámara.",
+        {
+          "table": {
+            "head": [
+              "Aspecto",
+              "Texto a video",
+              "Imagen a video"
+            ],
+            "rows": [
+              [
+                "Origen del aspecto visual",
+                "El prompt",
+                "Tu imagen"
+              ],
+              [
+                "Qué describe el prompt",
+                "Sujeto, escena, estilo, movimiento, cámara, sonido",
+                "Sobre todo movimiento, cámara y sonido"
+              ],
+              [
+                "Coherencia de un rostro o producto",
+                "Varía entre tomas",
+                "Fuerte al principio, puede desviarse más adelante en el clip"
+              ],
+              [
+                "Preparación",
+                "Ninguna",
+                "Crear o elegir una buena imagen inicial"
+              ],
+              [
+                "Uso típico",
+                "Explorar ideas",
+                "Animar un aspecto ya definido, fotos de producto, personajes a lo largo de varios planos"
+              ]
+            ]
+          }
+        },
+        "Dentro del modelo, la imagen inicial se codifica y se introduce como condición junto con el texto. Stable Video Diffusion, un modelo abierto, se publicó con variantes de texto a video y de imagen a video construidas sobre la misma base de difusión de video latente."
+      ]
+    },
+    {
+      "h": "Cómo elegir la imagen inicial",
+      "body": [
+        "La imagen inicial decide más que el prompt. La mayoría de los clips fallidos de imagen a video se deben a una imagen inicial que no dejaba espacio para el movimiento.",
+        {
+          "ul": [
+            "Ajusta la relación de aspecto de salida. Si la herramienta genera en 16:9 o 9:16, dale esa forma; otros tamaños pueden recortarse o redimensionarse. La documentación de Veo de Google recomienda una entrada de al menos 720p en 16:9 o 9:16.",
+            "Deja espacio para el movimiento. Si la persona va a caminar hacia la derecha, deja sitio a la derecha. Si la cámara va a hacer un push-in, el rostro no debería llenar ya el encuadre.",
+            "Pon la pose del inicio de la acción. Para «she turns to look at the camera», empieza con ella mirando hacia otro lado.",
+            "Sujeto nítido y claro. Los rostros borrosos o diminutos empeoran al animarse.",
+            "Manos sencillas. Las manos ocultas, relajadas o sin sostener nada se animan con más limpieza.",
+            "Nada de texto que necesites conservar. Los logotipos y carteles pueden deformarse cuando el encuadre empieza a moverse."
+          ]
+        },
+        "Si creas la imagen inicial con un modelo de imágenes, genérala para el plano, no como un póster terminado: una pose natural, una fuente de luz creíble y espacio alrededor del sujeto."
+      ]
+    },
+    {
+      "h": "Cómo escribir el prompt de movimiento",
+      "body": [
+        "Describe solo lo que cambia. Repetir la descripción de la imagen añade palabras que el modelo no necesita y puede hacer que se quede quieto. Los ejemplos de la documentación de imagen a video de Google son líneas cortas de movimiento, como un animal que se mueve con naturalidad o flores que se mecen suavemente.",
+        {
+          "code": "Weak:\nA beautiful woman with long red hair in a green dress standing in a field\nof flowers at sunset, highly detailed.\n\nStrong:\nShe slowly turns her head toward the camera and smiles. A light breeze\nmoves her hair and the flowers. Slow dolly in. Audio: wind, distant birds.",
+          "lang": "text"
+        },
+        {
+          "ol": [
+            "Movimiento del sujeto: una acción, con velocidad y punto final.",
+            "Movimiento secundario: pequeños detalles que dan vida a la escena, como el pelo, las hojas, el vapor o el agua.",
+            "Cámara: un movimiento o cámara fija. Consulta la guía de movimientos de cámara.",
+            "Audio, si el modelo genera sonido."
+          ]
+        },
+        "Mantén el movimiento físicamente posible desde la pose inicial. Una persona sentada en la imagen no puede estar corriendo con naturalidad dos segundos después. Si la acción es grande, usa una herramienta de primer y último fotograma y dale también la pose final."
+      ]
+    },
+    {
+      "h": "El método de paralaje 2.5D: mapa de profundidad más movimiento de cámara",
+      "body": [
+        "Hay una segunda forma, mucho más sencilla, de mover una foto, y no es video generativo en absoluto. A menudo se llama efecto Ken Burns en 3D, por un artículo de 2019 de Niklaus y colaboradores.",
+        {
+          "ol": [
+            "Estimar la profundidad. Un modelo de profundidad, como Depth Anything V2, predice para cada píxel a qué distancia está de la cámara.",
+            "Convertir la foto en una capa 3D. Cada píxel se desplaza hacia atrás según su profundidad, de modo que la foto pasa a ser un relieve poco profundo y no una hoja plana.",
+            "Mover una cámara virtual. La cámara se acerca, se aleja, orbita o hace una panorámica. Los píxeles cercanos se desplazan más que los lejanos; eso es el paralaje, y el cerebro lo interpreta como profundidad.",
+            "Rellenar los huecos. Al moverse la cámara, puede ver zonas que estaban ocultas detrás del sujeto. Las herramientas sencillas estiran los píxeles vecinos o amplían un poco la imagen para disimular los bordes; los sistemas de investigación, como el del artículo de 3D Ken Burns, reconstruyen las zonas ocultas (inpainting)."
+          ]
+        },
+        "Es el método que usa la herramienta `v` de cv.cm. Ejecuta Depth Anything V2 en tu navegador, genera el paralaje con la GPU a lo largo de una trayectoria de acercamiento, alejamiento, órbita, panorámica o ascenso, y exporta un MP4. La cámara se mueve; el sujeto no parpadea, ni camina, ni habla. También puedes ver antes el propio mapa de profundidad con la herramienta `depth-map` de cv.cm.",
+        {
+          "table": {
+            "head": [
+              "Aspecto",
+              "Imagen a video generativo",
+              "Paralaje 2.5D"
+            ],
+            "rows": [
+              [
+                "Qué se mueve",
+                "El sujeto, la escena y la cámara",
+                "Solo la cámara"
+              ],
+              [
+                "Fidelidad a la foto",
+                "Puede cambiar rostros y detalles",
+                "Cada píxel procede de tu foto"
+              ],
+              [
+                "Problemas típicos",
+                "Deformaciones, física extraña, deriva",
+                "Bordes estirados alrededor del sujeto si el movimiento es grande"
+              ],
+              [
+                "Hardware",
+                "Normalmente un servicio en la nube",
+                "Puede ejecutarse en un navegador"
+              ],
+              [
+                "Ideal para",
+                "Escenas con vida, personajes que actúan",
+                "Retratos, paisajes, fotos de producto, presentaciones"
+              ]
+            ]
+          }
+        },
+        "El paralaje funciona mejor con fotos que tienen capas de profundidad claras: una persona delante de un fondo lejano, un producto sobre una mesa, una calle que se aleja en la distancia. Funciona mal con sujetos planos, como un documento o una pared, porque no hay profundidad que la cámara pueda revelar."
+      ]
+    },
+    {
+      "h": "Problemas frecuentes y soluciones",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Problema",
+              "Causa probable",
+              "Solución"
+            ],
+            "rows": [
+              [
+                "Casi nada se mueve",
+                "El prompt describe la imagen, no el movimiento",
+                "Escribe solo el movimiento y usa verbos fuertes"
+              ],
+              [
+                "El rostro cambia al final",
+                "Movimiento amplio o clip largo",
+                "Clip más corto, acción más pequeña, fotograma inicial más cercano"
+              ],
+              [
+                "El cuerpo se dobla o se deforma",
+                "Acción imposible desde la pose inicial",
+                "Cambia la pose inicial o añade un último fotograma"
+              ],
+              [
+                "Los bordes se emborronan en el paralaje",
+                "El movimiento de cámara es demasiado fuerte para la profundidad",
+                "Usa un movimiento más suave o una foto con un fondo más limpio"
+              ],
+              [
+                "Relación de aspecto incorrecta, sujeto recortado",
+                "La forma de entrada difiere de la de salida",
+                "Recorta antes la imagen inicial a la relación de salida"
+              ]
+            ]
+          }
+        },
+        {
+          "note": "Anima solo fotos que tengas derecho a usar y no animes a personas reales sin su consentimiento. Un rostro en movimiento es mucho más convincente que una imagen fija, lo que facilita el mal uso."
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "¿Puedo convertir una foto en video gratis?",
+      "a": "Sí, con una herramienta de paralaje que se ejecute en el navegador y mueva una cámara por la foto. También existen planes gratuitos de herramientas generativas, pero suelen limitar cuántos clips puedes crear."
+    },
+    {
+      "q": "¿Por qué mi clip de imagen a video cambia el rostro de la persona?",
+      "a": "El modelo regenera todos los fotogramas después del primero, y la identidad se desvía a medida que crece el movimiento. Usa una imagen inicial clara y de frente, un clip corto y un movimiento pequeño."
+    },
+    {
+      "q": "¿Necesito un prompt para imagen a video?",
+      "a": "Muchas herramientas aceptan un prompt vacío y eligen por su cuenta un movimiento suave. Un prompt breve de movimiento te da control sobre qué se mueve y cómo se comporta la cámara."
+    },
+    {
+      "q": "¿Qué diferencia hay entre imagen a video y el efecto Ken Burns?",
+      "a": "El efecto Ken Burns clásico hace una panorámica y un zoom sobre una foto plana. La versión 3D añade profundidad, de modo que las partes cercanas y lejanas se mueven distinto. La imagen a video generativa va más allá y hace que se mueva el propio sujeto."
+    },
+    {
+      "q": "¿Puede la imagen a video hacer que alguien hable?",
+      "a": "Algunos modelos generativos y herramientas específicas de cabezas parlantes pueden animar los labios con un audio. Las herramientas de paralaje no, porque solo mueven la cámara."
+    }
+  ]
+}

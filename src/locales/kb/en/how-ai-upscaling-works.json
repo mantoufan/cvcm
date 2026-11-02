@@ -1,0 +1,138 @@
+{
+  "title": "How AI Image Upscaling Works: Super-Resolution Explained — cv.cm",
+  "description": "How AI upscaling works: why bicubic blurs, how SRCNN, GAN and Real-ESRGAN models invent detail, 2x vs 4x, photo vs anime models, and when upscaling fails.",
+  "h1": "How does AI image upscaling work?",
+  "answer": "AI upscaling, or super-resolution, uses a neural network trained on pairs of small and large images to predict the missing pixels when it enlarges a picture. Instead of averaging neighbors like bicubic resizing, it draws plausible edges and textures it learned from training. The extra detail looks sharp but is invented, so it improves appearance, not factual information.",
+  "sections": [
+    {
+      "h": "Classic resizing versus AI upscaling",
+      "body": [
+        "When you enlarge a 500-pixel image to 2000 pixels, three out of every four pixels in each direction did not exist before. Something has to decide their values.",
+        "Classic methods calculate them from nearby pixels. Nearest neighbor copies the closest pixel, which gives blocky edges. Bilinear and bicubic take a weighted average of neighbors, which gives smooth but soft results: an edge that was sharp in the small image becomes a gradual ramp in the large one. These methods are fast, predictable and never invent anything.",
+        "AI upscalers learn what sharp images usually look like. During training, the model sees many high-resolution images and versions of the same images that were made smaller and worse. It learns to map the small version back to the large one. At use time it applies that learned mapping, so it can draw a crisp edge, hair strands or brick texture where a simple average would only blur.",
+        {
+          "table": {
+            "head": [
+              "Method",
+              "How it fills new pixels",
+              "Look",
+              "Invents detail?"
+            ],
+            "rows": [
+              [
+                "Nearest neighbor",
+                "Copies the closest pixel",
+                "Blocky, pixelated",
+                "No"
+              ],
+              [
+                "Bicubic",
+                "Weighted average of 16 neighbors",
+                "Smooth, soft edges",
+                "No"
+              ],
+              [
+                "CNN trained for accuracy (SRCNN-style)",
+                "Learned mapping, trained to match pixels",
+                "Sharper than bicubic, still slightly smooth",
+                "Little"
+              ],
+              [
+                "GAN-based (ESRGAN, Real-ESRGAN)",
+                "Learned mapping plus a critic that rewards realistic texture",
+                "Crisp edges and texture",
+                "Yes"
+              ],
+              [
+                "Diffusion-based",
+                "Generates a large image conditioned on the small one",
+                "Very detailed, can change content",
+                "Yes, the most"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "From SRCNN to GANs: why sharp beats accurate",
+      "body": [
+        "SRCNN was one of the first deep networks for super-resolution: a small convolutional network trained end to end to turn a low-resolution image into a high-resolution one. Models like it were trained to minimize the pixel-by-pixel difference from the real image. That gives good scores on measures such as PSNR, but the results look smooth. When the network is unsure whether an edge goes slightly left or right, the safest answer under that loss is an average of both, which is a blur.",
+        "SRGAN changed the goal. It added a second network, a discriminator, that learns to tell real high-resolution photos from upscaled ones. The upscaler is rewarded for fooling it, so it produces sharp, realistic texture even if the exact pixels differ from the original. The SRGAN authors noted that error-minimizing methods often lack high-frequency detail and look unsatisfying to people. ESRGAN improved the network design, the adversarial training and the perceptual loss, and became the base for many later tools."
+      ]
+    },
+    {
+      "h": "What Real-ESRGAN adds: training on realistic damage",
+      "body": [
+        "Early models were trained on images that were simply shrunk with bicubic resizing. Real photos are damaged in more ways: camera blur, sensor noise, JPEG compression, resizing several times, sharpening halos. A model trained only on clean shrinking does not know how to handle those, and it often enlarges the noise along with the detail.",
+        "Real-ESRGAN, by the same research group, keeps the ESRGAN generator but changes the training data. It builds training pairs from clean images with a high-order degradation process: it applies blur, resizing, noise and JPEG compression, and then repeats the sequence a second time, to imitate images that were saved and shared many times. It also simulates ringing and overshoot artifacts around edges. A stronger discriminator, a U-Net with spectral normalization, judges detail at each pixel. All the training data is synthetic, so no real low and high-resolution photo pairs are needed.",
+        "The result is a model that removes compression blocks and noise while it enlarges, which is why it works well on old web images, screenshots and phone photos. Separate weights are usually trained for anime and illustration, because flat colors and clean lines need different texture than photographs.",
+        "For example, cv.cm's image upscaler runs a compact Real-ESRGAN model in your browser at 2x or 4x, with a photo and an anime option, so the image never leaves your device."
+      ]
+    },
+    {
+      "h": "How to upscale well, step by step",
+      "body": [
+        {
+          "ol": [
+            "Start from the best source you have. Use the original file, not a screenshot or a version that has been re-sent through messaging apps.",
+            "Crop first. Upscaling only the part you need is faster and uses less memory.",
+            "Pick the model for the content: a photo model for photographs, an anime or illustration model for drawings, line art and game art.",
+            "Choose the smallest factor that reaches your target. If you need 1600 pixels from 800, use 2x, not 4x and then shrink.",
+            "Compare at 100% zoom with the original. Look at faces, text, hair and fine patterns, where invented detail shows first.",
+            "If the result looks too smooth or plastic, blend it with a bicubic enlargement in an editor, or add a little grain.",
+            "Save as PNG or high-quality JPEG. Strong JPEG compression after upscaling brings the blocks back."
+          ]
+        },
+        {
+          "note": "2x then 2x again is not the same as 4x once. Each pass invents detail on top of invented detail, and artifacts compound. Use one pass at the needed factor when the model offers it."
+        }
+      ]
+    },
+    {
+      "h": "Diffusion upscalers and creative upscaling",
+      "body": [
+        "A newer group of upscalers uses diffusion. SR3, for example, starts from noise and refines it step by step into a high-resolution image, conditioned on the low-resolution input. Many image generators also offer a creative or detail-adding upscale that runs image-to-image on an enlarged picture with a prompt.",
+        "These methods can produce far more detail than a GAN upscaler, which is useful for AI art. The trade-off is control: with more freedom they can change faces, add objects, rewrite small text or alter the texture of materials. For documents, products, evidence or any picture that must stay true to the original, prefer a GAN upscaler or classic resizing. Use diffusion upscaling when looking good matters more than staying faithful."
+      ]
+    },
+    {
+      "h": "Limits: what upscaling cannot do",
+      "body": [
+        {
+          "ul": [
+            "It cannot recover information that is not in the image. A face that is ten pixels wide becomes a plausible face, not the actual person. Do not use AI upscaling to identify people, read license plates or produce evidence.",
+            "Text is risky. Small, blurry letters may become different letters that look sharp and convincing.",
+            "Heavy blur and motion blur are hard. Upscalers are trained on certain kinds of damage; extreme cases come out smeared or painted.",
+            "Repeating patterns such as fabric, grass or brick can turn into artificial textures.",
+            "Over-smoothing on skin. Photo models sometimes remove pores and fine wrinkles, which looks like heavy retouching.",
+            "Large factors need lots of memory. A 4x upscale has 16 times the pixels of the input, so large images may need to be processed in tiles."
+          ]
+        },
+        "Used with those limits in mind, an AI upscaler is the right last step for AI-generated images, old small photos and web graphics that need to be printed or shown on large screens."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Is AI upscaling better than Photoshop resize?",
+      "a": "For enlarging, usually yes in appearance, because it draws sharp edges and texture instead of blurring. Classic resizing is still better when you must not add any invented detail."
+    },
+    {
+      "q": "Can AI upscaling restore an old blurry photo?",
+      "a": "It can reduce blur, noise and compression and make the photo look sharper. It cannot recover the real details that were lost, so faces and text may change slightly."
+    },
+    {
+      "q": "Should I choose 2x or 4x?",
+      "a": "Choose the smallest factor that reaches the size you need. 4x takes more time and memory and invents more detail, which also means more chances for artifacts."
+    },
+    {
+      "q": "Why does my upscaled image look like a painting?",
+      "a": "The model replaced fine, noisy texture with smooth learned texture. Try a different model, a smaller factor, or blend the result with a normal enlargement and add light grain."
+    },
+    {
+      "q": "Does AI upscaling increase DPI for printing?",
+      "a": "DPI is only a label; what matters is the pixel count at the print size. Upscaling adds pixels, so a 4x upscale lets you print about four times wider at the same sharpness, within the model's limits."
+    }
+  ]
+}

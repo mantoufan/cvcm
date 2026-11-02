@@ -1,20 +1,23 @@
 import type { Locale } from "./locale";
 import type { ToolId, TutorialId } from "./path";
 import { CODE_ARTICLES, CODE_GROUPS, CODE_TOOLS, type CodeId } from "./kb-code";
+import { AI_ARTICLES, AI_ARTICLE_TOOLS, AI_GROUPS, type AiId } from "./kb-ai";
 import { KB_MINUTES, KB_UPDATED } from "../locales/kb/meta";
 
-export { CODE_ARTICLES };
+export { AI_ARTICLES, CODE_ARTICLES };
 
 /**
- * Two shelves of articles under the tutorials, rendered the same way:
+ * Three shelves of articles under the tutorials, rendered the same way:
  * - knowledge: plain explanations of the formats, encodings and numbers the tools work with, `/{locale}/learn/knowledge/{id}/`.
  *   Tutorials say how; these say what and why.
  * - code: programming languages, design patterns, data structures and algorithms, `/{locale}/learn/code/{id}/` (src/shared/kb-code.ts).
+ * - ai: generative AI concepts, prompts, image, video and audio workflows, AI law, `/{locale}/learn/ai/{id}/` (src/shared/kb-ai.ts).
  */
 export const KB_SEGMENT = "knowledge";
 export const CODE_SEGMENT = "code";
+export const AI_SEGMENT = "ai";
 
-export type KbShelf = "knowledge" | "code";
+export type KbShelf = "knowledge" | "code" | "ai";
 
 export const KNOWLEDGE_ARTICLES = [
   "what-is-heic",
@@ -38,20 +41,21 @@ export const KNOWLEDGE_ARTICLES = [
 ] as const;
 
 export type KnowledgeId = (typeof KNOWLEDGE_ARTICLES)[number];
-export type { CodeId };
-export type KbId = KnowledgeId | CodeId;
+export type { AiId, CodeId };
+export type KbId = KnowledgeId | CodeId | AiId;
 
-/** Every article of both shelves, knowledge first, each shelf in hub order. */
-export const KB_ARTICLES: readonly KbId[] = [...KNOWLEDGE_ARTICLES, ...CODE_ARTICLES];
+/** Every article of every shelf, knowledge first, then coding, then AI, each shelf in hub order. */
+export const KB_ARTICLES: readonly KbId[] = [...KNOWLEDGE_ARTICLES, ...CODE_ARTICLES, ...AI_ARTICLES];
 
-/** A shelf hub: "hub" is the knowledge hub, "code" the coding hub. */
-export type KbHub = "hub" | "code";
+/** A shelf hub: "hub" is the knowledge hub, "code" the coding hub, "ai" the AI hub. */
+export type KbHub = "hub" | "code" | "ai";
 
 /** A kb page: a hub, one article, or none. */
 export type KbPage = KbId | KbHub | null;
 
 export type CodeGroupId = "languages" | "patterns" | "structures" | "algorithms";
-export type KbGroupId = "files" | "data" | "time" | "money" | CodeGroupId;
+export type AiGroupId = "basics" | "prompts" | "image" | "video" | "audio" | "dev" | "trust";
+export type KbGroupId = "files" | "data" | "time" | "money" | CodeGroupId | AiGroupId;
 
 const KNOWLEDGE_GROUPS: readonly { id: KbGroupId; articles: readonly KbId[] }[] = [
   { id: "files", articles: ["what-is-heic", "jpg-vs-png-vs-webp", "what-is-exif", "dpi-vs-ppi", "aspect-ratios", "why-pdf-files-are-large"] },
@@ -63,7 +67,15 @@ const KNOWLEDGE_GROUPS: readonly { id: KbGroupId; articles: readonly KbId[] }[] 
 export const KB_GROUPS: readonly { id: KbGroupId; shelf: KbShelf; articles: readonly KbId[] }[] = [
   ...KNOWLEDGE_GROUPS.map((group) => ({ ...group, shelf: "knowledge" as const })),
   ...CODE_GROUPS.map((group) => ({ ...group, shelf: "code" as const })),
+  ...AI_GROUPS.map((group) => ({ ...group, shelf: "ai" as const })),
 ];
+
+/** Per shelf: URL segment, hub page and the data-nav of hub links (main.ts prefetches the kb pack on hover). */
+export const KB_SHELVES: Record<KbShelf, { segment: string; hub: KbHub; nav: string }> = {
+  knowledge: { segment: KB_SEGMENT, hub: "hub", nav: "knowledge" },
+  code: { segment: CODE_SEGMENT, hub: "code", nav: "coding" },
+  ai: { segment: AI_SEGMENT, hub: "ai", nav: "ai-learn" },
+};
 
 export type KbSource = { title: string; href: string };
 
@@ -268,46 +280,50 @@ const KNOWLEDGE_META: Record<KnowledgeId, KbMeta> = {
   },
 };
 
-type CodeShelf = {
-  meta: Record<CodeId, KbMeta>;
-  updated: Record<CodeId, Record<Locale, string>>;
-  minutes: Record<CodeId, Record<Locale, number>>;
+/** Meta of a shelf that loads with the kb packs instead of the entry chunk (coding: kb-code-meta.ts, AI: kb-ai-meta.ts). */
+type LazyShelf<Id extends KbId> = {
+  meta: Record<Id, KbMeta>;
+  updated: Record<Id, Record<Locale, string>>;
+  minutes: Record<Id, Record<Locale, number>>;
 };
 
-let codeShelf: CodeShelf | null = null;
+type LazyShelfId = Exclude<KbShelf, "knowledge">;
 
-/** Called by src/shared/kb-code-meta.ts, which loads with the kb packs (and in the Worker, build scripts and tests). */
-export function registerCodeShelf(shelf: CodeShelf): void {
-  codeShelf = shelf;
+const lazyShelves: { code?: LazyShelf<CodeId>; ai?: LazyShelf<AiId> } = {};
+
+/** Called by src/shared/kb-code-meta.ts and kb-ai-meta.ts, which load with the kb packs (and in the Worker, build scripts and tests). */
+export function registerShelf(shelf: "code", data: LazyShelf<CodeId>): void;
+export function registerShelf(shelf: "ai", data: LazyShelf<AiId>): void;
+export function registerShelf(shelf: LazyShelfId, data: LazyShelf<CodeId> | LazyShelf<AiId>): void {
+  (lazyShelves as Record<LazyShelfId, unknown>)[shelf] = data;
 }
 
-function code(): CodeShelf {
-  if (!codeShelf) throw new Error("coding shelf meta not loaded: import src/shared/kb-code-meta");
-  return codeShelf;
+function lazy(id: KbId): LazyShelf<KbId> | null {
+  const shelf = kbShelfOf(id);
+  if (shelf === "knowledge") return null;
+  const data = lazyShelves[shelf];
+  if (!data) throw new Error(`${shelf} shelf meta not loaded: import src/shared/kb-${shelf}-meta`);
+  return data as LazyShelf<KbId>;
 }
 
-/** Sources, links and publish date; coding articles need the kb pack (kb-code-meta) loaded. */
+/** Sources, links and publish date; coding and AI articles need the kb pack (kb-code-meta, kb-ai-meta) loaded. */
 export function kbMeta(id: KbId): KbMeta {
-  return isCodeId(id) ? code().meta[id] : KNOWLEDGE_META[id];
+  return lazy(id)?.meta[id] ?? KNOWLEDGE_META[id as KnowledgeId];
 }
 
 /** When this locale's page last changed (from `npm run kb:sync`). */
 export function kbUpdatedOn(id: KbId, locale: Locale): string {
-  return isCodeId(id) ? code().updated[id][locale] : KB_UPDATED[id][locale];
+  return lazy(id)?.updated[id][locale] ?? KB_UPDATED[id as KnowledgeId][locale];
 }
 
 /** Reading time in minutes (from `npm run kb:sync`). */
 export function kbMinutesOf(id: KbId, locale: Locale): number {
-  return isCodeId(id) ? code().minutes[id][locale] : KB_MINUTES[id][locale];
+  return lazy(id)?.minutes[id][locale] ?? KB_MINUTES[id as KnowledgeId][locale];
 }
 
 const PLACE = new Map<string, { group: KbGroupId; shelf: KbShelf }>(
   KB_GROUPS.flatMap((group) => group.articles.map((id) => [id, { group: group.id, shelf: group.shelf }] as const)),
 );
-
-function isCodeId(id: KbId): id is CodeId {
-  return PLACE.get(id)!.shelf === "code";
-}
 
 export function isKbId(value: string): value is KbId {
   return PLACE.has(value);
@@ -323,12 +339,12 @@ export function kbShelfOf(id: KbId): KbShelf {
 
 /** The article a page shows, or null on a hub. */
 export function kbArticleOf(page: KbPage): KbId | null {
-  return page === null || page === "hub" || page === "code" ? null : page;
+  return page === null || page === "hub" || page === "code" || page === "ai" ? null : page;
 }
 
 /** The shelf a page belongs to (null and "hub" are the knowledge hub). */
 export function kbShelfOfPage(page: KbPage): KbShelf {
-  if (page === "code") return "code";
+  if (page === "code" || page === "ai") return page;
   const id = kbArticleOf(page);
   return id ? kbShelfOf(id) : "knowledge";
 }
@@ -339,7 +355,7 @@ export function kbGroupsOf(shelf: KbShelf): readonly { id: KbGroupId; shelf: KbS
 
 /** Articles of a shelf that use this tool, in hub order: tool pages link to them. */
 export function kbForTool(tool: ToolId, shelf: KbShelf = "knowledge"): KbId[] {
-  return shelf === "code"
-    ? CODE_ARTICLES.filter((id) => CODE_TOOLS[id]?.includes(tool))
-    : KNOWLEDGE_ARTICLES.filter((id) => KNOWLEDGE_META[id].tools.includes(tool));
+  if (shelf === "code") return CODE_ARTICLES.filter((id) => CODE_TOOLS[id]?.includes(tool));
+  if (shelf === "ai") return AI_ARTICLES.filter((id) => AI_ARTICLE_TOOLS[id]?.includes(tool));
+  return KNOWLEDGE_ARTICLES.filter((id) => KNOWLEDGE_META[id].tools.includes(tool));
 }

@@ -1,0 +1,167 @@
+{
+  "title": "Multi-Shot AI Video: Keep Characters Consistent Across Shots — cv.cm",
+  "description": "How to make multi-shot AI video that stays consistent: lock the character, wardrobe, location and light, chain frames between shots, and hide drift in the edit.",
+  "h1": "How do you keep AI video consistent across multiple shots?",
+  "answer": "Fix everything that should not change before you generate: a character reference image, one wardrobe and location description, one light setup and one color look. Then generate each shot from those references, chain shots by reusing the last frame of one clip as the first frame of the next, and use editing techniques such as cutting on action to hide the small differences that remain.",
+  "sections": [
+    {
+      "h": "Why shots drift apart",
+      "body": [
+        "A video model creates each clip by starting from random noise and turning it into frames that match the prompt. Two generations from the same prompt start from different noise, so they come out with a slightly different face, a different coat button, a different window behind the actor. Inside one clip the model keeps things stable because it sees all the frames together. Between two separate clips it has no memory at all.",
+        "Researchers describe the same gap. The paper Long Context Tuning for Video Generation (2025) notes that models able to make long single shots still struggle to make coherent multi-shot scenes, and it proposes extending the model's attention across all the shots of a scene so that it learns scene-level consistency. Some commercial models now advertise native multi-shot generation; the Seedance 1.0 technical report, for example, lists multi-shot narrative coherence with consistent subjects as a feature.",
+        "Native multi-shot features help, but at the time of writing they are limited to short sequences inside one generation. A short film or an episode is still built from many generations, so the methods below remain the core of the work."
+      ]
+    },
+    {
+      "h": "What must stay the same: the continuity sheet",
+      "body": [
+        "Film crews keep continuity notes so that a scene shot over several days looks like one moment. Do the same before you write any prompt. Each line below is a short, fixed text block or a reference image that you reuse unchanged.",
+        {
+          "table": {
+            "head": [
+              "Element",
+              "How to lock it",
+              "Typical failure"
+            ],
+            "rows": [
+              [
+                "Face and body",
+                "One reference image plus a fixed text block (age, hair, build)",
+                "Face changes shape or age between shots"
+              ],
+              [
+                "Wardrobe",
+                "Exact garments and colors, reused word for word",
+                "Coat color or collar changes"
+              ],
+              [
+                "Props",
+                "Name and describe each prop once; keep it in the same hand",
+                "Phone switches hands or disappears"
+              ],
+              [
+                "Location",
+                "A location reference still and a fixed description",
+                "Furniture or windows move"
+              ],
+              [
+                "Light",
+                "One sentence: main light source, direction, time of day",
+                "Day in one shot, evening in the next"
+              ],
+              [
+                "Color look",
+                "One grade description, then a final grade in the editor",
+                "One shot warm, the next cold"
+              ],
+              [
+                "Screen direction",
+                "Note which way each character faces and moves",
+                "Characters swap sides after a cut"
+              ],
+              [
+                "Voice and sound",
+                "One voice per character, one ambience bed per location",
+                "Voice timbre or room tone changes"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "Method 1: references instead of descriptions",
+      "body": [
+        "Text alone is a weak anchor. \"A woman with short black hair\" matches millions of faces. A reference image is a much stronger anchor because it fixes one face. Many tools at the time of writing accept subject or character reference images: Google's Veo documentation, for example, describes a reference mode where one to three images of a person, character or product are used so that the subject's appearance is preserved in the output.",
+        "Build the references first, in still images, where retries are fast:",
+        {
+          "ol": [
+            "A character sheet: the same person from the front, three-quarter and side, plus a full-body view in the final costume, on a plain background.",
+            "A location still for every place in the scene, at the final aspect ratio.",
+            "A key prop sheet if an object matters to the story."
+          ]
+        },
+        "Use plain, even light on the character sheet. A strong colored light in the reference tends to be copied into every shot, which then fights the light of each scene."
+      ]
+    },
+    {
+      "h": "Method 2: chain shots with frames",
+      "body": [
+        "When two shots must flow into each other, such as one continuous action split in two, connect them through frames instead of text.",
+        {
+          "ul": [
+            "Last-frame chaining: export the final frame of shot A and use it as the first frame of shot B in image-to-video. The start of B then matches the end of A exactly.",
+            "First and last frame: if the tool supports both, give it the frame where the shot must start and the frame where it must end, and let the model fill the motion. This is useful when shot C must arrive at an already-planned keyframe.",
+            "Keyframe storyboard: make all keyframes from the same references first, check them together, then animate each one."
+          ]
+        },
+        "Chaining has a cost. Small errors build up: a slightly softer face at the end of shot A becomes the starting face of shot B, and after several links the character can drift. Re-anchor every few shots by starting from a fresh keyframe made from the original reference, not from the last frame."
+      ]
+    },
+    {
+      "h": "Method 3: write prompts that share blocks",
+      "body": [
+        "Treat the prompt as fixed blocks plus one changing block. Only the shot block changes from shot to shot.",
+        {
+          "code": "[CHARACTER] Leo, a man in his 20s, curly brown hair, round glasses,\nmustard-yellow knit sweater, dark blue jeans.\n[LOCATION] Small bookshop interior, tall wooden shelves, one large front window.\n[LIGHT] Late afternoon sun through the front window from screen right, warm tones.\n[SHOT] Medium shot, eye level. Leo pulls a red book from the shelf and opens it,\nfacing screen left. Slow push-in.",
+          "lang": "text"
+        },
+        "For the next shot, copy the first three blocks exactly and replace only the [SHOT] block. If the story moves to a new place or a new time of day, write a new [LOCATION] or [LIGHT] block once and reuse that one from then on."
+      ]
+    },
+    {
+      "h": "Method 4: hide what you cannot fix in the edit",
+      "body": [
+        "Even with references, a few differences will remain. Editors have long used techniques that make small mismatches invisible:",
+        {
+          "ul": [
+            "Cut on action. Cut in the middle of a movement; the eye follows the motion and misses details.",
+            "Change shot size at each cut. A wide shot followed by a close-up hides a different background; two medium shots in a row expose it.",
+            "Use inserts and cutaways. A shot of hands, an object or the place gives the viewer a break between two shots of the face.",
+            "Grade the whole sequence together. Apply one color correction on top of all clips so the light feels consistent.",
+            "Put one continuous sound under the cuts. Room tone or music running across several shots makes them feel like one moment."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "A quality check before you publish",
+      "body": [
+        "Watch the sequence three times, each time looking for one kind of problem:",
+        {
+          "ol": [
+            "Identity: freeze on each face and compare it with the reference. Check age, eye color, hair line, glasses and scars.",
+            "Objects: follow each prop and garment from shot to shot. Check which hand holds what.",
+            "Space and time: check screen direction, the light direction and the weather outside windows."
+          ]
+        },
+        "Regenerate only the shots that fail. Keep a log of the reference image, prompt and settings for each accepted shot, so that you can make a matching replacement later.",
+        {
+          "note": "Limits at the time of writing: crowds, identical twins, two characters touching, and text on clothes are where consistency breaks most often. Keep extra characters in the background or out of focus, and avoid writing on costumes."
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Can I use a seed number to keep shots consistent?",
+      "a": "A fixed seed with a fixed prompt can reproduce a similar result in the same tool, but once the prompt changes for a new shot the output changes too. Seeds help with retries, not with consistency across different shots."
+    },
+    {
+      "q": "Is it better to generate one long clip or many short ones?",
+      "a": "A single clip keeps things consistent inside it but gives you less control. Many short clips are easier to direct and to fix one by one. Most narrative work uses short clips joined in an editor."
+    },
+    {
+      "q": "How do I keep two characters consistent in the same shot?",
+      "a": "Make a separate reference for each character and give them clearly different silhouettes and colors. Keep them apart in the frame when possible, and use single shots of each person for close-ups."
+    },
+    {
+      "q": "Why does my character's voice change between clips?",
+      "a": "Models that generate audio create a new voice for each clip unless you give a voice reference. For reliable results, record or generate the dialogue separately with one fixed voice and add it in the edit."
+    },
+    {
+      "q": "Do I need a LoRA or a custom model for consistency?",
+      "a": "Not for most short projects. Reference images and fixed prompt blocks are enough. A trained character model can help on long series with an open model, but it takes time and must follow the model license."
+    }
+  ]
+}

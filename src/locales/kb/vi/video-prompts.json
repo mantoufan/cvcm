@@ -1,0 +1,199 @@
+{
+  "title": "Cách viết prompt tạo video AI: cấu trúc và ví dụ — cv.cm",
+  "description": "Cách viết prompt tạo video AI: cấu trúc 7 phần, mỗi cảnh một hành động, chia nhịp theo giây, dòng âm thanh và ví dụ viết lại từ prompt yếu thành prompt tốt để bạn sao chép.",
+  "h1": "Viết prompt video AI thế nào cho tốt?",
+  "answer": "Một prompt video AI tốt mô tả đúng một cảnh quay, giống cách đạo diễn giao việc cho ê-kíp quay phim: ai xuất hiện trong khung hình, họ làm một hành động duy nhất và kéo dài bao lâu, một chuyển động máy quay, ánh sáng, phong cách hình ảnh, âm thanh và độ dài clip. Mỗi cảnh chỉ nên có một hành động và một chuyển động máy, đồng thời ghi thời gian theo nhịp (beat) hoặc theo giây.",
+  "sections": [
+    {
+      "h": "Vì sao prompt video khác prompt ảnh",
+      "body": [
+        "Prompt ảnh mô tả một khoảnh khắc duy nhất. Prompt video mô tả sự thay đổi theo thời gian. Mô hình phải tự quyết định cái gì chuyển động, theo hướng nào, nhanh hay chậm, và máy quay làm gì trong lúc đó. Nếu prompt không nói rõ, mô hình sẽ đoán, và kết quả thường là một cú trôi chậm mơ hồ hoặc vài hành động bị trộn lẫn vào nhau.",
+        "Các mô hình text-to-video tạo toàn bộ khung hình của một clip ngắn cùng lúc, nên câu chữ phải bao quát cả clip chứ không chỉ khung đầu tiên. Vì vậy những từ hữu ích nhất trong prompt video là động từ và từ chỉ thời gian: đi, quay người, dừng lại, nhấc lên, trong hai giây, rồi. Tính từ tả vẻ ngoài vẫn quan trọng, nhưng chỉ là lớp thứ hai.",
+        "Hướng dẫn chính thức của các hãng làm mô hình video cũng nói điều tương tự bằng lời khác. Hướng dẫn prompt của OpenAI Sora coi prompt là một danh sách mong muốn sáng tạo chứ không phải hợp đồng: cùng một prompt mỗi lần cho ra kết quả khác nhau, nên bạn viết để tăng xác suất ra đúng thứ mình muốn, rồi lặp lại và chỉnh dần."
+      ]
+    },
+    {
+      "h": "Cấu trúc bảy phần",
+      "body": [
+        "Hãy viết các phần theo thứ tự này. Không phải prompt nào cũng cần đủ bảy phần, nhưng rà từng phần giúp bạn không để lại chỗ trống cho mô hình tự lấp một cách ngẫu nhiên.",
+        {
+          "table": {
+            "head": [
+              "Phần",
+              "Cần viết gì",
+              "Đoạn ví dụ"
+            ],
+            "rows": [
+              [
+                "Chủ thể",
+                "Ai hoặc cái gì trong khung hình, kèm 2–3 chi tiết nhìn thấy được và phải giữ nguyên",
+                "a woman in her 30s, short black hair, yellow raincoat"
+              ],
+              [
+                "Hành động kèm thời gian",
+                "Một hành động chính, tốc độ, điểm bắt đầu và điểm kết thúc",
+                "walks to the window in four slow steps, stops, looks out"
+              ],
+              [
+                "Máy quay",
+                "Cỡ cảnh, góc máy và một chuyển động (hoặc đứng yên)",
+                "medium shot, eye level, slow dolly in"
+              ],
+              [
+                "Bối cảnh và ánh sáng",
+                "Địa điểm, thời điểm trong ngày, nguồn sáng và hướng sáng",
+                "small apartment at dusk, cool blue light from the window, warm lamp behind her"
+              ],
+              [
+                "Phong cách",
+                "Chất liệu và vẻ ngoài, loại phim hoặc phong cách nghệ thuật, bảng màu",
+                "35mm film look, soft grain, muted teal and amber"
+              ],
+              [
+                "Âm thanh",
+                "Âm thanh nền, hiệu ứng và lời thoại ngắn, mỗi loại một câu riêng",
+                "Rain on glass. A distant train. No music."
+              ],
+              [
+                "Thời lượng và tỷ lệ khung hình",
+                "Độ dài clip và tỷ lệ khung hình, nếu công cụ đọc chúng từ văn bản",
+                "6 seconds, 9:16"
+              ]
+            ]
+          }
+        },
+        "Nhiều công cụ nhận thời lượng, độ phân giải và tỷ lệ khung hình qua phần cài đặt chứ không qua câu chữ. Hướng dẫn của OpenAI lưu ý rằng các thông số kỹ thuật này thuộc về lệnh gọi API hoặc giao diện, không viết vào văn xuôi. Chỉ ghi chúng trong prompt khi tài liệu của công cụ nói mô hình đọc chúng ở đó."
+      ]
+    },
+    {
+      "h": "Mỗi cảnh một hành động, một chuyển động máy",
+      "body": [
+        "Lý do phổ biến nhất khiến prompt video thất bại là đòi hỏi quá nhiều. 'Cô bước vào, cầm điện thoại lên, bật cười, rồi chạy ra ngoài trong khi máy quay xoay quanh cô' là bốn hành động và một chuyển động phức tạp trong một clip có thể chỉ dài năm giây. Mô hình thường nén chúng lại, bỏ bớt, hoặc biến hình hành động này thành hành động khác.",
+        "Hướng dẫn Sora của OpenAI khuyên giữ mỗi cảnh đơn giản: một chuyển động máy và một hành động của chủ thể. Nếu câu chuyện cần bốn hành động, hãy viết bốn cảnh rồi ghép lại trong phần mềm dựng. Clip ngắn cũng tuân theo chỉ dẫn ổn định hơn, nên hai cảnh ngắn thường đẹp hơn một cảnh dài.",
+        {
+          "ul": [
+            "Chọn một hành động mà cảnh này nói về. Mọi thứ còn lại trong khung hình chỉ nên là chuyển động nhỏ làm nền: tóc bay trong gió, hơi nước, xe cộ ở xa.",
+            "Chọn một chuyển động máy, hoặc ghi `static shot`. Đừng kết hợp orbit với zoom và tilt.",
+            "Nói rõ hành động kết thúc ở đâu. 'Dừng lại bên cửa sổ' cho mô hình một trạng thái kết thúc; chỉ viết 'đi' thì có thể không bao giờ xong.",
+            "Mô tả tốc độ bằng từ đơn giản: chậm rãi, trong một động tác nhanh, trong ba giây."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Prompt theo dòng thời gian và theo nhịp",
+      "body": [
+        "Khi một cảnh có chuỗi hành động ngắn bên trong, hãy viết theo nhịp (beat). Một nhịp là một bước nhỏ của hành động kèm mốc thời gian ước chừng. Hướng dẫn của OpenAI gợi ý đếm bước hoặc nhịp, ví dụ 'đi bốn bước tới cửa sổ, dừng lại', vì con số cụ thể dễ làm theo hơn 'đi tới'.",
+        "Một số công cụ phản hồi tốt với khoảng thời gian cụ thể. Số khác bỏ qua số giây chính xác nhưng vẫn làm đúng thứ tự. Dù thế nào, dòng thời gian cũng làm rõ trình tự các sự kiện.",
+        {
+          "code": "8 seconds, 16:9, static camera, medium-wide shot.\nA small cafe counter at morning, soft window light from the left.\n\n0-2s: A barista in a green apron sets a white cup on the counter.\n2-5s: She pours steamed milk in one slow motion; a leaf pattern forms.\n5-8s: She slides the cup forward and smiles at the customer off screen.\n\nAudio: espresso machine hiss, quiet cafe chatter, a cup touching a saucer.",
+          "lang": "text"
+        },
+        "Giữ mỗi nhịp ngắn và mang tính vật lý. 'Cô ấy thấy vui' không phải là một nhịp; 'cô ấy mỉm cười và thả lỏng vai' thì có. Hãy để nhịp cuối là một khoảnh khắc giữ yên, để clip không kết thúc giữa chừng một chuyển động và dễ cắt ghép."
+      ]
+    },
+    {
+      "h": "Viết lại một prompt yếu",
+      "body": [
+        "Đây là lần thử đầu tiên điển hình. Nó nêu tâm trạng và chủ thể nhưng để hành động, máy quay, ánh sáng và âm thanh cho may rủi.",
+        {
+          "code": "A cinematic video of a samurai in the rain, epic, 4K, masterpiece.",
+          "lang": "text"
+        },
+        "Vấn đề: 'cinematic', 'epic' và 'masterpiece' không mô tả thứ gì máy quay nhìn thấy được. Không có hành động, nên mô hình có thể cho ra một cú lia chậm qua một bóng người đứng yên, hoặc một trận đánh với những thanh kiếm chảy ra. Không có chỉ dẫn máy quay, không có âm thanh. '4K' là một thiết lập, không phải từ để đưa vào prompt.",
+        {
+          "code": "Medium shot, low angle, slow push-in.\nA lone samurai in a dark blue kimono stands in a muddy village street at night.\nHeavy rain. A single paper lantern behind him gives warm orange rim light;\nthe rest of the scene is cool blue.\n\nAction: he slowly draws his sword over three seconds, then holds it still\nat chest height. Rain drips from the blade.\n\nStyle: live-action, shallow depth of field, film grain, desaturated colors.\nAudio: steady rain, the metal sound of the blade leaving the scabbard, distant thunder.",
+          "lang": "text"
+        },
+        "Giờ mỗi dòng trả lời một câu hỏi mà mô hình lẽ ra phải đoán: ai, làm gì, trong bao lâu, nhìn từ đâu, chiếu sáng thế nào, phong cách gì, âm thanh ra sao. Bản viết lại dài hơn nhưng không độn chữ. Mỗi cụm từ đều thay đổi hình ảnh."
+      ]
+    },
+    {
+      "h": "Viết âm thanh và lời thoại",
+      "body": [
+        "Các mô hình tạo âm thanh cùng hình ảnh sẽ đọc phần âm thanh từ prompt. Hướng dẫn Veo của Google khuyên nói rõ rằng bạn muốn có âm thanh và mô tả âm thanh trong các câu riêng: tiếng nền, hiệu ứng và lời thoại.",
+        {
+          "ul": [
+            "Âm nền: tiếng của căn phòng hoặc môi trường, như gió, đám đông, xe cộ, chim hót.",
+            "Hiệu ứng: âm thanh gắn với hành động, như bước chân trên sỏi hay tiếng đóng cửa.",
+            "Lời thoại: đặt câu chính xác trong dấu ngoặc kép và nói ai là người nói. Giữ thật ngắn; một hai câu ngắn là vừa với clip khoảng bốn giây.",
+            "Nhạc: ghi 'no music' nếu bạn định thêm nhạc riêng khi dựng, vì nhạc do AI tạo rất khó cắt ghép."
+          ]
+        },
+        "Khớp khẩu hình và đọc đúng từng chữ vẫn là điểm yếu tại thời điểm viết bài. Nếu một câu thoại phải hoàn hảo, hãy tạo cảnh không có thoại rồi thêm giọng thu âm hoặc giọng đọc từ văn bản (text-to-speech) khi dựng."
+      ]
+    },
+    {
+      "h": "Lỗi thường gặp và cách sửa",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Lỗi",
+              "Kết quả nhận được",
+              "Cách sửa"
+            ],
+            "rows": [
+              [
+                "Nhiều hành động trong một clip",
+                "Các hành động bị trộn, bị bỏ qua hoặc biến hình",
+                "Tách thành mỗi hành động một cảnh"
+              ],
+              [
+                "Chỉ có từ chỉ tâm trạng",
+                "Chuyển động trôi chung chung",
+                "Thêm một động từ cụ thể và trạng thái kết thúc"
+              ],
+              [
+                "Hai hoặc ba chuyển động máy",
+                "Quỹ đạo máy quay rung hoặc méo",
+                "Chọn một chuyển động hoặc cảnh tĩnh"
+              ],
+              [
+                "'No people', 'don't show cars'",
+                "Mô hình có thể vẫn thêm vào",
+                "Mô tả những gì có trong cảnh; dùng ô negative prompt nếu công cụ có"
+              ],
+              [
+                "Đổi nhiều từ giữa các lần thử",
+                "Bạn không biết thay đổi nào có tác dụng",
+                "Mỗi lần thử chỉ đổi một thứ"
+              ],
+              [
+                "Mô tả lại ảnh đầu vào trong image-to-video",
+                "Chữ dồn vào thứ đã nhìn thấy, không vào chuyển động",
+                "Chỉ mô tả chuyển động bạn muốn"
+              ]
+            ]
+          }
+        },
+        "Vật lý là giới hạn trung thực còn lại. Chất lỏng, va chạm, bàn tay cầm đồ vật và đám đông thường bị hỏng. Hãy giữ các hành động đó đơn giản, cho bàn tay nằm một phần ngoài khung hình khi có thể, và tạo nhiều bản để chọn.",
+        {
+          "note": "Hãy lặp lại như một người dựng phim: giữ những phần của prompt đã hiệu quả, đổi một phần, rồi so sánh. Lưu các prompt tốt nhất làm mẫu có chỗ trống cho chủ thể và hành động."
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Prompt video AI nên dài bao nhiêu?",
+      "a": "Thường từ 40 đến 150 từ cho một cảnh. Đủ dài để bao quát chủ thể, hành động, máy quay, ánh sáng, phong cách và âm thanh; đủ ngắn để mỗi cụm từ đều thay đổi điều gì đó nhìn thấy được."
+    },
+    {
+      "q": "Negative prompt có tác dụng với video không?",
+      "a": "Một số công cụ có ô negative prompt riêng, và liệt kê những thứ không muốn ở đó có thể giúp ích. Trong prompt chính, các từ như 'no' hay 'don't' thường gây tác dụng ngược, nên hãy mô tả điều bạn muốn."
+    },
+    {
+      "q": "Có nên viết prompt video bằng tiếng Anh không?",
+      "a": "Nhiều mô hình hiểu các ngôn ngữ khác, nhưng phần lớn dữ liệu huấn luyện là tiếng Anh, nên prompt tiếng Anh thường được làm theo sát hơn. Giữ tên riêng và lời thoại bằng ngôn ngữ bạn muốn nhân vật nói."
+    },
+    {
+      "q": "Vì sao video AI bỏ qua chuyển động máy quay tôi yêu cầu?",
+      "a": "Chuyển động đó có thể mâu thuẫn với hành động, hoặc prompt chứa nhiều chuyển động. Hãy đặt chỉ dẫn máy quay ở đầu, gọi tên một chuyển động chuẩn như 'slow dolly in' và bỏ các từ chuyển động khác."
+    },
+    {
+      "q": "Một prompt có thể tạo video dài hơn một cảnh không?",
+      "a": "Một số mô hình nhận prompt nhiều cảnh, nhưng kết quả ổn định hơn khi bạn tạo từng cảnh một rồi dựng lại. Giữ cách mô tả chủ thể và phong cách giống nhau ở mọi cảnh để đảm bảo tính liền mạch."
+    }
+  ]
+}

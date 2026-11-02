@@ -1,0 +1,212 @@
+{
+  "title": "Cómo funciona la IA de texto a video y cómo usarla bien — cv.cm",
+  "description": "Cómo la IA de texto a video convierte un prompt en un clip: qué ajustes importan, un plan de 15 segundos por planos y sus límites: física, manos, texto y rostros que cambian.",
+  "h1": "¿Cómo funciona la IA de texto a video?",
+  "answer": "La IA de texto a video parte de ruido aleatorio con la forma de un clip corto y lo va eliminando paso a paso, guiada por tu prompt, hasta que cada fotograma es una imagen coherente y los fotogramas concuerdan entre sí a lo largo del tiempo. Como genera el clip entero a la vez, funciona mejor con planos únicos y cortos con una acción clara.",
+  "sections": [
+    {
+      "h": "Qué ocurre cuando pulsas generar",
+      "body": [
+        "La mayoría de los sistemas de texto a video son modelos de difusión ampliados de la imagen al video. El artículo de 2022 Video Diffusion Models, de Ho y colaboradores, mostró la idea básica: tratar un clip como un bloque de fotogramas, añadir ruido a clips reales durante el entrenamiento y enseñar a una red a eliminarlo. Al generar, el modelo parte de ruido puro en todos los fotogramas y los limpia a la vez, así que el movimiento y el aspecto se deciden de forma conjunta.",
+        "Tres ideas lo hacen viable a gran escala.",
+        {
+          "ul": [
+            "Espacio latente. El modelo trabaja con una versión comprimida del video, no con los píxeles originales. Un decodificador aparte convierte el resultado en fotogramas. Stable Video Diffusion es un ejemplo abierto de este enfoque latente.",
+            "Espacio y tiempo a la vez. La red mira entre fotogramas además de dentro de cada uno, de modo que un rostro del fotograma 1 y del fotograma 40 se trata como el mismo rostro. El informe de Sora de OpenAI describe cómo se divide el video en parches espaciotemporales para un transformer.",
+            "Condicionamiento por texto. Un codificador de lenguaje convierte tu prompt en números que guían cada paso de eliminación de ruido. Algunos sistemas también redactan una descripción más rica a partir de tu prompt antes de generar."
+          ]
+        },
+        "Imagen Video, de Google, añadió una cascada: primero se genera un clip pequeño, corto y de pocos fotogramas por segundo, y después otros modelos suben su resolución y su frecuencia de fotogramas. Muchos productos siguen usando alguna versión de esta idea en dos etapas, por eso un modo borrador suele ser más rápido y de menor calidad que el render final."
+      ]
+    },
+    {
+      "h": "El flujo de trabajo, de la idea al clip utilizable",
+      "body": [
+        {
+          "ol": [
+            "Decide el plano. Un sujeto, una acción, un movimiento de cámara. Si necesitas más, planifica varios planos.",
+            "Escribe el prompt con sujeto, acción y tiempos, cámara, escenario y luz, estilo y audio. Consulta la guía de prompts de video para ver la estructura.",
+            "Configura las opciones técnicas en la interfaz: duración, relación de aspecto, resolución y audio activado o desactivado.",
+            "Genera de 2 a 4 tomas con el mismo prompt. Los resultados varían mucho de una semilla a otra.",
+            "Elige la mejor toma y, si aún necesita trabajo, cambia una sola cosa del prompt.",
+            "Si los rostros o los productos deben verse exactos, pasa a imagen a video y dale al modelo un fotograma inicial.",
+            "Recorta el clip en un editor. Quita los primeros y últimos fotogramas si tiemblan."
+          ]
+        },
+        "El error más caro es arreglar un mal plano con prompts cada vez más largos. Si fallan tres intentos, lo más probable es que el plano sea demasiado complejo para el modelo. Simplifica la acción o divídela."
+      ]
+    },
+    {
+      "h": "Ajustes que importan",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Ajuste",
+              "Qué controla",
+              "Consejo práctico"
+            ],
+            "rows": [
+              [
+                "Duración",
+                "Cuántos segundos genera el modelo",
+                "Los clips más cortos siguen mejor el prompt; une los planos breves en la edición"
+              ],
+              [
+                "Relación de aspecto",
+                "16:9, 9:16, 1:1 y similares",
+                "Elige ya la relación de la plataforma final; recortar después hace perder el encuadre"
+              ],
+              [
+                "Resolución",
+                "Tamaño de salida",
+                "Usa un ajuste bajo de borrador para probar prompts y el alto solo para la toma elegida"
+              ],
+              [
+                "Semilla (seed)",
+                "El ruido de partida",
+                "Reutiliza la semilla para comparar justamente los cambios del prompt, si la herramienta lo permite"
+              ],
+              [
+                "Prompt negativo",
+                "Cosas que se deben evitar",
+                "Enumera objetos o defectos de forma directa, sin «no»"
+              ],
+              [
+                "Audio",
+                "Sonido generado junto con la imagen",
+                "Desactívalo si vas a añadir música y voz en la edición"
+              ],
+              [
+                "Reescritura del prompt",
+                "La herramienta amplía tu prompt automáticamente",
+                "Desactívala cuando necesites que se siga el texto exacto"
+              ]
+            ]
+          }
+        },
+        "Los límites exactos de duración, resolución y precio cambian a menudo y dependen de cada herramienta, así que consulta la documentación actual de la que uses."
+      ]
+    },
+    {
+      "h": "Ejemplo: un clip de 15 segundos en tres planos",
+      "body": [
+        "En lugar de pedir un único clip de 15 segundos con una rutina matutina, planifica tres planos de unos cinco segundos cada uno. Cada plano tiene una sola función, y la misma línea de estilo los mantiene a juego.",
+        {
+          "table": {
+            "head": [
+              "Plano",
+              "Duración",
+              "Cámara",
+              "Acción"
+            ],
+            "rows": [
+              [
+                "1",
+                "5 s",
+                "Plano general, cámara fija",
+                "La luz del sol entra en un dormitorio pequeño; suena un despertador en la mesilla"
+              ],
+              [
+                "2",
+                "5 s",
+                "Plano medio corto, push-in lento",
+                "Un joven se incorpora en la cama, se frota los ojos y mira hacia la ventana"
+              ],
+              [
+                "3",
+                "5 s",
+                "Primer plano, cámara fija",
+                "Sirve café en una taza blanca; sube el vapor"
+              ]
+            ]
+          }
+        },
+        {
+          "code": "Shot 2 of 3. Medium close-up, eye level, slow push-in.\nA young man with messy short brown hair, grey T-shirt, sits up in bed.\nHe rubs his eyes with one hand, then turns his head toward the window\nand holds still. Soft warm morning light from the left, white sheets.\nStyle: natural live-action, 35mm film look, warm muted colors.\nAudio: birds outside, a quiet room. No music.",
+          "lang": "text"
+        },
+        "Repetir palabra por palabra la descripción del sujeto y la línea de estilo en cada plano es la herramienta de continuidad más sencilla. Para una coherencia mayor, crea primero una imagen fija del personaje y úsala como fotograma inicial."
+      ]
+    },
+    {
+      "h": "¿Texto a video o imagen a video?",
+      "body": [
+        "El texto a video lo decide todo a partir de palabras. Es ideal para explorar ideas y para escenas en las que el aspecto exacto no importa. La imagen a video parte de una imagen que tú aportas, así que el aspecto queda fijado y el prompt solo tiene que describir el movimiento.",
+        {
+          "table": {
+            "head": [
+              "Necesidad",
+              "Mejor opción",
+              "Por qué"
+            ],
+            "rows": [
+              [
+                "Ideas y ambientes rápidos",
+                "Texto a video",
+                "Es rápido; no hay que preparar ninguna imagen"
+              ],
+              [
+                "Un rostro, producto o logotipo concreto",
+                "Imagen a video",
+                "El primer fotograma conserva el aspecto exacto"
+              ],
+              [
+                "El mismo personaje en varios planos",
+                "Imagen a video o imágenes de referencia",
+                "Solo con texto, el aspecto cambia entre planos"
+              ],
+              [
+                "Una pose inicial y final definidas",
+                "Primer y último fotograma",
+                "El modelo rellena el movimiento entre dos imágenes"
+              ]
+            ]
+          }
+        },
+        "Un enfoque híbrido habitual es crear una imagen fija con un modelo de imágenes y luego animarla. Por ejemplo, `ai-image-generator` de cv.cm puede hacer un borrador rápido de 384 px en tu propia GPU; después, un modelo de video completo anima una versión más grande."
+      ]
+    },
+    {
+      "h": "Límites que debes tener en cuenta",
+      "body": [
+        "El texto a video ha mejorado muy rápido, pero algunas debilidades son estructurales. En el momento de escribir esto, ten en cuenta lo siguiente:",
+        {
+          "ul": [
+            "Física. Verter líquidos, romper cosas, las colisiones y la tela suelen verse mal. El propio informe de Sora puso como ejemplo el vidrio que se rompe, una física que el modelo no resolvía bien. Mantén los eventos físicos sencillos o muéstralos fuera de plano.",
+            "Manos y objetos pequeños. Los dedos se funden y los objetos atraviesan las manos. Mantén simples las acciones con las manos y evita primeros planos de trabajo fino con los dedos.",
+            "Texto en pantalla. Los carteles y subtítulos suelen salir ilegibles. Añade el texto en la edición.",
+            "Deriva de identidad. Un rostro puede cambiar entre el inicio y el final de un clip, y más aún entre clips. Usa una imagen inicial o imágenes de referencia.",
+            "Conteo y multitudes. «Tres perros» pueden convertirse en dos o cuatro; las personas de una multitud pueden fundirse.",
+            "Tomas largas. La calidad y el seguimiento del prompt bajan cuanto más largo es el clip. Monta planos cortos en su lugar."
+          ]
+        },
+        {
+          "note": "Muchas plataformas y algunas leyes exigen etiquetar el video generado con IA, sobre todo si muestra personas o hechos realistas. Consulta las normas de la plataforma donde publiques."
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "¿Cuánto tarda en generarse un video con IA?",
+      "a": "Desde menos de un minuto hasta varios minutos por clip en las herramientas en la nube, según la duración, la resolución y la cola. Los modos borrador son más rápidos que los renders de calidad completa."
+    },
+    {
+      "q": "¿Puedo ejecutar texto a video en mi propio ordenador?",
+      "a": "Existen modelos abiertos, pero la mayoría necesita una tarjeta gráfica potente con mucha memoria de video. Un navegador todavía no puede ejecutar con comodidad un modelo completo de texto a video en un equipo normal."
+    },
+    {
+      "q": "¿Por qué el mismo prompt da videos distintos?",
+      "a": "Cada ejecución parte de un ruido aleatorio distinto, llamado semilla. Fijar la semilla, si la herramienta lo permite, hace que los resultados sean repetibles para poder compararlos."
+    },
+    {
+      "q": "¿Por qué los videos de IA parecen en cámara lenta?",
+      "a": "Los modelos tienden a elegir un movimiento lento y seguro cuando el prompt no marca el ritmo. Escribe la velocidad y el tiempo de la acción, por ejemplo «in one quick motion» o «runs fast»."
+    },
+    {
+      "q": "¿Puede la IA hacer una película completa con un solo prompt?",
+      "a": "No de forma fiable. Los modelos actuales generan clips cortos; las obras más largas se construyen con muchos planos planificados, montados con sonido, música y rótulos."
+    }
+  ]
+}

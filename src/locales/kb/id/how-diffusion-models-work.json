@@ -1,0 +1,160 @@
+{
+  "title": "Cara Kerja Model Difusi (Diffusion Model): dari Noise ke Gambar — cv.cm",
+  "description": "Cara kerja diffusion model: dilatih dengan noise, denoising langkah demi langkah, panduan teks, latent space, dan apa yang sebenarnya diubah oleh steps, CFG scale, dan seed.",
+  "h1": "Bagaimana cara kerja model difusi (diffusion model)?",
+  "answer": "Model difusi belajar menghilangkan noise. Saat pelatihan, gambar asli dikaburkan dengan noise acak selangkah demi selangkah, dan jaringan saraf belajar memprediksi noise itu. Untuk menghasilkan gambar, model mulai dari noise murni dan menghilangkan sedikit demi sedikit di tiap langkah, dipandu oleh prompt teks Anda, sampai gambar bersih muncul. Kebanyakan pembuat gambar dan video bekerja dengan cara ini.",
+  "sections": [
+    {
+      "h": "Versi singkat: belajar membersihkan noise, lalu membersihkan noise murni",
+      "body": [
+        "Bayangkan Anda mengambil sebuah foto dan menambahkan sedikit bintik acak. Lalu tambah lagi sedikit, dan lagi, sampai setelah ratusan langkah tidak ada yang tersisa selain salju abu-abu. Arah itu mudah. Komputer bisa melakukannya dengan satu baris rumus.",
+        "Model difusi adalah jaringan saraf yang dilatih untuk berjalan ke arah sebaliknya: melihat gambar yang berisik dan memperkirakan noise yang ditambahkan, supaya bisa dikurangkan. Kalau jaringan bisa melakukannya dengan baik pada setiap tingkat noise, Anda bisa mulai dari noise acak murni dan membersihkannya selangkah demi selangkah. Yang tersisa di akhir adalah gambar baru yang belum pernah ada, tetapi tampak seperti bagian dari data pelatihan.",
+        "Gagasan ini dijelaskan pada 2015 dan dibuat praktis untuk gambar berkualitas tinggi oleh makalah Denoising Diffusion Probabilistic Models (DDPM) pada 2020. Stable Diffusion, FLUX, Imagen, model bergaya DALL·E, dan sebagian besar pembuat video seperti Veo, Kling, Runway, atau Seedance dibangun di atas keluarga metode ini atau kerabat dekatnya saat tulisan ini dibuat."
+      ]
+    },
+    {
+      "h": "Pelatihan: proses maju dan prediktor noise",
+      "body": [
+        "Pelatihan memakai jutaan gambar, masing-masing berpasangan dengan keterangan (caption). Untuk setiap contoh pelatihan, sistem melakukan latihan kecil yang sama:",
+        {
+          "ol": [
+            "Pilih gambar asli beserta keterangannya, misalnya foto dengan keterangan \"a red bicycle leaning on a brick wall\".",
+            "Pilih tingkat noise acak, dari hampir bersih sampai hampir noise murni.",
+            "Campur gambar dengan noise acak pada tingkat itu. Ini disebut proses maju (forward process). Tidak perlu belajar.",
+            "Berikan gambar berisik, tingkat noise, dan keterangannya ke jaringan, lalu minta ia memprediksi noise yang ditambahkan.",
+            "Bandingkan prediksi dengan noise yang sebenarnya dan sesuaikan bobot jaringan untuk mengurangi galat."
+          ]
+        },
+        "Ulangi ini miliaran kali dan jaringan belajar seperti apa gambar pada umumnya di setiap tingkat keburaman: ke mana tepi biasanya mengarah, bagaimana cahaya jatuh di kulit, seperti apa sepeda dan dinding bata. Jaringan tidak pernah menyimpan foto pelatihan sebagai file. Ia mempelajari statistiknya, dan itu pula sebabnya ia bisa memadukan gagasan yang belum pernah dilihatnya bersama.",
+        "Jaringannya biasanya U-Net, sejenis jaringan gambar. Banyak model yang lebih baru memakai transformer (sering disebut diffusion transformer). Beberapa model terbaru dilatih dengan flow matching, metode yang berkerabat dekat dan mempelajari jalur lurus dari noise ke gambar. Gagasan yang terlihat oleh pengguna di bawah ini tetap sama."
+      ]
+    },
+    {
+      "h": "Pembuatan gambar: proses mundur, satu langkah demi satu langkah",
+      "body": [
+        "Saat Anda menekan Generate, model tidak menggambar garis atau menempelkan bagian. Ia menjalankan sebuah perulangan:",
+        {
+          "code": "x = random_noise(seed)                  # start: pure static\nfor t in noise_levels_high_to_low:      # e.g. 30 steps\n    predicted_noise = model(x, t, prompt)\n    x = remove_some_noise(x, predicted_noise, t)\nimage = decode(x)                       # latent -> pixels",
+          "lang": "python"
+        },
+        "Langkah awal menentukan bentuk besar: posisi subjek, garis cakrawala, warna utama. Langkah tengah menambah bentuk dan pencahayaan. Langkah akhir menambah tekstur halus seperti rambut, kain, dan pori kulit. Ini menjelaskan beberapa efek praktis. Kalau jumlah langkah diturunkan terlalu jauh, gambar tampak halus dan belum selesai. Kalau seed diganti, noise pertamanya berbeda, sehingga seluruh komposisi berubah.",
+        "Aturan yang mengubah prediksi noise menjadi gambar yang sedikit lebih bersih disebut sampler atau scheduler. DDPM memakai banyak langkah kecil. Metode berikutnya seperti DDIM menunjukkan bahwa Anda bisa mengambil langkah lebih besar yang deterministik dan mendapat kualitas serupa dengan langkah jauh lebih sedikit. Karena itulah alat modern memerlukan puluhan langkah, bukan seribu."
+      ]
+    },
+    {
+      "h": "Bagaimana prompt teks mengarahkan gambar",
+      "body": [
+        "Prompt lebih dulu diubah menjadi angka oleh text encoder, model bahasa yang dilatih untuk merepresentasikan makna keterangan gambar. Di dalam jaringan denoising, mekanisme bernama cross-attention membuat setiap area gambar melihat kata-kata prompt di setiap langkah. Area yang sedang menjadi wajah memperhatikan kata seperti \"freckles\" atau \"smiling\".",
+        "Sendirian, pengarahan ini lemah. Classifier-free guidance membuatnya lebih kuat. Di setiap langkah, model memprediksi noise dua kali: sekali dengan prompt Anda dan sekali dengan prompt kosong. Prediksi akhir bergeser lebih jauh ke arah selisihnya. Guidance scale (sering disebut CFG scale) menentukan seberapa jauh. Nilai lebih tinggi mengikuti prompt lebih ketat tetapi bisa tampak keras dan terlalu jenuh. Nilai lebih rendah tampak lebih alami tetapi mungkin mengabaikan sebagian prompt.",
+        "Negative prompt, jika alatnya mendukung, biasanya menggantikan prompt kosong pada prediksi kedua itu. Gambar didorong menjauh dari kata-kata tersebut, misalnya \"blurry, watermark, extra fingers\"."
+      ]
+    },
+    {
+      "h": "Mengapa kebanyakan model bekerja di latent space",
+      "body": [
+        "Menghilangkan noise dari gambar beresolusi penuh ratusan kali akan lambat. Latent diffusion, metode di balik Stable Diffusion, lebih dulu melatih autoencoder yang memadatkan gambar menjadi kisi angka yang jauh lebih kecil dan bisa mengembangkannya kembali. Model difusi lalu bekerja hanya pada kisi kecil itu. Misalnya, dengan faktor kompresi 8 di setiap sisi, gambar 512×512 menjadi kisi 64×64, yaitu 64 kali lebih sedikit posisi yang harus diproses.",
+        "Langkah terakhir setiap pembuatan, decoder, mengubah kisi latent yang sudah bersih kembali menjadi piksel. Ketika gambar punya bercak warna aneh atau wajah kecil tampak buram, kompresi decoder sering ikut menjadi penyebab, dan inilah salah satu alasan wajah dan teks kecil membaik ketika subjek mengisi lebih banyak bagian frame.",
+        "Difusi video memakai gagasan yang sama dengan tambahan waktu: latent-nya berupa tumpukan frame, dan jaringan menghilangkan noise dari semuanya bersama-sama supaya gerakan tetap konsisten dari frame ke frame."
+      ]
+    },
+    {
+      "h": "Apa yang sebenarnya diubah oleh pengaturan umum",
+      "body": [
+        "Kebanyakan generator menyediakan sebagian kontrol ini. Namanya bervariasi, tetapi mekanismenya sama:",
+        {
+          "table": {
+            "head": [
+              "Pengaturan",
+              "Yang dikendalikan",
+              "Efek praktis"
+            ],
+            "rows": [
+              [
+                "Seed",
+                "Noise awal",
+                "Seed sama + prompt sama + pengaturan sama menghasilkan gambar yang sama. Ganti untuk melihat komposisi baru."
+              ],
+              [
+                "Steps",
+                "Jumlah putaran denoising",
+                "Terlalu sedikit tampak lembut atau belum selesai. Lewat satu titik, lebih banyak langkah menambah waktu tetapi sedikit kualitas."
+              ],
+              [
+                "Guidance / CFG scale",
+                "Seberapa kuat prompt diterapkan",
+                "Lebih tinggi lebih patuh pada prompt tetapi bisa tampak keras. Lebih rendah tampak alami tetapi menyimpang."
+              ],
+              [
+                "Sampler / scheduler",
+                "Aturan tiap langkah",
+                "Mengubah kecepatan dan tekstur halus. Pakai satu sampler saat Anda menguji pengaturan lain."
+              ],
+              [
+                "Negative prompt",
+                "Hal yang dijauhkan",
+                "Berguna untuk menghilangkan cacat yang berulang. Daftar panjang jarang membantu."
+              ],
+              [
+                "Strength (image to image)",
+                "Seberapa banyak noise ditambahkan ke gambar masukan Anda",
+                "Rendah mempertahankan tata letak Anda. Tinggi hanya mempertahankan gagasan kasarnya."
+              ],
+              [
+                "Resolusi / rasio aspek",
+                "Ukuran kisi latent",
+                "Terlalu jauh dari ukuran pelatihan bisa menyebabkan subjek ganda atau tubuh yang melar."
+              ]
+            ]
+          }
+        },
+        "Cara uji yang baik: kunci seed, lalu ubah satu pengaturan pada satu waktu. Kalau tidak, Anda tidak bisa tahu apakah gambar yang lebih bagus berasal dari perubahan Anda atau dari keberuntungan."
+      ]
+    },
+    {
+      "h": "Difusi dibandingkan cara lain membuat gambar",
+      "body": [
+        "Difusi bukan satu-satunya metode. Model autoregresif membuat gambar sebagai urutan token, satu demi satu, seperti model bahasa menulis teks. Beberapa model multimodal terbaru memakai pendekatan ini. Misalnya, ai-image-generator di cv.cm menjalankan Janus-Pro-1B, model autoregresif, secara lokal di browser Anda dengan WebGPU pada 384 px. Pengaturannya terasa berbeda: tidak ada jumlah langkah yang bisa diatur dalam arti difusi.",
+        "GAN (generative adversarial network) yang lebih tua menghasilkan gambar dalam satu lintasan dan cepat, tetapi lebih sulit dilatih dan kurang bervariasi. Difusi menjadi dominan karena pelatihannya stabil dan mencakup rentang gambar yang luas. Biaya utamanya adalah kecepatan, karena setiap gambar memerlukan banyak lintasan jaringan. Model hasil distilasi mengurangi jumlah langkah menjadi segelintir dengan sedikit mengorbankan variasi."
+      ]
+    },
+    {
+      "h": "Kelemahan umum dan cara mengatasinya",
+      "body": [
+        {
+          "ul": [
+            "Tangan dan jari: tangan muncul dalam banyak pose dan sering sebagian tertutup di foto pelatihan, sehingga model mempelajari rata-rata yang buram. Minta pose tangan yang sederhana dan terlihat, atau lakukan inpaint pada tangan setelahnya.",
+            "Teks di dalam gambar: model mempelajari huruf sebagai bentuk, bukan ejaan. Model baru jauh lebih baik, tetapi buat teks tetap pendek, taruh dalam tanda kutip di prompt, dan periksa setiap hurufnya. Untuk teks penting, tambahkan belakangan di editor.",
+            "Menghitung: \"five apples\" sering menghasilkan empat atau enam. Objek yang lebih sedikit lebih andal.",
+            "Prompt bleed: warna dan atribut bocor antar subjek, misalnya topi merah membuat bajunya juga merah. Deskripsikan tiap subjek dalam satu frasa yang jelas, atau buat terpisah.",
+            "Menyalin: model kadang bisa mereproduksi salinan yang mirip dari gambar terkenal atau yang sangat sering diulang. Hindari prompt dengan nama seniman atau karakter merek jika Anda butuh karya orisinal."
+          ]
+        },
+        {
+          "note": "Mengganti seed adalah perbaikan termurah. Buat beberapa gambar per prompt lalu pilih, daripada menulis ulang prompt setelah setiap hasil."
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Apakah Stable Diffusion sama dengan model difusi?",
+      "a": "Tidak. Model difusi adalah metode umumnya. Stable Diffusion adalah satu keluarga model terbuka tertentu yang memakai latent diffusion. Banyak generator lain juga memakai difusi."
+    },
+    {
+      "q": "Mengapa prompt yang sama menghasilkan gambar berbeda setiap kali?",
+      "a": "Setiap pembuatan dimulai dari noise acak berbeda, yang ditentukan oleh seed. Jika Anda mengunci seed dan mempertahankan semua pengaturan lain, Anda mendapat gambar yang sama lagi pada perangkat lunak yang sama."
+    },
+    {
+      "q": "Apakah model difusi menyimpan salinan gambar pelatihannya?",
+      "a": "Mereka menyimpan bobot hasil belajar, bukan file gambar. Namun, riset menunjukkan sebagian gambar pelatihan bisa diekstrak hampir persis, terutama yang terkenal atau sangat sering diulang, jadi penyalinan yang mirip mungkin terjadi pada kasus yang jarang."
+    },
+    {
+      "q": "Mengapa gambar AI butuh beberapa detik untuk dibuat?",
+      "a": "Model difusi menjalankan jaringan besarnya satu kali per langkah, sering puluhan kali per gambar. Model yang lebih cepat dilatih agar butuh lebih sedikit langkah, dan bekerja di latent space yang dipadatkan juga menghemat waktu."
+    },
+    {
+      "q": "Berapa CFG scale yang bagus?",
+      "a": "Tergantung modelnya. Banyak model lama bekerja baik di sekitar tengah rentangnya, dan beberapa model hasil distilasi memerlukan guidance yang sangat rendah. Mulailah dari nilai bawaan alatnya dan geser dengan langkah kecil sambil mengunci seed."
+    }
+  ]
+}

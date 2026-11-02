@@ -1,0 +1,215 @@
+{
+  "title": "Cara Memanggil API LLM: Request, Streaming, JSON, Retry — cv.cm",
+  "description": "Cara memanggil API LLM: contoh request chat completions yang berfungsi di curl, Python, dan JavaScript, plus streaming, output JSON, retry, rate limit, dan biaya token.",
+  "h1": "Bagaimana cara memanggil API LLM?",
+  "answer": "Kirim request HTTPS POST dengan API key di header dan body JSON yang menyebut model serta daftar pesan. Balasannya berupa JSON berisi teks hasil generate dan jumlah token. Banyak provider menerima format chat completions ala OpenAI, sementara Anthropic dan Gemini juga punya format sendiri. Simpan key di server Anda dan bayar per token.",
+  "sections": [
+    {
+      "h": "Apa yang terjadi dalam satu panggilan API",
+      "body": [
+        "API LLM adalah layanan web. Program Anda mengirim teks, server provider menjalankan model, lalu hasilnya kembali sebagai JSON. Tidak ada memori antarpanggilan: setiap request harus menyertakan seluruh percakapan yang perlu dilihat model.",
+        "Anda butuh tiga hal: akun dengan API key, URL endpoint, dan ID model dari daftar model provider. Pada contoh di bawah, `MODEL_ID` adalah placeholder. Nama model sering berubah, jadi salin ID terbaru dari dokumentasi provider, bukan dari artikel blog."
+      ]
+    },
+    {
+      "h": "Request minimal di curl, Python, dan JavaScript",
+      "body": [
+        "Format chat completions, yang pertama diterbitkan OpenAI, adalah bentuk request yang paling banyak ditiru. Banyak provider lain dan server lokal menerimanya, kadang hanya dengan base URL yang berbeda. Berikut request paling sederhana yang berguna:",
+        {
+          "code": "curl https://api.openai.com/v1/chat/completions \\\n  -H \"Content-Type: application/json\" \\\n  -H \"Authorization: Bearer $OPENAI_API_KEY\" \\\n  -d '{\n    \"model\": \"MODEL_ID\",\n    \"messages\": [\n      {\"role\": \"system\", \"content\": \"You answer in one short paragraph.\"},\n      {\"role\": \"user\", \"content\": \"What is a context window?\"}\n    ]\n  }'",
+          "lang": "bash"
+        },
+        "Daftar `messages` berisi percakapan. Setiap pesan punya `role` dan `content`. Pesan `system` menetapkan aturan untuk balasan (model OpenAI yang lebih baru juga menerima nama `developer` untuk peran ini). Pesan `user` adalah permintaan, dan pesan `assistant` adalah balasan sebelumnya, yang Anda kirim kembali untuk melanjutkan percakapan. Respons yang diringkas tampak seperti ini:",
+        {
+          "code": "{\n  \"id\": \"chatcmpl-...\",\n  \"object\": \"chat.completion\",\n  \"model\": \"MODEL_ID\",\n  \"choices\": [\n    {\n      \"index\": 0,\n      \"message\": {\"role\": \"assistant\", \"content\": \"A context window is ...\"},\n      \"finish_reason\": \"stop\"\n    }\n  ],\n  \"usage\": {\"prompt_tokens\": 27, \"completion_tokens\": 64, \"total_tokens\": 91}\n}",
+          "lang": "json"
+        },
+        "Teksnya ada di `choices[0].message.content`. Objek `usage` menghitung token yang Anda bayar. `finish_reason` memberi tahu alasan model berhenti: `stop` berarti selesai, sedangkan `length` berarti mencapai batas token Anda dan jawabannya terpotong.",
+        "Di Python, panggilan yang sama dengan timeout dan retry tampak seperti ini. Contoh ini memakai library `requests` yang umum. SDK resmi tiap provider melakukan hal yang sama dan menambahkan retry untuk Anda.",
+        {
+          "code": "import os, random, time\nimport requests\n\nURL = \"https://api.openai.com/v1/chat/completions\"\nAPI_KEY = os.environ[\"OPENAI_API_KEY\"]   # read from the server environment\n\ndef chat(messages, model=\"MODEL_ID\", max_attempts=5):\n    body = {\"model\": model, \"messages\": messages,\n            \"max_completion_tokens\": 500}   # many compatible APIs: \"max_tokens\"\n    headers = {\"Authorization\": f\"Bearer {API_KEY}\"}\n    for attempt in range(max_attempts):\n        r = requests.post(URL, headers=headers, json=body, timeout=60)\n        if r.status_code == 429 or r.status_code >= 500:\n            backoff = 2 ** attempt + random.random()      # exponential + jitter\n            try:\n                wait = max(float(r.headers.get(\"Retry-After\", 0)), backoff)\n            except ValueError:\n                wait = backoff\n            time.sleep(wait)\n            continue\n        r.raise_for_status()                # 400, 401, 403: fix the request, do not retry\n        data = r.json()\n        return data[\"choices\"][0][\"message\"][\"content\"], data[\"usage\"]\n    raise RuntimeError(\"API still failing after retries\")\n\ntext, usage = chat([{\"role\": \"user\", \"content\": \"What is a context window?\"}])\nprint(text)\nprint(usage[\"prompt_tokens\"], \"in /\", usage[\"completion_tokens\"], \"out\")",
+          "lang": "python"
+        }
+      ]
+    },
+    {
+      "h": "Provider berbeda-beda: kompatibel OpenAI, Anthropic, dan Gemini",
+      "body": [
+        "Bentuk chat completions memang umum tetapi tidak universal. Messages API milik Anthropic dan Gemini API milik Google punya format native masing-masing. Kedua provider juga menyediakan opsi kompatibilitas, tetapi API native mereka membuka semua fitur lebih dulu. Perbedaan utamanya:",
+        {
+          "table": {
+            "head": [
+              "Item",
+              "Chat completions ala OpenAI",
+              "Anthropic Messages API",
+              "Gemini API (native)"
+            ],
+            "rows": [
+              [
+                "Endpoint",
+                "`POST /v1/chat/completions`",
+                "`POST /v1/messages`",
+                "`POST /v1beta/models/{model}:generateContent`"
+              ],
+              [
+                "Header API key",
+                "`Authorization: Bearer <key>`",
+                "`x-api-key` ditambah header tanggal `anthropic-version` yang wajib",
+                "`x-goog-api-key`"
+              ],
+              [
+                "Instruksi sistem",
+                "Pesan `system` atau `developer`",
+                "Field `system` tingkat atas",
+                "Field `systemInstruction` tingkat atas"
+              ],
+              [
+                "Field wajib",
+                "`model`, `messages`",
+                "`model`, `max_tokens`, `messages`",
+                "`contents` (model ada di URL)"
+              ],
+              [
+                "Teks balasan",
+                "`choices[0].message.content`",
+                "Blok teks di array `content`",
+                "`candidates[0].content.parts[].text`"
+              ],
+              [
+                "Streaming",
+                "`\"stream\": true`, server-sent events yang berakhir dengan `[DONE]`",
+                "`\"stream\": true`, server-sent events bernama",
+                "Metode `streamGenerateContent` dengan `alt=sse`"
+              ]
+            ]
+          }
+        },
+        "Gemini menyediakan base URL yang kompatibel dengan OpenAI, dan banyak provider lain, termasuk DeepSeek serta beberapa host model Tiongkok dan model terbuka, menerima format chat completions. Kompatibilitasnya biasanya parsial: fitur lanjutan seperti structured output, tool calling, atau input gambar bisa berbeda. Baca halaman kompatibilitas tiap provider sebelum berpindah hanya dengan mengganti URL."
+      ]
+    },
+    {
+      "h": "Simpan API key di server",
+      "body": [
+        "Siapa pun yang memegang API key Anda bisa menghabiskan uang Anda. Jangan pernah menaruhnya di JavaScript browser, aplikasi seluler, repositori publik, atau file environment front-end yang ikut dibundel ke halaman. Semuanya bisa dibaca pengguna.",
+        {
+          "ol": [
+            "Simpan key di environment variable atau secret manager di server Anda.",
+            "Minta aplikasi web atau seluler Anda memanggil endpoint backend milik Anda sendiri.",
+            "Di backend, periksa pengguna (login, rate limit per pengguna, panjang input), lalu panggil API LLM dengan key.",
+            "Kembalikan hanya hasilnya ke klien.",
+            "Tetapkan batas pengeluaran bulanan di dasbor provider, pakai key terpisah per proyek, dan ganti key segera jika bocor."
+          ]
+        },
+        {
+          "note": "Endpoint backend Anda kini menjadi pintu publik ke layanan berbayar. Batasi ukuran request dan jumlah request per pengguna, atau satu skrip saja bisa menimbulkan tagihan besar."
+        }
+      ]
+    },
+    {
+      "h": "Streaming: tampilkan jawaban saat ditulis",
+      "body": [
+        "Jawaban panjang bisa memakan banyak detik. Dengan `\"stream\": true`, server mengirim potongan-potongan kecil sebagai server-sent events, sehingga antarmuka Anda bisa menampilkan teks saat muncul. Setiap baris event diawali `data: ` dan berisi chunk dengan `delta`. Format OpenAI diakhiri dengan `data: [DONE]`. Contoh ini berjalan di server Node.js:",
+        {
+          "code": "// Node.js 18+ (server side). Prints the reply as it arrives.\nconst res = await fetch(\"https://api.openai.com/v1/chat/completions\", {\n  method: \"POST\",\n  headers: {\n    \"Content-Type\": \"application/json\",\n    Authorization: `Bearer ${process.env.OPENAI_API_KEY}`,\n  },\n  body: JSON.stringify({\n    model: \"MODEL_ID\",\n    stream: true,\n    messages: [{ role: \"user\", content: \"Write a haiku about rain.\" }],\n  }),\n});\nif (!res.ok) throw new Error(`HTTP ${res.status}: ${await res.text()}`);\n\nconst decoder = new TextDecoder();\nlet buffer = \"\";\nfor await (const chunk of res.body) {\n  buffer += decoder.decode(chunk, { stream: true });\n  const lines = buffer.split(\"\\n\");\n  buffer = lines.pop();                       // keep a partial line for later\n  for (const line of lines) {\n    if (!line.startsWith(\"data: \")) continue;\n    const data = line.slice(6);\n    if (data === \"[DONE]\") continue;          // end of stream\n    const delta = JSON.parse(data).choices[0]?.delta?.content;\n    if (delta) process.stdout.write(delta);\n  }\n}",
+          "lang": "javascript"
+        },
+        "Untuk menampilkan stream di browser, teruskan chunk dari server Anda ke halaman. Jangan memanggil provider dari browser dengan key Anda. Pada format OpenAI, usage tidak disertakan dalam chunk streaming kecuali Anda mengatur `stream_options` dengan `include_usage`, jadi aktifkan itu jika Anda butuh jumlah token untuk penagihan."
+      ]
+    },
+    {
+      "h": "Mendapatkan JSON, bukan prosa",
+      "body": [
+        "Saat kode yang akan membaca jawabannya, minta JSON. Ada dua tingkat. Mode JSON (`\"response_format\": {\"type\": \"json_object\"}`) menjanjikan JSON yang valid, tetapi tidak menentukan field-nya. Structured output dengan JSON Schema membuat model mengikuti field dan tipe yang persis Anda tentukan, pada model yang mendukungnya:",
+        {
+          "code": "{\n  \"model\": \"MODEL_ID\",\n  \"messages\": [\n    {\"role\": \"user\", \"content\": \"Extract the total and currency: 'Amount due: 1.250,00 EUR'\"}\n  ],\n  \"response_format\": {\n    \"type\": \"json_schema\",\n    \"json_schema\": {\n      \"name\": \"invoice_total\",\n      \"strict\": true,\n      \"schema\": {\n        \"type\": \"object\",\n        \"properties\": {\n          \"total\": {\"type\": \"number\"},\n          \"currency\": {\"type\": \"string\"}\n        },\n        \"required\": [\"total\", \"currency\"],\n        \"additionalProperties\": false\n      }\n    }\n  }\n}",
+          "lang": "json"
+        },
+        "Meski memakai schema, validasi hasil parse di kode Anda. Nilainya masih bisa salah, misalnya angka yang salah dibaca, walaupun bentuknya benar. Anthropic dan Gemini mendukung schema dan definisi tool dalam format mereka sendiri. Saat men-debug balasan JSON yang panjang, formatter seperti alat json di cv.cm membuat keluaran bersarang lebih mudah dibaca."
+      ]
+    },
+    {
+      "h": "Rate limit, retry, dan error",
+      "body": [
+        "Provider membatasi request per menit (RPM) maupun token per menit (TPM), dan batas mana pun yang Anda capai lebih dulu yang berlaku. Saat melampaui batas, Anda mendapat HTTP status 429. Tangani error menurut jenisnya:",
+        {
+          "table": {
+            "head": [
+              "Status",
+              "Arti",
+              "Yang dilakukan"
+            ],
+            "rows": [
+              [
+                "400",
+                "Request buruk: field salah, terlalu banyak token",
+                "Perbaiki request. Jangan retry."
+              ],
+              [
+                "401 / 403",
+                "Key tidak ada, salah, atau tidak berwenang",
+                "Periksa key dan izinnya. Jangan retry."
+              ],
+              [
+                "429",
+                "Rate limit, atau kadang kuota habis",
+                "Tunggu dan retry dengan backoff. Jika pesannya menyebut kuota atau penagihan, berhenti dan perbaiki akunnya."
+              ],
+              [
+                "500 / 503",
+                "Error server atau kelebihan beban",
+                "Retry dengan backoff."
+              ],
+              [
+                "Timeout",
+                "Tidak ada balasan tepat waktu",
+                "Retry sekali atau dua kali. Pakai streaming untuk jawaban panjang."
+              ]
+            ]
+          }
+        },
+        "Retry dengan exponential backoff: tunggu sekitar 1 detik, lalu 2, 4, 8, ditambah jeda acak kecil (jitter) agar banyak klien tidak retry pada saat yang sama. Jika respons punya header `Retry-After`, tunggu setidaknya selama itu. Batasi jumlah percobaan. Request yang gagal juga bisa dihitung ke batas Anda, jadi retry instan dalam loop rapat justru memperburuk keadaan. Jika Anda memakai SDK resmi, ingat bahwa ia sudah meretry sebagian error."
+      ]
+    },
+    {
+      "h": "Biaya dihitung dalam token",
+      "body": [
+        "Anda membayar token input (semua yang Anda kirim, termasuk system prompt dan seluruh riwayat percakapan) dan token output (yang ditulis model). Token output biasanya dihargai lebih mahal daripada token input. Rumusnya sederhana:",
+        {
+          "code": "cost = input_tokens  / 1,000,000 * input_price_per_million\n     + output_tokens / 1,000,000 * output_price_per_million\n\nExample with made-up prices (2.00 in, 8.00 out per million tokens):\n  27 input + 64 output tokens\n  = 0.000054 + 0.000512 = 0.000566 per call\n  x 100,000 calls a month = about 56.60",
+          "lang": "text"
+        },
+        {
+          "ul": [
+            "Baca jumlah sebenarnya dari `usage` di setiap respons dan catat. Jangan memperkirakan dari jumlah kata.",
+            "Batasi panjang tiap balasan: `max_completion_tokens` di OpenAI (`max_tokens` yang lama sudah deprecated di sana), `max_tokens` di Anthropic dan banyak API kompatibel.",
+            "Riwayat chat bertambah di setiap giliran, jadi pesan ke-20 lebih mahal daripada yang pertama. Pangkas atau ringkas giliran lama.",
+            "Pakai model yang lebih kecil untuk tugas sederhana seperti klasifikasi, dan model yang lebih besar hanya bila kualitas membutuhkannya.",
+            "Sebagian provider memberi diskon untuk awalan prompt yang berulang (prompt caching) atau menawarkan pemrosesan batch yang lebih murah untuk pekerjaan yang bisa menunggu."
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Bisakah saya memanggil API LLM langsung dari browser?",
+      "a": "Tidak aman dengan key Anda sendiri, karena setiap pengunjung bisa membacanya dari halaman. Panggil server Anda sendiri, yang menambahkan key. Pengecualiannya adalah key yang dimasukkan pengguna untuk akunnya sendiri, atau model yang berjalan sepenuhnya di browser."
+    },
+    {
+      "q": "Kenapa API melupakan apa yang saya katakan sebelumnya?",
+      "a": "API bersifat stateless. Setiap request harus menyertakan pesan-pesan sebelumnya yang ingin dilihat model. Aplikasi chat menyimpan riwayat dan mengirimnya ulang setiap kali."
+    },
+    {
+      "q": "Apa fungsi temperature, dan perlukah saya mengaturnya?",
+      "a": "Temperature mengatur seberapa acak pemilihan kata: makin rendah makin mudah ditebak, makin tinggi makin beragam. Sebagian provider dan model yang lebih baru membatasi atau menghapus parameter sampling, jadi periksa referensi API sebelum mengaturnya."
+    },
+    {
+      "q": "Kenapa jawaban saya berhenti di tengah?",
+      "a": "Balasan mencapai batas token yang Anda tetapkan, atau output maksimum model. Periksa `finish_reason` (atau `stop_reason` di Anthropic). Naikkan batasnya atau minta jawaban yang lebih singkat."
+    },
+    {
+      "q": "Apakah ada API LLM gratis?",
+      "a": "Beberapa provider menawarkan tier gratis atau kredit percobaan dengan rate limit rendah, dan model terbuka bisa dijalankan di mesin Anda sendiri di balik server lokal yang kompatibel dengan OpenAI. Tier gratis dan ketentuannya sering berubah, jadi periksa halaman terbaru provider."
+    }
+  ]
+}

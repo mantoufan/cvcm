@@ -1,0 +1,199 @@
+{
+  "title": "How to Write AI Video Prompts: Structure and Examples — cv.cm",
+  "description": "How to write AI video prompts: a 7-part structure, one action per shot, beat-by-beat timing, audio lines, and a weak-to-strong rewrite you can copy.",
+  "h1": "How do you write a good AI video prompt?",
+  "answer": "A good AI video prompt describes one shot the way a director would brief a camera crew: who is in frame, the single action they perform and how long it takes, one camera move, the lighting, the visual style, the sound, and the clip length. Keep each shot to one action and one camera move, and write timing in beats or seconds.",
+  "sections": [
+    {
+      "h": "Why video prompts are different from image prompts",
+      "body": [
+        "An image prompt describes a single moment. A video prompt describes a change over time. The model has to decide what moves, in which direction, how fast, and what the camera does while it happens. If the prompt does not say, the model guesses, and guesses tend to be a slow, vague drift or several actions blended into one.",
+        "Text-to-video models generate all frames of a short clip together, so the text has to cover the whole clip, not only the first frame. That is why the most useful words in a video prompt are verbs and timing words: walks, turns, pauses, lifts, for two seconds, then. Adjectives about how things look still matter, but they are the second layer.",
+        "Official guides from video model makers say the same thing in different words. OpenAI's Sora prompting guide calls a prompt a creative wish list, not a contract: the same prompt gives different results each time, so you write to raise the odds of the result you want, then iterate."
+      ]
+    },
+    {
+      "h": "The seven-part structure",
+      "body": [
+        "Write the parts in this order. Not every prompt needs all seven, but checking each one stops you from leaving a gap the model will fill at random.",
+        {
+          "table": {
+            "head": [
+              "Part",
+              "What to write",
+              "Example fragment"
+            ],
+            "rows": [
+              [
+                "Subject",
+                "Who or what is in frame, with 2 or 3 visible details that must stay the same",
+                "a woman in her 30s, short black hair, yellow raincoat"
+              ],
+              [
+                "Action with timing",
+                "One main action, its speed, and where it starts and ends",
+                "walks to the window in four slow steps, stops, looks out"
+              ],
+              [
+                "Camera",
+                "Shot size, angle, and one move (or static)",
+                "medium shot, eye level, slow dolly in"
+              ],
+              [
+                "Setting and lighting",
+                "Place, time of day, light source and direction",
+                "small apartment at dusk, cool blue light from the window, warm lamp behind her"
+              ],
+              [
+                "Style",
+                "Medium and look, film stock or art style, color palette",
+                "35mm film look, soft grain, muted teal and amber"
+              ],
+              [
+                "Audio",
+                "Ambient sound, effects, and any short dialogue, in separate sentences",
+                "Rain on glass. A distant train. No music."
+              ],
+              [
+                "Duration and format",
+                "Clip length and aspect ratio, if the tool reads them from text",
+                "6 seconds, 9:16"
+              ]
+            ]
+          }
+        },
+        "Many tools take duration, resolution and aspect ratio as settings rather than text. OpenAI's guide notes that these technical parameters belong in the API call or interface, not in prose. Put them in text only when the tool's documentation says the model reads them there."
+      ]
+    },
+    {
+      "h": "One action and one camera move per shot",
+      "body": [
+        "The most common reason a video prompt fails is that it asks for too much. 'She walks in, picks up the phone, laughs, then runs outside as the camera circles her' is four actions and a complex move in a clip that may last five seconds. The model usually compresses them, skips some, or morphs one into another.",
+        "OpenAI's Sora guide recommends keeping each shot simple: one camera move and one subject action. If the story needs four actions, write four shots and join them in an editor. Shorter clips also follow instructions more reliably, so two short shots often look better than one long one.",
+        {
+          "ul": [
+            "Pick the one action the shot is about. Everything else in frame should be small, ambient motion: hair in the wind, steam, traffic far away.",
+            "Pick one camera move, or say `static shot`. Do not combine an orbit with a zoom and a tilt.",
+            "Say where the action ends. 'Stops at the window' gives the model an end state; 'walks' alone may never finish.",
+            "Describe speed with plain words: slowly, in one quick motion, over three seconds."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Timeline and beat-style prompts",
+      "body": [
+        "When one shot has a short sequence inside it, write it as beats. A beat is one small step of the action with a rough time. OpenAI's guide suggests counting steps or beats, for example 'takes four steps to the window, pauses', because concrete counts are easier for the model to follow than 'walks over'.",
+        "Some tools respond well to explicit time ranges. Others ignore exact seconds but still follow the order. Either way, a timeline makes the order of events clear.",
+        {
+          "code": "8 seconds, 16:9, static camera, medium-wide shot.\nA small cafe counter at morning, soft window light from the left.\n\n0-2s: A barista in a green apron sets a white cup on the counter.\n2-5s: She pours steamed milk in one slow motion; a leaf pattern forms.\n5-8s: She slides the cup forward and smiles at the customer off screen.\n\nAudio: espresso machine hiss, quiet cafe chatter, a cup touching a saucer.",
+          "lang": "text"
+        },
+        "Keep beats short and physical. 'She feels happy' is not a beat; 'she smiles and lowers her shoulders' is. Leave the final beat as a held moment, so the clip does not end mid-motion and is easy to cut."
+      ]
+    },
+    {
+      "h": "A weak prompt rewritten",
+      "body": [
+        "Here is a typical first attempt. It names a mood and a subject but leaves the action, camera, light and sound to chance.",
+        {
+          "code": "A cinematic video of a samurai in the rain, epic, 4K, masterpiece.",
+          "lang": "text"
+        },
+        "Problems: 'cinematic', 'epic' and 'masterpiece' do not describe anything the camera can see. There is no action, so the model may produce a slow pan over a standing figure, or a fight with melting swords. There is no camera instruction and no audio. '4K' is a setting, not a prompt word.",
+        {
+          "code": "Medium shot, low angle, slow push-in.\nA lone samurai in a dark blue kimono stands in a muddy village street at night.\nHeavy rain. A single paper lantern behind him gives warm orange rim light;\nthe rest of the scene is cool blue.\n\nAction: he slowly draws his sword over three seconds, then holds it still\nat chest height. Rain drips from the blade.\n\nStyle: live-action, shallow depth of field, film grain, desaturated colors.\nAudio: steady rain, the metal sound of the blade leaving the scabbard, distant thunder.",
+          "lang": "text"
+        },
+        "Every line now answers a question the model would otherwise guess: who, doing what, for how long, seen from where, lit how, in what style, with what sound. The rewrite is longer, but it is not padded. Each phrase changes the image."
+      ]
+    },
+    {
+      "h": "Writing audio and dialogue",
+      "body": [
+        "Models that generate sound with the picture read audio from the prompt. Google's Veo guide recommends saying clearly that you want audio and describing sound in separate sentences: ambient noise, sound effects, and dialogue.",
+        {
+          "ul": [
+            "Ambient: the room tone or environment, such as wind, crowd, traffic, birds.",
+            "Effects: sounds tied to the action, such as footsteps on gravel or a door closing.",
+            "Dialogue: put the exact line in quotes and say who speaks it. Keep it short; one or two brief lines fit a clip of about four seconds.",
+            "Music: say 'no music' if you plan to add your own in the edit, because generated music is hard to cut."
+          ]
+        },
+        "Lip sync and exact wording are still weak points at the time of writing. If a line must be perfect, generate the shot without dialogue and add a recorded or text-to-speech voice in the edit."
+      ]
+    },
+    {
+      "h": "Common mistakes and how to fix them",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Mistake",
+              "What you get",
+              "Fix"
+            ],
+            "rows": [
+              [
+                "Several actions in one clip",
+                "Actions merged, skipped, or morphing",
+                "Split into one shot per action"
+              ],
+              [
+                "Only mood words",
+                "Generic slow drift",
+                "Add a concrete verb and an end state"
+              ],
+              [
+                "Two or three camera moves",
+                "Shaky or warped camera path",
+                "Choose one move or a static shot"
+              ],
+              [
+                "'No people', 'don't show cars'",
+                "The model may add them",
+                "Describe what is there; use a negative prompt field if the tool has one"
+              ],
+              [
+                "Changing many words between tries",
+                "You cannot tell what helped",
+                "Change one thing per attempt"
+              ],
+              [
+                "Describing the input image again in image-to-video",
+                "Words go to what is already visible, not to motion",
+                "Describe only the motion you want"
+              ]
+            ]
+          }
+        },
+        "Physics is the other honest limit. Liquids, collisions, hands holding objects and crowds often break. Keep those actions simple, keep hands partly out of frame when you can, and generate several takes to choose from.",
+        {
+          "note": "Iterate like an editor: keep the parts of the prompt that worked, change one part, and compare. Save your best prompts as templates with blanks for subject and action."
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "How long should an AI video prompt be?",
+      "a": "Usually 40 to 150 words for one shot. Long enough to cover subject, action, camera, light, style and sound; short enough that every phrase changes something visible."
+    },
+    {
+      "q": "Do negative prompts work for video?",
+      "a": "Some tools have a separate negative prompt field, and listing unwanted things there can help. In the main prompt, words like 'no' or 'don't' often have the opposite effect, so describe what you want instead."
+    },
+    {
+      "q": "Should I write video prompts in English?",
+      "a": "Many models understand other languages, but much of their training text is English, so English prompts are often followed more closely. Keep proper names and dialogue in the language you want spoken."
+    },
+    {
+      "q": "Why does my AI video ignore the camera movement I asked for?",
+      "a": "The move may conflict with the action, or the prompt may contain several moves. Put the camera instruction at the start, name one standard move such as 'slow dolly in', and remove other motion words."
+    },
+    {
+      "q": "Can one prompt make a video longer than a single shot?",
+      "a": "Some models accept multi-shot prompts, but results are more reliable when you generate one shot at a time and edit them together. Keep the same subject and style wording in each shot for continuity."
+    }
+  ]
+}

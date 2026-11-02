@@ -1,0 +1,279 @@
+{
+  "title": "Cómo hacer un cortometraje o microdrama con IA: flujo de trabajo — cv.cm",
+  "description": "Flujo completo para crear un microdrama con IA en formato vertical 9:16: gancho, guion, fichas de personajes, lista de planos, generación, voz, música, subtítulos, edición y etiquetas de IA.",
+  "h1": "¿Cómo se hace un microdrama con IA, de la idea al episodio terminado?",
+  "answer": "Trabaja siempre en el mismo orden: escribe un gancho que funcione en los tres primeros segundos, un guion breve, fichas de personajes y localizaciones, y una lista de planos. Genera fotogramas clave estáticos y luego anímalos. Graba o genera los diálogos, añade música con licencia y subtítulos, edita en vertical 9:16 y etiqueta el contenido de IA como exija cada plataforma. Cada paso fija decisiones para que el siguiente no se desvíe.",
+  "sections": [
+    {
+      "h": "El proceso de un vistazo",
+      "body": [
+        "Un microdrama vertical es una serie de episodios muy cortos pensados para la pantalla del móvil, en la que cada episodio termina con una pregunta que invita a ver el siguiente. Con IA haces el trabajo de guionista, director de casting, equipo de cámara y editor. El orden de abajo importa, porque cada paso fija algo de lo que dependen los siguientes.",
+        {
+          "table": {
+            "head": [
+              "Etapa",
+              "Resultado",
+              "Qué fija"
+            ],
+            "rows": [
+              [
+                "1. Gancho y premisa",
+                "Una frase y los 3 primeros segundos",
+                "Género, conflicto, tono"
+              ],
+              [
+                "2. Guion",
+                "Escenas con diálogos y acciones",
+                "Giros de la historia y ritmo"
+              ],
+              [
+                "3. Personajes y localizaciones",
+                "Fichas de referencia",
+                "Rostros, vestuario, lugares"
+              ],
+              [
+                "4. Lista de planos",
+                "Una fila por plano",
+                "Encuadre, acción, duración"
+              ],
+              [
+                "5. Fotogramas clave",
+                "Una imagen fija por plano",
+                "El aspecto de cada plano"
+              ],
+              [
+                "6. Generación de video",
+                "Clips con margen",
+                "Movimiento y cámara"
+              ],
+              [
+                "7. Voz",
+                "Audio de diálogo por línea",
+                "Interpretación y tiempos"
+              ],
+              [
+                "8. Música y sonido",
+                "Banda sonora, efectos, ambiente",
+                "Atmósfera y ritmo"
+              ],
+              [
+                "9. Subtítulos",
+                "SRT o subtítulos incrustados",
+                "Legibilidad sin sonido"
+              ],
+              [
+                "10. Edición y exportación",
+                "Archivo maestro 9:16",
+                "Ritmo y aspecto final"
+              ],
+              [
+                "11. Etiquetado y publicación",
+                "Subida a la plataforma con aviso de IA",
+                "Cumplimiento y confianza"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "Gancho y guion: gana los tres primeros segundos",
+      "body": [
+        "La gente hace scroll rápido. Los tres primeros segundos deben mostrar a una persona, un conflicto y una pregunta. No abras con un paisaje ni con un título lento. Empieza en mitad de la acción: una bofetada, un anillo lanzado al suelo, un desconocido que sabe un secreto, una frase que lo cambia todo.",
+        {
+          "ul": [
+            "Escribe la premisa en una sola frase, con un deseo y un obstáculo: “Una repartidora descubre que el cliente es el padre que la abandonó”.",
+            "Escribe primero la primera línea de diálogo. Debe entenderse sin contexto.",
+            "Planifica cada episodio como planteamiento, giro y cliffhanger. Incluso un episodio de 30 segundos necesita un giro.",
+            "Mantén el reparto reducido. Dos o tres personajes por episodio son mucho más fáciles de mantener coherentes.",
+            "Escribe acciones visibles, no pensamientos. El modelo puede mostrar una mano temblando, pero no puede mostrar “ella recuerda su infancia” sin un plano de flashback."
+          ]
+        },
+        "Usa un formato de guion que sirva también como plan de planos: encabezado de escena, líneas de acción breves y diálogo con el nombre de quien habla. Un chatbot puede ayudarte a redactar o ajustar escenas, pero lee cada línea en voz alta y elimina todo lo que no haga avanzar la historia."
+      ]
+    },
+    {
+      "h": "Personajes, localizaciones y lista de planos",
+      "body": [
+        "Antes de generar cualquier video, crea una ficha de personaje para cada papel principal: vistas frontal, de tres cuartos y de perfil del rostro, una vista de cuerpo entero con el vestuario de este episodio y una descripción de texto fija que pegarás en cada prompt. Haz una imagen de referencia por localización. Mantén el vestuario igual dentro de una escena, salvo que la historia lo cambie.",
+        "Después convierte el guion en una lista de planos. Abajo tienes un ejemplo desarrollado para un episodio inicial de 20 segundos, con siete planos.",
+        "Premisa: Lin, una joven camarera, atiende a un cliente rico que la trata con grosería. A él se le cae una tarjeta. Ella ve el nombre que figura en ella: su propio apellido.",
+        {
+          "table": {
+            "head": [
+              "Plano",
+              "Tiempo",
+              "Tamaño y cámara",
+              "Acción y sonido",
+              "Texto en pantalla"
+            ],
+            "rows": [
+              [
+                "1",
+                "0–2 s",
+                "Primer plano, fijo",
+                "Un vaso de agua salpica la cara de Lin. Exclamaciones en las mesas cercanas.",
+                "Ninguno"
+              ],
+              [
+                "2",
+                "2–5 s",
+                "Plano medio, ligero avance de cámara",
+                "El cliente, un hombre de unos 50 años con traje oscuro, dice: “Tráeme un vaso limpio”.",
+                "Subtítulo"
+              ],
+              [
+                "3",
+                "5–8 s",
+                "Primer plano de Lin, fijo",
+                "El agua gotea de su pelo. Contiene las lágrimas y dice: “Sí, señor”.",
+                "Subtítulo"
+              ],
+              [
+                "4",
+                "8–11 s",
+                "Plano medio, fijo",
+                "Él se levanta para irse; una tarjeta negra cae de su cartera al suelo.",
+                "Ninguno"
+              ],
+              [
+                "5",
+                "11–14 s",
+                "Plano de detalle, cenital",
+                "La mano de Lin recoge la tarjeta. El nombre aún no se lee.",
+                "Ninguno"
+              ],
+              [
+                "6",
+                "14–17 s",
+                "Plano detalle de los ojos",
+                "Abre mucho los ojos. La música se detiene.",
+                "Nombre añadido como gráfico"
+              ],
+              [
+                "7",
+                "17–20 s",
+                "Plano medio, avance lento de cámara",
+                "Mira hacia la puerta por donde él se ha ido. Tono grave que va en aumento.",
+                "“Continuará”"
+              ]
+            ]
+          }
+        },
+        "El plano 1 es el gancho: un rostro, una acción y una pregunta en menos de dos segundos. El nombre de la tarjeta se añade en la edición como gráfico, porque muchos modelos de video generan mal el texto. El plano 7 termina con una pregunta, que es la razón para ver el episodio 2."
+      ]
+    },
+    {
+      "h": "Generación: primero los fotogramas clave, después el movimiento",
+      "body": [
+        {
+          "ol": [
+            "Genera un fotograma clave por plano en 9:16 usando las referencias de personajes y localizaciones. Revisa los siete juntos, uno al lado del otro.",
+            "Anima cada fotograma clave con imagen a video. Describe solo el movimiento, el movimiento de cámara y el sonido.",
+            "Pide algo más de duración de la que necesitas, para poder recortar el arranque lento y el final que se desvía.",
+            "Genera dos o tres tomas de los planos importantes, sobre todo el gancho y el último plano, y elige la mejor.",
+            "Guarda el fotograma clave, el prompt y los ajustes de cada clip aceptado para poder rehacerlo más adelante."
+          ]
+        },
+        "Espera problemas con las manos, con los objetos en contacto (una tarjeta que pasa entre los dedos, agua que golpea una cara) y con los movimientos rápidos. Encuadra esos momentos más cerrados, divídelos en dos planos o muestra el resultado en lugar del proceso. Una salpicadura puede sugerirse con la reacción y una cara mojada, sin mostrar el agua en sí."
+      ]
+    },
+    {
+      "h": "Voz, música y subtítulos",
+      "body": [
+        "El diálogo es lo que sostiene un microdrama, así que trátalo como una pista propia. Puedes grabar a actores, usar un modelo de texto a voz o de voz, o conservar el audio que genera un modelo de video. En una serie, una voz fija por personaje importa más que una calidad perfecta. Clona una voz solo si su dueño te ha dado un permiso claro.",
+        {
+          "ul": [
+            "Graba o genera cada línea como un archivo separado y colócala después en la línea de tiempo. Así es fácil ajustar los tiempos y sustituir líneas.",
+            "Usa música para la que tengas licencia: la biblioteca musical de la propia plataforma, una biblioteca libre de derechos o música generada con una herramienta cuyas condiciones permitan el uso comercial.",
+            "Añade un sonido ambiente suave bajo cada escena. El silencio entre líneas suena a fallo.",
+            "Crea subtítulos para todas las líneas. Muchos espectadores ven los videos sin sonido. Mantén las líneas cortas, una o dos líneas en pantalla, y colócalas por encima de la zona inferior donde están los botones y los textos de la plataforma."
+          ]
+        },
+        "Para crear los subtítulos, transcribe la pista de diálogo final y corrige el texto a mano. Por ejemplo, el reconocimiento de voz de cv.cm ejecuta Whisper en el navegador y exporta SRT o VTT. YouTube acepta archivos de subtítulos SRT y WebVTT, pero los subtítulos incrustados son más seguros en plataformas donde los espectadores casi nunca activan los subtítulos."
+      ]
+    },
+    {
+      "h": "Edición y exportación en 9:16",
+      "body": [
+        "Edita pensando en el ritmo. Corta toda pausa que no aporte significado, empieza cada plano lo más tarde posible y termínalo lo antes posible, y corta sobre la acción. Pon la imagen más potente en el primer fotograma del episodio, porque el espectador decide si sigue viendo antes de que termine la primera línea.",
+        {
+          "table": {
+            "head": [
+              "Ajuste",
+              "Opción habitual",
+              "Por qué"
+            ],
+            "rows": [
+              [
+                "Relación de aspecto",
+                "9:16 vertical",
+                "Llena la pantalla de un móvil en vertical"
+              ],
+              [
+                "Resolución",
+                "1080 × 1920 píxeles",
+                "El fotograma vertical Full HD estándar"
+              ],
+              [
+                "Fotogramas por segundo",
+                "Mantén la frecuencia de tus clips originales, a menudo 24, 25 o 30 fps",
+                "Mezclar frecuencias provoca tirones"
+              ],
+              [
+                "Zona segura",
+                "Mantén rostros y texto alejados del borde superior, el inferior y el derecho",
+                "Los botones y textos de la plataforma cubren esas zonas"
+              ],
+              [
+                "Audio",
+                "Diálogo claramente más alto que la música",
+                "La mayoría de los espectadores escucha por el altavoz del móvil"
+              ]
+            ]
+          }
+        },
+        "Consulta las reglas de duración de cada plataforma antes de planificar un episodio. Por ejemplo, YouTube trata como Shorts los videos cuadrados o verticales de hasta tres minutos. Reglas como esta cambian, así que lee la página de ayuda actual de cada plataforma cuando publiques."
+      ]
+    },
+    {
+      "h": "Etiqueta el contenido de IA y sigue las normas de cada plataforma",
+      "body": [
+        "Las personas y escenas realistas generadas con IA suelen requerir un aviso. YouTube exige a los creadores que indiquen el contenido realista generado o alterado con IA. Las Normas de la comunidad de TikTok piden etiquetar el contenido generado por IA o muy editado que muestre escenas o personas de aspecto realista. En China, las Medidas para el etiquetado de contenido sintético generado por IA, en vigor desde el 1 de septiembre de 2025, exigen que los usuarios que publican contenido generado por IA lo declaren y usen la función de etiquetado de la plataforma.",
+        {
+          "ul": [
+            "Activa la etiqueta de IA de la plataforma al subir el video.",
+            "No uses el rostro ni la voz de una persona real sin su permiso, y no hagas que una figura pública real parezca decir o hacer algo que no ha dicho ni hecho.",
+            "Conserva las etiquetas de metadatos que las herramientas de generación añaden a los archivos; no las elimines a propósito.",
+            "Guarda tus archivos de proyecto y tus prompts, por si una plataforma o un comprador te pregunta cómo se hizo el episodio."
+          ]
+        },
+        {
+          "note": "Las normas de las plataformas y las leyes cambian. Esta página es información general, no asesoramiento jurídico. Consulta el artículo sobre etiquetado de esta sección para ver los detalles por país y plataforma."
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "¿Cuánto debe durar un episodio de microdrama con IA?",
+      "a": "Muchos episodios de microdramas verticales duran entre unos 30 segundos y unos pocos minutos. Empieza con episodios cortos: son más baratos de hacer, más fáciles de mantener coherentes y más fáciles de probar con el público."
+    },
+    {
+      "q": "¿Puede una sola persona hacer un microdrama con IA?",
+      "a": "Sí. Una persona puede escribir, generar, poner la voz y editar un episodio corto. El factor limitante suele ser el tiempo dedicado a repetir tomas y a revisar la coherencia, no la falta de habilidades."
+    },
+    {
+      "q": "¿Qué es lo más difícil de hacer un drama con IA?",
+      "a": "Mantener los mismos personajes a lo largo de muchos planos y episodios, y lograr que las manos y el contacto físico se vean bien. Unas buenas fichas de referencia y encuadres cerrados reducen ambos problemas."
+    },
+    {
+      "q": "¿Puedo monetizar un microdrama generado con IA?",
+      "a": "Por lo general, las plataformas permiten monetizar contenido de IA que cumpla sus normas y esté etiquetado cuando se exige, pero cada programa fija sus propios criterios. Consulta las reglas vigentes del programa de socios y asegúrate de tener los derechos de toda la música, las voces y los rostros."
+    },
+    {
+      "q": "¿Tengo que etiquetar un drama de IA animado o de estilo dibujos animados?",
+      "a": "Depende de la plataforma. YouTube y Meta centran sus normas de aviso en el contenido realista, mientras que las normas chinas cubren el contenido generado por IA en general. Si tienes dudas, etiquétalo."
+    }
+  ]
+}

@@ -70,7 +70,7 @@ let legalPage: LegalPageId | null = null;
 let quizPage: QuizId | "hub" | null = null;
 /** A data page: "hub" for /datasets/, else the table id. */
 let datasetPage: DatasetId | "hub" | null = null;
-/** A kb page: "hub" for /learn/knowledge/, "code" for /learn/code/, else the article id. */
+/** A kb page: "hub" for /learn/knowledge/, "code" for /learn/code/, "ai" for /learn/ai/, else the article id. */
 let kbPage: KbPage = null;
 /** A reference page: "hub" for /reference/, else the entry id. */
 let refPage: RefPage = null;
@@ -256,12 +256,12 @@ function prefetchGamePack(e: Event): void {
     const page: RefPage = isRefId(id) ? id : "hub";
     if (!hasPageMessages(loc, false, false, false, false, null, page)) loadPageMessages(loc, false, false, false, false, null, page).catch(() => {});
   } else {
-    const link = target?.closest?.('a[data-nav^="kb-"], a[data-nav="knowledge"], a[data-nav="coding"]');
+    const link = target?.closest?.('a[data-nav^="kb-"], a[data-nav="knowledge"], a[data-nav="coding"], a[data-nav="ai-learn"]');
     if (!link) return;
-    // data-nav is "kb-<article id>" on an article link, "knowledge" or "coding" on a hub link.
+    // data-nav is "kb-<article id>" on an article link, "knowledge", "coding" or "ai-learn" on a hub link.
     const nav = link.getAttribute("data-nav") ?? "";
     const id = nav.startsWith("kb-") ? nav.slice(3) : "";
-    const page: KbPage = isKbId(id) ? id : nav === "coding" ? "code" : "hub";
+    const page: KbPage = isKbId(id) ? id : nav === "coding" ? "code" : nav === "ai-learn" ? "ai" : "hub";
     if (!hasPageMessages(loc, false, false, false, false, page)) loadPageMessages(loc, false, false, false, false, page).catch(() => {});
   }
 }
@@ -794,6 +794,14 @@ function toolDirectory(loc: Locale): HTMLElement {
       h("p", null,
         ...kbGroupsOf("code").map((group) =>
           h("a", { href: `${kbHref(loc, "code")}#${group.id}`, "data-nav": "coding" }, t(`kb.code.groups.${group.id}`)),
+        ),
+      ),
+    ),
+    h("div", { class: "dir-group" },
+      h("h2", null, h("a", { href: kbHref(loc, "ai"), "data-nav": "ai-learn" }, t("kb.ai.label"))),
+      h("p", null,
+        ...kbGroupsOf("ai").map((group) =>
+          h("a", { href: `${kbHref(loc, "ai")}#${group.id}`, "data-nav": "ai-learn" }, t(`kb.ai.groups.${group.id}`)),
         ),
       ),
     ),

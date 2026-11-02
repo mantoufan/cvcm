@@ -1,0 +1,199 @@
+{
+  "title": "Cómo escribir prompts de video con IA: estructura y ejemplos — cv.cm",
+  "description": "Cómo escribir prompts para video con IA: una estructura en 7 partes, una acción por plano, tiempos por beats, líneas de audio y una reescritura de débil a fuerte que puedes copiar.",
+  "h1": "¿Cómo se escribe un buen prompt de video con IA?",
+  "answer": "Un buen prompt de video con IA describe un solo plano como un director daría instrucciones a su equipo de cámara: quién sale en el encuadre, la única acción que realiza y cuánto dura, un movimiento de cámara, la iluminación, el estilo visual, el sonido y la duración del clip. Limita cada plano a una acción y un movimiento de cámara, y expresa los tiempos en beats o en segundos.",
+  "sections": [
+    {
+      "h": "Por qué los prompts de video son distintos de los de imagen",
+      "body": [
+        "Un prompt de imagen describe un único instante. Un prompt de video describe un cambio a lo largo del tiempo. El modelo tiene que decidir qué se mueve, en qué dirección, a qué velocidad y qué hace la cámara mientras tanto. Si el prompt no lo dice, el modelo adivina, y lo habitual es un desplazamiento lento y vago o varias acciones mezcladas en una.",
+        "Los modelos de texto a video generan todos los fotogramas de un clip corto a la vez, así que el texto debe cubrir el clip entero, no solo el primer fotograma. Por eso las palabras más útiles en un prompt de video son los verbos y las marcas de tiempo: camina, gira, se detiene, levanta, durante dos segundos, luego. Los adjetivos sobre el aspecto siguen importando, pero son la segunda capa.",
+        "Las guías oficiales de los creadores de modelos de video dicen lo mismo con otras palabras. La guía de prompts de Sora de OpenAI describe el prompt como una lista de deseos creativa, no como un contrato: el mismo prompt da resultados distintos cada vez, así que escribes para aumentar las probabilidades del resultado que quieres y luego iteras."
+      ]
+    },
+    {
+      "h": "La estructura en siete partes",
+      "body": [
+        "Escribe las partes en este orden. No todos los prompts necesitan las siete, pero revisarlas una por una evita dejar un hueco que el modelo rellenará al azar.",
+        {
+          "table": {
+            "head": [
+              "Parte",
+              "Qué escribir",
+              "Fragmento de ejemplo"
+            ],
+            "rows": [
+              [
+                "Sujeto",
+                "Quién o qué aparece en el encuadre, con 2 o 3 detalles visibles que deben mantenerse",
+                "una mujer de unos 30 años, pelo corto y negro, impermeable amarillo"
+              ],
+              [
+                "Acción con tiempos",
+                "Una acción principal, su velocidad y dónde empieza y termina",
+                "camina hasta la ventana en cuatro pasos lentos, se detiene, mira hacia fuera"
+              ],
+              [
+                "Cámara",
+                "Tamaño de plano, ángulo y un solo movimiento (o cámara fija)",
+                "plano medio, a la altura de los ojos, dolly in lento"
+              ],
+              [
+                "Escenario e iluminación",
+                "Lugar, momento del día, fuente y dirección de la luz",
+                "un apartamento pequeño al anochecer, luz azul fría desde la ventana, lámpara cálida a su espalda"
+              ],
+              [
+                "Estilo",
+                "Medio y aspecto, tipo de película o estilo artístico, paleta de color",
+                "aspecto de película de 35 mm, grano suave, verde azulado y ámbar apagados"
+              ],
+              [
+                "Audio",
+                "Sonido ambiente, efectos y diálogos breves, en frases separadas",
+                "Lluvia sobre el cristal. Un tren a lo lejos. Sin música."
+              ],
+              [
+                "Duración y formato",
+                "Duración del clip y relación de aspecto, si la herramienta los lee del texto",
+                "6 segundos, 9:16"
+              ]
+            ]
+          }
+        },
+        "Muchas herramientas piden la duración, la resolución y la relación de aspecto como ajustes, no como texto. La guía de OpenAI señala que estos parámetros técnicos van en la llamada a la API o en la interfaz, no en la prosa. Ponlos en el texto solo si la documentación de la herramienta dice que el modelo los lee ahí."
+      ]
+    },
+    {
+      "h": "Una acción y un movimiento de cámara por plano",
+      "body": [
+        "El motivo más habitual por el que falla un prompt de video es que pide demasiado. «Entra, coge el teléfono, se ríe y sale corriendo mientras la cámara gira a su alrededor» son cuatro acciones y un movimiento complejo en un clip que quizá dure cinco segundos. El modelo suele comprimirlas, saltarse alguna o fundir unas con otras.",
+        "La guía de Sora de OpenAI recomienda mantener cada plano simple: un movimiento de cámara y una acción del sujeto. Si la historia necesita cuatro acciones, escribe cuatro planos y únelos en un editor. Además, los clips cortos siguen mejor las instrucciones, por lo que dos planos breves suelen quedar mejor que uno largo.",
+        {
+          "ul": [
+            "Elige la única acción de la que trata el plano. Todo lo demás en el encuadre debe ser movimiento pequeño y ambiental: el pelo al viento, el vapor, el tráfico a lo lejos.",
+            "Elige un solo movimiento de cámara o escribe `static shot`. No combines una órbita con un zoom y una inclinación.",
+            "Indica dónde termina la acción. «Se detiene junto a la ventana» da al modelo un estado final; «camina» a secas puede no acabar nunca.",
+            "Describe la velocidad con palabras sencillas: despacio, de un solo movimiento rápido, a lo largo de tres segundos."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Prompts con línea de tiempo y por beats",
+      "body": [
+        "Cuando un plano contiene una secuencia corta, escríbelo por beats. Un beat es un paso pequeño de la acción con un tiempo aproximado. La guía de OpenAI sugiere contar pasos o beats, por ejemplo «da cuatro pasos hasta la ventana, se detiene», porque al modelo le resulta más fácil seguir cifras concretas que «se acerca».",
+        "Algunas herramientas responden bien a rangos de tiempo explícitos. Otras ignoran los segundos exactos pero respetan el orden. En cualquier caso, una línea de tiempo deja claro el orden de los acontecimientos.",
+        {
+          "code": "8 seconds, 16:9, static camera, medium-wide shot.\nA small cafe counter at morning, soft window light from the left.\n\n0-2s: A barista in a green apron sets a white cup on the counter.\n2-5s: She pours steamed milk in one slow motion; a leaf pattern forms.\n5-8s: She slides the cup forward and smiles at the customer off screen.\n\nAudio: espresso machine hiss, quiet cafe chatter, a cup touching a saucer.",
+          "lang": "text"
+        },
+        "Mantén los beats cortos y físicos. «Se siente feliz» no es un beat; «sonríe y relaja los hombros» sí lo es. Deja el último beat como un momento quieto, para que el clip no termine a mitad de un movimiento y sea fácil de cortar."
+      ]
+    },
+    {
+      "h": "Un prompt débil reescrito",
+      "body": [
+        "Este es un primer intento típico. Nombra un ambiente y un sujeto, pero deja la acción, la cámara, la luz y el sonido al azar.",
+        {
+          "code": "A cinematic video of a samurai in the rain, epic, 4K, masterpiece.",
+          "lang": "text"
+        },
+        "Problemas: «cinematic», «epic» y «masterpiece» no describen nada que la cámara pueda ver. No hay acción, así que el modelo puede producir un paneo lento sobre una figura inmóvil o una pelea con espadas que se derriten. No hay indicación de cámara ni de audio. «4K» es un ajuste, no una palabra de prompt.",
+        {
+          "code": "Medium shot, low angle, slow push-in.\nA lone samurai in a dark blue kimono stands in a muddy village street at night.\nHeavy rain. A single paper lantern behind him gives warm orange rim light;\nthe rest of the scene is cool blue.\n\nAction: he slowly draws his sword over three seconds, then holds it still\nat chest height. Rain drips from the blade.\n\nStyle: live-action, shallow depth of field, film grain, desaturated colors.\nAudio: steady rain, the metal sound of the blade leaving the scabbard, distant thunder.",
+          "lang": "text"
+        },
+        "Ahora cada línea responde a una pregunta que el modelo, si no, tendría que adivinar: quién, haciendo qué, durante cuánto tiempo, visto desde dónde, con qué luz, en qué estilo y con qué sonido. La reescritura es más larga, pero no lleva relleno: cada frase cambia la imagen."
+      ]
+    },
+    {
+      "h": "Cómo escribir audio y diálogos",
+      "body": [
+        "Los modelos que generan sonido junto con la imagen leen el audio del prompt. La guía de Veo de Google recomienda decir con claridad que quieres audio y describir el sonido en frases separadas: ruido ambiente, efectos de sonido y diálogos.",
+        {
+          "ul": [
+            "Ambiente: el sonido de la sala o del entorno, como viento, multitud, tráfico o pájaros.",
+            "Efectos: sonidos ligados a la acción, como pasos sobre la grava o una puerta que se cierra.",
+            "Diálogo: pon la frase exacta entre comillas e indica quién la dice. Que sea breve; una o dos líneas cortas caben en un clip de unos cuatro segundos.",
+            "Música: escribe «sin música» si piensas añadir la tuya en la edición, porque la música generada es difícil de cortar."
+          ]
+        },
+        "La sincronización labial y la fidelidad exacta del texto siguen siendo puntos débiles en el momento de escribir esto. Si una frase tiene que salir perfecta, genera el plano sin diálogo y añade en la edición una voz grabada o de síntesis de voz."
+      ]
+    },
+    {
+      "h": "Errores comunes y cómo corregirlos",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Error",
+              "Qué obtienes",
+              "Solución"
+            ],
+            "rows": [
+              [
+                "Varias acciones en un clip",
+                "Acciones fusionadas, omitidas o que se transforman unas en otras",
+                "Divide en un plano por acción"
+              ],
+              [
+                "Solo palabras de ambiente",
+                "Un desplazamiento lento y genérico",
+                "Añade un verbo concreto y un estado final"
+              ],
+              [
+                "Dos o tres movimientos de cámara",
+                "Trayectoria de cámara temblorosa o deformada",
+                "Elige un movimiento o un plano fijo"
+              ],
+              [
+                "«Sin personas», «no muestres coches»",
+                "Es posible que el modelo los añada",
+                "Describe lo que sí hay; usa el campo de prompt negativo si la herramienta lo tiene"
+              ],
+              [
+                "Cambiar muchas palabras entre intentos",
+                "No sabes qué fue lo que ayudó",
+                "Cambia una sola cosa por intento"
+              ],
+              [
+                "Volver a describir la imagen de entrada en imagen a video",
+                "Las palabras se gastan en lo que ya se ve, no en el movimiento",
+                "Describe solo el movimiento que quieres"
+              ]
+            ]
+          }
+        },
+        "La física es el otro límite real. Los líquidos, las colisiones, las manos que sujetan objetos y las multitudes suelen fallar. Mantén esas acciones sencillas, deja las manos parcialmente fuera de plano cuando puedas y genera varias tomas para elegir.",
+        {
+          "note": "Itera como un editor: conserva las partes del prompt que funcionaron, cambia una y compara. Guarda tus mejores prompts como plantillas con huecos para el sujeto y la acción."
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "¿Qué longitud debe tener un prompt de video con IA?",
+      "a": "Normalmente, de 40 a 150 palabras para un plano. Lo bastante largo para cubrir sujeto, acción, cámara, luz, estilo y sonido; lo bastante corto para que cada frase cambie algo visible."
+    },
+    {
+      "q": "¿Funcionan los prompts negativos en video?",
+      "a": "Algunas herramientas tienen un campo aparte para el prompt negativo, y enumerar ahí lo que no quieres puede ayudar. En el prompt principal, palabras como «no» o «sin» suelen tener el efecto contrario, así que describe lo que sí quieres."
+    },
+    {
+      "q": "¿Debo escribir los prompts de video en inglés?",
+      "a": "Muchos modelos entienden otros idiomas, pero buena parte de su texto de entrenamiento está en inglés, así que los prompts en inglés suelen seguirse con más fidelidad. Deja los nombres propios y los diálogos en el idioma en que quieras que se hablen."
+    },
+    {
+      "q": "¿Por qué mi video con IA ignora el movimiento de cámara que pedí?",
+      "a": "Puede que el movimiento choque con la acción o que el prompt contenga varios movimientos. Pon la instrucción de cámara al principio, nombra un único movimiento estándar como «slow dolly in» y elimina el resto de palabras de movimiento."
+    },
+    {
+      "q": "¿Puede un prompt generar un video más largo que un solo plano?",
+      "a": "Algunos modelos aceptan prompts de varios planos, pero los resultados son más fiables si generas un plano cada vez y los montas después. Repite en cada plano las mismas palabras sobre el sujeto y el estilo para mantener la continuidad."
+    }
+  ]
+}

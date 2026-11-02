@@ -4,7 +4,7 @@ import en from "../locales/en.json";
 import { AI_MODELS, formatMb, modelBytes, type AiModelId } from "./ai-models";
 import { CLIP_MAX_VIEWS, CLIP_TTL_MS } from "./clip";
 import { DATASETS, csvHref } from "./datasets";
-import { CODE_ARTICLES } from "./kb";
+import { AI_ARTICLES, CODE_ARTICLES } from "./kb";
 import { REF_ENTRIES } from "./ref";
 import { LOCALES, localePath } from "./locale";
 import { IMAGE_COUNTS, IMAGE_SIZES, IMAGE_STYLES, PROMPT_MAX } from "./image-gen";
@@ -203,6 +203,7 @@ export function buildLlmsTxt(): string {
     `- [Tutorials](${SITE_ORIGIN}${learnHref("en", null)}): illustrated how-to guides.`,
     `- [Knowledge base](${SITE_ORIGIN}${kbHref("en", null)}): sourced explainers.`,
     `- [Coding tutorials](${SITE_ORIGIN}${kbHref("en", "code")}): ${CODE_ARTICLES.length} one-page tutorials on programming languages, design patterns, data structures and algorithms, with runnable code.`,
+    `- [AI tutorials](${SITE_ORIGIN}${kbHref("en", "ai")}): ${AI_ARTICLES.length} sourced guides to generative AI: how LLMs and diffusion models work, writing image and video prompts, camera moves, AI video workflows, speech, running models in the browser, and AI copyright and labeling.`,
     `- [Datasets](${SITE_ORIGIN}${datasetHref("en", null)}): ${DATASETS.length} public reference tables, each also a CSV (for example ${SITE_ORIGIN}${csvHref(DATASETS[0])}).`,
     `- [Pose & style reference](${SITE_ORIGIN}${refHref("en", null)}): ${REF_ENTRIES.length} entries on hairstyles, hair colours, expressions, hand gestures, outfits, poses and camera angles, with credited photos linked from mfan8.com and English prompt keywords.`,
     `- [Personality tests](${SITE_ORIGIN}${quizHref("en", null)}): quizzes that run in the page.`,

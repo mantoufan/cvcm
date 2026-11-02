@@ -1,0 +1,143 @@
+{
+  "title": "Cara Kerja Speech-to-Text: Whisper, WER, dan Subtitle — cv.cm",
+  "description": "Cara kerja AI speech-to-text: dari audio ke spektrogram lalu ke kata, cara Whisper dilatih, word error rate, kenapa bisa berhalusinasi, dan cara mendapat subtitle SRT yang rapi.",
+  "h1": "Bagaimana cara kerja speech-to-text AI?",
+  "answer": "Speech-to-text (automatic speech recognition, ASR) mengubah suara menjadi spektrogram, gambar yang menunjukkan frekuensi mana yang keras dari waktu ke waktu. Jaringan saraf membaca gambar itu dan menulis teks yang paling mungkin, satu token demi satu token. Model seperti Whisper mempelajarinya dari ratusan ribu jam audio bertranskrip, sehingga mampu menangani banyak bahasa dan kebisingan, tetapi tetap bisa salah dengar nama dan mengarang teks saat hening.",
+  "sections": [
+    {
+      "h": "Dari gelombang suara ke teks dalam empat langkah",
+      "body": [
+        "Pengenal suara modern seperti Whisper mengikuti alur yang sama setiap kali Anda memberinya file:",
+        {
+          "ol": [
+            "Resample. Audio diubah menjadi satu kanal dengan 16.000 sampel per detik. Ini cukup untuk ucapan, yang sebagian besar informasinya berada di bawah 8 kHz.",
+            "Buat spektrogram. Sinyal dipotong menjadi jendela-jendela pendek yang saling tumpang tindih (Whisper memakai jendela 25 ms setiap 10 ms), dan tiap jendela menjadi 80 angka pada skala Mel, yang mengatur jarak frekuensi sesuai cara pendengaran manusia. Hasilnya berupa gambar: waktu di satu sumbu, pita nada di sumbu lainnya.",
+            "Encode. Encoder Transformer membaca spektrogram dan membangun representasi dari apa yang diucapkan, termasuk mana bunyi yang berupa ucapan dan mana yang berupa derau.",
+            "Decode. Decoder Transformer menulis transkrip satu token demi satu token, setiap kali memilih token berikutnya yang paling mungkin berdasarkan audio dan teks sejauh ini. Token khusus memberi tahu bahasa, tugas (transkripsi atau terjemahan ke bahasa Inggris), dan tempat meletakkan timestamp."
+          ]
+        },
+        "Whisper memproses audio dalam jendela 30 detik. File satu jam ditangani sebagai urutan jendela yang bergeser, dan timestamp hasil prediksi memberi tahu program tempat memulai jendela berikutnya. Timestamp diprediksi dalam langkah 20 ms, itulah sebabnya waktu subtitle dari Whisper bagus tetapi tidak presisi per frame."
+      ]
+    },
+    {
+      "h": "Cara model belajar: weak supervision dalam skala besar",
+      "body": [
+        "Sistem lama menggabungkan beberapa bagian terpisah: model akustik untuk bunyi, kamus pelafalan, dan model bahasa untuk urutan kata. Setiap bagian membutuhkan data berlabel yang teliti di setiap bahasa.",
+        "Whisper menempuh jalan lain. Para penulisnya mengumpulkan 680.000 jam audio beserta transkrip yang ditemukan di internet. Sekitar 117.000 jam mencakup 96 bahasa selain bahasa Inggris, dan 125.000 jam berupa ucapan non-Inggris yang dipasangkan dengan teks Inggris, yang mengajari model menerjemahkan. Labelnya tidak sempurna (itulah bagian \"weak\" dari weak supervision), tetapi skalanya membuat model tangguh terhadap aksen, derau latar, dan kualitas rekaman tanpa fine-tuning untuk tiap set uji.",
+        "Gagasan yang sama menjelaskan kelemahannya. Bahasa yang datanya sedikit dalam kumpulan itu dikenali kurang akurat, dan model mempelajari kebiasaan teks keterangan di internet, seperti menambahkan frasa yang sering muncul di akhir video."
+      ]
+    },
+    {
+      "h": "Mengukur akurasi: word error rate",
+      "body": [
+        "Akurasi ASR dilaporkan sebagai word error rate (WER): jumlah kata yang tergantikan, terhapus, dan tersisip, dibagi jumlah kata dalam transkrip yang benar. Makin rendah makin baik, dan nilainya bisa melebihi 100 persen jika model menyisipkan banyak teks.",
+        {
+          "code": "Reference:  the meeting moved to three thirty on friday   (8 words)\nModel:      the meeting moved to tree  thirty    friday\n\nSubstitutions: three -> tree        1\nDeletions:     on                   1\nInsertions:                         0\nWER = (1 + 1 + 0) / 8 = 25%",
+          "lang": "text"
+        },
+        "Sebelum membandingkan, peneliti menormalkan kedua teks: huruf kecil, tanda baca dibuang, kontraksi diuraikan, dan angka ditulis dengan cara yang sama. Tanpa langkah itu, \"3:30\" dan \"three thirty\" akan dihitung salah padahal keduanya benar. Saat vendor menyebut angka WER, tanyakan audio apa yang dipakai untuk mengukurnya; ucapan bersih yang dibacakan dan telepon yang bising bisa berbeda berkali-kali lipat.",
+        "Untuk bahasa Mandarin, Jepang, dan Thai, yang tidak memisahkan kata dengan spasi, dipakai character error rate (CER)."
+      ]
+    },
+    {
+      "h": "Jenis-jenis pengenal suara",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Jenis",
+              "Cara kerja",
+              "Kelebihan",
+              "Kekurangan"
+            ],
+            "rows": [
+              [
+                "Encoder-decoder (gaya Whisper)",
+                "Membaca sepotong audio, lalu menulis teks dengan decoder",
+                "Akurasi tinggi, tanda baca, banyak bahasa, terjemahan",
+                "Bekerja per potongan sehingga teks langsung tertinggal; bisa berhalusinasi"
+              ],
+              [
+                "Model CTC dan transducer",
+                "Memprediksi label untuk tiap frame audio pendek lalu menggabungkannya",
+                "Latensi rendah, cocok untuk teks langsung, jarang mengarang teks",
+                "Butuh usaha lebih untuk tanda baca dan huruf kapital"
+              ],
+              [
+                "Layanan suara platform",
+                "Browser atau ponsel Anda mengirim audio ke layanan vendornya, atau menjalankan model di perangkat",
+                "Tanpa pengaturan; Web Speech API menyediakannya untuk halaman web",
+                "Perilaku berbeda per browser dan perangkat; mungkin butuh jaringan"
+              ]
+            ]
+          }
+        },
+        "Antarmuka `SpeechRecognition` dari Web Speech API memungkinkan halaman web meminta pengenalan langsung dari mikrofon kepada platform. Secara default ia memakai layanan yang disediakan browser atau sistem operasi; sebagian browser juga bisa menjalankannya di perangkat. Halaman yang menjalankan Whisper sendiri, misalnya alat speech-to-text cv.cm yang menjalankan Whisper di browser dan mengekspor TXT, SRT, atau VTT, tidak bergantung pada layanan itu, tetapi perlu mengunduh modelnya sekali."
+      ]
+    },
+    {
+      "h": "Di mana speech-to-text gagal",
+      "body": [
+        {
+          "ul": [
+            "Nama, merek, dan istilah khusus. Decoder lebih menyukai kata umum, jadi nama keluarga yang jarang berubah menjadi nama yang umum. Perbaiki secara manual, atau beri prompt singkat berisi ejaan yang benar jika alat Anda mendukungnya.",
+            "Halusinasi saat hening atau musik. Makalah Whisper melaporkan bahwa transkripsi panjang bisa terjebak dalam pengulangan, melewatkan kata pertama atau terakhir sebuah segmen, atau menghasilkan teks yang tidak berkaitan dengan audio. Intro yang hening, tepuk tangan, dan musik latar adalah pemicu umum.",
+            "Aksen dan code-switching. Pembicara yang mencampur dua bahasa dalam satu kalimat, atau aksen daerah yang kuat dengan sedikit data latih, menaikkan tingkat kesalahan.",
+            "Pembicara yang tumpang tindih. Kebanyakan pengenal menulis satu aliran teks dan tidak menyebut siapa yang berbicara. Label pembicara (diarization) adalah langkah tersendiri.",
+            "Mandarin Tradisional vs Sederhana. Model bisa mengeluarkan salah satu aksara untuk bahasa Mandarin; konversikan transkrip sesudahnya jika Anda butuh satu aksara.",
+            "Bahasa terdeteksi salah. Deteksi otomatis melihat bagian awal audio. Jika beberapa detik pertama berupa musik atau bahasa lain, pilih bahasa secara manual."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Alur kerja praktis untuk subtitle yang rapi",
+      "body": [
+        {
+          "ol": [
+            "Mulai dari audio terbaik yang Anda punya. Pakai file asli, bukan rekaman ulang dari speaker. Kurangi musik di bawah ucapan jika bisa.",
+            "Pangkas keheningan panjang dan musik di bagian awal, yang menyebabkan salah deteksi bahasa dan baris karangan.",
+            "Atur bahasa secara manual jika Anda tahu bahasanya.",
+            "Pilih model yang lebih besar untuk subtitle final dan yang lebih kecil untuk catatan cepat. Model besar lebih lambat tetapi lebih sedikit salah pada nama dan aksen.",
+            "Ekspor SRT atau VTT, lalu baca seluruh file sekali sambil menonton video. Perbaiki nama, angka, dan baris yang berulang.",
+            "Pecah cue yang panjang. Subtitle yang mudah dibaca sekitar dua baris dan tampil di layar setidaknya satu detik."
+          ]
+        },
+        "Dua format subtitle yang umum hanya berbeda pada detail kecil:",
+        {
+          "code": "SRT:\n1\n00:00:01,000 --> 00:00:04,000\nWelcome to the lesson.\n\nVTT:\nWEBVTT\n\n00:00:01.000 --> 00:00:04.000\nWelcome to the lesson.",
+          "lang": "text"
+        },
+        "SRT memberi nomor pada setiap cue dan memakai koma sebelum milidetik. WebVTT, format W3C yang dipakai elemen video HTML, diawali header `WEBVTT` dan memakai titik."
+      ]
+    },
+    {
+      "h": "Privasi dan persetujuan",
+      "body": [
+        "Rekaman rapat, panggilan, dan wawancara berisi data pribadi, dan di banyak negara merekam seseorang membutuhkan persetujuannya. Sebelum memakai layanan transkripsi cloud, periksa tempat audio disimpan dan apakah dipakai untuk pelatihan. Menjalankan model secara lokal, di aplikasi atau di browser, menjaga audio tetap di perangkat Anda, yang sering menjadi cara paling sederhana untuk memenuhi persyaratan privasi."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Seberapa akurat transkripsi AI?",
+      "a": "Pada audio jernih dengan satu pembicara dalam bahasa yang banyak dituturkan, model modern hanya membuat beberapa kesalahan per seratus kata. Akurasi turun karena derau, pembicara yang tumpang tindih, aksen kuat, bahasa yang jarang, dan kosakata khusus, jadi selalu periksa nama dan angka."
+    },
+    {
+      "q": "Kenapa Whisper menulis kata yang tidak pernah diucapkan?",
+      "a": "Ia adalah generator teks yang dikondisikan pada audio. Saat hening, ada musik, atau derau, ia bisa melanjutkan dengan teks yang umumnya mungkin muncul, seperti baris berulang atau frasa yang lazim di akhir video online. Memangkas keheningan dan mengatur bahasa mengurangi hal ini."
+    },
+    {
+      "q": "Bisakah speech-to-text mengetahui siapa yang berbicara?",
+      "a": "Tidak dengan sendirinya. Mengenali pembicara disebut diarization dan biasanya merupakan model terpisah yang melabeli segmen sebagai Pembicara 1, Pembicara 2, dan seterusnya. Label itu kemudian harus dicocokkan dengan nama asli oleh manusia."
+    },
+    {
+      "q": "Apa bedanya SRT dan VTT?",
+      "a": "Keduanya adalah file subtitle teks biasa dengan waktu mulai dan selesai. SRT memakai koma pada timestamp dan menomori tiap cue. VTT diawali baris WEBVTT, memakai titik, dan merupakan format yang dibaca browser secara native untuk video HTML."
+    },
+    {
+      "q": "Bisakah saya mentranskripsi audio secara offline?",
+      "a": "Bisa. Model terbuka seperti Whisper dapat berjalan di komputer atau di browser modern tanpa mengirim audio ke server. Pada pemakaian pertama, model diunduh; setelah itu transkripsi berjalan tanpa mengunggah file Anda."
+    }
+  ]
+}

@@ -1,0 +1,215 @@
+{
+  "title": "Cách gọi API LLM: request, streaming, JSON, retry — cv.cm",
+  "description": "Cách gọi API LLM: một yêu cầu chat completions chạy được bằng curl, Python và JavaScript, cùng streaming, đầu ra JSON, thử lại, giới hạn tốc độ và chi phí token.",
+  "h1": "Làm thế nào để gọi một API LLM?",
+  "answer": "Gửi một yêu cầu HTTPS POST với API key trong header và phần thân JSON nêu tên mô hình cùng danh sách tin nhắn. Phản hồi là JSON chứa văn bản được tạo ra và số token. Nhiều nhà cung cấp chấp nhận định dạng chat completions kiểu OpenAI, trong khi Anthropic và Gemini cũng có định dạng riêng. Hãy giữ key trên máy chủ của bạn và trả tiền theo token.",
+  "sections": [
+    {
+      "h": "Điều gì xảy ra trong một lần gọi API",
+      "body": [
+        "API LLM là một dịch vụ web. Chương trình của bạn gửi văn bản, máy chủ của nhà cung cấp chạy mô hình, và kết quả quay về dưới dạng JSON. Giữa các lần gọi không có bộ nhớ: mỗi yêu cầu phải chứa toàn bộ cuộc hội thoại mà mô hình cần thấy.",
+        "Bạn cần ba thứ: một tài khoản có API key, URL của endpoint, và ID mô hình từ danh sách mô hình của nhà cung cấp. Trong các ví dụ dưới đây, `MODEL_ID` là chỗ giữ chỗ. Tên mô hình thay đổi thường xuyên, nên hãy sao chép ID hiện hành từ tài liệu của nhà cung cấp thay vì từ một bài blog."
+      ]
+    },
+    {
+      "h": "Yêu cầu tối giản bằng curl, Python và JavaScript",
+      "body": [
+        "Định dạng chat completions, do OpenAI công bố đầu tiên, là dạng yêu cầu được bắt chước rộng rãi nhất. Nhiều nhà cung cấp khác và máy chủ cục bộ chấp nhận nó, đôi khi chỉ cần đổi base URL. Đây là yêu cầu nhỏ nhất mà vẫn hữu ích:",
+        {
+          "code": "curl https://api.openai.com/v1/chat/completions \\\n  -H \"Content-Type: application/json\" \\\n  -H \"Authorization: Bearer $OPENAI_API_KEY\" \\\n  -d '{\n    \"model\": \"MODEL_ID\",\n    \"messages\": [\n      {\"role\": \"system\", \"content\": \"You answer in one short paragraph.\"},\n      {\"role\": \"user\", \"content\": \"What is a context window?\"}\n    ]\n  }'",
+          "lang": "bash"
+        },
+        "Danh sách `messages` chứa cuộc hội thoại. Mỗi tin nhắn có `role` và `content`. Tin nhắn `system` đặt quy tắc cho câu trả lời (các mô hình mới hơn của OpenAI cũng chấp nhận tên `developer` cho vai trò này). Tin nhắn `user` là yêu cầu, còn tin nhắn `assistant` là các câu trả lời trước đó, bạn gửi lại để tiếp tục cuộc hội thoại. Một phản hồi rút gọn trông như sau:",
+        {
+          "code": "{\n  \"id\": \"chatcmpl-...\",\n  \"object\": \"chat.completion\",\n  \"model\": \"MODEL_ID\",\n  \"choices\": [\n    {\n      \"index\": 0,\n      \"message\": {\"role\": \"assistant\", \"content\": \"A context window is ...\"},\n      \"finish_reason\": \"stop\"\n    }\n  ],\n  \"usage\": {\"prompt_tokens\": 27, \"completion_tokens\": 64, \"total_tokens\": 91}\n}",
+          "lang": "json"
+        },
+        "Văn bản nằm trong `choices[0].message.content`. Đối tượng `usage` đếm số token bạn bị tính phí. `finish_reason` cho biết vì sao mô hình dừng: `stop` nghĩa là nó đã viết xong, còn `length` nghĩa là nó chạm giới hạn token của bạn và câu trả lời bị cắt.",
+        "Trong Python, cùng lời gọi đó với timeout và thử lại trông như sau. Nó dùng thư viện `requests` phổ biến. SDK chính thức của từng nhà cung cấp làm cùng việc này và tự thêm cơ chế thử lại cho bạn.",
+        {
+          "code": "import os, random, time\nimport requests\n\nURL = \"https://api.openai.com/v1/chat/completions\"\nAPI_KEY = os.environ[\"OPENAI_API_KEY\"]   # read from the server environment\n\ndef chat(messages, model=\"MODEL_ID\", max_attempts=5):\n    body = {\"model\": model, \"messages\": messages,\n            \"max_completion_tokens\": 500}   # many compatible APIs: \"max_tokens\"\n    headers = {\"Authorization\": f\"Bearer {API_KEY}\"}\n    for attempt in range(max_attempts):\n        r = requests.post(URL, headers=headers, json=body, timeout=60)\n        if r.status_code == 429 or r.status_code >= 500:\n            backoff = 2 ** attempt + random.random()      # exponential + jitter\n            try:\n                wait = max(float(r.headers.get(\"Retry-After\", 0)), backoff)\n            except ValueError:\n                wait = backoff\n            time.sleep(wait)\n            continue\n        r.raise_for_status()                # 400, 401, 403: fix the request, do not retry\n        data = r.json()\n        return data[\"choices\"][0][\"message\"][\"content\"], data[\"usage\"]\n    raise RuntimeError(\"API still failing after retries\")\n\ntext, usage = chat([{\"role\": \"user\", \"content\": \"What is a context window?\"}])\nprint(text)\nprint(usage[\"prompt_tokens\"], \"in /\", usage[\"completion_tokens\"], \"out\")",
+          "lang": "python"
+        }
+      ]
+    },
+    {
+      "h": "Các nhà cung cấp khác nhau: tương thích OpenAI, Anthropic và Gemini",
+      "body": [
+        "Dạng chat completions phổ biến nhưng không phải phổ quát. Messages API của Anthropic và Gemini API của Google có định dạng gốc riêng. Cả hai nhà cung cấp cũng công bố tùy chọn tương thích, nhưng API gốc của họ phơi bày mọi tính năng trước. Những khác biệt chính:",
+        {
+          "table": {
+            "head": [
+              "Mục",
+              "Chat completions kiểu OpenAI",
+              "Anthropic Messages API",
+              "Gemini API (gốc)"
+            ],
+            "rows": [
+              [
+                "Endpoint",
+                "`POST /v1/chat/completions`",
+                "`POST /v1/messages`",
+                "`POST /v1beta/models/{model}:generateContent`"
+              ],
+              [
+                "Header API key",
+                "`Authorization: Bearer <key>`",
+                "`x-api-key` cùng header ngày bắt buộc `anthropic-version`",
+                "`x-goog-api-key`"
+              ],
+              [
+                "Chỉ dẫn hệ thống",
+                "Tin nhắn `system` hoặc `developer`",
+                "Trường `system` ở cấp cao nhất",
+                "Trường `systemInstruction` ở cấp cao nhất"
+              ],
+              [
+                "Trường bắt buộc",
+                "`model`, `messages`",
+                "`model`, `max_tokens`, `messages`",
+                "`contents` (mô hình nằm trong URL)"
+              ],
+              [
+                "Văn bản trả lời",
+                "`choices[0].message.content`",
+                "Các khối văn bản trong mảng `content`",
+                "`candidates[0].content.parts[].text`"
+              ],
+              [
+                "Streaming",
+                "`\"stream\": true`, server-sent events kết thúc bằng `[DONE]`",
+                "`\"stream\": true`, server-sent events có tên",
+                "Phương thức `streamGenerateContent` với `alt=sse`"
+              ]
+            ]
+          }
+        },
+        "Gemini có base URL tương thích OpenAI, và nhiều nhà cung cấp khác, gồm DeepSeek và một số nơi lưu trữ mô hình Trung Quốc và mô hình mở, chấp nhận định dạng chat completions. Mức tương thích thường chỉ một phần: các tính năng nâng cao như đầu ra có cấu trúc, gọi công cụ hay đầu vào ảnh có thể khác nhau. Hãy đọc trang tương thích của từng nhà cung cấp trước khi chuyển chỉ bằng việc đổi URL."
+      ]
+    },
+    {
+      "h": "Giữ API key trên máy chủ",
+      "body": [
+        "Ai có API key của bạn đều có thể tiêu tiền của bạn. Đừng bao giờ đặt nó trong JavaScript của trình duyệt, ứng dụng di động, kho mã công khai hay file môi trường front-end bị đóng gói vào trang. Tất cả những chỗ này đều đọc được bởi người dùng.",
+        {
+          "ol": [
+            "Lưu key trong biến môi trường hoặc trình quản lý bí mật trên máy chủ của bạn.",
+            "Cho ứng dụng web hoặc di động gọi endpoint backend của chính bạn.",
+            "Ở backend, kiểm tra người dùng (đăng nhập, giới hạn tốc độ theo người dùng, độ dài đầu vào), rồi gọi API LLM bằng key.",
+            "Chỉ trả kết quả về cho client.",
+            "Đặt hạn mức chi tiêu hằng tháng trong bảng điều khiển của nhà cung cấp, dùng key riêng cho từng dự án, và thay key ngay khi bị lộ."
+          ]
+        },
+        {
+          "note": "Endpoint backend của bạn giờ là một cánh cửa công khai dẫn tới dịch vụ trả phí. Hãy giới hạn kích thước yêu cầu và số yêu cầu mỗi người dùng, nếu không một script có thể tạo ra hóa đơn lớn."
+        }
+      ]
+    },
+    {
+      "h": "Streaming: hiển thị câu trả lời khi nó đang được viết",
+      "body": [
+        "Một câu trả lời dài có thể mất nhiều giây. Với `\"stream\": true`, máy chủ gửi từng mẩu nhỏ dưới dạng server-sent events, nên giao diện của bạn hiển thị văn bản ngay khi nó xuất hiện. Mỗi dòng sự kiện bắt đầu bằng `data: ` và chứa một khối với `delta`. Định dạng OpenAI kết thúc bằng `data: [DONE]`. Ví dụ này chạy trên máy chủ Node.js:",
+        {
+          "code": "// Node.js 18+ (server side). Prints the reply as it arrives.\nconst res = await fetch(\"https://api.openai.com/v1/chat/completions\", {\n  method: \"POST\",\n  headers: {\n    \"Content-Type\": \"application/json\",\n    Authorization: `Bearer ${process.env.OPENAI_API_KEY}`,\n  },\n  body: JSON.stringify({\n    model: \"MODEL_ID\",\n    stream: true,\n    messages: [{ role: \"user\", content: \"Write a haiku about rain.\" }],\n  }),\n});\nif (!res.ok) throw new Error(`HTTP ${res.status}: ${await res.text()}`);\n\nconst decoder = new TextDecoder();\nlet buffer = \"\";\nfor await (const chunk of res.body) {\n  buffer += decoder.decode(chunk, { stream: true });\n  const lines = buffer.split(\"\\n\");\n  buffer = lines.pop();                       // keep a partial line for later\n  for (const line of lines) {\n    if (!line.startsWith(\"data: \")) continue;\n    const data = line.slice(6);\n    if (data === \"[DONE]\") continue;          // end of stream\n    const delta = JSON.parse(data).choices[0]?.delta?.content;\n    if (delta) process.stdout.write(delta);\n  }\n}",
+          "lang": "javascript"
+        },
+        "Để hiển thị luồng trong trình duyệt, hãy chuyển tiếp các khối từ máy chủ của bạn tới trang. Đừng gọi nhà cung cấp từ trình duyệt bằng key của bạn. Trong định dạng OpenAI, usage không có trong các khối streaming trừ khi bạn đặt `stream_options` với `include_usage`, vì vậy hãy bật nó nếu bạn cần số token để tính phí."
+      ]
+    },
+    {
+      "h": "Nhận JSON thay vì văn xuôi",
+      "body": [
+        "Khi mã sẽ đọc câu trả lời, hãy yêu cầu JSON. Có hai mức. Chế độ JSON (`\"response_format\": {\"type\": \"json_object\"}`) đảm bảo JSON hợp lệ, nhưng không đảm bảo các trường nào. Đầu ra có cấu trúc với JSON Schema khiến mô hình tuân theo đúng các trường và kiểu của bạn, trên những mô hình hỗ trợ:",
+        {
+          "code": "{\n  \"model\": \"MODEL_ID\",\n  \"messages\": [\n    {\"role\": \"user\", \"content\": \"Extract the total and currency: 'Amount due: 1.250,00 EUR'\"}\n  ],\n  \"response_format\": {\n    \"type\": \"json_schema\",\n    \"json_schema\": {\n      \"name\": \"invoice_total\",\n      \"strict\": true,\n      \"schema\": {\n        \"type\": \"object\",\n        \"properties\": {\n          \"total\": {\"type\": \"number\"},\n          \"currency\": {\"type\": \"string\"}\n        },\n        \"required\": [\"total\", \"currency\"],\n        \"additionalProperties\": false\n      }\n    }\n  }\n}",
+          "lang": "json"
+        },
+        "Ngay cả khi có schema, hãy kiểm tra lại kết quả đã phân tích trong mã của bạn. Giá trị vẫn có thể sai, chẳng hạn một con số đọc nhầm, dù cấu trúc đúng. Anthropic và Gemini hỗ trợ schema và định nghĩa công cụ theo định dạng riêng của họ. Khi gỡ lỗi các phản hồi JSON dài, một trình định dạng như công cụ json của cv.cm giúp đọc đầu ra lồng nhau dễ hơn."
+      ]
+    },
+    {
+      "h": "Giới hạn tốc độ, thử lại và lỗi",
+      "body": [
+        "Nhà cung cấp giới hạn cả số yêu cầu mỗi phút (RPM) lẫn số token mỗi phút (TPM), và giới hạn nào chạm trước thì áp dụng. Khi vượt giới hạn, bạn nhận mã trạng thái HTTP 429. Hãy xử lý lỗi theo loại:",
+        {
+          "table": {
+            "head": [
+              "Trạng thái",
+              "Ý nghĩa",
+              "Cần làm"
+            ],
+            "rows": [
+              [
+                "400",
+                "Yêu cầu sai: trường sai, quá nhiều token",
+                "Sửa yêu cầu. Không thử lại."
+              ],
+              [
+                "401 / 403",
+                "Key thiếu, sai hoặc không được phép",
+                "Kiểm tra key và quyền. Không thử lại."
+              ],
+              [
+                "429",
+                "Giới hạn tốc độ, hoặc đôi khi hết hạn mức",
+                "Chờ và thử lại với backoff. Nếu thông báo nói về hạn mức hoặc thanh toán, hãy dừng và xử lý tài khoản."
+              ],
+              [
+                "500 / 503",
+                "Lỗi máy chủ hoặc quá tải",
+                "Thử lại với backoff."
+              ],
+              [
+                "Hết thời gian",
+                "Không có phản hồi kịp lúc",
+                "Thử lại một hoặc hai lần. Dùng streaming cho câu trả lời dài."
+              ]
+            ]
+          }
+        },
+        "Thử lại với exponential backoff: chờ khoảng 1 giây, rồi 2, 4, 8, cộng thêm một độ trễ ngẫu nhiên nhỏ (jitter) để nhiều client không thử lại cùng một lúc. Nếu phản hồi có header `Retry-After`, hãy chờ ít nhất bằng thời gian đó. Giới hạn số lần thử. Yêu cầu thất bại cũng có thể được tính vào giới hạn của bạn, nên thử lại ngay lập tức trong vòng lặp dày chỉ làm mọi thứ tệ hơn. Nếu bạn dùng SDK chính thức, hãy nhớ rằng nó đã tự thử lại một số lỗi."
+      ]
+    },
+    {
+      "h": "Chi phí được tính bằng token",
+      "body": [
+        "Bạn trả tiền cho token đầu vào (mọi thứ bạn gửi, gồm system prompt và toàn bộ lịch sử hội thoại) và token đầu ra (những gì mô hình viết). Token đầu ra thường được định giá cao hơn token đầu vào. Công thức rất đơn giản:",
+        {
+          "code": "cost = input_tokens  / 1,000,000 * input_price_per_million\n     + output_tokens / 1,000,000 * output_price_per_million\n\nExample with made-up prices (2.00 in, 8.00 out per million tokens):\n  27 input + 64 output tokens\n  = 0.000054 + 0.000512 = 0.000566 per call\n  x 100,000 calls a month = about 56.60",
+          "lang": "text"
+        },
+        {
+          "ul": [
+            "Đọc số token thực từ `usage` trong mỗi phản hồi và ghi log. Đừng ước tính từ số từ.",
+            "Giới hạn độ dài mỗi câu trả lời: `max_completion_tokens` ở OpenAI (`max_tokens` cũ hơn đã bị coi là lỗi thời ở đó), `max_tokens` ở Anthropic và nhiều API tương thích.",
+            "Lịch sử chat lớn dần sau mỗi lượt, nên tin nhắn thứ 20 tốn hơn tin nhắn đầu tiên. Hãy cắt bớt hoặc tóm tắt các lượt cũ.",
+            "Dùng mô hình nhỏ hơn cho tác vụ đơn giản như phân loại, và mô hình lớn hơn chỉ ở nơi chất lượng đòi hỏi.",
+            "Một số nhà cung cấp giảm giá cho phần đầu prompt lặp lại (prompt caching) hoặc có xử lý hàng loạt rẻ hơn cho các việc có thể chờ."
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Tôi có thể gọi API LLM trực tiếp từ trình duyệt không?",
+      "a": "Không an toàn nếu dùng key của bạn, vì mọi khách truy cập đều đọc được nó từ trang. Hãy gọi máy chủ của bạn, nơi sẽ thêm key. Ngoại lệ là key do người dùng tự nhập cho tài khoản của họ, hoặc mô hình chạy hoàn toàn trong trình duyệt."
+    },
+    {
+      "q": "Vì sao API quên những gì tôi nói trước đó?",
+      "a": "API không giữ trạng thái. Mỗi yêu cầu phải chứa các tin nhắn trước đó mà bạn muốn mô hình thấy. Ứng dụng chat lưu lịch sử và gửi lại mỗi lần."
+    },
+    {
+      "q": "Temperature làm gì, và tôi có nên đặt nó không?",
+      "a": "Temperature điều khiển mức ngẫu nhiên khi chọn từ: thấp hơn thì dễ đoán, cao hơn thì đa dạng. Một số nhà cung cấp và mô hình mới hạn chế hoặc bỏ các tham số lấy mẫu, nên hãy xem tài liệu tham chiếu API trước khi đặt."
+    },
+    {
+      "q": "Vì sao câu trả lời của tôi dừng giữa chừng?",
+      "a": "Câu trả lời đã chạm giới hạn token bạn đặt, hoặc mức đầu ra tối đa của mô hình. Hãy kiểm tra `finish_reason` (hoặc `stop_reason` ở Anthropic). Tăng giới hạn hoặc yêu cầu câu trả lời ngắn hơn."
+    },
+    {
+      "q": "Có API LLM miễn phí không?",
+      "a": "Một số nhà cung cấp có gói miễn phí hoặc tín dụng dùng thử với giới hạn tốc độ thấp, và mô hình mở có thể chạy trên máy của bạn sau một máy chủ cục bộ tương thích OpenAI. Gói miễn phí và điều khoản của chúng thay đổi thường xuyên, nên hãy xem trang hiện hành của nhà cung cấp."
+    }
+  ]
+}

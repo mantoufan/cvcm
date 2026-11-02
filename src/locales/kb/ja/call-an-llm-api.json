@@ -1,0 +1,215 @@
+{
+  "title": "LLM APIの呼び出し方：リクエスト・ストリーミング・JSON・リトライ — cv.cm",
+  "description": "LLM APIの使い方を解説。curl、Python、JavaScript で動くチャット補完リクエストの例に加え、ストリーミング、JSON出力、リトライ、レート制限、トークン課金の考え方も紹介します。",
+  "h1": "LLM API（ChatGPT APIなど）の呼び出し方は？",
+  "answer": "HTTPSのPOSTリクエストを送ります。ヘッダーにAPIキーを入れ、JSONの本文にモデル名とメッセージのリストを書きます。返ってくるのは、生成されたテキストとトークン数を含むJSONです。多くのプロバイダーが OpenAI 形式のチャット補完フォーマットに対応しており、Anthropic と Gemini には独自の形式もあります。キーはサーバー側で管理し、料金はトークン単位で支払います。",
+  "sections": [
+    {
+      "h": "API呼び出し1回で起きること",
+      "body": [
+        "LLM APIはWebサービスです。プログラムがテキストを送ると、プロバイダーのサーバーがモデルを実行し、結果がJSONで返ってきます。呼び出し間で記憶は引き継がれません。モデルに見せたい会話は、毎回のリクエストにすべて含める必要があります。",
+        "必要なのは3つです。APIキーを持つアカウント、エンドポイントのURL、プロバイダーのモデル一覧にあるモデルIDです。以下の例では `MODEL_ID` がプレースホルダーです。モデル名は頻繁に変わるので、ブログ記事ではなく、プロバイダーの公式ドキュメントから最新のIDをコピーしてください。"
+      ]
+    },
+    {
+      "h": "curl、Python、JavaScript での最小リクエスト",
+      "body": [
+        "OpenAI が最初に公開したチャット補完（chat completions）の形式は、最も広く真似されているリクエストの形です。他の多くのプロバイダーやローカルサーバーが、ベースURLを変えるだけで対応していることもあります。最小限で実用的なリクエストは次のとおりです。",
+        {
+          "code": "curl https://api.openai.com/v1/chat/completions \\\n  -H \"Content-Type: application/json\" \\\n  -H \"Authorization: Bearer $OPENAI_API_KEY\" \\\n  -d '{\n    \"model\": \"MODEL_ID\",\n    \"messages\": [\n      {\"role\": \"system\", \"content\": \"You answer in one short paragraph.\"},\n      {\"role\": \"user\", \"content\": \"What is a context window?\"}\n    ]\n  }'",
+          "lang": "bash"
+        },
+        "`messages` のリストが会話を保持します。各メッセージには `role` と `content` があります。`system` メッセージは返答のルールを設定します（OpenAI の新しいモデルでは、このロールに `developer` という名前も使えます）。`user` メッセージは依頼、`assistant` メッセージは過去の返答で、会話を続けるときにそのまま送り返します。レスポンスを短くすると次のようになります。",
+        {
+          "code": "{\n  \"id\": \"chatcmpl-...\",\n  \"object\": \"chat.completion\",\n  \"model\": \"MODEL_ID\",\n  \"choices\": [\n    {\n      \"index\": 0,\n      \"message\": {\"role\": \"assistant\", \"content\": \"A context window is ...\"},\n      \"finish_reason\": \"stop\"\n    }\n  ],\n  \"usage\": {\"prompt_tokens\": 27, \"completion_tokens\": 64, \"total_tokens\": 91}\n}",
+          "lang": "json"
+        },
+        "テキストは `choices[0].message.content` にあります。`usage` オブジェクトは課金対象のトークン数です。`finish_reason` はモデルが止まった理由を示します。`stop` は最後まで書き終えたこと、`length` はトークン上限に達して答えが途中で切れたことを意味します。",
+        "Pythonでは、タイムアウトとリトライつきの同じ呼び出しは次のようになります。一般的な `requests` ライブラリを使っています。各プロバイダーの公式SDKも同じ働きをし、リトライも自動で行います。",
+        {
+          "code": "import os, random, time\nimport requests\n\nURL = \"https://api.openai.com/v1/chat/completions\"\nAPI_KEY = os.environ[\"OPENAI_API_KEY\"]   # read from the server environment\n\ndef chat(messages, model=\"MODEL_ID\", max_attempts=5):\n    body = {\"model\": model, \"messages\": messages,\n            \"max_completion_tokens\": 500}   # many compatible APIs: \"max_tokens\"\n    headers = {\"Authorization\": f\"Bearer {API_KEY}\"}\n    for attempt in range(max_attempts):\n        r = requests.post(URL, headers=headers, json=body, timeout=60)\n        if r.status_code == 429 or r.status_code >= 500:\n            backoff = 2 ** attempt + random.random()      # exponential + jitter\n            try:\n                wait = max(float(r.headers.get(\"Retry-After\", 0)), backoff)\n            except ValueError:\n                wait = backoff\n            time.sleep(wait)\n            continue\n        r.raise_for_status()                # 400, 401, 403: fix the request, do not retry\n        data = r.json()\n        return data[\"choices\"][0][\"message\"][\"content\"], data[\"usage\"]\n    raise RuntimeError(\"API still failing after retries\")\n\ntext, usage = chat([{\"role\": \"user\", \"content\": \"What is a context window?\"}])\nprint(text)\nprint(usage[\"prompt_tokens\"], \"in /\", usage[\"completion_tokens\"], \"out\")",
+          "lang": "python"
+        }
+      ]
+    },
+    {
+      "h": "プロバイダーごとの違い：OpenAI互換、Anthropic、Gemini",
+      "body": [
+        "チャット補完の形は一般的ですが、普遍的ではありません。Anthropic の Messages API と Google の Gemini API には、それぞれ独自のネイティブ形式があります。どちらも互換オプションを公開していますが、全機能が最初に使えるのはネイティブAPIです。主な違いは次のとおりです。",
+        {
+          "table": {
+            "head": [
+              "項目",
+              "OpenAI形式のチャット補完",
+              "Anthropic Messages API",
+              "Gemini API（ネイティブ）"
+            ],
+            "rows": [
+              [
+                "エンドポイント",
+                "`POST /v1/chat/completions`",
+                "`POST /v1/messages`",
+                "`POST /v1beta/models/{model}:generateContent`"
+              ],
+              [
+                "APIキーのヘッダー",
+                "`Authorization: Bearer <key>`",
+                "`x-api-key` と、必須の日付ヘッダー `anthropic-version`",
+                "`x-goog-api-key`"
+              ],
+              [
+                "システム指示",
+                "`system` または `developer` メッセージ",
+                "トップレベルの `system` フィールド",
+                "トップレベルの `systemInstruction` フィールド"
+              ],
+              [
+                "必須フィールド",
+                "`model`, `messages`",
+                "`model`, `max_tokens`, `messages`",
+                "`contents`（モデルはURLに含まれる）"
+              ],
+              [
+                "返答のテキスト",
+                "`choices[0].message.content`",
+                "`content` 配列内のテキストブロック",
+                "`candidates[0].content.parts[].text`"
+              ],
+              [
+                "ストリーミング",
+                "`\"stream\": true`、`[DONE]` で終わるServer-Sent Events",
+                "`\"stream\": true`、名前付きServer-Sent Events",
+                "`alt=sse` を付けた `streamGenerateContent` メソッド"
+              ]
+            ]
+          }
+        },
+        "Gemini はOpenAI互換のベースURLを提供しており、DeepSeek や、中国系・オープンモデル系の複数のホスティング事業者を含む多くのプロバイダーが、チャット補完の形式に対応しています。互換性は多くの場合部分的で、構造化出力、ツール呼び出し、画像入力などの高度な機能は異なることがあります。URLを変えるだけで切り替える前に、各プロバイダーの互換性ページを読んでください。"
+      ]
+    },
+    {
+      "h": "APIキーはサーバーで管理する",
+      "body": [
+        "APIキーを持つ人は誰でも、あなたのお金を使えます。ブラウザのJavaScript、モバイルアプリ、公開リポジトリ、ページにバンドルされるフロントエンドの環境変数ファイルには、決してキーを入れてはいけません。これらはすべてユーザーが読めます。",
+        {
+          "ol": [
+            "キーはサーバーの環境変数かシークレットマネージャーに保存します。",
+            "WebアプリやモバイルアプリからはあなたのバックエンドのAPIエンドポイントを呼び出します。",
+            "バックエンドでユーザーを確認し（ログイン、ユーザーごとのレート制限、入力の長さ）、そのうえでキーを付けてLLM APIを呼び出します。",
+            "クライアントには結果だけを返します。",
+            "プロバイダーのダッシュボードで月の利用上限を設定し、プロジェクトごとに別のキーを使い、漏えいしたらすぐにキーをローテーションします。"
+          ]
+        },
+        {
+          "note": "あなたのバックエンドのエンドポイントは、有料サービスへの公開された入口になります。リクエストのサイズとユーザーあたりのリクエスト数を制限しないと、1本のスクリプトで高額の請求になりかねません。"
+        }
+      ]
+    },
+    {
+      "h": "ストリーミング：書かれた順に回答を表示する",
+      "body": [
+        "長い回答は数秒以上かかることがあります。`\"stream\": true` を指定すると、サーバーが小さな断片をServer-Sent Eventsとして送るので、画面にテキストを逐次表示できます。各イベントの行は `data: ` で始まり、`delta` を持つチャンクが入ります。OpenAI形式は `data: [DONE]` で終わります。次の例はNode.jsサーバーで動きます。",
+        {
+          "code": "// Node.js 18+ (server side). Prints the reply as it arrives.\nconst res = await fetch(\"https://api.openai.com/v1/chat/completions\", {\n  method: \"POST\",\n  headers: {\n    \"Content-Type\": \"application/json\",\n    Authorization: `Bearer ${process.env.OPENAI_API_KEY}`,\n  },\n  body: JSON.stringify({\n    model: \"MODEL_ID\",\n    stream: true,\n    messages: [{ role: \"user\", content: \"Write a haiku about rain.\" }],\n  }),\n});\nif (!res.ok) throw new Error(`HTTP ${res.status}: ${await res.text()}`);\n\nconst decoder = new TextDecoder();\nlet buffer = \"\";\nfor await (const chunk of res.body) {\n  buffer += decoder.decode(chunk, { stream: true });\n  const lines = buffer.split(\"\\n\");\n  buffer = lines.pop();                       // keep a partial line for later\n  for (const line of lines) {\n    if (!line.startsWith(\"data: \")) continue;\n    const data = line.slice(6);\n    if (data === \"[DONE]\") continue;          // end of stream\n    const delta = JSON.parse(data).choices[0]?.delta?.content;\n    if (delta) process.stdout.write(delta);\n  }\n}",
+          "lang": "javascript"
+        },
+        "ブラウザでストリームを表示するには、サーバーからページへチャンクを中継します。キーを付けてブラウザからプロバイダーを直接呼び出してはいけません。OpenAI形式では、`stream_options` で `include_usage` を設定しない限り、ストリームのチャンクに使用量は含まれません。課金用にトークン数が必要なら、有効にしてください。"
+      ]
+    },
+    {
+      "h": "文章ではなくJSONで受け取る",
+      "body": [
+        "コードが回答を読むなら、JSONを要求します。レベルは2つあります。JSONモード（`\"response_format\": {\"type\": \"json_object\"}`）は有効なJSONを保証しますが、どのフィールドが入るかは保証しません。JSON Schemaによる構造化出力は、対応モデルで、指定どおりのフィールドと型にモデルを従わせます。",
+        {
+          "code": "{\n  \"model\": \"MODEL_ID\",\n  \"messages\": [\n    {\"role\": \"user\", \"content\": \"Extract the total and currency: 'Amount due: 1.250,00 EUR'\"}\n  ],\n  \"response_format\": {\n    \"type\": \"json_schema\",\n    \"json_schema\": {\n      \"name\": \"invoice_total\",\n      \"strict\": true,\n      \"schema\": {\n        \"type\": \"object\",\n        \"properties\": {\n          \"total\": {\"type\": \"number\"},\n          \"currency\": {\"type\": \"string\"}\n        },\n        \"required\": [\"total\", \"currency\"],\n        \"additionalProperties\": false\n      }\n    }\n  }\n}",
+          "lang": "json"
+        },
+        "スキーマを使っても、パース後の結果はコード側で検証してください。形が正しくても、数値の読み違いなど、値が間違っていることはありえます。Anthropic と Gemini も、それぞれの形式でスキーマとツール定義に対応しています。長いJSONの返答をデバッグするときは、cv.cm の JSON ツールのようなフォーマッターを使うと、入れ子の出力が読みやすくなります。"
+      ]
+    },
+    {
+      "h": "レート制限、リトライ、エラー",
+      "body": [
+        "プロバイダーは、1分あたりのリクエスト数（RPM）と1分あたりのトークン数（TPM）の両方を制限し、先に達したほうが適用されます。制限を超えると、HTTPステータス429が返ります。エラーは種類別に処理します。",
+        {
+          "table": {
+            "head": [
+              "ステータス",
+              "意味",
+              "対処"
+            ],
+            "rows": [
+              [
+                "400",
+                "不正なリクエスト：フィールドの誤り、トークン数超過",
+                "リクエストを直す。リトライしない。"
+              ],
+              [
+                "401 / 403",
+                "キーがない、間違っている、権限がない",
+                "キーと権限を確認する。リトライしない。"
+              ],
+              [
+                "429",
+                "レート制限、または利用枠の使い切り",
+                "待ってからバックオフ付きでリトライ。利用枠や請求の問題とある場合は、止めてアカウントを直す。"
+              ],
+              [
+                "500 / 503",
+                "サーバーエラーまたは過負荷",
+                "バックオフ付きでリトライ。"
+              ],
+              [
+                "タイムアウト",
+                "時間内に返答がない",
+                "1〜2回リトライ。長い回答にはストリーミングを使う。"
+              ]
+            ]
+          }
+        },
+        "指数バックオフでリトライします。約1秒、次に2、4、8秒と待ち、多数のクライアントが同じ瞬間にリトライしないよう、小さなランダムな遅延（ジッター）を加えます。レスポンスに `Retry-After` ヘッダーがあれば、少なくともその時間は待ちます。試行回数には上限を設けましょう。失敗したリクエストも制限に数えられることがあるため、短い間隔のループで即座にリトライすると、状況が悪化します。公式SDKを使う場合は、一部のエラーをすでにリトライしていることを覚えておいてください。"
+      ]
+    },
+    {
+      "h": "コストはトークンで数える",
+      "body": [
+        "料金は、入力トークン（システムプロンプトと会話履歴全体を含め、送るものすべて）と、出力トークン（モデルが書くもの）に対して発生します。出力トークンのほうが、入力トークンより高く設定されているのが普通です。計算式は単純です。",
+        {
+          "code": "cost = input_tokens  / 1,000,000 * input_price_per_million\n     + output_tokens / 1,000,000 * output_price_per_million\n\nExample with made-up prices (2.00 in, 8.00 out per million tokens):\n  27 input + 64 output tokens\n  = 0.000054 + 0.000512 = 0.000566 per call\n  x 100,000 calls a month = about 56.60",
+          "lang": "text"
+        },
+        {
+          "ul": [
+            "各レスポンスの `usage` から実際の数を読み取り、記録します。単語数からの推定はしないでください。",
+            "返答ごとの長さに上限を設けます。OpenAI では `max_completion_tokens`（古い `max_tokens` は非推奨）、Anthropic や多くの互換APIでは `max_tokens` です。",
+            "チャット履歴はターンごとに増えるため、20通目のメッセージは1通目より高くつきます。古いターンは削るか要約しましょう。",
+            "分類のような単純なタスクには小さなモデルを使い、大きなモデルは品質が必要な場面だけにします。",
+            "プロバイダーによっては、繰り返されるプロンプトの先頭部分を割引したり（プロンプトキャッシュ）、待てるジョブ向けにより安いバッチ処理を提供したりします。"
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "LLM APIをブラウザから直接呼び出せますか？",
+      "a": "自分のキーでは、安全にはできません。訪問者の誰でもページからキーを読めるからです。キーを付ける自分のサーバーを呼び出してください。例外は、ユーザーが自分のアカウントのキーを入力する場合や、ブラウザ内で完結して動くモデルです。"
+    },
+    {
+      "q": "APIが前に言ったことを忘れるのはなぜですか？",
+      "a": "APIはステートレスだからです。各リクエストに、モデルに見せたい過去のメッセージを含める必要があります。チャットアプリは履歴を保存し、毎回それを再送しています。"
+    },
+    {
+      "q": "temperature（温度）は何をするもので、設定すべきですか？",
+      "a": "temperature は単語選びのランダムさを制御します。低いほど予測しやすく、高いほど多様になります。プロバイダーや新しいモデルによってはサンプリングパラメータが制限または削除されているので、設定する前にAPIリファレンスを確認してください。"
+    },
+    {
+      "q": "回答が途中で止まるのはなぜですか？",
+      "a": "返答が、自分で設定したトークン上限、またはモデルの最大出力に達したためです。`finish_reason`（Anthropic では `stop_reason`）を確認してください。上限を上げるか、もっと短い回答を依頼しましょう。"
+    },
+    {
+      "q": "無料のLLM APIはありますか？",
+      "a": "レート制限の低い無料枠や試用クレジットを提供するプロバイダーがいくつかあり、オープンなモデルを、OpenAI互換のローカルサーバーの背後で自分のマシンで動かすこともできます。無料枠とその条件は頻繁に変わるので、プロバイダーの最新のページを確認してください。"
+    }
+  ]
+}

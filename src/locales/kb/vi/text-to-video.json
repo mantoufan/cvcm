@@ -1,0 +1,212 @@
+{
+  "title": "Text-to-video AI hoạt động thế nào và cách dùng hiệu quả — cv.cm",
+  "description": "Text-to-video AI biến prompt thành clip ra sao, những cài đặt cần chú ý, kế hoạch quay 15 giây và các giới hạn: vật lý, bàn tay, chữ trên màn hình, khuôn mặt bị trôi.",
+  "h1": "Text-to-video AI hoạt động như thế nào?",
+  "answer": "Text-to-video AI bắt đầu từ nhiễu ngẫu nhiên có hình dạng một clip ngắn, rồi gỡ nhiễu từng bước theo hướng dẫn của prompt, cho đến khi mọi khung hình là một ảnh mạch lạc và các khung hình khớp với nhau theo thời gian. Vì tạo cả clip cùng lúc, nó hoạt động tốt nhất với các cảnh đơn ngắn có một hành động rõ ràng.",
+  "sections": [
+    {
+      "h": "Chuyện gì xảy ra khi bạn bấm tạo",
+      "body": [
+        "Hầu hết hệ thống text-to-video là mô hình khuếch tán (diffusion model) được mở rộng từ ảnh sang video. Bài báo Video Diffusion Models năm 2022 của Ho và cộng sự đã cho thấy ý tưởng cơ bản: coi clip là một khối khung hình, thêm nhiễu vào clip thật khi huấn luyện, rồi dạy mạng nơ-ron gỡ nhiễu đó. Khi tạo, mô hình bắt đầu bằng nhiễu thuần cho mọi khung hình và gỡ nhiễu tất cả cùng lúc, nên chuyển động và hình dạng được quyết định đồng thời.",
+        "Ba ý tưởng giúp việc này khả thi ở quy mô lớn.",
+        {
+          "ul": [
+            "Không gian tiềm ẩn (latent space). Mô hình làm việc trên bản nén của video chứ không phải điểm ảnh thô. Một bộ giải mã riêng biến kết quả thành các khung hình. Stable Video Diffusion là một ví dụ mã nguồn mở của cách tiếp cận latent này.",
+            "Không gian và thời gian cùng lúc. Mạng nhìn xuyên các khung hình chứ không chỉ trong từng khung, nên khuôn mặt ở khung 1 và khung 40 được coi là cùng một khuôn mặt. Báo cáo Sora của OpenAI mô tả việc cắt video thành các mảnh không-thời gian (spacetime patch) cho transformer.",
+            "Điều kiện từ văn bản. Một bộ mã hóa ngôn ngữ biến prompt thành các con số dẫn hướng cho từng bước gỡ nhiễu. Một số hệ thống còn viết thêm chú thích phong phú hơn từ prompt của bạn trước khi tạo."
+          ]
+        },
+        "Imagen Video của Google bổ sung một chuỗi tầng: tạo trước một clip nhỏ, ngắn, tốc độ khung hình thấp, rồi nâng độ phân giải và tốc độ khung hình bằng các mô hình tiếp theo. Nhiều sản phẩm vẫn dùng một dạng của ý tưởng hai giai đoạn này, nên chế độ bản nháp thường nhanh hơn và chất lượng thấp hơn bản render cuối."
+      ]
+    },
+    {
+      "h": "Quy trình từ ý tưởng đến clip dùng được",
+      "body": [
+        {
+          "ol": [
+            "Chốt cảnh quay. Một chủ thể, một hành động, một chuyển động máy. Nếu cần nhiều hơn, hãy lên kế hoạch nhiều cảnh.",
+            "Viết prompt gồm chủ thể, hành động và thời gian, máy quay, bối cảnh và ánh sáng, phong cách, và âm thanh. Xem hướng dẫn prompt video để biết cấu trúc.",
+            "Đặt các tùy chọn kỹ thuật trong giao diện: độ dài, tỷ lệ khung hình, độ phân giải, bật hoặc tắt âm thanh.",
+            "Tạo 2 đến 4 bản cho cùng một prompt. Kết quả giữa các seed khác nhau rất nhiều.",
+            "Chọn bản tốt nhất, rồi đổi một thứ trong prompt nếu vẫn cần cải thiện.",
+            "Nếu khuôn mặt hoặc sản phẩm phải giống chính xác, chuyển sang image-to-video và đưa cho mô hình một khung hình mở đầu.",
+            "Cắt clip trong phần mềm dựng. Bỏ vài khung hình đầu và cuối nếu chúng bị rung."
+          ]
+        },
+        "Sai lầm tốn kém nhất là cố sửa một cảnh hỏng bằng prompt ngày càng dài. Nếu ba lần thử đều thất bại, nhiều khả năng cảnh quá phức tạp so với mô hình. Hãy đơn giản hóa hành động hoặc tách ra."
+      ]
+    },
+    {
+      "h": "Những cài đặt quan trọng",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Cài đặt",
+              "Điều khiển gì",
+              "Lời khuyên thực tế"
+            ],
+            "rows": [
+              [
+                "Thời lượng",
+                "Số giây mô hình tạo ra",
+                "Clip ngắn bám prompt sát hơn; ghép các cảnh ngắn khi dựng"
+              ],
+              [
+                "Tỷ lệ khung hình",
+                "16:9, 9:16, 1:1 và tương tự",
+                "Chọn ngay tỷ lệ của nền tảng đăng cuối; cắt sau này sẽ mất bố cục"
+              ],
+              [
+                "Độ phân giải",
+                "Kích thước đầu ra",
+                "Dùng mức nháp thấp để thử prompt, chỉ dùng mức cao cho bản đã chọn"
+              ],
+              [
+                "Seed",
+                "Nhiễu khởi đầu",
+                "Dùng lại seed để so sánh công bằng khi đổi prompt, nếu công cụ cho phép"
+              ],
+              [
+                "Negative prompt",
+                "Những thứ cần tránh",
+                "Liệt kê vật thể hoặc lỗi một cách thẳng, không dùng 'no'"
+              ],
+              [
+                "Âm thanh",
+                "Âm thanh tạo cùng hình ảnh",
+                "Tắt nếu bạn sẽ thêm nhạc và giọng nói khi dựng"
+              ],
+              [
+                "Viết lại prompt",
+                "Công cụ tự mở rộng prompt của bạn",
+                "Tắt khi cần mô hình làm đúng từng chữ"
+              ]
+            ]
+          }
+        },
+        "Giới hạn chính xác về độ dài, độ phân giải và giá thay đổi thường xuyên và khác nhau giữa các công cụ, nên hãy xem tài liệu hiện hành của công cụ bạn dùng."
+      ]
+    },
+    {
+      "h": "Ví dụ: clip 15 giây chia thành ba cảnh",
+      "body": [
+        "Thay vì yêu cầu một clip 15 giây về buổi sáng thường ngày, hãy lên kế hoạch ba cảnh, mỗi cảnh khoảng năm giây. Mỗi cảnh có một nhiệm vụ, và cùng một dòng phong cách giúp chúng đồng bộ.",
+        {
+          "table": {
+            "head": [
+              "Cảnh",
+              "Độ dài",
+              "Máy quay",
+              "Hành động"
+            ],
+            "rows": [
+              [
+                "1",
+                "5 giây",
+                "Toàn cảnh, cố định",
+                "Ánh nắng tràn vào phòng ngủ nhỏ; đồng hồ báo thức reo trên bàn cạnh giường"
+              ],
+              [
+                "2",
+                "5 giây",
+                "Cận trung, push-in chậm",
+                "Chàng trai ngồi dậy trên giường, dụi mắt và nhìn về phía cửa sổ"
+              ],
+              [
+                "3",
+                "5 giây",
+                "Cận cảnh, cố định",
+                "Anh rót cà phê vào chiếc cốc trắng; hơi nước bốc lên"
+              ]
+            ]
+          }
+        },
+        {
+          "code": "Shot 2 of 3. Medium close-up, eye level, slow push-in.\nA young man with messy short brown hair, grey T-shirt, sits up in bed.\nHe rubs his eyes with one hand, then turns his head toward the window\nand holds still. Soft warm morning light from the left, white sheets.\nStyle: natural live-action, 35mm film look, warm muted colors.\nAudio: birds outside, a quiet room. No music.",
+          "lang": "text"
+        },
+        "Lặp lại nguyên văn mô tả chủ thể và dòng phong cách ở mỗi cảnh là công cụ giữ tính liền mạch đơn giản nhất. Để nhất quán chặt hơn, hãy tạo trước một ảnh tĩnh của nhân vật và dùng nó làm khung hình mở đầu."
+      ]
+    },
+    {
+      "h": "Text-to-video hay image-to-video?",
+      "body": [
+        "Text-to-video quyết định mọi thứ chỉ từ chữ. Điều đó tốt để khám phá ý tưởng và cho những cảnh mà vẻ ngoài chính xác không quan trọng. Image-to-video bắt đầu từ bức ảnh bạn đưa vào, nên vẻ ngoài đã cố định và prompt chỉ cần mô tả chuyển động.",
+        {
+          "table": {
+            "head": [
+              "Nhu cầu",
+              "Lựa chọn tốt hơn",
+              "Vì sao"
+            ],
+            "rows": [
+              [
+                "Ý tưởng và không khí nhanh",
+                "Text-to-video",
+                "Nhanh; không cần chuẩn bị ảnh"
+              ],
+              [
+                "Một khuôn mặt, sản phẩm hoặc logo cụ thể",
+                "Image-to-video",
+                "Khung hình đầu giữ đúng vẻ ngoài"
+              ],
+              [
+                "Cùng một nhân vật qua nhiều cảnh",
+                "Image-to-video hoặc ảnh tham chiếu",
+                "Chỉ dùng chữ thì bị trôi giữa các cảnh"
+              ],
+              [
+                "Tư thế đầu và cuối đã định",
+                "Khung hình đầu và cuối",
+                "Mô hình lấp chuyển động giữa hai ảnh"
+              ]
+            ]
+          }
+        },
+        "Một cách kết hợp phổ biến là tạo ảnh tĩnh bằng mô hình ảnh, rồi làm cho nó chuyển động. Ví dụ, `ai-image-generator` của cv.cm có thể tạo nhanh ảnh nháp 384 px ngay trên GPU của bạn; sau đó một mô hình video đầy đủ sẽ làm động phiên bản lớn hơn của ảnh đó."
+      ]
+    },
+    {
+      "h": "Những giới hạn cần tính đến",
+      "body": [
+        "Text-to-video đã tiến bộ nhanh, nhưng một số điểm yếu mang tính cấu trúc. Tại thời điểm viết bài, hãy tính đến những điều sau:",
+        {
+          "ul": [
+            "Vật lý. Rót nước, vỡ, va chạm và vải thường trông sai. Chính báo cáo Sora nêu kính vỡ làm ví dụ về vật lý mô hình chưa làm đúng. Hãy giữ các sự kiện vật lý đơn giản hoặc để chúng diễn ra ngoài khung hình.",
+            "Bàn tay và vật nhỏ. Ngón tay dính vào nhau, vật xuyên qua bàn tay. Giữ động tác tay đơn giản và tránh cận cảnh các thao tác ngón tay tinh vi.",
+            "Chữ trên màn hình. Biển hiệu và phụ đề thường bị méo mó. Hãy thêm chữ khi dựng.",
+            "Trôi danh tính. Khuôn mặt có thể đổi giữa đầu và cuối clip, và còn nhiều hơn giữa các clip. Dùng ảnh mở đầu hoặc ảnh tham chiếu.",
+            "Đếm số lượng và đám đông. 'Ba con chó' có thể thành hai hoặc bốn; người trong đám đông có thể dính vào nhau.",
+            "Cảnh quay dài. Chất lượng và khả năng bám prompt giảm khi clip dài hơn. Hãy dựng các cảnh ngắn lại với nhau."
+          ]
+        },
+        {
+          "note": "Nhiều nền tảng và một số quy định pháp luật yêu cầu gắn nhãn video do AI tạo, đặc biệt là người hoặc sự kiện trông như thật. Hãy kiểm tra quy tắc của nền tảng bạn đăng tải."
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Tạo một video AI mất bao lâu?",
+      "a": "Từ dưới một phút đến vài phút cho mỗi clip trên các công cụ đám mây, tùy độ dài, độ phân giải và hàng đợi. Chế độ nháp nhanh hơn bản render chất lượng đầy đủ."
+    },
+    {
+      "q": "Tôi có thể chạy text-to-video trên máy tính của mình không?",
+      "a": "Có các mô hình mở, nhưng đa số cần card đồ họa mạnh với nhiều bộ nhớ video. Trình duyệt hiện chưa thể chạy trọn vẹn một mô hình text-to-video một cách thoải mái trên phần cứng thông thường."
+    },
+    {
+      "q": "Vì sao cùng một prompt lại cho video khác nhau?",
+      "a": "Mỗi lần chạy bắt đầu từ nhiễu ngẫu nhiên khác nhau, gọi là seed. Cố định seed, khi công cụ cho phép, giúp kết quả lặp lại được để so sánh."
+    },
+    {
+      "q": "Vì sao video AI trông như quay chậm?",
+      "a": "Mô hình có xu hướng chọn chuyển động chậm, an toàn khi prompt không đặt nhịp độ. Hãy viết tốc độ và thời gian của hành động, như 'in one quick motion' hoặc 'runs fast'."
+    },
+    {
+      "q": "AI có thể làm cả một bộ phim dài từ một prompt không?",
+      "a": "Chưa đáng tin cậy. Các mô hình hiện nay tạo clip ngắn; tác phẩm dài hơn được xây từ nhiều cảnh đã lên kế hoạch, dựng cùng âm thanh, nhạc và tiêu đề."
+    }
+  ]
+}

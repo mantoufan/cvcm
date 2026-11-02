@@ -1,0 +1,307 @@
+{
+  "title": "Movimientos de cámara para video con IA: dolly, órbita, grúa — cv.cm",
+  "description": "Términos de movimientos de cámara para prompts de video con IA: dolly, travelling lateral, pedestal, órbita, grúa, dolly zoom, rack focus y más, con su aspecto en pantalla y cómo escribirlos.",
+  "h1": "¿Cuáles son los movimientos de cámara que se usan en los prompts de video con IA?",
+  "answer": "Los movimientos de cámara son el vocabulario del equipo de rodaje para describir cómo se mueve la cámara: la panorámica (pan) y la inclinación (tilt) la giran sobre su eje, el dolly (travelling) la acerca o la aleja, el truck (travelling lateral) la desplaza hacia un lado, el pedestal la sube o la baja y la órbita rodea al sujeto. Los modelos de video aprendieron estas palabras de imágenes con descripciones, así que nombrar un movimiento estándar te da mucho más control que «cinematic camera».",
+  "sections": [
+    {
+      "h": "Por qué importa la palabra exacta",
+      "body": [
+        "Los modelos de video aprenden el lenguaje de cámara a partir de descripciones escritas sobre metraje real. Cuando un texto dice «slow dolly in on her face», el modelo asocia esa frase con un patrón de movimiento concreto: el sujeto crece en el encuadre y el fondo se desplaza un poco detrás. Una frase vaga como «dynamic camera» se asocia con todo a la vez, y obtienes una mezcla aleatoria.",
+        "Los términos de abajo son los que usan los equipos de cine, y casi todos aparecen en la guía de prompts de Veo de Google. Los investigadores también tratan el movimiento de cámara como una señal de control propia: se ha demostrado que Stable Video Diffusion funciona con módulos de movimiento de cámara, y CameraCtrl añade trayectorias de cámara exactas a los modelos de texto a video. Esa investigación existe porque el texto por sí solo da un control aproximado. Usa la palabra correcta, limítate a un movimiento por plano y cuenta con hacer varias tomas.",
+        "Hay dos parejas fáciles de confundir. La panorámica y la inclinación giran la cámara sobre su sitio, como cuando giras la cabeza. El truck y el pedestal mueven la cámara entera hacia los lados o hacia arriba y abajo, como dar un paso a un lado o ponerte de pie. Girar da un barrido plano; desplazarse da paralaje, es decir, los objetos cercanos pasan más rápido que los lejanos."
+      ]
+    },
+    {
+      "h": "Movimientos de cámara: la tabla completa",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Movimiento",
+              "Cómo se ve en pantalla",
+              "Efecto emocional",
+              "Cómo escribirlo"
+            ],
+            "rows": [
+              [
+                "Estático (cámara fija)",
+                "El encuadre no se mueve; solo se mueve el sujeto",
+                "Calma, observación; deja que la interpretación sostenga el plano",
+                "`static shot, locked-off camera on a tripod`"
+              ],
+              [
+                "Panorámica (pan)",
+                "La cámara gira a izquierda o derecha sobre su eje; la escena se desliza hacia un lado",
+                "Descubre el espacio, sigue una mirada o un movimiento",
+                "`slow pan left across the harbor`"
+              ],
+              [
+                "Inclinación (tilt)",
+                "La cámara gira hacia arriba o hacia abajo sobre su eje",
+                "Hacia arriba muestra escala o poder; hacia abajo, un descubrimiento",
+                "`tilt up from her shoes to her face`"
+              ],
+              [
+                "Dolly in / dolly out (travelling de acercamiento / alejamiento)",
+                "La cámara se acerca o se aleja del sujeto; hay paralaje en el fondo",
+                "Al acercarse concentra la atención y crea tensión; al alejarse crea distancia o soledad",
+                "`slow dolly in toward the man at the desk`"
+              ],
+              [
+                "Truck (travelling lateral, izquierda / derecha)",
+                "La cámara se desliza hacia un lado, paralela a la escena",
+                "Fluido, observador, como pasar caminando",
+                "`camera trucks right along the market stalls`"
+              ],
+              [
+                "Pedestal (arriba / abajo)",
+                "La cámara sube o baja en vertical, sin inclinarse",
+                "Revelación suave por encima o por debajo de un objeto",
+                "`pedestal up from behind the counter to reveal the room`"
+              ],
+              [
+                "Zoom in / out (zoom de acercamiento / alejamiento)",
+                "El objetivo cambia de distancia focal; la imagen se agranda pero no hay paralaje",
+                "Plano, observacional, a veces brusco",
+                "`slow zoom in, camera stays in place`"
+              ],
+              [
+                "Push-in",
+                "Un dolly in lento y constante, normalmente hacia un rostro",
+                "Emoción creciente o toma de conciencia",
+                "`slow push-in on her eyes as she understands`"
+              ],
+              [
+                "Pull-back reveal (alejamiento revelador)",
+                "La cámara retrocede para mostrar lo que estaba fuera del encuadre",
+                "Sorpresa, contexto, aislamiento",
+                "`pull back to reveal he is alone on a huge empty stage`"
+              ],
+              [
+                "Órbita / arco (travelling circular)",
+                "La cámara rodea al sujeto, que permanece centrado",
+                "Importancia, un momento heroico o onírico",
+                "`camera orbits slowly around the dancer, half circle`"
+              ],
+              [
+                "Grúa / jib",
+                "La cámara sube o baja en un gran arco, a menudo muy en alto",
+                "Apertura o cierre grandioso, sensación de escala",
+                "`crane shot rising up over the crowd to a wide view`"
+              ],
+              [
+                "Seguimiento (tracking)",
+                "La cámara se mueve con un sujeto en movimiento, a la misma distancia",
+                "Impulso, acompañar al personaje",
+                "`tracking shot following her from behind as she runs`"
+              ],
+              [
+                "Cámara en mano",
+                "Pequeñas sacudidas y derivas, como si una persona sostuviera la cámara",
+                "Realismo, urgencia, aire documental",
+                "`handheld camera, slight natural shake`"
+              ],
+              [
+                "Barrido (whip pan)",
+                "Una panorámica muy rápida con desenfoque de movimiento",
+                "Energía, un cambio rápido de atención, una transición",
+                "`fast whip pan to the door`"
+              ],
+              [
+                "Dolly zoom (efecto Vértigo)",
+                "El sujeto mantiene su tamaño mientras el fondo se estira o se encoge",
+                "Impacto, vértigo, el mundo que se desplaza",
+                "`dolly zoom on his face, background stretches away`"
+              ],
+              [
+                "Cambio de foco (rack focus)",
+                "El foco pasa de una profundidad a otra; la cámara no se mueve",
+                "Desplaza la atención, une dos sujetos",
+                "`rack focus from the ring in the foreground to her face`"
+              ],
+              [
+                "Plano holandés (Dutch angle)",
+                "La cámara está girada hacia un lado; el horizonte queda inclinado",
+                "Inquietud, algo va mal",
+                "`dutch angle, horizon tilted 20 degrees`"
+              ],
+              [
+                "Plano subjetivo (POV)",
+                "Vemos lo que ve el personaje, a menudo con sus manos en el encuadre",
+                "Inmersión, identificación",
+                "`first-person POV, his hands on the steering wheel`"
+              ],
+              [
+                "Dron FPV",
+                "Vuelo rápido, bajo y en picado a través de espacios",
+                "Velocidad, emoción, un viaje continuo",
+                "`FPV drone shot diving off the cliff and skimming the waves`"
+              ]
+            ]
+          }
+        },
+        "Notas sobre los más difíciles. Un zoom y un dolly in pueden acabar en el mismo encuadre, pero solo el dolly muestra paralaje, así que da la sensación de moverse por el espacio. El dolly zoom combina ambos a la vez en sentidos opuestos y a los modelos les cuesta; pídelo solo, con un sujeto sencillo, y genera varias tomas. El plano holandés y el POV son decisiones de encuadre más que movimientos, pero se escriben en el mismo lugar del prompt."
+      ]
+    },
+    {
+      "h": "Tamaños de plano",
+      "body": [
+        "El tamaño de plano indica cuánto del sujeto llena el encuadre. Es lo primero que conviene fijar en un prompt, porque decide qué detalle tiene que dibujar el modelo.",
+        {
+          "table": {
+            "head": [
+              "Tamaño de plano",
+              "Qué llena el encuadre",
+              "Útil para"
+            ],
+            "rows": [
+              [
+                "Plano general muy amplio / de situación",
+                "Todo el lugar; las personas se ven diminutas",
+                "Abrir una escena, escala, geografía"
+              ],
+              [
+                "Plano general (cuerpo entero)",
+                "El cuerpo completo, de la cabeza a los pies, con el entorno",
+                "Movimiento, baile, acción, vestuario"
+              ],
+              [
+                "Plano medio",
+                "De la cintura hacia arriba",
+                "Conversación, gestos, la mayor parte del diálogo"
+              ],
+              [
+                "Plano medio corto",
+                "Del pecho hacia arriba",
+                "Emoción con algo de lenguaje corporal"
+              ],
+              [
+                "Primer plano",
+                "El rostro o un solo objeto",
+                "Reacción, emoción, objetos importantes"
+              ],
+              [
+                "Primerísimo primer plano (plano detalle)",
+                "Un solo detalle: un ojo, una yema del dedo, una gota",
+                "Intensidad, textura, pistas"
+              ],
+              [
+                "Plano por encima del hombro",
+                "Detrás de una persona, mirando a otra",
+                "Diálogo entre dos personas"
+              ]
+            ]
+          }
+        },
+        "En video con IA, los primeros planos de rostros suelen ser más estables que los planos generales de multitudes, porque el modelo tiene menos figuras pequeñas que mantener coherentes. Las manos y los dedos quedan mejor en primeros planos con movimiento sencillo, o dejándolos parcialmente fuera de plano."
+      ]
+    },
+    {
+      "h": "Ángulos de cámara",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Ángulo",
+              "Posición de la cámara",
+              "Efecto"
+            ],
+            "rows": [
+              [
+                "A la altura de los ojos",
+                "A la altura de los ojos del sujeto",
+                "Neutro, honesto"
+              ],
+              [
+                "Contrapicado",
+                "Por debajo, mirando hacia arriba",
+                "Poder, amenaza, heroísmo"
+              ],
+              [
+                "Picado",
+                "Por encima, mirando hacia abajo",
+                "Debilidad, vulnerabilidad, visión de conjunto"
+              ],
+              [
+                "Vista de pájaro / cenital",
+                "En vertical desde arriba",
+                "Patrón, aspecto de mapa, distancia"
+              ],
+              [
+                "Contrapicado extremo (a ras de suelo)",
+                "A ras de suelo, mirando muy hacia arriba",
+                "Escala enorme, dramatismo"
+              ],
+              [
+                "Holandés (inclinado)",
+                "Girada hacia un lado",
+                "Tensión, desorientación"
+              ]
+            ]
+          }
+        },
+        "Los ángulos se combinan con los movimientos. «Low angle, slow tracking shot» es una instrucción clara: el ángulo fija la posición y el movimiento fija la trayectoria."
+      ]
+    },
+    {
+      "h": "Cómo poner un movimiento de cámara en un prompt",
+      "body": [
+        {
+          "ol": [
+            "Empieza por la línea de cámara: tamaño de plano, ángulo, movimiento y velocidad. Ejemplo: `Medium close-up, eye level, slow push-in.`",
+            "Nombra el objetivo del movimiento: acercarse a qué, orbitar alrededor de quién, panear de dónde a dónde.",
+            "Dale al movimiento una velocidad y un final: «slowly», «over the full clip», «stops on her face».",
+            "Describe la acción del sujeto por separado y mantenla pequeña si el movimiento de cámara es grande.",
+            "Añade palabras de objetivo solo si importan: `shallow depth of field`, `wide-angle lens`, `telephoto compression`."
+          ]
+        },
+        {
+          "code": "Wide shot, low angle, slow crane up.\nA lighthouse on a rocky coast at sunset; waves break on the rocks below.\nThe camera rises from the rocks to above the lighthouse lamp, ending on a\nwide view of the sea. Warm orange light, long shadows, light sea mist.\nAudio: waves, wind, seagulls.",
+          "lang": "text"
+        },
+        "Si partes de una sola foto, el movimiento también se puede hacer sin un modelo de video. Por ejemplo, la herramienta `v` de cv.cm estima la profundidad de una foto y genera un empuje, retroceso, órbita, panorámica o ascenso 3D reales. La cámara se mueve; el sujeto permanece quieto. Es una forma rápida de ver cómo queda cada movimiento en tu propia imagen."
+      ]
+    },
+    {
+      "h": "Lo que los modelos hacen mal",
+      "body": [
+        {
+          "ul": [
+            "Movimientos combinados: «orbit while craning up and zooming» suele dar una trayectoria deformada o temblorosa. Usa un solo movimiento.",
+            "Velocidad: los movimientos «rápidos» pueden desenfocar o deformar los rostros. Funcionan mejor en paisajes y espacios vacíos.",
+            "Zoom frente a dolly: muchos modelos tratan ambos como «acercarse». Si necesitas paralaje, escribe «camera moves forward» además de «dolly in».",
+            "Órbitas completas: una órbita de 360 grados obliga al modelo a inventar la parte de atrás de todo. Un semicírculo o un arco corto es más seguro.",
+            "Rack focus y dolly zoom: son efectos ópticos, y los resultados varían de un modelo a otro en el momento de escribir esto. Pruébalos antes de planificar una secuencia en torno a ellos.",
+            "Cámara en mano: algunos modelos añaden demasiada sacudida. Escribe «slight» o «subtle»."
+          ]
+        },
+        {
+          "note": "Si una herramienta ofrece controles de cámara como deslizadores o ajustes preestablecidos, úsalos en lugar del texto. Un control numérico se sigue con más exactitud que una palabra."
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "¿Cuál es la diferencia entre una panorámica y un travelling lateral (truck)?",
+      "a": "La panorámica gira la cámara a izquierda o derecha desde un punto fijo. El travelling lateral mueve toda la cámara hacia un lado, de modo que los objetos cercanos y lejanos pasan a distintas velocidades."
+    },
+    {
+      "q": "¿Cuál es la diferencia entre zoom y dolly?",
+      "a": "El zoom cambia el objetivo y agranda la imagen sin mover la cámara, así que no hay paralaje. El dolly mueve la cámara por el espacio, de modo que el fondo se desplaza respecto al sujeto."
+    },
+    {
+      "q": "¿Para qué sirve un dolly zoom?",
+      "a": "Mantiene el tamaño del sujeto mientras el fondo parece estirarse o encogerse, lo que expresa impacto o una revelación repentina. También se conoce como efecto Vértigo."
+    },
+    {
+      "q": "¿Qué movimiento de cámara hace que una escena resulte tensa?",
+      "a": "Un push-in lento hacia un rostro genera tensión, y la sacudida de la cámara en mano o un plano holandés añaden inquietud. Mantén pequeña la acción del sujeto para que el movimiento transmita la emoción."
+    },
+    {
+      "q": "¿Qué significa FPV en el video con drones?",
+      "a": "FPV significa vista en primera persona (first-person view): el piloto vuela con gafas, así que las imágenes son rápidas, bajas y en picado. En un prompt, «FPV drone shot» pide ese estilo, a diferencia de una toma aérea suave y alta."
+    }
+  ]
+}

@@ -1,0 +1,206 @@
+{
+  "title": "Image-to-Video AI: Frame Awal, Prompt Gerakan, Parallax — cv.cm",
+  "description": "Cara kerja image-to-video AI menganimasikan foto: memilih gambar awal, menulis prompt khusus gerakan, dan metode parallax 2.5D yang menggerakkan kamera, bukan subjek.",
+  "h1": "Bagaimana cara kerja image-to-video AI?",
+  "answer": "Image-to-video AI memakai gambarmu sebagai frame pertama dan membuat frame berikutnya, dipandu prompt singkat tentang gerakan. Tampilan berasal dari gambar, jadi prompt cukup menjelaskan apa yang bergerak dan bagaimana kamera bergerak. Metode yang lebih sederhana, parallax 2.5D, memperkirakan kedalaman lalu menggerakkan kamera virtual, sehingga adegan terasa 3D tetapi tidak ada benda di dalamnya yang bergerak.",
+  "sections": [
+    {
+      "h": "Apa bedanya dengan text-to-video",
+      "body": [
+        "Di text-to-video, model mengarang segalanya: wajah, pakaian, ruangan, cahaya, dan gerakan. Di image-to-video, kamu menyediakan frame pertama, dan model hanya perlu mengarang apa yang terjadi berikutnya. Dokumentasi Veo dari Google menyebutnya memakai gambar yang sudah ada sebagai frame pertama video baru; panduan Sora dari OpenAI menyebutnya menjangkarkan frame pertama.",
+        "Ini mengubah fungsi prompt. Gambar sudah menjawab siapa, di mana, dan gaya apa. Prompt menjawab apa yang bergerak, ke arah mana, seberapa cepat, dan apa yang dilakukan kamera.",
+        {
+          "table": {
+            "head": [
+              "Aspek",
+              "Text-to-video",
+              "Image-to-video"
+            ],
+            "rows": [
+              [
+                "Sumber tampilan",
+                "Prompt",
+                "Gambarmu"
+              ],
+              [
+                "Yang digambarkan prompt",
+                "Subjek, adegan, gaya, gerakan, kamera, suara",
+                "Terutama gerakan, kamera, dan suara"
+              ],
+              [
+                "Konsistensi wajah atau produk",
+                "Bervariasi antartake",
+                "Kuat di awal, bisa bergeser di akhir klip"
+              ],
+              [
+                "Persiapan",
+                "Tidak ada",
+                "Buat atau pilih gambar awal yang bagus"
+              ],
+              [
+                "Pemakaian umum",
+                "Menjelajahi ide",
+                "Menganimasikan tampilan yang sudah ditetapkan, foto produk, karakter lintas shot"
+              ]
+            ]
+          }
+        },
+        "Di dalam model, gambar awal di-encode dan dimasukkan sebagai kondisi, bersama teks. Stable Video Diffusion, model terbuka, dirilis dengan varian text-to-video dan image-to-video yang dibangun di atas basis difusi video laten yang sama."
+      ]
+    },
+    {
+      "h": "Memilih gambar awal",
+      "body": [
+        "Gambar awal menentukan hasil lebih besar daripada prompt. Sebagian besar klip image-to-video yang gagal bisa ditelusuri ke gambar awal yang tidak menyisakan ruang untuk gerakan.",
+        {
+          "ul": [
+            "Sesuaikan rasio aspek output. Kalau alat menghasilkan 16:9 atau 9:16, berikan gambar dengan bentuk itu; ukuran lain bisa terpotong atau diubah ukurannya. Dokumentasi Veo dari Google menyarankan input minimal 720p dalam 16:9 atau 9:16.",
+            "Sisakan ruang untuk gerakan. Kalau orang akan berjalan ke kanan, beri ruang di sebelah kanan. Kalau kamera akan push in, wajah sebaiknya belum memenuhi frame.",
+            "Atur pose untuk awal aksi. Untuk 'she turns to look at the camera', mulailah dengan ia menghadap ke arah lain.",
+            "Subjek jelas dan tajam. Wajah yang buram atau kecil jadi lebih buruk setelah dianimasikan.",
+            "Tangan yang sederhana. Tangan yang tersembunyi, rileks, atau tidak memegang apa pun teranimasi lebih bersih.",
+            "Tidak ada teks yang harus dipertahankan. Logo dan papan tanda bisa melengkung begitu frame mulai bergerak."
+          ]
+        },
+        "Kalau gambar awal dibuat dengan model gambar, buatlah untuk shot ini, bukan sebagai poster jadi: pose yang natural, sumber cahaya yang masuk akal, dan ruang di sekitar subjek."
+      ]
+    },
+    {
+      "h": "Menulis prompt gerakan",
+      "body": [
+        "Gambarkan hanya apa yang berubah. Mengulang deskripsi gambar menambah kata yang tidak dibutuhkan model dan bisa membuatnya diam saja. Contoh di dokumentasi image-to-video Google berupa baris gerakan pendek, seperti hewan yang bergerak natural atau bunga yang bergoyang pelan.",
+        {
+          "code": "Weak:\nA beautiful woman with long red hair in a green dress standing in a field\nof flowers at sunset, highly detailed.\n\nStrong:\nShe slowly turns her head toward the camera and smiles. A light breeze\nmoves her hair and the flowers. Slow dolly in. Audio: wind, distant birds.",
+          "lang": "text"
+        },
+        {
+          "ol": [
+            "Gerakan subjek: satu aksi, dengan kecepatan dan titik akhir.",
+            "Gerakan sekunder: hal-hal kecil yang menghidupkan adegan, seperti rambut, daun, uap, air.",
+            "Kamera: satu gerakan atau statis. Lihat panduan istilah gerakan kamera.",
+            "Audio, jika model menghasilkan suara."
+          ]
+        },
+        "Buat gerakan yang mungkin secara fisik dari pose awal. Orang yang duduk di gambar tidak bisa berlari dengan mulus dalam dua detik. Kalau aksinya besar, pakai alat first-and-last-frame dan berikan juga pose akhirnya."
+      ]
+    },
+    {
+      "h": "Metode parallax 2.5D: peta kedalaman plus gerakan kamera",
+      "body": [
+        "Ada cara kedua yang jauh lebih sederhana untuk menggerakkan foto, dan ini sama sekali bukan video generatif. Cara ini sering disebut efek 3D Ken Burns, dari makalah tahun 2019 oleh Niklaus dan rekan-rekan.",
+        {
+          "ol": [
+            "Perkirakan kedalaman. Model kedalaman, seperti Depth Anything V2, memprediksi jarak setiap piksel dari kamera.",
+            "Ubah foto menjadi lapisan 3D. Tiap piksel didorong mundur sesuai kedalamannya, sehingga foto menjadi relief dangkal, bukan lembaran datar.",
+            "Gerakkan kamera virtual. Kamera push in, pull out, orbit, atau pan. Piksel dekat bergeser lebih jauh daripada piksel jauh, itulah paralaks, dan otak membacanya sebagai kedalaman.",
+            "Isi celah. Saat kamera bergerak, ia bisa melihat area yang tadinya tersembunyi di balik subjek. Alat sederhana meregangkan piksel di dekatnya atau men-zoom sedikit untuk menyembunyikan tepinya; sistem riset seperti makalah 3D Ken Burns melakukan inpainting pada area tersembunyi itu."
+          ]
+        },
+        "Inilah metode yang dipakai alat `v` dari cv.cm. Alat ini menjalankan Depth Anything V2 di browsermu, merender parallax dengan GPU sepanjang jalur push, pull, orbit, pan, atau naik, lalu mengekspor MP4. Kameranya yang bergerak; subjeknya tidak berkedip, berjalan, atau berbicara. Kamu juga bisa melihat peta kedalamannya lebih dulu dengan alat `depth-map` dari cv.cm.",
+        {
+          "table": {
+            "head": [
+              "Aspek",
+              "Image-to-video generatif",
+              "Parallax 2.5D"
+            ],
+            "rows": [
+              [
+                "Yang bergerak",
+                "Subjek, adegan, dan kamera",
+                "Hanya kamera"
+              ],
+              [
+                "Kesetiaan pada foto",
+                "Bisa mengubah wajah dan detail",
+                "Setiap piksel berasal dari fotomu"
+              ],
+              [
+                "Masalah umum",
+                "Morphing, fisika aneh, pergeseran",
+                "Tepi di sekitar subjek meregang jika gerakannya besar"
+              ],
+              [
+                "Perangkat keras",
+                "Biasanya layanan cloud",
+                "Bisa berjalan di browser"
+              ],
+              [
+                "Cocok untuk",
+                "Adegan hidup, karakter yang berakting",
+                "Potret, lanskap, foto produk, slideshow"
+              ]
+            ]
+          }
+        },
+        "Parallax bekerja terbaik pada foto dengan lapisan kedalaman yang jelas: orang di depan latar yang jauh, produk di atas meja, jalan yang menjauh ke kejauhan. Hasilnya buruk pada subjek datar, seperti dokumen atau tembok, karena tidak ada kedalaman yang bisa diungkap kamera."
+      ]
+    },
+    {
+      "h": "Masalah umum dan solusinya",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Masalah",
+              "Kemungkinan penyebab",
+              "Solusi"
+            ],
+            "rows": [
+              [
+                "Hampir tidak ada yang bergerak",
+                "Prompt menggambarkan gambar, bukan gerakan",
+                "Tulis hanya gerakan dan pakai kata kerja yang kuat"
+              ],
+              [
+                "Wajah berubah di akhir",
+                "Gerakan besar atau klip terlalu panjang",
+                "Klip lebih pendek, aksi lebih kecil, frame awal lebih dekat"
+              ],
+              [
+                "Tubuh menekuk atau terdistorsi",
+                "Aksi mustahil dari pose awal",
+                "Ubah pose awal atau tambahkan frame akhir"
+              ],
+              [
+                "Tepi mengabur pada parallax",
+                "Gerakan kamera terlalu kuat untuk kedalamannya",
+                "Pakai gerakan yang lebih lembut atau foto dengan latar yang lebih bersih"
+              ],
+              [
+                "Rasio aspek salah, subjek terpotong",
+                "Bentuk input berbeda dari output",
+                "Pangkas gambar awal ke rasio output lebih dulu"
+              ]
+            ]
+          }
+        },
+        {
+          "note": "Animasikan hanya foto yang kamu berhak memakainya, dan jangan menganimasikan orang sungguhan tanpa persetujuan mereka. Wajah yang bergerak jauh lebih meyakinkan daripada foto diam, sehingga penyalahgunaannya lebih mudah."
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Bisakah mengubah foto jadi video secara gratis?",
+      "a": "Bisa, dengan alat parallax yang berjalan di browser dan menggerakkan kamera menembus foto. Alat generatif juga punya paket gratis, tetapi biasanya membatasi jumlah klip yang bisa dibuat."
+    },
+    {
+      "q": "Mengapa klip image-to-video saya mengubah wajah orangnya?",
+      "a": "Model membuat ulang setiap frame setelah yang pertama, dan identitas bergeser seiring gerakan membesar. Pakai gambar awal yang jelas dan menghadap depan, klip pendek, dan gerakan kecil."
+    },
+    {
+      "q": "Apakah image-to-video butuh prompt?",
+      "a": "Banyak alat menerima prompt kosong dan memilih gerakan lembut sendiri. Prompt gerakan singkat memberimu kendali atas apa yang bergerak dan bagaimana kamera berperilaku."
+    },
+    {
+      "q": "Apa bedanya image-to-video dengan efek Ken Burns?",
+      "a": "Efek Ken Burns klasik hanya mem-pan dan men-zoom foto datar. Versi 3D menambahkan kedalaman, sehingga bagian dekat dan jauh bergerak berbeda. Image-to-video generatif melangkah lebih jauh dan membuat subjeknya sendiri bergerak."
+    },
+    {
+      "q": "Bisakah image-to-video membuat seseorang berbicara?",
+      "a": "Sebagian model generatif dan alat talking-head khusus bisa menganimasikan bibir mengikuti audio. Alat parallax tidak bisa, karena hanya menggerakkan kamera."
+    }
+  ]
+}

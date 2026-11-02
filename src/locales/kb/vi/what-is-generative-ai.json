@@ -1,0 +1,218 @@
+{
+  "title": "AI tạo sinh (Generative AI) là gì? Cách hoạt động và ví dụ — cv.cm",
+  "description": "AI tạo sinh là gì? Giải thích dễ hiểu cách mô hình học từ dữ liệu để tạo văn bản, hình ảnh, video, âm thanh, các loại mô hình chính và những lỗi thường gặp.",
+  "h1": "AI tạo sinh là gì?",
+  "answer": "AI tạo sinh (generative AI) là phần mềm tạo ra nội dung mới như văn bản, hình ảnh, video, âm thanh hay mã nguồn, thay vì chỉ phân loại hoặc chấm điểm dữ liệu có sẵn. Mô hình học các quy luật từ một tập ví dụ rất lớn, rồi khi bạn đưa một chỉ dẫn (gọi là prompt), nó sinh ra kết quả mới phù hợp với những quy luật đó. ChatGPT, Claude, Midjourney và các công cụ dùng Whisper là những ví dụ quen thuộc.",
+  "sections": [
+    {
+      "h": "AI tạo sinh khác gì các loại AI khác",
+      "body": [
+        "Phần lớn AI trước thập niên 2020 là AI dự đoán. Nó nhìn vào đầu vào rồi trả về một nhãn hoặc một con số: email này có phải spam không, ngôi nhà này giá bao nhiêu, khuôn mặt trong ảnh là của ai. AI tạo sinh đảo ngược chiều đó: nhận một đầu vào ngắn và trả về cả một nội dung hoàn toàn mới.",
+        "Cả hai đều được huấn luyện từ ví dụ và đều dựa trên thống kê. Điểm khác là hình dạng của đầu ra. Bộ lọc spam chỉ trả về một từ, còn mô hình ngôn ngữ trả về cả một đoạn văn chưa từng tồn tại.",
+        {
+          "table": {
+            "head": [
+              "",
+              "AI dự đoán",
+              "AI tạo sinh"
+            ],
+            "rows": [
+              [
+                "Câu hỏi điển hình",
+                "Cái này thuộc loại nào?",
+                "Hãy tạo ra thứ gì đó khớp với mô tả này."
+              ],
+              [
+                "Đầu ra",
+                "Một nhãn, điểm số hoặc con số",
+                "Văn bản, hình ảnh, video, âm thanh hoặc mã nguồn"
+              ],
+              [
+                "Ví dụ",
+                "Bộ lọc spam, cảnh báo gian lận, mở khóa bằng khuôn mặt",
+                "Trợ lý trò chuyện, công cụ tạo ảnh, tổng hợp giọng nói"
+              ],
+              [
+                "Cách kiểm tra",
+                "So với nhãn đúng",
+                "Khó hơn: nhiều kết quả khác nhau đều có thể chấp nhận được"
+              ]
+            ]
+          }
+        },
+        "Nhiều sản phẩm kết hợp cả hai. Công cụ chuyển giọng nói thành văn bản (speech-to-text) theo nghĩa hẹp là tạo sinh vì nó viết ra bản chép lời, nhưng lại gần với dự đoán hơn, vì chỉ có một bản chép lời đúng."
+      ]
+    },
+    {
+      "h": "Mô hình tạo sinh hoạt động thế nào",
+      "body": [
+        "Mọi mô hình tạo sinh đều theo cùng một ý tưởng hai giai đoạn. Khi huấn luyện, mô hình xem hàng triệu đến hàng tỷ ví dụ và điều chỉnh các con số bên trong (gọi là tham số hay trọng số) để tái tạo tốt hơn các quy luật của dữ liệu. Khi sử dụng, giai đoạn gọi là suy luận (inference), mô hình xuất phát từ prompt của bạn và dựng kết quả mới từng bước, dựa trên những gì đã học.",
+        "Mô hình không lưu bản sao của từng ví dụ huấn luyện rồi dán lại. Nó lưu một bức tranh thống kê đã nén về việc văn bản, hình ảnh hay âm thanh thường trông ra sao. Vì vậy nó tạo được những tổ hợp mới, và cũng vì vậy nó có thể mắc lỗi một cách đầy tự tin.",
+        "Hiện nay ba họ mô hình đảm nhận phần lớn công việc:",
+        {
+          "table": {
+            "head": [
+              "Họ mô hình",
+              "Cách tạo kết quả",
+              "Công dụng thường gặp"
+            ],
+            "rows": [
+              [
+                "Tự hồi quy (transformer)",
+                "Dự đoán phần tiếp theo, tức một token, rồi đến phần kế tiếp, lần lượt từng cái một",
+                "Trò chuyện, viết lách, mã nguồn, dịch thuật, một số mô hình ảnh"
+              ],
+              [
+                "Khuếch tán (diffusion)",
+                "Bắt đầu từ nhiễu ngẫu nhiên và khử nhiễu qua nhiều bước cho đến khi hiện ra hình ảnh hoặc video",
+                "Hầu hết công cụ tạo ảnh từ văn bản và tạo video từ văn bản"
+              ],
+              [
+                "GAN (mạng đối nghịch tạo sinh)",
+                "Bộ tạo và bộ phê bình huấn luyện đối đầu nhau",
+                "Các bộ tạo khuôn mặt và phong cách đời cũ, một số công cụ phóng to ảnh"
+              ]
+            ]
+          }
+        },
+        "Kiến trúc transformer, ra đời năm 2017, nằm sau gần như mọi mô hình ngôn ngữ lớn. Mô hình khuếch tán trở thành hướng chính cho hình ảnh sau năm 2020. GAN xuất hiện sớm nhất, năm 2014, và vẫn được dùng cho một số tác vụ ảnh cần tốc độ. Ranh giới ngày càng mờ: có mô hình ảnh theo kiểu tự hồi quy, và có mô hình video kết hợp khuếch tán với transformer.",
+        {
+          "note": "Một ví dụ cụ thể: công cụ tạo ảnh AI của cv.cm chạy Janus-Pro-1B ngay trên GPU của bạn trong trình duyệt. Đó là mô hình tự hồi quy, dựng ảnh 384 pixel từng mảnh một giống cách chatbot dựng một câu, chứ không phải mô hình khuếch tán."
+        }
+      ]
+    },
+    {
+      "h": "AI tạo sinh làm được những gì",
+      "body": [
+        "Cùng một ý tưởng áp dụng cho mọi loại nội dung. Thứ thay đổi là dữ liệu huấn luyện và cách biểu diễn đầu ra.",
+        {
+          "table": {
+            "head": [
+              "Đầu ra",
+              "Đầu vào điển hình",
+              "Ví dụ nổi tiếng",
+              "Điểm yếu thường gặp"
+            ],
+            "rows": [
+              [
+                "Văn bản",
+                "Một câu hỏi hoặc chỉ dẫn",
+                "ChatGPT, Claude, Gemini, DeepSeek, Qwen",
+                "Bịa sự kiện và trích dẫn, kiến thức lỗi thời"
+              ],
+              [
+                "Mã nguồn",
+                "Mô tả nhiệm vụ, mã có sẵn",
+                "Trợ lý lập trình xây trên cùng các LLM",
+                "Mã trông đúng nhưng sai ở trường hợp biên hoặc gọi hàm không tồn tại"
+              ],
+              [
+                "Hình ảnh",
+                "Prompt văn bản, ảnh tham chiếu",
+                "Midjourney, GPT image, Stable Diffusion, FLUX, Imagen",
+                "Bàn tay, chữ đọc được, số lượng vật thể chính xác"
+              ],
+              [
+                "Video",
+                "Prompt, ảnh bắt đầu, khung hình đầu và cuối",
+                "Veo, Kling, Runway, Seedance",
+                "Vật lý, tính bền vững của vật thể, độ nhất quán giữa các cảnh"
+              ],
+              [
+                "Giọng nói và âm nhạc",
+                "Văn bản, mẫu giọng, mô tả phong cách",
+                "Text-to-speech bằng mạng nơ-ron, công cụ tạo nhạc",
+                "Nhấn nhá thiếu tự nhiên, tên riêng, trộn nhiều ngôn ngữ"
+              ],
+              [
+                "Bản chép lời",
+                "Âm thanh hoặc video",
+                "Whisper và các mô hình giọng nói tương tự",
+                "Giọng vùng miền nặng, nhiều người nói chồng lên nhau, tên hiếm"
+              ]
+            ]
+          }
+        },
+        "Không phải công cụ AI đa phương tiện nào cũng là tạo sinh theo nghĩa đầy đủ. Ví dụ, công cụ biến ảnh thành video của cv.cm ước tính bản đồ độ sâu từ một ảnh rồi di chuyển một máy quay ảo xuyên qua đó. Máy quay chuyển động nhưng chủ thể thì không, vì không có khung hình chuyển động mới nào được tạo ra. Ngược lại, mô hình text-to-video tạo ra mọi khung hình."
+      ]
+    },
+    {
+      "h": "Ví dụ thực tế: một ý tưởng, nhiều mô hình",
+      "body": [
+        "Giả sử một cửa hàng nhỏ muốn làm clip 15 giây để giới thiệu chiếc cốc gốm mới. Quy trình tạo sinh điển hình trông như sau:",
+        {
+          "ol": [
+            "Văn bản: nhờ mô hình trò chuyện viết ba dòng chú thích ngắn và một kịch bản lời bình 30 từ. Chọn bản bạn thích rồi tự chỉnh tay.",
+            "Hình ảnh: mô tả cảnh quay cho mô hình ảnh, ví dụ một sản phẩm đặt trên bàn gỗ dưới ánh sáng buổi sáng dịu. Tạo vài ảnh rồi chọn một.",
+            "Video: đưa ảnh đó cho mô hình image-to-video kèm một prompt chuyển động ngắn, chẳng hạn máy quay đẩy chậm vào trong khi hơi nước bốc lên.",
+            "Giọng nói: chuyển kịch bản thành giọng đọc bằng mô hình text-to-speech, hoặc tự thu âm.",
+            "Phụ đề: cho âm thanh chạy qua mô hình speech-to-text để có file SRT, rồi sửa lỗi.",
+            "Kiểm tra: xem sản phẩm có giống thật không, chữ có đúng chính tả không, và gắn nhãn video là do AI tạo ở nơi pháp luật hoặc nền tảng yêu cầu."
+          ]
+        },
+        "Mỗi bước dùng một mô hình khác nhau, nhưng tất cả đều làm cùng một việc cơ bản: biến một chỉ dẫn ngắn thành nội dung mới khớp với các quy luật đã học. Mỗi bước cũng cần con người kiểm tra, vì mỗi mô hình có kiểu lỗi đặc trưng riêng.",
+        {
+          "code": "Weak prompt:\nmug ad\n\nStronger prompt:\nA white ceramic mug with a thin blue rim on a light oak table,\nsoft morning window light from the left, steam rising,\nshallow depth of field, product photo, no text, no logo.",
+          "lang": "text"
+        },
+        "Prompt mạnh hơn nêu rõ chủ thể, chất liệu, bối cảnh, ánh sáng và những gì cần loại bỏ. Mô hình tạo sinh lấp mọi chỗ trống bằng lựa chọn phổ biến nhất trong dữ liệu huấn luyện, nên bạn càng chỉ định kỹ thì nó càng ít phải đoán."
+      ]
+    },
+    {
+      "h": "AI tạo sinh làm tốt và làm dở điều gì",
+      "body": [
+        "AI tạo sinh mạnh ở việc tạo nhanh bản nháp đầu tiên, viết lại câu chữ, tóm tắt tài liệu dài do bạn cung cấp, dịch thuật, động não nhiều phương án, và biến một ý tưởng sơ sài thành hình ảnh hoặc âm thanh.",
+        "Nó yếu ở những chỗ có thể đoán trước:",
+        {
+          "ul": [
+            "Sự thật: mô hình ngôn ngữ có thể nêu thông tin sai với vẻ hoàn toàn chắc chắn. Hiện tượng này gọi là ảo giác (hallucination) hay bịa chuyện (confabulation).",
+            "Đếm và chi tiết chính xác: năm ngón tay, ba quả táo, câu đúng 12 từ. Mô hình chỉ xấp xỉ.",
+            "Chữ trong ảnh: biển hiệu và nhãn thường bị sai chính tả, dù đến thời điểm viết bài này đã khá hơn trước.",
+            "Vật lý và tính liên tục trong video: vật thể có thể dính vào nhau, biến mất hoặc chuyển động phi thực tế.",
+            "Thông tin mới: mô hình chỉ biết những gì có trong dữ liệu huấn luyện, tính đến một mốc thời gian nhất định, trừ khi được nối với công cụ tìm kiếm.",
+            "Ngôn ngữ hiếm, phương ngữ và giọng địa phương: chất lượng giảm khi dữ liệu huấn luyện ít."
+          ]
+        },
+        "Nguyên tắc thực tế là dùng AI tạo sinh ở chỗ lỗi dễ phát hiện và sửa rẻ, còn chỗ lỗi gây hậu quả đắt thì phải kiểm chứng mọi thứ."
+      ]
+    },
+    {
+      "h": "Dùng AI tạo sinh có trách nhiệm",
+      "body": [
+        "Danh sách kiểm tra ngắn trước khi đăng hoặc dựa vào kết quả của AI:",
+        {
+          "ol": [
+            "Đối chiếu sự kiện, số liệu, trích dẫn và liên kết với nguồn gốc.",
+            "Không dán dữ liệu riêng tư, mật khẩu, file khách hàng hay giấy tờ tùy thân vào công cụ bạn không kiểm soát. Công cụ chạy mô hình ngay trên thiết bị trong trình duyệt thì không cần tải file lên.",
+            "Xem điều khoản của công cụ về sử dụng thương mại, và đừng yêu cầu tạo người thật, logo hay nhân vật mà bạn không có quyền sử dụng.",
+            "Gắn nhãn nội dung do AI tạo hoặc chỉnh sửa ở nơi pháp luật hoặc nền tảng yêu cầu. Trung Quốc, Liên minh châu Âu và nhiều nền tảng hiện đã có quy định về gắn nhãn.",
+            "Luôn có một con người chịu trách nhiệm cho kết quả cuối cùng, nhất là trong y tế, pháp lý, tài chính và tin tức."
+          ]
+        },
+        "AI tạo sinh là công cụ dự đoán kết quả có vẻ hợp lý. Nó rất hữu ích khi bạn coi nó là trợ lý nhanh tay soạn bản nháp, chứ không phải là chuyên gia biết tuốt."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "ChatGPT có phải AI tạo sinh không?",
+      "a": "Có. ChatGPT là sản phẩm trò chuyện xây trên các mô hình ngôn ngữ lớn, tức các mô hình tạo sinh viết văn bản từng token một. Một số phiên bản còn tạo được cả hình ảnh và giọng nói."
+    },
+    {
+      "q": "AI và AI tạo sinh khác nhau thế nào?",
+      "a": "AI là lĩnh vực rộng gồm các phần mềm thực hiện những việc có vẻ cần trí thông minh. AI tạo sinh là phần của AI tạo ra nội dung mới, khác với việc phân loại, xếp hạng hay dự đoán một giá trị đơn lẻ."
+    },
+    {
+      "q": "AI tạo sinh có sao chép dữ liệu huấn luyện không?",
+      "a": "Thông thường nó tạo ra các tổ hợp mới chứ không sao chép, nhưng đôi khi mô hình vẫn tái tạo rất sát một đoạn văn, hình ảnh hay phong cách, nhất là với tác phẩm nổi tiếng hoặc được lặp lại nhiều. Đây là một lý do khiến các câu hỏi về bản quyền liên quan đến AI vẫn đang được xem xét."
+    },
+    {
+      "q": "AI tạo sinh có giống AGI không?",
+      "a": "Không. AGI (trí tuệ nhân tạo tổng quát) là một hệ thống giả định có năng lực ngang con người trên hầu hết mọi việc. Các mô hình tạo sinh ngày nay ấn tượng ở nhiều tác vụ nhưng vẫn sai ở những phép kiểm tra đơn giản và cần con người giám sát."
+    },
+    {
+      "q": "Có dùng AI tạo sinh miễn phí được không?",
+      "a": "Được. Nhiều trợ lý trò chuyện có gói miễn phí, và một số công cụ chạy mô hình mở ngay trong trình duyệt mà không mất phí. Gói miễn phí thường có giới hạn sử dụng, và điều khoản thương mại khác nhau tùy công cụ."
+    }
+  ]
+}

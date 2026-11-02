@@ -1,0 +1,188 @@
+{
+  "title": "Text to Image AI: How It Works, Settings and Workflow — cv.cm",
+  "description": "How text-to-image AI turns a prompt into a picture, what steps, guidance, seed and size do, and a step-by-step workflow from first draft to final image.",
+  "h1": "How does text-to-image AI work, and how do you use it well?",
+  "answer": "Text-to-image AI encodes your prompt into numbers, then a generator builds a picture that matches them, usually by removing noise step by step from a random start. You control the result with the prompt, image size, number of steps, guidance strength and seed. A good workflow drafts many small images fast, fixes one seed, refines the prompt, then edits and upscales the best one.",
+  "sections": [
+    {
+      "h": "What happens between the prompt and the picture",
+      "body": [
+        "Most text-to-image systems have three parts. A text encoder turns the prompt into a list of numbers that capture its meaning. An image generator creates a picture conditioned on those numbers. A decoder turns the generator's internal representation into real pixels.",
+        "The most common generator type at the time of writing is a diffusion model. It starts from pure random noise and, over a series of steps, predicts and removes a little noise each time, guided by the text. Latent diffusion models, the family behind Stable Diffusion, do this in a compressed space instead of on full-size pixels, which makes them much cheaper to run. Other systems are autoregressive: they produce the image as a sequence of tokens, one after another, much like a language model writes words. Janus-Pro, for example, works this way. Both kinds take the same inputs from you, so the workflow below applies to either.",
+        {
+          "ol": [
+            "Your prompt is split into tokens and encoded.",
+            "A random starting point is created from the seed.",
+            "The generator refines that start for a set number of steps, each step pulled toward the prompt.",
+            "The decoder outputs the final image at the chosen size."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "The settings that matter",
+      "body": [
+        "Names differ between tools, and many hosted services hide some of these. When you can see them, these are the ones worth learning.",
+        {
+          "table": {
+            "head": [
+              "Setting",
+              "What it controls",
+              "Practical advice"
+            ],
+            "rows": [
+              [
+                "Prompt",
+                "What the model tries to draw",
+                "Subject first, then setting, style, lighting and camera. See the image prompts guide."
+              ],
+              [
+                "Negative prompt",
+                "What the model moves away from",
+                "Short and specific: text, watermark, extra fingers. Leave it empty if you have nothing specific."
+              ],
+              [
+                "Size / aspect ratio",
+                "Output pixels and shape",
+                "Use the sizes the model was trained on. Far larger sizes can duplicate subjects; upscale afterwards instead."
+              ],
+              [
+                "Steps",
+                "How many refinement passes",
+                "More steps add detail up to a point, then only cost time. Use the tool's default first."
+              ],
+              [
+                "Guidance (CFG scale)",
+                "How strictly the image follows the prompt",
+                "Low values drift from the prompt; very high values look harsh or oversaturated. Start at the default."
+              ],
+              [
+                "Seed",
+                "The random starting point",
+                "Same seed, prompt and settings on the same setup give a near-identical image. Fix it while you tune the prompt."
+              ],
+              [
+                "Sampler / scheduler",
+                "The math used to remove noise",
+                "Affects speed and texture a little. Change it last, if at all."
+              ],
+              [
+                "Batch size",
+                "Images per run",
+                "Generate several at once and pick; it is faster than rerunning one at a time."
+              ]
+            ]
+          }
+        },
+        "Guidance works by comparing two predictions at each step, one with your prompt and one without, and pushing the result further toward the difference. That is why the scale feels like a strength dial for the prompt, and why setting it too high exaggerates everything."
+      ]
+    },
+    {
+      "h": "A workflow from idea to final image",
+      "body": [
+        {
+          "ol": [
+            "Write the brief in one sentence: what the image is for, its shape (square post, 16:9 banner, 9:16 phone wallpaper) and the one thing it must show.",
+            "Draft a prompt with subject, action, setting, style, lighting and framing.",
+            "Generate a batch of four to eight small images with random seeds. Look for composition, not detail.",
+            "Pick the best one and note its seed. Keep the seed fixed from now on.",
+            "Change one thing at a time in the prompt (lighting, lens, color) and compare. With a fixed seed, differences come from your words.",
+            "When the composition is right, fix local problems with inpainting or image-to-image rather than regenerating from scratch.",
+            "Upscale the final image to the size you need, then check faces, hands and any text at full size.",
+            "Record the prompt, seed, model and settings next to the file so you can make variations later."
+          ]
+        },
+        "Here is a small example of step 5. The seed stays the same; only the lighting phrase changes between runs.",
+        {
+          "code": "seed 1234\nA: a lighthouse on a rocky coast, wide shot, overcast soft light\nB: a lighthouse on a rocky coast, wide shot, golden hour, warm rim light\nC: a lighthouse on a rocky coast, wide shot, blue hour, lamp glowing",
+          "lang": "text"
+        },
+        "Because the starting noise is the same, A, B and C keep a similar layout, so you can judge the lighting alone. With a new seed each time you would be comparing different compositions."
+      ]
+    },
+    {
+      "h": "Choosing size and resolution",
+      "body": [
+        "Each model is trained around certain sizes. Earlier Stable Diffusion models were trained mostly at 512 by 512 pixels; newer ones are trained around 1024 by 1024 and several aspect ratios. Asking for a much larger image than the training size often produces repeated subjects, such as two heads or a doubled horizon, because the model fills the extra space with more of what it knows.",
+        "The safer pattern is to generate at the native size and then enlarge with an AI upscaler. For example, cv.cm's AI image generator makes a 384-pixel image on your own GPU with an autoregressive model, then can enlarge it 2x or 4x with Real-ESRGAN. The upscaler sharpens edges and textures, but it cannot add objects or fix a bad composition, so get the layout right first."
+      ]
+    },
+    {
+      "h": "What text-to-image still does badly",
+      "body": [
+        {
+          "ul": [
+            "Text inside the image. Letters may be misspelled or invented, especially in long phrases and in non-Latin scripts. Add text in an editor afterwards when it must be correct.",
+            "Hands and counting. Extra or merged fingers are less common than before but still appear. Exact counts (seven birds) and spatial relations (left of, behind) are often wrong.",
+            "Several distinct people. Details from one person leak to another. Build the scene in stages or use reference images.",
+            "The same character twice. A new run is a new person unless you use reference images, fixed descriptors or fine-tuning. See the guide on consistent characters.",
+            "Bias toward common looks. Without details, models fall back on the most frequent faces, places and styles in their training data. Be explicit about age, region, body type and setting.",
+            "Real people, brands and logos. Many services block them, and using them can create legal risk even where a tool allows it."
+          ]
+        },
+        {
+          "note": "Seeds are reproducible only on the same model, settings and, often, the same hardware and software version. Moving to another tool or GPU can change the result even with the same seed."
+        }
+      ]
+    },
+    {
+      "h": "Hosted service or local model?",
+      "body": [
+        "Hosted tools such as Midjourney, GPT image, Imagen or online Stable Diffusion and FLUX services are easy to start with and run large models, but you send your prompt to a server and follow its content rules and terms. Local tools run a model on your own GPU: nothing leaves your device, and you can see every setting, but the model must fit in memory and is usually smaller.",
+        {
+          "table": {
+            "head": [
+              "Question",
+              "Hosted service",
+              "Local or in-browser model"
+            ],
+            "rows": [
+              [
+                "Privacy",
+                "Prompt and images go to the provider",
+                "Stay on your device"
+              ],
+              [
+                "Image quality",
+                "Usually larger, stronger models",
+                "Smaller models; depends on your hardware"
+              ],
+              [
+                "Control",
+                "Some settings hidden",
+                "All settings visible"
+              ],
+              [
+                "Cost",
+                "Free tier or subscription",
+                "Free after download; uses your power and GPU"
+              ]
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Is text-to-image AI the same as a diffusion model?",
+      "a": "Not always. Diffusion is the most common method at the time of writing, but some text-to-image models are autoregressive and generate the image as a sequence of tokens. You use both the same way."
+    },
+    {
+      "q": "Why do I get a different image every time with the same prompt?",
+      "a": "Each run starts from new random noise chosen by the seed. Fix the seed, along with the model and settings, to get the same or a very similar image again."
+    },
+    {
+      "q": "What CFG or guidance scale should I use?",
+      "a": "Start with the tool's default. Raise it a little if the image ignores parts of your prompt, and lower it if colors look harsh or details look overcooked."
+    },
+    {
+      "q": "Can I use AI-generated images commercially?",
+      "a": "It depends on the tool's terms and on the law where you are. Many services allow commercial use, but copyright protection for purely AI-made images is limited in some countries. Check the terms and the copyright guide."
+    },
+    {
+      "q": "Why are AI images often square and small?",
+      "a": "Models are trained at specific sizes and generating large images costs a lot of memory and time. Generate at the native size, then use an AI upscaler for the final resolution."
+    }
+  ]
+}

@@ -1,0 +1,188 @@
+{
+  "title": "Text to Image AI: Cara Kerja, Pengaturan, dan Alur Kerja — cv.cm",
+  "description": "Cara kerja text-to-image AI mengubah prompt jadi gambar, fungsi steps, guidance, seed, dan ukuran, plus alur kerja langkah demi langkah dari draf sampai gambar akhir.",
+  "h1": "Bagaimana cara kerja text-to-image AI, dan cara memakainya dengan baik?",
+  "answer": "Text-to-image AI mengubah promptmu menjadi angka, lalu generator membangun gambar yang cocok dengan angka itu, biasanya dengan membuang noise langkah demi langkah dari titik awal acak. Hasilnya dikendalikan lewat prompt, ukuran gambar, jumlah steps, kekuatan guidance, dan seed. Alur kerja yang baik: buat banyak draf kecil dengan cepat, kunci satu seed, sempurnakan prompt, lalu edit dan upscale gambar terbaik.",
+  "sections": [
+    {
+      "h": "Apa yang terjadi antara prompt dan gambar",
+      "body": [
+        "Kebanyakan sistem text-to-image punya tiga bagian. Text encoder mengubah prompt menjadi daftar angka yang menangkap maknanya. Generator gambar membuat gambar yang dikondisikan pada angka-angka itu. Dekoder mengubah representasi internal generator menjadi piksel sungguhan.",
+        "Jenis generator yang paling umum saat artikel ini ditulis adalah model difusi (diffusion model). Modelnya mulai dari noise acak murni dan, lewat serangkaian langkah, memprediksi dan membuang sedikit noise setiap kali, dipandu oleh teks. Latent diffusion model, keluarga di balik Stable Diffusion, melakukannya di ruang terkompresi, bukan pada piksel ukuran penuh, sehingga jauh lebih murah dijalankan. Sistem lain bersifat autoregresif: menghasilkan gambar sebagai urutan token, satu demi satu, mirip model bahasa menulis kata. Janus-Pro, misalnya, bekerja dengan cara ini. Kedua jenis menerima masukan yang sama darimu, jadi alur kerja di bawah berlaku untuk keduanya.",
+        {
+          "ol": [
+            "Promptmu dipecah menjadi token dan di-encode.",
+            "Titik awal acak dibuat dari seed.",
+            "Generator menyempurnakan titik awal itu selama sejumlah steps, tiap langkah ditarik ke arah prompt.",
+            "Dekoder menghasilkan gambar akhir pada ukuran yang dipilih."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Pengaturan yang penting",
+      "body": [
+        "Nama pengaturan berbeda antaralat, dan banyak layanan hosted menyembunyikan sebagian. Kalau terlihat, inilah yang layak dipelajari.",
+        {
+          "table": {
+            "head": [
+              "Pengaturan",
+              "Yang dikendalikan",
+              "Saran praktis"
+            ],
+            "rows": [
+              [
+                "Prompt",
+                "Apa yang coba digambar model",
+                "Subjek dulu, lalu latar, gaya, cahaya, dan kamera. Lihat panduan prompt gambar."
+              ],
+              [
+                "Negative prompt",
+                "Apa yang dijauhi model",
+                "Pendek dan spesifik: teks, watermark, jari berlebih. Kosongkan kalau tidak ada yang spesifik."
+              ],
+              [
+                "Ukuran / rasio aspek",
+                "Piksel dan bentuk output",
+                "Pakai ukuran yang dipakai saat pelatihan model. Ukuran jauh lebih besar bisa menggandakan subjek; upscale setelahnya saja."
+              ],
+              [
+                "Steps",
+                "Jumlah putaran penyempurnaan",
+                "Lebih banyak steps menambah detail sampai batas tertentu, setelah itu hanya memakan waktu. Pakai default alatnya dulu."
+              ],
+              [
+                "Guidance (CFG scale)",
+                "Seberapa ketat gambar mengikuti prompt",
+                "Nilai rendah melenceng dari prompt; nilai sangat tinggi terlihat kasar atau terlalu jenuh. Mulai dari default."
+              ],
+              [
+                "Seed",
+                "Titik awal acak",
+                "Seed, prompt, dan pengaturan yang sama pada setelan yang sama menghasilkan gambar nyaris identik. Kunci saat menyetel prompt."
+              ],
+              [
+                "Sampler / scheduler",
+                "Cara hitung untuk membuang noise",
+                "Sedikit memengaruhi kecepatan dan tekstur. Ubah paling akhir, kalau perlu."
+              ],
+              [
+                "Batch size",
+                "Jumlah gambar per proses",
+                "Buat beberapa sekaligus lalu pilih; lebih cepat daripada mengulang satu per satu."
+              ]
+            ]
+          }
+        },
+        "Guidance bekerja dengan membandingkan dua prediksi di setiap langkah, satu dengan promptmu dan satu tanpa, lalu mendorong hasil lebih jauh ke arah selisihnya. Itu sebabnya skalanya terasa seperti dial kekuatan prompt, dan mengapa menyetelnya terlalu tinggi melebih-lebihkan segalanya."
+      ]
+    },
+    {
+      "h": "Alur kerja dari ide sampai gambar akhir",
+      "body": [
+        {
+          "ol": [
+            "Tulis brief dalam satu kalimat: untuk apa gambarnya, bentuknya (postingan persegi, banner 16:9, wallpaper ponsel 9:16), dan satu hal yang wajib ditampilkan.",
+            "Susun prompt berisi subjek, aksi, latar, gaya, cahaya, dan framing.",
+            "Buat batch empat sampai delapan gambar kecil dengan seed acak. Perhatikan komposisi, bukan detail.",
+            "Pilih yang terbaik dan catat seed-nya. Kunci seed itu mulai sekarang.",
+            "Ubah satu hal pada satu waktu di prompt (cahaya, lensa, warna) dan bandingkan. Dengan seed terkunci, perbedaan berasal dari kata-katamu.",
+            "Setelah komposisi tepat, perbaiki masalah lokal dengan inpainting atau image-to-image, jangan generate ulang dari awal.",
+            "Upscale gambar akhir ke ukuran yang dibutuhkan, lalu periksa wajah, tangan, dan teks pada ukuran penuh.",
+            "Catat prompt, seed, model, dan pengaturan di samping file agar kamu bisa membuat variasi nanti."
+          ]
+        },
+        "Ini contoh kecil untuk langkah 5. Seed tetap sama; hanya frasa pencahayaan yang berubah antarproses.",
+        {
+          "code": "seed 1234\nA: a lighthouse on a rocky coast, wide shot, overcast soft light\nB: a lighthouse on a rocky coast, wide shot, golden hour, warm rim light\nC: a lighthouse on a rocky coast, wide shot, blue hour, lamp glowing",
+          "lang": "text"
+        },
+        "Karena noise awalnya sama, A, B, dan C mempertahankan tata letak yang mirip, sehingga kamu bisa menilai pencahayaannya saja. Dengan seed baru setiap kali, yang kamu bandingkan adalah komposisi yang berbeda-beda."
+      ]
+    },
+    {
+      "h": "Memilih ukuran dan resolusi",
+      "body": [
+        "Setiap model dilatih di sekitar ukuran tertentu. Model Stable Diffusion awal dilatih terutama pada 512 x 512 piksel; yang lebih baru dilatih di sekitar 1024 x 1024 dan beberapa rasio aspek. Meminta gambar yang jauh lebih besar dari ukuran pelatihan sering menghasilkan subjek berulang, seperti dua kepala atau horizon ganda, karena model mengisi ruang tambahan dengan lebih banyak hal yang ia kenal.",
+        "Pola yang lebih aman adalah membuat gambar pada ukuran bawaan lalu memperbesarnya dengan AI upscaler. Misalnya, generator gambar AI cv.cm membuat gambar 384 piksel di GPU-mu sendiri dengan model autoregresif, lalu bisa memperbesarnya 2x atau 4x dengan Real-ESRGAN. Upscaler mempertajam tepi dan tekstur, tetapi tidak bisa menambah objek atau memperbaiki komposisi yang buruk, jadi pastikan tata letaknya benar lebih dulu."
+      ]
+    },
+    {
+      "h": "Kelemahan text-to-image yang masih ada",
+      "body": [
+        {
+          "ul": [
+            "Teks di dalam gambar. Huruf bisa salah eja atau karangan, terutama pada frasa panjang dan aksara non-Latin. Tambahkan teks di editor kalau harus benar.",
+            "Tangan dan hitungan. Jari berlebih atau menyatu sudah lebih jarang daripada dulu, tetapi masih muncul. Jumlah pasti (tujuh burung) dan hubungan ruang (di kiri, di belakang) sering salah.",
+            "Beberapa orang yang berbeda. Detail satu orang bocor ke orang lain. Bangun adegan secara bertahap atau pakai gambar referensi.",
+            "Karakter yang sama dua kali. Proses baru berarti orang baru, kecuali kamu memakai gambar referensi, deskriptor tetap, atau fine-tuning. Lihat panduan karakter yang konsisten.",
+            "Bias ke tampilan umum. Tanpa detail, model kembali ke wajah, tempat, dan gaya yang paling sering ada di data pelatihannya. Sebutkan dengan jelas usia, daerah, bentuk tubuh, dan latar.",
+            "Orang nyata, merek, dan logo. Banyak layanan memblokirnya, dan memakainya bisa menimbulkan risiko hukum meski alatnya mengizinkan."
+          ]
+        },
+        {
+          "note": "Seed hanya bisa direproduksi pada model, pengaturan, dan sering kali perangkat keras serta versi perangkat lunak yang sama. Pindah ke alat atau GPU lain bisa mengubah hasil meski seed sama."
+        }
+      ]
+    },
+    {
+      "h": "Layanan hosted atau model lokal?",
+      "body": [
+        "Alat hosted seperti Midjourney, GPT image, Imagen, atau layanan Stable Diffusion dan FLUX online mudah dimulai dan menjalankan model besar, tetapi promptmu dikirim ke server dan kamu mengikuti aturan konten serta ketentuannya. Alat lokal menjalankan model di GPU-mu sendiri: tidak ada yang keluar dari perangkatmu, dan semua pengaturan terlihat, tetapi modelnya harus muat di memori dan biasanya lebih kecil.",
+        {
+          "table": {
+            "head": [
+              "Pertanyaan",
+              "Layanan hosted",
+              "Model lokal atau di browser"
+            ],
+            "rows": [
+              [
+                "Privasi",
+                "Prompt dan gambar dikirim ke penyedia",
+                "Tetap di perangkatmu"
+              ],
+              [
+                "Kualitas gambar",
+                "Biasanya model lebih besar dan lebih kuat",
+                "Model lebih kecil; tergantung perangkat kerasmu"
+              ],
+              [
+                "Kendali",
+                "Sebagian pengaturan disembunyikan",
+                "Semua pengaturan terlihat"
+              ],
+              [
+                "Biaya",
+                "Paket gratis atau langganan",
+                "Gratis setelah diunduh; memakai listrik dan GPU-mu"
+              ]
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Apakah text-to-image AI sama dengan model difusi?",
+      "a": "Tidak selalu. Difusi adalah metode paling umum saat artikel ini ditulis, tetapi sebagian model text-to-image bersifat autoregresif dan membuat gambar sebagai urutan token. Cara memakainya sama untuk keduanya."
+    },
+    {
+      "q": "Mengapa saya mendapat gambar berbeda setiap kali dengan prompt yang sama?",
+      "a": "Setiap proses dimulai dari noise acak baru yang dipilih oleh seed. Kunci seed, bersama model dan pengaturan, untuk mendapat gambar yang sama atau sangat mirip."
+    },
+    {
+      "q": "Berapa CFG atau guidance scale yang sebaiknya dipakai?",
+      "a": "Mulai dari default alatnya. Naikkan sedikit kalau gambar mengabaikan bagian promptmu, dan turunkan kalau warna terlihat kasar atau detail terlihat terlalu matang."
+    },
+    {
+      "q": "Bolehkah memakai gambar buatan AI untuk keperluan komersial?",
+      "a": "Tergantung ketentuan alatnya dan hukum di tempatmu. Banyak layanan mengizinkan penggunaan komersial, tetapi perlindungan hak cipta untuk gambar yang murni buatan AI terbatas di beberapa negara. Periksa ketentuannya dan panduan hak cipta."
+    },
+    {
+      "q": "Mengapa gambar AI sering berbentuk persegi dan kecil?",
+      "a": "Model dilatih pada ukuran tertentu, dan membuat gambar besar memakan banyak memori dan waktu. Buat pada ukuran bawaan, lalu pakai AI upscaler untuk resolusi akhir."
+    }
+  ]
+}

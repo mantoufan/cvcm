@@ -1,0 +1,167 @@
+{
+  "title": "Video con IA de varios planos: personajes coherentes entre planos — cv.cm",
+  "description": "Cómo hacer video con IA de varios planos que se mantenga coherente: fija personaje, vestuario, lugar y luz, encadena fotogramas entre planos y disimula las diferencias en el montaje.",
+  "h1": "¿Cómo mantener la coherencia de un video con IA entre varios planos?",
+  "answer": "Fija todo lo que no debe cambiar antes de generar: una imagen de referencia del personaje, una descripción única del vestuario y del lugar, una configuración de luz y un aspecto de color. Después genera cada plano a partir de esas referencias, encadena los planos reutilizando el último fotograma de un clip como primer fotograma del siguiente y usa técnicas de montaje, como cortar sobre la acción, para disimular las pequeñas diferencias que queden.",
+  "sections": [
+    {
+      "h": "Por qué los planos se desvían",
+      "body": [
+        "Un modelo de video crea cada clip partiendo de ruido aleatorio y convirtiéndolo en fotogramas que encajan con el prompt. Dos generaciones con el mismo prompt parten de ruidos distintos, así que salen con una cara ligeramente diferente, un botón del abrigo distinto o una ventana distinta detrás del actor. Dentro de un clip, el modelo mantiene la estabilidad porque ve todos los fotogramas juntos. Entre dos clips separados no tiene ninguna memoria.",
+        "Los investigadores describen la misma carencia. El artículo Long Context Tuning for Video Generation (2025) señala que los modelos capaces de hacer planos únicos largos aún tienen problemas para crear escenas coherentes de varios planos, y propone extender la atención del modelo a todos los planos de una escena para que aprenda coherencia a nivel de escena. Algunos modelos comerciales anuncian ya generación multiplano nativa; el informe técnico de Seedance 1.0, por ejemplo, incluye entre sus características la coherencia narrativa multiplano con sujetos consistentes.",
+        "Las funciones multiplano nativas ayudan, pero en el momento de escribir este artículo se limitan a secuencias cortas dentro de una sola generación. Un cortometraje o un episodio se sigue construyendo con muchas generaciones, así que los métodos siguientes siguen siendo el núcleo del trabajo."
+      ]
+    },
+    {
+      "h": "Qué debe mantenerse igual: la hoja de continuidad",
+      "body": [
+        "Los equipos de cine llevan notas de continuidad (raccord) para que una escena rodada en varios días parezca un solo momento. Haz lo mismo antes de escribir ningún prompt. Cada línea de abajo es un bloque de texto corto y fijo o una imagen de referencia que reutilizas sin cambios.",
+        {
+          "table": {
+            "head": [
+              "Elemento",
+              "Cómo fijarlo",
+              "Fallo típico"
+            ],
+            "rows": [
+              [
+                "Cara y cuerpo",
+                "Una imagen de referencia más un bloque de texto fijo (edad, pelo, complexión)",
+                "La cara cambia de forma o de edad entre planos"
+              ],
+              [
+                "Vestuario",
+                "Prendas y colores exactos, reutilizados palabra por palabra",
+                "Cambia el color del abrigo o del cuello"
+              ],
+              [
+                "Objetos de atrezo",
+                "Nombra y describe cada objeto una sola vez; mantenlo en la misma mano",
+                "El teléfono cambia de mano o desaparece"
+              ],
+              [
+                "Lugar",
+                "Una imagen fija de referencia del lugar y una descripción fija",
+                "Los muebles o las ventanas se mueven"
+              ],
+              [
+                "Luz",
+                "Una frase: fuente de luz principal, dirección, hora del día",
+                "Día en un plano, tarde en el siguiente"
+              ],
+              [
+                "Aspecto de color",
+                "Una descripción de etalonaje y luego un etalonaje final en el editor",
+                "Un plano cálido y el siguiente frío"
+              ],
+              [
+                "Dirección en pantalla",
+                "Anota hacia dónde mira y se mueve cada personaje",
+                "Los personajes cambian de lado tras un corte"
+              ],
+              [
+                "Voz y sonido",
+                "Una voz por personaje y un fondo ambiental por lugar",
+                "Cambian el timbre de la voz o el sonido de la sala"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "Método 1: referencias en lugar de descripciones",
+      "body": [
+        "El texto solo es un ancla débil. “Una mujer de pelo corto negro” encaja con millones de caras. Una imagen de referencia es un ancla mucho más fuerte porque fija una cara concreta. Muchas herramientas, en el momento de escribir este artículo, aceptan imágenes de referencia de sujeto o de personaje: la documentación de Veo de Google, por ejemplo, describe un modo de referencia en el que se usan de una a tres imágenes de una persona, un personaje o un producto para que el aspecto del sujeto se conserve en la salida.",
+        "Crea primero las referencias, en imágenes fijas, donde repetir es rápido:",
+        {
+          "ol": [
+            "Una hoja de personaje: la misma persona de frente, de tres cuartos y de perfil, más una vista de cuerpo entero con el vestuario final, sobre un fondo liso.",
+            "Una imagen fija de cada lugar de la escena, con la relación de aspecto final.",
+            "Una hoja de objetos clave si algún objeto importa para la historia."
+          ]
+        },
+        "Usa una luz uniforme y neutra en la hoja de personaje. Una luz de color intensa en la referencia tiende a copiarse en todos los planos y luego choca con la luz de cada escena."
+      ]
+    },
+    {
+      "h": "Método 2: encadena planos con fotogramas",
+      "body": [
+        "Cuando dos planos deben fluir uno hacia otro, como una acción continua dividida en dos, conéctalos mediante fotogramas y no con texto.",
+        {
+          "ul": [
+            "Encadenado por último fotograma: exporta el fotograma final del plano A y úsalo como primer fotograma del plano B en imagen a video. El comienzo de B coincide entonces exactamente con el final de A.",
+            "Primer y último fotograma: si la herramienta admite ambos, dale el fotograma donde el plano debe empezar y el fotograma donde debe terminar, y deja que el modelo rellene el movimiento. Es útil cuando el plano C debe llegar a un fotograma clave ya planificado.",
+            "Storyboard de fotogramas clave: crea primero todos los fotogramas clave a partir de las mismas referencias, revísalos juntos y luego anima cada uno."
+          ]
+        },
+        "El encadenado tiene un coste. Los pequeños errores se acumulan: una cara algo más suave al final del plano A se convierte en la cara inicial del plano B y, tras varios eslabones, el personaje puede desviarse. Vuelve a anclar cada pocos planos empezando por un fotograma clave nuevo creado a partir de la referencia original, y no del último fotograma."
+      ]
+    },
+    {
+      "h": "Método 3: escribe prompts que comparten bloques",
+      "body": [
+        "Trata el prompt como bloques fijos más un bloque que cambia. Solo cambia el bloque del plano de un plano a otro.",
+        {
+          "code": "[CHARACTER] Leo, a man in his 20s, curly brown hair, round glasses,\nmustard-yellow knit sweater, dark blue jeans.\n[LOCATION] Small bookshop interior, tall wooden shelves, one large front window.\n[LIGHT] Late afternoon sun through the front window from screen right, warm tones.\n[SHOT] Medium shot, eye level. Leo pulls a red book from the shelf and opens it,\nfacing screen left. Slow push-in.",
+          "lang": "text"
+        },
+        "Para el plano siguiente, copia exactamente los tres primeros bloques y sustituye solo el bloque [SHOT]. Si la historia pasa a otro lugar o a otra hora del día, escribe una sola vez un bloque [LOCATION] o [LIGHT] nuevo y reutiliza ese a partir de entonces."
+      ]
+    },
+    {
+      "h": "Método 4: disimula en el montaje lo que no puedes arreglar",
+      "body": [
+        "Aun con referencias, quedarán algunas diferencias. Los montadores usan desde hace mucho técnicas que hacen invisibles las pequeñas discrepancias:",
+        {
+          "ul": [
+            "Corta sobre la acción. Corta en mitad de un movimiento; el ojo sigue el movimiento y no se fija en los detalles.",
+            "Cambia el tamaño de plano en cada corte. Un plano general seguido de un primer plano oculta un fondo distinto; dos planos medios seguidos lo delatan.",
+            "Usa planos de detalle y de recurso (cutaways). Un plano de las manos, de un objeto o del lugar da al espectador un respiro entre dos planos de la cara.",
+            "Etalona toda la secuencia a la vez. Aplica una única corrección de color sobre todos los clips para que la luz se sienta coherente.",
+            "Pon un sonido continuo bajo los cortes. El sonido ambiente o la música que atraviesa varios planos hace que se perciban como un solo momento."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Una revisión de calidad antes de publicar",
+      "body": [
+        "Mira la secuencia tres veces, buscando cada vez un solo tipo de problema:",
+        {
+          "ol": [
+            "Identidad: congela la imagen en cada cara y compárala con la referencia. Revisa la edad, el color de ojos, la línea del pelo, las gafas y las cicatrices.",
+            "Objetos: sigue cada objeto y cada prenda de plano en plano. Comprueba qué mano sostiene qué.",
+            "Espacio y tiempo: comprueba la dirección en pantalla, la dirección de la luz y el clima al otro lado de las ventanas."
+          ]
+        },
+        "Regenera solo los planos que fallen. Guarda un registro de la imagen de referencia, el prompt y los ajustes de cada plano aceptado, para poder hacer más tarde una sustitución que encaje.",
+        {
+          "note": "Límites en el momento de escribir este artículo: las multitudes, los gemelos idénticos, dos personajes que se tocan y el texto en la ropa son donde más a menudo se rompe la coherencia. Deja a los personajes extra al fondo o desenfocados y evita escribir sobre los trajes."
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "¿Puedo usar un número de semilla para mantener la coherencia entre planos?",
+      "a": "Una semilla fija con un prompt fijo puede reproducir un resultado parecido en la misma herramienta, pero en cuanto el prompt cambia para un plano nuevo, la salida también cambia. Las semillas ayudan a repetir, no a mantener la coherencia entre planos distintos."
+    },
+    {
+      "q": "¿Es mejor generar un clip largo o muchos cortos?",
+      "a": "Un solo clip mantiene la coherencia dentro de sí mismo, pero te da menos control. Los clips cortos son más fáciles de dirigir y de corregir uno a uno. La mayor parte del trabajo narrativo usa clips cortos unidos en un editor."
+    },
+    {
+      "q": "¿Cómo mantengo la coherencia de dos personajes en el mismo plano?",
+      "a": "Crea una referencia aparte para cada personaje y dales siluetas y colores claramente distintos. Mantenlos separados en el encuadre cuando puedas y usa planos individuales de cada persona para los primeros planos."
+    },
+    {
+      "q": "¿Por qué cambia la voz de mi personaje entre clips?",
+      "a": "Los modelos que generan audio crean una voz nueva para cada clip si no les das una referencia de voz. Para obtener resultados fiables, graba o genera el diálogo por separado con una voz fija y añádelo en el montaje."
+    },
+    {
+      "q": "¿Necesito un LoRA o un modelo personalizado para la coherencia?",
+      "a": "No para la mayoría de los proyectos cortos. Bastan las imágenes de referencia y los bloques de prompt fijos. Un modelo de personaje entrenado puede ayudar en series largas con un modelo abierto, pero lleva tiempo y debe respetar la licencia del modelo."
+    }
+  ]
+}

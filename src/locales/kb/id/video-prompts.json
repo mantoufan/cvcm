@@ -1,0 +1,199 @@
+{
+  "title": "Cara Menulis Prompt Video AI: Struktur dan Contoh — cv.cm",
+  "description": "Cara menulis prompt video AI: struktur 7 bagian, satu aksi per adegan, timing per detik, baris audio, dan contoh prompt lemah yang ditulis ulang jadi kuat.",
+  "h1": "Bagaimana cara menulis prompt video AI yang bagus?",
+  "answer": "Prompt video AI yang bagus menggambarkan satu adegan seperti arahan sutradara kepada kru kamera: siapa yang ada di frame, satu aksi yang dilakukan dan berapa lama, satu gerakan kamera, pencahayaan, gaya visual, suara, dan durasi klip. Batasi setiap adegan pada satu aksi dan satu gerakan kamera, lalu tulis timing dalam hitungan beat atau detik.",
+  "sections": [
+    {
+      "h": "Mengapa prompt video berbeda dari prompt gambar",
+      "body": [
+        "Prompt gambar menggambarkan satu momen. Prompt video menggambarkan perubahan dari waktu ke waktu. Model harus memutuskan apa yang bergerak, ke arah mana, seberapa cepat, dan apa yang dilakukan kamera selama itu. Kalau prompt tidak menyebutkannya, model menebak, dan hasil tebakan biasanya berupa gerakan pelan yang tidak jelas atau beberapa aksi yang tercampur jadi satu.",
+        "Model text-to-video membuat semua frame dalam klip pendek sekaligus, jadi teks harus mencakup seluruh klip, bukan hanya frame pertama. Karena itu kata yang paling berguna dalam prompt video adalah kata kerja dan kata waktu: berjalan, berbalik, berhenti sejenak, mengangkat, selama dua detik, lalu. Kata sifat tentang tampilan tetap penting, tetapi posisinya di lapisan kedua.",
+        "Panduan resmi dari pembuat model video mengatakan hal yang sama dengan kata-kata berbeda. Panduan prompt Sora dari OpenAI menyebut prompt sebagai daftar keinginan kreatif, bukan kontrak: prompt yang sama memberi hasil berbeda setiap kali, jadi kamu menulis untuk memperbesar peluang mendapat hasil yang diinginkan, lalu mengulang dan memperbaiki."
+      ]
+    },
+    {
+      "h": "Struktur tujuh bagian",
+      "body": [
+        "Tulis bagian-bagiannya dengan urutan ini. Tidak setiap prompt butuh ketujuhnya, tetapi memeriksa satu per satu mencegah celah yang akan diisi model secara acak.",
+        {
+          "table": {
+            "head": [
+              "Bagian",
+              "Yang ditulis",
+              "Contoh potongan prompt"
+            ],
+            "rows": [
+              [
+                "Subjek",
+                "Siapa atau apa yang ada di frame, dengan 2 atau 3 detail terlihat yang harus tetap sama",
+                "a woman in her 30s, short black hair, yellow raincoat"
+              ],
+              [
+                "Aksi dengan timing",
+                "Satu aksi utama, kecepatannya, serta titik awal dan akhirnya",
+                "walks to the window in four slow steps, stops, looks out"
+              ],
+              [
+                "Kamera",
+                "Ukuran shot, sudut, dan satu gerakan (atau statis)",
+                "medium shot, eye level, slow dolly in"
+              ],
+              [
+                "Latar dan pencahayaan",
+                "Tempat, waktu, sumber cahaya dan arahnya",
+                "small apartment at dusk, cool blue light from the window, warm lamp behind her"
+              ],
+              [
+                "Gaya",
+                "Medium dan tampilan, film stock atau gaya seni, palet warna",
+                "35mm film look, soft grain, muted teal and amber"
+              ],
+              [
+                "Audio",
+                "Suara sekitar, efek suara, dan dialog singkat, masing-masing dalam kalimat terpisah",
+                "Rain on glass. A distant train. No music."
+              ],
+              [
+                "Durasi dan format",
+                "Panjang klip dan rasio aspek, jika alat membacanya dari teks",
+                "6 seconds, 9:16"
+              ]
+            ]
+          }
+        },
+        "Banyak alat menerima durasi, resolusi, dan rasio aspek sebagai pengaturan, bukan teks. Panduan OpenAI menyebutkan bahwa parameter teknis ini ditaruh di panggilan API atau antarmuka, bukan di dalam kalimat. Tulis di teks hanya kalau dokumentasi alatnya menyatakan model membacanya dari sana."
+      ]
+    },
+    {
+      "h": "Satu aksi dan satu gerakan kamera per adegan",
+      "body": [
+        "Penyebab paling umum prompt video gagal adalah meminta terlalu banyak. 'She walks in, picks up the phone, laughs, then runs outside as the camera circles her' berisi empat aksi dan gerakan kamera yang rumit dalam klip yang mungkin hanya lima detik. Model biasanya memadatkannya, melewatkan sebagian, atau mengubah satu aksi menjadi aksi lain.",
+        "Panduan Sora dari OpenAI menyarankan agar setiap shot dibuat sederhana: satu gerakan kamera dan satu aksi subjek. Kalau cerita butuh empat aksi, tulis empat shot lalu gabungkan di editor. Klip yang lebih pendek juga lebih patuh pada instruksi, jadi dua shot pendek sering terlihat lebih baik daripada satu shot panjang.",
+        {
+          "ul": [
+            "Pilih satu aksi yang menjadi inti shot. Semua hal lain di frame sebaiknya hanya gerakan kecil di latar: rambut tertiup angin, uap, lalu lintas di kejauhan.",
+            "Pilih satu gerakan kamera, atau tulis `static shot`. Jangan menggabungkan orbit, zoom, dan tilt.",
+            "Sebutkan di mana aksi berakhir. 'Stops at the window' memberi model kondisi akhir; 'walks' saja bisa membuat aksi tidak pernah selesai.",
+            "Gambarkan kecepatan dengan kata sederhana: pelan-pelan, dalam satu gerakan cepat, selama tiga detik."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Prompt berbasis timeline dan beat",
+      "body": [
+        "Kalau satu shot berisi urutan pendek, tulis sebagai beat. Beat adalah satu langkah kecil dari aksi dengan perkiraan waktu. Panduan OpenAI menyarankan menghitung langkah atau beat, misalnya 'takes four steps to the window, pauses', karena hitungan konkret lebih mudah diikuti model daripada 'walks over'.",
+        "Beberapa alat merespons rentang waktu eksplisit dengan baik. Alat lain mengabaikan detik yang persis tetapi tetap mengikuti urutannya. Dalam kedua kasus, timeline membuat urutan kejadian jadi jelas.",
+        {
+          "code": "8 seconds, 16:9, static camera, medium-wide shot.\nA small cafe counter at morning, soft window light from the left.\n\n0-2s: A barista in a green apron sets a white cup on the counter.\n2-5s: She pours steamed milk in one slow motion; a leaf pattern forms.\n5-8s: She slides the cup forward and smiles at the customer off screen.\n\nAudio: espresso machine hiss, quiet cafe chatter, a cup touching a saucer.",
+          "lang": "text"
+        },
+        "Tulis beat yang pendek dan fisik. 'She feels happy' bukan beat; 'she smiles and lowers her shoulders' adalah beat. Biarkan beat terakhir berupa momen yang bertahan diam, supaya klip tidak berhenti di tengah gerakan dan mudah dipotong."
+      ]
+    },
+    {
+      "h": "Prompt lemah yang ditulis ulang",
+      "body": [
+        "Ini contoh percobaan pertama yang umum. Ada suasana dan subjek, tetapi aksi, kamera, cahaya, dan suara diserahkan pada keberuntungan.",
+        {
+          "code": "A cinematic video of a samurai in the rain, epic, 4K, masterpiece.",
+          "lang": "text"
+        },
+        "Masalahnya: 'cinematic', 'epic', dan 'masterpiece' tidak menggambarkan apa pun yang bisa dilihat kamera. Tidak ada aksi, jadi model mungkin menghasilkan pan lambat di atas sosok yang berdiri diam, atau pertarungan dengan pedang yang meleleh. Tidak ada instruksi kamera dan tidak ada audio. '4K' adalah pengaturan, bukan kata prompt.",
+        {
+          "code": "Medium shot, low angle, slow push-in.\nA lone samurai in a dark blue kimono stands in a muddy village street at night.\nHeavy rain. A single paper lantern behind him gives warm orange rim light;\nthe rest of the scene is cool blue.\n\nAction: he slowly draws his sword over three seconds, then holds it still\nat chest height. Rain drips from the blade.\n\nStyle: live-action, shallow depth of field, film grain, desaturated colors.\nAudio: steady rain, the metal sound of the blade leaving the scabbard, distant thunder.",
+          "lang": "text"
+        },
+        "Setiap baris sekarang menjawab pertanyaan yang kalau tidak akan ditebak model: siapa, melakukan apa, berapa lama, dilihat dari mana, dengan cahaya seperti apa, bergaya apa, dengan suara apa. Versi baru ini lebih panjang, tetapi tidak berisi pengisi. Setiap frasa mengubah gambar."
+      ]
+    },
+    {
+      "h": "Menulis audio dan dialog",
+      "body": [
+        "Model yang membuat suara bersama gambar membaca audio dari prompt. Panduan Veo dari Google menyarankan untuk menyatakan dengan jelas bahwa kamu ingin audio dan menggambarkan suara dalam kalimat terpisah: suara sekitar, efek suara, dan dialog.",
+        {
+          "ul": [
+            "Ambient: suasana ruangan atau lingkungan, seperti angin, keramaian, lalu lintas, burung.",
+            "Efek: suara yang terkait aksi, seperti langkah kaki di kerikil atau pintu yang menutup.",
+            "Dialog: tulis kalimat persisnya dalam tanda kutip dan sebutkan siapa yang mengucapkannya. Buat singkat; satu atau dua kalimat pendek cukup untuk klip sekitar empat detik.",
+            "Musik: tulis 'no music' kalau kamu berencana menambahkan musik sendiri saat editing, karena musik hasil generate sulit dipotong."
+          ]
+        },
+        "Lip sync dan ketepatan kata masih menjadi titik lemah saat artikel ini ditulis. Kalau satu kalimat harus sempurna, buat shot tanpa dialog lalu tambahkan suara rekaman atau text-to-speech saat editing."
+      ]
+    },
+    {
+      "h": "Kesalahan umum dan cara memperbaikinya",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Kesalahan",
+              "Hasilnya",
+              "Perbaikan"
+            ],
+            "rows": [
+              [
+                "Beberapa aksi dalam satu klip",
+                "Aksi menyatu, terlewat, atau berubah bentuk",
+                "Pecah jadi satu shot per aksi"
+              ],
+              [
+                "Hanya kata suasana",
+                "Gerakan pelan yang generik",
+                "Tambahkan kata kerja konkret dan kondisi akhir"
+              ],
+              [
+                "Dua atau tiga gerakan kamera",
+                "Jalur kamera goyang atau terdistorsi",
+                "Pilih satu gerakan atau shot statis"
+              ],
+              [
+                "'No people', 'don't show cars'",
+                "Model mungkin justru menambahkannya",
+                "Gambarkan apa yang ada; pakai kolom negative prompt jika alatnya punya"
+              ],
+              [
+                "Mengubah banyak kata di tiap percobaan",
+                "Kamu tidak tahu apa yang membantu",
+                "Ubah satu hal per percobaan"
+              ],
+              [
+                "Mendeskripsikan ulang gambar input di image-to-video",
+                "Kata terpakai untuk hal yang sudah terlihat, bukan untuk gerakan",
+                "Gambarkan hanya gerakan yang diinginkan"
+              ]
+            ]
+          }
+        },
+        "Fisika adalah batas jujur lainnya. Cairan, tabrakan, tangan yang memegang benda, dan keramaian sering rusak. Jaga aksi tetap sederhana, sembunyikan sebagian tangan dari frame jika bisa, dan buat beberapa take untuk dipilih.",
+        {
+          "note": "Iterasi seperti editor: pertahankan bagian prompt yang berhasil, ubah satu bagian, lalu bandingkan. Simpan prompt terbaikmu sebagai template dengan bagian kosong untuk subjek dan aksi."
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Seberapa panjang prompt video AI sebaiknya?",
+      "a": "Biasanya 40 sampai 150 kata untuk satu shot. Cukup panjang untuk mencakup subjek, aksi, kamera, cahaya, gaya, dan suara; cukup pendek agar setiap frasa mengubah sesuatu yang terlihat."
+    },
+    {
+      "q": "Apakah negative prompt berfungsi untuk video?",
+      "a": "Sebagian alat punya kolom negative prompt terpisah, dan mencantumkan hal yang tidak diinginkan di sana bisa membantu. Di prompt utama, kata seperti 'no' atau 'don't' sering berefek sebaliknya, jadi gambarkan saja apa yang kamu mau."
+    },
+    {
+      "q": "Haruskah saya menulis prompt video dalam bahasa Inggris?",
+      "a": "Banyak model mengerti bahasa lain, tetapi sebagian besar teks pelatihannya berbahasa Inggris, sehingga prompt Inggris sering diikuti lebih tepat. Biarkan nama diri dan dialog dalam bahasa yang ingin diucapkan."
+    },
+    {
+      "q": "Mengapa video AI saya mengabaikan gerakan kamera yang saya minta?",
+      "a": "Gerakannya mungkin bertentangan dengan aksi, atau prompt berisi beberapa gerakan. Taruh instruksi kamera di awal, sebut satu gerakan standar seperti 'slow dolly in', dan hapus kata gerak lainnya."
+    },
+    {
+      "q": "Bisakah satu prompt menghasilkan video lebih panjang dari satu shot?",
+      "a": "Sebagian model menerima prompt multi-shot, tetapi hasilnya lebih andal kalau kamu membuat satu shot sekali jalan lalu menyuntingnya. Pakai kata deskripsi subjek dan gaya yang sama di tiap shot agar kontinuitas terjaga."
+    }
+  ]
+}

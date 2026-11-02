@@ -1,0 +1,211 @@
+{
+  "title": "Cara Kerja LLM (Large Language Model) Langkah demi Langkah — cv.cm",
+  "description": "Bagaimana cara kerja large language model? Ikuti satu prompt lewat token, attention, dan prediksi token berikutnya, lalu lihat bagaimana pelatihan dan temperature membentuk jawaban.",
+  "h1": "Bagaimana cara kerja large language model (LLM)?",
+  "answer": "Large language model adalah jaringan saraf yang dilatih untuk memprediksi token berikutnya, yaitu potongan kecil teks, dari semua token sebelumnya. Untuk menjawab Anda, model memecah prompt menjadi token, memberi skor pada setiap kemungkinan token berikutnya, memilih satu, menambahkannya ke teks, lalu mengulang sampai berhenti. Pelatihan tambahan dengan instruksi dan umpan balik manusia mengubah prediktor ini menjadi asisten yang membantu.",
+  "sections": [
+    {
+      "h": "Versi singkat: penebak kata berikutnya yang sangat jago",
+      "body": [
+        "LLM melakukan satu hal berulang-ulang. Ia melihat teks sejauh ini dan memperkirakan seberapa besar peluang tiap potongan teks berikutnya. Lalu ia memilih satu potongan, menambahkannya, dan melihat lagi. Jawaban 300 kata berarti beberapa ratus langkah kecil seperti ini.",
+        "Kedengarannya terlalu sederhana untuk menghasilkan esai, kode, dan terjemahan. Kekuatannya datang dari skala. Model punya miliaran parameter, yaitu angka yang disesuaikan selama pelatihan, dan dilatih dengan teks dalam jumlah sangat besar. Agar bisa menebak kata berikutnya dengan baik di sebanyak itu teks, model harus menangkap tata bahasa, fakta, gaya bernalar, dan struktur kode.",
+        "Asisten chat seperti ChatGPT, Claude, Gemini, DeepSeek, dan Qwen adalah produk yang dibangun di sekitar LLM. Produknya menambahkan antarmuka chat, system prompt tersembunyi, aturan keamanan, dan sering juga alat seperti pencarian web. Intinya tetap prediksi token berikutnya."
+      ]
+    },
+    {
+      "h": "Apa yang terjadi pada pesan Anda, langkah demi langkah",
+      "body": [
+        "Ambil prompt `The capital of France is`. Inilah yang dilakukan model terhadapnya:",
+        {
+          "ol": [
+            "Tokenisasi: teks dipecah menjadi token. Dengan salah satu tokenizer yang umum, prompt ini menjadi lima token: The, capital, of, France, is (sebagian besar membawa spasi di depannya).",
+            "Embedding: setiap token diganti dengan daftar angka yang panjang, yaitu embedding, yang menempatkannya di ruang tempat makna yang berkaitan letaknya berdekatan.",
+            "Attention: embedding melewati puluhan lapisan transformer. Di setiap lapisan, langkah attention membuat tiap token melihat token-token sebelumnya dan mengambil yang relevan.",
+            "Penilaian: lapisan terakhir menghasilkan skor untuk setiap token dalam kosakata, sering kali 100.000 entri atau lebih. Skor itu diubah menjadi probabilitas.",
+            "Sampling: satu token dipilih sesuai probabilitas itu dan pengaturan sampling.",
+            "Ulangi: token terpilih ditambahkan ke teks, dan seluruh proses berjalan lagi untuk token berikutnya, sampai model mengeluarkan token berhenti atau mencapai batas panjang."
+          ]
+        },
+        "Probabilitas untuk token berikutnya kira-kira seperti ini. Angkanya hanya ilustrasi, bukan dari model sungguhan:",
+        {
+          "table": {
+            "head": [
+              "Kandidat token berikutnya",
+              "Probabilitas (ilustrasi)",
+              "Keterangan"
+            ],
+            "rows": [
+              [
+                " Paris",
+                "0,92",
+                "Jawaban yang diharapkan"
+              ],
+              [
+                " a",
+                "0,03",
+                "Bisa dilanjutkan sebagai a city of ..."
+              ],
+              [
+                " the",
+                "0,02",
+                "Bisa dilanjutkan sebagai the city of ..."
+              ],
+              [
+                " located",
+                "0,01",
+                "Benar secara tata bahasa tetapi tidak lazim"
+              ],
+              [
+                " Lyon",
+                "0,001",
+                "Salah, tetapi masih mungkin terpilih"
+              ]
+            ]
+          }
+        },
+        "Dua pelajaran dari tabel ini. Pertama, model tidak mencari entri di basis data. Ia menghasilkan kelanjutan yang paling mungkin. Kedua, token yang salah selalu punya sedikit peluang, dan ini salah satu alasan model kadang menyatakan hal yang keliru."
+      ]
+    },
+    {
+      "h": "Attention: cara model melacak makna",
+      "body": [
+        "Attention adalah gagasan utama arsitektur transformer, yang dipublikasikan pada 2017. Untuk setiap token, model menghitung seberapa besar bobot yang diberikan pada tiap token sebelumnya saat membangun maknanya.",
+        "Perhatikan: `The trophy did not fit in the suitcase because it was too big.` Untuk memahami apa yang dirujuk `it`, model harus mengaitkannya dengan trophy, bukan suitcase. Ganti big dengan small, dan `it` kini berarti suitcase. Attention memungkinkan model membuat kaitan ini dari kata-kata di sekitarnya, lewat banyak lapisan yang masing-masing menyempurnakan gambarannya.",
+        "Karena attention membandingkan tiap token dengan token-token sebelumnya, biayanya naik cepat seiring teks makin panjang. Itulah sebabnya setiap model punya context window, yaitu jumlah maksimum token yang bisa dipertimbangkan sekaligus."
+      ]
+    },
+    {
+      "h": "Cara LLM dilatih: tiga tahap",
+      "body": [
+        "Prediktor token mentah belum menjadi asisten yang berguna. Jika Anda bertanya, ia mungkin melanjutkan dengan pertanyaan lain, karena itu juga tampak seperti teks dari internet. Asisten modern melewati beberapa tahap pelatihan.",
+        {
+          "table": {
+            "head": [
+              "Tahap",
+              "Data pelatihan",
+              "Yang dipelajari model",
+              "Hasil"
+            ],
+            "rows": [
+              [
+                "Pretraining",
+                "Teks dan kode publik dalam jumlah sangat besar",
+                "Bahasa, fakta, pola, gaya bernalar",
+                "Model dasar yang melanjutkan teks apa pun"
+              ],
+              [
+                "Instruction tuning",
+                "Contoh prompt dengan jawaban bagus yang ditulis manusia",
+                "Format mengikuti instruksi",
+                "Model yang menjawab, bukan mengoceh"
+              ],
+              [
+                "Preference tuning (misalnya RLHF)",
+                "Manusia atau model meranking beberapa jawaban",
+                "Jawaban mana yang disukai orang: membantu, jujur, aman",
+                "Asisten dengan gaya yang konsisten dan penolakan yang sesuai"
+              ]
+            ]
+          }
+        },
+        "Riset InstructGPT menunjukkan bahwa model yang lebih kecil dengan pelatihan seperti ini lebih disukai pengguna daripada model yang jauh lebih besar tetapi hanya melalui pretraining. Saat tulisan ini dibuat, banyak model juga mendapat pelatihan tambahan untuk menyelesaikan masalah selangkah demi selangkah sebelum menjawab, yang di produk sering tampil sebagai mode berpikir atau penalaran.",
+        "Pelatihan dilakukan sekali, dengan biaya besar, sebelum rilis. Saat Anda mengobrol dengan model, parameternya tidak berubah. Ia tidak belajar dari percakapan Anda saat itu juga, meski penyedia layanan bisa memakai percakapan untuk melatih versi berikutnya jika kebijakannya mengizinkan."
+      ]
+    },
+    {
+      "h": "Pengaturan sampling yang mengubah jawaban",
+      "body": [
+        "Prompt yang sama bisa menghasilkan jawaban berbeda karena model mengambil sampel dari probabilitas. Jika memakai API, Anda bisa mengendalikan cara ini. Rentang dan nilai bawaan berbeda di tiap penyedia.",
+        {
+          "table": {
+            "head": [
+              "Pengaturan",
+              "Fungsinya",
+              "Kapan diubah"
+            ],
+            "rows": [
+              [
+                "`temperature`",
+                "Nilai rendah membuat pilihan teratas makin mungkin; nilai tinggi meratakan peluang dan menambah variasi",
+                "Turunkan untuk ekstraksi dan kode, naikkan untuk brainstorming"
+              ],
+              [
+                "`top_p`",
+                "Hanya mengambil sampel dari himpunan token terkecil yang probabilitasnya berjumlah p",
+                "Biasanya atur ini atau temperature, jangan keduanya"
+              ],
+              [
+                "`max_tokens`",
+                "Membatasi panjang keluaran",
+                "Naikkan jika jawaban terpotong di tengah kalimat"
+              ],
+              [
+                "Stop sequence",
+                "Teks yang menghentikan generasi saat muncul",
+                "Keluaran terstruktur, template"
+              ],
+              [
+                "System prompt",
+                "Instruksi tersembunyi yang ditaruh sebelum percakapan",
+                "Atur peran, nada, format, dan aturan sekali saja"
+              ]
+            ]
+          }
+        },
+        "Temperature rendah membuat jawaban lebih konsisten. Itu tidak membuatnya lebih benar. Kalau kelanjutan yang paling mungkin itu salah, temperature rendah membuat model salah setiap kali."
+      ]
+    },
+    {
+      "h": "Yang tidak dilakukan LLM",
+      "body": [
+        "Banyak kegagalan yang mengejutkan jadi masuk akal begitu Anda ingat mekanismenya:",
+        {
+          "ul": [
+            "LLM tidak melihat huruf. Model melihat token, jadi kata seperti strawberry bisa datang sebagai tiga potong seperti st, raw, dan berry. Karena itu menghitung huruf atau membalik kata terasa sulit baginya.",
+            "LLM tidak mengingat chat lama dengan sendirinya. Fitur memori di aplikasi bekerja dengan menyimpan catatan lalu menyisipkannya ke prompt.",
+            "LLM tidak tahu peristiwa terbaru kecuali aplikasi menambahkan hasil pencarian atau dokumen ke konteks.",
+            "LLM tidak memeriksa fakta. Tidak ada bagian dari prediksi token berikutnya yang membandingkan keluaran dengan kenyataan, sehingga teks yang lancar bisa saja salah.",
+            "LLM tidak menjalankan kode atau berhitung secara eksak kecuali memanggil alat. Perkalian panjang dalam teks murni rawan salah."
+          ]
+        },
+        "Produk yang baik menutup celah ini dengan alat: kalkulator, penjalan kode, pencarian web, atau pengambilan dari dokumen Anda sendiri. Kalau Anda tahu celah itu ada, Anda tahu kapan harus meminta alat atau memeriksa jawabannya sendiri."
+      ]
+    },
+    {
+      "h": "Tips praktis dari cara kerja LLM",
+      "body": [
+        {
+          "ul": [
+            "Taruh materinya di prompt. Kalau ingin jawaban tentang sebuah dokumen, tempelkan bagian yang relevan. Model bernalar jauh lebih baik atas teks yang bisa dilihatnya daripada atas ingatan samar dari pelatihan.",
+            "Spesifik soal keluaran. Sebutkan format, panjang, audiens, dan bahasa. Model mengisi celah dengan pilihan paling umum.",
+            "Minta langkah-langkah untuk masalah sulit. Menulis langkah antara memberi model lebih banyak token untuk dikerjakan sebelum memutuskan jawaban.",
+            "Mulai chat baru untuk tugas baru. Pesan lama yang tidak berkaitan masih ada di konteks dan bisa menyimpangkan jawaban.",
+            "Verifikasi nama, angka, kutipan, dan tautan. Itulah detail yang paling mungkin dikarang."
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Apakah large language model memahami apa yang mereka katakan?",
+      "a": "Model membangun representasi makna internal yang kaya sehingga bisa menjawab, menerjemahkan, dan bernalar dalam banyak kasus. Mereka tidak punya pengalaman atau tujuan, dan bisa gagal pada tugas sederhana yang bagi manusia terasa jelas, jadi apakah itu bisa disebut memahami masih diperdebatkan."
+    },
+    {
+      "q": "Mengapa AI memberi jawaban berbeda untuk pertanyaan yang sama?",
+      "a": "Model mengambil token berikutnya dari distribusi probabilitas, sehingga pilihan acak kecil di awal jawaban membuat susunan kata di bagian akhir berbeda. Temperature yang lebih rendah membuat jawaban lebih mudah diulang."
+    },
+    {
+      "q": "GPT singkatan dari apa?",
+      "a": "GPT singkatan dari Generative Pre-trained Transformer: model transformer yang dilatih lebih dulu (pretrained) dengan teks dalam jumlah besar dan menghasilkan teks."
+    },
+    {
+      "q": "Apakah LLM terhubung ke internet?",
+      "a": "Modelnya sendiri tidak. Ia hanya tahu data pelatihannya sampai tanggal batas tertentu. Beberapa aplikasi menambahkan alat pencarian web dan menempelkan hasilnya ke konteks, dan begitulah cara mereka bisa menyebut peristiwa terbaru."
+    },
+    {
+      "q": "Apa itu parameter dalam LLM?",
+      "a": "Parameter adalah salah satu angka di dalam jaringan yang disesuaikan oleh pelatihan. Model punya miliaran parameter, dan bersama-sama angka itu menyimpan apa yang dipelajari model. Parameter yang lebih banyak bisa memuat lebih banyak pola, tetapi lebih mahal dijalankan."
+    }
+  ]
+}

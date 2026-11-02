@@ -1,0 +1,307 @@
+{
+  "title": "AI视频运镜术语大全：推拉摇移跟、环绕、升降 — cv.cm",
+  "description": "AI视频提示词常用运镜术语：推、拉、摇、移、升降、环绕、希区柯克变焦、移焦（rack focus）等，说明每种镜头的画面效果和英文提示词写法。",
+  "h1": "AI视频提示词里有哪些运镜术语？",
+  "answer": "运镜术语是摄制组描述镜头如何运动的行话：摇（pan）和俯仰（tilt）是镜头原地转动，推拉（dolly）是镜头向前或向后移动，横移（truck）是向侧面移动，升降（pedestal）是上下移动，环绕（orbit）是围着主体转圈。视频模型从带字幕的影像里学会了这些词，所以写明一种标准运镜，比写“电影感镜头”好控制得多。",
+  "sections": [
+    {
+      "h": "为什么要用准确的词",
+      "body": [
+        "视频模型是从描述真实影像的文字里学会镜头语言的。当字幕写着“slow dolly in on her face”（缓慢推向她的脸），模型就把这句话和一种特定的运动模式联系起来：主体在画面里变大，背景在后面略微错位。而“dynamic camera”（动感镜头）这类含糊的说法对应所有可能，你得到的就是随机的混合。",
+        "下面这些是摄制组实际使用的术语，大部分也出现在 Google 的 Veo 提示词指南里。研究者同样把镜头运动当作一种单独的控制信号：Stable Video Diffusion 已被证明可以搭配镜头运动模块，CameraCtrl 则为文生视频模型加入了精确的镜头路径。这些研究之所以存在，是因为光靠文字只能做粗略控制。所以用对词，每个镜头只写一种运镜，并做好多生成几条的准备。",
+        "有两组容易混淆。摇和俯仰是镜头在原地转动，像转头；横移和升降是整个镜头向侧面或上下移动，像向旁边迈一步或站起来。转动得到的是平面的扫视，移动则会产生视差（parallax），近处物体比远处物体滑过得更快。"
+      ]
+    },
+    {
+      "h": "运镜方式总表",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "运镜",
+              "画面上看起来如何",
+              "情绪效果",
+              "提示词怎么写"
+            ],
+            "rows": [
+              [
+                "固定镜头（static / locked-off）",
+                "画面不动，只有主体在动",
+                "平静、旁观，让表演撑起镜头",
+                "`static shot, locked-off camera on a tripod`"
+              ],
+              [
+                "摇（pan）",
+                "镜头在原地向左或向右转动，场景横向扫过",
+                "展现空间，跟随视线或动作",
+                "`slow pan left across the harbor`"
+              ],
+              [
+                "俯仰（tilt）",
+                "镜头在原地向上或向下转动",
+                "上摇显示规模或气势，下摇表现发现",
+                "`tilt up from her shoes to her face`"
+              ],
+              [
+                "推 / 拉（dolly in / dolly out）",
+                "镜头朝主体靠近或远离，背景有视差",
+                "推进聚焦、增强紧张感；拉出带来距离或孤独",
+                "`slow dolly in toward the man at the desk`"
+              ],
+              [
+                "横移（truck 左 / 右）",
+                "镜头与场景平行地向侧面滑动",
+                "流畅、旁观，像边走边看",
+                "`camera trucks right along the market stalls`"
+              ],
+              [
+                "升降（pedestal 上 / 下）",
+                "镜头笔直地升起或降下，不带俯仰",
+                "从物体上方或下方轻柔地展现",
+                "`pedestal up from behind the counter to reveal the room`"
+              ],
+              [
+                "变焦（zoom in / out）",
+                "镜头改变焦距，画面放大或缩小，但没有视差",
+                "平面化、旁观，有时显得突兀",
+                "`slow zoom in, camera stays in place`"
+              ],
+              [
+                "缓推（push-in）",
+                "缓慢稳定的推镜，通常推向脸部",
+                "情绪渐强或恍然大悟",
+                "`slow push-in on her eyes as she understands`"
+              ],
+              [
+                "拉开揭示（pull-back reveal）",
+                "镜头后拉，展现原本在画外的东西",
+                "惊讶、交代背景、孤立感",
+                "`pull back to reveal he is alone on a huge empty stage`"
+              ],
+              [
+                "环绕（orbit / arc）",
+                "镜头围着主体转圈，主体始终居中",
+                "强调重要性，英雄或梦幻时刻",
+                "`camera orbits slowly around the dancer, half circle`"
+              ],
+              [
+                "升降臂 / 摇臂（crane / jib）",
+                "镜头沿大弧线升起或降落，常在高处",
+                "宏大的开场或收尾，规模感",
+                "`crane shot rising up over the crowd to a wide view`"
+              ],
+              [
+                "跟拍（tracking / follow）",
+                "镜头与运动中的主体保持同样距离同步移动",
+                "动感，与角色同行",
+                "`tracking shot following her from behind as she runs`"
+              ],
+              [
+                "手持（handheld）",
+                "轻微的晃动和漂移，像人手持摄影机",
+                "真实、紧迫、纪录片感",
+                "`handheld camera, slight natural shake`"
+              ],
+              [
+                "甩镜（whip pan）",
+                "极快的摇镜，带动态模糊",
+                "能量感、注意力快速切换、转场",
+                "`fast whip pan to the door`"
+              ],
+              [
+                "希区柯克变焦 / 滑动变焦（dolly zoom，vertigo effect）",
+                "主体大小不变，背景被拉伸或压缩",
+                "震惊、眩晕、世界在变形",
+                "`dolly zoom on his face, background stretches away`"
+              ],
+              [
+                "移焦（rack focus）",
+                "焦点从一个景深移到另一个，镜头本身不动",
+                "转移注意力，连接两个主体",
+                "`rack focus from the ring in the foreground to her face`"
+              ],
+              [
+                "荷兰角（dutch angle）",
+                "镜头向一侧倾斜，地平线是歪的",
+                "不安，有什么不对劲",
+                "`dutch angle, horizon tilted 20 degrees`"
+              ],
+              [
+                "主观视角（POV）",
+                "我们看到的就是角色看到的，常有手出现在画面里",
+                "沉浸感、代入感",
+                "`first-person POV, his hands on the steering wheel`"
+              ],
+              [
+                "FPV 穿越机（FPV drone）",
+                "快速、低空、俯冲穿梭于各种空间",
+                "速度、刺激、一气呵成的旅程",
+                "`FPV drone shot diving off the cliff and skimming the waves`"
+              ]
+            ]
+          }
+        },
+        "几个难点补充说明。变焦和推镜可以落在同样的构图上，但只有推镜有视差，所以看起来是在空间里穿行。希区柯克变焦是两者同时进行、方向相反，模型很难做好；单独要求这一个效果，用简单的主体，并多生成几条。荷兰角和主观视角严格说是构图选择而不是运动，但在提示词里写在同一位置。"
+      ]
+    },
+    {
+      "h": "景别",
+      "body": [
+        "景别指主体在画面中占多大比例。它是提示词里最先要定的内容，因为它决定模型需要画出多少细节。",
+        {
+          "table": {
+            "head": [
+              "景别",
+              "画面里是什么",
+              "适合用于"
+            ],
+            "rows": [
+              [
+                "大远景 / 建立镜头（extreme wide / establishing）",
+                "整个场地，人物很小",
+                "开场、表现规模和地理环境"
+              ],
+              [
+                "全景（wide / full shot）",
+                "从头到脚的整个人，带周围环境",
+                "动作、舞蹈、打斗、服装"
+              ],
+              [
+                "中景（medium shot）",
+                "腰部以上",
+                "对话、手势、大多数台词戏"
+              ],
+              [
+                "中近景（medium close-up）",
+                "胸部以上",
+                "情绪，兼带一些肢体语言"
+              ],
+              [
+                "近景 / 特写（close-up）",
+                "脸或某一件物体",
+                "反应、情绪、重要道具"
+              ],
+              [
+                "大特写（extreme close-up）",
+                "一个细节：一只眼睛、一个指尖、一滴水",
+                "强烈感、质感、线索"
+              ],
+              [
+                "过肩镜头（over-the-shoulder）",
+                "从一个人身后看向另一个人",
+                "两人对话"
+              ]
+            ]
+          }
+        },
+        "对AI视频来说，脸部的较近景别通常比人群的远景更稳定，因为模型需要保持一致的小人物更少。手和手指在简单动作的特写里效果最好，或者让它们半出镜。"
+      ]
+    },
+    {
+      "h": "拍摄角度",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "角度",
+              "机位",
+              "效果"
+            ],
+            "rows": [
+              [
+                "平视（eye level）",
+                "与主体视线同高",
+                "中性、客观"
+              ],
+              [
+                "仰拍（low angle）",
+                "在下方向上拍",
+                "力量、威胁、英雄感"
+              ],
+              [
+                "俯拍（high angle）",
+                "在上方向下拍",
+                "弱小、脆弱、全局视角"
+              ],
+              [
+                "鸟瞰 / 垂直俯拍（bird's-eye / top-down）",
+                "从正上方垂直向下",
+                "图案感、像地图、抽离"
+              ],
+              [
+                "虫眼视角（worm's-eye）",
+                "贴地面，陡峭地向上拍",
+                "巨大的规模感、戏剧性"
+              ],
+              [
+                "荷兰角 / 斜角（dutch / canted）",
+                "向一侧倾斜",
+                "紧张、失去方向感"
+              ]
+            ]
+          }
+        },
+        "角度可以和运镜组合。“Low angle, slow tracking shot”就是一条清晰的指令：角度决定机位，运镜决定路径。"
+      ]
+    },
+    {
+      "h": "怎么把运镜写进提示词",
+      "body": [
+        {
+          "ol": [
+            "先写镜头这一行：景别、角度、运镜、速度。示例：`Medium close-up, eye level, slow push-in.`",
+            "写明运镜的目标：推向什么，围着谁环绕，从哪里摇到哪里。",
+            "给运镜一个速度和终点：“缓慢地”“贯穿整个片段”“停在她的脸上”。",
+            "主体的动作单独描述；如果运镜幅度大，主体的动作就要小。",
+            "只在有必要时才加镜头参数词：`shallow depth of field`、`wide-angle lens`、`telephoto compression`。"
+          ]
+        },
+        {
+          "code": "Wide shot, low angle, slow crane up.\nA lighthouse on a rocky coast at sunset; waves break on the rocks below.\nThe camera rises from the rocks to above the lighthouse lamp, ending on a\nwide view of the sea. Warm orange light, long shadows, light sea mist.\nAudio: waves, wind, seagulls.",
+          "lang": "text"
+        },
+        "如果你手上只有一张照片，也可以不用视频模型来做运镜。例如 cv.cm 的 `v` 工具会从照片估计深度，渲染出真实的3D推、拉、环绕、摇或升。镜头在动，主体不动。想直观看看各种运镜在自己图片上的效果，这是个快捷办法。"
+      ]
+    },
+    {
+      "h": "模型容易出错的地方",
+      "body": [
+        {
+          "ul": [
+            "组合运镜：“边环绕、边升起、边变焦”通常会得到扭曲或晃动的镜头路径。只用一种运镜。",
+            "速度：“快”的运镜可能让脸部模糊或变形。快速运镜更适合风景和空旷场景。",
+            "变焦与推镜：很多模型把两者都理解成“靠近”。如果需要视差，在写“dolly in”的同时再写“camera moves forward”。",
+            "完整环绕：360度环绕要求模型凭空编出所有物体的背面。半圈或一小段弧线更稳妥。",
+            "移焦和希区柯克变焦：这些是光学效果，截至目前各模型的表现差异很大。围绕它们安排镜头序列之前，先测试一下。",
+            "手持：有些模型会加太多抖动。写上“slight”或“subtle”（轻微）。"
+          ]
+        },
+        {
+          "note": "如果工具提供了滑块或预设形式的镜头控制，就用它们而不是文字。数值控制比一个词更能被精确执行。"
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "摇镜头和横移镜头有什么区别？",
+      "a": "摇是镜头在固定位置向左或向右转动；横移是整个镜头向侧面移动，所以近处和远处的物体滑过的速度不同。"
+    },
+    {
+      "q": "变焦和推镜头有什么区别？",
+      "a": "变焦是改变镜头焦距来放大画面，镜头本身不动，所以没有视差；推镜头是镜头在空间中前进，背景会相对主体产生位移。"
+    },
+    {
+      "q": "希区柯克变焦有什么用？",
+      "a": "它让主体大小保持不变，背景却像被拉伸或压缩，用来表现震惊或突然的醒悟。也叫滑动变焦或眩晕效应（vertigo effect）。"
+    },
+    {
+      "q": "什么运镜能让画面显得紧张？",
+      "a": "朝脸部缓慢推进能累积紧张感，手持晃动或荷兰角则增加不安。让主体动作保持小幅，运镜才能把情绪带出来。"
+    },
+    {
+      "q": "无人机视频里的 FPV 是什么意思？",
+      "a": "FPV 是第一人称视角（first-person view）：飞手戴着眼镜飞行，所以画面快速、低空、来回俯冲。提示词里写“FPV drone shot”就是要这种风格，而不是平稳的高空航拍。"
+    }
+  ]
+}

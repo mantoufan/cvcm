@@ -1,0 +1,183 @@
+{
+  "title": "Image to Image AI: Strength, Inpainting, dan ControlNet — cv.cm",
+  "description": "Cara kerja image-to-image AI: denoising strength, gambar referensi, style transfer, inpainting, outpainting, dan kontrol ControlNet untuk depth, pose, dan tepi.",
+  "h1": "Bagaimana cara kerja image-to-image AI?",
+  "answer": "Image-to-image AI berangkat dari gambarmu, bukan dari noise murni. Ia menambahkan noise sebanyak yang dipilih, lalu membuangnya sambil mengikuti prompt, sehingga strength rendah mempertahankan gambar asli dan strength tinggi mengubahnya. Mask membatasi perubahan pada satu area (inpainting) atau bingkai baru (outpainting), dan gambar kontrol seperti peta kedalaman, pose, atau tepi mengunci tata letak sementara gayanya berubah.",
+  "sections": [
+    {
+      "h": "Ide inti: noise sebagian, lalu denoise",
+      "body": [
+        "Model difusi biasanya membangun gambar dengan membuang noise dari keacakan murni. Image-to-image melewati bagian awal perjalanan itu. Ia mengambil gambarmu, menambahkan noise sampai gambar sebagian tertutup, lalu menjalankan sisa langkah denoising dengan promptmu. Metode ini dijelaskan dalam makalah SDEdit, yang menunjukkan bahwa model difusi bisa mengubah sketsa kasar atau foto yang diedit menjadi gambar realistis tanpa pelatihan tambahan.",
+        "Jumlah noise adalah pengaturan terpenting. Namanya strength, denoise, atau image weight tergantung alatnya. Dengan sedikit noise, hanya tekstur halus yang bisa berubah. Dengan banyak noise, bentuk-bentuk hampir hilang dan model mengarang gambar baru yang hanya longgar mengikuti warna dan tata letak lama.",
+        "Di banyak implementasi, strength juga menentukan berapa steps yang benar-benar dijalankan. Kalau alat diatur 50 steps dan strength 0,8, gambar diberi noise setara sekitar 40 steps lalu di-denoise selama 40 steps itu."
+      ]
+    },
+    {
+      "h": "Memilih nilai strength",
+      "body": [
+        "Angka pastinya berbeda antarmodel, tetapi rentang di bawah ini adalah titik awal yang berguna untuk alat berskala 0 sampai 1. Alat dengan skala image weight sering bekerja sebaliknya: bobot lebih tinggi mempertahankan lebih banyak gambar asli.",
+        {
+          "table": {
+            "head": [
+              "Strength",
+              "Yang bertahan dari gambarmu",
+              "Cocok untuk"
+            ],
+            "rows": [
+              [
+                "0,1 sampai 0,3",
+                "Hampir semuanya: bentuk, wajah, warna",
+                "Pembersihan ringan, menambah grain, perubahan tekstur kecil"
+              ],
+              [
+                "0,3 sampai 0,5",
+                "Komposisi dan sebagian besar detail",
+                "Mengubah pencahayaan atau color grade, pergeseran gaya yang lembut"
+              ],
+              [
+                "0,5 sampai 0,7",
+                "Tata letak dan bentuk utama; detail digambar ulang",
+                "Foto jadi ilustrasi, sketsa jadi karya jadi"
+              ],
+              [
+                "0,7 sampai 0,9",
+                "Blok warna kasar dan penempatan",
+                "Memakai gambar hanya sebagai petunjuk tata letak yang longgar"
+              ],
+              [
+                "1,0",
+                "Nyaris tidak ada",
+                "Sama dengan text-to-image"
+              ]
+            ]
+          }
+        },
+        "Naikkan strength dalam langkah kecil sekitar 0,1 dan kunci seed, agar kamu melihat efek strength saja. Kalau wajah seseorang berubah terlalu banyak sebelum gayanya cukup berubah, strength saja bukan alat yang tepat: tambahkan gambar kontrol atau gunakan inpainting pada latar saja."
+      ]
+    },
+    {
+      "h": "Gambar referensi dan style transfer",
+      "body": [
+        "Tidak semua gambar yang kamu berikan ke model adalah titik awal. Banyak alat juga menerima gambar referensi yang memandu hasil tanpa diberi noise. Gambar itu diubah menjadi fitur yang bekerja bersama prompt teks. IP-Adapter adalah metode terbuka yang terkenal: ia menambahkan modul kecil ke model text-to-image yang dibekukan, dengan lapisan attention terpisah untuk fitur gambar, sehingga kamu bisa memberi image prompt dan text prompt bersamaan. Alat hosted sering menyebutnya image prompt, style reference, atau character reference.",
+        "Ada dua cara umum untuk mengubah gaya sebuah gambar:",
+        {
+          "ul": [
+            "Image-to-image dengan prompt gaya. Fotomu menjadi gambar awal dan prompt menyebut gaya baru, misalnya `watercolor illustration, loose brush strokes, white paper`. Sederhana, tetapi wajah dan detail kecil bergeser pada strength lebih tinggi.",
+            "Struktur dari satu gambar, gaya dari gambar lain. Gambar kontrol (kedalaman atau tepi) menjaga tata letak fotomu, sementara referensi gaya atau prompt menentukan tampilannya. Cara ini menjaga komposisi tetap stabil bahkan pada strength tinggi."
+          ]
+        },
+        {
+          "code": "Start image: photo of a street market at dusk\nStrength:    0.55\nPrompt:      gouache painting of a street market at dusk, flat shapes,\n             warm lantern light, limited palette of orange, teal and cream\nNegative:    photo, text, watermark",
+          "lang": "text"
+        },
+        "Gambarkan gambar seperti yang kamu mau tampilannya, bukan sebagai perintah. `Gouache painting of a street market` bekerja lebih baik daripada `make this a painting`, karena prompt dicocokkan dengan caption gambar, bukan dijalankan sebagai instruksi. Beberapa model baru yang dilatih dengan pasangan data editing memang memahami instruksi; periksa apa yang diharapkan alatmu."
+      ]
+    },
+    {
+      "h": "Inpainting dan outpainting",
+      "body": [
+        "Inpainting hanya mengubah area yang di-mask. Kamu mewarnai mask di atas wilayah yang akan diganti, biasanya putih untuk diubah dan hitam untuk dipertahankan, dan model mengisinya agar cocok dengan prompt dan piksel di sekitarnya. RePaint menunjukkan bahwa model difusi biasa pun bisa melakukan inpainting dengan mengembalikan piksel yang diketahui di setiap langkah denoising; model inpainting khusus yang dilatih dengan mask biasanya menyatu lebih bersih.",
+        {
+          "ol": [
+            "Buat mask sedikit lebih besar dari objek, supaya model bisa menyatukan tepinya.",
+            "Haluskan tepi mask (feather atau blur) untuk menghindari sambungan yang terlihat.",
+            "Tulis prompt untuk area ber-mask beserta konteksnya, misalnya `empty wooden bench in a park`, bukan sekadar `remove person`.",
+            "Pakai strength sedang sampai tinggi untuk penggantian, strength rendah untuk perbaikan.",
+            "Kalau areanya kecil di gambar besar, gunakan opsi crop-and-upscale (kadang disebut only masked atau mask crop) agar model bekerja pada resolusi lebih tinggi."
+          ]
+        },
+        "Outpainting memperluas gambar melewati batasnya. Kanvas diperbesar, area kosong baru di-mask, dan model mengisinya untuk melanjutkan adegan. Berguna untuk mengubah foto persegi menjadi banner 16:9. Perluas dengan langkah seperempat sampai setengah gambar sekali jalan; lompatan yang sangat besar cenderung mengulang objek atau merusak perspektif.",
+        {
+          "note": "Model inpainting bisa sedikit mengubah piksel di luar mask, terutama saat gambar di-encode ulang. Kalau area yang tidak disentuh harus tetap persis sama, tempelkan kembali gambar asli di atas semua bagian di luar mask setelah generate."
+        }
+      ]
+    },
+    {
+      "h": "Kondisi ala ControlNet: depth, pose, dan tepi",
+      "body": [
+        "ControlNet menambahkan salinan yang dapat dilatih dari sebagian model gambar yang dibekukan, yang membaca gambar kontrol tambahan. Gambar kontrol mengunci struktur; prompt menentukan struktur itu terbuat dari apa. Makalah aslinya menunjukkan kontrol dari tepi, kedalaman, peta segmentasi, dan pose manusia, dan ide yang sama kini ada untuk banyak keluarga model.",
+        {
+          "table": {
+            "head": [
+              "Jenis kontrol",
+              "Input",
+              "Yang dikunci",
+              "Pemakaian umum"
+            ],
+            "rows": [
+              [
+                "Tepi (Canny, line art)",
+                "Gambar garis hitam putih",
+                "Garis luar dan bentuk halus",
+                "Menjaga produk atau bangunan tetap persis sambil mengubah bahan dan cahaya"
+              ],
+              [
+                "Depth",
+                "Peta kedalaman skala abu-abu, dekat terang dan jauh gelap",
+                "Tata letak 3D dan apa yang berada di depan apa",
+                "Mengubah gaya ruangan atau lanskap sambil menjaga ruangnya"
+              ],
+              [
+                "Pose (gaya OpenPose)",
+                "Kerangka stick figure dari sendi-sendi",
+                "Posisi tubuh, anggota badan, arah kepala",
+                "Menaruh karakter baru dalam pose yang persis"
+              ],
+              [
+                "Segmentasi",
+                "Wilayah berwarna, satu warna per kelas",
+                "Letak langit, jalan, orang, dan objek",
+                "Menyusun adegan berdasarkan wilayah"
+              ],
+              [
+                "Scribble / sketsa",
+                "Gambar tangan kasar",
+                "Komposisi longgar",
+                "Mengubah coretan menjadi karya jadi"
+              ]
+            ]
+          }
+        },
+        "Kebanyakan alat memberi setiap kontrol sebuah bobot (misalnya conditioning scale) dan kadang titik mulai dan akhir dalam langkah denoising. Bobot yang terlalu tinggi menyalin gambar kontrol terlalu harfiah, misalnya noise tepi menjadi garis keras; terlalu rendah dan kontrolnya diabaikan. Nilai tengah dengan gambar kontrol yang jelas biasanya paling baik. Kamu juga bisa menggabungkan dua kontrol, seperti depth plus pose, dengan memberi masing-masing bobot lebih rendah.",
+        "Untuk membuat peta kedalaman dari foto, kamu bisa memakai model estimasi kedalaman. Misalnya, alat depth map dari cv.cm mengubah foto menjadi gambar kedalaman skala abu-abu di browser yang bisa dipakai sebagai kontrol depth."
+      ]
+    },
+    {
+      "h": "Masalah umum dan solusinya",
+      "body": [
+        {
+          "ul": [
+            "Identitas wajah berubah. Turunkan strength, lakukan inpainting pada latar saja, atau pakai referensi wajah atau karakter.",
+            "Warna terlalu dekat dengan aslinya bahkan pada strength tinggi. Gambar awal masih membawa warna keseluruhannya. Geser warna dulu di editor, atau andalkan gambar kontrol dan strength lebih tinggi.",
+            "Sambungan terlihat setelah inpainting. Perbesar dan haluskan mask, dan sertakan sedikit konteks di prompt.",
+            "Objek ganda atau terdistorsi setelah outpainting. Perluas dengan langkah lebih kecil dan ulangi deskripsi adegan di prompt.",
+            "Hasilnya buram. Strength mungkin terlalu rendah untuk menambah detail, atau gambarnya terlalu kecil. Upscale dulu atau pakai opsi mask-crop.",
+            "Hak. Mengubah gaya foto yang bukan milikmu tidak membuatnya jadi milikmu; hak atas gambar asli tetap berlaku."
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Apa itu denoising strength pada image-to-image?",
+      "a": "Itu adalah seberapa banyak noise yang ditambahkan ke gambarmu sebelum model menggambarnya ulang. Strength rendah mempertahankan gambar asli hampir tanpa perubahan; strength tinggi membiarkan model mengganti sebagian besarnya."
+    },
+    {
+      "q": "Apa bedanya image-to-image dengan inpainting?",
+      "a": "Image-to-image bisa mengubah seluruh gambar. Inpainting hanya mengubah area yang kamu mask dan berusaha mempertahankan sisanya seperti semula."
+    },
+    {
+      "q": "Apakah saya perlu ControlNet untuk style transfer?",
+      "a": "Tidak untuk perubahan gaya sederhana pada strength rendah sampai sedang. Gambar kontrol membantu saat kamu ingin perubahan gaya yang kuat tetapi harus mempertahankan tata letak, pose, atau garis luar yang persis."
+    },
+    {
+      "q": "Mengapa outpainting mengulang objek di tepi?",
+      "a": "Model mengisi ruang baru dengan hal yang paling mungkin ada di samping batas, yang sering kali lebih banyak dari hal yang sama. Perluas dengan langkah lebih kecil dan jelaskan apa yang harus muncul di area baru."
+    },
+    {
+      "q": "Bolehkah memakai foto orang sungguhan sebagai input image-to-image?",
+      "a": "Secara teknis bisa, tetapi kamu perlu hak untuk memakai foto itu dan, di banyak tempat, persetujuan orangnya. Banyak layanan juga memblokir pengeditan orang sungguhan yang bisa menyesatkan atau merugikan."
+    }
+  ]
+}

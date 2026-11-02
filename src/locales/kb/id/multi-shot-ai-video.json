@@ -1,0 +1,167 @@
+{
+  "title": "Video AI Multi-Shot: Jaga Konsistensi Karakter Antar Shot — cv.cm",
+  "description": "Cara membuat video AI multi-shot yang konsisten: kunci karakter, kostum, lokasi, dan cahaya, sambungkan frame antar shot, dan sembunyikan perbedaan kecil saat editing.",
+  "h1": "Bagaimana cara menjaga konsistensi video AI di banyak shot?",
+  "answer": "Tetapkan semua yang tidak boleh berubah sebelum membuat video: gambar referensi karakter, satu deskripsi kostum dan lokasi, satu setelan cahaya, dan satu tampilan warna. Lalu buat tiap shot dari referensi itu, sambungkan shot dengan memakai frame terakhir satu klip sebagai frame pertama klip berikutnya, dan gunakan teknik editing seperti memotong saat aksi untuk menyembunyikan perbedaan kecil yang tersisa.",
+  "sections": [
+    {
+      "h": "Mengapa shot bisa saling menyimpang",
+      "body": [
+        "Model video membuat tiap klip dengan mulai dari noise acak lalu mengubahnya menjadi frame yang sesuai dengan prompt. Dua generasi dari prompt yang sama mulai dari noise yang berbeda, sehingga hasilnya punya wajah yang sedikit berbeda, kancing mantel yang berbeda, jendela yang berbeda di belakang aktor. Di dalam satu klip model menjaga kestabilan karena ia melihat semua frame bersamaan. Antara dua klip terpisah, ia sama sekali tidak punya ingatan.",
+        "Para peneliti menggambarkan celah yang sama. Makalah Long Context Tuning for Video Generation (2025) mencatat bahwa model yang mampu membuat satu shot panjang tetap kesulitan membuat adegan multi-shot yang koheren, dan mengusulkan perluasan attention model ke semua shot dalam satu adegan agar ia belajar konsistensi tingkat adegan. Beberapa model komersial kini mengiklankan pembuatan multi-shot bawaan; laporan teknis Seedance 1.0, misalnya, mencantumkan koherensi naratif multi-shot dengan subjek yang konsisten sebagai salah satu fitur.",
+        "Fitur multi-shot bawaan membantu, tetapi saat tulisan ini dibuat terbatas pada urutan pendek dalam satu generasi. Film pendek atau satu episode tetap dibangun dari banyak generasi, jadi metode di bawah ini tetap menjadi inti pekerjaannya."
+      ]
+    },
+    {
+      "h": "Yang harus tetap sama: lembar kontinuitas",
+      "body": [
+        "Kru film menyimpan catatan kontinuitas agar adegan yang direkam selama beberapa hari tampak seperti satu momen. Lakukan hal yang sama sebelum menulis prompt apa pun. Setiap baris di bawah adalah blok teks pendek yang tetap atau gambar referensi yang Anda pakai ulang tanpa diubah.",
+        {
+          "table": {
+            "head": [
+              "Elemen",
+              "Cara mengunci",
+              "Kegagalan umum"
+            ],
+            "rows": [
+              [
+                "Wajah dan tubuh",
+                "Satu gambar referensi plus blok teks tetap (usia, rambut, postur)",
+                "Bentuk atau usia wajah berubah antar shot"
+              ],
+              [
+                "Kostum",
+                "Pakaian dan warna yang persis, dipakai ulang kata demi kata",
+                "Warna mantel atau kerahnya berubah"
+              ],
+              [
+                "Properti",
+                "Beri nama dan deskripsikan tiap properti sekali; tetap di tangan yang sama",
+                "Ponsel berpindah tangan atau menghilang"
+              ],
+              [
+                "Lokasi",
+                "Gambar diam referensi lokasi dan deskripsi tetap",
+                "Perabot atau jendela berpindah"
+              ],
+              [
+                "Cahaya",
+                "Satu kalimat: sumber cahaya utama, arah, waktu",
+                "Siang di satu shot, sore di shot berikutnya"
+              ],
+              [
+                "Tampilan warna",
+                "Satu deskripsi grading, lalu grading akhir di editor",
+                "Satu shot hangat, shot berikutnya dingin"
+              ],
+              [
+                "Arah layar",
+                "Catat ke arah mana tiap karakter menghadap dan bergerak",
+                "Karakter bertukar sisi setelah potongan"
+              ],
+              [
+                "Suara",
+                "Satu suara per karakter, satu lapisan ambience per lokasi",
+                "Timbre suara atau room tone berubah"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "Metode 1: referensi, bukan deskripsi",
+      "body": [
+        "Teks saja adalah jangkar yang lemah. \"Seorang wanita berambut hitam pendek\" cocok dengan jutaan wajah. Gambar referensi adalah jangkar yang jauh lebih kuat karena mengunci satu wajah. Banyak alat saat tulisan ini dibuat menerima gambar referensi subjek atau karakter: dokumentasi Veo dari Google, misalnya, menjelaskan mode referensi yang memakai satu sampai tiga gambar orang, karakter, atau produk agar penampilan subjek terjaga dalam hasilnya.",
+        "Buat referensi lebih dulu, dalam bentuk gambar diam, tempat percobaan ulang berlangsung cepat:",
+        {
+          "ol": [
+            "Lembar karakter: orang yang sama dari depan, tiga perempat, dan samping, plus tampilan seluruh tubuh dalam kostum akhir, dengan latar polos.",
+            "Gambar diam lokasi untuk setiap tempat dalam adegan, dengan rasio aspek akhir.",
+            "Lembar properti kunci jika ada benda yang penting bagi cerita."
+          ]
+        },
+        "Pakai cahaya yang polos dan merata pada lembar karakter. Cahaya berwarna yang kuat dalam referensi cenderung disalin ke setiap shot, lalu bertabrakan dengan cahaya tiap adegan."
+      ]
+    },
+    {
+      "h": "Metode 2: sambungkan shot dengan frame",
+      "body": [
+        "Ketika dua shot harus mengalir satu ke yang lain, misalnya satu aksi berkelanjutan yang dibagi dua, hubungkan keduanya lewat frame, bukan teks.",
+        {
+          "ul": [
+            "Rantai frame terakhir: ekspor frame akhir shot A dan pakai sebagai frame pertama shot B di image-to-video. Awal B lalu persis cocok dengan akhir A.",
+            "Frame awal dan akhir: jika alatnya mendukung keduanya, berikan frame tempat shot harus mulai dan frame tempat shot harus berakhir, lalu biarkan model mengisi geraknya. Ini berguna ketika shot C harus tiba di keyframe yang sudah direncanakan.",
+            "Storyboard keyframe: buat semua keyframe dari referensi yang sama lebih dulu, periksa bersama-sama, lalu animasikan satu per satu."
+          ]
+        },
+        "Merantai ada harganya. Kesalahan kecil menumpuk: wajah yang sedikit lebih lembut di akhir shot A menjadi wajah awal shot B, dan setelah beberapa mata rantai karakter bisa menyimpang. Tetapkan ulang jangkar setiap beberapa shot dengan mulai dari keyframe baru yang dibuat dari referensi asli, bukan dari frame terakhir."
+      ]
+    },
+    {
+      "h": "Metode 3: tulis prompt dengan blok bersama",
+      "body": [
+        "Perlakukan prompt sebagai blok tetap plus satu blok yang berubah. Hanya blok shot yang berubah dari shot ke shot.",
+        {
+          "code": "[CHARACTER] Leo, a man in his 20s, curly brown hair, round glasses,\nmustard-yellow knit sweater, dark blue jeans.\n[LOCATION] Small bookshop interior, tall wooden shelves, one large front window.\n[LIGHT] Late afternoon sun through the front window from screen right, warm tones.\n[SHOT] Medium shot, eye level. Leo pulls a red book from the shelf and opens it,\nfacing screen left. Slow push-in.",
+          "lang": "text"
+        },
+        "Untuk shot berikutnya, salin tiga blok pertama persis sama dan ganti hanya blok [SHOT]. Jika cerita pindah ke tempat baru atau waktu yang berbeda, tulis blok [LOCATION] atau [LIGHT] baru sekali lalu pakai yang itu seterusnya."
+      ]
+    },
+    {
+      "h": "Metode 4: sembunyikan yang tidak bisa diperbaiki lewat editing",
+      "body": [
+        "Bahkan dengan referensi, beberapa perbedaan akan tersisa. Editor sudah lama memakai teknik yang membuat ketidakcocokan kecil tidak terlihat:",
+        {
+          "ul": [
+            "Potong saat aksi (cut on action). Potong di tengah gerakan; mata mengikuti gerak dan melewatkan detail.",
+            "Ubah ukuran shot di setiap potongan. Wide shot yang disusul close-up menyembunyikan latar yang berbeda; dua medium shot berturut-turut justru membongkarnya.",
+            "Pakai insert dan cutaway. Shot tangan, benda, atau tempat memberi penonton jeda di antara dua shot wajah.",
+            "Lakukan grading seluruh urutan sekaligus. Terapkan satu koreksi warna di atas semua klip agar cahaya terasa konsisten.",
+            "Taruh satu suara berkelanjutan di bawah potongan. Room tone atau musik yang berjalan melintasi beberapa shot membuatnya terasa seperti satu momen."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Pemeriksaan kualitas sebelum dipublikasikan",
+      "body": [
+        "Tonton urutannya tiga kali, tiap kali mencari satu jenis masalah:",
+        {
+          "ol": [
+            "Identitas: bekukan di setiap wajah dan bandingkan dengan referensi. Periksa usia, warna mata, garis rambut, kacamata, dan bekas luka.",
+            "Benda: ikuti setiap properti dan pakaian dari shot ke shot. Periksa tangan mana yang memegang apa.",
+            "Ruang dan waktu: periksa arah layar, arah cahaya, dan cuaca di luar jendela."
+          ]
+        },
+        "Buat ulang hanya shot yang gagal. Simpan catatan gambar referensi, prompt, dan pengaturan untuk setiap shot yang diterima, agar Anda bisa membuat pengganti yang cocok nanti.",
+        {
+          "note": "Batasan saat tulisan ini dibuat: keramaian, kembar identik, dua karakter yang bersentuhan, dan teks di pakaian adalah tempat konsistensi paling sering rusak. Letakkan karakter tambahan di latar belakang atau di luar fokus, dan hindari tulisan di kostum."
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Bisakah saya memakai nomor seed untuk menjaga konsistensi shot?",
+      "a": "Seed tetap dengan prompt tetap dapat mereproduksi hasil yang mirip di alat yang sama, tetapi begitu prompt berubah untuk shot baru, hasilnya ikut berubah. Seed membantu saat mencoba ulang, bukan untuk konsistensi antar shot yang berbeda."
+    },
+    {
+      "q": "Lebih baik membuat satu klip panjang atau banyak klip pendek?",
+      "a": "Satu klip menjaga konsistensi di dalamnya tetapi memberi Anda kendali lebih sedikit. Banyak klip pendek lebih mudah diarahkan dan diperbaiki satu per satu. Kebanyakan karya naratif memakai klip pendek yang digabung di editor."
+    },
+    {
+      "q": "Bagaimana menjaga konsistensi dua karakter dalam satu shot?",
+      "a": "Buat referensi terpisah untuk tiap karakter dan beri mereka siluet serta warna yang jelas berbeda. Jauhkan mereka di dalam frame bila memungkinkan, dan pakai shot tunggal tiap orang untuk close-up."
+    },
+    {
+      "q": "Mengapa suara karakter saya berubah antar klip?",
+      "a": "Model yang menghasilkan audio membuat suara baru untuk tiap klip kecuali Anda memberi referensi suara. Untuk hasil yang andal, rekam atau buat dialog secara terpisah dengan satu suara tetap dan tambahkan saat editing."
+    },
+    {
+      "q": "Apakah saya butuh LoRA atau model khusus untuk konsistensi?",
+      "a": "Tidak untuk kebanyakan proyek pendek. Gambar referensi dan blok prompt tetap sudah cukup. Model karakter yang dilatih bisa membantu pada serial panjang dengan model terbuka, tetapi memakan waktu dan harus mengikuti lisensi modelnya."
+    }
+  ]
+}
