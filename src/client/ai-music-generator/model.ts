@@ -1,6 +1,6 @@
 /**
- * MusicVAE trio_4bar through @magenta/music (TensorFlow.js, WebGL or CPU). Imported only by the music generator and
- * only on the first Generate, so the page itself loads no TensorFlow.
+ * MusicVAE trio_4bar through @magenta/music (TensorFlow.js, WebGL or CPU). Runs inside model-worker.ts, so a CPU
+ * fallback never freezes the page; the page itself loads no TensorFlow.
  */
 import { MusicVAE } from "@magenta/music/esm/music_vae/model.js";
 import { modelFileUrl } from "../../shared/ai-models";
@@ -9,28 +9,19 @@ import { MODEL_HOST } from "../ai/host";
 
 export type Sequence = Awaited<ReturnType<MusicVAE["sample"]>>[number];
 
-let vae: MusicVAE | null = null;
-let ready: Promise<void> | null = null;
-/** Bumped by disposeModel, so a load that finishes after it frees itself instead of becoming the model. */
-let generation = 0;
+let ready: Promise<MusicVAE> | null = null;
 
-/** Loads the checkpoint once (about 18 MB); TensorFlow.js picks WebGL, or the CPU without it. */
-export function loadModel(): Promise<void> {
+/** Loads the checkpoint once (about 18 MB). */
+function loadModel(): Promise<MusicVAE> {
   if (ready) return ready;
-  const mine = generation;
   const load = (async () => {
     // Magenta appends "/config.json" etc.: no trailing slash, or the Worker sees "//" and refuses the path.
-    const base = modelFileUrl("trio", "", MODEL_HOST, location.origin).replace(/\/$/, "");
+    const base = modelFileUrl("trio", "", MODEL_HOST, self.location.origin).replace(/\/$/, "");
     const model = new MusicVAE(base);
     await model.initialize();
-    if (mine !== generation) {
-      model.dispose();
-      throw new Error("cancelled");
-    }
-    vae = model;
+    return model;
   })();
   ready = load;
-  // Only this load's own failure clears it: a newer load may already be in flight.
   load.catch(() => {
     if (ready === load) ready = null;
   });
@@ -39,30 +30,38 @@ export function loadModel(): Promise<void> {
 
 const STEPS_PER_SAMPLE = BARS_PER_SAMPLE * STEPS_PER_BAR;
 
-/** 4 bars is one sample; 8 and 16 bars move through the model's latent space from one end to the other. */
-async function assemble(model: MusicVAE, ends: Sequence[], bars: MusicBars, temperature: number): Promise<{ notes: Note[]; seeds: Sequence[] }> {
+/**
+ * The 4-bar samples of a piece, arranged to loop smoothly: 4 bars = A; 8 bars = A and a close variation of it;
+ * 16 bars = A → halfway → B → halfway, so the wrap back to A is a step, not a jump.
+ */
+async function arrange(model: MusicVAE, a: Sequence, b: () => Promise<Sequence>, bars: MusicBars, temperature: number): Promise<Sequence[]> {
   const count = samplesFor(bars);
-  const parts = count === 1 ? [ends[0]] : count === 2 ? ends : await model.interpolate(ends, count, temperature);
-  return { notes: parts.flatMap((seq, i) => toNotes((seq.notes ?? []) as ModelNote[], i * STEPS_PER_SAMPLE)), seeds: ends };
+  if (count === 1) return [a];
+  if (count === 2) return [a, (await model.similar(a, 1, 0.85, temperature))[0]];
+  const [start, middle, end] = await model.interpolate([a, await b()], 3, temperature);
+  return [start, middle, end, middle];
 }
 
-/** A new piece of `bars` bars. */
+function notesOf(parts: Sequence[]): Note[] {
+  return parts.flatMap((seq, i) => toNotes((seq.notes ?? []) as ModelNote[], i * STEPS_PER_SAMPLE));
+}
+
+/** A new piece; `seeds` are kept by the worker for "More like this". */
 export async function compose(bars: MusicBars, temperature: number): Promise<{ notes: Note[]; seeds: Sequence[] }> {
-  if (!vae) throw new Error("model not loaded");
-  return assemble(vae, await vae.sample(2, temperature), bars, temperature);
+  const model = await loadModel();
+  const count = samplesFor(bars);
+  const samples = await model.sample(count === 4 ? 2 : 1, temperature);
+  const parts = await arrange(model, samples[0], async () => samples[1], bars, temperature);
+  return { notes: notesOf(parts), seeds: samples };
 }
 
 /** "More like this": keeps the feel of the last piece and changes the details. */
 export async function vary(seeds: Sequence[], bars: MusicBars, temperature: number): Promise<{ notes: Note[]; seeds: Sequence[] }> {
-  if (!vae) throw new Error("model not loaded");
-  const model = vae;
+  const model = await loadModel();
   const near = async (seq: Sequence): Promise<Sequence> => (await model.similar(seq, 1, 0.8, temperature))[0];
-  return assemble(model, [await near(seeds[0]), await near(seeds[seeds.length - 1])], bars, temperature);
-}
-
-export function disposeModel(): void {
-  generation++;
-  vae?.dispose();
-  vae = null;
-  ready = null;
+  const a = await near(seeds[0]);
+  let b: Sequence | null = null;
+  const second = async (): Promise<Sequence> => (b = await near(seeds[seeds.length - 1]));
+  const parts = await arrange(model, a, second, bars, temperature);
+  return { notes: notesOf(parts), seeds: b ? [a, b] : [a] };
 }

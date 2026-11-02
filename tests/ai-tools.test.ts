@@ -275,4 +275,16 @@ describe("AI music generator", () => {
     expect(bytes.join(",")).toContain([0, 0xc0, 80, 0, 0x90, 60, 90, 0x83, 0x60, 0x80, 60, 0].join(","));
     expect(bytes.join(",")).toContain([0x99, 36, 127].join(","));
   });
+
+  it("swings MIDI like the audio, cuts same-pitch overlaps and skips notes without a pitch", () => {
+    const notes = [
+      { part: "lead" as const, pitch: 60, start: 0, end: 8, velocity: 90 },
+      { part: "lead" as const, pitch: 60, start: 1, end: 3, velocity: 90 },
+    ];
+    const bytes = [...toMidi(notes, 120, 0.3)].join(",");
+    // The second note starts on the swung off-beat (120 + round(0.3 × 0.5 × 120) = 138 ticks, delta 0x81 0x0a), and
+    // the first note ends right there (note-off first at that tick), not at step 8 over it.
+    expect(bytes).toContain([0x90, 60, 90, 0x81, 0x0a, 0x80, 60, 0, 0, 0x90, 60, 90].join(","));
+    expect(toNotes([{ pitch: null, quantizedStartStep: 0, quantizedEndStep: 1 }])).toEqual([]);
+  });
 });

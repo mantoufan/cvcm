@@ -6,7 +6,7 @@ const SAMPLE_RATE = 44_100;
 /** Renders the piece (plus a short tail for releases and echo) to stereo audio. */
 export async function renderPiece(notes: readonly Note[], bars: number, preset: StylePreset): Promise<AudioBuffer> {
   const loop = pieceSeconds(bars, preset.bpm);
-  const tail = 1.5 + preset.lead.echo * 3;
+  const tail = tailSeconds(preset);
   const ctx = new OfflineAudioContext(2, Math.ceil((loop + tail) * SAMPLE_RATE), SAMPLE_RATE);
   const master = ctx.createGain();
   master.gain.value = 0.9;
@@ -16,8 +16,11 @@ export async function renderPiece(notes: readonly Note[], bars: number, preset: 
   comp.ratio.value = 6;
   master.connect(comp).connect(ctx.destination);
 
+  // A little width: lead left of centre, its echo right, bass and drums in the middle.
   const leadBus = ctx.createGain();
-  leadBus.connect(master);
+  const leadPan = ctx.createStereoPanner();
+  leadPan.pan.value = -0.25;
+  leadBus.connect(leadPan).connect(master);
   if (preset.lead.echo > 0) {
     const delay = ctx.createDelay(2);
     delay.delayTime.value = stepSeconds(preset.bpm) * 3;
@@ -25,9 +28,11 @@ export async function renderPiece(notes: readonly Note[], bars: number, preset: 
     feedback.gain.value = preset.lead.echo;
     const wet = ctx.createGain();
     wet.gain.value = 0.5;
+    const wetPan = ctx.createStereoPanner();
+    wetPan.pan.value = 0.4;
     leadBus.connect(delay);
     delay.connect(feedback).connect(delay);
-    delay.connect(wet).connect(master);
+    delay.connect(wet).connect(wetPan).connect(master);
   }
   const noise = noiseBuffer(ctx);
   const step = stepSeconds(preset.bpm);
@@ -40,6 +45,13 @@ export async function renderPiece(notes: readonly Note[], bars: number, preset: 
     else tone(ctx, leadBus, n.pitch, t, dur, vel * preset.lead.gain, preset.lead.wave, preset.lead.cutoff, preset.lead.attack, preset.lead.release);
   }
   return ctx.startRendering();
+}
+
+/** Long enough for the last release and for the echo to fall below -60 dB (capped for very long feedback). */
+function tailSeconds(preset: StylePreset): number {
+  const { echo, release } = preset.lead;
+  const echoes = echo > 0 ? (Math.log(0.001) / Math.log(echo)) * stepSeconds(preset.bpm) * 3 : 0;
+  return Math.min(10, Math.max(release, 0.35) + echoes + 0.3);
 }
 
 function tone(
@@ -145,6 +157,17 @@ export function loopBuffer(audio: AudioBuffer, loopSeconds: number): AudioBuffer
     const out = loop.getChannelData(c);
     out.set(src.subarray(0, length));
     for (let i = length; i < src.length; i++) out[(i - length) % length] += src[i];
+  }
+  // The tail lands on the first beats after the limiter: scale back down if the sum went past full scale.
+  let peak = 0;
+  for (let c = 0; c < loop.numberOfChannels; c++) {
+    for (const v of loop.getChannelData(c)) peak = Math.max(peak, Math.abs(v));
+  }
+  if (peak > 0.99) {
+    for (let c = 0; c < loop.numberOfChannels; c++) {
+      const data = loop.getChannelData(c);
+      for (let i = 0; i < data.length; i++) data[i] *= 0.99 / peak;
+    }
   }
   return loop;
 }

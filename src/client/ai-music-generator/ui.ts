@@ -19,10 +19,48 @@ import { AI_MODELS, formatMb, modelBytes } from "../../shared/ai-models";
 import { chipGroup, formatSeconds } from "../ai/kit";
 import { downloadBlob, h } from "../dom";
 import { locale, t } from "../i18n";
-import type { Sequence } from "./model";
+import type { MusicRequest, MusicResponse } from "./model-worker";
 
-type Model = typeof import("./model");
-type Piece = { notes: Note[]; seeds: Sequence[]; style: MusicStyle; bars: MusicBars; audio: AudioBuffer; loop: AudioBuffer };
+type Piece = { notes: Note[]; style: MusicStyle; bars: MusicBars; audio: AudioBuffer; loop: AudioBuffer };
+
+/** The model worker, started on the first Generate; terminating it frees TensorFlow.js and the weights. */
+class MusicModel {
+  private worker = new Worker(new URL("./model-worker.ts", import.meta.url), { type: "module", name: "cvcm-music" });
+  private seq = 0;
+  private pending = new Map<number, { resolve: (notes: Note[]) => void; reject: (err: Error) => void }>();
+
+  constructor() {
+    this.worker.onmessage = (e: MessageEvent<MusicResponse>) => {
+      const job = this.pending.get(e.data.id);
+      if (!job) return;
+      this.pending.delete(e.data.id);
+      if ("error" in e.data) job.reject(new Error(e.data.error));
+      else job.resolve(e.data.notes);
+    };
+    this.worker.onerror = (e) => {
+      e.preventDefault();
+      this.fail(new Error(e.message || "worker"));
+    };
+  }
+
+  run(type: MusicRequest["type"], bars: MusicBars, temperature: number): Promise<Note[]> {
+    const id = ++this.seq;
+    return new Promise((resolve, reject) => {
+      this.pending.set(id, { resolve, reject });
+      this.worker.postMessage({ id, type, bars, temperature } satisfies MusicRequest);
+    });
+  }
+
+  private fail(err: Error): void {
+    for (const job of this.pending.values()) job.reject(err);
+    this.pending.clear();
+  }
+
+  dispose(): void {
+    this.fail(new Error("cancelled"));
+    this.worker.terminate();
+  }
+}
 
 /**
  * The model line and one status line. Not the AI tools' statusPanel: that one reads the Transformers.js cache and
@@ -66,7 +104,7 @@ const state = {
 };
 
 let status: Panel | null = null;
-let model: Model | null = null;
+let model: MusicModel | null = null;
 let piece: Piece | null = null;
 let ctx: AudioContext | null = null;
 let source: AudioBufferSourceNode | null = null;
@@ -104,7 +142,7 @@ export function unmountMusicGenerator(): void {
   stop();
   void ctx?.close();
   ctx = null;
-  model?.disposeModel();
+  model?.dispose();
   model = null;
   piece = null;
   state.running = false;
@@ -170,28 +208,20 @@ async function generate(more: boolean): Promise<void> {
   void ctx.resume().catch(() => {});
   const started = performance.now();
   try {
-    if (!model) {
-      panel.working(t("musicGen.loading"));
-      const m = await import("./model");
-      if (stale()) return;
-      model = m;
-    }
-    await model.loadModel();
-    if (stale()) return;
-    panel.working(t("musicGen.composing"));
+    // The first run also downloads the model (about 18 MB) inside the worker.
+    panel.working(t(model ? "musicGen.composing" : "musicGen.loading"));
+    model ??= new MusicModel();
     // "More like this" keeps the last piece's ideas and takes the style and length now selected.
     const { style, bars } = state;
     const preset = STYLE_PRESETS[style];
     const temperature = preset.temperature * SURPRISE[state.surprise];
-    const { notes, seeds } = more && piece
-      ? await model.vary(piece.seeds, bars, temperature)
-      : await model.compose(bars, temperature);
+    const notes = await model.run(more && piece ? "vary" : "compose", bars, temperature);
     if (stale()) return;
     panel.working(t("musicGen.rendering"));
     const { renderPiece, loopBuffer } = await import("./synth");
     const audio = await renderPiece(notes, bars, preset);
     if (stale()) return;
-    piece = { notes, seeds, style, bars, audio, loop: loopBuffer(audio, pieceSeconds(bars, preset.bpm)) };
+    piece = { notes, style, bars, audio, loop: loopBuffer(audio, pieceSeconds(bars, preset.bpm)) };
     serial++;
     drawRoll(notes, bars);
     if (infoEl) infoEl.textContent = t("musicGen.info", { style: t(`musicGen.style_${style}`), bars, bpm: preset.bpm, s: formatSeconds(pieceSeconds(bars, preset.bpm)) });
@@ -259,7 +289,7 @@ function saveWav(): void {
 
 function saveMidi(): void {
   if (!piece) return;
-  downloadBlob(blobFromBytes(toMidi(piece.notes, STYLE_PRESETS[piece.style].bpm), "audio/midi"), `${fileBase()}.mid`);
+  downloadBlob(blobFromBytes(toMidi(piece.notes, STYLE_PRESETS[piece.style].bpm, STYLE_PRESETS[piece.style].swing), "audio/midi"), `${fileBase()}.mid`);
 }
 
 const PART_COLOR = { lead: "#d6336c", bass: "#7048e8", drums: "#868e96" } as const;

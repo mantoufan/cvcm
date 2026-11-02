@@ -83,18 +83,18 @@ export type Note = { part: Part; pitch: number; start: number; end: number; velo
 
 /** The fields of a Magenta NoteSequence note the page reads. */
 export type ModelNote = {
-  pitch?: number;
-  velocity?: number;
-  quantizedStartStep?: number;
-  quantizedEndStep?: number;
-  instrument?: number;
-  isDrum?: boolean;
+  pitch?: number | null;
+  velocity?: number | null;
+  quantizedStartStep?: number | null;
+  quantizedEndStep?: number | null;
+  instrument?: number | null;
+  isDrum?: boolean | null;
 };
 
 /** Trio samples put the melody on instrument 0, the bass on 1 and the drums (isDrum) on 2. */
 export function toNotes(notes: readonly ModelNote[], offsetSteps = 0): Note[] {
   return notes
-    .filter((n) => n.pitch !== undefined && n.quantizedStartStep !== undefined)
+    .filter((n) => n.pitch != null && n.quantizedStartStep != null)
     .map((n) => {
       const start = (n.quantizedStartStep ?? 0) + offsetSteps;
       const end = Math.max(start + 1, (n.quantizedEndStep ?? n.quantizedStartStep! + 1) + offsetSteps);
@@ -168,8 +168,16 @@ function track(events: { tick: number; data: number[] }[]): number[] {
   return [0x4d, 0x54, 0x72, 0x6b, (n >>> 24) & 255, (n >>> 16) & 255, (n >>> 8) & 255, n & 255, ...body];
 }
 
-/** A standard MIDI file of the piece, so it can be opened in any DAW and played with other instruments. */
-export function toMidi(notes: readonly Note[], bpm: number): Uint8Array {
+/** MIDI tick of a step, with the same swing as the audio (every second 16th late by swing × half a step). */
+function tickOf(step: number, swing: number): number {
+  return step * TICKS_PER_STEP + (step % 2 === 1 ? Math.round(swing * 0.5 * TICKS_PER_STEP) : 0);
+}
+
+/**
+ * A standard MIDI file of the piece, so it can be opened in any DAW and played with other instruments. A note is
+ * cut where the next note of the same pitch in its part starts, so one note-off never ends a later note.
+ */
+export function toMidi(notes: readonly Note[], bpm: number, swing = 0): Uint8Array {
   const tempo = Math.round(60_000_000 / bpm);
   const tracks = [track([{ tick: 0, data: [0xff, 0x51, 3, (tempo >> 16) & 255, (tempo >> 8) & 255, tempo & 255] }])];
   const parts: { part: Part; channel: number; program: number }[] = [
@@ -179,13 +187,15 @@ export function toMidi(notes: readonly Note[], bpm: number): Uint8Array {
   ];
   for (const { part, channel, program } of parts) {
     const events: { tick: number; data: number[] }[] = part === "drums" ? [] : [{ tick: 0, data: [0xc0 | channel, program] }];
-    for (const n of notes) {
-      if (n.part !== part) continue;
+    const own = notes.filter((n) => n.part === part).sort((a, b) => a.start - b.start);
+    own.forEach((n, i) => {
+      const next = own.slice(i + 1).find((m) => m.pitch === n.pitch && m.start >= n.start);
+      const end = next && next.start < n.end ? Math.max(n.start + 1, next.start) : n.end;
       const vel = Math.max(1, Math.min(127, Math.round(n.velocity)));
-      events.push({ tick: n.start * TICKS_PER_STEP, data: [0x90 | channel, n.pitch, vel] });
+      events.push({ tick: tickOf(n.start, swing), data: [0x90 | channel, n.pitch, vel] });
       // Note-offs sort before note-ons at the same tick (rank), so repeated notes do not cut each other.
-      events.push({ tick: n.end * TICKS_PER_STEP, data: [0x80 | channel, n.pitch, 0] });
-    }
+      events.push({ tick: tickOf(end, swing), data: [0x80 | channel, n.pitch, 0] });
+    });
     tracks.push(track(events));
   }
   const header = [0x4d, 0x54, 0x68, 0x64, 0, 0, 0, 6, 0, 1, 0, tracks.length, (TICKS_PER_QUARTER >> 8) & 255, TICKS_PER_QUARTER & 255];
