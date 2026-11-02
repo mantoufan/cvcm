@@ -22,9 +22,11 @@ describe("language links", () => {
     expect(select?.value).toBe("ko");
     expect([...(select?.options ?? [])].filter((o) => o.hasAttribute("selected")).map((o) => o.value)).toEqual(["ko"]);
     const links = [...document.querySelectorAll<HTMLAnchorElement>("nav.foot-langs a")];
-    expect(links.map((a) => a.getAttribute("href"))).toEqual(["/en/qr/", "/zh-cn/qr/", "/zh-tw/qr/", "/ja/qr/", "/ko/qr/", "/vi/qr/", "/id/qr/", "/es/qr/"]);
-    expect(links.map((a) => a.hreflang)).toEqual(["en", "zh-CN", "zh-TW", "ja", "ko", "vi", "id", "es"]);
-    expect(links.filter((a) => a.getAttribute("aria-current") === "page").map((a) => a.hreflang)).toEqual(["ko"]);
+    expect(links.map((a) => a.getAttribute("href"))).toEqual(["/en/qr/", "/zh-cn/qr/", "/zh-tw/qr/", "/ja/qr/", "/vi/qr/", "/id/qr/", "/es/qr/"]);
+    expect(links.map((a) => a.hreflang)).toEqual(["en", "zh-CN", "zh-TW", "ja", "vi", "id", "es"]);
+    // The page's own locale is plain text, so clicking it cannot remount the page.
+    expect(document.querySelector('nav.foot-langs [aria-current="page"]')?.tagName).toBe("SPAN");
+    expect(document.querySelector('nav.foot-langs [aria-current="page"]')?.getAttribute("lang")).toBe("ko");
   });
 
   it("carries the current query along on click", async () => {
@@ -35,6 +37,8 @@ describe("language links", () => {
     document.querySelector<HTMLAnchorElement>('nav.foot-langs a[hreflang="ja"]')?.click();
     await whenRendered();
     expect(window.location.pathname + window.location.search).toBe("/ja/qr/?text=hi");
+    // The link itself keeps the clean URL for crawlers and new tabs.
+    expect(document.querySelector('nav.foot-langs a[hreflang="en"]')?.getAttribute("href")).toBe("/en/qr/");
   });
 
   it("leaves the links off clip notes", async () => {

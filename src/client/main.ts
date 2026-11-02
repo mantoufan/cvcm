@@ -271,7 +271,6 @@ function onClick(e: MouseEvent): void {
   const target = e.target as HTMLElement | null;
   const a = target?.closest("a");
   if (!a || a.target === "_blank" || a.hasAttribute("download") || a.origin !== location.origin) return;
-  if (a.hasAttribute("data-keep-search")) a.search = location.search;
   // An in-page anchor (#tools) is the browser's job.
   if (a.hash && a.pathname === location.pathname && a.search === location.search) return;
   // With gtag running, open file tools and clip notes as a fresh page: their CSP has no GA hosts,
@@ -910,37 +909,49 @@ function langSwitch(current: Locale): HTMLElement {
 /** This page in every language as plain links: crawlers do not follow the picker's options. */
 function langLinks(current: Locale): HTMLElement {
   return h("nav", { class: "foot-links foot-langs", "aria-label": t("lang.links") },
-    ...LOCALES.map((code) => h("a", {
-      // Crawlers get the clean page URL; onClick() carries the page's current query along, like the picker.
-      href: localeHref(code).split("?")[0],
-      "data-keep-search": true,
-      hreflang: HREFLANG[code],
-      lang: HREFLANG[code],
-      "aria-current": code === current ? "page" : undefined,
-    }, t(`lang.${code}`))),
+    ...LOCALES.map((code) => code === current
+      ? h("span", { lang: HREFLANG[code], "aria-current": "page" }, t(`lang.${code}`))
+      : h("a", {
+        // Crawlers and new tabs get the clean page URL; a plain click switches like the picker, keeping the query.
+        href: localePath(code),
+        hreflang: HREFLANG[code],
+        lang: HREFLANG[code],
+        onClick: (e: MouseEvent) => {
+          if (e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+          e.preventDefault();
+          history.pushState(null, "", localeHref(code));
+          scrollOnSwap = true;
+          render();
+        },
+      }, t(`lang.${code}`))),
   );
 }
 
 function localeHref(next: Locale): string {
+  return withSearch(localePath(next), location.search);
+}
+
+/** The page on screen in another locale, without the query. */
+function localePath(next: Locale): string {
   return devicePage
-    ? withSearch(deviceHref(next, devicePage), location.search)
+    ? deviceHref(next, devicePage)
     : quizPage
-    ? withSearch(quizHref(next, quizPage === "hub" ? null : quizPage), location.search)
+    ? quizHref(next, quizPage === "hub" ? null : quizPage)
     : datasetPage
-    ? withSearch(datasetHref(next, datasetPage === "hub" ? null : datasetPage), location.search)
+    ? datasetHref(next, datasetPage === "hub" ? null : datasetPage)
     : kbPage
-    ? withSearch(kbHref(next, kbPage), location.search)
+    ? kbHref(next, kbPage)
     : refPage
-    ? withSearch(refHref(next, refPage === "hub" ? null : refPage), location.search)
+    ? refHref(next, refPage === "hub" ? null : refPage)
     : legalPage
-    ? withSearch(legalHref(next, legalPage), location.search)
+    ? legalHref(next, legalPage)
     : learnHub || tutorial
-      ? withSearch(learnHref(next, tutorial), location.search)
+      ? learnHref(next, tutorial)
       : gamesHub || gameId
-        ? withSearch(gamesHref(next, gameConsole, gameId), location.search)
+        ? gamesHref(next, gameConsole, gameId)
         : marketsHub || marketId
-          ? withSearch(marketsHref(next, marketId), location.search)
-          : withSearch(appHref(next, tool, clipId, convertJob ?? resizeJob), location.search);
+          ? marketsHref(next, marketId)
+          : appHref(next, tool, clipId, convertJob ?? resizeJob);
 }
 
 /** ID Watermark & Redact pages (watermark + mosaic) wear their own tab icon; every other page keeps cv.cm's. */
