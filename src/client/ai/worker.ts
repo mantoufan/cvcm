@@ -8,6 +8,8 @@ import {
   AutoProcessor,
   AutoTokenizer,
   AutomaticSpeechRecognitionPipeline,
+  BaseStreamer,
+  MultiModalityCausalLM,
   RawImage,
   Tensor,
   WhisperForConditionalGeneration,
@@ -18,7 +20,7 @@ import {
   type ProgressInfo,
 } from "@huggingface/transformers";
 import * as ort from "onnxruntime-web/webgpu";
-import { AI_MODELS, AI_ORT_PREFIX, DEPTH_INPUT_MAX, modelFileUrl, type AiBackend, type AiModelId } from "../../shared/ai-models";
+import { AI_MODELS, AI_ORT_PREFIX, DEPTH_INPUT_MAX, JANUS_DEVICES, modelFileUrl, type AiBackend, type AiModelId } from "../../shared/ai-models";
 import { detectBackend } from "./gpu";
 import { CACHE_NAME, MODEL_HOST } from "./host";
 import type { AiRequest, AiResponse, AsrChunk } from "./protocol";
@@ -163,6 +165,13 @@ async function load(model: AiModelId, id: number, force?: AiBackend): Promise<Lo
         revision: spec.revision,
         progress_callback: progressFor(key, variant.bytes),
       };
+      if (model === "janus") {
+        const [m, p] = await Promise.all([
+          MultiModalityCausalLM.from_pretrained(spec.repo, { ...opts, device: backend === "cpu" ? "wasm" : JANUS_DEVICES }),
+          AutoProcessor.from_pretrained(spec.repo, { revision: spec.revision }),
+        ]);
+        return { backend, model: m, processor: p };
+      }
       if (model === "whisper-base" || model === "whisper-small") {
         // Assembled by hand: pipeline() looks up its file list without the pinned revision (Transformers.js 4.3).
         const [m, tokenizer, processor] = await Promise.all([
@@ -332,6 +341,73 @@ async function upscale(id: number, bitmap: ImageBitmap, scale: 2 | 4, style: "ph
   post({ type: "image", id, data: out, width: W, height: h * scale }, [out.buffer]);
 }
 
+/** Counts generated tokens: Janus writes an image as a fixed number of them, so the count is the progress. */
+class TokenCounter extends BaseStreamer {
+  private seen = 0;
+  constructor(private readonly onToken: (n: number) => void) {
+    super();
+  }
+  put(): void {
+    this.seen += 1;
+    this.onToken(this.seen);
+  }
+  end(): void {}
+}
+
+type JanusProcessor = Processor & {
+  (conversation: { role: string; content: string }[], opts?: { chat_template: string }): Promise<Record<string, unknown>>;
+  num_image_tokens: number;
+};
+
+/**
+ * Janus draws well from English and poorly from other languages, but its language model is bilingual: the same
+ * weights translate the prompt first (greedy, a few dozen tokens), so no translation model is downloaded.
+ */
+async function toEnglish(model: MultiModalityCausalLM, janus: JanusProcessor, prompt: string): Promise<string> {
+  // One worked example keeps the 1B model literal (colors, objects, time of day) instead of paraphrasing.
+  const inputs = await janus([
+    { role: "<|User|>", content: "Translate into English, word for word, keeping every object, color and time of day:\n月光下屋顶上戴蓝色围巾的白色猫头鹰" },
+    { role: "<|Assistant|>", content: "A white owl in a blue scarf on a rooftop under the moonlight" },
+    { role: "<|User|>", content: `Translate into English, word for word, keeping every object, color and time of day:\n${prompt}` },
+    { role: "<|Assistant|>", content: "" },
+  ]);
+  const start = (inputs.input_ids as Tensor).dims[1];
+  const out = (await model.generate({ ...inputs, max_new_tokens: 96, do_sample: false } as never)) as Tensor;
+  const ids = (out.tolist() as bigint[][])[0].slice(start).map(Number);
+  const text = janus.tokenizer!.decode(ids, { skip_special_tokens: true }).trim().replace(/^["'“]+|["'”]+$/g, "");
+  return text || prompt;
+}
+
+/** Janus-Pro: prompt → 384 × 384 image, one image token at a time (the model applies its own guidance). */
+async function textToImage(id: number, prompt: string, translate: boolean, suffix: string, force?: AiBackend): Promise<void> {
+  const { model, processor, backend } = await load("janus", id, force);
+  post({ type: "stage", id, stage: "run", backend });
+  const janus = processor as JanusProcessor;
+  const mm = model as unknown as MultiModalityCausalLM;
+  let english = prompt;
+  if (translate) {
+    english = await toEnglish(mm, janus, prompt);
+    post({ type: "text", id, text: english });
+  }
+  const inputs = await janus([{ role: "<|User|>", content: english + suffix }], { chat_template: "text_to_image" });
+  const total = janus.num_image_tokens;
+  // The first put() is the prompt itself, not an image token.
+  const streamer = new TokenCounter((n) => {
+    const done = Math.max(0, n - 1);
+    if (done % 8 === 0 || done === total) post({ type: "tiles", id, done, total });
+  });
+  const [image] = (await mm.generate_images({
+    ...inputs,
+    min_new_tokens: total,
+    max_new_tokens: total,
+    do_sample: true,
+    streamer,
+  } as never)) as RawImage[];
+  const rgba = image.rgba();
+  const data = new Uint8ClampedArray(rgba.data);
+  post({ type: "image", id, data, width: rgba.width, height: rgba.height }, [data.buffer]);
+}
+
 /**
  * Whisper's language guess: the first token it writes after <|startoftranscript|> is the language tag.
  * Transformers.js has no detection of its own and would read every file as English.
@@ -420,6 +496,9 @@ self.onmessage = async (e: MessageEvent<AiRequest>) => {
         break;
       case "depth":
         await estimateDepth(req.id, req.bitmap, req.backend);
+        break;
+      case "text-to-image":
+        await textToImage(req.id, req.prompt, req.translate, req.suffix, req.backend);
         break;
       case "upscale":
         await upscale(req.id, req.bitmap, req.scale, req.style, req.backend);

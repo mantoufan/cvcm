@@ -499,7 +499,9 @@
     "titleTestTouchScreen": "Cómo probar una pantalla táctil: zonas muertas y multitáctil | cv.cm",
     "descTestTouchScreen": "Dibuje sobre una cuadrícula para encontrar zonas muertas, cuente cuántos dedos detecta la pantalla a la vez y compruebe la presión del lápiz. No se sube nada.",
     "titleV": "IA de foto a video — movimiento 3D desde una imagen, gratis — cv.cm",
-    "descV": "Convierte una foto en un video 3D en movimiento: la profundidad con IA se calcula en tu navegador, la cámara se acerca, gira o hace paneo y descargas un MP4. Gratis, sin registro, sin marca de agua y sin subir la foto."
+    "descV": "Convierte una foto en un video 3D en movimiento: la profundidad con IA se calcula en tu navegador, la cámara se acerca, gira o hace paneo y descargas un MP4. Gratis, sin registro, sin marca de agua y sin subir la foto.",
+    "titleImageGen": "Generador de imágenes con IA — de texto a imagen gratis en tu navegador — cv.cm",
+    "descImageGen": "Escribe una descripción y obtén una imagen: la IA Janus-Pro funciona con tu propia tarjeta gráfica en esta pestaña. Gratis, sin registro, sin marca de agua, sin colas y sin subir nada. Amplía hasta 1536 px."
   },
   "brand": "cv.cm",
   "nav": {
@@ -1061,6 +1063,10 @@
     "v": {
       "name": "IA de foto a video",
       "blurb": "Una imagen se convierte en un MP4 con movimiento de cámara 3D."
+    },
+    "ai-image-generator": {
+      "name": "Generador de imágenes con IA",
+      "blurb": "Escribe una descripción y obtén una imagen. Funciona en tu GPU."
     }
   },
   "watermark": {
@@ -4181,6 +4187,18 @@
       "a4": "MP4 a 30 fps, de 3, 5 u 8 segundos, en 720p o 1080p (nunca más píxeles que la foto), con la forma de la foto o recortado a 9:16, 1:1 o 16:9. Se reproduce en el móvil y se puede subir a TikTok, Reels y Shorts.",
       "q5": "¿Por qué los bordes se ven estirados?",
       "a5": "La cámara deja ver un poco de lo que estaba oculto detrás de los objetos cercanos, y la herramienta lo rellena con píxeles vecinos. Elige Suave, o una foto con un sujeto claro y un fondo sencillo."
+    },
+    "ai-image-generator": {
+      "q1": "¿Cómo funciona el generador de imágenes con IA?",
+      "a1": "Janus-Pro-1B, un modelo abierto de DeepSeek, lee tu texto y dibuja una imagen de 384 × 384 token a token. Después Real-ESRGAN puede ampliarla a 768 o 1536 px. Ambos funcionan en esta pestaña.",
+      "q2": "¿Es gratis? ¿Tiene marca de agua?",
+      "a2": "Gratis, sin cuenta, sin límite diario y sin marca de agua: el trabajo se hace en tu propio dispositivo, así que no hay coste de servidor que cobrar.",
+      "q3": "¿Puedo usar las imágenes con fines comerciales?",
+      "a3": "Sí. La licencia del modelo de DeepSeek permite el uso comercial. Prohíbe algunos usos, como contenido ilegal, contenido que dañe a menores, desinformación y acoso, que aquí tampoco se permiten.",
+      "q4": "¿Por qué la primera imagen es lenta?",
+      "a4": "El modelo se descarga una vez (unos 1,5 GB) y queda guardado en tu navegador. Después, cada imagen tarda de unos segundos a un minuto, según tu tarjeta gráfica.",
+      "q5": "¿Por qué dice que hace falta WebGPU?",
+      "a5": "Para dibujar hace falta la tarjeta gráfica mediante WebGPU (Chrome, Edge o Safari recientes). Solo con la CPU una imagen tardaría muchos minutos, así que la página no lo inicia."
     }
   },
   "qr": {
@@ -9819,5 +9837,42 @@
     "errorGl": "Este navegador no admite WebGL 2, necesario para la vista previa 3D.",
     "errorEncode": "Este navegador no puede codificar video. Prueba un Chrome, Edge o Safari reciente.",
     "errorGpuReset": "La tarjeta gráfica se reinició durante la exportación. Vuelve a intentarlo."
+  },
+  "imageGen": {
+    "back": "Todas las herramientas",
+    "title": "Generador de imágenes con IA",
+    "privacyNote": "La IA funciona con tu tarjeta gráfica en esta pestaña. Tu texto y tus imágenes nunca se suben.",
+    "promptLabel": "Describe la imagen",
+    "promptPlaceholder": "Un gato con jersey rosa leyendo un libro junto a la ventana, luz de mañana",
+    "examplesLabel": "Prueba una:",
+    "example1": "Una cabaña acogedora en un bosque nevado de noche, ventanas cálidas",
+    "example2": "Un corgi astronauta adorable flotando en el espacio, estrellas",
+    "example3": "Un bol de ramen humeante, vista cenital, foto de comida",
+    "example4": "Una chica con paraguas caminando bajo la lluvia en Tokio, neón",
+    "example5": "Una isla pequeña con un faro al atardecer",
+    "example6": "Acuarela de cerezos rosas junto a un río",
+    "generate": "Generar",
+    "hint": "Tus imágenes aparecerán aquí.",
+    "resultsTitle": "Resultados",
+    "show": "Ver esta imagen",
+    "download": "Descargar PNG",
+    "style": "Estilo",
+    "style_none": "Tal cual",
+    "style_photo": "Foto",
+    "style_anime": "Anime",
+    "style_watercolor": "Acuarela",
+    "style_3d": "3D",
+    "count": "Imágenes",
+    "size": "Tamaño",
+    "size_384": "384 px",
+    "size_768": "768 px (ampliado con IA)",
+    "size_1536": "1536 px (ampliado con IA)",
+    "note": "Ctrl/⌘ + Intro también genera. Se permite el uso comercial; los usos que prohíbe la licencia del modelo de DeepSeek, no.",
+    "drawing": "Dibujando… {pct} %",
+    "upscaling": "Mejorando nitidez… {pct} %",
+    "translated": "Dibujado a partir del inglés: «{text}» ¿No es correcto? Escribe la descripción en inglés.",
+    "empty": "Primero describe la imagen.",
+    "needsGpu": "Este navegador no tiene WebGPU, así que dibujar con la CPU tardaría muchos minutos. Usa un Chrome, Edge o Safari reciente.",
+    "errorRun": "No se pudo dibujar. Recarga la página y vuelve a intentarlo."
   }
 }

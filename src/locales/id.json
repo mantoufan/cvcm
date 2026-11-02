@@ -499,7 +499,9 @@
     "titleTestTouchScreen": "Cara tes layar sentuh: dead zone dan multi-touch | cv.cm",
     "descTestTouchScreen": "Gambar di grid untuk menemukan dead zone layar sentuh, hitung berapa jari terbaca sekaligus, dan cek tekanan pena. Tidak ada unggahan.",
     "titleV": "AI foto jadi video — gerakan 3D dari satu gambar, gratis — cv.cm",
-    "descV": "Ubah satu foto menjadi video 3D bergerak: kedalaman AI dihitung di browser, kamera maju, mengitari atau menyapu, lalu unduh MP4. Gratis, tanpa daftar, tanpa watermark, foto tidak diunggah."
+    "descV": "Ubah satu foto menjadi video 3D bergerak: kedalaman AI dihitung di browser, kamera maju, mengitari atau menyapu, lalu unduh MP4. Gratis, tanpa daftar, tanpa watermark, foto tidak diunggah.",
+    "titleImageGen": "AI pembuat gambar — teks jadi gambar gratis di browser — cv.cm",
+    "descImageGen": "Ketik deskripsi, dapatkan gambar: AI Janus-Pro berjalan di kartu grafis Anda sendiri di tab ini. Gratis, tanpa daftar, tanpa watermark, tanpa antre, tidak ada yang diunggah. Perbesar hingga 1536 px."
   },
   "brand": "cv.cm",
   "nav": {
@@ -1061,6 +1063,10 @@
     "v": {
       "name": "AI foto jadi video",
       "blurb": "Satu gambar jadi MP4 dengan gerakan kamera 3D."
+    },
+    "ai-image-generator": {
+      "name": "AI pembuat gambar",
+      "blurb": "Ketik deskripsi, dapatkan gambar. Berjalan di GPU Anda."
     }
   },
   "watermark": {
@@ -4181,6 +4187,18 @@
       "a4": "MP4 30 fps, durasi 3, 5 atau 8 detik, 720p atau 1080p (tidak melebihi piksel foto asli), sesuai bentuk foto atau dipotong 9:16, 1:1, 16:9. Bisa diputar di ponsel dan diunggah ke TikTok, Reels, Shorts.",
       "q5": "Mengapa tepi terlihat melar?",
       "a5": "Saat kamera bergerak, sedikit area yang tadinya tertutup benda dekat terlihat, dan alat mengisinya dengan piksel sekitar. Pilih Halus, atau gunakan foto dengan subjek jelas dan latar polos."
+    },
+    "ai-image-generator": {
+      "q1": "Bagaimana AI pembuat gambar bekerja?",
+      "a1": "Janus-Pro-1B, model terbuka dari DeepSeek, membaca teks Anda dan menggambar gambar 384 × 384 token demi token. Lalu Real-ESRGAN bisa memperbesarnya ke 768 atau 1536 px. Keduanya berjalan di tab ini.",
+      "q2": "Apakah gratis? Ada watermark?",
+      "a2": "Gratis, tanpa akun, tanpa batas harian, dan tanpa watermark: prosesnya berjalan di perangkat Anda sendiri, jadi tidak ada biaya server.",
+      "q3": "Bolehkah gambar dipakai untuk komersial?",
+      "a3": "Boleh. Lisensi Model DeepSeek mengizinkan penggunaan komersial. Lisensi itu melarang beberapa penggunaan, seperti konten ilegal, konten yang merugikan anak, disinformasi, dan pelecehan, jadi di sini juga tidak diizinkan.",
+      "q4": "Kenapa gambar pertama lambat?",
+      "a4": "Model diunduh sekali (sekitar 1,5 GB) dan disimpan di browser. Setelah itu satu gambar butuh beberapa detik hingga sekitar satu menit, tergantung kartu grafis.",
+      "q5": "Kenapa butuh WebGPU?",
+      "a5": "Menggambar butuh kartu grafis lewat WebGPU (Chrome, Edge, atau Safari terbaru). Dengan CPU saja satu gambar butuh banyak menit, jadi halaman tidak memulainya."
     }
   },
   "qr": {
@@ -9819,5 +9837,42 @@
     "errorGl": "Browser ini tidak mendukung WebGL 2 yang dibutuhkan pratinjau 3D.",
     "errorEncode": "Browser ini tidak bisa mengenkode video. Coba Chrome, Edge atau Safari terbaru.",
     "errorGpuReset": "Kartu grafis direset saat ekspor. Coba lagi."
+  },
+  "imageGen": {
+    "back": "Semua alat",
+    "title": "AI pembuat gambar",
+    "privacyNote": "AI berjalan di kartu grafis Anda di tab ini. Teks dan gambar Anda tidak pernah diunggah.",
+    "promptLabel": "Deskripsikan gambarnya",
+    "promptPlaceholder": "Kucing bersweter merah muda membaca buku di dekat jendela, cahaya pagi",
+    "examplesLabel": "Coba salah satu:",
+    "example1": "Pondok hangat di hutan bersalju pada malam hari, jendela menyala",
+    "example2": "Astronot corgi lucu melayang di luar angkasa, bintang",
+    "example3": "Semangkuk ramen beruap, tampak atas, foto makanan",
+    "example4": "Gadis berpayung berjalan di hujan Tokyo, lampu neon",
+    "example5": "Pulau kecil dengan mercusuar saat matahari terbenam",
+    "example6": "Lukisan cat air bunga sakura merah muda di tepi sungai",
+    "generate": "Buat",
+    "hint": "Gambar Anda muncul di sini.",
+    "resultsTitle": "Hasil",
+    "show": "Lihat gambar ini",
+    "download": "Unduh PNG",
+    "style": "Gaya",
+    "style_none": "Sesuai teks",
+    "style_photo": "Foto",
+    "style_anime": "Anime",
+    "style_watercolor": "Cat air",
+    "style_3d": "3D",
+    "count": "Jumlah",
+    "size": "Ukuran",
+    "size_384": "384 px",
+    "size_768": "768 px (diperbesar AI)",
+    "size_1536": "1536 px (diperbesar AI)",
+    "note": "Ctrl/⌘ + Enter juga membuat gambar. Boleh dipakai komersial; penggunaan yang dilarang Lisensi Model DeepSeek tidak boleh.",
+    "drawing": "Menggambar… {pct}%",
+    "upscaling": "Mempertajam… {pct}%",
+    "translated": "Digambar dari bahasa Inggris: “{text}” Kurang tepat? Ketik deskripsinya dalam bahasa Inggris.",
+    "empty": "Deskripsikan gambarnya dulu.",
+    "needsGpu": "Browser ini tidak punya WebGPU, jadi menggambar dengan CPU butuh banyak menit. Gunakan Chrome, Edge, atau Safari terbaru.",
+    "errorRun": "Gagal menggambar. Muat ulang halaman lalu coba lagi."
   }
 }

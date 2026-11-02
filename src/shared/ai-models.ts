@@ -87,6 +87,67 @@ export const AI_MODELS = {
       cpu: { dtype: "fp32", files: ["onnx/model.onnx"], bytes: 2_492_937 },
     },
   },
+  // Janus-Pro-1B (DeepSeek Model License: royalty-free, commercial use allowed, with the use restrictions of its
+  // Attachment A passed on to users). Text to a 384 × 384 image, 576 image tokens; the same language model also
+  // translates non-English prompts first (lm_head). Choices that are not obvious:
+  // - prepare_inputs_embeds also holds the image-understanding encoder, whose Conv fails on WebGPU even for
+  //   text-only input: that session runs on the CPU (int8, once per prompt; JANUS_DEVICES).
+  // - The q4 language model keeps fp32 activations, which both q4 heads expect. The q4f16 one emits fp16 hidden
+  //   states that only the fp16 heads accept, and the fp16 lm_head alone is 419 MB.
+  janus: {
+    repo: "onnx-community/Janus-Pro-1B-ONNX",
+    revision: "04efdf2e36cb07a034b0d94f7322356b292f0418",
+    license: "DeepSeek Model License",
+    configs: [
+      "config.json",
+      "generation_config.json",
+      "preprocessor_config.json",
+      "processor_config.json",
+      "special_tokens_map.json",
+      "tokenizer.json",
+      "tokenizer_config.json",
+    ],
+    variants: {
+      gpu16: {
+        dtype: { prepare_inputs_embeds: "q8", language_model: "q4", lm_head: "q4", gen_head: "q4", gen_img_embeds: "q4", image_decode: "fp16" },
+        files: [
+          "onnx/prepare_inputs_embeds_quantized.onnx",
+          "onnx/language_model_q4.onnx",
+          "onnx/lm_head_q4.onnx",
+          "onnx/gen_head_q4.onnx",
+          "onnx/gen_img_embeds_q4.onnx",
+          "onnx/image_decode_fp16.onnx",
+        ],
+        bytes: 523_040_991 + 779_633_963 + 131_072_477 + 23_669_258 + 3_205_586 + 85_297_169,
+      },
+      gpu: {
+        dtype: { prepare_inputs_embeds: "q8", language_model: "q4", lm_head: "q4", gen_head: "q4", gen_img_embeds: "q4", image_decode: "fp32" },
+        files: [
+          "onnx/prepare_inputs_embeds_quantized.onnx",
+          "onnx/language_model_q4.onnx",
+          "onnx/lm_head_q4.onnx",
+          "onnx/gen_head_q4.onnx",
+          "onnx/gen_img_embeds_q4.onnx",
+          "onnx/image_decode.onnx",
+        ],
+        bytes: 523_040_991 + 779_633_963 + 131_072_477 + 23_669_258 + 3_205_586 + 170_460_651,
+      },
+      // 576 sequential steps of a 1B model take many minutes on a CPU: the page asks for WebGPU instead.
+      // Listed so the catalog stays complete; it is the same set as the plain WebGPU variant.
+      cpu: {
+        dtype: { prepare_inputs_embeds: "q8", language_model: "q4", lm_head: "q4", gen_head: "q4", gen_img_embeds: "q4", image_decode: "fp32" },
+        files: [
+          "onnx/prepare_inputs_embeds_quantized.onnx",
+          "onnx/language_model_q4.onnx",
+          "onnx/lm_head_q4.onnx",
+          "onnx/gen_head_q4.onnx",
+          "onnx/gen_img_embeds_q4.onnx",
+          "onnx/image_decode.onnx",
+        ],
+        bytes: 523_040_991 + 779_633_963 + 131_072_477 + 23_669_258 + 3_205_586 + 170_460_651,
+      },
+    },
+  },
   "whisper-base": {
     repo: "onnx-community/whisper-base",
     revision: "1846881b6b3a3024392c1eea3ad983695bc23925",
@@ -136,6 +197,16 @@ export const AI_MODELS = {
 } as const satisfies Record<string, AiModel>;
 
 export type AiModelId = keyof typeof AI_MODELS;
+
+/** Where each Janus session runs on a GPU backend (see the janus entry); on the CPU backend all run on wasm. */
+export const JANUS_DEVICES = {
+  prepare_inputs_embeds: "wasm",
+  language_model: "webgpu",
+  lm_head: "webgpu",
+  gen_head: "webgpu",
+  gen_img_embeds: "webgpu",
+  image_decode: "webgpu",
+} as const;
 
 /** Same-origin path the Worker proxies to s3.cv.cm. */
 export const AI_MODEL_PREFIX = "/ai/models/";

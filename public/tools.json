@@ -92,6 +92,39 @@
       }
     },
     {
+      "id": "ai-image-generator",
+      "name": "AI image generator",
+      "description": "Type a description, get a picture. Runs on your GPU.",
+      "category": "ai",
+      "url": "https://cv.cm/en/ai-image-generator/",
+      "data_handling": "Downloads an AI model once and runs it on the device. Files are not uploaded.",
+      "ai": {
+        "models": [
+          {
+            "option": null,
+            "model": "onnx-community/Janus-Pro-1B-ONNX",
+            "license": "DeepSeek Model License",
+            "download_bytes": {
+              "webgpu_fp16": 1545919444,
+              "webgpu": 1631082926,
+              "cpu": 1631082926
+            }
+          },
+          {
+            "option": "Size \"768 px (AI upscale)\" / \"1536 px (AI upscale)\"",
+            "model": "cvcm/realesrgan-general-x4v3",
+            "license": "BSD-3-Clause",
+            "download_bytes": {
+              "webgpu_fp16": 2445084,
+              "webgpu": 4866457,
+              "cpu": 4866457
+            }
+          }
+        ],
+        "options": "Text prompt up to 500 characters. Style: As written / Photo / Anime / Watercolor / 3D. Pictures: 1 / 2 / 4. Size: 384 px / 768 px (AI upscale) / 1536 px (AI upscale). Downloads PNG. Needs WebGPU (no CPU fallback: 576 sequential model steps per image). Ctrl/⌘ + Enter also generates. Commercial use is allowed; uses the DeepSeek Model License forbids are not."
+      }
+    },
+    {
       "id": "remove-background",
       "name": "Remove background",
       "description": "AI cut-out for people, products and pets. Transparent PNG.",
