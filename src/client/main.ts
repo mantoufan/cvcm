@@ -37,6 +37,7 @@ import { DATASETS, type DatasetId } from "../shared/datasets";
 import { KNOWLEDGE_ARTICLES, isKbId, kbArticleOf, kbGroupsOf, type KbPage } from "../shared/kb";
 import { isRefId, type RefId, type RefPage } from "../shared/ref";
 import { BRANDED_TOOLS, hreflangAlternates, pageCanonical, pageDescription, pageTitle } from "../shared/seo";
+import { HREFLANG } from "../shared/sitemap";
 import { toolLessonsSection } from "./tool-lessons";
 import { TOOL_LOADERS } from "./tools";
 import { analyticsActive, gateAnalytics, trackPageView } from "./analytics";
@@ -736,6 +737,8 @@ function shell(loc: Locale): { page: HTMLElement; ready: Promise<void> } {
         h("a", { href: legalHref(loc, "privacy"), "data-nav": "privacy" }, t("footer.privacyLink")),
         h("a", { href: legalHref(loc, "terms"), "data-nav": "terms" }, t("footer.termsLink")),
       ),
+      // Clip notes are private and count views: no extra links for crawlers to follow.
+      clipId ? null : langLinks(loc),
     ),
   );
   return { page, ready };
@@ -890,47 +893,65 @@ function syncHreflang(seo: Parameters<typeof hreflangAlternates>[0]): void {
 }
 
 function langSwitch(current: Locale): HTMLElement {
-  const sel = h("select", {
+  // Options go in as children so h() syncs the selected one; appended later, the prerendered HTML marked another locale.
+  return h("select", {
     class: "lang",
     "aria-label": t("lang.label"),
-    onChange: (e: Event) => {
-      const next = (e.target as HTMLSelectElement).value as Locale;
-      // render() sets the locale once its pack is loaded, like any navigation.
-      history.pushState(null, "", localeHref(next));
-      render();
-    },
-  });
-  for (const code of LOCALES) {
-    sel.append(
-      h("option", {
-        value: code,
-        selected: code === current,
-      }, t(`lang.${code}`)),
-    );
-  }
-  return sel;
+    onChange: (e: Event) => switchLocale((e.target as HTMLSelectElement).value as Locale),
+  }, ...LOCALES.map((code) => h("option", { value: code, selected: code === current }, t(`lang.${code}`))));
+}
+
+/** This page in every language as plain links: crawlers do not follow the picker's options. */
+function langLinks(current: Locale): HTMLElement {
+  return h("nav", { class: "foot-links foot-langs", "aria-label": t("lang.links") },
+    ...LOCALES.map((code) => code === current
+      ? h("span", { lang: HREFLANG[code], "aria-current": "page" }, t(`lang.${code}`))
+      : h("a", {
+        // Crawlers and new tabs get the clean page URL; a plain click switches like the picker, keeping the query.
+        href: localePath(code),
+        hreflang: HREFLANG[code],
+        lang: HREFLANG[code],
+        onClick: (e: MouseEvent) => {
+          if (e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+          e.preventDefault();
+          scrollOnSwap = true;
+          switchLocale(code);
+        },
+      }, t(`lang.${code}`))),
+  );
+}
+
+/** Show the page on screen in another locale, keeping its query. render() sets the locale once its pack is loaded, like any navigation. */
+function switchLocale(next: Locale): void {
+  history.pushState(null, "", localeHref(next));
+  render();
 }
 
 function localeHref(next: Locale): string {
+  return withSearch(localePath(next), location.search);
+}
+
+/** The page on screen in another locale, without the query. */
+function localePath(next: Locale): string {
   return devicePage
-    ? withSearch(deviceHref(next, devicePage), location.search)
+    ? deviceHref(next, devicePage)
     : quizPage
-    ? withSearch(quizHref(next, quizPage === "hub" ? null : quizPage), location.search)
+    ? quizHref(next, quizPage === "hub" ? null : quizPage)
     : datasetPage
-    ? withSearch(datasetHref(next, datasetPage === "hub" ? null : datasetPage), location.search)
+    ? datasetHref(next, datasetPage === "hub" ? null : datasetPage)
     : kbPage
-    ? withSearch(kbHref(next, kbPage), location.search)
+    ? kbHref(next, kbPage)
     : refPage
-    ? withSearch(refHref(next, refPage === "hub" ? null : refPage), location.search)
+    ? refHref(next, refPage === "hub" ? null : refPage)
     : legalPage
-    ? withSearch(legalHref(next, legalPage), location.search)
+    ? legalHref(next, legalPage)
     : learnHub || tutorial
-      ? withSearch(learnHref(next, tutorial), location.search)
+      ? learnHref(next, tutorial)
       : gamesHub || gameId
-        ? withSearch(gamesHref(next, gameConsole, gameId), location.search)
+        ? gamesHref(next, gameConsole, gameId)
         : marketsHub || marketId
-          ? withSearch(marketsHref(next, marketId), location.search)
-          : withSearch(appHref(next, tool, clipId, convertJob ?? resizeJob), location.search);
+          ? marketsHref(next, marketId)
+          : appHref(next, tool, clipId, convertJob ?? resizeJob);
 }
 
 /** ID Watermark & Redact pages (watermark + mosaic) wear their own tab icon; every other page keeps cv.cm's. */
