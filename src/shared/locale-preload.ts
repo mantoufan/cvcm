@@ -1,4 +1,5 @@
 import type { Locale } from "./locale";
+import { isKbHub } from "./kb";
 
 // Locale -> hashed string-pack chunk files, injected by scripts/build-worker.mjs (absent in tests).
 declare const __LOCALE_PACKS__: Record<string, string[]> | undefined;
@@ -16,7 +17,7 @@ export function preloadLocalePack(html: string, locale: Locale, game = false, pa
     ...(quiz ? packs[`quiz-${locale}`] ?? [] : []),
     ...(dataset ? packs[`datasets-${locale}`] ?? [] : []),
     ...(kb ? packs[`kb-${locale}`] ?? [] : []),
-    ...(kb && kb !== "hub" && kb !== "code" && kb !== "ai" ? [...(packs[`kb-${locale}/loaders`] ?? []), ...(packs[`kb-${locale}/${kb}`] ?? [])] : []),
+    ...(kb && !isKbHub(kb) ? [...(packs[`kb-${locale}/loaders`] ?? []), ...(packs[`kb-${locale}/${kb}`] ?? [])] : []),
     ...(ref ? packs[`ref-${locale}`] ?? [] : []),
     ...(ref && ref !== "hub" ? [...(packs[`ref-${locale}/loaders`] ?? []), ...(packs[`ref-${locale}/${ref}`] ?? [])] : []),
   ])];

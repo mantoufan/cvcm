@@ -229,6 +229,11 @@ describe("knowledge: catalog and copy", () => {
       expect(en.length, id).toBeGreaterThan(0);
       for (const locale of LOCALES) expect(codeBlocks(kbCopy(locale, id)), `${locale} ${id}`).toEqual(en);
     }
+    // AI articles' example prompts stay English in every locale.
+    for (const id of AI_ARTICLES) {
+      const en = codeBlocks(kbCopy("en", id));
+      for (const locale of LOCALES) expect(codeBlocks(kbCopy(locale, id)), `${locale} ${id}`).toEqual(en);
+    }
   });
 
   it("has a name and blurb for every article in every core pack", () => {

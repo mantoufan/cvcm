@@ -337,14 +337,27 @@ export function kbShelfOf(id: KbId): KbShelf {
   return PLACE.get(id)!.shelf;
 }
 
+const HUB_SHELF = new Map<KbPage, KbShelf>((Object.keys(KB_SHELVES) as KbShelf[]).map((shelf) => [KB_SHELVES[shelf].hub, shelf]));
+
+/** Whether a page is a shelf hub ("hub", "code", "ai"), not an article. */
+export function isKbHub(page: KbPage | string): page is KbHub {
+  return HUB_SHELF.has(page as KbPage);
+}
+
+/** The hub page whose links carry this data-nav value (main.ts prefetch), or null. */
+export function kbHubOfNav(nav: string): KbHub | null {
+  const shelf = (Object.keys(KB_SHELVES) as KbShelf[]).find((s) => KB_SHELVES[s].nav === nav);
+  return shelf ? KB_SHELVES[shelf].hub : null;
+}
+
 /** The article a page shows, or null on a hub. */
 export function kbArticleOf(page: KbPage): KbId | null {
-  return page === null || page === "hub" || page === "code" || page === "ai" ? null : page;
+  return page === null || isKbHub(page) ? null : page;
 }
 
 /** The shelf a page belongs to (null and "hub" are the knowledge hub). */
 export function kbShelfOfPage(page: KbPage): KbShelf {
-  if (page === "code" || page === "ai") return page;
+  if (page !== null && isKbHub(page)) return HUB_SHELF.get(page)!;
   const id = kbArticleOf(page);
   return id ? kbShelfOf(id) : "knowledge";
 }
