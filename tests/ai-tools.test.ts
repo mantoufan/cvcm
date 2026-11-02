@@ -219,6 +219,9 @@ describe("AI image generator", () => {
     expect(promptLanguage("kucing lucu di jendela, anime style", "id")).toBe("id");
     expect(promptLanguage("girl’s umbrella — café at night", "en")).toBe("en");
     expect(promptLanguage("crème brûlée on a plate", "en")).toBe("en");
+    expect(promptLanguage("cute corgi astronaut floating in space", "es")).toBe("en");
+    expect(promptLanguage("cat wearing a hat", "id")).toBe("en");
+    expect(promptLanguage("co gai an kem", "vi")).toBe("vi");
   });
 
   it("lists every Janus file the page can load, for each backend", () => {

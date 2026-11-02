@@ -158,8 +158,10 @@ function controls(): HTMLElement {
   );
 }
 
-/** Start loading the model while the visitor types (only if it is already cached: it is a large download). */
-/** Once per mount, and only with a GPU: the page never runs Janus on the CPU, so it should not load it there. */
+/**
+ * Start loading the model while the visitor types: only if it is already cached (it is a large download), once per
+ * mount, and only with a GPU (the page never runs Janus on the CPU, so it should not load it there).
+ */
 async function warm(): Promise<void> {
   if (warmed || !client || !status) return;
   warmed = true;
@@ -170,7 +172,11 @@ async function warm(): Promise<void> {
 async function generate(): Promise<void> {
   if (!client || !status || !promptEl || state.running) return;
   // Chat-template control tags typed or pasted into a prompt would break the model's input: drop them.
-  const text = promptEl.value.replace(/<\|?[\w\s|｜▁-]{1,40}\|?>/g, " ").replace(/\s+/g, " ").trim().slice(0, PROMPT_MAX);
+  const text = promptEl.value
+    .replace(/<[|｜][^<>|｜]{1,40}[|｜]>|<(?:image_placeholder|begin_of_image|end_of_image)>/gi, " ")
+    .replace(/\s+/g, " ")
+    .trim()
+    .slice(0, PROMPT_MAX);
   if (!text) {
     status.error(t("imageGen.empty"));
     promptEl.focus();
@@ -208,6 +214,8 @@ async function generate(): Promise<void> {
   let device = "";
   try {
     for (let i = 0; i < count; i++) {
+      // Left the page: stop here, or the next job would start a new worker on the disposed client.
+      if (stale()) return;
       const label = count > 1 ? ` (${i + 1}/${count})` : "";
       const { result, backend } = await runJob<Extract<AiResponse, { type: "image" }>>(
         runner,

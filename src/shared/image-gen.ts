@@ -25,13 +25,13 @@ export const PROMPT_MAX = 500;
  * Function words of English that Spanish, Indonesian and plain-ASCII Vietnamese do not use ("a", "an", "en" do
  * occur there). Loanwords like "style" or "light" turn up in any language's prompt, so they are not listed.
  */
-const ENGLISH_WORDS = /\b(the|in|on|at|with|and|of|from|under|over|by|is|are|for|wearing|holding)\b/gi;
+const ENGLISH_WORDS = /\b(the|in|on|at|with|and|of|from|under|over|by|is|are|for|wearing|holding)\b/i;
 
 function looksEnglish(text: string): boolean {
-  return new Set((text.match(ENGLISH_WORDS) ?? []).map((w) => w.toLowerCase())).size >= 2;
+  return ENGLISH_WORDS.test(text);
 }
 
-/** Languages a prompt can be drawn from: English as typed, Chinese via Janus, the rest via OPUS-MT. */
+/** Languages a prompt can be drawn from: English as typed, the rest translated by that language's OPUS-MT model. */
 export const PROMPT_LANGS = ["en", "zh", "ja", "ko", "vi", "id", "es"] as const;
 export type PromptLang = (typeof PROMPT_LANGS)[number];
 

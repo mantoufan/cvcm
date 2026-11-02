@@ -388,8 +388,14 @@ async function textToImage(id: number, prompt: string, from: PromptLang, suffix:
   // Translated before Janus loads: the progress line shows the small download, then the large one.
   let english = prompt;
   if (from !== "en") {
-    english = (await translatePrompt(id, prompt, from)) || prompt;
-    if (english !== prompt) post({ type: "text", id, text: english });
+    try {
+      english = (await translatePrompt(id, prompt, from)) || prompt;
+      // Sent even when unchanged (a name, a brand): the page then reuses it instead of translating again.
+      post({ type: "text", id, text: english });
+    } catch (err) {
+      // No translator (offline, missing file): draw from the words as typed rather than fail the picture.
+      console.warn("translation failed, drawing the prompt as typed:", err);
+    }
   }
   const { model, processor, backend } = await load("janus", id, force);
   post({ type: "stage", id, stage: "run", backend });
