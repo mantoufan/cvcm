@@ -1,0 +1,71 @@
+{
+  "meta": {
+    "titleMusicGen": "AI music generator — free royalty-free background music in your browser — cv.cm",
+    "descMusicGen": "Make an original instrumental loop with AI: melody, bass and drums in lo-fi, pop, chiptune, ambient or dance style. Free, no sign-up, commercial use allowed. Download WAV and MIDI."
+  },
+  "tools": {
+    "ai-music-generator": {
+      "name": "AI music generator",
+      "blurb": "Original instrumental loops: melody, bass and drums. WAV and MIDI."
+    }
+  },
+  "faq": {
+    "ai-music-generator": {
+      "q1": "How does the AI music generator work?",
+      "a1": "MusicVAE, an open model from Google's Magenta project, writes 4 bars of melody, bass and drums at a time; longer pieces morph from one idea to another. The page then plays the notes with its own synthesizers.",
+      "q2": "Can I use the music in videos or commercially?",
+      "a2": "Yes. Every piece is newly generated, the model is Apache-2.0, and nothing is sampled from existing songs. Use it in videos, games, podcasts or products, no credit needed.",
+      "q3": "Does it make songs with vocals?",
+      "a3": "No. It makes instrumental music: a lead melody, a bass line and drums. Download the MIDI file to play the same notes with other instruments in GarageBand, FL Studio or any DAW.",
+      "q4": "Is anything uploaded?",
+      "a4": "No. The model downloads once (about 18 MB) and runs in this tab; the audio is rendered in the browser too.",
+      "q5": "How do I get music I like?",
+      "a5": "Generate a few times and keep the one you like, then press More like this for variations of it. Calm keeps the music simple and repetitive; Wild tries bolder ideas."
+    }
+  },
+  "ui": {
+    "musicGen": {
+      "back": "All tools",
+      "title": "AI music generator",
+      "privacyNote": "The AI composes in this tab. Nothing is uploaded, and the music is yours to use.",
+      "styleTitle": "Style",
+      "style_lofi": "Lo-fi",
+      "style_pop": "Pop",
+      "style_chiptune": "Chiptune",
+      "style_ambient": "Ambient",
+      "style_dance": "Dance",
+      "generate": "Generate music",
+      "more": "More like this",
+      "moreHint": "More like this keeps the feel of the last piece and changes the details.",
+      "hint": "Melody, bass and drums appear here.",
+      "play": "Play",
+      "stop": "Stop",
+      "downloadWav": "Download WAV",
+      "downloadMidi": "Download MIDI",
+      "length": "Length",
+      "bars": "{n} bars",
+      "surprise": "Surprise",
+      "surprise_calm": "Calm",
+      "surprise_normal": "Normal",
+      "surprise_wild": "Wild",
+      "note": "Instrumental only, no vocals. Commercial use is allowed.",
+      "loading": "Loading the AI model…",
+      "composing": "Composing…",
+      "rendering": "Mixing the audio…",
+      "info": "{style} · {bars} bars · {bpm} BPM · {s} s loop",
+      "done": "Done in {s} s.",
+      "errorRun": "Composing failed. Reload the page and try again."
+    }
+  },
+  "guides": {
+    "ai-music-generator": {
+      "lead": "Make an original instrumental loop in this tab.",
+      "s1t": "Pick a style",
+      "s1b": "Choose lo-fi, pop, chiptune, ambient or dance, a length of 4, 8 or 16 bars, and how surprising it should be.",
+      "s2t": "Generate and listen",
+      "s2b": "The model downloads once, then composes melody, bass and drums in a second and plays them in a loop. Press More like this for variations.",
+      "s3t": "Download",
+      "s3b": "Save a WAV for videos and podcasts, or a MIDI file to change the instruments in a music app."
+    }
+  }
+}

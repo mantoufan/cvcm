@@ -195,6 +195,29 @@
       }
     },
     {
+      "id": "ai-music-generator",
+      "name": "AI music generator",
+      "description": "Original instrumental loops: melody, bass and drums. WAV and MIDI.",
+      "category": "ai",
+      "url": "https://cv.cm/en/ai-music-generator/",
+      "data_handling": "Downloads an AI model once and runs it on the device. Files are not uploaded.",
+      "ai": {
+        "models": [
+          {
+            "option": null,
+            "model": "magenta/music_vae-trio_4bar",
+            "license": "Apache-2.0",
+            "download_bytes": {
+              "webgpu_fp16": 17636532,
+              "webgpu": 17636532,
+              "cpu": 17636532
+            }
+          }
+        ],
+        "options": "Instrumental only (melody, bass and drums; no vocals or lyrics). Style: Lo-fi (80 BPM) / Pop (108 BPM) / Chiptune (140 BPM) / Ambient (72 BPM) / Dance (124 BPM). Length: 4 bars / 8 bars / 16 bars. Surprise: Calm / Normal / Wild. \"More like this\" makes a variation of the last piece. Plays in the page with Web Audio synths; downloads WAV (44.1 kHz stereo) and MIDI. Runs on TensorFlow.js (WebGL, or the CPU)."
+      }
+    },
+    {
       "id": "remove-background",
       "name": "Remove background",
       "description": "AI cut-out for people, products and pets. Transparent PNG.",

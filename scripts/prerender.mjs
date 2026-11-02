@@ -28,6 +28,14 @@ await esbuild.build({
     __PRERENDER_ROOT__: JSON.stringify(root),
   },
   plugins: [{
+    // The music generator's model code (Magenta + TensorFlow.js) only runs after a click, never in prerender, and
+    // its extensionless ESM imports do not load in Node: stand in empty modules.
+    name: "no-ml-runtime",
+    setup(build) {
+      build.onResolve({ filter: /^(@magenta\/music|@tensorflow\/tfjs)(\/|$)/ }, (args) => ({ path: args.path, namespace: "no-ml-runtime" }));
+      build.onLoad({ filter: /.*/, namespace: "no-ml-runtime" }, () => ({ contents: "export default {}; export const MusicVAE = class {}; export const getBackend = () => 'none';", loader: "js" }));
+    },
+  }, {
     name: "game-names",
     setup(build) {
       build.onResolve({ filter: NAMES_FILTER }, (args) => ({

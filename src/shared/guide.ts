@@ -133,6 +133,7 @@ export const GUIDE_STEP_COUNT: Record<ToolId, number> = {
   "depth-map": 3,
   v: 3,
   "ai-image-generator": 3,
+  "ai-music-generator": 3,
 };
 
 export function guideSteps(tool: ToolId): number {

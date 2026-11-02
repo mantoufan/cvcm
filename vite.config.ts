@@ -19,6 +19,14 @@ export default defineConfig({
       this.addWatchFile(file);
       return `export default ${gameNamesSource(file)};`;
     },
+  }, {
+    // seedrandom (under TensorFlow.js 2, used by the music generator) finds the global object with
+    // `(0, eval)('this')`, which the AI pages' CSP forbids (no 'unsafe-eval'). globalThis is the same object.
+    name: "seedrandom-no-eval",
+    transform(code, id) {
+      if (!/[\\/]seedrandom[\\/]seedrandom\.js$/.test(id)) return null;
+      return code.replace("(0, eval)('this')", "globalThis");
+    },
   }],
   resolve: {
     alias: [
@@ -37,6 +45,13 @@ export default defineConfig({
     assetsInlineLimit: 0,
     // Read by scripts/build-worker.mjs to preload the page locale's string pack.
     manifest: true,
+    rollupOptions: {
+      output: {
+        // The music generator's page and its lazy model / synth chunks share this module. Left to Rollup it is
+        // folded into the page chunk, which then loses its own manifest entry (build-worker needs it to preload).
+        manualChunks: (id) => (id.endsWith("/src/shared/music-gen.ts") ? "music-gen" : undefined),
+      },
+    },
   },
   server: {
     port: 5173,

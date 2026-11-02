@@ -574,6 +574,12 @@ export const TOOL_LOADERS: Record<ToolId, ToolLoader> = {
     await m.mountDepthMap(host);
     return m.unmountDepthMap;
   },
+  "ai-music-generator": async (host, ctx) => {
+    const m = await import("./ai-music-generator/ui");
+    if (!ctx.alive()) return undefined;
+    await m.mountMusicGenerator(host);
+    return m.unmountMusicGenerator;
+  },
   "ai-image-generator": async (host, ctx) => {
     const m = await import("./ai-image-generator/ui");
     if (!ctx.alive()) return undefined;

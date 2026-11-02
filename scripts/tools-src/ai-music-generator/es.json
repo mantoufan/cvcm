@@ -1,0 +1,71 @@
+{
+  "meta": {
+    "titleMusicGen": "Generador de música con IA — música de fondo libre de regalías en tu navegador — cv.cm",
+    "descMusicGen": "Crea un loop instrumental original con IA: melodía, bajo y batería en estilo lo-fi, pop, chiptune, ambient o dance. Gratis, sin registro, uso comercial permitido. Descarga WAV y MIDI."
+  },
+  "tools": {
+    "ai-music-generator": {
+      "name": "Generador de música con IA",
+      "blurb": "Loops instrumentales originales: melodía, bajo y batería. WAV y MIDI."
+    }
+  },
+  "faq": {
+    "ai-music-generator": {
+      "q1": "¿Cómo funciona el generador de música con IA?",
+      "a1": "MusicVAE, un modelo abierto del proyecto Magenta de Google, escribe 4 compases de melodía, bajo y batería a la vez; las piezas más largas pasan poco a poco de una idea a otra. Después la página toca las notas con sus propios sintetizadores.",
+      "q2": "¿Puedo usar la música en vídeos o con fines comerciales?",
+      "a2": "Sí. Cada pieza se genera nueva, el modelo es Apache-2.0 y no se usan muestras de canciones existentes. Úsala en vídeos, juegos, pódcast o productos, sin necesidad de dar crédito.",
+      "q3": "¿Crea canciones con voz?",
+      "a3": "No. Crea música instrumental: una melodía, una línea de bajo y batería. Descarga el MIDI para tocar las mismas notas con otros instrumentos en GarageBand, FL Studio o cualquier DAW.",
+      "q4": "¿Se sube algo?",
+      "a4": "No. El modelo se descarga una vez (unos 18 MB) y funciona en esta pestaña; el audio también se genera en el navegador.",
+      "q5": "¿Cómo consigo música que me guste?",
+      "a5": "Genera varias veces, quédate con la que te guste y pulsa Más como esta para obtener variaciones. Tranquila hace la música sencilla y repetitiva; Atrevida prueba ideas más audaces."
+    }
+  },
+  "ui": {
+    "musicGen": {
+      "back": "Todas las herramientas",
+      "title": "Generador de música con IA",
+      "privacyNote": "La IA compone en esta pestaña. No se sube nada y la música es tuya.",
+      "styleTitle": "Estilo",
+      "style_lofi": "Lo-fi",
+      "style_pop": "Pop",
+      "style_chiptune": "Chiptune",
+      "style_ambient": "Ambient",
+      "style_dance": "Dance",
+      "generate": "Generar música",
+      "more": "Más como esta",
+      "moreHint": "Más como esta conserva el carácter de la última pieza y cambia los detalles.",
+      "hint": "La melodía, el bajo y la batería aparecen aquí.",
+      "play": "Reproducir",
+      "stop": "Detener",
+      "downloadWav": "Descargar WAV",
+      "downloadMidi": "Descargar MIDI",
+      "length": "Duración",
+      "bars": "{n} compases",
+      "surprise": "Sorpresa",
+      "surprise_calm": "Tranquila",
+      "surprise_normal": "Normal",
+      "surprise_wild": "Atrevida",
+      "note": "Solo instrumental, sin voz. Se permite el uso comercial.",
+      "loading": "Cargando el modelo de IA…",
+      "composing": "Componiendo…",
+      "rendering": "Mezclando el audio…",
+      "info": "{style} · {bars} compases · {bpm} BPM · bucle de {s} s",
+      "done": "Listo en {s} s.",
+      "errorRun": "No se pudo componer. Recarga la página y vuelve a intentarlo."
+    }
+  },
+  "guides": {
+    "ai-music-generator": {
+      "lead": "Crea un loop instrumental original en esta pestaña.",
+      "s1t": "Elige un estilo",
+      "s1b": "Elige lo-fi, pop, chiptune, ambient o dance, una duración de 4, 8 o 16 compases y cuánta sorpresa quieres.",
+      "s2t": "Genera y escucha",
+      "s2b": "El modelo se descarga una vez y luego compone melodía, bajo y batería en un segundo y los reproduce en bucle. Pulsa Más como esta para obtener variaciones.",
+      "s3t": "Descarga",
+      "s3b": "Guarda un WAV para vídeos y pódcast, o un MIDI para cambiar los instrumentos en una app de música."
+    }
+  }
+}

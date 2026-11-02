@@ -501,7 +501,9 @@
     "titleV": "AI biến ảnh thành video — chuyển động 3D từ một bức ảnh, miễn phí — cv.cm",
     "descV": "Biến một bức ảnh thành video 3D chuyển động: AI ước lượng độ sâu ngay trong trình duyệt, máy quay tiến vào, xoay quanh hoặc lia ngang, rồi tải MP4. Miễn phí, không cần đăng ký, không watermark, ảnh không bị tải lên.",
     "titleImageGen": "AI tạo ảnh — tạo ảnh từ chữ miễn phí ngay trong trình duyệt — cv.cm",
-    "descImageGen": "Gõ mô tả là có ảnh: AI Janus-Pro chạy bằng card đồ họa của bạn ngay trong tab này. Miễn phí, không đăng ký, không watermark, không xếp hàng, không tải gì lên. Phóng to tới 1536 px."
+    "descImageGen": "Gõ mô tả là có ảnh: AI Janus-Pro chạy bằng card đồ họa của bạn ngay trong tab này. Miễn phí, không đăng ký, không watermark, không xếp hàng, không tải gì lên. Phóng to tới 1536 px.",
+    "titleMusicGen": "AI tạo nhạc — nhạc nền miễn phí bản quyền, tạo ngay trong trình duyệt — cv.cm",
+    "descMusicGen": "Tạo vòng lặp nhạc không lời độc bản bằng AI: giai điệu, bass và trống theo phong cách lo-fi, pop, chiptune, ambient hoặc dance. Miễn phí, không đăng ký, được dùng thương mại. Tải WAV và MIDI."
   },
   "brand": "cv.cm",
   "nav": {
@@ -1068,6 +1070,10 @@
     "ai-image-generator": {
       "name": "AI tạo ảnh",
       "blurb": "Gõ mô tả, nhận một bức ảnh. Chạy trên GPU của bạn."
+    },
+    "ai-music-generator": {
+      "name": "AI tạo nhạc",
+      "blurb": "Vòng lặp nhạc không lời độc bản: giai điệu, bass, trống. WAV và MIDI."
     }
   },
   "watermark": {
@@ -4200,6 +4206,18 @@
       "a4": "Mô hình chỉ tải một lần (khoảng 1,5 GB) và được lưu trong trình duyệt. Sau đó mỗi ảnh mất từ vài giây đến khoảng một phút tùy card đồ họa.",
       "q5": "Vì sao báo cần WebGPU?",
       "a5": "Vẽ ảnh cần card đồ họa qua WebGPU (Chrome, Edge hoặc Safari bản mới). Chỉ dùng CPU thì một ảnh mất nhiều phút, nên trang không chạy."
+    },
+    "ai-music-generator": {
+      "q1": "AI tạo nhạc hoạt động thế nào?",
+      "a1": "MusicVAE, mô hình mở của dự án Magenta (Google), viết 4 ô nhịp giai điệu, bass và trống mỗi lần; bản dài hơn chuyển dần từ ý nhạc này sang ý nhạc khác. Trang sau đó chơi các nốt bằng bộ tổng hợp âm thanh riêng.",
+      "q2": "Có dùng nhạc trong video hoặc thương mại được không?",
+      "a2": "Được. Mỗi bản nhạc đều mới tạo, mô hình theo Apache-2.0 và không lấy mẫu từ bài hát có sẵn. Dùng cho video, game, podcast hay sản phẩm, không cần ghi nguồn.",
+      "q3": "Có tạo bài hát có lời không?",
+      "a3": "Không. Công cụ tạo nhạc không lời: giai điệu chính, bass và trống. Tải file MIDI để chơi cùng các nốt bằng nhạc cụ khác trong GarageBand, FL Studio hoặc DAW bất kỳ.",
+      "q4": "Có tải gì lên không?",
+      "a4": "Không. Mô hình chỉ tải một lần (khoảng 18 MB) và chạy trong tab này; âm thanh cũng được tạo trong trình duyệt.",
+      "q5": "Làm sao có bản nhạc ưng ý?",
+      "a5": "Tạo vài lần, giữ bản bạn thích rồi bấm Thêm bản tương tự để có biến thể. Nhẹ nhàng giữ nhạc đơn giản, lặp lại; Táo bạo thử ý tưởng mới hơn."
     }
   },
   "qr": {
@@ -9875,5 +9893,37 @@
     "empty": "Hãy mô tả bức ảnh trước.",
     "needsGpu": "Trình duyệt này không có WebGPU, vẽ bằng CPU sẽ mất nhiều phút. Hãy dùng Chrome, Edge hoặc Safari bản mới.",
     "errorRun": "Vẽ không thành công. Hãy tải lại trang và thử lại."
+  },
+  "musicGen": {
+    "back": "Tất cả công cụ",
+    "title": "AI tạo nhạc",
+    "privacyNote": "AI soạn nhạc trong tab này. Không có gì bị tải lên, và nhạc là của bạn.",
+    "styleTitle": "Phong cách",
+    "style_lofi": "Lo-fi",
+    "style_pop": "Pop",
+    "style_chiptune": "Chiptune",
+    "style_ambient": "Ambient",
+    "style_dance": "Dance",
+    "generate": "Tạo nhạc",
+    "more": "Thêm bản tương tự",
+    "moreHint": "Thêm bản tương tự giữ cảm xúc của bản trước và đổi chi tiết.",
+    "hint": "Giai điệu, bass và trống sẽ hiện ở đây.",
+    "play": "Phát",
+    "stop": "Dừng",
+    "downloadWav": "Tải WAV",
+    "downloadMidi": "Tải MIDI",
+    "length": "Độ dài",
+    "bars": "{n} ô nhịp",
+    "surprise": "Độ bất ngờ",
+    "surprise_calm": "Nhẹ nhàng",
+    "surprise_normal": "Vừa",
+    "surprise_wild": "Táo bạo",
+    "note": "Chỉ có nhạc không lời. Được dùng thương mại.",
+    "loading": "Đang tải mô hình AI…",
+    "composing": "Đang soạn nhạc…",
+    "rendering": "Đang phối âm…",
+    "info": "{style} · {bars} ô nhịp · {bpm} BPM · vòng lặp {s} giây",
+    "done": "Xong trong {s} giây.",
+    "errorRun": "Soạn nhạc không thành công. Hãy tải lại trang và thử lại."
   }
 }

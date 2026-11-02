@@ -1,0 +1,71 @@
+{
+  "meta": {
+    "titleMusicGen": "AI tạo nhạc — nhạc nền miễn phí bản quyền, tạo ngay trong trình duyệt — cv.cm",
+    "descMusicGen": "Tạo vòng lặp nhạc không lời độc bản bằng AI: giai điệu, bass và trống theo phong cách lo-fi, pop, chiptune, ambient hoặc dance. Miễn phí, không đăng ký, được dùng thương mại. Tải WAV và MIDI."
+  },
+  "tools": {
+    "ai-music-generator": {
+      "name": "AI tạo nhạc",
+      "blurb": "Vòng lặp nhạc không lời độc bản: giai điệu, bass, trống. WAV và MIDI."
+    }
+  },
+  "faq": {
+    "ai-music-generator": {
+      "q1": "AI tạo nhạc hoạt động thế nào?",
+      "a1": "MusicVAE, mô hình mở của dự án Magenta (Google), viết 4 ô nhịp giai điệu, bass và trống mỗi lần; bản dài hơn chuyển dần từ ý nhạc này sang ý nhạc khác. Trang sau đó chơi các nốt bằng bộ tổng hợp âm thanh riêng.",
+      "q2": "Có dùng nhạc trong video hoặc thương mại được không?",
+      "a2": "Được. Mỗi bản nhạc đều mới tạo, mô hình theo Apache-2.0 và không lấy mẫu từ bài hát có sẵn. Dùng cho video, game, podcast hay sản phẩm, không cần ghi nguồn.",
+      "q3": "Có tạo bài hát có lời không?",
+      "a3": "Không. Công cụ tạo nhạc không lời: giai điệu chính, bass và trống. Tải file MIDI để chơi cùng các nốt bằng nhạc cụ khác trong GarageBand, FL Studio hoặc DAW bất kỳ.",
+      "q4": "Có tải gì lên không?",
+      "a4": "Không. Mô hình chỉ tải một lần (khoảng 18 MB) và chạy trong tab này; âm thanh cũng được tạo trong trình duyệt.",
+      "q5": "Làm sao có bản nhạc ưng ý?",
+      "a5": "Tạo vài lần, giữ bản bạn thích rồi bấm Thêm bản tương tự để có biến thể. Nhẹ nhàng giữ nhạc đơn giản, lặp lại; Táo bạo thử ý tưởng mới hơn."
+    }
+  },
+  "ui": {
+    "musicGen": {
+      "back": "Tất cả công cụ",
+      "title": "AI tạo nhạc",
+      "privacyNote": "AI soạn nhạc trong tab này. Không có gì bị tải lên, và nhạc là của bạn.",
+      "styleTitle": "Phong cách",
+      "style_lofi": "Lo-fi",
+      "style_pop": "Pop",
+      "style_chiptune": "Chiptune",
+      "style_ambient": "Ambient",
+      "style_dance": "Dance",
+      "generate": "Tạo nhạc",
+      "more": "Thêm bản tương tự",
+      "moreHint": "Thêm bản tương tự giữ cảm xúc của bản trước và đổi chi tiết.",
+      "hint": "Giai điệu, bass và trống sẽ hiện ở đây.",
+      "play": "Phát",
+      "stop": "Dừng",
+      "downloadWav": "Tải WAV",
+      "downloadMidi": "Tải MIDI",
+      "length": "Độ dài",
+      "bars": "{n} ô nhịp",
+      "surprise": "Độ bất ngờ",
+      "surprise_calm": "Nhẹ nhàng",
+      "surprise_normal": "Vừa",
+      "surprise_wild": "Táo bạo",
+      "note": "Chỉ có nhạc không lời. Được dùng thương mại.",
+      "loading": "Đang tải mô hình AI…",
+      "composing": "Đang soạn nhạc…",
+      "rendering": "Đang phối âm…",
+      "info": "{style} · {bars} ô nhịp · {bpm} BPM · vòng lặp {s} giây",
+      "done": "Xong trong {s} giây.",
+      "errorRun": "Soạn nhạc không thành công. Hãy tải lại trang và thử lại."
+    }
+  },
+  "guides": {
+    "ai-music-generator": {
+      "lead": "Tạo một vòng lặp nhạc không lời độc bản trong tab này.",
+      "s1t": "Chọn phong cách",
+      "s1b": "Chọn lo-fi, pop, chiptune, ambient hoặc dance, độ dài 4, 8 hay 16 ô nhịp và độ bất ngờ.",
+      "s2t": "Tạo và nghe",
+      "s2b": "Mô hình tải một lần, sau đó soạn giai điệu, bass và trống trong khoảng một giây và phát lặp lại. Bấm Thêm bản tương tự để có biến thể.",
+      "s3t": "Tải về",
+      "s3b": "Lưu WAV cho video và podcast, hoặc MIDI để đổi nhạc cụ trong ứng dụng làm nhạc."
+    }
+  }
+}

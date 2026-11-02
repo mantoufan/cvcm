@@ -1,0 +1,71 @@
+{
+  "meta": {
+    "titleMusicGen": "AI pembuat musik — musik latar bebas royalti gratis di browser — cv.cm",
+    "descMusicGen": "Buat loop instrumental orisinal dengan AI: melodi, bas, dan drum bergaya lo-fi, pop, chiptune, ambient, atau dance. Gratis, tanpa daftar, boleh dipakai komersial. Unduh WAV dan MIDI."
+  },
+  "tools": {
+    "ai-music-generator": {
+      "name": "AI pembuat musik",
+      "blurb": "Loop instrumental orisinal: melodi, bas, dan drum. WAV dan MIDI."
+    }
+  },
+  "faq": {
+    "ai-music-generator": {
+      "q1": "Bagaimana AI pembuat musik bekerja?",
+      "a1": "MusicVAE, model terbuka dari proyek Magenta milik Google, menulis 4 birama melodi, bas, dan drum sekaligus; karya yang lebih panjang berubah perlahan dari satu ide ke ide lain. Halaman lalu memainkan not-notnya dengan synthesizer sendiri.",
+      "q2": "Bolehkah musiknya dipakai di video atau untuk komersial?",
+      "a2": "Boleh. Setiap karya dibuat baru, modelnya Apache-2.0, dan tidak ada sampel dari lagu yang sudah ada. Pakai untuk video, game, podcast, atau produk tanpa perlu kredit.",
+      "q3": "Apakah bisa membuat lagu dengan vokal?",
+      "a3": "Tidak. Alat ini membuat musik instrumental: melodi utama, bas, dan drum. Unduh file MIDI untuk memainkan not yang sama dengan instrumen lain di GarageBand, FL Studio, atau DAW apa pun.",
+      "q4": "Apakah ada yang diunggah?",
+      "a4": "Tidak. Model diunduh sekali (sekitar 18 MB) dan berjalan di tab ini; audio juga dibuat di browser.",
+      "q5": "Bagaimana mendapatkan musik yang saya suka?",
+      "a5": "Buat beberapa kali, simpan yang Anda suka, lalu tekan Lagi yang mirip untuk variasinya. Tenang membuat musik sederhana dan berulang; Liar mencoba ide yang lebih berani."
+    }
+  },
+  "ui": {
+    "musicGen": {
+      "back": "Semua alat",
+      "title": "AI pembuat musik",
+      "privacyNote": "AI menggubah musik di tab ini. Tidak ada yang diunggah, dan musiknya milik Anda.",
+      "styleTitle": "Gaya",
+      "style_lofi": "Lo-fi",
+      "style_pop": "Pop",
+      "style_chiptune": "Chiptune",
+      "style_ambient": "Ambient",
+      "style_dance": "Dance",
+      "generate": "Buat musik",
+      "more": "Lagi yang mirip",
+      "moreHint": "Lagi yang mirip mempertahankan nuansa karya terakhir dan mengubah detailnya.",
+      "hint": "Melodi, bas, dan drum muncul di sini.",
+      "play": "Putar",
+      "stop": "Berhenti",
+      "downloadWav": "Unduh WAV",
+      "downloadMidi": "Unduh MIDI",
+      "length": "Durasi",
+      "bars": "{n} birama",
+      "surprise": "Kejutan",
+      "surprise_calm": "Tenang",
+      "surprise_normal": "Normal",
+      "surprise_wild": "Liar",
+      "note": "Hanya instrumental, tanpa vokal. Boleh dipakai komersial.",
+      "loading": "Memuat model AI…",
+      "composing": "Menggubah…",
+      "rendering": "Mencampur audio…",
+      "info": "{style} · {bars} birama · {bpm} BPM · loop {s} dtk",
+      "done": "Selesai dalam {s} dtk.",
+      "errorRun": "Gagal menggubah. Muat ulang halaman lalu coba lagi."
+    }
+  },
+  "guides": {
+    "ai-music-generator": {
+      "lead": "Buat loop instrumental orisinal di tab ini.",
+      "s1t": "Pilih gaya",
+      "s1b": "Pilih lo-fi, pop, chiptune, ambient, atau dance, durasi 4, 8, atau 16 birama, dan tingkat kejutan.",
+      "s2t": "Buat dan dengarkan",
+      "s2b": "Model diunduh sekali, lalu dalam sekitar satu detik menggubah melodi, bas, dan drum dan memutarnya berulang. Tekan Lagi yang mirip untuk variasi.",
+      "s3t": "Unduh",
+      "s3b": "Simpan WAV untuk video dan podcast, atau MIDI untuk mengganti instrumen di aplikasi musik."
+    }
+  }
+}

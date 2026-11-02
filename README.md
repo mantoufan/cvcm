@@ -15,6 +15,7 @@ Browser tools plus a tiny cloud clipboard.
 - **Depth map generator** / 深度图生成. [Open](https://cv.cm/en/depth-map/)
 - **AI photo to video** / AI 照片转视频 (3D camera move → MP4). [Open](https://cv.cm/en/v/)
 - **AI image generator** / AI 绘画生成器 (text → image, Janus-Pro on your GPU). [Open](https://cv.cm/en/ai-image-generator/)
+- **AI music generator** / AI 音乐生成器 (instrumental loops, WAV + MIDI). [Open](https://cv.cm/en/ai-music-generator/)
 - **Photo collage** / 图片拼图 — combine photos with layouts. [Open](https://cv.cm/en/collage/)
 - **Portrait camera sim** / 人像相机模拟 — aperture, shutter, ISO, lenses and filters on photoreal adult sitters. [Open](https://cv.cm/en/portrait-sim/)
 - **Image formats** / 图片格式 — PNG, JPG, WebP, AVIF, GIF, BMP, ICO. [Open](https://cv.cm/en/convert/)
