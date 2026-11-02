@@ -897,12 +897,7 @@ function langSwitch(current: Locale): HTMLElement {
   return h("select", {
     class: "lang",
     "aria-label": t("lang.label"),
-    onChange: (e: Event) => {
-      const next = (e.target as HTMLSelectElement).value as Locale;
-      // render() sets the locale once its pack is loaded, like any navigation.
-      history.pushState(null, "", localeHref(next));
-      render();
-    },
+    onChange: (e: Event) => switchLocale((e.target as HTMLSelectElement).value as Locale),
   }, ...LOCALES.map((code) => h("option", { value: code, selected: code === current }, t(`lang.${code}`))));
 }
 
@@ -919,12 +914,17 @@ function langLinks(current: Locale): HTMLElement {
         onClick: (e: MouseEvent) => {
           if (e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
           e.preventDefault();
-          history.pushState(null, "", localeHref(code));
           scrollOnSwap = true;
-          render();
+          switchLocale(code);
         },
       }, t(`lang.${code}`))),
   );
+}
+
+/** Show the page on screen in another locale, keeping its query. render() sets the locale once its pack is loaded, like any navigation. */
+function switchLocale(next: Locale): void {
+  history.pushState(null, "", localeHref(next));
+  render();
 }
 
 function localeHref(next: Locale): string {

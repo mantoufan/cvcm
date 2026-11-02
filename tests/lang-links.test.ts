@@ -1,6 +1,6 @@
 // @vitest-environment happy-dom
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import { render, start, whenRendered } from "../src/client/app-shell";
+import { start, whenRendered } from "../src/client/app-shell";
 
 function reset(url: string): void {
   document.head.innerHTML = `<title></title><meta name="description" content="old"><link rel="canonical" href="https://cv.cm/">`;
@@ -44,7 +44,7 @@ describe("language links", () => {
   it("leaves the links off clip notes", async () => {
     vi.stubGlobal("fetch", vi.fn(async () => new Response("{}", { status: 404 })));
     reset("/en/clip/abc/");
-    render();
+    start();
     await whenRendered();
     expect(document.querySelector("nav.foot-langs")).toBeNull();
   });
