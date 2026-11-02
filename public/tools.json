@@ -214,7 +214,7 @@
             }
           }
         ],
-        "options": "Instrumental only (melody, bass and drums; no vocals or lyrics). Style: Lo-fi (80 BPM) / Pop (108 BPM) / Chiptune (140 BPM) / Ambient (72 BPM) / Dance (124 BPM). Length: 4 bars / 8 bars / 16 bars. Surprise: Calm / Normal / Wild. \"More like this\" makes a variation of the last piece. Plays in the page with Web Audio synths; downloads WAV (44.1 kHz stereo) and MIDI. Runs on TensorFlow.js (WebGL, or the CPU)."
+        "options": "Instrumental only (melody, bass and drums; no vocals or lyrics). Style: Lo-fi (80 BPM) / Pop (108 BPM) / Chiptune (140 BPM) / Ambient (72 BPM) / Dance (124 BPM). Length: 4 bars / 8 bars / 16 bars. Surprise: Calm / Normal / Wild. \"More like this\" makes a variation of the last piece. Plays in the page with Web Audio synths; downloads WAV (44.1 kHz stereo) and MIDI. Unlike the other AI tools it runs on TensorFlow.js (WebGL, or the CPU) in a worker, not ONNX Runtime; its weights are Magenta's MusicVAE trio_4bar checkpoint (not a Hugging Face repo), mirrored to cv.cm."
       }
     },
     {

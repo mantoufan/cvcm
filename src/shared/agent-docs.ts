@@ -90,7 +90,7 @@ const AI_DETAILS: Partial<Record<ToolId, AiToolDetails>> = {
   },
   "ai-music-generator": {
     models: [{ option: null, model: "trio" }],
-    options: `Instrumental only (melody, bass and drums; no vocals or lyrics). ${en.musicGen.styleTitle}: ${MUSIC_STYLES.map((s) => `${en.musicGen[`style_${s}`]} (${STYLE_PRESETS[s].bpm} BPM)`).join(" / ")}. ${en.musicGen.length}: ${MUSIC_BARS.map((b) => `${b} bars`).join(" / ")}. ${en.musicGen.surprise}: ${SURPRISE_IDS.map((s) => en.musicGen[`surprise_${s}`]).join(" / ")}. "${en.musicGen.more}" makes a variation of the last piece. Plays in the page with Web Audio synths; downloads WAV (44.1 kHz stereo) and MIDI. Runs on TensorFlow.js (WebGL, or the CPU).`,
+    options: `Instrumental only (melody, bass and drums; no vocals or lyrics). ${en.musicGen.styleTitle}: ${MUSIC_STYLES.map((s) => `${en.musicGen[`style_${s}`]} (${STYLE_PRESETS[s].bpm} BPM)`).join(" / ")}. ${en.musicGen.length}: ${MUSIC_BARS.map((b) => `${b} bars`).join(" / ")}. ${en.musicGen.surprise}: ${SURPRISE_IDS.map((s) => en.musicGen[`surprise_${s}`]).join(" / ")}. "${en.musicGen.more}" makes a variation of the last piece. Plays in the page with Web Audio synths; downloads WAV (44.1 kHz stereo) and MIDI. Unlike the other AI tools it runs on TensorFlow.js (WebGL, or the CPU) in a worker, not ONNX Runtime; its weights are Magenta's MusicVAE trio_4bar checkpoint (not a Hugging Face repo), mirrored to cv.cm.`,
   },
   "ai-image-generator": {
     models: [

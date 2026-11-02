@@ -24,6 +24,9 @@ import type { MusicRequest, MusicResponse } from "./model-worker";
 /** `job`: the worker job that wrote it, which "More like this" varies. */
 type Piece = { notes: Note[]; style: MusicStyle; bars: MusicBars; audio: AudioBuffer; loop: AudioBuffer; job: number };
 
+/** Longest a run may take, model download included (18 MB on a slow line, then the CPU backend). */
+const RUN_TIMEOUT_MS = 180_000;
+
 /** The model worker, started on the first Generate; terminating it frees TensorFlow.js and the weights. */
 class MusicModel {
   private worker = new Worker(new URL("./model-worker.ts", import.meta.url), { type: "module", name: "cvcm-music" });
@@ -57,7 +60,22 @@ class MusicModel {
   run(type: MusicRequest["type"], bars: MusicBars, temperature: number, base?: number): Promise<{ notes: Note[]; job: number }> {
     const id = ++this.seq;
     return new Promise((resolve, reject) => {
-      this.pending.set(id, { resolve: (notes) => resolve({ notes, job: id }), reject });
+      // A worker the browser kills (out of memory) sends neither a reply nor an error: give up after a while.
+      const timer = setTimeout(() => {
+        this.dead = true;
+        this.fail(new Error("timeout"));
+        this.worker.terminate();
+      }, RUN_TIMEOUT_MS);
+      this.pending.set(id, {
+        resolve: (notes) => {
+          clearTimeout(timer);
+          resolve({ notes, job: id });
+        },
+        reject: (err) => {
+          clearTimeout(timer);
+          reject(err);
+        },
+      });
       this.worker.postMessage({ id, type, base, bars, temperature } satisfies MusicRequest);
     });
   }
@@ -256,7 +274,9 @@ function setBusy(busy: boolean): void {
   const [make, more, play, wav, midi] = actions;
   if (make) make.disabled = busy;
   if (more) more.disabled = busy || !piece;
-  for (const b of [play, wav, midi]) if (b) b.disabled = busy || !piece;
+  // Play / Stop stays usable while a new piece is made: the old loop keeps playing until then.
+  if (play) play.disabled = !piece;
+  for (const b of [wav, midi]) if (b) b.disabled = busy || !piece;
 }
 
 function stop(): void {
@@ -274,7 +294,7 @@ function play(): void {
   if (!piece) return;
   stop();
   ctx ??= new AudioContext();
-  void ctx.resume();
+  void ctx.resume().catch(() => {});
   const src = ctx.createBufferSource();
   src.buffer = piece.loop;
   src.loop = true;

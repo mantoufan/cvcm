@@ -38,7 +38,8 @@ export async function renderPiece(notes: readonly Note[], bars: number, preset: 
   const step = stepSeconds(preset.bpm);
   for (const n of notes) {
     const t = stepTime(n.start, preset.bpm, preset.swing);
-    const dur = Math.max(step * 0.9, (n.end - n.start) * step);
+    // Measured on the swung grid, so a swung note ends where the next one starts, as in the MIDI file.
+    const dur = Math.max(step * 0.9, stepTime(n.end, preset.bpm, preset.swing) - t);
     const vel = n.velocity / 127;
     if (n.part === "drums") drum(ctx, master, noise, drumKind(n.pitch), t, vel * preset.drums);
     else if (n.part === "bass") tone(ctx, master, n.pitch, t, dur, vel * preset.bass.gain, preset.bass.wave, preset.bass.cutoff, 0.005, 0.08);
@@ -48,18 +49,26 @@ export async function renderPiece(notes: readonly Note[], bars: number, preset: 
   return normalize(await ctx.startRendering());
 }
 
-/** Scales the buffer down (in place) when its peak is past just under full scale. */
-function normalize(audio: AudioBuffer): AudioBuffer {
+/** The gain that brings the buffer's peak to just under full scale (1 when it is already there). */
+function headroom(audio: AudioBuffer): number {
   let peak = 0;
   for (let c = 0; c < audio.numberOfChannels; c++) {
     for (const v of audio.getChannelData(c)) peak = Math.max(peak, Math.abs(v));
   }
-  if (peak > 0.99) {
-    for (let c = 0; c < audio.numberOfChannels; c++) {
-      const data = audio.getChannelData(c);
-      for (let i = 0; i < data.length; i++) data[i] *= 0.99 / peak;
-    }
+  return peak > 0.99 ? 0.99 / peak : 1;
+}
+
+function scale(audio: AudioBuffer, gain: number): void {
+  for (let c = 0; c < audio.numberOfChannels; c++) {
+    const data = audio.getChannelData(c);
+    for (let i = 0; i < data.length; i++) data[i] *= gain;
   }
+}
+
+/** Scales the buffer down (in place) when its peak is past just under full scale. */
+function normalize(audio: AudioBuffer): AudioBuffer {
+  const gain = headroom(audio);
+  if (gain < 1) scale(audio, gain);
   return audio;
 }
 
@@ -163,7 +172,9 @@ function drum(ctx: BaseAudioContext, out: AudioNode, noise: AudioBuffer, kind: R
 
 /**
  * The loop for playback: the piece cut at the last bar line with its tail (releases, echo) added back onto the
- * start, as it would ring over the next repeat. The WAV keeps the tail at the end instead.
+ * start, as it would ring over the next repeat. The WAV keeps the tail at the end instead. If the wrapped tail
+ * pushes the loop past full scale, the loop and `audio` (the WAV) are scaled by the same amount, so the page
+ * and the download play at one level.
  */
 export function loopBuffer(audio: AudioBuffer, loopSeconds: number): AudioBuffer {
   const length = Math.min(audio.length, Math.round(loopSeconds * audio.sampleRate));
@@ -174,6 +185,10 @@ export function loopBuffer(audio: AudioBuffer, loopSeconds: number): AudioBuffer
     out.set(src.subarray(0, length));
     for (let i = length; i < src.length; i++) out[(i - length) % length] += src[i];
   }
-  // The tail lands on the first beats: scale back down if the sum went past full scale.
-  return normalize(loop);
+  const gain = headroom(loop);
+  if (gain < 1) {
+    scale(loop, gain);
+    scale(audio, gain);
+  }
+  return loop;
 }
