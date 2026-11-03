@@ -395,7 +395,8 @@ const AVATAR: ChoiceItem[] = [
 
 /**
  * Eight Straw Hat Pirates from One Piece. Each question offers four, so each pirate appears in six; the questions come
- * in pairs that split the crew in two, and the six splits mix who appears alongside whom.
+ * in pairs that split the crew in two, and the six splits mix who appears alongside whom. Each pirate sits in each
+ * position once or twice.
  */
 const ONE_PIECE: ChoiceItem[] = [
   { options: [{ luffy: 2 }, { zoro: 2 }, { nami: 2 }, { usopp: 2 }] },
@@ -408,8 +409,8 @@ const ONE_PIECE: ChoiceItem[] = [
   { options: [{ nami: 2 }, { sanji: 2 }, { franky: 2 }, { zoro: 2 }] },
   { options: [{ franky: 2 }, { robin: 2 }, { zoro: 2 }, { luffy: 2 }] },
   { options: [{ sanji: 2 }, { usopp: 2 }, { chopper: 2 }, { nami: 2 }] },
-  { options: [{ nami: 2 }, { franky: 2 }, { luffy: 2 }, { chopper: 2 }] },
-  { options: [{ robin: 2 }, { zoro: 2 }, { usopp: 2 }, { sanji: 2 }] },
+  { options: [{ nami: 2 }, { chopper: 2 }, { luffy: 2 }, { franky: 2 }] },
+  { options: [{ zoro: 2 }, { robin: 2 }, { usopp: 2 }, { sanji: 2 }] },
 ];
 
 /** The four Hogwarts houses; every question offers all four, each house three times in each position. */
@@ -463,7 +464,7 @@ const MARVEL: ChoiceItem[] = [
   { options: [{ cap: 2 }, { widow: 2 }, { thor: 2 }, { ironman: 2 }] },
 ];
 
-/** Eight Studio Ghibli characters, laid out like `ONE_PIECE`: each in six questions. */
+/** Eight Studio Ghibli characters, laid out like `ONE_PIECE`: each in six questions, once or twice in each position. */
 const GHIBLI: ChoiceItem[] = [
   { options: [{ chihiro: 2 }, { san: 2 }, { kiki: 2 }, { sophie: 2 }] },
   { options: [{ nausicaa: 2 }, { howl: 2 }, { haku: 2 }, { totoro: 2 }] },
@@ -475,8 +476,8 @@ const GHIBLI: ChoiceItem[] = [
   { options: [{ kiki: 2 }, { haku: 2 }, { howl: 2 }, { san: 2 }] },
   { options: [{ howl: 2 }, { nausicaa: 2 }, { san: 2 }, { chihiro: 2 }] },
   { options: [{ haku: 2 }, { sophie: 2 }, { totoro: 2 }, { kiki: 2 }] },
-  { options: [{ kiki: 2 }, { howl: 2 }, { chihiro: 2 }, { totoro: 2 }] },
-  { options: [{ nausicaa: 2 }, { san: 2 }, { sophie: 2 }, { haku: 2 }] },
+  { options: [{ kiki: 2 }, { totoro: 2 }, { chihiro: 2 }, { howl: 2 }] },
+  { options: [{ san: 2 }, { nausicaa: 2 }, { sophie: 2 }, { haku: 2 }] },
 ];
 
 export const QUIZ_DEFS: Record<QuizId, QuizDef> = {

@@ -276,11 +276,12 @@ describe("test pages: scoring", () => {
   });
 
   it("lets every love style, leadership style and temperament win, and spreads ties between them", () => {
+    const perDim = { "love-style": 4, leadership: 4, temperament: 5 } as const;
     for (const id of ["love-style", "leadership", "temperament"] as const) {
       const def = QUIZ_DEFS[id];
       if (def.type !== "likert") throw new Error();
       for (const dim of def.dims) {
-        expect(def.items.filter((i) => i.dim === dim), `${id} ${dim}`).toHaveLength(def.items.length / def.dims.length);
+        expect(def.items.filter((i) => i.dim === dim), `${id} ${dim}`).toHaveLength(perDim[id]);
         expect(scoreQuiz(id, lean(id, [dim])).key, `${id} ${dim}`).toBe(dim);
       }
     }
@@ -518,6 +519,18 @@ describe("test pages: scoring", () => {
       for (const dim of def.dims) {
         for (let position = 0; position < 4; position++) {
           expect(def.items.filter((item) => (item.options[position][dim] ?? 0) > 0), `${id} ${dim} ${position}`).toHaveLength(2);
+        }
+      }
+    }
+    // One Piece and Ghibli: eight results, each in six questions, once or twice in each position.
+    for (const id of ["one-piece", "ghibli"] as const) {
+      const def = QUIZ_DEFS[id];
+      if (def.type !== "choice") throw new Error();
+      for (const dim of def.dims) {
+        for (let position = 0; position < 4; position++) {
+          const n = def.items.filter((item) => (item.options[position][dim] ?? 0) > 0).length;
+          expect(n, `${id} ${dim} ${position}`).toBeGreaterThanOrEqual(1);
+          expect(n, `${id} ${dim} ${position}`).toBeLessThanOrEqual(2);
         }
       }
     }
