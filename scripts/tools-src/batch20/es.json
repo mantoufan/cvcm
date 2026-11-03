@@ -141,8 +141,6 @@
       "verdict_ok": "Afinada",
       "verdict_flat": "Baja — tensa la cuerda",
       "verdict_sharp": "Alta — afloja la cuerda",
-      "wayFlat": "Unos {n} semitonos por debajo",
-      "waySharp": "Unos {n} semitonos por encima",
       "idle": "Pulsa Iniciar afinador y permite el micrófono cuando el navegador lo pida.",
       "asking": "Esperando permiso…",
       "listening": "Escuchando…",
@@ -153,7 +151,8 @@
       "unsupported": "Este navegador no puede usar un micrófono aquí.",
       "insecure": "El micrófono solo funciona en una página segura (https).",
       "ended": "El micrófono se desconectó.",
-      "hint": "Toca una cuerda para afinar esa, o deja Auto activado para seguir la cuerda que toques. Afinada es dentro de ±5 cents."
+      "hint": "Toca una cuerda para afinar esa, o deja Auto activado para seguir la cuerda que toques. Afinada es dentro de ±5 cents.",
+      "farOff": "Lejos de esta cuerda: estás tocando {note}."
     },
     "factors": {
       "title": "Divisores de un número",

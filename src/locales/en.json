@@ -10224,8 +10224,6 @@
     "verdict_ok": "In tune",
     "verdict_flat": "Flat — tighten the string",
     "verdict_sharp": "Sharp — loosen the string",
-    "wayFlat": "About {n} semitones flat",
-    "waySharp": "About {n} semitones sharp",
     "idle": "Press Start tuner and allow the microphone when the browser asks.",
     "asking": "Waiting for permission…",
     "listening": "Listening…",
@@ -10236,7 +10234,8 @@
     "unsupported": "This browser cannot use a microphone here.",
     "insecure": "The microphone only works on a secure (https) page.",
     "ended": "The microphone was disconnected.",
-    "hint": "Tap a string to tune to it, or leave Auto on to follow the string you play. In tune is within ±5 cents."
+    "hint": "Tap a string to tune to it, or leave Auto on to follow the string you play. In tune is within ±5 cents.",
+    "farOff": "Far from this string: you are playing {note}."
   },
   "factors": {
     "title": "Factor calculator",

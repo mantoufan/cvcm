@@ -1,4 +1,4 @@
-import { armAudio } from "../audio";
+import { armAudio, newAudioContext } from "../audio";
 import { h } from "../dom";
 import { locale, t } from "../i18n";
 import { appHref } from "../../shared/path";
@@ -195,13 +195,8 @@ async function start(): Promise<void> {
     let ok = false;
     if (rate !== audio.sampleRate) {
       void audio.close().catch(() => undefined);
-      try {
-        audio = new AudioContext(rate ? { sampleRate: rate } : undefined);
-        if (audio.state === "suspended") void audio.resume().catch(() => undefined);
-        ok = buildGraph(audio, s);
-      } catch {
-        audio = null;
-      }
+      audio = newAudioContext(rate ? { sampleRate: rate } : undefined);
+      ok = !!audio && buildGraph(audio, s);
     }
     if (!ok) {
       stop();
@@ -225,8 +220,9 @@ function buildGraph(ctx: AudioContext, s: MediaStream): boolean {
   try {
     source = ctx.createMediaStreamSource(s);
     analyser = ctx.createAnalyser();
-    // 4096 samples hold three periods of a five-string bass's low B (31 Hz) at 48 kHz.
-    analyser.fftSize = 4096;
+    // The window must hold two periods of the lowest note searched (a fifth below a five-string bass's low B, ~21 Hz):
+    // 4096 samples up to 48 kHz, 8192 at 88.2 or 96 kHz.
+    analyser.fftSize = ctx.sampleRate > 50000 ? 8192 : 4096;
     buf = new Float32Array(analyser.fftSize);
     // Some WebKit builds only run nodes the destination pulls on: feed it through a silent gain.
     sink = ctx.createGain();
@@ -269,7 +265,7 @@ function analyse(): void {
   const { min, max } = searchRange(tuning(), a4());
   const pitch = detectPitch(buf, audio.sampleRate, min, max);
   const now = performance.now();
-  if (!pitch || pitch.clarity < 0.8) {
+  if (!pitch) {
     if (lastHeard && now - lastHeard > HOLD_MS) {
       lastHeard = 0;
       readings = [];
@@ -310,11 +306,11 @@ function paintNote(freq: number | null): void {
   const ok = Math.abs(cents) <= IN_TUNE_CENTS;
   needleEl.classList.toggle("ok", ok);
   meterEl.setAttribute("aria-valuenow", String(Math.round(shown)));
-  // Far from the string (a different string is ringing while one is picked): say how far in semitones.
+  // Far from a picked string (another string is ringing): name the note actually heard.
   const state = ok ? "ok" : cents < 0 ? "flat" : "sharp";
   verdictEl.dataset.state = state;
   verdictEl.textContent = Math.abs(cents) > 100
-    ? t(cents < 0 ? "guitarTuner.wayFlat" : "guitarTuner.waySharp", { n: Math.round(Math.abs(cents) / 100) })
+    ? t("guitarTuner.farOff", { note: name(nearestTarget(freq, "chromatic", a4())) })
     : t(`guitarTuner.verdict_${state}`);
   if (target !== lastTarget) {
     lastTarget = target;

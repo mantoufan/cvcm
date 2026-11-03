@@ -2,7 +2,7 @@ import { copyWithFlash } from "../copy";
 import { h } from "../dom";
 import { locale, t } from "../i18n";
 import { appHref } from "../../shared/path";
-import { MAX_DIGITS, MAX_NUMBERS, euclidSteps, factorText, factorize, gcd, gcfLcmByPrimes, lcm, parseWhole, splitNumbers } from "../../shared/factors";
+import { MAX_DIGITS, MAX_NUMBERS, euclidSteps, factorText, factorize, gcd, gcfLcmByPrimes, lcm, parseWhole, splitNumbers, thousandsMarkFor } from "../../shared/factors";
 
 let inputEl: HTMLTextAreaElement | null = null;
 let errorEl: HTMLElement | null = null;
@@ -74,7 +74,8 @@ function paint(): void {
   const bad: string[] = [];
   let tooBig = false;
   for (const p of parts) {
-    const r = parseWhole(p);
+    // Commas always split the list, so only "." can group thousands inside one entry (es, id, vi).
+    const r = parseWhole(p, thousandsMarkFor(locale()) === "." ? "." : ",");
     if (r.ok && r.n > 0n) nums.push(r.n);
     else {
       if (!r.ok && r.error === "tooBig") tooBig = true;

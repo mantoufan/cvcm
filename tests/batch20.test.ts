@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { coinStats, flipCoin, percentText } from "../src/shared/coin";
+import { extendStreaks, flipCoins, percentText } from "../src/shared/coin";
 import { TUNINGS, centsOff, centsText, detectPitch, midiToFreq, nearestTarget, noteName, searchRange } from "../src/shared/tuner";
 import {
   divisorCount, divisorSum, divisors, euclidSteps, factorPairs, factorText, factorTextExpanded, factorize, gcd,
@@ -7,20 +7,19 @@ import {
 } from "../src/shared/factors";
 
 describe("coin-flip", () => {
-  it("flips by one bit and tracks streaks", () => {
-    expect(flipCoin(() => 1)).toBe("heads");
-    expect(flipCoin(() => 0)).toBe("tails");
-    const s = coinStats(3, 2, ["heads", "tails", "tails", "heads", "heads"]);
-    expect(s.total).toBe(5);
-    expect(s.longest).toEqual({ face: "tails", length: 2 });
-    expect(s.current).toEqual({ face: "heads", length: 2 });
-    expect(coinStats(0, 0, []).longest).toBeNull();
+  it("takes one bit per coin and tracks streaks across presses", () => {
+    expect(flipCoins(10, () => Uint8Array.of(0b00000101, 0b10))).toEqual(["heads", "tails", "heads", "tails", "tails", "tails", "tails", "tails", "tails", "heads"]);
+    let s = extendStreaks({ longest: null, current: null }, ["heads", "tails", "tails"]);
+    expect(s).toEqual({ longest: { face: "tails", length: 2 }, current: { face: "tails", length: 2 } });
+    s = extendStreaks(s, ["tails", "heads"]);
+    expect(s).toEqual({ longest: { face: "tails", length: 3 }, current: { face: "heads", length: 1 } });
     expect(percentText(1, 3)).toBe("33.3%");
     expect(percentText(0, 0)).toBe("—");
   });
   it("is fair over many real flips", () => {
-    let heads = 0;
-    for (let i = 0; i < 20000; i++) if (flipCoin() === "heads") heads++;
+    const faces = flipCoins(20000);
+    const heads = faces.filter((f) => f === "heads").length;
+    expect(faces).toHaveLength(20000);
     expect(Math.abs(heads - 10000)).toBeLessThan(600);
   });
 });
@@ -61,6 +60,11 @@ describe("guitar-tuner", () => {
       }
     }
   });
+  it("hears a five-string bass's low B at 96 kHz with the larger window", () => {
+    const { min, max } = searchRange("bass-5");
+    const p = detectPitch(tone(midiToFreq(23), 96000, 8192), 96000, min, max);
+    expect(Math.abs(centsOff(p!.freq, 23))).toBeLessThan(1);
+  });
   it("ignores silence and noise", () => {
     expect(detectPitch(new Float32Array(4096), 48000)).toBeNull();
     let seed = 1;
@@ -73,7 +77,10 @@ describe("factors", () => {
   it("parses whole numbers", () => {
     expect(parseWhole(" 1 234 567 ")).toEqual({ ok: true, n: 1234567n });
     expect(parseWhole("12,345")).toEqual({ ok: true, n: 12345n });
-    expect(parseWhole("1.234.567")).toEqual({ ok: true, n: 1234567n });
+    expect(parseWhole("1.234.567")).toEqual({ ok: false, error: "notInteger" });
+    expect(parseWhole("1.234.567", ".")).toEqual({ ok: true, n: 1234567n });
+    expect(parseWhole("4.500")).toEqual({ ok: false, error: "notInteger" });
+    expect(parseWhole("1,500", ".")).toEqual({ ok: false, error: "notInteger" });
     expect(parseWhole("4.5")).toEqual({ ok: false, error: "notInteger" });
     expect(parseWhole("1,23")).toEqual({ ok: false, error: "notInteger" });
     expect(parseWhole("-5")).toEqual({ ok: false, error: "notPositive" });

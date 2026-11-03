@@ -2,7 +2,7 @@ import { copyWithFlash } from "../copy";
 import { h, keepShortcutsOnClick, onScreen } from "../dom";
 import { locale, t } from "../i18n";
 import { appHref } from "../../shared/path";
-import { FLIP_COUNTS, HISTORY_MAX, coinStats, flipCoin, percentText, type CoinFace } from "../../shared/coin";
+import { FLIP_COUNTS, HISTORY_MAX, extendStreaks, flipCoins, percentText, type CoinFace, type Streaks } from "../../shared/coin";
 
 /** Length of the spin; a reduced-motion setting skips it. */
 const SPIN_MS = 700;
@@ -19,12 +19,14 @@ let copyBtn: HTMLButtonElement | null = null;
 let heads = 0;
 let tails = 0;
 let history: CoinFace[] = [];
+let streaks: Streaks = { longest: null, current: null };
 let spinTimer = 0;
 let spinning = false;
 
 export function mountCoinFlip(host: HTMLElement): void {
   heads = tails = 0;
   history = [];
+  streaks = { longest: null, current: null };
   spinning = false;
   faceEl = h("span", { class: "coin-face" }, t("coinFlip.tapToFlip"));
   coinEl = h("button", { type: "button", class: "coin", "data-action": "flip", "aria-label": t("coinFlip.flip"), onClick: () => flip() }, faceEl);
@@ -90,8 +92,7 @@ function faceName(face: CoinFace): string {
 function flip(): void {
   if (spinning || !coinEl) return;
   const n = Number(countEl?.value) || 1;
-  const faces: CoinFace[] = [];
-  for (let i = 0; i < n; i++) faces.push(flipCoin());
+  const faces = flipCoins(n);
   const last = faces[faces.length - 1]!;
   const land = () => {
     spinning = false;
@@ -101,6 +102,7 @@ function flip(): void {
       else tails++;
     }
     history.push(...faces);
+    streaks = extendStreaks(streaks, faces);
     if (history.length > HISTORY_MAX) history = history.slice(-HISTORY_MAX);
     if (coinEl) coinEl.dataset.face = last;
     if (faceEl) faceEl.textContent = faceName(last);
@@ -128,6 +130,7 @@ function reset(): void {
   spinning = false;
   heads = tails = 0;
   history = [];
+  streaks = { longest: null, current: null };
   coinEl?.classList.remove("spinning");
   if (coinEl) delete coinEl.dataset.face;
   if (faceEl) faceEl.textContent = t("coinFlip.tapToFlip");
@@ -137,14 +140,14 @@ function reset(): void {
 
 function paint(): void {
   if (!statsEl || !stripEl) return;
-  const s = coinStats(heads, tails, history);
-  const streak = (r: typeof s.longest) => (r ? t("coinFlip.streakValue", { n: r.length, face: faceName(r.face) }) : "—");
+  const total = heads + tails;
+  const streak = (r: Streaks["longest"]) => (r ? t("coinFlip.streakValue", { n: r.length, face: faceName(r.face) }) : "—");
   const rows: Array<[string, string]> = [
-    [t("coinFlip.heads"), `${s.heads} (${percentText(s.heads, s.total)})`],
-    [t("coinFlip.tails"), `${s.tails} (${percentText(s.tails, s.total)})`],
-    [t("coinFlip.total"), String(s.total)],
-    [t("coinFlip.longest"), streak(s.longest)],
-    [t("coinFlip.current"), streak(s.current)],
+    [t("coinFlip.heads"), `${heads} (${percentText(heads, total)})`],
+    [t("coinFlip.tails"), `${tails} (${percentText(tails, total)})`],
+    [t("coinFlip.total"), String(total)],
+    [t("coinFlip.longest"), streak(streaks.longest)],
+    [t("coinFlip.current"), streak(streaks.current)],
   ];
   statsEl.replaceChildren(...rows.flatMap(([k, v]) => [h("dt", null, k), h("dd", null, v)]));
   const shown = history.slice(-SHOWN);
@@ -162,8 +165,7 @@ function onKey(e: KeyboardEvent): void {
 }
 
 async function copyOut(): Promise<void> {
-  const s = coinStats(heads, tails, history);
-  if (!s.total) return;
-  const text = t("coinFlip.copyText", { heads: s.heads, tails: s.tails, total: s.total });
+  if (!heads && !tails) return;
+  const text = t("coinFlip.copyText", { heads, tails, total: heads + tails });
   await copyWithFlash(copyBtn, text, { done: t("coinFlip.copied"), failed: t("coinFlip.copyFailed") });
 }

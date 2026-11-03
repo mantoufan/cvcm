@@ -8,14 +8,23 @@ export const MAX_NUMBERS = 20;
 
 export type ParseError = "empty" | "notInteger" | "tooBig" | "notPositive";
 
+/** The mark written between thousands: "." where the decimal mark is a comma (es, id, vi), "," elsewhere. */
+export type ThousandsMark = "," | ".";
+
+export function thousandsMarkFor(loc: string): ThousandsMark {
+  return loc === "es" || loc === "id" || loc === "vi" ? "." : ",";
+}
+
 /**
- * Reads one whole number. Spaces are ignored; commas, dots and apostrophes count as thousands separators only between
- * groups of three digits (1,234,567 or 1.234.567), so 4.5 is a decimal, not 45.
+ * Reads one whole number. Spaces and apostrophes may group digits; the locale's thousands mark counts only between
+ * groups of three (1,234,567 in English, 1.234.567 in Spanish). The other mark is a decimal point, so 4.5 and 4.500 in
+ * English, or 1,5 in Spanish, are rejected instead of being read as 45, 4500 or 15.
  */
-export function parseWhole(raw: string): { ok: true; n: bigint } | { ok: false; error: ParseError } {
+export function parseWhole(raw: string, thousands: ThousandsMark = ","): { ok: true; n: bigint } | { ok: false; error: ParseError } {
   let s = raw.trim().replace(/[\s\u00a0\u202f_]/g, "");
   if (!s) return { ok: false, error: "empty" };
-  if (/^[-−]?\d{1,3}([,.'’])\d{3}(\1\d{3})*$/.test(s)) s = s.replace(/[,.'’]/g, "");
+  const mark = thousands === "," ? "," : "\\.";
+  if (new RegExp(`^[-−]?\\d{1,3}([${mark}'’])\\d{3}(\\1\\d{3})*$`).test(s)) s = s.replace(/[,.'’]/g, "");
   if (/^[-−]\d+$/.test(s)) return { ok: false, error: "notPositive" };
   if (!/^\d+$/.test(s)) return { ok: false, error: "notInteger" };
   const digits = s.replace(/^0+(?=\d)/, "");
@@ -24,8 +33,8 @@ export function parseWhole(raw: string): { ok: true; n: bigint } | { ok: false; 
 }
 
 /**
- * Splits a list typed with commas, spaces, semicolons or new lines. A comma between digit groups of three
- * (12,345) is read as a separator between numbers, so lists stay unambiguous; thousands separators are not supported here.
+ * Splits a list typed with commas, spaces, semicolons or new lines. Every comma separates numbers (12,345 is 12 and
+ * 345); where the thousands mark is "." (es, id, vi), 12.345 inside one entry is still twelve thousand.
  */
 export function splitNumbers(raw: string): string[] {
   return raw.split(/[\s,;，、;]+/).map((x) => x.trim()).filter(Boolean);
@@ -256,13 +265,4 @@ export function gcfLcmByPrimes(factors: readonly (readonly PrimePower[])[]): { g
     if (hi > 0) lcmOut.push({ p, e: hi });
   }
   return { gcf: gcfOut, lcm: lcmOut };
-}
-
-/** Digits grouped by a locale's thousands separator (BigInt-safe). */
-export function groupDigits(n: bigint, loc: string): string {
-  try {
-    return new Intl.NumberFormat(loc, { maximumFractionDigits: 0 }).format(n);
-  } catch {
-    return n.toString();
-  }
 }

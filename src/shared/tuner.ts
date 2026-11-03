@@ -1,3 +1,5 @@
+import { rms } from "./mic";
+
 /** Instrument tunings as MIDI note numbers, lowest string first (A4 = 69). */
 export const TUNINGS = {
   "guitar": [40, 45, 50, 55, 59, 64],
@@ -67,13 +69,7 @@ export function searchRange(tuning: TuningId, a4 = DEFAULT_A4): { min: number; m
   return { min: midiToFreq(Math.min(...strings) - 7, a4), max: Math.min(2100, midiToFreq(Math.max(...strings), a4) * 2.5) };
 }
 
-/** Root mean square of a buffer; below a floor the tuner ignores the input (room noise). */
-export function signalLevel(buf: ArrayLike<number>): number {
-  let sum = 0;
-  for (let i = 0; i < buf.length; i++) sum += buf[i]! * buf[i]!;
-  return buf.length ? Math.sqrt(sum / buf.length) : 0;
-}
-
+/** Below this RMS level the tuner ignores the input (room noise). */
 export const MIN_LEVEL = 0.008;
 
 export type Pitch = { freq: number; clarity: number };
@@ -83,7 +79,7 @@ export type Pitch = { freq: number; clarity: number };
  * parabolic interpolation. Returns null for silence or noise with no clear period.
  */
 export function detectPitch(buf: ArrayLike<number>, sampleRate: number, minFreq = 27.5, maxFreq = 2100): Pitch | null {
-  if (signalLevel(buf) < MIN_LEVEL) return null;
+  if (rms(buf) < MIN_LEVEL) return null;
   const maxLag = Math.min(Math.floor(sampleRate / minFreq), Math.floor(buf.length / 2));
   const minLag = Math.max(2, Math.floor(sampleRate / maxFreq));
   const w = buf.length - maxLag;

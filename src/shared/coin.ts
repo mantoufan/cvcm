@@ -7,39 +7,36 @@ export const FLIP_COUNTS = [1, 10, 100, 1000] as const;
 /** The history keeps this many faces (counts keep going past it). */
 export const HISTORY_MAX = 1000;
 
-/** One fair flip from one random bit of Web Crypto (no modulo bias). */
-export function flipCoin(bit: () => number = cryptoBit): CoinFace {
-  return bit() ? "heads" : "tails";
+/** Fair flips from one Web Crypto draw: one random bit per coin (no modulo bias), 8 coins per byte. */
+export function flipCoins(count: number, bytes: (n: number) => Uint8Array = cryptoBytes): CoinFace[] {
+  const n = Math.max(0, Math.floor(count));
+  const buf = bytes(Math.ceil(n / 8));
+  const out: CoinFace[] = [];
+  for (let i = 0; i < n; i++) out.push((buf[i >> 3]! >> (i & 7)) & 1 ? "heads" : "tails");
+  return out;
 }
 
-function cryptoBit(): number {
-  const buf = new Uint8Array(1);
-  crypto.getRandomValues(buf);
-  return buf[0]! & 1;
+function cryptoBytes(n: number): Uint8Array {
+  const buf = new Uint8Array(n);
+  if (n) crypto.getRandomValues(buf);
+  return buf;
 }
 
-export type CoinStats = {
-  heads: number;
-  tails: number;
-  total: number;
-  /** Longest run of one face in the kept history. */
-  longest: { face: CoinFace; length: number } | null;
-  /** The run the last flip belongs to. */
-  current: { face: CoinFace; length: number } | null;
-};
+export type Run = { face: CoinFace; length: number };
 
-/** Counts come from `heads`/`tails` (all flips); streaks from the kept history, oldest first. */
-export function coinStats(heads: number, tails: number, history: readonly CoinFace[]): CoinStats {
-  let longest: CoinStats["longest"] = null;
-  let run: CoinStats["current"] = null;
-  for (const face of history) {
-    run = run && run.face === face ? { face, length: run.length + 1 } : { face, length: 1 };
-    if (!longest || run.length > longest.length) longest = { ...run };
+/** Streaks over every flip so far, updated as coins land (the history kept for display may be shorter). */
+export type Streaks = { longest: Run | null; current: Run | null };
+
+export function extendStreaks(prev: Streaks, faces: readonly CoinFace[]): Streaks {
+  let { longest, current } = prev;
+  for (const face of faces) {
+    current = current && current.face === face ? { face, length: current.length + 1 } : { face, length: 1 };
+    if (!longest || current.length > longest.length) longest = current;
   }
-  return { heads, tails, total: heads + tails, longest, current: run };
+  return { longest, current };
 }
 
-/** Share of heads in whole percent with one decimal, "—" before any flip. */
+/** Share in percent with one decimal, "—" before any flip. */
 export function percentText(part: number, total: number): string {
   if (!total) return "—";
   return `${(Math.round((part / total) * 1000) / 10).toFixed(1)}%`;

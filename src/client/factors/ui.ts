@@ -4,7 +4,7 @@ import { locale, t } from "../i18n";
 import { appHref } from "../../shared/path";
 import {
   MAX_DIGITS, MAX_LISTED_DIVISORS, divisorCount, divisorSum, divisors, factorPairs, factorText, factorTextExpanded,
-  factorize, nextPrime, parseWhole, previousPrime,
+  factorize, nextPrime, parseWhole, previousPrime, thousandsMarkFor,
 } from "../../shared/factors";
 
 let inputEl: HTMLInputElement | null = null;
@@ -70,7 +70,7 @@ function schedule(): void {
 
 function paint(): void {
   if (!inputEl || !verdictEl || !outEl || !divisorsEl || !pairsEl) return;
-  const parsed = parseWhole(inputEl.value);
+  const parsed = parseWhole(inputEl.value, thousandsMarkFor(locale()));
   outEl.replaceChildren();
   divisorsEl.textContent = "";
   pairsEl.textContent = "";
