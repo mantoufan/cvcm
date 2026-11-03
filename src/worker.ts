@@ -6,7 +6,7 @@ import { isIpAddress } from "./shared/device";
 import { appHref, datasetHref, deviceHref, gamesHref, isAgentDocPath, devicePolicyOf, isAiToolPath, isPublishedTutorial, kbHref, learnHref, legalHref, parseAppPath, quizHref, refHref, STATIC_FILE, toolJob } from "./shared/path";
 import { GA_CONNECT_HOSTS, GA_SCRIPT_HOST, isTrackedPath } from "./shared/analytics";
 import { thumbOriginal } from "./shared/covers";
-import { upstreamUrl } from "./shared/ai-models";
+import { aiContentType, upstreamUrl } from "./shared/ai-models";
 import { preloadLocalePack, preloadPageChunk } from "./shared/locale-preload";
 import { DATASET_FILES } from "./shared/datasets";
 import { applyHtmlSeo } from "./shared/seo";
@@ -88,7 +88,7 @@ function s3Config(env: Env): S3Config | null {
 }
 
 export default {
-  async fetch(request: Request, env: Env): Promise<Response> {
+  async fetch(request: Request, env: Env, ctx?: ExecutionContextLike): Promise<Response> {
     const url = new URL(request.url);
     // CORS preflight for the agent discovery files, before the www redirect: browsers reject redirected preflights.
     if (request.method === "OPTIONS" && isAgentDocPath(url.pathname)) {
@@ -136,7 +136,7 @@ export default {
     if (emu) return withHeaders(emu, path);
     const cover = await proxyCovers(path, request.method);
     if (cover) return withHeaders(cover, path);
-    const ai = await proxyAi(path, request.method);
+    const ai = await proxyAi(path, request.method, ctx);
     if (ai) return withHeaders(ai, path);
 
     if (!STATIC_FILE.test(path)) {
@@ -442,7 +442,7 @@ async function proxyEmu(pathname: string, method: string): Promise<Response | nu
   return new Response(upstream.body, { status: 200, headers });
 }
 
-async function proxyAi(pathname: string, method: string): Promise<Response | null> {
+async function proxyAi(pathname: string, method: string, ctx?: ExecutionContextLike): Promise<Response | null> {
   const match = AI_PROXY.exec(pathname);
   if (!match) return null;
   if (method !== "GET" && method !== "HEAD") {
@@ -453,38 +453,51 @@ async function proxyAi(pathname: string, method: string): Promise<Response | nul
     return new Response("Bad Request", { status: 400 });
   }
   // Only catalog files: our own exports from s3.cv.cm, the rest straight from their publisher (Hugging Face, the npm
-  // CDN), so nothing has to be uploaded. The Worker fetches them, so visitors (mainland China included) only ever talk
-  // to cv.cm. Every URL names a pinned revision, so the edge keeps it for a year (files over Cloudflare's cache limit,
-  // the two large Janus sessions, are streamed each time).
+  // CDN), so nothing has to be uploaded. Visitors (mainland China included) only ever talk to cv.cm.
   const source = upstreamUrl(match[1] as "models" | "ort", rest);
-  const upstream = source
-    ? await fetch(source, {
-      // Only successes are kept: a 404 cached by mistake would break the tool at that PoP for a year.
-      cf: { cacheEverything: true, cacheTtlByStatus: { "200-299": 31_536_000, "300-599": 0 } },
-    } as RequestInit)
-    : new Response(null, { status: 404 });
-  if (!upstream.ok) {
-    // A real 404: Transformers.js probes optional files and must not get the SPA's index.html.
-    return new Response(method === "HEAD" ? null : "Not Found", {
-      status: 404,
-      headers: { "Cache-Control": "no-store", "Content-Type": "text/plain; charset=utf-8" },
-    });
+  if (!source) return aiNotFound(method);
+  // Cached under our own stable URL: Hugging Face redirects every download to a freshly signed CDN URL, which the
+  // fetch cache would never hit again. Every path names a pinned revision, so a year is safe.
+  const key = new Request(`https://cv.cm${pathname}`);
+  const cache = typeof caches === "undefined" ? null : (caches as unknown as { default: Cache }).default;
+  const hit = method === "GET" ? await cache?.match(key) : undefined;
+  if (hit) return aiResponse(hit, rest, method);
+  const upstream = await fetch(source, { method });
+  if (upstream.status === 404 || upstream.status === 403) return aiNotFound(method);
+  // Rate limits and outages are not "missing file": a retry may work, so never a cached 404.
+  if (!upstream.ok) return new Response(null, { status: 502, headers: { "Cache-Control": "no-store" } });
+  const response = aiResponse(upstream, rest, method);
+  if (method === "GET" && cache && ctx) {
+    // Files over the cache's 512 MB limit (two Janus sessions) are refused by put(); they stream through each time.
+    const size = Number(upstream.headers.get("Content-Length"));
+    if (!size || size < 500_000_000) {
+      const stored = new Response(response.clone().body, { headers: { ...Object.fromEntries(response.headers), "Cache-Control": "public, max-age=31536000, immutable" } });
+      ctx.waitUntil(cache.put(key, stored).catch(() => {}));
+    }
   }
-  const headers = new Headers();
-  for (const name of ["Content-Length", "ETag", "Last-Modified"]) {
+  return response;
+}
+
+type ExecutionContextLike = { waitUntil(promise: Promise<unknown>): void };
+
+function aiNotFound(method: string): Response {
+  // A real 404: Transformers.js probes optional files and must not get the SPA's index.html.
+  return new Response(method === "HEAD" ? null : "Not Found", {
+    status: 404,
+    headers: { "Cache-Control": "no-store", "Content-Type": "text/plain; charset=utf-8" },
+  });
+}
+
+function aiResponse(upstream: Response, path: string, method: string): Response {
+  const headers = new Headers({ "Content-Type": aiContentType(path) });
+  for (const name of ["ETag", "Last-Modified"]) {
     const value = upstream.headers.get(name);
     if (value) headers.set(name, value);
   }
-  // Set from the extension: publishers label .mjs / .wasm / .json differently, and the worker needs the right types.
-  headers.set("Content-Type", aiContentType(rest) ?? upstream.headers.get("Content-Type") ?? "application/octet-stream");
+  // A compressed upstream body arrives decoded, so its Content-Length would be wrong: pass it only when unencoded.
+  const length = upstream.headers.get("Content-Length");
+  if (length && !upstream.headers.get("Content-Encoding")) headers.set("Content-Length", length);
   return new Response(method === "HEAD" ? null : upstream.body, { status: 200, headers });
-}
-
-function aiContentType(path: string): string | null {
-  if (path.endsWith(".json")) return "application/json";
-  if (path.endsWith(".wasm")) return "application/wasm";
-  if (path.endsWith(".mjs")) return "text/javascript";
-  return null;
 }
 
 async function proxyCovers(pathname: string, method: string): Promise<Response | null> {

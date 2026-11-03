@@ -1,6 +1,8 @@
+import { readFileSync } from "node:fs";
+import { join } from "node:path";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import worker from "../src/worker";
-import { AI_MODELS, formatMb, mirrorFiles, modelFileUrl, type AiModelId } from "../src/shared/ai-models";
+import { AI_MODELS, ORT_VERSION, formatMb, mirrorFiles, modelFileUrl, upstreamUrl, type AiModelId } from "../src/shared/ai-models";
 import { AI_TOOLS, appHref, isAiToolPath, parseAppPath } from "../src/shared/path";
 import { cleanSegments, shortClock, toSrt, toText, toVtt } from "../src/shared/subtitles";
 import { isTrackedPath } from "../src/shared/analytics";
@@ -154,6 +156,30 @@ describe("AI page headers", () => {
     const bad = await get("/ai/models/a//b.onnx");
     expect(bad.status).toBe(400);
     expect(seen).toHaveLength(5);
+  });
+
+  it("reports rate limits as 502, drops a compressed length, answers HEAD with HEAD, and pins ONNX Runtime", async () => {
+    const calls: { url: string; method: string }[] = [];
+    let reply = (): Response => new Response("busy", { status: 429 });
+    vi.stubGlobal("fetch", async (url: string, init?: RequestInit) => {
+      calls.push({ url, method: init?.method ?? "GET" });
+      return reply();
+    });
+    const get = (path: string, method = "GET") => worker.fetch(new Request(`https://cv.cm${path}`, { method }), { ASSETS: html });
+    const cfg = `/ai/models/onnx-community/depth-anything-v2-small/${AI_MODELS.depth.revision}/config.json`;
+    const limited = await get(cfg);
+    expect(limited.status).toBe(502);
+    expect(limited.headers.get("Cache-Control")).toBe("no-store");
+    reply = () => new Response("{}", { headers: { "Content-Length": "1", "Content-Encoding": "br" } });
+    expect((await get(cfg)).headers.get("Content-Length")).toBeNull();
+    reply = () => new Response(null, { headers: { "Content-Length": "38" } });
+    const head = await get(cfg, "HEAD");
+    expect(head.headers.get("Content-Length")).toBe("38");
+    expect(calls.at(-1)!.method).toBe("HEAD");
+    const lock = JSON.parse(readFileSync(join(__dirname, "../package-lock.json"), "utf8")) as { packages: Record<string, { version: string }> };
+    expect(ORT_VERSION).toBe(lock.packages["node_modules/onnxruntime-web"].version);
+    expect(upstreamUrl("ort", `${ORT_VERSION}/ort-wasm-simd-threaded.asyncify.mjs`)).toContain(`onnxruntime-web@${ORT_VERSION}/dist/`);
+    expect(upstreamUrl("ort", "1.22.0/ort-wasm-simd-threaded.asyncify.mjs")).toBeNull();
   });
 });
 

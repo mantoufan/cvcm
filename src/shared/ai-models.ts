@@ -1,7 +1,8 @@
 /**
- * Models behind the AI tools. Weights are mirrored from Hugging Face at a pinned revision to
- * s3.cv.cm `files/ai/models/{repo}/` (scripts/mirror-ai-models.mjs) and served same-origin at `/ai/models/`.
- * Hugging Face is not reachable from mainland China, and same-origin keeps the CSP closed.
+ * Models behind the AI tools, at pinned revisions. The Worker serves every file same-origin at `/ai/models/`
+ * (`upstreamUrl`): published models straight from Hugging Face (or the model's `source`), our own re-exports
+ * (`cvcm/*`, not on Hugging Face) from s3.cv.cm `files/ai/models/` (scripts/ai/mirror.mjs). Visitors only talk to
+ * cv.cm, which also keeps them working where Hugging Face is blocked (mainland China).
  */
 
 /** How the model runs: WebGPU with 16-bit floats, WebGPU without them, or WebAssembly on the CPU. */
@@ -246,9 +247,9 @@ export const JANUS_DEVICES = {
   image_decode: "webgpu",
 } as const;
 
-/** Same-origin path the Worker proxies to s3.cv.cm. */
+/** Same-origin path the Worker serves models at (from their publisher, or s3.cv.cm for our own exports). */
 export const AI_MODEL_PREFIX = "/ai/models/";
-/** ONNX Runtime's WebAssembly build, mirrored next to the models (the .wasm is over Pages' 25 MiB file limit). */
+/** ONNX Runtime's WebAssembly build (the .wasm is over Pages' 25 MiB file limit): the Worker serves it from the npm CDN. */
 export const AI_ORT_PREFIX = "/ai/ort/";
 
 /**
@@ -262,6 +263,9 @@ export function modelFileUrl(id: AiModelId, file: string, host: string | null | 
   return source ? `${source}/${file}` : `https://huggingface.co/${repo}/resolve/${revision}/${file}`;
 }
 
+/** The onnxruntime-web version the AI worker bundles (a test keeps it equal to package-lock). */
+export const ORT_VERSION = "1.31.0-dev.20260914-8d85527a0";
+
 /** Our own exports (scripts/ai/export-*.py): not on Hugging Face, so they are the only files kept on s3.cv.cm. */
 export function isOwnExport(repo: string): boolean {
   return repo.startsWith("cvcm/");
@@ -274,8 +278,9 @@ export function isOwnExport(repo: string): boolean {
  */
 export function upstreamUrl(kind: "models" | "ort", rest: string): string | null {
   if (kind === "ort") {
+    // Only the ONNX Runtime build this site bundles.
     const m = /^([0-9][0-9A-Za-z.-]*)\/(ort-wasm-simd-threaded\.asyncify\.(?:mjs|wasm))$/.exec(rest);
-    return m ? `https://cdn.jsdelivr.net/npm/onnxruntime-web@${m[1]}/dist/${m[2]}` : null;
+    return m && m[1] === ORT_VERSION ? `https://cdn.jsdelivr.net/npm/onnxruntime-web@${m[1]}/dist/${m[2]}` : null;
   }
   for (const id of Object.keys(AI_MODELS) as AiModelId[]) {
     const { repo, revision } = AI_MODELS[id];
@@ -286,6 +291,14 @@ export function upstreamUrl(kind: "models" | "ort", rest: string): string | null
     return isOwnExport(repo) ? `https://s3.cv.cm/files/ai/models/${rest}` : modelFileUrl(id, file, null, "https://cv.cm");
   }
   return null;
+}
+
+/** Content-Type for an /ai/ file, by extension (publishers label .mjs / .wasm / .json differently). */
+export function aiContentType(path: string): string {
+  if (path.endsWith(".json")) return "application/json";
+  if (path.endsWith(".wasm")) return "application/wasm";
+  if (path.endsWith(".mjs")) return "text/javascript";
+  return "application/octet-stream";
 }
 
 export function modelBytes(id: AiModelId, backend: AiBackend): number {

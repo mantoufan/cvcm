@@ -1,5 +1,6 @@
 /**
- * Stage the AI tools' files and (with --upload) put them on s3.cv.cm, where the Worker serves them at /ai/.
+ * Stage the AI tools' files for local testing, and (with --upload) put our own cvcm/* exports on s3.cv.cm. Other
+ * models and ONNX Runtime are not uploaded: the Worker fetches them from their publisher (upstreamUrl).
  *
  *   node scripts/ai/mirror.mjs                      # download to tmp-verify/mirror (dev: VITE_AI_MODEL_HOST=/tmp-verify/mirror/)
  *   node scripts/ai/mirror.mjs --exports DIR        # take our own cvcm/* exports (scripts/ai/export-*.py OUT_ROOT)
@@ -14,7 +15,7 @@ import { execFileSync } from "node:child_process";
 import { createHash } from "node:crypto";
 import { copyFile, mkdir, readFile, stat, writeFile } from "node:fs/promises";
 import { dirname, join, resolve } from "node:path";
-import { AI_MODELS, isOwnExport, mirrorFiles, modelFileUrl, type AiModelId } from "../../src/shared/ai-models";
+import { AI_MODELS, aiContentType, isOwnExport, mirrorFiles, modelFileUrl, type AiModelId } from "../../src/shared/ai-models";
 import { presignS3Put, type S3Config } from "../../src/s3-sign";
 
 const args = process.argv.slice(2);
@@ -53,7 +54,7 @@ async function stage(): Promise<string[]> {
       const rel = `models/${repo}/${revision}/${file}`;
       const dest = join(out, rel);
       rels.push(rel);
-      if (repo.startsWith("cvcm/")) {
+      if (isOwnExport(repo)) {
         // Our own exports (not on Hugging Face): copy from the export scripts' output root when given.
         if (exportsDir) {
           await mkdir(dirname(dest), { recursive: true });
@@ -64,6 +65,8 @@ async function stage(): Promise<string[]> {
         continue;
       }
       if ((await size(dest)) > 0) continue;
+      // Uploads are our own exports only; published models are fetched by the Worker, not staged for upload.
+      if (upload) continue;
       console.log("download", rel);
       await download(modelFileUrl(id, file, null, "https://cv.cm"), dest);
     }
@@ -78,12 +81,6 @@ async function stage(): Promise<string[]> {
   return rels;
 }
 
-function contentType(path: string): string {
-  if (path.endsWith(".json")) return "application/json";
-  if (path.endsWith(".wasm")) return "application/wasm";
-  if (path.endsWith(".mjs")) return "text/javascript";
-  return "application/octet-stream";
-}
 
 async function publish(rels: string[]): Promise<void> {
   const accessKey = process.env.S3_ACCESS_KEY_ID;
@@ -92,13 +89,13 @@ async function publish(rels: string[]): Promise<void> {
   const cfg: S3Config = { accessKey, secret, host: "s3.cv.cm", bucket: "files", region: "us-east-1" };
   for (const rel of rels) {
     // Only our own exports live on s3.cv.cm; the Worker fetches every other file from its publisher (upstreamUrl).
-    if (!rel.startsWith("models/") || !isOwnExport(rel.slice("models/".length))) continue;
+    if (!rel.startsWith("models/cvcm/")) continue;
     const path = join(out, rel);
     const bytes = await size(path);
     const key = `ai/${rel}`;
     const head = await fetch(`https://s3.cv.cm/files/${key}`, { method: "HEAD" });
     if (head.ok && Number(head.headers.get("content-length")) === bytes) continue;
-    const type = contentType(rel);
+    const type = aiContentType(rel);
     const url = await presignS3Put(cfg, key, new Date(), 3600, type, bytes);
     // curl, not fetch: s3.cv.cm answers a large PUT only after storing it, past fetch's 5-minute header timeout.
     const code = execFileSync("curl", [
