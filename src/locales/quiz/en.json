@@ -44,9 +44,9 @@
   },
   "hub": {
     "title": "Free personality tests: MBTI, Big Five, EQ, love and career — cv.cm",
-    "description": "Free personality and psychology tests: 16 types (MBTI-style), Big Five, introvert or extrovert, Enneagram, emotional intelligence, love language, attachment, love style, conflict style, career, work style, leadership, money, chronotype, pet match, face shape, well-being (WHO-5), self-esteem, anxiety and depression, plus fan quizzes: Hogwarts house, Pokémon, Genshin Impact, Sonic, D&D, Naruto, One Piece, Demon Slayer, Jujutsu Kaisen, Avatar and anime archetypes. No sign-up; answers stay in your browser.",
+    "description": "Free personality and psychology tests: 16 types (MBTI-style), Big Five, introvert or extrovert, Enneagram, emotional intelligence, four temperaments, love language, attachment, love style, conflict style, career, work style, leadership, growth mindset, money, chronotype, pet match, face shape, friend group role, well-being (WHO-5), self-esteem, anxiety and depression, plus fan quizzes: Hogwarts house, Marvel, Studio Ghibli, Pokémon, Genshin Impact, Sonic, D&D, Naruto, One Piece, Demon Slayer, Jujutsu Kaisen, Avatar and anime archetypes. No sign-up; answers stay in your browser.",
     "h1": "Personality and psychology tests",
-    "lede": "Thirty-two free tests, from 16 personality types, the Big Five and emotional intelligence to love styles, leadership, your Hogwarts house, One Piece and Naruto fan quizzes and quick mental health self-checks. No sign-up, no email. Your answers are scored in your browser and never uploaded.",
+    "lede": "Thirty-seven free tests, from 16 personality types, the Big Five and the four temperaments to love styles, growth mindset, your role in your friend group, Hogwarts, Marvel and Studio Ghibli fan quizzes and quick mental health self-checks. No sign-up, no email. Your answers are scored in your browser and never uploaded.",
     "groups": {
       "personality": "Personality",
       "love": "Love and relationships",
@@ -59,7 +59,7 @@
     },
     "about": [
       "Each test lists all of its questions on one page. Answer them, press the button, and the result appears under the questions with a short explanation and a chart of your scores.",
-      "The wellbeing checks use published screening questionnaires (WHO-5, Rosenberg, GAD-7, PHQ-9). The Big Five and the introvert–extrovert test use the public-domain IPIP item pool. The other tests are written for cv.cm from well-known models, and their results are a starting point for reflection, not a verdict. The game, anime and book quizzes are unofficial fan quizzes, just for fun."
+      "The wellbeing checks use published screening questionnaires (WHO-5, Rosenberg, GAD-7, PHQ-9). The Big Five and the introvert–extrovert test use the public-domain IPIP item pool. The other tests are written for cv.cm from well-known models, and their results are a starting point for reflection, not a verdict. The game, anime, book and film quizzes are unofficial fan quizzes, just for fun."
     ],
     "faq": [
       { "q": "Are these tests free?", "a": "Yes. Every test is free, with no sign-up, no email, and no paywall in front of the result." },
@@ -456,6 +456,80 @@
           "low": "Handling conflict and difficult conversations is a growth area for you. Start small: give honest, kind feedback about one thing, and say what you need clearly.",
           "mid": "You get along well with most people. Practising the harder parts, like conflict, feedback and bringing people together, will make you even stronger.",
           "high": "You build trust, handle conflict calmly and help people work together. Teams and friends often count on you to keep things running smoothly."
+        }
+      }
+    },
+    "temperament": {
+      "title": "Four temperaments test: sanguine, choleric, melancholic or phlegmatic? — cv.cm",
+      "description": "Free four temperaments test: rate 20 statements to see whether you are mostly sanguine, choleric, melancholic or phlegmatic, with your score for each. No sign-up; answers stay in your browser.",
+      "h1": "Four temperaments test",
+      "lede": "Lively, driven, thoughtful or easygoing? Rate 20 statements to find which of the four classical temperaments sounds most like you, and how much of the other three you have.",
+      "about": [
+        "The four temperaments are one of the oldest personality ideas: Greek physicians linked them to the four bodily humors, and the philosopher Immanuel Kant later described them as types of feeling and acting. Sanguine people are sociable and cheerful, choleric people driven and decisive, melancholic people deep and careful, phlegmatic people calm and steady.",
+        "The humor theory is long gone, and modern psychology describes personality with traits such as the Big Five instead. The four types are still a handy, memorable way to talk about style. The statements here were written for cv.cm; most people are a mix, so look at all four scores, not just the top one."
+      ],
+      "faq": [
+        {
+          "q": "What are the four temperaments?",
+          "a": "Sanguine (outgoing, cheerful, spontaneous), choleric (ambitious, decisive, quick to anger), melancholic (thoughtful, detail-minded, sensitive) and phlegmatic (calm, patient, easygoing)."
+        },
+        {
+          "q": "Is the four temperaments theory scientific?",
+          "a": "Not in its original form: the idea that body fluids shape character was abandoned long ago. The four styles roughly line up with combinations of extraversion and emotional stability, which are well studied. Treat the result as a conversation starter."
+        },
+        {
+          "q": "Can I be two temperaments?",
+          "a": "Yes. Most people have one or two strong temperaments and some of the others. Your result shows all four scores so you can see your blend."
+        },
+        {
+          "q": "Which temperament is best?",
+          "a": "None. Each has strengths and blind spots: the sanguine brings energy, the choleric drive, the melancholic depth and the phlegmatic calm."
+        }
+      ],
+      "items": [
+        "I make friends easily, even with strangers.",
+        "I like to take charge and make the decisions.",
+        "I notice small details that other people miss.",
+        "I rarely lose my temper.",
+        "I get bored quickly without people or excitement around me.",
+        "I get impatient when things move too slowly.",
+        "I think things over carefully before I act.",
+        "I'm happy to go along with what the group wants.",
+        "I tell stories and jokes, and people enjoy them.",
+        "I set high goals and push hard to reach them.",
+        "I feel things deeply and remember them for a long time.",
+        "I stay calm when others are panicking.",
+        "I start new things with enthusiasm, but don't always finish them.",
+        "I say what I think, even if it causes friction.",
+        "I like things to be done properly, or not at all.",
+        "I prefer a quiet, steady routine to constant change.",
+        "My mood lifts as soon as I'm with other people.",
+        "I would rather lead than follow.",
+        "I often need time alone to recharge and think.",
+        "People say I'm easy to get along with."
+      ],
+      "dims": {
+        "sanguine": "Sanguine",
+        "choleric": "Choleric",
+        "melancholic": "Melancholic",
+        "phlegmatic": "Phlegmatic"
+      },
+      "results": {
+        "sanguine": {
+          "name": "Sanguine: the lively one",
+          "body": "You are warm, talkative and quick to enjoy the moment, and people feel welcome around you. You bring energy to any group. Watch out for spreading yourself too thin: finishing what you start makes your enthusiasm count."
+        },
+        "choleric": {
+          "name": "Choleric: the driven one",
+          "body": "You are decisive, ambitious and happiest when you are making things happen. In a crisis, people look to you. Your challenge is patience: slowing down to listen helps others follow you willingly."
+        },
+        "melancholic": {
+          "name": "Melancholic: the thoughtful one",
+          "body": "You are deep, careful and loyal, with high standards and a rich inner life. You notice what others miss and do things properly. Try not to let perfectionism or old worries hold you back."
+        },
+        "phlegmatic": {
+          "name": "Phlegmatic: the calm one",
+          "body": "You are steady, patient and easy to be around, and you keep the peace when others get heated. People trust your calm. Remember that your own wishes matter too: speak up for them before others decide for you."
         }
       }
     },
@@ -1022,6 +1096,60 @@
         }
       }
     },
+    "mindset": {
+      "title": "Growth mindset test: do you have a fixed or growth mindset? — cv.cm",
+      "description": "Free growth mindset quiz inspired by Carol Dweck's research: rate 10 statements about talent, effort and mistakes to see whether you lean toward a fixed or a growth mindset. Takes 2 minutes.",
+      "h1": "Growth mindset test",
+      "lede": "Do you believe talent is set at birth or that it grows with practice? Rate 10 statements to see where you sit between a fixed and a growth mindset, and how to move toward growth.",
+      "about": [
+        "The psychologist Carol Dweck of Stanford University found that people differ in what they believe about ability. With a fixed mindset, intelligence and talent are things you either have or don't, so mistakes feel like proof of your limits. With a growth mindset, abilities develop through effort, good strategies and help from others, so mistakes are information.",
+        "The statements here were written for cv.cm and inspired by Dweck's work; half describe a growth view and half a fixed one. Your score runs from 0 (strongly fixed) to 40 (strongly growth). Nobody has a pure growth mindset all the time, and mindsets can change with practice."
+      ],
+      "faq": [
+        {
+          "q": "What is the difference between a fixed and a growth mindset?",
+          "a": "A fixed mindset sees talent and intelligence as set; a growth mindset sees them as abilities that develop with effort, strategy and feedback. The difference shows most when things get hard."
+        },
+        {
+          "q": "How is the score worked out?",
+          "a": "Each statement is scored 0 to 4. Growth statements count as you agree; fixed statements count as you disagree. The total runs from 0 to 40: 16 or less leans fixed, 17 to 27 is mixed, 28 or more leans growth."
+        },
+        {
+          "q": "Can I change my mindset?",
+          "a": "Yes. Notice fixed-mindset thoughts (\"I'm just not a math person\"), add \"yet\" to them, treat mistakes as feedback, and praise effort and strategy rather than talent, in yourself and in others."
+        },
+        {
+          "q": "Does a growth mindset guarantee success?",
+          "a": "No. Later studies found its effects on grades are real but often small, and bigger for struggling students. It helps most when combined with good teaching, effective strategies and support."
+        }
+      ],
+      "items": [
+        "With enough practice, I can get much better at almost anything.",
+        "You're either born good at something or you're not.",
+        "Mistakes show me what to work on next.",
+        "If I have to try hard at something, it means I'm not naturally good at it.",
+        "I like challenges that stretch me, even if I might fail.",
+        "I avoid tasks where I might look stupid.",
+        "Feedback, even harsh feedback, helps me improve.",
+        "My intelligence is something I can't change much.",
+        "When someone is better than me, I want to learn how they did it.",
+        "When I fail at something, I tend to give up on it."
+      ],
+      "results": {
+        "fixed": {
+          "name": "Leaning fixed mindset",
+          "body": "Your answers suggest you often see ability as set, which can make challenges and mistakes feel threatening. Try adding \"yet\" to thoughts like \"I can't do this\", pick one small skill to practice for a few weeks, and notice how it improves."
+        },
+        "mixed": {
+          "name": "Mixed mindset",
+          "body": "Like most people, you see growth in some areas and fixed limits in others. Notice which situations trigger a fixed view, such as failure, criticism or a talented rival, and practice treating those moments as feedback rather than verdicts."
+        },
+        "growth": {
+          "name": "Leaning growth mindset",
+          "body": "You see ability as something that grows with effort and good strategies, and you're likely to take on challenges and learn from setbacks. Keep pairing effort with new strategies and asking for help, and share that outlook with the people around you."
+        }
+      }
+    },
     "money": {
       "title": "Free money personality test: what's your money type? — cv.cm",
       "description": "Free money personality quiz. Rate 20 statements to learn whether you are a saver, spender, investor, avoider or giver, with strengths, blind spots and a tip. No sign-up.",
@@ -1523,6 +1651,178 @@
         "oblong": { "name": "Oblong face", "body": "Clearly longer than wide, with forehead, cheeks and jaw of similar width. Add width: bangs, waves and volume at the sides; oversized or deep frames. Avoid very long straight hair and tall styling on top." },
         "diamond": { "name": "Diamond face", "body": "Wide, high cheekbones with a narrower forehead and jaw. Show off the cheekbones: side-swept fringes, tucked-behind-the-ear styles and chin-length cuts; oval or cat-eye glasses." },
         "triangle": { "name": "Triangle (pear) face", "body": "Jaw wider than the forehead. Add width up top: volume at the crown and temples, layered cuts, side bangs; frames that are bold on top, like browline glasses. Keep beards short at the sides." }
+      }
+    },
+    "friend-role": {
+      "title": "What's your role in your friend group? Free quiz — cv.cm",
+      "description": "Free friend group role quiz: are you the planner, the caretaker, the comedian, the adventurer, the mediator or the wildcard? Answer 12 quick questions. No sign-up.",
+      "h1": "What's your role in your friend group?",
+      "lede": "Every group of friends has its planner, its caretaker and its comedian. Answer 12 questions about trips, group chats and birthdays to find out which of six roles you play.",
+      "about": [
+        "Friend groups tend to share out roles without anyone deciding it: someone books the restaurant, someone checks everyone got home, someone keeps the group chat funny. Knowing your role can explain why you feel tired after organizing every trip, or why everyone calls you when there's drama.",
+        "This quiz was written for cv.cm, just for fun. Each of the six roles appears equally often in the answers, so every result is equally possible. Your result shows your main role and how strongly you lean toward each of the others."
+      ],
+      "faq": [
+        {
+          "q": "What roles can I get?",
+          "a": "The planner (organizes everything), the caretaker (looks after everyone), the comedian (keeps everyone laughing), the adventurer (always up for something new), the mediator (keeps the peace) and the wildcard (nobody knows what you'll do next)."
+        },
+        {
+          "q": "Can my role change?",
+          "a": "Yes. You might be the planner with school friends and the comedian with family. Answer with one group in mind, then take it again for another."
+        },
+        {
+          "q": "Is this a psychology test?",
+          "a": "No. It is a light-hearted quiz, not a scientific measure of personality."
+        },
+        {
+          "q": "Do my answers get saved?",
+          "a": "No. The quiz is scored in your browser and nothing is uploaded."
+        }
+      ],
+      "items": [
+        {
+          "q": "A friend suggests a last-minute weekend trip. You…",
+          "options": [
+            "Say yes before they finish the sentence",
+            "Start thinking of funny things to film on the way",
+            "Check that everyone's okay with the plan first",
+            "Suggest a completely different, weirder destination"
+          ]
+        },
+        {
+          "q": "In the group chat, you're the one who…",
+          "options": [
+            "Sends a random voice note at 3 a.m.",
+            "Asks if everyone got home safe",
+            "Posts a poll with three possible dates",
+            "Calms things down when an argument starts"
+          ]
+        },
+        {
+          "q": "At a party, you're usually…",
+          "options": [
+            "Doing impressions in the middle of the room",
+            "Talking someone into a game nobody has heard of",
+            "Making sure there's enough food and water",
+            "Daring people to go somewhere else afterward"
+          ]
+        },
+        {
+          "q": "A friend's birthday is coming up. You…",
+          "options": [
+            "Booked the restaurant a month ago",
+            "Quietly ask the others what everyone can afford",
+            "Bake their favorite cake",
+            "Prepare an embarrassing speech"
+          ]
+        },
+        {
+          "q": "The group is bored on a rainy afternoon. You…",
+          "options": [
+            "Start a ridiculous story everyone has to continue",
+            "Already have a list of indoor plans",
+            "Suggest going out anyway and getting soaked",
+            "Turn up with a strange board game from a flea market"
+          ]
+        },
+        {
+          "q": "Two friends aren't speaking to each other. You…",
+          "options": [
+            "Drag them both out for something exciting",
+            "Check that each of them is okay",
+            "Do something so unexpected they both laugh",
+            "Talk to each side and help them meet halfway"
+          ]
+        },
+        {
+          "q": "Your friends would trust you with…",
+          "options": [
+            "The tickets, passports and timetable",
+            "A sad moment they need to laugh through",
+            "A secret plan nobody else would approve",
+            "Their plants and their cat while they're away"
+          ]
+        },
+        {
+          "q": "On a group holiday, your favorite moment is…",
+          "options": [
+            "The night nobody planned and nobody can explain",
+            "Trying the scariest ride or the highest cliff jump",
+            "Everyone finally agreeing where to eat",
+            "Seeing the itinerary run perfectly"
+          ]
+        },
+        {
+          "q": "When a friend is sick, you…",
+          "options": [
+            "Bring soup, medicine and a blanket",
+            "Make a schedule of who visits when",
+            "Send them memes until they feel better",
+            "Promise them a big adventure when they recover"
+          ]
+        },
+        {
+          "q": "In a group photo, you're…",
+          "options": [
+            "Making sure nobody is left out of the frame",
+            "Doing something strange in the background",
+            "Pulling the funniest face",
+            "Fixing someone's collar"
+          ]
+        },
+        {
+          "q": "The group can't decide on a film. You…",
+          "options": [
+            "Find the one everyone can live with",
+            "Suggest skipping the film and going on a night walk",
+            "Already made a shortlist with ratings",
+            "Act out the trailers until someone chooses"
+          ]
+        },
+        {
+          "q": "Friends would describe you as…",
+          "options": [
+            "The one who looks after us",
+            "The peacemaker",
+            "The one who's always up for anything",
+            "The one who keeps us organized"
+          ]
+        }
+      ],
+      "dims": {
+        "planner": "Planner",
+        "caretaker": "Caretaker",
+        "comedian": "Comedian",
+        "adventurer": "Adventurer",
+        "mediator": "Mediator",
+        "wildcard": "Wildcard"
+      },
+      "results": {
+        "planner": {
+          "name": "The planner",
+          "body": "Without you, the trip would never happen. You book, you remind, you make the spreadsheet, and everyone secretly relies on it. Let someone else plan now and then: you deserve to just turn up."
+        },
+        "caretaker": {
+          "name": "The caretaker",
+          "body": "You notice who's quiet, who hasn't eaten and who needs a ride home. Friends come to you when life is hard. Remember to let them look after you too."
+        },
+        "comedian": {
+          "name": "The comedian",
+          "body": "You keep the group laughing, even on bad days, and your jokes end up as the group's inside jokes. It's okay to be serious sometimes: your friends want to hear that side of you too."
+        },
+        "adventurer": {
+          "name": "The adventurer",
+          "body": "You're the first to say yes, and the reason the group has its best stories. You pull people out of their comfort zone. Just check now and then that everyone is having fun, not only you."
+        },
+        "mediator": {
+          "name": "The mediator",
+          "body": "You keep the peace. You hear both sides, find the middle ground and make sure nobody is left out. Don't forget that your own opinion counts too."
+        },
+        "wildcard": {
+          "name": "The wildcard",
+          "body": "Nobody knows what you'll do next, and that's why life is never boring with you around. Your odd ideas become the group's legends. Give your friends a little warning before the next one."
+        }
       }
     },
     "wellbeing-index": {
@@ -2817,6 +3117,188 @@
         }
       }
     },
+    "ghibli": {
+      "title": "Which Studio Ghibli character are you? Free quiz — cv.cm",
+      "description": "Free Studio Ghibli quiz: answer 12 questions to find out if you're Chihiro, Kiki, Sophie, Howl, San, Nausicaä, Haku or Totoro. Unofficial fan quiz, no sign-up.",
+      "h1": "Which Studio Ghibli character are you?",
+      "lede": "Brave like Chihiro, independent like Kiki or calm like Totoro? Answer 12 questions about your habits, fears and favorite places to find your Ghibli match.",
+      "about": [
+        "Studio Ghibli's films are full of characters who grow quietly: a scared girl who saves her parents, a young witch who loses her magic and finds it again, a woman cursed with old age who finds her confidence. This quiz matches you with eight of them, from Spirited Away, Kiki's Delivery Service, Howl's Moving Castle, Princess Mononoke, Nausicaä of the Valley of the Wind and My Neighbor Totoro.",
+        "Your result names your character and shows your scores for all eight. This is an unofficial fan quiz written for cv.cm. It is not affiliated with or endorsed by Studio Ghibli or Hayao Miyazaki; the names belong to their owners."
+      ],
+      "faq": [
+        {
+          "q": "Which characters can I get?",
+          "a": "Chihiro (Spirited Away), Kiki (Kiki's Delivery Service), Sophie and Howl (Howl's Moving Castle), San (Princess Mononoke), Nausicaä (Nausicaä of the Valley of the Wind), Haku (Spirited Away) and Totoro (My Neighbor Totoro)."
+        },
+        {
+          "q": "Is one result rarer than the others?",
+          "a": "No. Every character appears in the same number of answers, so each one is equally likely."
+        },
+        {
+          "q": "Why isn't my favorite character here?",
+          "a": "Eight results keep the quiz short and fair. Ponyo, Kaonashi and others may join in a later update."
+        },
+        {
+          "q": "Is this quiz official?",
+          "a": "No. It is a free fan quiz, and your answers stay in your browser."
+        }
+      ],
+      "items": [
+        {
+          "q": "Your first day somewhere completely new. You…",
+          "options": [
+            "Feel scared, then get to work anyway",
+            "Want to go back to the forest",
+            "Look for a way to earn your own money",
+            "Clean the place up before anything else"
+          ]
+        },
+        {
+          "q": "Your favorite way to spend a free day:",
+          "options": [
+            "Exploring ruins and studying strange plants",
+            "Doing something dramatic with your hair",
+            "A long quiet swim or a walk by the river",
+            "Napping under a big tree"
+          ]
+        },
+        {
+          "q": "A friend is in trouble. You…",
+          "options": [
+            "Appear out of nowhere to help, without explaining",
+            "Keep going until you've saved them, however scared you are",
+            "Try to understand both sides before anyone gets hurt",
+            "Fly over to help, even if your broom wobbles"
+          ]
+        },
+        {
+          "q": "Your biggest weakness:",
+          "options": [
+            "You think too little of yourself",
+            "You run away when things get serious",
+            "You don't trust people easily",
+            "You'd rather sleep than worry"
+          ]
+        },
+        {
+          "q": "Your ideal home:",
+          "options": [
+            "A giant hollow tree",
+            "A bathhouse full of strange guests",
+            "A quiet place by the water you can't quite remember",
+            "Deep in the forest, far from towns"
+          ]
+        },
+        {
+          "q": "What would you most like to be good at?",
+          "options": [
+            "Magic that makes everything look amazing",
+            "Flying",
+            "Housekeeping that keeps a whole family going",
+            "Talking to animals and calming them down"
+          ]
+        },
+        {
+          "q": "When you're angry, you…",
+          "options": [
+            "Stay calm and look for the cause",
+            "Grumble, then let it go after a nap",
+            "Push through and do what has to be done",
+            "Say exactly what you think, then fix things"
+          ]
+        },
+        {
+          "q": "Which gift would you love most?",
+          "options": [
+            "A job of your own in a seaside town",
+            "A name that is truly yours",
+            "A castle that can walk",
+            "A mask and a spear"
+          ]
+        },
+        {
+          "q": "Others see you as…",
+          "options": [
+            "Charming but hard to pin down",
+            "A born peacemaker",
+            "Fierce and loyal",
+            "Ordinary at first, then surprisingly brave"
+          ]
+        },
+        {
+          "q": "Your relationship with rules:",
+          "options": [
+            "You keep your promises, even strange ones",
+            "You follow them, but nobody gives you orders about your own life",
+            "You don't know any rules, you just appear when needed",
+            "You find your own way and live by it"
+          ]
+        },
+        {
+          "q": "What helps you through a slump?",
+          "options": [
+            "Time away to remember why you love what you do",
+            "Hiding, until someone needs you",
+            "Small, steady work, one task at a time",
+            "A bus stop in the rain and a friend with an umbrella"
+          ]
+        },
+        {
+          "q": "What would you fight for?",
+          "options": [
+            "Peace between people and nature",
+            "The forest and the creatures in it",
+            "The people who believed in you",
+            "The person who once saved your life"
+          ]
+        }
+      ],
+      "dims": {
+        "chihiro": "Chihiro",
+        "kiki": "Kiki",
+        "sophie": "Sophie",
+        "howl": "Howl",
+        "san": "San",
+        "nausicaa": "Nausicaä",
+        "haku": "Haku",
+        "totoro": "Totoro"
+      },
+      "results": {
+        "chihiro": {
+          "name": "Chihiro",
+          "body": "You may start out scared, but when it counts you work hard, keep your promises and don't give up on the people you love. Like Chihiro in Spirited Away, you grow braver with every step into the unknown."
+        },
+        "kiki": {
+          "name": "Kiki",
+          "body": "You want to make it on your own and find what you're good at. Some days the magic fades, and that's okay: like Kiki, you find it again by resting, making friends and remembering why you started."
+        },
+        "sophie": {
+          "name": "Sophie",
+          "body": "You are practical, kind and much stronger than you think. You quietly keep everyone going. Like Sophie in Howl's Moving Castle, you shine when you stop believing you're plain."
+        },
+        "howl": {
+          "name": "Howl",
+          "body": "You are charming, creative and a little dramatic, with a big heart you don't always show. Like Howl, you'd rather avoid hard things, but you're brave when it matters to the people you love."
+        },
+        "san": {
+          "name": "San",
+          "body": "You are fierce, independent and loyal to what you believe in. You don't trust easily, but once you do, it's for life. Like San in Princess Mononoke, you stand up for those who can't defend themselves."
+        },
+        "nausicaa": {
+          "name": "Nausicaä",
+          "body": "You are curious, compassionate and brave, and you look for understanding where others see enemies. Like Nausicaä, you bring people, and creatures, together."
+        },
+        "haku": {
+          "name": "Haku",
+          "body": "You are calm, a little mysterious and fiercely protective of your friends. You don't say much, but you're always there when needed. Like Haku, you're still discovering who you really are."
+        },
+        "totoro": {
+          "name": "Totoro",
+          "body": "You are gentle, playful and calming to be around. You don't worry much, and you show up when someone needs a friend. Like Totoro, you make the world feel a little more magical."
+        }
+      }
+    },
     "demon-slayer": {
       "title": "Which Demon Slayer breathing style are you? Demon Slayer quiz — cv.cm",
       "description": "Free Demon Slayer quiz: answer 12 questions to find your Breathing style (Water, Flame, Thunder, Beast, Insect, Wind, Mist, Love, Sound or Stone) and the Demon Slayer character who shares it. No sign-up.",
@@ -3512,6 +3994,178 @@
         "slytherin": {
           "name": "Slytherin",
           "body": "Ambitious, resourceful and determined. You know what you want and find clever ways to get it, and you're fiercely loyal to your own people. Famous Slytherins: Merlin, Severus Snape and Horace Slughorn."
+        }
+      }
+    },
+    "marvel": {
+      "title": "Which Avenger are you? Free Marvel quiz — cv.cm",
+      "description": "Free Marvel quiz: answer 12 questions to find which Avenger you are: Iron Man, Captain America, Thor, Hulk, Black Widow or Spider-Man. Unofficial fan quiz, no sign-up.",
+      "h1": "Which Avenger are you?",
+      "lede": "Genius inventor, natural leader or god of thunder? Answer 12 questions about how you handle a crisis, a team and a day off to find your Avenger.",
+      "about": [
+        "The Avengers work because they are so different: Tony Stark's genius and ego, Steve Rogers's principles, Thor's courage, Bruce Banner's mind and temper, Natasha Romanoff's skill and loyalty, Peter Parker's humor and sense of responsibility. This quiz matches you with one of these six.",
+        "Your result names your Avenger and shows your scores for all six. This is an unofficial fan quiz written for cv.cm. It is not affiliated with or endorsed by Marvel or Disney; the names belong to their owners."
+      ],
+      "faq": [
+        {
+          "q": "Which Avengers can I get?",
+          "a": "Iron Man (Tony Stark), Captain America (Steve Rogers), Thor, Hulk (Bruce Banner), Black Widow (Natasha Romanoff) and Spider-Man (Peter Parker)."
+        },
+        {
+          "q": "Is one result rarer than the others?",
+          "a": "No. Every Avenger appears in the same number of answers, so each one is equally likely."
+        },
+        {
+          "q": "Why isn't Hawkeye (or my favorite) in the quiz?",
+          "a": "Six results keep the quiz short and every result equally easy to get. More heroes may join in a later update."
+        },
+        {
+          "q": "Is this quiz official?",
+          "a": "No. It is a free fan quiz, and your answers stay in your browser."
+        }
+      ],
+      "items": [
+        {
+          "q": "The alarm goes off: the city is under attack. You…",
+          "options": [
+            "Charge straight in",
+            "Crack a joke and swing into action",
+            "Slip in quietly from a side entrance",
+            "Try very hard to stay calm"
+          ]
+        },
+        {
+          "q": "Your perfect day off:",
+          "options": [
+            "Alone in the lab until you lose track of time",
+            "A long, peaceful walk in the countryside",
+            "Building something brilliant in the garage",
+            "A training session, then dinner with your closest friends"
+          ]
+        },
+        {
+          "q": "In a team, you're the one who…",
+          "options": [
+            "Makes sure everyone has fun",
+            "Needs space when things get heated",
+            "Holds everyone to what's right",
+            "Shows up with the biggest energy"
+          ]
+        },
+        {
+          "q": "Your secret weakness:",
+          "options": [
+            "Your ego",
+            "Your past",
+            "You trust too much in old-fashioned ideas",
+            "You're always running late"
+          ]
+        },
+        {
+          "q": "What do you bring to a party?",
+          "options": [
+            "Terrible puns",
+            "The fanciest drinks",
+            "Endless stories of your victories",
+            "A quiet presence in the corner"
+          ]
+        },
+        {
+          "q": "How do you handle a bully?",
+          "options": [
+            "Challenge them to a fair fight",
+            "Stand up to them, even if you lose",
+            "Try very hard not to lose your temper",
+            "Find out everything about them first"
+          ]
+        },
+        {
+          "q": "Your dream gadget:",
+          "options": [
+            "A flying suit you designed yourself",
+            "Web-shooters you built in your bedroom",
+            "A machine to help you control your strength",
+            "A shield that always comes back"
+          ]
+        },
+        {
+          "q": "What do you fear most?",
+          "options": [
+            "Hurting someone without meaning to",
+            "Not being worthy",
+            "Your past catching up with you",
+            "Failing to protect the world you built"
+          ]
+        },
+        {
+          "q": "How do you make big decisions?",
+          "options": [
+            "By asking what's right, not what's easy",
+            "By trusting your gut and your genius",
+            "By thinking about who could get hurt",
+            "By following your heart, loudly"
+          ]
+        },
+        {
+          "q": "What would your friends tease you about?",
+          "options": [
+            "Never telling anyone what you really feel",
+            "Turning into someone else when you're hungry",
+            "Doing homework in between saving the day",
+            "Saying \"language!\" at every swear word"
+          ]
+        },
+        {
+          "q": "What matters most to you?",
+          "options": [
+            "The family you chose",
+            "Being worthy of your name",
+            "Leaving the world safer than you found it",
+            "With great power comes great responsibility"
+          ]
+        },
+        {
+          "q": "Your leadership style:",
+          "options": [
+            "Lead from the front, by example",
+            "Read the room and act when it counts",
+            "Inspire with a big speech and a bigger hammer",
+            "Have a plan, a backup plan and a suit for each"
+          ]
+        }
+      ],
+      "dims": {
+        "ironman": "Iron Man",
+        "cap": "Captain America",
+        "thor": "Thor",
+        "hulk": "Hulk",
+        "widow": "Black Widow",
+        "spiderman": "Spider-Man"
+      },
+      "results": {
+        "ironman": {
+          "name": "Iron Man",
+          "body": "You are brilliant, inventive and confident, and you'd rather build the solution yourself than wait for one. Like Tony Stark, you can be a little too sure of yourself, but you'll give everything for the people you love."
+        },
+        "cap": {
+          "name": "Captain America",
+          "body": "You have a strong sense of right and wrong and you stand by it, even when it's hard. People trust you to lead. Like Steve Rogers, you never stop standing up for the little guy."
+        },
+        "thor": {
+          "name": "Thor",
+          "body": "You are big-hearted, brave and full of energy, and you love a good feast with friends. Like Thor, you've learned that true strength is about being worthy, not just being powerful."
+        },
+        "hulk": {
+          "name": "Hulk",
+          "body": "You are a deep thinker with a lot of power inside, and you work hard to keep it under control. Like Bruce Banner, you're at your best when your head and your heart work together."
+        },
+        "widow": {
+          "name": "Black Widow",
+          "body": "You are skilled, observant and calm under pressure, and you keep your feelings close. Like Natasha Romanoff, you'd do anything for the family you chose."
+        },
+        "spiderman": {
+          "name": "Spider-Man",
+          "body": "You are funny, curious and full of heart, juggling a busy life with doing the right thing. Like Peter Parker, you know that great power comes with great responsibility."
         }
       }
     }

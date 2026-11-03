@@ -249,6 +249,20 @@ describe("test pages: scoring", () => {
     expect(scoreQuiz("depression", all("depression", 3)).key).toBe("severe");
   });
 
+  it("scores the growth mindset from 0 (fixed) to 40 (growth), fixed statements reversed", () => {
+    expect(maxTotal("mindset")).toBe(40);
+    expect(scoreQuiz("mindset", lean("mindset", ["growth"]))).toMatchObject({ total: 40, key: "growth" });
+    expect(scoreQuiz("mindset", lean("mindset", []))).toMatchObject({ total: 0, key: "fixed" });
+    // Agreeing with everything: growth statements 4 each, fixed ones 0.
+    expect(scoreQuiz("mindset", all("mindset", 4))).toMatchObject({ total: 20, key: "mixed" });
+    const total = (points: number[]): number[] => points.map((p, i) => (i % 2 === 0 ? p : 4 - p));
+    expect(scoreQuiz("mindset", total([4, 4, 4, 4, 0, 0, 0, 0, 0, 0])).total).toBe(16);
+    expect(scoreQuiz("mindset", total([4, 4, 4, 4, 0, 0, 0, 0, 0, 0])).key).toBe("fixed");
+    expect(scoreQuiz("mindset", total([4, 4, 4, 4, 1, 0, 0, 0, 0, 0])).key).toBe("mixed");
+    expect(scoreQuiz("mindset", total([4, 4, 4, 4, 4, 4, 3, 0, 0, 0])).key).toBe("mixed");
+    expect(scoreQuiz("mindset", total([4, 4, 4, 4, 4, 4, 4, 0, 0, 0])).key).toBe("growth");
+  });
+
   it("uses the WHO-5 cut-offs: below 13 (52%) poor, 7 or less (28%) low", () => {
     expect(maxTotal("wellbeing-index")).toBe(25);
     expect(scoreQuiz("wellbeing-index", all("wellbeing-index", 0))).toMatchObject({ total: 0, key: "low" });
@@ -261,18 +275,18 @@ describe("test pages: scoring", () => {
     expect(isComplete("wellbeing-index", all("wellbeing-index", 6))).toBe(false);
   });
 
-  it("lets every love and leadership style win, and spreads ties between styles", () => {
-    for (const id of ["love-style", "leadership"] as const) {
+  it("lets every love style, leadership style and temperament win, and spreads ties between them", () => {
+    for (const id of ["love-style", "leadership", "temperament"] as const) {
       const def = QUIZ_DEFS[id];
       if (def.type !== "likert") throw new Error();
       for (const dim of def.dims) {
-        expect(def.items.filter((i) => i.dim === dim), `${id} ${dim}`).toHaveLength(4);
+        expect(def.items.filter((i) => i.dim === dim), `${id} ${dim}`).toHaveLength(def.items.length / def.dims.length);
         expect(scoreQuiz(id, lean(id, [dim])).key, `${id} ${dim}`).toBe(dim);
       }
     }
-    // Six styles scored 0–16 tie often: random answers must not favor the first style in the list.
+    // Styles scored 0–16 or 0–20 tie often: random answers must not favor the first style in the list.
     const next = randomInts(11);
-    for (const id of ["love-style", "leadership"] as const) {
+    for (const id of ["love-style", "leadership", "temperament"] as const) {
       const def = QUIZ_DEFS[id];
       const counts = new Map<string, number>();
       const runs = 12000;
@@ -468,7 +482,7 @@ describe("test pages: scoring", () => {
     expect(scoreQuiz("face-shape", [2, 3, 0, 2, 2, 3]).key).toBe("square");
     expect(scoreQuiz("face-shape", [1, 0, 2, 0, 0, 0]).key).toBe("heart");
     expect(scoreQuiz("face-shape", [0, 3, 0, 2, 2, 3]).key).toBe("oblong");
-    for (const id of ["face-shape", "anime", "pet", ...FAN_QUIZZES] as QuizId[]) {
+    for (const id of ["face-shape", "anime", "pet", "friend-role", ...FAN_QUIZZES] as QuizId[]) {
       const quiz = QUIZ_DEFS[id];
       if (quiz.type !== "choice") throw new Error();
       // For each result, the answers that favor it most must make it win.
@@ -496,6 +510,16 @@ describe("test pages: scoring", () => {
       // Highest possible score per result: equal, so no result is easier to reach.
       const best = def.dims.map((dim) => def.items.reduce((sum, item) => sum + Math.max(0, ...item.options.map((o) => o[dim] ?? 0)), 0));
       expect(new Set(best).size, id).toBe(1);
+    }
+    // Friend roles and Avengers: six results, four a question, each in eight questions and twice in each position.
+    for (const id of ["friend-role", "marvel"] as const) {
+      const def = QUIZ_DEFS[id];
+      if (def.type !== "choice") throw new Error();
+      for (const dim of def.dims) {
+        for (let position = 0; position < 4; position++) {
+          expect(def.items.filter((item) => (item.options[position][dim] ?? 0) > 0), `${id} ${dim} ${position}`).toHaveLength(2);
+        }
+      }
     }
     // Avatar and Hogwarts offer every result in every question; each sits in each position three times.
     for (const id of ["avatar-element", "hogwarts"] as const) {
@@ -540,9 +564,9 @@ describe("test pages: scoring", () => {
   });
 
   // 200k scorings: about two seconds locally, more than the default 5 s on a slow CI runner.
-  it("lets no game or anime result dominate random answers", () => {
+  it("lets no fan quiz or friend role result dominate random answers", () => {
     const next = randomInts(42);
-    for (const id of FAN_QUIZZES) {
+    for (const id of [...FAN_QUIZZES, "friend-role"] as QuizId[]) {
       const def = QUIZ_DEFS[id];
       if (def.type !== "choice") throw new Error();
       const counts = new Map<string, number>();
