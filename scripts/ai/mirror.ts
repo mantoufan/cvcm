@@ -3,7 +3,8 @@
  *
  *   node scripts/ai/mirror.mjs                      # download to tmp-verify/mirror (dev: VITE_AI_MODEL_HOST=/tmp-verify/mirror/)
  *   node scripts/ai/mirror.mjs --exports DIR        # take our own cvcm/* exports (scripts/ai/export-*.py OUT_ROOT)
- *   node scripts/ai/mirror.mjs --upload             # then PUT anything missing to files/ai/ (S3_ACCESS_KEY_ID / S3_SECRET_ACCESS_KEY)
+ *   node scripts/ai/mirror.mjs --upload             # then PUT our own cvcm/* exports to files/ai/ (S3_ACCESS_KEY_ID / S3_SECRET_ACCESS_KEY);
+ *                                                   # other models and ONNX Runtime are fetched from their publisher by the Worker
  *
  * Layout (same on disk, in the bucket under ai/, and on the site under /ai/):
  *   models/{repo}/{revision}/{file}   pinned Hugging Face revisions; URLs never change, so they cache forever
@@ -13,7 +14,7 @@ import { execFileSync } from "node:child_process";
 import { createHash } from "node:crypto";
 import { copyFile, mkdir, readFile, stat, writeFile } from "node:fs/promises";
 import { dirname, join, resolve } from "node:path";
-import { AI_MODELS, mirrorFiles, modelFileUrl, type AiModelId } from "../../src/shared/ai-models";
+import { AI_MODELS, isOwnExport, mirrorFiles, modelFileUrl, type AiModelId } from "../../src/shared/ai-models";
 import { presignS3Put, type S3Config } from "../../src/s3-sign";
 
 const args = process.argv.slice(2);
@@ -90,6 +91,8 @@ async function publish(rels: string[]): Promise<void> {
   if (!accessKey || !secret) throw new Error("set S3_ACCESS_KEY_ID and S3_SECRET_ACCESS_KEY");
   const cfg: S3Config = { accessKey, secret, host: "s3.cv.cm", bucket: "files", region: "us-east-1" };
   for (const rel of rels) {
+    // Only our own exports live on s3.cv.cm; the Worker fetches every other file from its publisher (upstreamUrl).
+    if (!rel.startsWith("models/") || !isOwnExport(rel.slice("models/".length))) continue;
     const path = join(out, rel);
     const bytes = await size(path);
     const key = `ai/${rel}`;

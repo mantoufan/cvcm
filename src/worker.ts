@@ -6,6 +6,7 @@ import { isIpAddress } from "./shared/device";
 import { appHref, datasetHref, deviceHref, gamesHref, isAgentDocPath, devicePolicyOf, isAiToolPath, isPublishedTutorial, kbHref, learnHref, legalHref, parseAppPath, quizHref, refHref, STATIC_FILE, toolJob } from "./shared/path";
 import { GA_CONNECT_HOSTS, GA_SCRIPT_HOST, isTrackedPath } from "./shared/analytics";
 import { thumbOriginal } from "./shared/covers";
+import { upstreamUrl } from "./shared/ai-models";
 import { preloadLocalePack, preloadPageChunk } from "./shared/locale-preload";
 import { DATASET_FILES } from "./shared/datasets";
 import { applyHtmlSeo } from "./shared/seo";
@@ -451,11 +452,17 @@ async function proxyAi(pathname: string, method: string): Promise<Response | nul
   if (!rest || rest.includes("..") || rest.includes("//")) {
     return new Response("Bad Request", { status: 400 });
   }
-  // Every URL names a pinned revision, so the edge keeps it for a year and s3.cv.cm serves each file about once per PoP.
-  const upstream = await fetch(`https://s3.cv.cm/files/ai/${match[1]}/${rest}`, {
-    // Only successes are kept: a 404 cached before an upload finished would break the tool at that PoP for a year.
-    cf: { cacheEverything: true, cacheTtlByStatus: { "200-299": 31_536_000, "300-599": 0 } },
-  } as RequestInit);
+  // Only catalog files: our own exports from s3.cv.cm, the rest straight from their publisher (Hugging Face, the npm
+  // CDN), so nothing has to be uploaded. The Worker fetches them, so visitors (mainland China included) only ever talk
+  // to cv.cm. Every URL names a pinned revision, so the edge keeps it for a year (files over Cloudflare's cache limit,
+  // the two large Janus sessions, are streamed each time).
+  const source = upstreamUrl(match[1] as "models" | "ort", rest);
+  const upstream = source
+    ? await fetch(source, {
+      // Only successes are kept: a 404 cached by mistake would break the tool at that PoP for a year.
+      cf: { cacheEverything: true, cacheTtlByStatus: { "200-299": 31_536_000, "300-599": 0 } },
+    } as RequestInit)
+    : new Response(null, { status: 404 });
   if (!upstream.ok) {
     // A real 404: Transformers.js probes optional files and must not get the SPA's index.html.
     return new Response(method === "HEAD" ? null : "Not Found", {
@@ -464,11 +471,20 @@ async function proxyAi(pathname: string, method: string): Promise<Response | nul
     });
   }
   const headers = new Headers();
-  for (const name of ["Content-Type", "Content-Length", "ETag", "Last-Modified"]) {
+  for (const name of ["Content-Length", "ETag", "Last-Modified"]) {
     const value = upstream.headers.get(name);
     if (value) headers.set(name, value);
   }
+  // Set from the extension: publishers label .mjs / .wasm / .json differently, and the worker needs the right types.
+  headers.set("Content-Type", aiContentType(rest) ?? upstream.headers.get("Content-Type") ?? "application/octet-stream");
   return new Response(method === "HEAD" ? null : upstream.body, { status: 200, headers });
+}
+
+function aiContentType(path: string): string | null {
+  if (path.endsWith(".json")) return "application/json";
+  if (path.endsWith(".wasm")) return "application/wasm";
+  if (path.endsWith(".mjs")) return "text/javascript";
+  return null;
 }
 
 async function proxyCovers(pathname: string, method: string): Promise<Response | null> {

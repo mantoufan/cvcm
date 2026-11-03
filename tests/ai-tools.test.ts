@@ -117,28 +117,43 @@ describe("AI page headers", () => {
     expect(other.headers.get("Content-Security-Policy")).not.toContain("wasm-unsafe-eval");
   });
 
-  it("proxies model files from s3.cv.cm with long caching and real 404s", async () => {
+  it("proxies model files from their source with long caching, and only catalog files", async () => {
     const seen: string[] = [];
     vi.stubGlobal("fetch", async (input: string) => {
       seen.push(input);
-      return input.endsWith("missing.json")
+      return input.endsWith("preprocessor_config.json")
         ? new Response("nope", { status: 404 })
-        : new Response("onnx", { headers: { "Content-Type": "application/octet-stream", "Content-Length": "4", "Set-Cookie": "x=1" } });
+        : new Response("onnx", { headers: { "Content-Type": "binary/octet-stream", "Content-Length": "4", "Set-Cookie": "x=1" } });
     });
-    const ok = await worker.fetch(new Request("https://cv.cm/ai/models/cvcm/birefnet-lite-1024/abc/onnx/model_fp16.onnx"), { ASSETS: html });
+    const get = (path: string) => worker.fetch(new Request(`https://cv.cm${path}`), { ASSETS: html });
+    const own = `/ai/models/cvcm/birefnet-lite-1024/${AI_MODELS.birefnet.revision}/onnx/model_fp16.onnx`;
+    const ok = await get(own);
     expect(ok.status).toBe(200);
     expect(await ok.text()).toBe("onnx");
     expect(ok.headers.get("Cache-Control")).toBe("public, max-age=31536000, immutable");
     expect(ok.headers.get("Set-Cookie")).toBeNull();
-    expect(seen[0]).toBe("https://s3.cv.cm/files/ai/models/cvcm/birefnet-lite-1024/abc/onnx/model_fp16.onnx");
+    // Our own exports stay on s3.cv.cm; published models come from Hugging Face; ONNX Runtime from the npm CDN.
+    expect(seen[0]).toBe(`https://s3.cv.cm/files${own}`);
+    await get(`/ai/models/onnx-community/depth-anything-v2-small/${AI_MODELS.depth.revision}/config.json`);
+    expect(seen[1]).toBe(`https://huggingface.co/onnx-community/depth-anything-v2-small/resolve/${AI_MODELS.depth.revision}/config.json`);
+    const trio = await get(`/ai/models/magenta/music_vae-trio_4bar/${AI_MODELS.trio.revision}/weights_manifest.json`);
+    expect(seen[2]).toBe("https://storage.googleapis.com/magentadata/js/checkpoints/music_vae/trio_4bar/weights_manifest.json");
+    expect(trio.headers.get("Content-Type")).toBe("application/json");
+    const wasm = await get("/ai/ort/1.31.0-dev.20260914-8d85527a0/ort-wasm-simd-threaded.asyncify.wasm");
+    expect(seen[3]).toBe("https://cdn.jsdelivr.net/npm/onnxruntime-web@1.31.0-dev.20260914-8d85527a0/dist/ort-wasm-simd-threaded.asyncify.wasm");
+    expect(wasm.headers.get("Content-Type")).toBe("application/wasm");
 
-    const missing = await worker.fetch(new Request("https://cv.cm/ai/models/x/y/missing.json"), { ASSETS: html });
+    const missing = await get(`/ai/models/onnx-community/depth-anything-v2-small/${AI_MODELS.depth.revision}/preprocessor_config.json`);
     expect(missing.status).toBe(404);
     expect(missing.headers.get("Cache-Control")).toBe("no-store");
 
-    const bad = await worker.fetch(new Request("https://cv.cm/ai/models/a//b.onnx"), { ASSETS: html });
+    // Not in the catalog: a real 404, nothing fetched (no open proxy).
+    for (const path of ["/ai/models/someone/else/main/model.onnx", `/ai/models/cvcm/birefnet-lite-1024/${AI_MODELS.birefnet.revision}/secret.txt`, "/ai/ort/1.0.0/evil.js"]) {
+      expect((await get(path)).status).toBe(404);
+    }
+    const bad = await get("/ai/models/a//b.onnx");
     expect(bad.status).toBe(400);
-    expect(seen).toHaveLength(2);
+    expect(seen).toHaveLength(5);
   });
 });
 

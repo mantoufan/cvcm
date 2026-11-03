@@ -262,6 +262,32 @@ export function modelFileUrl(id: AiModelId, file: string, host: string | null | 
   return source ? `${source}/${file}` : `https://huggingface.co/${repo}/resolve/${revision}/${file}`;
 }
 
+/** Our own exports (scripts/ai/export-*.py): not on Hugging Face, so they are the only files kept on s3.cv.cm. */
+export function isOwnExport(repo: string): boolean {
+  return repo.startsWith("cvcm/");
+}
+
+/**
+ * Where the Worker fetches a file under /ai/models/ or /ai/ort/ (path after the prefix), or null if it is not in
+ * the catalog (no open proxy). Our own exports come from s3.cv.cm; every other model straight from its publisher
+ * (Hugging Face, or the model's `source`), and the ONNX Runtime build from the npm CDN, pinned by version.
+ */
+export function upstreamUrl(kind: "models" | "ort", rest: string): string | null {
+  if (kind === "ort") {
+    const m = /^([0-9][0-9A-Za-z.-]*)\/(ort-wasm-simd-threaded\.asyncify\.(?:mjs|wasm))$/.exec(rest);
+    return m ? `https://cdn.jsdelivr.net/npm/onnxruntime-web@${m[1]}/dist/${m[2]}` : null;
+  }
+  for (const id of Object.keys(AI_MODELS) as AiModelId[]) {
+    const { repo, revision } = AI_MODELS[id];
+    const prefix = `${repo}/${revision}/`;
+    if (!rest.startsWith(prefix)) continue;
+    const file = rest.slice(prefix.length);
+    if (!mirrorFiles(id).includes(file)) return null;
+    return isOwnExport(repo) ? `https://s3.cv.cm/files/ai/models/${rest}` : modelFileUrl(id, file, null, "https://cv.cm");
+  }
+  return null;
+}
+
 export function modelBytes(id: AiModelId, backend: AiBackend): number {
   return AI_MODELS[id].variants[backend].bytes;
 }
