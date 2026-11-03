@@ -2,12 +2,10 @@ import { copyWithFlash } from "../copy";
 import { h, keepShortcutsOnClick, onScreen } from "../dom";
 import { locale, t } from "../i18n";
 import { appHref } from "../../shared/path";
-import { FLIP_COUNTS, HISTORY_MAX, extendStreaks, flipCoins, percentText, type CoinFace, type Streaks } from "../../shared/coin";
+import { FLIP_COUNTS, HISTORY_MAX, extendStreaks, flipFairCoins, percentText, type CoinFace, type Streaks } from "../../shared/coin";
 
 /** Length of the spin; a reduced-motion setting skips it. */
 const SPIN_MS = 700;
-/** The history strip shows the latest flips. */
-const SHOWN = 100;
 
 let coinEl: HTMLButtonElement | null = null;
 let faceEl: HTMLElement | null = null;
@@ -92,7 +90,7 @@ function faceName(face: CoinFace): string {
 function flip(): void {
   if (spinning || !coinEl) return;
   const n = Number(countEl?.value) || 1;
-  const faces = flipCoins(n);
+  const faces = flipFairCoins(n);
   const last = faces[faces.length - 1]!;
   const land = () => {
     spinning = false;
@@ -150,7 +148,7 @@ function paint(): void {
     [t("coinFlip.current"), streak(streaks.current)],
   ];
   statsEl.replaceChildren(...rows.flatMap(([k, v]) => [h("dt", null, k), h("dd", null, v)]));
-  const shown = history.slice(-SHOWN);
+  const shown = history;
   stripEl.textContent = shown.length ? shown.map((f) => t(f === "heads" ? "coinFlip.headsShort" : "coinFlip.tailsShort")).join(" ") : t("coinFlip.noFlips");
 }
 

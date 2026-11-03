@@ -143,16 +143,28 @@ function paintStrings(): void {
     return;
   }
   stringsEl.replaceChildren(
-    h("button", { type: "button", class: `chip${locked == null ? " on" : ""}`, "data-string": "auto", "aria-pressed": String(locked == null), onClick: () => { locked = null; paintStrings(); } }, t("guitarTuner.auto")),
+    h("button", { type: "button", class: `chip${locked == null ? " on" : ""}`, "data-string": "auto", "aria-pressed": String(locked == null), onClick: () => { locked = null; markStrings(); } }, t("guitarTuner.auto")),
     ...strings.map((m) => h("button", {
       type: "button",
       class: `chip${locked === m ? " on" : ""}${lastTarget === m ? " heard" : ""}`,
       "data-string": String(m),
       "aria-pressed": String(locked === m),
       title: `${midiToFreq(m, a4()).toFixed(2)} Hz`,
-      onClick: () => { locked = locked === m ? null : m; paintStrings(); },
+      onClick: () => { locked = locked === m ? null : m; markStrings(); },
     }, name(m))),
   );
+}
+
+/** Updates the chips' picked and heard marks in place, so a focused or half-clicked chip is not replaced. */
+function markStrings(): void {
+  if (!stringsEl) return;
+  for (const btn of Array.from(stringsEl.querySelectorAll<HTMLButtonElement>("button[data-string]"))) {
+    const m = btn.dataset.string === "auto" ? null : Number(btn.dataset.string);
+    const on = m === locked;
+    btn.classList.toggle("on", on);
+    btn.setAttribute("aria-pressed", String(on));
+    btn.classList.toggle("heard", m != null && m === lastTarget);
+  }
 }
 
 async function start(): Promise<void> {
@@ -194,6 +206,7 @@ async function start(): Promise<void> {
     const rate = s.getAudioTracks()[0]?.getSettings().sampleRate;
     let ok = false;
     if (rate !== audio.sampleRate) {
+      stopReference();
       void audio.close().catch(() => undefined);
       audio = newAudioContext(rate ? { sampleRate: rate } : undefined);
       ok = !!audio && buildGraph(audio, s);
@@ -220,8 +233,8 @@ function buildGraph(ctx: AudioContext, s: MediaStream): boolean {
   try {
     source = ctx.createMediaStreamSource(s);
     analyser = ctx.createAnalyser();
-    // The window must hold two periods of the lowest note searched (a fifth below a five-string bass's low B, ~21 Hz):
-    // 4096 samples up to 48 kHz, 8192 at 88.2 or 96 kHz.
+    // Lags up to half the window are searched: 4096 samples reach 23 Hz at 48 kHz (below a five-string bass's low B,
+    // 31 Hz); 8192 keep that floor at 88.2 or 96 kHz.
     analyser.fftSize = ctx.sampleRate > 50000 ? 8192 : 4096;
     buf = new Float32Array(analyser.fftSize);
     // Some WebKit builds only run nodes the destination pulls on: feed it through a silent gain.
@@ -314,7 +327,7 @@ function paintNote(freq: number | null): void {
     : t(`guitarTuner.verdict_${state}`);
   if (target !== lastTarget) {
     lastTarget = target;
-    paintStrings();
+    markStrings();
   }
 }
 

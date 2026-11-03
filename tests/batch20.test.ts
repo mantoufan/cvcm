@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { extendStreaks, flipCoins, percentText } from "../src/shared/coin";
+import { extendStreaks, flipFairCoins, percentText } from "../src/shared/coin";
 import { TUNINGS, centsOff, centsText, detectPitch, midiToFreq, nearestTarget, noteName, searchRange } from "../src/shared/tuner";
 import {
   divisorCount, divisorSum, divisors, euclidSteps, factorPairs, factorText, factorTextExpanded, factorize, gcd,
@@ -8,7 +8,7 @@ import {
 
 describe("coin-flip", () => {
   it("takes one bit per coin and tracks streaks across presses", () => {
-    expect(flipCoins(10, () => Uint8Array.of(0b00000101, 0b10))).toEqual(["heads", "tails", "heads", "tails", "tails", "tails", "tails", "tails", "tails", "heads"]);
+    expect(flipFairCoins(10, () => Uint8Array.of(0b00000101, 0b10))).toEqual(["heads", "tails", "heads", "tails", "tails", "tails", "tails", "tails", "tails", "heads"]);
     let s = extendStreaks({ longest: null, current: null }, ["heads", "tails", "tails"]);
     expect(s).toEqual({ longest: { face: "tails", length: 2 }, current: { face: "tails", length: 2 } });
     s = extendStreaks(s, ["tails", "heads"]);
@@ -17,7 +17,7 @@ describe("coin-flip", () => {
     expect(percentText(0, 0)).toBe("—");
   });
   it("is fair over many real flips", () => {
-    const faces = flipCoins(20000);
+    const faces = flipFairCoins(20000);
     const heads = faces.filter((f) => f === "heads").length;
     expect(faces).toHaveLength(20000);
     expect(Math.abs(heads - 10000)).toBeLessThan(600);
@@ -88,6 +88,7 @@ describe("factors", () => {
     expect(parseWhole("1".repeat(19))).toEqual({ ok: false, error: "tooBig" });
     expect(parseWhole("")).toEqual({ ok: false, error: "empty" });
     expect(splitNumbers("12, 18;24\n30 36")).toEqual(["12", "18", "24", "30", "36"]);
+    expect(splitNumbers("12；18、24，30")).toEqual(["12", "18", "24", "30"]);
   });
   it("tests primes and factors big numbers exactly", () => {
     expect([0n, 1n, 2n, 3n, 4n, 97n, 561n].map(isPrime)).toEqual([false, false, true, true, false, true, false]);

@@ -70,12 +70,13 @@ function paint(): void {
   last = "";
   errorEl.textContent = "";
   const parts = splitNumbers(inputEl.value);
+  // Commas always split the list, so only "." can group thousands inside one entry (es, id, vi).
+  const mark = thousandsMarkFor(locale()) === "." ? "." : ",";
   const nums: bigint[] = [];
   const bad: string[] = [];
   let tooBig = false;
   for (const p of parts) {
-    // Commas always split the list, so only "." can group thousands inside one entry (es, id, vi).
-    const r = parseWhole(p, thousandsMarkFor(locale()) === "." ? "." : ",");
+    const r = parseWhole(p, mark);
     if (r.ok && r.n > 0n) nums.push(r.n);
     else {
       if (!r.ok && r.error === "tooBig") tooBig = true;
@@ -83,7 +84,9 @@ function paint(): void {
     }
   }
   if (bad.length) {
-    errorEl.textContent = tooBig ? t("lcmGcf.tooBig", { n: MAX_DIGITS }) : t("lcmGcf.invalid", { list: bad.slice(0, 5).join(", ") });
+    errorEl.textContent = tooBig ? t("lcmGcf.tooBig", { n: MAX_DIGITS }) : "";
+    const notWhole = bad.filter((b) => { const r = parseWhole(b, mark); return r.ok || r.error !== "tooBig"; });
+    if (notWhole.length) errorEl.textContent = `${errorEl.textContent} ${t("lcmGcf.invalid", { list: notWhole.slice(0, 5).join(", ") })}`.trim();
     return;
   }
   if (nums.length > MAX_NUMBERS) {

@@ -48,6 +48,12 @@ describe("guitar-tuner ui", () => {
     mountGuitarTuner(host);
     const strings = () => Array.from(host.querySelectorAll("[data-out=strings] button")).map((b) => b.textContent);
     expect(strings()).toEqual(["Auto", "E2", "A2", "D3", "G3", "B3", "E4"]);
+    // Picking a string marks it in place: the clicked button stays in the page (keyboard focus is kept).
+    const a2 = q<HTMLButtonElement>("[data-string='45']");
+    a2.click();
+    expect(a2.isConnected).toBe(true);
+    expect(a2.getAttribute("aria-pressed")).toBe("true");
+    expect(q("[data-string=auto]").getAttribute("aria-pressed")).toBe("false");
     const tuning = q<HTMLSelectElement>("[data-field=tuning]");
     tuning.value = "guitar-half-down";
     tuning.dispatchEvent(new Event("change"));
@@ -87,5 +93,9 @@ describe("lcm-gcf ui", () => {
     input.dispatchEvent(new Event("input"));
     vi.advanceTimersByTime(200);
     expect(q("[data-out=error]").textContent).toBe("Not a positive whole number: x");
+    input.value = "12, x, 1234567890123456789";
+    input.dispatchEvent(new Event("input"));
+    vi.advanceTimersByTime(200);
+    expect(q("[data-out=error]").textContent).toBe("Each number can have up to 18 digits. Not a positive whole number: x");
   });
 });

@@ -74,6 +74,9 @@ export const MIN_LEVEL = 0.008;
 
 export type Pitch = { freq: number; clarity: number };
 
+let scratchD = new Float64Array(0);
+let scratchC = new Float64Array(0);
+
 /**
  * YIN pitch detection (de Cheveigné & Kawahara, 2002): cumulative mean normalised difference, first dip below 0.15,
  * parabolic interpolation. Returns null for silence or noise with no clear period.
@@ -84,7 +87,13 @@ export function detectPitch(buf: ArrayLike<number>, sampleRate: number, minFreq 
   const minLag = Math.max(2, Math.floor(sampleRate / maxFreq));
   const w = buf.length - maxLag;
   if (maxLag <= minLag || w < maxLag / 2) return null;
-  const d = new Float64Array(maxLag + 1);
+  // Reused between calls (the tuner runs this ~20 times a second).
+  if (scratchD.length < maxLag + 1) {
+    scratchD = new Float64Array(maxLag + 1);
+    scratchC = new Float64Array(maxLag + 1);
+  }
+  const d = scratchD;
+  d.fill(0, 0, maxLag + 1);
   for (let tau = 1; tau <= maxLag; tau++) {
     let sum = 0;
     for (let j = 0; j < w; j++) {
@@ -93,7 +102,7 @@ export function detectPitch(buf: ArrayLike<number>, sampleRate: number, minFreq 
     }
     d[tau] = sum;
   }
-  const cmnd = new Float64Array(maxLag + 1);
+  const cmnd = scratchC;
   cmnd[0] = 1;
   let running = 0;
   for (let tau = 1; tau <= maxLag; tau++) {

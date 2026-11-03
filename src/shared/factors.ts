@@ -37,7 +37,7 @@ export function parseWhole(raw: string, thousands: ThousandsMark = ","): { ok: t
  * 345); where the thousands mark is "." (es, id, vi), 12.345 inside one entry is still twelve thousand.
  */
 export function splitNumbers(raw: string): string[] {
-  return raw.split(/[\s,;，、;]+/).map((x) => x.trim()).filter(Boolean);
+  return raw.split(/[\s,;，、；]+/).map((x) => x.trim()).filter(Boolean);
 }
 
 function modPow(base: bigint, exp: bigint, mod: bigint): bigint {
