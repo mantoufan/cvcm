@@ -3,6 +3,7 @@ import { h } from "../dom";
 import { locale, t } from "../i18n";
 import { appHref } from "../../shared/path";
 import {
+  MAX_EVAL,
   MAX_EXPR,
   MAX_HISTORY,
   decimalMarkOf,
@@ -13,7 +14,8 @@ import {
   type HistoryEntry,
 } from "../../shared/calculator";
 
-const STORE_KEY = "cvcm.calculator.v1";
+/** History per decimal mark: "1,5" means 1.5 on a decimal-comma page and nothing on a decimal-point one. */
+const storeKey = () => (decimalMarkOf(locale()) === "," ? "cvcm.calculator.comma.v1" : "cvcm.calculator.v1");
 
 let exprEl: HTMLInputElement | null = null;
 let previewEl: HTMLElement | null = null;
@@ -32,7 +34,7 @@ const KEYS: Array<[string, string, string?]> = [
   ["sin⁻¹", "asin(", "fn"], ["cos⁻¹", "acos(", "fn"], ["tan⁻¹", "atan(", "fn"], ["7", "7"], ["8", "8"], ["9", "9"],
   ["ln", "ln(", "fn"], ["log", "log(", "fn"], ["√", "√(", "fn"], ["4", "4"], ["5", "5"], ["6", "6"],
   ["xʸ", "^", "fn"], ["x²", "^2", "fn"], ["x!", "!", "fn"], ["1", "1"], ["2", "2"], ["3", "3"],
-  ["π", "π", "fn"], ["e", "e", "fn"], ["%", "%", "fn"], ["0", "0"], [".", "@dot"], ["⌫", "@back", "op"],
+  ["π", "π", "fn"], ["e", "ℯ", "fn"], ["%", "%", "fn"], ["0", "0"], [".", "@dot"], ["⌫", "@back", "op"],
   ["Ans", "Ans", "fn"], ["÷", "÷", "op"], ["×", "×", "op"], ["−", "−", "op"], ["+", "+", "op"], ["=", "@eq", "eq"],
 ];
 
@@ -147,7 +149,7 @@ function toggleMode(): void {
 
 function load(): HistoryEntry[] {
   try {
-    return parseHistory(window.localStorage.getItem(STORE_KEY));
+    return parseHistory(window.localStorage.getItem(storeKey()));
   } catch {
     return [];
   }
@@ -155,7 +157,7 @@ function load(): HistoryEntry[] {
 
 function save(): void {
   try {
-    window.localStorage.setItem(STORE_KEY, JSON.stringify(history));
+    window.localStorage.setItem(storeKey(), JSON.stringify(history));
   } catch { /* storage blocked: history lasts for this visit */ }
 }
 
@@ -231,7 +233,7 @@ function equals(): void {
     ans < 0 || /e/i.test(was) || /[\d.,]/.test(expr[at - 1] ?? "") || /[\d.,]/.test(expr[at + m.length] ?? "") ? `(${was})` : was);
   ans = r.value;
   shown = formatResult(r.value, mark);
-  history.unshift({ expr: saved, result: shown });
+  if (saved.length <= MAX_EVAL) history.unshift({ expr: saved, result: shown });
   history = history.slice(0, MAX_HISTORY);
   save();
   paintHistory();

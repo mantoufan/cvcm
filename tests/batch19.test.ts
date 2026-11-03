@@ -56,7 +56,10 @@ describe("calculator", () => {
     expect(calc("1,5")).toBe("syntax");
     expect(calc("3,14×2")).toBe("syntax");
     expect(calc("1,0000")).toBe("syntax");
-    expect(calc("1.234,5", "deg", 0, ",")).toBe("syntax");
+    expect(calc("1.234,5", "deg", 0, ",")).toBe("1234.5");
+    expect(calc("1.000×3", "deg", 0, ",")).toBe("3000");
+    expect(calc("2ℯ3")).toBe("16.3096909707543");
+    expect(calc("2e3")).toBe("2000");
     expect(calc("1.2.3")).toBe("syntax");
     expect(calc("1 000")).toBe("syntax");
     expect(calc("sqrt 2 3")).toBe("syntax");
@@ -183,6 +186,8 @@ describe("markdown", () => {
     expect(md("&copy; &#x1F600; &bogus;")).toBe("<p>© 😀 &amp;bogus;</p>");
     expect(md("<javascript:alert(document.domain)//@x.y>")).not.toContain("href");
     expect(md("<me@cv.cm> <https://cv.cm/x>")).toBe("<p><a href=\"mailto:me@cv.cm\">me@cv.cm</a> <a href=\"https://cv.cm/x\">https://cv.cm/x</a></p>");
+    expect(md("Visit https:// now, HTTPS://cv.cm or Www.cv.cm")).toBe("<p>Visit https:// now, <a href=\"HTTPS://cv.cm\">HTTPS://cv.cm</a> or <a href=\"http://Www.cv.cm\">Www.cv.cm</a></p>");
+    expect(md("~~~ js `x`\ncode\n~~~\n# H")).toBe("<pre><code class=\"language-js\">code\n</code></pre>\n<h1>H</h1>");
     expect(safeHref("mailto:a@b.c")).toBe("mailto:a@b.c");
     expect(safeHref("VBScript:x")).toBeNull();
     expect(safeHref("page.html#x")).toBe("page.html#x");
@@ -193,6 +198,8 @@ describe("markdown", () => {
     expect(md("*a **b** c*")).toBe("<p><em>a <strong>b</strong> c</em></p>");
     expect(md("2 * 3 * 4")).toBe("<p>2 * 3 * 4</p>");
     expect(md("\\*not em\\*")).toBe("<p>*not em*</p>");
+    expect(md("**bold *italic***")).toBe("<p><strong>bold <em>italic</em></strong></p>");
+    expect(md("*a **b***")).toBe("<p><em>a <strong>b</strong></em></p>");
     expect(md("Card ending ****1234")).toBe("<p>Card ending ****1234</p>");
     expect(md("***foo")).toBe("<p>***foo</p>");
     expect(md("a *b* **c** ***d***")).toBe("<p>a <em>b</em> <strong>c</strong> <strong><em>d</em></strong></p>");
@@ -208,6 +215,8 @@ describe("markdown", () => {
     md("_a **b ".repeat(30000));
     md("`a ".repeat(60000));
     md("[a ".repeat(60000));
+    md("[a](".repeat(40000));
+    md("b\n".repeat(90000));
     // A paragraph that uses up its scan budget leaves the next one alone.
     expect(md("[a ".repeat(60000) + "\n\n`code` [ok](https://cv.cm)")).toContain("<p><code>code</code> <a href=\"https://cv.cm\">ok</a></p>");
     expect(Date.now() - start).toBeLessThan(4000);

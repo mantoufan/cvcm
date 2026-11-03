@@ -122,10 +122,24 @@ function indentOnTab(e: KeyboardEvent): void {
   schedule();
 }
 
+/** Re-reads the box (for exports right after typing), without redrawing the preview. */
+function refresh(): void {
+  if (inputEl) doc = parseMarkdown(inputEl.value);
+}
+
+/** Images from the last preview, by address: redrawing reuses them, so they do not flicker or load again on each key. */
+let imgPool = new Map<string, HTMLImageElement[]>();
+
 function paint(): void {
   if (!inputEl || !previewEl || !statsEl) return;
   doc = parseMarkdown(inputEl.value);
+  imgPool = new Map();
+  for (const img of previewEl.querySelectorAll("img")) {
+    const src = img.getAttribute("src") ?? "";
+    imgPool.set(src, [...(imgPool.get(src) ?? []), img]);
+  }
   previewEl.replaceChildren(...doc.map(blockEl));
+  imgPool = new Map();
   statsEl.textContent = t("markdown.stats", { words: countText(docText(doc)).words, chars: Array.from(inputEl.value).length });
 }
 
@@ -179,14 +193,22 @@ function inlineEl(n: Inline): Node {
     case "link":
       // Links open in a new tab, so a click in the preview does not leave the text being written.
       return h("a", { href: n.href, title: n.title || null, target: "_blank", rel: "noopener noreferrer nofollow" }, ...n.kids.map(inlineEl));
-    case "img":
+    case "img": {
+      const reused = imgPool.get(n.src)?.shift();
+      if (reused) {
+        reused.alt = n.alt;
+        if (n.title) reused.title = n.title;
+        else reused.removeAttribute("title");
+        return reused;
+      }
       return h("img", { src: n.src, alt: n.alt, title: n.title || null, loading: "lazy", referrerpolicy: "no-referrer" });
+    }
   }
 }
 
 async function copyHtml(): Promise<void> {
   // Export what is in the box now, not what the last (debounced) preview showed.
-  paint();
+  refresh();
   await copyWithFlash(copyHtmlBtn, toHtml(doc), { done: t("markdown.copied"), failed: t("markdown.copyFailed") });
 }
 
@@ -201,7 +223,7 @@ function baseName(): string {
 }
 
 function downloadHtml(): void {
-  paint();
+  refresh();
   const first = doc.find((b) => b.t === "h");
   const title = first && first.t === "h" ? plain(first.kids) : "Document";
   const page = `<!doctype html>
@@ -222,6 +244,6 @@ ${toHtml(doc)}
 
 function downloadMd(): void {
   if (!inputEl) return;
-  paint();
+  refresh();
   downloadBlob(new Blob([inputEl.value], { type: "text/markdown;charset=utf-8" }), `${baseName()}.md`);
 }

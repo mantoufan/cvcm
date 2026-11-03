@@ -15,8 +15,10 @@ export type CalcError = "syntax" | "domain" | "overflow";
 
 export type CalcResult = { ok: true; value: number } | { ok: false; error: CalcError };
 
-/** Longest expression the calculator accepts (characters), so a pasted novel does not stall the page. */
+/** Longest expression that can be typed (characters). */
 export const MAX_EXPR = 500;
+/** Longest expression evaluated or kept in history: a typed one with each Ans written out as its number. */
+export const MAX_EVAL = 5000;
 /** Factorials above this overflow a double. */
 const MAX_FACTORIAL = 170;
 const MAX_DEPTH = 100;
@@ -50,9 +52,14 @@ function normalize(src: string): string {
 
 function tokenize(src: string, decimal: "." | ","): Tok[] {
   let s = normalize(src);
-  // With a decimal comma, "." still works as a decimal point; with a decimal point, commas group thousands (1,000).
-  // Only real grouping (1,234,567) is read as thousands; "1,5" stays a comma and fails, instead of quietly being 15.
-  s = decimal === "," ? s.replace(/,/g, ".") : s.replace(/(^|[^\d.])(\d{1,3}(?:,\d{3})+)(?![\d,])/g, (_, pre: string, n: string) => pre + n.replace(/,/g, ""));
+  // Thousands are read only in real groups: 1,234,567 with a decimal point, 1.234.567 with a decimal comma. Any other
+  // comma fails with a decimal point ("1,5" is not quietly 15); with a decimal comma, a lone "." is a decimal point too.
+  if (decimal === ",") {
+    s = s.replace(/(^|[^\d,])(\d{1,3}(?:\.\d{3})+)(?![\d.])/g, (_, pre: string, n: string) => pre + n.replace(/\./g, ""));
+    s = s.replace(/,/g, ".");
+  } else {
+    s = s.replace(/(^|[^\d.])(\d{1,3}(?:,\d{3})+)(?![\d,])/g, (_, pre: string, n: string) => pre + n.replace(/,/g, ""));
+  }
   const out: Tok[] = [];
   let i = 0;
   while (i < s.length) {
@@ -72,6 +79,12 @@ function tokenize(src: string, decimal: "." | ","): Tok[] {
     }
     if ("+-*/^!%()√".includes(c)) {
       out.push({ k: "op", v: c as "+" });
+      i++;
+      continue;
+    }
+    // "ℯ" is what the keypad's e key types, so 2, e, 3 is 2·e·3 and not 2e3 (2000).
+    if (c === "ℯ") {
+      out.push({ k: "const", v: "e" });
       i++;
       continue;
     }
@@ -180,7 +193,7 @@ function applyRaw(fn: Func, x: number, mode: AngleMode): number {
  * the reader uses (with ",", "1,5" is 1.5; with ".", "1,000" is 1000).
  */
 export function evaluate(src: string, mode: AngleMode = "deg", ans = 0, decimal: "." | "," = "."): CalcResult {
-  if (src.length > MAX_EXPR) return { ok: false, error: "syntax" };
+  if (src.length > MAX_EVAL) return { ok: false, error: "syntax" };
   let toks: Tok[];
   try {
     toks = tokenize(src, decimal);
@@ -378,7 +391,8 @@ export function parseHistory(raw: string | null): HistoryEntry[] {
     return data
       .filter((e): e is HistoryEntry => !!e && typeof e === "object" && typeof (e as HistoryEntry).expr === "string" && typeof (e as HistoryEntry).result === "string")
       .slice(0, MAX_HISTORY)
-      .map((e) => ({ expr: e.expr.slice(0, MAX_EXPR), result: e.result.slice(0, 64) }));
+      .filter((e) => e.expr.length <= MAX_EVAL)
+      .map((e) => ({ expr: e.expr, result: e.result.slice(0, 64) }));
   } catch {
     return [];
   }

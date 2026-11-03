@@ -33,7 +33,7 @@ export type Block =
 export const MAX_MARKDOWN = 200_000;
 const MAX_NEST = 12;
 
-const FENCE = /^ {0,3}(`{3,}|~{3,})[ \t]*([^`\s]*)[^`]*$/;
+const FENCE_LINE = /^ {0,3}(`{3,}|~{3,})(.*)$/;
 const ATX = /^ {0,3}(#{1,6})(?:[ \t]+(.*?))?(?:[ \t]+#+)?[ \t]*$/;
 const HR = /^ {0,3}([-*_])(?:[ \t]*\1){2,}[ \t]*$/;
 const QUOTE = /^ {0,3}>/;
@@ -91,6 +91,13 @@ function alignOf(cell: string): Align {
   return l && r ? "center" : r ? "right" : l ? "left" : null;
 }
 
+/** An opening code fence: its marker and language. A backtick fence's info may not contain a backtick (CommonMark). */
+function fenceOf(line: string): { mark: string; lang: string } | null {
+  const m = FENCE_LINE.exec(line);
+  if (!m || (m[1][0] === "`" && m[2].includes("`"))) return null;
+  return { mark: m[1], lang: m[2].trim().split(/\s+/)[0] ?? "" };
+}
+
 /** Whether lines i and i + 1 are a table's header and delimiter rows (same number of cells). */
 function startsTable(lines: string[], i: number): boolean {
   const head = lines[i];
@@ -101,7 +108,7 @@ function startsTable(lines: string[], i: number): boolean {
 
 /** Whether a line starts a block that ends the paragraph above it. */
 function interrupts(line: string): boolean {
-  if (FENCE.test(line) || ATX.test(line) || HR.test(line) || QUOTE.test(line)) return true;
+  if (fenceOf(line) || ATX.test(line) || HR.test(line) || QUOTE.test(line)) return true;
   const m = BULLET.exec(line);
   // A list interrupts a paragraph only when the item has text and, if numbered, starts at 1 (so "2019. was a year" stays text).
   return !!m && m[4].trim() !== "" && (/^[-*+]$/.test(m[2]) || /^1[.)]$/.test(m[2]));
@@ -129,10 +136,10 @@ function blocks(lines: string[], depth: number): Block[] {
       i++;
       continue;
     }
-    const fence = FENCE.exec(line);
-    if (fence && !(fence[1][0] === "`" && fence[2].includes("`"))) {
+    const fence = fenceOf(line);
+    if (fence) {
       const indent = indentOf(line);
-      const mark = fence[1];
+      const mark = fence.mark;
       const body: string[] = [];
       const close = new RegExp(`^ {0,3}${mark[0] === "`" ? "`" : "~"}{${mark.length},}[ \\t]*$`);
       const strip = new RegExp(`^ {0,${indent}}`);
@@ -146,7 +153,7 @@ function blocks(lines: string[], depth: number): Block[] {
         body.push(lines[i].replace(strip, ""));
         i++;
       }
-      out.push({ t: "code", lang: fence[2], text: body.join("\n") });
+      out.push({ t: "code", lang: fence.lang, text: body.join("\n") });
       continue;
     }
     const atx = ATX.exec(line);
@@ -268,7 +275,7 @@ function list(lines: string[], start: number, depth: number, out: Block[]): numb
         continue;
       }
       // Lazy continuation of the item's last paragraph.
-      if (!sawBlank && !interrupts(l) && !BULLET.test(l) && !blank(body[body.length - 1]) && !FENCE.test(body[0] ?? "")) {
+      if (!sawBlank && !interrupts(l) && !BULLET.test(l) && !blank(body[body.length - 1]) && !fenceOf(body[0] ?? "")) {
         body.push(l.trim());
         i++;
         continue;
@@ -386,6 +393,7 @@ function destination(s: string, i: number): { href: string; title: string; end: 
     let depth = 0;
     const startHref = j;
     for (; j < s.length; j++) {
+      if (--budget < 0) return null;
       const c = s[j];
       if (c === "\\" && PUNCT.test(s[j + 1] ?? "")) {
         j++;
@@ -419,7 +427,7 @@ const isSpace = (c: string | undefined) => c == null || /\s/.test(c);
 const isWord = (c: string | undefined) => c != null && /[\p{L}\p{N}]/u.test(c);
 
 /** Finds where an emphasis run of `delim` opened at i closes, or −1. */
-function closeEmphasis(s: string, from: number, delim: string, failed: Map<string, number>): number {
+function closeEmphasis(s: string, from: number, delim: string, failed: Map<string, number>, nested = false): number {
   // A run that found no closer from an earlier position finds none from a later one either.
   if (from >= (failed.get(delim) ?? Infinity)) return -1;
   for (let j = from; j < s.length; j++) {
@@ -446,19 +454,21 @@ function closeEmphasis(s: string, from: number, delim: string, failed: Map<strin
     }
     // "*a **b** c*": a strong pair inside emphasis is skipped as a whole, so its "**" does not close the "*".
     if (delim.length === 1 && s.startsWith(delim + delim, j) && !isSpace(s[j + 2])) {
-      const inner = closeEmphasis(s, j + 2, delim + delim, failed);
+      const inner = closeEmphasis(s, j + 2, delim + delim, failed, true);
       if (inner > 0) {
         j = inner + 1;
         continue;
       }
     }
-    if (s.startsWith(delim, j) && !isSpace(s[j - 1]) && j > from && s[j - 1] !== delim[0] && s[j + delim.length] !== delim[0]) {
+    // At the end of a longer run the closer is its last characters ("**bold *italic***"); a strong pair nested in
+    // emphasis closes on the first ones instead ("*a **b***"), leaving the last "*" to close the emphasis.
+    if (s.startsWith(delim, j) && !isSpace(s[j - 1]) && j > from && (nested || s[j + delim.length] !== delim[0])) {
       // "_" closes only at the end of a word, so snake_case_names stay as typed.
       if (delim[0] === "_" && isWord(s[j + delim.length])) continue;
       return j;
     }
   }
-  if (budget >= 0) failed.set(delim, Math.min(from, failed.get(delim) ?? Infinity));
+  if (budget >= 0 && !nested) failed.set(delim, Math.min(from, failed.get(delim) ?? Infinity));
   return -1;
 }
 
@@ -515,12 +525,15 @@ export function inline(src: string, depth = 0, inLink = false): Inline[] {
     }
     if (c === "\n") {
       // Two or more spaces before a line end make a hard line break; otherwise it is a soft break.
-      if (/ {2,}$/.test(buf)) {
-        buf = buf.replace(/ +$/, "");
+      // Text is flushed at every line end, so these checks only ever look at one line (not the whole paragraph).
+      const hard = / {2,}$/.test(buf);
+      buf = buf.replace(/ +$/, "");
+      if (hard) {
         flush();
         out.push({ t: "br" });
       } else {
-        buf = buf.replace(/ +$/, "") + "\n";
+        buf += "\n";
+        flush();
       }
       i++;
       while (s[i] === " ") i++;
@@ -560,7 +573,7 @@ export function inline(src: string, depth = 0, inLink = false): Inline[] {
       }
     }
     // A bare web address at the start of a word becomes a link (GitHub style).
-    if ((c === "h" || c === "w") && !inLink && !isWord(s[i - 1])) {
+    if ((c === "h" || c === "w" || c === "H" || c === "W") && !inLink && !isWord(s[i - 1])) {
       const m = /^(?:https?:\/\/|www\.)[^\s<]+/i.exec(s.slice(i));
       if (m) {
         let url = m[0];
@@ -571,9 +584,10 @@ export function inline(src: string, depth = 0, inLink = false): Inline[] {
           else if (last === ")" && (url.match(/\(/g)?.length ?? 0) < (url.match(/\)/g)?.length ?? 0)) url = url.slice(0, -1);
           else break;
         }
-        if (url.length > 7 || /^www\.\S/.test(url)) {
+        // It needs a host: "https://" alone is text.
+        if (/^(?:https?:\/\/[^\s/?#]+|www\.[^\s/?#.]+\.[^\s/?#]+)/i.test(url)) {
           flush();
-          out.push({ t: "link", href: safeHref(url.startsWith("www.") ? `http://${url}` : url) ?? "#", title: "", kids: [{ t: "text", v: url }] });
+          out.push({ t: "link", href: safeHref(/^www\./i.test(url) ? `http://${url}` : url) ?? "#", title: "", kids: [{ t: "text", v: url }] });
           i += url.length;
           continue;
         }
