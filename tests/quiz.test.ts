@@ -66,6 +66,11 @@ function randomInts(seed: number): (n: number) => number {
 const FAN_QUIZZES: QuizId[] = QUIZ_GROUPS.filter((group) => FAN_GROUPS.includes(group.id))
   .flatMap((group) => [...group.quizzes])
   .filter((id) => id !== "anime");
+/** Choice quizzes built to be balanced (every result equally reachable, ties spread): the fan quizzes and the like. */
+const BALANCED_CHOICE: QuizId[] = QUIZZES.filter((id) => {
+  const def = QUIZ_DEFS[id];
+  return def.type === "choice" && def.result.kind === "top" && def.result.tie === "spread";
+});
 
 describe("test pages: routes", () => {
   it("parses locale and bare paths", () => {
@@ -255,12 +260,14 @@ describe("test pages: scoring", () => {
     expect(scoreQuiz("mindset", lean("mindset", []))).toMatchObject({ total: 0, key: "fixed" });
     // Agreeing with everything: growth statements 4 each, fixed ones 0.
     expect(scoreQuiz("mindset", all("mindset", 4))).toMatchObject({ total: 20, key: "mixed" });
-    const total = (points: number[]): number[] => points.map((p, i) => (i % 2 === 0 ? p : 4 - p));
-    expect(scoreQuiz("mindset", total([4, 4, 4, 4, 0, 0, 0, 0, 0, 0])).total).toBe(16);
-    expect(scoreQuiz("mindset", total([4, 4, 4, 4, 0, 0, 0, 0, 0, 0])).key).toBe("fixed");
-    expect(scoreQuiz("mindset", total([4, 4, 4, 4, 1, 0, 0, 0, 0, 0])).key).toBe("mixed");
-    expect(scoreQuiz("mindset", total([4, 4, 4, 4, 4, 4, 3, 0, 0, 0])).key).toBe("mixed");
-    expect(scoreQuiz("mindset", total([4, 4, 4, 4, 4, 4, 4, 0, 0, 0])).key).toBe("growth");
+    // Answers that give these points per statement (fixed statements are reversed).
+    const answersFor = (points: number[]): number[] => points.map((p, i) => (i % 2 === 0 ? p : 4 - p));
+    expect(scoreQuiz("mindset", answersFor([4, 4, 4, 1, 0, 0, 0, 0, 0, 0]))).toMatchObject({ total: 13, key: "fixed" });
+    expect(scoreQuiz("mindset", answersFor([4, 4, 4, 2, 0, 0, 0, 0, 0, 0]))).toMatchObject({ total: 14, key: "mixed" });
+    expect(scoreQuiz("mindset", answersFor([4, 4, 4, 4, 4, 4, 2, 0, 0, 0]))).toMatchObject({ total: 26, key: "mixed" });
+    expect(scoreQuiz("mindset", answersFor([4, 4, 4, 4, 4, 4, 3, 0, 0, 0]))).toMatchObject({ total: 27, key: "growth" });
+    // Neutral to everything sits in the middle of "mixed".
+    expect(scoreQuiz("mindset", all("mindset", 2))).toMatchObject({ total: 20, key: "mixed" });
   });
 
   it("uses the WHO-5 cut-offs: below 13 (52%) poor, 7 or less (28%) low", () => {
@@ -483,7 +490,7 @@ describe("test pages: scoring", () => {
     expect(scoreQuiz("face-shape", [2, 3, 0, 2, 2, 3]).key).toBe("square");
     expect(scoreQuiz("face-shape", [1, 0, 2, 0, 0, 0]).key).toBe("heart");
     expect(scoreQuiz("face-shape", [0, 3, 0, 2, 2, 3]).key).toBe("oblong");
-    for (const id of ["face-shape", "anime", "pet", "friend-role", ...FAN_QUIZZES] as QuizId[]) {
+    for (const id of ["face-shape", "anime", "pet", ...BALANCED_CHOICE] as QuizId[]) {
       const quiz = QUIZ_DEFS[id];
       if (quiz.type !== "choice") throw new Error();
       // For each result, the answers that favor it most must make it win.
@@ -504,43 +511,32 @@ describe("test pages: scoring", () => {
     expect(def.dims).toHaveLength(7);
   });
 
-  it("gives every game and anime result the same best score and spreads ties evenly", () => {
-    for (const id of FAN_QUIZZES) {
+  it("gives every fan quiz and friend role result the same best score and spreads ties evenly", () => {
+    expect(BALANCED_CHOICE).toEqual(expect.arrayContaining([...FAN_QUIZZES, "friend-role"]));
+    for (const id of BALANCED_CHOICE) {
       const def = QUIZ_DEFS[id];
       if (def.type !== "choice") throw new Error();
       // Highest possible score per result: equal, so no result is easier to reach.
       const best = def.dims.map((dim) => def.items.reduce((sum, item) => sum + Math.max(0, ...item.options.map((o) => o[dim] ?? 0)), 0));
       expect(new Set(best).size, id).toBe(1);
     }
-    // Friend roles and Avengers: six results, four a question, each in eight questions and twice in each position.
-    for (const id of ["friend-role", "marvel"] as const) {
-      const def = QUIZ_DEFS[id];
-      if (def.type !== "choice") throw new Error();
-      for (const dim of def.dims) {
-        for (let position = 0; position < 4; position++) {
-          expect(def.items.filter((item) => (item.options[position][dim] ?? 0) > 0), `${id} ${dim} ${position}`).toHaveLength(2);
-        }
-      }
-    }
-    // One Piece and Ghibli: eight results, each in six questions, once or twice in each position.
-    for (const id of ["one-piece", "ghibli"] as const) {
-      const def = QUIZ_DEFS[id];
-      if (def.type !== "choice") throw new Error();
-      for (const dim of def.dims) {
-        for (let position = 0; position < 4; position++) {
-          const n = def.items.filter((item) => (item.options[position][dim] ?? 0) > 0).length;
-          expect(n, `${id} ${dim} ${position}`).toBeGreaterThanOrEqual(1);
-          expect(n, `${id} ${dim} ${position}`).toBeLessThanOrEqual(2);
-        }
-      }
-    }
-    // Avatar and Hogwarts offer every result in every question; each sits in each position three times.
-    for (const id of ["avatar-element", "hogwarts"] as const) {
-      const def = QUIZ_DEFS[id];
-      if (def.type !== "choice") throw new Error();
-      for (const dim of def.dims) {
-        for (let position = 0; position < 4; position++) {
-          expect(def.items.filter((item) => (item.options[position][dim] ?? 0) > 0), `${id} ${dim} ${position}`).toHaveLength(3);
+    // How often each result sits in each answer position: six results, four a question (each in eight questions);
+    // eight results, four a question (each in six); four results, all in every question.
+    const positions = [
+      { ids: ["friend-role", "avengers"], min: 2, max: 2 },
+      { ids: ["one-piece", "ghibli"], min: 1, max: 2 },
+      { ids: ["avatar-element", "hogwarts"], min: 3, max: 3 },
+    ] as const;
+    for (const { ids, min, max } of positions) {
+      for (const id of ids) {
+        const def = QUIZ_DEFS[id];
+        if (def.type !== "choice") throw new Error();
+        for (const dim of def.dims) {
+          for (let position = 0; position < 4; position++) {
+            const n = def.items.filter((item) => (item.options[position][dim] ?? 0) > 0).length;
+            expect(n, `${id} ${dim} ${position}`).toBeGreaterThanOrEqual(min);
+            expect(n, `${id} ${dim} ${position}`).toBeLessThanOrEqual(max);
+          }
         }
       }
     }
@@ -579,7 +575,7 @@ describe("test pages: scoring", () => {
   // 200k scorings: about two seconds locally, more than the default 5 s on a slow CI runner.
   it("lets no fan quiz or friend role result dominate random answers", () => {
     const next = randomInts(42);
-    for (const id of [...FAN_QUIZZES, "friend-role"] as QuizId[]) {
+    for (const id of BALANCED_CHOICE) {
       const def = QUIZ_DEFS[id];
       if (def.type !== "choice") throw new Error();
       const counts = new Map<string, number>();

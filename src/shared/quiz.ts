@@ -8,7 +8,7 @@ export const QUIZ_GROUPS = [
   { id: "career", quizzes: ["career", "work-style", "leadership", "mindset", "money"] },
   { id: "games", quizzes: ["pokemon", "genshin", "sonic", "dnd-class"] },
   { id: "anime", quizzes: ["naruto", "one-piece", "ghibli", "demon-slayer", "jujutsu-kaisen", "avatar-element", "anime"] },
-  { id: "books", quizzes: ["hogwarts", "marvel"] },
+  { id: "books", quizzes: ["hogwarts", "avengers"] },
   { id: "fun", quizzes: ["chronotype", "pet", "face-shape", "friend-role"] },
   { id: "wellbeing", quizzes: ["wellbeing-index", "self-esteem", "anxiety", "depression"] },
 ] as const;
@@ -170,7 +170,10 @@ const TEMPERAMENT = likert(`
   sanguine+ choleric+ melancholic+ phlegmatic+
 `);
 
-/** Growth or fixed mindset (after Carol Dweck): ten original statements, the fixed-mindset ones reversed. Total 0–40. */
+/**
+ * Growth or fixed mindset (after Carol Dweck): ten original statements, the fixed-mindset ones reversed. Total 0–40;
+ * the bands (0–13, 14–26, 27–40) put "mixed" around 20, the total for neutral, or agree-to-everything, answers.
+ */
 const MINDSET = likert("growth+ growth- growth+ growth- growth+ growth- growth+ growth- growth+ growth-");
 
 /** WHO-5 Well-Being Index (WHO Regional Office for Europe, 1998; free to use). Total 0–25; times 4 gives the 0–100 percentage. */
@@ -449,7 +452,7 @@ const FRIEND_ROLE: ChoiceItem[] = [
 ];
 
 /** Six Avengers, laid out like `FRIEND_ROLE`: each in eight questions, twice in each position. */
-const MARVEL: ChoiceItem[] = [
+const AVENGERS: ChoiceItem[] = [
   { options: [{ thor: 2 }, { spiderman: 2 }, { widow: 2 }, { hulk: 2 }] },
   { options: [{ hulk: 2 }, { cap: 2 }, { ironman: 2 }, { widow: 2 }] },
   { options: [{ spiderman: 2 }, { hulk: 2 }, { cap: 2 }, { thor: 2 }] },
@@ -552,7 +555,7 @@ export const QUIZ_DEFS: Record<QuizId, QuizDef> = {
     scale: "agree5",
     dims: ["growth"],
     items: MINDSET,
-    result: { kind: "band", bands: [{ max: 16, key: "fixed" }, { max: 27, key: "mixed" }, { max: 40, key: "growth" }] },
+    result: { kind: "band", bands: [{ max: 13, key: "fixed" }, { max: 26, key: "mixed" }, { max: 40, key: "growth" }] },
   },
   money: { id: "money", type: "likert", scale: "agree5", dims: ["saver", "spender", "investor", "avoider", "giver"], items: MONEY, result: { kind: "top" } },
   chronotype: {
@@ -696,11 +699,11 @@ export const QUIZ_DEFS: Record<QuizId, QuizDef> = {
     items: GHIBLI,
     result: { kind: "top", tie: "spread" },
   },
-  marvel: {
-    id: "marvel",
+  avengers: {
+    id: "avengers",
     type: "choice",
     dims: ["ironman", "cap", "thor", "hulk", "widow", "spiderman"],
-    items: MARVEL,
+    items: AVENGERS,
     result: { kind: "top", tie: "spread" },
   },
   hogwarts: {
