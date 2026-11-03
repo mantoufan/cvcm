@@ -105,6 +105,12 @@ describe("factors", () => {
     expect(divisorCount(f)).toBe(240);
     expect(divisorSum(factorize(28n))).toBe(56n);
     expect(divisors(factorize(12n))).toEqual([1n, 2n, 3n, 4n, 6n, 12n]);
+    const big = factorize(897612484786617600n);
+    expect(divisorCount(big)).toBe(103680);
+    const firstK = divisors(big, 1000);
+    expect(firstK).toHaveLength(1000);
+    expect(firstK.slice(0, 6)).toEqual([1n, 2n, 3n, 4n, 5n, 6n]);
+    expect(divisors(factorize(720720n), 10)).toEqual(divisors(factorize(720720n)).slice(0, 10));
     expect(factorPairs(12n, divisors(factorize(12n)))).toEqual([[1n, 12n], [2n, 6n], [3n, 4n]]);
     expect(nextPrime(13n)).toBe(17n);
     expect(previousPrime(13n)).toBe(11n);

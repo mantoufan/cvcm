@@ -94,7 +94,9 @@ function paint(): void {
     return;
   }
   // "1,500, 2,500" in English: the commas split it into 1, 500, 2, 500. Say so next to the answer.
-  if (mark === "," && /\d,\d{3}(?!\d)/.test(inputEl.value.normalize("NFKC"))) errorEl.textContent = t("lcmGcf.commaNote");
+  // "4,5" in es, id or vi (a decimal) is split into 4 and 5 the same way.
+  const raw = inputEl.value.normalize("NFKC");
+  if (mark === "," ? /\d,\d{3}(?!\d)/.test(raw) : /\d,\d/.test(raw)) errorEl.textContent = t("lcmGcf.commaNote");
   const g = nums.reduce((a, b) => gcd(a, b));
   const l = nums.reduce((a, b) => lcm(a, b));
   const list = nums.join(", ");

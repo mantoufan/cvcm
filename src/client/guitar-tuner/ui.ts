@@ -38,6 +38,8 @@ let sink: GainNode | null = null;
 let buf: Float32Array<ArrayBuffer> | null = null;
 let timer = 0;
 let readings: number[] = [];
+/** A reading far from the median, waiting for a second frame to confirm the note changed. */
+let pending: number | null = null;
 let lastHeard = 0;
 let lastTarget: number | null = null;
 /** A string picked by hand; null = follow whichever string is played. */
@@ -224,6 +226,7 @@ async function start(): Promise<void> {
     }
   });
   readings = [];
+  pending = null;
   lastHeard = 0;
   say("listening");
   timer = window.setInterval(analyse, ANALYSE_MS);
@@ -264,6 +267,7 @@ function stop(): void {
   stream?.getTracks().forEach((tr) => tr.stop());
   stream = null;
   readings = [];
+  pending = null;
   lastTarget = null;
   if (startBtn) startBtn.textContent = t("guitarTuner.start");
   paintNote(null);
@@ -284,14 +288,22 @@ function analyse(): void {
     if (lastHeard && now - lastHeard > HOLD_MS) {
       lastHeard = 0;
       readings = [];
+      pending = null;
       paintNote(null);
       say("listening");
     }
     return;
   }
-  // A new note (more than a semitone away) starts a fresh median.
-  const last = readings[readings.length - 1];
-  if (last && Math.abs(12 * Math.log2(pitch.freq / last)) > 1) readings = [];
+  // A new note (more than a semitone from the median) restarts the median only when two frames in a row agree on it,
+  // so one stray frame (an octave error) is dropped instead of painted.
+  const far = readings.length > 0 && Math.abs(12 * Math.log2(pitch.freq / median(readings))) > 1;
+  if (far) {
+    const agrees = pending != null && Math.abs(12 * Math.log2(pitch.freq / pending)) <= 1;
+    pending = pitch.freq;
+    if (!agrees) return;
+    readings = [];
+  }
+  pending = null;
   readings.push(pitch.freq);
   if (readings.length > SMOOTH) readings.shift();
   lastHeard = now;

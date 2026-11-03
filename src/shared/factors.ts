@@ -55,7 +55,7 @@ function modPow(base: bigint, exp: bigint, mod: bigint): bigint {
 
 const SMALL_PRIMES = [2n, 3n, 5n, 7n, 11n, 13n, 17n, 19n, 23n, 29n, 31n, 37n];
 
-/** Deterministic Miller–Rabin: these 12 bases are exact for every n below 3.3 × 10^24. */
+/** Deterministic Miller–Rabin: the first 12 prime bases are exact for every n below 3.18 × 10^23 (far above 18 digits). */
 export function isPrime(n: bigint): boolean {
   if (n < 2n) return false;
   for (const p of SMALL_PRIMES) {
@@ -191,10 +191,11 @@ export function divisors(f: readonly PrimePower[], limit = MAX_LISTED_DIVISORS):
         v *= p;
       }
     }
-    list = next;
+    // Keeping only the smallest `limit` partial products is safe: every prefix of a small divisor is smaller still.
+    next.sort((a, b) => (a < b ? -1 : a > b ? 1 : 0));
+    list = next.slice(0, limit);
   }
-  list.sort((a, b) => (a < b ? -1 : a > b ? 1 : 0));
-  return list.slice(0, limit);
+  return list;
 }
 
 const SUPERSCRIPT = ["⁰", "¹", "²", "³", "⁴", "⁵", "⁶", "⁷", "⁸", "⁹"];

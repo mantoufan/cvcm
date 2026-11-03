@@ -62,7 +62,7 @@ export function nearestTarget(freq: number, tuning: TuningId, a4 = DEFAULT_A4): 
   return best;
 }
 
-/** Lowest and highest frequency worth searching for this instrument (a fifth below the lowest string, top string's 4th harmonic). */
+/** Lowest and highest frequency worth searching for this instrument (a fifth below the lowest string, 2.5× the top string). */
 export function searchRange(tuning: TuningId, a4 = DEFAULT_A4): { min: number; max: number } {
   const strings = TUNINGS[tuning] as readonly number[];
   if (!strings.length) return { min: 27.5, max: 2100 };
@@ -95,14 +95,13 @@ export function detectPitch(input: ArrayLike<number>, rate: number, minFreq = 27
   const maxLag = Math.min(Math.floor(sampleRate / minFreq), Math.floor(buf.length / 2));
   const minLag = Math.max(2, Math.floor(sampleRate / maxFreq));
   const w = buf.length - maxLag;
-  if (maxLag <= minLag || w < maxLag / 2) return null;
+  if (maxLag <= minLag) return null;
   // Reused between calls (the tuner runs this ~20 times a second).
   if (scratchD.length < maxLag + 1) {
     scratchD = new Float64Array(maxLag + 1);
     scratchC = new Float64Array(maxLag + 1);
   }
   const d = scratchD;
-  d.fill(0, 0, maxLag + 1);
   for (let tau = 1; tau <= maxLag; tau++) {
     let sum = 0;
     for (let j = 0; j < w; j++) {
