@@ -53,10 +53,11 @@ let asking = false;
 export function mountGuitarTuner(host: HTMLElement): void {
   locked = null;
   lastTarget = null;
+  lastA4 = DEFAULT_A4;
   tuningEl = h("select", { "data-field": "tuning", onChange: () => { locked = null; lastTarget = null; readings = []; paintStrings(); } },
     ...TUNING_IDS.map((id) => h("option", { value: id, selected: id === "guitar" }, t(`guitarTuner.tuning_${id}`))),
   );
-  a4El = h("input", { type: "number", min: String(MIN_A4), max: String(MAX_A4), step: "0.1", inputmode: "decimal", value: String(DEFAULT_A4), "data-field": "a4", onChange: () => { if (a4El) a4El.value = String(a4()); readings = []; paintStrings(); } });
+  a4El = h("input", { type: "number", min: String(MIN_A4), max: String(MAX_A4), step: "0.1", inputmode: "decimal", value: String(DEFAULT_A4), "data-field": "a4", onChange: () => { if (a4El) a4El.value = String(a4()); readings = []; pending = null; paintStrings(); } });
   notationEl = h("select", { "data-field": "notation", onChange: () => { paintStrings(); paintNote(null); } },
     h("option", { value: "letter", selected: locale() !== "es" }, t("guitarTuner.letters")),
     h("option", { value: "solfege", selected: locale() === "es" }, t("guitarTuner.solfege")),
@@ -121,8 +122,13 @@ function tuning(): TuningId {
   return v && v in TUNINGS ? v : "guitar";
 }
 
+/** The reference in use: a blank or half-typed field ("4", "44") keeps the last valid value instead of jumping to 415. */
+let lastA4 = DEFAULT_A4;
+
 function a4(): number {
-  return clampA4(Number(a4El?.value));
+  const v = Number(a4El?.value);
+  if (a4El?.value.trim() && Number.isFinite(v) && v >= MIN_A4 && v <= MAX_A4) lastA4 = clampA4(v);
+  return lastA4;
 }
 
 function notation(): Notation {
@@ -285,6 +291,7 @@ function analyse(): void {
   const pitch = detectPitch(buf, audio.sampleRate, min, max);
   const now = performance.now();
   if (!pitch) {
+    pending = null;
     if (lastHeard && now - lastHeard > HOLD_MS) {
       lastHeard = 0;
       readings = [];

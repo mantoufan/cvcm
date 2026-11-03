@@ -76,6 +76,7 @@ export type Pitch = { freq: number; clarity: number };
 
 let scratchD = new Float64Array(0);
 let scratchC = new Float64Array(0);
+let scratchHalf = new Float32Array(0);
 
 /**
  * YIN pitch detection (de Cheveigné & Kawahara, 2002): cumulative mean normalised difference, first dip below 0.15,
@@ -87,14 +88,16 @@ export function detectPitch(input: ArrayLike<number>, rate: number, minFreq = 27
   let buf = input;
   let sampleRate = rate;
   if (rate > 50000) {
-    const half = new Float32Array(input.length >> 1);
+    if (scratchHalf.length !== input.length >> 1) scratchHalf = new Float32Array(input.length >> 1);
+    const half = scratchHalf;
     for (let i = 0; i < half.length; i++) half[i] = (input[2 * i]! + input[2 * i + 1]!) / 2;
     buf = half;
     sampleRate = rate / 2;
   }
   const maxLag = Math.min(Math.floor(sampleRate / minFreq), Math.floor(buf.length / 2));
   const minLag = Math.max(2, Math.floor(sampleRate / maxFreq));
-  const w = buf.length - maxLag;
+  // Summing over about two of the longest periods is enough; a longer window only costs time.
+  const w = Math.min(buf.length - maxLag, 2 * maxLag);
   if (maxLag <= minLag) return null;
   // Reused between calls (the tuner runs this ~20 times a second).
   if (scratchD.length < maxLag + 1) {
