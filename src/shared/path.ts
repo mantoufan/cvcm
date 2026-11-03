@@ -41,7 +41,7 @@ export const CATEGORIES = [
   { id: "ai", tools: ["v", "ai-image-generator", "ai-music-generator", "remove-background", "image-upscaler", "speech-to-text", "depth-map"] },
   { id: "image", tools: ["watermark", "mosaic", "collage", "portrait-sim", "resize", "crop", "rotate", "exif", "meme", "signature", "favicon", "screenshot", "image-colors"] },
   { id: "convert", tools: ["convert", "image-pdf", "pdf-jpg", "merge-pdf", "compress-pdf", "split-pdf", "invoice", "audio", "audio-cutter", "audio-joiner", "data", "xml-json", "yaml-json", "json", "base64"] },
-  { id: "text", tools: ["password", "word-count", "color", "hex-rgb", "names", "timezone", "timestamp", "lorem", "units", "text-to-speech", "diff", "uuid", "hash", "regex", "case", "jwt", "percent", "random", "html", "cron", "slug", "age", "bmi", "binary", "tip", "morse", "roman", "discount", "countdown", "loan", "stopwatch", "compound", "vat", "reverse", "url-encode", "text-hex", "days", "sort", "replace", "words", "add-days", "week", "aspect", "workdays", "fraction", "hourly", "margin", "radix", "duration", "tdee", "cidr", "chmod", "typing", "dice", "gpa", "pomodoro", "sleep", "body-fat", "contrast", "pace", "grade", "due-date", "ideal-weight", "water-intake", "fuel-cost", "reading-time", "time-card", "electricity", "ovulation", "macro", "calories-burned", "wheel", "average", "metronome", "keyboard-test", "zodiac", "click-test", "reaction-time", "tone-generator", "tally-counter", "mic-test", "webcam-test", "gamepad-test", "dead-pixel", "refresh-rate", "touch-test"] },
+  { id: "text", tools: ["password", "word-count", "color", "hex-rgb", "names", "timezone", "timestamp", "lorem", "units", "text-to-speech", "diff", "uuid", "hash", "regex", "case", "jwt", "percent", "random", "html", "cron", "slug", "age", "bmi", "binary", "tip", "morse", "roman", "discount", "countdown", "loan", "stopwatch", "compound", "vat", "reverse", "url-encode", "text-hex", "days", "sort", "replace", "words", "add-days", "week", "aspect", "workdays", "fraction", "hourly", "margin", "radix", "duration", "tdee", "cidr", "chmod", "typing", "dice", "gpa", "pomodoro", "sleep", "body-fat", "contrast", "pace", "grade", "due-date", "ideal-weight", "water-intake", "fuel-cost", "reading-time", "time-card", "electricity", "ovulation", "macro", "calories-burned", "wheel", "average", "metronome", "keyboard-test", "zodiac", "click-test", "reaction-time", "tone-generator", "tally-counter", "mic-test", "webcam-test", "gamepad-test", "dead-pixel", "refresh-rate", "touch-test", "coin-flip", "guitar-tuner", "factors", "lcm-gcf"] },
   { id: "assets", tools: ["gold", "silver", "platinum", "palladium", "oil", "stocks"] },
 ] as const;
 
@@ -165,6 +165,10 @@ export const TOOLS = [
   "dead-pixel",
   "refresh-rate",
   "touch-test",
+  "coin-flip",
+  "guitar-tuner",
+  "factors",
+  "lcm-gcf",
   "gold",
   "silver",
   "platinum",
@@ -357,7 +361,7 @@ export function isAiToolPath(pathname: string): boolean {
 }
 
 /** Tools that record from the microphone. Only their pages allow it (Permissions-Policy), so links into one load a fresh document. */
-export const MIC_TOOLS: ReadonlySet<ToolId> = new Set<ToolId>(["speech-to-text", "mic-test"]);
+export const MIC_TOOLS: ReadonlySet<ToolId> = new Set<ToolId>(["speech-to-text", "mic-test", "guitar-tuner"]);
 
 export function isMicToolPath(pathname: string): boolean {
   const parsed = parseAppPath(pathname);

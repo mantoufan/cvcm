@@ -790,4 +790,28 @@ export const TOOL_LOADERS: Record<ToolId, ToolLoader> = {
     m.mountTouchTest(host);
     return m.unmountTouchTest;
   },
+  "coin-flip": async (host, ctx) => {
+    const m = await import("./coin-flip/ui");
+    if (!ctx.alive()) return undefined;
+    m.mountCoinFlip(host);
+    return m.unmountCoinFlip;
+  },
+  "guitar-tuner": async (host, ctx) => {
+    const m = await import("./guitar-tuner/ui");
+    if (!ctx.alive()) return undefined;
+    m.mountGuitarTuner(host);
+    return m.unmountGuitarTuner;
+  },
+  "factors": async (host, ctx) => {
+    const m = await import("./factors/ui");
+    if (!ctx.alive()) return undefined;
+    m.mountFactors(host);
+    return m.unmountFactors;
+  },
+  "lcm-gcf": async (host, ctx) => {
+    const m = await import("./lcm-gcf/ui");
+    if (!ctx.alive()) return undefined;
+    m.mountLcmGcf(host);
+    return m.unmountLcmGcf;
+  },
 };

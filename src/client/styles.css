@@ -787,3 +787,31 @@ html.dp-lock, html.dp-lock body { overflow: hidden; }
 .touch-pad.used .touch-start { display: none; }
 .dp-screen.idle .dp-exit { pointer-events: none; }
 .cam-actions { display: flex; gap: 0.5rem; }
+/* Coin flip */
+.coin-stage { display: grid; gap: 0.6rem; justify-items: center; text-align: center; align-content: start; }
+.coin { display: grid; place-items: center; width: 11rem; height: 11rem; border: 6px double var(--pink-deep); border-radius: 50%; background: var(--pink-soft); color: var(--pink-deep); font: inherit; font-size: 1.5rem; font-weight: 800; cursor: pointer; touch-action: manipulation; }
+.coin[data-face="tails"] { background: var(--white); }
+.coin.spinning { animation: coin-spin 0.7s ease-out; }
+.coin.spinning .coin-face { visibility: hidden; }
+@keyframes coin-spin { from { transform: rotateY(0); } to { transform: rotateY(1800deg); } }
+.coin-result { min-height: 1.5em; margin: 0; font-size: 1.2rem; font-weight: 700; color: var(--pink-deep); }
+.coin-strip { margin: 0 0 0.6rem; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0.9rem; line-height: 1.7; overflow-wrap: anywhere; }
+/* Guitar tuner */
+.tuner-stage { display: grid; gap: 0.5rem; justify-items: center; text-align: center; align-content: start; }
+.tuner-note { margin: 0; font-size: 3.4rem; font-weight: 800; line-height: 1.1; color: var(--pink-deep); }
+.tuner-sub { display: flex; align-items: baseline; gap: 0.8rem; margin: 0; color: var(--ink-soft); font-variant-numeric: tabular-nums; }
+.tuner-meter { position: relative; width: 100%; max-width: 30rem; height: 3rem; border: 1px solid var(--line); border-radius: 10px; background: var(--white); overflow: hidden; }
+.tuner-zone { position: absolute; top: 0; bottom: 1.1rem; left: 45%; width: 10%; background: #d8f0e2; }
+.tuner-needle { position: absolute; top: 0; bottom: 1.1rem; left: 50%; width: 3px; margin-left: -1.5px; background: var(--pink-deep); transition: left 90ms linear; }
+.tuner-needle.ok { background: #1f7a4d; }
+.tuner-scale { position: absolute; left: 0.4rem; right: 0.4rem; bottom: 0.1rem; display: flex; justify-content: space-between; color: var(--ink-soft); font-size: 0.75rem; }
+.tuner-verdict { min-height: 1.5em; margin: 0; font-weight: 700; color: var(--pink-deep); }
+.tuner-verdict[data-state="ok"] { color: #1f7a4d; }
+.tuner-strings { justify-content: center; }
+.tuner-strings .chip.heard { border-color: var(--pink-deep); font-weight: 700; }
+/* Factor and LCM/GCF calculators */
+.factor-verdict { margin: 0 0 0.6rem; font-weight: 700; color: var(--pink-deep); overflow-wrap: anywhere; }
+.factor-verdict[data-state="error"] { color: #b4233c; }
+.factor-list { margin: 0 0 0.6rem; line-height: 1.7; font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
+.factor-steps { margin: 0 0 0.6rem; padding-left: 1.2rem; line-height: 1.7; font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
+.stats-grid dd { overflow-wrap: anywhere; }

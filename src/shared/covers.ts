@@ -121,6 +121,11 @@ export const TOOL_COVER: Record<ToolId, string> = {
   "dead-pixel": "/covers/dead-pixel-sweet.jpg?v=1",
   "refresh-rate": "/covers/refresh-rate-sweet.jpg?v=1",
   "touch-test": "/covers/touch-test-sweet.jpg?v=1",
+  // Own covers are pending (Codex usage limit, 2026-11-03); prompts are in docs/tool-cover-prompts.md.
+  "coin-flip": "/covers/dice-sweet.jpg?v=1",
+  "guitar-tuner": "/covers/tone-generator-sweet.jpg?v=1",
+  "factors": "/covers/fraction-sweet.jpg?v=1",
+  "lcm-gcf": "/covers/average-sweet.jpg?v=1",
   gold: "/covers/gold-sweet.jpg?v=1",
   silver: "/covers/silver-sweet.jpg?v=1",
   platinum: "/covers/platinum-sweet.jpg?v=1",

@@ -227,3 +227,12 @@ Codex, refs `due-date-sweet.jpg` + `reading-time-sweet.jpg`. Same character and 
 ## AI music generator (2026-11-02)
 
 Codex, refs `tone-generator-sweet.jpg` + `reading-time-sweet.jpg`. Same character and room. `ai-music-generator`: pink over-ear headphones with lace bows, she presses glowing pads on a small pearlescent pink keyboard synthesizer; pastel musical notes and a soft wave of little bars rise from it; a cream drum pad with heart buttons beside. No words, letters, numerals, logo or watermark.
+
+## Coin flip, guitar tuner, factor calculator, LCM and GCF calculator (2026-11-03)
+
+Codex (`codex exec`, built-in image tool), refs `dice-sweet.jpg` + `metronome-sweet.jpg`. Same character and room, no words, letters, numerals, logo or watermark. Save `public/covers/<id>-sweet.jpg`, `sips -z 720 1280`.
+
+- `coin-flip`: she flicks a shiny pink-gold coin into the air with her thumb, the coin spinning above her hand with soft motion arcs, blank faces on the coin.
+- `guitar-tuner`: she holds a small cream acoustic guitar and plucks a string, looking at a little round pink clip-on tuner on the headstock whose needle points straight up.
+- `factors`: she sorts small pink and cream round tokens into neat groups and little stacks on the desk, a magnifying glass beside them, blank tokens with no marks.
+- `lcm-gcf`: two rows of pastel pink and cream stepping stones of different spacings meet at the same glowing heart stone, she points at the meeting point.
