@@ -3,13 +3,13 @@
 // `src/locales/quiz/<locale>.json`, with items in the same order. Scoring runs in the page; answers never leave it.
 
 export const QUIZ_GROUPS = [
-  { id: "personality", quizzes: ["mbti", "big-five", "introvert", "enneagram", "eq"] },
+  { id: "personality", quizzes: ["mbti", "big-five", "introvert", "enneagram", "eq", "temperament"] },
   { id: "love", quizzes: ["love-language", "attachment", "love-style", "marriage", "conflict-style"] },
-  { id: "career", quizzes: ["career", "work-style", "leadership", "money"] },
+  { id: "career", quizzes: ["career", "work-style", "leadership", "mindset", "money"] },
   { id: "games", quizzes: ["pokemon", "genshin", "sonic", "dnd-class"] },
-  { id: "anime", quizzes: ["naruto", "one-piece", "demon-slayer", "jujutsu-kaisen", "avatar-element", "anime"] },
-  { id: "books", quizzes: ["hogwarts"] },
-  { id: "fun", quizzes: ["chronotype", "pet", "face-shape"] },
+  { id: "anime", quizzes: ["naruto", "one-piece", "ghibli", "demon-slayer", "jujutsu-kaisen", "avatar-element", "anime"] },
+  { id: "books", quizzes: ["hogwarts", "avengers"] },
+  { id: "fun", quizzes: ["chronotype", "pet", "face-shape", "friend-role"] },
   { id: "wellbeing", quizzes: ["wellbeing-index", "self-esteem", "anxiety", "depression"] },
 ] as const;
 
@@ -162,6 +162,19 @@ const LEADERSHIP = likert(`
   visionary+ coaching+ affiliative+ democratic+ pacesetting+ commanding+  visionary+ coaching+ affiliative+ democratic+ pacesetting+ commanding+
   visionary+ coaching+ affiliative+ democratic+ pacesetting+ commanding+  visionary+ coaching+ affiliative+ democratic+ pacesetting+ commanding+
 `);
+
+/** The four classical temperaments (Hippocrates, Galen, Kant), five original statements each. */
+const TEMPERAMENT = likert(`
+  sanguine+ choleric+ melancholic+ phlegmatic+  sanguine+ choleric+ melancholic+ phlegmatic+
+  sanguine+ choleric+ melancholic+ phlegmatic+  sanguine+ choleric+ melancholic+ phlegmatic+
+  sanguine+ choleric+ melancholic+ phlegmatic+
+`);
+
+/**
+ * Growth or fixed mindset (after Carol Dweck): ten original statements, the fixed-mindset ones reversed. Total 0–40;
+ * the bands (0–13, 14–26, 27–40) put "mixed" around 20, the total for neutral, or agree-to-everything, answers.
+ */
+const MINDSET = likert("growth+ growth- growth+ growth- growth+ growth- growth+ growth- growth+ growth-");
 
 /** WHO-5 Well-Being Index (WHO Regional Office for Europe, 1998; free to use). Total 0–25; times 4 gives the 0–100 percentage. */
 const WHO5 = likert("who+ who+ who+ who+ who+");
@@ -385,7 +398,8 @@ const AVATAR: ChoiceItem[] = [
 
 /**
  * Eight Straw Hat Pirates from One Piece. Each question offers four, so each pirate appears in six; the questions come
- * in pairs that split the crew in two, and the six splits mix who appears alongside whom.
+ * in pairs that split the crew in two, and the six splits mix who appears alongside whom. Each pirate sits in each
+ * position once or twice.
  */
 const ONE_PIECE: ChoiceItem[] = [
   { options: [{ luffy: 2 }, { zoro: 2 }, { nami: 2 }, { usopp: 2 }] },
@@ -398,8 +412,8 @@ const ONE_PIECE: ChoiceItem[] = [
   { options: [{ nami: 2 }, { sanji: 2 }, { franky: 2 }, { zoro: 2 }] },
   { options: [{ franky: 2 }, { robin: 2 }, { zoro: 2 }, { luffy: 2 }] },
   { options: [{ sanji: 2 }, { usopp: 2 }, { chopper: 2 }, { nami: 2 }] },
-  { options: [{ nami: 2 }, { franky: 2 }, { luffy: 2 }, { chopper: 2 }] },
-  { options: [{ robin: 2 }, { zoro: 2 }, { usopp: 2 }, { sanji: 2 }] },
+  { options: [{ nami: 2 }, { chopper: 2 }, { luffy: 2 }, { franky: 2 }] },
+  { options: [{ zoro: 2 }, { robin: 2 }, { usopp: 2 }, { sanji: 2 }] },
 ];
 
 /** The four Hogwarts houses; every question offers all four, each house three times in each position. */
@@ -418,6 +432,57 @@ const HOGWARTS: ChoiceItem[] = [
   { options: [{ ravenclaw: 2 }, { gryffindor: 2 }, { slytherin: 2 }, { hufflepuff: 2 }] },
 ];
 
+/**
+ * Six roles in a friend group. Each question offers four: the two left out are a different pair every time (all
+ * pairs but the three opposites), so each role appears in eight questions, twice in each position.
+ */
+const FRIEND_ROLE: ChoiceItem[] = [
+  { options: [{ adventurer: 2 }, { comedian: 2 }, { mediator: 2 }, { wildcard: 2 }] },
+  { options: [{ wildcard: 2 }, { caretaker: 2 }, { planner: 2 }, { mediator: 2 }] },
+  { options: [{ comedian: 2 }, { wildcard: 2 }, { caretaker: 2 }, { adventurer: 2 }] },
+  { options: [{ planner: 2 }, { mediator: 2 }, { caretaker: 2 }, { comedian: 2 }] },
+  { options: [{ comedian: 2 }, { planner: 2 }, { adventurer: 2 }, { wildcard: 2 }] },
+  { options: [{ adventurer: 2 }, { caretaker: 2 }, { wildcard: 2 }, { mediator: 2 }] },
+  { options: [{ planner: 2 }, { comedian: 2 }, { wildcard: 2 }, { caretaker: 2 }] },
+  { options: [{ wildcard: 2 }, { adventurer: 2 }, { mediator: 2 }, { planner: 2 }] },
+  { options: [{ caretaker: 2 }, { planner: 2 }, { comedian: 2 }, { adventurer: 2 }] },
+  { options: [{ mediator: 2 }, { wildcard: 2 }, { comedian: 2 }, { caretaker: 2 }] },
+  { options: [{ mediator: 2 }, { adventurer: 2 }, { planner: 2 }, { comedian: 2 }] },
+  { options: [{ caretaker: 2 }, { mediator: 2 }, { adventurer: 2 }, { planner: 2 }] },
+];
+
+/** Six Avengers, laid out like `FRIEND_ROLE`: each in eight questions, twice in each position. */
+const AVENGERS: ChoiceItem[] = [
+  { options: [{ thor: 2 }, { spiderman: 2 }, { widow: 2 }, { hulk: 2 }] },
+  { options: [{ hulk: 2 }, { cap: 2 }, { ironman: 2 }, { widow: 2 }] },
+  { options: [{ spiderman: 2 }, { hulk: 2 }, { cap: 2 }, { thor: 2 }] },
+  { options: [{ ironman: 2 }, { widow: 2 }, { cap: 2 }, { spiderman: 2 }] },
+  { options: [{ spiderman: 2 }, { ironman: 2 }, { thor: 2 }, { hulk: 2 }] },
+  { options: [{ thor: 2 }, { cap: 2 }, { hulk: 2 }, { widow: 2 }] },
+  { options: [{ ironman: 2 }, { spiderman: 2 }, { hulk: 2 }, { cap: 2 }] },
+  { options: [{ hulk: 2 }, { thor: 2 }, { widow: 2 }, { ironman: 2 }] },
+  { options: [{ cap: 2 }, { ironman: 2 }, { spiderman: 2 }, { thor: 2 }] },
+  { options: [{ widow: 2 }, { hulk: 2 }, { spiderman: 2 }, { cap: 2 }] },
+  { options: [{ widow: 2 }, { thor: 2 }, { ironman: 2 }, { spiderman: 2 }] },
+  { options: [{ cap: 2 }, { widow: 2 }, { thor: 2 }, { ironman: 2 }] },
+];
+
+/** Eight Studio Ghibli characters, laid out like `ONE_PIECE`: each in six questions, once or twice in each position. */
+const GHIBLI: ChoiceItem[] = [
+  { options: [{ chihiro: 2 }, { san: 2 }, { kiki: 2 }, { sophie: 2 }] },
+  { options: [{ nausicaa: 2 }, { howl: 2 }, { haku: 2 }, { totoro: 2 }] },
+  { options: [{ haku: 2 }, { chihiro: 2 }, { nausicaa: 2 }, { kiki: 2 }] },
+  { options: [{ sophie: 2 }, { howl: 2 }, { san: 2 }, { totoro: 2 }] },
+  { options: [{ totoro: 2 }, { chihiro: 2 }, { haku: 2 }, { san: 2 }] },
+  { options: [{ howl: 2 }, { kiki: 2 }, { sophie: 2 }, { nausicaa: 2 }] },
+  { options: [{ nausicaa: 2 }, { totoro: 2 }, { chihiro: 2 }, { sophie: 2 }] },
+  { options: [{ kiki: 2 }, { haku: 2 }, { howl: 2 }, { san: 2 }] },
+  { options: [{ howl: 2 }, { nausicaa: 2 }, { san: 2 }, { chihiro: 2 }] },
+  { options: [{ haku: 2 }, { sophie: 2 }, { totoro: 2 }, { kiki: 2 }] },
+  { options: [{ kiki: 2 }, { totoro: 2 }, { chihiro: 2 }, { howl: 2 }] },
+  { options: [{ san: 2 }, { nausicaa: 2 }, { sophie: 2 }, { haku: 2 }] },
+];
+
 export const QUIZ_DEFS: Record<QuizId, QuizDef> = {
   mbti: { id: "mbti", type: "likert", scale: "agree5", dims: ["EI", "SN", "TF", "JP"], items: TYPES, result: { kind: "types" } },
   "big-five": { id: "big-five", type: "likert", scale: "agree5", dims: ["O", "C", "E", "A", "N"], items: BIG_FIVE, result: { kind: "profile" } },
@@ -431,6 +496,14 @@ export const QUIZ_DEFS: Record<QuizId, QuizDef> = {
     result: { kind: "band", bands: [{ max: 31, key: "introvert" }, { max: 48, key: "ambivert" }, { max: 80, key: "extrovert" }] },
   },
   eq: { id: "eq", type: "likert", scale: "agree5", dims: ["self", "regulate", "empathy", "social"], items: EQ, result: { kind: "profile" } },
+  temperament: {
+    id: "temperament",
+    type: "likert",
+    scale: "agree5",
+    dims: ["sanguine", "choleric", "melancholic", "phlegmatic"],
+    items: TEMPERAMENT,
+    result: { kind: "top", tie: "spread" },
+  },
   enneagram: { id: "enneagram", type: "likert", scale: "agree5", dims: ["1", "2", "3", "4", "5", "6", "7", "8", "9"], items: ENNEAGRAM, result: { kind: "top" } },
   "love-language": { id: "love-language", type: "likert", scale: "agree5", dims: ["words", "time", "gifts", "service", "touch"], items: LOVE, result: { kind: "top" } },
   attachment: {
@@ -476,6 +549,14 @@ export const QUIZ_DEFS: Record<QuizId, QuizDef> = {
     items: LEADERSHIP,
     result: { kind: "top", tie: "spread" },
   },
+  mindset: {
+    id: "mindset",
+    type: "likert",
+    scale: "agree5",
+    dims: ["growth"],
+    items: MINDSET,
+    result: { kind: "band", bands: [{ max: 13, key: "fixed" }, { max: 26, key: "mixed" }, { max: 40, key: "growth" }] },
+  },
   money: { id: "money", type: "likert", scale: "agree5", dims: ["saver", "spender", "investor", "avoider", "giver"], items: MONEY, result: { kind: "top" } },
   chronotype: {
     id: "chronotype",
@@ -504,6 +585,13 @@ export const QUIZ_DEFS: Record<QuizId, QuizDef> = {
     dims: ["oval", "round", "square", "heart", "oblong", "diamond", "triangle"],
     items: FACE,
     result: { kind: "top" },
+  },
+  "friend-role": {
+    id: "friend-role",
+    type: "choice",
+    dims: ["planner", "caretaker", "comedian", "adventurer", "mediator", "wildcard"],
+    items: FRIEND_ROLE,
+    result: { kind: "top", tie: "spread" },
   },
   "wellbeing-index": {
     id: "wellbeing-index",
@@ -602,6 +690,20 @@ export const QUIZ_DEFS: Record<QuizId, QuizDef> = {
     type: "choice",
     dims: ["water", "earth", "fire", "air"],
     items: AVATAR,
+    result: { kind: "top", tie: "spread" },
+  },
+  ghibli: {
+    id: "ghibli",
+    type: "choice",
+    dims: ["chihiro", "kiki", "sophie", "howl", "san", "nausicaa", "haku", "totoro"],
+    items: GHIBLI,
+    result: { kind: "top", tie: "spread" },
+  },
+  avengers: {
+    id: "avengers",
+    type: "choice",
+    dims: ["ironman", "cap", "thor", "hulk", "widow", "spiderman"],
+    items: AVENGERS,
     result: { kind: "top", tie: "spread" },
   },
   hogwarts: {
