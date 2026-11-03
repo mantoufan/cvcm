@@ -1,0 +1,164 @@
+{
+  "title": "Cómo etiquetar contenido generado con IA: China, UE y plataformas — cv.cm",
+  "description": "Cómo etiquetar el contenido generado con IA: las medidas de etiquetado de China (etiquetas explícitas e implícitas), el artículo 50 del Reglamento de IA de la UE, las normas de YouTube, TikTok y Meta, y una lista de comprobación.",
+  "h1": "¿Cómo se etiqueta correctamente el contenido generado con IA?",
+  "answer": "Usa dos tipos de etiquetas. Una etiqueta explícita es un aviso visible o audible, como el texto “Generado por IA” sobre una imagen o un video. Una etiqueta implícita son datos legibles por máquina dentro del archivo, como los metadatos. China exige ambas a los servicios de IA desde el 1 de septiembre de 2025, el Reglamento de IA de la UE añade obligaciones similares desde el 2 de agosto de 2026, y YouTube, TikTok y Meta piden a los creadores que revelen el contenido realista de IA.",
+  "sections": [
+    {
+      "h": "Etiquetas explícitas e implícitas",
+      "body": [
+        "Las Medidas de China para el etiquetado del contenido sintético generado por IA definen con claridad los dos tipos, y esa misma división resulta útil en todas partes. Una etiqueta explícita se añade al contenido o a la interfaz y se presenta como texto, sonido o gráficos que las personas pueden percibir con claridad. Una etiqueta implícita se añade a los datos del archivo por medios técnicos y a las personas no les resulta fácil advertirla.",
+        {
+          "table": {
+            "head": [
+              "Tipo",
+              "Ejemplos",
+              "Quién la lee",
+              "Punto débil"
+            ],
+            "rows": [
+              [
+                "Explícita",
+                "El texto “Generado por IA” en una esquina, un aviso hablado, una etiqueta de la plataforma junto a una publicación",
+                "Las personas",
+                "Se puede recortar, tapar o cortar"
+              ],
+              [
+                "Implícita: metadatos",
+                "Campos del archivo que indican que el contenido está generado por IA, además del proveedor y un identificador",
+                "Software y plataformas",
+                "Se pierde cuando el archivo se recodifica, se captura en pantalla o se le eliminan los metadatos"
+              ],
+              [
+                "Implícita: marca de agua",
+                "Una señal invisible dentro de los píxeles o del audio",
+                "Software de detección",
+                "Puede debilitarse tras ediciones intensas o compresión"
+              ]
+            ]
+          }
+        },
+        "Ninguno de los dos tipos basta por sí solo. Las etiquetas visibles informan a los espectadores; las etiquetas legibles por máquina permiten a las plataformas añadir sus propios avisos automáticamente. La buena práctica es usar ambas y mantenerlas intactas cuando edites."
+      ]
+    },
+    {
+      "h": "China: las Medidas para el etiquetado del contenido sintético generado por IA",
+      "body": [
+        "La Administración del Ciberespacio de China, junto con el Ministerio de Industria y Tecnologías de la Información, el Ministerio de Seguridad Pública y la Administración Nacional de Radio y Televisión, emitió las Medidas en marzo de 2025. Entraron en vigor el 1 de septiembre de 2025. Se aplican a los servicios de IA que ya están cubiertos por las normas chinas sobre recomendación algorítmica, síntesis profunda y servicios de IA generativa.",
+        {
+          "ul": [
+            "Etiquetas explícitas (artículo 4): el texto recibe un aviso o símbolo al principio, al final o en una posición intermedia adecuada, o en la interfaz; el audio recibe una señal de voz o de sonido; las imágenes reciben una marca destacada en un lugar adecuado; el video recibe una marca destacada en el fotograma inicial y alrededor de la zona de reproducción; las escenas virtuales la reciben en la pantalla de inicio. Los archivos descargados, copiados o exportados deben conservar la etiqueta explícita.",
+            "Etiquetas implícitas (artículo 5): los proveedores añaden metadatos con los atributos del contenido, el nombre o código del proveedor y un número de contenido. Se fomentan las marcas de agua digitales.",
+            "Plataformas que distribuyen contenido (artículo 6): si los metadatos indican que el contenido está generado por IA, la plataforma añade un aviso destacado; si no hay metadatos pero el usuario lo declara, el aviso dice que puede estar generado por IA; si no se da ninguno de los dos casos, pero la plataforma detecta indicios, lo marca como sospechoso de estar generado por IA. Las plataformas deben ofrecer además una función de etiquetado y recordar a los usuarios que lo declaren.",
+            "Resultados sin etiquetar (artículo 9): un proveedor solo puede entregar a un usuario contenido sin etiqueta explícita después de que el usuario acepte asumir la responsabilidad del etiquetado, y debe conservar registros durante al menos seis meses.",
+            "Usuarios (artículo 10): cuando publicas contenido generado por IA, debes declararlo y usar la función de etiquetado de la plataforma. Nadie puede eliminar, alterar, falsificar u ocultar las etiquetas de forma malintencionada, ni ofrecer herramientas para hacerlo."
+          ]
+        },
+        "El artículo 11 añade que el etiquetado debe cumplir además las leyes, reglamentos y normas nacionales obligatorias pertinentes, por lo que los proveedores deben seguir las normas técnicas además de las Medidas."
+      ]
+    },
+    {
+      "h": "Unión Europea: artículo 50 del Reglamento de IA",
+      "body": [
+        "El artículo 50 del Reglamento de IA de la UE (Reglamento (UE) 2024/1689) establece obligaciones de transparencia. Conforme al artículo 113, se aplica desde el 2 de agosto de 2026.",
+        {
+          "ul": [
+            "Chatbots (50(1)): hay que informar a las personas de que interactúan con un sistema de IA, salvo que sea evidente.",
+            "Marcado legible por máquina (50(2)): los proveedores de sistemas que generan audio, imágenes, video o texto sintéticos deben marcar los resultados en un formato legible por máquina para que puedan detectarse como generados o manipulados artificialmente, en la medida en que sea técnicamente viable. Se excluye la edición asistida que no altere sustancialmente los datos de entrada.",
+            "Reconocimiento de emociones y categorización biométrica (50(3)): los responsables del despliegue deben informar a las personas expuestas.",
+            "Ultrafalsificaciones o deepfakes (50(4)): los responsables del despliegue que publiquen deepfakes de imagen, audio o video deben revelar que el contenido ha sido generado o manipulado artificialmente. En las obras evidentemente artísticas, creativas, satíricas o de ficción, la revelación puede limitarse de forma que no estropee la obra. También hay que revelar el texto generado por IA que se publique para informar al público sobre asuntos de interés público, salvo que una persona u organización tenga la responsabilidad editorial sobre él tras una revisión humana."
+          ]
+        },
+        "Una norma transitoria del artículo 111(4), añadida por una modificación posterior, da a los proveedores cuyos sistemas se comercializaron antes del 2 de agosto de 2026 hasta el 2 de diciembre de 2026 para cumplir el artículo 50(2)."
+      ]
+    },
+    {
+      "h": "Normas de las plataformas: YouTube, TikTok y Meta",
+      "body": [
+        "Las plataformas aplican en todo el mundo sus propias normas, además de la legislación local. A grandes rasgos, en el momento de escribir esto:",
+        {
+          "table": {
+            "head": [
+              "Plataforma",
+              "Qué deben revelar los creadores",
+              "Etiquetas automáticas"
+            ],
+            "rows": [
+              [
+                "YouTube",
+                "Contenido realista creado o alterado con IA: una persona real que dice o hace algo que no dijo ni hizo, imágenes alteradas de hechos o lugares reales, escenas realistas que nunca ocurrieron y música de IA que sea el foco principal",
+                "YouTube puede añadir etiquetas por su cuenta; no revelar el contenido de forma repetida puede conllevar sanciones"
+              ],
+              [
+                "TikTok",
+                "Contenido generado por IA o muy editado que muestre escenas o personas de aspecto realista",
+                "El contenido creado con los efectos de IA de TikTok, y el que lleve credenciales de contenido C2PA, puede etiquetarse automáticamente"
+              ],
+              [
+                "Meta (Facebook, Instagram, Threads)",
+                "Video fotorrealista y audio de sonido realista creados o alterados con IA; las imágenes no exigen una autoetiqueta",
+                "El contenido creado con herramientas de IA de Meta, o detectado mediante señales estándar de la industria, puede recibir una etiqueta “AI info”"
+              ]
+            ]
+          }
+        },
+        "YouTube no exige revelar el contenido claramente irreal, las ediciones menores como la corrección de color o los filtros, ni la ayuda de la IA con guiones, títulos y subtítulos, y afirma que revelar el uso de IA por sí solo no limita la audiencia ni la monetización de un video. TikTok dice que una etiqueta no hace aceptable el contenido dañino o engañoso."
+      ]
+    },
+    {
+      "h": "Cómo etiquetar en la práctica",
+      "body": [
+        {
+          "ol": [
+            "Conserva los metadatos del generador. Exporta desde la herramienta de IA en un formato que mantenga los metadatos y comprueba que tu editor no los descarta al exportar.",
+            "Añade una etiqueta visible que sobreviva a los recortes. En video, colócala en el fotograma inicial y mantén una pequeña marca en una esquina; en imágenes, ponla dentro de la imagen, no solo en el pie de foto.",
+            "En el contenido solo de audio, dilo al principio, por ejemplo: “Este audio se ha generado con IA”.",
+            "Activa el ajuste de aviso de IA de la plataforma al subir el contenido, aunque el archivo ya tenga metadatos.",
+            "Escribe una línea sencilla en el pie, como “Hecho con IA” o “Video generado por IA”, para que los espectadores la vean en cualquier aplicación.",
+            "Conserva un registro de las herramientas, los prompts y los archivos de origen de cada pieza publicada."
+          ]
+        },
+        "Ten cuidado con las herramientas de privacidad. Eliminar los datos EXIF y GPS, por ejemplo con la herramienta exif de cv.cm, protege tu ubicación en las fotos que hiciste tú mismo, pero ese mismo paso también elimina las etiquetas de metadatos de los archivos de IA. Para el contenido generado por IA, añade una etiqueta visible antes de compartirlo y no elimines las etiquetas que exijan una ley o una plataforma."
+      ]
+    },
+    {
+      "h": "Errores comunes",
+      "body": [
+        {
+          "ul": [
+            "Etiquetar solo en el texto de la publicación. Los pies de foto se pierden cuando el archivo se vuelve a publicar o se descarga.",
+            "Colocar una etiqueta diminuta en el borde mismo, donde los botones de la plataforma o el recorte la eliminan.",
+            "Convertir o grabar la pantalla de un video de IA, lo que elimina sus metadatos, y publicarlo después sin una etiqueta visible.",
+            "Creer que un estilo de dibujos animados no necesita etiqueta en ningún sitio. Las plataformas occidentales se centran en el contenido realista, pero las Medidas de China se aplican al contenido generado por IA en general.",
+            "Etiquetar como IA imágenes reales para eludir responsabilidad. Las Medidas de China prohíben usar etiquetas indebidas para perjudicar los derechos de otros, y una etiqueta nunca hace aceptable un contenido engañoso."
+          ]
+        },
+        {
+          "note": "Esta página es información general, no asesoramiento jurídico. Las leyes y las políticas de las plataformas cambian; consulta el texto oficial vigente antes de basarte en un detalle."
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "¿Tengo que etiquetar las imágenes generadas con IA en Instagram?",
+      "a": "Meta dice que puede exigir una etiqueta para el video fotorrealista y el audio realista, no para las imágenes. Aun así, puede añadir una etiqueta “AI info” a las imágenes cuando sus sistemas detecten señales de IA."
+    },
+    {
+      "q": "¿Qué pasa si no etiqueto el contenido de IA en YouTube?",
+      "a": "YouTube puede añadir una etiqueta por su cuenta. Los creadores que no lo revelen de forma repetida pueden enfrentarse a sanciones, como la eliminación del contenido o la suspensión del Programa de socios de YouTube."
+    },
+    {
+      "q": "¿Usar IA para un guion o unos subtítulos requiere una etiqueta?",
+      "a": "En YouTube, no: la ayuda en la producción, como guiones, títulos, miniaturas y subtítulos, no necesita revelarse. Otras plataformas y leyes se centran en los propios contenidos multimedia generados."
+    },
+    {
+      "q": "¿Una marca de agua es lo mismo que una etiqueta de IA?",
+      "a": "Una marca de agua visible puede servir como etiqueta explícita si indica con claridad que el contenido está generado por IA. Una marca de agua invisible es una etiqueta implícita que el software puede detectar pero las personas no ven."
+    },
+    {
+      "q": "¿Puedo quitar la marca de agua de IA del contenido que he generado?",
+      "a": "En China, las normas prohíben eliminar, alterar u ocultar de forma malintencionada las etiquetas exigidas. En otros lugares, las condiciones de la herramienta y las normas de la plataforma también pueden prohibirlo. Conserva las etiquetas al publicar."
+    }
+  ]
+}

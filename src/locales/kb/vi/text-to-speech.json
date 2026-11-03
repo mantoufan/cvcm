@@ -1,0 +1,203 @@
+{
+  "title": "Text-to-speech hoạt động thế nào: TTS nơ-ron, SSML, nhân bản giọng — cv.cm",
+  "description": "Cách chuyển văn bản thành giọng nói hoạt động: TTS nơ-ron và giọng có sẵn trên thiết bị, Web Speech API, SSML cho quãng nghỉ và phát âm, quy định khi nhân bản giọng.",
+  "h1": "Text-to-speech hoạt động như thế nào, và TTS nơ-ron là gì?",
+  "answer": "Text-to-speech (TTS, chuyển văn bản thành giọng nói) biến văn bản thành âm thanh qua ba giai đoạn: chuẩn hóa văn bản (số, ngày, từ viết tắt), chuyển thành âm, rồi tạo dạng sóng âm. TTS nơ-ron dùng mạng được huấn luyện trên giọng thu âm để có nhịp điệu và ngữ điệu tự nhiên. Các giọng trình duyệt cung cấp qua Web Speech API đến từ thiết bị hoặc nhà cung cấp của nó, nên khác nhau giữa điện thoại và máy tính.",
+  "sections": [
+    {
+      "h": "Ba giai đoạn của một hệ thống TTS",
+      "body": [
+        {
+          "ol": [
+            "Chuẩn hóa văn bản. Hệ thống viết lại văn bản thành những từ có thể đọc thành tiếng. “Dr. Lee paid $25 on 3/4” phải trở thành đại loại “Doctor Lee paid twenty-five dollars on March fourth” (hoặc “the third of April”, tùy khu vực). Nhiều lỗi phát âm xảy ra ở đây, không phải ở giọng đọc.",
+            "Phân tích ngôn ngữ. Từ được chuyển thành âm vị (phoneme), các đơn vị âm thanh của một ngôn ngữ, và hệ thống dự đoán trọng âm, cách ngắt cụm và ngữ điệu. Những từ viết giống nhau nhưng đọc khác, như “read” ở thì hiện tại và quá khứ, hay chữ Hán có nhiều hơn một cách đọc, cần ngữ cảnh để phân giải.",
+            "Tạo dạng sóng âm. Âm và thời gian của chúng được chuyển thành mẫu âm thanh. Hệ thống cũ ghép các đoạn thu sẵn (tổng hợp nối ghép) hoặc dùng mô hình formant, nghe như robot. Hệ thống nơ-ron dự đoán âm thanh bằng một mạng."
+          ]
+        },
+        "Một thiết kế nơ-ron kinh điển, Tacotron 2, cho thấy rõ cách chia hiện đại: một mạng ánh xạ văn bản sang mel spectrogram (bức tranh thời gian-tần số của lời nói), và mạng thứ hai, vocoder, biến bức tranh đó thành dạng sóng. Trong các bài nghe thử của chính tác giả, nó đạt điểm gần với bản thu chuyên nghiệp. Các hệ thống mới hơn thường gộp các giai đoạn lại hoặc tạo ra token âm thanh nén bằng mạng kiểu mô hình ngôn ngữ, nhờ đó sao chép được giọng người nói từ một mẫu ngắn."
+      ]
+    },
+    {
+      "h": "TTS nơ-ron và giọng hệ thống trong trình duyệt",
+      "body": [
+        "Trang web có thể nói qua Web Speech API mà không cần mô hình riêng. Đối tượng `speechSynthesis` đọc to một `SpeechSynthesisUtterance` bằng một trong các giọng mà nền tảng cung cấp.",
+        {
+          "table": {
+            "head": [
+              "",
+              "Giọng hệ thống của trình duyệt (Web Speech API)",
+              "Dịch vụ hoặc mô hình TTS nơ-ron"
+            ],
+            "rows": [
+              [
+                "Giọng đến từ đâu",
+                "Hệ điều hành hoặc nhà cung cấp trình duyệt; một số cục bộ, một số từ xa",
+                "Mô hình bạn tự chạy hoặc API đám mây bạn gọi"
+              ],
+              [
+                "Lựa chọn giọng",
+                "Tùy những gì được cài; khác nhau trên Windows, macOS, Android, iOS",
+                "Danh mục cố định, giọng tùy chỉnh, đôi khi có nhân bản giọng"
+              ],
+              [
+                "Chất lượng",
+                "Từ máy móc đến khá tự nhiên, tùy thiết bị",
+                "Thường tự nhiên, nhịp điệu và cảm xúc tốt hơn"
+              ],
+              [
+                "Chi phí và cài đặt",
+                "Miễn phí, không cần key, giọng cục bộ dùng được ngoại tuyến",
+                "Cần API key và tính phí theo ký tự, hoặc tải mô hình lớn"
+              ],
+              [
+                "Lấy file âm thanh",
+                "Không nằm trong API; âm thanh phát ra loa",
+                "Thường trả về MP3, WAV hoặc tương tự"
+              ],
+              [
+                "Nhân bản giọng",
+                "Không",
+                "Một số dịch vụ, có kiểm tra sự đồng ý"
+              ]
+            ]
+          }
+        },
+        "Mỗi giọng báo một cờ `localService`. Đặc tả nói rằng nó đúng (true) với bộ tổng hợp cục bộ và sai (false) với dịch vụ từ xa; giọng từ xa có thể cần mạng và có thể thêm độ trễ.",
+        {
+          "code": "const u = new SpeechSynthesisUtterance(\"Your order has shipped.\");\nu.lang = \"en-GB\";\nu.rate = 0.9;   // 1 is normal; spec allows 0.1 to 10\nu.pitch = 1.0;  // 0 to 2, 1 is the voice default\nu.volume = 1.0; // 0 to 1\nconst voices = speechSynthesis.getVoices();\nu.voice = voices.find(v => v.lang === \"en-GB\") || null;\nspeechSynthesis.speak(u);",
+          "lang": "javascript"
+        },
+        "Giọng thường tải sau khi trang bắt đầu, nên `getVoices()` lúc đầu có thể trả về danh sách rỗng; hãy lắng nghe sự kiện `voiceschanged`. Chẳng hạn, công cụ text-to-speech của cv.cm dùng đúng các giọng có sẵn này, kèm điều khiển tốc độ và cao độ. Đó là cách nhanh để nghe thử bản nháp, không phải trình tạo giọng nơ-ron, và danh sách giọng tùy thuộc vào thiết bị của bạn."
+      ]
+    },
+    {
+      "h": "SSML: điều khiển quãng nghỉ và phát âm",
+      "body": [
+        "Speech Synthesis Markup Language (SSML), một chuẩn của W3C, là XML cho bộ máy TTS biết cách đọc văn bản. Hầu hết dịch vụ TTS đám mây đều chấp nhận nó. Đặc tả Web Speech cho phép SSML trong một utterance, nhưng bộ máy không hỗ trợ một số thẻ phải bỏ chúng đi và đọc phần văn bản còn lại, nên mức hỗ trợ của trình duyệt không đồng nhất.",
+        {
+          "code": "<speak>\n  Your code is <say-as interpret-as=\"characters\">A7K</say-as>.\n  <break time=\"500ms\"/>\n  Please call <sub alias=\"World Health Organization\">WHO</sub>\n  before <prosody rate=\"90%\" pitch=\"+2st\">Friday at noon</prosody>.\n  The word is <phoneme alphabet=\"ipa\" ph=\"təˈmɑːtoʊ\">tomato</phoneme>,\n  and it is <emphasis level=\"strong\">not</emphasis> optional.\n</speak>",
+          "lang": "text"
+        },
+        {
+          "table": {
+            "head": [
+              "Phần tử",
+              "Chức năng",
+              "Giá trị ví dụ"
+            ],
+            "rows": [
+              [
+                "break",
+                "Chèn một quãng nghỉ",
+                "time 250ms hoặc 2s; strength từ weak đến x-strong"
+              ],
+              [
+                "prosody",
+                "Đổi tốc độ, cao độ, âm lượng",
+                "rate 90% hoặc slow; pitch +2st hoặc high; volume +6dB hoặc soft"
+              ],
+              [
+                "emphasis",
+                "Nhấn mạnh một từ",
+                "level strong, moderate, reduced"
+              ],
+              [
+                "say-as",
+                "Đọc như ký tự, ngày tháng, con số",
+                "giá trị interpret-as tùy bộ máy"
+              ],
+              [
+                "sub",
+                "Đọc một tên thay thế thay cho chữ viết",
+                "WHO đọc thành World Health Organization"
+              ],
+              [
+                "phoneme",
+                "Cho phát âm chính xác",
+                "alphabet ipa; hỗ trợ là tùy chọn"
+              ],
+              [
+                "voice, lang",
+                "Đổi giọng hoặc ngôn ngữ giữa văn bản",
+                "Một tựa đề nước ngoài được trích trong câu tiếng Anh"
+              ]
+            ]
+          }
+        },
+        "Nếu dịch vụ bỏ qua SSML, bạn vẫn có thể điều hướng bằng văn bản thường: dấu phẩy và dấu chấm để nghỉ, số viết thành chữ, và viết lại tên khó theo cách phiên âm."
+      ]
+    },
+    {
+      "h": "Viết văn bản nghe hay khi đọc thành tiếng",
+      "body": [
+        {
+          "ul": [
+            "Dùng câu ngắn. Mệnh đề dài khiến giọng đọc hết chỗ lấy hơi tự nhiên.",
+            "Viết số theo cách cần đọc khi điều đó quan trọng: “two thousand twenty-six” hoặc “twenty twenty-six”.",
+            "Khai triển từ viết tắt và đơn vị mà người nghe cần nghe: “km/h” có thể bị đọc từng chữ cái.",
+            "Đặt đúng ngôn ngữ và khu vực. Giọng en-US đọc tên tiếng Tây Ban Nha, hay giọng zh-CN đọc tiếng Anh, sẽ dùng sai hệ thống âm.",
+            "Nghe toàn bộ kết quả một lần trước khi đăng. Kiểm tra tên, số và từ có hai cách phát âm."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Nhân bản giọng: sự đồng ý và pháp luật",
+      "body": [
+        "Các mô hình hiện đại có thể bắt chước một giọng từ bản ghi ngắn. Điều đó hữu ích để lồng tiếng cho video của chính bạn hoặc trả lại giọng nói cho người đã mất nó, và cũng bị dùng cho lừa đảo, như các cuộc gọi giả giọng người thân hay giám đốc công ty. Hãy coi mọi giọng nói là dữ liệu cá nhân thuộc về người nói.",
+        {
+          "table": {
+            "head": [
+              "Khu vực",
+              "Quy định nói gì (tóm tắt)",
+              "Tình trạng"
+            ],
+            "rows": [
+              [
+                "Trung Quốc",
+                "Dịch vụ chỉnh sửa khuôn mặt hoặc giọng nói phải nhắc người dùng thông báo cho người liên quan và được sự đồng ý riêng của họ (Quy định về tổng hợp sâu, Deep Synthesis Provisions, Điều 14). Giọng tổng hợp và giọng bắt chước có thể gây hiểu lầm phải có nhãn nổi bật (Điều 17). Biện pháp gắn nhãn năm 2025 bổ sung nhãn hiển thị và nhãn trong siêu dữ liệu, đồng thời cấm gỡ bỏ chúng.",
+                "Có hiệu lực từ ngày 10 tháng 1 năm 2023; biện pháp gắn nhãn từ ngày 1 tháng 9 năm 2025"
+              ],
+              [
+                "Liên minh châu Âu",
+                "Điều 50 của Đạo luật AI (AI Act): nhà cung cấp phải đánh dấu âm thanh tổng hợp theo cách máy đọc được, và người đăng âm thanh hoặc video deepfake phải công bố rằng nó là nhân tạo. Quy định về dữ liệu cá nhân cũng áp dụng cho bản ghi giọng nói.",
+                "Áp dụng từ ngày 2 tháng 8 năm 2026 theo Điều 113; hãy kiểm tra các sửa đổi sau đó"
+              ],
+              [
+                "Hoa Kỳ",
+                "Tại thời điểm viết bài không có luật quốc gia nào riêng về nhân bản giọng. Sự bảo vệ đến từ luật quyền công khai (right of publicity) và quyền riêng tư của từng bang, cùng các quy định hiện hành về gian lận và bảo vệ người tiêu dùng.",
+                "Khác nhau theo từng bang"
+              ]
+            ]
+          }
+        },
+        {
+          "note": "Đây là thông tin chung, không phải tư vấn pháp lý. Trước khi nhân bản giọng cho mục đích thương mại, hãy xin sự đồng ý bằng văn bản của người nói, nêu rõ mục đích, nền tảng và thời hạn, và gắn nhãn kết quả là do AI tạo ra khi nền tảng hoặc pháp luật yêu cầu."
+        },
+        "Các dịch vụ nhân bản uy tín yêu cầu người nói ghi âm một lời đồng ý trước khi tạo giọng. Nếu một công cụ cho phép nhân bản bất kỳ giọng nào từ bất kỳ đoạn clip nào mà không kiểm tra như vậy, đừng dùng nó cho bất cứ thứ gì bạn đăng tải."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Vì sao cùng một trang web nghe khác nhau trên điện thoại và laptop?",
+      "a": "Web Speech API dùng các giọng được cài trên từng thiết bị hoặc do nhà cung cấp của nó cung cấp. Windows, macOS, Android và iOS đi kèm các giọng khác nhau, nên cùng một đoạn mã cho ra âm thanh khác nhau."
+    },
+    {
+      "q": "Tôi có tải được MP3 từ Web Speech API không?",
+      "a": "Không trực tiếp. API phát giọng nói qua loa và không trả về dữ liệu âm thanh. Để có file, bạn cần dịch vụ hoặc mô hình TTS xuất âm thanh, hoặc một trình ghi màn hình hay ghi âm."
+    },
+    {
+      "q": "Nhân bản giọng của người nổi tiếng có hợp pháp không?",
+      "a": "Ở hầu hết nơi, dùng giọng của một người có thể nhận ra khi chưa được phép cho quảng cáo, sản phẩm hoặc nội dung có thể đánh lừa người nghe sẽ tạo rủi ro pháp lý theo các quy định về quyền công khai, quyền riêng tư, bảo vệ người tiêu dùng hoặc tổng hợp sâu. Hãy xin phép và gắn nhãn kết quả."
+    },
+    {
+      "q": "TTS khác chuyển đổi giọng (voice conversion) thế nào?",
+      "a": "TTS tạo giọng nói từ văn bản. Chuyển đổi giọng lấy bản ghi một người đang nói và biến nó thành nghe như giọng khác, giữ nguyên nhịp và cảm xúc gốc."
+    },
+    {
+      "q": "Vì sao TTS đọc sai tên riêng?",
+      "a": "Mô hình đoán cách phát âm từ chính tả và dữ liệu huấn luyện. Tên hiếm, từ mượn và chữ có nhiều cách đọc thường bị đoán sai. Hãy dùng thẻ phoneme hoặc sub của SSML, hoặc viết lại tên theo cách phiên âm."
+    }
+  ]
+}

@@ -1,0 +1,205 @@
+{
+  "title": "Cómo escribir prompts para imágenes con IA: fórmula y ejemplos — cv.cm",
+  "description": "Aprende a escribir prompts para imágenes con IA con una fórmula reutilizable, una reescritura de débil a fuerte, palabras clave de estilo, luz y objetivo, y prompts negativos que funcionan.",
+  "h1": "¿Cómo se escribe un buen prompt para imágenes con IA?",
+  "answer": "Un buen prompt de imagen nombra un sujeto claro, dice qué hace y dónde, y luego añade estilo, iluminación, cámara y composición con palabras sencillas. Pon primero la idea más importante, describe lo que quieres en lugar de lo que no quieres y limita cada frase a una idea. Usa un prompt negativo solo para problemas concretos y visibles, como texto o dedos de más.",
+  "sections": [
+    {
+      "h": "Por qué importa cómo redactas el prompt",
+      "body": [
+        "Un modelo de imágenes no lee tu prompt como una persona. Un codificador de texto convierte las palabras en números, y el generador de imágenes se entrena para crear imágenes que coincidan con esos números. Las palabras que aparecían a menudo junto a ciertos tipos de imágenes en las descripciones de entrenamiento atraen el resultado hacia esas imágenes. La expresión `golden hour`, por ejemplo, aparece tantas veces junto a una luz solar cálida y baja que funciona casi como un ajuste de iluminación.",
+        "De ahí se derivan dos consecuencias. La primera: las palabras visuales concretas funcionan mejor que las abstractas; `wet cobblestone street` le da al modelo algo que dibujar, mientras que `a sad mood` lo deja adivinando. La segunda: el modelo pondera cada palabra, así que el relleno como `very`, `beautiful` o `amazing` ocupa espacio sin aportar información. Además, la mayoría de las herramientas limitan cuánto texto lee el codificador; las palabras que sobrepasan ese límite se cortan o pesan menos, por lo que la primera parte del prompt es la que más influye.",
+        "Muchos generadores también usan guidance (guía): comparan una imagen hecha con tu prompt con otra hecha sin él y empujan el resultado en la dirección de la diferencia. Una guía más alta sigue las palabras con más rigidez, pero puede verse dura o sobresaturada. Por eso un prompt claro con una guía moderada suele quedar mejor que uno vago con la guía al máximo."
+      ]
+    },
+    {
+      "h": "Una fórmula de prompt reutilizable",
+      "body": [
+        "La mayoría de los buenos prompts responden a las mismas seis preguntas. Escríbelas en este orden, porque el modelo tiende a dar más importancia a las primeras palabras.",
+        {
+          "code": "[subject + key details], [action or pose], [setting + time],\n[style or medium], [lighting], [camera / lens / framing], [color + mood]",
+          "lang": "text"
+        },
+        {
+          "ol": [
+            "Sujeto: quién o qué, con dos o tres detalles relevantes (rango de edad, ropa, material, color).",
+            "Acción: qué está haciendo el sujeto. Un verbo le da al modelo una pose que dibujar.",
+            "Escenario: dónde y cuándo. Basta un lugar y un momento del día.",
+            "Estilo o medio: foto, acuarela, render 3D, boceto a tinta, vector plano, sombreado cel de anime.",
+            "Iluminación: la palanca más potente sobre el ambiente. Nombra la fuente de luz y su dirección.",
+            "Cámara y composición: tamaño de plano, ángulo, objetivo, profundidad de campo, dónde se sitúa el sujeto en el encuadre."
+          ]
+        },
+        "No necesitas las seis cada vez. Una foto de producto puede omitir la acción; un patrón abstracto puede omitir la cámara. Pero repasar la lista antes de pulsar generar detecta el fallo más habitual: un prompt que describe el sujeto y nada más."
+      ]
+    },
+    {
+      "h": "De débil a fuerte: una reescritura paso a paso",
+      "body": [
+        "Este es un primer intento típico. Le da al modelo un sujeto y un adjetivo, y nada sobre cómo debe verse la imagen.",
+        {
+          "code": "a beautiful cat in a cafe, high quality, 8k, masterpiece",
+          "lang": "text"
+        },
+        "El resultado suele ser un gato genérico y centrado con un interior desenfocado. `8k` y `masterpiece` no añaden detalle en la mayoría de los modelos actuales; solo empujan hacia un aspecto pulido de banco de imágenes. La reescritura de abajo mantiene la misma idea pero responde a las seis preguntas.",
+        {
+          "code": "an orange tabby cat with a white chest, sitting on a wooden windowsill\ninside a small cafe, looking out at the rain, late afternoon,\n35mm film photograph, soft window light from the left, warm interior lamps\nin the background, medium close-up at eye level, shallow depth of field,\nmuted warm colors, quiet and cozy",
+          "lang": "text"
+        },
+        {
+          "table": {
+            "head": [
+              "Parte",
+              "Texto en el prompt",
+              "Qué hace"
+            ],
+            "rows": [
+              [
+                "Sujeto",
+                "orange tabby cat with a white chest",
+                "Fija el aspecto para que las ejecuciones repetidas se parezcan"
+              ],
+              [
+                "Acción",
+                "sitting on a wooden windowsill, looking out",
+                "Da una pose y una dirección a la mirada"
+              ],
+              [
+                "Escenario",
+                "small cafe, rain, late afternoon",
+                "Un lugar y un momento, para que la luz sea coherente"
+              ],
+              [
+                "Estilo",
+                "35mm film photograph",
+                "Define el grano, la respuesta de color y el realismo"
+              ],
+              [
+                "Iluminación",
+                "soft window light from the left, warm lamps behind",
+                "Crea una luz principal y un resplandor cálido de fondo"
+              ],
+              [
+                "Cámara",
+                "medium close-up, eye level, shallow depth of field",
+                "Controla el encuadre y desenfoca el fondo a propósito"
+              ],
+              [
+                "Ambiente",
+                "muted warm colors, quiet and cozy",
+                "Orienta la gradación de color en una dirección"
+              ]
+            ]
+          }
+        },
+        "Si la segunda versión aún no es la que buscas, cambia una parte cada vez y deja el resto fijo. Cambiar cinco cosas a la vez impide saber qué palabra provocó el cambio."
+      ]
+    },
+    {
+      "h": "Palabras clave de estilo, iluminación, objetivo y composición",
+      "body": [
+        "Los modelos de imágenes entienden bien estos términos porque son habituales en pies de foto, descripciones de arte y lenguaje cinematográfico. Usa una o dos de cada fila, no todas.",
+        {
+          "table": {
+            "head": [
+              "Categoría",
+              "Palabras clave",
+              "Qué verás normalmente"
+            ],
+            "rows": [
+              [
+                "Estilo / medio",
+                "35mm film photo, studio product photo, watercolor, gouache, ink line art, flat vector illustration, isometric 3D render, anime cel shading, oil painting, paper cutout",
+                "Aspecto general, textura y nivel de realismo"
+              ],
+              [
+                "Iluminación",
+                "golden hour, blue hour, overcast soft light, hard noon sun, rim light, backlit, softbox key light, neon signs at night, candlelight, volumetric light through fog",
+                "Ambiente, contraste y dirección de las sombras"
+              ],
+              [
+                "Objetivo / cámara",
+                "wide-angle 24mm, 50mm standard, 85mm portrait, macro, telephoto compression, fisheye, shallow depth of field, deep focus, motion blur, long exposure",
+                "Distorsión de perspectiva, desenfoque del fondo y sensación de cercanía"
+              ],
+              [
+                "Tamaño de plano / ángulo",
+                "extreme close-up, close-up, medium shot, full body, wide establishing shot, low angle, high angle, overhead flat lay, eye level, Dutch tilt",
+                "Cuánto se muestra del sujeto y qué fuerza transmite"
+              ],
+              [
+                "Composición",
+                "rule of thirds, centered symmetrical, negative space on the right, leading lines, framed by a doorway, foreground blur, subject small in a large landscape",
+                "Dónde se sitúa el sujeto y hacia dónde va la mirada"
+              ],
+              [
+                "Color / ambiente",
+                "muted earth tones, pastel palette, high contrast black and white, teal and orange, monochrome red, warm and nostalgic, cold and clinical",
+                "Gradación de color y tono emocional"
+              ]
+            ]
+          }
+        },
+        {
+          "note": "Nombrar a un artista vivo para copiar su estilo plantea cuestiones legales y éticas, y algunos servicios lo bloquean. Describir los rasgos visuales que te gustan (pinceladas gruesas, paleta limitada, sombras planas) es más seguro y suele ser más preciso."
+        }
+      ]
+    },
+    {
+      "h": "Prompts negativos: qué hacen y cuándo usarlos",
+      "body": [
+        "Un prompt negativo es un segundo campo de texto que le dice al modelo de qué debe alejarse. En herramientas basadas en Stable Diffusion o FLUX suele ser un cuadro aparte o un parámetro `negative_prompt`; Midjourney usa el parámetro `--no`. Algunas herramientas de imagen de tipo chat no tienen campo negativo, y ahí debes formular la petición en positivo (`a clean, empty wall` en vez de `no text on the wall`).",
+        "Los prompts negativos funcionan mejor con cosas concretas y visibles:",
+        {
+          "code": "Prompt:   a clean product photo of a ceramic mug on a white table\nNegative: text, logo, watermark, extra handles, cluttered background",
+          "lang": "text"
+        },
+        {
+          "ul": [
+            "Buenos objetivos: texto y marcas de agua, dedos de más, una segunda persona, un objeto concreto que sigue apareciendo, un color que no quieres.",
+            "Objetivos débiles: listas largas de palabras de calidad como `ugly, bad, worst quality`. Ayudan un poco en algunos modelos antiguos, pero también empujan todas las imágenes hacia el mismo aspecto.",
+            "No pongas una idea en ambos campos. Un gato en el prompt y `cat` en el negativo se anulan y confunden el resultado.",
+            "Escribir `no` dentro del prompt principal suele ser contraproducente: `a room with no windows` menciona ventanas, y el modelo puede dibujarlas."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Errores comunes y límites reales",
+      "body": [
+        {
+          "ul": [
+            "Demasiados sujetos. Tres personas con tres atuendos y tres acciones suelen mezclarse: la ropa se intercambia, las manos se funden. Genera primero el sujeto principal y añade los demás con edición o inpainting.",
+            "Pedir texto exacto. Muchos modelos aún escriben mal las palabras o inventan letras, sobre todo en alfabetos no latinos. Mantén el texto corto, ponlo entre comillas o añádelo después en un editor.",
+            "Manos, cantidades y posiciones. `Five apples` o `the cup to the left of the book` no siempre se respetan. Revisa el resultado y vuelve a generar o edita en lugar de añadir más palabras.",
+            "Palabras de estilo contradictorias. `photorealistic watercolor anime` tira en tres direcciones. Elige un solo medio.",
+            "Copiar un prompt entre modelos. Un prompt ajustado para una herramienta puede comportarse de otro modo en otra, porque cada una usa un codificador de texto y unos datos de entrenamiento distintos. Prueba varias ejecuciones antes de fiarte."
+          ]
+        },
+        "Los prompts en otros idiomas funcionan en muchas herramientas, pero algunos modelos se entrenaron sobre todo con descripciones en inglés. Por ejemplo, el generador de imágenes con IA de cv.cm traduce al inglés un prompt que no esté en ese idioma antes de ejecutar el modelo, así que las frases cortas y literales se traducen con más fiabilidad que los modismos."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "¿Qué extensión debe tener un prompt de imagen con IA?",
+      "a": "Normalmente de una a cuatro frases, o unas 20 a 75 palabras. Los prompts más cortos dejan más al azar; los mucho más largos pueden superar lo que lee el codificador de texto, y entonces las últimas palabras pesan menos."
+    },
+    {
+      "q": "¿Palabras como 4k, 8k o masterpiece mejoran la imagen?",
+      "a": "En la mayoría de los modelos actuales aportan poco. Pueden empujar la imagen hacia un estilo pulido de banco de imágenes, pero describir la iluminación, el objetivo y el material mejora mucho más la calidad."
+    },
+    {
+      "q": "¿Importa el orden de las palabras en un prompt de imagen?",
+      "a": "Sí, en la mayoría de los modelos. Las palabras del principio tienden a influir más, así que pon primero el sujeto y el detalle más importante, y los toques finales al final."
+    },
+    {
+      "q": "¿Puedo escribir prompts de imagen en chino, japonés o español?",
+      "a": "Muchas herramientas aceptan otros idiomas, pero los resultados suelen ser mejores en inglés porque la mayoría de las descripciones de entrenamiento están en inglés. Si una herramienta traduce por ti, usa frases cortas y literales."
+    },
+    {
+      "q": "¿Qué diferencia hay entre un prompt y un prompt negativo?",
+      "a": "El prompt describe lo que quieres ver. El prompt negativo enumera cosas concretas de las que el modelo debe alejarse, como texto, marcas de agua o dedos de más."
+    }
+  ]
+}

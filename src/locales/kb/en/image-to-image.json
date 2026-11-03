@@ -1,0 +1,183 @@
+{
+  "title": "Image to Image AI: Strength, Inpainting and ControlNet — cv.cm",
+  "description": "How image-to-image AI works: denoising strength, reference images, style transfer, inpainting, outpainting and ControlNet depth, pose and edge control.",
+  "h1": "How does image-to-image AI work?",
+  "answer": "Image-to-image AI starts from your picture instead of pure noise. It adds a chosen amount of noise, then removes it while following a prompt, so low strength keeps the original and high strength changes it. Masks limit the change to one area (inpainting) or a new border (outpainting), and control images such as depth maps, poses or edges lock the layout while the style changes.",
+  "sections": [
+    {
+      "h": "The core idea: partial noise, then denoise",
+      "body": [
+        "A diffusion model normally builds an image by removing noise from pure randomness. Image-to-image skips the first part of that journey. It takes your image, adds noise until the picture is partly hidden, and then runs the remaining denoising steps with your prompt. This method was described in the SDEdit paper, which showed that a diffusion model can turn a rough sketch or an edited photo into a realistic image without any extra training.",
+        "The amount of noise is the single most important setting. It is called strength, denoise or image weight depending on the tool. With little noise, only fine texture can change. With a lot of noise, the shapes are mostly gone and the model invents a new picture that only loosely follows the old colors and layout.",
+        "In many implementations strength also sets how many steps actually run. If the tool is set to 50 steps and strength is 0.8, the image is noised by about 40 steps' worth and then denoised for those 40 steps."
+      ]
+    },
+    {
+      "h": "Choosing a strength value",
+      "body": [
+        "Exact numbers vary by model, but the ranges below are a useful starting point for tools that use a 0 to 1 scale. Tools with an image weight scale often work the other way round: higher weight keeps more of the original.",
+        {
+          "table": {
+            "head": [
+              "Strength",
+              "What survives from your image",
+              "Good for"
+            ],
+            "rows": [
+              [
+                "0.1 to 0.3",
+                "Almost everything: shapes, faces, colors",
+                "Light cleanup, adding grain, small texture changes"
+              ],
+              [
+                "0.3 to 0.5",
+                "Composition and most details",
+                "Changing lighting or color grade, gentle style shift"
+              ],
+              [
+                "0.5 to 0.7",
+                "Layout and main shapes; details are redrawn",
+                "Photo to illustration, sketch to finished art"
+              ],
+              [
+                "0.7 to 0.9",
+                "Rough color blocks and placement",
+                "Using the image only as a loose layout hint"
+              ],
+              [
+                "1.0",
+                "Almost nothing",
+                "Same as text-to-image"
+              ]
+            ]
+          }
+        },
+        "Raise strength in small steps of about 0.1 and keep the seed fixed, so you see the effect of strength alone. If the face of a person changes too much before the style changes enough, strength alone is the wrong tool: add a control image or use inpainting on the background only."
+      ]
+    },
+    {
+      "h": "Reference images and style transfer",
+      "body": [
+        "Not every image you give a model is a starting point. Many tools also accept a reference image that guides the result without being noised. It is turned into features that work alongside the text prompt. IP-Adapter is a well-known open method: it adds a small module to a frozen text-to-image model with separate attention layers for image features, so you can give an image prompt and a text prompt together. Hosted tools often call this an image prompt, style reference or character reference.",
+        "There are two common ways to restyle a picture:",
+        {
+          "ul": [
+            "Image-to-image with a style prompt. Your photo is the starting image and the prompt names the new style, for example `watercolor illustration, loose brush strokes, white paper`. Simple, but faces and small details drift at higher strength.",
+            "Structure from one image, style from another. A control image (depth or edges) keeps the layout of your photo, while a style reference or prompt sets the look. This keeps the composition stable even at high strength."
+          ]
+        },
+        {
+          "code": "Start image: photo of a street market at dusk\nStrength:    0.55\nPrompt:      gouache painting of a street market at dusk, flat shapes,\n             warm lantern light, limited palette of orange, teal and cream\nNegative:    photo, text, watermark",
+          "lang": "text"
+        },
+        "Describe the image as you want it to look, not as an instruction. `Gouache painting of a street market` works better than `make this a painting`, because the prompt is matched against image captions, not followed as a command. Some newer models trained on editing pairs do understand instructions; check what your tool expects."
+      ]
+    },
+    {
+      "h": "Inpainting and outpainting",
+      "body": [
+        "Inpainting changes only a masked area. You paint a mask over the region to replace, usually white for change and black for keep, and the model fills it to match both the prompt and the surrounding pixels. RePaint showed that even a plain diffusion model can inpaint by putting the known pixels back at each denoising step; dedicated inpainting models trained with masks usually blend more cleanly.",
+        {
+          "ol": [
+            "Mask a little larger than the object, so the model can blend the edge.",
+            "Soften the mask edge (feather or blur) to avoid a visible seam.",
+            "Write the prompt for the masked area and its context, for example `empty wooden bench in a park`, not just `remove person`.",
+            "Use moderate to high strength for replacement, low strength for repair.",
+            "If the area is small in a large image, use a crop-and-upscale option (sometimes called only masked or mask crop) so the model works at a higher resolution."
+          ]
+        },
+        "Outpainting extends an image beyond its border. The canvas is enlarged, the new empty area is masked, and the model fills it to continue the scene. It is useful for turning a square photo into a 16:9 banner. Extend in steps of a quarter to a half of the image at a time; very large jumps tend to repeat objects or lose perspective.",
+        {
+          "note": "Inpainting models can slightly change pixels outside the mask, especially when the image is re-encoded. When the untouched area must stay exactly the same, paste the original back over everything outside the mask after generation."
+        }
+      ]
+    },
+    {
+      "h": "ControlNet-style conditioning: depth, pose and edges",
+      "body": [
+        "ControlNet adds a trainable copy of part of a frozen image model that reads an extra control image. The control image fixes structure; the prompt decides what that structure is made of. The original paper showed control from edges, depth, segmentation maps and human pose, and the same idea now exists for many model families.",
+        {
+          "table": {
+            "head": [
+              "Control type",
+              "Input",
+              "What it locks",
+              "Typical use"
+            ],
+            "rows": [
+              [
+                "Edges (Canny, line art)",
+                "A black and white outline image",
+                "Outlines and fine shapes",
+                "Keep a product or building exact while changing material and light"
+              ],
+              [
+                "Depth",
+                "A grayscale depth map, near bright and far dark",
+                "3D layout and what is in front of what",
+                "Restyle a room or landscape while keeping its space"
+              ],
+              [
+                "Pose (OpenPose-style)",
+                "A stick-figure skeleton of joints",
+                "Body position, limbs, head direction",
+                "Put a new character in an exact pose"
+              ],
+              [
+                "Segmentation",
+                "Colored regions, one color per class",
+                "Where sky, road, people and objects go",
+                "Lay out a scene by regions"
+              ],
+              [
+                "Scribble / sketch",
+                "A rough hand drawing",
+                "Loose composition",
+                "Turn a doodle into finished art"
+              ]
+            ]
+          }
+        },
+        "Most tools give each control a weight (for example a conditioning scale) and sometimes a start and end point in the denoising steps. A weight that is too high copies the control image too literally, such as edge noise turning into hard lines; too low and it is ignored. A middle value with a clear control image usually works best. You can also combine two controls, such as depth plus pose, by giving each a lower weight.",
+        "To make a depth map from a photo you can use a depth estimation model. For example, cv.cm's depth map tool turns a photo into a grayscale depth image in the browser that you can use as a depth control."
+      ]
+    },
+    {
+      "h": "Common problems and fixes",
+      "body": [
+        {
+          "ul": [
+            "The face changes identity. Lower strength, inpaint the background only, or use a face or character reference.",
+            "Colors stay too close to the original even at high strength. The start image still carries its overall color. Shift colors first in an editor, or rely on a control image and higher strength.",
+            "Visible seams after inpainting. Enlarge and feather the mask, and include some context in the prompt.",
+            "Double or warped objects after outpainting. Extend in smaller steps and repeat the scene description in the prompt.",
+            "The result is blurry. Strength may be too low to add detail, or the image is too small. Upscale first or use a mask-crop option.",
+            "Rights. Restyling a photo you do not own does not make it yours; the original rights still matter."
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "What is denoising strength in image-to-image?",
+      "a": "It is how much noise is added to your image before the model redraws it. Low strength keeps the original almost unchanged; high strength lets the model replace most of it."
+    },
+    {
+      "q": "What is the difference between image-to-image and inpainting?",
+      "a": "Image-to-image can change the whole picture. Inpainting changes only the area you mask and tries to keep the rest as it was."
+    },
+    {
+      "q": "Do I need ControlNet for style transfer?",
+      "a": "Not for simple restyling at low to medium strength. A control image helps when you want a strong style change but must keep the exact layout, pose or outline."
+    },
+    {
+      "q": "Why does outpainting repeat objects at the edge?",
+      "a": "The model fills the new space with what is most likely next to the border, which is often more of the same. Extend in smaller steps and describe what should appear in the new area."
+    },
+    {
+      "q": "Can I use a photo of a real person as an image-to-image input?",
+      "a": "Technically yes, but you need the right to use the photo and, in many places, the person's consent. Many services also block edits of real people that could mislead or harm."
+    }
+  ]
+}

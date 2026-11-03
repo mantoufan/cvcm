@@ -1,0 +1,197 @@
+{
+  "title": "Ảo giác AI (hallucination) là gì? Vì sao AI bịa thông tin và cách kiểm tra — cv.cm",
+  "description": "Ảo giác AI là gì? Vì sao chatbot bịa sự kiện và trích dẫn, tác vụ nào rủi ro nhất, prompt giúp giảm lỗi và danh sách kiểm tra để xác minh mọi câu trả lời.",
+  "h1": "Ảo giác AI là gì và làm sao hạn chế?",
+  "answer": "Ảo giác AI (AI hallucination) là khi mô hình nêu thông tin sai hoặc bịa đặt như thể đó là sự thật, chẳng hạn một trích dẫn giả, một ngày tháng sai hay câu nói chưa ai từng nói. Hiện tượng này xảy ra vì mô hình ngôn ngữ tạo ra đoạn văn hợp lý nhất, chứ không phải sự thật đã được kiểm chứng. Bạn không thể loại bỏ hoàn toàn, nhưng có thể giảm bằng cách đưa nguồn cho mô hình, cho phép nó nói là không biết và kiểm chứng các chi tiết quan trọng.",
+  "sections": [
+    {
+      "h": "Thế nào là ảo giác",
+      "body": [
+        "Viện Tiêu chuẩn và Công nghệ Quốc gia Hoa Kỳ (NIST) gọi đây là bịa chuyện (confabulation): AI tạo sinh đưa ra nội dung sai hoặc không đúng nhưng nêu với vẻ chắc chắn. Ảo giác là tên gọi phổ biến. Khái niệm này cũng bao gồm những câu trả lời mâu thuẫn với tài liệu bạn cung cấp, hoặc mâu thuẫn với điều mô hình đã nói trước đó trong cùng cuộc trò chuyện.",
+        {
+          "table": {
+            "head": [
+              "Loại",
+              "Ví dụ",
+              "Vì sao nguy hiểm"
+            ],
+            "rows": [
+              [
+                "Sự kiện bịa",
+                "Năm thành lập, dân số hoặc giá bị sai",
+                "Trông chính xác nên dễ được tin"
+              ],
+              [
+                "Trích dẫn giả",
+                "Tiêu đề bài báo, tạp chí và DOI nghe có vẻ thật nhưng không tồn tại",
+                "Khó phát hiện nếu không mở liên kết"
+              ],
+              [
+                "Câu nói giả",
+                "Lời gán cho một người có thật nhưng người đó chưa từng nói",
+                "Có thể làm tổn hại danh tiếng"
+              ],
+              [
+                "Tóm tắt không trung thành",
+                "Bản tóm tắt thêm một nhận định không có trong tài liệu gốc",
+                "Bạn tưởng nguồn gốc có nói điều đó"
+              ],
+              [
+                "Mã nguồn bịa",
+                "Một hàm hoặc tùy chọn thư viện không tồn tại",
+                "Mã bị lỗi hoặc chạy sai ý"
+              ],
+              [
+                "Câu trả lời lỗi thời",
+                "Mô tả một quy định hay sản phẩm như trước mốc dữ liệu huấn luyện",
+                "Từng đúng, nay đã sai"
+              ]
+            ]
+          }
+        },
+        "Với hình ảnh và video, những chi tiết kỳ lạ như thừa ngón tay hay vật thể chảy nhão đôi khi cũng được gọi là ảo giác. Đó là vấn đề chất lượng chứ không phải khẳng định sai. Trong sáng tạo, bịa ra những thứ không tồn tại thường chính là mục tiêu. Ảo giác chỉ thành vấn đề khi bạn cần sự thật."
+      ]
+    },
+    {
+      "h": "Vì sao mô hình ngôn ngữ bị ảo giác",
+      "body": [
+        "Mô hình ngôn ngữ viết bằng cách dự đoán token tiếp theo, một mẩu văn bản nhỏ, từ phần văn bản đã có. Nó được huấn luyện để tạo ra văn bản có khả năng xảy ra cao, chứ không phải văn bản đúng. Phần lớn thời gian, cái có khả năng cao và cái đúng trùng nhau, nên mô hình mới hữu ích. Lỗi xuất hiện ở chỗ hai thứ này không trùng nhau.",
+        {
+          "ul": [
+            "Không có bước kiểm chứng sự thật sẵn có. Trong dự đoán token không có gì so đầu ra với thế giới thực.",
+            "Sự kiện hiếm được học yếu. Một sự kiện chỉ xuất hiện vài lần trong dữ liệu huấn luyện rất dễ bị nhòe với các sự kiện tương tự, chẳng hạn năm sinh của một nhân vật công chúng ít tiếng tăm.",
+            "Đoán mò được thưởng. Nghiên cứu công bố năm 2025 lập luận rằng cách huấn luyện và chấm điểm benchmark phổ biến cho điểm khi đoán chắc chắn nhưng không cho điểm khi nói tôi không biết, nên mô hình học cách đoán.",
+            "Bắt chước lỗi phổ biến. Mô hình học từ văn bản của con người có thể lặp lại những quan niệm sai lầm phổ biến, điều mà benchmark TruthfulQA được thiết kế để đo.",
+            "Áp lực từ prompt. Câu hỏi giả định điều sai, chẳng hạn hỏi về phần tiếp theo năm 2019 của một bộ phim không có phần tiếp theo, dễ khiến mô hình diễn theo.",
+            "Ngữ cảnh dài hoặc lộn xộn. Chi tiết ở giữa một đầu vào dài dễ bị bỏ sót hoặc nhầm lẫn.",
+            "Mốc kiến thức. Mô hình không biết gì sau khi dữ liệu huấn luyện kết thúc, trừ khi được thêm tìm kiếm hoặc tài liệu."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Tác vụ nào rủi ro nhất",
+      "body": [
+        "Rủi ro phụ thuộc vào việc bạn yêu cầu mô hình làm gì nhiều hơn là vào bản thân mô hình.",
+        {
+          "table": {
+            "head": [
+              "Tác vụ",
+              "Rủi ro ảo giác",
+              "Lý do"
+            ],
+            "rows": [
+              [
+                "Viết lại, dịch hoặc rút gọn văn bản bạn cung cấp",
+                "Thấp",
+                "Sự kiện đã nằm trong prompt"
+              ],
+              [
+                "Tóm tắt tài liệu bạn đính kèm",
+                "Thấp đến trung bình",
+                "Có thể thêm hoặc gộp chi tiết, nhất là với tệp dài"
+              ],
+              [
+                "Giải thích một khái niệm nổi tiếng",
+                "Thấp đến trung bình",
+                "Kiến thức phổ thông được học kỹ"
+              ],
+              [
+                "Số liệu, ngày tháng, tên, thống kê cụ thể",
+                "Cao",
+                "Chi tiết nhỏ dễ bị nhòe"
+              ],
+              [
+                "Danh sách nguồn, bài báo, vụ kiện, liên kết",
+                "Rất cao",
+                "Tiêu đề nghe hợp lý rất dễ tạo ra"
+              ],
+              [
+                "Sự kiện gần đây hoặc giá hiện tại",
+                "Rất cao nếu không có tìm kiếm",
+                "Không có trong dữ liệu huấn luyện"
+              ],
+              [
+                "Chủ đề ngách, luật địa phương, công ty nhỏ",
+                "Cao",
+                "Ít dữ liệu huấn luyện"
+              ]
+            ]
+          }
+        },
+        "Nghiên cứu pháp lý là vùng nguy hiểm nổi tiếng. Tòa án đã xử phạt luật sư vì nộp hồ sơ trích dẫn những vụ án do chatbot bịa ra."
+      ]
+    },
+    {
+      "h": "Prompt giúp giảm ảo giác",
+      "body": [
+        "Cách hiệu quả nhất là neo vào nguồn (grounding): đưa tài liệu gốc cho mô hình và yêu cầu chỉ trả lời từ tài liệu đó. Đây cũng là ý tưởng đằng sau RAG (retrieval-augmented generation, tạo sinh có truy xuất), khi hệ thống tìm trong tài liệu trước rồi đặt các đoạn phù hợp nhất vào prompt.",
+        {
+          "code": "Weak prompt:\nWhat is the refund period in our store policy?\n\nGrounded prompt:\nAnswer using only the policy text below.\nIf the answer is not in the text, reply: Not stated in the policy.\nQuote the exact sentence you used.\n\nPolicy:\n<paste the policy text here>\n\nQuestion: What is the refund period?",
+          "lang": "text"
+        },
+        "Mỗi dòng của prompt có neo nguồn đều có nhiệm vụ. Dòng “Answer using only the policy text below” giới hạn nguồn chỉ còn văn bản chính sách. Câu dự phòng “Not stated in the policy” cho mô hình một đáp án an toàn thay vì đoán. Dòng “Quote the exact sentence you used” giúp bạn kiểm tra câu trả lời trong vài giây.",
+        "Những thói quen khác cũng hữu ích:",
+        {
+          "ol": [
+            "Hỏi hẹp. Mỗi câu hỏi một thông tin dễ đúng hơn một danh sách dài.",
+            "Cho phép sự không chắc chắn. Thêm một dòng như: Nếu không chắc, hãy nói rõ và giải thích điều gì sẽ xác nhận được.",
+            "Bật tìm kiếm hoặc duyệt web cho những sự kiện hiện tại, rồi mở các liên kết mà câu trả lời trích dẫn.",
+            "Yêu cầu nêu lý lẽ hoặc các bước với bài toán nhiều phần, và kiểm tra từng bước.",
+            "Đừng yêu cầu nguồn từ trí nhớ. Hãy bảo nó tìm nguồn bằng công cụ tìm kiếm, hoặc tự tìm rồi dán vào.",
+            "Với mã nguồn, hãy nêu phiên bản thư viện và dán tài liệu liên quan, rồi chạy thử mã."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Cách kiểm tra câu trả lời của AI",
+      "body": [
+        "Dùng danh sách này trước khi dựa vào hoặc đăng bất cứ nội dung nào mang tính sự kiện:",
+        {
+          "ol": [
+            "Mở mọi liên kết và DOI. Xác nhận trang tồn tại và nói đúng điều câu trả lời khẳng định.",
+            "Tìm kiếm nguyên văn các câu trích. Nếu không tìm thấy trong nguồn gốc thì đừng dùng.",
+            "Đối chiếu mọi con số với nguồn gốc, như trang thống kê chính thức, một tiêu chuẩn hoặc bài báo gốc.",
+            "Chú ý dấu hiệu cảnh báo: số liệu rất chính xác nhưng không có nguồn, danh sách tác giả nghe chung chung, tài liệu tham khảo không tìm ra và câu trả lời thay đổi khi hỏi lại.",
+            "Tìm nguồn thứ hai độc lập cho mọi nhận định quan trọng, chứ không phải chatbot thứ hai.",
+            "Với câu hỏi pháp lý, y tế hoặc tài chính, hãy nhờ người có chuyên môn xem lại kết quả."
+          ]
+        },
+        {
+          "note": "Hỏi mô hình xem nó có chắc không là cách kiểm tra yếu. Mô hình đôi khi bảo vệ đáp án sai, và đôi khi bỏ đáp án đúng vì câu hỏi nghe như một gợi ý. Hãy đối chiếu với nguồn thay vào đó."
+        }
+      ]
+    },
+    {
+      "h": "Giới hạn của các cách khắc phục",
+      "body": [
+        "Chưa có phương pháp nào hiện nay loại bỏ hoàn toàn ảo giác. Neo nguồn và RAG giảm mạnh tỷ lệ lỗi với những câu hỏi mà tài liệu trả lời được, nhưng mô hình vẫn có thể đọc sai một đoạn, gộp hai đoạn hoặc lấp chỗ trống mà tài liệu để lại. Công cụ tìm kiếm có thể trả về trang kém chất lượng và mô hình có thể tin chúng.",
+        "Hạ temperature làm câu trả lời lặp lại được hơn chứ không chính xác hơn. Nếu câu trả lời có khả năng cao nhất là sai, mô hình sẽ lặp lại đúng câu sai đó một cách nhất quán.",
+        "Các mô hình mới hơn thường ít ảo giác hơn với câu hỏi phổ biến, và một số được huấn luyện để thừa nhận sự không chắc chắn thường xuyên hơn. Tỷ lệ vẫn khác nhau theo chủ đề và ngôn ngữ, nên hãy thử mô hình trên loại câu hỏi của chính bạn trước khi dựa vào, và giữ một bước kiểm tra của con người ở nơi lỗi gây tốn kém."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Có thể loại bỏ hoàn toàn ảo giác AI không?",
+      "a": "Với các phương pháp hiện nay thì không. Neo vào nguồn, công cụ tìm kiếm và huấn luyện tốt hơn giảm đi rất nhiều, nhưng vì mô hình tạo ra văn bản có khả năng cao chứ không phải sự thật đã kiểm chứng, một số lỗi vẫn còn. Vẫn cần xác minh."
+    },
+    {
+      "q": "Vì sao ChatGPT bịa tài liệu tham khảo và trích dẫn?",
+      "a": "Một tài liệu tham khảo là khuôn mẫu gồm tên tác giả, tiêu đề, tạp chí và năm, mà mô hình có thể tạo trôi chảy dù không có bài báo thật nào trong đầu. Nếu ứng dụng không tra nguồn bằng công cụ tìm kiếm, trích dẫn đó có thể không tồn tại."
+    },
+    {
+      "q": "AI nào ít bị ảo giác nhất?",
+      "a": "Bảng xếp hạng thay đổi theo mỗi lần phát hành mô hình và khác nhau theo chủ đề, ngôn ngữ. Hãy thử vài mô hình với những câu hỏi từ công việc của bạn mà bạn biết đáp án, và ưu tiên công cụ hiển thị nguồn."
+    },
+    {
+      "q": "Ảo giác AI có giống nói dối không?",
+      "a": "Không. Nói dối là cố ý nói điều sai. Mô hình không có ý định; nó tạo ra phần tiếp theo trông hợp lý nhất. Tác động lên người đọc có thể giống nhau, vì thế việc kiểm tra mới quan trọng."
+    },
+    {
+      "q": "Tìm kiếm web có ngăn AI bị ảo giác không?",
+      "a": "Nó giúp ích với các sự kiện hiện tại và cụ thể, vì câu trả lời có thể dựa trên các trang đã truy xuất. Mô hình vẫn có thể đọc sai hoặc trích sai các trang đó, nên với việc quan trọng hãy mở các liên kết được trích dẫn."
+    }
+  ]
+}

@@ -1,0 +1,160 @@
+{
+  "title": "How Diffusion Models Work: Noise to Image, Step by Step — cv.cm",
+  "description": "How diffusion models work: training on noise, denoising step by step, text guidance, latent space, and what steps, CFG scale and seed really change.",
+  "h1": "How do diffusion models work?",
+  "answer": "A diffusion model learns to remove noise. In training, real images are blurred with random noise step by step, and a neural network learns to predict that noise. To generate, the model starts from pure noise and removes a little at each step, guided by your text prompt, until a clean image appears. Most image and video generators work this way.",
+  "sections": [
+    {
+      "h": "The short version: learn to clean noise, then clean pure noise",
+      "body": [
+        "Imagine taking a photo and adding a small amount of random static to it. Then add a little more, and more again, until after hundreds of steps nothing is left but grey snow. That direction is easy. A computer can do it with one line of math.",
+        "A diffusion model is a neural network trained to go the other way: look at a noisy image and estimate the noise that was added, so it can be subtracted. If the network can do this well at every noise level, you can start from pure random noise and clean it step by step. What remains at the end is a new image that never existed, but that looks like it belongs to the training data.",
+        "The idea was described in 2015 and made practical for high-quality images by the Denoising Diffusion Probabilistic Models (DDPM) paper in 2020. Stable Diffusion, FLUX, Imagen, DALL·E style models and most video generators such as Veo, Kling, Runway or Seedance are built on this family of methods or close relatives, at the time of writing."
+      ]
+    },
+    {
+      "h": "Training: the forward process and the noise predictor",
+      "body": [
+        "Training uses millions of images, each paired with a caption. For every training example the system does the same small exercise:",
+        {
+          "ol": [
+            "Pick a real image and its caption, for example a photo captioned \"a red bicycle leaning on a brick wall\".",
+            "Pick a random noise level, from almost clean to almost pure noise.",
+            "Mix the image with random noise at that level. This is the forward process. It needs no learning.",
+            "Give the noisy image, the noise level and the caption to the network, and ask it to predict the noise that was added.",
+            "Compare the prediction with the real noise and adjust the network's weights to reduce the error."
+          ]
+        },
+        "Repeat this billions of times and the network learns what images in general look like at every level of blur: where edges usually go, how light falls on skin, what bicycles and brick walls look like. It never stores the training photos as files. It learns statistics about them, which is also why it can mix ideas it has never seen together.",
+        "The network itself was usually a U-Net, a type of image network. Many newer models use a transformer instead (often called a diffusion transformer). Some recent models train with flow matching, a closely related method that learns a straight path from noise to image. The user-facing ideas below are the same."
+      ]
+    },
+    {
+      "h": "Generation: the reverse process, one step at a time",
+      "body": [
+        "When you press Generate, the model does not draw lines or paste parts. It runs a loop:",
+        {
+          "code": "x = random_noise(seed)                  # start: pure static\nfor t in noise_levels_high_to_low:      # e.g. 30 steps\n    predicted_noise = model(x, t, prompt)\n    x = remove_some_noise(x, predicted_noise, t)\nimage = decode(x)                       # latent -> pixels",
+          "lang": "python"
+        },
+        "Early steps decide the big shapes: where the subject is, the horizon line, the main colors. Middle steps add form and lighting. Late steps add fine texture such as hair, fabric and skin pores. This explains several practical effects. If you lower the step count too far, images look smooth and unfinished. If you change the seed, the first noise is different, so the whole composition changes.",
+        "The rule that turns a noise prediction into a slightly cleaner image is called the sampler or scheduler. DDPM used many small steps. Later methods such as DDIM showed that you can take larger, deterministic steps and get similar quality in far fewer steps. This is why modern tools need tens of steps, not a thousand."
+      ]
+    },
+    {
+      "h": "How the text prompt steers the image",
+      "body": [
+        "The prompt is first turned into numbers by a text encoder, a language model trained to represent the meaning of captions. Inside the denoising network, a mechanism called cross-attention lets every region of the image look at the prompt's words at every step. A region that is becoming a face pays attention to words like \"freckles\" or \"smiling\".",
+        "On its own, this guidance is weak. Classifier-free guidance makes it stronger. At each step, the model predicts the noise twice: once with your prompt and once with an empty prompt. The final prediction moves further in the direction of the difference. The guidance scale (often called CFG scale) sets how far. A higher value follows the prompt more closely but can look harsh and oversaturated. A lower value looks more natural but may ignore parts of the prompt.",
+        "A negative prompt, where a tool supports one, usually replaces the empty prompt in that second prediction. The image is pushed away from those words, for example \"blurry, watermark, extra fingers\"."
+      ]
+    },
+    {
+      "h": "Why most models work in latent space",
+      "body": [
+        "Denoising a full-resolution image hundreds of times would be slow. Latent diffusion, the method behind Stable Diffusion, first trains an autoencoder that compresses an image into a much smaller grid of numbers and can expand it back. The diffusion model then works only on that small grid. For example, with a compression factor of 8 on each side, a 512×512 image becomes a 64×64 grid, which is 64 times fewer positions to process.",
+        "The last step of every generation, the decoder, turns the cleaned latent grid back into pixels. When an image has odd color blotches or small faces look smeared, the decoder's compression is often part of the cause, which is one reason faces and small text improve when the subject fills more of the frame.",
+        "Video diffusion uses the same idea with time added: the latent is a stack of frames, and the network denoises them together so that motion stays consistent from frame to frame."
+      ]
+    },
+    {
+      "h": "What the common settings actually change",
+      "body": [
+        "Most generators expose some of these controls. Names vary, but the mechanism is the same:",
+        {
+          "table": {
+            "head": [
+              "Setting",
+              "What it controls",
+              "Practical effect"
+            ],
+            "rows": [
+              [
+                "Seed",
+                "The starting noise",
+                "Same seed + same prompt + same settings gives the same image. Change it to see a new composition."
+              ],
+              [
+                "Steps",
+                "How many denoising passes",
+                "Too few looks soft or unfinished. Beyond a point, more steps add time but little quality."
+              ],
+              [
+                "Guidance / CFG scale",
+                "How strongly the prompt is enforced",
+                "Higher follows the prompt more but can look harsh. Lower looks natural but drifts."
+              ],
+              [
+                "Sampler / scheduler",
+                "The rule for each step",
+                "Changes speed and fine texture. Keep one sampler while you test other settings."
+              ],
+              [
+                "Negative prompt",
+                "What to push away from",
+                "Useful for removing recurring defects. Long lists rarely help."
+              ],
+              [
+                "Strength (image to image)",
+                "How much noise is added to your input image",
+                "Low keeps your layout. High keeps only the rough idea."
+              ],
+              [
+                "Resolution / aspect ratio",
+                "The size of the latent grid",
+                "Far from the training size can cause doubled subjects or stretched bodies."
+              ]
+            ]
+          }
+        },
+        "A good test method is to fix the seed, then change one setting at a time. Otherwise you cannot tell whether a better image came from your change or from luck."
+      ]
+    },
+    {
+      "h": "Diffusion versus other ways to generate images",
+      "body": [
+        "Diffusion is not the only method. Autoregressive models generate an image as a sequence of tokens, one after another, the way a language model writes text. Some recent multimodal models use this approach. For example, cv.cm's ai-image-generator runs Janus-Pro-1B, an autoregressive model, locally in your browser on WebGPU at 384 px. Its settings feel different: there is no step count to tune in the diffusion sense.",
+        "Older GANs (generative adversarial networks) produced an image in one pass and were fast, but they were harder to train and less varied. Diffusion became dominant because it trains stably and covers a wide range of images. Its main cost is speed, since every image needs many network passes. Distilled models reduce the number of steps to a handful at some cost in variety."
+      ]
+    },
+    {
+      "h": "Common weaknesses and how to work around them",
+      "body": [
+        {
+          "ul": [
+            "Hands and fingers: hands appear in many poses and are often partly hidden in training photos, so the model learns a blurry average. Ask for simple, visible hand poses, or inpaint the hands afterwards.",
+            "Text in images: the model learns letters as shapes, not spelling. Newer models are much better, but keep text short, put it in quotes in the prompt, and check every letter. For important text, add it later in an editor.",
+            "Counting: \"five apples\" often gives four or six. Fewer objects are more reliable.",
+            "Prompt bleed: colors and attributes leak between subjects, for example a red hat makes the shirt red too. Describe each subject in one clear phrase, or generate them separately.",
+            "Copying: models can sometimes reproduce close copies of famous or heavily repeated images. Avoid prompting with artist names or brand characters if you need original work."
+          ]
+        },
+        {
+          "note": "Changing the seed is the cheapest fix. Generate several images per prompt and choose, rather than rewriting the prompt after every single result."
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Is Stable Diffusion the same thing as a diffusion model?",
+      "a": "No. Diffusion model is the general method. Stable Diffusion is one specific family of open models that uses latent diffusion. Many other generators use diffusion too."
+    },
+    {
+      "q": "Why does the same prompt give a different image every time?",
+      "a": "Each generation starts from different random noise, set by the seed. If you fix the seed and keep all other settings the same, you get the same image again on the same software."
+    },
+    {
+      "q": "Do diffusion models store copies of their training images?",
+      "a": "They store learned weights, not image files. However, research has shown that some training images can be extracted almost exactly, especially famous or heavily repeated ones, so close copying is possible in rare cases."
+    },
+    {
+      "q": "Why do AI images take several seconds to make?",
+      "a": "A diffusion model runs its large network once per step, often tens of times per image. Faster models are trained to need fewer steps, and running in a compressed latent space also saves time."
+    },
+    {
+      "q": "What is a good CFG scale?",
+      "a": "It depends on the model. Many older models work around the middle of their range, and some distilled models need very low guidance. Start with the tool's default and move it in small steps with the seed fixed."
+    }
+  ]
+}

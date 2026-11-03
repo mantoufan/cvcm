@@ -1,0 +1,183 @@
+{
+  "title": "C2PA, Content Credentials và watermark AI là gì — cv.cm",
+  "description": "C2PA Content Credentials, watermark SynthID và metadata IPTC gắn nhãn ảnh AI thế nào, vì sao xóa metadata làm mất chúng, và giới hạn của việc phát hiện nội dung AI.",
+  "h1": "C2PA Content Credentials và watermark AI là gì?",
+  "answer": "C2PA Content Credentials là bản ghi có chữ ký gắn vào file, cho biết ai tạo ra nó, bằng công cụ nào và đã được chỉnh sửa ra sao, kể cả việc có phải AI tạo ra hay không. Watermark vô hình như SynthID giấu một tín hiệu ngay trong điểm ảnh hoặc âm thanh. Metadata có thể bị xóa bởi chụp màn hình hoặc tải lại; watermark chịu được nhiều chỉnh sửa hơn, nhưng cả hai đều không tự chứng minh nội dung là thật hay giả.",
+  "sections": [
+    {
+      "h": "Bốn lớp gắn nhãn AI",
+      "body": [
+        "Nội dung AI có thể được gắn nhãn theo nhiều cách độc lập. Chúng giải quyết các vấn đề khác nhau, và hầu hết hệ thống nghiêm túc dùng nhiều hơn một.",
+        {
+          "table": {
+            "head": [
+              "Lớp",
+              "Nằm ở đâu",
+              "Ai đọc được",
+              "Có qua được chụp màn hình không?"
+            ],
+            "rows": [
+              [
+                "Nhãn nhìn thấy được",
+                "Chữ hoặc biểu tượng trong ảnh, video hoặc chú thích",
+                "Mọi người",
+                "Có, trừ khi bị cắt đi"
+              ],
+              [
+                "Metadata (EXIF, XMP, IPTC)",
+                "Các trường trong phần đầu file",
+                "Bất kỳ trình xem metadata nào",
+                "Không"
+              ],
+              [
+                "Manifest C2PA (Content Credentials)",
+                "Một khối dữ liệu có chữ ký bên trong file hoặc trong kho trực tuyến",
+                "Trình xác thực C2PA",
+                "Không, trừ khi khôi phục được qua soft binding"
+              ],
+              [
+                "Watermark vô hình",
+                "Thay đổi nhỏ trong điểm ảnh, mẫu âm thanh hoặc cách chọn từ",
+                "Chỉ bộ phát hiện tương ứng",
+                "Thường là có, trong một giới hạn"
+              ]
+            ]
+          }
+        },
+        "Biện pháp gắn nhãn của Trung Quốc, có hiệu lực từ ngày 1 tháng 9 năm 2025, nêu trực tiếp hai trong số này: nhãn hiển thị mà con người nhìn hoặc nghe được, và nhãn ngầm trong metadata của file, đồng thời khuyến khích dùng watermark số. Điều 50 của Đạo luật AI của EU cũng yêu cầu nhà cung cấp AI tạo sinh đánh dấu sản phẩm đầu ra tổng hợp theo cách máy đọc được và phát hiện được."
+      ]
+    },
+    {
+      "h": "Manifest C2PA hoạt động thế nào",
+      "body": [
+        "C2PA (Coalition for Content Provenance and Authenticity) công bố một đặc tả kỹ thuật mở. Tên gọi dành cho người dùng của dữ liệu này là Content Credentials. Một manifest gồm ba phần:",
+        {
+          "ol": [
+            "Assertion: các tuyên bố về file, như công cụ tạo ra nó, các thao tác đã thực hiện (tạo, cắt, chỉnh màu), ảnh thu nhỏ, và các thành phần (những file trước đó dùng để tạo ra nó).",
+            "Claim: một danh sách trỏ tới các assertion đó, kèm hash để không cái nào bị thay đổi về sau.",
+            "Chữ ký của claim: chữ ký số được tạo bằng khóa riêng của bên ký và được xác định bằng chứng chỉ X.509, cùng loại hệ thống chứng chỉ mà HTTPS sử dụng."
+          ]
+        },
+        "Manifest còn chứa một hard binding: hash mật mã của dữ liệu ảnh hoặc video. Nếu dù chỉ một điểm ảnh thay đổi sau khi ký, hash không còn khớp và trình xác thực báo rằng nội dung đã bị thay đổi. Khi một trình chỉnh sửa hỗ trợ C2PA thực hiện thay đổi, nó thêm một manifest mới liệt kê manifest cũ như một thành phần, tạo ra chuỗi các lần chỉnh sửa.",
+        "Ở các định dạng phổ biến như JPEG, PNG và MP4, manifest được lưu trong các hộp JUMBF bên trong file. Một file cũng có thể chỉ mang một liên kết tới manifest được lưu ở nơi khác.",
+        {
+          "code": "Content Credentials (simplified view)\n  Signed by:     Example Camera Co. (certificate valid)\n  Created with:  Example Image Generator\n  Actions:       c2pa.created\n    digitalSourceType: trainedAlgorithmicMedia\n  Then:          c2pa.cropped, c2pa.color_adjustments (Example Editor)\n  Ingredients:   1 earlier file\n  Hash check:    content matches signature",
+          "lang": "text"
+        },
+        "Tài liệu giải thích của C2PA nói rõ về phạm vi: nguồn gốc cho bạn biết nội dung đến từ đâu và đã thay đổi thế nào. Nó không cho biết nội dung có đúng sự thật hay không. Một bức ảnh có chữ ký chụp cảnh dàn dựng vẫn là cảnh dàn dựng."
+      ]
+    },
+    {
+      "h": "IPTC digital source type: trường AI trong metadata",
+      "body": [
+        "IPTC, tổ chức chuẩn về metadata cho truyền thông báo chí, duy trì một bộ từ vựng gọi là digital source type. Các thuật ngữ này được dùng trong metadata ảnh IPTC và cả trong các assertion hành động của C2PA. Những thuật ngữ liên quan nhất đến AI là:",
+        {
+          "table": {
+            "head": [
+              "Thuật ngữ",
+              "Nhãn",
+              "Ý nghĩa"
+            ],
+            "rows": [
+              [
+                "trainedAlgorithmicMedia",
+                "Created using Generative AI",
+                "Do mô hình AI được huấn luyện trên nội dung đã ghi lại tạo ra"
+              ],
+              [
+                "compositeWithTrainedAlgorithmicMedia",
+                "Edited using Generative AI",
+                "Nội dung thật bị thay đổi bằng AI tạo sinh, ví dụ inpainting hoặc outpainting"
+              ],
+              [
+                "algorithmicMedia",
+                "Pure algorithmic media",
+                "Do thuật toán tạo ra mà không có dữ liệu huấn luyện, như một họa tiết thủ tục"
+              ],
+              [
+                "digitalCapture",
+                "Digital capture",
+                "Ghi lại từ đời thực bằng máy ảnh hoặc máy ghi âm kỹ thuật số"
+              ]
+            ]
+          }
+        },
+        "Các nền tảng đọc những giá trị này để quyết định khi nào hiện nhãn như “Made with AI” hoặc “AI info”. Tự bản thân, một trường IPTC không có chữ ký, nên ai cũng có thể ghi hoặc xóa nó. Bên trong manifest C2PA, cùng giá trị đó được chữ ký bao phủ."
+      ]
+    },
+    {
+      "h": "Vì sao xóa metadata làm mất credential",
+      "body": [
+        "Metadata và manifest nhúng nằm cạnh dữ liệu ảnh chứ không nằm trong đó. Bất cứ thứ gì ghi ra file mới chỉ từ điểm ảnh đều làm mất chúng:",
+        {
+          "ul": [
+            "Chụp màn hình hoặc quay màn hình.",
+            "Tải lên nền tảng mã hóa lại ảnh và xóa metadata vì quyền riêng tư hoặc dung lượng.",
+            "Chuyển đổi định dạng, ví dụ PNG sang JPEG, bằng công cụ không sao chép metadata.",
+            "Chạy công cụ xóa metadata, được thiết kế để xóa EXIF, GPS, XMP và các khối tương tự.",
+            "Sao chép và dán ảnh giữa các ứng dụng qua clipboard."
+          ]
+        },
+        "Đây là hành vi bình thường, không phải lỗi của một công cụ nào. Xóa dữ liệu vị trí trước khi chia sẻ ảnh là thực hành tốt về quyền riêng tư; ví dụ, công cụ EXIF của cv.cm xóa dữ liệu EXIF và GPS ngay trong trình duyệt, và nó cũng sẽ xóa luôn credential nhúng. Nếu bạn cần chứng minh một bức ảnh đến từ đâu, hãy giữ file gốc có chữ ký và chia sẻ nó nguyên vẹn.",
+        "Câu trả lời của C2PA là Content Credentials bền vững: kết hợp hard binding với soft binding, tức một watermark vô hình hoặc dấu vân tay nhận thức (perceptual fingerprint). Trình xác thực tìm thấy watermark hoặc dấu vân tay có thể tra cứu manifest gốc trong kho manifest ngay cả sau khi metadata của file đã bị xóa.",
+        {
+          "note": "Việc gỡ nhãn có thể có hậu quả pháp lý. Biện pháp gắn nhãn của Trung Quốc (Điều 10) cấm cố ý xóa, sửa, làm giả hoặc che giấu nhãn AI, và cấm cung cấp công cụ để người khác làm việc đó. Xóa metadata vì quyền riêng tư khác với gỡ nhãn để cho nội dung AI qua mặt là thật. Đây là thông tin chung, không phải tư vấn pháp lý."
+        }
+      ]
+    },
+    {
+      "h": "Watermark vô hình như SynthID",
+      "body": [
+        "Watermark vô hình thay đổi chính nội dung theo cách con người không nhận ra nhưng bộ phát hiện tìm được. Chẳng hạn, SynthID của Google DeepMind được mô tả là bao phủ ảnh, video, âm thanh và văn bản. Với ảnh và video, nó được thiết kế để chịu được việc cắt, bộ lọc, đổi tốc độ khung hình và nén có mất dữ liệu; với âm thanh, là nhiễu thêm vào, nén MP3 và đổi tốc độ. Với văn bản, nó điều chỉnh nhẹ xác suất của các từ mà mô hình chọn.",
+        "Những giới hạn quan trọng áp dụng cho mọi watermark loại này:",
+        {
+          "ul": [
+            "Chỉ bộ phát hiện tương ứng mới đọc được. Kiểm tra SynthID không nói gì về ảnh từ mô hình dùng watermark khác hoặc không có watermark.",
+            "Bền vững không có nghĩa là vĩnh viễn. Chỉnh sửa nặng, tạo lại ảnh bằng mô hình khác, hoặc viết lại văn bản có thể làm yếu hoặc xóa tín hiệu.",
+            "Watermark văn bản yếu nhất ở đoạn ngắn và ở văn bản đã được dịch hoặc diễn đạt lại.",
+            "Watermark cho thấy một nhà cung cấp hợp tác đã tạo ra hoặc chỉnh sửa nội dung. Nó không cho thấy phần nào đã bị thay đổi hay cảnh đó có thật hay không."
+          ]
+        },
+        "Watermark vô hình cá nhân là một công cụ khác cho một công việc khác. Một dấu bạn giấu trong ảnh của chính mình, ví dụ bằng công cụ watermark của cv.cm, giúp bạn chứng minh sau này rằng một bản sao đến từ file của bạn. Nó không phải nhãn AI và không nền tảng nào đọc nó."
+      ]
+    },
+    {
+      "h": "Giới hạn của việc phát hiện AI",
+      "body": [
+        "Không phương pháp nào có thể nhìn một file bất kỳ và nói chắc chắn “AI” hay “thật”. Hãy ghi nhớ những quy tắc sau:",
+        {
+          "ol": [
+            "Một credential hợp lệ cho bạn biết ai đã ký và họ khai báo điều gì. Mức tin cậy phụ thuộc vào việc bạn có tin bên ký đó hay không.",
+            "Thiếu credential không chứng minh gì cả. Hầu hết ảnh thật trên mạng không có, vì nền tảng xóa chúng và đa số máy ảnh không ký.",
+            "Tìm thấy watermark là bằng chứng mạnh cho mô hình của nhà cung cấp đó. Không tìm thấy watermark là bằng chứng yếu cho bất cứ điều gì.",
+            "Các công cụ phát hiện AI kiểu bộ phân loại, đoán từ mẫu hình ảnh hoặc thống kê, có dương tính giả và âm tính giả. Đừng chỉ dùng chúng để buộc tội ai.",
+            "Kết hợp các tín hiệu: credential, watermark, tài khoản nguồn, lần tải lên sớm nhất, và các kiểm tra thông thường như tìm ảnh ngược và xem có lỗi vật lý không."
+          ]
+        },
+        "Với nhà sáng tạo, quy tắc thực tế rất đơn giản: giữ các file gốc từ công cụ tạo cùng credential của chúng, thêm nhãn nhìn thấy được khi nền tảng hoặc luật yêu cầu, và đừng cố gỡ dấu AI khỏi nội dung bạn đăng."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Làm sao kiểm tra một ảnh có Content Credentials không?",
+      "a": "Hãy mở nó trong trình xem hỗ trợ C2PA, như trang xác minh chính thức, một trình chỉnh sửa có hỗ trợ, hoặc nền tảng hiển thị huy hiệu CR hay AI info. Nếu file đã được lưu lại hoặc chụp màn hình, credential có thể đã mất dù ban đầu có."
+    },
+    {
+      "q": "C2PA Content Credentials có thể bị làm giả không?",
+      "a": "Ai cũng tạo được manifest, nhưng họ không thể ký nó bằng chứng chỉ của tổ chức khác. Trình xác thực kiểm tra chữ ký và hash nội dung, nên câu hỏi thật sự là bạn có tin bên ký được hiển thị hay không."
+    },
+    {
+      "q": "Xóa dữ liệu EXIF có xóa nhãn AI không?",
+      "a": "Nó xóa các nhãn metadata và manifest C2PA nhúng. Nó không xóa nhãn nhìn thấy được hay watermark vô hình trong điểm ảnh, và soft binding vẫn có thể giúp trình xác thực khôi phục manifest gốc."
+    },
+    {
+      "q": "SynthID có giống C2PA không?",
+      "a": "Không. SynthID là watermark bên trong nội dung, được bộ phát hiện của Google đọc. C2PA là chuẩn mở cho các bản ghi nguồn gốc có chữ ký gắn vào file. Chúng bổ sung cho nhau, và C2PA có thể dùng watermark làm soft binding."
+    },
+    {
+      "q": "Công cụ tạo ảnh AI có tự thêm C2PA không?",
+      "a": "Nhiều nhà cung cấp lớn thêm Content Credentials hoặc metadata IPTC, watermark vô hình, hoặc cả hai, nhưng thực tế khác nhau theo sản phẩm và thay đổi theo thời gian. Hãy xem tài liệu của nhà cung cấp và kiểm tra một file mẫu."
+    }
+  ]
+}

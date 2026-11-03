@@ -1,0 +1,192 @@
+{
+  "title": "Cómo ejecutar IA en el navegador: WebGPU, WASM y Transformers.js — cv.cm",
+  "description": "Cómo ejecutar modelos de IA en el navegador con WebGPU o WASM, ONNX Runtime Web y Transformers.js: tamaño del modelo, caché, cuantización, privacidad y límites en el móvil.",
+  "h1": "¿Cómo se ejecuta un modelo de IA en el navegador?",
+  "answer": "Descargas un archivo de modelo, normalmente en formato ONNX, y lo ejecutas dentro de la página web con un runtime como ONNX Runtime Web, a menudo a través de Transformers.js. El runtime usa la GPU mediante WebGPU cuando está disponible y recurre a la CPU con WebAssembly si no. Los archivos se guardan en caché tras la primera visita y tus datos nunca salen del dispositivo.",
+  "sections": [
+    {
+      "h": "Por qué ejecutar IA en el navegador",
+      "body": [
+        "La mayoría de las funciones de IA llaman a un servidor: se sube la foto o el texto, una GPU de un centro de datos ejecuta el modelo y el resultado vuelve. La IA en el navegador le da la vuelta a este esquema. El modelo se descarga una vez y el trabajo lo hace el propio dispositivo del visitante.",
+        {
+          "ul": [
+            "Privacidad: las fotos, el audio y los documentos se quedan en el dispositivo. No hace falta subir ni almacenar nada, lo que además simplifica el cumplimiento de las leyes de privacidad de muchos países.",
+            "Sin coste de servidor por uso: el sitio paga por alojar los archivos del modelo, no por tiempo de GPU. Eso hace posibles las herramientas gratuitas.",
+            "Funciona sin conexión tras la primera carga y no tiene retraso de red en cada petición.",
+            "No hacen falta cuenta ni clave de API."
+          ]
+        },
+        "Las contrapartidas son reales. La primera visita requiere una descarga grande, la velocidad depende del hardware del visitante y solo caben modelos pequeños y medianos. Los grandes modelos de chat, con decenas de miles de millones de parámetros, siguen necesitando un servidor. Las tareas que encajan bien hoy son la eliminación de fondo, el aumento de resolución de imágenes, la estimación de profundidad, la transcripción de voz a texto, la traducción, la clasificación de texto, los embeddings y los modelos pequeños de imagen o de lenguaje. Por ejemplo, las herramientas de quitar fondo y de voz a texto de cv.cm ejecutan BiRefNet y Whisper de esta manera, sin subir nada."
+      ]
+    },
+    {
+      "h": "Las cuatro capas: modelo, runtime, backend y biblioteca",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Capa",
+              "Qué es",
+              "Opción habitual"
+            ],
+            "rows": [
+              [
+                "Archivo del modelo",
+                "Los pesos entrenados y el grafo de cómputo",
+                "Archivos ONNX, a menudo exportados desde PyTorch"
+              ],
+              [
+                "Runtime",
+                "El código que ejecuta el grafo en la página",
+                "ONNX Runtime Web (hay alternativas, como TensorFlow.js o WebLLM para modelos de chat)"
+              ],
+              [
+                "Backend",
+                "La vía de hardware que usa el runtime",
+                "WebGPU para la GPU, WebAssembly (WASM) para la CPU, WebNN donde esté disponible"
+              ],
+              [
+                "Biblioteca",
+                "API cómoda: preprocesado, tokenizadores, pipelines",
+                "Transformers.js, que usa ONNX Runtime por debajo"
+              ]
+            ]
+          }
+        },
+        "ONNX es un formato abierto para redes neuronales. Un modelo entrenado en PyTorch puede exportarse a ONNX, y ONNX Runtime Web puede ejecutarlo después con varios backends. El backend WASM admite todos los operadores de ONNX. Los backends de GPU admiten un subconjunto, así que un modelo puede fallar en WebGPU y funcionar igualmente en WASM. Transformers.js añade lo que de otro modo tendrías que escribir tú: redimensionar imágenes, convertir texto en tokens, decodificar audio y transformar los números de salida en etiquetas, máscaras o texto."
+      ]
+    },
+    {
+      "h": "WebGPU frente a WebAssembly",
+      "body": [
+        "WebGPU es un estándar web del W3C que da a las páginas acceso a la tarjeta gráfica, tanto para dibujar como para cómputo general. En las redes neuronales lo que importa es la parte de cómputo: las multiplicaciones de matrices se ejecutan en paralelo en muchos núcleos de la GPU. WebAssembly ejecuta código compilado en la CPU a una velocidad cercana a la nativa y funciona en todos los navegadores modernos.",
+        {
+          "table": {
+            "head": [
+              "Pregunta",
+              "WebGPU",
+              "WebAssembly (WASM)"
+            ],
+            "rows": [
+              [
+                "Se ejecuta en",
+                "GPU",
+                "CPU, opcionalmente con varios hilos y SIMD"
+              ],
+              [
+                "Velocidad en modelos grandes",
+                "A menudo muchas veces más rápido",
+                "Más lento, pero predecible"
+              ],
+              [
+                "Disponibilidad",
+                "En crecimiento, pero no en todos los navegadores y dispositivos; MDN la indica como de disponibilidad limitada",
+                "Todos los navegadores modernos"
+              ],
+              [
+                "Cobertura de operadores en ONNX Runtime Web",
+                "Un subconjunto",
+                "Todos los operadores"
+              ],
+              [
+                "Requisitos",
+                "Contexto seguro (HTTPS)",
+                "Los hilos necesitan una página con aislamiento de origen cruzado"
+              ],
+              [
+                "Ideal para",
+                "Generación de imágenes, grandes modelos de visión, Whisper con audio largo",
+                "Modelos pequeños, alternativa de reserva, dispositivos sin una buena GPU"
+              ]
+            ]
+          }
+        },
+        "En la práctica, prueba primero WebGPU y recurre a WASM si falla. No decidas por el nombre del navegador. Pídele un adaptador al navegador y comprueba sus características:",
+        {
+          "code": "// Check what this device can do before loading a model.\nasync function pickBackend() {\n  if (!(\"gpu\" in navigator)) return { device: \"wasm\" };      // no WebGPU API\n  const adapter = await navigator.gpu.requestAdapter();\n  if (!adapter) return { device: \"wasm\" };                    // API exists, no usable GPU\n  const f16 = adapter.features.has(\"shader-f16\");             // half-precision support\n  return { device: \"webgpu\", f16 };\n}\n\nconsole.log(await pickBackend(), \"threads:\", self.crossOriginIsolated);",
+          "lang": "javascript"
+        },
+        "El WASM con varios hilos usa `SharedArrayBuffer`, que los navegadores solo permiten cuando la página tiene aislamiento de origen cruzado. Eso implica enviar las cabeceras `Cross-Origin-Opener-Policy` y `Cross-Origin-Embedder-Policy`. Sin ellas, WASM se ejecuta en un solo hilo y es mucho más lento."
+      ]
+    },
+    {
+      "h": "Un ejemplo mínimo con Transformers.js",
+      "body": [
+        "Con Transformers.js, una tarea es una sola llamada a `pipeline`. La biblioteca descarga el modelo, elige los archivos para el dispositivo y el tipo de datos seleccionados y devuelve una función que puedes llamar:",
+        {
+          "code": "import { pipeline } from \"@huggingface/transformers\";\n\nconst { device } = await pickBackend();     // from the snippet above\n\n// First call downloads the model and caches it. Later visits load from cache.\nconst classify = await pipeline(\n  \"sentiment-analysis\",\n  \"Xenova/distilbert-base-uncased-finetuned-sst-2-english\",\n  {\n    device,                                  // \"webgpu\" or \"wasm\"\n    dtype: device === \"webgpu\" ? \"fp32\" : \"q8\",\n    progress_callback: (p) => console.log(p.status, p.file ?? \"\", p.progress ?? \"\"),\n  }\n);\n\nconsole.log(await classify(\"This runs entirely on my laptop.\"));\n// [{ label: \"POSITIVE\", score: 0.99... }]",
+          "lang": "javascript"
+        },
+        "Ejecuta esto en un script de módulo o, mejor, en un Web Worker. La inferencia del modelo puede bloquear durante cientos de milisegundos o más, y en un worker la página sigue respondiendo. WebGPU también está disponible dentro de los workers. Muestra el progreso de descarga al usuario, porque la primera carga de un modelo grande puede tardar con una conexión lenta."
+      ]
+    },
+    {
+      "h": "Tamaño de descarga, cuantización y caché",
+      "body": [
+        "La descarga equivale aproximadamente al número de parámetros multiplicado por los bytes que ocupa cada uno. Esta aritmética sencilla te dice si un modelo es práctico:",
+        {
+          "code": "download size  ~  number of parameters  x  bytes per parameter\n\n                      fp32 (4 B)   fp16 (2 B)   int8 / q8 (1 B)   q4 (0.5 B)\n 50 million params      200 MB       100 MB          50 MB            25 MB\n 500 million params     2.0 GB       1.0 GB         500 MB           250 MB\n 1 billion params       4.0 GB       2.0 GB         1.0 GB           500 MB\n\nReal files differ a little: some layers stay at higher precision,\nand the tokenizer and config add a few MB.",
+          "lang": "text"
+        },
+        "La cuantización almacena los pesos con menos bits: fp16 reduce a la mitad el tamaño de fp32, la cuantización de 8 bits (q8) lo reduce a una cuarta parte y la de 4 bits (q4) lo reduce unas ocho veces. Los pesos más pequeños se descargan más rápido y necesitan menos memoria. El coste es cierta pérdida de precisión, que suele ser pequeña con 8 bits y más visible con 4 bits, sobre todo en modelos pequeños y en tareas como la generación de imágenes, donde los pequeños errores se notan. Transformers.js selecciona la variante con su opción `dtype`. Sus valores predeterminados son q8 en WASM y fp32 en WebGPU, y las opciones disponibles dependen de lo que haya exportado el editor del modelo.",
+        "La caché hace que la segunda visita sea rápida. Transformers.js guarda los archivos descargados con la Cache API del navegador de forma predeterminada. Los navegadores asignan a cada sitio una cuota de almacenamiento basada en el tamaño del disco, a menudo suficiente para varios gigabytes en un ordenador de escritorio, pero ese almacenamiento es de mejor esfuerzo: el navegador puede borrarlo cuando el dispositivo tiene poco espacio, y Safari puede eliminar los datos creados por scripts de los sitios con los que el usuario no ha interactuado durante varios días. Un sitio puede solicitar almacenamiento persistente con `navigator.storage.persist()` y consultar el uso con `navigator.storage.estimate()`.",
+        {
+          "note": "Aloja tú mismo los archivos del modelo, con una versión fija, si tu sitio depende de ellos. Cargarlos desde un repositorio de terceros hace que sus caídas, los archivos renombrados o las nuevas versiones del modelo se conviertan en tu problema."
+        }
+      ]
+    },
+    {
+      "h": "Móviles y otros límites",
+      "body": [
+        {
+          "ul": [
+            "Memoria: un modelo necesita memoria para sus pesos más espacio de trabajo. Los navegadores móviles dan a cada pestaña mucha menos memoria que los de escritorio y pueden cerrarla sin avisar si el modelo es demasiado grande. Mantén pequeños los modelos para móvil, a menudo por debajo de unos cientos de megabytes.",
+            "WebGPU en teléfonos: la compatibilidad depende del navegador, de la versión del sistema operativo y del controlador de la GPU. Ten siempre una vía WASM o un mensaje claro.",
+            "Calor y batería: el trabajo prolongado de la GPU calienta los teléfonos, y el sistema reduce entonces la velocidad del chip. Una tarea que tarda 2 segundos la primera vez puede tardar mucho más la quinta.",
+            "Planes de datos: avisa a los usuarios antes de una descarga grande en una conexión móvil.",
+            "Precisión: algunas GPU no tienen soporte rápido para media precisión (fp16) o producen números ligeramente distintos, de modo que los resultados pueden diferir un poco entre dispositivos.",
+            "Las licencias de los modelos siguen vigentes. Ejecutar un modelo en el navegador no cambia sus condiciones de uso."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Lista de comprobación para publicar IA en el navegador",
+      "body": [
+        {
+          "ol": [
+            "Elige el modelo más pequeño que alcance tu nivel de calidad y prueba sus versiones cuantizadas una junto a otra.",
+            "Detecta WebGPU solicitando un adaptador y recurre a WASM si no está disponible.",
+            "Sirve el sitio por HTTPS y activa el aislamiento de origen cruzado si necesitas hilos de WASM.",
+            "Ejecuta la inferencia en un Web Worker y muestra el progreso de descarga y de procesamiento.",
+            "No descargues el modelo al cargar la página. Espera a que el usuario inicie una tarea, para que los visitantes que solo leen la página no paguen gigabytes.",
+            "Aloja los archivos del modelo en una versión fija y guárdalos en caché.",
+            "Prueba en un móvil de gama baja, no solo en un portátil de desarrollo."
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "¿La IA en el navegador es realmente privada?",
+      "a": "El modelo se ejecuta en tu dispositivo, así que tus datos de entrada no tienen por qué enviarse a ningún sitio. Que un sitio concreto suba algo depende de su código, por lo que conviene consultar su política de privacidad o el panel de red del navegador."
+    },
+    {
+      "q": "¿Qué navegadores admiten WebGPU?",
+      "a": "La compatibilidad ha crecido en los principales navegadores de escritorio y en algunos móviles, pero sigue variando según la versión del navegador, el sistema operativo y la GPU. Consulta la tabla de compatibilidad actual en MDN y comprueba `navigator.gpu` en el código."
+    },
+    {
+      "q": "¿Puedo ejecutar en el navegador un modelo parecido a ChatGPT?",
+      "a": "Los modelos de lenguaje pequeños, de hasta unos pocos miles de millones de parámetros, pueden ejecutarse en el navegador con una buena GPU, tras una descarga de un gigabyte o más. Son mucho menos capaces que los grandes modelos que hay detrás de ChatGPT, Claude o Gemini."
+    },
+    {
+      "q": "¿Por qué la primera ejecución es lenta y la segunda rápida?",
+      "a": "La primera ejecución descarga el modelo y compila los shaders de la GPU o el código WASM. Las siguientes cargan los archivos desde la caché del navegador, siempre que el navegador no haya borrado ese almacenamiento."
+    },
+    {
+      "q": "¿Ejecutar IA en el navegador usa mi GPU aunque no tenga una tarjeta para juegos?",
+      "a": "Sí. WebGPU puede usar los gráficos integrados de portátiles y teléfonos normales. Es más lento que una tarjeta dedicada, pero a menudo sigue siendo mucho más rápido que la vía de la CPU."
+    }
+  ]
+}

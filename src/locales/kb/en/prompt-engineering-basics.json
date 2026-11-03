@@ -1,0 +1,169 @@
+{
+  "title": "Prompt Engineering Basics: Write Prompts That Work — cv.cm",
+  "description": "Prompt engineering basics: the six parts of a good prompt, a before/after rewrite, examples, formats, and how to test prompts in ChatGPT, Claude or Gemini.",
+  "h1": "Prompt engineering basics: how to write a good prompt",
+  "answer": "Prompt engineering is writing instructions so a language model gives the result you need on the first try and every time after. A good prompt states the task, gives the needed context and input, says who the output is for, shows the format, and sets limits. Add one or two examples for tricky cases, then test the prompt on several real inputs.",
+  "sections": [
+    {
+      "h": "Why the wording of a prompt matters",
+      "body": [
+        "A language model does not know your situation. It only sees the text you send. When a prompt is vague, the model fills the gaps with the most typical answer, which is usually generic, too long or aimed at the wrong reader. Prompt engineering is mostly the work of removing guesses.",
+        "A helpful test: could a smart new colleague, who has never met you, do the task well from your message alone? If they would need to ask three questions first, the model needs those answers too. The official guides from OpenAI, Anthropic and Google give the same core advice in different words: be clear and specific, give context, show examples, say what format you want."
+      ]
+    },
+    {
+      "h": "The six parts of a good prompt",
+      "body": [
+        "Not every prompt needs all six parts, but checking this list fixes most weak prompts.",
+        {
+          "table": {
+            "head": [
+              "Part",
+              "What it answers",
+              "Example fragment"
+            ],
+            "rows": [
+              [
+                "Task",
+                "What should the model do?",
+                "Write a reply to this customer email."
+              ],
+              [
+                "Context",
+                "What background does it need?",
+                "We sell handmade ceramic mugs. Shipping takes 5 to 7 days."
+              ],
+              [
+                "Input",
+                "What material should it work on?",
+                "The customer email, clearly separated."
+              ],
+              [
+                "Audience and tone",
+                "Who reads the output?",
+                "A frustrated first-time customer. Friendly, not overly apologetic."
+              ],
+              [
+                "Format",
+                "What shape should the output have?",
+                "Three short paragraphs, under 120 words, no subject line."
+              ],
+              [
+                "Constraints",
+                "What must it do or avoid?",
+                "Do not promise a refund. Offer a tracking link."
+              ]
+            ]
+          }
+        },
+        "Put long input material between clear markers, such as XML-style tags or triple quotes, so the model can tell your instructions from the text it should process. This also lowers the risk that instructions hidden inside the input, for example in a pasted web page, are followed by mistake."
+      ]
+    },
+    {
+      "h": "A before and after rewrite",
+      "body": [
+        "Here is a typical weak prompt:",
+        {
+          "code": "Summarize this article.",
+          "lang": "text"
+        },
+        "The model will produce a summary, but of what length, for whom and in what form? Here is the same request with the gaps filled:",
+        {
+          "code": "You are helping a busy product manager decide whether to read a research article.\n\nSummarize the article below for that reader.\n- Start with one sentence: the main finding.\n- Then 3 bullet points: method, key number, main limitation.\n- Use plain English. Explain any technical term in a few words.\n- Under 100 words in total.\n- If the article does not state a limitation, write \"No limitation stated\".\n\n<article>\n{paste the article here}\n</article>",
+          "lang": "text"
+        },
+        "What each part does:",
+        {
+          "ul": [
+            "The first line sets the audience and purpose. The model now knows why the summary exists, so it chooses what to keep.",
+            "The bullet structure fixes the format, so every summary looks the same and is easy to compare.",
+            "The word limit stops the model from padding.",
+            "The rule for a missing limitation tells the model what to do in an edge case, instead of inventing one.",
+            "The tags separate the article from the instructions."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Show examples when words are not enough",
+      "body": [
+        "Some requirements are hard to describe but easy to show: a tone of voice, a labeling scheme, a specific output style. Adding a few worked examples is called few-shot prompting. One example (one-shot) often helps a lot. Two to five varied examples usually cover the main cases.",
+        {
+          "code": "Classify each support message as BILLING, SHIPPING, PRODUCT or OTHER.\nReply with the label only.\n\nMessage: I was charged twice for order 5521.\nLabel: BILLING\n\nMessage: The handle on my mug cracked after one week.\nLabel: PRODUCT\n\nMessage: Do you have a shop in Osaka?\nLabel: OTHER\n\nMessage: {new message}\nLabel:",
+          "lang": "text"
+        },
+        "Make your examples different from each other. If all of them are short and polite, the model may handle a long angry message badly. Also check that examples match the rules: the model copies examples more strongly than it follows written instructions."
+      ]
+    },
+    {
+      "h": "Techniques that help in specific cases",
+      "body": [
+        {
+          "ul": [
+            "Ask for steps before the answer. For math, logic or multi-part decisions, asking the model to work through the problem before giving the final answer improves accuracy. This is known as chain-of-thought prompting. Many current models do this internally (often called reasoning or thinking modes), so a plain request for a careful answer may be enough.",
+            "Split big tasks. Instead of \"research, outline and write a report\" in one prompt, run three prompts and check each output. This is called prompt chaining.",
+            "Give a role only when it adds information. \"You are a tax accountant in Vietnam\" changes word choice and assumptions. \"You are a world-class genius\" adds nothing.",
+            "Say what to do, not only what to avoid. \"Write in short sentences\" works better than \"Don't be wordy\".",
+            "Allow \"I don't know\". Tell the model it may say the information is missing. This reduces invented facts, though it does not remove them.",
+            "Ask for a machine-readable format when code will read the output, for example JSON with named fields. Most APIs can also enforce a JSON schema directly."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Test a prompt like code",
+      "body": [
+        "A prompt that works on one example may fail on the next. If the prompt will be used again, or by other people, test it:",
+        {
+          "ol": [
+            "Write down what a good output looks like: length, format, facts that must be right.",
+            "Collect 10 to 20 real inputs, including difficult ones: very short, very long, off-topic, another language.",
+            "Run the prompt on all of them and read every output.",
+            "Change one thing at a time and run the whole set again, so you know which change helped.",
+            "Keep the final prompt and the test set together. When you switch models or a model is updated, run the set again."
+          ]
+        },
+        "This last step matters because the same prompt can behave differently on different models, and on newer versions of the same model. Prompt engineering guidance from model makers changes over time for this reason."
+      ]
+    },
+    {
+      "h": "Common mistakes",
+      "body": [
+        {
+          "ul": [
+            "Too many goals in one prompt. Ten rules with equal weight get partly ignored. Put the most important rules first and keep the list short.",
+            "Contradictions, such as \"be detailed\" and \"keep it under 50 words\". The model will satisfy one and break the other.",
+            "Relying on capital letters or threats (\"YOU MUST\") instead of a clear reason. A short explanation of why a rule exists usually works better.",
+            "Not separating input from instructions, so the model treats part of your document as a command.",
+            "Trusting facts in the output. A well-written prompt still produces confident mistakes. Check names, numbers, quotes and links."
+          ]
+        },
+        {
+          "note": "Image and video generators read prompts differently from chat models. They respond to visual descriptions (subject, setting, light, camera) more than to instructions. See the image and video prompt guides for that style."
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Is prompt engineering still needed with newer AI models?",
+      "a": "Less trickery is needed, but clear tasks, context, formats and testing still make a large difference. Newer models follow instructions more literally, so precise wording matters even more."
+    },
+    {
+      "q": "What is the difference between a system prompt and a user prompt?",
+      "a": "The system prompt (some APIs call it developer instructions) sets rules and behavior for the whole conversation. The user prompt is the request for this turn. In apps, the system prompt is usually written by the developer."
+    },
+    {
+      "q": "Should I write prompts in English?",
+      "a": "Most large models work well in many languages. English can be slightly more reliable for complex instructions, but writing the instructions in the output language often gives more natural results. Test both on your task."
+    },
+    {
+      "q": "How long should a prompt be?",
+      "a": "As long as it needs to be to remove guesses, and no longer. A one-line prompt is fine for a simple task. A reusable prompt for a product can run to a page or more."
+    },
+    {
+      "q": "Can a prompt stop AI hallucinations?",
+      "a": "No prompt removes them completely. Giving the source text, asking the model to quote it, and allowing it to say the answer is not in the text all reduce invented facts."
+    }
+  ]
+}

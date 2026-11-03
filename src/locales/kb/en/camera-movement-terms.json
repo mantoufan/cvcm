@@ -1,0 +1,307 @@
+{
+  "title": "Camera Movement Terms for AI Video: Dolly, Orbit, Crane — cv.cm",
+  "description": "Camera movement terms for AI video prompts: dolly, truck, pedestal, orbit, crane, dolly zoom, rack focus and more, with what each looks like and how to phrase it.",
+  "h1": "What are the camera movement terms for AI video prompts?",
+  "answer": "Camera movement terms are the film-crew words for how the camera moves: pan and tilt rotate it in place, dolly moves it forward or back, truck moves it sideways, pedestal moves it up or down, and orbit circles the subject. Video models learned these words from captioned footage, so naming one standard move gives you far more control than 'cinematic camera'.",
+  "sections": [
+    {
+      "h": "Why the exact word matters",
+      "body": [
+        "Video models learn camera language from captions written about real footage. When a caption says 'slow dolly in on her face', the model links that phrase to a specific pattern of motion: the subject grows in frame and the background shifts a little behind it. A vague phrase like 'dynamic camera' links to everything at once, so you get a random mix.",
+        "The terms below are the ones film crews use, and most of them appear in Google's Veo prompt guide. Researchers also treat camera motion as its own control signal: Stable Video Diffusion was shown to work with camera-motion modules, and CameraCtrl adds exact camera paths to text-to-video models. That research exists because text alone gives only rough control. Use the right word, keep it to one move per shot, and expect to make a few takes.",
+        "Two pairs are easy to confuse. Pan and tilt rotate the camera on the spot, like turning your head. Truck and pedestal move the whole camera sideways or up and down, like stepping to the side or standing up. Rotating gives a flat sweep; moving gives parallax, where near objects slide past faster than far ones."
+      ]
+    },
+    {
+      "h": "Camera movements: the full table",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Move",
+              "What it looks like on screen",
+              "Emotional effect",
+              "How to phrase it"
+            ],
+            "rows": [
+              [
+                "Static (locked-off)",
+                "Frame does not move; only the subject moves",
+                "Calm, observational, lets acting carry the shot",
+                "`static shot, locked-off camera on a tripod`"
+              ],
+              [
+                "Pan",
+                "Camera turns left or right on the spot; scene sweeps sideways",
+                "Reveals space, follows a look or a movement",
+                "`slow pan left across the harbor`"
+              ],
+              [
+                "Tilt",
+                "Camera turns up or down on the spot",
+                "Up shows scale or power; down shows a discovery",
+                "`tilt up from her shoes to her face`"
+              ],
+              [
+                "Dolly in / dolly out",
+                "Camera travels toward or away from the subject; background parallax",
+                "In builds focus and tension; out creates distance or loneliness",
+                "`slow dolly in toward the man at the desk`"
+              ],
+              [
+                "Truck (left / right)",
+                "Camera slides sideways, parallel to the scene",
+                "Smooth, observing, like walking past",
+                "`camera trucks right along the market stalls`"
+              ],
+              [
+                "Pedestal (up / down)",
+                "Camera rises or lowers straight up or down, no tilt",
+                "Gentle reveal over or under an object",
+                "`pedestal up from behind the counter to reveal the room`"
+              ],
+              [
+                "Zoom in / out",
+                "Lens changes focal length; image enlarges but no parallax",
+                "Flat, observational, sometimes jarring",
+                "`slow zoom in, camera stays in place`"
+              ],
+              [
+                "Push-in",
+                "A slow, steady dolly in, usually toward a face",
+                "Growing emotion or realization",
+                "`slow push-in on her eyes as she understands`"
+              ],
+              [
+                "Pull-back reveal",
+                "Camera moves back to show what was outside the frame",
+                "Surprise, context, isolation",
+                "`pull back to reveal he is alone on a huge empty stage`"
+              ],
+              [
+                "Orbit / arc",
+                "Camera circles around the subject, which stays centered",
+                "Importance, a heroic or dreamlike moment",
+                "`camera orbits slowly around the dancer, half circle`"
+              ],
+              [
+                "Crane / jib",
+                "Camera rises or descends on a big arc, often high above",
+                "Grand opening or ending, sense of scale",
+                "`crane shot rising up over the crowd to a wide view`"
+              ],
+              [
+                "Tracking / follow",
+                "Camera moves with a moving subject at the same distance",
+                "Momentum, being with the character",
+                "`tracking shot following her from behind as she runs`"
+              ],
+              [
+                "Handheld",
+                "Small shakes and drift, like a person holding the camera",
+                "Realism, urgency, documentary feel",
+                "`handheld camera, slight natural shake`"
+              ],
+              [
+                "Whip pan",
+                "A very fast pan with motion blur",
+                "Energy, a quick switch of attention, a transition",
+                "`fast whip pan to the door`"
+              ],
+              [
+                "Dolly zoom (vertigo effect)",
+                "Subject stays the same size while background stretches or shrinks",
+                "Shock, dizziness, the world shifting",
+                "`dolly zoom on his face, background stretches away`"
+              ],
+              [
+                "Rack focus",
+                "Focus shifts from one depth to another; camera does not move",
+                "Moves attention, links two subjects",
+                "`rack focus from the ring in the foreground to her face`"
+              ],
+              [
+                "Dutch angle",
+                "Camera rolled to one side; horizon is tilted",
+                "Unease, something is wrong",
+                "`dutch angle, horizon tilted 20 degrees`"
+              ],
+              [
+                "POV",
+                "We see what the character sees, often with hands in frame",
+                "Immersion, identification",
+                "`first-person POV, his hands on the steering wheel`"
+              ],
+              [
+                "FPV drone",
+                "Fast, low, swooping flight through spaces",
+                "Speed, thrill, a continuous journey",
+                "`FPV drone shot diving off the cliff and skimming the waves`"
+              ]
+            ]
+          }
+        },
+        "Notes on the hard ones. A zoom and a dolly in can end on the same framing, but only the dolly shows parallax, so it feels like moving through the space. A dolly zoom combines both at once in opposite directions and is difficult for models; ask for it alone, on a simple subject, and generate several takes. A Dutch angle and POV are framing choices rather than moves, but they are written in the same place in a prompt."
+      ]
+    },
+    {
+      "h": "Shot sizes",
+      "body": [
+        "Shot size says how much of the subject fills the frame. It is the first thing to fix in a prompt, because it decides what detail the model has to draw.",
+        {
+          "table": {
+            "head": [
+              "Shot size",
+              "What fills the frame",
+              "Good for"
+            ],
+            "rows": [
+              [
+                "Extreme wide / establishing",
+                "The whole location; people are tiny",
+                "Opening a scene, scale, geography"
+              ],
+              [
+                "Wide (full) shot",
+                "The whole body, head to feet, with surroundings",
+                "Movement, dance, action, costume"
+              ],
+              [
+                "Medium shot",
+                "From the waist up",
+                "Conversation, gestures, most dialogue"
+              ],
+              [
+                "Medium close-up",
+                "From the chest up",
+                "Emotion with some body language"
+              ],
+              [
+                "Close-up",
+                "The face or one object",
+                "Reaction, emotion, important props"
+              ],
+              [
+                "Extreme close-up",
+                "One detail: an eye, a fingertip, a drop",
+                "Intensity, texture, clues"
+              ],
+              [
+                "Over-the-shoulder",
+                "Behind one person, looking at another",
+                "Two-person dialogue"
+              ]
+            ]
+          }
+        },
+        "For AI video, closer shots of faces are usually more stable than wide shots of crowds, because the model has fewer small figures to keep consistent. Hands and fingers look best in close-ups with simple motion, or kept partly out of frame."
+      ]
+    },
+    {
+      "h": "Camera angles",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Angle",
+              "Camera position",
+              "Effect"
+            ],
+            "rows": [
+              [
+                "Eye level",
+                "At the subject's eye height",
+                "Neutral, honest"
+              ],
+              [
+                "Low angle",
+                "Below, looking up",
+                "Power, threat, heroism"
+              ],
+              [
+                "High angle",
+                "Above, looking down",
+                "Weakness, vulnerability, overview"
+              ],
+              [
+                "Bird's-eye / top-down",
+                "Straight down from above",
+                "Pattern, map-like, detached"
+              ],
+              [
+                "Worm's-eye",
+                "At ground level, looking up steeply",
+                "Huge scale, drama"
+              ],
+              [
+                "Dutch (canted)",
+                "Rolled to one side",
+                "Tension, disorientation"
+              ]
+            ]
+          }
+        },
+        "Angles combine with moves. 'Low angle, slow tracking shot' is a clear instruction; the angle fixes the position and the move fixes the path."
+      ]
+    },
+    {
+      "h": "How to put a camera move into a prompt",
+      "body": [
+        {
+          "ol": [
+            "Start with the camera line: shot size, angle, move, speed. Example: `Medium close-up, eye level, slow push-in.`",
+            "Name the target of the move: push in on what, orbit around whom, pan from where to where.",
+            "Give the move a speed and an end: 'slowly', 'over the full clip', 'stops on her face'.",
+            "Describe the subject's action separately, and keep it small if the camera move is big.",
+            "Add lens words only if they matter: `shallow depth of field`, `wide-angle lens`, `telephoto compression`."
+          ]
+        },
+        {
+          "code": "Wide shot, low angle, slow crane up.\nA lighthouse on a rocky coast at sunset; waves break on the rocks below.\nThe camera rises from the rocks to above the lighthouse lamp, ending on a\nwide view of the sea. Warm orange light, long shadows, light sea mist.\nAudio: waves, wind, seagulls.",
+          "lang": "text"
+        },
+        "If you work from a single photo, the move can also be made without a video model. For example, cv.cm's `v` tool estimates depth from a photo and renders a real 3D push, pull, orbit, pan or rise. The camera moves; the subject stays still. That is a quick way to see what each move looks like on your own picture."
+      ]
+    },
+    {
+      "h": "What models get wrong",
+      "body": [
+        {
+          "ul": [
+            "Combined moves: 'orbit while craning up and zooming' usually gives a warped or wobbling path. Use one move.",
+            "Speed: 'fast' moves can blur or distort faces. Fast moves work better on landscapes and empty spaces.",
+            "Zoom vs dolly: many models treat both as 'get closer'. If you need parallax, write 'camera moves forward' as well as 'dolly in'.",
+            "Full orbits: a 360-degree orbit asks the model to invent the back of everything. A half circle or a short arc is safer.",
+            "Rack focus and dolly zoom: these are optical effects, and results vary from one model to another at the time of writing. Test them before planning a sequence around them.",
+            "Handheld: some models add too much shake. Say 'slight' or 'subtle'."
+          ]
+        },
+        {
+          "note": "If a tool offers camera controls as sliders or presets, use them instead of text. A numeric control is followed more exactly than a word."
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "What is the difference between a pan and a truck shot?",
+      "a": "A pan turns the camera left or right from one fixed spot. A truck moves the whole camera sideways, so near and far objects slide past at different speeds."
+    },
+    {
+      "q": "What is the difference between zoom and dolly?",
+      "a": "A zoom changes the lens and enlarges the image without moving the camera, so there is no parallax. A dolly moves the camera through space, so the background shifts relative to the subject."
+    },
+    {
+      "q": "What is a dolly zoom used for?",
+      "a": "It keeps the subject the same size while the background seems to stretch or shrink, which shows shock or a sudden realization. It is also called the vertigo effect."
+    },
+    {
+      "q": "What camera movement makes a scene feel tense?",
+      "a": "A slow push-in toward a face builds tension, and handheld shake or a Dutch angle adds unease. Keep the subject's action small so the move carries the feeling."
+    },
+    {
+      "q": "What does FPV mean in drone video?",
+      "a": "FPV means first-person view: the pilot flies with goggles, so the footage is fast, low and swooping. In prompts, 'FPV drone shot' asks for that style, unlike a smooth, high aerial shot."
+    }
+  ]
+}

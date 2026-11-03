@@ -1,0 +1,177 @@
+{
+  "title": "How AI Background Removal Works: Masks, Mattes, PNG — cv.cm",
+  "description": "How AI background removal works: segmentation vs matting, soft alpha masks, why hair, fur and glass go wrong, and why the cut-out must be saved as PNG.",
+  "h1": "How does AI background removal work?",
+  "answer": "An AI background remover runs a segmentation network that scores every pixel from 0 (background) to 1 (subject). That score map becomes the alpha channel of the image: opaque where the subject is, transparent elsewhere, and partly transparent along soft edges such as hair. The result must be saved in a format with alpha, usually PNG, or the background comes back.",
+  "sections": [
+    {
+      "h": "The short version: a mask becomes an alpha channel",
+      "body": [
+        "A photo has three color channels: red, green and blue. A cut-out needs a fourth channel, called alpha, that says how opaque each pixel is. Background removal is the job of filling in that alpha channel automatically.",
+        "The model never paints a new background and never moves pixels. It only answers one question for every pixel: how much of this pixel belongs to the subject? The color values of the photo stay as they were. When you open the result over a checkerboard or a new background, the alpha values decide what shows through.",
+        {
+          "ol": [
+            "The photo is resized to the model's working size. Many models work on a fixed square; BiRefNet, for example, was trained and tested at 1024 × 1024.",
+            "The network outputs one number per pixel. A final sigmoid step squeezes it into the range 0 to 1.",
+            "The score map is scaled back up to the size of the original photo.",
+            "The scores become the alpha channel (0 to 255 in an 8-bit image), and the file is encoded with alpha."
+          ]
+        },
+        "Because step 3 enlarges a mask that was computed at a smaller size, fine edges on a very large photo are always an estimate. This is one reason why a 6000-pixel product shot can look crisp in the middle and slightly soft at the outline."
+      ]
+    },
+    {
+      "h": "Segmentation vs matting",
+      "body": [
+        "Two research fields meet in background removal, and the difference explains most edge problems.",
+        {
+          "table": {
+            "head": [
+              "",
+              "Segmentation",
+              "Matting"
+            ],
+            "rows": [
+              [
+                "Question it answers",
+                "Is this pixel subject or background?",
+                "What fraction of this pixel is subject?"
+              ],
+              [
+                "Typical output",
+                "A mask that is mostly 0 or 1",
+                "A continuous alpha matte from 0 to 1"
+              ],
+              [
+                "Extra input",
+                "Usually none",
+                "Classic methods need a trimap: sure subject, sure background, unknown band"
+              ],
+              [
+                "Good at",
+                "Whole objects, products, clean outlines",
+                "Hair, fur, smoke, motion blur, veils"
+              ],
+              [
+                "Typical failure",
+                "Hard, cut-paper edges",
+                "Slow; needs a good first guess of the shape"
+              ]
+            ]
+          }
+        },
+        "Segmentation decides where the object is. Matting decides how the edge blends. A pixel at the tip of a strand of hair may be 30 percent hair and 70 percent sky, so the right alpha is about 0.3, not 0 or 1. The classic deep-learning matting method, Deep Image Matting, takes the image plus a hand-drawn trimap and predicts that fractional value inside the unknown band.",
+        "One-click removers skip the trimap. Models in the dichotomous image segmentation family, such as IS-Net and BiRefNet, are trained on high-resolution images with very detailed outlines, so they can follow thin structures without user input. Their output is still a segmentation score, not a true physical matte, but because the score is continuous it gives soft edges that look close to matting in most photos.",
+        {
+          "note": "A useful mental model: the score map says how confident the model is that a pixel is subject. Along an edge, confidence and true coverage are often similar, but they are not the same thing. That gap is where halos and missing hair come from."
+        }
+      ]
+    },
+    {
+      "h": "Why the output must be PNG (or WebP)",
+      "body": [
+        "JPEG has no alpha channel. If you save a cut-out as JPEG, every transparent pixel has to get some color, and tools fill it with white or black. The background you just removed is replaced by a solid one.",
+        {
+          "table": {
+            "head": [
+              "Format",
+              "Alpha channel",
+              "Compression",
+              "Use it for"
+            ],
+            "rows": [
+              [
+                "PNG",
+                "Yes, 8 or 16 bits",
+                "Lossless",
+                "Cut-outs to edit further, print, design files"
+              ],
+              [
+                "WebP",
+                "Yes",
+                "Lossy or lossless",
+                "Smaller cut-outs for the web"
+              ],
+              [
+                "JPEG",
+                "No",
+                "Lossy",
+                "Final images with a solid backdrop already applied"
+              ],
+              [
+                "AVIF",
+                "Yes",
+                "Lossy or lossless",
+                "Web delivery where supported"
+              ]
+            ]
+          }
+        },
+        "The PNG specification stores alpha unassociated (not premultiplied): the color of a half-transparent pixel is kept at full strength, and alpha is kept separately. That makes PNG a safe master copy. You can place it on any background later without dark fringes caused by a previous blend.",
+        "If you need a JPEG for a marketplace that demands a white background, apply the white backdrop in the tool first, then export JPEG. Keep the PNG as the master."
+      ]
+    },
+    {
+      "h": "Hard cases: hair, fur, glass, shadows",
+      "body": [
+        {
+          "ul": [
+            "Hair and fur. Single strands are thinner than one pixel at the model's working size, so they are partly lost before the model even sees them. Expect clumps of hair to survive and fly-away strands to fade. Shooting against a plain, contrasting wall helps more than any setting.",
+            "Similar colors. A black dog on a black sofa, or a white shirt on a white wall, gives the network almost no edge to find. It falls back on shape knowledge and may cut into the subject.",
+            "Glass, water and veils. A wine glass is mostly the background seen through it. A segmentation model must choose: keep the glass (and the old background inside it) or drop it. Neither is physically right; real transparency would need a matte plus the true glass color, which one photo cannot give.",
+            "Shadows and reflections. A product's contact shadow belongs to the floor, so most removers delete it, and the product then looks like it floats. Many shop photos look better with a soft shadow added back later.",
+            "Holes. The gap between an arm and the body, or inside a handle or a bicycle wheel, is background. Good high-resolution models catch these; weaker ones fill them in.",
+            "Color spill. Green or colored light bouncing onto the subject's edges stays in the RGB values after the background is gone. On a new background it shows as a colored rim."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "How to get a cleaner cut-out",
+      "body": [
+        "Most quality comes from the photo, not from the tool. A short checklist:",
+        {
+          "ol": [
+            "Shoot with clear contrast between the subject and the background, in color and in brightness.",
+            "Keep the subject sharp. Motion blur and shallow focus at the edges turn into uncertain alpha.",
+            "Fill the frame. A subject that covers a large part of the image keeps more detail after resizing to the model's input size.",
+            "Check the result over a dark and a light background. Halos that hide on white show up on black, and the other way round.",
+            "Fix stubborn areas by hand in an editor with a soft eraser or a mask brush, working on the PNG master.",
+            "For hair portraits that must be perfect, use a matting tool with a trimap or a refine-edge brush after the automatic cut."
+          ]
+        },
+        "For the clicks in a specific tool, see the step-by-step tutorial on removing a photo background. For example, cv.cm's remove-background tool runs BiRefNet in the browser, so the photo is not uploaded, and lets you export a transparent PNG or place the subject on white, a color or a blurred copy of the original."
+      ]
+    },
+    {
+      "h": "Limits and honest expectations",
+      "body": [
+        "Automatic removal is now good enough for most product listings, profile photos and slide decks. It is not a replacement for careful masking in advertising or film work. The model only knows what it learned from its training data: unusual objects, overlapping people, or a subject that is unclear (which of three people is the subject?) can produce surprising masks.",
+        "The model also has no idea what you meant to keep. If you want only the cup and not the hand holding it, an automatic cut will usually keep both, because the training data treated the hand and cup as one foreground. Crop first, or erase the extra part afterwards.",
+        "Finally, removing a background does not remove other information. EXIF data such as GPS location may still be inside the original file. If you share the cut-out publicly, export a fresh file and strip metadata if needed."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Why does my cut-out have a white or gray outline?",
+      "a": "The edge pixels still hold some of the old background color, and the alpha there is partly opaque. Check the cut-out over a dark background, then shrink or soften the edge slightly in an editor, or reshoot against a background closer in color to the new one."
+    },
+    {
+      "q": "Why is the background black or white after I saved the image?",
+      "a": "The file was saved in a format without an alpha channel, usually JPEG. Save as PNG or WebP to keep transparency."
+    },
+    {
+      "q": "Can AI remove the background from a transparent glass or bottle?",
+      "a": "Only roughly. A single photo does not tell the model how transparent the glass is, so it either keeps the glass with the old background visible inside or removes too much. For catalog work, shoot glass on a plain light background and edit by hand."
+    },
+    {
+      "q": "Is AI background removal the same as a green screen?",
+      "a": "No. A green screen (chroma key) removes one known color, which is reliable when lighting is even. AI removal has no known color and must recognize the subject, so it works on any background but is less predictable at fine edges."
+    },
+    {
+      "q": "Does the image lose quality when the background is removed?",
+      "a": "The subject's pixels keep their original colors if you export PNG. Only the alpha changes. Quality loss happens at edges, where the mask was computed at a smaller size and scaled up, and if you export to a lossy format."
+    }
+  ]
+}

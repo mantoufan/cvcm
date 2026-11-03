@@ -10,7 +10,7 @@ import {
 import { isMarketId, type MarketId } from "./markets";
 import { isQuizId, type QuizId } from "./quiz";
 import { DATASET_SEGMENT, isDatasetId, type DatasetId } from "./datasets";
-import { CODE_SEGMENT, KB_SEGMENT, isKbId, kbArticleOf, kbShelfOf, kbShelfOfPage, type KbId, type KbPage, type KbShelf } from "./kb";
+import { KB_SHELVES, isKbId, kbArticleOf, kbShelfOf, kbShelfOfPage, type KbHub, type KbId, type KbPage, type KbShelf } from "./kb";
 import { REF_SEGMENT, isRefId, type RefId } from "./ref";
 import { localePath, parseLocale, type Locale } from "./locale";
 
@@ -404,16 +404,16 @@ export type GamesPath = {
   game: GameId | null;
 };
 
-/** A kb route: an article, null for the knowledge hub, or "code" for the coding hub. */
-export type KbArticlePath = KbId | "code" | null;
+/** A kb route: an article, null for the knowledge hub, "code" for the coding hub or "ai" for the AI hub. */
+export type KbArticlePath = KbId | Exclude<KbHub, "hub"> | null;
 
 function kbShelfOfSegment(segment: string | undefined): KbShelf | null {
-  return segment === KB_SEGMENT ? "knowledge" : segment === CODE_SEGMENT ? "code" : null;
+  return (Object.keys(KB_SHELVES) as KbShelf[]).find((shelf) => KB_SHELVES[shelf].segment === segment) ?? null;
 }
 
 /** The article under a shelf segment: its hub when empty, undefined when the id is not on that shelf. */
 function parseKbArticle(shelf: KbShelf, slug: string | undefined): KbArticlePath | undefined {
-  if (!slug) return shelf === "code" ? "code" : null;
+  if (!slug) return shelf === "knowledge" ? null : KB_SHELVES[shelf].hub as Exclude<KbHub, "hub">;
   return isKbId(slug) && kbShelfOf(slug) === shelf ? slug : undefined;
 }
 
@@ -678,9 +678,9 @@ export function learnHref(locale: Locale, tutorial: TutorialId | null = null): s
   return tutorial ? `${base}/${tutorial}/` : `${base}/`;
 }
 
-/** Kb articles sit under the tutorials: `/{locale}/learn/knowledge/{id}/` and `/{locale}/learn/code/{id}/`; null or "hub" is the knowledge hub, "code" the coding hub. */
+/** Kb articles sit under the tutorials: `/{locale}/learn/{knowledge,code,ai}/{id}/`; null or "hub" is the knowledge hub, "code" the coding hub, "ai" the AI hub. */
 export function kbHref(locale: Locale, page: KbPage = null): string {
-  const base = `/${localePath(locale)}/learn/${kbShelfOfPage(page) === "code" ? CODE_SEGMENT : KB_SEGMENT}`;
+  const base = `/${localePath(locale)}/learn/${KB_SHELVES[kbShelfOfPage(page)].segment}`;
   const article = kbArticleOf(page);
   return article ? `${base}/${article}/` : `${base}/`;
 }

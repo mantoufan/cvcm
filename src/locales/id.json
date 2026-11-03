@@ -8777,6 +8777,149 @@
     "bit-manipulation": {
       "name": "Bit manipulation",
       "blurb": "Operator bitwise, trik satu bit, penghitungan bit, dan bitmask dengan contoh Python"
+    },
+    "what-is-generative-ai": {
+      "name": "Apa itu generative AI?",
+      "blurb": "Cara model AI belajar dari data untuk membuat teks, gambar, video, dan audio, serta di mana kelemahannya"
+    },
+    "how-llms-work": {
+      "name": "Cara kerja LLM",
+      "blurb": "Ikuti satu prompt lewat token, attention, dan prediksi token berikutnya sampai jadi jawaban"
+    },
+    "tokens-and-context-window": {
+      "name": "Token dan context window",
+      "blurb": "Hitungan token nyata dalam enam bahasa, apa yang memenuhi context window, dan cara menghemat ruang"
+    },
+    "ai-hallucination": {
+      "name": "Halusinasi AI",
+      "blurb": "Mengapa AI mengarang fakta dan sitasi, prompt yang menguranginya, dan cara memeriksa jawaban"
+    },
+    "how-diffusion-models-work": {
+      "name": "Cara kerja model difusi",
+      "blurb": "Bagaimana noise menjadi gambar, dan apa yang diubah oleh steps, seed, dan CFG scale"
+    },
+    "what-are-ai-agents": {
+      "name": "Apa itu AI agent?",
+      "blurb": "Bagaimana AI agent memanggil tool dalam loop, jejak nyata, MCP, dan risiko yang perlu diantisipasi"
+    },
+    "ai-glossary": {
+      "name": "Glosarium AI",
+      "blurb": "60 istilah generative AI dengan bahasa sederhana, dari token dan LoRA hingga CFG, C2PA, dan deepfake"
+    },
+    "prompt-engineering-basics": {
+      "name": "Dasar prompt engineering",
+      "blurb": "Enam bagian prompt yang baik, tulis ulang sebelum dan sesudah, contoh, dan pengujian"
+    },
+    "image-prompts": {
+      "name": "Cara menulis prompt gambar",
+      "blurb": "Rumus prompt, contoh lemah jadi kuat, tabel kata kunci, dan negative prompt"
+    },
+    "video-prompts": {
+      "name": "Cara menulis prompt video",
+      "blurb": "Struktur prompt 7 bagian, satu aksi per shot, timing per beat, dan contoh tulis ulang lengkap"
+    },
+    "camera-movement-terms": {
+      "name": "Istilah gerakan kamera",
+      "blurb": "Dolly, truck, orbit, crane, dolly zoom dan lainnya: tampilannya dan cara menulis prompt-nya"
+    },
+    "storyboard-prompts": {
+      "name": "Prompt storyboard",
+      "blurb": "Ubah naskah jadi shot dan satu prompt per shot, dengan contoh 15 detik."
+    },
+    "text-to-image": {
+      "name": "Cara kerja text-to-image AI",
+      "blurb": "Dari prompt ke gambar: steps, guidance, seed, ukuran, dan alur kerja dari draf sampai final"
+    },
+    "image-to-image": {
+      "name": "Cara kerja image-to-image AI",
+      "blurb": "Strength, gambar referensi, style transfer, inpainting, serta kontrol depth, pose, dan tepi"
+    },
+    "consistent-ai-characters": {
+      "name": "Karakter AI yang konsisten",
+      "blurb": "Character sheet, referensi, seed, deskripsi tetap, LoRA, dan checklist kontinuitas"
+    },
+    "how-ai-upscaling-works": {
+      "name": "Cara kerja upscale AI",
+      "blurb": "Mengapa bicubic buram, bagaimana model GAN dan Real-ESRGAN menambah detail, dan kapan gagal"
+    },
+    "how-ai-background-removal-works": {
+      "name": "Cara kerja hapus background dengan AI",
+      "blurb": "Mask vs alpha matte, kenapa rambut dan kaca gagal, dan kenapa hasil potongan harus PNG"
+    },
+    "what-is-a-depth-map": {
+      "name": "Apa itu depth map?",
+      "blurb": "Cara AI menebak kedalaman dari satu foto, arti terang dan gelap, serta pemakaian untuk 3D dan ControlNet"
+    },
+    "text-to-video": {
+      "name": "Cara kerja text-to-video",
+      "blurb": "Dari prompt jadi klip, pengaturan yang penting, dan rencana shot 15 detik"
+    },
+    "image-to-video": {
+      "name": "Cara kerja image-to-video",
+      "blurb": "Pilih gambar awal, tulis prompt khusus gerakan, dan kapan parallax 2.5D sudah cukup"
+    },
+    "first-last-frame-video": {
+      "name": "Video frame awal dan akhir",
+      "blurb": "Interpolasi keyframe, cara mendesain kedua frame, dan transisi yang berhasil atau gagal"
+    },
+    "multi-shot-ai-video": {
+      "name": "Video AI multi-shot",
+      "blurb": "Jaga wajah, pakaian, tempat, dan cahaya tetap konsisten di banyak shot video AI."
+    },
+    "ai-short-drama-workflow": {
+      "name": "Alur kerja drama pendek AI",
+      "blurb": "Dari hook dan naskah ke episode 9:16 berlabel, dengan shot list 20 detik."
+    },
+    "how-speech-to-text-works": {
+      "name": "Cara kerja speech-to-text",
+      "blurb": "Dari spektrogram ke kata, cara Whisper belajar, word error rate, dan subtitle yang rapi"
+    },
+    "text-to-speech": {
+      "name": "Cara kerja text-to-speech",
+      "blurb": "Neural TTS vs suara browser, SSML untuk jeda dan nama, dan persetujuan kloning suara"
+    },
+    "run-ai-in-the-browser": {
+      "name": "Menjalankan AI di browser",
+      "blurb": "WebGPU vs WASM, ONNX Runtime Web, Transformers.js, ukuran model, cache, dan batasan ponsel"
+    },
+    "call-an-llm-api": {
+      "name": "Cara memanggil API LLM",
+      "blurb": "Request API yang berfungsi di curl, Python, dan JS, plus streaming, JSON, retry, dan biaya"
+    },
+    "ai-copyright-and-commercial-use": {
+      "name": "Hak cipta AI dan pemakaian komersial",
+      "blurb": "Siapa pemilik keluaran AI di AS, Tiongkok, dan UE, dan apa yang perlu diperiksa sebelum menjualnya."
+    },
+    "labeling-ai-content": {
+      "name": "Cara memberi label konten AI",
+      "blurb": "Label eksplisit dan implisit menurut aturan Tiongkok, EU AI Act, dan kebijakan platform."
+    },
+    "c2pa-and-ai-watermarks": {
+      "name": "C2PA dan watermark AI",
+      "blurb": "Content Credentials, SynthID, dan label IPTC, kenapa metadata hilang, dan batas deteksi"
+    },
+    "ai": {
+      "label": "Tutorial AI",
+      "lead": "Panduan AI generatif dengan sumber jelas: cara kerja LLM dan model difusi, menulis prompt gambar dan video, alur kerja gambar, video, dan audio AI, menjalankan model di browser, serta hak cipta dan pelabelan AI.",
+      "all": "Semua tutorial AI",
+      "groups": {
+        "basics": "Dasar-dasar AI",
+        "prompts": "Menulis prompt",
+        "image": "Gambar AI",
+        "video": "Video AI",
+        "audio": "Audio AI",
+        "dev": "AI untuk developer",
+        "trust": "Hak cipta dan keamanan"
+      },
+      "blurbs": {
+        "basics": "Cara kerja LLM dan model difusi, token, halusinasi, agen, dan glosarium",
+        "prompts": "Rumus prompt untuk teks, gambar, dan video, gerakan kamera, dan storyboard",
+        "image": "Text to image, image to image, karakter konsisten, upscale, dan cut-out",
+        "video": "Text to video, image to video, keyframe, kontinuitas multi-shot, dan drama pendek AI",
+        "audio": "Cara kerja speech to text dan text to speech, serta batasannya",
+        "dev": "Menjalankan model di browser dan memanggil API LLM",
+        "trust": "Siapa pemilik hasil AI, aturan pelabelan, C2PA, dan watermark AI"
+      }
     }
   },
   "dice": {

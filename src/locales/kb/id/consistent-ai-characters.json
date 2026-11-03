@@ -1,0 +1,204 @@
+{
+  "title": "Cara Membuat Karakter AI Konsisten di Banyak Gambar — cv.cm",
+  "description": "Jaga karakter AI tetap sama di banyak gambar dan shot: character sheet, gambar referensi, seed, deskripsi tetap, pelatihan LoRA, dan checklist kontinuitas.",
+  "h1": "Bagaimana cara menjaga karakter AI tetap konsisten di banyak gambar?",
+  "answer": "Tulis deskripsi karakter yang tetap dan pakai ulang persis sama, lalu buat satu character sheet yang jelas (depan, samping, belakang, ekspresi) dan masukkan sebagai gambar referensi di setiap generate baru. Seed hanya membantu dalam satu setelan yang sama. Untuk proyek panjang, latih LoRA kecil dari kumpulan gambar yang bervariasi dan sudah disetujui. Periksa setiap gambar baru dengan checklist kontinuitas sebelum dipakai.",
+  "sections": [
+    {
+      "h": "Mengapa karakter bisa berubah-ubah",
+      "body": [
+        "Model gambar tidak punya ingatan antarproses. Setiap generate dimulai dari noise acak baru dan membaca promptmu dari nol. Kata seperti `a young woman with short black hair` menggambarkan jutaan kemungkinan wajah, dan model memilih yang berbeda setiap kali. Perubahan kecil pada kata, pose, atau sudut kamera menggeser hasilnya lebih jauh.",
+        "Jadi konsistensi tidak datang dari model yang mengingat. Konsistensi datang dari kamu yang memberi model informasi yang sama setiap kali, dalam sebanyak mungkin bentuk yang diterima alatnya: kata-kata yang sama, gambar referensi yang sama, dan untuk proyek besar, add-on kecil hasil pelatihan yang sudah mempelajari karakternya. Metode di bawah ini diurutkan dari yang termurah sampai yang paling banyak usahanya. Kebanyakan proyek menggabungkan dua atau tiga."
+      ]
+    },
+    {
+      "h": "Langkah 1: tulis blok karakter yang tetap",
+      "body": [
+        "Tulis deskripsi sekali, simpan di file teks, dan tempel tanpa perubahan di setiap prompt. Urutkan detail dari yang paling terlihat ke yang paling tidak, dan hanya masukkan hal yang bisa dilihat penonton.",
+        {
+          "code": "MEI (character block, paste unchanged)\nadult woman in her late 20s, East Asian, oval face, straight black hair\nin a chin-length bob with blunt bangs, dark brown eyes, small mole under\nthe left eye, slim build, wearing a mustard-yellow raincoat over a white\nT-shirt, dark blue jeans, white sneakers, round silver earrings",
+          "lang": "text"
+        },
+        "Lalu susun setiap prompt sebagai blok karakter ditambah adegan. Hanya adegannya yang berubah:",
+        {
+          "code": "[MEI block], standing at a bus stop in the rain, holding a clear umbrella,\nnight, neon reflections on the wet road, medium shot, 35mm photo",
+          "lang": "text"
+        },
+        {
+          "ul": [
+            "Pilih jangkar yang khas: satu warna tidak biasa, satu aksesori, satu tanda di wajah. `Mustard raincoat` dan `mole under the left eye` lebih mudah diperiksa dan direproduksi daripada `pretty`.",
+            "Hindari kata yang maknanya berubah antarproses, seperti `stylish outfit` atau `cute`.",
+            "Taruh kata gaya di luar blok, supaya kamu bisa mengubah adegan dari foto ke ilustrasi tanpa menyunting karakternya.",
+            "Beri karakter nama di catatanmu, tetapi jangan mengandalkan nama itu di prompt; nama rekaan tidak berarti apa-apa bagi model kecuali kamu melatihnya."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Langkah 2: buat character sheet",
+      "body": [
+        "Character sheet adalah satu gambar, atau satu set kecil, yang menunjukkan karakter dengan jelas dari beberapa sudut di latar polos. Ini menjadi referensi yang kamu kembali ke sana untuk setiap shot berikutnya.",
+        {
+          "ol": [
+            "Buat banyak kandidat dari blok karakter di latar abu-abu terang polos, cahaya netral, seluruh tubuh.",
+            "Pilih satu wajah yang paling kamu suka. Ini sekarang wajah kanonik; jangan terus mencari yang lain.",
+            "Buat tampilan turnaround karakter itu: depan, tiga perempat, samping, dan belakang. Pakai gambar terpilih sebagai referensi, atau kontrol pose untuk tiap sudut.",
+            "Tambahkan deretan ekspresi (netral, senyum, kaget, marah) dan close-up wajah serta aksesori.",
+            "Perbaiki kesalahan dengan inpainting, lalu simpan sheet pada resolusi penuh dengan blok karakter tertulis di sebelahnya."
+          ]
+        },
+        {
+          "code": "character turnaround sheet of [MEI block], front view, three-quarter view,\nside view and back view, full body, standing in a neutral pose,\nplain light gray background, even soft studio light, clean illustration",
+          "lang": "text"
+        },
+        "Jaga sheet tetap bersih. Latar yang ramai atau cahaya dramatis pada referensi akan ikut tersalin ke gambar-gambar berikutnya bersama wajahnya."
+      ]
+    },
+    {
+      "h": "Langkah 3: pakai gambar referensi di setiap generate",
+      "body": [
+        "Kebanyakan alat saat ini menerima setidaknya satu gambar sebagai referensi. Alat hosted menyebutnya character reference, subject reference, atau sekadar gambar yang diunggah; alur kerja open-source memakai adapter seperti IP-Adapter, yang mengubah gambar referensi menjadi fitur yang memandu model bersama teks. Berikan model close-up wajah dan satu tampilan seluruh tubuh dari sheet, lalu gambarkan adegan baru dalam teks.",
+        {
+          "ul": [
+            "Pakai potongan yang sesuai shot: referensi wajah untuk close-up, referensi seluruh tubuh untuk wide shot.",
+            "Turunkan bobot referensi kalau setiap gambar menyalin pose dan latar referensi; naikkan kalau wajah bergeser.",
+            "Jangan merantai referensi dari gambar hasil generate terakhir. Kesalahan menumpuk. Selalu kembali ke sheet yang sudah disetujui.",
+            "Untuk pose yang harus persis sama, tambahkan juga gambar kontrol pose. Lihat panduan image-to-image."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Seed: berguna, tetapi terbatas",
+      "body": [
+        "Seed mengunci noise awal yang acak. Dengan model, pengaturan, dan prompt yang sama, seed yang sama menghasilkan gambar yang hampir identik, sehingga seed sangat bagus untuk membuat variasi kecil dari satu shot: ubah ekspresi atau pencahayaan dan pertahankan yang lain.",
+        "Seed tidak menjaga karakter di adegan yang berbeda. Ubah pose, latar, atau framing, dan seed yang sama menghasilkan tata letak yang berbeda dan sering kali wajah yang berbeda. Seed juga berhenti berfungsi saat kamu mengganti model, versi alat, perangkat keras, atau sampler. Anggap seed sebagai cara mengulang satu gambar, bukan sebagai identitas karakter."
+      ]
+    },
+    {
+      "h": "Langkah 4 untuk proyek panjang: LoRA dan fine-tuning",
+      "body": [
+        "Untuk komik, serial, atau maskot merek yang muncul di ratusan gambar, pilihan terkuat adalah mengajari model karakternya. Tiga metode umum di alat open-source:",
+        {
+          "table": {
+            "head": [
+              "Metode",
+              "Yang dilatih",
+              "Yang dibutuhkan",
+              "Catatan"
+            ],
+            "rows": [
+              [
+                "Textual inversion",
+                "Hanya word embedding baru; model tetap dibekukan",
+                "Beberapa gambar, sering tiga sampai lima",
+                "File kecil, identitas lebih lemah; bagus untuk gaya atau objek"
+              ],
+              [
+                "DreamBooth",
+                "Modelnya sendiri, dihubungkan ke kata pengenal yang jarang dipakai",
+                "Segelintir gambar subjek",
+                "Identitas kuat; file besar; bisa overfit dan melupakan hal lain"
+              ],
+              [
+                "LoRA",
+                "Matriks add-on low-rank kecil; model dasar tetap dibekukan",
+                "Umumnya 15 sampai 30 gambar yang bervariasi",
+                "File kecil, mudah dinaikkan atau diturunkan pengaruhnya; pilihan paling populer"
+              ]
+            ]
+          }
+        },
+        "Data pelatihan lebih penting daripada pengaturan. Pakai gambar karakter yang sama dari sheet dan shot yang sudah disetujui, dengan sudut, ekspresi, cahaya, dan latar yang bervariasi, dan beri caption pada tiap gambar. Kalau semua gambar pelatihan punya latar atau pose yang sama, LoRA ikut mempelajarinya. Layanan hosted yang menawarkan karakter kustom melakukan hal serupa di balik layar.",
+        {
+          "note": "Melatih model dengan wajah orang sungguhan, atau karakter milik seniman lain, bisa melanggar aturan privasi, hak atas rupa, atau hak cipta tergantung negara dan platformnya. Gunakan karakter yang kamu buat sendiri atau yang kamu punya izinnya."
+        }
+      ]
+    },
+    {
+      "h": "Checklist kontinuitas",
+      "body": [
+        "Sebelum gambar baru masuk ke proyek, bandingkan berdampingan dengan character sheet. Perbaiki atau generate ulang apa pun yang tidak lolos.",
+        {
+          "table": {
+            "head": [
+              "Periksa",
+              "Yang dibandingkan",
+              "Kegagalan umum"
+            ],
+            "rows": [
+              [
+                "Bentuk wajah",
+                "Rahang, bentuk dan jarak mata, hidung",
+                "Wajah jadi lebih bulat atau lebih generik"
+              ],
+              [
+                "Rambut",
+                "Panjang, poni, warna, belahan",
+                "Poni hilang; panjang berubah"
+              ],
+              [
+                "Tanda khas",
+                "Tahi lalat, bekas luka, bintik, tato dan sisi letaknya",
+                "Tanda pindah ke sisi lain atau hilang"
+              ],
+              [
+                "Mata",
+                "Warna dan bentuk",
+                "Warna mata bergeser di bawah cahaya berwarna"
+              ],
+              [
+                "Pakaian",
+                "Tiap busana, warna, logo, lapisan",
+                "Jas hujan jadi jaket; warna tertukar"
+              ],
+              [
+                "Aksesori",
+                "Anting, kacamata, tas, jam tangan",
+                "Aksesori hilang atau di tangan yang salah"
+              ],
+              [
+                "Proporsi",
+                "Tinggi relatif terhadap orang lain dan properti",
+                "Karakter membesar atau mengecil antarshot"
+              ],
+              [
+                "Tangan",
+                "Jumlah jari dan apa yang dipegang tiap tangan",
+                "Properti berpindah tangan antarshot"
+              ],
+              [
+                "Gaya",
+                "Medium, tebal garis, color grade",
+                "Foto nyasar ke dalam serial ilustrasi"
+              ]
+            ]
+          }
+        },
+        "Simpan log sederhana untuk setiap shot: prompt, seed, referensi yang dipakai, model, dan perbaikan yang dilakukan. Ketika karakter bergeser di tengah proyek, log menunjukkan perubahan mana yang menyebabkannya. Untuk video, aturan yang sama berlaku dari shot ke shot; panduan video multi-shot menjelaskan cara membawa karakter melewati gerakan."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Bisakah menjaga karakter tetap sama hanya dengan memakai seed yang sama?",
+      "a": "Hanya untuk gambar yang sangat mirip. Pose, latar, atau framing baru mengubah hasil meski seed sama, jadi gabungkan deskripsi tetap dengan gambar referensi."
+    },
+    {
+      "q": "Berapa gambar yang dibutuhkan untuk melatih LoRA karakter?",
+      "a": "Banyak kreator memakai sekitar 15 sampai 30 gambar yang bagus dan bervariasi. Kualitas dan variasi lebih penting daripada jumlah, dan setiap gambar harus menampilkan desain yang sama dan sudah disetujui."
+    },
+    {
+      "q": "Mengapa pakaian karakter saya terus berubah?",
+      "a": "Pakaiannya dideskripsikan terlalu longgar atau deskripsinya berubah antarprompt. Sebut tiap busana beserta warnanya, jaga kata-katanya identik, dan sertakan pakaian itu dalam gambar referensi."
+    },
+    {
+      "q": "Apakah legal membuat karakter AI konsisten dari orang sungguhan?",
+      "a": "Tergantung tempatmu dan cara memakainya. Banyak negara melindungi rupa seseorang dan mensyaratkan persetujuan, dan banyak platform melarangnya. Ini informasi umum, bukan nasihat hukum."
+    },
+    {
+      "q": "Apakah referensi karakter berfungsi di berbagai alat AI?",
+      "a": "Metodenya berfungsi, tetapi hasilnya berbeda. Setiap alat membaca referensi dengan caranya sendiri, jadi uji sheet-mu di alat baru dan sesuaikan bobot referensi sebelum memulai proyek."
+    }
+  ]
+}

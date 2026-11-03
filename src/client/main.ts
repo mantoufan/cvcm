@@ -34,7 +34,7 @@ import { legalStaticHtml } from "../shared/legal";
 import type { MarketId } from "../shared/markets";
 import { QUIZZES, type QuizId } from "../shared/quiz";
 import { DATASETS, type DatasetId } from "../shared/datasets";
-import { KNOWLEDGE_ARTICLES, isKbId, kbArticleOf, kbGroupsOf, type KbPage } from "../shared/kb";
+import { KB_SHELVES, KNOWLEDGE_ARTICLES, isKbId, kbArticleOf, kbGroupsOf, kbHubOfNav, type KbPage } from "../shared/kb";
 import { isRefId, type RefId, type RefPage } from "../shared/ref";
 import { BRANDED_TOOLS, hreflangAlternates, pageCanonical, pageDescription, pageTitle } from "../shared/seo";
 import { HREFLANG } from "../shared/sitemap";
@@ -43,6 +43,9 @@ import { TOOL_LOADERS } from "./tools";
 import { analyticsActive, gateAnalytics, trackPageView } from "./analytics";
 import { isTrackedPath } from "../shared/analytics";
 import "./styles.css";
+
+/** Links whose hover prefetches the kb pack: article links and every shelf's hub links. */
+const KB_NAV_SELECTOR = ['a[data-nav^="kb-"]', ...Object.values(KB_SHELVES).map((shelf) => `a[data-nav="${shelf.nav}"]`)].join(", ");
 
 function requireApp(): HTMLElement {
   const el = document.getElementById("app");
@@ -70,7 +73,7 @@ let legalPage: LegalPageId | null = null;
 let quizPage: QuizId | "hub" | null = null;
 /** A data page: "hub" for /datasets/, else the table id. */
 let datasetPage: DatasetId | "hub" | null = null;
-/** A kb page: "hub" for /learn/knowledge/, "code" for /learn/code/, else the article id. */
+/** A kb page: "hub" for /learn/knowledge/, "code" for /learn/code/, "ai" for /learn/ai/, else the article id. */
 let kbPage: KbPage = null;
 /** A reference page: "hub" for /reference/, else the entry id. */
 let refPage: RefPage = null;
@@ -256,12 +259,12 @@ function prefetchGamePack(e: Event): void {
     const page: RefPage = isRefId(id) ? id : "hub";
     if (!hasPageMessages(loc, false, false, false, false, null, page)) loadPageMessages(loc, false, false, false, false, null, page).catch(() => {});
   } else {
-    const link = target?.closest?.('a[data-nav^="kb-"], a[data-nav="knowledge"], a[data-nav="coding"]');
+    const link = target?.closest?.(KB_NAV_SELECTOR);
     if (!link) return;
-    // data-nav is "kb-<article id>" on an article link, "knowledge" or "coding" on a hub link.
+    // data-nav is "kb-<article id>" on an article link, a shelf's hub nav (KB_SHELVES) on a hub link.
     const nav = link.getAttribute("data-nav") ?? "";
     const id = nav.startsWith("kb-") ? nav.slice(3) : "";
-    const page: KbPage = isKbId(id) ? id : nav === "coding" ? "code" : "hub";
+    const page: KbPage = isKbId(id) ? id : kbHubOfNav(nav) ?? "hub";
     if (!hasPageMessages(loc, false, false, false, false, page)) loadPageMessages(loc, false, false, false, false, page).catch(() => {});
   }
 }
@@ -794,6 +797,14 @@ function toolDirectory(loc: Locale): HTMLElement {
       h("p", null,
         ...kbGroupsOf("code").map((group) =>
           h("a", { href: `${kbHref(loc, "code")}#${group.id}`, "data-nav": "coding" }, t(`kb.code.groups.${group.id}`)),
+        ),
+      ),
+    ),
+    h("div", { class: "dir-group" },
+      h("h2", null, h("a", { href: kbHref(loc, "ai"), "data-nav": KB_SHELVES.ai.nav }, t("kb.ai.label"))),
+      h("p", null,
+        ...kbGroupsOf("ai").map((group) =>
+          h("a", { href: `${kbHref(loc, "ai")}#${group.id}`, "data-nav": KB_SHELVES.ai.nav }, t(`kb.ai.groups.${group.id}`)),
         ),
       ),
     ),

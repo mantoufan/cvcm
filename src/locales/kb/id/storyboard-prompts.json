@@ -1,0 +1,219 @@
+{
+  "title": "Prompt Storyboard: Ubah Naskah Jadi Shot Video AI — cv.cm",
+  "description": "Cara menulis prompt storyboard untuk video AI: pecah naskah jadi shot, isi kartu shot, dan tulis prompt tiap klip. Lengkap dengan contoh adegan 15 detik.",
+  "h1": "Bagaimana cara mengubah naskah menjadi prompt storyboard untuk video AI?",
+  "answer": "Pecah naskah menjadi beat, beri tiap beat satu shot, dan tulis satu prompt per shot. Setiap prompt shot menyebutkan ukuran framing, subjek beserta satu aksinya, latar, gerakan kamera, cahaya, dan durasi. Buat satu kartu shot untuk setiap klip agar karakter, kostum, dan arah layar tetap sama saat Anda membuat shot satu per satu.",
+  "sections": [
+    {
+      "h": "Apa itu prompt storyboard",
+      "body": [
+        "Prompt storyboard adalah teks yang Anda kirim ke model video untuk satu shot dari sebuah rangkaian yang lebih besar. Prompt video menggambarkan satu klip; prompt storyboard menggambarkan klip yang harus tersambung mulus dengan klip sebelum dan sesudahnya. Tugas tambahan itu mengubah cara Anda menulisnya.",
+        "Kebanyakan alat video AI menghasilkan klip pendek dari satu prompt. Adegan dengan awal, tengah, dan akhir karena itu dibangun dari beberapa kali generasi, lalu digabung di editor. Storyboard adalah rencana yang menghubungkannya: ia memutuskan apa yang ditampilkan tiap shot, berapa lama, dan apa yang harus sama antar shot.",
+        "Bayangkan storyboard sebagai dua lapisan. Lapisan pertama untuk Anda: nomor shot, tujuan, durasi, dan baris dialog yang dicakupnya. Lapisan kedua adalah teks prompt yang benar-benar dibaca model. Menaruh kedua lapisan dalam satu tabel membuat revisi cepat, karena ketika naskah berubah Anda bisa melihat prompt mana yang harus ikut berubah."
+      ]
+    },
+    {
+      "h": "Langkah 1: pecah naskah menjadi beat dan shot",
+      "body": [
+        "Beat adalah perubahan terkecil dalam cerita: tatapan, keputusan, pengungkapan, reaksi. Baca naskah dan tandai setiap beat. Lalu beri tiap beat shot-nya sendiri. Dua aturan praktis ini membuat shot mudah dirender model:",
+        {
+          "ul": [
+            "Satu aksi utama per shot. \"Dia membuka surat dan mulai menangis\" adalah dua aksi; beri tangisannya close-up sendiri.",
+            "Satu ide kamera per shot. Push-in pelan atau frame statis bekerja; push-in yang berubah menjadi orbit lalu crane biasanya gagal.",
+            "Durasi pendek. Rencanakan sebagian besar shot beberapa detik saja. Shot reaksi bisa lebih pendek dari klip penuh; Anda memotongnya saat editing.",
+            "Sebutkan tujuan tiap shot: memperkenalkan tempat, menunjukkan aksi, menunjukkan reaksi, atau menunjukkan detail yang harus diperhatikan penonton."
+          ]
+        },
+        "Variasikan ukuran shot. Lima medium shot berturut-turut terasa datar. Pola yang umum adalah wide (di mana kita), medium (siapa melakukan apa), close-up (bagaimana perasaannya), insert (benda penting), lalu shot yang lebih lebar untuk menutup atau pindah ke adegan berikutnya."
+      ]
+    },
+    {
+      "h": "Langkah 2: isi kartu shot untuk setiap shot",
+      "body": [
+        "Kartu shot adalah daftar field yang tetap. Mengisi field yang sama setiap kali mencegah Anda melupakan detail yang menyebabkan kesalahan kontinuitas. Prompt-nya tinggal kartu itu yang ditulis menjadi kalimat.",
+        {
+          "table": {
+            "head": [
+              "Field",
+              "Yang ditulis",
+              "Contoh"
+            ],
+            "rows": [
+              [
+                "Ukuran shot dan sudut",
+                "Wide, medium, close-up, insert; setinggi mata, rendah, tinggi",
+                "Close-up, setinggi mata"
+              ],
+              [
+                "Subjek",
+                "Siapa, dengan deskripsi tetap yang sama di setiap shot",
+                "Wanita usia 30-an, rambut hitam pendek, mantel wol abu-abu"
+              ],
+              [
+                "Aksi",
+                "Satu kata kerja, beserta cara terjadinya",
+                "perlahan menurunkan ponsel dari telinganya"
+              ],
+              [
+                "Latar",
+                "Tempat, waktu, cuaca",
+                "peron kereta kosong di malam hari, gerimis"
+              ],
+              [
+                "Kamera",
+                "Statis atau satu gerakan, beserta kecepatannya",
+                "kamera statis"
+              ],
+              [
+                "Cahaya dan warna",
+                "Sumber cahaya utama dan suasana",
+                "lampu neon dingin dari atas, nuansa biru kehijauan"
+              ],
+              [
+                "Arah layar",
+                "Subjek menghadap atau bergerak ke arah mana",
+                "menghadap kiri layar"
+              ],
+              [
+                "Suara",
+                "Dialog, efek, atau ambience, jika model membuat audio",
+                "pengumuman kereta dari kejauhan, hujan"
+              ],
+              [
+                "Durasi dan masuk/keluar",
+                "Panjang yang direncanakan dan cara mulai serta berakhirnya",
+                "3 detik, berakhir saat matanya terpejam"
+              ]
+            ]
+          }
+        },
+        "Taruh deskripsi subjek yang tetap di catatan terpisah dan tempel tanpa diubah ke setiap prompt. Perubahan kata kecil seperti \"mantel abu-abu\" di satu shot dan \"jaket gelap\" di shot berikutnya adalah penyebab umum karakter berubah antar potongan."
+      ]
+    },
+    {
+      "h": "Contoh kerja: adegan 15 detik dalam lima shot",
+      "body": [
+        "Naskah: \"Malam. Peron kereta. MAYA mengakhiri telepon. Ia melihat papan keberangkatan. Keretanya dibatalkan. Ia tertawa sekali, lelah, lalu duduk di atas kopernya.\"",
+        "Ini punya lima beat, jadi mendapat lima shot. Durasi yang direncanakan berjumlah 15 detik.",
+        {
+          "table": {
+            "head": [
+              "Shot",
+              "Ukuran",
+              "Beat",
+              "Detik"
+            ],
+            "rows": [
+              [
+                "1",
+                "Wide",
+                "Memperkenalkan peron kosong dan Maya yang menelepon",
+                "3"
+              ],
+              [
+                "2",
+                "Close-up",
+                "Ia menurunkan ponselnya",
+                "3"
+              ],
+              [
+                "3",
+                "Insert",
+                "Papan keberangkatan berganti menjadi CANCELLED",
+                "2"
+              ],
+              [
+                "4",
+                "Medium close-up",
+                "Satu tawa lelah",
+                "3"
+              ],
+              [
+                "5",
+                "Wide",
+                "Ia duduk di atas kopernya",
+                "4"
+              ]
+            ]
+          }
+        },
+        "Berikut prompt untuk shot 1, 2, dan 3. Perhatikan bahwa baris karakter dan baris cahaya identik di tiap shot.",
+        {
+          "code": "Shot 1 (wide, 3 s)\nWide shot of an empty train platform at night, light rain beyond the roof edge.\nMaya, a woman in her 30s with short black hair and a grey wool coat, stands\nnear the edge talking on a phone, facing screen left, a small red suitcase beside her.\nCold fluorescent light from above, blue-green tones, wet reflective floor.\nStatic camera. Ambient sound: rain and a distant announcement.\n\nShot 2 (close-up, 3 s)\nClose-up at eye level of Maya, a woman in her 30s with short black hair\nand a grey wool coat, facing screen left. She slowly lowers the phone from her ear\nand looks up and to the left. Cold fluorescent light from above, blue-green tones.\nStatic camera, shallow depth of field, platform blurred behind her.\n\nShot 3 (insert, 2 s)\nInsert shot of an old split-flap departure board on a train platform at night.\nThe top line flips and stops on a single word. Cold fluorescent light,\nblue-green tones. Static camera. Sound: clicking split-flap letters.",
+          "lang": "text"
+        },
+        "Dua detail penting di sini. Pada shot 2 ia menengadah ke kiri, dan pada shot 3 kita melihat papannya: garis pandang satu shot menyiapkan isi shot berikutnya. Dan kata di papan tidak ditulis di prompt sebagai teks untuk dirender, karena banyak model masih menggambar huruf dengan buruk. Buat papannya tanpa teks yang terbaca lalu tambahkan kata CANCELLED sebagai grafis saat editing."
+      ]
+    },
+    {
+      "h": "Langkah 3: buat keyframe sebelum membuat gerakan",
+      "body": [
+        "Membuat video lebih lambat dan lebih mahal daripada membuat gambar diam. Alur kerja yang andal adalah membuat satu keyframe diam per shot lebih dulu, memeriksa seluruh storyboard sebagai deretan gambar, dan baru kemudian menganimasikan tiap gambar dengan image-to-video.",
+        {
+          "ol": [
+            "Buat gambar referensi karakter dan gambar referensi lokasi.",
+            "Buat satu keyframe per shot, memakai referensi itu, dengan rasio aspek akhir.",
+            "Sejajarkan keyframe berdampingan dan periksa wajah, pakaian, properti, dan cahaya.",
+            "Animasikan tiap keyframe dengan prompt gerakan singkat yang hanya menjelaskan apa yang bergerak.",
+            "Di mana dua shot harus tersambung mulus, pakai mode frame awal dan akhir agar ujung satu klip cocok dengan awal klip berikutnya."
+          ]
+        },
+        "Saat menganimasikan keyframe, gambarnya sudah menetapkan tampilan, jadi prompt cukup menjelaskan gerakan dan kamera, tidak perlu mengulang setiap detail visual. Panduan resmi model, seperti panduan prompt Veo dari Google, juga menyarankan untuk menjelaskan apa yang Anda inginkan di dalam frame daripada menulis instruksi \"tidak\" atau \"jangan\"."
+      ]
+    },
+    {
+      "h": "Langkah 4: tulis tiap shot untuk potongannya",
+      "body": [
+        "Setiap shot akan berada di antara dua shot lain, jadi tulis awal dan akhirnya dengan sengaja. Beberapa aturan editing dari film live-action bekerja sama baiknya pada video AI:",
+        {
+          "ul": [
+            "Jaga arah layar. Jika Maya menghadap kiri layar di shot 1, biarkan ia menghadap kiri sampai cerita memutarnya. Membalik arah antar potongan membingungkan penonton.",
+            "Pakai aturan 180 derajat dalam dialog. Tahan kamera di satu sisi garis antara dua pembicara agar posisi mereka tidak bertukar.",
+            "Potong saat aksi (cut on action). Akhiri shot 4 saat ia mulai duduk, dan mulai shot 5 saat ia setengah turun. Gerakan menyembunyikan perbedaan kecil antar klip.",
+            "Siapkan handle. Minta waktu sedikit lebih panjang dari yang dibutuhkan agar Anda bisa memangkas awal yang lambat atau akhir yang melayang yang dimiliki banyak hasil generasi.",
+            "Samakan cahaya. Pakai satu deskripsi cahaya untuk seluruh adegan dan ubah hanya ketika cerita mengubah waktu atau tempat."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Kesalahan umum dan batasan",
+      "body": [
+        {
+          "ul": [
+            "Menulis seluruh adegan dalam satu prompt. Model memadatkan atau melewatkan beat. Satu shot per prompt lebih mudah dikendalikan dan diperbaiki.",
+            "Menjelaskan perasaan tanpa aksi yang terlihat. \"Dia merasa putus asa\" itu samar; \"dia membiarkan ponsel turun ke sisi tubuhnya dan menatap lantai\" bisa difilmkan.",
+            "Meminta papan tanda, teks, atau logo yang terbaca di dalam shot. Tambahkan teks di editor saja.",
+            "Mengubah deskripsi karakter antar shot. Tempel blok yang sama setiap kali.",
+            "Merencanakan gerakan tangan rumit, perkelahian cepat, atau fisika benda dalam satu shot. Model video masih kesulitan dengan tangan, kontak, dan sebab-akibat. Pecah aksinya, ambil framing lebih dekat, atau tampilkan hasilnya alih-alih prosesnya."
+          ]
+        },
+        {
+          "note": "Sintaks prompt, panjang klip, dan fitur referensi berbeda antar alat dan sering berubah. Metode kartu shot bekerja dengan semuanya; sesuaikan kata-katanya dengan panduan alat yang Anda pakai."
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Berapa shot yang saya butuhkan untuk video AI 15 detik?",
+      "a": "Biasanya tiga sampai enam. Shot yang terlalu sedikit terasa lambat, dan banyak shot yang sangat pendek sulit dijaga konsistensinya. Rencanakan berdasarkan beat, bukan jumlah tetap."
+    },
+    {
+      "q": "Bisakah saya menulis prompt storyboard untuk beberapa shot sekaligus?",
+      "a": "Beberapa model baru menerima deskripsi multi-shot dalam satu prompt dan memotong di dalam klip. Ini bisa berhasil untuk adegan sederhana, tetapi Anda kehilangan kendali atas tiap shot. Untuk apa pun yang mungkin perlu diperbaiki nanti, buat shot demi shot."
+    },
+    {
+      "q": "Haruskah saya menggambar storyboard atau cukup menuliskannya?",
+      "a": "Daftar shot tertulis sudah cukup untuk memulai. Membuat satu keyframe diam per shot memberi Anda storyboard visual dengan cepat dan memungkinkan Anda memperbaiki masalah sebelum menghabiskan waktu untuk video."
+    },
+    {
+      "q": "Bisakah chatbot AI mengubah naskah saya menjadi daftar shot?",
+      "a": "Bisa, chatbot seperti ChatGPT, Claude, Gemini, atau DeepSeek dapat membuat draf daftar shot jika Anda memberinya field kartu shot. Periksa sendiri: chatbot sering menambahkan aksi yang tidak ada di naskah atau melupakan arah layar."
+    },
+    {
+      "q": "Mengapa karakter saya tampak berbeda di setiap shot?",
+      "a": "Setiap generasi mengambil wajah dan pakaian baru kecuali ada yang menahannya tetap. Gunakan teks deskripsi yang sama, gambar referensi karakter, dan keyframe yang dibuat dari referensi itu."
+    }
+  ]
+}

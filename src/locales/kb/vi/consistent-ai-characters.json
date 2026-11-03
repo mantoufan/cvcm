@@ -1,0 +1,204 @@
+{
+  "title": "Cách tạo nhân vật AI nhất quán qua nhiều ảnh — cv.cm",
+  "description": "Giữ cùng một nhân vật AI qua nhiều ảnh và nhiều cảnh: character sheet, ảnh tham chiếu, seed, mô tả cố định, huấn luyện LoRA và danh sách kiểm tra tính liền mạch.",
+  "h1": "Làm sao giữ nhân vật AI nhất quán qua nhiều ảnh?",
+  "answer": "Hãy viết một mô tả nhân vật cố định và dùng lại nguyên văn, sau đó thiết kế một character sheet rõ ràng (mặt trước, mặt bên, mặt sau, các biểu cảm) và đưa nó làm ảnh tham chiếu cho mỗi lần tạo mới. Seed chỉ giúp trong cùng một thiết lập. Với dự án dài, hãy huấn luyện một LoRA nhỏ trên bộ ảnh đã duyệt, đa dạng. Kiểm tra mỗi ảnh mới bằng danh sách kiểm tra tính liền mạch trước khi dùng.",
+  "sections": [
+    {
+      "h": "Vì sao nhân vật bị trôi",
+      "body": [
+        "Mô hình ảnh không có trí nhớ giữa các lần chạy. Mỗi lần tạo bắt đầu từ nhiễu ngẫu nhiên mới và đọc prompt của bạn từ đầu. Những từ như `a young woman with short black hair` mô tả hàng triệu khuôn mặt khả dĩ, và mô hình chọn một khuôn mặt khác nhau mỗi lần. Thay đổi nhỏ trong cách diễn đạt, tư thế hay góc máy đều đẩy kết quả đi xa hơn.",
+        "Vì vậy sự nhất quán không đến từ việc mô hình nhớ. Nó đến từ việc bạn đưa cho mô hình cùng một thông tin mỗi lần, dưới nhiều dạng nhất mà công cụ chấp nhận: cùng chữ, cùng ảnh tham chiếu và, với dự án lớn, một mô-đun nhỏ được huấn luyện đã học được nhân vật. Các phương pháp dưới đây đi từ rẻ nhất đến tốn công nhất. Phần lớn dự án kết hợp hai hoặc ba cách."
+      ]
+    },
+    {
+      "h": "Bước 1: viết một khối mô tả nhân vật cố định",
+      "body": [
+        "Hãy viết mô tả một lần, lưu trong tệp văn bản và dán nguyên vẹn vào mọi prompt. Sắp xếp chi tiết từ dễ thấy nhất đến ít thấy nhất, và chỉ đưa vào những gì người xem nhìn thấy được.",
+        {
+          "code": "MEI (character block, paste unchanged)\nadult woman in her late 20s, East Asian, oval face, straight black hair\nin a chin-length bob with blunt bangs, dark brown eyes, small mole under\nthe left eye, slim build, wearing a mustard-yellow raincoat over a white\nT-shirt, dark blue jeans, white sneakers, round silver earrings",
+          "lang": "text"
+        },
+        "Sau đó dựng mỗi prompt bằng khối nhân vật cộng với cảnh. Chỉ phần cảnh thay đổi:",
+        {
+          "code": "[MEI block], standing at a bus stop in the rain, holding a clear umbrella,\nnight, neon reflections on the wet road, medium shot, 35mm photo",
+          "lang": "text"
+        },
+        {
+          "ul": [
+            "Chọn các điểm neo dễ nhận: một màu khác thường, một phụ kiện, một dấu trên mặt. `Mustard raincoat` và `mole under the left eye` dễ kiểm tra và tái tạo hơn `pretty`.",
+            "Tránh những từ đổi nghĩa giữa các lần chạy, như `stylish outfit` hay `cute`.",
+            "Để từ về phong cách bên ngoài khối mô tả, để bạn có thể đổi cảnh từ ảnh chụp sang minh họa mà không phải sửa nhân vật.",
+            "Hãy đặt tên cho nhân vật trong ghi chú, nhưng đừng dựa vào cái tên trong prompt; một cái tên tự đặt chẳng có nghĩa gì với mô hình trừ khi bạn huấn luyện nó."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Bước 2: làm character sheet",
+      "body": [
+        "Character sheet là một ảnh, hoặc một bộ nhỏ, cho thấy nhân vật rõ ràng từ nhiều góc trên nền trơn. Nó trở thành ảnh tham chiếu để bạn quay lại cho mọi cảnh về sau.",
+        {
+          "ol": [
+            "Tạo nhiều ứng viên từ khối nhân vật trên nền xám nhạt trơn, ánh sáng trung tính, toàn thân.",
+            "Chọn khuôn mặt bạn thích nhất. Đây giờ là khuôn mặt chuẩn; đừng tiếp tục khám phá nữa.",
+            "Tạo các góc nhìn xoay quanh của nhân vật đó: chính diện, ba phần tư, bên hông và phía sau. Dùng ảnh đã chọn làm tham chiếu, hoặc dùng điều khiển tư thế cho mỗi góc.",
+            "Thêm một hàng biểu cảm (trung tính, mỉm cười, ngạc nhiên, giận dữ) và một cận cảnh khuôn mặt cùng phụ kiện.",
+            "Sửa lỗi bằng inpainting, rồi lưu sheet ở độ phân giải đầy đủ cùng khối mô tả nhân vật viết bên cạnh."
+          ]
+        },
+        {
+          "code": "character turnaround sheet of [MEI block], front view, three-quarter view,\nside view and back view, full body, standing in a neutral pose,\nplain light gray background, even soft studio light, clean illustration",
+          "lang": "text"
+        },
+        "Hãy giữ sheet sạch sẽ. Hậu cảnh lộn xộn hoặc ánh sáng kịch tính trên ảnh tham chiếu sẽ bị sao chép sang các ảnh sau cùng với khuôn mặt."
+      ]
+    },
+    {
+      "h": "Bước 3: dùng ảnh tham chiếu trong mọi lần tạo",
+      "body": [
+        "Hầu hết công cụ hiện nay chấp nhận ít nhất một ảnh làm tham chiếu. Công cụ trực tuyến gọi nó là character reference, subject reference hoặc đơn giản là ảnh tải lên; quy trình mã nguồn mở dùng các adapter như IP-Adapter, biến ảnh tham chiếu thành đặc trưng dẫn hướng mô hình cùng với văn bản. Hãy đưa cho mô hình cận cảnh khuôn mặt và một góc toàn thân từ sheet, rồi mô tả cảnh mới bằng văn bản.",
+        {
+          "ul": [
+            "Dùng đoạn cắt khớp với cảnh quay: ảnh tham chiếu khuôn mặt cho cận cảnh, ảnh tham chiếu toàn thân cho cảnh rộng.",
+            "Giảm trọng số tham chiếu nếu mọi ảnh đều sao chép tư thế và hậu cảnh của tham chiếu; tăng lên nếu khuôn mặt bị trôi.",
+            "Đừng nối tham chiếu từ ảnh vừa tạo xong. Lỗi sẽ cộng dồn. Luôn quay về sheet đã duyệt.",
+            "Với tư thế phải khớp chính xác, hãy thêm cả ảnh điều khiển tư thế. Xem hướng dẫn image-to-image."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Seed: hữu ích nhưng có giới hạn",
+      "body": [
+        "Seed cố định nhiễu khởi đầu ngẫu nhiên. Với cùng mô hình, cài đặt và prompt, cùng một seed cho ảnh gần như giống hệt, nên seed rất tốt để tạo các biến thể nhỏ của một cảnh: đổi biểu cảm hoặc ánh sáng và giữ nguyên mọi thứ khác.",
+        "Seed không giữ được nhân vật qua các cảnh khác nhau. Đổi tư thế, hậu cảnh hay khung hình, cùng seed sẽ cho bố cục khác và thường là khuôn mặt khác. Nó cũng ngừng có tác dụng khi bạn đổi mô hình, phiên bản công cụ, phần cứng hay sampler. Hãy coi seed là cách lặp lại một bức ảnh, không phải danh tính của nhân vật."
+      ]
+    },
+    {
+      "h": "Bước 4 cho dự án dài: LoRA và tinh chỉnh",
+      "body": [
+        "Với truyện tranh, một loạt hay linh vật thương hiệu xuất hiện trong hàng trăm ảnh, lựa chọn mạnh nhất là dạy mô hình về nhân vật. Có ba phương pháp phổ biến trong công cụ mã nguồn mở:",
+        {
+          "table": {
+            "head": [
+              "Phương pháp",
+              "Cái được huấn luyện",
+              "Cần gì",
+              "Ghi chú"
+            ],
+            "rows": [
+              [
+                "Textual inversion",
+                "Chỉ một word embedding mới; mô hình giữ nguyên",
+                "Vài ảnh, thường ba đến năm",
+                "Tệp nhỏ, danh tính yếu hơn; tốt cho một phong cách hoặc vật thể"
+              ],
+              [
+                "DreamBooth",
+                "Chính mô hình, gắn với một từ định danh hiếm",
+                "Một nhúm ảnh của chủ thể",
+                "Danh tính mạnh; tệp lớn; có thể quá khớp và quên những thứ khác"
+              ],
+              [
+                "LoRA",
+                "Các ma trận bổ sung hạng thấp nhỏ; mô hình gốc giữ nguyên",
+                "Thường 15 đến 30 ảnh đa dạng",
+                "Tệp nhỏ, dễ tăng giảm cường độ; lựa chọn phổ biến nhất"
+              ]
+            ]
+          }
+        },
+        "Dữ liệu huấn luyện quan trọng hơn cài đặt. Hãy dùng ảnh cùng một nhân vật từ sheet và các cảnh đã duyệt, với góc, biểu cảm, ánh sáng và hậu cảnh đa dạng, và chú thích từng ảnh. Nếu mọi ảnh huấn luyện có cùng hậu cảnh hoặc tư thế, LoRA cũng học luôn những thứ đó. Các dịch vụ trực tuyến cung cấp nhân vật tùy chỉnh cũng làm điều tương tự ở phía sau.",
+        {
+          "note": "Huấn luyện trên khuôn mặt người thật, hoặc trên nhân vật của nghệ sĩ khác, có thể vi phạm quy định về quyền riêng tư, hình ảnh cá nhân hoặc bản quyền tùy quốc gia và nền tảng. Hãy dùng nhân vật do bạn tạo ra hoặc bạn có quyền sử dụng."
+        }
+      ]
+    },
+    {
+      "h": "Danh sách kiểm tra tính liền mạch",
+      "body": [
+        "Trước khi đưa ảnh mới vào dự án, hãy đặt cạnh character sheet để so sánh. Sửa hoặc tạo lại bất cứ thứ gì không đạt.",
+        {
+          "table": {
+            "head": [
+              "Kiểm tra",
+              "So sánh gì",
+              "Lỗi thường gặp"
+            ],
+            "rows": [
+              [
+                "Khuôn mặt",
+                "Hàm, hình dáng và khoảng cách mắt, mũi",
+                "Mặt tròn hơn hoặc chung chung hơn"
+              ],
+              [
+                "Tóc",
+                "Độ dài, mái, màu, đường rẽ",
+                "Mất mái; độ dài thay đổi"
+              ],
+              [
+                "Dấu hiệu",
+                "Nốt ruồi, sẹo, tàn nhang, hình xăm và bên chúng nằm",
+                "Dấu sang bên kia hoặc biến mất"
+              ],
+              [
+                "Mắt",
+                "Màu và hình dáng",
+                "Màu mắt đổi dưới ánh sáng màu"
+              ],
+              [
+                "Trang phục",
+                "Từng món, màu, logo, các lớp",
+                "Áo mưa thành áo khoác; màu bị đổi chỗ"
+              ],
+              [
+                "Phụ kiện",
+                "Khuyên tai, kính, túi, đồng hồ",
+                "Phụ kiện mất hoặc nằm sai tay"
+              ],
+              [
+                "Tỷ lệ cơ thể",
+                "Chiều cao so với người khác và đồ vật",
+                "Nhân vật cao lên hoặc thấp đi giữa các cảnh"
+              ],
+              [
+                "Bàn tay",
+                "Số ngón và mỗi tay cầm gì",
+                "Đồ vật đổi tay giữa các cảnh"
+              ],
+              [
+                "Phong cách",
+                "Chất liệu, độ đậm nét, chỉnh màu",
+                "Cảnh ảnh chụp lẫn vào loạt tranh minh họa"
+              ]
+            ]
+          }
+        },
+        "Hãy ghi một nhật ký đơn giản cho mỗi cảnh: prompt, seed, tham chiếu đã dùng, mô hình và các chỉnh sửa đã làm. Khi nhân vật bị trôi về sau, nhật ký cho bạn biết thay đổi nào gây ra. Với video, các quy tắc tương tự áp dụng từng cảnh một; hướng dẫn video nhiều cảnh nói về cách mang nhân vật qua chuyển động."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Chỉ dùng lại seed có giữ được cùng một nhân vật không?",
+      "a": "Chỉ với những ảnh rất giống nhau. Tư thế, hậu cảnh hay khung hình mới sẽ đổi kết quả dù cùng seed, nên hãy kết hợp mô tả cố định với ảnh tham chiếu."
+    },
+    {
+      "q": "Cần bao nhiêu ảnh để huấn luyện LoRA cho nhân vật?",
+      "a": "Nhiều người sáng tạo dùng khoảng 15 đến 30 ảnh tốt và đa dạng. Chất lượng và sự đa dạng quan trọng hơn số lượng, và mọi ảnh phải thể hiện cùng một thiết kế đã duyệt."
+    },
+    {
+      "q": "Vì sao trang phục nhân vật của tôi cứ thay đổi?",
+      "a": "Trang phục được mô tả quá lỏng hoặc mô tả thay đổi giữa các prompt. Hãy gọi tên từng món cùng màu, giữ cách diễn đạt y hệt, và đưa trang phục vào ảnh tham chiếu."
+    },
+    {
+      "q": "Tạo nhân vật AI nhất quán của một người thật có hợp pháp không?",
+      "a": "Tùy bạn ở đâu và dùng thế nào. Nhiều quốc gia bảo vệ hình ảnh cá nhân và yêu cầu có sự đồng ý, và nhiều nền tảng cấm việc này. Đây là thông tin chung, không phải tư vấn pháp lý."
+    },
+    {
+      "q": "Ảnh tham chiếu nhân vật có dùng được giữa các công cụ AI khác nhau không?",
+      "a": "Phương pháp thì được, nhưng kết quả khác nhau. Mỗi công cụ đọc tham chiếu theo cách riêng, nên hãy thử sheet của bạn trong công cụ mới và chỉnh trọng số tham chiếu trước khi bắt đầu dự án."
+    }
+  ]
+}

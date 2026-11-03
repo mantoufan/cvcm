@@ -8777,6 +8777,149 @@
     "bit-manipulation": {
       "name": "位元運算",
       "blurb": "位元運算子、單位元技巧、位元計數與位元遮罩，附 Python 範例"
+    },
+    "what-is-generative-ai": {
+      "name": "什麼是生成式 AI？",
+      "blurb": "AI 模型如何從資料學習並產生文字、圖片、影片與聲音，以及它們哪裡會出錯"
+    },
+    "how-llms-work": {
+      "name": "LLM 如何運作",
+      "blurb": "跟著一句提示詞，走過 token、注意力與下一個 token 預測，直到產生答案"
+    },
+    "tokens-and-context-window": {
+      "name": "token 與上下文視窗",
+      "blurb": "六種語言的實測 token 數、哪些內容會塞滿上下文視窗，以及如何節省空間"
+    },
+    "ai-hallucination": {
+      "name": "AI 幻覺",
+      "blurb": "AI 為什麼會捏造事實與引用來源、能減少幻覺的提示詞，以及如何查證答案"
+    },
+    "how-diffusion-models-work": {
+      "name": "擴散模型如何運作",
+      "blurb": "雜訊如何變成圖片，以及步數、種子與 CFG scale 各改變了什麼"
+    },
+    "what-are-ai-agents": {
+      "name": "什麼是 AI Agent",
+      "blurb": "AI Agent 如何在迴圈中呼叫工具、真實的執行紀錄、MCP，以及要預先防範的風險"
+    },
+    "ai-glossary": {
+      "name": "AI 名詞對照",
+      "blurb": "60 個生成式 AI 術語白話解釋，從 token、LoRA 到 CFG、C2PA 與深偽"
+    },
+    "prompt-engineering-basics": {
+      "name": "提示詞工程入門",
+      "blurb": "好提示詞的六個要素、改寫前後對照、範例寫法與測試方法"
+    },
+    "image-prompts": {
+      "name": "AI 繪圖提示詞怎麼寫",
+      "blurb": "提示詞公式、弱到強的改寫、關鍵字表與負面提示詞"
+    },
+    "video-prompts": {
+      "name": "AI 影片提示詞怎麼寫",
+      "blurb": "七段式提示詞結構、一個鏡頭一個動作、節拍時間軸，以及完整改寫範例"
+    },
+    "camera-movement-terms": {
+      "name": "運鏡術語大全",
+      "blurb": "推軌、橫移、環繞、搖臂、希區考克變焦等：每種運鏡的畫面效果與提示詞寫法"
+    },
+    "storyboard-prompts": {
+      "name": "分鏡提示詞",
+      "blurb": "把劇本拆成鏡頭，每個鏡頭寫一條提示詞，附 15 秒完整範例。"
+    },
+    "text-to-image": {
+      "name": "文字生成圖片的原理",
+      "blurb": "從提示詞到圖片：步數、引導值、種子、尺寸，以及草稿到成品的流程"
+    },
+    "image-to-image": {
+      "name": "圖生圖的原理",
+      "blurb": "重繪強度、參考圖、風格轉換、局部重繪，以及深度、姿勢與邊緣控制"
+    },
+    "consistent-ai-characters": {
+      "name": "AI 角色一致性",
+      "blurb": "角色設定圖、參考圖、種子、固定描述、LoRA 與連貫性檢查表"
+    },
+    "how-ai-upscaling-works": {
+      "name": "AI 圖片放大原理",
+      "blurb": "雙三次為何模糊、GAN 與 Real-ESRGAN 如何補細節，以及何時會失敗"
+    },
+    "how-ai-background-removal-works": {
+      "name": "AI 去背原理",
+      "blurb": "遮罩與 alpha 遮色片的差別、頭髮與玻璃為何容易出錯，以及為何去背圖要存成 PNG"
+    },
+    "what-is-a-depth-map": {
+      "name": "什麼是深度圖",
+      "blurb": "AI 如何從單張照片推測深度、遠近明暗的對應，以及 3D 與 ControlNet 的用途"
+    },
+    "text-to-video": {
+      "name": "文字生成影片的原理",
+      "blurb": "提示詞如何變成影片、關鍵設定，以及 15 秒三鏡頭規劃範例"
+    },
+    "image-to-video": {
+      "name": "圖生影片的原理",
+      "blurb": "選起始圖片、只寫動態的提示詞，以及何時 2.5D 視差就夠用"
+    },
+    "first-last-frame-video": {
+      "name": "首尾影格影片",
+      "blurb": "關鍵影格補間、兩張影格怎麼設計，以及哪些轉場可行或會失敗"
+    },
+    "multi-shot-ai-video": {
+      "name": "AI 多鏡頭影片",
+      "blurb": "讓臉孔、服裝、場景與光線在多個 AI 影片鏡頭之間保持一致。"
+    },
+    "ai-short-drama-workflow": {
+      "name": "AI 短劇製作流程",
+      "blurb": "從開場鉤子、劇本到加上標示的 9:16 直式短劇，附 20 秒分鏡表範例。"
+    },
+    "how-speech-to-text-works": {
+      "name": "語音轉文字原理",
+      "blurb": "從頻譜圖到文字、Whisper 的學習方式、詞錯誤率，以及如何得到乾淨的字幕"
+    },
+    "text-to-speech": {
+      "name": "文字轉語音原理",
+      "blurb": "神經網路 TTS 與瀏覽器內建語音的差別、用 SSML 控制停頓與念法，以及聲音複製的同意規範"
+    },
+    "run-ai-in-the-browser": {
+      "name": "在瀏覽器中執行 AI",
+      "blurb": "WebGPU 與 WASM、ONNX Runtime Web、Transformers.js、模型大小、快取與手機限制"
+    },
+    "call-an-llm-api": {
+      "name": "如何呼叫 LLM API",
+      "blurb": "以 curl、Python 與 JS 寫出可執行的 API 請求，並涵蓋串流、JSON、重試與費用"
+    },
+    "ai-copyright-and-commercial-use": {
+      "name": "AI 著作權與商業使用",
+      "blurb": "美國、中國與歐盟如何看待 AI 產出的歸屬，以及販售前該檢查什麼。"
+    },
+    "labeling-ai-content": {
+      "name": "如何標示 AI 內容",
+      "blurb": "中國大陸辦法、歐盟《人工智慧法》與各平台政策下的顯式與隱式標識。"
+    },
+    "c2pa-and-ai-watermarks": {
+      "name": "C2PA 與 AI 浮水印",
+      "blurb": "內容憑證、SynthID 與 IPTC 標示、中繼資料為何會消失，以及偵測的限制"
+    },
+    "ai": {
+      "label": "AI 教學",
+      "lead": "附來源的生成式 AI 指南：大型語言模型與擴散模型的原理、圖片與影片提示詞寫法、AI 圖片／影片／音訊工作流程、在瀏覽器中執行模型，以及 AI 著作權與標示。",
+      "all": "全部 AI 教學",
+      "groups": {
+        "basics": "AI 基礎",
+        "prompts": "提示詞寫作",
+        "image": "AI 圖片",
+        "video": "AI 影片",
+        "audio": "AI 音訊",
+        "dev": "開發者看 AI",
+        "trust": "著作權與安全"
+      },
+      "blurbs": {
+        "basics": "大型語言模型與擴散模型的原理、token、幻覺、代理與名詞解釋",
+        "prompts": "文字、圖片與影片的提示詞公式、運鏡與分鏡",
+        "image": "文字生成圖片、圖生圖、角色一致性、放大與去背",
+        "video": "文字生成影片、圖生影片、關鍵影格、多鏡頭連貫與 AI 短劇",
+        "audio": "語音轉文字與文字轉語音的原理與限制",
+        "dev": "在瀏覽器中執行模型與呼叫大型語言模型 API",
+        "trust": "AI 產出的歸屬、標示規則、C2PA 與 AI 浮水印"
+      }
     }
   },
   "dice": {

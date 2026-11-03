@@ -1,0 +1,462 @@
+{
+  "title": "Glosario de IA: 60 términos de IA generativa explicados fácil — cv.cm",
+  "description": "Glosario de IA con 60 términos esenciales, desde token, LoRA y RAG hasta difusión, CFG, clonación de voz, C2PA y deepfakes, cada uno con su significado claro y un ejemplo.",
+  "h1": "Glosario de IA: términos de IA generativa explicados",
+  "answer": "Este glosario explica unos 60 términos que aparecen al usar IA generativa, agrupados por temas: modelos y entrenamiento, texto y LLM, generación de imágenes y video, audio, y seguridad y legislación. Cada entrada da un significado claro y un ejemplo breve, para que puedas entender la ficha de un modelo, un panel de ajustes o una noticia sin conocimientos técnicos.",
+  "sections": [
+    {
+      "h": "Modelos y entrenamiento",
+      "body": [
+        "Estos términos describen qué es un modelo y cómo se construye. Valen igual para modelos de texto, imagen, video y audio.",
+        {
+          "table": {
+            "head": [
+              "Término",
+              "Significado",
+              "Ejemplo"
+            ],
+            "rows": [
+              [
+                "Inteligencia artificial (IA)",
+                "Software que realiza tareas que normalmente requieren inteligencia humana",
+                "Traducción, desbloqueo facial, un asistente de chat"
+              ],
+              [
+                "Aprendizaje automático (machine learning)",
+                "IA que aprende patrones a partir de ejemplos en lugar de seguir reglas escritas a mano",
+                "Un filtro de spam entrenado con correos etiquetados"
+              ],
+              [
+                "Red neuronal",
+                "Un modelo formado por muchas capas de unidades simples conectadas cuya fuerza se aprende",
+                "El núcleo de todos los modelos modernos de imagen o de lenguaje"
+              ],
+              [
+                "Modelo",
+                "La propia red entrenada: un archivo de números aprendidos más el código para ejecutarla",
+                "Una aplicación como un chatbot ejecuta uno o varios modelos"
+              ],
+              [
+                "Parámetros (pesos)",
+                "Los números dentro de un modelo que el entrenamiento ajusta",
+                "Un modelo de 7B tiene unos 7.000 millones de parámetros"
+              ],
+              [
+                "Datos de entrenamiento",
+                "Los ejemplos de los que aprende un modelo",
+                "Texto de la web, libros con licencia, pares de imagen y descripción"
+              ],
+              [
+                "Preentrenamiento",
+                "La primera y mayor etapa de entrenamiento, con datos amplios",
+                "Aprender a predecir el siguiente token en texto a escala de la web"
+              ],
+              [
+                "Ajuste fino (fine-tuning)",
+                "Entrenamiento adicional de un modelo existente con un conjunto de datos menor y específico",
+                "Entrenar un modelo base con respuestas de atención al cliente"
+              ],
+              [
+                "LoRA",
+                "Adaptación de bajo rango (low-rank adaptation): un archivo complementario pequeño que ajusta un modelo con poco coste sin cambiar los pesos originales",
+                "Un LoRA de estilo o de personaje para un modelo de imágenes"
+              ],
+              [
+                "Modelo base (foundation model)",
+                "Un modelo general grande sobre el que se construyen muchos productos y ajustes",
+                "Un mismo LLM que impulsa herramientas de chat, búsqueda y programación"
+              ],
+              [
+                "Modelo de pesos abiertos",
+                "Un modelo cuyos pesos se pueden descargar y ejecutar por tu cuenta; la licencia aún puede limitar el uso",
+                "Ejecutar un modelo abierto en tu propio ordenador"
+              ],
+              [
+                "Inferencia",
+                "Ejecutar un modelo entrenado para obtener una salida",
+                "Cada vez que pulsas Generar"
+              ],
+              [
+                "Cuantización",
+                "Guardar los pesos con menos bits para que el modelo sea más pequeño y rápido, con una pequeña pérdida de calidad",
+                "Una versión de 4 bits de un modelo que cabe en un portátil"
+              ],
+              [
+                "Modelo multimodal",
+                "Un modelo que maneja más de un tipo de datos, como texto e imágenes",
+                "Hacer una pregunta sobre una foto"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "Texto y grandes modelos de lenguaje",
+      "body": [
+        "Términos que verás en aplicaciones de chat, en los ajustes de las API y en artículos sobre LLM.",
+        {
+          "table": {
+            "head": [
+              "Término",
+              "Significado",
+              "Ejemplo"
+            ],
+            "rows": [
+              [
+                "Gran modelo de lenguaje (LLM)",
+                "Una red neuronal grande entrenada para predecir el siguiente token de un texto",
+                "El modelo detrás de ChatGPT, Claude, Gemini, DeepSeek, Qwen"
+              ],
+              [
+                "Token",
+                "La unidad de texto que un modelo lee y escribe: una palabra, parte de una palabra o un símbolo",
+                "unbelievable puede ser 3 tokens: un, bel, ievable"
+              ],
+              [
+                "Ventana de contexto",
+                "El número máximo de tokens que un modelo puede considerar a la vez, entrada más salida",
+                "Un chat largo que empieza a olvidar su comienzo"
+              ],
+              [
+                "Transformer",
+                "El diseño de red neuronal, basado en la atención, que usan casi todos los LLM",
+                "GPT significa Generative Pre-trained Transformer"
+              ],
+              [
+                "Atención (attention)",
+                "El paso que permite a cada token valorar qué tokens anteriores le importan",
+                "Vincular it con trophy en una frase sobre una maleta"
+              ],
+              [
+                "Embedding",
+                "Una lista de números que representa el significado, de modo que textos parecidos reciben números parecidos",
+                "Encontrar documentos similares a una pregunta"
+              ],
+              [
+                "Prompt",
+                "La entrada que le das a un modelo",
+                "Resume este correo en dos frases"
+              ],
+              [
+                "Prompt de sistema",
+                "Instrucciones ocultas que fija la aplicación o el desarrollador antes de la conversación",
+                "Eres un agente de soporte amable de una tienda de bicicletas"
+              ],
+              [
+                "Temperatura",
+                "Un ajuste que controla la aleatoriedad de la salida",
+                "Baja para extraer datos, más alta para generar ideas"
+              ],
+              [
+                "Alucinación",
+                "Una afirmación falsa o inventada que un modelo expresa con seguridad",
+                "La cita de un artículo que no existe"
+              ],
+              [
+                "RAG (generación aumentada por recuperación)",
+                "Buscar primero en documentos y poner los mejores fragmentos en el prompt",
+                "Un bot de ayuda que responde a partir de tus manuales"
+              ],
+              [
+                "Fecha de corte del conocimiento",
+                "La fecha a partir de la cual el modelo no tiene datos de entrenamiento",
+                "No conoce los acontecimientos del mes pasado"
+              ],
+              [
+                "Modo de razonamiento",
+                "Un modo en el que el modelo escribe pasos intermedios antes de la respuesta final",
+                "Se muestra como pensando en algunas aplicaciones de chat"
+              ],
+              [
+                "Uso de herramientas (function calling)",
+                "El modelo pide a la aplicación que ejecute una herramienta y lee el resultado",
+                "Llamar a una calculadora o a una búsqueda web"
+              ],
+              [
+                "Agente de IA",
+                "Un sistema en el que un modelo planifica y ejecuta varias acciones con herramientas para lograr un objetivo",
+                "Investigar y reservar opciones en varios sitios web"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "Generación de imágenes y video",
+      "body": [
+        "Ajustes y técnicas que aparecen en herramientas de imagen y video como Midjourney, Stable Diffusion, FLUX, Veo, Kling, Runway y Seedance. Los nombres varían un poco entre herramientas.",
+        {
+          "table": {
+            "head": [
+              "Término",
+              "Significado",
+              "Ejemplo"
+            ],
+            "rows": [
+              [
+                "Modelo de difusión",
+                "Un modelo que crea una imagen quitando ruido paso a paso a partir de ruido aleatorio",
+                "La mayoría de las herramientas de texto a imagen"
+              ],
+              [
+                "Espacio latente",
+                "Una representación interna comprimida en la que trabaja el modelo en lugar de hacerlo sobre píxeles en bruto",
+                "La difusión latente genera un latente pequeño y luego lo decodifica en una imagen"
+              ],
+              [
+                "Texto a imagen",
+                "Generar una imagen a partir de un prompt de texto",
+                "Una bicicleta roja contra una pared azul al atardecer"
+              ],
+              [
+                "Imagen a imagen",
+                "Generar una imagen nueva guiada por una imagen de entrada",
+                "Convertir un boceto en una ilustración terminada"
+              ],
+              [
+                "Inpainting",
+                "Regenerar solo una zona enmascarada de una imagen",
+                "Sustituir una taza de café sobre una mesa por una planta"
+              ],
+              [
+                "Prompt negativo",
+                "Texto que describe lo que se debe evitar",
+                "blurry, extra fingers, watermark"
+              ],
+              [
+                "Semilla (seed)",
+                "El número aleatorio inicial; la misma semilla y los mismos ajustes dan un resultado parecido",
+                "Reutilizar una semilla para hacer pequeños cambios en el prompt"
+              ],
+              [
+                "Escala de guía (CFG)",
+                "Con qué fuerza la salida sigue el prompt frente a verse natural",
+                "Demasiado alta da colores ásperos y artefactos"
+              ],
+              [
+                "ControlNet",
+                "Un complemento que guía un modelo de difusión con una pose, un contorno o una imagen de profundidad",
+                "Mantener la pose exacta de un personaje"
+              ],
+              [
+                "Mapa de profundidad",
+                "Una imagen en escala de grises en la que el brillo indica la distancia a la cámara",
+                "Se usa para el video con paralaje y para ControlNet"
+              ],
+              [
+                "Escalado (upscaling)",
+                "Ampliar una imagen con un modelo que añade detalle plausible",
+                "Una imagen de 512 píxeles ampliada 4 veces"
+              ],
+              [
+                "Texto a video",
+                "Generar un clip de video a partir de un prompt de texto",
+                "Un barquito de papel a la deriva por una calle bajo la lluvia"
+              ],
+              [
+                "Imagen a video",
+                "Animar una imagen fija para convertirla en un clip",
+                "Hacer que la foto de un producto gire despacio"
+              ],
+              [
+                "Primer y último fotograma",
+                "Dar una imagen inicial y una final y dejar que el modelo rellene el movimiento intermedio",
+                "Una puerta cerrada en el primer fotograma y abierta en el último"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "Audio y voz",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Término",
+              "Significado",
+              "Ejemplo"
+            ],
+            "rows": [
+              [
+                "Voz a texto (ASR)",
+                "Reconocimiento automático del habla: convertir audio hablado en texto",
+                "Transcribir una reunión o un video"
+              ],
+              [
+                "Whisper",
+                "Una familia de modelos abiertos de reconocimiento de voz de OpenAI muy utilizada",
+                "Crear subtítulos en muchos idiomas"
+              ],
+              [
+                "Texto a voz (TTS)",
+                "Convertir texto en audio hablado",
+                "Leer un artículo en voz alta"
+              ],
+              [
+                "Clonación de voz",
+                "Un modelo de TTS que imita la voz de una persona concreta a partir de una muestra",
+                "Una voz en off con la propia voz del creador, con su consentimiento"
+              ],
+              [
+                "Diarización de hablantes",
+                "Etiquetar quién habló y cuándo en una grabación",
+                "Hablante 1 y Hablante 2 en la transcripción de una entrevista"
+              ],
+              [
+                "Tasa de error de palabras (WER)",
+                "El porcentaje de palabras que una transcripción tiene mal, usado para medir la calidad del ASR",
+                "Un WER del 5 por ciento significa unas 1 palabra errónea de cada 20"
+              ],
+              [
+                "SRT y VTT",
+                "Formatos de subtítulos en texto plano con marcas de tiempo para cada línea",
+                "Subir subtítulos a una plataforma de video"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "Seguridad, etiquetado y legislación",
+      "body": [
+        "Las normas varían según el país y cambian a menudo. Esta sección es información general, no asesoramiento jurídico.",
+        {
+          "table": {
+            "head": [
+              "Término",
+              "Significado",
+              "Ejemplo"
+            ],
+            "rows": [
+              [
+                "Deepfake",
+                "Contenido realista generado o alterado con IA que muestra personas o hechos que no son reales",
+                "Un video de un político diciendo palabras que nunca dijo"
+              ],
+              [
+                "Credenciales de contenido (C2PA)",
+                "Un estándar abierto que adjunta información firmada sobre cómo se creó y se editó un archivo",
+                "Una foto que muestra que se editó con una herramienta de IA"
+              ],
+              [
+                "Marca de agua invisible",
+                "Una señal oculta incrustada en los píxeles o el audio que un software puede detectar después",
+                "Un generador que marca cada imagen que crea"
+              ],
+              [
+                "Etiquetas explícitas e implícitas",
+                "En las normas de etiquetado de China: una etiqueta visible que la gente puede ver y una etiqueta oculta en los metadatos o en una marca de agua",
+                "Una etiqueta de generado por IA en un video más un campo en los metadatos"
+              ],
+              [
+                "Obligaciones de transparencia de la Ley de IA de la UE",
+                "Normas de la UE según las cuales hay que informar a las personas cuando hablan con una IA y los contenidos de IA y los deepfakes deben poder identificarse",
+                "Un chatbot que avisa de que es un bot"
+              ],
+              [
+                "Derechos de autor de los datos de entrenamiento",
+                "La cuestión legal de si se permite entrenar con obras protegidas por derechos de autor, que varía según el país",
+                "Demandas e informes de políticas públicas en varios países"
+              ],
+              [
+                "Salvaguardas (guardrails)",
+                "Reglas y filtros que bloquean peticiones o salidas dañinas",
+                "Negarse a dar instrucciones para fabricar armas"
+              ],
+              [
+                "Jailbreak",
+                "Un prompt diseñado para que un modelo ignore sus reglas de seguridad",
+                "Un truco de juego de rol para saltarse las negativas"
+              ],
+              [
+                "Inyección de prompts (prompt injection)",
+                "Instrucciones ocultas en una página web o un archivo que secuestran a una IA que los lee",
+                "Una página que le dice a un agente de IA que envíe tus datos a otro sitio"
+              ],
+              [
+                "Sesgo",
+                "Injusticia sistemática en las salidas, a menudo aprendida de datos de entrenamiento desequilibrados",
+                "Imágenes de una profesión que muestran solo un género"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "Términos que la gente suele confundir",
+      "body": [
+        "Hay varios pares de términos que se confunden en las noticias y en las páginas de productos. La diferencia suele cambiar lo que conviene hacer.",
+        {
+          "table": {
+            "head": [
+              "Par",
+              "Diferencia",
+              "Por qué importa"
+            ],
+            "rows": [
+              [
+                "Modelo frente a aplicación",
+                "El modelo genera; la aplicación añade la interfaz, el prompt de sistema, las herramientas y el almacenamiento",
+                "Dos aplicaciones con el mismo modelo pueden comportarse de forma distinta"
+              ],
+              [
+                "Token frente a palabra",
+                "Una palabra puede ser un token o varios; los recuentos cambian según el idioma",
+                "Los precios y los límites se cuentan en tokens"
+              ],
+              [
+                "Parámetros frente a ventana de contexto",
+                "Los parámetros son lo que el modelo aprendió; la ventana de contexto es lo que puede ver ahora mismo",
+                "Un modelo enorme aún puede olvidar el principio de un chat largo"
+              ],
+              [
+                "Ajuste fino frente a RAG",
+                "El ajuste fino cambia el modelo; la RAG le da documentos en el momento de la pregunta",
+                "Para datos que cambian a menudo, la RAG suele ser más fácil"
+              ],
+              [
+                "Pesos abiertos frente a código abierto",
+                "Los pesos abiertos se pueden descargar; el código abierto implica además que el código y los datos de entrenamiento son abiertos con una licencia abierta",
+                "Lee la licencia antes de un uso comercial"
+              ],
+              [
+                "Marca de agua frente a etiqueta",
+                "Una marca de agua es una señal técnica; una etiqueta es un aviso que la gente puede leer",
+                "Algunas leyes exigen ambas"
+              ]
+            ]
+          }
+        },
+        "Para una explicación más a fondo de cualquier término, consulta los artículos relacionados de esta sección, como cómo funcionan los LLM, los tokens y la ventana de contexto, y cómo funcionan los modelos de difusión."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "¿Cuál es la diferencia entre IA, aprendizaje automático y aprendizaje profundo?",
+      "a": "La IA es todo el campo. El aprendizaje automático es la parte de la IA que aprende de ejemplos. El aprendizaje profundo es la parte del aprendizaje automático que usa redes neuronales de muchas capas, que es lo que son los modelos generativos modernos."
+    },
+    {
+      "q": "¿Cuál es la diferencia entre un LLM y un chatbot?",
+      "a": "Un LLM es el modelo que genera texto. Un chatbot es una aplicación construida alrededor de uno o varios modelos, que añade una interfaz de chat, instrucciones, funciones de memoria y herramientas como la búsqueda web."
+    },
+    {
+      "q": "¿Qué significa código abierto en los modelos de IA?",
+      "a": "Se usa con poco rigor. A menudo significa solo que los pesos se pueden descargar. Un modelo totalmente abierto también comparte el código de entrenamiento y detalles de los datos con una licencia abierta. Revisa la licencia para el uso comercial y las normas de atribución."
+    },
+    {
+      "q": "¿Qué significa 7B o 70B en el nombre de un modelo?",
+      "a": "Es el número aproximado de parámetros, en miles de millones. Un número mayor suele significar más capacidad, pero también más memoria y potencia de cálculo para ejecutarlo."
+    },
+    {
+      "q": "¿La ingeniería de prompts es una habilidad real?",
+      "a": "Sí, en el sentido práctico de escribir instrucciones claras y específicas, dar ejemplos y aportar el contexto adecuado. Los modelos entienden cada vez mejor las peticiones sencillas, pero una entrada clara sigue dando resultados más fiables."
+    }
+  ]
+}

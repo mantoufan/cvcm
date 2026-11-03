@@ -8777,6 +8777,149 @@
     "bit-manipulation": {
       "name": "Manipulación de bits",
       "blurb": "Operadores bit a bit, trucos de un solo bit, conteo de bits y bitmasks"
+    },
+    "what-is-generative-ai": {
+      "name": "¿Qué es la IA generativa?",
+      "blurb": "Cómo los modelos de IA aprenden de los datos para crear texto, imágenes, video y audio, y dónde fallan"
+    },
+    "how-llms-work": {
+      "name": "Cómo funcionan los LLM",
+      "blurb": "Sigue un prompt a través de los tokens, la atención y la predicción del siguiente token hasta la respuesta"
+    },
+    "tokens-and-context-window": {
+      "name": "Tokens y ventana de contexto",
+      "blurb": "Recuentos reales de tokens en seis idiomas, qué llena la ventana de contexto y cómo ahorrar espacio"
+    },
+    "ai-hallucination": {
+      "name": "Alucinaciones de la IA",
+      "blurb": "Por qué la IA inventa datos y citas, prompts que lo reducen y cómo comprobar las respuestas"
+    },
+    "how-diffusion-models-work": {
+      "name": "Cómo funcionan los modelos de difusión",
+      "blurb": "Cómo el ruido se convierte en imagen y qué cambian los pasos, la semilla y la escala CFG"
+    },
+    "what-are-ai-agents": {
+      "name": "¿Qué son los agentes de IA?",
+      "blurb": "Cómo los agentes de IA llaman a herramientas en bucle, una traza real, MCP y los riesgos a tener en cuenta"
+    },
+    "ai-glossary": {
+      "name": "Glosario de IA",
+      "blurb": "60 términos de IA generativa explicados fácil, de token y LoRA a CFG, C2PA y deepfakes"
+    },
+    "prompt-engineering-basics": {
+      "name": "Ingeniería de prompts básica",
+      "blurb": "Las seis partes de un buen prompt, una reescritura de antes y después, ejemplos y pruebas"
+    },
+    "image-prompts": {
+      "name": "Cómo escribir prompts para imágenes",
+      "blurb": "Una fórmula de prompt, una reescritura de débil a fuerte, tablas de palabras clave y prompts negativos"
+    },
+    "video-prompts": {
+      "name": "Cómo escribir prompts de video",
+      "blurb": "Estructura de prompt en 7 partes, una acción por plano, tiempos por beats y una reescritura completa"
+    },
+    "camera-movement-terms": {
+      "name": "Movimientos de cámara",
+      "blurb": "Dolly, travelling, órbita, grúa, dolly zoom y más: qué aspecto tiene cada uno y cómo pedirlo en un prompt"
+    },
+    "storyboard-prompts": {
+      "name": "Prompts de storyboard",
+      "blurb": "Convierte un guion en planos y un prompt por plano, con un ejemplo de 15 segundos."
+    },
+    "text-to-image": {
+      "name": "Cómo funciona la IA de texto a imagen",
+      "blurb": "Del prompt a la imagen: pasos, guía, semilla, tamaño y un flujo de trabajo del borrador al resultado final"
+    },
+    "image-to-image": {
+      "name": "Cómo funciona la IA de imagen a imagen",
+      "blurb": "Fuerza, imágenes de referencia, transferencia de estilo, inpainting y control por profundidad, pose y bordes"
+    },
+    "consistent-ai-characters": {
+      "name": "Personajes de IA coherentes",
+      "blurb": "Hojas de personaje, referencias, semillas, descriptores fijos, LoRA y una lista de continuidad"
+    },
+    "how-ai-upscaling-works": {
+      "name": "Cómo funciona el escalado con IA",
+      "blurb": "Por qué el bicúbico desenfoca, cómo las GAN y Real-ESRGAN añaden detalle, y cuándo fallan"
+    },
+    "how-ai-background-removal-works": {
+      "name": "Cómo funciona la eliminación de fondo con IA",
+      "blurb": "Máscaras frente a matrices alfa, por qué fallan el pelo y el cristal, y por qué los recortes deben ser PNG"
+    },
+    "what-is-a-depth-map": {
+      "name": "¿Qué es un mapa de profundidad?",
+      "blurb": "Cómo deduce la IA la profundidad de una foto, tonos de cerca y lejos, y usos en 3D y ControlNet"
+    },
+    "text-to-video": {
+      "name": "Cómo funciona el texto a video",
+      "blurb": "Cómo un prompt se convierte en un clip, los ajustes que importan y un plan de planos de 15 segundos"
+    },
+    "image-to-video": {
+      "name": "Cómo funciona la imagen a video",
+      "blurb": "Elige la imagen inicial, escribe prompts solo de movimiento y cuándo basta el paralaje 2.5D"
+    },
+    "first-last-frame-video": {
+      "name": "Video de primer y último fotograma",
+      "blurb": "Interpolación de fotogramas clave, cómo diseñar ambos fotogramas y transiciones que funcionan o fallan"
+    },
+    "multi-shot-ai-video": {
+      "name": "Video con IA de varios planos",
+      "blurb": "Mantén coherentes las caras, la ropa, los lugares y la luz en muchos planos de video con IA."
+    },
+    "ai-short-drama-workflow": {
+      "name": "Flujo de trabajo de un microdrama con IA",
+      "blurb": "Del gancho y el guion a un episodio 9:16 etiquetado, con una lista de planos de 20 segundos."
+    },
+    "how-speech-to-text-works": {
+      "name": "Cómo funciona la transcripción de voz a texto",
+      "blurb": "Del espectrograma a las palabras, cómo aprendió Whisper, tasa de error por palabra y subtítulos limpios"
+    },
+    "text-to-speech": {
+      "name": "Cómo funciona el texto a voz",
+      "blurb": "TTS neuronal frente a voces del navegador, SSML para pausas y nombres, y consentimiento en la clonación de voz"
+    },
+    "run-ai-in-the-browser": {
+      "name": "Ejecutar IA en el navegador",
+      "blurb": "WebGPU frente a WASM, ONNX Runtime Web, Transformers.js, tamaño del modelo, caché y límites en el móvil"
+    },
+    "call-an-llm-api": {
+      "name": "Cómo llamar a una API de LLM",
+      "blurb": "Una petición de API que funciona en curl, Python y JS, más streaming, JSON, reintentos y coste"
+    },
+    "ai-copyright-and-commercial-use": {
+      "name": "Derechos de autor y uso comercial de la IA",
+      "blurb": "Quién es el titular del resultado de la IA en EE. UU., China y la UE, y qué comprobar antes de venderlo."
+    },
+    "labeling-ai-content": {
+      "name": "Cómo etiquetar contenido de IA",
+      "blurb": "Etiquetas explícitas e implícitas según las normas de China, el Reglamento de IA de la UE y las políticas de las plataformas."
+    },
+    "c2pa-and-ai-watermarks": {
+      "name": "C2PA y marcas de agua de IA",
+      "blurb": "Content Credentials, SynthID y etiquetas IPTC, por qué desaparecen los metadatos y los límites de la detección"
+    },
+    "ai": {
+      "label": "Tutoriales de IA",
+      "lead": "Guías con fuentes sobre IA generativa: cómo funcionan los LLM y los modelos de difusión, cómo escribir prompts de imagen y video, flujos de trabajo de imagen, video y audio con IA, modelos que se ejecutan en el navegador, y derechos de autor y etiquetado de la IA.",
+      "all": "Todos los tutoriales de IA",
+      "groups": {
+        "basics": "Fundamentos de IA",
+        "prompts": "Cómo escribir prompts",
+        "image": "Imágenes con IA",
+        "video": "Video con IA",
+        "audio": "Audio con IA",
+        "dev": "IA para desarrolladores",
+        "trust": "Derechos de autor y seguridad"
+      },
+      "blurbs": {
+        "basics": "Cómo funcionan los LLM y los modelos de difusión, tokens, alucinaciones, agentes y un glosario",
+        "prompts": "Fórmulas de prompts para texto, imagen y video, movimientos de cámara y storyboards",
+        "image": "Texto a imagen, imagen a imagen, personajes coherentes, escalado y recortes",
+        "video": "Texto a video, imagen a video, fotogramas clave, continuidad entre planos y cortos dramáticos con IA",
+        "audio": "Cómo funcionan la voz a texto y el texto a voz, y sus límites",
+        "dev": "Ejecutar modelos en el navegador y llamar a una API de LLM",
+        "trust": "Quién es dueño de lo que genera la IA, normas de etiquetado, C2PA y marcas de agua de IA"
+      }
     }
   },
   "dice": {

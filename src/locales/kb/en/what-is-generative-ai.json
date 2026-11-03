@@ -1,0 +1,218 @@
+{
+  "title": "What Is Generative AI? How It Works, With Examples — cv.cm",
+  "description": "What is generative AI? A plain explanation of how models learn from data to create text, images, video and audio, the main model types, and what they get wrong.",
+  "h1": "What is generative AI?",
+  "answer": "Generative AI is software that creates new content, such as text, images, video, audio or code, instead of only sorting or scoring existing data. A model learns the patterns in a very large set of examples, then produces new output that fits those patterns when you give it an instruction, called a prompt. ChatGPT, Claude, Midjourney and Whisper-based tools are common examples.",
+  "sections": [
+    {
+      "h": "Generative AI versus other AI",
+      "body": [
+        "Most AI before the 2020s was predictive. It looked at an input and gave back a label or a number: is this email spam, what is the price of this house, which face is in this photo. Generative AI turns the direction around. It takes a short input and gives back a whole new piece of content.",
+        "Both kinds are trained on examples, and both are statistical. The difference is the shape of the output. A spam filter outputs one word. A language model outputs a paragraph that did not exist before.",
+        {
+          "table": {
+            "head": [
+              "",
+              "Predictive AI",
+              "Generative AI"
+            ],
+            "rows": [
+              [
+                "Typical question",
+                "Which category is this?",
+                "Make something that fits this description."
+              ],
+              [
+                "Output",
+                "A label, score or number",
+                "Text, an image, a video, audio or code"
+              ],
+              [
+                "Example",
+                "Spam filter, fraud alert, face unlock",
+                "Chat assistant, image generator, voice synthesis"
+              ],
+              [
+                "How to check it",
+                "Compare with the correct label",
+                "Harder: many outputs can be acceptable"
+              ]
+            ]
+          }
+        },
+        "Many products mix the two. A speech-to-text tool is generative in the narrow sense, because it writes a transcript, but it is close to prediction, because there is one correct transcript."
+      ]
+    },
+    {
+      "h": "How generative models work",
+      "body": [
+        "Every generative model follows the same two-phase idea. In training, the model sees millions or billions of examples and adjusts its internal numbers, called parameters or weights, so that it gets better at reproducing the patterns in that data. In use, which is called inference, the model starts from your prompt and builds new output step by step, guided by what it learned.",
+        "The model does not store a copy of each training example and paste it back. It stores a compressed statistical picture of what text, images or sounds tend to look like. That is why it can produce new combinations, and also why it can produce confident mistakes.",
+        "Three families of models do most of the work today:",
+        {
+          "table": {
+            "head": [
+              "Family",
+              "How it generates",
+              "Common uses"
+            ],
+            "rows": [
+              [
+                "Autoregressive (transformer)",
+                "Predicts the next piece, a token, then the next, one at a time",
+                "Chat, writing, code, translation, some image models"
+              ],
+              [
+                "Diffusion",
+                "Starts from random noise and removes noise over many steps until an image or video appears",
+                "Most text-to-image and text-to-video tools"
+              ],
+              [
+                "GAN (generative adversarial network)",
+                "A generator and a critic train against each other",
+                "Older face and style generators, some upscalers"
+              ]
+            ]
+          }
+        },
+        "The transformer architecture, introduced in 2017, is behind almost all large language models. Diffusion models became the main approach for images after 2020. GANs came first, in 2014, and are still used for some fast image tasks. The lines are blurring: some image models are autoregressive, and some video models combine diffusion with transformers.",
+        {
+          "note": "A concrete example: cv.cm's AI image generator runs Janus-Pro-1B on your own GPU in the browser. It is an autoregressive model that builds a 384-pixel image piece by piece, the same way a chatbot builds a sentence, rather than a diffusion model."
+        }
+      ]
+    },
+    {
+      "h": "What generative AI can make",
+      "body": [
+        "The same idea applies to every kind of media. What changes is the training data and how the output is represented.",
+        {
+          "table": {
+            "head": [
+              "Output",
+              "Typical input",
+              "Well-known examples",
+              "Common weak spots"
+            ],
+            "rows": [
+              [
+                "Text",
+                "A question or instruction",
+                "ChatGPT, Claude, Gemini, DeepSeek, Qwen",
+                "Invented facts and citations, outdated knowledge"
+              ],
+              [
+                "Code",
+                "A description of the task, existing code",
+                "Coding assistants built on the same LLMs",
+                "Code that looks right but fails edge cases or uses fake functions"
+              ],
+              [
+                "Images",
+                "A text prompt, a reference image",
+                "Midjourney, GPT image, Stable Diffusion, FLUX, Imagen",
+                "Hands, readable text, exact counts of objects"
+              ],
+              [
+                "Video",
+                "A prompt, a start image, a start and end frame",
+                "Veo, Kling, Runway, Seedance",
+                "Physics, object permanence, consistency across shots"
+              ],
+              [
+                "Speech and music",
+                "Text, a voice sample, a style description",
+                "Neural text-to-speech, music generators",
+                "Unnatural stress, names, mixed languages"
+              ],
+              [
+                "Transcripts",
+                "Audio or video",
+                "Whisper and similar speech models",
+                "Strong accents, overlapping speakers, rare names"
+              ]
+            ]
+          }
+        },
+        "Not every AI media tool is generative in the full sense. cv.cm's photo to video tool, for example, estimates a depth map from one photo and moves a virtual camera through it. The camera moves, but the subject does not, because no new frames of motion are invented. A text-to-video model, by contrast, generates every frame."
+      ]
+    },
+    {
+      "h": "A worked example: one idea, several models",
+      "body": [
+        "Suppose a small shop wants a 15-second clip to announce a new ceramic mug. A typical generative workflow looks like this:",
+        {
+          "ol": [
+            "Text: ask a chat model for three short captions and a 30-word voiceover script. Edit the one you like by hand.",
+            "Image: describe the shot to an image model, for example a product on a wooden table in soft morning light. Generate several and pick one.",
+            "Video: give that image to an image-to-video model with a short motion prompt, such as a slow push-in while steam rises.",
+            "Voice: turn the script into speech with a text-to-speech model, or record it yourself.",
+            "Subtitles: run the audio through a speech-to-text model to get an SRT file, then fix any errors.",
+            "Review: check the product looks like the real one, the text is spelled correctly, and you label the video as AI-generated where required."
+          ]
+        },
+        "Each step uses a different model, but all of them do the same basic thing: they turn a short instruction into new content that matches patterns from training. Each step also needs a human check, because each model has its own typical failures.",
+        {
+          "code": "Weak prompt:\nmug ad\n\nStronger prompt:\nA white ceramic mug with a thin blue rim on a light oak table,\nsoft morning window light from the left, steam rising,\nshallow depth of field, product photo, no text, no logo.",
+          "lang": "text"
+        },
+        "The stronger prompt names the subject, the material, the setting, the light and what to leave out. Generative models fill every gap with the most typical choice from their training, so the more you specify, the less they guess."
+      ]
+    },
+    {
+      "h": "What generative AI does well and what it does badly",
+      "body": [
+        "Generative AI is strong at producing a first draft quickly, rewording text, summarizing long material you provide, translating, brainstorming many options, and turning a rough idea into a picture or a sound.",
+        "It is weak in predictable places:",
+        {
+          "ul": [
+            "Facts: language models can state false information with full confidence. This is called hallucination or confabulation.",
+            "Counting and exact details: five fingers, three apples, a 12-word sentence. Models approximate.",
+            "Text inside images: signs and labels often come out misspelled, though this has improved at the time of writing.",
+            "Physics and continuity in video: objects can merge, vanish or move in impossible ways.",
+            "Fresh information: a model only knows what was in its training data, up to a cutoff date, unless it is connected to search.",
+            "Rare languages, dialects and accents: quality drops where training data was thin."
+          ]
+        },
+        "The practical rule is to use generative AI where a mistake is easy to spot and cheap to fix, and to verify everything where a mistake is costly."
+      ]
+    },
+    {
+      "h": "Using generative AI responsibly",
+      "body": [
+        "A short checklist before you publish or rely on AI output:",
+        {
+          "ol": [
+            "Verify facts, numbers, quotes and links against a primary source.",
+            "Do not paste private data, passwords, client files or ID documents into tools you do not control. Browser-based tools that run the model on your device avoid uploading the file.",
+            "Check the terms of the tool for commercial use, and do not prompt for real people, logos or characters you have no right to use.",
+            "Label AI-generated or AI-edited media where the law or the platform requires it. China, the EU and many platforms now have labeling rules.",
+            "Keep a human responsible for the final result, especially in health, law, finance and news."
+          ]
+        },
+        "Generative AI is a tool that predicts plausible output. It is very useful when you treat it as a fast assistant that drafts, and not as an authority that knows."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Is ChatGPT generative AI?",
+      "a": "Yes. ChatGPT is a chat product built on large language models, which are generative models that write text one token at a time. Some versions can also create images and speech."
+    },
+    {
+      "q": "What is the difference between AI and generative AI?",
+      "a": "AI is the broad field of software that performs tasks that seem to need intelligence. Generative AI is the part of AI that creates new content, as opposed to classifying, ranking or predicting a single value."
+    },
+    {
+      "q": "Does generative AI copy its training data?",
+      "a": "Usually it produces new combinations rather than copies, but models can sometimes reproduce passages, images or styles very closely, especially for famous or often-repeated works. This is one reason copyright questions about AI are still being decided."
+    },
+    {
+      "q": "Is generative AI the same as AGI?",
+      "a": "No. AGI, artificial general intelligence, is a hypothetical system that matches people across almost all tasks. Today's generative models can be impressive on many tasks but still fail at simple checks and need human oversight."
+    },
+    {
+      "q": "Can I use generative AI for free?",
+      "a": "Yes. Many chat assistants have free tiers, and some tools run open models directly in your browser at no cost. Free tiers usually have usage limits, and terms for commercial use differ by tool."
+    }
+  ]
+}

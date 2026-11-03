@@ -1,0 +1,169 @@
+{
+  "title": "Prompt engineering cơ bản: cách viết prompt hiệu quả — cv.cm",
+  "description": "Prompt engineering cơ bản: sáu phần của một prompt tốt, ví dụ viết lại trước và sau, mẫu minh họa, định dạng và cách kiểm thử prompt trong ChatGPT, Claude hay Gemini.",
+  "h1": "Prompt engineering cơ bản: cách viết prompt tốt",
+  "answer": "Prompt engineering là viết chỉ dẫn để mô hình ngôn ngữ cho đúng kết quả bạn cần ngay lần đầu và mọi lần sau. Một prompt tốt nêu rõ nhiệm vụ, cung cấp ngữ cảnh và đầu vào cần thiết, cho biết kết quả dành cho ai, chỉ ra định dạng và đặt giới hạn. Thêm một hai ví dụ cho các trường hợp khó, rồi thử prompt trên vài đầu vào thật.",
+  "sections": [
+    {
+      "h": "Vì sao cách diễn đạt prompt quan trọng",
+      "body": [
+        "Mô hình ngôn ngữ không biết hoàn cảnh của bạn. Nó chỉ thấy văn bản bạn gửi. Khi prompt mơ hồ, mô hình lấp chỗ trống bằng câu trả lời phổ biến nhất, thường chung chung, quá dài hoặc nhắm sai người đọc. Prompt engineering phần lớn là việc loại bỏ những chỗ phải đoán.",
+        "Một phép thử hữu ích: một đồng nghiệp mới thông minh, chưa từng gặp bạn, có làm tốt việc này chỉ từ tin nhắn của bạn không? Nếu họ phải hỏi lại ba câu trước, thì mô hình cũng cần những câu trả lời đó. Hướng dẫn chính thức của OpenAI, Anthropic và Google đưa ra cùng lời khuyên cốt lõi bằng những cách nói khác nhau: rõ ràng và cụ thể, đưa ngữ cảnh, cho ví dụ, nói rõ định dạng bạn muốn."
+      ]
+    },
+    {
+      "h": "Sáu phần của một prompt tốt",
+      "body": [
+        "Không phải prompt nào cũng cần đủ sáu phần, nhưng đối chiếu danh sách này sẽ sửa được hầu hết prompt yếu.",
+        {
+          "table": {
+            "head": [
+              "Phần",
+              "Trả lời câu hỏi nào",
+              "Đoạn ví dụ"
+            ],
+            "rows": [
+              [
+                "Nhiệm vụ",
+                "Mô hình cần làm gì?",
+                "Viết thư trả lời email này của khách hàng."
+              ],
+              [
+                "Ngữ cảnh",
+                "Nó cần bối cảnh gì?",
+                "Chúng tôi bán cốc gốm làm thủ công. Giao hàng mất 5 đến 7 ngày."
+              ],
+              [
+                "Đầu vào",
+                "Nó cần xử lý tài liệu nào?",
+                "Email của khách hàng, được tách riêng rõ ràng."
+              ],
+              [
+                "Đối tượng và giọng điệu",
+                "Ai đọc kết quả?",
+                "Một khách hàng mua lần đầu đang bực bội. Thân thiện, không xin lỗi quá mức."
+              ],
+              [
+                "Định dạng",
+                "Kết quả nên có hình dạng nào?",
+                "Ba đoạn ngắn, dưới 120 từ, không có dòng tiêu đề."
+              ],
+              [
+                "Ràng buộc",
+                "Nó phải làm hoặc tránh điều gì?",
+                "Không hứa hoàn tiền. Đưa liên kết theo dõi đơn hàng."
+              ]
+            ]
+          }
+        },
+        "Hãy đặt tài liệu đầu vào dài giữa các dấu phân cách rõ ràng, như thẻ kiểu XML hoặc ba dấu ngoặc kép, để mô hình phân biệt được chỉ dẫn của bạn với văn bản cần xử lý. Cách này cũng giảm nguy cơ làm theo nhầm chỉ dẫn ẩn trong đầu vào, ví dụ trong một trang web được dán vào."
+      ]
+    },
+    {
+      "h": "Viết lại: trước và sau",
+      "body": [
+        "Đây là một prompt yếu điển hình:",
+        {
+          "code": "Summarize this article.",
+          "lang": "text"
+        },
+        "Mô hình sẽ tạo ra bản tóm tắt, nhưng dài bao nhiêu, cho ai, dưới dạng nào? Đây là cùng yêu cầu đó khi đã lấp các chỗ trống:",
+        {
+          "code": "You are helping a busy product manager decide whether to read a research article.\n\nSummarize the article below for that reader.\n- Start with one sentence: the main finding.\n- Then 3 bullet points: method, key number, main limitation.\n- Use plain English. Explain any technical term in a few words.\n- Under 100 words in total.\n- If the article does not state a limitation, write \"No limitation stated\".\n\n<article>\n{paste the article here}\n</article>",
+          "lang": "text"
+        },
+        "Mỗi phần làm gì:",
+        {
+          "ul": [
+            "Dòng đầu đặt đối tượng và mục đích. Giờ mô hình biết vì sao cần bản tóm tắt, nên biết cần giữ gì.",
+            "Cấu trúc gạch đầu dòng cố định định dạng, nên mọi bản tóm tắt trông giống nhau và dễ so sánh.",
+            "Giới hạn số từ ngăn mô hình viết độn.",
+            "Quy tắc cho trường hợp thiếu hạn chế cho mô hình biết phải làm gì ở tình huống biên, thay vì tự bịa ra.",
+            "Các thẻ tách bài viết ra khỏi chỉ dẫn."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Cho ví dụ khi lời nói chưa đủ",
+      "body": [
+        "Một số yêu cầu khó mô tả nhưng dễ cho xem: giọng điệu, cách gắn nhãn, một phong cách đầu ra cụ thể. Thêm vài ví dụ minh họa gọi là few-shot prompting. Một ví dụ (one-shot) thường đã giúp nhiều. Hai đến năm ví dụ đa dạng thường bao quát được các trường hợp chính.",
+        {
+          "code": "Classify each support message as BILLING, SHIPPING, PRODUCT or OTHER.\nReply with the label only.\n\nMessage: I was charged twice for order 5521.\nLabel: BILLING\n\nMessage: The handle on my mug cracked after one week.\nLabel: PRODUCT\n\nMessage: Do you have a shop in Osaka?\nLabel: OTHER\n\nMessage: {new message}\nLabel:",
+          "lang": "text"
+        },
+        "Hãy làm cho các ví dụ khác nhau. Nếu tất cả đều ngắn và lịch sự, mô hình có thể xử lý kém một tin nhắn dài và giận dữ. Cũng cần kiểm tra ví dụ khớp với quy tắc: mô hình bắt chước ví dụ mạnh hơn là làm theo chỉ dẫn viết ra."
+      ]
+    },
+    {
+      "h": "Kỹ thuật giúp ích trong từng trường hợp",
+      "body": [
+        {
+          "ul": [
+            "Yêu cầu các bước trước khi trả lời. Với toán, logic hoặc quyết định nhiều phần, yêu cầu mô hình giải từng bước trước khi đưa đáp án cuối giúp tăng độ chính xác. Đây gọi là chain-of-thought prompting. Nhiều mô hình hiện nay làm việc này ngầm bên trong (thường gọi là chế độ suy luận hay suy nghĩ), nên một yêu cầu thông thường về câu trả lời cẩn thận có thể là đủ.",
+            "Chia nhỏ việc lớn. Thay vì “nghiên cứu, lập dàn ý và viết báo cáo” trong một prompt, hãy chạy ba prompt và kiểm tra từng kết quả. Cách này gọi là prompt chaining.",
+            "Chỉ gán vai khi nó thêm thông tin. “Bạn là kế toán thuế tại Việt Nam” làm thay đổi cách chọn từ và các giả định. “Bạn là thiên tài đẳng cấp thế giới” thì chẳng thêm gì.",
+            "Nói cần làm gì, không chỉ điều cần tránh. “Hãy viết câu ngắn” hiệu quả hơn “Đừng dài dòng”.",
+            "Cho phép trả lời “tôi không biết”. Hãy nói với mô hình rằng nó được phép báo là thiếu thông tin. Cách này giảm sự kiện bịa, dù không loại bỏ hết.",
+            "Yêu cầu định dạng máy đọc được khi mã sẽ đọc kết quả, ví dụ JSON với các trường có tên. Hầu hết API cũng có thể ép buộc một lược đồ JSON trực tiếp."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Kiểm thử prompt như kiểm thử mã",
+      "body": [
+        "Một prompt chạy tốt trên một ví dụ có thể hỏng ở ví dụ sau. Nếu prompt sẽ được dùng lại, hoặc bởi người khác, hãy kiểm thử nó:",
+        {
+          "ol": [
+            "Viết ra kết quả tốt trông thế nào: độ dài, định dạng, những sự kiện bắt buộc đúng.",
+            "Thu thập 10 đến 20 đầu vào thật, kể cả loại khó: rất ngắn, rất dài, lạc đề, ngôn ngữ khác.",
+            "Chạy prompt trên tất cả và đọc từng kết quả.",
+            "Mỗi lần chỉ đổi một thứ và chạy lại cả bộ, để biết thay đổi nào có tác dụng.",
+            "Giữ prompt cuối cùng cùng với bộ kiểm thử. Khi đổi mô hình hoặc mô hình được cập nhật, hãy chạy lại bộ này."
+          ]
+        },
+        "Bước cuối này quan trọng vì cùng một prompt có thể hoạt động khác nhau trên các mô hình khác nhau, và trên các phiên bản mới của cùng một mô hình. Vì lý do đó, hướng dẫn prompt engineering từ các hãng mô hình thay đổi theo thời gian."
+      ]
+    },
+    {
+      "h": "Những lỗi thường gặp",
+      "body": [
+        {
+          "ul": [
+            "Quá nhiều mục tiêu trong một prompt. Mười quy tắc có trọng số ngang nhau sẽ bị bỏ qua một phần. Đặt quy tắc quan trọng nhất lên đầu và giữ danh sách ngắn.",
+            "Mâu thuẫn, như “hãy chi tiết” và “dưới 50 từ”. Mô hình sẽ thỏa mãn một và phá vỡ cái kia.",
+            "Dựa vào chữ in hoa hay lời đe dọa (“YOU MUST”) thay vì một lý do rõ ràng. Giải thích ngắn gọn vì sao có quy tắc đó thường hiệu quả hơn.",
+            "Không tách đầu vào khỏi chỉ dẫn, khiến mô hình coi một phần tài liệu của bạn là mệnh lệnh.",
+            "Tin các sự kiện trong kết quả. Prompt viết tốt vẫn cho ra lỗi nói với vẻ chắc chắn. Hãy kiểm tra tên, số liệu, trích dẫn và liên kết."
+          ]
+        },
+        {
+          "note": "Công cụ tạo ảnh và video đọc prompt khác với mô hình chat. Chúng phản hồi với mô tả hình ảnh (chủ thể, bối cảnh, ánh sáng, máy quay) nhiều hơn là chỉ dẫn. Xem các hướng dẫn prompt ảnh và video cho kiểu viết đó."
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Với các mô hình AI mới hơn có còn cần prompt engineering không?",
+      "a": "Cần ít mẹo hơn, nhưng nhiệm vụ rõ ràng, ngữ cảnh, định dạng và kiểm thử vẫn tạo khác biệt lớn. Mô hình mới làm theo chỉ dẫn sát nghĩa hơn, nên cách diễn đạt chính xác còn quan trọng hơn."
+    },
+    {
+      "q": "System prompt và user prompt khác nhau thế nào?",
+      "a": "System prompt (một số API gọi là developer instructions) đặt quy tắc và hành vi cho cả cuộc trò chuyện. User prompt là yêu cầu của lượt này. Trong ứng dụng, system prompt thường do nhà phát triển viết."
+    },
+    {
+      "q": "Tôi có nên viết prompt bằng tiếng Anh không?",
+      "a": "Hầu hết mô hình lớn hoạt động tốt với nhiều ngôn ngữ. Tiếng Anh có thể đáng tin hơn một chút với chỉ dẫn phức tạp, nhưng viết chỉ dẫn bằng chính ngôn ngữ của kết quả thường cho văn phong tự nhiên hơn. Hãy thử cả hai trên tác vụ của bạn."
+    },
+    {
+      "q": "Prompt nên dài bao nhiêu?",
+      "a": "Đủ dài để loại bỏ những chỗ phải đoán, và không dài hơn. Prompt một dòng là ổn với việc đơn giản. Một prompt dùng lại cho sản phẩm có thể dài một trang hoặc hơn."
+    },
+    {
+      "q": "Prompt có ngăn được ảo giác AI không?",
+      "a": "Không prompt nào loại bỏ hoàn toàn. Đưa văn bản nguồn, yêu cầu mô hình trích dẫn nó và cho phép nó nói rằng câu trả lời không có trong văn bản đều giúp giảm sự kiện bịa."
+    }
+  ]
+}

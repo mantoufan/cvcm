@@ -80,5 +80,44 @@
         "a": "A data structure is a way to store data, such as an array, hash table or tree. An algorithm is a sequence of steps that solves a problem, such as sorting or finding a shortest path, and its speed often depends on the data structure it uses."
       }
     ]
+  },
+  "aiHub": {
+    "kicker": "AI",
+    "all": "All AI tutorials",
+    "title": "AI tutorials: prompts, AI images and video, LLMs explained — cv.cm",
+    "description": "Free, sourced AI guides: how LLMs and diffusion models work, how to write image and video prompts, camera moves, AI short drama workflows and AI copyright.",
+    "h1": "AI tutorials",
+    "lede": "Learn how generative AI works and how to get good results from it. Each guide answers the question first, then shows the method with real prompts and examples, the common mistakes and the official sources.",
+    "groups": {
+      "basics": "AI basics",
+      "prompts": "Prompt writing",
+      "image": "AI images",
+      "video": "AI video",
+      "audio": "AI audio",
+      "dev": "AI for developers",
+      "trust": "Copyright and safety"
+    },
+    "about": [
+      "The basics explain what large language models and diffusion models actually do, why they hallucinate and what tokens and context windows are. The prompt guides give reusable formulas for text, image and video prompts, with weak and strong versions side by side. The image, video and audio guides walk through each workflow from the first prompt to a finished file, and say where the tools still fail.",
+      "The guides are model-agnostic, so the methods work in ChatGPT, Claude, Gemini, Midjourney, Stable Diffusion, Kling, Veo and similar tools. Legal pages cite the official texts and are general information, not legal advice. Several guides link to cv.cm's free AI tools, which run in your browser without uploading your files."
+    ],
+    "faq": [
+      {
+        "q": "Where should a beginner start with AI?",
+        "a": "Read what generative AI is and how LLMs work, then the prompt writing basics. Those three pages explain most of what you need to get useful answers from any chatbot or image generator."
+      },
+      {
+        "q": "Do these tutorials depend on one AI tool?",
+        "a": "No. They teach methods that work across tools. Where a step depends on a product, the guide says so and describes the general option to look for."
+      },
+      {
+        "q": "Can I use AI-generated images and videos commercially?",
+        "a": "Often yes, but it depends on the tool's license and terms, the law where you publish, and whether the output copies someone else's work or likeness. The copyright and labeling guides list what to check."
+      },
+      {
+        "q": "Are the cv.cm AI tools free?",
+        "a": "Yes. The AI image generator, photo to video, background remover, upscaler and speech to text tools are free and run on your own device, so your files are not uploaded."
+      }
+    ]
   }
 }

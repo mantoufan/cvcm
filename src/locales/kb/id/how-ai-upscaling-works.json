@@ -1,0 +1,138 @@
+{
+  "title": "Cara Kerja Upscale Gambar AI: Super-Resolution Dijelaskan — cv.cm",
+  "description": "Cara kerja upscale gambar AI: mengapa bicubic membuat gambar buram, bagaimana SRCNN, GAN, dan Real-ESRGAN mengarang detail, 2x vs 4x, model foto vs anime, dan kapan gagal.",
+  "h1": "Bagaimana cara kerja upscale gambar AI?",
+  "answer": "Upscale AI, atau super-resolution, memakai jaringan saraf yang dilatih dengan pasangan gambar kecil dan besar untuk memprediksi piksel yang hilang saat gambar diperbesar. Alih-alih merata-ratakan piksel tetangga seperti resize bicubic, ia menggambar tepi dan tekstur yang masuk akal berdasarkan hasil pelatihan. Detail tambahan terlihat tajam tetapi hasil karangan, jadi yang membaik hanya tampilan, bukan informasi faktual.",
+  "sections": [
+    {
+      "h": "Resize klasik versus upscale AI",
+      "body": [
+        "Ketika kamu memperbesar gambar 500 piksel menjadi 2000 piksel, tiga dari setiap empat piksel di setiap arah sebelumnya tidak ada. Sesuatu harus memutuskan nilainya.",
+        "Metode klasik menghitungnya dari piksel di sekitar. Nearest neighbor menyalin piksel terdekat, yang menghasilkan tepi kotak-kotak. Bilinear dan bicubic mengambil rata-rata berbobot dari piksel tetangga, yang menghasilkan hasil halus tetapi lembut: tepi yang tajam di gambar kecil menjadi gradasi landai di gambar besar. Metode ini cepat, mudah diprediksi, dan tidak pernah mengarang apa pun.",
+        "Upscaler AI mempelajari seperti apa gambar tajam biasanya terlihat. Selama pelatihan, model melihat banyak gambar beresolusi tinggi dan versi gambar yang sama yang dibuat lebih kecil dan lebih buruk. Ia belajar memetakan versi kecil kembali ke versi besar. Saat dipakai, ia menerapkan pemetaan itu, sehingga bisa menggambar tepi tajam, helai rambut, atau tekstur bata di tempat yang hanya akan dibuat buram oleh rata-rata sederhana.",
+        {
+          "table": {
+            "head": [
+              "Metode",
+              "Cara mengisi piksel baru",
+              "Tampilan",
+              "Mengarang detail?"
+            ],
+            "rows": [
+              [
+                "Nearest neighbor",
+                "Menyalin piksel terdekat",
+                "Kotak-kotak, pecah",
+                "Tidak"
+              ],
+              [
+                "Bicubic",
+                "Rata-rata berbobot dari 16 tetangga",
+                "Halus, tepi lembut",
+                "Tidak"
+              ],
+              [
+                "CNN yang dilatih untuk akurasi (gaya SRCNN)",
+                "Pemetaan hasil belajar, dilatih agar cocok per piksel",
+                "Lebih tajam dari bicubic, masih agak halus",
+                "Sedikit"
+              ],
+              [
+                "Berbasis GAN (ESRGAN, Real-ESRGAN)",
+                "Pemetaan hasil belajar ditambah kritikus yang memberi imbalan untuk tekstur realistis",
+                "Tepi dan tekstur tajam",
+                "Ya"
+              ],
+              [
+                "Berbasis difusi",
+                "Membuat gambar besar yang dikondisikan pada gambar kecil",
+                "Sangat detail, bisa mengubah isi",
+                "Ya, paling banyak"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "Dari SRCNN ke GAN: mengapa tajam mengalahkan akurat",
+      "body": [
+        "SRCNN adalah salah satu jaringan dalam pertama untuk super-resolution: jaringan konvolusional kecil yang dilatih end to end untuk mengubah gambar beresolusi rendah menjadi beresolusi tinggi. Model seperti ini dilatih untuk meminimalkan selisih per piksel dari gambar asli. Itu menghasilkan skor bagus pada ukuran seperti PSNR, tetapi hasilnya terlihat halus. Ketika jaringan ragu apakah sebuah tepi bergeser sedikit ke kiri atau kanan, jawaban teraman di bawah loss itu adalah rata-rata keduanya, yang berarti buram.",
+        "SRGAN mengubah tujuannya. Ia menambahkan jaringan kedua, discriminator, yang belajar membedakan foto beresolusi tinggi asli dari yang hasil upscale. Upscaler diberi imbalan karena berhasil mengelabuinya, sehingga ia menghasilkan tekstur tajam dan realistis meski piksel persisnya berbeda dari aslinya. Penulis SRGAN mencatat bahwa metode yang meminimalkan error sering kekurangan detail frekuensi tinggi dan terlihat kurang memuaskan bagi manusia. ESRGAN memperbaiki rancangan jaringan, pelatihan adversarial, dan perceptual loss, dan menjadi dasar banyak alat berikutnya."
+      ]
+    },
+    {
+      "h": "Yang ditambahkan Real-ESRGAN: pelatihan dengan kerusakan yang realistis",
+      "body": [
+        "Model awal dilatih pada gambar yang hanya diperkecil dengan resize bicubic. Foto nyata rusak dengan lebih banyak cara: blur kamera, noise sensor, kompresi JPEG, di-resize berkali-kali, halo akibat sharpening. Model yang dilatih hanya dengan pengecilan bersih tidak tahu cara menangani semua itu, dan sering memperbesar noise bersama detailnya.",
+        "Real-ESRGAN, dari kelompok riset yang sama, mempertahankan generator ESRGAN tetapi mengubah data pelatihannya. Ia menyusun pasangan pelatihan dari gambar bersih dengan proses degradasi orde tinggi: menerapkan blur, resize, noise, dan kompresi JPEG, lalu mengulang urutannya sekali lagi, untuk meniru gambar yang sudah disimpan dan dibagikan berkali-kali. Ia juga mensimulasikan artefak ringing dan overshoot di sekitar tepi. Discriminator yang lebih kuat, U-Net dengan spectral normalization, menilai detail di setiap piksel. Semua data pelatihan bersifat sintetis, jadi tidak diperlukan pasangan foto asli beresolusi rendah dan tinggi.",
+        "Hasilnya adalah model yang menghilangkan blok kompresi dan noise sambil memperbesar, itulah sebabnya ia bagus untuk gambar web lama, tangkapan layar, dan foto ponsel. Bobot terpisah biasanya dilatih untuk anime dan ilustrasi, karena warna datar dan garis bersih butuh tekstur yang berbeda dari foto.",
+        "Misalnya, upscaler gambar cv.cm menjalankan model Real-ESRGAN ringkas di browsermu pada 2x atau 4x, dengan opsi foto dan anime, sehingga gambar tidak pernah meninggalkan perangkatmu."
+      ]
+    },
+    {
+      "h": "Cara upscale yang baik, langkah demi langkah",
+      "body": [
+        {
+          "ol": [
+            "Mulai dari sumber terbaik yang kamu punya. Pakai file asli, bukan tangkapan layar atau versi yang sudah dikirim ulang lewat aplikasi pesan.",
+            "Crop dulu. Meng-upscale hanya bagian yang dibutuhkan lebih cepat dan memakai lebih sedikit memori.",
+            "Pilih model sesuai isi: model foto untuk fotografi, model anime atau ilustrasi untuk gambar, line art, dan seni game.",
+            "Pilih faktor terkecil yang mencapai targetmu. Kalau butuh 1600 piksel dari 800, pakai 2x, bukan 4x lalu diperkecil.",
+            "Bandingkan pada zoom 100% dengan aslinya. Lihat wajah, teks, rambut, dan pola halus, tempat detail karangan pertama kali terlihat.",
+            "Kalau hasilnya terlalu halus atau seperti plastik, campurkan dengan pembesaran bicubic di editor, atau tambahkan sedikit grain.",
+            "Simpan sebagai PNG atau JPEG berkualitas tinggi. Kompresi JPEG yang kuat setelah upscale mengembalikan blok-bloknya."
+          ]
+        },
+        {
+          "note": "2x lalu 2x lagi tidak sama dengan 4x sekali. Setiap proses mengarang detail di atas detail karangan, dan artefak menumpuk. Pakai satu proses pada faktor yang dibutuhkan bila modelnya menyediakan."
+        }
+      ]
+    },
+    {
+      "h": "Upscaler difusi dan upscale kreatif",
+      "body": [
+        "Kelompok upscaler yang lebih baru memakai difusi. SR3, misalnya, mulai dari noise dan menyempurnakannya langkah demi langkah menjadi gambar beresolusi tinggi, dikondisikan pada input beresolusi rendah. Banyak generator gambar juga menawarkan upscale kreatif atau penambah detail yang menjalankan image-to-image pada gambar yang diperbesar dengan sebuah prompt.",
+        "Metode ini bisa menghasilkan jauh lebih banyak detail daripada upscaler GAN, yang berguna untuk seni AI. Imbalannya adalah kendali: dengan kebebasan lebih besar, metode ini bisa mengubah wajah, menambah objek, menulis ulang teks kecil, atau mengubah tekstur bahan. Untuk dokumen, produk, bukti, atau gambar apa pun yang harus setia pada aslinya, pilih upscaler GAN atau resize klasik. Pakai upscale difusi ketika tampil bagus lebih penting daripada tetap setia."
+      ]
+    },
+    {
+      "h": "Batasan: yang tidak bisa dilakukan upscale",
+      "body": [
+        {
+          "ul": [
+            "Tidak bisa memulihkan informasi yang tidak ada di gambar. Wajah selebar sepuluh piksel menjadi wajah yang masuk akal, bukan orang yang sebenarnya. Jangan pakai upscale AI untuk mengidentifikasi orang, membaca pelat nomor, atau membuat bukti.",
+            "Teks berisiko. Huruf kecil yang buram bisa menjadi huruf lain yang terlihat tajam dan meyakinkan.",
+            "Blur berat dan motion blur sulit. Upscaler dilatih untuk jenis kerusakan tertentu; kasus ekstrem hasilnya mengabur atau seperti lukisan.",
+            "Pola berulang seperti kain, rumput, atau bata bisa berubah menjadi tekstur buatan.",
+            "Kulit terlalu mulus. Model foto kadang menghilangkan pori dan kerutan halus, yang terlihat seperti retouch berat.",
+            "Faktor besar butuh banyak memori. Upscale 4x punya 16 kali jumlah piksel input, jadi gambar besar mungkin perlu diproses dalam tile."
+          ]
+        },
+        "Dipakai dengan memahami batasan tersebut, upscaler AI adalah langkah terakhir yang tepat untuk gambar buatan AI, foto lama berukuran kecil, dan grafis web yang perlu dicetak atau ditampilkan di layar besar."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Apakah upscale AI lebih baik daripada resize di Photoshop?",
+      "a": "Untuk memperbesar, biasanya ya dari segi tampilan, karena ia menggambar tepi dan tekstur tajam alih-alih membuat buram. Resize klasik tetap lebih baik bila kamu tidak boleh menambahkan detail karangan sama sekali."
+    },
+    {
+      "q": "Bisakah upscale AI memulihkan foto lama yang buram?",
+      "a": "Bisa mengurangi blur, noise, dan kompresi sehingga foto terlihat lebih tajam. Ia tidak bisa memulihkan detail asli yang sudah hilang, jadi wajah dan teks bisa sedikit berubah."
+    },
+    {
+      "q": "Sebaiknya pilih 2x atau 4x?",
+      "a": "Pilih faktor terkecil yang mencapai ukuran yang kamu butuhkan. 4x memakan lebih banyak waktu dan memori serta mengarang lebih banyak detail, yang berarti lebih banyak peluang munculnya artefak."
+    },
+    {
+      "q": "Mengapa gambar hasil upscale saya terlihat seperti lukisan?",
+      "a": "Model mengganti tekstur halus yang noisy dengan tekstur halus hasil belajar. Coba model lain, faktor yang lebih kecil, atau campurkan hasilnya dengan pembesaran biasa lalu tambahkan grain tipis."
+    },
+    {
+      "q": "Apakah upscale AI menaikkan DPI untuk cetak?",
+      "a": "DPI hanyalah label; yang penting adalah jumlah piksel pada ukuran cetak. Upscale menambah piksel, jadi upscale 4x memungkinkan cetak sekitar empat kali lebih lebar dengan ketajaman yang sama, dalam batas kemampuan modelnya."
+    }
+  ]
+}

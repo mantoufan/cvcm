@@ -1,0 +1,215 @@
+{
+  "title": "LLM API 호출하는 법: 요청, 스트리밍, JSON, 재시도 — cv.cm",
+  "description": "LLM API 호출 방법을 curl, Python, JavaScript 예제로 정리했습니다. 바로 쓸 수 있는 chat completions 요청과 함께 스트리밍, JSON 출력, 재시도, 요청 한도, 토큰 비용까지 다룹니다.",
+  "h1": "LLM API는 어떻게 호출할까?",
+  "answer": "헤더에 API 키를 넣고, 본문에 모델 이름과 메시지 목록을 담은 JSON으로 HTTPS POST 요청을 보내면 됩니다. 응답은 생성된 텍스트와 토큰 수가 들어 있는 JSON입니다. 많은 제공업체가 OpenAI 방식의 chat completions 형식을 받고, Anthropic과 Gemini는 자체 형식도 갖고 있습니다. 키는 서버에만 두고, 비용은 토큰 단위로 냅니다.",
+  "sections": [
+    {
+      "h": "API 호출 한 번에 일어나는 일",
+      "body": [
+        "LLM API는 웹 서비스입니다. 프로그램이 텍스트를 보내면 제공업체의 서버가 모델을 실행하고, 결과가 JSON으로 돌아옵니다. 호출 사이에 기억은 없습니다. 모델이 봐야 할 대화 전체를 매 요청에 담아야 합니다.",
+        "필요한 것은 세 가지입니다. API 키가 있는 계정, 엔드포인트 URL, 제공업체의 모델 목록에 있는 모델 ID입니다. 아래 예제에서 `MODEL_ID`는 자리표시자입니다. 모델 이름은 자주 바뀌므로 블로그 글이 아니라 제공업체 공식 문서에서 최신 ID를 복사하세요."
+      ]
+    },
+    {
+      "h": "curl, Python, JavaScript로 보는 최소 요청",
+      "body": [
+        "OpenAI가 처음 공개한 chat completions 형식은 가장 널리 따라 하는 요청 형태입니다. 다른 많은 제공업체와 로컬 서버가 이를 받으며, 기본 URL만 다른 경우도 있습니다. 가장 작은 실용 요청은 다음과 같습니다.",
+        {
+          "code": "curl https://api.openai.com/v1/chat/completions \\\n  -H \"Content-Type: application/json\" \\\n  -H \"Authorization: Bearer $OPENAI_API_KEY\" \\\n  -d '{\n    \"model\": \"MODEL_ID\",\n    \"messages\": [\n      {\"role\": \"system\", \"content\": \"You answer in one short paragraph.\"},\n      {\"role\": \"user\", \"content\": \"What is a context window?\"}\n    ]\n  }'",
+          "lang": "bash"
+        },
+        "`messages` 목록에 대화가 들어갑니다. 각 메시지는 `role`과 `content`를 갖습니다. `system` 메시지는 답변 규칙을 정합니다(OpenAI의 최신 모델은 이 역할에 `developer`라는 이름도 받습니다). `user` 메시지는 요청이고, `assistant` 메시지는 이전 답변으로, 대화를 이어 가려면 이를 다시 보냅니다. 줄인 응답은 이렇게 생겼습니다.",
+        {
+          "code": "{\n  \"id\": \"chatcmpl-...\",\n  \"object\": \"chat.completion\",\n  \"model\": \"MODEL_ID\",\n  \"choices\": [\n    {\n      \"index\": 0,\n      \"message\": {\"role\": \"assistant\", \"content\": \"A context window is ...\"},\n      \"finish_reason\": \"stop\"\n    }\n  ],\n  \"usage\": {\"prompt_tokens\": 27, \"completion_tokens\": 64, \"total_tokens\": 91}\n}",
+          "lang": "json"
+        },
+        "텍스트는 `choices[0].message.content`에 있습니다. `usage` 객체는 요금이 부과되는 토큰 수를 셉니다. `finish_reason`은 모델이 멈춘 이유를 알려 줍니다. `stop`은 끝까지 마쳤다는 뜻이고, `length`는 토큰 한도에 걸려 답이 잘렸다는 뜻입니다.",
+        "Python에서는 같은 호출을 타임아웃과 재시도를 넣어 이렇게 작성합니다. 흔히 쓰는 `requests` 라이브러리를 사용했습니다. 각 제공업체의 공식 SDK도 같은 일을 하고 재시도까지 대신 처리해 줍니다.",
+        {
+          "code": "import os, random, time\nimport requests\n\nURL = \"https://api.openai.com/v1/chat/completions\"\nAPI_KEY = os.environ[\"OPENAI_API_KEY\"]   # read from the server environment\n\ndef chat(messages, model=\"MODEL_ID\", max_attempts=5):\n    body = {\"model\": model, \"messages\": messages,\n            \"max_completion_tokens\": 500}   # many compatible APIs: \"max_tokens\"\n    headers = {\"Authorization\": f\"Bearer {API_KEY}\"}\n    for attempt in range(max_attempts):\n        last = attempt == max_attempts - 1\n        try:\n            r = requests.post(URL, headers=headers, json=body, timeout=60)\n        except (requests.Timeout, requests.ConnectionError):\n            if last:\n                raise\n            time.sleep(2 ** attempt + random.random())   # network error: retry\n            continue\n        if r.status_code == 429 or r.status_code >= 500:\n            if last:\n                break\n            backoff = 2 ** attempt + random.random()      # exponential + jitter\n            try:\n                wait = max(float(r.headers.get(\"Retry-After\", 0)), backoff)\n            except ValueError:\n                wait = backoff\n            time.sleep(wait)\n            continue\n        r.raise_for_status()                # 400, 401, 403: fix the request, do not retry\n        data = r.json()\n        return data[\"choices\"][0][\"message\"][\"content\"], data[\"usage\"]\n    raise RuntimeError(\"API still failing after retries\")\n\ntext, usage = chat([{\"role\": \"user\", \"content\": \"What is a context window?\"}])\nprint(text)\nprint(usage[\"prompt_tokens\"], \"in /\", usage[\"completion_tokens\"], \"out\")",
+          "lang": "python"
+        }
+      ]
+    },
+    {
+      "h": "제공업체별 차이: OpenAI 호환, Anthropic, Gemini",
+      "body": [
+        "chat completions 형태는 흔하지만 보편적이지는 않습니다. Anthropic의 Messages API와 Google의 Gemini API는 자체 형식이 있습니다. 두 제공업체 모두 호환 옵션을 내놓지만, 모든 기능은 네이티브 API에서 먼저 제공됩니다. 주요 차이는 다음과 같습니다.",
+        {
+          "table": {
+            "head": [
+              "항목",
+              "OpenAI 방식 chat completions",
+              "Anthropic Messages API",
+              "Gemini API(네이티브)"
+            ],
+            "rows": [
+              [
+                "엔드포인트",
+                "`POST /v1/chat/completions`",
+                "`POST /v1/messages`",
+                "`POST /v1beta/models/{model}:generateContent`"
+              ],
+              [
+                "API 키 헤더",
+                "`Authorization: Bearer <key>`",
+                "`x-api-key`와 필수 날짜 헤더 `anthropic-version`",
+                "`x-goog-api-key`"
+              ],
+              [
+                "시스템 지시",
+                "`system` 또는 `developer` 메시지",
+                "최상위 `system` 필드",
+                "최상위 `systemInstruction` 필드"
+              ],
+              [
+                "필수 필드",
+                "`model`, `messages`",
+                "`model`, `max_tokens`, `messages`",
+                "`contents`(모델은 URL에 포함)"
+              ],
+              [
+                "응답 텍스트",
+                "`choices[0].message.content`",
+                "`content` 배열의 텍스트 블록",
+                "`candidates[0].content.parts[].text`"
+              ],
+              [
+                "스트리밍",
+                "`\"stream\": true`, `[DONE]`으로 끝나는 서버 전송 이벤트(SSE)",
+                "`\"stream\": true`, 이름이 붙은 서버 전송 이벤트",
+                "`alt=sse`를 붙인 `streamGenerateContent` 메서드"
+              ]
+            ]
+          }
+        },
+        "Gemini는 OpenAI 호환 기본 URL을 제공하고, DeepSeek를 비롯해 여러 중국·오픈 모델 호스팅 업체가 chat completions 형식을 받습니다. 호환은 대개 부분적입니다. 구조화된 출력, 도구 호출, 이미지 입력 같은 고급 기능은 다를 수 있습니다. URL만 바꿔서 전환하기 전에 각 제공업체의 호환성 페이지를 읽어 보세요."
+      ]
+    },
+    {
+      "h": "API 키는 서버에 보관하세요",
+      "body": [
+        "API 키를 가진 사람은 누구나 내 돈을 쓸 수 있습니다. 브라우저 JavaScript, 모바일 앱, 공개 저장소, 페이지에 번들되는 프런트엔드 환경 파일에는 절대 넣지 마세요. 이 모두를 사용자가 읽을 수 있습니다.",
+        {
+          "ol": [
+            "키는 서버의 환경 변수나 시크릿 매니저에 저장합니다.",
+            "웹 또는 모바일 앱은 자체 백엔드 엔드포인트를 호출하게 합니다.",
+            "백엔드에서 사용자를 확인한 뒤(로그인, 사용자별 요청 제한, 입력 길이) 키로 LLM API를 호출합니다.",
+            "클라이언트에는 결과만 돌려줍니다.",
+            "제공업체 대시보드에서 월 지출 한도를 설정하고, 프로젝트마다 키를 따로 쓰며, 키가 유출되면 즉시 교체합니다."
+          ]
+        },
+        {
+          "note": "이제 내 백엔드 엔드포인트는 유료 서비스로 통하는 공개된 문입니다. 요청 크기와 사용자당 요청 수를 제한하지 않으면 스크립트 하나가 큰 요금을 일으킬 수 있습니다."
+        }
+      ]
+    },
+    {
+      "h": "스트리밍: 답변이 쓰이는 대로 보여 주기",
+      "body": [
+        "긴 답변은 몇 초씩 걸릴 수 있습니다. `\"stream\": true`를 지정하면 서버가 작은 조각을 서버 전송 이벤트로 보내므로, 화면에서 텍스트가 나오는 대로 보여 줄 수 있습니다. 각 이벤트 줄은 `data: `로 시작하고 `delta`가 담긴 조각을 가집니다. OpenAI 형식은 `data: [DONE]`으로 끝납니다. 이 예제는 Node.js 서버에서 실행됩니다.",
+        {
+          "code": "// Node.js 18+ (server side). Prints the reply as it arrives.\nconst res = await fetch(\"https://api.openai.com/v1/chat/completions\", {\n  method: \"POST\",\n  headers: {\n    \"Content-Type\": \"application/json\",\n    Authorization: `Bearer ${process.env.OPENAI_API_KEY}`,\n  },\n  body: JSON.stringify({\n    model: \"MODEL_ID\",\n    stream: true,\n    messages: [{ role: \"user\", content: \"Write a haiku about rain.\" }],\n  }),\n});\nif (!res.ok) throw new Error(`HTTP ${res.status}: ${await res.text()}`);\n\nconst decoder = new TextDecoder();\nlet buffer = \"\";\nfor await (const chunk of res.body) {\n  buffer += decoder.decode(chunk, { stream: true });\n  const lines = buffer.split(\"\\n\");\n  buffer = lines.pop();                       // keep a partial line for later\n  for (const line of lines) {\n    if (!line.startsWith(\"data: \")) continue;\n    const data = line.slice(6);\n    if (data === \"[DONE]\") continue;          // end of stream\n    const delta = JSON.parse(data).choices[0]?.delta?.content;\n    if (delta) process.stdout.write(delta);\n  }\n}",
+          "lang": "javascript"
+        },
+        "브라우저에서 스트림을 보여 주려면 서버가 받은 조각을 페이지로 전달하세요. 브라우저에서 키를 들고 제공업체를 직접 호출하면 안 됩니다. OpenAI 형식에서는 `stream_options`에 `include_usage`를 설정하지 않으면 스트리밍된 조각에 사용량이 포함되지 않으므로, 요금 계산에 토큰 수가 필요하다면 켜 두세요."
+      ]
+    },
+    {
+      "h": "줄글 대신 JSON 받기",
+      "body": [
+        "코드가 답변을 읽을 때는 JSON을 요청하세요. 두 가지 수준이 있습니다. JSON 모드(`\"response_format\": {\"type\": \"json_object\"}`)는 유효한 JSON을 보장하지만 어떤 필드가 들어갈지는 보장하지 않습니다. JSON Schema를 쓰는 구조화된 출력은, 지원하는 모델에서 모델이 정확히 내가 정한 필드와 타입을 따르게 합니다.",
+        {
+          "code": "{\n  \"model\": \"MODEL_ID\",\n  \"messages\": [\n    {\"role\": \"user\", \"content\": \"Extract the total and currency: 'Amount due: 1.250,00 EUR'\"}\n  ],\n  \"response_format\": {\n    \"type\": \"json_schema\",\n    \"json_schema\": {\n      \"name\": \"invoice_total\",\n      \"strict\": true,\n      \"schema\": {\n        \"type\": \"object\",\n        \"properties\": {\n          \"total\": {\"type\": \"number\"},\n          \"currency\": {\"type\": \"string\"}\n        },\n        \"required\": [\"total\", \"currency\"],\n        \"additionalProperties\": false\n      }\n    }\n  }\n}",
+          "lang": "json"
+        },
+        "스키마를 써도 파싱한 결과를 코드에서 검증하세요. 형태가 맞아도 값은 틀릴 수 있습니다. 예를 들어 숫자를 잘못 읽을 수 있죠. Anthropic과 Gemini도 각자의 형식으로 스키마와 도구 정의를 지원합니다. 긴 JSON 응답을 디버깅할 때는 cv.cm의 JSON 도구 같은 포매터를 쓰면 중첩된 출력을 읽기 쉽습니다."
+      ]
+    },
+    {
+      "h": "요청 한도, 재시도, 오류",
+      "body": [
+        "제공업체는 분당 요청 수(RPM)와 분당 토큰 수(TPM)를 모두 제한하며, 먼저 닿는 쪽이 적용됩니다. 한도를 넘으면 HTTP 상태 코드 429가 돌아옵니다. 오류는 종류별로 처리하세요.",
+        {
+          "table": {
+            "head": [
+              "상태",
+              "의미",
+              "대응"
+            ],
+            "rows": [
+              [
+                "400",
+                "잘못된 요청: 필드 오류, 토큰 초과",
+                "요청을 고치세요. 재시도하지 않습니다."
+              ],
+              [
+                "401 / 403",
+                "키가 없거나 틀렸거나 권한이 없음",
+                "키와 권한을 확인하세요. 재시도하지 않습니다."
+              ],
+              [
+                "429",
+                "요청 한도 초과, 때로는 할당량 소진",
+                "기다렸다가 백오프로 재시도하세요. 할당량이나 결제 문제라고 나오면 멈추고 계정을 해결하세요."
+              ],
+              [
+                "500 / 503",
+                "서버 오류 또는 과부하",
+                "백오프로 재시도하세요."
+              ],
+              [
+                "타임아웃",
+                "제때 응답이 없음",
+                "한두 번 재시도하세요. 긴 답변은 스트리밍을 쓰세요."
+              ]
+            ]
+          }
+        },
+        "지수 백오프로 재시도하세요. 약 1초 기다린 뒤 2, 4, 8초로 늘리고, 여러 클라이언트가 같은 순간에 재시도하지 않도록 작은 무작위 지연(지터)을 더합니다. 응답에 `Retry-After` 헤더가 있으면 최소한 그만큼 기다리세요. 시도 횟수에는 상한을 두세요. 실패한 요청도 한도에 포함될 수 있으므로 짧은 루프로 즉시 재시도하면 상황이 더 나빠집니다. 공식 SDK를 쓴다면 일부 오류는 이미 자동으로 재시도한다는 점을 기억하세요."
+      ]
+    },
+    {
+      "h": "비용은 토큰으로 계산됩니다",
+      "body": [
+        "입력 토큰(시스템 프롬프트와 전체 대화 기록을 포함해 보낸 모든 것)과 출력 토큰(모델이 쓴 것)에 요금을 냅니다. 출력 토큰이 보통 입력 토큰보다 비쌉니다. 공식은 간단합니다.",
+        {
+          "code": "cost = input_tokens  / 1,000,000 * input_price_per_million\n     + output_tokens / 1,000,000 * output_price_per_million\n\nExample with made-up prices (2.00 in, 8.00 out per million tokens):\n  27 input + 64 output tokens\n  = 0.000054 + 0.000512 = 0.000566 per call\n  x 100,000 calls a month = about 56.60",
+          "lang": "text"
+        },
+        {
+          "ul": [
+            "각 응답의 `usage`에서 실제 수치를 읽어 기록하세요. 단어 수로 추정하지 마세요.",
+            "답변마다 길이 상한을 두세요. OpenAI에서는 `max_completion_tokens`(이전의 `max_tokens`는 사용 중단), Anthropic과 많은 호환 API에서는 `max_tokens`입니다.",
+            "대화 기록은 턴마다 늘어나므로 20번째 메시지는 첫 번째보다 비쌉니다. 오래된 턴은 잘라 내거나 요약하세요.",
+            "분류 같은 단순한 작업에는 작은 모델을, 품질이 필요한 곳에만 큰 모델을 쓰세요.",
+            "일부 제공업체는 반복되는 프롬프트 앞부분을 할인하거나(프롬프트 캐싱), 기다려도 되는 작업에 더 저렴한 배치 처리를 제공합니다."
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "브라우저에서 LLM API를 직접 호출해도 되나요?",
+      "a": "내 키로는 안전하지 않습니다. 방문자 누구나 페이지에서 키를 읽을 수 있기 때문입니다. 키를 붙여 주는 내 서버를 호출하세요. 예외는 사용자가 자기 계정의 키를 직접 입력하는 경우나, 브라우저 안에서 완전히 실행되는 모델입니다."
+    },
+    {
+      "q": "API가 앞서 한 말을 기억하지 못하는 이유는 무엇인가요?",
+      "a": "API는 상태를 저장하지 않습니다(stateless). 모델이 봐야 할 이전 메시지를 매 요청에 포함해야 합니다. 채팅 앱은 기록을 저장해 두었다가 매번 다시 보냅니다."
+    },
+    {
+      "q": "temperature는 무엇을 하고, 꼭 설정해야 하나요?",
+      "a": "temperature는 단어 선택의 무작위성을 조절합니다. 낮을수록 예측 가능하고 높을수록 다양합니다. 일부 제공업체와 최신 모델은 샘플링 매개변수를 제한하거나 없애기도 하므로, 설정하기 전에 API 레퍼런스를 확인하세요."
+    },
+    {
+      "q": "답변이 중간에 끊기는 이유는 무엇인가요?",
+      "a": "응답이 설정한 토큰 한도나 모델의 최대 출력에 도달했기 때문입니다. `finish_reason`(Anthropic에서는 `stop_reason`)을 확인하세요. 한도를 높이거나 더 짧은 답을 요청합니다."
+    },
+    {
+      "q": "무료 LLM API도 있나요?",
+      "a": "여러 제공업체가 낮은 요청 한도의 무료 등급이나 체험 크레딧을 제공하고, 오픈 모델은 OpenAI 호환 로컬 서버 뒤에서 내 컴퓨터로 실행할 수 있습니다. 무료 등급과 약관은 자주 바뀌므로 제공업체의 최신 페이지를 확인하세요."
+    }
+  ]
+}

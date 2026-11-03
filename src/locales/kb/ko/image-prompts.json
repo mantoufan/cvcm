@@ -1,0 +1,205 @@
+{
+  "title": "AI 그림 프롬프트 작성법: 공식과 예시 — cv.cm",
+  "description": "AI 그림 프롬프트 잘 쓰는 법을 정리했습니다. 그대로 써먹는 작성 공식, 약한 프롬프트를 강하게 고치는 예시, 스타일·조명·렌즈 키워드, 효과 있는 네거티브 프롬프트까지 다룹니다.",
+  "h1": "AI 그림 프롬프트는 어떻게 써야 할까?",
+  "answer": "좋은 이미지 프롬프트는 뚜렷한 피사체 하나를 정하고, 그것이 무엇을 하고 어디에 있는지 말한 뒤, 스타일, 조명, 카메라, 구도를 쉬운 말로 덧붙입니다. 가장 중요한 아이디어를 맨 앞에 쓰고, 원하지 않는 것보다 원하는 것을 묘사하고, 구절마다 아이디어는 하나만 담으세요. 네거티브 프롬프트는 글자나 여분의 손가락처럼 구체적이고 눈에 보이는 문제에만 쓰세요.",
+  "sections": [
+    {
+      "h": "프롬프트 표현이 중요한 이유",
+      "body": [
+        "이미지 모델은 사람처럼 프롬프트를 읽지 않습니다. 텍스트 인코더가 단어를 숫자로 바꾸고, 이미지 생성기는 그 숫자에 맞는 그림을 만들도록 학습되어 있습니다. 학습 캡션에서 특정 종류의 이미지와 자주 함께 나온 단어는 결과를 그 이미지 쪽으로 끌어당깁니다. 예를 들어 `golden hour`는 낮고 따뜻한 햇빛과 함께 워낙 자주 등장해서 거의 조명 설정처럼 작동합니다.",
+        "여기서 두 가지를 알 수 있습니다. 첫째, 추상적인 말보다 구체적인 시각 표현이 낫습니다. `wet cobblestone street`는 모델이 그릴 거리를 주지만 `a sad mood`는 추측에 맡깁니다. 둘째, 모델은 모든 단어를 따져 보기 때문에 `very`, `beautiful`, `amazing` 같은 군더더기는 정보 없이 자리만 차지합니다. 또 대부분의 도구는 인코더가 읽는 텍스트 길이에 제한이 있어서, 그 길이를 넘은 단어는 잘리거나 영향력이 줄어듭니다. 그래서 프롬프트의 앞부분이 가장 큰 비중을 갖습니다.",
+        "많은 생성기가 가이던스(guidance)도 씁니다. 프롬프트로 만든 이미지와 프롬프트 없이 만든 이미지를 비교해, 그 차이 방향으로 결과를 더 밀어붙이는 방식입니다. 가이던스가 높을수록 단어를 엄격하게 따르지만 거칠거나 채도가 과하게 보일 수 있습니다. 그래서 가이던스를 높인 모호한 프롬프트보다 적당한 가이던스의 명확한 프롬프트가 대체로 더 좋아 보입니다."
+      ]
+    },
+    {
+      "h": "다시 쓸 수 있는 프롬프트 공식",
+      "body": [
+        "좋은 프롬프트는 대부분 같은 여섯 가지 질문에 답합니다. 모델은 앞쪽 단어를 더 중요하게 다루는 경향이 있으니 이 순서로 쓰세요.",
+        {
+          "code": "[subject + key details], [action or pose], [setting + time],\n[style or medium], [lighting], [camera / lens / framing], [color + mood]",
+          "lang": "text"
+        },
+        {
+          "ol": [
+            "피사체: 누구 또는 무엇인지, 중요한 특징 두세 가지(연령대, 옷, 재질, 색).",
+            "동작: 피사체가 하는 일. 동사가 있으면 모델이 그릴 포즈가 생깁니다.",
+            "배경: 어디서 언제인지. 장소 하나와 시간대 하나면 충분합니다.",
+            "스타일 또는 매체: 사진, 수채화, 3D 렌더, 잉크 스케치, 플랫 벡터, 애니메이션 셀 셰이딩 등.",
+            "조명: 분위기에 가장 큰 영향을 주는 요소입니다. 광원과 방향을 적으세요.",
+            "카메라와 구도: 샷 크기, 앵글, 렌즈, 심도, 피사체가 프레임에서 놓이는 위치."
+          ]
+        },
+        "매번 여섯 가지가 다 필요하지는 않습니다. 제품 사진은 동작을 생략할 수 있고, 추상적인 패턴은 카메라를 생략할 수 있습니다. 그래도 생성을 누르기 전에 이 목록을 확인하면 가장 흔한 빈틈, 즉 피사체만 묘사하고 끝나는 프롬프트를 막을 수 있습니다."
+      ]
+    },
+    {
+      "h": "약한 프롬프트에서 강한 프롬프트로: 고쳐 쓰기 예시",
+      "body": [
+        "다음은 전형적인 첫 시도입니다. 피사체와 형용사만 있고, 그림이 어떻게 보여야 하는지는 아무 말도 없습니다.",
+        {
+          "code": "a beautiful cat in a cafe, high quality, 8k, masterpiece",
+          "lang": "text"
+        },
+        "결과는 보통 흐릿한 실내를 배경으로 한 평범한 가운데 정렬 고양이입니다. 현재 대부분의 모델에서 `8k`와 `masterpiece`는 디테일을 더해 주지 않고, 그저 매끈한 스톡 사진 느낌으로 살짝 밀 뿐입니다. 아래 수정본은 같은 아이디어를 유지하면서 여섯 가지 질문에 답합니다.",
+        {
+          "code": "an orange tabby cat with a white chest, sitting on a wooden windowsill\ninside a small cafe, looking out at the rain, late afternoon,\n35mm film photograph, soft window light from the left, warm interior lamps\nin the background, medium close-up at eye level, shallow depth of field,\nmuted warm colors, quiet and cozy",
+          "lang": "text"
+        },
+        {
+          "table": {
+            "head": [
+              "부분",
+              "프롬프트의 문구",
+              "역할"
+            ],
+            "rows": [
+              [
+                "피사체",
+                "orange tabby cat with a white chest",
+                "외형을 고정해서 반복 생성해도 비슷하게 유지됨"
+              ],
+              [
+                "동작",
+                "sitting on a wooden windowsill, looking out",
+                "포즈와 시선 방향을 줌"
+              ],
+              [
+                "배경",
+                "small cafe, rain, late afternoon",
+                "장소 하나와 시간 하나로 빛을 일관되게 유지"
+              ],
+              [
+                "스타일",
+                "35mm film photograph",
+                "입자감, 색 반응, 사실감을 정함"
+              ],
+              [
+                "조명",
+                "soft window light from the left, warm lamps behind",
+                "주광과 따뜻한 배경 빛을 만듦"
+              ],
+              [
+                "카메라",
+                "medium close-up, eye level, shallow depth of field",
+                "프레이밍을 제어하고 배경을 의도적으로 흐림"
+              ],
+              [
+                "분위기",
+                "muted warm colors, quiet and cozy",
+                "색보정 방향을 한쪽으로 모음"
+              ]
+            ]
+          }
+        },
+        "두 번째 버전도 마음에 들지 않으면 한 번에 한 부분만 바꾸고 나머지는 고정하세요. 다섯 가지를 동시에 바꾸면 어떤 단어 때문에 달라졌는지 알 수 없습니다."
+      ]
+    },
+    {
+      "h": "스타일·조명·렌즈·구도 키워드",
+      "body": [
+        "아래 용어는 사진 캡션, 미술 설명, 영화 언어에 흔히 쓰여서 이미지 모델이 폭넓게 이해합니다. 행마다 한두 개만 고르세요. 전부 쓰지는 마세요.",
+        {
+          "table": {
+            "head": [
+              "분류",
+              "키워드",
+              "보통 나타나는 결과"
+            ],
+            "rows": [
+              [
+                "스타일 / 매체",
+                "35mm film photo, studio product photo, watercolor, gouache, ink line art, flat vector illustration, isometric 3D render, anime cel shading, oil painting, paper cutout",
+                "전체적인 룩, 질감, 사실감 정도"
+              ],
+              [
+                "조명",
+                "golden hour, blue hour, overcast soft light, hard noon sun, rim light, backlit, softbox key light, neon signs at night, candlelight, volumetric light through fog",
+                "분위기, 대비, 그림자 방향"
+              ],
+              [
+                "렌즈 / 카메라",
+                "wide-angle 24mm, 50mm standard, 85mm portrait, macro, telephoto compression, fisheye, shallow depth of field, deep focus, motion blur, long exposure",
+                "원근 왜곡, 배경 흐림, 사물이 가깝게 느껴지는 정도"
+              ],
+              [
+                "샷 크기 / 앵글",
+                "extreme close-up, close-up, medium shot, full body, wide establishing shot, low angle, high angle, overhead flat lay, eye level, Dutch tilt",
+                "피사체가 보이는 범위와 위압감"
+              ],
+              [
+                "구도",
+                "rule of thirds, centered symmetrical, negative space on the right, leading lines, framed by a doorway, foreground blur, subject small in a large landscape",
+                "피사체의 위치와 시선이 가는 곳"
+              ],
+              [
+                "색 / 분위기",
+                "muted earth tones, pastel palette, high contrast black and white, teal and orange, monochrome red, warm and nostalgic, cold and clinical",
+                "색보정과 정서적 톤"
+              ]
+            ]
+          }
+        },
+        {
+          "note": "살아 있는 작가의 이름을 넣어 그 스타일을 따라 하는 것은 법적·윤리적 문제를 일으킬 수 있고, 이를 막는 서비스도 있습니다. 마음에 드는 시각적 특징(굵은 붓 터치, 제한된 팔레트, 평평한 그림자)을 묘사하는 편이 더 안전하고 대개 더 정확합니다."
+        }
+      ]
+    },
+    {
+      "h": "네거티브 프롬프트: 하는 일과 쓸 때",
+      "body": [
+        "네거티브 프롬프트는 모델이 멀리해야 할 것을 알려 주는 두 번째 텍스트 입력란입니다. Stable Diffusion이나 FLUX 기반 도구에서는 보통 별도 입력란이나 `negative_prompt` 파라미터이고, Midjourney는 `--no` 파라미터를 씁니다. 채팅형 이미지 도구 중에는 네거티브 입력란이 아예 없는 것도 있는데, 이럴 때는 `no text on the wall` 대신 `a clean, empty wall`처럼 긍정문으로 요청하세요.",
+        "네거티브 프롬프트는 구체적이고 눈에 보이는 것에 가장 잘 듣습니다.",
+        {
+          "code": "Prompt:   a clean product photo of a ceramic mug on a white table\nNegative: text, logo, watermark, extra handles, cluttered background",
+          "lang": "text"
+        },
+        {
+          "ul": [
+            "효과적인 대상: 글자와 워터마크, 여분의 손가락, 두 번째 인물, 계속 나오는 특정 물체, 원하지 않는 색.",
+            "효과가 약한 대상: `ugly, bad, worst quality` 같은 품질 단어의 긴 나열. 일부 구형 모델에서는 조금 도움이 되지만 모든 이미지를 같은 룩으로 몰아가기도 합니다.",
+            "같은 아이디어를 두 입력란에 모두 넣지 마세요. 프롬프트의 고양이와 네거티브의 `cat`은 서로 상쇄되어 결과가 혼란스러워집니다.",
+            "메인 프롬프트에 `no`를 쓰면 역효과가 나기 쉽습니다. `a room with no windows`는 창문을 언급했기 때문에 모델이 창문을 그릴 수 있습니다."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "흔한 실수와 현실적인 한계",
+      "body": [
+        {
+          "ul": [
+            "피사체가 너무 많음. 옷도 동작도 다른 세 사람은 자주 섞입니다. 옷이 바뀌거나 손이 합쳐지죠. 주 피사체를 먼저 생성하고 나머지는 편집이나 인페인팅으로 추가하세요.",
+            "정확한 글자 요구. 많은 모델이 여전히 철자를 틀리거나 없는 글자를 만들어 내며, 비라틴 문자에서 특히 심합니다. 글자는 짧게 쓰고 따옴표로 묶거나 나중에 편집기에서 넣으세요.",
+            "손, 개수, 위치. `Five apples`나 `the cup to the left of the book`은 항상 지켜지지 않습니다. 단어를 더하지 말고 결과를 확인해서 다시 생성하거나 편집하세요.",
+            "충돌하는 스타일 단어. `photorealistic watercolor anime`는 세 방향으로 끌어당깁니다. 매체는 하나만 고르세요.",
+            "모델 간 프롬프트 복사. 한 도구에 맞춰 다듬은 프롬프트가 다른 도구에서는 다르게 동작할 수 있습니다. 텍스트 인코더와 학습 데이터가 다르기 때문입니다. 의존하기 전에 몇 번 테스트해 보세요."
+          ]
+        },
+        "한국어 같은 영어 외 언어 프롬프트가 되는 도구도 많지만, 학습 캡션이 대부분 영어인 모델도 있습니다. 예를 들어 cv.cm의 AI 이미지 생성기는 영어가 아닌 프롬프트를 모델 실행 전에 영어로 번역하므로, 관용구보다 짧고 직역에 가까운 표현이 더 정확하게 번역됩니다."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "AI 그림 프롬프트는 얼마나 길어야 하나요?",
+      "a": "보통 한두 문장에서 네 문장, 대략 20~75단어입니다. 너무 짧으면 운에 맡기는 부분이 많아지고, 훨씬 길면 텍스트 인코더가 읽는 범위를 넘어 뒤쪽 단어의 영향력이 줄어듭니다."
+    },
+    {
+      "q": "4k, 8k, masterpiece 같은 단어가 이미지를 좋게 하나요?",
+      "a": "현재 대부분의 모델에서는 효과가 거의 없습니다. 매끈한 스톡 이미지 스타일로 살짝 기울 수는 있지만, 조명과 렌즈와 재질을 묘사하는 편이 품질에 훨씬 큰 영향을 줍니다."
+    },
+    {
+      "q": "이미지 프롬프트에서 단어 순서가 중요한가요?",
+      "a": "대부분의 모델에서는 그렇습니다. 앞쪽 단어의 영향력이 큰 경향이 있으니 피사체와 가장 중요한 디테일을 앞에, 마무리 요소를 뒤에 두세요."
+    },
+    {
+      "q": "한국어, 일본어, 스페인어로 이미지 프롬프트를 써도 되나요?",
+      "a": "다른 언어를 받는 도구가 많지만 학습 캡션이 대부분 영어라서 영어로 쓸 때 결과가 더 좋은 경우가 많습니다. 도구가 번역해 준다면 짧고 직역에 가까운 표현을 쓰세요."
+    },
+    {
+      "q": "프롬프트와 네거티브 프롬프트는 어떻게 다른가요?",
+      "a": "프롬프트는 보고 싶은 것을 묘사합니다. 네거티브 프롬프트는 글자, 워터마크, 여분의 손가락처럼 모델이 멀리해야 할 구체적인 것을 나열합니다."
+    }
+  ]
+}

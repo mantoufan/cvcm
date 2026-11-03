@@ -80,5 +80,44 @@
         "a": "Cấu trúc dữ liệu là cách lưu dữ liệu, như mảng, bảng băm hay cây. Thuật toán là chuỗi bước giải một bài toán, như sắp xếp hay tìm đường đi ngắn nhất, và tốc độ của nó thường phụ thuộc vào cấu trúc dữ liệu được dùng."
       }
     ]
+  },
+  "aiHub": {
+    "kicker": "AI",
+    "all": "Tất cả hướng dẫn AI",
+    "title": "Hướng dẫn AI: viết prompt, tạo ảnh và video AI, giải thích LLM — cv.cm",
+    "description": "Hướng dẫn AI miễn phí, có dẫn nguồn: LLM và mô hình khuếch tán hoạt động ra sao, cách viết prompt ảnh và video, chuyển động máy quay, quy trình phim ngắn AI và bản quyền AI.",
+    "h1": "Hướng dẫn AI",
+    "lede": "Tìm hiểu AI sinh tạo hoạt động thế nào và làm sao để có kết quả tốt. Mỗi bài trả lời câu hỏi trước, rồi trình bày phương pháp bằng prompt và ví dụ thực tế, các lỗi thường gặp và nguồn chính thức.",
+    "groups": {
+      "basics": "Kiến thức nền tảng về AI",
+      "prompts": "Viết prompt",
+      "image": "Ảnh AI",
+      "video": "Video AI",
+      "audio": "Âm thanh AI",
+      "dev": "AI cho lập trình viên",
+      "trust": "Bản quyền và an toàn"
+    },
+    "about": [
+      "Phần kiến thức nền tảng giải thích các mô hình ngôn ngữ lớn và mô hình khuếch tán thực sự làm gì, vì sao chúng gây ra ảo giác (hallucination) và token, cửa sổ ngữ cảnh là gì. Các bài về prompt đưa ra công thức dùng lại được cho prompt văn bản, ảnh và video, với phiên bản yếu và mạnh đặt cạnh nhau. Các bài về ảnh, video và âm thanh hướng dẫn từng quy trình từ prompt đầu tiên đến tệp hoàn chỉnh, và nói rõ những chỗ công cụ vẫn còn thất bại.",
+      "Các bài viết không phụ thuộc vào mô hình cụ thể, nên phương pháp dùng được trong ChatGPT, Claude, Gemini, Midjourney, Stable Diffusion, Kling, Veo và các công cụ tương tự. Các trang pháp lý dẫn văn bản chính thức và chỉ là thông tin chung, không phải tư vấn pháp lý. Nhiều bài liên kết đến các công cụ AI miễn phí của cv.cm, chạy ngay trong trình duyệt mà không cần tải tệp của bạn lên."
+    ],
+    "faq": [
+      {
+        "q": "Người mới nên bắt đầu học AI từ đâu?",
+        "a": "Hãy đọc AI sinh tạo là gì và LLM hoạt động thế nào, rồi đến các kiến thức cơ bản về viết prompt. Ba trang đó giải thích phần lớn những gì bạn cần để nhận câu trả lời hữu ích từ bất kỳ chatbot hay công cụ tạo ảnh nào."
+      },
+      {
+        "q": "Các hướng dẫn này có phụ thuộc vào một công cụ AI nào không?",
+        "a": "Không. Chúng dạy các phương pháp dùng được trên nhiều công cụ. Khi một bước phụ thuộc vào sản phẩm cụ thể, bài viết sẽ nói rõ và mô tả tùy chọn chung cần tìm."
+      },
+      {
+        "q": "Tôi có thể dùng ảnh và video do AI tạo cho mục đích thương mại không?",
+        "a": "Thường là được, nhưng tùy giấy phép và điều khoản của công cụ, luật nơi bạn đăng tải, và việc sản phẩm có sao chép tác phẩm hoặc hình ảnh của người khác hay không. Các bài về bản quyền và gắn nhãn liệt kê những điều cần kiểm tra."
+      },
+      {
+        "q": "Các công cụ AI của cv.cm có miễn phí không?",
+        "a": "Có. Các công cụ tạo ảnh AI, ảnh thành video, xóa nền, upscale và chuyển giọng nói thành văn bản đều miễn phí và chạy ngay trên thiết bị của bạn, nên tệp của bạn không bị tải lên."
+      }
+    ]
   }
 }

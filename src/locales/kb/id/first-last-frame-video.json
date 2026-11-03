@@ -1,0 +1,188 @@
+{
+  "title": "Video AI Frame Awal dan Akhir: Keyframe yang Berhasil — cv.cm",
+  "description": "Cara kerja video AI first and last frame: interpolasi keyframe, cara mendesain dua frame, serta transisi yang berhasil atau gagal, lengkap dengan contoh prompt.",
+  "h1": "Bagaimana cara kerja video AI first and last frame?",
+  "answer": "Video first and last frame memberi model dua gambar, frame pembuka dan frame penutup, lalu meminta model membuat gerakan di antaranya. Ini adalah interpolasi keyframe dengan model generatif. Hasilnya paling baik bila kedua frame menampilkan adegan yang sama dengan satu perubahan jelas, seperti pose, ekspresi, atau posisi kamera, dan gagal bila keduanya terlalu berbeda.",
+  "sections": [
+    {
+      "h": "Apa itu interpolasi keyframe",
+      "body": [
+        "Dalam animasi, keyframe adalah gambar yang menetapkan momen penting, dan frame di antara keyframe disebut in-between. Video first-and-last-frame menerapkan ide yang sama: kamu menggambar atau membuat dua keyframe, dan model membuat in-between-nya.",
+        "Interpolasi frame klasik, seperti metode FILM dari Google Research, mengisi frame di antara dua foto yang diambil berdekatan. Metode ini memperkirakan bagaimana piksel bergerak dan memadukannya sepanjang gerakan itu. Hasilnya bagus untuk memperhalus slow motion, tetapi tidak bisa mengarang isi baru, sehingga perubahan besar terlihat seperti morph.",
+        "Interpolasi generatif melangkah lebih jauh. Model difusi video dikondisikan pada kedua gambar dan membuat klip utuh yang frame pertamanya cocok dengan satu gambar dan frame terakhirnya cocok dengan gambar lainnya. Makalah Generative Inbetweening tahun 2024 menyesuaikan model image-to-video untuk ini: satu proses berjalan maju dari frame pertama dan satu mundur dari frame terakhir, lalu keduanya digabungkan. Produk seperti Veo, Kling, Runway, dan Seedance menawarkan ide yang sama sebagai opsi frame awal dan frame akhir, dan dokumentasi Veo dari Google menjelaskannya sebagai menentukan frame pertama dan terakhir ditambah sebuah prompt."
+      ]
+    },
+    {
+      "h": "Kapan memakainya",
+      "body": [
+        {
+          "ul": [
+            "Kamu butuh klip yang berakhir pada pose, sudut produk, atau komposisi yang persis, misalnya pengungkapan logo atau produk yang berputar menghadap kamera.",
+            "Kamu menyambung shot: frame terakhir shot A menjadi frame pertama shot B, sehingga pergantian shot tidak terlihat.",
+            "Kamu menginginkan transformasi terkendali, seperti siang ke malam, bunga kuncup ke mekar, piring kosong ke hidangan tersaji.",
+            "Kamu menginginkan gerakan kamera dengan tujuan yang pasti, seperti wide shot yang berakhir pada close-up pintu."
+          ]
+        },
+        "Kalau kamu hanya peduli bagaimana klip dimulai, image-to-video biasa lebih sederhana dan memberi model kebebasan lebih besar."
+      ]
+    },
+    {
+      "h": "Cara mendesain kedua frame",
+      "body": [
+        "Model harus menemukan jalur yang masuk akal dari frame A ke frame B dalam beberapa detik. Tugasmu adalah membuat jalur itu pendek dan jelas.",
+        {
+          "ol": [
+            "Buat kedua frame dari sumber yang sama. Buat frame A, lalu buat frame B dengan mengedit frame A (ubah pose, ekspresi, atau cahaya), bukan membuat gambar baru dari nol. Karakter, pakaian, latar, dan lensa yang sama.",
+            "Ubah satu hal utama. Satu perubahan pose, atau satu perubahan kamera, atau satu perubahan cahaya. Dua perubahan sekaligus sering menghasilkan campuran yang bukan keduanya.",
+            "Sesuaikan besar perubahan dengan panjang klip. Menoleh cukup dalam beberapa detik; berjalan melintasi ruangan lalu duduk butuh klip lebih panjang atau dua shot.",
+            "Pakai rasio aspek dan resolusi yang sama untuk kedua gambar. Dokumentasi Google, misalnya, memakai 16:9 atau 9:16 untuk keduanya.",
+            "Pastikan jalurnya mungkin secara fisik. Kalau tangan kiri terangkat di frame A dan masuk saku di frame B, tangan itu harus bergerak melewati tempat yang bisa dilihat kamera.",
+            "Tulis prompt yang menggambarkan perubahannya. Contoh Google memasangkan frame pertama berisi kue dengan frame terakhir berisi kue dan susu, dan prompt-nya menggambarkan aksi yang menghubungkan keduanya."
+          ]
+        },
+        {
+          "code": "First frame: a woman at a desk, looking down at a laptop, office at dusk.\nLast frame: the same woman, same desk, now looking up at the camera, smiling.\n\nPrompt:\nShe slowly lifts her head from the laptop, notices the camera, and smiles.\nCamera static, medium shot. Soft warm desk lamp light. Audio: quiet keyboard\nclicks, then silence.",
+          "lang": "text"
+        }
+      ]
+    },
+    {
+      "h": "Transisi yang berhasil dan yang gagal",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Transisi",
+              "Biasanya berhasil?",
+              "Alasan"
+            ],
+            "rows": [
+              [
+                "Perubahan ekspresi (netral ke senyum)",
+                "Ya",
+                "Perubahan kecil dan lokal; wajah tetap di tempatnya"
+              ],
+              [
+                "Kepala atau badan berputar hingga sekitar 90 derajat",
+                "Ya",
+                "Model sudah sering melihat putaran seperti ini"
+              ],
+              [
+                "Kamera maju dari wide ke medium pada adegan yang sama",
+                "Ya",
+                "Jalur jelas; isi adegan tetap terlihat"
+              ],
+              [
+                "Perubahan cahaya (siang ke senja, lampu menyala)",
+                "Umumnya",
+                "Geometri sama; hanya warna dan bayangan yang berubah"
+              ],
+              [
+                "Benda muncul di tangan",
+                "Kadang-kadang",
+                "Butuh jalur yang terlihat: meraih, mengambil"
+              ],
+              [
+                "Putaran penuh 180 derajat mengelilingi orang",
+                "Sering gagal",
+                "Model harus mengarang bagian belakang dan menjaga identitas"
+              ],
+              [
+                "Lokasi berbeda di frame B",
+                "Sering gagal",
+                "Tidak ada jalur nyata; hasilnya morph atau cross-fade"
+              ],
+              [
+                "Orang atau pakaian berbeda",
+                "Biasanya gagal",
+                "Wajah dan pakaian melebur satu sama lain"
+              ],
+              [
+                "Perpindahan besar melintasi ruangan dalam klip pendek",
+                "Sering gagal",
+                "Gerakan berubah menjadi meluncur atau melompat"
+              ]
+            ]
+          }
+        },
+        "Kalau kamu memang menginginkan morph, seperti biji yang menjadi pohon atau satu gaya yang berubah menjadi gaya lain, jalur yang gagal bisa menjadi efeknya. Sebutkan dalam prompt: 'smooth magical transformation' memberi tahu model bahwa morph memang disengaja, dan hasilnya biasanya terlihat lebih bersih daripada morph yang tidak disengaja."
+      ]
+    },
+    {
+      "h": "Merantai klip dengan frame bersama",
+      "body": [
+        "Alat first-and-last-frame juga berguna untuk kontinuitas dalam sekuens yang lebih panjang. Rencanakan daftar keyframe, lalu buat tiap klip di antara dua keyframe bertetangga.",
+        {
+          "table": {
+            "head": [
+              "Klip",
+              "Frame awal",
+              "Frame akhir",
+              "Gerakan"
+            ],
+            "rows": [
+              [
+                "1",
+                "K1: sang tokoh di gerbang, membelakangi kamera",
+                "K2: sang tokoh di tengah jalan setapak",
+                "Berjalan maju, kamera mengikuti"
+              ],
+              [
+                "2",
+                "K2",
+                "K3: sang tokoh di pintu, tangan di gagang",
+                "Menaiki tangga, meraih pintu"
+              ],
+              [
+                "3",
+                "K3",
+                "K4: pintu terbuka, cahaya hangat di wajahnya",
+                "Membuka pintu pelan-pelan"
+              ]
+            ]
+          }
+        },
+        "Karena klip 2 dimulai tepat pada frame tempat klip 1 berakhir, sambungannya mulus. Warna dan ketajaman masih bisa sedikit bergeser di tiap sambungan, jadi samakan warna antarklip saat editing, dan jaga arah gerakan tetap konsisten agar potongan terasa natural."
+      ]
+    },
+    {
+      "h": "Batasan dan solusinya",
+      "body": [
+        {
+          "ul": [
+            "Ease-in dan macet. Model kadang menahan frame pertama lalu terburu-buru menuju frame terakhir. Gambarkan temponya: 'moves steadily over the whole clip'.",
+            "Cross-fade tersembunyi. Kalau kedua frame terlalu berbeda, model bisa saja melarutkan satu ke yang lain. Dekatkan kedua frame, atau tambahkan keyframe di tengah.",
+            "Identitas bergeser di tengah. Ujung-ujungnya cocok, tetapi wajah berubah di pertengahan. Pakai framing yang lebih dekat, klip lebih pendek, dan frame yang dibuat dari gambar sumber yang sama.",
+            "Frame akhir tidak persis. Sebagian alat menganggap frame terakhir sebagai petunjuk kuat, bukan aturan mutlak. Potong atau tahan frame terakhir saat editing jika perlu.",
+            "Teks dan logo yang bergerak. Biarkan diam, atau tambahkan saat editing."
+          ]
+        },
+        {
+          "note": "Buat beberapa take untuk setiap pasangan. Kedua frame mengunci ujungnya, tetapi jalur di antaranya tetap bervariasi dari satu proses ke proses berikutnya."
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Apa bedanya first-last frame dengan image-to-video?",
+      "a": "Image-to-video hanya mengunci frame pembuka dan membiarkan model menentukan akhir klip. First-last frame mengunci kedua ujung, sehingga kamu mengendalikan pose atau komposisi akhirnya."
+    },
+    {
+      "q": "Bisakah membuat video looping dengan frame awal dan akhir?",
+      "a": "Bisa, pakai gambar yang sama sebagai kedua frame dan gambarkan gerakan yang kembali ke posisi awal, seperti bergoyang pelan. Gerakan kecil yang berulang paling mulus saat di-loop."
+    },
+    {
+      "q": "Mengapa video first-last frame saya terlihat seperti morph?",
+      "a": "Kedua gambar kemungkinan terlalu berbeda untuk membentuk jalur yang masuk akal, misalnya lokasi baru atau pakaian yang berubah. Buat frame B dengan mengedit frame A, dan ubah satu hal saja."
+    },
+    {
+      "q": "Berapa detik durasi klip first-last frame yang ideal?",
+      "a": "Sesuaikan panjangnya dengan besar perubahan: beberapa detik untuk ekspresi atau menoleh, lebih lama untuk berjalan atau gerakan kamera besar. Klip yang terlalu singkat memaksa gerakan jadi terburu-buru."
+    },
+    {
+      "q": "Apakah first-last frame sama dengan interpolasi frame untuk slow motion?",
+      "a": "Keduanya berkaitan. Interpolasi slow motion mengisi frame di antara dua foto yang berdekatan, sedangkan first-last frame generatif mengarang beberapa detik gerakan baru di antara dua momen yang berjauhan."
+    }
+  ]
+}

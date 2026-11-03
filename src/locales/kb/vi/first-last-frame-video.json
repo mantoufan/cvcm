@@ -1,0 +1,188 @@
+{
+  "title": "Video AI khung hình đầu và cuối: keyframe hiệu quả — cv.cm",
+  "description": "Video AI khung hình đầu và cuối hoạt động thế nào: nội suy keyframe, cách thiết kế hai khung hình, những kiểu chuyển cảnh thành công hay thất bại, kèm ví dụ prompt.",
+  "h1": "Video AI khung hình đầu và cuối hoạt động như thế nào?",
+  "answer": "Video khung hình đầu và cuối đưa cho mô hình hai ảnh, khung mở đầu và khung kết thúc, rồi yêu cầu nó tạo chuyển động ở giữa. Đây là nội suy keyframe bằng mô hình sinh tạo. Cách này hiệu quả nhất khi hai khung hình cho thấy cùng một cảnh với một thay đổi rõ ràng, như tư thế, biểu cảm hoặc vị trí máy quay, và thất bại khi chúng khác nhau quá nhiều.",
+  "sections": [
+    {
+      "h": "Nội suy keyframe nghĩa là gì",
+      "body": [
+        "Trong hoạt hình, keyframe (khung hình khóa) là bản vẽ cố định một khoảnh khắc quan trọng, còn các khung nằm giữa các keyframe gọi là in-between. Video khung hình đầu và cuối áp dụng đúng ý tưởng này: bạn vẽ hoặc tạo hai keyframe, và mô hình làm các in-between.",
+        "Nội suy khung hình cổ điển, như phương pháp FILM của Google Research, lấp các khung giữa hai bức ảnh chụp cách nhau một khoảnh khắc. Nó ước lượng các điểm ảnh đã dịch chuyển thế nào và pha trộn dọc theo chuyển động đó. Cách này tốt để làm mượt slow motion, nhưng không thể bịa nội dung mới, nên thay đổi lớn trông như một cú morph.",
+        "Nội suy sinh tạo đi xa hơn. Một mô hình khuếch tán video được đặt điều kiện theo cả hai ảnh và tạo ra một clip đầy đủ mà khung đầu khớp với ảnh này và khung cuối khớp với ảnh kia. Bài báo Generative Inbetweening năm 2024 đã điều chỉnh một mô hình image-to-video cho việc này: chạy một lượt xuôi từ khung đầu, một lượt ngược từ khung cuối, rồi hợp nhất. Các sản phẩm như Veo, Kling, Runway và Seedance cung cấp cùng ý tưởng dưới dạng tùy chọn khung bắt đầu và khung kết thúc, và tài liệu Veo của Google mô tả đó là chỉ định khung hình đầu, khung hình cuối cùng với một prompt."
+      ]
+    },
+    {
+      "h": "Khi nào nên dùng",
+      "body": [
+        {
+          "ul": [
+            "Bạn cần clip kết thúc ở đúng một tư thế, góc sản phẩm hoặc bố cục, ví dụ lộ diện logo hay sản phẩm xoay về phía máy quay.",
+            "Bạn đang nối các cảnh: khung cuối của cảnh A trở thành khung đầu của cảnh B, nên đoạn cắt không lộ.",
+            "Bạn muốn một biến đổi có kiểm soát, như ngày sang đêm, bông hoa khép sang nở, đĩa trống thành đĩa đã dọn món.",
+            "Bạn muốn một chuyển động máy có điểm đến cố định, như cảnh rộng kết thúc ở cận cảnh một cánh cửa."
+          ]
+        },
+        "Nếu bạn chỉ quan tâm clip bắt đầu thế nào, image-to-video thông thường đơn giản hơn và cho mô hình nhiều tự do hơn."
+      ]
+    },
+    {
+      "h": "Cách thiết kế hai khung hình",
+      "body": [
+        "Mô hình phải tìm một lộ trình đáng tin từ khung A đến khung B trong vài giây. Việc của bạn là làm cho lộ trình đó ngắn và hiển nhiên.",
+        {
+          "ol": [
+            "Tạo cả hai khung từ cùng một nguồn. Tạo khung A, rồi tạo khung B bằng cách chỉnh sửa khung A (đổi tư thế, biểu cảm hoặc ánh sáng) thay vì tạo ảnh mới từ đầu. Cùng nhân vật, cùng quần áo, cùng hậu cảnh, cùng ống kính.",
+            "Chỉ đổi một thứ chính. Một thay đổi tư thế, hoặc một thay đổi máy quay, hoặc một thay đổi ánh sáng. Hai thay đổi cùng lúc thường cho ra một hỗn hợp không giống cái nào.",
+            "Giữ mức thay đổi hợp lý so với độ dài. Một cú quay đầu vừa trong vài giây; đi qua phòng rồi ngồi xuống cần clip dài hơn hoặc hai cảnh.",
+            "Giữ cùng tỷ lệ khung hình và độ phân giải cho cả hai ảnh. Ví dụ, tài liệu của Google dùng 16:9 hoặc 9:16 cho cả hai.",
+            "Kiểm tra lộ trình có khả thi về mặt vật lý không. Nếu tay trái giơ lên ở khung A và đút túi ở khung B, bàn tay phải đi tới nơi mà máy quay nhìn thấy được.",
+            "Viết prompt mô tả sự thay đổi. Ví dụ của Google ghép khung đầu là những chiếc bánh quy với khung cuối là bánh quy và sữa, và prompt mô tả hành động nối chúng lại."
+          ]
+        },
+        {
+          "code": "First frame: a woman at a desk, looking down at a laptop, office at dusk.\nLast frame: the same woman, same desk, now looking up at the camera, smiling.\n\nPrompt:\nShe slowly lifts her head from the laptop, notices the camera, and smiles.\nCamera static, medium shot. Soft warm desk lamp light. Audio: quiet keyboard\nclicks, then silence.",
+          "lang": "text"
+        }
+      ]
+    },
+    {
+      "h": "Kiểu chuyển cảnh thành công và thất bại",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Chuyển cảnh",
+              "Thường hiệu quả?",
+              "Vì sao"
+            ],
+            "rows": [
+              [
+                "Đổi biểu cảm (trung tính sang mỉm cười)",
+                "Có",
+                "Thay đổi nhỏ, cục bộ; khuôn mặt giữ nguyên vị trí"
+              ],
+              [
+                "Quay đầu hoặc quay người tới khoảng 90 độ",
+                "Có",
+                "Mô hình đã thấy rất nhiều cú quay như vậy"
+              ],
+              [
+                "Máy đẩy từ toàn cảnh sang trung cảnh trong cùng cảnh",
+                "Có",
+                "Lộ trình rõ ràng; nội dung vẫn nhìn thấy"
+              ],
+              [
+                "Đổi ánh sáng (ngày sang hoàng hôn, bật đèn)",
+                "Phần lớn có",
+                "Hình học giữ nguyên; chỉ màu và bóng đổi"
+              ],
+              [
+                "Vật xuất hiện trong tay",
+                "Đôi khi",
+                "Cần lộ trình nhìn thấy được: với tay, nhặt lên"
+              ],
+              [
+                "Quay trọn 180 độ quanh một người",
+                "Thường thất bại",
+                "Mô hình phải bịa ra phía sau và giữ danh tính"
+              ],
+              [
+                "Địa điểm khác ở khung B",
+                "Thường thất bại",
+                "Không có lộ trình thật; bạn nhận về morph hoặc cross-fade"
+              ],
+              [
+                "Người hoặc trang phục khác",
+                "Thường thất bại",
+                "Khuôn mặt và quần áo tan chảy vào nhau"
+              ],
+              [
+                "Di chuyển xa qua phòng trong clip ngắn",
+                "Thường thất bại",
+                "Chuyển động thành trượt hoặc nhảy"
+              ]
+            ]
+          }
+        },
+        "Khi bạn muốn một cú morph có chủ đích, như hạt giống thành cây hay phong cách này đổi sang phong cách khác, một lộ trình thất bại có thể trở thành hiệu ứng. Hãy nói điều đó trong prompt: 'smooth magical transformation' cho mô hình biết morph là chủ ý, và nó thường trông sạch hơn một cú morph ngoài ý muốn."
+      ]
+    },
+    {
+      "h": "Nối các clip bằng khung hình dùng chung",
+      "body": [
+        "Công cụ khung hình đầu và cuối cũng là công cụ giữ tính liền mạch cho chuỗi dài hơn. Hãy lên danh sách keyframe, rồi tạo từng clip giữa hai keyframe kề nhau.",
+        {
+          "table": {
+            "head": [
+              "Clip",
+              "Khung đầu",
+              "Khung cuối",
+              "Chuyển động"
+            ],
+            "rows": [
+              [
+                "1",
+                "K1: nhân vật ở cổng, quay lưng về máy quay",
+                "K2: nhân vật đi được nửa đường",
+                "Đi về phía trước, máy quay bám theo"
+              ],
+              [
+                "2",
+                "K2",
+                "K3: nhân vật ở cửa, tay đặt lên tay nắm",
+                "Leo bậc thang, với tay tới cánh cửa"
+              ],
+              [
+                "3",
+                "K3",
+                "K4: cửa mở, ánh sáng ấm chiếu lên mặt anh",
+                "Từ từ mở cửa"
+              ]
+            ]
+          }
+        },
+        "Vì clip 2 bắt đầu đúng ở khung hình mà clip 1 kết thúc, các chỗ nối liền mạch. Màu sắc và độ nét vẫn có thể lệch nhẹ ở mỗi chỗ nối, nên hãy chỉnh màu cho đồng đều khi dựng, và giữ hướng chuyển động nhất quán để các đoạn cắt tự nhiên."
+      ]
+    },
+    {
+      "h": "Giới hạn và cách khắc phục",
+      "body": [
+        {
+          "ul": [
+            "Khởi động chậm rồi dồn dập. Đôi khi mô hình giữ nguyên khung đầu rồi lao vội tới khung cuối. Hãy mô tả nhịp độ: 'moves steadily over the whole clip'.",
+            "Cross-fade ngầm. Nếu hai khung quá khác nhau, mô hình có thể hòa tan từ khung này sang khung kia. Hãy đưa hai khung lại gần nhau hơn, hoặc thêm một keyframe ở giữa.",
+            "Trôi danh tính ở giữa. Hai đầu khớp, nhưng khuôn mặt đổi ở nửa chừng. Dùng khung hình gần hơn, clip ngắn hơn, và các khung hình làm từ cùng một ảnh nguồn.",
+            "Khung cuối không chính xác. Một số công cụ coi khung cuối là gợi ý mạnh chứ không phải quy tắc cứng. Cắt hoặc giữ khung cuối khi dựng nếu cần.",
+            "Chữ và logo khi chuyển động. Hãy giữ chúng đứng yên, hoặc thêm vào khi dựng."
+          ]
+        },
+        {
+          "note": "Hãy tạo nhiều bản cho mỗi cặp khung hình. Hai khung hình cố định hai đầu, nhưng lộ trình ở giữa vẫn khác nhau giữa các lần chạy."
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Khung hình đầu và cuối khác image-to-video thế nào?",
+      "a": "Image-to-video chỉ cố định khung mở đầu và để mô hình quyết định clip kết thúc ở đâu. Khung đầu và cuối cố định cả hai đầu, nên bạn kiểm soát được tư thế hoặc bố cục cuối cùng."
+    },
+    {
+      "q": "Tôi có thể làm video lặp (loop) bằng khung hình đầu và cuối không?",
+      "a": "Có, dùng cùng một ảnh cho cả hai khung và mô tả chuyển động quay về điểm xuất phát, như đung đưa chậm. Chuyển động nhỏ, có tính chu kỳ lặp tốt nhất."
+    },
+    {
+      "q": "Vì sao video khung hình đầu và cuối của tôi trông như một cú morph?",
+      "a": "Hai ảnh có lẽ quá khác nhau để có lộ trình đáng tin, ví dụ địa điểm mới hoặc trang phục thay đổi. Hãy tạo khung B bằng cách chỉnh sửa khung A, và chỉ đổi một thứ."
+    },
+    {
+      "q": "Clip khung hình đầu và cuối nên dài bao nhiêu giây?",
+      "a": "Chọn độ dài khớp với mức thay đổi: vài giây cho biểu cảm hoặc quay đầu, dài hơn cho đi lại hoặc chuyển động máy lớn. Clip quá ngắn ép chuyển động vội vã."
+    },
+    {
+      "q": "Khung hình đầu và cuối có giống nội suy khung hình để làm slow motion không?",
+      "a": "Chúng có liên quan. Nội suy slow motion lấp khung giữa hai ảnh gần nhau, còn khung đầu và cuối kiểu sinh tạo bịa ra vài giây chuyển động mới giữa hai khoảnh khắc xa nhau."
+    }
+  ]
+}

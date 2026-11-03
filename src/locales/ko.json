@@ -8777,6 +8777,149 @@
     "bit-manipulation": {
       "name": "비트 조작",
       "blurb": "비트 연산자, 단일 비트 요령, 비트 세기, 비트마스크(Python)"
+    },
+    "what-is-generative-ai": {
+      "name": "생성형 AI란?",
+      "blurb": "AI 모델이 데이터에서 배워 텍스트·이미지·영상·음성을 만드는 원리와 한계"
+    },
+    "how-llms-work": {
+      "name": "LLM 작동 원리",
+      "blurb": "토큰, 어텐션, 다음 토큰 예측과 학습 과정을 따라가며 보는 대규모 언어 모델"
+    },
+    "tokens-and-context-window": {
+      "name": "토큰과 컨텍스트 윈도우",
+      "blurb": "언어별 실제 토큰 수, 윈도우를 채우는 요소, 한도 안에서 쓰는 방법"
+    },
+    "ai-hallucination": {
+      "name": "AI 환각(할루시네이션)",
+      "blurb": "AI가 사실을 지어내는 이유, 위험한 작업, 줄이는 프롬프트와 검증 체크리스트"
+    },
+    "how-diffusion-models-work": {
+      "name": "확산 모델 원리",
+      "blurb": "노이즈 학습과 단계별 제거, 텍스트 가이드, 스텝·CFG·시드의 실제 효과"
+    },
+    "what-are-ai-agents": {
+      "name": "AI 에이전트란?",
+      "blurb": "도구를 반복 호출해 작업을 끝내는 에이전트 루프, 실행 기록 예시, 위험과 한계"
+    },
+    "ai-glossary": {
+      "name": "AI 용어 사전",
+      "blurb": "토큰·LoRA·RAG·확산·CFG·C2PA 등 생성형 AI 핵심 용어 60개의 쉬운 설명"
+    },
+    "prompt-engineering-basics": {
+      "name": "프롬프트 엔지니어링 기초",
+      "blurb": "좋은 프롬프트의 6가지 요소, 전후 비교 예시, 퓨샷과 테스트 방법"
+    },
+    "image-prompts": {
+      "name": "AI 그림 프롬프트 작성법",
+      "blurb": "프롬프트 공식, 약한 것에서 강한 것으로 고쳐 쓰기, 키워드 표, 네거티브 프롬프트"
+    },
+    "video-prompts": {
+      "name": "AI 영상 프롬프트 작성법",
+      "blurb": "7단계 구성, 샷당 동작 하나, 비트 타이밍, 약한 프롬프트를 고치는 예시"
+    },
+    "camera-movement-terms": {
+      "name": "카메라 무빙 용어",
+      "blurb": "달리, 트럭, 오빗, 크레인, 달리 줌 등 각 움직임의 모습과 프롬프트 표현"
+    },
+    "storyboard-prompts": {
+      "name": "스토리보드 프롬프트",
+      "blurb": "대본을 샷으로 나누고 샷 카드로 AI 영상 프롬프트를 쓰는 법"
+    },
+    "text-to-image": {
+      "name": "텍스트 투 이미지 AI 원리",
+      "blurb": "프롬프트에서 그림까지: 스텝, 가이던스, 시드, 크기, 초안-최종본 작업 순서"
+    },
+    "image-to-image": {
+      "name": "이미지 투 이미지 원리",
+      "blurb": "강도, 참조 이미지, 스타일 변환, 인페인팅, 깊이·포즈·윤곽 제어"
+    },
+    "consistent-ai-characters": {
+      "name": "AI 캐릭터 일관성",
+      "blurb": "캐릭터 시트, 참조 이미지, 시드, 고정 묘사, LoRA, 연속성 체크리스트"
+    },
+    "how-ai-upscaling-works": {
+      "name": "AI 업스케일링 원리",
+      "blurb": "바이큐빅이 흐려지는 이유, GAN과 Real-ESRGAN이 디테일을 더하는 방식, 실패하는 경우"
+    },
+    "how-ai-background-removal-works": {
+      "name": "AI 배경 제거 원리",
+      "blurb": "마스크와 알파 매트, 머리카락과 유리가 어려운 이유, 누끼를 PNG로 저장해야 하는 이유"
+    },
+    "what-is-a-depth-map": {
+      "name": "뎁스맵이란?",
+      "blurb": "AI가 사진 한 장에서 깊이를 추정하는 방법, 가까움과 멂의 밝기 표기, 3D·ControlNet 활용"
+    },
+    "text-to-video": {
+      "name": "텍스트 투 비디오 원리",
+      "blurb": "프롬프트가 영상이 되는 과정, 중요한 설정, 15초 샷 계획"
+    },
+    "image-to-video": {
+      "name": "이미지 투 비디오 원리",
+      "blurb": "시작 이미지 선택, 모션 위주 프롬프트, 2.5D 패럴랙스가 충분한 경우"
+    },
+    "first-last-frame-video": {
+      "name": "첫 프레임·마지막 프레임 영상",
+      "blurb": "키프레임 보간, 두 프레임 설계, 되는 전환과 안 되는 전환"
+    },
+    "multi-shot-ai-video": {
+      "name": "멀티샷 AI 영상 일관성",
+      "blurb": "캐릭터·의상·장소·조명을 고정하고 프레임으로 샷을 잇는 방법"
+    },
+    "ai-short-drama-workflow": {
+      "name": "AI 숏드라마 제작 과정",
+      "blurb": "훅과 대본부터 AI 표시를 단 9:16 에피소드까지, 20초 샷 리스트 포함"
+    },
+    "how-speech-to-text-works": {
+      "name": "음성 인식(STT) 원리",
+      "blurb": "스펙트로그램에서 글자까지, Whisper의 학습, 단어 오류율, 깔끔한 자막 만들기"
+    },
+    "text-to-speech": {
+      "name": "TTS(텍스트 음성 변환) 원리",
+      "blurb": "신경망 TTS와 브라우저 음성, 쉼과 이름을 다루는 SSML, 음성 복제 동의"
+    },
+    "run-ai-in-the-browser": {
+      "name": "브라우저에서 AI 실행하기",
+      "blurb": "WebGPU와 WASM, ONNX Runtime Web, Transformers.js, 모델 크기, 캐싱, 휴대폰의 한계"
+    },
+    "call-an-llm-api": {
+      "name": "LLM API 호출하는 법",
+      "blurb": "curl, Python, JS 요청 예제와 스트리밍, JSON 출력, 재시도, 비용"
+    },
+    "ai-copyright-and-commercial-use": {
+      "name": "AI 저작권과 상업적 이용",
+      "blurb": "미국, 중국, EU에서 AI 결과물은 누구 것인지, 판매 전에 확인할 점"
+    },
+    "labeling-ai-content": {
+      "name": "AI 콘텐츠 표시 방법",
+      "blurb": "중국 규정의 명시적·암묵적 표시, EU AI법, 플랫폼 정책"
+    },
+    "c2pa-and-ai-watermarks": {
+      "name": "C2PA와 AI 워터마크",
+      "blurb": "콘텐츠 자격 증명, SynthID, IPTC 표시, 메타데이터가 사라지는 이유, 탐지의 한계"
+    },
+    "ai": {
+      "label": "AI 튜토리얼",
+      "lead": "출처를 밝힌 생성형 AI 가이드입니다. LLM과 확산 모델의 원리, 이미지·영상 프롬프트 작성, AI 이미지·영상·오디오 작업 흐름, 브라우저에서 모델 실행하기, AI 저작권과 표시를 다룹니다.",
+      "all": "AI 튜토리얼 전체",
+      "groups": {
+        "basics": "AI 기초",
+        "prompts": "프롬프트 작성",
+        "image": "AI 이미지",
+        "video": "AI 영상",
+        "audio": "AI 오디오",
+        "dev": "개발자를 위한 AI",
+        "trust": "저작권과 안전"
+      },
+      "blurbs": {
+        "basics": "LLM과 확산 모델의 원리, 토큰, 환각, 에이전트, 용어집",
+        "prompts": "텍스트·이미지·영상 프롬프트 공식, 카메라 무빙, 스토리보드",
+        "image": "텍스트 투 이미지, 이미지 투 이미지, 캐릭터 일관성, 업스케일링, 누끼",
+        "video": "텍스트 투 비디오, 이미지 투 비디오, 키프레임, 멀티샷 연속성, AI 단편 드라마",
+        "audio": "음성 인식과 음성 합성의 원리와 한계",
+        "dev": "브라우저에서 모델 실행하기, LLM API 호출하기",
+        "trust": "AI 결과물의 소유권, 표시 규정, C2PA, AI 워터마크"
+      }
     }
   },
   "dice": {

@@ -1,0 +1,218 @@
+{
+  "title": "¿Qué es la IA generativa? Cómo funciona, con ejemplos — cv.cm",
+  "description": "¿Qué es la IA generativa? Explicación sencilla de cómo los modelos aprenden de los datos para crear texto, imágenes, video y audio, los tipos de modelos y sus fallos.",
+  "h1": "¿Qué es la IA generativa?",
+  "answer": "La IA generativa es software que crea contenido nuevo, como texto, imágenes, video, audio o código, en lugar de limitarse a clasificar o puntuar datos que ya existen. Un modelo aprende los patrones de un conjunto enorme de ejemplos y, cuando le das una instrucción (un prompt), produce una salida nueva que encaja con esos patrones. ChatGPT, Claude, Midjourney y las herramientas basadas en Whisper son ejemplos habituales.",
+  "sections": [
+    {
+      "h": "IA generativa frente a otros tipos de IA",
+      "body": [
+        "Hasta los años 2020, la mayor parte de la IA era predictiva. Recibía una entrada y devolvía una etiqueta o un número: ¿este correo es spam?, ¿cuánto vale esta casa?, ¿de quién es la cara de esta foto? La IA generativa invierte el sentido: parte de una entrada breve y devuelve una pieza de contenido completamente nueva.",
+        "Los dos tipos se entrenan con ejemplos y los dos son estadísticos. Lo que cambia es la forma de la salida. Un filtro de spam devuelve una palabra. Un modelo de lenguaje devuelve un párrafo que antes no existía.",
+        {
+          "table": {
+            "head": [
+              "",
+              "IA predictiva",
+              "IA generativa"
+            ],
+            "rows": [
+              [
+                "Pregunta típica",
+                "¿A qué categoría pertenece esto?",
+                "Crea algo que encaje con esta descripción."
+              ],
+              [
+                "Salida",
+                "Una etiqueta, una puntuación o un número",
+                "Texto, una imagen, un video, audio o código"
+              ],
+              [
+                "Ejemplo",
+                "Filtro de spam, alerta de fraude, desbloqueo facial",
+                "Asistente de chat, generador de imágenes, síntesis de voz"
+              ],
+              [
+                "Cómo se comprueba",
+                "Se compara con la etiqueta correcta",
+                "Más difícil: muchas salidas pueden ser válidas"
+              ]
+            ]
+          }
+        },
+        "Muchos productos mezclan ambas. Una herramienta de voz a texto es generativa en sentido estricto, porque escribe una transcripción, pero se parece mucho a la predicción, porque solo hay una transcripción correcta."
+      ]
+    },
+    {
+      "h": "Cómo funcionan los modelos generativos",
+      "body": [
+        "Todos los modelos generativos siguen la misma idea en dos fases. En el entrenamiento, el modelo ve millones o miles de millones de ejemplos y ajusta sus números internos, llamados parámetros o pesos, para reproducir cada vez mejor los patrones de esos datos. En el uso, que se llama inferencia, el modelo parte de tu prompt y construye la salida paso a paso, guiado por lo aprendido.",
+        "El modelo no guarda una copia de cada ejemplo de entrenamiento para pegarla después. Guarda una imagen estadística comprimida de cómo suelen ser los textos, las imágenes o los sonidos. Por eso puede crear combinaciones nuevas y también por eso puede cometer errores con total seguridad.",
+        "Hoy hacen casi todo el trabajo tres familias de modelos:",
+        {
+          "table": {
+            "head": [
+              "Familia",
+              "Cómo genera",
+              "Usos habituales"
+            ],
+            "rows": [
+              [
+                "Autorregresivos (transformer)",
+                "Predice la siguiente pieza, un token, y luego la siguiente, de una en una",
+                "Chat, redacción, código, traducción, algunos modelos de imagen"
+              ],
+              [
+                "Difusión",
+                "Parte de ruido aleatorio y lo elimina en muchos pasos hasta que aparece una imagen o un video",
+                "La mayoría de las herramientas de texto a imagen y texto a video"
+              ],
+              [
+                "GAN (red generativa antagónica)",
+                "Un generador y un crítico se entrenan compitiendo entre sí",
+                "Generadores antiguos de rostros y estilos, algunos escaladores de imagen"
+              ]
+            ]
+          }
+        },
+        "La arquitectura transformer, presentada en 2017, está detrás de casi todos los grandes modelos de lenguaje. Los modelos de difusión se convirtieron en el enfoque principal para imágenes a partir de 2020. Las GAN llegaron primero, en 2014, y todavía se usan en algunas tareas rápidas de imagen. Las fronteras se difuminan: algunos modelos de imagen son autorregresivos y algunos modelos de video combinan difusión con transformers.",
+        {
+          "note": "Un ejemplo concreto: el generador de imágenes con IA de cv.cm ejecuta Janus-Pro-1B en tu propia GPU, dentro del navegador. Es un modelo autorregresivo que construye una imagen de 384 píxeles pieza a pieza, igual que un chatbot construye una frase, y no un modelo de difusión."
+        }
+      ]
+    },
+    {
+      "h": "Qué puede crear la IA generativa",
+      "body": [
+        "La misma idea sirve para cualquier tipo de medio. Cambian los datos de entrenamiento y la forma de representar la salida.",
+        {
+          "table": {
+            "head": [
+              "Salida",
+              "Entrada habitual",
+              "Ejemplos conocidos",
+              "Puntos débiles frecuentes"
+            ],
+            "rows": [
+              [
+                "Texto",
+                "Una pregunta o una instrucción",
+                "ChatGPT, Claude, Gemini, DeepSeek, Qwen",
+                "Datos y citas inventados, conocimiento desactualizado"
+              ],
+              [
+                "Código",
+                "Una descripción de la tarea, código existente",
+                "Asistentes de programación basados en los mismos LLM",
+                "Código que parece correcto pero falla en casos límite o usa funciones que no existen"
+              ],
+              [
+                "Imágenes",
+                "Un prompt de texto, una imagen de referencia",
+                "Midjourney, GPT image, Stable Diffusion, FLUX, Imagen",
+                "Manos, texto legible, número exacto de objetos"
+              ],
+              [
+                "Video",
+                "Un prompt, una imagen inicial, un fotograma inicial y otro final",
+                "Veo, Kling, Runway, Seedance",
+                "Física, permanencia de los objetos, coherencia entre planos"
+              ],
+              [
+                "Voz y música",
+                "Texto, una muestra de voz, una descripción de estilo",
+                "Texto a voz neuronal, generadores de música",
+                "Acentuación poco natural, nombres propios, idiomas mezclados"
+              ],
+              [
+                "Transcripciones",
+                "Audio o video",
+                "Whisper y modelos de voz similares",
+                "Acentos marcados, voces que se solapan, nombres poco comunes"
+              ]
+            ]
+          }
+        },
+        "No toda herramienta de IA para medios es generativa en sentido pleno. La herramienta de foto a video de cv.cm, por ejemplo, estima un mapa de profundidad a partir de una sola foto y mueve una cámara virtual por él. La cámara se mueve, pero el sujeto no, porque no se inventan fotogramas de movimiento nuevos. Un modelo de texto a video, en cambio, genera todos los fotogramas."
+      ]
+    },
+    {
+      "h": "Un ejemplo práctico: una idea, varios modelos",
+      "body": [
+        "Imagina que una tienda pequeña quiere un clip de 15 segundos para anunciar una taza de cerámica nueva. Un flujo de trabajo generativo típico sería así:",
+        {
+          "ol": [
+            "Texto: pide a un modelo de chat tres textos breves para la publicación y un guion de 30 palabras para la voz en off. Edita a mano el que más te guste.",
+            "Imagen: describe el plano a un modelo de imágenes, por ejemplo un producto sobre una mesa de madera con luz suave de mañana. Genera varias y elige una.",
+            "Video: pasa esa imagen a un modelo de imagen a video con un prompt de movimiento corto, como un acercamiento lento mientras sube el vapor.",
+            "Voz: convierte el guion en voz con un modelo de texto a voz, o grábalo tú.",
+            "Subtítulos: pasa el audio por un modelo de voz a texto para obtener un archivo SRT y corrige los errores.",
+            "Revisión: comprueba que el producto se parece al real, que el texto está bien escrito y que indicas que el video es de IA donde la ley lo exija."
+          ]
+        },
+        "Cada paso usa un modelo distinto, pero todos hacen lo mismo en el fondo: convierten una instrucción breve en contenido nuevo que sigue los patrones del entrenamiento. Y cada paso necesita una revisión humana, porque cada modelo tiene sus fallos típicos.",
+        {
+          "code": "Weak prompt:\nmug ad\n\nStronger prompt:\nA white ceramic mug with a thin blue rim on a light oak table,\nsoft morning window light from the left, steam rising,\nshallow depth of field, product photo, no text, no logo.",
+          "lang": "text"
+        },
+        "El prompt más sólido nombra el sujeto, el material, el entorno, la luz y lo que se debe evitar. Los modelos generativos rellenan cada hueco con la opción más típica de su entrenamiento, así que cuanto más especificas, menos tienen que adivinar."
+      ]
+    },
+    {
+      "h": "Qué hace bien y qué hace mal la IA generativa",
+      "body": [
+        "La IA generativa es muy buena para sacar un primer borrador rápido, reformular textos, resumir material largo que le proporcionas, traducir, proponer muchas alternativas y convertir una idea vaga en una imagen o un sonido.",
+        "Sus puntos débiles son bastante predecibles:",
+        {
+          "ul": [
+            "Datos: los modelos de lenguaje pueden afirmar información falsa con total seguridad. Esto se llama alucinación o confabulación.",
+            "Contar y detalles exactos: cinco dedos, tres manzanas, una frase de 12 palabras. Los modelos aproximan.",
+            "Texto dentro de las imágenes: los letreros y las etiquetas suelen salir con faltas, aunque esto ha mejorado en el momento de escribir este artículo.",
+            "Física y continuidad en video: los objetos pueden fundirse, desaparecer o moverse de forma imposible.",
+            "Información reciente: un modelo solo sabe lo que había en sus datos de entrenamiento, hasta una fecha de corte, salvo que esté conectado a un buscador.",
+            "Idiomas poco frecuentes, dialectos y acentos: la calidad baja donde había pocos datos de entrenamiento."
+          ]
+        },
+        "La regla práctica es usar la IA generativa donde un error sea fácil de detectar y barato de corregir, y verificarlo todo donde un error sea costoso."
+      ]
+    },
+    {
+      "h": "Cómo usar la IA generativa con responsabilidad",
+      "body": [
+        "Una lista breve antes de publicar o apoyarte en una salida de IA:",
+        {
+          "ol": [
+            "Verifica datos, cifras, citas y enlaces con una fuente primaria.",
+            "No pegues datos privados, contraseñas, archivos de clientes ni documentos de identidad en herramientas que no controlas. Las herramientas que ejecutan el modelo en tu dispositivo, dentro del navegador, evitan subir el archivo.",
+            "Revisa las condiciones de uso comercial de la herramienta y no pidas personas reales, logotipos ni personajes que no tengas derecho a usar.",
+            "Indica que un contenido es generado o editado con IA donde la ley o la plataforma lo exijan. China, la UE y muchas plataformas ya tienen normas de etiquetado.",
+            "Mantén a una persona responsable del resultado final, sobre todo en salud, derecho, finanzas y noticias."
+          ]
+        },
+        "La IA generativa es una herramienta que predice una salida plausible. Es muy útil si la tratas como un asistente rápido que redacta borradores, y no como una autoridad que sabe."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "¿ChatGPT es IA generativa?",
+      "a": "Sí. ChatGPT es un producto de chat basado en grandes modelos de lenguaje, que son modelos generativos que escriben texto token a token. Algunas versiones también pueden crear imágenes y voz."
+    },
+    {
+      "q": "¿Cuál es la diferencia entre IA e IA generativa?",
+      "a": "La IA es el campo amplio del software que realiza tareas que parecen requerir inteligencia. La IA generativa es la parte que crea contenido nuevo, frente a la que clasifica, ordena o predice un único valor."
+    },
+    {
+      "q": "¿La IA generativa copia sus datos de entrenamiento?",
+      "a": "Lo normal es que produzca combinaciones nuevas y no copias, pero a veces los modelos pueden reproducir fragmentos, imágenes o estilos con mucha fidelidad, sobre todo de obras famosas o muy repetidas. Es una de las razones por las que las cuestiones de derechos de autor sobre la IA todavía se están resolviendo."
+    },
+    {
+      "q": "¿La IA generativa es lo mismo que la AGI?",
+      "a": "No. La AGI, inteligencia artificial general, es un sistema hipotético que igualaría a las personas en casi todas las tareas. Los modelos generativos actuales pueden ser impresionantes en muchas tareas, pero siguen fallando en comprobaciones sencillas y necesitan supervisión humana."
+    },
+    {
+      "q": "¿Puedo usar la IA generativa gratis?",
+      "a": "Sí. Muchos asistentes de chat tienen un plan gratuito y algunas herramientas ejecutan modelos abiertos directamente en tu navegador sin coste. Los planes gratuitos suelen tener límites de uso y las condiciones para uso comercial varían según la herramienta."
+    }
+  ]
+}

@@ -1,0 +1,212 @@
+{
+  "title": "How Text-to-Video AI Works, and How to Use It Well — cv.cm",
+  "description": "How text-to-video AI turns a prompt into a clip, which settings matter, a 15-second shot plan, and the limits: physics, hands, text and drifting faces.",
+  "h1": "How does text-to-video AI work?",
+  "answer": "Text-to-video AI starts from random noise shaped like a short clip and removes the noise step by step, guided by your prompt, until every frame is a coherent image and the frames agree with each other over time. Because it generates the whole clip at once, it works best for short single shots with one clear action.",
+  "sections": [
+    {
+      "h": "What happens when you press generate",
+      "body": [
+        "Most text-to-video systems are diffusion models extended from images to video. The 2022 paper Video Diffusion Models by Ho and colleagues showed the basic idea: treat a clip as a block of frames, add noise to real clips during training, and teach a network to remove that noise. At generation time, the model starts with pure noise for every frame and denoises them together, so motion and appearance are decided jointly.",
+        "Three ideas make this practical at scale.",
+        {
+          "ul": [
+            "Latent space. The model works on a compressed version of the video, not raw pixels. A separate decoder turns the result into frames. Stable Video Diffusion is an open example of this latent approach.",
+            "Space and time together. The network looks across frames as well as within them, so a face in frame 1 and frame 40 is treated as the same face. OpenAI's Sora report describes cutting video into spacetime patches for a transformer.",
+            "Text conditioning. A language encoder turns your prompt into numbers that steer each denoising step. Some systems also write a richer caption from your prompt before generating."
+          ]
+        },
+        "Imagen Video from Google added a cascade: generate a small, short, low-frame-rate clip first, then raise its resolution and frame rate with further models. Many products still use some form of this two-stage idea, which is why a draft mode is often faster and lower quality than a final render."
+      ]
+    },
+    {
+      "h": "The workflow from idea to usable clip",
+      "body": [
+        {
+          "ol": [
+            "Decide the shot. One subject, one action, one camera move. If you need more, plan several shots.",
+            "Write the prompt with subject, action and timing, camera, setting and light, style, and audio. See the video prompts guide for the structure.",
+            "Set the technical options in the interface: length, aspect ratio, resolution, and audio on or off.",
+            "Generate 2 to 4 takes of the same prompt. Results vary a lot between seeds.",
+            "Pick the best take, then change one thing in the prompt if it still needs work.",
+            "If faces or products must look exact, switch to image-to-video and give the model a start frame.",
+            "Trim the clip in an editor. Cut off the first and last few frames if they wobble."
+          ]
+        },
+        "The most expensive mistake is fixing a bad shot with longer and longer prompts. If three attempts fail, the shot is probably too complex for the model. Simplify the action or split it."
+      ]
+    },
+    {
+      "h": "Settings that matter",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Setting",
+              "What it controls",
+              "Practical advice"
+            ],
+            "rows": [
+              [
+                "Duration",
+                "How many seconds the model generates",
+                "Shorter clips follow the prompt more closely; join short shots in the edit"
+              ],
+              [
+                "Aspect ratio",
+                "16:9, 9:16, 1:1 and similar",
+                "Choose the final platform's ratio now; cropping later loses framing"
+              ],
+              [
+                "Resolution",
+                "Output size",
+                "Use a low draft setting to test prompts, high only for the chosen take"
+              ],
+              [
+                "Seed",
+                "The starting noise",
+                "Reuse a seed to compare prompt changes fairly, where the tool allows it"
+              ],
+              [
+                "Negative prompt",
+                "Things to avoid",
+                "List objects or artifacts plainly, without 'no'"
+              ],
+              [
+                "Audio",
+                "Generated sound with the picture",
+                "Turn off if you will add music and voice in the edit"
+              ],
+              [
+                "Prompt rewriting",
+                "Tool expands your prompt automatically",
+                "Turn off when you need exact wording followed"
+              ]
+            ]
+          }
+        },
+        "Exact limits for length, resolution and price change often and differ by tool, so check the current documentation of the tool you use."
+      ]
+    },
+    {
+      "h": "Example: a 15-second clip as three shots",
+      "body": [
+        "Instead of asking for one 15-second clip of a morning routine, plan three shots of about five seconds each. Each shot has one job, and the same style line keeps them matched.",
+        {
+          "table": {
+            "head": [
+              "Shot",
+              "Length",
+              "Camera",
+              "Action"
+            ],
+            "rows": [
+              [
+                "1",
+                "5 s",
+                "Wide shot, static",
+                "Sunlight enters a small bedroom; an alarm clock rings on the bedside table"
+              ],
+              [
+                "2",
+                "5 s",
+                "Medium close-up, slow push-in",
+                "A young man sits up in bed, rubs his eyes, and looks toward the window"
+              ],
+              [
+                "3",
+                "5 s",
+                "Close-up, static",
+                "He pours coffee into a white mug; steam rises"
+              ]
+            ]
+          }
+        },
+        {
+          "code": "Shot 2 of 3. Medium close-up, eye level, slow push-in.\nA young man with messy short brown hair, grey T-shirt, sits up in bed.\nHe rubs his eyes with one hand, then turns his head toward the window\nand holds still. Soft warm morning light from the left, white sheets.\nStyle: natural live-action, 35mm film look, warm muted colors.\nAudio: birds outside, a quiet room. No music.",
+          "lang": "text"
+        },
+        "Repeating the subject description and the style line word for word in each shot is the simplest continuity tool. For stronger consistency, make one still of the character first and use it as a start frame."
+      ]
+    },
+    {
+      "h": "Text-to-video or image-to-video?",
+      "body": [
+        "Text-to-video decides everything from words. That is good for exploring ideas and for scenes where exact looks do not matter. Image-to-video starts from a picture you give it, so the look is fixed and the prompt only has to describe motion.",
+        {
+          "table": {
+            "head": [
+              "Need",
+              "Better choice",
+              "Why"
+            ],
+            "rows": [
+              [
+                "Quick ideas and moods",
+                "Text-to-video",
+                "Fast; no need to prepare an image"
+              ],
+              [
+                "A specific face, product or logo",
+                "Image-to-video",
+                "The first frame keeps the exact look"
+              ],
+              [
+                "Same character in many shots",
+                "Image-to-video or reference images",
+                "Text alone drifts between shots"
+              ],
+              [
+                "A set start and end pose",
+                "First and last frame",
+                "The model fills the motion between two images"
+              ]
+            ]
+          }
+        },
+        "A common hybrid is to make a still with an image model, then animate it. For example, cv.cm's `ai-image-generator` can make a quick 384 px draft image on your own GPU; a full video model then animates a larger version of it."
+      ]
+    },
+    {
+      "h": "Limits to plan around",
+      "body": [
+        "Text-to-video has improved fast, but some weaknesses are structural. At the time of writing, plan around these:",
+        {
+          "ul": [
+            "Physics. Pouring, breaking, collisions and cloth often look wrong. The Sora report itself gave glass shattering as an example of physics the model did not get right. Keep physical events simple or show them off screen.",
+            "Hands and small objects. Fingers merge, objects pass through hands. Keep hand actions simple and avoid close-ups of fine finger work.",
+            "Text on screen. Signs and captions often come out garbled. Add text in the edit.",
+            "Identity drift. A face can change between the start and end of a clip, and more so between clips. Use a start image or reference images.",
+            "Counting and crowds. 'Three dogs' may become two or four; people in a crowd may merge.",
+            "Long takes. Quality and prompt-following drop as clips get longer. Edit short shots together instead."
+          ]
+        },
+        {
+          "note": "Many platforms and some laws require AI-generated video to be labeled, especially realistic people or events. Check the rules of the platform where you publish."
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "How long does it take to generate an AI video?",
+      "a": "From under a minute to several minutes per clip on cloud tools, depending on length, resolution and queue. Draft modes are faster than full-quality renders."
+    },
+    {
+      "q": "Can I run text-to-video on my own computer?",
+      "a": "Open models exist, but most need a powerful graphics card with a lot of video memory. A browser cannot yet run a full text-to-video model comfortably on typical hardware."
+    },
+    {
+      "q": "Why does the same prompt give different videos?",
+      "a": "Each run starts from different random noise, called the seed. Fixing the seed, where the tool allows it, makes results repeatable for comparison."
+    },
+    {
+      "q": "Why do AI videos look like slow motion?",
+      "a": "Models tend to choose slow, safe motion when the prompt does not set a pace. Write the speed and timing of the action, such as 'in one quick motion' or 'runs fast'."
+    },
+    {
+      "q": "Can AI make a full-length film from one prompt?",
+      "a": "Not reliably. Current models generate short clips; longer work is built from many planned shots, edited together with sound, music and titles."
+    }
+  ]
+}

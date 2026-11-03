@@ -1,0 +1,164 @@
+{
+  "title": "Cara Memberi Label Konten Buatan AI: Tiongkok, UE, dan Platform — cv.cm",
+  "description": "Cara memberi label konten buatan AI: peraturan pelabelan Tiongkok (label eksplisit dan implisit), Pasal 50 EU AI Act, aturan YouTube, TikTok, dan Meta, plus daftar periksa.",
+  "h1": "Bagaimana cara memberi label konten buatan AI dengan benar?",
+  "answer": "Pakai dua jenis label. Label eksplisit adalah pemberitahuan yang terlihat atau terdengar, seperti teks \"AI-generated\" pada gambar atau video. Label implisit adalah data yang dapat dibaca mesin di dalam file, seperti metadata. Tiongkok mewajibkan keduanya dari layanan AI sejak 1 September 2025, EU AI Act menambahkan kewajiban serupa mulai 2 Agustus 2026, dan YouTube, TikTok, serta Meta meminta kreator mengungkapkan konten AI yang realistis.",
+  "sections": [
+    {
+      "h": "Label eksplisit dan implisit",
+      "body": [
+        "Measures for Labeling AI-Generated Synthetic Content milik Tiongkok (Peraturan Pelabelan Konten Sintetis Buatan AI) mendefinisikan kedua jenis ini dengan jelas, dan pembagian yang sama berguna di mana pun. Label eksplisit ditambahkan pada konten atau antarmuka dan disajikan sebagai teks, suara, atau grafis yang dapat dikenali dengan jelas oleh orang. Label implisit ditambahkan ke data file dengan cara teknis dan tidak mudah disadari orang.",
+        {
+          "table": {
+            "head": [
+              "Jenis",
+              "Contoh",
+              "Siapa yang membacanya",
+              "Kelemahan"
+            ],
+            "rows": [
+              [
+                "Eksplisit",
+                "Teks \"AI-generated\" di pojok, pemberitahuan lisan, tag platform di samping unggahan",
+                "Manusia",
+                "Bisa dipangkas, ditutupi, atau dipotong"
+              ],
+              [
+                "Implisit: metadata",
+                "Field di dalam file yang menyatakan konten buatan AI, plus nama penyedia dan ID",
+                "Perangkat lunak dan platform",
+                "Hilang saat file di-encode ulang, di-screenshot, atau metadatanya dihapus"
+              ],
+              [
+                "Implisit: watermark",
+                "Sinyal tak terlihat di dalam piksel atau audio",
+                "Perangkat lunak pendeteksi",
+                "Bisa melemah setelah pengeditan berat atau kompresi"
+              ]
+            ]
+          }
+        },
+        "Tidak ada jenis yang cukup sendirian. Label yang terlihat memberi tahu penonton; label yang dapat dibaca mesin memungkinkan platform menambahkan pemberitahuannya sendiri secara otomatis. Praktik yang baik adalah memakai keduanya dan menjaganya tetap utuh saat Anda mengedit."
+      ]
+    },
+    {
+      "h": "Tiongkok: Measures for Labeling AI-Generated Synthetic Content",
+      "body": [
+        "Administrasi Dunia Maya Tiongkok (Cyberspace Administration of China), bersama Kementerian Industri dan Teknologi Informasi, Kementerian Keamanan Publik, dan Administrasi Radio dan Televisi Nasional, menerbitkan Measures ini pada Maret 2025. Peraturan itu berlaku sejak 1 September 2025. Cakupannya adalah layanan AI yang sudah tunduk pada aturan Tiongkok tentang rekomendasi algoritma, deep synthesis, dan layanan AI generatif.",
+        {
+          "ul": [
+            "Label eksplisit (Pasal 4): teks mendapat pemberitahuan atau simbol di awal, akhir, atau posisi tengah yang sesuai, atau di antarmuka; audio mendapat isyarat suara atau bunyi; gambar mendapat tanda mencolok di tempat yang sesuai; video mendapat tanda mencolok pada frame pembuka dan di sekitar area pemutaran; adegan virtual mendapat tanda di layar pembuka. File yang diunduh, disalin, atau diekspor harus mempertahankan label eksplisit.",
+            "Label implisit (Pasal 5): penyedia menambahkan metadata berisi atribut konten, nama atau kode penyedia, dan nomor konten. Watermark digital dianjurkan.",
+            "Platform yang mendistribusikan konten (Pasal 6): jika metadata menunjukkan konten buatan AI, platform menambahkan pemberitahuan yang mencolok; jika tidak ada metadata tetapi pengguna menyatakannya, pemberitahuan menyebut konten itu mungkin buatan AI; jika keduanya tidak ada, tetapi platform mendeteksi jejaknya, platform menandainya sebagai diduga buatan AI. Platform juga harus menyediakan fitur pelabelan dan mengingatkan pengguna untuk menyatakannya.",
+            "Keluaran tanpa label (Pasal 9): penyedia boleh memberikan konten tanpa label eksplisit kepada pengguna hanya setelah pengguna setuju memikul tanggung jawab pelabelan, dan harus menyimpan log setidaknya enam bulan.",
+            "Pengguna (Pasal 10): saat memublikasikan konten buatan AI, Anda wajib menyatakannya dan memakai fitur pelabelan platform. Tidak seorang pun boleh dengan niat jahat menghapus, mengubah, memalsukan, atau menyembunyikan label, atau menyediakan alat untuk itu."
+          ]
+        },
+        "Pasal 11 menambahkan bahwa pelabelan juga harus memenuhi undang-undang, peraturan, dan standar nasional wajib yang relevan, sehingga penyedia perlu mengikuti standar teknis serta Measures tersebut."
+      ]
+    },
+    {
+      "h": "Uni Eropa: Pasal 50 EU AI Act",
+      "body": [
+        "Pasal 50 EU AI Act (Regulation (EU) 2024/1689) menetapkan kewajiban transparansi. Menurut Pasal 113, pasal ini berlaku mulai 2 Agustus 2026.",
+        {
+          "ul": [
+            "Chatbot (50(1)): orang harus diberi tahu bahwa mereka berinteraksi dengan sistem AI, kecuali hal itu sudah jelas.",
+            "Penandaan yang dapat dibaca mesin (50(2)): penyedia sistem yang menghasilkan audio, gambar, video, atau teks sintetis harus menandai keluarannya dalam format yang dapat dibaca mesin agar dapat dideteksi sebagai buatan atau hasil manipulasi buatan, sejauh layak secara teknis. Penyuntingan bantu yang tidak mengubah masukan secara substansial dikecualikan.",
+            "Pengenalan emosi dan kategorisasi biometrik (50(3)): deployer harus memberi tahu orang yang terpapar.",
+            "Deepfake (50(4)): deployer yang memublikasikan deepfake berupa gambar, audio, atau video harus mengungkapkan bahwa konten itu dibuat atau dimanipulasi secara buatan. Untuk karya yang jelas bersifat artistik, kreatif, satire, atau fiksi, pengungkapan dapat dibatasi agar tidak merusak karya tersebut. Teks buatan AI yang dipublikasikan untuk menginformasikan publik tentang hal-hal yang menjadi kepentingan publik juga harus diungkapkan, kecuali ada orang atau organisasi yang memegang tanggung jawab editorial atasnya setelah tinjauan manusia."
+          ]
+        },
+        "Aturan peralihan dalam Pasal 111(4), yang ditambahkan oleh amandemen kemudian, memberi penyedia yang sistemnya telah dipasarkan sebelum 2 Agustus 2026 waktu hingga 2 Desember 2026 untuk mematuhi Pasal 50(2)."
+      ]
+    },
+    {
+      "h": "Aturan platform: YouTube, TikTok, dan Meta",
+      "body": [
+        "Platform menerapkan aturannya sendiri di seluruh dunia, di atas hukum setempat. Secara umum, saat artikel ini ditulis:",
+        {
+          "table": {
+            "head": [
+              "Platform",
+              "Yang wajib diungkapkan kreator",
+              "Label otomatis"
+            ],
+            "rows": [
+              [
+                "YouTube",
+                "Konten realistis yang dibuat atau diubah dengan AI: orang nyata yang mengatakan atau melakukan sesuatu yang tidak pernah ia lakukan, rekaman peristiwa atau tempat nyata yang diubah, adegan realistis yang tidak pernah terjadi, dan musik AI yang menjadi fokus utama",
+                "YouTube dapat menambahkan label sendiri; kegagalan berulang untuk mengungkapkan dapat berujung sanksi"
+              ],
+              [
+                "TikTok",
+                "Konten buatan AI atau yang diedit secara signifikan yang menampilkan adegan atau orang yang tampak nyata",
+                "Konten yang dibuat dengan efek AI TikTok, dan konten yang membawa C2PA Content Credentials, dapat diberi label secara otomatis"
+              ],
+              [
+                "Meta (Facebook, Instagram, Threads)",
+                "Video fotorealistis dan audio yang terdengar realistis yang dibuat atau diubah dengan AI; gambar tidak mewajibkan label mandiri",
+                "Konten yang dibuat dengan alat Meta AI, atau terdeteksi lewat sinyal standar industri, dapat diberi label \"AI info\""
+              ]
+            ]
+          }
+        },
+        "YouTube tidak mewajibkan pengungkapan untuk konten yang jelas-jelas tidak realistis, penyuntingan kecil seperti koreksi warna atau filter, atau bantuan AI untuk naskah, judul, dan teks keterangan, dan YouTube menyatakan bahwa pengungkapan saja tidak membatasi audiens atau monetisasi sebuah video. TikTok menyatakan bahwa label tidak membuat konten yang berbahaya atau menyesatkan menjadi dapat diterima."
+      ]
+    },
+    {
+      "h": "Cara memberi label dalam praktik",
+      "body": [
+        {
+          "ol": [
+            "Pertahankan metadata dari generator. Ekspor dari alat AI dalam format yang menyimpan metadata, dan pastikan editor Anda tidak membuangnya saat ekspor.",
+            "Tambahkan label yang terlihat dan tahan terhadap pemangkasan. Untuk video, taruh di frame pembuka dan pertahankan tanda kecil di pojok; untuk gambar, letakkan di dalam gambar, bukan hanya di teks keterangan.",
+            "Untuk konten khusus audio, ucapkan di awal, misalnya: \"Audio ini dibuat dengan AI.\"",
+            "Aktifkan pengaturan pengungkapan AI milik platform saat mengunggah, meskipun file sudah punya metadata.",
+            "Tulis satu baris keterangan sederhana seperti \"Made with AI\" atau \"AI-generated video\" agar penonton melihatnya di setiap aplikasi.",
+            "Simpan catatan alat, prompt, dan file sumber untuk setiap karya yang dipublikasikan."
+          ]
+        },
+        "Hati-hati dengan alat privasi. Menghapus data EXIF dan GPS, misalnya dengan alat exif di cv.cm, melindungi lokasi pada foto yang Anda ambil sendiri, tetapi langkah yang sama juga menghapus label metadata dari file AI. Untuk konten buatan AI, tambahkan label yang terlihat sebelum membagikannya, dan jangan hapus label yang diwajibkan oleh hukum atau platform."
+      ]
+    },
+    {
+      "h": "Kesalahan umum",
+      "body": [
+        {
+          "ul": [
+            "Memberi label hanya di teks unggahan. Teks keterangan hilang saat file diunggah ulang atau diunduh.",
+            "Menaruh label kecil di tepi paling ujung tempat tombol platform atau pemangkasan menghilangkannya.",
+            "Mengonversi atau merekam layar video AI, yang menghapus metadatanya, lalu memublikasikannya tanpa label yang terlihat.",
+            "Mengira gaya kartun tidak perlu label di mana pun. Platform Barat berfokus pada konten realistis, tetapi Measures Tiongkok berlaku untuk konten buatan AI secara umum.",
+            "Melabeli rekaman asli sebagai AI untuk menghindari tanggung jawab. Measures Tiongkok melarang pemakaian label yang tidak semestinya untuk merugikan hak orang lain, dan label tidak pernah membuat konten yang menyesatkan menjadi dapat diterima."
+          ]
+        },
+        {
+          "note": "Halaman ini adalah informasi umum, bukan nasihat hukum. Hukum dan kebijakan platform berubah; periksa teks resmi terbaru sebelum Anda mengandalkan suatu detail."
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Apakah saya harus memberi label pada gambar buatan AI di Instagram?",
+      "a": "Meta menyatakan mungkin mewajibkan label untuk video fotorealistis dan audio yang terdengar realistis, bukan untuk gambar. Meta tetap dapat menambahkan label \"AI info\" pada gambar saat sistemnya mendeteksi sinyal AI."
+    },
+    {
+      "q": "Apa yang terjadi jika saya tidak melabeli konten AI di YouTube?",
+      "a": "YouTube dapat menambahkan label sendiri. Kreator yang berulang kali tidak mengungkapkan dapat menghadapi sanksi seperti penghapusan konten atau penangguhan dari YouTube Partner Program."
+    },
+    {
+      "q": "Apakah memakai AI untuk naskah atau subtitle perlu diberi label?",
+      "a": "Di YouTube, tidak: bantuan produksi seperti naskah, judul, thumbnail, dan teks keterangan tidak perlu diungkapkan. Platform dan hukum lain berfokus pada media hasil generate itu sendiri."
+    },
+    {
+      "q": "Apakah watermark sama dengan label AI?",
+      "a": "Watermark yang terlihat dapat berfungsi sebagai label eksplisit jika jelas menyatakan konten itu buatan AI. Watermark tak terlihat adalah label implisit yang dapat dideteksi perangkat lunak tetapi tidak terlihat manusia."
+    },
+    {
+      "q": "Bolehkah saya menghapus watermark AI dari konten yang saya buat?",
+      "a": "Di Tiongkok, aturan melarang penghapusan, pengubahan, atau penyembunyian label yang diwajibkan dengan niat jahat. Di tempat lain, ketentuan alat dan aturan platform mungkin juga melarangnya. Pertahankan label saat Anda memublikasikan."
+    }
+  ]
+}

@@ -1,0 +1,206 @@
+{
+  "title": "Image-to-Video AI: Start Frames, Motion Prompts, Parallax — cv.cm",
+  "description": "How image-to-video AI animates a photo: choosing a start image, writing motion-only prompts, and the 2.5D parallax method that moves the camera, not the subject.",
+  "h1": "How does image-to-video AI work?",
+  "answer": "Image-to-video AI takes your picture as the first frame and generates the frames that follow, guided by a short prompt about motion. The look comes from the image, so the prompt only needs to say what moves and how the camera moves. A simpler method, 2.5D parallax, estimates depth and moves a virtual camera, so the scene turns 3D but nothing in it moves.",
+  "sections": [
+    {
+      "h": "How it differs from text-to-video",
+      "body": [
+        "In text-to-video, the model invents everything: the face, the clothes, the room, the light, and the motion. In image-to-video, you supply the first frame, and the model only has to invent what happens next. Google's Veo documentation describes this as using an existing image as the first frame of a new video; OpenAI's Sora guide calls it anchoring the first frame.",
+        "This changes what the prompt is for. The image already answers who, where and what style. The prompt answers what moves, in which direction, how fast, and what the camera does.",
+        {
+          "table": {
+            "head": [
+              "Aspect",
+              "Text-to-video",
+              "Image-to-video"
+            ],
+            "rows": [
+              [
+                "Source of the look",
+                "The prompt",
+                "Your image"
+              ],
+              [
+                "What the prompt describes",
+                "Subject, scene, style, motion, camera, sound",
+                "Mainly motion, camera and sound"
+              ],
+              [
+                "Consistency of a face or product",
+                "Varies between takes",
+                "Strong at the start, can drift later in the clip"
+              ],
+              [
+                "Preparation",
+                "None",
+                "Make or choose a good start image"
+              ],
+              [
+                "Typical use",
+                "Exploring ideas",
+                "Animating a set look, product shots, characters across shots"
+              ]
+            ]
+          }
+        },
+        "Inside the model, the start image is encoded and fed in as a condition, alongside the text. Stable Video Diffusion, an open model, was released with both text-to-video and image-to-video variants built on the same latent video diffusion base."
+      ]
+    },
+    {
+      "h": "Choosing the start image",
+      "body": [
+        "The start image decides more than the prompt does. Most failed image-to-video clips can be traced to a start image that did not leave room for the motion.",
+        {
+          "ul": [
+            "Match the output aspect ratio. If the tool outputs 16:9 or 9:16, give it that shape; other sizes may be cropped or resized. Google's Veo documentation recommends at least 720p input in 16:9 or 9:16.",
+            "Leave room for the motion. If the person will walk right, leave space on the right. If the camera will push in, the face should not already fill the frame.",
+            "Pose for the start of the action. For 'she turns to look at the camera', start with her looking away.",
+            "Clear, sharp subject. Blurry or tiny faces become worse when animated.",
+            "Simple hands. Hands that are hidden, relaxed, or holding nothing animate more cleanly.",
+            "No text you need to keep. Logos and signs may warp once the frame starts moving."
+          ]
+        },
+        "If you make the start image with an image model, generate it for the shot, not as a finished poster: a natural pose, a believable light source, and space around the subject."
+      ]
+    },
+    {
+      "h": "Writing the motion prompt",
+      "body": [
+        "Describe only what changes. Repeating the description of the image adds words the model does not need and can make it hold still. The examples in Google's image-to-video documentation are short motion lines, such as an animal moving naturally or flowers swaying gently.",
+        {
+          "code": "Weak:\nA beautiful woman with long red hair in a green dress standing in a field\nof flowers at sunset, highly detailed.\n\nStrong:\nShe slowly turns her head toward the camera and smiles. A light breeze\nmoves her hair and the flowers. Slow dolly in. Audio: wind, distant birds.",
+          "lang": "text"
+        },
+        {
+          "ol": [
+            "Subject motion: one action, with speed and end point.",
+            "Secondary motion: small things that make the scene alive, such as hair, leaves, steam, water.",
+            "Camera: one move or static. See the camera movement terms guide.",
+            "Audio, if the model generates sound."
+          ]
+        },
+        "Keep the motion physically possible from the start pose. A person seated in the image cannot cleanly be running in two seconds. If the action is large, use a first-and-last-frame tool and give the end pose too."
+      ]
+    },
+    {
+      "h": "The 2.5D parallax method: depth map plus camera move",
+      "body": [
+        "There is a second, much simpler way to make a photo move, and it is not generative video at all. It is often called the 3D Ken Burns effect, after a 2019 paper by Niklaus and colleagues.",
+        {
+          "ol": [
+            "Estimate depth. A depth model, such as Depth Anything V2, predicts for every pixel how far it is from the camera.",
+            "Turn the photo into a 3D layer. Each pixel is pushed back by its depth, so the photo becomes a shallow relief rather than a flat sheet.",
+            "Move a virtual camera. The camera pushes in, pulls out, orbits or pans. Near pixels shift more than far ones, which is parallax, and the brain reads it as depth.",
+            "Fill the gaps. When the camera moves, it can see areas that were hidden behind the subject. Simple tools stretch nearby pixels or zoom in slightly to hide the edges; research systems such as the 3D Ken Burns paper inpaint the hidden areas."
+          ]
+        },
+        "This is the method cv.cm's `v` tool uses. It runs Depth Anything V2 in your browser, renders the parallax with the GPU along a push, pull, orbit, pan or rise path, and exports an MP4. The camera moves; the subject does not blink, walk or speak. You can also look at the depth map itself first with cv.cm's `depth-map` tool.",
+        {
+          "table": {
+            "head": [
+              "Aspect",
+              "Generative image-to-video",
+              "2.5D parallax"
+            ],
+            "rows": [
+              [
+                "What moves",
+                "Subject, scene and camera",
+                "Only the camera"
+              ],
+              [
+                "Faithfulness to the photo",
+                "Can change faces and details",
+                "Every pixel comes from your photo"
+              ],
+              [
+                "Typical problems",
+                "Morphing, odd physics, drift",
+                "Stretched edges around the subject if the move is large"
+              ],
+              [
+                "Hardware",
+                "Usually a cloud service",
+                "Can run in a browser"
+              ],
+              [
+                "Good for",
+                "Living scenes, characters acting",
+                "Portraits, landscapes, product stills, slideshows"
+              ]
+            ]
+          }
+        },
+        "Parallax works best on photos with clear depth layers: a person in front of a distant background, a product on a table, a street receding into the distance. It works poorly on flat subjects, such as a document or a wall, because there is no depth for the camera to reveal."
+      ]
+    },
+    {
+      "h": "Common problems and fixes",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Problem",
+              "Likely cause",
+              "Fix"
+            ],
+            "rows": [
+              [
+                "Almost nothing moves",
+                "Prompt describes the image, not motion",
+                "Write only the motion and use strong verbs"
+              ],
+              [
+                "Face changes by the end",
+                "Large motion or long clip",
+                "Shorter clip, smaller action, closer start frame"
+              ],
+              [
+                "Body bends or warps",
+                "Action impossible from the start pose",
+                "Change the start pose or add a last frame"
+              ],
+              [
+                "Edges smear in parallax",
+                "Camera move too strong for the depth",
+                "Use a gentler move or a photo with a cleaner background"
+              ],
+              [
+                "Wrong aspect ratio, subject cropped",
+                "Input shape differs from output",
+                "Crop the start image to the output ratio first"
+              ]
+            ]
+          }
+        },
+        {
+          "note": "Only animate photos you have the right to use, and do not animate real people without their consent. A moving face is far more convincing than a still, which makes misuse easier."
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Can I turn a photo into a video for free?",
+      "a": "Yes, with a parallax tool that runs in the browser, which moves a camera through the photo. Free tiers of generative tools also exist, but they usually limit how many clips you can make."
+    },
+    {
+      "q": "Why does my image-to-video clip change the person's face?",
+      "a": "The model regenerates every frame after the first, and identity drifts as motion grows. Use a clear, front-facing start image, a short clip and small motion."
+    },
+    {
+      "q": "Do I need a prompt for image-to-video?",
+      "a": "Many tools accept an empty prompt and choose a gentle motion on their own. A short motion prompt gives you control over what moves and how the camera behaves."
+    },
+    {
+      "q": "What is the difference between image-to-video and a Ken Burns effect?",
+      "a": "A classic Ken Burns effect pans and zooms a flat photo. The 3D version adds depth, so near and far parts move differently. Generative image-to-video goes further and makes the subject itself move."
+    },
+    {
+      "q": "Can image-to-video make someone talk?",
+      "a": "Some generative models and dedicated talking-head tools can animate lips to audio. Parallax tools cannot, because they only move the camera."
+    }
+  ]
+}

@@ -1,0 +1,164 @@
+{
+  "title": "Cách gắn nhãn nội dung do AI tạo ra: Trung Quốc, EU, nền tảng — cv.cm",
+  "description": "Cách gắn nhãn nội dung AI: biện pháp gắn nhãn của Trung Quốc (nhãn hiển thị và nhãn ngầm), Điều 50 Đạo luật AI của EU, quy tắc YouTube, TikTok, Meta và danh sách kiểm tra.",
+  "h1": "Gắn nhãn nội dung do AI tạo ra như thế nào cho đúng?",
+  "answer": "Hãy dùng hai loại nhãn. Nhãn hiển thị (explicit) là thông báo nhìn thấy hoặc nghe thấy được, như dòng chữ “AI-generated” trên ảnh hoặc video. Nhãn ngầm (implicit) là dữ liệu máy đọc được nằm trong file, như metadata. Trung Quốc yêu cầu cả hai đối với dịch vụ AI từ ngày 1 tháng 9 năm 2025, Đạo luật AI của EU bổ sung các nghĩa vụ tương tự từ ngày 2 tháng 8 năm 2026, còn YouTube, TikTok và Meta yêu cầu nhà sáng tạo khai báo nội dung AI chân thực.",
+  "sections": [
+    {
+      "h": "Nhãn hiển thị và nhãn ngầm",
+      "body": [
+        "Biện pháp gắn nhãn nội dung tổng hợp do AI tạo ra (Measures for Labeling AI-Generated Synthetic Content) của Trung Quốc định nghĩa rõ hai loại này, và cách chia đó hữu ích ở mọi nơi. Nhãn hiển thị được thêm vào nội dung hoặc giao diện và được trình bày dưới dạng chữ, âm thanh hoặc đồ họa mà con người nhận biết được rõ ràng. Nhãn ngầm được thêm vào dữ liệu của file bằng biện pháp kỹ thuật và con người không dễ nhận ra.",
+        {
+          "table": {
+            "head": [
+              "Loại",
+              "Ví dụ",
+              "Ai đọc được",
+              "Điểm yếu"
+            ],
+            "rows": [
+              [
+                "Hiển thị",
+                "Chữ “AI-generated” ở góc, thông báo bằng giọng nói, thẻ của nền tảng bên cạnh bài đăng",
+                "Con người",
+                "Có thể bị cắt, che hoặc xóa"
+              ],
+              [
+                "Ngầm: metadata",
+                "Các trường trong file nêu rõ nội dung do AI tạo ra, cùng nhà cung cấp và một mã định danh",
+                "Phần mềm và nền tảng",
+                "Mất khi file được mã hóa lại, chụp màn hình hoặc bị xóa metadata"
+              ],
+              [
+                "Ngầm: watermark",
+                "Tín hiệu vô hình bên trong điểm ảnh hoặc âm thanh",
+                "Phần mềm phát hiện",
+                "Có thể yếu đi sau khi chỉnh sửa nhiều hoặc nén"
+              ]
+            ]
+          }
+        },
+        "Không loại nào tự nó là đủ. Nhãn nhìn thấy được thông báo cho người xem; nhãn máy đọc được giúp nền tảng tự động thêm thông báo riêng. Thực hành tốt là dùng cả hai và giữ nguyên chúng khi bạn chỉnh sửa."
+      ]
+    },
+    {
+      "h": "Trung Quốc: Biện pháp gắn nhãn nội dung tổng hợp do AI tạo ra",
+      "body": [
+        "Cục Quản lý Không gian mạng Trung Quốc, cùng Bộ Công nghiệp và Công nghệ thông tin, Bộ Công an và Cục Phát thanh Truyền hình Quốc gia, ban hành Biện pháp này vào tháng 3 năm 2025. Biện pháp có hiệu lực từ ngày 1 tháng 9 năm 2025. Chúng áp dụng cho các dịch vụ AI vốn đã thuộc phạm vi các quy định của Trung Quốc về thuật toán đề xuất, tổng hợp sâu và dịch vụ AI tạo sinh.",
+        {
+          "ul": [
+            "Nhãn hiển thị (Điều 4): văn bản có thông báo hoặc biểu tượng ở đầu, cuối hoặc vị trí giữa thích hợp, hoặc trong giao diện; âm thanh có tín hiệu bằng giọng nói hoặc âm thanh; hình ảnh có dấu hiệu nổi bật ở vị trí thích hợp; video có dấu hiệu nổi bật ở khung hình mở đầu và quanh vùng phát; cảnh ảo có dấu hiệu ở màn hình mở đầu. File được tải xuống, sao chép hoặc xuất ra phải giữ nguyên nhãn hiển thị.",
+            "Nhãn ngầm (Điều 5): nhà cung cấp thêm metadata chứa các thuộc tính của nội dung, tên hoặc mã của nhà cung cấp và số hiệu nội dung. Khuyến khích dùng watermark số.",
+            "Nền tảng phân phối nội dung (Điều 6): nếu metadata cho thấy nội dung do AI tạo ra, nền tảng thêm thông báo nổi bật; nếu không có metadata nhưng người dùng khai báo, thông báo nêu rằng nội dung có thể do AI tạo ra; nếu không có cả hai nhưng nền tảng phát hiện dấu vết, nền tảng đánh dấu là nghi do AI tạo ra. Nền tảng cũng phải cung cấp chức năng gắn nhãn và nhắc người dùng khai báo.",
+            "Sản phẩm đầu ra không gắn nhãn (Điều 9): nhà cung cấp chỉ được đưa cho người dùng nội dung không có nhãn hiển thị sau khi người dùng đồng ý nhận trách nhiệm gắn nhãn, và phải lưu nhật ký ít nhất sáu tháng.",
+            "Người dùng (Điều 10): khi bạn đăng nội dung do AI tạo ra, bạn phải khai báo và dùng chức năng gắn nhãn của nền tảng. Không ai được cố ý xóa, sửa, làm giả hoặc che giấu nhãn, hoặc cung cấp công cụ để làm việc đó."
+          ]
+        },
+        "Điều 11 bổ sung rằng việc gắn nhãn còn phải đáp ứng các luật, quy định và tiêu chuẩn quốc gia bắt buộc có liên quan, nên nhà cung cấp cần tuân theo các tiêu chuẩn kỹ thuật cũng như Biện pháp."
+      ]
+    },
+    {
+      "h": "Liên minh châu Âu: Điều 50 Đạo luật AI",
+      "body": [
+        "Điều 50 của Đạo luật AI của EU (Quy định (EU) 2024/1689) đặt ra các nghĩa vụ minh bạch. Theo Điều 113, điều này áp dụng từ ngày 2 tháng 8 năm 2026.",
+        {
+          "ul": [
+            "Chatbot (50(1)): phải cho mọi người biết rằng họ đang tương tác với một hệ thống AI, trừ khi điều đó là hiển nhiên.",
+            "Đánh dấu máy đọc được (50(2)): nhà cung cấp các hệ thống tạo âm thanh, hình ảnh, video hoặc văn bản tổng hợp phải đánh dấu sản phẩm đầu ra ở định dạng máy đọc được để có thể phát hiện là do nhân tạo tạo ra hoặc thao túng, trong phạm vi khả thi về mặt kỹ thuật. Chỉnh sửa hỗ trợ không làm thay đổi đáng kể đầu vào thì được loại trừ.",
+            "Nhận dạng cảm xúc và phân loại sinh trắc học (50(3)): bên triển khai phải thông báo cho những người bị tiếp xúc.",
+            "Deepfake (50(4)): bên triển khai đăng deepfake hình ảnh, âm thanh hoặc video phải công bố rằng nội dung được tạo ra hoặc thao túng một cách nhân tạo. Với tác phẩm rõ ràng mang tính nghệ thuật, sáng tạo, châm biếm hoặc hư cấu, việc công bố có thể được giới hạn để không làm hỏng tác phẩm. Văn bản do AI tạo ra được đăng để thông tin cho công chúng về các vấn đề lợi ích công cộng cũng phải được công bố, trừ khi một cá nhân hoặc tổ chức chịu trách nhiệm biên tập sau khi con người rà soát."
+          ]
+        },
+        "Một quy tắc chuyển tiếp ở Điều 111(4), được bổ sung bởi một sửa đổi sau đó, cho các nhà cung cấp có hệ thống được đưa ra thị trường trước ngày 2 tháng 8 năm 2026 thời hạn đến ngày 2 tháng 12 năm 2026 để tuân thủ Điều 50(2)."
+      ]
+    },
+    {
+      "h": "Quy tắc nền tảng: YouTube, TikTok và Meta",
+      "body": [
+        "Các nền tảng áp dụng quy tắc riêng trên toàn thế giới, bên cạnh luật địa phương. Ở mức tổng quát, tại thời điểm viết bài:",
+        {
+          "table": {
+            "head": [
+              "Nền tảng",
+              "Nhà sáng tạo phải khai báo gì",
+              "Nhãn tự động"
+            ],
+            "rows": [
+              [
+                "YouTube",
+                "Nội dung chân thực được tạo hoặc chỉnh sửa bằng AI: người thật nói hoặc làm điều họ chưa từng làm, cảnh quay thật bị chỉnh sửa về sự kiện hoặc địa điểm thật, cảnh chân thực chưa từng xảy ra, và nhạc AI là trọng tâm chính",
+                "YouTube có thể tự thêm nhãn; việc nhiều lần không khai báo có thể dẫn đến bị xử phạt"
+              ],
+              [
+                "TikTok",
+                "Nội dung do AI tạo ra hoặc chỉnh sửa đáng kể có cảnh hoặc người trông chân thực",
+                "Nội dung làm bằng hiệu ứng AI của TikTok, và nội dung mang C2PA Content Credentials, có thể được gắn nhãn tự động"
+              ],
+              [
+                "Meta (Facebook, Instagram, Threads)",
+                "Video giống thật như ảnh chụp và âm thanh nghe như thật được tạo hoặc chỉnh sửa bằng AI; ảnh không yêu cầu tự gắn nhãn",
+                "Nội dung làm bằng công cụ Meta AI, hoặc được phát hiện qua các tín hiệu chuẩn của ngành, có thể nhận nhãn “AI info”"
+              ]
+            ]
+          }
+        },
+        "YouTube không yêu cầu khai báo với nội dung rõ ràng không chân thực, chỉnh sửa nhỏ như chỉnh màu hay bộ lọc, hoặc AI hỗ trợ kịch bản, tiêu đề và chú thích, và nói rằng việc khai báo tự nó không hạn chế đối tượng xem hay kiếm tiền của video. TikTok nói rằng nhãn không làm cho nội dung có hại hoặc gây hiểu lầm trở nên chấp nhận được."
+      ]
+    },
+    {
+      "h": "Cách gắn nhãn trong thực tế",
+      "body": [
+        {
+          "ol": [
+            "Giữ metadata của công cụ tạo. Xuất từ công cụ AI ở định dạng giữ được metadata, và kiểm tra trình chỉnh sửa của bạn không loại bỏ nó khi xuất file.",
+            "Thêm nhãn nhìn thấy được mà không bị mất khi cắt khung. Với video, đặt nó ở khung hình mở đầu và giữ một dấu nhỏ ở góc; với ảnh, đặt nhãn bên trong bức ảnh, không chỉ ở chú thích.",
+            "Với nội dung chỉ có âm thanh, hãy nói ngay từ đầu, ví dụ: “Âm thanh này được tạo bằng AI.”",
+            "Bật cài đặt khai báo AI của nền tảng khi tải lên, ngay cả khi file đã có metadata.",
+            "Viết một dòng chú thích đơn giản như “Làm bằng AI” hoặc “Video do AI tạo” để người xem thấy trong mọi ứng dụng.",
+            "Lưu hồ sơ về công cụ, prompt và file nguồn của từng tác phẩm đã đăng."
+          ]
+        },
+        "Hãy cẩn thận với công cụ bảo vệ quyền riêng tư. Xóa dữ liệu EXIF và GPS, chẳng hạn bằng công cụ exif của cv.cm, bảo vệ vị trí của bạn trong những ảnh bạn tự chụp, nhưng bước đó cũng xóa luôn nhãn metadata khỏi file AI. Với nội dung do AI tạo ra, hãy thêm nhãn nhìn thấy được trước khi chia sẻ, và đừng xóa các nhãn mà luật hoặc nền tảng yêu cầu."
+      ]
+    },
+    {
+      "h": "Những sai lầm thường gặp",
+      "body": [
+        {
+          "ul": [
+            "Chỉ gắn nhãn trong nội dung bài đăng. Chú thích bị mất khi file được đăng lại hoặc tải xuống.",
+            "Đặt nhãn quá nhỏ ở sát mép, nơi nút của nền tảng hoặc việc cắt khung làm mất nó.",
+            "Chuyển đổi hoặc quay màn hình một video AI, làm mất metadata của nó, rồi đăng mà không có nhãn nhìn thấy được.",
+            "Nghĩ rằng phong cách hoạt hình thì ở đâu cũng không cần nhãn. Các nền tảng phương Tây tập trung vào nội dung chân thực, nhưng Biện pháp của Trung Quốc áp dụng cho nội dung do AI tạo ra nói chung.",
+            "Gắn nhãn cảnh quay thật là AI để né trách nhiệm. Biện pháp của Trung Quốc cấm dùng nhãn không đúng để gây hại quyền của người khác, và nhãn không bao giờ khiến nội dung gây hiểu lầm trở nên chấp nhận được."
+          ]
+        },
+        {
+          "note": "Trang này là thông tin chung, không phải tư vấn pháp lý. Luật và chính sách nền tảng thay đổi; hãy kiểm tra văn bản chính thức hiện hành trước khi dựa vào một chi tiết."
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Tôi có phải gắn nhãn ảnh do AI tạo ra trên Instagram không?",
+      "a": "Meta nói họ có thể yêu cầu nhãn cho video giống thật như ảnh chụp và âm thanh chân thực, không phải cho ảnh. Họ vẫn có thể thêm nhãn “AI info” cho ảnh khi hệ thống của họ phát hiện tín hiệu AI."
+    },
+    {
+      "q": "Chuyện gì xảy ra nếu tôi không gắn nhãn nội dung AI trên YouTube?",
+      "a": "YouTube có thể tự thêm nhãn. Nhà sáng tạo nhiều lần không khai báo có thể bị xử phạt như gỡ nội dung hoặc bị đình chỉ khỏi Chương trình đối tác YouTube."
+    },
+    {
+      "q": "Dùng AI cho kịch bản hoặc phụ đề có cần gắn nhãn không?",
+      "a": "Trên YouTube thì không: hỗ trợ sản xuất như kịch bản, tiêu đề, hình thu nhỏ và chú thích không cần khai báo. Các nền tảng và luật khác tập trung vào chính nội dung phương tiện được tạo ra."
+    },
+    {
+      "q": "Watermark có giống nhãn AI không?",
+      "a": "Watermark nhìn thấy được có thể đóng vai trò nhãn hiển thị nếu nó nói rõ nội dung do AI tạo ra. Watermark vô hình là nhãn ngầm mà phần mềm phát hiện được nhưng con người không thấy."
+    },
+    {
+      "q": "Tôi có thể xóa watermark AI khỏi nội dung do chính tôi tạo ra không?",
+      "a": "Ở Trung Quốc, quy định cấm cố ý xóa, sửa hoặc che giấu các nhãn bắt buộc. Ở nơi khác, điều khoản của công cụ và quy tắc nền tảng cũng có thể cấm điều này. Hãy giữ nhãn khi bạn đăng."
+    }
+  ]
+}

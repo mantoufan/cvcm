@@ -8777,6 +8777,149 @@
     "bit-manipulation": {
       "name": "Bit manipulation",
       "blurb": "Bitwise operators, single-bit tricks, bit counting and bitmasks with Python examples"
+    },
+    "ai": {
+      "label": "AI tutorials",
+      "lead": "Sourced guides to generative AI: how LLMs and diffusion models work, writing image and video prompts, AI image, video and audio workflows, running models in the browser, and AI copyright and labeling.",
+      "all": "All AI tutorials",
+      "groups": {
+        "basics": "AI basics",
+        "prompts": "Prompt writing",
+        "image": "AI images",
+        "video": "AI video",
+        "audio": "AI audio",
+        "dev": "AI for developers",
+        "trust": "Copyright and safety"
+      },
+      "blurbs": {
+        "basics": "How LLMs and diffusion models work, tokens, hallucinations, agents and a glossary",
+        "prompts": "Prompt formulas for text, images and video, camera moves and storyboards",
+        "image": "Text to image, image to image, consistent characters, upscaling and cut-outs",
+        "video": "Text to video, image to video, keyframes, multi-shot continuity and AI short dramas",
+        "audio": "How speech to text and text to speech work, and their limits",
+        "dev": "Run models in the browser and call an LLM API",
+        "trust": "Who owns AI output, labeling rules, C2PA and AI watermarks"
+      }
+    },
+    "what-is-generative-ai": {
+      "name": "What is generative AI?",
+      "blurb": "How AI models learn from data to make text, images, video and audio, and where they fail"
+    },
+    "how-llms-work": {
+      "name": "How LLMs work",
+      "blurb": "Follow one prompt through tokens, attention and next-token prediction to an answer"
+    },
+    "tokens-and-context-window": {
+      "name": "Tokens and context window",
+      "blurb": "Real token counts in six languages, what fills the context window, and how to save space"
+    },
+    "ai-hallucination": {
+      "name": "AI hallucination",
+      "blurb": "Why AI invents facts and citations, prompts that reduce it, and how to check answers"
+    },
+    "how-diffusion-models-work": {
+      "name": "How diffusion models work",
+      "blurb": "How noise becomes an image, and what steps, seed and CFG scale change"
+    },
+    "what-are-ai-agents": {
+      "name": "What are AI agents?",
+      "blurb": "How AI agents call tools in a loop, a real trace, MCP, and the risks to plan for"
+    },
+    "ai-glossary": {
+      "name": "AI glossary",
+      "blurb": "60 generative AI terms in plain English, from tokens and LoRA to CFG, C2PA and deepfakes"
+    },
+    "prompt-engineering-basics": {
+      "name": "Prompt engineering basics",
+      "blurb": "The six parts of a good prompt, a before/after rewrite, examples and testing"
+    },
+    "image-prompts": {
+      "name": "How to write image prompts",
+      "blurb": "A prompt formula, a weak-to-strong rewrite, keyword tables and negative prompts"
+    },
+    "video-prompts": {
+      "name": "How to write video prompts",
+      "blurb": "A 7-part prompt structure, one action per shot, beat timing and a full rewrite"
+    },
+    "camera-movement-terms": {
+      "name": "Camera movement terms",
+      "blurb": "Dolly, truck, orbit, crane, dolly zoom and more: what each looks like and how to prompt it"
+    },
+    "storyboard-prompts": {
+      "name": "Storyboard prompts",
+      "blurb": "Turn a script into shots and one prompt per shot, with a 15-second example."
+    },
+    "text-to-image": {
+      "name": "How text-to-image AI works",
+      "blurb": "From prompt to picture: steps, guidance, seed, size and a working draft-to-final flow"
+    },
+    "image-to-image": {
+      "name": "How image-to-image AI works",
+      "blurb": "Strength, reference images, style transfer, inpainting and depth, pose and edge control"
+    },
+    "consistent-ai-characters": {
+      "name": "Consistent AI characters",
+      "blurb": "Character sheets, references, seeds, fixed descriptors, LoRA and a continuity checklist"
+    },
+    "how-ai-upscaling-works": {
+      "name": "How AI upscaling works",
+      "blurb": "Why bicubic blurs, how GAN and Real-ESRGAN models add detail, and when they fail"
+    },
+    "how-ai-background-removal-works": {
+      "name": "How AI background removal works",
+      "blurb": "Masks vs alpha mattes, why hair and glass fail, and why cut-outs must be PNG"
+    },
+    "what-is-a-depth-map": {
+      "name": "What is a depth map?",
+      "blurb": "How AI guesses depth from one photo, near vs far shading, and uses for 3D and ControlNet"
+    },
+    "text-to-video": {
+      "name": "How text-to-video works",
+      "blurb": "How a prompt becomes a clip, the settings that matter, and a 15-second shot plan"
+    },
+    "image-to-video": {
+      "name": "How image-to-video works",
+      "blurb": "Pick a start image, write motion-only prompts, and when 2.5D parallax is enough"
+    },
+    "first-last-frame-video": {
+      "name": "First and last frame video",
+      "blurb": "Keyframe interpolation, how to design both frames, and transitions that work or fail"
+    },
+    "multi-shot-ai-video": {
+      "name": "Multi-shot AI video",
+      "blurb": "Keep faces, clothes, places and light consistent across many AI video shots."
+    },
+    "ai-short-drama-workflow": {
+      "name": "AI short drama workflow",
+      "blurb": "From hook and script to a labeled 9:16 episode, with a 20-second shot list."
+    },
+    "how-speech-to-text-works": {
+      "name": "How speech-to-text works",
+      "blurb": "From spectrogram to words, how Whisper learned, word error rate, and clean subtitles"
+    },
+    "text-to-speech": {
+      "name": "How text-to-speech works",
+      "blurb": "Neural TTS vs browser voices, SSML for pauses and names, and voice-cloning consent"
+    },
+    "run-ai-in-the-browser": {
+      "name": "Run AI in the browser",
+      "blurb": "WebGPU vs WASM, ONNX Runtime Web, Transformers.js, model size, caching and phone limits"
+    },
+    "call-an-llm-api": {
+      "name": "How to call an LLM API",
+      "blurb": "A working API request in curl, Python and JS, plus streaming, JSON, retries and cost"
+    },
+    "ai-copyright-and-commercial-use": {
+      "name": "AI copyright and commercial use",
+      "blurb": "Who owns AI output in the US, China and EU, and what to check before selling it."
+    },
+    "labeling-ai-content": {
+      "name": "How to label AI content",
+      "blurb": "Explicit and implicit labels under China's rules, EU AI Act and platform policies."
+    },
+    "c2pa-and-ai-watermarks": {
+      "name": "C2PA and AI watermarks",
+      "blurb": "Content Credentials, SynthID and IPTC labels, why metadata vanishes, and detection limits"
     }
   },
   "dice": {

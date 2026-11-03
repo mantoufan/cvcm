@@ -1,0 +1,160 @@
+{
+  "title": "Cómo funcionan los modelos de difusión: del ruido a la imagen — cv.cm",
+  "description": "Cómo funcionan los modelos de difusión: entrenamiento con ruido, eliminación del ruido paso a paso, guía por texto, espacio latente y qué cambian realmente los pasos, la escala CFG y la semilla.",
+  "h1": "¿Cómo funcionan los modelos de difusión?",
+  "answer": "Un modelo de difusión aprende a eliminar ruido. En el entrenamiento, se degradan imágenes reales añadiéndoles ruido aleatorio paso a paso, y una red neuronal aprende a predecir ese ruido. Para generar, el modelo parte de ruido puro y quita un poco en cada paso, guiado por tu prompt de texto, hasta que aparece una imagen limpia. La mayoría de los generadores de imágenes y de video funcionan así.",
+  "sections": [
+    {
+      "h": "La versión corta: aprender a limpiar ruido y luego limpiar ruido puro",
+      "body": [
+        "Imagina que tomas una foto y le añades un poco de estática aleatoria. Luego otro poco, y otro, hasta que tras cientos de pasos solo queda una nieve gris. Ese sentido es fácil: un ordenador lo hace con una línea de matemáticas.",
+        "Un modelo de difusión es una red neuronal entrenada para ir en sentido contrario: mira una imagen con ruido y estima el ruido que se añadió, para poder restarlo. Si la red lo hace bien en todos los niveles de ruido, puedes partir de ruido aleatorio puro y limpiarlo paso a paso. Lo que queda al final es una imagen nueva que nunca existió, pero que parece pertenecer a los datos de entrenamiento.",
+        "La idea se describió en 2015 y se hizo práctica para imágenes de alta calidad con el artículo sobre Denoising Diffusion Probabilistic Models (DDPM) de 2020. Stable Diffusion, FLUX, Imagen, los modelos del estilo de DALL·E y la mayoría de los generadores de video, como Veo, Kling, Runway o Seedance, se basan en esta familia de métodos o en parientes cercanos, en el momento de escribir este artículo."
+      ]
+    },
+    {
+      "h": "Entrenamiento: el proceso directo y el predictor de ruido",
+      "body": [
+        "El entrenamiento usa millones de imágenes, cada una con su descripción. Con cada ejemplo, el sistema hace el mismo pequeño ejercicio:",
+        {
+          "ol": [
+            "Elige una imagen real y su descripción, por ejemplo una foto con la descripción “a red bicycle leaning on a brick wall” (una bicicleta roja apoyada en un muro de ladrillo).",
+            "Elige un nivel de ruido aleatorio, desde casi limpio hasta casi ruido puro.",
+            "Mezcla la imagen con ruido aleatorio a ese nivel. Es el proceso directo (forward) y no requiere aprendizaje.",
+            "Entrega la imagen con ruido, el nivel de ruido y la descripción a la red, y le pide que prediga el ruido que se añadió.",
+            "Compara la predicción con el ruido real y ajusta los pesos de la red para reducir el error."
+          ]
+        },
+        "Si repites esto miles de millones de veces, la red aprende cómo son las imágenes en general en cada nivel de degradación: dónde suelen ir los bordes, cómo cae la luz sobre la piel, cómo son las bicicletas y los muros de ladrillo. Nunca guarda las fotos de entrenamiento como archivos. Aprende estadísticas sobre ellas, y por eso también puede combinar ideas que nunca ha visto juntas.",
+        "La red solía ser una U-Net, un tipo de red para imágenes. Muchos modelos nuevos usan en su lugar un transformer (a menudo llamado transformer de difusión). Algunos modelos recientes se entrenan con flow matching, un método muy cercano que aprende una trayectoria recta del ruido a la imagen. Las ideas que ve el usuario, descritas más abajo, son las mismas."
+      ]
+    },
+    {
+      "h": "Generación: el proceso inverso, un paso cada vez",
+      "body": [
+        "Cuando pulsas Generar, el modelo no dibuja líneas ni pega piezas. Ejecuta un bucle:",
+        {
+          "code": "x = random_noise(seed)                  # start: pure static\nfor t in noise_levels_high_to_low:      # e.g. 30 steps\n    predicted_noise = model(x, t, prompt)\n    x = remove_some_noise(x, predicted_noise, t)\nimage = decode(x)                       # latent -> pixels",
+          "lang": "python"
+        },
+        "Los primeros pasos deciden las formas grandes: dónde está el sujeto, la línea del horizonte, los colores principales. Los pasos intermedios añaden forma e iluminación. Los últimos añaden textura fina, como el pelo, la tela y los poros de la piel. Esto explica varios efectos prácticos. Si bajas demasiado el número de pasos, las imágenes salen suaves e inacabadas. Si cambias la semilla, el ruido inicial es otro y cambia toda la composición.",
+        "La regla que convierte una predicción de ruido en una imagen algo más limpia se llama sampler o scheduler (muestreador o planificador). DDPM usaba muchos pasos pequeños. Métodos posteriores como DDIM demostraron que se pueden dar pasos más grandes y deterministas y obtener una calidad parecida con muchos menos pasos. Por eso las herramientas modernas necesitan decenas de pasos y no mil."
+      ]
+    },
+    {
+      "h": "Cómo el prompt de texto dirige la imagen",
+      "body": [
+        "Primero, un codificador de texto, un modelo de lenguaje entrenado para representar el significado de las descripciones, convierte el prompt en números. Dentro de la red que elimina el ruido, un mecanismo llamado atención cruzada (cross-attention) permite que cada región de la imagen mire las palabras del prompt en cada paso. Una región que se está convirtiendo en una cara presta atención a palabras como “freckles” (pecas) o “smiling” (sonriendo).",
+        "Por sí sola, esta guía es débil. La guía sin clasificador (classifier-free guidance) la refuerza. En cada paso, el modelo predice el ruido dos veces: una con tu prompt y otra con un prompt vacío. La predicción final se mueve más lejos en la dirección de la diferencia. La escala de guía (a menudo llamada escala CFG) fija hasta dónde. Un valor alto sigue el prompt más de cerca, pero puede verse áspero y sobresaturado. Un valor bajo se ve más natural, pero puede ignorar partes del prompt.",
+        "Un prompt negativo, cuando la herramienta lo admite, suele sustituir al prompt vacío en esa segunda predicción. La imagen se aleja de esas palabras, por ejemplo “blurry, watermark, extra fingers” (borroso, marca de agua, dedos de más)."
+      ]
+    },
+    {
+      "h": "Por qué la mayoría de los modelos trabajan en el espacio latente",
+      "body": [
+        "Eliminar el ruido de una imagen a resolución completa cientos de veces sería lento. La difusión latente, el método que hay detrás de Stable Diffusion, entrena primero un autoencoder que comprime una imagen en una cuadrícula de números mucho más pequeña y puede expandirla de nuevo. El modelo de difusión trabaja entonces solo sobre esa cuadrícula pequeña. Por ejemplo, con un factor de compresión de 8 por lado, una imagen de 512×512 se convierte en una cuadrícula de 64×64, que son 64 veces menos posiciones que procesar.",
+        "El último paso de cada generación, el decodificador, convierte la cuadrícula latente limpia de nuevo en píxeles. Cuando una imagen tiene manchas de color raras o las caras pequeñas se ven borrosas, la compresión del decodificador suele ser parte de la causa, y esa es una de las razones por las que las caras y el texto pequeño mejoran cuando el sujeto ocupa más espacio del encuadre.",
+        "La difusión de video usa la misma idea añadiendo el tiempo: el latente es una pila de fotogramas y la red elimina el ruido de todos a la vez para que el movimiento sea coherente de un fotograma a otro."
+      ]
+    },
+    {
+      "h": "Qué cambian realmente los ajustes más comunes",
+      "body": [
+        "La mayoría de los generadores muestran algunos de estos controles. Los nombres varían, pero el mecanismo es el mismo:",
+        {
+          "table": {
+            "head": [
+              "Ajuste",
+              "Qué controla",
+              "Efecto práctico"
+            ],
+            "rows": [
+              [
+                "Semilla (seed)",
+                "El ruido inicial",
+                "Misma semilla + mismo prompt + mismos ajustes da la misma imagen. Cámbiala para ver una composición nueva."
+              ],
+              [
+                "Pasos (steps)",
+                "Cuántas pasadas de eliminación de ruido",
+                "Con muy pocos se ve suave o inacabada. A partir de cierto punto, más pasos añaden tiempo y poca calidad."
+              ],
+              [
+                "Guía / escala CFG",
+                "Con qué fuerza se impone el prompt",
+                "Más alta sigue más el prompt, pero puede verse áspera. Más baja se ve natural, pero se desvía."
+              ],
+              [
+                "Sampler / scheduler",
+                "La regla de cada paso",
+                "Cambia la velocidad y la textura fina. Usa un solo sampler mientras pruebas otros ajustes."
+              ],
+              [
+                "Prompt negativo",
+                "De qué alejarse",
+                "Útil para quitar defectos recurrentes. Las listas largas rara vez ayudan."
+              ],
+              [
+                "Intensidad (imagen a imagen)",
+                "Cuánto ruido se añade a tu imagen de entrada",
+                "Baja conserva tu composición. Alta conserva solo la idea general."
+              ],
+              [
+                "Resolución / relación de aspecto",
+                "El tamaño de la cuadrícula latente",
+                "Alejarse mucho del tamaño de entrenamiento puede producir sujetos duplicados o cuerpos estirados."
+              ]
+            ]
+          }
+        },
+        "Un buen método de prueba es fijar la semilla y cambiar un solo ajuste cada vez. Si no, no puedes saber si una imagen mejor viene de tu cambio o de la suerte."
+      ]
+    },
+    {
+      "h": "La difusión frente a otras formas de generar imágenes",
+      "body": [
+        "La difusión no es el único método. Los modelos autorregresivos generan una imagen como una secuencia de tokens, uno tras otro, igual que un modelo de lenguaje escribe texto. Algunos modelos multimodales recientes usan este enfoque. Por ejemplo, el ai-image-generator de cv.cm ejecuta Janus-Pro-1B, un modelo autorregresivo, en local en tu navegador con WebGPU a 384 px. Sus ajustes se sienten distintos: no hay un número de pasos que afinar en el sentido de la difusión.",
+        "Las GAN (redes generativas antagónicas) más antiguas producían una imagen de una sola pasada y eran rápidas, pero eran más difíciles de entrenar y menos variadas. La difusión se impuso porque se entrena de forma estable y cubre una gama amplia de imágenes. Su principal coste es la velocidad, ya que cada imagen requiere muchas pasadas por la red. Los modelos destilados reducen el número de pasos a unos pocos a cambio de algo de variedad."
+      ]
+    },
+    {
+      "h": "Puntos débiles frecuentes y cómo sortearlos",
+      "body": [
+        {
+          "ul": [
+            "Manos y dedos: las manos aparecen en muchas posturas y, en las fotos de entrenamiento, a menudo están parcialmente ocultas, así que el modelo aprende un promedio borroso. Pide posturas de mano sencillas y visibles, o retoca las manos después con inpainting.",
+            "Texto en las imágenes: el modelo aprende las letras como formas, no como ortografía. Los modelos nuevos son mucho mejores, pero mantén el texto corto, ponlo entre comillas en el prompt y revisa cada letra. Si el texto es importante, añádelo después en un editor.",
+            "Contar: “five apples” (cinco manzanas) suele dar cuatro o seis. Con menos objetos es más fiable.",
+            "Mezcla de atributos: los colores y los atributos se pasan de un sujeto a otro; por ejemplo, un sombrero rojo hace que la camiseta también sea roja. Describe cada sujeto con una frase clara o genéralos por separado.",
+            "Copias: a veces los modelos pueden reproducir copias muy cercanas de imágenes famosas o muy repetidas. Evita nombrar artistas o personajes de marcas en el prompt si necesitas un trabajo original."
+          ]
+        },
+        {
+          "note": "Cambiar la semilla es la solución más barata. Genera varias imágenes por prompt y elige, en lugar de reescribir el prompt tras cada resultado."
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "¿Stable Diffusion es lo mismo que un modelo de difusión?",
+      "a": "No. Modelo de difusión es el método general. Stable Diffusion es una familia concreta de modelos abiertos que usa difusión latente. Muchos otros generadores también usan difusión."
+    },
+    {
+      "q": "¿Por qué el mismo prompt da una imagen distinta cada vez?",
+      "a": "Cada generación parte de un ruido aleatorio distinto, determinado por la semilla. Si fijas la semilla y mantienes todos los demás ajustes, obtienes de nuevo la misma imagen con el mismo software."
+    },
+    {
+      "q": "¿Los modelos de difusión guardan copias de sus imágenes de entrenamiento?",
+      "a": "Guardan pesos aprendidos, no archivos de imagen. Sin embargo, hay investigaciones que han mostrado que algunas imágenes de entrenamiento se pueden extraer casi exactas, sobre todo las famosas o muy repetidas, así que en casos raros es posible una copia muy cercana."
+    },
+    {
+      "q": "¿Por qué las imágenes de IA tardan varios segundos en crearse?",
+      "a": "Un modelo de difusión ejecuta su gran red una vez por paso, a menudo decenas de veces por imagen. Los modelos más rápidos se entrenan para necesitar menos pasos, y trabajar en un espacio latente comprimido también ahorra tiempo."
+    },
+    {
+      "q": "¿Qué escala CFG es buena?",
+      "a": "Depende del modelo. Muchos modelos antiguos funcionan hacia la mitad de su rango y algunos modelos destilados necesitan una guía muy baja. Empieza con el valor por defecto de la herramienta y muévelo en pasos pequeños con la semilla fija."
+    }
+  ]
+}

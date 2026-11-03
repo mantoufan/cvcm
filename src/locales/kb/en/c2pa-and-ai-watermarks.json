@@ -1,0 +1,183 @@
+{
+  "title": "C2PA, Content Credentials and AI Watermarks Explained — cv.cm",
+  "description": "How C2PA Content Credentials, SynthID watermarks and IPTC metadata label AI images, why stripping metadata removes them, and the limits of detection.",
+  "h1": "What are C2PA Content Credentials and AI watermarks?",
+  "answer": "C2PA Content Credentials are a signed record attached to a file that says who made it, with what tool and how it was edited, including whether AI generated it. Invisible watermarks such as SynthID hide a signal in the pixels or audio itself. Metadata can be stripped by a screenshot or re-upload; watermarks survive more edits, but neither proves on its own that content is real or fake.",
+  "sections": [
+    {
+      "h": "Four layers of AI labeling",
+      "body": [
+        "AI content can be labeled in several independent ways. They solve different problems, and most serious systems use more than one.",
+        {
+          "table": {
+            "head": [
+              "Layer",
+              "Where it lives",
+              "Who can read it",
+              "Survives a screenshot?"
+            ],
+            "rows": [
+              [
+                "Visible label",
+                "Text or icon in the image, video or caption",
+                "Everyone",
+                "Yes, unless cropped out"
+              ],
+              [
+                "Metadata (EXIF, XMP, IPTC)",
+                "Fields in the file header",
+                "Any metadata viewer",
+                "No"
+              ],
+              [
+                "C2PA manifest (Content Credentials)",
+                "A signed data block inside the file or in an online store",
+                "C2PA validators",
+                "No, unless recovered through a soft binding"
+              ],
+              [
+                "Invisible watermark",
+                "Small changes in the pixels, samples or word choices",
+                "Only the matching detector",
+                "Often yes, within limits"
+              ]
+            ]
+          }
+        },
+        "China's labeling measures, in force since 2025-09-01, name two of these directly: explicit labels that people can see or hear, and implicit labels in file metadata, with digital watermarks encouraged. The EU AI Act's Article 50 similarly requires generative AI providers to mark synthetic output in a machine-readable, detectable way."
+      ]
+    },
+    {
+      "h": "How a C2PA manifest works",
+      "body": [
+        "C2PA (Coalition for Content Provenance and Authenticity) publishes an open technical specification. The consumer name for its data is Content Credentials. A manifest is built from three parts:",
+        {
+          "ol": [
+            "Assertions: statements about the file, such as the creating tool, the actions taken (created, cropped, color adjusted), a thumbnail, and ingredients (earlier files it was made from).",
+            "A claim: a list that points to those assertions, with hashes so none can be changed later.",
+            "A claim signature: a digital signature made with the signer's private key and identified by an X.509 certificate, the same kind of certificate system used by HTTPS."
+          ]
+        },
+        "The manifest also contains a hard binding: a cryptographic hash of the image or video data. If even one pixel changes after signing, the hash no longer matches and a validator reports that the content was altered. When a C2PA-aware editor makes a change, it adds a new manifest that lists the old one as an ingredient, which builds a chain of edits.",
+        "In common formats such as JPEG, PNG and MP4, manifests are stored in JUMBF boxes inside the file. A file can also carry only a link to a manifest stored elsewhere.",
+        {
+          "code": "Content Credentials (simplified view)\n  Signed by:     Example Camera Co. (certificate valid)\n  Created with:  Example Image Generator\n  Actions:       c2pa.created\n    digitalSourceType: trainedAlgorithmicMedia\n  Then:          c2pa.cropped, c2pa.color_adjustments (Example Editor)\n  Ingredients:   1 earlier file\n  Hash check:    content matches signature",
+          "lang": "text"
+        },
+        "The C2PA explainer is clear about the scope: provenance tells you where content came from and how it changed. It does not say whether the content is true. A signed photo of a staged scene is still staged."
+      ]
+    },
+    {
+      "h": "IPTC digital source type: the AI field in metadata",
+      "body": [
+        "The IPTC, the standards body for news media metadata, maintains a vocabulary called digital source type. The same terms are used in IPTC photo metadata and inside C2PA action assertions. The terms most relevant to AI are:",
+        {
+          "table": {
+            "head": [
+              "Term",
+              "Label",
+              "Meaning"
+            ],
+            "rows": [
+              [
+                "trainedAlgorithmicMedia",
+                "Created using Generative AI",
+                "Made by an AI model trained on captured content"
+              ],
+              [
+                "compositeWithTrainedAlgorithmicMedia",
+                "Edited using Generative AI",
+                "Real content changed with generative AI, for example inpainting or outpainting"
+              ],
+              [
+                "algorithmicMedia",
+                "Pure algorithmic media",
+                "Made by an algorithm with no training data, such as a procedural pattern"
+              ],
+              [
+                "digitalCapture",
+                "Digital capture",
+                "Captured from real life with a digital camera or recorder"
+              ]
+            ]
+          }
+        },
+        "Platforms read these values to decide when to show labels such as \"Made with AI\" or \"AI info\". On its own, an IPTC field is not signed, so anyone can write or remove it. Inside a C2PA manifest the same value is covered by the signature."
+      ]
+    },
+    {
+      "h": "Why stripping metadata removes the credentials",
+      "body": [
+        "Metadata and embedded manifests live next to the image data, not in it. Anything that writes a new file from the pixels alone drops them:",
+        {
+          "ul": [
+            "Taking a screenshot or screen recording.",
+            "Uploading to a platform that re-encodes images and removes metadata for privacy or size.",
+            "Converting format, for example PNG to JPEG, in a tool that does not copy metadata.",
+            "Running a metadata remover, which is designed to delete EXIF, GPS, XMP and similar blocks.",
+            "Copying and pasting an image between apps through the clipboard."
+          ]
+        },
+        "This is expected behavior, not a flaw in one tool. Removing location data before sharing a photo is good privacy practice; for example, cv.cm's EXIF tool strips EXIF and GPS data in the browser, and it will remove embedded credentials along with them. If you need to prove where an image came from, keep the original signed file and share it unchanged.",
+        "C2PA's answer is durable Content Credentials: combining the hard binding with a soft binding, meaning an invisible watermark or a perceptual fingerprint. A validator that finds the watermark or fingerprint can look up the original manifest in a manifest repository even after the file's metadata was removed.",
+        {
+          "note": "Removing labels can have legal consequences. China's labeling measures (Article 10) forbid maliciously deleting, altering, forging or hiding AI labels, and forbid offering tools for others to do so. Stripping metadata for privacy is different from removing labels to pass off AI content as real. This is general information, not legal advice."
+        }
+      ]
+    },
+    {
+      "h": "Invisible watermarks such as SynthID",
+      "body": [
+        "An invisible watermark changes the content itself in a way people do not notice but a detector can find. Google DeepMind's SynthID, for example, is described as covering images, video, audio and text. For images and video it is designed to survive cropping, filters, frame-rate changes and lossy compression; for audio, added noise, MP3 compression and speed changes. For text, it slightly adjusts the probabilities of the words the model chooses.",
+        "Important limits apply to every watermark of this kind:",
+        {
+          "ul": [
+            "Only the matching detector can read it. A SynthID check says nothing about images from a model that uses a different watermark or none at all.",
+            "Robust does not mean permanent. Heavy edits, regenerating the image with another model, or rewriting text can weaken or remove the signal.",
+            "Text watermarks are weakest on short passages and on text that has been translated or paraphrased.",
+            "A watermark shows that a cooperating provider generated or edited the content. It does not show which parts were changed or whether the scene is true."
+          ]
+        },
+        "Personal invisible watermarks are a different tool for a different job. A mark you hide in your own photo, for example with cv.cm's watermark tool, helps you show later that a copy came from your file. It is not an AI label and no platform reads it."
+      ]
+    },
+    {
+      "h": "The limits of AI detection",
+      "body": [
+        "No method can look at an arbitrary file and reliably say \"AI\" or \"real\". Keep these rules in mind:",
+        {
+          "ol": [
+            "A valid credential tells you who signed and what they declared. Trust depends on whether you trust that signer.",
+            "Missing credentials prove nothing. Most real photos online have none, because platforms strip them and most cameras do not sign.",
+            "A watermark found is strong evidence for that provider's model. No watermark found is weak evidence of anything.",
+            "Classifier-style AI detectors, which guess from visual or statistical patterns, have false positives and false negatives. Do not use them alone to accuse someone.",
+            "Combine signals: credentials, watermarks, the source account, the earliest upload, and ordinary checks such as reverse image search and looking for physical errors."
+          ]
+        },
+        "For creators, the practical rule is simple: keep your generator's original files with their credentials, add a visible label where your platform or law requires one, and do not try to remove AI marks from content you publish."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "How can I check if an image has Content Credentials?",
+      "a": "Open it in a C2PA-aware viewer, such as an official verify site, a supporting editor, or a platform that shows a CR or AI info badge. If the file was re-saved or screenshotted, the credentials may be gone even if they existed originally."
+    },
+    {
+      "q": "Can C2PA Content Credentials be faked?",
+      "a": "Anyone can create a manifest, but they cannot sign it with another organization's certificate. Validators check the signature and the content hash, so the real question is whether you trust the signer shown."
+    },
+    {
+      "q": "Does removing EXIF data remove the AI label?",
+      "a": "It removes metadata labels and embedded C2PA manifests. It does not remove a visible label or an invisible watermark in the pixels, and a soft binding may still let a validator recover the original manifest."
+    },
+    {
+      "q": "Is SynthID the same as C2PA?",
+      "a": "No. SynthID is a watermark inside the content, read by Google's detector. C2PA is an open standard for signed provenance records attached to a file. They complement each other, and C2PA can use a watermark as a soft binding."
+    },
+    {
+      "q": "Do AI image generators add C2PA automatically?",
+      "a": "Many large providers add Content Credentials or IPTC metadata, an invisible watermark, or both, but practice differs by product and changes over time. Check the provider's documentation and inspect a sample file."
+    }
+  ]
+}

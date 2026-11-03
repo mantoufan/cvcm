@@ -1,0 +1,192 @@
+{
+  "title": "Cara Menjalankan AI di Browser: WebGPU, WASM, Transformers.js — cv.cm",
+  "description": "Cara menjalankan model AI di browser dengan WebGPU atau WASM, ONNX Runtime Web, dan Transformers.js: ukuran model, cache, kuantisasi, privasi, dan batasan di ponsel.",
+  "h1": "Bagaimana cara menjalankan model AI di browser?",
+  "answer": "Anda mengunduh file model, biasanya berformat ONNX, lalu menjalankannya di dalam halaman web dengan runtime seperti ONNX Runtime Web, sering lewat Transformers.js. Runtime memakai GPU lewat WebGPU bila tersedia dan beralih ke CPU dengan WebAssembly bila tidak. File di-cache setelah kunjungan pertama, dan data Anda tidak pernah meninggalkan perangkat.",
+  "sections": [
+    {
+      "h": "Kenapa menjalankan AI di browser",
+      "body": [
+        "Kebanyakan fitur AI memanggil server: foto atau teks diunggah, GPU di pusat data menjalankan model, lalu hasilnya dikirim balik. AI di browser membalik pola ini. Model diunduh sekali, dan perangkat pengunjung sendiri yang mengerjakannya.",
+        {
+          "ul": [
+            "Privasi: foto, audio, dan dokumen tetap di perangkat. Tidak ada yang perlu diunggah atau disimpan, sehingga di banyak negara juga lebih mudah memenuhi hukum privasi.",
+            "Tanpa biaya server per pemakaian: situs hanya membayar hosting file model, bukan waktu GPU. Inilah yang memungkinkan alat gratis.",
+            "Bisa dipakai offline setelah pemuatan pertama, dan tanpa jeda jaringan per permintaan.",
+            "Tidak perlu akun atau API key."
+          ]
+        },
+        "Kompromi-nya nyata. Kunjungan pertama butuh unduhan besar, kecepatan bergantung pada perangkat keras pengunjung, dan hanya model kecil dan menengah yang muat. Model chat besar dengan puluhan miliar parameter tetap butuh server. Tugas yang cocok saat ini mencakup penghapusan background, peningkatan resolusi gambar, estimasi depth, speech to text, terjemahan, klasifikasi teks, embedding, dan model gambar atau bahasa yang kecil. Misalnya, alat remove-background dan speech-to-text di cv.cm menjalankan BiRefNet dan Whisper dengan cara ini, tanpa mengunggah apa pun."
+      ]
+    },
+    {
+      "h": "Empat lapisan: model, runtime, backend, library",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Lapisan",
+              "Apa itu",
+              "Pilihan umum"
+            ],
+            "rows": [
+              [
+                "File model",
+                "Bobot hasil pelatihan dan graf komputasinya",
+                "File ONNX, sering diekspor dari PyTorch"
+              ],
+              [
+                "Runtime",
+                "Kode yang mengeksekusi graf di dalam halaman",
+                "ONNX Runtime Web (ada alternatif, seperti TensorFlow.js atau WebLLM untuk model chat)"
+              ],
+              [
+                "Backend",
+                "Jalur perangkat keras yang dipakai runtime",
+                "WebGPU untuk GPU, WebAssembly (WASM) untuk CPU, WebNN jika didukung"
+              ],
+              [
+                "Library",
+                "API yang ramah: preprocessing, tokenizer, pipeline",
+                "Transformers.js, yang memakai ONNX Runtime di bawahnya"
+              ]
+            ]
+          }
+        },
+        "ONNX adalah format terbuka untuk jaringan saraf. Model yang dilatih di PyTorch bisa diekspor ke ONNX, lalu ONNX Runtime Web dapat menjalankannya dengan beberapa backend. Backend WASM mendukung semua operator ONNX. Backend GPU mendukung sebagian saja, sehingga model bisa gagal di WebGPU tetapi tetap berjalan di WASM. Transformers.js menambahkan hal yang kalau tidak harus Anda tulis sendiri: mengubah ukuran gambar, mengubah teks menjadi token, men-decode audio, dan mengubah angka keluaran mentah menjadi label, mask, atau teks."
+      ]
+    },
+    {
+      "h": "WebGPU versus WebAssembly",
+      "body": [
+        "WebGPU adalah standar web W3C yang memberi halaman akses ke kartu grafis, baik untuk menggambar maupun komputasi umum. Untuk jaringan saraf, bagian komputasinyalah yang penting: perkalian matriks berjalan paralel di banyak inti GPU. WebAssembly menjalankan kode terkompilasi di CPU dengan kecepatan mendekati native dan berfungsi di setiap browser modern.",
+        {
+          "table": {
+            "head": [
+              "Pertanyaan",
+              "WebGPU",
+              "WebAssembly (WASM)"
+            ],
+            "rows": [
+              [
+                "Berjalan di",
+                "GPU",
+                "CPU, opsional multi-thread dengan SIMD"
+              ],
+              [
+                "Kecepatan pada model besar",
+                "Sering berkali-kali lipat lebih cepat",
+                "Lebih lambat, tetapi bisa diprediksi"
+              ],
+              [
+                "Ketersediaan",
+                "Terus bertambah, tetapi belum di semua browser dan perangkat; MDN mencantumkannya sebagai ketersediaan terbatas",
+                "Setiap browser modern"
+              ],
+              [
+                "Cakupan operator di ONNX Runtime Web",
+                "Sebagian",
+                "Semua operator"
+              ],
+              [
+                "Persyaratan",
+                "Secure context (HTTPS)",
+                "Thread butuh halaman yang cross-origin isolated"
+              ],
+              [
+                "Terbaik untuk",
+                "Pembuatan gambar, model visi besar, Whisper pada audio panjang",
+                "Model kecil, cadangan, perangkat tanpa GPU yang bagus"
+              ]
+            ]
+          }
+        },
+        "Dalam praktik, coba WebGPU dulu lalu beralih ke WASM. Jangan menentukan berdasarkan nama browser. Minta adapter dari browser dan periksa fiturnya:",
+        {
+          "code": "// Check what this device can do before loading a model.\nasync function pickBackend() {\n  if (!(\"gpu\" in navigator)) return { device: \"wasm\" };      // no WebGPU API\n  const adapter = await navigator.gpu.requestAdapter();\n  if (!adapter) return { device: \"wasm\" };                    // API exists, no usable GPU\n  const f16 = adapter.features.has(\"shader-f16\");             // half-precision support\n  return { device: \"webgpu\", f16 };\n}\n\nconsole.log(await pickBackend(), \"threads:\", self.crossOriginIsolated);",
+          "lang": "javascript"
+        },
+        "WASM multi-thread memakai `SharedArrayBuffer`, yang hanya diizinkan browser bila halaman cross-origin isolated. Artinya halaman harus mengirim header `Cross-Origin-Opener-Policy` dan `Cross-Origin-Embedder-Policy`. Tanpa header itu, WASM berjalan di satu thread dan jauh lebih lambat."
+      ]
+    },
+    {
+      "h": "Contoh minimal Transformers.js",
+      "body": [
+        "Dengan Transformers.js, satu tugas cukup satu panggilan `pipeline`. Library mengunduh model, memilih file untuk perangkat dan tipe data yang dipilih, lalu mengembalikan fungsi yang bisa Anda panggil:",
+        {
+          "code": "import { pipeline } from \"@huggingface/transformers\";\n\nconst { device } = await pickBackend();     // from the snippet above\n\n// First call downloads the model and caches it. Later visits load from cache.\nconst classify = await pipeline(\n  \"sentiment-analysis\",\n  \"Xenova/distilbert-base-uncased-finetuned-sst-2-english\",\n  {\n    device,                                  // \"webgpu\" or \"wasm\"\n    dtype: device === \"webgpu\" ? \"fp32\" : \"q8\",\n    progress_callback: (p) => console.log(p.status, p.file ?? \"\", p.progress ?? \"\"),\n  }\n);\n\nconsole.log(await classify(\"This runs entirely on my laptop.\"));\n// [{ label: \"POSITIVE\", score: 0.99... }]",
+          "lang": "javascript"
+        },
+        "Jalankan ini dalam module script atau, lebih baik lagi, di Web Worker. Inferensi model bisa memblokir selama ratusan milidetik atau lebih, dan di dalam worker halaman tetap responsif. WebGPU juga tersedia di dalam worker. Tampilkan progres unduhan kepada pengguna, karena pemuatan pertama model besar bisa lama pada koneksi lambat."
+      ]
+    },
+    {
+      "h": "Ukuran unduhan, kuantisasi, dan caching",
+      "body": [
+        "Ukuran unduhan kira-kira sama dengan jumlah parameter dikalikan byte yang disimpan untuk tiap parameter. Aritmetika sederhana ini menunjukkan apakah sebuah model praktis:",
+        {
+          "code": "download size  ~  number of parameters  x  bytes per parameter\n\n                      fp32 (4 B)   fp16 (2 B)   int8 / q8 (1 B)   q4 (0.5 B)\n 50 million params      200 MB       100 MB          50 MB            25 MB\n 500 million params     2.0 GB       1.0 GB         500 MB           250 MB\n 1 billion params       4.0 GB       2.0 GB         1.0 GB           500 MB\n\nReal files differ a little: some layers stay at higher precision,\nand the tokenizer and config add a few MB.",
+          "lang": "text"
+        },
+        "Kuantisasi menyimpan bobot dengan lebih sedikit bit: fp16 memangkas ukuran fp32 menjadi setengah, kuantisasi 8-bit (q8) menjadi seperempat, dan 4-bit (q4) mengurangi sekitar delapan kali lipat. Bobot yang lebih kecil diunduh lebih cepat dan butuh lebih sedikit memori. Harganya adalah sedikit akurasi, yang biasanya kecil pada 8 bit dan lebih terlihat pada 4 bit, terutama pada model kecil dan tugas seperti pembuatan gambar yang menampakkan kesalahan kecil. Transformers.js memilih varian lewat opsi `dtype`. Nilai defaultnya q8 di WASM dan fp32 di WebGPU, dan opsi yang tersedia bergantung pada apa yang diekspor penerbit modelnya.",
+        "Caching membuat kunjungan kedua cepat. Transformers.js secara default menyimpan file unduhan dengan Cache API milik browser. Browser memberi tiap situs kuota penyimpanan berdasarkan ukuran disk, sering cukup besar untuk beberapa gigabyte di desktop, tetapi penyimpanan ini bersifat best-effort: browser dapat menghapusnya saat ruang perangkat menipis, dan Safari dapat menghapus data buatan skrip untuk situs yang tidak berinteraksi dengan pengguna selama beberapa hari. Situs bisa meminta penyimpanan persisten dengan `navigator.storage.persist()` dan memeriksa pemakaian dengan `navigator.storage.estimate()`.",
+        {
+          "note": "Hosting file model sendiri, dengan versi yang tetap, jika situs Anda bergantung padanya. Memuat dari hub pihak ketiga berarti gangguan layanannya, file yang diganti nama, atau versi model baru menjadi masalah Anda."
+        }
+      ]
+    },
+    {
+      "h": "Ponsel dan batasan lain",
+      "body": [
+        {
+          "ul": [
+            "Memori: model butuh memori untuk bobotnya plus ruang kerja. Browser seluler memberi tiap tab memori jauh lebih sedikit daripada desktop dan bisa menutup tab tanpa peringatan bila model terlalu besar. Jaga model seluler tetap kecil, sering di bawah beberapa ratus megabyte.",
+            "WebGPU di ponsel: dukungan bergantung pada browser, versi sistem operasi, dan driver GPU. Selalu sediakan jalur WASM atau pesan yang jelas.",
+            "Panas dan baterai: kerja GPU yang lama membuat ponsel panas, lalu sistem memperlambat chip. Tugas yang sekali makan 2 detik bisa jauh lebih lama pada kali kelima.",
+            "Paket data: peringatkan pengguna sebelum unduhan besar di koneksi seluler.",
+            "Presisi: sebagian GPU tidak punya dukungan half-precision (fp16) yang cepat atau menghasilkan angka yang sedikit berbeda, sehingga keluaran bisa agak berbeda antarperangkat.",
+            "Lisensi model tetap berlaku. Menjalankan model di browser tidak mengubah ketentuan penggunaannya."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Daftar periksa untuk merilis AI di browser",
+      "body": [
+        {
+          "ol": [
+            "Pilih model terkecil yang memenuhi standar kualitas Anda, dan uji versi kuantisasinya berdampingan.",
+            "Deteksi WebGPU dengan permintaan adapter, dan beralih ke WASM bila tidak ada.",
+            "Sajikan situs lewat HTTPS, dan aktifkan cross-origin isolation jika Anda butuh thread WASM.",
+            "Jalankan inferensi di Web Worker dan tampilkan progres unduhan dan pemrosesan.",
+            "Jangan unduh model saat halaman dimuat. Tunggu sampai pengguna memulai tugas, agar pengunjung yang hanya membaca halaman tidak menanggung gigabyte.",
+            "Hosting file model pada versi yang dipatok, dan cache.",
+            "Uji di ponsel kelas bawah, bukan hanya di laptop pengembangan."
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Apakah AI di browser benar-benar privat?",
+      "a": "Model berjalan di perangkat Anda, jadi masukan Anda tidak perlu dikirim ke mana pun. Apakah suatu situs mengunggah sesuatu bergantung pada kodenya, jadi periksa pernyataan privasinya atau panel jaringan browser."
+    },
+    {
+      "q": "Browser mana saja yang mendukung WebGPU?",
+      "a": "Dukungan terus bertambah di browser desktop utama dan sebagian browser seluler, tetapi masih bervariasi menurut versi browser, sistem operasi, dan GPU. Periksa tabel kompatibilitas terbaru di MDN dan uji `navigator.gpu` di dalam kode."
+    },
+    {
+      "q": "Bisakah saya menjalankan model seperti ChatGPT di browser?",
+      "a": "Model bahasa kecil dengan hingga beberapa miliar parameter bisa berjalan di browser pada GPU yang bagus, setelah mengunduh satu gigabyte atau lebih. Kemampuannya jauh di bawah model besar di balik ChatGPT, Claude, atau Gemini."
+    },
+    {
+      "q": "Kenapa pemakaian pertama lambat dan yang kedua cepat?",
+      "a": "Pemakaian pertama mengunduh model dan mengompilasi shader GPU atau kode WASM. Pemakaian berikutnya memuat file dari cache browser, selama browser tidak membersihkan penyimpanan itu."
+    },
+    {
+      "q": "Apakah menjalankan AI di browser memakai GPU saya meski bukan kartu gaming?",
+      "a": "Ya. WebGPU bisa memakai grafis terintegrasi pada laptop dan ponsel biasa. Lebih lambat daripada kartu khusus, tetapi sering kali tetap jauh lebih cepat daripada jalur CPU."
+    }
+  ]
+}

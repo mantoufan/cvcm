@@ -4,7 +4,7 @@ import { h } from "../dom";
 import { learnFaqSection } from "../faq";
 import { locale, t } from "../i18n";
 import { ALGO_SNIPPETS, ONE_PAGE_HTML, TUTORIAL_META, TUTORIAL_DIAGRAMS, TUTORIAL_SOURCES, tutorialSteps } from "../../shared/learn";
-import { KNOWLEDGE_ARTICLES, kbGroupsOf } from "../../shared/kb";
+import { KB_SHELVES, KNOWLEDGE_ARTICLES, kbGroupsOf } from "../../shared/kb";
 import { kbLinkItems } from "../../shared/kb-i18n";
 import { appHref, isConvertJobId, kbHref, learnHref, TUTORIAL_GROUPS, type ToolId, type TutorialGroupId, type TutorialId } from "../../shared/path";
 
@@ -21,6 +21,15 @@ export function mountLearnHub(host: HTMLElement): void {
         h("h2", null, t(`learn.groups.${group.id}`)),
         linkList(group.tutorials.map((id) => learnLink(loc, id))),
       ),
+    ),
+    h("section", { class: "wall", id: "ai" },
+      h("h2", null, h("a", { href: kbHref(loc, "ai"), "data-nav": KB_SHELVES.ai.nav }, t("kb.ai.label"))),
+      h("p", { class: "lede" }, t("kb.ai.lead")),
+      ...kbGroupsOf("ai").map((group) => [
+        h("h3", null, t(`kb.ai.groups.${group.id}`)),
+        linkList(kbLinkItems(loc, group.articles)),
+      ]).flat(),
+      h("p", { class: "more" }, h("a", { href: kbHref(loc, "ai"), "data-nav": KB_SHELVES.ai.nav }, t("kb.ai.all"))),
     ),
     h("section", { class: "wall", id: "knowledge" },
       h("h2", null, h("a", { href: kbHref(loc), "data-nav": "knowledge" }, t("kb.label"))),

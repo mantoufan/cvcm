@@ -1,0 +1,183 @@
+{
+  "title": "C2PA, Content Credentials, dan Watermark AI: Penjelasan Lengkap — cv.cm",
+  "description": "Cara C2PA Content Credentials, watermark SynthID, dan metadata IPTC melabeli gambar AI, kenapa menghapus metadata ikut menghapusnya, dan batas-batas deteksi.",
+  "h1": "Apa itu C2PA Content Credentials dan watermark AI?",
+  "answer": "C2PA Content Credentials adalah catatan bertanda tangan yang melekat pada file dan menyatakan siapa pembuatnya, dengan alat apa, dan bagaimana file disunting, termasuk apakah dibuat oleh AI. Watermark tak terlihat seperti SynthID menyembunyikan sinyal di dalam piksel atau audionya sendiri. Metadata bisa hilang karena screenshot atau unggah ulang; watermark bertahan pada lebih banyak jenis penyuntingan, tetapi keduanya tidak dengan sendirinya membuktikan konten itu asli atau palsu.",
+  "sections": [
+    {
+      "h": "Empat lapisan pelabelan AI",
+      "body": [
+        "Konten AI dapat dilabeli dengan beberapa cara yang saling independen. Masing-masing menyelesaikan masalah berbeda, dan kebanyakan sistem serius memakai lebih dari satu.",
+        {
+          "table": {
+            "head": [
+              "Lapisan",
+              "Letaknya",
+              "Siapa yang bisa membaca",
+              "Bertahan setelah screenshot?"
+            ],
+            "rows": [
+              [
+                "Label yang terlihat",
+                "Teks atau ikon di dalam gambar, video, atau keterangan",
+                "Semua orang",
+                "Ya, kecuali terpangkas"
+              ],
+              [
+                "Metadata (EXIF, XMP, IPTC)",
+                "Field di header file",
+                "Penampil metadata apa pun",
+                "Tidak"
+              ],
+              [
+                "Manifest C2PA (Content Credentials)",
+                "Blok data bertanda tangan di dalam file atau di penyimpanan online",
+                "Validator C2PA",
+                "Tidak, kecuali dipulihkan lewat soft binding"
+              ],
+              [
+                "Watermark tak terlihat",
+                "Perubahan kecil pada piksel, sampel, atau pilihan kata",
+                "Hanya detektor yang cocok",
+                "Sering ya, dengan batas tertentu"
+              ]
+            ]
+          }
+        },
+        "Peraturan pelabelan Tiongkok, yang berlaku sejak 1 September 2025, menyebut dua di antaranya secara langsung: label eksplisit yang dapat dilihat atau didengar orang, dan label implisit dalam metadata file, dengan watermark digital yang dianjurkan. Pasal 50 EU AI Act juga mewajibkan penyedia AI generatif menandai keluaran sintetis dengan cara yang dapat dibaca mesin dan dapat dideteksi."
+      ]
+    },
+    {
+      "h": "Cara kerja manifest C2PA",
+      "body": [
+        "C2PA (Coalition for Content Provenance and Authenticity) menerbitkan spesifikasi teknis terbuka. Nama untuk konsumen bagi datanya adalah Content Credentials. Sebuah manifest dibangun dari tiga bagian:",
+        {
+          "ol": [
+            "Assertion: pernyataan tentang file, seperti alat pembuatnya, tindakan yang dilakukan (dibuat, dipangkas, warna disesuaikan), thumbnail, dan ingredient (file sebelumnya yang menjadi bahan pembuatannya).",
+            "Claim: daftar yang menunjuk ke assertion tersebut, dengan hash agar tidak ada yang bisa diubah kemudian.",
+            "Claim signature: tanda tangan digital yang dibuat dengan kunci privat penanda tangan dan diidentifikasi oleh sertifikat X.509, jenis sistem sertifikat yang sama dengan yang dipakai HTTPS."
+          ]
+        },
+        "Manifest juga berisi hard binding: hash kriptografis dari data gambar atau video. Jika satu piksel saja berubah setelah penandatanganan, hash tidak lagi cocok dan validator melaporkan bahwa konten telah diubah. Saat editor yang mendukung C2PA membuat perubahan, ia menambahkan manifest baru yang mencantumkan manifest lama sebagai ingredient, sehingga terbentuk rantai penyuntingan.",
+        "Pada format umum seperti JPEG, PNG, dan MP4, manifest disimpan dalam kotak JUMBF di dalam file. File juga bisa hanya membawa tautan ke manifest yang disimpan di tempat lain.",
+        {
+          "code": "Content Credentials (simplified view)\n  Signed by:     Example Camera Co. (certificate valid)\n  Created with:  Example Image Generator\n  Actions:       c2pa.created\n    digitalSourceType: trainedAlgorithmicMedia\n  Then:          c2pa.cropped, c2pa.color_adjustments (Example Editor)\n  Ingredients:   1 earlier file\n  Hash check:    content matches signature",
+          "lang": "text"
+        },
+        "Penjelasan C2PA tegas soal cakupannya: provenance memberi tahu dari mana konten berasal dan bagaimana ia berubah. Ia tidak menyatakan apakah konten itu benar. Foto bertanda tangan dari adegan yang direkayasa tetap rekayasa."
+      ]
+    },
+    {
+      "h": "IPTC digital source type: field AI di metadata",
+      "body": [
+        "IPTC, badan standar untuk metadata media berita, memelihara kosakata bernama digital source type. Istilah yang sama dipakai dalam metadata foto IPTC dan di dalam action assertion C2PA. Istilah yang paling relevan untuk AI adalah:",
+        {
+          "table": {
+            "head": [
+              "Istilah",
+              "Label",
+              "Arti"
+            ],
+            "rows": [
+              [
+                "trainedAlgorithmicMedia",
+                "Dibuat dengan Generative AI",
+                "Dibuat oleh model AI yang dilatih dengan konten hasil tangkapan"
+              ],
+              [
+                "compositeWithTrainedAlgorithmicMedia",
+                "Disunting dengan Generative AI",
+                "Konten nyata yang diubah dengan AI generatif, misalnya inpainting atau outpainting"
+              ],
+              [
+                "algorithmicMedia",
+                "Media algoritmik murni",
+                "Dibuat oleh algoritma tanpa data latih, seperti pola prosedural"
+              ],
+              [
+                "digitalCapture",
+                "Tangkapan digital",
+                "Ditangkap dari kehidupan nyata dengan kamera atau perekam digital"
+              ]
+            ]
+          }
+        },
+        "Platform membaca nilai-nilai ini untuk memutuskan kapan menampilkan label seperti \"Made with AI\" atau \"AI info\". Field IPTC sendiri tidak bertanda tangan, sehingga siapa pun bisa menulis atau menghapusnya. Di dalam manifest C2PA, nilai yang sama dicakup oleh tanda tangan."
+      ]
+    },
+    {
+      "h": "Kenapa menghapus metadata ikut menghapus credentials",
+      "body": [
+        "Metadata dan manifest yang tertanam berada di samping data gambar, bukan di dalamnya. Apa pun yang menulis file baru hanya dari piksel akan membuangnya:",
+        {
+          "ul": [
+            "Mengambil screenshot atau merekam layar.",
+            "Mengunggah ke platform yang meng-encode ulang gambar dan menghapus metadata demi privasi atau ukuran.",
+            "Mengonversi format, misalnya PNG ke JPEG, di alat yang tidak menyalin metadata.",
+            "Menjalankan penghapus metadata, yang memang dirancang untuk membuang blok EXIF, GPS, XMP, dan sejenisnya.",
+            "Menyalin dan menempel gambar antaraplikasi lewat clipboard."
+          ]
+        },
+        "Ini perilaku yang wajar, bukan cacat satu alat. Menghapus data lokasi sebelum membagikan foto adalah praktik privasi yang baik; misalnya, alat EXIF di cv.cm menghapus data EXIF dan GPS di browser, dan ikut menghapus credentials yang tertanam. Jika Anda perlu membuktikan asal sebuah gambar, simpan file asli yang bertanda tangan dan bagikan tanpa diubah.",
+        "Jawaban C2PA adalah durable Content Credentials: menggabungkan hard binding dengan soft binding, yaitu watermark tak terlihat atau sidik jari perseptual. Validator yang menemukan watermark atau sidik jari itu dapat mencari manifest aslinya di repositori manifest bahkan setelah metadata file dihapus.",
+        {
+          "note": "Menghapus label dapat berakibat hukum. Peraturan pelabelan Tiongkok (Pasal 10) melarang penghapusan, pengubahan, pemalsuan, atau penyembunyian label AI dengan niat jahat, dan melarang menyediakan alat bagi orang lain untuk melakukannya. Menghapus metadata demi privasi berbeda dengan menghapus label untuk menyamarkan konten AI sebagai konten asli. Ini informasi umum, bukan nasihat hukum."
+        }
+      ]
+    },
+    {
+      "h": "Watermark tak terlihat seperti SynthID",
+      "body": [
+        "Watermark tak terlihat mengubah kontennya sendiri dengan cara yang tidak disadari orang tetapi dapat ditemukan detektor. SynthID milik Google DeepMind, misalnya, digambarkan mencakup gambar, video, audio, dan teks. Untuk gambar dan video, ia dirancang bertahan dari pemangkasan, filter, perubahan frame rate, dan kompresi lossy; untuk audio, dari derau tambahan, kompresi MP3, dan perubahan kecepatan. Untuk teks, ia sedikit menyesuaikan probabilitas kata yang dipilih model.",
+        "Batasan penting berlaku untuk semua watermark jenis ini:",
+        {
+          "ul": [
+            "Hanya detektor yang cocok yang bisa membacanya. Pemeriksaan SynthID tidak mengatakan apa pun tentang gambar dari model yang memakai watermark lain atau tidak memakai sama sekali.",
+            "Tangguh tidak berarti permanen. Penyuntingan berat, membuat ulang gambar dengan model lain, atau menulis ulang teks dapat melemahkan atau menghapus sinyalnya.",
+            "Watermark teks paling lemah pada kutipan pendek dan pada teks yang sudah diterjemahkan atau diparafrasekan.",
+            "Watermark menunjukkan bahwa penyedia yang bekerja sama membuat atau menyunting konten itu. Ia tidak menunjukkan bagian mana yang diubah atau apakah adegannya benar."
+          ]
+        },
+        "Watermark tak terlihat pribadi adalah alat berbeda untuk tujuan berbeda. Tanda yang Anda sembunyikan di foto Anda sendiri, misalnya dengan alat watermark di cv.cm, membantu Anda menunjukkan kemudian bahwa sebuah salinan berasal dari file Anda. Itu bukan label AI dan tidak ada platform yang membacanya."
+      ]
+    },
+    {
+      "h": "Batas deteksi AI",
+      "body": [
+        "Tidak ada metode yang dapat memeriksa file sembarang dan dengan andal menyatakan \"AI\" atau \"asli\". Ingat aturan-aturan ini:",
+        {
+          "ol": [
+            "Credential yang valid memberi tahu siapa yang menandatangani dan apa yang mereka nyatakan. Kepercayaan bergantung pada apakah Anda memercayai penanda tangan itu.",
+            "Credential yang tidak ada tidak membuktikan apa-apa. Kebanyakan foto asli di internet tidak memilikinya, karena platform menghapusnya dan kebanyakan kamera tidak menandatangani.",
+            "Watermark yang ditemukan adalah bukti kuat untuk model penyedia itu. Tidak menemukan watermark hanyalah bukti lemah untuk apa pun.",
+            "Detektor AI bergaya classifier, yang menebak dari pola visual atau statistik, memiliki positif palsu dan negatif palsu. Jangan memakainya sendirian untuk menuduh seseorang.",
+            "Gabungkan sinyal: credential, watermark, akun sumber, unggahan paling awal, dan pemeriksaan biasa seperti pencarian gambar terbalik serta mencari kesalahan fisik."
+          ]
+        },
+        "Bagi kreator, aturan praktisnya sederhana: simpan file asli dari generator beserta credentials-nya, tambahkan label yang terlihat bila platform atau hukum Anda mewajibkannya, dan jangan mencoba menghapus tanda AI dari konten yang Anda publikasikan."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Bagaimana cara memeriksa apakah sebuah gambar punya Content Credentials?",
+      "a": "Buka di penampil yang mendukung C2PA, seperti situs verifikasi resmi, editor yang mendukung, atau platform yang menampilkan lencana CR atau AI info. Jika file disimpan ulang atau di-screenshot, credentials mungkin sudah hilang walaupun awalnya ada."
+    },
+    {
+      "q": "Bisakah C2PA Content Credentials dipalsukan?",
+      "a": "Siapa pun dapat membuat manifest, tetapi tidak dapat menandatanganinya dengan sertifikat organisasi lain. Validator memeriksa tanda tangan dan hash konten, jadi pertanyaan sebenarnya adalah apakah Anda memercayai penanda tangan yang ditampilkan."
+    },
+    {
+      "q": "Apakah menghapus data EXIF menghapus label AI?",
+      "a": "Itu menghapus label metadata dan manifest C2PA yang tertanam. Itu tidak menghapus label yang terlihat atau watermark tak terlihat di dalam piksel, dan soft binding mungkin masih memungkinkan validator memulihkan manifest aslinya."
+    },
+    {
+      "q": "Apakah SynthID sama dengan C2PA?",
+      "a": "Tidak. SynthID adalah watermark di dalam konten, dibaca oleh detektor Google. C2PA adalah standar terbuka untuk catatan provenance bertanda tangan yang melekat pada file. Keduanya saling melengkapi, dan C2PA dapat memakai watermark sebagai soft binding."
+    },
+    {
+      "q": "Apakah generator gambar AI menambahkan C2PA secara otomatis?",
+      "a": "Banyak penyedia besar menambahkan Content Credentials atau metadata IPTC, watermark tak terlihat, atau keduanya, tetapi praktiknya berbeda per produk dan berubah dari waktu ke waktu. Periksa dokumentasi penyedia dan inspeksi file contoh."
+    }
+  ]
+}

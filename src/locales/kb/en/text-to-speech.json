@@ -1,0 +1,203 @@
+{
+  "title": "How Text-to-Speech Works: Neural TTS, SSML, Voice Cloning — cv.cm",
+  "description": "How text-to-speech works: neural TTS vs your device's built-in voices, the Web Speech API, SSML pauses and pronunciation, and consent rules for voice cloning.",
+  "h1": "How does text-to-speech work, and what is neural TTS?",
+  "answer": "Text-to-speech (TTS) turns written text into audio in three stages: it normalizes the text (numbers, dates, abbreviations), converts it to sounds, and generates a waveform. Neural TTS uses networks trained on recorded speech for natural rhythm and tone. The voices your browser offers through the Web Speech API come from the device or its vendor, so they differ between phones and computers.",
+  "sections": [
+    {
+      "h": "The three stages of a TTS system",
+      "body": [
+        {
+          "ol": [
+            "Text normalization. The system rewrites text into words that can be spoken. \"Dr. Lee paid $25 on 3/4\" must become something like \"Doctor Lee paid twenty-five dollars on March fourth\" (or \"the third of April\", depending on the locale). Many mispronunciations happen here, not in the voice.",
+            "Linguistic analysis. Words are turned into phonemes, the sound units of a language, and the system predicts stress, phrasing and intonation. Words spelled the same but said differently, such as \"read\" in present and past tense, or Chinese characters with more than one reading, need context to resolve.",
+            "Waveform generation. The sounds and their timing are turned into audio samples. Older systems glued together recorded fragments (concatenative synthesis) or used a formant model, which sounds robotic. Neural systems predict the audio with a network."
+          ]
+        },
+        "A classic neural design, Tacotron 2, showed the modern split clearly: one network maps text to a mel spectrogram (a time-frequency picture of speech), and a second network, the vocoder, turns that picture into a waveform. In its authors' listening tests, it scored close to professional recordings. Newer systems often merge the stages or generate compressed audio tokens with a language-model style network, which lets them copy a speaker's voice from a short sample."
+      ]
+    },
+    {
+      "h": "Neural TTS vs the system voices in your browser",
+      "body": [
+        "Web pages can speak through the Web Speech API without any model of their own. The `speechSynthesis` object reads a `SpeechSynthesisUtterance` aloud with one of the voices the platform provides.",
+        {
+          "table": {
+            "head": [
+              "",
+              "Browser system voices (Web Speech API)",
+              "Neural TTS service or model"
+            ],
+            "rows": [
+              [
+                "Where the voice comes from",
+                "The operating system or browser vendor; some are local, some remote",
+                "A model you run or a cloud API you call"
+              ],
+              [
+                "Voice choice",
+                "Whatever is installed; differs on Windows, macOS, Android, iOS",
+                "Fixed catalog, custom voices, sometimes cloning"
+              ],
+              [
+                "Quality",
+                "From robotic to quite natural, depending on the device",
+                "Usually natural, with better rhythm and emotion"
+              ],
+              [
+                "Cost and setup",
+                "Free, no key, works offline for local voices",
+                "API key and per-character pricing, or a large model download"
+              ],
+              [
+                "Getting an audio file",
+                "Not part of the API; it plays through the speakers",
+                "Normally returns MP3, WAV or similar"
+              ],
+              [
+                "Cloning",
+                "No",
+                "Some services, with consent checks"
+              ]
+            ]
+          }
+        },
+        "Each voice reports a `localService` flag. The specification says it is true for a local synthesizer and false for a remote service; a remote voice may need the network and may add delay.",
+        {
+          "code": "const u = new SpeechSynthesisUtterance(\"Your order has shipped.\");\nu.lang = \"en-GB\";\nu.rate = 0.9;   // 1 is normal; spec allows 0.1 to 10\nu.pitch = 1.0;  // 0 to 2, 1 is the voice default\nu.volume = 1.0; // 0 to 1\nconst voices = speechSynthesis.getVoices();\nu.voice = voices.find(v => v.lang === \"en-GB\") || null;\nspeechSynthesis.speak(u);",
+          "lang": "javascript"
+        },
+        "Voices often load after the page starts, so `getVoices()` can return an empty list at first; listen for the `voiceschanged` event. For example, cv.cm's text-to-speech tool uses exactly these built-in voices with rate and pitch controls. It is a quick way to listen to a draft, not a neural voice generator, and the voice list depends on your device."
+      ]
+    },
+    {
+      "h": "SSML: controlling pauses and pronunciation",
+      "body": [
+        "Speech Synthesis Markup Language (SSML), a W3C standard, is XML that tells a TTS engine how to read text. Most cloud TTS services accept it. The Web Speech specification allows SSML in an utterance, but engines that do not support some tags must strip them and read the remaining text, so browser support is inconsistent.",
+        {
+          "code": "<speak>\n  Your code is <say-as interpret-as=\"characters\">A7K</say-as>.\n  <break time=\"500ms\"/>\n  Please call <sub alias=\"World Health Organization\">WHO</sub>\n  before <prosody rate=\"90%\" pitch=\"+2st\">Friday at noon</prosody>.\n  The word is <phoneme alphabet=\"ipa\" ph=\"təˈmɑːtoʊ\">tomato</phoneme>,\n  and it is <emphasis level=\"strong\">not</emphasis> optional.\n</speak>",
+          "lang": "text"
+        },
+        {
+          "table": {
+            "head": [
+              "Element",
+              "What it does",
+              "Example values"
+            ],
+            "rows": [
+              [
+                "break",
+                "Inserts a pause",
+                "time 250ms or 2s; strength weak to x-strong"
+              ],
+              [
+                "prosody",
+                "Changes rate, pitch, volume",
+                "rate 90% or slow; pitch +2st or high; volume +6dB or soft"
+              ],
+              [
+                "emphasis",
+                "Stresses a word",
+                "level strong, moderate, reduced"
+              ],
+              [
+                "say-as",
+                "Reads as characters, a date, a number",
+                "interpret-as values depend on the engine"
+              ],
+              [
+                "sub",
+                "Reads an alias instead of the written text",
+                "WHO read as World Health Organization"
+              ],
+              [
+                "phoneme",
+                "Gives exact pronunciation",
+                "alphabet ipa; support is optional"
+              ],
+              [
+                "voice, lang",
+                "Switch voice or language mid-text",
+                "A quoted foreign title in an English sentence"
+              ]
+            ]
+          }
+        },
+        "If a service ignores SSML, you can still steer it with plain text: commas and full stops for pauses, spelled-out numbers, and phonetic respellings of hard names."
+      ]
+    },
+    {
+      "h": "Writing text that sounds good when spoken",
+      "body": [
+        {
+          "ul": [
+            "Use short sentences. Long clauses make the voice run out of natural breath points.",
+            "Write numbers the way they should be said when it matters: \"two thousand twenty-six\" or \"twenty twenty-six\".",
+            "Expand abbreviations and units the listener needs to hear: \"km/h\" may be read letter by letter.",
+            "Set the correct language and region. An en-US voice reading a Spanish name, or a zh-CN voice reading English, will use the wrong sound system.",
+            "Listen to the whole result once before publishing. Check names, numbers and words with two pronunciations."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Voice cloning: consent and law",
+      "body": [
+        "Modern models can imitate a voice from a short recording. That is useful for dubbing your own videos or giving a voice back to someone who lost it, and it is also used for fraud, such as calls that imitate a relative or a company director. Treat any voice as personal data that belongs to the speaker.",
+        {
+          "table": {
+            "head": [
+              "Region",
+              "What the rules say (summary)",
+              "Status"
+            ],
+            "rows": [
+              [
+                "China",
+                "Services that edit faces or voices must prompt users to inform the person and get their separate consent (Deep Synthesis Provisions, Article 14). Synthetic voices and voice imitation that could mislead must carry a prominent label (Article 17). The 2025 labeling measures add explicit and metadata labels and forbid removing them.",
+                "In force since 2023-01-10; labeling measures since 2025-09-01"
+              ],
+              [
+                "European Union",
+                "AI Act Article 50: providers must mark synthetic audio in a machine-readable way, and people who publish deepfake audio or video must disclose that it is artificial. Personal data rules also apply to voice recordings.",
+                "Applies from 2 August 2026 under Article 113; check for later amendments"
+              ],
+              [
+                "United States",
+                "No single national voice-cloning law at the time of writing. Protection comes from state right-of-publicity and privacy laws and from existing fraud and consumer-protection rules.",
+                "Varies by state"
+              ]
+            ]
+          }
+        },
+        {
+          "note": "This is general information, not legal advice. Before cloning a voice for commercial use, get written consent from the speaker that names the purpose, the platforms and the duration, and label the result as AI-generated where your platform or law requires it."
+        },
+        "Reputable cloning services ask the speaker to record a consent statement before a voice is created. If a tool lets you clone any voice from any clip without such a check, do not use it for anything you publish."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Why does the same web page sound different on my phone and my laptop?",
+      "a": "The Web Speech API uses the voices installed on each device or provided by its vendor. Windows, macOS, Android and iOS ship different voices, so the same code produces different audio."
+    },
+    {
+      "q": "Can I download an MP3 from the Web Speech API?",
+      "a": "Not directly. The API plays speech through the speakers and does not return audio data. To get a file you need a TTS service or model that outputs audio, or a screen or audio recorder."
+    },
+    {
+      "q": "Is it legal to clone a celebrity's voice?",
+      "a": "In most places, using a recognizable person's voice without permission for ads, products or content that could mislead listeners creates legal risk under publicity, privacy, consumer-protection or deep synthesis rules. Get permission and label the result."
+    },
+    {
+      "q": "What is the difference between TTS and voice conversion?",
+      "a": "TTS creates speech from text. Voice conversion takes a recording of one person speaking and changes it to sound like another voice, keeping the original timing and emotion."
+    },
+    {
+      "q": "Why does TTS mispronounce names?",
+      "a": "The model guesses pronunciation from spelling and its training data. Rare names, loanwords and characters with several readings are often guessed wrong. Use an SSML phoneme or sub tag, or respell the name phonetically."
+    }
+  ]
+}

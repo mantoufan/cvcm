@@ -1,0 +1,188 @@
+{
+  "title": "Video con IA de primer y último fotograma: fotogramas clave que funcionan — cv.cm",
+  "description": "Cómo funciona el video con IA de primer y último fotograma: interpolación de fotogramas clave, cómo diseñar los dos fotogramas y qué transiciones funcionan o fallan, con ejemplos de prompts.",
+  "h1": "¿Cómo funciona el video con IA de primer y último fotograma?",
+  "answer": "El video de primer y último fotograma le da al modelo dos imágenes, el fotograma inicial y el final, y le pide que genere el movimiento intermedio. Es interpolación de fotogramas clave con un modelo generativo. Funciona mejor cuando los dos fotogramas muestran la misma escena con un cambio claro, como una pose, una expresión o una posición de cámara, y falla cuando son demasiado distintos.",
+  "sections": [
+    {
+      "h": "Qué significa interpolar fotogramas clave",
+      "body": [
+        "En animación, un fotograma clave es un dibujo que fija un momento importante, y los fotogramas que hay entre ellos se llaman intercalados (in-betweens). El video de primer y último fotograma aplica la misma idea: tú dibujas o generas los dos fotogramas clave y el modelo hace los intercalados.",
+        "La interpolación de fotogramas clásica, como el método FILM de Google Research, rellena fotogramas entre dos fotos tomadas con un instante de diferencia. Estima cómo se movieron los píxeles y mezcla siguiendo ese movimiento. Sirve para suavizar la cámara lenta, pero no puede inventar contenido nuevo, así que los cambios grandes parecen un fundido deformante (morph).",
+        "La interpolación generativa va más lejos. Un modelo de difusión de video se condiciona con ambas imágenes y genera un clip completo cuyo primer fotograma coincide con una y cuyo último fotograma coincide con la otra. El artículo de 2024 Generative Inbetweening adaptó un modelo de imagen a video para esto: hace una pasada hacia delante desde el primer fotograma y otra hacia atrás desde el último, y las combina. Productos como Veo, Kling, Runway y Seedance ofrecen la misma idea como opción de fotograma inicial y final, y la documentación de Veo de Google la describe como indicar el primer y el último fotograma más un prompt."
+      ]
+    },
+    {
+      "h": "Cuándo usarlo",
+      "body": [
+        {
+          "ul": [
+            "Necesitas que el clip termine en una pose, un ángulo de producto o una composición exactos, por ejemplo en la revelación de un logotipo o un producto que gira hasta mirar a la cámara.",
+            "Vas a unir planos: el último fotograma del plano A pasa a ser el primero del plano B, de modo que el corte es invisible.",
+            "Quieres una transformación controlada, como de día a noche, de flor cerrada a flor abierta o de plato vacío a plato servido.",
+            "Quieres un movimiento de cámara con un destino fijo, como un plano general que termina en un primer plano de una puerta."
+          ]
+        },
+        "Si solo te importa cómo empieza el clip, la imagen a video simple es más sencilla y da más libertad al modelo."
+      ]
+    },
+    {
+      "h": "Cómo diseñar los dos fotogramas",
+      "body": [
+        "El modelo tiene que encontrar un camino creíble del fotograma A al B en unos pocos segundos. Tu trabajo es que ese camino sea corto y evidente.",
+        {
+          "ol": [
+            "Crea ambos fotogramas a partir de la misma fuente. Genera el fotograma A y obtén el B editando el A (cambia la pose, la expresión o la luz) en lugar de generar una imagen nueva desde cero. Mismo personaje, misma ropa, mismo fondo, mismo objetivo.",
+            "Cambia una sola cosa importante. Un cambio de pose, o de cámara, o de iluminación. Dos cambios a la vez suelen producir una mezcla que no es ni lo uno ni lo otro.",
+            "Mantén el tamaño del cambio acorde con la duración. Un giro de cabeza cabe en unos segundos; cruzar una habitación y sentarse requiere un clip más largo o dos planos.",
+            "Usa la misma relación de aspecto y resolución en las dos imágenes. La documentación de Google, por ejemplo, usa 16:9 o 9:16 para ambas.",
+            "Comprueba que el camino sea físicamente posible. Si la mano izquierda está levantada en el fotograma A y en un bolsillo en el B, la mano tiene que pasar por algún sitio que la cámara pueda ver.",
+            "Escribe un prompt que describa el cambio. El ejemplo de Google empareja un primer fotograma con galletas y un último fotograma con galletas y leche, y el prompt describe la acción que los conecta."
+          ]
+        },
+        {
+          "code": "First frame: a woman at a desk, looking down at a laptop, office at dusk.\nLast frame: the same woman, same desk, now looking up at the camera, smiling.\n\nPrompt:\nShe slowly lifts her head from the laptop, notices the camera, and smiles.\nCamera static, medium shot. Soft warm desk lamp light. Audio: quiet keyboard\nclicks, then silence.",
+          "lang": "text"
+        }
+      ]
+    },
+    {
+      "h": "Transiciones que funcionan y transiciones que fallan",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Transición",
+              "¿Suele funcionar?",
+              "Por qué"
+            ],
+            "rows": [
+              [
+                "Cambio de expresión (neutra a sonrisa)",
+                "Sí",
+                "Cambio pequeño y localizado; el rostro permanece en su sitio"
+              ],
+              [
+                "Giro de cabeza o de cuerpo de hasta unos 90 grados",
+                "Sí",
+                "El modelo ha visto muchos giros así"
+              ],
+              [
+                "Empuje de cámara de plano general a plano medio en la misma escena",
+                "Sí",
+                "Camino claro; el contenido sigue visible"
+              ],
+              [
+                "Cambio de iluminación (de día a atardecer, lámpara encendida)",
+                "Casi siempre",
+                "La misma geometría; solo cambian el color y las sombras"
+              ],
+              [
+                "Un objeto aparece en la mano",
+                "A veces",
+                "Necesita un camino visible: alcanzar, recoger"
+              ],
+              [
+                "Giro completo de 180 grados alrededor de una persona",
+                "Suele fallar",
+                "El modelo debe inventar la parte de atrás y mantener la identidad"
+              ],
+              [
+                "Otro lugar en el fotograma B",
+                "Suele fallar",
+                "No hay un camino real; sale un morph o un fundido encadenado"
+              ],
+              [
+                "Otra persona u otro atuendo",
+                "Normalmente falla",
+                "Los rostros y la ropa se funden entre sí"
+              ],
+              [
+                "Gran desplazamiento por la habitación en un clip corto",
+                "Suele fallar",
+                "El movimiento se convierte en un deslizamiento o un salto"
+              ]
+            ]
+          }
+        },
+        "Cuando quieres un morph deliberado, como una semilla que se convierte en árbol o un estilo que se transforma en otro, un camino fallido puede convertirse en el efecto. Dilo en el prompt: «smooth magical transformation» le indica al modelo que se busca un morph, y suele verse más limpio que uno accidental."
+      ]
+    },
+    {
+      "h": "Encadenar clips con fotogramas compartidos",
+      "body": [
+        "Las herramientas de primer y último fotograma también sirven para mantener la continuidad en secuencias más largas. Planifica una lista de fotogramas clave y genera cada clip entre dos vecinos.",
+        {
+          "table": {
+            "head": [
+              "Clip",
+              "Primer fotograma",
+              "Último fotograma",
+              "Movimiento"
+            ],
+            "rows": [
+              [
+                "1",
+                "K1: el protagonista ante la verja, de espaldas a la cámara",
+                "K2: el protagonista a medio camino del sendero",
+                "Camina hacia delante, la cámara lo sigue"
+              ],
+              [
+                "2",
+                "K2",
+                "K3: el protagonista ante la puerta, con la mano en el picaporte",
+                "Sube los escalones, alarga la mano hacia la puerta"
+              ],
+              [
+                "3",
+                "K3",
+                "K4: puerta abierta, luz cálida sobre su rostro",
+                "Abre la puerta despacio"
+              ]
+            ]
+          }
+        },
+        "Como el clip 2 empieza exactamente en el fotograma en el que termina el clip 1, las uniones son imperceptibles. Aun así, los colores y la nitidez pueden variar ligeramente en cada unión, así que iguala el color de los clips en la edición y mantén la misma dirección de movimiento para que los cortes resulten naturales."
+      ]
+    },
+    {
+      "h": "Límites y soluciones",
+      "body": [
+        {
+          "ul": [
+            "Arranque lento y tirón final. A veces los modelos mantienen el primer fotograma y luego se precipitan hacia el último. Describe el ritmo: «moves steadily over the whole clip».",
+            "Fundido encadenado oculto. Si los fotogramas son demasiado distintos, el modelo puede disolver uno en otro. Acerca los dos fotogramas o añade un fotograma clave intermedio.",
+            "Deriva de identidad en el medio. Los extremos coinciden, pero el rostro cambia a mitad de clip. Usa un encuadre más cercano, un clip más corto y fotogramas creados a partir de la misma imagen.",
+            "El último fotograma no es exacto. Algunas herramientas tratan el último fotograma como una pista fuerte y no como una regla estricta. Recorta o congela el fotograma final en la edición si hace falta.",
+            "Texto y logotipos en movimiento. Mantenlos quietos o añádelos en la edición."
+          ]
+        },
+        {
+          "note": "Genera varias tomas para cada pareja. Los dos fotogramas fijan los extremos, pero el camino intermedio sigue variando de una ejecución a otra."
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "¿Qué diferencia hay entre primer y último fotograma e imagen a video?",
+      "a": "La imagen a video fija solo el fotograma inicial y deja que el modelo decida dónde termina el clip. El primer y último fotograma fija ambos extremos, de modo que controlas la pose o la composición final."
+    },
+    {
+      "q": "¿Puedo hacer un video en bucle con primer y último fotograma?",
+      "a": "Sí, usa la misma imagen como primer y último fotograma y describe un movimiento que vuelva al inicio, como un balanceo lento. Los movimientos pequeños y cíclicos son los que mejor encajan en bucle."
+    },
+    {
+      "q": "¿Por qué mi video de primer y último fotograma parece un morph?",
+      "a": "Probablemente las dos imágenes son demasiado distintas para un camino creíble, por ejemplo un lugar nuevo o un atuendo diferente. Crea el fotograma B editando el A y cambia solo una cosa."
+    },
+    {
+      "q": "¿Cuántos segundos debe durar un clip de primer y último fotograma?",
+      "a": "Ajusta la duración al tamaño del cambio: unos pocos segundos para una expresión o un giro de cabeza, más para caminar o para movimientos de cámara grandes. Los clips muy cortos fuerzan un movimiento apresurado."
+    },
+    {
+      "q": "¿Es lo mismo primer y último fotograma que la interpolación de fotogramas para cámara lenta?",
+      "a": "Están relacionados. La interpolación para cámara lenta rellena fotogramas entre dos fotos cercanas, mientras que el primer y último fotograma generativo inventa segundos de movimiento nuevo entre dos momentos distantes."
+    }
+  ]
+}

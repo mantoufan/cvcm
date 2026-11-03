@@ -1,0 +1,169 @@
+{
+  "title": "Dasar Prompt Engineering: Cara Menulis Prompt yang Efektif — cv.cm",
+  "description": "Dasar prompt engineering: enam bagian prompt yang baik, contoh sebelum dan sesudah, contoh few-shot, format keluaran, dan cara menguji prompt di ChatGPT, Claude, atau Gemini.",
+  "h1": "Dasar prompt engineering: cara menulis prompt yang bagus",
+  "answer": "Prompt engineering adalah seni menulis instruksi agar model bahasa memberi hasil yang Anda butuhkan sejak percobaan pertama dan seterusnya. Prompt yang baik menyebutkan tugas, memberi konteks dan masukan yang diperlukan, menyatakan untuk siapa keluarannya, menunjukkan formatnya, dan menetapkan batasan. Tambahkan satu atau dua contoh untuk kasus yang rumit, lalu uji prompt pada beberapa masukan nyata.",
+  "sections": [
+    {
+      "h": "Mengapa kata-kata dalam prompt penting",
+      "body": [
+        "Model bahasa tidak tahu situasi Anda. Ia hanya melihat teks yang Anda kirim. Ketika prompt samar, model mengisi celah dengan jawaban yang paling umum, yang biasanya generik, terlalu panjang, atau ditujukan ke pembaca yang salah. Prompt engineering sebagian besar adalah pekerjaan menghilangkan tebakan.",
+        "Ada tes yang membantu: bisakah rekan kerja baru yang cerdas dan belum pernah bertemu Anda mengerjakan tugas ini dengan baik hanya dari pesan Anda? Kalau ia perlu bertanya tiga hal dulu, model juga membutuhkan jawaban itu. Panduan resmi dari OpenAI, Anthropic, dan Google memberi nasihat inti yang sama dengan kata-kata berbeda: jelas dan spesifik, beri konteks, tunjukkan contoh, sebutkan format yang Anda inginkan."
+      ]
+    },
+    {
+      "h": "Enam bagian prompt yang baik",
+      "body": [
+        "Tidak setiap prompt butuh keenam bagian, tetapi memeriksa daftar ini memperbaiki sebagian besar prompt yang lemah.",
+        {
+          "table": {
+            "head": [
+              "Bagian",
+              "Yang dijawab",
+              "Contoh potongan"
+            ],
+            "rows": [
+              [
+                "Tugas",
+                "Apa yang harus dilakukan model?",
+                "Tulis balasan untuk email pelanggan ini."
+              ],
+              [
+                "Konteks",
+                "Latar belakang apa yang dibutuhkan?",
+                "Kami menjual mug keramik buatan tangan. Pengiriman memakan waktu 5 sampai 7 hari."
+              ],
+              [
+                "Masukan",
+                "Materi apa yang harus dikerjakan?",
+                "Email pelanggan, dipisahkan dengan jelas."
+              ],
+              [
+                "Audiens dan nada",
+                "Siapa yang membaca keluarannya?",
+                "Pelanggan baru yang kesal. Ramah, jangan terlalu banyak minta maaf."
+              ],
+              [
+                "Format",
+                "Bentuk keluarannya seperti apa?",
+                "Tiga paragraf pendek, kurang dari 120 kata, tanpa baris subjek."
+              ],
+              [
+                "Batasan",
+                "Apa yang harus atau tidak boleh dilakukan?",
+                "Jangan menjanjikan pengembalian dana. Tawarkan tautan pelacakan."
+              ]
+            ]
+          }
+        },
+        "Taruh materi masukan yang panjang di antara penanda yang jelas, seperti tag bergaya XML atau tiga tanda kutip, supaya model bisa membedakan instruksi Anda dari teks yang harus diproses. Ini juga mengurangi risiko instruksi yang tersembunyi di dalam masukan, misalnya di halaman web yang ditempel, diikuti secara keliru."
+      ]
+    },
+    {
+      "h": "Tulis ulang: sebelum dan sesudah",
+      "body": [
+        "Berikut prompt lemah yang khas:",
+        {
+          "code": "Summarize this article.",
+          "lang": "text"
+        },
+        "Model akan membuat ringkasan, tetapi seberapa panjang, untuk siapa, dan dalam bentuk apa? Berikut permintaan yang sama dengan celah yang sudah diisi:",
+        {
+          "code": "You are helping a busy product manager decide whether to read a research article.\n\nSummarize the article below for that reader.\n- Start with one sentence: the main finding.\n- Then 3 bullet points: method, key number, main limitation.\n- Use plain English. Explain any technical term in a few words.\n- Under 100 words in total.\n- If the article does not state a limitation, write \"No limitation stated\".\n\n<article>\n{paste the article here}\n</article>",
+          "lang": "text"
+        },
+        "Fungsi tiap bagian:",
+        {
+          "ul": [
+            "Baris pertama menetapkan audiens dan tujuan. Model kini tahu untuk apa ringkasan ini dibuat, sehingga ia memilih apa yang dipertahankan.",
+            "Struktur poin menetapkan format, sehingga setiap ringkasan tampak sama dan mudah dibandingkan.",
+            "Batas kata mencegah model berbelit-belit.",
+            "Aturan untuk keterbatasan yang tidak disebut memberi tahu model apa yang dilakukan pada kasus tepi, daripada mengarangnya.",
+            "Tag memisahkan artikel dari instruksi."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Tunjukkan contoh ketika kata-kata tidak cukup",
+      "body": [
+        "Sebagian kebutuhan sulit dijelaskan tetapi mudah ditunjukkan: gaya bicara, skema pelabelan, gaya keluaran tertentu. Menambahkan beberapa contoh yang sudah dikerjakan disebut few-shot prompting. Satu contoh (one-shot) sering sudah sangat membantu. Dua sampai lima contoh yang bervariasi biasanya mencakup kasus utama.",
+        {
+          "code": "Classify each support message as BILLING, SHIPPING, PRODUCT or OTHER.\nReply with the label only.\n\nMessage: I was charged twice for order 5521.\nLabel: BILLING\n\nMessage: The handle on my mug cracked after one week.\nLabel: PRODUCT\n\nMessage: Do you have a shop in Osaka?\nLabel: OTHER\n\nMessage: {new message}\nLabel:",
+          "lang": "text"
+        },
+        "Buat contoh Anda berbeda satu sama lain. Jika semuanya pendek dan sopan, model mungkin menangani pesan panjang yang marah dengan buruk. Pastikan juga contoh sesuai dengan aturan: model meniru contoh lebih kuat daripada mengikuti instruksi tertulis."
+      ]
+    },
+    {
+      "h": "Teknik yang membantu pada kasus tertentu",
+      "body": [
+        {
+          "ul": [
+            "Minta langkah sebelum jawaban. Untuk matematika, logika, atau keputusan bertahap, meminta model menyelesaikan masalah dulu sebelum memberi jawaban akhir meningkatkan akurasi. Ini dikenal sebagai chain-of-thought prompting. Banyak model saat ini melakukannya secara internal (sering disebut mode penalaran atau berpikir), jadi permintaan biasa untuk jawaban yang teliti mungkin sudah cukup.",
+            "Pecah tugas besar. Daripada \"riset, buat kerangka, dan tulis laporan\" dalam satu prompt, jalankan tiga prompt dan periksa tiap keluaran. Ini disebut prompt chaining.",
+            "Beri peran hanya jika menambah informasi. \"Kamu akuntan pajak di Vietnam\" mengubah pilihan kata dan asumsi. \"Kamu jenius kelas dunia\" tidak menambah apa pun.",
+            "Katakan apa yang harus dilakukan, bukan hanya apa yang dihindari. \"Tulis dengan kalimat pendek\" lebih berhasil daripada \"Jangan bertele-tele\".",
+            "Izinkan \"Saya tidak tahu\". Beri tahu model bahwa ia boleh mengatakan informasinya tidak ada. Ini mengurangi fakta karangan, meski tidak menghilangkannya.",
+            "Minta format yang bisa dibaca mesin ketika kode akan membaca keluarannya, misalnya JSON dengan field bernama. Sebagian besar API juga bisa memberlakukan skema JSON secara langsung."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Uji prompt seperti menguji kode",
+      "body": [
+        "Prompt yang berhasil pada satu contoh bisa gagal pada contoh berikutnya. Jika prompt akan dipakai lagi, atau oleh orang lain, ujilah:",
+        {
+          "ol": [
+            "Tuliskan seperti apa keluaran yang baik: panjang, format, fakta yang harus benar.",
+            "Kumpulkan 10 sampai 20 masukan nyata, termasuk yang sulit: sangat pendek, sangat panjang, di luar topik, bahasa lain.",
+            "Jalankan prompt pada semuanya dan baca setiap keluaran.",
+            "Ubah satu hal pada satu waktu dan jalankan seluruh set lagi, agar Anda tahu perubahan mana yang membantu.",
+            "Simpan prompt akhir bersama set ujinya. Saat Anda berganti model atau model diperbarui, jalankan set itu lagi."
+          ]
+        },
+        "Langkah terakhir ini penting karena prompt yang sama bisa berperilaku berbeda di model berbeda, dan di versi yang lebih baru dari model yang sama. Karena itulah panduan prompt engineering dari pembuat model berubah seiring waktu."
+      ]
+    },
+    {
+      "h": "Kesalahan umum",
+      "body": [
+        {
+          "ul": [
+            "Terlalu banyak tujuan dalam satu prompt. Sepuluh aturan dengan bobot sama akan sebagian diabaikan. Taruh aturan terpenting di depan dan buat daftarnya singkat.",
+            "Kontradiksi, seperti \"buat detail\" dan \"maksimal 50 kata\". Model akan memenuhi satu dan melanggar yang lain.",
+            "Mengandalkan huruf kapital atau ancaman (\"KAMU HARUS\") alih-alih alasan yang jelas. Penjelasan singkat mengapa suatu aturan ada biasanya lebih efektif.",
+            "Tidak memisahkan masukan dari instruksi, sehingga model menganggap sebagian dokumen Anda sebagai perintah.",
+            "Memercayai fakta dalam keluaran. Prompt yang ditulis dengan baik tetap menghasilkan kesalahan yang disampaikan dengan yakin. Periksa nama, angka, kutipan, dan tautan."
+          ]
+        },
+        {
+          "note": "Pembuat gambar dan video membaca prompt secara berbeda dari model chat. Mereka lebih menanggapi deskripsi visual (subjek, latar, cahaya, kamera) daripada instruksi. Lihat panduan prompt gambar dan video untuk gaya itu."
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Apakah prompt engineering masih diperlukan pada model AI yang lebih baru?",
+      "a": "Trik yang dibutuhkan lebih sedikit, tetapi tugas yang jelas, konteks, format, dan pengujian tetap membuat perbedaan besar. Model yang lebih baru mengikuti instruksi lebih harfiah, jadi kata-kata yang tepat justru makin penting."
+    },
+    {
+      "q": "Apa bedanya system prompt dan user prompt?",
+      "a": "System prompt (sebagian API menyebutnya developer instructions) menetapkan aturan dan perilaku untuk seluruh percakapan. User prompt adalah permintaan untuk giliran ini. Di aplikasi, system prompt biasanya ditulis oleh pengembang."
+    },
+    {
+      "q": "Haruskah saya menulis prompt dalam bahasa Inggris?",
+      "a": "Sebagian besar model besar bekerja baik di banyak bahasa. Bahasa Inggris bisa sedikit lebih andal untuk instruksi yang kompleks, tetapi menulis instruksi dalam bahasa keluaran sering memberi hasil yang lebih natural. Uji keduanya pada tugas Anda."
+    },
+    {
+      "q": "Seberapa panjang prompt sebaiknya?",
+      "a": "Sepanjang yang dibutuhkan untuk menghilangkan tebakan, dan tidak lebih. Prompt satu baris cukup untuk tugas sederhana. Prompt yang dapat dipakai ulang untuk sebuah produk bisa mencapai satu halaman atau lebih."
+    },
+    {
+      "q": "Bisakah prompt menghentikan halusinasi AI?",
+      "a": "Tidak ada prompt yang menghilangkannya sepenuhnya. Memberikan teks sumber, meminta model mengutipnya, dan mengizinkannya mengatakan bahwa jawabannya tidak ada di teks, semuanya mengurangi fakta karangan."
+    }
+  ]
+}

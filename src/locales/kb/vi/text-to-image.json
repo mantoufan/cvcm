@@ -1,0 +1,188 @@
+{
+  "title": "Text-to-image AI: nguyên lý, cài đặt và quy trình tạo ảnh — cv.cm",
+  "description": "Text-to-image AI biến prompt thành bức ảnh thế nào, steps, guidance, seed và kích thước làm gì, cùng quy trình từng bước từ bản nháp đầu tiên đến ảnh hoàn chỉnh.",
+  "h1": "Text-to-image AI hoạt động ra sao và dùng thế nào cho hiệu quả?",
+  "answer": "Text-to-image AI mã hóa prompt của bạn thành các con số, rồi một bộ tạo ảnh dựng bức ảnh khớp với chúng, thường bằng cách gỡ nhiễu từng bước từ một điểm khởi đầu ngẫu nhiên. Bạn điều khiển kết quả bằng prompt, kích thước ảnh, số bước (steps), độ mạnh guidance và seed. Quy trình tốt là tạo nhanh nhiều ảnh nháp nhỏ, cố định một seed, tinh chỉnh prompt, rồi chỉnh sửa và phóng to bản đẹp nhất.",
+  "sections": [
+    {
+      "h": "Chuyện gì xảy ra giữa prompt và bức ảnh",
+      "body": [
+        "Hầu hết hệ thống text-to-image có ba phần. Bộ mã hóa văn bản biến prompt thành danh sách các con số nắm bắt ý nghĩa của nó. Bộ tạo ảnh dựng một bức ảnh có điều kiện theo các con số đó. Bộ giải mã biến biểu diễn bên trong của bộ tạo ảnh thành điểm ảnh thật.",
+        "Loại bộ tạo ảnh phổ biến nhất tại thời điểm viết bài là mô hình khuếch tán (diffusion model). Nó bắt đầu từ nhiễu ngẫu nhiên thuần và qua một loạt bước, mỗi lần dự đoán và gỡ đi một chút nhiễu, dưới sự dẫn hướng của văn bản. Mô hình khuếch tán tiềm ẩn (latent diffusion), họ mô hình đứng sau Stable Diffusion, làm việc này trong một không gian nén thay vì trên điểm ảnh kích thước đầy đủ, nên chạy rẻ hơn nhiều. Các hệ thống khác là tự hồi quy (autoregressive): chúng tạo ảnh như một chuỗi token nối tiếp nhau, giống cách mô hình ngôn ngữ viết từng từ. Janus-Pro chẳng hạn hoạt động theo cách này. Cả hai loại nhận cùng đầu vào từ bạn, nên quy trình dưới đây áp dụng cho cả hai.",
+        {
+          "ol": [
+            "Prompt của bạn được tách thành token và mã hóa.",
+            "Một điểm khởi đầu ngẫu nhiên được tạo từ seed.",
+            "Bộ tạo ảnh tinh chỉnh điểm khởi đầu đó trong một số bước nhất định, mỗi bước được kéo về phía prompt.",
+            "Bộ giải mã xuất ảnh cuối cùng ở kích thước đã chọn."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Những cài đặt quan trọng",
+      "body": [
+        "Tên gọi khác nhau giữa các công cụ, và nhiều dịch vụ trực tuyến ẩn bớt một số cài đặt. Khi nhìn thấy chúng, đây là những cái đáng học.",
+        {
+          "table": {
+            "head": [
+              "Cài đặt",
+              "Điều khiển gì",
+              "Lời khuyên thực tế"
+            ],
+            "rows": [
+              [
+                "Prompt",
+                "Thứ mô hình cố vẽ",
+                "Chủ thể trước, rồi bối cảnh, phong cách, ánh sáng và máy ảnh. Xem hướng dẫn prompt tạo ảnh."
+              ],
+              [
+                "Negative prompt",
+                "Thứ mô hình tránh xa",
+                "Ngắn và cụ thể: chữ, watermark, thừa ngón tay. Để trống nếu bạn không có gì cụ thể."
+              ],
+              [
+                "Kích thước / tỷ lệ khung hình",
+                "Số điểm ảnh và hình dạng đầu ra",
+                "Dùng các kích thước mô hình đã được huấn luyện. Kích thước lớn hơn nhiều có thể làm chủ thể bị nhân đôi; hãy phóng to sau đó thay vì vậy."
+              ],
+              [
+                "Steps (số bước)",
+                "Số lượt tinh chỉnh",
+                "Nhiều bước thêm chi tiết đến một mức nhất định, sau đó chỉ tốn thời gian. Hãy dùng mặc định của công cụ trước."
+              ],
+              [
+                "Guidance (CFG scale)",
+                "Ảnh bám prompt chặt đến đâu",
+                "Giá trị thấp thì lệch khỏi prompt; giá trị rất cao trông gắt hoặc quá bão hòa. Bắt đầu ở mặc định."
+              ],
+              [
+                "Seed",
+                "Điểm khởi đầu ngẫu nhiên",
+                "Cùng seed, prompt và cài đặt trên cùng một hệ thống cho ảnh gần như giống hệt. Hãy cố định nó khi bạn chỉnh prompt."
+              ],
+              [
+                "Sampler / scheduler",
+                "Công thức toán dùng để gỡ nhiễu",
+                "Ảnh hưởng chút ít đến tốc độ và kết cấu. Đổi cuối cùng, nếu cần."
+              ],
+              [
+                "Batch size",
+                "Số ảnh mỗi lần chạy",
+                "Tạo nhiều ảnh cùng lúc rồi chọn; nhanh hơn chạy lại từng ảnh một."
+              ]
+            ]
+          }
+        },
+        "Guidance hoạt động bằng cách so sánh hai dự đoán ở mỗi bước, một có prompt của bạn và một không có, rồi đẩy kết quả xa hơn theo hướng của sự khác biệt. Đó là lý do thang đo này giống một núm vặn cường độ của prompt, và vì sao đặt quá cao sẽ làm mọi thứ bị phóng đại."
+      ]
+    },
+    {
+      "h": "Quy trình từ ý tưởng đến ảnh hoàn chỉnh",
+      "body": [
+        {
+          "ol": [
+            "Viết yêu cầu trong một câu: ảnh dùng để làm gì, hình dạng của nó (bài đăng vuông, banner 16:9, hình nền điện thoại 9:16) và một điều nó bắt buộc phải thể hiện.",
+            "Soạn prompt gồm chủ thể, hành động, bối cảnh, phong cách, ánh sáng và khung hình.",
+            "Tạo một loạt bốn đến tám ảnh nhỏ với seed ngẫu nhiên. Hãy nhìn bố cục, chưa phải chi tiết.",
+            "Chọn ảnh tốt nhất và ghi lại seed của nó. Từ giờ cố định seed.",
+            "Mỗi lần đổi một thứ trong prompt (ánh sáng, ống kính, màu) rồi so sánh. Với seed cố định, sự khác biệt đến từ chữ của bạn.",
+            "Khi bố cục đã đúng, hãy sửa các lỗi cục bộ bằng inpainting hoặc image-to-image thay vì tạo lại từ đầu.",
+            "Phóng to ảnh cuối cùng lên kích thước cần dùng, rồi kiểm tra khuôn mặt, bàn tay và mọi chữ ở kích thước đầy đủ.",
+            "Ghi lại prompt, seed, mô hình và cài đặt cạnh tệp để sau này có thể làm các biến thể."
+          ]
+        },
+        "Đây là một ví dụ nhỏ cho bước 5. Seed giữ nguyên; chỉ cụm từ về ánh sáng thay đổi giữa các lần chạy.",
+        {
+          "code": "seed 1234\nA: a lighthouse on a rocky coast, wide shot, overcast soft light\nB: a lighthouse on a rocky coast, wide shot, golden hour, warm rim light\nC: a lighthouse on a rocky coast, wide shot, blue hour, lamp glowing",
+          "lang": "text"
+        },
+        "Vì nhiễu khởi đầu giống nhau, A, B và C giữ bố cục tương tự, nên bạn có thể đánh giá riêng phần ánh sáng. Nếu mỗi lần dùng seed mới, bạn sẽ đang so sánh những bố cục khác nhau."
+      ]
+    },
+    {
+      "h": "Chọn kích thước và độ phân giải",
+      "body": [
+        "Mỗi mô hình được huấn luyện quanh một số kích thước nhất định. Các mô hình Stable Diffusion đời đầu chủ yếu được huấn luyện ở 512 × 512 điểm ảnh; các mô hình mới hơn được huấn luyện quanh 1024 × 1024 và nhiều tỷ lệ khung hình. Yêu cầu ảnh lớn hơn nhiều so với kích thước huấn luyện thường tạo ra chủ thể lặp lại, như hai cái đầu hay đường chân trời bị nhân đôi, vì mô hình lấp phần không gian dư bằng thêm những gì nó biết.",
+        "Cách an toàn hơn là tạo ở kích thước gốc rồi phóng to bằng công cụ upscale AI. Chẳng hạn, công cụ tạo ảnh AI của cv.cm tạo ảnh 384 điểm ảnh trên GPU của chính bạn bằng mô hình tự hồi quy, rồi có thể phóng to 2x hoặc 4x bằng Real-ESRGAN. Bộ upscale làm nét viền và kết cấu, nhưng không thể thêm vật thể hay sửa một bố cục kém, nên hãy làm đúng bố cục trước."
+      ]
+    },
+    {
+      "h": "Những điều text-to-image vẫn làm chưa tốt",
+      "body": [
+        {
+          "ul": [
+            "Chữ bên trong ảnh. Chữ cái có thể sai chính tả hoặc bị bịa ra, nhất là với cụm dài và chữ không phải Latin. Hãy thêm chữ trong phần mềm chỉnh sửa khi cần đúng tuyệt đối.",
+            "Bàn tay và đếm số lượng. Thừa hoặc dính ngón tay ít gặp hơn trước nhưng vẫn xuất hiện. Số lượng chính xác (bảy con chim) và quan hệ vị trí (bên trái, phía sau) thường sai.",
+            "Nhiều người khác nhau. Chi tiết của người này lẫn sang người kia. Hãy dựng cảnh theo từng giai đoạn hoặc dùng ảnh tham chiếu.",
+            "Cùng một nhân vật hai lần. Mỗi lần chạy mới là một người mới, trừ khi bạn dùng ảnh tham chiếu, mô tả cố định hoặc tinh chỉnh mô hình (fine-tuning). Xem hướng dẫn về nhân vật nhất quán.",
+            "Thiên lệch về vẻ ngoài phổ biến. Khi thiếu chi tiết, mô hình quay về những khuôn mặt, địa điểm và phong cách thường gặp nhất trong dữ liệu huấn luyện. Hãy nêu rõ độ tuổi, vùng miền, vóc dáng và bối cảnh.",
+            "Người thật, thương hiệu và logo. Nhiều dịch vụ chặn chúng, và việc dùng chúng có thể tạo rủi ro pháp lý ngay cả khi công cụ cho phép."
+          ]
+        },
+        {
+          "note": "Seed chỉ tái lập được trên cùng mô hình, cài đặt và thường là cùng phần cứng và phiên bản phần mềm. Chuyển sang công cụ hoặc GPU khác có thể đổi kết quả dù dùng cùng seed."
+        }
+      ]
+    },
+    {
+      "h": "Dịch vụ trực tuyến hay mô hình chạy cục bộ?",
+      "body": [
+        "Các công cụ trực tuyến như Midjourney, GPT image, Imagen hay các dịch vụ Stable Diffusion và FLUX online dễ bắt đầu và chạy mô hình lớn, nhưng bạn gửi prompt lên máy chủ và phải theo quy tắc nội dung cùng điều khoản của họ. Công cụ cục bộ chạy mô hình trên GPU của bạn: không có gì rời khỏi thiết bị, bạn thấy mọi cài đặt, nhưng mô hình phải vừa bộ nhớ và thường nhỏ hơn.",
+        {
+          "table": {
+            "head": [
+              "Câu hỏi",
+              "Dịch vụ trực tuyến",
+              "Mô hình cục bộ hoặc trong trình duyệt"
+            ],
+            "rows": [
+              [
+                "Quyền riêng tư",
+                "Prompt và ảnh được gửi tới nhà cung cấp",
+                "Ở lại trên thiết bị của bạn"
+              ],
+              [
+                "Chất lượng ảnh",
+                "Thường là mô hình lớn hơn, mạnh hơn",
+                "Mô hình nhỏ hơn; phụ thuộc phần cứng của bạn"
+              ],
+              [
+                "Kiểm soát",
+                "Một số cài đặt bị ẩn",
+                "Thấy mọi cài đặt"
+              ],
+              [
+                "Chi phí",
+                "Gói miễn phí hoặc đăng ký",
+                "Miễn phí sau khi tải; dùng điện và GPU của bạn"
+              ]
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Text-to-image AI có giống mô hình khuếch tán không?",
+      "a": "Không phải lúc nào cũng vậy. Khuếch tán là phương pháp phổ biến nhất tại thời điểm viết bài, nhưng một số mô hình text-to-image là tự hồi quy và tạo ảnh như một chuỗi token. Bạn dùng cả hai theo cùng một cách."
+    },
+    {
+      "q": "Vì sao cùng một prompt mà mỗi lần tôi nhận một ảnh khác?",
+      "a": "Mỗi lần chạy bắt đầu từ nhiễu ngẫu nhiên mới do seed quyết định. Hãy cố định seed, cùng với mô hình và cài đặt, để nhận lại ảnh giống hệt hoặc rất gần."
+    },
+    {
+      "q": "Nên dùng CFG hay guidance scale bao nhiêu?",
+      "a": "Bắt đầu với mặc định của công cụ. Tăng nhẹ nếu ảnh bỏ qua phần nào đó của prompt, và giảm đi nếu màu trông gắt hoặc chi tiết bị quá đà."
+    },
+    {
+      "q": "Tôi có thể dùng ảnh do AI tạo cho mục đích thương mại không?",
+      "a": "Tùy điều khoản của công cụ và luật nơi bạn ở. Nhiều dịch vụ cho phép dùng thương mại, nhưng bản quyền cho ảnh hoàn toàn do AI tạo bị hạn chế ở một số quốc gia. Hãy kiểm tra điều khoản và hướng dẫn về bản quyền."
+    },
+    {
+      "q": "Vì sao ảnh AI thường vuông và nhỏ?",
+      "a": "Mô hình được huấn luyện ở các kích thước cụ thể, và tạo ảnh lớn tốn nhiều bộ nhớ và thời gian. Hãy tạo ở kích thước gốc, rồi dùng công cụ upscale AI để lấy độ phân giải cuối cùng."
+    }
+  ]
+}

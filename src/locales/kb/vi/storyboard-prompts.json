@@ -1,0 +1,219 @@
+{
+  "title": "Prompt phân cảnh (storyboard) video AI: từ kịch bản thành cảnh quay — cv.cm",
+  "description": "Cách viết prompt phân cảnh cho video AI: chia kịch bản thành cảnh quay, điền thẻ cảnh quay và viết prompt cho từng clip. Có ví dụ 15 giây từng bước.",
+  "h1": "Làm sao biến kịch bản thành prompt phân cảnh cho video AI?",
+  "answer": "Chia kịch bản thành các nhịp (beat), cho mỗi nhịp một cảnh quay và viết một prompt cho mỗi cảnh. Prompt của mỗi cảnh nêu cỡ cảnh, chủ thể cùng hành động duy nhất của nó, bối cảnh, chuyển động máy quay, ánh sáng và thời lượng. Hãy giữ một thẻ cảnh quay (shot card) cho từng clip để nhân vật, trang phục và hướng trên màn hình luôn giống nhau khi bạn tạo từng cảnh một.",
+  "sections": [
+    {
+      "h": "Prompt phân cảnh là gì",
+      "body": [
+        "Prompt phân cảnh là đoạn văn bản bạn gửi cho mô hình video cho một cảnh quay trong một chuỗi lớn hơn. Prompt video mô tả một clip đơn lẻ; prompt phân cảnh mô tả một clip phải cắt mượt với clip trước và clip sau nó. Nhiệm vụ thêm này làm thay đổi cách bạn viết.",
+        "Hầu hết công cụ video AI tạo clip ngắn từ một prompt. Vì vậy một cảnh có mở đầu, diễn biến và kết thúc được dựng từ nhiều lần tạo rồi ghép trong phần mềm dựng. Bảng phân cảnh là kế hoạch nối chúng lại: quyết định mỗi cảnh quay hiển thị gì, kéo dài bao lâu và điều gì phải khớp giữa các cảnh.",
+        "Hãy hình dung bảng phân cảnh có hai lớp. Lớp thứ nhất dành cho bạn: số thứ tự cảnh, mục đích, thời lượng và dòng thoại mà cảnh đó bao phủ. Lớp thứ hai là văn bản prompt mà mô hình thực sự đọc. Để cả hai lớp trong một bảng giúp sửa nhanh, vì khi kịch bản đổi bạn thấy ngay prompt nào phải đổi theo."
+      ]
+    },
+    {
+      "h": "Bước 1: chia kịch bản thành nhịp và cảnh quay",
+      "body": [
+        "Một nhịp (beat) là thay đổi nhỏ nhất trong câu chuyện: một ánh nhìn, một quyết định, một tiết lộ, một phản ứng. Hãy đọc kịch bản và đánh dấu mọi nhịp. Rồi cho mỗi nhịp một cảnh quay riêng. Hai quy tắc thực tế giúp mô hình dựng cảnh dễ hơn:",
+        {
+          "ul": [
+            "Mỗi cảnh một hành động chính. “Cô ấy mở lá thư và bắt đầu khóc” là hai hành động; hãy cho cảnh khóc một cận cảnh riêng.",
+            "Mỗi cảnh một ý tưởng máy quay. Đẩy máy chậm vào hoặc khung hình tĩnh thì được; đẩy máy rồi chuyển thành vòng quanh rồi cẩu lên thường hỏng.",
+            "Thời lượng ngắn. Lên kế hoạch phần lớn cảnh ở vài giây. Cảnh phản ứng có thể ngắn hơn một clip đầy đủ; bạn cắt bớt khi dựng.",
+            "Nêu mục đích của từng cảnh: giới thiệu địa điểm, cho thấy hành động, cho thấy phản ứng, hoặc cho thấy một chi tiết khán giả phải để ý."
+          ]
+        },
+        "Thay đổi cỡ cảnh. Năm trung cảnh liên tiếp trông phẳng. Một mô thức quen thuộc là toàn cảnh (ta đang ở đâu), trung cảnh (ai đang làm gì), cận cảnh (họ cảm thấy ra sao), cảnh chèn (insert, vật quan trọng), rồi một cảnh rộng hơn để kết thúc hoặc chuyển sang cảnh sau."
+      ]
+    },
+    {
+      "h": "Bước 2: điền thẻ cảnh quay cho mỗi cảnh",
+      "body": [
+        "Thẻ cảnh quay là một danh sách trường cố định. Điền cùng các trường mỗi lần giúp bạn không quên những chi tiết gây lỗi liên tục (continuity). Prompt khi đó chỉ là tấm thẻ viết thành câu.",
+        {
+          "table": {
+            "head": [
+              "Trường",
+              "Cần viết gì",
+              "Ví dụ (prompt tiếng Anh)"
+            ],
+            "rows": [
+              [
+                "Cỡ cảnh và góc máy",
+                "Toàn cảnh, trung cảnh, cận cảnh, cảnh chèn; ngang tầm mắt, góc thấp, góc cao",
+                "Close-up, eye level"
+              ],
+              [
+                "Chủ thể",
+                "Ai, với cùng một mô tả cố định ở mọi cảnh",
+                "A woman in her 30s, short black hair, grey wool coat"
+              ],
+              [
+                "Hành động",
+                "Một động từ, kèm cách nó diễn ra",
+                "slowly lowers the phone from her ear"
+              ],
+              [
+                "Bối cảnh",
+                "Địa điểm, thời điểm trong ngày, thời tiết",
+                "empty train platform at night, light rain"
+              ],
+              [
+                "Máy quay",
+                "Tĩnh hoặc một chuyển động, kèm tốc độ",
+                "static camera"
+              ],
+              [
+                "Ánh sáng và màu sắc",
+                "Nguồn sáng chính và không khí",
+                "cold fluorescent light from above, blue-green tones"
+              ],
+              [
+                "Hướng trên màn hình",
+                "Chủ thể quay mặt hoặc di chuyển về phía nào",
+                "faces screen left"
+              ],
+              [
+                "Âm thanh",
+                "Lời thoại, hiệu ứng hoặc âm thanh môi trường, nếu mô hình tạo âm thanh",
+                "distant train announcement, rain"
+              ],
+              [
+                "Thời lượng và điểm vào/ra",
+                "Độ dài dự kiến và cách bắt đầu, kết thúc",
+                "3 s, ends on her eyes closing"
+              ]
+            ]
+          }
+        },
+        "Hãy để mô tả chủ thể cố định trong một ghi chú riêng và dán nguyên văn vào mọi prompt. Những thay đổi nhỏ trong cách diễn đạt, như “grey coat” ở cảnh này và “dark jacket” ở cảnh sau, là nguyên nhân phổ biến khiến nhân vật đổi dáng giữa các lần cắt."
+      ]
+    },
+    {
+      "h": "Ví dụ thực tế: cảnh 15 giây gồm năm cảnh quay",
+      "body": [
+        "Kịch bản: “Đêm. Một sân ga. MAYA kết thúc cuộc gọi. Cô nhìn bảng giờ tàu. Chuyến tàu của cô bị hủy. Cô bật cười một tiếng mệt mỏi và ngồi xuống chiếc vali.”",
+        "Kịch bản có năm nhịp, nên có năm cảnh quay. Thời lượng dự kiến cộng lại là 15 giây.",
+        {
+          "table": {
+            "head": [
+              "Cảnh",
+              "Cỡ cảnh",
+              "Nhịp",
+              "Giây"
+            ],
+            "rows": [
+              [
+                "1",
+                "Toàn cảnh",
+                "Giới thiệu sân ga vắng và Maya đang nghe điện thoại",
+                "3"
+              ],
+              [
+                "2",
+                "Cận cảnh",
+                "Cô hạ điện thoại xuống",
+                "3"
+              ],
+              [
+                "3",
+                "Cảnh chèn",
+                "Bảng giờ tàu lật sang CANCELLED",
+                "2"
+              ],
+              [
+                "4",
+                "Cận trung cảnh",
+                "Một tiếng cười mệt mỏi",
+                "3"
+              ],
+              [
+                "5",
+                "Toàn cảnh",
+                "Cô ngồi xuống chiếc vali",
+                "4"
+              ]
+            ]
+          }
+        },
+        "Đây là prompt cho các cảnh 1, 2 và 3. Hãy để ý dòng mô tả nhân vật và dòng ánh sáng giống hệt nhau ở mỗi cảnh.",
+        {
+          "code": "Shot 1 (wide, 3 s)\nWide shot of an empty train platform at night, light rain beyond the roof edge.\nMaya, a woman in her 30s with short black hair and a grey wool coat, stands\nnear the edge talking on a phone, facing screen left, a small red suitcase beside her.\nCold fluorescent light from above, blue-green tones, wet reflective floor.\nStatic camera. Ambient sound: rain and a distant announcement.\n\nShot 2 (close-up, 3 s)\nClose-up at eye level of Maya, a woman in her 30s with short black hair\nand a grey wool coat, facing screen left. She slowly lowers the phone from her ear\nand looks up and to the left. Cold fluorescent light from above, blue-green tones.\nStatic camera, shallow depth of field, platform blurred behind her.\n\nShot 3 (insert, 2 s)\nInsert shot of an old split-flap departure board on a train platform at night.\nThe top line flips and stops on a single word. Cold fluorescent light,\nblue-green tones. Static camera. Sound: clicking split-flap letters.",
+          "lang": "text"
+        },
+        "Có hai chi tiết đáng chú ý. Ở cảnh 2 cô nhìn lên và sang trái, còn ở cảnh 3 ta thấy bảng giờ tàu: hướng nhìn của một cảnh dẫn vào nội dung của cảnh kế tiếp. Và chữ trên bảng không được đưa vào prompt như văn bản cần vẽ, vì nhiều mô hình vẫn vẽ chữ kém. Hãy tạo bảng giờ tàu không có chữ đọc được, rồi thêm chữ CANCELLED dưới dạng đồ họa khi dựng."
+      ]
+    },
+    {
+      "h": "Bước 3: làm keyframe trước khi làm chuyển động",
+      "body": [
+        "Tạo video chậm và tốn kém hơn tạo ảnh tĩnh. Một quy trình đáng tin cậy là làm trước một keyframe (khung hình chính) tĩnh cho mỗi cảnh, kiểm tra cả bảng phân cảnh như một hàng ảnh, rồi mới làm chuyển động cho từng ảnh bằng image-to-video.",
+        {
+          "ol": [
+            "Tạo một ảnh tham chiếu nhân vật và một ảnh tham chiếu địa điểm.",
+            "Tạo một keyframe cho mỗi cảnh, dùng các ảnh tham chiếu đó, ở tỷ lệ khung hình cuối cùng.",
+            "Xếp các keyframe cạnh nhau và kiểm tra khuôn mặt, quần áo, đạo cụ và ánh sáng.",
+            "Làm chuyển động cho từng keyframe bằng một prompt chuyển động ngắn chỉ mô tả cái gì chuyển động.",
+            "Ở chỗ hai cảnh phải nối mượt, hãy dùng chế độ khung hình đầu và cuối để cuối clip này khớp với đầu clip sau."
+          ]
+        },
+        "Khi làm chuyển động cho một keyframe, ảnh đã cố định diện mạo, nên prompt chỉ cần mô tả chuyển động và máy quay, không lặp lại mọi chi tiết hình ảnh. Hướng dẫn chính thức của các mô hình, như hướng dẫn prompt Veo của Google, cũng khuyên mô tả điều bạn muốn có trong khung hình thay vì viết chỉ dẫn “không” hay “đừng”."
+      ]
+    },
+    {
+      "h": "Bước 4: viết mỗi cảnh sao cho dễ cắt",
+      "body": [
+        "Mỗi cảnh sẽ nằm giữa hai cảnh khác, nên hãy viết điểm bắt đầu và kết thúc của nó có chủ đích. Một vài quy tắc dựng phim thực tế cũng áp dụng được cho video AI:",
+        {
+          "ul": [
+            "Giữ hướng trên màn hình. Nếu Maya quay mặt sang trái màn hình ở cảnh 1, hãy giữ cô ấy quay trái cho đến khi câu chuyện khiến cô quay lại. Đổi hướng giữa các lần cắt làm người xem rối.",
+            "Dùng quy tắc 180 độ trong đối thoại. Giữ máy quay ở một phía của đường nối giữa hai người nói để vị trí của họ không bị đổi chỗ.",
+            "Cắt theo hành động. Kết thúc cảnh 4 khi cô bắt đầu ngồi, và bắt đầu cảnh 5 khi cô đã ngồi nửa chừng. Chuyển động che đi những khác biệt nhỏ giữa các clip.",
+            "Chừa dư thời lượng (handle). Yêu cầu dài hơn một chút so với cần thiết để bạn cắt bỏ đoạn đầu chậm hoặc đoạn cuối lơ lửng mà nhiều lần tạo có.",
+            "Khớp ánh sáng. Giữ một mô tả ánh sáng cho cả cảnh và chỉ đổi khi câu chuyện đổi thời điểm hoặc địa điểm."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Lỗi thường gặp và giới hạn",
+      "body": [
+        {
+          "ul": [
+            "Viết cả cảnh trong một prompt. Mô hình nén hoặc bỏ qua các nhịp. Mỗi cảnh quay một prompt dễ kiểm soát và dễ sửa hơn.",
+            "Mô tả cảm xúc mà không có hành động nhìn thấy được. “Cô ấy cảm thấy tuyệt vọng” thì mơ hồ; “cô buông thõng điện thoại xuống bên người và nhìn chằm chằm xuống sàn” thì quay được.",
+            "Yêu cầu bảng hiệu, phụ đề hay logo đọc được trong cảnh. Hãy thêm chữ trong phần mềm dựng.",
+            "Đổi mô tả nhân vật giữa các cảnh. Hãy dán cùng một khối mô tả mỗi lần.",
+            "Lên kế hoạch cảnh tay phức tạp, đánh nhau nhanh hay vật lý của vật thể trong một cảnh. Mô hình video vẫn gặp khó với bàn tay, va chạm và quan hệ nhân quả. Hãy chia nhỏ hành động, lấy khung chặt hơn, hoặc cho thấy kết quả thay vì quá trình."
+          ]
+        },
+        {
+          "note": "Cú pháp prompt, độ dài clip và tính năng tham chiếu khác nhau giữa các công cụ và thay đổi thường xuyên. Phương pháp thẻ cảnh quay dùng được với tất cả; hãy điều chỉnh cách diễn đạt theo hướng dẫn của công cụ bạn dùng."
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Video AI 15 giây cần bao nhiêu cảnh quay?",
+      "a": "Thường từ ba đến sáu. Ít cảnh hơn thì cảm giác chậm, còn nhiều cảnh rất ngắn thì khó giữ nhất quán. Hãy lên kế hoạch theo nhịp, không theo con số cố định."
+    },
+    {
+      "q": "Tôi có thể viết một prompt phân cảnh cho nhiều cảnh cùng lúc không?",
+      "a": "Một số mô hình mới hơn nhận mô tả nhiều cảnh trong một prompt và tự cắt bên trong clip. Cách này có thể dùng được cho cảnh đơn giản, nhưng bạn mất quyền kiểm soát từng cảnh. Với bất cứ thứ gì bạn cần sửa về sau, hãy tạo từng cảnh một."
+    },
+    {
+      "q": "Tôi nên vẽ bảng phân cảnh hay chỉ viết ra?",
+      "a": "Danh sách cảnh quay bằng chữ là đủ để bắt đầu. Tạo một keyframe tĩnh cho mỗi cảnh sẽ nhanh chóng cho bạn một bảng phân cảnh trực quan và cho phép sửa lỗi trước khi bạn mất thời gian làm video."
+    },
+    {
+      "q": "Chatbot AI có thể biến kịch bản của tôi thành danh sách cảnh quay không?",
+      "a": "Được, một chatbot như ChatGPT, Claude, Gemini hay DeepSeek có thể soạn danh sách cảnh quay nếu bạn đưa cho nó các trường của thẻ cảnh quay. Hãy tự kiểm tra: chatbot thường thêm hành động không có trong kịch bản hoặc quên hướng trên màn hình."
+    },
+    {
+      "q": "Vì sao nhân vật của tôi trông khác nhau ở mỗi cảnh?",
+      "a": "Mỗi lần tạo lấy mẫu một khuôn mặt và quần áo mới, trừ khi có thứ gì đó giữ cố định. Hãy dùng cùng một đoạn mô tả, một ảnh tham chiếu của nhân vật và các keyframe làm từ ảnh tham chiếu đó."
+    }
+  ]
+}

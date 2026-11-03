@@ -46,6 +46,7 @@ export function sitemapPages(): SitemapPage[] {
     for (const tutorial of FEATURED_TUTORIALS) pages.push({ locale, kind: "learn", tutorial });
     pages.push({ locale, kind: "kb", article: null });
     pages.push({ locale, kind: "kb", article: "code" });
+    pages.push({ locale, kind: "kb", article: "ai" });
     for (const article of KB_ARTICLES) pages.push({ locale, kind: "kb", article });
     pages.push({ locale, kind: "games", console: null, game: null });
     for (const consoleId of GAME_CONSOLES) {

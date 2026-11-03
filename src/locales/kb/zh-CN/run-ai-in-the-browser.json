@@ -1,0 +1,192 @@
+{
+  "title": "浏览器运行AI模型：WebGPU、WASM与Transformers.js — cv.cm",
+  "description": "如何在浏览器里本地运行AI模型：WebGPU 与 WASM 的选择、ONNX Runtime Web 和 Transformers.js、模型体积、缓存、量化、隐私和手机限制。",
+  "h1": "怎样在浏览器里运行AI模型？",
+  "answer": "下载一个模型文件（通常是 ONNX 格式），用 ONNX Runtime Web 之类的运行时在网页内运行，常常通过 Transformers.js 来调用。运行时在可用时通过 WebGPU 使用显卡，否则退回到用 WebAssembly 的 CPU 方案。文件在首次访问后会被缓存，你的数据始终不会离开设备。",
+  "sections": [
+    {
+      "h": "为什么要在浏览器里跑AI",
+      "body": [
+        "大多数AI功能都要调用服务器：照片或文字被上传，数据中心里的 GPU 运行模型，再把结果传回来。浏览器端AI把这个过程倒了过来：模型只下载一次，由访客自己的设备来完成计算。",
+        {
+          "ul": [
+            "隐私：照片、音频和文档都留在设备上，无需上传或保存，这在许多国家也让隐私合规更简单。",
+            "没有按次计费的服务器成本：网站只需支付托管模型文件的费用，不用为 GPU 时间买单，这让免费工具成为可能。",
+            "首次加载之后可离线使用，每次请求也没有网络延迟。",
+            "不需要账号或 API 密钥。"
+          ]
+        },
+        "取舍也是真实存在的。首次访问要下载很大的文件，速度取决于访客的硬件，而且只有小型和中型模型装得下。拥有数百亿参数的大型对话模型仍然需要服务器。目前适合的任务包括抠图、图像放大、深度估计、语音转文字、翻译、文本分类、嵌入向量，以及小型的图像或语言模型。例如 cv.cm 的抠图和语音转文字工具就是这样运行 BiRefNet 和 Whisper 的，什么都不会上传。"
+      ]
+    },
+    {
+      "h": "四个层次：模型、运行时、后端、库",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "层次",
+              "是什么",
+              "常见选择"
+            ],
+            "rows": [
+              [
+                "模型文件",
+                "训练好的权重和计算图",
+                "ONNX 文件，常从 PyTorch 导出"
+              ],
+              [
+                "运行时",
+                "在页面里执行计算图的代码",
+                "ONNX Runtime Web（也有其他选择，如 TensorFlow.js，或用于对话模型的 WebLLM）"
+              ],
+              [
+                "后端",
+                "运行时使用的硬件路径",
+                "GPU 用 WebGPU，CPU 用 WebAssembly（WASM），支持的环境还有 WebNN"
+              ],
+              [
+                "库",
+                "易用的 API：预处理、分词器、pipeline",
+                "Transformers.js，底层使用 ONNX Runtime"
+              ]
+            ]
+          }
+        },
+        "ONNX 是神经网络的开放格式。在 PyTorch 中训练的模型可以导出为 ONNX，再由 ONNX Runtime Web 通过多种后端运行。WASM 后端支持所有 ONNX 算子；GPU 后端只支持其中一部分，所以一个模型可能在 WebGPU 上失败，却能在 WASM 上正常运行。Transformers.js 补上了你原本要自己写的那部分：缩放图像、把文字转成 token、解码音频，以及把原始输出数字变成标签、蒙版或文字。"
+      ]
+    },
+    {
+      "h": "WebGPU 与 WebAssembly 的对比",
+      "body": [
+        "WebGPU 是 W3C 的网页标准，让页面既能用显卡绘图，也能用它做通用计算。对神经网络来说，重要的是计算部分：矩阵乘法在许多 GPU 核心上并行执行。WebAssembly 则在 CPU 上运行编译后的代码，速度接近原生，并且所有现代浏览器都支持。",
+        {
+          "table": {
+            "head": [
+              "问题",
+              "WebGPU",
+              "WebAssembly（WASM）"
+            ],
+            "rows": [
+              [
+                "运行在",
+                "GPU",
+                "CPU，可配合 SIMD 多线程"
+              ],
+              [
+                "大模型上的速度",
+                "往往快许多倍",
+                "较慢，但可预期"
+              ],
+              [
+                "可用性",
+                "在增长，但并非每个浏览器和设备都支持；MDN 标注为有限可用",
+                "所有现代浏览器"
+              ],
+              [
+                "ONNX Runtime Web 的算子覆盖",
+                "一部分",
+                "全部算子"
+              ],
+              [
+                "要求",
+                "安全上下文（HTTPS）",
+                "多线程需要跨源隔离的页面"
+              ],
+              [
+                "最适合",
+                "图像生成、大型视觉模型、长音频的 Whisper",
+                "小模型、兜底方案、没有好显卡的设备"
+              ]
+            ]
+          }
+        },
+        "实际做法是优先尝试 WebGPU，不行再退回 WASM。不要按浏览器名称来判断，而应该向浏览器请求一个适配器（adapter）并检查它的特性：",
+        {
+          "code": "// Check what this device can do before loading a model.\nasync function pickBackend() {\n  if (!(\"gpu\" in navigator)) return { device: \"wasm\" };      // no WebGPU API\n  const adapter = await navigator.gpu.requestAdapter();\n  if (!adapter) return { device: \"wasm\" };                    // API exists, no usable GPU\n  const f16 = adapter.features.has(\"shader-f16\");             // half-precision support\n  return { device: \"webgpu\", f16 };\n}\n\nconsole.log(await pickBackend(), \"threads:\", self.crossOriginIsolated);",
+          "lang": "javascript"
+        },
+        "多线程 WASM 使用 `SharedArrayBuffer`，浏览器只在页面跨源隔离时才允许使用，这意味着要发送 `Cross-Origin-Opener-Policy` 和 `Cross-Origin-Embedder-Policy` 响应头。没有它们，WASM 就只能单线程运行，会慢很多。"
+      ]
+    },
+    {
+      "h": "最小的 Transformers.js 示例",
+      "body": [
+        "用 Transformers.js，一个任务只需调用一次 `pipeline`。库会下载模型，按所选设备和数据类型挑选文件，并返回一个可以调用的函数：",
+        {
+          "code": "import { pipeline } from \"@huggingface/transformers\";\n\nconst { device } = await pickBackend();     // from the snippet above\n\n// First call downloads the model and caches it. Later visits load from cache.\nconst classify = await pipeline(\n  \"sentiment-analysis\",\n  \"Xenova/distilbert-base-uncased-finetuned-sst-2-english\",\n  {\n    device,                                  // \"webgpu\" or \"wasm\"\n    dtype: device === \"webgpu\" ? \"fp32\" : \"q8\",\n    progress_callback: (p) => console.log(p.status, p.file ?? \"\", p.progress ?? \"\"),\n  }\n);\n\nconsole.log(await classify(\"This runs entirely on my laptop.\"));\n// [{ label: \"POSITIVE\", score: 0.99... }]",
+          "lang": "javascript"
+        },
+        "请在模块脚本里运行，更好的做法是放进 Web Worker。模型推理可能阻塞数百毫秒甚至更久，放在 Worker 里页面就能保持响应。WebGPU 在 Worker 中同样可用。要向用户显示下载进度，因为网速慢时，大模型的首次加载可能要等一阵子。"
+      ]
+    },
+    {
+      "h": "下载体积、量化与缓存",
+      "body": [
+        "下载体积大致等于参数个数乘以每个参数占用的字节数。用这个简单算术就能判断一个模型是否实用：",
+        {
+          "code": "download size  ~  number of parameters  x  bytes per parameter\n\n                      fp32 (4 B)   fp16 (2 B)   int8 / q8 (1 B)   q4 (0.5 B)\n 50 million params      200 MB       100 MB          50 MB            25 MB\n 500 million params     2.0 GB       1.0 GB         500 MB           250 MB\n 1 billion params       4.0 GB       2.0 GB         1.0 GB           500 MB\n\nReal files differ a little: some layers stay at higher precision,\nand the tokenizer and config add a few MB.",
+          "lang": "text"
+        },
+        "量化是用更少的位数存储权重：fp16 把 fp32 的体积减半，8 位量化（q8）缩小到四分之一，4 位（q4）约缩小到八分之一。权重越小，下载越快，占用内存也越少。代价是精度有所损失：8 位时通常很小，4 位时更明显，尤其是在小模型和图像生成等小误差就会显现的任务上。Transformers.js 通过 `dtype` 选项选择变体。它的默认值是 WASM 上用 q8、WebGPU 上用 fp32，可选项取决于模型发布者导出了哪些版本。",
+        "缓存让第二次访问变快。Transformers.js 默认用浏览器的 Cache API 保存下载的文件。浏览器会根据磁盘大小给每个网站分配存储配额，在桌面端往往大到可以放几个 GB，但这类存储是尽力而为的：设备空间不足时，浏览器可以删除它；Safari 还可能清除用户几天没有交互过的网站由脚本创建的数据。网站可以用 `navigator.storage.persist()` 申请持久存储，并用 `navigator.storage.estimate()` 查看用量。",
+        {
+          "note": "如果网站依赖模型文件，请自己托管并固定版本。从第三方模型库加载，意味着它的故障、文件改名或新版本发布，都会变成你的问题。"
+        }
+      ]
+    },
+    {
+      "h": "手机与其他限制",
+      "body": [
+        {
+          "ul": [
+            "内存：模型需要内存放权重，还要有运算空间。手机浏览器分给每个标签页的内存远比桌面端少，模型太大时可能不打招呼就关闭标签页。手机上的模型要小，通常不超过几百 MB。",
+            "手机上的 WebGPU：支持情况取决于浏览器、操作系统版本和 GPU 驱动。务必准备 WASM 路径或清晰的提示。",
+            "发热与电量：长时间的 GPU 运算会让手机发烫，系统随后会给芯片降频。一个第一次只要 2 秒的任务，第五次可能慢得多。",
+            "流量套餐：在移动网络下进行大文件下载之前，要提醒用户。",
+            "精度：有些 GPU 不支持快速的半精度（fp16），或产生略有不同的数值，所以不同设备上的输出可能有细微差异。",
+            "模型许可证依然有效。在浏览器中运行模型并不会改变它的使用条款。"
+          ]
+        }
+      ]
+    },
+    {
+      "h": "上线浏览器端AI的检查清单",
+      "body": [
+        {
+          "ol": [
+            "选择能满足质量要求的最小模型，并把它的各个量化版本放在一起对比测试。",
+            "通过请求 adapter 来检测 WebGPU，不行就退回到 WASM。",
+            "用 HTTPS 提供网站服务；需要 WASM 多线程时，启用跨源隔离。",
+            "在 Web Worker 里运行推理，并显示下载和处理进度。",
+            "不要在页面加载时就下载模型。等用户开始任务再下载，只读页面的访客就不必为几个 GB 买单。",
+            "把模型文件托管在固定版本上，并做好缓存。",
+            "在低端手机上测试，而不只是在开发用的笔记本上。"
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "浏览器端AI真的保护隐私吗？",
+      "a": "模型在你的设备上运行，输入内容不必发送到任何地方。具体某个网站是否上传了东西，取决于它的代码，所以请查看它的隐私声明，或浏览器的网络面板。"
+    },
+    {
+      "q": "哪些浏览器支持 WebGPU？",
+      "a": "主流桌面浏览器和部分移动浏览器的支持在不断增加，但仍然因浏览器版本、操作系统和 GPU 而异。请查看 MDN 上最新的兼容性表，并在代码中检测 `navigator.gpu`。"
+    },
+    {
+      "q": "能在浏览器里运行类似 ChatGPT 的模型吗？",
+      "a": "参数规模最多几十亿的小型语言模型，可以在性能不错的 GPU 上于浏览器中运行，但需要先下载 1 GB 甚至更大的文件。它们的能力远不及 ChatGPT、Claude 或 Gemini 背后的大模型。"
+    },
+    {
+      "q": "为什么第一次运行慢，第二次就快了？",
+      "a": "第一次运行要下载模型，并编译 GPU 着色器或 WASM 代码。之后只要浏览器没有清除缓存，就会直接从浏览器缓存里加载文件。"
+    },
+    {
+      "q": "没有游戏显卡，在浏览器里运行AI也会用到 GPU 吗？",
+      "a": "会。WebGPU 可以使用普通笔记本和手机上的集成显卡。它比独立显卡慢，但通常仍比 CPU 路径快得多。"
+    }
+  ]
+}

@@ -1,0 +1,192 @@
+{
+  "title": "How to Run AI in the Browser: WebGPU, WASM, Transformers.js — cv.cm",
+  "description": "How to run AI models in the browser with WebGPU or WASM, ONNX Runtime Web and Transformers.js: model size, caching, quantization, privacy and phone limits.",
+  "h1": "How do you run an AI model in the browser?",
+  "answer": "You download a model file, usually in ONNX format, and run it inside the web page with a runtime such as ONNX Runtime Web, often through Transformers.js. The runtime uses the GPU through WebGPU when available and falls back to the CPU with WebAssembly. Files are cached after the first visit, and your data never leaves the device.",
+  "sections": [
+    {
+      "h": "Why run AI in the browser at all",
+      "body": [
+        "Most AI features call a server: the photo or text is uploaded, a GPU in a data center runs the model, and the result comes back. In-browser AI turns this around. The model is downloaded once, and the visitor's own device does the work.",
+        {
+          "ul": [
+            "Privacy: photos, audio and documents stay on the device. Nothing needs to be uploaded or stored, which also simplifies compliance with privacy laws in many countries.",
+            "No server cost per use: the site pays to host the model files, not for GPU time. This makes free tools possible.",
+            "Works offline after the first load, and has no network delay per request.",
+            "No account or API key is needed."
+          ]
+        },
+        "The trade-offs are real. The first visit needs a large download, speed depends on the visitor's hardware, and only small and medium models fit. Large chat models with tens of billions of parameters still need a server. Tasks that fit well today include background removal, image upscaling, depth estimation, speech to text, translation, text classification, embeddings and small image or language models. For example, cv.cm's remove-background and speech-to-text tools run BiRefNet and Whisper this way, with nothing uploaded."
+      ]
+    },
+    {
+      "h": "The four layers: model, runtime, backend, library",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Layer",
+              "What it is",
+              "Common choice"
+            ],
+            "rows": [
+              [
+                "Model file",
+                "The trained weights and the compute graph",
+                "ONNX files, often exported from PyTorch"
+              ],
+              [
+                "Runtime",
+                "Code that executes the graph in the page",
+                "ONNX Runtime Web (alternatives exist, such as TensorFlow.js or WebLLM for chat models)"
+              ],
+              [
+                "Backend",
+                "The hardware path the runtime uses",
+                "WebGPU for the GPU, WebAssembly (WASM) for the CPU, WebNN where supported"
+              ],
+              [
+                "Library",
+                "Friendly API: preprocessing, tokenizers, pipelines",
+                "Transformers.js, which uses ONNX Runtime underneath"
+              ]
+            ]
+          }
+        },
+        "ONNX is an open format for neural networks. A model trained in PyTorch can be exported to ONNX, and ONNX Runtime Web can then run it with several backends. The WASM backend supports every ONNX operator. The GPU backends support a subset, so a model can fail on WebGPU and still work on WASM. Transformers.js adds what you would otherwise write yourself: resizing images, turning text into tokens, decoding audio, and turning raw output numbers into labels, masks or text."
+      ]
+    },
+    {
+      "h": "WebGPU versus WebAssembly",
+      "body": [
+        "WebGPU is a W3C web standard that gives pages access to the graphics card for both drawing and general computation. For neural networks, the compute part is what matters: matrix multiplications run on many GPU cores in parallel. WebAssembly runs compiled code on the CPU at close to native speed and works in every modern browser.",
+        {
+          "table": {
+            "head": [
+              "Question",
+              "WebGPU",
+              "WebAssembly (WASM)"
+            ],
+            "rows": [
+              [
+                "Runs on",
+                "GPU",
+                "CPU, optionally multi-threaded with SIMD"
+              ],
+              [
+                "Speed on large models",
+                "Often many times faster",
+                "Slower, but predictable"
+              ],
+              [
+                "Availability",
+                "Growing, but not in every browser and device; MDN lists it as limited availability",
+                "Every modern browser"
+              ],
+              [
+                "Operator coverage in ONNX Runtime Web",
+                "A subset",
+                "All operators"
+              ],
+              [
+                "Requirements",
+                "Secure context (HTTPS)",
+                "Threads need a cross-origin isolated page"
+              ],
+              [
+                "Best for",
+                "Image generation, large vision models, Whisper on long audio",
+                "Small models, fallback, devices without a good GPU"
+              ]
+            ]
+          }
+        },
+        "In practice, try WebGPU first and fall back to WASM. Do not decide by browser name. Ask the browser for an adapter and check its features:",
+        {
+          "code": "// Check what this device can do before loading a model.\nasync function pickBackend() {\n  if (!(\"gpu\" in navigator)) return { device: \"wasm\" };      // no WebGPU API\n  const adapter = await navigator.gpu.requestAdapter();\n  if (!adapter) return { device: \"wasm\" };                    // API exists, no usable GPU\n  const f16 = adapter.features.has(\"shader-f16\");             // half-precision support\n  return { device: \"webgpu\", f16 };\n}\n\nconsole.log(await pickBackend(), \"threads:\", self.crossOriginIsolated);",
+          "lang": "javascript"
+        },
+        "Multi-threaded WASM uses `SharedArrayBuffer`, which browsers only allow when the page is cross-origin isolated. That means sending the `Cross-Origin-Opener-Policy` and `Cross-Origin-Embedder-Policy` headers. Without them, WASM runs on a single thread and is much slower."
+      ]
+    },
+    {
+      "h": "A minimal Transformers.js example",
+      "body": [
+        "With Transformers.js, a task is one `pipeline` call. The library downloads the model, picks the files for the chosen device and data type, and returns a function you can call:",
+        {
+          "code": "import { pipeline } from \"@huggingface/transformers\";\n\nconst { device } = await pickBackend();     // from the snippet above\n\n// First call downloads the model and caches it. Later visits load from cache.\nconst classify = await pipeline(\n  \"sentiment-analysis\",\n  \"Xenova/distilbert-base-uncased-finetuned-sst-2-english\",\n  {\n    device,                                  // \"webgpu\" or \"wasm\"\n    dtype: device === \"webgpu\" ? \"fp32\" : \"q8\",\n    progress_callback: (p) => console.log(p.status, p.file ?? \"\", p.progress ?? \"\"),\n  }\n);\n\nconsole.log(await classify(\"This runs entirely on my laptop.\"));\n// [{ label: \"POSITIVE\", score: 0.99... }]",
+          "lang": "javascript"
+        },
+        "Run this in a module script or, better, in a Web Worker. Model inference can block for hundreds of milliseconds or more, and in a worker the page stays responsive. WebGPU is also available inside workers. Show download progress to the user, because the first load of a large model can take a while on a slow connection."
+      ]
+    },
+    {
+      "h": "Download size, quantization and caching",
+      "body": [
+        "The download is roughly the number of parameters times the bytes stored for each one. This simple arithmetic tells you whether a model is practical:",
+        {
+          "code": "download size  ~  number of parameters  x  bytes per parameter\n\n                      fp32 (4 B)   fp16 (2 B)   int8 / q8 (1 B)   q4 (0.5 B)\n 50 million params      200 MB       100 MB          50 MB            25 MB\n 500 million params     2.0 GB       1.0 GB         500 MB           250 MB\n 1 billion params       4.0 GB       2.0 GB         1.0 GB           500 MB\n\nReal files differ a little: some layers stay at higher precision,\nand the tokenizer and config add a few MB.",
+          "lang": "text"
+        },
+        "Quantization stores weights with fewer bits: fp16 halves the size of fp32, 8-bit quantization (q8) quarters it, and 4-bit (q4) reduces it by about eight times. Smaller weights download faster and need less memory. The cost is some accuracy, which is usually small at 8 bits and more visible at 4 bits, especially on small models and on tasks such as image generation where small errors show. Transformers.js selects the variant with its `dtype` option. Its defaults are q8 on WASM and fp32 on WebGPU, and the available options depend on what the model publisher exported.",
+        "Caching makes the second visit fast. Transformers.js stores downloaded files with the browser's Cache API by default. Browsers give each site a storage quota based on disk size, often large enough for several gigabytes on a desktop, but this storage is best-effort: the browser can delete it when the device is low on space, and Safari can remove script-created data for sites that the user has not interacted with for several days. A site can ask for persistent storage with `navigator.storage.persist()` and check usage with `navigator.storage.estimate()`.",
+        {
+          "note": "Host model files yourself, with a fixed version, if your site depends on them. Loading from a third-party hub means its outages, renamed files or new model versions become your problem."
+        }
+      ]
+    },
+    {
+      "h": "Phones and other limits",
+      "body": [
+        {
+          "ul": [
+            "Memory: a model needs memory for its weights plus working space. Mobile browsers give each tab much less memory than desktops and may close the tab without warning if a model is too large. Keep mobile models small, often under a few hundred megabytes.",
+            "WebGPU on phones: support depends on the browser, the operating system version and the GPU driver. Always have a WASM path or a clear message.",
+            "Heat and battery: long GPU work makes phones hot, and the system then slows the chip down. A task that takes 2 seconds once may take much longer the fifth time.",
+            "Data plans: warn users before a large download on a mobile connection.",
+            "Precision: some GPUs lack fast half-precision (fp16) support or produce slightly different numbers, so outputs can differ a little between devices.",
+            "Model licenses still apply. Running a model in the browser does not change its terms of use."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "A checklist for shipping in-browser AI",
+      "body": [
+        {
+          "ol": [
+            "Choose the smallest model that meets your quality bar, and test its quantized versions side by side.",
+            "Detect WebGPU with an adapter request, and fall back to WASM.",
+            "Serve the site over HTTPS, and enable cross-origin isolation if you need WASM threads.",
+            "Run inference in a Web Worker and show download and processing progress.",
+            "Do not download the model on page load. Wait until the user starts a task, so visitors who only read the page do not pay for gigabytes.",
+            "Host the model files at a pinned version, and cache them.",
+            "Test on a low-end phone, not only on a development laptop."
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Is in-browser AI really private?",
+      "a": "The model runs on your device, so your input does not need to be sent anywhere. Whether a specific site uploads anything depends on its code, so check its privacy statement or the browser's network panel."
+    },
+    {
+      "q": "Which browsers support WebGPU?",
+      "a": "Support has grown across major desktop browsers and some mobile ones, but it still varies by browser version, operating system and GPU. Check the current compatibility table on MDN and test for `navigator.gpu` in code."
+    },
+    {
+      "q": "Can I run a ChatGPT-like model in the browser?",
+      "a": "Small language models with up to a few billion parameters can run in the browser on a good GPU, after a download of one gigabyte or more. They are far less capable than the large models behind ChatGPT, Claude or Gemini."
+    },
+    {
+      "q": "Why is the first run slow and the second fast?",
+      "a": "The first run downloads the model and compiles GPU shaders or WASM code. Later runs load the files from the browser cache, as long as the browser has not cleared that storage."
+    },
+    {
+      "q": "Does running AI in the browser use my GPU even without a gaming card?",
+      "a": "Yes. WebGPU can use integrated graphics in ordinary laptops and phones. It is slower than a dedicated card, but often still much faster than the CPU path."
+    }
+  ]
+}

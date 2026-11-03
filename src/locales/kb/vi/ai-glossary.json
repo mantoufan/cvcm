@@ -1,0 +1,462 @@
+{
+  "title": "Thuật ngữ AI: 60 từ về AI tạo sinh giải thích đơn giản — cv.cm",
+  "description": "Bảng thuật ngữ AI với 60 từ quan trọng, từ token, LoRA, RAG đến diffusion, CFG, nhân bản giọng nói, C2PA và deepfake, mỗi mục có nghĩa dễ hiểu và ví dụ.",
+  "h1": "Thuật ngữ AI: giải thích các từ về AI tạo sinh",
+  "answer": "Bảng thuật ngữ này giải thích khoảng 60 từ bạn gặp khi dùng AI tạo sinh, chia theo chủ đề: mô hình và huấn luyện, văn bản và LLM, tạo ảnh và video, âm thanh, an toàn và pháp luật. Mỗi mục có nghĩa dễ hiểu và một ví dụ ngắn, để bạn đọc được thẻ mô hình (model card), bảng cài đặt hay bản tin mà không cần nền tảng kỹ thuật.",
+  "sections": [
+    {
+      "h": "Mô hình và huấn luyện",
+      "body": [
+        "Những thuật ngữ này mô tả mô hình là gì và được xây dựng ra sao. Chúng áp dụng cho cả mô hình văn bản, hình ảnh, video và âm thanh.",
+        {
+          "table": {
+            "head": [
+              "Thuật ngữ",
+              "Nghĩa",
+              "Ví dụ"
+            ],
+            "rows": [
+              [
+                "Trí tuệ nhân tạo (AI)",
+                "Phần mềm thực hiện những việc thường cần trí thông minh của con người",
+                "Dịch thuật, mở khóa bằng khuôn mặt, trợ lý trò chuyện"
+              ],
+              [
+                "Học máy (machine learning)",
+                "AI học các quy luật từ ví dụ thay vì làm theo quy tắc viết tay",
+                "Bộ lọc spam huấn luyện trên email đã gắn nhãn"
+              ],
+              [
+                "Mạng nơ-ron (neural network)",
+                "Mô hình gồm nhiều lớp đơn vị đơn giản nối với nhau, độ mạnh của các kết nối được học",
+                "Lõi của mọi mô hình ảnh hoặc ngôn ngữ hiện đại"
+              ],
+              [
+                "Mô hình (model)",
+                "Chính mạng đã huấn luyện, một tệp các con số đã học cùng mã để chạy nó",
+                "Một ứng dụng như chatbot chạy một hoặc nhiều mô hình"
+              ],
+              [
+                "Tham số (trọng số)",
+                "Các con số bên trong mô hình mà quá trình huấn luyện điều chỉnh",
+                "Mô hình 7B có khoảng 7 tỷ tham số"
+              ],
+              [
+                "Dữ liệu huấn luyện",
+                "Các ví dụ mà mô hình học từ đó",
+                "Văn bản web, sách có bản quyền được cấp phép, cặp ảnh và chú thích"
+              ],
+              [
+                "Tiền huấn luyện (pretraining)",
+                "Giai đoạn huấn luyện đầu tiên và lớn nhất trên dữ liệu rộng",
+                "Học dự đoán token tiếp theo trên văn bản quy mô web"
+              ],
+              [
+                "Tinh chỉnh (fine-tuning)",
+                "Huấn luyện thêm một mô hình có sẵn trên tập dữ liệu nhỏ hơn, có trọng tâm",
+                "Huấn luyện mô hình nền trên các câu trả lời chăm sóc khách hàng"
+              ],
+              [
+                "LoRA",
+                "Low-rank adaptation: một tệp bổ sung nhỏ giúp tinh chỉnh mô hình với chi phí thấp mà không đổi trọng số gốc",
+                "LoRA phong cách hoặc nhân vật cho mô hình ảnh"
+              ],
+              [
+                "Mô hình nền tảng (foundation model)",
+                "Một mô hình lớn đa năng mà nhiều sản phẩm và bản tinh chỉnh được xây trên đó",
+                "Một LLM chạy cả công cụ chat, tìm kiếm và lập trình"
+              ],
+              [
+                "Mô hình trọng số mở (open-weight)",
+                "Mô hình cho tải trọng số về và tự chạy; giấy phép vẫn có thể giới hạn việc sử dụng",
+                "Chạy mô hình mở trên máy tính của bạn"
+              ],
+              [
+                "Suy luận (inference)",
+                "Chạy mô hình đã huấn luyện để có đầu ra",
+                "Mỗi lần bạn nhấn Generate"
+              ],
+              [
+                "Lượng tử hóa (quantization)",
+                "Lưu trọng số bằng ít bit hơn để mô hình nhỏ và nhanh hơn, đổi lại giảm chút chất lượng",
+                "Bản 4-bit của một mô hình chạy vừa trên laptop"
+              ],
+              [
+                "Mô hình đa phương thức (multimodal)",
+                "Mô hình xử lý hơn một loại dữ liệu, như văn bản và hình ảnh",
+                "Hỏi một câu về một bức ảnh"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "Văn bản và mô hình ngôn ngữ lớn",
+      "body": [
+        "Những thuật ngữ bạn thấy trong ứng dụng chat, cài đặt API và các bài viết về LLM.",
+        {
+          "table": {
+            "head": [
+              "Thuật ngữ",
+              "Nghĩa",
+              "Ví dụ"
+            ],
+            "rows": [
+              [
+                "Mô hình ngôn ngữ lớn (LLM)",
+                "Mạng nơ-ron lớn được huấn luyện để dự đoán token văn bản tiếp theo",
+                "Mô hình đứng sau ChatGPT, Claude, Gemini, DeepSeek, Qwen"
+              ],
+              [
+                "Token",
+                "Đơn vị văn bản mà mô hình đọc và viết: một từ, một phần của từ hoặc một ký hiệu",
+                "unbelievable có thể là 3 token: un, bel, ievable"
+              ],
+              [
+                "Cửa sổ ngữ cảnh (context window)",
+                "Số token tối đa mô hình xem xét được cùng lúc, gồm cả đầu vào và đầu ra",
+                "Cuộc trò chuyện dài bắt đầu quên phần đầu"
+              ],
+              [
+                "Transformer",
+                "Thiết kế mạng nơ-ron dựa trên attention, được dùng bởi hầu hết LLM",
+                "GPT nghĩa là Generative Pre-trained Transformer"
+              ],
+              [
+                "Attention (cơ chế chú ý)",
+                "Bước cho phép mỗi token cân nhắc những token trước đó quan trọng với nó đến đâu",
+                "Nối “it” với “trophy” trong câu nói về chiếc vali"
+              ],
+              [
+                "Embedding",
+                "Dãy số biểu diễn ý nghĩa, để các văn bản giống nhau có số giống nhau",
+                "Tìm các tài liệu giống một câu hỏi"
+              ],
+              [
+                "Prompt",
+                "Đầu vào bạn đưa cho mô hình",
+                "Summarize this email in two sentences"
+              ],
+              [
+                "System prompt",
+                "Chỉ dẫn ẩn do ứng dụng hoặc nhà phát triển đặt trước cuộc trò chuyện",
+                "You are a polite support agent for a bike shop"
+              ],
+              [
+                "Temperature",
+                "Cài đặt điều khiển mức ngẫu nhiên của đầu ra",
+                "Thấp cho trích xuất dữ liệu, cao hơn cho động não ý tưởng"
+              ],
+              [
+                "Ảo giác (hallucination)",
+                "Phát biểu sai hoặc bịa đặt của mô hình nhưng nêu với vẻ chắc chắn",
+                "Trích dẫn một bài báo không tồn tại"
+              ],
+              [
+                "RAG (retrieval-augmented generation)",
+                "Tìm trong tài liệu trước rồi đặt các đoạn phù hợp nhất vào prompt",
+                "Bot hỗ trợ trả lời dựa trên sách hướng dẫn của bạn"
+              ],
+              [
+                "Mốc kiến thức (knowledge cutoff)",
+                "Ngày mà sau đó mô hình không có dữ liệu huấn luyện",
+                "Nó không biết các sự kiện của tháng trước"
+              ],
+              [
+                "Chế độ suy luận (reasoning mode)",
+                "Chế độ mô hình viết các bước trung gian trước khi đưa ra câu trả lời cuối",
+                "Hiện là “thinking” trong một số ứng dụng chat"
+              ],
+              [
+                "Dùng công cụ (function calling)",
+                "Mô hình yêu cầu ứng dụng chạy một công cụ rồi đọc kết quả",
+                "Gọi máy tính hoặc tìm kiếm web"
+              ],
+              [
+                "AI agent",
+                "Hệ thống trong đó mô hình lập kế hoạch và thực hiện nhiều hành động bằng công cụ để đạt mục tiêu",
+                "Nghiên cứu và đặt các lựa chọn trên nhiều trang web"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "Tạo ảnh và video",
+      "body": [
+        "Các cài đặt và kỹ thuật xuất hiện trong công cụ tạo ảnh và video như Midjourney, Stable Diffusion, FLUX, Veo, Kling, Runway và Seedance. Tên gọi hơi khác nhau giữa các công cụ.",
+        {
+          "table": {
+            "head": [
+              "Thuật ngữ",
+              "Nghĩa",
+              "Ví dụ"
+            ],
+            "rows": [
+              [
+                "Mô hình khuếch tán (diffusion model)",
+                "Mô hình tạo ảnh bằng cách khử nhiễu từng bước từ nhiễu ngẫu nhiên",
+                "Hầu hết công cụ tạo ảnh từ văn bản"
+              ],
+              [
+                "Không gian ẩn (latent space)",
+                "Biểu diễn nội bộ đã nén, nơi mô hình làm việc thay vì trên điểm ảnh thô",
+                "Latent diffusion tạo một latent nhỏ rồi giải mã thành ảnh"
+              ],
+              [
+                "Text-to-image (tạo ảnh từ văn bản)",
+                "Tạo ảnh từ một prompt văn bản",
+                "A red bicycle against a blue wall at sunset"
+              ],
+              [
+                "Image-to-image (ảnh sang ảnh)",
+                "Tạo ảnh mới dựa trên một ảnh đầu vào làm định hướng",
+                "Biến bản phác thảo thành tranh minh họa hoàn chỉnh"
+              ],
+              [
+                "Inpainting",
+                "Chỉ tạo lại một vùng được khoanh (mask) của ảnh",
+                "Thay tách cà phê trên bàn bằng một chậu cây"
+              ],
+              [
+                "Negative prompt",
+                "Văn bản mô tả những gì cần tránh",
+                "blurry, extra fingers, watermark"
+              ],
+              [
+                "Seed",
+                "Số ngẫu nhiên khởi đầu; cùng seed và cài đặt cho kết quả tương tự",
+                "Dùng lại seed để chỉnh prompt chút ít"
+              ],
+              [
+                "Guidance scale (CFG)",
+                "Mức độ đầu ra bám theo prompt so với trông tự nhiên",
+                "Quá cao cho màu gắt và lỗi hình"
+              ],
+              [
+                "ControlNet",
+                "Mô-đun bổ sung định hướng mô hình khuếch tán bằng tư thế, đường viền hoặc ảnh độ sâu",
+                "Giữ nguyên tư thế chính xác của nhân vật"
+              ],
+              [
+                "Bản đồ độ sâu (depth map)",
+                "Ảnh thang xám mà độ sáng thể hiện khoảng cách đến máy quay",
+                "Dùng cho video parallax và ControlNet"
+              ],
+              [
+                "Phóng to ảnh (upscaling)",
+                "Phóng to ảnh bằng mô hình thêm chi tiết hợp lý",
+                "Ảnh 512 pixel phóng to 4 lần"
+              ],
+              [
+                "Text-to-video (tạo video từ văn bản)",
+                "Tạo một đoạn video từ prompt văn bản",
+                "A paper boat drifting down a rainy street"
+              ],
+              [
+                "Image-to-video (ảnh sang video)",
+                "Làm một ảnh tĩnh chuyển động thành clip",
+                "Cho ảnh sản phẩm xoay chậm"
+              ],
+              [
+                "Khung hình đầu và cuối",
+                "Đưa ảnh bắt đầu và ảnh kết thúc rồi để mô hình tự điền chuyển động ở giữa",
+                "Cánh cửa đóng ở khung đầu và mở ở khung cuối"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "Âm thanh và giọng nói",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Thuật ngữ",
+              "Nghĩa",
+              "Ví dụ"
+            ],
+            "rows": [
+              [
+                "Speech-to-text (ASR)",
+                "Nhận dạng giọng nói tự động: chuyển âm thanh nói thành văn bản",
+                "Chép lời một cuộc họp hoặc một video"
+              ],
+              [
+                "Whisper",
+                "Họ mô hình nhận dạng giọng nói mở được dùng rộng rãi của OpenAI",
+                "Tạo phụ đề bằng nhiều ngôn ngữ"
+              ],
+              [
+                "Text-to-speech (TTS)",
+                "Chuyển văn bản thành âm thanh giọng nói",
+                "Đọc to một bài viết"
+              ],
+              [
+                "Nhân bản giọng nói (voice cloning)",
+                "Mô hình TTS bắt chước giọng của một người cụ thể từ một đoạn mẫu",
+                "Lời bình bằng chính giọng của người sáng tạo, khi có sự đồng ý"
+              ],
+              [
+                "Phân tách người nói (speaker diarization)",
+                "Gắn nhãn ai nói khi nào trong một bản ghi âm",
+                "Người nói 1 và Người nói 2 trong bản chép lời phỏng vấn"
+              ],
+              [
+                "Tỷ lệ lỗi từ (WER)",
+                "Tỷ lệ từ mà bản chép lời làm sai, dùng để đo chất lượng ASR",
+                "WER 5 phần trăm nghĩa là khoảng 1 từ sai trong 20"
+              ],
+              [
+                "SRT và VTT",
+                "Định dạng phụ đề văn bản thuần có mốc thời gian cho từng dòng",
+                "Tải phụ đề lên nền tảng video"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "An toàn, gắn nhãn và pháp luật",
+      "body": [
+        "Quy định khác nhau theo quốc gia và thay đổi thường xuyên. Phần này chỉ là thông tin chung, không phải tư vấn pháp lý.",
+        {
+          "table": {
+            "head": [
+              "Thuật ngữ",
+              "Nghĩa",
+              "Ví dụ"
+            ],
+            "rows": [
+              [
+                "Deepfake",
+                "Nội dung do AI tạo hoặc chỉnh sửa trông chân thực, thể hiện những người hoặc sự kiện không có thật",
+                "Video một chính trị gia nói những lời họ chưa từng nói"
+              ],
+              [
+                "Thông tin xác thực nội dung (C2PA)",
+                "Tiêu chuẩn mở gắn thông tin có chữ ký về cách một tệp được tạo và chỉnh sửa",
+                "Ảnh cho biết đã được chỉnh bằng công cụ AI"
+              ],
+              [
+                "Hình mờ vô hình (invisible watermark)",
+                "Tín hiệu ẩn nhúng trong điểm ảnh hoặc âm thanh mà phần mềm có thể phát hiện sau này",
+                "Một công cụ tạo ảnh đánh dấu mọi ảnh nó tạo ra"
+              ],
+              [
+                "Nhãn hiển thị và nhãn ẩn",
+                "Trong quy định gắn nhãn của Trung Quốc: nhãn hiển thị mà mọi người nhìn thấy, và nhãn ẩn trong siêu dữ liệu hoặc hình mờ",
+                "Thẻ “do AI tạo” trên video cùng một trường siêu dữ liệu"
+              ],
+              [
+                "Nghĩa vụ minh bạch theo Đạo luật AI của EU",
+                "Quy định của EU rằng người dùng phải được biết khi họ đang trò chuyện với AI, và nội dung AI cùng deepfake phải nhận diện được",
+                "Chatbot tự nêu rõ nó là bot"
+              ],
+              [
+                "Bản quyền dữ liệu huấn luyện",
+                "Câu hỏi pháp lý về việc có được phép huấn luyện trên tác phẩm có bản quyền hay không, khác nhau theo quốc gia",
+                "Các vụ kiện và báo cáo chính sách ở nhiều nước"
+              ],
+              [
+                "Hàng rào bảo vệ (guardrails)",
+                "Quy tắc và bộ lọc chặn yêu cầu hoặc đầu ra có hại",
+                "Từ chối hướng dẫn chế tạo vũ khí"
+              ],
+              [
+                "Jailbreak",
+                "Prompt được tạo ra để khiến mô hình bỏ qua quy tắc an toàn",
+                "Mẹo đóng vai để vượt qua việc từ chối"
+              ],
+              [
+                "Chèn lệnh qua prompt (prompt injection)",
+                "Chỉ dẫn ẩn trong trang web hoặc tệp chiếm quyền một AI đang đọc nó",
+                "Trang bảo AI agent gửi dữ liệu của bạn đi nơi khác"
+              ],
+              [
+                "Thiên kiến (bias)",
+                "Sự thiếu công bằng có hệ thống trong đầu ra, thường học từ dữ liệu huấn luyện lệch",
+                "Ảnh một nghề nghiệp chỉ có một giới"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "Những thuật ngữ hay bị nhầm lẫn",
+      "body": [
+        "Nhiều cặp thuật ngữ bị nhầm lẫn trong tin tức và trang sản phẩm. Sự khác biệt thường quyết định bạn nên làm gì.",
+        {
+          "table": {
+            "head": [
+              "Cặp",
+              "Khác nhau",
+              "Vì sao quan trọng"
+            ],
+            "rows": [
+              [
+                "Mô hình so với ứng dụng",
+                "Mô hình tạo nội dung; ứng dụng thêm giao diện, system prompt, công cụ và lưu trữ",
+                "Hai ứng dụng trên cùng một mô hình có thể hoạt động khác nhau"
+              ],
+              [
+                "Token so với từ",
+                "Một từ có thể là một token hoặc nhiều token; số đếm khác nhau theo ngôn ngữ",
+                "Giá và giới hạn đều tính theo token"
+              ],
+              [
+                "Tham số so với cửa sổ ngữ cảnh",
+                "Tham số là những gì mô hình đã học; cửa sổ ngữ cảnh là những gì nó thấy ngay lúc này",
+                "Mô hình khổng lồ vẫn có thể quên phần đầu của cuộc trò chuyện dài"
+              ],
+              [
+                "Tinh chỉnh so với RAG",
+                "Tinh chỉnh thay đổi mô hình; RAG đưa tài liệu cho nó vào lúc hỏi",
+                "Với sự kiện thay đổi thường xuyên, RAG thường dễ hơn"
+              ],
+              [
+                "Trọng số mở so với mã nguồn mở",
+                "Trọng số mở thì tải về được; mã nguồn mở còn nghĩa là mã huấn luyện và dữ liệu cũng mở theo giấy phép mở",
+                "Đọc giấy phép trước khi dùng thương mại"
+              ],
+              [
+                "Hình mờ so với nhãn",
+                "Hình mờ là tín hiệu kỹ thuật; nhãn là thông báo mà con người đọc được",
+                "Một số luật yêu cầu cả hai"
+              ]
+            ]
+          }
+        },
+        "Để hiểu sâu hơn về bất kỳ thuật ngữ nào, hãy xem các bài liên quan trong mục này, như LLM hoạt động thế nào, token và cửa sổ ngữ cảnh, và mô hình khuếch tán hoạt động thế nào."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "AI, học máy và học sâu khác nhau thế nào?",
+      "a": "AI là toàn bộ lĩnh vực. Học máy là phần của AI học từ ví dụ. Học sâu (deep learning) là phần của học máy dùng mạng nơ-ron nhiều lớp, và các mô hình tạo sinh hiện đại chính là loại này."
+    },
+    {
+      "q": "LLM và chatbot khác nhau thế nào?",
+      "a": "LLM là mô hình tạo văn bản. Chatbot là ứng dụng xây quanh một hoặc nhiều mô hình, thêm giao diện chat, chỉ dẫn, tính năng bộ nhớ và công cụ như tìm kiếm web."
+    },
+    {
+      "q": "Mã nguồn mở nghĩa là gì với mô hình AI?",
+      "a": "Từ này được dùng khá lỏng. Thường nó chỉ có nghĩa là có thể tải trọng số về. Một mô hình mở hoàn toàn còn chia sẻ mã huấn luyện và chi tiết dữ liệu theo giấy phép mở. Hãy kiểm tra giấy phép về sử dụng thương mại và quy tắc ghi nguồn."
+    },
+    {
+      "q": "7B hay 70B trong tên mô hình nghĩa là gì?",
+      "a": "Đó là số tham số xấp xỉ, tính bằng tỷ. Con số lớn hơn thường nghĩa là năng lực cao hơn, nhưng cũng cần nhiều bộ nhớ và sức tính toán hơn để chạy."
+    },
+    {
+      "q": "Prompt engineering có thực sự là một kỹ năng không?",
+      "a": "Có, theo nghĩa thực tế là viết chỉ dẫn rõ ràng, cụ thể, đưa ví dụ và cung cấp đúng ngữ cảnh. Mô hình ngày càng hiểu yêu cầu thông thường tốt hơn, nhưng đầu vào rõ ràng vẫn cho kết quả đáng tin cậy hơn."
+    }
+  ]
+}

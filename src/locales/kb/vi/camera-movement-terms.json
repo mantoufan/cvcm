@@ -1,0 +1,307 @@
+{
+  "title": "Thuật ngữ chuyển động máy quay cho video AI: dolly, orbit, crane — cv.cm",
+  "description": "Thuật ngữ chuyển động máy quay khi viết prompt video AI: dolly, truck, pedestal, orbit, crane, dolly zoom, rack focus... kèm hình ảnh thực tế và cách diễn đạt từng kiểu.",
+  "h1": "Các thuật ngữ chuyển động máy quay dùng trong prompt video AI là gì?",
+  "answer": "Thuật ngữ chuyển động máy quay là những từ nghề của ê-kíp phim để chỉ cách máy di chuyển: pan (lia ngang) và tilt (lia dọc) xoay máy tại chỗ, dolly đẩy máy tiến hoặc lùi, truck trượt máy sang ngang, pedestal nâng hoặc hạ máy, còn orbit đi vòng quanh chủ thể. Các mô hình video học những từ này từ cảnh quay có chú thích, nên gọi đúng tên một chuyển động chuẩn sẽ cho bạn kiểm soát tốt hơn nhiều so với 'cinematic camera'.",
+  "sections": [
+    {
+      "h": "Vì sao dùng đúng từ lại quan trọng",
+      "body": [
+        "Mô hình video học ngôn ngữ máy quay từ những chú thích viết về cảnh quay thật. Khi chú thích ghi 'slow dolly in on her face' (đẩy máy chậm vào khuôn mặt cô ấy), mô hình gắn cụm từ đó với một kiểu chuyển động cụ thể: chủ thể lớn dần trong khung hình và hậu cảnh dịch chuyển nhẹ phía sau. Một cụm mơ hồ như 'dynamic camera' lại gắn với đủ thứ cùng lúc, nên bạn nhận về một hỗn hợp ngẫu nhiên.",
+        "Các thuật ngữ dưới đây là từ của giới làm phim, và phần lớn xuất hiện trong hướng dẫn prompt Veo của Google. Giới nghiên cứu cũng coi chuyển động máy quay là một tín hiệu điều khiển riêng: Stable Video Diffusion từng được cho thấy hoạt động được với các mô-đun chuyển động máy quay, còn CameraCtrl bổ sung quỹ đạo máy quay chính xác cho các mô hình text-to-video. Hướng nghiên cứu này tồn tại vì chỉ dùng văn bản thì chỉ kiểm soát được ở mức thô. Hãy dùng đúng từ, giữ mỗi cảnh một chuyển động và chuẩn bị tạo vài bản.",
+        "Có hai cặp dễ nhầm. Pan và tilt xoay máy tại chỗ, như xoay đầu. Truck và pedestal di chuyển cả chiếc máy sang ngang hoặc lên xuống, như bước sang bên hay đứng dậy. Xoay cho cảnh quét phẳng; di chuyển cho thị sai (parallax), tức vật ở gần trượt qua nhanh hơn vật ở xa."
+      ]
+    },
+    {
+      "h": "Các chuyển động máy quay: bảng đầy đủ",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Chuyển động",
+              "Trông như thế nào trên màn hình",
+              "Hiệu ứng cảm xúc",
+              "Cách diễn đạt"
+            ],
+            "rows": [
+              [
+                "Static (cố định)",
+                "Khung hình không dịch chuyển; chỉ chủ thể chuyển động",
+                "Bình tĩnh, quan sát, để diễn xuất tự gánh cảnh",
+                "`static shot, locked-off camera on a tripod`"
+              ],
+              [
+                "Pan (lia ngang)",
+                "Máy xoay trái hoặc phải tại chỗ; cảnh quét ngang",
+                "Mở ra không gian, đi theo ánh nhìn hay một chuyển động",
+                "`slow pan left across the harbor`"
+              ],
+              [
+                "Tilt (lia dọc)",
+                "Máy xoay lên hoặc xuống tại chỗ",
+                "Lên cho thấy tầm vóc hay quyền lực; xuống cho thấy một phát hiện",
+                "`tilt up from her shoes to her face`"
+              ],
+              [
+                "Dolly in / dolly out (đẩy vào / kéo ra)",
+                "Máy tiến lại gần hoặc lùi xa chủ thể; hậu cảnh có thị sai",
+                "Tiến vào tăng sự tập trung và căng thẳng; lùi ra tạo khoảng cách hay sự cô đơn",
+                "`slow dolly in toward the man at the desk`"
+              ],
+              [
+                "Truck (di ngang trái / phải)",
+                "Máy trượt ngang, song song với cảnh",
+                "Mượt, quan sát, như đang đi ngang qua",
+                "`camera trucks right along the market stalls`"
+              ],
+              [
+                "Pedestal (nâng / hạ máy)",
+                "Máy dâng lên hoặc hạ xuống thẳng đứng, không nghiêng",
+                "Hé lộ nhẹ nhàng phía trên hay phía dưới một vật",
+                "`pedestal up from behind the counter to reveal the room`"
+              ],
+              [
+                "Zoom in / out (phóng to / thu nhỏ)",
+                "Ống kính đổi tiêu cự; hình lớn lên nhưng không có thị sai",
+                "Phẳng, quan sát, đôi khi gây khựng",
+                "`slow zoom in, camera stays in place`"
+              ],
+              [
+                "Push-in",
+                "Cú dolly in chậm và đều, thường hướng vào khuôn mặt",
+                "Cảm xúc dâng lên hoặc sự nhận ra",
+                "`slow push-in on her eyes as she understands`"
+              ],
+              [
+                "Pull-back reveal (lùi máy hé lộ)",
+                "Máy lùi ra để lộ thứ vốn nằm ngoài khung hình",
+                "Bất ngờ, bối cảnh, sự cô lập",
+                "`pull back to reveal he is alone on a huge empty stage`"
+              ],
+              [
+                "Orbit / arc (quay vòng quanh)",
+                "Máy đi vòng quanh chủ thể, chủ thể luôn ở giữa khung",
+                "Tầm quan trọng, khoảnh khắc anh hùng hoặc mơ màng",
+                "`camera orbits slowly around the dancer, half circle`"
+              ],
+              [
+                "Crane / jib (cần cẩu)",
+                "Máy nâng lên hoặc hạ xuống theo cung lớn, thường ở trên cao",
+                "Mở đầu hoặc kết thúc hoành tráng, cảm giác quy mô",
+                "`crane shot rising up over the crowd to a wide view`"
+              ],
+              [
+                "Tracking / follow (bám theo)",
+                "Máy di chuyển cùng chủ thể đang chuyển động, giữ nguyên khoảng cách",
+                "Đà tiến, cảm giác đi cùng nhân vật",
+                "`tracking shot following her from behind as she runs`"
+              ],
+              [
+                "Handheld (cầm tay)",
+                "Rung và trôi nhẹ, như người cầm máy",
+                "Chân thực, gấp gáp, chất tài liệu",
+                "`handheld camera, slight natural shake`"
+              ],
+              [
+                "Whip pan (lia giật)",
+                "Cú pan cực nhanh có nhòe chuyển động",
+                "Năng lượng, chuyển nhanh sự chú ý, một kiểu chuyển cảnh",
+                "`fast whip pan to the door`"
+              ],
+              [
+                "Dolly zoom (hiệu ứng chóng mặt, vertigo)",
+                "Chủ thể giữ nguyên kích thước trong khi hậu cảnh giãn ra hoặc co lại",
+                "Sốc, choáng váng, thế giới như xô lệch",
+                "`dolly zoom on his face, background stretches away`"
+              ],
+              [
+                "Rack focus (chuyển nét)",
+                "Nét chuyển từ lớp sâu này sang lớp khác; máy không di chuyển",
+                "Dẫn sự chú ý, nối hai chủ thể",
+                "`rack focus from the ring in the foreground to her face`"
+              ],
+              [
+                "Dutch angle (góc nghiêng)",
+                "Máy nghiêng sang một bên; đường chân trời bị chênh",
+                "Bất an, có điều gì đó không ổn",
+                "`dutch angle, horizon tilted 20 degrees`"
+              ],
+              [
+                "POV (góc nhìn thứ nhất)",
+                "Ta thấy điều nhân vật thấy, thường có bàn tay trong khung",
+                "Nhập tâm, đồng cảm",
+                "`first-person POV, his hands on the steering wheel`"
+              ],
+              [
+                "FPV drone",
+                "Bay nhanh, thấp, lượn qua các không gian",
+                "Tốc độ, hồi hộp, một hành trình liên tục",
+                "`FPV drone shot diving off the cliff and skimming the waves`"
+              ]
+            ]
+          }
+        },
+        "Ghi chú về những kiểu khó. Zoom và dolly in có thể kết thúc ở cùng một khung hình, nhưng chỉ dolly mới có thị sai nên cho cảm giác di chuyển xuyên qua không gian. Dolly zoom kết hợp cả hai theo hai chiều ngược nhau và rất khó với mô hình; hãy yêu cầu riêng nó, trên một chủ thể đơn giản, và tạo vài bản. Dutch angle và POV là lựa chọn về khung hình hơn là chuyển động, nhưng được viết ở cùng vị trí trong prompt."
+      ]
+    },
+    {
+      "h": "Cỡ cảnh",
+      "body": [
+        "Cỡ cảnh cho biết chủ thể chiếm bao nhiêu khung hình. Đây là thứ cần chốt đầu tiên trong prompt, vì nó quyết định mô hình phải vẽ chi tiết nào.",
+        {
+          "table": {
+            "head": [
+              "Cỡ cảnh",
+              "Thứ chiếm khung hình",
+              "Phù hợp cho"
+            ],
+            "rows": [
+              [
+                "Extreme wide / establishing (toàn cảnh rất rộng / cảnh thiết lập)",
+                "Toàn bộ địa điểm; người rất nhỏ",
+                "Mở đầu cảnh, quy mô, bối cảnh địa lý"
+              ],
+              [
+                "Wide (full) shot (toàn thân)",
+                "Cả cơ thể từ đầu đến chân, cùng môi trường xung quanh",
+                "Chuyển động, nhảy múa, hành động, trang phục"
+              ],
+              [
+                "Medium shot (trung cảnh)",
+                "Từ eo trở lên",
+                "Hội thoại, cử chỉ, phần lớn cảnh nói chuyện"
+              ],
+              [
+                "Medium close-up (cận trung)",
+                "Từ ngực trở lên",
+                "Cảm xúc kèm một chút ngôn ngữ cơ thể"
+              ],
+              [
+                "Close-up (cận cảnh)",
+                "Khuôn mặt hoặc một vật",
+                "Phản ứng, cảm xúc, đạo cụ quan trọng"
+              ],
+              [
+                "Extreme close-up (đặc tả)",
+                "Một chi tiết: con mắt, đầu ngón tay, một giọt nước",
+                "Cường độ, chất liệu, manh mối"
+              ],
+              [
+                "Over-the-shoulder (qua vai)",
+                "Sau lưng một người, nhìn sang người kia",
+                "Hội thoại hai người"
+              ]
+            ]
+          }
+        },
+        "Với video AI, cận cảnh khuôn mặt thường ổn định hơn toàn cảnh đám đông, vì mô hình phải giữ nhất quán ít nhân vật nhỏ hơn. Bàn tay và ngón tay đẹp nhất ở cận cảnh với chuyển động đơn giản, hoặc để một phần ngoài khung hình."
+      ]
+    },
+    {
+      "h": "Góc máy",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Góc máy",
+              "Vị trí máy quay",
+              "Hiệu ứng"
+            ],
+            "rows": [
+              [
+                "Eye level (ngang tầm mắt)",
+                "Ở độ cao mắt của chủ thể",
+                "Trung tính, chân thực"
+              ],
+              [
+                "Low angle (góc thấp)",
+                "Ở dưới, nhìn lên",
+                "Quyền lực, đe dọa, chất anh hùng"
+              ],
+              [
+                "High angle (góc cao)",
+                "Ở trên, nhìn xuống",
+                "Yếu đuối, dễ tổn thương, cái nhìn tổng quan"
+              ],
+              [
+                "Bird's-eye / top-down (từ trên cao nhìn xuống)",
+                "Thẳng đứng từ trên xuống",
+                "Họa tiết, như bản đồ, tách biệt"
+              ],
+              [
+                "Worm's-eye (góc sát đất)",
+                "Ngang mặt đất, nhìn lên rất dốc",
+                "Quy mô khổng lồ, kịch tính"
+              ],
+              [
+                "Dutch (canted, nghiêng)",
+                "Nghiêng sang một bên",
+                "Căng thẳng, mất phương hướng"
+              ]
+            ]
+          }
+        },
+        "Góc máy kết hợp với chuyển động. 'Low angle, slow tracking shot' là một chỉ dẫn rõ ràng; góc máy cố định vị trí và chuyển động cố định đường đi."
+      ]
+    },
+    {
+      "h": "Cách đưa chuyển động máy vào prompt",
+      "body": [
+        {
+          "ol": [
+            "Bắt đầu bằng dòng máy quay: cỡ cảnh, góc máy, chuyển động, tốc độ. Ví dụ: `Medium close-up, eye level, slow push-in.`",
+            "Nêu đích của chuyển động: đẩy vào cái gì, quay vòng quanh ai, lia từ đâu đến đâu.",
+            "Cho chuyển động một tốc độ và điểm dừng: 'chậm rãi', 'trong suốt clip', 'dừng lại ở khuôn mặt cô ấy'.",
+            "Mô tả hành động của chủ thể riêng, và giữ nó nhỏ nếu chuyển động máy lớn.",
+            "Chỉ thêm từ về ống kính khi thực sự cần: `shallow depth of field`, `wide-angle lens`, `telephoto compression`."
+          ]
+        },
+        {
+          "code": "Wide shot, low angle, slow crane up.\nA lighthouse on a rocky coast at sunset; waves break on the rocks below.\nThe camera rises from the rocks to above the lighthouse lamp, ending on a\nwide view of the sea. Warm orange light, long shadows, light sea mist.\nAudio: waves, wind, seagulls.",
+          "lang": "text"
+        },
+        "Nếu bạn làm từ một tấm ảnh duy nhất, chuyển động máy cũng có thể tạo ra mà không cần mô hình video. Chẳng hạn công cụ `v` của cv.cm ước lượng độ sâu từ ảnh rồi dựng một cú đẩy, kéo, quay vòng, lia hoặc nâng 3D thật. Máy quay di chuyển; chủ thể đứng yên. Đó là cách nhanh để xem từng chuyển động trông ra sao trên chính tấm ảnh của bạn."
+      ]
+    },
+    {
+      "h": "Những chỗ mô hình hay làm sai",
+      "body": [
+        {
+          "ul": [
+            "Chuyển động kết hợp: 'orbit đồng thời crane lên và zoom' thường cho đường đi méo hoặc chao đảo. Hãy dùng một chuyển động.",
+            "Tốc độ: chuyển động 'nhanh' có thể làm nhòe hoặc méo khuôn mặt. Chuyển động nhanh hợp với phong cảnh và không gian trống hơn.",
+            "Zoom và dolly: nhiều mô hình coi cả hai là 'lại gần hơn'. Nếu cần thị sai, hãy viết thêm 'camera moves forward' bên cạnh 'dolly in'.",
+            "Orbit trọn vòng: quỹ đạo 360 độ buộc mô hình tự bịa ra mặt sau của mọi thứ. Nửa vòng hoặc một cung ngắn an toàn hơn.",
+            "Rack focus và dolly zoom: đây là các hiệu ứng quang học, và kết quả khác nhau giữa các mô hình tại thời điểm viết bài. Hãy thử trước khi lên kế hoạch cả chuỗi cảnh dựa vào chúng.",
+            "Handheld: một số mô hình thêm quá nhiều rung. Hãy ghi 'slight' hoặc 'subtle'."
+          ]
+        },
+        {
+          "note": "Nếu công cụ có điều khiển máy quay dạng thanh trượt hoặc cài đặt sẵn, hãy dùng chúng thay vì viết bằng chữ. Điều khiển bằng số được làm theo chính xác hơn một từ."
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Pan và truck khác nhau thế nào?",
+      "a": "Pan xoay máy sang trái hoặc phải từ một điểm cố định. Truck di chuyển cả chiếc máy sang ngang, nên vật gần và vật xa trượt qua với tốc độ khác nhau."
+    },
+    {
+      "q": "Zoom và dolly khác nhau thế nào?",
+      "a": "Zoom đổi ống kính và phóng to hình mà không di chuyển máy, nên không có thị sai. Dolly đưa máy đi xuyên không gian, nên hậu cảnh dịch chuyển so với chủ thể."
+    },
+    {
+      "q": "Dolly zoom dùng để làm gì?",
+      "a": "Nó giữ chủ thể cùng kích thước trong khi hậu cảnh dường như giãn ra hoặc co lại, thể hiện cú sốc hay một khoảnh khắc chợt nhận ra. Nó còn được gọi là hiệu ứng chóng mặt (vertigo effect)."
+    },
+    {
+      "q": "Chuyển động máy nào làm cảnh thêm căng thẳng?",
+      "a": "Cú push-in chậm vào khuôn mặt tạo căng thẳng, còn rung cầm tay hoặc dutch angle thêm cảm giác bất an. Hãy giữ hành động của chủ thể nhỏ để chuyển động máy gánh phần cảm xúc."
+    },
+    {
+      "q": "FPV trong video flycam nghĩa là gì?",
+      "a": "FPV là first-person view (góc nhìn thứ nhất): người lái bay bằng kính, nên cảnh quay nhanh, thấp và lượn lờ. Trong prompt, 'FPV drone shot' yêu cầu phong cách đó, khác với cảnh quay trên cao êm ái."
+    }
+  ]
+}

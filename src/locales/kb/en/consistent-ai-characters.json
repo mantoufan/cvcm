@@ -1,0 +1,204 @@
+{
+  "title": "How to Make Consistent AI Characters Across Images — cv.cm",
+  "description": "Keep the same AI character across images and shots: character sheets, reference images, seeds, fixed descriptors, LoRA training and a continuity checklist.",
+  "h1": "How do you keep an AI character consistent across images?",
+  "answer": "Write a fixed character description and reuse it word for word, then design one clear character sheet (front, side, back, expressions) and feed it as a reference image to every new generation. Seeds help only within one setup. For a long project, train a small LoRA on a varied set of approved images. Check every new image against a continuity checklist before you use it.",
+  "sections": [
+    {
+      "h": "Why characters drift",
+      "body": [
+        "An image model has no memory between runs. Each generation starts from new random noise and reads your prompt from scratch. Words like `a young woman with short black hair` describe millions of possible faces, and the model picks a different one each time. Small changes in wording, pose or camera angle move the result further.",
+        "So consistency does not come from the model remembering. It comes from you giving the model the same information every time, in as many forms as the tool accepts: the same words, the same reference pictures and, for big projects, a small trained add-on that has learned the character. The methods below go from the cheapest to the most work. Most projects combine two or three."
+      ]
+    },
+    {
+      "h": "Step 1: write a fixed character block",
+      "body": [
+        "Write the description once, keep it in a text file and paste it unchanged into every prompt. Order the details from most to least visible, and only include things that a viewer can see.",
+        {
+          "code": "MEI (character block, paste unchanged)\nadult woman in her late 20s, East Asian, oval face, straight black hair\nin a chin-length bob with blunt bangs, dark brown eyes, small mole under\nthe left eye, slim build, wearing a mustard-yellow raincoat over a white\nT-shirt, dark blue jeans, white sneakers, round silver earrings",
+          "lang": "text"
+        },
+        "Then build each prompt as character block plus scene. Only the scene changes:",
+        {
+          "code": "[MEI block], standing at a bus stop in the rain, holding a clear umbrella,\nnight, neon reflections on the wet road, medium shot, 35mm photo",
+          "lang": "text"
+        },
+        {
+          "ul": [
+            "Choose distinctive anchors: one unusual color, one accessory, one facial mark. `Mustard raincoat` and `mole under the left eye` are easier to check and reproduce than `pretty`.",
+            "Avoid words that change meaning across runs, such as `stylish outfit` or `cute`.",
+            "Keep the style words outside the block, so you can change a scene from photo to illustration without editing the character.",
+            "Give the character a name in your notes, but do not rely on the name in the prompt; a made-up name means nothing to the model unless you train it."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Step 2: make a character sheet",
+      "body": [
+        "A character sheet is one image, or a small set, that shows the character clearly from several angles on a plain background. It becomes the reference you return to for every later shot.",
+        {
+          "ol": [
+            "Generate many candidates from the character block on a plain light gray background, neutral light, full body.",
+            "Pick the one face you like best. This is now the canonical face; do not keep exploring.",
+            "Make turnaround views of that character: front, three-quarter, side and back. Use the chosen image as a reference, or a pose control for each angle.",
+            "Add a row of expressions (neutral, smile, surprise, anger) and a close-up of the face and any accessory.",
+            "Fix errors by inpainting, then save the sheet at full resolution with the character block written next to it."
+          ]
+        },
+        {
+          "code": "character turnaround sheet of [MEI block], front view, three-quarter view,\nside view and back view, full body, standing in a neutral pose,\nplain light gray background, even soft studio light, clean illustration",
+          "lang": "text"
+        },
+        "Keep the sheet clean. A busy background or dramatic light on the reference gets copied into later images along with the face."
+      ]
+    },
+    {
+      "h": "Step 3: use reference images in every generation",
+      "body": [
+        "Most current tools accept at least one image as a reference. Hosted tools call it a character reference, subject reference or simply an uploaded image; open-source workflows use adapters such as IP-Adapter, which turns the reference image into features that guide the model alongside the text. Give the model the face close-up and one full-body view from the sheet, then describe the new scene in text.",
+        {
+          "ul": [
+            "Use a crop that matches the shot: a face reference for close-ups, a full-body reference for wide shots.",
+            "Lower the reference weight if every image copies the reference pose and background; raise it if the face drifts.",
+            "Do not chain references from the last generated image. Errors add up. Always go back to the approved sheet.",
+            "For a pose that must match exactly, add a pose control image as well. See the image-to-image guide."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Seeds: useful, but limited",
+      "body": [
+        "A seed fixes the random starting noise. With the same model, settings and prompt, the same seed gives a nearly identical image, so a seed is excellent for making small variations of one shot: change the expression or the lighting and keep everything else.",
+        "A seed does not hold a character across different scenes. Change the pose, the background or the framing, and the same seed produces a different layout and often a different face. It also stops working when you switch model, tool version, hardware or sampler. Treat a seed as a way to repeat a picture, not as a character identity."
+      ]
+    },
+    {
+      "h": "Step 4 for long projects: LoRA and fine-tuning",
+      "body": [
+        "For a comic, a series or a brand mascot that appears in hundreds of images, the strongest option is to teach the model the character. Three methods are common in open-source tools:",
+        {
+          "table": {
+            "head": [
+              "Method",
+              "What is trained",
+              "What you need",
+              "Notes"
+            ],
+            "rows": [
+              [
+                "Textual inversion",
+                "A new word embedding only; the model stays frozen",
+                "A few images, often three to five",
+                "Small file, weaker identity; good for a style or object"
+              ],
+              [
+                "DreamBooth",
+                "The model itself, linked to a rare identifier word",
+                "A handful of images of the subject",
+                "Strong identity; large file; can overfit and forget other things"
+              ],
+              [
+                "LoRA",
+                "Small low-rank add-on matrices; the base model stays frozen",
+                "Commonly 15 to 30 varied images",
+                "Small file, easy to turn up or down; the most popular choice"
+              ]
+            ]
+          }
+        },
+        "Training data matters more than settings. Use images of the same character from the sheet and approved shots, with varied angles, expressions, light and backgrounds, and caption each one. If every training image has the same background or pose, the LoRA learns those too. Hosted services that offer custom characters do something similar behind the scenes.",
+        {
+          "note": "Training on a real person's face, or on another artist's character, can break privacy, likeness or copyright rules depending on the country and the platform. Use characters you created or have permission to use."
+        }
+      ]
+    },
+    {
+      "h": "Continuity checklist",
+      "body": [
+        "Before a new image goes into the project, compare it side by side with the character sheet. Fix or regenerate anything that fails.",
+        {
+          "table": {
+            "head": [
+              "Check",
+              "What to compare",
+              "Common failure"
+            ],
+            "rows": [
+              [
+                "Face shape",
+                "Jaw, eye shape and spacing, nose",
+                "Face becomes rounder or more generic"
+              ],
+              [
+                "Hair",
+                "Length, bangs, color, parting",
+                "Bangs disappear; length changes"
+              ],
+              [
+                "Marks",
+                "Moles, scars, freckles, tattoos and their side",
+                "Mark moves to the other side or vanishes"
+              ],
+              [
+                "Eyes",
+                "Color and shape",
+                "Eye color shifts under colored light"
+              ],
+              [
+                "Outfit",
+                "Each garment, color, logo, layers",
+                "Raincoat becomes a jacket; colors swap"
+              ],
+              [
+                "Accessories",
+                "Earrings, glasses, bag, watch",
+                "Accessory missing or on the wrong hand"
+              ],
+              [
+                "Proportions",
+                "Height relative to other people and props",
+                "Character grows or shrinks between shots"
+              ],
+              [
+                "Hands",
+                "Finger count and what each hand holds",
+                "Prop switches hands between shots"
+              ],
+              [
+                "Style",
+                "Medium, line weight, color grade",
+                "Photo shot mixed into an illustrated series"
+              ]
+            ]
+          }
+        },
+        "Keep a simple log for each shot: prompt, seed, reference used, model and the fixes made. When a character drifts later in a project, the log tells you which change caused it. For video, the same rules apply shot to shot; the multi-shot video guide covers how to carry a character through motion."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Can I keep the same character just by reusing the seed?",
+      "a": "Only for very similar images. A new pose, background or framing changes the result even with the same seed, so combine a fixed description with reference images."
+    },
+    {
+      "q": "How many images do I need to train a character LoRA?",
+      "a": "Many creators use about 15 to 30 good, varied images. Quality and variety matter more than quantity, and every image should show the same approved design."
+    },
+    {
+      "q": "Why does my character's outfit keep changing?",
+      "a": "The outfit is described too loosely or the description changes between prompts. Name each garment with its color, keep the wording identical, and include the outfit in the reference image."
+    },
+    {
+      "q": "Is it legal to create a consistent AI character of a real person?",
+      "a": "It depends on where you are and how you use it. Many countries protect a person's likeness and require consent, and many platforms forbid it. This is general information, not legal advice."
+    },
+    {
+      "q": "Do character references work across different AI tools?",
+      "a": "The method does, but results differ. Each tool reads references in its own way, so test your sheet in the new tool and adjust the reference weight before you start a project."
+    }
+  ]
+}

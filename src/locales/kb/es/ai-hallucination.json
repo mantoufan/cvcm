@@ -1,0 +1,197 @@
+{
+  "title": "Alucinaciones de la IA: por qué se inventa datos y cómo comprobarlos — cv.cm",
+  "description": "¿Qué es una alucinación de la IA? Por qué los chatbots inventan datos y citas, qué tareas son más arriesgadas, prompts que la reducen y una lista para verificar cualquier respuesta.",
+  "h1": "¿Qué es una alucinación de la IA y cómo se evita?",
+  "answer": "Una alucinación de la IA es cuando un modelo afirma información falsa o inventada como si fuera verdadera, por ejemplo una cita falsa, una fecha incorrecta o una frase que nadie dijo. Ocurre porque los modelos de lenguaje generan el texto más plausible, no datos comprobados. No se puede eliminar del todo, pero se reduce dándole fuentes al modelo, dejándole decir que no lo sabe y verificando los detalles clave.",
+  "sections": [
+    {
+      "h": "Qué se considera una alucinación",
+      "body": [
+        "El Instituto Nacional de Estándares y Tecnología de EE. UU. (NIST) lo llama confabulación: una IA generativa que produce contenido erróneo o falso, pero expresado con seguridad. Alucinación es el nombre popular. También abarca las respuestas que contradicen el material que aportaste o lo que el propio modelo dijo antes en el mismo chat.",
+        {
+          "table": {
+            "head": [
+              "Tipo",
+              "Ejemplo",
+              "Por qué es arriesgado"
+            ],
+            "rows": [
+              [
+                "Dato inventado",
+                "Un año de fundación, una población o un precio incorrectos",
+                "Parece preciso, así que la gente se lo cree"
+              ],
+              [
+                "Cita falsa",
+                "El título de un artículo, una revista y un DOI que suenan reales pero no existen",
+                "Es difícil de detectar sin abrir el enlace"
+              ],
+              [
+                "Frase falsa",
+                "Palabras atribuidas a una persona real que nunca las dijo",
+                "Puede dañar reputaciones"
+              ],
+              [
+                "Resumen infiel",
+                "Un resumen que añade una afirmación que no está en el documento original",
+                "Das por hecho que lo decía la fuente"
+              ],
+              [
+                "Código inventado",
+                "Una función o una opción de una biblioteca que no existe",
+                "El código falla o se comporta de forma inesperada"
+              ],
+              [
+                "Respuesta desactualizada",
+                "Describe una norma o un producto tal como era antes de la fecha de corte del entrenamiento",
+                "Fue correcto una vez, ahora ya no"
+              ]
+            ]
+          }
+        },
+        "En imágenes y video, a veces también se llama alucinaciones a detalles raros como dedos de más u objetos que se derriten. Son un problema de calidad, no una afirmación falsa. En el trabajo creativo, inventar cosas que no existen suele ser precisamente el objetivo. La alucinación es un problema cuando necesitas datos reales."
+      ]
+    },
+    {
+      "h": "Por qué alucinan los modelos de lenguaje",
+      "body": [
+        "Un modelo de lenguaje escribe prediciendo el siguiente token, un fragmento pequeño de texto, a partir del texto anterior. Se entrena para producir texto probable, no texto verdadero. La mayoría de las veces lo probable y lo verdadero coinciden, y por eso los modelos son útiles. Los fallos aparecen donde no coinciden.",
+        {
+          "ul": [
+            "No hay una comprobación de datos incorporada. Nada en la predicción del siguiente token compara la salida con el mundo real.",
+            "Los datos poco frecuentes se aprenden mal. Un dato que apareció solo unas pocas veces en el entrenamiento se confunde fácilmente con otros parecidos, por ejemplo el año de nacimiento de un personaje público poco conocido.",
+            "Se premia adivinar. Una investigación publicada en 2025 sostiene que el entrenamiento y las puntuaciones de las pruebas habituales dan crédito a una conjetura segura, pero ninguno a decir no lo sé, de modo que los modelos aprenden a adivinar.",
+            "Imitar errores comunes. Los modelos entrenados con texto humano pueden repetir ideas erróneas muy extendidas, algo que el benchmark TruthfulQA se diseñó para medir.",
+            "Presión del propio prompt. Una pregunta que da por hecho algo falso, como pedir la secuela de 2019 de una película que no tiene secuela, invita al modelo a seguir el juego.",
+            "Contexto largo o desordenado. Los detalles del medio de una entrada larga se pasan por alto o se mezclan con más facilidad.",
+            "Fecha de corte del conocimiento. El modelo no sabe nada de lo posterior al final de sus datos de entrenamiento, salvo que se le añadan búsquedas o documentos."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Qué tareas son más arriesgadas",
+      "body": [
+        "El riesgo depende menos del modelo y más de lo que le pides que haga.",
+        {
+          "table": {
+            "head": [
+              "Tarea",
+              "Riesgo de alucinación",
+              "Por qué"
+            ],
+            "rows": [
+              [
+                "Reescribir, traducir o acortar un texto que aportas",
+                "Bajo",
+                "Los datos están en el prompt"
+              ],
+              [
+                "Resumir un documento que adjuntas",
+                "Entre bajo y medio",
+                "Puede añadir o mezclar detalles, sobre todo en archivos largos"
+              ],
+              [
+                "Explicar un concepto muy conocido",
+                "Entre bajo y medio",
+                "El conocimiento común está bien aprendido"
+              ],
+              [
+                "Cifras, fechas, nombres y estadísticas concretas",
+                "Alto",
+                "Los detalles pequeños se difuminan con facilidad"
+              ],
+              [
+                "Listas de fuentes, artículos, sentencias judiciales o enlaces",
+                "Muy alto",
+                "Es fácil generar títulos plausibles"
+              ],
+              [
+                "Acontecimientos recientes o precios actuales",
+                "Muy alto sin búsqueda",
+                "No están en los datos de entrenamiento"
+              ],
+              [
+                "Temas de nicho, leyes locales, empresas pequeñas",
+                "Alto",
+                "Hay pocos datos de entrenamiento"
+              ]
+            ]
+          }
+        },
+        "La investigación jurídica es una zona de peligro bien conocida. Algunos tribunales han sancionado a abogados por presentar escritos que citaban sentencias inventadas por chatbots."
+      ]
+    },
+    {
+      "h": "Prompts que reducen la alucinación",
+      "body": [
+        "El método más eficaz es el anclaje (grounding): dale al modelo el material de origen y dile que responda solo con ese material. Es también la idea detrás de la generación aumentada por recuperación (RAG), en la que un sistema busca primero en los documentos y coloca los mejores fragmentos en el prompt.",
+        {
+          "code": "Weak prompt:\nWhat is the refund period in our store policy?\n\nGrounded prompt:\nAnswer using only the policy text below.\nIf the answer is not in the text, reply: Not stated in the policy.\nQuote the exact sentence you used.\n\nPolicy:\n<paste the policy text here>\n\nQuestion: What is the refund period?",
+          "lang": "text"
+        },
+        "Cada línea del prompt anclado tiene su función. Only the policy text limita la fuente. La frase de reserva le da al modelo una respuesta segura distinta de adivinar. Quote the exact sentence te permite comprobar la respuesta en segundos.",
+        "Otros hábitos que ayudan:",
+        {
+          "ol": [
+            "Haz preguntas concretas. Es más fácil acertar un dato por pregunta que una lista larga.",
+            "Permite la incertidumbre. Añade una línea como: If you are not sure, say so and explain what would confirm it.",
+            "Activa la búsqueda o la navegación para datos actuales y luego abre los enlaces que cita la respuesta.",
+            "En problemas de varias partes, pide el razonamiento o los pasos y comprueba cada uno.",
+            "No pidas fuentes de memoria. Pídele que las busque con una herramienta de búsqueda, o búscalas tú y pégalas.",
+            "Con código, indica la versión de la biblioteca, pega la documentación relevante y ejecuta el código."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Cómo comprobar una respuesta de IA",
+      "body": [
+        "Usa esta lista antes de apoyarte en algo factual o publicarlo:",
+        {
+          "ol": [
+            "Abre todos los enlaces y los DOI. Confirma que la página existe y que dice lo que afirma la respuesta.",
+            "Busca las citas textuales exactas. Si una cita no aparece en una fuente primaria, no la uses.",
+            "Comprueba cada cifra con una fuente primaria, como un sitio oficial de estadísticas, una norma o el artículo original.",
+            "Busca señales de alerta: cifras muy precisas sin fuente, listas de autores de aspecto genérico, referencias que no encuentras y respuestas que cambian al preguntar de nuevo.",
+            "Consigue una segunda fuente independiente para cualquier afirmación que importe; un segundo chatbot no cuenta.",
+            "En cuestiones legales, médicas o financieras, que lo revise una persona cualificada."
+          ]
+        },
+        {
+          "note": "Preguntarle al modelo si está seguro es una comprobación débil. A veces defiende una respuesta incorrecta y otras abandona una correcta porque la pregunta suena a pista. Comprueba con una fuente."
+        }
+      ]
+    },
+    {
+      "h": "Límites de las soluciones",
+      "body": [
+        "Ningún método actual elimina la alucinación por completo. El anclaje y la RAG reducen mucho la tasa en las preguntas que los documentos pueden responder, pero el modelo aún puede interpretar mal un pasaje, fundir dos pasajes o rellenar un hueco que dejan los documentos. Las herramientas de búsqueda pueden devolver páginas de mala calidad y el modelo puede fiarse de ellas.",
+        "Bajar la temperatura hace las respuestas más repetibles, no más exactas. Si la respuesta más probable es incorrecta, el modelo repetirá siempre el mismo error.",
+        "Los modelos más nuevos suelen alucinar menos en las preguntas comunes y algunos se entrenan para admitir la incertidumbre con más frecuencia. Aun así, las tasas varían según el tema y el idioma, así que prueba el modelo con tu tipo de preguntas antes de fiarte y mantén una revisión humana donde los errores salgan caros."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "¿Se pueden eliminar por completo las alucinaciones de la IA?",
+      "a": "No con los métodos actuales. Anclar las respuestas en fuentes, las herramientas de búsqueda y un mejor entrenamiento las reducen mucho, pero como los modelos generan texto probable y no datos comprobados, siguen quedando errores. Hay que seguir verificando."
+    },
+    {
+      "q": "¿Por qué ChatGPT se inventa referencias y citas?",
+      "a": "Una referencia es un patrón de nombres de autores, un título, una revista y un año, que el modelo puede generar con fluidez sin tener en mente un artículo real. A menos que la aplicación busque la fuente con una herramienta de búsqueda, la cita puede no existir."
+    },
+    {
+      "q": "¿Qué IA alucina menos?",
+      "a": "Las clasificaciones cambian con cada lanzamiento y varían según el tema y el idioma. Prueba varios modelos con preguntas de tu propio trabajo cuyas respuestas conozcas y prefiere las herramientas que muestran sus fuentes."
+    },
+    {
+      "q": "¿Una alucinación de la IA es lo mismo que mentir?",
+      "a": "No. Mentir es decir algo falso a sabiendas. Un modelo no tiene intención: produce la continuación que parece más plausible. El efecto en el lector puede ser el mismo, y por eso es importante comprobar."
+    },
+    {
+      "q": "¿La búsqueda web evita que la IA alucine?",
+      "a": "Ayuda con datos actuales y concretos, porque la respuesta puede basarse en páginas recuperadas. El modelo aún puede interpretar mal o citar mal esas páginas, así que abre los enlaces citados cuando algo sea importante."
+    }
+  ]
+}

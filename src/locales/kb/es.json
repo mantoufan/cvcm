@@ -80,5 +80,44 @@
         "a": "Una estructura de datos es una forma de guardar datos, como un array, una tabla hash o un árbol. Un algoritmo es una secuencia de pasos que resuelve un problema, como ordenar o hallar el camino más corto, y su velocidad suele depender de la estructura de datos que usa."
       }
     ]
+  },
+  "aiHub": {
+    "kicker": "IA",
+    "all": "Todos los tutoriales de IA",
+    "title": "Tutoriales de IA: prompts, imágenes y video con IA, LLM explicados — cv.cm",
+    "description": "Guías de IA gratuitas y con fuentes: cómo funcionan los LLM y los modelos de difusión, cómo escribir prompts de imagen y video, movimientos de cámara y derechos de autor.",
+    "h1": "Tutoriales de IA",
+    "lede": "Aprende cómo funciona la IA generativa y cómo sacarle buenos resultados. Cada guía responde primero a la pregunta y luego muestra el método con prompts y ejemplos reales, los errores más comunes y las fuentes oficiales.",
+    "groups": {
+      "basics": "Fundamentos de IA",
+      "prompts": "Cómo escribir prompts",
+      "image": "Imágenes con IA",
+      "video": "Video con IA",
+      "audio": "Audio con IA",
+      "dev": "IA para desarrolladores",
+      "trust": "Derechos de autor y seguridad"
+    },
+    "about": [
+      "Los fundamentos explican qué hacen en realidad los grandes modelos de lenguaje y los modelos de difusión, por qué alucinan y qué son los tokens y las ventanas de contexto. Las guías de prompts ofrecen fórmulas reutilizables para texto, imagen y video, con versiones débiles y fuertes lado a lado. Las guías de imagen, video y audio recorren cada flujo de trabajo desde el primer prompt hasta el archivo final, e indican dónde siguen fallando las herramientas.",
+      "Las guías no dependen de un modelo concreto, así que los métodos sirven en ChatGPT, Claude, Gemini, Midjourney, Stable Diffusion, Kling, Veo y herramientas similares. Las páginas legales citan los textos oficiales y son información general, no asesoramiento jurídico. Varias guías enlazan a las herramientas de IA gratuitas de cv.cm, que se ejecutan en tu navegador sin subir tus archivos."
+    ],
+    "faq": [
+      {
+        "q": "¿Por dónde empieza un principiante con la IA?",
+        "a": "Lee qué es la IA generativa y cómo funcionan los LLM, y después los fundamentos para escribir prompts. Con esas tres páginas entenderás casi todo lo necesario para obtener buenas respuestas de cualquier chatbot o generador de imágenes."
+      },
+      {
+        "q": "¿Estos tutoriales dependen de una sola herramienta de IA?",
+        "a": "No. Enseñan métodos que funcionan en distintas herramientas. Cuando un paso depende de un producto, la guía lo indica y describe la opción general que debes buscar."
+      },
+      {
+        "q": "¿Puedo usar imágenes y videos generados con IA con fines comerciales?",
+        "a": "A menudo sí, pero depende de la licencia y los términos de la herramienta, de la ley del lugar donde publiques y de si el resultado copia la obra o la imagen de otra persona. Las guías de derechos de autor y etiquetado indican qué revisar."
+      },
+      {
+        "q": "¿Son gratuitas las herramientas de IA de cv.cm?",
+        "a": "Sí. El generador de imágenes con IA, la conversión de foto a video, el eliminador de fondos, el escalador y la transcripción de voz a texto son gratuitos y se ejecutan en tu propio dispositivo, por lo que tus archivos no se suben."
+      }
+    ]
   }
 }

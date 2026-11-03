@@ -9,7 +9,7 @@ import worker from "../src/worker";
 import { LOCALES } from "../src/shared/locale";
 import { kbMessages, messages } from "../src/shared/messages";
 import { FEATURED_TUTORIALS, TOOLS, kbHref, parseAppPath } from "../src/shared/path";
-import { CODE_ARTICLES, KB_ARTICLES, KB_GROUPS, KNOWLEDGE_ARTICLES, kbForTool, kbMeta, kbMinutesOf, kbShelfOf, kbUpdatedOn, type KbId } from "../src/shared/kb";
+import { AI_ARTICLES, CODE_ARTICLES, KB_ARTICLES, KB_GROUPS, KNOWLEDGE_ARTICLES, kbForTool, kbMeta, kbMinutesOf, kbShelfOf, kbUpdatedOn, type KbId } from "../src/shared/kb";
 import { kbArticleJsonLd, kbCopy, kbMinutes, kbPageHtml, kbUpdated, type KbArticleCopy, type KbBlock } from "../src/shared/kb-i18n";
 import { applyHtmlSeo, pageCanonical, pageTitle } from "../src/shared/seo";
 import { buildSitemapXml } from "../src/shared/sitemap";
@@ -67,6 +67,31 @@ describe("knowledge: routes", () => {
     for (const id of KNOWLEDGE_ARTICLES) expect(kbShelfOf(id)).toBe("knowledge");
   });
 
+  it("parses the AI shelf under /learn/ai/ and keeps each article on its own shelf", () => {
+    expect(parseAppPath("/en/learn/ai/")).toEqual({ kind: "kb", locale: "en", article: "ai" });
+    expect(parseAppPath("/zh-cn/learn/ai/image-prompts/")).toEqual({ kind: "kb", locale: "zh-CN", article: "image-prompts" });
+    expect(parseAppPath("/learn/ai/")).toEqual({ kind: "bare-kb", article: "ai" });
+    expect(parseAppPath("/learn/ai/how-llms-work")).toEqual({ kind: "bare-kb", article: "how-llms-work" });
+    expect(parseAppPath("/en/learn/code/image-prompts/")).toEqual({ kind: "unknown" });
+    expect(parseAppPath("/en/learn/ai/python/")).toEqual({ kind: "unknown" });
+    expect(kbHref("en", "ai")).toBe("/en/learn/ai/");
+    expect(kbHref("vi", "text-to-video")).toBe("/vi/learn/ai/text-to-video/");
+    for (const id of AI_ARTICLES) expect(kbShelfOf(id)).toBe("ai");
+  });
+
+  it("builds the AI hub with every group and links AI articles from AI tool pages", () => {
+    const hub = kbPageHtml("en", "ai");
+    for (const group of KB_GROUPS.filter((g) => g.shelf === "ai")) expect(hub).toContain(`<section class="wall" id="${group.id}">`);
+    const ld = kbArticleJsonLd("en", "ai") as { url: string; mainEntity: { itemListElement: unknown[] } };
+    expect(ld.url).toBe("https://cv.cm/en/learn/ai/");
+    expect(ld.mainEntity.itemListElement.length).toBe(AI_ARTICLES.length);
+    expect(kbForTool("image-upscaler", "ai")).toContain("how-ai-upscaling-works");
+    expect(kbForTool("image-upscaler")).not.toContain("how-ai-upscaling-works");
+    const article = kbPageHtml("ja", "image-prompts");
+    expect(article).toContain('href="/ja/learn/ai/" data-nav="ai-learn"');
+    expect(article).toContain('href="/ja/ai-image-generator/"');
+  });
+
   it("serves the coding hub and articles, and redirects bare paths", async () => {
     const assets = { fetch: async () => new Response(SHELL, { headers: { "Content-Type": "text/html; charset=utf-8" } }) };
     const bare = await worker.fetch(new Request("https://cv.cm/learn/code/rust/", { headers: { "Accept-Language": "es" } }), { ASSETS: assets });
@@ -83,6 +108,24 @@ describe("knowledge: routes", () => {
     expect(html).toContain('<link rel="canonical" href="https://cv.cm/en/learn/code/binary-search/"');
     expect(html).toContain('<meta property="og:type" content="article" />');
     expect(html).toContain('<pre class="kb-code"><code data-lang="python">');
+  });
+
+  it("serves the AI hub and articles, and redirects bare paths", async () => {
+    const assets = { fetch: async () => new Response(SHELL, { headers: { "Content-Type": "text/html; charset=utf-8" } }) };
+    const bare = await worker.fetch(new Request("https://cv.cm/learn/ai/image-prompts/", { headers: { "Accept-Language": "ja" } }), { ASSETS: assets });
+    expect(bare.status).toBe(302);
+    expect(bare.headers.get("Location")).toBe("https://cv.cm/ja/learn/ai/image-prompts/");
+    const hub = await worker.fetch(new Request("https://cv.cm/vi/learn/ai/"), { ASSETS: assets });
+    expect(hub.status).toBe(200);
+    const hubHtml = await hub.text();
+    expect(hubHtml).toContain(`<title>${pageTitle("vi", { kb: true, kbId: "ai" })}</title>`);
+    expect(hubHtml).toContain('<meta property="og:type" content="website" />');
+    const page = await worker.fetch(new Request("https://cv.cm/en/learn/ai/call-an-llm-api/"), { ASSETS: assets });
+    expect(page.status).toBe(200);
+    const html = await page.text();
+    expect(html).toContain('<link rel="canonical" href="https://cv.cm/en/learn/ai/call-an-llm-api/"');
+    expect(html).toContain('<meta property="og:type" content="article" />');
+    expect((await worker.fetch(new Request("https://cv.cm/en/learn/ai/nope/"), { ASSETS: assets })).status).toBe(404);
   });
 
   it("redirects bare paths, adds the slash, 404s unknown articles and serves the page", async () => {
@@ -108,6 +151,7 @@ describe("knowledge: routes", () => {
     for (const locale of LOCALES) {
       expect(xml).toContain(`<loc>https://cv.cm${kbHref(locale)}</loc>`);
       expect(xml).toContain(`<loc>https://cv.cm${kbHref(locale, "code")}</loc>`);
+      expect(xml).toContain(`<loc>https://cv.cm${kbHref(locale, "ai")}</loc>`);
       for (const id of KB_ARTICLES) expect(xml).toContain(`<loc>https://cv.cm${kbHref(locale, id)}</loc>`);
     }
   });
@@ -201,6 +245,11 @@ describe("knowledge: catalog and copy", () => {
     for (const id of CODE_ARTICLES) {
       const en = codeBlocks(kbCopy("en", id));
       expect(en.length, id).toBeGreaterThan(0);
+      for (const locale of LOCALES) expect(codeBlocks(kbCopy(locale, id)), `${locale} ${id}`).toEqual(en);
+    }
+    // AI articles' example prompts stay English in every locale.
+    for (const id of AI_ARTICLES) {
+      const en = codeBlocks(kbCopy("en", id));
       for (const locale of LOCALES) expect(codeBlocks(kbCopy(locale, id)), `${locale} ${id}`).toEqual(en);
     }
   });

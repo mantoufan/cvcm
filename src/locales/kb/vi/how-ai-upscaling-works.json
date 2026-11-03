@@ -1,0 +1,138 @@
+{
+  "title": "Upscale ảnh bằng AI hoạt động thế nào: giải thích super-resolution — cv.cm",
+  "description": "Upscale ảnh AI hoạt động ra sao: vì sao bicubic làm mờ, SRCNN, GAN và Real-ESRGAN tự vẽ thêm chi tiết thế nào, 2x hay 4x, mô hình ảnh thật hay anime và khi nào upscale thất bại.",
+  "h1": "Upscale ảnh bằng AI hoạt động như thế nào?",
+  "answer": "Upscale bằng AI, hay super-resolution (siêu phân giải), dùng mạng nơ-ron được huấn luyện trên các cặp ảnh nhỏ và lớn để dự đoán những điểm ảnh còn thiếu khi phóng to bức ảnh. Thay vì lấy trung bình các điểm lân cận như cách phóng bằng bicubic, nó vẽ ra những đường viền và kết cấu hợp lý mà nó đã học trong lúc huấn luyện. Chi tiết thêm vào trông sắc nét nhưng là do tự tạo ra, nên nó cải thiện vẻ ngoài chứ không bổ sung thông tin thật.",
+  "sections": [
+    {
+      "h": "Phóng to kiểu cổ điển so với upscale bằng AI",
+      "body": [
+        "Khi bạn phóng ảnh 500 điểm ảnh lên 2000, cứ bốn điểm ảnh theo mỗi chiều thì ba điểm trước đó chưa tồn tại. Phải có thứ gì đó quyết định giá trị của chúng.",
+        "Các phương pháp cổ điển tính chúng từ những điểm ảnh lân cận. Nearest neighbor sao chép điểm gần nhất, cho viền bị vuông vức. Bilinear và bicubic lấy trung bình có trọng số của các điểm lân cận, cho kết quả mượt nhưng mềm: một đường viền sắc trong ảnh nhỏ trở thành dải chuyển dần trong ảnh lớn. Những phương pháp này nhanh, dễ đoán và không bao giờ tự tạo thêm gì.",
+        "Bộ upscale AI học xem ảnh sắc nét thường trông thế nào. Trong lúc huấn luyện, mô hình xem rất nhiều ảnh độ phân giải cao cùng phiên bản của chính những ảnh đó đã bị thu nhỏ và làm xấu đi. Nó học cách ánh xạ bản nhỏ trở lại bản lớn. Khi sử dụng, nó áp dụng phép ánh xạ đã học, nên có thể vẽ một đường viền sắc nét, sợi tóc hay kết cấu gạch ở nơi mà phép lấy trung bình đơn giản chỉ làm mờ.",
+        {
+          "table": {
+            "head": [
+              "Phương pháp",
+              "Cách lấp điểm ảnh mới",
+              "Vẻ ngoài",
+              "Có tự tạo chi tiết?"
+            ],
+            "rows": [
+              [
+                "Nearest neighbor",
+                "Sao chép điểm ảnh gần nhất",
+                "Vuông vức, vỡ hạt",
+                "Không"
+              ],
+              [
+                "Bicubic",
+                "Trung bình có trọng số của 16 điểm lân cận",
+                "Mượt, viền mềm",
+                "Không"
+              ],
+              [
+                "CNN huấn luyện cho độ chính xác (kiểu SRCNN)",
+                "Phép ánh xạ đã học, huấn luyện để khớp từng điểm ảnh",
+                "Sắc hơn bicubic, vẫn hơi mịn",
+                "Ít"
+              ],
+              [
+                "Dựa trên GAN (ESRGAN, Real-ESRGAN)",
+                "Phép ánh xạ đã học cộng một bộ phê bình thưởng cho kết cấu chân thực",
+                "Viền và kết cấu sắc nét",
+                "Có"
+              ],
+              [
+                "Dựa trên khuếch tán",
+                "Tạo ảnh lớn có điều kiện theo ảnh nhỏ",
+                "Rất nhiều chi tiết, có thể đổi nội dung",
+                "Có, nhiều nhất"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "Từ SRCNN đến GAN: vì sao sắc nét thắng chính xác",
+      "body": [
+        "SRCNN là một trong những mạng sâu đầu tiên cho super-resolution: một mạng tích chập nhỏ được huấn luyện đầu cuối để biến ảnh độ phân giải thấp thành ảnh độ phân giải cao. Các mô hình như vậy được huấn luyện để giảm thiểu sai khác từng điểm ảnh so với ảnh thật. Điều đó cho điểm tốt ở các thước đo như PSNR, nhưng kết quả trông mịn. Khi mạng không chắc một đường viền lệch trái hay lệch phải một chút, câu trả lời an toàn nhất theo hàm mất mát đó là trung bình của cả hai, tức là một vệt mờ.",
+        "SRGAN đã đổi mục tiêu. Nó thêm một mạng thứ hai, bộ phân biệt (discriminator), học cách phân biệt ảnh thật độ phân giải cao với ảnh đã upscale. Bộ upscale được thưởng khi đánh lừa được nó, nên tạo ra kết cấu sắc nét, chân thực dù điểm ảnh chính xác có khác ảnh gốc. Các tác giả SRGAN nhận xét rằng các phương pháp giảm thiểu sai số thường thiếu chi tiết tần số cao và trông không thỏa mãn với con người. ESRGAN cải thiện thiết kế mạng, huấn luyện đối kháng và hàm mất mát cảm nhận, rồi trở thành nền tảng cho nhiều công cụ về sau."
+      ]
+    },
+    {
+      "h": "Real-ESRGAN bổ sung gì: huấn luyện trên hư hại thực tế",
+      "body": [
+        "Các mô hình đầu tiên được huấn luyện trên ảnh chỉ đơn giản bị thu nhỏ bằng bicubic. Ảnh thật bị hư hại theo nhiều cách hơn: nhòe do máy ảnh, nhiễu cảm biến, nén JPEG, đổi cỡ nhiều lần, quầng sáng do làm nét. Mô hình chỉ huấn luyện trên việc thu nhỏ sạch không biết xử lý những thứ đó, và thường phóng to cả nhiễu cùng với chi tiết.",
+        "Real-ESRGAN, của cùng nhóm nghiên cứu, giữ bộ tạo ảnh ESRGAN nhưng thay đổi dữ liệu huấn luyện. Nó dựng các cặp huấn luyện từ ảnh sạch bằng quy trình suy giảm bậc cao: áp dụng làm mờ, đổi cỡ, thêm nhiễu và nén JPEG, rồi lặp lại chuỗi đó lần thứ hai, để mô phỏng những ảnh đã được lưu và chia sẻ nhiều lần. Nó cũng mô phỏng các hiện tượng ringing và overshoot quanh đường viền. Một bộ phân biệt mạnh hơn, U-Net với chuẩn hóa phổ (spectral normalization), đánh giá chi tiết ở từng điểm ảnh. Toàn bộ dữ liệu huấn luyện là tổng hợp, nên không cần các cặp ảnh thật độ phân giải thấp và cao.",
+        "Kết quả là mô hình loại bỏ khối nén và nhiễu trong lúc phóng to, nên hoạt động tốt trên ảnh web cũ, ảnh chụp màn hình và ảnh điện thoại. Bộ trọng số riêng thường được huấn luyện cho anime và minh họa, vì mảng màu phẳng và nét sạch cần kết cấu khác với ảnh chụp.",
+        "Ví dụ, công cụ upscale ảnh của cv.cm chạy một mô hình Real-ESRGAN gọn nhẹ ngay trong trình duyệt của bạn ở mức 2x hoặc 4x, với tùy chọn ảnh thật và anime, nên ảnh không bao giờ rời khỏi thiết bị."
+      ]
+    },
+    {
+      "h": "Upscale đúng cách, từng bước",
+      "body": [
+        {
+          "ol": [
+            "Bắt đầu từ nguồn tốt nhất bạn có. Dùng tệp gốc, không phải ảnh chụp màn hình hay bản đã gửi qua lại bằng ứng dụng nhắn tin.",
+            "Cắt trước. Chỉ upscale phần bạn cần sẽ nhanh hơn và tốn ít bộ nhớ hơn.",
+            "Chọn mô hình theo nội dung: mô hình ảnh thật cho ảnh chụp, mô hình anime hoặc minh họa cho tranh vẽ, line art và đồ họa game.",
+            "Chọn hệ số nhỏ nhất đạt được mục tiêu. Nếu cần 1600 điểm ảnh từ 800, hãy dùng 2x, đừng dùng 4x rồi thu nhỏ.",
+            "So sánh ở mức phóng 100% với ảnh gốc. Nhìn khuôn mặt, chữ, tóc và họa tiết mịn, nơi chi tiết tự tạo lộ ra đầu tiên.",
+            "Nếu kết quả trông quá mịn hoặc như nhựa, hãy trộn với bản phóng bicubic trong phần mềm chỉnh sửa, hoặc thêm chút hạt (grain).",
+            "Lưu dưới dạng PNG hoặc JPEG chất lượng cao. Nén JPEG mạnh sau khi upscale sẽ làm các khối nén quay lại."
+          ]
+        },
+        {
+          "note": "2x rồi lại 2x không giống 4x một lần. Mỗi lượt tự tạo chi tiết chồng lên chi tiết tự tạo, và lỗi cộng dồn. Hãy dùng một lượt ở hệ số cần thiết khi mô hình hỗ trợ."
+        }
+      ]
+    },
+    {
+      "h": "Bộ upscale khuếch tán và upscale sáng tạo",
+      "body": [
+        "Một nhóm bộ upscale mới hơn dùng khuếch tán. Chẳng hạn SR3 bắt đầu từ nhiễu và tinh chỉnh từng bước thành ảnh độ phân giải cao, có điều kiện theo đầu vào độ phân giải thấp. Nhiều bộ tạo ảnh cũng cung cấp kiểu upscale sáng tạo hoặc thêm chi tiết, chạy image-to-image trên ảnh đã phóng to cùng với một prompt.",
+        "Các phương pháp này có thể tạo nhiều chi tiết hơn hẳn bộ upscale GAN, hữu ích cho tranh AI. Cái giá là khả năng kiểm soát: có nhiều tự do hơn nên chúng có thể đổi khuôn mặt, thêm vật thể, viết lại chữ nhỏ hoặc thay đổi kết cấu chất liệu. Với tài liệu, sản phẩm, bằng chứng hay bất kỳ ảnh nào phải trung thực với bản gốc, hãy ưu tiên bộ upscale GAN hoặc phóng cổ điển. Dùng upscale khuếch tán khi trông đẹp quan trọng hơn trung thành với bản gốc."
+      ]
+    },
+    {
+      "h": "Giới hạn: upscale không làm được gì",
+      "body": [
+        {
+          "ul": [
+            "Nó không thể khôi phục thông tin không có trong ảnh. Khuôn mặt rộng mười điểm ảnh trở thành một khuôn mặt hợp lý, không phải người thật. Đừng dùng upscale AI để nhận dạng người, đọc biển số xe hay tạo bằng chứng.",
+            "Chữ rất rủi ro. Chữ nhỏ, mờ có thể thành những chữ khác trông sắc nét và thuyết phục.",
+            "Mờ nặng và mờ do chuyển động rất khó. Bộ upscale được huấn luyện trên một số kiểu hư hại nhất định; trường hợp cực đoan cho kết quả nhòe hoặc như tranh vẽ.",
+            "Họa tiết lặp lại như vải, cỏ hay gạch có thể biến thành kết cấu giả.",
+            "Làm da quá mịn. Mô hình ảnh thật đôi khi xóa lỗ chân lông và nếp nhăn mịn, trông như retouch nặng.",
+            "Hệ số lớn cần nhiều bộ nhớ. Upscale 4x có số điểm ảnh gấp 16 lần đầu vào, nên ảnh lớn có thể phải xử lý theo từng ô (tile)."
+          ]
+        },
+        "Dùng với những giới hạn đó trong đầu, bộ upscale AI là bước cuối phù hợp cho ảnh do AI tạo, ảnh cũ kích thước nhỏ và đồ họa web cần in hoặc hiển thị trên màn hình lớn."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Upscale bằng AI có tốt hơn đổi kích thước trong Photoshop không?",
+      "a": "Về vẻ ngoài khi phóng to thì thường là có, vì nó vẽ viền và kết cấu sắc nét thay vì làm mờ. Phóng cổ điển vẫn tốt hơn khi bạn không được phép thêm bất kỳ chi tiết tự tạo nào."
+    },
+    {
+      "q": "Upscale bằng AI có khôi phục được ảnh cũ bị mờ không?",
+      "a": "Nó có thể giảm mờ, nhiễu và nén, làm ảnh trông sắc nét hơn. Nó không thể khôi phục chi tiết thật đã mất, nên khuôn mặt và chữ có thể thay đổi đôi chút."
+    },
+    {
+      "q": "Nên chọn 2x hay 4x?",
+      "a": "Chọn hệ số nhỏ nhất đạt được kích thước bạn cần. 4x tốn nhiều thời gian và bộ nhớ hơn và tự tạo nhiều chi tiết hơn, nghĩa là cũng có nhiều cơ hội xuất hiện lỗi hơn."
+    },
+    {
+      "q": "Vì sao ảnh sau khi upscale của tôi trông như tranh vẽ?",
+      "a": "Mô hình đã thay kết cấu nhiễu mịn bằng kết cấu mịn đã học. Hãy thử mô hình khác, hệ số nhỏ hơn, hoặc trộn kết quả với bản phóng thông thường rồi thêm chút hạt nhẹ."
+    },
+    {
+      "q": "Upscale bằng AI có tăng DPI để in không?",
+      "a": "DPI chỉ là nhãn; điều quan trọng là số điểm ảnh ở kích thước in. Upscale thêm điểm ảnh, nên upscale 4x cho phép in rộng gấp khoảng bốn lần với cùng độ sắc nét, trong giới hạn của mô hình."
+    }
+  ]
+}

@@ -1,0 +1,203 @@
+{
+  "title": "Cómo funciona el texto a voz: TTS neuronal, SSML y clonación de voz — cv.cm",
+  "description": "Cómo funciona el texto a voz (TTS): voz neuronal frente a las voces integradas de tu dispositivo, la Web Speech API, pausas y pronunciación con SSML, y las reglas de consentimiento para clonar voces.",
+  "h1": "¿Cómo funciona el texto a voz y qué es el TTS neuronal?",
+  "answer": "El texto a voz (TTS, text-to-speech) convierte texto escrito en audio en tres etapas: normaliza el texto (números, fechas, abreviaturas), lo convierte en sonidos y genera una onda de audio. El TTS neuronal usa redes entrenadas con voz grabada para lograr un ritmo y un tono naturales. Las voces que ofrece tu navegador mediante la Web Speech API proceden del dispositivo o de su fabricante, por lo que cambian entre teléfonos y ordenadores.",
+  "sections": [
+    {
+      "h": "Las tres etapas de un sistema TTS",
+      "body": [
+        {
+          "ol": [
+            "Normalización del texto. El sistema reescribe el texto en palabras que se puedan pronunciar. “Dr. Lee paid $25 on 3/4” debe convertirse en algo como “Doctor Lee paid twenty-five dollars on March fourth” (o “the third of April”, según la región). Muchas pronunciaciones erróneas se producen aquí, no en la voz.",
+            "Análisis lingüístico. Las palabras se convierten en fonemas, las unidades de sonido de una lengua, y el sistema predice el acento, la agrupación en frases y la entonación. Las palabras que se escriben igual pero se dicen distinto, como “read” en presente y en pasado, o los caracteres chinos con más de una lectura, necesitan contexto para resolverse.",
+            "Generación de la onda de audio. Los sonidos y su duración se convierten en muestras de audio. Los sistemas más antiguos pegaban fragmentos grabados (síntesis concatenativa) o usaban un modelo de formantes, que suena robótico. Los sistemas neuronales predicen el audio con una red."
+          ]
+        },
+        "Un diseño neuronal clásico, Tacotron 2, mostró con claridad la división moderna: una red asigna el texto a un espectrograma Mel (una imagen tiempo-frecuencia del habla) y una segunda red, el vocoder, convierte esa imagen en una onda de audio. En las pruebas de escucha de sus autores, obtuvo puntuaciones cercanas a las de las grabaciones profesionales. Los sistemas más nuevos suelen fusionar las etapas o generar tokens de audio comprimido con una red del estilo de los modelos de lenguaje, lo que les permite copiar la voz de un hablante a partir de una muestra corta."
+      ]
+    },
+    {
+      "h": "TTS neuronal frente a las voces del sistema en tu navegador",
+      "body": [
+        "Las páginas web pueden hablar mediante la Web Speech API sin ningún modelo propio. El objeto `speechSynthesis` lee en voz alta un `SpeechSynthesisUtterance` con una de las voces que ofrece la plataforma.",
+        {
+          "table": {
+            "head": [
+              "",
+              "Voces del sistema del navegador (Web Speech API)",
+              "Servicio o modelo de TTS neuronal"
+            ],
+            "rows": [
+              [
+                "De dónde viene la voz",
+                "El sistema operativo o el fabricante del navegador; unas son locales y otras remotas",
+                "Un modelo que ejecutas tú o una API en la nube a la que llamas"
+              ],
+              [
+                "Elección de voz",
+                "La que esté instalada; cambia en Windows, macOS, Android e iOS",
+                "Catálogo fijo, voces personalizadas, a veces clonación"
+              ],
+              [
+                "Calidad",
+                "Desde robótica hasta bastante natural, según el dispositivo",
+                "Normalmente natural, con mejor ritmo y emoción"
+              ],
+              [
+                "Coste y configuración",
+                "Gratis, sin clave, funciona sin conexión con las voces locales",
+                "Clave de API y precio por carácter, o la descarga de un modelo grande"
+              ],
+              [
+                "Obtener un archivo de audio",
+                "No forma parte de la API; suena por los altavoces",
+                "Normalmente devuelve MP3, WAV o similar"
+              ],
+              [
+                "Clonación",
+                "No",
+                "Algunos servicios, con verificación de consentimiento"
+              ]
+            ]
+          }
+        },
+        "Cada voz informa de un indicador `localService`. La especificación dice que es verdadero para un sintetizador local y falso para un servicio remoto; una voz remota puede necesitar red y añadir retraso.",
+        {
+          "code": "const u = new SpeechSynthesisUtterance(\"Your order has shipped.\");\nu.lang = \"en-GB\";\nu.rate = 0.9;   // 1 is normal; spec allows 0.1 to 10\nu.pitch = 1.0;  // 0 to 2, 1 is the voice default\nu.volume = 1.0; // 0 to 1\nconst voices = speechSynthesis.getVoices();\nu.voice = voices.find(v => v.lang === \"en-GB\") || null;\nspeechSynthesis.speak(u);",
+          "lang": "javascript"
+        },
+        "Las voces suelen cargarse después de que empiece la página, así que `getVoices()` puede devolver al principio una lista vacía; escucha el evento `voiceschanged`. Por ejemplo, la herramienta de texto a voz de cv.cm usa exactamente estas voces integradas con controles de velocidad y tono. Es una forma rápida de escuchar un borrador, no un generador de voz neuronal, y la lista de voces depende de tu dispositivo."
+      ]
+    },
+    {
+      "h": "SSML: controlar las pausas y la pronunciación",
+      "body": [
+        "El lenguaje de marcado de síntesis de voz (SSML, Speech Synthesis Markup Language), un estándar del W3C, es un XML que indica a un motor TTS cómo leer el texto. La mayoría de los servicios de TTS en la nube lo aceptan. La especificación de Web Speech permite SSML en una locución, pero los motores que no admiten algunas etiquetas deben eliminarlas y leer el texto restante, por lo que la compatibilidad en los navegadores es desigual.",
+        {
+          "code": "<speak>\n  Your code is <say-as interpret-as=\"characters\">A7K</say-as>.\n  <break time=\"500ms\"/>\n  Please call <sub alias=\"World Health Organization\">WHO</sub>\n  before <prosody rate=\"90%\" pitch=\"+2st\">Friday at noon</prosody>.\n  The word is <phoneme alphabet=\"ipa\" ph=\"təˈmɑːtoʊ\">tomato</phoneme>,\n  and it is <emphasis level=\"strong\">not</emphasis> optional.\n</speak>",
+          "lang": "text"
+        },
+        {
+          "table": {
+            "head": [
+              "Elemento",
+              "Qué hace",
+              "Valores de ejemplo"
+            ],
+            "rows": [
+              [
+                "break",
+                "Inserta una pausa",
+                "time 250ms o 2s; strength de weak a x-strong"
+              ],
+              [
+                "prosody",
+                "Cambia velocidad, tono y volumen",
+                "rate 90% o slow; pitch +2st o high; volume +6dB o soft"
+              ],
+              [
+                "emphasis",
+                "Acentúa una palabra",
+                "level strong, moderate, reduced"
+              ],
+              [
+                "say-as",
+                "Lee como caracteres, una fecha o un número",
+                "los valores de interpret-as dependen del motor"
+              ],
+              [
+                "sub",
+                "Lee un alias en lugar del texto escrito",
+                "WHO leído como World Health Organization"
+              ],
+              [
+                "phoneme",
+                "Da la pronunciación exacta",
+                "alphabet ipa; la compatibilidad es opcional"
+              ],
+              [
+                "voice, lang",
+                "Cambian de voz o de idioma en mitad del texto",
+                "Un título extranjero entre comillas dentro de una frase en inglés"
+              ]
+            ]
+          }
+        },
+        "Si un servicio ignora el SSML, aún puedes guiarlo con texto sencillo: comas y puntos para las pausas, números escritos con letras y reescrituras fonéticas de los nombres difíciles."
+      ]
+    },
+    {
+      "h": "Cómo escribir texto que suene bien al hablarse",
+      "body": [
+        {
+          "ul": [
+            "Usa frases cortas. Las oraciones largas hacen que la voz se quede sin puntos naturales para respirar.",
+            "Escribe los números como deben decirse cuando importe: “two thousand twenty-six” o “twenty twenty-six”.",
+            "Desarrolla las abreviaturas y las unidades que el oyente necesite oír: “km/h” puede leerse letra por letra.",
+            "Fija el idioma y la región correctos. Una voz en-US que lee un nombre español, o una voz zh-CN que lee inglés, usará un sistema de sonidos equivocado.",
+            "Escucha el resultado completo una vez antes de publicarlo. Revisa nombres, números y palabras con dos pronunciaciones."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Clonación de voz: consentimiento y ley",
+      "body": [
+        "Los modelos actuales pueden imitar una voz a partir de una grabación corta. Eso es útil para doblar tus propios videos o devolverle la voz a alguien que la perdió, y también se usa para fraudes, como llamadas que imitan a un familiar o al director de una empresa. Trata cualquier voz como un dato personal que pertenece a quien habla.",
+        {
+          "table": {
+            "head": [
+              "Región",
+              "Qué dicen las normas (resumen)",
+              "Estado"
+            ],
+            "rows": [
+              [
+                "China",
+                "Los servicios que editan rostros o voces deben pedir a los usuarios que informen a la persona y obtengan su consentimiento separado (Disposiciones sobre síntesis profunda, artículo 14). Las voces sintéticas y la imitación de voz que puedan inducir a error deben llevar una etiqueta visible (artículo 17). Las medidas de etiquetado de 2025 añaden etiquetas explícitas y en los metadatos, y prohíben eliminarlas.",
+                "En vigor desde el 10 de enero de 2023; las medidas de etiquetado, desde el 1 de septiembre de 2025"
+              ],
+              [
+                "Unión Europea",
+                "Artículo 50 de la Ley de IA: los proveedores deben marcar el audio sintético de forma legible por máquina, y quienes publiquen audio o video deepfake deben revelar que es artificial. Las normas de protección de datos personales también se aplican a las grabaciones de voz.",
+                "Se aplica desde el 2 de agosto de 2026 según el artículo 113; comprueba si hay modificaciones posteriores"
+              ],
+              [
+                "Estados Unidos",
+                "No existe una ley nacional única sobre clonación de voz en el momento de escribir esto. La protección proviene de las leyes estatales sobre derecho a la propia imagen y a la privacidad, y de las normas vigentes contra el fraude y de protección del consumidor.",
+                "Varía según el estado"
+              ]
+            ]
+          }
+        },
+        {
+          "note": "Esto es información general, no asesoramiento jurídico. Antes de clonar una voz para uso comercial, obtén el consentimiento por escrito del hablante, en el que figuren la finalidad, las plataformas y la duración, y etiqueta el resultado como generado por IA cuando tu plataforma o la ley lo exijan."
+        },
+        "Los servicios de clonación serios piden al hablante que grabe una declaración de consentimiento antes de crear una voz. Si una herramienta te permite clonar cualquier voz a partir de cualquier clip sin esa comprobación, no la uses para nada que publiques."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "¿Por qué la misma página web suena distinta en mi teléfono y en mi portátil?",
+      "a": "La Web Speech API usa las voces instaladas en cada dispositivo o las que ofrece su fabricante. Windows, macOS, Android e iOS incluyen voces distintas, por lo que el mismo código produce audio diferente."
+    },
+    {
+      "q": "¿Puedo descargar un MP3 desde la Web Speech API?",
+      "a": "No directamente. La API reproduce la voz por los altavoces y no devuelve datos de audio. Para obtener un archivo necesitas un servicio o modelo de TTS que genere audio, o un grabador de pantalla o de audio."
+    },
+    {
+      "q": "¿Es legal clonar la voz de un famoso?",
+      "a": "En la mayoría de los lugares, usar la voz de una persona reconocible sin permiso en anuncios, productos o contenido que pueda inducir a error a los oyentes supone un riesgo legal según las normas sobre derecho a la propia imagen, privacidad, protección del consumidor o síntesis profunda. Obtén permiso y etiqueta el resultado."
+    },
+    {
+      "q": "¿Cuál es la diferencia entre TTS y conversión de voz?",
+      "a": "El TTS crea voz a partir de texto. La conversión de voz toma la grabación de una persona hablando y la cambia para que suene como otra voz, conservando el ritmo y la emoción originales."
+    },
+    {
+      "q": "¿Por qué el TTS pronuncia mal los nombres?",
+      "a": "El modelo adivina la pronunciación a partir de la ortografía y de sus datos de entrenamiento. Los nombres poco comunes, los préstamos y los caracteres con varias lecturas suelen adivinarse mal. Usa una etiqueta SSML phoneme o sub, o reescribe el nombre fonéticamente."
+    }
+  ]
+}

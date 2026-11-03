@@ -1,0 +1,174 @@
+{
+  "title": "What Is a Depth Map? AI Depth Estimation Explained — cv.cm",
+  "description": "What a depth map is, how AI estimates depth from one photo, relative vs metric depth, which shade means near, and how to use it for parallax and ControlNet.",
+  "h1": "What is a depth map and how does AI make one from a photo?",
+  "answer": "A depth map is a grayscale image where each pixel's brightness stands for distance from the camera instead of color. AI models such as Depth Anything estimate it from a single photo by recognizing shapes, perspective and occlusion. Most give relative depth (which parts are nearer), not true meters, which is enough for 3D parallax, background blur and ControlNet.",
+  "sections": [
+    {
+      "h": "A depth map in one picture",
+      "body": [
+        "Take a photo of a person standing in front of a building. The depth map of that photo has the same width and height, but each pixel holds one number: how far that point is from the camera. Shown as an image, the person is one shade, the building another, and the sky the most extreme shade.",
+        "There is no single rule for which shade means near. Check the convention of every tool you use:",
+        {
+          "table": {
+            "head": [
+              "Convention",
+              "Near objects look",
+              "Far objects look",
+              "Where you meet it"
+            ],
+            "rows": [
+              [
+                "Inverse depth (disparity-like)",
+                "Bright",
+                "Dark",
+                "Most AI depth estimators, ControlNet depth maps"
+              ],
+              [
+                "Distance (z-depth)",
+                "Dark",
+                "Bright",
+                "3D render passes, fog effects, some game engines"
+              ],
+              [
+                "Metric depth",
+                "Small number (meters)",
+                "Large number",
+                "Robotics, AR, LiDAR, 16-bit or float files"
+              ],
+              [
+                "Color map (Turbo, Magma)",
+                "One end of the palette",
+                "Other end",
+                "Visual previews only, not for further processing"
+              ]
+            ]
+          }
+        },
+        "If a 3D effect looks inside out, with the background popping toward you, the map is in the opposite convention. Inverting the image (white becomes black) usually fixes it."
+      ]
+    },
+    {
+      "h": "How AI estimates depth from one photo",
+      "body": [
+        "A phone with two cameras or a LiDAR sensor can measure depth. A single ordinary photo cannot: the same picture could show a small toy car close up or a real car far away. Monocular depth estimation solves this the way people do, by using learned clues.",
+        {
+          "ul": [
+            "Perspective: parallel lines such as roads and rails meet in the distance.",
+            "Known sizes: a face, a door or a car has a typical size, so its size in the image hints at distance.",
+            "Occlusion: an object that covers another is in front of it.",
+            "Texture density and haze: grass and tiles look finer, and colors look paler, further away.",
+            "Shading and focus blur, which give hints about surface shape."
+          ]
+        },
+        "A depth network is trained on millions of images where the answer is known or estimated. Depth Anything V2, used by many tools at the time of writing, learned from precise synthetic (rendered) images first, then from a very large set of real photos labeled by a larger teacher model. Its authors chose synthetic data partly because real depth sensors cannot measure transparent and reflective surfaces correctly, so real labels are noisy exactly where photos are hard.",
+        "The model works on a resized copy of the image (Depth Anything V2 was trained with the shorter side at 518 pixels) and outputs one value per pixel. The tool then scales it back to the photo size and maps the values to 0 to 255 for an 8-bit image."
+      ]
+    },
+    {
+      "h": "Relative depth vs metric depth",
+      "body": [
+        "Most general-purpose depth models predict relative depth. Depth Anything V2's base models, for example, predict affine-invariant inverse depth. In plain terms, the order and the proportions are meaningful, but there is an unknown scale and offset. The map can tell you the person is in front of the building; it cannot tell you the person is 3.2 meters away.",
+        "This design came from training on many datasets with different cameras and units. The MiDaS work showed that a loss which ignores scale lets a model learn from all of them at once, which made it much more robust on random internet photos.",
+        "Metric depth models are fine-tuned versions trained for meters, usually for one kind of scene (indoor rooms or street driving). Use them for measurement or robotics. For creative work, relative depth is what you want, because it generalizes better and the effect only needs correct ordering."
+      ]
+    },
+    {
+      "h": "What you can do with a depth map",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Use",
+              "How depth is used",
+              "Tip"
+            ],
+            "rows": [
+              [
+                "2.5D parallax video",
+                "Near pixels move more than far ones when a virtual camera moves",
+                "Keep camera moves small to hide stretched edges"
+              ],
+              [
+                "Portrait-style blur",
+                "Blur grows with distance from the focus plane",
+                "Feather the edge; hair often gets blurred with the background"
+              ],
+              [
+                "ControlNet depth",
+                "The map guides the layout of a newly generated image",
+                "Use a bright-near map; lower the control weight for more freedom"
+              ],
+              [
+                "3D and AR",
+                "Pixels are pushed out into a mesh or point cloud",
+                "Relative depth gives the shape, not true size"
+              ],
+              [
+                "Fog, relighting, compositing",
+                "Depth acts as a mask for distance-based effects",
+                "Use a 16-bit export where the tool offers it"
+              ]
+            ]
+          }
+        },
+        "For example, cv.cm's depth-map tool turns a photo into a grayscale map (near is bright) or a color preview in the browser, and cv.cm's photo-to-video tool uses the same kind of map to move a virtual camera through a still photo. In that second case the camera moves and the subject stays still: it is parallax, not a model that animates people.",
+        "ControlNet showed that a diffusion model can be steered by conditions such as edges, pose, segmentation and depth. A depth condition keeps the composition (where the foreground and background are) while the prompt changes style, lighting or materials."
+      ]
+    },
+    {
+      "h": "Where AI depth goes wrong",
+      "body": [
+        {
+          "ul": [
+            "Glass, mirrors and water: the model may give the depth of the reflection or of what is behind the glass.",
+            "Sky and very far areas: all of it lands at the far end, so parallax there is flat.",
+            "Thin structures: hair, fences, branches and wires blur into the background at the model's working resolution.",
+            "Paintings, posters and screens: a photo of a picture can be given false 3D depth, because the content inside looks like a scene.",
+            "Unusual views: straight-down drone shots, macro photos and fish-eye images are less common in training data.",
+            "Edges between near and far: the map is smooth there, so a parallax effect stretches pixels into a rubbery band."
+          ]
+        },
+        {
+          "note": "Depth maps from photos are estimates. Do not use a relative depth map to measure real distances, sizes or speeds."
+        }
+      ]
+    },
+    {
+      "h": "Getting a better depth map",
+      "body": [
+        {
+          "ol": [
+            "Choose photos with a clear foreground, middle ground and background. Flat scenes, such as a face filling the frame against a wall, give little depth to work with.",
+            "Avoid strong reflections and large windows in the area you care about.",
+            "Make sure your next tool reads the same convention. If near is dark where it should be bright, invert the map.",
+            "Keep the map at the same size and crop as the photo. A depth map that is cropped or resized differently will not line up.",
+            "Blur or expand the map slightly before parallax to reduce tearing at edges, and keep camera moves gentle."
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Is a depth map the same as a normal map?",
+      "a": "No. A depth map stores distance per pixel. A normal map stores the direction each surface faces, as RGB colors, and is used for lighting. You can roughly derive normals from a depth map, but not the other way round without losing scale."
+    },
+    {
+      "q": "Can AI make a depth map from any photo?",
+      "a": "Yes, a monocular model will always produce a map, but quality depends on the scene. Clear layers of near and far objects work well; glass, mirrors, flat walls and photos of pictures do not."
+    },
+    {
+      "q": "What is the difference between a depth map and a disparity map?",
+      "a": "Disparity is the shift of a point between two stereo images, and it is larger for near objects, so it behaves like inverse depth. Many AI models output a disparity-like inverse depth, which is why near objects appear bright."
+    },
+    {
+      "q": "Why does my parallax video stretch around the edges of the subject?",
+      "a": "When the virtual camera moves, it reveals background that was hidden behind the subject in the original photo. No pixel exists there, so the renderer stretches neighbors. Smaller camera moves and a softened depth edge reduce it."
+    },
+    {
+      "q": "Does iPhone portrait mode use a depth map?",
+      "a": "Yes. Phones with dual cameras or depth sensors record a depth or disparity map and use it to blur the background; many also apply machine learning to refine it. The depth can be stored in the photo file alongside the image."
+    }
+  ]
+}

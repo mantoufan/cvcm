@@ -1,0 +1,169 @@
+{
+  "title": "Cómo escribir buenos prompts: guía básica de ingeniería de prompts — cv.cm",
+  "description": "Ingeniería de prompts desde cero: las seis partes de un buen prompt, una reescritura de antes y después, ejemplos, formatos y cómo probar prompts en ChatGPT, Claude o Gemini.",
+  "h1": "Ingeniería de prompts básica: cómo escribir un buen prompt",
+  "answer": "La ingeniería de prompts consiste en escribir instrucciones para que un modelo de lenguaje dé el resultado que necesitas a la primera y siempre. Un buen prompt indica la tarea, aporta el contexto y la entrada necesarios, dice para quién es la salida, muestra el formato y fija límites. Añade uno o dos ejemplos para los casos difíciles y prueba el prompt con varias entradas reales.",
+  "sections": [
+    {
+      "h": "Por qué importa la redacción de un prompt",
+      "body": [
+        "Un modelo de lenguaje no conoce tu situación. Solo ve el texto que le envías. Cuando un prompt es vago, el modelo rellena los huecos con la respuesta más típica, que suele ser genérica, demasiado larga o dirigida al lector equivocado. La ingeniería de prompts es, sobre todo, el trabajo de quitar conjeturas.",
+        "Una prueba útil: ¿podría un compañero nuevo y listo, que no te conoce de nada, hacer bien la tarea solo con tu mensaje? Si necesitaría hacer tres preguntas antes, el modelo también necesita esas respuestas. Las guías oficiales de OpenAI, Anthropic y Google dan el mismo consejo básico con otras palabras: sé claro y específico, da contexto, muestra ejemplos y di qué formato quieres."
+      ]
+    },
+    {
+      "h": "Las seis partes de un buen prompt",
+      "body": [
+        "No todos los prompts necesitan las seis partes, pero repasar esta lista arregla la mayoría de los prompts débiles.",
+        {
+          "table": {
+            "head": [
+              "Parte",
+              "Qué responde",
+              "Fragmento de ejemplo"
+            ],
+            "rows": [
+              [
+                "Tarea",
+                "¿Qué debe hacer el modelo?",
+                "Write a reply to this customer email."
+              ],
+              [
+                "Contexto",
+                "¿Qué información de fondo necesita?",
+                "We sell handmade ceramic mugs. Shipping takes 5 to 7 days."
+              ],
+              [
+                "Entrada",
+                "¿Con qué material debe trabajar?",
+                "The customer email, clearly separated."
+              ],
+              [
+                "Público y tono",
+                "¿Quién lee la salida?",
+                "A frustrated first-time customer. Friendly, not overly apologetic."
+              ],
+              [
+                "Formato",
+                "¿Qué forma debe tener la salida?",
+                "Three short paragraphs, under 120 words, no subject line."
+              ],
+              [
+                "Restricciones",
+                "¿Qué debe hacer o evitar?",
+                "Do not promise a refund. Offer a tracking link."
+              ]
+            ]
+          }
+        },
+        "Pon el material de entrada largo entre marcadores claros, como etiquetas al estilo XML o comillas triples, para que el modelo distinga tus instrucciones del texto que debe procesar. Así también bajas el riesgo de que se obedezcan por error instrucciones escondidas en la entrada, por ejemplo en una página web pegada."
+      ]
+    },
+    {
+      "h": "Una reescritura de antes y después",
+      "body": [
+        "Este es un prompt débil típico:",
+        {
+          "code": "Summarize this article.",
+          "lang": "text"
+        },
+        "El modelo producirá un resumen, pero ¿de qué longitud, para quién y de qué forma? Esta es la misma petición con los huecos rellenados:",
+        {
+          "code": "You are helping a busy product manager decide whether to read a research article.\n\nSummarize the article below for that reader.\n- Start with one sentence: the main finding.\n- Then 3 bullet points: method, key number, main limitation.\n- Use plain English. Explain any technical term in a few words.\n- Under 100 words in total.\n- If the article does not state a limitation, write \"No limitation stated\".\n\n<article>\n{paste the article here}\n</article>",
+          "lang": "text"
+        },
+        "Qué hace cada parte:",
+        {
+          "ul": [
+            "La primera línea fija el público y el propósito. Ahora el modelo sabe para qué existe el resumen y por eso elige qué conservar.",
+            "La estructura de viñetas fija el formato, de modo que todos los resúmenes se ven igual y son fáciles de comparar.",
+            "El límite de palabras evita que el modelo rellene.",
+            "La regla para una limitación ausente le dice al modelo qué hacer en un caso límite, en lugar de inventarla.",
+            "Las etiquetas separan el artículo de las instrucciones."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Muestra ejemplos cuando las palabras no bastan",
+      "body": [
+        "Algunos requisitos son difíciles de describir pero fáciles de mostrar: un tono de voz, un esquema de etiquetado, un estilo de salida concreto. Añadir unos pocos ejemplos resueltos se llama few-shot prompting (prompts con pocos ejemplos). Un solo ejemplo (one-shot) suele ayudar mucho. De dos a cinco ejemplos variados suelen cubrir los casos principales.",
+        {
+          "code": "Classify each support message as BILLING, SHIPPING, PRODUCT or OTHER.\nReply with the label only.\n\nMessage: I was charged twice for order 5521.\nLabel: BILLING\n\nMessage: The handle on my mug cracked after one week.\nLabel: PRODUCT\n\nMessage: Do you have a shop in Osaka?\nLabel: OTHER\n\nMessage: {new message}\nLabel:",
+          "lang": "text"
+        },
+        "Haz que tus ejemplos sean distintos entre sí. Si todos son cortos y educados, el modelo puede manejar mal un mensaje largo y enfadado. Comprueba también que los ejemplos cumplen las reglas: el modelo copia los ejemplos con más fuerza de la que sigue las instrucciones escritas."
+      ]
+    },
+    {
+      "h": "Técnicas que ayudan en casos concretos",
+      "body": [
+        {
+          "ul": [
+            "Pide los pasos antes de la respuesta. En matemáticas, lógica o decisiones de varias partes, pedirle al modelo que trabaje el problema antes de dar la respuesta final mejora la precisión. Se conoce como chain-of-thought prompting (cadena de pensamiento). Muchos modelos actuales lo hacen internamente (a menudo llamados modos de razonamiento o de pensamiento), así que puede bastar con pedir una respuesta cuidadosa.",
+            "Divide las tareas grandes. En lugar de “investiga, esquematiza y redacta un informe” en un solo prompt, ejecuta tres prompts y revisa cada salida. Se llama encadenamiento de prompts (prompt chaining).",
+            "Asigna un rol solo cuando aporte información. “Eres un asesor fiscal en Vietnam” cambia la elección de palabras y las suposiciones. “Eres un genio de talla mundial” no añade nada.",
+            "Di qué hacer, no solo qué evitar. “Escribe frases cortas” funciona mejor que “No seas prolijo”.",
+            "Permite el “no lo sé”. Dile al modelo que puede decir que falta información. Esto reduce los datos inventados, aunque no los elimina.",
+            "Pide un formato legible por máquina cuando un programa vaya a leer la salida, por ejemplo JSON con campos con nombre. La mayoría de las API también pueden imponer un esquema JSON directamente."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Prueba un prompt como si fuera código",
+      "body": [
+        "Un prompt que funciona con un ejemplo puede fallar con el siguiente. Si el prompt se va a reutilizar, o lo van a usar otras personas, pruébalo:",
+        {
+          "ol": [
+            "Anota cómo es una buena salida: longitud, formato, datos que deben ser correctos.",
+            "Reúne de 10 a 20 entradas reales, incluidas las difíciles: muy cortas, muy largas, fuera de tema, en otro idioma.",
+            "Ejecuta el prompt con todas y lee cada salida.",
+            "Cambia una sola cosa cada vez y vuelve a ejecutar todo el conjunto, para saber qué cambio ayudó.",
+            "Guarda juntos el prompt final y el conjunto de pruebas. Cuando cambies de modelo o se actualice un modelo, vuelve a ejecutar el conjunto."
+          ]
+        },
+        "Este último paso importa porque el mismo prompt puede comportarse de forma distinta en modelos distintos y en versiones más nuevas del mismo modelo. Por eso las recomendaciones de ingeniería de prompts de los fabricantes de modelos cambian con el tiempo."
+      ]
+    },
+    {
+      "h": "Errores comunes",
+      "body": [
+        {
+          "ul": [
+            "Demasiados objetivos en un solo prompt. Diez reglas con el mismo peso se ignoran en parte. Pon primero las reglas más importantes y mantén la lista corta.",
+            "Contradicciones, como “sé detallado” y “no pases de 50 palabras”. El modelo cumplirá una y romperá la otra.",
+            "Apoyarse en mayúsculas o amenazas (“DEBES”) en lugar de dar una razón clara. Una explicación breve de por qué existe una regla suele funcionar mejor.",
+            "No separar la entrada de las instrucciones, de modo que el modelo trata una parte de tu documento como una orden.",
+            "Fiarse de los datos de la salida. Un prompt bien escrito aún produce errores dichos con seguridad. Comprueba nombres, cifras, citas y enlaces."
+          ]
+        },
+        {
+          "note": "Los generadores de imágenes y de video leen los prompts de forma distinta a los modelos de chat. Responden más a descripciones visuales (sujeto, entorno, luz, cámara) que a instrucciones. Consulta las guías de prompts para imagen y video para ese estilo."
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "¿Sigue haciendo falta la ingeniería de prompts con los modelos de IA más nuevos?",
+      "a": "Hacen falta menos trucos, pero las tareas claras, el contexto, los formatos y las pruebas siguen marcando una gran diferencia. Los modelos nuevos siguen las instrucciones de forma más literal, así que la redacción precisa importa todavía más."
+    },
+    {
+      "q": "¿Cuál es la diferencia entre un prompt de sistema y un prompt de usuario?",
+      "a": "El prompt de sistema (algunas API lo llaman instrucciones del desarrollador) fija reglas y comportamiento para toda la conversación. El prompt de usuario es la petición de este turno. En las aplicaciones, el prompt de sistema lo suele escribir el desarrollador."
+    },
+    {
+      "q": "¿Debo escribir los prompts en inglés?",
+      "a": "La mayoría de los grandes modelos funcionan bien en muchos idiomas. El inglés puede ser algo más fiable para instrucciones complejas, pero escribir las instrucciones en el idioma de la salida suele dar resultados más naturales. Prueba ambos con tu tarea."
+    },
+    {
+      "q": "¿Cuánto debe medir un prompt?",
+      "a": "Lo que haga falta para quitar conjeturas, y no más. Un prompt de una línea sirve para una tarea sencilla. Un prompt reutilizable para un producto puede ocupar una página o más."
+    },
+    {
+      "q": "¿Un prompt puede evitar las alucinaciones de la IA?",
+      "a": "Ningún prompt las elimina del todo. Dar el texto de origen, pedir al modelo que lo cite y permitirle decir que la respuesta no está en el texto reducen los datos inventados."
+    }
+  ]
+}

@@ -1,0 +1,192 @@
+{
+  "title": "Cách chạy AI trong trình duyệt: WebGPU, WASM, Transformers.js — cv.cm",
+  "description": "Cách chạy mô hình AI ngay trong trình duyệt bằng WebGPU hoặc WASM, ONNX Runtime Web và Transformers.js: kích thước mô hình, bộ nhớ đệm, lượng tử hóa, riêng tư và giới hạn trên điện thoại.",
+  "h1": "Làm thế nào để chạy một mô hình AI trong trình duyệt?",
+  "answer": "Bạn tải về một file mô hình, thường ở định dạng ONNX, và chạy nó ngay trong trang web bằng một runtime như ONNX Runtime Web, thường thông qua Transformers.js. Runtime dùng GPU qua WebGPU khi có và quay về CPU bằng WebAssembly khi không. File được lưu đệm sau lần truy cập đầu tiên, và dữ liệu của bạn không bao giờ rời khỏi thiết bị.",
+  "sections": [
+    {
+      "h": "Vì sao nên chạy AI trong trình duyệt",
+      "body": [
+        "Hầu hết tính năng AI gọi tới máy chủ: ảnh hoặc văn bản được tải lên, một GPU trong trung tâm dữ liệu chạy mô hình, rồi kết quả gửi về. AI trong trình duyệt đảo ngược điều này. Mô hình được tải một lần, và thiết bị của chính người truy cập làm việc.",
+        {
+          "ul": [
+            "Riêng tư: ảnh, âm thanh và tài liệu ở lại trên thiết bị. Không cần tải lên hay lưu trữ gì, điều này cũng đơn giản hóa việc tuân thủ luật bảo vệ dữ liệu cá nhân ở nhiều quốc gia.",
+            "Không tốn chi phí máy chủ cho mỗi lần dùng: trang web chỉ trả tiền lưu trữ file mô hình, không trả tiền thời gian GPU. Nhờ vậy các công cụ miễn phí mới khả thi.",
+            "Dùng được ngoại tuyến sau lần tải đầu, và không có độ trễ mạng cho mỗi yêu cầu.",
+            "Không cần tài khoản hay API key."
+          ]
+        },
+        "Đánh đổi là có thật. Lần truy cập đầu cần tải xuống dung lượng lớn, tốc độ phụ thuộc vào phần cứng của người dùng, và chỉ các mô hình cỡ nhỏ đến vừa mới chạy được. Các mô hình chat lớn với hàng chục tỷ tham số vẫn cần máy chủ. Những tác vụ phù hợp hiện nay gồm xóa nền, phóng to ảnh, ước lượng độ sâu, chuyển giọng nói thành văn bản, dịch thuật, phân loại văn bản, embedding và các mô hình ảnh hoặc ngôn ngữ nhỏ. Chẳng hạn, công cụ remove-background và speech-to-text của cv.cm chạy BiRefNet và Whisper theo cách này, không tải gì lên."
+      ]
+    },
+    {
+      "h": "Bốn lớp: mô hình, runtime, backend, thư viện",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Lớp",
+              "Là gì",
+              "Lựa chọn phổ biến"
+            ],
+            "rows": [
+              [
+                "File mô hình",
+                "Trọng số đã huấn luyện và đồ thị tính toán",
+                "File ONNX, thường được xuất từ PyTorch"
+              ],
+              [
+                "Runtime",
+                "Mã thực thi đồ thị trong trang",
+                "ONNX Runtime Web (có các lựa chọn khác như TensorFlow.js hoặc WebLLM cho mô hình chat)"
+              ],
+              [
+                "Backend",
+                "Đường phần cứng mà runtime sử dụng",
+                "WebGPU cho GPU, WebAssembly (WASM) cho CPU, WebNN ở nơi được hỗ trợ"
+              ],
+              [
+                "Thư viện",
+                "API thân thiện: tiền xử lý, tokenizer, pipeline",
+                "Transformers.js, dùng ONNX Runtime bên dưới"
+              ]
+            ]
+          }
+        },
+        "ONNX là định dạng mở cho mạng nơ-ron. Mô hình huấn luyện bằng PyTorch có thể xuất sang ONNX, rồi ONNX Runtime Web chạy nó với nhiều backend. Backend WASM hỗ trợ mọi toán tử ONNX. Các backend GPU chỉ hỗ trợ một tập con, nên một mô hình có thể lỗi trên WebGPU mà vẫn chạy được trên WASM. Transformers.js thêm những thứ mà bạn sẽ phải tự viết: đổi kích thước ảnh, chuyển văn bản thành token, giải mã âm thanh, và biến các con số đầu ra thô thành nhãn, mặt nạ hoặc văn bản."
+      ]
+    },
+    {
+      "h": "WebGPU và WebAssembly",
+      "body": [
+        "WebGPU là chuẩn web của W3C cho phép trang truy cập card đồ họa để cả vẽ lẫn tính toán đa dụng. Với mạng nơ-ron, phần tính toán mới là điều quan trọng: phép nhân ma trận chạy song song trên nhiều lõi GPU. WebAssembly chạy mã đã biên dịch trên CPU với tốc độ gần như native và hoạt động trên mọi trình duyệt hiện đại.",
+        {
+          "table": {
+            "head": [
+              "Câu hỏi",
+              "WebGPU",
+              "WebAssembly (WASM)"
+            ],
+            "rows": [
+              [
+                "Chạy trên",
+                "GPU",
+                "CPU, tùy chọn đa luồng với SIMD"
+              ],
+              [
+                "Tốc độ với mô hình lớn",
+                "Thường nhanh hơn nhiều lần",
+                "Chậm hơn, nhưng dễ đoán"
+              ],
+              [
+                "Khả năng sẵn có",
+                "Đang tăng, nhưng chưa có ở mọi trình duyệt và thiết bị; MDN ghi là khả dụng hạn chế",
+                "Mọi trình duyệt hiện đại"
+              ],
+              [
+                "Độ phủ toán tử trong ONNX Runtime Web",
+                "Một tập con",
+                "Tất cả toán tử"
+              ],
+              [
+                "Yêu cầu",
+                "Ngữ cảnh bảo mật (HTTPS)",
+                "Đa luồng cần trang được cô lập cross-origin"
+              ],
+              [
+                "Phù hợp nhất cho",
+                "Tạo ảnh, mô hình thị giác lớn, Whisper với âm thanh dài",
+                "Mô hình nhỏ, phương án dự phòng, thiết bị không có GPU tốt"
+              ]
+            ]
+          }
+        },
+        "Trong thực tế, hãy thử WebGPU trước rồi quay về WASM. Đừng quyết định dựa vào tên trình duyệt. Hãy yêu cầu trình duyệt cấp một adapter và kiểm tra các tính năng của nó:",
+        {
+          "code": "// Check what this device can do before loading a model.\nasync function pickBackend() {\n  if (!(\"gpu\" in navigator)) return { device: \"wasm\" };      // no WebGPU API\n  const adapter = await navigator.gpu.requestAdapter();\n  if (!adapter) return { device: \"wasm\" };                    // API exists, no usable GPU\n  const f16 = adapter.features.has(\"shader-f16\");             // half-precision support\n  return { device: \"webgpu\", f16 };\n}\n\nconsole.log(await pickBackend(), \"threads:\", self.crossOriginIsolated);",
+          "lang": "javascript"
+        },
+        "WASM đa luồng dùng `SharedArrayBuffer`, thứ mà trình duyệt chỉ cho phép khi trang được cô lập cross-origin. Điều đó nghĩa là phải gửi các header `Cross-Origin-Opener-Policy` và `Cross-Origin-Embedder-Policy`. Nếu thiếu, WASM chạy trên một luồng và chậm hơn nhiều."
+      ]
+    },
+    {
+      "h": "Ví dụ Transformers.js tối giản",
+      "body": [
+        "Với Transformers.js, một tác vụ chỉ là một lời gọi `pipeline`. Thư viện tải mô hình, chọn file phù hợp với thiết bị và kiểu dữ liệu đã chọn, rồi trả về một hàm bạn có thể gọi:",
+        {
+          "code": "import { pipeline } from \"@huggingface/transformers\";\n\nconst { device } = await pickBackend();     // from the snippet above\n\n// First call downloads the model and caches it. Later visits load from cache.\nconst classify = await pipeline(\n  \"sentiment-analysis\",\n  \"Xenova/distilbert-base-uncased-finetuned-sst-2-english\",\n  {\n    device,                                  // \"webgpu\" or \"wasm\"\n    dtype: device === \"webgpu\" ? \"fp32\" : \"q8\",\n    progress_callback: (p) => console.log(p.status, p.file ?? \"\", p.progress ?? \"\"),\n  }\n);\n\nconsole.log(await classify(\"This runs entirely on my laptop.\"));\n// [{ label: \"POSITIVE\", score: 0.99... }]",
+          "lang": "javascript"
+        },
+        "Hãy chạy đoạn này trong module script hoặc tốt hơn là trong Web Worker. Suy luận của mô hình có thể chặn hàng trăm mili giây hoặc hơn, và trong worker thì trang vẫn phản hồi mượt. WebGPU cũng dùng được bên trong worker. Hãy hiển thị tiến độ tải cho người dùng, vì lần tải đầu của mô hình lớn có thể mất một lúc trên kết nối chậm."
+      ]
+    },
+    {
+      "h": "Kích thước tải về, lượng tử hóa và bộ nhớ đệm",
+      "body": [
+        "Dung lượng tải về xấp xỉ số tham số nhân với số byte lưu cho mỗi tham số. Phép tính đơn giản này cho bạn biết một mô hình có thực tế hay không:",
+        {
+          "code": "download size  ~  number of parameters  x  bytes per parameter\n\n                      fp32 (4 B)   fp16 (2 B)   int8 / q8 (1 B)   q4 (0.5 B)\n 50 million params      200 MB       100 MB          50 MB            25 MB\n 500 million params     2.0 GB       1.0 GB         500 MB           250 MB\n 1 billion params       4.0 GB       2.0 GB         1.0 GB           500 MB\n\nReal files differ a little: some layers stay at higher precision,\nand the tokenizer and config add a few MB.",
+          "lang": "text"
+        },
+        "Lượng tử hóa (quantization) lưu trọng số với ít bit hơn: fp16 giảm một nửa so với fp32, lượng tử hóa 8 bit (q8) giảm còn một phần tư, và 4 bit (q4) giảm khoảng tám lần. Trọng số nhỏ hơn tải nhanh hơn và cần ít bộ nhớ hơn. Cái giá là mất một chút độ chính xác, thường nhỏ ở 8 bit và rõ hơn ở 4 bit, nhất là với mô hình nhỏ và các tác vụ như tạo ảnh nơi lỗi nhỏ lộ ra. Transformers.js chọn biến thể bằng tùy chọn `dtype`. Mặc định của nó là q8 trên WASM và fp32 trên WebGPU, còn các tùy chọn có sẵn phụ thuộc vào những gì nhà phát hành mô hình đã xuất.",
+        "Bộ nhớ đệm giúp lần truy cập thứ hai nhanh. Theo mặc định Transformers.js lưu các file đã tải bằng Cache API của trình duyệt. Trình duyệt cấp cho mỗi trang một hạn mức lưu trữ dựa trên dung lượng ổ đĩa, thường đủ lớn cho vài gigabyte trên máy tính để bàn, nhưng nơi lưu này chỉ theo kiểu cố gắng hết sức: trình duyệt có thể xóa khi thiết bị sắp hết chỗ, và Safari có thể xóa dữ liệu do script tạo ra của những trang mà người dùng không tương tác trong vài ngày. Trang có thể xin lưu trữ bền vững bằng `navigator.storage.persist()` và kiểm tra mức dùng bằng `navigator.storage.estimate()`.",
+        {
+          "note": "Hãy tự lưu trữ file mô hình, với phiên bản cố định, nếu trang của bạn phụ thuộc vào chúng. Tải từ hub của bên thứ ba nghĩa là sự cố ngừng hoạt động, file bị đổi tên hay phiên bản mô hình mới của họ trở thành vấn đề của bạn."
+        }
+      ]
+    },
+    {
+      "h": "Điện thoại và các giới hạn khác",
+      "body": [
+        {
+          "ul": [
+            "Bộ nhớ: mô hình cần bộ nhớ cho trọng số cộng với không gian làm việc. Trình duyệt di động cấp cho mỗi tab ít bộ nhớ hơn nhiều so với máy tính để bàn và có thể đóng tab không báo trước nếu mô hình quá lớn. Hãy giữ mô hình di động nhỏ, thường dưới vài trăm megabyte.",
+            "WebGPU trên điện thoại: hỗ trợ phụ thuộc vào trình duyệt, phiên bản hệ điều hành và driver GPU. Luôn có đường WASM hoặc thông báo rõ ràng.",
+            "Nhiệt và pin: GPU làm việc lâu khiến điện thoại nóng, và hệ thống sẽ giảm xung chip. Một tác vụ mất 2 giây ở lần đầu có thể mất lâu hơn nhiều ở lần thứ năm.",
+            "Gói dữ liệu: hãy cảnh báo người dùng trước khi tải dung lượng lớn qua kết nối di động.",
+            "Độ chính xác số học: một số GPU thiếu hỗ trợ nhanh cho nửa độ chính xác (fp16) hoặc cho ra số hơi khác, nên đầu ra có thể lệch chút giữa các thiết bị.",
+            "Giấy phép mô hình vẫn có hiệu lực. Chạy mô hình trong trình duyệt không thay đổi điều khoản sử dụng của nó."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Danh sách kiểm tra khi triển khai AI trong trình duyệt",
+      "body": [
+        {
+          "ol": [
+            "Chọn mô hình nhỏ nhất đạt yêu cầu chất lượng, và thử các phiên bản lượng tử hóa cạnh nhau.",
+            "Phát hiện WebGPU bằng yêu cầu adapter, và quay về WASM.",
+            "Phục vụ trang qua HTTPS, và bật cô lập cross-origin nếu bạn cần luồng WASM.",
+            "Chạy suy luận trong Web Worker và hiển thị tiến độ tải và xử lý.",
+            "Đừng tải mô hình khi trang vừa mở. Hãy chờ đến khi người dùng bắt đầu một tác vụ, để những người chỉ đọc trang không phải trả giá bằng hàng gigabyte.",
+            "Lưu trữ file mô hình ở phiên bản cố định, và cho lưu đệm chúng.",
+            "Kiểm thử trên điện thoại cấu hình thấp, không chỉ trên laptop phát triển."
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "AI trong trình duyệt có thực sự riêng tư không?",
+      "a": "Mô hình chạy trên thiết bị của bạn, nên dữ liệu đầu vào không cần gửi đi đâu. Một trang cụ thể có tải gì lên hay không phụ thuộc vào mã của nó, vì vậy hãy kiểm tra tuyên bố riêng tư hoặc bảng mạng của trình duyệt."
+    },
+    {
+      "q": "Những trình duyệt nào hỗ trợ WebGPU?",
+      "a": "Hỗ trợ đã mở rộng trên các trình duyệt máy tính chính và một số trình duyệt di động, nhưng vẫn khác nhau theo phiên bản trình duyệt, hệ điều hành và GPU. Hãy xem bảng tương thích hiện hành trên MDN và kiểm tra `navigator.gpu` trong mã."
+    },
+    {
+      "q": "Tôi có chạy được mô hình kiểu ChatGPT trong trình duyệt không?",
+      "a": "Các mô hình ngôn ngữ nhỏ có đến vài tỷ tham số có thể chạy trong trình duyệt trên GPU tốt, sau khi tải về một gigabyte trở lên. Chúng kém xa các mô hình lớn đứng sau ChatGPT, Claude hay Gemini."
+    },
+    {
+      "q": "Vì sao lần chạy đầu chậm còn lần hai nhanh?",
+      "a": "Lần chạy đầu tải mô hình và biên dịch shader GPU hoặc mã WASM. Các lần sau tải file từ bộ nhớ đệm của trình duyệt, miễn là trình duyệt chưa xóa nơi lưu đó."
+    },
+    {
+      "q": "Chạy AI trong trình duyệt có dùng GPU của tôi dù không có card chơi game không?",
+      "a": "Có. WebGPU có thể dùng đồ họa tích hợp trong laptop và điện thoại thông thường. Nó chậm hơn card rời, nhưng thường vẫn nhanh hơn nhiều so với đường CPU."
+    }
+  ]
+}

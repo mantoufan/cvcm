@@ -1,0 +1,218 @@
+{
+  "title": "Apa Itu Generative AI? Cara Kerja dan Contohnya — cv.cm",
+  "description": "Apa itu generative AI? Penjelasan sederhana tentang cara model belajar dari data untuk membuat teks, gambar, video, dan audio, jenis-jenis modelnya, serta kelemahannya.",
+  "h1": "Apa itu generative AI?",
+  "answer": "Generative AI adalah perangkat lunak yang membuat konten baru, seperti teks, gambar, video, audio, atau kode, bukan sekadar mengelompokkan atau memberi skor pada data yang sudah ada. Model mempelajari pola dari kumpulan contoh yang sangat besar, lalu menghasilkan keluaran baru yang sesuai pola itu saat Anda memberinya instruksi yang disebut prompt. ChatGPT, Claude, Midjourney, dan alat berbasis Whisper adalah contoh yang umum.",
+  "sections": [
+    {
+      "h": "Generative AI dibandingkan AI jenis lain",
+      "body": [
+        "Sebelum 2020-an, sebagian besar AI bersifat prediktif. AI melihat sebuah masukan lalu mengembalikan label atau angka: apakah email ini spam, berapa harga rumah ini, wajah siapa yang ada di foto ini. Generative AI membalik arahnya. Ia menerima masukan singkat dan mengembalikan konten baru yang utuh.",
+        "Keduanya dilatih dengan contoh, dan keduanya bersifat statistik. Bedanya ada pada bentuk keluarannya. Filter spam hanya mengeluarkan satu kata. Model bahasa mengeluarkan satu paragraf yang sebelumnya tidak ada.",
+        {
+          "table": {
+            "head": [
+              "",
+              "AI prediktif",
+              "Generative AI"
+            ],
+            "rows": [
+              [
+                "Pertanyaan khas",
+                "Ini masuk kategori apa?",
+                "Buatkan sesuatu yang sesuai dengan deskripsi ini."
+              ],
+              [
+                "Keluaran",
+                "Label, skor, atau angka",
+                "Teks, gambar, video, audio, atau kode"
+              ],
+              [
+                "Contoh",
+                "Filter spam, peringatan penipuan, buka kunci dengan wajah",
+                "Asisten chat, pembuat gambar, sintesis suara"
+              ],
+              [
+                "Cara memeriksanya",
+                "Bandingkan dengan label yang benar",
+                "Lebih sulit: banyak keluaran bisa dianggap benar"
+              ]
+            ]
+          }
+        },
+        "Banyak produk menggabungkan keduanya. Alat speech-to-text termasuk generatif dalam arti sempit karena menulis transkrip, tetapi lebih dekat ke prediksi karena hanya ada satu transkrip yang benar."
+      ]
+    },
+    {
+      "h": "Cara kerja model generatif",
+      "body": [
+        "Setiap model generatif mengikuti ide dua fase yang sama. Saat pelatihan (training), model melihat jutaan hingga miliaran contoh dan menyesuaikan angka-angka internalnya, yang disebut parameter atau bobot (weights), supaya makin pandai meniru pola dalam data itu. Saat dipakai, yang disebut inferensi (inference), model memulai dari prompt Anda dan menyusun keluaran langkah demi langkah berdasarkan apa yang sudah dipelajarinya.",
+        "Model tidak menyimpan salinan tiap contoh pelatihan lalu menempelkannya kembali. Ia menyimpan gambaran statistik yang dipadatkan tentang seperti apa teks, gambar, atau suara pada umumnya. Karena itulah model bisa menghasilkan kombinasi baru, dan karena itu pula ia bisa membuat kesalahan dengan penuh percaya diri.",
+        "Tiga keluarga model mengerjakan sebagian besar tugas saat ini:",
+        {
+          "table": {
+            "head": [
+              "Keluarga",
+              "Cara membuat keluaran",
+              "Penggunaan umum"
+            ],
+            "rows": [
+              [
+                "Autoregresif (transformer)",
+                "Memprediksi potongan berikutnya, yaitu token, lalu token selanjutnya, satu per satu",
+                "Chat, menulis, kode, terjemahan, sebagian model gambar"
+              ],
+              [
+                "Difusi (diffusion)",
+                "Mulai dari noise acak lalu menghilangkan noise dalam banyak langkah sampai gambar atau video muncul",
+                "Sebagian besar alat text-to-image dan text-to-video"
+              ],
+              [
+                "GAN (generative adversarial network)",
+                "Generator dan pengkritik dilatih saling beradu",
+                "Pembuat wajah dan gaya generasi lama, sebagian alat upscale"
+              ]
+            ]
+          }
+        },
+        "Arsitektur transformer, yang diperkenalkan pada 2017, ada di balik hampir semua model bahasa besar. Model difusi menjadi pendekatan utama untuk gambar setelah 2020. GAN muncul lebih dulu, pada 2014, dan masih dipakai untuk beberapa tugas gambar yang cepat. Batasnya makin kabur: sebagian model gambar bersifat autoregresif, dan sebagian model video menggabungkan difusi dengan transformer.",
+        {
+          "note": "Contoh nyata: pembuat gambar AI di cv.cm menjalankan Janus-Pro-1B di GPU Anda sendiri lewat browser. Modelnya autoregresif dan menyusun gambar 384 piksel potong demi potong, seperti chatbot menyusun kalimat, bukan model difusi."
+        }
+      ]
+    },
+    {
+      "h": "Apa saja yang bisa dibuat generative AI",
+      "body": [
+        "Ide yang sama berlaku untuk semua jenis media. Yang berubah hanyalah data pelatihan dan cara keluarannya direpresentasikan.",
+        {
+          "table": {
+            "head": [
+              "Keluaran",
+              "Masukan umum",
+              "Contoh terkenal",
+              "Kelemahan umum"
+            ],
+            "rows": [
+              [
+                "Teks",
+                "Pertanyaan atau instruksi",
+                "ChatGPT, Claude, Gemini, DeepSeek, Qwen",
+                "Fakta dan kutipan karangan, pengetahuan usang"
+              ],
+              [
+                "Kode",
+                "Deskripsi tugas, kode yang sudah ada",
+                "Asisten coding yang dibangun di atas LLM yang sama",
+                "Kode yang tampak benar tetapi gagal pada kasus tepi atau memakai fungsi palsu"
+              ],
+              [
+                "Gambar",
+                "Prompt teks, gambar referensi",
+                "Midjourney, GPT image, Stable Diffusion, FLUX, Imagen",
+                "Tangan, teks yang terbaca, jumlah objek yang tepat"
+              ],
+              [
+                "Video",
+                "Prompt, gambar awal, frame awal dan akhir",
+                "Veo, Kling, Runway, Seedance",
+                "Fisika, keberadaan objek yang konsisten, konsistensi antar shot"
+              ],
+              [
+                "Suara dan musik",
+                "Teks, sampel suara, deskripsi gaya",
+                "Text-to-speech neural, pembuat musik",
+                "Penekanan tidak alami, nama, campuran bahasa"
+              ],
+              [
+                "Transkrip",
+                "Audio atau video",
+                "Whisper dan model suara sejenis",
+                "Aksen kental, pembicara yang tumpang tindih, nama yang jarang"
+              ]
+            ]
+          }
+        },
+        "Tidak semua alat media AI bersifat generatif dalam arti penuh. Alat foto ke video di cv.cm, misalnya, memperkirakan peta kedalaman dari satu foto lalu menggerakkan kamera virtual menembusnya. Kameranya bergerak, tetapi subjeknya tidak, karena tidak ada frame gerak baru yang diciptakan. Model text-to-video, sebaliknya, membuat setiap frame."
+      ]
+    },
+    {
+      "h": "Contoh kerja: satu ide, beberapa model",
+      "body": [
+        "Misalkan sebuah toko kecil ingin membuat klip 15 detik untuk mengumumkan mug keramik baru. Alur kerja generatif yang umum seperti ini:",
+        {
+          "ol": [
+            "Teks: minta model chat membuat tiga caption pendek dan naskah voice-over 30 kata. Sunting sendiri yang Anda pilih.",
+            "Gambar: gambarkan shot-nya ke model gambar, misalnya produk di atas meja kayu dengan cahaya pagi yang lembut. Buat beberapa lalu pilih satu.",
+            "Video: berikan gambar itu ke model image-to-video dengan prompt gerakan singkat, seperti push-in pelan sementara uap naik.",
+            "Suara: ubah naskah menjadi suara dengan model text-to-speech, atau rekam sendiri.",
+            "Subtitle: jalankan audionya lewat model speech-to-text untuk mendapat file SRT, lalu perbaiki kesalahannya.",
+            "Tinjau: pastikan produknya mirip aslinya, ejaan teksnya benar, dan beri label bahwa video ini buatan AI jika hukum atau platform mewajibkannya."
+          ]
+        },
+        "Tiap langkah memakai model yang berbeda, tetapi semuanya melakukan hal dasar yang sama: mengubah instruksi singkat menjadi konten baru yang cocok dengan pola dari pelatihan. Tiap langkah juga perlu diperiksa manusia, karena setiap model punya kegagalan khasnya sendiri.",
+        {
+          "code": "Weak prompt:\nmug ad\n\nStronger prompt:\nA white ceramic mug with a thin blue rim on a light oak table,\nsoft morning window light from the left, steam rising,\nshallow depth of field, product photo, no text, no logo.",
+          "lang": "text"
+        },
+        "Prompt yang lebih kuat menyebutkan subjek, bahan, latar, cahaya, dan apa yang tidak boleh muncul. Model generatif mengisi setiap celah dengan pilihan paling umum dari data pelatihannya, jadi semakin banyak yang Anda tentukan, semakin sedikit yang ditebak."
+      ]
+    },
+    {
+      "h": "Kelebihan dan kekurangan generative AI",
+      "body": [
+        "Generative AI kuat dalam membuat draf pertama dengan cepat, menulis ulang teks, meringkas materi panjang yang Anda berikan, menerjemahkan, mengumpulkan banyak opsi, dan mengubah ide kasar menjadi gambar atau suara.",
+        "Kelemahannya muncul di tempat-tempat yang bisa ditebak:",
+        {
+          "ul": [
+            "Fakta: model bahasa bisa menyatakan informasi salah dengan sangat yakin. Ini disebut halusinasi atau konfabulasi.",
+            "Menghitung dan detail yang tepat: lima jari, tiga apel, kalimat 12 kata. Model hanya memperkirakan.",
+            "Teks di dalam gambar: papan nama dan label sering salah eja, meski saat tulisan ini dibuat sudah membaik.",
+            "Fisika dan kesinambungan pada video: objek bisa menyatu, menghilang, atau bergerak secara mustahil.",
+            "Informasi terbaru: model hanya tahu isi data pelatihannya sampai tanggal batas tertentu, kecuali terhubung ke pencarian.",
+            "Bahasa, dialek, dan aksen yang jarang: kualitas turun ketika data pelatihannya sedikit."
+          ]
+        },
+        "Aturan praktisnya: pakai generative AI di tempat kesalahan mudah terlihat dan murah diperbaiki, dan verifikasi semuanya di tempat kesalahan berbiaya mahal."
+      ]
+    },
+    {
+      "h": "Memakai generative AI secara bertanggung jawab",
+      "body": [
+        "Daftar periksa singkat sebelum Anda memublikasikan atau mengandalkan keluaran AI:",
+        {
+          "ol": [
+            "Verifikasi fakta, angka, kutipan, dan tautan ke sumber primer.",
+            "Jangan menempelkan data pribadi, kata sandi, file klien, atau dokumen identitas ke alat yang tidak Anda kendalikan. Alat berbasis browser yang menjalankan model di perangkat Anda tidak mengunggah file.",
+            "Periksa ketentuan alat untuk penggunaan komersial, dan jangan membuat prompt tentang orang sungguhan, logo, atau karakter yang tidak boleh Anda pakai.",
+            "Beri label pada media buatan atau suntingan AI jika hukum atau platform mewajibkannya. Tiongkok, Uni Eropa, dan banyak platform kini punya aturan pelabelan.",
+            "Tetapkan manusia yang bertanggung jawab atas hasil akhir, terutama di bidang kesehatan, hukum, keuangan, dan berita."
+          ]
+        },
+        "Generative AI adalah alat yang memprediksi keluaran yang masuk akal. Ia sangat berguna jika Anda memperlakukannya sebagai asisten cepat yang membuat draf, bukan sebagai otoritas yang serba tahu."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Apakah ChatGPT termasuk generative AI?",
+      "a": "Ya. ChatGPT adalah produk chat yang dibangun di atas model bahasa besar, yaitu model generatif yang menulis teks satu token demi satu token. Beberapa versinya juga bisa membuat gambar dan suara."
+    },
+    {
+      "q": "Apa bedanya AI dan generative AI?",
+      "a": "AI adalah bidang luas untuk perangkat lunak yang mengerjakan tugas yang tampaknya memerlukan kecerdasan. Generative AI adalah bagian dari AI yang membuat konten baru, bukan mengklasifikasi, mengurutkan, atau memprediksi satu nilai."
+    },
+    {
+      "q": "Apakah generative AI menyalin data pelatihannya?",
+      "a": "Biasanya ia menghasilkan kombinasi baru, bukan salinan, tetapi model kadang bisa mereproduksi kutipan, gambar, atau gaya dengan sangat mirip, terutama untuk karya terkenal atau yang sering diulang. Ini salah satu alasan mengapa pertanyaan hak cipta soal AI masih terus diputuskan."
+    },
+    {
+      "q": "Apakah generative AI sama dengan AGI?",
+      "a": "Tidak. AGI, artificial general intelligence, adalah sistem hipotetis yang menyamai manusia di hampir semua tugas. Model generatif saat ini bisa mengesankan pada banyak tugas, tetapi masih gagal pada pemeriksaan sederhana dan memerlukan pengawasan manusia."
+    },
+    {
+      "q": "Bisakah saya memakai generative AI secara gratis?",
+      "a": "Bisa. Banyak asisten chat punya paket gratis, dan beberapa alat menjalankan model terbuka langsung di browser Anda tanpa biaya. Paket gratis biasanya punya batas pemakaian, dan ketentuan penggunaan komersial berbeda-beda di tiap alat."
+    }
+  ]
+}

@@ -1,0 +1,138 @@
+{
+  "title": "Cómo funciona el escalado de imágenes con IA: superresolución explicada — cv.cm",
+  "description": "Cómo funciona el escalado con IA: por qué la interpolación bicúbica desenfoca, cómo SRCNN, las GAN y Real-ESRGAN inventan detalle, 2x frente a 4x, modelos para fotos y para anime, y cuándo falla.",
+  "h1": "¿Cómo funciona el escalado de imágenes con IA?",
+  "answer": "El escalado con IA, o superresolución, usa una red neuronal entrenada con pares de imágenes pequeñas y grandes para predecir los píxeles que faltan al ampliar una imagen. En lugar de promediar los vecinos como hace el redimensionado bicúbico, dibuja bordes y texturas verosímiles que aprendió durante el entrenamiento. El detalle extra se ve nítido, pero es inventado, así que mejora la apariencia, no la información real.",
+  "sections": [
+    {
+      "h": "Redimensionado clásico frente a escalado con IA",
+      "body": [
+        "Cuando amplías una imagen de 500 píxeles a 2000, tres de cada cuatro píxeles en cada dirección no existían antes. Algo tiene que decidir sus valores.",
+        "Los métodos clásicos los calculan a partir de los píxeles cercanos. El vecino más cercano copia el píxel más próximo, lo que da bordes con aspecto de bloques. El bilineal y el bicúbico hacen un promedio ponderado de los vecinos, lo que da resultados suaves pero blandos: un borde que era nítido en la imagen pequeña se convierte en una rampa gradual en la grande. Estos métodos son rápidos, predecibles y nunca inventan nada.",
+        "Los escaladores de IA aprenden cómo suelen verse las imágenes nítidas. Durante el entrenamiento, el modelo ve muchas imágenes de alta resolución y versiones de esas mismas imágenes reducidas y empeoradas. Aprende a asociar la versión pequeña con la grande. Al usarlo, aplica esa asociación aprendida, de modo que puede dibujar un borde nítido, mechones de pelo o la textura de un ladrillo donde un simple promedio solo desenfocaría.",
+        {
+          "table": {
+            "head": [
+              "Método",
+              "Cómo rellena los píxeles nuevos",
+              "Aspecto",
+              "¿Inventa detalle?"
+            ],
+            "rows": [
+              [
+                "Vecino más cercano",
+                "Copia el píxel más próximo",
+                "En bloques, pixelado",
+                "No"
+              ],
+              [
+                "Bicúbico",
+                "Promedio ponderado de 16 vecinos",
+                "Bordes suaves y blandos",
+                "No"
+              ],
+              [
+                "CNN entrenada por precisión (tipo SRCNN)",
+                "Asociación aprendida, entrenada para igualar los píxeles",
+                "Más nítido que el bicúbico, aunque algo suave",
+                "Poco"
+              ],
+              [
+                "Basado en GAN (ESRGAN, Real-ESRGAN)",
+                "Asociación aprendida más un crítico que premia la textura realista",
+                "Bordes y texturas nítidos",
+                "Sí"
+              ],
+              [
+                "Basado en difusión",
+                "Genera una imagen grande condicionada por la pequeña",
+                "Muy detallado, puede cambiar el contenido",
+                "Sí, el que más"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "De SRCNN a las GAN: por qué lo nítido gana a lo exacto",
+      "body": [
+        "SRCNN fue una de las primeras redes profundas de superresolución: una pequeña red convolucional entrenada de extremo a extremo para convertir una imagen de baja resolución en una de alta resolución. Modelos como este se entrenaban para minimizar la diferencia píxel a píxel con la imagen real. Eso da buenas puntuaciones en medidas como el PSNR, pero los resultados se ven suaves. Cuando la red no sabe si un borde va un poco a la izquierda o a la derecha, la respuesta más segura bajo esa pérdida es el promedio de ambos, que es un desenfoque.",
+        "SRGAN cambió el objetivo. Añadió una segunda red, un discriminador, que aprende a distinguir las fotos reales de alta resolución de las ampliadas. El escalador es recompensado por engañarlo, de modo que produce una textura nítida y realista aunque los píxeles exactos difieran del original. Los autores de SRGAN señalaron que los métodos que minimizan el error suelen carecer de detalle de alta frecuencia y resultan poco satisfactorios para las personas. ESRGAN mejoró el diseño de la red, el entrenamiento adversarial y la pérdida perceptual, y se convirtió en la base de muchas herramientas posteriores."
+      ]
+    },
+    {
+      "h": "Lo que aporta Real-ESRGAN: entrenar con daños realistas",
+      "body": [
+        "Los primeros modelos se entrenaban con imágenes que simplemente se reducían con redimensionado bicúbico. Las fotos reales se degradan de más formas: desenfoque de la cámara, ruido del sensor, compresión JPEG, varios redimensionados, halos de nitidez. Un modelo entrenado solo con reducciones limpias no sabe tratar eso, y a menudo amplía el ruido junto con el detalle.",
+        "Real-ESRGAN, del mismo grupo de investigación, conserva el generador de ESRGAN pero cambia los datos de entrenamiento. Construye pares de entrenamiento a partir de imágenes limpias con un proceso de degradación de orden superior: aplica desenfoque, redimensionado, ruido y compresión JPEG, y repite la secuencia una segunda vez, para imitar imágenes que se han guardado y compartido muchas veces. También simula artefactos de anillado y sobreoscilación alrededor de los bordes. Un discriminador más potente, una U-Net con normalización espectral, juzga el detalle en cada píxel. Todos los datos de entrenamiento son sintéticos, por lo que no hacen falta pares reales de fotos de baja y alta resolución.",
+        "El resultado es un modelo que elimina los bloques de compresión y el ruido mientras amplía, por lo que funciona bien con imágenes web antiguas, capturas de pantalla y fotos de móvil. Normalmente se entrenan pesos distintos para anime e ilustración, porque los colores planos y las líneas limpias necesitan una textura diferente a la de las fotografías.",
+        "Por ejemplo, el escalador de imágenes de cv.cm ejecuta un modelo Real-ESRGAN compacto en tu navegador a 2x o 4x, con una opción para fotos y otra para anime, de modo que la imagen nunca sale de tu dispositivo."
+      ]
+    },
+    {
+      "h": "Cómo escalar bien, paso a paso",
+      "body": [
+        {
+          "ol": [
+            "Parte de la mejor fuente que tengas. Usa el archivo original, no una captura de pantalla ni una versión reenviada por aplicaciones de mensajería.",
+            "Recorta primero. Escalar solo la parte que necesitas es más rápido y usa menos memoria.",
+            "Elige el modelo según el contenido: un modelo de fotos para fotografías, un modelo de anime o ilustración para dibujos, line art y arte de videojuegos.",
+            "Elige el factor más pequeño que alcance tu objetivo. Si necesitas 1600 píxeles a partir de 800, usa 2x, no 4x y luego reducir.",
+            "Compara con el original al 100 % de zoom. Fíjate en rostros, texto, pelo y patrones finos, donde primero se nota el detalle inventado.",
+            "Si el resultado se ve demasiado liso o plástico, mézclalo con una ampliación bicúbica en un editor o añade un poco de grano.",
+            "Guarda en PNG o en JPEG de alta calidad. Una compresión JPEG fuerte después de escalar hace volver los bloques."
+          ]
+        },
+        {
+          "note": "2x y luego otro 2x no es lo mismo que 4x de una vez. Cada pasada inventa detalle sobre detalle inventado, y los artefactos se acumulan. Usa una sola pasada con el factor necesario cuando el modelo lo ofrezca."
+        }
+      ]
+    },
+    {
+      "h": "Escaladores por difusión y escalado creativo",
+      "body": [
+        "Un grupo más reciente de escaladores usa la difusión. SR3, por ejemplo, parte de ruido y lo refina paso a paso hasta una imagen de alta resolución, condicionada por la entrada de baja resolución. Muchos generadores de imágenes también ofrecen un escalado creativo o de añadir detalle, que ejecuta imagen a imagen sobre una imagen ampliada con un prompt.",
+        "Estos métodos pueden producir mucho más detalle que un escalador GAN, algo útil para el arte con IA. La contrapartida es el control: con más libertad pueden cambiar rostros, añadir objetos, reescribir texto pequeño o alterar la textura de los materiales. Para documentos, productos, pruebas o cualquier imagen que deba ser fiel al original, es preferible un escalador GAN o el redimensionado clásico. Usa el escalado por difusión cuando importe más que se vea bien que ser fiel."
+      ]
+    },
+    {
+      "h": "Límites: lo que el escalado no puede hacer",
+      "body": [
+        {
+          "ul": [
+            "No puede recuperar información que no está en la imagen. Un rostro de diez píxeles de ancho se convierte en un rostro verosímil, no en la persona real. No uses el escalado con IA para identificar personas, leer matrículas ni producir pruebas.",
+            "El texto es arriesgado. Las letras pequeñas y borrosas pueden convertirse en otras letras que se ven nítidas y convincentes.",
+            "El desenfoque fuerte y el desenfoque de movimiento son difíciles. Los escaladores se entrenan con ciertos tipos de daño; los casos extremos salen emborronados o con aspecto de pintura.",
+            "Los patrones repetitivos, como tela, hierba o ladrillo, pueden convertirse en texturas artificiales.",
+            "Piel demasiado suavizada. Los modelos de fotos a veces eliminan poros y arrugas finas, lo que parece un retoque excesivo.",
+            "Los factores grandes necesitan mucha memoria. Un escalado 4x tiene 16 veces los píxeles de la entrada, así que las imágenes grandes pueden tener que procesarse por mosaicos."
+          ]
+        },
+        "Con esos límites en mente, un escalador de IA es el último paso adecuado para imágenes generadas con IA, fotos antiguas pequeñas y gráficos web que deban imprimirse o mostrarse en pantallas grandes."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "¿Es mejor el escalado con IA que redimensionar en Photoshop?",
+      "a": "Para ampliar, normalmente sí en apariencia, porque dibuja bordes y texturas nítidos en lugar de desenfocar. El redimensionado clásico sigue siendo mejor cuando no debes añadir ningún detalle inventado."
+    },
+    {
+      "q": "¿Puede el escalado con IA restaurar una foto antigua y borrosa?",
+      "a": "Puede reducir el desenfoque, el ruido y la compresión y hacer que la foto se vea más nítida. No puede recuperar los detalles reales que se perdieron, así que los rostros y el texto pueden cambiar ligeramente."
+    },
+    {
+      "q": "¿Debo elegir 2x o 4x?",
+      "a": "Elige el factor más pequeño que alcance el tamaño que necesitas. El 4x requiere más tiempo y memoria e inventa más detalle, lo que también implica más posibilidades de artefactos."
+    },
+    {
+      "q": "¿Por qué mi imagen escalada parece una pintura?",
+      "a": "El modelo sustituyó la textura fina y con ruido por una textura suave aprendida. Prueba con otro modelo, con un factor menor, o mezcla el resultado con una ampliación normal y añade grano ligero."
+    },
+    {
+      "q": "¿El escalado con IA aumenta los DPI para imprimir?",
+      "a": "Los DPI son solo una etiqueta; lo que importa es el número de píxeles al tamaño de impresión. El escalado añade píxeles, así que un escalado 4x permite imprimir con una anchura unas cuatro veces mayor con la misma nitidez, dentro de los límites del modelo."
+    }
+  ]
+}

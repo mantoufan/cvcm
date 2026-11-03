@@ -1,0 +1,160 @@
+{
+  "title": "Mô hình khuếch tán (diffusion) hoạt động thế nào: từ nhiễu thành ảnh — cv.cm",
+  "description": "Mô hình khuếch tán hoạt động thế nào: huấn luyện trên nhiễu, khử nhiễu từng bước, định hướng bằng văn bản, không gian ẩn, và số bước, CFG scale, seed thực sự thay đổi gì.",
+  "h1": "Mô hình khuếch tán (diffusion model) hoạt động như thế nào?",
+  "answer": "Mô hình khuếch tán học cách loại bỏ nhiễu. Khi huấn luyện, ảnh thật bị làm nhòe dần bằng nhiễu ngẫu nhiên qua từng bước, và một mạng nơ-ron học dự đoán nhiễu đó. Khi tạo ảnh, mô hình bắt đầu từ nhiễu thuần túy và loại bớt một chút ở mỗi bước, được prompt văn bản của bạn định hướng, cho đến khi hiện ra một bức ảnh sạch. Hầu hết công cụ tạo ảnh và video hoạt động theo cách này.",
+  "sections": [
+    {
+      "h": "Tóm gọn: học cách lau sạch nhiễu, rồi lau sạch nhiễu thuần túy",
+      "body": [
+        "Hãy tưởng tượng bạn lấy một tấm ảnh và thêm vào một lượng nhỏ nhiễu ngẫu nhiên. Rồi thêm chút nữa, và nữa, cho đến khi sau hàng trăm bước chỉ còn lại một màn tuyết xám. Chiều này rất dễ. Máy tính làm được bằng một dòng toán.",
+        "Mô hình khuếch tán là một mạng nơ-ron được huấn luyện đi chiều ngược lại: nhìn một ảnh nhiễu và ước lượng phần nhiễu đã được thêm vào, để có thể trừ nó đi. Nếu mạng làm tốt việc này ở mọi mức nhiễu, bạn có thể bắt đầu từ nhiễu ngẫu nhiên thuần túy và lau sạch từng bước. Thứ còn lại cuối cùng là một bức ảnh mới chưa từng tồn tại, nhưng trông như thuộc về dữ liệu huấn luyện.",
+        "Ý tưởng được mô tả năm 2015 và trở nên khả thi cho ảnh chất lượng cao nhờ bài báo Denoising Diffusion Probabilistic Models (DDPM) năm 2020. Stable Diffusion, FLUX, Imagen, các mô hình kiểu DALL·E và hầu hết công cụ tạo video như Veo, Kling, Runway hay Seedance đều xây trên họ phương pháp này hoặc các biến thể gần, tính đến thời điểm viết bài."
+      ]
+    },
+    {
+      "h": "Huấn luyện: quá trình thuận và bộ dự đoán nhiễu",
+      "body": [
+        "Việc huấn luyện dùng hàng triệu ảnh, mỗi ảnh đi kèm một chú thích. Với mỗi ví dụ huấn luyện, hệ thống thực hiện cùng một bài tập nhỏ:",
+        {
+          "ol": [
+            "Chọn một ảnh thật và chú thích của nó, ví dụ một bức ảnh có chú thích “một chiếc xe đạp đỏ dựa vào bức tường gạch”.",
+            "Chọn một mức nhiễu ngẫu nhiên, từ gần như sạch đến gần như nhiễu thuần.",
+            "Trộn ảnh với nhiễu ngẫu nhiên ở mức đó. Đây là quá trình thuận (forward process). Bước này không cần học.",
+            "Đưa ảnh nhiễu, mức nhiễu và chú thích cho mạng, rồi yêu cầu nó dự đoán phần nhiễu đã thêm.",
+            "So sánh dự đoán với nhiễu thật và điều chỉnh trọng số của mạng để giảm sai số."
+          ]
+        },
+        "Lặp lại hàng tỷ lần, mạng học được ảnh nói chung trông ra sao ở mọi mức nhòe: đường viền thường nằm đâu, ánh sáng đổ lên da thế nào, xe đạp và tường gạch trông ra sao. Nó không bao giờ lưu ảnh huấn luyện thành tệp. Nó học các thống kê về chúng, và đó cũng là lý do nó có thể trộn những ý tưởng chưa từng được thấy cùng nhau.",
+        "Bản thân mạng thường là U-Net, một loại mạng xử lý ảnh. Nhiều mô hình mới hơn dùng transformer thay vào đó (thường gọi là diffusion transformer). Một số mô hình gần đây huấn luyện bằng flow matching, một phương pháp rất gần học một đường thẳng từ nhiễu đến ảnh. Các ý tưởng hướng đến người dùng bên dưới vẫn như nhau."
+      ]
+    },
+    {
+      "h": "Tạo ảnh: quá trình ngược, từng bước một",
+      "body": [
+        "Khi bạn nhấn Generate, mô hình không vẽ nét hay ghép các bộ phận. Nó chạy một vòng lặp:",
+        {
+          "code": "x = random_noise(seed)                  # start: pure static\nfor t in noise_levels_high_to_low:      # e.g. 30 steps\n    predicted_noise = model(x, t, prompt)\n    x = remove_some_noise(x, predicted_noise, t)\nimage = decode(x)                       # latent -> pixels",
+          "lang": "python"
+        },
+        "Các bước đầu quyết định hình khối lớn: chủ thể nằm đâu, đường chân trời, màu chính. Các bước giữa thêm hình dạng và ánh sáng. Các bước cuối thêm họa tiết mịn như tóc, vải và lỗ chân lông. Điều này giải thích nhiều hiệu ứng thực tế. Nếu bạn giảm số bước quá thấp, ảnh trông mịn và chưa hoàn thiện. Nếu bạn đổi seed, nhiễu ban đầu khác đi nên toàn bộ bố cục thay đổi.",
+        "Quy tắc biến dự đoán nhiễu thành một ảnh sạch hơn một chút gọi là sampler hay scheduler. DDPM dùng nhiều bước nhỏ. Các phương pháp sau như DDIM cho thấy có thể đi những bước lớn hơn, xác định, và đạt chất lượng tương tự với ít bước hơn nhiều. Vì vậy công cụ hiện đại chỉ cần vài chục bước chứ không phải một nghìn."
+      ]
+    },
+    {
+      "h": "Prompt văn bản định hướng ảnh thế nào",
+      "body": [
+        "Trước tiên prompt được bộ mã hóa văn bản (text encoder) biến thành các con số. Đó là một mô hình ngôn ngữ được huấn luyện để biểu diễn ý nghĩa của chú thích. Bên trong mạng khử nhiễu, cơ chế gọi là cross-attention cho phép mỗi vùng của ảnh nhìn vào các từ của prompt ở mọi bước. Vùng đang thành khuôn mặt sẽ chú ý đến những từ như “tàn nhang” hay “mỉm cười”.",
+        "Chỉ riêng như vậy, sự định hướng này yếu. Classifier-free guidance làm nó mạnh hơn. Ở mỗi bước, mô hình dự đoán nhiễu hai lần: một lần với prompt của bạn và một lần với prompt rỗng. Dự đoán cuối cùng dịch xa hơn theo hướng của phần chênh lệch. Guidance scale (thường gọi là CFG scale) quy định dịch xa đến đâu. Giá trị cao bám sát prompt hơn nhưng có thể trông gắt và quá bão hòa. Giá trị thấp trông tự nhiên hơn nhưng có thể bỏ qua một phần prompt.",
+        "Negative prompt, ở công cụ nào có hỗ trợ, thường thay thế prompt rỗng trong lần dự đoán thứ hai. Ảnh bị đẩy ra xa những từ đó, ví dụ “blurry, watermark, extra fingers”."
+      ]
+    },
+    {
+      "h": "Vì sao hầu hết mô hình làm việc trong không gian ẩn",
+      "body": [
+        "Khử nhiễu một ảnh độ phân giải đầy đủ hàng trăm lần sẽ rất chậm. Latent diffusion, phương pháp đứng sau Stable Diffusion, trước hết huấn luyện một autoencoder nén ảnh thành một lưới số nhỏ hơn nhiều và có thể giải nén ngược lại. Sau đó mô hình khuếch tán chỉ làm việc trên lưới nhỏ ấy. Ví dụ, với hệ số nén 8 trên mỗi cạnh, ảnh 512×512 thành lưới 64×64, tức ít vị trí cần xử lý hơn 64 lần.",
+        "Bước cuối của mọi lần tạo ảnh, bộ giải mã (decoder), biến lưới ẩn đã được làm sạch trở lại thành điểm ảnh. Khi ảnh có những mảng màu lạ hoặc khuôn mặt nhỏ bị nhòe, việc nén của bộ giải mã thường là một phần nguyên nhân, và đó là một lý do khuôn mặt và chữ nhỏ tốt hơn khi chủ thể chiếm nhiều khung hình hơn.",
+        "Khuếch tán cho video dùng cùng ý tưởng, thêm yếu tố thời gian: không gian ẩn là một chồng khung hình, và mạng khử nhiễu chúng cùng nhau để chuyển động nhất quán từ khung này sang khung khác."
+      ]
+    },
+    {
+      "h": "Các cài đặt phổ biến thực sự thay đổi gì",
+      "body": [
+        "Hầu hết công cụ tạo ảnh đều có một số điều khiển này. Tên gọi có thể khác nhau, nhưng cơ chế như nhau:",
+        {
+          "table": {
+            "head": [
+              "Cài đặt",
+              "Điều khiển gì",
+              "Tác dụng thực tế"
+            ],
+            "rows": [
+              [
+                "Seed",
+                "Nhiễu xuất phát",
+                "Cùng seed, cùng prompt và cùng cài đặt cho ra cùng một ảnh. Đổi seed để thấy bố cục mới."
+              ],
+              [
+                "Số bước (steps)",
+                "Số lần khử nhiễu",
+                "Quá ít thì ảnh mềm hoặc dở dang. Vượt một ngưỡng, thêm bước chỉ tốn thời gian mà ít cải thiện chất lượng."
+              ],
+              [
+                "Guidance / CFG scale",
+                "Mức độ ép tuân theo prompt",
+                "Cao thì bám prompt hơn nhưng có thể gắt. Thấp thì tự nhiên nhưng dễ lạc đề."
+              ],
+              [
+                "Sampler / scheduler",
+                "Quy tắc cho mỗi bước",
+                "Đổi tốc độ và họa tiết mịn. Giữ nguyên một sampler khi bạn thử các cài đặt khác."
+              ],
+              [
+                "Negative prompt",
+                "Thứ cần đẩy ra xa",
+                "Hữu ích để loại bỏ lỗi lặp lại. Danh sách dài hiếm khi giúp ích."
+              ],
+              [
+                "Strength (ảnh sang ảnh)",
+                "Lượng nhiễu thêm vào ảnh đầu vào của bạn",
+                "Thấp thì giữ bố cục của bạn. Cao thì chỉ giữ ý tưởng đại khái."
+              ],
+              [
+                "Độ phân giải / tỷ lệ khung hình",
+                "Kích thước lưới ẩn",
+                "Quá xa kích thước huấn luyện có thể gây chủ thể bị nhân đôi hoặc cơ thể bị kéo dãn."
+              ]
+            ]
+          }
+        },
+        "Cách thử tốt là cố định seed, rồi mỗi lần chỉ đổi một cài đặt. Nếu không, bạn không phân biệt được ảnh đẹp hơn là nhờ thay đổi của bạn hay do may mắn."
+      ]
+    },
+    {
+      "h": "Khuếch tán so với các cách tạo ảnh khác",
+      "body": [
+        "Khuếch tán không phải phương pháp duy nhất. Mô hình tự hồi quy (autoregressive) tạo ảnh như một chuỗi token nối tiếp nhau, giống cách mô hình ngôn ngữ viết văn bản. Một số mô hình đa phương thức gần đây dùng cách này. Ví dụ, ai-image-generator của cv.cm chạy Janus-Pro-1B, một mô hình tự hồi quy, ngay trong trình duyệt của bạn trên WebGPU ở 384 px. Cài đặt của nó có cảm giác khác: không có số bước để chỉnh theo nghĩa khuếch tán.",
+        "GAN (mạng đối nghịch tạo sinh) đời cũ tạo ảnh trong một lượt và nhanh, nhưng khó huấn luyện hơn và kém đa dạng hơn. Khuếch tán trở nên thống trị vì huấn luyện ổn định và bao quát nhiều loại ảnh. Cái giá chính là tốc độ, vì mỗi ảnh cần nhiều lượt chạy mạng. Các mô hình chưng cất (distilled) giảm số bước xuống còn một nhúm, đổi lại mất chút đa dạng."
+      ]
+    },
+    {
+      "h": "Điểm yếu thường gặp và cách xử lý",
+      "body": [
+        {
+          "ul": [
+            "Bàn tay và ngón tay: bàn tay xuất hiện ở nhiều tư thế và thường bị che một phần trong ảnh huấn luyện, nên mô hình học ra một trung bình nhòe. Hãy yêu cầu tư thế tay đơn giản, nhìn rõ, hoặc inpaint lại bàn tay sau.",
+            "Chữ trong ảnh: mô hình học chữ cái như hình dạng, không phải chính tả. Mô hình mới tốt hơn nhiều, nhưng hãy giữ chữ ngắn, đặt trong dấu ngoặc kép ở prompt và kiểm tra từng chữ. Với chữ quan trọng, hãy thêm sau trong trình chỉnh sửa.",
+            "Đếm số lượng: “năm quả táo” thường ra bốn hoặc sáu. Ít vật thể hơn thì đáng tin hơn.",
+            "Prompt bleed: màu sắc và thuộc tính lan giữa các chủ thể, ví dụ mũ đỏ khiến áo cũng đỏ. Hãy mô tả mỗi chủ thể trong một cụm rõ ràng, hoặc tạo riêng từng cái.",
+            "Sao chép: mô hình đôi khi tái tạo bản sao sát của những ảnh nổi tiếng hoặc lặp lại nhiều. Tránh dùng tên nghệ sĩ hay nhân vật thương hiệu trong prompt nếu bạn cần tác phẩm gốc."
+          ]
+        },
+        {
+          "note": "Đổi seed là cách sửa rẻ nhất. Hãy tạo nhiều ảnh cho mỗi prompt rồi chọn, thay vì viết lại prompt sau mỗi kết quả."
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Stable Diffusion có phải là mô hình khuếch tán nói chung không?",
+      "a": "Không. Mô hình khuếch tán là phương pháp chung. Stable Diffusion là một họ mô hình mở cụ thể dùng latent diffusion. Nhiều công cụ tạo ảnh khác cũng dùng khuếch tán."
+    },
+    {
+      "q": "Vì sao cùng một prompt mà mỗi lần ra một ảnh khác?",
+      "a": "Mỗi lần tạo bắt đầu từ nhiễu ngẫu nhiên khác nhau, do seed quyết định. Nếu bạn cố định seed và giữ nguyên mọi cài đặt khác, bạn sẽ nhận lại đúng ảnh đó trên cùng phần mềm."
+    },
+    {
+      "q": "Mô hình khuếch tán có lưu bản sao ảnh huấn luyện không?",
+      "a": "Chúng lưu các trọng số đã học, không phải tệp ảnh. Tuy nhiên, nghiên cứu cho thấy một số ảnh huấn luyện có thể bị trích xuất gần như nguyên vẹn, nhất là ảnh nổi tiếng hoặc lặp lại nhiều, nên việc sao chép sát vẫn có thể xảy ra trong số ít trường hợp."
+    },
+    {
+      "q": "Vì sao ảnh AI mất vài giây để tạo?",
+      "a": "Mô hình khuếch tán chạy mạng lớn của nó một lần cho mỗi bước, thường vài chục lần cho mỗi ảnh. Các mô hình nhanh hơn được huấn luyện để cần ít bước hơn, và chạy trong không gian ẩn đã nén cũng tiết kiệm thời gian."
+    },
+    {
+      "q": "CFG scale bao nhiêu là tốt?",
+      "a": "Tùy mô hình. Nhiều mô hình cũ chạy tốt quanh giữa khoảng giá trị của chúng, và một số mô hình chưng cất cần guidance rất thấp. Hãy bắt đầu với mặc định của công cụ rồi nhích từng bước nhỏ, với seed được cố định."
+    }
+  ]
+}
