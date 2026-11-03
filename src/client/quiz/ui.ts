@@ -199,7 +199,7 @@ export function mountQuiz(host: HTMLElement, locale: Locale, id: QuizId): void {
   );
 
   const group = quizGroupOf(id);
-  // Same group first, then the other fan-quiz groups for a fan quiz (Hogwarts is alone in its group), then the rest.
+  // Same group first, then the other fan-quiz groups for a fan quiz, then the rest.
   const fan = FAN_GROUPS.includes(group);
   const near = new Map(QUIZZES.map((q) => {
     const g = quizGroupOf(q);

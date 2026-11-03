@@ -540,6 +540,17 @@ describe("test pages: scoring", () => {
         }
       }
     }
+    // Friend roles and Avengers leave out a different pair of results in each question, never an "opposite" pair
+    // (the pairs that are never left out are three disjoint pairs covering all six results).
+    for (const id of ["friend-role", "avengers"] as const) {
+      const def = QUIZ_DEFS[id];
+      if (def.type !== "choice") throw new Error();
+      const left = def.items.map((item) => def.dims.filter((dim) => item.options.every((o) => !o[dim])).sort().join("+"));
+      expect(new Set(left).size, id).toBe(12);
+      const together = def.dims.flatMap((a, i) => def.dims.slice(i + 1).map((b) => [a, b].sort().join("+"))).filter((pair) => !left.includes(pair));
+      expect(together, id).toHaveLength(3);
+      expect(new Set(together.flatMap((pair) => pair.split("+"))).size, id).toBe(6);
+    }
     const avatar = QUIZ_DEFS["avatar-element"];
     if (avatar.type !== "choice") throw new Error();
     // A water/earth tie is settled by the answers, not by list order: across different tied answer sets both
