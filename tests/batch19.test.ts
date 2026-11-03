@@ -61,6 +61,11 @@ describe("calculator", () => {
     expect(calc("1 000")).toBe("syntax");
     expect(calc("sqrt 2 3")).toBe("syntax");
     expect(calc("2 π")).toBe("6.28318530717959");
+    expect(calc("sin -30")).toBe("−0.5");
+    expect(calc("cos -60 + 1")).toBe("1.5");
+    expect(calc("sin(1e-20)", "rad")).toBe("1e-20");
+    expect(calc("1/10^400")).toBe("overflow");
+    expect(calc("exp(1000)-exp(1000)")).toBe("overflow");
   });
   it("reports errors", () => {
     expect(calc("1÷0")).toBe("domain");
@@ -106,6 +111,8 @@ describe("fancy-text", () => {
     expect(fancy("ab!", "upsideDown")).toBe("¡qɐ");
     expect(fancy("a b", "strike")).toBe("a̶ b̶");
     expect(fancy("Hi 你好", "fullwidth")).toBe("Ｈｉ 你好");
+    expect(fancy("ßıſé", "squared")).toBe("ßıſé");
+    expect(fancy("ßa1", "circledNegative")).toBe("ß🅐❶");
     expect(fancy("x", "monospace")).toBe("𝚡");
   });
   it("keeps other characters and gives every style an output", () => {
@@ -158,6 +165,8 @@ describe("markdown", () => {
     expect(md("line one  \nline two")).toBe("<p>line one<br>\nline two</p>");
     expect(md("2019. A year")).toBe("<ol start=\"2019\">\n<li>A year</li>\n</ol>");
     expect(md("text\n2019. A year")).toBe("<p>text\n2019. A year</p>");
+    expect(md("foo\n| a | b |\n|---|---|\n| 1 | 2 |")).toBe("<p>foo</p>\n<table>\n<thead>\n<tr><th>a</th><th>b</th></tr>\n</thead>\n<tbody>\n<tr><td>1</td><td>2</td></tr>\n</tbody>\n</table>");
+    expect(md("1. a\n   - b")).toBe("<ol>\n<li>a\n<ul>\n<li>b</li>\n</ul></li>\n</ol>");
   });
   it("renders links and images safely", () => {
     expect(md("[cv](https://cv.cm \"Home\")")).toBe("<p><a href=\"https://cv.cm\" title=\"Home\">cv</a></p>");
@@ -184,6 +193,9 @@ describe("markdown", () => {
     expect(md("*a **b** c*")).toBe("<p><em>a <strong>b</strong> c</em></p>");
     expect(md("2 * 3 * 4")).toBe("<p>2 * 3 * 4</p>");
     expect(md("\\*not em\\*")).toBe("<p>*not em*</p>");
+    expect(md("Card ending ****1234")).toBe("<p>Card ending ****1234</p>");
+    expect(md("***foo")).toBe("<p>***foo</p>");
+    expect(md("a *b* **c** ***d***")).toBe("<p>a <em>b</em> <strong>c</strong> <strong><em>d</em></strong></p>");
     expect(md("**[link](https://a.b)**")).toBe("<p><strong><a href=\"https://a.b\">link</a></strong></p>");
   });
   it("survives hostile input", () => {
@@ -196,6 +208,8 @@ describe("markdown", () => {
     md("_a **b ".repeat(30000));
     md("`a ".repeat(60000));
     md("[a ".repeat(60000));
+    // A paragraph that uses up its scan budget leaves the next one alone.
+    expect(md("[a ".repeat(60000) + "\n\n`code` [ok](https://cv.cm)")).toContain("<p><code>code</code> <a href=\"https://cv.cm\">ok</a></p>");
     expect(Date.now() - start).toBeLessThan(4000);
   });
 });

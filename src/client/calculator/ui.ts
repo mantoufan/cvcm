@@ -223,9 +223,15 @@ function equals(): void {
     paint(true);
     return;
   }
+  // History shows the number Ans stood for, so reusing the line later gives the same result.
+  const mark = decimalMarkOf(locale());
+  const was = formatResult(ans, mark).replace("−", "-");
+  // Brackets when the number would run into a digit ("2Ans") or carries a sign or exponent.
+  const saved = expr.replace(/ans/gi, (m: string, at: number) =>
+    ans < 0 || /e/i.test(was) || /[\d.,]/.test(expr[at - 1] ?? "") || /[\d.,]/.test(expr[at + m.length] ?? "") ? `(${was})` : was);
   ans = r.value;
-  shown = formatResult(r.value, decimalMarkOf(locale()));
-  history.unshift({ expr, result: shown });
+  shown = formatResult(r.value, mark);
+  history.unshift({ expr: saved, result: shown });
   history = history.slice(0, MAX_HISTORY);
   save();
   paintHistory();

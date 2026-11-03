@@ -107,11 +107,17 @@ function indentOnTab(e: KeyboardEvent): void {
   const { selectionStart: s, selectionEnd: end, value } = inputEl;
   const lineStart = value.lastIndexOf("\n", s - 1) + 1;
   if (e.shiftKey) {
-    const m = /^ {1,2}/.exec(value.slice(lineStart));
+    const m = /^ {1,4}/.exec(value.slice(lineStart));
     if (!m) return;
     inputEl.setRangeText("", lineStart, lineStart + m[0].length, "preserve");
   } else {
-    inputEl.setRangeText("  ", s, end, "end");
+    // Under a list item, indent to where its text starts ("1. " is 3, "10. " is 4), which nests the new line.
+    const prevStart = value.lastIndexOf("\n", lineStart - 2) + 1;
+    const prev = lineStart > 0 ? value.slice(prevStart, lineStart - 1) : "";
+    const item = /^(\s*)([-*+]|\d{1,9}[.)])(\s+)/.exec(prev);
+    const before = value.slice(lineStart, s);
+    const width = item && /^ *$/.test(before) ? Math.max(2, item[0].length - before.length) : 2;
+    inputEl.setRangeText(" ".repeat(width), s, end, "end");
   }
   schedule();
 }

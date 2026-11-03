@@ -91,6 +91,14 @@ function alignOf(cell: string): Align {
   return l && r ? "center" : r ? "right" : l ? "left" : null;
 }
 
+/** Whether lines i and i + 1 are a table's header and delimiter rows (same number of cells). */
+function startsTable(lines: string[], i: number): boolean {
+  const head = lines[i];
+  const delim = lines[i + 1];
+  if (!head?.includes("|") || delim == null || !delim.includes("-") || !TABLE_DELIM.test(delim)) return false;
+  return splitRow(head).length === splitRow(delim).length;
+}
+
 /** Whether a line starts a block that ends the paragraph above it. */
 function interrupts(line: string): boolean {
   if (FENCE.test(line) || ATX.test(line) || HR.test(line) || QUOTE.test(line)) return true;
@@ -100,15 +108,14 @@ function interrupts(line: string): boolean {
 }
 
 /**
- * Steps left for the forward scans that look for a closing `*`, `]` or backtick. Unclosed delimiters would make those
- * scans quadratic (a pasted "*a *a *a…" froze the tab), so once a document has used its budget the remaining
- * delimiters are read as plain text. Ordinary documents use a tiny fraction of it.
+ * Steps left for the forward scans that look for a closing `*`, `]` or backtick in one paragraph (or heading or cell).
+ * Unclosed delimiters would make those scans quadratic (a pasted "*a *a *a…" froze the tab), so each paragraph gets a
+ * budget in proportion to its length; past it, that paragraph's remaining delimiters are read as plain text. Ordinary
+ * text uses a tiny fraction of it, and other paragraphs are not affected.
  */
-const SCAN_BUDGET = 4_000_000;
-let budget = SCAN_BUDGET;
+let budget = 0;
 
 export function parseMarkdown(src: string): Block[] {
-  budget = SCAN_BUDGET;
   const text = src.slice(0, MAX_MARKDOWN).replace(/\r\n?/g, "\n").replace(/^﻿/, "").replace(/\0/g, "�");
   return blocks(text.split("\n").map(expandTabs), 0);
 }
@@ -127,15 +134,16 @@ function blocks(lines: string[], depth: number): Block[] {
       const indent = indentOf(line);
       const mark = fence[1];
       const body: string[] = [];
+      const close = new RegExp(`^ {0,3}${mark[0] === "`" ? "`" : "~"}{${mark.length},}[ \\t]*$`);
+      const strip = new RegExp(`^ {0,${indent}}`);
       i++;
       while (i < lines.length) {
-        const close = new RegExp(`^ {0,3}${mark[0] === "`" ? "`" : "~"}{${mark.length},}[ \\t]*$`);
         if (close.test(lines[i])) {
           i++;
           break;
         }
         // Lines inside a fence opened with an indent lose up to that much indent.
-        body.push(lines[i].replace(new RegExp(`^ {0,${indent}}`), ""));
+        body.push(lines[i].replace(strip, ""));
         i++;
       }
       out.push({ t: "code", lang: fence[2], text: body.join("\n") });
@@ -181,10 +189,10 @@ function blocks(lines: string[], depth: number): Block[] {
       continue;
     }
     // A table: a header row, then a delimiter row with the same number of cells.
-    if (line.includes("|") && i + 1 < lines.length && TABLE_DELIM.test(lines[i + 1]) && lines[i + 1].includes("-")) {
+    if (startsTable(lines, i)) {
       const head = splitRow(line);
       const delim = splitRow(lines[i + 1]);
-      if (head.length === delim.length) {
+      {
         const rows: Inline[][][] = [];
         i += 2;
         while (i < lines.length && !blank(lines[i]) && !interrupts(lines[i])) {
@@ -207,7 +215,7 @@ function blocks(lines: string[], depth: number): Block[] {
         i++;
         break;
       }
-      if (interrupts(lines[i])) break;
+      if (interrupts(lines[i]) || startsTable(lines, i)) break;
       // Keep trailing spaces: two at the end of a line make a line break.
       para.push(lines[i].replace(/^[ \t]+/, ""));
       i++;
@@ -444,7 +452,7 @@ function closeEmphasis(s: string, from: number, delim: string, failed: Map<strin
         continue;
       }
     }
-    if (s.startsWith(delim, j) && !isSpace(s[j - 1]) && j > from) {
+    if (s.startsWith(delim, j) && !isSpace(s[j - 1]) && j > from && s[j - 1] !== delim[0] && s[j + delim.length] !== delim[0]) {
       // "_" closes only at the end of a word, so snake_case_names stay as typed.
       if (delim[0] === "_" && isWord(s[j + delim.length])) continue;
       return j;
@@ -459,6 +467,7 @@ const MAX_INLINE_DEPTH = 16;
 export function inline(src: string, depth = 0, inLink = false): Inline[] {
   const out: Inline[] = [];
   const failed = new Map<string, number>();
+  if (depth === 0) budget = 20 * src.length + 20_000;
   let buf = "";
   const flush = () => {
     if (buf) out.push({ t: "text", v: buf });
@@ -576,11 +585,14 @@ export function inline(src: string, depth = 0, inLink = false): Inline[] {
       const canOpen = !isSpace(s[i + run]) && !(c === "_" && isWord(s[i - 1]));
       if (canOpen) {
         // "~~text~~" is strikethrough; "***text***" is bold italic.
+        // A run of four or more ("****1234") is text, and a run only closes with a run of its own length.
         const tries: Array<{ delim: string; make: (kids: Inline[]) => Inline }> =
           c === "~"
             ? run === 2 ? [{ delim: "~~", make: (kids) => ({ t: "del", kids }) }] : []
-            : run >= 3
-              ? [{ delim: c.repeat(3), make: (kids) => ({ t: "strong", kids: [{ t: "em", kids }] }) }, { delim: c + c, make: (kids) => ({ t: "strong", kids }) }, { delim: c, make: (kids) => ({ t: "em", kids }) }]
+            : run > 3
+              ? []
+              : run === 3
+              ? [{ delim: c.repeat(3), make: (kids) => ({ t: "strong", kids: [{ t: "em", kids }] }) }]
               : run === 2
                 ? [{ delim: c + c, make: (kids) => ({ t: "strong", kids }) }]
                 : [{ delim: c, make: (kids) => ({ t: "em", kids }) }];

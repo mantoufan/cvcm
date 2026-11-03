@@ -50,7 +50,10 @@ describe("calculator ui", () => {
     q<HTMLButtonElement>("[data-key='@eq']").click();
     q<HTMLButtonElement>("[data-key='3']").click();
     expect(expr.value).toBe("3");
-    expect(JSON.parse(window.localStorage.getItem("cvcm.calculator.v1")!)).toHaveLength(2);
+    const saved = JSON.parse(window.localStorage.getItem("cvcm.calculator.v1")!);
+    expect(saved).toHaveLength(2);
+    // History keeps the number Ans stood for, so the line still gives its own result later.
+    expect(saved[0]).toEqual({ expr: "42+8", result: "50" });
   });
   it("switches angle mode, deletes function names whole and reports errors only after =", () => {
     mountCalculator(host);
@@ -80,6 +83,7 @@ describe("notepad ui", () => {
     mountNotepad(host);
     const text = q<HTMLTextAreaElement>("[data-field=note]");
     type(text, "Shopping\nmilk eggs");
+    vi.advanceTimersByTime(200);
     expect(q("[data-out=stats]").textContent).toContain("3");
     vi.advanceTimersByTime(500);
     expect(JSON.parse(window.localStorage.getItem("cvcm.notepad.v1")!).text).toBe("Shopping\nmilk eggs");

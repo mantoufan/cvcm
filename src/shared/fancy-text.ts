@@ -88,7 +88,11 @@ function circled(ch: string): string {
   return ch;
 }
 
+/** A–Z or a–z only: toUpperCase() would also turn ß into "SS" and ı, ſ into I, S. */
+const ASCII_LETTER = /^[A-Za-z]$/;
+
 function circledNegative(ch: string): string {
+  if (!ASCII_LETTER.test(ch) && !/^[0-9]$/.test(ch)) return ch;
   const c = ch.toUpperCase().charCodeAt(0);
   if (c >= 65 && c <= 90) return String.fromCodePoint(0x1f150 + c - 65);
   if (ch === "0") return "⓿";
@@ -97,6 +101,7 @@ function circledNegative(ch: string): string {
 }
 
 function squared(ch: string): string {
+  if (!ASCII_LETTER.test(ch)) return ch;
   const c = ch.toUpperCase().charCodeAt(0);
   if (c >= 65 && c <= 90) return String.fromCodePoint(0x1f130 + c - 65);
   return ch;

@@ -128,11 +128,22 @@ function trig(fn: "sin" | "cos" | "tan", x: number, mode: AngleMode): number {
     x = (x * Math.PI) / 180;
   }
   const v = Math[fn](x);
-  // In radians π is inexact, so sin(π) comes out as 1.2e-16: show the zero it stands for.
-  return Math.abs(v) < 1e-15 ? 0 : v;
+  // In radians π is inexact, so sin(π) comes out as 1.2e-16: show the zero it stands for (but keep sin of a tiny angle).
+  return Math.abs(v) < 1e-15 && Math.abs(x) > 1e-6 ? 0 : v;
+}
+
+/** A step that overflowed (10^400, exp(1000)) is an error, even if a later step would bring it back to a finite 0. */
+function fin(v: number): number {
+  if (Number.isNaN(v)) throw new Fail("domain");
+  if (!Number.isFinite(v)) throw new Fail("overflow");
+  return v;
 }
 
 function apply(fn: Func, x: number, mode: AngleMode): number {
+  return fin(applyRaw(fn, x, mode));
+}
+
+function applyRaw(fn: Func, x: number, mode: AngleMode): number {
   const toAngle = (r: number) => (mode === "deg" ? (r * 180) / Math.PI : r);
   switch (fn) {
     case "sin":
@@ -200,7 +211,7 @@ export function evaluate(src: string, mode: AngleMode = "deg", ans = 0, decimal:
     while (isOp(peek(), "+") || isOp(peek(), "-")) {
       const op = (toks[pos++] as { v: string }).v;
       const r = product();
-      v = op === "+" ? v + r : v - r;
+      v = fin(op === "+" ? v + r : v - r);
     }
     return v;
   });
@@ -213,11 +224,11 @@ export function evaluate(src: string, mode: AngleMode = "deg", ans = 0, decimal:
         pos++;
         const r = unary();
         if (t!.k === "op" && t!.v === "/" && r === 0) throw new Fail("domain");
-        v = t!.k === "op" && t!.v === "*" ? v * r : v / r;
+        v = fin(t!.k === "op" && t!.v === "*" ? v * r : v / r);
       } else if (startsAtom(t)) {
         // Two bare numbers in a row ("1.2.3", "1 000") are a typo, not a product.
         if (t!.k === "num" && toks[pos - 1]?.k === "num") throw new Fail("syntax");
-        v *= power();
+        v = fin(v * power());
       } else {
         return v;
       }
@@ -244,7 +255,7 @@ export function evaluate(src: string, mode: AngleMode = "deg", ans = 0, decimal:
       // A negative base with a fractional power has no real result.
       if (base < 0 && !Number.isInteger(exp)) throw new Fail("domain");
       if (base === 0 && exp < 0) throw new Fail("domain");
-      return base ** exp;
+      return fin(base ** exp);
     }
     return base;
   };
@@ -287,10 +298,19 @@ export function evaluate(src: string, mode: AngleMode = "deg", ans = 0, decimal:
 
   /** The argument of a function written without brackets: a number with its implicit factors (2π), not the rest of the sum. */
   const postfixChain = (): number => {
+    // "sin -30" and "log +2": a sign right after the function name belongs to its argument.
+    if (isOp(peek(), "-")) {
+      pos++;
+      return -postfixChain();
+    }
+    if (isOp(peek(), "+")) {
+      pos++;
+      return postfixChain();
+    }
     let v = power();
     while (startsAtom(peek()) && peek()!.k !== "fn") {
       if (peek()!.k === "num" && toks[pos - 1]?.k === "num") throw new Fail("syntax");
-      v *= power();
+      v = fin(v * power());
     }
     return v;
   };

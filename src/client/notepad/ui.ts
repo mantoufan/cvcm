@@ -1,6 +1,7 @@
 import { copyWithFlash } from "../copy";
 import { downloadBlob, h } from "../dom";
 import { locale, t } from "../i18n";
+import { debounce } from "../session";
 import { appHref } from "../../shared/path";
 import { countText } from "../../shared/word-count";
 import { MAX_NOTE, noteFileName, parseNote } from "../../shared/notepad";
@@ -25,6 +26,8 @@ let undoTimer = 0;
 /** The note before Clear, offered back for a few seconds. */
 let undoText: string | null = null;
 let storageOk = true;
+/** Counting a long note on every key would lag typing, so the counts follow a moment later. */
+const scheduleStats = debounce(() => paintStats(), 150);
 
 export function mountNotepad(host: HTMLElement): void {
   storageOk = true;
@@ -38,7 +41,7 @@ export function mountNotepad(host: HTMLElement): void {
     placeholder: t("notepad.placeholder"),
     onInput: () => {
       dropUndo();
-      paintStats();
+      scheduleStats();
       scheduleSave();
     },
   });
