@@ -15,7 +15,7 @@ import { execFileSync } from "node:child_process";
 import { createHash } from "node:crypto";
 import { copyFile, mkdir, readFile, stat, writeFile } from "node:fs/promises";
 import { dirname, join, resolve } from "node:path";
-import { AI_MODELS, aiContentType, isOwnExport, mirrorFiles, modelFileUrl, type AiModelId } from "../../src/shared/ai-models";
+import { AI_MODELS, ORT_VERSION, aiContentType, isOwnExport, mirrorFiles, modelFileUrl, type AiModelId } from "../../src/shared/ai-models";
 import { presignS3Put, type S3Config } from "../../src/s3-sign";
 
 const args = process.argv.slice(2);
@@ -71,9 +71,8 @@ async function stage(): Promise<string[]> {
       await download(modelFileUrl(id, file, null, "https://cv.cm"), dest);
     }
   }
-  const ortPkg = JSON.parse(await readFile(join(root, "node_modules/onnxruntime-web/package.json"), "utf8")) as { version: string };
   for (const file of ORT_FILES) {
-    const rel = `ort/${ortPkg.version}/${file}`;
+    const rel = `ort/${ORT_VERSION}/${file}`;
     rels.push(rel);
     await mkdir(join(out, dirname(rel)), { recursive: true });
     await copyFile(join(root, "node_modules/onnxruntime-web/dist", file), join(out, rel));
@@ -89,7 +88,7 @@ async function publish(rels: string[]): Promise<void> {
   const cfg: S3Config = { accessKey, secret, host: "s3.cv.cm", bucket: "files", region: "us-east-1" };
   for (const rel of rels) {
     // Only our own exports live on s3.cv.cm; the Worker fetches every other file from its publisher (upstreamUrl).
-    if (!rel.startsWith("models/cvcm/")) continue;
+    if (!rel.startsWith("models/") || !isOwnExport(rel.slice("models/".length))) continue;
     const path = join(out, rel);
     const bytes = await size(path);
     const key = `ai/${rel}`;

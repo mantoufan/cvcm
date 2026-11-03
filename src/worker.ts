@@ -88,7 +88,7 @@ function s3Config(env: Env): S3Config | null {
 }
 
 export default {
-  async fetch(request: Request, env: Env, ctx?: ExecutionContextLike): Promise<Response> {
+  async fetch(request: Request, env: Env): Promise<Response> {
     const url = new URL(request.url);
     // CORS preflight for the agent discovery files, before the www redirect: browsers reject redirected preflights.
     if (request.method === "OPTIONS" && isAgentDocPath(url.pathname)) {
@@ -136,7 +136,7 @@ export default {
     if (emu) return withHeaders(emu, path);
     const cover = await proxyCovers(path, request.method);
     if (cover) return withHeaders(cover, path);
-    const ai = await proxyAi(path, request.method, ctx);
+    const ai = await proxyAi(path, request.method);
     if (ai) return withHeaders(ai, path);
 
     if (!STATIC_FILE.test(path)) {
@@ -442,7 +442,7 @@ async function proxyEmu(pathname: string, method: string): Promise<Response | nu
   return new Response(upstream.body, { status: 200, headers });
 }
 
-async function proxyAi(pathname: string, method: string, ctx?: ExecutionContextLike): Promise<Response | null> {
+async function proxyAi(pathname: string, method: string): Promise<Response | null> {
   const match = AI_PROXY.exec(pathname);
   if (!match) return null;
   if (method !== "GET" && method !== "HEAD") {
@@ -460,25 +460,34 @@ async function proxyAi(pathname: string, method: string, ctx?: ExecutionContextL
   // fetch cache would never hit again. Every path names a pinned revision, so a year is safe.
   const key = new Request(`https://cv.cm${pathname}`);
   const cache = typeof caches === "undefined" ? null : (caches as unknown as { default: Cache }).default;
-  const hit = method === "GET" ? await cache?.match(key) : undefined;
+  const hit = await cache?.match(key);
   if (hit) return aiResponse(hit, rest, method);
   const upstream = await fetch(source, { method });
-  if (upstream.status === 404 || upstream.status === 403) return aiNotFound(method);
+  // Hugging Face answers 401 for a missing or gated repo: all three mean the file is not there.
+  if (upstream.status === 401 || upstream.status === 403 || upstream.status === 404) return aiNotFound(method);
   // Rate limits and outages are not "missing file": a retry may work, so never a cached 404.
   if (!upstream.ok) return new Response(null, { status: 502, headers: { "Cache-Control": "no-store" } });
-  const response = aiResponse(upstream, rest, method);
-  if (method === "GET" && cache && ctx) {
-    // Files over the cache's 512 MB limit (two Janus sessions) are refused by put(); they stream through each time.
-    const size = Number(upstream.headers.get("Content-Length"));
-    if (!size || size < 500_000_000) {
-      const stored = new Response(response.clone().body, { headers: { ...Object.fromEntries(response.headers), "Cache-Control": "public, max-age=31536000, immutable" } });
-      ctx.waitUntil(cache.put(key, stored).catch(() => {}));
+  const size = Number(upstream.headers.get("Content-Length"));
+  if (method === "GET" && cache && size > 0 && size <= CACHE_MAX_BYTES) {
+    // Stored whole, then served from the cache: no tee, so a slow visitor never makes the isolate buffer the file.
+    try {
+      await cache.put(key, new Response(upstream.body, {
+        headers: { "Content-Type": aiContentType(rest), "Content-Length": String(size), "Cache-Control": "public, max-age=31536000, immutable" },
+      }));
+      const stored = await cache.match(key);
+      if (stored) return aiResponse(stored, rest, method);
+    } catch (err) {
+      console.warn("ai cache put failed", pathname, err);
     }
+    // The body went to the failed put: fetch it again for the visitor.
+    return aiResponse(await fetch(source), rest, method);
   }
-  return response;
+  // Larger files (Whisper, Janus) stream through each time.
+  return aiResponse(upstream, rest, method);
 }
 
-type ExecutionContextLike = { waitUntil(promise: Promise<unknown>): void };
+/** Files up to this size are cached whole at the edge; bigger ones stream from the publisher. */
+const CACHE_MAX_BYTES = 100_000_000;
 
 function aiNotFound(method: string): Response {
   // A real 404: Transformers.js probes optional files and must not get the SPA's index.html.

@@ -277,20 +277,28 @@ export function isOwnExport(repo: string): boolean {
  * (Hugging Face, or the model's `source`), and the ONNX Runtime build from the npm CDN, pinned by version.
  */
 export function upstreamUrl(kind: "models" | "ort", rest: string): string | null {
-  if (kind === "ort") {
-    // Only the ONNX Runtime build this site bundles.
-    const m = /^([0-9][0-9A-Za-z.-]*)\/(ort-wasm-simd-threaded\.asyncify\.(?:mjs|wasm))$/.exec(rest);
-    return m && m[1] === ORT_VERSION ? `https://cdn.jsdelivr.net/npm/onnxruntime-web@${m[1]}/dist/${m[2]}` : null;
-  }
+  if (kind === "ort") return ORT_FILES.has(rest) ? `https://cdn.jsdelivr.net/npm/onnxruntime-web@${rest.replace("/", "/dist/")}` : null;
+  return (upstreams ??= catalogUpstreams()).get(rest) ?? null;
+}
+
+/** The ONNX Runtime files the AI worker loads, for the bundled version only. */
+const ORT_FILES: ReadonlySet<string> = new Set(
+  ["ort-wasm-simd-threaded.asyncify.mjs", "ort-wasm-simd-threaded.asyncify.wasm"].map((f) => `${ORT_VERSION}/${f}`),
+);
+
+let upstreams: Map<string, string> | null = null;
+
+/** `{repo}/{revision}/{file}` → where it is fetched from, for every catalog file. */
+function catalogUpstreams(): Map<string, string> {
+  const map = new Map<string, string>();
   for (const id of Object.keys(AI_MODELS) as AiModelId[]) {
     const { repo, revision } = AI_MODELS[id];
-    const prefix = `${repo}/${revision}/`;
-    if (!rest.startsWith(prefix)) continue;
-    const file = rest.slice(prefix.length);
-    if (!mirrorFiles(id).includes(file)) return null;
-    return isOwnExport(repo) ? `https://s3.cv.cm/files/ai/models/${rest}` : modelFileUrl(id, file, null, "https://cv.cm");
+    for (const file of mirrorFiles(id)) {
+      const rest = `${repo}/${revision}/${file}`;
+      map.set(rest, isOwnExport(repo) ? `https://s3.cv.cm/files/ai/models/${rest}` : modelFileUrl(id, file, null, "https://cv.cm"));
+    }
   }
-  return null;
+  return map;
 }
 
 /** Content-Type for an /ai/ file, by extension (publishers label .mjs / .wasm / .json differently). */

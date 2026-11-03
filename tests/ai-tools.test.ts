@@ -181,6 +181,35 @@ describe("AI page headers", () => {
     expect(upstreamUrl("ort", `${ORT_VERSION}/ort-wasm-simd-threaded.asyncify.mjs`)).toContain(`onnxruntime-web@${ORT_VERSION}/dist/`);
     expect(upstreamUrl("ort", "1.22.0/ort-wasm-simd-threaded.asyncify.mjs")).toBeNull();
   });
+
+  it("caches small files whole under the stable cv.cm URL and serves later requests (and HEAD) from it", async () => {
+    const store = new Map<string, Response>();
+    vi.stubGlobal("caches", {
+      default: {
+        match: async (req: Request) => store.get(req.url)?.clone(),
+        put: async (req: Request, res: Response) => {
+          store.set(req.url, new Response(await res.arrayBuffer(), { headers: res.headers }));
+        },
+      },
+    });
+    let fetches = 0;
+    vi.stubGlobal("fetch", async () => {
+      fetches += 1;
+      return new Response("{\"a\":1}", { headers: { "Content-Length": "7" } });
+    });
+    const path = `/ai/models/onnx-community/depth-anything-v2-small/${AI_MODELS.depth.revision}/config.json`;
+    const get = (method = "GET") => worker.fetch(new Request(`https://cv.cm${path}`, { method }), { ASSETS: html });
+    expect(await (await get()).text()).toBe("{\"a\":1}");
+    expect(store.has(`https://cv.cm${path}`)).toBe(true);
+    expect(await (await get()).text()).toBe("{\"a\":1}");
+    const head = await get("HEAD");
+    expect(head.headers.get("Content-Length")).toBe("7");
+    expect(fetches).toBe(1);
+    // Hugging Face's answer for a missing or gated repo is a 401: a real 404 here.
+    store.clear();
+    vi.stubGlobal("fetch", async () => new Response("", { status: 401 }));
+    expect((await get()).status).toBe(404);
+  });
 });
 
 describe("photo to video (/v/)", () => {
