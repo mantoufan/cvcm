@@ -97,5 +97,9 @@ describe("lcm-gcf ui", () => {
     input.dispatchEvent(new Event("input"));
     vi.advanceTimersByTime(200);
     expect(q("[data-out=error]").textContent).toBe("Each number can have up to 18 digits. Not a positive whole number: x");
+    input.value = "1,500, 2,500";
+    input.dispatchEvent(new Event("input"));
+    vi.advanceTimersByTime(200);
+    expect(q("[data-out=error]").textContent).toMatch(/^Commas separate numbers/);
   });
 });

@@ -109,7 +109,8 @@ function paint(): void {
   outEl.append(...rows.flatMap(([k, v]) => [h("dt", null, k), h("dd", null, v)]));
   const list = divisors(f);
   divisorsEl.textContent = list.join(", ") + (count > list.length ? ` … ${t("factors.more", { n: count - list.length, shown: MAX_LISTED_DIVISORS })}` : "");
-  if (count > list.length) pairsEl.textContent = t("factors.pairsTooMany");
+  // Pairs need only the divisors up to √n, the smallest half of them.
+  if (Math.ceil(count / 2) > list.length) pairsEl.textContent = t("factors.pairsTooMany");
   else pairsEl.textContent = factorPairs(n, list).map(([a, b]) => `${a} × ${b}`).join(", ");
 }
 

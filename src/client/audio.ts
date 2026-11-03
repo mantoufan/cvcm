@@ -3,15 +3,9 @@
  * Returns null where Web Audio is missing or blocked.
  */
 export function armAudio(current: AudioContext | null): AudioContext | null {
-  try {
-    const Ctx = window.AudioContext || (window as unknown as { webkitAudioContext?: typeof AudioContext }).webkitAudioContext;
-    if (!Ctx) return current;
-    const ctx = current ?? new Ctx();
-    if (ctx.state === "suspended") void ctx.resume().catch(() => undefined);
-    return ctx;
-  } catch {
-    return current;
-  }
+  if (!current) return newAudioContext() ?? current;
+  if (current.state === "suspended") void current.resume().catch(() => undefined);
+  return current;
 }
 
 /** A new AudioContext with options (such as the microphone's sample rate), with the webkit fallback; null when missing. */

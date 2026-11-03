@@ -89,7 +89,8 @@ function faceName(face: CoinFace): string {
 
 function flip(): void {
   if (spinning || !coinEl) return;
-  const n = Number(countEl?.value) || 1;
+  const picked = Number(countEl?.value);
+  const n = (FLIP_COUNTS as readonly number[]).includes(picked) ? picked : 1;
   const faces = flipFairCoins(n);
   const last = faces[faces.length - 1]!;
   const land = () => {
@@ -148,8 +149,7 @@ function paint(): void {
     [t("coinFlip.current"), streak(streaks.current)],
   ];
   statsEl.replaceChildren(...rows.flatMap(([k, v]) => [h("dt", null, k), h("dd", null, v)]));
-  const shown = history;
-  stripEl.textContent = shown.length ? shown.map((f) => t(f === "heads" ? "coinFlip.headsShort" : "coinFlip.tailsShort")).join(" ") : t("coinFlip.noFlips");
+  stripEl.textContent = history.length ? history.map((f) => t(f === "heads" ? "coinFlip.headsShort" : "coinFlip.tailsShort")).join(" ") : t("coinFlip.noFlips");
 }
 
 function onKey(e: KeyboardEvent): void {

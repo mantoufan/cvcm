@@ -10178,18 +10178,18 @@
     "copied": "Đã sao chép",
     "copyFailed": "Sao chép thất bại",
     "reset": "Đặt lại",
-    "heads": "Sấp",
-    "tails": "Ngửa",
-    "headsShort": "S",
-    "tailsShort": "N",
+    "heads": "Ngửa",
+    "tails": "Sấp",
+    "headsShort": "N",
+    "tailsShort": "S",
     "landed": "{face}!",
-    "landedMany": "{n} đồng xu: {heads} sấp, {tails} ngửa.",
+    "landedMany": "{n} đồng xu: {heads} ngửa, {tails} sấp.",
     "total": "Tổng số đồng xu",
     "longest": "Chuỗi dài nhất",
     "current": "Chuỗi hiện tại",
     "streakValue": "{n} × {face}",
     "noFlips": "Chưa tung lần nào.",
-    "copyText": "Tung đồng xu: {heads} sấp, {tails} ngửa trong tổng số {total}.",
+    "copyText": "Tung đồng xu: {heads} ngửa, {tails} sấp trong tổng số {total}.",
     "hint": "Bấm Space hoặc Enter để tung."
   },
   "guitarTuner": {
@@ -10290,6 +10290,7 @@
     "needTwo": "Hãy gõ ít nhất hai số.",
     "tooMany": "Tối đa {n} số.",
     "tooBig": "Mỗi số có tối đa {n} chữ số.",
-    "invalid": "Không phải số nguyên dương: {list}"
+    "invalid": "Không phải số nguyên dương: {list}",
+    "commaNote": "Dấu phẩy dùng để tách các số."
   }
 }

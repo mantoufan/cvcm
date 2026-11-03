@@ -273,6 +273,8 @@ function stop(): void {
 
 function analyse(): void {
   if (!analyser || !buf || !audio) return;
+  // A context made after the permission prompt (the sample-rate retry) may start suspended.
+  if (audio.state === "suspended") void audio.resume().catch(() => undefined);
   if (typeof analyser.getFloatTimeDomainData === "function") analyser.getFloatTimeDomainData(buf);
   else return;
   const { min, max } = searchRange(tuning(), a4());

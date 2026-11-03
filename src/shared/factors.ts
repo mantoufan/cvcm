@@ -21,7 +21,8 @@ export function thousandsMarkFor(loc: string): ThousandsMark {
  * English, or 1,5 in Spanish, are rejected instead of being read as 45, 4500 or 15.
  */
 export function parseWhole(raw: string, thousands: ThousandsMark = ","): { ok: true; n: bigint } | { ok: false; error: ParseError } {
-  let s = raw.trim().replace(/[\s\u00a0\u202f_]/g, "");
+  // NFKC turns full-width IME digits (３６０) into ASCII.
+  let s = raw.normalize("NFKC").trim().replace(/[\s\u00a0\u202f_]/g, "");
   if (!s) return { ok: false, error: "empty" };
   const mark = thousands === "," ? "," : "\\.";
   if (new RegExp(`^[-−]?\\d{1,3}([${mark}'’])\\d{3}(\\1\\d{3})*$`).test(s)) s = s.replace(/[,.'’]/g, "");
@@ -37,7 +38,7 @@ export function parseWhole(raw: string, thousands: ThousandsMark = ","): { ok: t
  * 345); where the thousands mark is "." (es, id, vi), 12.345 inside one entry is still twelve thousand.
  */
 export function splitNumbers(raw: string): string[] {
-  return raw.split(/[\s,;，、；]+/).map((x) => x.trim()).filter(Boolean);
+  return raw.normalize("NFKC").split(/[\s,;，、；]+/).map((x) => x.trim()).filter(Boolean);
 }
 
 function modPow(base: bigint, exp: bigint, mod: bigint): bigint {

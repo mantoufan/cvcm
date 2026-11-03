@@ -70,23 +70,19 @@ function paint(): void {
   last = "";
   errorEl.textContent = "";
   const parts = splitNumbers(inputEl.value);
-  // Commas always split the list, so only "." can group thousands inside one entry (es, id, vi).
-  const mark = thousandsMarkFor(locale()) === "." ? "." : ",";
+  // Commas always split the list; "." still groups thousands inside one entry in es, id and vi.
+  const mark = thousandsMarkFor(locale());
   const nums: bigint[] = [];
   const bad: string[] = [];
   let tooBig = false;
   for (const p of parts) {
     const r = parseWhole(p, mark);
     if (r.ok && r.n > 0n) nums.push(r.n);
-    else {
-      if (!r.ok && r.error === "tooBig") tooBig = true;
-      bad.push(p);
-    }
+    else if (!r.ok && r.error === "tooBig") tooBig = true;
+    else bad.push(p);
   }
-  if (bad.length) {
-    errorEl.textContent = tooBig ? t("lcmGcf.tooBig", { n: MAX_DIGITS }) : "";
-    const notWhole = bad.filter((b) => { const r = parseWhole(b, mark); return r.ok || r.error !== "tooBig"; });
-    if (notWhole.length) errorEl.textContent = `${errorEl.textContent} ${t("lcmGcf.invalid", { list: notWhole.slice(0, 5).join(", ") })}`.trim();
+  if (bad.length || tooBig) {
+    errorEl.textContent = [tooBig ? t("lcmGcf.tooBig", { n: MAX_DIGITS }) : "", bad.length ? t("lcmGcf.invalid", { list: bad.slice(0, 5).join(", ") }) : ""].filter(Boolean).join(" ");
     return;
   }
   if (nums.length > MAX_NUMBERS) {
@@ -97,6 +93,8 @@ function paint(): void {
     errorEl.textContent = t("lcmGcf.needTwo");
     return;
   }
+  // "1,500, 2,500" in English: the commas split it into 1, 500, 2, 500. Say so next to the answer.
+  if (mark === "," && /\d,\d{3}(?!\d)/.test(inputEl.value.normalize("NFKC"))) errorEl.textContent = t("lcmGcf.commaNote");
   const g = nums.reduce((a, b) => gcd(a, b));
   const l = nums.reduce((a, b) => lcm(a, b));
   const list = nums.join(", ");

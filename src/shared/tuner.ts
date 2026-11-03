@@ -81,8 +81,17 @@ let scratchC = new Float64Array(0);
  * YIN pitch detection (de Cheveigné & Kawahara, 2002): cumulative mean normalised difference, first dip below 0.15,
  * parabolic interpolation. Returns null for silence or noise with no clear period.
  */
-export function detectPitch(buf: ArrayLike<number>, sampleRate: number, minFreq = 27.5, maxFreq = 2100): Pitch | null {
-  if (rms(buf) < MIN_LEVEL) return null;
+export function detectPitch(input: ArrayLike<number>, rate: number, minFreq = 27.5, maxFreq = 2100): Pitch | null {
+  if (rms(input) < MIN_LEVEL) return null;
+  // Above 50 kHz, average sample pairs first: half the samples and half the lags, a quarter of the work, still 44+ kHz.
+  let buf = input;
+  let sampleRate = rate;
+  if (rate > 50000) {
+    const half = new Float32Array(input.length >> 1);
+    for (let i = 0; i < half.length; i++) half[i] = (input[2 * i]! + input[2 * i + 1]!) / 2;
+    buf = half;
+    sampleRate = rate / 2;
+  }
   const maxLag = Math.min(Math.floor(sampleRate / minFreq), Math.floor(buf.length / 2));
   const minLag = Math.max(2, Math.floor(sampleRate / maxFreq));
   const w = buf.length - maxLag;

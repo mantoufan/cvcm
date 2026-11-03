@@ -62,8 +62,10 @@ describe("guitar-tuner", () => {
   });
   it("hears a five-string bass's low B at 96 kHz with the larger window", () => {
     const { min, max } = searchRange("bass-5");
-    const p = detectPitch(tone(midiToFreq(23), 96000, 8192), 96000, min, max);
-    expect(Math.abs(centsOff(p!.freq, 23))).toBeLessThan(1);
+    for (const midi of [23, 28, 43]) {
+      const p = detectPitch(tone(midiToFreq(midi), 96000, 8192), 96000, min, max);
+      expect(Math.abs(centsOff(p!.freq, midi)), String(midi)).toBeLessThan(1);
+    }
   });
   it("ignores silence and noise", () => {
     expect(detectPitch(new Float32Array(4096), 48000)).toBeNull();
@@ -78,6 +80,7 @@ describe("factors", () => {
     expect(parseWhole(" 1 234 567 ")).toEqual({ ok: true, n: 1234567n });
     expect(parseWhole("12,345")).toEqual({ ok: true, n: 12345n });
     expect(parseWhole("1.234.567")).toEqual({ ok: false, error: "notInteger" });
+    expect(parseWhole("３６０")).toEqual({ ok: true, n: 360n });
     expect(parseWhole("1.234.567", ".")).toEqual({ ok: true, n: 1234567n });
     expect(parseWhole("4.500")).toEqual({ ok: false, error: "notInteger" });
     expect(parseWhole("1,500", ".")).toEqual({ ok: false, error: "notInteger" });
