@@ -116,6 +116,11 @@ Browser toolkit on a Cloudflare Worker (Pages advanced mode `_worker.js`).
 - `src/client/dead-pixel/` — solid colours on a Fullscreen API element (covers the window where there is none, e.g. iPhone); click/Space/→ next, ← back, optional auto-advance; never flashes quickly (seizure risk)
 - `src/client/refresh-rate/` — median requestAnimationFrame interval → Hz and nearest standard rate, skipped frames (≥1.5×), frame graph, moving block; restarts when the tab becomes visible
 - `src/client/touch-test/` — Pointer Events (coalesced) on a pad with touch-action none; per-finger colours, most at once, pressure when it varies, 8×12 coverage grid, optional full screen
+- `src/client/calculator/` + `src/shared/calculator.ts` — scientific calculator: recursive-descent parser (no eval), implicit ×, −2^2 = −4, % = ÷100, Ans, DEG/RAD with exact values at multiples of 30°/45°/90°, 15 significant digits, decimal comma for es/id/vi, last 20 results in localStorage
+- `src/client/notepad/` — online notepad saved to localStorage (debounced, flushed on pagehide/unmount), storage-event sync between tabs, word/char/line count, open/download .txt; untracked (personal notes)
+- `src/client/markdown/` + `src/shared/markdown.ts` — Markdown → document tree → DOM preview (never innerHTML) and escaped HTML for Copy/Download; GFM tables, task lists, strikethrough, bare links; raw HTML stays text and only http(s)/mailto/tel/relative links are linked (`safeHref`). Separate from `md.ts` (clip notes)
+- `src/client/gradient/` + `src/shared/gradient.ts` — CSS gradient generator (linear/radial/conic, 2–6 stops, presets) with a PNG drawn on canvas using CSS geometry (`linearLine`, farthest-corner `radialRadii`); the gradient preview is tool output, not page decoration (rule 7)
+- `src/client/fancy-text/` + `src/shared/fancy-text.ts` — Unicode look-alike letters (Mathematical Alphanumerics with the letterlike "holes", enclosed, fullwidth, small caps, upside down, combining strike/underline); only A–Z, a–z, 0–9 change
 - `src/client/resize/` — resize / compress images
 - `src/client/crop/` — crop images
 - `src/client/rotate/` — rotate / flip images

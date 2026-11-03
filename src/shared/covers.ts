@@ -121,6 +121,14 @@ export const TOOL_COVER: Record<ToolId, string> = {
   "dead-pixel": "/covers/dead-pixel-sweet.jpg?v=1",
   "refresh-rate": "/covers/refresh-rate-sweet.jpg?v=1",
   "touch-test": "/covers/touch-test-sweet.jpg?v=1",
+  "calculator": "/covers/calculator-sweet.jpg?v=1",
+  "notepad": "/covers/notepad-sweet.jpg?v=1",
+  // Until its own Codex cover is made (Codex was over its limit on 2026-11-03), the Markdown page shares a related cover.
+  "markdown": "/covers/data-sweet.jpg?v=1",
+  // Until its own Codex cover is made (Codex was over its limit on 2026-11-03), the gradient page shares a related cover.
+  "gradient": "/covers/color-sweet.jpg?v=1",
+  // Until its own Codex cover is made (Codex was over its limit on 2026-11-03), the fancy text page shares a related cover.
+  "fancy-text": "/covers/case-sweet.jpg?v=1",
   gold: "/covers/gold-sweet.jpg?v=1",
   silver: "/covers/silver-sweet.jpg?v=1",
   platinum: "/covers/platinum-sweet.jpg?v=1",

@@ -34,7 +34,7 @@ const AI: readonly ToolId[] = [...AI_TOOLS];
 const FILES: readonly ToolId[] = [
   "watermark", "mosaic", "collage", "portrait-sim", "convert", "image-pdf", "resize", "crop", "rotate", "exif",
   "meme", "favicon", "screenshot", "pdf-jpg", "merge-pdf", "compress-pdf", "split-pdf", "audio", "audio-cutter",
-  "audio-joiner", "image-colors",
+  "audio-joiner", "image-colors", "notepad",
 ];
 
 export const DATA_HANDLING_GROUPS = { STORES, NETWORK_VOICES, AI, FILES } as const;

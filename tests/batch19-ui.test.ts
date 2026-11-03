@@ -1,0 +1,166 @@
+// @vitest-environment happy-dom
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { mountCalculator, unmountCalculator } from "../src/client/calculator/ui";
+import { mountNotepad, unmountNotepad } from "../src/client/notepad/ui";
+import { mountMarkdown, unmountMarkdown } from "../src/client/markdown/ui";
+import { mountGradient, unmountGradient } from "../src/client/gradient/ui";
+import { mountFancyText, unmountFancyText } from "../src/client/fancy-text/ui";
+import { FANCY_STYLES } from "../src/shared/fancy-text";
+
+let host: HTMLElement;
+
+beforeEach(() => {
+  window.localStorage.clear();
+  host = document.createElement("div");
+  document.body.append(host);
+});
+
+afterEach(() => {
+  unmountCalculator();
+  unmountNotepad();
+  unmountMarkdown();
+  unmountGradient();
+  unmountFancyText();
+  host.remove();
+  vi.useRealTimers();
+  vi.restoreAllMocks();
+});
+
+const q = <T extends HTMLElement>(sel: string) => host.querySelector<T>(sel)!;
+const type = (el: HTMLInputElement | HTMLTextAreaElement, v: string) => {
+  el.value = v;
+  el.dispatchEvent(new Event("input"));
+};
+
+describe("calculator ui", () => {
+  it("shows a live result, keeps = results in history and carries on from Ans", () => {
+    mountCalculator(host);
+    const expr = q<HTMLInputElement>("[data-field=expr]");
+    for (const k of ["7", "×", "6"]) q<HTMLButtonElement>(`[data-key='${k}']`).click();
+    expect(expr.value).toBe("7×6");
+    expect(q("[data-out=result]").textContent).toBe("42");
+    q<HTMLButtonElement>("[data-key='@eq']").click();
+    expect(q("[data-out=result]").textContent).toBe("= 42");
+    expect(q("[data-out=history]").textContent).toContain("7×6= 42");
+    // An operator after = continues from the answer; a digit starts again.
+    q<HTMLButtonElement>("[data-key='+']").click();
+    q<HTMLButtonElement>("[data-key='8']").click();
+    expect(expr.value).toBe("Ans+8");
+    expect(q("[data-out=result]").textContent).toBe("50");
+    q<HTMLButtonElement>("[data-key='@eq']").click();
+    q<HTMLButtonElement>("[data-key='3']").click();
+    expect(expr.value).toBe("3");
+    expect(JSON.parse(window.localStorage.getItem("cvcm.calculator.v1")!)).toHaveLength(2);
+  });
+  it("switches angle mode, deletes function names whole and reports errors only after =", () => {
+    mountCalculator(host);
+    const expr = q<HTMLInputElement>("[data-field=expr]");
+    q<HTMLButtonElement>("[data-key='sin(']").click();
+    q<HTMLButtonElement>("[data-key='9']").click();
+    q<HTMLButtonElement>("[data-key='0']").click();
+    expect(q("[data-out=result]").textContent).toBe("1");
+    q<HTMLButtonElement>("[data-action=mode]").click();
+    expect(q("[data-out=result]").textContent).toBe("0.893996663600558");
+    q<HTMLButtonElement>("[data-key='@back']").click();
+    q<HTMLButtonElement>("[data-key='@back']").click();
+    q<HTMLButtonElement>("[data-key='@back']").click();
+    expect(expr.value).toBe("");
+    type(expr, "1÷");
+    expect(q("[data-out=result]").textContent).toBe("");
+    type(expr, "1÷0");
+    q<HTMLButtonElement>("[data-key='@eq']").click();
+    expect(q("[data-out=result]").classList.contains("error")).toBe(true);
+    expect(host.querySelectorAll(".calc-hist")).toHaveLength(0);
+  });
+});
+
+describe("notepad ui", () => {
+  it("saves as you type, restores the note and offers Undo after Clear", () => {
+    vi.useFakeTimers();
+    mountNotepad(host);
+    const text = q<HTMLTextAreaElement>("[data-field=note]");
+    type(text, "Shopping\nmilk eggs");
+    expect(q("[data-out=stats]").textContent).toContain("3");
+    vi.advanceTimersByTime(500);
+    expect(JSON.parse(window.localStorage.getItem("cvcm.notepad.v1")!).text).toBe("Shopping\nmilk eggs");
+    unmountNotepad();
+    host.replaceChildren();
+    mountNotepad(host);
+    const again = q<HTMLTextAreaElement>("[data-field=note]");
+    expect(again.value).toBe("Shopping\nmilk eggs");
+    q<HTMLButtonElement>("[data-action=clear]").click();
+    expect(again.value).toBe("");
+    expect(q<HTMLButtonElement>("[data-action=undo]").hidden).toBe(false);
+    q<HTMLButtonElement>("[data-action=undo]").click();
+    expect(again.value).toBe("Shopping\nmilk eggs");
+  });
+  it("saves pending typing when the tool closes", () => {
+    vi.useFakeTimers();
+    mountNotepad(host);
+    type(q<HTMLTextAreaElement>("[data-field=note]"), "last words");
+    unmountNotepad();
+    expect(JSON.parse(window.localStorage.getItem("cvcm.notepad.v1")!).text).toBe("last words");
+  });
+  it("takes over a note saved in another tab", () => {
+    mountNotepad(host);
+    window.dispatchEvent(new StorageEvent("storage", { key: "cvcm.notepad.v1", newValue: JSON.stringify({ text: "from tab 2", savedAt: 1 }) }));
+    expect(q<HTMLTextAreaElement>("[data-field=note]").value).toBe("from tab 2");
+  });
+});
+
+describe("markdown ui", () => {
+  it("renders the sample, builds DOM without running HTML and saves edits", () => {
+    vi.useFakeTimers();
+    mountMarkdown(host);
+    const preview = q("[data-out=preview]");
+    expect(preview.querySelector("h1")).not.toBeNull();
+    expect(preview.querySelector("table")).not.toBeNull();
+    expect(preview.querySelectorAll("input[type=checkbox]").length).toBe(3);
+    type(q<HTMLTextAreaElement>("[data-field=markdown]"), "# Hi <img src=x onerror=alert(1)>\n\n[x](javascript:alert(1)) [ok](https://cv.cm)");
+    vi.advanceTimersByTime(200);
+    expect(preview.querySelector("img")).toBeNull();
+    expect(preview.querySelector("h1")!.textContent).toBe("Hi <img src=x onerror=alert(1)>");
+    const links = preview.querySelectorAll("a");
+    expect(links).toHaveLength(1);
+    expect(links[0].getAttribute("href")).toBe("https://cv.cm");
+    expect(links[0].getAttribute("rel")).toContain("noopener");
+    expect(window.localStorage.getItem("cvcm.markdown.v1")).toContain("# Hi");
+  });
+});
+
+describe("gradient ui", () => {
+  it("updates CSS from stops, presets, type and limits stop count", () => {
+    mountGradient(host);
+    const css = q<HTMLTextAreaElement>("[data-out=css]");
+    expect(css.value).toBe("background: #ff9a9e;\nbackground: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%);");
+    const hex = host.querySelectorAll<HTMLInputElement>("[data-field=hex]")[1];
+    type(hex, "#000");
+    expect(css.value).toContain("#000000 100%");
+    type(hex, "#zz");
+    expect(css.value).toContain("#000000 100%");
+    expect(hex.classList.contains("invalid")).toBe(true);
+    const kind = q<HTMLSelectElement>("[data-field=kind]");
+    kind.value = "radial";
+    kind.dispatchEvent(new Event("change"));
+    expect(css.value).toContain("radial-gradient(circle,");
+    for (let i = 0; i < 10; i++) q<HTMLButtonElement>("[data-action=add-stop]").click();
+    expect(host.querySelectorAll("[data-stop]")).toHaveLength(6);
+    expect(q<HTMLButtonElement>("[data-action=add-stop]").disabled).toBe(true);
+    q<HTMLButtonElement>("[data-preset='4']").click();
+    expect(host.querySelectorAll("[data-stop]")).toHaveLength(3);
+    expect(kind.value).toBe("linear");
+    expect(css.value).toContain("linear-gradient(180deg,");
+  });
+});
+
+describe("fancy-text ui", () => {
+  it("lists every style and restyles typed text", () => {
+    vi.useFakeTimers();
+    mountFancyText(host);
+    expect(host.querySelectorAll(".fancy-row")).toHaveLength(FANCY_STYLES.length);
+    type(q<HTMLTextAreaElement>("[data-field=text]"), "Hi");
+    vi.advanceTimersByTime(100);
+    expect(q("[data-style=bold] .fancy-out").textContent).toBe("𝐇𝐢");
+    expect(q("[data-style=upsideDown] .fancy-out").textContent).toBe("ᴉH");
+  });
+});

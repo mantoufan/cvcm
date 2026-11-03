@@ -790,4 +790,34 @@ export const TOOL_LOADERS: Record<ToolId, ToolLoader> = {
     m.mountTouchTest(host);
     return m.unmountTouchTest;
   },
+  "calculator": async (host, ctx) => {
+    const m = await import("./calculator/ui");
+    if (!ctx.alive()) return undefined;
+    m.mountCalculator(host);
+    return m.unmountCalculator;
+  },
+  "notepad": async (host, ctx) => {
+    const m = await import("./notepad/ui");
+    if (!ctx.alive()) return undefined;
+    m.mountNotepad(host);
+    return m.unmountNotepad;
+  },
+  "markdown": async (host, ctx) => {
+    const m = await import("./markdown/ui");
+    if (!ctx.alive()) return undefined;
+    m.mountMarkdown(host);
+    return m.unmountMarkdown;
+  },
+  "gradient": async (host, ctx) => {
+    const m = await import("./gradient/ui");
+    if (!ctx.alive()) return undefined;
+    m.mountGradient(host);
+    return m.unmountGradient;
+  },
+  "fancy-text": async (host, ctx) => {
+    const m = await import("./fancy-text/ui");
+    if (!ctx.alive()) return undefined;
+    m.mountFancyText(host);
+    return m.unmountFancyText;
+  },
 };
