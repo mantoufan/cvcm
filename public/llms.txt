@@ -166,8 +166,8 @@ Facts an assistant can rely on:
 - [Refresh rate test](https://cv.cm/en/refresh-rate/): Your screen's Hz and skipped frames. Runs in the page. Inputs are not uploaded.
 - [Touch screen test](https://cv.cm/en/touch-test/): Multi-touch count and dead zones. Runs in the page. Inputs are not uploaded.
 - [Scientific calculator](https://cv.cm/en/calculator/): Trig, logs, powers, history. Runs in the page. Inputs are not uploaded.
-- [Online notepad](https://cv.cm/en/notepad/): Saves as you type. Word count, .txt files. Processes files in the page. Files are not uploaded.
-- [Markdown preview](https://cv.cm/en/markdown/): Live preview and Markdown to HTML. Runs in the page. Inputs are not uploaded.
+- [Online notepad](https://cv.cm/en/notepad/): Saves as you type. Word count, .txt files. Keeps the note in this browser's local storage on the device; files it opens are read in the page. Notes and files are not uploaded.
+- [Markdown preview](https://cv.cm/en/markdown/): Live preview and Markdown to HTML. Renders in the page and keeps the text in this browser. Images written into the text load from their own addresses. The text is not uploaded.
 - [CSS gradient generator](https://cv.cm/en/gradient/): Linear, radial, conic. Copy CSS or PNG. Runs in the page. Inputs are not uploaded.
 - [Fancy text generator](https://cv.cm/en/fancy-text/): Bold, script, bubble fonts to paste. Runs in the page. Inputs are not uploaded.
 

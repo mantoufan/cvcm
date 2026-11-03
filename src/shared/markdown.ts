@@ -4,6 +4,10 @@
  * and relative links are linked, so a pasted document cannot run script in the page or in copied HTML.
  */
 
+import { escapeHtml } from "./md";
+
+export { escapeHtml };
+
 export type Inline =
   | { t: "text"; v: string }
   | { t: "br" }
@@ -95,7 +99,16 @@ function interrupts(line: string): boolean {
   return !!m && m[4].trim() !== "" && (/^[-*+]$/.test(m[2]) || /^1[.)]$/.test(m[2]));
 }
 
+/**
+ * Steps left for the forward scans that look for a closing `*`, `]` or backtick. Unclosed delimiters would make those
+ * scans quadratic (a pasted "*a *a *a…" froze the tab), so once a document has used its budget the remaining
+ * delimiters are read as plain text. Ordinary documents use a tiny fraction of it.
+ */
+const SCAN_BUDGET = 4_000_000;
+let budget = SCAN_BUDGET;
+
 export function parseMarkdown(src: string): Block[] {
+  budget = SCAN_BUDGET;
   const text = src.slice(0, MAX_MARKDOWN).replace(/\r\n?/g, "\n").replace(/^﻿/, "").replace(/\0/g, "�");
   return blocks(text.split("\n").map(expandTabs), 0);
 }
@@ -316,6 +329,7 @@ function codeSpanAt(s: string, i: number): { v: string; end: number } | null {
   while (s[i + run] === "`") run++;
   let j = i + run;
   while (j < s.length) {
+    if (--budget < 0) return null;
     if (s[j] !== "`") {
       j++;
       continue;
@@ -336,6 +350,7 @@ function codeSpanAt(s: string, i: number): { v: string; end: number } | null {
 function closeBracket(s: string, i: number): number {
   let depth = 0;
   for (let j = i; j < s.length; j++) {
+    if (--budget < 0) return -1;
     const c = s[j];
     if (c === "\\") j++;
     else if (c === "`") {
@@ -396,8 +411,11 @@ const isSpace = (c: string | undefined) => c == null || /\s/.test(c);
 const isWord = (c: string | undefined) => c != null && /[\p{L}\p{N}]/u.test(c);
 
 /** Finds where an emphasis run of `delim` opened at i closes, or −1. */
-function closeEmphasis(s: string, from: number, delim: string): number {
+function closeEmphasis(s: string, from: number, delim: string, failed: Map<string, number>): number {
+  // A run that found no closer from an earlier position finds none from a later one either.
+  if (from >= (failed.get(delim) ?? Infinity)) return -1;
   for (let j = from; j < s.length; j++) {
+    if (--budget < 0) return -1;
     const c = s[j];
     if (c === "\\") {
       j++;
@@ -420,7 +438,7 @@ function closeEmphasis(s: string, from: number, delim: string): number {
     }
     // "*a **b** c*": a strong pair inside emphasis is skipped as a whole, so its "**" does not close the "*".
     if (delim.length === 1 && s.startsWith(delim + delim, j) && !isSpace(s[j + 2])) {
-      const inner = closeEmphasis(s, j + 2, delim + delim);
+      const inner = closeEmphasis(s, j + 2, delim + delim, failed);
       if (inner > 0) {
         j = inner + 1;
         continue;
@@ -432,6 +450,7 @@ function closeEmphasis(s: string, from: number, delim: string): number {
       return j;
     }
   }
+  if (budget >= 0) failed.set(delim, Math.min(from, failed.get(delim) ?? Infinity));
   return -1;
 }
 
@@ -439,6 +458,7 @@ const MAX_INLINE_DEPTH = 16;
 
 export function inline(src: string, depth = 0, inLink = false): Inline[] {
   const out: Inline[] = [];
+  const failed = new Map<string, number>();
   let buf = "";
   const flush = () => {
     if (buf) out.push({ t: "text", v: buf });
@@ -520,11 +540,12 @@ export function inline(src: string, depth = 0, inLink = false): Inline[] {
       }
     }
     if (c === "<") {
-      const auto = /^<((?:https?|mailto|tel):[^\s<>]+|[^\s<>@]+@[^\s<>@]+\.[^\s<>@]+)>/i.exec(s.slice(i));
-      if (auto && !inLink) {
+      // <https://…>, <mailto:…>, <tel:…>, or a bare e-mail address (no ":" or "/", so "<javascript:…//@x.y>" is not one).
+      const auto = /^<(?:((?:https?|mailto|tel):[^\s<>]+)|([^\s<>@:/\\]+@[^\s<>@:/\\]+\.[^\s<>@:/\\]+))>/i.exec(s.slice(i, i + 2048));
+      const href = auto ? safeHref(auto[1] ?? `mailto:${auto[2]}`) : null;
+      if (auto && href && !inLink) {
         flush();
-        const href = /^[a-z][a-z0-9+.-]*:/i.test(auto[1]) ? auto[1] : `mailto:${auto[1]}`;
-        out.push({ t: "link", href, title: "", kids: [{ t: "text", v: auto[1] }] });
+        out.push({ t: "link", href, title: "", kids: [{ t: "text", v: auto[1] ?? auto[2] }] });
         i += auto[0].length;
         continue;
       }
@@ -543,7 +564,7 @@ export function inline(src: string, depth = 0, inLink = false): Inline[] {
         }
         if (url.length > 7 || /^www\.\S/.test(url)) {
           flush();
-          out.push({ t: "link", href: url.startsWith("www.") ? `http://${url}` : url, title: "", kids: [{ t: "text", v: url }] });
+          out.push({ t: "link", href: safeHref(url.startsWith("www.") ? `http://${url}` : url) ?? "#", title: "", kids: [{ t: "text", v: url }] });
           i += url.length;
           continue;
         }
@@ -565,7 +586,7 @@ export function inline(src: string, depth = 0, inLink = false): Inline[] {
                 : [{ delim: c, make: (kids) => ({ t: "em", kids }) }];
         let done = false;
         for (const tr of tries) {
-          const end = closeEmphasis(s, i + tr.delim.length, tr.delim);
+          const end = closeEmphasis(s, i + tr.delim.length, tr.delim, failed);
           if (end > 0) {
             flush();
             out.push(tr.make(inline(s.slice(i + tr.delim.length, end), depth + 1, inLink)));
@@ -594,9 +615,6 @@ export function plain(nodes: readonly Inline[]): string {
 
 // ---------- HTML ----------
 
-export function escapeHtml(s: string): string {
-  return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
-}
 
 function inlineHtml(nodes: readonly Inline[]): string {
   return nodes
@@ -666,9 +684,25 @@ export function headings(doc: readonly Block[]): Array<{ level: number; text: st
   return doc.flatMap((b) => (b.t === "h" ? [{ level: b.level, text: plain(b.kids) }] : []));
 }
 
-/** Words in the source (CJK characters count one each), for the status line. */
-export function countWords(src: string): number {
-  const marked = src.replace(/[㐀-鿿豈-﫿぀-ヿ가-힯]/g, " $& ").replace(/[#>*_`~|[\]()!-]+/g, " ");
-  const t = marked.trim();
-  return t ? t.split(/\s+/).length : 0;
+/** The document's readable text (no Markdown syntax), one block per line, for word counts. */
+export function docText(doc: readonly Block[]): string {
+  return doc
+    .map((b): string => {
+      switch (b.t) {
+        case "h":
+        case "p":
+          return plain(b.kids);
+        case "code":
+          return b.text;
+        case "quote":
+          return docText(b.kids);
+        case "list":
+          return b.items.map((it) => docText(it.kids)).join("\n");
+        case "table":
+          return [b.head, ...b.rows].map((r) => r.map(plain).join(" ")).join("\n");
+        default:
+          return "";
+      }
+    })
+    .join("\n");
 }

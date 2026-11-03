@@ -1,5 +1,7 @@
 /** Online notepad: the saved note, and a file name for downloading it. */
 
+import { titleStem } from "./filename";
+
 export type Note = { text: string; savedAt: number };
 
 /** Longest note kept (characters): well under the ~5 MB localStorage quota even as UTF-16. */
@@ -25,9 +27,5 @@ export function parseNote(raw: string | null): Note | null {
  */
 export function noteFileName(text: string, fallback: string): string {
   const first = text.split("\n").find((l) => l.trim()) ?? "";
-  const name = Array.from(first.replace(/[\\/:*?"<>|\u0000-\u001f\u007f]/g, " ").replace(/\s+/g, " ").trim().replace(/^\.+/, ""))
-    .slice(0, 60)
-    .join("")
-    .trim();
-  return `${name || fallback}.txt`;
+  return `${titleStem(first) || fallback}.txt`;
 }

@@ -2,8 +2,10 @@ import { copyWithFlash } from "../copy";
 import { downloadBlob, h } from "../dom";
 import { locale, t } from "../i18n";
 import { debounce } from "../session";
+import { titleStem } from "../../shared/filename";
 import { appHref } from "../../shared/path";
-import { MAX_MARKDOWN, countWords, escapeHtml, parseMarkdown, plain, toHtml, type Block, type Inline } from "../../shared/markdown";
+import { countText } from "../../shared/word-count";
+import { MAX_MARKDOWN, docText, escapeHtml, parseMarkdown, plain, toHtml, type Block, type Inline } from "../../shared/markdown";
 
 const STORE_KEY = "cvcm.markdown.v1";
 
@@ -54,9 +56,11 @@ export function mountMarkdown(host: HTMLElement): void {
   );
   inputEl.value = load() ?? t("markdown.sampleText");
   paint();
+  window.addEventListener("pagehide", save);
 }
 
 export function unmountMarkdown(): void {
+  window.removeEventListener("pagehide", save);
   // A change typed within the last moment is saved before the tool goes away.
   if (inputEl) save();
   inputEl = previewEl = statsEl = null;
@@ -116,7 +120,7 @@ function paint(): void {
   if (!inputEl || !previewEl || !statsEl) return;
   doc = parseMarkdown(inputEl.value);
   previewEl.replaceChildren(...doc.map(blockEl));
-  statsEl.textContent = t("markdown.stats", { words: countWords(inputEl.value), chars: Array.from(inputEl.value).length });
+  statsEl.textContent = t("markdown.stats", { words: countText(docText(doc)).words, chars: Array.from(inputEl.value).length });
 }
 
 // The preview is built from DOM nodes (no innerHTML), so nothing in the text can become markup.
@@ -175,6 +179,8 @@ function inlineEl(n: Inline): Node {
 }
 
 async function copyHtml(): Promise<void> {
+  // Export what is in the box now, not what the last (debounced) preview showed.
+  paint();
   await copyWithFlash(copyHtmlBtn, toHtml(doc), { done: t("markdown.copied"), failed: t("markdown.copyFailed") });
 }
 
@@ -185,12 +191,11 @@ async function copyMd(): Promise<void> {
 
 function baseName(): string {
   const first = doc.find((b) => b.t === "h");
-  const title = first && first.t === "h" ? plain(first.kids) : "";
-  const safe = title.replace(/[\\/:*?"<>|\u0000-\u001f\u007f]/g, " ").replace(/\s+/g, " ").trim().slice(0, 60).trim();
-  return safe || "document";
+  return titleStem(first && first.t === "h" ? plain(first.kids) : "") || "document";
 }
 
 function downloadHtml(): void {
+  paint();
   const first = doc.find((b) => b.t === "h");
   const title = first && first.t === "h" ? plain(first.kids) : "Document";
   const page = `<!doctype html>
@@ -211,5 +216,6 @@ ${toHtml(doc)}
 
 function downloadMd(): void {
   if (!inputEl) return;
+  paint();
   downloadBlob(new Blob([inputEl.value], { type: "text/markdown;charset=utf-8" }), `${baseName()}.md`);
 }

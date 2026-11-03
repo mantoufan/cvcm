@@ -12,11 +12,26 @@
     "descFancyText": "把文字變成 𝐛𝐨𝐥𝐝、𝑖𝑡𝑎𝑙𝑖𝑐、𝓈𝒸𝓇𝒾𝓅𝓉、𝔣𝔯𝔞𝔨𝔱𝔲𝔯、ⓒⓘⓡⓒⓛⓔⓓ 和上下顛倒的字母，貼到哪裡都能用：Instagram 自介、TikTok、Discord 和遊戲名稱。免費，一鍵複製。"
   },
   "tools": {
-    "calculator": { "name": "科學計算機", "blurb": "三角函數、對數、次方、歷史紀錄。" },
-    "notepad": { "name": "線上記事本", "blurb": "在瀏覽器裡自動儲存。不上傳。" },
-    "markdown": { "name": "Markdown 預覽", "blurb": "即時預覽，Markdown 轉 HTML。" },
-    "gradient": { "name": "CSS 漸層產生器", "blurb": "線性、放射、圓錐。複製 CSS 或 PNG。" },
-    "fancy-text": { "name": "特殊字體產生器", "blurb": "粗體、草寫、泡泡字，複製即貼。" }
+    "calculator": {
+      "name": "科學計算機",
+      "blurb": "三角函數、對數、次方、歷史紀錄。"
+    },
+    "notepad": {
+      "name": "線上記事本",
+      "blurb": "在瀏覽器裡自動儲存。不上傳。"
+    },
+    "markdown": {
+      "name": "Markdown 預覽",
+      "blurb": "即時預覽，Markdown 轉 HTML。"
+    },
+    "gradient": {
+      "name": "CSS 漸層產生器",
+      "blurb": "線性、放射、圓錐。複製 CSS 或 PNG。"
+    },
+    "fancy-text": {
+      "name": "特殊字體產生器",
+      "blurb": "粗體、草寫、泡泡字，複製即貼。"
+    }
   },
   "faq": {
     "calculator": {
@@ -131,7 +146,7 @@
       "autosave": "自動儲存",
       "savedAt": "已於 {time} 儲存",
       "notSaved": "這個瀏覽器無法儲存筆記（無痕模式或儲存空間被封鎖）。請下載保留。",
-      "tooBig": "這個檔案超過 2 MB。"
+      "tooBig": "這個檔案超過 1 MB。"
     },
     "markdown": {
       "title": "Markdown 預覽",

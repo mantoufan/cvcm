@@ -52,6 +52,15 @@ describe("calculator", () => {
     expect(calc("1,5+1", "deg", 0, ",")).toBe("2.5");
     expect(calc("1,000+1")).toBe("1001");
     expect(calc("3.5+1", "deg", 0, ",")).toBe("4.5");
+    expect(calc("1,234,567.5×2")).toBe("2469135");
+    expect(calc("1,5")).toBe("syntax");
+    expect(calc("3,14×2")).toBe("syntax");
+    expect(calc("1,0000")).toBe("syntax");
+    expect(calc("1.234,5", "deg", 0, ",")).toBe("syntax");
+    expect(calc("1.2.3")).toBe("syntax");
+    expect(calc("1 000")).toBe("syntax");
+    expect(calc("sqrt 2 3")).toBe("syntax");
+    expect(calc("2 π")).toBe("6.28318530717959");
   });
   it("reports errors", () => {
     expect(calc("1÷0")).toBe("domain");
@@ -72,6 +81,8 @@ describe("calculator", () => {
     expect(formatResult(1e20)).toBe("1e20");
     expect(formatResult(1.5e-9)).toBe("1.5e-9");
     expect(formatResult(-0.000001)).toBe("−0.000001");
+    expect(formatResult(1.23456789012345e-7)).toBe("0.000000123456789012345");
+    expect(formatResult(-5e-7)).toBe("−0.0000005");
     expect(formatResult(123456789012345)).toBe("123456789012345");
     expect(formatResult(2.5, ",")).toBe("2,5");
     expect(formatResult(1 / 3)).toBe("0.333333333333333");
@@ -161,6 +172,8 @@ describe("markdown", () => {
     expect(md("[a\"b](https://x.y/\"onmouseover=\")")).toBe("<p><a href=\"https://x.y/&quot;onmouseover=&quot;\">a&quot;b</a></p>");
     expect(md("see https://cv.cm/a_(b). and <https://x.y>")).toBe("<p>see <a href=\"https://cv.cm/a_(b)\">https://cv.cm/a_(b)</a>. and <a href=\"https://x.y\">https://x.y</a></p>");
     expect(md("&copy; &#x1F600; &bogus;")).toBe("<p>© 😀 &amp;bogus;</p>");
+    expect(md("<javascript:alert(document.domain)//@x.y>")).not.toContain("href");
+    expect(md("<me@cv.cm> <https://cv.cm/x>")).toBe("<p><a href=\"mailto:me@cv.cm\">me@cv.cm</a> <a href=\"https://cv.cm/x\">https://cv.cm/x</a></p>");
     expect(safeHref("mailto:a@b.c")).toBe("mailto:a@b.c");
     expect(safeHref("VBScript:x")).toBeNull();
     expect(safeHref("page.html#x")).toBe("page.html#x");
@@ -179,7 +192,11 @@ describe("markdown", () => {
     md("*a ".repeat(3000));
     md(">".repeat(500) + " deep");
     md("- ".repeat(500) + "x");
-    expect(Date.now() - start).toBeLessThan(3000);
+    md("*a ".repeat(60000));
+    md("_a **b ".repeat(30000));
+    md("`a ".repeat(60000));
+    md("[a ".repeat(60000));
+    expect(Date.now() - start).toBeLessThan(4000);
   });
 });
 

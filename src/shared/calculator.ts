@@ -51,7 +51,8 @@ function normalize(src: string): string {
 function tokenize(src: string, decimal: "." | ","): Tok[] {
   let s = normalize(src);
   // With a decimal comma, "." still works as a decimal point; with a decimal point, commas group thousands (1,000).
-  s = decimal === "," ? s.replace(/,/g, ".") : s.replace(/(\d),(?=\d)/g, "$1");
+  // Only real grouping (1,234,567) is read as thousands; "1,5" stays a comma and fails, instead of quietly being 15.
+  s = decimal === "," ? s.replace(/,/g, ".") : s.replace(/(^|[^\d.])(\d{1,3}(?:,\d{3})+)(?![\d,])/g, (_, pre: string, n: string) => pre + n.replace(/,/g, ""));
   const out: Tok[] = [];
   let i = 0;
   while (i < s.length) {
@@ -214,6 +215,8 @@ export function evaluate(src: string, mode: AngleMode = "deg", ans = 0, decimal:
         if (t!.k === "op" && t!.v === "/" && r === 0) throw new Fail("domain");
         v = t!.k === "op" && t!.v === "*" ? v * r : v / r;
       } else if (startsAtom(t)) {
+        // Two bare numbers in a row ("1.2.3", "1 000") are a typo, not a product.
+        if (t!.k === "num" && toks[pos - 1]?.k === "num") throw new Fail("syntax");
         v *= power();
       } else {
         return v;
@@ -285,7 +288,10 @@ export function evaluate(src: string, mode: AngleMode = "deg", ans = 0, decimal:
   /** The argument of a function written without brackets: a number with its implicit factors (2π), not the rest of the sum. */
   const postfixChain = (): number => {
     let v = power();
-    while (startsAtom(peek()) && peek()!.k !== "fn") v *= power();
+    while (startsAtom(peek()) && peek()!.k !== "fn") {
+      if (peek()!.k === "num" && toks[pos - 1]?.k === "num") throw new Fail("syntax");
+      v *= power();
+    }
     return v;
   };
 
@@ -324,8 +330,12 @@ export function formatResult(v: number, decimal: "." | "," = "."): string {
     s = `${m.replace(/\.?0+$/, "")}e${e.replace("+", "")}`;
   } else {
     s = String(rounded);
-    // String() still uses exponents below 1e-6; spell those out.
-    if (/e/i.test(s)) s = rounded.toFixed(20).replace(/\.?0+$/, "");
+    // String() uses an exponent below 1e-6; spell those out from the same 15 digits.
+    if (/e/i.test(s)) {
+      const [m, e] = Math.abs(rounded).toExponential(14).split("e");
+      const digits = m.replace(".", "").replace(/0+$/, "");
+      s = `${rounded < 0 ? "-" : ""}0.${"0".repeat(-Number(e) - 1)}${digits}`;
+    }
   }
   s = s.replace(/^-/, "−");
   return decimal === "," ? s.replace(".", ",") : s;

@@ -1255,7 +1255,7 @@
       "description": "Saves as you type. Word count, .txt files.",
       "category": "text",
       "url": "https://cv.cm/en/notepad/",
-      "data_handling": "Processes files in the page. Files are not uploaded."
+      "data_handling": "Keeps the note in this browser's local storage on the device; files it opens are read in the page. Notes and files are not uploaded."
     },
     {
       "id": "markdown",
@@ -1263,7 +1263,7 @@
       "description": "Live preview and Markdown to HTML.",
       "category": "text",
       "url": "https://cv.cm/en/markdown/",
-      "data_handling": "Runs in the page. Inputs are not uploaded."
+      "data_handling": "Renders in the page and keeps the text in this browser. Images written into the text load from their own addresses. The text is not uploaded."
     },
     {
       "id": "gradient",

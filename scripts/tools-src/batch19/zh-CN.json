@@ -12,11 +12,26 @@
     "descFancyText": "把文字变成 𝐛𝐨𝐥𝐝 粗体、𝑖𝑡𝑎𝑙𝑖𝑐 斜体、𝓈𝒸𝓇𝒾𝓅𝓉 花体、𝔣𝔯𝔞𝔨𝔱𝔲𝔯 哥特体、ⓒⓘⓡⓒⓛⓔⓓ 圆圈字和倒置字母，粘贴到哪里都能用：抖音、小红书简介、微信昵称和游戏名。免费，一键复制。"
   },
   "tools": {
-    "calculator": { "name": "科学计算器", "blurb": "三角函数、对数、乘方、历史记录。" },
-    "notepad": { "name": "在线记事本", "blurb": "自动保存在浏览器里。不上传。" },
-    "markdown": { "name": "Markdown 预览", "blurb": "实时预览，Markdown 转 HTML。" },
-    "gradient": { "name": "CSS 渐变生成器", "blurb": "线性、径向、锥形。复制 CSS 或存 PNG。" },
-    "fancy-text": { "name": "花样字体生成器", "blurb": "粗体、花体、圆圈字，复制即用。" }
+    "calculator": {
+      "name": "科学计算器",
+      "blurb": "三角函数、对数、乘方、历史记录。"
+    },
+    "notepad": {
+      "name": "在线记事本",
+      "blurb": "自动保存在浏览器里。不上传。"
+    },
+    "markdown": {
+      "name": "Markdown 预览",
+      "blurb": "实时预览，Markdown 转 HTML。"
+    },
+    "gradient": {
+      "name": "CSS 渐变生成器",
+      "blurb": "线性、径向、锥形。复制 CSS 或存 PNG。"
+    },
+    "fancy-text": {
+      "name": "花样字体生成器",
+      "blurb": "粗体、花体、圆圈字，复制即用。"
+    }
   },
   "faq": {
     "calculator": {
@@ -131,7 +146,7 @@
       "autosave": "自动保存",
       "savedAt": "已于 {time} 保存",
       "notSaved": "这个浏览器无法保存笔记（无痕模式或存储被禁用）。请下载保留。",
-      "tooBig": "这个文件超过 2 MB。"
+      "tooBig": "这个文件超过 1 MB。"
     },
     "markdown": {
       "title": "Markdown 预览",

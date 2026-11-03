@@ -9,8 +9,8 @@ const STORE_KEY = "cvcm.notepad.v1";
 const PREFS_KEY = "cvcm.notepad.prefs.v1";
 const SAVE_MS = 400;
 const UNDO_MS = 8000;
-/** Biggest file Open reads (bytes); a note is text, not a database dump. */
-const MAX_FILE = 2 * 1024 * 1024;
+/** Biggest file Open reads (bytes): even plain ASCII then fits the note's character limit, so nothing is cut off. */
+const MAX_FILE = 1_000_000;
 
 let textEl: HTMLTextAreaElement | null = null;
 let statsEl: HTMLElement | null = null;
@@ -226,8 +226,13 @@ async function openFile(): Promise<void> {
     savedEl.classList.add("error");
     return;
   }
-  const text = (await file.text()).replace(/^﻿/, "").replace(/\r\n?/g, "\n").slice(0, MAX_NOTE);
-  if (!textEl) return;
+  const text = (await file.text()).replace(/^﻿/, "").replace(/\r\n?/g, "\n");
+  if (!textEl || !savedEl) return;
+  if (text.length > MAX_NOTE) {
+    savedEl.textContent = t("notepad.tooBig");
+    savedEl.classList.add("error");
+    return;
+  }
   // Opening replaces the note; the old one can come back with Undo.
   if (textEl.value) {
     undoText = textEl.value;
