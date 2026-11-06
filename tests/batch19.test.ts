@@ -221,6 +221,9 @@ describe("markdown", () => {
     md("a" + " ".repeat(199000) + "b\nc");
     md("a" + " ".repeat(199000) + "b");
     md("a|b\n" + " ".repeat(199000) + "x-");
+    md("www./中".repeat(33000));
+    md("www./".repeat(40000));
+    md("http:///".repeat(25000));
     md("# a" + " ".repeat(199000) + "b");
     md("---" + " ".repeat(199000) + "x");
     md("| a" + " ".repeat(199000) + "x");
@@ -344,5 +347,26 @@ describe("review pass 6", () => {
     expect(md("text\n[1]: https://x.y")).toContain("[1]:");
     expect(md("```\n\n[1]: https://x.y\n```")).toContain("[1]: https://x.y");
     expect(md("[a]: x" + " ".repeat(199000) + "y")).toBeTruthy();
+  });
+});
+
+describe("review pass 7", () => {
+  it("keeps definitions inside any fence as code", () => {
+    const html = md("- a\n\n  ```\n  x\n\n  [r]: http://x\n  ```\n\n[r]");
+    expect(html).toContain("[r]: http://x");
+    expect(html).not.toContain('href="http://x"');
+  });
+  it("ends an unspaced address at the next CJK letter only", () => {
+    expect(md("详见https://a.com/x了解更多。")).toContain('<a href="https://a.com/x">https://a.com/x</a>了解更多');
+    expect(md("公式见www.a.com的说明")).toContain('href="http://www.a.com"');
+    expect(md("wiki https://zh.wikipedia.org/wiki/中国")).toContain('href="https://zh.wikipedia.org/wiki/中国"');
+  });
+  it("decodes entities in bare addresses", () => {
+    expect(md("http://a.com?a=1&amp;b=2")).toBe('<p><a href="http://a.com?a=1&amp;b=2">http://a.com?a=1&amp;b=2</a></p>');
+  });
+  it("keeps a list tight around nested blank lines", () => {
+    expect(md("- a\n  ```\n  x\n\n  y\n  ```\n- b")).toContain("<li>b</li>");
+    expect(md("- a\n  - b\n\n  - c\n- d")).toContain("<li>d</li>");
+    expect(md("- a\n\n  more\n- b")).toContain("<li><p>b</p></li>");
   });
 });

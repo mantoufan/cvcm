@@ -221,7 +221,8 @@ function paint(): void {
 function blockEl(b: Block): Node {
   switch (b.t) {
     case "h":
-      return h(`h${b.level}` as "h1", null, ...b.kids.map(inlineEl));
+      // One level down, so a document's "# Title" is not a second top heading of this page (the sample is in the prerendered HTML too).
+      return h(`h${Math.min(b.level + 1, 6)}` as "h2", { class: `md-h${b.level}` }, ...b.kids.map(inlineEl));
     case "p":
       return h("p", null, ...b.kids.map(inlineEl));
     case "hr":

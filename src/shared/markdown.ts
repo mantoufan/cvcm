@@ -65,6 +65,8 @@ function expandTabs(line: string): string {
 function toLines(text: string): string[] {
   const out: string[] = [];
   let close: RegExp | null = null;
+  // A fence indented 2 or 3 spaces may sit in a list item, whose indent must still count, so only its definitions are skipped.
+  let keepRaw = false;
   for (const raw of text.split("\n")) {
     const line = expandTabs(raw);
     if (close) {
@@ -72,11 +74,12 @@ function toLines(text: string): string[] {
         close = null;
         out.push(line);
       } else {
-        out.push(raw);
+        out.push(keepRaw ? raw : line);
       }
       continue;
     }
-    const fence = indentOf(line) < 2 ? fenceOf(line) : null;
+    const fence = fenceOf(line);
+    keepRaw = indentOf(line) < 2;
     if (fence) close = new RegExp(`^ {0,3}${fence.mark[0] === "`" ? "`" : "~"}{${fence.mark.length},}[ \\t]*$`);
     // A reference definition ("[1]: https://…") is not shown. It cannot interrupt a paragraph, so it follows a blank line.
     if (!fence && line.includes("]:") && blank(out[out.length - 1]) && addRef(line)) continue;
@@ -326,6 +329,29 @@ function blocks(lines: string[], depth: number): Block[] {
   return out;
 }
 
+/** Whether a blank line separates an item's own blocks, not lines inside its code block or nested list. */
+function hasOwnBlank(body: string[]): boolean {
+  let inFence = false;
+  let prev = "";
+  for (let k = 0; k < body.length; k++) {
+    const l = body[k];
+    if (fenceOf(l)) inFence = !inFence;
+    if (inFence) continue;
+    if (!blank(l)) {
+      prev = l;
+      continue;
+    }
+    let n = k + 1;
+    while (n < body.length && blank(body[n])) n++;
+    if (n === body.length || !prev) continue;
+    const next = body[n];
+    const nested = indentOf(next) > 0 || (BULLET.test(next) && (BULLET.test(prev) || indentOf(prev) > 0));
+    if (!nested) return true;
+    k = n - 1;
+  }
+  return false;
+}
+
 /** Reads a list starting at line i into `out`; returns the line after it. */
 function list(lines: string[], start: number, depth: number, out: Block[]): number {
   const first = BULLET.exec(lines[start])!;
@@ -384,7 +410,7 @@ function list(lines: string[], start: number, depth: number, out: Block[]): numb
     }
     const kids = depth < MAX_NEST ? blocks(body, depth + 1) : [{ t: "p" as const, kids: [{ t: "text" as const, v: body.join("\n") }] }];
     // Blank lines between an item's own blocks make the list loose.
-    if (body.slice(0, -1).some((l, k) => blank(l) && k > 0 && !blank(body[k - 1])) && kids.length > 1) tight = false;
+    if (kids.length > 1 && hasOwnBlank(body)) tight = false;
     items.push({ task, kids });
     // A blank line between two items also makes it loose.
     if (i < lines.length && blank(lines[i])) {
@@ -585,6 +611,7 @@ function closeEmphasis(s: string, from: number, delim: string, failed: Map<strin
 }
 
 const MAX_INLINE_DEPTH = 16;
+const MAX_BARE_URL = 4096;
 
 export function inline(src: string, depth = 0, inLink = false): Inline[] {
   const out: Inline[] = [];
@@ -687,8 +714,15 @@ export function inline(src: string, depth = 0, inLink = false): Inline[] {
     }
     // A bare web address at the start of a word becomes a link (GitHub style).
     if ((c === "h" || c === "w" || c === "H" || c === "W") && !inLink && !(isWord(s[i - 1]) && !CJK.test(s[i - 1]))) {
-      const m = /^(?:https?:\/\/|www\.)[^\s<，。；：！？、）】》」』（【《「『]+/i.exec(s.slice(i));
+      // Bounded and budgeted: a failed candidate is scanned again from its next letter.
+      const m = budget >= 0 ? /^(?:https?:\/\/|www\.)[^\s<，。；：！？、）】》」』（【《「『]+/i.exec(s.slice(i, i + MAX_BARE_URL)) : null;
       if (m) {
+        budget -= m[0].length;
+        // Written straight after a CJK letter, with no spaces, the address also ends at the next one ("见a.com/x了解更多").
+        if (CJK.test(s[i - 1] ?? "")) {
+          const stop = /[\p{Script=Han}\p{Script=Hiragana}\p{Script=Katakana}\p{Script=Hangul}]/u.exec(m[0]);
+          if (stop) m[0] = m[0].slice(0, stop.index);
+        }
         // Trailing punctuation belongs to the sentence; a ")" stays only if it closes a "(" in the address.
         const opens = m[0].split("(").length - 1;
         let closes = m[0].split(")").length - 1;
@@ -705,7 +739,8 @@ export function inline(src: string, depth = 0, inLink = false): Inline[] {
         // It needs a host: "https://" alone is text.
         if (/^(?:https?:\/\/[^\s/?#]+|www\.[^\s/?#.]+\.[^\s/?#]+)/i.test(url)) {
           flush();
-          out.push({ t: "link", href: safeHref(/^www\./i.test(url) ? `http://${url}` : url) ?? "#", title: "", kids: [{ t: "text", v: url }] });
+          const shown = decodeEntities(url);
+          out.push({ t: "link", href: safeHref(/^www\./i.test(shown) ? `http://${shown}` : shown) ?? "#", title: "", kids: [{ t: "text", v: shown }] });
           i += url.length;
           continue;
         }

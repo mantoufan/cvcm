@@ -117,13 +117,14 @@ describe("markdown ui", () => {
     vi.useFakeTimers();
     mountMarkdown(host);
     const preview = q("[data-out=preview]");
-    expect(preview.querySelector("h1")).not.toBeNull();
+    expect(preview.querySelector("h1")).toBeNull();
+    expect(preview.querySelector("h2.md-h1")).not.toBeNull();
     expect(preview.querySelector("table")).not.toBeNull();
     expect(preview.querySelectorAll("input[type=checkbox]").length).toBe(3);
     type(q<HTMLTextAreaElement>("[data-field=markdown]"), "# Hi <img src=x onerror=alert(1)>\n\n[x](javascript:alert(1)) [ok](https://cv.cm)");
     vi.advanceTimersByTime(200);
     expect(preview.querySelector("img")).toBeNull();
-    expect(preview.querySelector("h1")!.textContent).toBe("Hi <img src=x onerror=alert(1)>");
+    expect(preview.querySelector(".md-h1")!.textContent).toBe("Hi <img src=x onerror=alert(1)>");
     const links = preview.querySelectorAll("a");
     expect(links).toHaveLength(1);
     expect(links[0].getAttribute("href")).toBe("https://cv.cm");
