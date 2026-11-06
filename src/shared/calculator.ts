@@ -136,8 +136,12 @@ function factorial(raw: number): number {
 
 /** Degree trig that gives exact zeros and ones at multiples of 90° (sin 180° is 0, not 1.2e-16). */
 function trig(fn: "sin" | "cos" | "tan", x: number, mode: AngleMode): number {
+  const angle = x;
   if (mode === "deg") {
-    const d = ((x % 360) + 360) % 360;
+    let d = ((x % 360) + 360) % 360;
+    // Within rounding of a right angle counts as one: (0.1+0.2)×1200 is 360.00000000000006.
+    const right = Math.round(d / 90) * 90;
+    if (Math.abs(d - right) <= Math.abs(x) * 4 * Number.EPSILON) d = right % 360;
     if (fn === "sin" && d % 180 === 0) return 0;
     if (fn === "cos" && (d === 90 || d === 270)) return 0;
     if (fn === "tan" && d % 180 === 0) return 0;
@@ -152,14 +156,14 @@ function trig(fn: "sin" | "cos" | "tan", x: number, mode: AngleMode): number {
     if (fn === "cos" && d === 240) return -0.5;
     if (fn === "tan" && d % 180 === 45) return 1;
     if (fn === "tan" && d % 180 === 135) return -1;
-    // A whole number of turns off first: sin(1e20) loses every digit otherwise, and 1e308·π overflows. Small angles keep theirs.
-    x = ((Math.abs(x) >= 360 ? x % 360 : x) * Math.PI) / 180;
+    // A whole number of turns off first: sin(1e20) loses every digit otherwise, and 1e308·π overflows.
+    x = ((x % 360) * Math.PI) / 180;
   }
   // tan(π/2) comes out as 1.6e16 because π is inexact: it has no value, the same as tan(90) in degrees.
   if (fn === "tan" && Math.abs(Math.cos(x)) < 1e-15) throw new Fail("domain");
   const v = Math[fn](x);
   // In radians π is inexact, so sin(π) comes out as 1.2e-16: show the zero it stands for (but keep sin of a tiny angle).
-  return Math.abs(v) < 1e-15 && Math.abs(x) > 1e-6 ? 0 : v;
+  return Math.abs(v) < 1e-15 && Math.abs(angle) > 1e-6 ? 0 : v;
 }
 
 /** A step that overflowed (10^400, exp(1000)) is an error, even if a later step would bring it back to a finite 0. */
@@ -419,7 +423,8 @@ export function replaceAns(expr: string, write: (at: number) => string): string 
   });
 }
 
-export type HistoryEntry = { expr: string; result: string; mode?: AngleMode };
+/** `expr` is what the line shows; `full` is the same sum with Ans in all its digits, which is what reusing the line enters. */
+export type HistoryEntry = { expr: string; result: string; mode?: AngleMode; full?: string };
 export const MAX_HISTORY = 20;
 
 /** Reads history saved by an earlier visit; anything malformed is dropped. */
@@ -432,7 +437,7 @@ export function parseHistory(raw: string | null): HistoryEntry[] {
       .filter((e): e is HistoryEntry => !!e && typeof e === "object" && typeof (e as HistoryEntry).expr === "string" && typeof (e as HistoryEntry).result === "string")
       .slice(0, MAX_HISTORY)
       .filter((e) => e.expr.length <= MAX_EVAL)
-      .map((e) => ({ expr: e.expr, result: e.result.slice(0, 64), ...(e.mode === "rad" || e.mode === "deg" ? { mode: e.mode } : {}) }));
+      .map((e) => ({ expr: e.expr, result: e.result.slice(0, 64), ...(e.mode === "rad" || e.mode === "deg" ? { mode: e.mode } : {}), ...(typeof e.full === "string" && e.full.length <= MAX_EVAL ? { full: e.full } : {}) }));
   } catch {
     return [];
   }

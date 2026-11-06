@@ -251,17 +251,20 @@ function equals(): void {
     paint(true);
     return;
   }
-  // History shows the number Ans stood for, so reusing the line later gives the same result.
+  // History shows the number Ans stood for; reusing the line enters it in full, as the 15 digits shown for 1/3 would turn
+  // Ans*3 into 0.999999999999999.
   const mark = decimalMarkOf(locale());
-  // In full: the 15 digits shown for 1/3 would make Ans*3 come back as 0.999999999999999.
-  const was = String(used).replace(".", mark);
+  const shownAns = formatResult(used, mark).replace("−", "-");
+  const fullAns = String(used).replace(".", mark);
   // Brackets when the number would run into a digit or letter ("2Ans", "2 Ans", "Anse2") or carries a sign or exponent.
-  const saved = replaceAns(expr, (at) =>
+  const writeOut = (was: string) => replaceAns(expr, (at) =>
     used < 0 || /e/i.test(was) || /[\d.,\p{L}]/u.test(expr.slice(0, at).trimEnd().slice(-1)) || /[\d.,\p{L}]/u.test(expr.slice(at + 3).trimStart().charAt(0)) ? `(${was})` : was);
+  const saved = writeOut(shownAns);
+  const full = writeOut(fullAns);
   done = { expr, ans: used };
   ans = r.value;
   shown = formatResult(r.value, mark);
-  if (saved.length <= MAX_EVAL) history.unshift({ expr: saved, result: shown, mode });
+  if (saved.length <= MAX_EVAL) history.unshift({ expr: saved, result: shown, mode, ...(full !== saved && full.length <= MAX_EVAL ? { full } : {}) });
   history = history.slice(0, MAX_HISTORY);
   save();
   paintHistory();
@@ -309,7 +312,7 @@ function paintHistory(): void {
           title: t("calculator.reuse"),
           onClick: () => {
             if (!exprEl) return;
-            exprEl.value = e.expr;
+            exprEl.value = e.full ?? e.expr;
             // The line was worked out in this angle mode, so reusing it gives the same result.
             if (e.mode && e.mode !== mode) toggleMode();
             shown = null;

@@ -296,7 +296,9 @@ describe("review pass 11 ui", () => {
     type(expr, "Ans*3");
     enter();
     const saved = JSON.parse(window.localStorage.getItem("cvcm.calculator.v1")!)[0];
-    type(expr, saved.expr);
+    expect(saved.expr).toBe("0.333333333333333*3");
+    host.querySelector<HTMLButtonElement>(".calc-hist")!.click();
+    expect(expr.value).toBe(saved.full);
     enter();
     expect(q("[data-out=result]").textContent).toBe("= 1");
   });

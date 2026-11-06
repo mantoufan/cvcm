@@ -440,3 +440,19 @@ describe("review pass 11", () => {
     expect(calc("sin(390)")).toBe("0.5");
   });
 });
+
+describe("review pass 12", () => {
+  it("keeps quotes inside an address unless it opened after one", () => {
+    expect(md("https://en.wikipedia.org/wiki/Alzheimer's_disease")).not.toContain('Alzheimer">');
+    expect(md('<a href="https://x.com">link</a>')).toContain('href="https://x.com"');
+  });
+  it("treats rounding around a right angle as the right angle", () => {
+    expect(calc("sin((0.1+0.2)×1200)")).toBe("0");
+    expect(calc("sin(11880.000000000002)")).toBe("0");
+    expect(calc("tan(90.00000000000001)")).toBe("domain");
+    expect(calc("sin(90.001)")).not.toBe("1");
+  });
+  it("keeps the full sum of a history line", () => {
+    expect(parseHistory(JSON.stringify([{ expr: "0.3+1", result: "1.3", full: "0.30000000000000004+1" }]))[0].full).toBe("0.30000000000000004+1");
+  });
+});
