@@ -9,7 +9,7 @@ import { LOCALES, type Locale } from "../src/shared/locale";
 import { preloadLocalePack } from "../src/shared/locale-preload";
 import { messages, refMessages } from "../src/shared/messages";
 import { parseAppPath, refHref } from "../src/shared/path";
-import { REF_ENTRIES, REF_GROUPS, REF_META, REF_PUBLISHED, isRefId, mfan8Href, refGroupOf, type RefId } from "../src/shared/ref";
+import { REF_ENTRIES, REF_FOCUS, REF_GROUPS, REF_MANNEQUINS, REF_META, REF_PUBLISHED, REF_UPDATED, isRefId, mfan8Href, refGroupOf, type RefId } from "../src/shared/ref";
 import { refArticleJsonLd, refCopy, refPageHtml, refPhotos, refTitle, type RefEntryCopy, type RefPhoto } from "../src/shared/ref-i18n";
 import { refSyncFiles } from "../src/shared/ref-sync";
 import type { KbBlock } from "../src/shared/kb-i18n";
@@ -53,6 +53,45 @@ function structure(copy: RefEntryCopy): unknown {
   };
   return { sections: copy.sections.map((s) => s.body.map(block)), faq: copy.faq.length, aka: Array.isArray(copy.aka) };
 }
+
+describe("reference: mannequins and footer entries", () => {
+  it("ships all three widths for every mannequin view", () => {
+    for (const [id, angles] of Object.entries(REF_MANNEQUINS)) {
+      for (const angle of angles) {
+        for (const width of [300, 600, 900]) {
+          expect(existsSync(join(root, `public/covers/ref/${id}-${angle}-${width}.webp`)), `${id} ${angle} ${width}`).toBe(true);
+        }
+      }
+    }
+  });
+
+  it("renders mannequins with localized alt text and a CC0 credit, only where listed", () => {
+    for (const locale of LOCALES) {
+      const html = refPageHtml(locale, "sitting-pose");
+      expect(html).toContain('src="/covers/ref/sitting-pose-front-300.webp"');
+      expect(html).toContain("creativecommons.org/publicdomain/zero/1.0/");
+      expect(html).not.toContain("{angle}");
+    }
+    expect(refPageHtml("en", "hanfu")).not.toContain("/covers/ref/");
+  });
+
+  it("marks mannequin entries as edited and credits their images", () => {
+    const ld = refArticleJsonLd("en", "standing-pose") as { dateModified: string; image: { contentUrl: string; license?: string }[] };
+    expect(ld.dateModified).toBe(REF_UPDATED["standing-pose"]);
+    expect(ld.image[0].contentUrl).toBe("https://cv.cm/covers/ref/standing-pose-front-900.webp");
+    expect(ld.image[0].license).toContain("publicdomain/zero");
+  });
+
+  it("keeps the footer's entry names equal to each entry's name", () => {
+    for (const locale of LOCALES) {
+      const names = (readJson(`src/locales/${locale}.json`) as { refFocus: Record<string, string> }).refFocus;
+      expect(Object.keys(names).sort()).toEqual([...REF_FOCUS].sort());
+      for (const id of REF_FOCUS) {
+        expect(names[id]).toBe((readJson(`src/locales/ref/${locale}/${id}.json`) as { name: string }).name);
+      }
+    }
+  });
+});
 
 describe("reference: content", () => {
   it("has every entry in every locale, matching the English structure", () => {
