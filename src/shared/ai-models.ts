@@ -1,7 +1,8 @@
 /**
- * Models behind the AI tools. Weights are mirrored from Hugging Face at a pinned revision to
- * s3.cv.cm `files/ai/models/{repo}/` (scripts/mirror-ai-models.mjs) and served same-origin at `/ai/models/`.
- * Hugging Face is not reachable from mainland China, and same-origin keeps the CSP closed.
+ * Models behind the AI tools, at pinned revisions. The Worker serves every file same-origin at `/ai/models/`
+ * (`upstreamUrl`): published models straight from Hugging Face (or the model's `source`), our own re-exports
+ * (`cvcm/*`, not on Hugging Face) from s3.cv.cm `files/ai/models/` (scripts/ai/mirror.mjs). Visitors only talk to
+ * cv.cm, which also keeps them working where Hugging Face is blocked (mainland China).
  */
 
 /** How the model runs: WebGPU with 16-bit floats, WebGPU without them, or WebAssembly on the CPU. */
@@ -246,9 +247,9 @@ export const JANUS_DEVICES = {
   image_decode: "webgpu",
 } as const;
 
-/** Same-origin path the Worker proxies to s3.cv.cm. */
+/** Same-origin path the Worker serves models at (from their publisher, or s3.cv.cm for our own exports). */
 export const AI_MODEL_PREFIX = "/ai/models/";
-/** ONNX Runtime's WebAssembly build, mirrored next to the models (the .wasm is over Pages' 25 MiB file limit). */
+/** ONNX Runtime's WebAssembly build (the .wasm is over Pages' 25 MiB file limit): the Worker serves it from the npm CDN. */
 export const AI_ORT_PREFIX = "/ai/ort/";
 
 /**
@@ -260,6 +261,52 @@ export function modelFileUrl(id: AiModelId, file: string, host: string | null | 
   const { source } = AI_MODELS[id] as AiModel;
   if (host) return `${new URL(host, origin).href}${repo}/${revision}/${file}`;
   return source ? `${source}/${file}` : `https://huggingface.co/${repo}/resolve/${revision}/${file}`;
+}
+
+/** The onnxruntime-web version the AI worker bundles (a test keeps it equal to package-lock). */
+export const ORT_VERSION = "1.31.0-dev.20260914-8d85527a0";
+
+/** Our own exports (scripts/ai/export-*.py): not on Hugging Face, so they are the only files kept on s3.cv.cm. */
+export function isOwnExport(repo: string): boolean {
+  return repo.startsWith("cvcm/");
+}
+
+/**
+ * Where the Worker fetches a file under /ai/models/ or /ai/ort/ (path after the prefix), or null if it is not in
+ * the catalog (no open proxy). Our own exports come from s3.cv.cm; every other model straight from its publisher
+ * (Hugging Face, or the model's `source`), and the ONNX Runtime build from the npm CDN, pinned by version.
+ */
+export function upstreamUrl(kind: "models" | "ort", rest: string): string | null {
+  if (kind === "ort") return ORT_FILES.has(rest) ? `https://cdn.jsdelivr.net/npm/onnxruntime-web@${rest.replace("/", "/dist/")}` : null;
+  return (upstreams ??= catalogUpstreams()).get(rest) ?? null;
+}
+
+/** The ONNX Runtime files the AI worker loads, for the bundled version only. */
+const ORT_FILES: ReadonlySet<string> = new Set(
+  ["ort-wasm-simd-threaded.asyncify.mjs", "ort-wasm-simd-threaded.asyncify.wasm"].map((f) => `${ORT_VERSION}/${f}`),
+);
+
+let upstreams: Map<string, string> | null = null;
+
+/** `{repo}/{revision}/{file}` → where it is fetched from, for every catalog file. */
+function catalogUpstreams(): Map<string, string> {
+  const map = new Map<string, string>();
+  for (const id of Object.keys(AI_MODELS) as AiModelId[]) {
+    const { repo, revision } = AI_MODELS[id];
+    for (const file of mirrorFiles(id)) {
+      const rest = `${repo}/${revision}/${file}`;
+      map.set(rest, isOwnExport(repo) ? `https://s3.cv.cm/files/ai/models/${rest}` : modelFileUrl(id, file, null, "https://cv.cm"));
+    }
+  }
+  return map;
+}
+
+/** Content-Type for an /ai/ file, by extension (publishers label .mjs / .wasm / .json differently). */
+export function aiContentType(path: string): string {
+  if (path.endsWith(".json")) return "application/json";
+  if (path.endsWith(".wasm")) return "application/wasm";
+  if (path.endsWith(".mjs")) return "text/javascript";
+  return "application/octet-stream";
 }
 
 export function modelBytes(id: AiModelId, backend: AiBackend): number {
