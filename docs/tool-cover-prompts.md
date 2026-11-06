@@ -227,3 +227,13 @@ Codex, refs `due-date-sweet.jpg` + `reading-time-sweet.jpg`. Same character and 
 ## AI music generator (2026-11-02)
 
 Codex, refs `tone-generator-sweet.jpg` + `reading-time-sweet.jpg`. Same character and room. `ai-music-generator`: pink over-ear headphones with lace bows, she presses glowing pads on a small pearlescent pink keyboard synthesizer; pastel musical notes and a soft wave of little bars rise from it; a cream drum pad with heart buttons beside. No words, letters, numerals, logo or watermark.
+
+## Scientific calculator, online notepad, Markdown preview, CSS gradient generator, fancy text generator (2026-11-03)
+
+Codex, refs `click-test-sweet.jpg` + `mic-test-sweet.jpg`. Same character and room, no words, letters, numerals, logo or watermark. `markdown` and `gradient` were made on 2026-11-06. Codex then hit its usage limit again (until 2026-11-10), so `fancy-text` came from GPT Image 2.5 on kie.ai with the same prompt and references.
+
+- `calculator`: she taps a chunky pastel pink scientific calculator with round blank cream buttons; a few soft pastel shapes (a tiny pi-like swirl, a triangle, a small curve graph line) float above it, no readable symbols.
+- `notepad`: she writes in a cream spiral notepad with a pink cover on a pink laptop keyboard; a small pink heart-shaped cloud with a soft check mark floats above, showing it saved itself; blank wavy lines on the pages.
+- `markdown`: a cream laptop screen split in two halves: the left half shows plain blank grey lines with tiny pink marks, the right half shows the same content as a neat card layout with a pink heading bar, bullet dots and a little table; she points at it with a pink pencil.
+- `gradient`: she holds a painter's palette shaped like a heart with soft paint blobs; a large cream card on an easel shows a smooth pastel colour gradient from pink to peach to lavender; two small round colour drops on the desk.
+- `fancy-text`: pastel pink alphabet blocks and ribbon-like decorative curly shapes float out of a cream phone screen; the blocks have only ornamental swirls, stars, circles and hearts on them, no letters; she smiles holding the phone.

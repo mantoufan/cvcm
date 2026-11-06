@@ -37,7 +37,12 @@ const FILES: readonly ToolId[] = [
   "audio-joiner", "image-colors",
 ];
 
-export const DATA_HANDLING_GROUPS = { STORES, NETWORK_VOICES, AI, FILES } as const;
+/** Text kept in this browser's localStorage between visits. */
+const NOTES: readonly ToolId[] = ["notepad"];
+/** Renders text in the page; images the text links to are loaded from their own sites. */
+const LINKED_IMAGES: readonly ToolId[] = ["markdown"];
+
+export const DATA_HANDLING_GROUPS = { STORES, NETWORK_VOICES, AI, FILES, NOTES, LINKED_IMAGES } as const;
 
 const DATA_HANDLING_TEXT: Record<keyof typeof DATA_HANDLING_GROUPS | "LOCAL", string> = {
   STORES: `Stores the note on cv.cm (text in its database, files on its storage host s3.cv.cm) until ${CLIP_MAX_VIEWS} views or ${CLIP_TTL_MS / 3_600_000} hours. Anyone with the short link can open it, so it is not for secrets.`,
@@ -45,6 +50,8 @@ const DATA_HANDLING_TEXT: Record<keyof typeof DATA_HANDLING_GROUPS | "LOCAL", st
     "Speaks with the browser's voices. On-device voices keep the text on the device; online voices (such as Chrome's Google voices) send it to the voice provider.",
   AI: "Downloads an AI model once and runs it on the device. Files are not uploaded.",
   FILES: "Processes files in the page. Files are not uploaded.",
+  NOTES: "Keeps the note in this browser's local storage on the device; files it opens are read in the page. Notes and files are not uploaded.",
+  LINKED_IMAGES: "Renders in the page and keeps the text in this browser. Images written into the text load from their own addresses. The text is not uploaded.",
   LOCAL: "Runs in the page. Inputs are not uploaded.",
 };
 
