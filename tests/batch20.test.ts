@@ -213,3 +213,12 @@ describe("fifth review pass after merging batch 19", () => {
     expect(parseWhole("１２３　４５６")).toEqual({ ok: true, n: 123456n });
   });
 });
+
+describe("sixth review pass after merging batch 19", () => {
+  it("reads every kind of grouping space", () => {
+    for (const sp of [" ", "\u00a0", "\u2007", "\u2009", "\u202f", "\u3000"]) {
+      expect(parseWhole(`1${sp}234${sp}567`)).toEqual({ ok: true, n: 1234567n });
+    }
+    expect(parseWhole("-1 000")).toEqual({ ok: false, error: "notPositive" });
+  });
+});

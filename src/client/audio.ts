@@ -4,8 +4,7 @@
  */
 export function armAudio(current: AudioContext | null): AudioContext | null {
   if (!current) return newAudioContext() ?? current;
-  // iOS moves a context to "interrupted" after a call or app switch.
-  if (current.state === "suspended" || (current.state as string) === "interrupted") void current.resume().catch(() => undefined);
+  resumeIfPaused(current);
   return current;
 }
 
@@ -15,9 +14,14 @@ export function newAudioContext(options?: AudioContextOptions): AudioContext | n
     const Ctx = window.AudioContext || (window as unknown as { webkitAudioContext?: typeof AudioContext }).webkitAudioContext;
     if (!Ctx) return null;
     const ctx = new Ctx(options);
-    if (ctx.state === "suspended") void ctx.resume().catch(() => undefined);
+    resumeIfPaused(ctx);
     return ctx;
   } catch {
     return null;
   }
+}
+
+/** Resumes a context that is not running: suspended, or "interrupted", where iOS leaves it after a call or app switch. */
+export function resumeIfPaused(ctx: AudioContext): void {
+  if (ctx.state === "suspended" || ctx.state === "interrupted") void ctx.resume().catch(() => undefined);
 }

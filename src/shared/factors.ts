@@ -42,7 +42,7 @@ export function parseWhole(raw: string, thousands: ThousandsMark = ","): { ok: t
   if (!s) return { ok: false, error: "empty" };
   const mark = thousands === "," ? "," : "\\.";
   // A leading zero is a decimal (0.125), and spaces need real groups too: "12 18" is two numbers, not 1218.
-  if (new RegExp(`^[-−]?[1-9]\\d{0,2}([${mark}'’ \\u00a0\\u202f\\u3000_])\\d{3}(\\1\\d{3})*$`).test(s)) s = s.replace(/[,.'’ \u00a0\u202f\u3000_]/g, "");
+  if (new RegExp(`^[-−]?[1-9]\\d{0,2}([${mark}'’ \\u00a0\\u2007\\u2009\\u202f\\u3000_])\\d{3}(\\1\\d{3})*$`).test(s)) s = s.replace(/[^\d−-]/g, "");
   if (/^[-−]\d+$/.test(s)) return { ok: false, error: "notPositive" };
   if (!/^\d+$/.test(s)) return { ok: false, error: "notInteger" };
   const digits = s.replace(/^0+(?=\d)/, "");

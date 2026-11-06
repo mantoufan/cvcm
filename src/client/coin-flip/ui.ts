@@ -34,7 +34,9 @@ export function mountCoinFlip(host: HTMLElement): void {
   countEl = h("select", {
     "data-field": "count",
     onPointerdown: () => { byPointer = true; },
-    onKeydown: () => { byPointer = false; },
+    // Esc or Tab: the list closed without a pick, so the next change is the keyboard's.
+    onKeydown: (e: KeyboardEvent) => { if (e.key === "Escape" || e.key === "Tab") byPointer = false; },
+    onBlur: () => { byPointer = false; },
     onChange: () => {
       if (byPointer) countEl?.blur();
       byPointer = false;

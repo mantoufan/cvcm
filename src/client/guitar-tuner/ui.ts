@@ -1,4 +1,4 @@
-import { armAudio, newAudioContext } from "../audio";
+import { armAudio, newAudioContext, resumeIfPaused } from "../audio";
 import { h } from "../dom";
 import { locale, t } from "../i18n";
 import { appHref } from "../../shared/path";
@@ -44,6 +44,7 @@ let lastHeard = 0;
 let lastTarget: number | null = null;
 /** The string last heard, kept after Stop so the reference tone can still play it. */
 let lastPlayed: number | null = null;
+let lastResume = 0;
 /** A string picked by hand; null = follow whichever string is played. */
 let locked: number | null = null;
 let refOsc: OscillatorNode | null = null;
@@ -287,14 +288,27 @@ function stop(): void {
 function analyse(): void {
   // With echo cancellation off, the mic hears the reference tone: it must not read as the string being "in tune".
   if (!analyser || !buf || !audio || refOsc) return;
-  // A context made after the permission prompt (the sample-rate retry) may start suspended.
-  // iOS moves a context to "interrupted" after a call or app switch.
-  if (audio.state === "suspended" || (audio.state as string) === "interrupted") void audio.resume().catch(() => undefined);
+  const now = performance.now();
+  // Not running (the sample-rate retry can start suspended; iOS interrupts for a call): the buffer holds old samples, so
+  // they must not count as a string still ringing. Asks to resume once a second.
+  if (audio.state !== "running") {
+    if (now - lastResume > 1000) {
+      lastResume = now;
+      resumeIfPaused(audio);
+    }
+    if (lastHeard && now - lastHeard > HOLD_MS) {
+      lastHeard = 0;
+      readings = [];
+      pending = null;
+      paintNote(null);
+      say("listening");
+    }
+    return;
+  }
   if (typeof analyser.getFloatTimeDomainData === "function") analyser.getFloatTimeDomainData(buf);
   else return;
   const { min, max } = searchRange(tuning(), a4());
   const pitch = detectPitch(buf, audio.sampleRate, min, max);
-  const now = performance.now();
   if (!pitch) {
     pending = null;
     if (lastHeard && now - lastHeard > HOLD_MS) {
