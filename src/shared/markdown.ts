@@ -41,6 +41,13 @@ const BULLET = /^( {0,3})([-*+]|\d{1,9}[.)])([ \t]+|$)(.*)$/;
 const SETEXT = /^ {0,3}(=+|-+)[ \t]*$/;
 const TABLE_DELIM = /^[ \t]*\|?[ \t]*:?-+:?[ \t]*(\|[ \t]*:?-+:?[ \t]*)*\|?[ \t]*$/;
 
+/** Removes trailing characters by scanning back: an end-anchored regex is quadratic on a long run inside a line. */
+function trimEnd(s: string, chars: string): string {
+  let e = s.length;
+  while (e > 0 && chars.includes(s[e - 1])) e--;
+  return s.slice(0, e);
+}
+
 const blank = (s: string | undefined) => s == null || /^[ \t]*$/.test(s);
 
 function expandTabs(line: string): string {
@@ -70,7 +77,8 @@ export function splitRow(line: string): string[] {
     } else if (c === "`") {
       let run = 1;
       while (s[i + run] === "`") run++;
-      tick = tick === run ? 0 : tick || run;
+      // A run with no closing run is plain text, so it does not swallow the cells after it.
+      tick = tick === run ? 0 : tick || (s.indexOf("`".repeat(run), i + run) >= 0 ? run : 0);
       cur += "`".repeat(run);
       i += run - 1;
     } else if (c === "|" && !tick) {
@@ -199,17 +207,15 @@ function blocks(lines: string[], depth: number): Block[] {
     if (startsTable(lines, i)) {
       const head = splitRow(line);
       const delim = splitRow(lines[i + 1]);
-      {
-        const rows: Inline[][][] = [];
-        i += 2;
-        while (i < lines.length && !blank(lines[i]) && !interrupts(lines[i])) {
-          const cells = splitRow(lines[i]);
-          rows.push(head.map((_, c) => inline(cells[c] ?? "")));
-          i++;
-        }
-        out.push({ t: "table", align: delim.map(alignOf), head: head.map((c) => inline(c)), rows });
-        continue;
+      const rows: Inline[][][] = [];
+      i += 2;
+      while (i < lines.length && !blank(lines[i]) && !interrupts(lines[i])) {
+        const cells = splitRow(lines[i]);
+        rows.push(head.map((_, c) => inline(cells[c] ?? "")));
+        i++;
       }
+      out.push({ t: "table", align: delim.map(alignOf), head: head.map((c) => inline(c)), rows });
+      continue;
     }
     // A paragraph, or a setext heading when the next line is ===== or -----.
     const para: string[] = [line.replace(/^[ \t]+/, "")];
@@ -228,8 +234,8 @@ function blocks(lines: string[], depth: number): Block[] {
       i++;
     }
     const body = para.join("\n");
-    if (heading) out.push({ t: "h", level: heading, kids: inline(body.replace(/[ \t]+$/, "")) });
-    else out.push({ t: "p", kids: inline(body.replace(/[ \t]+$/, "")) });
+    if (heading) out.push({ t: "h", level: heading, kids: inline(trimEnd(body, " \t")) });
+    else out.push({ t: "p", kids: inline(trimEnd(body, " \t")) });
   }
   return out;
 }
@@ -326,6 +332,21 @@ function entity(s: string, i: number): { v: string; len: number } | null {
   return { v: ok ? String.fromCodePoint(cp) : "�", len: m[0].length };
 }
 
+function decodeEntities(s: string): string {
+  if (!s.includes("&")) return s;
+  let out = "";
+  for (let i = 0; i < s.length; i++) {
+    const e = s[i] === "&" ? entity(s, i) : null;
+    if (e) {
+      out += e.v;
+      i += e.len - 1;
+    } else {
+      out += s[i];
+    }
+  }
+  return out;
+}
+
 /**
  * Links are kept only for http(s), mailto, tel, in-page and relative addresses; null for anything else
  * (javascript:, data:, vbscript: …), which is shown as plain text instead.
@@ -420,7 +441,8 @@ function destination(s: string, i: number): { href: string; title: string; end: 
     while (s[j] === " " || s[j] === "\n") j++;
   }
   if (s[j] !== ")") return null;
-  return { href, title, end: j + 1 };
+  // Entities count here as in body text ("?a=1&amp;b=2"); safeHref checks the decoded address.
+  return { href: decodeEntities(href), title: decodeEntities(title), end: j + 1 };
 }
 
 const isSpace = (c: string | undefined) => c == null || /\s/.test(c);
@@ -526,8 +548,9 @@ export function inline(src: string, depth = 0, inLink = false): Inline[] {
     if (c === "\n") {
       // Two or more spaces before a line end make a hard line break; otherwise it is a soft break.
       // Text is flushed at every line end, so these checks only ever look at one line (not the whole paragraph).
-      const hard = / {2,}$/.test(buf);
-      buf = buf.replace(/ +$/, "");
+      const kept = trimEnd(buf, " ");
+      const hard = buf.length - kept.length >= 2;
+      buf = kept;
       if (hard) {
         flush();
         out.push({ t: "br" });
@@ -576,14 +599,19 @@ export function inline(src: string, depth = 0, inLink = false): Inline[] {
     if ((c === "h" || c === "w" || c === "H" || c === "W") && !inLink && !isWord(s[i - 1])) {
       const m = /^(?:https?:\/\/|www\.)[^\s<]+/i.exec(s.slice(i));
       if (m) {
-        let url = m[0];
         // Trailing punctuation belongs to the sentence; a ")" stays only if it closes a "(" in the address.
+        const opens = m[0].split("(").length - 1;
+        let closes = m[0].split(")").length - 1;
+        let end = m[0].length;
         for (;;) {
-          const last = url[url.length - 1];
-          if (/[.,:;!?"'*_~]/.test(last)) url = url.slice(0, -1);
-          else if (last === ")" && (url.match(/\(/g)?.length ?? 0) < (url.match(/\)/g)?.length ?? 0)) url = url.slice(0, -1);
-          else break;
+          const last = m[0][end - 1];
+          if (/[.,:;!?"'*_~]/.test(last)) end--;
+          else if (last === ")" && opens < closes) {
+            closes--;
+            end--;
+          } else break;
         }
+        const url = m[0].slice(0, end);
         // It needs a host: "https://" alone is text.
         if (/^(?:https?:\/\/[^\s/?#]+|www\.[^\s/?#.]+\.[^\s/?#]+)/i.test(url)) {
           flush();
@@ -703,11 +731,6 @@ export function toHtml(doc: readonly Block[], tight = false): string {
       }
     })
     .join("\n");
-}
-
-/** A heading's text and level, for the outline. */
-export function headings(doc: readonly Block[]): Array<{ level: number; text: string }> {
-  return doc.flatMap((b) => (b.t === "h" ? [{ level: b.level, text: plain(b.kids) }] : []));
 }
 
 /** The document's readable text (no Markdown syntax), one block per line, for word counts. */

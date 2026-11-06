@@ -229,7 +229,17 @@ async function openFile(): Promise<void> {
     savedEl.classList.add("error");
     return;
   }
-  const text = (await file.text()).replace(/^﻿/, "").replace(/\r\n?/g, "\n");
+  // Strict UTF-8: a GBK or Shift-JIS file would otherwise replace the note with garbage and be saved over it.
+  let text: string;
+  try {
+    text = new TextDecoder("utf-8", { fatal: true }).decode(await file.arrayBuffer()).replace(/\r\n?/g, "\n");
+  } catch {
+    if (savedEl) {
+      savedEl.textContent = t("notepad.notUtf8");
+      savedEl.classList.add("error");
+    }
+    return;
+  }
   if (!textEl || !savedEl) return;
   if (text.length > MAX_NOTE) {
     savedEl.textContent = t("notepad.tooBig");

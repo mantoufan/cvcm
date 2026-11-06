@@ -15,6 +15,8 @@ let statsEl: HTMLElement | null = null;
 let copyHtmlBtn: HTMLButtonElement | null = null;
 let copyMdBtn: HTMLButtonElement | null = null;
 let doc: Block[] = [];
+/** True from an edit until it is saved: an idle tab must not overwrite what another tab saved. */
+let dirty = false;
 const schedule = debounce(() => {
   paint();
   save();
@@ -28,7 +30,10 @@ export function mountMarkdown(host: HTMLElement): void {
     spellcheck: "false",
     "aria-label": t("markdown.input"),
     placeholder: t("markdown.placeholder"),
-    onInput: () => schedule(),
+    onInput: () => {
+      dirty = true;
+      schedule();
+    },
     onKeydown: (e: KeyboardEvent) => indentOnTab(e),
   });
   previewEl = h("div", { class: "md-preview", "data-out": "preview", "aria-live": "off" });
@@ -55,12 +60,24 @@ export function mountMarkdown(host: HTMLElement): void {
     ),
   );
   inputEl.value = load() ?? t("markdown.sampleText");
+  dirty = false;
   paint();
   window.addEventListener("pagehide", save);
+  window.addEventListener("storage", onStorage);
+}
+
+/** Another tab saved: show its text, unless this tab has an unsaved edit of its own. */
+function onStorage(e: StorageEvent): void {
+  if (e.key !== STORE_KEY || !inputEl || dirty) return;
+  const next = e.newValue?.slice(0, MAX_MARKDOWN) ?? t("markdown.sampleText");
+  if (next === inputEl.value) return;
+  inputEl.value = next;
+  paint();
 }
 
 export function unmountMarkdown(): void {
   window.removeEventListener("pagehide", save);
+  window.removeEventListener("storage", onStorage);
   // A change typed within the last moment is saved before the tool goes away.
   if (inputEl) save();
   inputEl = previewEl = statsEl = null;
@@ -78,7 +95,8 @@ function load(): string | null {
 }
 
 function save(): void {
-  if (!inputEl) return;
+  if (!inputEl || !dirty) return;
+  dirty = false;
   try {
     // The sample is not saved, so a later visit in another language shows that language's sample.
     if (inputEl.value === t("markdown.sampleText")) window.localStorage.removeItem(STORE_KEY);
@@ -89,6 +107,7 @@ function save(): void {
 function loadSample(): void {
   if (!inputEl) return;
   inputEl.value = t("markdown.sampleText");
+  dirty = true;
   paint();
   save();
 }
@@ -106,10 +125,21 @@ function indentOnTab(e: KeyboardEvent): void {
   e.preventDefault();
   const { selectionStart: s, selectionEnd: end, value } = inputEl;
   const lineStart = value.lastIndexOf("\n", s - 1) + 1;
-  if (e.shiftKey) {
-    const m = /^ {1,4}/.exec(value.slice(lineStart));
-    if (!m) return;
-    inputEl.setRangeText("", lineStart, lineStart + m[0].length, "preserve");
+  if (e.shiftKey || end > s) {
+    // Whole lines: a selection is indented, never replaced. A selection ending at a line start leaves that line alone.
+    const stop = end > s && value[end - 1] === "\n" ? end - 1 : end;
+    const next = value.indexOf("\n", stop);
+    const blockEnd = next < 0 ? value.length : next;
+    const lines = value.slice(lineStart, blockEnd).split("\n");
+    const changed = lines.map((l) => (e.shiftKey ? l.replace(/^ {1,4}/, "") : l && `  ${l}`));
+    const block = changed.join("\n");
+    if (block === value.slice(lineStart, blockEnd)) return;
+    replaceRange(lineStart, blockEnd, block);
+    if (end > s) inputEl.setSelectionRange(lineStart, lineStart + block.length);
+    else {
+      const caret = Math.max(lineStart, s - (lines[0].length - changed[0].length));
+      inputEl.setSelectionRange(caret, caret);
+    }
   } else {
     // Under a list item, indent to where its text starts ("1. " is 3, "10. " is 4), which nests the new line.
     const prevStart = value.lastIndexOf("\n", lineStart - 2) + 1;
@@ -117,9 +147,21 @@ function indentOnTab(e: KeyboardEvent): void {
     const item = /^(\s*)([-*+]|\d{1,9}[.)])(\s+)/.exec(prev);
     const before = value.slice(lineStart, s);
     const width = item && /^ *$/.test(before) ? Math.max(2, item[0].length - before.length) : 2;
-    inputEl.setRangeText(" ".repeat(width), s, end, "end");
+    replaceRange(s, end, " ".repeat(width));
   }
+  dirty = true;
   schedule();
+}
+
+/** Edits through the browser's own command where it can, so Ctrl+Z still brings the text back. */
+function replaceRange(start: number, end: number, text: string): void {
+  if (!inputEl) return;
+  inputEl.setSelectionRange(start, end);
+  let done = false;
+  try {
+    done = document.execCommand(text ? "insertText" : "delete", false, text);
+  } catch { /* not supported: fall through */ }
+  if (!done) inputEl.setRangeText(text, start, end, "end");
 }
 
 /** Re-reads the box (for exports right after typing), without redrawing the preview. */

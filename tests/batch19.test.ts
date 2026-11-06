@@ -217,6 +217,9 @@ describe("markdown", () => {
     md("[a ".repeat(60000));
     md("[a](".repeat(40000));
     md("b\n".repeat(90000));
+    md("http://x.co" + ")".repeat(199000));
+    md("a" + " ".repeat(199000) + "b\nc");
+    md("a" + " ".repeat(199000) + "b");
     // A paragraph that uses up its scan budget leaves the next one alone.
     expect(md("[a ".repeat(60000) + "\n\n`code` [ok](https://cv.cm)")).toContain("<p><code>code</code> <a href=\"https://cv.cm\">ok</a></p>");
     expect(Date.now() - start).toBeLessThan(4000);
@@ -231,5 +234,41 @@ describe("notepad", () => {
     expect(noteFileName("\n  Shopping: list?\nmore", "note")).toBe("Shopping list.txt");
     expect(noteFileName("   \n", "note-2026-11-03")).toBe("note-2026-11-03.txt");
     expect(noteFileName("...", "n")).toBe("n.txt");
+  });
+});
+
+describe("review pass 4", () => {
+  it("does not read decimals or typos as thousands", () => {
+    expect(calc("0.125", "deg", 0, ",")).toBe("0.125");
+    expect(calc("0.500", "deg", 0, ",")).toBe("0.5");
+    expect(calc("1.234.567", "deg", 0, ",")).toBe(formatResult(1234567));
+    expect(calc("1,234,567")).toBe(formatResult(1234567));
+    expect(calc("3.14.159", "deg", 0, ",")).toBe("syntax");
+    expect(calc("1.5.000", "deg", 0, ",")).toBe("syntax");
+    expect(calc("0,125")).toBe("syntax");
+  });
+  it("keeps two × from becoming a power", () => {
+    expect(calc("2××3")).toBe("syntax");
+    expect(calc("2**3")).toBe("8");
+  });
+  it("has no value for tan of a right angle in radians", () => {
+    expect(calc("tan(π/2)", "rad")).toBe("domain");
+    expect(calc("tan(1)", "rad")).toBe(formatResult(Math.tan(1)));
+  });
+  it("keeps the angle mode in history", () => {
+    expect(parseHistory(JSON.stringify([{ expr: "sin(30)", result: "0.5", mode: "deg" }]))[0].mode).toBe("deg");
+    expect(parseHistory(JSON.stringify([{ expr: "1", result: "1", mode: "x" }]))[0].mode).toBeUndefined();
+  });
+  it("decodes entities in link addresses and still blocks script", () => {
+    expect(md("[a](http://x.com?a=1&amp;b=2)")).toContain('href="http://x.com?a=1&amp;b=2"');
+    expect(md("[a](&#106;avascript:alert(1))")).not.toContain("href=\"javascript");
+  });
+  it("trims a bare address the same way after the rewrite", () => {
+    expect(md("(see http://x.co/a_(b)).")).toContain('href="http://x.co/a_(b)"');
+    expect(md("line  \nnext")).toBe("<p>line<br>\nnext</p>");
+  });
+  it("lets an unmatched backtick leave table cells apart", () => {
+    const html = md("| a | b |\n|---|---|\n| ` | c |");
+    expect(html).toContain("<td>c</td>");
   });
 });

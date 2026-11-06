@@ -53,7 +53,7 @@ describe("calculator ui", () => {
     const saved = JSON.parse(window.localStorage.getItem("cvcm.calculator.v1")!);
     expect(saved).toHaveLength(2);
     // History keeps the number Ans stood for, so the line still gives its own result later.
-    expect(saved[0]).toEqual({ expr: "42+8", result: "50" });
+    expect(saved[0]).toEqual({ expr: "42+8", result: "50", mode: "deg" });
   });
   it("switches angle mode, deletes function names whole and reports errors only after =", () => {
     mountCalculator(host);
@@ -166,5 +166,56 @@ describe("fancy-text ui", () => {
     vi.advanceTimersByTime(100);
     expect(q("[data-style=bold] .fancy-out").textContent).toBe("𝐇𝐢");
     expect(q("[data-style=upsideDown] .fancy-out").textContent).toBe("ᴉH");
+  });
+});
+
+describe("review pass 4 ui", () => {
+  const beforeinput = (el: HTMLElement, data: string) =>
+    el.dispatchEvent(new InputEvent("beforeinput", { data, inputType: "insertText", bubbles: true, cancelable: true }));
+
+  it("treats typing after = like the keypad", () => {
+    mountCalculator(host);
+    const expr = q<HTMLInputElement>("[data-field=expr]");
+    type(expr, "2+3");
+    expr.dispatchEvent(new KeyboardEvent("keydown", { key: "Enter", bubbles: true }));
+    beforeinput(expr, "*");
+    expect(expr.value).toBe("Ans*");
+    type(expr, "2+3");
+    expr.dispatchEvent(new KeyboardEvent("keydown", { key: "Enter", bubbles: true }));
+    beforeinput(expr, "4");
+    expect(expr.value).toBe("4");
+  });
+
+  it("an idle Markdown tab leaves another tab's document alone", () => {
+    mountMarkdown(host);
+    window.localStorage.setItem("cvcm.markdown.v1", "from tab 2");
+    window.dispatchEvent(new Event("pagehide"));
+    expect(window.localStorage.getItem("cvcm.markdown.v1")).toBe("from tab 2");
+    window.dispatchEvent(new StorageEvent("storage", { key: "cvcm.markdown.v1", newValue: "from tab 2" }));
+    expect(q<HTMLTextAreaElement>("[data-field=markdown]").value).toBe("from tab 2");
+  });
+
+  it("Tab indents a selection instead of deleting it", () => {
+    mountMarkdown(host);
+    const box = q<HTMLTextAreaElement>("[data-field=markdown]");
+    box.value = "- a\n- b\nc";
+    box.setSelectionRange(0, 7);
+    box.dispatchEvent(new KeyboardEvent("keydown", { key: "Tab", bubbles: true, cancelable: true }));
+    expect(box.value).toBe("  - a\n  - b\nc");
+    box.setSelectionRange(0, box.value.indexOf("\nc"));
+    box.dispatchEvent(new KeyboardEvent("keydown", { key: "Tab", shiftKey: true, bubbles: true, cancelable: true }));
+    expect(box.value).toBe("- a\n- b\nc");
+  });
+
+  it("refuses a file that is not UTF-8 and keeps the note", async () => {
+    mountNotepad(host);
+    const box = q<HTMLTextAreaElement>("[data-field=note]") ?? host.querySelector("textarea")!;
+    type(box, "keep me");
+    const file = new File([new Uint8Array([0xc4, 0xe3, 0xba, 0xc3])], "gbk.txt");
+    const input = host.querySelector<HTMLInputElement>("input[type=file]")!;
+    Object.defineProperty(input, "files", { value: [file], configurable: true });
+    input.dispatchEvent(new Event("change"));
+    await vi.waitFor(() => expect(q("[data-out=saved]").classList.contains("error")).toBe(true));
+    expect(box.value).toBe("keep me");
   });
 });

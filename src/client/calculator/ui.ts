@@ -57,6 +57,13 @@ export function mountCalculator(host: HTMLElement): void {
       shown = null;
       paint();
     },
+    // After "=", typing means the same as the keypad: a new sum, or carrying on from the answer.
+    onBeforeinput: (e: InputEvent) => {
+      if (shown === null || !e.data || !e.data.trim() || (e.inputType !== "insertText" && e.inputType !== "insertFromPaste")) return;
+      e.preventDefault();
+      insert(e.data);
+      paint();
+    },
     onKeydown: (e: KeyboardEvent) => {
       if (e.key === "Enter" || (e.key === "=" && !e.ctrlKey && !e.metaKey)) {
         e.preventDefault();
@@ -166,7 +173,7 @@ function insert(text: string): void {
   if (!exprEl) return;
   // After "=", a digit starts a new sum; an operator carries on from the answer.
   if (shown !== null) {
-    exprEl.value = /^[+−×÷^!%]/.test(text) ? "Ans" : "";
+    exprEl.value = /^[+\-−×*÷/^!%]/.test(text) ? "Ans" : "";
     exprEl.setSelectionRange(exprEl.value.length, exprEl.value.length);
     shown = null;
   }
@@ -228,12 +235,12 @@ function equals(): void {
   // History shows the number Ans stood for, so reusing the line later gives the same result.
   const mark = decimalMarkOf(locale());
   const was = formatResult(ans, mark).replace("−", "-");
-  // Brackets when the number would run into a digit ("2Ans") or carries a sign or exponent.
+  // Brackets when the number would run into a digit or letter ("2Ans", "Anse2") or carries a sign or exponent.
   const saved = expr.replace(/ans/gi, (m: string, at: number) =>
-    ans < 0 || /e/i.test(was) || /[\d.,]/.test(expr[at - 1] ?? "") || /[\d.,]/.test(expr[at + m.length] ?? "") ? `(${was})` : was);
+    ans < 0 || /e/i.test(was) || /[\d.,\p{L}]/u.test(expr[at - 1] ?? "") || /[\d.,\p{L}]/u.test(expr[at + m.length] ?? "") ? `(${was})` : was);
   ans = r.value;
   shown = formatResult(r.value, mark);
-  if (saved.length <= MAX_EVAL) history.unshift({ expr: saved, result: shown });
+  if (saved.length <= MAX_EVAL) history.unshift({ expr: saved, result: shown, mode });
   history = history.slice(0, MAX_HISTORY);
   save();
   paintHistory();
@@ -280,6 +287,8 @@ function paintHistory(): void {
           onClick: () => {
             if (!exprEl) return;
             exprEl.value = e.expr;
+            // The line was worked out in this angle mode, so reusing it gives the same result.
+            if (e.mode && e.mode !== mode) toggleMode();
             shown = null;
             paint();
             exprEl.focus();

@@ -40,14 +40,15 @@ class Fail extends Error {
 
 /** Maps the many ways people type the same operator onto one. */
 function normalize(src: string): string {
+  // "**" first: two × keys in a row are a typo, not a power.
   return src
+    .replace(/\*\*/g, "^")
     .replace(/[×✕·⋅]/g, "*")
     .replace(/[÷∶]/g, "/")
     .replace(/[−–—﹣－]/g, "-")
     .replace(/＋/g, "+")
     .replace(/[（]/g, "(")
-    .replace(/[）]/g, ")")
-    .replace(/\*\*/g, "^");
+    .replace(/[）]/g, ")");
 }
 
 function tokenize(src: string, decimal: "." | ","): Tok[] {
@@ -55,10 +56,10 @@ function tokenize(src: string, decimal: "." | ","): Tok[] {
   // Thousands are read only in real groups: 1,234,567 with a decimal point, 1.234.567 with a decimal comma. Any other
   // comma fails with a decimal point ("1,5" is not quietly 15); with a decimal comma, a lone "." is a decimal point too.
   if (decimal === ",") {
-    s = s.replace(/(^|[^\d,])(\d{1,3}(?:\.\d{3})+)(?![\d.])/g, (_, pre: string, n: string) => pre + n.replace(/\./g, ""));
+    s = s.replace(/(^|[^\d,.])([1-9]\d{0,2}(?:\.\d{3})+)(?![\d.])/g, (_, pre: string, n: string) => pre + n.replace(/\./g, ""));
     s = s.replace(/,/g, ".");
   } else {
-    s = s.replace(/(^|[^\d.])(\d{1,3}(?:,\d{3})+)(?![\d,])/g, (_, pre: string, n: string) => pre + n.replace(/,/g, ""));
+    s = s.replace(/(^|[^\d.,])([1-9]\d{0,2}(?:,\d{3})+)(?![\d,])/g, (_, pre: string, n: string) => pre + n.replace(/,/g, ""));
   }
   const out: Tok[] = [];
   let i = 0;
@@ -140,6 +141,8 @@ function trig(fn: "sin" | "cos" | "tan", x: number, mode: AngleMode): number {
     if (fn === "tan" && d % 180 === 135) return -1;
     x = (x * Math.PI) / 180;
   }
+  // tan(π/2) comes out as 1.6e16 because π is inexact: it has no value, the same as tan(90) in degrees.
+  if (fn === "tan" && Math.abs(Math.cos(x)) < 1e-15) throw new Fail("domain");
   const v = Math[fn](x);
   // In radians π is inexact, so sin(π) comes out as 1.2e-16: show the zero it stands for (but keep sin of a tiny angle).
   return Math.abs(v) < 1e-15 && Math.abs(x) > 1e-6 ? 0 : v;
@@ -379,7 +382,7 @@ export function decimalMarkOf(locale: string): "." | "," {
   return ["es", "id", "vi"].includes(locale) ? "," : ".";
 }
 
-export type HistoryEntry = { expr: string; result: string };
+export type HistoryEntry = { expr: string; result: string; mode?: AngleMode };
 export const MAX_HISTORY = 20;
 
 /** Reads history saved by an earlier visit; anything malformed is dropped. */
@@ -392,7 +395,7 @@ export function parseHistory(raw: string | null): HistoryEntry[] {
       .filter((e): e is HistoryEntry => !!e && typeof e === "object" && typeof (e as HistoryEntry).expr === "string" && typeof (e as HistoryEntry).result === "string")
       .slice(0, MAX_HISTORY)
       .filter((e) => e.expr.length <= MAX_EVAL)
-      .map((e) => ({ expr: e.expr, result: e.result.slice(0, 64) }));
+      .map((e) => ({ expr: e.expr, result: e.result.slice(0, 64), ...(e.mode === "rad" || e.mode === "deg" ? { mode: e.mode } : {}) }));
   } catch {
     return [];
   }
