@@ -155,19 +155,18 @@ function save(): void {
   paintSaved(savedAt);
 }
 
-/** Another tab saved the note: show it here too, unless this tab has unsaved typing (then this tab's save wins). */
 /** Back to a page kept in memory: it heard no storage events while frozen, and its old text must not overwrite newer work. */
 function onPageShow(e: PageTransitionEvent): void {
-  // If saving failed, the box holds the only copy: the stored note is older.
-  if (e.persisted && storageOk) takeNote(load());
+  if (e.persisted) takeNote(load());
 }
 
 function onStorage(e: StorageEvent): void {
   if (e.key === STORE_KEY) takeNote(parseNote(e.newValue));
 }
 
+/** Shows a note saved elsewhere, unless this tab has typing not saved yet, or could not save it: then the box is the only copy. */
 function takeNote(note: ReturnType<typeof parseNote>): void {
-  if (!textEl || saveTimer) return;
+  if (!textEl || saveTimer || !storageOk) return;
   if (!note || note.text === textEl.value) return;
   const focused = document.activeElement === textEl;
   const { selectionStart, selectionEnd } = textEl;

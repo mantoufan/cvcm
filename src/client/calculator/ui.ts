@@ -28,6 +28,7 @@ let ans = 0;
 /** The sum "=" last worked out and the Ans it used: "=" updates `ans`, so re-reading that same "Ans+1" must not use its own result. */
 let done: { expr: string; ans: number } | null = null;
 let history: HistoryEntry[] = [];
+let unsaved = false;
 /** The last "=" result, shown until the expression changes. */
 let shown: string | null = null;
 
@@ -47,6 +48,7 @@ export function mountCalculator(host: HTMLElement): void {
   done = null;
   shown = null;
   history = load();
+  unsaved = false;
   exprEl = h("input", {
     type: "text",
     class: "calc-expr",
@@ -139,14 +141,14 @@ export function mountCalculator(host: HTMLElement): void {
 
 /** Back to a page kept in memory: it heard no storage events while frozen. */
 function onPageShow(e: PageTransitionEvent): void {
-  if (!e.persisted) return;
+  if (!e.persisted || unsaved) return;
   history = load();
   paintHistory();
 }
 
 /** Another tab changed the history: show it, and the next "=" here adds to it rather than over it. */
 function onStorage(e: StorageEvent): void {
-  if (e.key !== storeKey() && e.key !== null) return;
+  if ((e.key !== storeKey() && e.key !== null) || unsaved) return;
   history = load();
   paintHistory();
 }
@@ -199,7 +201,11 @@ function load(): HistoryEntry[] {
 function save(): void {
   try {
     window.localStorage.setItem(storeKey(), JSON.stringify(history));
-  } catch { /* storage blocked: history lasts for this visit */ }
+    unsaved = false;
+  } catch {
+    // Storage blocked or full: history lasts for this visit, so what is stored must not replace it.
+    unsaved = true;
+  }
 }
 
 /** Types `text` at the caret (replacing a selection), as a key on the pad does. */

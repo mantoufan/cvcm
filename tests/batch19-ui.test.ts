@@ -439,3 +439,41 @@ describe("review pass 17 ui", () => {
     expect(JSON.parse(window.localStorage.getItem("cvcm.calculator.v1")!)[0].expr).toBe("2e−(5)");
   });
 });
+
+describe("review pass 18 ui", () => {
+  const backFromMemory = () => {
+    const ev = new Event("pageshow");
+    Object.defineProperty(ev, "persisted", { value: true });
+    window.dispatchEvent(ev);
+  };
+  it("keeps calculator history it could not save", () => {
+    mountCalculator(host);
+    const expr = q<HTMLInputElement>("[data-field=expr]");
+    vi.spyOn(window.localStorage.__proto__, "setItem").mockImplementation(() => { throw new Error("full"); });
+    type(expr, "1+1");
+    q<HTMLButtonElement>("[data-key='@eq']").click();
+    backFromMemory();
+    window.dispatchEvent(new StorageEvent("storage", { key: "cvcm.calculator.v1" }));
+    expect(host.querySelectorAll(".calc-hist").length).toBe(1);
+  });
+  it("keeps Markdown it could not save when another tab saves", () => {
+    mountMarkdown(host);
+    const box = q<HTMLTextAreaElement>("[data-field=markdown]");
+    vi.spyOn(window.localStorage.__proto__, "setItem").mockImplementation(() => { throw new Error("full"); });
+    box.value = "large draft";
+    box.dispatchEvent(new Event("input", { bubbles: true }));
+    window.dispatchEvent(new Event("pagehide"));
+    window.dispatchEvent(new StorageEvent("storage", { key: "cvcm.markdown.v1", newValue: "x" }));
+    expect(box.value).toBe("large draft");
+  });
+  it("keeps a note it could not save when another tab saves", () => {
+    mountNotepad(host);
+    const box = host.querySelector("textarea")!;
+    vi.spyOn(window.localStorage.__proto__, "setItem").mockImplementation(() => { throw new Error("full"); });
+    box.value = "large note";
+    box.dispatchEvent(new Event("input", { bubbles: true }));
+    window.dispatchEvent(new Event("pagehide"));
+    window.dispatchEvent(new StorageEvent("storage", { key: "cvcm.notepad.v1", newValue: JSON.stringify({ text: "x", savedAt: 1 }) }));
+    expect(box.value).toBe("large note");
+  });
+});
