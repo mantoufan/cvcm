@@ -82,7 +82,8 @@ function paint(): void {
     else bad.push(p);
   }
   if (bad.length || tooBig) {
-    errorEl.textContent = [tooBig ? t("lcmGcf.tooBig", { n: MAX_DIGITS }) : "", bad.length ? t("lcmGcf.invalid", { list: bad.slice(0, 5).join(", ") }) : ""].filter(Boolean).join(" ");
+    // "1,000, 2,000" splits into entries of 000: explain the split, not just the entries nobody typed on their own.
+    errorEl.textContent = [commaLooksLikeANumber(inputEl.value, mark) ? t("lcmGcf.commaNote") : "", tooBig ? t("lcmGcf.tooBig", { n: MAX_DIGITS }) : "", bad.length ? t("lcmGcf.invalid", { list: bad.slice(0, 5).join(", ") }) : ""].filter(Boolean).join(" ");
     return;
   }
   if (nums.length > MAX_NUMBERS) {

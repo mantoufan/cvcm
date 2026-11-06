@@ -132,10 +132,17 @@ export function detectPitch(input: ArrayLike<number>, rate: number, minFreq = 27
   if (tau < 0) return null;
   // A phone mic rolls off a low string, so its second harmonic can dip below the threshold half a period in. The real
   // period then dips much deeper at double the lag; in a note that really is this high, the two dips are about equal.
-  if (cmnd[tau]! > 0.01 && 2 * tau + 2 <= maxLag) {
+  // The first dip's floor is read between samples, as a period near n + 0.5 samples misses it by half a sample and only
+  // looks shallow.
+  const a = cmnd[tau - 1]!;
+  const b = cmnd[tau]!;
+  const c = tau + 1 <= maxLag ? cmnd[tau + 1]! : b;
+  const curve = a + c - 2 * b;
+  const floor = curve > 0 ? b - ((a - c) * (a - c)) / (8 * curve) : b;
+  if (floor > 0.03 && 2 * tau + 2 <= maxLag) {
     let deep = 2 * tau - 2;
     for (let t = deep + 1; t <= 2 * tau + 2; t++) if (cmnd[t]! < cmnd[deep]!) deep = t;
-    if (cmnd[deep]! < 0.5 * cmnd[tau]!) tau = deep;
+    if (cmnd[deep]! < 0.5 * floor) tau = deep;
   }
   const y0 = cmnd[tau - 1]!;
   const y1 = cmnd[tau]!;

@@ -23,25 +23,26 @@ export function halfWidth(s: string): string {
 /**
  * Whether a list holds an entry that looks like one number with a comma in it, though commas separate numbers. A run with
  * a three-digit first group ("100,200,300") is an ordinary list when it is all there is, but not beside other entries
- * ("250,500, 100,250"). Where the decimal mark is a comma, so is "1,5".
+ * ("250,500, 100,250"). Where the decimal mark is a comma, so is "1,5 2,5" (but "8,12" alone is a list).
  */
 export function commaLooksLikeANumber(raw: string, thousands: ThousandsMark = ","): boolean {
   // Split before converting: a full-width comma only ever separates.
   const entries = raw.split(/[\s;，、；]+|,\s+/).map(halfWidth).filter(Boolean);
   return entries.some((entry) =>
-    /^[1-9]\d?(,\d{3})+$/.test(entry) || (entries.length > 1 && /^\d{1,3}(,\d{3})+$/.test(entry)) || (thousands === "." && /^\d+,\d+$/.test(entry)));
+    /^[1-9]\d?(,\d{3})+$/.test(entry) || (entries.length > 1 && /^\d{1,3}(,\d{3})+$/.test(entry)) || (entries.length > 1 && thousands === "." && /^\d+,\d+$/.test(entry)));
 }
 
 /**
- * Reads one whole number. Spaces and apostrophes may group digits; the locale's thousands mark counts only between
- * groups of three (1,234,567 in English, 1.234.567 in Spanish). The other mark is a decimal point, so 4.5 and 4.500 in
+ * Reads one whole number. Spaces, underscores, apostrophes and the locale's thousands mark count only between groups of
+ * three (1,234,567 in English, 1.234.567 in Spanish). The other mark is a decimal point, so 4.5 and 4.500 in
  * English, or 1,5 in Spanish, are rejected instead of being read as 45, 4500 or 15.
  */
 export function parseWhole(raw: string, thousands: ThousandsMark = ","): { ok: true; n: bigint } | { ok: false; error: ParseError } {
-  let s = halfWidth(raw).trim().replace(/[\s\u00a0\u202f_]/g, "");
+  let s = halfWidth(raw).trim();
   if (!s) return { ok: false, error: "empty" };
   const mark = thousands === "," ? "," : "\\.";
-  if (new RegExp(`^[-−]?\\d{1,3}([${mark}'’])\\d{3}(\\1\\d{3})*$`).test(s)) s = s.replace(/[,.'’]/g, "");
+  // A leading zero is a decimal (0.125), and spaces need real groups too: "12 18" is two numbers, not 1218.
+  if (new RegExp(`^[-−]?[1-9]\\d{0,2}([${mark}'’ \\u00a0\\u202f_])\\d{3}(\\1\\d{3})*$`).test(s)) s = s.replace(/[,.'’ \u00a0\u202f_]/g, "");
   if (/^[-−]\d+$/.test(s)) return { ok: false, error: "notPositive" };
   if (!/^\d+$/.test(s)) return { ok: false, error: "notInteger" };
   const digits = s.replace(/^0+(?=\d)/, "");

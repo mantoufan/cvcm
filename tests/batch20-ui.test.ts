@@ -101,5 +101,9 @@ describe("lcm-gcf ui", () => {
     input.dispatchEvent(new Event("input"));
     vi.advanceTimersByTime(200);
     expect(q("[data-out=error]").textContent).toMatch(/^Commas separate numbers/);
+    input.value = "1,000, 2,000";
+    input.dispatchEvent(new Event("input"));
+    vi.advanceTimersByTime(200);
+    expect(q("[data-out=error]").textContent).toMatch(/^Commas separate numbers/);
   });
 });

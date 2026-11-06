@@ -164,3 +164,39 @@ describe("second review pass after merging batch 19", () => {
     expect(commaLooksLikeANumber("12，18", ".")).toBe(false);
   });
 });
+
+describe("third review pass after merging batch 19", () => {
+  it("keeps high notes high across every detune", () => {
+    const family = [1, 1 / 2, 1 / 3, 1 / 4, 1 / 5, 1 / 6];
+    for (const [midi, rate] of [[76, 48000], [81, 48000], [67, 44100], [64, 48000], [69, 44100]] as const) {
+      for (let cents = -30; cents <= 30; cents += 2) {
+        const f = midiToFreq(midi) * Math.pow(2, cents / 1200);
+        const p = detectPitch(tone(f, rate, 8192, family), rate, 70, 1400);
+        expect(Math.abs(1200 * Math.log2(p!.freq / f))).toBeLessThan(30);
+      }
+    }
+  });
+  it("still finds low strings across a detune sweep", () => {
+    for (let cents = -30; cents <= 30; cents += 5) {
+      const f = 82.41 * Math.pow(2, cents / 1200);
+      const p = detectPitch(tone(f, 48000, 8192, [0.2, 1, 0.2]), 48000, 70, 1000);
+      expect(Math.abs(1200 * Math.log2(p!.freq / f))).toBeLessThan(30);
+    }
+  });
+  it("reads groups only where they are real", () => {
+    expect(parseWhole("12 18")).toEqual({ ok: false, error: "notInteger" });
+    expect(parseWhole("4 5")).toEqual({ ok: false, error: "notInteger" });
+    expect(parseWhole("1_2")).toEqual({ ok: false, error: "notInteger" });
+    expect(parseWhole("1 000 000")).toEqual({ ok: true, n: 1000000n });
+    expect(parseWhole("1_000")).toEqual({ ok: true, n: 1000n });
+    expect(parseWhole("1,234,567")).toEqual({ ok: true, n: 1234567n });
+    expect(parseWhole("0.125", ".")).toEqual({ ok: false, error: "notInteger" });
+    expect(parseWhole("0,123")).toEqual({ ok: false, error: "notInteger" });
+    expect(parseWhole(" 360 ")).toEqual({ ok: true, n: 360n });
+  });
+  it("does not warn about a plain pair on decimal-comma pages", () => {
+    expect(commaLooksLikeANumber("8,12", ".")).toBe(false);
+    expect(commaLooksLikeANumber("1,5 2,5", ".")).toBe(true);
+    expect(commaLooksLikeANumber("1,000, 2,000")).toBe(true);
+  });
+});
