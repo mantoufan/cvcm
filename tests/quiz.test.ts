@@ -20,6 +20,7 @@ import {
   type ChoiceItem,
   type QuizId,
 } from "../src/shared/quiz";
+import { escapeHtml } from "../src/shared/device-i18n";
 import { quizCopy, quizStaticHtml } from "../src/shared/quiz-i18n";
 import { applyHtmlSeo, pageCanonical, pageTitle } from "../src/shared/seo";
 import { buildSitemapXml } from "../src/shared/sitemap";
@@ -153,6 +154,11 @@ describe("test pages: copy", () => {
           const ui = quizMessages(locale).ui;
           expect(ui.scale[def.scale], `${where} scale`).toHaveLength(SCALE_POINTS[def.scale]);
           expect(ui.scaleHint[def.scale], `${where} hint`).toBeTruthy();
+        }
+        // These two ask about a set period, and an empty hint would silently fall back to "as you usually are".
+        if (id === "adhd" || id === "burnout") {
+          expect(copy.hint, `${where} own hint`).toBeTruthy();
+          expect(quizStaticHtml(locale, id), `${where} static hint`).toContain(escapeHtml(copy.hint!));
         }
         if (def.result.kind !== "band" && def.result.kind !== "types") {
           for (const dim of def.dims) expect(copy.dims?.[dim], `${where} dim ${dim}`).toBeTruthy();
@@ -320,6 +326,72 @@ describe("test pages: scoring", () => {
     }
   });
 
+  it("bands the narcissism, sensitivity and burnout scores, half their statements reversed", () => {
+    const cases = [
+      { id: "narcissist", max: 64, keys: ["low", "mid", "high"], cuts: [21, 42] },
+      { id: "highly-sensitive-person", max: 56, keys: ["low", "mid", "high"], cuts: [18, 37] },
+      { id: "burnout", max: 64, keys: ["low", "risk", "high"], cuts: [21, 42] },
+    ] as const;
+    for (const { id, max, keys, cuts } of cases) {
+      const def = QUIZ_DEFS[id];
+      if (def.type !== "likert") throw new Error();
+      expect(maxTotal(id), id).toBe(max);
+      expect(def.items.filter((item) => item.rev), id).toHaveLength(def.items.length / 2);
+      // Answers that add up to `points`, statement by statement (reversed statements answered the other way).
+      const answersFor = (points: number): number[] => {
+        let left = points;
+        return def.items.map((item) => {
+          const p = Math.min(4, left);
+          left -= p;
+          return item.rev ? 4 - p : p;
+        });
+      };
+      expect(scoreQuiz(id, answersFor(0))).toMatchObject({ total: 0, key: keys[0] });
+      expect(scoreQuiz(id, answersFor(cuts[0])).key, id).toBe(keys[0]);
+      expect(scoreQuiz(id, answersFor(cuts[0] + 1)).key, id).toBe(keys[1]);
+      expect(scoreQuiz(id, answersFor(cuts[1])).key, id).toBe(keys[1]);
+      expect(scoreQuiz(id, answersFor(cuts[1] + 1)).key, id).toBe(keys[2]);
+      expect(scoreQuiz(id, answersFor(max))).toMatchObject({ total: max, key: keys[2] });
+      // Saying "agree" or "neutral" to everything reads as the middle band: it is not a high score.
+      for (const answer of [2, 4]) expect(scoreQuiz(id, all(id, answer))).toMatchObject({ total: max / 2, key: keys[1] });
+    }
+  });
+
+  it("bands the ADHD self-check from few to many signs", () => {
+    expect(maxTotal("adhd")).toBe(72);
+    expect(scoreQuiz("adhd", all("adhd", 0))).toMatchObject({ total: 0, key: "few" });
+    expect(scoreQuiz("adhd", all("adhd", 2))).toMatchObject({ total: 36, key: "some" });
+    expect(scoreQuiz("adhd", all("adhd", 4))).toMatchObject({ total: 72, key: "many" });
+    const answersFor = (points: number): number[] => Array.from({ length: 18 }, (_, i) => Math.max(0, Math.min(4, points - i * 4)));
+    expect(scoreQuiz("adhd", answersFor(28)).key).toBe("few");
+    expect(scoreQuiz("adhd", answersFor(29)).key).toBe("some");
+    expect(scoreQuiz("adhd", answersFor(47)).key).toBe("some");
+    expect(scoreQuiz("adhd", answersFor(48)).key).toBe("many");
+  });
+
+  it("offers help at the high burnout band, and never a crisis box", () => {
+    expect(SUPPORT.burnout).toEqual(["high"]);
+    expect(FOLLOW_UP.burnout).toEqual({ bands: ["high"], quiz: "depression" });
+    expect(scoreQuiz("burnout", QUIZ_DEFS.burnout.items.map((_, i) => (i % 2 === 0 ? 4 : 0))).safety).toBe(false);
+  });
+
+  it("lets every DISC style win, spreads ties and keeps the styles level", () => {
+    const def = QUIZ_DEFS.disc;
+    if (def.type !== "likert") throw new Error();
+    for (const dim of def.dims) {
+      expect(def.items.filter((i) => i.dim === dim), dim).toHaveLength(5);
+      expect(scoreQuiz("disc", lean("disc", [dim])).key, dim).toBe(dim);
+    }
+    const next = randomInts(23);
+    const counts = new Map<string, number>();
+    const runs = 12000;
+    for (let run = 0; run < runs; run++) {
+      const key = scoreQuiz("disc", def.items.map(() => next(5))).key;
+      counts.set(key, (counts.get(key) ?? 0) + 1);
+    }
+    for (const dim of def.dims) expect((counts.get(dim) ?? 0) / runs, dim).toBeGreaterThan(0.2);
+  });
+
   it("scores the four EQ areas as a profile", () => {
     const def = QUIZ_DEFS.eq;
     if (def.type !== "likert") throw new Error();
@@ -340,6 +412,9 @@ describe("test pages: scoring", () => {
     expect(isTrackedPath("/en/tests/depression/")).toBe(false);
     expect(isTrackedPath("/zh-cn/tests/anxiety/")).toBe(false);
     expect(isTrackedPath("/tests/self-esteem/")).toBe(false);
+    expect(isTrackedPath("/en/tests/adhd/")).toBe(false);
+    expect(isTrackedPath("/ja/tests/narcissist/")).toBe(false);
+    expect(isTrackedPath("/es/tests/burnout/")).toBe(false);
     expect(isTrackedPath("/en/tests/mbti/")).toBe(true);
     expect(isTrackedPath("/en/tests/")).toBe(true);
   });
@@ -524,8 +599,8 @@ describe("test pages: scoring", () => {
     // eight results, four a question (each in six); four results, all in every question.
     const positions = [
       { ids: ["friend-role", "avengers"], min: 2, max: 2 },
-      { ids: ["one-piece", "ghibli"], min: 1, max: 2 },
-      { ids: ["avatar-element", "hogwarts"], min: 3, max: 3 },
+      { ids: ["one-piece", "ghibli", "spirit-animal", "percy-jackson"], min: 1, max: 2 },
+      { ids: ["avatar-element", "hogwarts", "color-personality"], min: 3, max: 3 },
     ] as const;
     for (const { ids, min, max } of positions) {
       for (const id of ids) {

@@ -44,9 +44,9 @@
   },
   "hub": {
     "title": "Tests de personalidad gratis: MBTI, Big Five, inteligencia emocional y amor — cv.cm",
-    "description": "Tests de personalidad y psicología gratis: 16 personalidades (estilo MBTI), Big Five, introvertido o extrovertido, eneagrama, inteligencia emocional, cuatro temperamentos, lenguajes del amor, apego, estilos de amor, conflicto, vocacional, estilo de trabajo, liderazgo, mentalidad de crecimiento, dinero, cronotipo, mascota, forma de cara, papel en tu grupo de amigos, bienestar (WHO-5), autoestima, ansiedad y depresión, además de tests de fans: casa de Hogwarts, Marvel, Studio Ghibli, Pokémon, Genshin Impact, Sonic, D&D, Naruto, One Piece, Demon Slayer, Jujutsu Kaisen, Avatar y arquetipos de anime. Sin registro; tus respuestas no salen del navegador.",
+    "description": "Tests de personalidad y psicología gratis: 16 personalidades (estilo MBTI), Big Five, DISC, persona altamente sensible, narcisismo, introvertido o extrovertido, eneagrama, inteligencia emocional, cuatro temperamentos, lenguajes del amor, apego, estilos de amor, conflicto, vocacional, estilo de trabajo, liderazgo, mentalidad de crecimiento, dinero, cronotipo, mascota, forma de cara, papel en tu grupo de amigos, animal espiritual, personalidad por colores, bienestar (WHO-5), autoestima, ansiedad, depresión, burnout y TDAH en adultos, además de tests de fans: casa de Hogwarts, Percy Jackson, Marvel, Studio Ghibli, Pokémon, Genshin Impact, Sonic, D&D, Naruto, One Piece, Demon Slayer, Jujutsu Kaisen, Avatar y arquetipos de anime. Sin registro; tus respuestas no salen del navegador.",
     "h1": "Tests de personalidad y psicología",
-    "lede": "Treinta y siete tests gratuitos, desde los 16 tipos de personalidad, el Big Five y los cuatro temperamentos hasta los estilos de amor, la mentalidad de crecimiento, tu papel en tu grupo de amigos, tests de fans de Hogwarts, Marvel y Studio Ghibli y breves autoevaluaciones de salud mental. Sin registro ni correo. Tus respuestas se puntúan en tu navegador y nunca se suben.",
+    "lede": "Cuarenta y cinco tests gratuitos, desde los 16 tipos de personalidad, el Big Five y DISC hasta los estilos de amor, tu animal espiritual, tests de fans de Hogwarts, Percy Jackson, Marvel y Studio Ghibli y breves autoevaluaciones de ansiedad, burnout y TDAH en adultos. Sin registro ni correo. Tus respuestas se puntúan en tu navegador y nunca se suben.",
     "groups": {
       "personality": "Personalidad",
       "love": "Amor y relaciones",
@@ -59,7 +59,7 @@
     },
     "about": [
       "Cada test muestra todas sus preguntas en una sola página. Respóndelas, pulsa el botón y el resultado aparece debajo con una breve explicación y un gráfico de tus puntuaciones.",
-      "Las autoevaluaciones de bienestar usan cuestionarios de cribado publicados (WHO-5, Rosenberg, GAD-7, PHQ-9). El Big Five y el test de introvertido o extrovertido usan el banco de ítems IPIP, de dominio público. Los demás tests se han escrito para cv.cm a partir de modelos conocidos, y sus resultados son un punto de partida para reflexionar, no un veredicto. Los tests de videojuegos, anime, libros y cine son tests de fans no oficiales, solo por diversión."
+      "La mayoría de las autoevaluaciones de bienestar usan cuestionarios de cribado publicados (WHO-5, Rosenberg, GAD-7, PHQ-9); las de burnout y TDAH en adultos se han escrito para cv.cm y no se han validado clínicamente. El Big Five y el test de introvertido o extrovertido usan el banco de ítems IPIP, de dominio público. Los demás tests se han escrito para cv.cm a partir de modelos conocidos, y sus resultados son un punto de partida para reflexionar, no un veredicto. Los tests de videojuegos, anime, libros y cine son tests de fans no oficiales, solo por diversión."
     ],
     "faq": [
       { "q": "¿Son gratis estos tests?", "a": "Sí. Todos los tests son gratuitos, sin registro, sin correo y sin pagar para ver el resultado." },
@@ -4167,6 +4167,852 @@
         "spiderman": {
           "name": "Spider-Man",
           "body": "Eres divertido, curioso y de gran corazón, y compaginas una vida ajetreada con hacer lo correcto. Como Peter Parker, sabes que un gran poder conlleva una gran responsabilidad."
+        }
+      }
+    },
+    "disc": {
+      "title": "Test de personalidad DISC gratis: descubre tu estilo DISC — cv.cm",
+      "description": "Test de personalidad DISC gratis: valora 20 afirmaciones y descubre si tu estilo es Dominancia, Influencia, Estabilidad o Cumplimiento, con tu puntuación en cada uno. Sin registro; tus respuestas no salen del navegador.",
+      "h1": "Test de personalidad DISC",
+      "lede": "¿Directo, sociable, constante o preciso? Valora 20 afirmaciones y descubre tu estilo DISC principal, qué peso tienen los otros tres y cómo sueles trabajar con los demás.",
+      "about": [
+        "DISC describe cuatro estilos de comportamiento: Dominancia (directo, primero los resultados), Influencia (sociable, persuasivo), Estabilidad (paciente, solidario) y Cumplimiento (exacto, cuidadoso). El modelo se remonta al psicólogo William Moulton Marston, que describió cuatro patrones de emoción y conducta en su libro de 1928 Emotions of Normal People. Más tarde, otros convirtieron sus ideas en cuestionarios para el trabajo.",
+        "Las afirmaciones se han escrito para cv.cm. Este test no es Everything DiSC ni ninguna otra evaluación comercial, y no tiene relación con sus editores; DiSC es una marca registrada de su propietario. DISC se usa mucho en formación, pero tiene menos respaldo científico que el Big Five, así que usa tu resultado para abrir una conversación, no para tomar decisiones de contratación."
+      ],
+      "faq": [
+        {
+          "q": "¿Qué significan las cuatro letras de DISC?",
+          "a": "La D es Dominancia, la I es Influencia, la S es Estabilidad (Steadiness, en inglés) y la C es Cumplimiento. Algunas versiones usan palabras un poco distintas, pero los cuatro estilos son prácticamente los mismos."
+        },
+        {
+          "q": "¿Cómo se calcula el resultado de DISC?",
+          "a": "Cada estilo tiene cinco afirmaciones, con una puntuación de 0 a 4. Tu resultado es el estilo con la puntuación más alta, y las barras muestran los cuatro. Si dos estilos empatan, la página indica ambos."
+        },
+        {
+          "q": "¿Cuál es el mejor estilo DISC?",
+          "a": "Ninguno. La D pone las cosas en marcha, la I suma a la gente, la S le da estabilidad al equipo y la C cuida la calidad. Los buenos equipos necesitan los cuatro, y la mayoría de las personas usa más de uno."
+        },
+        {
+          "q": "¿Es esta la evaluación oficial de DiSC?",
+          "a": "No. Es un test gratuito e independiente basado en la misma idea pública. Los informes comerciales son más largos y tienen su propia puntuación, así que tu resultado en ellos puede ser distinto."
+        }
+      ],
+      "dims": {
+        "D": "Dominancia",
+        "I": "Influencia",
+        "S": "Estabilidad",
+        "C": "Cumplimiento"
+      },
+      "items": [
+        "Digo lo que quiero y voy a por ello sin rodeos.",
+        "Me resulta fácil iniciar una conversación con casi cualquier persona.",
+        "Tengo paciencia, incluso cuando las cosas tardan mucho.",
+        "Reviso los detalles antes de dar algo por terminado.",
+        "Me gusta tener la última palabra cuando hay que tomar una decisión.",
+        "Disfruto entusiasmando a la gente con una idea.",
+        "Prefiero un ritmo constante a los cambios repentinos.",
+        "Sigo las normas y los procedimientos porque suelen existir por una razón.",
+        "Un reto difícil me da más ganas de esforzarme.",
+        "La gente suele decirme que es divertido estar conmigo.",
+        "Prefiero ayudar a que el equipo tenga éxito antes que destacar yo.",
+        "Quiero ver los hechos y las pruebas antes de decidirme.",
+        "Me importan más los resultados que que todo el mundo esté cómodo.",
+        "Suelo ser optimista, incluso cuando los planes salen mal.",
+        "Sé escuchar, y la gente acude a mí cuando necesita apoyo.",
+        "Me exijo un alto nivel de exactitud.",
+        "Me impaciento cuando la gente tarda demasiado en actuar.",
+        "Prefiero hablar de algo antes que ponerlo por escrito.",
+        "Soy fiel a las personas y los lugares que conozco.",
+        "Me gusta planificar con cuidado y pensar en lo que podría salir mal."
+      ],
+      "results": {
+        "D": {
+          "name": "Dominancia (D)",
+          "body": "Eres directo y decidido, y te mueven los resultados. Te gustan los retos y avanzas rápido cuando otros dudan. Cuidado con parecer brusco: si bajas el ritmo para escuchar, conseguirás más apoyo."
+        },
+        "I": {
+          "name": "Influencia (I)",
+          "body": "Eres sociable, cálido y persuasivo. Le das energía al grupo y consigues que la gente se sume. Cuidado con perder de vista los detalles o prometer demasiado: un plan breve por escrito ayuda."
+        },
+        "S": {
+          "name": "Estabilidad (S)",
+          "body": "Eres paciente, confiable y solidario. La gente confía en ti y los equipos se sienten más tranquilos contigo. Cuidado con evitar los conflictos o los cambios repentinos: decir pronto lo que necesitas ayuda a todos."
+        },
+        "C": {
+          "name": "Cumplimiento (C)",
+          "body": "Eres cuidadoso, analítico y preciso. Quieres hacer las cosas bien y respaldas tus opiniones con pruebas. Cuidado con analizar de más o ser demasiado crítico: a veces, algo suficientemente bueno y a tiempo es la mejor opción."
+        }
+      }
+    },
+    "highly-sensitive-person": {
+      "title": "Test de persona altamente sensible (PAS): ¿soy PAS? — cv.cm",
+      "description": "Test de persona altamente sensible (PAS) gratis: valora 14 afirmaciones sobre ruido, multitudes, emociones y detalles y obtén una puntuación de 0 a 56 con su significado. No es un diagnóstico. Tus respuestas no salen del navegador.",
+      "h1": "Test de persona altamente sensible (PAS)",
+      "scoreLabel": "Puntuación de sensibilidad (0 = baja, 56 = alta)",
+      "lede": "¿Te agotan los lugares ruidosos? ¿Notas los pequeños cambios y sientes el estado de ánimo de los demás? Valora 14 afirmaciones para ver qué tan sensible eres y cómo cuidarte si la respuesta es «mucho».",
+      "about": [
+        "Los psicólogos Elaine Aron y Arthur Aron introdujeron el término persona altamente sensible en la década de 1990 para describir a quienes tienen una alta sensibilidad de procesamiento sensorial: perciben más y procesan con más profundidad lo que perciben, por lo que también pueden saturarse antes. Aron calculó que el 15–20% de las personas son altamente sensibles; un estudio de 2018 de Lionetti y sus colegas situó al grupo más sensible más cerca del 30%.",
+        "La alta sensibilidad es un rasgo de personalidad, no un trastorno. Las afirmaciones se han escrito para cv.cm; este test no es la escala PAS de Aron, y la mitad de las afirmaciones describen una sensibilidad baja para que estar de acuerdo con todo no suba tu puntuación. Nuestros tramos de puntuación son una guía aproximada, no puntos de corte de investigación."
+      ],
+      "faq": [
+        {
+          "q": "¿Qué significa ser una persona altamente sensible?",
+          "a": "Que reaccionas con más intensidad a lo que te rodea: el ruido, la luz, las multitudes, el arte y los sentimientos de los demás. Eso puede hacerte perspicaz y empático, y también hacer que te canses antes en lugares muy concurridos."
+        },
+        {
+          "q": "¿Cómo se calcula la puntuación?",
+          "a": "Cada afirmación puntúa de 0 a 4, y la mitad están invertidas, así que el total va de 0 a 56. 18 o menos es sensibilidad baja, de 19 a 37 es media y 38 o más es alta."
+        },
+        {
+          "q": "¿Ser PAS es lo mismo que ser introvertido o ansioso?",
+          "a": "No. Muchas personas altamente sensibles son introvertidas, pero una buena parte son extrovertidas. La sensibilidad tiene que ver con la profundidad con que procesas las cosas; la ansiedad, con la preocupación y el miedo. Si lo que te afecta es la preocupación, prueba el test de ansiedad GAD-7 de este sitio."
+        },
+        {
+          "q": "¿La alta sensibilidad es un trastorno?",
+          "a": "No. Es una variación normal del temperamento y no un diagnóstico médico. Si te sientes saturado la mayor parte del tiempo o te impide hacer tu vida, habla con un médico o un terapeuta."
+        }
+      ],
+      "items": [
+        "Los ruidos fuertes, los olores intensos o las luces brillantes me afectan enseguida.",
+        "Un lugar ruidoso y lleno de gente rara vez me molesta.",
+        "A menudo percibo cómo se sienten los demás antes de que digan nada.",
+        "No suelo notar los pequeños cambios en una habitación o en el ánimo de alguien.",
+        "Después de un día muy ajetreado necesito tiempo a solas para recuperarme.",
+        "Puedo pasar de una tarea exigente a otra sin necesidad de descansar.",
+        "El arte, la música o un paisaje hermoso pueden conmoverme profundamente.",
+        "Las películas, la música o el arte rara vez me conmueven mucho.",
+        "Me altero cuando tengo mucho que hacer en poco tiempo.",
+        "Mantengo la calma cuando alguien me observa trabajar o cuando tengo poco tiempo.",
+        "Pienso las cosas a fondo y les doy vueltas durante mucho tiempo.",
+        "Cuando algo termina, no le doy muchas más vueltas.",
+        "Las escenas violentas o perturbadoras de las películas se me quedan grabadas.",
+        "El mal humor de los demás no me afecta demasiado."
+      ],
+      "results": {
+        "low": {
+          "name": "Sensibilidad baja (0–18)",
+          "body": "Llevas bien el ruido, las multitudes y la presión, y rara vez te sientes saturado. Es una verdadera ventaja en entornos ajetreados. Recuerda que quienes te rodean quizá sientan más de lo que notas."
+        },
+        "mid": {
+          "name": "Sensibilidad media (19–37)",
+          "body": "Eres sensible a algunas cosas y a otras no, como mucha gente. Probablemente notas cuándo necesitas un descanso y puedes con un día movido. Fíjate en qué situaciones te agotan más."
+        },
+        "high": {
+          "name": "Sensibilidad alta (38–56)",
+          "body": "Parece que percibes y sientes las cosas con profundidad. Eso puede aportar empatía, atención a los demás y una vida interior rica, y también cansarte antes. Protege algo de tiempo tranquilo, incluye pausas en tu día y no veas tus límites como un defecto."
+        }
+      }
+    },
+    "narcissist": {
+      "title": "Test de narcisismo: ¿qué tan fuertes son tus rasgos narcisistas? — cv.cm",
+      "description": "Test de narcisismo gratis: valora 16 afirmaciones sobre admiración, sentido de superioridad y empatía y obtén una puntuación de 0 a 64. Mide un rasgo de personalidad y no puede diagnosticar a nadie. Tus respuestas no salen del navegador.",
+      "h1": "Test de narcisismo",
+      "scoreLabel": "Puntuación de rasgos narcisistas (0 = baja, 64 = alta)",
+      "lede": "¿Soy narcisista? Valora con sinceridad 16 afirmaciones sobre la atención, el estatus y la empatía para ver dónde te sitúas en la escala de narcisismo, y qué significa y qué no significa tu puntuación.",
+      "about": [
+        "El narcisismo es un rasgo de personalidad que todo el mundo tiene en algún grado. Va desde una sana confianza en uno mismo hasta una fuerte necesidad de admiración, la sensación de merecerlo todo y poco interés por los sentimientos de los demás. Los psicólogos lo miden desde el Inventario de Personalidad Narcisista de Raskin y Hall, de 1979.",
+        "Las afirmaciones se han escrito para cv.cm y no son un instrumento clínico. La mitad están invertidas, así que estar de acuerdo con todo no sube tu puntuación. El trastorno narcisista de la personalidad es una afección poco frecuente que solo un profesional cualificado puede diagnosticar, y una puntuación alta aquí no significa que lo tengas. Este test trata sobre ti: no está pensado para poner etiquetas a tu pareja, a tu padre o a tu madre, ni a nadie más."
+      ],
+      "faq": [
+        {
+          "q": "¿Este test puede decirme si soy narcisista?",
+          "a": "Muestra hasta qué punto reconoces en ti algunos rasgos narcisistas. No puede diagnosticar el trastorno narcisista de la personalidad, que requiere la evaluación profesional de patrones duraderos y del daño que causan."
+        },
+        {
+          "q": "¿Cómo se calcula la puntuación?",
+          "a": "Cada afirmación puntúa de 0 a 4, y la mitad están invertidas, así que el total va de 0 a 64. 21 o menos es bajo, de 22 a 42 es medio y 43 o más es alto. Los tramos son una guía para este test, no puntos de corte clínicos."
+        },
+        {
+          "q": "¿Algo de narcisismo es sano?",
+          "a": "Sí. La confianza, la ambición y disfrutar del reconocimiento son normales. Los problemas empiezan cuando la necesidad de admiración se satisface a costa de los demás o cuando cualquier crítica resulta insoportable."
+        },
+        {
+          "q": "¿Y si alguien cercano se comporta como un narcisista?",
+          "a": "Un test que respondes en nombre de otra persona no dice gran cosa. Céntrate en su comportamiento y en cómo te afecta. Si te sientes controlado, menospreciado o en peligro, habla con alguien de confianza, con un orientador o con un servicio de apoyo de tu zona."
+        }
+      ],
+      "items": [
+        "Me gusta ser el centro de atención.",
+        "Me incomoda que me elogien.",
+        "Merezco más reconocimiento del que suelo recibir.",
+        "No espero un trato especial de nadie.",
+        "En el fondo, sé que soy mejor que la mayoría de la gente.",
+        "Creo que la mayoría de la gente es más o menos tan capaz como yo.",
+        "Cuando alguien me critica, me da rabia o busco la forma de devolvérsela.",
+        "Puedo aceptar una crítica sin sentir que me atacan.",
+        "Los problemas de los demás suelen aburrirme.",
+        "Me esfuerzo por entender cómo se sienten los demás.",
+        "Las normas son para los demás; yo debería poder saltármelas.",
+        "No me importa esperar mi turno como todo el mundo.",
+        "A menudo uso mi encanto para conseguir lo que quiero de la gente.",
+        "No me importa dejar que otros se lleven el mérito.",
+        "Necesito que la gente me admire para estar a gusto con quien soy.",
+        "Estoy a gusto con quien soy aunque nadie se fije en lo que hago."
+      ],
+      "results": {
+        "low": {
+          "name": "Pocos rasgos narcisistas (0–21)",
+          "body": "No parece que necesites mucha admiración, y dejas espacio a los demás. Si tu puntuación es muy baja, comprueba que no te estés infravalorando: está bien atribuirte el mérito de un buen trabajo y pedir lo que necesitas."
+        },
+        "mid": {
+          "name": "Algunos rasgos narcisistas (22–42)",
+          "body": "Tienes una mezcla común: algo de confianza y gusto por el reconocimiento, junto con interés por los demás. Observa qué situaciones sacan tu lado más egocéntrico, como las críticas o la competencia."
+        },
+        "high": {
+          "name": "Rasgos narcisistas fuertes (43–64)",
+          "body": "Reconoces en ti muchos rasgos narcisistas, como una fuerte necesidad de admiración y sensibilidad a las críticas. Esto no es un diagnóstico. Puede ayudarte preguntar a personas de confianza qué imagen das, practicar la escucha y, si esto te causa problemas en tus relaciones o en el trabajo, hablar con un terapeuta."
+        }
+      }
+    },
+    "spirit-animal": {
+      "title": "¿Cuál es tu animal espiritual? Test de personalidad gratis — cv.cm",
+      "description": "Test del animal espiritual gratis: responde 12 preguntas y descubre si eres lobo, búho, zorro, oso, águila, delfín, ciervo o nutria, y qué dice eso de ti. Sin registro.",
+      "h1": "¿Cuál es tu animal espiritual?",
+      "lede": "¿Lobo leal, búho sabio o nutria juguetona? Responde 12 preguntas sobre tus amigos, tu tiempo libre y tus puntos débiles y descubre qué animal encaja con tu personalidad.",
+      "about": [
+        "Desde hace mucho usamos a los animales para resumir el carácter de alguien: astuto como un zorro, sabio como un búho, leal como un lobo. Este test usa esas imágenes conocidas para relacionarte con uno de ocho animales según cómo actúas con los demás, cómo afrontas los problemas y cómo recargas energía.",
+        "Es solo por diversión y se ha escrito para cv.cm. Los animales espirituales y los animales guía tienen un significado real en varias tradiciones indígenas y otras tradiciones espirituales; este test no se basa en ellas ni pretende revelar nada espiritual. Tómalo como un test de personalidad para pasar el rato."
+      ],
+      "faq": [
+        {
+          "q": "¿Qué animales me pueden salir?",
+          "a": "Lobo, búho, zorro, oso, águila, delfín, ciervo y nutria. Tu resultado indica tu animal principal y muestra tu puntuación en los ocho."
+        },
+        {
+          "q": "¿Hay algún animal más raro que los demás?",
+          "a": "No. Todos los animales aparecen en el mismo número de respuestas, así que cada uno es igual de probable."
+        },
+        {
+          "q": "¿Es una lectura espiritual de verdad?",
+          "a": "No. Es un test de personalidad divertido sin base espiritual, y no representa las creencias de ninguna tradición."
+        },
+        {
+          "q": "¿Por qué esta vez me ha salido otro animal?",
+          "a": "Cambiar unas pocas respuestas puede mover puntuaciones muy parejas. Si dos animales empatan, el resultado indica ambos, y es muy posible que tengas algo de cada uno."
+        }
+      ],
+      "dims": {
+        "wolf": "Lobo",
+        "owl": "Búho",
+        "fox": "Zorro",
+        "bear": "Oso",
+        "eagle": "Águila",
+        "dolphin": "Delfín",
+        "deer": "Ciervo",
+        "otter": "Nutria"
+      },
+      "items": [
+        {
+          "q": "Entras en una sala llena de desconocidos. ¿Qué haces?",
+          "options": [
+            "Busco a los míos y no me separo de ellos",
+            "Me mantengo al margen y me tomo mi tiempo",
+            "Averiguo rápido quién es quién y cómo encajar",
+            "Me quedo cerca de la puerta, captando el ambiente"
+          ]
+        },
+        {
+          "q": "Un fin de semana libre. ¿Cómo lo pasas?",
+          "options": [
+            "Rodeado de amigos, haciendo planes sobre la marcha",
+            "Con un libro y dándole vueltas a una idea",
+            "A solas en un sendero alto con unas vistas enormes",
+            "Jugando: un juego, un baño, cualquier tontería"
+          ]
+        },
+        {
+          "q": "Tu equipo se topa con un problema. ¿Qué haces?",
+          "options": [
+            "Me aparto un poco y miro el panorama completo",
+            "Reúno a todos para que nadie se quede atrás",
+            "Levanto los ánimos y hago que la gente hable",
+            "Encuentro una forma ingeniosa de sortearlo"
+          ]
+        },
+        {
+          "q": "¿Qué buscan tus amigos en ti?",
+          "options": [
+            "Comprensión y delicadeza",
+            "Consejos bien pensados",
+            "Protección firme cuando algo sale mal",
+            "Unas risas cuando las necesitan"
+          ]
+        },
+        {
+          "q": "Tu hogar ideal:",
+          "options": [
+            "Junto al agua, con espacio para hacer el tonto",
+            "Cerca de la familia y los viejos amigos",
+            "En un lugar alto, con vistas lejanas",
+            "Una cabaña acogedora en lo profundo del bosque"
+          ]
+        },
+        {
+          "q": "Tu fortaleza secreta:",
+          "options": [
+            "Notar lo que a otros se les escapa",
+            "Salir de cualquier apuro hablando",
+            "Percibir cómo se siente la gente antes de que lo diga",
+            "Hacer que cualquiera se sienta bienvenido"
+          ]
+        },
+        {
+          "q": "Alguien de tu grupo está mal. ¿Qué haces?",
+          "options": [
+            "Reúno a la gente para animarlo",
+            "Hago alguna tontería hasta que sonríe",
+            "Me pongo de su lado y lo defiendo",
+            "Me siento con él en silencio y lo escucho"
+          ]
+        },
+        {
+          "q": "Los planes se vienen abajo en el último momento. ¿Qué haces?",
+          "options": [
+            "Improviso, y seguramente lo disfruto",
+            "Replanteo el objetivo y marco un nuevo rumbo",
+            "Primero averiguo qué salió mal",
+            "Mantengo la calma y espero a que pase la tormenta"
+          ]
+        },
+        {
+          "q": "¿Qué es lo que más valoras?",
+          "options": [
+            "La comprensión",
+            "La conexión con los demás",
+            "Mantener a salvo a quienes quiero",
+            "La lealtad"
+          ]
+        },
+        {
+          "q": "Tu mayor debilidad:",
+          "options": [
+            "Puedes parecer distante",
+            "Te hieren con facilidad",
+            "Esquivas todo lo que sea demasiado serio",
+            "Es difícil saber a qué atenerse contigo"
+          ]
+        },
+        {
+          "q": "En una fiesta, tú eres quien…",
+          "options": [
+            "Va de grupo en grupo enterándose de todo",
+            "Propone el juego más tonto",
+            "Cuida de sus amigos",
+            "Tiene la mejor conversación en un rincón"
+          ]
+        },
+        {
+          "q": "Cuando necesitas recargar energía…",
+          "options": [
+            "Me quedo en silencio y lo consulto con la almohada",
+            "Llamo a un amigo",
+            "Camino por algún sitio verde y tranquilo",
+            "Me voy a solas para ver las cosas con perspectiva"
+          ]
+        }
+      ],
+      "results": {
+        "wolf": {
+          "name": "Lobo",
+          "body": "Eres leal y protector, y das lo mejor de ti con tu manada cerca. Apoyas a los tuyos y te aseguras de que nadie se quede atrás. Recuerda que tú también puedes tener tus propias necesidades."
+        },
+        "owl": {
+          "name": "Búho",
+          "body": "Eres reflexivo y observador. Notas lo que a otros se les escapa y das consejos que vale la pena escuchar. Quizá te quedes demasiado tiempo en tu cabeza, así que comparte tus ideas antes de que sean perfectas."
+        },
+        "fox": {
+          "name": "Zorro",
+          "body": "Eres ingenioso y te adaptas a todo, y sabes encontrar la forma de sortear casi cualquier obstáculo. A la gente le encanta tu agudeza. Deja que vean tu verdadero yo de vez en cuando."
+        },
+        "bear": {
+          "name": "Oso",
+          "body": "Eres fuerte, tranquilo y protector, y necesitas tu propia guarida silenciosa. La gente se siente segura a tu lado. No tardes demasiado en salir de la hibernación para decir lo que necesitas."
+        },
+        "eagle": {
+          "name": "Águila",
+          "body": "Eres independiente y ves lejos. Te gusta el panorama general, y prefieres marcar tu propio rumbo antes que seguir a la multitud. No olvides bajar a tierra y llevar a los demás contigo."
+        },
+        "dolphin": {
+          "name": "Delfín",
+          "body": "Eres amable y brillante, y nunca estás tan feliz como con otras personas. Haces que la gente se sienta bienvenida y unes a los grupos. Reserva también tiempo para ti, lejos de las necesidades de todos."
+        },
+        "deer": {
+          "name": "Ciervo",
+          "body": "Eres delicado y perceptivo, y captas el ambiente antes de que nadie hable. Tu amabilidad calma a la gente. Te pueden herir con facilidad, así que elige a quienes tratan tu sensibilidad con cuidado."
+        },
+        "otter": {
+          "name": "Nutria",
+          "body": "Eres juguetón y curioso, y le encuentras la gracia a casi todo. Levantas el ánimo allá donde vas. Cuando surge algo serio, eres más fuerte de lo que crees, así que no te alejes nadando."
+        }
+      }
+    },
+    "color-personality": {
+      "title": "Test de personalidad por colores: ¿rojo, azul, amarillo o verde? — cv.cm",
+      "description": "Test de personalidad por colores gratis: responde 12 preguntas y descubre si eres principalmente rojo, azul, amarillo o verde, con tu puntuación en cada color. Sin registro; tus respuestas no salen del navegador.",
+      "h1": "Test de personalidad por colores",
+      "lede": "¿Rojo y directo, azul y preciso, amarillo y alegre, o verde y tranquilo? Responde 12 preguntas y descubre tu color principal y cuánto tienes de los otros tres.",
+      "about": [
+        "Los tests de personalidad por colores usan cuatro colores como una forma sencilla de hablar del comportamiento. En este, el rojo representa el empuje y la franqueza; el azul, la lógica y el cuidado; el amarillo, la energía y el optimismo; y el verde, la calma y la armonía. Cada pregunta ofrece una respuesta de cada color.",
+        "Este test se ha escrito para cv.cm y es solo por diversión. No tiene relación con sistemas registrados como Insights Discovery, True Colors o Color Code, ni afirma que tu color favorito diga algo de ti. Los colores son etiquetas para hábitos. Si buscas un test con más respaldo científico, prueba el Big Five."
+      ],
+      "faq": [
+        {
+          "q": "¿Qué significan los cuatro colores?",
+          "a": "El rojo es directo y orientado a resultados; el azul, lógico y cuidadoso; el amarillo, sociable y optimista; y el verde, tranquilo y atento a los demás."
+        },
+        {
+          "q": "¿Cómo se calcula el color?",
+          "a": "Cada pregunta tiene una respuesta por color. El color que más eliges es tu resultado, y las barras muestran los cuatro. Si hay un empate, la página indica todos los colores empatados."
+        },
+        {
+          "q": "¿El test de personalidad por colores es científico?",
+          "a": "No. Es una forma sencilla y fácil de recordar para pensar en tu estilo, no una medida validada. Si quieres resultados basados en la investigación, haz el test Big Five de este sitio."
+        },
+        {
+          "q": "¿Este test pregunta por mi color favorito?",
+          "a": "No. Tu resultado depende de cómo actúas en situaciones cotidianas, sean cuales sean los colores que te gusta vestir."
+        }
+      ],
+      "dims": {
+        "red": "Rojo",
+        "blue": "Azul",
+        "yellow": "Amarillo",
+        "green": "Verde"
+      },
+      "items": [
+        {
+          "q": "Empieza un proyecto en grupo. ¿Qué haces?",
+          "options": [
+            "Tomo las riendas y fijo la fecha límite",
+            "Me aseguro de que todos se sientan incluidos",
+            "Determino con exactitud lo que hay que hacer",
+            "Entusiasmo a todos con la idea"
+          ]
+        },
+        {
+          "q": "¿Cómo tomas una decisión importante?",
+          "options": [
+            "Comparo los datos con detalle",
+            "Me dejo llevar por lo que me entusiasma",
+            "Pienso en cómo afectará a la gente",
+            "Decido rápido y sigo adelante"
+          ]
+        },
+        {
+          "q": "Tus amigos te describirían como alguien…",
+          "options": [
+            "Amable y con quien es fácil estar",
+            "Fiable y reflexivo",
+            "Decidido y que habla sin rodeos",
+            "Divertido y lleno de energía"
+          ]
+        },
+        {
+          "q": "Surge un desacuerdo. ¿Qué haces?",
+          "options": [
+            "Hago una broma para aligerar el ambiente",
+            "Digo exactamente lo que pienso",
+            "Intento que todos se sientan escuchados",
+            "Pido los datos antes de decir nada"
+          ]
+        },
+        {
+          "q": "Tu escritorio o tu habitación suele estar…",
+          "options": [
+            "Preparado para hacer las cosas rápido",
+            "Ordenado, con cada cosa en su sitio",
+            "Lleno de color y de cosas",
+            "Acogedor y cómodo"
+          ]
+        },
+        {
+          "q": "¿Qué es lo que más te agota?",
+          "options": [
+            "Pasar mucho tiempo sin nadie con quien hablar",
+            "Las discusiones y la gente tensa",
+            "El trabajo descuidado y los planes vagos",
+            "La gente lenta y las reuniones inútiles"
+          ]
+        },
+        {
+          "q": "De vacaciones…",
+          "options": [
+            "Llevo un plan bien investigado",
+            "Hablo con todo el que me encuentro",
+            "Voy a por el mayor reto disponible",
+            "Me relajo y sigo el ritmo de todos"
+          ]
+        },
+        {
+          "q": "Cuando alguien acude a ti con un problema…",
+          "options": [
+            "Primero lo escucho y lo consuelo",
+            "Le digo qué debe hacer",
+            "Le ayudo a analizarlo paso a paso",
+            "Lo animo y busco el lado bueno"
+          ]
+        },
+        {
+          "q": "¿Qué es lo que más te gustaría que dijeran de tu trabajo?",
+          "options": [
+            "Que dio resultados",
+            "Que fue inspirador",
+            "Que les facilitó las cosas a todos",
+            "Que estaba bien hecho"
+          ]
+        },
+        {
+          "q": "En una reunión, eres quien…",
+          "options": [
+            "Comprueba que todos estén de acuerdo",
+            "Pregunta por los detalles",
+            "Lanza ideas nuevas",
+            "Presiona para que se tome una decisión"
+          ]
+        },
+        {
+          "q": "Tu mayor debilidad:",
+          "options": [
+            "Te distraes y te comprometes con demasiadas cosas",
+            "Te cuesta decir que no",
+            "Puedes ser impaciente y brusco",
+            "Le das demasiadas vueltas a todo"
+          ]
+        },
+        {
+          "q": "¿Qué es lo que más te motiva?",
+          "options": [
+            "Hacer algo como es debido",
+            "Ganar",
+            "Divertirme con la gente",
+            "Mantener la paz"
+          ]
+        }
+      ],
+      "results": {
+        "red": {
+          "name": "Rojo: el impulsor",
+          "body": "Eres directo, seguro y te centras en los resultados. Actúas cuando otros dudan y no te dan miedo las decisiones difíciles. Frena de vez en cuando para escuchar: la gente te seguirá con más ganas si se siente escuchada."
+        },
+        "blue": {
+          "name": "Azul: el analista",
+          "body": "Eres lógico, cuidadoso y minucioso. Quieres los datos y haces las cosas como es debido. Recuerda que no toda decisión necesita información perfecta, y que la gente puede necesitar calidez además de exactitud."
+        },
+        "yellow": {
+          "name": "Amarillo: la chispa",
+          "body": "Eres sociable, optimista y estás lleno de ideas. Llevas energía a cualquier sala y pones a la gente en marcha. Un poco de estructura te ayuda a terminar lo que empiezas y a cumplir las promesas que haces con tanta facilidad."
+        },
+        "green": {
+          "name": "Verde: el pacificador",
+          "body": "Eres tranquilo, paciente y atento a los demás. La gente confía en ti y se siente a gusto a tu lado. Di también lo que quieres: la armonía no tiene por qué significar ceder siempre."
+        }
+      }
+    },
+    "percy-jackson": {
+      "title": "¿Quién es tu progenitor divino en Percy Jackson? Test gratis — cv.cm",
+      "description": "Test de Percy Jackson gratis: responde 12 preguntas y descubre quién es tu progenitor divino, de Zeus, Poseidón y Hades a Atenea, Apolo, Ares, Afrodita y Hermes. Test de fans no oficial, sin registro.",
+      "h1": "¿Quién es tu progenitor divino en Percy Jackson?",
+      "lede": "¿Qué cabaña te reclamaría en el Campamento Mestizo? Responde 12 preguntas sobre misiones, miedos y tu defecto fatal y descubre qué dios griego es tu progenitor divino.",
+      "about": [
+        "En los libros de Percy Jackson y los dioses del Olimpo, de Rick Riordan, los hijos de los dioses griegos crecen en el mundo moderno y se entrenan en el Campamento Mestizo, donde cada uno vive en la cabaña de su progenitor divino. Este test te relaciona con ocho de esos dioses: Zeus, Poseidón, Hades, Atenea, Apolo, Ares, Afrodita y Hermes.",
+        "Tu resultado indica tu progenitor divino y muestra tus puntuaciones en los ocho. Este es un test de fans no oficial escrito para cv.cm. No está afiliado a Rick Riordan, sus editoriales ni Disney, ni cuenta con su respaldo; los nombres y personajes de la serie pertenecen a sus respectivos dueños."
+      ],
+      "faq": [
+        {
+          "q": "¿Qué progenitores divinos me pueden salir?",
+          "a": "Zeus, Poseidón, Hades, Atenea, Apolo, Ares, Afrodita y Hermes. Tu resultado indica tu progenitor principal y muestra tu puntuación en los ocho."
+        },
+        {
+          "q": "¿Hay algún resultado más raro que los demás?",
+          "a": "No. Todos los dioses aparecen en el mismo número de respuestas, así que cada uno es igual de probable, incluidos los Tres Grandes."
+        },
+        {
+          "q": "¿Por qué no está mi dios favorito?",
+          "a": "Con ocho resultados el test es breve y justo. Deméter, Hefesto, Dioniso y otros podrían sumarse en una próxima actualización."
+        },
+        {
+          "q": "¿Este test es oficial?",
+          "a": "No. Es un test de fans gratuito, y tus respuestas no salen del navegador."
+        }
+      ],
+      "dims": {
+        "zeus": "Zeus",
+        "poseidon": "Poseidón",
+        "hades": "Hades",
+        "athena": "Atenea",
+        "apollo": "Apolo",
+        "ares": "Ares",
+        "aphrodite": "Afrodita",
+        "hermes": "Hermes"
+      },
+      "items": [
+        {
+          "q": "Un monstruo irrumpe en el campamento. ¿Qué haces?",
+          "options": [
+            "Voy hacia el agua, donde me siento más fuerte",
+            "Cargo directamente contra él",
+            "Lo atraigo a una trampa que acabo de idear",
+            "Calmo a mis amigos, y quizá también encandilo al monstruo"
+          ]
+        },
+        {
+          "q": "Capturar la bandera. Tu tarea:",
+          "options": [
+            "Trazar el plan de batalla",
+            "Disparar desde lejos y curar a los heridos",
+            "Colarte tras las líneas enemigas sin que te vean",
+            "Liderar desde el frente y dar órdenes"
+          ]
+        },
+        {
+          "q": "Una tarde libre en el campamento. ¿Cómo la pasas?",
+          "options": [
+            "A solas en algún lugar oscuro y silencioso",
+            "Remando en canoa por el lago",
+            "Leyendo sobre arquitectura griega",
+            "Vendiendo cosas que probablemente no debería"
+          ]
+        },
+        {
+          "q": "Tu defecto fatal:",
+          "options": [
+            "Te importa demasiado lo que piensan de ti",
+            "No puedes resistirte a presumir",
+            "Tienes un carácter terrible",
+            "Siempre tienes que estar al mando"
+          ]
+        },
+        {
+          "q": "Tu destino ideal para una misión:",
+          "options": [
+            "La azotea de un rascacielos, lo más alto posible",
+            "Una isla oculta en mar abierto",
+            "Una cueva de la que nadie ha regresado jamás",
+            "Un antiguo campo de batalla"
+          ]
+        },
+        {
+          "q": "¿A qué actividad del campamento te apuntas?",
+          "options": [
+            "Tiro con arco y música",
+            "Forzar cerraduras",
+            "Hacer de celestina y cambios de look",
+            "Acertijos y juegos de estrategia"
+          ]
+        },
+        {
+          "q": "Tus amigos dirían que eres…",
+          "options": [
+            "El listo que siempre tiene un plan",
+            "El líder nato",
+            "Tranquilo y leal, hasta que alguien te provoca",
+            "El encantador"
+          ]
+        },
+        {
+          "q": "Una profecía dice que un amigo te traicionará. ¿Qué haces?",
+          "options": [
+            "Intento engañar al destino antes de que ocurra",
+            "Guardo mis secretos y no confío en nadie",
+            "Averiguo qué significa de verdad el verso",
+            "Reto a pelear a todos los sospechosos"
+          ]
+        },
+        {
+          "q": "El regalo que más te gustaría recibir de los dioses:",
+          "options": [
+            "Un arco que nunca falla",
+            "Un libro que responde a cualquier pregunta",
+            "Una lanza que nunca se rompe",
+            "El poder de respirar bajo el agua"
+          ]
+        },
+        {
+          "q": "¿Qué es lo que más temes?",
+          "options": [
+            "Que me olviden",
+            "Que no me quieran",
+            "Perder el control",
+            "Quedarme atrapado en un solo lugar"
+          ]
+        },
+        {
+          "q": "¿Cómo viajas en una misión?",
+          "options": [
+            "Rápido y ligero, por un atajo que nadie conoce",
+            "Por aire siempre que puedo",
+            "En barco",
+            "En un descapotable con la música a todo volumen"
+          ]
+        },
+        {
+          "q": "Acabas de ganar una pelea. ¿Qué haces?",
+          "options": [
+            "Busco la siguiente",
+            "Estudio cómo ganar mejor la próxima vez",
+            "Me aseguro de que todos hayan visto lo bien que quedé",
+            "Desaparezco antes de que nadie pueda darme las gracias"
+          ]
+        }
+      ],
+      "results": {
+        "zeus": {
+          "name": "Zeus, dios del cielo",
+          "body": "Eres un líder nato, con grandes ambiciones y mucha presencia. La gente te mira cuando hay que tomar decisiones. Te gusta tener el control, así que recuerda que hasta el rey de los dioses necesita aliados."
+        },
+        "poseidon": {
+          "name": "Poseidón, dios del mar",
+          "body": "Eres tan leal y tranquilo como testarudo. Harías cualquier cosa por tus amigos, y mantienes la calma hasta que alguien te provoca. Entonces, como el mar, es difícil detenerte."
+        },
+        "hades": {
+          "name": "Hades, dios del inframundo",
+          "body": "Eres reservado, serio y más leal de lo que la gente cree. Estás a gusto en soledad y no te asustan los lugares oscuros. Deja entrar a unas cuantas personas: tienes más amigos de lo que piensas."
+        },
+        "athena": {
+          "name": "Atenea, diosa de la sabiduría",
+          "body": "Eres inteligente y estratégico, y siempre tienes un plan. Ganas con la cabeza, no con los puños. Te cuesta admitir que te equivocas, así que recuerda que los mejores planes dejan espacio a las ideas de los demás."
+        },
+        "apollo": {
+          "name": "Apolo, dios del sol, la música y la curación",
+          "body": "Eres brillante, talentoso y difícil de ignorar. El arte, la música y ayudar a la gente te salen de forma natural. Disfrutas de tener público, así que asegúrate de escuchar además de actuar."
+        },
+        "ares": {
+          "name": "Ares, dios de la guerra",
+          "body": "Eres valiente y competitivo, y nunca te echas atrás. Te lanzas donde otros dudan, y eso puede salvar el día. Elige tus batallas: no todos los problemas necesitan una lanza."
+        },
+        "aphrodite": {
+          "name": "Afrodita, diosa del amor",
+          "body": "Eres encantador y entiendes a la gente mejor de lo que ella se entiende a sí misma. Puedes ganarte a toda una sala sin levantar la voz. Hay en ti mucho más que apariencia, y tu verdadero poder es saber lo que siente la gente."
+        },
+        "hermes": {
+          "name": "Hermes, dios de los viajeros y los ladrones",
+          "body": "Eres rápido, gracioso y siempre estás en movimiento. Tienes un atajo, un truco o un contacto para cada problema. Odias sentirte atado, pero tus amigos cuentan con que aparezcas, así que aparece."
+        }
+      }
+    },
+    "burnout": {
+      "title": "Test de burnout: ¿estoy quemado en el trabajo? Autoevaluación gratis — cv.cm",
+      "description": "Test de burnout (desgaste profesional) gratis: valora 16 afirmaciones sobre agotamiento, distanciamiento y eficacia en el trabajo y obtén una puntuación de 0 a 64 y qué hacer a continuación. Privado: nada sale de tu navegador.",
+      "h1": "Test de burnout",
+      "hint": "Pensando en tu trabajo durante las últimas semanas, ¿hasta qué punto te describe cada afirmación?",
+      "scoreLabel": "Puntuación de burnout (0 = baja, 64 = alta)",
+      "lede": "¿Siempre cansado, harto de tu trabajo y con la sensación de que rindes menos? Valora 16 afirmaciones sobre tu trabajo en las últimas semanas para ver qué tan cerca podrías estar del burnout y qué puede ayudarte.",
+      "about": [
+        "La CIE-11 de la Organización Mundial de la Salud describe el burnout como un fenómeno ocupacional, no como una afección médica. Es el resultado de un estrés laboral crónico que no se ha gestionado con éxito y tiene tres dimensiones: agotamiento, distancia mental o cinismo respecto al trabajo, y menor eficacia laboral.",
+        "Las afirmaciones se han escrito para cv.cm en torno a esas tres dimensiones. Este test no es el Maslach Burnout Inventory y no se ha validado clínicamente, así que los tramos de puntuación son una guía aproximada y no puntos de corte clínicos. La depresión, los problemas de tiroides y otras afecciones médicas pueden sentirse como burnout. Si te sientes así la mayor parte del tiempo, acude a un médico. Si estudias o cuidas de alguien en lugar de tener un empleo, responde pensando en esa actividad."
+      ],
+      "faq": [
+        {
+          "q": "¿Cuáles son los signos del burnout?",
+          "a": "Los tres signos principales son sentirte sin energía, tener una actitud negativa o distante hacia tu trabajo, y rendir menos o dudar de tu capacidad. A menudo los acompañan el mal sueño, los dolores de cabeza y la irritabilidad."
+        },
+        {
+          "q": "¿Cómo se calcula la puntuación?",
+          "a": "Cada afirmación puntúa de 0 a 4, y la mitad están invertidas, así que el total va de 0 a 64. 21 o menos es bajo, de 22 a 42 sugiere cierto riesgo y 43 o más sugiere signos fuertes de burnout."
+        },
+        {
+          "q": "¿Cuál es la diferencia entre burnout y depresión?",
+          "a": "El burnout está ligado al trabajo, mientras que la depresión suele afectar a toda la vida, incluidas las cosas que normalmente disfrutas. Se solapan, y uno puede llevar a la otra. Si tu bajo estado de ánimo va más allá del trabajo, prueba el test PHQ-9 de este sitio y habla con un médico."
+        },
+        {
+          "q": "¿Cómo me recupero del burnout?",
+          "a": "Descansar ayuda, pero el efecto rara vez dura si la causa no cambia también. Revisa tu carga de trabajo, el control que tienes sobre ella, cómo te tratan y si tienes suficiente tiempo libre. Si puedes, habla con tu superior o con el servicio de salud laboral, y acude a un médico si los síntomas persisten."
+        }
+      ],
+      "items": [
+        "Al final de casi todas las jornadas de trabajo siento que no me queda energía.",
+        "Después del trabajo suelo tener energía de sobra.",
+        "Al despertar, ya me cansa pensar en otro día de trabajo.",
+        "Casi todos los días de trabajo empiezo con ganas.",
+        "Mi trabajo me importa menos que antes.",
+        "Mi trabajo sigue teniendo sentido para mí.",
+        "Cada vez veo con más cinismo mi trabajo y a las personas con las que trato.",
+        "Mantengo la paciencia y el buen trato con las personas con las que trabajo.",
+        "En el trabajo me limito a cumplir de forma mecánica.",
+        "Todavía me meto de lleno en mi trabajo.",
+        "Me cuesta más concentrarme en el trabajo que antes.",
+        "Por lo general puedo concentrarme bien en la tarea que tengo delante.",
+        "Dudo de si estoy haciendo bien mi trabajo.",
+        "Siento que hago cosas útiles en el trabajo.",
+        "Me cuesta desconectar del trabajo, incluso fuera de mi horario.",
+        "Con el tiempo libre consigo descansar de verdad."
+      ],
+      "results": {
+        "low": {
+          "name": "Pocos signos de burnout (0–21)",
+          "body": "El trabajo no parece estar desgastándote en este momento. Sigue protegiendo lo que te ayuda, como el sueño, el tiempo libre y un final claro de la jornada. Vale la pena volver a comprobarlo si tu trabajo se vuelve más exigente."
+        },
+        "risk": {
+          "name": "Algunos signos de burnout (22–42)",
+          "body": "Tienes algunos signos de tensión. Es un buen momento para actuar: mira qué parte del trabajo te agota más, habla de tu carga de trabajo y tómate descansos de verdad. Repite el test dentro de unas semanas y acude a un médico si va a peor."
+        },
+        "high": {
+          "name": "Signos fuertes de burnout (43–64)",
+          "body": "Tus respuestas sugieren un agotamiento serio y distancia respecto a tu trabajo. Por favor, no te limites a aguantar. Habla con un médico, porque otras afecciones pueden sentirse igual, y si puedes, habla con tu superior o con el servicio de salud laboral sobre lo que se puede cambiar. También puedes hacer aquí el test PHQ-9."
+        }
+      }
+    },
+    "adhd": {
+      "title": "Test de TDAH en adultos: autoevaluación gratis de atención e inquietud — cv.cm",
+      "description": "Autoevaluación de TDAH en adultos gratis: valora 18 afirmaciones sobre atención, inquietud e impulsividad y mira si vale la pena pedir una evaluación. No es un diagnóstico. Tus respuestas no salen del navegador.",
+      "h1": "Autoevaluación de TDAH en adultos",
+      "hint": "Pensando en los últimos 6 meses, ¿hasta qué punto te describe cada afirmación?",
+      "scoreLabel": "Puntuación de la autoevaluación de TDAH (0 = pocos signos, 72 = muchos)",
+      "lede": "¿Pierdes el hilo de las tareas, extravías cosas y te cuesta quedarte quieto? Valora 18 afirmaciones sobre tu día a día en los últimos 6 meses para decidir si vale la pena consultar sobre una evaluación de TDAH.",
+      "about": [
+        "El TDAH (trastorno por déficit de atención e hiperactividad) es una afección del neurodesarrollo que empieza en la infancia y a menudo continúa en la edad adulta. Se manifiesta con problemas persistentes de atención, inquietud o impulsividad. Un diagnóstico requiere una evaluación profesional: los síntomas deben haber comenzado en la infancia, aparecer en más de un área de la vida y causar problemas reales.",
+        "Estas afirmaciones se han escrito para cv.cm en torno a esas áreas de síntomas. Este test no es la Escala de Autoinforme de TDAH en Adultos (ASRS) y no se ha validado clínicamente, así que no puede detectar ni descartar el TDAH, y sus tramos no son puntos de corte clínicos. Úsalo para ordenar tus ideas antes de ver a un profesional, que puede usar una herramienta validada como la ASRS. La falta de sueño, el estrés, la ansiedad, la depresión y otras afecciones pueden causar problemas similares."
+      ],
+      "faq": [
+        {
+          "q": "¿Este test puede decirme si tengo TDAH?",
+          "a": "No. Solo un profesional cualificado puede diagnosticar el TDAH, después de preguntar por tu historia, incluida la infancia, y descartar otras causas. Una puntuación alta es simplemente un motivo para consultar, y una baja no lo descarta."
+        },
+        {
+          "q": "¿Cómo se calcula la puntuación?",
+          "a": "Cada afirmación puntúa de 0 a 4, así que el total va de 0 a 72. 28 o menos cuenta como pocos signos, de 29 a 47 como algunos y 48 o más como muchos. Los tramos son una guía solo para este test, no puntos de corte clínicos."
+        },
+        {
+          "q": "¿Es esta la ASRS?",
+          "a": "No. La ASRS es un cuestionario validado aparte cuya redacción no se puede cambiar. Nuestras afirmaciones son originales y no se han validado, así que un profesional clínico puede pedirte que rellenes la ASRS o una herramienta similar."
+        },
+        {
+          "q": "¿Qué más puede parecer TDAH?",
+          "a": "La falta de sueño, la ansiedad, la depresión, el estrés, los problemas de tiroides, algunos medicamentos y el uso intensivo del teléfono pueden perjudicar la atención. Por eso un profesional comprueba si hay otras causas."
+        }
+      ],
+      "items": [
+        "Pierdo el hilo en conversaciones, lecturas o reuniones, incluso cuando quiero prestar atención.",
+        "Cometo errores por descuido porque paso por alto los detalles.",
+        "Empiezo tareas y luego las dejo sin terminar.",
+        "Me cuesta organizar las tareas, los papeles o mi tiempo.",
+        "Pospongo las tareas que requieren un esfuerzo mental sostenido.",
+        "A menudo extravío cosas como las llaves, el teléfono o la cartera.",
+        "Los ruidos pequeños o los pensamientos pasajeros me apartan fácilmente de lo que estoy haciendo.",
+        "Olvido citas, facturas o cosas que dije que haría.",
+        "La gente dice que parece que no escucho cuando me habla.",
+        "Muevo sin parar las manos o los pies cuando tengo que permanecer mucho tiempo en mi asiento.",
+        "Me cuesta no levantarme durante las reuniones o comidas largas.",
+        "Siento una inquietud interna, como si tuviera que seguir moviéndome.",
+        "Me cuesta relajarme, incluso cuando no tengo nada que hacer.",
+        "Hablo más de lo que los demás parecen querer.",
+        "Termino las frases de la gente o respondo antes de que acaben.",
+        "Me cuesta esperar en una fila o a que llegue mi turno.",
+        "Interrumpo a la gente o me meto en lo que está haciendo.",
+        "Tomo decisiones rápidas o compro cosas por impulso y luego me arrepiento."
+      ],
+      "results": {
+        "few": {
+          "name": "Pocos signos (0–28)",
+          "body": "No indicas muchas de estas dificultades. Eso no descarta el TDAH, sobre todo si has desarrollado buenos hábitos para compensarlas. Si los problemas de atención te preocupan de todos modos, puedes hablar con un médico igualmente."
+        },
+        "some": {
+          "name": "Algunos signos (29–47)",
+          "body": "Reconoces algunas de estas dificultades, como le ocurre a mucha gente a veces, sobre todo con cansancio o estrés. Piensa si vienen de la infancia y causan problemas reales en el trabajo, en casa o en tus relaciones. Si es así, plantéate consultarlo con un médico."
+        },
+        "many": {
+          "name": "Muchos signos (48–72)",
+          "body": "Reconoces muchas de estas dificultades. Esto no significa que tengas TDAH, pero es un buen motivo para pedirle a un médico o a un psicólogo una evaluación. Anota ejemplos de tu trabajo, tu casa y tu infancia para llevarlos a la consulta. Existe apoyo eficaz."
         }
       }
     }

@@ -32,6 +32,7 @@ import {
   type QuizResultCopy,
 } from "../../shared/quiz-i18n";
 import { messages, quizMessages } from "../../shared/messages";
+import { UNTRACKED_QUIZZES } from "../../shared/analytics";
 
 function crumb(locale: Locale, id: QuizId | null): HTMLElement {
   const hub = quizHub(locale);
@@ -188,7 +189,7 @@ export function mountQuiz(host: HTMLElement, locale: Locale, id: QuizId): void {
   }
 
   const form = h("form", { class: "quiz-form", novalidate: true, onSubmit: submit },
-    h("p", { class: "quiz-hint" }, def.type === "likert" ? ui.scaleHint[def.scale] : ui.choiceHint),
+    h("p", { class: "quiz-hint" }, copy.hint ?? (def.type === "likert" ? ui.scaleHint[def.scale] : ui.choiceHint)),
     h("ol", { class: "quiz-list" }, ...questions),
     h("div", { class: "quiz-bar" },
       h("span", { class: "quiz-meter", "aria-hidden": "true" }, meter),
@@ -199,13 +200,14 @@ export function mountQuiz(host: HTMLElement, locale: Locale, id: QuizId): void {
   );
 
   const group = quizGroupOf(id);
-  // Same group first, then the other fan-quiz groups for a fan quiz, then the rest.
+  // Same group first, starting after this test (wrapping around) so a large group links to every member from
+  // somewhere; then the other fan-quiz groups for a fan quiz, then the rest, in catalog order.
   const fan = FAN_GROUPS.includes(group);
-  const near = new Map(QUIZZES.map((q) => {
-    const g = quizGroupOf(q);
-    return [q, g === group ? 2 : fan && FAN_GROUPS.includes(g) ? 1 : 0];
-  }));
-  const siblings = QUIZZES.filter((q) => q !== id).sort((a, b) => near.get(b)! - near.get(a)!);
+  const near = new Map(QUIZZES.map((q) => [q, fan && FAN_GROUPS.includes(quizGroupOf(q)) ? 1 : 0]));
+  const members: readonly QuizId[] = QUIZ_GROUPS.find((g) => g.id === group)!.quizzes;
+  const at = members.indexOf(id);
+  const others = QUIZZES.filter((q) => quizGroupOf(q) !== group).sort((a, b) => near.get(b)! - near.get(a)!);
+  const siblings = [...members.slice(at + 1), ...members.slice(0, at), ...others];
 
   host.append(
     crumb(locale, id),
@@ -214,7 +216,7 @@ export function mountQuiz(host: HTMLElement, locale: Locale, id: QuizId): void {
       h("h1", null, copy.h1),
       h("p", { class: "lede" }, copy.lede),
     ),
-    h("p", { class: "muted quiz-privacy" }, ui.privacy, group === "wellbeing" ? ` ${ui.notDiagnosis}` : ""),
+    h("p", { class: "muted quiz-privacy" }, ui.privacy, UNTRACKED_QUIZZES.has(id) ? ` ${ui.notDiagnosis}` : ""),
     form,
     resultBox,
     h("section", { class: "quiz-about" }, h("h2", null, ui.about), ...copy.about.map((p) => h("p", null, p))),
@@ -369,7 +371,7 @@ function resultView(locale: Locale, id: QuizId, copy: QuizCopy, result: QuizResu
       const next = FOLLOW_UP[id];
       if (next?.bands.includes(result.key)) nodes.push(testLinks(locale, [next.quiz]));
       if (help === "support") nodes.push(helpBox(locale, "support"));
-      if (quizGroupOf(id) === "wellbeing") nodes.push(h("p", { class: "muted" }, ui.notDiagnosis));
+      if (UNTRACKED_QUIZZES.has(id)) nodes.push(h("p", { class: "muted" }, ui.notDiagnosis));
       return { nodes, summary: `${results[result.key]?.name ?? result.key}, ${shown}` };
     }
   }
