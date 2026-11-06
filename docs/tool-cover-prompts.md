@@ -236,3 +236,13 @@ Codex (`codex exec`, built-in image tool), refs `dice-sweet.jpg` + `metronome-sw
 - `guitar-tuner`: she holds a small cream acoustic guitar and plucks a string, looking at a little round pink clip-on tuner on the headstock whose needle points straight up.
 - `factors`: she sorts small pink and cream round tokens into neat groups and little stacks on the desk, a magnifying glass beside them, blank tokens with no marks.
 - `lcm-gcf`: two rows of pastel pink and cream stepping stones of different spacings meet at the same glowing heart stone, she points at the meeting point.
+
+## Scientific calculator, online notepad, Markdown preview, CSS gradient generator, fancy text generator (2026-11-03)
+
+Codex, refs `click-test-sweet.jpg` + `mic-test-sweet.jpg`. Same character and room, no words, letters, numerals, logo or watermark. `markdown` and `gradient` were made on 2026-11-06. Codex then hit its usage limit again (until 2026-11-10), so `fancy-text` came from GPT Image 2.5 on kie.ai with the same prompt and references.
+
+- `calculator`: she taps a chunky pastel pink scientific calculator with round blank cream buttons; a few soft pastel shapes (a tiny pi-like swirl, a triangle, a small curve graph line) float above it, no readable symbols.
+- `notepad`: she writes in a cream spiral notepad with a pink cover on a pink laptop keyboard; a small pink heart-shaped cloud with a soft check mark floats above, showing it saved itself; blank wavy lines on the pages.
+- `markdown`: a cream laptop screen split in two halves: the left half shows plain blank grey lines with tiny pink marks, the right half shows the same content as a neat card layout with a pink heading bar, bullet dots and a little table; she points at it with a pink pencil.
+- `gradient`: she holds a painter's palette shaped like a heart with soft paint blobs; a large cream card on an easel shows a smooth pastel colour gradient from pink to peach to lavender; two small round colour drops on the desk.
+- `fancy-text`: pastel pink alphabet blocks and ribbon-like decorative curly shapes float out of a cream phone screen; the blocks have only ornamental swirls, stars, circles and hearts on them, no letters; she smiles holding the phone.

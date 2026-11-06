@@ -6,6 +6,7 @@ import { isIpAddress } from "./shared/device";
 import { appHref, datasetHref, deviceHref, gamesHref, isAgentDocPath, devicePolicyOf, isAiToolPath, isPublishedTutorial, kbHref, learnHref, legalHref, parseAppPath, quizHref, refHref, STATIC_FILE, toolJob } from "./shared/path";
 import { GA_CONNECT_HOSTS, GA_SCRIPT_HOST, isTrackedPath } from "./shared/analytics";
 import { thumbOriginal } from "./shared/covers";
+import { aiContentType, upstreamUrl } from "./shared/ai-models";
 import { preloadLocalePack, preloadPageChunk } from "./shared/locale-preload";
 import { DATASET_FILES } from "./shared/datasets";
 import { applyHtmlSeo } from "./shared/seo";
@@ -451,23 +452,60 @@ async function proxyAi(pathname: string, method: string): Promise<Response | nul
   if (!rest || rest.includes("..") || rest.includes("//")) {
     return new Response("Bad Request", { status: 400 });
   }
-  // Every URL names a pinned revision, so the edge keeps it for a year and s3.cv.cm serves each file about once per PoP.
-  const upstream = await fetch(`https://s3.cv.cm/files/ai/${match[1]}/${rest}`, {
-    // Only successes are kept: a 404 cached before an upload finished would break the tool at that PoP for a year.
-    cf: { cacheEverything: true, cacheTtlByStatus: { "200-299": 31_536_000, "300-599": 0 } },
-  } as RequestInit);
-  if (!upstream.ok) {
-    // A real 404: Transformers.js probes optional files and must not get the SPA's index.html.
-    return new Response(method === "HEAD" ? null : "Not Found", {
-      status: 404,
-      headers: { "Cache-Control": "no-store", "Content-Type": "text/plain; charset=utf-8" },
-    });
+  // Only catalog files: our own exports from s3.cv.cm, the rest straight from their publisher (Hugging Face, the npm
+  // CDN), so nothing has to be uploaded. Visitors (mainland China included) only ever talk to cv.cm.
+  const source = upstreamUrl(match[1] as "models" | "ort", rest);
+  if (!source) return aiNotFound(method);
+  // Cached under our own stable URL: Hugging Face redirects every download to a freshly signed CDN URL, which the
+  // fetch cache would never hit again. Every path names a pinned revision, so a year is safe.
+  const key = new Request(`https://cv.cm${pathname}`);
+  const cache = typeof caches === "undefined" ? null : (caches as unknown as { default: Cache }).default;
+  const hit = await cache?.match(key);
+  if (hit) return aiResponse(hit, rest, method);
+  const upstream = await fetch(source, { method });
+  // Hugging Face answers 401 for a missing or gated repo: all three mean the file is not there.
+  if (upstream.status === 401 || upstream.status === 403 || upstream.status === 404) return aiNotFound(method);
+  // Rate limits and outages are not "missing file": a retry may work, so never a cached 404.
+  if (!upstream.ok) return new Response(null, { status: 502, headers: { "Cache-Control": "no-store" } });
+  const size = Number(upstream.headers.get("Content-Length"));
+  if (method === "GET" && cache && size > 0 && size <= CACHE_MAX_BYTES) {
+    // Stored whole, then served from the cache: no tee, so a slow visitor never makes the isolate buffer the file.
+    try {
+      await cache.put(key, new Response(upstream.body, {
+        headers: { "Content-Type": aiContentType(rest), "Content-Length": String(size), "Cache-Control": "public, max-age=31536000, immutable" },
+      }));
+      const stored = await cache.match(key);
+      if (stored) return aiResponse(stored, rest, method);
+    } catch (err) {
+      console.warn("ai cache put failed", pathname, err);
+    }
+    // The body went to the failed put: fetch it again for the visitor.
+    return aiResponse(await fetch(source), rest, method);
   }
-  const headers = new Headers();
-  for (const name of ["Content-Type", "Content-Length", "ETag", "Last-Modified"]) {
+  // Larger files (Whisper, Janus) stream through each time.
+  return aiResponse(upstream, rest, method);
+}
+
+/** Files up to this size are cached whole at the edge; bigger ones stream from the publisher. */
+const CACHE_MAX_BYTES = 100_000_000;
+
+function aiNotFound(method: string): Response {
+  // A real 404: Transformers.js probes optional files and must not get the SPA's index.html.
+  return new Response(method === "HEAD" ? null : "Not Found", {
+    status: 404,
+    headers: { "Cache-Control": "no-store", "Content-Type": "text/plain; charset=utf-8" },
+  });
+}
+
+function aiResponse(upstream: Response, path: string, method: string): Response {
+  const headers = new Headers({ "Content-Type": aiContentType(path) });
+  for (const name of ["ETag", "Last-Modified"]) {
     const value = upstream.headers.get(name);
     if (value) headers.set(name, value);
   }
+  // A compressed upstream body arrives decoded, so its Content-Length would be wrong: pass it only when unencoded.
+  const length = upstream.headers.get("Content-Length");
+  if (length && !upstream.headers.get("Content-Encoding")) headers.set("Content-Length", length);
   return new Response(method === "HEAD" ? null : upstream.body, { status: 200, headers });
 }
 

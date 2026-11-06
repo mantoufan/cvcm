@@ -658,7 +658,8 @@ function carryInput(old: Element[], page: HTMLElement): (() => void) | null {
         if (selectionStart !== null && selectionEnd !== null) next.setSelectionRange(selectionStart, selectionEnd);
       };
     }
-    if (field.readOnly || field.value === field.defaultValue) return;
+    // A field holding the visitor's saved text (data-restored) keeps it: a few letters typed before load must not replace a note.
+    if (field.readOnly || field.value === field.defaultValue || next.hasAttribute("data-restored")) return;
     next.value = field.value;
     next.dispatchEvent(new Event("input", { bubbles: true }));
   });

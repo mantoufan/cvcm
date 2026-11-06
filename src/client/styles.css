@@ -815,3 +815,76 @@ html.dp-lock, html.dp-lock body { overflow: hidden; }
 .factor-list { margin: 0 0 0.6rem; line-height: 1.7; font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
 .factor-steps { margin: 0 0 0.6rem; padding-left: 1.2rem; line-height: 1.7; font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
 .stats-grid dd { overflow-wrap: anywhere; }
+
+/* Scientific calculator */
+.calc-tool { grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr); align-items: start; }
+.calc-screen { display: grid; gap: 0.35rem; padding: 0.8rem; border: 1px solid var(--line); border-radius: var(--radius); background: var(--white); }
+.calc-top { display: flex; gap: 0.4rem; justify-content: space-between; }
+.calc-expr { width: 100%; min-height: 3rem; padding: 0.4rem 0.2rem; border: 0; border-bottom: 1px solid var(--line); font: 1.5rem/1.3 var(--mono); text-align: right; background: transparent; }
+.calc-expr:focus { outline: none; border-bottom-color: var(--pink-deep); }
+.calc-result { min-height: 2.4rem; font-size: 1.7rem; font-weight: 700; text-align: right; font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
+.calc-result.error { font-size: 1rem; font-weight: 600; color: var(--pink-dark); }
+.calc-pad { display: grid; grid-template-columns: repeat(6, 1fr); gap: 0.35rem; margin-top: 0.6rem; }
+.calc-key { min-height: 3rem; padding: 0; border: 1px solid var(--line); border-radius: 10px; background: var(--white); color: var(--ink); font: 600 1.05rem var(--sans); cursor: pointer; touch-action: manipulation; }
+.calc-key:hover { border-color: var(--pink-deep); }
+.calc-key.fn { background: var(--gray); font-size: 0.92rem; }
+.calc-key.op { background: var(--pink-soft); }
+.calc-key.eq { background: var(--pink-deep); border-color: var(--pink-deep); color: var(--white); }
+.calc-history { list-style: none; margin: 0 0 0.6rem; padding: 0; display: grid; gap: 0.3rem; max-height: 22rem; overflow: auto; }
+.calc-hist { display: grid; width: 100%; padding: 0.4rem 0.6rem; border: 1px solid var(--line); border-radius: 8px; background: var(--white); text-align: right; font: inherit; cursor: pointer; }
+.calc-hist:hover { border-color: var(--pink-deep); }
+.calc-hist-expr { color: var(--ink-soft); font-family: var(--mono); font-size: 0.85rem; overflow-wrap: anywhere; }
+.calc-hist-result { font-weight: 700; font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
+@media (max-width: 960px) { .calc-tool { grid-template-columns: 1fr; } }
+@media (max-width: 400px) { .calc-key { min-height: 2.7rem; font-size: 0.95rem; } .calc-key.fn { font-size: 0.8rem; } }
+
+/* Online notepad */
+.note-tool { grid-template-columns: minmax(0, 1fr) 16rem; align-items: start; }
+.note-text { min-height: 60vh; font-family: var(--sans); font-size: 1rem; }
+.note-text.mono { font-family: var(--mono); font-size: 0.92rem; }
+.note-text.nowrap { white-space: pre; overflow-wrap: normal; overflow-x: auto; }
+@media (max-width: 960px) { .note-tool { grid-template-columns: 1fr; } .note-text { min-height: 50vh; } }
+
+/* Markdown preview */
+.md-actions { flex-wrap: wrap; }
+.md-panes .md-input { min-height: 32rem; }
+.md-preview { min-height: 32rem; max-height: 80vh; overflow: auto; padding: 0.4rem 1rem; border: 1px solid var(--line); border-radius: var(--radius); background: var(--white); overflow-wrap: anywhere; }
+.md-preview :is(h1, h2, h3, h4, h5, h6) { margin: 1rem 0 0.5rem; line-height: 1.3; color: var(--ink); text-transform: none; letter-spacing: normal; }
+.md-preview .md-h3 { font-size: 1.1rem; }
+.md-preview :is(.md-h4, .md-h5, .md-h6) { font-size: 1rem; }
+.md-preview .md-h1 { font-size: 1.6rem; }
+.md-preview .md-h2 { font-size: 1.3rem; padding-bottom: 0.2rem; border-bottom: 1px solid var(--line); }
+.md-preview pre { padding: 0.7rem; border-radius: 8px; background: var(--gray); overflow-x: auto; }
+.md-preview code { font-family: var(--mono); font-size: 0.9em; }
+.md-preview :not(pre) > code { padding: 0.05rem 0.3rem; border-radius: 4px; background: var(--pink-soft); }
+.md-preview blockquote { margin: 0.6rem 0; padding: 0.1rem 0 0.1rem 0.9rem; border-left: 3px solid var(--pink); color: var(--ink-soft); }
+.md-preview hr { border: 0; border-top: 1px solid var(--line); margin: 1rem 0; }
+.md-preview img { max-width: 100%; }
+.md-preview li.task { list-style: none; }
+.md-preview li.task input { margin: 0 0.35rem 0 -1.2rem; }
+.md-table { overflow-x: auto; }
+.md-preview table { border-collapse: collapse; margin: 0.6rem 0; }
+.md-preview :is(th, td) { padding: 0.35rem 0.65rem; border: 1px solid var(--line); }
+.md-preview th { background: var(--gray); }
+
+/* CSS gradient generator: the gradient itself is the tool's output, not page decoration. */
+.grad-preview { aspect-ratio: 16 / 9; max-width: 100%; margin-bottom: 0.8rem; border: 1px solid var(--line); border-radius: var(--radius); }
+.grad-code { min-height: 5rem; }
+.grad-stops { display: grid; gap: 0.5rem; margin-bottom: 0.6rem; }
+.grad-stop { display: grid; grid-template-columns: 2.4rem 5.6rem minmax(0, 1fr) 2.8rem auto; gap: 0.4rem; align-items: center; }
+.grad-stop input[type="color"] { width: 2.4rem; height: 2.4rem; padding: 0; border: 1px solid var(--line); border-radius: 8px; background: var(--white); }
+.grad-hex { min-width: 0; padding: 0.35rem 0.4rem; border: 1px solid var(--line); border-radius: 8px; font: 0.88rem var(--mono); }
+.grad-hex.invalid { border-color: var(--pink-dark); }
+.grad-pos { font-size: 0.85rem; font-variant-numeric: tabular-nums; text-align: right; }
+.grad-presets { display: flex; flex-wrap: wrap; gap: 0.4rem; align-items: center; }
+.grad-swatch { width: 2.6rem; height: 2.6rem; border: 1px solid var(--line); border-radius: 8px; cursor: pointer; }
+.grad-swatch:hover { border-color: var(--pink-deep); }
+.grad-size { margin: 0; }
+.grad-size select { min-height: 44px; }
+
+/* Fancy text generator */
+.fancy-input { min-height: 6rem; font-family: var(--sans); font-size: 1.05rem; }
+.fancy-list { display: grid; gap: 0.5rem; }
+.fancy-row { padding: 0.5rem 0.75rem; border: 1px solid var(--line); border-radius: var(--radius); background: var(--white); }
+.fancy-meta { display: flex; justify-content: space-between; align-items: center; gap: 0.5rem; }
+.fancy-out { margin: 0.2rem 0 0; font-size: 1.2rem; line-height: 1.5; white-space: pre-wrap; overflow-wrap: anywhere; }

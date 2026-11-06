@@ -1274,6 +1274,46 @@
       "data_handling": "Runs in the page. Inputs are not uploaded."
     },
     {
+      "id": "calculator",
+      "name": "Scientific calculator",
+      "description": "Trig, logs, powers, history.",
+      "category": "text",
+      "url": "https://cv.cm/en/calculator/",
+      "data_handling": "Runs in the page. Inputs are not uploaded."
+    },
+    {
+      "id": "notepad",
+      "name": "Online notepad",
+      "description": "Saves as you type. Word count, .txt files.",
+      "category": "text",
+      "url": "https://cv.cm/en/notepad/",
+      "data_handling": "Keeps the note in this browser's local storage on the device; files it opens are read in the page. Notes and files are not uploaded."
+    },
+    {
+      "id": "markdown",
+      "name": "Markdown preview",
+      "description": "Live preview and Markdown to HTML.",
+      "category": "text",
+      "url": "https://cv.cm/en/markdown/",
+      "data_handling": "Renders in the page and keeps the text in this browser. Images written into the text load from their own addresses. The text is not uploaded."
+    },
+    {
+      "id": "gradient",
+      "name": "CSS gradient generator",
+      "description": "Linear, radial, conic. Copy CSS or PNG.",
+      "category": "text",
+      "url": "https://cv.cm/en/gradient/",
+      "data_handling": "Runs in the page. Inputs are not uploaded."
+    },
+    {
+      "id": "fancy-text",
+      "name": "Fancy text generator",
+      "description": "Bold, script, bubble fonts to paste.",
+      "category": "text",
+      "url": "https://cv.cm/en/fancy-text/",
+      "data_handling": "Runs in the page. Inputs are not uploaded."
+    },
+    {
       "id": "gold",
       "name": "Gold weight",
       "description": "Troy ounce, gram, and tael.",

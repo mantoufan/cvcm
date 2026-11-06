@@ -1,3 +1,12 @@
+/**
+ * A file name stem from a title or a note's first line ("Shopping list"), without characters file systems refuse,
+ * at most `max` characters; "" when nothing usable is left.
+ */
+export function titleStem(title: string, max = 60): string {
+  const clean = title.replace(/[\\/:*?"<>|\u0000-\u001f\u007f]/g, " ").replace(/\s+/g, " ").trim().replace(/^\.+/, "");
+  return Array.from(clean).slice(0, max).join("").trim();
+}
+
 export function baseName(name: string): string {
   const trimmed = name.replace(/\\/g, "/").split("/").pop() || "image";
   return trimmed.replace(/^\.+/, "") || "image";
