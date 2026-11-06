@@ -188,7 +188,7 @@ export function mountQuiz(host: HTMLElement, locale: Locale, id: QuizId): void {
   }
 
   const form = h("form", { class: "quiz-form", novalidate: true, onSubmit: submit },
-    h("p", { class: "quiz-hint" }, def.type === "likert" ? ui.scaleHint[def.scale] : ui.choiceHint),
+    h("p", { class: "quiz-hint" }, copy.hint ?? (def.type === "likert" ? ui.scaleHint[def.scale] : ui.choiceHint)),
     h("ol", { class: "quiz-list" }, ...questions),
     h("div", { class: "quiz-bar" },
       h("span", { class: "quiz-meter", "aria-hidden": "true" }, meter),
@@ -205,7 +205,9 @@ export function mountQuiz(host: HTMLElement, locale: Locale, id: QuizId): void {
     const g = quizGroupOf(q);
     return [q, g === group ? 2 : fan && FAN_GROUPS.includes(g) ? 1 : 0];
   }));
-  const siblings = QUIZZES.filter((q) => q !== id).sort((a, b) => near.get(b)! - near.get(a)!);
+  // Start from the tests after this one (wrapping around), so a large group links to every member from somewhere.
+  const at = QUIZZES.indexOf(id);
+  const siblings = [...QUIZZES.slice(at + 1), ...QUIZZES.slice(0, at)].sort((a, b) => near.get(b)! - near.get(a)!);
 
   host.append(
     crumb(locale, id),

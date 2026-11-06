@@ -407,6 +407,7 @@ describe("test pages: scoring", () => {
     expect(isTrackedPath("/zh-cn/tests/anxiety/")).toBe(false);
     expect(isTrackedPath("/tests/self-esteem/")).toBe(false);
     expect(isTrackedPath("/en/tests/adhd/")).toBe(false);
+    expect(isTrackedPath("/ja/tests/narcissist/")).toBe(false);
     expect(isTrackedPath("/es/tests/burnout/")).toBe(false);
     expect(isTrackedPath("/en/tests/mbti/")).toBe(true);
     expect(isTrackedPath("/en/tests/")).toBe(true);

@@ -13,6 +13,8 @@ export type QuizCopy = {
   title: string;
   description: string;
   h1: string;
+  /** Replaces the scale hint above the questions, for tests that ask about a set period. */
+  hint?: string;
   lede: string;
   about: string[];
   faq: { q: string; a: string }[];

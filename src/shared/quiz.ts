@@ -170,10 +170,6 @@ const TEMPERAMENT = likert(`
   sanguine+ choleric+ melancholic+ phlegmatic+
 `);
 
-/**
- * Growth or fixed mindset (after Carol Dweck): ten original statements, the fixed-mindset ones reversed. Total 0–40;
- * the bands (0–13, 14–26, 27–40) put "mixed" around 20, the total for neutral, or agree-to-everything, answers.
- */
 /** Written for cv.cm (DISC after Marston's 1928 model): five statements for each of the four styles. */
 const DISC = likert(`
   D+ I+ S+ C+  D+ I+ S+ C+  D+ I+ S+ C+  D+ I+ S+ C+  D+ I+ S+ C+
@@ -186,6 +182,10 @@ const BURNOUT = likert(Array(8).fill("burnout+ burnout-").join(" "));
 /** Written for cv.cm from the adult symptom areas of ADHD. Not the ASRS and not clinically validated; the copy says so. */
 const ADHD = likert(Array(18).fill("adhd+").join(" "));
 
+/**
+ * Growth or fixed mindset (after Carol Dweck): ten original statements, the fixed-mindset ones reversed. Total 0–40;
+ * the bands (0–13, 14–26, 27–40) put "mixed" around 20, the total for neutral, or agree-to-everything, answers.
+ */
 const MINDSET = likert("growth+ growth- growth+ growth- growth+ growth- growth+ growth- growth+ growth-");
 
 /** WHO-5 Well-Being Index (WHO Regional Office for Europe, 1998; free to use). Total 0–25; times 4 gives the 0–100 percentage. */
@@ -511,7 +511,7 @@ const SPIRIT_ANIMAL: ChoiceItem[] = [
   { options: [{ bear: 2 }, { dolphin: 2 }, { deer: 2 }, { eagle: 2 }] },
 ];
 
-/** Eight Olympian parents, laid out like `GHIBLI`. */
+/** Eight godly parents, laid out like `GHIBLI`. */
 const PERCY_JACKSON: ChoiceItem[] = [
   { options: [{ poseidon: 2 }, { ares: 2 }, { hermes: 2 }, { aphrodite: 2 }] },
   { options: [{ athena: 2 }, { apollo: 2 }, { hades: 2 }, { zeus: 2 }] },
