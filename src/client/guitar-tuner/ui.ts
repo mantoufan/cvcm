@@ -288,7 +288,8 @@ function analyse(): void {
   // With echo cancellation off, the mic hears the reference tone: it must not read as the string being "in tune".
   if (!analyser || !buf || !audio || refOsc) return;
   // A context made after the permission prompt (the sample-rate retry) may start suspended.
-  if (audio.state === "suspended") void audio.resume().catch(() => undefined);
+  // iOS moves a context to "interrupted" after a call or app switch.
+  if (audio.state === "suspended" || (audio.state as string) === "interrupted") void audio.resume().catch(() => undefined);
   if (typeof analyser.getFloatTimeDomainData === "function") analyser.getFloatTimeDomainData(buf);
   else return;
   const { min, max } = searchRange(tuning(), a4());

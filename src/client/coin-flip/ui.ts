@@ -34,6 +34,7 @@ export function mountCoinFlip(host: HTMLElement): void {
   countEl = h("select", {
     "data-field": "count",
     onPointerdown: () => { byPointer = true; },
+    onKeydown: () => { byPointer = false; },
     onChange: () => {
       if (byPointer) countEl?.blur();
       byPointer = false;

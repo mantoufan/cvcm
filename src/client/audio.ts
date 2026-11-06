@@ -4,7 +4,8 @@
  */
 export function armAudio(current: AudioContext | null): AudioContext | null {
   if (!current) return newAudioContext() ?? current;
-  if (current.state === "suspended") void current.resume().catch(() => undefined);
+  // iOS moves a context to "interrupted" after a call or app switch.
+  if (current.state === "suspended" || (current.state as string) === "interrupted") void current.resume().catch(() => undefined);
   return current;
 }
 

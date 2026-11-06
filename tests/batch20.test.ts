@@ -207,3 +207,9 @@ describe("fourth review pass after merging batch 19", () => {
     expect(Math.abs(p!.freq - 30.87)).toBeLessThan(0.5);
   });
 });
+
+describe("fifth review pass after merging batch 19", () => {
+  it("reads an ideographic space between groups", () => {
+    expect(parseWhole("１２３　４５６")).toEqual({ ok: true, n: 123456n });
+  });
+});
