@@ -307,7 +307,17 @@ function analyse(): void {
   if (far) {
     const agrees = pending != null && Math.abs(12 * Math.log2(pitch.freq / pending)) <= 1;
     pending = pitch.freq;
-    if (!agrees) return;
+    if (!agrees) {
+      // Frames that keep disagreeing are not a note either: the last reading must not stay up for ever.
+      if (lastHeard && now - lastHeard > HOLD_MS) {
+        lastHeard = 0;
+        readings = [];
+        pending = null;
+        paintNote(null);
+        say("listening");
+      }
+      return;
+    }
     readings = [];
   }
   pending = null;
@@ -343,9 +353,11 @@ function paintNote(freq: number | null): void {
   // Far from a picked string (another string is ringing): name the note actually heard.
   const state = ok ? "ok" : cents < 0 ? "flat" : "sharp";
   verdictEl.dataset.state = state;
-  verdictEl.textContent = Math.abs(cents) > 100
+  // A live region: writing it about 20 times a second, even with the same words, can make screen readers repeat them.
+  const verdict = Math.abs(cents) > 100
     ? t("guitarTuner.farOff", { note: name(nearestTarget(freq, "chromatic", a4())) })
     : t(`guitarTuner.verdict_${state}`);
+  if (verdictEl.textContent !== verdict) verdictEl.textContent = verdict;
   if (target !== lastTarget) {
     lastTarget = target;
     markStrings();

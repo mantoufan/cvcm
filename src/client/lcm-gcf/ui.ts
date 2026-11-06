@@ -2,7 +2,7 @@ import { copyWithFlash } from "../copy";
 import { h } from "../dom";
 import { locale, t } from "../i18n";
 import { appHref } from "../../shared/path";
-import { MAX_DIGITS, MAX_NUMBERS, euclidSteps, factorText, factorize, gcd, gcfLcmByPrimes, lcm, parseWhole, splitNumbers, thousandsMarkFor } from "../../shared/factors";
+import { MAX_DIGITS, MAX_NUMBERS, euclidSteps, factorText, factorize, gcd, gcfLcmByPrimes, lcm, parseWhole, splitNumbers, thousandsMarkFor, commaLooksLikeANumber } from "../../shared/factors";
 
 let inputEl: HTMLTextAreaElement | null = null;
 let errorEl: HTMLElement | null = null;
@@ -93,8 +93,8 @@ function paint(): void {
     errorEl.textContent = t("lcmGcf.needTwo");
     return;
   }
-  // "1,500, 2,500" in English: the commas split it into 1, 500, 2, 500. Say so next to the answer.
-  if (mark === "," && /\d,\d{3}(?!\d)/.test(inputEl.value.normalize("NFKC"))) errorEl.textContent = t("lcmGcf.commaNote");
+  // "1,500, 2,500": the commas split it into 1, 500, 2, 500. Say so next to the answer.
+  if (commaLooksLikeANumber(inputEl.value, mark)) errorEl.textContent = t("lcmGcf.commaNote");
   const g = nums.reduce((a, b) => gcd(a, b));
   const l = nums.reduce((a, b) => lcm(a, b));
   const list = nums.join(", ");

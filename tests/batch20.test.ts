@@ -3,7 +3,7 @@ import { extendStreaks, flipFairCoins, percentText } from "../src/shared/coin";
 import { TUNINGS, centsOff, centsText, detectPitch, midiToFreq, nearestTarget, noteName, searchRange } from "../src/shared/tuner";
 import {
   divisorCount, divisorSum, divisors, euclidSteps, factorPairs, factorText, factorTextExpanded, factorize, gcd,
-  gcfLcmByPrimes, isPrime, lcm, nextPrime, parseWhole, previousPrime, splitNumbers,
+  commaLooksLikeANumber, gcfLcmByPrimes, isPrime, lcm, nextPrime, parseWhole, previousPrime, splitNumbers,
 } from "../src/shared/factors";
 
 describe("coin-flip", () => {
@@ -123,5 +123,25 @@ describe("factors", () => {
     const r = gcfLcmByPrimes([factorize(12n), factorize(18n), factorize(30n)]);
     expect(factorText(r.gcf)).toBe("2 × 3");
     expect(factorText(r.lcm)).toBe("2² × 3² × 5");
+  });
+});
+
+describe("review pass after merging batch 19", () => {
+  it("reads full-width digits but not superscripts or circled digits", () => {
+    expect(parseWhole("３６０")).toEqual({ ok: true, n: 360n });
+    expect(parseWhole("2³")).toEqual({ ok: false, error: "notInteger" });
+    expect(parseWhole("10⁶")).toEqual({ ok: false, error: "notInteger" });
+    expect(parseWhole("①")).toEqual({ ok: false, error: "notInteger" });
+    expect(splitNumbers("２ ３")).toEqual(["2", "3"]);
+  });
+  it("warns about a comma only where one number could be meant", () => {
+    expect(commaLooksLikeANumber("1,500, 2,500")).toBe(true);
+    expect(commaLooksLikeANumber("100,200,300")).toBe(false);
+    expect(commaLooksLikeANumber("12,18,120")).toBe(false);
+    expect(commaLooksLikeANumber("12, 18, 24")).toBe(false);
+    expect(commaLooksLikeANumber("1,500, 2,500", ".")).toBe(true);
+    expect(commaLooksLikeANumber("1,5 2,5", ".")).toBe(true);
+    expect(commaLooksLikeANumber("1,5 2,5")).toBe(false);
+    expect(commaLooksLikeANumber("12, 18", ".")).toBe(false);
   });
 });

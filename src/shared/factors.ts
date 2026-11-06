@@ -15,14 +15,27 @@ export function thousandsMarkFor(loc: string): ThousandsMark {
   return loc === "es" || loc === "id" || loc === "vi" ? "." : ",";
 }
 
+/** Full-width IME forms (３６０) to ASCII. Only those: NFKC would also read the 2³ this page prints as 23. */
+export function halfWidth(s: string): string {
+  return s.replace(/[！-～]/g, (c) => String.fromCharCode(c.charCodeAt(0) - 0xfee0));
+}
+
+/**
+ * Whether a list holds an entry that looks like one number with a comma in it, though commas separate numbers. A run with
+ * a three-digit first group ("100,200,300") is an ordinary list. Where the decimal mark is a comma, so is "1,5".
+ */
+export function commaLooksLikeANumber(raw: string, thousands: ThousandsMark = ","): boolean {
+  return halfWidth(raw).split(/[\s;，、；]+|,\s+/).some((entry) =>
+    /^[1-9]\d?(,\d{3})+$/.test(entry) || (thousands === "." && /^\d+,\d+$/.test(entry)));
+}
+
 /**
  * Reads one whole number. Spaces and apostrophes may group digits; the locale's thousands mark counts only between
  * groups of three (1,234,567 in English, 1.234.567 in Spanish). The other mark is a decimal point, so 4.5 and 4.500 in
  * English, or 1,5 in Spanish, are rejected instead of being read as 45, 4500 or 15.
  */
 export function parseWhole(raw: string, thousands: ThousandsMark = ","): { ok: true; n: bigint } | { ok: false; error: ParseError } {
-  // NFKC turns full-width IME digits (３６０) into ASCII.
-  let s = raw.normalize("NFKC").trim().replace(/[\s\u00a0\u202f_]/g, "");
+  let s = halfWidth(raw).trim().replace(/[\s\u00a0\u202f_]/g, "");
   if (!s) return { ok: false, error: "empty" };
   const mark = thousands === "," ? "," : "\\.";
   if (new RegExp(`^[-−]?\\d{1,3}([${mark}'’])\\d{3}(\\1\\d{3})*$`).test(s)) s = s.replace(/[,.'’]/g, "");
@@ -38,7 +51,7 @@ export function parseWhole(raw: string, thousands: ThousandsMark = ","): { ok: t
  * 345); where the thousands mark is "." (es, id, vi), 12.345 inside one entry is still twelve thousand.
  */
 export function splitNumbers(raw: string): string[] {
-  return raw.normalize("NFKC").split(/[\s,;，、；]+/).map((x) => x.trim()).filter(Boolean);
+  return halfWidth(raw).split(/[\s,;，、；]+/).map((x) => x.trim()).filter(Boolean);
 }
 
 function modPow(base: bigint, exp: bigint, mod: bigint): bigint {
