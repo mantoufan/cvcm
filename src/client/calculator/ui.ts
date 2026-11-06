@@ -248,9 +248,9 @@ function equals(): void {
   // History shows the number Ans stood for, so reusing the line later gives the same result.
   const mark = decimalMarkOf(locale());
   const was = formatResult(used, mark).replace("−", "-");
-  // Brackets when the number would run into a digit or letter ("2Ans", "Anse2") or carries a sign or exponent.
+  // Brackets when the number would run into a digit or letter ("2Ans", "2 Ans", "Anse2") or carries a sign or exponent.
   const saved = replaceAns(expr, (at) =>
-    used < 0 || /e/i.test(was) || /[\d.,\p{L}]/u.test(expr[at - 1] ?? "") || /[\d.,\p{L}]/u.test(expr[at + 3] ?? "") ? `(${was})` : was);
+    used < 0 || /e/i.test(was) || /[\d.,\p{L}]/u.test(expr.slice(0, at).trimEnd().slice(-1)) || /[\d.,\p{L}]/u.test(expr.slice(at + 3).trimStart().charAt(0)) ? `(${was})` : was);
   done = { expr, ans: used };
   ans = r.value;
   shown = formatResult(r.value, mark);

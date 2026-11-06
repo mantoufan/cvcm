@@ -78,9 +78,11 @@ function toLines(text: string): string[] {
       }
       continue;
     }
-    const fence = fenceOf(line);
-    keepRaw = indentOf(line) < 2;
-    if (fence) close = new RegExp(`^ {0,3}${fence.mark[0] === "`" ? "`" : "~"}{${fence.mark.length},}[ \\t]*$`);
+    // The opener can share a line with list markers ("- ```"); its closer is then indented to the item's text.
+    const bare = line.replace(/^(?: {0,3}(?:[-*+]|\d{1,9}[.)]) +)+/, "");
+    const fence = fenceOf(line) ?? fenceOf(bare);
+    keepRaw = bare === line && indentOf(line) < 2;
+    if (fence) close = new RegExp(`^ ${keepRaw ? "{0,3}" : "*"}${fence.mark[0] === "`" ? "`" : "~"}{${fence.mark.length},}[ \\t]*$`);
     // A reference definition ("[1]: https://…") is not shown. It cannot interrupt a paragraph, so it follows a blank line.
     if (!fence && line.includes("]:") && blank(out[out.length - 1]) && addRef(line)) continue;
     out.push(line);
@@ -345,7 +347,8 @@ function hasOwnBlank(body: string[]): boolean {
     while (n < body.length && blank(body[n])) n++;
     if (n === body.length || !prev) continue;
     const next = body[n];
-    const nested = indentOf(next) > 0 || (BULLET.test(next) && (BULLET.test(prev) || indentOf(prev) > 0));
+    // Only after a nested list's own line: "- a\n\n    more" is a second paragraph of the item, however far it is indented.
+    const nested = (BULLET.test(prev.trimStart()) || indentOf(prev) > 0) && (indentOf(next) > 0 || BULLET.test(next));
     if (!nested) return true;
     k = n - 1;
   }
@@ -440,7 +443,7 @@ const NAMED: Record<string, string> = {
 function entity(s: string, i: number): { v: string; len: number } | null {
   const m = /^&(?:#(\d{1,7})|#[xX]([0-9a-fA-F]{1,6})|([a-zA-Z]{2,8}));/.exec(s.slice(i, i + 12));
   if (!m) return null;
-  if (m[3]) return NAMED[m[3]] ? { v: NAMED[m[3]], len: m[0].length } : null;
+  if (m[3]) return Object.hasOwn(NAMED, m[3]) ? { v: NAMED[m[3]], len: m[0].length } : null;
   const cp = m[1] ? Number(m[1]) : parseInt(m[2], 16);
   const ok = cp > 0 && cp <= 0x10ffff && !(cp >= 0xd800 && cp <= 0xdfff);
   return { v: ok ? String.fromCodePoint(cp) : "�", len: m[0].length };

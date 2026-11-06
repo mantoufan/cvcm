@@ -23,8 +23,9 @@ const UNDO_MS = 8000;
 /** True from an edit until it is saved: an idle tab must not overwrite what another tab saved. */
 let dirty = false;
 const schedule = debounce(() => {
-  paint();
+  // Saved first, so the edit is kept even if drawing it fails.
   save();
+  paint();
 }, 120);
 
 export function mountMarkdown(host: HTMLElement): void {
@@ -210,11 +211,19 @@ function paint(): void {
   imgPool = new Map();
   for (const img of previewEl.querySelectorAll("img")) {
     const src = img.getAttribute("src") ?? "";
-    imgPool.set(src, [...(imgPool.get(src) ?? []), img]);
+    const same = imgPool.get(src);
+    if (same) same.push(img);
+    else imgPool.set(src, [img]);
   }
-  previewEl.replaceChildren(...doc.map(blockEl));
+  previewEl.replaceChildren(fill(document.createDocumentFragment(), doc.map(blockEl)));
   imgPool = new Map();
   statsEl.textContent = t("markdown.stats", { words: countText(docText(doc)).words, chars: Array.from(inputEl.value).length });
+}
+
+/** Appends one at a time: a document can hold more children than a function call can take as arguments. */
+function fill<T extends Node>(parent: T, kids: readonly Node[]): T {
+  for (const kid of kids) parent.appendChild(kid);
+  return parent;
 }
 
 // The preview is built from DOM nodes (no innerHTML), so nothing in the text can become markup.
@@ -222,28 +231,28 @@ function blockEl(b: Block): Node {
   switch (b.t) {
     case "h":
       // One level down, so a document's "# Title" is not a second top heading of this page (the sample is in the prerendered HTML too).
-      return h(`h${Math.min(b.level + 1, 6)}` as "h2", { class: `md-h${b.level}` }, ...b.kids.map(inlineEl));
+      return fill(h(`h${Math.min(b.level + 1, 6)}` as "h2", { class: `md-h${b.level}` }), b.kids.map(inlineEl));
     case "p":
-      return h("p", null, ...b.kids.map(inlineEl));
+      return fill(h("p"), b.kids.map(inlineEl));
     case "hr":
       return h("hr");
     case "code":
       return h("pre", null, h("code", b.lang ? { "data-lang": b.lang } : null, b.text));
     case "quote":
-      return h("blockquote", null, ...b.kids.map(blockEl));
+      return fill(h("blockquote"), b.kids.map(blockEl));
     case "list": {
       const items = b.items.map((it) => {
         const kids = it.kids.flatMap((k) => (b.tight && k.t === "p" ? k.kids.map(inlineEl) : [blockEl(k)]));
         const box = it.task == null ? null : h("input", { type: "checkbox", disabled: true, checked: it.task, "aria-label": it.task ? t("markdown.done") : t("markdown.todo") });
-        return h("li", it.task == null ? null : { class: "task" }, box, ...kids);
+        return fill(h("li", it.task == null ? null : { class: "task" }, box), kids);
       });
-      return b.ordered ? h("ol", b.start !== 1 ? { start: String(b.start) } : null, ...items) : h("ul", null, ...items);
+      return fill(b.ordered ? h("ol", b.start !== 1 ? { start: String(b.start) } : null) : h("ul"), items);
     }
     case "table":
       return h("div", { class: "md-table" },
         h("table", null,
-          h("thead", null, h("tr", null, ...b.head.map((c, k) => h("th", cellProps(b.align[k]), ...c.map(inlineEl))))),
-          b.rows.length ? h("tbody", null, ...b.rows.map((r) => h("tr", null, ...r.map((c, k) => h("td", cellProps(b.align[k]), ...c.map(inlineEl)))))) : null,
+          h("thead", null, fill(h("tr"), b.head.map((c, k) => fill(h("th", cellProps(b.align[k])), c.map(inlineEl))))),
+          b.rows.length ? fill(h("tbody"), b.rows.map((r) => fill(h("tr"), r.map((c, k) => fill(h("td", cellProps(b.align[k])), c.map(inlineEl)))))) : null,
         ),
       );
   }
@@ -264,10 +273,10 @@ function inlineEl(n: Inline): Node {
     case "strong":
     case "em":
     case "del":
-      return h(n.t, null, ...n.kids.map(inlineEl));
+      return fill(h(n.t), n.kids.map(inlineEl));
     case "link":
       // Links open in a new tab, so a click in the preview does not leave the text being written.
-      return h("a", { href: n.href, title: n.title || null, target: "_blank", rel: "noopener noreferrer nofollow" }, ...n.kids.map(inlineEl));
+      return fill(h("a", { href: n.href, title: n.title || null, target: "_blank", rel: "noopener noreferrer nofollow" }), n.kids.map(inlineEl));
     case "img": {
       const reused = imgPool.get(n.src)?.shift();
       if (reused) {

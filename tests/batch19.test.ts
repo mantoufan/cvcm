@@ -370,3 +370,17 @@ describe("review pass 7", () => {
     expect(md("- a\n\n  more\n- b")).toContain("<li><p>b</p></li>");
   });
 });
+
+describe("review pass 8", () => {
+  it("calls an indented second paragraph loose, whatever its indent", () => {
+    expect(md("- Install\n\n    Run it.\n- Next")).toContain("<p>Install</p>");
+    expect(md("1. One\n\n    More\n2. Two")).toContain("<p>More</p>");
+  });
+  it("follows a fence opened on a list marker", () => {
+    expect(md("- ```\n  x\n\n  [a]: http://y\n\n  z\n  ```\n")).toContain("[a]: http://y");
+    expect(md("- ```\n  code\n  ```\n\n[ref]: http://x.com\n\n[ref]")).toContain('<a href="http://x.com">ref</a>');
+  });
+  it("leaves names from Object.prototype as text", () => {
+    expect(md("&valueOf; &toString; &amp;")).toBe("<p>&amp;valueOf; &amp;toString; &amp;</p>");
+  });
+});

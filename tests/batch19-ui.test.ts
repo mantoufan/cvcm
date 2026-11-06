@@ -265,3 +265,23 @@ describe("review pass 6 ui", () => {
     expect(JSON.parse(window.localStorage.getItem("cvcm.calculator.v1")!)[0].expr).toBe("3+3");
   });
 });
+
+describe("review pass 8 ui", () => {
+  const enter = (el: HTMLElement) => el.dispatchEvent(new KeyboardEvent("keydown", { key: "Enter", bubbles: true }));
+  it("saves a spaced product with Ans so the line can be reused", () => {
+    mountCalculator(host);
+    const expr = q<HTMLInputElement>("[data-field=expr]");
+    type(expr, "1+2");
+    enter(expr);
+    type(expr, "2 Ans");
+    enter(expr);
+    const saved = JSON.parse(window.localStorage.getItem("cvcm.calculator.v1")!)[0];
+    expect(saved.expr).toBe("2 (3)");
+    expect(saved.result).toBe("6");
+  });
+  it("draws every block of a long saved document", () => {
+    window.localStorage.setItem("cvcm.markdown.v1", "#\n".repeat(2000));
+    mountMarkdown(host);
+    expect(q("[data-out=preview]").children.length).toBe(2000);
+  });
+});
