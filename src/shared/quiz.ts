@@ -3,14 +3,14 @@
 // `src/locales/quiz/<locale>.json`, with items in the same order. Scoring runs in the page; answers never leave it.
 
 export const QUIZ_GROUPS = [
-  { id: "personality", quizzes: ["mbti", "big-five", "introvert", "enneagram", "eq", "temperament"] },
+  { id: "personality", quizzes: ["mbti", "big-five", "introvert", "enneagram", "eq", "temperament", "disc", "highly-sensitive-person", "narcissist"] },
   { id: "love", quizzes: ["love-language", "attachment", "love-style", "marriage", "conflict-style"] },
   { id: "career", quizzes: ["career", "work-style", "leadership", "mindset", "money"] },
   { id: "games", quizzes: ["pokemon", "genshin", "sonic", "dnd-class"] },
   { id: "anime", quizzes: ["naruto", "one-piece", "ghibli", "demon-slayer", "jujutsu-kaisen", "avatar-element", "anime"] },
-  { id: "books", quizzes: ["hogwarts", "avengers"] },
-  { id: "fun", quizzes: ["chronotype", "pet", "face-shape", "friend-role"] },
-  { id: "wellbeing", quizzes: ["wellbeing-index", "self-esteem", "anxiety", "depression"] },
+  { id: "books", quizzes: ["hogwarts", "percy-jackson", "avengers"] },
+  { id: "fun", quizzes: ["chronotype", "pet", "face-shape", "friend-role", "spirit-animal", "color-personality"] },
+  { id: "wellbeing", quizzes: ["wellbeing-index", "self-esteem", "anxiety", "depression", "burnout", "adhd"] },
 ] as const;
 
 export type QuizGroupId = (typeof QUIZ_GROUPS)[number]["id"];
@@ -174,6 +174,18 @@ const TEMPERAMENT = likert(`
  * Growth or fixed mindset (after Carol Dweck): ten original statements, the fixed-mindset ones reversed. Total 0–40;
  * the bands (0–13, 14–26, 27–40) put "mixed" around 20, the total for neutral, or agree-to-everything, answers.
  */
+/** Written for cv.cm (DISC after Marston's 1928 model): five statements for each of the four styles. */
+const DISC = likert(`
+  D+ I+ S+ C+  D+ I+ S+ C+  D+ I+ S+ C+  D+ I+ S+ C+  D+ I+ S+ C+
+`);
+
+/** Written for cv.cm, every second statement reversed: agreeing with everything lands mid-scale, not high. */
+const NARCISSISM = likert(Array(8).fill("narc+ narc-").join(" "));
+const SENSITIVITY = likert(Array(7).fill("hsp+ hsp-").join(" "));
+const BURNOUT = likert(Array(8).fill("burnout+ burnout-").join(" "));
+/** Written for cv.cm from the adult symptom areas of ADHD. Not the ASRS and not clinically validated; the copy says so. */
+const ADHD = likert(Array(18).fill("adhd+").join(" "));
+
 const MINDSET = likert("growth+ growth- growth+ growth- growth+ growth- growth+ growth- growth+ growth-");
 
 /** WHO-5 Well-Being Index (WHO Regional Office for Europe, 1998; free to use). Total 0–25; times 4 gives the 0–100 percentage. */
@@ -483,6 +495,54 @@ const GHIBLI: ChoiceItem[] = [
   { options: [{ san: 2 }, { nausicaa: 2 }, { sophie: 2 }, { haku: 2 }] },
 ];
 
+/** Eight animals, laid out like `GHIBLI`: each in six questions, once or twice in each position. */
+const SPIRIT_ANIMAL: ChoiceItem[] = [
+  { options: [{ wolf: 2 }, { bear: 2 }, { fox: 2 }, { deer: 2 }] },
+  { options: [{ dolphin: 2 }, { owl: 2 }, { eagle: 2 }, { otter: 2 }] },
+  { options: [{ eagle: 2 }, { wolf: 2 }, { dolphin: 2 }, { fox: 2 }] },
+  { options: [{ deer: 2 }, { owl: 2 }, { bear: 2 }, { otter: 2 }] },
+  { options: [{ otter: 2 }, { wolf: 2 }, { eagle: 2 }, { bear: 2 }] },
+  { options: [{ owl: 2 }, { fox: 2 }, { deer: 2 }, { dolphin: 2 }] },
+  { options: [{ dolphin: 2 }, { otter: 2 }, { wolf: 2 }, { deer: 2 }] },
+  { options: [{ fox: 2 }, { eagle: 2 }, { owl: 2 }, { bear: 2 }] },
+  { options: [{ owl: 2 }, { dolphin: 2 }, { bear: 2 }, { wolf: 2 }] },
+  { options: [{ eagle: 2 }, { deer: 2 }, { otter: 2 }, { fox: 2 }] },
+  { options: [{ fox: 2 }, { otter: 2 }, { wolf: 2 }, { owl: 2 }] },
+  { options: [{ bear: 2 }, { dolphin: 2 }, { deer: 2 }, { eagle: 2 }] },
+];
+
+/** Eight Olympian parents, laid out like `GHIBLI`. */
+const PERCY_JACKSON: ChoiceItem[] = [
+  { options: [{ poseidon: 2 }, { ares: 2 }, { hermes: 2 }, { aphrodite: 2 }] },
+  { options: [{ athena: 2 }, { apollo: 2 }, { hades: 2 }, { zeus: 2 }] },
+  { options: [{ hades: 2 }, { poseidon: 2 }, { athena: 2 }, { hermes: 2 }] },
+  { options: [{ aphrodite: 2 }, { apollo: 2 }, { ares: 2 }, { zeus: 2 }] },
+  { options: [{ zeus: 2 }, { poseidon: 2 }, { hades: 2 }, { ares: 2 }] },
+  { options: [{ apollo: 2 }, { hermes: 2 }, { aphrodite: 2 }, { athena: 2 }] },
+  { options: [{ athena: 2 }, { zeus: 2 }, { poseidon: 2 }, { aphrodite: 2 }] },
+  { options: [{ hermes: 2 }, { hades: 2 }, { apollo: 2 }, { ares: 2 }] },
+  { options: [{ apollo: 2 }, { athena: 2 }, { ares: 2 }, { poseidon: 2 }] },
+  { options: [{ hades: 2 }, { aphrodite: 2 }, { zeus: 2 }, { hermes: 2 }] },
+  { options: [{ hermes: 2 }, { zeus: 2 }, { poseidon: 2 }, { apollo: 2 }] },
+  { options: [{ ares: 2 }, { athena: 2 }, { aphrodite: 2 }, { hades: 2 }] },
+];
+
+/** Four colors, laid out like `HOGWARTS`: all four in every question, each three times in each position. */
+const COLOR_PERSONALITY: ChoiceItem[] = [
+  { options: [{ red: 2 }, { green: 2 }, { blue: 2 }, { yellow: 2 }] },
+  { options: [{ blue: 2 }, { yellow: 2 }, { green: 2 }, { red: 2 }] },
+  { options: [{ green: 2 }, { blue: 2 }, { red: 2 }, { yellow: 2 }] },
+  { options: [{ yellow: 2 }, { red: 2 }, { green: 2 }, { blue: 2 }] },
+  { options: [{ red: 2 }, { blue: 2 }, { yellow: 2 }, { green: 2 }] },
+  { options: [{ yellow: 2 }, { green: 2 }, { blue: 2 }, { red: 2 }] },
+  { options: [{ blue: 2 }, { yellow: 2 }, { red: 2 }, { green: 2 }] },
+  { options: [{ green: 2 }, { red: 2 }, { blue: 2 }, { yellow: 2 }] },
+  { options: [{ red: 2 }, { yellow: 2 }, { green: 2 }, { blue: 2 }] },
+  { options: [{ green: 2 }, { blue: 2 }, { yellow: 2 }, { red: 2 }] },
+  { options: [{ yellow: 2 }, { green: 2 }, { red: 2 }, { blue: 2 }] },
+  { options: [{ blue: 2 }, { red: 2 }, { yellow: 2 }, { green: 2 }] },
+];
+
 export const QUIZ_DEFS: Record<QuizId, QuizDef> = {
   mbti: { id: "mbti", type: "likert", scale: "agree5", dims: ["EI", "SN", "TF", "JP"], items: TYPES, result: { kind: "types" } },
   "big-five": { id: "big-five", type: "likert", scale: "agree5", dims: ["O", "C", "E", "A", "N"], items: BIG_FIVE, result: { kind: "profile" } },
@@ -706,6 +766,71 @@ export const QUIZ_DEFS: Record<QuizId, QuizDef> = {
     items: AVENGERS,
     result: { kind: "top", tie: "spread" },
   },
+  "disc": {
+    id: "disc",
+    type: "likert",
+    scale: "agree5",
+    dims: ["D", "I", "S", "C"],
+    items: DISC,
+    result: { kind: "top", tie: "spread" },
+  },
+  "highly-sensitive-person": {
+    id: "highly-sensitive-person",
+    type: "likert",
+    scale: "agree5",
+    dims: ["hsp"],
+    items: SENSITIVITY,
+    // Three equal bands around the neutral total of 28.
+    result: { kind: "band", bands: [{ max: 18, key: "low" }, { max: 37, key: "mid" }, { max: 56, key: "high" }] },
+  },
+  "narcissist": {
+    id: "narcissist",
+    type: "likert",
+    scale: "agree5",
+    dims: ["narc"],
+    items: NARCISSISM,
+    // Three near-equal bands around the neutral total of 32.
+    result: { kind: "band", bands: [{ max: 21, key: "low" }, { max: 42, key: "mid" }, { max: 64, key: "high" }] },
+  },
+  "burnout": {
+    id: "burnout",
+    type: "likert",
+    scale: "agree5",
+    dims: ["burnout"],
+    items: BURNOUT,
+    // Three near-equal bands around the neutral total of 32. Not clinical cut-offs; the copy says so.
+    result: { kind: "band", bands: [{ max: 21, key: "low" }, { max: 42, key: "risk" }, { max: 64, key: "high" }] },
+  },
+  "adhd": {
+    id: "adhd",
+    type: "likert",
+    scale: "agree5",
+    dims: ["adhd"],
+    items: ADHD,
+    // 28 and 47 of 72 are about 40% and 65%. Not clinical cut-offs; the copy says so.
+    result: { kind: "band", bands: [{ max: 28, key: "few" }, { max: 47, key: "some" }, { max: 72, key: "many" }] },
+  },
+  "spirit-animal": {
+    id: "spirit-animal",
+    type: "choice",
+    dims: ["wolf", "owl", "fox", "bear", "eagle", "dolphin", "deer", "otter"],
+    items: SPIRIT_ANIMAL,
+    result: { kind: "top", tie: "spread" },
+  },
+  "color-personality": {
+    id: "color-personality",
+    type: "choice",
+    dims: ["red", "blue", "yellow", "green"],
+    items: COLOR_PERSONALITY,
+    result: { kind: "top", tie: "spread" },
+  },
+  "percy-jackson": {
+    id: "percy-jackson",
+    type: "choice",
+    dims: ["zeus", "poseidon", "hades", "athena", "apollo", "ares", "aphrodite", "hermes"],
+    items: PERCY_JACKSON,
+    result: { kind: "top", tie: "spread" },
+  },
   hogwarts: {
     id: "hogwarts",
     type: "choice",
@@ -733,11 +858,13 @@ export const SUPPORT: Partial<Record<QuizId, readonly string[]>> = {
   "wellbeing-index": ["low"],
   depression: ["moderate", "modsevere", "severe"],
   anxiety: ["moderate", "severe"],
+  burnout: ["high"],
 };
 
 /** Band results whose copy sends the reader to another test: the page links it under the result (band quizzes only). */
 export const FOLLOW_UP: Partial<Record<QuizId, { bands: readonly string[]; quiz: QuizId }>> = {
   "wellbeing-index": { bands: ["low", "reduced"], quiz: "depression" },
+  burnout: { bands: ["high"], quiz: "depression" },
 };
 
 export function questionCount(id: QuizId): number {

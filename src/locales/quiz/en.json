@@ -44,9 +44,9 @@
   },
   "hub": {
     "title": "Free personality tests: MBTI, Big Five, EQ, love and career — cv.cm",
-    "description": "Free personality and psychology tests: 16 types (MBTI-style), Big Five, introvert or extrovert, Enneagram, emotional intelligence, four temperaments, love language, attachment, love style, conflict style, career, work style, leadership, growth mindset, money, chronotype, pet match, face shape, friend group role, well-being (WHO-5), self-esteem, anxiety and depression, plus fan quizzes: Hogwarts house, Marvel, Studio Ghibli, Pokémon, Genshin Impact, Sonic, D&D, Naruto, One Piece, Demon Slayer, Jujutsu Kaisen, Avatar and anime archetypes. No sign-up; answers stay in your browser.",
+    "description": "Free personality and psychology tests: 16 types (MBTI-style), Big Five, DISC, highly sensitive person, narcissism, introvert or extrovert, Enneagram, emotional intelligence, four temperaments, love language, attachment, love style, conflict style, career, work style, leadership, growth mindset, money, chronotype, pet match, face shape, friend group role, spirit animal, color personality, well-being (WHO-5), self-esteem, anxiety, depression, burnout and adult ADHD, plus fan quizzes: Hogwarts house, Percy Jackson, Marvel, Studio Ghibli, Pokémon, Genshin Impact, Sonic, D&D, Naruto, One Piece, Demon Slayer, Jujutsu Kaisen, Avatar and anime archetypes. No sign-up; answers stay in your browser.",
     "h1": "Personality and psychology tests",
-    "lede": "Thirty-seven free tests, from 16 personality types, the Big Five and the four temperaments to love styles, growth mindset, your role in your friend group, Hogwarts, Marvel and Studio Ghibli fan quizzes and quick mental health self-checks. No sign-up, no email. Your answers are scored in your browser and never uploaded.",
+    "lede": "Forty-five free tests, from 16 personality types, the Big Five and DISC to love styles, your spirit animal, Hogwarts, Percy Jackson, Marvel and Studio Ghibli fan quizzes, and quick self-checks for anxiety, burnout and adult ADHD. No sign-up, no email. Your answers are scored in your browser and never uploaded.",
     "groups": {
       "personality": "Personality",
       "love": "Love and relationships",
@@ -59,7 +59,7 @@
     },
     "about": [
       "Each test lists all of its questions on one page. Answer them, press the button, and the result appears under the questions with a short explanation and a chart of your scores.",
-      "The wellbeing checks use published screening questionnaires (WHO-5, Rosenberg, GAD-7, PHQ-9). The Big Five and the introvert–extrovert test use the public-domain IPIP item pool. The other tests are written for cv.cm from well-known models, and their results are a starting point for reflection, not a verdict. The game, anime, book and film quizzes are unofficial fan quizzes, just for fun."
+      "Most wellbeing checks use published screening questionnaires (WHO-5, Rosenberg, GAD-7, PHQ-9); the burnout and adult ADHD checks were written for cv.cm and have not been clinically validated. The Big Five and the introvert–extrovert test use the public-domain IPIP item pool. The other tests are written for cv.cm from well-known models, and their results are a starting point for reflection, not a verdict. The game, anime, book and film quizzes are unofficial fan quizzes, just for fun."
     ],
     "faq": [
       { "q": "Are these tests free?", "a": "Yes. Every test is free, with no sign-up, no email, and no paywall in front of the result." },
@@ -4167,6 +4167,850 @@
         "spiderman": {
           "name": "Spider-Man",
           "body": "You are funny, curious and full of heart, juggling a busy life with doing the right thing. Like Peter Parker, you know that great power comes with great responsibility."
+        }
+      }
+    },
+    "disc": {
+      "title": "Free DISC personality test: find your DISC style — cv.cm",
+      "description": "Free DISC personality test: rate 20 statements to see whether your style is Dominance, Influence, Steadiness or Conscientiousness, with a score for each. No sign-up; answers stay in your browser.",
+      "h1": "DISC personality test",
+      "lede": "Are you direct, outgoing, steady or precise? Rate 20 statements to find your main DISC style, how strong the other three are, and how you tend to work with people.",
+      "about": [
+        "DISC describes four styles of behavior: Dominance (direct, results first), Influence (outgoing, persuasive), Steadiness (patient, supportive) and Conscientiousness (accurate, careful). The model goes back to the psychologist William Moulton Marston, who described four patterns of emotion and behavior in his 1928 book Emotions of Normal People. Others later turned his ideas into workplace questionnaires.",
+        "The statements here were written for cv.cm. This is not Everything DiSC or any other commercial assessment and has no link to their publishers; DiSC is a registered trademark of its owner. DISC is widely used in training but is less well supported by research than the Big Five, so use your result to start a conversation, not to make hiring decisions."
+      ],
+      "faq": [
+        {
+          "q": "What do the four DISC letters stand for?",
+          "a": "D is Dominance, I is Influence, S is Steadiness and C is Conscientiousness. Some versions use slightly different words, but the four styles are much the same."
+        },
+        {
+          "q": "How is the DISC result worked out?",
+          "a": "Each style has five statements, scored 0 to 4. Your result is the style with the highest score, and the bars show all four. If two styles tie, the page names both."
+        },
+        {
+          "q": "Which DISC style is best?",
+          "a": "None. D gets things moving, I brings people along, S keeps a team steady and C keeps the quality high. Good teams need all four, and most people use more than one."
+        },
+        {
+          "q": "Is this the official DiSC assessment?",
+          "a": "No. It is a free, independent test based on the same public idea. Commercial reports are longer and have their own scoring, so your result there may differ."
+        }
+      ],
+      "dims": {
+        "D": "Dominance",
+        "I": "Influence",
+        "S": "Steadiness",
+        "C": "Conscientiousness"
+      },
+      "items": [
+        "I say what I want and go after it directly.",
+        "I find it easy to start a conversation with almost anyone.",
+        "I'm patient, even when things take a long time.",
+        "I check the details before I call something finished.",
+        "I like making the final call when a decision is needed.",
+        "I enjoy getting people excited about an idea.",
+        "I prefer a steady pace to sudden changes.",
+        "I follow the rules and procedures because they usually exist for a reason.",
+        "A tough challenge makes me want to try harder.",
+        "People often tell me I'm fun to be around.",
+        "I'd rather help the team succeed than stand out myself.",
+        "I want the facts and evidence before I make up my mind.",
+        "I care more about results than about keeping everyone comfortable.",
+        "I'm usually optimistic, even when plans go wrong.",
+        "I'm a good listener, and people come to me when they need support.",
+        "I hold myself to high standards of accuracy.",
+        "I get impatient when people take too long to act.",
+        "I would rather talk something through than write it down.",
+        "I stay loyal to the people and places I know.",
+        "I like to plan carefully and think through what could go wrong."
+      ],
+      "results": {
+        "D": {
+          "name": "Dominance (D)",
+          "body": "You are direct, decisive and driven by results. You like a challenge and move fast when others hesitate. Watch for coming across as blunt: slowing down to listen will win you more support."
+        },
+        "I": {
+          "name": "Influence (I)",
+          "body": "You are outgoing, warm and persuasive. You bring energy to a group and get people on board. Watch for losing track of details or promising too much: a short written plan helps."
+        },
+        "S": {
+          "name": "Steadiness (S)",
+          "body": "You are patient, dependable and supportive. People trust you and teams feel calmer with you around. Watch for avoiding conflict or sudden change: saying what you need early helps everyone."
+        },
+        "C": {
+          "name": "Conscientiousness (C)",
+          "body": "You are careful, analytical and precise. You want to get things right and you back your views with evidence. Watch for over-analyzing or being too critical: sometimes good enough, on time, is the better choice."
+        }
+      }
+    },
+    "highly-sensitive-person": {
+      "title": "Highly sensitive person test (HSP): am I an HSP? — cv.cm",
+      "description": "Free highly sensitive person (HSP) test: rate 14 statements on noise, crowds, emotions and detail to get a score from 0 to 56 and what it means. Not a diagnosis. Answers stay in your browser.",
+      "h1": "Highly sensitive person (HSP) test",
+      "scoreLabel": "Sensitivity score (0 = low, 56 = high)",
+      "lede": "Do loud rooms wear you out? Do you notice small changes, and feel other people's moods? Rate 14 statements to see how sensitive you are, and how to look after yourself if the answer is very.",
+      "about": [
+        "The psychologists Elaine Aron and Arthur Aron introduced the term highly sensitive person in the 1990s to describe people with high sensory processing sensitivity: they notice more and take in what they notice more deeply, so they can also get overwhelmed sooner. Aron estimated that 15–20% of people are highly sensitive; a 2018 study by Lionetti and colleagues put the most sensitive group nearer 30%.",
+        "High sensitivity is a personality trait, not a disorder. The statements here were written for cv.cm; this is not Aron's HSP Scale, and half of them describe low sensitivity so that simply agreeing with everything doesn't raise your score. Our score bands are a rough guide, not research cut-offs."
+      ],
+      "faq": [
+        {
+          "q": "What does it mean to be a highly sensitive person?",
+          "a": "You react more strongly to what's around you: noise, light, crowds, art and other people's feelings. That can make you perceptive and empathetic, and also quicker to tire in busy places."
+        },
+        {
+          "q": "How is the score worked out?",
+          "a": "Each statement scores 0 to 4, and half are reversed, so the total runs from 0 to 56. 18 or less is low sensitivity, 19 to 37 is medium, and 38 or more is high."
+        },
+        {
+          "q": "Is being an HSP the same as being introverted or anxious?",
+          "a": "No. Many highly sensitive people are introverted, but a good share are extroverted. Sensitivity is about how deeply you process things; anxiety is about worry and fear. If worry is what troubles you, try the GAD-7 anxiety check on this site."
+        },
+        {
+          "q": "Is high sensitivity a disorder?",
+          "a": "No. It is a normal variation in temperament and isn't a medical diagnosis. If you feel overwhelmed most of the time or it stops you living your life, talk to a doctor or therapist."
+        }
+      ],
+      "items": [
+        "Loud noises, strong smells or bright lights quickly get to me.",
+        "A noisy, crowded place rarely bothers me.",
+        "I often sense how others feel before they say anything.",
+        "I don't usually notice small changes in a room or in someone's mood.",
+        "After a busy day I need time alone to recover.",
+        "I can go from one demanding thing to the next without needing a break.",
+        "Art, music or a beautiful view can move me deeply.",
+        "I'm rarely moved much by films, music or art.",
+        "I get flustered when I have a lot to do in a short time.",
+        "I stay relaxed when someone is watching me work or I'm under time pressure.",
+        "I think deeply about things and turn them over for a long time.",
+        "Once something is over, I don't give it much more thought.",
+        "Violent or upsetting scenes in films stay with me.",
+        "Other people's bad moods don't really affect me."
+      ],
+      "results": {
+        "low": {
+          "name": "Low sensitivity (0–18)",
+          "body": "You take noise, crowds and pressure in your stride and rarely feel overwhelmed. That's a real strength in busy settings. Remember that people around you may be feeling more than you notice."
+        },
+        "mid": {
+          "name": "Medium sensitivity (19–37)",
+          "body": "You are sensitive to some things and not others, like many people. You probably notice when you need a break, and you can cope with a lively day. Pay attention to which situations drain you most."
+        },
+        "high": {
+          "name": "High sensitivity (38–56)",
+          "body": "You seem to notice and feel things deeply. That can bring empathy, care and a rich inner life, and also tire you faster. Protect some quiet time, build breaks into your day and don't treat your limits as a flaw."
+        }
+      }
+    },
+    "narcissist": {
+      "title": "Narcissism test: how strong are your narcissistic traits? — cv.cm",
+      "description": "Free narcissism test: rate 16 statements on admiration, entitlement and empathy to get a score from 0 to 64. It measures a personality trait and can't diagnose anyone. Answers stay in your browser.",
+      "h1": "Narcissism test",
+      "scoreLabel": "Narcissistic traits score (0 = low, 64 = high)",
+      "lede": "Am I a narcissist? Rate 16 honest statements about attention, status and empathy to see where you fall on the narcissism scale, and what your score does and doesn't mean.",
+      "about": [
+        "Narcissism is a personality trait that everyone has to some degree. It runs from healthy self-confidence to a strong need for admiration, a sense of entitlement and little interest in other people's feelings. Psychologists have measured it since Raskin and Hall's Narcissistic Personality Inventory in 1979.",
+        "The statements here were written for cv.cm and are not a clinical instrument. Half are reversed, so agreeing with everything doesn't raise your score. Narcissistic personality disorder is a rare condition that only a qualified professional can diagnose, and a high score here doesn't mean you have it. This test is about you: it isn't meant for labeling a partner, a parent or anybody else."
+      ],
+      "faq": [
+        {
+          "q": "Can this test tell me whether I'm a narcissist?",
+          "a": "It shows how strongly you recognize some narcissistic traits in yourself. It can't diagnose narcissistic personality disorder, which needs a professional assessment of long-standing patterns and the harm they cause."
+        },
+        {
+          "q": "How is the score worked out?",
+          "a": "Each statement scores 0 to 4, half reversed, so the total runs from 0 to 64. 21 or less is low, 22 to 42 is medium, and 43 or more is high. The bands are a guide for this test, not clinical cut-offs."
+        },
+        {
+          "q": "Is some narcissism healthy?",
+          "a": "Yes. Confidence, ambition and enjoying recognition are normal. Problems start when the need for admiration comes at other people's expense or when any criticism feels unbearable."
+        },
+        {
+          "q": "What if someone close to me behaves like a narcissist?",
+          "a": "A quiz taken on someone else's behalf can't tell you much. Focus on the behavior and how it affects you. If you feel controlled, belittled or unsafe, talk to someone you trust, a counselor or a local support service."
+        }
+      ],
+      "items": [
+        "I like being the center of attention.",
+        "I feel uncomfortable when people praise me.",
+        "I deserve more recognition than I usually get.",
+        "I don't expect special treatment from anybody.",
+        "Deep down, I know I'm better than most people.",
+        "I think most people are about as capable as I am.",
+        "When someone criticizes me, I get angry or look for a way to hit back.",
+        "I can take criticism without feeling attacked.",
+        "Other people's problems often bore me.",
+        "I go out of my way to understand how others feel.",
+        "Rules are for other people; I should be able to bend them.",
+        "I'm happy to wait my turn like everybody else.",
+        "I often use charm to get what I want from people.",
+        "I'm happy to let others take the credit.",
+        "I need people to admire me to feel good about myself.",
+        "I feel fine about myself even when nobody notices what I do."
+      ],
+      "results": {
+        "low": {
+          "name": "Few narcissistic traits (0–21)",
+          "body": "You don't seem to need much admiration and you make room for other people. If your score is very low, check that you aren't underselling yourself: it's fine to take credit for good work and ask for what you need."
+        },
+        "mid": {
+          "name": "Some narcissistic traits (22–42)",
+          "body": "You have an ordinary mix: some confidence and a liking for recognition, along with an interest in others. Most people land here. Watch which situations bring out the more self-centered side, such as criticism or competition."
+        },
+        "high": {
+          "name": "Strong narcissistic traits (43–64)",
+          "body": "You recognize many narcissistic traits in yourself, like a strong need for admiration and sensitivity to criticism. This is not a diagnosis. It can help to ask people you trust how you come across, practice listening and, if this causes trouble in your relationships or work, talk to a therapist."
+        }
+      }
+    },
+    "spirit-animal": {
+      "title": "What is your spirit animal? Free personality quiz — cv.cm",
+      "description": "Free spirit animal quiz: answer 12 questions to find out if you're a wolf, owl, fox, bear, eagle, dolphin, deer or otter, and what that says about you. No sign-up.",
+      "h1": "What is your spirit animal?",
+      "lede": "Loyal wolf, wise owl or playful otter? Answer 12 questions about your friends, your free time and your weak spots to find the animal that matches your personality.",
+      "about": [
+        "People have long used animals as a shorthand for character: sly as a fox, wise as an owl, loyal as a wolf. This quiz uses those familiar images to match you with one of eight animals based on how you act with others, handle trouble and recharge.",
+        "It is just for fun, written for cv.cm. Spirit animals and animal guides have real meaning in a number of Indigenous and other spiritual traditions; this quiz doesn't draw on them or claim to reveal anything spiritual. Think of it as a playful personality quiz."
+      ],
+      "faq": [
+        {
+          "q": "Which animals can I get?",
+          "a": "Wolf, owl, fox, bear, eagle, dolphin, deer and otter. Your result names your main animal and shows your score for all eight."
+        },
+        {
+          "q": "Is one animal rarer than the others?",
+          "a": "No. Every animal appears in the same number of answers, so each one is equally likely."
+        },
+        {
+          "q": "Is this a real spiritual reading?",
+          "a": "No. It is a fun personality quiz with no spiritual basis, and it doesn't represent any tradition's beliefs."
+        },
+        {
+          "q": "Why did I get a different animal this time?",
+          "a": "A few changed answers can shift close scores. If two animals tie, the result names both, and you may well have something of each."
+        }
+      ],
+      "dims": {
+        "wolf": "Wolf",
+        "owl": "Owl",
+        "fox": "Fox",
+        "bear": "Bear",
+        "eagle": "Eagle",
+        "dolphin": "Dolphin",
+        "deer": "Deer",
+        "otter": "Otter"
+      },
+      "items": [
+        {
+          "q": "You walk into a room full of strangers. You…",
+          "options": [
+            "Find your people and stick close to them",
+            "Hold back and take your time",
+            "Quickly work out who's who and how to fit in",
+            "Stay near the door, sensing the mood"
+          ]
+        },
+        {
+          "q": "A free weekend. You spend it…",
+          "options": [
+            "Surrounded by friends, making plans on the fly",
+            "With a book and a long train of thought",
+            "Alone on a high trail with a big view",
+            "Playing: a game, a swim, anything silly"
+          ]
+        },
+        {
+          "q": "Your team hits a problem. You…",
+          "options": [
+            "Step back and look at the whole picture",
+            "Rally everyone so nobody gets left behind",
+            "Keep spirits up and get people talking",
+            "Find a clever way around it"
+          ]
+        },
+        {
+          "q": "What do friends come to you for?",
+          "options": [
+            "Gentle understanding",
+            "Thoughtful advice",
+            "Solid protection when things go wrong",
+            "A laugh when they need one"
+          ]
+        },
+        {
+          "q": "Your ideal home:",
+          "options": [
+            "By the water, with room to mess about",
+            "Close to family and old friends",
+            "Somewhere high with a long view",
+            "A snug cabin deep in the woods"
+          ]
+        },
+        {
+          "q": "Your secret strength:",
+          "options": [
+            "Noticing what others miss",
+            "Talking your way out of anything",
+            "Sensing how people feel before they say it",
+            "Making anyone feel welcome"
+          ]
+        },
+        {
+          "q": "Someone in your group is upset. You…",
+          "options": [
+            "Gather people round to cheer them up",
+            "Do something daft until they smile",
+            "Stand by them and take their side",
+            "Sit quietly with them and listen"
+          ]
+        },
+        {
+          "q": "Plans fall apart at the last minute. You…",
+          "options": [
+            "Improvise, and probably enjoy it",
+            "Rethink the goal and set a new direction",
+            "Work out what went wrong first",
+            "Stay calm and wait for the dust to settle"
+          ]
+        },
+        {
+          "q": "What do you value most?",
+          "options": [
+            "Understanding",
+            "Connection",
+            "Keeping those you love safe",
+            "Loyalty"
+          ]
+        },
+        {
+          "q": "Your biggest weakness:",
+          "options": [
+            "You can seem distant",
+            "You get hurt easily",
+            "You dodge anything too serious",
+            "You're hard to pin down"
+          ]
+        },
+        {
+          "q": "At a party, you're the one…",
+          "options": [
+            "Slipping between groups and hearing all the news",
+            "Starting the silly game",
+            "Looking after your friends",
+            "In a corner having the best conversation"
+          ]
+        },
+        {
+          "q": "When you need to recharge, you…",
+          "options": [
+            "Go quiet and sleep on it",
+            "Call a friend",
+            "Walk somewhere green and peaceful",
+            "Go off alone to get some perspective"
+          ]
+        }
+      ],
+      "results": {
+        "wolf": {
+          "name": "Wolf",
+          "body": "You are loyal and protective, and at your best with your pack around you. You stand by your people and make sure nobody gets left behind. Remember that you can also have needs of your own."
+        },
+        "owl": {
+          "name": "Owl",
+          "body": "You are thoughtful and observant. You notice what others miss and give advice worth hearing. You may stay in your head too long, so share your ideas before they're perfect."
+        },
+        "fox": {
+          "name": "Fox",
+          "body": "You are quick-witted and adaptable, and you can find a way around almost anything. People enjoy your cleverness. Let them see the real you once in a while, too."
+        },
+        "bear": {
+          "name": "Bear",
+          "body": "You are strong, calm and protective, with a need for your own quiet den. People feel safe around you. Don't wait too long before coming out of hibernation to say what you need."
+        },
+        "eagle": {
+          "name": "Eagle",
+          "body": "You are independent and far-sighted. You like the big picture, and you'd rather set your own course than follow the crowd. Don't forget to come down to earth and bring people with you."
+        },
+        "dolphin": {
+          "name": "Dolphin",
+          "body": "You are friendly, bright and at your happiest with others. You make people feel welcome and bring groups together. Make time for yourself too, away from everyone's needs."
+        },
+        "deer": {
+          "name": "Deer",
+          "body": "You are gentle and perceptive, and you sense moods before anyone speaks. Your kindness calms people. You can get hurt easily, so choose those who treat your softness with care."
+        },
+        "otter": {
+          "name": "Otter",
+          "body": "You are playful and curious, and you find the fun in nearly everything. You lift the mood wherever you go. When something serious comes up, you are stronger than you think, so don't swim away from it."
+        }
+      }
+    },
+    "color-personality": {
+      "title": "Color personality test: red, blue, yellow or green? — cv.cm",
+      "description": "Free color personality test: answer 12 questions to see whether you're mainly red, blue, yellow or green, with your score for each color. No sign-up; answers stay in your browser.",
+      "h1": "Color personality test",
+      "lede": "Red and direct, blue and precise, yellow and sunny, or green and calm? Answer 12 questions to find your main color and how much of the other three you have.",
+      "about": [
+        "Color personality tests use four colors as an easy way to talk about behavior. In this one, red stands for drive and directness, blue for logic and care, yellow for energy and optimism, and green for calm and harmony. Each question offers one answer in each color.",
+        "This test was written for cv.cm and is just for fun. It has no link to trademarked systems such as True Colors or the Color Code, and it doesn't claim that your favorite color says anything about you. The colors are labels for habits. For a test with stronger research behind it, try the Big Five."
+      ],
+      "faq": [
+        {
+          "q": "What do the four colors mean?",
+          "a": "Red is direct and results-driven, blue is logical and careful, yellow is sociable and optimistic, and green is calm and caring."
+        },
+        {
+          "q": "How is the color worked out?",
+          "a": "Each question has one answer per color. The color you choose most is your result, and the bars show all four. If colors tie, the page names them all."
+        },
+        {
+          "q": "Is the color personality test scientific?",
+          "a": "No. It is a simple, memorable way to think about style, not a validated measure. For research-based results, take the Big Five test on this site."
+        },
+        {
+          "q": "Does this test ask about my favorite color?",
+          "a": "No. Your result comes from how you act in everyday situations, whatever colors you like to wear."
+        }
+      ],
+      "dims": {
+        "red": "Red",
+        "blue": "Blue",
+        "yellow": "Yellow",
+        "green": "Green"
+      },
+      "items": [
+        {
+          "q": "A group project is starting. You…",
+          "options": [
+            "Take charge and set the deadline",
+            "Make sure everyone feels included",
+            "Work out exactly what needs doing",
+            "Get everyone excited about the idea"
+          ]
+        },
+        {
+          "q": "How do you make a big decision?",
+          "options": [
+            "Compare the facts in detail",
+            "Go with what feels exciting",
+            "Think about how it will affect people",
+            "Decide quickly and move on"
+          ]
+        },
+        {
+          "q": "Your friends would describe you as…",
+          "options": [
+            "Kind and easy to be with",
+            "Reliable and thoughtful",
+            "Determined and straight-talking",
+            "Funny and full of energy"
+          ]
+        },
+        {
+          "q": "A disagreement breaks out. You…",
+          "options": [
+            "Crack a joke to lighten the mood",
+            "Say exactly what you think",
+            "Try to help everyone feel heard",
+            "Ask for the facts before saying anything"
+          ]
+        },
+        {
+          "q": "Your desk or room usually looks…",
+          "options": [
+            "Set up for getting things done fast",
+            "Neat, with everything in its place",
+            "Colorful, with lots going on",
+            "Cozy and comfortable"
+          ]
+        },
+        {
+          "q": "What drains you the most?",
+          "options": [
+            "Long stretches with nobody to talk to",
+            "Arguments and tense people",
+            "Sloppy work and vague plans",
+            "Slow people and pointless meetings"
+          ]
+        },
+        {
+          "q": "On vacation, you…",
+          "options": [
+            "Bring a researched plan",
+            "Talk to everybody you meet",
+            "Go for the biggest challenge available",
+            "Relax and go at everyone's pace"
+          ]
+        },
+        {
+          "q": "When someone comes to you with a problem, you…",
+          "options": [
+            "Listen and comfort them first",
+            "Tell them what to do about it",
+            "Help them analyze it step by step",
+            "Cheer them up and find the bright side"
+          ]
+        },
+        {
+          "q": "What do you most want people to say about your work?",
+          "options": [
+            "It got results",
+            "It was inspiring",
+            "It made things easier for everyone",
+            "It was done right"
+          ]
+        },
+        {
+          "q": "In a meeting, you are the one who…",
+          "options": [
+            "Checks that everyone agrees",
+            "Asks about the details",
+            "Throws out new ideas",
+            "Pushes for a decision"
+          ]
+        },
+        {
+          "q": "Your biggest weakness:",
+          "options": [
+            "You get distracted and overcommit",
+            "You find it hard to say no",
+            "You can be impatient and blunt",
+            "You overthink things"
+          ]
+        },
+        {
+          "q": "What motivates you most?",
+          "options": [
+            "Doing something properly",
+            "Winning",
+            "Having fun with people",
+            "Keeping things peaceful"
+          ]
+        }
+      ],
+      "results": {
+        "red": {
+          "name": "Red: the driver",
+          "body": "You are direct, confident and focused on results. You act when others hesitate and aren't afraid of a hard call. Slow down now and then to listen: people will follow you more readily if they feel heard."
+        },
+        "blue": {
+          "name": "Blue: the analyst",
+          "body": "You are logical, careful and thorough. You want the facts and do things properly. Remember that not every decision needs perfect information, and that people may need warmth as well as accuracy."
+        },
+        "yellow": {
+          "name": "Yellow: the spark",
+          "body": "You are sociable, upbeat and full of ideas. You bring energy into a room and get people going. A little structure helps you finish what you start and keep the promises you make so easily."
+        },
+        "green": {
+          "name": "Green: the peacemaker",
+          "body": "You are calm, patient and caring. People trust you and feel at ease around you. Speak up about what you want, too: harmony doesn't have to mean always giving way."
+        }
+      }
+    },
+    "percy-jackson": {
+      "title": "Who is your Percy Jackson godly parent? Free quiz — cv.cm",
+      "description": "Free Percy Jackson quiz: answer 12 questions to find your godly parent, from Zeus, Poseidon and Hades to Athena, Apollo, Ares, Aphrodite and Hermes. Unofficial fan quiz, no sign-up.",
+      "h1": "Who is your Percy Jackson godly parent?",
+      "lede": "Which cabin would claim you at Camp Half-Blood? Answer 12 questions about quests, fears and your fatal flaw to find out which Olympian is your godly parent.",
+      "about": [
+        "In Rick Riordan's Percy Jackson and the Olympians books, the children of Greek gods grow up in the modern world and train at Camp Half-Blood, where each lives in their godly parent's cabin. This quiz matches you with eight of those gods: Zeus, Poseidon, Hades, Athena, Apollo, Ares, Aphrodite and Hermes.",
+        "Your result names your godly parent and shows your scores for all eight. This is an unofficial fan quiz written for cv.cm. It is not affiliated with or endorsed by Rick Riordan, his publishers or Disney; the names and characters of the series belong to their owners."
+      ],
+      "faq": [
+        {
+          "q": "Which godly parents can I get?",
+          "a": "Zeus, Poseidon, Hades, Athena, Apollo, Ares, Aphrodite and Hermes. Your result names your main parent and shows your score for all eight."
+        },
+        {
+          "q": "Is one result rarer than the others?",
+          "a": "No. Every god appears in the same number of answers, so each one is equally likely, including the Big Three."
+        },
+        {
+          "q": "Why isn't my favorite god here?",
+          "a": "Eight results keep the quiz short and fair. Demeter, Hephaestus, Dionysus and others may join in a later update."
+        },
+        {
+          "q": "Is this quiz official?",
+          "a": "No. It is a free fan quiz, and your answers stay in your browser."
+        }
+      ],
+      "dims": {
+        "zeus": "Zeus",
+        "poseidon": "Poseidon",
+        "hades": "Hades",
+        "athena": "Athena",
+        "apollo": "Apollo",
+        "ares": "Ares",
+        "aphrodite": "Aphrodite",
+        "hermes": "Hermes"
+      },
+      "items": [
+        {
+          "q": "A monster bursts into camp. You…",
+          "options": [
+            "Head for the water, where you feel strongest",
+            "Charge straight at it",
+            "Lure it into a trap you just thought up",
+            "Calm your friends down, and maybe charm the monster too"
+          ]
+        },
+        {
+          "q": "Capture the flag. Your job:",
+          "options": [
+            "Drawing up the battle plan",
+            "Shooting from afar and healing the wounded",
+            "Slipping behind enemy lines unseen",
+            "Leading from the front and giving orders"
+          ]
+        },
+        {
+          "q": "A free afternoon at camp. You spend it…",
+          "options": [
+            "Alone somewhere dark and quiet",
+            "Canoeing on the lake",
+            "Reading up on Greek architecture",
+            "Selling things you probably shouldn't"
+          ]
+        },
+        {
+          "q": "Your fatal flaw:",
+          "options": [
+            "You care too much what people think of you",
+            "You can't resist showing off",
+            "You have a terrible temper",
+            "You always have to be in charge"
+          ]
+        },
+        {
+          "q": "Your ideal quest destination:",
+          "options": [
+            "The top of a skyscraper, as high as you can get",
+            "A hidden island in the open sea",
+            "A cave nobody has ever come back from",
+            "An ancient battlefield"
+          ]
+        },
+        {
+          "q": "Which camp activity do you sign up for?",
+          "options": [
+            "Archery and music",
+            "Lock picking",
+            "Matchmaking and makeovers",
+            "Puzzles and strategy games"
+          ]
+        },
+        {
+          "q": "Your friends would call you…",
+          "options": [
+            "The smart one with a plan",
+            "The natural leader",
+            "Easygoing and loyal, until someone crosses you",
+            "The charmer"
+          ]
+        },
+        {
+          "q": "A prophecy says a friend will betray you. You…",
+          "options": [
+            "Try to trick fate before it happens",
+            "Keep your secrets and trust no one",
+            "Work out what the verse really means",
+            "Challenge every suspect to a fight"
+          ]
+        },
+        {
+          "q": "The gift you'd most like from the gods:",
+          "options": [
+            "A bow that never misses",
+            "A book that answers any question",
+            "A spear that never breaks",
+            "The power to breathe underwater"
+          ]
+        },
+        {
+          "q": "What do you fear most?",
+          "options": [
+            "Being forgotten",
+            "Being unloved",
+            "Losing control",
+            "Being stuck in one place"
+          ]
+        },
+        {
+          "q": "How do you travel on a quest?",
+          "options": [
+            "Fast and light, with a shortcut nobody knows",
+            "By air whenever you can",
+            "By boat",
+            "In a convertible with the music up"
+          ]
+        },
+        {
+          "q": "You've just won a fight. You…",
+          "options": [
+            "Look around for the next one",
+            "Study how to win better next time",
+            "Make sure everyone saw how good you looked",
+            "Vanish before anyone can thank you"
+          ]
+        }
+      ],
+      "results": {
+        "zeus": {
+          "name": "Zeus, god of the sky",
+          "body": "You are a born leader with big ambitions and a commanding presence. People look to you when decisions need making. You like being in control, so remember that even the king of the gods needs allies."
+        },
+        "poseidon": {
+          "name": "Poseidon, god of the sea",
+          "body": "You are loyal, easygoing and stubborn in equal measure. You'd do anything for your friends, and you stay calm until someone crosses you. Then, like the sea, you're hard to stop."
+        },
+        "hades": {
+          "name": "Hades, god of the underworld",
+          "body": "You are private, serious and more loyal than people realize. You're at home on your own and aren't scared of dark places. Let a few people in: you have more friends than you think."
+        },
+        "athena": {
+          "name": "Athena, goddess of wisdom",
+          "body": "You are clever and strategic, and always have a plan. You win with your head, not your fists. You find it hard to admit you're wrong, so remember that the best plans leave room for other people's ideas."
+        },
+        "apollo": {
+          "name": "Apollo, god of the sun, music and healing",
+          "body": "You are bright, talented and hard to ignore. Art, music and helping people come naturally to you. You enjoy an audience, so make sure you're listening as well as performing."
+        },
+        "ares": {
+          "name": "Ares, god of war",
+          "body": "You are brave and competitive, and you never back down. You charge in where others hesitate, and that can save the day. Pick your fights: not every problem needs a spear."
+        },
+        "aphrodite": {
+          "name": "Aphrodite, goddess of love",
+          "body": "You are charming and understand people better than they understand themselves. You can win a room over without raising your voice. There is more to you than looks, and your real power is knowing what people feel."
+        },
+        "hermes": {
+          "name": "Hermes, god of travelers and thieves",
+          "body": "You are quick, funny and always on the move. You know a shortcut, a trick or a person for every problem. You hate being tied down, but your friends count on you to show up, so do."
+        }
+      }
+    },
+    "burnout": {
+      "title": "Burnout test: am I burned out at work? Free self-check — cv.cm",
+      "description": "Free burnout test: rate 16 statements on exhaustion, detachment and effectiveness at work to get a score from 0 to 64 and what to do next. Private: nothing leaves your browser.",
+      "h1": "Burnout test",
+      "scoreLabel": "Burnout score (0 = low, 64 = high)",
+      "lede": "Always tired, fed up with your job, and feeling you get less done? Rate 16 statements about your work over recent weeks to see how close you may be to burnout, and what can help.",
+      "about": [
+        "The World Health Organization's ICD-11 describes burnout as an occupational phenomenon, not a medical condition. It results from chronic workplace stress that hasn't been successfully managed and has three dimensions: exhaustion, mental distance or cynicism about your job, and reduced effectiveness at work.",
+        "The statements here were written for cv.cm around those three dimensions. This isn't the Maslach Burnout Inventory, and it hasn't been clinically validated, so the score bands are a rough guide rather than clinical cut-offs. Depression, thyroid problems and other medical conditions can feel like burnout. If you feel this way most of the time, see a doctor. If you study or care for someone rather than work a job, answer with that in mind."
+      ],
+      "faq": [
+        {
+          "q": "What are the signs of burnout?",
+          "a": "The three main signs are feeling drained, feeling negative or detached about your job, and getting less done or doubting your ability. Poor sleep, headaches and irritability often come along with them."
+        },
+        {
+          "q": "How is the score worked out?",
+          "a": "Each statement scores 0 to 4, and half are reversed, so the total runs from 0 to 64. 21 or less is low, 22 to 42 suggests some risk, and 43 or more suggests strong signs of burnout."
+        },
+        {
+          "q": "What is the difference between burnout and depression?",
+          "a": "Burnout is tied to work, while depression usually affects all of life, including things you normally enjoy. They overlap, and one can lead to the other. If your low mood goes beyond work, try the PHQ-9 check on this site and talk to a doctor."
+        },
+        {
+          "q": "How do I recover from burnout?",
+          "a": "Rest helps, but it rarely lasts unless the cause changes too. Look at your workload, your control over it, how you're treated and whether you get enough time off. Talk to your manager or occupational health service if you can, and see a doctor if symptoms persist."
+        }
+      ],
+      "items": [
+        "I feel drained by the end of most working days.",
+        "I usually have plenty of energy left after work.",
+        "I wake up tired at the thought of another day of work.",
+        "I look forward to most of my working days.",
+        "I care less about my work than I used to.",
+        "My work still feels meaningful to me.",
+        "I've become more cynical about my job and the people I deal with.",
+        "I stay patient and friendly with the people I work with.",
+        "I just go through the motions at work.",
+        "I still get absorbed in my work.",
+        "It's harder to concentrate at work than it used to be.",
+        "I can usually focus well on the task in front of me.",
+        "I doubt whether I'm doing my job well.",
+        "I feel I get useful things done at work.",
+        "I find it hard to switch off from work, even when I'm off duty.",
+        "Time off leaves me feeling properly rested."
+      ],
+      "results": {
+        "low": {
+          "name": "Low burnout signs (0–21)",
+          "body": "Work doesn't seem to be wearing you out at the moment. Keep protecting what helps, such as sleep, time off and a clear end to the working day. It's worth checking again if your job gets more demanding."
+        },
+        "risk": {
+          "name": "Some burnout signs (22–42)",
+          "body": "You have some signs of strain. This is a good moment to act: see which part of work drains you most, talk about your workload and take real breaks. Take the test again in a few weeks, and see a doctor if it's getting worse."
+        },
+        "high": {
+          "name": "Strong burnout signs (43–64)",
+          "body": "Your answers suggest serious exhaustion and distance from your work. Please don't just push through it. Talk to a doctor, since other conditions can feel the same, and if you can, talk to your manager or occupational health service about what can change. You can also take the PHQ-9 check here."
+        }
+      }
+    },
+    "adhd": {
+      "title": "Adult ADHD test: free self-check for attention and restlessness — cv.cm",
+      "description": "Free adult ADHD self-check: rate 18 statements about attention, restlessness and impulsivity and see whether it's worth asking for an assessment. Not a diagnosis. Answers stay in your browser.",
+      "h1": "Adult ADHD self-check",
+      "scoreLabel": "ADHD self-check score (0 = few signs, 72 = many)",
+      "lede": "Do you lose track of tasks, misplace things and find it hard to sit still? Rate 18 statements about your everyday life over the last 6 months to help you decide whether an ADHD assessment is worth asking about.",
+      "about": [
+        "ADHD (attention deficit hyperactivity disorder) is a neurodevelopmental condition that starts in childhood and often continues into adult life. It shows up as lasting problems with attention, restlessness or impulsivity. A diagnosis needs a professional assessment: symptoms must have begun in childhood, show up in more than one area of life and cause real problems.",
+        "These statements were written for cv.cm around those symptom areas. This isn't the Adult ADHD Self-Report Scale (ASRS) and it hasn't been clinically validated, so it can't screen for or rule out ADHD, and its bands aren't clinical cut-offs. Use it to organize your thoughts before seeing a professional, who may use a validated tool such as the ASRS. Poor sleep, stress, anxiety, depression and other conditions can cause similar problems."
+      ],
+      "faq": [
+        {
+          "q": "Can this test tell me if I have ADHD?",
+          "a": "No. Only a qualified professional can diagnose ADHD, after asking about your history, including childhood, and ruling out other causes. A high score is simply a reason to ask, and a low score doesn't rule it out."
+        },
+        {
+          "q": "How is the score worked out?",
+          "a": "Each statement scores 0 to 4, so the total runs from 0 to 72. 28 or less counts as few signs, 29 to 47 as some and 48 or more as many. The bands are a guide for this test only, not clinical cut-offs."
+        },
+        {
+          "q": "Is this the ASRS?",
+          "a": "No. The ASRS is a separate validated questionnaire whose wording can't be changed. Our statements are original and have not been validated, so a clinician may ask you to fill in the ASRS or a similar tool."
+        },
+        {
+          "q": "What else can look like ADHD?",
+          "a": "Lack of sleep, anxiety, depression, stress, thyroid problems, some medicines and heavy phone use can all harm attention. That's why a professional checks for other causes."
+        }
+      ],
+      "items": [
+        "I lose focus on conversations, reading or meetings, even when I want to pay attention.",
+        "I make careless mistakes because I overlook details.",
+        "I start tasks and then leave them unfinished.",
+        "I find it hard to organize tasks, papers or my time.",
+        "I put off tasks that take sustained mental effort.",
+        "I often misplace things like my keys, phone or wallet.",
+        "Small noises or passing thoughts easily pull me off what I'm doing.",
+        "I forget appointments, bills or things I said I would do.",
+        "People say I don't seem to be listening when they talk to me.",
+        "I fidget with my hands or feet when I have to sit for a long time.",
+        "I find it hard to stay seated through long meetings or meals.",
+        "I feel restless inside, as if I have to keep moving.",
+        "I find it hard to relax, even when I have nothing to do.",
+        "I talk more than other people seem to want me to.",
+        "I finish people's sentences or answer before they're done.",
+        "I find it hard to wait in lines or for my turn.",
+        "I interrupt people or jump into what they're doing.",
+        "I make quick decisions or buy things on impulse and regret them later."
+      ],
+      "results": {
+        "few": {
+          "name": "Few signs (0–28)",
+          "body": "You don't report many of these difficulties. That doesn't rule ADHD out, especially if you've built strong coping habits. If attention problems trouble you anyway, it is still fine to talk to a doctor."
+        },
+        "some": {
+          "name": "Some signs (29–47)",
+          "body": "You recognize some of these difficulties, as many people do at times, especially when tired or stressed. Think about whether they go back to childhood and cause real problems at work, at home or in relationships. If so, consider asking a doctor about it."
+        },
+        "many": {
+          "name": "Many signs (48–72)",
+          "body": "You recognize many of these difficulties. This doesn't mean you have ADHD, but it is a good reason to ask a doctor or psychologist about an assessment. Note down examples from your work, home and childhood to bring with you. Effective support exists."
         }
       }
     }
