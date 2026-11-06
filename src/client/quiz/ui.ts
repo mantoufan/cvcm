@@ -203,10 +203,7 @@ export function mountQuiz(host: HTMLElement, locale: Locale, id: QuizId): void {
   // Same group first, starting after this test (wrapping around) so a large group links to every member from
   // somewhere; then the other fan-quiz groups for a fan quiz, then the rest, in catalog order.
   const fan = FAN_GROUPS.includes(group);
-  const near = new Map(QUIZZES.map((q) => {
-    const g = quizGroupOf(q);
-    return [q, g === group ? 2 : fan && FAN_GROUPS.includes(g) ? 1 : 0];
-  }));
+  const near = new Map(QUIZZES.map((q) => [q, fan && FAN_GROUPS.includes(quizGroupOf(q)) ? 1 : 0]));
   const members: readonly QuizId[] = QUIZ_GROUPS.find((g) => g.id === group)!.quizzes;
   const at = members.indexOf(id);
   const others = QUIZZES.filter((q) => quizGroupOf(q) !== group).sort((a, b) => near.get(b)! - near.get(a)!);
