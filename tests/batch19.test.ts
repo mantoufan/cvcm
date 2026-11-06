@@ -427,3 +427,16 @@ describe("review pass 10", () => {
     expect(md("see [https://a.com/x] and {www.a.com}")).toContain('href="http://www.a.com">www.a.com</a>}');
   });
 });
+
+describe("review pass 11", () => {
+  it("ends a bare address at raw HTML quotes and brackets", () => {
+    expect(md('<a href="https://x.com">link</a>')).toContain('href="https://x.com"');
+    expect(md("<img src='https://x.com/a.png'>")).toContain('href="https://x.com/a.png"');
+  });
+  it("reduces large degree angles and keeps small ones", () => {
+    expect(Number(calc("sin(1e20)").replace("−", "-"))).toBeCloseTo(Math.sin((280 * Math.PI) / 180), 10);
+    expect(calc("cos(1e308)")).not.toBe("domain");
+    expect(Number(calc("sin(0.000001)"))).toBeCloseTo((0.000001 * Math.PI) / 180, 12);
+    expect(calc("sin(390)")).toBe("0.5");
+  });
+});

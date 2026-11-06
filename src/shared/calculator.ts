@@ -152,7 +152,8 @@ function trig(fn: "sin" | "cos" | "tan", x: number, mode: AngleMode): number {
     if (fn === "cos" && d === 240) return -0.5;
     if (fn === "tan" && d % 180 === 45) return 1;
     if (fn === "tan" && d % 180 === 135) return -1;
-    x = (x * Math.PI) / 180;
+    // A whole number of turns off first: sin(1e20) loses every digit otherwise, and 1e308·π overflows. Small angles keep theirs.
+    x = ((Math.abs(x) >= 360 ? x % 360 : x) * Math.PI) / 180;
   }
   // tan(π/2) comes out as 1.6e16 because π is inexact: it has no value, the same as tan(90) in degrees.
   if (fn === "tan" && Math.abs(Math.cos(x)) < 1e-15) throw new Fail("domain");

@@ -725,7 +725,7 @@ export function inline(src: string, depth = 0, inLink = false): Inline[] {
     // A bare web address at the start of a word becomes a link (GitHub style).
     if ((c === "h" || c === "w" || c === "H" || c === "W") && !inLink && !(isWord(s[i - 1]) && !CJK.test(s[i - 1]))) {
       // Bounded and budgeted: a failed candidate is scanned again from its next letter.
-      const m = budget >= 0 ? /^(?:https?:\/\/|www\.)[^\s<，。；：！？、）】》」』（【《「『]+/i.exec(s.slice(i, i + MAX_BARE_URL)) : null;
+      const m = budget >= 0 ? /^(?:https?:\/\/|www\.)[^\s<>"'，。；：！？、）】》」』（【《「『]+/i.exec(s.slice(i, i + MAX_BARE_URL)) : null;
       if (m) {
         budget -= m[0].length;
         // Written straight after a CJK letter, with no spaces, the address also ends at the next one ("见a.com/x了解更多").

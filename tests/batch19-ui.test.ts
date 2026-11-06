@@ -285,3 +285,19 @@ describe("review pass 8 ui", () => {
     expect(q("[data-out=preview]").children.length).toBe(2000);
   });
 });
+
+describe("review pass 11 ui", () => {
+  it("keeps Ans in full in history", () => {
+    mountCalculator(host);
+    const expr = q<HTMLInputElement>("[data-field=expr]");
+    const enter = () => expr.dispatchEvent(new KeyboardEvent("keydown", { key: "Enter", bubbles: true }));
+    type(expr, "1/3");
+    enter();
+    type(expr, "Ans*3");
+    enter();
+    const saved = JSON.parse(window.localStorage.getItem("cvcm.calculator.v1")!)[0];
+    type(expr, saved.expr);
+    enter();
+    expect(q("[data-out=result]").textContent).toBe("= 1");
+  });
+});

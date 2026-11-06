@@ -253,7 +253,8 @@ function equals(): void {
   }
   // History shows the number Ans stood for, so reusing the line later gives the same result.
   const mark = decimalMarkOf(locale());
-  const was = formatResult(used, mark).replace("−", "-");
+  // In full: the 15 digits shown for 1/3 would make Ans*3 come back as 0.999999999999999.
+  const was = String(used).replace(".", mark);
   // Brackets when the number would run into a digit or letter ("2Ans", "2 Ans", "Anse2") or carries a sign or exponent.
   const saved = replaceAns(expr, (at) =>
     used < 0 || /e/i.test(was) || /[\d.,\p{L}]/u.test(expr.slice(0, at).trimEnd().slice(-1)) || /[\d.,\p{L}]/u.test(expr.slice(at + 3).trimStart().charAt(0)) ? `(${was})` : was);
