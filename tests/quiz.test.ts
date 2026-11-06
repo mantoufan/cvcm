@@ -20,6 +20,7 @@ import {
   type ChoiceItem,
   type QuizId,
 } from "../src/shared/quiz";
+import { escapeHtml } from "../src/shared/device-i18n";
 import { quizCopy, quizStaticHtml } from "../src/shared/quiz-i18n";
 import { applyHtmlSeo, pageCanonical, pageTitle } from "../src/shared/seo";
 import { buildSitemapXml } from "../src/shared/sitemap";
@@ -153,6 +154,11 @@ describe("test pages: copy", () => {
           const ui = quizMessages(locale).ui;
           expect(ui.scale[def.scale], `${where} scale`).toHaveLength(SCALE_POINTS[def.scale]);
           expect(ui.scaleHint[def.scale], `${where} hint`).toBeTruthy();
+        }
+        // These two ask about a set period, and an empty hint would silently fall back to "as you usually are".
+        if (id === "adhd" || id === "burnout") {
+          expect(copy.hint, `${where} own hint`).toBeTruthy();
+          expect(quizStaticHtml(locale, id), `${where} static hint`).toContain(escapeHtml(copy.hint!));
         }
         if (def.result.kind !== "band" && def.result.kind !== "types") {
           for (const dim of def.dims) expect(copy.dims?.[dim], `${where} dim ${dim}`).toBeTruthy();

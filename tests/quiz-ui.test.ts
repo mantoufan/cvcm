@@ -199,6 +199,13 @@ describe("test page UI", () => {
     expect(mount("disc").querySelector(".quiz-hint")?.textContent).toContain("as you usually are");
   });
 
+  it("shows the not-a-diagnosis notice on the health-sensitive tests only", () => {
+    const notice = quizUi("en").notDiagnosis;
+    expect(mount("narcissist").querySelector(".quiz-privacy")?.textContent).toContain(notice);
+    expect(mount("adhd").querySelector(".quiz-privacy")?.textContent).toContain(notice);
+    expect(mount("disc").querySelector(".quiz-privacy")?.textContent).not.toContain(notice);
+  });
+
   it("names the pets the answers ruled out", () => {
     const main = mount("pet");
     // Fur allergy (question 5, option 2): only fish and reptiles stay possible.
