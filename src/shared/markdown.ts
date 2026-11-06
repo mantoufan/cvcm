@@ -572,6 +572,8 @@ function destination(s: string, i: number): { href: string; title: string; end: 
 const isSpace = (c: string | undefined) => c == null || /\s/.test(c);
 /** Chinese, Japanese and Korean run on without spaces, so a web address can follow one of these letters directly. */
 const CJK = /[\p{Script=Han}\p{Script=Hiragana}\p{Script=Katakana}\p{Script=Hangul}]/u;
+/** What a bare web address may follow, as in GFM: not "ftp://www.a.com", "me@www.a.com" or "a.www.b.com". */
+const BEFORE_URL = /[\s(*_~[{"'<>（【《「『：，。、；！？“‘]/;
 const isWord = (c: string | undefined) => c != null && /[\p{L}\p{N}]/u.test(c);
 
 /** Finds where an emphasis run of `delim` opened at i closes, or −1. */
@@ -723,9 +725,9 @@ export function inline(src: string, depth = 0, inLink = false): Inline[] {
       }
     }
     // A bare web address at the start of a word becomes a link (GitHub style).
-    if ((c === "h" || c === "w" || c === "H" || c === "W") && !inLink && !(isWord(s[i - 1]) && !CJK.test(s[i - 1]))) {
+    if ((c === "h" || c === "w" || c === "H" || c === "W") && !inLink && (i === 0 || BEFORE_URL.test(s[i - 1]) || CJK.test(s[i - 1]))) {
       // Bounded and budgeted: a failed candidate is scanned again from its next letter.
-      const m = budget >= 0 ? /^(?:https?:\/\/|www\.)[^\s<>，。；：！？、）】》」』（【《「『]+/i.exec(s.slice(i, i + MAX_BARE_URL)) : null;
+      const m = budget >= 0 ? /^(?:https?:\/\/|www\.)[^\s<>，。；：！？、）】》」』（【《「『”’…]+/i.exec(s.slice(i, i + MAX_BARE_URL)) : null;
       if (m) {
         budget -= m[0].length;
         // Inside quotes (raw HTML is text here: <a href="https://…">), the address ends at the closing quote.
@@ -859,7 +861,9 @@ export function toHtml(doc: readonly Block[], tight = false): string {
           const items = b.items
             .map((it) => {
               const box = it.task == null ? "" : `<input type="checkbox" disabled${it.task ? " checked" : ""}> `;
-              return `<li>${box}${toHtml(it.kids, b.tight)}</li>`;
+              // In a loose list the box goes inside the first paragraph, so it stays on the text's line.
+              const body = toHtml(it.kids, b.tight);
+              return body.startsWith("<p>") ? `<li><p>${box}${body.slice(3)}</li>` : `<li>${box}${body}</li>`;
             })
             .join("\n");
           return `<${tag}${start}>\n${items}\n</${tag}>`;

@@ -456,3 +456,28 @@ describe("review pass 12", () => {
     expect(parseHistory(JSON.stringify([{ expr: "0.3+1", result: "1.3", full: "0.30000000000000004+1" }]))[0].full).toBe("0.30000000000000004+1");
   });
 });
+
+describe("review pass 13", () => {
+  it("does not snap large degree angles to a right angle", () => {
+    expect(Number(calc("cos(1e17)"))).toBeCloseTo(Math.cos((280 * Math.PI) / 180), 8);
+    expect(calc("tan(1e17)")).not.toBe("domain");
+    expect(calc("sin(11880.000000000002)")).toBe("0");
+  });
+  it("links a bare address only where one can start", () => {
+    expect(md("ftp://www.a.com/x")).not.toContain("<a ");
+    expect(md("me@www.a.com")).not.toContain("<a ");
+    expect(md("a.www.b.com")).not.toContain("<a ");
+    expect(md("(https://a.com)")).toContain('href="https://a.com"');
+    expect(md("**https://a.com**")).toContain('href="https://a.com"');
+    expect(md("https://a.com")).toContain('href="https://a.com"');
+    expect(md("详见https://a.com")).toContain('href="https://a.com"');
+  });
+  it("ends an address at curly quotes", () => {
+    expect(md("“https://a.com”")).toContain('<a href="https://a.com">https://a.com</a>”');
+    expect(md("详见“https://a.com/x”。")).toContain('href="https://a.com/x"');
+  });
+  it("keeps a task box in the first paragraph of a loose item", () => {
+    expect(md("- [x] a\n\n- [ ] b")).toContain('<li><p><input type="checkbox" disabled checked> a</p></li>');
+    expect(md("- [x] a\n- [ ] b")).toContain('<li><input type="checkbox" disabled checked> a</li>');
+  });
+});

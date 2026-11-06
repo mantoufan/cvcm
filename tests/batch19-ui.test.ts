@@ -303,3 +303,22 @@ describe("review pass 11 ui", () => {
     expect(q("[data-out=result]").textContent).toBe("= 1");
   });
 });
+
+describe("review pass 13 ui", () => {
+  it("shares history between calculator tabs", () => {
+    mountCalculator(host);
+    const expr = q<HTMLInputElement>("[data-field=expr]");
+    window.localStorage.setItem("cvcm.calculator.v1", JSON.stringify([{ expr: "1+1", result: "2" }]));
+    window.dispatchEvent(new StorageEvent("storage", { key: "cvcm.calculator.v1" }));
+    expect(host.querySelectorAll(".calc-hist").length).toBe(1);
+    window.localStorage.setItem("cvcm.calculator.v1", JSON.stringify([{ expr: "2+2", result: "4" }, { expr: "1+1", result: "2" }]));
+    type(expr, "3+3");
+    expr.dispatchEvent(new KeyboardEvent("keydown", { key: "Enter", bubbles: true }));
+    expect(JSON.parse(window.localStorage.getItem("cvcm.calculator.v1")!).map((e: { expr: string }) => e.expr)).toEqual(["3+3", "2+2", "1+1"]);
+  });
+  it("keeps a loose task box in its paragraph", () => {
+    window.localStorage.setItem("cvcm.markdown.v1", "- [x] a\n\n- [ ] b");
+    mountMarkdown(host);
+    expect(host.querySelector(".md-preview li.task > p > input")).not.toBeNull();
+  });
+});

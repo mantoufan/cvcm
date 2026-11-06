@@ -133,9 +133,18 @@ export function mountCalculator(host: HTMLElement): void {
   );
   paint();
   paintHistory();
+  window.addEventListener("storage", onStorage);
+}
+
+/** Another tab changed the history: show it, and the next "=" here adds to it rather than over it. */
+function onStorage(e: StorageEvent): void {
+  if (e.key !== storeKey() && e.key !== null) return;
+  history = load();
+  paintHistory();
 }
 
 export function unmountCalculator(): void {
+  window.removeEventListener("storage", onStorage);
   exprEl = previewEl = historyEl = null;
   copyBtn = modeBtn = null;
 }
@@ -264,6 +273,7 @@ function equals(): void {
   done = { expr, ans: used };
   ans = r.value;
   shown = formatResult(r.value, mark);
+  history = load();
   if (saved.length <= MAX_EVAL) history.unshift({ expr: saved, result: shown, mode, ...(full !== saved && full.length <= MAX_EVAL ? { full } : {}) });
   history = history.slice(0, MAX_HISTORY);
   save();

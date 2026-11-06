@@ -141,7 +141,7 @@ function trig(fn: "sin" | "cos" | "tan", x: number, mode: AngleMode): number {
     let d = ((x % 360) + 360) % 360;
     // Within rounding of a right angle counts as one: (0.1+0.2)×1200 is 360.00000000000006.
     const right = Math.round(d / 90) * 90;
-    if (Math.abs(d - right) <= Math.abs(x) * 4 * Number.EPSILON) d = right % 360;
+    if (Math.abs(d - right) <= Math.min(Math.abs(x) * 4 * Number.EPSILON, 1e-9)) d = right % 360;
     if (fn === "sin" && d % 180 === 0) return 0;
     if (fn === "cos" && (d === 90 || d === 270)) return 0;
     if (fn === "tan" && d % 180 === 0) return 0;

@@ -245,7 +245,10 @@ function blockEl(b: Block): Node {
       const items = b.items.map((it) => {
         const kids = it.kids.flatMap((k) => (b.tight && k.t === "p" ? k.kids.map(inlineEl) : [blockEl(k)]));
         const box = it.task == null ? null : h("input", { type: "checkbox", disabled: true, checked: it.task, "aria-label": it.task ? t("markdown.done") : t("markdown.todo") });
-        return fill(h("li", it.task == null ? null : { class: "task" }, box), kids);
+        // In a loose list the box goes inside the first paragraph, so it stays on the text's line.
+        const first = kids[0];
+        if (box && first instanceof HTMLParagraphElement) first.prepend(box);
+        return fill(h("li", it.task == null ? null : { class: "task" }, first instanceof HTMLParagraphElement ? null : box), kids);
       });
       return fill(b.ordered ? h("ol", b.start !== 1 ? { start: String(b.start) } : null) : h("ul"), items);
     }
