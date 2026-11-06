@@ -1183,6 +1183,42 @@
       "s3t": "Descarga",
       "s3b": "Guarda un WAV para vídeos y pódcast, o un MIDI para cambiar los instrumentos en una app de música."
     },
+    "coin-flip": {
+      "lead": "Lanza una moneda justa, o mil, con un toque. No se sube nada.",
+      "s1t": "Abre Cara o cruz",
+      "s1b": "Toca la moneda o pulsa Lanzar. Gira y cae en cara o cruz.",
+      "s2t": "Lanza muchas a la vez",
+      "s2b": "Elige 10, 100 o 1000 en Monedas por lanzamiento para ver cómo se equilibran los resultados.",
+      "s3t": "Lee los resultados",
+      "s3b": "Recuento de caras y cruces, porcentajes, la racha más larga y la actual, y las últimas 100 monedas como C y X."
+    },
+    "guitar-tuner": {
+      "lead": "Afina una guitarra, bajo, ukelele o violín con tu micrófono. No se sube nada.",
+      "s1t": "Abre el afinador de guitarra",
+      "s1b": "Elige tu instrumento y afinación, pulsa Iniciar afinador y permite el micrófono.",
+      "s2t": "Toca una cuerda",
+      "s2b": "Deja que suene. El afinador muestra la cuerda más cercana, su frecuencia y cuántos cents se desvía.",
+      "s3t": "Gira la clavija hasta que se ponga en verde",
+      "s3b": "Aguja a la izquierda: baja, tensa. Aguja a la derecha: alta, afloja. Afinada es dentro de ±5 cents. Reproducir referencia hace sonar la nota de la cuerda."
+    },
+    "factors": {
+      "lead": "Encuentra todos los divisores de un número y si es primo. No se sube nada.",
+      "s1t": "Abre Divisores de un número",
+      "s1b": "Escribe un número entero de hasta 18 dígitos, o toca un ejemplo.",
+      "s2t": "Lee la descomposición en factores primos",
+      "s2b": "Mira si el número es primo, su descomposición en factores primos como 2³ × 3² × 5, y los primos justo antes y después.",
+      "s3t": "Mira todos los divisores y pares",
+      "s3b": "Cada divisor aparece en orden, junto con los pares de divisores, la cantidad de divisores y su suma."
+    },
+    "lcm-gcf": {
+      "lead": "Calcula el mínimo común múltiplo y el máximo común divisor de varios números. No se sube nada.",
+      "s1t": "Abre la calculadora de mcm y MCD",
+      "s1b": "Escribe de 2 a 20 números enteros separados por comas o espacios.",
+      "s2t": "Lee el MCD y el mcm",
+      "s2b": "Ambos aparecen a la vez, y la página indica si los números son coprimos (MCD 1).",
+      "s3t": "Sigue el procedimiento",
+      "s3b": "Los factores primos de cada número muestran cómo se obtienen el MCD y el mcm. Con dos números se muestra el algoritmo de Euclides paso a paso."
+    },
     "calculator": {
       "lead": "Haz cálculos con trigonometría, logaritmos, potencias y porcentajes. No se sube nada.",
       "s1t": "Escribe o pulsa la operación",
