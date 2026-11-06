@@ -365,3 +365,43 @@ describe("review pass 15 ui", () => {
     expect(box.value).toBe("- a\n  - b\n  - c");
   });
 });
+
+describe("review pass 16 ui", () => {
+  const eq = () => q<HTMLButtonElement>("[data-key='@eq']").click();
+  it("brackets Ans after a written exponent start", () => {
+    mountCalculator(host);
+    const expr = q<HTMLInputElement>("[data-field=expr]");
+    type(expr, "2+3");
+    eq();
+    type(expr, "2e+Ans");
+    eq();
+    expect(JSON.parse(window.localStorage.getItem("cvcm.calculator.v1")!)[0].expr).toBe("2e+(5)");
+  });
+  it("keeps the sum when a paste after = is too long", () => {
+    mountCalculator(host);
+    const expr = q<HTMLInputElement>("[data-field=expr]");
+    type(expr, "2+2");
+    eq();
+    expr.dispatchEvent(new InputEvent("beforeinput", { data: "1".repeat(5000), inputType: "insertFromPaste", bubbles: true, cancelable: true }));
+    expect(expr.value).toBe("2+2");
+    expect(q("[data-out=result]").textContent).toBe("= 4");
+  });
+  it("takes newer saved text back from memory", () => {
+    mountNotepad(host);
+    const box = host.querySelector("textarea")!;
+    window.localStorage.setItem("cvcm.notepad.v1", JSON.stringify({ text: "newer", savedAt: 1 }));
+    const back = new Event("pageshow");
+    Object.defineProperty(back, "persisted", { value: true });
+    window.dispatchEvent(back);
+    expect(box.value).toBe("newer");
+  });
+  it("lets Esc then Shift+Tab leave the Markdown box", () => {
+    mountMarkdown(host);
+    const box = q<HTMLTextAreaElement>("[data-field=markdown]");
+    box.dispatchEvent(new KeyboardEvent("keydown", { key: "Escape", bubbles: true }));
+    box.dispatchEvent(new KeyboardEvent("keydown", { key: "Shift", shiftKey: true, bubbles: true }));
+    const tab = new KeyboardEvent("keydown", { key: "Tab", shiftKey: true, bubbles: true, cancelable: true });
+    box.dispatchEvent(tab);
+    expect(tab.defaultPrevented).toBe(false);
+  });
+});

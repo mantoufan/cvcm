@@ -514,3 +514,10 @@ describe("review pass 15", () => {
     expect(md("- a\n  - b\n\n  - c\n- d")).toContain("<li>d</li>");
   });
 });
+
+describe("review pass 16", () => {
+  it("does not add a line to an open fence", () => {
+    expect((parseMarkdown("```js\nx\n")[0] as { text: string }).text).toBe("x");
+    expect((parseMarkdown("```\nx\n\n```")[0] as { text: string }).text).toBe("x\n");
+  });
+});

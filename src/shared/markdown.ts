@@ -248,16 +248,20 @@ function blocks(lines: string[], depth: number): Block[] {
       const body: string[] = [];
       const close = new RegExp(`^ {0,3}${mark[0] === "`" ? "`" : "~"}{${mark.length},}[ \\t]*$`);
       const strip = new RegExp(`^ {0,${indent}}`);
+      let closed = false;
       i++;
       while (i < lines.length) {
         if (close.test(lines[i])) {
           i++;
+          closed = true;
           break;
         }
         // Lines inside a fence opened with an indent lose up to that much indent.
         body.push(lines[i].replace(strip, ""));
         i++;
       }
+      // A fence left open runs to the end of the text, whose final newline is not a line of code.
+      if (!closed && body[body.length - 1] === "") body.pop();
       out.push({ t: "code", lang: fence.lang, text: body.join("\n") });
       continue;
     }

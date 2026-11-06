@@ -198,7 +198,10 @@ function insert(text: string): void {
   if (!exprEl) return;
   // After "=", a digit starts a new sum; an operator carries on from the answer.
   if (shown !== null) {
-    exprEl.value = /^[+\-−×*÷/^!%]/.test(text) ? "Ans" : "";
+    const base = /^[+\-−×*÷/^!%]/.test(text) ? "Ans" : "";
+    // Too long to enter: the sum on screen stays, rather than being cleared for nothing.
+    if (base.length + text.length > MAX_EXPR) return;
+    exprEl.value = base;
     done = null;
     exprEl.setSelectionRange(exprEl.value.length, exprEl.value.length);
     shown = null;
@@ -264,7 +267,7 @@ function equals(): void {
   const fullAns = String(used).replace(".", mark);
   // Brackets when the number would run into a digit or letter ("2Ans", "2 Ans", "Anse2") or carries a sign or exponent.
   const writeOut = (was: string) => replaceAns(expr, (at) =>
-    used < 0 || /e/i.test(was) || /[\d.,\p{L}]/u.test(expr.slice(0, at).trimEnd().slice(-1)) || /[\d.,\p{L}]/u.test(expr.slice(at + 3).trimStart().charAt(0)) ? `(${was})` : was);
+    used < 0 || /e/i.test(was) || /\d[eE][+-]\s*$/.test(expr.slice(Math.max(0, at - 8), at)) || /[\d.,\p{L}]/u.test(expr.slice(0, at).trimEnd().slice(-1)) || /[\d.,\p{L}]/u.test(expr.slice(at + 3).trimStart().charAt(0)) ? `(${was})` : was);
   const saved = writeOut(shownAns);
   const full = writeOut(fullAns);
   done = { expr, ans: used };

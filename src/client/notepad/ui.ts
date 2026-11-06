@@ -86,12 +86,14 @@ export function mountNotepad(host: HTMLElement): void {
   paintStats();
   paintSaved(note?.savedAt ?? 0);
   window.addEventListener("storage", onStorage);
+  window.addEventListener("pageshow", onPageShow);
   window.addEventListener("pagehide", flush);
 }
 
 export function unmountNotepad(): void {
   flush();
   window.removeEventListener("storage", onStorage);
+  window.removeEventListener("pageshow", onPageShow);
   window.removeEventListener("pagehide", flush);
   window.clearTimeout(undoTimer);
   textEl = statsEl = savedEl = null;
@@ -154,9 +156,17 @@ function save(): void {
 }
 
 /** Another tab saved the note: show it here too, unless this tab has unsaved typing (then this tab's save wins). */
+/** Back to a page kept in memory: it heard no storage events while frozen, and its old text must not overwrite newer work. */
+function onPageShow(e: PageTransitionEvent): void {
+  if (e.persisted) takeNote(load());
+}
+
 function onStorage(e: StorageEvent): void {
-  if (e.key !== STORE_KEY || !textEl || saveTimer) return;
-  const note = parseNote(e.newValue);
+  if (e.key === STORE_KEY) takeNote(parseNote(e.newValue));
+}
+
+function takeNote(note: ReturnType<typeof parseNote>): void {
+  if (!textEl || saveTimer) return;
   if (!note || note.text === textEl.value) return;
   const focused = document.activeElement === textEl;
   const { selectionStart, selectionEnd } = textEl;

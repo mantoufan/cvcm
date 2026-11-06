@@ -74,6 +74,17 @@ export function mountMarkdown(host: HTMLElement): void {
   paint();
   window.addEventListener("pagehide", save);
   window.addEventListener("storage", onStorage);
+  window.addEventListener("pageshow", onPageShow);
+}
+
+/** Back to a page kept in memory: it heard no storage events while frozen, and its old text must not overwrite newer work. */
+function onPageShow(e: PageTransitionEvent): void {
+  if (!e.persisted || !inputEl || dirty) return;
+  const next = load() ?? t("markdown.sampleText");
+  if (next === inputEl.value) return;
+  dropUndo();
+  inputEl.value = next;
+  paint();
 }
 
 /** Another tab saved: show its text, unless this tab has an unsaved edit of its own. */
@@ -90,6 +101,7 @@ function onStorage(e: StorageEvent): void {
 export function unmountMarkdown(): void {
   window.removeEventListener("pagehide", save);
   window.removeEventListener("storage", onStorage);
+  window.removeEventListener("pageshow", onPageShow);
   // A change typed within the last moment is saved before the tool goes away.
   if (inputEl) save();
   dropUndo();
@@ -151,8 +163,8 @@ function dropUndo(): void {
 
 /** Tab indents (lists need it) instead of leaving the field; Esc then Tab still moves focus on. */
 function indentOnTab(e: KeyboardEvent): void {
-  // Tab and Esc belong to the IME while it is composing.
-  if (!inputEl || e.isComposing) return;
+  // Tab and Esc belong to the IME while it is composing. Shift on its own must not end the Esc-then-Tab way out.
+  if (!inputEl || e.isComposing || ["Shift", "Control", "Alt", "Meta"].includes(e.key)) return;
   if (e.key === "Escape") {
     inputEl.dataset.escaped = "1";
     return;
