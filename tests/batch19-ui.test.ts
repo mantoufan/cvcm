@@ -405,3 +405,37 @@ describe("review pass 16 ui", () => {
     expect(tab.defaultPrevented).toBe(false);
   });
 });
+
+describe("review pass 17 ui", () => {
+  const backFromMemory = () => {
+    const ev = new Event("pageshow");
+    Object.defineProperty(ev, "persisted", { value: true });
+    window.dispatchEvent(ev);
+  };
+  it("keeps unsaved text when coming back from memory", () => {
+    window.localStorage.setItem("cvcm.markdown.v1", "old");
+    mountMarkdown(host);
+    const box = q<HTMLTextAreaElement>("[data-field=markdown]");
+    vi.spyOn(window.localStorage.__proto__, "setItem").mockImplementation(() => { throw new Error("full"); });
+    box.value = "my draft";
+    box.dispatchEvent(new Event("input", { bubbles: true }));
+    window.dispatchEvent(new Event("pagehide"));
+    backFromMemory();
+    expect(box.value).toBe("my draft");
+  });
+  it("re-reads calculator history when coming back from memory", () => {
+    mountCalculator(host);
+    window.localStorage.setItem("cvcm.calculator.v1", JSON.stringify([{ expr: "9+9", result: "18" }]));
+    backFromMemory();
+    expect(host.querySelectorAll(".calc-hist").length).toBe(1);
+  });
+  it("brackets Ans after any spelling of an exponent sign", () => {
+    mountCalculator(host);
+    const expr = q<HTMLInputElement>("[data-field=expr]");
+    type(expr, "2+3");
+    q<HTMLButtonElement>("[data-key='@eq']").click();
+    type(expr, "2e−Ans");
+    q<HTMLButtonElement>("[data-key='@eq']").click();
+    expect(JSON.parse(window.localStorage.getItem("cvcm.calculator.v1")!)[0].expr).toBe("2e−(5)");
+  });
+});

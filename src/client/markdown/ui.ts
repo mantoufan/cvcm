@@ -22,6 +22,7 @@ let undoTimer = 0;
 const UNDO_MS = 8000;
 /** True from an edit until it is saved: an idle tab must not overwrite what another tab saved. */
 let dirty = false;
+let saveFailed = false;
 const schedule = debounce(() => {
   // Saved first, so the edit is kept even if drawing it fails.
   save();
@@ -79,7 +80,8 @@ export function mountMarkdown(host: HTMLElement): void {
 
 /** Back to a page kept in memory: it heard no storage events while frozen, and its old text must not overwrite newer work. */
 function onPageShow(e: PageTransitionEvent): void {
-  if (!e.persisted || !inputEl || dirty) return;
+  // If saving failed, the box holds the only copy: what is stored is older.
+  if (!e.persisted || !inputEl || dirty || saveFailed) return;
   const next = load() ?? t("markdown.sampleText");
   if (next === inputEl.value) return;
   dropUndo();
@@ -126,7 +128,11 @@ function save(): void {
     // The sample is not saved, so a later visit in another language shows that language's sample.
     if (inputEl.value === t("markdown.sampleText")) window.localStorage.removeItem(STORE_KEY);
     else window.localStorage.setItem(STORE_KEY, inputEl.value);
-  } catch { /* storage blocked: the text lasts for this visit */ }
+    saveFailed = false;
+  } catch {
+    // Storage blocked or full: the text lasts for this visit.
+    saveFailed = true;
+  }
 }
 
 function loadSample(): void {

@@ -158,7 +158,8 @@ function save(): void {
 /** Another tab saved the note: show it here too, unless this tab has unsaved typing (then this tab's save wins). */
 /** Back to a page kept in memory: it heard no storage events while frozen, and its old text must not overwrite newer work. */
 function onPageShow(e: PageTransitionEvent): void {
-  if (e.persisted) takeNote(load());
+  // If saving failed, the box holds the only copy: the stored note is older.
+  if (e.persisted && storageOk) takeNote(load());
 }
 
 function onStorage(e: StorageEvent): void {

@@ -134,6 +134,14 @@ export function mountCalculator(host: HTMLElement): void {
   paint();
   paintHistory();
   window.addEventListener("storage", onStorage);
+  window.addEventListener("pageshow", onPageShow);
+}
+
+/** Back to a page kept in memory: it heard no storage events while frozen. */
+function onPageShow(e: PageTransitionEvent): void {
+  if (!e.persisted) return;
+  history = load();
+  paintHistory();
 }
 
 /** Another tab changed the history: show it, and the next "=" here adds to it rather than over it. */
@@ -145,6 +153,7 @@ function onStorage(e: StorageEvent): void {
 
 export function unmountCalculator(): void {
   window.removeEventListener("storage", onStorage);
+  window.removeEventListener("pageshow", onPageShow);
   exprEl = previewEl = historyEl = null;
   copyBtn = modeBtn = null;
 }
@@ -267,7 +276,7 @@ function equals(): void {
   const fullAns = String(used).replace(".", mark);
   // Brackets when the number would run into a digit or letter ("2Ans", "2 Ans", "Anse2") or carries a sign or exponent.
   const writeOut = (was: string) => replaceAns(expr, (at) =>
-    used < 0 || /e/i.test(was) || /\d[eE][+-]\s*$/.test(expr.slice(Math.max(0, at - 8), at)) || /[\d.,\p{L}]/u.test(expr.slice(0, at).trimEnd().slice(-1)) || /[\d.,\p{L}]/u.test(expr.slice(at + 3).trimStart().charAt(0)) ? `(${was})` : was);
+    used < 0 || /e/i.test(was) || /[eEｅＥ]\s*[+\-−–—﹣－＋]\s*$/.test(expr.slice(Math.max(0, at - 8), at)) || /[\d.,\p{L}]/u.test(expr.slice(0, at).trimEnd().slice(-1)) || /[\d.,\p{L}]/u.test(expr.slice(at + 3).trimStart().charAt(0)) ? `(${was})` : was);
   const saved = writeOut(shownAns);
   const full = writeOut(fullAns);
   done = { expr, ans: used };
