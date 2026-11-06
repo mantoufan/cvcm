@@ -123,12 +123,9 @@ export const TOOL_COVER: Record<ToolId, string> = {
   "touch-test": "/covers/touch-test-sweet.jpg?v=1",
   "calculator": "/covers/calculator-sweet.jpg?v=1",
   "notepad": "/covers/notepad-sweet.jpg?v=1",
-  // Until its own Codex cover is made (Codex was over its limit on 2026-11-03), the Markdown page shares a related cover.
-  "markdown": "/covers/data-sweet.jpg?v=1",
-  // Until its own Codex cover is made (Codex was over its limit on 2026-11-03), the gradient page shares a related cover.
-  "gradient": "/covers/color-sweet.jpg?v=1",
-  // Until its own Codex cover is made (Codex was over its limit on 2026-11-03), the fancy text page shares a related cover.
-  "fancy-text": "/covers/case-sweet.jpg?v=1",
+  "markdown": "/covers/markdown-sweet.jpg?v=1",
+  "gradient": "/covers/gradient-sweet.jpg?v=1",
+  "fancy-text": "/covers/fancy-text-sweet.jpg?v=1",
   gold: "/covers/gold-sweet.jpg?v=1",
   silver: "/covers/silver-sweet.jpg?v=1",
   platinum: "/covers/platinum-sweet.jpg?v=1",
