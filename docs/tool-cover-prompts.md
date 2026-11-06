@@ -230,7 +230,7 @@ Codex, refs `tone-generator-sweet.jpg` + `reading-time-sweet.jpg`. Same characte
 
 ## Coin flip, guitar tuner, factor calculator, LCM and GCF calculator (2026-11-03)
 
-Codex (`codex exec`, built-in image tool), refs `dice-sweet.jpg` + `metronome-sweet.jpg`. Same character and room, no words, letters, numerals, logo or watermark. Save `public/covers/<id>-sweet.jpg`, `sips -z 720 1280`.
+GPT Image 2.5 on kie.ai (Codex had no quota, 2026-11-06), refs `dice-sweet.jpg` + `metronome-sweet.jpg`. Same character and room, no words, letters, numerals, logo or watermark. Save `public/covers/<id>-sweet.jpg`, `sips -z 720 1280`.
 
 - `coin-flip`: she flicks a shiny pink-gold coin into the air with her thumb, the coin spinning above her hand with soft motion arcs, blank faces on the coin.
 - `guitar-tuner`: she holds a small cream acoustic guitar and plucks a string, looking at a little round pink clip-on tuner on the headstock whose needle points straight up.
