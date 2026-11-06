@@ -34,6 +34,43 @@ export type RefMeta = {
 
 export const REF_PUBLISHED = "2026-10-31";
 
+/** Entries edited after REF_PUBLISHED, for dateModified. */
+export const REF_UPDATED: Partial<Record<RefId, string>> = {
+  "sitting-pose": "2026-11-07",
+  "standing-pose": "2026-11-07",
+  "kneeling-pose": "2026-11-07",
+};
+
+/** Entries the site footer links directly, chosen from Keyword Planner volume; their names are core-pack `refFocus.*`. */
+export const REF_FOCUS = [
+  "sitting-pose",
+  "standing-pose",
+  "kneeling-pose",
+  "hime-cut",
+  "ahoge",
+  "twin-tails",
+  "heart-hands",
+  "hugging-pose",
+  "hanfu",
+  "qipao",
+] as const satisfies readonly RefId[];
+
+export type RefAngle = "front" | "three-quarter" | "side" | "above";
+
+/**
+ * One CC0 Shisei mannequin pose per entry, by camera angle (`public/covers/ref/<id>-<angle>-<300|600|900>.webp`; 3:4).
+ * Provenance: docs/ref-mannequins.md.
+ */
+export const REF_MANNEQUINS: Partial<Record<RefId, readonly RefAngle[]>> = {
+  "sitting-pose": ["front", "three-quarter", "side", "above"],
+  "standing-pose": ["front", "three-quarter", "side"],
+  "kneeling-pose": ["front", "three-quarter", "side"],
+};
+
+export function refMannequinUrl(id: RefId, angle: RefAngle, width: 300 | 600 | 900): string {
+  return `/covers/ref/${id}-${angle}-${width}.webp`;
+}
+
 export const REF_META: Record<RefId, RefMeta> = {
   "twin-tails": { mfan8: "萌点:双马尾", prompt: ["twintails", "low twintails", "hair ribbon"], related: ["braids", "hair-bow", "blunt-bangs", "pink-hair"] },
   "hime-cut": { mfan8: "萌点:黑长直", prompt: ["hime cut", "long hair", "straight hair", "black hair", "blunt bangs", "sidelocks"], related: ["blunt-bangs", "black-hair", "kimono", "side-profile"] },

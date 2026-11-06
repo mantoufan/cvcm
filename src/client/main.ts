@@ -35,7 +35,7 @@ import type { MarketId } from "../shared/markets";
 import { QUIZZES, type QuizId } from "../shared/quiz";
 import { DATASETS, type DatasetId } from "../shared/datasets";
 import { KB_SHELVES, KNOWLEDGE_ARTICLES, isKbId, kbArticleOf, kbGroupsOf, kbHubOfNav, type KbPage } from "../shared/kb";
-import { isRefId, type RefId, type RefPage } from "../shared/ref";
+import { REF_FOCUS, isRefId, type RefId, type RefPage } from "../shared/ref";
 import { BRANDED_TOOLS, hreflangAlternates, pageCanonical, pageDescription, pageTitle } from "../shared/seo";
 import { HREFLANG } from "../shared/sitemap";
 import { toolLessonsSection } from "./tool-lessons";
@@ -781,9 +781,15 @@ function toolDirectory(loc: Locale): HTMLElement {
         ),
       ),
     ),
-    // Entry names live in the ref pack (reference pages only), so the footer links the hub.
+    // Entry names live in the ref pack (reference pages only), so the footer links the hub and only the REF_FOCUS
+    // entries, whose names are also in the core pack.
     h("div", { class: "dir-group" },
       h("h2", null, h("a", { href: refHref(loc), "data-nav": "reference", "aria-current": refPage === "hub" ? "page" : undefined }, t("nav.reference"))),
+      h("p", null,
+        ...REF_FOCUS.map((id) =>
+          h("a", { href: refHref(loc, id), "data-nav": `ref-${id}`, "aria-current": refPage === id ? "page" : undefined }, t(`refFocus.${id}`)),
+        ),
+      ),
     ),
     h("div", { class: "dir-group" },
       h("h2", null, h("a", { href: kbHref(loc), "data-nav": "knowledge" }, t("kb.label"))),
