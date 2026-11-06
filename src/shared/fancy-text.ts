@@ -118,6 +118,8 @@ const EMOJI = /\p{Extended_Pictographic}|\p{Regional_Indicator}/u;
 
 /** What a reader sees as one character: a flag, a skin-tone emoji or e + an accent stay together. */
 function graphemes(text: string): string[] {
+  // Firefox before 125 has no Segmenter: code points still work, apart from these clusters.
+  if (typeof Intl.Segmenter !== "function") return Array.from(text);
   return Array.from(new Intl.Segmenter(undefined, { granularity: "grapheme" }).segment(text), (g) => g.segment);
 }
 

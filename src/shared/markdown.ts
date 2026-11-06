@@ -67,11 +67,13 @@ function toLines(text: string): string[] {
   let close: RegExp | null = null;
   // A fence indented 2 or 3 spaces may sit in a list item, whose indent must still count, so only its definitions are skipped.
   let keepRaw = false;
+  let afterFence = false;
   for (const raw of text.split("\n")) {
     const line = expandTabs(raw);
     if (close) {
       if (close.test(line)) {
         close = null;
+        afterFence = true;
         out.push(line);
       } else {
         out.push(keepRaw ? raw : line);
@@ -83,8 +85,10 @@ function toLines(text: string): string[] {
     const fence = fenceOf(line) ?? fenceOf(bare);
     keepRaw = bare === line && indentOf(line) < 2;
     if (fence) close = new RegExp(`^ ${keepRaw ? "{0,3}" : "*"}${fence.mark[0] === "`" ? "`" : "~"}{${fence.mark.length},}[ \\t]*$`);
-    // A reference definition ("[1]: https://…") is not shown. It cannot interrupt a paragraph, so it follows a blank line.
-    if (!fence && line.includes("]:") && blank(out[out.length - 1]) && addRef(line)) continue;
+    // A reference definition ("[1]: https://…") is not shown. It cannot interrupt a paragraph.
+    const prev = out[out.length - 1];
+    if (!fence && line.includes("]:") && (prev === undefined || afterFence || !continuesParagraph(prev)) && addRef(line)) continue;
+    afterFence = false;
     out.push(line);
   }
   return out;
@@ -735,7 +739,7 @@ export function inline(src: string, depth = 0, inLink = false): Inline[] {
         let end = m[0].length;
         for (;;) {
           const last = m[0][end - 1];
-          if (/[.,:;!?"'*_~]/.test(last)) end--;
+          if (/[.,:;!?"'*_~\]}]/.test(last)) end--;
           else if (last === ")" && opens < closes) {
             closes--;
             end--;

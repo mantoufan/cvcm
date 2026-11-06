@@ -414,3 +414,16 @@ describe("review pass 9", () => {
     expect(Array.from(new Intl.Segmenter().segment(fancy("e\u0301x", "strike"))).length).toBe(2);
   });
 });
+
+describe("review pass 10", () => {
+  it("takes a definition after any block but a paragraph", () => {
+    expect(md("# T\n[a]: /b\n\n[a]")).toBe('<h1>T</h1>\n<p><a href="/b">a</a></p>');
+    expect(md("```\nx\n```\n[a]: /b\n\n[a]")).toContain('<a href="/b">a</a>');
+    expect(md("[a]: /b\n[c]: /d\n\n[a] [c]")).toBe('<p><a href="/b">a</a> <a href="/d">c</a></p>');
+    expect(md("text\n[a]: /b")).toContain("[a]: /b");
+  });
+  it("leaves closing brackets out of a bare address", () => {
+    expect(md("see [https://a.com/x] and {www.a.com}")).toContain('href="https://a.com/x">https://a.com/x</a>]');
+    expect(md("see [https://a.com/x] and {www.a.com}")).toContain('href="http://www.a.com">www.a.com</a>}');
+  });
+});

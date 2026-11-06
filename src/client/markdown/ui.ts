@@ -147,7 +147,8 @@ function dropUndo(): void {
 
 /** Tab indents (lists need it) instead of leaving the field; Esc then Tab still moves focus on. */
 function indentOnTab(e: KeyboardEvent): void {
-  if (!inputEl) return;
+  // Tab and Esc belong to the IME while it is composing.
+  if (!inputEl || e.isComposing) return;
   if (e.key === "Escape") {
     inputEl.dataset.escaped = "1";
     return;
