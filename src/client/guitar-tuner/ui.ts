@@ -13,6 +13,7 @@ const ANALYSE_MS = 50;
 const SMOOTH = 5;
 /** With no clear pitch for this long the display goes back to waiting. */
 const HOLD_MS = 1200;
+const RESUME_SKIP_MS = 400;
 const REFERENCE_MS = 2500;
 /** Tunings named in flats (they are tuned down a half step). */
 const FLAT_TUNINGS: ReadonlySet<TuningId> = new Set<TuningId>(["guitar-half-down"]);
@@ -45,6 +46,7 @@ let lastTarget: number | null = null;
 /** The string last heard, kept after Stop so the reference tone can still play it. */
 let lastPlayed: number | null = null;
 let lastResume = 0;
+let resumedAt = -Infinity;
 /** A string picked by hand; null = follow whichever string is played. */
 let locked: number | null = null;
 let refOsc: OscillatorNode | null = null;
@@ -285,6 +287,16 @@ function stop(): void {
   say("idle");
 }
 
+/** Nothing usable heard for a while: the last reading comes off the screen. */
+function expireIfQuiet(now: number): void {
+  if (!lastHeard || now - lastHeard <= HOLD_MS) return;
+  lastHeard = 0;
+  readings = [];
+  pending = null;
+  paintNote(null);
+  say("listening");
+}
+
 function analyse(): void {
   // With echo cancellation off, the mic hears the reference tone: it must not read as the string being "in tune".
   if (!analyser || !buf || !audio || refOsc) return;
@@ -296,28 +308,19 @@ function analyse(): void {
       lastResume = now;
       resumeIfPaused(audio);
     }
-    if (lastHeard && now - lastHeard > HOLD_MS) {
-      lastHeard = 0;
-      readings = [];
-      pending = null;
-      paintNote(null);
-      say("listening");
-    }
+    expireIfQuiet(now);
+    resumedAt = now;
     return;
   }
+  // Just back from a pause: the analyser's window still holds samples from before it.
+  if (now - resumedAt < RESUME_SKIP_MS) return;
   if (typeof analyser.getFloatTimeDomainData === "function") analyser.getFloatTimeDomainData(buf);
   else return;
   const { min, max } = searchRange(tuning(), a4());
   const pitch = detectPitch(buf, audio.sampleRate, min, max);
   if (!pitch) {
     pending = null;
-    if (lastHeard && now - lastHeard > HOLD_MS) {
-      lastHeard = 0;
-      readings = [];
-      pending = null;
-      paintNote(null);
-      say("listening");
-    }
+    expireIfQuiet(now);
     return;
   }
   // A new note (more than a semitone from the median) restarts the median only when two frames in a row agree on it,
@@ -328,13 +331,7 @@ function analyse(): void {
     pending = pitch.freq;
     if (!agrees) {
       // Frames that keep disagreeing are not a note either: the last reading must not stay up for ever.
-      if (lastHeard && now - lastHeard > HOLD_MS) {
-        lastHeard = 0;
-        readings = [];
-        pending = null;
-        paintNote(null);
-        say("listening");
-      }
+      expireIfQuiet(now);
       return;
     }
     readings = [];
