@@ -22,11 +22,14 @@ export function halfWidth(s: string): string {
 
 /**
  * Whether a list holds an entry that looks like one number with a comma in it, though commas separate numbers. A run with
- * a three-digit first group ("100,200,300") is an ordinary list. Where the decimal mark is a comma, so is "1,5".
+ * a three-digit first group ("100,200,300") is an ordinary list when it is all there is, but not beside other entries
+ * ("250,500, 100,250"). Where the decimal mark is a comma, so is "1,5".
  */
 export function commaLooksLikeANumber(raw: string, thousands: ThousandsMark = ","): boolean {
-  return halfWidth(raw).split(/[\s;，、；]+|,\s+/).some((entry) =>
-    /^[1-9]\d?(,\d{3})+$/.test(entry) || (thousands === "." && /^\d+,\d+$/.test(entry)));
+  // Split before converting: a full-width comma only ever separates.
+  const entries = raw.split(/[\s;，、；]+|,\s+/).map(halfWidth).filter(Boolean);
+  return entries.some((entry) =>
+    /^[1-9]\d?(,\d{3})+$/.test(entry) || (entries.length > 1 && /^\d{1,3}(,\d{3})+$/.test(entry)) || (thousands === "." && /^\d+,\d+$/.test(entry)));
 }
 
 /**

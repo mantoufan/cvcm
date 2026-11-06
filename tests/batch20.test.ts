@@ -145,3 +145,22 @@ describe("review pass after merging batch 19", () => {
     expect(commaLooksLikeANumber("12, 18", ".")).toBe(false);
   });
 });
+
+describe("second review pass after merging batch 19", () => {
+  it("finds a low string with a weak fundamental", () => {
+    for (const harmonics of [[0.2, 1, 0.2], [0.2, 1, 0.1, 0.3]]) {
+      const p = detectPitch(tone(82.41, 48000, 8192, harmonics), 48000, 70, 1000);
+      expect(Math.abs(p!.freq - 82.41)).toBeLessThan(1);
+    }
+    // A note that really is high stays high.
+    const high = detectPitch(tone(165, 48000, 8192), 48000, 70, 1000);
+    expect(Math.abs(high!.freq - 165)).toBeLessThan(1);
+  });
+  it("warns about larger numbers beside others and full-width separators", () => {
+    expect(commaLooksLikeANumber("250,500, 100,250")).toBe(true);
+    expect(commaLooksLikeANumber("100,200,300")).toBe(false);
+    expect(commaLooksLikeANumber("1,500，2,500")).toBe(true);
+    expect(commaLooksLikeANumber("12，345")).toBe(false);
+    expect(commaLooksLikeANumber("12，18", ".")).toBe(false);
+  });
+});

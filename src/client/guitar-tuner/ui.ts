@@ -66,7 +66,7 @@ export function mountGuitarTuner(host: HTMLElement): void {
   refBtn = h("button", { type: "button", class: "btn ghost", "data-action": "reference", onClick: () => playReference() }, t("guitarTuner.reference"));
   statusEl = h("p", { class: "hint", "aria-live": "polite", "data-out": "status" }, t("guitarTuner.idle"));
   noteEl = h("p", { class: "tuner-note", "data-out": "note" }, "—");
-  freqEl = h("p", { class: "tuner-freq", "data-out": "frequency" }, "— Hz");
+  freqEl = h("span", { class: "tuner-freq", "data-out": "frequency" }, "— Hz");
   centsEl = h("span", { class: "tuner-cents", "data-out": "cents" }, "");
   needleEl = h("span", { class: "tuner-needle" });
   meterEl = h("div", { class: "tuner-meter", role: "meter", "aria-label": t("guitarTuner.cents"), "aria-valuemin": "-50", "aria-valuemax": "50", "aria-valuenow": "0" },
@@ -235,6 +235,7 @@ async function start(): Promise<void> {
   pending = null;
   lastHeard = 0;
   say("listening");
+  paintNote(null);
   timer = window.setInterval(analyse, ANALYSE_MS);
 }
 
