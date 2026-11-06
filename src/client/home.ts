@@ -79,7 +79,7 @@ export function mountHome(host: HTMLElement, locale: Locale): () => void {
     ),
     h("section", { class: "wall" },
       h("h2", null, h("a", { href: refHref(locale), "data-nav": "reference" }, t("nav.reference"))),
-      h("p", { class: "ref-focus" }, ...REF_FOCUS.map((id) => h("a", { href: refHref(locale, id), "data-nav": `ref-${id}` }, t(`refFocus.${id}`)))),
+      linkList(REF_FOCUS.map((id) => ({ href: refHref(locale, id), name: t(`refFocus.${id}`), nav: `ref-${id}` }))),
     ),
     h("section", { class: "wall" },
       h("h2", null, t("nav.games")),

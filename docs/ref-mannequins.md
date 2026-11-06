@@ -11,7 +11,7 @@ alt text comes from cv.cm's own copy. Pose ids appear here only as provenance.
 | cv.cm entry | Shisei file stem | Angles used (Shisei view) |
 |---|---|---|
 | `sitting-pose` | `std_P012` | front, three-quarter (`diag`), side, above |
-| `standing-pose` | `std_P015` | front, three-quarter (`diag`), side |
+| `standing-pose` | `std_P016` | front, three-quarter (`diag`), side |
 | `kneeling-pose` | `std_P037` | front, three-quarter (`diag`), side |
 
 Only poses rated `general` were considered, and each view was checked by eye before use. Low-angle (`below`) views and
