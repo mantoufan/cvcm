@@ -79,6 +79,8 @@ function onStorage(e: StorageEvent): void {
   if (e.key !== STORE_KEY || !inputEl || dirty) return;
   const next = e.newValue?.slice(0, MAX_MARKDOWN) ?? t("markdown.sampleText");
   if (next === inputEl.value) return;
+  // The text Undo would bring back is older than what just arrived.
+  dropUndo();
   inputEl.value = next;
   paint();
 }

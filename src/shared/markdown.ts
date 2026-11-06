@@ -65,15 +65,13 @@ function expandTabs(line: string): string {
 function toLines(text: string): string[] {
   const out: string[] = [];
   let close: RegExp | null = null;
-  // A fence indented 2 or 3 spaces may sit in a list item, whose indent must still count, so only its definitions are skipped.
+  // A fence indented 2 or 3 spaces may sit in a list item, whose indent must still count, so it is not kept raw.
   let keepRaw = false;
-  let afterFence = false;
   for (const raw of text.split("\n")) {
     const line = expandTabs(raw);
     if (close) {
       if (close.test(line)) {
         close = null;
-        afterFence = true;
         out.push(line);
       } else {
         out.push(keepRaw ? raw : line);
@@ -85,10 +83,6 @@ function toLines(text: string): string[] {
     const fence = fenceOf(line) ?? fenceOf(bare);
     keepRaw = bare === line && indentOf(line) < 2;
     if (fence) close = new RegExp(`^ ${keepRaw ? "{0,3}" : "*"}${fence.mark[0] === "`" ? "`" : "~"}{${fence.mark.length},}[ \\t]*$`);
-    // A reference definition ("[1]: https://…") is not shown. It cannot interrupt a paragraph.
-    const prev = out[out.length - 1];
-    if (!fence && line.includes("]:") && (prev === undefined || afterFence || !continuesParagraph(prev)) && addRef(line)) continue;
-    afterFence = false;
     out.push(line);
   }
   return out;
@@ -98,6 +92,13 @@ function toLines(text: string): string[] {
 let refs = new Map<string, { href: string; title: string }>();
 
 const refKey = (label: string) => label.trim().replace(/\s+/g, " ").toLowerCase();
+
+/** How many lines the definition at line i takes: 1, or 2 with its address wrapped onto the next line; 0 if there is none. */
+function refLines(lines: string[], i: number): number {
+  if (addRef(lines[i])) return 1;
+  const next = lines[i + 1];
+  return /\]:[ \t]*$/.test(lines[i].slice(-200)) && next !== undefined && !blank(next) && addRef(`${trimEnd(lines[i], " \t")} ${next.trim()}`) ? 2 : 0;
+}
 
 function addRef(line: string): boolean {
   const m = /^ {0,3}\[([^\]\n]{1,200})\]:[ ]*(\S+)(?:\s+(?:"([^"]*)"|'([^']*)'|\(([^)]*)\)))?\s*$/.exec(line);
@@ -221,9 +222,14 @@ let budget = 0;
 
 export function parseMarkdown(src: string): Block[] {
   const text = src.slice(0, MAX_MARKDOWN).replace(/\r\n?/g, "\n").replace(/^﻿/, "").replace(/\0/g, "�");
-  cellsLeft = MAX_TABLE_CELLS;
+  const lines = toLines(text);
   refs = new Map();
-  return blocks(toLines(text), 0);
+  cellsLeft = MAX_TABLE_CELLS;
+  const doc = blocks(lines, 0);
+  if (refs.size === 0) return doc;
+  // A reference can come before its definition, so with definitions in the document the text is read again knowing them all.
+  cellsLeft = MAX_TABLE_CELLS;
+  return blocks(lines, 0);
 }
 
 function blocks(lines: string[], depth: number): Block[] {
@@ -310,6 +316,12 @@ function blocks(lines: string[], depth: number): Block[] {
         i++;
       }
       out.push({ t: "table", align: delim.map(alignOf), head: head.map((c) => inline(c)), rows });
+      continue;
+    }
+    // Reference definitions start where a paragraph would, and are not shown.
+    const defined = line.includes("]:") ? refLines(lines, i) : 0;
+    if (defined) {
+      i += defined;
       continue;
     }
     // A paragraph, or a setext heading when the next line is ===== or -----.
@@ -707,7 +719,7 @@ export function inline(src: string, depth = 0, inLink = false): Inline[] {
           const href = safeHref(dest.href);
           const kids = depth < MAX_INLINE_DEPTH ? inline(label, depth + 1, true) : [{ t: "text" as const, v: label }];
           if (href) out.push({ t: "link", href, title: dest.title, kids });
-          else out.push(...kids);
+          else for (const kid of kids) out.push(kid);
         }
         i = dest.end;
         continue;
@@ -777,14 +789,20 @@ export function inline(src: string, depth = 0, inLink = false): Inline[] {
             : run > 3
               ? []
               : run === 3
-              ? [{ delim: c.repeat(3), make: (kids) => ({ t: "strong", kids: [{ t: "em", kids }] }) }]
+              ? [
+                  { delim: c.repeat(3), make: (kids) => ({ t: "strong", kids: [{ t: "em", kids }] }) },
+                  // Closed in two steps: "***a** b*" is emphasis around bold, "***a* b**" bold around emphasis.
+                  { delim: c, make: (kids) => ({ t: "em", kids }) },
+                  { delim: c + c, make: (kids) => ({ t: "strong", kids }) },
+                ]
               : run === 2
                 ? [{ delim: c + c, make: (kids) => ({ t: "strong", kids }) }]
                 : [{ delim: c, make: (kids) => ({ t: "em", kids }) }];
         let done = false;
         for (const tr of tries) {
           const end = closeEmphasis(s, i + tr.delim.length, tr.delim, failed);
-          if (end > 0) {
+          // The closer has to lie past the opening run ("***foo" is text, not emphasis around one of its own "*").
+          if (end >= i + run) {
             flush();
             out.push(tr.make(inline(s.slice(i + tr.delim.length, end), depth + 1, inLink)));
             i = end + tr.delim.length;

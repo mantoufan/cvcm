@@ -481,3 +481,29 @@ describe("review pass 13", () => {
     expect(md("- [x] a\n- [ ] b")).toContain('<li><input type="checkbox" disabled checked> a</li>');
   });
 });
+
+describe("review pass 14", () => {
+  it("reads log bases and refuses a number glued to a function and a bracket", () => {
+    expect(calc("log10(100)")).toBe("2");
+    expect(calc("log2(8)")).toBe("3");
+    expect(calc("log(1000)")).toBe("3");
+    expect(calc("sin2(30)")).toBe("syntax");
+    expect(calc("ln2(3)")).toBe("syntax");
+    expect(calc("sin 30")).toBe("0.5");
+    expect(calc("log 100")).toBe("2");
+    expect(calc("log2")).toBe(formatResult(Math.log10(2)));
+  });
+  it("collects definitions wherever a paragraph could start", () => {
+    expect(md("[r]:\n  http://a.com\n[s]: http://b.com\n\n[s] [r]")).toBe('<p><a href="http://b.com">s</a> <a href="http://a.com">r</a></p>');
+    expect(md("- ```\n  x\n- y\n\n[a]: http://a.com\n\n[a]")).toContain('<a href="http://a.com">a</a>');
+    expect(md("> [r]: http://a.com\n\n[r]")).toContain('<a href="http://a.com">r</a>');
+    expect(md("  ```\n    ```\n  [a]: b\n  ```")).toContain("[a]: b");
+    expect(md("[f]\n\n[f]: /later")).toBe('<p><a href="/later">f</a></p>');
+  });
+  it("closes a triple run in two steps", () => {
+    expect(md("***a** b*")).toBe("<p><em><strong>a</strong> b</em></p>");
+    expect(md("***a* b**")).toBe("<p><strong><em>a</em> b</strong></p>");
+    expect(md("___a__ b_")).toBe("<p><em><strong>a</strong> b</em></p>");
+    expect(md("***a***")).toBe("<p><strong><em>a</em></strong></p>");
+  });
+});

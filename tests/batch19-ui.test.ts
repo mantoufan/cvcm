@@ -322,3 +322,15 @@ describe("review pass 13 ui", () => {
     expect(host.querySelector(".md-preview li.task > p > input")).not.toBeNull();
   });
 });
+
+describe("review pass 14 ui", () => {
+  it("drops Undo when another tab's text arrives", () => {
+    mountMarkdown(host);
+    const box = q<HTMLTextAreaElement>("[data-field=markdown]");
+    type(box, "mine");
+    q("[data-action=sample]").click();
+    window.dispatchEvent(new StorageEvent("storage", { key: "cvcm.markdown.v1", newValue: "from tab 2" }));
+    expect(box.value).toBe("from tab 2");
+    expect(q<HTMLButtonElement>("[data-action=undo]").hidden).toBe(true);
+  });
+});

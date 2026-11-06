@@ -23,7 +23,7 @@ export const MAX_EVAL = 5000;
 const MAX_FACTORIAL = 170;
 const MAX_DEPTH = 100;
 
-const FUNCS = ["asin", "acos", "atan", "sinh", "cosh", "tanh", "sin", "cos", "tan", "sqrt", "cbrt", "log", "ln", "abs", "exp"] as const;
+const FUNCS = ["log2", "asin", "acos", "atan", "sinh", "cosh", "tanh", "sin", "cos", "tan", "sqrt", "cbrt", "log", "ln", "abs", "exp"] as const;
 type Func = (typeof FUNCS)[number];
 /** Every word the parser reads, in the order it tries them when a run of letters holds several ("pie", "2sinpi"). */
 const NAMES = ["ans", "pi", ...FUNCS, "e"];
@@ -98,6 +98,13 @@ function tokenize(src: string, decimal: "." | ","): Tok[] {
     if (c === "π") {
       out.push({ k: "const", v: "pi" });
       i++;
+      continue;
+    }
+    // log2(8) and log10(100): the base belongs to the name, and "log" is already base 10.
+    const based = /^log\s*(2|10)(?=\s*\()/i.exec(s.slice(i, i + 32));
+    if (based) {
+      out.push({ k: "fn", v: based[1] === "2" ? "log2" : "log" });
+      i += based[0].length;
       continue;
     }
     const word = /^[a-zA-Z]+/.exec(s.slice(i));
@@ -200,6 +207,9 @@ function applyRaw(fn: Func, x: number, mode: AngleMode): number {
     case "sqrt":
       if (x < 0) throw new Fail("domain");
       return Math.sqrt(x);
+    case "log2":
+      if (x <= 0) throw new Fail("domain");
+      return Math.log2(x);
     case "log":
       if (x <= 0) throw new Fail("domain");
       return Math.log10(x);
@@ -318,6 +328,8 @@ export function evaluate(src: string, mode: AngleMode = "deg", ans = 0, decimal:
     if (t.k === "fn") {
       // "sin 30" and "sin(30)" both work; "sin 30 + 1" is sin(30) + 1 and "sin 2π" is sin(2π) — as calculators read it.
       if (isOp(peek(), "(")) return apply(t.v, atom(), mode);
+      // "sin2(30)" reads as sin(2×30) by the rules but almost never means that: ask, rather than answer something else.
+      if (peek()?.k === "num" && isOp(toks[pos + 1], "(")) throw new Fail("syntax");
       return apply(t.v, postfixChain(), mode);
     }
     // Bracketed, it reads like every other function: √(9)! is 3!, not √(9!).
