@@ -219,3 +219,34 @@ describe("review pass 4 ui", () => {
     expect(box.value).toBe("keep me");
   });
 });
+
+describe("review pass 5 ui", () => {
+  const enter = (el: HTMLElement) => el.dispatchEvent(new KeyboardEvent("keydown", { key: "Enter", bubbles: true }));
+
+  it("does not let Ans read its own result after =", () => {
+    mountCalculator(host);
+    const expr = q<HTMLInputElement>("[data-field=expr]");
+    type(expr, "1+1");
+    enter(expr);
+    type(expr, "Ans+1");
+    enter(expr);
+    expect(q("[data-out=result]").textContent).toBe("= 3");
+    q("[data-action=mode]").click();
+    expect(q("[data-out=result]").textContent).toBe("3");
+    enter(expr);
+    expect(q("[data-out=result]").textContent).toBe("= 3");
+  });
+
+  it("offers Undo after Sample replaces a document", () => {
+    mountMarkdown(host);
+    const box = q<HTMLTextAreaElement>("[data-field=markdown]");
+    type(box, "my long document");
+    q("[data-action=sample]").click();
+    expect(box.value).not.toBe("my long document");
+    expect(q<HTMLButtonElement>("[data-action=undo]").hidden).toBe(false);
+    q("[data-action=undo]").click();
+    expect(box.value).toBe("my long document");
+    expect(window.localStorage.getItem("cvcm.markdown.v1")).toBe("my long document");
+    expect(q<HTMLButtonElement>("[data-action=undo]").hidden).toBe(true);
+  });
+});

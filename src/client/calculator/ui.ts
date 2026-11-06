@@ -10,6 +10,7 @@ import {
   evaluate,
   formatResult,
   parseHistory,
+  replaceAns,
   type AngleMode,
   type HistoryEntry,
 } from "../../shared/calculator";
@@ -24,6 +25,8 @@ let copyBtn: HTMLButtonElement | null = null;
 let modeBtn: HTMLButtonElement | null = null;
 let mode: AngleMode = "deg";
 let ans = 0;
+/** The sum "=" last worked out and the Ans it used: "=" updates `ans`, so re-reading that same "Ans+1" must not use its own result. */
+let done: { expr: string; ans: number } | null = null;
 let history: HistoryEntry[] = [];
 /** The last "=" result, shown until the expression changes. */
 let shown: string | null = null;
@@ -41,6 +44,7 @@ const KEYS: Array<[string, string, string?]> = [
 export function mountCalculator(host: HTMLElement): void {
   mode = "deg";
   ans = 0;
+  done = null;
   shown = null;
   history = load();
   exprEl = h("input", {
@@ -174,6 +178,7 @@ function insert(text: string): void {
   // After "=", a digit starts a new sum; an operator carries on from the answer.
   if (shown !== null) {
     exprEl.value = /^[+\-−×*÷/^!%]/.test(text) ? "Ans" : "";
+    done = null;
     exprEl.setSelectionRange(exprEl.value.length, exprEl.value.length);
     shown = null;
   }
@@ -219,6 +224,7 @@ function press(act: string): void {
 function clearAll(): void {
   if (!exprEl) return;
   exprEl.value = "";
+  done = null;
   shown = null;
   paint();
 }
@@ -227,17 +233,19 @@ function equals(): void {
   if (!exprEl) return;
   const expr = exprEl.value.trim();
   if (!expr || shown !== null) return;
-  const r = evaluate(expr, mode, ans, decimalMarkOf(locale()));
+  const used = done?.expr === expr ? done.ans : ans;
+  const r = evaluate(expr, mode, used, decimalMarkOf(locale()));
   if (!r.ok) {
     paint(true);
     return;
   }
   // History shows the number Ans stood for, so reusing the line later gives the same result.
   const mark = decimalMarkOf(locale());
-  const was = formatResult(ans, mark).replace("−", "-");
+  const was = formatResult(used, mark).replace("−", "-");
   // Brackets when the number would run into a digit or letter ("2Ans", "Anse2") or carries a sign or exponent.
-  const saved = expr.replace(/ans/gi, (m: string, at: number) =>
-    ans < 0 || /e/i.test(was) || /[\d.,\p{L}]/u.test(expr[at - 1] ?? "") || /[\d.,\p{L}]/u.test(expr[at + m.length] ?? "") ? `(${was})` : was);
+  const saved = replaceAns(expr, (at) =>
+    used < 0 || /e/i.test(was) || /[\d.,\p{L}]/u.test(expr[at - 1] ?? "") || /[\d.,\p{L}]/u.test(expr[at + 3] ?? "") ? `(${was})` : was);
+  done = { expr, ans: used };
   ans = r.value;
   shown = formatResult(r.value, mark);
   if (saved.length <= MAX_EVAL) history.unshift({ expr: saved, result: shown, mode });
@@ -256,11 +264,13 @@ function paint(showError = false): void {
     return;
   }
   const expr = exprEl.value.trim();
+  // Any edit makes it a new sum, read with the latest Ans.
+  if (done && done.expr !== expr) done = null;
   if (!expr) {
     previewEl.textContent = "";
     return;
   }
-  const r = evaluate(expr, mode, ans, decimalMarkOf(locale()));
+  const r = evaluate(expr, mode, done ? done.ans : ans, decimalMarkOf(locale()));
   if (r.ok) {
     previewEl.textContent = formatResult(r.value, decimalMarkOf(locale()));
   } else if (showError) {

@@ -14,7 +14,12 @@ let previewEl: HTMLElement | null = null;
 let statsEl: HTMLElement | null = null;
 let copyHtmlBtn: HTMLButtonElement | null = null;
 let copyMdBtn: HTMLButtonElement | null = null;
+let undoBtn: HTMLButtonElement | null = null;
 let doc: Block[] = [];
+/** What the Sample button replaced, for a few seconds. */
+let undoText: string | null = null;
+let undoTimer = 0;
+const UNDO_MS = 8000;
 /** True from an edit until it is saved: an idle tab must not overwrite what another tab saved. */
 let dirty = false;
 const schedule = debounce(() => {
@@ -31,6 +36,7 @@ export function mountMarkdown(host: HTMLElement): void {
     "aria-label": t("markdown.input"),
     placeholder: t("markdown.placeholder"),
     onInput: () => {
+      dropUndo();
       dirty = true;
       schedule();
     },
@@ -51,6 +57,7 @@ export function mountMarkdown(host: HTMLElement): void {
         h("button", { type: "button", class: "btn ghost", "data-action": "download-html", onClick: () => downloadHtml() }, t("markdown.downloadHtml")),
         h("button", { type: "button", class: "btn ghost", "data-action": "download-md", onClick: () => downloadMd() }, t("markdown.downloadMd")),
         h("button", { type: "button", class: "btn ghost", "data-action": "sample", onClick: () => loadSample() }, t("markdown.sample")),
+        undoBtn = h("button", { type: "button", class: "btn ghost", "data-action": "undo", hidden: true, onClick: () => undoSample() }, t("markdown.undo")),
       ),
       h("div", { class: "data-panes md-panes" },
         h("div", { class: "rail" }, h("h2", null, t("markdown.input")), inputEl, statsEl),
@@ -80,8 +87,9 @@ export function unmountMarkdown(): void {
   window.removeEventListener("storage", onStorage);
   // A change typed within the last moment is saved before the tool goes away.
   if (inputEl) save();
+  dropUndo();
   inputEl = previewEl = statsEl = null;
-  copyHtmlBtn = copyMdBtn = null;
+  copyHtmlBtn = copyMdBtn = undoBtn = null;
   doc = [];
 }
 
@@ -106,10 +114,34 @@ function save(): void {
 
 function loadSample(): void {
   if (!inputEl) return;
-  inputEl.value = t("markdown.sampleText");
+  const sample = t("markdown.sampleText");
+  if (inputEl.value === sample) return;
+  // The sample replaces the document, and setting a value clears the box's own undo history.
+  if (inputEl.value) {
+    undoText = inputEl.value;
+    if (undoBtn) undoBtn.hidden = false;
+    window.clearTimeout(undoTimer);
+    undoTimer = window.setTimeout(dropUndo, UNDO_MS);
+  }
+  inputEl.value = sample;
   dirty = true;
   paint();
   save();
+}
+
+function undoSample(): void {
+  if (!inputEl || undoText === null) return;
+  inputEl.value = undoText;
+  dropUndo();
+  dirty = true;
+  paint();
+  save();
+}
+
+function dropUndo(): void {
+  window.clearTimeout(undoTimer);
+  undoText = null;
+  if (undoBtn) undoBtn.hidden = true;
 }
 
 /** Tab indents (lists need it) instead of leaving the field; Esc then Tab still moves focus on. */

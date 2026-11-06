@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { evaluate, formatResult, parseHistory } from "../src/shared/calculator";
+import { evaluate, formatResult, parseHistory, replaceAns } from "../src/shared/calculator";
 import { fancy, FANCY_STYLES } from "../src/shared/fancy-text";
 import { clampAngle, cssRule, gradientCss, linearLine, newStop, normalizeHex, radialRadii, randomGradient, PRESETS } from "../src/shared/gradient";
 import { parseMarkdown, safeHref, toHtml } from "../src/shared/markdown";
@@ -176,7 +176,7 @@ describe("markdown", () => {
     expect(md("![logo](/a.png)")).toBe("<p><img src=\"/a.png\" alt=\"logo\"></p>");
     expect(md("[x](javascript:alert(1))")).toBe("<p>x</p>");
     expect(md("[x](<java\tscript:alert(1)>)")).not.toContain("href=\"java\tscript");
-    expect(md("[x](<java\tscript:alert(1)>)")).toMatch(/href="java%20/);
+    expect(md("[x](<java\tscript:alert(1)>)")).toBe("<p>x</p>");
     expect(md("[x](\u0001javascript:alert(1))")).toBe("<p>x</p>");
     expect(md("![x](data:image/svg+xml,abc)")).toBe("<p>x</p>");
     expect(md("<script>alert(1)</script>")).toBe("<p>&lt;script&gt;alert(1)&lt;/script&gt;</p>");
@@ -220,6 +220,12 @@ describe("markdown", () => {
     md("http://x.co" + ")".repeat(199000));
     md("a" + " ".repeat(199000) + "b\nc");
     md("a" + " ".repeat(199000) + "b");
+    md("a|b\n" + " ".repeat(199000) + "x-");
+    md("# a" + " ".repeat(199000) + "b");
+    md("---" + " ".repeat(199000) + "x");
+    md("| a" + " ".repeat(199000) + "x");
+    md("- a" + " ".repeat(199000) + "x");
+    md("|a".repeat(1500) + "|\n" + "|-".repeat(1500) + "|\n" + "x\n".repeat(40000));
     // A paragraph that uses up its scan budget leaves the next one alone.
     expect(md("[a ".repeat(60000) + "\n\n`code` [ok](https://cv.cm)")).toContain("<p><code>code</code> <a href=\"https://cv.cm\">ok</a></p>");
     expect(Date.now() - start).toBeLessThan(4000);
@@ -270,5 +276,39 @@ describe("review pass 4", () => {
   it("lets an unmatched backtick leave table cells apart", () => {
     const html = md("| a | b |\n|---|---|\n| ` | c |");
     expect(html).toContain("<td>c</td>");
+  });
+});
+
+describe("review pass 5", () => {
+  it("prints the largest doubles instead of throwing", () => {
+    expect(formatResult(Number.MAX_VALUE)).toBe("1.79769313486232e308");
+    expect(formatResult(-Number.MAX_VALUE)).toBe("−1.79769313486232e308");
+  });
+  it("finds Ans only where the parser does", () => {
+    const out = (e: string) => replaceAns(e, () => "7");
+    expect(out("tansin(30)")).toBe("tansin(30)");
+    expect(out("2Ans+ANS")).toBe("27+7");
+    expect(out("sinAns")).toBe("sin7");
+    expect(out("pians")).toBe("pi7");
+  });
+  it("keeps tabs in code and strips only the heading's closing marks", () => {
+    expect(md("```\n\tfoo\tbar\n```")).toContain("\tfoo\tbar");
+    expect(md("`a\tb`")).toContain("<code>a\tb</code>");
+    expect(md("\t- not a tab stop issue")).toBeTruthy();
+    expect(md("- a\n\t- b")).toContain("<li>b</li>");
+    expect(md("## Title ##")).toBe("<h2>Title</h2>");
+    expect(md("## C#")).toBe("<h2>C#</h2>");
+    expect(md("#\tTabbed")).toBe("<h1>Tabbed</h1>");
+    expect(md("# Spaced   ")).toBe("<h1>Spaced</h1>");
+  });
+  it("reads delimiter rows as before", () => {
+    expect(md("a|b\n-|:-:")).toContain("<table>");
+    expect(md("a|b\n-|x")).not.toContain("<table>");
+    expect(md("| a | b |\n| --- | --- |\n| 1 | 2 |")).toContain("<td>2</td>");
+  });
+  it("caps table cells across a document", () => {
+    const doc = parseMarkdown("|a".repeat(1500) + "|\n" + "|-".repeat(1500) + "|\n" + "x\n".repeat(40000));
+    const table = doc[0] as { rows: unknown[] };
+    expect(table.rows.length).toBeLessThanOrEqual(67);
   });
 });

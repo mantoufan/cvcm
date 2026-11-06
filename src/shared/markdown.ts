@@ -34,12 +34,14 @@ export const MAX_MARKDOWN = 200_000;
 const MAX_NEST = 12;
 
 const FENCE_LINE = /^ {0,3}(`{3,}|~{3,})(.*)$/;
-const ATX = /^ {0,3}(#{1,6})(?:[ \t]+(.*?))?(?:[ \t]+#+)?[ \t]*$/;
+const ATX = /^ {0,3}(#{1,6})(?:[ \t]+(.*))?$/;
 const HR = /^ {0,3}([-*_])(?:[ \t]*\1){2,}[ \t]*$/;
 const QUOTE = /^ {0,3}>/;
 const BULLET = /^( {0,3})([-*+]|\d{1,9}[.)])([ \t]+|$)(.*)$/;
 const SETEXT = /^ {0,3}(=+|-+)[ \t]*$/;
-const TABLE_DELIM = /^[ \t]*\|?[ \t]*:?-+:?[ \t]*(\|[ \t]*:?-+:?[ \t]*)*\|?[ \t]*$/;
+/** Cells in one document's tables. A short table can pad very many rows to very many columns; no real table comes near this. */
+const MAX_TABLE_CELLS = 100_000;
+let cellsLeft = 0;
 
 /** Removes trailing characters by scanning back: an end-anchored regex is quadratic on a long run inside a line. */
 function trimEnd(s: string, chars: string): string {
@@ -50,11 +52,43 @@ function trimEnd(s: string, chars: string): string {
 
 const blank = (s: string | undefined) => s == null || /^[ \t]*$/.test(s);
 
+/** Tabs in the indent become spaces, for block structure. Later tabs are content (a TSV sample, a Makefile line). */
 function expandTabs(line: string): string {
   if (!line.includes("\t")) return line;
   let out = "";
-  for (const ch of line) out += ch === "\t" ? " ".repeat(4 - (out.length % 4)) : ch;
-  return out;
+  let i = 0;
+  for (; line[i] === " " || line[i] === "\t"; i++) out += line[i] === "\t" ? " ".repeat(4 - (out.length % 4)) : " ";
+  return out + line.slice(i);
+}
+
+/** Splits text into lines with their indents expanded, leaving the lines of a top-level fence exactly as typed. */
+function toLines(text: string): string[] {
+  let close: RegExp | null = null;
+  return text.split("\n").map((raw) => {
+    const line = expandTabs(raw);
+    if (close) {
+      if (close.test(line)) close = null;
+      return close ? raw : line;
+    }
+    const fence = indentOf(line) < 2 ? fenceOf(line) : null;
+    if (fence) close = new RegExp(`^ {0,3}${fence.mark[0] === "`" ? "`" : "~"}{${fence.mark.length},}[ \\t]*$`);
+    return line;
+  });
+}
+
+/** A delimiter row, cell by cell (a single regex for this backtracks badly on long runs of spaces). */
+function isDelimRow(line: string): boolean {
+  let s = line.trim();
+  if (s.startsWith("|")) s = s.slice(1);
+  if (s.endsWith("|")) s = s.slice(0, -1);
+  return s.split("|").every((c) => /^:?-+:?$/.test(c.trim()));
+}
+
+/** A heading's text, without its optional closing #s ("## Title ##"). */
+function atxText(raw: string | undefined): string {
+  const s = trimEnd(raw ?? "", " \t");
+  const body = trimEnd(s, "#");
+  return body.length < s.length && (body.endsWith(" ") || body.endsWith("\t")) ? trimEnd(body, " \t") : s;
 }
 
 function indentOf(line: string): number {
@@ -110,7 +144,7 @@ function fenceOf(line: string): { mark: string; lang: string } | null {
 function startsTable(lines: string[], i: number): boolean {
   const head = lines[i];
   const delim = lines[i + 1];
-  if (!head?.includes("|") || delim == null || !delim.includes("-") || !TABLE_DELIM.test(delim)) return false;
+  if (!head?.includes("|") || delim == null || !delim.includes("-") || !isDelimRow(delim)) return false;
   return splitRow(head).length === splitRow(delim).length;
 }
 
@@ -132,7 +166,8 @@ let budget = 0;
 
 export function parseMarkdown(src: string): Block[] {
   const text = src.slice(0, MAX_MARKDOWN).replace(/\r\n?/g, "\n").replace(/^﻿/, "").replace(/\0/g, "�");
-  return blocks(text.split("\n").map(expandTabs), 0);
+  cellsLeft = MAX_TABLE_CELLS;
+  return blocks(toLines(text), 0);
 }
 
 function blocks(lines: string[], depth: number): Block[] {
@@ -166,7 +201,7 @@ function blocks(lines: string[], depth: number): Block[] {
     }
     const atx = ATX.exec(line);
     if (atx) {
-      out.push({ t: "h", level: atx[1].length as 1, kids: inline(atx[2] ?? "") });
+      out.push({ t: "h", level: atx[1].length as 1, kids: inline(atxText(atx[2])) });
       i++;
       continue;
     }
@@ -204,12 +239,14 @@ function blocks(lines: string[], depth: number): Block[] {
       continue;
     }
     // A table: a header row, then a delimiter row with the same number of cells.
-    if (startsTable(lines, i)) {
+    if (cellsLeft > 0 && startsTable(lines, i)) {
       const head = splitRow(line);
+      cellsLeft -= head.length;
       const delim = splitRow(lines[i + 1]);
       const rows: Inline[][][] = [];
       i += 2;
-      while (i < lines.length && !blank(lines[i]) && !interrupts(lines[i])) {
+      while (i < lines.length && cellsLeft > 0 && !blank(lines[i]) && !interrupts(lines[i])) {
+        cellsLeft -= head.length;
         const cells = splitRow(lines[i]);
         rows.push(head.map((_, c) => inline(cells[c] ?? "")));
         i++;

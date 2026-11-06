@@ -25,6 +25,8 @@ const MAX_DEPTH = 100;
 
 const FUNCS = ["asin", "acos", "atan", "sinh", "cosh", "tanh", "sin", "cos", "tan", "sqrt", "cbrt", "log", "ln", "abs", "exp"] as const;
 type Func = (typeof FUNCS)[number];
+/** Every word the parser reads, in the order it tries them when a run of letters holds several ("pie", "2sinpi"). */
+const NAMES = ["ans", "pi", ...FUNCS, "e"];
 
 type Tok =
   | { k: "num"; v: number }
@@ -99,7 +101,7 @@ function tokenize(src: string, decimal: "." | ","): Tok[] {
       let w = word[0].toLowerCase();
       // Split runs like "pie" or "2sinpi": take the longest known name at the front each time.
       while (w) {
-        const name = ["ans", "pi", ...FUNCS, "e"].find((n) => w.startsWith(n));
+        const name = NAMES.find((n) => w.startsWith(n));
         if (!name) throw new Fail("syntax");
         if (name === "ans" || name === "pi" || name === "e") out.push({ k: "const", v: name });
         else out.push({ k: "fn", v: name as Func });
@@ -358,7 +360,9 @@ export function evaluate(src: string, mode: AngleMode = "deg", ans = 0, decimal:
 export function formatResult(v: number, decimal: "." | "," = "."): string {
   if (!Number.isFinite(v)) return "";
   if (v === 0) return "0";
-  const rounded = Number(v.toPrecision(15));
+  // Rounding up the largest doubles gives Infinity: keep the value itself, which still prints at 15 digits below.
+  const up = Number(v.toPrecision(15));
+  const rounded = Number.isFinite(up) ? up : v;
   const abs = Math.abs(rounded);
   let s: string;
   if (abs >= 1e15 || abs < 1e-7) {
@@ -380,6 +384,25 @@ export function formatResult(v: number, decimal: "." | "," = "."): string {
 /** Whether a locale writes decimals with a comma (es, id, vi). */
 export function decimalMarkOf(locale: string): "." | "," {
   return ["es", "id", "vi"].includes(locale) ? "," : ".";
+}
+
+/**
+ * Rewrites each Ans in an expression, reading letters the way the parser does, so the "ans" across "tansin" is left alone.
+ * `write` gets where the Ans starts in `expr`.
+ */
+export function replaceAns(expr: string, write: (at: number) => string): string {
+  return expr.replace(/[a-zA-Z]+/g, (run: string, at: number) => {
+    const w = run.toLowerCase();
+    let out = "";
+    let p = 0;
+    while (p < run.length) {
+      const name = NAMES.find((n) => w.startsWith(n, p));
+      if (!name) return out + run.slice(p);
+      out += name === "ans" ? write(at + p) : run.slice(p, p + name.length);
+      p += name.length;
+    }
+    return out;
+  });
 }
 
 export type HistoryEntry = { expr: string; result: string; mode?: AngleMode };
