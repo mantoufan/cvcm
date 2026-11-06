@@ -125,7 +125,8 @@ export const TOOL_COVER: Record<ToolId, string> = {
   "notepad": "/covers/notepad-sweet.jpg?v=1",
   "markdown": "/covers/markdown-sweet.jpg?v=1",
   "gradient": "/covers/gradient-sweet.jpg?v=1",
-  "fancy-text": "/covers/fancy-text-sweet.jpg?v=1",
+  // Until its own Codex cover is made (Codex is over its limit until 2026-11-10), the fancy text page shares a related cover.
+  "fancy-text": "/covers/case-sweet.jpg?v=1",
   gold: "/covers/gold-sweet.jpg?v=1",
   silver: "/covers/silver-sweet.jpg?v=1",
   platinum: "/covers/platinum-sweet.jpg?v=1",

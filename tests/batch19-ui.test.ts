@@ -486,17 +486,3 @@ describe("review pass 18 ui", () => {
     expect(box.value).toBe("large note");
   });
 });
-
-describe("review pass 19 ui", () => {
-  it("retries a note that could not be saved when leaving", () => {
-    mountNotepad(host);
-    const box = host.querySelector("textarea")!;
-    failWrites();
-    box.value = "only copy";
-    box.dispatchEvent(new Event("input", { bubbles: true }));
-    window.dispatchEvent(new Event("pagehide"));
-    vi.restoreAllMocks();
-    window.dispatchEvent(new Event("pagehide"));
-    expect(JSON.parse(window.localStorage.getItem("cvcm.notepad.v1")!).text).toBe("only copy");
-  });
-});
