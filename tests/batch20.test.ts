@@ -200,3 +200,10 @@ describe("third review pass after merging batch 19", () => {
     expect(commaLooksLikeANumber("1,000, 2,000")).toBe(true);
   });
 });
+
+describe("fourth review pass after merging batch 19", () => {
+  it("reaches a five-string bass at 192 kHz with the larger window", () => {
+    const p = detectPitch(tone(30.87, 192000, 16384), 192000, 25, 400);
+    expect(Math.abs(p!.freq - 30.87)).toBeLessThan(0.5);
+  });
+});

@@ -42,6 +42,8 @@ let readings: number[] = [];
 let pending: number | null = null;
 let lastHeard = 0;
 let lastTarget: number | null = null;
+/** The string last heard, kept after Stop so the reference tone can still play it. */
+let lastPlayed: number | null = null;
 /** A string picked by hand; null = follow whichever string is played. */
 let locked: number | null = null;
 let refOsc: OscillatorNode | null = null;
@@ -52,9 +54,9 @@ let asking = false;
 
 export function mountGuitarTuner(host: HTMLElement): void {
   locked = null;
-  lastTarget = null;
+  lastTarget = lastPlayed = null;
   lastA4 = DEFAULT_A4;
-  tuningEl = h("select", { "data-field": "tuning", onChange: () => { locked = null; lastTarget = null; readings = []; paintStrings(); } },
+  tuningEl = h("select", { "data-field": "tuning", onChange: () => { locked = null; lastTarget = lastPlayed = null; readings = []; paintStrings(); } },
     ...TUNING_IDS.map((id) => h("option", { value: id, selected: id === "guitar" }, t(`guitarTuner.tuning_${id}`))),
   );
   a4El = h("input", { type: "number", min: String(MIN_A4), max: String(MAX_A4), step: "0.1", inputmode: "decimal", value: String(DEFAULT_A4), "data-field": "a4", onChange: () => { if (a4El) a4El.value = String(a4()); readings = []; pending = null; paintStrings(); } });
@@ -244,8 +246,8 @@ function buildGraph(ctx: AudioContext, s: MediaStream): boolean {
     source = ctx.createMediaStreamSource(s);
     analyser = ctx.createAnalyser();
     // Lags up to half the window are searched: 4096 samples reach 23 Hz at 48 kHz (below a five-string bass's low B,
-    // 31 Hz); 8192 keep that floor at 88.2 or 96 kHz.
-    analyser.fftSize = ctx.sampleRate > 50000 ? 8192 : 4096;
+    // 31 Hz); 8192 keep that floor at 88.2 or 96 kHz, and 16384 at 176.4 or 192 kHz.
+    analyser.fftSize = ctx.sampleRate > 100000 ? 16384 : ctx.sampleRate > 50000 ? 8192 : 4096;
     buf = new Float32Array(analyser.fftSize);
     // Some WebKit builds only run nodes the destination pulls on: feed it through a silent gain.
     sink = ctx.createGain();
@@ -283,7 +285,8 @@ function stop(): void {
 }
 
 function analyse(): void {
-  if (!analyser || !buf || !audio) return;
+  // With echo cancellation off, the mic hears the reference tone: it must not read as the string being "in tune".
+  if (!analyser || !buf || !audio || refOsc) return;
   // A context made after the permission prompt (the sample-rate retry) may start suspended.
   if (audio.state === "suspended") void audio.resume().catch(() => undefined);
   if (typeof analyser.getFloatTimeDomainData === "function") analyser.getFloatTimeDomainData(buf);
@@ -360,7 +363,7 @@ function paintNote(freq: number | null): void {
     : t(`guitarTuner.verdict_${state}`);
   if (verdictEl.textContent !== verdict) verdictEl.textContent = verdict;
   if (target !== lastTarget) {
-    lastTarget = target;
+    lastTarget = lastPlayed = target;
     markStrings();
   }
 }
@@ -374,7 +377,7 @@ function playReference(): void {
     return;
   }
   const strings = TUNINGS[tuning()] as readonly number[];
-  const midi = locked ?? lastTarget ?? (strings.length ? strings[0]! : 69);
+  const midi = locked ?? lastTarget ?? lastPlayed ?? (strings.length ? strings[0]! : 69);
   const osc = audio.createOscillator();
   const gain = audio.createGain();
   osc.type = "triangle";

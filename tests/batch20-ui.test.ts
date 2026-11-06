@@ -107,3 +107,16 @@ describe("lcm-gcf ui", () => {
     expect(q("[data-out=error]").textContent).toMatch(/^Commas separate numbers/);
   });
 });
+
+describe("coin count focus", () => {
+  it("leaves the list after a mouse pick and keeps it for the keyboard", () => {
+    mountCoinFlip(host);
+    const sel = q<HTMLSelectElement>("[data-field=count]");
+    sel.focus();
+    sel.dispatchEvent(new Event("change"));
+    expect(document.activeElement).toBe(sel);
+    sel.dispatchEvent(new Event("pointerdown"));
+    sel.dispatchEvent(new Event("change"));
+    expect(document.activeElement).not.toBe(sel);
+  });
+});

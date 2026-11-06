@@ -11,6 +11,7 @@ let coinEl: HTMLButtonElement | null = null;
 let faceEl: HTMLElement | null = null;
 let resultEl: HTMLElement | null = null;
 let countEl: HTMLSelectElement | null = null;
+let byPointer = false;
 let statsEl: HTMLElement | null = null;
 let stripEl: HTMLElement | null = null;
 let copyBtn: HTMLButtonElement | null = null;
@@ -29,7 +30,15 @@ export function mountCoinFlip(host: HTMLElement): void {
   faceEl = h("span", { class: "coin-face" }, t("coinFlip.tapToFlip"));
   coinEl = h("button", { type: "button", class: "coin", "data-action": "flip", "aria-label": t("coinFlip.flip"), onClick: () => flip() }, faceEl);
   resultEl = h("p", { class: "coin-result", "aria-live": "polite", "data-out": "result" });
-  countEl = h("select", { "data-field": "count" },
+  // Picked with the mouse, focus leaves the list so Space and Enter flip as the hint says; the keyboard keeps its place.
+  countEl = h("select", {
+    "data-field": "count",
+    onPointerdown: () => { byPointer = true; },
+    onChange: () => {
+      if (byPointer) countEl?.blur();
+      byPointer = false;
+    },
+  },
     ...FLIP_COUNTS.map((n) => h("option", { value: String(n), selected: n === 1 }, n === 1 ? t("coinFlip.one") : t("coinFlip.many", { n }))),
   );
   statsEl = h("dl", { class: "stats-grid", "data-out": "stats" });
