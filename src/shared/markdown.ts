@@ -345,7 +345,10 @@ function hasOwnBlank(body: string[]): boolean {
     }
     let n = k + 1;
     while (n < body.length && blank(body[n])) n++;
-    if (n === body.length || !prev) continue;
+    if (n === body.length || !prev) {
+      k = n - 1;
+      continue;
+    }
     const next = body[n];
     // Only after a nested list's own line: "- a\n\n    more" is a second paragraph of the item, however far it is indented.
     const nested = (BULLET.test(prev.trimStart()) || indentOf(prev) > 0) && (indentOf(next) > 0 || BULLET.test(next));

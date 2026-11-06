@@ -113,6 +113,14 @@ function smallCap(ch: string): string {
   return ch;
 }
 
+/** Emoji and flags: a combining line would split them. */
+const EMOJI = /\p{Extended_Pictographic}|\p{Regional_Indicator}/u;
+
+/** What a reader sees as one character: a flag, a skin-tone emoji or e + an accent stay together. */
+function graphemes(text: string): string[] {
+  return Array.from(new Intl.Segmenter(undefined, { granularity: "grapheme" }).segment(text), (g) => g.segment);
+}
+
 /** Restyles `text` (cut to MAX_FANCY characters). Characters a style has no look-alike for are kept as typed. */
 export function fancy(text: string, style: FancyStyle): string {
   const chars = Array.from(text).slice(0, MAX_FANCY);
@@ -129,11 +137,11 @@ export function fancy(text: string, style: FancyStyle): string {
       return chars.map(smallCap).join("");
     case "upsideDown":
       // Each line is flipped on its own, and the lines are reversed too: the whole block reads turned over.
-      return chars.join("").split("\n").map((line) => Array.from(line).reverse().map((ch) => FLIP[ch] ?? ch).join("")).reverse().join("\n");
+      return chars.join("").split("\n").map((line) => graphemes(line).reverse().map((ch) => FLIP[ch] ?? ch).join("")).reverse().join("\n");
     case "strike":
-      return chars.map((ch) => (/\s/.test(ch) ? ch : `${ch}̶`)).join("");
+      return graphemes(chars.join("")).map((ch) => (/\s/.test(ch) || EMOJI.test(ch) ? ch : `${ch}̶`)).join("");
     case "underline":
-      return chars.map((ch) => (ch === "\n" ? ch : `${ch}̲`)).join("");
+      return graphemes(chars.join("")).map((ch) => (ch === "\n" || EMOJI.test(ch) ? ch : `${ch}̲`)).join("");
     default:
       return chars.join("");
   }

@@ -42,8 +42,9 @@ class Fail extends Error {
 
 /** Maps the many ways people type the same operator onto one. */
 function normalize(src: string): string {
-  // "**" first: two × keys in a row are a typo, not a power.
+  // Full-width forms from CJK input first ("２＋２"). "**" before ×: two × keys in a row are a typo, not a power.
   return src
+    .replace(/[！-～]/g, (c) => String.fromCharCode(c.charCodeAt(0) - 0xfee0))
     .replace(/\*\*/g, "^")
     .replace(/[×✕·⋅]/g, "*")
     .replace(/[÷∶]/g, "/")
@@ -56,9 +57,11 @@ function normalize(src: string): string {
 function tokenize(src: string, decimal: "." | ","): Tok[] {
   // A pasted "2+2=" asks for the result.
   let s = normalize(src).replace(/[=＝]\s*$/, "");
-  // Thousands are read only in real groups: 1,234,567 with a decimal point, 1.234.567 with a decimal comma. Any other
-  // comma fails with a decimal point ("1,5" is not quietly 15); with a decimal comma, a lone "." is a decimal point too.
+  // Thousands are read only in real groups: 1,234,567 with a decimal point, 1.234.567 or 1.234,5 with a decimal comma. Any
+  // other comma fails with a decimal point ("1,5" is not quietly 15); with a decimal comma, a lone "." is a decimal point too.
   if (decimal === ",") {
+    // "1.250" is 1250 in Spain and Indonesia and 1.25 in Mexico: refuse it rather than be silently 1000 times out.
+    if (/(^|[^\d,.])[1-9]\d{0,2}\.\d{3}(?![\d.,])/.test(s)) throw new Fail("syntax");
     s = s.replace(/(^|[^\d,.])([1-9]\d{0,2}(?:\.\d{3})+)(?![\d.])/g, (_, pre: string, n: string) => pre + n.replace(/\./g, ""));
     s = s.replace(/,/g, ".");
   } else {
@@ -312,7 +315,8 @@ export function evaluate(src: string, mode: AngleMode = "deg", ans = 0, decimal:
       if (isOp(peek(), "(")) return apply(t.v, atom(), mode);
       return apply(t.v, postfixChain(), mode);
     }
-    if (isOp(t, "√")) return apply("sqrt", unaryNoImplicit(), mode);
+    // Bracketed, it reads like every other function: √(9)! is 3!, not √(9!).
+    if (isOp(t, "√")) return apply("sqrt", isOp(peek(), "(") ? atom() : unaryNoImplicit(), mode);
     if (isOp(t, "(")) {
       const v = sum();
       // A missing ")" at the very end is closed for you, as on most calculators: "2×(3+4" is 14.

@@ -74,7 +74,13 @@ export function mountCalculator(host: HTMLElement): void {
       insert(e.data);
       paint();
     },
+    // Composing (IME) after "=" replaces the old sum, as typing does; the text is not known until the composition ends.
+    onCompositionstart: () => {
+      if (shown !== null) exprEl?.select();
+    },
     onKeydown: (e: KeyboardEvent) => {
+      // Enter here commits the IME's text; it is not "=".
+      if (e.isComposing) return;
       if (e.key === "Enter" || (e.key === "=" && !e.ctrlKey && !e.metaKey)) {
         e.preventDefault();
         equals();

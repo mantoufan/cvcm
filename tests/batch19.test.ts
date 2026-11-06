@@ -57,7 +57,7 @@ describe("calculator", () => {
     expect(calc("3,14×2")).toBe("syntax");
     expect(calc("1,0000")).toBe("syntax");
     expect(calc("1.234,5", "deg", 0, ",")).toBe("1234.5");
-    expect(calc("1.000×3", "deg", 0, ",")).toBe("3000");
+    expect(calc("1.000×3", "deg", 0, ",")).toBe("syntax");
     expect(calc("2ℯ3")).toBe("16.3096909707543");
     expect(calc("2e3")).toBe("2000");
     expect(calc("1.2.3")).toBe("syntax");
@@ -222,6 +222,7 @@ describe("markdown", () => {
     md("a" + " ".repeat(199000) + "b");
     md("a|b\n" + " ".repeat(199000) + "x-");
     md("www./中".repeat(33000));
+    md("-" + "\n".repeat(199000) + "  x\n\n  y");
     md("www./".repeat(40000));
     md("http:///".repeat(25000));
     md("# a" + " ".repeat(199000) + "b");
@@ -382,5 +383,34 @@ describe("review pass 8", () => {
   });
   it("leaves names from Object.prototype as text", () => {
     expect(md("&valueOf; &toString; &amp;")).toBe("<p>&amp;valueOf; &amp;toString; &amp;</p>");
+  });
+});
+
+describe("review pass 9", () => {
+  it("reads a bracketed root like any function", () => {
+    expect(calc("√(9)!")).toBe("6");
+    expect(calc("√(16)%")).toBe("0.04");
+    expect(calc("√(-4)^2")).toBe("domain");
+    expect(calc("√4")).toBe("2");
+    expect(calc("√(9)π")).toBe(formatResult(3 * Math.PI));
+  });
+  it("refuses a lone dot group on decimal-comma pages", () => {
+    expect(calc("3.142", "deg", 0, ",")).toBe("syntax");
+    expect(calc("2^1.000", "deg", 0, ",")).toBe("syntax");
+    expect(calc("1.5", "deg", 0, ",")).toBe("1.5");
+    expect(calc("1.234.567", "deg", 0, ",")).toBe(formatResult(1234567));
+    expect(calc("1.234,5", "deg", 0, ",")).toBe("1234.5");
+    expect(calc("3.142")).toBe("3.142");
+  });
+  it("reads full-width input", () => {
+    expect(calc("２＋２")).toBe("4");
+    expect(calc("３＊４／２")).toBe("6");
+    expect(calc("１０％")).toBe("0.1");
+  });
+  it("keeps flags, emoji and accents whole", () => {
+    expect(fancy("🇨🇳", "upsideDown")).toBe("🇨🇳");
+    expect(fancy("👍🏽", "strike")).toBe("👍🏽");
+    expect(fancy("👨‍👩‍👧", "underline")).toBe("👨‍👩‍👧");
+    expect(Array.from(new Intl.Segmenter().segment(fancy("e\u0301x", "strike"))).length).toBe(2);
   });
 });
