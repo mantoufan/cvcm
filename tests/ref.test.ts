@@ -70,7 +70,7 @@ describe("reference: mannequins and footer entries", () => {
       const html = refPageHtml(locale, "sitting-pose");
       expect(html).toContain('src="/covers/ref/sitting-pose-front-300.webp"');
       expect(html).toContain("creativecommons.org/publicdomain/zero/1.0/");
-      expect(html).not.toContain("{angle}");
+      expect(html).not.toMatch(/\{(name|angle)\}/);
     }
     expect(refPageHtml("en", "hanfu")).not.toContain("/covers/ref/");
   });
@@ -80,6 +80,10 @@ describe("reference: mannequins and footer entries", () => {
     expect(ld.dateModified).toBe(REF_UPDATED["standing-pose"]);
     expect(ld.image[0].contentUrl).toBe("https://cv.cm/covers/ref/standing-pose-front-900.webp");
     expect(ld.image[0].license).toContain("publicdomain/zero");
+  });
+
+  it("dates every entry that has mannequins", () => {
+    for (const id of Object.keys(REF_MANNEQUINS) as RefId[]) expect(REF_UPDATED[id], id).toBeDefined();
   });
 
   it("keeps the footer's entry names equal to each entry's name", () => {
@@ -255,10 +259,11 @@ describe("reference: routes", () => {
     expect(html).not.toContain('id="software-jsonld"');
   });
 
-  it("is in the sitemap with every locale, without lastmod, and tracked by analytics", () => {
+  it("is in the sitemap with every locale, lastmod only on edited entries, and tracked by analytics", () => {
     const xml = buildSitemapXml(sitemapPages().filter((p) => p.kind === "ref"));
     expect(xml.match(/<url>/g)?.length).toBe(LOCALES.length * (REF_ENTRIES.length + 1));
-    expect(xml).not.toContain("<lastmod>");
+    expect(xml.match(/<lastmod>/g)?.length).toBe(LOCALES.length * Object.keys(REF_UPDATED).length);
+    expect(xml).toContain("<loc>https://cv.cm/vi/reference/sitting-pose/</loc>\n    <lastmod>2026-11-07</lastmod>");
     expect(xml).toContain("<loc>https://cv.cm/vi/reference/hanfu/</loc>");
     expect(xml).toContain('hreflang="zh-TW" href="https://cv.cm/zh-tw/reference/hanfu/"');
     expect(readFileSync(join(root, "public/sitemaps/reference.xml"), "utf8")).toBe(buildSitemapXml(sitemapPages().filter((p) => p.kind === "ref")));

@@ -5,7 +5,8 @@ import { linkList } from "./links";
 import type { Locale } from "../shared/locale";
 import { GAMES } from "../shared/games";
 import { gameName } from "../shared/games-i18n";
-import { CATEGORIES, FEATURED_TUTORIALS, appHref, deviceHref, gamesHref, kbHref, learnHref, quizHref, datasetHref } from "../shared/path";
+import { CATEGORIES, FEATURED_TUTORIALS, appHref, deviceHref, gamesHref, kbHref, learnHref, quizHref, datasetHref, refHref } from "../shared/path";
+import { REF_FOCUS } from "../shared/ref";
 import { KB_SHELVES, KNOWLEDGE_ARTICLES, kbGroupsOf } from "../shared/kb";
 import { kbLinkItems } from "../shared/kb-i18n";
 import { QUIZZES } from "../shared/quiz";
@@ -75,6 +76,10 @@ export function mountHome(host: HTMLElement, locale: Locale): () => void {
       h("h2", null, h("a", { href: kbHref(locale, "ai"), "data-nav": KB_SHELVES.ai.nav }, t("kb.ai.label"))),
       linkList(kbGroupsOf("ai").map((group) => ({ href: `${kbHref(locale, "ai")}#${group.id}`, name: t(`kb.ai.groups.${group.id}`), blurb: t(`kb.ai.blurbs.${group.id}`), nav: KB_SHELVES.ai.nav }))),
       h("p", { class: "more" }, h("a", { href: kbHref(locale, "ai"), "data-nav": KB_SHELVES.ai.nav }, t("kb.ai.all"))),
+    ),
+    h("section", { class: "wall" },
+      h("h2", null, h("a", { href: refHref(locale), "data-nav": "reference" }, t("nav.reference"))),
+      h("p", { class: "ref-focus" }, ...REF_FOCUS.map((id) => h("a", { href: refHref(locale, id), "data-nav": `ref-${id}` }, t(`refFocus.${id}`)))),
     ),
     h("section", { class: "wall" },
       h("h2", null, t("nav.games")),

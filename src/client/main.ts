@@ -252,6 +252,8 @@ function prefetchGamePack(e: Event): void {
   const loc = locale();
   if (target?.closest?.('a[data-nav^="game-"]')) {
     if (!hasPageMessages(loc, true)) loadPageMessages(loc, true).catch(() => {});
+  } else if (target?.closest?.('.dir-group a[data-nav^="ref-"]')) {
+    // Footer entries sit on every page and are easy to brush past; the pack loads on click instead.
   } else if (target?.closest?.('a[data-nav^="ref-"], a[data-nav="reference"]')) {
     // data-nav is "ref-<entry id>" on an entry link, "reference" on a hub link.
     const nav = target.closest('a[data-nav^="ref-"], a[data-nav="reference"]')?.getAttribute("data-nav") ?? "";

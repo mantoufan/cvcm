@@ -628,6 +628,7 @@ input[type="color"] { width: 2.6rem; height: 2.2rem; padding: 0; border: 1px sol
 .gen-grid figcaption .btn { width: 100%; }
 /* AI music generator: piano roll of the generated piece. */
 .music-roll { display: block; width: 100%; height: auto; background: var(--white); }
+.ref-focus { display: flex; flex-wrap: wrap; gap: 0.15rem 0.85rem; margin: 0; line-height: 1.7; }
 .ref-tags { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 0.4rem; }
 .ref-names th[scope="row"] { font-weight: 400; color: var(--ink-soft); }
 .game-official { margin: 0.4rem 0 0.6rem; padding-left: 1.2rem; }
