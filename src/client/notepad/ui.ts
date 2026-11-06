@@ -137,7 +137,8 @@ function scheduleSave(): void {
 
 /** Saves now if a save is waiting (leaving the page or the tool must not lose the last keystrokes). */
 function flush(): void {
-  if (!saveTimer) return;
+  // A save that failed earlier gets another try: space may have been freed since.
+  if (!saveTimer && storageOk) return;
   save();
 }
 

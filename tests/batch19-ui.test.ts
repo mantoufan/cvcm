@@ -26,6 +26,15 @@ afterEach(() => {
   vi.restoreAllMocks();
 });
 
+/** Storage that reads but refuses writes, as when the quota is full. */
+const failWrites = () => {
+  const real = window.localStorage;
+  vi.spyOn(window, "localStorage", "get").mockReturnValue({
+    getItem: (k: string) => real.getItem(k),
+    removeItem: (k: string) => real.removeItem(k),
+    setItem: () => { throw new Error("full"); },
+  } as unknown as Storage);
+};
 const q = <T extends HTMLElement>(sel: string) => host.querySelector<T>(sel)!;
 const type = (el: HTMLInputElement | HTMLTextAreaElement, v: string) => {
   el.value = v;
@@ -348,7 +357,7 @@ describe("review pass 15 ui", () => {
   it("keeps history for the visit when storage is blocked", () => {
     mountCalculator(host);
     const expr = q<HTMLInputElement>("[data-field=expr]");
-    vi.spyOn(window.localStorage.__proto__, "setItem").mockImplementation(() => { throw new Error("full"); });
+    failWrites();
     for (const sum of ["1+1", "2+2"]) {
       type(expr, sum);
       q<HTMLButtonElement>("[data-key='@eq']").click();
@@ -416,7 +425,7 @@ describe("review pass 17 ui", () => {
     window.localStorage.setItem("cvcm.markdown.v1", "old");
     mountMarkdown(host);
     const box = q<HTMLTextAreaElement>("[data-field=markdown]");
-    vi.spyOn(window.localStorage.__proto__, "setItem").mockImplementation(() => { throw new Error("full"); });
+    failWrites();
     box.value = "my draft";
     box.dispatchEvent(new Event("input", { bubbles: true }));
     window.dispatchEvent(new Event("pagehide"));
@@ -449,7 +458,7 @@ describe("review pass 18 ui", () => {
   it("keeps calculator history it could not save", () => {
     mountCalculator(host);
     const expr = q<HTMLInputElement>("[data-field=expr]");
-    vi.spyOn(window.localStorage.__proto__, "setItem").mockImplementation(() => { throw new Error("full"); });
+    failWrites();
     type(expr, "1+1");
     q<HTMLButtonElement>("[data-key='@eq']").click();
     backFromMemory();
@@ -459,7 +468,7 @@ describe("review pass 18 ui", () => {
   it("keeps Markdown it could not save when another tab saves", () => {
     mountMarkdown(host);
     const box = q<HTMLTextAreaElement>("[data-field=markdown]");
-    vi.spyOn(window.localStorage.__proto__, "setItem").mockImplementation(() => { throw new Error("full"); });
+    failWrites();
     box.value = "large draft";
     box.dispatchEvent(new Event("input", { bubbles: true }));
     window.dispatchEvent(new Event("pagehide"));
@@ -469,11 +478,25 @@ describe("review pass 18 ui", () => {
   it("keeps a note it could not save when another tab saves", () => {
     mountNotepad(host);
     const box = host.querySelector("textarea")!;
-    vi.spyOn(window.localStorage.__proto__, "setItem").mockImplementation(() => { throw new Error("full"); });
+    failWrites();
     box.value = "large note";
     box.dispatchEvent(new Event("input", { bubbles: true }));
     window.dispatchEvent(new Event("pagehide"));
     window.dispatchEvent(new StorageEvent("storage", { key: "cvcm.notepad.v1", newValue: JSON.stringify({ text: "x", savedAt: 1 }) }));
     expect(box.value).toBe("large note");
+  });
+});
+
+describe("review pass 19 ui", () => {
+  it("retries a note that could not be saved when leaving", () => {
+    mountNotepad(host);
+    const box = host.querySelector("textarea")!;
+    failWrites();
+    box.value = "only copy";
+    box.dispatchEvent(new Event("input", { bubbles: true }));
+    window.dispatchEvent(new Event("pagehide"));
+    vi.restoreAllMocks();
+    window.dispatchEvent(new Event("pagehide"));
+    expect(JSON.parse(window.localStorage.getItem("cvcm.notepad.v1")!).text).toBe("only copy");
   });
 });
