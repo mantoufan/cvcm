@@ -54,7 +54,8 @@ function normalize(src: string): string {
 }
 
 function tokenize(src: string, decimal: "." | ","): Tok[] {
-  let s = normalize(src);
+  // A pasted "2+2=" asks for the result.
+  let s = normalize(src).replace(/[=＝]\s*$/, "");
   // Thousands are read only in real groups: 1,234,567 with a decimal point, 1.234.567 with a decimal comma. Any other
   // comma fails with a decimal point ("1,5" is not quietly 15); with a decimal comma, a lone "." is a decimal point too.
   if (decimal === ",") {
@@ -115,7 +116,14 @@ function tokenize(src: string, decimal: "." | ","): Tok[] {
   return out;
 }
 
-function factorial(n: number): number {
+/** A result that displays as a whole number counts as one: (0.1+0.2)*10 shows 3, so 3! must work too. */
+function nearInt(v: number): number {
+  const r = Number(v.toPrecision(15));
+  return Number.isInteger(r) ? r : v;
+}
+
+function factorial(raw: number): number {
+  const n = nearInt(raw);
   if (n < 0 || !Number.isInteger(n)) throw new Fail("domain");
   if (n > MAX_FACTORIAL) throw new Fail("overflow");
   let r = 1;
@@ -269,7 +277,8 @@ export function evaluate(src: string, mode: AngleMode = "deg", ans = 0, decimal:
     const base = postfix();
     if (isOp(peek(), "^")) {
       pos++;
-      const exp = unary();
+      const raw = unary();
+      const exp = base < 0 ? nearInt(raw) : raw;
       // A negative base with a fractional power has no real result.
       if (base < 0 && !Number.isInteger(exp)) throw new Fail("domain");
       if (base === 0 && exp < 0) throw new Fail("domain");

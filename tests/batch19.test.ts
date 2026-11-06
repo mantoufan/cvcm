@@ -312,3 +312,37 @@ describe("review pass 5", () => {
     expect(table.rows.length).toBeLessThanOrEqual(67);
   });
 });
+
+describe("review pass 6", () => {
+  it("ends a bare address at CJK punctuation and links it after CJK letters", () => {
+    expect(md("详情见 https://cv.cm/zh-cn/，然后继续。")).toContain('<a href="https://cv.cm/zh-cn/">https://cv.cm/zh-cn/</a>，然后继续。');
+    expect(md("详情见https://cv.cm/ 后面")).toContain('<a href="https://cv.cm/">');
+    expect(md("xhttps://cv.cm/")).not.toContain("<a ");
+  });
+  it("continues only paragraphs lazily", () => {
+    expect(md("> # h\nnext")).toBe("<blockquote>\n<h1>h</h1>\n</blockquote>\n<p>next</p>");
+    expect(md("> a\nb")).toBe("<blockquote>\n<p>a\nb</p>\n</blockquote>");
+    expect(md("- a\n  ```\n  x\n  ```\nafter")).toContain("<p>after</p>");
+    expect(md("- # h\nnext")).toContain("<p>next</p>");
+    expect(md("- a\nb")).not.toContain("<p>b</p>");
+  });
+  it("treats a shown whole number as whole", () => {
+    expect(calc("((0.1+0.2)*10)!")).toBe("6");
+    expect(calc("(-8)^((0.1+0.2)*10)")).toBe("−512");
+    expect(calc("(-8)^0.5")).toBe("domain");
+    expect(calc("2.5!")).toBe("domain");
+  });
+  it("reads a trailing equals sign", () => {
+    expect(calc("2+2=")).toBe("4");
+    expect(calc("2=2")).toBe("syntax");
+  });
+  it("resolves reference links and hides definitions", () => {
+    expect(md("[docs][1] and [Site] and [x][]\n\n[1]: https://x.y \"T\"\n[site]: <https://s.t>\n[x]: /x")).toBe('<p><a href="https://x.y" title="T">docs</a> and <a href="https://s.t">Site</a> and <a href="/x">x</a></p>');
+    expect(md("![badge][b]\n\n[b]: https://i.png")).toBe('<p><img src="https://i.png" alt="badge"></p>');
+    expect(md("[a]\n\n[a]: javascript:alert(1)")).toBe("<p>a</p>");
+    expect(md("[no ref] stays")).toBe("<p>[no ref] stays</p>");
+    expect(md("text\n[1]: https://x.y")).toContain("[1]:");
+    expect(md("```\n\n[1]: https://x.y\n```")).toContain("[1]: https://x.y");
+    expect(md("[a]: x" + " ".repeat(199000) + "y")).toBeTruthy();
+  });
+});

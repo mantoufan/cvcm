@@ -63,17 +63,58 @@ function expandTabs(line: string): string {
 
 /** Splits text into lines with their indents expanded, leaving the lines of a top-level fence exactly as typed. */
 function toLines(text: string): string[] {
+  const out: string[] = [];
   let close: RegExp | null = null;
-  return text.split("\n").map((raw) => {
+  for (const raw of text.split("\n")) {
     const line = expandTabs(raw);
     if (close) {
-      if (close.test(line)) close = null;
-      return close ? raw : line;
+      if (close.test(line)) {
+        close = null;
+        out.push(line);
+      } else {
+        out.push(raw);
+      }
+      continue;
     }
     const fence = indentOf(line) < 2 ? fenceOf(line) : null;
     if (fence) close = new RegExp(`^ {0,3}${fence.mark[0] === "`" ? "`" : "~"}{${fence.mark.length},}[ \\t]*$`);
-    return line;
-  });
+    // A reference definition ("[1]: https://…") is not shown. It cannot interrupt a paragraph, so it follows a blank line.
+    if (!fence && line.includes("]:") && blank(out[out.length - 1]) && addRef(line)) continue;
+    out.push(line);
+  }
+  return out;
+}
+
+/** Link reference definitions of the document being parsed, by normalized label. */
+let refs = new Map<string, { href: string; title: string }>();
+
+const refKey = (label: string) => label.trim().replace(/\s+/g, " ").toLowerCase();
+
+function addRef(line: string): boolean {
+  const m = /^ {0,3}\[([^\]\n]{1,200})\]:[ ]*(\S+)(?:\s+(?:"([^"]*)"|'([^']*)'|\(([^)]*)\)))?\s*$/.exec(line);
+  if (!m) return false;
+  const key = refKey(m[1]);
+  // The first definition of a label wins, as in CommonMark.
+  if (key && !refs.has(key)) refs.set(key, { href: decodeEntities(m[2].replace(/^<(.*)>$/, "$1")), title: decodeEntities(m[3] ?? m[4] ?? m[5] ?? "") });
+  return key !== "";
+}
+
+/** The reference a bracket pair closing at `close` points to: "[a][b]", "[a][]" or "[a]". */
+function refAt(s: string, open: number, close: number): { href: string; title: string; end: number } | null {
+  if (refs.size === 0) return null;
+  let label = s.slice(open + 1, close);
+  let end = close + 1;
+  if (s[end] === "[") {
+    const stop = s.indexOf("]", end);
+    if (stop > 0 && stop - end <= 1000) {
+      const second = s.slice(end + 1, stop);
+      if (second.trim()) label = second;
+      end = stop + 1;
+    }
+  }
+  if (label.length > 1000) return null;
+  const ref = refs.get(refKey(label));
+  return ref ? { ...ref, end } : null;
 }
 
 /** A delimiter row, cell by cell (a single regex for this backtracks badly on long runs of spaces). */
@@ -148,6 +189,11 @@ function startsTable(lines: string[], i: number): boolean {
   return splitRow(head).length === splitRow(delim).length;
 }
 
+/** Whether the line before a plain line is paragraph text, which is all a "lazy" line can continue. */
+function continuesParagraph(last: string): boolean {
+  return !blank(last) && !ATX.test(last) && !HR.test(last) && !SETEXT.test(last);
+}
+
 /** Whether a line starts a block that ends the paragraph above it. */
 function interrupts(line: string): boolean {
   if (fenceOf(line) || ATX.test(line) || HR.test(line) || QUOTE.test(line)) return true;
@@ -167,6 +213,7 @@ let budget = 0;
 export function parseMarkdown(src: string): Block[] {
   const text = src.slice(0, MAX_MARKDOWN).replace(/\r\n?/g, "\n").replace(/^﻿/, "").replace(/\0/g, "�");
   cellsLeft = MAX_TABLE_CELLS;
+  refs = new Map();
   return blocks(toLines(text), 0);
 }
 
@@ -212,12 +259,14 @@ function blocks(lines: string[], depth: number): Block[] {
     }
     if (QUOTE.test(line)) {
       const inner: string[] = [];
+      let fenced = false;
       while (i < lines.length && !blank(lines[i])) {
         const l = lines[i];
         if (QUOTE.test(l)) inner.push(l.replace(/^ {0,3}> ?/, ""));
         // A plain line right after quoted text continues that paragraph ("lazy" continuation).
-        else if (!interrupts(l) && inner.length && !blank(inner[inner.length - 1])) inner.push(l);
+        else if (!fenced && !interrupts(l) && inner.length && continuesParagraph(inner[inner.length - 1])) inner.push(l);
         else break;
+        if (fenceOf(inner[inner.length - 1])) fenced = true;
         i++;
       }
       out.push({ t: "quote", kids: depth < MAX_NEST ? blocks(inner, depth + 1) : [{ t: "p", kids: [{ t: "text", v: inner.join("\n") }] }] });
@@ -297,6 +346,7 @@ function list(lines: string[], start: number, depth: number, out: Block[]): numb
     const pad = spaces > 4 || m[4] === "" ? 1 : spaces;
     const content = m[1].length + m[2].length + pad;
     const body: string[] = [spaces > 4 ? " ".repeat(spaces - 1) + m[4] : m[4]];
+    let fenced = !!fenceOf(body[0] ?? "");
     i++;
     let sawBlank = false;
     while (i < lines.length) {
@@ -314,11 +364,12 @@ function list(lines: string[], start: number, depth: number, out: Block[]): numb
       }
       if (indentOf(l) >= content) {
         body.push(l.slice(content));
+        if (fenceOf(body[body.length - 1])) fenced = true;
         i++;
         continue;
       }
       // Lazy continuation of the item's last paragraph.
-      if (!sawBlank && !interrupts(l) && !BULLET.test(l) && !blank(body[body.length - 1]) && !fenceOf(body[0] ?? "")) {
+      if (!sawBlank && !fenced && !interrupts(l) && !BULLET.test(l) && continuesParagraph(body[body.length - 1])) {
         body.push(l.trim());
         i++;
         continue;
@@ -483,6 +534,8 @@ function destination(s: string, i: number): { href: string; title: string; end: 
 }
 
 const isSpace = (c: string | undefined) => c == null || /\s/.test(c);
+/** Chinese, Japanese and Korean run on without spaces, so a web address can follow one of these letters directly. */
+const CJK = /[\p{Script=Han}\p{Script=Hiragana}\p{Script=Katakana}\p{Script=Hangul}]/u;
 const isWord = (c: string | undefined) => c != null && /[\p{L}\p{N}]/u.test(c);
 
 /** Finds where an emphasis run of `delim` opened at i closes, or −1. */
@@ -602,7 +655,7 @@ export function inline(src: string, depth = 0, inLink = false): Inline[] {
     if ((c === "!" && s[i + 1] === "[") || (c === "[" && !inLink)) {
       const open = c === "!" ? i + 1 : i;
       const close = closeBracket(s, open);
-      const dest = close > 0 ? destination(s, close + 1) : null;
+      const dest = close > 0 ? destination(s, close + 1) ?? refAt(s, open, close) : null;
       if (dest) {
         const label = s.slice(open + 1, close);
         flush();
@@ -633,8 +686,8 @@ export function inline(src: string, depth = 0, inLink = false): Inline[] {
       }
     }
     // A bare web address at the start of a word becomes a link (GitHub style).
-    if ((c === "h" || c === "w" || c === "H" || c === "W") && !inLink && !isWord(s[i - 1])) {
-      const m = /^(?:https?:\/\/|www\.)[^\s<]+/i.exec(s.slice(i));
+    if ((c === "h" || c === "w" || c === "H" || c === "W") && !inLink && !(isWord(s[i - 1]) && !CJK.test(s[i - 1]))) {
+      const m = /^(?:https?:\/\/|www\.)[^\s<，。；：！？、）】》」』（【《「『]+/i.exec(s.slice(i));
       if (m) {
         // Trailing punctuation belongs to the sentence; a ")" stays only if it closes a "(" in the address.
         const opens = m[0].split("(").length - 1;

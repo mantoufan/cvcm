@@ -250,3 +250,17 @@ describe("review pass 5 ui", () => {
     expect(q<HTMLButtonElement>("[data-action=undo]").hidden).toBe(true);
   });
 });
+
+describe("review pass 6 ui", () => {
+  it("runs equals for a typed = and keeps it out of history", () => {
+    mountCalculator(host);
+    const expr = q<HTMLInputElement>("[data-field=expr]");
+    type(expr, "2+2");
+    expr.dispatchEvent(new InputEvent("beforeinput", { data: "=", inputType: "insertText", bubbles: true, cancelable: true }));
+    expect(q("[data-out=result]").textContent).toBe("= 4");
+    q("[data-action=clear-history]").click();
+    type(expr, "3+3=");
+    expr.dispatchEvent(new KeyboardEvent("keydown", { key: "Enter", bubbles: true }));
+    expect(JSON.parse(window.localStorage.getItem("cvcm.calculator.v1")!)[0].expr).toBe("3+3");
+  });
+});

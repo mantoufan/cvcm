@@ -63,6 +63,12 @@ export function mountCalculator(host: HTMLElement): void {
     },
     // After "=", typing means the same as the keypad: a new sum, or carrying on from the answer.
     onBeforeinput: (e: InputEvent) => {
+      // Soft keyboards do not always report "=" as a key press.
+      if (e.data === "=" || e.data === "＝") {
+        e.preventDefault();
+        equals();
+        return;
+      }
       if (shown === null || !e.data || !e.data.trim() || (e.inputType !== "insertText" && e.inputType !== "insertFromPaste")) return;
       e.preventDefault();
       insert(e.data);
@@ -231,7 +237,7 @@ function clearAll(): void {
 
 function equals(): void {
   if (!exprEl) return;
-  const expr = exprEl.value.trim();
+  const expr = exprEl.value.trim().replace(/[=＝]\s*$/, "").trim();
   if (!expr || shown !== null) return;
   const used = done?.expr === expr ? done.ans : ans;
   const r = evaluate(expr, mode, used, decimalMarkOf(locale()));
@@ -319,7 +325,8 @@ function clearHistory(): void {
 }
 
 async function copyResult(): Promise<void> {
-  const text = (previewEl?.textContent ?? "").replace(/^= /, "");
+  // The display's minus sign (U+2212) pastes as text in spreadsheets and number fields.
+  const text = (previewEl?.textContent ?? "").replace(/^= /, "").replace("−", "-");
   if (!text || previewEl?.classList.contains("error")) return;
   await copyWithFlash(copyBtn, text, { done: t("calculator.copied"), failed: t("calculator.copyFailed") });
 }
