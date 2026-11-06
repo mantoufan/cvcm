@@ -67,7 +67,9 @@ export function mountMarkdown(host: HTMLElement): void {
       h("p", { class: "hint" }, t("markdown.hint")),
     ),
   );
-  inputEl.value = load() ?? t("markdown.sampleText");
+  const saved = load();
+  inputEl.value = saved ?? t("markdown.sampleText");
+  if (saved) inputEl.setAttribute("data-restored", "");
   dirty = false;
   paint();
   window.addEventListener("pagehide", save);
@@ -167,7 +169,7 @@ function indentOnTab(e: KeyboardEvent): void {
     const next = value.indexOf("\n", stop);
     const blockEnd = next < 0 ? value.length : next;
     const lines = value.slice(lineStart, blockEnd).split("\n");
-    const changed = lines.map((l) => (e.shiftKey ? l.replace(/^ {1,4}/, "") : l && `  ${l}`));
+    const changed = lines.map((l) => (e.shiftKey ? l.replace(/^ {1,2}/, "") : l && `  ${l}`));
     const block = changed.join("\n");
     if (block === value.slice(lineStart, blockEnd)) return;
     replaceRange(lineStart, blockEnd, block);

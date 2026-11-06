@@ -217,11 +217,8 @@ function press(act: string): void {
   if (act === "@clear") return clearAll();
   if (act === "@eq") return equals();
   if (act === "@back") {
-    if (shown !== null) {
-      shown = null;
-      paint();
-      return;
-    }
+    // After "=" this edits the sum at once, like the keyboard's Backspace.
+    shown = null;
     const start = exprEl.selectionStart ?? exprEl.value.length;
     const end = exprEl.selectionEnd ?? start;
     if (start !== end) {
@@ -273,7 +270,6 @@ function equals(): void {
   done = { expr, ans: used };
   ans = r.value;
   shown = formatResult(r.value, mark);
-  history = load();
   if (saved.length <= MAX_EVAL) history.unshift({ expr: saved, result: shown, mode, ...(full !== saved && full.length <= MAX_EVAL ? { full } : {}) });
   history = history.slice(0, MAX_HISTORY);
   save();

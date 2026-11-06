@@ -351,12 +351,14 @@ function blocks(lines: string[], depth: number): Block[] {
 function hasOwnBlank(body: string[]): boolean {
   let inFence = false;
   let prev = "";
+  let inNested = false;
   for (let k = 0; k < body.length; k++) {
     const l = body[k];
     if (fenceOf(l)) inFence = !inFence;
     if (inFence) continue;
     if (!blank(l)) {
       prev = l;
+      if (k > 0 && BULLET.test(l.trimStart())) inNested = true;
       continue;
     }
     let n = k + 1;
@@ -367,7 +369,7 @@ function hasOwnBlank(body: string[]): boolean {
     }
     const next = body[n];
     // Only after a nested list's own line: "- a\n\n    more" is a second paragraph of the item, however far it is indented.
-    const nested = (BULLET.test(prev.trimStart()) || indentOf(prev) > 0) && (indentOf(next) > 0 || BULLET.test(next));
+    const nested = inNested && (indentOf(next) > 0 || BULLET.test(next));
     if (!nested) return true;
     k = n - 1;
   }

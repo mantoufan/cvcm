@@ -312,6 +312,7 @@ describe("review pass 13 ui", () => {
     window.dispatchEvent(new StorageEvent("storage", { key: "cvcm.calculator.v1" }));
     expect(host.querySelectorAll(".calc-hist").length).toBe(1);
     window.localStorage.setItem("cvcm.calculator.v1", JSON.stringify([{ expr: "2+2", result: "4" }, { expr: "1+1", result: "2" }]));
+    window.dispatchEvent(new StorageEvent("storage", { key: "cvcm.calculator.v1" }));
     type(expr, "3+3");
     expr.dispatchEvent(new KeyboardEvent("keydown", { key: "Enter", bubbles: true }));
     expect(JSON.parse(window.localStorage.getItem("cvcm.calculator.v1")!).map((e: { expr: string }) => e.expr)).toEqual(["3+3", "2+2", "1+1"]);
@@ -332,5 +333,35 @@ describe("review pass 14 ui", () => {
     window.dispatchEvent(new StorageEvent("storage", { key: "cvcm.markdown.v1", newValue: "from tab 2" }));
     expect(box.value).toBe("from tab 2");
     expect(q<HTMLButtonElement>("[data-action=undo]").hidden).toBe(true);
+  });
+});
+
+describe("review pass 15 ui", () => {
+  it("edits at once with the keypad's backspace after =", () => {
+    mountCalculator(host);
+    const expr = q<HTMLInputElement>("[data-field=expr]");
+    type(expr, "12+34");
+    q<HTMLButtonElement>("[data-key='@eq']").click();
+    q<HTMLButtonElement>("[data-key='@back']").click();
+    expect(expr.value).toBe("12+3");
+  });
+  it("keeps history for the visit when storage is blocked", () => {
+    mountCalculator(host);
+    const expr = q<HTMLInputElement>("[data-field=expr]");
+    vi.spyOn(window.localStorage.__proto__, "setItem").mockImplementation(() => { throw new Error("full"); });
+    for (const sum of ["1+1", "2+2"]) {
+      type(expr, sum);
+      q<HTMLButtonElement>("[data-key='@eq']").click();
+    }
+    expect(host.querySelectorAll(".calc-hist").length).toBe(2);
+  });
+  it("marks restored text so early typing cannot replace it, and outdents one level", () => {
+    window.localStorage.setItem("cvcm.markdown.v1", "- a\n  - b\n    - c");
+    mountMarkdown(host);
+    const box = q<HTMLTextAreaElement>("[data-field=markdown]");
+    expect(box.hasAttribute("data-restored")).toBe(true);
+    box.setSelectionRange(box.value.length, box.value.length);
+    box.dispatchEvent(new KeyboardEvent("keydown", { key: "Tab", shiftKey: true, bubbles: true, cancelable: true }));
+    expect(box.value).toBe("- a\n  - b\n  - c");
   });
 });

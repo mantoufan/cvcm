@@ -78,7 +78,10 @@ export function mountNotepad(host: HTMLElement): void {
     ),
   );
   const note = load();
-  if (note) textEl.value = note.text;
+  if (note) {
+    textEl.value = note.text;
+    if (note.text) textEl.setAttribute("data-restored", "");
+  }
   applyPrefs(false);
   paintStats();
   paintSaved(note?.savedAt ?? 0);

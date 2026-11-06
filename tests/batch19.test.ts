@@ -507,3 +507,10 @@ describe("review pass 14", () => {
     expect(md("***a***")).toBe("<p><strong><em>a</em></strong></p>");
   });
 });
+
+describe("review pass 15", () => {
+  it("keeps two paragraphs of an item apart whatever their indent", () => {
+    expect(md("1. Step one\n    more detail\n\n    Second paragraph")).toContain("<p>Second paragraph</p>");
+    expect(md("- a\n  - b\n\n  - c\n- d")).toContain("<li>d</li>");
+  });
+});
