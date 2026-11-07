@@ -544,7 +544,8 @@
     "tests": "Tests",
     "data": "Data",
     "reference": "Reference",
-    "ai": "AI"
+    "ai": "AI",
+    "rankings": "Rankings"
   },
   "lang": {
     "label": "Language",
@@ -10652,5 +10653,51 @@
     "separator": ", ",
     "sample": "Pizza\nBurger\nSushi\nTacos\nRamen\nSalad",
     "picturesNote": "Pictures are not saved: they are cleared when you reload or leave, so download the PNG first."
+  },
+  "ranking": {
+    "ai-models": {
+      "name": "Best AI models (LLM leaderboard)",
+      "blurb": "The top chat models by human votes in blind comparisons."
+    },
+    "ai-coding-models": {
+      "name": "Best AI models for coding",
+      "blurb": "Models ranked by people judging web apps they built."
+    },
+    "ai-image-models": {
+      "name": "Best AI image generators",
+      "blurb": "Image models ranked by blind votes on their pictures."
+    },
+    "ai-video-models": {
+      "name": "Best AI video generators",
+      "blurb": "Video models ranked by blind votes on their clips."
+    },
+    "ai-usage": {
+      "name": "Most used AI models",
+      "blurb": "Models ranked by tokens sent through OpenRouter."
+    },
+    "ai-companies": {
+      "name": "AI companies by usage",
+      "blurb": "Who the most used models on OpenRouter come from."
+    },
+    "browser-market-share": {
+      "name": "Browser market share",
+      "blurb": "Chrome, Safari, Edge and others, worldwide and by country."
+    },
+    "os-market-share": {
+      "name": "Operating system market share",
+      "blurb": "Android, Windows, iOS and macOS, worldwide and by country."
+    },
+    "search-engine-market-share": {
+      "name": "Search engine market share",
+      "blurb": "Google, Bing, Baidu and others, worldwide and by country."
+    },
+    "phone-market-share": {
+      "name": "Phone brand market share",
+      "blurb": "Apple, Samsung, Xiaomi and others, worldwide and by country."
+    },
+    "social-media-market-share": {
+      "name": "Social media market share",
+      "blurb": "Which networks send the most web visits, by country."
+    }
   }
 }

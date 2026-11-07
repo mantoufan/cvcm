@@ -544,7 +544,8 @@
     "tests": "診断",
     "data": "データ",
     "reference": "資料集",
-    "ai": "AI"
+    "ai": "AI",
+    "rankings": "ランキング"
   },
   "lang": {
     "label": "言語",
@@ -10652,5 +10653,51 @@
     "separator": "、",
     "sample": "寿司\nラーメン\nたこ焼き\n唐揚げ\nカレーライス\nおにぎり",
     "picturesNote": "画像は保存されません。再読み込みやページ移動で消えるので、先に PNG をダウンロードしてください。"
+  },
+  "ranking": {
+    "ai-models": {
+      "name": "生成AI ランキング（LLM）",
+      "blurb": "ブラインド比較の人による投票で選ばれたチャットモデル上位。"
+    },
+    "ai-coding-models": {
+      "name": "コーディング AI ランキング",
+      "blurb": "モデルが作った Web アプリを人が評価した順位。"
+    },
+    "ai-image-models": {
+      "name": "画像生成AI ランキング",
+      "blurb": "画像のブラインド投票による画像モデルの順位。"
+    },
+    "ai-video-models": {
+      "name": "動画生成AI ランキング",
+      "blurb": "動画のブラインド投票による動画モデルの順位。"
+    },
+    "ai-usage": {
+      "name": "利用量の多い AI モデル",
+      "blurb": "OpenRouter 経由のトークン量によるモデルの順位。"
+    },
+    "ai-companies": {
+      "name": "AI 企業の利用量ランキング",
+      "blurb": "OpenRouter でよく使われるモデルの提供元。"
+    },
+    "browser-market-share": {
+      "name": "ブラウザ シェア",
+      "blurb": "Chrome、Safari、Edge など。世界全体と国別。"
+    },
+    "os-market-share": {
+      "name": "OS シェア",
+      "blurb": "Android、Windows、iOS、macOS。世界全体と国別。"
+    },
+    "search-engine-market-share": {
+      "name": "検索エンジン シェア",
+      "blurb": "Google、Bing、Baidu など。世界全体と国別。"
+    },
+    "phone-market-share": {
+      "name": "スマホ シェア（ブランド別）",
+      "blurb": "Apple、Samsung、Xiaomi など。世界全体と国別。"
+    },
+    "social-media-market-share": {
+      "name": "SNS シェア",
+      "blurb": "Web サイトへの訪問を最も多く送る SNS を国別に。"
+    }
   }
 }

@@ -869,5 +869,388 @@
         { "q": "Apa beda LF dan CR?", "a": "LF (10, line feed) memulai baris baru di Linux dan macOS. File teks Windows mengakhiri baris dengan CR LF (13 lalu 10)." }
       ]
     }
+  },
+  "rankings": {
+    "hub": {
+      "title": "Peringkat: AI Terbaik, Pangsa Pasar, dan Lainnya | cv.cm",
+      "description": "Peringkat bersumber yang bisa diurutkan dan diunduh: AI terbaik, AI paling banyak dipakai, serta pangsa pasar browser, OS, mesin pencari, ponsel, dan media sosial.",
+      "h1": "Peringkat",
+      "lede": "Peringkat yang disusun dari data terbuka, masing-masing dengan sumber, lisensi, dan tanggalnya. Urutkan kolom mana pun, saring baris, atau unduh CSV.",
+      "groups": {
+        "ai": "AI",
+        "share": "Pangsa pasar",
+        "countries": "Negara"
+      },
+      "makeYourOwn": "Buat peringkat sendiri",
+      "about": [
+        "Setiap tabel di sini berasal dari sumber terbitan yang mengizinkan penggunaan ulang, dan cv.cm tidak menambahkan skor sendiri atau memasukkan produknya sendiri. Baca bagian Tentang di setiap halaman: sebagian besar daftar hanya mengukur satu hal, seperti suara di satu situs atau kunjungan ke situs yang dilacak, dan batasan itu penting.",
+        "Data berupa cuplikan bertanggal, bukan siaran langsung, jadi setiap halaman memberi tahu tanggal yang ditampilkan."
+      ],
+      "faq": [
+        {
+          "q": "Dari mana datanya berasal?",
+          "a": "Kualitas AI berasal dari papan peringkat Arena, penggunaan AI dari OpenRouter, dan pangsa pasar dari StatCounter Global Stats. Setiap halaman menautkan ke sumber dan lisensinya."
+        },
+        {
+          "q": "Seberapa sering peringkat diperbarui?",
+          "a": "Peringkat diperbarui otomatis sekali sehari dan setiap halaman menampilkan tanggal datanya. Kecepatan terbit tiap sumber berbeda: pangsa pasar bulanan, tabel AI lebih sering berubah."
+        },
+        {
+          "q": "Bolehkah saya memakai ulang tabel ini?",
+          "a": "Boleh, sesuai lisensi sumber yang tertera di setiap halaman: CC BY 4.0 untuk tabel AI dan CC BY-SA 3.0 untuk pangsa pasar. Cantumkan sumbernya. Setiap tabel bisa diunduh sebagai CSV."
+        }
+      ]
+    },
+    "ui": {
+      "all": "Semua peringkat",
+      "search": "Saring baris",
+      "searchPlaceholder": "Ketik nama atau nilai",
+      "rows": "{n} baris",
+      "shown": "{shown} dari {n} baris",
+      "noMatch": "Tidak ada baris yang cocok.",
+      "download": "Unduh CSV",
+      "sortHint": "Pilih judul kolom untuk mengurutkan.",
+      "facts": "Fakta utama",
+      "about": "Tentang peringkat ini",
+      "faq": "Pertanyaan umum",
+      "related": "Peringkat lainnya",
+      "source": "Sumber",
+      "license": "Lisensi",
+      "snapshot": "Dikumpulkan {date}",
+      "dataAsOf": "Data per {date}",
+      "rank": "#",
+      "model": "Model AI",
+      "organization": "Perusahaan",
+      "licence": "Lisensi",
+      "score": "Skor",
+      "votes": "Suara",
+      "tokens": "Token",
+      "shareOfTokens": "Porsi token",
+      "modelsListed": "Jumlah model",
+      "name": "Nama",
+      "world": "Dunia",
+      "change": "Perubahan 1 tahun (poin)"
+    },
+    "sets": {
+      "ai-models": {
+        "title": "Peringkat Model AI {year}: Papan Peringkat LLM Terbaik | cv.cm",
+        "description": "Model chat AI terbaik saat ini: {top1} memimpin papan Arena dengan {v1}, lalu {top2} dan {top3}. {rows} teratas dengan skor dan suara, unduh CSV.",
+        "h1": "Model AI terbaik: papan peringkat LLM, {date}",
+        "lede": "{rows} model chat teratas di papan peringkat teks Arena, diurutkan menurut suara manusia secara buta. Cari, urutkan kolom mana pun, atau unduh CSV.",
+        "facts": [
+          "Pertama: {top1} ({v1}), lalu {top2} ({v2}) dan {top3} ({v3}).",
+          "{leadOrg} memegang posisi terbanyak di 10 besar: {leadCount}.",
+          "Data per {date}."
+        ],
+        "about": [
+          "Arena memungkinkan orang memberikan satu prompt ke dua model anonim dan memilih jawaban yang lebih baik. Suara itu menjadi rating, jadi selisih beberapa poin tidak banyak artinya: periksa kolom suara, karena model baru dengan sedikit suara paling banyak bergerak. Tabel ini menampilkan kategori keseluruhan dari cuplikan terbaru yang diterbitkan.",
+          "Rating tinggi menunjukkan apa yang lebih disukai pemilih dalam obrolan umum. Rating tidak mengukur harga, kecepatan, atau kinerja model pada pekerjaan Anda sendiri, jadi coba beberapa yang teratas pada tugas nyata sebelum memilih."
+        ],
+        "faq": [
+          {
+            "q": "Apa model AI terbaik saat ini?",
+            "a": "Menurut suara Arena per {date}, {top1} berada di posisi pertama dengan skor {v1}, diikuti {top2} dan {top3}. Urutannya sering berubah, dan model dengan skor berdekatan bisa bertukar posisi seiring masuknya suara."
+          },
+          {
+            "q": "Bagaimana papan peringkat LLM ini dinilai?",
+            "a": "Orang membandingkan dua model anonim pada prompt yang sama lalu memilih. Arena mengubah suara menjadi rating yang mirip dengan rating catur. Skor lebih tinggi berarti model cenderung mengalahkan model lain dalam pertandingan tersebut."
+          },
+          {
+            "q": "Mengapa satu model muncul beberapa kali?",
+            "a": "Arena memeringkat pengaturan secara terpisah, seperti tingkat penalaran High atau Max, karena model yang sama bisa menjawab berbeda di tiap pengaturan."
+          }
+        ]
+      },
+      "ai-coding-models": {
+        "title": "AI Terbaik untuk Coding {year}: Peringkat LLM Coding | cv.cm",
+        "description": "Model AI terbaik untuk coding, dari suara pengembangan web Arena: {top1} memimpin dengan {v1}, lalu {top2} dan {top3}. {rows} teratas dengan suara, unduh CSV.",
+        "h1": "Model AI terbaik untuk coding, {date}",
+        "lede": "{rows} model teratas di papan peringkat pengembangan web Arena: orang melihat dua aplikasi web hasil buatan model dan memilih yang lebih baik.",
+        "facts": [
+          "Pertama: {top1} ({v1}), lalu {top2} ({v2}) dan {top3} ({v3}).",
+          "{leadOrg} memegang posisi terbanyak di 10 besar: {leadCount}.",
+          "Data per {date}."
+        ],
+        "about": [
+          "Setiap suara membandingkan dua model anonim yang diberi permintaan sama untuk membuat halaman web atau aplikasi kecil. Pemilih menilai hasil yang mereka lihat, jadi tabel ini lebih menguntungkan front end yang berfungsi dan enak dilihat daripada kemampuan back end atau algoritma.",
+          "Skor adalah rating yang dibangun dari suara tersebut. Model dengan sedikit suara bisa banyak bergerak, jadi baca juga kolom suara, dan uji beberapa yang teratas pada codebase Anda sendiri, yang tidak bisa digantikan oleh peringkat publik mana pun."
+        ],
+        "faq": [
+          {
+            "q": "Apa AI terbaik untuk coding saat ini?",
+            "a": "Dalam suara pengembangan web Arena per {date}, {top1} berada di posisi pertama dengan {v1}, lalu {top2} dan {top3}."
+          },
+          {
+            "q": "Apakah ini mencakup semua jenis pemrograman?",
+            "a": "Tidak. Ini mencakup pembuatan halaman web dan aplikasi dari sebuah prompt. Model yang menang di sini belum tentu yang terbaik untuk men-debug proyek besar atau menulis kode sistem."
+          },
+          {
+            "q": "Mengapa skornya lebih tinggi daripada di tabel chat?",
+            "a": "Setiap tabel dinilai dari suaranya sendiri, jadi skor hanya membandingkan model dalam satu tabel."
+          }
+        ]
+      },
+      "ai-image-models": {
+        "title": "AI Pembuat Gambar Terbaik {year}: Peringkat Model | cv.cm",
+        "description": "AI pembuat gambar terbaik menurut suara buta: {top1} memimpin Arena dengan {v1}, lalu {top2} dan {top3}. {rows} model gambar teratas dengan skor dan suara.",
+        "h1": "AI pembuat gambar terbaik, {date}",
+        "lede": "{rows} model teks-ke-gambar teratas di papan peringkat Arena: orang melihat dua gambar dari satu prompt dan memilih tanpa tahu model mana yang membuatnya.",
+        "facts": [
+          "Pertama: {top1} ({v1}), lalu {top2} ({v2}) dan {top3} ({v3}).",
+          "{leadOrg} memegang posisi terbanyak di 10 besar: {leadCount}.",
+          "Data per {date}."
+        ],
+        "about": [
+          "Pemilih memilih gambar yang mereka sukai untuk prompt yang sama, dan suara itu menjadi rating. Ini menguntungkan daya tarik keseluruhan, jadi model yang kuat pada satu pekerjaan, seperti teks dalam gambar atau gaya tertentu, bisa berada di peringkat lebih rendah daripada yang layak untuk pekerjaan itu.",
+          "Tabel ini memeringkat model, bukan aplikasi. Satu aplikasi bisa menawarkan beberapa model ini, dan harga serta batasnya berbeda di tiap aplikasi."
+        ],
+        "faq": [
+          {
+            "q": "Apa AI pembuat gambar terbaik?",
+            "a": "Menurut suara Arena per {date}, {top1} berada di posisi pertama dengan {v1}, lalu {top2} dan {top3}. Untuk gaya tertentu, bandingkan beberapa yang teratas dengan prompt Anda sendiri."
+          },
+          {
+            "q": "Apakah peringkat ini tentang alat gratis?",
+            "a": "Tidak. Tabel ini memeringkat kualitas model, berapa pun biayanya. Kolom lisensi menunjukkan model mana yang memiliki bobot terbuka."
+          },
+          {
+            "q": "Seberapa sering ini berubah?",
+            "a": "Arena sering menerbitkan cuplikan baru, dan halaman ini menampilkan tanggal cuplikan yang digunakannya."
+          }
+        ]
+      },
+      "ai-video-models": {
+        "title": "AI Pembuat Video Terbaik {year}: Peringkat Model | cv.cm",
+        "description": "AI pembuat video terbaik menurut suara buta: {top1} memimpin Arena dengan {v1}, lalu {top2} dan {top3}. {rows} model teks-ke-video teratas dengan skor dan suara.",
+        "h1": "AI pembuat video terbaik, {date}",
+        "lede": "{rows} model teks-ke-video teratas di papan peringkat Arena: orang menonton dua klip dari satu prompt dan memilih tanpa tahu model mana yang membuatnya.",
+        "facts": [
+          "Pertama: {top1} ({v1}), lalu {top2} ({v2}) dan {top3} ({v3}).",
+          "{leadOrg} memegang posisi terbanyak di 10 besar: {leadCount}.",
+          "Data per {date}."
+        ],
+        "about": [
+          "Pemilih memilih klip yang mereka sukai untuk prompt yang sama, dan suara itu menjadi rating. Video mendapat lebih sedikit suara daripada teks, jadi skor di sini lebih tidak pasti, terutama untuk model baru.",
+          "Tabel ini mencakup video yang dibuat dari teks saja. Alat yang menganimasikan foto atau mengedit klip dinilai terpisah oleh Arena dan tidak disertakan di sini."
+        ],
+        "faq": [
+          {
+            "q": "Apa AI pembuat video terbaik?",
+            "a": "Menurut suara Arena per {date}, {top1} berada di posisi pertama dengan {v1}, lalu {top2} dan {top3}."
+          },
+          {
+            "q": "Apakah tabel ini mencakup suara, durasi, atau harga?",
+            "a": "Tidak. Tabel ini hanya mencerminkan klip mana yang lebih disukai pemilih. Periksa batas durasi, audio, dan harga pada aplikasi yang menawarkan model tersebut."
+          },
+          {
+            "q": "Apakah alat foto ke video cv.cm masuk dalam peringkat ini?",
+            "a": "Tidak. Alat cv.cm menggerakkan kamera virtual melalui foto di browser Anda dan tidak menghasilkan gerakan dari teks, jadi jenis alatnya berbeda."
+          }
+        ]
+      },
+      "ai-usage": {
+        "title": "Model AI Paling Banyak Dipakai {year}: OpenRouter | cv.cm",
+        "description": "Model AI paling banyak dipakai di OpenRouter: {top1} mengambil {v1} dari semua token selama 7 hari, lalu {top2} dan {top3}. Unduh CSV.",
+        "h1": "Model AI paling banyak dipakai di OpenRouter, {date}",
+        "lede": "{rows} model teratas menurut token yang diproses lewat OpenRouter selama 7 hari hingga {date}. Ini mengukur penggunaan, bukan kualitas.",
+        "facts": [
+          "Pertama: {top1} ({v1} dari semua token), lalu {top2} ({v2}) dan {top3} ({v3}).",
+          "Porsi dihitung dari semua token di OpenRouter, bukan dari seluruh penggunaan AI. Hanya lalu lintas publik yang dihitung, dan suatu model hanya dihitung pada hari ia masuk 50 besar harian OpenRouter.",
+          "Data untuk 7 hari hingga {date}."
+        ],
+        "about": [
+          "OpenRouter adalah layanan yang dipakai pengembang untuk mengakses banyak model melalui satu API, dan layanan ini menerbitkan apa yang melewatinya. Model murah yang dipakai agen otomatis yang sibuk bisa memuncaki tabel ini, karena token menghitung lalu lintas mesin selain manusia.",
+          "Ini satu platform. Penggunaan di dalam ChatGPT, Claude, Gemini, dan aplikasi lain, atau melalui API milik vendor, tidak dihitung, jadi tabel ini tidak bisa memberi tahu AI mana yang paling banyak penggunanya secara keseluruhan."
+        ],
+        "faq": [
+          {
+            "q": "Apa model AI yang paling banyak dipakai?",
+            "a": "Di OpenRouter selama 7 hari hingga {date}, {top1} memproses token terbanyak, yaitu {v1} dari total platform. Untuk semua produk AI, tidak ada angka publik yang memberi jawaban lengkap."
+          },
+          {
+            "q": "Apakah paling banyak dipakai berarti terbaik?",
+            "a": "Tidak. Harga sangat berpengaruh di sini. Untuk kualitas, lihat tabel Arena di bagian ini."
+          },
+          {
+            "q": "Apa itu token?",
+            "a": "Potongan kecil teks, sering kali bagian dari kata, yang dibaca dan ditulis model. Dokumen panjang dan agen yang menjalankan banyak langkah memakai token jauh lebih banyak daripada obrolan singkat."
+          }
+        ]
+      },
+      "ai-companies": {
+        "title": "Perusahaan AI menurut Penggunaan {year}: OpenRouter | cv.cm",
+        "description": "Perusahaan AI menurut token di OpenRouter: {top1} memiliki {v1} dari semua token selama 7 hari, lalu {top2} dan {top3}. Pangsa satu platform, unduh CSV.",
+        "h1": "Perusahaan AI menurut penggunaan di OpenRouter, {date}",
+        "lede": "Perusahaan di balik model yang paling banyak dipakai di OpenRouter, diurutkan menurut porsi dari semua token selama 7 hari. Ini hanya satu platform, bukan seluruh pasar AI.",
+        "facts": [
+          "Pertama: {top1} ({v1}), lalu {top2} ({v2}) dan {top3} ({v3}).",
+          "Porsi dihitung dari semua token di OpenRouter. Model yang dikelompokkan sebagai \"other\" ikut dihitung dalam total tetapi tidak milik perusahaan mana pun di sini, sehingga jumlah porsi tidak mencapai 100%. Hanya lalu lintas publik yang dihitung, dan suatu model hanya dihitung pada hari ia masuk 50 besar harian OpenRouter.",
+          "Data untuk 7 hari hingga {date}."
+        ],
+        "about": [
+          "cv.cm menjumlahkan, untuk tiap perusahaan, token dari model yang disebut OpenRouter dalam daftar teratas hariannya. Model lebih kecil yang dikelompokkan sebagai \"other\" tidak disertakan, dan model terbuka yang dilayani penyedia lain tetap dihitung untuk perusahaan pembuatnya.",
+          "Tabel ini tidak mencakup aplikasi konsumen dan penggunaan API langsung, yang urutannya bisa sangat berbeda. Bacalah sebagai apa yang disalurkan pengembang melalui satu layanan dalam satu pekan."
+        ],
+        "faq": [
+          {
+            "q": "Perusahaan AI mana yang memiliki pangsa pasar terbesar?",
+            "a": "Di OpenRouter selama 7 hari hingga {date}, {top1} memiliki porsi terbesar, yaitu {v1} dari semua token. Itu mencakup satu platform pengembang; tidak ada sumber publik yang memberikan pangsa seluruh penggunaan AI."
+          },
+          {
+            "q": "Mengapa ini berbeda dari angka pangsa pasar AI lainnya?",
+            "a": "Laporan lain menghitung kunjungan chatbot, pengguna aplikasi, atau pendapatan. Tabel ini menghitung token melalui satu layanan API, jadi condong ke pengembang dan model murah."
+          },
+          {
+            "q": "Mengapa perusahaan terkenal bisa berperingkat rendah?",
+            "a": "Banyak pelanggannya mungkin memakai API atau aplikasi perusahaan itu sendiri, yang tidak bisa dilihat OpenRouter."
+          }
+        ]
+      },
+      "browser-market-share": {
+        "title": "Pangsa Pasar Browser {year}: Global dan per Negara | cv.cm",
+        "description": "Pangsa pasar browser {date}: {top1} {v1}, {top2} {v2}, {top3} {v3} secara global, berdampingan dengan AS, Tiongkok, Taiwan, Jepang, Korea, dan lainnya.",
+        "h1": "Pangsa pasar browser, {date}",
+        "lede": "Porsi tayangan halaman web menurut browser, secara global dan di delapan pasar, pada semua perangkat. Bandingkan negara secara berdampingan, atau urutkan kolom mana pun.",
+        "facts": [
+          "Global: {top1} {v1}, {top2} {v2}, {top3} {v3}.",
+          "Tiongkok: {CNTop} memimpin dengan {CNV}. Jepang: {JPTop} dengan {JPV}. AS: {USTop} dengan {USV}.",
+          "Data untuk {date}."
+        ],
+        "about": [
+          "StatCounter menghitung tayangan halaman di lebih dari satu juta situs yang memakai pelacaknya, jadi ini mengukur seberapa banyak tiap browser dipakai di situs tersebut, bukan berapa banyak orang yang memasangnya. Perubahan dinyatakan dalam poin persentase dibanding bulan yang sama setahun sebelumnya.",
+          "Browser berbasis Chromium, seperti Edge dan banyak browser Tiongkok, dihitung dengan namanya sendiri di sini, meski memakai mesin yang sama dengan Chrome. Browser yang mengidentifikasi diri sebagai Chrome dihitung sebagai Chrome."
+        ],
+        "faq": [
+          {
+            "q": "Apa browser yang paling banyak dipakai?",
+            "a": "{top1}, dengan {v1} tayangan halaman global pada {date}, diikuti {top2} ({v2}) dan {top3} ({v3})."
+          },
+          {
+            "q": "Apa browser yang paling banyak dipakai di Tiongkok?",
+            "a": "Dalam data StatCounter {date}, {CNTop} memimpin Tiongkok dengan {CNV}. Browser lokal seperti UC dan 360 memiliki porsi jauh lebih besar di sana daripada di tempat lain dalam tabel."
+          },
+          {
+            "q": "Apakah ini porsi pengguna?",
+            "a": "Tidak. Ini porsi tayangan halaman di situs yang dilacak StatCounter, jadi orang yang lebih banyak menjelajah lebih banyak dihitung."
+          }
+        ]
+      },
+      "os-market-share": {
+        "title": "Pangsa Pasar OS {year}: Android, Windows, iOS | cv.cm",
+        "description": "Pangsa pasar sistem operasi {date}: {top1} {v1}, {top2} {v2}, {top3} {v3} secara global, berdampingan dengan AS, Tiongkok, Jepang, Korea, dan lainnya.",
+        "h1": "Pangsa pasar sistem operasi, {date}",
+        "lede": "Porsi tayangan halaman web menurut sistem operasi di ponsel, tablet, dan komputer, secara global dan di delapan pasar.",
+        "facts": [
+          "Global: {top1} {v1}, {top2} {v2}, {top3} {v3}.",
+          "Tiongkok: {CNTop} memimpin dengan {CNV}. AS: {USTop} dengan {USV}. Indonesia: {IDTop} dengan {IDV}.",
+          "Data untuk {date}."
+        ],
+        "about": [
+          "StatCounter menghitung tayangan halaman di situs yang memakai pelacaknya, pada semua jenis perangkat. Jadi tabel ini menunjukkan seberapa banyak web dilihat dari tiap sistem, yang tidak sama dengan jumlah perangkat terjual.",
+          "Versi lama dan baru suatu sistem dihitung bersama. Ponsel dan komputer berada dalam satu tabel, sehingga negara yang sebagian besar menjelajah lewat ponsel menunjukkan porsi Android atau iOS yang tinggi."
+        ],
+        "faq": [
+          {
+            "q": "Apa sistem operasi yang paling banyak dipakai?",
+            "a": "Jika menghitung semua perangkat, {top1} memimpin dengan {v1} tayangan halaman global pada {date}, diikuti {top2} ({v2}) dan {top3} ({v3})."
+          },
+          {
+            "q": "Apakah Windows masih yang terbesar?",
+            "a": "Di komputer, biasanya ya. Di semua perangkat, Windows bersaing dengan Android, karena begitu banyak penjelajahan terjadi di ponsel. Tabel di atas menunjukkan urutan saat ini."
+          },
+          {
+            "q": "Apakah ini menghitung aplikasi?",
+            "a": "Tidak. Ini menghitung kunjungan ke situs web di browser, jadi waktu yang dihabiskan di dalam aplikasi tidak termasuk."
+          }
+        ]
+      },
+      "search-engine-market-share": {
+        "title": "Pangsa Pasar Mesin Pencari {year}: Google, Bing, Baidu | cv.cm",
+        "description": "Pangsa pasar mesin pencari {date}: {top1} {v1}, {top2} {v2}, {top3} {v3} secara global, berdampingan dengan Tiongkok, Korea, Jepang, AS, dan lainnya.",
+        "h1": "Pangsa pasar mesin pencari, {date}",
+        "lede": "Porsi kunjungan yang datang dari tiap mesin pencari, secara global dan di delapan pasar. Urutannya sangat berubah menurut negara.",
+        "facts": [
+          "Global: {top1} {v1}, {top2} {v2}, {top3} {v3}.",
+          "Tiongkok: {CNTop} memimpin dengan {CNV}. Korea: {KRTop} dengan {KRV}. Jepang: {JPTop} dengan {JPV}.",
+          "Data untuk {date}."
+        ],
+        "about": [
+          "StatCounter menghitung tayangan halaman yang datang dari mesin pencari di situs yang memakai pelacaknya. Ini mengukur lalu lintas yang dikirim ke situs tersebut, bukan jumlah pencarian, dan jawaban yang dibaca orang tanpa mengeklik tidak dihitung.",
+          "Cakupan menjadi batasan di Tiongkok dan pasar lain tempat hanya sedikit situs terlacak yang dikunjungi, dan tempat pencarian di dalam aplikasi tidak terlihat, jadi anggap porsi itu sebagai panduan kasar."
+        ],
+        "faq": [
+          {
+            "q": "Apa mesin pencari yang paling banyak dipakai?",
+            "a": "{top1}, yang mengirim {v1} kunjungan pencarian global pada {date}, diikuti {top2} ({v2}) dan {top3} ({v3})."
+          },
+          {
+            "q": "Mesin pencari mana yang memimpin di Tiongkok?",
+            "a": "Dalam data StatCounter {date}, {CNTop} memimpin Tiongkok dengan {CNV}. Angka untuk Tiongkok sangat berbeda antarsumber karena situs yang dilacak tiap sumber berbeda."
+          },
+          {
+            "q": "Apakah chatbot AI dihitung sebagai mesin pencari di sini?",
+            "a": "Tidak. Tabel ini mencakup mesin pencari tradisional. Kunjungan dari asisten AI tidak termasuk."
+          }
+        ]
+      },
+      "phone-market-share": {
+        "title": "Pangsa Pasar Ponsel {year}: Apple, Samsung, Xiaomi | cv.cm",
+        "description": "Pangsa pasar merek ponsel {date}: {top1} {v1}, {top2} {v2}, {top3} {v3} secara global, berdampingan dengan AS, Tiongkok, Jepang, Korea, Vietnam, dan lainnya.",
+        "h1": "Pangsa pasar merek ponsel, {date}",
+        "lede": "Porsi tayangan halaman web seluler menurut merek ponsel, secara global dan di delapan pasar. Ini menunjukkan ponsel yang sedang dipakai orang, bukan yang terjual tahun ini.",
+        "facts": [
+          "Global: {top1} {v1}, {top2} {v2}, {top3} {v3}.",
+          "Tiongkok: {CNTop} memimpin dengan {CNV}. Korea: {KRTop} dengan {KRV}. Indonesia: {IDTop} dengan {IDV}.",
+          "Data untuk {date}."
+        ],
+        "about": [
+          "StatCounter mengenali merek dari kunjungan ke situs yang memakai pelacaknya pada perangkat seluler. Jadi ponsel lama yang masih dipakai ikut terhitung, itulah sebabnya angka ini berbeda dari peringkat penjualan yang diterbitkan firma riset setiap kuartal.",
+          "Sebagian ponsel menyembunyikan mereknya dari situs web, dan orang yang lebih banyak menjelajah lebih banyak dihitung. Anggap selisih kecil antarmerek sebagai derau."
+        ],
+        "faq": [
+          {
+            "q": "Merek ponsel mana yang paling banyak dipakai?",
+            "a": "{top1}, dengan {v1} tayangan halaman seluler global pada {date}, diikuti {top2} ({v2}) dan {top3} ({v3})."
+          },
+          {
+            "q": "Apakah ini sama dengan ponsel terjual?",
+            "a": "Tidak. Peringkat penjualan menghitung ponsel baru yang dikirim dalam suatu periode. Tabel ini menghitung ponsel yang dipakai, dibobot menurut seberapa banyak orang menjelajah dengannya."
+          },
+          {
+            "q": "Apa merek ponsel teratas di Tiongkok?",
+            "a": "Dalam data StatCounter {date}, {CNTop} memimpin Tiongkok dengan {CNV} tayangan halaman seluler."
+          }
+        ]
+      },
+      "social-media-market-share": {
+        "title": "Pangsa Pasar Media Sosial {year}: per Negara | cv.cm",
+        "description": "Pangsa pasar media sosial {date}: {top1} {v1}, {top2} {v2}, {top3} {v3} dari kunjungan web asal jejaring sosial, dengan AS, Jepang, Korea, dan lainnya.",
+        "h1": "Pangsa pasar media sosial, {date}",
+        "lede": "Jejaring sosial yang paling banyak mengirim kunjungan ke situs web, secara global dan di delapan pasar. Ini mengukur tautan yang diklik, bukan jumlah pengguna tiap jejaring.",
+        "facts": [
+          "Global: {top1} {v1}, {top2} {v2}, {top3} {v3}.",
+          "Jepang: {JPTop} memimpin dengan {JPV}. Korea: {KRTop} dengan {KRV}. AS: {USTop} dengan {USV}.",
+          "Data untuk {date}."
+        ],
+        "about": [
+          "StatCounter menghitung tayangan halaman yang datang dari jejaring sosial di situs yang memakai pelacaknya. Jejaring yang penggunanya jarang mengeklik keluar, seperti aplikasi video, bisa berperingkat rendah di sini meski audiensnya sangat besar.",
+          "Lalu lintas dari dalam aplikasi sering datang tanpa label, dan jejaring yang terutama dipakai di Tiongkok daratan hampir tidak terlihat dalam data ini, jadi tabel ini tidak boleh dibaca sebagai hitungan pengguna."
+        ],
+        "faq": [
+          {
+            "q": "Jejaring sosial mana yang memiliki porsi terbesar?",
+            "a": "{top1}, dengan {v1} kunjungan asal jejaring sosial secara global pada {date}, diikuti {top2} ({v2}) dan {top3} ({v3})."
+          },
+          {
+            "q": "Apakah ini jumlah pengguna?",
+            "a": "Tidak. Ini menghitung kunjungan yang dikirim ke situs web lain. Jumlah pengguna suatu jejaring bisa jauh lebih tinggi daripada yang tersirat dari porsinya di sini."
+          },
+          {
+            "q": "Mengapa TikTok atau WeChat lebih rendah dari perkiraan?",
+            "a": "Orang kebanyakan tetap berada di dalam aplikasi tersebut, dan tautan yang dibuka di sana sering tidak diberi label berasal darinya."
+          }
+        ]
+      }
+    }
   }
 }

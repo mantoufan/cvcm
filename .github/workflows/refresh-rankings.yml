@@ -1,0 +1,57 @@
+name: Refresh rankings
+
+# Daily snapshot of /rankings/ data. A source that fails keeps its last good tables and turns this run red at the end.
+# A failed test publishes nothing.
+on:
+  schedule:
+    - cron: "17 2 * * *"
+  workflow_dispatch:
+
+concurrency:
+  group: refresh-rankings
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      actions: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Fetch snapshots
+        run: node scripts/fetch-rankings.mjs
+        env:
+          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+          RANKINGS_FAILURES_FILE: ${{ runner.temp }}/rankings-failures.txt
+      - run: node scripts/write-sitemap.mjs
+      # The same checks as the deploy, so data that would break it never reaches main.
+      - run: npm test
+      - run: npm run typecheck
+      - name: Commit changed data and deploy
+        run: |
+          git add src/shared/rankings-rows.json src/shared/rankings-meta.json public/rankings public/sitemaps/rankings.xml
+          if git diff --cached --quiet; then
+            echo "No new data."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "chore: refresh rankings data on cv.cm"
+          git pull --rebase --autostash origin main
+          git push origin HEAD:main
+          # A push made with GITHUB_TOKEN does not start other workflows, so ask for the deploy.
+          gh workflow run deploy.yml --ref main
+      - name: Fail if a source kept old data
+        run: |
+          if [ -s "$RUNNER_TEMP/rankings-failures.txt" ]; then
+            cat "$RUNNER_TEMP/rankings-failures.txt"
+            exit 1
+          fi
+        env:
+          GH_TOKEN: ${{ github.token }}

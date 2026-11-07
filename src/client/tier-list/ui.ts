@@ -6,6 +6,7 @@ import { appHref } from "../../shared/path";
 import {
   MAX_ITEMS,
   MAX_LABEL,
+  MAX_TIERS,
   MAX_ITEM_TEXT,
   PICK_COLORS,
   PNG_CELL,
@@ -271,6 +272,8 @@ function paint(): void {
     placeButton(null) ?? "",
   );
   poolEl.dataset.empty = board.pool.length ? "" : "1";
+  const addRow = rootOf()?.querySelector<HTMLButtonElement>("[data-action=add-row]");
+  if (addRow) addRow.disabled = board.tiers.length >= MAX_TIERS;
   const removeBtn = rootOf()?.querySelector<HTMLButtonElement>("[data-action=delete-item]");
   if (removeBtn) removeBtn.disabled = !selected;
   syncPreset();
@@ -418,6 +421,21 @@ function onPaste(e: ClipboardEvent): void {
   }
 }
 
+/** Dragged text is left alone, so it can land in a text field. */
+function carriesFiles(e: DragEvent): boolean {
+  return Boolean(e.dataTransfer?.types.includes("Files"));
+}
+
+/** Back from the bfcache: this frozen page heard no storage events, so reload what another tab saved. */
+function onPageShow(e: PageTransitionEvent): void {
+  if (!e.persisted || saveTimer || files.size) return;
+  const next = load();
+  board = next;
+  selected = null;
+  if (titleEl) titleEl.value = board.title;
+  paint();
+}
+
 function applyPreset(id: PresetId): void {
   applyLabels(board, presetLabels(id));
   paint();
@@ -553,7 +571,7 @@ export function mountTierList(host: HTMLElement): void {
       h("h1", null, t("tierList.title")),
       h("p", { class: "lede" }, t("tierList.privacyNote")),
     ),
-    h("div", { class: "tier-tool", onDragover: (e: DragEvent) => e.preventDefault(), onDrop: (e: DragEvent) => { e.preventDefault(); if (e.dataTransfer?.files.length) addFiles(e.dataTransfer.files); } },
+    h("div", { class: "tier-tool", onDragover: (e: DragEvent) => { if (carriesFiles(e)) e.preventDefault(); }, onDrop: (e: DragEvent) => { if (carriesFiles(e)) { e.preventDefault(); addFiles(e.dataTransfer!.files); } } },
       h("div", { class: "tier-setup" },
         h("label", { class: "tier-field" }, h("span", null, t("tierList.titleField")), titleEl),
         h("label", { class: "tier-field" }, h("span", null, t("tierList.presetLabel")), presetEl),
@@ -584,6 +602,7 @@ export function mountTierList(host: HTMLElement): void {
   window.addEventListener("pagehide", flush);
   window.addEventListener("paste", onPaste);
   window.addEventListener("storage", onStorage);
+  window.addEventListener("pageshow", onPageShow);
   window.addEventListener("beforeunload", warnPictures);
   paint();
 }
@@ -593,6 +612,7 @@ export function unmountTierList(): void {
   disarm();
   window.removeEventListener("paste", onPaste);
   window.removeEventListener("storage", onStorage);
+  window.removeEventListener("pageshow", onPageShow);
   window.removeEventListener("beforeunload", warnPictures);
   window.removeEventListener("pagehide", flush);
   endDrag();

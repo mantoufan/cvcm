@@ -10,12 +10,13 @@ import {
 import { isMarketId, type MarketId } from "./markets";
 import { isQuizId, type QuizId } from "./quiz";
 import { DATASET_SEGMENT, isDatasetId, type DatasetId } from "./datasets";
+import { RANKING_SEGMENT, isRankingId, type RankingId } from "./rankings";
 import { KB_SHELVES, isKbId, kbArticleOf, kbShelfOf, kbShelfOfPage, type KbHub, type KbId, type KbPage, type KbShelf } from "./kb";
 import { REF_SEGMENT, isRefId, type RefId } from "./ref";
 import { localePath, parseLocale, type Locale } from "./locale";
 
 /** Child sitemaps listed by `/sitemap.xml` (`/sitemaps/<section>.xml`), so Search Console reports indexing per section. */
-export const SITEMAP_SECTIONS = ["pages", "learn", "games", "tests", "datasets", "reference"] as const;
+export const SITEMAP_SECTIONS = ["pages", "learn", "games", "tests", "datasets", "rankings", "reference"] as const;
 
 /** Agent discovery files (`src/shared/agent-docs.ts`): static, and readable from any origin (the Worker adds CORS). */
 export const AGENT_DOC_PATHS = ["/llms.txt", "/tools.json", "/.well-known/poppy.json"] as const;
@@ -29,7 +30,7 @@ export function isAgentDocPath(pathname: string): boolean {
 const AGENT_DOC_PATTERN = AGENT_DOC_PATHS.map((p) => `${p.slice(1).replace(/[.*+?^${}()|[\]\\/]/g, "\\$&")}$`).join("|");
 
 export const STATIC_FILE = new RegExp(
-  String.raw`^\/(assets\/|brand\/|covers\/|thumbs\/|emu\/|ai\/|favicon(\.svg|-\d+\.png)$|robots\.txt$|${AGENT_DOC_PATTERN}|sitemap\.xml$|sitemaps\/(${SITEMAP_SECTIONS.join("|")})\.xml$|4972981e4cdf3fdd13b674ad85304c11\.txt$|manifest\.webmanifest$|datasets\/[a-z0-9-]+\.csv$)`,
+  String.raw`^\/(assets\/|brand\/|covers\/|thumbs\/|emu\/|ai\/|favicon(\.svg|-\d+\.png)$|robots\.txt$|${AGENT_DOC_PATTERN}|sitemap\.xml$|sitemaps\/(${SITEMAP_SECTIONS.join("|")})\.xml$|4972981e4cdf3fdd13b674ad85304c11\.txt$|manifest\.webmanifest$|(datasets|rankings)\/[a-z0-9-]+\.csv$)`,
 );
 
 /** Personality tests live under `/{locale}/tests/` (the code calls them quizzes to keep them apart from unit tests). */
@@ -440,6 +441,7 @@ export type AppPath =
   | { kind: "bare-legal"; page: LegalPageId }
   | { kind: "bare-quiz"; quiz: QuizId | null }
   | { kind: "bare-dataset"; dataset: DatasetId | null }
+  | { kind: "bare-ranking"; ranking: RankingId | null }
   | { kind: "bare-kb"; article: KbArticlePath }
   | { kind: "bare-ref"; entry: RefId | null }
   | { kind: "app"; locale: Locale; tool: ToolId | null; clipId?: string; convertJob?: ConvertJobId; resizeJob?: ResizeJobId }
@@ -450,6 +452,7 @@ export type AppPath =
   | { kind: "legal"; locale: Locale; page: LegalPageId }
   | { kind: "quiz"; locale: Locale; quiz: QuizId | null }
   | { kind: "dataset"; locale: Locale; dataset: DatasetId | null }
+  | { kind: "ranking"; locale: Locale; ranking: RankingId | null }
   | { kind: "kb"; locale: Locale; article: KbArticlePath }
   | { kind: "ref"; locale: Locale; entry: RefId | null }
   | { kind: "clip"; id: string }
@@ -556,6 +559,12 @@ export function parseAppPath(pathname: string): AppPath {
       if (isDatasetId(third)) return { kind: "dataset", locale, dataset: third };
       return { kind: "unknown" };
     }
+    if (second === RANKING_SEGMENT) {
+      if (rest.length > 0) return { kind: "unknown" };
+      if (!third) return { kind: "ranking", locale, ranking: null };
+      if (isRankingId(third)) return { kind: "ranking", locale, ranking: third };
+      return { kind: "unknown" };
+    }
     if (second === REF_SEGMENT) {
       if (rest.length > 0) return { kind: "unknown" };
       if (!third) return { kind: "ref", locale, entry: null };
@@ -621,6 +630,11 @@ export function parseAppPath(pathname: string): AppPath {
     if (isDatasetId(second) && !third) return { kind: "bare-dataset", dataset: second };
     return { kind: "unknown" };
   }
+  if (first === RANKING_SEGMENT) {
+    if (!second) return { kind: "bare-ranking", ranking: null };
+    if (isRankingId(second) && !third) return { kind: "bare-ranking", ranking: second };
+    return { kind: "unknown" };
+  }
   if (first === REF_SEGMENT) {
     if (!second) return { kind: "bare-ref", entry: null };
     if (isRefId(second) && !third) return { kind: "bare-ref", entry: second };
@@ -669,6 +683,11 @@ export function deviceHref(locale: Locale, page: DevicePageId = "hub"): string {
 export function quizHref(locale: Locale, quiz: QuizId | null = null): string {
   const base = `/${localePath(locale)}/${QUIZ_SEGMENT}`;
   return quiz ? `${base}/${quiz}/` : `${base}/`;
+}
+
+export function rankingHref(locale: Locale, ranking: RankingId | null = null): string {
+  const base = `/${localePath(locale)}/${RANKING_SEGMENT}`;
+  return ranking ? `${base}/${ranking}/` : `${base}/`;
 }
 
 export function datasetHref(locale: Locale, dataset: DatasetId | null = null): string {
