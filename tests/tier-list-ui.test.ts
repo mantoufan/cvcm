@@ -105,3 +105,54 @@ describe("tier list preset select", () => {
     expect(q<HTMLSelectElement>("[data-field=preset]").value).toBe("feeling");
   });
 });
+
+describe("tier list fixes", () => {
+  it("start over asks once on a board with items, and works from a custom board", () => {
+    mountTierList(host);
+    const label = q<HTMLInputElement>("[data-field=label]");
+    label.value = "Custom";
+    label.dispatchEvent(new Event("input"));
+    unmountTierList();
+    host.replaceChildren();
+    mountTierList(host);
+    q("[data-action=start-over]").click();
+    expect(qa(".tier-pool [data-item]").length).toBe(6);
+    q("[data-action=start-over]").click();
+    expect(qa(".tier-pool [data-item]").length).toBe(0);
+    expect((qa("[data-field=label]")[0] as HTMLInputElement).value).toBe("S");
+  });
+
+  it("does not write to storage until something changes", () => {
+    mountTierList(host);
+    window.dispatchEvent(new Event("pagehide"));
+    unmountTierList();
+    expect(localStorage.getItem("cvcm_tier_list")).toBeNull();
+  });
+
+  it("keeps lines that did not fit in the box", () => {
+    mountTierList(host);
+    const entry = q<HTMLTextAreaElement>("[data-field=entry]");
+    entry.value = Array.from({ length: 250 }, (_, i) => `n${i}`).join("\n");
+    q("[data-action=add]").click();
+    expect(q<HTMLTextAreaElement>("[data-field=entry]").value.split("\n")).toHaveLength(56);
+  });
+
+  it("ignores a second pointer during a drag and does not treat a touch swipe as a tap", () => {
+    mountTierList(host);
+    const [a, b] = qa(".tier-pool [data-item]");
+    a.dispatchEvent(new PointerEvent("pointerdown", { button: 0, pointerId: 1, pointerType: "touch", clientX: 5, clientY: 5, bubbles: true }));
+    b.dispatchEvent(new PointerEvent("pointerdown", { button: 0, pointerId: 2, clientX: 5, clientY: 5, bubbles: true }));
+    window.dispatchEvent(new PointerEvent("pointermove", { pointerId: 1, clientX: 5, clientY: 50 }));
+    window.dispatchEvent(new PointerEvent("pointerup", { pointerId: 1, clientX: 5, clientY: 50 }));
+    expect(host.querySelector(".tier-item.picked")).toBeNull();
+    expect(document.querySelector(".tier-ghost")).toBeNull();
+  });
+
+  it("keeps keyboard focus on the row control after a repaint", () => {
+    mountTierList(host);
+    const down = qa("[aria-label='Move row down']")[0];
+    down.focus();
+    down.click();
+    expect((document.activeElement as HTMLElement).getAttribute("aria-label")).toBe("Move row down");
+  });
+});

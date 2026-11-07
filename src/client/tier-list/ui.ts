@@ -1,5 +1,5 @@
 import { copyWithFlash } from "../copy";
-import { decodeImage } from "../decode";
+import { canvasToBlob, decodeImage } from "../decode";
 import { downloadBlob, h } from "../dom";
 import { locale, t } from "../i18n";
 import { appHref } from "../../shared/path";
@@ -40,6 +40,7 @@ const DRAG_PX = 6;
 /** Dragging this close to the top or bottom of the window scrolls it, so far-apart rows stay reachable. */
 const EDGE_PX = 70;
 const EDGE_SPEED = 14;
+const CONFIRM_MS = 4000;
 
 let board: Board = emptyBoard([]);
 let rowsEl: HTMLElement | null = null;
@@ -51,9 +52,10 @@ let presetEl: HTMLSelectElement | null = null;
 let fileEl: HTMLInputElement | null = null;
 let selected: string | null = null;
 let saveTimer = 0;
+let confirmTimer = 0;
 let edgeFrame = 0;
 let dragY = 0;
-let drag: { id: string; el: HTMLElement; ghost: HTMLElement | null; startX: number; startY: number; pointer: number; moved: boolean } | null = null;
+let drag: { id: string; el: HTMLElement; ghost: HTMLElement | null; startX: number; startY: number; pointer: number; moved: boolean; touch: boolean } | null = null;
 /** The picked files behind each object URL: the PNG decodes these, so no page request is made. */
 const files = new Map<string, File>();
 
@@ -84,8 +86,11 @@ function save(): void {
   saveTimer = window.setTimeout(flush, SAVE_MS);
 }
 
+/** Writes only a pending change, so a page that was only looked at leaves other tabs and locales alone. */
 function flush(): void {
+  if (!saveTimer) return;
   clearTimeout(saveTimer);
+  saveTimer = 0;
   try {
     localStorage.setItem(STORE_KEY, serializeBoard(board));
   } catch {
@@ -130,8 +135,7 @@ function itemEl(id: string): HTMLElement {
 function pick(id: string): void {
   selected = selected === id ? null : id;
   paint();
-  const el = selected ? rootOf()?.querySelector<HTMLElement>(`[data-item="${selected}"]`) : null;
-  el?.focus();
+  rootOf()?.querySelector<HTMLElement>(`[data-item="${id}"]`)?.focus();
 }
 
 function rootOf(): HTMLElement | null {
@@ -183,20 +187,37 @@ function rowEl(tierId: string, index: number): HTMLElement {
     h("div", { class: "tier-row-actions" },
       h("select", {
         class: "tier-color",
+        "data-focus": `${tier.id}:color`,
         "aria-label": t("tierList.rowColor"),
         "data-field": "color",
         style: { background: tier.color },
         onChange: (e: Event) => { tier.color = (e.target as HTMLSelectElement).value; paint(); save(); },
       }, ...colors.map((color) => h("option", { value: color, selected: color === tier.color, style: { background: color, color: textOn(color) } }, color))),
-      h("button", { type: "button", class: "tier-mini", "aria-label": t("tierList.rowUp"), disabled: index === 0, onClick: () => { moveTier(board, tier.id, -1); paint(); save(); } }, "↑"),
-      h("button", { type: "button", class: "tier-mini", "aria-label": t("tierList.rowDown"), disabled: index === board.tiers.length - 1, onClick: () => { moveTier(board, tier.id, 1); paint(); save(); } }, "↓"),
-      h("button", { type: "button", class: "tier-mini", "data-action": "remove-row", "aria-label": t("tierList.rowRemove"), disabled: board.tiers.length === 1, onClick: () => { removeTier(board, tier.id); paint(); save(); } }, "×"),
+      h("button", { type: "button", class: "tier-mini", "data-focus": `${tier.id}:up`, "aria-label": t("tierList.rowUp"), disabled: index === 0, onClick: () => { moveTier(board, tier.id, -1); paint(); save(); } }, "↑"),
+      h("button", { type: "button", class: "tier-mini", "data-focus": `${tier.id}:down`, "aria-label": t("tierList.rowDown"), disabled: index === board.tiers.length - 1, onClick: () => { moveTier(board, tier.id, 1); paint(); save(); } }, "↓"),
+      h("button", { type: "button", class: "tier-mini", "data-focus": `${tier.id}:remove`, "data-action": "remove-row", "aria-label": t("tierList.rowRemove"), disabled: board.tiers.length === 1, onClick: () => { removeTier(board, tier.id); paint(); save(); } }, "×"),
     ),
   );
 }
 
+/** Repainting replaces the board's elements, so keyboard focus moves to the same control in the new ones. */
+function focusKey(): string | null {
+  const active = document.activeElement;
+  if (!(active instanceof HTMLElement) || !rootOf()?.contains(active)) return null;
+  return active.dataset.focus ?? (active.dataset.item ? `item:${active.dataset.item}` : null);
+}
+
+function restoreFocus(key: string | null): void {
+  if (!key) return;
+  const root = rootOf();
+  const selector = key.startsWith("item:") ? `[data-item="${key.slice(5)}"]` : `[data-focus="${key}"]`;
+  const next = root?.querySelector<HTMLElement>(`${selector}:not([disabled])`) ?? root?.querySelector<HTMLElement>("[data-action=add-row]");
+  next?.focus();
+}
+
 function paint(): void {
   if (!rowsEl || !poolEl) return;
+  const focused = focusKey();
   rowsEl.replaceChildren(...board.tiers.map((tier, index) => rowEl(tier.id, index)));
   poolEl.replaceChildren(
     ...board.pool.map(itemEl),
@@ -205,13 +226,15 @@ function paint(): void {
   poolEl.dataset.empty = board.pool.length ? "" : "1";
   const removeBtn = rootOf()?.querySelector<HTMLButtonElement>("[data-action=delete-item]");
   if (removeBtn) removeBtn.disabled = !selected;
+  restoreFocus(focused);
   note(selected ? t("tierList.pickedHint", { name: board.items[selected]?.text || imageLabel() }) : t("tierList.count", { n: itemCount(board), max: MAX_ITEMS }));
 }
 
 function startDrag(e: PointerEvent, id: string): void {
-  if (e.button !== 0) return;
+  // One drag at a time: a second finger or the mouse must not orphan the first ghost.
+  if (e.button !== 0 || drag) return;
   const el = e.currentTarget as HTMLElement;
-  drag = { id, el, ghost: null, startX: e.clientX, startY: e.clientY, pointer: e.pointerId, moved: false };
+  drag = { id, el, ghost: null, startX: e.clientX, startY: e.clientY, pointer: e.pointerId, moved: false, touch: e.pointerType === "touch" };
   window.addEventListener("pointermove", onDragMove);
   window.addEventListener("pointerup", onDragEnd);
   window.addEventListener("pointercancel", cancelDrag);
@@ -221,6 +244,11 @@ function onDragMove(e: PointerEvent): void {
   if (!drag || e.pointerId !== drag.pointer) return;
   if (!drag.moved) {
     if (Math.hypot(e.clientX - drag.startX, e.clientY - drag.startY) < DRAG_PX) return;
+    // A finger that moves is scrolling the page: touch places items by tap and Put here.
+    if (drag.touch) {
+      endDrag();
+      return;
+    }
     drag.moved = true;
     const box = drag.el.getBoundingClientRect();
     const ghost = drag.el.cloneNode(true) as HTMLElement;
@@ -249,7 +277,9 @@ function edgeScroll(): void {
 
 /** The list under the pointer and the slot in it: before the first item whose middle is past the pointer. */
 function dropTarget(x: number, y: number): { tier: string | null; index: number } | null {
-  const under = document.elementFromPoint(x, y)?.closest<HTMLElement>("[data-drop]");
+  const hit = document.elementFromPoint(x, y);
+  // Anywhere on a row counts, its name and buttons too.
+  const under = hit?.closest<HTMLElement>("[data-drop]") ?? hit?.closest<HTMLElement>("[data-tier]")?.querySelector<HTMLElement>("[data-drop]");
   if (!under) return null;
   const tier = under.dataset.drop === "pool" ? null : under.dataset.drop!;
   const items = Array.from(under.querySelectorAll<HTMLElement>("[data-item]"));
@@ -302,7 +332,8 @@ function addFromEntry(): void {
   const existing = Object.values(board.items).map((item) => item.text);
   const fresh = parseItems(entryEl.value, existing);
   const added = addItems(board, fresh.map((text) => ({ text })));
-  entryEl.value = "";
+  // Lines that did not fit stay in the box, so they can go in after clearing space.
+  entryEl.value = fresh.slice(added).join("\n");
   paint();
   save();
   if (added < fresh.length) note(t("tierList.full", { max: MAX_ITEMS }));
@@ -323,6 +354,9 @@ function addFiles(picked: Iterable<File>): void {
 }
 
 function onPaste(e: ClipboardEvent): void {
+  // Excel and Word put a picture of the text next to the text: into a text field, the text wins.
+  const target = e.target as HTMLElement | null;
+  if (target?.closest?.("input, textarea, select, [contenteditable]") && e.clipboardData?.getData("text/plain")) return;
   const pasted = e.clipboardData?.files;
   if (pasted?.length) {
     const images = Array.from(pasted).filter((file) => file.type.startsWith("image/"));
@@ -376,17 +410,23 @@ async function renderPng(): Promise<Blob | null> {
       ctx.fillStyle = "#ffffff";
       ctx.fillRect(cell.x, cell.y, PNG_CELL, PNG_CELL);
       if (item.image) {
-        const { bitmap, width, height } = await decodeImage(files.get(item.image)!);
-        const side = Math.min(width, height);
-        ctx.drawImage(bitmap, (width - side) / 2, (height - side) / 2, side, side, cell.x, cell.y, PNG_CELL, PNG_CELL);
-        bitmap.close();
+        try {
+          const { bitmap, width, height } = await decodeImage(files.get(item.image)!);
+          const side = Math.min(width, height);
+          ctx.drawImage(bitmap, (width - side) / 2, (height - side) / 2, side, side, cell.x, cell.y, PNG_CELL, PNG_CELL);
+          bitmap.close();
+        } catch {
+          // One picture the canvas cannot read (a sizeless SVG) shows its name; the chart still exports.
+          ctx.fillStyle = "#1a1a1a";
+          drawCentered(ctx, item.text || imageLabel(), cell.x + PNG_CELL / 2, cell.y + PNG_CELL / 2, PNG_CELL - 10, 15, 4);
+        }
       } else {
         ctx.fillStyle = "#1a1a1a";
         drawCentered(ctx, item.text, cell.x + PNG_CELL / 2, cell.y + PNG_CELL / 2, PNG_CELL - 10, 15, 4);
       }
     }
   }
-  return new Promise((resolve) => canvas.toBlob(resolve, "image/png"));
+  return canvasToBlob(canvas, "image/png", 1);
 }
 
 async function exportPng(btn: HTMLButtonElement): Promise<void> {
@@ -402,10 +442,26 @@ async function exportPng(btn: HTMLButtonElement): Promise<void> {
   }
 }
 
+/** Starting over cannot be undone (pictures must be picked again), so a board with items asks for a second press. */
+function askStartOver(btn: HTMLButtonElement): void {
+  if (itemCount(board) && !confirmTimer) {
+    btn.textContent = t("tierList.startOverConfirm");
+    confirmTimer = window.setTimeout(() => {
+      confirmTimer = 0;
+      btn.textContent = t("tierList.startOver");
+    }, CONFIRM_MS);
+    return;
+  }
+  clearTimeout(confirmTimer);
+  confirmTimer = 0;
+  btn.textContent = t("tierList.startOver");
+  startOver();
+}
+
 function startOver(): void {
   releaseUrls();
   selected = null;
-  board = emptyBoard(presetLabels((presetEl?.value as PresetId) ?? defaultPreset()));
+  board = emptyBoard(presetLabels((presetEl?.value as PresetId) || defaultPreset()));
   if (titleEl) titleEl.value = "";
   paint();
   save();
@@ -424,6 +480,7 @@ export function mountTierList(host: HTMLElement): void {
   noteEl = h("p", { class: "hint", "aria-live": "polite", "data-out": "note" });
   entryEl = h("textarea", { rows: "3", "data-field": "entry", spellcheck: "false", placeholder: t("tierList.entryPlaceholder"), "aria-label": t("tierList.entry") });
   titleEl = h("input", { type: "text", maxlength: String(MAX_ITEM_TEXT), "data-field": "title", value: board.title, placeholder: t("tierList.titlePlaceholder"), "aria-label": t("tierList.titleField"), onInput: () => { board.title = titleEl?.value ?? ""; save(); } });
+  if (board.title) titleEl.setAttribute("data-restored", "");
   fileEl = h("input", { type: "file", accept: "image/*", multiple: true, hidden: true, "data-field": "files", onChange: () => { if (fileEl?.files) addFiles(fileEl.files); if (fileEl) fileEl.value = ""; } });
   presetEl = h("select", { "data-field": "preset", "aria-label": t("tierList.presetLabel"), onChange: () => applyPreset(presetEl!.value as PresetId) },
     ...PRESET_IDS.map((id) => h("option", { value: id, selected: id === defaultPreset() }, t(`tierList.preset.${id}`))),
@@ -439,7 +496,7 @@ export function mountTierList(host: HTMLElement): void {
       h("h1", null, t("tierList.title")),
       h("p", { class: "lede" }, t("tierList.privacyNote")),
     ),
-    h("div", { class: "tier-tool", onPaste, onDragover: (e: DragEvent) => e.preventDefault(), onDrop: (e: DragEvent) => { e.preventDefault(); if (e.dataTransfer?.files.length) addFiles(e.dataTransfer.files); } },
+    h("div", { class: "tier-tool", onDragover: (e: DragEvent) => e.preventDefault(), onDrop: (e: DragEvent) => { e.preventDefault(); if (e.dataTransfer?.files.length) addFiles(e.dataTransfer.files); } },
       h("div", { class: "tier-setup" },
         h("label", { class: "tier-field" }, h("span", null, t("tierList.titleField")), titleEl),
         h("label", { class: "tier-field" }, h("span", null, t("tierList.presetLabel")), presetEl),
@@ -448,7 +505,7 @@ export function mountTierList(host: HTMLElement): void {
       h("div", { class: "stage-actions" },
         h("button", { type: "button", class: "btn ghost", "data-action": "add-row", onClick: () => { if (addTier(board, t("tierList.newRow"))) { paint(); save(); } } }, t("tierList.addRow")),
         h("button", { type: "button", class: "btn ghost", "data-action": "clear", onClick: () => { clearPlacements(board); selected = null; paint(); save(); } }, t("tierList.clear")),
-        h("button", { type: "button", class: "btn ghost", "data-action": "start-over", onClick: startOver }, t("tierList.startOver")),
+        h("button", { type: "button", class: "btn ghost", "data-action": "start-over", onClick: (e: Event) => askStartOver(e.currentTarget as HTMLButtonElement) }, t("tierList.startOver")),
       ),
       h("h2", { class: "tier-sub" }, t("tierList.pool")),
       poolEl,
@@ -467,11 +524,14 @@ export function mountTierList(host: HTMLElement): void {
     ),
   );
   window.addEventListener("pagehide", flush);
+  window.addEventListener("paste", onPaste);
   paint();
 }
 
 export function unmountTierList(): void {
-  if (saveTimer) flush();
+  flush();
+  clearTimeout(confirmTimer);
+  window.removeEventListener("paste", onPaste);
   window.removeEventListener("pagehide", flush);
   endDrag();
   releaseUrls();

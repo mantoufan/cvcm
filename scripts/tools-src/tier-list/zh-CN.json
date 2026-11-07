@@ -4,7 +4,10 @@
     "descTierList": "在线免费制作从夯到拉排行榜和 Tier List：输入名字或添加图片，拖到夯、顶级、人上人、NPC、拉完了或自定义等级，一键下载 PNG。无需注册，图片不上传。"
   },
   "tools": {
-    "tier-list": { "name": "从夯到拉排行榜", "blurb": "把名字或图片拖进等级，生成 Tier List 图片。" }
+    "tier-list": {
+      "name": "从夯到拉排行榜",
+      "blurb": "把名字或图片拖进等级，生成 Tier List 图片。"
+    }
   },
   "faq": {
     "tier-list": {
@@ -45,6 +48,7 @@
       "newRow": "新等级",
       "clear": "全部移回待排名",
       "startOver": "重新开始",
+      "startOverConfirm": "再点一次确认",
       "pool": "待排名",
       "entry": "添加内容，每行一项",
       "entryPlaceholder": "每行一项",
