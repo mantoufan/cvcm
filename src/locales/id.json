@@ -522,6 +522,24 @@
     "descGradient": "Buat gradien latar CSS: pilih warna dan titiknya, atur sudut atau bentuk, mulai dari preset, lalu salin CSS atau simpan wallpaper PNG. Gratis, di browser Anda.",
     "titleFancyText": "Generator font keren — tulisan unik untuk salin tempel — cv.cm",
     "descFancyText": "Ubah teks jadi huruf 𝐛𝐨𝐥𝐝, 𝑖𝑡𝑎𝑙𝑖𝑐, 𝓈𝒸𝓇𝒾𝓅𝓉, 𝔣𝔯𝔞𝔨𝔱𝔲𝔯, ⓒⓘⓡⓒⓛⓔⓓ, dan terbalik yang bisa ditempel di mana saja: bio Instagram, TikTok, Discord, dan nama game. Gratis, sekali ketuk untuk salin.",
+    "titleUseScientificCalculator": "Cara menggunakan kalkulator ilmiah online | cv.cm",
+    "descUseScientificCalculator": "Masukkan hitungan dengan urutan yang benar, pakai kurung, pindah DEG dan RAD, hitung pangkat, akar, log, dan %, lalu pakai ulang jawaban. Gratis, di browser.",
+    "titleUseOnlineNotepad": "Cara memakai notepad online tanpa kehilangan catatan | cv.cm",
+    "descUseOnlineNotepad": "Tulis catatan yang tersimpan saat mengetik, buka dan unduh file .txt, pulihkan catatan yang terhapus, dan ketahui tempat simpannya. Tanpa akun, tanpa unggahan.",
+    "titlePreviewMarkdown": "Cara menulis dan melihat pratinjau Markdown online | cv.cm",
+    "descPreviewMarkdown": "Pelajari judul, teks tebal, daftar, tautan, tabel, dan daftar tugas dengan pratinjau langsung, lalu salin HTML atau unduh file .md. Tidak ada unggahan.",
+    "titleMakeCssGradient": "Cara membuat latar belakang gradien CSS | cv.cm",
+    "descMakeCssGradient": "Pilih Linear, Radial, atau Kerucut, atur warna dan posisinya, salin CSS beserta warna cadangannya, atau simpan gradien sebagai wallpaper PNG.",
+    "titleMakeFancyText": "Cara membuat font keren untuk bio dan nama | cv.cm",
+    "descMakeFancyText": "Ubah huruf biasa jadi teks Unicode tebal, sambung, gotik, dan dalam lingkaran yang bisa ditempel di mana saja. Pahami juga batasnya dan kendala pembaca layar.",
+    "titleFlipCoin": "Cara lempar koin online secara adil | cv.cm",
+    "descFlipCoin": "Sepakati Gambar atau Angka dulu, lempar 1 sampai 1.000 koin dengan acak aman, baca rentetan dan total, pahami kenapa lima Gambar beruntun tak mengubah apa pun.",
+    "titleTuneGuitar": "Cara stem gitar dengan mikrofon | cv.cm",
+    "descTuneGuitar": "Stem gitar per senar (E A D G B E) dengan tuner online gratis: baca Terlalu rendah dan Terlalu tinggi, setem naik ke nada, atau pakai drop D, bass, ukulele.",
+    "titleFindFactors": "Cara mencari faktor suatu bilangan | cv.cm",
+    "descFindFactors": "Cari semua faktor, pasangan faktor, dan faktorisasi prima bilangan bulat sampai 18 digit, cek apakah prima, dan lihat kenapa 360 punya 24 faktor.",
+    "titleFindLcmGcf": "Cara mencari KPK dan FPB suatu bilangan | cv.cm",
+    "descFindLcmGcf": "Cari KPK dan FPB dari 2 sampai 20 bilangan, lengkap dengan faktor prima dan langkah Euclid. Berguna untuk pecahan dan jadwal.",
     "titleRomEmulator": "Emulator game online — buka ROM GBA, NES, SNES — cv.cm",
     "descRomEmulator": "Emulator game online gratis: buka ROM GBA, NES, SNES, Game Boy, atau Mega Drive milik Anda. Konsol dikenali dari file. Tanpa instalasi, mendukung gamepad dan layar sentuh. Tidak ada yang diunggah.",
     "titleFlashPlayer": "Flash Player online — SWF player tanpa plugin — cv.cm",
@@ -548,7 +566,8 @@
     "tests": "Tes",
     "data": "Data",
     "reference": "Referensi",
-    "ai": "AI"
+    "ai": "AI",
+    "rankings": "Peringkat"
   },
   "lang": {
     "label": "Bahasa",
@@ -2802,6 +2821,7 @@
         "q5": "Apakah ada yang diunggah?",
         "a5": "Tidak. Sentuhan hanya digambar di tab browser Anda."
       },
+<<<<<<< HEAD
       "use-emulator": {
         "q1": "Apakah ROM saya diunggah?",
         "a1": "Tidak. File dibaca di tab ini dan diberikan ke emulator di halaman. Hanya program emulator yang diunduh.",
@@ -2825,6 +2845,115 @@
         "a4": "Game itu mungkin memerlukan file lain atau situs lamanya. Halaman ini memblokir akses jaringan, jadi tidak bisa mengambilnya.",
         "q5": "Bisakah membuka SWF di ponsel?",
         "a5": "Bisa. Ketukan dihitung sebagai klik. Game yang memerlukan keyboard lebih mudah di komputer."
+=======
+      "use-scientific-calculator": {
+        "q1": "Kenapa sin(30) tidak menghasilkan 0,5?",
+        "a1": "Kalkulator sedang dalam mode RAD, jadi 30 dibaca sebagai 30 radian. Pindah ke DEG, dan sin(30) menjadi 0,5.",
+        "q2": "Apa bedanya log dan ln?",
+        "a2": "log berbasis 10, jadi log(1000) hasilnya 3. ln berbasis e (sekitar 2,718), jadi ln(e) hasilnya 1. Untuk basis 2, Anda bisa mengetik log2(8), yang hasilnya 3.",
+        "q3": "Kenapa 200 + 10% hasilnya 200,1?",
+        "a3": "Di sini % selalu berarti dibagi 100, jadi 10% adalah 0,1 dan 200 + 0,1 adalah 200,1. Untuk menambahkan 10% ke 200, tulis 200 × 1,1 agar mendapat 220.",
+        "q4": "Kenapa −2^2 hasilnya −4?",
+        "a4": "Pangkat dihitung sebelum tanda minus, jadi dibaca sebagai −(2²). Tulis (−2)^2 untuk mendapat 4.",
+        "q5": "Kenapa muncul Terlalu besar atau Tidak terdefinisi?",
+        "a5": "Terlalu besar berarti jawabannya melebihi kemampuan kalkulator: 170! masih bisa, 171! tidak. Tidak terdefinisi berarti hitungan itu tidak punya jawaban, misalnya pembagian dengan 0."
+      },
+      "use-online-notepad": {
+        "q1": "Apakah catatan saya privat?",
+        "a1": "Ya. Catatan tetap di penyimpanan browser di perangkat ini dan tidak dikirim ke cv.cm. Siapa pun yang memakai profil browser ini bisa membuka halaman dan membacanya, jadi hindari di komputer bersama.",
+        "q2": "Apakah catatan hilang jika tab ditutup?",
+        "a2": "Tidak. Catatan kembali saat Anda membuka halaman di browser yang sama. Catatan hilang jika Anda menghapus data situs cv.cm, karena itu salinan unduhan layak dibuat.",
+        "q3": "Bisakah catatan saya dibuka di perangkat lain?",
+        "a3": "Tidak otomatis, karena tidak ada yang disimpan online. Unduh .txt lalu buka di perangkat lain dengan Buka file.",
+        "q4": "Apakah bisa dipakai di jendela privat?",
+        "a4": "Anda bisa menulis di sana, tetapi jendela privat membuang penyimpanan saat ditutup, dan sebagian memblokirnya sama sekali. Unduh catatan sebelum menutup jendela.",
+        "q5": "Seberapa panjang sebuah catatan?",
+        "a5": "Sampai 1.000.000 karakter, dan file yang dibuka bisa sampai 1 MB. Catatan yang sangat panjang bisa terasa lambat di kotak teks."
+      },
+      "preview-markdown": {
+        "q1": "Apa itu Markdown?",
+        "a1": "Cara memformat teks biasa dengan tanda sederhana, seperti # untuk judul dan ** untuk teks tebal. GitHub, Reddit, Discord, dan banyak aplikasi catatan bisa membacanya.",
+        "q2": "Markdown jenis apa yang didukung pratinjau ini?",
+        "a2": "Sintaks umum CommonMark ditambah tabel GitHub, daftar tugas, coretan, dan tautan polos. Situs lain mungkin menampilkan fitur tambahan itu sedikit berbeda.",
+        "q3": "Kenapa HTML saya tampil sebagai teks?",
+        "a3": "HTML mentah sengaja dibiarkan sebagai teks, supaya dokumen yang ditempel tidak bisa menjalankan kode di halaman atau di HTML yang Anda salin. Pakai tanda Markdown saja.",
+        "q4": "Bagaimana cara menambahkan pemisah baris?",
+        "a4": "Akhiri baris dengan dua spasi untuk pindah baris, atau beri satu baris kosong untuk memulai paragraf baru. Satu pemisah baris saja bisa tergabung saat ditampilkan.",
+        "q5": "Apakah teks saya diunggah?",
+        "a5": "Tidak. Teks dirender di tab browser Anda dan disimpan di browser ini. Sampai 200.000 karakter bisa disimpan."
+      },
+      "make-css-gradient": {
+        "q1": "Kenapa gradien saya tidak muncul di halaman?",
+        "a1": "Kemungkinan elemennya tidak punya tinggi. Gradien mengisi kotak elemen, jadi blok kosong tingginya 0. Beri tinggi atau isi; untuk satu halaman penuh, atur html dan body ke height 100%.",
+        "q2": "Kenapa ada dua baris background di CSS?",
+        "a2": "Yang pertama warna polos, dan yang kedua gradiennya. Browser yang tidak bisa menggambar gradien mengabaikan baris itu dan tetap memakai warnanya.",
+        "q3": "Mana yang lebih baik, background atau background-image?",
+        "a3": "Keduanya bisa, karena gradien dihitung sebagai gambar. background lebih pendek dan juga mengatur ulang setelan latar lainnya, jadi pakai background-image jika menumpuknya di atas latar lain.",
+        "q4": "Bagaimana membuat garis warna yang tegas?",
+        "a4": "Taruh dua warna di posisi yang sama, misalnya keduanya di 50%. Tidak ada ruang untuk membaur, jadi warnanya berubah di satu garis tajam.",
+        "q5": "Kenapa PNG terlihat bergaris-garis?",
+        "a5": "Gradien yang sangat lebar antara warna yang mirip bisa menampilkan undakan samar, karena PNG menyimpan 256 tingkat per kanal warna. Pakai warna yang lebih berjauhan, atau tambahkan sedikit tekstur di editor gambar."
+      },
+      "make-fancy-text": {
+        "q1": "Kenapa saya melihat kotak kosong?",
+        "a1": "Perangkat itu tidak punya font yang berisi simbol tersebut. Ponsel dan komputer lama paling mungkin menampilkan kotak. Coba gaya yang lebih umum, seperti Tebal.",
+        "q2": "Apakah bisa untuk huruf Mandarin atau huruf beraksen?",
+        "a2": "Gaya huruf tidak: Unicode punya bentuk bergaya untuk A–Z, a–z, dan angka, bukan untuk karakter itu, jadi tetap seperti yang Anda ketik. Coret dan Garis bawah tetap berfungsi, karena menambahkan garis pada setiap karakter.",
+        "q3": "Bisakah dipakai untuk nama Instagram atau TikTok?",
+        "a3": "Nama tampilan dan bio biasanya menerimanya, tetapi tergantung aplikasi dan bisa berubah. Nama pengguna umumnya hanya mengizinkan huruf biasa, angka, dan beberapa tanda.",
+        "q4": "Apakah ini buruk untuk pembaca layar?",
+        "a4": "Bisa jadi. Pembaca layar mungkin melewati simbolnya atau membaca tiap simbol dengan nama lengkapnya, sehingga kalimat sangat sulit diikuti. Biarkan informasi penting tetap biasa.",
+        "q5": "Apakah saya perlu memasang font?",
+        "a5": "Tidak. Anda menyalin karakter, bukan font, jadi teks terlihat bergaya di mana pun perangkat pembaca punya simbolnya."
+      },
+      "flip-coin": {
+        "q1": "Apakah lempar koin online benar-benar adil?",
+        "a1": "Ya. Tiap lemparan mengambil satu bit dari generator acak aman di browser Anda, jadi kedua sisi sama-sama mungkin. Tidak ada yang dikirim ke server, jadi hasilnya dibuat di perangkat Anda.",
+        "q2": "Apakah Gambar lebih mungkin setelah deretan Angka?",
+        "a2": "Tidak. Keyakinan itu disebut kekeliruan penjudi (gambler's fallacy). Tiap lemparan tidak bergantung pada yang sebelumnya, jadi peluangnya tetap 50%.",
+        "q3": "Seberapa panjang rentetan yang normal?",
+        "a3": "Lebih panjang daripada tebakan kebanyakan orang. Dalam 100 lemparan, deretan 6 atau lebih sisi yang sama itu biasa, dan bukan berarti ada yang salah.",
+        "q4": "Kenapa saya tidak dapat tepat 500 dari 1.000?",
+        "a4": "Tepat setengah justru jarang, sekitar 2,5% untuk 1.000 koin. Sebagian besar hasil jatuh di antara 470 dan 530 Gambar, dan porsinya makin mendekati 50% seiring bertambahnya lemparan.",
+        "q5": "Bisakah dipakai untuk hal yang serius?",
+        "a5": "Ini adil untuk keputusan sehari-hari, permainan, dan pengajaran. Jika undian punya aturan hukum atau uang, ikuti proses resminya, karena mungkin butuh saksi atau audit."
+      },
+      "tune-guitar": {
+        "q1": "Kenapa tuner menampilkan nada yang berbeda dari senarnya?",
+        "a1": "Otomatis mengikuti senar terdekat, jadi senar yang jauh dari targetnya bisa terbaca sebagai senar di sebelahnya, dan nada harmonik bisa menimbulkan hal yang sama. Ketuk senar yang diinginkan untuk menguncinya, lalu petik pelan dan naikkan bertahap.",
+        "q2": "Kenapa angkanya melompat-lompat?",
+        "a2": "Kebisingan dan senar lain yang ikut berbunyi mengacaukan pembacaan nada. Redam senar lain dengan tangan, petik dengan bagian lembut ibu jari, dan baca tepat setelah petikan awal.",
+        "q3": "Apa arti 440 Hz?",
+        "a3": "Itu nada standar untuk not A di atas C tengah. Biarkan Acuan A4 di 440, kecuali Anda menyamakan dengan piano atau rekaman yang distem ke nilai lain.",
+        "q4": "Bisakah menyetem tanpa mikrofon?",
+        "a4": "Bisa. Ketuk senar yang diinginkan, lalu tekan Putar nada acuan untuk mendengar nadanya dan samakan senar dengan telinga. Dengarkan denyut lambat di antara kedua suara, dan putar pasak sampai denyutnya hilang.",
+        "q5": "Seberapa sering harus menyetem?",
+        "a5": "Setiap kali bermain. Cek lagi setelah memasang senar baru atau berpindah antara ruangan panas dan dingin, karena keduanya mengubah tegangan senar."
+      },
+      "find-factors": {
+        "q1": "Apa bedanya faktor dan faktor prima?",
+        "a1": "Faktor adalah semua bilangan yang membaginya tepat: 12 punya 1, 2, 3, 4, 6, dan 12. Faktor prima adalah bilangan prima yang jika dikalikan menghasilkan bilangan itu: 12 = 2² × 3.",
+        "q2": "Apakah 1 bilangan prima?",
+        "a2": "Bukan. Bilangan prima punya tepat dua faktor berbeda, yaitu 1 dan dirinya sendiri, sedangkan 1 hanya punya satu. Dengan mengeluarkan 1, setiap bilangan hanya punya satu faktorisasi prima.",
+        "q3": "Berapa banyak faktor bilangan prima?",
+        "a3": "Tepat dua: 1 dan dirinya sendiri. Bilangan dengan jumlah faktor ganjil selalu bilangan kuadrat sempurna, karena akar kuadratnya berpasangan dengan dirinya sendiri.",
+        "q4": "Kenapa berhenti di akar kuadrat?",
+        "a4": "Faktor datang berpasangan, satu di bawah atau sama dengan akar kuadrat dan satu di atas atau sama dengannya. Jika tidak ada yang membagi bilangan itu sampai akar kuadratnya, bilangan itu prima.",
+        "q5": "Seberapa besar bilangan yang bisa dihitung?",
+        "a5": "Sampai 18 digit, dengan hitungan bilangan bulat yang tepat. Jika bilangan punya lebih dari 1.000 faktor, 1.000 pertama yang dicantumkan, dan jumlahnya tetap tepat."
+      },
+      "find-lcm-gcf": {
+        "q1": "Apa bedanya FPB, GCD, dan HCF?",
+        "a1": "Tidak ada. Faktor persekutuan terbesar (FPB), greatest common divisor (GCD), dan highest common factor (HCF) adalah tiga nama untuk bilangan yang sama.",
+        "q2": "Berapa KPK dan FPB dari 12 dan 18?",
+        "a2": "FPB-nya 6 dan KPK-nya 36. Cek: 6 × 36 = 216, sama dengan 12 × 18.",
+        "q3": "Bagaimana KPK membantu menjumlahkan pecahan?",
+        "a3": "KPK memberi penyebut bersama terkecil. Untuk 1/12 + 1/18, pakai 36: 3/36 + 2/36 = 5/36.",
+        "q4": "Apa arti relatif prima?",
+        "a4": "Dua bilangan relatif prima jika FPB-nya 1, seperti 8 dan 15. Keduanya tidak harus prima; hanya tidak punya faktor prima yang sama.",
+        "q5": "Kenapa 1,500 berubah menjadi dua bilangan?",
+        "a5": "Di sini koma memisahkan bilangan, jadi 1,500 dibaca sebagai 1 dan 500. Untuk seribu lima ratus, ketik 1500 atau 1.500."
+>>>>>>> origin/main
       }
     },
     "compress-pdf": {
@@ -4421,7 +4550,7 @@
       "q2": "Di mana saya bisa memakai font ini?",
       "a2": "Bio Instagram dan TikTok, postingan X, Discord, WhatsApp, komentar YouTube, dan nama game. Beberapa aplikasi atau font mungkin menampilkan kotak untuk karakter yang tidak dimilikinya.",
       "q3": "Mengapa beberapa huruf tidak berubah?",
-      "a3": "Unicode hanya punya gaya ini untuk A–Z, a–z, dan sebagian angka. Huruf lain, aksen, serta teks Tionghoa, Jepang, atau Korea tetap seperti yang Anda ketik.",
+      "a3": "Unicode hanya punya gaya ini untuk A–Z, a–z, dan sebagian angka. Huruf lain, aksen, serta teks Tionghoa, Jepang, atau Korea tetap seperti yang Anda ketik. Pengecualiannya Coret dan Garis bawah, yang juga berlaku untuk teks itu.",
       "q4": "Apakah font keren ini aksesibel?",
       "a4": "Pembaca layar mungkin membacanya huruf demi huruf atau melewatinya, dan pencarian tidak mencocokkannya. Pakai untuk hiasan, bukan untuk teks penting.",
       "q5": "Bagaimana cara menyalin sebuah gaya?",
@@ -6733,6 +6862,7 @@
       "diagram1": "Usap setiap baris: kotak kosong = dead zone.",
       "diagram2": "HP dan tablet: 5–10 jari · banyak laptop: 2."
     },
+<<<<<<< HEAD
     "use-emulator": {
       "name": "Cara memakai emulator",
       "blurb": "Buka ROM di browser, periksa konsol, pelajari tombol, dan simpan game Anda.",
@@ -6776,6 +6906,205 @@
       "s6b": "Ruffle menjalankan sebagian besar file ActionScript 1 dan 2 lama, tetapi dukungan ActionScript 3 belum lengkap, jadi beberapa game yang lebih baru mungkin gagal mulai atau berjalan tidak benar. Tekan Pilih SWF lagi untuk membuka file lain, atau mainkan game gratis di bagian game Flash.",
       "diagram1": "Cara memakai mouse, sentuhan, dan keyboard pada file Flash.",
       "diagram2": "SWF yang bisa mulai sendiri akan berjalan. Yang perlu file lain atau situs lamanya akan berhenti."
+=======
+    "use-scientific-calculator": {
+      "name": "Cara menggunakan kalkulator ilmiah",
+      "blurb": "Pastikan urutan, kurung, DEG dan RAD, pangkat, log, dan % sudah benar, lalu pakai ulang jawaban.",
+      "title": "Cara menggunakan kalkulator ilmiah",
+      "lead": "Anda punya hitungan dengan kurung, pangkat, atau sinus, dan jawabannya harus benar. Anda akan mengetiknya dengan urutan yang tepat, memilih mode sudut yang benar, dan memakai ulang hasil tanpa mengetik lagi. Semuanya berjalan di browser Anda.",
+      "result": "Hasil yang benar untuk hitungan dengan kurung, pangkat, akar, log, dan trigonometri, dengan 20 hitungan terakhir tersimpan di riwayat.",
+      "note": "Jawaban salah paling sering berasal dari dua hal: kurung yang kurang atau mode sudut yang keliru. Periksa dua hal itu dulu.",
+      "s1t": "Pahami urutan operasi",
+      "s1b": "Kalkulator mengikuti urutan matematika standar: kurung dulu, lalu pangkat, lalu × dan ÷, lalu + dan −. Jadi 2 + 3 × 4 hasilnya 14, bukan 20.",
+      "s2t": "Buka Kalkulator ilmiah di cv.cm",
+      "s2b": "Ketuk tombolnya atau ketik dengan keyboard. Hasil muncul saat Anda mengetik. Enter atau = menyelesaikan hitungan, Esc menghapusnya, dan ^ membuat pangkat.",
+      "s3t": "Tambahkan kurung saat urutan berpengaruh",
+      "s3b": "Tulis (2 + 3) × 4 untuk mendapat 20. Beri kurung pada seluruh pembilang dan penyebut pecahan: (2 + 6) ÷ (1 + 3) hasilnya 2. Kurung yang belum ditutup akan ditutup otomatis di akhir perhitungan, jadi periksa apakah kurung itu tertutup di tempat yang Anda maksud. Periksa ekspresinya biasanya berarti ada ) berlebih atau angka yang kurang.",
+      "s4t": "Pilih DEG atau RAD sebelum memakai sin, cos, atau tan",
+      "s4b": "Tombol DEG / RAD berpindah antara derajat dan radian. Sudut dari segitiga atau busur derajat memakai derajat; rumus dengan π biasanya memakai radian. sin(30) adalah 0,5 di DEG dan −0,988 di RAD.",
+      "s5t": "Pakai pangkat, akar, log, dan %",
+      "s5b": "xʸ membuat pangkat berapa pun (2^10 hasilnya 1024), √ adalah akar kuadrat, x! adalah faktorial. log berbasis 10 dan ln berbasis e. % hanya membagi dengan 100: 200 × 10% hasilnya 20, tetapi 200 + 10% hasilnya 200,1. Untuk harga ditambah 10%, tulis 200 × 1,1.",
+      "s6t": "Pakai ulang jawaban dan salin hasil",
+      "s6b": "Ans memasukkan jawaban terakhir ke hitungan berikutnya. Riwayat menyimpan 20 hitungan terakhir; pilih salah satu untuk memakainya lagi. Salin hasil mengirim jawaban ke papan klip, siap ditempel.",
+      "diagram1": "Kurung mengubah bagian mana yang dihitung lebih dulu.",
+      "diagram2": "sin(30) yang sama memberi dua jawaban: cek DEG atau RAD dulu."
+    },
+    "use-online-notepad": {
+      "name": "Cara memakai notepad online",
+      "blurb": "Catatan yang tersimpan saat Anda mengetik. Buka dan unduh file .txt, dan ketahui tempat simpannya.",
+      "title": "Cara memakai notepad online",
+      "lead": "Anda perlu tempat menaruh teks sekarang juga, tanpa akun atau aplikasi. Anda akan menulis catatan yang tersimpan sendiri, membuka atau mengunduh file teks, dan mengenal satu hal yang bisa menghilangkannya. Catatan tetap di browser Anda dan tidak ada unggahan.",
+      "result": "Catatan yang tetap ada setelah tab ditutup, dan salinan .txt di perangkat Anda kapan pun dibutuhkan.",
+      "note": "Catatan hanya ada di browser ini di perangkat ini. Unduh dulu sebelum menghapus data browser atau berganti perangkat.",
+      "s1t": "Ketahui tempat catatan disimpan",
+      "s1b": "Catatan disimpan di browser ini di perangkat ini, bukan di server. Jadi catatan itu tidak pernah keluar dari perangkat Anda, tetapi juga tidak ikut ke ponsel atau browser lain.",
+      "s2t": "Buka Notepad online di cv.cm",
+      "s2b": "Mulai mengetik. Halaman menyimpan sesaat setelah Anda berhenti dan menampilkan waktu penyimpanan terakhir. Tutup tab lalu kembali: catatannya masih ada.",
+      "s3t": "Atur tampilan sesuai yang Anda tulis",
+      "s3b": "Di Tampilan, matikan Bungkus baris panjang untuk kode atau log agar satu baris tetap satu baris, dan nyalakan Font monospace untuk meratakan kolom. Penghitung menampilkan kata, karakter, dan baris.",
+      "s4t": "Buka file teks",
+      "s4b": "Buka file memuat file teks UTF-8 sampai 1 MB ke dalam catatan dan menggantikan isinya; Urungkan mengembalikan catatan lama selama beberapa detik. File dengan encoding lain ditolak dan catatan Anda tidak berubah.",
+      "s5t": "Unduh salinan",
+      "s5b": "Unduh .txt menyimpan catatan sebagai file di perangkat Anda. Lakukan ini untuk apa pun yang sayang jika hilang. Salin semua menaruh seluruh catatan di papan klip untuk ditempel ke email atau dokumen.",
+      "s6t": "Hapus, dan urungkan jika berubah pikiran",
+      "s6b": "Hapus mengosongkan catatan, dan Urungkan muncul selama beberapa detik untuk mengembalikannya. Jika halaman menyebut browser ini tidak menyimpan catatan, kemungkinan Anda ada di jendela privat: unduh sebelum menutupnya.",
+      "diagram1": "Tersimpan hanya di browser ini: unduh salinan untuk membawanya ke tempat lain.",
+      "diagram2": "Bungkus baris cocok untuk menulis; tanpa bungkus, tiap baris kode atau log tetap utuh."
+    },
+    "preview-markdown": {
+      "name": "Cara menulis dan melihat pratinjau Markdown",
+      "blurb": "Judul, teks tebal, daftar, tautan, tabel, dan daftar tugas dengan pratinjau langsung, lalu salin HTML-nya.",
+      "title": "Cara menulis dan melihat pratinjau Markdown",
+      "lead": "Anda punya README, posting forum, atau catatan yang perlu diformat, dan ingin melihat hasilnya sambil menulis. Anda akan mempelajari tanda yang benar-benar dibutuhkan, mengeceknya di pratinjau langsung, dan membawa pulang Markdown atau HTML. Tidak ada unggahan.",
+      "result": "Dokumen berformat yang sudah Anda cek sendiri, siap sebagai Markdown, file .md, HTML untuk ditempel, atau file HTML.",
+      "note": "Markdown adalah teks biasa, jadi bisa dibuka di mana saja. Tiap situs berbeda soal fitur tambahan seperti tabel, jadi cek di tempat Anda akan menerbitkannya.",
+      "s1t": "Pelajari tanda dasarnya",
+      "s1b": "# dan satu spasi membuat judul (## dan satu spasi yang lebih kecil). **Dua bintang** membuat teks tebal dan *satu bintang* membuat miring. Baris yang diawali - dan satu spasi adalah butir daftar, dan [text](https://example.com) adalah tautan. Beri satu baris kosong di antara paragraf.",
+      "s2t": "Buka Pratinjau Markdown di cv.cm",
+      "s2b": "Kotak Markdown sudah berisi contoh pendek dengan semua tanda, dan Lihat contoh memunculkannya kembali kapan saja. Ganti dengan teks Anda sendiri dan baca hasilnya di kotak Pratinjau sambil jalan.",
+      "s3t": "Tambahkan tabel dan daftar tugas",
+      "s3b": "Pisahkan sel tabel dengan | dan beri satu baris tanda hubung di bawah header; titik dua di baris itu mengatur perataan. - [ ] adalah tugas yang belum selesai dan - [x] yang sudah selesai. Pakai ~~dua tilde~~ untuk coretan.",
+      "s4t": "Tandai kode",
+      "s4b": "Apit kata dengan satu backtick untuk kode sebaris. Taruh tiga backtick di baris atas dan bawah sebuah blok, dan blok itu mempertahankan pemisah barisnya. Tab menjorokkan baris; tekan Esc lalu Tab untuk keluar dari kotak.",
+      "s5t": "Cek pratinjaunya",
+      "s5b": "HTML mentah ditampilkan sebagai teks biasa dan tidak pernah dijalankan. Hanya tautan http, https, mailto, tel, dan relatif yang menjadi tautan, jadi tautan yang tetap berupa teks punya alamat yang tidak dipercaya halaman ini.",
+      "s6t": "Salin atau unduh hasilnya",
+      "s6b": "Salin Markdown dan Unduh .md memberi Anda sumbernya. Salin HTML dan Unduh HTML memberi kode halaman jadinya. Teks juga tetap ada di browser ini, jadi Anda bisa kembali lagi.",
+      "diagram1": "Yang Anda ketik di kiri, yang dilihat pembaca di kanan.",
+      "diagram2": "Satu baris tanda hubung membuat tabel; kurung siku membuat daftar periksa."
+    },
+    "make-css-gradient": {
+      "name": "Cara membuat gradien CSS",
+      "blurb": "Pilih Linear, Radial, atau Kerucut, atur warna dan posisinya, lalu salin CSS atau simpan PNG.",
+      "title": "Cara membuat gradien CSS",
+      "lead": "Anda ingin gradien di belakang halaman, kartu, atau slide, dan menulis CSS dengan coba-coba itu lambat. Anda akan memilih jenis, menempatkan warna, lalu menyalin CSS yang siap ditempel atau menyimpan gambar. Semuanya berjalan di browser Anda.",
+      "result": "Aturan background CSS dengan warna cadangan polos, atau PNG berukuran 1080p, 1440p, potret, atau persegi.",
+      "note": "Teks di atas gradien harus tetap terbaca di kedua ujungnya. Uji warna paling terang dan paling gelap dengan warna teks yang akan dipakai.",
+      "s1t": "Pilih jenis gradien",
+      "s1b": "Linear membaur dalam garis lurus dan cocok untuk sebagian besar latar. Radial menyebar dari tengah, seperti cahaya lembut. Kerucut berputar mengelilingi satu titik, seperti roda warna atau diagram lingkaran.",
+      "s2t": "Buka Generator gradien CSS di cv.cm",
+      "s2b": "Pilih jenisnya di bagian Gradien. Tekan preset sebagai titik awal atau Acak untuk mencari ide, dan pratinjau langsung berubah.",
+      "s3t": "Atur arahnya",
+      "s3b": "Untuk Linear dan Kerucut, geser Sudut: 0° mengarah ke atas, 90° ke kanan, dan 180° ke bawah. Untuk Radial, pilih Lingkaran atau Elips.",
+      "s4t": "Tempatkan warnanya",
+      "s4b": "Tiap warna punya posisi dari 0% sampai 100%, dan Anda bisa memakai sampai 6 warna. Tambah warna menyisipkan satu warna, dan × menghapusnya. Posisi berdekatan membuat tepi tajam, dan posisi berjauhan membuat baur yang lembut.",
+      "s5t": "Salin CSS-nya",
+      "s5b": "Salin CSS memberi dua baris: warna polos untuk browser yang sangat lama, lalu gradiennya. Tempel keduanya ke aturan CSS elemen Anda. Ini berfungsi di blok apa pun yang punya ukuran, seperti body atau kartu.",
+      "s6t": "Atau simpan PNG",
+      "s6b": "Untuk slide dan wallpaper, pilih Ukuran gambar lalu tekan Simpan PNG. Ukurannya antara lain 1920 × 1080, 2560 × 1440, 1080 × 1920 untuk ponsel, dan 1080 × 1080 untuk posting persegi.",
+      "diagram1": "Ketiga jenis berbeda pada jalur yang diikuti warnanya.",
+      "diagram2": "Tiap warna berada di satu posisi pada garis, dan CSS mencantumkannya berurutan."
+    },
+    "make-fancy-text": {
+      "name": "Cara membuat font keren",
+      "blurb": "Ubah huruf biasa jadi teks tebal, sambung, gotik, dan dalam lingkaran yang bisa ditempel, dan pahami batasnya.",
+      "title": "Cara membuat font keren",
+      "lead": "Anda ingin bio, nama pengguna, atau judul menonjol di aplikasi yang tidak menyediakan pilihan font. Anda akan mengubah teks, menyalin satu gaya dan menempelkannya, lalu mengetahui di mana cara ini tidak berhasil. Semuanya berjalan di browser Anda.",
+      "result": "Teks bergaya yang bisa ditempel ke bio, nama, dan posting media sosial sebagai karakter biasa, tanpa perlu memasang font.",
+      "note": "Ini bukan font sungguhan. Ini simbol Unicode tersendiri yang mirip huruf, karena itu bisa ditempel di mana saja, dan karena itu pula punya batas.",
+      "s1t": "Pahami apa sebenarnya font keren ini",
+      "s1b": "Unicode punya kumpulan simbol yang mirip huruf tebal, sambung, atau gotik, dan banyak yang awalnya ditambahkan untuk matematika. Font keren menukar tiap huruf dengan salah satu simbol itu, jadi gayanya ikut terbawa bersama teks.",
+      "s2t": "Buka Generator font keren di cv.cm",
+      "s2b": "Ketik di Teks Anda. Semua gaya di bawahnya berubah saat Anda mengetik, dari Tebal dan Sambung (script) sampai Gotik (Fraktur), Dalam lingkaran, dan Terbalik.",
+      "s3t": "Pilih gaya yang tetap mudah dibaca",
+      "s3b": "Tebal dan Sans tebal paling mudah dibaca. Sambung dan Gotik cocok untuk nama pendek atau beberapa kata, bukan satu paragraf penuh. Biarkan sisa bio Anda sebagai teks biasa.",
+      "s4t": "Salin dan tempel",
+      "s4b": "Tekan Salin di samping gaya yang Anda inginkan dan tempel ke aplikasi. Cek setelah disimpan: kotak kosong atau tanda tanya berarti perangkat itu tidak punya simbol untuk karakter tersebut.",
+      "s5t": "Karakter lain akan tetap sama",
+      "s5b": "Gaya huruf hanya mengubah A–Z, a–z, dan, pada beberapa gaya, angka. Huruf Mandarin, Jepang, Korea, dan huruf beraksen seperti é tidak punya simbol padanan, jadi tetap seperti yang diketik. Coret dan Garis bawah menambahkan garis pada setiap karakter, dan Terbalik membalik seluruh teks.",
+      "s6t": "Hindari di tempat yang merugikan",
+      "s6b": "Jangan pakai untuk hal yang perlu ditemukan atau didengar orang. Pencarian mungkin tidak mencocokkan 𝐜𝐚𝐤𝐞 dengan cake, dan pembaca layar bisa melewati simbolnya atau membacakan nama panjangnya. Biarkan nama asli dan kata kunci tetap biasa.",
+      "diagram1": "Kata yang sama, tetapi simbol Unicode yang berbeda, bukan font.",
+      "diagram2": "Gaya huruf hanya mengubah A–Z, a–z, dan sebagian angka; lainnya tetap seperti yang diketik."
+    },
+    "flip-coin": {
+      "name": "Cara lempar koin online",
+      "blurb": "Putuskan dengan adil, lempar sampai 1.000 koin, dan baca rentetan tanpa terkecoh.",
+      "title": "Cara lempar koin online",
+      "lead": "Dua orang butuh keputusan yang adil, atau satu kelas ingin melihat cara kerja peluang, dan tidak ada yang punya koin. Anda akan menyepakati pilihan, melempar satu koin atau sampai 1.000, lalu membaca total dan rentetannya. Semuanya berjalan di browser Anda.",
+      "result": "Gambar atau Angka yang adil, atau sekumpulan sampai 1.000 lemparan dengan total, persentase, dan rentetan, serta ringkasan yang bisa disalin.",
+      "note": "Tiap koin memakai satu bit acak aman dari browser Anda, jadi Gambar dan Angka sama-sama mungkin dan lemparan sebelumnya tidak berpengaruh.",
+      "s1t": "Sepakati pilihan dulu",
+      "s1b": "Sebutkan siapa yang memilih Gambar dan apa arti tiap sisi sebelum melempar, serta bahwa satu lemparan menentukan. Keputusan yang dibuat lebih dulu itulah yang membuat lemparan adil bagi semua.",
+      "s2t": "Buka Lempar koin di cv.cm",
+      "s2b": "Ketuk koin atau tekan Lempar. Spasi dan Enter juga melempar. Sisi yang tampak saat koin berhenti adalah hasilnya.",
+      "s3t": "Lempar banyak koin sekaligus",
+      "s3b": "Pilih 10, 100, atau 1.000 di Koin per lemparan. Semuanya mendarat bersamaan dan halaman menampilkan berapa yang menjadi Gambar dan Angka, berguna untuk pelajaran peluang.",
+      "s4t": "Baca totalnya",
+      "s4b": "Hasil menjumlahkan semua lemparan sejak Atur ulang terakhir, jadi tekan Atur ulang dulu untuk membaca satu kumpulan saja. Harapkan mendekati setengah, bukan tepat setengah: pada 100 koin, 40 sampai 60 Gambar terjadi sekitar 96% dari waktu.",
+      "s5t": "Jangan mencari arti dalam rentetan",
+      "s5b": "Rentetan terpanjang dan Rentetan saat ini menampilkan deretan sisi yang sama. Tampaknya mengejutkan, tetapi itu normal. Setelah lima Gambar berturut-turut, koin berikutnya tetap 50% Gambar.",
+      "s6t": "Salin atau atur ulang",
+      "s6b": "Salin hasil memberi satu baris berisi total untuk ditempel di obrolan atau laporan. 100 koin terakhir menampilkan sisi terbaru secara berurutan. Atur ulang memulai hitungan baru.",
+      "diagram1": "Tiap lemparan terbagi rata: satu bit, dua sisi yang setara.",
+      "diagram2": "Koin tidak punya ingatan: setelah deretan apa pun, lemparan berikutnya tetap 50%."
+    },
+    "tune-guitar": {
+      "name": "Cara stem gitar",
+      "blurb": "Setem E A D G B E dengan mikrofon, baca Terlalu rendah dan Terlalu tinggi, dan selalu setem naik ke nada.",
+      "title": "Cara stem gitar",
+      "lead": "Gitar Anda terdengar sumbang, atau ini pertama kalinya Anda menyetem. Anda akan menyiapkan tuner, memetik satu senar demi satu, dan memutar pasak sampai tiap senar berada dalam ±5 cent. Tuner mendengarkan lewat mikrofon, dan tidak ada yang direkam atau diunggah.",
+      "result": "Keenam senar dalam stem standar (E A D G B E), masing-masing dalam ±5 cent dari nadanya.",
+      "note": "Senar baru dan perubahan suhu besar membuat stem gitar bergeser, jadi putaran kedua itu normal, dan senar baru mungkin perlu beberapa kali.",
+      "s1t": "Kenali enam senar",
+      "s1b": "Stem standar dari senar paling tebal ke paling tipis adalah E A D G B E. Yang paling tebal adalah E rendah (sekitar 82 Hz), dan yang paling tipis E tinggi (sekitar 330 Hz), dua oktaf lebih tinggi.",
+      "s2t": "Buka Tuner gitar di cv.cm",
+      "s2b": "Tekan Mulai tuner dan izinkan mikrofon saat browser meminta. Instrumen secara bawaan adalah gitar standar. Pindah ke ruangan yang tenang dan dekatkan gitar ke mikrofon.",
+      "s3t": "Petik satu senar dan baca meternya",
+      "s3b": "Biarkan Otomatis aktif, lalu petik satu senar dan biarkan berdenging. Halaman menampilkan nada senar terdekat dan selisihnya dalam cent. Sudah pas berarti dalam ±5 cent; satu cent adalah seperseratus semitone.",
+      "s4t": "Putar pasak ke arah yang benar",
+      "s4b": "Terlalu rendah berarti nadanya di bawah target, jadi kencangkan senar. Terlalu tinggi berarti nadanya di atas target, jadi kendurkan. Putar pelan lalu petik lagi, karena putaran kecil cepat mengubah nada, terutama pada senar tipis.",
+      "s5t": "Setem naik ke nada",
+      "s5b": "Jika senar terlalu tinggi, kendurkan sampai di bawah nada lalu naikkan lagi. Senar jadi lebih tahan menjaga nadanya, karena tidak ada kelonggaran tersisa di pasak. Lakukan hal yang sama untuk keenam senar.",
+      "s6t": "Cek lagi, atau ganti stem",
+      "s6b": "Menarik satu senar sedikit mengubah senar lain, jadi periksa semuanya sekali lagi. Jika Otomatis melompat antarsenar, ketuk satu senar untuk menguncinya. Instrumen juga punya drop D, DADGAD, open G, bass, ukulele, biola, dan cello.",
+      "diagram1": "Paling tebal ke paling tipis: E A D G B E, masing-masing dengan nada targetnya.",
+      "diagram2": "Kiri tengah terlalu rendah, kanan tengah terlalu tinggi, dan ±5 cent terhitung pas."
+    },
+    "find-factors": {
+      "name": "Cara mencari faktor suatu bilangan",
+      "blurb": "Dapatkan semua faktor, pasangan, dan faktorisasi prima, dan lihat cara menghitung jumlah faktornya.",
+      "title": "Cara mencari faktor suatu bilangan",
+      "lead": "Anda butuh faktor suatu bilangan untuk PR, untuk menyederhanakan, atau untuk mengecek apakah bilangan itu prima. Anda akan mencarinya dengan tangan untuk bilangan kecil, lalu membaca jawaban lengkap untuk bilangan bulat apa pun sampai 18 digit. Semuanya berjalan di browser Anda dengan hitungan yang tepat.",
+      "result": "Apakah bilangan itu prima, faktorisasi primanya, jumlah dan total faktornya, serta setiap pasangan faktor untuk bilangan dengan hingga 2.000 faktor.",
+      "note": "Faktor membagi suatu bilangan tanpa sisa. Tiap faktor punya pasangan, jadi Anda hanya perlu menguji sampai akar kuadratnya.",
+      "s1t": "Cari faktor prima dengan tangan",
+      "s1b": "Terus bagi dengan bilangan prima terkecil yang cocok. 360 ÷ 2 = 180, ÷ 2 = 90, ÷ 2 = 45, ÷ 3 = 15, ÷ 3 = 5, dan 5 adalah prima. Jadi 360 = 2³ × 3² × 5.",
+      "s2t": "Buka Kalkulator faktor di cv.cm",
+      "s2b": "Ketik bilangan bulat atau ketuk contoh seperti 97 atau 1001. Angka boleh dikelompokkan per tiga, seperti 1.234.567. Jawaban berubah saat Anda mengetik.",
+      "s3t": "Baca prima atau komposit",
+      "s3b": "Baris pertama menyebut apakah bilangan itu prima, dan tabel mencantumkan Prima sebelumnya dan Prima berikutnya. 97 adalah prima; 1001 bukan, karena 1001 = 7 × 11 × 13. 1 bukan keduanya, karena hanya punya satu faktor.",
+      "s4t": "Baca faktorisasi prima",
+      "s4b": "Faktorisasi prima memberi bentuk ringkas, dan Ditulis lengkap mengulang setiap prima: 2 × 2 × 2 × 3 × 3 × 5. Setiap bilangan bulat di atas 1 punya tepat satu daftar prima seperti itu.",
+      "s5t": "Pakai pasangan faktor",
+      "s5b": "Pasangan faktor adalah dua bilangan yang jika dikalikan menghasilkan bilangan Anda: 36 adalah 1 × 36, 2 × 18, 3 × 12, 4 × 9, dan 6 × 6. Ini juga setiap persegi panjang bersisi bilangan bulat dengan luas itu, berguna untuk tata letak dan tempat duduk.",
+      "s6t": "Cek jumlah faktornya",
+      "s6b": "Tambahkan 1 ke tiap pangkat lalu kalikan. 360 = 2³ × 3² × 5¹ punya 4 × 3 × 2 = 24 faktor, yaitu Jumlah pembagi yang ditampilkan. Semua faktor mencantumkannya, dan menampilkan 1.000 pertama jika lebih banyak.",
+      "diagram1": "Pecah sampai tiap cabang berakhir di prima: 360 = 2³ × 3² × 5.",
+      "diagram2": "Tiap faktor punya pasangan, dan pasangan berhenti di akar kuadrat."
+    },
+    "find-lcm-gcf": {
+      "name": "Cara mencari KPK dan FPB",
+      "blurb": "Hitung kelipatan persekutuan terkecil dan faktor persekutuan terbesar, dan ketahui mana yang Anda butuhkan.",
+      "title": "Cara mencari KPK dan FPB",
+      "lead": "Anda sedang menjumlahkan pecahan, menyederhanakannya, atau mencari kapan dua jadwal bertemu. Anda akan mempelajari mana dari keduanya yang dibutuhkan, mencarinya dengan tangan lewat faktor prima, dan mengeceknya dengan hitungan yang tepat di browser Anda.",
+      "result": "FPB dan KPK dari 2 sampai 20 bilangan bulat, dengan faktor prima dan, untuk dua bilangan, langkah Euclid.",
+      "note": "FPB juga disebut GCD atau HCF, dan semuanya berarti sama. KPK dari penyebut dua pecahan adalah penyebut persekutuan terkecilnya.",
+      "s1t": "Pilih yang Anda butuhkan",
+      "s1b": "Pakai FPB untuk membagi jadi kelompok sama besar atau menyederhanakan pecahan: 12/18 dibagi 6 adalah 2/3. Pakai KPK untuk mencari kapan sesuatu bertemu atau menjumlahkan pecahan: bus tiap 12 dan 18 menit bertemu tiap 36 menit.",
+      "s2t": "Buka Kalkulator KPK dan FPB di cv.cm",
+      "s2b": "Ketik 2 sampai 20 bilangan bulat, dipisah koma atau spasi, atau ketuk contoh seperti 8, 12. Untuk pemisah ribuan pakai titik, seperti 1.500, karena koma selalu memulai bilangan baru.",
+      "s3t": "Bandingkan faktor primanya",
+      "s3b": "Tulis masing-masing sebagai bilangan prima: 12 = 2² × 3 dan 18 = 2 × 3². FPB mengambil setiap prima yang sama dengan pangkat terendah, 2 × 3 = 6. KPK mengambil setiap prima dengan pangkat tertinggi, 2² × 3² = 36.",
+      "s4t": "Pakai algoritma Euclid untuk bilangan besar",
+      "s4b": "Bagi yang lebih besar dengan yang lebih kecil dan simpan sisanya, lalu ulangi dengan pembagi dan sisa itu. 18 = 1 × 12 + 6, dan 12 = 2 × 6 + 0. Pembagi terakhir, 6, adalah FPB. Halaman menampilkan langkah ini untuk dua bilangan.",
+      "s5t": "Cek dengan KPK × FPB",
+      "s5b": "Untuk dua bilangan, KPK × FPB sama dengan hasil kali kedua bilangan: 36 × 6 = 12 × 18 = 216. Dengan begitu KPK bisa langsung didapat dari FPB. Cara cepat ini tidak berlaku untuk tiga bilangan atau lebih.",
+      "s6t": "Baca hasilnya dan salin",
+      "s6b": "Halaman mencantumkan kedua hasil dan faktor prima tiap bilangan. Relatif prima: Ya berarti FPB-nya 1, jadi tidak ada bilangan prima yang membagi semuanya. Untuk dua bilangan, KPK-nya adalah hasil kali keduanya; dengan tiga bilangan atau lebih, KPK-nya bisa lebih kecil (6, 10, 15 memiliki KPK 30). Salin hasil mengirim jawaban ke papan klip.",
+      "diagram1": "Prima yang sama membentuk FPB; semua prima bersama membentuk KPK.",
+      "diagram2": "Tiap baris membagi dengan sisa terakhir sampai tidak ada sisa."
+>>>>>>> origin/main
     }
   },
   "compressPdf": {
@@ -10622,7 +10951,7 @@
     "input": "Teks Anda",
     "placeholder": "Ketik sesuatu…",
     "sample": "Fancy Text 123",
-    "hint": "Hanya A–Z, a–z, dan angka yang berubah; karakter lain tetap seperti yang diketik.",
+    "hint": "Gaya huruf hanya mengubah A–Z, a–z, dan sebagian angka. Coret dan Garis bawah juga berlaku untuk bahasa lain, tetapi melewati emoji. Terbalik membalik urutan semua teks, tetapi hanya memutar huruf yang punya bentuknya.",
     "copy": "Salin",
     "copied": "Tersalin",
     "copyFailed": "Gagal menyalin",
@@ -10725,5 +11054,51 @@
     "separator": ", ",
     "sample": "Nasi goreng\nSate\nBakso\nRendang\nMartabak\nGado-gado",
     "picturesNote": "Gambar tidak disimpan: akan hilang saat halaman dimuat ulang atau ditutup, jadi unduh PNG terlebih dahulu."
+  },
+  "ranking": {
+    "ai-models": {
+      "name": "Model AI terbaik (peringkat LLM)",
+      "blurb": "Model chat teratas menurut suara manusia dalam perbandingan buta."
+    },
+    "ai-coding-models": {
+      "name": "AI terbaik untuk coding",
+      "blurb": "Peringkat model menurut penilaian orang atas aplikasi web buatannya."
+    },
+    "ai-image-models": {
+      "name": "AI pembuat gambar terbaik",
+      "blurb": "Peringkat model gambar menurut suara buta atas hasil gambarnya."
+    },
+    "ai-video-models": {
+      "name": "AI pembuat video terbaik",
+      "blurb": "Peringkat model video menurut suara buta atas klipnya."
+    },
+    "ai-usage": {
+      "name": "Model AI paling banyak dipakai",
+      "blurb": "Peringkat model menurut token yang dikirim lewat OpenRouter."
+    },
+    "ai-companies": {
+      "name": "Perusahaan AI menurut penggunaan",
+      "blurb": "Asal model yang paling banyak dipakai di OpenRouter."
+    },
+    "browser-market-share": {
+      "name": "Pangsa pasar browser",
+      "blurb": "Chrome, Safari, Edge, dan lainnya, global dan per negara."
+    },
+    "os-market-share": {
+      "name": "Pangsa pasar sistem operasi",
+      "blurb": "Android, Windows, iOS, dan macOS, global dan per negara."
+    },
+    "search-engine-market-share": {
+      "name": "Pangsa pasar mesin pencari",
+      "blurb": "Google, Bing, Baidu, dan lainnya, global dan per negara."
+    },
+    "phone-market-share": {
+      "name": "Pangsa pasar merek ponsel",
+      "blurb": "Apple, Samsung, Xiaomi, dan lainnya, global dan per negara."
+    },
+    "social-media-market-share": {
+      "name": "Pangsa pasar media sosial",
+      "blurb": "Jaringan yang paling banyak mengirim kunjungan web, per negara."
+    }
   }
 }

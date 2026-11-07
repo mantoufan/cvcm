@@ -70,9 +70,11 @@ export function mountDatasetHub(host: HTMLElement, locale: Locale): void {
   );
 }
 
+type TableUi = { search: string; searchPlaceholder: string; rows: string; shown: string; noMatch: string; download: string; sortHint: string };
+
 /** Sortable, filterable table. The prerendered page carries every row, so crawlers see the whole table. */
-function tableView(locale: Locale, id: DatasetId, table: DatasetTable): HTMLElement {
-  const ui = datasetUi(locale);
+export function dataTable(locale: Locale, page: { label: string; caption: string; csvHref: string; csvName: string; ui: TableUi }, table: DatasetTable): HTMLElement {
+  const { ui } = page;
   const total = table.rows.length;
   const rows = table.rows.map((cells, index) => ({
     index,
@@ -129,15 +131,15 @@ function tableView(locale: Locale, id: DatasetId, table: DatasetTable): HTMLElem
       : fill(ui.rows, { n: total.toLocaleString(locale) });
     empty.hidden = shown > 0;
   });
-  return h("section", { class: "data-table", "aria-label": datasetName(locale, id).name },
+  return h("section", { class: "data-table", "aria-label": page.label },
     h("div", { class: "data-tools" },
       search,
-      h("a", { class: "btn ghost", href: csvHref(id), download: `${id}.csv` }, ui.download),
+      h("a", { class: "btn ghost", href: page.csvHref, download: page.csvName }, ui.download),
     ),
     count,
     h("div", { class: "data-wrap" },
       h("table", null,
-        h("caption", null, `${datasetPageCopy(locale, id).h1}. ${ui.sortHint}`),
+        h("caption", null, `${page.caption}. ${ui.sortHint}`),
         h("thead", null, h("tr", null, ...heads)),
         body,
       ),
@@ -163,7 +165,7 @@ export async function mountDataset(host: HTMLElement, locale: Locale, id: Datase
       h("h2", { id: "facts-title" }, ui.facts),
       h("ul", null, ...copy.facts.map((fact) => h("li", null, fact))),
     ),
-    tableView(locale, id, datasetTable(locale, id, rows, countries as CountryRow[])),
+    dataTable(locale, { label: datasetName(locale, id).name, caption: copy.h1, csvHref: csvHref(id), csvName: `${id}.csv`, ui }, datasetTable(locale, id, rows, countries as CountryRow[])),
     h("p", { class: "data-source muted" },
       `${ui.source}: `, h("a", { href: source.url, rel: "noopener", target: "_blank" }, source.name),
       ` · ${ui.license}: `, h("a", { href: source.licenseUrl, rel: "noopener license", target: "_blank" }, source.license),
