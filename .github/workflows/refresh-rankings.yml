@@ -1,6 +1,7 @@
 name: Refresh rankings
 
-# Daily snapshot of /rankings/ data. A failed fetch or test publishes nothing, so the site keeps its last good data.
+# Daily snapshot of /rankings/ data. A source that fails keeps its last good tables and turns this run red at the end.
+# A failed test publishes nothing.
 on:
   schedule:
     - cron: "17 2 * * *"
@@ -27,6 +28,7 @@ jobs:
         run: node scripts/fetch-rankings.mjs
         env:
           OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+          RANKINGS_FAILURES_FILE: ${{ runner.temp }}/rankings-failures.txt
       - run: node scripts/write-sitemap.mjs
       # The same checks as the deploy, so data that would break it never reaches main.
       - run: npm test
@@ -45,5 +47,11 @@ jobs:
           git push origin HEAD:main
           # A push made with GITHUB_TOKEN does not start other workflows, so ask for the deploy.
           gh workflow run deploy.yml --ref main
+      - name: Fail if a source kept old data
+        run: |
+          if [ -s "$RUNNER_TEMP/rankings-failures.txt" ]; then
+            cat "$RUNNER_TEMP/rankings-failures.txt"
+            exit 1
+          fi
         env:
           GH_TOKEN: ${{ github.token }}

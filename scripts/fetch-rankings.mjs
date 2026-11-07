@@ -3,11 +3,13 @@
 //   Arena leaderboard (CC BY 4.0): huggingface.co/datasets/lmarena-ai/leaderboard-dataset
 //   OpenRouter rankings data API (CC BY 4.0, needs OPENROUTER_API_KEY, free): openrouter.ai/docs/cookbook/administration/data-api
 //   StatCounter Global Stats (CC BY-SA 3.0): gs.statcounter.com
-import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
+import { appendFileSync, existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import { tmpdir } from "node:os";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
+const FAILURES_FILE = process.env.RANKINGS_FAILURES_FILE ?? join(tmpdir(), "rankings-failures.txt");
 const UA = "cv.cm rankings snapshot (https://cv.cm/)";
 const REGIONS = ["ww", "US", "CN", "TW", "JP", "KR", "VN", "ID", "ES"];
 const ARENA = { "ai-models": "text", "ai-coding-models": "webdev", "ai-image-models": "text_to_image", "ai-video-models": "text_to_video" };
@@ -67,7 +69,8 @@ async function arena(config) {
 async function openRouter() {
   const key = process.env.OPENROUTER_API_KEY;
   if (!key) throw new Error("OPENROUTER_API_KEY is not set");
-  const end = new Date(Date.UTC(today.getUTCFullYear(), today.getUTCMonth(), today.getUTCDate() - 1));
+  // Two days back: at 02:17 UTC yesterday may still be loading, and a partial day would understate every total.
+  const end = new Date(Date.UTC(today.getUTCFullYear(), today.getUTCMonth(), today.getUTCDate() - 2));
   const start = new Date(end.getTime() - (USAGE_DAYS - 1) * 86_400_000);
   const q = new URLSearchParams({ start_date: start.toISOString().slice(0, 10), end_date: end.toISOString().slice(0, 10) });
   const { data, meta: source } = JSON.parse(await get(`https://openrouter.ai/api/v1/datasets/rankings-daily?${q}`, { Authorization: `Bearer ${key}` }));
@@ -209,6 +212,7 @@ const keep = (id) => {
   rows[id] = oldRows[id];
   meta.sets[id] = oldMeta.sets[id];
 };
+rmSync(FAILURES_FILE, { force: true });
 let attempts = 0;
 let failures = 0;
 /** One source failing keeps its last good tables, so it cannot hold back the others. With no earlier data there is nothing to keep. */
@@ -220,6 +224,8 @@ async function attempt(ids, fetchTables) {
     if (ids.some((id) => !oldRows[id])) throw error;
     failures += 1;
     console.log(`::warning::keeping the last good ${ids.join(", ")}: ${error.message}`);
+    // The workflow publishes what did refresh, then fails on this file so the stale table gets noticed.
+    appendFileSync(FAILURES_FILE, `${ids.join(", ")}: ${error.message}\n`);
     ids.forEach(keep);
   }
 }
@@ -249,7 +255,8 @@ await attempt(["ai-usage", "ai-companies"], async () => {
 const month = lastMonth();
 for (const [id, spec] of Object.entries(SHARE)) {
   // StatCounter publishes monthly: nothing to ask for until a new month is due.
-  if (oldMeta.sets[id]?.asOf === month && oldRows[id]) {
+  // FORCE_SHARE=1 asks again, for a fix to names or filters.
+  if (!process.env.FORCE_SHARE && oldMeta.sets[id]?.asOf === month && oldRows[id]) {
     keep(id);
     continue;
   }
@@ -265,8 +272,10 @@ if (attempts && failures === attempts) throw new Error("every source failed");
 
 // A table's date moves only when its rows changed, so a monthly table never claims a daily update.
 for (const [id, set] of Object.entries(meta.sets)) {
-  const same = oldMeta.sets[id]?.updated && JSON.stringify(oldRows[id]) === JSON.stringify(rows[id]);
+  const same = oldMeta.sets[id]?.updated && oldMeta.sets[id].asOf === set.asOf && JSON.stringify(oldRows[id]) === JSON.stringify(rows[id]);
   set.updated = same ? oldMeta.sets[id].updated : meta.updated;
+  // Same data: the file stays, so a re-run with only a newer citation time makes no commit.
+  if (same) delete csv[id];
 }
 meta.updated = Object.values(meta.sets).map((set) => set.updated).sort().at(-1);
 writeFileSync(rowsPath, `${JSON.stringify(rows)}\n`);
