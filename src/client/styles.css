@@ -910,6 +910,8 @@ html.dp-lock, html.dp-lock body { overflow: hidden; }
 .tier-color option { font-size: 0.85rem; }
 .tier-mini { min-width: 28px; min-height: 28px; padding: 0; border: 1px solid var(--line); border-radius: 6px; background: var(--white); color: var(--ink); cursor: pointer; }
 .tier-mini:disabled { opacity: 0.4; cursor: default; }
+.tier-actions { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+.tier-actions .btn:disabled { opacity: 0.45; cursor: not-allowed; }
 .tier-sub { margin: 0.25rem 0 0; font-size: 1rem; }
 .tier-add { display: grid; gap: 0.5rem; }
 @media (max-width: 600px) {

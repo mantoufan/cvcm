@@ -502,7 +502,7 @@ export function mountTierList(host: HTMLElement): void {
         h("label", { class: "tier-field" }, h("span", null, t("tierList.presetLabel")), presetEl),
       ),
       rowsEl,
-      h("div", { class: "stage-actions" },
+      h("div", { class: "tier-actions" },
         h("button", { type: "button", class: "btn ghost", "data-action": "add-row", onClick: () => { if (addTier(board, t("tierList.newRow"))) { paint(); save(); } } }, t("tierList.addRow")),
         h("button", { type: "button", class: "btn ghost", "data-action": "clear", onClick: () => { clearPlacements(board); selected = null; paint(); save(); } }, t("tierList.clear")),
         h("button", { type: "button", class: "btn ghost", "data-action": "start-over", onClick: (e: Event) => askStartOver(e.currentTarget as HTMLButtonElement) }, t("tierList.startOver")),
@@ -512,7 +512,7 @@ export function mountTierList(host: HTMLElement): void {
       noteEl,
       h("div", { class: "tier-add" },
         entryEl,
-        h("div", { class: "stage-actions" },
+        h("div", { class: "tier-actions" },
           h("button", { type: "button", class: "btn ghost", "data-action": "add", onClick: addFromEntry }, t("tierList.add")),
           h("button", { type: "button", class: "btn ghost", "data-action": "pictures", onClick: () => fileEl?.click() }, t("tierList.addPictures")),
           h("button", { type: "button", class: "btn ghost", "data-action": "delete-item", disabled: true, onClick: () => { if (selected) drop(selected); } }, t("tierList.deleteItem")),
@@ -520,7 +520,7 @@ export function mountTierList(host: HTMLElement): void {
         ),
       ),
       h("p", { class: "hint" }, t("tierList.hint")),
-      h("div", { class: "stage-actions" }, pngBtn, copyBtn),
+      h("div", { class: "tier-actions" }, pngBtn, copyBtn),
     ),
   );
   window.addEventListener("pagehide", flush);

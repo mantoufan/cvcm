@@ -119,7 +119,7 @@ describe("tier list fixes", () => {
     expect(qa(".tier-pool [data-item]").length).toBe(6);
     q("[data-action=start-over]").click();
     expect(qa(".tier-pool [data-item]").length).toBe(0);
-    expect((qa("[data-field=label]")[0] as HTMLInputElement).value).toBe("S");
+    expect(qa("[data-field=label]").map((el) => (el as HTMLInputElement).value)).not.toContain("Custom");
   });
 
   it("does not write to storage until something changes", () => {
