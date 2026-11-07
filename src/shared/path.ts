@@ -316,6 +316,8 @@ export const TUTORIALS = [
   "test-reaction-time",
   "generate-test-tone",
   "test-microphone",
+  "use-emulator",
+  "open-swf-file",
   "use-tally-counter",
   "test-webcam",
   "test-gamepad",
@@ -345,7 +347,7 @@ export const TUTORIALS = [
 ] as const;
 export type TutorialId = (typeof TUTORIALS)[number];
 
-export type TutorialGroupId = "codes" | "files" | "photo" | "audio" | "text" | "dev" | "time" | "money" | "health" | "math" | "court" | "water" | "code" | "mind" | "course";
+export type TutorialGroupId = "codes" | "files" | "photo" | "audio" | "text" | "dev" | "time" | "money" | "health" | "math" | "court" | "water" | "code" | "mind" | "course" | "games";
 
 // New how-tos are published. Legacy ids still parse so old URLs 301 to the hub.
 export const TUTORIAL_GROUPS: readonly {
@@ -356,6 +358,7 @@ export const TUTORIAL_GROUPS: readonly {
   { id: "files", tutorials: ["merge-pdf", "compress-pdf", "split-pdf", "heic-to-jpg", "jpg-to-pdf", "pdf-to-jpg", "webp-to-png", "png-to-jpg", "jpg-to-png", "avif-to-jpg", "png-to-webp", "make-invoice"] },
   { id: "photo", tutorials: ["crop-photo", "rotate-photo", "resize-image", "add-watermark", "watermark-id-copy", "mosaic-photo", "remove-exif", "make-collage", "make-meme", "make-favicon", "make-signature", "annotate-screenshot", "remove-photo-background"] },
   { id: "audio", tutorials: ["trim-audio", "mp3-to-wav", "join-audio", "use-metronome", "generate-test-tone", "test-microphone", "tune-guitar"] },
+  { id: "games", tutorials: ["use-emulator", "open-swf-file"] },
   { id: "dev", tutorials: ["format-json", "decode-base64", "encode-url", "read-jwt", "unix-time", "convert-base", "read-cron", "hash-text", "generate-uuid", "test-regex", "make-password", "check-contrast", "test-keyboard", "test-click-speed", "test-reaction-time", "test-webcam", "test-gamepad", "check-dead-pixels", "check-refresh-rate", "test-touch-screen", "make-css-gradient"] },
   { id: "text", tutorials: ["count-words", "compare-text", "estimate-reading-time", "use-online-notepad", "preview-markdown", "make-fancy-text"] },
   { id: "time", tutorials: ["days-between", "shift-date", "count-workdays", "add-duration", "calculate-age", "iso-week", "convert-timezone", "calculate-work-hours", "use-pomodoro", "find-zodiac-sign"] },

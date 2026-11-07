@@ -1,0 +1,104 @@
+{
+  "group": "Game",
+  "meta": {
+    "titleUseEmulator": "Cara memakai emulator untuk main ROM di browser | cv.cm",
+    "descUseEmulator": "Buka ROM tanpa instalasi: pilih file, periksa konsol, pelajari tombol, simpan game, dan atasi layar hitam. Tidak ada yang diunggah.",
+    "titleOpenSwfFile": "Cara membuka file SWF tanpa Flash | cv.cm",
+    "descOpenSwfFile": "Buka file .swf di browser tanpa plugin, nyalakan suara, main dengan mouse atau sentuhan, dan ketahui mengapa sebagian file berhenti memuat. Tidak ada yang diunggah."
+  },
+  "lessons": {
+    "use-emulator": {
+      "copy": {
+        "name": "Cara memakai emulator",
+        "blurb": "Buka ROM di browser, periksa konsol, pelajari tombol, dan simpan game Anda.",
+        "title": "Cara memakai emulator untuk main ROM",
+        "lead": "Anda punya file ROM dan ingin memainkannya tanpa memasang apa pun. Anda akan membukanya di browser, memeriksa konsol, mempelajari tombol, dan menyimpan progres. File tetap di perangkat Anda.",
+        "result": "Game berjalan di tab browser, tombolnya terlihat jelas, dan file simpanan ada di perangkat Anda.",
+        "note": "Gunakan ROM yang berhak Anda pakai, misalnya homebrew yang dirilis pembuatnya. cv.cm tidak menyediakan ROM komersial.",
+        "s1t": "Siapkan ROM yang boleh dipakai",
+        "s1b": "ROM adalah salinan kartrid game dalam satu file. Alat ini membuka game FC / NES, SFC / SNES, Game Boy, Game Boy Color, Game Boy Advance, dan Mega Drive / Genesis. Jika belum punya file, kolom Game di cv.cm punya homebrew gratis.",
+        "s2t": "Buka emulator game di cv.cm",
+        "s2b": "Tekan Pilih ROM, lalu pilih file .nes, .sfc, .smc, .gb, .gbc, .gba, .md, .gen, .smd, .bin, atau .zip. File dibaca di tab ini dan tidak dikirim ke mana pun. Saat pertama, emulator juga diunduh, jadi tunggu sebentar.",
+        "s3t": "Periksa konsol",
+        "s3b": "Baris di bawah game menyebut konsol yang terdeteksi. Jika file tidak menyebutnya atau tampilan game salah, pilih di Konsol dan game dimulai ulang dengan konsol itu. Game Boy dan Game Boy Color memakai core emulator yang sama, jadi beralih di antara keduanya tidak memulai ulang game.",
+        "s4t": "Pelajari tombol",
+        "s4b": "Tombol untuk konsol itu muncul di bawah game. Pada sebagian besar konsol, tombol panah untuk bergerak, Z adalah A, X adalah B, V adalah Select, dan Enter adalah Start. Di ponsel, gunakan pad di layar atau gamepad Bluetooth.",
+        "s5t": "Simpan game",
+        "s5b": "Arahkan penunjuk ke game untuk menampilkan bilah alat. Di ponsel, ketuk ikon tiga garis di kanan atas. Ikon disket menyimpan state dan mengunduhnya sebagai file .state. Ikon folder memuatnya. Simpan file ini: setelah tab ditutup, file ini mengembalikan Anda ke titik yang sama.",
+        "s6t": "Atasi game yang tidak mau mulai",
+        "s6b": "Layar hitam biasanya berarti konsol salah, jadi coba konsol lain di Konsol. Zip harus langsung berisi ROM, bukan zip lain. File di atas 64 MB ditolak karena terlalu besar untuk konsol ini, dan game cakram tidak didukung.",
+        "diagram1": "Setiap jenis file dan konsol yang membukanya.",
+        "diagram2": "Tombol keyboard untuk sebagian besar konsol, dan tambahan pada SFC."
+      },
+      "faq": {
+        "q1": "Apakah ROM saya diunggah?",
+        "a1": "Tidak. File dibaca di tab ini dan diberikan ke emulator di halaman. Hanya program emulator yang diunduh.",
+        "q2": "Apakah bermain ROM itu legal?",
+        "a2": "Tergantung game dan tempat tinggal Anda. Homebrew yang dirilis gratis oleh pembuatnya tidak masalah. Aturan salinan game komersial berbeda di tiap negara, jadi periksa aturan di tempat Anda.",
+        "q3": "File mana yang dipilih dari zip?",
+        "a3": "Pilih zip itu sendiri. Alat ini mencari ROM di dalamnya dan emulator membukanya. Jika isinya .bin, pilih konsol sendiri.",
+        "q4": "Bisakah memainkan game PlayStation atau Nintendo DS?",
+        "a4": "Tidak. Alat ini mendukung FC / NES, SFC / SNES, Game Boy, Game Boy Color, Game Boy Advance, dan Mega Drive / Genesis.",
+        "q5": "Di mana simpanan saya?",
+        "a5": "Ikon disket mengunduh file .state ke perangkat Anda. Untuk melanjutkan, buka ROM yang sama dan muat file itu dengan ikon folder. Simpanan dari menu game itu sendiri mungkin tetap di browser ini sampai data situs dihapus, jadi simpan file .state untuk progres yang penting."
+      }
+    },
+    "open-swf-file": {
+      "copy": {
+        "name": "Cara membuka file SWF",
+        "blurb": "Buka file .swf tanpa plugin, nyalakan suara, dan ketahui mengapa sebagian file berhenti memuat.",
+        "title": "Cara membuka file SWF tanpa Flash",
+        "lead": "Anda punya file .swf, tetapi Flash Player sudah tidak berfungsi. Anda akan membukanya di tab browser dengan Ruffle, menyalakan suara, memainkannya, dan tahu apa yang dilakukan saat berhenti memuat. File tetap di perangkat Anda.",
+        "result": "SWF berjalan di tab browser dengan suara, tanpa memasang plugin.",
+        "note": "Jangan memasang Flash Player lama dari situs lain. Adobe telah menghentikan dukungan Flash Player dan menyarankan untuk mencopotnya.",
+        "s1t": "Pahami apa itu SWF",
+        "s1b": "SWF adalah file Flash: game, animasi, atau aplikasi kecil. Adobe mengakhiri dukungan Flash Player pada 31 Desember 2020 dan memblokir konten Flash sejak 12 Januari 2021, sehingga browser tidak lagi menjalankan file ini sendiri.",
+        "s2t": "Buka Flash Player di cv.cm",
+        "s2b": "Tekan Pilih SWF, lalu pilih file .swf Anda. File tetap di tab ini dan tidak dikirim ke server. Saat pertama, Ruffle, emulator Flash open source, juga diunduh dan bisa memakan beberapa detik.",
+        "s3t": "Nyalakan suara",
+        "s3b": "Browser bisa memblokir suara yang diputar otomatis. Jika tidak terdengar, klik gambar sekali.",
+        "s4t": "Mainkan",
+        "s4b": "Sebagian besar Flash memakai tombol kiri mouse. Ketukan di ponsel dihitung sebagai klik. Tombol panah berfungsi jika game memerlukan keyboard, jadi game seperti itu lebih mudah di komputer.",
+        "s5t": "Ketahui mengapa file berhenti memuat",
+        "s5b": "Halaman ini hanya menjalankan file yang bisa mulai sendiri dan memblokir akses jaringan. Game yang memuat SWF lain atau XML, atau hanya berjalan di situs lamanya, berhenti di layar pemuatan.",
+        "s6t": "Coba cara lain jika gagal",
+        "s6b": "Ruffle menjalankan sebagian besar file ActionScript 1 dan 2 lama, tetapi dukungan ActionScript 3 belum lengkap, jadi beberapa game yang lebih baru mungkin gagal mulai atau berjalan tidak benar. Tekan Pilih SWF lagi untuk membuka file lain, atau mainkan game gratis di bagian game Flash.",
+        "diagram1": "Cara memakai mouse, sentuhan, dan keyboard pada file Flash.",
+        "diagram2": "SWF yang bisa mulai sendiri akan berjalan. Yang perlu file lain atau situs lamanya akan berhenti."
+      },
+      "faq": {
+        "q1": "Apakah saya perlu Adobe Flash Player?",
+        "a1": "Tidak. Ruffle menjalankan file di halaman ini, jadi tidak ada yang perlu dipasang. Halaman ini bukan dari Adobe.",
+        "q2": "Apakah SWF saya diunggah?",
+        "a2": "Tidak. File tetap di tab ini dan tidak dikirim ke server.",
+        "q3": "Mengapa tidak ada suara?",
+        "a3": "Browser bisa memblokir suara yang diputar otomatis. Jika tidak terdengar, klik gambar sekali.",
+        "q4": "Mengapa berhenti di layar pemuatan?",
+        "a4": "Game itu mungkin memerlukan file lain atau situs lamanya. Halaman ini memblokir akses jaringan, jadi tidak bisa mengambilnya.",
+        "q5": "Bisakah membuka SWF di ponsel?",
+        "a5": "Bisa. Ketukan dihitung sebagai klik. Game yang memerlukan keyboard lebih mudah di komputer."
+      }
+    }
+  },
+  "svg": {
+    "use-emulator": {
+      "file": "File",
+      "console": "Konsol",
+      "bin": "dari header, atau pilih sendiri",
+      "zip": "mencari ROM di dalamnya",
+      "move": "Bergerak",
+      "sfc": "Tambahan SFC. GBA juga memakai Q dan E. Mega Drive: lihat tombol di bawah game."
+    },
+    "open-swf-file": {
+      "ok": "Berjalan",
+      "stop": "Berhenti",
+      "one": "Satu .swf yang mulai sendiri",
+      "more": "Memuat SWF lain atau XML",
+      "site": "Hanya berjalan di situs lamanya",
+      "click": "Tombol kiri mouse",
+      "tap": "Ketukan di ponsel = klik",
+      "keys": "Tombol panah, jika game memerlukan",
+      "sound": "Tidak ada suara? Klik sekali"
+    }
+  }
+}
