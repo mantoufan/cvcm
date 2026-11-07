@@ -55,7 +55,7 @@
     },
     "currency-strength": {
       "name": "Currency strength against the US dollar",
-      "blurb": "29 currencies ranked by how their value moved against the dollar."
+      "blurb": "Currencies ranked by how their value moved against the dollar."
     }
   },
   "rankings": {
@@ -521,12 +521,12 @@
       },
       "commodity-prices": {
         "title": "Commodity Prices {year}: Biggest Gainers and Losers | cv.cm",
-        "description": "Commodity prices for {date}: {top1} rose most over a year ({v1}), {low1} fell most ({lv1}). Oil, gas, metals, grains and more, from the World Bank.",
+        "description": "Commodity prices for {date}: {top1} rose most over a year ({v1}), {low1} did worst ({lv1}). Oil, gas, metals, grains and more, from the World Bank.",
         "h1": "Commodity prices: gainers and losers, {date}",
         "lede": "{rows} commodities ranked by their price change over 12 months, with the latest monthly price and the change over one month. World Bank Pink Sheet data, in US dollars.",
         "facts": [
           "Biggest rises over a year: {top1} ({v1}), {top2} ({v2}) and {top3} ({v3}).",
-          "Biggest falls: {low1} ({lv1}), {low2} ({lv2}) and {low3} ({lv3}).",
+          "Weakest over a year: {low1} ({lv1}), {low2} ({lv2}) and {low3} ({lv3}).",
           "Monthly average prices for {date}."
         ],
         "about": [
@@ -536,11 +536,11 @@
         "faq": [
           {
             "q": "Which commodity rose the most this year?",
-            "a": "Among the {rows} listed, {top1} rose the most over 12 months to {date}: {v1}."
+            "a": "Among the {rows} listed, {top1} did best over 12 months to {date}: {v1}."
           },
           {
             "q": "Which commodity fell the most?",
-            "a": "{low1}, down {ld1} over 12 months to {date}."
+            "a": "{low1}, with {lv1} over 12 months to {date}."
           },
           {
             "q": "Are these live prices?",
@@ -549,7 +549,7 @@
         ]
       },
       "currency-strength": {
-        "title": "Currency Strength vs US Dollar {year}: 29 Currencies Ranked | cv.cm",
+        "title": "Currency Strength vs US Dollar {year}: {rows} Currencies Ranked | cv.cm",
         "description": "Which currencies gained or lost against the US dollar since {yearAgo}: {top1} {v1}, {top2} {v2}, {low1} {lv1}. ECB reference rates.",
         "h1": "Currency strength against the US dollar, {date}",
         "lede": "{rows} currencies ranked by how their value changed against the US dollar over a year, with the rate per dollar and the change over one month. From the European Central Bank's daily reference rates.",
@@ -565,11 +565,11 @@
         "faq": [
           {
             "q": "Which currency gained the most against the dollar?",
-            "a": "{top1}, up {v1} against the US dollar since {yearAgo}."
+            "a": "{top1}: {v1} against the US dollar since {yearAgo}."
           },
           {
             "q": "Which currency lost the most?",
-            "a": "{low1}, down {ld1} against the dollar since {yearAgo}."
+            "a": "{low1}: {lv1} against the dollar since {yearAgo}."
           },
           {
             "q": "Are these exchange rates live?",

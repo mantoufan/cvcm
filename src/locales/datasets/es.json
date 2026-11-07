@@ -1338,7 +1338,7 @@
         "lede": "{rows} materias primas ordenadas por la variación de su precio en 12 meses, con el último precio mensual y la variación a un mes. Datos del Pink Sheet del Banco Mundial, en dólares estadounidenses.",
         "facts": [
           "Mayores subidas en un año: {top1} ({v1}), {top2} ({v2}) y {top3} ({v3}).",
-          "Mayores caídas: {low1} ({lv1}), {low2} ({lv2}) y {low3} ({lv3}).",
+          "Peor evolución en un año: {low1} ({lv1}), {low2} ({lv2}) y {low3} ({lv3}).",
           "Precios medios mensuales de {date}."
         ],
         "about": [
@@ -1348,11 +1348,11 @@
         "faq": [
           {
             "q": "¿Qué materia prima subió más este año?",
-            "a": "De las {rows} listadas, {top1} subió más en los 12 meses hasta {date}: {v1}."
+            "a": "De las {rows} listadas, {top1} tuvo la mejor evolución en los 12 meses hasta {date}: {v1}."
           },
           {
             "q": "¿Cuál cayó más?",
-            "a": "{low1}, con una caída de {ld1} en los 12 meses hasta {date}."
+            "a": "{low1}, con {lv1} en los 12 meses hasta {date}."
           },
           {
             "q": "¿Son precios en directo?",
@@ -1361,7 +1361,7 @@
         ]
       },
       "currency-strength": {
-        "title": "Fortaleza de Divisas frente al Dólar {year}: 29 Divisas | cv.cm",
+        "title": "Fortaleza de Divisas frente al Dólar {year}: {rows} Divisas | cv.cm",
         "description": "Qué divisas ganaron o perdieron frente al dólar desde {yearAgo}: {top1} {v1}, {top2} {v2}, {low1} {lv1}. Tipos de referencia del BCE.",
         "h1": "Fortaleza de divisas frente al dólar estadounidense, {date}",
         "lede": "{rows} divisas ordenadas por cómo cambió su valor frente al dólar estadounidense en un año, con el tipo por dólar y la variación a un mes. Datos de los tipos de referencia diarios del Banco Central Europeo.",
@@ -1377,11 +1377,11 @@
         "faq": [
           {
             "q": "¿Qué divisa ganó más frente al dólar?",
-            "a": "{top1}, con una subida de {v1} frente al dólar estadounidense desde {yearAgo}."
+            "a": "{top1}: {v1} frente al dólar estadounidense desde {yearAgo}."
           },
           {
             "q": "¿Qué divisa perdió más?",
-            "a": "{low1}, con una caída de {ld1} frente al dólar desde {yearAgo}."
+            "a": "{low1}: {lv1} frente al dólar desde {yearAgo}."
           },
           {
             "q": "¿Son tipos de cambio en directo?",

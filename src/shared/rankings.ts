@@ -111,8 +111,8 @@ export type UsageRow = [number, string, string, number, number];
 export type CompanyRow = [number, string, number, number, number];
 /** [rank, name, world a year ago (null when it was not listed), world, ...RANKING_REGIONS] in percent */
 export type ShareRow = [number, string, number | null, number, ...number[]];
-/** [rank, name, symbol, price USD, 24h change %, 7-day change %, market cap USD, 24h volume USD] */
-export type CryptoRow = [number, string, string, number, number, number, number, number];
+/** [rank, name, symbol, price USD, 24h change %, 7-day change %, market cap USD, 24h volume USD]; a new coin can lack a change or volume (null). */
+export type CryptoRow = [number, string, string, number, number | null, number | null, number, number | null];
 /** [rank, commodity id, unit, latest monthly price USD, 1-month change %, 12-month change %] */
 export type CommodityRow = [number, string, string, number, number, number];
 /** [rank, ISO 4217 code, units per US dollar, change vs USD over 1 month %, over 1 year %] */

@@ -27,6 +27,9 @@ export type RankingUi = RankingMessages["ui"];
 export type RankingCopy = { title: string; description: string; h1: string; lede: string; facts: string[]; about: string[]; faq: { q: string; a: string }[] };
 
 const ORIGIN = "https://cv.cm";
+const NO_VALUE = "—";
+/** Below any real change, and plain enough not to match a text filter. */
+const NOT_LISTED = -1000;
 
 export function rankingHub(locale: Locale): RankingHubCopy {
   return datasetMessages(locale).rankings.hub;
@@ -42,11 +45,11 @@ export function rankingName(locale: Locale, id: RankingId): { name: string; blur
 }
 
 function compact(locale: Locale, value: number): string {
-  return new Intl.NumberFormat(locale, { notation: "compact", maximumFractionDigits: 1 }).format(value);
+  return numberFormat(locale, { notation: "compact", maximumFractionDigits: 1 }).format(value);
 }
 
 function plain(locale: Locale, value: number, digits = 0): string {
-  return new Intl.NumberFormat(locale, { minimumFractionDigits: digits, maximumFractionDigits: digits }).format(value);
+  return numberFormat(locale, { minimumFractionDigits: digits, maximumFractionDigits: digits }).format(value);
 }
 
 /** "2026-10" as "October 2026" (or the locale's own form); a full date likewise. */
@@ -64,8 +67,25 @@ function percent(locale: Locale, value: number): string {
   return `${plain(locale, value, 1)}%`;
 }
 
+/** Intl objects are slow to build: one per locale and options, kept for the page's life. */
+const formatters = new Map<string, Intl.NumberFormat>();
+function numberFormat(locale: Locale, options: Intl.NumberFormatOptions): Intl.NumberFormat {
+  const key = `${locale}|${JSON.stringify(options)}`;
+  let format = formatters.get(key);
+  if (!format) {
+    format = new Intl.NumberFormat(locale, options);
+    formatters.set(key, format);
+  }
+  return format;
+}
+
 function usd(locale: Locale, value: number, compactForm = false): string {
-  return new Intl.NumberFormat(locale, { style: "currency", currency: "USD", notation: compactForm ? "compact" : "standard", maximumFractionDigits: compactForm ? 2 : value >= 1 ? 2 : 8 }).format(value);
+  return numberFormat(locale, { style: "currency", currency: "USD", notation: compactForm ? "compact" : "standard", maximumFractionDigits: compactForm ? 2 : value >= 1 ? 2 : 8 }).format(value);
+}
+
+/** A change that may be missing (a coin too new for a 7-day figure). */
+function maybeSigned(locale: Locale, value: number | null): { text: string; sort: number } {
+  return value === null ? { text: NO_VALUE, sort: NOT_LISTED } : { text: signed(locale, value), sort: value };
 }
 
 function signed(locale: Locale, value: number): string {
@@ -74,8 +94,14 @@ function signed(locale: Locale, value: number): string {
   return `${sign}${plain(locale, Math.abs(rounded), 1)}%`;
 }
 
+const currencyNames = new Map<string, Intl.DisplayNames>();
 function currencyName(locale: Locale, code: string): string {
-  return new Intl.DisplayNames([locale], { type: "currency" }).of(code) ?? code;
+  let names = currencyNames.get(locale);
+  if (!names) {
+    names = new Intl.DisplayNames([locale], { type: "currency" });
+    currencyNames.set(locale, names);
+  }
+  return names.of(code) ?? code;
 }
 
 function commodityName(locale: Locale, id: string): string {
@@ -102,8 +128,6 @@ function vars(locale: Locale, id: RankingId): Record<string, string | number> {
   meta.bottom?.forEach(([name, value], index) => {
     out[`low${index + 1}`] = displayName(locale, id, name);
     out[`lv${index + 1}`] = shown(value);
-    // For sentences that already say "down": the size of the drop, without a sign.
-    out[`ld${index + 1}`] = percent(locale, Math.abs(value));
   });
   if (meta.total !== undefined) out.total = usd(locale, meta.total, true);
   if (meta.dominance !== undefined) out.dominance = percent(locale, meta.dominance);
@@ -153,9 +177,6 @@ export function rankingLinkMeta(locale: Locale, id: RankingId): string {
   return `${values.top1} · ${values.v1}`;
 }
 
-const NO_VALUE = "—";
-/** Below any real change, and plain enough not to match a text filter. */
-const NOT_LISTED = -1000;
 const text = (value: string) => ({ text: value || NO_VALUE, sort: value });
 const num = (shown: string, value: number) => ({ text: shown, sort: value });
 
@@ -178,7 +199,7 @@ export function rankingTable(locale: Locale, id: RankingId, rows: unknown[]): Da
   if (kind === "crypto") {
     return {
       columns: [{ label: ui.rank, num: true }, { label: ui.name, head: true }, { label: ui.symbol }, { label: ui.price, num: true }, { label: ui.change24h, num: true }, { label: ui.change7d, num: true }, { label: ui.marketCap, num: true }, { label: ui.volume24h, num: true }],
-      rows: (rows as CryptoRow[]).map(([place, name, symbol, price, day, week, cap, volume]) => [rank(place), text(name), text(symbol), num(usd(locale, price), price), num(signed(locale, day), day), num(signed(locale, week), week), num(usd(locale, cap, true), cap), num(usd(locale, volume, true), volume)]),
+      rows: (rows as CryptoRow[]).map(([place, name, symbol, price, day, week, cap, volume]) => [rank(place), text(name), text(symbol), num(usd(locale, price), price), maybeSigned(locale, day), maybeSigned(locale, week), num(usd(locale, cap, true), cap), volume === null ? { text: NO_VALUE, sort: NOT_LISTED } : num(usd(locale, volume, true), volume)]),
     };
   }
   if (kind === "commodity") {

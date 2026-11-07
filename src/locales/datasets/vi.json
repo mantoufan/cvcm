@@ -1338,7 +1338,7 @@
         "lede": "{rows} mặt hàng xếp theo mức thay đổi giá trong 12 tháng, kèm giá tháng mới nhất và mức thay đổi trong một tháng. Dữ liệu Pink Sheet của Ngân hàng Thế giới, tính bằng đô la Mỹ.",
         "facts": [
           "Tăng nhiều nhất trong một năm: {top1} ({v1}), {top2} ({v2}) và {top3} ({v3}).",
-          "Giảm nhiều nhất: {low1} ({lv1}), {low2} ({lv2}) và {low3} ({lv3}).",
+          "Kém nhất trong một năm: {low1} ({lv1}), {low2} ({lv2}) và {low3} ({lv3}).",
           "Giá trung bình hằng tháng cho {date}."
         ],
         "about": [
@@ -1348,11 +1348,11 @@
         "faq": [
           {
             "q": "Hàng hóa nào tăng nhiều nhất trong năm nay?",
-            "a": "Trong {rows} mặt hàng được liệt kê, {top1} tăng nhiều nhất trong 12 tháng đến {date}: {v1}."
+            "a": "Trong {rows} mặt hàng được liệt kê, {top1} diễn biến tốt nhất trong 12 tháng đến {date}: {v1}."
           },
           {
             "q": "Hàng hóa nào giảm nhiều nhất?",
-            "a": "{low1}, giảm {ld1} trong 12 tháng đến {date}."
+            "a": "{low1}: {lv1} trong 12 tháng đến {date}."
           },
           {
             "q": "Đây có phải giá trực tiếp không?",
@@ -1361,7 +1361,7 @@
         ]
       },
       "currency-strength": {
-        "title": "Sức mạnh tiền tệ so với USD {year}: Xếp hạng 29 đồng tiền | cv.cm",
+        "title": "Sức mạnh tiền tệ so với USD {year}: Xếp hạng {rows} đồng tiền | cv.cm",
         "description": "Đồng tiền nào tăng hay giảm so với đô la Mỹ kể từ {yearAgo}: {top1} {v1}, {top2} {v2}, {low1} {lv1}. Tỷ giá tham chiếu của ECB.",
         "h1": "Sức mạnh tiền tệ so với đô la Mỹ, {date}",
         "lede": "{rows} đồng tiền xếp theo mức thay đổi giá trị so với đô la Mỹ trong một năm, kèm tỷ giá trên mỗi đô la và mức thay đổi trong một tháng. Lấy từ tỷ giá tham chiếu hằng ngày của Ngân hàng Trung ương châu Âu.",
@@ -1377,11 +1377,11 @@
         "faq": [
           {
             "q": "Đồng tiền nào tăng nhiều nhất so với đô la?",
-            "a": "{top1}, tăng {v1} so với đô la Mỹ kể từ {yearAgo}."
+            "a": "{top1}: {v1} so với đô la Mỹ kể từ {yearAgo}."
           },
           {
             "q": "Đồng tiền nào mất giá nhiều nhất?",
-            "a": "{low1}, giảm {ld1} so với đô la kể từ {yearAgo}."
+            "a": "{low1}: {lv1} so với đô la kể từ {yearAgo}."
           },
           {
             "q": "Tỷ giá này có trực tiếp không?",

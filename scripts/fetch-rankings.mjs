@@ -239,11 +239,12 @@ async function crypto() {
   const round = (v, d) => Math.round(v * 10 ** d) / 10 ** d;
   const rows = coins.map((coin, i) => {
     const usd = coin.quote.USD;
-    const values = [usd.price, usd.percent_change_24h, usd.percent_change_7d, usd.market_cap, usd.volume_24h];
-    if (values.some((v) => !Number.isFinite(v))) throw new Error(`coinmarketcap: bad numbers for ${coin.symbol}`);
+    // Price and market cap rank the table; a coin listed days ago can lack a 7-day change or volume, shown as missing.
+    if (![usd.price, usd.market_cap].every((v) => Number.isFinite(v) && v > 0)) throw new Error(`coinmarketcap: bad numbers for ${coin.symbol}`);
+    const maybe = (v, d) => (Number.isFinite(v) ? round(v, d) : null);
     // Enough digits for coins worth a fraction of a cent.
     const priceDigits = usd.price >= 1 ? 2 : Math.min(10, 3 - Math.floor(Math.log10(usd.price)));
-    return [i + 1, coin.name, coin.symbol, round(usd.price, priceDigits), round(usd.percent_change_24h, 2), round(usd.percent_change_7d, 2), Math.round(usd.market_cap), Math.round(usd.volume_24h)];
+    return [i + 1, coin.name, coin.symbol, round(usd.price, priceDigits), maybe(usd.percent_change_24h, 2), maybe(usd.percent_change_7d, 2), Math.round(usd.market_cap), maybe(usd.volume_24h, 0)];
   });
   return {
     asOf: body.status.timestamp.slice(0, 10),
@@ -266,12 +267,20 @@ const COMMODITIES = {
 };
 const PINK_SHEET = "https://www.worldbank.org/en/research/commodity-markets";
 
+function decodeXml(text) {
+  const named = { amp: "&", lt: "<", gt: ">", quot: '"', apos: "'" };
+  return text.replace(/&(#x[0-9a-f]+|#\d+|amp|lt|gt|quot|apos);/gi, (all, code) => {
+    if (code[0] !== "#") return named[code.toLowerCase()];
+    return String.fromCodePoint(code[1].toLowerCase() === "x" ? parseInt(code.slice(2), 16) : Number(code.slice(1)));
+  }).replace(/\u00a0/g, " ").trim();
+}
+
 async function commodities() {
   const page = await get(PINK_SHEET);
   const url = page.match(/https:\/\/[^"']*CMO-Historical-Data-Monthly\.xlsx/)?.[0];
   if (!url) throw new Error("pink sheet: workbook link not found");
   const files = unzip(await getBuffer(url));
-  const strings = [...files.get("xl/sharedStrings.xml").toString("utf8").matchAll(/<si>([\s\S]*?)<\/si>/g)].map((m) => m[1].replace(/<[^>]+>/g, "").replace(/&amp;/g, "&"));
+  const strings = [...files.get("xl/sharedStrings.xml").toString("utf8").matchAll(/<si>([\s\S]*?)<\/si>/g)].map((m) => decodeXml(m[1].replace(/<[^>]+>/g, "")));
   const book = files.get("xl/workbook.xml").toString("utf8");
   const rid = book.match(/<sheet name="Monthly Prices"[^>]*r:id="([^"]+)"/)?.[1];
   const target = files.get("xl/_rels/workbook.xml.rels").toString("utf8").match(new RegExp(`Id="${rid}"[^>]*Target="([^"]+)"`))?.[1];
@@ -320,10 +329,13 @@ async function currencies() {
   const head = csv[0].map((cell) => cell.trim());
   const days = csv.slice(1).map((cells) => ({ date: cells[0], rates: Object.fromEntries(head.slice(1).map((code, i) => [code, Number(cells[i + 1])])) }));
   const latest = days[0];
+  // Same day of an earlier month, kept inside that month (31 March → 28 February, not 3 March).
   const before = (months) => {
-    const d = new Date(`${latest.date}T00:00:00Z`);
-    d.setUTCMonth(d.getUTCMonth() - months);
-    const day = d.toISOString().slice(0, 10);
+    const [y, m, d] = latest.date.split("-").map(Number);
+    const target = new Date(Date.UTC(y, m - 1 - months, 1));
+    const last = new Date(Date.UTC(target.getUTCFullYear(), target.getUTCMonth() + 1, 0)).getUTCDate();
+    target.setUTCDate(Math.min(d, last));
+    const day = target.toISOString().slice(0, 10);
     return days.find((entry) => entry.date <= day);
   };
   const monthAgo = before(1);
@@ -413,11 +425,11 @@ await attempt(["currency-strength"], async () => {
   const set = await currencies();
   rows["currency-strength"] = set.rows;
   meta.sets["currency-strength"] = { asOf: set.asOf, monthAgo: set.monthAgo, yearAgo: set.yearAgo, rows: set.rows.length, top: topOf(set.rows, 1, 4), bottom: set.rows.slice(-3).reverse().map((r) => [r[1], r[4]]) };
-  csv["currency-strength"] = toCsv(["rank", "currency", "per_usd", `change_vs_usd_since_${set.monthAgo}_percent`, `change_vs_usd_since_${set.yearAgo}_percent`], set.rows, ["European Central Bank euro reference rates (ecb.europa.eu)", "Reuse with source named"]);
+  csv["currency-strength"] = toCsv(["rank", "currency", "per_usd", "change_vs_usd_1_month_percent", "change_vs_usd_1_year_percent"], set.rows, ["European Central Bank euro reference rates (ecb.europa.eu)", "Reuse with source named"]);
 });
 const month = lastMonth();
 // The Pink Sheet comes out early each month: nothing to ask for until a new month is due.
-if (!process.env.FORCE_SHARE && oldMeta.sets["commodity-prices"]?.asOf === month && oldRows["commodity-prices"]) keep("commodity-prices");
+if (!process.env.FORCE_COMMODITIES && oldMeta.sets["commodity-prices"]?.asOf === month && oldRows["commodity-prices"]) keep("commodity-prices");
 else {
   await attempt(["commodity-prices"], async () => {
     const set = await commodities();
@@ -449,7 +461,8 @@ for (const [id, set] of Object.entries(meta.sets)) {
   const same = oldMeta.sets[id]?.updated && oldMeta.sets[id].asOf === set.asOf && JSON.stringify(oldRows[id]) === JSON.stringify(rows[id]);
   set.updated = same ? oldMeta.sets[id].updated : meta.updated;
   // Same data: the file stays, so a re-run with only a newer citation time makes no commit.
-  if (same) delete csv[id];
+  const file = join(root, "public/rankings", `${id}.csv`);
+  if (same && csv[id] && existsSync(file) && readFileSync(file, "utf8").split("\n")[0] === csv[id].split("\n")[0]) delete csv[id];
 }
 meta.updated = Object.values(meta.sets).map((set) => set.updated).sort().at(-1);
 writeFileSync(rowsPath, `${JSON.stringify(rows)}\n`);

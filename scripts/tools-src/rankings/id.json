@@ -55,7 +55,7 @@
     },
     "currency-strength": {
       "name": "Kekuatan mata uang terhadap dolar AS",
-      "blurb": "29 mata uang diurutkan menurut pergerakan nilainya terhadap dolar."
+      "blurb": "Mata uang diurutkan menurut pergerakan nilainya terhadap dolar."
     }
   },
   "rankings": {
@@ -526,7 +526,7 @@
         "lede": "{rows} komoditas diurutkan menurut perubahan harga selama 12 bulan, dengan harga bulanan terbaru dan perubahan satu bulan. Data Pink Sheet Bank Dunia, dalam dolar AS.",
         "facts": [
           "Kenaikan terbesar dalam setahun: {top1} ({v1}), {top2} ({v2}), dan {top3} ({v3}).",
-          "Penurunan terbesar: {low1} ({lv1}), {low2} ({lv2}), dan {low3} ({lv3}).",
+          "Kinerja terlemah setahun: {low1} ({lv1}), {low2} ({lv2}), dan {low3} ({lv3}).",
           "Harga rata-rata bulanan untuk {date}."
         ],
         "about": [
@@ -536,11 +536,11 @@
         "faq": [
           {
             "q": "Komoditas apa yang naik paling tinggi tahun ini?",
-            "a": "Dari {rows} komoditas yang tercantum, {top1} naik paling tinggi dalam 12 bulan hingga {date}: {v1}."
+            "a": "Dari {rows} komoditas yang tercantum, {top1} berkinerja terbaik dalam 12 bulan hingga {date}: {v1}."
           },
           {
             "q": "Komoditas apa yang turun paling dalam?",
-            "a": "{low1}, turun {ld1} dalam 12 bulan hingga {date}."
+            "a": "{low1}: {lv1} dalam 12 bulan hingga {date}."
           },
           {
             "q": "Apakah ini harga langsung?",
@@ -549,7 +549,7 @@
         ]
       },
       "currency-strength": {
-        "title": "Kekuatan Mata Uang vs Dolar AS {year}: 29 Mata Uang | cv.cm",
+        "title": "Kekuatan Mata Uang vs Dolar AS {year}: {rows} Mata Uang | cv.cm",
         "description": "Mata uang yang menguat atau melemah terhadap dolar AS sejak {yearAgo}: {top1} {v1}, {top2} {v2}, {low1} {lv1}. Kurs acuan ECB.",
         "h1": "Kekuatan mata uang terhadap dolar AS, {date}",
         "lede": "{rows} mata uang diurutkan menurut perubahan nilainya terhadap dolar AS selama setahun, dengan kurs per dolar dan perubahan satu bulan. Dari kurs acuan harian Bank Sentral Eropa.",
@@ -565,11 +565,11 @@
         "faq": [
           {
             "q": "Mata uang apa yang paling menguat terhadap dolar?",
-            "a": "{top1}, naik {v1} terhadap dolar AS sejak {yearAgo}."
+            "a": "{top1}: {v1} terhadap dolar AS sejak {yearAgo}."
           },
           {
             "q": "Mata uang apa yang paling melemah?",
-            "a": "{low1}, turun {ld1} terhadap dolar sejak {yearAgo}."
+            "a": "{low1}: {lv1} terhadap dolar sejak {yearAgo}."
           },
           {
             "q": "Apakah kurs ini langsung?",
