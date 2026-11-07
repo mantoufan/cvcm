@@ -14,7 +14,11 @@ for loc in ["en", "es", "id", "ja", "ko", "vi", "zh-CN", "zh-TW"]:
     at = text.find(',\n  "rankings":')
     head = text[:at] if at >= 0 else text.rstrip()[:-1].rstrip()
     block = json.dumps(src["rankings"], ensure_ascii=False, indent=2).replace("\n", "\n  ")
-    data_path.write_text(f'{head},\n  "rankings": {block}\n}}\n', encoding="utf-8")
+    merged = f'{head},\n  "rankings": {block}\n}}\n'
+    # Rankings must stay the last key: anything after it would be lost here, so stop rather than drop it.
+    if set(json.loads(merged)) != set(json.loads(text)) | {"rankings"}:
+        raise SystemExit(f"{data_path}: a key would be lost; keep rankings last")
+    data_path.write_text(merged, encoding="utf-8")
     core_path = ROOT / f"src/locales/{loc}.json"
     core = json.loads(core_path.read_text(encoding="utf-8"))
     core["nav"]["rankings"] = src["nav"]

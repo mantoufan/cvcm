@@ -54,7 +54,7 @@ async function arena(config) {
   const data = JSON.parse(await get(`https://datasets-server.huggingface.co/rows?${q}`));
   const overall = data.rows.map(({ row }) => row).filter((row) => row.category === "overall").sort((a, b) => a.rank - b.rank).slice(0, ARENA_ROWS);
   const rows = overall.map((row) => [Math.round(row.rank), row.model_name, row.organization ? nameOf(row.organization) : "", row.license ?? "", Math.round(row.rating), Math.round(row.vote_count)]);
-  if (rows.length < 5) throw new Error(`arena ${config}: only ${rows.length} rows`);
+  if (rows.length < ARENA_ROWS) throw new Error(`arena ${config}: only ${rows.length} overall rows in the first page`);
   return { asOf: overall[0].leaderboard_publish_date, rows };
 }
 
@@ -103,8 +103,11 @@ async function openRouter() {
   const bySlug = new Map();
   for (const row of rows) {
     const entry = bySlug.get(row.model_permaslug) ?? { tokens: 0, requests: 0 };
-    entry.tokens += Number(row.total_prompt_tokens) + Number(row.total_completion_tokens);
-    entry.requests += Number(row.count);
+    const tokens = Number(row.total_prompt_tokens) + Number(row.total_completion_tokens);
+    const requests = Number(row.count);
+    if (!Number.isFinite(tokens) || !Number.isFinite(requests)) throw new Error(`openrouter: bad numbers for ${row.model_permaslug}`);
+    entry.tokens += tokens;
+    entry.requests += requests;
     bySlug.set(row.model_permaslug, entry);
   }
   const total = [...bySlug.values()].reduce((sum, m) => sum + m.tokens, 0);
@@ -135,8 +138,9 @@ async function openRouter() {
 
 // --- StatCounter ---------------------------------------------------------------------------------------------------
 
+/** Empty cells stay in place, so values never shift onto the wrong name. */
 function parseCsvLine(line) {
-  return [...line.matchAll(/"((?:[^"]|"")*)"|([^,]+)/g)].map((m) => m[1] ?? m[2]);
+  return [...line.matchAll(/(?:^|,)(?:"((?:[^"]|"")*)"|([^,]*))/g)].map((m) => m[1] ?? m[2]);
 }
 
 async function statCounter(stat, device, region, month) {
@@ -144,11 +148,15 @@ async function statCounter(stat, device, region, month) {
   const q = new URLSearchParams({ device_hidden: device, statType_hidden: stat, region_hidden: region, granularity: "monthly", fromInt: compact, toInt: compact, fromMonthYear: month, toMonthYear: month, csv: "1" });
   const text = await get(`https://gs.statcounter.com/chart.php?${q}`);
   const lines = text.trim().split(/\r?\n/).map(parseCsvLine);
-  if (lines[0]?.[1]?.startsWith("Market Share")) return new Map(lines.slice(1).map(([name, value]) => [name, Number(value)]));
+  if (lines[0]?.[1]?.startsWith("Market Share")) {
+    const values = lines.slice(1).map(([name, value]) => [name, Number(value)]);
+    if (!values.length || values.some(([, value]) => !Number.isFinite(value))) throw new Error(`statcounter ${stat} ${region} ${month}: bad values`);
+    return new Map(values);
+  }
   // Some requests come back as one row per month with a column per name.
   const row = lines.find((cells) => cells[0] === month);
   if (!row) throw new Error(`statcounter ${stat} ${region} ${month}: no data`);
-  return new Map(lines[0].slice(1).map((name, i) => [name, Number(row[i + 1])]));
+  return new Map(lines[0].slice(1).map((name, i) => [name, Number(row[i + 1] || 0)]));
 }
 
 const pause = () => new Promise((r) => setTimeout(r, 400));
@@ -194,7 +202,13 @@ const rows = {};
 const meta = { updated: today.toISOString().slice(0, 10), sets: {} };
 const csv = {};
 const esc = (v) => (v === null ? "" : typeof v === "string" && /[",\n]/.test(v) ? `"${v.replace(/"/g, '""')}"` : String(v));
-const toCsv = (head, table) => [head, ...table].map((r) => r.map(esc).join(",")).join("\n") + "\n";
+/** Every row carries its credit, so the licence travels with a downloaded or fetched file. */
+const SOURCES = {
+  arena: ["https://huggingface.co/datasets/lmarena-ai/leaderboard-dataset", "CC BY 4.0"],
+  openrouter: ["https://openrouter.ai/rankings", "CC BY 4.0"],
+  statcounter: ["https://gs.statcounter.com/", "CC BY-SA 3.0"],
+};
+const toCsv = (head, table, source) => [[...head, "source", "license"], ...table.map((row) => [...row, ...SOURCES[source]])].map((r) => r.map(esc).join(",")).join("\n") + "\n";
 const topOf = (table, nameCol, valueCol) => table.slice(0, 3).map((r) => [r[nameCol], r[valueCol]]);
 
 for (const [id, config] of Object.entries(ARENA)) {
@@ -204,20 +218,20 @@ for (const [id, config] of Object.entries(ARENA)) {
   for (const row of set.rows.slice(0, 10)) if (row[2]) tally.set(row[2], (tally.get(row[2]) ?? 0) + 1);
   const [leadOrg, leadCount] = [...tally.entries()].sort((a, b) => b[1] - a[1])[0];
   meta.sets[id] = { asOf: set.asOf, rows: set.rows.length, top: topOf(set.rows, 1, 4), leadOrg, leadCount };
-  csv[id] = toCsv(["rank", "model", "organization", "license", "score", "votes"], set.rows);
+  csv[id] = toCsv(["rank", "model", "organization", "license", "score", "votes"], set.rows, "arena");
 }
 const or = await openRouter();
 rows["ai-usage"] = or.usage.rows;
 meta.sets["ai-usage"] = { asOf: or.usage.asOf, rows: or.usage.rows.length, top: topOf(or.usage.rows, 1, 4) };
-csv["ai-usage"] = toCsv(["rank", "model", "author", "tokens", "share_of_top_models_percent", "requests"], or.usage.rows);
+csv["ai-usage"] = toCsv(["rank", "model", "author", "tokens", "share_of_top_models_percent", "requests"], or.usage.rows, "openrouter");
 rows["ai-companies"] = or.authors.rows;
 meta.sets["ai-companies"] = { asOf: or.authors.asOf, rows: or.authors.rows.length, top: topOf(or.authors.rows, 1, 3) };
-csv["ai-companies"] = toCsv(["rank", "company", "tokens", "share_of_top_models_percent", "models_in_top_list"], or.authors.rows);
+csv["ai-companies"] = toCsv(["rank", "company", "tokens", "share_of_top_models_percent", "models_in_top_list"], or.authors.rows, "openrouter");
 for (const [id, spec] of Object.entries(SHARE)) {
   const set = await shareTable(spec);
   rows[id] = set.rows;
   meta.sets[id] = { asOf: set.asOf, yearAgo: set.yearAgo, rows: set.rows.length, top: topOf(set.rows, 1, 3), leaders: set.leaders };
-  csv[id] = toCsv(["rank", "name", `world_${set.yearAgo}`, ...REGIONS.map((r) => (r === "ww" ? `world_${set.asOf}` : r))], set.rows);
+  csv[id] = toCsv(["rank", "name", `world_${set.yearAgo}`, ...REGIONS.map((r) => (r === "ww" ? `world_${set.asOf}` : r))], set.rows, "statcounter");
   console.log(id, set.asOf, set.rows.length, "rows");
 }
 

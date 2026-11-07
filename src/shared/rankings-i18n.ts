@@ -83,21 +83,17 @@ function vars(locale: Locale, id: RankingId): Record<string, string | number> {
   return out;
 }
 
-function filled(text: string, values: Record<string, string | number>): string {
-  return fill(text, values);
-}
-
 export function rankingPageCopy(locale: Locale, id: RankingId): RankingCopy {
   const copy = datasetMessages(locale).rankings.sets[id] as RankingCopy;
   const values = vars(locale, id);
   return {
-    title: filled(copy.title, values),
-    description: filled(copy.description, values),
-    h1: filled(copy.h1, values),
-    lede: filled(copy.lede, values),
-    facts: copy.facts.map((text) => filled(text, values)),
-    about: copy.about.map((text) => filled(text, values)),
-    faq: copy.faq.map((item) => ({ q: filled(item.q, values), a: filled(item.a, values) })),
+    title: fill(copy.title, values),
+    description: fill(copy.description, values),
+    h1: fill(copy.h1, values),
+    lede: fill(copy.lede, values),
+    facts: copy.facts.map((text) => fill(text, values)),
+    about: copy.about.map((text) => fill(text, values)),
+    faq: copy.faq.map((item) => ({ q: fill(item.q, values), a: fill(item.a, values) })),
   };
 }
 
@@ -120,6 +116,8 @@ export function rankingLinkMeta(locale: Locale, id: RankingId): string {
 }
 
 const NO_VALUE = "—";
+/** Below any real change, and plain enough not to match a text filter. */
+const NOT_LISTED = -1000;
 const text = (value: string) => ({ text: value || NO_VALUE, sort: value });
 const num = (shown: string, value: number) => ({ text: shown, sort: value });
 
@@ -161,7 +159,7 @@ export function rankingTable(locale: Locale, id: RankingId, rows: unknown[]): Da
         rank(place),
         text(name),
         num(percent(locale, world), world),
-        change === null ? num(NO_VALUE, Number.NEGATIVE_INFINITY) : num(`${sign}${plain(locale, Math.abs(change), 1)}`, change),
+        change === null ? num(NO_VALUE, NOT_LISTED) : num(`${sign}${plain(locale, Math.abs(change), 1)}`, change),
         ...regions.map((value) => num(percent(locale, value), value)),
       ];
     }),

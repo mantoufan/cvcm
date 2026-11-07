@@ -7,11 +7,11 @@ import { fill } from "../../shared/datasets-i18n";
 import { RANKING_GROUPS, RANKING_SNAPSHOT, RANKING_SOURCE, rankingCsvHref, rankingGroupOf, rankingMeta, type RankingId } from "../../shared/rankings";
 import { rankingDate, rankingFaqItems, rankingHub, rankingLinkMeta, rankingName, rankingPageCopy, rankingTable, rankingUi } from "../../shared/rankings-i18n";
 import { dataTable } from "../datasets/ui";
-import { DATASETS, type DatasetId } from "../../shared/datasets";
+import type { DatasetId } from "../../shared/datasets";
 import { datasetLinkMeta, datasetName } from "../../shared/datasets-i18n";
 
 /** Country tables that are rankings too: the hub links them rather than repeating them. */
-const COUNTRY_TABLES: readonly DatasetId[] = (["population", "gdp", "gdp-per-capita", "life-expectancy", "land-area", "internet-users"] as const).filter((id) => DATASETS.includes(id));
+const COUNTRY_TABLES: readonly DatasetId[] = ["population", "gdp", "gdp-per-capita", "life-expectancy", "land-area", "internet-users"];
 
 function crumb(locale: Locale, id: RankingId | null): HTMLElement {
   const hub = rankingHub(locale);

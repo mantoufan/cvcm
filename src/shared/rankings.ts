@@ -85,4 +85,3 @@ export type UsageRow = [number, string, string, number, number, number];
 export type CompanyRow = [number, string, number, number, number];
 /** [rank, name, world a year ago (null when it was not listed), world, ...RANKING_REGIONS] in percent */
 export type ShareRow = [number, string, number | null, number, ...number[]];
-export type RankingRows = Record<RankingId, ArenaRow[] | UsageRow[] | CompanyRow[] | ShareRow[]>;

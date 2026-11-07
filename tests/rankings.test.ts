@@ -28,6 +28,8 @@ describe("ranking data", () => {
       expect(RANKING_SOURCE[id].licenseUrl, id).toMatch(/^https:\/\/creativecommons\.org\//);
       const csv = readFileSync(`public${rankingCsvHref(id)}`, "utf8").trim().split("\n");
       expect(csv.length, id).toBe(table.length + 1);
+      expect(csv[0].endsWith("source,license"), id).toBe(true);
+      expect(csv[1], id).toContain(RANKING_SOURCE[id].license);
     }
   });
 
@@ -95,7 +97,7 @@ describe("share table gaps", () => {
   it("shows no change for a name not listed a year ago, and sorts it last", () => {
     const table = rankingTable("en", "browser-market-share", [["1", "New", null, 3.2, ...RANKING_REGIONS.map(() => 1)]]);
     expect(table.rows[0][3].text).toBe("—");
-    expect(table.rows[0][3].sort).toBe(Number.NEGATIVE_INFINITY);
+    expect(table.rows[0][3].sort).toBeLessThan(-100);
   });
   it("marks a model with no company", () => {
     const table = rankingTable("en", "ai-usage", [[1, "Mystery", "", 10, 1, 1]]);
