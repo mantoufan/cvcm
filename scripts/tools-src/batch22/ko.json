@@ -1,22 +1,22 @@
 {
   "meta": {
-    "titleEmulator": "온라인 ROM 에뮬레이터 — FC, SFC, GB, GBA, MD — cv.cm",
-    "descEmulator": "무료 온라인 고전 게임 에뮬레이터. 내 FC, SFC, 게임보이, GBA, 메가 드라이브 ROM을 열 수 있습니다. 기종은 파일에서 자동으로 알아냅니다. 설치가 필요 없고 게임패드와 터치를 지원하며 업로드하지 않습니다.",
-    "titleSwfPlayer": "온라인 SWF 플레이어 — 플러그인 없이 Flash 열기 — cv.cm",
-    "descSwfPlayer": "무료 온라인 SWF 플레이어. Ruffle로 Flash .swf 파일을 엽니다. Flash 플러그인도 설치도 필요 없습니다. 파일은 이 탭에만 있고 업로드되지 않습니다."
+    "titleRomEmulator": "고전 게임 에뮬레이터 온라인 — GBA, 패미컴, 슈퍼패미컴 — cv.cm",
+    "descRomEmulator": "무료 온라인 고전 게임 에뮬레이터. 내 GBA, 패미컴, 슈퍼패미컴, 게임보이, 메가 드라이브 ROM을 열 수 있습니다. 기종은 파일에서 자동으로 알아냅니다. 설치가 필요 없고 게임패드와 터치를 지원하며 업로드하지 않습니다.",
+    "titleFlashPlayer": "플래시 플레이어 온라인 — SWF 플레이어, SWF 파일 실행 — cv.cm",
+    "descFlashPlayer": "무료 온라인 플래시 플레이어이자 SWF 플레이어. 오픈소스 Flash 에뮬레이터 Ruffle로 .swf 파일을 실행합니다. 플러그인도 설치도 필요 없습니다. 파일은 이 탭에만 있고 업로드되지 않습니다."
   },
   "tools": {
-    "emulator": {
-      "name": "ROM 에뮬레이터",
-      "blurb": "내 FC, SFC, GB, GBA, MD ROM으로 플레이합니다."
+    "rom-emulator": {
+      "name": "고전 게임 에뮬레이터",
+      "blurb": "내 GBA, 패미컴, 슈퍼패미컴, GB, MD ROM으로 플레이합니다."
     },
-    "swf-player": {
-      "name": "Flash SWF 플레이어",
+    "flash-player": {
+      "name": "플래시 플레이어",
       "blurb": "플러그인 없이 .swf 파일을 엽니다."
     }
   },
   "faq": {
-    "emulator": {
+    "rom-emulator": {
       "q1": "어떤 기종과 파일을 열 수 있나요?",
       "a1": "FC / NES(.nes), SFC / SNES(.sfc, .smc), 게임보이와 게임보이 컬러(.gb, .gbc), 게임보이 어드밴스(.gba), 메가 드라이브 / Genesis(.md, .gen, .smd, .bin), 그리고 이 파일이 든 .zip입니다.",
       "q2": "ROM이 업로드되나요?",
@@ -28,9 +28,9 @@
       "q5": "조작과 저장은 어떻게 하나요?",
       "a5": "게임이 시작되면 아래에 키가 표시됩니다. 휴대폰에서는 화면 패드를 쓰고 블루투스 게임패드도 쓸 수 있습니다. 저장과 불러오기는 에뮬레이터 도구 모음에 있습니다."
     },
-    "swf-player": {
+    "flash-player": {
       "q1": "Adobe Flash Player가 필요한가요?",
-      "a1": "아니요. 오픈소스 Flash 에뮬레이터 Ruffle이 페이지에서 파일을 실행합니다. 설치할 것이 없습니다.",
+      "a1": "아니요. 오픈소스 Flash 에뮬레이터 Ruffle이 페이지에서 파일을 실행합니다. 설치할 것이 없습니다. 이 페이지는 Adobe에서 제공하지 않습니다.",
       "q2": "SWF가 업로드되나요?",
       "a2": "아니요. 파일은 이 탭에만 있고 서버로 보내지 않습니다.",
       "q3": "SWF가 로딩 화면에서 멈추는 이유는 무엇인가요?",
@@ -42,8 +42,8 @@
     }
   },
   "ui": {
-    "emulator": {
-      "title": "ROM 에뮬레이터",
+    "romEmulator": {
+      "title": "고전 게임 에뮬레이터",
       "back": "모든 도구",
       "privacyNote": "내 ROM을 이 탭에서 열어 플레이합니다. 기종은 파일에서 알아냅니다. 업로드하지 않습니다.",
       "auto": "파일에서 알아내기",
@@ -54,18 +54,18 @@
       "chosen": "{console}(으)로 실행 중입니다.",
       "unknown": "이 파일의 기종을 알 수 없습니다. 기종에서 하나를 고르세요.",
       "games": "무료 자작 게임",
-      "openTool": "내 ROM이 있나요? ROM 에뮬레이터 열기",
+      "openTool": "내 ROM이 있나요? 고전 게임 에뮬레이터 열기",
       "tooBig": "이 파일은 너무 커서 지원 기종의 게임이 아닙니다({mb}MB 초과)."
     },
-    "swfPlayer": {
-      "title": "Flash SWF 플레이어",
+    "flashPlayer": {
+      "title": "플래시 플레이어",
       "back": "모든 도구",
       "privacyNote": "Ruffle로 .swf 파일을 이 탭에서 엽니다. Flash 플러그인이 필요 없고 업로드하지 않습니다.",
       "games": "무료 Flash 게임"
     }
   },
   "guides": {
-    "emulator": {
+    "rom-emulator": {
       "lead": "ROM을 열어 이 페이지에서 플레이합니다. 업로드하지 않습니다.",
       "s1t": "ROM 선택",
       "s1b": "ROM 선택 버튼을 누르고 .nes, .sfc, .gb, .gbc, .gba, .md, .zip 파일을 고릅니다.",
@@ -74,7 +74,7 @@
       "s3t": "플레이",
       "s3b": "게임 아래 표시된 키, 휴대폰의 화면 패드, 또는 블루투스 게임패드로 조작합니다."
     },
-    "swf-player": {
+    "flash-player": {
       "lead": "Ruffle로 .swf 파일을 이 탭에서 엽니다. 플러그인도 업로드도 없습니다.",
       "s1t": "SWF 선택",
       "s1b": "SWF 선택 버튼을 누르고 .swf 파일을 고릅니다. 파일은 이 탭에만 있습니다.",

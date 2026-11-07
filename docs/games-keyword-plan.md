@@ -78,3 +78,20 @@ Most-maintained browser frontend researched 2026-09-18: **EmulatorJS/EmulatorJS*
 3. Five FAQ items covering Planner variants: 金手指, 手机, ROM, 攻略, 存档.
 4. Do not paste another site's walkthrough. Short original steps only.
 5. IA reference: zaixianwan.app (console + cover + play). Do not copy their ROM library.
+
+## ROM emulator and Flash player tools (2026-11-07)
+
+Names come from Google Ads Keyword Planner (average monthly searches, language plus main markets; close variants are merged, and `zh-CN` mostly counts where Google is reachable). Slugs are one English word pair for all locales; display names follow each language.
+
+| Locale | ROM tool name | Evidence | Flash tool name | Evidence |
+|---|---|---|---|---|
+| en | ROM emulator | rom emulator 60,500; online emulator 5,400; rom player 320 | Flash player | flash player 6,600; swf player 3,600 |
+| zh-CN | 游戏模拟器 | 游戏模拟器 140; rom 模拟器 10; GBA 模拟器 590 in title | Flash 播放器 | flash player 590; swf 播放器 50; flash 播放器 40 |
+| zh-TW | 遊戲模擬器 | 遊戲模擬器 590; rom 模擬器 30; GBA 模擬器 4,400 in title | Flash 播放器 | flash player 1,900; flash 播放器 140; swf 播放器 140 |
+| ja | ROM エミュレーター | rom エミュレーター 590; レトロゲーム 260 | フラッシュプレイヤー | flash player 1,000; swf 再生 720; フラッシュプレイヤー 480 |
+| ko | 고전 게임 에뮬레이터 | 고전 게임 170; 게임 90; rom 0 | 플래시 플레이어 | 플래시 플레이어 260; swf 플레이어 110 |
+| vi | Trình giả lập game | giả lập game 140; giả lập rom 0 | Flash Player | flash player 590; swf player 110; trình phát flash 0 |
+| id | Emulator game | emulator game 33,100; emulator rom 9,900 | Flash Player | flash player 880; swf player 590 |
+| es | Emulador online | emulador online 4,400; emulador de rom 70 | Flash Player | flash player 2,900; reproductor swf 90 |
+
+Bare terms (模拟器, エミュレーター, emulador) are larger but mostly mean Android and PlayStation emulators, so they are not the page name. "Flash player" searches lean toward Adobe's download, so the copy says the page is Ruffle and not from Adobe, and titles keep "SWF player" for the exact-intent query.

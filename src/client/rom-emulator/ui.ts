@@ -9,9 +9,9 @@ const AUTO = "auto";
 // A newer file or an unmount makes an in-flight read stale.
 let token = 0;
 
-export function mountEmulator(host: HTMLElement): void {
+export function mountRomEmulator(host: HTMLElement): void {
   const loc = locale();
-  const name = t("emulator.title");
+  const name = t("romEmulator.title");
   const { frame, boot, stop, focus } = gameFrame({ flash: false, core: ROM_CORE.fc, name });
   const picker = h("input", {
     type: "file",
@@ -22,7 +22,7 @@ export function mountEmulator(host: HTMLElement): void {
   const empty = gameEmpty({ flash: false, picker, hidden: false });
   const status = h("p", { class: "game-note", role: "status", "data-out": "status" });
   const select = h("select", { "data-field": "console" },
-    h("option", { value: AUTO }, t("emulator.auto")),
+    h("option", { value: AUTO }, t("romEmulator.auto")),
     ...ROM_CONSOLES.map((id) => h("option", { value: id }, t(`games.consoles.${id}`))),
   ) as HTMLSelectElement;
   const controlsHost = h("div", { "data-out": "controls" });
@@ -45,12 +45,12 @@ export function mountEmulator(host: HTMLElement): void {
       running = null;
       controlsHost.replaceChildren();
       empty.hidden = true;
-      status.textContent = t("emulator.unknown");
+      status.textContent = t("romEmulator.unknown");
       select.focus();
       return;
     }
     const label = t(`games.consoles.${consoleId}`);
-    status.textContent = t(chosen ? "emulator.chosen" : "emulator.detected", { console: label });
+    status.textContent = t(chosen ? "romEmulator.chosen" : "romEmulator.detected", { console: label });
     controlsHost.replaceChildren(controls(consoleId));
     empty.hidden = true;
     const core = ROM_CORE[consoleId];
@@ -71,11 +71,11 @@ export function mountEmulator(host: HTMLElement): void {
     // The last game keeps running until this file is known to be usable.
     if (file.size > MAX_ROM_BYTES) {
       reading = false;
-      status.textContent = t("emulator.tooBig", { mb: MAX_ROM_BYTES / 1024 / 1024 });
+      status.textContent = t("romEmulator.tooBig", { mb: MAX_ROM_BYTES / 1024 / 1024 });
       return;
     }
     reading = true;
-    status.textContent = t("emulator.reading");
+    status.textContent = t("romEmulator.reading");
     file.arrayBuffer().then((buffer) => {
       if (mine !== token) return;
       reading = false;
@@ -86,7 +86,7 @@ export function mountEmulator(host: HTMLElement): void {
     }).catch(() => {
       if (mine !== token) return;
       reading = false;
-      status.textContent = t("emulator.readFailed");
+      status.textContent = t("romEmulator.readFailed");
     });
   });
   select.addEventListener("keydown", () => { keyed = true; });
@@ -97,24 +97,24 @@ export function mountEmulator(host: HTMLElement): void {
 
   host.append(
     h("header", { class: "tool-head game-head" },
-      h("a", { class: "back", href: appHref(loc, null), "data-nav": "home" }, t("emulator.back")),
+      h("a", { class: "back", href: appHref(loc, null), "data-nav": "home" }, t("romEmulator.back")),
       h("h1", null, name),
-      h("p", { class: "lede" }, t("emulator.privacyNote")),
+      h("p", { class: "lede" }, t("romEmulator.privacyNote")),
     ),
     h("section", { class: "game-play", "aria-label": t("games.play") },
       h("div", { class: "game-stage" }, frame, empty),
       h("div", { class: "game-playbar" },
         h("label", { class: "btn" }, t("games.loadRom"), picker),
-        h("label", { class: "game-console" }, h("span", null, t("emulator.console")), select),
+        h("label", { class: "game-console" }, h("span", null, t("romEmulator.console")), select),
         status,
       ),
       h("p", { class: "game-note muted" }, t("games.emulator"), " · ", t("games.mobile")),
       controlsHost,
     ),
-    h("p", { class: "more" }, h("a", { href: gamesHref(loc, null), "data-nav": "games" }, t("emulator.games"))),
+    h("p", { class: "more" }, h("a", { href: gamesHref(loc, null), "data-nav": "games" }, t("romEmulator.games"))),
   );
 }
 
-export function unmountEmulator(): void {
+export function unmountRomEmulator(): void {
   token += 1;
 }

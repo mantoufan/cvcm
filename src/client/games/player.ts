@@ -178,7 +178,7 @@ export function player(spec: {
       if (!spec.romUrl) picker.value = "";
     } catch {
       if (read !== reads) return;
-      status.textContent = t("emulator.readFailed");
+      status.textContent = t("romEmulator.readFailed");
       // The file can be picked again, and an unreadable one must not be offered to Remember.
       picker.value = "";
       current = null;

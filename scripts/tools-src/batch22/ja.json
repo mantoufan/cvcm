@@ -1,22 +1,22 @@
 {
   "meta": {
-    "titleEmulator": "ROM エミュレーター（オンライン）— FC・SFC・GB・GBA・MD — cv.cm",
-    "descEmulator": "無料のオンラインレトロゲームエミュレーター。手持ちの FC、SFC、ゲームボーイ、GBA、メガドライブの ROM を開けます。機種はファイルから自動判別。インストール不要、ゲームパッドとタッチ操作に対応。アップロードはしません。",
-    "titleSwfPlayer": "SWF プレーヤー（オンライン）— プラグインなしで Flash を開く — cv.cm",
-    "descSwfPlayer": "無料のオンライン SWF プレーヤー。Ruffle で Flash の .swf ファイルを開けます。Flash プラグインもインストールも不要。ファイルはこのタブに留まり、アップロードされません。"
+    "titleRomEmulator": "ROM エミュレーター（オンライン）— GBA・スーファミ・ゲームボーイ — cv.cm",
+    "descRomEmulator": "無料のオンライン ROM エミュレーター。手持ちの GBA、スーファミ、ゲームボーイ、ファミコン、メガドライブの ROM を開けます。機種はファイルから自動判別。インストール不要、ゲームパッドとタッチ操作に対応。アップロードはしません。",
+    "titleFlashPlayer": "Flash Player オンライン — フラッシュプレイヤーで SWF 再生 — cv.cm",
+    "descFlashPlayer": "無料のオンライン Flash プレイヤー。オープンソースの Flash エミュレーター Ruffle で SWF を再生できます。プラグインもインストールも不要。ファイルはこのタブに留まり、アップロードされません。"
   },
   "tools": {
-    "emulator": {
+    "rom-emulator": {
       "name": "ROM エミュレーター",
-      "blurb": "手持ちの FC・SFC・GB・GBA・MD の ROM で遊べます。"
+      "blurb": "手持ちの GBA・スーファミ・ファミコン・GB・MD の ROM で遊べます。"
     },
-    "swf-player": {
-      "name": "Flash SWF プレーヤー",
+    "flash-player": {
+      "name": "フラッシュプレイヤー",
       "blurb": "プラグインなしで .swf ファイルを開けます。"
     }
   },
   "faq": {
-    "emulator": {
+    "rom-emulator": {
       "q1": "どの機種とファイルを開けますか？",
       "a1": "FC / NES（.nes）、SFC / SNES（.sfc、.smc）、ゲームボーイとゲームボーイカラー（.gb、.gbc）、ゲームボーイアドバンス（.gba）、メガドライブ / Genesis（.md、.gen、.smd、.bin）、およびこれらを入れた .zip です。",
       "q2": "ROM はアップロードされますか？",
@@ -28,9 +28,9 @@
       "q5": "操作とセーブはどうしますか？",
       "a5": "ゲームが始まると下にキー操作が表示されます。スマホでは画面上のパッドを使えます。Bluetooth ゲームパッドも使えます。セーブとロードはエミュレーターのツールバーから行います。"
     },
-    "swf-player": {
+    "flash-player": {
       "q1": "Adobe Flash Player は必要ですか？",
-      "a1": "いいえ。オープンソースの Flash エミュレーター Ruffle がページ内でファイルを実行します。インストールするものはありません。",
+      "a1": "いいえ。オープンソースの Flash エミュレーター Ruffle がページ内でファイルを実行します。インストールするものはありません。このページは Adobe によるものではありません。",
       "q2": "SWF はアップロードされますか？",
       "a2": "いいえ。ファイルはこのタブに留まり、サーバーには送られません。",
       "q3": "SWF が読み込み画面で止まるのはなぜですか？",
@@ -42,7 +42,7 @@
     }
   },
   "ui": {
-    "emulator": {
+    "romEmulator": {
       "title": "ROM エミュレーター",
       "back": "すべてのツール",
       "privacyNote": "手持ちの ROM をこのタブで開いて遊べます。機種はファイルから判別します。アップロードはしません。",
@@ -57,15 +57,15 @@
       "openTool": "手持ちの ROM がありますか？ROM エミュレーターを開く",
       "tooBig": "このファイルは大きすぎて、対応機種のものではありません（{mb} MB 超）。"
     },
-    "swfPlayer": {
-      "title": "Flash SWF プレーヤー",
+    "flashPlayer": {
+      "title": "フラッシュプレイヤー",
       "back": "すべてのツール",
       "privacyNote": "Ruffle で .swf ファイルをこのタブで開きます。Flash プラグインは不要。アップロードはしません。",
       "games": "無料の Flash ゲーム"
     }
   },
   "guides": {
-    "emulator": {
+    "rom-emulator": {
       "lead": "ROM を開いて、このページで遊べます。アップロードはしません。",
       "s1t": "ROM を選ぶ",
       "s1b": "ROM を選ぶボタンを押し、.nes、.sfc、.gb、.gbc、.gba、.md、.zip のファイルを選びます。",
@@ -74,7 +74,7 @@
       "s3t": "遊ぶ",
       "s3b": "ゲームの下に表示されるキー、スマホなら画面上のパッド、または Bluetooth ゲームパッドで操作します。"
     },
-    "swf-player": {
+    "flash-player": {
       "lead": "Ruffle で .swf ファイルをこのタブで開きます。プラグイン不要、アップロードなし。",
       "s1t": "SWF を選ぶ",
       "s1b": "SWF を選ぶボタンを押し、.swf ファイルを選びます。ファイルはこのタブに留まります。",

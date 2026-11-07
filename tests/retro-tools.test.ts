@@ -1,7 +1,7 @@
 // @vitest-environment happy-dom
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { mountEmulator, unmountEmulator } from "../src/client/emulator/ui";
-import { mountSwfPlayer } from "../src/client/swf-player/ui";
+import { mountRomEmulator, unmountRomEmulator } from "../src/client/rom-emulator/ui";
+import { mountFlashPlayer } from "../src/client/flash-player/ui";
 import { CATEGORIES, TOOLS, parseAppPath } from "../src/shared/path";
 import { isTrackedPath } from "../src/shared/analytics";
 import { dataHandling } from "../src/shared/agent-docs";
@@ -114,8 +114,8 @@ describe("detectRomConsole", () => {
 
 describe("registration", () => {
   it("lists both tools under the games group and keeps them out of analytics", () => {
-    expect(CATEGORIES.find((c) => c.id === "games")?.tools).toEqual(["emulator", "swf-player"]);
-    for (const id of ["emulator", "swf-player"] as const) {
+    expect(CATEGORIES.find((c) => c.id === "games")?.tools).toEqual(["rom-emulator", "flash-player"]);
+    for (const id of ["rom-emulator", "flash-player"] as const) {
       expect(TOOLS).toContain(id);
       expect(parseAppPath(`/en/${id}/`)).toMatchObject({ kind: "app", tool: id });
       expect(isTrackedPath(`/en/${id}/`), id).toBe(false);
@@ -149,20 +149,20 @@ describe("tool pages", () => {
   });
 
   afterEach(() => {
-    unmountEmulator();
+    unmountRomEmulator();
     host.remove();
     vi.restoreAllMocks();
   });
 
   it("starts empty, with no emulator loaded at mount", () => {
-    mountEmulator(host);
+    mountRomEmulator(host);
     expect(q(".game-empty").hidden).toBe(false);
     expect(q("[data-out=controls]").children).toHaveLength(0);
     expect(frameSrc.filter((src) => src !== "about:blank")).toEqual([]);
   });
 
   it("boots the detected core and shows that console's keys", async () => {
-    mountEmulator(host);
+    mountRomEmulator(host);
     await pick(new File([rom(64, 0, [0x4e, 0x45, 0x53, 0x1a]) as BlobPart], "game.bin"));
     expect(q(".game-empty").hidden).toBe(true);
     expect(frameSrc.at(-1)).toContain("/emu/player");
@@ -173,7 +173,7 @@ describe("tool pages", () => {
   });
 
   it("asks for a console when the file does not say, then boots the choice", async () => {
-    mountEmulator(host);
+    mountRomEmulator(host);
     await pick(new File([new Uint8Array(32)], "game.bin"));
     expect(frameSrc.filter((src) => src !== "about:blank")).toEqual([]);
     expect(q("[data-out=status]").textContent).toBeTruthy();
@@ -184,7 +184,7 @@ describe("tool pages", () => {
   });
 
   it("reloads the frame with the new core when the choice changes", async () => {
-    mountEmulator(host);
+    mountRomEmulator(host);
     await pick(new File([rom(64, 0, [0x4e, 0x45, 0x53, 0x1a]) as BlobPart], "game.nes"));
     const before = frameSrc.length;
     const select = q<HTMLSelectElement>("[data-field=console]");
@@ -195,7 +195,7 @@ describe("tool pages", () => {
   });
 
   it("detects a new file even after a manual choice", async () => {
-    mountEmulator(host);
+    mountRomEmulator(host);
     await pick(new File([new Uint8Array(32)], "a.bin"));
     const select = q<HTMLSelectElement>("[data-field=console]");
     select.value = "md";
@@ -207,7 +207,7 @@ describe("tool pages", () => {
   });
 
   it("swaps the iframe instead of navigating it again, so Back leaves the page", async () => {
-    mountEmulator(host);
+    mountRomEmulator(host);
     await pick(new File([rom(64, 0, [0x4e, 0x45, 0x53, 0x1a]) as BlobPart], "a.nes"));
     const first = q("iframe");
     await pick(new File([rom(64, 0, [0x4e, 0x45, 0x53, 0x1a]) as BlobPart], "b.nes"));
@@ -216,7 +216,7 @@ describe("tool pages", () => {
   });
 
   it("keeps the last game when the next file is refused", async () => {
-    mountEmulator(host);
+    mountRomEmulator(host);
     await pick(new File([rom(64, 0, [0x4e, 0x45, 0x53, 0x1a]) as BlobPart], "a.nes"));
     const before = frameSrc.length;
     const big = new File([new Uint8Array(1)], "disc.bin");
@@ -227,7 +227,7 @@ describe("tool pages", () => {
   });
 
   it("leaves focus on the select for keyboard choices", async () => {
-    mountEmulator(host);
+    mountRomEmulator(host);
     await pick(new File([new Uint8Array(32)], "a.bin"));
     const select = q<HTMLSelectElement>("[data-field=console]");
     select.focus();
@@ -238,7 +238,7 @@ describe("tool pages", () => {
   });
 
   it("refuses a file too big to be a cartridge without reading it", async () => {
-    mountEmulator(host);
+    mountRomEmulator(host);
     const big = new File([new Uint8Array(1)], "disc.bin");
     Object.defineProperty(big, "size", { value: MAX_ROM_BYTES + 1 });
     const read = vi.spyOn(big, "arrayBuffer");
@@ -248,7 +248,7 @@ describe("tool pages", () => {
   });
 
   it("does not restart the game when the choice needs the core already running", async () => {
-    mountEmulator(host);
+    mountRomEmulator(host);
     await pick(new File([rom(64, 0, [0x4e, 0x45, 0x53, 0x1a]) as BlobPart], "a.nes"));
     const before = frameSrc.length;
     const select = q<HTMLSelectElement>("[data-field=console]");
@@ -260,7 +260,7 @@ describe("tool pages", () => {
   });
 
   it("stops the last game when a new file does not name its console", async () => {
-    mountEmulator(host);
+    mountRomEmulator(host);
     await pick(new File([rom(64, 0, [0x4e, 0x45, 0x53, 0x1a]) as BlobPart], "a.nes"));
     await pick(new File([new Uint8Array(32)], "b.bin"));
     expect(frameSrc.at(-1)).toBe("about:blank");
@@ -268,7 +268,7 @@ describe("tool pages", () => {
   });
 
   it("keeps a console chosen before any file, and takes keys away from the select", async () => {
-    mountEmulator(host);
+    mountRomEmulator(host);
     const select = q<HTMLSelectElement>("[data-field=console]");
     select.value = "md";
     await pick(new File([new Uint8Array(32)], "a.bin"));
@@ -277,17 +277,17 @@ describe("tool pages", () => {
   });
 
   it("drops a read that finished after the page left", async () => {
-    mountEmulator(host);
+    mountRomEmulator(host);
     const input = q<HTMLInputElement>("input[type=file]");
     Object.defineProperty(input, "files", { configurable: true, get: () => [new File([rom(64, 0, [0x4e, 0x45, 0x53, 0x1a]) as BlobPart], "a.nes")] });
     input.dispatchEvent(new Event("change"));
-    unmountEmulator();
+    unmountRomEmulator();
     await flush();
     expect(frameSrc.filter((src) => src !== "about:blank")).toEqual([]);
   });
 
   it("opens a SWF in the Ruffle shell, and only takes .swf", async () => {
-    mountSwfPlayer(host);
+    mountFlashPlayer(host);
     expect(q<HTMLInputElement>("input[type=file]").accept).toBe(".swf");
     await pick(new File([new Uint8Array([0x46, 0x57, 0x53])], "movie.swf"));
     expect(frameSrc.at(-1)).toContain("/emu/flash");

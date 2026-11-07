@@ -1,22 +1,22 @@
 {
   "meta": {
-    "titleEmulator": "Trình giả lập ROM trực tuyến — NES, SNES, GB, GBA, Mega Drive — cv.cm",
-    "descEmulator": "Trình giả lập game cổ điển trực tuyến miễn phí: mở ROM NES, SNES, Game Boy, GBA hoặc Mega Drive của bạn. Hệ máy được nhận diện từ tệp. Không cần cài đặt, hỗ trợ tay cầm và cảm ứng. Không tải lên.",
-    "titleSwfPlayer": "Trình phát SWF trực tuyến — mở tệp Flash không cần plugin — cv.cm",
-    "descSwfPlayer": "Trình phát SWF trực tuyến miễn phí: mở tệp Flash .swf bằng Ruffle. Không cần plugin Flash, không cần cài đặt. Tệp ở lại trong tab này và không được tải lên."
+    "titleRomEmulator": "Trình giả lập game online — giả lập GBA, NES, SNES — cv.cm",
+    "descRomEmulator": "Trình giả lập game online miễn phí: mở ROM GBA, NES, SNES, Game Boy hoặc Mega Drive của bạn. Hệ máy được nhận diện từ tệp. Không cần cài đặt, hỗ trợ tay cầm và cảm ứng. Không tải lên.",
+    "titleFlashPlayer": "Flash Player online — SWF player, mở file SWF không cần plugin — cv.cm",
+    "descFlashPlayer": "Flash Player và SWF player trực tuyến miễn phí: mở file .swf bằng Ruffle, trình giả lập Flash mã nguồn mở. Không cần plugin, không cần cài đặt. Tệp ở lại trong tab này và không được tải lên."
   },
   "tools": {
-    "emulator": {
-      "name": "Trình giả lập ROM",
-      "blurb": "Chơi ROM NES, SNES, GB, GBA hoặc Mega Drive của bạn."
+    "rom-emulator": {
+      "name": "Trình giả lập game",
+      "blurb": "Chơi ROM GBA, NES, SNES, GB hoặc Mega Drive của bạn."
     },
-    "swf-player": {
-      "name": "Trình phát Flash SWF",
+    "flash-player": {
+      "name": "Flash Player",
       "blurb": "Mở tệp Flash .swf không cần plugin."
     }
   },
   "faq": {
-    "emulator": {
+    "rom-emulator": {
       "q1": "Có thể mở những hệ máy và tệp nào?",
       "a1": "FC / NES (.nes), SFC / SNES (.sfc, .smc), Game Boy và Game Boy Color (.gb, .gbc), Game Boy Advance (.gba), Mega Drive / Genesis (.md, .gen, .smd, .bin), hoặc tệp .zip chứa một trong các tệp này.",
       "q2": "ROM của tôi có bị tải lên không?",
@@ -28,9 +28,9 @@
       "q5": "Điều khiển và lưu game thế nào?",
       "a5": "Khi game bắt đầu, các phím hiện ở bên dưới. Trên điện thoại, dùng tay cầm ảo trên màn hình hoặc tay cầm Bluetooth. Lưu và tải trạng thái nằm trên thanh công cụ của trình giả lập."
     },
-    "swf-player": {
+    "flash-player": {
       "q1": "Có cần Adobe Flash Player không?",
-      "a1": "Không. Ruffle, trình giả lập Flash mã nguồn mở, chạy tệp ngay trên trang. Không cần cài gì.",
+      "a1": "Không. Ruffle, trình giả lập Flash mã nguồn mở, chạy tệp ngay trên trang. Không cần cài gì. Trang này không do Adobe cung cấp.",
       "q2": "SWF của tôi có bị tải lên không?",
       "a2": "Không. Tệp ở lại trong tab này và không được gửi đến máy chủ.",
       "q3": "Vì sao SWF dừng ở màn hình tải?",
@@ -42,8 +42,8 @@
     }
   },
   "ui": {
-    "emulator": {
-      "title": "Trình giả lập ROM",
+    "romEmulator": {
+      "title": "Trình giả lập game",
       "back": "Tất cả công cụ",
       "privacyNote": "Mở ROM của bạn và chơi trong tab này. Hệ máy được nhận diện từ tệp. Không tải lên.",
       "auto": "Nhận diện từ tệp",
@@ -54,18 +54,18 @@
       "chosen": "Đang chạy theo {console}.",
       "unknown": "Tệp này không cho biết thuộc hệ máy nào. Hãy chọn ở mục Hệ máy.",
       "games": "Game tự chế miễn phí",
-      "openTool": "Bạn có ROM riêng? Mở trình giả lập ROM",
+      "openTool": "Bạn có ROM riêng? Mở trình giả lập game",
       "tooBig": "Tệp này quá lớn so với các hệ máy này (trên {mb} MB)."
     },
-    "swfPlayer": {
-      "title": "Trình phát Flash SWF",
+    "flashPlayer": {
+      "title": "Flash Player",
       "back": "Tất cả công cụ",
       "privacyNote": "Mở tệp .swf trong tab này bằng Ruffle. Không cần plugin Flash. Không tải lên.",
       "games": "Game Flash miễn phí"
     }
   },
   "guides": {
-    "emulator": {
+    "rom-emulator": {
       "lead": "Mở ROM và chơi ngay trên trang này. Không tải lên.",
       "s1t": "Chọn ROM",
       "s1b": "Nhấn nút chọn ROM và chọn tệp .nes, .sfc, .gb, .gbc, .gba, .md hoặc .zip.",
@@ -74,7 +74,7 @@
       "s3t": "Chơi",
       "s3b": "Dùng các phím liệt kê dưới game, tay cầm ảo trên điện thoại hoặc tay cầm Bluetooth."
     },
-    "swf-player": {
+    "flash-player": {
       "lead": "Mở tệp .swf trong tab này bằng Ruffle. Không plugin, không tải lên.",
       "s1t": "Chọn SWF",
       "s1b": "Nhấn nút chọn SWF và chọn tệp .swf. Tệp ở lại trong tab này.",

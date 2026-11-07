@@ -522,10 +522,10 @@
     "descGradient": "Buat gradien latar CSS: pilih warna dan titiknya, atur sudut atau bentuk, mulai dari preset, lalu salin CSS atau simpan wallpaper PNG. Gratis, di browser Anda.",
     "titleFancyText": "Generator font keren — tulisan unik untuk salin tempel — cv.cm",
     "descFancyText": "Ubah teks jadi huruf 𝐛𝐨𝐥𝐝, 𝑖𝑡𝑎𝑙𝑖𝑐, 𝓈𝒸𝓇𝒾𝓅𝓉, 𝔣𝔯𝔞𝔨𝔱𝔲𝔯, ⓒⓘⓡⓒⓛⓔⓓ, dan terbalik yang bisa ditempel di mana saja: bio Instagram, TikTok, Discord, dan nama game. Gratis, sekali ketuk untuk salin.",
-    "titleEmulator": "Emulator ROM online — NES, SNES, GB, GBA, Mega Drive — cv.cm",
-    "descEmulator": "Emulator game retro online gratis: buka ROM NES, SNES, Game Boy, GBA, atau Mega Drive milik Anda. Konsol dikenali dari file. Tanpa instalasi, mendukung gamepad dan layar sentuh. Tidak ada yang diunggah.",
-    "titleSwfPlayer": "Pemutar SWF online — buka file Flash tanpa plugin — cv.cm",
-    "descSwfPlayer": "Pemutar SWF online gratis: buka file Flash .swf dengan Ruffle. Tanpa plugin Flash dan tanpa instalasi. File tetap di tab ini dan tidak diunggah."
+    "titleRomEmulator": "Emulator game online — buka ROM GBA, NES, SNES — cv.cm",
+    "descRomEmulator": "Emulator game online gratis: buka ROM GBA, NES, SNES, Game Boy, atau Mega Drive milik Anda. Konsol dikenali dari file. Tanpa instalasi, mendukung gamepad dan layar sentuh. Tidak ada yang diunggah.",
+    "titleFlashPlayer": "Flash Player online — SWF player tanpa plugin — cv.cm",
+    "descFlashPlayer": "Flash Player dan SWF player online gratis: buka file .swf dengan Ruffle, emulator Flash open source. Tanpa plugin dan tanpa instalasi. File tetap di tab ini dan tidak diunggah."
   },
   "brand": "cv.cm",
   "nav": {
@@ -1133,12 +1133,12 @@
       "name": "Generator font keren",
       "blurb": "Tulisan tebal, sambung, gelembung untuk ditempel."
     },
-    "emulator": {
-      "name": "Emulator ROM",
-      "blurb": "Mainkan ROM NES, SNES, GB, GBA, atau Mega Drive milik Anda."
+    "rom-emulator": {
+      "name": "Emulator game",
+      "blurb": "Mainkan ROM GBA, NES, SNES, GB, atau Mega Drive milik Anda."
     },
-    "swf-player": {
-      "name": "Pemutar Flash SWF",
+    "flash-player": {
+      "name": "Flash Player",
       "blurb": "Buka file Flash .swf tanpa plugin."
     }
   },
@@ -4393,7 +4393,7 @@
       "q5": "Bagaimana cara menyalin sebuah gaya?",
       "a5": "Ketik teks Anda, lalu tekan Salin di samping gaya yang Anda suka. Teks terbalik juga dibalik urutannya, jadi terbaca benar saat diputar."
     },
-    "emulator": {
+    "rom-emulator": {
       "q1": "Konsol dan file apa saja yang bisa dibuka?",
       "a1": "FC / NES (.nes), SFC / SNES (.sfc, .smc), Game Boy dan Game Boy Color (.gb, .gbc), Game Boy Advance (.gba), Mega Drive / Genesis (.md, .gen, .smd, .bin), atau .zip yang berisi salah satunya.",
       "q2": "Apakah ROM saya diunggah?",
@@ -4405,9 +4405,9 @@
       "q5": "Bagaimana cara bermain dan menyimpan?",
       "a5": "Tombol kontrol muncul setelah game mulai. Di ponsel, gunakan pad di layar atau gamepad Bluetooth. Simpan dan muat state ada di bilah alat emulator."
     },
-    "swf-player": {
+    "flash-player": {
       "q1": "Apakah saya perlu Adobe Flash Player?",
-      "a1": "Tidak. Ruffle, emulator Flash open source, menjalankan file di halaman ini. Tidak ada yang perlu dipasang.",
+      "a1": "Tidak. Ruffle, emulator Flash open source, menjalankan file di halaman ini. Tidak ada yang perlu dipasang. Halaman ini bukan dari Adobe.",
       "q2": "Apakah SWF saya diunggah?",
       "a2": "Tidak. File tetap di tab ini dan tidak dikirim ke server.",
       "q3": "Mengapa SWF saya berhenti di layar pemuatan?",
@@ -10568,8 +10568,8 @@
     "hanfu": "Hanfu",
     "qipao": "Qipao (cheongsam)"
   },
-  "emulator": {
-    "title": "Emulator ROM",
+  "romEmulator": {
+    "title": "Emulator game",
     "back": "Semua alat",
     "privacyNote": "Buka ROM milik Anda dan mainkan di tab ini. Konsol dikenali dari file. Tidak ada yang diunggah.",
     "auto": "Kenali dari file",
@@ -10580,11 +10580,11 @@
     "chosen": "Berjalan sebagai {console}.",
     "unknown": "File ini tidak menyebut konsolnya. Pilih di Konsol.",
     "games": "Game homebrew gratis",
-    "openTool": "Punya ROM sendiri? Buka emulator ROM",
+    "openTool": "Punya ROM sendiri? Buka emulator game",
     "tooBig": "File ini terlalu besar untuk konsol-konsol ini (lebih dari {mb} MB)."
   },
-  "swfPlayer": {
-    "title": "Pemutar Flash SWF",
+  "flashPlayer": {
+    "title": "Flash Player",
     "back": "Semua alat",
     "privacyNote": "Buka file .swf di tab ini dengan Ruffle. Tanpa plugin Flash. Tidak ada yang diunggah.",
     "games": "Game Flash gratis"

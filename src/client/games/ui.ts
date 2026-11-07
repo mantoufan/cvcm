@@ -70,7 +70,7 @@ export function mountGamesHub(host: HTMLElement, consoleId: GameConsoleId | null
       h("h2", { class: "sr-only" }, consoleId ? t(`games.consoles.${consoleId}`) : t("nav.games")),
       catalog,
     ),
-    h("p", { class: "more" }, h("a", { href: appHref(loc, "emulator"), "data-nav": "emulator" }, t("emulator.openTool"))),
+    h("p", { class: "more" }, h("a", { href: appHref(loc, "rom-emulator"), "data-nav": "rom-emulator" }, t("romEmulator.openTool"))),
     gamesFaq(loc, consoleId),
   );
 }

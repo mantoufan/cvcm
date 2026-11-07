@@ -1,22 +1,22 @@
 {
   "meta": {
-    "titleEmulator": "ROM 模擬器線上版 — FC、SFC、GB、GBA、MD — cv.cm",
-    "descEmulator": "免費線上懷舊遊戲模擬器：開啟你自己的 FC、SFC、Game Boy、GBA 或 Mega Drive ROM，自動辨識主機。不用安裝，支援手把和觸控，檔案不上傳。",
-    "titleSwfPlayer": "Flash 播放器線上版 — 不裝外掛開啟 SWF — cv.cm",
-    "descSwfPlayer": "免費線上 Flash 播放器：用 Ruffle 開啟 .swf 檔案，不用裝 Flash 外掛，也不用安裝軟體。檔案只留在這個分頁，不上傳。"
+    "titleRomEmulator": "線上遊戲模擬器 — GBA 模擬器、FC、SFC，開啟 ROM — cv.cm",
+    "descRomEmulator": "免費線上遊戲模擬器：開啟你自己的 GBA、FC、SFC、Game Boy 或 Mega Drive ROM，自動辨識主機。不用安裝，支援手把和觸控，檔案不上傳。",
+    "titleFlashPlayer": "Flash Player 線上版 — SWF 播放器，開啟 SWF 檔案 — cv.cm",
+    "descFlashPlayer": "免費線上 Flash 播放器和 SWF 播放器：用開源 Flash 模擬器 Ruffle 開啟 .swf 檔案，不用裝外掛，也不用安裝軟體。檔案只留在這個分頁，不上傳。"
   },
   "tools": {
-    "emulator": {
-      "name": "ROM 模擬器",
-      "blurb": "玩你自己的 FC、SFC、GB、GBA、MD ROM。"
+    "rom-emulator": {
+      "name": "遊戲模擬器",
+      "blurb": "玩你自己的 GBA、FC、SFC、GB、MD ROM。"
     },
-    "swf-player": {
+    "flash-player": {
       "name": "Flash 播放器",
       "blurb": "不裝外掛，直接開啟 .swf 檔案。"
     }
   },
   "faq": {
-    "emulator": {
+    "rom-emulator": {
       "q1": "能開啟哪些主機和檔案？",
       "a1": "FC / NES（.nes）、SFC / SNES（.sfc、.smc）、Game Boy 和 Game Boy Color（.gb、.gbc）、Game Boy Advance（.gba）、Mega Drive / Genesis（.md、.gen、.smd、.bin），或裝著其中一種檔案的 .zip。",
       "q2": "ROM 會上傳嗎？",
@@ -28,9 +28,9 @@
       "q5": "怎麼操作和存檔？",
       "a5": "遊戲開始後，下方會顯示按鍵。手機上用螢幕虛擬手把，也可以連藍牙手把。存檔和讀檔在模擬器工具列裡。"
     },
-    "swf-player": {
+    "flash-player": {
       "q1": "需要安裝 Adobe Flash Player 嗎？",
-      "a1": "不需要。開源的 Flash 模擬器 Ruffle 直接在頁面裡執行檔案，不用安裝任何東西。",
+      "a1": "不需要。開源的 Flash 模擬器 Ruffle 直接在頁面裡執行檔案，不用安裝任何東西。本頁並非 Adobe 提供。",
       "q2": "SWF 會上傳嗎？",
       "a2": "不會。檔案只留在這個分頁，不會傳到伺服器。",
       "q3": "為什麼 SWF 停在載入畫面？",
@@ -42,8 +42,8 @@
     }
   },
   "ui": {
-    "emulator": {
-      "title": "ROM 模擬器",
+    "romEmulator": {
+      "title": "遊戲模擬器",
       "back": "全部工具",
       "privacyNote": "開啟你自己的 ROM，在這個分頁裡玩，自動辨識主機。檔案不上傳。",
       "auto": "根據檔案辨識",
@@ -54,10 +54,10 @@
       "chosen": "正在按 {console} 執行。",
       "unknown": "這個檔案看不出屬於哪台主機，請在「主機」裡選一個。",
       "games": "免費自製遊戲",
-      "openTool": "有自己的 ROM？開啟 ROM 模擬器",
+      "openTool": "有自己的 ROM？開啟遊戲模擬器",
       "tooBig": "這個檔案太大，不是這些主機的遊戲（超過 {mb} MB）。"
     },
-    "swfPlayer": {
+    "flashPlayer": {
       "title": "Flash 播放器",
       "back": "全部工具",
       "privacyNote": "用 Ruffle 在這個分頁開啟 .swf 檔案，不用 Flash 外掛。檔案不上傳。",
@@ -65,7 +65,7 @@
     }
   },
   "guides": {
-    "emulator": {
+    "rom-emulator": {
       "lead": "開啟你的 ROM，就在這一頁玩。檔案不上傳。",
       "s1t": "選擇 ROM",
       "s1b": "點「選擇 ROM」，選一個 .nes、.sfc、.gb、.gbc、.gba、.md 或 .zip 檔案。",
@@ -74,7 +74,7 @@
       "s3t": "開始玩",
       "s3b": "用遊戲下方列出的按鍵，手機上用螢幕虛擬手把，也可以連藍牙手把。"
     },
-    "swf-player": {
+    "flash-player": {
       "lead": "用 Ruffle 在這個分頁開啟 .swf 檔案。不裝外掛，檔案不上傳。",
       "s1t": "選擇 SWF",
       "s1b": "點「選擇 SWF」，選一個 .swf 檔案。檔案只留在這個分頁。",

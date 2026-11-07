@@ -522,10 +522,10 @@
     "descGradient": "Make a CSS background gradient: pick colours and stops, set the angle or shape, start from presets, then copy the CSS or save a PNG wallpaper. Free, in your browser.",
     "titleFancyText": "Fancy text generator — cool fonts to copy and paste — cv.cm",
     "descFancyText": "Turn text into 𝐛𝐨𝐥𝐝, 𝑖𝑡𝑎𝑙𝑖𝑐, 𝓈𝒸𝓇𝒾𝓅𝓉, 𝔣𝔯𝔞𝔨𝔱𝔲𝔯, ⓒⓘⓡⓒⓛⓔⓓ and upside-down letters that paste anywhere: Instagram bios, TikTok, Discord and game names. Free, one tap to copy.",
-    "titleEmulator": "Online ROM emulator — NES, SNES, GB, GBA, Mega Drive — cv.cm",
-    "descEmulator": "Free online retro emulator: open your own NES, SNES, Game Boy, GBA or Mega Drive ROM. The console is detected from the file. No install, with gamepad and touch controls. Nothing is uploaded.",
-    "titleSwfPlayer": "SWF player online — open Flash files without a plugin — cv.cm",
-    "descSwfPlayer": "Free online SWF player: open a Flash .swf file with Ruffle. No Flash plugin and no install. The file stays in this tab and is not uploaded."
+    "titleRomEmulator": "ROM emulator online — GBA, NES, SNES, Mega Drive — cv.cm",
+    "descRomEmulator": "Free online ROM emulator: open your own GBA, NES, SNES, Game Boy or Mega Drive ROM. The console is detected from the file. No install, with gamepad and touch controls. Nothing is uploaded.",
+    "titleFlashPlayer": "Flash player online — SWF player, no plugin — cv.cm",
+    "descFlashPlayer": "Free online Flash player and SWF player: open a .swf file with Ruffle, an open-source Flash emulator. No plugin and no install. The file stays in this tab and is not uploaded."
   },
   "brand": "cv.cm",
   "nav": {
@@ -3242,12 +3242,12 @@
       "name": "Fancy text generator",
       "blurb": "Bold, script, bubble fonts to paste."
     },
-    "emulator": {
+    "rom-emulator": {
       "name": "ROM emulator",
-      "blurb": "Play your own NES, SNES, GB, GBA or Mega Drive ROM."
+      "blurb": "Play your own GBA, NES, SNES, GB or Mega Drive ROM."
     },
-    "swf-player": {
-      "name": "Flash SWF player",
+    "flash-player": {
+      "name": "Flash player",
       "blurb": "Open a Flash .swf file without a plugin."
     }
   },
@@ -6502,7 +6502,7 @@
       "q5": "How do I copy a style?",
       "a5": "Type your text, then press Copy next to the style you like. Upside-down text is also reversed, so it reads correctly turned over."
     },
-    "emulator": {
+    "rom-emulator": {
       "q1": "Which consoles and files does it open?",
       "a1": "FC / NES (.nes), SFC / SNES (.sfc, .smc), Game Boy and Game Boy Color (.gb, .gbc), Game Boy Advance (.gba) and Mega Drive / Genesis (.md, .gen, .smd, .bin), or a .zip holding one of these.",
       "q2": "Is my ROM uploaded?",
@@ -6514,9 +6514,9 @@
       "q5": "How do I play and save?",
       "a5": "The controls appear once a game starts. On a phone, use the on-screen pad; a Bluetooth gamepad works too. Save and load states from the emulator toolbar."
     },
-    "swf-player": {
+    "flash-player": {
       "q1": "Do I need Adobe Flash Player?",
-      "a1": "No. Ruffle, an open-source Flash emulator, runs the file in the page. There is nothing to install.",
+      "a1": "No. Ruffle, an open-source Flash emulator, runs the file in the page. There is nothing to install. This page is not from Adobe.",
       "q2": "Is my SWF uploaded?",
       "a2": "No. The file stays in this tab and is not sent to a server.",
       "q3": "Why does my SWF stop on a loading screen?",
@@ -10568,7 +10568,7 @@
     "hanfu": "Hanfu",
     "qipao": "Qipao"
   },
-  "emulator": {
+  "romEmulator": {
     "title": "ROM emulator",
     "back": "All tools",
     "privacyNote": "Open a ROM you own and play it in this tab. The console is detected from the file. Nothing is uploaded.",
@@ -10583,8 +10583,8 @@
     "openTool": "Have your own ROM? Open the ROM emulator",
     "tooBig": "This file is too big for these consoles (over {mb} MB)."
   },
-  "swfPlayer": {
-    "title": "Flash SWF player",
+  "flashPlayer": {
+    "title": "Flash player",
     "back": "All tools",
     "privacyNote": "Open a .swf file in this tab with Ruffle. No Flash plugin. Nothing is uploaded.",
     "games": "Free Flash games"
