@@ -80,6 +80,8 @@ describe("reference: mannequins and footer entries", () => {
     expect(ld.dateModified).toBe(REF_UPDATED["standing-pose"]);
     expect(ld.image[0].contentUrl).toBe("https://cv.cm/covers/ref/standing-pose-front-900.webp");
     expect(ld.image[0].license).toContain("publicdomain/zero");
+    // Google image-metadata: all four recommended fields on images we know the terms of.
+    for (const key of ["creator", "copyrightNotice", "license", "acquireLicensePage"]) expect(ld.image[0]).toHaveProperty(key);
   });
 
   it("dates every entry that has mannequins", () => {
@@ -309,6 +311,9 @@ describe("reference: page HTML and SEO", () => {
       const ld = refArticleJsonLd("en", withPhotos) as { image: { contentUrl: string; acquireLicensePage: string }[] };
       expect(ld.image[0].contentUrl).toBe(`https://s1.mtf6.com/${photo.img}_c_w_600_ext_jpg.webp`);
       expect(ld.image[0]).not.toHaveProperty("acquireLicensePage");
+      expect(ld.image[0]).not.toHaveProperty("license");
+      if (photo.photo) expect(ld.image[0]).toMatchObject({ creator: { "@type": "Person", name: photo.photo }, copyrightNotice: `© ${photo.photo}` });
+      else expect(ld.image[0]).not.toHaveProperty("creator");
     }
     if (without) {
       const html = refPageHtml("en", without);

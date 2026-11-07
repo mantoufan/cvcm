@@ -270,14 +270,21 @@ export function refArticleJsonLd(locale: Locale, id: RefId | null): Record<strin
   const mannequins = (REF_MANNEQUINS[id] ?? []).map((angle) => ({
     "@type": "ImageObject",
     contentUrl: `${ORIGIN}${refMannequinUrl(id, angle, 900)}`,
+    creator: { "@type": "Organization", name: "Shisei", url: SHISEI_URL },
     creditText: "Shisei",
+    copyrightNotice: "Shisei · CC0 1.0",
     license: CC0_URL,
+    acquireLicensePage: SHISEI_URL,
   }));
+  // Third-party photos: credit the photographer as creator/copyright holder. No `license` or
+  // `acquireLicensePage`: we don't know (and must not assert) the photographers' terms, and the
+  // mfan8 set page is a source, not a licensing page.
   const photos = refPhotos(locale, id).map((photo) => {
     const credit = [photo.photo, photo.model].filter(Boolean).join(" / ");
     return {
       "@type": "ImageObject",
       contentUrl: refImageUrl(photo, 600),
+      ...(photo.photo ? { creator: { "@type": "Person", name: photo.photo }, copyrightNotice: `© ${photo.photo}` } : {}),
       ...(credit ? { creditText: credit } : {}),
     };
   });
