@@ -8,6 +8,7 @@ import worker from "../src/worker";
 import { LOCALES, type Locale } from "../src/shared/locale";
 import { preloadLocalePack } from "../src/shared/locale-preload";
 import { messages, refMessages } from "../src/shared/messages";
+import { PUBLISHER } from "../src/shared/kb-i18n";
 import { parseAppPath, refHref } from "../src/shared/path";
 import { REF_ENTRIES, REF_FOCUS, REF_GROUPS, REF_MANNEQUINS, REF_META, REF_PUBLISHED, REF_UPDATED, isRefId, mfan8Href, refGroupOf, type RefId } from "../src/shared/ref";
 import { refArticleJsonLd, refCopy, refPageHtml, refPhotos, refTitle, type RefEntryCopy, type RefPhoto } from "../src/shared/ref-i18n";
@@ -80,8 +81,14 @@ describe("reference: mannequins and footer entries", () => {
     expect(ld.dateModified).toBe(REF_UPDATED["standing-pose"]);
     expect(ld.image[0].contentUrl).toBe("https://cv.cm/covers/ref/standing-pose-front-900.webp");
     expect(ld.image[0].license).toContain("publicdomain/zero");
-    // Google image-metadata: all four recommended fields on images we know the terms of.
-    for (const key of ["creator", "copyrightNotice", "license", "acquireLicensePage"]) expect(ld.image[0]).toHaveProperty(key);
+    // Google image-metadata: all four recommended fields on every mannequin image.
+    for (const image of ld.image.filter((item) => typeof item === "object")) {
+      for (const key of ["creator", "copyrightNotice", "license", "acquireLicensePage"]) expect(image, key).toHaveProperty(key);
+    }
+  });
+
+  it("gives the publisher logo as a plain URL, not an ImageObject Search Console checks for licence fields", () => {
+    expect(PUBLISHER.logo).toBe("https://cv.cm/favicon-512.png");
   });
 
   it("dates every entry that has mannequins", () => {
@@ -308,12 +315,9 @@ describe("reference: page HTML and SEO", () => {
         expect(html).toContain('<p class="ref-note">');
         if (photo.model) expect(html).toContain(photo.model.replace(/&/g, "&amp;"));
       }
-      const ld = refArticleJsonLd("en", withPhotos) as { image: { contentUrl: string; acquireLicensePage: string }[] };
-      expect(ld.image[0].contentUrl).toBe(`https://s1.mtf6.com/${photo.img}_c_w_600_ext_jpg.webp`);
-      expect(ld.image[0]).not.toHaveProperty("acquireLicensePage");
-      expect(ld.image[0]).not.toHaveProperty("license");
-      if (photo.photo) expect(ld.image[0]).toMatchObject({ creator: { "@type": "Person", name: photo.photo }, copyrightNotice: `© ${photo.photo}` });
-      else expect(ld.image[0]).not.toHaveProperty("creator");
+      // Third-party photos carry no rights claims: plain URLs, never ImageObjects.
+      const ld = refArticleJsonLd("en", withPhotos) as { image: unknown[] };
+      expect(ld.image).toContain(`https://s1.mtf6.com/${photo.img}_c_w_600_ext_jpg.webp`);
     }
     if (without) {
       const html = refPageHtml("en", without);

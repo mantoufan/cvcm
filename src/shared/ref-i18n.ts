@@ -131,6 +131,14 @@ function photosHtml(locale: Locale, id: RefId): string {
 
 const CC0_URL = "https://creativecommons.org/publicdomain/zero/1.0/";
 const SHISEI_URL = "https://github.com/wquguru/shisei";
+/** Rights metadata for the Shisei line art: CC0 at the pinned tag the files were taken from (docs/ref-mannequins.md). */
+const SHISEI_IMAGE_META = {
+  creator: { "@type": "Person", name: "wquguru", url: "https://github.com/wquguru" },
+  creditText: "Shisei",
+  copyrightNotice: "Public domain (CC0 1.0), by Shisei",
+  license: CC0_URL,
+  acquireLicensePage: `${SHISEI_URL}/tree/v0.4.1`,
+} as const;
 
 function angleLabel(ui: RefUi, angle: RefAngle): string {
   const labels: Record<RefAngle, string> = {
@@ -243,7 +251,7 @@ export function refFaqJsonLd(locale: Locale, id: RefId | null): Record<string, u
   };
 }
 
-/** Article (with the look as a DefinedTerm and its photos as credited ImageObjects) for an entry; CollectionPage + ItemList for the hub. */
+/** Article (with the look as a DefinedTerm, mannequins as CC0 ImageObjects, photos as plain image URLs) for an entry; CollectionPage + ItemList for the hub. */
 export function refArticleJsonLd(locale: Locale, id: RefId | null): Record<string, unknown> {
   if (!id) {
     const hub = refHub(locale);
@@ -270,24 +278,11 @@ export function refArticleJsonLd(locale: Locale, id: RefId | null): Record<strin
   const mannequins = (REF_MANNEQUINS[id] ?? []).map((angle) => ({
     "@type": "ImageObject",
     contentUrl: `${ORIGIN}${refMannequinUrl(id, angle, 900)}`,
-    creator: { "@type": "Organization", name: "Shisei", url: SHISEI_URL },
-    creditText: "Shisei",
-    copyrightNotice: "Shisei · CC0 1.0",
-    license: CC0_URL,
-    acquireLicensePage: SHISEI_URL,
+    ...SHISEI_IMAGE_META,
   }));
-  // Third-party photos: credit the photographer as creator/copyright holder. No `license` or
-  // `acquireLicensePage`: we don't know (and must not assert) the photographers' terms, and the
-  // mfan8 set page is a source, not a licensing page.
-  const photos = refPhotos(locale, id).map((photo) => {
-    const credit = [photo.photo, photo.model].filter(Boolean).join(" / ");
-    return {
-      "@type": "ImageObject",
-      contentUrl: refImageUrl(photo, 600),
-      ...(photo.photo ? { creator: { "@type": "Person", name: photo.photo }, copyrightNotice: `© ${photo.photo}` } : {}),
-      ...(credit ? { creditText: credit } : {}),
-    };
-  });
+  // Third-party photos are plain URLs, not ImageObjects: we don't know who holds their rights or on
+  // what terms, so we assert none. Their credit stays visible in each <figcaption>.
+  const photos = refPhotos(locale, id).map((photo) => refImageUrl(photo, 600));
   const images = [...mannequins, ...photos];
   return {
     "@context": "https://schema.org",
