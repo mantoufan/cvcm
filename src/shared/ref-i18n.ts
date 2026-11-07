@@ -131,13 +131,13 @@ function photosHtml(locale: Locale, id: RefId): string {
 
 const CC0_URL = "https://creativecommons.org/publicdomain/zero/1.0/";
 const SHISEI_URL = "https://github.com/wquguru/shisei";
-/** Rights metadata for the Shisei line art: CC0 at the pinned tag the files were taken from (docs/ref-mannequins.md). */
+/** Rights metadata for the Shisei line art: CC0, licence page pinned to the commit the files came from (docs/ref-mannequins.md). */
 const SHISEI_IMAGE_META = {
   creator: { "@type": "Person", name: "wquguru", url: "https://github.com/wquguru" },
   creditText: "Shisei",
-  copyrightNotice: "Public domain (CC0 1.0), by Shisei",
+  copyrightNotice: "Shisei by wquguru, dedicated to the public domain under CC0 1.0",
   license: CC0_URL,
-  acquireLicensePage: `${SHISEI_URL}/tree/v0.4.1`,
+  acquireLicensePage: `${SHISEI_URL}/tree/26522a708c77088eda4631327b15d8d05f6281c0`,
 } as const;
 
 function angleLabel(ui: RefUi, angle: RefAngle): string {
