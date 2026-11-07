@@ -54,8 +54,9 @@ let selected: string | null = null;
 let saveTimer = 0;
 let confirmTimer = 0;
 let edgeFrame = 0;
+let justDragged = false;
 let dragY = 0;
-let drag: { id: string; el: HTMLElement; ghost: HTMLElement | null; startX: number; startY: number; pointer: number; moved: boolean; touch: boolean } | null = null;
+let drag: { id: string; el: HTMLElement; ghost: HTMLElement | null; startX: number; startY: number; pointer: number; moved: boolean } | null = null;
 /** The picked files behind each object URL: the PNG decodes these, so no page request is made. */
 const files = new Map<string, File>();
 
@@ -98,6 +99,22 @@ function flush(): void {
   }
 }
 
+/** Another tab saved: follow it, unless this tab has unsaved edits or pictures that only live here. */
+function onStorage(e: StorageEvent): void {
+  if (e.key !== STORE_KEY || saveTimer || files.size) return;
+  const next = parseBoard(e.newValue);
+  if (!next) return;
+  board = next;
+  selected = null;
+  if (titleEl) titleEl.value = board.title;
+  paint();
+}
+
+/** Pictures cannot be saved, so closing the page with some on the board asks first. */
+function warnPictures(e: BeforeUnloadEvent): void {
+  if (files.size) e.preventDefault();
+}
+
 function note(message: string): void {
   if (noteEl) noteEl.textContent = message;
 }
@@ -118,6 +135,8 @@ function itemEl(id: string): HTMLElement {
     "aria-label": name,
     title: name,
     onPointerdown: (e: PointerEvent) => startDrag(e, id),
+    // Picking on click, not pointerup: a finger that drifts is still a tap, and nothing moves under it before the click lands.
+    onClick: () => { if (justDragged) justDragged = false; else pick(id); },
     onKeydown: (e: KeyboardEvent) => {
       if (e.key === "Enter" || e.key === " ") {
         e.preventDefault();
@@ -180,7 +199,7 @@ function rowEl(tierId: string, index: number): HTMLElement {
         "data-field": "label",
         "aria-label": t("tierList.rowName"),
         style: { color: textOn(tier.color) },
-        onInput: (e: Event) => { tier.label = (e.target as HTMLInputElement).value; save(); },
+        onInput: (e: Event) => { tier.label = (e.target as HTMLInputElement).value; syncPreset(); save(); },
       }),
     ),
     h("div", { class: "tier-items", "data-drop": tier.id }, ...tier.items.map(itemEl), placeButton(tier.id)),
@@ -211,8 +230,19 @@ function restoreFocus(key: string | null): void {
   if (!key) return;
   const root = rootOf();
   const selector = key.startsWith("item:") ? `[data-item="${key.slice(5)}"]` : `[data-focus="${key}"]`;
-  const next = root?.querySelector<HTMLElement>(`${selector}:not([disabled])`) ?? root?.querySelector<HTMLElement>("[data-action=add-row]");
-  next?.focus();
+  // A button that just went disabled (top row's up) hands focus to its row, not away down the page.
+  const row = key.split(":")[0];
+  const next = root?.querySelector<HTMLElement>(`${selector}:not([disabled])`)
+    ?? root?.querySelector<HTMLElement>(`[data-focus^="${row}:"]:not([disabled])`)
+    ?? root?.querySelector<HTMLElement>("[data-action=add-row]");
+  next?.focus({ preventScroll: true });
+}
+
+/** Shows the preset the rows match, or none, so any preset can always be chosen. */
+function syncPreset(): void {
+  if (!presetEl) return;
+  const rows = board.tiers.map((tier) => tier.label).join("|");
+  presetEl.selectedIndex = PRESET_IDS.findIndex((id) => presetLabels(id).join("|") === rows);
 }
 
 function paint(): void {
@@ -226,15 +256,17 @@ function paint(): void {
   poolEl.dataset.empty = board.pool.length ? "" : "1";
   const removeBtn = rootOf()?.querySelector<HTMLButtonElement>("[data-action=delete-item]");
   if (removeBtn) removeBtn.disabled = !selected;
+  syncPreset();
   restoreFocus(focused);
   note(selected ? t("tierList.pickedHint", { name: board.items[selected]?.text || imageLabel() }) : t("tierList.count", { n: itemCount(board), max: MAX_ITEMS }));
 }
 
 function startDrag(e: PointerEvent, id: string): void {
   // One drag at a time: a second finger or the mouse must not orphan the first ghost.
-  if (e.button !== 0 || drag) return;
+  // Touch places by tap so a swipe scrolls; Ctrl+click on a Mac is a context menu, not a drag.
+  if (e.button !== 0 || e.ctrlKey || e.pointerType === "touch" || drag) return;
   const el = e.currentTarget as HTMLElement;
-  drag = { id, el, ghost: null, startX: e.clientX, startY: e.clientY, pointer: e.pointerId, moved: false, touch: e.pointerType === "touch" };
+  drag = { id, el, ghost: null, startX: e.clientX, startY: e.clientY, pointer: e.pointerId, moved: false };
   window.addEventListener("pointermove", onDragMove);
   window.addEventListener("pointerup", onDragEnd);
   window.addEventListener("pointercancel", cancelDrag);
@@ -242,13 +274,13 @@ function startDrag(e: PointerEvent, id: string): void {
 
 function onDragMove(e: PointerEvent): void {
   if (!drag || e.pointerId !== drag.pointer) return;
+  // The button came up where we could not see it (a context menu took the pointerup).
+  if (!e.buttons) {
+    cancelDrag(e);
+    return;
+  }
   if (!drag.moved) {
     if (Math.hypot(e.clientX - drag.startX, e.clientY - drag.startY) < DRAG_PX) return;
-    // A finger that moves is scrolling the page: touch places items by tap and Put here.
-    if (drag.touch) {
-      endDrag();
-      return;
-    }
     drag.moved = true;
     const box = drag.el.getBoundingClientRect();
     const ghost = drag.el.cloneNode(true) as HTMLElement;
@@ -299,10 +331,10 @@ function onDragEnd(e: PointerEvent): void {
   if (!drag || e.pointerId !== drag.pointer) return;
   const { id, moved } = drag;
   endDrag();
-  if (!moved) {
-    pick(id);
-    return;
-  }
+  if (!moved) return;
+  justDragged = true;
+  // The click after a drag only fires on the element it started on; clear the flag if none comes.
+  setTimeout(() => { justDragged = false; }, 0);
   const target = dropTarget(e.clientX, e.clientY);
   if (target) {
     moveItem(board, id, target.tier, target.index);
@@ -311,9 +343,11 @@ function onDragEnd(e: PointerEvent): void {
   paint();
 }
 
-function cancelDrag(): void {
+function cancelDrag(e: PointerEvent): void {
+  if (!drag || e.pointerId !== drag.pointer) return;
+  const moved = drag.moved;
   endDrag();
-  paint();
+  if (moved) paint();
 }
 
 function endDrag(): void {
@@ -385,7 +419,9 @@ function drawCentered(ctx: CanvasRenderingContext2D, text: string, cx: number, c
 }
 
 async function renderPng(): Promise<Blob | null> {
-  const layout = pngLayout(board);
+  // Decoding takes a while with many photos and the board stays editable: draw what was there when asked.
+  const shot: Board = structuredClone(board);
+  const layout = pngLayout(shot);
   const scale = 2;
   const canvas = document.createElement("canvas");
   canvas.width = layout.width * scale;
@@ -397,16 +433,16 @@ async function renderPng(): Promise<Blob | null> {
   ctx.fillRect(0, 0, layout.width, layout.height);
   if (layout.titleHeight) {
     ctx.fillStyle = "#ffffff";
-    drawCentered(ctx, board.title.trim(), PNG_WIDTH / 2, layout.titleHeight / 2, PNG_WIDTH - 40, 28, 1);
+    drawCentered(ctx, shot.title.trim(), PNG_WIDTH / 2, layout.titleHeight / 2, PNG_WIDTH - 40, 28, 1);
   }
   for (const row of layout.rows) {
-    const tier = board.tiers.find((candidate) => candidate.id === row.tierId)!;
+    const tier = shot.tiers.find((candidate) => candidate.id === row.tierId)!;
     ctx.fillStyle = tier.color;
     ctx.fillRect(0, row.y, PNG_LABEL, row.height);
     ctx.fillStyle = textOn(tier.color);
     drawCentered(ctx, tier.label, PNG_LABEL / 2, row.y + row.height / 2, PNG_LABEL - 12, 26, 3);
     for (const cell of row.cells) {
-      const item = board.items[cell.id];
+      const item = shot.items[cell.id];
       ctx.fillStyle = "#ffffff";
       ctx.fillRect(cell.x, cell.y, PNG_CELL, PNG_CELL);
       if (item.image) {
@@ -485,9 +521,6 @@ export function mountTierList(host: HTMLElement): void {
   presetEl = h("select", { "data-field": "preset", "aria-label": t("tierList.presetLabel"), onChange: () => applyPreset(presetEl!.value as PresetId) },
     ...PRESET_IDS.map((id) => h("option", { value: id, selected: id === defaultPreset() }, t(`tierList.preset.${id}`))),
   );
-  // A remembered board may use any preset or its own rows; show which, or none.
-  const rows = board.tiers.map((tier) => tier.label).join("|");
-  presetEl.selectedIndex = PRESET_IDS.findIndex((id) => presetLabels(id).join("|") === rows);
   const copyBtn: HTMLButtonElement = h("button", { type: "button", class: "btn ghost", "data-action": "copy", onClick: () => void copyWithFlash(copyBtn, boardText(board, imageLabel(), t("tierList.separator")), { done: t("tierList.copied"), failed: t("tierList.copyFailed") }) }, t("tierList.copy"));
   const pngBtn: HTMLButtonElement = h("button", { type: "button", class: "btn", "data-action": "png", onClick: () => void exportPng(pngBtn) }, t("tierList.download"));
   host.append(
@@ -520,18 +553,24 @@ export function mountTierList(host: HTMLElement): void {
         ),
       ),
       h("p", { class: "hint" }, t("tierList.hint")),
+      h("p", { class: "hint" }, t("tierList.picturesNote")),
       h("div", { class: "tier-actions" }, pngBtn, copyBtn),
     ),
   );
   window.addEventListener("pagehide", flush);
   window.addEventListener("paste", onPaste);
+  window.addEventListener("storage", onStorage);
+  window.addEventListener("beforeunload", warnPictures);
   paint();
 }
 
 export function unmountTierList(): void {
   flush();
   clearTimeout(confirmTimer);
+  confirmTimer = 0;
   window.removeEventListener("paste", onPaste);
+  window.removeEventListener("storage", onStorage);
+  window.removeEventListener("beforeunload", warnPictures);
   window.removeEventListener("pagehide", flush);
   endDrag();
   releaseUrls();
