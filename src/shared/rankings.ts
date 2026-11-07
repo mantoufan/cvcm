@@ -83,6 +83,6 @@ export type ArenaRow = [number, string, string, string, number, number];
 export type UsageRow = [number, string, string, number, number, number];
 /** [rank, company, tokens, share of the listed models' tokens in percent, models listed] */
 export type CompanyRow = [number, string, number, number, number];
-/** [rank, name, world a year ago, world, ...RANKING_REGIONS] in percent */
-export type ShareRow = [number, string, number, number, ...number[]];
+/** [rank, name, world a year ago (null when it was not listed), world, ...RANKING_REGIONS] in percent */
+export type ShareRow = [number, string, number | null, number, ...number[]];
 export type RankingRows = Record<RankingId, ArenaRow[] | UsageRow[] | CompanyRow[] | ShareRow[]>;

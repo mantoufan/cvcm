@@ -17,18 +17,9 @@
       "Numbers are shown in your language, but the CSV files keep raw values and ISO codes, so they open cleanly in Excel, Google Sheets or code."
     ],
     "faq": [
-      {
-        "q": "Where does this data come from?",
-        "a": "Country statistics are from the World Bank World Development Indicators. Country, currency and dialing codes follow ISO 3166, ISO 4217 and the ITU list. Time zones are from the IANA tz database. Paper sizes follow ISO 216, ISO 269, JIS P 0138 and ANSI."
-      },
-      {
-        "q": "Can I use these tables for free?",
-        "a": "Yes. World Bank data is licensed CC BY 4.0, so credit the World Bank when you reuse it. Codes and reference tables are public facts you can reuse freely."
-      },
-      {
-        "q": "How current are the numbers?",
-        "a": "Each page shows the date of its snapshot and the year of every value. The World Bank publishes most indicators a year or two after the fact, so a country's latest value can be from an earlier year."
-      }
+      { "q": "Where does this data come from?", "a": "Country statistics are from the World Bank World Development Indicators. Country, currency and dialing codes follow ISO 3166, ISO 4217 and the ITU list. Time zones are from the IANA tz database. Paper sizes follow ISO 216, ISO 269, JIS P 0138 and ANSI." },
+      { "q": "Can I use these tables for free?", "a": "Yes. World Bank data is licensed CC BY 4.0, so credit the World Bank when you reuse it. Codes and reference tables are public facts you can reuse freely." },
+      { "q": "How current are the numbers?", "a": "Each page shows the date of its snapshot and the year of every value. The World Bank publishes most indicators a year or two after the fact, so a country's latest value can be from an earlier year." }
     ]
   },
   "ui": {
@@ -88,18 +79,9 @@
         "The list covers the 217 economies the World Bank reports on. Some territories are listed separately from the country they belong to."
       ],
       "faq": [
-        {
-          "q": "Which country has the largest population?",
-          "a": "{top1}, with {v1} people in {year1}. {top2} is second with {v2}."
-        },
-        {
-          "q": "What is the population of the world?",
-          "a": "The World Bank puts the world population at {world} in {worldYear}."
-        },
-        {
-          "q": "Which country has the smallest population?",
-          "a": "In this list it is {last}, with {vlast} people. Areas the World Bank does not report on, such as Vatican City, are not included."
-        }
+        { "q": "Which country has the largest population?", "a": "{top1}, with {v1} people in {year1}. {top2} is second with {v2}." },
+        { "q": "What is the population of the world?", "a": "The World Bank puts the world population at {world} in {worldYear}." },
+        { "q": "Which country has the smallest population?", "a": "In this list it is {last}, with {vlast} people. Areas the World Bank does not report on, such as Vatican City, are not included." }
       ]
     },
     "gdp": {
@@ -119,18 +101,9 @@
         "For living standards, compare GDP per capita, or GDP at purchasing power parity, which adjusts for price levels."
       ],
       "faq": [
-        {
-          "q": "Which country has the largest GDP?",
-          "a": "{top1}, with a GDP of {v1} in {year1}. {top2} is second with {v2}."
-        },
-        {
-          "q": "What is world GDP?",
-          "a": "World GDP was {world} in {worldYear}, in current US dollars."
-        },
-        {
-          "q": "Why do some countries show an older year?",
-          "a": "The World Bank only publishes a figure once a country reports it. Each row shows the latest year available, so a few countries lag behind."
-        }
+        { "q": "Which country has the largest GDP?", "a": "{top1}, with a GDP of {v1} in {year1}. {top2} is second with {v2}." },
+        { "q": "What is world GDP?", "a": "World GDP was {world} in {worldYear}, in current US dollars." },
+        { "q": "Why do some countries show an older year?", "a": "The World Bank only publishes a figure once a country reports it. Each row shows the latest year available, so a few countries lag behind." }
       ]
     },
     "gdp-per-capita": {
@@ -150,18 +123,9 @@
         "Small financial centres and resource exporters often top the list because a large economy is divided among few residents."
       ],
       "faq": [
-        {
-          "q": "Which country has the highest GDP per capita?",
-          "a": "{top1}, at {v1} per person in {year1}, followed by {top2} ({v2})."
-        },
-        {
-          "q": "What is the world average GDP per capita?",
-          "a": "{world} in {worldYear}, in current US dollars."
-        },
-        {
-          "q": "Which country has the lowest GDP per capita?",
-          "a": "In this list, {last}, at {vlast} per person."
-        }
+        { "q": "Which country has the highest GDP per capita?", "a": "{top1}, at {v1} per person in {year1}, followed by {top2} ({v2})." },
+        { "q": "What is the world average GDP per capita?", "a": "{world} in {worldYear}, in current US dollars." },
+        { "q": "Which country has the lowest GDP per capita?", "a": "In this list, {last}, at {vlast} per person." }
       ]
     },
     "life-expectancy": {
@@ -181,18 +145,9 @@
         "Values are for both sexes. Women live longer than men in almost every country."
       ],
       "faq": [
-        {
-          "q": "Which country has the highest life expectancy?",
-          "a": "{top1}, at {v1} years in {year1}, followed by {top2} ({v2})."
-        },
-        {
-          "q": "What is the average life expectancy in the world?",
-          "a": "{world} years in {worldYear}, for both sexes."
-        },
-        {
-          "q": "Which country has the lowest life expectancy?",
-          "a": "In this list, {last}, at {vlast} years."
-        }
+        { "q": "Which country has the highest life expectancy?", "a": "{top1}, at {v1} years in {year1}, followed by {top2} ({v2})." },
+        { "q": "What is the average life expectancy in the world?", "a": "{world} years in {worldYear}, for both sexes." },
+        { "q": "Which country has the lowest life expectancy?", "a": "In this list, {last}, at {vlast} years." }
       ]
     },
     "fertility-rate": {
@@ -212,18 +167,9 @@
         "About 2.1 births per woman keeps a population stable without migration. Most of East Asia and Europe is well below it."
       ],
       "faq": [
-        {
-          "q": "Which country has the highest fertility rate?",
-          "a": "{top1}, at {v1} births per woman in {year1}, followed by {top2} ({v2})."
-        },
-        {
-          "q": "Which country has the lowest fertility rate?",
-          "a": "In this list, {last}, at {vlast} births per woman."
-        },
-        {
-          "q": "What is the replacement fertility rate?",
-          "a": "About 2.1 births per woman in countries with low child mortality. The world average is {world} ({worldYear})."
-        }
+        { "q": "Which country has the highest fertility rate?", "a": "{top1}, at {v1} births per woman in {year1}, followed by {top2} ({v2})." },
+        { "q": "Which country has the lowest fertility rate?", "a": "In this list, {last}, at {vlast} births per woman." },
+        { "q": "What is the replacement fertility rate?", "a": "About 2.1 births per woman in countries with low child mortality. The world average is {world} ({worldYear})." }
       ]
     },
     "internet-users": {
@@ -243,18 +189,9 @@
         "Several countries report every few years, so check the year column before comparing two rows."
       ],
       "faq": [
-        {
-          "q": "Which country has the highest share of internet users?",
-          "a": "{top1}, where {v1}% of people were online in {year1}."
-        },
-        {
-          "q": "What share of the world uses the internet?",
-          "a": "{world}% of the world's population in {worldYear}."
-        },
-        {
-          "q": "Which country has the fewest internet users?",
-          "a": "In this list, {last}, at {vlast}% of the population."
-        }
+        { "q": "Which country has the highest share of internet users?", "a": "{top1}, where {v1}% of people were online in {year1}." },
+        { "q": "What share of the world uses the internet?", "a": "{world}% of the world's population in {worldYear}." },
+        { "q": "Which country has the fewest internet users?", "a": "In this list, {last}, at {vlast}% of the population." }
       ]
     },
     "gdp-ppp-per-capita": {
@@ -274,18 +211,9 @@
         "Small financial centres and oil exporters top the list because their output is large next to the number of residents, not because every resident is that rich. Each row shows the latest year the country reported."
       ],
       "faq": [
-        {
-          "q": "Which country has the highest GDP per capita at PPP?",
-          "a": "{top1}, with {v1} international dollars per person in {year1}, followed by {top2} ({v2})."
-        },
-        {
-          "q": "What is the difference between GDP per capita and GDP per capita PPP?",
-          "a": "Plain GDP per capita uses market exchange rates. The PPP version adjusts for what money buys locally, so poorer countries with low prices rank higher than they do on the nominal list."
-        },
-        {
-          "q": "Which country has the lowest GDP per capita at PPP?",
-          "a": "In this list, {last}, at {vlast} international dollars per person."
-        }
+        { "q": "Which country has the highest GDP per capita at PPP?", "a": "{top1}, with {v1} international dollars per person in {year1}, followed by {top2} ({v2})." },
+        { "q": "What is the difference between GDP per capita and GDP per capita PPP?", "a": "Plain GDP per capita uses market exchange rates. The PPP version adjusts for what money buys locally, so poorer countries with low prices rank higher than they do on the nominal list." },
+        { "q": "Which country has the lowest GDP per capita at PPP?", "a": "In this list, {last}, at {vlast} international dollars per person." }
       ]
     },
     "gdp-growth": {
@@ -305,18 +233,9 @@
         "Small economies swing the most: one new oil field, a bad harvest or a war can move growth by ten points in a year. Look at several years before reading a trend."
       ],
       "faq": [
-        {
-          "q": "Which country has the fastest growing economy?",
-          "a": "{top1}, with real GDP growth of {v1}% in {year1}. {top2} was next at {v2}%."
-        },
-        {
-          "q": "How fast is the world economy growing?",
-          "a": "World GDP grew {world}% in {worldYear}, in real terms."
-        },
-        {
-          "q": "What does negative GDP growth mean?",
-          "a": "The economy produced less than the year before. Two quarters in a row of decline is the common rule of thumb for a recession. The lowest value in this list is {last}, at {vlast}%."
-        }
+        { "q": "Which country has the fastest growing economy?", "a": "{top1}, with real GDP growth of {v1}% in {year1}. {top2} was next at {v2}%." },
+        { "q": "How fast is the world economy growing?", "a": "World GDP grew {world}% in {worldYear}, in real terms." },
+        { "q": "What does negative GDP growth mean?", "a": "The economy produced less than the year before. Two quarters in a row of decline is the common rule of thumb for a recession. The lowest value in this list is {last}, at {vlast}%." }
       ]
     },
     "inflation": {
@@ -336,18 +255,9 @@
         "Most central banks aim for about 2% a year. Rates above 50% a month are called hyperinflation. Some countries publish late, so check the year column."
       ],
       "faq": [
-        {
-          "q": "Which country has the highest inflation rate?",
-          "a": "{top1}, where consumer prices rose {v1}% in {year1}, followed by {top2} ({v2}%)."
-        },
-        {
-          "q": "What is the world inflation rate?",
-          "a": "Consumer prices worldwide rose {world}% in {worldYear}."
-        },
-        {
-          "q": "Which country has the lowest inflation?",
-          "a": "In this list, {last}, at {vlast}%. A negative number means prices fell."
-        }
+        { "q": "Which country has the highest inflation rate?", "a": "{top1}, where consumer prices rose {v1}% in {year1}, followed by {top2} ({v2}%)." },
+        { "q": "What is the world inflation rate?", "a": "Consumer prices worldwide rose {world}% in {worldYear}." },
+        { "q": "Which country has the lowest inflation?", "a": "In this list, {last}, at {vlast}%. A negative number means prices fell." }
       ]
     },
     "unemployment": {
@@ -367,18 +277,9 @@
         "These are modelled estimates that use one definition for every country, so they can differ from the national figures each government publishes."
       ],
       "faq": [
-        {
-          "q": "Which country has the highest unemployment rate?",
-          "a": "{top1}, at {v1}% of the labour force in {year1}, followed by {top2} ({v2}%)."
-        },
-        {
-          "q": "What is the world unemployment rate?",
-          "a": "The ILO estimates {world}% for {worldYear}."
-        },
-        {
-          "q": "Which country has the lowest unemployment rate?",
-          "a": "In this list, {last}, at {vlast}%. Very low rates often mean many people work informally or for family businesses."
-        }
+        { "q": "Which country has the highest unemployment rate?", "a": "{top1}, at {v1}% of the labour force in {year1}, followed by {top2} ({v2}%)." },
+        { "q": "What is the world unemployment rate?", "a": "The ILO estimates {world}% for {worldYear}." },
+        { "q": "Which country has the lowest unemployment rate?", "a": "In this list, {last}, at {vlast}%. Very low rates often mean many people work informally or for family businesses." }
       ]
     },
     "land-area": {
@@ -398,18 +299,9 @@
         "The list covers the economies the World Bank reports on. Antarctica and disputed areas with no single government are not included."
       ],
       "faq": [
-        {
-          "q": "What is the largest country by land area?",
-          "a": "{top1}, with {v1} km² of land, followed by {top2} ({v2} km²) and {top3} ({v3} km²)."
-        },
-        {
-          "q": "How much land is there on Earth?",
-          "a": "The World Bank sums the land of all countries to {world} km² ({worldYear}), roughly a quarter of the Earth's surface. Antarctica is not included."
-        },
-        {
-          "q": "What is the smallest country by land area?",
-          "a": "In this list, {last}, at {vlast} km². Vatican City is smaller but is not in the World Bank data."
-        }
+        { "q": "What is the largest country by land area?", "a": "{top1}, with {v1} km² of land, followed by {top2} ({v2} km²) and {top3} ({v3} km²)." },
+        { "q": "How much land is there on Earth?", "a": "The World Bank sums the land of all countries to {world} km² ({worldYear}), roughly a quarter of the Earth's surface. Antarctica is not included." },
+        { "q": "What is the smallest country by land area?", "a": "In this list, {last}, at {vlast} km². Vatican City is smaller but is not in the World Bank data." }
       ]
     },
     "population-density": {
@@ -429,18 +321,9 @@
         "City-states and small islands top the list. Among large countries, Bangladesh is the most crowded."
       ],
       "faq": [
-        {
-          "q": "Which country has the highest population density?",
-          "a": "{top1}, with {v1} people per km² in {year1}, followed by {top2} ({v2})."
-        },
-        {
-          "q": "What is the population density of the world?",
-          "a": "About {world} people per km² of land in {worldYear}."
-        },
-        {
-          "q": "Which country has the lowest population density?",
-          "a": "In this list, {last}, with {vlast} people per km²."
-        }
+        { "q": "Which country has the highest population density?", "a": "{top1}, with {v1} people per km² in {year1}, followed by {top2} ({v2})." },
+        { "q": "What is the population density of the world?", "a": "About {world} people per km² of land in {worldYear}." },
+        { "q": "Which country has the lowest population density?", "a": "In this list, {last}, with {vlast} people per km²." }
       ]
     },
     "urban-population": {
@@ -460,18 +343,9 @@
         "City-states and small territories are 100% urban by definition. More than half of the world's people have lived in cities since about 2007."
       ],
       "faq": [
-        {
-          "q": "Which country is the most urbanized?",
-          "a": "{top1} ({v1}%), then {top2} ({v2}%) and {top3} ({v3}%). City-states and small territories often count as fully urban."
-        },
-        {
-          "q": "What share of the world lives in cities?",
-          "a": "{world}% in {worldYear}, according to UN estimates."
-        },
-        {
-          "q": "Which country is the least urbanized?",
-          "a": "In this list, {last}, where {vlast}% of people live in urban areas."
-        }
+        { "q": "Which country is the most urbanized?", "a": "{top1} ({v1}%), then {top2} ({v2}%) and {top3} ({v3}%). City-states and small territories often count as fully urban." },
+        { "q": "What share of the world lives in cities?", "a": "{world}% in {worldYear}, according to UN estimates." },
+        { "q": "Which country is the least urbanized?", "a": "In this list, {last}, where {vlast}% of people live in urban areas." }
       ]
     },
     "aged-65-plus": {
@@ -491,18 +365,9 @@
         "Gulf states have very low shares because most residents are working-age migrants, not because their own citizens are young."
       ],
       "faq": [
-        {
-          "q": "Which country has the oldest population?",
-          "a": "{top1}, where {v1}% of people were 65 or older in {year1}, followed by {top2} ({v2}%)."
-        },
-        {
-          "q": "What share of the world is over 65?",
-          "a": "{world}% in {worldYear}."
-        },
-        {
-          "q": "Which country has the youngest population?",
-          "a": "By this measure, {last}, where {vlast}% of people are 65 or older."
-        }
+        { "q": "Which country has the oldest population?", "a": "{top1}, where {v1}% of people were 65 or older in {year1}, followed by {top2} ({v2}%)." },
+        { "q": "What share of the world is over 65?", "a": "{world}% in {worldYear}." },
+        { "q": "Which country has the youngest population?", "a": "By this measure, {last}, where {vlast}% of people are 65 or older." }
       ]
     },
     "birth-rate": {
@@ -522,18 +387,9 @@
         "To compare how many children women have, use the fertility rate table. Countries with the lowest birth rates also have the oldest populations."
       ],
       "faq": [
-        {
-          "q": "Which country has the highest birth rate?",
-          "a": "{top1}, with {v1} births per 1,000 people in {year1}, followed by {top2} ({v2})."
-        },
-        {
-          "q": "What is the world birth rate?",
-          "a": "{world} births per 1,000 people in {worldYear}."
-        },
-        {
-          "q": "Which country has the lowest birth rate?",
-          "a": "In this list, {last}, with {vlast} births per 1,000 people."
-        }
+        { "q": "Which country has the highest birth rate?", "a": "{top1}, with {v1} births per 1,000 people in {year1}, followed by {top2} ({v2})." },
+        { "q": "What is the world birth rate?", "a": "{world} births per 1,000 people in {worldYear}." },
+        { "q": "Which country has the lowest birth rate?", "a": "In this list, {last}, with {vlast} births per 1,000 people." }
       ]
     },
     "infant-mortality": {
@@ -553,18 +409,9 @@
         "The UN Inter-agency Group for Child Mortality Estimation (UN IGME) combines surveys, censuses and civil registration into one comparable series."
       ],
       "faq": [
-        {
-          "q": "Which country has the highest infant mortality rate?",
-          "a": "{top1}, with {v1} deaths per 1,000 live births in {year1}, followed by {top2} ({v2})."
-        },
-        {
-          "q": "What is the world infant mortality rate?",
-          "a": "{world} per 1,000 live births in {worldYear}. It has fallen by more than half since 1990."
-        },
-        {
-          "q": "Which country has the lowest infant mortality rate?",
-          "a": "In this list, {last}, at {vlast} per 1,000 live births."
-        }
+        { "q": "Which country has the highest infant mortality rate?", "a": "{top1}, with {v1} deaths per 1,000 live births in {year1}, followed by {top2} ({v2})." },
+        { "q": "What is the world infant mortality rate?", "a": "{world} per 1,000 live births in {worldYear}. It has fallen by more than half since 1990." },
+        { "q": "Which country has the lowest infant mortality rate?", "a": "In this list, {last}, at {vlast} per 1,000 live births." }
       ]
     },
     "co2-per-capita": {
@@ -584,18 +431,9 @@
         "Small oil and gas producers top the list because energy-heavy industry is large next to their population. For a country's total share of world emissions, multiply by its population."
       ],
       "faq": [
-        {
-          "q": "Which country has the highest CO2 emissions per person?",
-          "a": "{top1}, at {v1} tonnes per person in {year1}, followed by {top2} ({v2} t)."
-        },
-        {
-          "q": "What are average CO2 emissions per person in the world?",
-          "a": "About {world} tonnes per person in {worldYear}."
-        },
-        {
-          "q": "Which country emits the least CO2 per person?",
-          "a": "In this list, {last}, at {vlast} tonnes per person."
-        }
+        { "q": "Which country has the highest CO2 emissions per person?", "a": "{top1}, at {v1} tonnes per person in {year1}, followed by {top2} ({v2} t)." },
+        { "q": "What are average CO2 emissions per person in the world?", "a": "About {world} tonnes per person in {worldYear}." },
+        { "q": "Which country emits the least CO2 per person?", "a": "In this list, {last}, at {vlast} tonnes per person." }
       ]
     },
     "electricity-access": {
@@ -615,18 +453,9 @@
         "Most people without electricity live in sub-Saharan Africa, where access in several countries is still below half."
       ],
       "faq": [
-        {
-          "q": "Which countries have the highest access to electricity?",
-          "a": "{top1} ({v1}%), {top2} ({v2}%) and {top3} ({v3}%) lead the list in {year1}. Ties share a rank."
-        },
-        {
-          "q": "What share of the world has electricity?",
-          "a": "{world}% of the world's population in {worldYear}."
-        },
-        {
-          "q": "Which country has the lowest access to electricity?",
-          "a": "In this list, {last}, where {vlast}% of people have electricity."
-        }
+        { "q": "Which countries have the highest access to electricity?", "a": "{top1} ({v1}%), {top2} ({v2}%) and {top3} ({v3}%) lead the list in {year1}. Ties share a rank." },
+        { "q": "What share of the world has electricity?", "a": "{world}% of the world's population in {worldYear}." },
+        { "q": "Which country has the lowest access to electricity?", "a": "In this list, {last}, where {vlast}% of people have electricity." }
       ]
     },
     "population-growth": {
@@ -646,18 +475,9 @@
         "Many countries in Europe and East Asia now shrink every year because deaths outnumber births and few migrants arrive."
       ],
       "faq": [
-        {
-          "q": "Which country has the fastest growing population?",
-          "a": "{top1}, where the population grew {v1}% in {year1}, followed by {top2} ({v2}%)."
-        },
-        {
-          "q": "How fast is the world population growing?",
-          "a": "{world}% in {worldYear}, less than half the peak rate of the late 1960s."
-        },
-        {
-          "q": "Which country's population is shrinking the fastest?",
-          "a": "In this list, {last}, at {vlast}% a year."
-        }
+        { "q": "Which country has the fastest growing population?", "a": "{top1}, where the population grew {v1}% in {year1}, followed by {top2} ({v2}%)." },
+        { "q": "How fast is the world population growing?", "a": "{world}% in {worldYear}, less than half the peak rate of the late 1960s." },
+        { "q": "Which country's population is shrinking the fastest?", "a": "In this list, {last}, at {vlast}% a year." }
       ]
     },
     "death-rate": {
@@ -677,18 +497,9 @@
         "Gulf states have the lowest rates because most residents are young working-age migrants. To compare health, use life expectancy instead."
       ],
       "faq": [
-        {
-          "q": "Which country has the highest death rate?",
-          "a": "{top1}, with {v1} deaths per 1,000 people in {year1}, followed by {top2} ({v2})."
-        },
-        {
-          "q": "What is the world death rate?",
-          "a": "{world} deaths per 1,000 people in {worldYear}."
-        },
-        {
-          "q": "Which country has the lowest death rate?",
-          "a": "In this list, {last}, with {vlast} deaths per 1,000 people."
-        }
+        { "q": "Which country has the highest death rate?", "a": "{top1}, with {v1} deaths per 1,000 people in {year1}, followed by {top2} ({v2})." },
+        { "q": "What is the world death rate?", "a": "{world} deaths per 1,000 people in {worldYear}." },
+        { "q": "Which country has the lowest death rate?", "a": "In this list, {last}, with {vlast} deaths per 1,000 people." }
       ]
     },
     "life-expectancy-male": {
@@ -708,18 +519,9 @@
         "Men die younger than women almost everywhere, by about five years on average. The gap is widest in Eastern Europe, where heavy drinking and smoking among men are common."
       ],
       "faq": [
-        {
-          "q": "Which country has the highest male life expectancy?",
-          "a": "{top1}, at {v1} years in {year1}, followed by {top2} ({v2})."
-        },
-        {
-          "q": "What is the average life expectancy for men in the world?",
-          "a": "{world} years in {worldYear}."
-        },
-        {
-          "q": "Which country has the lowest male life expectancy?",
-          "a": "In this list, {last}, at {vlast} years."
-        }
+        { "q": "Which country has the highest male life expectancy?", "a": "{top1}, at {v1} years in {year1}, followed by {top2} ({v2})." },
+        { "q": "What is the average life expectancy for men in the world?", "a": "{world} years in {worldYear}." },
+        { "q": "Which country has the lowest male life expectancy?", "a": "In this list, {last}, at {vlast} years." }
       ]
     },
     "life-expectancy-female": {
@@ -739,18 +541,9 @@
         "Women outlive men in almost every country. Part of the gap is biological and part comes from men's higher rates of smoking, drinking, accidents and violence."
       ],
       "faq": [
-        {
-          "q": "Which country has the highest female life expectancy?",
-          "a": "{top1}, at {v1} years in {year1}, followed by {top2} ({v2})."
-        },
-        {
-          "q": "What is the average life expectancy for women in the world?",
-          "a": "{world} years in {worldYear}."
-        },
-        {
-          "q": "Which country has the lowest female life expectancy?",
-          "a": "In this list, {last}, at {vlast} years."
-        }
+        { "q": "Which country has the highest female life expectancy?", "a": "{top1}, at {v1} years in {year1}, followed by {top2} ({v2})." },
+        { "q": "What is the average life expectancy for women in the world?", "a": "{world} years in {worldYear}." },
+        { "q": "Which country has the lowest female life expectancy?", "a": "In this list, {last}, at {vlast} years." }
       ]
     },
     "maternal-mortality": {
@@ -770,18 +563,9 @@
         "These are modelled estimates from the UN Maternal Mortality Estimation Inter-Agency Group (MMEIG), which fills gaps where countries do not register every death."
       ],
       "faq": [
-        {
-          "q": "Which country has the highest maternal mortality rate?",
-          "a": "{top1}, with {v1} maternal deaths per 100,000 live births in {year1}, followed by {top2} ({v2})."
-        },
-        {
-          "q": "What is the world maternal mortality ratio?",
-          "a": "{world} per 100,000 live births in {worldYear}. The UN goal for 2030 is below 70."
-        },
-        {
-          "q": "Which country has the lowest maternal mortality?",
-          "a": "In this list, {last}, at {vlast} per 100,000 live births."
-        }
+        { "q": "Which country has the highest maternal mortality rate?", "a": "{top1}, with {v1} maternal deaths per 100,000 live births in {year1}, followed by {top2} ({v2})." },
+        { "q": "What is the world maternal mortality ratio?", "a": "{world} per 100,000 live births in {worldYear}. The UN goal for 2030 is below 70." },
+        { "q": "Which country has the lowest maternal mortality?", "a": "In this list, {last}, at {vlast} per 100,000 live births." }
       ]
     },
     "exports": {
@@ -801,18 +585,9 @@
         "Each row shows the latest year the country reported, within the last four years. Re-exports through trade hubs such as Singapore and Hong Kong are counted where they leave."
       ],
       "faq": [
-        {
-          "q": "Which country exports the most?",
-          "a": "{top1}, with exports of {v1} in {year1}, followed by {top2} ({v2}) and {top3} ({v3})."
-        },
-        {
-          "q": "How much does the world export?",
-          "a": "{world} of goods and services in {worldYear}."
-        },
-        {
-          "q": "Do exports include services?",
-          "a": "Yes. This table counts goods and services together, so countries with large tourism, finance or software sectors rank higher than on a goods-only list."
-        }
+        { "q": "Which country exports the most?", "a": "{top1}, with exports of {v1} in {year1}, followed by {top2} ({v2}) and {top3} ({v3})." },
+        { "q": "How much does the world export?", "a": "{world} of goods and services in {worldYear}." },
+        { "q": "Do exports include services?", "a": "Yes. This table counts goods and services together, so countries with large tourism, finance or software sectors rank higher than on a goods-only list." }
       ]
     },
     "imports": {
@@ -832,18 +607,9 @@
         "A country that imports more than it exports runs a trade deficit. Compare this table with the exports table to see each country's balance."
       ],
       "faq": [
-        {
-          "q": "Which country imports the most?",
-          "a": "{top1}, with imports of {v1} in {year1}, followed by {top2} ({v2}) and {top3} ({v3})."
-        },
-        {
-          "q": "How much does the world import?",
-          "a": "{world} of goods and services in {worldYear}. World imports and exports should match but differ because of timing and reporting gaps."
-        },
-        {
-          "q": "Which country imports the least?",
-          "a": "In this list, {last}, at {vlast}."
-        }
+        { "q": "Which country imports the most?", "a": "{top1}, with imports of {v1} in {year1}, followed by {top2} ({v2}) and {top3} ({v3})." },
+        { "q": "How much does the world import?", "a": "{world} of goods and services in {worldYear}. World imports and exports should match but differ because of timing and reporting gaps." },
+        { "q": "Which country imports the least?", "a": "In this list, {last}, at {vlast}." }
       ]
     },
     "health-spending-per-capita": {
@@ -863,18 +629,9 @@
         "Values are at market exchange rates, so high-wage countries look more expensive than the care they buy. Spending more does not always buy longer lives: compare with the life expectancy table."
       ],
       "faq": [
-        {
-          "q": "Which country spends the most on health care per person?",
-          "a": "{top1}, at {v1} per person in {year1}, followed by {top2} ({v2})."
-        },
-        {
-          "q": "How much does the world spend on health per person?",
-          "a": "About {world} per person in {worldYear}."
-        },
-        {
-          "q": "Which country spends the least on health care?",
-          "a": "In this list, {last}, at {vlast} per person."
-        }
+        { "q": "Which country spends the most on health care per person?", "a": "{top1}, at {v1} per person in {year1}, followed by {top2} ({v2})." },
+        { "q": "How much does the world spend on health per person?", "a": "About {world} per person in {worldYear}." },
+        { "q": "Which country spends the least on health care?", "a": "In this list, {last}, at {vlast} per person." }
       ]
     },
     "female-labor-force": {
@@ -894,18 +651,9 @@
         "Some of the highest rates are in low-income countries where most women farm. Rates are lowest in parts of the Middle East and South Asia. These are ILO modelled estimates that use one definition for every country."
       ],
       "faq": [
-        {
-          "q": "Which country has the highest female labour force participation?",
-          "a": "{top1}, where {v1}% of women were in the labour force in {year1}, followed by {top2} ({v2}%)."
-        },
-        {
-          "q": "What share of women in the world work?",
-          "a": "{world}% of women aged 15 and over were working or looking for work in {worldYear}."
-        },
-        {
-          "q": "Which country has the lowest female labour force participation?",
-          "a": "In this list, {last}, at {vlast}%."
-        }
+        { "q": "Which country has the highest female labour force participation?", "a": "{top1}, where {v1}% of women were in the labour force in {year1}, followed by {top2} ({v2}%)." },
+        { "q": "What share of women in the world work?", "a": "{world}% of women aged 15 and over were working or looking for work in {worldYear}." },
+        { "q": "Which country has the lowest female labour force participation?", "a": "In this list, {last}, at {vlast}%." }
       ]
     },
     "forest-area": {
@@ -925,18 +673,9 @@
         "Small tropical countries top the list by share. By total area, Russia, Brazil, Canada, the United States and China hold more than half of the world's forest."
       ],
       "faq": [
-        {
-          "q": "Which country has the most forest cover?",
-          "a": "{top1}, where forest covers {v1}% of the land in {year1}, followed by {top2} ({v2}%)."
-        },
-        {
-          "q": "How much of the world is covered by forest?",
-          "a": "{world}% of the world's land area in {worldYear}."
-        },
-        {
-          "q": "Which country has the least forest?",
-          "a": "In this list, {last}, at {vlast}% of its land."
-        }
+        { "q": "Which country has the most forest cover?", "a": "{top1}, where forest covers {v1}% of the land in {year1}, followed by {top2} ({v2}%)." },
+        { "q": "How much of the world is covered by forest?", "a": "{world}% of the world's land area in {worldYear}." },
+        { "q": "Which country has the least forest?", "a": "In this list, {last}, at {vlast}% of its land." }
       ]
     },
     "renewable-energy": {
@@ -956,18 +695,9 @@
         "Many of the highest shares are in low-income countries where most households cook with wood, not in countries with the most wind and solar power. The data lags by a few years."
       ],
       "faq": [
-        {
-          "q": "Which country uses the most renewable energy?",
-          "a": "By share, {top1}, where {v1}% of energy use was renewable in {year1}, mostly from firewood and hydropower."
-        },
-        {
-          "q": "What share of the world's energy is renewable?",
-          "a": "{world}% of final energy consumption in {worldYear}."
-        },
-        {
-          "q": "Which country uses the least renewable energy?",
-          "a": "In this list, {last}, at {vlast}%."
-        }
+        { "q": "Which country uses the most renewable energy?", "a": "By share, {top1}, where {v1}% of energy use was renewable in {year1}, mostly from firewood and hydropower." },
+        { "q": "What share of the world's energy is renewable?", "a": "{world}% of final energy consumption in {worldYear}." },
+        { "q": "Which country uses the least renewable energy?", "a": "In this list, {last}, at {vlast}%." }
       ]
     },
     "country-codes": {
@@ -994,18 +724,9 @@
         "The UK uses .uk for its internet domain although its ISO code is GB. Names here are in your language."
       ],
       "faq": [
-        {
-          "q": "What is the difference between alpha-2 and alpha-3 codes?",
-          "a": "Alpha-2 codes have two letters (JP) and are used in domains, language tags and most software. Alpha-3 codes have three letters (JPN) and are used on passports and in statistics."
-        },
-        {
-          "q": "How many ISO country codes are there?",
-          "a": "ISO 3166-1 lists {rows} countries and territories, each with an alpha-2, alpha-3 and numeric code."
-        },
-        {
-          "q": "What is the country code for the United Kingdom?",
-          "a": "GB (alpha-2), GBR (alpha-3) and 826 (numeric). Its internet domain is .uk."
-        }
+        { "q": "What is the difference between alpha-2 and alpha-3 codes?", "a": "Alpha-2 codes have two letters (JP) and are used in domains, language tags and most software. Alpha-3 codes have three letters (JPN) and are used on passports and in statistics." },
+        { "q": "How many ISO country codes are there?", "a": "ISO 3166-1 lists {rows} countries and territories, each with an alpha-2, alpha-3 and numeric code." },
+        { "q": "What is the country code for the United Kingdom?", "a": "GB (alpha-2), GBR (alpha-3) and 826 (numeric). Its internet domain is .uk." }
       ]
     },
     "calling-codes": {
@@ -1029,18 +750,9 @@
         "On a mobile phone, hold 0 to type +. It works from any country, so you do not need to know the local exit code."
       ],
       "faq": [
-        {
-          "q": "How do I call another country?",
-          "a": "Type + (or your exit code, such as 00 in most countries or 011 in the US), the country code, then the local number without its leading 0."
-        },
-        {
-          "q": "Which country is +86?",
-          "a": "+86 is China. +852 is Hong Kong, +853 Macao and +886 Taiwan."
-        },
-        {
-          "q": "Why do several countries share +1?",
-          "a": "They are in the North American Numbering Plan. The 3-digit area code after +1 tells you the country."
-        }
+        { "q": "How do I call another country?", "a": "Type + (or your exit code, such as 00 in most countries or 011 in the US), the country code, then the local number without its leading 0." },
+        { "q": "Which country is +86?", "a": "+86 is China. +852 is Hong Kong, +853 Macao and +886 Taiwan." },
+        { "q": "Why do several countries share +1?", "a": "They are in the North American Numbering Plan. The 3-digit area code after +1 tells you the country." }
       ]
     },
     "currency-codes": {
@@ -1067,18 +779,9 @@
         "Decimals is the number of minor-unit digits (cents). JPY and KRW have none, and some Gulf currencies have three."
       ],
       "faq": [
-        {
-          "q": "What is the currency code for the Chinese yuan?",
-          "a": "CNY, numeric code 156. Offshore yuan is often quoted as CNH, but that is a market convention, not an ISO code."
-        },
-        {
-          "q": "How many currencies are there?",
-          "a": "ISO 4217 lists {rows} active codes, including a few funds, precious metals and testing codes."
-        },
-        {
-          "q": "Why does the euro have one code for many countries?",
-          "a": "EUR is one currency shared by the euro area, so it has one code. The Used in column lists every country and territory that uses it."
-        }
+        { "q": "What is the currency code for the Chinese yuan?", "a": "CNY, numeric code 156. Offshore yuan is often quoted as CNH, but that is a market convention, not an ISO code." },
+        { "q": "How many currencies are there?", "a": "ISO 4217 lists {rows} active codes, including a few funds, precious metals and testing codes." },
+        { "q": "Why does the euro have one code for many countries?", "a": "EUR is one currency shared by the euro area, so it has one code. The Used in column lists every country and territory that uses it." }
       ]
     },
     "time-zones": {
@@ -1103,18 +806,9 @@
         "Offsets are calculated for 15 January and 15 July {year} from the {tz} tz database. Governments sometimes change their rules at short notice."
       ],
       "faq": [
-        {
-          "q": "What time zone is China in?",
-          "a": "All of China uses China Standard Time, UTC+08:00, all year. The IANA ID is Asia/Shanghai."
-        },
-        {
-          "q": "What is the difference between UTC and GMT?",
-          "a": "For everyday use they are the same time. UTC is the atomic time standard; GMT is the time zone at 0° longitude, which the UK uses in winter."
-        },
-        {
-          "q": "How many time zones are there?",
-          "a": "The IANA database used here has {rows} zone IDs. They use fewer than 40 distinct UTC offsets."
-        }
+        { "q": "What time zone is China in?", "a": "All of China uses China Standard Time, UTC+08:00, all year. The IANA ID is Asia/Shanghai." },
+        { "q": "What is the difference between UTC and GMT?", "a": "For everyday use they are the same time. UTC is the atomic time standard; GMT is the time zone at 0° longitude, which the UK uses in winter." },
+        { "q": "How many time zones are there?", "a": "The IANA database used here has {rows} zone IDs. They use fewer than 40 distinct UTC offsets." }
       ]
     },
     "paper-sizes": {
@@ -1141,18 +835,9 @@
         "JIS B sizes, common in Japan and China for notebooks and books, are slightly larger than ISO B. JIS B5 is 182 × 257 mm, while ISO B5 is 176 × 250 mm."
       ],
       "faq": [
-        {
-          "q": "What is the size of A4 paper?",
-          "a": "210 × 297 mm, or 8.27 × 11.69 inches. At 300 DPI that is 2480 × 3508 pixels."
-        },
-        {
-          "q": "What is the difference between A4 and Letter?",
-          "a": "A4 (210 × 297 mm) is narrower and taller than US Letter (215.9 × 279.4 mm). Most of the world uses A4; the US, Canada and Mexico use Letter."
-        },
-        {
-          "q": "How many pixels do I need to print A4?",
-          "a": "2480 × 3508 px for sharp prints at 300 DPI. 1240 × 1754 px (150 DPI) is enough for drafts."
-        }
+        { "q": "What is the size of A4 paper?", "a": "210 × 297 mm, or 8.27 × 11.69 inches. At 300 DPI that is 2480 × 3508 pixels." },
+        { "q": "What is the difference between A4 and Letter?", "a": "A4 (210 × 297 mm) is narrower and taller than US Letter (215.9 × 279.4 mm). Most of the world uses A4; the US, Canada and Mexico use Letter." },
+        { "q": "How many pixels do I need to print A4?", "a": "2480 × 3508 px for sharp prints at 300 DPI. 1240 × 1754 px (150 DPI) is enough for drafts." }
       ]
     },
     "ascii": {
@@ -1179,18 +864,9 @@
         "UTF-8 encodes these 128 characters exactly as ASCII does, so every ASCII file is also valid UTF-8."
       ],
       "faq": [
-        {
-          "q": "What is the ASCII code for A?",
-          "a": "Capital A is 65 in decimal, 0x41 in hex and 1000001 in binary. Lowercase a is 97 (0x61)."
-        },
-        {
-          "q": "What is the ASCII code for a space?",
-          "a": "32 in decimal, 0x20 in hex."
-        },
-        {
-          "q": "What is the difference between LF and CR?",
-          "a": "LF (10, line feed) starts a new line on Linux and macOS. Windows text files end lines with CR LF (13 then 10)."
-        }
+        { "q": "What is the ASCII code for A?", "a": "Capital A is 65 in decimal, 0x41 in hex and 1000001 in binary. Lowercase a is 97 (0x61)." },
+        { "q": "What is the ASCII code for a space?", "a": "32 in decimal, 0x20 in hex." },
+        { "q": "What is the difference between LF and CR?", "a": "LF (10, line feed) starts a new line on Linux and macOS. Windows text files end lines with CR LF (13 then 10)." }
       ]
     }
   },
@@ -1451,7 +1127,7 @@
           },
           {
             "q": "What is the most used browser in China?",
-            "a": "In StatCounter's {date} data, {CNTop} leads China with {CNV}. Local browsers such as UC, 360 and QQ hold a far larger share there than anywhere else in the table."
+            "a": "In StatCounter's {date} data, {CNTop} leads China with {CNV}. Local browsers such as UC and 360 hold a far larger share there than anywhere else in the table."
           },
           {
             "q": "Is this share of users?",

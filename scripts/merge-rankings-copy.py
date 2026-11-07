@@ -9,9 +9,12 @@ ROOT = Path(__file__).resolve().parent.parent
 for loc in ["en", "es", "id", "ja", "ko", "vi", "zh-CN", "zh-TW"]:
     src = json.loads((ROOT / f"scripts/tools-src/rankings/{loc}.json").read_text(encoding="utf-8"))
     data_path = ROOT / f"src/locales/datasets/{loc}.json"
-    data = json.loads(data_path.read_text(encoding="utf-8"))
-    data["rankings"] = src["rankings"]
-    data_path.write_text(json.dumps(data, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    # Spliced as text: the pack keeps FAQ items on one line, which a JSON round trip would reflow.
+    text = data_path.read_text(encoding="utf-8")
+    at = text.find(',\n  "rankings":')
+    head = text[:at] if at >= 0 else text.rstrip()[:-1].rstrip()
+    block = json.dumps(src["rankings"], ensure_ascii=False, indent=2).replace("\n", "\n  ")
+    data_path.write_text(f'{head},\n  "rankings": {block}\n}}\n', encoding="utf-8")
     core_path = ROOT / f"src/locales/{loc}.json"
     core = json.loads(core_path.read_text(encoding="utf-8"))
     core["nav"]["rankings"] = src["nav"]

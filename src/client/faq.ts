@@ -1,3 +1,5 @@
+import type { RankingId } from "../shared/rankings";
+import { rankingBreadcrumbJsonLd, rankingFaqJsonLd, rankingJsonLd } from "../shared/rankings-i18n";
 import { h } from "./dom";
 import { t } from "./i18n";
 import { toolHowToJsonLd } from "../shared/guide";
@@ -87,6 +89,7 @@ export function syncPageJsonLd(
   datasetPage: DatasetId | "hub" | null = null,
   kbPage: KbPage = null,
   refPage: RefPage = null,
+  rankingPage: RankingId | "hub" | null = null,
 ): void {
   const refId = refPage === "hub" ? null : refPage;
   writeJsonLd("article-jsonld", kbPage ? kbArticleJsonLd(locale, kbPage) : refPage ? refArticleJsonLd(locale, refId) : null);
@@ -96,6 +99,14 @@ export function syncPageJsonLd(
     writeJsonLd("faq-jsonld", datasetFaqJsonLd(locale, id));
     writeJsonLd("breadcrumb-jsonld", datasetBreadcrumbJsonLd(locale, id));
     writeJsonLd("dataset-jsonld", datasetJsonLd(locale, id));
+    return;
+  }
+  if (rankingPage) {
+    const id = rankingPage === "hub" ? null : rankingPage;
+    for (const key of ["howto-jsonld", "game-jsonld", "software-jsonld"]) writeJsonLd(key, null);
+    writeJsonLd("faq-jsonld", rankingFaqJsonLd(locale, id));
+    writeJsonLd("breadcrumb-jsonld", rankingBreadcrumbJsonLd(locale, id));
+    writeJsonLd("dataset-jsonld", rankingJsonLd(locale, id));
     return;
   }
   writeJsonLd("dataset-jsonld", null);

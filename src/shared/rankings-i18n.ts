@@ -119,7 +119,8 @@ export function rankingLinkMeta(locale: Locale, id: RankingId): string {
   return `${name} · ${rankingKind(id) === "arena" ? plain(locale, value) : percent(locale, value)}`;
 }
 
-const text = (value: string) => ({ text: value, sort: value });
+const NO_VALUE = "—";
+const text = (value: string) => ({ text: value || NO_VALUE, sort: value });
 const num = (shown: string, value: number) => ({ text: shown, sort: value });
 
 export function rankingTable(locale: Locale, id: RankingId, rows: unknown[]): DatasetTable {
@@ -153,14 +154,14 @@ export function rankingTable(locale: Locale, id: RankingId, rows: unknown[]): Da
       ...RANKING_REGIONS.map((region) => ({ label: regionName(locale, region), num: true })),
     ],
     rows: (rows as ShareRow[]).map(([place, name, before, world, ...regions]) => {
-      // Rounded to what is shown, so a tiny change reads 0.0 rather than −0.0.
-      const change = Math.round((world - before) * 10) / 10;
-      const sign = change > 0 ? "+" : change < 0 ? "−" : "";
+      // Rounded to what is shown, so a tiny change reads 0.0 rather than −0.0. Not listed a year ago: no change to show.
+      const change = before === null ? null : Math.round((world - before) * 10) / 10;
+      const sign = change === null ? "" : change > 0 ? "+" : change < 0 ? "−" : "";
       return [
         rank(place),
         text(name),
         num(percent(locale, world), world),
-        num(`${sign}${plain(locale, Math.abs(change), 1)}`, change),
+        change === null ? num(NO_VALUE, Number.NEGATIVE_INFINITY) : num(`${sign}${plain(locale, Math.abs(change), 1)}`, change),
         ...regions.map((value) => num(percent(locale, value), value)),
       ];
     }),

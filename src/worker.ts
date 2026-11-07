@@ -337,6 +337,7 @@ export default {
       let out = applyHtmlSeo(html, locale, seo, undefined, body);
       out = preloadLocalePack(out, locale, parsed.kind === "games" && Boolean(parsed.game), undefined, parsed.kind === "quiz", parsed.kind === "dataset" || parsed.kind === "ranking", parsed.kind === "kb" ? parsed.article ?? "hub" : null, parsed.kind === "ref" ? parsed.entry ?? "hub" : null);
       out = preloadPageChunk(out, chunk);
+      if (parsed.kind === "ranking" && parsed.ranking) out = preloadPageChunk(out, "rows-rankings");
       if (parsed.kind === "dataset" && parsed.dataset) {
         for (const file of DATASET_FILES[parsed.dataset]) out = preloadPageChunk(out, `rows-${file}`);
       }

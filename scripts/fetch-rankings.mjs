@@ -27,6 +27,7 @@ const DROP = new Set(["Other", "Unknown"]);
 /** Names in the sources that read wrong on a page. */
 const NAMES = {
   google: "Google", openai: "OpenAI", anthropic: "Anthropic", xai: "xAI", "x-ai": "xAI", deepseek: "DeepSeek", meta: "Meta", "meta-llama": "Meta", alibaba: "Alibaba", qwen: "Qwen", tencent: "Tencent", "z-ai": "Z.ai", zhipu: "Zhipu", moonshotai: "Moonshot AI", moonshot: "Moonshot AI", minimax: "MiniMax", mistral: "Mistral AI", mistralai: "Mistral AI", bytedance: "ByteDance", "bytedance-seed": "ByteDance", baidu: "Baidu", nvidia: "NVIDIA", microsoft: "Microsoft", amazon: "Amazon", cohere: "Cohere", kuaishou: "Kuaishou", kling: "Kling", runway: "Runway", luma: "Luma AI", pika: "Pika", "black-forest-labs": "Black Forest Labs", bfl: "Black Forest Labs", ideogram: "Ideogram", recraft: "Recraft", stabilityai: "Stability AI", xiaomi: "Xiaomi", stepfun: "StepFun", liquid: "Liquid AI", nousresearch: "Nous Research", arcee: "Arcee AI", "arcee-ai": "Arcee AI", inception: "Inception", perplexity: "Perplexity",
+  zai: "Z.ai", "luma-ai": "Luma AI", "microsoft-ai": "Microsoft", skyreel: "SkyReels", "news.ycombinator.com": "Hacker News",
   bing: "Bing", YANDEX: "Yandex", "YANDEX RU": "Yandex", reddit: "Reddit", "Yahoo!": "Yahoo", "OS X": "macOS", macOS: "macOS", iOS: "iOS", "Unknown Mobile": "Other", "Twitter": "X (Twitter)", "VKontakte": "VK",
 };
 const nameOf = (raw) => NAMES[raw] ?? (/^[a-z]/.test(raw) ? raw[0].toUpperCase() + raw.slice(1) : raw);
@@ -52,7 +53,7 @@ async function arena(config) {
   const q = new URLSearchParams({ dataset: "lmarena-ai/leaderboard-dataset", config, split: "latest", offset: "0", length: "100" });
   const data = JSON.parse(await get(`https://datasets-server.huggingface.co/rows?${q}`));
   const overall = data.rows.map(({ row }) => row).filter((row) => row.category === "overall").sort((a, b) => a.rank - b.rank).slice(0, ARENA_ROWS);
-  const rows = overall.map((row) => [Math.round(row.rank), row.model_name, nameOf(row.organization ?? ""), row.license ?? "", Math.round(row.rating), Math.round(row.vote_count)]);
+  const rows = overall.map((row) => [Math.round(row.rank), row.model_name, row.organization ? nameOf(row.organization) : "", row.license ?? "", Math.round(row.rating), Math.round(row.vote_count)]);
   if (rows.length < 5) throw new Error(`arena ${config}: only ${rows.length} rows`);
   return { asOf: overall[0].leaderboard_publish_date, rows };
 }
@@ -62,6 +63,13 @@ async function arena(config) {
 /** The rankings page ships its weekly top models as dehydrated query data; a change of shape fails here, not silently. */
 async function openRouter() {
   const html = await get("https://openrouter.ai/rankings");
+  // The page only names its first few models; the public model list names them all.
+  const listed = JSON.parse(await get("https://openrouter.ai/api/v1/models")).data;
+  const fullName = new Map();
+  for (const model of listed) {
+    const name = model.name.replace(/^[^:]+:\s*/, "");
+    if (!fullName.has(model.canonical_slug) || !/\(/.test(name)) fullName.set(model.canonical_slug, name);
+  }
   const text = [...html.matchAll(/self\.__next_f\.push\(\[1,"((?:[^"\\]|\\.)*)"\]\)<\/script>/g)].map((m) => JSON.parse(`"${m[1]}"`)).join("");
   const key = text.indexOf('["rankings","models",{"view":"week"}]');
   const start = text.lastIndexOf('"state":{"data":[', key);
@@ -103,8 +111,9 @@ async function openRouter() {
   const models = [...bySlug.entries()]
     .map(([slug, m]) => {
       const author = slug.split("/")[0];
-      const name = links[slug]?.shortName ?? slug.split("/")[1];
-      return { name, author: nameOf(author), ...m };
+      const name = links[slug]?.shortName ?? fullName.get(slug) ?? slug.split("/")[1].replace(/-\d{8}$/, "");
+      // "stealth" is OpenRouter's namespace for unannounced models, not a company.
+      return { name, author: author === "stealth" ? "" : nameOf(author), ...m };
     })
     .sort((a, b) => b.tokens - a.tokens);
   if (models.length < 10) throw new Error(`openrouter: only ${models.length} models`);
@@ -112,6 +121,7 @@ async function openRouter() {
   const share = (tokens) => Math.round((tokens / total) * 1000) / 10;
   const authors = new Map();
   for (const m of models) {
+    if (!m.author) continue;
     const entry = authors.get(m.author) ?? { tokens: 0, models: 0 };
     entry.tokens += m.tokens;
     entry.models += 1;
@@ -168,7 +178,7 @@ async function shareTable({ stat, device, drop = [] }) {
   const names = new Set([...byRegion.ww.entries()].filter(([name]) => !skip.has(name)).sort((a, b) => b[1] - a[1]).slice(0, SHARE_TOP).map(([name]) => name));
   for (const region of REGIONS) for (const [name, value] of byRegion[region]) if (value >= SHARE_LOCAL_MIN && !skip.has(name)) names.add(name);
   const rows = [...names]
-    .map((name) => [name, before.get(name) ?? 0, ...REGIONS.map((region) => byRegion[region].get(name) ?? 0)])
+    .map((name) => [name, before.get(name) ?? null, ...REGIONS.map((region) => byRegion[region].get(name) ?? 0)])
     .sort((a, b) => b[2] - a[2])
     .map((row, i) => [i + 1, ...row]);
   const leaders = Object.fromEntries(REGIONS.map((region) => {
@@ -183,7 +193,7 @@ async function shareTable({ stat, device, drop = [] }) {
 const rows = {};
 const meta = { updated: today.toISOString().slice(0, 10), sets: {} };
 const csv = {};
-const esc = (v) => (typeof v === "string" && /[",\n]/.test(v) ? `"${v.replace(/"/g, '""')}"` : String(v));
+const esc = (v) => (v === null ? "" : typeof v === "string" && /[",\n]/.test(v) ? `"${v.replace(/"/g, '""')}"` : String(v));
 const toCsv = (head, table) => [head, ...table].map((r) => r.map(esc).join(",")).join("\n") + "\n";
 const topOf = (table, nameCol, valueCol) => table.slice(0, 3).map((r) => [r[nameCol], r[valueCol]]);
 
@@ -191,7 +201,7 @@ for (const [id, config] of Object.entries(ARENA)) {
   const set = await arena(config);
   rows[id] = set.rows;
   const tally = new Map();
-  for (const row of set.rows.slice(0, 10)) tally.set(row[2], (tally.get(row[2]) ?? 0) + 1);
+  for (const row of set.rows.slice(0, 10)) if (row[2]) tally.set(row[2], (tally.get(row[2]) ?? 0) + 1);
   const [leadOrg, leadCount] = [...tally.entries()].sort((a, b) => b[1] - a[1])[0];
   meta.sets[id] = { asOf: set.asOf, rows: set.rows.length, top: topOf(set.rows, 1, 4), leadOrg, leadCount };
   csv[id] = toCsv(["rank", "model", "organization", "license", "score", "votes"], set.rows);

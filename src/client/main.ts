@@ -462,7 +462,7 @@ function unmountTools(): void {
 
 export function render(): void {
   const parsed = parseAppPath(location.pathname);
-  const loc: Locale = parsed.kind === "app" || parsed.kind === "learn" || parsed.kind === "games" || parsed.kind === "markets" || parsed.kind === "device" || parsed.kind === "legal" || parsed.kind === "quiz" || parsed.kind === "dataset" || parsed.kind === "kb" || parsed.kind === "ref"
+  const loc: Locale = parsed.kind === "app" || parsed.kind === "learn" || parsed.kind === "games" || parsed.kind === "markets" || parsed.kind === "device" || parsed.kind === "legal" || parsed.kind === "quiz" || parsed.kind === "dataset" || parsed.kind === "ranking" || parsed.kind === "kb" || parsed.kind === "ref"
     ? parsed.locale
     : locale();
   const req = ++localeReq;
@@ -615,7 +615,7 @@ export function render(): void {
   upsertMeta("name", "twitter:description", pageDescription(loc, seo));
   upsertMeta("name", "twitter:image", image ? `https://cv.cm${image.split("?")[0]}` : null);
   syncBrandIcon(Boolean(tool && !tutorial && !gameId && !devicePage && !marketId && BRANDED_TOOLS.has(tool)));
-  syncPageJsonLd(loc, tool, tutorial, gameId, gamesHub, convertJob, resizeJob, marketId, marketsHub, devicePage, gameConsole, legalPage, quizPage, datasetPage, kbPage, refPage);
+  syncPageJsonLd(loc, tool, tutorial, gameId, gamesHub, convertJob, resizeJob, marketId, marketsHub, devicePage, gameConsole, legalPage, quizPage, datasetPage, kbPage, refPage, rankingPage);
 
   const root = appEl();
   const gen = pageGen;

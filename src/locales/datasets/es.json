@@ -17,18 +17,9 @@
       "Los números se muestran en su idioma, pero los archivos CSV conservan los valores sin formato y los códigos ISO, así que se abren sin problemas en Excel, Google Sheets o desde código."
     ],
     "faq": [
-      {
-        "q": "¿De dónde proceden estos datos?",
-        "a": "Las estadísticas por país proceden de los Indicadores del Desarrollo Mundial del Banco Mundial. Los códigos de país, de moneda y telefónicos siguen ISO 3166, ISO 4217 y la lista de la UIT. Los husos horarios proceden de la base de datos IANA tz. Los tamaños de papel siguen ISO 216, ISO 269, JIS P 0138 y ANSI."
-      },
-      {
-        "q": "¿Se pueden usar estas tablas gratis?",
-        "a": "Sí. Los datos del Banco Mundial tienen licencia CC BY 4.0, así que basta con citar al Banco Mundial al reutilizarlos. Los códigos y las tablas de referencia son datos públicos de libre uso."
-      },
-      {
-        "q": "¿Qué tan recientes son las cifras?",
-        "a": "Cada página muestra la fecha de la instantánea y el año de cada valor. El Banco Mundial publica la mayoría de los indicadores con uno o dos años de retraso, por lo que el último valor de un país puede ser de un año anterior."
-      }
+      { "q": "¿De dónde proceden estos datos?", "a": "Las estadísticas por país proceden de los Indicadores del Desarrollo Mundial del Banco Mundial. Los códigos de país, de moneda y telefónicos siguen ISO 3166, ISO 4217 y la lista de la UIT. Los husos horarios proceden de la base de datos IANA tz. Los tamaños de papel siguen ISO 216, ISO 269, JIS P 0138 y ANSI." },
+      { "q": "¿Se pueden usar estas tablas gratis?", "a": "Sí. Los datos del Banco Mundial tienen licencia CC BY 4.0, así que basta con citar al Banco Mundial al reutilizarlos. Los códigos y las tablas de referencia son datos públicos de libre uso." },
+      { "q": "¿Qué tan recientes son las cifras?", "a": "Cada página muestra la fecha de la instantánea y el año de cada valor. El Banco Mundial publica la mayoría de los indicadores con uno o dos años de retraso, por lo que el último valor de un país puede ser de un año anterior." }
     ]
   },
   "ui": {
@@ -88,18 +79,9 @@
         "La lista abarca las 217 economías sobre las que informa el Banco Mundial. Algunos territorios aparecen por separado del país al que pertenecen."
       ],
       "faq": [
-        {
-          "q": "¿Cuál es el país más poblado del mundo?",
-          "a": "{top1}, con {v1} habitantes en {year1}. {top2} ocupa el segundo lugar con {v2}."
-        },
-        {
-          "q": "¿Cuál es la población mundial?",
-          "a": "Según el Banco Mundial, la población mundial era de {world} en {worldYear}."
-        },
-        {
-          "q": "¿Cuál es el país menos poblado?",
-          "a": "En esta lista es {last}, con {vlast} habitantes. No se incluyen territorios sobre los que el Banco Mundial no informa, como la Ciudad del Vaticano."
-        }
+        { "q": "¿Cuál es el país más poblado del mundo?", "a": "{top1}, con {v1} habitantes en {year1}. {top2} ocupa el segundo lugar con {v2}." },
+        { "q": "¿Cuál es la población mundial?", "a": "Según el Banco Mundial, la población mundial era de {world} en {worldYear}." },
+        { "q": "¿Cuál es el país menos poblado?", "a": "En esta lista es {last}, con {vlast} habitantes. No se incluyen territorios sobre los que el Banco Mundial no informa, como la Ciudad del Vaticano." }
       ]
     },
     "gdp": {
@@ -119,18 +101,9 @@
         "Para comparar niveles de vida, conviene mirar el PIB per cápita o el PIB en paridad de poder adquisitivo (PPA), que ajusta por el nivel de precios."
       ],
       "faq": [
-        {
-          "q": "¿Qué país tiene el mayor PIB?",
-          "a": "{top1}, con un PIB de {v1} en {year1}. {top2} ocupa el segundo lugar con {v2}."
-        },
-        {
-          "q": "¿Cuál es el PIB mundial?",
-          "a": "El PIB mundial fue de {world} en {worldYear}, en dólares estadounidenses corrientes."
-        },
-        {
-          "q": "¿Por qué algunos países muestran un año anterior?",
-          "a": "El Banco Mundial solo publica una cifra cuando el país la reporta. Cada fila muestra el último año disponible, así que algunos países van con retraso."
-        }
+        { "q": "¿Qué país tiene el mayor PIB?", "a": "{top1}, con un PIB de {v1} en {year1}. {top2} ocupa el segundo lugar con {v2}." },
+        { "q": "¿Cuál es el PIB mundial?", "a": "El PIB mundial fue de {world} en {worldYear}, en dólares estadounidenses corrientes." },
+        { "q": "¿Por qué algunos países muestran un año anterior?", "a": "El Banco Mundial solo publica una cifra cuando el país la reporta. Cada fila muestra el último año disponible, así que algunos países van con retraso." }
       ]
     },
     "gdp-per-capita": {
@@ -150,18 +123,9 @@
         "Los pequeños centros financieros y los exportadores de materias primas suelen encabezar la lista porque una economía grande se divide entre pocos habitantes."
       ],
       "faq": [
-        {
-          "q": "¿Qué país tiene el PIB per cápita más alto?",
-          "a": "{top1}, con {v1} por habitante en {year1}, seguido de {top2} ({v2})."
-        },
-        {
-          "q": "¿Cuál es el PIB per cápita promedio del mundo?",
-          "a": "{world} en {worldYear}, en dólares estadounidenses corrientes."
-        },
-        {
-          "q": "¿Qué país tiene el PIB per cápita más bajo?",
-          "a": "En esta lista, {last}, con {vlast} por habitante."
-        }
+        { "q": "¿Qué país tiene el PIB per cápita más alto?", "a": "{top1}, con {v1} por habitante en {year1}, seguido de {top2} ({v2})." },
+        { "q": "¿Cuál es el PIB per cápita promedio del mundo?", "a": "{world} en {worldYear}, en dólares estadounidenses corrientes." },
+        { "q": "¿Qué país tiene el PIB per cápita más bajo?", "a": "En esta lista, {last}, con {vlast} por habitante." }
       ]
     },
     "life-expectancy": {
@@ -181,18 +145,9 @@
         "Los valores corresponden a ambos sexos. Las mujeres viven más que los hombres en casi todos los países."
       ],
       "faq": [
-        {
-          "q": "¿Qué país tiene la mayor esperanza de vida?",
-          "a": "{top1}, con {v1} años en {year1}, seguido de {top2} ({v2})."
-        },
-        {
-          "q": "¿Cuál es la esperanza de vida promedio en el mundo?",
-          "a": "{world} años en {worldYear}, para ambos sexos."
-        },
-        {
-          "q": "¿Qué país tiene la menor esperanza de vida?",
-          "a": "En esta lista, {last}, con {vlast} años."
-        }
+        { "q": "¿Qué país tiene la mayor esperanza de vida?", "a": "{top1}, con {v1} años en {year1}, seguido de {top2} ({v2})." },
+        { "q": "¿Cuál es la esperanza de vida promedio en el mundo?", "a": "{world} años en {worldYear}, para ambos sexos." },
+        { "q": "¿Qué país tiene la menor esperanza de vida?", "a": "En esta lista, {last}, con {vlast} años." }
       ]
     },
     "fertility-rate": {
@@ -212,18 +167,9 @@
         "Unos 2,1 hijos por mujer mantienen estable una población sin migración. La mayor parte de Asia Oriental y Europa está muy por debajo."
       ],
       "faq": [
-        {
-          "q": "¿Qué país tiene la tasa de fecundidad más alta?",
-          "a": "{top1}, con {v1} hijos por mujer en {year1}, seguido de {top2} ({v2})."
-        },
-        {
-          "q": "¿Qué país tiene la tasa de fecundidad más baja?",
-          "a": "En esta lista, {last}, con {vlast} hijos por mujer."
-        },
-        {
-          "q": "¿Cuál es la tasa de fecundidad de reemplazo?",
-          "a": "Unos 2,1 hijos por mujer en países con baja mortalidad infantil. El promedio mundial es {world} ({worldYear})."
-        }
+        { "q": "¿Qué país tiene la tasa de fecundidad más alta?", "a": "{top1}, con {v1} hijos por mujer en {year1}, seguido de {top2} ({v2})." },
+        { "q": "¿Qué país tiene la tasa de fecundidad más baja?", "a": "En esta lista, {last}, con {vlast} hijos por mujer." },
+        { "q": "¿Cuál es la tasa de fecundidad de reemplazo?", "a": "Unos 2,1 hijos por mujer en países con baja mortalidad infantil. El promedio mundial es {world} ({worldYear})." }
       ]
     },
     "internet-users": {
@@ -243,18 +189,9 @@
         "Varios países informan solo cada pocos años, así que conviene revisar la columna del año antes de comparar dos filas."
       ],
       "faq": [
-        {
-          "q": "¿Qué país tiene el mayor porcentaje de usuarios de internet?",
-          "a": "{top1}, donde el {v1}% de las personas se conectó en {year1}."
-        },
-        {
-          "q": "¿Qué porcentaje del mundo usa internet?",
-          "a": "El {world}% de la población mundial en {worldYear}."
-        },
-        {
-          "q": "¿Qué país tiene menos usuarios de internet?",
-          "a": "En esta lista, {last}, con el {vlast}% de la población."
-        }
+        { "q": "¿Qué país tiene el mayor porcentaje de usuarios de internet?", "a": "{top1}, donde el {v1}% de las personas se conectó en {year1}." },
+        { "q": "¿Qué porcentaje del mundo usa internet?", "a": "El {world}% de la población mundial en {worldYear}." },
+        { "q": "¿Qué país tiene menos usuarios de internet?", "a": "En esta lista, {last}, con el {vlast}% de la población." }
       ]
     },
     "gdp-ppp-per-capita": {
@@ -274,18 +211,9 @@
         "Los pequeños centros financieros y los exportadores de petróleo encabezan la lista porque su producción es grande en relación con el número de residentes, no porque todos sus habitantes sean así de ricos. Cada fila muestra el último año del que el país tiene datos."
       ],
       "faq": [
-        {
-          "q": "¿Qué país tiene el PIB per cápita PPA más alto?",
-          "a": "{top1}, con {v1} dólares internacionales por persona en {year1}, seguido de {top2} ({v2})."
-        },
-        {
-          "q": "¿Qué diferencia hay entre el PIB per cápita y el PIB per cápita PPA?",
-          "a": "El PIB per cápita simple usa tipos de cambio de mercado. La versión PPA tiene en cuenta lo que el dinero compra en cada país, de modo que los países más pobres con precios bajos quedan más arriba que en la lista nominal."
-        },
-        {
-          "q": "¿Qué país tiene el PIB per cápita PPA más bajo?",
-          "a": "En esta lista, {last}, con {vlast} dólares internacionales por persona."
-        }
+        { "q": "¿Qué país tiene el PIB per cápita PPA más alto?", "a": "{top1}, con {v1} dólares internacionales por persona en {year1}, seguido de {top2} ({v2})." },
+        { "q": "¿Qué diferencia hay entre el PIB per cápita y el PIB per cápita PPA?", "a": "El PIB per cápita simple usa tipos de cambio de mercado. La versión PPA tiene en cuenta lo que el dinero compra en cada país, de modo que los países más pobres con precios bajos quedan más arriba que en la lista nominal." },
+        { "q": "¿Qué país tiene el PIB per cápita PPA más bajo?", "a": "En esta lista, {last}, con {vlast} dólares internacionales por persona." }
       ]
     },
     "gdp-growth": {
@@ -305,18 +233,9 @@
         "Las economías pequeñas son las que más oscilan: un nuevo yacimiento de petróleo, una mala cosecha o una guerra pueden mover el crecimiento diez puntos en un año. Conviene mirar varios años antes de hablar de tendencia."
       ],
       "faq": [
-        {
-          "q": "¿Qué país tiene la economía que más crece?",
-          "a": "{top1}, con un crecimiento del PIB real del {v1}% en {year1}. Le sigue {top2}, con un {v2}%."
-        },
-        {
-          "q": "¿Cuánto crece la economía mundial?",
-          "a": "El PIB mundial creció un {world}% en términos reales en {worldYear}."
-        },
-        {
-          "q": "¿Qué significa un crecimiento negativo del PIB?",
-          "a": "Que la economía produjo menos que el año anterior. Dos trimestres seguidos de caída es la regla práctica habitual para hablar de recesión. El valor más bajo de esta lista es el de {last}, con un {vlast}%."
-        }
+        { "q": "¿Qué país tiene la economía que más crece?", "a": "{top1}, con un crecimiento del PIB real del {v1}% en {year1}. Le sigue {top2}, con un {v2}%." },
+        { "q": "¿Cuánto crece la economía mundial?", "a": "El PIB mundial creció un {world}% en términos reales en {worldYear}." },
+        { "q": "¿Qué significa un crecimiento negativo del PIB?", "a": "Que la economía produjo menos que el año anterior. Dos trimestres seguidos de caída es la regla práctica habitual para hablar de recesión. El valor más bajo de esta lista es el de {last}, con un {vlast}%." }
       ]
     },
     "inflation": {
@@ -336,18 +255,9 @@
         "La mayoría de los bancos centrales apuntan a un 2% anual aproximadamente. Las tasas superiores al 50% mensual se llaman hiperinflación. Algunos países publican con retraso, así que revise la columna del año."
       ],
       "faq": [
-        {
-          "q": "¿Qué país tiene la tasa de inflación más alta?",
-          "a": "{top1}, donde los precios al consumidor subieron un {v1}% en {year1}, seguido de {top2} ({v2}%)."
-        },
-        {
-          "q": "¿Cuál es la tasa de inflación mundial?",
-          "a": "Los precios al consumidor en el mundo subieron un {world}% en {worldYear}."
-        },
-        {
-          "q": "¿Qué país tiene la inflación más baja?",
-          "a": "En esta lista, {last}, con un {vlast}%. Un número negativo significa que los precios bajaron."
-        }
+        { "q": "¿Qué país tiene la tasa de inflación más alta?", "a": "{top1}, donde los precios al consumidor subieron un {v1}% en {year1}, seguido de {top2} ({v2}%)." },
+        { "q": "¿Cuál es la tasa de inflación mundial?", "a": "Los precios al consumidor en el mundo subieron un {world}% en {worldYear}." },
+        { "q": "¿Qué país tiene la inflación más baja?", "a": "En esta lista, {last}, con un {vlast}%. Un número negativo significa que los precios bajaron." }
       ]
     },
     "unemployment": {
@@ -367,18 +277,9 @@
         "Son estimaciones modelizadas que usan una misma definición para todos los países, por lo que pueden diferir de las cifras nacionales que publica cada gobierno."
       ],
       "faq": [
-        {
-          "q": "¿Qué país tiene la tasa de desempleo más alta?",
-          "a": "{top1}, con un {v1}% de la población activa en {year1}, seguido de {top2} ({v2}%)."
-        },
-        {
-          "q": "¿Cuál es la tasa de desempleo mundial?",
-          "a": "La OIT la estima en un {world}% para {worldYear}."
-        },
-        {
-          "q": "¿Qué país tiene la tasa de desempleo más baja?",
-          "a": "En esta lista, {last}, con un {vlast}%. Las tasas muy bajas suelen indicar que mucha gente trabaja en la economía informal o en negocios familiares."
-        }
+        { "q": "¿Qué país tiene la tasa de desempleo más alta?", "a": "{top1}, con un {v1}% de la población activa en {year1}, seguido de {top2} ({v2}%)." },
+        { "q": "¿Cuál es la tasa de desempleo mundial?", "a": "La OIT la estima en un {world}% para {worldYear}." },
+        { "q": "¿Qué país tiene la tasa de desempleo más baja?", "a": "En esta lista, {last}, con un {vlast}%. Las tasas muy bajas suelen indicar que mucha gente trabaja en la economía informal o en negocios familiares." }
       ]
     },
     "land-area": {
@@ -398,18 +299,9 @@
         "La lista abarca las economías sobre las que informa el Banco Mundial. No se incluyen la Antártida ni las zonas en disputa sin un único gobierno."
       ],
       "faq": [
-        {
-          "q": "¿Cuál es el país más grande por superficie?",
-          "a": "{top1}, con {v1} km² de tierra, seguido de {top2} ({v2} km²) y {top3} ({v3} km²)."
-        },
-        {
-          "q": "¿Cuánta tierra hay en la Tierra?",
-          "a": "El Banco Mundial suma la tierra de todos los países en {world} km² ({worldYear}), aproximadamente una cuarta parte de la superficie de la Tierra. No se incluye la Antártida."
-        },
-        {
-          "q": "¿Cuál es el país más pequeño por superficie?",
-          "a": "En esta lista, {last}, con {vlast} km². La Ciudad del Vaticano es más pequeña, pero no figura en los datos del Banco Mundial."
-        }
+        { "q": "¿Cuál es el país más grande por superficie?", "a": "{top1}, con {v1} km² de tierra, seguido de {top2} ({v2} km²) y {top3} ({v3} km²)." },
+        { "q": "¿Cuánta tierra hay en la Tierra?", "a": "El Banco Mundial suma la tierra de todos los países en {world} km² ({worldYear}), aproximadamente una cuarta parte de la superficie de la Tierra. No se incluye la Antártida." },
+        { "q": "¿Cuál es el país más pequeño por superficie?", "a": "En esta lista, {last}, con {vlast} km². La Ciudad del Vaticano es más pequeña, pero no figura en los datos del Banco Mundial." }
       ]
     },
     "population-density": {
@@ -429,18 +321,9 @@
         "Las ciudades-estado y las islas pequeñas encabezan la lista. Entre los países grandes, Bangladés es el más densamente poblado."
       ],
       "faq": [
-        {
-          "q": "¿Qué país tiene la mayor densidad de población?",
-          "a": "{top1}, con {v1} habitantes por km² en {year1}, seguido de {top2} ({v2})."
-        },
-        {
-          "q": "¿Cuál es la densidad de población del mundo?",
-          "a": "Unos {world} habitantes por km² de tierra en {worldYear}."
-        },
-        {
-          "q": "¿Qué país tiene la menor densidad de población?",
-          "a": "En esta lista, {last}, con {vlast} habitantes por km²."
-        }
+        { "q": "¿Qué país tiene la mayor densidad de población?", "a": "{top1}, con {v1} habitantes por km² en {year1}, seguido de {top2} ({v2})." },
+        { "q": "¿Cuál es la densidad de población del mundo?", "a": "Unos {world} habitantes por km² de tierra en {worldYear}." },
+        { "q": "¿Qué país tiene la menor densidad de población?", "a": "En esta lista, {last}, con {vlast} habitantes por km²." }
       ]
     },
     "urban-population": {
@@ -460,18 +343,9 @@
         "Las ciudades-estado y los territorios pequeños son 100% urbanos por definición. Más de la mitad de la población mundial vive en ciudades desde aproximadamente 2007."
       ],
       "faq": [
-        {
-          "q": "¿Cuál es el país más urbanizado?",
-          "a": "{top1} ({v1}%), seguido de {top2} ({v2}%) y {top3} ({v3}%). Las ciudades-estado y los territorios pequeños suelen contar como totalmente urbanos."
-        },
-        {
-          "q": "¿Qué porcentaje de la población mundial vive en ciudades?",
-          "a": "El {world}% en {worldYear}, según estimaciones de la ONU."
-        },
-        {
-          "q": "¿Cuál es el país menos urbanizado?",
-          "a": "En esta lista, {last}, donde el {vlast}% de las personas vive en zonas urbanas."
-        }
+        { "q": "¿Cuál es el país más urbanizado?", "a": "{top1} ({v1}%), seguido de {top2} ({v2}%) y {top3} ({v3}%). Las ciudades-estado y los territorios pequeños suelen contar como totalmente urbanos." },
+        { "q": "¿Qué porcentaje de la población mundial vive en ciudades?", "a": "El {world}% en {worldYear}, según estimaciones de la ONU." },
+        { "q": "¿Cuál es el país menos urbanizado?", "a": "En esta lista, {last}, donde el {vlast}% de las personas vive en zonas urbanas." }
       ]
     },
     "aged-65-plus": {
@@ -491,18 +365,9 @@
         "Los países del Golfo tienen porcentajes muy bajos porque la mayoría de sus residentes son migrantes en edad de trabajar, no porque sus propios ciudadanos sean jóvenes."
       ],
       "faq": [
-        {
-          "q": "¿Qué país tiene la población más envejecida?",
-          "a": "{top1}, donde el {v1}% de las personas tenía 65 años o más en {year1}, seguido de {top2} ({v2}%)."
-        },
-        {
-          "q": "¿Qué porcentaje de la población mundial tiene más de 65 años?",
-          "a": "El {world}% en {worldYear}."
-        },
-        {
-          "q": "¿Qué país tiene la población más joven?",
-          "a": "Según esta medida, {last}, donde el {vlast}% de las personas tiene 65 años o más."
-        }
+        { "q": "¿Qué país tiene la población más envejecida?", "a": "{top1}, donde el {v1}% de las personas tenía 65 años o más en {year1}, seguido de {top2} ({v2}%)." },
+        { "q": "¿Qué porcentaje de la población mundial tiene más de 65 años?", "a": "El {world}% en {worldYear}." },
+        { "q": "¿Qué país tiene la población más joven?", "a": "Según esta medida, {last}, donde el {vlast}% de las personas tiene 65 años o más." }
       ]
     },
     "birth-rate": {
@@ -522,18 +387,9 @@
         "Para comparar cuántos hijos tienen las mujeres, use la tabla de tasa de fecundidad. Los países con las tasas de natalidad más bajas también tienen las poblaciones más envejecidas."
       ],
       "faq": [
-        {
-          "q": "¿Qué país tiene la tasa de natalidad más alta?",
-          "a": "{top1}, con {v1} nacimientos por cada 1000 habitantes en {year1}, seguido de {top2} ({v2})."
-        },
-        {
-          "q": "¿Cuál es la tasa de natalidad mundial?",
-          "a": "{world} nacimientos por cada 1000 habitantes en {worldYear}."
-        },
-        {
-          "q": "¿Qué país tiene la tasa de natalidad más baja?",
-          "a": "En esta lista, {last}, con {vlast} nacimientos por cada 1000 habitantes."
-        }
+        { "q": "¿Qué país tiene la tasa de natalidad más alta?", "a": "{top1}, con {v1} nacimientos por cada 1000 habitantes en {year1}, seguido de {top2} ({v2})." },
+        { "q": "¿Cuál es la tasa de natalidad mundial?", "a": "{world} nacimientos por cada 1000 habitantes en {worldYear}." },
+        { "q": "¿Qué país tiene la tasa de natalidad más baja?", "a": "En esta lista, {last}, con {vlast} nacimientos por cada 1000 habitantes." }
       ]
     },
     "infant-mortality": {
@@ -553,18 +409,9 @@
         "El Grupo Interinstitucional de las Naciones Unidas para la Estimación de la Mortalidad Infantil (UN IGME) combina encuestas, censos y registros civiles en una única serie comparable."
       ],
       "faq": [
-        {
-          "q": "¿Qué país tiene la tasa de mortalidad infantil más alta?",
-          "a": "{top1}, con {v1} muertes por cada 1000 nacidos vivos en {year1}, seguido de {top2} ({v2})."
-        },
-        {
-          "q": "¿Cuál es la tasa de mortalidad infantil mundial?",
-          "a": "{world} por cada 1000 nacidos vivos en {worldYear}. Ha bajado a menos de la mitad desde 1990."
-        },
-        {
-          "q": "¿Qué país tiene la tasa de mortalidad infantil más baja?",
-          "a": "En esta lista, {last}, con {vlast} por cada 1000 nacidos vivos."
-        }
+        { "q": "¿Qué país tiene la tasa de mortalidad infantil más alta?", "a": "{top1}, con {v1} muertes por cada 1000 nacidos vivos en {year1}, seguido de {top2} ({v2})." },
+        { "q": "¿Cuál es la tasa de mortalidad infantil mundial?", "a": "{world} por cada 1000 nacidos vivos en {worldYear}. Ha bajado a menos de la mitad desde 1990." },
+        { "q": "¿Qué país tiene la tasa de mortalidad infantil más baja?", "a": "En esta lista, {last}, con {vlast} por cada 1000 nacidos vivos." }
       ]
     },
     "co2-per-capita": {
@@ -584,18 +431,9 @@
         "Los pequeños productores de petróleo y gas encabezan la lista porque su industria intensiva en energía es grande en relación con su población. Para conocer el porcentaje total de un país en las emisiones mundiales, multiplique por su población."
       ],
       "faq": [
-        {
-          "q": "¿Qué país tiene las mayores emisiones de CO2 por persona?",
-          "a": "{top1}, con {v1} toneladas por persona en {year1}, seguido de {top2} ({v2} t)."
-        },
-        {
-          "q": "¿Cuáles son las emisiones medias de CO2 por persona en el mundo?",
-          "a": "Unas {world} toneladas por persona en {worldYear}."
-        },
-        {
-          "q": "¿Qué país emite menos CO2 por persona?",
-          "a": "En esta lista, {last}, con {vlast} toneladas por persona."
-        }
+        { "q": "¿Qué país tiene las mayores emisiones de CO2 por persona?", "a": "{top1}, con {v1} toneladas por persona en {year1}, seguido de {top2} ({v2} t)." },
+        { "q": "¿Cuáles son las emisiones medias de CO2 por persona en el mundo?", "a": "Unas {world} toneladas por persona en {worldYear}." },
+        { "q": "¿Qué país emite menos CO2 por persona?", "a": "En esta lista, {last}, con {vlast} toneladas por persona." }
       ]
     },
     "electricity-access": {
@@ -615,18 +453,9 @@
         "La mayoría de las personas sin electricidad vive en África subsahariana, donde el acceso en varios países sigue por debajo de la mitad."
       ],
       "faq": [
-        {
-          "q": "¿Qué países tienen el mayor acceso a la electricidad?",
-          "a": "{top1} ({v1}%), {top2} ({v2}%) y {top3} ({v3}%) encabezan la lista en {year1}. Los empates comparten puesto."
-        },
-        {
-          "q": "¿Qué porcentaje del mundo tiene electricidad?",
-          "a": "El {world}% de la población mundial en {worldYear}."
-        },
-        {
-          "q": "¿Qué país tiene el menor acceso a la electricidad?",
-          "a": "En esta lista, {last}, donde el {vlast}% de las personas tiene electricidad."
-        }
+        { "q": "¿Qué países tienen el mayor acceso a la electricidad?", "a": "{top1} ({v1}%), {top2} ({v2}%) y {top3} ({v3}%) encabezan la lista en {year1}. Los empates comparten puesto." },
+        { "q": "¿Qué porcentaje del mundo tiene electricidad?", "a": "El {world}% de la población mundial en {worldYear}." },
+        { "q": "¿Qué país tiene el menor acceso a la electricidad?", "a": "En esta lista, {last}, donde el {vlast}% de las personas tiene electricidad." }
       ]
     },
     "population-growth": {
@@ -646,18 +475,9 @@
         "Muchos países de Europa y de Asia oriental ya pierden población cada año porque las defunciones superan a los nacimientos y llegan pocos migrantes."
       ],
       "faq": [
-        {
-          "q": "¿Qué país tiene la población que más rápido crece?",
-          "a": "{top1}, donde la población creció un {v1}% en {year1}, seguido de {top2} ({v2}%)."
-        },
-        {
-          "q": "¿A qué ritmo crece la población mundial?",
-          "a": "Un {world}% en {worldYear}, menos de la mitad de la tasa máxima de finales de los años sesenta."
-        },
-        {
-          "q": "¿Qué país pierde población más rápido?",
-          "a": "En esta lista, {last}, con un {vlast}% al año."
-        }
+        { "q": "¿Qué país tiene la población que más rápido crece?", "a": "{top1}, donde la población creció un {v1}% en {year1}, seguido de {top2} ({v2}%)." },
+        { "q": "¿A qué ritmo crece la población mundial?", "a": "Un {world}% en {worldYear}, menos de la mitad de la tasa máxima de finales de los años sesenta." },
+        { "q": "¿Qué país pierde población más rápido?", "a": "En esta lista, {last}, con un {vlast}% al año." }
       ]
     },
     "death-rate": {
@@ -677,18 +497,9 @@
         "Los Estados del Golfo tienen las tasas más bajas porque la mayoría de sus residentes son migrantes jóvenes en edad de trabajar. Para comparar la salud, use mejor la esperanza de vida."
       ],
       "faq": [
-        {
-          "q": "¿Qué país tiene la tasa de mortalidad más alta?",
-          "a": "{top1}, con {v1} muertes por cada 1000 habitantes en {year1}, seguido de {top2} ({v2})."
-        },
-        {
-          "q": "¿Cuál es la tasa de mortalidad mundial?",
-          "a": "{world} muertes por cada 1000 habitantes en {worldYear}."
-        },
-        {
-          "q": "¿Qué país tiene la tasa de mortalidad más baja?",
-          "a": "En esta lista, {last}, con {vlast} muertes por cada 1000 habitantes."
-        }
+        { "q": "¿Qué país tiene la tasa de mortalidad más alta?", "a": "{top1}, con {v1} muertes por cada 1000 habitantes en {year1}, seguido de {top2} ({v2})." },
+        { "q": "¿Cuál es la tasa de mortalidad mundial?", "a": "{world} muertes por cada 1000 habitantes en {worldYear}." },
+        { "q": "¿Qué país tiene la tasa de mortalidad más baja?", "a": "En esta lista, {last}, con {vlast} muertes por cada 1000 habitantes." }
       ]
     },
     "life-expectancy-male": {
@@ -708,18 +519,9 @@
         "Los hombres mueren antes que las mujeres en casi todo el mundo, unos cinco años de media. La diferencia es mayor en Europa del Este, donde el consumo excesivo de alcohol y el tabaquismo son frecuentes entre los hombres."
       ],
       "faq": [
-        {
-          "q": "¿Qué país tiene la mayor esperanza de vida masculina?",
-          "a": "{top1}, con {v1} años en {year1}, seguido de {top2} ({v2})."
-        },
-        {
-          "q": "¿Cuál es la esperanza de vida promedio de los hombres en el mundo?",
-          "a": "{world} años en {worldYear}."
-        },
-        {
-          "q": "¿Qué país tiene la menor esperanza de vida masculina?",
-          "a": "En esta lista, {last}, con {vlast} años."
-        }
+        { "q": "¿Qué país tiene la mayor esperanza de vida masculina?", "a": "{top1}, con {v1} años en {year1}, seguido de {top2} ({v2})." },
+        { "q": "¿Cuál es la esperanza de vida promedio de los hombres en el mundo?", "a": "{world} años en {worldYear}." },
+        { "q": "¿Qué país tiene la menor esperanza de vida masculina?", "a": "En esta lista, {last}, con {vlast} años." }
       ]
     },
     "life-expectancy-female": {
@@ -739,18 +541,9 @@
         "Las mujeres viven más que los hombres en casi todos los países. Parte de la diferencia es biológica y parte se debe a que los hombres fuman, beben y sufren accidentes y violencia con más frecuencia."
       ],
       "faq": [
-        {
-          "q": "¿Qué país tiene la mayor esperanza de vida femenina?",
-          "a": "{top1}, con {v1} años en {year1}, seguido de {top2} ({v2})."
-        },
-        {
-          "q": "¿Cuál es la esperanza de vida promedio de las mujeres en el mundo?",
-          "a": "{world} años en {worldYear}."
-        },
-        {
-          "q": "¿Qué país tiene la menor esperanza de vida femenina?",
-          "a": "En esta lista, {last}, con {vlast} años."
-        }
+        { "q": "¿Qué país tiene la mayor esperanza de vida femenina?", "a": "{top1}, con {v1} años en {year1}, seguido de {top2} ({v2})." },
+        { "q": "¿Cuál es la esperanza de vida promedio de las mujeres en el mundo?", "a": "{world} años en {worldYear}." },
+        { "q": "¿Qué país tiene la menor esperanza de vida femenina?", "a": "En esta lista, {last}, con {vlast} años." }
       ]
     },
     "maternal-mortality": {
@@ -770,18 +563,9 @@
         "Son estimaciones modelizadas del Grupo Interinstitucional de las Naciones Unidas para la Estimación de la Mortalidad Materna (MMEIG), que completa los vacíos donde los países no registran todas las defunciones."
       ],
       "faq": [
-        {
-          "q": "¿Qué país tiene la tasa de mortalidad materna más alta?",
-          "a": "{top1}, con {v1} muertes maternas por cada 100 000 nacidos vivos en {year1}, seguido de {top2} ({v2})."
-        },
-        {
-          "q": "¿Cuál es la razón de mortalidad materna mundial?",
-          "a": "{world} por cada 100 000 nacidos vivos en {worldYear}. La meta de la ONU para 2030 es bajar de 70."
-        },
-        {
-          "q": "¿Qué país tiene la mortalidad materna más baja?",
-          "a": "En esta lista, {last}, con {vlast} por cada 100 000 nacidos vivos."
-        }
+        { "q": "¿Qué país tiene la tasa de mortalidad materna más alta?", "a": "{top1}, con {v1} muertes maternas por cada 100 000 nacidos vivos en {year1}, seguido de {top2} ({v2})." },
+        { "q": "¿Cuál es la razón de mortalidad materna mundial?", "a": "{world} por cada 100 000 nacidos vivos en {worldYear}. La meta de la ONU para 2030 es bajar de 70." },
+        { "q": "¿Qué país tiene la mortalidad materna más baja?", "a": "En esta lista, {last}, con {vlast} por cada 100 000 nacidos vivos." }
       ]
     },
     "exports": {
@@ -801,18 +585,9 @@
         "Cada fila muestra el último año informado por el país dentro de los cuatro últimos años. Las reexportaciones a través de centros comerciales como Singapur y Hong Kong se cuentan en el lugar desde donde salen."
       ],
       "faq": [
-        {
-          "q": "¿Qué país exporta más?",
-          "a": "{top1}, con exportaciones de {v1} en {year1}, seguido de {top2} ({v2}) y {top3} ({v3})."
-        },
-        {
-          "q": "¿Cuánto exporta el mundo?",
-          "a": "{world} en bienes y servicios en {worldYear}."
-        },
-        {
-          "q": "¿Las exportaciones incluyen los servicios?",
-          "a": "Sí. Esta tabla cuenta bienes y servicios juntos, así que los países con grandes sectores de turismo, finanzas o software quedan más arriba que en una lista solo de bienes."
-        }
+        { "q": "¿Qué país exporta más?", "a": "{top1}, con exportaciones de {v1} en {year1}, seguido de {top2} ({v2}) y {top3} ({v3})." },
+        { "q": "¿Cuánto exporta el mundo?", "a": "{world} en bienes y servicios en {worldYear}." },
+        { "q": "¿Las exportaciones incluyen los servicios?", "a": "Sí. Esta tabla cuenta bienes y servicios juntos, así que los países con grandes sectores de turismo, finanzas o software quedan más arriba que en una lista solo de bienes." }
       ]
     },
     "imports": {
@@ -832,18 +607,9 @@
         "Un país que importa más de lo que exporta tiene déficit comercial. Compare esta tabla con la de exportaciones para ver la balanza de cada país."
       ],
       "faq": [
-        {
-          "q": "¿Qué país importa más?",
-          "a": "{top1}, con importaciones de {v1} en {year1}, seguido de {top2} ({v2}) y {top3} ({v3})."
-        },
-        {
-          "q": "¿Cuánto importa el mundo?",
-          "a": "{world} en bienes y servicios en {worldYear}. Las importaciones y exportaciones mundiales deberían coincidir, pero difieren por desfases temporales y lagunas en los datos informados."
-        },
-        {
-          "q": "¿Qué país importa menos?",
-          "a": "En esta lista, {last}, con {vlast}."
-        }
+        { "q": "¿Qué país importa más?", "a": "{top1}, con importaciones de {v1} en {year1}, seguido de {top2} ({v2}) y {top3} ({v3})." },
+        { "q": "¿Cuánto importa el mundo?", "a": "{world} en bienes y servicios en {worldYear}. Las importaciones y exportaciones mundiales deberían coincidir, pero difieren por desfases temporales y lagunas en los datos informados." },
+        { "q": "¿Qué país importa menos?", "a": "En esta lista, {last}, con {vlast}." }
       ]
     },
     "health-spending-per-capita": {
@@ -863,18 +629,9 @@
         "Los valores se calculan con tipos de cambio de mercado, por lo que en los países con salarios altos la atención parece más cara de lo que realmente compra. Gastar más no siempre significa vivir más: compárelo con la tabla de esperanza de vida."
       ],
       "faq": [
-        {
-          "q": "¿Qué país gasta más en salud por persona?",
-          "a": "{top1}, con {v1} por persona en {year1}, seguido de {top2} ({v2})."
-        },
-        {
-          "q": "¿Cuánto gasta el mundo en salud por persona?",
-          "a": "Unos {world} por persona en {worldYear}."
-        },
-        {
-          "q": "¿Qué país gasta menos en salud?",
-          "a": "En esta lista, {last}, con {vlast} por persona."
-        }
+        { "q": "¿Qué país gasta más en salud por persona?", "a": "{top1}, con {v1} por persona en {year1}, seguido de {top2} ({v2})." },
+        { "q": "¿Cuánto gasta el mundo en salud por persona?", "a": "Unos {world} por persona en {worldYear}." },
+        { "q": "¿Qué país gasta menos en salud?", "a": "En esta lista, {last}, con {vlast} por persona." }
       ]
     },
     "female-labor-force": {
@@ -894,18 +651,9 @@
         "Algunas de las tasas más altas se dan en países de bajos ingresos donde la mayoría de las mujeres trabaja en el campo. Las más bajas están en partes de Oriente Medio y Asia meridional. Son estimaciones modelizadas de la OIT que aplican una misma definición a todos los países."
       ],
       "faq": [
-        {
-          "q": "¿Qué país tiene la mayor participación laboral femenina?",
-          "a": "{top1}, donde el {v1}% de las mujeres formaba parte de la población activa en {year1}, seguido de {top2} ({v2}%)."
-        },
-        {
-          "q": "¿Qué porcentaje de mujeres trabaja en el mundo?",
-          "a": "El {world}% de las mujeres de 15 años o más trabajaba o buscaba trabajo en {worldYear}."
-        },
-        {
-          "q": "¿Qué país tiene la menor participación laboral femenina?",
-          "a": "En esta lista, {last}, con un {vlast}%."
-        }
+        { "q": "¿Qué país tiene la mayor participación laboral femenina?", "a": "{top1}, donde el {v1}% de las mujeres formaba parte de la población activa en {year1}, seguido de {top2} ({v2}%)." },
+        { "q": "¿Qué porcentaje de mujeres trabaja en el mundo?", "a": "El {world}% de las mujeres de 15 años o más trabajaba o buscaba trabajo en {worldYear}." },
+        { "q": "¿Qué país tiene la menor participación laboral femenina?", "a": "En esta lista, {last}, con un {vlast}%." }
       ]
     },
     "forest-area": {
@@ -925,18 +673,9 @@
         "Por porcentaje, encabezan la lista pequeños países tropicales. Por superficie total, Rusia, Brasil, Canadá, Estados Unidos y China reúnen más de la mitad de los bosques del mundo."
       ],
       "faq": [
-        {
-          "q": "¿Qué país tiene más superficie cubierta de bosque?",
-          "a": "{top1}, donde los bosques cubrían el {v1}% del territorio en {year1}, seguido de {top2} ({v2}%)."
-        },
-        {
-          "q": "¿Qué parte del mundo está cubierta de bosques?",
-          "a": "El {world}% de la superficie terrestre mundial en {worldYear}."
-        },
-        {
-          "q": "¿Qué país tiene menos bosques?",
-          "a": "En esta lista, {last}, con el {vlast}% de su territorio."
-        }
+        { "q": "¿Qué país tiene más superficie cubierta de bosque?", "a": "{top1}, donde los bosques cubrían el {v1}% del territorio en {year1}, seguido de {top2} ({v2}%)." },
+        { "q": "¿Qué parte del mundo está cubierta de bosques?", "a": "El {world}% de la superficie terrestre mundial en {worldYear}." },
+        { "q": "¿Qué país tiene menos bosques?", "a": "En esta lista, {last}, con el {vlast}% de su territorio." }
       ]
     },
     "renewable-energy": {
@@ -956,18 +695,9 @@
         "Muchos de los porcentajes más altos se dan en países de bajos ingresos donde la mayoría de los hogares cocina con leña, no en los países con más energía eólica y solar. Los datos llevan unos años de retraso."
       ],
       "faq": [
-        {
-          "q": "¿Qué país usa más energía renovable?",
-          "a": "Por porcentaje, {top1}, donde el {v1}% del consumo de energía fue renovable en {year1}, sobre todo leña y energía hidráulica."
-        },
-        {
-          "q": "¿Qué porcentaje de la energía mundial es renovable?",
-          "a": "El {world}% del consumo de energía final en {worldYear}."
-        },
-        {
-          "q": "¿Qué país usa menos energía renovable?",
-          "a": "En esta lista, {last}, con un {vlast}%."
-        }
+        { "q": "¿Qué país usa más energía renovable?", "a": "Por porcentaje, {top1}, donde el {v1}% del consumo de energía fue renovable en {year1}, sobre todo leña y energía hidráulica." },
+        { "q": "¿Qué porcentaje de la energía mundial es renovable?", "a": "El {world}% del consumo de energía final en {worldYear}." },
+        { "q": "¿Qué país usa menos energía renovable?", "a": "En esta lista, {last}, con un {vlast}%." }
       ]
     },
     "country-codes": {
@@ -994,18 +724,9 @@
         "El Reino Unido usa el dominio .uk aunque su código ISO es GB. Los nombres aparecen aquí en su idioma."
       ],
       "faq": [
-        {
-          "q": "¿Qué diferencia hay entre los códigos alfa-2 y alfa-3?",
-          "a": "Los códigos alfa-2 tienen dos letras (ES) y se usan en dominios, etiquetas de idioma y la mayoría del software. Los alfa-3 tienen tres letras (ESP) y se usan en pasaportes y estadísticas."
-        },
-        {
-          "q": "¿Cuántos códigos de país ISO existen?",
-          "a": "ISO 3166-1 recoge {rows} países y territorios, cada uno con un código alfa-2, alfa-3 y numérico."
-        },
-        {
-          "q": "¿Cuál es el código de país de España?",
-          "a": "ES (alfa-2), ESP (alfa-3) y 724 (numérico). Su dominio de internet es .es. México tiene MX, MEX y 484, con el dominio .mx."
-        }
+        { "q": "¿Qué diferencia hay entre los códigos alfa-2 y alfa-3?", "a": "Los códigos alfa-2 tienen dos letras (ES) y se usan en dominios, etiquetas de idioma y la mayoría del software. Los alfa-3 tienen tres letras (ESP) y se usan en pasaportes y estadísticas." },
+        { "q": "¿Cuántos códigos de país ISO existen?", "a": "ISO 3166-1 recoge {rows} países y territorios, cada uno con un código alfa-2, alfa-3 y numérico." },
+        { "q": "¿Cuál es el código de país de España?", "a": "ES (alfa-2), ESP (alfa-3) y 724 (numérico). Su dominio de internet es .es. México tiene MX, MEX y 484, con el dominio .mx." }
       ]
     },
     "calling-codes": {
@@ -1029,18 +750,9 @@
         "En el móvil, mantenga pulsado el 0 para escribir +. Funciona desde cualquier país, así que no hace falta conocer el código de salida local."
       ],
       "faq": [
-        {
-          "q": "¿Cómo se llama a otro país?",
-          "a": "Se marca + (o el código de salida: 00 en España y México, 011 desde EE. UU. y Canadá), el prefijo del país y luego el número local sin el 0 inicial."
-        },
-        {
-          "q": "¿De qué país es el +34?",
-          "a": "El +34 es España. Otros prefijos frecuentes: +52 México, +54 Argentina y +57 Colombia."
-        },
-        {
-          "q": "¿Por qué varios países comparten el +1?",
-          "a": "Forman parte del Plan de Numeración de América del Norte. El código de área de 3 cifras que sigue al +1 indica el país."
-        }
+        { "q": "¿Cómo se llama a otro país?", "a": "Se marca + (o el código de salida: 00 en España y México, 011 desde EE. UU. y Canadá), el prefijo del país y luego el número local sin el 0 inicial." },
+        { "q": "¿De qué país es el +34?", "a": "El +34 es España. Otros prefijos frecuentes: +52 México, +54 Argentina y +57 Colombia." },
+        { "q": "¿Por qué varios países comparten el +1?", "a": "Forman parte del Plan de Numeración de América del Norte. El código de área de 3 cifras que sigue al +1 indica el país." }
       ]
     },
     "currency-codes": {
@@ -1067,18 +779,9 @@
         "Los decimales indican cuántas cifras tiene la unidad fraccionaria (los céntimos o centavos). JPY y KRW no tienen, y algunas monedas del Golfo tienen tres."
       ],
       "faq": [
-        {
-          "q": "¿Cuál es el código del euro y del peso mexicano?",
-          "a": "El euro es EUR, con código numérico 978 y 2 decimales. El peso mexicano es MXN, con código numérico 484 y 2 decimales."
-        },
-        {
-          "q": "¿Cuántas monedas hay en el mundo?",
-          "a": "ISO 4217 recoge {rows} códigos vigentes, incluidos algunos fondos, metales preciosos y códigos de prueba."
-        },
-        {
-          "q": "¿Por qué el euro tiene un solo código para muchos países?",
-          "a": "EUR es una única moneda compartida por la zona del euro, así que tiene un solo código. La columna Se usa en muestra todos los países y territorios que la usan."
-        }
+        { "q": "¿Cuál es el código del euro y del peso mexicano?", "a": "El euro es EUR, con código numérico 978 y 2 decimales. El peso mexicano es MXN, con código numérico 484 y 2 decimales." },
+        { "q": "¿Cuántas monedas hay en el mundo?", "a": "ISO 4217 recoge {rows} códigos vigentes, incluidos algunos fondos, metales preciosos y códigos de prueba." },
+        { "q": "¿Por qué el euro tiene un solo código para muchos países?", "a": "EUR es una única moneda compartida por la zona del euro, así que tiene un solo código. La columna Se usa en muestra todos los países y territorios que la usan." }
       ]
     },
     "time-zones": {
@@ -1103,18 +806,9 @@
         "Las diferencias se calculan para el 15 de enero y el 15 de julio de {year} con la base de datos tz {tz}. Los gobiernos a veces cambian sus reglas con poca antelación."
       ],
       "faq": [
-        {
-          "q": "¿Qué huso horario tiene España?",
-          "a": "La España peninsular usa Europe/Madrid: UTC+01:00 en invierno y UTC+02:00 en verano. Canarias usa Atlantic/Canary: UTC+00:00 en invierno y UTC+01:00 en verano. Ciudad de México (America/Mexico_City) está en UTC-06:00 todo el año, ya que México eliminó el horario de verano en 2022, salvo en algunas zonas fronterizas."
-        },
-        {
-          "q": "¿Qué diferencia hay entre UTC y GMT?",
-          "a": "En el uso diario marcan la misma hora. UTC es el estándar de tiempo atómico; GMT es la zona horaria del meridiano 0°, que el Reino Unido usa en invierno."
-        },
-        {
-          "q": "¿Cuántos husos horarios hay?",
-          "a": "La base de datos IANA usada aquí tiene {rows} identificadores de zona. Usan menos de 40 diferencias con UTC distintas."
-        }
+        { "q": "¿Qué huso horario tiene España?", "a": "La España peninsular usa Europe/Madrid: UTC+01:00 en invierno y UTC+02:00 en verano. Canarias usa Atlantic/Canary: UTC+00:00 en invierno y UTC+01:00 en verano. Ciudad de México (America/Mexico_City) está en UTC-06:00 todo el año, ya que México eliminó el horario de verano en 2022, salvo en algunas zonas fronterizas." },
+        { "q": "¿Qué diferencia hay entre UTC y GMT?", "a": "En el uso diario marcan la misma hora. UTC es el estándar de tiempo atómico; GMT es la zona horaria del meridiano 0°, que el Reino Unido usa en invierno." },
+        { "q": "¿Cuántos husos horarios hay?", "a": "La base de datos IANA usada aquí tiene {rows} identificadores de zona. Usan menos de 40 diferencias con UTC distintas." }
       ]
     },
     "paper-sizes": {
@@ -1141,18 +835,9 @@
         "Los tamaños JIS B, habituales en Japón y China para cuadernos y libros, son algo mayores que los ISO B. El JIS B5 mide 182 × 257 mm, y el ISO B5, 176 × 250 mm."
       ],
       "faq": [
-        {
-          "q": "¿Cuánto mide una hoja A4?",
-          "a": "210 × 297 mm, o 8,27 × 11,69 pulgadas. A 300 DPI son 2480 × 3508 píxeles."
-        },
-        {
-          "q": "¿Qué diferencia hay entre A4 y Carta?",
-          "a": "El A4 (210 × 297 mm) es más estrecho y más alto que el Carta o US Letter (215,9 × 279,4 mm). España y la mayor parte de Latinoamérica usan A4; en México se usan tanto Carta como A4, y en EE. UU. y Canadá, Carta."
-        },
-        {
-          "q": "¿Cuántos píxeles se necesitan para imprimir en A4?",
-          "a": "2480 × 3508 px para una impresión nítida a 300 DPI. 1240 × 1754 px (150 DPI) bastan para borradores."
-        }
+        { "q": "¿Cuánto mide una hoja A4?", "a": "210 × 297 mm, o 8,27 × 11,69 pulgadas. A 300 DPI son 2480 × 3508 píxeles." },
+        { "q": "¿Qué diferencia hay entre A4 y Carta?", "a": "El A4 (210 × 297 mm) es más estrecho y más alto que el Carta o US Letter (215,9 × 279,4 mm). España y la mayor parte de Latinoamérica usan A4; en México se usan tanto Carta como A4, y en EE. UU. y Canadá, Carta." },
+        { "q": "¿Cuántos píxeles se necesitan para imprimir en A4?", "a": "2480 × 3508 px para una impresión nítida a 300 DPI. 1240 × 1754 px (150 DPI) bastan para borradores." }
       ]
     },
     "ascii": {
@@ -1179,18 +864,9 @@
         "UTF-8 codifica estos 128 caracteres exactamente igual que ASCII, así que todo archivo ASCII es también UTF-8 válido."
       ],
       "faq": [
-        {
-          "q": "¿Cuál es el código ASCII de la A?",
-          "a": "La A mayúscula es 65 en decimal, 0x41 en hexadecimal y 1000001 en binario. La a minúscula es 97 (0x61)."
-        },
-        {
-          "q": "¿Cuál es el código ASCII del espacio?",
-          "a": "32 en decimal, 0x20 en hexadecimal."
-        },
-        {
-          "q": "¿Qué diferencia hay entre LF y CR?",
-          "a": "LF (10, salto de línea) inicia una línea nueva en Linux y macOS. Los archivos de texto de Windows terminan las líneas con CR LF (13 y luego 10)."
-        }
+        { "q": "¿Cuál es el código ASCII de la A?", "a": "La A mayúscula es 65 en decimal, 0x41 en hexadecimal y 1000001 en binario. La a minúscula es 97 (0x61)." },
+        { "q": "¿Cuál es el código ASCII del espacio?", "a": "32 en decimal, 0x20 en hexadecimal." },
+        { "q": "¿Qué diferencia hay entre LF y CR?", "a": "LF (10, salto de línea) inicia una línea nueva en Linux y macOS. Los archivos de texto de Windows terminan las líneas con CR LF (13 y luego 10)." }
       ]
     }
   },
@@ -1451,7 +1127,7 @@
           },
           {
             "q": "¿Cuál es el navegador más usado en China?",
-            "a": "En los datos de StatCounter de {date}, {CNTop} lidera en China con {CNV}. Los navegadores locales como UC, 360 y QQ tienen allí una cuota mucho mayor que en cualquier otro lugar de la tabla."
+            "a": "En los datos de StatCounter de {date}, {CNTop} lidera en China con {CNV}. Los navegadores locales como UC y 360 tienen allí una cuota mucho mayor que en cualquier otro lugar de la tabla."
           },
           {
             "q": "¿Es esto una cuota de usuarios?",

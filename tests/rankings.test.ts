@@ -90,3 +90,21 @@ describe("share table values", () => {
     expect(flat.rows[0][3].text).toBe("0.0");
   });
 });
+
+describe("share table gaps", () => {
+  it("shows no change for a name not listed a year ago, and sorts it last", () => {
+    const table = rankingTable("en", "browser-market-share", [["1", "New", null, 3.2, ...RANKING_REGIONS.map(() => 1)]]);
+    expect(table.rows[0][3].text).toBe("—");
+    expect(table.rows[0][3].sort).toBe(Number.NEGATIVE_INFINITY);
+  });
+  it("marks a model with no company", () => {
+    const table = rankingTable("en", "ai-usage", [[1, "Mystery", "", 10, 1, 1]]);
+    expect(table.rows[0][2].text).toBe("—");
+  });
+  it("does not rank OpenRouter's stealth namespace as a company", () => {
+    const names = (rows as unknown as Record<string, (string | number)[][]>)["ai-companies"].map((row) => row[1]);
+    expect(names).not.toContain("Stealth");
+    const usage = (rows as unknown as Record<string, (string | number)[][]>)["ai-usage"].map((row) => String(row[1]));
+    for (const name of usage) expect(name).not.toMatch(/-\d{8}$/);
+  });
+});
