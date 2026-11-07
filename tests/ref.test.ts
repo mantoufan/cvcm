@@ -80,6 +80,14 @@ describe("reference: mannequins and footer entries", () => {
     expect(ld.dateModified).toBe(REF_UPDATED["standing-pose"]);
     expect(ld.image[0].contentUrl).toBe("https://cv.cm/covers/ref/standing-pose-front-900.webp");
     expect(ld.image[0].license).toContain("publicdomain/zero");
+    // Google image-metadata: all four recommended fields on every mannequin image of every entry.
+    for (const id of Object.keys(REF_MANNEQUINS) as RefId[]) {
+      const objects = (refArticleJsonLd("en", id) as { image: { contentUrl: string }[] }).image.filter((item) => item.contentUrl.startsWith("https://cv.cm/covers/ref/"));
+      expect(objects.length, id).toBe(REF_MANNEQUINS[id]!.length);
+      for (const image of objects) {
+        for (const key of ["creator", "copyrightNotice", "license", "acquireLicensePage"]) expect(image, `${id} ${key}`).toHaveProperty(key);
+      }
+    }
   });
 
   it("dates every entry that has mannequins", () => {
@@ -306,9 +314,8 @@ describe("reference: page HTML and SEO", () => {
         expect(html).toContain('<p class="ref-note">');
         if (photo.model) expect(html).toContain(photo.model.replace(/&/g, "&amp;"));
       }
-      const ld = refArticleJsonLd("en", withPhotos) as { image: { contentUrl: string; acquireLicensePage: string }[] };
-      expect(ld.image[0].contentUrl).toBe(`https://s1.mtf6.com/${photo.img}_c_w_600_ext_jpg.webp`);
-      expect(ld.image[0]).not.toHaveProperty("acquireLicensePage");
+      // Third-party photos carry no rights claims: they never appear in the structured data.
+      expect(JSON.stringify(refArticleJsonLd("en", withPhotos))).not.toContain("s1.mtf6.com");
     }
     if (without) {
       const html = refPageHtml("en", without);

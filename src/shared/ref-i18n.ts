@@ -131,6 +131,14 @@ function photosHtml(locale: Locale, id: RefId): string {
 
 const CC0_URL = "https://creativecommons.org/publicdomain/zero/1.0/";
 const SHISEI_URL = "https://github.com/wquguru/shisei";
+/** Rights metadata for the Shisei line art: CC0, licence page pinned to the commit the files came from (docs/ref-mannequins.md). */
+const SHISEI_IMAGE_META = {
+  creator: { "@type": "Person", name: "wquguru", url: "https://github.com/wquguru" },
+  creditText: "Shisei",
+  copyrightNotice: "Shisei by wquguru, dedicated to the public domain under CC0 1.0",
+  license: CC0_URL,
+  acquireLicensePage: `${SHISEI_URL}/tree/26522a708c77088eda4631327b15d8d05f6281c0`,
+} as const;
 
 function angleLabel(ui: RefUi, angle: RefAngle): string {
   const labels: Record<RefAngle, string> = {
@@ -243,7 +251,7 @@ export function refFaqJsonLd(locale: Locale, id: RefId | null): Record<string, u
   };
 }
 
-/** Article (with the look as a DefinedTerm and its photos as credited ImageObjects) for an entry; CollectionPage + ItemList for the hub. */
+/** Article (with the look as a DefinedTerm and its CC0 mannequins as ImageObjects; third-party photos are left out) for an entry; CollectionPage + ItemList for the hub. */
 export function refArticleJsonLd(locale: Locale, id: RefId | null): Record<string, unknown> {
   if (!id) {
     const hub = refHub(locale);
@@ -270,18 +278,11 @@ export function refArticleJsonLd(locale: Locale, id: RefId | null): Record<strin
   const mannequins = (REF_MANNEQUINS[id] ?? []).map((angle) => ({
     "@type": "ImageObject",
     contentUrl: `${ORIGIN}${refMannequinUrl(id, angle, 900)}`,
-    creditText: "Shisei",
-    license: CC0_URL,
+    ...SHISEI_IMAGE_META,
   }));
-  const photos = refPhotos(locale, id).map((photo) => {
-    const credit = [photo.photo, photo.model].filter(Boolean).join(" / ");
-    return {
-      "@type": "ImageObject",
-      contentUrl: refImageUrl(photo, 600),
-      ...(credit ? { creditText: credit } : {}),
-    };
-  });
-  const images = [...mannequins, ...photos];
+  // Only cv.cm's own CC0 mannequins are article images. Third-party mfan8 photos stay out of the
+  // structured data: we can't state their rights, so we don't offer them as this page's images.
+  const images = mannequins;
   return {
     "@context": "https://schema.org",
     "@type": "Article",
