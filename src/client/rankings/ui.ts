@@ -1,4 +1,5 @@
 import { h } from "../dom";
+import { t } from "../i18n";
 import { linkList } from "../links";
 import type { Locale } from "../../shared/locale";
 import { appHref, datasetHref, rankingHref } from "../../shared/path";
@@ -56,6 +57,10 @@ export function mountRankingHub(host: HTMLElement, locale: Locale): void {
           return { href: datasetHref(locale, id), name: name.name, blurb: name.blurb, meta: datasetLinkMeta(locale, id), nav: `dataset-${id}` };
         })),
       ),
+    ),
+    h("section", { class: "wall" },
+      h("h2", null, hub.makeYourOwn),
+      linkList([{ href: appHref(locale, "tier-list"), name: t("tools.tier-list.name"), blurb: t("tools.tier-list.blurb"), nav: "tier-list" }]),
     ),
     h("section", { class: "quiz-about" }, ...hub.about.map((p) => h("p", null, p))),
     faq(locale, null),

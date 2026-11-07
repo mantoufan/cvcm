@@ -106,6 +106,7 @@ Browser tools plus a tiny cloud clipboard.
 - **Flash player** / Flash 播放器 — open a .swf file with Ruffle, no plugin. [Open](https://cv.cm/en/flash-player/)
 - **Factor calculator** / 分解质因数 — prime check, factorization, all factors. [Open](https://cv.cm/en/factors/)
 - **LCM and GCF calculator** / 最小公倍数和最大公约数 — with prime factors and Euclid's steps. [Open](https://cv.cm/en/lcm-gcf/)
+- **Tier list maker** / 从夯到拉排行榜 — drag names or local pictures into rows, save a PNG. [Open](https://cv.cm/en/tier-list/)
 - **Touch screen test** / 触摸屏测试 — multi-touch count, pressure, dead-zone grid. [Open](https://cv.cm/en/touch-test/)
 - **Scientific calculator** / 科学计算器 — trig, logs, powers, %, DEG/RAD, history. [Open](https://cv.cm/en/calculator/)
 - **Online notepad** / 在线记事本 — saves in the browser as you type, .txt open/download. [Open](https://cv.cm/en/notepad/)

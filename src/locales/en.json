@@ -525,7 +525,9 @@
     "titleRomEmulator": "ROM emulator online — GBA, NES, SNES, Mega Drive — cv.cm",
     "descRomEmulator": "Free online ROM emulator: open your own GBA, NES, SNES, Game Boy or Mega Drive ROM. The console is detected from the file. No install, with gamepad and touch controls. Nothing is uploaded.",
     "titleFlashPlayer": "Flash player online — SWF player, no plugin — cv.cm",
-    "descFlashPlayer": "Free online Flash player and SWF player: open a .swf file with Ruffle, an open-source Flash emulator. No plugin and no install. The file stays in this tab and is not uploaded."
+    "descFlashPlayer": "Free online Flash player and SWF player: open a .swf file with Ruffle, an open-source Flash emulator. No plugin and no install. The file stays in this tab and is not uploaded.",
+    "titleTierList": "Tier list maker — free online ranking chart with pictures — cv.cm",
+    "descTierList": "Make a tier list online for free: type names or add pictures, drag them into S to D or your own rows, then download a PNG. No sign-up. Pictures stay on your device."
   },
   "brand": "cv.cm",
   "nav": {
@@ -3250,6 +3252,10 @@
     "flash-player": {
       "name": "Flash player",
       "blurb": "Open a Flash .swf file without a plugin."
+    },
+    "tier-list": {
+      "name": "Tier list maker",
+      "blurb": "Drag names or pictures into ranked rows, save a PNG."
     }
   },
   "watermark": {
@@ -6526,6 +6532,18 @@
       "a4": "Most older ActionScript 1 and 2 files do. ActionScript 3 support in Ruffle is still incomplete, so some newer games fail to start or misbehave.",
       "q5": "Why is there no sound?",
       "a5": "Browsers block audio that plays by itself. Click the picture once and the sound starts."
+    },
+    "tier-list": {
+      "q1": "What is a tier list?",
+      "a1": "A chart that sorts things into ranked rows instead of giving each one a number, usually S at the top and D at the bottom. It is popular for games, anime, food and anything people like to argue about.",
+      "q2": "How do I make a tier list here?",
+      "a2": "Type one item per line or add pictures, then drag each item into a row. On a phone or with a keyboard, tap or press Enter on an item, then choose Put here on a row. Download PNG saves the chart.",
+      "q3": "Are my pictures uploaded?",
+      "a3": "No. Pictures stay in this page, and the PNG is drawn in your browser. Names and rows are remembered on this device, but pictures are not, so add them again after you reload the page.",
+      "q4": "Can I change the rows?",
+      "a4": "Yes. Click a row name to rename it, change its colour, move it up or down, add rows or remove them, up to 12. Items in a removed row go back to the unranked pool.",
+      "q5": "What is the 夯 to 拉 preset?",
+      "a5": "A Chinese internet meme version of a tier list. The rows run from 夯 (the very best) through 顶级 (top), 人上人 (above average) and NPC (forgettable) to 拉完了 (the worst)."
     }
   },
   "qr": {
@@ -10589,6 +10607,52 @@
     "back": "All tools",
     "privacyNote": "Open a .swf file in this tab with Ruffle. No Flash plugin. Nothing is uploaded.",
     "games": "Free Flash games"
+  },
+  "tierList": {
+    "title": "Tier list maker",
+    "back": "All tools",
+    "privacyNote": "Pictures stay in this page and the PNG is made in your browser. Nothing is uploaded.",
+    "titleField": "Chart title",
+    "titlePlaceholder": "For example: best snacks",
+    "presetLabel": "Rows",
+    "preset": {
+      "hang": "夯 to 拉 (Chinese meme)",
+      "hangRows": "夯|顶级|人上人|NPC|拉完了",
+      "sabcd": "S, A, B, C, D",
+      "sabcdRows": "S|A|B|C|D",
+      "feeling": "Love it to hate it",
+      "feelingRows": "Love it|Like it|It's fine|Not for me|Hate it"
+    },
+    "rowName": "Row name",
+    "rowColor": "Row colour",
+    "rowUp": "Move row up",
+    "rowDown": "Move row down",
+    "rowRemove": "Remove row",
+    "addRow": "Add row",
+    "newRow": "New",
+    "clear": "Move all back to unranked",
+    "startOver": "Start over",
+    "startOverConfirm": "Press again to confirm",
+    "pool": "Unranked",
+    "entry": "Add items, one per line",
+    "entryPlaceholder": "One item per line",
+    "add": "Add items",
+    "addPictures": "Add pictures",
+    "deleteItem": "Delete selected item",
+    "placeHere": "Put here",
+    "picture": "Picture",
+    "pickedHint": "Selected: {name}. Choose Put here on a row, or tap it again to cancel.",
+    "count": "{n} of {max} items.",
+    "full": "That is the limit: {max} items.",
+    "hint": "Drag items between rows, or tap one and choose Put here. You can also paste or drop pictures anywhere on the tool.",
+    "download": "Download PNG",
+    "copy": "Copy as text",
+    "copied": "Copied",
+    "copyFailed": "Copy failed",
+    "exportFailed": "Could not make the PNG. Remove any picture that does not show and try again.",
+    "separator": ", ",
+    "sample": "Pizza\nBurger\nSushi\nTacos\nRamen\nSalad",
+    "picturesNote": "Pictures are not saved: they are cleared when you reload or leave, so download the PNG first."
   },
   "ranking": {
     "ai-models": {

@@ -525,7 +525,9 @@
     "titleRomEmulator": "在线游戏模拟器 — GBA 模拟器、FC 模拟器，打开 ROM — cv.cm",
     "descRomEmulator": "免费在线游戏模拟器：打开你自己的 GBA、FC、SFC、Game Boy 或 Mega Drive ROM，自动识别主机。不用安装，支持手柄和触屏，文件不上传。",
     "titleFlashPlayer": "Flash Player 在线版 — SWF 播放器，不用装插件 — cv.cm",
-    "descFlashPlayer": "免费在线 Flash 播放器和 SWF 播放器：用开源 Flash 模拟器 Ruffle 打开 .swf 文件，不用装插件，也不用安装软件。文件只留在这个标签页，不上传。"
+    "descFlashPlayer": "免费在线 Flash 播放器和 SWF 播放器：用开源 Flash 模拟器 Ruffle 打开 .swf 文件，不用装插件，也不用安装软件。文件只留在这个标签页，不上传。",
+    "titleTierList": "从夯到拉排行榜生成器 — 在线 Tier List 制作，可加图片 — cv.cm",
+    "descTierList": "在线免费制作从夯到拉排行榜和 Tier List：输入名字或添加图片，拖到夯、顶级、人上人、NPC、拉完了或自定义等级，一键下载 PNG。无需注册，图片不上传。"
   },
   "brand": "cv.cm",
   "nav": {
@@ -1141,6 +1143,10 @@
     "flash-player": {
       "name": "Flash 播放器",
       "blurb": "不装插件，直接打开 .swf 文件。"
+    },
+    "tier-list": {
+      "name": "从夯到拉排行榜",
+      "blurb": "把名字或图片拖进等级，生成 Tier List 图片。"
     }
   },
   "watermark": {
@@ -4417,6 +4423,18 @@
       "a4": "大多数较老的 ActionScript 1、2 文件可以。Ruffle 对 ActionScript 3 的支持还不完整，一些较新的游戏可能打不开或运行异常。",
       "q5": "为什么没有声音？",
       "a5": "浏览器会拦住自动播放的声音。点一下画面，声音就会出来。"
+    },
+    "tier-list": {
+      "q1": "从夯到拉是什么意思？",
+      "a1": "这是一种网络流行的排行榜格式，也就是中文版 Tier List。等级从高到低是夯、顶级、人上人、NPC、拉完了：夯代表最好，NPC 代表普通没存在感，拉完了代表最差。",
+      "q2": "怎么制作排行榜？",
+      "a2": "每行输入一项或添加图片，再把它们拖到对应等级。手机或键盘操作时，点一下某一项（或按回车），再点目标等级里的“放到这里”。最后点“下载 PNG”保存。",
+      "q3": "图片会上传吗？",
+      "a3": "不会。图片只留在当前页面，PNG 也在浏览器里生成。文字和等级会保存在这台设备上，图片不保存，刷新页面后需要重新添加。",
+      "q4": "可以改等级吗？",
+      "a4": "可以。点等级名称直接修改，还能换颜色、上下移动、增加或删除等级，最多 12 行。删除某个等级后，里面的内容会回到“待排名”。",
+      "q5": "除了从夯到拉，还有别的模板吗？",
+      "a5": "有。可以切换成常见的 S、A、B、C、D，或者“超爱到讨厌”。切换后已排好的内容会留在原来的行里；如果行数变少，多出来的内容回到“待排名”。"
     }
   },
   "qr": {
@@ -10589,6 +10607,52 @@
     "back": "全部工具",
     "privacyNote": "用 Ruffle 在这个标签页打开 .swf 文件，不用 Flash 插件。文件不上传。",
     "games": "免费 Flash 游戏"
+  },
+  "tierList": {
+    "title": "从夯到拉排行榜生成器（Tier List）",
+    "back": "全部工具",
+    "privacyNote": "图片只留在当前页面，PNG 在浏览器里生成，不会上传任何内容。",
+    "titleField": "排行榜标题",
+    "titlePlaceholder": "例如：零食排行榜",
+    "presetLabel": "等级模板",
+    "preset": {
+      "hang": "从夯到拉",
+      "hangRows": "夯|顶级|人上人|NPC|拉完了",
+      "sabcd": "S、A、B、C、D",
+      "sabcdRows": "S|A|B|C|D",
+      "feeling": "超爱到讨厌",
+      "feelingRows": "超爱|喜欢|还行|不太行|讨厌"
+    },
+    "rowName": "等级名称",
+    "rowColor": "等级颜色",
+    "rowUp": "上移等级",
+    "rowDown": "下移等级",
+    "rowRemove": "删除等级",
+    "addRow": "增加等级",
+    "newRow": "新等级",
+    "clear": "全部移回待排名",
+    "startOver": "重新开始",
+    "startOverConfirm": "再点一次确认",
+    "pool": "待排名",
+    "entry": "添加内容，每行一项",
+    "entryPlaceholder": "每行一项",
+    "add": "添加内容",
+    "addPictures": "添加图片",
+    "deleteItem": "删除选中项",
+    "placeHere": "放到这里",
+    "picture": "图片",
+    "pickedHint": "已选中：{name}。点目标等级里的“放到这里”，再点一次可取消。",
+    "count": "共 {n} 项，上限 {max} 项。",
+    "full": "已达上限：{max} 项。",
+    "hint": "可以直接拖动，也可以点一下再选“放到这里”。图片还能直接粘贴或拖进工具区。",
+    "download": "下载 PNG",
+    "copy": "复制为文字",
+    "copied": "已复制",
+    "copyFailed": "复制失败",
+    "exportFailed": "PNG 生成失败。请删除显示异常的图片后重试。",
+    "separator": "、",
+    "sample": "奶茶\n火锅\n烧烤\n螺蛳粉\n麻辣烫\n沙拉",
+    "picturesNote": "图片不会保存，刷新或离开页面后就会清空，请先下载 PNG。"
   },
   "ranking": {
     "ai-models": {

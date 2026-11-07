@@ -826,6 +826,12 @@ export const TOOL_LOADERS: Record<ToolId, ToolLoader> = {
     m.mountLcmGcf(host);
     return m.unmountLcmGcf;
   },
+  "tier-list": async (host, ctx) => {
+    const m = await import("./tier-list/ui");
+    if (!ctx.alive()) return undefined;
+    m.mountTierList(host);
+    return m.unmountTierList;
+  },
   "calculator": async (host, ctx) => {
     const m = await import("./calculator/ui");
     if (!ctx.alive()) return undefined;
