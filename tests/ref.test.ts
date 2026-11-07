@@ -82,7 +82,7 @@ describe("reference: mannequins and footer entries", () => {
     expect(ld.image[0].license).toContain("publicdomain/zero");
     // Google image-metadata: all four recommended fields on every mannequin image of every entry.
     for (const id of Object.keys(REF_MANNEQUINS) as RefId[]) {
-      const objects = (refArticleJsonLd("en", id) as { image: unknown[] }).image.filter((item) => typeof item === "object");
+      const objects = (refArticleJsonLd("en", id) as { image: { contentUrl: string }[] }).image.filter((item) => item.contentUrl.startsWith("https://cv.cm/covers/ref/"));
       expect(objects.length, id).toBe(REF_MANNEQUINS[id]!.length);
       for (const image of objects) {
         for (const key of ["creator", "copyrightNotice", "license", "acquireLicensePage"]) expect(image, `${id} ${key}`).toHaveProperty(key);
@@ -314,12 +314,8 @@ describe("reference: page HTML and SEO", () => {
         expect(html).toContain('<p class="ref-note">');
         if (photo.model) expect(html).toContain(photo.model.replace(/&/g, "&amp;"));
       }
-      // Third-party photos carry no rights claims: plain URLs, never ImageObjects.
-      const ld = refArticleJsonLd("en", withPhotos) as { image: unknown[] };
-      expect(ld.image).toContain(`https://s1.mtf6.com/${photo.img}_c_w_600_ext_jpg.webp`);
-      for (const item of ld.image) {
-        if (typeof item === "object") expect(String((item as { contentUrl?: string }).contentUrl)).not.toContain("s1.mtf6.com");
-      }
+      // Third-party photos carry no rights claims: they never appear in the structured data.
+      expect(JSON.stringify(refArticleJsonLd("en", withPhotos))).not.toContain("s1.mtf6.com");
     }
     if (without) {
       const html = refPageHtml("en", without);

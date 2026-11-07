@@ -251,7 +251,7 @@ export function refFaqJsonLd(locale: Locale, id: RefId | null): Record<string, u
   };
 }
 
-/** Article (with the look as a DefinedTerm, mannequins as CC0 ImageObjects, photos as plain image URLs) for an entry; CollectionPage + ItemList for the hub. */
+/** Article (with the look as a DefinedTerm and its CC0 mannequins as ImageObjects; third-party photos are left out) for an entry; CollectionPage + ItemList for the hub. */
 export function refArticleJsonLd(locale: Locale, id: RefId | null): Record<string, unknown> {
   if (!id) {
     const hub = refHub(locale);
@@ -280,10 +280,9 @@ export function refArticleJsonLd(locale: Locale, id: RefId | null): Record<strin
     contentUrl: `${ORIGIN}${refMannequinUrl(id, angle, 900)}`,
     ...SHISEI_IMAGE_META,
   }));
-  // Third-party photos are plain URLs, not ImageObjects: we don't know who holds their rights or on
-  // what terms, so we assert none. Their credit stays visible in each <figcaption>.
-  const photos = refPhotos(locale, id).map((photo) => refImageUrl(photo, 600));
-  const images = [...mannequins, ...photos];
+  // Only cv.cm's own CC0 mannequins are article images. Third-party mfan8 photos stay out of the
+  // structured data: we can't state their rights, so we don't offer them as this page's images.
+  const images = mannequins;
   return {
     "@context": "https://schema.org",
     "@type": "Article",
