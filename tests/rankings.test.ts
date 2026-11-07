@@ -107,6 +107,13 @@ describe("share table gaps", () => {
     expect(table.rows[0][3].text).toBe("—");
     expect(table.rows[0][3].sort).toBe(Number.NEGATIVE_INFINITY);
   });
+  it("shows a dash for a new coin's missing change and volume", () => {
+    const table = rankingTable("en", "crypto-market-cap", [[1, "New", "NEW", 0.5, null, null, 1000, null]]);
+    expect(table.rows[0][4].text).toBe("—");
+    expect(table.rows[0][5].text).toBe("—");
+    expect(table.rows[0][7].text).toBe("—");
+    expect(table.rows[0][6].text).toContain("1");
+  });
   it("marks a model with no company", () => {
     const table = rankingTable("en", "ai-usage", [[1, "Mystery", "", 10, 1]]);
     expect(table.rows[0][2].text).toBe("—");

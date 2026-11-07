@@ -102,7 +102,8 @@ export function dataTable(locale: Locale, page: { label: string; caption: string
       const sorted = [...rows].sort((a, b) => {
         const x = a.cells[index].sort;
         const y = b.cells[index].sort;
-        const diff = typeof x === "number" && typeof y === "number" ? x - y : collator.compare(String(x), String(y));
+        // Equal first: two missing values (-Infinity) would subtract to NaN.
+        const diff = x === y ? 0 : typeof x === "number" && typeof y === "number" ? x - y : collator.compare(String(x), String(y));
         return diff * dir || a.index - b.index;
       });
       body.append(...sorted.map((r) => r.el));

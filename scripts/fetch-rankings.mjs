@@ -354,6 +354,19 @@ async function currencies() {
   return { asOf: latest.date, monthAgo: monthAgo.date, yearAgo: yearAgo.date, rows: rows.map((row, i) => [i + 1, ...row]) };
 }
 
+/** The downloadable file for a table, from its rows and summary. CoinMarketCap rows are never written (NO_CSV). */
+const NO_CSV = new Set(["crypto-market-cap"]);
+function csvOf(id, table, set) {
+  if (ARENA[id]) return toCsv(["rank", "model", "organization", "license", "score", "votes"], table, SOURCES.arena);
+  // The citation OpenRouter asks for when its data is republished.
+  const cite = [`OpenRouter (openrouter.ai/rankings), as of ${set.citedAt ?? set.asOf}`, "CC BY 4.0"];
+  if (id === "ai-usage") return toCsv(["rank", "model", "author", "tokens", "share_of_public_tokens_percent"], table, cite);
+  if (id === "ai-companies") return toCsv(["rank", "company", "tokens", "share_of_public_tokens_percent", "models_listed"], table, cite);
+  if (id === "currency-strength") return toCsv(["rank", "currency", "per_usd", "change_vs_usd_1_month_percent", "change_vs_usd_1_year_percent", "as_of", "month_ago", "year_ago"], table.map((row) => [...row, set.asOf, set.monthAgo, set.yearAgo]), ["European Central Bank euro reference rates (ecb.europa.eu)", "Reuse with source named"]);
+  if (id === "commodity-prices") return toCsv(["rank", "commodity", "unit", "price_usd", "change_1_month_percent", "change_12_months_percent", "month"], table.map((row) => [...row, set.asOf]), [PINK_SHEET, "CC BY 4.0"]);
+  return toCsv(["rank", "name", `world_${set.yearAgo}`, ...REGIONS.map((r) => (r === "ww" ? `world_${set.asOf}` : r))], table, SOURCES.statcounter);
+}
+
 // --- Write ---------------------------------------------------------------------------------------------------------
 
 const rows = {};
@@ -402,19 +415,14 @@ for (const [id, config] of Object.entries(ARENA)) {
     const [leadOrg, leadCount] = [...tally.entries()].sort((a, b) => b[1] - a[1])[0];
     rows[id] = set.rows;
     meta.sets[id] = { asOf: set.asOf, rows: set.rows.length, top: topOf(set.rows, 1, 4), leadOrg, leadCount };
-    csv[id] = toCsv(["rank", "model", "organization", "license", "score", "votes"], set.rows, SOURCES.arena);
   });
 }
 await attempt(["ai-usage", "ai-companies"], async () => {
   const or = await openRouter();
-  // The citation OpenRouter asks for when its data is republished.
-  const cite = [`OpenRouter (openrouter.ai/rankings), as of ${or.citedAt}`, "CC BY 4.0"];
   rows["ai-usage"] = or.usage.rows;
-  meta.sets["ai-usage"] = { asOf: or.usage.asOf, rows: or.usage.rows.length, top: topOf(or.usage.rows, 1, 4) };
-  csv["ai-usage"] = toCsv(["rank", "model", "author", "tokens", "share_of_public_tokens_percent"], or.usage.rows, cite);
+  meta.sets["ai-usage"] = { asOf: or.usage.asOf, citedAt: or.citedAt, rows: or.usage.rows.length, top: topOf(or.usage.rows, 1, 4) };
   rows["ai-companies"] = or.authors.rows;
-  meta.sets["ai-companies"] = { asOf: or.authors.asOf, rows: or.authors.rows.length, top: topOf(or.authors.rows, 1, 3) };
-  csv["ai-companies"] = toCsv(["rank", "company", "tokens", "share_of_public_tokens_percent", "models_listed"], or.authors.rows, cite);
+  meta.sets["ai-companies"] = { asOf: or.authors.asOf, citedAt: or.citedAt, rows: or.authors.rows.length, top: topOf(or.authors.rows, 1, 3) };
 });
 await attempt(["crypto-market-cap"], async () => {
   const set = await crypto();
@@ -425,17 +433,15 @@ await attempt(["currency-strength"], async () => {
   const set = await currencies();
   rows["currency-strength"] = set.rows;
   meta.sets["currency-strength"] = { asOf: set.asOf, monthAgo: set.monthAgo, yearAgo: set.yearAgo, rows: set.rows.length, top: topOf(set.rows, 1, 4), bottom: set.rows.slice(-3).reverse().map((r) => [r[1], r[4]]) };
-  csv["currency-strength"] = toCsv(["rank", "currency", "per_usd", "change_vs_usd_1_month_percent", "change_vs_usd_1_year_percent", "as_of", "month_ago", "year_ago"], set.rows.map((row) => [...row, set.asOf, set.monthAgo, set.yearAgo]), ["European Central Bank euro reference rates (ecb.europa.eu)", "Reuse with source named"]);
 });
 const month = lastMonth();
 // The Pink Sheet comes out early each month: nothing to ask for until a new month is due.
-if (!process.env.FORCE_COMMODITIES && !process.env.FORCE_SHARE && oldMeta.sets["commodity-prices"]?.asOf === month && oldRows["commodity-prices"]) keep("commodity-prices");
+if (!process.env.FORCE_COMMODITIES && oldMeta.sets["commodity-prices"]?.asOf === month && oldRows["commodity-prices"]) keep("commodity-prices");
 else {
   await attempt(["commodity-prices"], async () => {
     const set = await commodities();
     rows["commodity-prices"] = set.rows;
     meta.sets["commodity-prices"] = { asOf: set.asOf, rows: set.rows.length, top: topOf(set.rows, 1, 5), bottom: set.rows.slice(-3).reverse().map((r) => [r[1], r[5]]) };
-    csv["commodity-prices"] = toCsv(["rank", "commodity", "unit", "price_usd", "change_1_month_percent", "change_12_months_percent", "month"], set.rows.map((row) => [...row, set.asOf]), [PINK_SHEET, "CC BY 4.0"]);
   });
 }
 
@@ -450,7 +456,6 @@ for (const [id, spec] of Object.entries(SHARE)) {
     const set = await shareTable(spec, month);
     rows[id] = set.rows;
     meta.sets[id] = { asOf: set.asOf, yearAgo: set.yearAgo, rows: set.rows.length, top: topOf(set.rows, 1, 3), leaders: set.leaders };
-    csv[id] = toCsv(["rank", "name", `world_${set.yearAgo}`, ...REGIONS.map((r) => (r === "ww" ? `world_${set.asOf}` : r))], set.rows, SOURCES.statcounter);
     console.log(id, set.asOf, set.rows.length, "rows");
   });
 }
@@ -461,8 +466,13 @@ for (const [id, set] of Object.entries(meta.sets)) {
   const same = oldMeta.sets[id]?.updated && oldMeta.sets[id].asOf === set.asOf && JSON.stringify(oldRows[id]) === JSON.stringify(rows[id]);
   set.updated = same ? oldMeta.sets[id].updated : meta.updated;
   // Same data: the file stays, so a re-run with only a newer citation time makes no commit.
+  if (NO_CSV.has(id)) continue;
+  // Built from the rows every run, kept tables too, so a format change reaches every file at once.
+  csv[id] = csvOf(id, rows[id], set);
+  // OpenRouter's citation time changes on every call; it alone is not a change worth a commit.
   const file = join(root, "public/rankings", `${id}.csv`);
-  if (same && csv[id] && existsSync(file) && readFileSync(file, "utf8") === csv[id]) delete csv[id];
+  const plain = (text) => text.replace(/as of [0-9T:.\-]+Z/g, "as of");
+  if (same && existsSync(file) && plain(readFileSync(file, "utf8")) === plain(csv[id])) delete csv[id];
 }
 meta.updated = Object.values(meta.sets).map((set) => set.updated).sort().at(-1);
 writeFileSync(rowsPath, `${JSON.stringify(rows)}\n`);

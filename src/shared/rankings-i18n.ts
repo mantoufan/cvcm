@@ -236,7 +236,7 @@ export function rankingTable(locale: Locale, id: RankingId, rows: unknown[]): Da
         rank(place),
         text(name),
         num(percent(locale, world), world),
-        change === null ? num(NO_VALUE, NOT_LISTED) : num(`${sign}${plain(locale, Math.abs(change), 1)}`, change),
+        maybe(change, (v) => `${sign}${plain(locale, Math.abs(v), 1)}`),
         ...regions.map((value) => num(percent(locale, value), value)),
       ];
     }),
