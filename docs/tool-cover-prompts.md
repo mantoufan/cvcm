@@ -253,3 +253,9 @@ GPT Image 2.5 on kie.ai (Codex at its usage limit until 2026-11-10), refs `click
 
 - `rom-emulator`: she holds a chunky pastel pink generic handheld console with a cream screen showing soft pixel blocks and a pixel heart; two blank cartridges and a pink wired gamepad on the desk.
 - `flash-player`: she clicks a small pink mouse beside a rounded cream retro monitor showing a pink bouncing ball with a fading arc, three film-frame squares and a blank play triangle; a blank pink floppy-like disk on the desk.
+
+## Tier list maker (2026-11-07)
+
+GPT Image 2.5 on kie.ai, refs `dice-sweet.jpg` + `wheel-sweet.jpg`. Same character and room, no words, letters, numerals, logo or watermark. Save `public/covers/tier-list-sweet.jpg`, `sips -z 720 1280`.
+
+- `tier-list`: she drags a small blank square card with one finger into a big cream board with five stacked rows, each starting with a blank coloured block from coral red through orange and yellow to white; blank pastel cards with tiny hearts and stars already sit in the rows.

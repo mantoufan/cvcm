@@ -1,0 +1,85 @@
+{
+  "meta": {
+    "titleTierList": "Tạo tier list online — bảng xếp hạng miễn phí, thêm ảnh — cv.cm",
+    "descTierList": "Tạo tier list miễn phí: nhập tên hoặc thêm ảnh, kéo vào hàng S đến D hay hàng tự đặt rồi tải PNG. Không cần đăng ký, ảnh không bị tải lên."
+  },
+  "tools": {
+    "tier-list": {
+      "name": "Tạo tier list",
+      "blurb": "Kéo tên hoặc ảnh vào từng hàng, lưu thành PNG."
+    }
+  },
+  "faq": {
+    "tier-list": {
+      "q1": "Tier list là gì?",
+      "a1": "Là bảng chia mọi thứ vào các hàng xếp hạng thay vì chấm điểm, thường S ở trên cùng và D ở dưới cùng. Rất hợp để xếp game, anime, đồ ăn và mọi thứ hay gây tranh cãi.",
+      "q2": "Làm tier list ở đây thế nào?",
+      "a2": "Nhập mỗi dòng một mục hoặc thêm ảnh, rồi kéo từng mục vào một hàng. Trên điện thoại hoặc bằng bàn phím, hãy chạm (hoặc nhấn Enter) vào mục rồi chọn Đặt vào đây ở hàng muốn xếp. Nhấn Tải PNG để lưu bảng.",
+      "q3": "Ảnh của tôi có bị tải lên không?",
+      "a3": "Không. Ảnh chỉ nằm trong trang này và PNG được tạo ngay trên trình duyệt. Tên và các hàng được nhớ trên thiết bị này, còn ảnh thì không, nên hãy thêm lại ảnh sau khi tải lại trang.",
+      "q4": "Tôi có đổi được các hàng không?",
+      "a4": "Có. Nhấp vào tên hàng để đổi tên, đổi màu, di chuyển lên xuống, thêm hoặc xóa hàng, tối đa 12 hàng. Các mục trong hàng bị xóa sẽ quay về khu chưa xếp hạng.",
+      "q5": "Mẫu 夯 đến 拉 là gì?",
+      "a5": "Là phiên bản tier list theo meme internet Trung Quốc. Các hàng đi từ 夯 (tốt nhất) qua 顶级 (đỉnh), 人上人 (trên mức trung bình) và NPC (dễ bị quên) đến 拉完了 (tệ nhất)."
+    }
+  },
+  "ui": {
+    "tierList": {
+      "title": "Tạo tier list online (bảng xếp hạng)",
+      "back": "Tất cả công cụ",
+      "privacyNote": "Ảnh chỉ nằm trong trang này và PNG được tạo trên trình duyệt. Không có gì được tải lên.",
+      "titleField": "Tiêu đề bảng",
+      "titlePlaceholder": "Ví dụ: đồ ăn vặt ngon nhất",
+      "presetLabel": "Mẫu hàng",
+      "preset": {
+        "hang": "夯 đến 拉 (meme Trung Quốc)",
+        "hangRows": "夯|顶级|人上人|NPC|拉完了",
+        "sabcd": "S / A / B / C / D",
+        "sabcdRows": "S|A|B|C|D",
+        "feeling": "Mê đến ghét",
+        "feelingRows": "Mê tít|Thích|Cũng được|Không hợp|Ghét"
+      },
+      "rowName": "Tên hàng",
+      "rowColor": "Màu hàng",
+      "rowUp": "Đưa hàng lên",
+      "rowDown": "Đưa hàng xuống",
+      "rowRemove": "Xóa hàng",
+      "addRow": "Thêm hàng",
+      "newRow": "Mới",
+      "clear": "Đưa tất cả về chưa xếp hạng",
+      "startOver": "Làm lại từ đầu",
+      "startOverConfirm": "Bấm lần nữa để xác nhận",
+      "pool": "Chưa xếp hạng",
+      "entry": "Thêm mục, mỗi dòng một mục",
+      "entryPlaceholder": "Mỗi dòng một mục",
+      "add": "Thêm mục",
+      "addPictures": "Thêm ảnh",
+      "deleteItem": "Xóa mục đã chọn",
+      "placeHere": "Đặt vào đây",
+      "picture": "Ảnh",
+      "pickedHint": "Đã chọn: {name}. Chọn Đặt vào đây ở một hàng, hoặc chạm lần nữa để hủy.",
+      "count": "{n}/{max} mục.",
+      "full": "Đã đạt giới hạn: {max} mục.",
+      "hint": "Kéo mục giữa các hàng, hoặc chạm vào mục rồi chọn Đặt vào đây. Bạn cũng có thể dán hoặc thả ảnh vào bất kỳ đâu trên công cụ.",
+      "download": "Tải PNG",
+      "copy": "Sao chép dạng văn bản",
+      "copied": "Đã sao chép",
+      "copyFailed": "Sao chép thất bại",
+      "exportFailed": "Không tạo được PNG. Hãy xóa ảnh không hiển thị rồi thử lại.",
+      "separator": ", ",
+      "sample": "Phở\nBánh mì\nBún chả\nCơm tấm\nGỏi cuốn\nTrà sữa",
+      "picturesNote": "Ảnh không được lưu: tải lại hoặc rời trang là ảnh sẽ mất, nên hãy tải PNG về trước."
+    }
+  },
+  "guides": {
+    "tier-list": {
+      "lead": "Xếp hạng mọi thứ theo hàng và lưu bảng thành ảnh. Không có gì được tải lên.",
+      "s1t": "Thêm mục",
+      "s1b": "Nhập mỗi dòng một mục rồi nhấn Thêm mục, hoặc thêm, dán, thả ảnh. Chúng sẽ chờ ở khu Chưa xếp hạng.",
+      "s2t": "Xếp vào các hàng",
+      "s2b": "Kéo từng mục vào một hàng. Trên điện thoại, chạm vào mục rồi chọn Đặt vào đây. Có thể đổi tên, đổi màu hoặc thêm hàng tùy ý.",
+      "s3t": "Lưu bảng",
+      "s3b": "Đặt tiêu đề rồi nhấn Tải PNG, hoặc Sao chép dạng văn bản để dán bảng xếp hạng vào cuộc trò chuyện."
+    }
+  }
+}

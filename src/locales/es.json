@@ -543,7 +543,9 @@
     "titleRomEmulator": "Emulador online de juegos retro — GBA, SNES, NES — cv.cm",
     "descRomEmulator": "Emulador online gratis: abre tu propia ROM de GBA, SNES, NES, Game Boy o Mega Drive. La consola se detecta a partir del archivo. Sin instalar, con mando y controles táctiles. No se sube nada.",
     "titleFlashPlayer": "Flash Player online — reproductor SWF, sin plugin — cv.cm",
-    "descFlashPlayer": "Flash Player y reproductor SWF online gratis: abre un archivo .swf con Ruffle, un emulador de Flash de código abierto. Sin plugin y sin instalar nada. El archivo se queda en esta pestaña y no se sube."
+    "descFlashPlayer": "Flash Player y reproductor SWF online gratis: abre un archivo .swf con Ruffle, un emulador de Flash de código abierto. Sin plugin y sin instalar nada. El archivo se queda en esta pestaña y no se sube.",
+    "titleTierList": "Creador de tier list online — ranking gratis con imágenes — cv.cm",
+    "descTierList": "Crea tu tier list gratis: escribe nombres o añade imágenes, arrástralos de la S a la D o a tus propias filas y descarga un PNG. Sin registro; las imágenes no se suben."
   },
   "brand": "cv.cm",
   "nav": {
@@ -1158,6 +1160,10 @@
     "flash-player": {
       "name": "Flash Player",
       "blurb": "Abre un archivo Flash .swf sin plugin."
+    },
+    "tier-list": {
+      "name": "Creador de tier list",
+      "blurb": "Arrastra nombres o imágenes a filas y guarda un PNG."
     }
   },
   "watermark": {
@@ -4542,6 +4548,18 @@
       "a4": "La mayoría de los archivos antiguos de ActionScript 1 y 2 sí. El soporte de ActionScript 3 en Ruffle aún está incompleto, así que algunos juegos más nuevos pueden no arrancar o funcionar mal.",
       "q5": "¿Por qué no hay sonido?",
       "a5": "Los navegadores bloquean el audio que se reproduce solo. Haz clic una vez en la imagen y empezará el sonido."
+    },
+    "tier-list": {
+      "q1": "¿Qué es una tier list?",
+      "a1": "Un gráfico que ordena cosas en filas por nivel en vez de ponerles nota, normalmente con la S arriba y la D abajo. Es muy popular para videojuegos, anime, comida y cualquier tema que dé pie a debate.",
+      "q2": "¿Cómo hago una tier list aquí?",
+      "a2": "Escribe un elemento por línea o añade imágenes y arrastra cada uno a una fila. En el móvil o con teclado, toca (o pulsa Intro) un elemento y elige Poner aquí en una fila. Descargar PNG guarda el gráfico.",
+      "q3": "¿Se suben mis imágenes?",
+      "a3": "No. Las imágenes se quedan en esta página y el PNG se genera en tu navegador. Los nombres y las filas se recuerdan en este dispositivo, pero las imágenes no, así que vuelve a añadirlas al recargar la página.",
+      "q4": "¿Puedo cambiar las filas?",
+      "a4": "Sí. Haz clic en el nombre de una fila para renombrarla, cambia su color, súbela o bájala, añade o elimina filas, hasta 12. Los elementos de una fila eliminada vuelven a «Sin clasificar».",
+      "q5": "¿Qué es el preajuste 夯 a 拉?",
+      "a5": "Una versión de la tier list basada en un meme de internet chino. Las filas van de 夯 (lo mejor de lo mejor), 顶级 (de primera), 人上人 (por encima de la media) y NPC (olvidable) hasta 拉完了 (lo peor)."
     }
   },
   "qr": {
@@ -10912,5 +10930,51 @@
     "back": "Todas las herramientas",
     "privacyNote": "Abre un archivo .swf en esta pestaña con Ruffle. Sin plugin de Flash. No se sube nada.",
     "games": "Juegos Flash gratis"
+  },
+  "tierList": {
+    "title": "Creador de tier list online (ranking)",
+    "back": "Todas las herramientas",
+    "privacyNote": "Las imágenes se quedan en esta página y el PNG se crea en tu navegador. No se sube nada.",
+    "titleField": "Título del gráfico",
+    "titlePlaceholder": "Por ejemplo: mejores snacks",
+    "presetLabel": "Filas",
+    "preset": {
+      "hang": "夯 a 拉 (meme chino)",
+      "hangRows": "夯|顶级|人上人|NPC|拉完了",
+      "sabcd": "S / A / B / C / D",
+      "sabcdRows": "S|A|B|C|D",
+      "feeling": "De amor a odio",
+      "feelingRows": "Me encanta|Me gusta|Está bien|No es lo mío|Lo odio"
+    },
+    "rowName": "Nombre de la fila",
+    "rowColor": "Color de la fila",
+    "rowUp": "Subir fila",
+    "rowDown": "Bajar fila",
+    "rowRemove": "Eliminar fila",
+    "addRow": "Añadir fila",
+    "newRow": "Nueva",
+    "clear": "Devolver todo a sin clasificar",
+    "startOver": "Empezar de nuevo",
+    "startOverConfirm": "Pulsa otra vez para confirmar",
+    "pool": "Sin clasificar",
+    "entry": "Añade elementos, uno por línea",
+    "entryPlaceholder": "Un elemento por línea",
+    "add": "Añadir elementos",
+    "addPictures": "Añadir imágenes",
+    "deleteItem": "Eliminar elemento seleccionado",
+    "placeHere": "Poner aquí",
+    "picture": "Imagen",
+    "pickedHint": "Seleccionado: {name}. Elige Poner aquí en una fila, o tócalo otra vez para cancelar.",
+    "count": "{n} de {max} elementos.",
+    "full": "Es el límite: {max} elementos.",
+    "hint": "Arrastra elementos entre filas, o tócalos y elige Poner aquí. También puedes pegar o soltar imágenes en cualquier parte de la herramienta.",
+    "download": "Descargar PNG",
+    "copy": "Copiar como texto",
+    "copied": "Copiado",
+    "copyFailed": "No se pudo copiar",
+    "exportFailed": "No se pudo crear el PNG. Quita las imágenes que no se vean e inténtalo de nuevo.",
+    "separator": ", ",
+    "sample": "Paella\nTortilla\nTacos al pastor\nEmpanadas\nChurros\nEnsalada",
+    "picturesNote": "Las imágenes no se guardan: se borran al recargar o salir, así que descarga antes el PNG."
   }
 }
