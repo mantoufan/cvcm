@@ -100,8 +100,7 @@
       "score": "Score",
       "votes": "Votes",
       "tokens": "Tokens",
-      "requests": "Requests",
-      "shareOfList": "Share of list",
+      "shareOfTokens": "Share of tokens",
       "modelsListed": "Models listed",
       "name": "Name",
       "world": "World",
@@ -226,13 +225,13 @@
       },
       "ai-usage": {
         "title": "Most Used AI Models {year}: OpenRouter Usage Ranking | cv.cm",
-        "description": "The most used AI models on OpenRouter: {top1} takes {v1} of tokens among the top {rows}, then {top2} and {top3}. Tokens and requests, CSV download.",
+        "description": "The most used AI models on OpenRouter: {top1} takes {v1} of all tokens over 7 days, then {top2} and {top3}. CSV download.",
         "h1": "Most used AI models on OpenRouter, {date}",
-        "lede": "The top {rows} models by tokens processed through OpenRouter over the latest week shown on its ranking page. This measures use, not quality.",
+        "lede": "The top {rows} models by tokens processed through OpenRouter over the 7 days to {date}. This measures use, not quality.",
         "facts": [
-          "First: {top1} ({v1} of tokens in this list), then {top2} ({v2}) and {top3} ({v3}).",
-          "Shares are of the {rows} models listed, not of all AI use.",
-          "Data as of {date}."
+          "First: {top1} ({v1} of all tokens), then {top2} ({v2}) and {top3} ({v3}).",
+          "Shares are of all tokens on OpenRouter, not of all AI use.",
+          "Data for the 7 days to {date}."
         ],
         "about": [
           "OpenRouter is a service developers use to reach many models through one API, and it publishes what passes through it. Cheap models used by busy automated agents can top this table, because tokens count machine traffic as well as people.",
@@ -241,7 +240,7 @@
         "faq": [
           {
             "q": "What is the most used AI model?",
-            "a": "On OpenRouter as of {date}, {top1} processed the most tokens, {v1} of the total for these {rows} models. Across all AI products, no public figure gives a full answer."
+            "a": "On OpenRouter in the 7 days to {date}, {top1} processed the most tokens, {v1} of the platform's total. Across all AI products, no public figure gives a full answer."
           },
           {
             "q": "Does most used mean best?",
@@ -255,22 +254,22 @@
       },
       "ai-companies": {
         "title": "AI Companies by Usage {year}: AI Market Share on OpenRouter | cv.cm",
-        "description": "AI companies ranked by tokens on OpenRouter: {top1} has {v1} among the most used models, then {top2} and {top3}. One platform's share, CSV download.",
+        "description": "AI companies ranked by tokens on OpenRouter: {top1} has {v1} of all tokens over 7 days, then {top2} and {top3}. One platform's share, CSV download.",
         "h1": "AI companies by usage on OpenRouter, {date}",
-        "lede": "The companies behind the most used models on OpenRouter, ranked by their share of tokens. This is a share of one platform's top models, not the whole AI market.",
+        "lede": "The companies behind the most used models on OpenRouter, ranked by their share of all tokens over 7 days. This covers one platform, not the whole AI market.",
         "facts": [
           "First: {top1} ({v1}), then {top2} ({v2}) and {top3} ({v3}).",
-          "Covers {rows} companies with a model among the most used on OpenRouter.",
-          "Data as of {date}."
+          "Shares are of all tokens on OpenRouter. Models it groups as \"other\" count towards the total but belong to no company here, so shares do not add up to 100%.",
+          "Data for the 7 days to {date}."
         ],
         "about": [
-          "cv.cm adds up the tokens of the most used models listed by OpenRouter for each company. Companies with no model in that list do not appear, and open models served by other providers still count for the company that made them.",
+          "cv.cm adds up, for each company, the tokens of the models OpenRouter names in its daily top list. Smaller models it groups as \"other\" are left out, and open models served by other providers still count for the company that made them.",
           "It leaves out consumer apps and direct API use, where the order can be very different. Read it as what developers route through one service in one week."
         ],
         "faq": [
           {
             "q": "Which AI company has the largest market share?",
-            "a": "Among the most used models on OpenRouter as of {date}, {top1} has the largest share at {v1}. That covers one developer platform; no public source gives the share of all AI use."
+            "a": "On OpenRouter in the 7 days to {date}, {top1} has the largest share at {v1} of all tokens. That covers one developer platform; no public source gives the share of all AI use."
           },
           {
             "q": "Why is this different from other AI market share figures?",

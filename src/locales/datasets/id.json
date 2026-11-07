@@ -924,8 +924,7 @@
       "score": "Skor",
       "votes": "Suara",
       "tokens": "Token",
-      "requests": "Permintaan",
-      "shareOfList": "Porsi dalam daftar",
+      "shareOfTokens": "Porsi token",
       "modelsListed": "Jumlah model",
       "name": "Nama",
       "world": "Dunia",
@@ -1050,13 +1049,13 @@
       },
       "ai-usage": {
         "title": "Model AI Paling Banyak Dipakai {year}: OpenRouter | cv.cm",
-        "description": "Model AI paling banyak dipakai di OpenRouter: {top1} mengambil {v1} token di antara {rows} teratas, lalu {top2} dan {top3}. Token dan permintaan, unduh CSV.",
+        "description": "Model AI paling banyak dipakai di OpenRouter: {top1} mengambil {v1} dari semua token selama 7 hari, lalu {top2} dan {top3}. Unduh CSV.",
         "h1": "Model AI paling banyak dipakai di OpenRouter, {date}",
-        "lede": "{rows} model teratas menurut token yang diproses lewat OpenRouter selama pekan terbaru yang ditampilkan di halaman peringkatnya. Ini mengukur penggunaan, bukan kualitas.",
+        "lede": "{rows} model teratas menurut token yang diproses lewat OpenRouter selama 7 hari hingga {date}. Ini mengukur penggunaan, bukan kualitas.",
         "facts": [
-          "Pertama: {top1} ({v1} token dalam daftar ini), lalu {top2} ({v2}) dan {top3} ({v3}).",
-          "Porsi dihitung dari {rows} model yang tercantum, bukan dari seluruh penggunaan AI.",
-          "Data per {date}."
+          "Pertama: {top1} ({v1} dari semua token), lalu {top2} ({v2}) dan {top3} ({v3}).",
+          "Porsi dihitung dari semua token di OpenRouter, bukan dari seluruh penggunaan AI.",
+          "Data untuk 7 hari hingga {date}."
         ],
         "about": [
           "OpenRouter adalah layanan yang dipakai pengembang untuk mengakses banyak model melalui satu API, dan layanan ini menerbitkan apa yang melewatinya. Model murah yang dipakai agen otomatis yang sibuk bisa memuncaki tabel ini, karena token menghitung lalu lintas mesin selain manusia.",
@@ -1065,7 +1064,7 @@
         "faq": [
           {
             "q": "Apa model AI yang paling banyak dipakai?",
-            "a": "Di OpenRouter per {date}, {top1} memproses token terbanyak, yaitu {v1} dari total {rows} model ini. Untuk semua produk AI, tidak ada angka publik yang memberi jawaban lengkap."
+            "a": "Di OpenRouter selama 7 hari hingga {date}, {top1} memproses token terbanyak, yaitu {v1} dari total platform. Untuk semua produk AI, tidak ada angka publik yang memberi jawaban lengkap."
           },
           {
             "q": "Apakah paling banyak dipakai berarti terbaik?",
@@ -1079,22 +1078,22 @@
       },
       "ai-companies": {
         "title": "Perusahaan AI menurut Penggunaan {year}: OpenRouter | cv.cm",
-        "description": "Perusahaan AI menurut token di OpenRouter: {top1} memiliki {v1} di antara model terpopuler, lalu {top2} dan {top3}. Pangsa satu platform, unduh CSV.",
+        "description": "Perusahaan AI menurut token di OpenRouter: {top1} memiliki {v1} dari semua token selama 7 hari, lalu {top2} dan {top3}. Pangsa satu platform, unduh CSV.",
         "h1": "Perusahaan AI menurut penggunaan di OpenRouter, {date}",
-        "lede": "Perusahaan di balik model yang paling banyak dipakai di OpenRouter, diurutkan menurut porsi token. Ini porsi dari model teratas satu platform, bukan seluruh pasar AI.",
+        "lede": "Perusahaan di balik model yang paling banyak dipakai di OpenRouter, diurutkan menurut porsi dari semua token selama 7 hari. Ini hanya satu platform, bukan seluruh pasar AI.",
         "facts": [
           "Pertama: {top1} ({v1}), lalu {top2} ({v2}) dan {top3} ({v3}).",
-          "Mencakup {rows} perusahaan yang modelnya termasuk paling banyak dipakai di OpenRouter.",
-          "Data per {date}."
+          "Porsi dihitung dari semua token di OpenRouter. Model yang dikelompokkan sebagai \"other\" ikut dihitung dalam total tetapi tidak milik perusahaan mana pun di sini, sehingga jumlah porsi tidak mencapai 100%.",
+          "Data untuk 7 hari hingga {date}."
         ],
         "about": [
-          "cv.cm menjumlahkan token dari model paling banyak dipakai yang dicantumkan OpenRouter untuk tiap perusahaan. Perusahaan tanpa model dalam daftar itu tidak muncul, dan model terbuka yang dilayani penyedia lain tetap dihitung untuk perusahaan pembuatnya.",
+          "cv.cm menjumlahkan, untuk tiap perusahaan, token dari model yang disebut OpenRouter dalam daftar teratas hariannya. Model lebih kecil yang dikelompokkan sebagai \"other\" tidak disertakan, dan model terbuka yang dilayani penyedia lain tetap dihitung untuk perusahaan pembuatnya.",
           "Tabel ini tidak mencakup aplikasi konsumen dan penggunaan API langsung, yang urutannya bisa sangat berbeda. Bacalah sebagai apa yang disalurkan pengembang melalui satu layanan dalam satu pekan."
         ],
         "faq": [
           {
             "q": "Perusahaan AI mana yang memiliki pangsa pasar terbesar?",
-            "a": "Di antara model paling banyak dipakai di OpenRouter per {date}, {top1} memiliki porsi terbesar, yaitu {v1}. Itu mencakup satu platform pengembang; tidak ada sumber publik yang memberikan pangsa seluruh penggunaan AI."
+            "a": "Di OpenRouter selama 7 hari hingga {date}, {top1} memiliki porsi terbesar, yaitu {v1} dari semua token. Itu mencakup satu platform pengembang; tidak ada sumber publik yang memberikan pangsa seluruh penggunaan AI."
           },
           {
             "q": "Mengapa ini berbeda dari angka pangsa pasar AI lainnya?",

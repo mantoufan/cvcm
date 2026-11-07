@@ -79,9 +79,9 @@ export function rankingCsvHref(id: RankingId): string {
 
 /** [rank, model, organization, licence, score, votes] */
 export type ArenaRow = [number, string, string, string, number, number];
-/** [rank, model, author, tokens, share of the listed models' tokens in percent, requests] */
-export type UsageRow = [number, string, string, number, number, number];
-/** [rank, company, tokens, share of the listed models' tokens in percent, models listed] */
+/** [rank, model, author, tokens over the last 7 days, share of all OpenRouter tokens in percent] */
+export type UsageRow = [number, string, string, number, number];
+/** [rank, company, tokens over the last 7 days, share of all OpenRouter tokens in percent, models named by OpenRouter] */
 export type CompanyRow = [number, string, number, number, number];
 /** [rank, name, world a year ago (null when it was not listed), world, ...RANKING_REGIONS] in percent */
 export type ShareRow = [number, string, number | null, number, ...number[]];

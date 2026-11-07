@@ -100,8 +100,7 @@
       "score": "Puntuación",
       "votes": "Votos",
       "tokens": "N.º de tokens",
-      "requests": "Solicitudes",
-      "shareOfList": "Cuota de la lista",
+      "shareOfTokens": "Cuota de tokens",
       "modelsListed": "Modelos listados",
       "name": "Nombre",
       "world": "Mundo",
@@ -226,13 +225,13 @@
       },
       "ai-usage": {
         "title": "Modelos de IA más usados {year}: ranking de OpenRouter | cv.cm",
-        "description": "Los modelos de IA más usados en OpenRouter: {top1} acapara {v1} de los tokens entre los {rows} primeros, seguido de {top2} y {top3}. Tokens y solicitudes, CSV.",
+        "description": "Los modelos de IA más usados en OpenRouter: {top1} acapara {v1} de todos los tokens en 7 días, seguido de {top2} y {top3}. Descarga en CSV.",
         "h1": "Modelos de IA más usados en OpenRouter, {date}",
-        "lede": "Los {rows} primeros modelos por tokens procesados a través de OpenRouter en la última semana que muestra su página de rankings. Esto mide el uso, no la calidad.",
+        "lede": "Los {rows} primeros modelos por tokens procesados a través de OpenRouter en los 7 días hasta {date}. Esto mide el uso, no la calidad.",
         "facts": [
-          "Primero: {top1} ({v1} de los tokens de esta lista), seguido de {top2} ({v2}) y {top3} ({v3}).",
-          "Las cuotas se refieren a los {rows} modelos listados, no a todo el uso de IA.",
-          "Datos a {date}."
+          "Primero: {top1} ({v1} de todos los tokens), seguido de {top2} ({v2}) y {top3} ({v3}).",
+          "Las cuotas se refieren a todos los tokens de OpenRouter, no a todo el uso de IA.",
+          "Datos de los 7 días hasta {date}."
         ],
         "about": [
           "OpenRouter es un servicio que los desarrolladores usan para acceder a muchos modelos con una sola API, y publica lo que pasa por él. Los modelos baratos que usan agentes automatizados muy activos pueden encabezar esta tabla, porque los tokens cuentan el tráfico de máquinas además del de personas.",
@@ -241,7 +240,7 @@
         "faq": [
           {
             "q": "¿Cuál es el modelo de IA más usado?",
-            "a": "En OpenRouter a {date}, {top1} procesó la mayor cantidad de tokens, {v1} del total de estos {rows} modelos. Para el conjunto de productos de IA, ninguna cifra pública da una respuesta completa."
+            "a": "En OpenRouter en los 7 días hasta {date}, {top1} procesó la mayor cantidad de tokens, {v1} del total de la plataforma. Para el conjunto de productos de IA, ninguna cifra pública da una respuesta completa."
           },
           {
             "q": "¿Más usado significa mejor?",
@@ -255,22 +254,22 @@
       },
       "ai-companies": {
         "title": "Empresas de IA por uso {year}: cuota en OpenRouter | cv.cm",
-        "description": "Empresas de IA por tokens en OpenRouter: {top1} tiene {v1} entre los modelos más usados, seguida de {top2} y {top3}. Cuota de una sola plataforma, CSV.",
+        "description": "Empresas de IA por tokens en OpenRouter: {top1} tiene {v1} de todos los tokens en 7 días, seguida de {top2} y {top3}. Cuota de una sola plataforma, CSV.",
         "h1": "Empresas de IA por uso en OpenRouter, {date}",
-        "lede": "Las empresas detrás de los modelos más usados en OpenRouter, ordenadas por su cuota de tokens. Es una cuota de los principales modelos de una plataforma, no de todo el mercado de IA.",
+        "lede": "Las empresas detrás de los modelos más usados en OpenRouter, ordenadas por su cuota de todos los tokens en 7 días. Cubre una sola plataforma, no todo el mercado de IA.",
         "facts": [
           "Primero: {top1} ({v1}), seguido de {top2} ({v2}) y {top3} ({v3}).",
-          "Abarca {rows} empresas con un modelo entre los más usados en OpenRouter.",
-          "Datos a {date}."
+          "Las cuotas se refieren a todos los tokens de OpenRouter. Los modelos que agrupa como \"other\" cuentan en el total pero no pertenecen a ninguna empresa aquí, así que las cuotas no suman el 100%.",
+          "Datos de los 7 días hasta {date}."
         ],
         "about": [
-          "cv.cm suma los tokens de los modelos más usados que OpenRouter lista para cada empresa. Las empresas sin ningún modelo en esa lista no aparecen, y los modelos abiertos servidos por otros proveedores siguen contando para la empresa que los creó.",
+          "cv.cm suma, para cada empresa, los tokens de los modelos que OpenRouter nombra en su lista diaria de más usados. Los modelos menores que agrupa como \"other\" se dejan fuera, y los modelos abiertos servidos por otros proveedores siguen contando para la empresa que los creó.",
           "Deja fuera las apps de consumo y el uso directo de la API, donde el orden puede ser muy distinto. Interprétalo como lo que los desarrolladores canalizan a través de un servicio en una semana."
         ],
         "faq": [
           {
             "q": "¿Qué empresa de IA tiene la mayor cuota de mercado?",
-            "a": "Entre los modelos más usados en OpenRouter a {date}, {top1} tiene la mayor cuota, con {v1}. Eso abarca una sola plataforma de desarrolladores; ninguna fuente pública da la cuota de todo el uso de IA."
+            "a": "En OpenRouter en los 7 días hasta {date}, {top1} tiene la mayor cuota, con {v1} de todos los tokens. Eso abarca una sola plataforma de desarrolladores; ninguna fuente pública da la cuota de todo el uso de IA."
           },
           {
             "q": "¿Por qué difiere de otras cifras de cuota de mercado de IA?",

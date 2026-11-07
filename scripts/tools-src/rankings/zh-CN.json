@@ -100,8 +100,7 @@
       "score": "评分",
       "votes": "票数",
       "tokens": "Token 数",
-      "requests": "请求数",
-      "shareOfList": "占榜单比例",
+      "shareOfTokens": "占 token 比例",
       "modelsListed": "上榜模型数",
       "name": "名称",
       "world": "全球",
@@ -226,13 +225,13 @@
       },
       "ai-usage": {
         "title": "AI模型使用量排名 {year}：OpenRouter 榜单 | cv.cm",
-        "description": "OpenRouter 上使用最多的 AI 模型：前 {rows} 名中 {top1} 占 token 的 {v1}，其次是 {top2} 和 {top3}。含 token 数与请求数，可下载 CSV。",
+        "description": "OpenRouter 上使用最多的 AI 模型：7 天内 {top1} 占全部 token 的 {v1}，其次是 {top2} 和 {top3}。可下载 CSV。",
         "h1": "OpenRouter 上使用最多的 AI 模型，{date}",
-        "lede": "按其排名页显示的最近一周内经 OpenRouter 处理的 token 量，列出前 {rows} 个模型。这里衡量的是使用量，不是质量。",
+        "lede": "按截至{date}的 7 天内经 OpenRouter 处理的 token 量，列出前 {rows} 个模型。这里衡量的是使用量，不是质量。",
         "facts": [
-          "第一名：{top1}（占此榜单 token 的 {v1}），其次是 {top2}（{v2}）和 {top3}（{v3}）。",
-          "份额是相对于所列 {rows} 个模型计算的，不是全部 AI 使用量。",
-          "数据截至{date}。"
+          "第一名：{top1}（占全部 token 的 {v1}），其次是 {top2}（{v2}）和 {top3}（{v3}）。",
+          "占比是相对于 OpenRouter 上的全部 token，而不是全部 AI 使用量。",
+          "数据为截至{date}的 7 天。"
         ],
         "about": [
           "OpenRouter 是开发者通过一个 API 调用多种模型的服务，并会公布经其处理的数据。繁忙的自动化代理使用的廉价模型可能登上榜首，因为 token 既统计人的使用，也统计机器流量。",
@@ -241,7 +240,7 @@
         "faq": [
           {
             "q": "使用最多的 AI 模型是哪个？",
-            "a": "截至{date}，在 OpenRouter 上 {top1} 处理的 token 最多，占这 {rows} 个模型总量的 {v1}。就所有 AI 产品而言，没有公开数据能给出完整答案。"
+            "a": "截至{date}的 7 天内，在 OpenRouter 上 {top1} 处理的 token 最多，占该平台总量的 {v1}。就所有 AI 产品而言，没有公开数据能给出完整答案。"
           },
           {
             "q": "使用最多就等于最好吗？",
@@ -255,22 +254,22 @@
       },
       "ai-companies": {
         "title": "AI公司使用量排名 {year}：OpenRouter 市场份额 | cv.cm",
-        "description": "按 OpenRouter 上 token 量排名的 AI 公司：在使用最多的模型中 {top1} 占 {v1}，其次是 {top2} 和 {top3}。仅为单一平台份额，可下载 CSV。",
+        "description": "按 OpenRouter 上 token 量排名的 AI 公司：7 天内 {top1} 占 {v1}，其次是 {top2} 和 {top3}。单一平台份额，可下载 CSV。",
         "h1": "OpenRouter 上的 AI 公司使用量排名，{date}",
-        "lede": "OpenRouter 上使用最多的模型背后的公司，按 token 份额排名。这是单一平台热门模型中的份额，不是整个 AI 市场。",
+        "lede": "OpenRouter 上使用最多的模型背后的公司，按 7 天内占全部 token 的份额排名。这只涵盖一个平台，不是整个 AI 市场。",
         "facts": [
           "第一名：{top1}（{v1}），其次是 {top2}（{v2}）和 {top3}（{v3}）。",
-          "涵盖 {rows} 家有模型进入 OpenRouter 最常用榜单的公司。",
-          "数据截至{date}。"
+          "份额是相对于 OpenRouter 上的全部 token。被其归为“other”的模型计入总量，但在这里不属于任何公司，所以份额之和不到 100%。",
+          "数据为截至{date}的 7 天。"
         ],
         "about": [
-          "cv.cm 按公司汇总 OpenRouter 所列最常用模型的 token 量。没有模型进入该榜单的公司不会出现；由其他服务商提供的开放模型，仍计入开发该模型的公司。",
+          "cv.cm 按公司汇总 OpenRouter 每日榜单中列名模型的 token 量。被其归为“other”的较小模型不计入；由其他服务商提供的开放模型，仍计入开发该模型的公司。",
           "消费者应用和直接 API 使用未计入，而这些场景下的排序可能大不相同。请把它理解为开发者在一周内通过单一服务调用的情况。"
         ],
         "faq": [
           {
             "q": "哪家 AI 公司的市场份额最大？",
-            "a": "截至{date}，在 OpenRouter 上使用最多的模型中，{top1} 的份额最大，为 {v1}。这只涵盖一个开发者平台；没有公开来源给出全部 AI 使用量的份额。"
+            "a": "截至{date}的 7 天内，在 OpenRouter 上 {top1} 的份额最大，占全部 token 的 {v1}。这只涵盖一个开发者平台；没有公开来源给出全部 AI 使用量的份额。"
           },
           {
             "q": "为什么这和其他 AI 市场份额数字不同？",

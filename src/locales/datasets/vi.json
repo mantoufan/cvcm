@@ -924,8 +924,7 @@
       "score": "Điểm",
       "votes": "Phiếu bầu",
       "tokens": "Lượng token",
-      "requests": "Yêu cầu",
-      "shareOfList": "Tỷ lệ trong danh sách",
+      "shareOfTokens": "Tỷ lệ token",
       "modelsListed": "Số mô hình",
       "name": "Tên",
       "world": "Toàn cầu",
@@ -1050,13 +1049,13 @@
       },
       "ai-usage": {
         "title": "Mô hình AI dùng nhiều nhất {year}: OpenRouter | cv.cm",
-        "description": "Các mô hình AI dùng nhiều nhất trên OpenRouter: {top1} chiếm {v1} token trong top {rows}, tiếp theo là {top2} và {top3}. Token và yêu cầu, tải CSV.",
+        "description": "Các mô hình AI dùng nhiều nhất trên OpenRouter: {top1} chiếm {v1} tổng token trong 7 ngày, tiếp theo là {top2} và {top3}. Tải CSV.",
         "h1": "Mô hình AI dùng nhiều nhất trên OpenRouter, {date}",
-        "lede": "Top {rows} mô hình theo lượng token xử lý qua OpenRouter trong tuần gần nhất hiển thị trên trang xếp hạng của dịch vụ này. Bảng đo mức sử dụng, không phải chất lượng.",
+        "lede": "Top {rows} mô hình theo lượng token xử lý qua OpenRouter trong 7 ngày đến {date}. Bảng đo mức sử dụng, không phải chất lượng.",
         "facts": [
-          "Hạng nhất: {top1} ({v1} token trong danh sách này), tiếp theo là {top2} ({v2}) và {top3} ({v3}).",
-          "Tỷ lệ tính trên {rows} mô hình được liệt kê, không phải toàn bộ mức sử dụng AI.",
-          "Dữ liệu tính đến {date}."
+          "Hạng nhất: {top1} ({v1} tổng token), tiếp theo là {top2} ({v2}) và {top3} ({v3}).",
+          "Tỷ lệ tính trên tổng token của OpenRouter, không phải toàn bộ mức sử dụng AI.",
+          "Dữ liệu 7 ngày đến {date}."
         ],
         "about": [
           "OpenRouter là dịch vụ mà lập trình viên dùng để truy cập nhiều mô hình qua một API, và dịch vụ này công bố lượng dữ liệu đi qua. Các mô hình giá rẻ do những agent tự động hoạt động liên tục sử dụng có thể đứng đầu bảng, vì token tính cả lưu lượng của máy lẫn của con người.",
@@ -1065,7 +1064,7 @@
         "faq": [
           {
             "q": "Mô hình AI nào được dùng nhiều nhất?",
-            "a": "Trên OpenRouter tính đến {date}, {top1} xử lý nhiều token nhất, chiếm {v1} tổng số của {rows} mô hình này. Với mọi sản phẩm AI, không có số liệu công khai nào đưa ra câu trả lời đầy đủ."
+            "a": "Trên OpenRouter trong 7 ngày đến {date}, {top1} xử lý nhiều token nhất, chiếm {v1} tổng của nền tảng. Với mọi sản phẩm AI, không có số liệu công khai nào đưa ra câu trả lời đầy đủ."
           },
           {
             "q": "Dùng nhiều nhất có nghĩa là tốt nhất không?",
@@ -1079,22 +1078,22 @@
       },
       "ai-companies": {
         "title": "Công ty AI theo mức sử dụng {year}: Thị phần OpenRouter | cv.cm",
-        "description": "Công ty AI xếp theo token trên OpenRouter: {top1} chiếm {v1} trong các mô hình dùng nhiều nhất, tiếp theo là {top2} và {top3}. Thị phần của một nền tảng, tải CSV.",
+        "description": "Công ty AI xếp theo token trên OpenRouter: {top1} chiếm {v1} tổng token trong 7 ngày, tiếp theo là {top2} và {top3}. Thị phần của một nền tảng, tải CSV.",
         "h1": "Công ty AI theo mức sử dụng trên OpenRouter, {date}",
-        "lede": "Các công ty đứng sau những mô hình dùng nhiều nhất trên OpenRouter, xếp theo tỷ lệ token. Đây là tỷ lệ trong các mô hình hàng đầu của một nền tảng, không phải toàn bộ thị trường AI.",
+        "lede": "Các công ty đứng sau những mô hình dùng nhiều nhất trên OpenRouter, xếp theo tỷ lệ trong tổng token của 7 ngày. Đây chỉ là một nền tảng, không phải toàn bộ thị trường AI.",
         "facts": [
           "Hạng nhất: {top1} ({v1}), tiếp theo là {top2} ({v2}) và {top3} ({v3}).",
-          "Gồm {rows} công ty có mô hình nằm trong nhóm dùng nhiều nhất trên OpenRouter.",
-          "Dữ liệu tính đến {date}."
+          "Tỷ lệ tính trên tổng token của OpenRouter. Các mô hình được nhóm là \"other\" vẫn tính vào tổng nhưng không thuộc công ty nào ở đây, nên tổng các tỷ lệ không bằng 100%.",
+          "Dữ liệu 7 ngày đến {date}."
         ],
         "about": [
-          "cv.cm cộng token của các mô hình dùng nhiều nhất do OpenRouter liệt kê theo từng công ty. Công ty không có mô hình trong danh sách đó sẽ không xuất hiện, và các mô hình mở do nhà cung cấp khác phục vụ vẫn được tính cho công ty đã tạo ra chúng.",
+          "cv.cm cộng token của các mô hình mà OpenRouter nêu tên trong danh sách top hằng ngày, theo từng công ty. Các mô hình nhỏ hơn được nhóm là \"other\" bị loại, và các mô hình mở do nhà cung cấp khác phục vụ vẫn được tính cho công ty đã tạo ra chúng.",
           "Bảng không tính các ứng dụng cho người tiêu dùng và việc dùng API trực tiếp, nơi thứ tự có thể rất khác. Hãy xem đây là lượng lập trình viên định tuyến qua một dịch vụ trong một tuần."
         ],
         "faq": [
           {
             "q": "Công ty AI nào có thị phần lớn nhất?",
-            "a": "Trong các mô hình dùng nhiều nhất trên OpenRouter tính đến {date}, {top1} có tỷ lệ lớn nhất với {v1}. Số liệu này chỉ thuộc một nền tảng cho lập trình viên; không có nguồn công khai nào cho biết thị phần của toàn bộ việc sử dụng AI."
+            "a": "Trên OpenRouter trong 7 ngày đến {date}, {top1} có tỷ lệ lớn nhất với {v1} tổng token. Số liệu này chỉ thuộc một nền tảng cho lập trình viên; không có nguồn công khai nào cho biết thị phần của toàn bộ việc sử dụng AI."
           },
           {
             "q": "Vì sao số liệu này khác các số liệu thị phần AI khác?",

@@ -100,7 +100,7 @@ describe("share table gaps", () => {
     expect(table.rows[0][3].sort).toBeLessThan(-100);
   });
   it("marks a model with no company", () => {
-    const table = rankingTable("en", "ai-usage", [[1, "Mystery", "", 10, 1, 1]]);
+    const table = rankingTable("en", "ai-usage", [[1, "Mystery", "", 10, 1]]);
     expect(table.rows[0][2].text).toBe("—");
   });
   it("does not rank OpenRouter's stealth namespace as a company", () => {

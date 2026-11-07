@@ -133,13 +133,13 @@ export function rankingTable(locale: Locale, id: RankingId, rows: unknown[]): Da
   }
   if (kind === "usage") {
     return {
-      columns: [{ label: ui.rank, num: true }, { label: ui.model, head: true }, { label: ui.organization }, { label: ui.tokens, num: true }, { label: ui.shareOfList, num: true }, { label: ui.requests, num: true }],
-      rows: (rows as UsageRow[]).map(([place, model, author, tokens, share, requests]) => [rank(place), text(model), text(author), num(compact(locale, tokens), tokens), num(percent(locale, share), share), num(compact(locale, requests), requests)]),
+      columns: [{ label: ui.rank, num: true }, { label: ui.model, head: true }, { label: ui.organization }, { label: ui.tokens, num: true }, { label: ui.shareOfTokens, num: true }],
+      rows: (rows as UsageRow[]).map(([place, model, author, tokens, share]) => [rank(place), text(model), text(author), num(compact(locale, tokens), tokens), num(percent(locale, share), share)]),
     };
   }
   if (kind === "companies") {
     return {
-      columns: [{ label: ui.rank, num: true }, { label: ui.organization, head: true }, { label: ui.tokens, num: true }, { label: ui.shareOfList, num: true }, { label: ui.modelsListed, num: true }],
+      columns: [{ label: ui.rank, num: true }, { label: ui.organization, head: true }, { label: ui.tokens, num: true }, { label: ui.shareOfTokens, num: true }, { label: ui.modelsListed, num: true }],
       rows: (rows as CompanyRow[]).map(([place, company, tokens, share, models]) => [rank(place), text(company), num(compact(locale, tokens), tokens), num(percent(locale, share), share), num(plain(locale, models), models)]),
     };
   }

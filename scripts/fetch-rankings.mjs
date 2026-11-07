@@ -1,9 +1,9 @@
 // Snapshots the data behind /{locale}/rankings/ into src/shared/rankings-rows.json, rankings-meta.json and public/rankings/*.csv.
 // Run by hand to refresh (`node scripts/fetch-rankings.mjs`), then commit. Pages never call these sources.
 //   Arena leaderboard (CC BY 4.0): huggingface.co/datasets/lmarena-ai/leaderboard-dataset
-//   OpenRouter rankings (CC BY 4.0): openrouter.ai/rankings
+//   OpenRouter rankings data API (CC BY 4.0, needs OPENROUTER_API_KEY, free): openrouter.ai/docs/cookbook/administration/data-api
 //   StatCounter Global Stats (CC BY-SA 3.0): gs.statcounter.com
-import { mkdirSync, writeFileSync } from "node:fs";
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -12,6 +12,9 @@ const UA = "cv.cm rankings snapshot (https://cv.cm/)";
 const REGIONS = ["ww", "US", "CN", "TW", "JP", "KR", "VN", "ID", "ES"];
 const ARENA = { "ai-models": "text", "ai-coding-models": "webdev", "ai-image-models": "text_to_image", "ai-video-models": "text_to_video" };
 const ARENA_ROWS = 30;
+const USAGE_DAYS = 7;
+const USAGE_ROWS = 20;
+const COMPANY_ROWS = 15;
 const SHARE = {
   // StatCounter's "Android" and "Mozilla" browsers are leftovers (old WebViews, unnamed Gecko), not products to rank.
   "browser-market-share": { stat: "browser", device: "desktop+mobile+tablet+console", drop: ["Android", "Mozilla"] },
@@ -32,9 +35,9 @@ const NAMES = {
 };
 const nameOf = (raw) => NAMES[raw] ?? (/^[a-z]/.test(raw) ? raw[0].toUpperCase() + raw.slice(1) : raw);
 
-async function get(url) {
+async function get(url, headers = {}) {
   for (let attempt = 0; ; attempt += 1) {
-    const res = await fetch(url, { headers: { "User-Agent": UA }, signal: AbortSignal.timeout(40_000) }).catch((error) => {
+    const res = await fetch(url, { headers: { "User-Agent": UA, ...headers }, signal: AbortSignal.timeout(40_000) }).catch((error) => {
       if (attempt === 3) throw error;
       return null;
     });
@@ -60,68 +63,48 @@ async function arena(config) {
 
 // --- OpenRouter ----------------------------------------------------------------------------------------------------
 
-/** The rankings page ships its weekly top models as dehydrated query data; a change of shape fails here, not silently. */
+/** Free dataset endpoint: read-only statistics, no model is called, so the key spends nothing. Never call inference here. */
 async function openRouter() {
-  const html = await get("https://openrouter.ai/rankings");
-  // The page only names its first few models; the public model list names them all.
+  const key = process.env.OPENROUTER_API_KEY;
+  if (!key) throw new Error("OPENROUTER_API_KEY is not set");
+  const end = new Date(Date.UTC(today.getUTCFullYear(), today.getUTCMonth(), today.getUTCDate() - 1));
+  const start = new Date(end.getTime() - (USAGE_DAYS - 1) * 86_400_000);
+  const q = new URLSearchParams({ start_date: start.toISOString().slice(0, 10), end_date: end.toISOString().slice(0, 10) });
+  const { data, meta: source } = JSON.parse(await get(`https://openrouter.ai/api/v1/datasets/rankings-daily?${q}`, { Authorization: `Bearer ${key}` }));
+  if (!Array.isArray(data) || !data.length) throw new Error("openrouter: no rows");
+  // The public model list names them; a slug's date suffix is what is left when a model is not listed any more.
   const listed = JSON.parse(await get("https://openrouter.ai/api/v1/models")).data;
   const fullName = new Map();
   for (const model of listed) {
     const name = model.name.replace(/^[^:]+:\s*/, "");
     if (!fullName.has(model.canonical_slug) || !/\(/.test(name)) fullName.set(model.canonical_slug, name);
   }
-  const text = [...html.matchAll(/self\.__next_f\.push\(\[1,"((?:[^"\\]|\\.)*)"\]\)<\/script>/g)].map((m) => JSON.parse(`"${m[1]}"`)).join("");
-  const key = text.indexOf('["rankings","models",{"view":"week"}]');
-  const start = text.lastIndexOf('"state":{"data":[', key);
-  if (key < 0 || start < 0) throw new Error("openrouter: weekly models not found on the page");
-  const open = start + '"state":{"data":'.length;
-  let depth = 0;
-  let end = open;
-  let inString = false;
-  for (; end < text.length; end += 1) {
-    const c = text[end];
-    if (inString) {
-      if (c === "\\") end += 1;
-      else if (c === '"') inString = false;
-    } else if (c === '"') inString = true;
-    else if (c === "[" || c === "{") depth += 1;
-    else if (c === "]" || c === "}") {
-      depth -= 1;
-      if (!depth) break;
-    }
-  }
-  const rows = JSON.parse(text.slice(open, end + 1));
-  const linksAt = text.indexOf('"modelLinks":');
-  const linksOpen = linksAt + '"modelLinks":'.length;
-  let d = 0;
-  let linksEnd = linksOpen;
-  for (; linksEnd < text.length; linksEnd += 1) {
-    if (text[linksEnd] === "{") d += 1;
-    else if (text[linksEnd] === "}" && !--d) break;
-  }
-  const links = JSON.parse(text.slice(linksOpen, linksEnd + 1));
   const bySlug = new Map();
-  for (const row of rows) {
-    const entry = bySlug.get(row.model_permaslug) ?? { tokens: 0, requests: 0 };
-    const tokens = Number(row.total_prompt_tokens) + Number(row.total_completion_tokens);
-    const requests = Number(row.count);
-    if (!Number.isFinite(tokens) || !Number.isFinite(requests)) throw new Error(`openrouter: bad numbers for ${row.model_permaslug}`);
-    entry.tokens += tokens;
-    entry.requests += requests;
-    bySlug.set(row.model_permaslug, entry);
+  for (const row of data) {
+    const tokens = Number(row.total_tokens);
+    if (!Number.isFinite(tokens)) throw new Error(`openrouter: bad tokens for ${row.model_permaslug}`);
+    // A model's ":free" variant is the same model.
+    const slug = row.model_permaslug.split(":")[0];
+    bySlug.set(slug, (bySlug.get(slug) ?? 0) + tokens);
   }
-  const total = [...bySlug.values()].reduce((sum, m) => sum + m.tokens, 0);
+  // The "other" row counts towards the total, so shares are of everything on the platform.
+  const total = [...bySlug.values()].reduce((sum, tokens) => sum + tokens, 0);
+  const share = (tokens) => Math.round((tokens / total) * 1000) / 10;
   const models = [...bySlug.entries()]
-    .map(([slug, m]) => {
-      const author = slug.split("/")[0];
-      const name = links[slug]?.shortName ?? fullName.get(slug) ?? slug.split("/")[1].replace(/-\d{8}$/, "");
+    .filter(([slug]) => slug !== "other")
+    .map(([slug, tokens]) => {
+      const [author, rest] = slug.split("/");
+      const date = /-(\d{4})(\d{4})$/.exec(rest)?.[2];
       // "stealth" is OpenRouter's namespace for unannounced models, not a company.
-      return { name, author: author === "stealth" ? "" : nameOf(author), ...m };
+      return { name: fullName.get(slug) ?? rest.replace(/-\d{8}$/, ""), date, author: author === "stealth" ? "" : nameOf(author), tokens };
     })
     .sort((a, b) => b.tokens - a.tokens);
-  if (models.length < 10) throw new Error(`openrouter: only ${models.length} models`);
-  const asOf = rows[0].date.slice(0, 10);
-  const share = (tokens) => Math.round((tokens / total) * 1000) / 10;
+  if (models.length < USAGE_ROWS) throw new Error(`openrouter: only ${models.length} models`);
+  // Two versions of a model can share a name: their release date tells them apart.
+  const top = models.slice(0, USAGE_ROWS);
+  const seen = new Map();
+  for (const m of top) seen.set(m.name, (seen.get(m.name) ?? 0) + 1);
+  const label = (m) => (seen.get(m.name) > 1 && m.date ? `${m.name} (${m.date})` : m.name);
   const authors = new Map();
   for (const m of models) {
     if (!m.author) continue;
@@ -130,9 +113,10 @@ async function openRouter() {
     entry.models += 1;
     authors.set(m.author, entry);
   }
+  const asOf = source.end_date;
   return {
-    usage: { asOf, rows: models.map((m, i) => [i + 1, m.name, m.author, m.tokens, share(m.tokens), m.requests]) },
-    authors: { asOf, rows: [...authors.entries()].sort((a, b) => b[1].tokens - a[1].tokens).map(([author, a], i) => [i + 1, author, a.tokens, share(a.tokens), a.models]) },
+    usage: { asOf, rows: top.map((m, i) => [i + 1, label(m), m.author, m.tokens, share(m.tokens)]) },
+    authors: { asOf, rows: [...authors.entries()].sort((a, b) => b[1].tokens - a[1].tokens).slice(0, COMPANY_ROWS).map(([author, a], i) => [i + 1, author, a.tokens, share(a.tokens), a.models]) },
   };
 }
 
@@ -200,6 +184,8 @@ async function shareTable({ stat, device, drop = [] }) {
 
 const rows = {};
 const meta = { updated: today.toISOString().slice(0, 10), sets: {} };
+const rowsPath = join(root, "src/shared/rankings-rows.json");
+const metaPath = join(root, "src/shared/rankings-meta.json");
 const csv = {};
 const esc = (v) => (v === null ? "" : typeof v === "string" && /[",\n]/.test(v) ? `"${v.replace(/"/g, '""')}"` : String(v));
 /** Every row carries its credit, so the licence travels with a downloaded or fetched file. */
@@ -223,10 +209,10 @@ for (const [id, config] of Object.entries(ARENA)) {
 const or = await openRouter();
 rows["ai-usage"] = or.usage.rows;
 meta.sets["ai-usage"] = { asOf: or.usage.asOf, rows: or.usage.rows.length, top: topOf(or.usage.rows, 1, 4) };
-csv["ai-usage"] = toCsv(["rank", "model", "author", "tokens", "share_of_top_models_percent", "requests"], or.usage.rows, "openrouter");
+csv["ai-usage"] = toCsv(["rank", "model", "author", "tokens", "share_of_all_tokens_percent"], or.usage.rows, "openrouter");
 rows["ai-companies"] = or.authors.rows;
 meta.sets["ai-companies"] = { asOf: or.authors.asOf, rows: or.authors.rows.length, top: topOf(or.authors.rows, 1, 3) };
-csv["ai-companies"] = toCsv(["rank", "company", "tokens", "share_of_top_models_percent", "models_in_top_list"], or.authors.rows, "openrouter");
+csv["ai-companies"] = toCsv(["rank", "company", "tokens", "share_of_all_tokens_percent", "models_listed"], or.authors.rows, "openrouter");
 for (const [id, spec] of Object.entries(SHARE)) {
   const set = await shareTable(spec);
   rows[id] = set.rows;
@@ -235,8 +221,13 @@ for (const [id, spec] of Object.entries(SHARE)) {
   console.log(id, set.asOf, set.rows.length, "rows");
 }
 
-writeFileSync(join(root, "src/shared/rankings-rows.json"), `${JSON.stringify(rows)}\n`);
-writeFileSync(join(root, "src/shared/rankings-meta.json"), `${JSON.stringify(meta, null, 1)}\n`);
+// Nothing new from the sources: keep the old date, so no empty commit and no false sitemap date.
+const rowsText = `${JSON.stringify(rows)}\n`;
+if (existsSync(rowsPath) && readFileSync(rowsPath, "utf8") === rowsText) {
+  meta.updated = JSON.parse(readFileSync(metaPath, "utf8")).updated;
+}
+writeFileSync(rowsPath, rowsText);
+writeFileSync(metaPath, `${JSON.stringify(meta, null, 1)}\n`);
 const dir = join(root, "public/rankings");
 mkdirSync(dir, { recursive: true });
 for (const [id, text] of Object.entries(csv)) writeFileSync(join(dir, `${id}.csv`), text);
