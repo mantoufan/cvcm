@@ -105,7 +105,7 @@ describe("share table gaps", () => {
   it("shows no change for a name not listed a year ago, and sorts it last", () => {
     const table = rankingTable("en", "browser-market-share", [["1", "New", null, 3.2, ...RANKING_REGIONS.map(() => 1)]]);
     expect(table.rows[0][3].text).toBe("—");
-    expect(table.rows[0][3].sort).toBeLessThan(-100);
+    expect(table.rows[0][3].sort).toBe(Number.NEGATIVE_INFINITY);
   });
   it("marks a model with no company", () => {
     const table = rankingTable("en", "ai-usage", [[1, "Mystery", "", 10, 1]]);

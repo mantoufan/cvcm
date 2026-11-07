@@ -1333,11 +1333,11 @@
       },
       "commodity-prices": {
         "title": "Giá hàng hóa {year}: Tăng và giảm nhiều nhất | cv.cm",
-        "description": "Giá hàng hóa {date}: {top1} tăng nhiều nhất trong một năm ({v1}), {low1} giảm nhiều nhất ({lv1}). Dầu, khí, kim loại, ngũ cốc... theo Ngân hàng Thế giới.",
+        "description": "Giá hàng hóa {date}: tốt nhất trong năm {top1} ({v1}), kém nhất {low1} ({lv1}). Dầu, khí, kim loại, ngũ cốc, từ Ngân hàng Thế giới.",
         "h1": "Giá hàng hóa: tăng và giảm nhiều nhất, {date}",
         "lede": "{rows} mặt hàng xếp theo mức thay đổi giá trong 12 tháng, kèm giá tháng mới nhất và mức thay đổi trong một tháng. Dữ liệu Pink Sheet của Ngân hàng Thế giới, tính bằng đô la Mỹ.",
         "facts": [
-          "Tăng nhiều nhất trong một năm: {top1} ({v1}), {top2} ({v2}) và {top3} ({v3}).",
+          "Mạnh nhất trong một năm: {top1} ({v1}), {top2} ({v2}) và {top3} ({v3}).",
           "Kém nhất trong một năm: {low1} ({lv1}), {low2} ({lv2}) và {low3} ({lv3}).",
           "Giá trung bình hằng tháng cho {date}."
         ],
@@ -1347,11 +1347,11 @@
         ],
         "faq": [
           {
-            "q": "Hàng hóa nào tăng nhiều nhất trong năm nay?",
+            "q": "Mặt hàng nào diễn biến tốt nhất trong năm qua?",
             "a": "Trong {rows} mặt hàng được liệt kê, {top1} diễn biến tốt nhất trong 12 tháng đến {date}: {v1}."
           },
           {
-            "q": "Hàng hóa nào giảm nhiều nhất?",
+            "q": "Mặt hàng nào diễn biến kém nhất?",
             "a": "{low1}: {lv1} trong 12 tháng đến {date}."
           },
           {
@@ -1376,11 +1376,11 @@
         ],
         "faq": [
           {
-            "q": "Đồng tiền nào tăng nhiều nhất so với đô la?",
+            "q": "Đồng tiền nào diễn biến tốt nhất so với đô la?",
             "a": "{top1}: {v1} so với đô la Mỹ kể từ {yearAgo}."
           },
           {
-            "q": "Đồng tiền nào mất giá nhiều nhất?",
+            "q": "Đồng tiền nào diễn biến kém nhất?",
             "a": "{low1}: {lv1} so với đô la kể từ {yearAgo}."
           },
           {

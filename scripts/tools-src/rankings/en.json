@@ -521,11 +521,11 @@
       },
       "commodity-prices": {
         "title": "Commodity Prices {year}: Biggest Gainers and Losers | cv.cm",
-        "description": "Commodity prices for {date}: {top1} rose most over a year ({v1}), {low1} did worst ({lv1}). Oil, gas, metals, grains and more, from the World Bank.",
+        "description": "Commodity prices for {date}: best over a year {top1} ({v1}), worst {low1} ({lv1}). Oil, gas, metals, grains and more, from the World Bank.",
         "h1": "Commodity prices: gainers and losers, {date}",
         "lede": "{rows} commodities ranked by their price change over 12 months, with the latest monthly price and the change over one month. World Bank Pink Sheet data, in US dollars.",
         "facts": [
-          "Biggest rises over a year: {top1} ({v1}), {top2} ({v2}) and {top3} ({v3}).",
+          "Strongest over a year: {top1} ({v1}), {top2} ({v2}) and {top3} ({v3}).",
           "Weakest over a year: {low1} ({lv1}), {low2} ({lv2}) and {low3} ({lv3}).",
           "Monthly average prices for {date}."
         ],
@@ -535,11 +535,11 @@
         ],
         "faq": [
           {
-            "q": "Which commodity rose the most this year?",
+            "q": "Which commodity did best over the past year?",
             "a": "Among the {rows} listed, {top1} did best over 12 months to {date}: {v1}."
           },
           {
-            "q": "Which commodity fell the most?",
+            "q": "Which commodity did worst?",
             "a": "{low1}, with {lv1} over 12 months to {date}."
           },
           {
@@ -564,11 +564,11 @@
         ],
         "faq": [
           {
-            "q": "Which currency gained the most against the dollar?",
+            "q": "Which currency did best against the dollar?",
             "a": "{top1}: {v1} against the US dollar since {yearAgo}."
           },
           {
-            "q": "Which currency lost the most?",
+            "q": "Which currency did worst?",
             "a": "{low1}: {lv1} against the dollar since {yearAgo}."
           },
           {

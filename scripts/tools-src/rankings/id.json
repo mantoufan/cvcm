@@ -521,11 +521,11 @@
       },
       "commodity-prices": {
         "title": "Harga Komoditas {year}: Naik dan Turun Terbesar | cv.cm",
-        "description": "Harga komoditas {date}: {top1} naik paling tinggi dalam setahun ({v1}), {low1} turun paling dalam ({lv1}). Minyak, gas, logam, biji-bijian, dari Bank Dunia.",
+        "description": "Harga komoditas {date}: terbaik setahun {top1} ({v1}), terburuk {low1} ({lv1}). Minyak, gas, logam, biji-bijian, dari Bank Dunia.",
         "h1": "Harga komoditas: naik dan turun terbesar, {date}",
         "lede": "{rows} komoditas diurutkan menurut perubahan harga selama 12 bulan, dengan harga bulanan terbaru dan perubahan satu bulan. Data Pink Sheet Bank Dunia, dalam dolar AS.",
         "facts": [
-          "Kenaikan terbesar dalam setahun: {top1} ({v1}), {top2} ({v2}), dan {top3} ({v3}).",
+          "Kinerja terkuat setahun: {top1} ({v1}), {top2} ({v2}), dan {top3} ({v3}).",
           "Kinerja terlemah setahun: {low1} ({lv1}), {low2} ({lv2}), dan {low3} ({lv3}).",
           "Harga rata-rata bulanan untuk {date}."
         ],
@@ -535,11 +535,11 @@
         ],
         "faq": [
           {
-            "q": "Komoditas apa yang naik paling tinggi tahun ini?",
+            "q": "Komoditas mana yang berkinerja terbaik setahun terakhir?",
             "a": "Dari {rows} komoditas yang tercantum, {top1} berkinerja terbaik dalam 12 bulan hingga {date}: {v1}."
           },
           {
-            "q": "Komoditas apa yang turun paling dalam?",
+            "q": "Komoditas mana yang berkinerja terburuk?",
             "a": "{low1}: {lv1} dalam 12 bulan hingga {date}."
           },
           {
@@ -564,11 +564,11 @@
         ],
         "faq": [
           {
-            "q": "Mata uang apa yang paling menguat terhadap dolar?",
+            "q": "Mata uang mana yang berkinerja terbaik terhadap dolar?",
             "a": "{top1}: {v1} terhadap dolar AS sejak {yearAgo}."
           },
           {
-            "q": "Mata uang apa yang paling melemah?",
+            "q": "Mata uang mana yang berkinerja terburuk?",
             "a": "{low1}: {lv1} terhadap dolar sejak {yearAgo}."
           },
           {

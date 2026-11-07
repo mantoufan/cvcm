@@ -1333,11 +1333,11 @@
       },
       "commodity-prices": {
         "title": "Precios de Materias Primas {year}: Subidas y Bajadas | cv.cm",
-        "description": "Precios de materias primas a {date}: {top1} subió más en un año ({v1}) y {low1} cayó más ({lv1}). Petróleo, gas, metales, cereales y más, del Banco Mundial.",
+        "description": "Precios de materias primas de {date}: mejor en un año {top1} ({v1}), peor {low1} ({lv1}). Petróleo, gas, metales y granos, del Banco Mundial.",
         "h1": "Precios de materias primas: ganadoras y perdedoras, {date}",
         "lede": "{rows} materias primas ordenadas por la variación de su precio en 12 meses, con el último precio mensual y la variación a un mes. Datos del Pink Sheet del Banco Mundial, en dólares estadounidenses.",
         "facts": [
-          "Mayores subidas en un año: {top1} ({v1}), {top2} ({v2}) y {top3} ({v3}).",
+          "Mejor evolución en un año: {top1} ({v1}), {top2} ({v2}) y {top3} ({v3}).",
           "Peor evolución en un año: {low1} ({lv1}), {low2} ({lv2}) y {low3} ({lv3}).",
           "Precios medios mensuales de {date}."
         ],
@@ -1347,11 +1347,11 @@
         ],
         "faq": [
           {
-            "q": "¿Qué materia prima subió más este año?",
+            "q": "¿Qué materia prima tuvo la mejor evolución en el último año?",
             "a": "De las {rows} listadas, {top1} tuvo la mejor evolución en los 12 meses hasta {date}: {v1}."
           },
           {
-            "q": "¿Cuál cayó más?",
+            "q": "¿Cuál tuvo la peor evolución?",
             "a": "{low1}, con {lv1} en los 12 meses hasta {date}."
           },
           {
@@ -1376,11 +1376,11 @@
         ],
         "faq": [
           {
-            "q": "¿Qué divisa ganó más frente al dólar?",
+            "q": "¿Qué divisa tuvo la mejor evolución frente al dólar?",
             "a": "{top1}: {v1} frente al dólar estadounidense desde {yearAgo}."
           },
           {
-            "q": "¿Qué divisa perdió más?",
+            "q": "¿Cuál tuvo la peor evolución?",
             "a": "{low1}: {lv1} frente al dólar desde {yearAgo}."
           },
           {

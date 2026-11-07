@@ -28,8 +28,8 @@ export type RankingCopy = { title: string; description: string; h1: string; lede
 
 const ORIGIN = "https://cv.cm";
 const NO_VALUE = "—";
-/** Below any real change, and plain enough not to match a text filter. */
-const NOT_LISTED = -1000;
+/** Sorts below any real value; the table leaves non-finite sort keys out of its filter text. */
+const NOT_LISTED = Number.NEGATIVE_INFINITY;
 
 export function rankingHub(locale: Locale): RankingHubCopy {
   return datasetMessages(locale).rankings.hub;
@@ -83,9 +83,9 @@ function usd(locale: Locale, value: number, compactForm = false): string {
   return numberFormat(locale, { style: "currency", currency: "USD", notation: compactForm ? "compact" : "standard", maximumFractionDigits: compactForm ? 2 : value >= 1 ? 2 : 8 }).format(value);
 }
 
-/** A change that may be missing (a coin too new for a 7-day figure). */
-function maybeSigned(locale: Locale, value: number | null): { text: string; sort: number } {
-  return value === null ? { text: NO_VALUE, sort: NOT_LISTED } : { text: signed(locale, value), sort: value };
+/** A value that may be missing (a coin too new for a 7-day figure). */
+function maybe(value: number | null, shown: (v: number) => string): { text: string; sort: number } {
+  return value === null ? { text: NO_VALUE, sort: NOT_LISTED } : { text: shown(value), sort: value };
 }
 
 function signed(locale: Locale, value: number): string {
@@ -199,7 +199,7 @@ export function rankingTable(locale: Locale, id: RankingId, rows: unknown[]): Da
   if (kind === "crypto") {
     return {
       columns: [{ label: ui.rank, num: true }, { label: ui.name, head: true }, { label: ui.symbol }, { label: ui.price, num: true }, { label: ui.change24h, num: true }, { label: ui.change7d, num: true }, { label: ui.marketCap, num: true }, { label: ui.volume24h, num: true }],
-      rows: (rows as CryptoRow[]).map(([place, name, symbol, price, day, week, cap, volume]) => [rank(place), text(name), text(symbol), num(usd(locale, price), price), maybeSigned(locale, day), maybeSigned(locale, week), num(usd(locale, cap, true), cap), volume === null ? { text: NO_VALUE, sort: NOT_LISTED } : num(usd(locale, volume, true), volume)]),
+      rows: (rows as CryptoRow[]).map(([place, name, symbol, price, day, week, cap, volume]) => [rank(place), text(name), text(symbol), num(usd(locale, price), price), maybe(day, (v) => signed(locale, v)), maybe(week, (v) => signed(locale, v)), num(usd(locale, cap, true), cap), maybe(volume, (v) => usd(locale, v, true))]),
     };
   }
   if (kind === "commodity") {

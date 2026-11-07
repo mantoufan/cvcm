@@ -79,7 +79,8 @@ export function dataTable(locale: Locale, page: { label: string; caption: string
   const rows = table.rows.map((cells, index) => ({
     index,
     cells,
-    text: cells.map((c) => `${c.text} ${c.sort}`).join(" ").toLocaleLowerCase(locale),
+    // A missing value sorts as -Infinity; that is not text anyone filters for.
+    text: cells.map((c) => (typeof c.sort === "number" && !Number.isFinite(c.sort) ? c.text : `${c.text} ${c.sort}`)).join(" ").toLocaleLowerCase(locale),
     el: h("tr", null, ...cells.map((c, col) => {
       const column = table.columns[col];
       const cls = [column.num ? "num" : "", column.mono ? "mono" : "", column.wide ? "wide" : ""].join(" ").trim() || null;

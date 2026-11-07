@@ -425,17 +425,17 @@ await attempt(["currency-strength"], async () => {
   const set = await currencies();
   rows["currency-strength"] = set.rows;
   meta.sets["currency-strength"] = { asOf: set.asOf, monthAgo: set.monthAgo, yearAgo: set.yearAgo, rows: set.rows.length, top: topOf(set.rows, 1, 4), bottom: set.rows.slice(-3).reverse().map((r) => [r[1], r[4]]) };
-  csv["currency-strength"] = toCsv(["rank", "currency", "per_usd", "change_vs_usd_1_month_percent", "change_vs_usd_1_year_percent"], set.rows, ["European Central Bank euro reference rates (ecb.europa.eu)", "Reuse with source named"]);
+  csv["currency-strength"] = toCsv(["rank", "currency", "per_usd", "change_vs_usd_1_month_percent", "change_vs_usd_1_year_percent", "as_of", "month_ago", "year_ago"], set.rows.map((row) => [...row, set.asOf, set.monthAgo, set.yearAgo]), ["European Central Bank euro reference rates (ecb.europa.eu)", "Reuse with source named"]);
 });
 const month = lastMonth();
 // The Pink Sheet comes out early each month: nothing to ask for until a new month is due.
-if (!process.env.FORCE_COMMODITIES && oldMeta.sets["commodity-prices"]?.asOf === month && oldRows["commodity-prices"]) keep("commodity-prices");
+if (!process.env.FORCE_COMMODITIES && !process.env.FORCE_SHARE && oldMeta.sets["commodity-prices"]?.asOf === month && oldRows["commodity-prices"]) keep("commodity-prices");
 else {
   await attempt(["commodity-prices"], async () => {
     const set = await commodities();
     rows["commodity-prices"] = set.rows;
     meta.sets["commodity-prices"] = { asOf: set.asOf, rows: set.rows.length, top: topOf(set.rows, 1, 5), bottom: set.rows.slice(-3).reverse().map((r) => [r[1], r[5]]) };
-    csv["commodity-prices"] = toCsv(["rank", "commodity", "unit", "price_usd", "change_1_month_percent", "change_12_months_percent"], set.rows, [PINK_SHEET, "CC BY 4.0"]);
+    csv["commodity-prices"] = toCsv(["rank", "commodity", "unit", "price_usd", "change_1_month_percent", "change_12_months_percent", "month"], set.rows.map((row) => [...row, set.asOf]), [PINK_SHEET, "CC BY 4.0"]);
   });
 }
 
@@ -462,7 +462,7 @@ for (const [id, set] of Object.entries(meta.sets)) {
   set.updated = same ? oldMeta.sets[id].updated : meta.updated;
   // Same data: the file stays, so a re-run with only a newer citation time makes no commit.
   const file = join(root, "public/rankings", `${id}.csv`);
-  if (same && csv[id] && existsSync(file) && readFileSync(file, "utf8").split("\n")[0] === csv[id].split("\n")[0]) delete csv[id];
+  if (same && csv[id] && existsSync(file) && readFileSync(file, "utf8") === csv[id]) delete csv[id];
 }
 meta.updated = Object.values(meta.sets).map((set) => set.updated).sort().at(-1);
 writeFileSync(rowsPath, `${JSON.stringify(rows)}\n`);
