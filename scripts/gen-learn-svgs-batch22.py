@@ -39,12 +39,13 @@ def page(inner: str, label: str) -> str:
 
 
 def files(t: dict) -> str:
+    names = t["consoles"]
     rows = [
-        (".nes", "FC / NES"),
-        (".sfc  .smc", "SFC / SNES"),
-        (".gb  .gbc", "Game Boy / Game Boy Color"),
-        (".gba", "Game Boy Advance"),
-        (".md  .gen  .smd", "Mega Drive"),
+        (".nes", names["fc"]),
+        (".sfc  .smc", names["sfc"]),
+        (".gb  .gbc", f'{names["gb"]} / {names["gbc"]}'),
+        (".gba", names["gba"]),
+        (".md  .gen  .smd", names["md"]),
         (".bin", t["bin"]),
         (".zip", t["zip"]),
     ]
@@ -62,7 +63,7 @@ def keyboard(t: dict) -> str:
     for k, name, x in pairs:
         out += [key(x, 110, k), text(x + 32, 214, name, 22, INK, 700, "middle")]
     out += [key(740, 110, "Enter", 120), text(800, 214, "Start", 22, INK, 700, "middle")]
-    out += [box(50, 350, 860, 150, SOFT), text(70, 392, t["sfc"], 20, DEEP, 700)]
+    out += [box(50, 350, 860, 150, SOFT), text(70, 392, t["sfc"], 18, DEEP, 700)]
     for i, (k, name) in enumerate([("S", "Y"), ("A", "X"), ("Q", "L"), ("E", "R")]):
         x = 90 + i * 200
         out += [key(x, 412, k), text(x + 84, 454, f"= {name}", 26, INK, 700)]
@@ -102,6 +103,8 @@ DIAGRAMS = {
 count = 0
 for loc, folder in FOLDERS.items():
     data = json.loads((SRC / f"{loc}.json").read_text(encoding="utf-8"))
+    # Console names match the tool's Console list.
+    data["svg"]["use-emulator"]["consoles"] = json.loads((REPO / "src/locales" / f"{loc}.json").read_text(encoding="utf-8"))["games"]["consoles"]
     dest = ROOT / folder if folder else ROOT
     dest.mkdir(parents=True, exist_ok=True)
     for lesson_id, pair in DIAGRAMS.items():

@@ -16,7 +16,7 @@
         "result": "Su juego funciona en una pestaña del navegador, con las teclas a la vista y un archivo de guardado en su dispositivo.",
         "note": "Use ROM que tenga derecho a usar, como juegos homebrew publicados por su autor. cv.cm no ofrece ROM comerciales.",
         "s1t": "Busque una ROM que pueda usar",
-        "s1b": "Una ROM es la copia de un cartucho de juego en un archivo. Esta herramienta abre juegos de FC / NES, SFC / SNES, Game Boy, Game Boy Color, Game Boy Advance y Mega Drive. Si no tiene ningún archivo, la sección Juegos de cv.cm tiene homebrew gratis.",
+        "s1b": "Una ROM es la copia de un cartucho de juego en un archivo. Esta herramienta abre juegos de FC / NES, SFC / SNES, Game Boy, Game Boy Color, Game Boy Advance y Mega Drive / Genesis. Si no tiene ningún archivo, la sección Juegos de cv.cm tiene homebrew gratis.",
         "s2t": "Abra el emulador online de cv.cm",
         "s2b": "Pulse Elegir ROM y seleccione un archivo .nes, .sfc, .smc, .gb, .gbc, .gba, .md, .gen, .smd, .bin o .zip. Se lee en esta pestaña y no se envía a ningún sitio. La primera vez también se descarga el emulador, así que espere un momento.",
         "s3t": "Compruebe la consola",
@@ -26,7 +26,7 @@
         "s5t": "Guarde la partida",
         "s5b": "Mueva el puntero sobre el juego para ver la barra de herramientas. En el móvil, toque el icono de tres líneas de arriba a la derecha. El icono del disquete guarda un estado y lo descarga como archivo .state. El icono de la carpeta lo carga. Conserve el archivo: tras cerrar la pestaña, le devuelve a ese mismo punto.",
         "s6t": "Solucione un juego que no arranca",
-        "s6b": "Una pantalla negra suele indicar una consola equivocada, así que pruebe otra en Consola. El zip debe contener uno de los tipos de archivo anteriores. Los archivos de más de 64 MB se rechazan porque son demasiado grandes para estas consolas, y los juegos en disco no son compatibles.",
+        "s6b": "Una pantalla negra suele indicar una consola equivocada, así que pruebe otra en Consola. El zip debe contener la ROM directamente, no otro zip. Los archivos de más de 64 MB se rechazan porque son demasiado grandes para estas consolas, y los juegos en disco no son compatibles.",
         "diagram1": "Cada tipo de archivo y la consola con la que se abre.",
         "diagram2": "Las teclas de la mayoría de las consolas y las que añade SFC."
       },
@@ -38,7 +38,7 @@
         "q3": "¿Qué archivo elijo de un zip?",
         "a3": "Elija el propio zip. La herramienta busca la ROM dentro y el emulador la abre. Si contiene un .bin, elija usted la consola.",
         "q4": "¿Puedo jugar a juegos de PlayStation o Nintendo DS?",
-        "a4": "No. Esta herramienta admite FC / NES, SFC / SNES, Game Boy, Game Boy Color, Game Boy Advance y Mega Drive.",
+        "a4": "No. Esta herramienta admite FC / NES, SFC / SNES, Game Boy, Game Boy Color, Game Boy Advance y Mega Drive / Genesis.",
         "q5": "¿Dónde quedan mis partidas guardadas?",
         "a5": "El icono del disquete descarga un archivo .state en su dispositivo. Para continuar, abra la misma ROM y cargue ese archivo con el icono de la carpeta. Lo guardado en el menú del propio juego puede quedarse en este navegador hasta que se borren los datos del sitio, así que conserve un archivo .state de lo que le importe."
       }
@@ -56,11 +56,11 @@
         "s2t": "Abra Flash Player en cv.cm",
         "s2b": "Pulse Elegir SWF y seleccione su archivo .swf. Se queda en esta pestaña y no se envía a ningún servidor. La primera vez también se descarga Ruffle, un emulador de Flash de código abierto, lo que puede tardar unos segundos.",
         "s3t": "Active el sonido",
-        "s3b": "Los navegadores bloquean el audio que se reproduce solo. Haga clic una vez en la imagen y empezará el sonido.",
+        "s3b": "Los navegadores pueden bloquear el audio que se reproduce solo. Si no oye nada, haga clic una vez en la imagen.",
         "s4t": "Juegue",
         "s4b": "La mayoría de los Flash usan el botón izquierdo del ratón. Un toque en el móvil cuenta como clic. Las flechas funcionan cuando el juego espera teclado, así que esos juegos son más cómodos en un ordenador.",
         "s5t": "Sepa por qué un archivo se detiene al cargar",
-        "s5b": "Esta página ejecuta un archivo que puede arrancar solo y bloquea el acceso a la red. Un juego que carga otros SWF o XML, o que solo funciona en su antiguo sitio web, se detiene en la pantalla de carga.",
+        "s5b": "Esta página solo ejecuta archivos que pueden arrancar solos y bloquea el acceso a la red. Un juego que carga otros SWF o XML, o que solo funciona en su antiguo sitio web, se detiene en la pantalla de carga.",
         "s6t": "Pruebe otra opción si falla",
         "s6b": "Ruffle ejecuta la mayoría de los archivos antiguos de ActionScript 1 y 2, pero su soporte de ActionScript 3 aún está incompleto, así que algunos juegos más nuevos pueden no arrancar o funcionar mal. Pulse Elegir SWF de nuevo para abrir otro archivo o juegue a los títulos gratis de la sección de juegos Flash.",
         "diagram1": "Cómo funcionan el ratón, la pantalla táctil y el teclado en un archivo Flash.",
@@ -72,7 +72,7 @@
         "q2": "¿Se sube mi SWF?",
         "a2": "No. El archivo se queda en esta pestaña y no se envía a ningún servidor.",
         "q3": "¿Por qué no hay sonido?",
-        "a3": "Los navegadores bloquean el audio que se reproduce solo. Haga clic una vez en la imagen y empezará el sonido.",
+        "a3": "Los navegadores pueden bloquear el audio que se reproduce solo. Si no oye nada, haga clic una vez en la imagen.",
         "q4": "¿Por qué se queda en la pantalla de carga?",
         "a4": "Probablemente el juego necesita otros archivos o su antiguo sitio web. Esta página bloquea el acceso a la red, así que no puede obtenerlos.",
         "q5": "¿Puedo abrir un SWF en el móvil?",
@@ -98,7 +98,7 @@
       "click": "Botón izquierdo del ratón",
       "tap": "Toque en el móvil = clic",
       "keys": "Flechas, si el juego las espera",
-      "sound": "Un clic para el sonido"
+      "sound": "¿Sin sonido? Un clic"
     }
   }
 }

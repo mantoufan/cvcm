@@ -16,7 +16,7 @@
         "result": "Your game running in a browser tab, with its keys in front of you and a save state on your device.",
         "note": "Use ROMs you have the right to use, such as homebrew released by its author. cv.cm does not provide commercial ROMs.",
         "s1t": "Find a ROM you can use",
-        "s1b": "A ROM is a copy of a game cartridge in one file. This tool opens FC / NES, SFC / SNES, Game Boy, Game Boy Color, Game Boy Advance and Mega Drive games. cv.cm's Games column has free homebrew if you have no file.",
+        "s1b": "A ROM is a copy of a game cartridge in one file. This tool opens FC / NES, SFC / SNES, Game Boy, Game Boy Color, Game Boy Advance and Mega Drive / Genesis games. cv.cm's Games column has free homebrew if you have no file.",
         "s2t": "Open the ROM emulator on cv.cm",
         "s2b": "Press Choose ROM and pick a .nes, .sfc, .smc, .gb, .gbc, .gba, .md, .gen, .smd, .bin or .zip file. It is read in this tab and not sent anywhere. The first start also downloads the emulator, so give it a moment.",
         "s3t": "Check the console",
@@ -26,7 +26,7 @@
         "s5t": "Save your game",
         "s5b": "Move the pointer over the game to show the toolbar. On a phone, tap the three-line icon at the top right. The floppy disk icon saves a state and downloads it as a .state file. The folder icon loads one. Keep the file: it brings you back to this exact spot after you close the tab.",
         "s6t": "Fix a game that will not start",
-        "s6b": "A black screen usually means the wrong console, so try another under Console. A zip must hold one of the file types above. Files over 64 MB are refused, because they are too big for these consoles, and disc games are not supported.",
+        "s6b": "A black screen usually means the wrong console, so try another under Console. A zip must hold a ROM directly, not another zip. Files over 64 MB are refused, because they are too big for these consoles, and disc games are not supported.",
         "diagram1": "Each file type and the console it opens on.",
         "diagram2": "The keyboard keys for most consoles, and what SFC adds."
       },
@@ -38,7 +38,7 @@
         "q3": "Which file should I choose from a zip?",
         "a3": "Choose the zip itself. The tool looks inside it for a ROM and the emulator opens it. If the zip holds a .bin, choose the console yourself.",
         "q4": "Can I play PlayStation or Nintendo DS games?",
-        "a4": "No. This tool covers FC / NES, SFC / SNES, Game Boy, Game Boy Color, Game Boy Advance and Mega Drive.",
+        "a4": "No. This tool covers FC / NES, SFC / SNES, Game Boy, Game Boy Color, Game Boy Advance and Mega Drive / Genesis.",
         "q5": "Where do my saves go?",
         "a5": "The floppy disk icon downloads a .state file to your device. To continue later, open the same ROM and load that file with the folder icon. Saves made in the game's own menu may stay in this browser until site data is cleared, so keep a .state file for anything you care about."
       }
@@ -56,11 +56,11 @@
         "s2t": "Open the Flash player on cv.cm",
         "s2b": "Press Choose SWF and pick your .swf file. It stays in this tab and is not sent to a server. The first start also downloads Ruffle, an open-source Flash emulator, which can take a few seconds.",
         "s3t": "Turn on the sound",
-        "s3b": "Browsers block audio that plays by itself. Click the picture once and the sound starts.",
+        "s3b": "Browsers may block audio that plays by itself. If you hear nothing, click the picture once.",
         "s4t": "Play it",
         "s4b": "Most Flash files use the left mouse button. A tap on a phone counts as a click. Arrow keys work when the game expects a keyboard, so a computer is easier for those games.",
         "s5t": "See why a file stops loading",
-        "s5b": "This page runs a file that can start on its own and blocks network access. A game that loads more SWFs or XML, or only runs on its old website, stops on its loader.",
+        "s5b": "This page only runs a file that can start on its own, and it blocks network access. A game that loads more SWFs or XML, or only runs on its old website, stops on its loader.",
         "s6t": "Try something else if it fails",
         "s6b": "Ruffle runs most older ActionScript 1 and 2 files, but its ActionScript 3 support is incomplete, so some newer games fail or misbehave. Choose SWF again to open another file, or play the free titles under Flash games.",
         "diagram1": "How mouse, touch and keyboard work in a Flash file.",
@@ -72,7 +72,7 @@
         "q2": "Is my SWF uploaded?",
         "a2": "No. The file stays in this tab and is not sent to a server.",
         "q3": "Why is there no sound?",
-        "a3": "Browsers block audio that plays by itself. Click the picture once and the sound starts.",
+        "a3": "Browsers may block audio that plays by itself. If you hear nothing, click the picture once.",
         "q4": "Why does it stop on the loading screen?",
         "a4": "The game probably needs more files or its old website. This page blocks network access, so it cannot fetch them.",
         "q5": "Can I open a SWF on a phone?",
@@ -98,7 +98,7 @@
       "click": "Left mouse button",
       "tap": "Tap on a phone = click",
       "keys": "Arrow keys, when the game expects them",
-      "sound": "Click once for sound"
+      "sound": "No sound? Click once"
     }
   }
 }

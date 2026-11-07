@@ -2,6 +2,8 @@ import { describe, expect, it } from "vitest";
 import { readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
+import { localizedTutorialSrc } from "../src/shared/covers";
+import type { Locale } from "../src/shared/locale";
 import { TUTORIAL_DIAGRAMS, lessonsForTool } from "../src/shared/learn";
 import { CONSOLE_CONTROLS } from "../src/shared/game-controls";
 import { MAX_ROM_BYTES, ROM_ACCEPT } from "../src/shared/rom-detect";
@@ -52,13 +54,31 @@ describe("retro tool tutorials", () => {
     for (const key of [fc.a, fc.b, fc.select, fc.start, sfc.y, sfc.x, sfc.l, sfc.r]) expect(svg, key).toContain(`>${key}</text>`);
   });
 
-  it("captions each diagram with the text drawn into it", () => {
-    for (const id of ["use-emulator", "open-swf-file"] as const) {
-      TUTORIAL_DIAGRAMS[id]!.forEach((diagram, i) => {
-        const svg = readFileSync(join(root, "public", diagram.src), "utf8");
-        const caption = en.learn[id][`diagram${i + 1}` as "diagram1"];
-        expect(svg, diagram.src).toContain(`aria-label="${caption}"`);
-      });
+  it("captions each diagram with the text drawn into it, in every language", () => {
+    for (const [loc, pack] of packs) {
+      for (const id of ["use-emulator", "open-swf-file"] as const) {
+        TUTORIAL_DIAGRAMS[id]!.forEach((diagram, i) => {
+          const svg = readFileSync(join(root, "public", localizedTutorialSrc(diagram.src, loc as Locale)), "utf8");
+          const caption = pack.learn[id][`diagram${i + 1}` as "diagram1"];
+          expect(svg, `${loc} ${diagram.src}`).toContain(`aria-label="${caption}"`);
+        });
+      }
+    }
+  });
+
+  it("draws every accepted file type in the diagram, in every language", () => {
+    for (const [loc] of packs) {
+      const svg = readFileSync(join(root, "public", localizedTutorialSrc("/covers/tutorials/use-emulator-files.svg", loc as Locale)), "utf8");
+      for (const ext of ROM_ACCEPT.split(",")) expect(svg, `${loc} ${ext}`).toContain(ext);
+    }
+  });
+
+  it("pairs each key with its button", () => {
+    expect(en.learn["use-emulator"].s4b).toContain("Z is A, X is B, V is Select and Enter is Start");
+    const svg = readFileSync(join(root, "public/covers/tutorials/use-emulator-keys.svg"), "utf8");
+    const labels = [...svg.matchAll(/>([^<>]+)<\/text>/g)].map((m) => m[1]);
+    for (const [key, button] of [["Z", "A"], ["X", "B"], ["V", "Select"], ["Enter", "Start"]] as const) {
+      expect(labels[labels.indexOf(key) + 1], key).toBe(button);
     }
   });
 });
