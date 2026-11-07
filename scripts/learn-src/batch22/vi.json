@@ -1,0 +1,104 @@
+{
+  "group": "Trò chơi",
+  "meta": {
+    "titleUseEmulator": "Cách dùng trình giả lập để chơi ROM trên trình duyệt | cv.cm",
+    "descUseEmulator": "Mở ROM không cần cài đặt: chọn tệp, kiểm tra hệ máy, học phím, lưu game và xử lý màn hình đen. Không tải lên.",
+    "titleOpenSwfFile": "Cách mở file SWF không cần Flash | cv.cm",
+    "descOpenSwfFile": "Mở file .swf trên trình duyệt không cần plugin, bật tiếng, chơi bằng chuột hoặc cảm ứng và biết vì sao một số file dừng khi tải. Không tải lên."
+  },
+  "lessons": {
+    "use-emulator": {
+      "copy": {
+        "name": "Cách dùng trình giả lập",
+        "blurb": "Mở ROM trên trình duyệt, kiểm tra hệ máy, học phím và lưu game.",
+        "title": "Cách dùng trình giả lập để chơi ROM",
+        "lead": "Bạn có một tệp ROM và muốn chơi mà không cài gì. Bạn sẽ mở tệp trên trình duyệt, kiểm tra hệ máy, học phím và lưu tiến trình. Tệp chỉ ở trên thiết bị của bạn.",
+        "result": "Game chạy trong một tab trình duyệt, các phím hiện ngay trước mắt và tệp lưu nằm trên thiết bị của bạn.",
+        "note": "Hãy dùng ROM bạn có quyền sử dụng, chẳng hạn game tự chế do tác giả phát hành. cv.cm không cung cấp ROM thương mại.",
+        "s1t": "Tìm ROM bạn được dùng",
+        "s1b": "ROM là bản sao của băng game trong một tệp. Công cụ này mở game FC / NES, SFC / SNES, Game Boy, Game Boy Color, Game Boy Advance và Mega Drive. Nếu chưa có tệp, chuyên mục Trò chơi của cv.cm có game tự chế miễn phí.",
+        "s2t": "Mở trình giả lập game trên cv.cm",
+        "s2b": "Nhấn Chọn ROM và chọn tệp .nes, .sfc, .smc, .gb, .gbc, .gba, .md, .gen, .smd, .bin hoặc .zip. Tệp được đọc trong tab này và không gửi đi đâu. Lần đầu còn phải tải trình giả lập, nên hãy chờ một chút.",
+        "s3t": "Kiểm tra hệ máy",
+        "s3b": "Dòng dưới game cho biết hệ máy đã nhận diện. Nếu tệp không cho biết hoặc game hiển thị sai, hãy chọn ở mục Hệ máy và game sẽ chạy lại theo hệ máy đó.",
+        "s4t": "Học phím",
+        "s4b": "Các phím của hệ máy hiện dưới game. Trên đa số hệ máy, phím mũi tên để di chuyển, Z là A, X là B, V là Select và Enter là Start. Trên điện thoại, dùng tay cầm ảo trên màn hình hoặc tay cầm Bluetooth.",
+        "s5t": "Lưu game",
+        "s5b": "Di chuột lên game để hiện thanh công cụ. Biểu tượng đĩa mềm lưu trạng thái và tải về thành tệp .state. Biểu tượng thư mục dùng để tải lại. Hãy giữ tệp này: sau khi đóng tab, tệp sẽ đưa bạn về đúng chỗ đó.",
+        "s6t": "Xử lý game không chạy",
+        "s6b": "Màn hình đen thường do sai hệ máy, hãy thử hệ máy khác ở mục Hệ máy. Tệp zip phải chứa một trong các loại tệp ở trên. Tệp trên 64 MB bị từ chối vì quá lớn với các hệ máy này, và game đĩa không được hỗ trợ.",
+        "diagram1": "Từng loại tệp và hệ máy tương ứng.",
+        "diagram2": "Các phím bàn phím của đa số hệ máy và các phím SFC có thêm."
+      },
+      "faq": {
+        "q1": "ROM của tôi có bị tải lên không?",
+        "a1": "Không. Tệp được đọc trong tab này và chuyển cho trình giả lập trên trang. Chỉ có chương trình giả lập được tải về.",
+        "q2": "Chơi ROM có hợp pháp không?",
+        "a2": "Tùy vào game và nơi bạn sống. Game tự chế do tác giả phát hành miễn phí thì không sao. Quy định về bản sao game thương mại khác nhau theo quốc gia, nên hãy kiểm tra.",
+        "q3": "Trong tệp zip nên chọn tệp nào?",
+        "a3": "Hãy chọn chính tệp zip. Công cụ sẽ tìm ROM bên trong và trình giả lập sẽ mở. Nếu zip chứa .bin, hãy tự chọn hệ máy.",
+        "q4": "Có chơi được game PlayStation hay Nintendo DS không?",
+        "a4": "Không. Công cụ này hỗ trợ FC / NES, SFC / SNES, Game Boy, Game Boy Color, Game Boy Advance và Mega Drive.",
+        "q5": "Tệp lưu nằm ở đâu?",
+        "a5": "Lưu trạng thái sẽ tải một tệp .state về thiết bị. Để chơi tiếp, hãy mở cùng ROM rồi tải tệp đó bằng biểu tượng thư mục."
+      }
+    },
+    "open-swf-file": {
+      "copy": {
+        "name": "Cách mở file SWF",
+        "blurb": "Mở file .swf không cần plugin, bật tiếng và biết vì sao một số file dừng khi tải.",
+        "title": "Cách mở file SWF không cần Flash",
+        "lead": "Bạn có một file .swf nhưng Flash Player không còn dùng được. Bạn sẽ mở file trong tab trình duyệt bằng Ruffle, bật tiếng, chơi và biết cách xử lý khi file dừng ở màn hình tải. File chỉ ở trên thiết bị của bạn.",
+        "result": "File SWF chạy trong tab trình duyệt, có tiếng và không cần cài plugin.",
+        "note": "Đừng cài Flash Player cũ từ các trang khác. Adobe đã ngừng hỗ trợ Flash Player và khuyên gỡ cài đặt.",
+        "s1t": "Biết SWF là gì",
+        "s1b": "SWF là file Flash: game, hoạt hình hoặc ứng dụng nhỏ. Adobe ngừng hỗ trợ Flash Player vào ngày 31/12/2020 và chặn nội dung Flash từ ngày 12/1/2021, nên trình duyệt không còn tự chạy các file này.",
+        "s2t": "Mở Flash Player trên cv.cm",
+        "s2b": "Nhấn Chọn SWF và chọn file .swf. File ở lại trong tab này và không được gửi đến máy chủ. Lần đầu còn phải tải Ruffle, trình giả lập Flash mã nguồn mở, có thể mất vài giây.",
+        "s3t": "Bật tiếng",
+        "s3b": "Trình duyệt chặn âm thanh tự phát. Nhấp vào hình một lần là có tiếng.",
+        "s4t": "Chơi",
+        "s4b": "Phần lớn Flash dùng chuột trái. Chạm trên điện thoại được tính là nhấp. Phím mũi tên dùng được khi game cần bàn phím, nên chơi các game đó trên máy tính sẽ dễ hơn.",
+        "s5t": "Biết vì sao file dừng khi tải",
+        "s5b": "Trang này chạy file có thể tự khởi động và chặn truy cập mạng. Game cần tải thêm SWF hoặc XML, hoặc chỉ chạy trên trang web cũ, sẽ dừng ở màn hình tải.",
+        "s6t": "Thử cách khác nếu không chạy",
+        "s6b": "Ruffle chạy được phần lớn file ActionScript 1 và 2 cũ, nhưng chưa hỗ trợ đầy đủ ActionScript 3 nên một số game mới hơn có thể không khởi động hoặc chạy sai. Nhấn Chọn SWF để mở file khác, hoặc chơi các game miễn phí ở mục game Flash.",
+        "diagram1": "SWF tự khởi động thì chạy được. File cần tệp khác hoặc trang web cũ sẽ dừng.",
+        "diagram2": "Cách dùng chuột, cảm ứng và bàn phím trong file Flash."
+      },
+      "faq": {
+        "q1": "Có cần Adobe Flash Player không?",
+        "a1": "Không. Ruffle chạy file ngay trên trang nên không cần cài gì. Trang này không do Adobe cung cấp.",
+        "q2": "SWF của tôi có bị tải lên không?",
+        "a2": "Không. File ở lại trong tab này và không được gửi đến máy chủ.",
+        "q3": "Vì sao không có tiếng?",
+        "a3": "Trình duyệt chặn âm thanh tự phát. Nhấp vào hình một lần là có tiếng.",
+        "q4": "Vì sao dừng ở màn hình tải?",
+        "a4": "Có thể game cần thêm tệp khác hoặc trang web cũ. Trang này chặn truy cập mạng nên không lấy được chúng.",
+        "q5": "Có mở được SWF trên điện thoại không?",
+        "a5": "Có. Chạm được tính là nhấp. Game cần bàn phím sẽ dễ chơi hơn trên máy tính."
+      }
+    }
+  },
+  "svg": {
+    "use-emulator": {
+      "file": "Tệp",
+      "console": "Hệ máy",
+      "bin": "xem phần đầu tệp hoặc tự chọn",
+      "zip": "tìm ROM bên trong",
+      "move": "Di chuyển",
+      "sfc": "SFC có thêm"
+    },
+    "open-swf-file": {
+      "ok": "Chạy được",
+      "stop": "Dừng lại",
+      "one": "Một .swf tự khởi động",
+      "more": "Cần tải thêm SWF hoặc XML",
+      "site": "Chỉ chạy trên trang web cũ",
+      "click": "Chuột trái",
+      "tap": "Chạm trên điện thoại = nhấp",
+      "keys": "Phím mũi tên, khi game cần",
+      "sound": "Nhấp một lần để có tiếng"
+    }
+  }
+}

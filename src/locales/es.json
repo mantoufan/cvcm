@@ -525,7 +525,11 @@
     "titleRomEmulator": "Emulador online de juegos retro — GBA, SNES, NES — cv.cm",
     "descRomEmulator": "Emulador online gratis: abre tu propia ROM de GBA, SNES, NES, Game Boy o Mega Drive. La consola se detecta a partir del archivo. Sin instalar, con mando y controles táctiles. No se sube nada.",
     "titleFlashPlayer": "Flash Player online — reproductor SWF, sin plugin — cv.cm",
-    "descFlashPlayer": "Flash Player y reproductor SWF online gratis: abre un archivo .swf con Ruffle, un emulador de Flash de código abierto. Sin plugin y sin instalar nada. El archivo se queda en esta pestaña y no se sube."
+    "descFlashPlayer": "Flash Player y reproductor SWF online gratis: abre un archivo .swf con Ruffle, un emulador de Flash de código abierto. Sin plugin y sin instalar nada. El archivo se queda en esta pestaña y no se sube.",
+    "titleUseEmulator": "Cómo usar un emulador para jugar ROM en el navegador | cv.cm",
+    "descUseEmulator": "Abra una ROM sin instalar nada: elija el archivo, compruebe la consola, aprenda las teclas, guarde la partida y solucione la pantalla negra. No se sube nada.",
+    "titleOpenSwfFile": "Cómo abrir archivos SWF sin Flash | cv.cm",
+    "descOpenSwfFile": "Abra un archivo .swf en el navegador sin plugin, active el sonido, juegue con ratón o pantalla táctil y sepa por qué algunos archivos se detienen al cargar. No se sube nada."
   },
   "brand": "cv.cm",
   "nav": {
@@ -2791,6 +2795,30 @@
         "a4": "Sí, mantenga pulsado el botón izquierdo y dibuje, pero un ratón no puede probar el multitáctil ni las zonas muertas de la propia pantalla.",
         "q5": "¿Se sube algo?",
         "a5": "No. Los toques solo se dibujan en la pestaña del navegador."
+      },
+      "use-emulator": {
+        "q1": "¿Se sube mi ROM?",
+        "a1": "No. El archivo se lee en esta pestaña y se entrega al emulador de la página. Solo se descarga el propio emulador.",
+        "q2": "¿Es legal jugar con ROM?",
+        "a2": "Depende del juego y de dónde viva. El homebrew que su autor publicó gratis no plantea problema. Las normas sobre copias de juegos comerciales varían según el país, así que consulte las suyas.",
+        "q3": "¿Qué archivo elijo de un zip?",
+        "a3": "Elija el propio zip. La herramienta busca la ROM dentro y el emulador la abre. Si contiene un .bin, elija usted la consola.",
+        "q4": "¿Puedo jugar a juegos de PlayStation o Nintendo DS?",
+        "a4": "No. Esta herramienta admite FC / NES, SFC / SNES, Game Boy, Game Boy Color, Game Boy Advance y Mega Drive.",
+        "q5": "¿Dónde quedan mis partidas guardadas?",
+        "a5": "Guardar estado descarga un archivo .state en su dispositivo. Para continuar, abra la misma ROM y cargue ese archivo con el icono de la carpeta."
+      },
+      "open-swf-file": {
+        "q1": "¿Necesito Adobe Flash Player?",
+        "a1": "No. Ruffle ejecuta el archivo en la página, así que no hay nada que instalar. Esta página no es de Adobe.",
+        "q2": "¿Se sube mi SWF?",
+        "a2": "No. El archivo se queda en esta pestaña y no se envía a ningún servidor.",
+        "q3": "¿Por qué no hay sonido?",
+        "a3": "Los navegadores bloquean el audio que se reproduce solo. Haga clic una vez en la imagen y empezará el sonido.",
+        "q4": "¿Por qué se queda en la pantalla de carga?",
+        "a4": "Probablemente el juego necesita otros archivos o su antiguo sitio web. Esta página bloquea el acceso a la red, así que no puede obtenerlos.",
+        "q5": "¿Puedo abrir un SWF en el móvil?",
+        "a5": "Sí. Un toque cuenta como clic. Los juegos que necesitan teclado son más cómodos en un ordenador."
       }
     },
     "compress-pdf": {
@@ -4602,7 +4630,8 @@
       "time": "Fechas y horas",
       "money": "Dinero y compras",
       "health": "Salud y ejercicio",
-      "math": "Matemáticas y estudio"
+      "math": "Matemáticas y estudio",
+      "games": "Juegos"
     },
     "hub": {
       "kicker": "Lecciones del mismo día",
@@ -6685,6 +6714,50 @@
       "s6b": "Pulse Borrar y vuelva a probar para confirmar una zona muerta. Si las mismas celdas nunca responden, el fallo es de la pantalla o del digitalizador, no de la app.",
       "diagram1": "Deslice por cada fila: celdas vacías = zona muerta.",
       "diagram2": "Móviles y tabletas: 5–10 dedos · muchos portátiles: 2."
+    },
+    "use-emulator": {
+      "name": "Cómo usar un emulador",
+      "blurb": "Abra una ROM en el navegador, compruebe la consola, aprenda las teclas y guarde la partida.",
+      "title": "Cómo usar un emulador para jugar ROM",
+      "lead": "Tiene un archivo ROM y quiere jugar sin instalar nada. Lo abrirá en el navegador, comprobará la consola, aprenderá las teclas y guardará su progreso. El archivo se queda en su dispositivo.",
+      "result": "Su juego funciona en una pestaña del navegador, con las teclas a la vista y un archivo de guardado en su dispositivo.",
+      "note": "Use ROM que tenga derecho a usar, como juegos homebrew publicados por su autor. cv.cm no ofrece ROM comerciales.",
+      "s1t": "Busque una ROM que pueda usar",
+      "s1b": "Una ROM es la copia de un cartucho de juego en un archivo. Esta herramienta abre juegos de FC / NES, SFC / SNES, Game Boy, Game Boy Color, Game Boy Advance y Mega Drive. Si no tiene ningún archivo, la sección Juegos de cv.cm tiene homebrew gratis.",
+      "s2t": "Abra el emulador online de cv.cm",
+      "s2b": "Pulse Elegir ROM y seleccione un archivo .nes, .sfc, .smc, .gb, .gbc, .gba, .md, .gen, .smd, .bin o .zip. Se lee en esta pestaña y no se envía a ningún sitio. La primera vez también se descarga el emulador, así que espere un momento.",
+      "s3t": "Compruebe la consola",
+      "s3b": "La línea bajo el juego indica la consola detectada. Si el archivo no lo indica o el juego se ve mal, elija una en Consola y el juego se reiniciará con ella.",
+      "s4t": "Aprenda las teclas",
+      "s4b": "Las teclas de esa consola aparecen bajo el juego. En la mayoría, las flechas mueven, Z es A, X es B, V es Select y Enter es Start. En el móvil, use el mando en pantalla o un mando Bluetooth.",
+      "s5t": "Guarde la partida",
+      "s5b": "Mueva el puntero sobre el juego para ver la barra de herramientas. El icono del disquete guarda un estado y lo descarga como archivo .state. El icono de la carpeta lo carga. Conserve el archivo: tras cerrar la pestaña, le devuelve a ese mismo punto.",
+      "s6t": "Solucione un juego que no arranca",
+      "s6b": "Una pantalla negra suele indicar una consola equivocada, así que pruebe otra en Consola. El zip debe contener uno de los tipos de archivo anteriores. Los archivos de más de 64 MB se rechazan porque son demasiado grandes para estas consolas, y los juegos en disco no son compatibles.",
+      "diagram1": "Cada tipo de archivo y la consola con la que se abre.",
+      "diagram2": "Las teclas de la mayoría de las consolas y las que añade SFC."
+    },
+    "open-swf-file": {
+      "name": "Cómo abrir archivos SWF",
+      "blurb": "Abra un archivo .swf sin plugin, active el sonido y sepa por qué algunos se detienen al cargar.",
+      "title": "Cómo abrir archivos SWF sin Flash",
+      "lead": "Tiene un archivo .swf y Flash Player ya no funciona. Lo abrirá en una pestaña del navegador con Ruffle, activará el sonido, jugará y sabrá qué hacer si se detiene al cargar. El archivo se queda en su dispositivo.",
+      "result": "Su SWF funciona en una pestaña del navegador, con sonido y sin instalar ningún plugin.",
+      "note": "No instale versiones antiguas de Flash Player desde otros sitios. Adobe dejó de dar soporte a Flash Player y recomienda desinstalarlo.",
+      "s1t": "Sepa qué es un SWF",
+      "s1b": "Un SWF es un archivo Flash: un juego, una animación o una pequeña aplicación. Adobe dejó de dar soporte a Flash Player el 31 de diciembre de 2020 y bloqueó el contenido Flash desde el 12 de enero de 2021, así que los navegadores ya no abren estos archivos por sí solos.",
+      "s2t": "Abra Flash Player en cv.cm",
+      "s2b": "Pulse Elegir SWF y seleccione su archivo .swf. Se queda en esta pestaña y no se envía a ningún servidor. La primera vez también se descarga Ruffle, un emulador de Flash de código abierto, lo que puede tardar unos segundos.",
+      "s3t": "Active el sonido",
+      "s3b": "Los navegadores bloquean el audio que se reproduce solo. Haga clic una vez en la imagen y empezará el sonido.",
+      "s4t": "Juegue",
+      "s4b": "La mayoría de los Flash usan el botón izquierdo del ratón. Un toque en el móvil cuenta como clic. Las flechas funcionan cuando el juego espera teclado, así que esos juegos son más cómodos en un ordenador.",
+      "s5t": "Sepa por qué un archivo se detiene al cargar",
+      "s5b": "Esta página ejecuta un archivo que puede arrancar solo y bloquea el acceso a la red. Un juego que carga otros SWF o XML, o que solo funciona en su antiguo sitio web, se detiene en la pantalla de carga.",
+      "s6t": "Pruebe otra opción si falla",
+      "s6b": "Ruffle ejecuta la mayoría de los archivos antiguos de ActionScript 1 y 2, pero su soporte de ActionScript 3 aún está incompleto, así que algunos juegos más nuevos pueden no arrancar o funcionar mal. Pulse Elegir SWF de nuevo para abrir otro archivo o juegue a los títulos gratis de la sección de juegos Flash.",
+      "diagram1": "Un SWF que arranca solo funciona. Uno que necesita otros archivos o su antiguo sitio se detiene.",
+      "diagram2": "Cómo funcionan el ratón, la pantalla táctil y el teclado en un archivo Flash."
     }
   },
   "compressPdf": {

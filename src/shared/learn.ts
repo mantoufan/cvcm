@@ -501,6 +501,18 @@ export const TUTORIAL_META: Record<TutorialId, TutorialMeta> = {
     openAt: 2,
     related: ["tone-generator", "metronome", "mic-test"],
   },
+  "use-emulator": {
+    minutes: 5,
+    steps: 6,
+    openAt: 2,
+    related: ["rom-emulator", "gamepad-test", "keyboard-test"],
+  },
+  "open-swf-file": {
+    minutes: 4,
+    steps: 6,
+    openAt: 2,
+    related: ["flash-player", "rom-emulator"],
+  },
   "test-microphone": {
     minutes: 5,
     steps: 6,
@@ -699,6 +711,10 @@ export const ONE_PAGE_HTML = `<!doctype html>
 `;
 
 export const TUTORIAL_SOURCES: Partial<Record<TutorialId, { title: string; href: string }[]>> = {
+  "open-swf-file": [
+    { title: "Adobe Flash Player End of Life", href: "https://www.adobe.com/products/flashplayer/end-of-life.html" },
+    { title: "Ruffle Flash Player emulator", href: "https://ruffle.rs/" },
+  ],
   algorithms: [{ title: "JavaScript Map — MDN", href: "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map" }],
   "one-page-site": [
     { title: "Cloudflare Pages — Direct Upload", href: "https://developers.cloudflare.com/pages/get-started/direct-upload/" },
@@ -1029,6 +1045,14 @@ export const TUTORIAL_DIAGRAMS: Partial<Record<TutorialId, { step: number; src: 
   "generate-test-tone": [
     { step: 1, src: "/covers/tutorials/generate-test-tone-range.svg" },
     { step: 4, src: "/covers/tutorials/generate-test-tone-channels.svg" },
+  ],
+  "use-emulator": [
+    { step: 2, src: "/covers/tutorials/use-emulator-files.svg" },
+    { step: 4, src: "/covers/tutorials/use-emulator-keys.svg" },
+  ],
+  "open-swf-file": [
+    { step: 4, src: "/covers/tutorials/open-swf-file-inputs.svg" },
+    { step: 5, src: "/covers/tutorials/open-swf-file-runs.svg" },
   ],
   "test-microphone": [
     { step: 1, src: "/covers/tutorials/test-microphone-levels.svg" },

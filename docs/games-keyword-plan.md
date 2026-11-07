@@ -95,3 +95,5 @@ Names come from Google Ads Keyword Planner (average monthly searches, language p
 | es | Emulador online | emulador online 4,400; emulador de rom 70 | Flash Player | flash player 2,900; reproductor swf 90 |
 
 Bare terms (模拟器, エミュレーター, emulador) are larger but mostly mean Android and PlayStation emulators, so they are not the page name. "Flash player" searches lean toward Adobe's download, so the copy says the page is Ruffle and not from Adobe, and titles keep "SWF player" for the exact-intent query.
+
+Tutorial slugs, same source: `open-swf-file` (how to open swf files 720, open swf file 480, swf 檔案開啟 170, como abrir archivos swf 110; how to play flash games 480) and `use-emulator` (how to use emulator 480, エミュレーター 使い方 110; how to use rom emulator 10, how to play roms 70).
