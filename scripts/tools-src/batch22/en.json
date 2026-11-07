@@ -1,0 +1,86 @@
+{
+  "meta": {
+    "titleEmulator": "Online ROM emulator — NES, SNES, GB, GBA, Mega Drive — cv.cm",
+    "descEmulator": "Free online retro emulator: open your own NES, SNES, Game Boy, GBA or Mega Drive ROM. The console is detected from the file. No install, with gamepad and touch controls. Nothing is uploaded.",
+    "titleSwfPlayer": "SWF player online — open Flash files without a plugin — cv.cm",
+    "descSwfPlayer": "Free online SWF player: open a Flash .swf file with Ruffle. No Flash plugin and no install. The file stays in this tab and is not uploaded."
+  },
+  "tools": {
+    "emulator": {
+      "name": "ROM emulator",
+      "blurb": "Play your own NES, SNES, GB, GBA or Mega Drive ROM."
+    },
+    "swf-player": {
+      "name": "Flash SWF player",
+      "blurb": "Open a Flash .swf file without a plugin."
+    }
+  },
+  "faq": {
+    "emulator": {
+      "q1": "Which consoles and files does it open?",
+      "a1": "FC / NES (.nes), SFC / SNES (.sfc, .smc), Game Boy and Game Boy Color (.gb, .gbc), Game Boy Advance (.gba) and Mega Drive / Genesis (.md, .gen, .smd, .bin), or a .zip holding one of these.",
+      "q2": "Is my ROM uploaded?",
+      "a2": "No. The file is read in this tab and handed to the emulator on this page. Only the emulator itself is downloaded.",
+      "q3": "Why does it ask me to choose a console?",
+      "a3": "SNES files have no fixed header, and a .bin or a zipped .bin can be anything. If the file does not name its console, pick one under Console and the game starts.",
+      "q4": "Does cv.cm provide ROMs?",
+      "a4": "No commercial ROMs. Open a file you have the right to use. The Games column has free homebrew that starts without a file.",
+      "q5": "How do I play and save?",
+      "a5": "The controls appear once a game starts. On a phone, use the on-screen pad; a Bluetooth gamepad works too. Save and load states from the emulator toolbar."
+    },
+    "swf-player": {
+      "q1": "Do I need Adobe Flash Player?",
+      "a1": "No. Ruffle, an open-source Flash emulator, runs the file in the page. There is nothing to install.",
+      "q2": "Is my SWF uploaded?",
+      "a2": "No. The file stays in this tab and is not sent to a server.",
+      "q3": "Why does my SWF stop on a loading screen?",
+      "a3": "This page runs a file that can start on its own. It blocks network access, so a game that loads more SWFs, XML or its old website stops there.",
+      "q4": "Does every Flash file work?",
+      "a4": "Most older ActionScript 1 and 2 files do. ActionScript 3 support in Ruffle is still incomplete, so some newer games fail to start or misbehave.",
+      "q5": "Why is there no sound?",
+      "a5": "Browsers block audio that plays by itself. Click the picture once and the sound starts."
+    }
+  },
+  "ui": {
+    "emulator": {
+      "title": "ROM emulator",
+      "back": "All tools",
+      "privacyNote": "Open a ROM you own and play it in this tab. The console is detected from the file. Nothing is uploaded.",
+      "auto": "Detect from file",
+      "console": "Console",
+      "reading": "Reading the file…",
+      "readFailed": "This file could not be read. Try it again.",
+      "detected": "Detected: {console}. If it looks wrong, choose another console.",
+      "chosen": "Running as {console}.",
+      "unknown": "This file does not say which console it is for. Choose one under Console.",
+      "games": "Free homebrew games",
+      "openTool": "Have your own ROM? Open the ROM emulator"
+    },
+    "swfPlayer": {
+      "title": "Flash SWF player",
+      "back": "All tools",
+      "privacyNote": "Open a .swf file in this tab with Ruffle. No Flash plugin. Nothing is uploaded.",
+      "games": "Free Flash games"
+    }
+  },
+  "guides": {
+    "emulator": {
+      "lead": "Open your ROM and play on this page. Nothing is uploaded.",
+      "s1t": "Choose a ROM",
+      "s1b": "Press Choose ROM and pick a .nes, .sfc, .gb, .gbc, .gba, .md or .zip file.",
+      "s2t": "Check the console",
+      "s2b": "The console is detected from the file. If it is wrong or unknown, choose one under Console and the game restarts.",
+      "s3t": "Play",
+      "s3b": "Use the keys listed under the game, the on-screen pad on a phone, or a Bluetooth gamepad."
+    },
+    "swf-player": {
+      "lead": "Open a .swf file in this tab with Ruffle. No plugin, nothing uploaded.",
+      "s1t": "Choose a SWF",
+      "s1b": "Press Choose SWF and pick a .swf file. The file stays in this tab.",
+      "s2t": "Start it",
+      "s2b": "It starts by itself. Click the picture once to turn on the sound.",
+      "s3t": "Play",
+      "s3b": "Most Flash files use the mouse; a tap on a phone is a click. Arrow keys work when the game expects a keyboard."
+    }
+  }
+}

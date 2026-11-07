@@ -39,6 +39,10 @@
       "name": "Text and calculators"
     },
     {
+      "id": "games",
+      "name": "Retro games: open your own ROM or SWF"
+    },
+    {
       "id": "assets",
       "name": "Precious metals, oil and stock calculators (unit and ratio math; the user enters any prices, no live quotes)"
     }
@@ -1312,6 +1316,22 @@
       "category": "text",
       "url": "https://cv.cm/en/fancy-text/",
       "data_handling": "Runs in the page. Inputs are not uploaded."
+    },
+    {
+      "id": "emulator",
+      "name": "ROM emulator",
+      "description": "Play your own NES, SNES, GB, GBA or Mega Drive ROM.",
+      "category": "games",
+      "url": "https://cv.cm/en/emulator/",
+      "data_handling": "Processes files in the page. Files are not uploaded."
+    },
+    {
+      "id": "swf-player",
+      "name": "Flash SWF player",
+      "description": "Open a Flash .swf file without a plugin.",
+      "category": "games",
+      "url": "https://cv.cm/en/swf-player/",
+      "data_handling": "Processes files in the page. Files are not uploaded."
     },
     {
       "id": "gold",

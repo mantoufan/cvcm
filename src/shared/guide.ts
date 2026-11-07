@@ -121,6 +121,8 @@ export const GUIDE_STEP_COUNT: Record<ToolId, number> = {
   "dead-pixel": 3,
   "refresh-rate": 3,
   "touch-test": 3,
+  "emulator": 3,
+  "swf-player": 3,
   "coin-flip": 3,
   "guitar-tuner": 3,
   "factors": 3,

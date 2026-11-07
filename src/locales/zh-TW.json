@@ -521,7 +521,11 @@
     "titleGradient": "CSS 漸層產生器 — 線性、放射、圓錐漸層 — cv.cm",
     "descGradient": "製作 CSS 背景漸層：挑選顏色和色標位置，設定角度或形狀，可從預設樣式開始，再複製 CSS 或儲存成 PNG 桌布。免費，在瀏覽器裡完成。",
     "titleFancyText": "特殊字體產生器 — 花式字體複製貼上 — cv.cm",
-    "descFancyText": "把文字變成 𝐛𝐨𝐥𝐝、𝑖𝑡𝑎𝑙𝑖𝑐、𝓈𝒸𝓇𝒾𝓅𝓉、𝔣𝔯𝔞𝔨𝔱𝔲𝔯、ⓒⓘⓡⓒⓛⓔⓓ 和上下顛倒的字母，貼到哪裡都能用：Instagram 自介、TikTok、Discord 和遊戲名稱。免費，一鍵複製。"
+    "descFancyText": "把文字變成 𝐛𝐨𝐥𝐝、𝑖𝑡𝑎𝑙𝑖𝑐、𝓈𝒸𝓇𝒾𝓅𝓉、𝔣𝔯𝔞𝔨𝔱𝔲𝔯、ⓒⓘⓡⓒⓛⓔⓓ 和上下顛倒的字母，貼到哪裡都能用：Instagram 自介、TikTok、Discord 和遊戲名稱。免費，一鍵複製。",
+    "titleEmulator": "ROM 模擬器線上版 — FC、SFC、GB、GBA、MD — cv.cm",
+    "descEmulator": "免費線上懷舊遊戲模擬器：開啟你自己的 FC、SFC、Game Boy、GBA 或 Mega Drive ROM，自動辨識主機。不用安裝，支援手把和觸控，檔案不上傳。",
+    "titleSwfPlayer": "Flash 播放器線上版 — 不裝外掛開啟 SWF — cv.cm",
+    "descSwfPlayer": "免費線上 Flash 播放器：用 Ruffle 開啟 .swf 檔案，不用裝 Flash 外掛，也不用安裝軟體。檔案只留在這個分頁，不上傳。"
   },
   "brand": "cv.cm",
   "nav": {
@@ -1128,6 +1132,14 @@
     "fancy-text": {
       "name": "特殊字體產生器",
       "blurb": "粗體、草寫、泡泡字，複製即貼。"
+    },
+    "emulator": {
+      "name": "ROM 模擬器",
+      "blurb": "玩你自己的 FC、SFC、GB、GBA、MD ROM。"
+    },
+    "swf-player": {
+      "name": "Flash 播放器",
+      "blurb": "不裝外掛，直接開啟 .swf 檔案。"
     }
   },
   "watermark": {
@@ -4380,6 +4392,30 @@
       "a4": "螢幕閱讀器可能會逐字母朗讀或直接略過，搜尋也比對不到。請用來裝飾，不要用在重要的文字上。",
       "q5": "怎麼複製某個樣式？",
       "a5": "輸入文字，然後按喜歡的樣式旁邊的「複製」。上下顛倒的文字也會反轉順序，翻過來看就是正確的。"
+    },
+    "emulator": {
+      "q1": "能開啟哪些主機和檔案？",
+      "a1": "FC / NES（.nes）、SFC / SNES（.sfc、.smc）、Game Boy 和 Game Boy Color（.gb、.gbc）、Game Boy Advance（.gba）、Mega Drive / Genesis（.md、.gen、.smd、.bin），或裝著其中一種檔案的 .zip。",
+      "q2": "ROM 會上傳嗎？",
+      "a2": "不會。檔案在這個分頁裡讀取，直接交給本頁的模擬器。只有模擬器程式本身需要下載。",
+      "q3": "為什麼要我選擇主機？",
+      "a3": "SFC 檔案沒有固定的檔頭，.bin 或壓縮檔裡的 .bin 也可能是任何主機的。檔案看不出主機時，在「主機」裡選一個，遊戲就會開始。",
+      "q4": "cv.cm 提供 ROM 嗎？",
+      "a4": "不提供商業 ROM。請開啟你有權使用的檔案。遊戲欄目裡有免費的自製遊戲，不用檔案就能玩。",
+      "q5": "怎麼操作和存檔？",
+      "a5": "遊戲開始後，下方會顯示按鍵。手機上用螢幕虛擬手把，也可以連藍牙手把。存檔和讀檔在模擬器工具列裡。"
+    },
+    "swf-player": {
+      "q1": "需要安裝 Adobe Flash Player 嗎？",
+      "a1": "不需要。開源的 Flash 模擬器 Ruffle 直接在頁面裡執行檔案，不用安裝任何東西。",
+      "q2": "SWF 會上傳嗎？",
+      "a2": "不會。檔案只留在這個分頁，不會傳到伺服器。",
+      "q3": "為什麼 SWF 停在載入畫面？",
+      "a3": "這一頁只執行能自己啟動的檔案，並且禁止連網。還要載入別的 SWF、XML，或只認原來網站的遊戲，會停在那裡。",
+      "q4": "所有 Flash 檔案都能開啟嗎？",
+      "a4": "大多數較舊的 ActionScript 1、2 檔案可以。Ruffle 對 ActionScript 3 的支援還不完整，一些較新的遊戲可能打不開或執行異常。",
+      "q5": "為什麼沒有聲音？",
+      "a5": "瀏覽器會擋下自動播放的聲音。點一下畫面，聲音就會出來。"
     }
   },
   "qr": {
@@ -10531,5 +10567,25 @@
     "hugging-pose": "擁抱姿勢",
     "hanfu": "漢服",
     "qipao": "旗袍"
+  },
+  "emulator": {
+    "title": "ROM 模擬器",
+    "back": "全部工具",
+    "privacyNote": "開啟你自己的 ROM，在這個分頁裡玩，自動辨識主機。檔案不上傳。",
+    "auto": "根據檔案辨識",
+    "console": "主機",
+    "reading": "正在讀取檔案…",
+    "readFailed": "這個檔案讀取失敗，請再試一次。",
+    "detected": "已辨識：{console}。不對的話，請換一個主機。",
+    "chosen": "正在按 {console} 執行。",
+    "unknown": "這個檔案看不出屬於哪台主機，請在「主機」裡選一個。",
+    "games": "免費自製遊戲",
+    "openTool": "有自己的 ROM？開啟 ROM 模擬器"
+  },
+  "swfPlayer": {
+    "title": "Flash 播放器",
+    "back": "全部工具",
+    "privacyNote": "用 Ruffle 在這個分頁開啟 .swf 檔案，不用 Flash 外掛。檔案不上傳。",
+    "games": "免費 Flash 遊戲"
   }
 }

@@ -19,6 +19,7 @@ const CATEGORY_TITLE: Record<CategoryId, string> = {
   image: "Images",
   convert: "Convert files and data",
   text: "Text and calculators",
+  games: "Retro games: open your own ROM or SWF",
   assets: "Precious metals, oil and stock calculators (unit and ratio math; the user enters any prices, no live quotes)",
 };
 
@@ -34,7 +35,7 @@ const AI: readonly ToolId[] = [...AI_TOOLS];
 const FILES: readonly ToolId[] = [
   "watermark", "mosaic", "collage", "portrait-sim", "convert", "image-pdf", "resize", "crop", "rotate", "exif",
   "meme", "favicon", "screenshot", "pdf-jpg", "merge-pdf", "compress-pdf", "split-pdf", "audio", "audio-cutter",
-  "audio-joiner", "image-colors",
+  "audio-joiner", "image-colors", "emulator", "swf-player",
 ];
 
 /** Text kept in this browser's localStorage between visits. */
