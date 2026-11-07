@@ -163,7 +163,7 @@ export function player(spec: {
   picker.addEventListener("change", async () => {
     const file = picker.files?.[0];
     if (!file) return;
-    status.textContent = t(flash ? "games.flash.needFileBody" : "games.loadRomHint");
+    status.textContent = flash ? file.name : t("games.loadRomHint");
     if (remember) {
       // Keep the File (a Blob) rather than a second ArrayBuffer copy.
       current = { blob: file, name: file.name };
@@ -174,6 +174,8 @@ export function player(spec: {
     try {
       const buffer = await file.arrayBuffer();
       if (read === reads) boot({ buffer, filename: file.name, cheats: spec.cheats });
+      // With nothing hosted to race against, the same file can be opened again.
+      if (!spec.romUrl) picker.value = "";
     } catch {
       if (read !== reads) return;
       status.textContent = t("emulator.readFailed");

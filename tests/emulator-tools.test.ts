@@ -60,12 +60,13 @@ describe("detectRomConsole", () => {
     expect(detectRomConsole("game.bin", new Uint8Array(1024))).toBeNull();
     expect(detectRomConsole("notes.txt", new Uint8Array(16))).toBeNull();
     expect(detectRomConsole("noextension", new Uint8Array(0))).toBeNull();
+    expect(detectRomConsole("x.constructor", new Uint8Array(16))).toBeNull();
   });
 
   it("looks inside a zip, past files that are not ROMs and past a comment", () => {
     expect(zipEntries(zip(["a.txt", "dir/b.gba"])).map((e) => e.name)).toEqual(["a.txt", "dir/b.gba"]);
     expect(detectRomConsole("x.zip", zip(["readme.txt", "dir/game.GBA"]))).toBe("gba");
-    expect(detectRomConsole("x.zip", zip(["game.sfc"], "PK\u0005\u0006 comment"))).toBe("sfc");
+    expect(detectRomConsole("x.zip", zip(["game.sfc"], `PK\u0005\u0006${"x".repeat(40)}`))).toBe("sfc");
     expect(detectRomConsole("x.zip", zip(["game.bin"]))).toBeNull();
     expect(detectRomConsole("x.zip", zip(["readme.txt"]))).toBeNull();
   });
@@ -212,6 +213,28 @@ describe("tool pages", () => {
     await pick(new File([rom(64, 0, [0x4e, 0x45, 0x53, 0x1a]) as BlobPart], "b.nes"));
     expect(q("iframe")).not.toBe(first);
     expect(host.querySelectorAll("iframe")).toHaveLength(1);
+  });
+
+  it("keeps the last game when the next file is refused", async () => {
+    mountEmulator(host);
+    await pick(new File([rom(64, 0, [0x4e, 0x45, 0x53, 0x1a]) as BlobPart], "a.nes"));
+    const before = frameSrc.length;
+    const big = new File([new Uint8Array(1)], "disc.bin");
+    Object.defineProperty(big, "size", { value: MAX_ROM_BYTES + 1 });
+    await pick(big);
+    expect(frameSrc.length).toBe(before);
+    expect(q("[data-out=controls] .game-controls")).toBeTruthy();
+  });
+
+  it("leaves focus on the select for keyboard choices", async () => {
+    mountEmulator(host);
+    await pick(new File([new Uint8Array(32)], "a.bin"));
+    const select = q<HTMLSelectElement>("[data-field=console]");
+    select.focus();
+    select.dispatchEvent(new KeyboardEvent("keydown", { key: "ArrowDown" }));
+    select.value = "fc";
+    select.dispatchEvent(new Event("change"));
+    expect(document.activeElement).toBe(select);
   });
 
   it("refuses a file too big to be a cartridge without reading it", async () => {

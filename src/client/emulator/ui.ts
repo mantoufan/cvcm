@@ -20,7 +20,7 @@ export function mountEmulator(host: HTMLElement): void {
     "aria-label": t("games.loadRom"),
   }) as HTMLInputElement;
   const empty = gameEmpty({ flash: false, picker, hidden: false });
-  const status = h("p", { class: "game-note", role: "status", "data-out": "status" }, t("games.needFileBody"));
+  const status = h("p", { class: "game-note", role: "status", "data-out": "status" });
   const select = h("select", { "data-field": "console" },
     h("option", { value: AUTO }, t("emulator.auto")),
     ...ROM_CONSOLES.map((id) => h("option", { value: id }, t(`games.consoles.${id}`))),
@@ -31,8 +31,12 @@ export function mountEmulator(host: HTMLElement): void {
   // What the frame is running: choosing a console that needs the same core must not restart the game.
   let running: { rom: object; core: string } | null = null;
 
+  let reading = false;
+  // Arrowing through a closed select changes it once per key, so focus stays there until the visitor leaves it.
+  let keyed = false;
+
   const play = (): void => {
-    if (!rom) return;
+    if (!rom || reading) return;
     const chosen = select.value === AUTO ? null : (select.value as RomConsoleId);
     const consoleId = chosen ?? detectRomConsole(rom.name, new Uint8Array(rom.buffer));
     if (!consoleId) {
@@ -54,33 +58,42 @@ export function mountEmulator(host: HTMLElement): void {
       running = { rom, core };
       boot({ buffer: rom.buffer, filename: rom.name, core, name: rom.name, cheats: [] });
     }
-    // Left on the select, the arrow keys used to play would change the console and restart the game.
-    focus();
+    // Left on the select after a mouse choice, the arrow keys used to play would change the console and restart the game.
+    if (!keyed) focus();
   };
 
   picker.addEventListener("change", () => {
     const file = picker.files?.[0];
     if (!file) return;
     const mine = ++token;
-    // A choice made for the last file says nothing about this one; one made before any file is the answer for it.
-    if (rom) select.value = AUTO;
-    rom = null;
     // Lets the same file be picked again, after a failed read or a wrong console choice.
     picker.value = "";
+    // The last game keeps running until this file is known to be usable.
     if (file.size > MAX_ROM_BYTES) {
+      reading = false;
       status.textContent = t("emulator.tooBig", { mb: MAX_ROM_BYTES / 1024 / 1024 });
       return;
     }
+    reading = true;
     status.textContent = t("emulator.reading");
     file.arrayBuffer().then((buffer) => {
       if (mine !== token) return;
+      reading = false;
+      // A choice made for the last file says nothing about this one; one made before any file is the answer for it.
+      if (rom) select.value = AUTO;
       rom = { name: file.name, buffer };
       play();
     }).catch(() => {
-      if (mine === token) status.textContent = t("emulator.readFailed");
+      if (mine !== token) return;
+      reading = false;
+      status.textContent = t("emulator.readFailed");
     });
   });
-  select.addEventListener("change", play);
+  select.addEventListener("keydown", () => { keyed = true; });
+  select.addEventListener("change", () => {
+    play();
+    keyed = false;
+  });
 
   host.append(
     h("header", { class: "tool-head game-head" },

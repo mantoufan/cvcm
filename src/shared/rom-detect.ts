@@ -42,7 +42,7 @@ function matches(bytes: Uint8Array, offset: number, expected: readonly number[])
 
 function fromExtension(name: string): RomConsoleId | null {
   const ext = name.toLowerCase().match(/\.([a-z0-9]+)$/)?.[1];
-  return (ext && BY_EXTENSION[ext]) || null;
+  return ext && Object.hasOwn(BY_EXTENSION, ext) ? BY_EXTENSION[ext]! : null;
 }
 
 /** Fixed bytes the console's boot code or header requires. SNES has none, so it is named by its extension. */
@@ -63,7 +63,8 @@ export function zipEntries(bytes: Uint8Array): ZipEntry[] {
   const floor = Math.max(0, bytes.length - 22 - 0xffff);
   let end = -1;
   for (let i = bytes.length - 22; i >= floor; i -= 1) {
-    if (view.getUint32(i, true) === 0x06054b50) {
+    // The comment must run exactly to the end of the file, or these bytes are comment text that looks like the record.
+    if (view.getUint32(i, true) === 0x06054b50 && i + 22 + view.getUint16(i + 20, true) === bytes.length) {
       end = i;
       break;
     }
