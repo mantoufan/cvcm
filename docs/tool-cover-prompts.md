@@ -247,6 +247,13 @@ Codex, refs `click-test-sweet.jpg` + `mic-test-sweet.jpg`. Same character and ro
 - `gradient`: she holds a painter's palette shaped like a heart with soft paint blobs; a large cream card on an easel shows a smooth pastel colour gradient from pink to peach to lavender; two small round colour drops on the desk.
 - `fancy-text`: pastel pink alphabet blocks and ribbon-like decorative curly shapes float out of a cream phone screen; the blocks have only ornamental swirls, stars, circles and hearts on them, no letters; she smiles holding the phone.
 
+## ROM emulator and Flash player (2026-11-07)
+
+GPT Image 2.5 on kie.ai (Codex at its usage limit until 2026-11-10), refs `click-test-sweet.jpg` + `mic-test-sweet.jpg`. Same character and room, no words, letters, numerals, logos, brand marks or real game characters.
+
+- `rom-emulator`: she holds a chunky pastel pink generic handheld console with a cream screen showing soft pixel blocks and a pixel heart; two blank cartridges and a pink wired gamepad on the desk.
+- `flash-player`: she clicks a small pink mouse beside a rounded cream retro monitor showing a pink bouncing ball with a fading arc, three film-frame squares and a blank play triangle; a blank pink floppy-like disk on the desk.
+
 ## Tier list maker (2026-11-07)
 
 GPT Image 2.5 on kie.ai, refs `dice-sweet.jpg` + `wheel-sweet.jpg`. Same character and room, no words, letters, numerals, logo or watermark. Save `public/covers/tier-list-sweet.jpg`, `sips -z 720 1280`.
