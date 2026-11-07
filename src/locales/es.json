@@ -521,7 +521,11 @@
     "titleGradient": "Generador de degradados CSS — lineal, radial y cónico — cv.cm",
     "descGradient": "Crea un degradado CSS de fondo: elige colores y paradas, ajusta el ángulo o la forma, parte de un preajuste y copia el CSS o guarda un fondo PNG. Gratis, en tu navegador.",
     "titleFancyText": "Generador de letras bonitas para copiar y pegar — cv.cm",
-    "descFancyText": "Convierte texto en letras 𝐛𝐨𝐥𝐝, 𝑖𝑡𝑎𝑙𝑖𝑐, 𝓈𝒸𝓇𝒾𝓅𝓉, 𝔣𝔯𝔞𝔨𝔱𝔲𝔯, ⓒⓘⓡⓒⓛⓔⓓ y al revés que se pegan en cualquier sitio: bio de Instagram, TikTok, Discord y nombres de juegos. Gratis, copia con un toque."
+    "descFancyText": "Convierte texto en letras 𝐛𝐨𝐥𝐝, 𝑖𝑡𝑎𝑙𝑖𝑐, 𝓈𝒸𝓇𝒾𝓅𝓉, 𝔣𝔯𝔞𝔨𝔱𝔲𝔯, ⓒⓘⓡⓒⓛⓔⓓ y al revés que se pegan en cualquier sitio: bio de Instagram, TikTok, Discord y nombres de juegos. Gratis, copia con un toque.",
+    "titleRomEmulator": "Emulador online de juegos retro — GBA, SNES, NES — cv.cm",
+    "descRomEmulator": "Emulador online gratis: abre tu propia ROM de GBA, SNES, NES, Game Boy o Mega Drive. La consola se detecta a partir del archivo. Sin instalar, con mando y controles táctiles. No se sube nada.",
+    "titleFlashPlayer": "Flash Player online — reproductor SWF, sin plugin — cv.cm",
+    "descFlashPlayer": "Flash Player y reproductor SWF online gratis: abre un archivo .swf con Ruffle, un emulador de Flash de código abierto. Sin plugin y sin instalar nada. El archivo se queda en esta pestaña y no se sube."
   },
   "brand": "cv.cm",
   "nav": {
@@ -1128,6 +1132,14 @@
     "fancy-text": {
       "name": "Generador de letras bonitas",
       "blurb": "Letras negritas, cursivas y de burbuja para pegar."
+    },
+    "rom-emulator": {
+      "name": "Emulador online",
+      "blurb": "Juega con tu ROM de GBA, SNES, NES, GB o Mega Drive."
+    },
+    "flash-player": {
+      "name": "Flash Player",
+      "blurb": "Abre un archivo Flash .swf sin plugin."
     }
   },
   "watermark": {
@@ -4380,6 +4392,30 @@
       "a4": "Los lectores de pantalla pueden leerlas letra por letra u omitirlas, y las búsquedas no las encuentran. Úsalas como decoración, no para texto importante.",
       "q5": "¿Cómo copio un estilo?",
       "a5": "Escribe tu texto y pulsa Copiar junto al estilo que te guste. El texto al revés también se invierte, para que se lea bien al darle la vuelta."
+    },
+    "rom-emulator": {
+      "q1": "¿Qué consolas y archivos abre?",
+      "a1": "FC / NES (.nes), SFC / SNES (.sfc, .smc), Game Boy y Game Boy Color (.gb, .gbc), Game Boy Advance (.gba) y Mega Drive / Genesis (.md, .gen, .smd, .bin), o un .zip que contenga uno de ellos.",
+      "q2": "¿Se sube mi ROM?",
+      "a2": "No. El archivo se lee en esta pestaña y se entrega al emulador de esta página. Solo se descarga el propio emulador.",
+      "q3": "¿Por qué me pide elegir una consola?",
+      "a3": "Los archivos de SNES no tienen una cabecera fija, y un .bin, también dentro de un zip, puede ser de cualquier consola. Si el archivo no indica su consola, elige una en Consola y el juego empezará.",
+      "q4": "¿cv.cm ofrece ROM?",
+      "a4": "No ofrece ROM comerciales. Abre un archivo que tengas derecho a usar. La sección Juegos tiene juegos homebrew gratis que empiezan sin archivo.",
+      "q5": "¿Cómo juego y guardo?",
+      "a5": "Los controles aparecen cuando empieza el juego. En el móvil, usa el mando en pantalla o un mando Bluetooth. Guardar y cargar estados está en la barra del emulador."
+    },
+    "flash-player": {
+      "q1": "¿Necesito Adobe Flash Player?",
+      "a1": "No. Ruffle, un emulador de Flash de código abierto, ejecuta el archivo en la página. No hay nada que instalar. Esta página no es de Adobe.",
+      "q2": "¿Se sube mi SWF?",
+      "a2": "No. El archivo se queda en esta pestaña y no se envía a ningún servidor.",
+      "q3": "¿Por qué mi SWF se queda en la pantalla de carga?",
+      "a3": "Esta página ejecuta un archivo que puede arrancar solo y bloquea el acceso a la red. Un juego que carga otros SWF, XML o su antiguo sitio web se detiene ahí.",
+      "q4": "¿Funcionan todos los archivos Flash?",
+      "a4": "La mayoría de los archivos antiguos de ActionScript 1 y 2 sí. El soporte de ActionScript 3 en Ruffle aún está incompleto, así que algunos juegos más nuevos pueden no arrancar o funcionar mal.",
+      "q5": "¿Por qué no hay sonido?",
+      "a5": "Los navegadores bloquean el audio que se reproduce solo. Haz clic una vez en la imagen y empezará el sonido."
     }
   },
   "qr": {
@@ -10531,5 +10567,26 @@
     "hugging-pose": "Pose de abrazo",
     "hanfu": "Hanfu",
     "qipao": "Qipao"
+  },
+  "romEmulator": {
+    "title": "Emulador online",
+    "back": "Todas las herramientas",
+    "privacyNote": "Abre tu ROM y juega en esta pestaña. La consola se detecta a partir del archivo. No se sube nada.",
+    "auto": "Detectar del archivo",
+    "console": "Consola",
+    "reading": "Leyendo el archivo…",
+    "readFailed": "No se pudo leer este archivo. Inténtalo de nuevo.",
+    "detected": "Detectada: {console}. Si no es correcta, elige otra consola.",
+    "chosen": "Ejecutando como {console}.",
+    "unknown": "Este archivo no indica su consola. Elige una en Consola.",
+    "games": "Juegos homebrew gratis",
+    "openTool": "¿Tienes tu propia ROM? Abre el emulador online",
+    "tooBig": "Este archivo es demasiado grande para estas consolas (más de {mb} MB)."
+  },
+  "flashPlayer": {
+    "title": "Flash Player",
+    "back": "Todas las herramientas",
+    "privacyNote": "Abre un archivo .swf en esta pestaña con Ruffle. Sin plugin de Flash. No se sube nada.",
+    "games": "Juegos Flash gratis"
   }
 }

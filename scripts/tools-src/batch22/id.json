@@ -1,0 +1,87 @@
+{
+  "meta": {
+    "titleRomEmulator": "Emulator game online — buka ROM GBA, NES, SNES — cv.cm",
+    "descRomEmulator": "Emulator game online gratis: buka ROM GBA, NES, SNES, Game Boy, atau Mega Drive milik Anda. Konsol dikenali dari file. Tanpa instalasi, mendukung gamepad dan layar sentuh. Tidak ada yang diunggah.",
+    "titleFlashPlayer": "Flash Player online — SWF player tanpa plugin — cv.cm",
+    "descFlashPlayer": "Flash Player dan SWF player online gratis: buka file .swf dengan Ruffle, emulator Flash open source. Tanpa plugin dan tanpa instalasi. File tetap di tab ini dan tidak diunggah."
+  },
+  "tools": {
+    "rom-emulator": {
+      "name": "Emulator game",
+      "blurb": "Mainkan ROM GBA, NES, SNES, GB, atau Mega Drive milik Anda."
+    },
+    "flash-player": {
+      "name": "Flash Player",
+      "blurb": "Buka file Flash .swf tanpa plugin."
+    }
+  },
+  "faq": {
+    "rom-emulator": {
+      "q1": "Konsol dan file apa saja yang bisa dibuka?",
+      "a1": "FC / NES (.nes), SFC / SNES (.sfc, .smc), Game Boy dan Game Boy Color (.gb, .gbc), Game Boy Advance (.gba), Mega Drive / Genesis (.md, .gen, .smd, .bin), atau .zip yang berisi salah satunya.",
+      "q2": "Apakah ROM saya diunggah?",
+      "a2": "Tidak. File dibaca di tab ini dan diberikan ke emulator di halaman ini. Hanya program emulator yang diunduh.",
+      "q3": "Mengapa saya diminta memilih konsol?",
+      "a3": "File SNES tidak punya header tetap, dan .bin atau .bin di dalam zip bisa untuk konsol apa saja. Jika file tidak menyebut konsolnya, pilih di Konsol dan game akan mulai.",
+      "q4": "Apakah cv.cm menyediakan ROM?",
+      "a4": "Tidak ada ROM komersial. Buka file yang berhak Anda gunakan. Kolom Game punya game homebrew gratis yang berjalan tanpa file.",
+      "q5": "Bagaimana cara bermain dan menyimpan?",
+      "a5": "Tombol kontrol muncul setelah game mulai. Di ponsel, gunakan pad di layar atau gamepad Bluetooth. Simpan dan muat state ada di bilah alat emulator."
+    },
+    "flash-player": {
+      "q1": "Apakah saya perlu Adobe Flash Player?",
+      "a1": "Tidak. Ruffle, emulator Flash open source, menjalankan file di halaman ini. Tidak ada yang perlu dipasang. Halaman ini bukan dari Adobe.",
+      "q2": "Apakah SWF saya diunggah?",
+      "a2": "Tidak. File tetap di tab ini dan tidak dikirim ke server.",
+      "q3": "Mengapa SWF saya berhenti di layar pemuatan?",
+      "a3": "Halaman ini menjalankan file yang bisa mulai sendiri dan memblokir akses jaringan. Game yang memuat SWF lain, XML, atau situs lamanya akan berhenti di sana.",
+      "q4": "Apakah semua file Flash berfungsi?",
+      "a4": "Sebagian besar file ActionScript 1 dan 2 lama berfungsi. Dukungan ActionScript 3 di Ruffle belum lengkap, jadi beberapa game yang lebih baru mungkin gagal mulai atau berjalan tidak benar.",
+      "q5": "Mengapa tidak ada suara?",
+      "a5": "Browser memblokir suara yang diputar otomatis. Klik gambar sekali dan suara akan keluar."
+    }
+  },
+  "ui": {
+    "romEmulator": {
+      "title": "Emulator game",
+      "back": "Semua alat",
+      "privacyNote": "Buka ROM milik Anda dan mainkan di tab ini. Konsol dikenali dari file. Tidak ada yang diunggah.",
+      "auto": "Kenali dari file",
+      "console": "Konsol",
+      "reading": "Membaca file…",
+      "readFailed": "File ini tidak dapat dibaca. Coba lagi.",
+      "detected": "Terdeteksi: {console}. Jika salah, pilih konsol lain.",
+      "chosen": "Berjalan sebagai {console}.",
+      "unknown": "File ini tidak menyebut konsolnya. Pilih di Konsol.",
+      "games": "Game homebrew gratis",
+      "openTool": "Punya ROM sendiri? Buka emulator game",
+      "tooBig": "File ini terlalu besar untuk konsol-konsol ini (lebih dari {mb} MB)."
+    },
+    "flashPlayer": {
+      "title": "Flash Player",
+      "back": "Semua alat",
+      "privacyNote": "Buka file .swf di tab ini dengan Ruffle. Tanpa plugin Flash. Tidak ada yang diunggah.",
+      "games": "Game Flash gratis"
+    }
+  },
+  "guides": {
+    "rom-emulator": {
+      "lead": "Buka ROM Anda dan mainkan di halaman ini. Tidak ada yang diunggah.",
+      "s1t": "Pilih ROM",
+      "s1b": "Tekan tombol pilih ROM, lalu pilih file .nes, .sfc, .gb, .gbc, .gba, .md, atau .zip.",
+      "s2t": "Periksa konsol",
+      "s2b": "Konsol dikenali dari file. Jika salah atau tidak dikenal, pilih di Konsol dan game akan dimulai ulang.",
+      "s3t": "Mainkan",
+      "s3b": "Gunakan tombol yang tercantum di bawah game, pad di layar ponsel, atau gamepad Bluetooth."
+    },
+    "flash-player": {
+      "lead": "Buka file .swf di tab ini dengan Ruffle. Tanpa plugin, tanpa unggahan.",
+      "s1t": "Pilih SWF",
+      "s1b": "Tekan tombol pilih SWF, lalu pilih file .swf. File tetap di tab ini.",
+      "s2t": "Mulai",
+      "s2b": "File mulai sendiri. Klik gambar sekali untuk menyalakan suara.",
+      "s3t": "Mainkan",
+      "s3b": "Sebagian besar Flash memakai mouse; ketukan di ponsel dihitung sebagai klik. Gunakan tombol panah jika game memerlukan keyboard."
+    }
+  }
+}

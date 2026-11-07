@@ -521,7 +521,11 @@
     "titleGradient": "Tạo gradient CSS — linear, radial và conic — cv.cm",
     "descGradient": "Tạo nền gradient CSS: chọn màu và điểm dừng, chỉnh góc hoặc hình dạng, bắt đầu từ mẫu có sẵn, rồi sao chép CSS hoặc lưu hình nền PNG. Miễn phí, ngay trong trình duyệt.",
     "titleFancyText": "Tạo chữ kiểu — font chữ đẹp copy và dán — cv.cm",
-    "descFancyText": "Biến chữ thành 𝐛𝐨𝐥𝐝, 𝑖𝑡𝑎𝑙𝑖𝑐, 𝓈𝒸𝓇𝒾𝓅𝓉, 𝔣𝔯𝔞𝔨𝔱𝔲𝔯, ⓒⓘⓡⓒⓛⓔⓓ và chữ lộn ngược dán được ở mọi nơi: tiểu sử Instagram, TikTok, Discord và tên game. Miễn phí, chạm một lần để sao chép."
+    "descFancyText": "Biến chữ thành 𝐛𝐨𝐥𝐝, 𝑖𝑡𝑎𝑙𝑖𝑐, 𝓈𝒸𝓇𝒾𝓅𝓉, 𝔣𝔯𝔞𝔨𝔱𝔲𝔯, ⓒⓘⓡⓒⓛⓔⓓ và chữ lộn ngược dán được ở mọi nơi: tiểu sử Instagram, TikTok, Discord và tên game. Miễn phí, chạm một lần để sao chép.",
+    "titleRomEmulator": "Trình giả lập game online — giả lập GBA, NES, SNES — cv.cm",
+    "descRomEmulator": "Trình giả lập game online miễn phí: mở ROM GBA, NES, SNES, Game Boy hoặc Mega Drive của bạn. Hệ máy được nhận diện từ tệp. Không cần cài đặt, hỗ trợ tay cầm và cảm ứng. Không tải lên.",
+    "titleFlashPlayer": "Flash Player online — SWF player, mở file SWF không cần plugin — cv.cm",
+    "descFlashPlayer": "Flash Player và SWF player trực tuyến miễn phí: mở file .swf bằng Ruffle, trình giả lập Flash mã nguồn mở. Không cần plugin, không cần cài đặt. Tệp ở lại trong tab này và không được tải lên."
   },
   "brand": "cv.cm",
   "nav": {
@@ -1128,6 +1132,14 @@
     "fancy-text": {
       "name": "Tạo chữ kiểu",
       "blurb": "Font chữ đậm, viết tay, bong bóng để dán."
+    },
+    "rom-emulator": {
+      "name": "Trình giả lập game",
+      "blurb": "Chơi ROM GBA, NES, SNES, GB hoặc Mega Drive của bạn."
+    },
+    "flash-player": {
+      "name": "Flash Player",
+      "blurb": "Mở tệp Flash .swf không cần plugin."
     }
   },
   "watermark": {
@@ -4380,6 +4392,30 @@
       "a4": "Trình đọc màn hình có thể đọc từng ký tự hoặc bỏ qua, và tìm kiếm không khớp được chúng. Hãy dùng để trang trí, không dùng cho nội dung quan trọng.",
       "q5": "Sao chép một kiểu chữ như thế nào?",
       "a5": "Gõ chữ của bạn, rồi bấm Sao chép cạnh kiểu bạn thích. Chữ lộn ngược cũng được đảo thứ tự, nên lật lại sẽ đọc đúng."
+    },
+    "rom-emulator": {
+      "q1": "Có thể mở những hệ máy và tệp nào?",
+      "a1": "FC / NES (.nes), SFC / SNES (.sfc, .smc), Game Boy và Game Boy Color (.gb, .gbc), Game Boy Advance (.gba), Mega Drive / Genesis (.md, .gen, .smd, .bin), hoặc tệp .zip chứa một trong các tệp này.",
+      "q2": "ROM của tôi có bị tải lên không?",
+      "a2": "Không. Tệp được đọc trong tab này và chuyển cho trình giả lập trên trang. Chỉ có chương trình giả lập được tải về.",
+      "q3": "Vì sao trang yêu cầu chọn hệ máy?",
+      "a3": "Tệp SNES không có phần đầu cố định, còn .bin hay .bin trong tệp zip có thể thuộc hệ máy bất kỳ. Nếu tệp không cho biết hệ máy, hãy chọn ở mục Hệ máy và game sẽ bắt đầu.",
+      "q4": "cv.cm có cung cấp ROM không?",
+      "a4": "Không cung cấp ROM thương mại. Hãy mở tệp bạn có quyền sử dụng. Chuyên mục Trò chơi có game tự chế miễn phí, chơi được mà không cần tệp.",
+      "q5": "Điều khiển và lưu game thế nào?",
+      "a5": "Khi game bắt đầu, các phím hiện ở bên dưới. Trên điện thoại, dùng tay cầm ảo trên màn hình hoặc tay cầm Bluetooth. Lưu và tải trạng thái nằm trên thanh công cụ của trình giả lập."
+    },
+    "flash-player": {
+      "q1": "Có cần Adobe Flash Player không?",
+      "a1": "Không. Ruffle, trình giả lập Flash mã nguồn mở, chạy tệp ngay trên trang. Không cần cài gì. Trang này không do Adobe cung cấp.",
+      "q2": "SWF của tôi có bị tải lên không?",
+      "a2": "Không. Tệp ở lại trong tab này và không được gửi đến máy chủ.",
+      "q3": "Vì sao SWF dừng ở màn hình tải?",
+      "a3": "Trang này chạy tệp có thể tự khởi động và chặn truy cập mạng. Game cần tải thêm SWF, XML hoặc trang web cũ sẽ dừng ở đó.",
+      "q4": "Mọi tệp Flash đều chạy được chứ?",
+      "a4": "Phần lớn tệp ActionScript 1 và 2 cũ chạy được. Ruffle chưa hỗ trợ đầy đủ ActionScript 3 nên một số game mới hơn có thể không khởi động hoặc chạy sai.",
+      "q5": "Vì sao không có tiếng?",
+      "a5": "Trình duyệt chặn âm thanh tự phát. Nhấp vào hình một lần là có tiếng."
     }
   },
   "qr": {
@@ -10531,5 +10567,26 @@
     "hugging-pose": "Dáng ôm",
     "hanfu": "Hán phục",
     "qipao": "Sườn xám (qipao)"
+  },
+  "romEmulator": {
+    "title": "Trình giả lập game",
+    "back": "Tất cả công cụ",
+    "privacyNote": "Mở ROM của bạn và chơi trong tab này. Hệ máy được nhận diện từ tệp. Không tải lên.",
+    "auto": "Nhận diện từ tệp",
+    "console": "Hệ máy",
+    "reading": "Đang đọc tệp…",
+    "readFailed": "Không đọc được tệp này. Hãy thử lại.",
+    "detected": "Đã nhận diện: {console}. Nếu sai, hãy chọn hệ máy khác.",
+    "chosen": "Đang chạy theo {console}.",
+    "unknown": "Tệp này không cho biết thuộc hệ máy nào. Hãy chọn ở mục Hệ máy.",
+    "games": "Game tự chế miễn phí",
+    "openTool": "Bạn có ROM riêng? Mở trình giả lập game",
+    "tooBig": "Tệp này quá lớn so với các hệ máy này (trên {mb} MB)."
+  },
+  "flashPlayer": {
+    "title": "Flash Player",
+    "back": "Tất cả công cụ",
+    "privacyNote": "Mở tệp .swf trong tab này bằng Ruffle. Không cần plugin Flash. Không tải lên.",
+    "games": "Game Flash miễn phí"
   }
 }
