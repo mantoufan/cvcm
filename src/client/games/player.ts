@@ -22,67 +22,48 @@ type SavedRom = { blob: Blob; name: string };
 export function gameFrame(spec: { flash: boolean; core: string; name: string }): {
   frame: HTMLIFrameElement;
   boot: (payload: Record<string, unknown>) => void;
+  stop: () => void;
+  focus: () => void;
 } {
-  let frame = h("iframe", {
+  const initial = h("iframe", {
     class: "game-frame",
     title: spec.name,
     allow: "autoplay; fullscreen; gamepad",
     src: "about:blank",
   }) as HTMLIFrameElement;
+  let frame = initial;
   const shellPath = spec.flash ? "/emu/flash" : "/emu/player";
-  // The shell boots once (player.js ignores a second boot), so every later ROM reloads the frame.
-  let started = false;
   let loads = 0;
-  let onLoad: (() => void) | null = null;
+  // The shell boots once, so every ROM gets a new element. Navigating the old one would add a history entry, and Back
+  // would land on a shell with no ROM. A discarded element also takes its pending load listener with it.
+  const swap = (src: string): HTMLIFrameElement => {
+    const next = frame.cloneNode(false) as HTMLIFrameElement;
+    next.src = src;
+    frame.replaceWith(next);
+    frame = next;
+    return next;
+  };
   const boot = (payload: Record<string, unknown>): void => {
     const message = { type: "boot", core: spec.core, name: spec.name, ...payload };
-    let ready = false;
-    try {
-      const path = new URL(frame.src, location.origin).pathname.replace(/\/$/, "");
-      ready = !started && path === shellPath && !!frame.contentWindow;
-    } catch {
-      ready = false;
-    }
-    started = true;
-    if (ready) {
-      frame.contentWindow?.postMessage(message, location.origin);
-      return;
-    }
     const lang = locale() === "zh-CN" ? "zh-CN" : "en-US";
     // Only the page's own title goes in the URL: `message.name` can be a local file name, which must not reach the server.
     const qs = new URLSearchParams({ core: message.core, name: spec.name, lang });
     if (typeof payload.rom === "string") qs.set("rom", payload.rom);
     loads += 1;
-    const url = `${shellPath}?v=${spec.flash ? "1" : "5"}&${qs.toString()}${loads > 1 ? `&n=${loads}` : ""}`;
-    // An aborted navigation never fires load, so drop its listener or the stale ROM boots first.
-    if (onLoad) frame.removeEventListener("load", onLoad);
-    if (loads > 1) {
-      // A new element, because navigating the old one adds a history entry: Back would land on a shell with no ROM.
-      const next = frame.cloneNode(false) as HTMLIFrameElement;
-      next.src = url;
-      frame.replaceWith(next);
-      frame = next;
-    } else {
-      frame.src = url;
-    }
-    const target = frame;
-    const listener = (): void => {
-      onLoad = null;
+    const target = swap(`${shellPath}?v=${spec.flash ? "1" : "5"}&${qs.toString()}${loads > 1 ? `&n=${loads}` : ""}`);
+    target.addEventListener("load", () => {
       target.contentWindow?.postMessage(message, location.origin);
-    };
-    onLoad = listener;
-    frame.addEventListener("load", listener, { once: true });
+    }, { once: true });
   };
-  return { frame, boot };
+  return {
+    frame: initial,
+    boot,
+    stop: () => { if (loads) swap("about:blank"); },
+    focus: () => { frame.focus(); },
+  };
 }
 
-/** Dragging skips the file dialog's `accept` filter, and a dropped folder has no extension. */
-function accepted(name: string, accept: string): boolean {
-  const lower = name.toLowerCase();
-  return accept.split(",").some((ext) => lower.endsWith(ext.trim()));
-}
-
-/** The "no file" panel. A file dropped on it goes through the picker, so every path reads the same `change` event. */
+/** The "no file" panel. */
 export function gameEmpty(spec: { flash: boolean; picker: HTMLInputElement; hidden: boolean }): HTMLElement {
   const { flash, picker } = spec;
   const empty = h("div", { class: "game-empty", role: "status", hidden: spec.hidden },
@@ -91,14 +72,6 @@ export function gameEmpty(spec: { flash: boolean; picker: HTMLInputElement; hidd
     h("button", { class: "btn", type: "button" }, t(flash ? "games.flash.load" : "games.loadRom")),
   );
   empty.querySelector("button")?.addEventListener("click", () => { picker.click(); });
-  empty.addEventListener("dragover", (event) => { event.preventDefault(); });
-  empty.addEventListener("drop", (event) => {
-    event.preventDefault();
-    const files = event.dataTransfer?.files;
-    if (!files?.length || !accepted(files[0]!.name, picker.accept)) return;
-    picker.files = files;
-    picker.dispatchEvent(new Event("change"));
-  });
   return empty;
 }
 
@@ -202,7 +175,12 @@ export function player(spec: {
       const buffer = await file.arrayBuffer();
       if (read === reads) boot({ buffer, filename: file.name, cheats: spec.cheats });
     } catch {
-      if (read === reads) status.textContent = t("emulator.readFailed");
+      if (read !== reads) return;
+      status.textContent = t("emulator.readFailed");
+      // The file can be picked again, and an unreadable one must not be offered to Remember.
+      picker.value = "";
+      current = null;
+      sync();
     }
   });
 

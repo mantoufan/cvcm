@@ -12,7 +12,7 @@ let token = 0;
 export function mountEmulator(host: HTMLElement): void {
   const loc = locale();
   const name = t("emulator.title");
-  const { frame, boot } = gameFrame({ flash: false, core: ROM_CORE.fc, name });
+  const { frame, boot, stop, focus } = gameFrame({ flash: false, core: ROM_CORE.fc, name });
   const picker = h("input", {
     type: "file",
     accept: ROM_ACCEPT,
@@ -28,12 +28,19 @@ export function mountEmulator(host: HTMLElement): void {
   const controlsHost = h("div", { "data-out": "controls" });
 
   let rom: { name: string; buffer: ArrayBuffer } | null = null;
+  // What the frame is running: choosing a console that needs the same core must not restart the game.
+  let running: { rom: object; core: string } | null = null;
 
   const play = (): void => {
     if (!rom) return;
     const chosen = select.value === AUTO ? null : (select.value as RomConsoleId);
     const consoleId = chosen ?? detectRomConsole(rom.name, new Uint8Array(rom.buffer));
     if (!consoleId) {
+      // The prompt is about this file, so the last game cannot keep running behind it.
+      stop();
+      running = null;
+      controlsHost.replaceChildren();
+      empty.hidden = true;
       status.textContent = t("emulator.unknown");
       select.focus();
       return;
@@ -42,13 +49,22 @@ export function mountEmulator(host: HTMLElement): void {
     status.textContent = t(chosen ? "emulator.chosen" : "emulator.detected", { console: label });
     controlsHost.replaceChildren(controls(consoleId));
     empty.hidden = true;
-    boot({ buffer: rom.buffer, filename: rom.name, core: ROM_CORE[consoleId], name: rom.name, cheats: [] });
+    const core = ROM_CORE[consoleId];
+    if (running?.rom !== rom || running.core !== core) {
+      running = { rom, core };
+      boot({ buffer: rom.buffer, filename: rom.name, core, name: rom.name, cheats: [] });
+    }
+    // Left on the select, the arrow keys used to play would change the console and restart the game.
+    focus();
   };
 
   picker.addEventListener("change", () => {
     const file = picker.files?.[0];
     if (!file) return;
     const mine = ++token;
+    // A choice made for the last file says nothing about this one; one made before any file is the answer for it.
+    if (rom) select.value = AUTO;
+    rom = null;
     // Lets the same file be picked again, after a failed read or a wrong console choice.
     picker.value = "";
     if (file.size > MAX_ROM_BYTES) {
@@ -59,8 +75,6 @@ export function mountEmulator(host: HTMLElement): void {
     file.arrayBuffer().then((buffer) => {
       if (mine !== token) return;
       rom = { name: file.name, buffer };
-      // A choice made for the last file says nothing about this one.
-      select.value = AUTO;
       play();
     }).catch(() => {
       if (mine === token) status.textContent = t("emulator.readFailed");

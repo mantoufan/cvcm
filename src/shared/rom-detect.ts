@@ -17,8 +17,8 @@ export const ROM_CORE: Record<RomConsoleId, string> = {
 /** Twice the biggest cartridge here (32 MiB GBA). Stops a disc image being read and cloned for nothing. */
 export const MAX_ROM_BYTES = 64 * 1024 * 1024;
 
-/** A `.md` in a zip smaller than this is Markdown. Mega Drive cartridges start at 128 KiB in practice. */
-const MIN_ZIPPED_MD_BYTES = 64 * 1024;
+/** A `.md` smaller than this is Markdown. Mega Drive cartridges start at 128 KiB in practice. */
+const MIN_MD_BYTES = 64 * 1024;
 
 export const ROM_ACCEPT = ".nes,.sfc,.smc,.gb,.gbc,.gba,.md,.gen,.smd,.bin,.zip";
 
@@ -85,14 +85,25 @@ export function zipEntries(bytes: Uint8Array): ZipEntry[] {
   return entries;
 }
 
+function fromEntry(name: string, size: number): RomConsoleId | null {
+  const found = fromExtension(name);
+  if (found === "md" && /\.md$/i.test(name) && size < MIN_MD_BYTES) return null;
+  return found;
+}
+
 /** Which console a ROM belongs to, or null when the file does not say (the page then asks). */
 export function detectRomConsole(name: string, bytes: Uint8Array): RomConsoleId | null {
-  if (matches(bytes, 0, [0x50, 0x4b])) {
-    for (const entry of zipEntries(bytes)) {
-      const found = fromExtension(entry.name);
-      if (found && (found !== "md" || !/\.md$/i.test(entry.name) || entry.size >= MIN_ZIPPED_MD_BYTES)) return found;
+  if (matches(bytes, 0, [0x50, 0x4b, 0x03, 0x04]) || matches(bytes, 0, [0x50, 0x4b, 0x05, 0x06])) {
+    const entries = zipEntries(bytes);
+    if (entries.length) {
+      // `.md` last: it is also Markdown, and a release's README can sit before the ROM.
+      const ordered = [...entries.filter((e) => !/\.md$/i.test(e.name)), ...entries.filter((e) => /\.md$/i.test(e.name))];
+      for (const entry of ordered) {
+        const found = fromEntry(entry.name, entry.size);
+        if (found) return found;
+      }
+      return null;
     }
-    return null;
   }
-  return fromHeader(bytes) ?? fromExtension(name);
+  return fromHeader(bytes) ?? fromEntry(name, bytes.length);
 }

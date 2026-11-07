@@ -77,6 +77,17 @@ describe("detectRomConsole", () => {
     expect(detectRomConsole("x.zip", zip(["game.gen"]))).toBe("md");
   });
 
+  it("prefers other entries to a large Markdown file, and reads a bare one as text", () => {
+    expect(detectRomConsole("x.zip", zip(["README.md", "game.gba"], "", { "README.md": 100_000 }))).toBe("gba");
+    expect(detectRomConsole("notes.md", new Uint8Array(4000))).toBeNull();
+    expect(detectRomConsole("game.md", new Uint8Array(128 * 1024))).toBe("md");
+  });
+
+  it("falls back to the file name when bytes only look like a zip", () => {
+    expect(detectRomConsole("game.sfc", new Uint8Array([0x50, 0x4b, 0x10, 0x20]))).toBe("sfc");
+    expect(detectRomConsole("game.sfc", new Uint8Array([0x50, 0x4b, 0x03, 0x04]))).toBe("sfc");
+  });
+
   it("accepts the leading-space Mega Drive header", () => {
     expect(detectRomConsole("a.bin", rom(0x200, 0x100, ascii(" SEGA GENESIS")))).toBe("md");
   });
@@ -213,13 +224,33 @@ describe("tool pages", () => {
     expect(q("[data-out=status]").textContent).toContain("64");
   });
 
-  it("ignores a dropped file of the wrong type", async () => {
-    mountSwfPlayer(host);
-    const drop = new Event("drop", { cancelable: true }) as Event & { dataTransfer: unknown };
-    drop.dataTransfer = { files: [new File([new Uint8Array(4)], "game.nes")] };
-    q(".game-empty").dispatchEvent(drop);
-    await flush();
-    expect(frameSrc.filter((src) => src !== "about:blank")).toEqual([]);
+  it("does not restart the game when the choice needs the core already running", async () => {
+    mountEmulator(host);
+    await pick(new File([rom(64, 0, [0x4e, 0x45, 0x53, 0x1a]) as BlobPart], "a.nes"));
+    const before = frameSrc.length;
+    const select = q<HTMLSelectElement>("[data-field=console]");
+    select.value = "fc";
+    select.dispatchEvent(new Event("change"));
+    select.value = "auto";
+    select.dispatchEvent(new Event("change"));
+    expect(frameSrc.length).toBe(before);
+  });
+
+  it("stops the last game when a new file does not name its console", async () => {
+    mountEmulator(host);
+    await pick(new File([rom(64, 0, [0x4e, 0x45, 0x53, 0x1a]) as BlobPart], "a.nes"));
+    await pick(new File([new Uint8Array(32)], "b.bin"));
+    expect(frameSrc.at(-1)).toBe("about:blank");
+    expect(q("[data-out=controls]").children).toHaveLength(0);
+  });
+
+  it("keeps a console chosen before any file, and takes keys away from the select", async () => {
+    mountEmulator(host);
+    const select = q<HTMLSelectElement>("[data-field=console]");
+    select.value = "md";
+    await pick(new File([new Uint8Array(32)], "a.bin"));
+    expect(frameSrc.at(-1)).toContain("core=segaMD");
+    expect(document.activeElement).toBe(q("iframe"));
   });
 
   it("drops a read that finished after the page left", async () => {
