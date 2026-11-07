@@ -44,6 +44,18 @@
     "social-media-market-share": {
       "name": "Thị phần mạng xã hội",
       "blurb": "Mạng nào đem lại nhiều lượt truy cập web nhất, theo quốc gia."
+    },
+    "crypto-market-cap": {
+      "name": "Xếp hạng tiền điện tử theo vốn hóa",
+      "blurb": "100 đồng coin hàng đầu theo vốn hóa, kèm biến động 24 giờ và 7 ngày."
+    },
+    "commodity-prices": {
+      "name": "Giá hàng hóa: tăng và giảm nhiều nhất",
+      "blurb": "Dầu, khí, kim loại, ngũ cốc và hơn nữa, theo biến động trong một năm."
+    },
+    "currency-strength": {
+      "name": "Sức mạnh tiền tệ so với đô la Mỹ",
+      "blurb": "29 đồng tiền xếp theo mức thay đổi giá trị so với đô la."
     }
   },
   "rankings": {
@@ -55,7 +67,8 @@
       "groups": {
         "ai": "AI",
         "share": "Thị phần",
-        "countries": "Quốc gia"
+        "countries": "Quốc gia",
+        "markets": "Thị trường"
       },
       "makeYourOwn": "Tự tạo bảng xếp hạng",
       "about": [
@@ -105,7 +118,57 @@
       "modelsListed": "Số mô hình",
       "name": "Tên",
       "world": "Toàn cầu",
-      "change": "Thay đổi 1 năm (điểm %)"
+      "change": "Thay đổi 1 năm (điểm %)",
+      "symbol": "Ký hiệu",
+      "price": "Giá",
+      "change24h": "24 giờ",
+      "change7d": "7 ngày",
+      "marketCap": "Vốn hóa",
+      "volume24h": "Khối lượng (24 giờ)",
+      "commodity": "Hàng hóa",
+      "unit": "Đơn vị",
+      "change1m": "1 tháng",
+      "change1y": "1 năm",
+      "currency": "Tiền tệ",
+      "code": "Mã",
+      "perUsd": "Mỗi đô la Mỹ",
+      "commodities": {
+        "crude-oil-brent": "Dầu thô (Brent)",
+        "crude-oil-wti": "Dầu thô (WTI)",
+        "natural-gas-us": "Khí tự nhiên (Mỹ)",
+        "natural-gas-europe": "Khí tự nhiên (châu Âu)",
+        "lng-japan": "Khí tự nhiên hóa lỏng (Nhật Bản)",
+        "coal": "Than đá (Úc)",
+        "cocoa": "Ca cao",
+        "coffee-arabica": "Cà phê (Arabica)",
+        "coffee-robusta": "Cà phê (Robusta)",
+        "tea": "Trà",
+        "palm-oil": "Dầu cọ",
+        "soybeans": "Đậu tương",
+        "soybean-oil": "Dầu đậu tương",
+        "maize": "Ngô",
+        "wheat": "Lúa mì",
+        "rice": "Gạo (Thái Lan, tấm 5%)",
+        "sugar": "Đường",
+        "orange": "Cam",
+        "beef": "Thịt bò",
+        "chicken": "Thịt gà",
+        "shrimp": "Tôm",
+        "cotton": "Bông",
+        "rubber": "Cao su",
+        "urea": "Urê (phân bón)",
+        "aluminum": "Nhôm",
+        "iron-ore": "Quặng sắt",
+        "copper": "Đồng",
+        "lead": "Chì",
+        "tin": "Thiếc",
+        "nickel": "Niken",
+        "zinc": "Kẽm",
+        "gold": "Vàng",
+        "platinum": "Bạch kim",
+        "silver": "Bạc"
+      },
+      "tools": "Công cụ liên quan"
     },
     "sets": {
       "ai-models": {
@@ -424,6 +487,93 @@
           {
             "q": "Vì sao TikTok hoặc WeChat thấp hơn dự kiến?",
             "a": "Mọi người chủ yếu ở lại trong các ứng dụng đó, và liên kết mở từ đó thường không được gắn nhãn là đến từ chúng."
+          }
+        ]
+      },
+      "crypto-market-cap": {
+        "title": "Xếp hạng tiền điện tử theo vốn hóa {year}: Top 100 | cv.cm",
+        "description": "Top 100 tiền điện tử theo vốn hóa ngày {date}: {top1} {v1}, {top2} {v2}, {top3} {v3}. Giá, biến động 24 giờ, 7 ngày và khối lượng giao dịch.",
+        "h1": "Top 100 tiền điện tử theo vốn hóa, {date}",
+        "lede": "100 loại tiền điện tử có giá trị lớn nhất theo vốn hóa, kèm giá, biến động 24 giờ và 7 ngày cùng khối lượng giao dịch. Đây là ảnh chụp theo ngày, không phải bảng giá trực tiếp.",
+        "facts": [
+          "Lớn nhất: {top1} ({v1}), tiếp theo là {top2} ({v2}) và {top3} ({v3}).",
+          "Tổng giá trị của top 100 là {total}. Bitcoin chiếm {dominance} toàn thị trường tiền điện tử.",
+          "Dữ liệu tính đến {date}, lấy mỗi ngày một lần."
+        ],
+        "about": [
+          "Vốn hóa thị trường là giá nhân với số coin đang lưu hành, theo cách CoinMarketCap tính. Giá thay đổi từng giây, nên bảng này, làm mới mỗi ngày một lần, dùng để so sánh các coin chứ không phải để giao dịch. Các stablecoin như Tether được liệt kê vì chúng cũng được xếp hạng theo vốn hóa.",
+          "Nội dung ở đây không phải lời khuyên đầu tư. Giá tiền điện tử có thể biến động mạnh, và thứ hạng cao không có nghĩa là coin an toàn. cv.cm không bán hay khuyến nghị bất kỳ coin nào."
+        ],
+        "faq": [
+          {
+            "q": "Tiền điện tử nào lớn nhất theo vốn hóa?",
+            "a": "{top1}, trị giá {v1} vào {date}, tiếp theo là {top2} ({v2}) và {top3} ({v3})."
+          },
+          {
+            "q": "Giá được cập nhật bao lâu một lần?",
+            "a": "Mỗi ngày một lần. Muốn xem giá trực tiếp, hãy xem trên sàn giao dịch hoặc chính CoinMarketCap; thời điểm hiển thị trên trang cho biết ảnh chụp được lấy lúc nào."
+          },
+          {
+            "q": "Vì sao tôi không tải được bảng này?",
+            "a": "CoinMarketCap cho phép cv.cm hiển thị dữ liệu của họ tại đây nhưng không cho phép chuyển tiếp dưới dạng tệp, nên bảng này không có CSV."
+          }
+        ]
+      },
+      "commodity-prices": {
+        "title": "Giá hàng hóa {year}: Tăng và giảm nhiều nhất | cv.cm",
+        "description": "Giá hàng hóa {date}: {top1} tăng nhiều nhất trong một năm ({v1}), {low1} giảm nhiều nhất ({lv1}). Dầu, khí, kim loại, ngũ cốc... theo Ngân hàng Thế giới.",
+        "h1": "Giá hàng hóa: tăng và giảm nhiều nhất, {date}",
+        "lede": "{rows} mặt hàng xếp theo mức thay đổi giá trong 12 tháng, kèm giá tháng mới nhất và mức thay đổi trong một tháng. Dữ liệu Pink Sheet của Ngân hàng Thế giới, tính bằng đô la Mỹ.",
+        "facts": [
+          "Tăng nhiều nhất trong một năm: {top1} ({v1}), {top2} ({v2}) và {top3} ({v3}).",
+          "Giảm nhiều nhất: {low1} ({lv1}), {low2} ({lv2}) và {low3} ({lv3}).",
+          "Giá trung bình hằng tháng cho {date}."
+        ],
+        "about": [
+          "Ngân hàng Thế giới công bố Pink Sheet vào đầu mỗi tháng, với giá trung bình trên thị trường thế giới của tháng trước, tính bằng đô la Mỹ danh nghĩa. Mỗi mức giá là một chuẩn tham chiếu, như dầu Brent giao tại châu Âu hay gạo tấm 5% của Thái Lan, nên giá bạn trả tại địa phương có thể khác rất nhiều.",
+          "Mức thay đổi so sánh trung bình tháng mới nhất với tháng trước và với cùng tháng một năm trước. Trung bình tháng làm mượt các biến động hằng ngày, nên biên độ biến động trong một ngày có thể lớn hơn."
+        ],
+        "faq": [
+          {
+            "q": "Hàng hóa nào tăng nhiều nhất trong năm nay?",
+            "a": "Trong {rows} mặt hàng được liệt kê, {top1} tăng nhiều nhất trong 12 tháng đến {date}: {v1}."
+          },
+          {
+            "q": "Hàng hóa nào giảm nhiều nhất?",
+            "a": "{low1}, giảm {ld1} trong 12 tháng đến {date}."
+          },
+          {
+            "q": "Đây có phải giá trực tiếp không?",
+            "a": "Không. Đây là giá trung bình tháng của Ngân hàng Thế giới, được cập nhật khi tổ chức này công bố mỗi tháng."
+          }
+        ]
+      },
+      "currency-strength": {
+        "title": "Sức mạnh tiền tệ so với USD {year}: Xếp hạng 29 đồng tiền | cv.cm",
+        "description": "Đồng tiền nào tăng hay giảm so với đô la Mỹ kể từ {yearAgo}: {top1} {v1}, {top2} {v2}, {low1} {lv1}. Tỷ giá tham chiếu của ECB.",
+        "h1": "Sức mạnh tiền tệ so với đô la Mỹ, {date}",
+        "lede": "{rows} đồng tiền xếp theo mức thay đổi giá trị so với đô la Mỹ trong một năm, kèm tỷ giá trên mỗi đô la và mức thay đổi trong một tháng. Lấy từ tỷ giá tham chiếu hằng ngày của Ngân hàng Trung ương châu Âu.",
+        "facts": [
+          "Mạnh nhất so với đô la trong một năm: {top1} ({v1}), {top2} ({v2}) và {top3} ({v3}).",
+          "Yếu nhất: {low1} ({lv1}), {low2} ({lv2}) và {low3} ({lv3}).",
+          "Tỷ giá ngày {date}, so với {yearAgo}."
+        ],
+        "about": [
+          "Ngân hàng Trung ương châu Âu công bố mỗi ngày một tỷ giá tham chiếu của từng đồng tiền so với đồng euro. cv.cm chia chúng cho tỷ giá euro so với đô la để ra mỗi đồng tiền trên một đô la Mỹ, nên đây là tỷ giá chéo, gần với mức ngân hàng áp dụng nhưng không giống hệt.",
+          "Thay đổi dương nghĩa là đồng tiền đó hiện mua được nhiều đô la hơn trước. Bảng chỉ gồm các đồng tiền ECB niêm yết, nên một số đồng, như đô la Đài Loan và đồng Việt Nam, không có trong đó."
+        ],
+        "faq": [
+          {
+            "q": "Đồng tiền nào tăng nhiều nhất so với đô la?",
+            "a": "{top1}, tăng {v1} so với đô la Mỹ kể từ {yearAgo}."
+          },
+          {
+            "q": "Đồng tiền nào mất giá nhiều nhất?",
+            "a": "{low1}, giảm {ld1} so với đô la kể từ {yearAgo}."
+          },
+          {
+            "q": "Tỷ giá này có trực tiếp không?",
+            "a": "Không. Đây là tỷ giá tham chiếu của ECB, công bố mỗi ngày làm việc một lần vào khoảng 16:00 giờ Trung Âu, chỉ để tham khảo."
           }
         ]
       }

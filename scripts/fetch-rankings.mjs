@@ -3,8 +3,12 @@
 //   Arena leaderboard (CC BY 4.0): huggingface.co/datasets/lmarena-ai/leaderboard-dataset
 //   OpenRouter rankings data API (CC BY 4.0, needs OPENROUTER_API_KEY, free): openrouter.ai/docs/cookbook/administration/data-api
 //   StatCounter Global Stats (CC BY-SA 3.0): gs.statcounter.com
+//   CoinMarketCap API (free Basic plan, needs COINMARKETCAP_API_KEY; no redistribution, so no CSV): coinmarketcap.com/api
+//   World Bank Pink Sheet monthly commodity prices (CC BY 4.0): worldbank.org/en/research/commodity-markets
+//   ECB euro foreign exchange reference rates (free reuse with the source named): ecb.europa.eu
 import { appendFileSync, existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
+import { inflateRawSync } from "node:zlib";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -36,6 +40,35 @@ const NAMES = {
   bing: "Bing", YANDEX: "Yandex", "YANDEX RU": "Yandex", reddit: "Reddit", "Yahoo!": "Yahoo", "OS X": "macOS", macOS: "macOS", iOS: "iOS", "Unknown Mobile": "Other", "Twitter": "X (Twitter)", "VKontakte": "VK",
 };
 const nameOf = (raw) => NAMES[raw] ?? (/^[a-z]/.test(raw) ? raw[0].toUpperCase() + raw.slice(1) : raw);
+
+async function getBuffer(url) {
+  const res = await fetch(url, { headers: { "User-Agent": UA }, signal: AbortSignal.timeout(90_000) });
+  if (!res.ok) throw new Error(`${res.status} ${url}`);
+  return Buffer.from(await res.arrayBuffer());
+}
+
+/** The files in a zip (or xlsx), by name: enough of the format for the two archives read here. */
+function unzip(buffer) {
+  const end = buffer.lastIndexOf(Buffer.from([0x50, 0x4b, 0x05, 0x06]));
+  if (end < 0) throw new Error("not a zip file");
+  const count = buffer.readUInt16LE(end + 10);
+  let at = buffer.readUInt32LE(end + 16);
+  const files = new Map();
+  for (let i = 0; i < count; i += 1) {
+    const method = buffer.readUInt16LE(at + 10);
+    const size = buffer.readUInt32LE(at + 20);
+    const nameLength = buffer.readUInt16LE(at + 28);
+    const extra = buffer.readUInt16LE(at + 30);
+    const comment = buffer.readUInt16LE(at + 32);
+    const local = buffer.readUInt32LE(at + 42);
+    const name = buffer.toString("utf8", at + 46, at + 46 + nameLength);
+    const start = local + 30 + buffer.readUInt16LE(local + 26) + buffer.readUInt16LE(local + 28);
+    const raw = buffer.subarray(start, start + size);
+    files.set(name, method === 8 ? inflateRawSync(raw) : raw);
+    at += 46 + nameLength + extra + comment;
+  }
+  return files;
+}
 
 async function get(url, headers = {}) {
   for (let attempt = 0; ; attempt += 1) {
@@ -190,6 +223,125 @@ async function shareTable({ stat, device, drop = [] }, month) {
   return { asOf: month, yearAgo, rows, leaders };
 }
 
+// --- CoinMarketCap -------------------------------------------------------------------------------------------------
+
+const CRYPTO_ROWS = 100;
+
+/** One call to the free plan: one credit of 15,000 a month. Never redistributed as a file. */
+async function crypto() {
+  const key = process.env.COINMARKETCAP_API_KEY;
+  if (!key) throw new Error("COINMARKETCAP_API_KEY is not set");
+  const q = new URLSearchParams({ limit: String(CRYPTO_ROWS), convert: "USD", sort: "market_cap" });
+  const body = JSON.parse(await get(`https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest?${q}`, { "X-CMC_PRO_API_KEY": key }));
+  if (body.status?.error_code) throw new Error(`coinmarketcap: ${body.status.error_message}`);
+  const coins = body.data ?? [];
+  if (coins.length < CRYPTO_ROWS) throw new Error(`coinmarketcap: only ${coins.length} coins`);
+  const round = (v, d) => Math.round(v * 10 ** d) / 10 ** d;
+  const rows = coins.map((coin, i) => {
+    const usd = coin.quote.USD;
+    const values = [usd.price, usd.percent_change_24h, usd.percent_change_7d, usd.market_cap, usd.volume_24h];
+    if (values.some((v) => !Number.isFinite(v))) throw new Error(`coinmarketcap: bad numbers for ${coin.symbol}`);
+    // Enough digits for coins worth a fraction of a cent.
+    const priceDigits = usd.price >= 1 ? 2 : Math.min(10, 3 - Math.floor(Math.log10(usd.price)));
+    return [i + 1, coin.name, coin.symbol, round(usd.price, priceDigits), round(usd.percent_change_24h, 2), round(usd.percent_change_7d, 2), Math.round(usd.market_cap), Math.round(usd.volume_24h)];
+  });
+  return {
+    asOf: body.status.timestamp.slice(0, 10),
+    rows,
+    total: rows.reduce((sum, row) => sum + row[6], 0),
+    dominance: Math.round(coins[0].quote.USD.market_cap_dominance * 10) / 10,
+  };
+}
+
+// --- World Bank Pink Sheet -----------------------------------------------------------------------------------------
+
+/** Pink Sheet column name → id, for the commodities people look up; the copy names them in each language. */
+const COMMODITIES = {
+  "Crude oil, Brent": "crude-oil-brent", "Crude oil, WTI": "crude-oil-wti", "Natural gas, US": "natural-gas-us", "Natural gas, Europe": "natural-gas-europe",
+  "Liquefied natural gas, Japan": "lng-japan", "Coal, Australian": "coal", Cocoa: "cocoa", "Coffee, Arabica": "coffee-arabica", "Coffee, Robusta": "coffee-robusta",
+  "Tea, avg 3 auctions": "tea", "Palm oil": "palm-oil", Soybeans: "soybeans", "Soybean oil": "soybean-oil", Maize: "maize", "Wheat, US HRW": "wheat",
+  "Rice, Thai 5%": "rice", "Sugar, world": "sugar", Orange: "orange", Beef: "beef", Chicken: "chicken", "Shrimps, Mexican": "shrimp", "Cotton, A Index": "cotton",
+  "Rubber, RSS3": "rubber", Urea: "urea", Aluminum: "aluminum", "Iron ore, cfr spot": "iron-ore", Copper: "copper", Lead: "lead", Tin: "tin", Nickel: "nickel",
+  Zinc: "zinc", Gold: "gold", Platinum: "platinum", Silver: "silver",
+};
+const PINK_SHEET = "https://www.worldbank.org/en/research/commodity-markets";
+
+async function commodities() {
+  const page = await get(PINK_SHEET);
+  const url = page.match(/https:\/\/[^"']*CMO-Historical-Data-Monthly\.xlsx/)?.[0];
+  if (!url) throw new Error("pink sheet: workbook link not found");
+  const files = unzip(await getBuffer(url));
+  const strings = [...files.get("xl/sharedStrings.xml").toString("utf8").matchAll(/<si>([\s\S]*?)<\/si>/g)].map((m) => m[1].replace(/<[^>]+>/g, "").replace(/&amp;/g, "&"));
+  const book = files.get("xl/workbook.xml").toString("utf8");
+  const rid = book.match(/<sheet name="Monthly Prices"[^>]*r:id="([^"]+)"/)?.[1];
+  const target = files.get("xl/_rels/workbook.xml.rels").toString("utf8").match(new RegExp(`Id="${rid}"[^>]*Target="([^"]+)"`))?.[1];
+  const sheet = files.get(`xl/${target}`)?.toString("utf8");
+  if (!sheet) throw new Error("pink sheet: Monthly Prices not found");
+  const table = [];
+  for (const [, body] of sheet.matchAll(/<row [^>]*>([\s\S]*?)<\/row>/g)) {
+    const cells = {};
+    for (const [, col, attrs, inner] of body.matchAll(/<c r="([A-Z]+)\d+"([^>]*?)(?:\/>|>([\s\S]*?)<\/c>)/g)) {
+      const v = inner?.match(/<v>([\s\S]*?)<\/v>/)?.[1] ?? inner?.match(/<t[^>]*>([\s\S]*?)<\/t>/)?.[1] ?? "";
+      cells[col] = /t="s"/.test(attrs) ? strings[Number(v)] : v;
+    }
+    table.push(cells);
+  }
+  const headAt = table.findIndex((cells) => Object.values(cells).includes("Crude oil, Brent"));
+  if (headAt < 0) throw new Error("pink sheet: header row not found");
+  const head = table[headAt];
+  const units = table[headAt + 1];
+  const months = table.filter((cells) => /^\d{4}M\d{2}$/.test(cells.A ?? ""));
+  const at = (offset) => months[months.length - 1 - offset];
+  const rows = [];
+  for (const [col, raw] of Object.entries(head)) {
+    const id = COMMODITIES[String(raw).replace(/\*/g, "").trim()];
+    if (!id) continue;
+    const [now, month, year] = [0, 1, 12].map((offset) => Number(at(offset)[col]));
+    // A series the World Bank has not filled in for the latest month is left out rather than shown stale.
+    if (![now, month, year].every((v) => Number.isFinite(v) && v > 0)) {
+      console.log(`pink sheet: skipping ${raw}, no recent values`);
+      continue;
+    }
+    const pct = (old) => Math.round((now / old - 1) * 1000) / 10;
+    rows.push([id, (units[col] ?? "").replace(/[()]/g, ""), Math.round(now * 100) / 100, pct(month), pct(year)]);
+  }
+  if (rows.length < Object.keys(COMMODITIES).length - 5) throw new Error(`pink sheet: only ${rows.length} commodities matched`);
+  rows.sort((a, b) => b[4] - a[4]);
+  const last = at(0).A;
+  return { asOf: `${last.slice(0, 4)}-${last.slice(5)}`, rows: rows.map((row, i) => [i + 1, ...row]) };
+}
+
+// --- ECB reference rates -------------------------------------------------------------------------------------------
+
+/** Each currency against the US dollar, from the euro rates: how many per dollar, and how its value moved. */
+async function currencies() {
+  const files = unzip(await getBuffer("https://www.ecb.europa.eu/stats/eurofxref/eurofxref-hist.zip"));
+  const csv = [...files.values()][0].toString("utf8").trim().split(/\r?\n/).map((line) => line.split(","));
+  const head = csv[0].map((cell) => cell.trim());
+  const days = csv.slice(1).map((cells) => ({ date: cells[0], rates: Object.fromEntries(head.slice(1).map((code, i) => [code, Number(cells[i + 1])])) }));
+  const latest = days[0];
+  const before = (months) => {
+    const d = new Date(`${latest.date}T00:00:00Z`);
+    d.setUTCMonth(d.getUTCMonth() - months);
+    const day = d.toISOString().slice(0, 10);
+    return days.find((entry) => entry.date <= day);
+  };
+  const monthAgo = before(1);
+  const yearAgo = before(12);
+  const perUsd = (entry, code) => (code === "EUR" ? 1 / entry.rates.USD : entry.rates[code] / entry.rates.USD);
+  const codes = ["EUR", ...head.slice(1).filter((code) => code && code !== "USD" && Number.isFinite(latest.rates[code]) && latest.rates[code] > 0)];
+  const rows = codes.map((code) => {
+    const now = perUsd(latest, code);
+    // Fewer units per dollar than before means the currency gained value.
+    const change = (entry) => Math.round((perUsd(entry, code) / now - 1) * 1000) / 10;
+    const digits = now >= 100 ? 2 : now >= 1 ? 4 : 6;
+    return [code, Math.round(now * 10 ** digits) / 10 ** digits, change(monthAgo), change(yearAgo)];
+  }).filter((row) => Number.isFinite(row[2]) && Number.isFinite(row[3]));
+  if (rows.length < 20) throw new Error(`ecb: only ${rows.length} currencies`);
+  rows.sort((a, b) => b[3] - a[3]);
+  return { asOf: latest.date, monthAgo: monthAgo.date, yearAgo: yearAgo.date, rows: rows.map((row, i) => [i + 1, ...row]) };
+}
+
 // --- Write ---------------------------------------------------------------------------------------------------------
 
 const rows = {};
@@ -252,7 +404,29 @@ await attempt(["ai-usage", "ai-companies"], async () => {
   meta.sets["ai-companies"] = { asOf: or.authors.asOf, rows: or.authors.rows.length, top: topOf(or.authors.rows, 1, 3) };
   csv["ai-companies"] = toCsv(["rank", "company", "tokens", "share_of_public_tokens_percent", "models_listed"], or.authors.rows, cite);
 });
+await attempt(["crypto-market-cap"], async () => {
+  const set = await crypto();
+  rows["crypto-market-cap"] = set.rows;
+  meta.sets["crypto-market-cap"] = { asOf: set.asOf, rows: set.rows.length, top: topOf(set.rows, 1, 6), total: set.total, dominance: set.dominance };
+});
+await attempt(["currency-strength"], async () => {
+  const set = await currencies();
+  rows["currency-strength"] = set.rows;
+  meta.sets["currency-strength"] = { asOf: set.asOf, monthAgo: set.monthAgo, yearAgo: set.yearAgo, rows: set.rows.length, top: topOf(set.rows, 1, 4), bottom: set.rows.slice(-3).reverse().map((r) => [r[1], r[4]]) };
+  csv["currency-strength"] = toCsv(["rank", "currency", "per_usd", `change_vs_usd_since_${set.monthAgo}_percent`, `change_vs_usd_since_${set.yearAgo}_percent`], set.rows, ["European Central Bank euro reference rates (ecb.europa.eu)", "Reuse with source named"]);
+});
 const month = lastMonth();
+// The Pink Sheet comes out early each month: nothing to ask for until a new month is due.
+if (!process.env.FORCE_SHARE && oldMeta.sets["commodity-prices"]?.asOf === month && oldRows["commodity-prices"]) keep("commodity-prices");
+else {
+  await attempt(["commodity-prices"], async () => {
+    const set = await commodities();
+    rows["commodity-prices"] = set.rows;
+    meta.sets["commodity-prices"] = { asOf: set.asOf, rows: set.rows.length, top: topOf(set.rows, 1, 5), bottom: set.rows.slice(-3).reverse().map((r) => [r[1], r[5]]) };
+    csv["commodity-prices"] = toCsv(["rank", "commodity", "unit", "price_usd", "change_1_month_percent", "change_12_months_percent"], set.rows, [PINK_SHEET, "CC BY 4.0"]);
+  });
+}
+
 for (const [id, spec] of Object.entries(SHARE)) {
   // StatCounter publishes monthly: nothing to ask for until a new month is due.
   // FORCE_SHARE=1 asks again, for a fix to names or filters.

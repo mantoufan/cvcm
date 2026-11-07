@@ -73,7 +73,7 @@ export function mountDatasetHub(host: HTMLElement, locale: Locale): void {
 type TableUi = { search: string; searchPlaceholder: string; rows: string; shown: string; noMatch: string; download: string; sortHint: string };
 
 /** Sortable, filterable table. The prerendered page carries every row, so crawlers see the whole table. */
-export function dataTable(locale: Locale, page: { label: string; caption: string; csvHref: string; csvName: string; ui: TableUi }, table: DatasetTable): HTMLElement {
+export function dataTable(locale: Locale, page: { label: string; caption: string; csvHref: string | null; csvName: string; ui: TableUi }, table: DatasetTable): HTMLElement {
   const { ui } = page;
   const total = table.rows.length;
   const rows = table.rows.map((cells, index) => ({
@@ -134,7 +134,7 @@ export function dataTable(locale: Locale, page: { label: string; caption: string
   return h("section", { class: "data-table", "aria-label": page.label },
     h("div", { class: "data-tools" },
       search,
-      h("a", { class: "btn ghost", href: page.csvHref, download: page.csvName }, ui.download),
+      page.csvHref ? h("a", { class: "btn ghost", href: page.csvHref, download: page.csvName }, ui.download) : null,
     ),
     count,
     h("div", { class: "data-wrap" },

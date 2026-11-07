@@ -1,4 +1,4 @@
-import { readFileSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
 import rows from "../src/shared/rankings-rows.json";
 import { LOCALES } from "../src/shared/locale";
@@ -26,8 +26,13 @@ describe("ranking data", () => {
       expect(rankingMeta(id).rows, id).toBe(table.length);
       expect(rankingMeta(id).asOf, id).toMatch(/^\d{4}-\d{2}(-\d{2})?$/);
       expect(rankingMeta(id).updated, id).toMatch(/^\d{4}-\d{2}-\d{2}$/);
-      expect(RANKING_SOURCE[id].licenseUrl, id).toMatch(/^https:\/\/creativecommons\.org\//);
-      const csv = readFileSync(`public${rankingCsvHref(id)}`, "utf8").trim().split("\n");
+      expect(RANKING_SOURCE[id].licenseUrl, id).toMatch(/^https:\/\//);
+      const href = rankingCsvHref(id);
+      if (!href) {
+        expect(existsSync(`public/rankings/${id}.csv`), id).toBe(false);
+        continue;
+      }
+      const csv = readFileSync(`public${href}`, "utf8").trim().split("\n");
       expect(csv.length, id).toBe(table.length + 1);
       expect(csv[0].endsWith("source,license"), id).toBe(true);
       expect(csv[1], id).toContain(RANKING_SOURCE[id].license);
@@ -74,7 +79,9 @@ describe.each(LOCALES)("ranking copy in %s", (locale) => {
     const html = applyHtmlSeo(`<!doctype html><html lang="en"><head><title>cv.cm</title><meta name="description" content="x" /><link rel="canonical" href="https://cv.cm/" /></head><body><div id="app"></div></body></html>`, locale, { ranking: true, rankingId: "ai-models" });
     expect(html).toContain(`${rankingHref(locale, "ai-models")}`);
     expect(html).toContain('id="dataset-jsonld"');
-    expect(rankingStaticHtml(locale, "ai-models")).toContain(rankingCsvHref("ai-models"));
+    expect(rankingStaticHtml(locale, "ai-models")).toContain(rankingCsvHref("ai-models")!);
+    expect(rankingStaticHtml(locale, "crypto-market-cap")).not.toContain(".csv");
+    expect(rankingJsonLd(locale, "crypto-market-cap")).not.toHaveProperty("distribution");
     expect(rankingStaticHtml(locale, null)).toContain(rankingHref(locale, "browser-market-share"));
     expect(rankingJsonLd(locale, "ai-models")).toMatchObject({ "@type": "Dataset", license: RANKING_SOURCE["ai-models"].licenseUrl });
   });

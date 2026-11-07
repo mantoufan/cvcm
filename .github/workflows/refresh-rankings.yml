@@ -28,6 +28,7 @@ jobs:
         run: node scripts/fetch-rankings.mjs
         env:
           OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+          COINMARKETCAP_API_KEY: ${{ secrets.COINMARKETCAP_API_KEY }}
           RANKINGS_FAILURES_FILE: ${{ runner.temp }}/rankings-failures.txt
       - run: node scripts/write-sitemap.mjs
       # The same checks as the deploy, so data that would break it never reaches main.
