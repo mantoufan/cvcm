@@ -14,6 +14,12 @@ export const ROM_CORE: Record<RomConsoleId, string> = {
   md: "segaMD",
 };
 
+/** Twice the biggest cartridge here (32 MiB GBA). Stops a disc image being read and cloned for nothing. */
+export const MAX_ROM_BYTES = 64 * 1024 * 1024;
+
+/** A `.md` in a zip smaller than this is Markdown. Mega Drive cartridges start at 128 KiB in practice. */
+const MIN_ZIPPED_MD_BYTES = 64 * 1024;
+
 export const ROM_ACCEPT = ".nes,.sfc,.smc,.gb,.gbc,.gba,.md,.gen,.smd,.bin,.zip";
 
 // `.bin` is left out: it is a raw dump of anything, so only a Mega Drive header can name it.
@@ -44,12 +50,14 @@ function fromHeader(bytes: Uint8Array): RomConsoleId | null {
   if (matches(bytes, 0, [0x4e, 0x45, 0x53, 0x1a])) return "fc"; // "NES" + EOF, iNES
   if (matches(bytes, 4, [0x24, 0xff, 0xae, 0x51])) return "gba"; // Nintendo logo in the GBA header
   if (matches(bytes, 0x104, [0xce, 0xed, 0x66, 0x66])) return bytes[0x143]! & 0x80 ? "gbc" : "gb"; // logo; CGB flag
-  if (matches(bytes, 0x100, [0x53, 0x45, 0x47, 0x41])) return "md"; // "SEGA"
+  if (matches(bytes, 0x100, [0x53, 0x45, 0x47, 0x41]) || matches(bytes, 0x101, [0x53, 0x45, 0x47, 0x41])) return "md"; // "SEGA" or " SEGA"
   return null;
 }
 
-/** Names in a zip's central directory, which is stored uncompressed at the end of the file. */
-export function zipEntryNames(bytes: Uint8Array): string[] {
+type ZipEntry = { name: string; size: number };
+
+/** Entries in a zip's central directory, which is stored uncompressed at the end of the file. */
+export function zipEntries(bytes: Uint8Array): ZipEntry[] {
   const view = new DataView(bytes.buffer, bytes.byteOffset, bytes.byteLength);
   // The end record is 22 bytes plus a comment of at most 65535.
   const floor = Math.max(0, bytes.length - 22 - 0xffff);
@@ -61,7 +69,7 @@ export function zipEntryNames(bytes: Uint8Array): string[] {
     }
   }
   if (end < 0) return [];
-  const names: string[] = [];
+  const entries: ZipEntry[] = [];
   const decoder = new TextDecoder();
   const count = view.getUint16(end + 10, true);
   let at = view.getUint32(end + 16, true);
@@ -71,18 +79,18 @@ export function zipEntryNames(bytes: Uint8Array): string[] {
     const extraLength = view.getUint16(at + 30, true);
     const commentLength = view.getUint16(at + 32, true);
     if (at + 46 + nameLength > bytes.length) break;
-    names.push(decoder.decode(bytes.subarray(at + 46, at + 46 + nameLength)));
+    entries.push({ name: decoder.decode(bytes.subarray(at + 46, at + 46 + nameLength)), size: view.getUint32(at + 24, true) });
     at += 46 + nameLength + extraLength + commentLength;
   }
-  return names;
+  return entries;
 }
 
 /** Which console a ROM belongs to, or null when the file does not say (the page then asks). */
 export function detectRomConsole(name: string, bytes: Uint8Array): RomConsoleId | null {
   if (matches(bytes, 0, [0x50, 0x4b])) {
-    for (const entry of zipEntryNames(bytes)) {
-      const found = fromExtension(entry);
-      if (found) return found;
+    for (const entry of zipEntries(bytes)) {
+      const found = fromExtension(entry.name);
+      if (found && (found !== "md" || !/\.md$/i.test(entry.name) || entry.size >= MIN_ZIPPED_MD_BYTES)) return found;
     }
     return null;
   }

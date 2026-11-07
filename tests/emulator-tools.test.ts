@@ -6,7 +6,7 @@ import { CATEGORIES, TOOLS, parseAppPath } from "../src/shared/path";
 import { isTrackedPath } from "../src/shared/analytics";
 import { dataHandling } from "../src/shared/agent-docs";
 import { GAMES } from "../src/shared/games";
-import { ROM_ACCEPT, ROM_CONSOLES, ROM_CORE, detectRomConsole, zipEntryNames } from "../src/shared/rom-detect";
+import { MAX_ROM_BYTES, ROM_ACCEPT, ROM_CONSOLES, ROM_CORE, detectRomConsole, zipEntries } from "../src/shared/rom-detect";
 
 function rom(size: number, at: number, bytes: readonly number[]): Uint8Array {
   const out = new Uint8Array(size);
@@ -17,12 +17,13 @@ function rom(size: number, at: number, bytes: readonly number[]): Uint8Array {
 const ascii = (text: string): number[] => [...text].map((c) => c.charCodeAt(0));
 
 /** A stored zip with these entry names and no file data, as far as the reader needs. */
-function zip(names: string[], comment = ""): Uint8Array {
+function zip(names: string[], comment = "", sizes: Record<string, number> = {}): Uint8Array {
   const central: number[] = [];
   for (const name of names) {
     const record = new Uint8Array(46);
     const view = new DataView(record.buffer);
     view.setUint32(0, 0x02014b50, true);
+    view.setUint32(24, sizes[name] ?? 0, true);
     view.setUint16(28, name.length, true);
     central.push(...record, ...ascii(name));
   }
@@ -62,11 +63,22 @@ describe("detectRomConsole", () => {
   });
 
   it("looks inside a zip, past files that are not ROMs and past a comment", () => {
-    expect(zipEntryNames(zip(["a.txt", "dir/b.gba"]))).toEqual(["a.txt", "dir/b.gba"]);
+    expect(zipEntries(zip(["a.txt", "dir/b.gba"])).map((e) => e.name)).toEqual(["a.txt", "dir/b.gba"]);
     expect(detectRomConsole("x.zip", zip(["readme.txt", "dir/game.GBA"]))).toBe("gba");
     expect(detectRomConsole("x.zip", zip(["game.sfc"], "PK\u0005\u0006 comment"))).toBe("sfc");
     expect(detectRomConsole("x.zip", zip(["game.bin"]))).toBeNull();
     expect(detectRomConsole("x.zip", zip(["readme.txt"]))).toBeNull();
+  });
+
+  it("does not read Markdown in a zip as a Mega Drive ROM", () => {
+    expect(detectRomConsole("x.zip", zip(["README.md", "game.gba"], "", { "README.md": 4000 }))).toBe("gba");
+    expect(detectRomConsole("x.zip", zip(["README.md", "game.bin"], "", { "README.md": 4000 }))).toBeNull();
+    expect(detectRomConsole("x.zip", zip(["game.md"], "", { "game.md": 512 * 1024 }))).toBe("md");
+    expect(detectRomConsole("x.zip", zip(["game.gen"]))).toBe("md");
+  });
+
+  it("accepts the leading-space Mega Drive header", () => {
+    expect(detectRomConsole("a.bin", rom(0x200, 0x100, ascii(" SEGA GENESIS")))).toBe("md");
   });
 
   it("survives a damaged zip", () => {
@@ -143,7 +155,8 @@ describe("tool pages", () => {
     expect(q(".game-empty").hidden).toBe(true);
     expect(frameSrc.at(-1)).toContain("/emu/player");
     expect(frameSrc.at(-1)).toContain("core=nes");
-    expect(frameSrc.at(-1)).toContain("name=game.bin");
+    // A local file name must never reach the server in a URL.
+    expect(frameSrc.at(-1)).not.toContain("game.bin");
     expect(q("[data-out=controls] .game-controls")).toBeTruthy();
   });
 
@@ -167,6 +180,46 @@ describe("tool pages", () => {
     select.dispatchEvent(new Event("change"));
     expect(frameSrc.length).toBe(before + 1);
     expect(frameSrc.at(-1)).toContain("core=snes");
+  });
+
+  it("detects a new file even after a manual choice", async () => {
+    mountEmulator(host);
+    await pick(new File([new Uint8Array(32)], "a.bin"));
+    const select = q<HTMLSelectElement>("[data-field=console]");
+    select.value = "md";
+    select.dispatchEvent(new Event("change"));
+    await pick(new File([rom(64, 0, [0x4e, 0x45, 0x53, 0x1a]) as BlobPart], "b.nes"));
+    expect(select.value).toBe("auto");
+    expect(host.querySelector<HTMLIFrameElement>("iframe")?.isConnected).toBe(true);
+    expect(frameSrc.at(-1)).toContain("core=nes");
+  });
+
+  it("swaps the iframe instead of navigating it again, so Back leaves the page", async () => {
+    mountEmulator(host);
+    await pick(new File([rom(64, 0, [0x4e, 0x45, 0x53, 0x1a]) as BlobPart], "a.nes"));
+    const first = q("iframe");
+    await pick(new File([rom(64, 0, [0x4e, 0x45, 0x53, 0x1a]) as BlobPart], "b.nes"));
+    expect(q("iframe")).not.toBe(first);
+    expect(host.querySelectorAll("iframe")).toHaveLength(1);
+  });
+
+  it("refuses a file too big to be a cartridge without reading it", async () => {
+    mountEmulator(host);
+    const big = new File([new Uint8Array(1)], "disc.bin");
+    Object.defineProperty(big, "size", { value: MAX_ROM_BYTES + 1 });
+    const read = vi.spyOn(big, "arrayBuffer");
+    await pick(big);
+    expect(read).not.toHaveBeenCalled();
+    expect(q("[data-out=status]").textContent).toContain("64");
+  });
+
+  it("ignores a dropped file of the wrong type", async () => {
+    mountSwfPlayer(host);
+    const drop = new Event("drop", { cancelable: true }) as Event & { dataTransfer: unknown };
+    drop.dataTransfer = { files: [new File([new Uint8Array(4)], "game.nes")] };
+    q(".game-empty").dispatchEvent(drop);
+    await flush();
+    expect(frameSrc.filter((src) => src !== "about:blank")).toEqual([]);
   });
 
   it("drops a read that finished after the page left", async () => {

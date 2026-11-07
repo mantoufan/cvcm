@@ -23,7 +23,7 @@ export function gameFrame(spec: { flash: boolean; core: string; name: string }):
   frame: HTMLIFrameElement;
   boot: (payload: Record<string, unknown>) => void;
 } {
-  const frame = h("iframe", {
+  let frame = h("iframe", {
     class: "game-frame",
     title: spec.name,
     allow: "autoplay; fullscreen; gamepad",
@@ -49,20 +49,37 @@ export function gameFrame(spec: { flash: boolean; core: string; name: string }):
       return;
     }
     const lang = locale() === "zh-CN" ? "zh-CN" : "en-US";
-    const qs = new URLSearchParams({ core: message.core, name: message.name, lang });
+    // Only the page's own title goes in the URL: `message.name` can be a local file name, which must not reach the server.
+    const qs = new URLSearchParams({ core: message.core, name: spec.name, lang });
     if (typeof payload.rom === "string") qs.set("rom", payload.rom);
     loads += 1;
-    frame.src = `${shellPath}?v=${spec.flash ? "1" : "5"}&${qs.toString()}${loads > 1 ? `&n=${loads}` : ""}`;
+    const url = `${shellPath}?v=${spec.flash ? "1" : "5"}&${qs.toString()}${loads > 1 ? `&n=${loads}` : ""}`;
     // An aborted navigation never fires load, so drop its listener or the stale ROM boots first.
     if (onLoad) frame.removeEventListener("load", onLoad);
+    if (loads > 1) {
+      // A new element, because navigating the old one adds a history entry: Back would land on a shell with no ROM.
+      const next = frame.cloneNode(false) as HTMLIFrameElement;
+      next.src = url;
+      frame.replaceWith(next);
+      frame = next;
+    } else {
+      frame.src = url;
+    }
+    const target = frame;
     const listener = (): void => {
       onLoad = null;
-      frame.contentWindow?.postMessage(message, location.origin);
+      target.contentWindow?.postMessage(message, location.origin);
     };
     onLoad = listener;
     frame.addEventListener("load", listener, { once: true });
   };
   return { frame, boot };
+}
+
+/** Dragging skips the file dialog's `accept` filter, and a dropped folder has no extension. */
+function accepted(name: string, accept: string): boolean {
+  const lower = name.toLowerCase();
+  return accept.split(",").some((ext) => lower.endsWith(ext.trim()));
 }
 
 /** The "no file" panel. A file dropped on it goes through the picker, so every path reads the same `change` event. */
@@ -78,7 +95,7 @@ export function gameEmpty(spec: { flash: boolean; picker: HTMLInputElement; hidd
   empty.addEventListener("drop", (event) => {
     event.preventDefault();
     const files = event.dataTransfer?.files;
-    if (!files?.length) return;
+    if (!files?.length || !accepted(files[0]!.name, picker.accept)) return;
     picker.files = files;
     picker.dispatchEvent(new Event("change"));
   });
@@ -119,6 +136,7 @@ export function player(spec: {
   let stored = false; // a ROM for this game is in IndexedDB
   let currentStored = false; // ...and it is the one now playing
   let busy = false;
+  let reads = 0; // a newer pick makes a slower, earlier read stale
   const rememberBtn = h("button", { class: "btn ghost", type: "button", hidden: true }, t("games.rememberRom")) as HTMLButtonElement;
   const forgetBtn = h("button", { class: "btn ghost", type: "button", hidden: true }, t("games.forgetRom")) as HTMLButtonElement;
   // Move focus only if the user has not gone elsewhere during a slow save.
@@ -179,8 +197,13 @@ export function player(spec: {
       currentStored = false;
       sync();
     }
-    const buffer = await file.arrayBuffer();
-    boot({ buffer, filename: file.name, cheats: spec.cheats });
+    const read = ++reads;
+    try {
+      const buffer = await file.arrayBuffer();
+      if (read === reads) boot({ buffer, filename: file.name, cheats: spec.cheats });
+    } catch {
+      if (read === reads) status.textContent = t("emulator.readFailed");
+    }
   });
 
   box.append(

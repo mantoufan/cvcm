@@ -2,7 +2,7 @@ import { h } from "../dom";
 import { locale, t } from "../i18n";
 import { controls, gameEmpty, gameFrame } from "../games/player";
 import { appHref, gamesHref } from "../../shared/path";
-import { ROM_ACCEPT, ROM_CONSOLES, ROM_CORE, detectRomConsole, type RomConsoleId } from "../../shared/rom-detect";
+import { MAX_ROM_BYTES, ROM_ACCEPT, ROM_CONSOLES, ROM_CORE, detectRomConsole, type RomConsoleId } from "../../shared/rom-detect";
 
 const AUTO = "auto";
 
@@ -49,12 +49,18 @@ export function mountEmulator(host: HTMLElement): void {
     const file = picker.files?.[0];
     if (!file) return;
     const mine = ++token;
+    // Lets the same file be picked again, after a failed read or a wrong console choice.
+    picker.value = "";
+    if (file.size > MAX_ROM_BYTES) {
+      status.textContent = t("emulator.tooBig", { mb: MAX_ROM_BYTES / 1024 / 1024 });
+      return;
+    }
     status.textContent = t("emulator.reading");
     file.arrayBuffer().then((buffer) => {
       if (mine !== token) return;
       rom = { name: file.name, buffer };
-      // Lets the same file be picked again after a wrong console choice.
-      picker.value = "";
+      // A choice made for the last file says nothing about this one.
+      select.value = AUTO;
       play();
     }).catch(() => {
       if (mine === token) status.textContent = t("emulator.readFailed");
