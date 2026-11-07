@@ -319,7 +319,7 @@
         "s1t": "Chọn cái bạn cần",
         "s1b": "Dùng ƯCLN để chia thành các nhóm bằng nhau hoặc rút gọn phân số: chia 12/18 cho 6 được 2/3. Dùng BCNN để tìm khi nào mọi thứ trùng nhau hoặc để cộng phân số: xe buýt cứ 12 và 18 phút một chuyến sẽ gặp nhau mỗi 36 phút.",
         "s2t": "Mở Tính ƯCLN và BCNN trên cv.cm",
-        "s2b": "Gõ 2 đến 20 số nguyên, cách nhau bằng dấu phẩy hoặc dấu cách, hoặc chạm vào ví dụ như 8, 12. Đừng dùng dấu phân cách hàng nghìn, vì dấu phẩy luôn bắt đầu một số mới.",
+        "s2b": "Gõ 2 đến 20 số nguyên, cách nhau bằng dấu phẩy hoặc dấu cách, hoặc chạm vào ví dụ như 8, 12. Để tách hàng nghìn, hãy dùng dấu chấm như 1.500, vì dấu phẩy luôn bắt đầu một số mới.",
         "s3t": "So sánh các thừa số nguyên tố",
         "s3b": "Viết mỗi số thành tích các số nguyên tố: 12 = 2² × 3 và 18 = 2 × 3². ƯCLN lấy mỗi số nguyên tố chung với số mũ nhỏ nhất, 2 × 3 = 6. BCNN lấy mỗi số nguyên tố với số mũ lớn nhất, 2² × 3² = 36.",
         "s4t": "Dùng thuật toán Euclid cho số lớn",
@@ -341,19 +341,85 @@
         "q4": "Nguyên tố cùng nhau nghĩa là gì?",
         "a4": "Hai số nguyên tố cùng nhau khi ƯCLN của chúng bằng 1, như 8 và 15. Không số nào cần là số nguyên tố; chúng chỉ cần không có thừa số nguyên tố chung.",
         "q5": "Vì sao 1,500 lại thành hai số?",
-        "a5": "Ở đây dấu phẩy dùng để tách các số, nên 1,500 được đọc là 1 và 500. Hãy gõ 1500 không có dấu phân cách."
+        "a5": "Ở đây dấu phẩy dùng để tách các số, nên 1,500 được đọc là 1 và 500. Để nhập một nghìn năm trăm, hãy gõ 1500 hoặc 1.500."
       }
     }
   },
   "svg": {
-    "use-scientific-calculator": { "first": "trước", "sinDeg": "0,5", "sinRad": "−0,988" },
-    "use-online-notepad": { "browser": "Trình duyệt này", "saved": "Tự động lưu", "other": "Thiết bị khác", "notThere": "Không có", "download": "Tải .txt", "file": "Tệp .txt của bạn", "wrapOn": "Ngắt dòng dài: bật", "wrapOff": "Ngắt dòng dài: tắt", "sample": "Dòng chữ dài sẽ tự xuống dòng ở mép của khung", "scroll": "cuộn ngang" },
-    "preview-markdown": { "you": "Bạn gõ", "see": "Người đọc thấy", "title": "Tiêu đề", "bold": "đậm", "item": "một mục", "link": "liên kết", "day": "Ngày", "hours": "Giờ", "sat": "T7", "sun": "CN", "boots": "Giày", "snacks": "Ăn vặt" },
-    "make-css-gradient": { "linear": "Linear (thẳng)", "radial": "Radial (tỏa tròn)", "conic": "Conic (nón)" },
-    "make-fancy-text": { "plain": "Thường", "bold": "Đậm", "script": "Viết tay", "gothic": "Gothic", "circled": "Vòng tròn", "input": "Bạn gõ", "output": "Bạn nhận", "keeps": "你好 và é giữ nguyên" },
-    "flip-coin": { "heads": "Ngửa", "tails": "Sấp", "headsShort": "N", "tailsShort": "S", "next": "Lần sau" },
-    "tune-guitar": { "thick": "to nhất", "thin": "nhỏ nhất", "flat": "Thấp", "sharp": "Cao", "ok": "Đã đúng tông", "tighten": "vặn căng", "loosen": "vặn chùng", "cents": "cent", "notes": "E2 A2 D3 G3 B3 E4" },
-    "find-factors": { "pairs": "Các cặp ước của 36", "sqrt": "√36 = 6" },
-    "find-lcm-gcf": { "shared": "chung", "gcf": "ƯCLN", "lcm": "BCNN", "last": "Số chia cuối cùng là ƯCLN" }
+    "use-scientific-calculator": {
+      "first": "trước",
+      "sinDeg": "0,5",
+      "sinRad": "−0,988"
+    },
+    "use-online-notepad": {
+      "browser": "Trình duyệt này",
+      "saved": "Tự động lưu",
+      "other": "Thiết bị khác",
+      "notThere": "Không có",
+      "download": "Tải .txt",
+      "file": "Tệp .txt của bạn",
+      "wrapOn": "Ngắt dòng dài: bật",
+      "wrapOff": "Ngắt dòng dài: tắt",
+      "sample": "Dòng chữ dài sẽ tự xuống dòng ở mép của khung",
+      "scroll": "cuộn ngang"
+    },
+    "preview-markdown": {
+      "you": "Bạn gõ",
+      "see": "Người đọc thấy",
+      "title": "Tiêu đề",
+      "bold": "đậm",
+      "item": "một mục",
+      "link": "liên kết",
+      "day": "Ngày",
+      "hours": "Giờ",
+      "sat": "T7",
+      "sun": "CN",
+      "boots": "Giày",
+      "snacks": "Ăn vặt"
+    },
+    "make-css-gradient": {
+      "linear": "Linear (thẳng)",
+      "radial": "Radial (tỏa tròn)",
+      "conic": "Conic (nón)"
+    },
+    "make-fancy-text": {
+      "plain": "Thường",
+      "bold": "Đậm",
+      "script": "Viết tay",
+      "gothic": "Gothic",
+      "circled": "Vòng tròn",
+      "input": "Bạn gõ",
+      "output": "Bạn nhận",
+      "keeps": "你好 và é giữ nguyên"
+    },
+    "flip-coin": {
+      "heads": "Ngửa",
+      "tails": "Sấp",
+      "headsShort": "N",
+      "tailsShort": "S",
+      "next": "Lần sau"
+    },
+    "tune-guitar": {
+      "thick": "to nhất",
+      "thin": "nhỏ nhất",
+      "flat": "Thấp",
+      "sharp": "Cao",
+      "ok": "Đã đúng tông",
+      "tighten": "vặn căng",
+      "loosen": "vặn chùng",
+      "cents": "cent",
+      "notes": "E2 A2 D3 G3 B3 E4",
+      "lowHz": "82,4 Hz"
+    },
+    "find-factors": {
+      "pairs": "Các cặp ước của 36",
+      "sqrt": "√36 = 6"
+    },
+    "find-lcm-gcf": {
+      "shared": "chung",
+      "gcf": "ƯCLN",
+      "lcm": "BCNN",
+      "last": "Số chia cuối cùng là ƯCLN"
+    }
   }
 }

@@ -2916,7 +2916,7 @@
         "q4": "¿Qué significa coprimos?",
         "a4": "Dos números son coprimos cuando su MCD es 1, como 8 y 15. Ninguno tiene que ser primo; simplemente no comparten ningún factor primo.",
         "q5": "¿Por qué 1,500 se convirtió en dos números?",
-        "a5": "Aquí la coma separa números, así que 1,500 se lee como 1 y 500. Escriba 1500 sin el separador."
+        "a5": "Aquí la coma separa números, así que 1,500 se lee como 1 y 500. Para mil quinientos, escriba 1500 o 1.500."
       }
     },
     "compress-pdf": {
@@ -4513,7 +4513,7 @@
       "q2": "¿Dónde puedo usar estas letras?",
       "a2": "En la bio de Instagram y TikTok, publicaciones de X, Discord, WhatsApp, comentarios de YouTube y nombres de juegos. Algunas apps o fuentes pueden mostrar un cuadro si les falta un carácter.",
       "q3": "¿Por qué algunas letras no cambian?",
-      "a3": "Unicode solo tiene estos estilos para A–Z, a–z y algunos dígitos. Otras letras, los acentos y el texto en chino, japonés o coreano se quedan tal como los escribiste.",
+      "a3": "Unicode solo tiene estos estilos para A–Z, a–z y algunos dígitos. Otras letras, los acentos y el texto en chino, japonés o coreano se quedan tal como los escribiste. La excepción son Tachado y Subrayado, que también los marcan.",
       "q4": "¿Son accesibles estas letras?",
       "a4": "Los lectores de pantalla pueden leerlas letra por letra u omitirlas, y las búsquedas no las encuentran. Úsalas como decoración, no para texto importante.",
       "q5": "¿Cómo copio un estilo?",
@@ -6998,7 +6998,7 @@
       "s1t": "Elija el que necesita",
       "s1b": "Use el MCD para repartir en grupos iguales o simplificar una fracción: 12/18 dividido entre 6 es 2/3. Use el mcm para saber cuándo coinciden las cosas o para sumar fracciones: autobuses cada 12 y 18 minutos coinciden cada 36 minutos.",
       "s2t": "Abra Calculadora de mcm y MCD en cv.cm",
-      "s2b": "Escriba de 2 a 20 números enteros separados por comas o espacios, o toque un ejemplo como 8, 12. No use separadores de miles, porque una coma siempre empieza un número nuevo.",
+      "s2b": "Escriba de 2 a 20 números enteros separados por comas o espacios, o toque un ejemplo como 8, 12. Para separar miles use el punto, como en 1.500: una coma siempre empieza un número nuevo.",
       "s3t": "Compare los factores primos",
       "s3b": "Escriba cada uno como primos: 12 = 2² × 3 y 18 = 2 × 3². El MCD toma cada primo común con su exponente menor, 2 × 3 = 6. El mcm toma cada primo con su exponente mayor, 2² × 3² = 36.",
       "s4t": "Use el algoritmo de Euclides para números grandes",
@@ -10855,7 +10855,7 @@
     "input": "Tu texto",
     "placeholder": "Escribe algo…",
     "sample": "Fancy Text 123",
-    "hint": "Los estilos de letras solo cambian A–Z, a–z y algunos dígitos. Tachado, Subrayado y Al revés funcionan con todo el texto.",
+    "hint": "Los estilos de letras solo cambian A–Z, a–z y algunos dígitos. Tachado y Subrayado también marcan otros idiomas, pero omiten los emojis. Al revés invierte todo el texto, pero solo gira las letras que tienen forma equivalente.",
     "copy": "Copiar",
     "copied": "Copiado",
     "copyFailed": "No se pudo copiar",

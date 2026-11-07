@@ -262,7 +262,7 @@ def coin_memory(t) -> str:
 
 def tuner_strings(t) -> str:
     # Spanish pages default to solfège in the tuner, so the note names are labels too.
-    rows = tuple(zip(t["notes"].split(), ("82.4 Hz", "110 Hz", "147 Hz", "196 Hz", "247 Hz", "330 Hz"), (9, 7.5, 6, 4.5, 3, 2)))
+    rows = tuple(zip(t["notes"].split(), (t["lowHz"], "110 Hz", "147 Hz", "196 Hz", "247 Hz", "330 Hz"), (9, 7.5, 6, 4.5, 3, 2)))
     out = box(210, 56, 600, 428, SOFT, LINE, 12, 2)
     for i, (note, hz, width) in enumerate(rows):
         y = 96 + i * 70

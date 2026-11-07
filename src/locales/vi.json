@@ -2916,7 +2916,7 @@
         "q4": "Nguyên tố cùng nhau nghĩa là gì?",
         "a4": "Hai số nguyên tố cùng nhau khi ƯCLN của chúng bằng 1, như 8 và 15. Không số nào cần là số nguyên tố; chúng chỉ cần không có thừa số nguyên tố chung.",
         "q5": "Vì sao 1,500 lại thành hai số?",
-        "a5": "Ở đây dấu phẩy dùng để tách các số, nên 1,500 được đọc là 1 và 500. Hãy gõ 1500 không có dấu phân cách."
+        "a5": "Ở đây dấu phẩy dùng để tách các số, nên 1,500 được đọc là 1 và 500. Để nhập một nghìn năm trăm, hãy gõ 1500 hoặc 1.500."
       }
     },
     "compress-pdf": {
@@ -4513,7 +4513,7 @@
       "q2": "Dùng các font này ở đâu?",
       "a2": "Tiểu sử Instagram và TikTok, bài đăng X, Discord, WhatsApp, bình luận YouTube và tên game. Một số ứng dụng hoặc font có thể hiện ô vuông cho ký tự chúng không có.",
       "q3": "Sao một số chữ không đổi?",
-      "a3": "Unicode chỉ có các kiểu này cho A–Z, a–z và một số chữ số. Chữ khác, chữ có dấu và chữ Trung, Nhật hoặc Hàn giữ nguyên như bạn gõ.",
+      "a3": "Unicode chỉ có các kiểu này cho A–Z, a–z và một số chữ số. Chữ khác, chữ có dấu và chữ Trung, Nhật hoặc Hàn giữ nguyên như bạn gõ. Riêng Gạch ngang và Gạch chân vẫn áp dụng cho các chữ đó.",
       "q4": "Font chữ kiểu có thân thiện với trình đọc màn hình không?",
       "a4": "Trình đọc màn hình có thể đọc từng ký tự hoặc bỏ qua, và tìm kiếm không khớp được chúng. Hãy dùng để trang trí, không dùng cho nội dung quan trọng.",
       "q5": "Sao chép một kiểu chữ như thế nào?",
@@ -6998,7 +6998,7 @@
       "s1t": "Chọn cái bạn cần",
       "s1b": "Dùng ƯCLN để chia thành các nhóm bằng nhau hoặc rút gọn phân số: chia 12/18 cho 6 được 2/3. Dùng BCNN để tìm khi nào mọi thứ trùng nhau hoặc để cộng phân số: xe buýt cứ 12 và 18 phút một chuyến sẽ gặp nhau mỗi 36 phút.",
       "s2t": "Mở Tính ƯCLN và BCNN trên cv.cm",
-      "s2b": "Gõ 2 đến 20 số nguyên, cách nhau bằng dấu phẩy hoặc dấu cách, hoặc chạm vào ví dụ như 8, 12. Đừng dùng dấu phân cách hàng nghìn, vì dấu phẩy luôn bắt đầu một số mới.",
+      "s2b": "Gõ 2 đến 20 số nguyên, cách nhau bằng dấu phẩy hoặc dấu cách, hoặc chạm vào ví dụ như 8, 12. Để tách hàng nghìn, hãy dùng dấu chấm như 1.500, vì dấu phẩy luôn bắt đầu một số mới.",
       "s3t": "So sánh các thừa số nguyên tố",
       "s3b": "Viết mỗi số thành tích các số nguyên tố: 12 = 2² × 3 và 18 = 2 × 3². ƯCLN lấy mỗi số nguyên tố chung với số mũ nhỏ nhất, 2 × 3 = 6. BCNN lấy mỗi số nguyên tố với số mũ lớn nhất, 2² × 3² = 36.",
       "s4t": "Dùng thuật toán Euclid cho số lớn",
@@ -10855,7 +10855,7 @@
     "input": "Chữ của bạn",
     "placeholder": "Gõ gì đó…",
     "sample": "Fancy Text 123",
-    "hint": "Các kiểu chữ chỉ đổi A–Z, a–z và một số chữ số. Gạch ngang, Gạch chân và Lộn ngược dùng được với mọi văn bản.",
+    "hint": "Các kiểu chữ chỉ đổi A–Z, a–z và một số chữ số. Gạch ngang và Gạch chân cũng áp dụng cho ngôn ngữ khác nhưng bỏ qua emoji. Lộn ngược đảo cả văn bản nhưng chỉ lật những chữ có dạng tương ứng.",
     "copy": "Sao chép",
     "copied": "Đã sao chép",
     "copyFailed": "Sao chép thất bại",

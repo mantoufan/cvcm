@@ -346,14 +346,80 @@
     }
   },
   "svg": {
-    "use-scientific-calculator": { "first": "먼저", "sinDeg": "0.5", "sinRad": "−0.988" },
-    "use-online-notepad": { "browser": "이 브라우저", "saved": "자동 저장", "other": "다른 기기", "notThere": "없음", "download": ".txt 다운로드", "file": "내 .txt 파일", "wrapOn": "긴 줄 자동 줄바꿈: 켬", "wrapOff": "긴 줄 자동 줄바꿈: 끔", "sample": "긴 줄의 글은 상자 오른쪽 끝에 닿으면 자동으로 다음 줄로 넘어갑니다", "scroll": "옆으로 스크롤" },
-    "preview-markdown": { "you": "입력", "see": "독자 화면", "title": "제목", "bold": "굵게", "item": "목록 항목", "link": "링크", "day": "요일", "hours": "시간", "sat": "토", "sun": "일", "boots": "등산화", "snacks": "간식" },
-    "make-css-gradient": { "linear": "선형", "radial": "원형", "conic": "원뿔형" },
-    "make-fancy-text": { "plain": "일반", "bold": "굵게", "script": "필기체", "gothic": "고딕", "circled": "동그라미", "input": "입력", "output": "결과", "keeps": "你好와 é는 그대로" },
-    "flip-coin": { "heads": "앞면", "tails": "뒷면", "headsShort": "앞", "tailsShort": "뒤", "next": "다음 던지기" },
-    "tune-guitar": { "thick": "가장 굵음", "thin": "가장 얇음", "flat": "낮음", "sharp": "높음", "ok": "맞음", "tighten": "조이기", "loosen": "풀기", "cents": "센트", "notes": "E2 A2 D3 G3 B3 E4" },
-    "find-factors": { "pairs": "36의 약수 쌍", "sqrt": "√36 = 6" },
-    "find-lcm-gcf": { "shared": "공통", "gcf": "최대공약수", "lcm": "최소공배수", "last": "마지막 나누는 수가 최대공약수" }
+    "use-scientific-calculator": {
+      "first": "먼저",
+      "sinDeg": "0.5",
+      "sinRad": "−0.988"
+    },
+    "use-online-notepad": {
+      "browser": "이 브라우저",
+      "saved": "자동 저장",
+      "other": "다른 기기",
+      "notThere": "없음",
+      "download": ".txt 다운로드",
+      "file": "내 .txt 파일",
+      "wrapOn": "긴 줄 자동 줄바꿈: 켬",
+      "wrapOff": "긴 줄 자동 줄바꿈: 끔",
+      "sample": "긴 줄의 글은 상자 오른쪽 끝에 닿으면 자동으로 다음 줄로 넘어갑니다",
+      "scroll": "옆으로 스크롤"
+    },
+    "preview-markdown": {
+      "you": "입력",
+      "see": "독자 화면",
+      "title": "제목",
+      "bold": "굵게",
+      "item": "목록 항목",
+      "link": "링크",
+      "day": "요일",
+      "hours": "시간",
+      "sat": "토",
+      "sun": "일",
+      "boots": "등산화",
+      "snacks": "간식"
+    },
+    "make-css-gradient": {
+      "linear": "선형",
+      "radial": "원형",
+      "conic": "원뿔형"
+    },
+    "make-fancy-text": {
+      "plain": "일반",
+      "bold": "굵게",
+      "script": "필기체",
+      "gothic": "고딕",
+      "circled": "동그라미",
+      "input": "입력",
+      "output": "결과",
+      "keeps": "你好와 é는 그대로"
+    },
+    "flip-coin": {
+      "heads": "앞면",
+      "tails": "뒷면",
+      "headsShort": "앞",
+      "tailsShort": "뒤",
+      "next": "다음 던지기"
+    },
+    "tune-guitar": {
+      "thick": "가장 굵음",
+      "thin": "가장 얇음",
+      "flat": "낮음",
+      "sharp": "높음",
+      "ok": "맞음",
+      "tighten": "조이기",
+      "loosen": "풀기",
+      "cents": "센트",
+      "notes": "E2 A2 D3 G3 B3 E4",
+      "lowHz": "82.4 Hz"
+    },
+    "find-factors": {
+      "pairs": "36의 약수 쌍",
+      "sqrt": "√36 = 6"
+    },
+    "find-lcm-gcf": {
+      "shared": "공통",
+      "gcf": "최대공약수",
+      "lcm": "최소공배수",
+      "last": "마지막 나누는 수가 최대공약수"
+    }
   }
 }

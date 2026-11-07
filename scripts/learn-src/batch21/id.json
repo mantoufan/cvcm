@@ -319,7 +319,7 @@
         "s1t": "Pilih yang Anda butuhkan",
         "s1b": "Pakai FPB untuk membagi jadi kelompok sama besar atau menyederhanakan pecahan: 12/18 dibagi 6 adalah 2/3. Pakai KPK untuk mencari kapan sesuatu bertemu atau menjumlahkan pecahan: bus tiap 12 dan 18 menit bertemu tiap 36 menit.",
         "s2t": "Buka Kalkulator KPK dan FPB di cv.cm",
-        "s2b": "Ketik 2 sampai 20 bilangan bulat, dipisah koma atau spasi, atau ketuk contoh seperti 8, 12. Jangan pakai pemisah ribuan, karena koma selalu memulai bilangan baru.",
+        "s2b": "Ketik 2 sampai 20 bilangan bulat, dipisah koma atau spasi, atau ketuk contoh seperti 8, 12. Untuk pemisah ribuan pakai titik, seperti 1.500, karena koma selalu memulai bilangan baru.",
         "s3t": "Bandingkan faktor primanya",
         "s3b": "Tulis masing-masing sebagai bilangan prima: 12 = 2² × 3 dan 18 = 2 × 3². FPB mengambil setiap prima yang sama dengan pangkat terendah, 2 × 3 = 6. KPK mengambil setiap prima dengan pangkat tertinggi, 2² × 3² = 36.",
         "s4t": "Pakai algoritma Euclid untuk bilangan besar",
@@ -341,19 +341,85 @@
         "q4": "Apa arti relatif prima?",
         "a4": "Dua bilangan relatif prima jika FPB-nya 1, seperti 8 dan 15. Keduanya tidak harus prima; hanya tidak punya faktor prima yang sama.",
         "q5": "Kenapa 1,500 berubah menjadi dua bilangan?",
-        "a5": "Di sini koma memisahkan bilangan, jadi 1,500 dibaca sebagai 1 dan 500. Ketik 1500 tanpa pemisah."
+        "a5": "Di sini koma memisahkan bilangan, jadi 1,500 dibaca sebagai 1 dan 500. Untuk seribu lima ratus, ketik 1500 atau 1.500."
       }
     }
   },
   "svg": {
-    "use-scientific-calculator": { "first": "dulu", "sinDeg": "0,5", "sinRad": "−0,988" },
-    "use-online-notepad": { "browser": "Browser ini", "saved": "Tersimpan otomatis", "other": "Perangkat lain", "notThere": "Tidak ada", "download": "Unduh .txt", "file": "File .txt Anda", "wrapOn": "Bungkus baris panjang: on", "wrapOff": "Bungkus baris panjang: off", "sample": "Baris teks panjang terbungkus di tepi kotaknya", "scroll": "gulir ke samping" },
-    "preview-markdown": { "you": "Anda ketik", "see": "Pembaca lihat", "title": "Judul", "bold": "tebal", "item": "item daftar", "link": "tautan", "day": "Hari", "hours": "Jam", "sat": "Sab", "sun": "Min", "boots": "Sepatu", "snacks": "Camilan" },
-    "make-css-gradient": { "linear": "Linear", "radial": "Radial", "conic": "Kerucut" },
-    "make-fancy-text": { "plain": "Biasa", "bold": "Tebal", "script": "Sambung", "gothic": "Gotik", "circled": "Lingkaran", "input": "Anda ketik", "output": "Hasilnya", "keeps": "你好 dan é tetap apa adanya" },
-    "flip-coin": { "heads": "Gambar", "tails": "Angka", "headsShort": "G", "tailsShort": "A", "next": "Berikutnya" },
-    "tune-guitar": { "thick": "tertebal", "thin": "tertipis", "flat": "Terlalu rendah", "sharp": "Terlalu tinggi", "ok": "Sudah pas", "tighten": "kencangkan", "loosen": "kendurkan", "cents": "cent", "notes": "E2 A2 D3 G3 B3 E4" },
-    "find-factors": { "pairs": "Pasangan faktor 36", "sqrt": "√36 = 6" },
-    "find-lcm-gcf": { "shared": "bersama", "gcf": "FPB", "lcm": "KPK", "last": "Pembagi terakhir adalah FPB" }
+    "use-scientific-calculator": {
+      "first": "dulu",
+      "sinDeg": "0,5",
+      "sinRad": "−0,988"
+    },
+    "use-online-notepad": {
+      "browser": "Browser ini",
+      "saved": "Tersimpan otomatis",
+      "other": "Perangkat lain",
+      "notThere": "Tidak ada",
+      "download": "Unduh .txt",
+      "file": "File .txt Anda",
+      "wrapOn": "Bungkus baris panjang: on",
+      "wrapOff": "Bungkus baris panjang: off",
+      "sample": "Baris teks panjang terbungkus di tepi kotaknya",
+      "scroll": "gulir ke samping"
+    },
+    "preview-markdown": {
+      "you": "Anda ketik",
+      "see": "Pembaca lihat",
+      "title": "Judul",
+      "bold": "tebal",
+      "item": "item daftar",
+      "link": "tautan",
+      "day": "Hari",
+      "hours": "Jam",
+      "sat": "Sab",
+      "sun": "Min",
+      "boots": "Sepatu",
+      "snacks": "Camilan"
+    },
+    "make-css-gradient": {
+      "linear": "Linear",
+      "radial": "Radial",
+      "conic": "Kerucut"
+    },
+    "make-fancy-text": {
+      "plain": "Biasa",
+      "bold": "Tebal",
+      "script": "Sambung",
+      "gothic": "Gotik",
+      "circled": "Lingkaran",
+      "input": "Anda ketik",
+      "output": "Hasilnya",
+      "keeps": "你好 dan é tetap apa adanya"
+    },
+    "flip-coin": {
+      "heads": "Gambar",
+      "tails": "Angka",
+      "headsShort": "G",
+      "tailsShort": "A",
+      "next": "Berikutnya"
+    },
+    "tune-guitar": {
+      "thick": "tertebal",
+      "thin": "tertipis",
+      "flat": "Terlalu rendah",
+      "sharp": "Terlalu tinggi",
+      "ok": "Sudah pas",
+      "tighten": "kencangkan",
+      "loosen": "kendurkan",
+      "cents": "cent",
+      "notes": "E2 A2 D3 G3 B3 E4",
+      "lowHz": "82,4 Hz"
+    },
+    "find-factors": {
+      "pairs": "Pasangan faktor 36",
+      "sqrt": "√36 = 6"
+    },
+    "find-lcm-gcf": {
+      "shared": "bersama",
+      "gcf": "FPB",
+      "lcm": "KPK",
+      "last": "Pembagi terakhir adalah FPB"
+    }
   }
 }

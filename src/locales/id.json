@@ -2916,7 +2916,7 @@
         "q4": "Apa arti relatif prima?",
         "a4": "Dua bilangan relatif prima jika FPB-nya 1, seperti 8 dan 15. Keduanya tidak harus prima; hanya tidak punya faktor prima yang sama.",
         "q5": "Kenapa 1,500 berubah menjadi dua bilangan?",
-        "a5": "Di sini koma memisahkan bilangan, jadi 1,500 dibaca sebagai 1 dan 500. Ketik 1500 tanpa pemisah."
+        "a5": "Di sini koma memisahkan bilangan, jadi 1,500 dibaca sebagai 1 dan 500. Untuk seribu lima ratus, ketik 1500 atau 1.500."
       }
     },
     "compress-pdf": {
@@ -4513,7 +4513,7 @@
       "q2": "Di mana saya bisa memakai font ini?",
       "a2": "Bio Instagram dan TikTok, postingan X, Discord, WhatsApp, komentar YouTube, dan nama game. Beberapa aplikasi atau font mungkin menampilkan kotak untuk karakter yang tidak dimilikinya.",
       "q3": "Mengapa beberapa huruf tidak berubah?",
-      "a3": "Unicode hanya punya gaya ini untuk A–Z, a–z, dan sebagian angka. Huruf lain, aksen, serta teks Tionghoa, Jepang, atau Korea tetap seperti yang Anda ketik.",
+      "a3": "Unicode hanya punya gaya ini untuk A–Z, a–z, dan sebagian angka. Huruf lain, aksen, serta teks Tionghoa, Jepang, atau Korea tetap seperti yang Anda ketik. Pengecualiannya Coret dan Garis bawah, yang juga berlaku untuk teks itu.",
       "q4": "Apakah font keren ini aksesibel?",
       "a4": "Pembaca layar mungkin membacanya huruf demi huruf atau melewatinya, dan pencarian tidak mencocokkannya. Pakai untuk hiasan, bukan untuk teks penting.",
       "q5": "Bagaimana cara menyalin sebuah gaya?",
@@ -6998,7 +6998,7 @@
       "s1t": "Pilih yang Anda butuhkan",
       "s1b": "Pakai FPB untuk membagi jadi kelompok sama besar atau menyederhanakan pecahan: 12/18 dibagi 6 adalah 2/3. Pakai KPK untuk mencari kapan sesuatu bertemu atau menjumlahkan pecahan: bus tiap 12 dan 18 menit bertemu tiap 36 menit.",
       "s2t": "Buka Kalkulator KPK dan FPB di cv.cm",
-      "s2b": "Ketik 2 sampai 20 bilangan bulat, dipisah koma atau spasi, atau ketuk contoh seperti 8, 12. Jangan pakai pemisah ribuan, karena koma selalu memulai bilangan baru.",
+      "s2b": "Ketik 2 sampai 20 bilangan bulat, dipisah koma atau spasi, atau ketuk contoh seperti 8, 12. Untuk pemisah ribuan pakai titik, seperti 1.500, karena koma selalu memulai bilangan baru.",
       "s3t": "Bandingkan faktor primanya",
       "s3b": "Tulis masing-masing sebagai bilangan prima: 12 = 2² × 3 dan 18 = 2 × 3². FPB mengambil setiap prima yang sama dengan pangkat terendah, 2 × 3 = 6. KPK mengambil setiap prima dengan pangkat tertinggi, 2² × 3² = 36.",
       "s4t": "Pakai algoritma Euclid untuk bilangan besar",
@@ -10855,7 +10855,7 @@
     "input": "Teks Anda",
     "placeholder": "Ketik sesuatu…",
     "sample": "Fancy Text 123",
-    "hint": "Gaya huruf hanya mengubah A–Z, a–z, dan sebagian angka. Coret, Garis bawah, dan Terbalik berlaku untuk semua teks.",
+    "hint": "Gaya huruf hanya mengubah A–Z, a–z, dan sebagian angka. Coret dan Garis bawah juga berlaku untuk bahasa lain, tetapi melewati emoji. Terbalik membalik urutan semua teks, tetapi hanya memutar huruf yang punya bentuknya.",
     "copy": "Salin",
     "copied": "Tersalin",
     "copyFailed": "Gagal menyalin",
