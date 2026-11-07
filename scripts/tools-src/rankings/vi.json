@@ -68,7 +68,7 @@
         },
         {
           "q": "Bảng xếp hạng được cập nhật bao lâu một lần?",
-          "a": "Chúng được cập nhật thủ công từ nguồn và mỗi trang hiển thị ngày của dữ liệu. Các nguồn công bố với tốc độ khác nhau: thị phần theo tháng, các bảng AI thay đổi thường xuyên hơn."
+          "a": "Chúng được cập nhật tự động mỗi ngày một lần và mỗi trang hiển thị ngày của dữ liệu. Các nguồn công bố với tốc độ khác nhau: thị phần theo tháng, các bảng AI thay đổi thường xuyên hơn."
         },
         {
           "q": "Tôi có thể dùng lại các bảng này không?",
@@ -230,7 +230,7 @@
         "lede": "Top {rows} mô hình theo lượng token xử lý qua OpenRouter trong 7 ngày đến {date}. Bảng đo mức sử dụng, không phải chất lượng.",
         "facts": [
           "Hạng nhất: {top1} ({v1} tổng token), tiếp theo là {top2} ({v2}) và {top3} ({v3}).",
-          "Tỷ lệ tính trên tổng token của OpenRouter, không phải toàn bộ mức sử dụng AI.",
+          "Tỷ lệ tính trên tổng token của OpenRouter, không phải toàn bộ mức sử dụng AI. Chỉ tính lưu lượng công khai, và mỗi mô hình chỉ được tính vào những ngày lọt top 50 hằng ngày của OpenRouter.",
           "Dữ liệu 7 ngày đến {date}."
         ],
         "about": [
@@ -259,7 +259,7 @@
         "lede": "Các công ty đứng sau những mô hình dùng nhiều nhất trên OpenRouter, xếp theo tỷ lệ trong tổng token của 7 ngày. Đây chỉ là một nền tảng, không phải toàn bộ thị trường AI.",
         "facts": [
           "Hạng nhất: {top1} ({v1}), tiếp theo là {top2} ({v2}) và {top3} ({v3}).",
-          "Tỷ lệ tính trên tổng token của OpenRouter. Các mô hình được nhóm là \"other\" vẫn tính vào tổng nhưng không thuộc công ty nào ở đây, nên tổng các tỷ lệ không bằng 100%.",
+          "Tỷ lệ tính trên tổng token của OpenRouter. Các mô hình được nhóm là \"other\" vẫn tính vào tổng nhưng không thuộc công ty nào ở đây, nên tổng các tỷ lệ không bằng 100%. Chỉ tính lưu lượng công khai, và mỗi mô hình chỉ được tính vào những ngày lọt top 50 hằng ngày của OpenRouter.",
           "Dữ liệu 7 ngày đến {date}."
         ],
         "about": [

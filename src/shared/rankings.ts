@@ -56,6 +56,8 @@ export type RankingRegion = (typeof RANKING_REGIONS)[number];
 
 export type RankingMeta = {
   asOf: string;
+  /** The last date this table's rows changed. */
+  updated: string;
   rows: number;
   /** [name, value] of the first three rows. */
   top: [string, number][];

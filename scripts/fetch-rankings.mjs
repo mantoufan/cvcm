@@ -1,5 +1,5 @@
 // Snapshots the data behind /{locale}/rankings/ into src/shared/rankings-rows.json, rankings-meta.json and public/rankings/*.csv.
-// Run by hand to refresh (`node scripts/fetch-rankings.mjs`), then commit. Pages never call these sources.
+// Run daily by .github/workflows/refresh-rankings.yml, or by hand (`node scripts/fetch-rankings.mjs`). Pages never call these sources.
 //   Arena leaderboard (CC BY 4.0): huggingface.co/datasets/lmarena-ai/leaderboard-dataset
 //   OpenRouter rankings data API (CC BY 4.0, needs OPENROUTER_API_KEY, free): openrouter.ai/docs/cookbook/administration/data-api
 //   StatCounter Global Stats (CC BY-SA 3.0): gs.statcounter.com
@@ -72,11 +72,15 @@ async function openRouter() {
   const q = new URLSearchParams({ start_date: start.toISOString().slice(0, 10), end_date: end.toISOString().slice(0, 10) });
   const { data, meta: source } = JSON.parse(await get(`https://openrouter.ai/api/v1/datasets/rankings-daily?${q}`, { Authorization: `Bearer ${key}` }));
   if (!Array.isArray(data) || !data.length) throw new Error("openrouter: no rows");
+  // The pages say "7 days": a shorter window would understate every total.
+  const days = new Set(data.map((row) => row.date)).size;
+  if (days !== USAGE_DAYS || source.end_date !== q.get("end_date")) throw new Error(`openrouter: ${days} days to ${source.end_date}`);
   // The public model list names them; a slug's date suffix is what is left when a model is not listed any more.
   const listed = JSON.parse(await get("https://openrouter.ai/api/v1/models")).data;
   const fullName = new Map();
   for (const model of listed) {
-    const name = model.name.replace(/^[^:]+:\s*/, "");
+    // ":free" variants merge with their model below, so their "(free)" label goes too.
+    const name = model.name.replace(/^[^:]+:\s*/, "").replace(/\s*\(free\)$/i, "");
     if (!fullName.has(model.canonical_slug) || !/\(/.test(name)) fullName.set(model.canonical_slug, name);
   }
   const bySlug = new Map();
@@ -115,6 +119,7 @@ async function openRouter() {
   }
   const asOf = source.end_date;
   return {
+    citedAt: source.as_of,
     usage: { asOf, rows: top.map((m, i) => [i + 1, label(m), m.author, m.tokens, share(m.tokens)]) },
     authors: { asOf, rows: [...authors.entries()].sort((a, b) => b[1].tokens - a[1].tokens).slice(0, COMPANY_ROWS).map(([author, a], i) => [i + 1, author, a.tokens, share(a.tokens), a.models]) },
   };
@@ -155,11 +160,13 @@ function merged(values) {
   return out;
 }
 
-async function shareTable({ stat, device, drop = [] }) {
+function lastMonth() {
+  return new Date(Date.UTC(today.getUTCFullYear(), today.getUTCMonth() - 1, 1)).toISOString().slice(0, 7);
+}
+
+async function shareTable({ stat, device, drop = [] }, month) {
   const skip = new Set([...DROP, ...drop]);
-  const last = new Date(Date.UTC(today.getUTCFullYear(), today.getUTCMonth() - 1, 1));
-  const month = last.toISOString().slice(0, 7);
-  const yearAgo = `${last.getUTCFullYear() - 1}-${month.slice(5)}`;
+  const yearAgo = `${Number(month.slice(0, 4)) - 1}-${month.slice(5)}`;
   const byRegion = {};
   for (const region of REGIONS) {
     byRegion[region] = merged(await statCounter(stat, device, region, month));
@@ -191,42 +198,78 @@ const esc = (v) => (v === null ? "" : typeof v === "string" && /[",\n]/.test(v) 
 /** Every row carries its credit, so the licence travels with a downloaded or fetched file. */
 const SOURCES = {
   arena: ["https://huggingface.co/datasets/lmarena-ai/leaderboard-dataset", "CC BY 4.0"],
-  openrouter: ["https://openrouter.ai/rankings", "CC BY 4.0"],
   statcounter: ["https://gs.statcounter.com/", "CC BY-SA 3.0"],
 };
-const toCsv = (head, table, source) => [[...head, "source", "license"], ...table.map((row) => [...row, ...SOURCES[source]])].map((r) => r.map(esc).join(",")).join("\n") + "\n";
+const toCsv = (head, table, source) => [[...head, "source", "license"], ...table.map((row) => [...row, ...source])].map((r) => r.map(esc).join(",")).join("\n") + "\n";
 const topOf = (table, nameCol, valueCol) => table.slice(0, 3).map((r) => [r[nameCol], r[valueCol]]);
 
-for (const [id, config] of Object.entries(ARENA)) {
-  const set = await arena(config);
-  rows[id] = set.rows;
-  const tally = new Map();
-  for (const row of set.rows.slice(0, 10)) if (row[2]) tally.set(row[2], (tally.get(row[2]) ?? 0) + 1);
-  const [leadOrg, leadCount] = [...tally.entries()].sort((a, b) => b[1] - a[1])[0];
-  meta.sets[id] = { asOf: set.asOf, rows: set.rows.length, top: topOf(set.rows, 1, 4), leadOrg, leadCount };
-  csv[id] = toCsv(["rank", "model", "organization", "license", "score", "votes"], set.rows, "arena");
-}
-const or = await openRouter();
-rows["ai-usage"] = or.usage.rows;
-meta.sets["ai-usage"] = { asOf: or.usage.asOf, rows: or.usage.rows.length, top: topOf(or.usage.rows, 1, 4) };
-csv["ai-usage"] = toCsv(["rank", "model", "author", "tokens", "share_of_all_tokens_percent"], or.usage.rows, "openrouter");
-rows["ai-companies"] = or.authors.rows;
-meta.sets["ai-companies"] = { asOf: or.authors.asOf, rows: or.authors.rows.length, top: topOf(or.authors.rows, 1, 3) };
-csv["ai-companies"] = toCsv(["rank", "company", "tokens", "share_of_all_tokens_percent", "models_listed"], or.authors.rows, "openrouter");
-for (const [id, spec] of Object.entries(SHARE)) {
-  const set = await shareTable(spec);
-  rows[id] = set.rows;
-  meta.sets[id] = { asOf: set.asOf, yearAgo: set.yearAgo, rows: set.rows.length, top: topOf(set.rows, 1, 3), leaders: set.leaders };
-  csv[id] = toCsv(["rank", "name", `world_${set.yearAgo}`, ...REGIONS.map((r) => (r === "ww" ? `world_${set.asOf}` : r))], set.rows, "statcounter");
-  console.log(id, set.asOf, set.rows.length, "rows");
+const oldRows = existsSync(rowsPath) ? JSON.parse(readFileSync(rowsPath, "utf8")) : {};
+const oldMeta = existsSync(metaPath) ? JSON.parse(readFileSync(metaPath, "utf8")) : { sets: {} };
+const keep = (id) => {
+  rows[id] = oldRows[id];
+  meta.sets[id] = oldMeta.sets[id];
+};
+let attempts = 0;
+let failures = 0;
+/** One source failing keeps its last good tables, so it cannot hold back the others. With no earlier data there is nothing to keep. */
+async function attempt(ids, fetchTables) {
+  attempts += 1;
+  try {
+    await fetchTables();
+  } catch (error) {
+    if (ids.some((id) => !oldRows[id])) throw error;
+    failures += 1;
+    console.log(`::warning::keeping the last good ${ids.join(", ")}: ${error.message}`);
+    ids.forEach(keep);
+  }
 }
 
-// Nothing new from the sources: keep the old date, so no empty commit and no false sitemap date.
-const rowsText = `${JSON.stringify(rows)}\n`;
-if (existsSync(rowsPath) && readFileSync(rowsPath, "utf8") === rowsText) {
-  meta.updated = JSON.parse(readFileSync(metaPath, "utf8")).updated;
+for (const [id, config] of Object.entries(ARENA)) {
+  await attempt([id], async () => {
+    const set = await arena(config);
+    const tally = new Map();
+    for (const row of set.rows.slice(0, 10)) if (row[2]) tally.set(row[2], (tally.get(row[2]) ?? 0) + 1);
+    const [leadOrg, leadCount] = [...tally.entries()].sort((a, b) => b[1] - a[1])[0];
+    rows[id] = set.rows;
+    meta.sets[id] = { asOf: set.asOf, rows: set.rows.length, top: topOf(set.rows, 1, 4), leadOrg, leadCount };
+    csv[id] = toCsv(["rank", "model", "organization", "license", "score", "votes"], set.rows, SOURCES.arena);
+  });
 }
-writeFileSync(rowsPath, rowsText);
+await attempt(["ai-usage", "ai-companies"], async () => {
+  const or = await openRouter();
+  // The citation OpenRouter asks for when its data is republished.
+  const cite = [`OpenRouter (openrouter.ai/rankings), as of ${or.citedAt}`, "CC BY 4.0"];
+  rows["ai-usage"] = or.usage.rows;
+  meta.sets["ai-usage"] = { asOf: or.usage.asOf, rows: or.usage.rows.length, top: topOf(or.usage.rows, 1, 4) };
+  csv["ai-usage"] = toCsv(["rank", "model", "author", "tokens", "share_of_public_tokens_percent"], or.usage.rows, cite);
+  rows["ai-companies"] = or.authors.rows;
+  meta.sets["ai-companies"] = { asOf: or.authors.asOf, rows: or.authors.rows.length, top: topOf(or.authors.rows, 1, 3) };
+  csv["ai-companies"] = toCsv(["rank", "company", "tokens", "share_of_public_tokens_percent", "models_listed"], or.authors.rows, cite);
+});
+const month = lastMonth();
+for (const [id, spec] of Object.entries(SHARE)) {
+  // StatCounter publishes monthly: nothing to ask for until a new month is due.
+  if (oldMeta.sets[id]?.asOf === month && oldRows[id]) {
+    keep(id);
+    continue;
+  }
+  await attempt([id], async () => {
+    const set = await shareTable(spec, month);
+    rows[id] = set.rows;
+    meta.sets[id] = { asOf: set.asOf, yearAgo: set.yearAgo, rows: set.rows.length, top: topOf(set.rows, 1, 3), leaders: set.leaders };
+    csv[id] = toCsv(["rank", "name", `world_${set.yearAgo}`, ...REGIONS.map((r) => (r === "ww" ? `world_${set.asOf}` : r))], set.rows, SOURCES.statcounter);
+    console.log(id, set.asOf, set.rows.length, "rows");
+  });
+}
+if (attempts && failures === attempts) throw new Error("every source failed");
+
+// A table's date moves only when its rows changed, so a monthly table never claims a daily update.
+for (const [id, set] of Object.entries(meta.sets)) {
+  const same = oldMeta.sets[id]?.updated && JSON.stringify(oldRows[id]) === JSON.stringify(rows[id]);
+  set.updated = same ? oldMeta.sets[id].updated : meta.updated;
+}
+meta.updated = Object.values(meta.sets).map((set) => set.updated).sort().at(-1);
+writeFileSync(rowsPath, `${JSON.stringify(rows)}\n`);
 writeFileSync(metaPath, `${JSON.stringify(meta, null, 1)}\n`);
 const dir = join(root, "public/rankings");
 mkdirSync(dir, { recursive: true });

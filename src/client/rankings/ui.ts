@@ -4,7 +4,7 @@ import type { Locale } from "../../shared/locale";
 import { appHref, datasetHref, rankingHref } from "../../shared/path";
 import { datasetMessages } from "../../shared/messages";
 import { fill } from "../../shared/datasets-i18n";
-import { RANKING_GROUPS, RANKING_SNAPSHOT, RANKING_SOURCE, rankingCsvHref, rankingGroupOf, rankingMeta, type RankingId } from "../../shared/rankings";
+import { RANKING_GROUPS, RANKING_SOURCE, rankingCsvHref, rankingGroupOf, rankingMeta, type RankingId } from "../../shared/rankings";
 import { rankingDate, rankingFaqItems, rankingHub, rankingLinkMeta, rankingName, rankingPageCopy, rankingTable, rankingUi } from "../../shared/rankings-i18n";
 import { dataTable } from "../datasets/ui";
 import type { DatasetId } from "../../shared/datasets";
@@ -89,7 +89,7 @@ export async function mountRanking(host: HTMLElement, locale: Locale, id: Rankin
       `${ui.source}: `, h("a", { href: source.url, rel: "noopener", target: "_blank" }, source.name),
       ` · ${ui.license}: `, h("a", { href: source.licenseUrl, rel: "noopener license", target: "_blank" }, source.license),
       ` · ${fill(ui.dataAsOf, { date: rankingDate(locale, rankingMeta(id).asOf) })}`,
-      ` · ${fill(ui.snapshot, { date: RANKING_SNAPSHOT })}`,
+      ` · ${fill(ui.snapshot, { date: rankingMeta(id).updated })}`,
     ),
     h("section", { class: "quiz-about" }, h("h2", null, ui.about), ...copy.about.map((p) => h("p", null, p))),
     faq(locale, id),

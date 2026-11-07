@@ -4,7 +4,7 @@ import { DEVICE_PAGES, type DevicePageId } from "./device";
 import { QUIZZES, type QuizId } from "./quiz";
 import { KB_ARTICLES, kbArticleOf, kbGroupsOf, kbShelfOfPage, kbUpdatedOn, type KbPage } from "./kb";
 import { DATASET_SNAPSHOT, DATASETS, type DatasetId } from "./datasets";
-import { RANKING_SNAPSHOT, RANKINGS, type RankingId } from "./rankings";
+import { RANKING_SNAPSHOT, RANKINGS, rankingMeta, type RankingId } from "./rankings";
 import { REF_ENTRIES, REF_UPDATED, type RefId } from "./ref";
 import { CONVERT_JOBS, RESIZE_JOBS, SITEMAP_SECTIONS, TOOLS, FEATURED_TUTORIALS, LEGAL_PAGES, appHref, rankingHref, deviceHref, gamesHref, kbHref, learnHref, legalHref, quizHref, datasetHref, refHref, type ConvertJobId, type ResizeJobId, type ToolId, type LegalPageId, type TutorialId } from "./path";
 
@@ -147,7 +147,7 @@ function pageLastmod(page: SitemapPage): string | null {
     return kbGroupsOf(kbShelfOfPage(page.article)).flatMap((group) => group.articles).map((article) => kbUpdatedOn(article, page.locale)).sort().at(-1) ?? null;
   }
   if (page.kind === "dataset") return DATASET_SNAPSHOT;
-  if (page.kind === "ranking") return RANKING_SNAPSHOT;
+  if (page.kind === "ranking") return page.ranking ? rankingMeta(page.ranking).updated : RANKING_SNAPSHOT;
   if (page.kind === "ref" && page.entry) return REF_UPDATED[page.entry] ?? null;
   return null;
 }

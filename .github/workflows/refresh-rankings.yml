@@ -28,7 +28,9 @@ jobs:
         env:
           OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
       - run: node scripts/write-sitemap.mjs
-      - run: npx vitest run tests/rankings.test.ts
+      # The same checks as the deploy, so data that would break it never reaches main.
+      - run: npm test
+      - run: npm run typecheck
       - name: Commit changed data and deploy
         run: |
           git add src/shared/rankings-rows.json src/shared/rankings-meta.json public/rankings public/sitemaps/rankings.xml

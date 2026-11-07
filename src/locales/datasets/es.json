@@ -892,7 +892,7 @@
         },
         {
           "q": "¿Con qué frecuencia se actualizan los rankings?",
-          "a": "Se actualizan a mano a partir de las fuentes y cada página muestra la fecha de sus datos. Las fuentes publican a distinto ritmo: la cuota de mercado es mensual y las tablas de IA cambian más a menudo."
+          "a": "Se actualizan automáticamente una vez al día y cada página muestra la fecha de sus datos. Las fuentes publican a distinto ritmo: la cuota de mercado es mensual y las tablas de IA cambian más a menudo."
         },
         {
           "q": "¿Puedo reutilizar estas tablas?",
@@ -1054,7 +1054,7 @@
         "lede": "Los {rows} primeros modelos por tokens procesados a través de OpenRouter en los 7 días hasta {date}. Esto mide el uso, no la calidad.",
         "facts": [
           "Primero: {top1} ({v1} de todos los tokens), seguido de {top2} ({v2}) y {top3} ({v3}).",
-          "Las cuotas se refieren a todos los tokens de OpenRouter, no a todo el uso de IA.",
+          "Las cuotas se refieren a todos los tokens de OpenRouter, no a todo el uso de IA. Solo cuenta el tráfico público, y cada modelo solo los días en que entra en el top 50 diario de OpenRouter.",
           "Datos de los 7 días hasta {date}."
         ],
         "about": [
@@ -1083,7 +1083,7 @@
         "lede": "Las empresas detrás de los modelos más usados en OpenRouter, ordenadas por su cuota de todos los tokens en 7 días. Cubre una sola plataforma, no todo el mercado de IA.",
         "facts": [
           "Primero: {top1} ({v1}), seguido de {top2} ({v2}) y {top3} ({v3}).",
-          "Las cuotas se refieren a todos los tokens de OpenRouter. Los modelos que agrupa como \"other\" cuentan en el total pero no pertenecen a ninguna empresa aquí, así que las cuotas no suman el 100%.",
+          "Las cuotas se refieren a todos los tokens de OpenRouter. Los modelos que agrupa como \"other\" cuentan en el total pero no pertenecen a ninguna empresa aquí, así que las cuotas no suman el 100%. Solo cuenta el tráfico público, y cada modelo solo los días en que entra en el top 50 diario de OpenRouter.",
           "Datos de los 7 días hasta {date}."
         ],
         "about": [

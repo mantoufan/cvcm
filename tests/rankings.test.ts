@@ -25,6 +25,7 @@ describe("ranking data", () => {
       expect(table.length, id).toBeGreaterThanOrEqual(5);
       expect(rankingMeta(id).rows, id).toBe(table.length);
       expect(rankingMeta(id).asOf, id).toMatch(/^\d{4}-\d{2}(-\d{2})?$/);
+      expect(rankingMeta(id).updated, id).toMatch(/^\d{4}-\d{2}-\d{2}$/);
       expect(RANKING_SOURCE[id].licenseUrl, id).toMatch(/^https:\/\/creativecommons\.org\//);
       const csv = readFileSync(`public${rankingCsvHref(id)}`, "utf8").trim().split("\n");
       expect(csv.length, id).toBe(table.length + 1);

@@ -68,7 +68,7 @@
         },
         {
           "q": "Seberapa sering peringkat diperbarui?",
-          "a": "Peringkat diperbarui secara manual dari sumbernya dan setiap halaman menampilkan tanggal datanya. Kecepatan terbit tiap sumber berbeda: pangsa pasar bulanan, tabel AI lebih sering berubah."
+          "a": "Peringkat diperbarui otomatis sekali sehari dan setiap halaman menampilkan tanggal datanya. Kecepatan terbit tiap sumber berbeda: pangsa pasar bulanan, tabel AI lebih sering berubah."
         },
         {
           "q": "Bolehkah saya memakai ulang tabel ini?",
@@ -230,7 +230,7 @@
         "lede": "{rows} model teratas menurut token yang diproses lewat OpenRouter selama 7 hari hingga {date}. Ini mengukur penggunaan, bukan kualitas.",
         "facts": [
           "Pertama: {top1} ({v1} dari semua token), lalu {top2} ({v2}) dan {top3} ({v3}).",
-          "Porsi dihitung dari semua token di OpenRouter, bukan dari seluruh penggunaan AI.",
+          "Porsi dihitung dari semua token di OpenRouter, bukan dari seluruh penggunaan AI. Hanya lalu lintas publik yang dihitung, dan suatu model hanya dihitung pada hari ia masuk 50 besar harian OpenRouter.",
           "Data untuk 7 hari hingga {date}."
         ],
         "about": [
@@ -259,7 +259,7 @@
         "lede": "Perusahaan di balik model yang paling banyak dipakai di OpenRouter, diurutkan menurut porsi dari semua token selama 7 hari. Ini hanya satu platform, bukan seluruh pasar AI.",
         "facts": [
           "Pertama: {top1} ({v1}), lalu {top2} ({v2}) dan {top3} ({v3}).",
-          "Porsi dihitung dari semua token di OpenRouter. Model yang dikelompokkan sebagai \"other\" ikut dihitung dalam total tetapi tidak milik perusahaan mana pun di sini, sehingga jumlah porsi tidak mencapai 100%.",
+          "Porsi dihitung dari semua token di OpenRouter. Model yang dikelompokkan sebagai \"other\" ikut dihitung dalam total tetapi tidak milik perusahaan mana pun di sini, sehingga jumlah porsi tidak mencapai 100%. Hanya lalu lintas publik yang dihitung, dan suatu model hanya dihitung pada hari ia masuk 50 besar harian OpenRouter.",
           "Data untuk 7 hari hingga {date}."
         ],
         "about": [

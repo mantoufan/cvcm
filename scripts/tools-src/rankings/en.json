@@ -68,7 +68,7 @@
         },
         {
           "q": "How often are the rankings updated?",
-          "a": "They are refreshed by hand from the sources and each page shows its data date. Sources publish at different speeds: market share is monthly, AI tables change more often."
+          "a": "They are refreshed automatically once a day and each page shows its data date. Sources publish at different speeds: market share is monthly, AI tables change more often."
         },
         {
           "q": "Can I reuse these tables?",
@@ -230,7 +230,7 @@
         "lede": "The top {rows} models by tokens processed through OpenRouter over the 7 days to {date}. This measures use, not quality.",
         "facts": [
           "First: {top1} ({v1} of all tokens), then {top2} ({v2}) and {top3} ({v3}).",
-          "Shares are of all tokens on OpenRouter, not of all AI use.",
+          "Shares are of all tokens on OpenRouter, not of all AI use. Only public traffic counts, and a model only on days it makes OpenRouter's daily top 50.",
           "Data for the 7 days to {date}."
         ],
         "about": [
@@ -259,7 +259,7 @@
         "lede": "The companies behind the most used models on OpenRouter, ranked by their share of all tokens over 7 days. This covers one platform, not the whole AI market.",
         "facts": [
           "First: {top1} ({v1}), then {top2} ({v2}) and {top3} ({v3}).",
-          "Shares are of all tokens on OpenRouter. Models it groups as \"other\" count towards the total but belong to no company here, so shares do not add up to 100%.",
+          "Shares are of all tokens on OpenRouter. Models it groups as \"other\" count towards the total but belong to no company here, so shares do not add up to 100%. Only public traffic counts, and a model only on days it makes OpenRouter's daily top 50.",
           "Data for the 7 days to {date}."
         ],
         "about": [
