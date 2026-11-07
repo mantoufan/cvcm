@@ -48,11 +48,11 @@ jobs:
           git push origin HEAD:main
           # A push made with GITHUB_TOKEN does not start other workflows, so ask for the deploy.
           gh workflow run deploy.yml --ref main
+        env:
+          GH_TOKEN: ${{ github.token }}
       - name: Fail if a source kept old data
         run: |
           if [ -s "$RUNNER_TEMP/rankings-failures.txt" ]; then
             cat "$RUNNER_TEMP/rankings-failures.txt"
             exit 1
           fi
-        env:
-          GH_TOKEN: ${{ github.token }}
