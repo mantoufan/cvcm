@@ -246,3 +246,9 @@ Codex, refs `click-test-sweet.jpg` + `mic-test-sweet.jpg`. Same character and ro
 - `markdown`: a cream laptop screen split in two halves: the left half shows plain blank grey lines with tiny pink marks, the right half shows the same content as a neat card layout with a pink heading bar, bullet dots and a little table; she points at it with a pink pencil.
 - `gradient`: she holds a painter's palette shaped like a heart with soft paint blobs; a large cream card on an easel shows a smooth pastel colour gradient from pink to peach to lavender; two small round colour drops on the desk.
 - `fancy-text`: pastel pink alphabet blocks and ribbon-like decorative curly shapes float out of a cream phone screen; the blocks have only ornamental swirls, stars, circles and hearts on them, no letters; she smiles holding the phone.
+
+## Tier list maker (2026-11-07)
+
+GPT Image 2.5 on kie.ai, refs `dice-sweet.jpg` + `wheel-sweet.jpg`. Same character and room, no words, letters, numerals, logo or watermark. Save `public/covers/tier-list-sweet.jpg`, `sips -z 720 1280`.
+
+- `tier-list`: she drags a small blank square card with one finger into a big cream board with five stacked rows, each starting with a blank coloured block from coral red through orange and yellow to white; blank pastel cards with tiny hearts and stars already sit in the rows.

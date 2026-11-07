@@ -125,6 +125,7 @@ export const GUIDE_STEP_COUNT: Record<ToolId, number> = {
   "guitar-tuner": 3,
   "factors": 3,
   "lcm-gcf": 3,
+  "tier-list": 3,
   "calculator": 3,
   "notepad": 3,
   "markdown": 3,

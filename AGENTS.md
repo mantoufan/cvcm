@@ -4,7 +4,7 @@ Browser toolkit on a Cloudflare Worker (Pages advanced mode `_worker.js`).
 
 ## Hard rules
 
-1. Image and PDF tools (watermark, mosaic, collage, portrait-sim, convert, image-pdf, resize, crop, rotate, exif, meme, signature, favicon, screenshot, image-colors, pdf-jpg, merge-pdf, compress-pdf, split-pdf, invoice) process files in the page. Do not add upload APIs for those tools, analytics beacons, or extra third-party `connect-src` hosts. Site analytics (GA4 `G-5X2J6QT5KK`, `src/shared/analytics.ts`) skips them, the audio tools (audio, audio-cutter, audio-joiner, mic-test), the guitar tuner, the webcam test and clip notes: those pages get a CSP without the GA hosts and send no hits. Add new file tools to `UNTRACKED_TOOLS`.
+1. Image and PDF tools (watermark, mosaic, collage, portrait-sim, convert, image-pdf, resize, crop, rotate, exif, meme, signature, favicon, screenshot, image-colors, tier-list, pdf-jpg, merge-pdf, compress-pdf, split-pdf, invoice) process files in the page. Do not add upload APIs for those tools, analytics beacons, or extra third-party `connect-src` hosts. Site analytics (GA4 `G-5X2J6QT5KK`, `src/shared/analytics.ts`) skips them, the audio tools (audio, audio-cutter, audio-joiner, mic-test), the guitar tuner, the webcam test and clip notes: those pages get a CSP without the GA hosts and send no hits. Add new file tools to `UNTRACKED_TOOLS`.
 2. Clipboard text lives in D1 (`cvcm` / binding `DB`, table `clips`). Non-text files go to s3.cv.cm bucket `files` via Worker-presigned PUT. No KV or R2.
 3. The Worker serves static files, locale redirects, security headers, `/api/clip`, and `/api/clip/upload`. Reject other `POST` / `PUT` / `PATCH` / `DELETE` with 405.
 4. Clipboard notes: no login; auto-delete after 10 views or 24 hours. Text max 64 KB, files max 32 MB. No listing endpoint.
@@ -125,6 +125,7 @@ Browser toolkit on a Cloudflare Worker (Pages advanced mode `_worker.js`).
 - `src/client/markdown/` + `src/shared/markdown.ts` — Markdown → document tree → DOM preview (never innerHTML) and escaped HTML for Copy/Download; GFM tables, task lists, strikethrough, bare links; raw HTML stays text and only http(s)/mailto/tel/relative links are linked (`safeHref`). Separate from `md.ts` (clip notes)
 - `src/client/gradient/` + `src/shared/gradient.ts` — CSS gradient generator (linear/radial/conic, 2–6 stops, presets) with a PNG drawn on canvas using CSS geometry (`linearLine`, farthest-corner `radialRadii`); the gradient preview is tool output, not page decoration (rule 7)
 - `src/client/fancy-text/` + `src/shared/fancy-text.ts` — Unicode look-alike letters (Mathematical Alphanumerics with the letterlike "holes", enclosed, fullwidth, small caps, upside down, combining strike/underline); only A–Z, a–z, 0–9 change
+- `src/client/tier-list/` + `src/shared/tier-list.ts` — tier list maker (`/tier-list/`): typed items or local pictures dragged into rows (`hang` 夯-to-拉 preset by default in zh-CN and zh-TW, S–D elsewhere), tap-to-place for touch and keyboard, PNG drawn on canvas, copy as text. Text and rows are in localStorage; pictures stay object URLs in the page and are never stored. Untracked (file tool)
 - `src/client/resize/` — resize / compress images
 - `src/client/crop/` — crop images
 - `src/client/rotate/` — rotate / flip images

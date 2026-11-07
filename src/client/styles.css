@@ -888,3 +888,32 @@ html.dp-lock, html.dp-lock body { overflow: hidden; }
 .fancy-row { padding: 0.5rem 0.75rem; border: 1px solid var(--line); border-radius: var(--radius); background: var(--white); }
 .fancy-meta { display: flex; justify-content: space-between; align-items: center; gap: 0.5rem; }
 .fancy-out { margin: 0.2rem 0 0; font-size: 1.2rem; line-height: 1.5; white-space: pre-wrap; overflow-wrap: anywhere; }
+
+/* Tier list: the row colours are the tool's output, not page decoration (rule 7). */
+.tier-tool { display: grid; gap: 0.75rem; }
+.tier-setup { display: flex; flex-wrap: wrap; gap: 0.75rem; }
+.tier-field { display: grid; flex: 1 1 14rem; gap: 0.25rem; font-weight: 600; }
+.tier-rows { display: grid; gap: 2px; border: 1px solid var(--line); border-radius: 10px; overflow: hidden; background: var(--line); }
+.tier-row { display: grid; grid-template-columns: 6.5rem minmax(0, 1fr) auto; min-height: 5rem; background: var(--white); }
+.tier-label { display: flex; align-items: center; justify-content: center; padding: 0.25rem; }
+.tier-label input { width: 100%; padding: 0.25rem; border: 0; background: transparent; font-size: 1.05rem; font-weight: 700; text-align: center; }
+.tier-items { display: flex; flex-wrap: wrap; align-content: flex-start; align-items: flex-start; gap: 4px; min-height: 5rem; padding: 4px; }
+.tier-pool { border: 1px dashed var(--pink); border-radius: 10px; }
+.tier-item { display: flex; align-items: center; justify-content: center; width: 4.5rem; height: 4.5rem; padding: 0.2rem; border: 1px solid var(--line); border-radius: 6px; background: var(--white); color: var(--ink); font-size: 0.8rem; line-height: 1.2; text-align: center; overflow: hidden; overflow-wrap: anywhere; cursor: grab; touch-action: none; user-select: none; }
+.tier-item img { width: 100%; height: 100%; object-fit: cover; pointer-events: none; }
+.tier-item.picked { border-color: var(--pink-deep); outline: 2px solid var(--pink-deep); }
+.tier-item.dragging { opacity: 0.35; }
+.tier-ghost { position: fixed; top: 0; left: 0; z-index: 50; pointer-events: none; opacity: 0.9; }
+.tier-place { width: 4.5rem; min-height: 4.5rem; padding: 0.2rem; font-size: 0.75rem; }
+.tier-row-actions { display: grid; grid-template-columns: repeat(3, 28px); align-content: center; gap: 2px; padding: 0.25rem; }
+.tier-color { grid-column: 1 / -1; width: 100%; min-height: 28px; padding: 0; border: 1px solid var(--line); border-radius: 6px; font-size: 0.65rem; color: transparent; }
+.tier-color option { font-size: 0.85rem; }
+.tier-mini { min-width: 28px; min-height: 28px; padding: 0; border: 1px solid var(--line); border-radius: 6px; background: var(--white); color: var(--ink); cursor: pointer; }
+.tier-mini:disabled { opacity: 0.4; cursor: default; }
+.tier-sub { margin: 0.25rem 0 0; font-size: 1rem; }
+.tier-add { display: grid; gap: 0.5rem; }
+@media (max-width: 600px) {
+  .tier-row { grid-template-columns: 4.5rem minmax(0, 1fr) auto; }
+  .tier-item, .tier-place { width: 3.75rem; height: 3.75rem; min-height: 3.75rem; font-size: 0.72rem; }
+  .tier-label input { font-size: 0.9rem; }
+}
