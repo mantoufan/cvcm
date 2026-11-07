@@ -35,7 +35,7 @@ const AI: readonly ToolId[] = [...AI_TOOLS];
 const FILES: readonly ToolId[] = [
   "watermark", "mosaic", "collage", "portrait-sim", "convert", "image-pdf", "resize", "crop", "rotate", "exif",
   "meme", "favicon", "screenshot", "pdf-jpg", "merge-pdf", "compress-pdf", "split-pdf", "audio", "audio-cutter",
-  "audio-joiner", "image-colors", "rom-emulator", "flash-player",
+  "audio-joiner", "image-colors", "rom-emulator", "flash-player", "tier-list",
 ];
 
 /** Text kept in this browser's localStorage between visits. */
