@@ -2701,7 +2701,7 @@
       "s2t": "Open the ROM emulator on cv.cm",
       "s2b": "Press Choose ROM and pick a .nes, .sfc, .smc, .gb, .gbc, .gba, .md, .gen, .smd, .bin or .zip file. It is read in this tab and not sent anywhere. The first start also downloads the emulator, so give it a moment.",
       "s3t": "Check the console",
-      "s3b": "The line under the game says which console was detected. If the file does not say, or the game looks wrong, choose one under Console and the game starts again on it.",
+      "s3b": "The line under the game says which console was detected. If the file does not say, or the game looks wrong, choose one under Console and the game starts again on it. Game Boy and Game Boy Color share one emulator core, so switching between those two does not restart the game.",
       "s4t": "Learn the keys",
       "s4b": "The keys for that console appear under the game. On most consoles the arrow keys move, Z is A, X is B, V is Select and Enter is Start. On a phone, use the on-screen pad. A Bluetooth gamepad works too.",
       "s5t": "Save your game",

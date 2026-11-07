@@ -7,6 +7,10 @@ import type { Locale } from "../src/shared/locale";
 import { TUTORIAL_DIAGRAMS, lessonsForTool } from "../src/shared/learn";
 import { CONSOLE_CONTROLS } from "../src/shared/game-controls";
 import { MAX_ROM_BYTES, ROM_ACCEPT } from "../src/shared/rom-detect";
+import gamesEn from "../src/locales/games/en.json";
+import gamesEs from "../src/locales/games/es.json";
+import gamesJa from "../src/locales/games/ja.json";
+import gamesZhCN from "../src/locales/games/zh-CN.json";
 import en from "../src/locales/en.json";
 import es from "../src/locales/es.json";
 import id from "../src/locales/id.json";
@@ -70,6 +74,14 @@ describe("retro tool tutorials", () => {
     for (const [loc] of packs) {
       const svg = readFileSync(join(root, "public", localizedTutorialSrc("/covers/tutorials/use-emulator-files.svg", loc as Locale)), "utf8");
       for (const ext of ROM_ACCEPT.split(",")) expect(svg, `${loc} ${ext}`).toContain(ext);
+    }
+  });
+
+  it("describes save states as downloads on every game page, in every language", () => {
+    for (const [loc, copy] of Object.entries({ en: gamesEn, "zh-CN": gamesZhCN, ja: gamesJa, es: gamesEs })) {
+      const text = JSON.stringify(copy);
+      expect(text, loc).not.toMatch(/save-?states? stays?|stays? in this browser|留在(这个|本机)|このブラウザ内|se queda en este navegador/i);
+      expect(text, loc).toContain(".state");
     }
   });
 
