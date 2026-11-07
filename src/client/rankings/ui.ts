@@ -5,7 +5,7 @@ import type { Locale } from "../../shared/locale";
 import { appHref, datasetHref, rankingHref } from "../../shared/path";
 import { datasetMessages } from "../../shared/messages";
 import { fill } from "../../shared/datasets-i18n";
-import { RANKING_GROUPS, RANKING_SOURCE, rankingCsvHref, rankingGroupOf, rankingMeta, type RankingId } from "../../shared/rankings";
+import { RANKING_GROUPS, RANKING_SOURCE, RANKING_TOOLS, rankingCsvHref, rankingGroupOf, rankingMeta, type RankingId } from "../../shared/rankings";
 import { rankingDate, rankingFaqItems, rankingHub, rankingLinkMeta, rankingName, rankingPageCopy, rankingTable, rankingUi } from "../../shared/rankings-i18n";
 import { dataTable } from "../datasets/ui";
 import type { DatasetId } from "../../shared/datasets";
@@ -99,6 +99,12 @@ export async function mountRanking(host: HTMLElement, locale: Locale, id: Rankin
     h("section", { class: "quiz-about" }, h("h2", null, ui.about), ...copy.about.map((p) => h("p", null, p))),
     faq(locale, id),
     h("section", { class: "wall" }, h("h2", null, ui.related), setLinks(locale, related)),
+    ...(RANKING_TOOLS[id]?.length
+      ? [h("section", { class: "wall" },
+        h("h2", null, ui.tools),
+        linkList(RANKING_TOOLS[id]!.map((tool) => ({ href: appHref(locale, tool), name: t(`tools.${tool}.name`), blurb: t(`tools.${tool}.blurb`), nav: tool }))),
+      )]
+      : []),
     h("p", { class: "more" }, h("a", { href: rankingHref(locale), "data-nav": "rankings" }, ui.all)),
   );
 }

@@ -44,6 +44,18 @@
     "social-media-market-share": {
       "name": "Cuota de mercado de redes sociales",
       "blurb": "Qué redes envían más visitas a la web, por país."
+    },
+    "crypto-market-cap": {
+      "name": "Ranking de criptomonedas por capitalización",
+      "blurb": "Las 100 monedas principales por capitalización, con variación a 24 horas y 7 días."
+    },
+    "commodity-prices": {
+      "name": "Precios de materias primas: ganadoras y perdedoras",
+      "blurb": "Petróleo, gas, metales, cereales y más, por variación en un año."
+    },
+    "currency-strength": {
+      "name": "Fortaleza de divisas frente al dólar",
+      "blurb": "Divisas ordenadas por cómo cambió su valor frente al dólar."
     }
   },
   "rankings": {
@@ -55,7 +67,8 @@
       "groups": {
         "ai": "IA",
         "share": "Cuota de mercado",
-        "countries": "Países"
+        "countries": "Países",
+        "markets": "Mercados"
       },
       "makeYourOwn": "Crea tu propio ranking",
       "about": [
@@ -105,7 +118,57 @@
       "modelsListed": "Modelos listados",
       "name": "Nombre",
       "world": "Mundo",
-      "change": "Cambio a 1 año (pts)"
+      "change": "Cambio a 1 año (pts)",
+      "symbol": "Símbolo",
+      "price": "Precio",
+      "change24h": "24 h",
+      "change7d": "7 d",
+      "marketCap": "Capitalización",
+      "volume24h": "Volumen (24 h)",
+      "commodity": "Materia prima",
+      "unit": "Unidad",
+      "change1m": "1 mes",
+      "change1y": "1 año",
+      "currency": "Divisa",
+      "code": "Código",
+      "perUsd": "Por dólar estadounidense",
+      "commodities": {
+        "crude-oil-brent": "Petróleo crudo (Brent)",
+        "crude-oil-wti": "Petróleo crudo (WTI)",
+        "natural-gas-us": "Gas natural (EE. UU.)",
+        "natural-gas-europe": "Gas natural (Europa)",
+        "lng-japan": "Gas natural licuado (Japón)",
+        "coal": "Carbón (Australia)",
+        "cocoa": "Cacao",
+        "coffee-arabica": "Café (arábica)",
+        "coffee-robusta": "Café (robusta)",
+        "tea": "Té",
+        "palm-oil": "Aceite de palma",
+        "soybeans": "Soja",
+        "soybean-oil": "Aceite de soja",
+        "maize": "Maíz",
+        "wheat": "Trigo",
+        "rice": "Arroz (Tailandia, 5 % partido)",
+        "sugar": "Azúcar",
+        "orange": "Naranjas",
+        "beef": "Carne de vacuno",
+        "chicken": "Pollo",
+        "shrimp": "Gambas",
+        "cotton": "Algodón",
+        "rubber": "Caucho",
+        "urea": "Urea (fertilizante)",
+        "aluminum": "Aluminio",
+        "iron-ore": "Mineral de hierro",
+        "copper": "Cobre",
+        "lead": "Plomo",
+        "tin": "Estaño",
+        "nickel": "Níquel",
+        "zinc": "Zinc",
+        "gold": "Oro",
+        "platinum": "Platino",
+        "silver": "Plata"
+      },
+      "tools": "Herramientas relacionadas"
     },
     "sets": {
       "ai-models": {
@@ -424,6 +487,93 @@
           {
             "q": "¿Por qué TikTok o WeChat aparecen más abajo de lo esperado?",
             "a": "La gente se queda sobre todo dentro de esas apps, y los enlaces que se abren allí a menudo no se etiquetan como procedentes de ellas."
+          }
+        ]
+      },
+      "crypto-market-cap": {
+        "title": "Ranking de Criptomonedas por Capitalización {year}: Top 100 | cv.cm",
+        "description": "Las 100 criptomonedas principales por capitalización a {date}: {top1} {v1}, {top2} {v2}, {top3} {v3}. Precio, variación a 24 horas y 7 días y volumen.",
+        "h1": "Top 100 criptomonedas por capitalización de mercado, {date}",
+        "lede": "Las 100 mayores criptomonedas por valor de mercado, con precio, variación a 24 horas y 7 días y volumen de negociación. Es una instantánea diaria, no un precio en directo.",
+        "facts": [
+          "La mayor: {top1} ({v1}), seguida de {top2} ({v2}) y {top3} ({v3}).",
+          "Juntas, las 100 primeras valen {total}. Bitcoin supone {dominance} de todo el mercado cripto.",
+          "Datos a {date}, tomados una vez al día."
+        ],
+        "about": [
+          "La capitalización es el precio multiplicado por las monedas en circulación, tal como las cuenta CoinMarketCap. Los precios cambian cada segundo, así que esta tabla, que se actualiza una vez al día, sirve para comparar monedas y no para operar. Las stablecoins como Tether aparecen porque se ordenan por capitalización.",
+          "Nada de esto es asesoramiento de inversión. Los precios de las criptomonedas pueden oscilar con fuerza, y un puesto alto no significa que una moneda sea segura. cv.cm no vende ni recomienda ninguna moneda."
+        ],
+        "faq": [
+          {
+            "q": "¿Cuál es la mayor criptomoneda por capitalización?",
+            "a": "{top1}, con un valor de {v1} a {date}, seguida de {top2} ({v2}) y {top3} ({v3})."
+          },
+          {
+            "q": "¿Cada cuánto se actualizan estos precios?",
+            "a": "Una vez al día. Para un precio en directo, consulta un exchange o la propia CoinMarketCap; la hora de esta página indica cuándo se tomó la instantánea."
+          },
+          {
+            "q": "¿Por qué no puedo descargar esta tabla?",
+            "a": "CoinMarketCap permite que cv.cm muestre sus datos aquí pero no que los redistribuya como archivo, así que esta tabla no tiene CSV."
+          }
+        ]
+      },
+      "commodity-prices": {
+        "title": "Precios de Materias Primas {year}: Subidas y Bajadas | cv.cm",
+        "description": "Precios de materias primas de {date}: mejor en un año {top1} ({v1}), peor {low1} ({lv1}). Petróleo, gas, metales y granos, del Banco Mundial.",
+        "h1": "Precios de materias primas: ganadoras y perdedoras, {date}",
+        "lede": "{rows} materias primas ordenadas por la variación de su precio en 12 meses, con el último precio mensual y la variación a un mes. Datos del Pink Sheet del Banco Mundial, en dólares estadounidenses.",
+        "facts": [
+          "Mejor evolución en un año: {top1} ({v1}), {top2} ({v2}) y {top3} ({v3}).",
+          "Peor evolución en un año: {low1} ({lv1}), {low2} ({lv2}) y {low3} ({lv3}).",
+          "Precios medios mensuales de {date}."
+        ],
+        "about": [
+          "El Banco Mundial publica el Pink Sheet a principios de cada mes con los precios medios del mercado mundial del mes anterior, en dólares estadounidenses nominales. Cada precio es una referencia concreta, como el Brent entregado en Europa o el arroz tailandés con 5 % de grano partido, por lo que lo que pagas localmente puede diferir mucho.",
+          "Las variaciones comparan la media mensual más reciente con la del mes anterior y con la del mismo mes un año antes. Una media mensual suaviza las oscilaciones diarias, así que el tamaño de un movimiento en un solo día puede ser mayor."
+        ],
+        "faq": [
+          {
+            "q": "¿Qué materia prima tuvo la mejor evolución en el último año?",
+            "a": "De las {rows} listadas, {top1} tuvo la mejor evolución en los 12 meses hasta {date}: {v1}."
+          },
+          {
+            "q": "¿Cuál tuvo la peor evolución en el último año?",
+            "a": "{low1}, con {lv1} en los 12 meses hasta {date}."
+          },
+          {
+            "q": "¿Son precios en directo?",
+            "a": "No. Son medias mensuales del Banco Mundial, que se actualizan cuando las publica cada mes."
+          }
+        ]
+      },
+      "currency-strength": {
+        "title": "Fortaleza de Divisas frente al Dólar {year}: {rows} Divisas | cv.cm",
+        "description": "Qué divisas ganaron o perdieron frente al dólar desde {yearAgo}: {top1} {v1}, {top2} {v2}, {low1} {lv1}. Tipos de referencia del BCE.",
+        "h1": "Fortaleza de divisas frente al dólar estadounidense, {date}",
+        "lede": "{rows} divisas ordenadas por cómo cambió su valor frente al dólar estadounidense en un año, con el tipo por dólar y la variación a un mes. Datos de los tipos de referencia diarios del Banco Central Europeo.",
+        "facts": [
+          "Más fuertes frente al dólar en un año: {top1} ({v1}), {top2} ({v2}) y {top3} ({v3}).",
+          "Más débiles: {low1} ({lv1}), {low2} ({lv2}) y {low3} ({lv3}).",
+          "Tipos a {date}, comparados con {yearAgo}."
+        ],
+        "about": [
+          "El Banco Central Europeo publica un tipo de referencia al día para cada divisa frente al euro. cv.cm los divide por el tipo del euro frente al dólar para obtener cada divisa por dólar estadounidense, así que son tipos cruzados, cercanos a lo que cobra un banco pero no iguales.",
+          "Una variación positiva significa que la divisa ahora compra más dólares que antes. La tabla cubre las divisas que cotiza el BCE, por lo que algunas, como el dólar taiwanés y el dong vietnamita, no están incluidas."
+        ],
+        "faq": [
+          {
+            "q": "¿Qué divisa tuvo la mejor evolución frente al dólar?",
+            "a": "{top1}: {v1} frente al dólar estadounidense desde {yearAgo}."
+          },
+          {
+            "q": "¿Cuál tuvo la peor evolución en el último año?",
+            "a": "{low1}: {lv1} frente al dólar desde {yearAgo}."
+          },
+          {
+            "q": "¿Son tipos de cambio en directo?",
+            "a": "No. Son los tipos de referencia del BCE, publicados una vez por día laborable hacia las 16:00 hora de Europa Central, solo a título informativo."
           }
         ]
       }

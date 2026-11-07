@@ -12,7 +12,10 @@ import {
   rankingKind,
   rankingMeta,
   type ArenaRow,
+  type CommodityRow,
   type CompanyRow,
+  type CryptoRow,
+  type FxRow,
   type RankingId,
   type ShareRow,
   type UsageRow,
@@ -24,6 +27,9 @@ export type RankingUi = RankingMessages["ui"];
 export type RankingCopy = { title: string; description: string; h1: string; lede: string; facts: string[]; about: string[]; faq: { q: string; a: string }[] };
 
 const ORIGIN = "https://cv.cm";
+const NO_VALUE = "—";
+/** Sorts below any real value; the table leaves non-finite sort keys out of its filter text. */
+const NOT_LISTED = Number.NEGATIVE_INFINITY;
 
 export function rankingHub(locale: Locale): RankingHubCopy {
   return datasetMessages(locale).rankings.hub;
@@ -39,11 +45,11 @@ export function rankingName(locale: Locale, id: RankingId): { name: string; blur
 }
 
 function compact(locale: Locale, value: number): string {
-  return new Intl.NumberFormat(locale, { notation: "compact", maximumFractionDigits: 1 }).format(value);
+  return numberFormat(locale, { notation: "compact", maximumFractionDigits: 1 }).format(value);
 }
 
 function plain(locale: Locale, value: number, digits = 0): string {
-  return new Intl.NumberFormat(locale, { minimumFractionDigits: digits, maximumFractionDigits: digits }).format(value);
+  return numberFormat(locale, { minimumFractionDigits: digits, maximumFractionDigits: digits }).format(value);
 }
 
 /** "2026-10" as "October 2026" (or the locale's own form); a full date likewise. */
@@ -61,14 +67,71 @@ function percent(locale: Locale, value: number): string {
   return `${plain(locale, value, 1)}%`;
 }
 
+/** Intl objects are slow to build: one per locale and options, kept for the page's life. */
+const formatters = new Map<string, Intl.NumberFormat>();
+function numberFormat(locale: Locale, options: Intl.NumberFormatOptions): Intl.NumberFormat {
+  const key = `${locale}|${JSON.stringify(options)}`;
+  let format = formatters.get(key);
+  if (!format) {
+    format = new Intl.NumberFormat(locale, options);
+    formatters.set(key, format);
+  }
+  return format;
+}
+
+function usd(locale: Locale, value: number, compactForm = false): string {
+  return numberFormat(locale, { style: "currency", currency: "USD", notation: compactForm ? "compact" : "standard", maximumFractionDigits: compactForm ? 2 : value >= 1 ? 2 : 8 }).format(value);
+}
+
+/** A value that may be missing (a coin too new for a 7-day figure). */
+function maybe(value: number | null, shown: (v: number) => string): { text: string; sort: number } {
+  return value === null ? { text: NO_VALUE, sort: NOT_LISTED } : { text: shown(value), sort: value };
+}
+
+function signed(locale: Locale, value: number): string {
+  const rounded = Math.round(value * 10) / 10;
+  const sign = rounded > 0 ? "+" : rounded < 0 ? "−" : "";
+  return `${sign}${plain(locale, Math.abs(rounded), 1)}%`;
+}
+
+const currencyNames = new Map<string, Intl.DisplayNames>();
+function currencyName(locale: Locale, code: string): string {
+  let names = currencyNames.get(locale);
+  if (!names) {
+    names = new Intl.DisplayNames([locale], { type: "currency" });
+    currencyNames.set(locale, names);
+  }
+  return names.of(code) ?? code;
+}
+
+function commodityName(locale: Locale, id: string): string {
+  return (rankingUi(locale).commodities as Record<string, string>)[id] ?? id;
+}
+
+/** What a row's name reads as in this locale: commodities and currencies are stored as ids. */
+function displayName(locale: Locale, id: RankingId, name: string): string {
+  const kind = rankingKind(id);
+  if (kind === "commodity") return commodityName(locale, name);
+  if (kind === "fx") return `${currencyName(locale, name)} (${name})`;
+  return name;
+}
+
 function vars(locale: Locale, id: RankingId): Record<string, string | number> {
   const meta = rankingMeta(id);
   const out: Record<string, string | number> = { rows: meta.rows, date: rankingDate(locale, meta.asOf), year: meta.asOf.slice(0, 4) };
   const kind = rankingKind(id);
+  const shown = (value: number) => (kind === "arena" ? plain(locale, value) : kind === "crypto" ? usd(locale, value, true) : kind === "commodity" || kind === "fx" ? signed(locale, value) : percent(locale, value));
   meta.top.forEach(([name, value], index) => {
-    out[`top${index + 1}`] = name;
-    out[`v${index + 1}`] = kind === "arena" ? plain(locale, value) : percent(locale, value);
+    out[`top${index + 1}`] = displayName(locale, id, name);
+    out[`v${index + 1}`] = shown(value);
   });
+  meta.bottom?.forEach(([name, value], index) => {
+    out[`low${index + 1}`] = displayName(locale, id, name);
+    out[`lv${index + 1}`] = shown(value);
+  });
+  if (meta.total !== undefined) out.total = usd(locale, meta.total, true);
+  if (meta.dominance !== undefined) out.dominance = percent(locale, meta.dominance);
+  if (meta.yearAgo) out.yearAgo = rankingDate(locale, meta.yearAgo);
   if (meta.leadOrg) {
     out.leadOrg = meta.leadOrg;
     out.leadCount = meta.leadCount ?? 0;
@@ -110,13 +173,10 @@ export function rankingFaqItems(locale: Locale, id: RankingId | null): { q: stri
 
 /** The first-place line under a link: who leads, without opening the table. */
 export function rankingLinkMeta(locale: Locale, id: RankingId): string {
-  const [name, value] = rankingMeta(id).top[0];
-  return `${name} · ${rankingKind(id) === "arena" ? plain(locale, value) : percent(locale, value)}`;
+  const values = vars(locale, id);
+  return `${values.top1} · ${values.v1}`;
 }
 
-const NO_VALUE = "—";
-/** Below any real change, and plain enough not to match a text filter. */
-const NOT_LISTED = -1000;
 const text = (value: string) => ({ text: value || NO_VALUE, sort: value });
 const num = (shown: string, value: number) => ({ text: shown, sort: value });
 
@@ -134,6 +194,24 @@ export function rankingTable(locale: Locale, id: RankingId, rows: unknown[]): Da
     return {
       columns: [{ label: ui.rank, num: true }, { label: ui.model, head: true }, { label: ui.organization }, { label: ui.tokens, num: true }, { label: ui.shareOfTokens, num: true }],
       rows: (rows as UsageRow[]).map(([place, model, author, tokens, share]) => [rank(place), text(model), text(author), num(compact(locale, tokens), tokens), num(percent(locale, share), share)]),
+    };
+  }
+  if (kind === "crypto") {
+    return {
+      columns: [{ label: ui.rank, num: true }, { label: ui.name, head: true }, { label: ui.symbol }, { label: ui.price, num: true }, { label: ui.change24h, num: true }, { label: ui.change7d, num: true }, { label: ui.marketCap, num: true }, { label: ui.volume24h, num: true }],
+      rows: (rows as CryptoRow[]).map(([place, name, symbol, price, day, week, cap, volume]) => [rank(place), text(name), text(symbol), num(usd(locale, price), price), maybe(day, (v) => signed(locale, v)), maybe(week, (v) => signed(locale, v)), num(usd(locale, cap, true), cap), maybe(volume, (v) => usd(locale, v, true))]),
+    };
+  }
+  if (kind === "commodity") {
+    return {
+      columns: [{ label: ui.rank, num: true }, { label: ui.commodity, head: true }, { label: ui.unit }, { label: ui.price, num: true }, { label: ui.change1m, num: true }, { label: ui.change1y, num: true }],
+      rows: (rows as CommodityRow[]).map(([place, id, unit, price, month, year]) => [rank(place), text(commodityName(locale, id)), text(unit), num(plain(locale, price, 2), price), num(signed(locale, month), month), num(signed(locale, year), year)]),
+    };
+  }
+  if (kind === "fx") {
+    return {
+      columns: [{ label: ui.rank, num: true }, { label: ui.currency, head: true }, { label: ui.code }, { label: ui.perUsd, num: true }, { label: ui.change1m, num: true }, { label: ui.change1y, num: true }],
+      rows: (rows as FxRow[]).map(([place, code, perUsd, month, year]) => [rank(place), text(currencyName(locale, code)), text(code), num(new Intl.NumberFormat(locale, { maximumSignificantDigits: 6 }).format(perUsd), perUsd), num(signed(locale, month), month), num(signed(locale, year), year)]),
     };
   }
   if (kind === "companies") {
@@ -158,7 +236,7 @@ export function rankingTable(locale: Locale, id: RankingId, rows: unknown[]): Da
         rank(place),
         text(name),
         num(percent(locale, world), world),
-        change === null ? num(NO_VALUE, NOT_LISTED) : num(`${sign}${plain(locale, Math.abs(change), 1)}`, change),
+        maybe(change, (v) => `${sign}${plain(locale, Math.abs(v), 1)}`),
         ...regions.map((value) => num(percent(locale, value), value)),
       ];
     }),
@@ -220,7 +298,7 @@ export function rankingJsonLd(locale: Locale, id: RankingId | null): Record<stri
     creator: { "@type": "Organization", name: source.name, url: source.url },
     isBasedOn: source.url,
     publisher: { "@type": "Organization", name: "cv.cm", url: ORIGIN },
-    distribution: [{ "@type": "DataDownload", encodingFormat: "text/csv", contentUrl: `${ORIGIN}${rankingCsvHref(id)}` }],
+    ...(rankingCsvHref(id) ? { distribution: [{ "@type": "DataDownload", encodingFormat: "text/csv", contentUrl: `${ORIGIN}${rankingCsvHref(id)}` }] } : {}),
     size: `${rankingMeta(id).rows} rows`,
     includedInDataCatalog: { "@type": "DataCatalog", name: hub.h1, url: `${ORIGIN}${rankingHref(locale)}` },
   };
@@ -265,7 +343,7 @@ export function rankingStaticHtml(locale: Locale, id: RankingId | null): string 
     `<h1>${escapeHtml(copy.h1)}</h1>`,
     `<p class="lede">${escapeHtml(copy.lede)}</p>`,
     `<h2>${escapeHtml(ui.facts)}</h2><ul>${copy.facts.map((f) => `<li>${escapeHtml(f)}</li>`).join("")}</ul>`,
-    `<p><a href="${escapeHtml(rankingCsvHref(id))}">${escapeHtml(ui.download)}</a> · ${escapeHtml(ui.source)}: <a href="${escapeHtml(source.url)}" rel="noopener">${escapeHtml(source.name)}</a> · ${escapeHtml(ui.license)}: ${escapeHtml(source.license)}</p>`,
+    `<p>${rankingCsvHref(id) ? `<a href="${escapeHtml(rankingCsvHref(id)!)}">${escapeHtml(ui.download)}</a> · ` : ""}${escapeHtml(ui.source)}: <a href="${escapeHtml(source.url)}" rel="noopener">${escapeHtml(source.name)}</a> · ${escapeHtml(ui.license)}: ${escapeHtml(source.license)}</p>`,
     `<section><h2>${escapeHtml(ui.about)}</h2>${copy.about.map((p) => `<p>${escapeHtml(p)}</p>`).join("")}</section>`,
     faqHtml(locale, id),
     `<p><a href="${escapeHtml(rankingHref(locale))}">${escapeHtml(ui.all)}</a></p>`,

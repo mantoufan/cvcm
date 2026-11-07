@@ -73,13 +73,14 @@ export function mountDatasetHub(host: HTMLElement, locale: Locale): void {
 type TableUi = { search: string; searchPlaceholder: string; rows: string; shown: string; noMatch: string; download: string; sortHint: string };
 
 /** Sortable, filterable table. The prerendered page carries every row, so crawlers see the whole table. */
-export function dataTable(locale: Locale, page: { label: string; caption: string; csvHref: string; csvName: string; ui: TableUi }, table: DatasetTable): HTMLElement {
+export function dataTable(locale: Locale, page: { label: string; caption: string; csvHref: string | null; csvName: string; ui: TableUi }, table: DatasetTable): HTMLElement {
   const { ui } = page;
   const total = table.rows.length;
   const rows = table.rows.map((cells, index) => ({
     index,
     cells,
-    text: cells.map((c) => `${c.text} ${c.sort}`).join(" ").toLocaleLowerCase(locale),
+    // A missing value sorts as -Infinity; that is not text anyone filters for.
+    text: cells.map((c) => (typeof c.sort === "number" && !Number.isFinite(c.sort) ? c.text : `${c.text} ${c.sort}`)).join(" ").toLocaleLowerCase(locale),
     el: h("tr", null, ...cells.map((c, col) => {
       const column = table.columns[col];
       const cls = [column.num ? "num" : "", column.mono ? "mono" : "", column.wide ? "wide" : ""].join(" ").trim() || null;
@@ -101,7 +102,8 @@ export function dataTable(locale: Locale, page: { label: string; caption: string
       const sorted = [...rows].sort((a, b) => {
         const x = a.cells[index].sort;
         const y = b.cells[index].sort;
-        const diff = typeof x === "number" && typeof y === "number" ? x - y : collator.compare(String(x), String(y));
+        // Equal first: two missing values (-Infinity) would subtract to NaN.
+        const diff = x === y ? 0 : typeof x === "number" && typeof y === "number" ? x - y : collator.compare(String(x), String(y));
         return diff * dir || a.index - b.index;
       });
       body.append(...sorted.map((r) => r.el));
@@ -134,7 +136,7 @@ export function dataTable(locale: Locale, page: { label: string; caption: string
   return h("section", { class: "data-table", "aria-label": page.label },
     h("div", { class: "data-tools" },
       search,
-      h("a", { class: "btn ghost", href: page.csvHref, download: page.csvName }, ui.download),
+      page.csvHref ? h("a", { class: "btn ghost", href: page.csvHref, download: page.csvName }, ui.download) : null,
     ),
     count,
     h("div", { class: "data-wrap" },

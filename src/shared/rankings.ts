@@ -2,12 +2,14 @@
 // (`rankings-rows.json`) load only on a ranking page, the summary (`rankings-meta.json`) is small enough for the head
 // tags. Pages never call the sources. Copy lives under `rankings` in `src/locales/datasets/<locale>.json`.
 import meta from "./rankings-meta.json";
+import type { ToolId } from "./path";
 
 export const RANKING_SEGMENT = "rankings";
 
 export const RANKING_GROUPS = [
   { id: "ai", sets: ["ai-models", "ai-coding-models", "ai-image-models", "ai-video-models", "ai-usage", "ai-companies"] },
   { id: "share", sets: ["browser-market-share", "os-market-share", "search-engine-market-share", "phone-market-share", "social-media-market-share"] },
+  { id: "markets", sets: ["crypto-market-cap", "commodity-prices", "currency-strength"] },
 ] as const;
 
 export type RankingGroupId = (typeof RANKING_GROUPS)[number]["id"];
@@ -22,11 +24,14 @@ export function rankingGroupOf(id: RankingId): RankingGroupId {
   return RANKING_GROUPS.find((group) => (group.sets as readonly string[]).includes(id))!.id;
 }
 
-export type RankingKind = "arena" | "usage" | "companies" | "share";
+export type RankingKind = "arena" | "usage" | "companies" | "share" | "crypto" | "commodity" | "fx";
 
 export function rankingKind(id: RankingId): RankingKind {
   if (id === "ai-usage") return "usage";
   if (id === "ai-companies") return "companies";
+  if (id === "crypto-market-cap") return "crypto";
+  if (id === "commodity-prices") return "commodity";
+  if (id === "currency-strength") return "fx";
   return rankingGroupOf(id) === "ai" ? "arena" : "share";
 }
 
@@ -48,7 +53,19 @@ export const RANKING_SOURCE: Record<RankingId, RankingSource> = {
   "search-engine-market-share": statCounter("search-engine-market-share"),
   "phone-market-share": statCounter("vendor-market-share/mobile"),
   "social-media-market-share": statCounter("social-media-stats"),
+  // CoinMarketCap's licence covers showing the data on cv.cm, not passing it on: no CSV for this table.
+  "crypto-market-cap": { name: "CoinMarketCap", url: "https://coinmarketcap.com/", license: "CoinMarketCap API terms", licenseUrl: "https://coinmarketcap.com/api/" },
+  "commodity-prices": { name: "World Bank Commodity Price Data (The Pink Sheet)", url: "https://www.worldbank.org/en/research/commodity-markets", license: "CC BY 4.0", licenseUrl: CC_BY },
+  "currency-strength": { name: "ECB euro foreign exchange reference rates", url: "https://www.ecb.europa.eu/stats/policy_and_exchange_rates/euro_reference_exchange_rates/html/index.en.html", license: "Reuse with source named", licenseUrl: "https://www.ecb.europa.eu/services/disclaimer/html/index.en.html" },
 };
+
+/** cv.cm tools a reader of the table may want next. */
+export const RANKING_TOOLS: Partial<Record<RankingId, readonly ToolId[]>> = {
+  "commodity-prices": ["gold", "silver", "platinum", "oil"],
+};
+
+/** Tables whose source allows showing but not redistributing the rows. */
+export const NO_CSV: ReadonlySet<RankingId> = new Set<RankingId>(["crypto-market-cap"]);
 
 /** The markets a share table compares, after the world column: the countries cv.cm's languages mostly reach. */
 export const RANKING_REGIONS = ["US", "CN", "TW", "JP", "KR", "VN", "ID", "ES"] as const;
@@ -67,6 +84,13 @@ export type RankingMeta = {
   /** Share only: the same month a year before, and each market's first place. */
   yearAgo?: string;
   leaders?: Record<"ww" | RankingRegion, [string, number]>;
+  /** Commodities and currencies: the last three, worst first. */
+  bottom?: [string, number][];
+  /** Crypto: total market cap of the listed coins, and Bitcoin's share of all crypto. */
+  total?: number;
+  dominance?: number;
+  /** Currencies: the dates the changes are measured from (`yearAgo` also above). */
+  monthAgo?: string;
 };
 
 export const RANKING_SNAPSHOT: string = meta.updated;
@@ -75,8 +99,8 @@ export function rankingMeta(id: RankingId): RankingMeta {
   return (meta.sets as unknown as Record<RankingId, RankingMeta>)[id];
 }
 
-export function rankingCsvHref(id: RankingId): string {
-  return `/${RANKING_SEGMENT}/${id}.csv`;
+export function rankingCsvHref(id: RankingId): string | null {
+  return NO_CSV.has(id) ? null : `/${RANKING_SEGMENT}/${id}.csv`;
 }
 
 /** [rank, model, organization, licence, score, votes] */
@@ -87,3 +111,9 @@ export type UsageRow = [number, string, string, number, number];
 export type CompanyRow = [number, string, number, number, number];
 /** [rank, name, world a year ago (null when it was not listed), world, ...RANKING_REGIONS] in percent */
 export type ShareRow = [number, string, number | null, number, ...number[]];
+/** [rank, name, symbol, price USD, 24h change %, 7-day change %, market cap USD, 24h volume USD]; a new coin can lack a change or volume (null). */
+export type CryptoRow = [number, string, string, number, number | null, number | null, number, number | null];
+/** [rank, commodity id, unit, latest monthly price USD, 1-month change %, 12-month change %] */
+export type CommodityRow = [number, string, string, number, number, number];
+/** [rank, ISO 4217 code, units per US dollar, change vs USD over 1 month %, over 1 year %] */
+export type FxRow = [number, string, number, number, number];
