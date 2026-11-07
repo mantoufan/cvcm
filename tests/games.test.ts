@@ -3,7 +3,7 @@ import flashHtml from "../public/emu/flash.html?raw";
 import flashJs from "../public/emu/flash.js?raw";
 import playerHtml from "../public/emu/player.html?raw";
 import playerJs from "../public/emu/player.js?raw";
-import gamesUi from "../src/client/games/ui.ts?raw";
+import gamesUi from "../src/client/games/player.ts?raw";
 import { GAME_COVER } from "../src/shared/covers";
 import { CONSOLE_CONTROLS } from "../src/shared/game-controls";
 import { GAME_OFFICIAL } from "../src/shared/game-official";
