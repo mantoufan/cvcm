@@ -102,6 +102,8 @@ Browser tools plus a tiny cloud clipboard.
 - **Refresh rate test** / 刷新率测试 — measured Hz, frame time, skipped frames, motion block. [Open](https://cv.cm/en/refresh-rate/)
 - **Coin flip** / 抛硬币 — heads or tails, up to 1,000 coins, streaks. [Open](https://cv.cm/en/coin-flip/)
 - **Guitar tuner** / 吉他调音器 — microphone tuner for guitar, bass, ukulele, violin, cello. [Open](https://cv.cm/en/guitar-tuner/)
+- **ROM emulator** / 游戏模拟器 — open your own NES, SNES, GB, GBA or Mega Drive ROM; the console is detected from the file. [Open](https://cv.cm/en/rom-emulator/)
+- **Flash player** / Flash 播放器 — open a .swf file with Ruffle, no plugin. [Open](https://cv.cm/en/flash-player/)
 - **Factor calculator** / 分解质因数 — prime check, factorization, all factors. [Open](https://cv.cm/en/factors/)
 - **LCM and GCF calculator** / 最小公倍数和最大公约数 — with prime factors and Euclid's steps. [Open](https://cv.cm/en/lcm-gcf/)
 - **Touch screen test** / 触摸屏测试 — multi-touch count, pressure, dead-zone grid. [Open](https://cv.cm/en/touch-test/)

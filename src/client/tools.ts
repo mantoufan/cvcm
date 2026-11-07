@@ -790,6 +790,18 @@ export const TOOL_LOADERS: Record<ToolId, ToolLoader> = {
     m.mountTouchTest(host);
     return m.unmountTouchTest;
   },
+  "rom-emulator": async (host, ctx) => {
+    const m = await import("./rom-emulator/ui");
+    if (!ctx.alive()) return undefined;
+    m.mountRomEmulator(host);
+    return m.unmountRomEmulator;
+  },
+  "flash-player": async (host, ctx) => {
+    const m = await import("./flash-player/ui");
+    if (!ctx.alive()) return undefined;
+    m.mountFlashPlayer(host);
+    return undefined;
+  },
   "coin-flip": async (host, ctx) => {
     const m = await import("./coin-flip/ui");
     if (!ctx.alive()) return undefined;
