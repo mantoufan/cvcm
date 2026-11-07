@@ -529,7 +529,9 @@
     "titleUseEmulator": "Cara memakai emulator untuk main ROM di browser | cv.cm",
     "descUseEmulator": "Buka ROM tanpa instalasi: pilih file, periksa konsol, pelajari tombol, simpan game, dan atasi layar hitam. Tidak ada yang diunggah.",
     "titleOpenSwfFile": "Cara membuka file SWF tanpa Flash | cv.cm",
-    "descOpenSwfFile": "Buka file .swf di browser tanpa plugin, nyalakan suara, main dengan mouse atau sentuhan, dan ketahui mengapa sebagian file berhenti memuat. Tidak ada yang diunggah."
+    "descOpenSwfFile": "Buka file .swf di browser tanpa plugin, nyalakan suara, main dengan mouse atau sentuhan, dan ketahui mengapa sebagian file berhenti memuat. Tidak ada yang diunggah.",
+    "titleTierList": "Pembuat tier list online — peringkat gratis dengan gambar — cv.cm",
+    "descTierList": "Buat tier list gratis: ketik nama atau tambah gambar, seret ke baris S sampai D atau baris buatanmu, lalu unduh PNG. Tanpa daftar, gambar tidak diunggah."
   },
   "brand": "cv.cm",
   "nav": {
@@ -1144,6 +1146,10 @@
     "flash-player": {
       "name": "Flash Player",
       "blurb": "Buka file Flash .swf tanpa plugin."
+    },
+    "tier-list": {
+      "name": "Pembuat tier list",
+      "blurb": "Seret nama atau gambar ke baris peringkat, simpan sebagai PNG."
     }
   },
   "watermark": {
@@ -4444,6 +4450,18 @@
       "a4": "Sebagian besar file ActionScript 1 dan 2 lama berfungsi. Dukungan ActionScript 3 di Ruffle belum lengkap, jadi beberapa game yang lebih baru mungkin gagal mulai atau berjalan tidak benar.",
       "q5": "Mengapa tidak ada suara?",
       "a5": "Browser memblokir suara yang diputar otomatis. Klik gambar sekali dan suara akan keluar."
+    },
+    "tier-list": {
+      "q1": "Apa itu tier list?",
+      "a1": "Bagan yang mengelompokkan sesuatu ke dalam baris peringkat, bukan memberi angka satu per satu. Biasanya S di paling atas dan D di paling bawah. Populer untuk game, anime, makanan, dan hal apa pun yang suka diperdebatkan.",
+      "q2": "Bagaimana cara membuat tier list di sini?",
+      "a2": "Ketik satu item per baris atau tambah gambar, lalu seret tiap item ke sebuah baris. Di ponsel atau dengan keyboard, ketuk (atau tekan Enter) item, lalu pilih Taruh di sini pada baris. Unduh PNG untuk menyimpan bagan.",
+      "q3": "Apakah gambar saya diunggah?",
+      "a3": "Tidak. Gambar tetap di halaman ini, dan PNG dibuat di browser kamu. Nama dan baris diingat di perangkat ini, tetapi gambar tidak, jadi tambahkan lagi setelah memuat ulang halaman.",
+      "q4": "Bisakah saya mengubah baris?",
+      "a4": "Bisa. Klik nama baris untuk mengganti nama, ubah warna, geser ke atas atau bawah, tambah atau hapus baris, hingga 12 baris. Item di baris yang dihapus kembali ke area belum diurutkan.",
+      "q5": "Apa itu preset 夯 sampai 拉?",
+      "a5": "Versi tier list ala meme internet Tiongkok. Barisnya dari 夯 (paling top) lalu 顶级 (teratas), 人上人 (di atas rata-rata), NPC (mudah terlupakan), sampai 拉完了 (paling buruk)."
     }
   },
   "qr": {
@@ -10661,5 +10679,51 @@
     "back": "Semua alat",
     "privacyNote": "Buka file .swf di tab ini dengan Ruffle. Tanpa plugin Flash. Tidak ada yang diunggah.",
     "games": "Game Flash gratis"
+  },
+  "tierList": {
+    "title": "Pembuat tier list online (peringkat)",
+    "back": "Semua alat",
+    "privacyNote": "Gambar tetap di halaman ini dan PNG dibuat di browser kamu. Tidak ada yang diunggah.",
+    "titleField": "Judul bagan",
+    "titlePlaceholder": "Contoh: jajanan terenak",
+    "presetLabel": "Susunan baris",
+    "preset": {
+      "hang": "夯 sampai 拉 (meme Tiongkok)",
+      "hangRows": "夯|顶级|人上人|NPC|拉完了",
+      "sabcd": "S / A / B / C / D",
+      "sabcdRows": "S|A|B|C|D",
+      "feeling": "Suka banget sampai benci",
+      "feelingRows": "Suka banget|Suka|Biasa saja|Kurang cocok|Benci"
+    },
+    "rowName": "Nama baris",
+    "rowColor": "Warna baris",
+    "rowUp": "Naikkan baris",
+    "rowDown": "Turunkan baris",
+    "rowRemove": "Hapus baris",
+    "addRow": "Tambah baris",
+    "newRow": "Baru",
+    "clear": "Kembalikan semua ke belum diurutkan",
+    "startOver": "Mulai ulang",
+    "startOverConfirm": "Klik lagi untuk konfirmasi",
+    "pool": "Belum diurutkan",
+    "entry": "Tambah item, satu per baris",
+    "entryPlaceholder": "Satu item per baris",
+    "add": "Tambah item",
+    "addPictures": "Tambah gambar",
+    "deleteItem": "Hapus item terpilih",
+    "placeHere": "Taruh di sini",
+    "picture": "Gambar",
+    "pickedHint": "Terpilih: {name}. Pilih Taruh di sini pada sebuah baris, atau ketuk lagi untuk membatalkan.",
+    "count": "{n} dari {max} item.",
+    "full": "Sudah batas maksimum: {max} item.",
+    "hint": "Seret item antar baris, atau ketuk lalu pilih Taruh di sini. Kamu juga bisa menempel atau menjatuhkan gambar di mana saja pada alat ini.",
+    "download": "Unduh PNG",
+    "copy": "Salin sebagai teks",
+    "copied": "Tersalin",
+    "copyFailed": "Gagal menyalin",
+    "exportFailed": "PNG tidak bisa dibuat. Hapus gambar yang tidak tampil lalu coba lagi.",
+    "separator": ", ",
+    "sample": "Nasi goreng\nSate\nBakso\nRendang\nMartabak\nGado-gado",
+    "picturesNote": "Gambar tidak disimpan: akan hilang saat halaman dimuat ulang atau ditutup, jadi unduh PNG terlebih dahulu."
   }
 }

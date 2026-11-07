@@ -127,6 +127,7 @@ export const TOOL_COVER: Record<ToolId, string> = {
   "guitar-tuner": "/covers/guitar-tuner-sweet.jpg?v=1",
   "factors": "/covers/factors-sweet.jpg?v=1",
   "lcm-gcf": "/covers/lcm-gcf-sweet.jpg?v=1",
+  "tier-list": "/covers/tier-list-sweet.jpg?v=1",
   "calculator": "/covers/calculator-sweet.jpg?v=1",
   "notepad": "/covers/notepad-sweet.jpg?v=1",
   "markdown": "/covers/markdown-sweet.jpg?v=1",

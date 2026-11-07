@@ -529,7 +529,9 @@
     "titleUseEmulator": "遊戲模擬器怎麼用：在瀏覽器裡玩 ROM | cv.cm",
     "descUseEmulator": "不用安裝就能開啟 ROM：選擇檔案、確認主機、看懂按鍵、存檔，以及黑畫面怎麼辦。檔案不上傳。",
     "titleOpenSwfFile": "SWF 檔案開啟教學：不用 Flash 外掛 | cv.cm",
-    "descOpenSwfFile": "不裝外掛，在瀏覽器裡開啟 .swf 檔案：開啟聲音、用滑鼠或觸控操作，並了解有些 Flash 為什麼停在載入。檔案不上傳。"
+    "descOpenSwfFile": "不裝外掛，在瀏覽器裡開啟 .swf 檔案：開啟聲音、用滑鼠或觸控操作，並了解有些 Flash 為什麼停在載入。檔案不上傳。",
+    "titleTierList": "從夯到拉排行榜產生器 — 線上 Tier List 製作，可加圖片 — cv.cm",
+    "descTierList": "線上免費製作從夯到拉排行榜和 Tier List：輸入名稱或加入圖片，拖曳到夯、頂級、人上人、NPC、拉完了或自訂等級，一鍵下載 PNG。免註冊，圖片不上傳。"
   },
   "brand": "cv.cm",
   "nav": {
@@ -1144,6 +1146,10 @@
     "flash-player": {
       "name": "Flash 播放器",
       "blurb": "不裝外掛，直接開啟 .swf 檔案。"
+    },
+    "tier-list": {
+      "name": "從夯到拉排行榜",
+      "blurb": "把名稱或圖片拖進等級，製作 Tier List 圖片。"
     }
   },
   "watermark": {
@@ -4444,6 +4450,18 @@
       "a4": "大多數較舊的 ActionScript 1、2 檔案可以。Ruffle 對 ActionScript 3 的支援還不完整，一些較新的遊戲可能打不開或執行異常。",
       "q5": "為什麼沒有聲音？",
       "a5": "瀏覽器會擋下自動播放的聲音。點一下畫面，聲音就會出來。"
+    },
+    "tier-list": {
+      "q1": "從夯到拉是什麼意思？",
+      "a1": "這是網路上流行的排行榜格式，也就是中文版 Tier List。等級由高到低是夯、頂級、人上人、NPC、拉完了：夯代表最好，NPC 代表普通沒存在感，拉完了代表最差。",
+      "q2": "怎麼製作排行榜？",
+      "a2": "每行輸入一項或加入圖片，再把它們拖曳到對應等級。使用手機或鍵盤時，點一下某一項（或按 Enter），再點目標等級裡的「放到這裡」。最後按「下載 PNG」儲存。",
+      "q3": "圖片會上傳嗎？",
+      "a3": "不會。圖片只留在目前的頁面，PNG 也是在瀏覽器裡產生。文字和等級會記在這台裝置上，圖片不會，重新整理頁面後需要重新加入。",
+      "q4": "可以修改等級嗎？",
+      "a4": "可以。點等級名稱直接修改，也能換顏色、上下移動、新增或刪除等級，最多 12 行。刪除某個等級後，裡面的內容會回到「待排名」。",
+      "q5": "除了從夯到拉，還有別的範本嗎？",
+      "a5": "有。可以切換成常見的 S、A、B、C、D，或「超愛到討厭」。切換後已排好的內容會留在原本的行；如果行數變少，多出來的內容會回到「待排名」。"
     }
   },
   "qr": {
@@ -10661,5 +10679,51 @@
     "back": "全部工具",
     "privacyNote": "用 Ruffle 在這個分頁開啟 .swf 檔案，不用 Flash 外掛。檔案不上傳。",
     "games": "免費 Flash 遊戲"
+  },
+  "tierList": {
+    "title": "從夯到拉排行榜產生器（Tier List）",
+    "back": "全部工具",
+    "privacyNote": "圖片只留在目前的頁面，PNG 在瀏覽器裡產生，不會上傳任何內容。",
+    "titleField": "排行榜標題",
+    "titlePlaceholder": "例如：零食排行榜",
+    "presetLabel": "等級範本",
+    "preset": {
+      "hang": "從夯到拉",
+      "hangRows": "夯|頂級|人上人|NPC|拉完了",
+      "sabcd": "S、A、B、C、D",
+      "sabcdRows": "S|A|B|C|D",
+      "feeling": "超愛到討厭",
+      "feelingRows": "超愛|喜歡|還行|不太行|討厭"
+    },
+    "rowName": "等級名稱",
+    "rowColor": "等級顏色",
+    "rowUp": "上移等級",
+    "rowDown": "下移等級",
+    "rowRemove": "刪除等級",
+    "addRow": "新增等級",
+    "newRow": "新等級",
+    "clear": "全部移回待排名",
+    "startOver": "重新開始",
+    "startOverConfirm": "再按一次確認",
+    "pool": "待排名",
+    "entry": "新增內容，每行一項",
+    "entryPlaceholder": "每行一項",
+    "add": "新增內容",
+    "addPictures": "加入圖片",
+    "deleteItem": "刪除選取項目",
+    "placeHere": "放到這裡",
+    "picture": "圖片",
+    "pickedHint": "已選取：{name}。點目標等級裡的「放到這裡」，再點一次可取消。",
+    "count": "共 {n} 項，上限 {max} 項。",
+    "full": "已達上限：{max} 項。",
+    "hint": "可以直接拖曳，也可以點一下再選「放到這裡」。圖片還能直接貼上或拖進工具區。",
+    "download": "下載 PNG",
+    "copy": "複製為文字",
+    "copied": "已複製",
+    "copyFailed": "複製失敗",
+    "exportFailed": "PNG 產生失敗。請刪除顯示異常的圖片後再試一次。",
+    "separator": "、",
+    "sample": "珍珠奶茶\n鹽酥雞\n滷肉飯\n臭豆腐\n牛肉麵\n沙拉",
+    "picturesNote": "圖片不會儲存，重新整理或離開頁面後就會清空，請先下載 PNG。"
   }
 }
