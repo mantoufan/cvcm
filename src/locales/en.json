@@ -544,12 +544,12 @@
     "descRomEmulator": "Free online ROM emulator: open your own GBA, NES, SNES, Game Boy or Mega Drive ROM. The console is detected from the file. No install, with gamepad and touch controls. Nothing is uploaded.",
     "titleFlashPlayer": "Flash player online — SWF player, no plugin — cv.cm",
     "descFlashPlayer": "Free online Flash player and SWF player: open a .swf file with Ruffle, an open-source Flash emulator. No plugin and no install. The file stays in this tab and is not uploaded.",
+    "titleTierList": "Tier list maker — free online ranking chart with pictures — cv.cm",
+    "descTierList": "Make a tier list online for free: type names or add pictures, drag them into S to D or your own rows, then download a PNG. No sign-up. Pictures stay on your device.",
     "titleUseEmulator": "How to use an emulator to play ROMs in a browser | cv.cm",
     "descUseEmulator": "Open a ROM with no install: choose the file, check the console, learn the keys, save your game and fix a black screen. Nothing is uploaded.",
     "titleOpenSwfFile": "How to open SWF files without Flash | cv.cm",
-    "descOpenSwfFile": "Open a .swf file in a browser with no plugin, turn on the sound, play with mouse or touch, and see why some Flash files stop loading. Nothing is uploaded.",
-    "titleTierList": "Tier list maker — free online ranking chart with pictures — cv.cm",
-    "descTierList": "Make a tier list online for free: type names or add pictures, drag them into S to D or your own rows, then download a PNG. No sign-up. Pictures stay on your device."
+    "descOpenSwfFile": "Open a .swf file in a browser with no plugin, turn on the sound, play with mouse or touch, and see why some Flash files stop loading. Nothing is uploaded."
   },
   "brand": "cv.cm",
   "nav": {
@@ -2710,51 +2710,6 @@
       "diagram1": "Swipe every row: empty cells = dead zone.",
       "diagram2": "Phones and tablets: 5–10 fingers · many laptops: 2."
     },
-<<<<<<< HEAD
-    "use-emulator": {
-      "name": "How to use an emulator",
-      "blurb": "Open a ROM in your browser, check the console, learn the keys and save your game.",
-      "title": "How to use an emulator to play ROMs",
-      "lead": "You have a ROM file and want to play it without installing anything. You will open it in the browser, check the console, learn the keys and save your progress. The file stays on your device.",
-      "result": "Your game running in a browser tab, with its keys in front of you and a save state on your device.",
-      "note": "Use ROMs you have the right to use, such as homebrew released by its author. cv.cm does not provide commercial ROMs.",
-      "s1t": "Find a ROM you can use",
-      "s1b": "A ROM is a copy of a game cartridge in one file. This tool opens FC / NES, SFC / SNES, Game Boy, Game Boy Color, Game Boy Advance and Mega Drive / Genesis games. cv.cm's Games column has free homebrew if you have no file.",
-      "s2t": "Open the ROM emulator on cv.cm",
-      "s2b": "Press Choose ROM and pick a .nes, .sfc, .smc, .gb, .gbc, .gba, .md, .gen, .smd, .bin or .zip file. It is read in this tab and not sent anywhere. The first start also downloads the emulator, so give it a moment.",
-      "s3t": "Check the console",
-      "s3b": "The line under the game says which console was detected. If the file does not say, or the game looks wrong, choose one under Console and the game starts again on it. Game Boy and Game Boy Color share one emulator core, so switching between those two does not restart the game.",
-      "s4t": "Learn the keys",
-      "s4b": "The keys for that console appear under the game. On most consoles the arrow keys move, Z is A, X is B, V is Select and Enter is Start. On a phone, use the on-screen pad. A Bluetooth gamepad works too.",
-      "s5t": "Save your game",
-      "s5b": "Move the pointer over the game to show the toolbar. On a phone, tap the three-line icon at the top right. The floppy disk icon saves a state and downloads it as a .state file. The folder icon loads one. Keep the file: it brings you back to this exact spot after you close the tab.",
-      "s6t": "Fix a game that will not start",
-      "s6b": "A black screen usually means the wrong console, so try another under Console. A zip must hold a ROM directly, not another zip. Files over 64 MB are refused, because they are too big for these consoles, and disc games are not supported.",
-      "diagram1": "Each file type and the console it opens on.",
-      "diagram2": "The keyboard keys for most consoles, and what SFC adds."
-    },
-    "open-swf-file": {
-      "name": "How to open SWF files",
-      "blurb": "Open a .swf file with no plugin, turn on the sound, and see why some files stop loading.",
-      "title": "How to open SWF files without Flash",
-      "lead": "You have a .swf file and Flash Player no longer works. You will open it in a browser tab with Ruffle, turn on the sound, play it, and see what to do when it stops loading. The file stays on your device.",
-      "result": "Your SWF running in a browser tab, with sound, and no plugin installed.",
-      "note": "Do not install old Flash Player downloads from other sites. Adobe stopped supporting Flash Player and recommends uninstalling it.",
-      "s1t": "Know what a SWF is",
-      "s1b": "A SWF is a Flash file: a game, animation or small app. Adobe ended Flash Player support on December 31, 2020 and blocked Flash content from January 12, 2021, so browsers no longer run these files by themselves.",
-      "s2t": "Open the Flash player on cv.cm",
-      "s2b": "Press Choose SWF and pick your .swf file. It stays in this tab and is not sent to a server. The first start also downloads Ruffle, an open-source Flash emulator, which can take a few seconds.",
-      "s3t": "Turn on the sound",
-      "s3b": "Browsers may block audio that plays by itself. If you hear nothing, click the picture once.",
-      "s4t": "Play it",
-      "s4b": "Most Flash files use the left mouse button. A tap on a phone counts as a click. Arrow keys work when the game expects a keyboard, so a computer is easier for those games.",
-      "s5t": "See why a file stops loading",
-      "s5b": "This page only runs a file that can start on its own, and it blocks network access. A game that loads more SWFs or XML, or only runs on its old website, stops on its loader.",
-      "s6t": "Try something else if it fails",
-      "s6b": "Ruffle runs most older ActionScript 1 and 2 files, but its ActionScript 3 support is incomplete, so some newer games fail or misbehave. Choose SWF again to open another file, or play the free titles under Flash games.",
-      "diagram1": "How mouse, touch and keyboard work in a Flash file.",
-      "diagram2": "A SWF that starts alone runs. One that needs other files or its old website stops."
-=======
     "use-scientific-calculator": {
       "name": "How to use a scientific calculator",
       "blurb": "Get the order, brackets, DEG and RAD, powers, logs and % right, and reuse answers.",
@@ -2952,7 +2907,50 @@
       "s6b": "The page lists both results and the prime factors of each number. Coprime: Yes means the GCF is 1, so no prime divides all of them. For two numbers, the LCM is then their product; with three or more it can be smaller (6, 10, 15 has an LCM of 30). Copy result sends the answer to your clipboard.",
       "diagram1": "Shared primes make the GCF; all the primes together make the LCM.",
       "diagram2": "Each line divides by the last remainder until nothing is left."
->>>>>>> origin/main
+    },
+    "use-emulator": {
+      "name": "How to use an emulator",
+      "blurb": "Open a ROM in your browser, check the console, learn the keys and save your game.",
+      "title": "How to use an emulator to play ROMs",
+      "lead": "You have a ROM file and want to play it without installing anything. You will open it in the browser, check the console, learn the keys and save your progress. The file stays on your device.",
+      "result": "Your game running in a browser tab, with its keys in front of you and a save state on your device.",
+      "note": "Use ROMs you have the right to use, such as homebrew released by its author. cv.cm does not provide commercial ROMs.",
+      "s1t": "Find a ROM you can use",
+      "s1b": "A ROM is a copy of a game cartridge in one file. This tool opens FC / NES, SFC / SNES, Game Boy, Game Boy Color, Game Boy Advance and Mega Drive / Genesis games. cv.cm's Games column has free homebrew if you have no file.",
+      "s2t": "Open the ROM emulator on cv.cm",
+      "s2b": "Press Choose ROM and pick a .nes, .sfc, .smc, .gb, .gbc, .gba, .md, .gen, .smd, .bin or .zip file. It is read in this tab and not sent anywhere. The first start also downloads the emulator, so give it a moment.",
+      "s3t": "Check the console",
+      "s3b": "The line under the game says which console was detected. If the file does not say, or the game looks wrong, choose one under Console and the game starts again on it. Game Boy and Game Boy Color share one emulator core, so switching between those two does not restart the game.",
+      "s4t": "Learn the keys",
+      "s4b": "The keys for that console appear under the game. On most consoles the arrow keys move, Z is A, X is B, V is Select and Enter is Start. On a phone, use the on-screen pad. A Bluetooth gamepad works too.",
+      "s5t": "Save your game",
+      "s5b": "Move the pointer over the game to show the toolbar. On a phone, tap the three-line icon at the top right. The floppy disk icon saves a state and downloads it as a .state file. The folder icon loads one. Keep the file: it brings you back to this exact spot after you close the tab.",
+      "s6t": "Fix a game that will not start",
+      "s6b": "A black screen usually means the wrong console, so try another under Console. A zip must hold a ROM directly, not another zip. Files over 64 MB are refused, because they are too big for these consoles, and disc games are not supported.",
+      "diagram1": "Each file type and the console it opens on.",
+      "diagram2": "The keyboard keys for most consoles, and what SFC adds."
+    },
+    "open-swf-file": {
+      "name": "How to open SWF files",
+      "blurb": "Open a .swf file with no plugin, turn on the sound, and see why some files stop loading.",
+      "title": "How to open SWF files without Flash",
+      "lead": "You have a .swf file and Flash Player no longer works. You will open it in a browser tab with Ruffle, turn on the sound, play it, and see what to do when it stops loading. The file stays on your device.",
+      "result": "Your SWF running in a browser tab, with sound, and no plugin installed.",
+      "note": "Do not install old Flash Player downloads from other sites. Adobe stopped supporting Flash Player and recommends uninstalling it.",
+      "s1t": "Know what a SWF is",
+      "s1b": "A SWF is a Flash file: a game, animation or small app. Adobe ended Flash Player support on December 31, 2020 and blocked Flash content from January 12, 2021, so browsers no longer run these files by themselves.",
+      "s2t": "Open the Flash player on cv.cm",
+      "s2b": "Press Choose SWF and pick your .swf file. It stays in this tab and is not sent to a server. The first start also downloads Ruffle, an open-source Flash emulator, which can take a few seconds.",
+      "s3t": "Turn on the sound",
+      "s3b": "Browsers may block audio that plays by itself. If you hear nothing, click the picture once.",
+      "s4t": "Play it",
+      "s4b": "Most Flash files use the left mouse button. A tap on a phone counts as a click. Arrow keys work when the game expects a keyboard, so a computer is easier for those games.",
+      "s5t": "See why a file stops loading",
+      "s5b": "This page only runs a file that can start on its own, and it blocks network access. A game that loads more SWFs or XML, or only runs on its old website, stops on its loader.",
+      "s6t": "Try something else if it fails",
+      "s6b": "Ruffle runs most older ActionScript 1 and 2 files, but its ActionScript 3 support is incomplete, so some newer games fail or misbehave. Choose SWF again to open another file, or play the free titles under Flash games.",
+      "diagram1": "How mouse, touch and keyboard work in a Flash file.",
+      "diagram2": "A SWF that starts alone runs. One that needs other files or its old website stops."
     }
   },
   "tools": {
@@ -5175,31 +5173,6 @@
         "q5": "Is anything uploaded?",
         "a5": "No. Touches are drawn in your browser tab only."
       },
-<<<<<<< HEAD
-      "use-emulator": {
-        "q1": "Is my ROM uploaded?",
-        "a1": "No. The file is read in this tab and handed to the emulator on the page. Only the emulator itself is downloaded.",
-        "q2": "Is it legal to play ROMs?",
-        "a2": "It depends on the game and on where you live. Homebrew that its author released freely is fine. Rules for copies of commercial games differ by country, so check yours.",
-        "q3": "Which file should I choose from a zip?",
-        "a3": "Choose the zip itself. The tool looks inside it for a ROM and the emulator opens it. If the zip holds a .bin, choose the console yourself.",
-        "q4": "Can I play PlayStation or Nintendo DS games?",
-        "a4": "No. This tool covers FC / NES, SFC / SNES, Game Boy, Game Boy Color, Game Boy Advance and Mega Drive / Genesis.",
-        "q5": "Where do my saves go?",
-        "a5": "The floppy disk icon downloads a .state file to your device. To continue later, open the same ROM and load that file with the folder icon. Saves made in the game's own menu may stay in this browser until site data is cleared, so keep a .state file for anything you care about."
-      },
-      "open-swf-file": {
-        "q1": "Do I need Adobe Flash Player?",
-        "a1": "No. Ruffle runs the file in the page, so there is nothing to install. This page is not from Adobe.",
-        "q2": "Is my SWF uploaded?",
-        "a2": "No. The file stays in this tab and is not sent to a server.",
-        "q3": "Why is there no sound?",
-        "a3": "Browsers may block audio that plays by itself. If you hear nothing, click the picture once.",
-        "q4": "Why does it stop on the loading screen?",
-        "a4": "The game probably needs more files or its old website. This page blocks network access, so it cannot fetch them.",
-        "q5": "Can I open a SWF on a phone?",
-        "a5": "Yes. A tap counts as a click. Games that need a keyboard are easier on a computer."
-=======
       "use-scientific-calculator": {
         "q1": "Why does sin(30) not give 0.5?",
         "a1": "The calculator is in RAD mode, so it reads 30 as 30 radians. Switch to DEG and sin(30) is 0.5.",
@@ -5307,7 +5280,30 @@
         "a4": "Two numbers are coprime when their GCF is 1, such as 8 and 15. Neither has to be prime; they just share no prime factor.",
         "q5": "Why did 1,500 turn into two numbers?",
         "a5": "A comma separates numbers here, so 1,500 reads as 1 and 500. Type 1500 without the separator."
->>>>>>> origin/main
+      },
+      "use-emulator": {
+        "q1": "Is my ROM uploaded?",
+        "a1": "No. The file is read in this tab and handed to the emulator on the page. Only the emulator itself is downloaded.",
+        "q2": "Is it legal to play ROMs?",
+        "a2": "It depends on the game and on where you live. Homebrew that its author released freely is fine. Rules for copies of commercial games differ by country, so check yours.",
+        "q3": "Which file should I choose from a zip?",
+        "a3": "Choose the zip itself. The tool looks inside it for a ROM and the emulator opens it. If the zip holds a .bin, choose the console yourself.",
+        "q4": "Can I play PlayStation or Nintendo DS games?",
+        "a4": "No. This tool covers FC / NES, SFC / SNES, Game Boy, Game Boy Color, Game Boy Advance and Mega Drive / Genesis.",
+        "q5": "Where do my saves go?",
+        "a5": "The floppy disk icon downloads a .state file to your device. To continue later, open the same ROM and load that file with the folder icon. Saves made in the game's own menu may stay in this browser until site data is cleared, so keep a .state file for anything you care about."
+      },
+      "open-swf-file": {
+        "q1": "Do I need Adobe Flash Player?",
+        "a1": "No. Ruffle runs the file in the page, so there is nothing to install. This page is not from Adobe.",
+        "q2": "Is my SWF uploaded?",
+        "a2": "No. The file stays in this tab and is not sent to a server.",
+        "q3": "Why is there no sound?",
+        "a3": "Browsers may block audio that plays by itself. If you hear nothing, click the picture once.",
+        "q4": "Why does it stop on the loading screen?",
+        "a4": "The game probably needs more files or its old website. This page blocks network access, so it cannot fetch them.",
+        "q5": "Can I open a SWF on a phone?",
+        "a5": "Yes. A tap counts as a click. Games that need a keyboard are easier on a computer."
       }
     },
     "compress-pdf": {
