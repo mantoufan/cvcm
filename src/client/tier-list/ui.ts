@@ -53,12 +53,16 @@ let fileEl: HTMLInputElement | null = null;
 let selected: string | null = null;
 let saveTimer = 0;
 let confirmTimer = 0;
+let armedBtn: HTMLButtonElement | null = null;
+let armedIdle = "";
 let edgeFrame = 0;
 let justDragged = false;
 let dragY = 0;
 let drag: { id: string; el: HTMLElement; ghost: HTMLElement | null; startX: number; startY: number; pointer: number; moved: boolean } | null = null;
 /** The picked files behind each object URL: the PNG decodes these, so no page request is made. */
 const files = new Map<string, File>();
+/** One <img> per picture, moved between repaints instead of decoded again. */
+const imageNodes = new Map<string, HTMLImageElement>();
 
 function presetLabels(id: PresetId): string[] {
   return t(`tierList.preset.${id}Rows`).split("|");
@@ -112,7 +116,10 @@ function onStorage(e: StorageEvent): void {
 
 /** Pictures cannot be saved, so closing the page with some on the board asks first. */
 function warnPictures(e: BeforeUnloadEvent): void {
-  if (files.size) e.preventDefault();
+  if (!files.size) return;
+  e.preventDefault();
+  // Chromium before 119, still common in QQ, 360 and in-app browsers, only asks when this is set.
+  e.returnValue = "";
 }
 
 function note(message: string): void {
@@ -121,6 +128,15 @@ function note(message: string): void {
 
 function imageLabel(): string {
   return t("tierList.picture");
+}
+
+function imageNode(src: string, name: string): HTMLImageElement {
+  let node = imageNodes.get(src);
+  if (!node) {
+    node = h("img", { src, alt: name, draggable: "false", decoding: "async" });
+    imageNodes.set(src, node);
+  }
+  return node;
 }
 
 function itemEl(id: string): HTMLElement {
@@ -147,7 +163,7 @@ function itemEl(id: string): HTMLElement {
       }
     },
   },
-    item.image ? h("img", { src: item.image, alt: name, draggable: "false" }) : h("span", null, item.text),
+    item.image ? imageNode(item.image, name) : h("span", null, item.text),
   );
 }
 
@@ -166,6 +182,7 @@ function drop(id: string): void {
   if (item?.image) {
     URL.revokeObjectURL(item.image);
     files.delete(item.image);
+    imageNodes.delete(item.image);
   }
   if (selected === id) selected = null;
   paint();
@@ -363,7 +380,7 @@ function endDrag(): void {
 
 function addFromEntry(): void {
   if (!entryEl) return;
-  const existing = Object.values(board.items).map((item) => item.text);
+  const existing = Object.values(board.items).filter((item) => !item.image).map((item) => item.text);
   const fresh = parseItems(entryEl.value, existing);
   const added = addItems(board, fresh.map((text) => ({ text })));
   // Lines that did not fit stay in the box, so they can go in after clearing space.
@@ -421,6 +438,7 @@ function drawCentered(ctx: CanvasRenderingContext2D, text: string, cx: number, c
 async function renderPng(): Promise<Blob | null> {
   // Decoding takes a while with many photos and the board stays editable: draw what was there when asked.
   const shot: Board = structuredClone(board);
+  const shotFiles = new Map(files);
   const layout = pngLayout(shot);
   const scale = 2;
   const canvas = document.createElement("canvas");
@@ -447,7 +465,7 @@ async function renderPng(): Promise<Blob | null> {
       ctx.fillRect(cell.x, cell.y, PNG_CELL, PNG_CELL);
       if (item.image) {
         try {
-          const { bitmap, width, height } = await decodeImage(files.get(item.image)!);
+          const { bitmap, width, height } = await decodeImage(shotFiles.get(item.image)!);
           const side = Math.min(width, height);
           ctx.drawImage(bitmap, (width - side) / 2, (height - side) / 2, side, side, cell.x, cell.y, PNG_CELL, PNG_CELL);
           bitmap.close();
@@ -478,20 +496,25 @@ async function exportPng(btn: HTMLButtonElement): Promise<void> {
   }
 }
 
-/** Starting over cannot be undone (pictures must be picked again), so a board with items asks for a second press. */
-function askStartOver(btn: HTMLButtonElement): void {
-  if (itemCount(board) && !confirmTimer) {
+/** Starting over or unranking everything cannot be undone, so a board with items asks for a second press. */
+function pressTwice(btn: HTMLButtonElement, idle: string, act: () => void): void {
+  const armed = armedBtn === btn;
+  disarm();
+  if (itemCount(board) && !armed) {
+    armedBtn = btn;
+    armedIdle = idle;
     btn.textContent = t("tierList.startOverConfirm");
-    confirmTimer = window.setTimeout(() => {
-      confirmTimer = 0;
-      btn.textContent = t("tierList.startOver");
-    }, CONFIRM_MS);
+    confirmTimer = window.setTimeout(disarm, CONFIRM_MS);
     return;
   }
+  act();
+}
+
+function disarm(): void {
   clearTimeout(confirmTimer);
   confirmTimer = 0;
-  btn.textContent = t("tierList.startOver");
-  startOver();
+  if (armedBtn) armedBtn.textContent = armedIdle;
+  armedBtn = null;
 }
 
 function startOver(): void {
@@ -506,6 +529,7 @@ function startOver(): void {
 function releaseUrls(): void {
   for (const url of files.keys()) URL.revokeObjectURL(url);
   files.clear();
+  imageNodes.clear();
 }
 
 export function mountTierList(host: HTMLElement): void {
@@ -537,8 +561,8 @@ export function mountTierList(host: HTMLElement): void {
       rowsEl,
       h("div", { class: "tier-actions" },
         h("button", { type: "button", class: "btn ghost", "data-action": "add-row", onClick: () => { if (addTier(board, t("tierList.newRow"))) { paint(); save(); } } }, t("tierList.addRow")),
-        h("button", { type: "button", class: "btn ghost", "data-action": "clear", onClick: () => { clearPlacements(board); selected = null; paint(); save(); } }, t("tierList.clear")),
-        h("button", { type: "button", class: "btn ghost", "data-action": "start-over", onClick: (e: Event) => askStartOver(e.currentTarget as HTMLButtonElement) }, t("tierList.startOver")),
+        h("button", { type: "button", class: "btn ghost", "data-action": "clear", onClick: (e: Event) => pressTwice(e.currentTarget as HTMLButtonElement, t("tierList.clear"), () => { clearPlacements(board); selected = null; paint(); save(); }) }, t("tierList.clear")),
+        h("button", { type: "button", class: "btn ghost", "data-action": "start-over", onClick: (e: Event) => pressTwice(e.currentTarget as HTMLButtonElement, t("tierList.startOver"), startOver) }, t("tierList.startOver")),
       ),
       h("h2", { class: "tier-sub" }, t("tierList.pool")),
       poolEl,
@@ -566,8 +590,7 @@ export function mountTierList(host: HTMLElement): void {
 
 export function unmountTierList(): void {
   flush();
-  clearTimeout(confirmTimer);
-  confirmTimer = 0;
+  disarm();
   window.removeEventListener("paste", onPaste);
   window.removeEventListener("storage", onStorage);
   window.removeEventListener("beforeunload", warnPictures);
