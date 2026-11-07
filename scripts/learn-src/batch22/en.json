@@ -24,7 +24,7 @@
         "s4t": "Learn the keys",
         "s4b": "The keys for that console appear under the game. On most consoles the arrow keys move, Z is A, X is B, V is Select and Enter is Start. On a phone, use the on-screen pad. A Bluetooth gamepad works too.",
         "s5t": "Save your game",
-        "s5b": "Move the pointer over the game to show the toolbar. The floppy disk icon saves a state and downloads it as a .state file. The folder icon loads one. Keep the file: it brings you back to this exact spot after you close the tab.",
+        "s5b": "Move the pointer over the game to show the toolbar. On a phone, tap the three-line icon at the top right. The floppy disk icon saves a state and downloads it as a .state file. The folder icon loads one. Keep the file: it brings you back to this exact spot after you close the tab.",
         "s6t": "Fix a game that will not start",
         "s6b": "A black screen usually means the wrong console, so try another under Console. A zip must hold one of the file types above. Files over 64 MB are refused, because they are too big for these consoles, and disc games are not supported.",
         "diagram1": "Each file type and the console it opens on.",
@@ -40,7 +40,7 @@
         "q4": "Can I play PlayStation or Nintendo DS games?",
         "a4": "No. This tool covers FC / NES, SFC / SNES, Game Boy, Game Boy Color, Game Boy Advance and Mega Drive.",
         "q5": "Where do my saves go?",
-        "a5": "Save State downloads a .state file to your device. To continue later, open the same ROM and load that file with the folder icon."
+        "a5": "The floppy disk icon downloads a .state file to your device. To continue later, open the same ROM and load that file with the folder icon. Saves made in the game's own menu may stay in this browser until site data is cleared, so keep a .state file for anything you care about."
       }
     },
     "open-swf-file": {
@@ -63,8 +63,8 @@
         "s5b": "This page runs a file that can start on its own and blocks network access. A game that loads more SWFs or XML, or only runs on its old website, stops on its loader.",
         "s6t": "Try something else if it fails",
         "s6b": "Ruffle runs most older ActionScript 1 and 2 files, but its ActionScript 3 support is incomplete, so some newer games fail or misbehave. Choose SWF again to open another file, or play the free titles under Flash games.",
-        "diagram1": "A SWF that starts alone runs. One that needs other files or its old website stops.",
-        "diagram2": "How mouse, touch and keyboard work in a Flash file."
+        "diagram1": "How mouse, touch and keyboard work in a Flash file.",
+        "diagram2": "A SWF that starts alone runs. One that needs other files or its old website stops."
       },
       "faq": {
         "q1": "Do I need Adobe Flash Player?",
@@ -87,7 +87,7 @@
       "bin": "named by its header, or choose",
       "zip": "looks inside for a ROM",
       "move": "Move",
-      "sfc": "SFC also"
+      "sfc": "SFC also. GBA uses Q and E too. Mega Drive: see the keys under the game."
     },
     "open-swf-file": {
       "ok": "Runs",

@@ -712,7 +712,7 @@ export const ONE_PAGE_HTML = `<!doctype html>
 
 export const TUTORIAL_SOURCES: Partial<Record<TutorialId, { title: string; href: string }[]>> = {
   "open-swf-file": [
-    { title: "Adobe Flash Player End of Life", href: "https://www.adobe.com/products/flashplayer/end-of-life.html" },
+    { title: "Adobe Flash Player End of Life", href: "https://www.adobe.com/products/flashplayer/end-of-life-alternative.html" },
     { title: "Ruffle Flash Player emulator", href: "https://ruffle.rs/" },
   ],
   algorithms: [{ title: "JavaScript Map — MDN", href: "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map" }],

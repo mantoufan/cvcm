@@ -62,7 +62,7 @@ def keyboard(t: dict) -> str:
     for k, name, x in pairs:
         out += [key(x, 110, k), text(x + 32, 214, name, 22, INK, 700, "middle")]
     out += [key(740, 110, "Enter", 120), text(800, 214, "Start", 22, INK, 700, "middle")]
-    out += [box(50, 350, 860, 150, SOFT), text(80, 392, t["sfc"], 24, DEEP, 700)]
+    out += [box(50, 350, 860, 150, SOFT), text(70, 392, t["sfc"], 20, DEEP, 700)]
     for i, (k, name) in enumerate([("S", "Y"), ("A", "X"), ("Q", "L"), ("E", "R")]):
         x = 90 + i * 200
         out += [key(x, 412, k), text(x + 84, 454, f"= {name}", 26, INK, 700)]
@@ -97,7 +97,7 @@ def inputs(t: dict) -> str:
 
 DIAGRAMS = {
     "use-emulator": (("use-emulator-files", files, 1), ("use-emulator-keys", keyboard, 2)),
-    "open-swf-file": (("open-swf-file-runs", runs, 1), ("open-swf-file-inputs", inputs, 2)),
+    "open-swf-file": (("open-swf-file-inputs", inputs, 1), ("open-swf-file-runs", runs, 2)),
 }
 count = 0
 for loc, folder in FOLDERS.items():

@@ -24,7 +24,7 @@
         "s4t": "Aprenda las teclas",
         "s4b": "Las teclas de esa consola aparecen bajo el juego. En la mayoría, las flechas mueven, Z es A, X es B, V es Select y Enter es Start. En el móvil, use el mando en pantalla o un mando Bluetooth.",
         "s5t": "Guarde la partida",
-        "s5b": "Mueva el puntero sobre el juego para ver la barra de herramientas. El icono del disquete guarda un estado y lo descarga como archivo .state. El icono de la carpeta lo carga. Conserve el archivo: tras cerrar la pestaña, le devuelve a ese mismo punto.",
+        "s5b": "Mueva el puntero sobre el juego para ver la barra de herramientas. En el móvil, toque el icono de tres líneas de arriba a la derecha. El icono del disquete guarda un estado y lo descarga como archivo .state. El icono de la carpeta lo carga. Conserve el archivo: tras cerrar la pestaña, le devuelve a ese mismo punto.",
         "s6t": "Solucione un juego que no arranca",
         "s6b": "Una pantalla negra suele indicar una consola equivocada, así que pruebe otra en Consola. El zip debe contener uno de los tipos de archivo anteriores. Los archivos de más de 64 MB se rechazan porque son demasiado grandes para estas consolas, y los juegos en disco no son compatibles.",
         "diagram1": "Cada tipo de archivo y la consola con la que se abre.",
@@ -40,7 +40,7 @@
         "q4": "¿Puedo jugar a juegos de PlayStation o Nintendo DS?",
         "a4": "No. Esta herramienta admite FC / NES, SFC / SNES, Game Boy, Game Boy Color, Game Boy Advance y Mega Drive.",
         "q5": "¿Dónde quedan mis partidas guardadas?",
-        "a5": "Guardar estado descarga un archivo .state en su dispositivo. Para continuar, abra la misma ROM y cargue ese archivo con el icono de la carpeta."
+        "a5": "El icono del disquete descarga un archivo .state en su dispositivo. Para continuar, abra la misma ROM y cargue ese archivo con el icono de la carpeta. Lo guardado en el menú del propio juego puede quedarse en este navegador hasta que se borren los datos del sitio, así que conserve un archivo .state de lo que le importe."
       }
     },
     "open-swf-file": {
@@ -63,8 +63,8 @@
         "s5b": "Esta página ejecuta un archivo que puede arrancar solo y bloquea el acceso a la red. Un juego que carga otros SWF o XML, o que solo funciona en su antiguo sitio web, se detiene en la pantalla de carga.",
         "s6t": "Pruebe otra opción si falla",
         "s6b": "Ruffle ejecuta la mayoría de los archivos antiguos de ActionScript 1 y 2, pero su soporte de ActionScript 3 aún está incompleto, así que algunos juegos más nuevos pueden no arrancar o funcionar mal. Pulse Elegir SWF de nuevo para abrir otro archivo o juegue a los títulos gratis de la sección de juegos Flash.",
-        "diagram1": "Un SWF que arranca solo funciona. Uno que necesita otros archivos o su antiguo sitio se detiene.",
-        "diagram2": "Cómo funcionan el ratón, la pantalla táctil y el teclado en un archivo Flash."
+        "diagram1": "Cómo funcionan el ratón, la pantalla táctil y el teclado en un archivo Flash.",
+        "diagram2": "Un SWF que arranca solo funciona. Uno que necesita otros archivos o su antiguo sitio se detiene."
       },
       "faq": {
         "q1": "¿Necesito Adobe Flash Player?",
@@ -87,7 +87,7 @@
       "bin": "según su cabecera, o elija",
       "zip": "busca la ROM dentro",
       "move": "Mover",
-      "sfc": "SFC añade"
+      "sfc": "SFC añade. GBA también usa Q y E. Mega Drive: vea las teclas bajo el juego."
     },
     "open-swf-file": {
       "ok": "Funciona",

@@ -24,7 +24,7 @@
         "s4t": "Pelajari tombol",
         "s4b": "Tombol untuk konsol itu muncul di bawah game. Pada sebagian besar konsol, tombol panah untuk bergerak, Z adalah A, X adalah B, V adalah Select, dan Enter adalah Start. Di ponsel, gunakan pad di layar atau gamepad Bluetooth.",
         "s5t": "Simpan game",
-        "s5b": "Arahkan penunjuk ke game untuk menampilkan bilah alat. Ikon disket menyimpan state dan mengunduhnya sebagai file .state. Ikon folder memuatnya. Simpan file ini: setelah tab ditutup, file ini mengembalikan Anda ke titik yang sama.",
+        "s5b": "Arahkan penunjuk ke game untuk menampilkan bilah alat. Di ponsel, ketuk ikon tiga garis di kanan atas. Ikon disket menyimpan state dan mengunduhnya sebagai file .state. Ikon folder memuatnya. Simpan file ini: setelah tab ditutup, file ini mengembalikan Anda ke titik yang sama.",
         "s6t": "Atasi game yang tidak mau mulai",
         "s6b": "Layar hitam biasanya berarti konsol salah, jadi coba konsol lain di Konsol. Zip harus berisi salah satu jenis file di atas. File di atas 64 MB ditolak karena terlalu besar untuk konsol ini, dan game cakram tidak didukung.",
         "diagram1": "Setiap jenis file dan konsol yang membukanya.",
@@ -40,7 +40,7 @@
         "q4": "Bisakah memainkan game PlayStation atau Nintendo DS?",
         "a4": "Tidak. Alat ini mendukung FC / NES, SFC / SNES, Game Boy, Game Boy Color, Game Boy Advance, dan Mega Drive.",
         "q5": "Di mana simpanan saya?",
-        "a5": "Simpan state mengunduh file .state ke perangkat Anda. Untuk melanjutkan, buka ROM yang sama dan muat file itu dengan ikon folder."
+        "a5": "Ikon disket mengunduh file .state ke perangkat Anda. Untuk melanjutkan, buka ROM yang sama dan muat file itu dengan ikon folder. Simpanan dari menu game itu sendiri mungkin tetap di browser ini sampai data situs dihapus, jadi simpan file .state untuk progres yang penting."
       }
     },
     "open-swf-file": {
@@ -63,8 +63,8 @@
         "s5b": "Halaman ini menjalankan file yang bisa mulai sendiri dan memblokir akses jaringan. Game yang memuat SWF lain atau XML, atau hanya berjalan di situs lamanya, berhenti di layar pemuatan.",
         "s6t": "Coba cara lain jika gagal",
         "s6b": "Ruffle menjalankan sebagian besar file ActionScript 1 dan 2 lama, tetapi dukungan ActionScript 3 belum lengkap, jadi beberapa game yang lebih baru mungkin gagal mulai atau berjalan tidak benar. Tekan Pilih SWF lagi untuk membuka file lain, atau mainkan game gratis di bagian game Flash.",
-        "diagram1": "SWF yang bisa mulai sendiri akan berjalan. Yang perlu file lain atau situs lamanya akan berhenti.",
-        "diagram2": "Cara memakai mouse, sentuhan, dan keyboard pada file Flash."
+        "diagram1": "Cara memakai mouse, sentuhan, dan keyboard pada file Flash.",
+        "diagram2": "SWF yang bisa mulai sendiri akan berjalan. Yang perlu file lain atau situs lamanya akan berhenti."
       },
       "faq": {
         "q1": "Apakah saya perlu Adobe Flash Player?",
@@ -87,7 +87,7 @@
       "bin": "dari header, atau pilih sendiri",
       "zip": "mencari ROM di dalamnya",
       "move": "Bergerak",
-      "sfc": "Tambahan SFC"
+      "sfc": "Tambahan SFC. GBA juga memakai Q dan E. Mega Drive: lihat tombol di bawah game."
     },
     "open-swf-file": {
       "ok": "Berjalan",
