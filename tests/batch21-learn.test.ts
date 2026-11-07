@@ -43,6 +43,10 @@ describe("batch 21 tutorial examples", () => {
     expect(value("log2(8)")).toBe("3");
     expect(value("−2^2")).toMatch(/^[−-]4$/);
     expect(value("(−2)^2")).toBe("4");
+    // A bracket left open is closed at the end; an extra one is the error.
+    expect(value("(2 + 3")).toBe("5");
+    expect(value("(2 + 6 ÷ (1 + 3")).toBe("3.5");
+    expect(evaluate("2 + 3)")).toMatchObject({ ok: false, error: "syntax" });
     expect(evaluate("170!").ok).toBe(true);
     expect(evaluate("171!")).toMatchObject({ ok: false, error: "overflow" });
     expect(evaluate("1 ÷ 0")).toMatchObject({ ok: false, error: "domain" });
@@ -59,6 +63,9 @@ describe("batch 21 tutorial examples", () => {
     expect(lcm(12n, 18n)).toBe(36n);
     expect(euclidSteps(12n, 18n).at(-1)).toMatchObject({ r: 0n, b: 6n });
     expect(gcd(8n, 15n)).toBe(1n);
+    // Coprime as a group, but the LCM is not the product.
+    expect(gcd(gcd(6n, 10n), 15n)).toBe(1n);
+    expect(lcm(lcm(6n, 10n), 15n)).toBe(30n);
   });
 
   it("matches the tuner and fancy text", () => {
@@ -68,6 +75,9 @@ describe("batch 21 tutorial examples", () => {
     const bold = FANCY_STYLES.find((s) => s === "bold")!;
     expect(fancy("cake", bold)).toBe("𝐜𝐚𝐤𝐞");
     expect(fancy("你好é", bold)).toBe("你好é");
+    expect(fancy("你", "strike")).not.toBe("你");
+    expect(fancy("ab", "upsideDown").length).toBe(2);
+    expect(fancy("123", "script")).toBe("123");
   });
 
   it("writes decimals the way the calculator reads them in each language", () => {

@@ -33,7 +33,7 @@
         "s2t": "Open the Scientific calculator on cv.cm",
         "s2b": "Tap the keys or type with your keyboard. The result appears as you type. Enter or = finishes the sum, Esc clears it, and ^ makes a power.",
         "s3t": "Add brackets where the order matters",
-        "s3b": "Write (2 + 3) × 4 to get 20. Put the whole top and bottom of a fraction in brackets: (2 + 6) ÷ (1 + 3) is 2. If you see Check the expression, look for a bracket that was never closed.",
+        "s3b": "Write (2 + 3) × 4 to get 20. Put the whole top and bottom of a fraction in brackets: (2 + 6) ÷ (1 + 3) is 2. A bracket left open is closed for you at the end of the sum, so check that it closes where you meant. Check the expression usually means an extra ) or a missing number.",
         "s4t": "Choose DEG or RAD before using sin, cos or tan",
         "s4b": "The DEG / RAD button switches between degrees and radians. Angles from a triangle or a protractor are in degrees; formulas with π are usually in radians. sin(30) is 0.5 in DEG and −0.988 in RAD.",
         "s5t": "Use powers, roots, logs and %",
@@ -65,7 +65,7 @@
         "result": "A note that survives closing the tab, and a .txt copy on your device whenever you want one.",
         "note": "The note lives in this browser on this device only. Download it before you clear browser data or change devices.",
         "s1t": "Know where the note is kept",
-        "s1b": "The note is saved in this browser on this device, not on a server. So no one else can read it, but it does not follow you to your phone or to another browser.",
+        "s1b": "The note is saved in this browser on this device, not on a server. So it never leaves your device, but it does not follow you to your phone or to another browser.",
         "s2t": "Open the Online notepad on cv.cm",
         "s2b": "Start typing. The page saves shortly after you stop and shows the time of the last save. Close the tab and come back: the note is still there.",
         "s3t": "Set the view for what you are writing",
@@ -101,9 +101,9 @@
         "result": "A formatted document you have checked by eye, ready as Markdown, a .md file, HTML you can paste, or an HTML file.",
         "note": "Markdown is plain text, so it opens anywhere. Sites differ on extras such as tables, so check them where you will publish.",
         "s1t": "Learn the basic marks",
-        "s1b": "# makes a heading (## a smaller one). **Two stars** make bold and *one star* italic. A line starting with - is a list item, and [text](https://example.com) is a link. Leave a blank line between paragraphs.",
+        "s1b": "# and a space make a heading (## and a space a smaller one). **Two stars** make bold and *one star* italic. A line starting with - and a space is a list item, and [text](https://example.com) is a link. Leave a blank line between paragraphs.",
         "s2t": "Open Markdown preview on cv.cm",
-        "s2b": "Type in the Markdown box and read the result in the Preview box as you go. Show example fills in a short document with every mark, which is a quick way to see them all.",
+        "s2b": "The Markdown box starts with a short example of every mark, and Show example brings it back at any time. Replace it with your own text and read the result in the Preview box as you go.",
         "s3t": "Add tables and task lists",
         "s3b": "Separate table cells with | and put a row of dashes under the header; a colon in that row sets the alignment. - [ ] is an open task and - [x] a finished one. Add ~~two tildes~~ for strikethrough.",
         "s4t": "Mark up code",
@@ -181,17 +181,17 @@
         "s4t": "Copy and paste it",
         "s4b": "Press Copy beside the style you want and paste it into the app. Check it after saving: an empty box or a question mark means that device has no symbol for that character.",
         "s5t": "Expect other characters to stay the same",
-        "s5b": "Only A–Z, a–z and digits change. Chinese, Japanese, Korean and accented letters such as é have no matching symbols, so they stay as typed in the same line.",
+        "s5b": "Letter styles change only A–Z, a–z and, in some styles, digits. Chinese, Japanese, Korean and accented letters such as é have no matching symbols, so they stay as typed. Strikethrough and Underline add a line to every character, and Upside down reverses the whole text.",
         "s6t": "Keep it out of the places where it hurts",
         "s6b": "Avoid it for anything people need to find or hear. Search may not match 𝐜𝐚𝐤𝐞 with cake, and screen readers may skip the symbols or read out their long names. Leave your real name and key words plain.",
         "diagram1": "The same word, but different Unicode symbols, not a font.",
-        "diagram2": "Only A–Z, a–z and digits change; everything else stays as typed."
+        "diagram2": "Letter styles change only A–Z, a–z and some digits; everything else stays as typed."
       },
       "faq": {
         "q1": "Why do I see empty boxes?",
         "a1": "The device has no font containing that symbol. Older phones and computers are the most likely to show boxes. Try a more common style, such as Bold.",
         "q2": "Does it work with Chinese or accented letters?",
-        "a2": "No. Unicode has styled forms for A–Z, a–z and digits, not for those characters, so they stay as you typed them.",
+        "a2": "Letter styles do not: Unicode has styled forms for A–Z, a–z and digits, not for those characters, so they stay as you typed them. Strikethrough and Underline do work, as they add a line to each character.",
         "q3": "Can I use it for my Instagram or TikTok name?",
         "a3": "Display names and bios usually accept it, though it depends on the app and can change. Usernames normally allow only plain letters, digits and a few marks.",
         "q4": "Is it bad for screen readers?",
@@ -206,7 +206,7 @@
         "blurb": "Settle it fairly, flip up to 1,000 coins, and read streaks without being fooled by them.",
         "title": "How to flip a coin online",
         "lead": "Two people need a fair decision, or a class wants to see how chance behaves, and nobody has a coin. You will agree the call, flip one coin or up to 1,000, and read the totals and streaks. It runs in your browser.",
-        "result": "A fair heads or tails, or a batch of up to 1,000 flips with totals, percentages and streaks you can copy.",
+        "result": "A fair heads or tails, or a batch of up to 1,000 flips with totals, percentages and streaks, and a summary you can copy.",
         "note": "Each coin uses one secure random bit from your browser, so heads and tails are equally likely and earlier flips do not matter.",
         "s1t": "Agree on the call first",
         "s1b": "Say who has heads and what each side means before you flip, and that one flip decides. A decision made in advance is what makes the flip fair to everyone.",
@@ -215,7 +215,7 @@
         "s3t": "Flip many coins at once",
         "s3b": "Choose 10, 100 or 1,000 under Coins per flip. All of them land together and the page shows how many came up heads and tails, which is handy for a probability lesson.",
         "s4t": "Read the totals",
-        "s4b": "Results show the heads, tails and total. Expect close to half each, not exactly half: in 100 coins, anything from 40 to 60 heads happens about 96% of the time.",
+        "s4b": "Results add up every flip since the last Reset, so press Reset first to read one batch on its own. Expect close to half each, not exactly half: in 100 coins, anything from 40 to 60 heads happens about 96% of the time.",
         "s5t": "Do not read meaning into streaks",
         "s5b": "Longest streak and Current streak show runs of the same face. They look surprising but are normal. After five heads in a row, the next coin is still 50% heads.",
         "s6t": "Copy or reset",
@@ -249,7 +249,7 @@
         "s2t": "Open the Guitar tuner on cv.cm",
         "s2b": "Press Start tuner and allow the microphone when the browser asks. Instrument defaults to standard guitar. Move to a quiet room and hold the guitar close to the microphone.",
         "s3t": "Play one string and read the meter",
-        "s3b": "Leave Auto on, then pick one string and let it ring. The page shows the closest note and how many cents off it is. In tune means within ±5 cents; a cent is one hundredth of a semitone.",
+        "s3b": "Leave Auto on, then pluck one string and let it ring. The page shows the closest string's note and how many cents off it is. In tune means within ±5 cents; a cent is one hundredth of a semitone.",
         "s4t": "Turn the peg the right way",
         "s4b": "Flat means too low, so tighten the string. Sharp means too high, so loosen it. Turn slowly and pluck again, because a small turn moves the pitch quickly, especially on the thin strings.",
         "s5t": "Tune up to the note",
@@ -261,13 +261,13 @@
       },
       "faq": {
         "q1": "Why does the tuner show a different note from the string?",
-        "a1": "The string is far from its target, so its nearest note is another one, or the tuner is hearing an overtone. Tap the string you want to lock onto it, then pluck softly and tune up gradually.",
+        "a1": "Auto follows the closest string, so a string far from its target can read as its neighbour, and an overtone can do the same. Tap the string you want to lock onto it, then pluck softly and tune up gradually.",
         "q2": "Why does the reading jump around?",
         "a2": "Noise and other ringing strings confuse the pitch reading. Mute the other strings with your hand, pluck with the soft part of your thumb, and read it just after the first attack.",
         "q3": "What does 440 Hz mean?",
         "a3": "It is the standard pitch of the note A above middle C. Leave Reference A4 at 440 unless you are matching a piano or a recording tuned to something else.",
         "q4": "Can I tune without a microphone?",
-        "a4": "Yes. Press Play reference to hear the target note and match the string by ear. Listen for the slow beats between the two sounds, and turn the peg until they stop.",
+        "a4": "Yes. Tap the string you want, then press Play reference to hear its note and match the string by ear. Listen for the slow beats between the two sounds, and turn the peg until they stop.",
         "q5": "How often should I tune?",
         "a5": "Every time you play. Check it again after you put on new strings or move between hot and cold rooms, because both change the tension in the strings."
       }
@@ -278,7 +278,7 @@
         "blurb": "Get all factors, pairs and the prime factorization, and see how the factor count is worked out.",
         "title": "How to find the factors of a number",
         "lead": "You need the factors of a number for homework, for simplifying, or to check whether it is prime. You will find them by hand for a small number, then read the full answer for any whole number up to 18 digits. It runs in your browser with exact maths.",
-        "result": "Whether the number is prime, its prime factorization, the number and sum of its factors, and every factor pair.",
+        "result": "Whether the number is prime, its prime factorization, the number and sum of its factors, and every factor pair for numbers with up to 2,000 factors.",
         "note": "A factor divides a number with nothing left over. Each factor comes with a partner, so you only need to test up to the square root.",
         "s1t": "Find the prime factors by hand",
         "s1b": "Keep dividing by the smallest prime that fits. 360 ÷ 2 = 180, ÷ 2 = 90, ÷ 2 = 45, ÷ 3 = 15, ÷ 3 = 5, and 5 is prime. So 360 = 2³ × 3² × 5.",
@@ -315,7 +315,7 @@
         "title": "How to find the LCM and GCF",
         "lead": "You are adding fractions, simplifying one, or working out when two schedules line up. You will learn which of the two you need, find it by hand with prime factors, and check it with exact maths in your browser.",
         "result": "The GCF and LCM of 2 to 20 whole numbers, with the prime factors and, for two numbers, Euclid's steps.",
-        "note": "GCF is also called GCD or HCF, and they all mean the same thing. LCM is the same number as the lowest common denominator of two fractions.",
+        "note": "GCF is also called GCD or HCF, and they all mean the same thing. The LCM of two fractions' denominators is their lowest common denominator.",
         "s1t": "Choose the one you need",
         "s1b": "Use the GCF to split into equal groups or simplify a fraction: 12/18 divided by 6 is 2/3. Use the LCM to find when things line up or to add fractions: buses every 12 and 18 minutes meet every 36 minutes.",
         "s2t": "Open the LCM and GCF calculator on cv.cm",
@@ -327,7 +327,7 @@
         "s5t": "Check with LCM × GCF",
         "s5b": "For two numbers, LCM × GCF equals the two numbers multiplied: 36 × 6 = 12 × 18 = 216. That lets you get the LCM straight from the GCF. This shortcut does not work for three or more numbers.",
         "s6t": "Read the result and copy it",
-        "s6b": "The page lists both results and the prime factors of each number. Coprime: Yes means the GCF is 1, so the numbers share no prime and the LCM is their product. Copy result sends the answer to your clipboard.",
+        "s6b": "The page lists both results and the prime factors of each number. Coprime: Yes means the GCF is 1, so no prime divides all of them. For two numbers, the LCM is then their product; with three or more it can be smaller (6, 10, 15 has an LCM of 30). Copy result sends the answer to your clipboard.",
         "diagram1": "Shared primes make the GCF; all the primes together make the LCM.",
         "diagram2": "Each line divides by the last remainder until nothing is left."
       },
@@ -346,14 +346,79 @@
     }
   },
   "svg": {
-    "use-scientific-calculator": { "first": "first", "sinDeg": "0.5", "sinRad": "−0.988" },
-    "use-online-notepad": { "browser": "This browser", "saved": "Saves automatically", "other": "Another device", "notThere": "Not there", "download": "Download .txt", "file": "Your .txt file", "wrapOn": "Wrap long lines: on", "wrapOff": "Wrap long lines: off", "sample": "A long line of text wraps at the edge of the box", "scroll": "scroll sideways" },
-    "preview-markdown": { "you": "You type", "see": "Readers see", "title": "Title", "bold": "bold", "item": "list item", "link": "a link", "day": "Day", "hours": "Hours", "sat": "Sat", "sun": "Sun", "boots": "Boots", "snacks": "Snacks" },
-    "make-css-gradient": { "linear": "Linear", "radial": "Radial", "conic": "Conic" },
-    "make-fancy-text": { "plain": "Plain", "bold": "Bold", "script": "Script", "gothic": "Gothic", "circled": "Circled", "input": "You type", "output": "You get", "keeps": "你好 and é stay as typed" },
-    "flip-coin": { "heads": "Heads", "tails": "Tails", "headsShort": "H", "tailsShort": "T", "next": "Next flip" },
-    "tune-guitar": { "thick": "thickest", "thin": "thinnest", "flat": "Flat", "sharp": "Sharp", "ok": "In tune", "tighten": "tighten", "loosen": "loosen", "cents": "cents" },
-    "find-factors": { "pairs": "Factor pairs of 36", "sqrt": "√36 = 6" },
-    "find-lcm-gcf": { "shared": "shared", "gcf": "GCF", "lcm": "LCM", "last": "The last divisor is the GCF" }
+    "use-scientific-calculator": {
+      "first": "first",
+      "sinDeg": "0.5",
+      "sinRad": "−0.988"
+    },
+    "use-online-notepad": {
+      "browser": "This browser",
+      "saved": "Saves automatically",
+      "other": "Another device",
+      "notThere": "Not there",
+      "download": "Download .txt",
+      "file": "Your .txt file",
+      "wrapOn": "Wrap long lines: on",
+      "wrapOff": "Wrap long lines: off",
+      "sample": "A long line of text wraps at the edge of the box",
+      "scroll": "scroll sideways"
+    },
+    "preview-markdown": {
+      "you": "You type",
+      "see": "Readers see",
+      "title": "Title",
+      "bold": "bold",
+      "item": "list item",
+      "link": "a link",
+      "day": "Day",
+      "hours": "Hours",
+      "sat": "Sat",
+      "sun": "Sun",
+      "boots": "Boots",
+      "snacks": "Snacks"
+    },
+    "make-css-gradient": {
+      "linear": "Linear",
+      "radial": "Radial",
+      "conic": "Conic"
+    },
+    "make-fancy-text": {
+      "plain": "Plain",
+      "bold": "Bold",
+      "script": "Script",
+      "gothic": "Gothic",
+      "circled": "Circled",
+      "input": "You type",
+      "output": "You get",
+      "keeps": "你好 and é stay as typed"
+    },
+    "flip-coin": {
+      "heads": "Heads",
+      "tails": "Tails",
+      "headsShort": "H",
+      "tailsShort": "T",
+      "next": "Next flip"
+    },
+    "tune-guitar": {
+      "thick": "thickest",
+      "thin": "thinnest",
+      "flat": "Flat",
+      "sharp": "Sharp",
+      "ok": "In tune",
+      "tighten": "tighten",
+      "loosen": "loosen",
+      "cents": "cents",
+      "notes": "E2 A2 D3 G3 B3 E4"
+    },
+    "find-factors": {
+      "pairs": "Factor pairs of 36",
+      "sqrt": "√36 = 6"
+    },
+    "find-lcm-gcf": {
+      "shared": "shared",
+      "gcf": "GCF",
+      "lcm": "LCM",
+      "last": "The last divisor is the GCF"
+    }
   }
 }

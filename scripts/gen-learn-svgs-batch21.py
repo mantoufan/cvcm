@@ -63,7 +63,7 @@ def calc_order(t) -> str:
             + text(860, y + 72, f"= {result}", 46, PINK, 800, "end", MONO)
             + text(860, y + 126, step, 22, MUTED, 400, "end", MONO)
         )
-    return sum_card(70, "2 + 3 × 4", 220, 145, "2 + 12", "14") + sum_card(290, "(2 + 3) × 4", 110, 145, "5 × 4", "20")
+    return sum_card(70, "2 + 3 × 4", 220, 145, "2 + 12", "14") + sum_card(290, "(2 + 3) × 4", 110, 193, "5 × 4", "20")
 
 
 def calc_angle(t) -> str:
@@ -94,7 +94,7 @@ def note_where(t) -> str:
         + box(560, 70, 330, 160)
         + text(725, 135, t["other"], 24, DEEP, 700, "middle") + text(725, 180, t["notThere"], 20, MUTED, 400, "middle")
         + arrow(400, 290, 560, 340)
-        + text(480, 395, t["download"], 20, PINK, 700, "middle")
+        + text(545, 395, t["download"], 20, PINK, 700, "end")
         + box(560, 280, 330, 160)
         + text(725, 370, t["file"], 24, DEEP, 700, "middle")
     )
@@ -206,8 +206,8 @@ def fancy_styles(t) -> str:
     rows = (
         (t["plain"], "cake 123"),
         (t["bold"], "𝐜𝐚𝐤𝐞 𝟏𝟐𝟑"),
-        (t["script"], "𝒸𝒶𝓀ℯ"),
-        (t["gothic"], "𝔠𝔞𝔨𝔢"),
+        (t["script"], "𝒸𝒶𝓀ℯ 123"),
+        (t["gothic"], "𝔠𝔞𝔨𝔢 123"),
         (t["circled"], "ⓒⓐⓚⓔ ①②③"),
     )
     out = ""
@@ -261,7 +261,8 @@ def coin_memory(t) -> str:
 
 
 def tuner_strings(t) -> str:
-    rows = (("E2", "82.4 Hz", 9), ("A2", "110 Hz", 7.5), ("D3", "147 Hz", 6), ("G3", "196 Hz", 4.5), ("B3", "247 Hz", 3), ("E4", "330 Hz", 2))
+    # Spanish pages default to solfège in the tuner, so the note names are labels too.
+    rows = tuple(zip(t["notes"].split(), ("82.4 Hz", "110 Hz", "147 Hz", "196 Hz", "247 Hz", "330 Hz"), (9, 7.5, 6, 4.5, 3, 2)))
     out = box(210, 56, 600, 428, SOFT, LINE, 12, 2)
     for i, (note, hz, width) in enumerate(rows):
         y = 96 + i * 70
@@ -337,7 +338,7 @@ def lcm_euclid(t) -> str:
         out += text(190, y + 62, f"{a} = {q} × ", 36, DEEP, 700, font=MONO)
         out += text(445, y + 62, str(b), 36, PINK if last else DEEP, 800, font=MONO)
         out += text(510, y + 62, f"+ {r}", 36, DEEP, 700, font=MONO)
-    out += arrow(665, 186, 470, 224)
+    out += arrow(564, 186, 456, 224)
     out += text(480, 390, t["last"], 24, DEEP, 700, "middle") + text(480, 450, f"{t['gcf']} = 6", 40, PINK, 800, "middle", MONO)
     return out
 

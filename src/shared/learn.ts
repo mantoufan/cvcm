@@ -1133,7 +1133,7 @@ export const TUTORIAL_DIAGRAMS: Partial<Record<TutorialId, { step: number; src: 
     { step: 5, src: "/covers/tutorials/make-fancy-text-changes.svg" },
   ],
   "flip-coin": [
-    { step: 3, src: "/covers/tutorials/flip-coin-even.svg" },
+    { step: 4, src: "/covers/tutorials/flip-coin-even.svg" },
     { step: 5, src: "/covers/tutorials/flip-coin-memory.svg" },
   ],
   "tune-guitar": [
