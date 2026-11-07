@@ -17,9 +17,18 @@
       "Angka ditampilkan dalam bahasa Anda, tetapi file CSV menyimpan nilai mentah dan kode ISO, sehingga bisa dibuka dengan rapi di Excel, Google Sheets, atau kode."
     ],
     "faq": [
-      { "q": "Dari mana data ini berasal?", "a": "Statistik negara berasal dari World Development Indicators Bank Dunia. Kode negara, mata uang, dan telepon mengikuti ISO 3166, ISO 4217, dan daftar ITU. Zona waktu berasal dari basis data IANA tz. Ukuran kertas mengikuti ISO 216, ISO 269, JIS P 0138, dan ANSI." },
-      { "q": "Apakah tabel ini boleh dipakai gratis?", "a": "Ya. Data Bank Dunia berlisensi CC BY 4.0, jadi sebutkan Bank Dunia sebagai sumber saat menggunakannya kembali. Kode dan tabel referensi adalah fakta publik yang bebas dipakai." },
-      { "q": "Seberapa baru angkanya?", "a": "Setiap halaman menampilkan tanggal pengambilan data dan tahun setiap nilai. Bank Dunia menerbitkan sebagian besar indikator satu atau dua tahun setelahnya, jadi nilai terbaru suatu negara bisa berasal dari tahun yang lebih lama." }
+      {
+        "q": "Dari mana data ini berasal?",
+        "a": "Statistik negara berasal dari World Development Indicators Bank Dunia. Kode negara, mata uang, dan telepon mengikuti ISO 3166, ISO 4217, dan daftar ITU. Zona waktu berasal dari basis data IANA tz. Ukuran kertas mengikuti ISO 216, ISO 269, JIS P 0138, dan ANSI."
+      },
+      {
+        "q": "Apakah tabel ini boleh dipakai gratis?",
+        "a": "Ya. Data Bank Dunia berlisensi CC BY 4.0, jadi sebutkan Bank Dunia sebagai sumber saat menggunakannya kembali. Kode dan tabel referensi adalah fakta publik yang bebas dipakai."
+      },
+      {
+        "q": "Seberapa baru angkanya?",
+        "a": "Setiap halaman menampilkan tanggal pengambilan data dan tahun setiap nilai. Bank Dunia menerbitkan sebagian besar indikator satu atau dua tahun setelahnya, jadi nilai terbaru suatu negara bisa berasal dari tahun yang lebih lama."
+      }
     ]
   },
   "ui": {
@@ -79,9 +88,18 @@
         "Daftar ini mencakup 217 perekonomian yang dilaporkan Bank Dunia. Beberapa wilayah dicantumkan terpisah dari negara induknya."
       ],
       "faq": [
-        { "q": "Negara mana yang penduduknya paling banyak?", "a": "{top1}, dengan {v1} jiwa pada {year1}. {top2} di urutan kedua dengan {v2}." },
-        { "q": "Berapa jumlah penduduk dunia?", "a": "Menurut Bank Dunia, jumlah penduduk dunia pada {worldYear} adalah {world}." },
-        { "q": "Negara mana yang penduduknya paling sedikit?", "a": "Dalam daftar ini, {last}, dengan {vlast} jiwa. Wilayah yang tidak dilaporkan Bank Dunia, seperti Vatikan, tidak termasuk." }
+        {
+          "q": "Negara mana yang penduduknya paling banyak?",
+          "a": "{top1}, dengan {v1} jiwa pada {year1}. {top2} di urutan kedua dengan {v2}."
+        },
+        {
+          "q": "Berapa jumlah penduduk dunia?",
+          "a": "Menurut Bank Dunia, jumlah penduduk dunia pada {worldYear} adalah {world}."
+        },
+        {
+          "q": "Negara mana yang penduduknya paling sedikit?",
+          "a": "Dalam daftar ini, {last}, dengan {vlast} jiwa. Wilayah yang tidak dilaporkan Bank Dunia, seperti Vatikan, tidak termasuk."
+        }
       ]
     },
     "gdp": {
@@ -101,9 +119,18 @@
         "Untuk membandingkan taraf hidup, lihat PDB per kapita, atau PDB berdasarkan paritas daya beli (PPP) yang memperhitungkan tingkat harga."
       ],
       "faq": [
-        { "q": "Negara mana yang PDB-nya terbesar?", "a": "{top1}, dengan PDB {v1} pada {year1}. {top2} di urutan kedua dengan {v2}." },
-        { "q": "Berapa PDB dunia?", "a": "PDB dunia pada {worldYear} adalah {world}, dalam dolar AS berlaku." },
-        { "q": "Mengapa beberapa negara menampilkan tahun yang lebih lama?", "a": "Bank Dunia baru menerbitkan angka setelah negara tersebut melaporkannya. Setiap baris menampilkan tahun terbaru yang tersedia, jadi beberapa negara tertinggal." }
+        {
+          "q": "Negara mana yang PDB-nya terbesar?",
+          "a": "{top1}, dengan PDB {v1} pada {year1}. {top2} di urutan kedua dengan {v2}."
+        },
+        {
+          "q": "Berapa PDB dunia?",
+          "a": "PDB dunia pada {worldYear} adalah {world}, dalam dolar AS berlaku."
+        },
+        {
+          "q": "Mengapa beberapa negara menampilkan tahun yang lebih lama?",
+          "a": "Bank Dunia baru menerbitkan angka setelah negara tersebut melaporkannya. Setiap baris menampilkan tahun terbaru yang tersedia, jadi beberapa negara tertinggal."
+        }
       ]
     },
     "gdp-per-capita": {
@@ -123,9 +150,18 @@
         "Pusat keuangan kecil dan negara pengekspor sumber daya sering berada di puncak karena ekonomi yang besar dibagi ke sedikit penduduk."
       ],
       "faq": [
-        { "q": "Negara mana yang PDB per kapitanya tertinggi?", "a": "{top1}, sebesar {v1} per orang pada {year1}, disusul {top2} ({v2})." },
-        { "q": "Berapa rata-rata PDB per kapita dunia?", "a": "{world} pada {worldYear}, dalam dolar AS berlaku." },
-        { "q": "Negara mana yang PDB per kapitanya terendah?", "a": "Dalam daftar ini, {last}, sebesar {vlast} per orang." }
+        {
+          "q": "Negara mana yang PDB per kapitanya tertinggi?",
+          "a": "{top1}, sebesar {v1} per orang pada {year1}, disusul {top2} ({v2})."
+        },
+        {
+          "q": "Berapa rata-rata PDB per kapita dunia?",
+          "a": "{world} pada {worldYear}, dalam dolar AS berlaku."
+        },
+        {
+          "q": "Negara mana yang PDB per kapitanya terendah?",
+          "a": "Dalam daftar ini, {last}, sebesar {vlast} per orang."
+        }
       ]
     },
     "life-expectancy": {
@@ -145,9 +181,18 @@
         "Nilainya untuk laki-laki dan perempuan. Di hampir semua negara, perempuan hidup lebih lama daripada laki-laki."
       ],
       "faq": [
-        { "q": "Negara mana yang angka harapan hidupnya tertinggi?", "a": "{top1}, yaitu {v1} tahun pada {year1}, disusul {top2} ({v2})." },
-        { "q": "Berapa rata-rata angka harapan hidup dunia?", "a": "{world} tahun pada {worldYear}, untuk laki-laki dan perempuan." },
-        { "q": "Negara mana yang angka harapan hidupnya terendah?", "a": "Dalam daftar ini, {last}, yaitu {vlast} tahun." }
+        {
+          "q": "Negara mana yang angka harapan hidupnya tertinggi?",
+          "a": "{top1}, yaitu {v1} tahun pada {year1}, disusul {top2} ({v2})."
+        },
+        {
+          "q": "Berapa rata-rata angka harapan hidup dunia?",
+          "a": "{world} tahun pada {worldYear}, untuk laki-laki dan perempuan."
+        },
+        {
+          "q": "Negara mana yang angka harapan hidupnya terendah?",
+          "a": "Dalam daftar ini, {last}, yaitu {vlast} tahun."
+        }
       ]
     },
     "fertility-rate": {
@@ -167,9 +212,18 @@
         "Sekitar 2,1 anak per perempuan menjaga jumlah penduduk tetap stabil tanpa migrasi. Sebagian besar Asia Timur dan Eropa jauh di bawahnya."
       ],
       "faq": [
-        { "q": "Negara mana yang tingkat kesuburannya tertinggi?", "a": "{top1}, yaitu {v1} anak per perempuan pada {year1}, disusul {top2} ({v2})." },
-        { "q": "Negara mana yang tingkat kesuburannya terendah?", "a": "Dalam daftar ini, {last}, yaitu {vlast} anak per perempuan." },
-        { "q": "Apa itu tingkat kesuburan pengganti?", "a": "Sekitar 2,1 anak per perempuan di negara dengan angka kematian anak yang rendah. Rata-rata dunia adalah {world} ({worldYear})." }
+        {
+          "q": "Negara mana yang tingkat kesuburannya tertinggi?",
+          "a": "{top1}, yaitu {v1} anak per perempuan pada {year1}, disusul {top2} ({v2})."
+        },
+        {
+          "q": "Negara mana yang tingkat kesuburannya terendah?",
+          "a": "Dalam daftar ini, {last}, yaitu {vlast} anak per perempuan."
+        },
+        {
+          "q": "Apa itu tingkat kesuburan pengganti?",
+          "a": "Sekitar 2,1 anak per perempuan di negara dengan angka kematian anak yang rendah. Rata-rata dunia adalah {world} ({worldYear})."
+        }
       ]
     },
     "internet-users": {
@@ -189,9 +243,18 @@
         "Beberapa negara melapor hanya setiap beberapa tahun, jadi periksa kolom tahun sebelum membandingkan dua baris."
       ],
       "faq": [
-        { "q": "Negara mana yang persentase pengguna internetnya tertinggi?", "a": "{top1}, dengan {v1}% penduduk daring pada {year1}." },
-        { "q": "Berapa persen penduduk dunia yang menggunakan internet?", "a": "{world}% penduduk dunia pada {worldYear}." },
-        { "q": "Negara mana yang pengguna internetnya paling sedikit?", "a": "Dalam daftar ini, {last}, yaitu {vlast}% penduduk." }
+        {
+          "q": "Negara mana yang persentase pengguna internetnya tertinggi?",
+          "a": "{top1}, dengan {v1}% penduduk daring pada {year1}."
+        },
+        {
+          "q": "Berapa persen penduduk dunia yang menggunakan internet?",
+          "a": "{world}% penduduk dunia pada {worldYear}."
+        },
+        {
+          "q": "Negara mana yang pengguna internetnya paling sedikit?",
+          "a": "Dalam daftar ini, {last}, yaitu {vlast}% penduduk."
+        }
       ]
     },
     "gdp-ppp-per-capita": {
@@ -211,9 +274,18 @@
         "Pusat keuangan kecil dan negara pengekspor minyak berada di puncak daftar karena outputnya besar dibandingkan jumlah penduduknya, bukan karena setiap penduduknya sekaya itu. Setiap baris menampilkan tahun terbaru yang dilaporkan negara tersebut."
       ],
       "faq": [
-        { "q": "Negara mana yang PDB per kapita PPP-nya tertinggi?", "a": "{top1}, dengan {v1} dolar internasional per orang pada {year1}, disusul {top2} ({v2})." },
-        { "q": "Apa bedanya PDB per kapita dan PDB per kapita PPP?", "a": "PDB per kapita biasa memakai kurs pasar. Versi PPP disesuaikan dengan apa yang bisa dibeli dengan uang di dalam negeri, sehingga negara yang lebih miskin dengan harga rendah berperingkat lebih tinggi daripada di daftar nominal." },
-        { "q": "Negara mana yang PDB per kapita PPP-nya terendah?", "a": "Dalam daftar ini, {last}, dengan {vlast} dolar internasional per orang." }
+        {
+          "q": "Negara mana yang PDB per kapita PPP-nya tertinggi?",
+          "a": "{top1}, dengan {v1} dolar internasional per orang pada {year1}, disusul {top2} ({v2})."
+        },
+        {
+          "q": "Apa bedanya PDB per kapita dan PDB per kapita PPP?",
+          "a": "PDB per kapita biasa memakai kurs pasar. Versi PPP disesuaikan dengan apa yang bisa dibeli dengan uang di dalam negeri, sehingga negara yang lebih miskin dengan harga rendah berperingkat lebih tinggi daripada di daftar nominal."
+        },
+        {
+          "q": "Negara mana yang PDB per kapita PPP-nya terendah?",
+          "a": "Dalam daftar ini, {last}, dengan {vlast} dolar internasional per orang."
+        }
       ]
     },
     "gdp-growth": {
@@ -233,9 +305,18 @@
         "Ekonomi kecil paling mudah bergejolak: satu ladang minyak baru, gagal panen, atau perang bisa menggeser pertumbuhan hingga sepuluh poin dalam setahun. Lihat beberapa tahun sebelum menyimpulkan tren."
       ],
       "faq": [
-        { "q": "Negara mana yang ekonominya tumbuh paling cepat?", "a": "{top1}, dengan pertumbuhan PDB riil {v1}% pada {year1}. {top2} di urutan berikutnya dengan {v2}%." },
-        { "q": "Berapa pertumbuhan ekonomi dunia?", "a": "PDB dunia tumbuh {world}% secara riil pada {worldYear}." },
-        { "q": "Apa arti pertumbuhan PDB negatif?", "a": "Ekonomi menghasilkan lebih sedikit dibanding tahun sebelumnya. Penurunan dua kuartal berturut-turut adalah patokan umum untuk resesi. Nilai terendah dalam daftar ini adalah {last}, yaitu {vlast}%." }
+        {
+          "q": "Negara mana yang ekonominya tumbuh paling cepat?",
+          "a": "{top1}, dengan pertumbuhan PDB riil {v1}% pada {year1}. {top2} di urutan berikutnya dengan {v2}%."
+        },
+        {
+          "q": "Berapa pertumbuhan ekonomi dunia?",
+          "a": "PDB dunia tumbuh {world}% secara riil pada {worldYear}."
+        },
+        {
+          "q": "Apa arti pertumbuhan PDB negatif?",
+          "a": "Ekonomi menghasilkan lebih sedikit dibanding tahun sebelumnya. Penurunan dua kuartal berturut-turut adalah patokan umum untuk resesi. Nilai terendah dalam daftar ini adalah {last}, yaitu {vlast}%."
+        }
       ]
     },
     "inflation": {
@@ -255,9 +336,18 @@
         "Sebagian besar bank sentral menargetkan sekitar 2% per tahun. Inflasi di atas 50% per bulan disebut hiperinflasi. Beberapa negara terlambat menerbitkan data, jadi periksa kolom tahun."
       ],
       "faq": [
-        { "q": "Negara mana yang tingkat inflasinya tertinggi?", "a": "{top1}, dengan kenaikan harga konsumen {v1}% pada {year1}, disusul {top2} ({v2}%)." },
-        { "q": "Berapa tingkat inflasi dunia?", "a": "Harga konsumen di seluruh dunia naik {world}% pada {worldYear}." },
-        { "q": "Negara mana yang inflasinya terendah?", "a": "Dalam daftar ini, {last}, yaitu {vlast}%. Angka negatif berarti harga turun." }
+        {
+          "q": "Negara mana yang tingkat inflasinya tertinggi?",
+          "a": "{top1}, dengan kenaikan harga konsumen {v1}% pada {year1}, disusul {top2} ({v2}%)."
+        },
+        {
+          "q": "Berapa tingkat inflasi dunia?",
+          "a": "Harga konsumen di seluruh dunia naik {world}% pada {worldYear}."
+        },
+        {
+          "q": "Negara mana yang inflasinya terendah?",
+          "a": "Dalam daftar ini, {last}, yaitu {vlast}%. Angka negatif berarti harga turun."
+        }
       ]
     },
     "unemployment": {
@@ -277,9 +367,18 @@
         "Ini adalah estimasi model yang memakai satu definisi untuk semua negara, sehingga bisa berbeda dari angka nasional yang diterbitkan masing-masing pemerintah."
       ],
       "faq": [
-        { "q": "Negara mana yang tingkat penganggurannya tertinggi?", "a": "{top1}, yaitu {v1}% dari angkatan kerja pada {year1}, disusul {top2} ({v2}%)." },
-        { "q": "Berapa tingkat pengangguran dunia?", "a": "ILO memperkirakan {world}% pada {worldYear}." },
-        { "q": "Negara mana yang tingkat penganggurannya terendah?", "a": "Dalam daftar ini, {last}, yaitu {vlast}%. Angka yang sangat rendah sering berarti banyak orang bekerja di sektor informal atau di usaha keluarga." }
+        {
+          "q": "Negara mana yang tingkat penganggurannya tertinggi?",
+          "a": "{top1}, yaitu {v1}% dari angkatan kerja pada {year1}, disusul {top2} ({v2}%)."
+        },
+        {
+          "q": "Berapa tingkat pengangguran dunia?",
+          "a": "ILO memperkirakan {world}% pada {worldYear}."
+        },
+        {
+          "q": "Negara mana yang tingkat penganggurannya terendah?",
+          "a": "Dalam daftar ini, {last}, yaitu {vlast}%. Angka yang sangat rendah sering berarti banyak orang bekerja di sektor informal atau di usaha keluarga."
+        }
       ]
     },
     "land-area": {
@@ -299,9 +398,18 @@
         "Daftar ini mencakup perekonomian yang dilaporkan Bank Dunia. Antartika dan wilayah sengketa tanpa satu pemerintahan tidak termasuk."
       ],
       "faq": [
-        { "q": "Negara mana yang daratannya paling luas?", "a": "{top1}, dengan daratan {v1} km², disusul {top2} ({v2} km²) dan {top3} ({v3} km²)." },
-        { "q": "Berapa luas daratan di Bumi?", "a": "Bank Dunia menjumlahkan daratan semua negara menjadi {world} km² ({worldYear}), kira-kira seperempat permukaan Bumi. Antartika tidak termasuk." },
-        { "q": "Negara mana yang daratannya paling kecil?", "a": "Dalam daftar ini, {last}, dengan {vlast} km². Vatikan lebih kecil, tetapi tidak ada dalam data Bank Dunia." }
+        {
+          "q": "Negara mana yang daratannya paling luas?",
+          "a": "{top1}, dengan daratan {v1} km², disusul {top2} ({v2} km²) dan {top3} ({v3} km²)."
+        },
+        {
+          "q": "Berapa luas daratan di Bumi?",
+          "a": "Bank Dunia menjumlahkan daratan semua negara menjadi {world} km² ({worldYear}), kira-kira seperempat permukaan Bumi. Antartika tidak termasuk."
+        },
+        {
+          "q": "Negara mana yang daratannya paling kecil?",
+          "a": "Dalam daftar ini, {last}, dengan {vlast} km². Vatikan lebih kecil, tetapi tidak ada dalam data Bank Dunia."
+        }
       ]
     },
     "population-density": {
@@ -321,9 +429,18 @@
         "Negara-kota dan pulau kecil berada di puncak daftar. Di antara negara besar, Bangladesh adalah yang terpadat."
       ],
       "faq": [
-        { "q": "Negara mana yang kepadatan penduduknya tertinggi?", "a": "{top1}, dengan {v1} jiwa per km² pada {year1}, disusul {top2} ({v2})." },
-        { "q": "Berapa kepadatan penduduk dunia?", "a": "Sekitar {world} jiwa per km² daratan pada {worldYear}." },
-        { "q": "Negara mana yang kepadatan penduduknya terendah?", "a": "Dalam daftar ini, {last}, dengan {vlast} jiwa per km²." }
+        {
+          "q": "Negara mana yang kepadatan penduduknya tertinggi?",
+          "a": "{top1}, dengan {v1} jiwa per km² pada {year1}, disusul {top2} ({v2})."
+        },
+        {
+          "q": "Berapa kepadatan penduduk dunia?",
+          "a": "Sekitar {world} jiwa per km² daratan pada {worldYear}."
+        },
+        {
+          "q": "Negara mana yang kepadatan penduduknya terendah?",
+          "a": "Dalam daftar ini, {last}, dengan {vlast} jiwa per km²."
+        }
       ]
     },
     "urban-population": {
@@ -343,9 +460,18 @@
         "Negara-kota dan wilayah kecil 100% perkotaan menurut definisinya. Lebih dari separuh penduduk dunia tinggal di kota sejak sekitar tahun 2007."
       ],
       "faq": [
-        { "q": "Negara mana yang paling urban?", "a": "{top1} ({v1}%), lalu {top2} ({v2}%) dan {top3} ({v3}%). Negara-kota dan wilayah kecil sering dihitung sepenuhnya perkotaan." },
-        { "q": "Berapa persen penduduk dunia yang tinggal di kota?", "a": "{world}% pada {worldYear}, menurut perkiraan PBB." },
-        { "q": "Negara mana yang paling tidak urban?", "a": "Dalam daftar ini, {last}, di mana {vlast}% penduduknya tinggal di daerah perkotaan." }
+        {
+          "q": "Negara mana yang paling urban?",
+          "a": "{top1} ({v1}%), lalu {top2} ({v2}%) dan {top3} ({v3}%). Negara-kota dan wilayah kecil sering dihitung sepenuhnya perkotaan."
+        },
+        {
+          "q": "Berapa persen penduduk dunia yang tinggal di kota?",
+          "a": "{world}% pada {worldYear}, menurut perkiraan PBB."
+        },
+        {
+          "q": "Negara mana yang paling tidak urban?",
+          "a": "Dalam daftar ini, {last}, di mana {vlast}% penduduknya tinggal di daerah perkotaan."
+        }
       ]
     },
     "aged-65-plus": {
@@ -365,9 +491,18 @@
         "Negara-negara Teluk memiliki porsi sangat rendah karena sebagian besar penduduknya adalah pekerja migran usia produktif, bukan karena warga negaranya sendiri muda."
       ],
       "faq": [
-        { "q": "Negara mana yang penduduknya paling tua?", "a": "{top1}, di mana {v1}% penduduknya berusia 65 tahun atau lebih pada {year1}, disusul {top2} ({v2}%)." },
-        { "q": "Berapa persen penduduk dunia yang berusia di atas 65 tahun?", "a": "{world}% pada {worldYear}." },
-        { "q": "Negara mana yang penduduknya paling muda?", "a": "Menurut ukuran ini, {last}, di mana {vlast}% penduduknya berusia 65 tahun atau lebih." }
+        {
+          "q": "Negara mana yang penduduknya paling tua?",
+          "a": "{top1}, di mana {v1}% penduduknya berusia 65 tahun atau lebih pada {year1}, disusul {top2} ({v2}%)."
+        },
+        {
+          "q": "Berapa persen penduduk dunia yang berusia di atas 65 tahun?",
+          "a": "{world}% pada {worldYear}."
+        },
+        {
+          "q": "Negara mana yang penduduknya paling muda?",
+          "a": "Menurut ukuran ini, {last}, di mana {vlast}% penduduknya berusia 65 tahun atau lebih."
+        }
       ]
     },
     "birth-rate": {
@@ -387,9 +522,18 @@
         "Untuk membandingkan berapa banyak anak yang dimiliki perempuan, gunakan tabel tingkat kesuburan. Negara dengan angka kelahiran terendah juga memiliki penduduk tertua."
       ],
       "faq": [
-        { "q": "Negara mana yang angka kelahirannya tertinggi?", "a": "{top1}, dengan {v1} kelahiran per 1.000 penduduk pada {year1}, disusul {top2} ({v2})." },
-        { "q": "Berapa angka kelahiran dunia?", "a": "{world} kelahiran per 1.000 penduduk pada {worldYear}." },
-        { "q": "Negara mana yang angka kelahirannya terendah?", "a": "Dalam daftar ini, {last}, dengan {vlast} kelahiran per 1.000 penduduk." }
+        {
+          "q": "Negara mana yang angka kelahirannya tertinggi?",
+          "a": "{top1}, dengan {v1} kelahiran per 1.000 penduduk pada {year1}, disusul {top2} ({v2})."
+        },
+        {
+          "q": "Berapa angka kelahiran dunia?",
+          "a": "{world} kelahiran per 1.000 penduduk pada {worldYear}."
+        },
+        {
+          "q": "Negara mana yang angka kelahirannya terendah?",
+          "a": "Dalam daftar ini, {last}, dengan {vlast} kelahiran per 1.000 penduduk."
+        }
       ]
     },
     "infant-mortality": {
@@ -409,9 +553,18 @@
         "Kelompok Antarlembaga PBB untuk Estimasi Kematian Anak (UN IGME) menggabungkan survei, sensus, dan pencatatan sipil menjadi satu seri yang bisa dibandingkan."
       ],
       "faq": [
-        { "q": "Negara mana yang angka kematian bayinya tertinggi?", "a": "{top1}, dengan {v1} kematian per 1.000 kelahiran hidup pada {year1}, disusul {top2} ({v2})." },
-        { "q": "Berapa angka kematian bayi dunia?", "a": "{world} per 1.000 kelahiran hidup pada {worldYear}. Angka ini sudah turun lebih dari separuh sejak 1990." },
-        { "q": "Negara mana yang angka kematian bayinya terendah?", "a": "Dalam daftar ini, {last}, yaitu {vlast} per 1.000 kelahiran hidup." }
+        {
+          "q": "Negara mana yang angka kematian bayinya tertinggi?",
+          "a": "{top1}, dengan {v1} kematian per 1.000 kelahiran hidup pada {year1}, disusul {top2} ({v2})."
+        },
+        {
+          "q": "Berapa angka kematian bayi dunia?",
+          "a": "{world} per 1.000 kelahiran hidup pada {worldYear}. Angka ini sudah turun lebih dari separuh sejak 1990."
+        },
+        {
+          "q": "Negara mana yang angka kematian bayinya terendah?",
+          "a": "Dalam daftar ini, {last}, yaitu {vlast} per 1.000 kelahiran hidup."
+        }
       ]
     },
     "co2-per-capita": {
@@ -431,9 +584,18 @@
         "Produsen minyak dan gas kecil berada di puncak daftar karena industri padat energinya besar dibandingkan jumlah penduduknya. Untuk mengetahui porsi total suatu negara dari emisi dunia, kalikan dengan jumlah penduduknya."
       ],
       "faq": [
-        { "q": "Negara mana yang emisi CO2 per orangnya tertinggi?", "a": "{top1}, yaitu {v1} ton per orang pada {year1}, disusul {top2} ({v2} t)." },
-        { "q": "Berapa rata-rata emisi CO2 per orang di dunia?", "a": "Sekitar {world} ton per orang pada {worldYear}." },
-        { "q": "Negara mana yang emisi CO2 per orangnya paling sedikit?", "a": "Dalam daftar ini, {last}, yaitu {vlast} ton per orang." }
+        {
+          "q": "Negara mana yang emisi CO2 per orangnya tertinggi?",
+          "a": "{top1}, yaitu {v1} ton per orang pada {year1}, disusul {top2} ({v2} t)."
+        },
+        {
+          "q": "Berapa rata-rata emisi CO2 per orang di dunia?",
+          "a": "Sekitar {world} ton per orang pada {worldYear}."
+        },
+        {
+          "q": "Negara mana yang emisi CO2 per orangnya paling sedikit?",
+          "a": "Dalam daftar ini, {last}, yaitu {vlast} ton per orang."
+        }
       ]
     },
     "electricity-access": {
@@ -453,9 +615,18 @@
         "Sebagian besar orang tanpa listrik tinggal di Afrika sub-Sahara, di mana akses di beberapa negara masih di bawah separuh."
       ],
       "faq": [
-        { "q": "Negara mana yang akses listriknya tertinggi?", "a": "{top1} ({v1}%), {top2} ({v2}%) dan {top3} ({v3}%) memimpin daftar pada {year1}. Nilai yang sama berbagi peringkat." },
-        { "q": "Berapa persen penduduk dunia yang memiliki listrik?", "a": "{world}% penduduk dunia pada {worldYear}." },
-        { "q": "Negara mana yang akses listriknya terendah?", "a": "Dalam daftar ini, {last}, di mana {vlast}% penduduknya memiliki listrik." }
+        {
+          "q": "Negara mana yang akses listriknya tertinggi?",
+          "a": "{top1} ({v1}%), {top2} ({v2}%) dan {top3} ({v3}%) memimpin daftar pada {year1}. Nilai yang sama berbagi peringkat."
+        },
+        {
+          "q": "Berapa persen penduduk dunia yang memiliki listrik?",
+          "a": "{world}% penduduk dunia pada {worldYear}."
+        },
+        {
+          "q": "Negara mana yang akses listriknya terendah?",
+          "a": "Dalam daftar ini, {last}, di mana {vlast}% penduduknya memiliki listrik."
+        }
       ]
     },
     "population-growth": {
@@ -475,9 +646,18 @@
         "Banyak negara di Eropa dan Asia Timur kini menyusut setiap tahun karena jumlah kematian melebihi kelahiran dan hanya sedikit migran yang datang."
       ],
       "faq": [
-        { "q": "Negara mana yang pertumbuhan penduduknya paling cepat?", "a": "{top1}, di mana penduduknya tumbuh {v1}% pada {year1}, disusul {top2} ({v2}%)." },
-        { "q": "Seberapa cepat penduduk dunia bertambah?", "a": "{world}% pada {worldYear}, kurang dari separuh laju puncaknya pada akhir 1960-an." },
-        { "q": "Negara mana yang penduduknya paling cepat menyusut?", "a": "Dalam daftar ini, {last}, yaitu {vlast}% per tahun." }
+        {
+          "q": "Negara mana yang pertumbuhan penduduknya paling cepat?",
+          "a": "{top1}, di mana penduduknya tumbuh {v1}% pada {year1}, disusul {top2} ({v2}%)."
+        },
+        {
+          "q": "Seberapa cepat penduduk dunia bertambah?",
+          "a": "{world}% pada {worldYear}, kurang dari separuh laju puncaknya pada akhir 1960-an."
+        },
+        {
+          "q": "Negara mana yang penduduknya paling cepat menyusut?",
+          "a": "Dalam daftar ini, {last}, yaitu {vlast}% per tahun."
+        }
       ]
     },
     "death-rate": {
@@ -497,9 +677,18 @@
         "Negara-negara Teluk memiliki angka terendah karena sebagian besar penduduknya adalah migran muda usia kerja. Untuk membandingkan tingkat kesehatan, gunakan angka harapan hidup."
       ],
       "faq": [
-        { "q": "Negara mana yang angka kematiannya tertinggi?", "a": "{top1}, dengan {v1} kematian per 1.000 penduduk pada {year1}, disusul {top2} ({v2})." },
-        { "q": "Berapa angka kematian dunia?", "a": "{world} kematian per 1.000 penduduk pada {worldYear}." },
-        { "q": "Negara mana yang angka kematiannya terendah?", "a": "Dalam daftar ini, {last}, dengan {vlast} kematian per 1.000 penduduk." }
+        {
+          "q": "Negara mana yang angka kematiannya tertinggi?",
+          "a": "{top1}, dengan {v1} kematian per 1.000 penduduk pada {year1}, disusul {top2} ({v2})."
+        },
+        {
+          "q": "Berapa angka kematian dunia?",
+          "a": "{world} kematian per 1.000 penduduk pada {worldYear}."
+        },
+        {
+          "q": "Negara mana yang angka kematiannya terendah?",
+          "a": "Dalam daftar ini, {last}, dengan {vlast} kematian per 1.000 penduduk."
+        }
       ]
     },
     "life-expectancy-male": {
@@ -519,9 +708,18 @@
         "Hampir di mana pun, laki-laki meninggal lebih muda daripada perempuan, rata-rata sekitar lima tahun. Selisihnya paling lebar di Eropa Timur, tempat kebiasaan minum alkohol berat dan merokok umum di kalangan laki-laki."
       ],
       "faq": [
-        { "q": "Negara mana yang angka harapan hidup laki-lakinya tertinggi?", "a": "{top1}, yaitu {v1} tahun pada {year1}, disusul {top2} ({v2})." },
-        { "q": "Berapa rata-rata angka harapan hidup laki-laki di dunia?", "a": "{world} tahun pada {worldYear}." },
-        { "q": "Negara mana yang angka harapan hidup laki-lakinya terendah?", "a": "Dalam daftar ini, {last}, yaitu {vlast} tahun." }
+        {
+          "q": "Negara mana yang angka harapan hidup laki-lakinya tertinggi?",
+          "a": "{top1}, yaitu {v1} tahun pada {year1}, disusul {top2} ({v2})."
+        },
+        {
+          "q": "Berapa rata-rata angka harapan hidup laki-laki di dunia?",
+          "a": "{world} tahun pada {worldYear}."
+        },
+        {
+          "q": "Negara mana yang angka harapan hidup laki-lakinya terendah?",
+          "a": "Dalam daftar ini, {last}, yaitu {vlast} tahun."
+        }
       ]
     },
     "life-expectancy-female": {
@@ -541,9 +739,18 @@
         "Di hampir semua negara, perempuan hidup lebih lama daripada laki-laki. Sebagian selisihnya bersifat biologis, dan sebagian lagi karena laki-laki lebih banyak merokok, minum alkohol, mengalami kecelakaan, dan terlibat kekerasan."
       ],
       "faq": [
-        { "q": "Negara mana yang angka harapan hidup perempuannya tertinggi?", "a": "{top1}, yaitu {v1} tahun pada {year1}, disusul {top2} ({v2})." },
-        { "q": "Berapa rata-rata angka harapan hidup perempuan di dunia?", "a": "{world} tahun pada {worldYear}." },
-        { "q": "Negara mana yang angka harapan hidup perempuannya terendah?", "a": "Dalam daftar ini, {last}, yaitu {vlast} tahun." }
+        {
+          "q": "Negara mana yang angka harapan hidup perempuannya tertinggi?",
+          "a": "{top1}, yaitu {v1} tahun pada {year1}, disusul {top2} ({v2})."
+        },
+        {
+          "q": "Berapa rata-rata angka harapan hidup perempuan di dunia?",
+          "a": "{world} tahun pada {worldYear}."
+        },
+        {
+          "q": "Negara mana yang angka harapan hidup perempuannya terendah?",
+          "a": "Dalam daftar ini, {last}, yaitu {vlast} tahun."
+        }
       ]
     },
     "maternal-mortality": {
@@ -563,9 +770,18 @@
         "Ini adalah estimasi model dari Kelompok Antar-Lembaga PBB untuk Estimasi Kematian Ibu (MMEIG), yang mengisi kekosongan data di negara yang tidak mencatat setiap kematian."
       ],
       "faq": [
-        { "q": "Negara mana yang angka kematian ibunya tertinggi?", "a": "{top1}, dengan {v1} kematian ibu per 100.000 kelahiran hidup pada {year1}, disusul {top2} ({v2})." },
-        { "q": "Berapa angka kematian ibu dunia?", "a": "{world} per 100.000 kelahiran hidup pada {worldYear}. Target PBB untuk 2030 adalah di bawah 70." },
-        { "q": "Negara mana yang angka kematian ibunya terendah?", "a": "Dalam daftar ini, {last}, yaitu {vlast} per 100.000 kelahiran hidup." }
+        {
+          "q": "Negara mana yang angka kematian ibunya tertinggi?",
+          "a": "{top1}, dengan {v1} kematian ibu per 100.000 kelahiran hidup pada {year1}, disusul {top2} ({v2})."
+        },
+        {
+          "q": "Berapa angka kematian ibu dunia?",
+          "a": "{world} per 100.000 kelahiran hidup pada {worldYear}. Target PBB untuk 2030 adalah di bawah 70."
+        },
+        {
+          "q": "Negara mana yang angka kematian ibunya terendah?",
+          "a": "Dalam daftar ini, {last}, yaitu {vlast} per 100.000 kelahiran hidup."
+        }
       ]
     },
     "exports": {
@@ -585,9 +801,18 @@
         "Setiap baris menampilkan tahun terakhir yang dilaporkan negara tersebut, dalam empat tahun terakhir. Re-ekspor melalui pusat perdagangan seperti Singapura dan Hong Kong dihitung di tempat barang itu keluar."
       ],
       "faq": [
-        { "q": "Negara mana yang ekspornya paling besar?", "a": "{top1}, dengan ekspor {v1} pada {year1}, disusul {top2} ({v2}) dan {top3} ({v3})." },
-        { "q": "Berapa total ekspor dunia?", "a": "{world} barang dan jasa pada {worldYear}." },
-        { "q": "Apakah ekspor termasuk jasa?", "a": "Ya. Tabel ini menghitung barang dan jasa sekaligus, sehingga negara dengan sektor pariwisata, keuangan, atau perangkat lunak yang besar berperingkat lebih tinggi daripada di daftar yang hanya menghitung barang." }
+        {
+          "q": "Negara mana yang ekspornya paling besar?",
+          "a": "{top1}, dengan ekspor {v1} pada {year1}, disusul {top2} ({v2}) dan {top3} ({v3})."
+        },
+        {
+          "q": "Berapa total ekspor dunia?",
+          "a": "{world} barang dan jasa pada {worldYear}."
+        },
+        {
+          "q": "Apakah ekspor termasuk jasa?",
+          "a": "Ya. Tabel ini menghitung barang dan jasa sekaligus, sehingga negara dengan sektor pariwisata, keuangan, atau perangkat lunak yang besar berperingkat lebih tinggi daripada di daftar yang hanya menghitung barang."
+        }
       ]
     },
     "imports": {
@@ -607,9 +832,18 @@
         "Negara yang mengimpor lebih banyak daripada yang diekspornya mengalami defisit perdagangan. Bandingkan tabel ini dengan tabel ekspor untuk melihat neraca setiap negara."
       ],
       "faq": [
-        { "q": "Negara mana yang impornya paling besar?", "a": "{top1}, dengan impor {v1} pada {year1}, disusul {top2} ({v2}) dan {top3} ({v3})." },
-        { "q": "Berapa total impor dunia?", "a": "{world} barang dan jasa pada {worldYear}. Impor dan ekspor dunia seharusnya sama, tetapi berbeda karena perbedaan waktu dan celah pelaporan." },
-        { "q": "Negara mana yang impornya paling kecil?", "a": "Dalam daftar ini, {last}, yaitu {vlast}." }
+        {
+          "q": "Negara mana yang impornya paling besar?",
+          "a": "{top1}, dengan impor {v1} pada {year1}, disusul {top2} ({v2}) dan {top3} ({v3})."
+        },
+        {
+          "q": "Berapa total impor dunia?",
+          "a": "{world} barang dan jasa pada {worldYear}. Impor dan ekspor dunia seharusnya sama, tetapi berbeda karena perbedaan waktu dan celah pelaporan."
+        },
+        {
+          "q": "Negara mana yang impornya paling kecil?",
+          "a": "Dalam daftar ini, {last}, yaitu {vlast}."
+        }
       ]
     },
     "health-spending-per-capita": {
@@ -629,9 +863,18 @@
         "Nilainya memakai kurs pasar, sehingga negara berupah tinggi tampak lebih mahal daripada layanan yang sebenarnya didapat. Belanja lebih besar tidak selalu berarti hidup lebih panjang: bandingkan dengan tabel angka harapan hidup."
       ],
       "faq": [
-        { "q": "Negara mana yang belanja kesehatan per orangnya paling besar?", "a": "{top1}, yaitu {v1} per orang pada {year1}, disusul {top2} ({v2})." },
-        { "q": "Berapa belanja kesehatan dunia per orang?", "a": "Sekitar {world} per orang pada {worldYear}." },
-        { "q": "Negara mana yang belanja kesehatannya paling kecil?", "a": "Dalam daftar ini, {last}, yaitu {vlast} per orang." }
+        {
+          "q": "Negara mana yang belanja kesehatan per orangnya paling besar?",
+          "a": "{top1}, yaitu {v1} per orang pada {year1}, disusul {top2} ({v2})."
+        },
+        {
+          "q": "Berapa belanja kesehatan dunia per orang?",
+          "a": "Sekitar {world} per orang pada {worldYear}."
+        },
+        {
+          "q": "Negara mana yang belanja kesehatannya paling kecil?",
+          "a": "Dalam daftar ini, {last}, yaitu {vlast} per orang."
+        }
       ]
     },
     "female-labor-force": {
@@ -651,9 +894,18 @@
         "Beberapa angka tertinggi ada di negara berpenghasilan rendah tempat sebagian besar perempuan bertani. Angka terendah ada di sebagian Timur Tengah dan Asia Selatan. Ini adalah estimasi model ILO yang memakai satu definisi untuk semua negara."
       ],
       "faq": [
-        { "q": "Negara mana yang partisipasi angkatan kerja perempuannya tertinggi?", "a": "{top1}, di mana {v1}% perempuan termasuk angkatan kerja pada {year1}, disusul {top2} ({v2}%)." },
-        { "q": "Berapa persen perempuan di dunia yang bekerja?", "a": "{world}% perempuan berusia 15 tahun ke atas bekerja atau sedang mencari kerja pada {worldYear}." },
-        { "q": "Negara mana yang partisipasi angkatan kerja perempuannya terendah?", "a": "Dalam daftar ini, {last}, yaitu {vlast}%." }
+        {
+          "q": "Negara mana yang partisipasi angkatan kerja perempuannya tertinggi?",
+          "a": "{top1}, di mana {v1}% perempuan termasuk angkatan kerja pada {year1}, disusul {top2} ({v2}%)."
+        },
+        {
+          "q": "Berapa persen perempuan di dunia yang bekerja?",
+          "a": "{world}% perempuan berusia 15 tahun ke atas bekerja atau sedang mencari kerja pada {worldYear}."
+        },
+        {
+          "q": "Negara mana yang partisipasi angkatan kerja perempuannya terendah?",
+          "a": "Dalam daftar ini, {last}, yaitu {vlast}%."
+        }
       ]
     },
     "forest-area": {
@@ -673,9 +925,18 @@
         "Negara tropis kecil menduduki puncak daftar berdasarkan persentase. Berdasarkan luas total, Rusia, Brasil, Kanada, Amerika Serikat, dan Tiongkok memiliki lebih dari separuh hutan dunia."
       ],
       "faq": [
-        { "q": "Negara mana yang tutupan hutannya paling luas?", "a": "{top1}, di mana hutan menutupi {v1}% daratannya pada {year1}, disusul {top2} ({v2}%)." },
-        { "q": "Berapa persen daratan dunia yang tertutup hutan?", "a": "{world}% luas daratan dunia pada {worldYear}." },
-        { "q": "Negara mana yang hutannya paling sedikit?", "a": "Dalam daftar ini, {last}, yaitu {vlast}% daratannya." }
+        {
+          "q": "Negara mana yang tutupan hutannya paling luas?",
+          "a": "{top1}, di mana hutan menutupi {v1}% daratannya pada {year1}, disusul {top2} ({v2}%)."
+        },
+        {
+          "q": "Berapa persen daratan dunia yang tertutup hutan?",
+          "a": "{world}% luas daratan dunia pada {worldYear}."
+        },
+        {
+          "q": "Negara mana yang hutannya paling sedikit?",
+          "a": "Dalam daftar ini, {last}, yaitu {vlast}% daratannya."
+        }
       ]
     },
     "renewable-energy": {
@@ -695,9 +956,18 @@
         "Banyak porsi tertinggi ada di negara berpenghasilan rendah tempat sebagian besar rumah tangga memasak dengan kayu, bukan di negara dengan tenaga angin dan surya terbanyak. Datanya tertinggal beberapa tahun."
       ],
       "faq": [
-        { "q": "Negara mana yang paling banyak memakai energi terbarukan?", "a": "Berdasarkan porsi, {top1}, di mana {v1}% penggunaan energinya berasal dari sumber terbarukan pada {year1}, sebagian besar dari kayu bakar dan tenaga air." },
-        { "q": "Berapa persen energi dunia yang terbarukan?", "a": "{world}% konsumsi energi final pada {worldYear}." },
-        { "q": "Negara mana yang paling sedikit memakai energi terbarukan?", "a": "Dalam daftar ini, {last}, yaitu {vlast}%." }
+        {
+          "q": "Negara mana yang paling banyak memakai energi terbarukan?",
+          "a": "Berdasarkan porsi, {top1}, di mana {v1}% penggunaan energinya berasal dari sumber terbarukan pada {year1}, sebagian besar dari kayu bakar dan tenaga air."
+        },
+        {
+          "q": "Berapa persen energi dunia yang terbarukan?",
+          "a": "{world}% konsumsi energi final pada {worldYear}."
+        },
+        {
+          "q": "Negara mana yang paling sedikit memakai energi terbarukan?",
+          "a": "Dalam daftar ini, {last}, yaitu {vlast}%."
+        }
       ]
     },
     "country-codes": {
@@ -724,9 +994,18 @@
         "Inggris memakai domain internet .uk walaupun kode ISO-nya GB. Nama di sini ditampilkan dalam bahasa Anda."
       ],
       "faq": [
-        { "q": "Apa beda kode alpha-2 dan alpha-3?", "a": "Kode alpha-2 terdiri dari dua huruf (ID) dan dipakai di domain, tag bahasa, dan sebagian besar perangkat lunak. Kode alpha-3 terdiri dari tiga huruf (IDN) dan dipakai di paspor dan statistik." },
-        { "q": "Ada berapa kode negara ISO?", "a": "ISO 3166-1 mencantumkan {rows} negara dan wilayah, masing-masing dengan kode alpha-2, alpha-3, dan numerik." },
-        { "q": "Apa kode negara Indonesia?", "a": "ID (alpha-2), IDN (alpha-3), dan 360 (numerik). Domain internetnya .id." }
+        {
+          "q": "Apa beda kode alpha-2 dan alpha-3?",
+          "a": "Kode alpha-2 terdiri dari dua huruf (ID) dan dipakai di domain, tag bahasa, dan sebagian besar perangkat lunak. Kode alpha-3 terdiri dari tiga huruf (IDN) dan dipakai di paspor dan statistik."
+        },
+        {
+          "q": "Ada berapa kode negara ISO?",
+          "a": "ISO 3166-1 mencantumkan {rows} negara dan wilayah, masing-masing dengan kode alpha-2, alpha-3, dan numerik."
+        },
+        {
+          "q": "Apa kode negara Indonesia?",
+          "a": "ID (alpha-2), IDN (alpha-3), dan 360 (numerik). Domain internetnya .id."
+        }
       ]
     },
     "calling-codes": {
@@ -750,9 +1029,18 @@
         "Di ponsel, tahan tombol 0 untuk mengetik +. Cara ini berlaku dari negara mana pun, jadi Anda tidak perlu tahu kode akses internasional setempat."
       ],
       "faq": [
-        { "q": "Bagaimana cara menelepon ke luar negeri?", "a": "Ketik + (atau kode akses internasional, misalnya 001, 007, atau 008 dari Indonesia, atau 011 dari AS), kode negara, lalu nomor lokal tanpa angka 0 di depan. Untuk menelepon Indonesia dari luar negeri, tekan +62 lalu hapus 0 di depan: 08xx menjadi +62 8xx." },
-        { "q": "+62 kode negara mana?", "a": "+62 adalah kode telepon Indonesia." },
-        { "q": "Mengapa beberapa negara berbagi +1?", "a": "Negara-negara itu tergabung dalam North American Numbering Plan. Kode area 3 digit setelah +1 menunjukkan negaranya." }
+        {
+          "q": "Bagaimana cara menelepon ke luar negeri?",
+          "a": "Ketik + (atau kode akses internasional, misalnya 001, 007, atau 008 dari Indonesia, atau 011 dari AS), kode negara, lalu nomor lokal tanpa angka 0 di depan. Untuk menelepon Indonesia dari luar negeri, tekan +62 lalu hapus 0 di depan: 08xx menjadi +62 8xx."
+        },
+        {
+          "q": "+62 kode negara mana?",
+          "a": "+62 adalah kode telepon Indonesia."
+        },
+        {
+          "q": "Mengapa beberapa negara berbagi +1?",
+          "a": "Negara-negara itu tergabung dalam North American Numbering Plan. Kode area 3 digit setelah +1 menunjukkan negaranya."
+        }
       ]
     },
     "currency-codes": {
@@ -779,9 +1067,18 @@
         "Desimal adalah jumlah digit satuan kecil (sen). JPY dan KRW tidak punya desimal, dan beberapa mata uang negara Teluk punya tiga."
       ],
       "faq": [
-        { "q": "Apa kode mata uang rupiah?", "a": "IDR, dengan kode numerik 360. Dalam ISO 4217 rupiah tercatat dengan 2 desimal, meski sen sudah tidak dipakai dalam praktik." },
-        { "q": "Ada berapa mata uang di dunia?", "a": "ISO 4217 mencantumkan {rows} kode yang berlaku, termasuk beberapa dana, logam mulia, dan kode untuk pengujian." },
-        { "q": "Mengapa euro punya satu kode untuk banyak negara?", "a": "EUR adalah satu mata uang yang dipakai bersama di kawasan euro, jadi kodenya hanya satu. Kolom Dipakai di mencantumkan semua negara dan wilayah yang memakainya." }
+        {
+          "q": "Apa kode mata uang rupiah?",
+          "a": "IDR, dengan kode numerik 360. Dalam ISO 4217 rupiah tercatat dengan 2 desimal, meski sen sudah tidak dipakai dalam praktik."
+        },
+        {
+          "q": "Ada berapa mata uang di dunia?",
+          "a": "ISO 4217 mencantumkan {rows} kode yang berlaku, termasuk beberapa dana, logam mulia, dan kode untuk pengujian."
+        },
+        {
+          "q": "Mengapa euro punya satu kode untuk banyak negara?",
+          "a": "EUR adalah satu mata uang yang dipakai bersama di kawasan euro, jadi kodenya hanya satu. Kolom Dipakai di mencantumkan semua negara dan wilayah yang memakainya."
+        }
       ]
     },
     "time-zones": {
@@ -806,9 +1103,18 @@
         "Selisih dihitung untuk 15 Januari dan 15 Juli {year} dari basis data tz {tz}. Pemerintah terkadang mengubah aturannya secara mendadak."
       ],
       "faq": [
-        { "q": "Indonesia memakai zona waktu apa?", "a": "Indonesia punya tiga zona waktu: WIB (UTC+07:00, Asia/Jakarta), WITA (UTC+08:00, Asia/Makassar), dan WIT (UTC+09:00, Asia/Jayapura). Tidak ada waktu musim panas." },
-        { "q": "Apa beda UTC dan GMT?", "a": "Untuk keperluan sehari-hari, waktunya sama. UTC adalah standar waktu atom; GMT adalah zona waktu di bujur 0°, yang dipakai Inggris saat musim dingin." },
-        { "q": "Ada berapa zona waktu?", "a": "Basis data IANA yang dipakai di sini memiliki {rows} ID zona. Semuanya memakai kurang dari 40 selisih UTC yang berbeda." }
+        {
+          "q": "Indonesia memakai zona waktu apa?",
+          "a": "Indonesia punya tiga zona waktu: WIB (UTC+07:00, Asia/Jakarta), WITA (UTC+08:00, Asia/Makassar), dan WIT (UTC+09:00, Asia/Jayapura). Tidak ada waktu musim panas."
+        },
+        {
+          "q": "Apa beda UTC dan GMT?",
+          "a": "Untuk keperluan sehari-hari, waktunya sama. UTC adalah standar waktu atom; GMT adalah zona waktu di bujur 0°, yang dipakai Inggris saat musim dingin."
+        },
+        {
+          "q": "Ada berapa zona waktu?",
+          "a": "Basis data IANA yang dipakai di sini memiliki {rows} ID zona. Semuanya memakai kurang dari 40 selisih UTC yang berbeda."
+        }
       ]
     },
     "paper-sizes": {
@@ -835,9 +1141,18 @@
         "Ukuran JIS B, yang umum di Jepang dan Tiongkok untuk buku tulis dan buku, sedikit lebih besar daripada ISO B. JIS B5 berukuran 182 × 257 mm, sedangkan ISO B5 176 × 250 mm."
       ],
       "faq": [
-        { "q": "Berapa ukuran kertas A4?", "a": "210 × 297 mm, atau 8,27 × 11,69 inci. Pada 300 DPI, ukurannya 2480 × 3508 piksel." },
-        { "q": "Apa beda A4 dan Letter?", "a": "A4 (210 × 297 mm) lebih sempit dan lebih panjang daripada US Letter (215,9 × 279,4 mm). Sebagian besar dunia, termasuk Indonesia, memakai A4; AS, Kanada, dan Meksiko memakai Letter." },
-        { "q": "Berapa piksel yang dibutuhkan untuk mencetak A4?", "a": "2480 × 3508 px untuk hasil tajam pada 300 DPI. 1240 × 1754 px (150 DPI) cukup untuk draf." }
+        {
+          "q": "Berapa ukuran kertas A4?",
+          "a": "210 × 297 mm, atau 8,27 × 11,69 inci. Pada 300 DPI, ukurannya 2480 × 3508 piksel."
+        },
+        {
+          "q": "Apa beda A4 dan Letter?",
+          "a": "A4 (210 × 297 mm) lebih sempit dan lebih panjang daripada US Letter (215,9 × 279,4 mm). Sebagian besar dunia, termasuk Indonesia, memakai A4; AS, Kanada, dan Meksiko memakai Letter."
+        },
+        {
+          "q": "Berapa piksel yang dibutuhkan untuk mencetak A4?",
+          "a": "2480 × 3508 px untuk hasil tajam pada 300 DPI. 1240 × 1754 px (150 DPI) cukup untuk draf."
+        }
       ]
     },
     "ascii": {
@@ -864,10 +1179,402 @@
         "UTF-8 mengodekan 128 karakter ini persis sama dengan ASCII, jadi setiap file ASCII juga merupakan UTF-8 yang valid."
       ],
       "faq": [
-        { "q": "Berapa kode ASCII huruf A?", "a": "Huruf kapital A adalah 65 dalam desimal, 0x41 dalam hex, dan 1000001 dalam biner. Huruf kecil a adalah 97 (0x61)." },
-        { "q": "Berapa kode ASCII untuk spasi?", "a": "32 dalam desimal, 0x20 dalam hex." },
-        { "q": "Apa beda LF dan CR?", "a": "LF (10, line feed) memulai baris baru di Linux dan macOS. File teks Windows mengakhiri baris dengan CR LF (13 lalu 10)." }
+        {
+          "q": "Berapa kode ASCII huruf A?",
+          "a": "Huruf kapital A adalah 65 dalam desimal, 0x41 dalam hex, dan 1000001 dalam biner. Huruf kecil a adalah 97 (0x61)."
+        },
+        {
+          "q": "Berapa kode ASCII untuk spasi?",
+          "a": "32 dalam desimal, 0x20 dalam hex."
+        },
+        {
+          "q": "Apa beda LF dan CR?",
+          "a": "LF (10, line feed) memulai baris baru di Linux dan macOS. File teks Windows mengakhiri baris dengan CR LF (13 lalu 10)."
+        }
       ]
+    }
+  },
+  "rankings": {
+    "hub": {
+      "title": "Peringkat: AI Terbaik, Pangsa Pasar, dan Lainnya | cv.cm",
+      "description": "Peringkat bersumber yang bisa diurutkan dan diunduh: AI terbaik, AI paling banyak dipakai, serta pangsa pasar browser, OS, mesin pencari, ponsel, dan media sosial.",
+      "h1": "Peringkat",
+      "lede": "Peringkat yang disusun dari data terbuka, masing-masing dengan sumber, lisensi, dan tanggalnya. Urutkan kolom mana pun, saring baris, atau unduh CSV.",
+      "groups": {
+        "ai": "AI",
+        "share": "Pangsa pasar",
+        "countries": "Negara"
+      },
+      "about": [
+        "Setiap tabel di sini berasal dari sumber terbitan yang mengizinkan penggunaan ulang, dan cv.cm tidak menambahkan skor sendiri atau memasukkan produknya sendiri. Baca bagian Tentang di setiap halaman: sebagian besar daftar hanya mengukur satu hal, seperti suara di satu situs atau kunjungan ke situs yang dilacak, dan batasan itu penting.",
+        "Data berupa cuplikan bertanggal, bukan siaran langsung, jadi setiap halaman memberi tahu tanggal yang ditampilkan."
+      ],
+      "faq": [
+        {
+          "q": "Dari mana datanya berasal?",
+          "a": "Kualitas AI berasal dari papan peringkat Arena, penggunaan AI dari OpenRouter, dan pangsa pasar dari StatCounter Global Stats. Setiap halaman menautkan ke sumber dan lisensinya."
+        },
+        {
+          "q": "Seberapa sering peringkat diperbarui?",
+          "a": "Peringkat diperbarui secara manual dari sumbernya dan setiap halaman menampilkan tanggal datanya. Kecepatan terbit tiap sumber berbeda: pangsa pasar bulanan, tabel AI lebih sering berubah."
+        },
+        {
+          "q": "Bolehkah saya memakai ulang tabel ini?",
+          "a": "Boleh, sesuai lisensi sumber yang tertera di setiap halaman: CC BY 4.0 untuk tabel AI dan CC BY-SA 3.0 untuk pangsa pasar. Cantumkan sumbernya. Setiap tabel bisa diunduh sebagai CSV."
+        }
+      ]
+    },
+    "ui": {
+      "all": "Semua peringkat",
+      "search": "Saring baris",
+      "searchPlaceholder": "Ketik nama atau nilai",
+      "rows": "{n} baris",
+      "shown": "{shown} dari {n} baris",
+      "noMatch": "Tidak ada baris yang cocok.",
+      "download": "Unduh CSV",
+      "sortHint": "Pilih judul kolom untuk mengurutkan.",
+      "facts": "Fakta utama",
+      "about": "Tentang peringkat ini",
+      "faq": "Pertanyaan umum",
+      "related": "Peringkat lainnya",
+      "source": "Sumber",
+      "license": "Lisensi",
+      "snapshot": "Dikumpulkan {date}",
+      "dataAsOf": "Data per {date}",
+      "rank": "#",
+      "model": "Model AI",
+      "organization": "Perusahaan",
+      "licence": "Lisensi",
+      "score": "Skor",
+      "votes": "Suara",
+      "tokens": "Token",
+      "requests": "Permintaan",
+      "shareOfList": "Porsi dalam daftar",
+      "modelsListed": "Jumlah model",
+      "name": "Nama",
+      "world": "Dunia",
+      "change": "Perubahan 1 tahun (poin)"
+    },
+    "sets": {
+      "ai-models": {
+        "title": "Peringkat Model AI {year}: Papan Peringkat LLM Terbaik | cv.cm",
+        "description": "Model chat AI terbaik saat ini: {top1} memimpin papan Arena dengan {v1}, lalu {top2} dan {top3}. {rows} teratas dengan skor dan suara, unduh CSV.",
+        "h1": "Model AI terbaik: papan peringkat LLM, {date}",
+        "lede": "{rows} model chat teratas di papan peringkat teks Arena, diurutkan menurut suara manusia secara buta. Cari, urutkan kolom mana pun, atau unduh CSV.",
+        "facts": [
+          "Pertama: {top1} ({v1}), lalu {top2} ({v2}) dan {top3} ({v3}).",
+          "{leadOrg} memegang posisi terbanyak di 10 besar: {leadCount}.",
+          "Data per {date}."
+        ],
+        "about": [
+          "Arena memungkinkan orang memberikan satu prompt ke dua model anonim dan memilih jawaban yang lebih baik. Suara itu menjadi rating, jadi selisih beberapa poin tidak banyak artinya: periksa kolom suara, karena model baru dengan sedikit suara paling banyak bergerak. Tabel ini menampilkan kategori keseluruhan dari cuplikan terbaru yang diterbitkan.",
+          "Rating tinggi menunjukkan apa yang lebih disukai pemilih dalam obrolan umum. Rating tidak mengukur harga, kecepatan, atau kinerja model pada pekerjaan Anda sendiri, jadi coba beberapa yang teratas pada tugas nyata sebelum memilih."
+        ],
+        "faq": [
+          {
+            "q": "Apa model AI terbaik saat ini?",
+            "a": "Menurut suara Arena per {date}, {top1} berada di posisi pertama dengan skor {v1}, diikuti {top2} dan {top3}. Urutannya sering berubah, dan model dengan skor berdekatan bisa bertukar posisi seiring masuknya suara."
+          },
+          {
+            "q": "Bagaimana papan peringkat LLM ini dinilai?",
+            "a": "Orang membandingkan dua model anonim pada prompt yang sama lalu memilih. Arena mengubah suara menjadi rating yang mirip dengan rating catur. Skor lebih tinggi berarti model cenderung mengalahkan model lain dalam pertandingan tersebut."
+          },
+          {
+            "q": "Mengapa satu model muncul beberapa kali?",
+            "a": "Arena memeringkat pengaturan secara terpisah, seperti tingkat penalaran High atau Max, karena model yang sama bisa menjawab berbeda di tiap pengaturan."
+          }
+        ]
+      },
+      "ai-coding-models": {
+        "title": "AI Terbaik untuk Coding {year}: Peringkat LLM Coding | cv.cm",
+        "description": "Model AI terbaik untuk coding, dari suara pengembangan web Arena: {top1} memimpin dengan {v1}, lalu {top2} dan {top3}. {rows} teratas dengan suara, unduh CSV.",
+        "h1": "Model AI terbaik untuk coding, {date}",
+        "lede": "{rows} model teratas di papan peringkat pengembangan web Arena: orang melihat dua aplikasi web hasil buatan model dan memilih yang lebih baik.",
+        "facts": [
+          "Pertama: {top1} ({v1}), lalu {top2} ({v2}) dan {top3} ({v3}).",
+          "{leadOrg} memegang posisi terbanyak di 10 besar: {leadCount}.",
+          "Data per {date}."
+        ],
+        "about": [
+          "Setiap suara membandingkan dua model anonim yang diberi permintaan sama untuk membuat halaman web atau aplikasi kecil. Pemilih menilai hasil yang mereka lihat, jadi tabel ini lebih menguntungkan front end yang berfungsi dan enak dilihat daripada kemampuan back end atau algoritma.",
+          "Skor adalah rating yang dibangun dari suara tersebut. Model dengan sedikit suara bisa banyak bergerak, jadi baca juga kolom suara, dan uji beberapa yang teratas pada codebase Anda sendiri, yang tidak bisa digantikan oleh peringkat publik mana pun."
+        ],
+        "faq": [
+          {
+            "q": "Apa AI terbaik untuk coding saat ini?",
+            "a": "Dalam suara pengembangan web Arena per {date}, {top1} berada di posisi pertama dengan {v1}, lalu {top2} dan {top3}."
+          },
+          {
+            "q": "Apakah ini mencakup semua jenis pemrograman?",
+            "a": "Tidak. Ini mencakup pembuatan halaman web dan aplikasi dari sebuah prompt. Model yang menang di sini belum tentu yang terbaik untuk men-debug proyek besar atau menulis kode sistem."
+          },
+          {
+            "q": "Mengapa skornya lebih tinggi daripada di tabel chat?",
+            "a": "Setiap tabel dinilai dari suaranya sendiri, jadi skor hanya membandingkan model dalam satu tabel."
+          }
+        ]
+      },
+      "ai-image-models": {
+        "title": "AI Pembuat Gambar Terbaik {year}: Peringkat Model | cv.cm",
+        "description": "AI pembuat gambar terbaik menurut suara buta: {top1} memimpin Arena dengan {v1}, lalu {top2} dan {top3}. {rows} model gambar teratas dengan skor dan suara.",
+        "h1": "AI pembuat gambar terbaik, {date}",
+        "lede": "{rows} model teks-ke-gambar teratas di papan peringkat Arena: orang melihat dua gambar dari satu prompt dan memilih tanpa tahu model mana yang membuatnya.",
+        "facts": [
+          "Pertama: {top1} ({v1}), lalu {top2} ({v2}) dan {top3} ({v3}).",
+          "{leadOrg} memegang posisi terbanyak di 10 besar: {leadCount}.",
+          "Data per {date}."
+        ],
+        "about": [
+          "Pemilih memilih gambar yang mereka sukai untuk prompt yang sama, dan suara itu menjadi rating. Ini menguntungkan daya tarik keseluruhan, jadi model yang kuat pada satu pekerjaan, seperti teks dalam gambar atau gaya tertentu, bisa berada di peringkat lebih rendah daripada yang layak untuk pekerjaan itu.",
+          "Tabel ini memeringkat model, bukan aplikasi. Satu aplikasi bisa menawarkan beberapa model ini, dan harga serta batasnya berbeda di tiap aplikasi."
+        ],
+        "faq": [
+          {
+            "q": "Apa AI pembuat gambar terbaik?",
+            "a": "Menurut suara Arena per {date}, {top1} berada di posisi pertama dengan {v1}, lalu {top2} dan {top3}. Untuk gaya tertentu, bandingkan beberapa yang teratas dengan prompt Anda sendiri."
+          },
+          {
+            "q": "Apakah peringkat ini tentang alat gratis?",
+            "a": "Tidak. Tabel ini memeringkat kualitas model, berapa pun biayanya. Kolom lisensi menunjukkan model mana yang memiliki bobot terbuka."
+          },
+          {
+            "q": "Seberapa sering ini berubah?",
+            "a": "Arena sering menerbitkan cuplikan baru, dan halaman ini menampilkan tanggal cuplikan yang digunakannya."
+          }
+        ]
+      },
+      "ai-video-models": {
+        "title": "AI Pembuat Video Terbaik {year}: Peringkat Model | cv.cm",
+        "description": "AI pembuat video terbaik menurut suara buta: {top1} memimpin Arena dengan {v1}, lalu {top2} dan {top3}. {rows} model teks-ke-video teratas dengan skor dan suara.",
+        "h1": "AI pembuat video terbaik, {date}",
+        "lede": "{rows} model teks-ke-video teratas di papan peringkat Arena: orang menonton dua klip dari satu prompt dan memilih tanpa tahu model mana yang membuatnya.",
+        "facts": [
+          "Pertama: {top1} ({v1}), lalu {top2} ({v2}) dan {top3} ({v3}).",
+          "{leadOrg} memegang posisi terbanyak di 10 besar: {leadCount}.",
+          "Data per {date}."
+        ],
+        "about": [
+          "Pemilih memilih klip yang mereka sukai untuk prompt yang sama, dan suara itu menjadi rating. Video mendapat lebih sedikit suara daripada teks, jadi skor di sini lebih tidak pasti, terutama untuk model baru.",
+          "Tabel ini mencakup video yang dibuat dari teks saja. Alat yang menganimasikan foto atau mengedit klip dinilai terpisah oleh Arena dan tidak disertakan di sini."
+        ],
+        "faq": [
+          {
+            "q": "Apa AI pembuat video terbaik?",
+            "a": "Menurut suara Arena per {date}, {top1} berada di posisi pertama dengan {v1}, lalu {top2} dan {top3}."
+          },
+          {
+            "q": "Apakah tabel ini mencakup suara, durasi, atau harga?",
+            "a": "Tidak. Tabel ini hanya mencerminkan klip mana yang lebih disukai pemilih. Periksa batas durasi, audio, dan harga pada aplikasi yang menawarkan model tersebut."
+          },
+          {
+            "q": "Apakah alat foto ke video cv.cm masuk dalam peringkat ini?",
+            "a": "Tidak. Alat cv.cm menggerakkan kamera virtual melalui foto di browser Anda dan tidak menghasilkan gerakan dari teks, jadi jenis alatnya berbeda."
+          }
+        ]
+      },
+      "ai-usage": {
+        "title": "Model AI Paling Banyak Dipakai {year}: OpenRouter | cv.cm",
+        "description": "Model AI paling banyak dipakai di OpenRouter: {top1} mengambil {v1} token di antara {rows} teratas, lalu {top2} dan {top3}. Token dan permintaan, unduh CSV.",
+        "h1": "Model AI paling banyak dipakai di OpenRouter, {date}",
+        "lede": "{rows} model teratas menurut token yang diproses lewat OpenRouter selama pekan terbaru yang ditampilkan di halaman peringkatnya. Ini mengukur penggunaan, bukan kualitas.",
+        "facts": [
+          "Pertama: {top1} ({v1} token dalam daftar ini), lalu {top2} ({v2}) dan {top3} ({v3}).",
+          "Porsi dihitung dari {rows} model yang tercantum, bukan dari seluruh penggunaan AI.",
+          "Data per {date}."
+        ],
+        "about": [
+          "OpenRouter adalah layanan yang dipakai pengembang untuk mengakses banyak model melalui satu API, dan layanan ini menerbitkan apa yang melewatinya. Model murah yang dipakai agen otomatis yang sibuk bisa memuncaki tabel ini, karena token menghitung lalu lintas mesin selain manusia.",
+          "Ini satu platform. Penggunaan di dalam ChatGPT, Claude, Gemini, dan aplikasi lain, atau melalui API milik vendor, tidak dihitung, jadi tabel ini tidak bisa memberi tahu AI mana yang paling banyak penggunanya secara keseluruhan."
+        ],
+        "faq": [
+          {
+            "q": "Apa model AI yang paling banyak dipakai?",
+            "a": "Di OpenRouter per {date}, {top1} memproses token terbanyak, yaitu {v1} dari total {rows} model ini. Untuk semua produk AI, tidak ada angka publik yang memberi jawaban lengkap."
+          },
+          {
+            "q": "Apakah paling banyak dipakai berarti terbaik?",
+            "a": "Tidak. Harga sangat berpengaruh di sini. Untuk kualitas, lihat tabel Arena di bagian ini."
+          },
+          {
+            "q": "Apa itu token?",
+            "a": "Potongan kecil teks, sering kali bagian dari kata, yang dibaca dan ditulis model. Dokumen panjang dan agen yang menjalankan banyak langkah memakai token jauh lebih banyak daripada obrolan singkat."
+          }
+        ]
+      },
+      "ai-companies": {
+        "title": "Perusahaan AI menurut Penggunaan {year}: OpenRouter | cv.cm",
+        "description": "Perusahaan AI menurut token di OpenRouter: {top1} memiliki {v1} di antara model terpopuler, lalu {top2} dan {top3}. Pangsa satu platform, unduh CSV.",
+        "h1": "Perusahaan AI menurut penggunaan di OpenRouter, {date}",
+        "lede": "Perusahaan di balik model yang paling banyak dipakai di OpenRouter, diurutkan menurut porsi token. Ini porsi dari model teratas satu platform, bukan seluruh pasar AI.",
+        "facts": [
+          "Pertama: {top1} ({v1}), lalu {top2} ({v2}) dan {top3} ({v3}).",
+          "Mencakup {rows} perusahaan yang modelnya termasuk paling banyak dipakai di OpenRouter.",
+          "Data per {date}."
+        ],
+        "about": [
+          "cv.cm menjumlahkan token dari model paling banyak dipakai yang dicantumkan OpenRouter untuk tiap perusahaan. Perusahaan tanpa model dalam daftar itu tidak muncul, dan model terbuka yang dilayani penyedia lain tetap dihitung untuk perusahaan pembuatnya.",
+          "Tabel ini tidak mencakup aplikasi konsumen dan penggunaan API langsung, yang urutannya bisa sangat berbeda. Bacalah sebagai apa yang disalurkan pengembang melalui satu layanan dalam satu pekan."
+        ],
+        "faq": [
+          {
+            "q": "Perusahaan AI mana yang memiliki pangsa pasar terbesar?",
+            "a": "Di antara model paling banyak dipakai di OpenRouter per {date}, {top1} memiliki porsi terbesar, yaitu {v1}. Itu mencakup satu platform pengembang; tidak ada sumber publik yang memberikan pangsa seluruh penggunaan AI."
+          },
+          {
+            "q": "Mengapa ini berbeda dari angka pangsa pasar AI lainnya?",
+            "a": "Laporan lain menghitung kunjungan chatbot, pengguna aplikasi, atau pendapatan. Tabel ini menghitung token melalui satu layanan API, jadi condong ke pengembang dan model murah."
+          },
+          {
+            "q": "Mengapa perusahaan terkenal bisa berperingkat rendah?",
+            "a": "Banyak pelanggannya mungkin memakai API atau aplikasi perusahaan itu sendiri, yang tidak bisa dilihat OpenRouter."
+          }
+        ]
+      },
+      "browser-market-share": {
+        "title": "Pangsa Pasar Browser {year}: Global dan per Negara | cv.cm",
+        "description": "Pangsa pasar browser {date}: {top1} {v1}, {top2} {v2}, {top3} {v3} secara global, berdampingan dengan AS, Tiongkok, Taiwan, Jepang, Korea, dan lainnya.",
+        "h1": "Pangsa pasar browser, {date}",
+        "lede": "Porsi tayangan halaman web menurut browser, secara global dan di delapan pasar, pada semua perangkat. Bandingkan negara secara berdampingan, atau urutkan kolom mana pun.",
+        "facts": [
+          "Global: {top1} {v1}, {top2} {v2}, {top3} {v3}.",
+          "Tiongkok: {CNTop} memimpin dengan {CNV}. Jepang: {JPTop} dengan {JPV}. AS: {USTop} dengan {USV}.",
+          "Data untuk {date}."
+        ],
+        "about": [
+          "StatCounter menghitung tayangan halaman di lebih dari satu juta situs yang memakai pelacaknya, jadi ini mengukur seberapa banyak tiap browser dipakai di situs tersebut, bukan berapa banyak orang yang memasangnya. Perubahan dinyatakan dalam poin persentase dibanding bulan yang sama setahun sebelumnya.",
+          "Browser berbasis Chromium, seperti Edge dan banyak browser Tiongkok, dihitung dengan namanya sendiri di sini, meski memakai mesin yang sama dengan Chrome. Browser yang mengidentifikasi diri sebagai Chrome dihitung sebagai Chrome."
+        ],
+        "faq": [
+          {
+            "q": "Apa browser yang paling banyak dipakai?",
+            "a": "{top1}, dengan {v1} tayangan halaman global pada {date}, diikuti {top2} ({v2}) dan {top3} ({v3})."
+          },
+          {
+            "q": "Apa browser yang paling banyak dipakai di Tiongkok?",
+            "a": "Dalam data StatCounter {date}, {CNTop} memimpin Tiongkok dengan {CNV}. Browser lokal seperti UC, 360, dan QQ memiliki porsi jauh lebih besar di sana daripada di tempat lain dalam tabel."
+          },
+          {
+            "q": "Apakah ini porsi pengguna?",
+            "a": "Tidak. Ini porsi tayangan halaman di situs yang dilacak StatCounter, jadi orang yang lebih banyak menjelajah lebih banyak dihitung."
+          }
+        ]
+      },
+      "os-market-share": {
+        "title": "Pangsa Pasar OS {year}: Android, Windows, iOS | cv.cm",
+        "description": "Pangsa pasar sistem operasi {date}: {top1} {v1}, {top2} {v2}, {top3} {v3} secara global, berdampingan dengan AS, Tiongkok, Jepang, Korea, dan lainnya.",
+        "h1": "Pangsa pasar sistem operasi, {date}",
+        "lede": "Porsi tayangan halaman web menurut sistem operasi di ponsel, tablet, dan komputer, secara global dan di delapan pasar.",
+        "facts": [
+          "Global: {top1} {v1}, {top2} {v2}, {top3} {v3}.",
+          "Tiongkok: {CNTop} memimpin dengan {CNV}. AS: {USTop} dengan {USV}. Indonesia: {IDTop} dengan {IDV}.",
+          "Data untuk {date}."
+        ],
+        "about": [
+          "StatCounter menghitung tayangan halaman di situs yang memakai pelacaknya, pada semua jenis perangkat. Jadi tabel ini menunjukkan seberapa banyak web dilihat dari tiap sistem, yang tidak sama dengan jumlah perangkat terjual.",
+          "Versi lama dan baru suatu sistem dihitung bersama. Ponsel dan komputer berada dalam satu tabel, sehingga negara yang sebagian besar menjelajah lewat ponsel menunjukkan porsi Android atau iOS yang tinggi."
+        ],
+        "faq": [
+          {
+            "q": "Apa sistem operasi yang paling banyak dipakai?",
+            "a": "Jika menghitung semua perangkat, {top1} memimpin dengan {v1} tayangan halaman global pada {date}, diikuti {top2} ({v2}) dan {top3} ({v3})."
+          },
+          {
+            "q": "Apakah Windows masih yang terbesar?",
+            "a": "Di komputer, biasanya ya. Di semua perangkat, Windows bersaing dengan Android, karena begitu banyak penjelajahan terjadi di ponsel. Tabel di atas menunjukkan urutan saat ini."
+          },
+          {
+            "q": "Apakah ini menghitung aplikasi?",
+            "a": "Tidak. Ini menghitung kunjungan ke situs web di browser, jadi waktu yang dihabiskan di dalam aplikasi tidak termasuk."
+          }
+        ]
+      },
+      "search-engine-market-share": {
+        "title": "Pangsa Pasar Mesin Pencari {year}: Google, Bing, Baidu | cv.cm",
+        "description": "Pangsa pasar mesin pencari {date}: {top1} {v1}, {top2} {v2}, {top3} {v3} secara global, berdampingan dengan Tiongkok, Korea, Jepang, AS, dan lainnya.",
+        "h1": "Pangsa pasar mesin pencari, {date}",
+        "lede": "Porsi kunjungan yang datang dari tiap mesin pencari, secara global dan di delapan pasar. Urutannya sangat berubah menurut negara.",
+        "facts": [
+          "Global: {top1} {v1}, {top2} {v2}, {top3} {v3}.",
+          "Tiongkok: {CNTop} memimpin dengan {CNV}. Korea: {KRTop} dengan {KRV}. Jepang: {JPTop} dengan {JPV}.",
+          "Data untuk {date}."
+        ],
+        "about": [
+          "StatCounter menghitung tayangan halaman yang datang dari mesin pencari di situs yang memakai pelacaknya. Ini mengukur lalu lintas yang dikirim ke situs tersebut, bukan jumlah pencarian, dan jawaban yang dibaca orang tanpa mengeklik tidak dihitung.",
+          "Cakupan menjadi batasan di Tiongkok dan pasar lain tempat hanya sedikit situs terlacak yang dikunjungi, dan tempat pencarian di dalam aplikasi tidak terlihat, jadi anggap porsi itu sebagai panduan kasar."
+        ],
+        "faq": [
+          {
+            "q": "Apa mesin pencari yang paling banyak dipakai?",
+            "a": "{top1}, yang mengirim {v1} kunjungan pencarian global pada {date}, diikuti {top2} ({v2}) dan {top3} ({v3})."
+          },
+          {
+            "q": "Mesin pencari mana yang memimpin di Tiongkok?",
+            "a": "Dalam data StatCounter {date}, {CNTop} memimpin Tiongkok dengan {CNV}. Angka untuk Tiongkok sangat berbeda antarsumber karena situs yang dilacak tiap sumber berbeda."
+          },
+          {
+            "q": "Apakah chatbot AI dihitung sebagai mesin pencari di sini?",
+            "a": "Tidak. Tabel ini mencakup mesin pencari tradisional. Kunjungan dari asisten AI tidak termasuk."
+          }
+        ]
+      },
+      "phone-market-share": {
+        "title": "Pangsa Pasar Ponsel {year}: Apple, Samsung, Xiaomi | cv.cm",
+        "description": "Pangsa pasar merek ponsel {date}: {top1} {v1}, {top2} {v2}, {top3} {v3} secara global, berdampingan dengan AS, Tiongkok, Jepang, Korea, Vietnam, dan lainnya.",
+        "h1": "Pangsa pasar merek ponsel, {date}",
+        "lede": "Porsi tayangan halaman web seluler menurut merek ponsel, secara global dan di delapan pasar. Ini menunjukkan ponsel yang sedang dipakai orang, bukan yang terjual tahun ini.",
+        "facts": [
+          "Global: {top1} {v1}, {top2} {v2}, {top3} {v3}.",
+          "Tiongkok: {CNTop} memimpin dengan {CNV}. Korea: {KRTop} dengan {KRV}. Indonesia: {IDTop} dengan {IDV}.",
+          "Data untuk {date}."
+        ],
+        "about": [
+          "StatCounter mengenali merek dari kunjungan ke situs yang memakai pelacaknya pada perangkat seluler. Jadi ponsel lama yang masih dipakai ikut terhitung, itulah sebabnya angka ini berbeda dari peringkat penjualan yang diterbitkan firma riset setiap kuartal.",
+          "Sebagian ponsel menyembunyikan mereknya dari situs web, dan orang yang lebih banyak menjelajah lebih banyak dihitung. Anggap selisih kecil antarmerek sebagai derau."
+        ],
+        "faq": [
+          {
+            "q": "Merek ponsel mana yang paling banyak dipakai?",
+            "a": "{top1}, dengan {v1} tayangan halaman seluler global pada {date}, diikuti {top2} ({v2}) dan {top3} ({v3})."
+          },
+          {
+            "q": "Apakah ini sama dengan ponsel terjual?",
+            "a": "Tidak. Peringkat penjualan menghitung ponsel baru yang dikirim dalam suatu periode. Tabel ini menghitung ponsel yang dipakai, dibobot menurut seberapa banyak orang menjelajah dengannya."
+          },
+          {
+            "q": "Apa merek ponsel teratas di Tiongkok?",
+            "a": "Dalam data StatCounter {date}, {CNTop} memimpin Tiongkok dengan {CNV} tayangan halaman seluler."
+          }
+        ]
+      },
+      "social-media-market-share": {
+        "title": "Pangsa Pasar Media Sosial {year}: per Negara | cv.cm",
+        "description": "Pangsa pasar media sosial {date}: {top1} {v1}, {top2} {v2}, {top3} {v3} dari kunjungan web asal jejaring sosial, dengan AS, Jepang, Korea, dan lainnya.",
+        "h1": "Pangsa pasar media sosial, {date}",
+        "lede": "Jejaring sosial yang paling banyak mengirim kunjungan ke situs web, secara global dan di delapan pasar. Ini mengukur tautan yang diklik, bukan jumlah pengguna tiap jejaring.",
+        "facts": [
+          "Global: {top1} {v1}, {top2} {v2}, {top3} {v3}.",
+          "Jepang: {JPTop} memimpin dengan {JPV}. Korea: {KRTop} dengan {KRV}. AS: {USTop} dengan {USV}.",
+          "Data untuk {date}."
+        ],
+        "about": [
+          "StatCounter menghitung tayangan halaman yang datang dari jejaring sosial di situs yang memakai pelacaknya. Jejaring yang penggunanya jarang mengeklik keluar, seperti aplikasi video, bisa berperingkat rendah di sini meski audiensnya sangat besar.",
+          "Lalu lintas dari dalam aplikasi sering datang tanpa label, dan jejaring yang terutama dipakai di Tiongkok daratan hampir tidak terlihat dalam data ini, jadi tabel ini tidak boleh dibaca sebagai hitungan pengguna."
+        ],
+        "faq": [
+          {
+            "q": "Jejaring sosial mana yang memiliki porsi terbesar?",
+            "a": "{top1}, dengan {v1} kunjungan asal jejaring sosial secara global pada {date}, diikuti {top2} ({v2}) dan {top3} ({v3})."
+          },
+          {
+            "q": "Apakah ini jumlah pengguna?",
+            "a": "Tidak. Ini menghitung kunjungan yang dikirim ke situs web lain. Jumlah pengguna suatu jejaring bisa jauh lebih tinggi daripada yang tersirat dari porsinya di sini."
+          },
+          {
+            "q": "Mengapa TikTok atau WeChat lebih rendah dari perkiraan?",
+            "a": "Orang kebanyakan tetap berada di dalam aplikasi tersebut, dan tautan yang dibuka di sana sering tidak diberi label berasal darinya."
+          }
+        ]
+      }
     }
   }
 }

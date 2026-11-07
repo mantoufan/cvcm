@@ -538,7 +538,8 @@
     "tests": "测试",
     "data": "数据",
     "reference": "参考",
-    "ai": "AI"
+    "ai": "AI",
+    "rankings": "排行榜"
   },
   "lang": {
     "label": "语言",
@@ -10531,5 +10532,51 @@
     "hugging-pose": "抱抱姿势",
     "hanfu": "汉服",
     "qipao": "旗袍"
+  },
+  "ranking": {
+    "ai-models": {
+      "name": "AI大模型排行榜",
+      "blurb": "盲测中由真人投票选出的顶尖聊天模型。"
+    },
+    "ai-coding-models": {
+      "name": "AI编程排行榜",
+      "blurb": "按用户对模型所做网页应用的评判排名。"
+    },
+    "ai-image-models": {
+      "name": "AI绘画/AI生图排行榜",
+      "blurb": "按图片盲测投票排名的图像模型。"
+    },
+    "ai-video-models": {
+      "name": "AI视频生成排行榜",
+      "blurb": "按视频片段盲测投票排名的视频模型。"
+    },
+    "ai-usage": {
+      "name": "AI模型使用量排名",
+      "blurb": "按经 OpenRouter 发送的 token 量排名的模型。"
+    },
+    "ai-companies": {
+      "name": "AI公司使用量排名",
+      "blurb": "OpenRouter 上使用最多的模型来自哪些公司。"
+    },
+    "browser-market-share": {
+      "name": "浏览器市场份额",
+      "blurb": "Chrome、Safari、Edge 等，全球及各国数据。"
+    },
+    "os-market-share": {
+      "name": "操作系统市场份额",
+      "blurb": "Android、Windows、iOS 和 macOS，全球及各国数据。"
+    },
+    "search-engine-market-share": {
+      "name": "搜索引擎市场份额",
+      "blurb": "Google、Bing、Baidu 等，全球及各国数据。"
+    },
+    "phone-market-share": {
+      "name": "手机品牌市场份额",
+      "blurb": "Apple、Samsung、Xiaomi 等，全球及各国数据。"
+    },
+    "social-media-market-share": {
+      "name": "社交媒体市场份额",
+      "blurb": "各国哪些社交网络带来的网站访问最多。"
+    }
   }
 }

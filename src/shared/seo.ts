@@ -10,6 +10,8 @@ import { quizBreadcrumbJsonLd, quizDescription, quizFaqJsonLd, quizStaticHtml, q
 import type { QuizId } from "./quiz";
 import { datasetBreadcrumbJsonLd, datasetDescription, datasetFaqJsonLd, datasetJsonLd, datasetStaticHtml, datasetTitle } from "./datasets-i18n";
 import type { DatasetId } from "./datasets";
+import type { RankingId } from "./rankings";
+import { rankingBreadcrumbJsonLd, rankingDescription, rankingFaqJsonLd, rankingJsonLd, rankingStaticHtml, rankingTitle } from "./rankings-i18n";
 import { kbArticleJsonLd, kbBreadcrumbJsonLd, kbDescription, kbFaqJsonLd, kbPageHtml, kbTitle } from "./kb-i18n";
 import { kbArticleOf, type KbPage } from "./kb";
 import { refArticleJsonLd, refBreadcrumbJsonLd, refDescription, refFaqJsonLd, refPageHtml, refTitle } from "./ref-i18n";
@@ -20,7 +22,7 @@ import { messages } from "./messages";
 import { HREFLANG } from "./sitemap";
 import { marketCopy, marketFaqItems, marketHub, marketHubFaqItems } from "./markets-i18n";
 import type { MarketId } from "./markets";
-import { CATEGORIES, FEATURED_TUTORIALS, appHref, categoryOf, deviceHref, gamesHref, learnHref, kbHref, legalHref, marketsHref, quizHref, datasetHref, refHref, type ConvertJobId, type LegalPageId, type ResizeJobId, type ToolId, type TutorialId } from "./path";
+import { CATEGORIES, FEATURED_TUTORIALS, appHref, categoryOf, deviceHref, gamesHref, learnHref, kbHref, legalHref, marketsHref, quizHref, datasetHref, rankingHref, refHref, type ConvertJobId, type LegalPageId, type ResizeJobId, type ToolId, type TutorialId } from "./path";
 
 
 export type FaqItem = { q: string; a: string };
@@ -55,6 +57,9 @@ export type SeoInput = {
   /** A data table under /datasets/; `datasetId` null is the hub. */
   dataset?: boolean;
   datasetId?: DatasetId | null;
+  /** A ranking under /rankings/; `rankingId` null is the hub. */
+  ranking?: boolean;
+  rankingId?: RankingId | null;
   /** A kb page under /learn/knowledge/, /learn/code/ or /learn/ai/; `kbId` null is the knowledge hub, "code" the coding hub, "ai" the AI hub. */
   kb?: boolean;
   kbId?: KbPage;
@@ -604,6 +609,7 @@ export function pageTitle(locale: Locale, input: SeoInput | ToolId | null = {}):
   if (seo.devicePage) return devicePageCopy(locale, seo.devicePage).title;
   if (seo.quiz) return quizTitle(locale, seo.quizId ?? null);
   if (seo.dataset) return datasetTitle(locale, seo.datasetId ?? null);
+  if (seo.ranking) return rankingTitle(locale, seo.rankingId ?? null);
   if (seo.legalPage) return legalPageCopy(locale, seo.legalPage).title;
   if (seo.tool === "convert" && seo.convertJob) return lookup(locale, CONVERT_JOB_TITLE[seo.convertJob]);
   if (seo.tool === "resize" && seo.resizeJob) return lookup(locale, RESIZE_JOB_TITLE[seo.resizeJob]);
@@ -626,6 +632,7 @@ export function pageDescription(locale: Locale, input: SeoInput | ToolId | null 
   if (seo.devicePage) return devicePageCopy(locale, seo.devicePage).description;
   if (seo.quiz) return quizDescription(locale, seo.quizId ?? null);
   if (seo.dataset) return datasetDescription(locale, seo.datasetId ?? null);
+  if (seo.ranking) return rankingDescription(locale, seo.rankingId ?? null);
   if (seo.legalPage) return legalPageCopy(locale, seo.legalPage).description;
   if (seo.tool === "convert" && seo.convertJob) return lookup(locale, CONVERT_JOB_DESC[seo.convertJob]);
   if (seo.tool === "resize" && seo.resizeJob) return lookup(locale, RESIZE_JOB_DESC[seo.resizeJob]);
@@ -659,6 +666,7 @@ export function pageCanonical(
   if (seo.devicePage) return `https://cv.cm${deviceHref(locale, seo.devicePage)}`;
   if (seo.quiz) return `https://cv.cm${quizHref(locale, seo.quizId ?? null)}`;
   if (seo.dataset) return `https://cv.cm${datasetHref(locale, seo.datasetId ?? null)}`;
+  if (seo.ranking) return `https://cv.cm${rankingHref(locale, seo.rankingId ?? null)}`;
   if (seo.legalPage) return `https://cv.cm${legalHref(locale, seo.legalPage)}`;
   return `https://cv.cm${appHref(locale, seo.tool ?? null, seo.clipId, seo.convertJob ?? seo.resizeJob)}`;
 }
@@ -1013,6 +1021,13 @@ export function applyHtmlSeo(
       `<script type="application/ld+json" id="breadcrumb-jsonld">${JSON.stringify(quizBreadcrumbJsonLd(locale, seo.quizId ?? null)).replace(/</g, "\\u003c")}</script>`,
       `<script type="application/ld+json" id="faq-jsonld">${JSON.stringify(quizFaqJsonLd(locale, seo.quizId ?? null)).replace(/</g, "\\u003c")}</script>`,
     );
+  } else if (seo.ranking) {
+    const id = seo.rankingId ?? null;
+    tags.push(
+      `<script type="application/ld+json" id="breadcrumb-jsonld">${JSON.stringify(rankingBreadcrumbJsonLd(locale, id)).replace(/</g, "\\u003c")}</script>`,
+      `<script type="application/ld+json" id="faq-jsonld">${JSON.stringify(rankingFaqJsonLd(locale, id)).replace(/</g, "\\u003c")}</script>`,
+      `<script type="application/ld+json" id="dataset-jsonld">${JSON.stringify(rankingJsonLd(locale, id)).replace(/</g, "\\u003c")}</script>`,
+    );
   } else if (seo.dataset) {
     const id = seo.datasetId ?? null;
     tags.push(
@@ -1029,7 +1044,7 @@ export function applyHtmlSeo(
       `<script type="application/ld+json" id="breadcrumb-jsonld">${JSON.stringify(marketBreadcrumbJsonLd(locale, seo.market ?? null)).replace(/</g, "\\u003c")}</script>`,
     );
   }
-  if (ld && !seo.devicePage && !seo.legalPage && !seo.quiz && !seo.dataset && !seo.kb && !seo.ref) {
+  if (ld && !seo.devicePage && !seo.legalPage && !seo.quiz && !seo.dataset && !seo.ranking && !seo.kb && !seo.ref) {
     tags.push(
       `<script type="application/ld+json" id="faq-jsonld">${JSON.stringify(ld).replace(/</g, "\\u003c")}</script>`,
     );
@@ -1049,7 +1064,7 @@ export function applyHtmlSeo(
     ? null
     : seo.learn && seo.tutorial
       ? howToJsonLd(locale, seo.tutorial)
-      : !seo.learn && !seo.games && !seo.markets && !seo.devicePage && !seo.legalPage && !seo.quiz && !seo.dataset && !seo.kb && !seo.ref && seo.tool
+      : !seo.learn && !seo.games && !seo.markets && !seo.devicePage && !seo.legalPage && !seo.quiz && !seo.dataset && !seo.ranking && !seo.kb && !seo.ref && seo.tool
         ? toolHowToJsonLd(locale, seo.tool)
         : null;
   if (howTo) {
@@ -1057,7 +1072,7 @@ export function applyHtmlSeo(
       `<script type="application/ld+json" id="howto-jsonld">${JSON.stringify(howTo).replace(/</g, "\\u003c")}</script>`,
     );
   }
-  const isToolPage = !seo.learn && !seo.games && !seo.markets && !seo.devicePage && !seo.legalPage && !seo.quiz && !seo.dataset && !seo.kb && !seo.ref && seo.tool && !seo.clipId;
+  const isToolPage = !seo.learn && !seo.games && !seo.markets && !seo.devicePage && !seo.legalPage && !seo.quiz && !seo.dataset && !seo.ranking && !seo.kb && !seo.ref && seo.tool && !seo.clipId;
   if (isToolPage && seo.tool) {
     tags.push(
       `<script type="application/ld+json" id="software-jsonld">${JSON.stringify(toolSoftwareJsonLd(locale, seo.tool)).replace(/</g, "\\u003c")}</script>`,
@@ -1075,6 +1090,8 @@ export function applyHtmlSeo(
     ? legalStaticHtml(locale, seo.legalPage)
     : seo.quiz
     ? quizStaticHtml(locale, seo.quizId ?? null)
+    : seo.ranking
+    ? rankingStaticHtml(locale, seo.rankingId ?? null)
     : seo.dataset
     ? datasetStaticHtml(locale, seo.datasetId ?? null)
     : seo.kb
@@ -1147,6 +1164,7 @@ function staticPageHtml(
       { href: deviceHref(locale, "hub"), text: linkText(pageTitle(locale, { devicePage: "hub" })) },
       { href: quizHref(locale), text: linkText(pageTitle(locale, { quiz: true })) },
       { href: datasetHref(locale), text: linkText(pageTitle(locale, { dataset: true })) },
+      { href: rankingHref(locale), text: linkText(pageTitle(locale, { ranking: true })) },
       { href: kbHref(locale), text: linkText(pageTitle(locale, { kb: true })) },
       { href: kbHref(locale, "code"), text: linkText(pageTitle(locale, { kb: true, kbId: "code" })) },
       { href: kbHref(locale, "ai"), text: linkText(pageTitle(locale, { kb: true, kbId: "ai" })) },

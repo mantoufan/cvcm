@@ -538,7 +538,8 @@
     "tests": "Tests",
     "data": "Datos",
     "reference": "Referencias",
-    "ai": "IA"
+    "ai": "IA",
+    "rankings": "Rankings"
   },
   "lang": {
     "label": "Idioma",
@@ -10531,5 +10532,51 @@
     "hugging-pose": "Pose de abrazo",
     "hanfu": "Hanfu",
     "qipao": "Qipao"
+  },
+  "ranking": {
+    "ai-models": {
+      "name": "Mejores modelos de IA (ranking LLM)",
+      "blurb": "Los mejores modelos de chat según votos humanos a ciegas."
+    },
+    "ai-coding-models": {
+      "name": "Mejores IA para programar",
+      "blurb": "Modelos ordenados según personas que juzgan las apps web que crean."
+    },
+    "ai-image-models": {
+      "name": "Mejores IA para generar imágenes",
+      "blurb": "Modelos de imagen ordenados por votos a ciegas sobre sus imágenes."
+    },
+    "ai-video-models": {
+      "name": "Mejores IA para generar vídeo",
+      "blurb": "Modelos de vídeo ordenados por votos a ciegas sobre sus clips."
+    },
+    "ai-usage": {
+      "name": "Modelos de IA más usados",
+      "blurb": "Modelos ordenados por tokens enviados a través de OpenRouter."
+    },
+    "ai-companies": {
+      "name": "Empresas de IA por uso",
+      "blurb": "De quién son los modelos más usados en OpenRouter."
+    },
+    "browser-market-share": {
+      "name": "Cuota de mercado de navegadores",
+      "blurb": "Chrome, Safari, Edge y otros, en el mundo y por país."
+    },
+    "os-market-share": {
+      "name": "Cuota de mercado de sistemas operativos",
+      "blurb": "Android, Windows, iOS y macOS, en el mundo y por país."
+    },
+    "search-engine-market-share": {
+      "name": "Cuota de mercado de buscadores",
+      "blurb": "Google, Bing, Baidu y otros, en el mundo y por país."
+    },
+    "phone-market-share": {
+      "name": "Cuota de mercado de marcas de teléfonos",
+      "blurb": "Apple, Samsung, Xiaomi y otras, en el mundo y por país."
+    },
+    "social-media-market-share": {
+      "name": "Cuota de mercado de redes sociales",
+      "blurb": "Qué redes envían más visitas a la web, por país."
+    }
   }
 }

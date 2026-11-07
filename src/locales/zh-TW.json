@@ -538,7 +538,8 @@
     "tests": "測驗",
     "data": "資料",
     "reference": "參考",
-    "ai": "AI"
+    "ai": "AI",
+    "rankings": "排行榜"
   },
   "lang": {
     "label": "語言",
@@ -10531,5 +10532,51 @@
     "hugging-pose": "擁抱姿勢",
     "hanfu": "漢服",
     "qipao": "旗袍"
+  },
+  "ranking": {
+    "ai-models": {
+      "name": "AI 模型排名（LLM 排行榜）",
+      "blurb": "盲測中由真人投票選出的頂尖聊天模型。"
+    },
+    "ai-coding-models": {
+      "name": "最佳程式設計 AI 模型",
+      "blurb": "依使用者對模型所做網頁應用程式的評判排名。"
+    },
+    "ai-image-models": {
+      "name": "AI 繪圖排行榜",
+      "blurb": "依圖片盲測投票排名的圖像模型。"
+    },
+    "ai-video-models": {
+      "name": "AI 影片生成排行榜",
+      "blurb": "依影片片段盲測投票排名的影片模型。"
+    },
+    "ai-usage": {
+      "name": "最常用的 AI 模型",
+      "blurb": "依透過 OpenRouter 傳送的 token 量排名的模型。"
+    },
+    "ai-companies": {
+      "name": "AI 公司使用量排名",
+      "blurb": "OpenRouter 上最常用的模型來自哪些公司。"
+    },
+    "browser-market-share": {
+      "name": "瀏覽器市佔率",
+      "blurb": "Chrome、Safari、Edge 等，全球與各國資料。"
+    },
+    "os-market-share": {
+      "name": "作業系統市佔率",
+      "blurb": "Android、Windows、iOS 和 macOS，全球與各國資料。"
+    },
+    "search-engine-market-share": {
+      "name": "搜尋引擎市佔率",
+      "blurb": "Google、Bing、Baidu 等，全球與各國資料。"
+    },
+    "phone-market-share": {
+      "name": "手機品牌市佔率",
+      "blurb": "Apple、Samsung、Xiaomi 等，全球與各國資料。"
+    },
+    "social-media-market-share": {
+      "name": "社群媒體市佔率",
+      "blurb": "各國哪些社群網路帶來的網站造訪最多。"
+    }
   }
 }

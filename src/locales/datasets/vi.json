@@ -17,9 +17,18 @@
       "Số trên trang hiển thị theo ngôn ngữ của bạn, còn file CSV giữ giá trị gốc và mã ISO, nên mở được ngay bằng Excel, Google Trang tính hoặc trong code."
     ],
     "faq": [
-      { "q": "Dữ liệu này lấy từ đâu?", "a": "Số liệu thống kê các nước lấy từ Chỉ số Phát triển Thế giới của Ngân hàng Thế giới. Mã quốc gia, mã tiền tệ và mã vùng điện thoại theo ISO 3166, ISO 4217 và danh sách của Liên minh Viễn thông Quốc tế (ITU). Múi giờ lấy từ cơ sở dữ liệu tz của IANA. Khổ giấy theo ISO 216, ISO 269, JIS P 0138 và ANSI." },
-      { "q": "Tôi có thể dùng các bảng này miễn phí không?", "a": "Có. Dữ liệu của Ngân hàng Thế giới theo giấy phép CC BY 4.0, nên khi dùng lại hãy ghi nguồn là Ngân hàng Thế giới. Các bảng mã và bảng tra cứu là thông tin công khai, bạn có thể dùng tự do." },
-      { "q": "Số liệu mới đến mức nào?", "a": "Mỗi trang ghi ngày chụp dữ liệu và năm của từng giá trị. Ngân hàng Thế giới công bố phần lớn chỉ số chậm một đến hai năm, nên giá trị mới nhất của một số nước có thể thuộc năm trước đó." }
+      {
+        "q": "Dữ liệu này lấy từ đâu?",
+        "a": "Số liệu thống kê các nước lấy từ Chỉ số Phát triển Thế giới của Ngân hàng Thế giới. Mã quốc gia, mã tiền tệ và mã vùng điện thoại theo ISO 3166, ISO 4217 và danh sách của Liên minh Viễn thông Quốc tế (ITU). Múi giờ lấy từ cơ sở dữ liệu tz của IANA. Khổ giấy theo ISO 216, ISO 269, JIS P 0138 và ANSI."
+      },
+      {
+        "q": "Tôi có thể dùng các bảng này miễn phí không?",
+        "a": "Có. Dữ liệu của Ngân hàng Thế giới theo giấy phép CC BY 4.0, nên khi dùng lại hãy ghi nguồn là Ngân hàng Thế giới. Các bảng mã và bảng tra cứu là thông tin công khai, bạn có thể dùng tự do."
+      },
+      {
+        "q": "Số liệu mới đến mức nào?",
+        "a": "Mỗi trang ghi ngày chụp dữ liệu và năm của từng giá trị. Ngân hàng Thế giới công bố phần lớn chỉ số chậm một đến hai năm, nên giá trị mới nhất của một số nước có thể thuộc năm trước đó."
+      }
     ]
   },
   "ui": {
@@ -79,9 +88,18 @@
         "Danh sách gồm 217 nền kinh tế mà Ngân hàng Thế giới thống kê. Một số vùng lãnh thổ được liệt kê riêng với quốc gia mà chúng thuộc về."
       ],
       "faq": [
-        { "q": "Nước nào đông dân nhất thế giới?", "a": "{top1}, với {v1} người vào năm {year1}. {top2} đứng thứ hai với {v2} người." },
-        { "q": "Dân số thế giới là bao nhiêu?", "a": "Theo Ngân hàng Thế giới, dân số thế giới năm {worldYear} là {world} người." },
-        { "q": "Nước nào ít dân nhất?", "a": "Trong danh sách này là {last}, với {vlast} người. Những nơi Ngân hàng Thế giới không thống kê, như Thành Vatican, không có trong bảng." }
+        {
+          "q": "Nước nào đông dân nhất thế giới?",
+          "a": "{top1}, với {v1} người vào năm {year1}. {top2} đứng thứ hai với {v2} người."
+        },
+        {
+          "q": "Dân số thế giới là bao nhiêu?",
+          "a": "Theo Ngân hàng Thế giới, dân số thế giới năm {worldYear} là {world} người."
+        },
+        {
+          "q": "Nước nào ít dân nhất?",
+          "a": "Trong danh sách này là {last}, với {vlast} người. Những nơi Ngân hàng Thế giới không thống kê, như Thành Vatican, không có trong bảng."
+        }
       ]
     },
     "gdp": {
@@ -101,9 +119,18 @@
         "Để so sánh mức sống, hãy xem GDP bình quân đầu người, hoặc GDP theo sức mua tương đương (PPP), vốn đã điều chỉnh theo mặt bằng giá."
       ],
       "faq": [
-        { "q": "Nước nào có GDP lớn nhất?", "a": "{top1}, với GDP {v1} năm {year1}. {top2} đứng thứ hai với {v2}." },
-        { "q": "GDP thế giới là bao nhiêu?", "a": "GDP thế giới năm {worldYear} là {world}, theo USD hiện hành." },
-        { "q": "Vì sao một số nước hiển thị năm cũ hơn?", "a": "Ngân hàng Thế giới chỉ công bố số liệu khi một nước báo cáo. Mỗi dòng hiển thị năm mới nhất hiện có, nên một vài nước bị chậm hơn." }
+        {
+          "q": "Nước nào có GDP lớn nhất?",
+          "a": "{top1}, với GDP {v1} năm {year1}. {top2} đứng thứ hai với {v2}."
+        },
+        {
+          "q": "GDP thế giới là bao nhiêu?",
+          "a": "GDP thế giới năm {worldYear} là {world}, theo USD hiện hành."
+        },
+        {
+          "q": "Vì sao một số nước hiển thị năm cũ hơn?",
+          "a": "Ngân hàng Thế giới chỉ công bố số liệu khi một nước báo cáo. Mỗi dòng hiển thị năm mới nhất hiện có, nên một vài nước bị chậm hơn."
+        }
       ]
     },
     "gdp-per-capita": {
@@ -123,9 +150,18 @@
         "Các trung tâm tài chính nhỏ và nước xuất khẩu tài nguyên thường đứng đầu, vì một nền kinh tế lớn được chia cho ít cư dân."
       ],
       "faq": [
-        { "q": "Nước nào có GDP bình quân đầu người cao nhất?", "a": "{top1}, với {v1} mỗi người năm {year1}, tiếp theo là {top2} ({v2})." },
-        { "q": "GDP bình quân đầu người trung bình của thế giới là bao nhiêu?", "a": "{world} năm {worldYear}, theo USD hiện hành." },
-        { "q": "Nước nào có GDP bình quân đầu người thấp nhất?", "a": "Trong danh sách này là {last}, với {vlast} mỗi người." }
+        {
+          "q": "Nước nào có GDP bình quân đầu người cao nhất?",
+          "a": "{top1}, với {v1} mỗi người năm {year1}, tiếp theo là {top2} ({v2})."
+        },
+        {
+          "q": "GDP bình quân đầu người trung bình của thế giới là bao nhiêu?",
+          "a": "{world} năm {worldYear}, theo USD hiện hành."
+        },
+        {
+          "q": "Nước nào có GDP bình quân đầu người thấp nhất?",
+          "a": "Trong danh sách này là {last}, với {vlast} mỗi người."
+        }
       ]
     },
     "life-expectancy": {
@@ -145,9 +181,18 @@
         "Giá trị tính chung cả hai giới. Ở hầu hết các nước, phụ nữ sống lâu hơn nam giới."
       ],
       "faq": [
-        { "q": "Nước nào có tuổi thọ trung bình cao nhất?", "a": "{top1}, với {v1} tuổi năm {year1}, tiếp theo là {top2} ({v2})." },
-        { "q": "Tuổi thọ trung bình của thế giới là bao nhiêu?", "a": "{world} tuổi năm {worldYear}, tính chung cả hai giới." },
-        { "q": "Nước nào có tuổi thọ trung bình thấp nhất?", "a": "Trong danh sách này là {last}, với {vlast} tuổi." }
+        {
+          "q": "Nước nào có tuổi thọ trung bình cao nhất?",
+          "a": "{top1}, với {v1} tuổi năm {year1}, tiếp theo là {top2} ({v2})."
+        },
+        {
+          "q": "Tuổi thọ trung bình của thế giới là bao nhiêu?",
+          "a": "{world} tuổi năm {worldYear}, tính chung cả hai giới."
+        },
+        {
+          "q": "Nước nào có tuổi thọ trung bình thấp nhất?",
+          "a": "Trong danh sách này là {last}, với {vlast} tuổi."
+        }
       ]
     },
     "fertility-rate": {
@@ -167,9 +212,18 @@
         "Khoảng 2,1 con mỗi phụ nữ giúp dân số ổn định khi không có di cư. Phần lớn Đông Á và châu Âu thấp hơn nhiều so với mức này."
       ],
       "faq": [
-        { "q": "Nước nào có tỷ suất sinh cao nhất?", "a": "{top1}, với {v1} con mỗi phụ nữ năm {year1}, tiếp theo là {top2} ({v2})." },
-        { "q": "Nước nào có tỷ suất sinh thấp nhất?", "a": "Trong danh sách này là {last}, với {vlast} con mỗi phụ nữ." },
-        { "q": "Mức sinh thay thế là bao nhiêu?", "a": "Khoảng 2,1 con mỗi phụ nữ ở các nước có tỷ lệ tử vong trẻ em thấp. Trung bình thế giới là {world} ({worldYear})." }
+        {
+          "q": "Nước nào có tỷ suất sinh cao nhất?",
+          "a": "{top1}, với {v1} con mỗi phụ nữ năm {year1}, tiếp theo là {top2} ({v2})."
+        },
+        {
+          "q": "Nước nào có tỷ suất sinh thấp nhất?",
+          "a": "Trong danh sách này là {last}, với {vlast} con mỗi phụ nữ."
+        },
+        {
+          "q": "Mức sinh thay thế là bao nhiêu?",
+          "a": "Khoảng 2,1 con mỗi phụ nữ ở các nước có tỷ lệ tử vong trẻ em thấp. Trung bình thế giới là {world} ({worldYear})."
+        }
       ]
     },
     "internet-users": {
@@ -189,9 +243,18 @@
         "Một số nước vài năm mới báo cáo một lần, nên hãy xem cột năm trước khi so sánh hai dòng."
       ],
       "faq": [
-        { "q": "Nước nào có tỷ lệ người dùng internet cao nhất?", "a": "{top1}, nơi {v1}% dân số lên mạng vào năm {year1}." },
-        { "q": "Bao nhiêu phần trăm dân số thế giới dùng internet?", "a": "{world}% dân số thế giới vào năm {worldYear}." },
-        { "q": "Nước nào có ít người dùng internet nhất?", "a": "Trong danh sách này là {last}, với {vlast}% dân số." }
+        {
+          "q": "Nước nào có tỷ lệ người dùng internet cao nhất?",
+          "a": "{top1}, nơi {v1}% dân số lên mạng vào năm {year1}."
+        },
+        {
+          "q": "Bao nhiêu phần trăm dân số thế giới dùng internet?",
+          "a": "{world}% dân số thế giới vào năm {worldYear}."
+        },
+        {
+          "q": "Nước nào có ít người dùng internet nhất?",
+          "a": "Trong danh sách này là {last}, với {vlast}% dân số."
+        }
       ]
     },
     "gdp-ppp-per-capita": {
@@ -211,9 +274,18 @@
         "Các trung tâm tài chính nhỏ và nước xuất khẩu dầu đứng đầu danh sách vì sản lượng của họ lớn so với số cư dân, chứ không phải vì mọi cư dân đều giàu như vậy. Mỗi dòng hiển thị năm mới nhất mà nước đó báo cáo."
       ],
       "faq": [
-        { "q": "Nước nào có GDP bình quân đầu người PPP cao nhất?", "a": "{top1}, với {v1} đô la quốc tế mỗi người vào năm {year1}, tiếp theo là {top2} ({v2})." },
-        { "q": "GDP bình quân đầu người và GDP bình quân đầu người PPP khác nhau thế nào?", "a": "GDP bình quân đầu người thông thường dùng tỷ giá thị trường. Bản PPP điều chỉnh theo lượng hàng hóa mà tiền mua được trong nước, nên các nước nghèo có giá cả thấp xếp hạng cao hơn so với danh sách danh nghĩa." },
-        { "q": "Nước nào có GDP bình quân đầu người PPP thấp nhất?", "a": "Trong danh sách này là {last}, với {vlast} đô la quốc tế mỗi người." }
+        {
+          "q": "Nước nào có GDP bình quân đầu người PPP cao nhất?",
+          "a": "{top1}, với {v1} đô la quốc tế mỗi người vào năm {year1}, tiếp theo là {top2} ({v2})."
+        },
+        {
+          "q": "GDP bình quân đầu người và GDP bình quân đầu người PPP khác nhau thế nào?",
+          "a": "GDP bình quân đầu người thông thường dùng tỷ giá thị trường. Bản PPP điều chỉnh theo lượng hàng hóa mà tiền mua được trong nước, nên các nước nghèo có giá cả thấp xếp hạng cao hơn so với danh sách danh nghĩa."
+        },
+        {
+          "q": "Nước nào có GDP bình quân đầu người PPP thấp nhất?",
+          "a": "Trong danh sách này là {last}, với {vlast} đô la quốc tế mỗi người."
+        }
       ]
     },
     "gdp-growth": {
@@ -233,9 +305,18 @@
         "Các nền kinh tế nhỏ biến động mạnh nhất: một mỏ dầu mới, một vụ mùa thất bát hay một cuộc chiến có thể làm tăng trưởng thay đổi mười điểm trong một năm. Hãy xem nhiều năm trước khi kết luận về xu hướng."
       ],
       "faq": [
-        { "q": "Nước nào có nền kinh tế tăng trưởng nhanh nhất?", "a": "{top1}, với tăng trưởng GDP thực {v1}% vào năm {year1}. {top2} đứng tiếp theo với {v2}%." },
-        { "q": "Kinh tế thế giới tăng trưởng bao nhiêu?", "a": "GDP thế giới tăng {world}% trong năm {worldYear}, tính theo giá thực." },
-        { "q": "Tăng trưởng GDP âm nghĩa là gì?", "a": "Nền kinh tế sản xuất ít hơn năm trước. Hai quý giảm liên tiếp là quy tắc kinh nghiệm thường dùng để xác định suy thoái. Giá trị thấp nhất trong danh sách này là {last}, ở mức {vlast}%." }
+        {
+          "q": "Nước nào có nền kinh tế tăng trưởng nhanh nhất?",
+          "a": "{top1}, với tăng trưởng GDP thực {v1}% vào năm {year1}. {top2} đứng tiếp theo với {v2}%."
+        },
+        {
+          "q": "Kinh tế thế giới tăng trưởng bao nhiêu?",
+          "a": "GDP thế giới tăng {world}% trong năm {worldYear}, tính theo giá thực."
+        },
+        {
+          "q": "Tăng trưởng GDP âm nghĩa là gì?",
+          "a": "Nền kinh tế sản xuất ít hơn năm trước. Hai quý giảm liên tiếp là quy tắc kinh nghiệm thường dùng để xác định suy thoái. Giá trị thấp nhất trong danh sách này là {last}, ở mức {vlast}%."
+        }
       ]
     },
     "inflation": {
@@ -255,9 +336,18 @@
         "Hầu hết ngân hàng trung ương nhắm mức khoảng 2% mỗi năm. Mức trên 50% mỗi tháng được gọi là siêu lạm phát. Một số nước công bố chậm, nên hãy xem cột năm."
       ],
       "faq": [
-        { "q": "Nước nào có tỷ lệ lạm phát cao nhất?", "a": "{top1}, nơi giá tiêu dùng tăng {v1}% vào năm {year1}, tiếp theo là {top2} ({v2}%)." },
-        { "q": "Tỷ lệ lạm phát thế giới là bao nhiêu?", "a": "Giá tiêu dùng trên toàn thế giới tăng {world}% trong năm {worldYear}." },
-        { "q": "Nước nào có lạm phát thấp nhất?", "a": "Trong danh sách này là {last}, ở mức {vlast}%. Số âm nghĩa là giá giảm." }
+        {
+          "q": "Nước nào có tỷ lệ lạm phát cao nhất?",
+          "a": "{top1}, nơi giá tiêu dùng tăng {v1}% vào năm {year1}, tiếp theo là {top2} ({v2}%)."
+        },
+        {
+          "q": "Tỷ lệ lạm phát thế giới là bao nhiêu?",
+          "a": "Giá tiêu dùng trên toàn thế giới tăng {world}% trong năm {worldYear}."
+        },
+        {
+          "q": "Nước nào có lạm phát thấp nhất?",
+          "a": "Trong danh sách này là {last}, ở mức {vlast}%. Số âm nghĩa là giá giảm."
+        }
       ]
     },
     "unemployment": {
@@ -277,9 +367,18 @@
         "Đây là ước tính mô hình dùng một định nghĩa chung cho mọi nước, nên có thể khác với số liệu chính thức mà chính phủ từng nước công bố."
       ],
       "faq": [
-        { "q": "Nước nào có tỷ lệ thất nghiệp cao nhất?", "a": "{top1}, ở mức {v1}% lực lượng lao động vào năm {year1}, tiếp theo là {top2} ({v2}%)." },
-        { "q": "Tỷ lệ thất nghiệp thế giới là bao nhiêu?", "a": "ILO ước tính {world}% cho năm {worldYear}." },
-        { "q": "Nước nào có tỷ lệ thất nghiệp thấp nhất?", "a": "Trong danh sách này là {last}, ở mức {vlast}%. Tỷ lệ rất thấp thường có nghĩa là nhiều người làm việc phi chính thức hoặc cho doanh nghiệp gia đình." }
+        {
+          "q": "Nước nào có tỷ lệ thất nghiệp cao nhất?",
+          "a": "{top1}, ở mức {v1}% lực lượng lao động vào năm {year1}, tiếp theo là {top2} ({v2}%)."
+        },
+        {
+          "q": "Tỷ lệ thất nghiệp thế giới là bao nhiêu?",
+          "a": "ILO ước tính {world}% cho năm {worldYear}."
+        },
+        {
+          "q": "Nước nào có tỷ lệ thất nghiệp thấp nhất?",
+          "a": "Trong danh sách này là {last}, ở mức {vlast}%. Tỷ lệ rất thấp thường có nghĩa là nhiều người làm việc phi chính thức hoặc cho doanh nghiệp gia đình."
+        }
       ]
     },
     "land-area": {
@@ -299,9 +398,18 @@
         "Danh sách gồm các nền kinh tế mà Ngân hàng Thế giới thống kê. Châu Nam Cực và các vùng tranh chấp không có một chính quyền duy nhất không được đưa vào."
       ],
       "faq": [
-        { "q": "Nước nào có diện tích đất lớn nhất?", "a": "{top1}, với {v1} km² đất, tiếp theo là {top2} ({v2} km²) và {top3} ({v3} km²)." },
-        { "q": "Trái Đất có bao nhiêu diện tích đất liền?", "a": "Ngân hàng Thế giới cộng diện tích đất của mọi quốc gia được {world} km² ({worldYear}), khoảng một phần tư bề mặt Trái Đất. Không tính châu Nam Cực." },
-        { "q": "Nước nào có diện tích đất nhỏ nhất?", "a": "Trong danh sách này là {last}, với {vlast} km². Thành Vatican nhỏ hơn nhưng không có trong dữ liệu của Ngân hàng Thế giới." }
+        {
+          "q": "Nước nào có diện tích đất lớn nhất?",
+          "a": "{top1}, với {v1} km² đất, tiếp theo là {top2} ({v2} km²) và {top3} ({v3} km²)."
+        },
+        {
+          "q": "Trái Đất có bao nhiêu diện tích đất liền?",
+          "a": "Ngân hàng Thế giới cộng diện tích đất của mọi quốc gia được {world} km² ({worldYear}), khoảng một phần tư bề mặt Trái Đất. Không tính châu Nam Cực."
+        },
+        {
+          "q": "Nước nào có diện tích đất nhỏ nhất?",
+          "a": "Trong danh sách này là {last}, với {vlast} km². Thành Vatican nhỏ hơn nhưng không có trong dữ liệu của Ngân hàng Thế giới."
+        }
       ]
     },
     "population-density": {
@@ -321,9 +429,18 @@
         "Các thành bang và đảo nhỏ đứng đầu danh sách. Trong số các nước lớn, Bangladesh đông đúc nhất."
       ],
       "faq": [
-        { "q": "Nước nào có mật độ dân số cao nhất?", "a": "{top1}, với {v1} người/km² vào năm {year1}, tiếp theo là {top2} ({v2})." },
-        { "q": "Mật độ dân số thế giới là bao nhiêu?", "a": "Khoảng {world} người trên mỗi km² đất vào năm {worldYear}." },
-        { "q": "Nước nào có mật độ dân số thấp nhất?", "a": "Trong danh sách này là {last}, với {vlast} người/km²." }
+        {
+          "q": "Nước nào có mật độ dân số cao nhất?",
+          "a": "{top1}, với {v1} người/km² vào năm {year1}, tiếp theo là {top2} ({v2})."
+        },
+        {
+          "q": "Mật độ dân số thế giới là bao nhiêu?",
+          "a": "Khoảng {world} người trên mỗi km² đất vào năm {worldYear}."
+        },
+        {
+          "q": "Nước nào có mật độ dân số thấp nhất?",
+          "a": "Trong danh sách này là {last}, với {vlast} người/km²."
+        }
       ]
     },
     "urban-population": {
@@ -343,9 +460,18 @@
         "Các thành bang và vùng lãnh thổ nhỏ theo định nghĩa là 100% đô thị. Từ khoảng năm 2007, hơn một nửa dân số thế giới sống ở thành phố."
       ],
       "faq": [
-        { "q": "Nước nào có tỷ lệ đô thị hóa cao nhất?", "a": "{top1} ({v1}%), rồi đến {top2} ({v2}%) và {top3} ({v3}%). Các thành bang và vùng lãnh thổ nhỏ thường được tính là hoàn toàn đô thị." },
-        { "q": "Bao nhiêu phần trăm dân số thế giới sống ở thành phố?", "a": "{world}% vào năm {worldYear}, theo ước tính của Liên Hợp Quốc." },
-        { "q": "Nước nào có tỷ lệ đô thị hóa thấp nhất?", "a": "Trong danh sách này là {last}, nơi {vlast}% người dân sống ở khu vực đô thị." }
+        {
+          "q": "Nước nào có tỷ lệ đô thị hóa cao nhất?",
+          "a": "{top1} ({v1}%), rồi đến {top2} ({v2}%) và {top3} ({v3}%). Các thành bang và vùng lãnh thổ nhỏ thường được tính là hoàn toàn đô thị."
+        },
+        {
+          "q": "Bao nhiêu phần trăm dân số thế giới sống ở thành phố?",
+          "a": "{world}% vào năm {worldYear}, theo ước tính của Liên Hợp Quốc."
+        },
+        {
+          "q": "Nước nào có tỷ lệ đô thị hóa thấp nhất?",
+          "a": "Trong danh sách này là {last}, nơi {vlast}% người dân sống ở khu vực đô thị."
+        }
       ]
     },
     "aged-65-plus": {
@@ -365,9 +491,18 @@
         "Các nước vùng Vịnh có tỷ lệ rất thấp vì phần lớn cư dân là lao động nhập cư trong độ tuổi làm việc, chứ không phải vì công dân của họ trẻ."
       ],
       "faq": [
-        { "q": "Nước nào có dân số già nhất?", "a": "{top1}, nơi {v1}% dân số từ 65 tuổi trở lên vào năm {year1}, tiếp theo là {top2} ({v2}%)." },
-        { "q": "Bao nhiêu phần trăm dân số thế giới trên 65 tuổi?", "a": "{world}% vào năm {worldYear}." },
-        { "q": "Nước nào có dân số trẻ nhất?", "a": "Theo thước đo này là {last}, nơi {vlast}% dân số từ 65 tuổi trở lên." }
+        {
+          "q": "Nước nào có dân số già nhất?",
+          "a": "{top1}, nơi {v1}% dân số từ 65 tuổi trở lên vào năm {year1}, tiếp theo là {top2} ({v2}%)."
+        },
+        {
+          "q": "Bao nhiêu phần trăm dân số thế giới trên 65 tuổi?",
+          "a": "{world}% vào năm {worldYear}."
+        },
+        {
+          "q": "Nước nào có dân số trẻ nhất?",
+          "a": "Theo thước đo này là {last}, nơi {vlast}% dân số từ 65 tuổi trở lên."
+        }
       ]
     },
     "birth-rate": {
@@ -387,9 +522,18 @@
         "Để so sánh số con mỗi phụ nữ sinh, hãy xem bảng tổng tỷ suất sinh. Các nước có tỷ suất sinh thô thấp nhất cũng có dân số già nhất."
       ],
       "faq": [
-        { "q": "Nước nào có tỷ suất sinh thô cao nhất?", "a": "{top1}, với {v1} ca sinh trên 1.000 dân vào năm {year1}, tiếp theo là {top2} ({v2})." },
-        { "q": "Tỷ suất sinh thô của thế giới là bao nhiêu?", "a": "{world} ca sinh trên 1.000 dân vào năm {worldYear}." },
-        { "q": "Nước nào có tỷ suất sinh thô thấp nhất?", "a": "Trong danh sách này là {last}, với {vlast} ca sinh trên 1.000 dân." }
+        {
+          "q": "Nước nào có tỷ suất sinh thô cao nhất?",
+          "a": "{top1}, với {v1} ca sinh trên 1.000 dân vào năm {year1}, tiếp theo là {top2} ({v2})."
+        },
+        {
+          "q": "Tỷ suất sinh thô của thế giới là bao nhiêu?",
+          "a": "{world} ca sinh trên 1.000 dân vào năm {worldYear}."
+        },
+        {
+          "q": "Nước nào có tỷ suất sinh thô thấp nhất?",
+          "a": "Trong danh sách này là {last}, với {vlast} ca sinh trên 1.000 dân."
+        }
       ]
     },
     "infant-mortality": {
@@ -409,9 +553,18 @@
         "Nhóm Liên cơ quan Liên Hợp Quốc về Ước tính Tử vong Trẻ em (UN IGME) kết hợp khảo sát, tổng điều tra dân số và đăng ký hộ tịch thành một chuỗi số liệu có thể so sánh."
       ],
       "faq": [
-        { "q": "Nước nào có tỷ lệ tử vong trẻ sơ sinh cao nhất?", "a": "{top1}, với {v1} ca tử vong trên 1.000 trẻ sinh sống vào năm {year1}, tiếp theo là {top2} ({v2})." },
-        { "q": "Tỷ lệ tử vong trẻ sơ sinh của thế giới là bao nhiêu?", "a": "{world} trên 1.000 trẻ sinh sống vào năm {worldYear}. Tỷ lệ này đã giảm hơn một nửa kể từ năm 1990." },
-        { "q": "Nước nào có tỷ lệ tử vong trẻ sơ sinh thấp nhất?", "a": "Trong danh sách này là {last}, ở mức {vlast} trên 1.000 trẻ sinh sống." }
+        {
+          "q": "Nước nào có tỷ lệ tử vong trẻ sơ sinh cao nhất?",
+          "a": "{top1}, với {v1} ca tử vong trên 1.000 trẻ sinh sống vào năm {year1}, tiếp theo là {top2} ({v2})."
+        },
+        {
+          "q": "Tỷ lệ tử vong trẻ sơ sinh của thế giới là bao nhiêu?",
+          "a": "{world} trên 1.000 trẻ sinh sống vào năm {worldYear}. Tỷ lệ này đã giảm hơn một nửa kể từ năm 1990."
+        },
+        {
+          "q": "Nước nào có tỷ lệ tử vong trẻ sơ sinh thấp nhất?",
+          "a": "Trong danh sách này là {last}, ở mức {vlast} trên 1.000 trẻ sinh sống."
+        }
       ]
     },
     "co2-per-capita": {
@@ -431,9 +584,18 @@
         "Các nước sản xuất dầu khí nhỏ đứng đầu danh sách vì ngành công nghiệp tiêu tốn nhiều năng lượng lớn so với dân số. Để biết tỷ trọng của một nước trong tổng phát thải thế giới, hãy nhân với dân số của nước đó."
       ],
       "faq": [
-        { "q": "Nước nào phát thải CO2 bình quân đầu người cao nhất?", "a": "{top1}, ở mức {v1} tấn mỗi người vào năm {year1}, tiếp theo là {top2} ({v2} tấn)." },
-        { "q": "Phát thải CO2 trung bình mỗi người trên thế giới là bao nhiêu?", "a": "Khoảng {world} tấn mỗi người vào năm {worldYear}." },
-        { "q": "Nước nào phát thải CO2 bình quân đầu người thấp nhất?", "a": "Trong danh sách này là {last}, ở mức {vlast} tấn mỗi người." }
+        {
+          "q": "Nước nào phát thải CO2 bình quân đầu người cao nhất?",
+          "a": "{top1}, ở mức {v1} tấn mỗi người vào năm {year1}, tiếp theo là {top2} ({v2} tấn)."
+        },
+        {
+          "q": "Phát thải CO2 trung bình mỗi người trên thế giới là bao nhiêu?",
+          "a": "Khoảng {world} tấn mỗi người vào năm {worldYear}."
+        },
+        {
+          "q": "Nước nào phát thải CO2 bình quân đầu người thấp nhất?",
+          "a": "Trong danh sách này là {last}, ở mức {vlast} tấn mỗi người."
+        }
       ]
     },
     "electricity-access": {
@@ -453,9 +615,18 @@
         "Phần lớn người chưa có điện sống ở châu Phi hạ Sahara, nơi tỷ lệ tiếp cận ở một số nước vẫn dưới một nửa."
       ],
       "faq": [
-        { "q": "Những nước nào có tỷ lệ tiếp cận điện cao nhất?", "a": "{top1} ({v1}%), {top2} ({v2}%) và {top3} ({v3}%) dẫn đầu danh sách năm {year1}. Các nước bằng nhau được xếp cùng hạng." },
-        { "q": "Bao nhiêu phần trăm dân số thế giới có điện?", "a": "{world}% dân số thế giới vào năm {worldYear}." },
-        { "q": "Nước nào có tỷ lệ tiếp cận điện thấp nhất?", "a": "Trong danh sách này là {last}, nơi {vlast}% người dân có điện." }
+        {
+          "q": "Những nước nào có tỷ lệ tiếp cận điện cao nhất?",
+          "a": "{top1} ({v1}%), {top2} ({v2}%) và {top3} ({v3}%) dẫn đầu danh sách năm {year1}. Các nước bằng nhau được xếp cùng hạng."
+        },
+        {
+          "q": "Bao nhiêu phần trăm dân số thế giới có điện?",
+          "a": "{world}% dân số thế giới vào năm {worldYear}."
+        },
+        {
+          "q": "Nước nào có tỷ lệ tiếp cận điện thấp nhất?",
+          "a": "Trong danh sách này là {last}, nơi {vlast}% người dân có điện."
+        }
       ]
     },
     "population-growth": {
@@ -475,9 +646,18 @@
         "Nhiều nước ở châu Âu và Đông Á hiện giảm dân số mỗi năm vì số người chết nhiều hơn số trẻ sinh ra và có ít người nhập cư."
       ],
       "faq": [
-        { "q": "Nước nào có dân số tăng nhanh nhất?", "a": "{top1}, nơi dân số tăng {v1}% vào năm {year1}, tiếp theo là {top2} ({v2}%)." },
-        { "q": "Dân số thế giới đang tăng nhanh đến mức nào?", "a": "{world}% vào năm {worldYear}, chưa bằng một nửa mức đỉnh cuối thập niên 1960." },
-        { "q": "Nước nào có dân số giảm nhanh nhất?", "a": "Trong danh sách này là {last}, ở mức {vlast}% mỗi năm." }
+        {
+          "q": "Nước nào có dân số tăng nhanh nhất?",
+          "a": "{top1}, nơi dân số tăng {v1}% vào năm {year1}, tiếp theo là {top2} ({v2}%)."
+        },
+        {
+          "q": "Dân số thế giới đang tăng nhanh đến mức nào?",
+          "a": "{world}% vào năm {worldYear}, chưa bằng một nửa mức đỉnh cuối thập niên 1960."
+        },
+        {
+          "q": "Nước nào có dân số giảm nhanh nhất?",
+          "a": "Trong danh sách này là {last}, ở mức {vlast}% mỗi năm."
+        }
       ]
     },
     "death-rate": {
@@ -497,9 +677,18 @@
         "Các nước vùng Vịnh có tỷ suất thấp nhất vì phần lớn cư dân là lao động nhập cư trẻ trong độ tuổi làm việc. Để so sánh sức khỏe, hãy xem tuổi thọ trung bình."
       ],
       "faq": [
-        { "q": "Nước nào có tỷ suất chết thô cao nhất?", "a": "{top1}, với {v1} ca tử vong trên 1.000 dân vào năm {year1}, tiếp theo là {top2} ({v2})." },
-        { "q": "Tỷ suất chết thô của thế giới là bao nhiêu?", "a": "{world} ca tử vong trên 1.000 dân vào năm {worldYear}." },
-        { "q": "Nước nào có tỷ suất chết thô thấp nhất?", "a": "Trong danh sách này là {last}, với {vlast} ca tử vong trên 1.000 dân." }
+        {
+          "q": "Nước nào có tỷ suất chết thô cao nhất?",
+          "a": "{top1}, với {v1} ca tử vong trên 1.000 dân vào năm {year1}, tiếp theo là {top2} ({v2})."
+        },
+        {
+          "q": "Tỷ suất chết thô của thế giới là bao nhiêu?",
+          "a": "{world} ca tử vong trên 1.000 dân vào năm {worldYear}."
+        },
+        {
+          "q": "Nước nào có tỷ suất chết thô thấp nhất?",
+          "a": "Trong danh sách này là {last}, với {vlast} ca tử vong trên 1.000 dân."
+        }
       ]
     },
     "life-expectancy-male": {
@@ -519,9 +708,18 @@
         "Gần như ở mọi nơi, nam giới mất sớm hơn nữ giới, trung bình khoảng năm năm. Khoảng cách lớn nhất ở Đông Âu, nơi nam giới uống nhiều rượu và hút thuốc phổ biến."
       ],
       "faq": [
-        { "q": "Nước nào có tuổi thọ nam giới cao nhất?", "a": "{top1}, với {v1} tuổi năm {year1}, tiếp theo là {top2} ({v2})." },
-        { "q": "Tuổi thọ trung bình của nam giới trên thế giới là bao nhiêu?", "a": "{world} tuổi năm {worldYear}." },
-        { "q": "Nước nào có tuổi thọ nam giới thấp nhất?", "a": "Trong danh sách này là {last}, với {vlast} tuổi." }
+        {
+          "q": "Nước nào có tuổi thọ nam giới cao nhất?",
+          "a": "{top1}, với {v1} tuổi năm {year1}, tiếp theo là {top2} ({v2})."
+        },
+        {
+          "q": "Tuổi thọ trung bình của nam giới trên thế giới là bao nhiêu?",
+          "a": "{world} tuổi năm {worldYear}."
+        },
+        {
+          "q": "Nước nào có tuổi thọ nam giới thấp nhất?",
+          "a": "Trong danh sách này là {last}, với {vlast} tuổi."
+        }
       ]
     },
     "life-expectancy-female": {
@@ -541,9 +739,18 @@
         "Ở gần như mọi nước, phụ nữ sống lâu hơn nam giới. Một phần khoảng cách là do sinh học, một phần do nam giới hút thuốc, uống rượu, gặp tai nạn và bạo lực nhiều hơn."
       ],
       "faq": [
-        { "q": "Nước nào có tuổi thọ nữ giới cao nhất?", "a": "{top1}, với {v1} tuổi năm {year1}, tiếp theo là {top2} ({v2})." },
-        { "q": "Tuổi thọ trung bình của nữ giới trên thế giới là bao nhiêu?", "a": "{world} tuổi năm {worldYear}." },
-        { "q": "Nước nào có tuổi thọ nữ giới thấp nhất?", "a": "Trong danh sách này là {last}, với {vlast} tuổi." }
+        {
+          "q": "Nước nào có tuổi thọ nữ giới cao nhất?",
+          "a": "{top1}, với {v1} tuổi năm {year1}, tiếp theo là {top2} ({v2})."
+        },
+        {
+          "q": "Tuổi thọ trung bình của nữ giới trên thế giới là bao nhiêu?",
+          "a": "{world} tuổi năm {worldYear}."
+        },
+        {
+          "q": "Nước nào có tuổi thọ nữ giới thấp nhất?",
+          "a": "Trong danh sách này là {last}, với {vlast} tuổi."
+        }
       ]
     },
     "maternal-mortality": {
@@ -563,9 +770,18 @@
         "Đây là ước tính mô hình của Nhóm liên cơ quan ước tính tử vong mẹ của Liên Hợp Quốc (MMEIG), giúp lấp các khoảng trống ở những nước không đăng ký đầy đủ mọi ca tử vong."
       ],
       "faq": [
-        { "q": "Nước nào có tỷ lệ tử vong mẹ cao nhất?", "a": "{top1}, với {v1} ca tử vong mẹ trên 100.000 ca sinh sống vào năm {year1}, tiếp theo là {top2} ({v2})." },
-        { "q": "Tỷ số tử vong mẹ của thế giới là bao nhiêu?", "a": "{world} trên 100.000 ca sinh sống vào năm {worldYear}. Mục tiêu của Liên Hợp Quốc đến năm 2030 là dưới 70." },
-        { "q": "Nước nào có tỷ lệ tử vong mẹ thấp nhất?", "a": "Trong danh sách này là {last}, ở mức {vlast} trên 100.000 ca sinh sống." }
+        {
+          "q": "Nước nào có tỷ lệ tử vong mẹ cao nhất?",
+          "a": "{top1}, với {v1} ca tử vong mẹ trên 100.000 ca sinh sống vào năm {year1}, tiếp theo là {top2} ({v2})."
+        },
+        {
+          "q": "Tỷ số tử vong mẹ của thế giới là bao nhiêu?",
+          "a": "{world} trên 100.000 ca sinh sống vào năm {worldYear}. Mục tiêu của Liên Hợp Quốc đến năm 2030 là dưới 70."
+        },
+        {
+          "q": "Nước nào có tỷ lệ tử vong mẹ thấp nhất?",
+          "a": "Trong danh sách này là {last}, ở mức {vlast} trên 100.000 ca sinh sống."
+        }
       ]
     },
     "exports": {
@@ -585,9 +801,18 @@
         "Mỗi dòng là năm gần nhất nước đó báo cáo, trong vòng bốn năm qua. Hàng tái xuất qua các trung tâm thương mại như Singapore và Hồng Kông được tính tại nơi hàng rời đi."
       ],
       "faq": [
-        { "q": "Nước nào xuất khẩu nhiều nhất?", "a": "{top1}, với kim ngạch xuất khẩu {v1} năm {year1}, tiếp theo là {top2} ({v2}) và {top3} ({v3})." },
-        { "q": "Thế giới xuất khẩu bao nhiêu?", "a": "{world} hàng hóa và dịch vụ năm {worldYear}." },
-        { "q": "Xuất khẩu có bao gồm dịch vụ không?", "a": "Có. Bảng này tính chung hàng hóa và dịch vụ, nên các nước có ngành du lịch, tài chính hay phần mềm lớn sẽ xếp cao hơn so với danh sách chỉ tính hàng hóa." }
+        {
+          "q": "Nước nào xuất khẩu nhiều nhất?",
+          "a": "{top1}, với kim ngạch xuất khẩu {v1} năm {year1}, tiếp theo là {top2} ({v2}) và {top3} ({v3})."
+        },
+        {
+          "q": "Thế giới xuất khẩu bao nhiêu?",
+          "a": "{world} hàng hóa và dịch vụ năm {worldYear}."
+        },
+        {
+          "q": "Xuất khẩu có bao gồm dịch vụ không?",
+          "a": "Có. Bảng này tính chung hàng hóa và dịch vụ, nên các nước có ngành du lịch, tài chính hay phần mềm lớn sẽ xếp cao hơn so với danh sách chỉ tính hàng hóa."
+        }
       ]
     },
     "imports": {
@@ -607,9 +832,18 @@
         "Một nước nhập khẩu nhiều hơn xuất khẩu sẽ bị thâm hụt thương mại. Hãy so sánh bảng này với bảng xuất khẩu để thấy cán cân của từng nước."
       ],
       "faq": [
-        { "q": "Nước nào nhập khẩu nhiều nhất?", "a": "{top1}, với kim ngạch nhập khẩu {v1} năm {year1}, tiếp theo là {top2} ({v2}) và {top3} ({v3})." },
-        { "q": "Thế giới nhập khẩu bao nhiêu?", "a": "{world} hàng hóa và dịch vụ năm {worldYear}. Về lý thuyết, nhập khẩu và xuất khẩu thế giới phải bằng nhau, nhưng vẫn chênh lệch do khác biệt về thời điểm và thiếu sót trong báo cáo." },
-        { "q": "Nước nào nhập khẩu ít nhất?", "a": "Trong danh sách này là {last}, ở mức {vlast}." }
+        {
+          "q": "Nước nào nhập khẩu nhiều nhất?",
+          "a": "{top1}, với kim ngạch nhập khẩu {v1} năm {year1}, tiếp theo là {top2} ({v2}) và {top3} ({v3})."
+        },
+        {
+          "q": "Thế giới nhập khẩu bao nhiêu?",
+          "a": "{world} hàng hóa và dịch vụ năm {worldYear}. Về lý thuyết, nhập khẩu và xuất khẩu thế giới phải bằng nhau, nhưng vẫn chênh lệch do khác biệt về thời điểm và thiếu sót trong báo cáo."
+        },
+        {
+          "q": "Nước nào nhập khẩu ít nhất?",
+          "a": "Trong danh sách này là {last}, ở mức {vlast}."
+        }
       ]
     },
     "health-spending-per-capita": {
@@ -629,9 +863,18 @@
         "Giá trị tính theo tỷ giá thị trường, nên ở các nước lương cao, chi phí trông đắt hơn so với lượng dịch vụ thực sự mua được. Chi nhiều hơn không phải lúc nào cũng giúp sống lâu hơn: hãy so sánh với bảng tuổi thọ."
       ],
       "faq": [
-        { "q": "Nước nào chi cho y tế bình quân đầu người nhiều nhất?", "a": "{top1}, ở mức {v1} mỗi người năm {year1}, tiếp theo là {top2} ({v2})." },
-        { "q": "Thế giới chi bao nhiêu cho y tế trên mỗi người?", "a": "Khoảng {world} mỗi người năm {worldYear}." },
-        { "q": "Nước nào chi cho y tế ít nhất?", "a": "Trong danh sách này là {last}, ở mức {vlast} mỗi người." }
+        {
+          "q": "Nước nào chi cho y tế bình quân đầu người nhiều nhất?",
+          "a": "{top1}, ở mức {v1} mỗi người năm {year1}, tiếp theo là {top2} ({v2})."
+        },
+        {
+          "q": "Thế giới chi bao nhiêu cho y tế trên mỗi người?",
+          "a": "Khoảng {world} mỗi người năm {worldYear}."
+        },
+        {
+          "q": "Nước nào chi cho y tế ít nhất?",
+          "a": "Trong danh sách này là {last}, ở mức {vlast} mỗi người."
+        }
       ]
     },
     "female-labor-force": {
@@ -651,9 +894,18 @@
         "Một số tỷ lệ cao nhất thuộc về các nước thu nhập thấp, nơi phần lớn phụ nữ làm nông. Tỷ lệ thấp nhất ở một số khu vực Trung Đông và Nam Á. Đây là ước tính mô hình của ILO, dùng một định nghĩa chung cho mọi nước."
       ],
       "faq": [
-        { "q": "Nước nào có tỷ lệ tham gia lực lượng lao động nữ cao nhất?", "a": "{top1}, nơi {v1}% phụ nữ tham gia lực lượng lao động vào năm {year1}, tiếp theo là {top2} ({v2}%)." },
-        { "q": "Bao nhiêu phần trăm phụ nữ trên thế giới đi làm?", "a": "{world}% phụ nữ từ 15 tuổi trở lên đang làm việc hoặc đang tìm việc vào năm {worldYear}." },
-        { "q": "Nước nào có tỷ lệ tham gia lực lượng lao động nữ thấp nhất?", "a": "Trong danh sách này là {last}, ở mức {vlast}%." }
+        {
+          "q": "Nước nào có tỷ lệ tham gia lực lượng lao động nữ cao nhất?",
+          "a": "{top1}, nơi {v1}% phụ nữ tham gia lực lượng lao động vào năm {year1}, tiếp theo là {top2} ({v2}%)."
+        },
+        {
+          "q": "Bao nhiêu phần trăm phụ nữ trên thế giới đi làm?",
+          "a": "{world}% phụ nữ từ 15 tuổi trở lên đang làm việc hoặc đang tìm việc vào năm {worldYear}."
+        },
+        {
+          "q": "Nước nào có tỷ lệ tham gia lực lượng lao động nữ thấp nhất?",
+          "a": "Trong danh sách này là {last}, ở mức {vlast}%."
+        }
       ]
     },
     "forest-area": {
@@ -673,9 +925,18 @@
         "Các nước nhiệt đới nhỏ đứng đầu danh sách theo tỷ lệ. Xét theo tổng diện tích, Nga, Brazil, Canada, Hoa Kỳ và Trung Quốc chiếm hơn một nửa diện tích rừng thế giới."
       ],
       "faq": [
-        { "q": "Nước nào có tỷ lệ che phủ rừng cao nhất?", "a": "{top1}, nơi rừng che phủ {v1}% diện tích đất vào năm {year1}, tiếp theo là {top2} ({v2}%)." },
-        { "q": "Rừng che phủ bao nhiêu phần trăm thế giới?", "a": "{world}% diện tích đất thế giới vào năm {worldYear}." },
-        { "q": "Nước nào có ít rừng nhất?", "a": "Trong danh sách này là {last}, với {vlast}% diện tích đất." }
+        {
+          "q": "Nước nào có tỷ lệ che phủ rừng cao nhất?",
+          "a": "{top1}, nơi rừng che phủ {v1}% diện tích đất vào năm {year1}, tiếp theo là {top2} ({v2}%)."
+        },
+        {
+          "q": "Rừng che phủ bao nhiêu phần trăm thế giới?",
+          "a": "{world}% diện tích đất thế giới vào năm {worldYear}."
+        },
+        {
+          "q": "Nước nào có ít rừng nhất?",
+          "a": "Trong danh sách này là {last}, với {vlast}% diện tích đất."
+        }
       ]
     },
     "renewable-energy": {
@@ -695,9 +956,18 @@
         "Nhiều tỷ trọng cao nhất thuộc về các nước thu nhập thấp, nơi phần lớn hộ gia đình nấu ăn bằng củi, chứ không phải các nước có nhiều điện gió và điện mặt trời nhất. Dữ liệu thường chậm vài năm."
       ],
       "faq": [
-        { "q": "Nước nào sử dụng nhiều năng lượng tái tạo nhất?", "a": "Xét theo tỷ trọng là {top1}, nơi {v1}% năng lượng sử dụng là năng lượng tái tạo vào năm {year1}, chủ yếu từ củi và thủy điện." },
-        { "q": "Năng lượng tái tạo chiếm bao nhiêu phần trăm năng lượng thế giới?", "a": "{world}% tổng tiêu thụ năng lượng cuối cùng vào năm {worldYear}." },
-        { "q": "Nước nào sử dụng ít năng lượng tái tạo nhất?", "a": "Trong danh sách này là {last}, ở mức {vlast}%." }
+        {
+          "q": "Nước nào sử dụng nhiều năng lượng tái tạo nhất?",
+          "a": "Xét theo tỷ trọng là {top1}, nơi {v1}% năng lượng sử dụng là năng lượng tái tạo vào năm {year1}, chủ yếu từ củi và thủy điện."
+        },
+        {
+          "q": "Năng lượng tái tạo chiếm bao nhiêu phần trăm năng lượng thế giới?",
+          "a": "{world}% tổng tiêu thụ năng lượng cuối cùng vào năm {worldYear}."
+        },
+        {
+          "q": "Nước nào sử dụng ít năng lượng tái tạo nhất?",
+          "a": "Trong danh sách này là {last}, ở mức {vlast}%."
+        }
       ]
     },
     "country-codes": {
@@ -724,9 +994,18 @@
         "Vương quốc Anh dùng tên miền .uk dù mã ISO là GB. Tên trong bảng hiển thị theo ngôn ngữ của bạn."
       ],
       "faq": [
-        { "q": "Mã alpha-2 và alpha-3 khác nhau thế nào?", "a": "Mã alpha-2 có hai chữ cái (VN), dùng trong tên miền, thẻ ngôn ngữ và hầu hết phần mềm. Mã alpha-3 có ba chữ cái (VNM), dùng trên hộ chiếu và trong thống kê." },
-        { "q": "Có bao nhiêu mã quốc gia ISO?", "a": "ISO 3166-1 liệt kê {rows} quốc gia và vùng lãnh thổ, mỗi nơi có một mã alpha-2, alpha-3 và mã số." },
-        { "q": "Mã quốc gia của Việt Nam là gì?", "a": "VN (alpha-2), VNM (alpha-3) và 704 (mã số). Tên miền internet là .vn." }
+        {
+          "q": "Mã alpha-2 và alpha-3 khác nhau thế nào?",
+          "a": "Mã alpha-2 có hai chữ cái (VN), dùng trong tên miền, thẻ ngôn ngữ và hầu hết phần mềm. Mã alpha-3 có ba chữ cái (VNM), dùng trên hộ chiếu và trong thống kê."
+        },
+        {
+          "q": "Có bao nhiêu mã quốc gia ISO?",
+          "a": "ISO 3166-1 liệt kê {rows} quốc gia và vùng lãnh thổ, mỗi nơi có một mã alpha-2, alpha-3 và mã số."
+        },
+        {
+          "q": "Mã quốc gia của Việt Nam là gì?",
+          "a": "VN (alpha-2), VNM (alpha-3) và 704 (mã số). Tên miền internet là .vn."
+        }
       ]
     },
     "calling-codes": {
@@ -750,9 +1029,18 @@
         "Trên điện thoại di động, giữ phím 0 để nhập dấu +. Cách này dùng được ở mọi nước, nên bạn không cần biết mã gọi quốc tế tại chỗ."
       ],
       "faq": [
-        { "q": "Làm sao gọi điện ra nước ngoài?", "a": "Bấm + (hoặc mã gọi quốc tế, ở Việt Nam là 00, ở Mỹ là 011), mã quốc gia, rồi số máy đã bỏ số 0 ở đầu. Từ điện thoại di động, bấm + là được. Gọi về Việt Nam từ nước ngoài: bấm +84 rồi bỏ số 0 ở đầu (09x… → +84 9x…)." },
-        { "q": "+84 là nước nào?", "a": "+84 là Việt Nam. Ngoài ra, +86 là Trung Quốc." },
-        { "q": "Vì sao nhiều nước dùng chung +1?", "a": "Các nước này thuộc Kế hoạch Đánh số Bắc Mỹ (NANP). Mã vùng 3 chữ số sau +1 cho biết đó là nước nào." }
+        {
+          "q": "Làm sao gọi điện ra nước ngoài?",
+          "a": "Bấm + (hoặc mã gọi quốc tế, ở Việt Nam là 00, ở Mỹ là 011), mã quốc gia, rồi số máy đã bỏ số 0 ở đầu. Từ điện thoại di động, bấm + là được. Gọi về Việt Nam từ nước ngoài: bấm +84 rồi bỏ số 0 ở đầu (09x… → +84 9x…)."
+        },
+        {
+          "q": "+84 là nước nào?",
+          "a": "+84 là Việt Nam. Ngoài ra, +86 là Trung Quốc."
+        },
+        {
+          "q": "Vì sao nhiều nước dùng chung +1?",
+          "a": "Các nước này thuộc Kế hoạch Đánh số Bắc Mỹ (NANP). Mã vùng 3 chữ số sau +1 cho biết đó là nước nào."
+        }
       ]
     },
     "currency-codes": {
@@ -779,9 +1067,18 @@
         "Số thập phân là số chữ số của đơn vị phụ (xu). JPY, KRW và VND không có, còn một số đồng tiền vùng Vịnh có ba chữ số."
       ],
       "faq": [
-        { "q": "Mã tiền tệ của đồng Việt Nam là gì?", "a": "VND, mã số 704. Theo ISO 4217, VND có 0 chữ số thập phân." },
-        { "q": "Có bao nhiêu loại tiền tệ?", "a": "ISO 4217 liệt kê {rows} mã đang dùng, gồm cả một số mã quỹ, kim loại quý và mã dùng để thử nghiệm." },
-        { "q": "Vì sao đồng euro chỉ có một mã cho nhiều nước?", "a": "EUR là một loại tiền dùng chung trong khu vực đồng euro, nên chỉ có một mã. Cột Nơi sử dụng liệt kê mọi quốc gia và vùng lãnh thổ dùng đồng tiền này." }
+        {
+          "q": "Mã tiền tệ của đồng Việt Nam là gì?",
+          "a": "VND, mã số 704. Theo ISO 4217, VND có 0 chữ số thập phân."
+        },
+        {
+          "q": "Có bao nhiêu loại tiền tệ?",
+          "a": "ISO 4217 liệt kê {rows} mã đang dùng, gồm cả một số mã quỹ, kim loại quý và mã dùng để thử nghiệm."
+        },
+        {
+          "q": "Vì sao đồng euro chỉ có một mã cho nhiều nước?",
+          "a": "EUR là một loại tiền dùng chung trong khu vực đồng euro, nên chỉ có một mã. Cột Nơi sử dụng liệt kê mọi quốc gia và vùng lãnh thổ dùng đồng tiền này."
+        }
       ]
     },
     "time-zones": {
@@ -806,9 +1103,18 @@
         "Độ lệch được tính cho ngày 15 tháng 1 và 15 tháng 7 năm {year} theo cơ sở dữ liệu tz phiên bản {tz}. Đôi khi chính phủ các nước thay đổi quy tắc chỉ với thông báo ngắn."
       ],
       "faq": [
-        { "q": "Việt Nam dùng múi giờ nào?", "a": "Việt Nam dùng UTC+07:00 quanh năm, không có giờ mùa hè. ID IANA là Asia/Ho_Chi_Minh (Asia/Bangkok có cùng độ lệch)." },
-        { "q": "UTC và GMT khác nhau thế nào?", "a": "Trong đời sống hằng ngày, hai giờ này như nhau. UTC là chuẩn thời gian nguyên tử; GMT là múi giờ tại kinh tuyến 0°, nước Anh dùng vào mùa đông." },
-        { "q": "Có bao nhiêu múi giờ?", "a": "Cơ sở dữ liệu IANA dùng ở đây có {rows} ID múi giờ. Chúng chỉ dùng chưa đến 40 mức lệch UTC khác nhau." }
+        {
+          "q": "Việt Nam dùng múi giờ nào?",
+          "a": "Việt Nam dùng UTC+07:00 quanh năm, không có giờ mùa hè. ID IANA là Asia/Ho_Chi_Minh (Asia/Bangkok có cùng độ lệch)."
+        },
+        {
+          "q": "UTC và GMT khác nhau thế nào?",
+          "a": "Trong đời sống hằng ngày, hai giờ này như nhau. UTC là chuẩn thời gian nguyên tử; GMT là múi giờ tại kinh tuyến 0°, nước Anh dùng vào mùa đông."
+        },
+        {
+          "q": "Có bao nhiêu múi giờ?",
+          "a": "Cơ sở dữ liệu IANA dùng ở đây có {rows} ID múi giờ. Chúng chỉ dùng chưa đến 40 mức lệch UTC khác nhau."
+        }
       ]
     },
     "paper-sizes": {
@@ -835,9 +1141,18 @@
         "Khổ JIS B, phổ biến ở Nhật Bản và Trung Quốc cho vở và sách, lớn hơn một chút so với ISO B. JIS B5 là 182 × 257 mm, còn ISO B5 là 176 × 250 mm."
       ],
       "faq": [
-        { "q": "Khổ giấy A4 kích thước bao nhiêu?", "a": "210 × 297 mm, tức 8,27 × 11,69 inch. Ở 300 DPI là 2480 × 3508 pixel." },
-        { "q": "A4 và Letter khác nhau thế nào?", "a": "A4 (210 × 297 mm) hẹp hơn và dài hơn Letter của Mỹ (215,9 × 279,4 mm). Phần lớn thế giới, trong đó có Việt Nam, dùng A4; Mỹ, Canada và Mexico dùng Letter." },
-        { "q": "In A4 cần bao nhiêu pixel?", "a": "2480 × 3508 px để in sắc nét ở 300 DPI. 1240 × 1754 px (150 DPI) là đủ cho bản nháp." }
+        {
+          "q": "Khổ giấy A4 kích thước bao nhiêu?",
+          "a": "210 × 297 mm, tức 8,27 × 11,69 inch. Ở 300 DPI là 2480 × 3508 pixel."
+        },
+        {
+          "q": "A4 và Letter khác nhau thế nào?",
+          "a": "A4 (210 × 297 mm) hẹp hơn và dài hơn Letter của Mỹ (215,9 × 279,4 mm). Phần lớn thế giới, trong đó có Việt Nam, dùng A4; Mỹ, Canada và Mexico dùng Letter."
+        },
+        {
+          "q": "In A4 cần bao nhiêu pixel?",
+          "a": "2480 × 3508 px để in sắc nét ở 300 DPI. 1240 × 1754 px (150 DPI) là đủ cho bản nháp."
+        }
       ]
     },
     "ascii": {
@@ -864,10 +1179,402 @@
         "UTF-8 mã hóa 128 ký tự này giống hệt ASCII, nên mọi file ASCII cũng là file UTF-8 hợp lệ. Tên ký tự điều khiển giữ nguyên tiếng Anh."
       ],
       "faq": [
-        { "q": "Mã ASCII của chữ A là bao nhiêu?", "a": "Chữ A hoa là 65 ở hệ thập phân, 0x41 ở hệ hex và 1000001 ở hệ nhị phân. Chữ a thường là 97 (0x61)." },
-        { "q": "Mã ASCII của dấu cách là bao nhiêu?", "a": "32 ở hệ thập phân, 0x20 ở hệ hex." },
-        { "q": "LF và CR khác nhau thế nào?", "a": "LF (10, xuống dòng) bắt đầu dòng mới trên Linux và macOS. File văn bản Windows kết thúc dòng bằng CR LF (13 rồi 10)." }
+        {
+          "q": "Mã ASCII của chữ A là bao nhiêu?",
+          "a": "Chữ A hoa là 65 ở hệ thập phân, 0x41 ở hệ hex và 1000001 ở hệ nhị phân. Chữ a thường là 97 (0x61)."
+        },
+        {
+          "q": "Mã ASCII của dấu cách là bao nhiêu?",
+          "a": "32 ở hệ thập phân, 0x20 ở hệ hex."
+        },
+        {
+          "q": "LF và CR khác nhau thế nào?",
+          "a": "LF (10, xuống dòng) bắt đầu dòng mới trên Linux và macOS. File văn bản Windows kết thúc dòng bằng CR LF (13 rồi 10)."
+        }
       ]
+    }
+  },
+  "rankings": {
+    "hub": {
+      "title": "Bảng xếp hạng: AI, thị phần và hơn nữa, có nguồn | cv.cm",
+      "description": "Bảng xếp hạng có nguồn, sắp xếp và tải về được: AI tốt nhất, AI dùng nhiều nhất, thị phần trình duyệt, hệ điều hành, tìm kiếm, điện thoại, mạng xã hội.",
+      "h1": "Bảng xếp hạng",
+      "lede": "Các bảng xếp hạng xây dựng từ dữ liệu mở, mỗi bảng đều ghi nguồn, giấy phép và ngày. Bạn có thể sắp xếp theo cột bất kỳ, lọc hàng hoặc tải CSV.",
+      "groups": {
+        "ai": "AI",
+        "share": "Thị phần",
+        "countries": "Quốc gia"
+      },
+      "about": [
+        "Mọi bảng ở đây đều lấy từ nguồn công khai cho phép dùng lại, và cv.cm không thêm điểm số riêng hay đưa sản phẩm của mình vào. Hãy đọc phần Giới thiệu trên mỗi trang: phần lớn danh sách chỉ đo một thứ, chẳng hạn phiếu bầu trên một trang hoặc lượt truy cập vào các trang web được theo dõi, và giới hạn đó rất quan trọng.",
+        "Dữ liệu là ảnh chụp có ghi ngày chứ không phải nguồn trực tiếp, nên mỗi trang đều cho biết đang hiển thị dữ liệu của ngày nào."
+      ],
+      "faq": [
+        {
+          "q": "Dữ liệu đến từ đâu?",
+          "a": "Chất lượng AI lấy từ bảng xếp hạng Arena, mức sử dụng AI từ OpenRouter, thị phần từ StatCounter Global Stats. Mỗi trang đều có liên kết đến nguồn và giấy phép."
+        },
+        {
+          "q": "Bảng xếp hạng được cập nhật bao lâu một lần?",
+          "a": "Chúng được cập nhật thủ công từ nguồn và mỗi trang hiển thị ngày của dữ liệu. Các nguồn công bố với tốc độ khác nhau: thị phần theo tháng, các bảng AI thay đổi thường xuyên hơn."
+        },
+        {
+          "q": "Tôi có thể dùng lại các bảng này không?",
+          "a": "Có, theo giấy phép của nguồn ghi trên mỗi trang: CC BY 4.0 cho các bảng AI và CC BY-SA 3.0 cho thị phần. Hãy ghi công nguồn. Bảng nào cũng có thể tải CSV."
+        }
+      ]
+    },
+    "ui": {
+      "all": "Tất cả bảng xếp hạng",
+      "search": "Lọc hàng",
+      "searchPlaceholder": "Nhập tên hoặc giá trị",
+      "rows": "{n} hàng",
+      "shown": "{shown} trên {n} hàng",
+      "noMatch": "Không có hàng nào khớp.",
+      "download": "Tải CSV",
+      "sortHint": "Chọn tiêu đề cột để sắp xếp.",
+      "facts": "Thông tin chính",
+      "about": "Về bảng xếp hạng này",
+      "faq": "Câu hỏi thường gặp",
+      "related": "Bảng xếp hạng khác",
+      "source": "Nguồn",
+      "license": "Giấy phép",
+      "snapshot": "Thu thập ngày {date}",
+      "dataAsOf": "Dữ liệu tính đến {date}",
+      "rank": "#",
+      "model": "Mô hình",
+      "organization": "Công ty",
+      "licence": "Giấy phép",
+      "score": "Điểm",
+      "votes": "Phiếu bầu",
+      "tokens": "Lượng token",
+      "requests": "Yêu cầu",
+      "shareOfList": "Tỷ lệ trong danh sách",
+      "modelsListed": "Số mô hình",
+      "name": "Tên",
+      "world": "Toàn cầu",
+      "change": "Thay đổi 1 năm (điểm %)"
+    },
+    "sets": {
+      "ai-models": {
+        "title": "Xếp hạng AI {year}: Bảng xếp hạng LLM tốt nhất | cv.cm",
+        "description": "Các mô hình chat AI tốt nhất hiện nay: {top1} dẫn đầu Arena với {v1}, tiếp theo là {top2} và {top3}. Top {rows} kèm điểm và phiếu bầu, tải CSV.",
+        "h1": "Mô hình AI tốt nhất: bảng xếp hạng LLM, {date}",
+        "lede": "Top {rows} mô hình chat trên bảng xếp hạng văn bản của Arena, xếp theo phiếu bầu mù của người dùng. Bạn có thể tìm, sắp xếp theo cột bất kỳ hoặc tải CSV.",
+        "facts": [
+          "Hạng nhất: {top1} ({v1}), tiếp theo là {top2} ({v2}) và {top3} ({v3}).",
+          "{leadOrg} có nhiều vị trí nhất trong top 10: {leadCount}.",
+          "Dữ liệu tính đến {date}."
+        ],
+        "about": [
+          "Arena cho phép mọi người đưa một prompt cho hai mô hình ẩn danh rồi bầu cho câu trả lời tốt hơn. Các phiếu đó tạo thành điểm xếp hạng, nên chênh lệch vài điểm không có nhiều ý nghĩa: hãy xem cột phiếu bầu, vì mô hình mới ít phiếu dao động nhiều nhất. Bảng này hiển thị hạng mục tổng thể từ ảnh chụp mới nhất được công bố.",
+          "Điểm cao cho thấy người bầu thích mô hình đó hơn khi trò chuyện nói chung. Điểm này không đo giá, tốc độ hay hiệu quả của mô hình với công việc của bạn, nên hãy thử vài mô hình đầu bảng với một tác vụ thực tế trước khi chọn."
+        ],
+        "faq": [
+          {
+            "q": "Mô hình AI tốt nhất hiện nay là gì?",
+            "a": "Theo phiếu bầu của Arena tính đến {date}, {top1} đứng đầu với điểm {v1}, tiếp theo là {top2} và {top3}. Thứ tự thay đổi thường xuyên, và các mô hình có điểm gần nhau có thể đổi chỗ khi có thêm phiếu."
+          },
+          {
+            "q": "Bảng xếp hạng LLM này chấm điểm thế nào?",
+            "a": "Mọi người so sánh hai mô hình ẩn danh trên cùng một prompt rồi bỏ phiếu. Arena chuyển các phiếu thành điểm xếp hạng tương tự hệ số cờ vua. Điểm cao hơn nghĩa là mô hình đó thường thắng các mô hình khác trong những lần đối đầu này."
+          },
+          {
+            "q": "Vì sao một mô hình xuất hiện nhiều lần?",
+            "a": "Arena xếp hạng riêng từng cấu hình, chẳng hạn mức suy luận High hoặc Max, vì cùng một mô hình có thể trả lời khác nhau ở mỗi mức."
+          }
+        ]
+      },
+      "ai-coding-models": {
+        "title": "AI lập trình tốt nhất {year}: Xếp hạng LLM | cv.cm",
+        "description": "Các mô hình AI lập trình tốt nhất theo phiếu bầu phát triển web của Arena: {top1} dẫn đầu với {v1}, tiếp theo là {top2} và {top3}. Top {rows} kèm phiếu bầu, tải CSV.",
+        "h1": "Mô hình AI lập trình tốt nhất, {date}",
+        "lede": "Top {rows} mô hình trên bảng xếp hạng phát triển web của Arena: mọi người xem hai web app được tạo ra và bầu cho app tốt hơn.",
+        "facts": [
+          "Hạng nhất: {top1} ({v1}), tiếp theo là {top2} ({v2}) và {top3} ({v3}).",
+          "{leadOrg} có nhiều vị trí nhất trong top 10: {leadCount}.",
+          "Dữ liệu tính đến {date}."
+        ],
+        "about": [
+          "Mỗi phiếu so sánh hai mô hình ẩn danh nhận cùng một yêu cầu xây dựng trang web hoặc ứng dụng nhỏ. Người bầu đánh giá kết quả họ nhìn thấy, nên bảng này ưu ái giao diện chạy được và đẹp mắt hơn là kỹ năng back-end hay thuật toán.",
+          "Điểm là điểm xếp hạng tạo từ các phiếu đó. Mô hình ít phiếu có thể dao động mạnh, nên hãy xem cả cột phiếu bầu và thử vài mô hình đầu bảng trên codebase của bạn, điều mà không bảng xếp hạng công khai nào thay thế được."
+        ],
+        "faq": [
+          {
+            "q": "AI lập trình tốt nhất hiện nay là gì?",
+            "a": "Trong các phiếu bầu phát triển web của Arena tính đến {date}, {top1} đứng đầu với {v1}, tiếp theo là {top2} và {top3}."
+          },
+          {
+            "q": "Bảng này có bao gồm mọi loại lập trình không?",
+            "a": "Không. Bảng chỉ bao gồm việc xây dựng trang web và ứng dụng từ một prompt. Mô hình thắng ở đây có thể không phải là mô hình giỏi nhất khi gỡ lỗi dự án lớn hoặc viết mã hệ thống."
+          },
+          {
+            "q": "Vì sao điểm cao hơn trong bảng chat?",
+            "a": "Mỗi bảng được tính điểm từ phiếu bầu riêng, nên điểm chỉ dùng để so sánh các mô hình trong cùng một bảng."
+          }
+        ]
+      },
+      "ai-image-models": {
+        "title": "AI tạo ảnh tốt nhất {year}: Xếp hạng mô hình | cv.cm",
+        "description": "Các AI tạo ảnh tốt nhất theo phiếu bầu mù: {top1} dẫn đầu Arena với {v1}, tiếp theo là {top2} và {top3}. Top {rows} mô hình ảnh kèm điểm và phiếu bầu.",
+        "h1": "AI tạo ảnh tốt nhất, {date}",
+        "lede": "Top {rows} mô hình tạo ảnh từ văn bản trên bảng xếp hạng Arena: mọi người xem hai ảnh từ cùng một prompt và bỏ phiếu mà không biết mô hình nào tạo ra.",
+        "facts": [
+          "Hạng nhất: {top1} ({v1}), tiếp theo là {top2} ({v2}) và {top3} ({v3}).",
+          "{leadOrg} có nhiều vị trí nhất trong top 10: {leadCount}.",
+          "Dữ liệu tính đến {date}."
+        ],
+        "about": [
+          "Người bầu chọn ảnh họ thích hơn cho cùng một prompt, và các phiếu đó tạo thành điểm xếp hạng. Cách này ưu ái sức hút chung, nên mô hình mạnh ở một việc, chẳng hạn chữ trong ảnh hoặc một phong cách nhất định, có thể xếp thấp hơn mức xứng đáng cho việc đó.",
+          "Bảng xếp hạng mô hình, không phải ứng dụng. Một ứng dụng có thể cung cấp nhiều mô hình trong số này, giá và giới hạn khác nhau tùy ứng dụng."
+        ],
+        "faq": [
+          {
+            "q": "AI tạo ảnh tốt nhất là gì?",
+            "a": "Theo phiếu bầu của Arena tính đến {date}, {top1} đứng đầu với {v1}, tiếp theo là {top2} và {top3}. Với một phong cách cụ thể, hãy so sánh vài mô hình đầu bảng bằng prompt của bạn."
+          },
+          {
+            "q": "Bảng xếp hạng này có nói về công cụ miễn phí không?",
+            "a": "Không. Bảng xếp hạng chất lượng của mô hình, bất kể chi phí. Cột giấy phép cho biết mô hình nào có trọng số mở."
+          },
+          {
+            "q": "Thứ hạng thay đổi bao lâu một lần?",
+            "a": "Arena thường xuyên công bố ảnh chụp mới, và trang này hiển thị ngày của ảnh chụp đang dùng."
+          }
+        ]
+      },
+      "ai-video-models": {
+        "title": "AI tạo video tốt nhất {year}: Xếp hạng mô hình | cv.cm",
+        "description": "Các AI tạo video tốt nhất theo phiếu bầu mù: {top1} dẫn đầu Arena với {v1}, tiếp theo là {top2} và {top3}. Top {rows} mô hình văn bản thành video kèm điểm và phiếu.",
+        "h1": "AI tạo video tốt nhất, {date}",
+        "lede": "Top {rows} mô hình tạo video từ văn bản trên bảng xếp hạng Arena: mọi người xem hai đoạn video từ cùng một prompt và bỏ phiếu mà không biết mô hình nào tạo ra.",
+        "facts": [
+          "Hạng nhất: {top1} ({v1}), tiếp theo là {top2} ({v2}) và {top3} ({v3}).",
+          "{leadOrg} có nhiều vị trí nhất trong top 10: {leadCount}.",
+          "Dữ liệu tính đến {date}."
+        ],
+        "about": [
+          "Người bầu chọn đoạn video họ thích hơn cho cùng một prompt, và các phiếu đó tạo thành điểm xếp hạng. Video có ít phiếu hơn văn bản, nên điểm ở đây kém chắc chắn hơn, nhất là với các mô hình mới.",
+          "Bảng chỉ gồm video tạo từ văn bản. Các công cụ làm ảnh chuyển động hoặc chỉnh sửa video được Arena đánh giá riêng và không có ở đây."
+        ],
+        "faq": [
+          {
+            "q": "AI tạo video tốt nhất là gì?",
+            "a": "Theo phiếu bầu của Arena tính đến {date}, {top1} đứng đầu với {v1}, tiếp theo là {top2} và {top3}."
+          },
+          {
+            "q": "Bảng có tính đến âm thanh, độ dài hay giá không?",
+            "a": "Không. Bảng chỉ phản ánh đoạn video mà người bầu thích hơn. Hãy kiểm tra giới hạn độ dài, âm thanh và giá với ứng dụng cung cấp mô hình."
+          },
+          {
+            "q": "Công cụ chuyển ảnh thành video của cv.cm có trong bảng này không?",
+            "a": "Không. Công cụ của cv.cm di chuyển một camera ảo qua ảnh ngay trong trình duyệt và không tạo chuyển động từ văn bản, nên đây là một loại công cụ khác."
+          }
+        ]
+      },
+      "ai-usage": {
+        "title": "Mô hình AI dùng nhiều nhất {year}: OpenRouter | cv.cm",
+        "description": "Các mô hình AI dùng nhiều nhất trên OpenRouter: {top1} chiếm {v1} token trong top {rows}, tiếp theo là {top2} và {top3}. Token và yêu cầu, tải CSV.",
+        "h1": "Mô hình AI dùng nhiều nhất trên OpenRouter, {date}",
+        "lede": "Top {rows} mô hình theo lượng token xử lý qua OpenRouter trong tuần gần nhất hiển thị trên trang xếp hạng của dịch vụ này. Bảng đo mức sử dụng, không phải chất lượng.",
+        "facts": [
+          "Hạng nhất: {top1} ({v1} token trong danh sách này), tiếp theo là {top2} ({v2}) và {top3} ({v3}).",
+          "Tỷ lệ tính trên {rows} mô hình được liệt kê, không phải toàn bộ mức sử dụng AI.",
+          "Dữ liệu tính đến {date}."
+        ],
+        "about": [
+          "OpenRouter là dịch vụ mà lập trình viên dùng để truy cập nhiều mô hình qua một API, và dịch vụ này công bố lượng dữ liệu đi qua. Các mô hình giá rẻ do những agent tự động hoạt động liên tục sử dụng có thể đứng đầu bảng, vì token tính cả lưu lượng của máy lẫn của con người.",
+          "Đây chỉ là một nền tảng. Việc dùng trong ChatGPT, Claude, Gemini và các ứng dụng khác, hoặc qua API riêng của nhà cung cấp, không được tính, nên bảng này không thể cho biết AI nào có nhiều người dùng nhất nói chung."
+        ],
+        "faq": [
+          {
+            "q": "Mô hình AI nào được dùng nhiều nhất?",
+            "a": "Trên OpenRouter tính đến {date}, {top1} xử lý nhiều token nhất, chiếm {v1} tổng số của {rows} mô hình này. Với mọi sản phẩm AI, không có số liệu công khai nào đưa ra câu trả lời đầy đủ."
+          },
+          {
+            "q": "Dùng nhiều nhất có nghĩa là tốt nhất không?",
+            "a": "Không. Giá có ảnh hưởng lớn ở đây. Về chất lượng, hãy xem các bảng Arena trong mục này."
+          },
+          {
+            "q": "Token là gì?",
+            "a": "Là một mẩu văn bản nhỏ, thường là một phần của từ, mà mô hình đọc và viết. Tài liệu dài và agent chạy nhiều bước dùng nhiều token hơn hẳn một cuộc trò chuyện ngắn."
+          }
+        ]
+      },
+      "ai-companies": {
+        "title": "Công ty AI theo mức sử dụng {year}: Thị phần OpenRouter | cv.cm",
+        "description": "Công ty AI xếp theo token trên OpenRouter: {top1} chiếm {v1} trong các mô hình dùng nhiều nhất, tiếp theo là {top2} và {top3}. Thị phần của một nền tảng, tải CSV.",
+        "h1": "Công ty AI theo mức sử dụng trên OpenRouter, {date}",
+        "lede": "Các công ty đứng sau những mô hình dùng nhiều nhất trên OpenRouter, xếp theo tỷ lệ token. Đây là tỷ lệ trong các mô hình hàng đầu của một nền tảng, không phải toàn bộ thị trường AI.",
+        "facts": [
+          "Hạng nhất: {top1} ({v1}), tiếp theo là {top2} ({v2}) và {top3} ({v3}).",
+          "Gồm {rows} công ty có mô hình nằm trong nhóm dùng nhiều nhất trên OpenRouter.",
+          "Dữ liệu tính đến {date}."
+        ],
+        "about": [
+          "cv.cm cộng token của các mô hình dùng nhiều nhất do OpenRouter liệt kê theo từng công ty. Công ty không có mô hình trong danh sách đó sẽ không xuất hiện, và các mô hình mở do nhà cung cấp khác phục vụ vẫn được tính cho công ty đã tạo ra chúng.",
+          "Bảng không tính các ứng dụng cho người tiêu dùng và việc dùng API trực tiếp, nơi thứ tự có thể rất khác. Hãy xem đây là lượng lập trình viên định tuyến qua một dịch vụ trong một tuần."
+        ],
+        "faq": [
+          {
+            "q": "Công ty AI nào có thị phần lớn nhất?",
+            "a": "Trong các mô hình dùng nhiều nhất trên OpenRouter tính đến {date}, {top1} có tỷ lệ lớn nhất với {v1}. Số liệu này chỉ thuộc một nền tảng cho lập trình viên; không có nguồn công khai nào cho biết thị phần của toàn bộ việc sử dụng AI."
+          },
+          {
+            "q": "Vì sao số liệu này khác các số liệu thị phần AI khác?",
+            "a": "Các báo cáo khác đếm lượt truy cập chatbot, người dùng ứng dụng hoặc doanh thu. Bảng này đếm token qua một dịch vụ API, nên nghiêng về lập trình viên và các mô hình giá rẻ."
+          },
+          {
+            "q": "Vì sao một công ty nổi tiếng có thể xếp thấp?",
+            "a": "Nhiều khách hàng của công ty đó có thể dùng API hoặc ứng dụng riêng của họ, điều mà OpenRouter không nhìn thấy."
+          }
+        ]
+      },
+      "browser-market-share": {
+        "title": "Thị phần trình duyệt {year}: Toàn cầu và theo quốc gia | cv.cm",
+        "description": "Thị phần trình duyệt {date}: {top1} {v1}, {top2} {v2}, {top3} {v3} toàn cầu, đặt cạnh Mỹ, Trung Quốc, Đài Loan, Nhật Bản, Hàn Quốc và các nơi khác.",
+        "h1": "Thị phần trình duyệt, {date}",
+        "lede": "Tỷ lệ lượt xem trang web theo trình duyệt, toàn cầu và tại tám thị trường, trên mọi thiết bị. So sánh các quốc gia cạnh nhau hoặc sắp xếp theo cột bất kỳ.",
+        "facts": [
+          "Toàn cầu: {top1} {v1}, {top2} {v2}, {top3} {v3}.",
+          "Trung Quốc: {CNTop} dẫn đầu với {CNV}. Nhật Bản: {JPTop} với {JPV}. Mỹ: {USTop} với {USV}.",
+          "Dữ liệu cho {date}."
+        ],
+        "about": [
+          "StatCounter đếm lượt xem trang trên hơn một triệu trang web dùng công cụ theo dõi của họ, nên đây là mức độ mỗi trình duyệt được dùng trên các trang đó, không phải số người đã cài đặt. Thay đổi tính bằng điểm phần trăm so với cùng tháng năm trước.",
+          "Các trình duyệt xây dựng trên Chromium, như Edge và nhiều trình duyệt Trung Quốc, được tính theo tên riêng ở đây dù dùng chung engine với Chrome. Trình duyệt tự nhận là Chrome được tính là Chrome."
+        ],
+        "faq": [
+          {
+            "q": "Trình duyệt nào được dùng nhiều nhất?",
+            "a": "{top1}, với {v1} lượt xem trang toàn cầu trong {date}, tiếp theo là {top2} ({v2}) và {top3} ({v3})."
+          },
+          {
+            "q": "Trình duyệt nào được dùng nhiều nhất ở Trung Quốc?",
+            "a": "Trong dữ liệu {date} của StatCounter, {CNTop} dẫn đầu Trung Quốc với {CNV}. Các trình duyệt nội địa như UC, 360 và QQ có thị phần ở đó lớn hơn nhiều so với bất kỳ nơi nào khác trong bảng."
+          },
+          {
+            "q": "Đây có phải là thị phần người dùng không?",
+            "a": "Không. Đây là tỷ lệ lượt xem trang trên các trang web StatCounter theo dõi, nên người lướt web nhiều hơn được tính nhiều hơn."
+          }
+        ]
+      },
+      "os-market-share": {
+        "title": "Thị phần hệ điều hành {year}: Android, Windows, iOS | cv.cm",
+        "description": "Thị phần hệ điều hành {date}: {top1} {v1}, {top2} {v2}, {top3} {v3} toàn cầu, đặt cạnh Mỹ, Trung Quốc, Nhật Bản, Hàn Quốc và các nơi khác.",
+        "h1": "Thị phần hệ điều hành, {date}",
+        "lede": "Tỷ lệ lượt xem trang web theo hệ điều hành trên điện thoại, máy tính bảng và máy tính, toàn cầu và tại tám thị trường.",
+        "facts": [
+          "Toàn cầu: {top1} {v1}, {top2} {v2}, {top3} {v3}.",
+          "Trung Quốc: {CNTop} dẫn đầu với {CNV}. Mỹ: {USTop} với {USV}. Indonesia: {IDTop} với {IDV}.",
+          "Dữ liệu cho {date}."
+        ],
+        "about": [
+          "StatCounter đếm lượt xem trang trên các trang web dùng công cụ theo dõi của họ, trên mọi loại thiết bị. Vì vậy bảng này cho thấy bao nhiêu phần web được xem từ mỗi hệ điều hành, khác với số thiết bị đã bán.",
+          "Các phiên bản cũ và mới của một hệ điều hành được tính chung. Điện thoại và máy tính nằm chung một bảng, nên quốc gia chủ yếu lướt web bằng điện thoại sẽ có thị phần Android hoặc iOS cao."
+        ],
+        "faq": [
+          {
+            "q": "Hệ điều hành nào được dùng nhiều nhất?",
+            "a": "Tính trên mọi thiết bị, {top1} dẫn đầu với {v1} lượt xem trang toàn cầu trong {date}, tiếp theo là {top2} ({v2}) và {top3} ({v3})."
+          },
+          {
+            "q": "Windows có còn lớn nhất không?",
+            "a": "Trên máy tính thì thường là có. Trên mọi thiết bị, Windows cạnh tranh với Android vì rất nhiều hoạt động lướt web diễn ra trên điện thoại. Bảng phía trên cho thấy thứ tự hiện tại."
+          },
+          {
+            "q": "Số liệu này có tính ứng dụng không?",
+            "a": "Không. Số liệu đếm lượt truy cập trang web trong trình duyệt, nên thời gian dùng trong ứng dụng không được tính."
+          }
+        ]
+      },
+      "search-engine-market-share": {
+        "title": "Thị phần công cụ tìm kiếm {year}: Google, Bing, Baidu | cv.cm",
+        "description": "Thị phần công cụ tìm kiếm {date}: {top1} {v1}, {top2} {v2}, {top3} {v3} toàn cầu, đặt cạnh Trung Quốc, Hàn Quốc, Nhật Bản, Mỹ và các nơi khác.",
+        "h1": "Thị phần công cụ tìm kiếm, {date}",
+        "lede": "Tỷ lệ lượt truy cập đến từ mỗi công cụ tìm kiếm, toàn cầu và tại tám thị trường. Thứ tự thay đổi nhiều theo quốc gia.",
+        "facts": [
+          "Toàn cầu: {top1} {v1}, {top2} {v2}, {top3} {v3}.",
+          "Trung Quốc: {CNTop} dẫn đầu với {CNV}. Hàn Quốc: {KRTop} với {KRV}. Nhật Bản: {JPTop} với {JPV}.",
+          "Dữ liệu cho {date}."
+        ],
+        "about": [
+          "StatCounter đếm lượt xem trang đến từ công cụ tìm kiếm trên các trang web dùng công cụ theo dõi của họ. Số liệu đo lưu lượng gửi đến các trang đó, không phải số lượt tìm kiếm, và câu trả lời người ta đọc mà không bấm vào sẽ không được tính.",
+          "Phạm vi bao phủ là một hạn chế ở Trung Quốc và các thị trường khác nơi ít người truy cập các trang được theo dõi, và nơi không thấy được tìm kiếm trong ứng dụng, nên hãy xem các tỷ lệ đó như một tham khảo sơ bộ."
+        ],
+        "faq": [
+          {
+            "q": "Công cụ tìm kiếm nào được dùng nhiều nhất?",
+            "a": "{top1}, đem lại {v1} lượt truy cập từ tìm kiếm trên toàn cầu trong {date}, tiếp theo là {top2} ({v2}) và {top3} ({v3})."
+          },
+          {
+            "q": "Công cụ tìm kiếm nào dẫn đầu ở Trung Quốc?",
+            "a": "Trong dữ liệu {date} của StatCounter, {CNTop} dẫn đầu Trung Quốc với {CNV}. Số liệu về Trung Quốc khác nhau nhiều giữa các nguồn do mỗi nguồn theo dõi những trang khác nhau."
+          },
+          {
+            "q": "Chatbot AI có được tính là công cụ tìm kiếm ở đây không?",
+            "a": "Không. Bảng này gồm các công cụ tìm kiếm truyền thống. Lượt truy cập từ trợ lý AI không nằm trong đó."
+          }
+        ]
+      },
+      "phone-market-share": {
+        "title": "Thị phần điện thoại {year}: Apple, Samsung, Xiaomi | cv.cm",
+        "description": "Thị phần hãng điện thoại {date}: {top1} {v1}, {top2} {v2}, {top3} {v3} toàn cầu, đặt cạnh Mỹ, Trung Quốc, Nhật Bản, Hàn Quốc, Việt Nam và các nơi khác.",
+        "h1": "Thị phần điện thoại theo hãng, {date}",
+        "lede": "Tỷ lệ lượt xem trang web trên di động theo hãng điện thoại, toàn cầu và tại tám thị trường. Bảng cho thấy điện thoại mọi người đang dùng, không phải điện thoại bán ra năm nay.",
+        "facts": [
+          "Toàn cầu: {top1} {v1}, {top2} {v2}, {top3} {v3}.",
+          "Trung Quốc: {CNTop} dẫn đầu với {CNV}. Hàn Quốc: {KRTop} với {KRV}. Indonesia: {IDTop} với {IDV}.",
+          "Dữ liệu cho {date}."
+        ],
+        "about": [
+          "StatCounter nhận diện hãng từ lượt truy cập bằng thiết bị di động vào các trang web dùng công cụ theo dõi của họ. Vì vậy điện thoại cũ vẫn đang dùng cũng được tính, đó là lý do số liệu này khác với bảng xếp hạng doanh số mà các công ty nghiên cứu công bố mỗi quý.",
+          "Một số điện thoại ẩn hãng với trang web, và người lướt web nhiều hơn được tính nhiều hơn. Hãy xem chênh lệch nhỏ giữa các hãng là nhiễu."
+        ],
+        "faq": [
+          {
+            "q": "Hãng điện thoại nào được dùng nhiều nhất?",
+            "a": "{top1}, với {v1} lượt xem trang trên di động toàn cầu trong {date}, tiếp theo là {top2} ({v2}) và {top3} ({v3})."
+          },
+          {
+            "q": "Đây có giống số điện thoại đã bán không?",
+            "a": "Không. Bảng xếp hạng doanh số đếm điện thoại mới xuất xưởng trong một giai đoạn. Bảng này đếm điện thoại đang dùng, có trọng số theo mức độ lướt web trên đó."
+          },
+          {
+            "q": "Hãng điện thoại đứng đầu ở Trung Quốc là gì?",
+            "a": "Trong dữ liệu {date} của StatCounter, {CNTop} dẫn đầu Trung Quốc với {CNV} lượt xem trang trên di động."
+          }
+        ]
+      },
+      "social-media-market-share": {
+        "title": "Thị phần mạng xã hội {year}: Theo quốc gia | cv.cm",
+        "description": "Thị phần mạng xã hội {date}: {top1} {v1}, {top2} {v2}, {top3} {v3} lượt truy cập web từ mạng xã hội, cùng số liệu Mỹ, Nhật Bản, Hàn Quốc và các nơi khác.",
+        "h1": "Thị phần mạng xã hội, {date}",
+        "lede": "Mạng xã hội nào đem lại nhiều lượt truy cập trang web nhất, toàn cầu và tại tám thị trường. Bảng đo số liên kết được bấm, không phải số người dùng mỗi mạng.",
+        "facts": [
+          "Toàn cầu: {top1} {v1}, {top2} {v2}, {top3} {v3}.",
+          "Nhật Bản: {JPTop} dẫn đầu với {JPV}. Hàn Quốc: {KRTop} với {KRV}. Mỹ: {USTop} với {USV}.",
+          "Dữ liệu cho {date}."
+        ],
+        "about": [
+          "StatCounter đếm lượt xem trang đến từ mạng xã hội trên các trang web dùng công cụ theo dõi của họ. Một mạng mà mọi người hiếm khi bấm ra ngoài, như ứng dụng video, có thể xếp thấp ở đây dù có lượng khán giả khổng lồ.",
+          "Lưu lượng từ trong ứng dụng thường không có nhãn, và các mạng chủ yếu dùng ở Trung Quốc đại lục gần như không hiện trong dữ liệu này, nên không nên đọc bảng này như số đếm người dùng."
+        ],
+        "faq": [
+          {
+            "q": "Mạng xã hội nào có thị phần lớn nhất?",
+            "a": "{top1}, với {v1} lượt truy cập từ mạng xã hội trên toàn cầu trong {date}, tiếp theo là {top2} ({v2}) và {top3} ({v3})."
+          },
+          {
+            "q": "Đây có phải số người dùng không?",
+            "a": "Không. Số liệu đếm lượt truy cập gửi đến các trang web khác. Số người dùng của một mạng có thể cao hơn nhiều so với tỷ lệ ở đây."
+          },
+          {
+            "q": "Vì sao TikTok hoặc WeChat thấp hơn dự kiến?",
+            "a": "Mọi người chủ yếu ở lại trong các ứng dụng đó, và liên kết mở từ đó thường không được gắn nhãn là đến từ chúng."
+          }
+        ]
+      }
     }
   }
 }

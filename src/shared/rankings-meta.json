@@ -1,0 +1,406 @@
+{
+ "updated": "2026-11-07",
+ "sets": {
+  "ai-models": {
+   "asOf": "2026-11-06",
+   "rows": 30,
+   "top": [
+    [
+     "Gemini 4 Carbon (High)",
+     1539
+    ],
+    [
+     "Gemini 4 Argon (High)",
+     1530
+    ],
+    [
+     "Claude Fable 5.1 (Max)",
+     1513
+    ]
+   ],
+   "leadOrg": "Anthropic",
+   "leadCount": 6
+  },
+  "ai-coding-models": {
+   "asOf": "2026-11-06",
+   "rows": 30,
+   "top": [
+    [
+     "Claude Opus 5.5 (Max)",
+     1814
+    ],
+    [
+     "Claude Sonnet 5.5 (xHigh)",
+     1772
+    ],
+    [
+     "GPT-6 Astra (Max)",
+     1770
+    ]
+   ],
+   "leadOrg": "Anthropic",
+   "leadCount": 5
+  },
+  "ai-image-models": {
+   "asOf": "2026-11-06",
+   "rows": 30,
+   "top": [
+    [
+     "GPT-Image-2.5 Sunburst",
+     1429
+    ],
+    [
+     "GPT-Image-2.6 Sunburst (Medium)",
+     1409
+    ],
+    [
+     "GPT-Image-2.5 Flare",
+     1402
+    ]
+   ],
+   "leadOrg": "OpenAI",
+   "leadCount": 5
+  },
+  "ai-video-models": {
+   "asOf": "2026-11-06",
+   "rows": 30,
+   "top": [
+    [
+     "Gemini Omni 1.2 Flash",
+     1541
+    ],
+    [
+     "Gemini Omni 1.1 Flash",
+     1514
+    ],
+    [
+     "gemini-omni-flash",
+     1509
+    ]
+   ],
+   "leadOrg": "Google",
+   "leadCount": 3
+  },
+  "ai-usage": {
+   "asOf": "2026-11-06",
+   "rows": 20,
+   "top": [
+    [
+     "DeepSeek V4.1 Flash 1017",
+     34.8
+    ],
+    [
+     "DeepSeek V4.1 Flash",
+     10.7
+    ],
+    [
+     "GLM 5.3 Flash",
+     8.7
+    ]
+   ]
+  },
+  "ai-companies": {
+   "asOf": "2026-11-06",
+   "rows": 11,
+   "top": [
+    [
+     "DeepSeek",
+     47.7
+    ],
+    [
+     "Z.ai",
+     11
+    ],
+    [
+     "OpenAI",
+     9.3
+    ]
+   ]
+  },
+  "browser-market-share": {
+   "asOf": "2026-10",
+   "yearAgo": "2025-10",
+   "rows": 11,
+   "top": [
+    [
+     "Chrome",
+     68.81
+    ],
+    [
+     "Safari",
+     16.6
+    ],
+    [
+     "Edge",
+     5.33
+    ]
+   ],
+   "leaders": {
+    "ww": [
+     "Chrome",
+     68.81
+    ],
+    "US": [
+     "Chrome",
+     55.94
+    ],
+    "CN": [
+     "Chrome",
+     50.29
+    ],
+    "TW": [
+     "Chrome",
+     60.31
+    ],
+    "JP": [
+     "Chrome",
+     54.34
+    ],
+    "KR": [
+     "Chrome",
+     49.33
+    ],
+    "VN": [
+     "Chrome",
+     68.53
+    ],
+    "ID": [
+     "Chrome",
+     76.9
+    ],
+    "ES": [
+     "Chrome",
+     73.15
+    ]
+   }
+  },
+  "os-market-share": {
+   "asOf": "2026-10",
+   "yearAgo": "2025-10",
+   "rows": 7,
+   "top": [
+    [
+     "Android",
+     44.7
+    ],
+    [
+     "Windows",
+     28.94
+    ],
+    [
+     "iOS",
+     17.48
+    ]
+   ],
+   "leaders": {
+    "ww": [
+     "Android",
+     44.7
+    ],
+    "US": [
+     "Windows",
+     33.97
+    ],
+    "CN": [
+     "Android",
+     40.83
+    ],
+    "TW": [
+     "iOS",
+     31.83
+    ],
+    "JP": [
+     "Windows",
+     36.1
+    ],
+    "KR": [
+     "Windows",
+     41.83
+    ],
+    "VN": [
+     "Android",
+     43.14
+    ],
+    "ID": [
+     "Windows",
+     50.67
+    ],
+    "ES": [
+     "Android",
+     49.8
+    ]
+   }
+  },
+  "search-engine-market-share": {
+   "asOf": "2026-10",
+   "yearAgo": "2025-10",
+   "rows": 10,
+   "top": [
+    [
+     "Google",
+     91.04
+    ],
+    [
+     "Bing",
+     4.77
+    ],
+    [
+     "Yahoo",
+     1.18
+    ]
+   ],
+   "leaders": {
+    "ww": [
+     "Google",
+     91.04
+    ],
+    "US": [
+     "Google",
+     85.45
+    ],
+    "CN": [
+     "Baidu",
+     49.08
+    ],
+    "TW": [
+     "Google",
+     80.12
+    ],
+    "JP": [
+     "Google",
+     59.58
+    ],
+    "KR": [
+     "Google",
+     48.64
+    ],
+    "VN": [
+     "Google",
+     93.41
+    ],
+    "ID": [
+     "Google",
+     91.43
+    ],
+    "ES": [
+     "Google",
+     93.3
+    ]
+   }
+  },
+  "phone-market-share": {
+   "asOf": "2026-10",
+   "yearAgo": "2025-10",
+   "rows": 12,
+   "top": [
+    [
+     "Apple",
+     27.57
+    ],
+    [
+     "Samsung",
+     22.72
+    ],
+    [
+     "Xiaomi",
+     11.81
+    ]
+   ],
+   "leaders": {
+    "ww": [
+     "Apple",
+     27.57
+    ],
+    "US": [
+     "Apple",
+     52
+    ],
+    "CN": [
+     "Apple",
+     30.34
+    ],
+    "TW": [
+     "Apple",
+     51.63
+    ],
+    "JP": [
+     "Apple",
+     53.87
+    ],
+    "KR": [
+     "Samsung",
+     57.55
+    ],
+    "VN": [
+     "Apple",
+     38.35
+    ],
+    "ID": [
+     "Apple",
+     21.22
+    ],
+    "ES": [
+     "Apple",
+     27.23
+    ]
+   }
+  },
+  "social-media-market-share": {
+   "asOf": "2026-10",
+   "yearAgo": "2025-10",
+   "rows": 10,
+   "top": [
+    [
+     "Facebook",
+     70.97
+    ],
+    [
+     "YouTube",
+     7.85
+    ],
+    [
+     "X (Twitter)",
+     7.64
+    ]
+   ],
+   "leaders": {
+    "ww": [
+     "Facebook",
+     70.97
+    ],
+    "US": [
+     "Facebook",
+     61.1
+    ],
+    "CN": [
+     "Facebook",
+     48.14
+    ],
+    "TW": [
+     "Facebook",
+     42.06
+    ],
+    "JP": [
+     "X (Twitter)",
+     59.59
+    ],
+    "KR": [
+     "YouTube",
+     79.84
+    ],
+    "VN": [
+     "Facebook",
+     44.47
+    ],
+    "ID": [
+     "Facebook",
+     71.58
+    ],
+    "ES": [
+     "Facebook",
+     90.15
+    ]
+   }
+  }
+ }
+}

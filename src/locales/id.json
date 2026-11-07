@@ -538,7 +538,8 @@
     "tests": "Tes",
     "data": "Data",
     "reference": "Referensi",
-    "ai": "AI"
+    "ai": "AI",
+    "rankings": "Peringkat"
   },
   "lang": {
     "label": "Bahasa",
@@ -10531,5 +10532,51 @@
     "hugging-pose": "Pose memeluk",
     "hanfu": "Hanfu",
     "qipao": "Qipao (cheongsam)"
+  },
+  "ranking": {
+    "ai-models": {
+      "name": "Model AI terbaik (peringkat LLM)",
+      "blurb": "Model chat teratas menurut suara manusia dalam perbandingan buta."
+    },
+    "ai-coding-models": {
+      "name": "AI terbaik untuk coding",
+      "blurb": "Peringkat model menurut penilaian orang atas aplikasi web buatannya."
+    },
+    "ai-image-models": {
+      "name": "AI pembuat gambar terbaik",
+      "blurb": "Peringkat model gambar menurut suara buta atas hasil gambarnya."
+    },
+    "ai-video-models": {
+      "name": "AI pembuat video terbaik",
+      "blurb": "Peringkat model video menurut suara buta atas klipnya."
+    },
+    "ai-usage": {
+      "name": "Model AI paling banyak dipakai",
+      "blurb": "Peringkat model menurut token yang dikirim lewat OpenRouter."
+    },
+    "ai-companies": {
+      "name": "Perusahaan AI menurut penggunaan",
+      "blurb": "Asal model yang paling banyak dipakai di OpenRouter."
+    },
+    "browser-market-share": {
+      "name": "Pangsa pasar browser",
+      "blurb": "Chrome, Safari, Edge, dan lainnya, global dan per negara."
+    },
+    "os-market-share": {
+      "name": "Pangsa pasar sistem operasi",
+      "blurb": "Android, Windows, iOS, dan macOS, global dan per negara."
+    },
+    "search-engine-market-share": {
+      "name": "Pangsa pasar mesin pencari",
+      "blurb": "Google, Bing, Baidu, dan lainnya, global dan per negara."
+    },
+    "phone-market-share": {
+      "name": "Pangsa pasar merek ponsel",
+      "blurb": "Apple, Samsung, Xiaomi, dan lainnya, global dan per negara."
+    },
+    "social-media-market-share": {
+      "name": "Pangsa pasar media sosial",
+      "blurb": "Jaringan yang paling banyak mengirim kunjungan web, per negara."
+    }
   }
 }

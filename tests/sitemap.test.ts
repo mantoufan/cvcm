@@ -7,6 +7,7 @@ import { CONVERT_JOBS, LEGAL_PAGES, RESIZE_JOBS, TOOLS, FEATURED_TUTORIALS, appH
 import { buildSectionSitemaps, buildSitemapIndexXml, buildSitemapXml, HREFLANG, pageUrl, SITEMAP_SECTIONS, sitemapPages, sitemapSectionUrl } from "../src/shared/sitemap";
 import { QUIZZES } from "../src/shared/quiz";
 import { DATASET_SNAPSHOT, DATASETS } from "../src/shared/datasets";
+import { RANKINGS } from "../src/shared/rankings";
 import { CODE_ARTICLES, KB_ARTICLES, KNOWLEDGE_ARTICLES, kbUpdatedOn } from "../src/shared/kb";
 import { REF_ENTRIES } from "../src/shared/ref";
 
@@ -17,7 +18,7 @@ describe("sitemap", () => {
     expect(xml).toContain('xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"');
     expect(xml).toContain('xmlns:xhtml="http://www.w3.org/1999/xhtml"');
     expect(sitemapPages().length).toBe(
-      LOCALES.length * (1 + TOOLS.length + CONVERT_JOBS.length + RESIZE_JOBS.length + 1 + FEATURED_TUTORIALS.length + 1 + GAME_CONSOLES.length + GAMES.length + DEVICE_PAGES.length + LEGAL_PAGES.length + 1 + QUIZZES.length + 1 + DATASETS.length + 3 + KB_ARTICLES.length + 1 + REF_ENTRIES.length),
+      LOCALES.length * (1 + TOOLS.length + CONVERT_JOBS.length + RESIZE_JOBS.length + 1 + FEATURED_TUTORIALS.length + 1 + GAME_CONSOLES.length + GAMES.length + DEVICE_PAGES.length + LEGAL_PAGES.length + 1 + QUIZZES.length + 1 + RANKINGS.length + 1 + DATASETS.length + 3 + KB_ARTICLES.length + 1 + REF_ENTRIES.length),
     );
     for (const locale of LOCALES) {
       expect(xml).toContain(`https://cv.cm${appHref(locale, null)}`);
@@ -41,7 +42,7 @@ describe("sitemap", () => {
     expect(xml).not.toContain("https://cv.cm/zh-CN/");
     expect(xml).not.toContain("https://cv.cm/zh-TW/");
     // Only kb pages (three hubs and their articles), data tables and reference pages have real edit dates.
-    expect(xml.match(/<lastmod>/g)?.length).toBe(LOCALES.length * (KB_ARTICLES.length + 3 + DATASETS.length + 1 + Object.keys(REF_UPDATED).length));
+    expect(xml.match(/<lastmod>/g)?.length).toBe(LOCALES.length * (KB_ARTICLES.length + 3 + DATASETS.length + 1 + RANKINGS.length + 1 + Object.keys(REF_UPDATED).length));
     expect(xml).toContain(`<lastmod>${DATASET_SNAPSHOT}</lastmod>`);
     const newest = KNOWLEDGE_ARTICLES.map((id) => kbUpdatedOn(id, "en")).sort().at(-1);
     expect(xml).toContain(`<loc>https://cv.cm${kbHref("en", null)}</loc>\n    <lastmod>${newest}</lastmod>`);

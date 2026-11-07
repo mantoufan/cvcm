@@ -48,6 +48,7 @@ const pageModules = {
   markets: "src/client/markets/ui.ts",
   quiz: "src/client/quiz/ui.ts",
   dataset: "src/client/datasets/ui.ts",
+  ranking: "src/client/rankings/ui.ts",
   kb: "src/client/kb/ui.ts",
   ref: "src/client/ref/ui.ts",
 };

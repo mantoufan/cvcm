@@ -538,7 +538,8 @@
     "tests": "Trắc nghiệm",
     "data": "Dữ liệu",
     "reference": "Tham khảo",
-    "ai": "AI"
+    "ai": "AI",
+    "rankings": "Xếp hạng"
   },
   "lang": {
     "label": "Ngôn ngữ",
@@ -10531,5 +10532,51 @@
     "hugging-pose": "Dáng ôm",
     "hanfu": "Hán phục",
     "qipao": "Sườn xám (qipao)"
+  },
+  "ranking": {
+    "ai-models": {
+      "name": "Xếp hạng AI tốt nhất (bảng LLM)",
+      "blurb": "Các mô hình chat hàng đầu theo phiếu bầu mù của người dùng."
+    },
+    "ai-coding-models": {
+      "name": "AI lập trình tốt nhất",
+      "blurb": "Xếp hạng theo đánh giá của người dùng về web app do mô hình tạo."
+    },
+    "ai-image-models": {
+      "name": "AI tạo ảnh tốt nhất",
+      "blurb": "Mô hình ảnh xếp hạng theo phiếu bầu mù về ảnh tạo ra."
+    },
+    "ai-video-models": {
+      "name": "AI tạo video tốt nhất",
+      "blurb": "Mô hình video xếp hạng theo phiếu bầu mù về đoạn video."
+    },
+    "ai-usage": {
+      "name": "Mô hình AI dùng nhiều nhất",
+      "blurb": "Xếp hạng theo lượng token gửi qua OpenRouter."
+    },
+    "ai-companies": {
+      "name": "Công ty AI theo mức sử dụng",
+      "blurb": "Các mô hình dùng nhiều nhất trên OpenRouter đến từ đâu."
+    },
+    "browser-market-share": {
+      "name": "Thị phần trình duyệt",
+      "blurb": "Chrome, Safari, Edge và các trình duyệt khác, toàn cầu và theo quốc gia."
+    },
+    "os-market-share": {
+      "name": "Thị phần hệ điều hành",
+      "blurb": "Android, Windows, iOS và macOS, toàn cầu và theo quốc gia."
+    },
+    "search-engine-market-share": {
+      "name": "Thị phần công cụ tìm kiếm",
+      "blurb": "Google, Bing, Baidu và các công cụ khác, toàn cầu và theo quốc gia."
+    },
+    "phone-market-share": {
+      "name": "Thị phần điện thoại theo hãng",
+      "blurb": "Apple, Samsung, Xiaomi và các hãng khác, toàn cầu và theo quốc gia."
+    },
+    "social-media-market-share": {
+      "name": "Thị phần mạng xã hội",
+      "blurb": "Mạng nào đem lại nhiều lượt truy cập web nhất, theo quốc gia."
+    }
   }
 }
