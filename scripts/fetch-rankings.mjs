@@ -398,6 +398,11 @@ const NOT_WIKIPEDIA = new Set(["commonswiki", "specieswiki", "wikidatawiki", "me
 /** The Wikidata label for each cv.cm locale; a locale without one shows the English name. */
 const LABEL_LANGS = { en: "en", "zh-CN": "zh-cn", "zh-TW": "zh-tw", ja: "ja", ko: "ko", vi: "vi", id: "id", es: "es" };
 
+/** Rows are shipped to the browser: a name the same as the English one is left for the page to fill in. */
+function withoutEnglishCopies(names) {
+  return Object.fromEntries(Object.entries(names).filter(([locale, name]) => locale === "en" || name !== names.en));
+}
+
 /** Names in every locale, and how many Wikipedias cover the item. Chinese falls back across scripts, converted by Wikidata (zh-tw from zh-hans and back). */
 async function labels(ids) {
   const out = {};
@@ -418,10 +423,8 @@ async function labels(ids) {
       if (!en) continue;
       const names = {};
       for (const [locale, code] of Object.entries(LABEL_LANGS)) names[locale] = LABEL_FIX[id]?.[locale] ?? label(code) ?? LABEL_FIX[id]?.en ?? en;
-      // Rows are shipped to the browser: a name the same as the English one is left for the page to fill in.
-      for (const locale of Object.keys(names)) if (locale !== "en" && names[locale] === names.en) delete names[locale];
       // Wikipedias only: Commons, Wikivoyage and the rest link stubs too.
-      out[id] = { names, sitelinks: Object.keys(entity.sitelinks ?? {}).filter((site) => /wiki$/.test(site) && !NOT_WIKIPEDIA.has(site)).length };
+      out[id] = { names: withoutEnglishCopies(names), all: names, sitelinks: Object.keys(entity.sitelinks ?? {}).filter((site) => /wiki$/.test(site) && !NOT_WIKIPEDIA.has(site)).length };
     }
     await pause();
   }
@@ -624,23 +627,30 @@ async function wikipediaList(id) {
     const value = firstNumber(cellText(row[spec.value]));
     // The main island of a country links its geography article ("Geography of Madagascar"): the item is the place itself.
     // The first link names the row; if it is red (no page), the cell's next link (its archipelago, say) is not the row's item.
+    // A link to a section of another page ("Kerguelen Islands#Grande Terre") names a part of it: no item of its own either.
     const firstLink = row[spec.name].match(/<a [^>]*>/)?.[0] ?? "";
-    const title = /redlink=1|class="new"/.test(firstLink) ? null : linkTitles(row[spec.name])[0]?.replace(/^Geography of (the )?/, "") ?? null;
+    const title = /redlink=1|class="new"|href="[^"]*#/.test(firstLink) ? null : linkTitles(row[spec.name])[0]?.replace(/^Geography of (the )?/, "") ?? null;
     if (!value) continue;
-    const name = cellText(row[spec.name]).split("\n")[0].trim();
+    const lines = cellText(row[spec.name]).split("\n").map((line) => line.trim()).filter(Boolean);
+    // An unlinked row keeps its qualifier ("Grande Terre (Kerguelen)"), so two of one name can be told apart.
+    const name = title ? lines[0] : lines.join(" ");
     parsed.push({
       // No link (an unnamed Antarctic island): kept, with no item and its English name.
       title,
       name,
       value,
       // A river system ("Mississippi–Missouri–Jefferson…") is named after its main river, with the whole course alongside.
-      system: id === "longest-rivers" && /–/.test(name) ? name.replace(/\s*\(.*\)\s*$/, "") : null,
+      // Written with en dashes or hyphens ("Padma-Ganges-Alaknanda"): more than one linked river means a system.
+      system: id === "longest-rivers" && linkTitles(row[spec.name]).length > 1 && /[–-]/.test(name) ? name.replace(/\s*\(.*\)\s*$/, "") : null,
       countries: countryTitles(row[spec.countries]),
       depth: spec.depth === undefined ? undefined : firstNumber(cellText(row[spec.depth])),
       type: spec.type === undefined ? undefined : waterOf(cellText(row[spec.type])),
     });
   }
   // Each row's item first (to drop repeats and cut the list), then names and countries for the kept rows only.
+  // Only rows near the top can make the list (a repeat dropped below moves at most a few up): the rest are not looked up.
+  parsed.sort((a, b) => b.value - a.value);
+  parsed.splice(spec.rows + 50);
   const itemOf = await titleIds(parsed.map((row) => row.title).filter(Boolean));
   for (const row of parsed) {
     if (row.title && !itemOf[row.title]) throw new Error(`wikipedia ${spec.page}: no Wikidata item for ${row.title}`);
@@ -670,7 +680,9 @@ async function wikipediaList(id) {
     for (const [c, options] of Object.entries(candidates)) {
       const island = options.filter((i) => candidateInfo[i]).sort((a, b) => candidateInfo[b].sitelinks - candidateInfo[a].sitelinks)[0];
       if (!island || !info[c]) continue;
-      info[island] = { names: { ...info[c].names, ...candidateInfo[island].names, ...ISLAND_NAMES[c] }, sitelinks: info[c].sitelinks };
+      // Full label sets (before names equal to English are dropped), so a locale where the island's name is its English one keeps that.
+      const merged = { ...info[c].all, ...candidateInfo[island].all, ...ISLAND_NAMES[c] };
+      info[island] = { names: withoutEnglishCopies(merged), all: merged, sitelinks: info[c].sitelinks };
       for (const row of kept) if (row.item === c) row.item = island;
     }
   }
@@ -820,8 +832,8 @@ for (const id of Object.keys(WP_LISTS)) {
     const unchanged = JSON.stringify(oldRows[id]) === JSON.stringify(set.rows);
     const last = set.rows.at(-1);
     // An edit elsewhere on the page moves its revision: the old one is still the citation for unchanged rows (and no commit follows).
-    // Summary rows are keyed by item; an unlinked island by its place ("#77"), so two of them don't share a key.
-    const key = (r) => r[1] || `#${r[0]}`;
+    // Summary rows are keyed by item; an unlinked island by its row ("#77"), unique even when two tie for a place.
+    const key = (r) => r[1] || `#${set.rows.indexOf(r) + 1}`;
     meta.sets[id] = { asOf: (unchanged && oldMeta.sets[id]?.asOf) || thisMonth, checked: thisMonth, revision: (unchanged && oldMeta.sets[id]?.revision) || set.revision, rows: set.rows.length, top: set.rows.slice(0, 3).map((r) => [key(r), r[3]]), bottom: [[key(last), last[3]]], lowRank: last[0], ...countryLeaders(set.rows, 4), names: Object.fromEntries([...set.rows.slice(0, 3), last].map((r) => [key(r), r[2]])) };
     console.log(id, set.rows.length, "rows, revision", set.revision);
   });
