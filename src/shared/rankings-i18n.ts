@@ -139,8 +139,13 @@ function displayName(locale: Locale, id: RankingId, name: string): string {
   const kind = rankingKind(id);
   if (kind === "commodity") return commodityName(locale, name);
   if (kind === "fx") return `${currencyName(locale, name)} (${name})`;
-  if (rankingGroupOf(id) === "geography") return localName(locale, rankingMeta(id).names?.[name]) || name;
+  if (rankingGroupOf(id) === "geography") return placeName(locale, name.startsWith("#") ? "" : name, rankingMeta(id).names?.[name]) || name;
   return name;
+}
+
+/** A place's name: an unlinked one (no Wikidata item) keeps its English name, or reads "unnamed" in the reader's language. */
+function placeName(locale: Locale, qid: string, names: LocaleNames | null | undefined): string {
+  return qid || !names || !/^unnamed\b/i.test(names.en) ? localName(locale, names) : rankingUi(locale).unnamedIsland;
 }
 
 function localName(locale: Locale, names: LocaleNames | null | undefined): string {
@@ -274,14 +279,13 @@ export function rankingTable(locale: Locale, id: RankingId, rows: unknown[]): Da
   if (kind === "lake") {
     return {
       columns: [{ label: ui.rank, num: true }, { label: ui.lake, head: true }, { label: ui.areaKm2, num: true }, { label: ui.areaSqMi, num: true }, { label: ui.maxDepth, num: true }, { label: ui.water }, { label: ui.countries }],
-      rows: (rows as LakeRow[]).map(([place, , names, km2, countries, depth, water]) => [rank(place), text(localName(locale, names)), num(plain(locale, km2), km2), num(plain(locale, toSqMiles(km2)), km2), maybe(depth, (v) => metres(locale, v)), text(ui.waters[water]), text(countryList(locale, countries))]),
+      rows: (rows as LakeRow[]).map(([place, , names, km2, countries, depth, water]) => [rank(place), text(localName(locale, names)), num(plain(locale, km2), km2), num(plain(locale, toSqMiles(km2)), km2), maybe(depth, (v) => metres(locale, v)), text(water ? ui.waters[water] : ""), text(countryList(locale, countries))]),
     };
   }
   if (kind === "island") {
     return {
       columns: [{ label: ui.rank, num: true }, { label: ui.island, head: true }, { label: ui.areaKm2, num: true }, { label: ui.areaSqMi, num: true }, { label: ui.countries }],
-      // An island the list does not link has no Wikidata item: its English name, or "unnamed" in the reader's language.
-      rows: (rows as IslandRow[]).map(([place, qid, names, km2, countries]) => [rank(place), text(qid || !/^unnamed\b/i.test(names.en) ? localName(locale, names) : ui.unnamedIsland), num(plain(locale, km2), km2), num(plain(locale, toSqMiles(km2)), km2), text(countryList(locale, countries))]),
+      rows: (rows as IslandRow[]).map(([place, qid, names, km2, countries]) => [rank(place), text(placeName(locale, qid, names)), num(plain(locale, km2), km2), num(plain(locale, toSqMiles(km2)), km2), text(countryList(locale, countries))]),
     };
   }
   if (kind === "mountain") {

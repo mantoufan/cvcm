@@ -162,8 +162,8 @@ export type MountainRow = [number, string, LocaleNames, number, number, string[]
 export type CountryRef = string | LocaleNames;
 /** [rank, Wikidata id, names, length km, countries in the basin, the whole river system in English (null for a single river)] */
 export type RiverRow = [number, string, LocaleNames, number, CountryRef[], string | null];
-/** [rank, Wikidata id, names, area km², countries on the shore, max depth m (null if unlisted), water] */
-export type LakeRow = [number, string, LocaleNames, number, CountryRef[], number | null, "fresh" | "saline" | "variable"];
+/** [rank, Wikidata id, names, area km², countries on the shore, max depth m (null if unlisted), water (null if unlisted)] */
+export type LakeRow = [number, string, LocaleNames, number, CountryRef[], number | null, "fresh" | "saline" | "variable" | null];
 /** [rank, Wikidata id ("" for an island the list does not link), names, area km², countries] */
 export type IslandRow = [number, string, LocaleNames, number, CountryRef[]];
 /** [rank, ISO 4217 code, units per US dollar, change vs USD over 1 month %, over 1 year %] */

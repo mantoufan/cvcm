@@ -387,6 +387,12 @@ const RANGE_MIN_SITELINKS = 3;
 /** Peaks rise at least this far above the col to a higher one: the usual line between a mountain and a shoulder of one. */
 const MIN_PROMINENCE = 500;
 const SPARQL = "https://query.wikidata.org/sparql";
+/** The bindings of a Wikidata query (its own limit is 60 s, so the wait here is longer). */
+async function sparql(query) {
+  return JSON.parse(await get(`${SPARQL}?${new URLSearchParams({ query, format: "json" })}`, { Accept: "application/sparql-results+json" }, 70_000)).results.bindings;
+}
+/** "http://www.wikidata.org/entity/Q513" → "Q513". */
+const qid = (uri) => uri.slice(uri.lastIndexOf("/") + 1);
 /** Sitelinks that are not a Wikipedia. */
 const NOT_WIKIPEDIA = new Set(["commonswiki", "specieswiki", "wikidatawiki", "metawiki", "mediawikiwiki", "sourceswiki", "wikimaniawiki", "incubatorwiki", "outreachwiki", "wikifunctionswiki"]);
 /** The Wikidata label for each cv.cm locale; a locale without one shows the English name. */
@@ -412,7 +418,7 @@ async function labels(ids) {
       if (!en) continue;
       const names = {};
       for (const [locale, code] of Object.entries(LABEL_LANGS)) names[locale] = LABEL_FIX[id]?.[locale] ?? label(code) ?? LABEL_FIX[id]?.en ?? en;
-      // Every page loads every ranking's rows: a name the same as the English one is left for the page to fill in.
+      // Rows are shipped to the browser: a name the same as the English one is left for the page to fill in.
       for (const locale of Object.keys(names)) if (locale !== "en" && names[locale] === names.en) delete names[locale];
       // Wikipedias only: Commons, Wikivoyage and the rest link stubs too.
       out[id] = { names, sitelinks: Object.keys(entity.sitelinks ?? {}).filter((site) => /wiki$/.test(site) && !NOT_WIKIPEDIA.has(site)).length };
@@ -440,9 +446,7 @@ async function mountains() {
   OPTIONAL { ?m wdt:P4552 ?r }
   OPTIONAL { ?m p:P625/psv:P625 [ wikibase:geoLatitude ?lat ; wikibase:geoLongitude ?lon ] }
 } GROUP BY ?m ORDER BY DESC(?elev) LIMIT ${MOUNTAIN_ROWS * 2}`;
-  const data = JSON.parse(await get(`${SPARQL}?${new URLSearchParams({ query, format: "json" })}`, { Accept: "application/sparql-results+json" }, 70_000));
-  const qid = (uri) => uri.slice(uri.lastIndexOf("/") + 1);
-  const found = data.results.bindings.map((b) => ({
+  const found = (await sparql(query)).map((b) => ({
     id: qid(b.m.value),
     elevation: Math.round(Number(b.elev.value) * 100) / 100,
     prominence: Math.round(Number(b.prom.value) * 100) / 100,
@@ -519,6 +523,8 @@ function firstNumber(text) {
 function wikitable(html, index) {
   const table = [...html.matchAll(/<table class="[^"]*wikitable[^"]*".*?<\/table>/gs)][index]?.[0];
   if (!table) throw new Error(`wikipedia: no table ${index}`);
+  // A table inside a cell would end this one at its own </table> and pair the wrong row and cell tags.
+  if (/<table/.test(table.slice(1))) throw new Error(`wikipedia: table ${index} has a table inside it`);
   // A merged cell in a data row (one with <td>) shifts every later cell in the rows it spans: rather than read the wrong column,
   // the table is not published. Header rows (all <th>) may span.
   for (const row of table.matchAll(/<tr[^>]*>(.*?)<\/tr>/gs)) {
@@ -549,16 +555,16 @@ async function titleIds(titles) {
 }
 
 /** Which of these items are countries: an ISO 3166 code where they have one, else true for a state without one (the Danish Realm).
- * Anything else a country cell links (a "China–India relations" article) is not a country. */
+ * Anything else a country cell links (a "China–India relations" article, or Scotland, a "country" within another) is not a country. */
 async function countryCodes(ids) {
   if (!ids.length) return {};
   const query = `SELECT ?c (SAMPLE(?code) AS ?iso) (COUNT(?t) AS ?state) WHERE { VALUES ?c { ${ids.map((id) => `wd:${id}`).join(" ")} }
   FILTER NOT EXISTS { ?c wdt:P576 [] }
-  OPTIONAL { ?c wdt:P297 ?code } OPTIONAL { ?c wdt:P31 ?t . VALUES ?t { wd:Q3624078 wd:Q6256 wd:Q7275 wd:Q15634554 } } } GROUP BY ?c`;
-  const data = JSON.parse(await get(`${SPARQL}?${new URLSearchParams({ query, format: "json" })}`, { Accept: "application/sparql-results+json" }, 70_000));
+  OPTIONAL { ?c wdt:P297 ?code }
+  OPTIONAL { ?c wdt:P31 ?t . VALUES ?t { wd:Q3624078 wd:Q6256 wd:Q7275 wd:Q15634554 } FILTER NOT EXISTS { ?c wdt:P17 ?up . FILTER(?up != ?c) } } } GROUP BY ?c`;
   const out = {};
-  for (const b of data.results.bindings) {
-    const id = b.c.value.slice(b.c.value.lastIndexOf("/") + 1);
+  for (const b of await sparql(query)) {
+    const id = qid(b.c.value);
     // Antarctica has a code (AQ) but is no country: its islands and lakes show none.
     if (b.iso?.value === "AQ") continue;
     if (b.iso) out[id] = b.iso.value;
@@ -576,28 +582,27 @@ function countryTitles(html) {
   return [...new Set([...linkTitles(html), ...names])];
 }
 
-/** "Fresh", "Saline 1.2%", "Salt", "Brackish"; a cell naming both (fresh in the west, salt in the east) or neither varies. */
+/** "Fresh", "Saline 1.2%", "Salt", "Brackish"; a cell naming both (fresh in one part, salt in another) or "Variable" varies. */
 function waterOf(text) {
   const fresh = /fresh/i.test(text);
   const salt = /salin|salt|brackish/i.test(text);
   if (fresh && !salt) return "fresh";
   if (salt && !fresh) return "saline";
-  return "variable";
+  // Both named, or the cell speaks of a varying lake ("Variable: …"); an empty or unknown cell is no water type at all.
+  return fresh || /vari/i.test(text) ? "variable" : null;
 }
 
 /** Islands a list links by their state, province or country (an island country counts as an island in Wikidata, so every row is asked):
  * the island item Wikidata places them on (P706), named like them. */
 async function islandItems(ids) {
-  const ask = async (query) => JSON.parse(await get(`${SPARQL}?${new URLSearchParams({ query, format: "json" })}`, { Accept: "application/sparql-results+json" }, 70_000)).results.bindings;
-  const qid = (uri) => uri.slice(uri.lastIndexOf("/") + 1);
   // Two small queries: the subclass walk over every candidate at once times the query service out.
-  const pairs = await ask(`SELECT ?c ?i WHERE { VALUES ?c { ${ids.map((id) => `wd:${id}`).join(" ")} }
+  const pairs = await sparql(`SELECT ?c ?i WHERE { VALUES ?c { ${ids.map((id) => `wd:${id}`).join(" ")} }
   ?c wdt:P706 ?i . FILTER(?i != ?c)
   ?c rdfs:label ?cl FILTER(LANG(?cl) IN ("en", "mul")) ?i rdfs:label ?il FILTER(LANG(?il) IN ("en", "mul"))
   FILTER(STRSTARTS(LCASE(?il), LCASE(?cl))) }`);
   const candidates = [...new Set(pairs.map((b) => qid(b.i.value)))];
   if (!candidates.length) return {};
-  const islands = new Set((await ask(`SELECT DISTINCT ?i WHERE { VALUES ?i { ${candidates.map((id) => `wd:${id}`).join(" ")} } ?i wdt:P31/wdt:P279* wd:Q23442 . }`)).map((b) => qid(b.i.value)));
+  const islands = new Set((await sparql(`SELECT DISTINCT ?i WHERE { VALUES ?i { ${candidates.map((id) => `wd:${id}`).join(" ")} } ?i wdt:P31/wdt:P279* wd:Q23442 . }`)).map((b) => qid(b.i.value)));
   const out = {};
   for (const b of pairs) {
     const [c, i] = [qid(b.c.value), qid(b.i.value)];
@@ -618,7 +623,9 @@ async function wikipediaList(id) {
     if (row.length < needs) continue;
     const value = firstNumber(cellText(row[spec.value]));
     // The main island of a country links its geography article ("Geography of Madagascar"): the item is the place itself.
-    const title = linkTitles(row[spec.name])[0]?.replace(/^Geography of (the )?/, "") ?? null;
+    // The first link names the row; if it is red (no page), the cell's next link (its archipelago, say) is not the row's item.
+    const firstLink = row[spec.name].match(/<a [^>]*>/)?.[0] ?? "";
+    const title = /redlink=1|class="new"/.test(firstLink) ? null : linkTitles(row[spec.name])[0]?.replace(/^Geography of (the )?/, "") ?? null;
     if (!value) continue;
     const name = cellText(row[spec.name]).split("\n")[0].trim();
     parsed.push({
@@ -647,8 +654,9 @@ async function wikipediaList(id) {
   const kept = sorted.slice(0, cut);
   if (kept.length < spec.rows) throw new Error(`wikipedia ${spec.page}: only ${kept.length} rows`);
   if (kept[0].item !== spec.first) throw new Error(`wikipedia ${spec.page}: ${kept[0].name} first`);
-  // Unlinked rows are rare (one unnamed island): many would mean the name column was misread.
-  if (kept.filter((row) => !row.item).length > 3) throw new Error(`wikipedia ${spec.page}: too many rows without a linked name`);
+  // Unlinked rows: an unnamed or unlinked island is real, a few of them; elsewhere, or many, the name column was misread.
+  const unlinked = kept.filter((row) => !row.item);
+  if (unlinked.length && (id !== "largest-islands" || unlinked.length > 3)) throw new Error(`wikipedia ${spec.page}: ${unlinked.map((row) => row.name).join(", ")} has no linked name`);
   const countryOf = await titleIds(kept.flatMap((row) => row.countries));
   const countryIds = [...new Set(Object.values(countryOf))];
   const codes = await countryCodes(countryIds);
@@ -812,7 +820,9 @@ for (const id of Object.keys(WP_LISTS)) {
     const unchanged = JSON.stringify(oldRows[id]) === JSON.stringify(set.rows);
     const last = set.rows.at(-1);
     // An edit elsewhere on the page moves its revision: the old one is still the citation for unchanged rows (and no commit follows).
-    meta.sets[id] = { asOf: (unchanged && oldMeta.sets[id]?.asOf) || thisMonth, checked: thisMonth, revision: (unchanged && oldMeta.sets[id]?.revision) || set.revision, rows: set.rows.length, top: topOf(set.rows, 1, 3), bottom: [[last[1], last[3]]], lowRank: last[0], ...countryLeaders(set.rows, 4), names: Object.fromEntries([...set.rows.slice(0, 3), last].map((r) => [r[1], r[2]])) };
+    // Summary rows are keyed by item; an unlinked island by its place ("#77"), so two of them don't share a key.
+    const key = (r) => r[1] || `#${r[0]}`;
+    meta.sets[id] = { asOf: (unchanged && oldMeta.sets[id]?.asOf) || thisMonth, checked: thisMonth, revision: (unchanged && oldMeta.sets[id]?.revision) || set.revision, rows: set.rows.length, top: set.rows.slice(0, 3).map((r) => [key(r), r[3]]), bottom: [[key(last), last[3]]], lowRank: last[0], ...countryLeaders(set.rows, 4), names: Object.fromEntries([...set.rows.slice(0, 3), last].map((r) => [key(r), r[2]])) };
     console.log(id, set.rows.length, "rows, revision", set.revision);
   });
 }
