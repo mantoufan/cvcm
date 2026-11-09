@@ -88,272 +88,285 @@ function s3Config(env: Env): S3Config | null {
   };
 }
 
+/** Hosts the site is indexed under; www.cv.cm only redirects to cv.cm. */
+const SITE_HOSTS = new Set(["cv.cm", "www.cv.cm"]);
+
 export default {
   async fetch(request: Request, env: Env): Promise<Response> {
-    const url = new URL(request.url);
-    // CORS preflight for the agent discovery files, before the www redirect: browsers reject redirected preflights.
-    if (request.method === "OPTIONS" && isAgentDocPath(url.pathname)) {
-      const preflight = new Response(null, {
-        status: 204,
-        headers: {
-          "Access-Control-Allow-Methods": "GET, HEAD, OPTIONS",
-          // `*` does not cover Authorization, so name it for agent frameworks that always send one.
-          "Access-Control-Allow-Headers": "*, Authorization",
-          "Access-Control-Max-Age": "86400",
-        },
-      });
-      return withHeaders(preflight, url.pathname);
-    }
-    if (url.hostname === "www.cv.cm") {
-      url.hostname = "cv.cm";
-      const status = request.method === "GET" || request.method === "HEAD" ? 301 : 307;
-      const moved = redirect(url.toString(), status);
-      // A cross-origin fetch follows a redirect only if the redirect itself passes the CORS check.
-      if (isAgentDocPath(url.pathname)) moved.headers.set("Access-Control-Allow-Origin", "*");
-      return moved;
-    }
+    const res = await handle(request, env);
+    if (SITE_HOSTS.has(new URL(request.url).hostname)) return res;
+    // Any other host (cvcm.<account>.workers.dev, a preview) serves the same site: keep it out of search results.
+    // Pages carry a cv.cm canonical as well; this also covers files and redirects, which have none.
+    const headers = new Headers(res.headers);
+    headers.set("X-Robots-Tag", "noindex");
+    return new Response(res.body, { status: res.status, statusText: res.statusText, headers });
+  },
+};
 
-    const store = env.DB ? d1Store(env.DB) : null;
-    const api = await handleClipApi(request, { store, s3: s3Config(env) });
-    if (api) return api;
+async function handle(request: Request, env: Env): Promise<Response> {
+  const url = new URL(request.url);
+  // CORS preflight for the agent discovery files, before the www redirect: browsers reject redirected preflights.
+  if (request.method === "OPTIONS" && isAgentDocPath(url.pathname)) {
+    const preflight = new Response(null, {
+      status: 204,
+      headers: {
+        "Access-Control-Allow-Methods": "GET, HEAD, OPTIONS",
+        // `*` does not cover Authorization, so name it for agent frameworks that always send one.
+        "Access-Control-Allow-Headers": "*, Authorization",
+        "Access-Control-Max-Age": "86400",
+      },
+    });
+    return withHeaders(preflight, url.pathname);
+  }
+  if (url.hostname === "www.cv.cm") {
+    url.hostname = "cv.cm";
+    const status = request.method === "GET" || request.method === "HEAD" ? 301 : 307;
+    const moved = redirect(url.toString(), status);
+    // A cross-origin fetch follows a redirect only if the redirect itself passes the CORS check.
+    if (isAgentDocPath(url.pathname)) moved.headers.set("Access-Control-Allow-Origin", "*");
+    return moved;
+  }
 
-    if (request.method !== "GET" && request.method !== "HEAD") {
-      const notAllowed = new Response("Method Not Allowed", {
-        status: 405,
+  const store = env.DB ? d1Store(env.DB) : null;
+  const api = await handleClipApi(request, { store, s3: s3Config(env) });
+  if (api) return api;
+
+  if (request.method !== "GET" && request.method !== "HEAD") {
+    const notAllowed = new Response("Method Not Allowed", {
+      status: 405,
+      headers: {
+        Allow: isAgentDocPath(url.pathname) ? `${ALLOWED}, OPTIONS` : ALLOWED,
+        "Cache-Control": "no-store",
+        "Content-Type": "text/plain; charset=utf-8",
+      },
+    });
+    return isAgentDocPath(url.pathname) ? withHeaders(notAllowed, url.pathname) : notAllowed;
+  }
+
+  const path = url.pathname;
+  // Prerendered page bodies are read through ASSETS below, never served on their own.
+  if (path.startsWith(SSR_PREFIX)) return withHeaders(notFound(DEFAULT_LOCALE, request.method), path);
+  if (path === "/api/device/ip") return withHeaders(deviceIpResponse(request), path);
+  const emu = await proxyEmu(path, request.method);
+  if (emu) return withHeaders(emu, path);
+  const cover = await proxyCovers(path, request.method);
+  if (cover) return withHeaders(cover, path);
+  const ai = await proxyAi(path, request.method);
+  if (ai) return withHeaders(ai, path);
+
+  if (!STATIC_FILE.test(path)) {
+    const parsed = parseAppPath(path);
+    const locale = negotiateLocale(
+      request.headers.get("Accept-Language"),
+      cookieValue(request.headers.get("Cookie"), LOCALE_COOKIE),
+    );
+
+    if (parsed.kind === "clip") {
+      return redirectTo(appHref(locale, "clip", parsed.id), url, 302);
+    }
+    if (parsed.kind === "bare") {
+      return redirectTo(appHref(locale, parsed.tool, parsed.clipId, toolJob(parsed)), url, 302);
+    }
+    if (parsed.kind === "bare-learn") {
+      return redirectTo(learnHref(locale, parsed.tutorial), url, 302);
+    }
+    if (parsed.kind === "bare-games") {
+      return redirectTo(gamesHref(locale, parsed.console, parsed.game), url, 302);
+    }
+    if (parsed.kind === "bare-markets") {
+      return redirectTo(appHref(locale, parsed.market), url, 301);
+    }
+    if (parsed.kind === "bare-device") {
+      return redirectTo(deviceHref(locale, parsed.page), url, 302);
+    }
+    if (parsed.kind === "bare-legal") {
+      return redirectTo(legalHref(locale, parsed.page), url, 302);
+    }
+    if (parsed.kind === "bare-quiz") {
+      return redirectTo(quizHref(locale, parsed.quiz), url, 302);
+    }
+    if (parsed.kind === "bare-dataset") {
+      return redirectTo(datasetHref(locale, parsed.dataset), url, 302);
+    }
+    if (parsed.kind === "bare-ranking") {
+      return redirectTo(rankingHref(locale, parsed.ranking), url, 302);
+    }
+    if (parsed.kind === "bare-kb") {
+      return redirectTo(kbHref(locale, parsed.article), url, 302);
+    }
+    if (parsed.kind === "bare-ref") {
+      return redirectTo(refHref(locale, parsed.entry), url, 302);
+    }
+    if (parsed.kind === "unknown") {
+      return withHeaders(notFound(locale, request.method), path);
+    }
+    if (parsed.kind === "app") {
+      const canonical = appHref(parsed.locale, parsed.tool, parsed.clipId, toolJob(parsed));
+      if (path !== canonical) {
+        return redirectTo(canonical, url, 301);
+      }
+    }
+    if (parsed.kind === "learn") {
+      if (parsed.tutorial && !isPublishedTutorial(parsed.tutorial)) {
+        return redirectTo(learnHref(parsed.locale, null), url, 301);
+      }
+      const canonical = learnHref(parsed.locale, parsed.tutorial);
+      if (path !== canonical) {
+        return redirectTo(canonical, url, 301);
+      }
+    }
+    if (parsed.kind === "games") {
+      const canonical = gamesHref(parsed.locale, parsed.console, parsed.game);
+      if (path !== canonical) {
+        return redirectTo(canonical, url, 301);
+      }
+    }
+    if (parsed.kind === "markets") {
+      return redirectTo(appHref(parsed.locale, parsed.market), url, 301);
+    }
+    if (parsed.kind === "device") {
+      const canonical = deviceHref(parsed.locale, parsed.page);
+      if (path !== canonical) {
+        return redirectTo(canonical, url, 301);
+      }
+    }
+    if (parsed.kind === "legal") {
+      const canonical = legalHref(parsed.locale, parsed.page);
+      if (path !== canonical) {
+        return redirectTo(canonical, url, 301);
+      }
+    }
+    if (parsed.kind === "quiz") {
+      const canonical = quizHref(parsed.locale, parsed.quiz);
+      if (path !== canonical) {
+        return redirectTo(canonical, url, 301);
+      }
+    }
+    if (parsed.kind === "dataset") {
+      const canonical = datasetHref(parsed.locale, parsed.dataset);
+      if (path !== canonical) {
+        return redirectTo(canonical, url, 301);
+      }
+    }
+    if (parsed.kind === "ranking") {
+      const canonical = rankingHref(parsed.locale, parsed.ranking);
+      if (path !== canonical) {
+        return redirectTo(canonical, url, 301);
+      }
+    }
+    if (parsed.kind === "kb") {
+      const canonical = kbHref(parsed.locale, parsed.article);
+      if (path !== canonical) {
+        return redirectTo(canonical, url, 301);
+      }
+    }
+    if (parsed.kind === "ref") {
+      const canonical = refHref(parsed.locale, parsed.entry);
+      if (path !== canonical) {
+        return redirectTo(canonical, url, 301);
+      }
+    }
+  }
+
+  // Fetch the page's prerendered body alongside the page itself.
+  const ssr = request.method === "GET" ? prerendered(env, url.origin, ssrPath(parseAppPath(path), path)) : Promise.resolve(null);
+  // Page HTML is rebuilt per request (locale, prerendered body), so index.html's ETag must not answer for it:
+  // drop the conditional headers on page routes and the validators from the page response below.
+  let assetResponse = await assetsFetch(env, STATIC_FILE.test(path) ? request : unconditional(request));
+  if (COVER_PROXY.test(path)) {
+    const type = assetResponse.headers.get("content-type") || "";
+    const image = type.startsWith("image/") || type.includes("octet-stream");
+    if (!image) {
+      return new Response(request.method === "HEAD" ? null : "Not Found", {
+        status: 404,
         headers: {
-          Allow: isAgentDocPath(url.pathname) ? `${ALLOWED}, OPTIONS` : ALLOWED,
           "Cache-Control": "no-store",
+          "CDN-Cache-Control": "no-store",
           "Content-Type": "text/plain; charset=utf-8",
         },
       });
-      return isAgentDocPath(url.pathname) ? withHeaders(notAllowed, url.pathname) : notAllowed;
     }
+  }
+  const thumbFallback = thumbOriginal(path);
+  // Missing files come back as the SPA's index.html (or a 404); a 304 revalidation is passed through.
+  const thumbMissing = assetResponse.status === 404 || (assetResponse.headers.get("content-type") || "").includes("text/html");
+  if (thumbFallback && thumbMissing) {
+    // No thumbnail was built (the cover has no local copy): send the original.
+    // Not redirectTo(): that copies the request's (empty) query over the cover's ?v=.
+    return redirect(new URL(thumbFallback, url.origin).toString(), 302);
+  }
+  if (assetResponse.status === 404 && !STATIC_FILE.test(path)) {
+    // "/", not "/index.html": Workers Static Assets redirects the latter to the former.
+    assetResponse = await assetsFetch(env, new URL("/", url.origin).toString());
+  }
 
-    const path = url.pathname;
-    // Prerendered page bodies are read through ASSETS below, never served on their own.
-    if (path.startsWith(SSR_PREFIX)) return withHeaders(notFound(DEFAULT_LOCALE, request.method), path);
-    if (path === "/api/device/ip") return withHeaders(deviceIpResponse(request), path);
-    const emu = await proxyEmu(path, request.method);
-    if (emu) return withHeaders(emu, path);
-    const cover = await proxyCovers(path, request.method);
-    if (cover) return withHeaders(cover, path);
-    const ai = await proxyAi(path, request.method);
-    if (ai) return withHeaders(ai, path);
-
-    if (!STATIC_FILE.test(path)) {
-      const parsed = parseAppPath(path);
-      const locale = negotiateLocale(
+  const type = assetResponse.headers.get("content-type") || "";
+  const parsed = parseAppPath(path);
+  if (
+    type.includes("text/html")
+    && (parsed.kind === "app" || parsed.kind === "learn" || parsed.kind === "games" || parsed.kind === "markets" || parsed.kind === "device" || parsed.kind === "legal" || parsed.kind === "quiz" || parsed.kind === "dataset" || parsed.kind === "ranking" || parsed.kind === "kb" || parsed.kind === "ref" || path === "/" || path === "/index.html")
+  ) {
+    const html = await assetResponse.text();
+    const locale = parsed.kind === "app" || parsed.kind === "learn" || parsed.kind === "games" || parsed.kind === "markets" || parsed.kind === "device" || parsed.kind === "legal" || parsed.kind === "quiz" || parsed.kind === "dataset" || parsed.kind === "ranking" || parsed.kind === "kb" || parsed.kind === "ref"
+      ? parsed.locale
+      : negotiateLocale(
         request.headers.get("Accept-Language"),
         cookieValue(request.headers.get("Cookie"), LOCALE_COOKIE),
       );
-
-      if (parsed.kind === "clip") {
-        return redirectTo(appHref(locale, "clip", parsed.id), url, 302);
-      }
-      if (parsed.kind === "bare") {
-        return redirectTo(appHref(locale, parsed.tool, parsed.clipId, toolJob(parsed)), url, 302);
-      }
-      if (parsed.kind === "bare-learn") {
-        return redirectTo(learnHref(locale, parsed.tutorial), url, 302);
-      }
-      if (parsed.kind === "bare-games") {
-        return redirectTo(gamesHref(locale, parsed.console, parsed.game), url, 302);
-      }
-      if (parsed.kind === "bare-markets") {
-        return redirectTo(appHref(locale, parsed.market), url, 301);
-      }
-      if (parsed.kind === "bare-device") {
-        return redirectTo(deviceHref(locale, parsed.page), url, 302);
-      }
-      if (parsed.kind === "bare-legal") {
-        return redirectTo(legalHref(locale, parsed.page), url, 302);
-      }
-      if (parsed.kind === "bare-quiz") {
-        return redirectTo(quizHref(locale, parsed.quiz), url, 302);
-      }
-      if (parsed.kind === "bare-dataset") {
-        return redirectTo(datasetHref(locale, parsed.dataset), url, 302);
-      }
-      if (parsed.kind === "bare-ranking") {
-        return redirectTo(rankingHref(locale, parsed.ranking), url, 302);
-      }
-      if (parsed.kind === "bare-kb") {
-        return redirectTo(kbHref(locale, parsed.article), url, 302);
-      }
-      if (parsed.kind === "bare-ref") {
-        return redirectTo(refHref(locale, parsed.entry), url, 302);
-      }
-      if (parsed.kind === "unknown") {
-        return withHeaders(notFound(locale, request.method), path);
-      }
-      if (parsed.kind === "app") {
-        const canonical = appHref(parsed.locale, parsed.tool, parsed.clipId, toolJob(parsed));
-        if (path !== canonical) {
-          return redirectTo(canonical, url, 301);
-        }
-      }
-      if (parsed.kind === "learn") {
-        if (parsed.tutorial && !isPublishedTutorial(parsed.tutorial)) {
-          return redirectTo(learnHref(parsed.locale, null), url, 301);
-        }
-        const canonical = learnHref(parsed.locale, parsed.tutorial);
-        if (path !== canonical) {
-          return redirectTo(canonical, url, 301);
-        }
-      }
-      if (parsed.kind === "games") {
-        const canonical = gamesHref(parsed.locale, parsed.console, parsed.game);
-        if (path !== canonical) {
-          return redirectTo(canonical, url, 301);
-        }
-      }
-      if (parsed.kind === "markets") {
-        return redirectTo(appHref(parsed.locale, parsed.market), url, 301);
-      }
-      if (parsed.kind === "device") {
-        const canonical = deviceHref(parsed.locale, parsed.page);
-        if (path !== canonical) {
-          return redirectTo(canonical, url, 301);
-        }
-      }
-      if (parsed.kind === "legal") {
-        const canonical = legalHref(parsed.locale, parsed.page);
-        if (path !== canonical) {
-          return redirectTo(canonical, url, 301);
-        }
-      }
-      if (parsed.kind === "quiz") {
-        const canonical = quizHref(parsed.locale, parsed.quiz);
-        if (path !== canonical) {
-          return redirectTo(canonical, url, 301);
-        }
-      }
-      if (parsed.kind === "dataset") {
-        const canonical = datasetHref(parsed.locale, parsed.dataset);
-        if (path !== canonical) {
-          return redirectTo(canonical, url, 301);
-        }
-      }
-      if (parsed.kind === "ranking") {
-        const canonical = rankingHref(parsed.locale, parsed.ranking);
-        if (path !== canonical) {
-          return redirectTo(canonical, url, 301);
-        }
-      }
-      if (parsed.kind === "kb") {
-        const canonical = kbHref(parsed.locale, parsed.article);
-        if (path !== canonical) {
-          return redirectTo(canonical, url, 301);
-        }
-      }
-      if (parsed.kind === "ref") {
-        const canonical = refHref(parsed.locale, parsed.entry);
-        if (path !== canonical) {
-          return redirectTo(canonical, url, 301);
-        }
-      }
+    const seo = parsed.kind === "learn"
+      ? { learn: true as const, tutorial: parsed.tutorial }
+      : parsed.kind === "games"
+        ? { games: true as const, console: parsed.console, game: parsed.game }
+        : parsed.kind === "markets"
+          ? { markets: true as const, market: parsed.market }
+          : parsed.kind === "device"
+            ? { devicePage: parsed.page }
+          : parsed.kind === "legal"
+            ? { legalPage: parsed.page }
+          : parsed.kind === "quiz"
+            ? { quiz: true as const, quizId: parsed.quiz }
+          : parsed.kind === "dataset"
+            ? { dataset: true as const, datasetId: parsed.dataset }
+          : parsed.kind === "ranking"
+            ? { ranking: true as const, rankingId: parsed.ranking }
+          : parsed.kind === "kb"
+            ? { kb: true as const, kbId: parsed.article }
+          : parsed.kind === "ref"
+            ? { ref: true as const, refId: parsed.entry }
+          : parsed.kind === "app"
+          ? { tool: parsed.tool, clipId: parsed.clipId, convertJob: parsed.convertJob, resizeJob: parsed.resizeJob }
+          : { tool: null };
+    const headers = new Headers(assetResponse.headers);
+    headers.set("Content-Type", "text/html; charset=utf-8");
+    headers.delete("ETag");
+    headers.delete("Last-Modified");
+    const body = await ssr;
+    const chunk = parsed.kind === "app" ? parsed.tool ?? "home"
+      : parsed.kind === "learn" || parsed.kind === "games" || parsed.kind === "device" || parsed.kind === "markets" ? parsed.kind
+      : parsed.kind === "quiz" ? "quiz"
+      : parsed.kind === "dataset" ? "dataset"
+      : parsed.kind === "ranking" ? "ranking"
+      : parsed.kind === "kb" ? "kb"
+      : parsed.kind === "ref" ? "ref"
+      : parsed.kind === "legal" ? null
+      : "home";
+    let out = applyHtmlSeo(html, locale, seo, undefined, body);
+    out = preloadLocalePack(out, locale, parsed.kind === "games" && Boolean(parsed.game), undefined, parsed.kind === "quiz", parsed.kind === "dataset" || parsed.kind === "ranking", parsed.kind === "kb" ? parsed.article ?? "hub" : null, parsed.kind === "ref" ? parsed.entry ?? "hub" : null);
+    out = preloadPageChunk(out, chunk);
+    if (parsed.kind === "ranking" && parsed.ranking) out = preloadPageChunk(out, rankingRowsChunk(parsed.ranking));
+    if (parsed.kind === "dataset" && parsed.dataset) {
+      for (const file of DATASET_FILES[parsed.dataset]) out = preloadPageChunk(out, `rows-${file}`);
     }
-
-    // Fetch the page's prerendered body alongside the page itself.
-    const ssr = request.method === "GET" ? prerendered(env, url.origin, ssrPath(parseAppPath(path), path)) : Promise.resolve(null);
-    // Page HTML is rebuilt per request (locale, prerendered body), so index.html's ETag must not answer for it:
-    // drop the conditional headers on page routes and the validators from the page response below.
-    let assetResponse = await assetsFetch(env, STATIC_FILE.test(path) ? request : unconditional(request));
-    if (COVER_PROXY.test(path)) {
-      const type = assetResponse.headers.get("content-type") || "";
-      const image = type.startsWith("image/") || type.includes("octet-stream");
-      if (!image) {
-        return new Response(request.method === "HEAD" ? null : "Not Found", {
-          status: 404,
-          headers: {
-            "Cache-Control": "no-store",
-            "CDN-Cache-Control": "no-store",
-            "Content-Type": "text/plain; charset=utf-8",
-          },
-        });
-      }
-    }
-    const thumbFallback = thumbOriginal(path);
-    // Missing files come back as the SPA's index.html (or a 404); a 304 revalidation is passed through.
-    const thumbMissing = assetResponse.status === 404 || (assetResponse.headers.get("content-type") || "").includes("text/html");
-    if (thumbFallback && thumbMissing) {
-      // No thumbnail was built (the cover has no local copy): send the original.
-      // Not redirectTo(): that copies the request's (empty) query over the cover's ?v=.
-      return redirect(new URL(thumbFallback, url.origin).toString(), 302);
-    }
-    if (assetResponse.status === 404 && !STATIC_FILE.test(path)) {
-      // "/", not "/index.html": Workers Static Assets redirects the latter to the former.
-      assetResponse = await assetsFetch(env, new URL("/", url.origin).toString());
-    }
-
-    const type = assetResponse.headers.get("content-type") || "";
-    const parsed = parseAppPath(path);
-    if (
-      type.includes("text/html")
-      && (parsed.kind === "app" || parsed.kind === "learn" || parsed.kind === "games" || parsed.kind === "markets" || parsed.kind === "device" || parsed.kind === "legal" || parsed.kind === "quiz" || parsed.kind === "dataset" || parsed.kind === "ranking" || parsed.kind === "kb" || parsed.kind === "ref" || path === "/" || path === "/index.html")
-    ) {
-      const html = await assetResponse.text();
-      const locale = parsed.kind === "app" || parsed.kind === "learn" || parsed.kind === "games" || parsed.kind === "markets" || parsed.kind === "device" || parsed.kind === "legal" || parsed.kind === "quiz" || parsed.kind === "dataset" || parsed.kind === "ranking" || parsed.kind === "kb" || parsed.kind === "ref"
-        ? parsed.locale
-        : negotiateLocale(
-          request.headers.get("Accept-Language"),
-          cookieValue(request.headers.get("Cookie"), LOCALE_COOKIE),
-        );
-      const seo = parsed.kind === "learn"
-        ? { learn: true as const, tutorial: parsed.tutorial }
-        : parsed.kind === "games"
-          ? { games: true as const, console: parsed.console, game: parsed.game }
-          : parsed.kind === "markets"
-            ? { markets: true as const, market: parsed.market }
-            : parsed.kind === "device"
-              ? { devicePage: parsed.page }
-            : parsed.kind === "legal"
-              ? { legalPage: parsed.page }
-            : parsed.kind === "quiz"
-              ? { quiz: true as const, quizId: parsed.quiz }
-            : parsed.kind === "dataset"
-              ? { dataset: true as const, datasetId: parsed.dataset }
-            : parsed.kind === "ranking"
-              ? { ranking: true as const, rankingId: parsed.ranking }
-            : parsed.kind === "kb"
-              ? { kb: true as const, kbId: parsed.article }
-            : parsed.kind === "ref"
-              ? { ref: true as const, refId: parsed.entry }
-            : parsed.kind === "app"
-            ? { tool: parsed.tool, clipId: parsed.clipId, convertJob: parsed.convertJob, resizeJob: parsed.resizeJob }
-            : { tool: null };
-      const headers = new Headers(assetResponse.headers);
-      headers.set("Content-Type", "text/html; charset=utf-8");
-      headers.delete("ETag");
-      headers.delete("Last-Modified");
-      const body = await ssr;
-      const chunk = parsed.kind === "app" ? parsed.tool ?? "home"
-        : parsed.kind === "learn" || parsed.kind === "games" || parsed.kind === "device" || parsed.kind === "markets" ? parsed.kind
-        : parsed.kind === "quiz" ? "quiz"
-        : parsed.kind === "dataset" ? "dataset"
-        : parsed.kind === "ranking" ? "ranking"
-        : parsed.kind === "kb" ? "kb"
-        : parsed.kind === "ref" ? "ref"
-        : parsed.kind === "legal" ? null
-        : "home";
-      let out = applyHtmlSeo(html, locale, seo, undefined, body);
-      out = preloadLocalePack(out, locale, parsed.kind === "games" && Boolean(parsed.game), undefined, parsed.kind === "quiz", parsed.kind === "dataset" || parsed.kind === "ranking", parsed.kind === "kb" ? parsed.article ?? "hub" : null, parsed.kind === "ref" ? parsed.entry ?? "hub" : null);
-      out = preloadPageChunk(out, chunk);
-      if (parsed.kind === "ranking" && parsed.ranking) out = preloadPageChunk(out, rankingRowsChunk(parsed.ranking));
-      if (parsed.kind === "dataset" && parsed.dataset) {
-        for (const file of DATASET_FILES[parsed.dataset]) out = preloadPageChunk(out, `rows-${file}`);
-      }
-      return withHeaders(
-        new Response(out, {
-          status: assetResponse.status,
-          headers,
-        }),
-        path,
-      );
-    }
-    return withHeaders(assetResponse, path);
-  },
-};
+    return withHeaders(
+      new Response(out, {
+        status: assetResponse.status,
+        headers,
+      }),
+      path,
+    );
+  }
+  return withHeaders(assetResponse, path);
+}
 
 const SSR_PREFIX = "/_ssr/";
 const SSR_MARKER = "<!--ssr-->";

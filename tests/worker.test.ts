@@ -166,3 +166,16 @@ it("falls back to the SPA shell at / (Workers Static Assets redirects /index.htm
   expect(seen).not.toContain("/index.html");
   expect(res.headers.get("Content-Type")).toContain("text/html");
 });
+
+it("keeps other hosts (workers.dev) out of search results, but not cv.cm", async () => {
+  const alt = await worker.fetch(new Request("https://cvcm.aao.workers.dev/en/tip/"), { ASSETS: assets });
+  expect(alt.headers.get("X-Robots-Tag")).toBe("noindex");
+  const altRedirect = await worker.fetch(new Request("https://cvcm.aao.workers.dev/crop/"), { ASSETS: assets });
+  expect(altRedirect.status).toBe(302);
+  expect(altRedirect.headers.get("X-Robots-Tag")).toBe("noindex");
+  const site = await worker.fetch(new Request("https://cv.cm/en/tip/"), { ASSETS: assets });
+  expect(site.headers.get("X-Robots-Tag")).toBeNull();
+  const www = await worker.fetch(new Request("https://www.cv.cm/en/tip/"), { ASSETS: assets });
+  expect(www.status).toBe(301);
+  expect(www.headers.get("X-Robots-Tag")).toBeNull();
+});
