@@ -1,3 +1,4 @@
+import { mustStay } from "./leave-guard";
 import { h } from "./dom";
 import { faqSection, syncPageJsonLd } from "./faq";
 import { guideSection } from "./guide";
@@ -103,6 +104,16 @@ export function start(): void {
       // Following an in-page #anchor (a table of contents, #tools) also fires popstate: the page itself is unchanged.
       if (renderedHref && renderedHref.split("#")[0] === location.pathname + location.search) {
         renderedHref = location.pathname + location.search + location.hash;
+        return;
+      }
+      // A recording that is not downloaded yet: put the URL back and load the target as a new document,
+      // so the browser's leave prompt can stop it.
+      if (mustStay() && renderedHref) {
+        const target = location.href;
+        history.pushState(null, "", renderedHref);
+        // replace, not assign, so only one extra entry (the target again) is left behind after leaving; a popstate
+        // cannot be cancelled, so some duplicate is unavoidable.
+        location.replace(target);
         return;
       }
       gateAnalytics(location.pathname);
@@ -300,6 +311,8 @@ function onClick(e: MouseEvent): void {
   // The microphone and camera are allowed only by a mic or camera tool page's own response headers: entering or leaving one loads a new document.
   if (devicePolicyOf(a.pathname) !== devicePolicyOf(location.pathname)) return;
   if (parseAppPath(a.pathname).kind === "static") return;
+  // Unsaved work in this tab: a full navigation lets beforeunload ask before it is lost.
+  if (mustStay()) return;
   e.preventDefault();
   history.pushState(null, "", a.href);
   scrollOnSwap = true;
@@ -992,6 +1005,14 @@ function langLinks(current: Locale): HTMLElement {
 
 /** Show the page on screen in another locale, keeping its query. render() sets the locale once its pack is loaded, like any navigation. */
 function switchLocale(next: Locale): void {
+  // Unsaved work in this tab: load the other language as a new document, so beforeunload can ask first.
+  if (mustStay()) {
+    // If the leave prompt is cancelled the page stays: put the picker back and forget the pending scroll.
+    scrollOnSwap = false;
+    restoreRendered();
+    location.assign(localeHref(next));
+    return;
+  }
   history.pushState(null, "", localeHref(next));
   render();
 }

@@ -892,4 +892,34 @@ export const TOOL_LOADERS: Record<ToolId, ToolLoader> = {
     m.mountAlarm(host);
     return m.unmountAlarm;
   },
+  "white-noise": async (host, ctx) => {
+    const m = await import("./white-noise/ui");
+    if (!ctx.alive()) return undefined;
+    m.mountWhiteNoise(host);
+    return m.unmountWhiteNoise;
+  },
+  "decibel-meter": async (host, ctx) => {
+    const m = await import("./decibel-meter/ui");
+    if (!ctx.alive()) return undefined;
+    m.mountDecibelMeter(host);
+    return m.unmountDecibelMeter;
+  },
+  "voice-recorder": async (host, ctx) => {
+    const m = await import("./voice-recorder/ui");
+    if (!ctx.alive()) return undefined;
+    m.mountVoiceRecorder(host);
+    return m.unmountVoiceRecorder;
+  },
+  "screen-recorder": async (host, ctx) => {
+    const m = await import("./screen-recorder/ui");
+    if (!ctx.alive()) return undefined;
+    m.mountScreenRecorder(host);
+    return m.unmountScreenRecorder;
+  },
+  "triangle": async (host, ctx) => {
+    const m = await import("./triangle/ui");
+    if (!ctx.alive()) return undefined;
+    m.mountTriangle(host);
+    return m.unmountTriangle;
+  },
 };
