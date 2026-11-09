@@ -279,6 +279,8 @@ for (const [id, set] of Object.entries(meta.sets)) {
   const files = (SET_FILES[id] ?? [id]).map((f) => `${f}.json`);
   const same = old && summary(old) === summary(set) && files.every(unchanged);
   set.updated = same ? old.updated ?? oldMeta.updated : today;
+  // The World Bank's release stamp moves on every WDI release; keep the old one for a table that did not change.
+  if (same && old.sourceUpdated) set.sourceUpdated = old.sourceUpdated;
 }
 // The hub's date: the newest table's, so a rerun that changes nothing leaves meta.json as it was.
 meta.updated = Object.values(meta.sets).map((set) => set.updated).sort().at(-1);
