@@ -14,13 +14,13 @@ let copyBtn: HTMLButtonElement | null = null;
 let last = "";
 
 export function mountTeamGenerator(host: HTMLElement): void {
-  namesEl = h("textarea", { rows: 10, "data-field": "names", spellcheck: "false", onInput: () => counted() });
+  namesEl = h("textarea", { rows: 10, "data-field": "names", spellcheck: "false", onInput: () => onSettings() });
   namesEl.value = t("teamGenerator.sample");
-  modeEl = h("select", { "data-field": "mode", onChange: () => counted() },
+  modeEl = h("select", { "data-field": "mode", onChange: () => onSettings() },
     h("option", { value: "count", selected: true }, t("teamGenerator.byCount")),
     h("option", { value: "size" }, t("teamGenerator.bySize")),
   );
-  valueEl = h("input", { type: "number", inputmode: "numeric", min: "1", max: String(MAX_NAMES), step: "1", value: "3", "data-field": "value", onInput: () => counted() });
+  valueEl = h("input", { type: "number", inputmode: "numeric", min: "1", max: String(MAX_NAMES), step: "1", value: "3", "data-field": "value", onInput: () => onSettings() });
   countEl = h("p", { class: "hint", "data-out": "count" });
   errorEl = h("p", { class: "hint", "aria-live": "polite", "data-out": "error" });
   outEl = h("ol", { class: "team-list", "aria-live": "polite", "data-out": "teams" });
@@ -63,6 +63,15 @@ export function unmountTeamGenerator(): void {
   countEl = errorEl = outEl = null;
   copyBtn = null;
   last = "";
+}
+
+/** New names or numbers make the last draw out of date: clear it, so Copy teams never copies teams that no longer match. */
+function onSettings(): void {
+  counted();
+  if (!last || !outEl || !errorEl) return;
+  last = "";
+  errorEl.textContent = "";
+  outEl.replaceChildren(h("li", { class: "muted" }, t("teamGenerator.empty")));
 }
 
 /** Live "12 names → 3 teams of 4" line, so the split is clear before pressing Generate teams. */

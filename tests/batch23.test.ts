@@ -97,10 +97,14 @@ describe("quadratic", () => {
   });
 
   it("finds exact forms quickly for the largest whole coefficients", () => {
-    const t0 = performance.now();
+    // About 4 ms here; the old trial division took over 150 ms. The fastest of five runs ignores a busy CI box.
     solveQuadratic(1, 999983, -999979);
-    // About 4 ms here; the old trial division took over 150 ms. Loose bound so a busy CI box does not fail it.
-    expect(performance.now() - t0).toBeLessThan(1000);
+    const runs = Array.from({ length: 5 }, () => {
+      const t0 = performance.now();
+      solveQuadratic(1, 999983, -999979);
+      return performance.now() - t0;
+    });
+    expect(Math.min(...runs)).toBeLessThan(50);
   });
 
   it("prints equations with real minus signs", () => {
@@ -184,6 +188,11 @@ describe("screen", () => {
     expect(realResolution(1093, 615, 1.25)).toEqual({ w: 1366, h: 768 });
     expect(realResolution(2134, 1200, 0.9)).toEqual({ w: 1920, h: 1080 });
     expect(realResolution(546, 307, 2.5)).toEqual({ w: 1366, h: 768 });
+    // Exact products are kept; unknown panels just round.
+    expect(realResolution(786, 1704, 1.5)).toEqual({ w: 1179, h: 2556 });
+    expect(realResolution(540, 360, 2.5)).toEqual({ w: 1350, h: 900 });
+    expect(realResolution(1975, 1277, 1.75)).toEqual({ w: 3456, h: 2234 });
+    expect(realResolution(1003, 667, 1.5)).toEqual({ w: 1504, h: 1000 });
   });
 });
 

@@ -64,42 +64,35 @@ export function physical(cssPx: number, dpr: number): number {
   return Math.round(cssPx * (dpr > 0 ? dpr : 1));
 }
 
+/** Panel sizes without a common name that scaled laptops and tablets report (Surface, MacBook, 3:2 and 16:10 panels). */
+const KNOWN: ReadonlyArray<readonly [number, number]> = [
+  [2256, 1504], [2736, 1824], [2880, 1920], [3000, 2000], [1920, 1280], [2560, 1664], [2880, 1864], [2940, 1912],
+  [3024, 1964], [3456, 2234], [2880, 1800], [3840, 2400], [2560, 1700], [3200, 2000], [3200, 1800], [2400, 1600],
+  [2048, 1536], [2360, 1640], [2388, 1668], [2732, 2048], [2160, 1440], [1600, 1200], [1680, 1050],
+];
+const SNAP: ReadonlyArray<readonly [number, number]> = [...NAMES.map(([a, b]) => [a, b] as const), ...KNOWN];
+
 /**
- * Real resolution from the CSS screen size. Browsers round (or floor) the CSS size, so at 150% a 2560 × 1440 screen
- * reports 1707 × 960, which multiplies back to 2561. Look at every pixel count within one CSS pixel: a common
- * resolution there wins; otherwise each side takes the count with the most factors of 2 (panel sizes are multiples
- * of 8, or at least even), then the nearest. A whole-number ratio is exact already.
+ * Real resolution from the CSS screen size. With a fractional ratio browsers round (or floor) the CSS size, so at
+ * 150% a 2560 × 1440 screen reports 1707 × 960 (2560.5) or 1706 × 960 (2559): snap to a known resolution within one
+ * CSS pixel. Anything else keeps the exact product, or rounds with an exact half going to the even side.
  */
 export function realResolution(cssW: number, cssH: number, dpr: number): { w: number; h: number } {
   const r = dpr > 0 ? dpr : 1;
-  if (Number.isInteger(r)) return { w: Math.round(cssW * r), h: Math.round(cssH * r) };
-  const ws = candidates(cssW, r);
-  const hs = candidates(cssH, r);
-  for (const [a, b] of NAMES) {
-    if (ws.includes(a) && hs.includes(b)) return { w: a, h: b };
-    if (ws.includes(b) && hs.includes(a)) return { w: b, h: a };
-  }
-  return { w: bestSide(ws, cssW * r), h: bestSide(hs, cssH * r) };
-}
-
-/** Pixel counts that a browser could report as this CSS size, rounding any way. */
-function candidates(css: number, r: number): number[] {
-  const out: number[] = [];
-  for (let px = Math.floor((css - 1) * r) + 1; px < (css + 1) * r; px++) out.push(px);
-  return out.length ? out : [Math.round(css * r)];
-}
-
-function bestSide(options: number[], exact: number): number {
-  let best = Math.round(exact);
-  let bestScore = -Infinity;
-  for (const px of options) {
-    let twos = 0;
-    for (let v = px; v > 0 && v % 2 === 0 && twos < 3; v /= 2) twos++;
-    const score = twos * 10 - Math.abs(px - exact);
-    if (score > bestScore) {
-      best = px;
-      bestScore = score;
+  const w = cssW * r;
+  const h = cssH * r;
+  if (!Number.isInteger(r)) {
+    const near = (px: number, exact: number) => Math.abs(px - exact) < r;
+    for (const [a, b] of SNAP) {
+      if (near(a, w) && near(b, h)) return { w: a, h: b };
+      if (near(b, w) && near(a, h)) return { w: b, h: a };
     }
   }
-  return best;
+  return { w: roundHalfEven(w), h: roundHalfEven(h) };
+}
+
+function roundHalfEven(x: number): number {
+  const f = Math.floor(x);
+  if (x - f !== 0.5) return Math.round(x);
+  return f % 2 === 0 ? f : f + 1;
 }

@@ -74,8 +74,10 @@ function labeled(label: string, control: HTMLElement): HTMLElement {
   return h("label", { class: "field" }, h("span", null, label), control);
 }
 
+/** Two decimals, except where a double can no longer hold cents (above about 10^13): whole units there. */
 function fmt(n: number): string {
-  return new Intl.NumberFormat(locale(), { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(n);
+  const cents = Math.abs(n) < 1e13;
+  return new Intl.NumberFormat(locale(), { minimumFractionDigits: cents ? 2 : 0, maximumFractionDigits: cents ? 2 : 0 }).format(n);
 }
 
 function fmtWhole(n: number): string {
@@ -97,9 +99,10 @@ function paint(): void {
   errorEl.textContent = "";
   last = "";
   if (!res) {
-    errorEl.textContent = Number(priceEl.value) > MAX_PRICE
-      ? t("mortgage.tooBig", { max: fmtWhole(MAX_PRICE) })
-      : t("mortgage.invalid", { n: MAX_YEARS });
+    const tooBig = Number(priceEl.value) > MAX_PRICE;
+    // Over the limit, still say whether the other fields are fine.
+    const othersBad = !tooBig || !mortgage({ price: 1, downPct: downEl.value === "" ? 0 : Number(downEl.value), rate: rateEl.value === "" ? NaN : Number(rateEl.value), years: yearsEl.value === "" ? NaN : Number(yearsEl.value), method });
+    errorEl.textContent = [tooBig ? t("mortgage.tooBig", { max: fmtWhole(MAX_PRICE) }) : "", othersBad ? t("mortgage.invalid", { n: MAX_YEARS }) : ""].filter(Boolean).join(" ");
     return;
   }
   const rows: Array<[string, string]> = [[t("mortgage.loan"), fmt(res.loan)]];
