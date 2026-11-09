@@ -109,7 +109,6 @@ await esbuild.build({
 });
 
 // The Worker script is deployed as `main`, not as a static asset (an asset may be at most 25 MiB).
-// Covers are served from s3.cv.cm (proxyCovers in src/worker.ts; scripts/sync-covers.mjs puts them there).
-writeFileSync(resolve(root, "dist/.assetsignore"), "_worker.js\n/covers/\n");
+writeFileSync(resolve(root, "dist/.assetsignore"), "_worker.js\n");
 
 console.log("wrote dist/_worker.js");
