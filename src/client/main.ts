@@ -111,7 +111,8 @@ export function start(): void {
       if (mustStay() && renderedHref) {
         const target = location.href;
         history.pushState(null, "", renderedHref);
-        location.assign(target);
+        // replace, not assign: after leaving, Back goes to the page before the recorder, not to the restored entry.
+        location.replace(target);
         return;
       }
       gateAnalytics(location.pathname);

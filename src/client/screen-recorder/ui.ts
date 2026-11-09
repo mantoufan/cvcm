@@ -4,7 +4,8 @@ import { fixInfiniteDuration } from "../media-duration";
 import { locale, t } from "../i18n";
 import { newAudioContext, resumeIfPaused } from "../audio";
 import { appHref } from "../../shared/path";
-import { MAX_SCREEN_MINUTES, VIDEO_MP4_TYPES, VIDEO_WEBM_TYPES, clockText, elapsedMs, extensionFor, pickType, recordingName, sizeText } from "../../shared/recorder";
+import { formatBytes } from "../../shared/resize";
+import { MAX_SCREEN_MINUTES, VIDEO_MP4_TYPES, VIDEO_WEBM_TYPES, clockText, elapsedMs, extensionFor, pickType, recordingName } from "../../shared/recorder";
 
 const FORMATS = ["auto", "webm"] as const;
 type Format = (typeof FORMATS)[number];
@@ -76,7 +77,7 @@ export function mountScreenRecorder(host: HTMLElement): void {
     ),
   );
   window.addEventListener("beforeunload", onLeave);
-  setLeaveGuard(() => recorder !== null || busy || unsaved);
+  setLeaveGuard(hasUnsaved);
 }
 
 export function unmountScreenRecorder(): void {
@@ -102,8 +103,12 @@ function canCapture(): boolean {
   return typeof navigator.mediaDevices?.getDisplayMedia === "function" && typeof MediaRecorder !== "undefined";
 }
 
+function hasUnsaved(): boolean {
+  return recorder !== null || busy || unsaved;
+}
+
 function onLeave(e: BeforeUnloadEvent): void {
-  if (recorder || unsaved) {
+  if (hasUnsaved()) {
     e.preventDefault();
     e.returnValue = "";
   }
@@ -175,7 +180,12 @@ async function begin(): Promise<void> {
     // MediaRecorder records only one audio track, so the tab/system sound and the microphone are mixed first.
     const mixed = mixAudio([screen, mic!]);
     if (mixed) tracks.push(mixed);
-    else tracks.push(audioTracks[0]);
+    else {
+      // Mixing failed: keep the shared sound and say the microphone is not in the recording.
+      tracks.push(audioTracks[0]);
+      mic?.getTracks().forEach((tr) => tr.stop());
+      mic = null;
+    }
   } else if (audioTracks.length) tracks.push(audioTracks[0]);
   const stream = new MediaStream(tracks);
   const type = chosenType();
@@ -270,8 +280,8 @@ function finish(): void {
   startedAt = null;
   window.clearInterval(timer);
   say("saving");
+  // Already stopping (a second Stop, or the browser's Stop sharing): onstop brings the last chunk.
   if (recorder.state !== "inactive") recorder.stop();
-  else saveRecording(recorder, run);
 }
 
 function saveRecording(rec: MediaRecorder, mine: number): void {
@@ -308,7 +318,7 @@ function showResult(blob: Blob, name: string, ms: number): void {
   fixInfiniteDuration(video);
   resultEl.replaceChildren(
     video,
-    h("p", { class: "rec-meta" }, h("strong", null, name), ` · ${clockText(ms)} · ${sizeText(blob.size)}`),
+    h("p", { class: "rec-meta" }, h("strong", null, name), ` · ${clockText(ms)} · ${formatBytes(blob.size)}`),
     h("div", { class: "stage-actions" },
       h("button", { type: "button", class: "btn", "data-action": "download", onClick: () => { unsaved = false; downloadBlob(blob, name); } }, t("screenRecorder.download", { ext: name.split(".").pop()!.toUpperCase() })),
       h("button", { type: "button", class: "btn ghost", "data-action": "discard", onClick: () => discard() }, t("screenRecorder.discard")),

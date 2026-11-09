@@ -110,8 +110,8 @@ function bufferFor(c: NoiseColor): AudioBuffer | null {
   } catch {
     return null;
   }
-  // Keep only the colour in use: each one is about 9 MB of samples.
-  buffers = new Map([[c, buf]]);
+  // Each colour is about 5 MB of samples at 48 kHz; keeping all four makes switching back instant.
+  buffers.set(c, buf);
   return buf;
 }
 

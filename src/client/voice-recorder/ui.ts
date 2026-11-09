@@ -4,12 +4,15 @@ import { setLeaveGuard } from "../leave-guard";
 import { fixInfiniteDuration } from "../media-duration";
 import { locale, t } from "../i18n";
 import { appHref } from "../../shared/path";
+import { formatBytes } from "../../shared/resize";
 import { encodeWav } from "../../shared/wav";
 import { rms, toDbfs, meterPercent } from "../../shared/mic";
-import { AUDIO_TYPES, MAX_VOICE_MINUTES, clockText, elapsedMs, extensionFor, pickType, recordingName, sizeText } from "../../shared/recorder";
+import { AUDIO_TYPES, MAX_VOICE_MINUTES, clockText, elapsedMs, extensionFor, pickType, recordingName } from "../../shared/recorder";
 
 /** Downloaded takes beyond this many drop off the list, oldest first; a take not yet downloaded is never dropped. */
 const MAX_TAKES = 20;
+/** About 1 GB of float samples at 48 kHz stereo is the most we decode for a WAV. */
+const MAX_WAV_MINUTES = 30;
 
 type Take = { id: number; blob: Blob; url: string; ms: number; at: Date; name: string; saved: boolean };
 
@@ -270,8 +273,8 @@ function finish(): void {
   if (!recorder) return;
   banked = elapsedMs(banked, startedAt, performance.now());
   startedAt = null;
+  // A second Stop (state already "inactive") waits for the same onstop, which brings the last chunk.
   if (recorder.state !== "inactive") recorder.stop();
-  else saveTake(recorder, run);
   window.clearInterval(timer);
   say("saving");
 }
@@ -296,12 +299,14 @@ function saveTake(rec: MediaRecorder, mine: number): void {
   const at = new Date();
   const take: Take = { id: nextId++, blob, url: URL.createObjectURL(blob), ms, at, name: recordingName("recording", at, extensionFor(type)), saved: false };
   takes.unshift(take);
+  listEl?.prepend(takeRow(take));
   for (let i = takes.length - 1; i >= 0 && takes.length > MAX_TAKES; i--) {
     if (!takes[i].saved) continue;
+    dropRow(takes[i].id);
     URL.revokeObjectURL(takes[i].url);
     takes.splice(i, 1);
   }
-  renderTakes();
+  showEmpty();
   if (hitLimit) say("limit", { n: MAX_VOICE_MINUTES });
   else say("saved", { time: clockText(ms) });
   hitLimit = false;
@@ -337,10 +342,13 @@ async function listDevices(currentId: string | undefined): Promise<void> {
   deviceEl.disabled = inputs.length < 2;
 }
 
-function renderTakes(): void {
-  if (!listEl) return;
-  listEl.replaceChildren(...takes.map((take) => takeRow(take)));
-  const empty = listEl.parentElement?.querySelector<HTMLElement>("[data-out=empty]");
+/** Rows are added and removed one by one, so a take that is playing keeps playing when another one changes. */
+function dropRow(id: number): void {
+  listEl?.querySelector(`[data-take="${id}"]`)?.remove();
+}
+
+function showEmpty(): void {
+  const empty = listEl?.parentElement?.querySelector<HTMLElement>("[data-out=empty]");
   if (empty) empty.hidden = takes.length > 0;
 }
 
@@ -349,8 +357,10 @@ function takeRow(take: Take): HTMLElement {
   fixInfiniteDuration(player);
   const wavBtn = h("button", { type: "button", class: "btn ghost", "data-action": "wav" }, t("voiceRecorder.downloadWav"));
   wavBtn.addEventListener("click", () => void downloadWav(take, wavBtn));
+  // Decoding a long take to PCM in memory could crash the tab (and every take with it): WAV only up to MAX_WAV_MINUTES.
+  wavBtn.hidden = take.ms > MAX_WAV_MINUTES * 60_000;
   return h("li", { class: "rec-item", "data-take": String(take.id) },
-    h("p", { class: "rec-meta" }, h("strong", null, take.name), ` · ${clockText(take.ms)} · ${sizeText(take.blob.size)}`),
+    h("p", { class: "rec-meta" }, h("strong", null, take.name), ` · ${clockText(take.ms)} · ${formatBytes(take.blob.size)}`),
     player,
     h("div", { class: "stage-actions" },
       h("button", { type: "button", class: "btn", "data-action": "download", onClick: () => { take.saved = true; downloadBlob(take.blob, take.name); } }, t("voiceRecorder.download", { ext: take.name.split(".").pop()!.toUpperCase() })),
@@ -365,7 +375,8 @@ function removeTake(id: number): void {
   if (i < 0) return;
   URL.revokeObjectURL(takes[i].url);
   takes.splice(i, 1);
-  renderTakes();
+  dropRow(id);
+  showEmpty();
 }
 
 /** Decodes the take and writes 16-bit PCM WAV at its own sample rate (mono stays mono). */

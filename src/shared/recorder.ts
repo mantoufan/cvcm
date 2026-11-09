@@ -50,19 +50,6 @@ export function clockText(ms: number): string {
   return h ? `${h}:${String(m).padStart(2, "0")}:${ss}` : `${m}:${ss}`;
 }
 
-/** File size with binary units, one decimal from KB up ("812 B", "1.4 MB"). */
-export function sizeText(bytes: number): string {
-  if (bytes < 1024) return `${Math.max(0, Math.round(bytes))} B`;
-  const units = ["KB", "MB", "GB"];
-  let v = bytes / 1024;
-  let i = 0;
-  while (v >= 1024 && i < units.length - 1) {
-    v /= 1024;
-    i++;
-  }
-  return `${v.toFixed(1)} ${units[i]}`;
-}
-
 /**
  * Wall-clock time spent recording, excluding pauses. `startedAt` is when recording began (or resumed);
  * `banked` holds what was recorded before the last pause.

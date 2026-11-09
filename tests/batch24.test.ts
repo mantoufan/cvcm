@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { FADE_OUT_S, NOISE_COLORS, TARGET_RMS, bandPass, fillNoise, noiseLoop, seamlessLoop, timerText } from "../src/shared/noise";
 import { LevelStats, aWeighting, bandOf, clampCalibration, magnitude, powerToDbfs, timeWeight, toDb } from "../src/shared/decibel";
-import { clockText, elapsedMs, extensionFor, pickType, recordingName, sizeText, AUDIO_TYPES } from "../src/shared/recorder";
+import { clockText, elapsedMs, extensionFor, pickType, recordingName, AUDIO_TYPES } from "../src/shared/recorder";
 import { fmt, layout, solveTriangle } from "../src/shared/triangle";
 
 /** Deterministic uniform values (mulberry32), so spectra are the same every run. */
@@ -152,13 +152,10 @@ describe("recorder helpers", () => {
     expect(recordingName("recording", new Date(2026, 10, 10, 9, 5, 7), "webm")).toBe("recording-2026-11-10-090507.webm");
   });
 
-  it("formats time, size and elapsed time", () => {
+  it("formats time and elapsed time", () => {
     expect(clockText(0)).toBe("0:00");
     expect(clockText(61_999)).toBe("1:01");
     expect(clockText(3_600_000)).toBe("1:00:00");
-    expect(sizeText(812)).toBe("812 B");
-    expect(sizeText(1536)).toBe("1.5 KB");
-    expect(sizeText(5 * 1024 * 1024)).toBe("5.0 MB");
     expect(elapsedMs(1000, null, 5000)).toBe(1000);
     expect(elapsedMs(1000, 4000, 5000)).toBe(2000);
   });

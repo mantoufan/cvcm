@@ -1,4 +1,4 @@
-import { armAudio } from "../audio";
+import { armAudio, newAudioContext } from "../audio";
 import { h } from "../dom";
 import { locale, t } from "../i18n";
 import { appHref } from "../../shared/path";
@@ -214,12 +214,7 @@ async function start(): Promise<void> {
     // Firefox throws when the microphone's sample rate differs from the AudioContext's: retry at the microphone's rate.
     const rate = s.getAudioTracks()[0]?.getSettings().sampleRate;
     void audio.close().catch(() => undefined);
-    try {
-      audio = new AudioContext(rate ? { sampleRate: rate } : undefined);
-      if (audio.state === "suspended") void audio.resume().catch(() => undefined);
-    } catch {
-      audio = null;
-    }
+    audio = newAudioContext(rate ? { sampleRate: rate } : undefined);
     if (!audio || !buildGraph(audio, s)) {
       stop();
       say("failed");
