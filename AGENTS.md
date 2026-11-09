@@ -189,12 +189,15 @@ Browser toolkit on a Cloudflare Worker (Pages advanced mode `_worker.js`).
 
 ## Deploy
 
-The Cloudflare API token in use has **Pages + DNS + D1**. Ship with:
+CI (`.github/workflows/deploy.yml`) ships every push to main. The Cloudflare API token needs **Workers Scripts edit + Workers Routes edit (cv.cm) + D1 + DNS**. By hand:
 
 ```
 npm run build
 npx wrangler d1 migrations apply cvcm --remote
-npx wrangler pages deploy dist --project-name cvcm --no-bundle
+S3_ACCESS_KEY_ID=… S3_SECRET_ACCESS_KEY=… node scripts/sync-covers.mjs
+npx wrangler deploy
 ```
 
-`dist/_worker.js` is the Worker, already bundled by `scripts/build-worker.mjs` as UTF-8 (wrangler's own bundle escapes CJK copy as `\uXXXX`). cv.cm runs as a Worker with static assets, not Pages: `wrangler deploy` (CI does it) reads `wrangler.jsonc`, which sets `main` to that file with `no_bundle` and `find_additional_modules: false` (dist/ also holds the client chunks), and the build writes `dist/.assetsignore` so the script is not uploaded as an asset. Limits: the Worker may be 64 MiB uncompressed (wrangler's "Total Upload"), a single asset 25 MiB, and an asset directory 20,000 files on the free plan. Secrets `S3_ACCESS_KEY_ID` and `S3_SECRET_ACCESS_KEY` are set with `wrangler secret put`. The old `cvcm` Pages project is kept only as a rollback. Domain: `cv.cm`. D1 database id: `1a809cf5-bb42-4f8d-b2c6-6cd7430226c5`.
+From a slow uplink the asset upload and the 25 MiB script upload can time out; let CI deploy instead.
+
+`dist/_worker.js` is the Worker, already bundled by `scripts/build-worker.mjs` as UTF-8 (wrangler's own bundle escapes CJK copy as `\uXXXX`). cv.cm runs as a Worker with static assets, not Pages: `wrangler deploy` (CI does it) reads `wrangler.jsonc`, which sets `main` to that file with `no_bundle` and `find_additional_modules: false` (dist/ also holds the client chunks), and the build writes `dist/.assetsignore` so neither the script nor `covers/` is uploaded as an asset: `/covers/*` is served from s3.cv.cm (`proxyCovers`), and `scripts/sync-covers.mjs` puts any missing cover there before each deploy. Limits: the Worker may be 64 MiB uncompressed (wrangler's "Total Upload"), a single asset 25 MiB, and an asset directory 20,000 files on the free plan. Secrets `S3_ACCESS_KEY_ID` and `S3_SECRET_ACCESS_KEY` are set with `wrangler secret put`. Routes `cv.cm/*` and `www.cv.cm/*` send the domain to the Worker; the DNS records still point at the old `cvcm` Pages project, which is kept only as a rollback (delete the two routes to fall back to it). Domain: `cv.cm`. D1 database id: `1a809cf5-bb42-4f8d-b2c6-6cd7430226c5`.

@@ -248,7 +248,7 @@ npm run dev
 
 Open http://localhost:5173/ — the client picks a language from the browser and sends you to `/{locale}/`.
 
-Clipboard API calls need the Worker + D1 (`npm run deploy` or `npx wrangler pages dev dist`).
+Clipboard API calls need the Worker + D1 (`npm run deploy`, or `npm run build && npx wrangler dev` locally).
 
 ## Deploy
 
