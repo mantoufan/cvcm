@@ -61,8 +61,14 @@ export function rankingDate(locale: Locale, asOf: string): string {
   return new Intl.DateTimeFormat(locale, parts[2] ? { year: "numeric", month: "long", day: "numeric", timeZone: "UTC" } : { year: "numeric", month: "long", timeZone: "UTC" }).format(date);
 }
 
+const regionNames = new Map<string, Intl.DisplayNames>();
 function regionName(locale: Locale, code: string): string {
-  return new Intl.DisplayNames([locale], { type: "region" }).of(code) ?? code;
+  let names = regionNames.get(locale);
+  if (!names) {
+    names = new Intl.DisplayNames([locale], { type: "region" });
+    regionNames.set(locale, names);
+  }
+  return names.of(code) ?? code;
 }
 
 function percent(locale: Locale, value: number): string {

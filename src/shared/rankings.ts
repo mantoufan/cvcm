@@ -95,7 +95,7 @@ export type RankingMeta = {
   /** Currencies: the dates the changes are measured from (`yearAgo` also above). */
   monthAgo?: string;
   /** Mountains: rows are Wikidata ids, named here for the head tags; peaks of 8,000 m or more; the country with the most peaks. */
-  names?: Record<string, Record<string, string>>;
+  names?: Record<string, LocaleNames>;
   over8000?: number;
   countryLead?: string;
   countryCount?: number;
@@ -123,9 +123,9 @@ export type ShareRow = [number, string, number | null, number, ...number[]];
 export type CryptoRow = [number, string, string, number, number | null, number | null, number, number | null];
 /** [rank, commodity id, unit, latest monthly price USD, 1-month change %, 12-month change %] */
 export type CommodityRow = [number, string, string, number, number, number];
-/** A name in each cv.cm locale (English where Wikidata has none). */
+/** A name by cv.cm locale; a locale left out reads the English one. */
 export type LocaleNames = Record<string, string>;
-/** [rank, Wikidata id, names, elevation m, prominence m, ISO 3166 countries, range names (null when Wikidata names none), latitude, longitude] */
-export type MountainRow = [number, string, LocaleNames, number, number, string[], LocaleNames | null, number, number];
+/** [rank, Wikidata id, names, elevation m, prominence m, ISO 3166 countries (empty when Wikidata names none), range names (null likewise)] */
+export type MountainRow = [number, string, LocaleNames, number, number, string[], LocaleNames | null];
 /** [rank, ISO 4217 code, units per US dollar, change vs USD over 1 month %, over 1 year %] */
 export type FxRow = [number, string, number, number, number];
