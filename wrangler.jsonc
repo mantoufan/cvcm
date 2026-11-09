@@ -14,8 +14,8 @@
     "not_found_handling": "single-page-application",
     "run_worker_first": true
   },
-  // Like cvcm.pages.dev before it: a direct origin for comparing against cv.cm.
-  "workers_dev": true,
+  // No cvcm.<account>.workers.dev copy of the site (a second indexable host). Compare cv.cm against cvcm.pages.dev.
+  "workers_dev": false,
   "preview_urls": false,
   // DNS for both hosts still points at the old Pages project; these routes put the Worker in front of it.
   "routes": [
