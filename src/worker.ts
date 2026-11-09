@@ -259,6 +259,11 @@ export default {
     // Page HTML is rebuilt per request (locale, prerendered body), so index.html's ETag must not answer for it:
     // drop the conditional headers on page routes and the validators from the page response below.
     let assetResponse = await env.ASSETS.fetch(STATIC_FILE.test(path) ? request : unconditional(request));
+    // Workers Static Assets answers its own .html / trailing-slash redirects with 307; Pages used 308.
+    // Keep them permanent so search engines move the URL rather than keep both.
+    if (assetResponse.status === 307) {
+      assetResponse = new Response(null, { status: 308, headers: assetResponse.headers });
+    }
     if (COVER_PROXY.test(path)) {
       const type = assetResponse.headers.get("content-type") || "";
       const image = type.startsWith("image/") || type.includes("octet-stream");
@@ -550,6 +555,11 @@ async function proxyCovers(pathname: string, method: string): Promise<Response |
 
 function withHeaders(res: Response, pathname: string): Response {
   const headers = new Headers(res.headers);
+  // Workers Static Assets sends text types without a charset (Pages added utf-8); every file here is UTF-8.
+  const type = headers.get("Content-Type");
+  if (type && !/charset=/i.test(type) && /^(text\/|application\/(json|xml|manifest\+json))/i.test(type)) {
+    headers.set("Content-Type", `${type}; charset=utf-8`);
+  }
   headers.delete("Access-Control-Allow-Origin");
   headers.set("X-Content-Type-Options", "nosniff");
   headers.set("Referrer-Policy", "no-referrer");
