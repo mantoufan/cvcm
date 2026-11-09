@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { annuityPayment, mortgage } from "../src/shared/mortgage";
 import { equationText, num, simplifySqrt, solveQuadratic } from "../src/shared/quadratic";
-import { makeTeams, parseNames, requestedTeams, shuffle, teamCount } from "../src/shared/teams";
+import { makeTeams, parseNames, planTeams, requestedTeams, shuffle, teamCount } from "../src/shared/teams";
 import { randomBelow } from "../src/shared/random";
 import { aspectRatio, physical, realResolution, resolutionName } from "../src/shared/screen";
 import { nextAlarm, parseClock, remainingText, untilParts } from "../src/shared/alarm";
@@ -82,6 +82,7 @@ describe("quadratic", () => {
     const r = solveQuadratic(1, 0.2, 0.01)!;
     expect(r.d).toBe(0);
     expect(r.roots).toEqual({ kind: "one", x: -0.1 });
+    expect(solveQuadratic(0.01, 0.2, 1)!.vertex).toEqual({ x: -10, y: -0 });
     // Whole numbers stay exact: Δ = 1 is not rounded away.
     expect(solveQuadratic(1, 999999, 249999500000)!.d).toBe(999999 ** 2 - 4 * 249999500000);
   });
@@ -125,6 +126,11 @@ describe("teams", () => {
     // People per team 2 for 500 names asks for 250 teams; the page warns that it made 50.
     expect(requestedTeams(500, "size", 2)).toBe(250);
     expect(teamCount(500, "size", 2)).toBe(50);
+    expect(planTeams(500, "size", 2)).toEqual({ ok: true, teams: 50, capped: true });
+    expect(planTeams(12, "size", 20)).toEqual({ ok: false, error: "oneTeam" });
+    expect(planTeams(1, "count", 3)).toEqual({ ok: false, error: "needTwo" });
+    expect(planTeams(501, "count", 3)).toEqual({ ok: false, error: "tooMany" });
+    expect(planTeams(12, "count", 0)).toEqual({ ok: false, error: "badNumber" });
   });
 
   it("deals every name once into teams that differ by at most one", () => {
@@ -166,6 +172,12 @@ describe("screen", () => {
     expect(realResolution(1504, 1003, 1.5)).toEqual({ w: 2256, h: 1504 });
     expect(realResolution(1003, 1504, 1.5)).toEqual({ w: 1504, h: 2256 });
     expect(realResolution(1000, 700, 1)).toEqual({ w: 1000, h: 700 });
+    expect(realResolution(1919, 1080, 1)).toEqual({ w: 1919, h: 1080 });
+    expect(realResolution(1829, 1143, 1.75)).toEqual({ w: 3200, h: 2000 });
+    expect(realResolution(1600, 1067, 1.5)).toEqual({ w: 2400, h: 1600 });
+    expect(realResolution(1093, 614, 1.25)).toEqual({ w: 1366, h: 768 });
+    expect(realResolution(1536, 864, 1.25)).toEqual({ w: 1920, h: 1080 });
+    expect(realResolution(1470, 956, 2)).toEqual({ w: 2940, h: 1912 });
   });
 });
 

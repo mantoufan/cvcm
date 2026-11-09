@@ -2,7 +2,7 @@ import { copyWithFlash } from "../copy";
 import { h } from "../dom";
 import { locale, t } from "../i18n";
 import { appHref } from "../../shared/path";
-import { MAX_YEARS, mortgage, type MortgageMethod } from "../../shared/mortgage";
+import { MAX_PRICE, MAX_YEARS, mortgage, type MortgageMethod } from "../../shared/mortgage";
 
 let priceEl: HTMLInputElement | null = null;
 let downEl: HTMLInputElement | null = null;
@@ -18,7 +18,7 @@ let last = "";
 export function mountMortgage(host: HTMLElement): void {
   const input = (field: string, value: string, step: string, min = "0", max?: string) =>
     h("input", { type: "number", inputmode: "decimal", min, max, step, value, "data-field": field, onInput: () => paint() });
-  priceEl = input("price", "400000", "1000");
+  priceEl = input("price", "400000", "1000", "0", String(MAX_PRICE));
   downEl = input("down", "20", "1", "0", "99.99");
   rateEl = input("rate", "6.5", "0.01", "0", "100");
   yearsEl = input("years", "30", "1", "1", String(MAX_YEARS));

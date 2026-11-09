@@ -36,6 +36,20 @@ export function requestedTeams(names: number, mode: "count" | "size", value: num
   return mode === "count" ? value : Math.ceil(names / value);
 }
 
+export type TeamPlan =
+  | { ok: false; error: "needTwo" | "tooMany" | "badNumber" | "oneTeam" }
+  | { ok: true; teams: number; capped: boolean };
+
+/** The one set of rules for both the live preview and Generate. */
+export function planTeams(names: number, mode: "count" | "size", value: number): TeamPlan {
+  if (names < 2) return { ok: false, error: "needTwo" };
+  if (names > MAX_NAMES) return { ok: false, error: "tooMany" };
+  if (!Number.isInteger(value) || value < 1) return { ok: false, error: "badNumber" };
+  const teams = teamCount(names, mode, value);
+  if (teams < 2) return { ok: false, error: "oneTeam" };
+  return { ok: true, teams, capped: requestedTeams(names, mode, value) > teams };
+}
+
 /** Deals shuffled names round-robin, so team sizes differ by at most one. */
 export function makeTeams(names: readonly string[], count: number, below?: (n: number) => number): string[][] {
   if (count < 1) return [];

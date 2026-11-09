@@ -2,7 +2,7 @@ import { copyWithFlash } from "../copy";
 import { h } from "../dom";
 import { locale, t } from "../i18n";
 import { appHref } from "../../shared/path";
-import { MAX_NAMES, makeTeams, parseNames, requestedTeams, teamCount } from "../../shared/teams";
+import { MAX_NAMES, makeTeams, parseNames, planTeams, type TeamPlan } from "../../shared/teams";
 
 let namesEl: HTMLTextAreaElement | null = null;
 let modeEl: HTMLSelectElement | null = null;
@@ -65,51 +65,40 @@ export function unmountTeamGenerator(): void {
   last = "";
 }
 
-/** Live "12 names → 3 teams of 4" line, so the split is clear before pressing Generate. */
+/** Live "12 names → 3 teams of 4" line, so the split is clear before pressing Generate teams. */
 function counted(): void {
   if (!namesEl || !modeEl || !valueEl || !countEl) return;
   const n = parseNames(namesEl.value).length;
-  const mode = modeEl.value as "count" | "size";
-  const value = Number(valueEl.value);
-  const teams = teamCount(n, mode, value);
-  // Only preview a split that Generate will make.
-  if (!teams || n < 2 || n > MAX_NAMES) {
-    countEl.textContent = t("teamGenerator.countNames", { n });
+  const plan = planTeams(n, modeEl.value as "count" | "size", Number(valueEl.value));
+  if (!plan.ok) {
+    countEl.textContent = n >= 2 && plan.error !== "tooMany" ? planError(plan) : t("teamGenerator.countNames", { n });
     return;
   }
-  if (requestedTeams(n, mode, value) > teams) {
-    countEl.textContent = t("teamGenerator.capped", { n: teams });
+  if (plan.capped) {
+    countEl.textContent = t("teamGenerator.capped", { n: plan.teams });
     return;
   }
-  const small = Math.floor(n / teams);
-  const big = Math.ceil(n / teams);
-  countEl.textContent = t(small === big ? "teamGenerator.countEven" : "teamGenerator.countUneven", { n, teams, small, big });
+  const small = Math.floor(n / plan.teams);
+  const big = Math.ceil(n / plan.teams);
+  countEl.textContent = t(small === big ? "teamGenerator.countEven" : "teamGenerator.countUneven", { n, teams: plan.teams, small, big });
+}
+
+function planError(plan: Extract<TeamPlan, { ok: false }>): string {
+  return plan.error === "tooMany" ? t("teamGenerator.tooMany", { n: MAX_NAMES }) : t(`teamGenerator.${plan.error}`);
 }
 
 function generate(): void {
   if (!namesEl || !modeEl || !valueEl || !errorEl || !outEl) return;
   errorEl.textContent = "";
   const names = parseNames(namesEl.value);
-  const value = Number(valueEl.value);
-  if (names.length < 2) {
-    errorEl.textContent = t("teamGenerator.needTwo");
+  const plan = planTeams(names.length, modeEl.value as "count" | "size", Number(valueEl.value));
+  if (!plan.ok) {
+    errorEl.textContent = planError(plan);
     return;
   }
-  if (names.length > MAX_NAMES) {
-    errorEl.textContent = t("teamGenerator.tooMany", { n: MAX_NAMES });
-    return;
-  }
-  if (!Number.isInteger(value) || value < 1) {
-    errorEl.textContent = t("teamGenerator.badNumber");
-    return;
-  }
-  const mode = modeEl.value as "count" | "size";
-  const count = teamCount(names.length, mode, value);
   // Both modes can ask for more teams than allowed (one per name, 50 at most): say what was made instead.
-  if (requestedTeams(names.length, mode, value) > count) {
-    errorEl.textContent = t("teamGenerator.capped", { n: count });
-  }
-  const teams = makeTeams(names, count);
+  if (plan.capped) errorEl.textContent = t("teamGenerator.capped", { n: plan.teams });
+  const teams = makeTeams(names, plan.teams);
   outEl.replaceChildren(...teams.map((team, i) => h("li", null,
     h("strong", null, t("teamGenerator.team", { n: i + 1 })),
     ` (${team.length})`,

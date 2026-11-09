@@ -86,7 +86,8 @@ export function solveQuadratic(a: number, b: number, c: number): QuadraticResult
     roots = { kind: "complex", re: -b / (2 * a), im: Math.sqrt(-d) / (2 * Math.abs(a)) };
   }
   const vx = -b / (2 * a);
-  const vertex = { x: vx, y: c - (b * b) / (4 * a) };
+  // From the (possibly snapped) discriminant, so a double root's vertex sits exactly on the axis.
+  const vertex = { x: vx, y: -d / (4 * a) };
   let exact: string[] | null = null;
   let factored: string | null = null;
   if (whole) {

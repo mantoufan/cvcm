@@ -72,6 +72,9 @@ describe("team generator ui", () => {
     expect(q("[data-out=count]").textContent).toBe("12 names → 3 teams of 4");
     set("[data-field=value]", "7");
     expect(q("[data-out=count]").textContent).toBe("12 names → 2 teams of 6");
+    set("[data-field=value]", "12");
+    expect(q("[data-out=count]").textContent).toContain("one team of everyone");
+    set("[data-field=value]", "7");
     q<HTMLButtonElement>("[data-action=generate]").click();
     const teams = host.querySelectorAll("[data-out=teams] li");
     expect(teams).toHaveLength(2);
