@@ -3,7 +3,7 @@ import { annuityPayment, mortgage } from "../src/shared/mortgage";
 import { equationText, num, simplifySqrt, solveQuadratic } from "../src/shared/quadratic";
 import { makeTeams, parseNames, requestedTeams, shuffle, teamCount } from "../src/shared/teams";
 import { randomBelow } from "../src/shared/random";
-import { aspectRatio, physical, resolutionName } from "../src/shared/screen";
+import { aspectRatio, physical, realResolution, resolutionName } from "../src/shared/screen";
 import { nextAlarm, parseClock, remainingText, untilParts } from "../src/shared/alarm";
 import { lessonsForTool } from "../src/shared/learn";
 
@@ -88,6 +88,8 @@ describe("quadratic", () => {
 
   it("prints tiny values instead of 0", () => {
     expect(num(1e-7)).toBe("1e-7");
+    expect(num(1.5e-6)).toBe("0.0000015");
+    expect(num(3.4567e-5)).toBe("0.000034567");
     expect(num(-2.5e-9)).toBe("−2.5e-9");
     expect(num(0.1 + 0.2)).toBe("0.3");
     expect(num(-0)).toBe("0");
@@ -158,6 +160,12 @@ describe("screen", () => {
     expect(resolutionName(1000, 700)).toBeNull();
     expect(physical(1536, 1.25)).toBe(1920);
     expect(physical(390, 3)).toBe(1170);
+    // Rounded CSS sizes snap back to the real panel.
+    expect(realResolution(1707, 960, 1.5)).toEqual({ w: 2560, h: 1440 });
+    expect(realResolution(1707, 1067, 1.5)).toEqual({ w: 2560, h: 1600 });
+    expect(realResolution(1504, 1003, 1.5)).toEqual({ w: 2256, h: 1504 });
+    expect(realResolution(1003, 1504, 1.5)).toEqual({ w: 1504, h: 2256 });
+    expect(realResolution(1000, 700, 1)).toEqual({ w: 1000, h: 700 });
   });
 });
 

@@ -2,7 +2,7 @@ import { copyWithFlash } from "../copy";
 import { h } from "../dom";
 import { locale, t } from "../i18n";
 import { appHref } from "../../shared/path";
-import { aspectRatio, physical, resolutionName } from "../../shared/screen";
+import { aspectRatio, realResolution, resolutionName } from "../../shared/screen";
 
 let bigEl: HTMLElement | null = null;
 let outEl: HTMLElement | null = null;
@@ -90,8 +90,7 @@ function paint(): void {
   const dpr = window.devicePixelRatio || 1;
   const sw = screen.width;
   const sh = screen.height;
-  const pw = physical(sw, dpr);
-  const ph = physical(sh, dpr);
+  const { w: pw, h: ph } = realResolution(sw, sh, dpr);
   const name = resolutionName(pw, ph);
   bigEl.textContent = `${pw} × ${ph}`;
   const orient = sw >= sh ? t("screenResolution.landscape") : t("screenResolution.portrait");

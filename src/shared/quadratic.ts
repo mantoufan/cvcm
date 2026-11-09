@@ -56,8 +56,8 @@ export function fractionText(p: number, q: number): string {
 /** Plain number text for results: up to 6 decimals, no trailing zeros, real minus sign, no "−0". */
 export function num(n: number): string {
   if (n === 0) return "0";
-  // Tiny and huge values keep 6 significant digits; rounding them to 6 decimals first would print 1e-7 as 0.
-  const s = Math.abs(n) >= 1e15 || Math.abs(n) < 1e-6 ? String(Number(n.toPrecision(6))) : String(Number(n.toFixed(6)));
+  // Small and huge values keep 6 significant digits; 6 decimals would print 1e-7 as 0 and 1.5e-6 as 0.000002.
+  const s = Math.abs(n) >= 1e15 || Math.abs(n) < 1e-3 ? String(Number(n.toPrecision(6))) : String(Number(n.toFixed(6)));
   // Only the sign becomes a real minus; "1e-7" keeps its exponent hyphen.
   return s.replace(/^-/, MINUS);
 }

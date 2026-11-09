@@ -110,7 +110,15 @@ function paint(): void {
     [t("mortgage.payments"), String(res.months)],
   );
   outEl.append(...rows.flatMap(([k, v]) => [h("dt", null, k), h("dd", null, v)]));
-  last = rows.map(([k, v]) => `${k}: ${v}`).join("\n");
+  // The inputs go first, so a pasted summary can be read and redone on its own.
+  const inputs: Array<[string, string]> = [
+    [t("mortgage.price"), priceEl.value],
+    [t("mortgage.down"), downEl.value || "0"],
+    [t("mortgage.rate"), rateEl.value],
+    [t("mortgage.years"), yearsEl.value],
+    [t("mortgage.method"), methodEl.selectedOptions[0]?.textContent ?? ""],
+  ];
+  last = [...inputs, ...rows].map(([k, v]) => `${k}: ${v}`).join("\n");
   tableEl.append(
     h("table", null,
       h("thead", null, h("tr", null, ...["year", "principalPaid", "interestPaid", "balance"].map((k) => h("th", { scope: "col" }, t(`mortgage.${k}`))))),

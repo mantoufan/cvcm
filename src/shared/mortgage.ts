@@ -32,7 +32,8 @@ export type MortgageResult = {
 };
 
 export const MAX_YEARS = 50;
-export const MAX_PRICE = 1e12;
+/** High enough for prices in đồng, rupiah or won; beyond it the cents would be lost to floating point. */
+export const MAX_PRICE = 1e15;
 
 /**
  * Fixed monthly payment for a loan: P·r / (1 − (1 + r)^−n), with expm1/log1p so a tiny rate does not round to 0/0.

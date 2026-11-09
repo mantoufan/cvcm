@@ -59,7 +59,30 @@ export function resolutionName(w: number, h: number): string | null {
   return null;
 }
 
+/** Panel sizes without a common name that scaled screens often report (Surface, MacBook, 3:2 laptops). */
+const KNOWN: Array<[number, number]> = [
+  [2256, 1504], [2736, 1824], [2880, 1920], [3000, 2000], [1920, 1280], [2560, 1664], [2880, 1864],
+  [2940, 1912], [3024, 1964], [3456, 2234], [2880, 1800], [3840, 2400], [2560, 1700],
+];
+
 /** Physical pixels from CSS pixels × devicePixelRatio, rounded (Windows 125% gives 1536 × 1.25 = 1920). */
 export function physical(cssPx: number, dpr: number): number {
   return Math.round(cssPx * (dpr > 0 ? dpr : 1));
+}
+
+/**
+ * Real resolution from the CSS screen size. Browsers round the CSS size, so at 150% a 2560 × 1440 screen reports
+ * 1707 × 960 and multiplies back to 2561 × 1440: snap to a known resolution within the rounding error.
+ */
+export function realResolution(cssW: number, cssH: number, dpr: number): { w: number; h: number } {
+  const w = physical(cssW, dpr);
+  const h = physical(cssH, dpr);
+  const slack = Math.ceil(dpr > 0 ? dpr : 1);
+  const sizes: Array<[number, number]> = [...NAMES.map(([a, b]) => [a, b] as [number, number]), ...KNOWN];
+  for (const [a, b] of sizes) {
+    for (const [x, y] of [[a, b], [b, a]] as const) {
+      if (Math.abs(w - x) <= slack && Math.abs(h - y) <= slack) return { w: x, h: y };
+    }
+  }
+  return { w, h };
 }

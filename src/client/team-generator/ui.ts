@@ -69,9 +69,16 @@ export function unmountTeamGenerator(): void {
 function counted(): void {
   if (!namesEl || !modeEl || !valueEl || !countEl) return;
   const n = parseNames(namesEl.value).length;
-  const teams = teamCount(n, modeEl.value as "count" | "size", Number(valueEl.value));
-  if (!teams) {
+  const mode = modeEl.value as "count" | "size";
+  const value = Number(valueEl.value);
+  const teams = teamCount(n, mode, value);
+  // Only preview a split that Generate will make.
+  if (!teams || n < 2 || n > MAX_NAMES) {
     countEl.textContent = t("teamGenerator.countNames", { n });
+    return;
+  }
+  if (requestedTeams(n, mode, value) > teams) {
+    countEl.textContent = t("teamGenerator.capped", { n: teams });
     return;
   }
   const small = Math.floor(n / teams);

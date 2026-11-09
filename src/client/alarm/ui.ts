@@ -140,8 +140,7 @@ function queueRingFromNow(): void {
   master = freshMaster();
   if (!master) return;
   scheduledFrom = ctx.currentTime;
-  scheduledUntil = scheduledFrom + CHUNK_S;
-  queue(master, scheduledFrom, scheduledUntil, sound());
+  scheduledUntil = queue(master, scheduledFrom, scheduledFrom + CHUNK_S, sound());
 }
 
 function sound(): AlarmSound {
@@ -149,11 +148,12 @@ function sound(): AlarmSound {
   return SOUNDS.includes(v) ? v : "beep";
 }
 
-/** Queues the pattern from `from` to `until` (audio-clock seconds) into `out`. */
-function queue(out: GainNode, from: number, until: number, kind: AlarmSound): void {
-  if (!ctx) return;
+/** Queues whole pattern periods from `from` until `until` (audio-clock seconds) into `out`; returns where the next period starts. */
+function queue(out: GainNode, from: number, until: number, kind: AlarmSound): number {
+  if (!ctx) return from;
   const p = PATTERNS[kind];
-  for (let start = from; start < until; start += p.period) {
+  let start = from;
+  for (; start < until; start += p.period) {
     for (const n of p.notes) {
       const at = start + n.at;
       const osc = ctx.createOscillator();
@@ -169,6 +169,7 @@ function queue(out: GainNode, from: number, until: number, kind: AlarmSound): vo
       osc.stop(at + n.d + 0.02);
     }
   }
+  return start;
 }
 
 function freshMaster(): GainNode | null {
@@ -185,15 +186,14 @@ function stopAudio(): void {
   scheduledFrom = scheduledUntil = 0;
 }
 
-/** Queues the first minute of ringing at the alarm time on the audio clock. */
+/** Queues the first CHUNK_S seconds of ringing at the alarm time on the audio clock. */
 function scheduleAt(ms: number): void {
   stopAudio();
   if (!ctx) return;
   master = freshMaster();
   if (!master) return;
   scheduledFrom = ctx.currentTime + Math.max(0, (ms - Date.now()) / 1000);
-  scheduledUntil = scheduledFrom + CHUNK_S;
-  queue(master, scheduledFrom, scheduledUntil, sound());
+  scheduledUntil = queue(master, scheduledFrom, scheduledFrom + CHUNK_S, sound());
 }
 
 function arm(): void {
@@ -287,10 +287,9 @@ function tick(): void {
   if (ringingSince !== null) {
     statusEl.textContent = t("alarm.ringingSince", { time: remainingText(now - ringingSince) });
     if (ctx && master && scheduledUntil - ctx.currentTime < REFILL_S) {
-      // Never queue notes in the past: after a long gap they would all start at once.
+      // Continue on the next beat; never queue notes in the past, or after a long gap they would all start at once.
       const from = Math.max(scheduledUntil, ctx.currentTime + 0.05);
-      queue(master, from, from + CHUNK_S, sound());
-      scheduledUntil = from + CHUNK_S;
+      scheduledUntil = queue(master, from, from + CHUNK_S, sound());
     }
     if (now - ringingSince >= RING_LIMIT_MS) {
       cancel();
