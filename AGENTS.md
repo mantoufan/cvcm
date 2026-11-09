@@ -1,6 +1,6 @@
 # cv.cm
 
-Browser toolkit on a Cloudflare Worker (Pages advanced mode `_worker.js`).
+Browser toolkit on a Cloudflare Worker with static assets (`wrangler deploy`; the old Pages project is only a rollback).
 
 ## Hard rules
 
@@ -164,7 +164,7 @@ Browser toolkit on a Cloudflare Worker (Pages advanced mode `_worker.js`).
 - `scripts/ai/` — model pipeline: `export-birefnet.py` (native DeformConv re-export + fp16), `export-realesrgan.py`, `mirror.mjs` (stage + upload to `files/ai/`), `gen-zh-chars.py`
 - `src/client/guide.ts` — text how-to above FAQ
 - `src/locales/guides/` — 8-locale how-to copy
-- `public/covers/` — tool/game/learn images (`og:image`, tutorial diagrams); `/thumbs/` URLs from older builds redirect to the originals; production serves them from S3 (`s3.cv.cm/files/covers/`) via Worker `/covers/`. Keep copies in git for local Vite. Favicons stay on Pages (`/favicon.svg`, `/favicon-*.png`)
+- `public/covers/` — tool/game/learn images (`og:image`, tutorial diagrams); `/thumbs/` URLs from older builds redirect to the originals; production serves them from S3 (`s3.cv.cm/files/covers/`) via Worker `/covers/`. Keep copies in git for local Vite. The built copies in `dist/covers/` are also deployed as static assets, the Worker's fallback when s3.cv.cm misses or fails. Favicons are static assets (`/favicon.svg`, `/favicon-*.png`)
 - `src/client/learn/` — minimal, complete illustrated tutorials
 - `src/client/kb/` + `src/shared/kb.ts` / `kb-i18n.ts` — knowledge articles, a sub-column of tutorials (`/{locale}/learn/knowledge/{id}/`): answer-first explanations of formats, encodings, time and money math. `kb.ts` holds ids, groups, dates, related tools/tutorials and primary sources (standards, official docs; check every URL). Hub copy is in `src/locales/kb/<locale>.json`; each article is `src/locales/kb/<locale>/<id>.json` and loads as its own chunk (blocks are paragraphs, `ul`/`ol`, `table`, `note`; backticks are the only inline markup); names/blurbs in the core packs under `kb.*`. One HTML builder (`kbPageHtml`) serves both the client and the Worker. JSON-LD: TechArticle + BreadcrumbList + FAQPage. **After editing any article copy or its sources, run `npm run kb:sync`**: per locale it moves the "Updated" date (dateModified) to today only where the copy changed (a source change dates every locale), recomputes reading times, and regenerates `src/locales/kb/meta.json` (fingerprints), `meta.ts` (dates/minutes the pages read), `all.ts` (Worker/tests) and `loaders/<locale>.ts` (client chunks). After re-checking facts with no edit: `npm run kb:sync -- --touch <id>`. `tests/kb.test.ts` fails if copy or sources changed without the sync. No thin or unsourced filler.
 - Coding shelf of the same kb system (`/{locale}/learn/code/{id}/`, hub `/learn/code/`): programming languages, design patterns, data structures, algorithms. Ids, groups and tools are in `src/shared/kb-code.ts` (entry chunk; `tools` may be empty); sources, links and published dates in `src/shared/kb-code-meta.ts`, which the kb packs import and which registers with `kb.ts` (read meta through `kbMeta`, `kbUpdatedOn`, `kbMinutesOf`; scripts outside the Worker import `kb-code-meta` themselves). `kb:sync` writes knowledge dates to `meta.ts`, coding dates to `meta-code.ts`, and one article loader table per locale to `loaders/<locale>.ts`. Hub copy is `codeHub` in `src/locales/kb/<locale>.json`; core packs hold `kb.code.*` labels and `kb.<id>` names (language names stay English in every locale). Articles add a `{ code, lang }` block: a multi-line sample, escaped whole, never translated (tests require identical code in every locale). A kb page is `KbPage` = article id, `"hub"` (knowledge hub), `"code"` (coding hub) or `"ai"` (AI hub); `kbHref(locale, page)` picks the shelf segment from `KB_SHELVES`.
@@ -189,12 +189,14 @@ Browser toolkit on a Cloudflare Worker (Pages advanced mode `_worker.js`).
 
 ## Deploy
 
-The Cloudflare API token in use has **Pages + DNS + D1**. Ship with:
+CI (`.github/workflows/deploy.yml`) ships every push to main. The Cloudflare API token needs **Workers Scripts edit + Workers Routes edit (cv.cm) + D1 + DNS**. By hand:
 
 ```
 npm run build
 npx wrangler d1 migrations apply cvcm --remote
-npx wrangler pages deploy dist --project-name cvcm --no-bundle
+npx wrangler deploy
 ```
 
-`dist/_worker.js` is the Worker, already bundled by `scripts/build-worker.mjs` as UTF-8; deploy with `--no-bundle`, because wrangler's own re-bundle escapes CJK copy as `\uXXXX` and pushes the Worker past the 25 MiB uncompressed limit. Domain: `cv.cm`. D1 database id: `1a809cf5-bb42-4f8d-b2c6-6cd7430226c5`.
+From a slow uplink the asset upload and the 25 MiB script upload can time out; let CI deploy instead.
+
+`dist/_worker.js` is the Worker, already bundled by `scripts/build-worker.mjs` as UTF-8 (wrangler's own bundle escapes CJK copy as `\uXXXX`). cv.cm runs as a Worker with static assets, not Pages: `wrangler deploy` (CI does it) reads `wrangler.jsonc`, which sets `main` to that file with `no_bundle` and `find_additional_modules: false` (dist/ also holds the client chunks), and the build writes `dist/.assetsignore` so the script is not uploaded as an asset. Limits: the Worker may be 64 MiB uncompressed (wrangler's "Total Upload"), a single asset 25 MiB, and an asset directory 20,000 files on the free plan. Secrets `S3_ACCESS_KEY_ID` and `S3_SECRET_ACCESS_KEY` are set with `wrangler secret put`. The routes `cv.cm/*` and `www.cv.cm/*` in `wrangler.jsonc` send the domain to the Worker (`wrangler deploy` creates them); the DNS records still point at the old `cvcm` Pages project, kept only as a short-term rollback: delete the two routes (dashboard or API) to fall back to it at once, then revert the config. CI no longer deploys Pages, so that build ages; once a D1 migration it does not know has run, roll back by reverting and redeploying the Worker instead. Domain: `cv.cm`. D1 database id: `1a809cf5-bb42-4f8d-b2c6-6cd7430226c5`.
