@@ -501,6 +501,18 @@ export const TUTORIAL_META: Record<TutorialId, TutorialMeta> = {
     openAt: 2,
     related: ["tone-generator", "metronome", "mic-test"],
   },
+  "use-emulator": {
+    minutes: 5,
+    steps: 6,
+    openAt: 2,
+    related: ["rom-emulator", "gamepad-test", "keyboard-test"],
+  },
+  "open-swf-file": {
+    minutes: 4,
+    steps: 6,
+    openAt: 2,
+    related: ["flash-player", "rom-emulator"],
+  },
   "test-microphone": {
     minutes: 5,
     steps: 6,
@@ -542,6 +554,60 @@ export const TUTORIAL_META: Record<TutorialId, TutorialMeta> = {
     steps: 6,
     openAt: 2,
     related: ["touch-test", "dead-pixel", "click-test"],
+  },
+  "use-scientific-calculator": {
+    minutes: 6,
+    steps: 6,
+    openAt: 2,
+    related: ["calculator", "percent", "fraction"],
+  },
+  "use-online-notepad": {
+    minutes: 5,
+    steps: 6,
+    openAt: 2,
+    related: ["notepad", "word-count", "markdown"],
+  },
+  "preview-markdown": {
+    minutes: 6,
+    steps: 6,
+    openAt: 2,
+    related: ["markdown", "html", "notepad"],
+  },
+  "make-css-gradient": {
+    minutes: 5,
+    steps: 6,
+    openAt: 2,
+    related: ["gradient", "color", "contrast"],
+  },
+  "make-fancy-text": {
+    minutes: 4,
+    steps: 6,
+    openAt: 2,
+    related: ["fancy-text", "case", "word-count"],
+  },
+  "flip-coin": {
+    minutes: 4,
+    steps: 6,
+    openAt: 2,
+    related: ["coin-flip", "dice", "random"],
+  },
+  "tune-guitar": {
+    minutes: 6,
+    steps: 6,
+    openAt: 2,
+    related: ["guitar-tuner", "metronome", "tone-generator"],
+  },
+  "find-factors": {
+    minutes: 6,
+    steps: 6,
+    openAt: 2,
+    related: ["factors", "lcm-gcf", "fraction"],
+  },
+  "find-lcm-gcf": {
+    minutes: 6,
+    steps: 6,
+    openAt: 2,
+    related: ["lcm-gcf", "factors", "fraction"],
   },
   "electricity-cost": {
     minutes: 6,
@@ -699,6 +765,10 @@ export const ONE_PAGE_HTML = `<!doctype html>
 `;
 
 export const TUTORIAL_SOURCES: Partial<Record<TutorialId, { title: string; href: string }[]>> = {
+  "open-swf-file": [
+    { title: "Adobe Flash Player End of Life", href: "https://www.adobe.com/products/flashplayer/end-of-life-alternative.html" },
+    { title: "Ruffle Flash Player emulator", href: "https://ruffle.rs/" },
+  ],
   algorithms: [{ title: "JavaScript Map — MDN", href: "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map" }],
   "one-page-site": [
     { title: "Cloudflare Pages — Direct Upload", href: "https://developers.cloudflare.com/pages/get-started/direct-upload/" },
@@ -1030,6 +1100,14 @@ export const TUTORIAL_DIAGRAMS: Partial<Record<TutorialId, { step: number; src: 
     { step: 1, src: "/covers/tutorials/generate-test-tone-range.svg" },
     { step: 4, src: "/covers/tutorials/generate-test-tone-channels.svg" },
   ],
+  "use-emulator": [
+    { step: 2, src: "/covers/tutorials/use-emulator-files.svg" },
+    { step: 4, src: "/covers/tutorials/use-emulator-keys.svg" },
+  ],
+  "open-swf-file": [
+    { step: 4, src: "/covers/tutorials/open-swf-file-inputs.svg" },
+    { step: 5, src: "/covers/tutorials/open-swf-file-runs.svg" },
+  ],
   "test-microphone": [
     { step: 1, src: "/covers/tutorials/test-microphone-levels.svg" },
     { step: 5, src: "/covers/tutorials/test-microphone-steps.svg" },
@@ -1057,6 +1135,42 @@ export const TUTORIAL_DIAGRAMS: Partial<Record<TutorialId, { step: number; src: 
   "test-touch-screen": [
     { step: 3, src: "/covers/tutorials/test-touch-screen-grid.svg" },
     { step: 4, src: "/covers/tutorials/test-touch-screen-multi.svg" },
+  ],
+  "use-scientific-calculator": [
+    { step: 1, src: "/covers/tutorials/use-scientific-calculator-order.svg" },
+    { step: 4, src: "/covers/tutorials/use-scientific-calculator-angle.svg" },
+  ],
+  "use-online-notepad": [
+    { step: 1, src: "/covers/tutorials/use-online-notepad-where.svg" },
+    { step: 3, src: "/covers/tutorials/use-online-notepad-wrap.svg" },
+  ],
+  "preview-markdown": [
+    { step: 1, src: "/covers/tutorials/preview-markdown-syntax.svg" },
+    { step: 3, src: "/covers/tutorials/preview-markdown-table.svg" },
+  ],
+  "make-css-gradient": [
+    { step: 1, src: "/covers/tutorials/make-css-gradient-types.svg" },
+    { step: 4, src: "/covers/tutorials/make-css-gradient-stops.svg" },
+  ],
+  "make-fancy-text": [
+    { step: 1, src: "/covers/tutorials/make-fancy-text-styles.svg" },
+    { step: 5, src: "/covers/tutorials/make-fancy-text-changes.svg" },
+  ],
+  "flip-coin": [
+    { step: 4, src: "/covers/tutorials/flip-coin-even.svg" },
+    { step: 5, src: "/covers/tutorials/flip-coin-memory.svg" },
+  ],
+  "tune-guitar": [
+    { step: 1, src: "/covers/tutorials/tune-guitar-strings.svg" },
+    { step: 3, src: "/covers/tutorials/tune-guitar-meter.svg" },
+  ],
+  "find-factors": [
+    { step: 1, src: "/covers/tutorials/find-factors-tree.svg" },
+    { step: 5, src: "/covers/tutorials/find-factors-pairs.svg" },
+  ],
+  "find-lcm-gcf": [
+    { step: 3, src: "/covers/tutorials/find-lcm-gcf-venn.svg" },
+    { step: 4, src: "/covers/tutorials/find-lcm-gcf-euclid.svg" },
   ],
   "electricity-cost": [
     { step: 1, src: "/covers/tutorials/electricity-cost-formula.svg" },

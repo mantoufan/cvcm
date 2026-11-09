@@ -101,7 +101,9 @@ describe("AI page headers", () => {
     expect(script.headers.get("Content-Security-Policy")).toContain("script-src 'self' 'wasm-unsafe-eval' blob:");
   });
 
-  it("allows the microphone on speech to text and the mic test only", async () => {
+  it("allows the microphone on speech to text, the mic test and the guitar tuner only", async () => {
+    const tuner = await worker.fetch(new Request("https://cv.cm/en/guitar-tuner/"), { ASSETS: html });
+    expect(tuner.headers.get("Permissions-Policy")).toContain("microphone=(self)");
     const stt = await worker.fetch(new Request("https://cv.cm/ko/speech-to-text/"), { ASSETS: html });
     expect(stt.headers.get("Permissions-Policy")).toContain("microphone=(self)");
     const mic = await worker.fetch(new Request("https://cv.cm/zh-cn/mic-test/"), { ASSETS: html });

@@ -1,0 +1,224 @@
+import { describe, expect, it } from "vitest";
+import { extendStreaks, flipFairCoins, percentText } from "../src/shared/coin";
+import { TUNINGS, centsOff, centsText, detectPitch, midiToFreq, nearestTarget, noteName, searchRange } from "../src/shared/tuner";
+import {
+  divisorCount, divisorSum, divisors, euclidSteps, factorPairs, factorText, factorTextExpanded, factorize, gcd,
+  commaLooksLikeANumber, gcfLcmByPrimes, isPrime, lcm, nextPrime, parseWhole, previousPrime, splitNumbers,
+} from "../src/shared/factors";
+
+describe("coin-flip", () => {
+  it("takes one bit per coin and tracks streaks across presses", () => {
+    expect(flipFairCoins(10, () => Uint8Array.of(0b00000101, 0b10))).toEqual(["heads", "tails", "heads", "tails", "tails", "tails", "tails", "tails", "tails", "heads"]);
+    let s = extendStreaks({ longest: null, current: null }, ["heads", "tails", "tails"]);
+    expect(s).toEqual({ longest: { face: "tails", length: 2 }, current: { face: "tails", length: 2 } });
+    s = extendStreaks(s, ["tails", "heads"]);
+    expect(s).toEqual({ longest: { face: "tails", length: 3 }, current: { face: "heads", length: 1 } });
+    expect(percentText(1, 3)).toBe("33.3%");
+    expect(percentText(0, 0)).toBe("—");
+  });
+  it("is fair over many real flips", () => {
+    const faces = flipFairCoins(20000);
+    const heads = faces.filter((f) => f === "heads").length;
+    expect(faces).toHaveLength(20000);
+    expect(Math.abs(heads - 10000)).toBeLessThan(600);
+  });
+});
+
+function tone(freq: number, rate: number, n: number, harmonics = [1, 0.5, 0.3]): Float32Array {
+  const buf = new Float32Array(n);
+  for (let i = 0; i < n; i++) {
+    let v = 0;
+    harmonics.forEach((a, k) => { v += a * Math.sin((2 * Math.PI * freq * (k + 1) * i) / rate); });
+    buf[i] = v * 0.2;
+  }
+  return buf;
+}
+
+describe("guitar-tuner", () => {
+  it("names notes and cents", () => {
+    expect(noteName(40)).toBe("E2");
+    expect(noteName(69, "solfege")).toBe("La4");
+    expect(noteName(63, "letter", true)).toBe("E♭4");
+    expect(midiToFreq(69)).toBe(440);
+    expect(midiToFreq(69, 432)).toBe(432);
+    expect(Math.round(centsOff(445, 69))).toBe(20);
+    expect([centsText(3.4), centsText(-12.2), centsText(0.2)]).toEqual(["+3", "−12", "0"]);
+    expect(nearestTarget(83, "guitar")).toBe(40);
+    expect(nearestTarget(250, "guitar")).toBe(59);
+    expect(nearestTarget(452, "chromatic")).toBe(69);
+  });
+  it("detects the pitch of every guitar, bass and ukulele string within a cent", () => {
+    for (const rate of [44100, 48000]) {
+      for (const id of ["guitar", "bass", "ukulele", "violin"] as const) {
+        const { min, max } = searchRange(id);
+        for (const midi of TUNINGS[id]) {
+          const f = midiToFreq(midi);
+          const p = detectPitch(tone(f * Math.pow(2, 3 / 1200), rate, 4096), rate, min, max);
+          expect(p, `${id} ${midi} @${rate}`).not.toBeNull();
+          expect(Math.abs(centsOff(p!.freq, midi) - 3), `${id} ${midi} @${rate}`).toBeLessThan(1);
+        }
+      }
+    }
+  });
+  it("hears a five-string bass's low B at 96 kHz with the larger window", () => {
+    const { min, max } = searchRange("bass-5");
+    for (const midi of [23, 28, 43]) {
+      const p = detectPitch(tone(midiToFreq(midi), 96000, 8192), 96000, min, max);
+      expect(Math.abs(centsOff(p!.freq, midi)), String(midi)).toBeLessThan(1);
+    }
+  });
+  it("ignores silence and noise", () => {
+    expect(detectPitch(new Float32Array(4096), 48000)).toBeNull();
+    let seed = 1;
+    const noise = Float32Array.from({ length: 4096 }, () => ((seed = (seed * 16807) % 2147483647) / 2147483647 - 0.5) * 0.5);
+    expect(detectPitch(noise, 48000, 70, 1000)).toBeNull();
+  });
+});
+
+describe("factors", () => {
+  it("parses whole numbers", () => {
+    expect(parseWhole(" 1 234 567 ")).toEqual({ ok: true, n: 1234567n });
+    expect(parseWhole("12,345")).toEqual({ ok: true, n: 12345n });
+    expect(parseWhole("1.234.567")).toEqual({ ok: false, error: "notInteger" });
+    expect(parseWhole("３６０")).toEqual({ ok: true, n: 360n });
+    expect(parseWhole("1.234.567", ".")).toEqual({ ok: true, n: 1234567n });
+    expect(parseWhole("4.500")).toEqual({ ok: false, error: "notInteger" });
+    expect(parseWhole("1,500", ".")).toEqual({ ok: false, error: "notInteger" });
+    expect(parseWhole("4.5")).toEqual({ ok: false, error: "notInteger" });
+    expect(parseWhole("1,23")).toEqual({ ok: false, error: "notInteger" });
+    expect(parseWhole("-5")).toEqual({ ok: false, error: "notPositive" });
+    expect(parseWhole("2.5e3")).toEqual({ ok: false, error: "notInteger" });
+    expect(parseWhole("1".repeat(19))).toEqual({ ok: false, error: "tooBig" });
+    expect(parseWhole("")).toEqual({ ok: false, error: "empty" });
+    expect(splitNumbers("12, 18;24\n30 36")).toEqual(["12", "18", "24", "30", "36"]);
+    expect(splitNumbers("12；18、24，30")).toEqual(["12", "18", "24", "30"]);
+  });
+  it("tests primes and factors big numbers exactly", () => {
+    expect([0n, 1n, 2n, 3n, 4n, 97n, 561n].map(isPrime)).toEqual([false, false, true, true, false, true, false]);
+    expect(isPrime(999999999999999989n)).toBe(true);
+    expect(factorText(factorize(360n))).toBe("2³ × 3² × 5");
+    expect(factorTextExpanded(factorize(360n))).toBe("2 × 2 × 2 × 3 × 3 × 5");
+    expect(factorText(factorize(1n))).toBe("1");
+    const semi = 999999937n * 999999929n;
+    expect(factorize(semi)).toEqual([{ p: 999999929n, e: 1 }, { p: 999999937n, e: 1 }]);
+    const f = factorize(720720n);
+    expect(divisorCount(f)).toBe(240);
+    expect(divisorSum(factorize(28n))).toBe(56n);
+    expect(divisors(factorize(12n))).toEqual([1n, 2n, 3n, 4n, 6n, 12n]);
+    const big = factorize(897612484786617600n);
+    expect(divisorCount(big)).toBe(103680);
+    const firstK = divisors(big, 1000);
+    expect(firstK).toHaveLength(1000);
+    expect(firstK.slice(0, 6)).toEqual([1n, 2n, 3n, 4n, 5n, 6n]);
+    expect(divisors(factorize(720720n), 10)).toEqual(divisors(factorize(720720n)).slice(0, 10));
+    expect(factorPairs(12n, divisors(factorize(12n)))).toEqual([[1n, 12n], [2n, 6n], [3n, 4n]]);
+    expect(nextPrime(13n)).toBe(17n);
+    expect(previousPrime(13n)).toBe(11n);
+    expect(previousPrime(2n)).toBeNull();
+  });
+  it("finds GCF and LCM with steps", () => {
+    expect(gcd(48n, 36n)).toBe(12n);
+    expect(lcm(4n, 6n)).toBe(12n);
+    expect(euclidSteps(36n, 48n).map((s) => `${s.a}=${s.q}×${s.b}+${s.r}`)).toEqual(["48=1×36+12", "36=3×12+0"]);
+    const r = gcfLcmByPrimes([factorize(12n), factorize(18n), factorize(30n)]);
+    expect(factorText(r.gcf)).toBe("2 × 3");
+    expect(factorText(r.lcm)).toBe("2² × 3² × 5");
+  });
+});
+
+describe("review pass after merging batch 19", () => {
+  it("reads full-width digits but not superscripts or circled digits", () => {
+    expect(parseWhole("３６０")).toEqual({ ok: true, n: 360n });
+    expect(parseWhole("2³")).toEqual({ ok: false, error: "notInteger" });
+    expect(parseWhole("10⁶")).toEqual({ ok: false, error: "notInteger" });
+    expect(parseWhole("①")).toEqual({ ok: false, error: "notInteger" });
+    expect(splitNumbers("２ ３")).toEqual(["2", "3"]);
+  });
+  it("warns about a comma only where one number could be meant", () => {
+    expect(commaLooksLikeANumber("1,500, 2,500")).toBe(true);
+    expect(commaLooksLikeANumber("100,200,300")).toBe(false);
+    expect(commaLooksLikeANumber("12,18,120")).toBe(false);
+    expect(commaLooksLikeANumber("12, 18, 24")).toBe(false);
+    expect(commaLooksLikeANumber("1,500, 2,500", ".")).toBe(true);
+    expect(commaLooksLikeANumber("1,5 2,5", ".")).toBe(true);
+    expect(commaLooksLikeANumber("1,5 2,5")).toBe(false);
+    expect(commaLooksLikeANumber("12, 18", ".")).toBe(false);
+  });
+});
+
+describe("second review pass after merging batch 19", () => {
+  it("finds a low string with a weak fundamental", () => {
+    for (const harmonics of [[0.2, 1, 0.2], [0.2, 1, 0.1, 0.3]]) {
+      const p = detectPitch(tone(82.41, 48000, 8192, harmonics), 48000, 70, 1000);
+      expect(Math.abs(p!.freq - 82.41)).toBeLessThan(1);
+    }
+    // A note that really is high stays high.
+    const high = detectPitch(tone(165, 48000, 8192), 48000, 70, 1000);
+    expect(Math.abs(high!.freq - 165)).toBeLessThan(1);
+  });
+  it("warns about larger numbers beside others and full-width separators", () => {
+    expect(commaLooksLikeANumber("250,500, 100,250")).toBe(true);
+    expect(commaLooksLikeANumber("100,200,300")).toBe(false);
+    expect(commaLooksLikeANumber("1,500，2,500")).toBe(true);
+    expect(commaLooksLikeANumber("12，345")).toBe(false);
+    expect(commaLooksLikeANumber("12，18", ".")).toBe(false);
+  });
+});
+
+describe("third review pass after merging batch 19", () => {
+  it("keeps high notes high across every detune", () => {
+    const family = [1, 1 / 2, 1 / 3, 1 / 4, 1 / 5, 1 / 6];
+    for (const [midi, rate] of [[76, 48000], [81, 48000], [67, 44100], [64, 48000], [69, 44100]] as const) {
+      for (let cents = -30; cents <= 30; cents += 2) {
+        const f = midiToFreq(midi) * Math.pow(2, cents / 1200);
+        const p = detectPitch(tone(f, rate, 8192, family), rate, 70, 1400);
+        expect(Math.abs(1200 * Math.log2(p!.freq / f))).toBeLessThan(30);
+      }
+    }
+  });
+  it("still finds low strings across a detune sweep", () => {
+    for (let cents = -30; cents <= 30; cents += 5) {
+      const f = 82.41 * Math.pow(2, cents / 1200);
+      const p = detectPitch(tone(f, 48000, 8192, [0.2, 1, 0.2]), 48000, 70, 1000);
+      expect(Math.abs(1200 * Math.log2(p!.freq / f))).toBeLessThan(30);
+    }
+  });
+  it("reads groups only where they are real", () => {
+    expect(parseWhole("12 18")).toEqual({ ok: false, error: "notInteger" });
+    expect(parseWhole("4 5")).toEqual({ ok: false, error: "notInteger" });
+    expect(parseWhole("1_2")).toEqual({ ok: false, error: "notInteger" });
+    expect(parseWhole("1 000 000")).toEqual({ ok: true, n: 1000000n });
+    expect(parseWhole("1_000")).toEqual({ ok: true, n: 1000n });
+    expect(parseWhole("1,234,567")).toEqual({ ok: true, n: 1234567n });
+    expect(parseWhole("0.125", ".")).toEqual({ ok: false, error: "notInteger" });
+    expect(parseWhole("0,123")).toEqual({ ok: false, error: "notInteger" });
+    expect(parseWhole(" 360 ")).toEqual({ ok: true, n: 360n });
+  });
+  it("does not warn about a plain pair on decimal-comma pages", () => {
+    expect(commaLooksLikeANumber("8,12", ".")).toBe(false);
+    expect(commaLooksLikeANumber("1,5 2,5", ".")).toBe(true);
+    expect(commaLooksLikeANumber("1,000, 2,000")).toBe(true);
+  });
+});
+
+describe("fourth review pass after merging batch 19", () => {
+  it("reaches a five-string bass at 192 kHz with the larger window", () => {
+    const p = detectPitch(tone(30.87, 192000, 16384), 192000, 25, 400);
+    expect(Math.abs(p!.freq - 30.87)).toBeLessThan(0.5);
+  });
+});
+
+describe("fifth review pass after merging batch 19", () => {
+  it("reads an ideographic space between groups", () => {
+    expect(parseWhole("１２３　４５６")).toEqual({ ok: true, n: 123456n });
+  });
+});
+
+describe("sixth review pass after merging batch 19", () => {
+  it("reads every kind of grouping space", () => {
+    for (const sp of [" ", "\u00a0", "\u2007", "\u2009", "\u202f", "\u3000"]) {
+      expect(parseWhole(`1${sp}234${sp}567`)).toEqual({ ok: true, n: 1234567n });
+    }
+    expect(parseWhole("-1 000")).toEqual({ ok: false, error: "notPositive" });
+  });
+});

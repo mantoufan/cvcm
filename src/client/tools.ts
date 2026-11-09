@@ -790,4 +790,76 @@ export const TOOL_LOADERS: Record<ToolId, ToolLoader> = {
     m.mountTouchTest(host);
     return m.unmountTouchTest;
   },
+  "rom-emulator": async (host, ctx) => {
+    const m = await import("./rom-emulator/ui");
+    if (!ctx.alive()) return undefined;
+    m.mountRomEmulator(host);
+    return m.unmountRomEmulator;
+  },
+  "flash-player": async (host, ctx) => {
+    const m = await import("./flash-player/ui");
+    if (!ctx.alive()) return undefined;
+    m.mountFlashPlayer(host);
+    return undefined;
+  },
+  "coin-flip": async (host, ctx) => {
+    const m = await import("./coin-flip/ui");
+    if (!ctx.alive()) return undefined;
+    m.mountCoinFlip(host);
+    return m.unmountCoinFlip;
+  },
+  "guitar-tuner": async (host, ctx) => {
+    const m = await import("./guitar-tuner/ui");
+    if (!ctx.alive()) return undefined;
+    m.mountGuitarTuner(host);
+    return m.unmountGuitarTuner;
+  },
+  "factors": async (host, ctx) => {
+    const m = await import("./factors/ui");
+    if (!ctx.alive()) return undefined;
+    m.mountFactors(host);
+    return m.unmountFactors;
+  },
+  "lcm-gcf": async (host, ctx) => {
+    const m = await import("./lcm-gcf/ui");
+    if (!ctx.alive()) return undefined;
+    m.mountLcmGcf(host);
+    return m.unmountLcmGcf;
+  },
+  "tier-list": async (host, ctx) => {
+    const m = await import("./tier-list/ui");
+    if (!ctx.alive()) return undefined;
+    m.mountTierList(host);
+    return m.unmountTierList;
+  },
+  "calculator": async (host, ctx) => {
+    const m = await import("./calculator/ui");
+    if (!ctx.alive()) return undefined;
+    m.mountCalculator(host);
+    return m.unmountCalculator;
+  },
+  "notepad": async (host, ctx) => {
+    const m = await import("./notepad/ui");
+    if (!ctx.alive()) return undefined;
+    m.mountNotepad(host);
+    return m.unmountNotepad;
+  },
+  "markdown": async (host, ctx) => {
+    const m = await import("./markdown/ui");
+    if (!ctx.alive()) return undefined;
+    m.mountMarkdown(host);
+    return m.unmountMarkdown;
+  },
+  "gradient": async (host, ctx) => {
+    const m = await import("./gradient/ui");
+    if (!ctx.alive()) return undefined;
+    m.mountGradient(host);
+    return m.unmountGradient;
+  },
+  "fancy-text": async (host, ctx) => {
+    const m = await import("./fancy-text/ui");
+    if (!ctx.alive()) return undefined;
+    m.mountFancyText(host);
+    return m.unmountFancyText;
+  },
 };

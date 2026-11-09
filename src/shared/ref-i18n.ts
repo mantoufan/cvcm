@@ -5,7 +5,7 @@ import { fill } from "./fill";
 import { PUBLISHER, blockHtml, inline, linkListHtml, type KbBlock } from "./kb-i18n";
 import { messages, refEntryMessages, refMessages, type RefMessages } from "./messages";
 import { appHref, refHref } from "./path";
-import { REF_GROUPS, REF_META, REF_PUBLISHED, mfan8Href, refGroupOf, type RefId } from "./ref";
+import { REF_GROUPS, REF_MANNEQUINS, REF_META, REF_PUBLISHED, REF_UPDATED, mfan8Href, refGroupOf, refMannequinUrl, type RefAngle, type RefId } from "./ref";
 import { HREFLANG } from "./sitemap";
 
 /** One entry's copy, `src/locales/ref/<locale>/<id>.json`. Blocks are the kb blocks (backticks are the only inline markup). */
@@ -129,6 +129,44 @@ function photosHtml(locale: Locale, id: RefId): string {
     + `<p class="ref-note">${escapeHtml(fill(ui.photosNote, { site: SITE }))}</p>${more}</section>`;
 }
 
+const CC0_URL = "https://creativecommons.org/publicdomain/zero/1.0/";
+const SHISEI_URL = "https://github.com/wquguru/shisei";
+/** Rights metadata for the Shisei line art: CC0, licence page pinned to the commit the files came from (docs/ref-mannequins.md). */
+const SHISEI_IMAGE_META = {
+  creator: { "@type": "Person", name: "wquguru", url: "https://github.com/wquguru" },
+  creditText: "Shisei",
+  copyrightNotice: "Shisei by wquguru, dedicated to the public domain under CC0 1.0",
+  license: CC0_URL,
+  acquireLicensePage: `${SHISEI_URL}/tree/26522a708c77088eda4631327b15d8d05f6281c0`,
+} as const;
+
+function angleLabel(ui: RefUi, angle: RefAngle): string {
+  const labels: Record<RefAngle, string> = {
+    front: ui.angleFront,
+    "three-quarter": ui.angleThreeQuarter,
+    side: ui.angleSide,
+    above: ui.angleAbove,
+  };
+  return labels[angle];
+}
+
+/** The same mannequin pose by camera angle, for the entries in REF_MANNEQUINS. CC0 images served from /covers/ref/. */
+function mannequinHtml(locale: Locale, id: RefId): string {
+  const angles = REF_MANNEQUINS[id];
+  if (!angles?.length) return "";
+  const ui = refUi(locale);
+  const name = refName(locale, id).name;
+  const figures = angles.map((angle) => {
+    const label = angleLabel(ui, angle);
+    return `<figure><a href="${escapeHtml(refMannequinUrl(id, angle, 900))}" target="_blank" rel="noopener">`
+      + `<img src="${escapeHtml(refMannequinUrl(id, angle, 300))}" srcset="${escapeHtml(refMannequinUrl(id, angle, 600))} 2x" width="300" height="400" loading="lazy" decoding="async" alt="${escapeHtml(fill(ui.mannequinAlt, { name, angle: label }))}" />`
+      + `</a><figcaption>${escapeHtml(label)}</figcaption></figure>`;
+  }).join("");
+  return `<section class="ref-photos" aria-labelledby="ref-mannequin-title"><h2 id="ref-mannequin-title">${escapeHtml(ui.mannequin)}</h2>`
+    + `<div class="ref-grid">${figures}</div>`
+    + `<p class="ref-note">${escapeHtml(ui.mannequinNote)} <a href="${SHISEI_URL}" target="_blank" rel="noopener">Shisei</a> · <a href="${CC0_URL}" target="_blank" rel="noopener">CC0 1.0</a></p></section>`;
+}
+
 /** Each entry's name in every locale, from the names map the ref pack carries (no other locale's pack is loaded). */
 function namesHtml(locale: Locale, id: RefId): string {
   const ui = refUi(locale);
@@ -174,6 +212,7 @@ export function refPageHtml(locale: Locale, id: RefId | null): string {
     copy.aka.length ? `<p class="ref-aka">${escapeHtml(ui.also)}${cjk ? "：" : ": "}${escapeHtml(copy.aka.join(cjk ? "、" : ", "))}</p>` : "",
     `</header>`,
     `<section class="kb-answer" aria-label="${escapeHtml(ui.answer)}"><h2>${escapeHtml(ui.answer)}</h2><p>${inline(copy.answer)}</p></section>`,
+    mannequinHtml(locale, id),
     photosHtml(locale, id),
     `<nav class="kb-toc" aria-label="${escapeHtml(ui.toc)}"><h2>${escapeHtml(ui.toc)}</h2><ol>${toc}</ol></nav>`,
     sections,
@@ -212,7 +251,7 @@ export function refFaqJsonLd(locale: Locale, id: RefId | null): Record<string, u
   };
 }
 
-/** Article (with the look as a DefinedTerm and its photos as credited ImageObjects) for an entry; CollectionPage + ItemList for the hub. */
+/** Article (with the look as a DefinedTerm and its CC0 mannequins as ImageObjects; third-party photos are left out) for an entry; CollectionPage + ItemList for the hub. */
 export function refArticleJsonLd(locale: Locale, id: RefId | null): Record<string, unknown> {
   if (!id) {
     const hub = refHub(locale);
@@ -236,14 +275,14 @@ export function refArticleJsonLd(locale: Locale, id: RefId | null): Record<strin
   }
   const copy = refCopy(locale, id);
   const url = `${ORIGIN}${refHref(locale, id)}`;
-  const images = refPhotos(locale, id).map((photo) => {
-    const credit = [photo.photo, photo.model].filter(Boolean).join(" / ");
-    return {
-      "@type": "ImageObject",
-      contentUrl: refImageUrl(photo, 600),
-      ...(credit ? { creditText: credit } : {}),
-    };
-  });
+  const mannequins = (REF_MANNEQUINS[id] ?? []).map((angle) => ({
+    "@type": "ImageObject",
+    contentUrl: `${ORIGIN}${refMannequinUrl(id, angle, 900)}`,
+    ...SHISEI_IMAGE_META,
+  }));
+  // Only cv.cm's own CC0 mannequins are article images. Third-party mfan8 photos stay out of the
+  // structured data: we can't state their rights, so we don't offer them as this page's images.
+  const images = mannequins;
   return {
     "@context": "https://schema.org",
     "@type": "Article",
@@ -254,7 +293,7 @@ export function refArticleJsonLd(locale: Locale, id: RefId | null): Record<strin
     mainEntityOfPage: { "@type": "WebPage", "@id": url },
     inLanguage: HREFLANG[locale],
     datePublished: REF_PUBLISHED,
-    dateModified: REF_PUBLISHED,
+    dateModified: REF_UPDATED[id] ?? REF_PUBLISHED,
     author: PUBLISHER,
     publisher: PUBLISHER,
     isAccessibleForFree: true,

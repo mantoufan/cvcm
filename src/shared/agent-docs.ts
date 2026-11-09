@@ -4,13 +4,14 @@ import en from "../locales/en.json";
 import { AI_MODELS, formatMb, modelBytes, type AiModelId } from "./ai-models";
 import { CLIP_MAX_VIEWS, CLIP_TTL_MS } from "./clip";
 import { DATASETS, csvHref } from "./datasets";
+import { RANKINGS, rankingCsvHref } from "./rankings";
 import { AI_ARTICLES, CODE_ARTICLES } from "./kb";
 import { REF_ENTRIES } from "./ref";
 import { LOCALES, localePath } from "./locale";
 import { IMAGE_COUNTS, IMAGE_SIZES, IMAGE_STYLES, PROMPT_MAX } from "./image-gen";
 import { MUSIC_BARS, MUSIC_STYLES, STYLE_PRESETS, SURPRISE_IDS } from "./music-gen";
 import { ASPECTS, DURATIONS, FPS, MOTIONS, SIZES, STRENGTH_IDS } from "./parallax";
-import { AI_TOOLS, CATEGORIES, appHref, datasetHref, gamesHref, kbHref, learnHref, quizHref, refHref, type CategoryId, type ToolId } from "./path";
+import { AI_TOOLS, CATEGORIES, appHref, datasetHref, rankingHref, gamesHref, kbHref, learnHref, quizHref, refHref, type CategoryId, type ToolId } from "./path";
 import { SITE_ORIGIN } from "./sitemap";
 
 const CATEGORY_TITLE: Record<CategoryId, string> = {
@@ -19,6 +20,7 @@ const CATEGORY_TITLE: Record<CategoryId, string> = {
   image: "Images",
   convert: "Convert files and data",
   text: "Text and calculators",
+  games: "Retro games: open your own ROM or SWF",
   assets: "Precious metals, oil and stock calculators (unit and ratio math; the user enters any prices, no live quotes)",
 };
 
@@ -34,10 +36,15 @@ const AI: readonly ToolId[] = [...AI_TOOLS];
 const FILES: readonly ToolId[] = [
   "watermark", "mosaic", "collage", "portrait-sim", "convert", "image-pdf", "resize", "crop", "rotate", "exif",
   "meme", "favicon", "screenshot", "pdf-jpg", "merge-pdf", "compress-pdf", "split-pdf", "audio", "audio-cutter",
-  "audio-joiner", "image-colors",
+  "audio-joiner", "image-colors", "rom-emulator", "flash-player", "tier-list",
 ];
 
-export const DATA_HANDLING_GROUPS = { STORES, NETWORK_VOICES, AI, FILES } as const;
+/** Text kept in this browser's localStorage between visits. */
+const NOTES: readonly ToolId[] = ["notepad"];
+/** Renders text in the page; images the text links to are loaded from their own sites. */
+const LINKED_IMAGES: readonly ToolId[] = ["markdown"];
+
+export const DATA_HANDLING_GROUPS = { STORES, NETWORK_VOICES, AI, FILES, NOTES, LINKED_IMAGES } as const;
 
 const DATA_HANDLING_TEXT: Record<keyof typeof DATA_HANDLING_GROUPS | "LOCAL", string> = {
   STORES: `Stores the note on cv.cm (text in its database, files on its storage host s3.cv.cm) until ${CLIP_MAX_VIEWS} views or ${CLIP_TTL_MS / 3_600_000} hours. Anyone with the short link can open it, so it is not for secrets.`,
@@ -45,6 +52,8 @@ const DATA_HANDLING_TEXT: Record<keyof typeof DATA_HANDLING_GROUPS | "LOCAL", st
     "Speaks with the browser's voices. On-device voices keep the text on the device; online voices (such as Chrome's Google voices) send it to the voice provider.",
   AI: "Downloads an AI model once and runs it on the device. Files are not uploaded.",
   FILES: "Processes files in the page. Files are not uploaded.",
+  NOTES: "Keeps the note in this browser's local storage on the device; files it opens are read in the page. Notes and files are not uploaded.",
+  LINKED_IMAGES: "Renders in the page and keeps the text in this browser. Images written into the text load from their own addresses. The text is not uploaded.",
   LOCAL: "Runs in the page. Inputs are not uploaded.",
 };
 
@@ -210,6 +219,7 @@ export function buildLlmsTxt(): string {
     `- [Coding tutorials](${SITE_ORIGIN}${kbHref("en", "code")}): ${CODE_ARTICLES.length} one-page tutorials on programming languages, design patterns, data structures and algorithms, with runnable code.`,
     `- [AI tutorials](${SITE_ORIGIN}${kbHref("en", "ai")}): ${AI_ARTICLES.length} sourced guides to generative AI: how LLMs and diffusion models work, writing image and video prompts, camera moves, AI video workflows, speech, running models in the browser, and AI copyright and labeling.`,
     `- [Datasets](${SITE_ORIGIN}${datasetHref("en", null)}): ${DATASETS.length} public reference tables, each also a CSV (for example ${SITE_ORIGIN}${csvHref(DATASETS[0])}).`,
+    `- [Rankings](${SITE_ORIGIN}${rankingHref("en", null)}): ${RANKINGS.length} sourced rankings: AI models, market share of browsers, operating systems, search engines, phones and social media, the top 100 cryptocurrencies, commodity prices and currencies against the US dollar. Most are also a CSV (for example ${SITE_ORIGIN}${rankingCsvHref(RANKINGS[0])}).`,
     `- [Pose & style reference](${SITE_ORIGIN}${refHref("en", null)}): ${REF_ENTRIES.length} entries on hairstyles, hair colours, expressions, hand gestures, outfits, poses and camera angles, with credited photos linked from mfan8.com and English prompt keywords.`,
     `- [Personality tests](${SITE_ORIGIN}${quizHref("en", null)}): quizzes that run in the page.`,
     `- [Games](${SITE_ORIGIN}${gamesHref("en", null)}): free homebrew games playable in the browser.`,

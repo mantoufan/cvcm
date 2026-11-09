@@ -4,8 +4,9 @@ import { DEVICE_PAGES, type DevicePageId } from "./device";
 import { QUIZZES, type QuizId } from "./quiz";
 import { KB_ARTICLES, kbArticleOf, kbGroupsOf, kbShelfOfPage, kbUpdatedOn, type KbPage } from "./kb";
 import { DATASET_SNAPSHOT, DATASETS, type DatasetId } from "./datasets";
-import { REF_ENTRIES, type RefId } from "./ref";
-import { CONVERT_JOBS, RESIZE_JOBS, SITEMAP_SECTIONS, TOOLS, FEATURED_TUTORIALS, LEGAL_PAGES, appHref, deviceHref, gamesHref, kbHref, learnHref, legalHref, quizHref, datasetHref, refHref, type ConvertJobId, type ResizeJobId, type ToolId, type LegalPageId, type TutorialId } from "./path";
+import { RANKING_SNAPSHOT, RANKINGS, rankingMeta, type RankingId } from "./rankings";
+import { REF_ENTRIES, REF_UPDATED, type RefId } from "./ref";
+import { CONVERT_JOBS, RESIZE_JOBS, SITEMAP_SECTIONS, TOOLS, FEATURED_TUTORIALS, LEGAL_PAGES, appHref, rankingHref, deviceHref, gamesHref, kbHref, learnHref, legalHref, quizHref, datasetHref, refHref, type ConvertJobId, type ResizeJobId, type ToolId, type LegalPageId, type TutorialId } from "./path";
 
 export const SITE_ORIGIN = "https://cv.cm";
 
@@ -32,6 +33,7 @@ export type SitemapPage =
   | { locale: Locale; kind: "legal"; page: LegalPageId }
   | { locale: Locale; kind: "quiz"; quiz: QuizId | null }
   | { locale: Locale; kind: "dataset"; dataset: DatasetId | null }
+  | { locale: Locale; kind: "ranking"; ranking: RankingId | null }
   | { locale: Locale; kind: "kb"; article: KbPage }
   | { locale: Locale; kind: "ref"; entry: RefId | null };
 
@@ -60,6 +62,8 @@ export function sitemapPages(): SitemapPage[] {
     for (const quiz of QUIZZES) pages.push({ locale, kind: "quiz", quiz });
     pages.push({ locale, kind: "dataset", dataset: null });
     for (const dataset of DATASETS) pages.push({ locale, kind: "dataset", dataset });
+    pages.push({ locale, kind: "ranking", ranking: null });
+    for (const ranking of RANKINGS) pages.push({ locale, kind: "ranking", ranking });
     pages.push({ locale, kind: "ref", entry: null });
     for (const entry of REF_ENTRIES) pages.push({ locale, kind: "ref", entry });
     for (const page of LEGAL_PAGES) pages.push({ locale, kind: "legal", page });
@@ -77,6 +81,7 @@ export function pageUrl(page: SitemapPage): string {
   if (page.kind === "legal") return `${SITE_ORIGIN}${legalHref(page.locale, page.page)}`;
   if (page.kind === "quiz") return `${SITE_ORIGIN}${quizHref(page.locale, page.quiz)}`;
   if (page.kind === "dataset") return `${SITE_ORIGIN}${datasetHref(page.locale, page.dataset)}`;
+  if (page.kind === "ranking") return `${SITE_ORIGIN}${rankingHref(page.locale, page.ranking)}`;
   if (page.kind === "kb") return `${SITE_ORIGIN}${kbHref(page.locale, page.article)}`;
   if (page.kind === "ref") return `${SITE_ORIGIN}${refHref(page.locale, page.entry)}`;
   return `${SITE_ORIGIN}${appHref(page.locale, null)}`;
@@ -96,6 +101,7 @@ function pathFor(locale: Locale, page: SitemapPage): string {
   if (page.kind === "legal") return `${SITE_ORIGIN}${legalHref(locale, page.page)}`;
   if (page.kind === "quiz") return `${SITE_ORIGIN}${quizHref(locale, page.quiz)}`;
   if (page.kind === "dataset") return `${SITE_ORIGIN}${datasetHref(locale, page.dataset)}`;
+  if (page.kind === "ranking") return `${SITE_ORIGIN}${rankingHref(locale, page.ranking)}`;
   if (page.kind === "kb") return `${SITE_ORIGIN}${kbHref(locale, page.article)}`;
   if (page.kind === "ref") return `${SITE_ORIGIN}${refHref(locale, page.entry)}`;
   return `${SITE_ORIGIN}${appHref(locale, null)}`;
@@ -119,6 +125,7 @@ export function sitemapSection(page: SitemapPage): SitemapSection {
   if (page.kind === "games") return "games";
   if (page.kind === "quiz") return "tests";
   if (page.kind === "dataset") return "datasets";
+  if (page.kind === "ranking") return "rankings";
   if (page.kind === "ref") return "reference";
   return "pages";
 }
@@ -129,7 +136,7 @@ export function sitemapSectionUrl(section: SitemapSection): string {
 
 /**
  * `<lastmod>` only where a real edit date exists: knowledge articles (per-locale dates from git via
- * `npm run kb:sync`), their hub (newest article), data tables (snapshot date). Other pages, reference entries included, have no tracked
+ * `npm run kb:sync`), their hub (newest article), data tables (snapshot date), reference entries in REF_UPDATED. Other pages have no tracked
  * edit date, and stamping the build date on every URL teaches Google to ignore lastmod.
  */
 function pageLastmod(page: SitemapPage): string | null {
@@ -140,6 +147,8 @@ function pageLastmod(page: SitemapPage): string | null {
     return kbGroupsOf(kbShelfOfPage(page.article)).flatMap((group) => group.articles).map((article) => kbUpdatedOn(article, page.locale)).sort().at(-1) ?? null;
   }
   if (page.kind === "dataset") return DATASET_SNAPSHOT;
+  if (page.kind === "ranking") return page.ranking ? rankingMeta(page.ranking).updated : RANKING_SNAPSHOT;
+  if (page.kind === "ref" && page.entry) return REF_UPDATED[page.entry] ?? null;
   return null;
 }
 

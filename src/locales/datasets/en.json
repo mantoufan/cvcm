@@ -869,5 +869,526 @@
         { "q": "What is the difference between LF and CR?", "a": "LF (10, line feed) starts a new line on Linux and macOS. Windows text files end lines with CR LF (13 then 10)." }
       ]
     }
+  },
+  "rankings": {
+    "hub": {
+      "title": "Rankings: AI Models, Market Share and More, with Sources | cv.cm",
+      "description": "Sourced rankings you can sort and download: best AI models, most used AI, and browser, operating system, search engine, phone and social media market share by country.",
+      "h1": "Rankings",
+      "lede": "Rankings built from open data, each with its source, licence and date. Sort any column, filter rows or download the CSV.",
+      "groups": {
+        "ai": "AI",
+        "share": "Market share",
+        "countries": "Countries",
+        "markets": "Markets"
+      },
+      "makeYourOwn": "Make your own ranking",
+      "about": [
+        "Every table here comes from a published source that allows reuse, and cv.cm does not add its own scores or place its own products in them. Read the About section on each page: most lists measure one thing, such as votes on one site or visits to tracked websites, and that limit matters.",
+        "Data is a dated snapshot rather than a live feed, so each page tells you which date it shows."
+      ],
+      "faq": [
+        {
+          "q": "Where does the data come from?",
+          "a": "AI quality comes from the Arena leaderboard, AI usage from OpenRouter, and market share from StatCounter Global Stats. Each page links to its source and licence."
+        },
+        {
+          "q": "How often are the rankings updated?",
+          "a": "They are refreshed automatically once a day and each page shows its data date. Sources publish at different speeds: market share is monthly, AI tables change more often."
+        },
+        {
+          "q": "Can I reuse these tables?",
+          "a": "Yes, under the source's licence shown on each page: CC BY 4.0 for the AI tables and CC BY-SA 3.0 for market share. Credit the source. Every table has a CSV download."
+        }
+      ]
+    },
+    "ui": {
+      "all": "All rankings",
+      "search": "Filter rows",
+      "searchPlaceholder": "Type a name or value",
+      "rows": "{n} rows",
+      "shown": "{shown} of {n} rows",
+      "noMatch": "No rows match.",
+      "download": "Download CSV",
+      "sortHint": "Select a column heading to sort.",
+      "facts": "Key facts",
+      "about": "About this ranking",
+      "faq": "FAQ",
+      "related": "More rankings",
+      "source": "Source",
+      "license": "Licence",
+      "snapshot": "Collected {date}",
+      "dataAsOf": "Data as of {date}",
+      "rank": "#",
+      "model": "Model",
+      "organization": "Company",
+      "licence": "Licence",
+      "score": "Score",
+      "votes": "Votes",
+      "tokens": "Tokens",
+      "shareOfTokens": "Share of tokens",
+      "modelsListed": "Models listed",
+      "name": "Name",
+      "world": "World",
+      "change": "1-year change (pts)",
+      "symbol": "Symbol",
+      "price": "Price",
+      "change24h": "24h",
+      "change7d": "7d",
+      "marketCap": "Market cap",
+      "volume24h": "Volume (24h)",
+      "commodity": "Commodity",
+      "unit": "Unit",
+      "change1m": "1 month",
+      "change1y": "1 year",
+      "currency": "Currency",
+      "code": "Code",
+      "perUsd": "Per US dollar",
+      "commodities": {
+        "crude-oil-brent": "Crude oil (Brent)",
+        "crude-oil-wti": "Crude oil (WTI)",
+        "natural-gas-us": "Natural gas (US)",
+        "natural-gas-europe": "Natural gas (Europe)",
+        "lng-japan": "Liquefied natural gas (Japan)",
+        "coal": "Coal (Australia)",
+        "cocoa": "Cocoa",
+        "coffee-arabica": "Coffee (Arabica)",
+        "coffee-robusta": "Coffee (Robusta)",
+        "tea": "Tea",
+        "palm-oil": "Palm oil",
+        "soybeans": "Soybeans",
+        "soybean-oil": "Soybean oil",
+        "maize": "Corn (maize)",
+        "wheat": "Wheat",
+        "rice": "Rice (Thai 5%)",
+        "sugar": "Sugar",
+        "orange": "Oranges",
+        "beef": "Beef",
+        "chicken": "Chicken",
+        "shrimp": "Shrimp",
+        "cotton": "Cotton",
+        "rubber": "Rubber",
+        "urea": "Urea (fertiliser)",
+        "aluminum": "Aluminium",
+        "iron-ore": "Iron ore",
+        "copper": "Copper",
+        "lead": "Lead",
+        "tin": "Tin",
+        "nickel": "Nickel",
+        "zinc": "Zinc",
+        "gold": "Gold",
+        "platinum": "Platinum",
+        "silver": "Silver"
+      },
+      "tools": "Related tools"
+    },
+    "sets": {
+      "ai-models": {
+        "title": "AI Model Rankings {year}: Best LLM Leaderboard | cv.cm",
+        "description": "The best AI chat models right now: {top1} leads the Arena leaderboard at {v1}, then {top2} and {top3}. Top {rows} with scores and votes, CSV download.",
+        "h1": "Best AI models: LLM leaderboard, {date}",
+        "lede": "The top {rows} chat models on the Arena text leaderboard, ranked by blind human votes. Search, sort by any column or download the CSV.",
+        "facts": [
+          "First: {top1} ({v1}), then {top2} ({v2}) and {top3} ({v3}).",
+          "{leadOrg} holds the most places in the top 10: {leadCount}.",
+          "Data as of {date}."
+        ],
+        "about": [
+          "Arena lets people put a prompt to two anonymous models and vote for the better answer. Those votes become a rating, so a gap of a few points means little: check the votes column, because new models with few votes move most. This table shows the overall category from the latest published snapshot.",
+          "A high rating shows what voters preferred in general chat. It does not measure price, speed, or how a model does on your own work, so try the top few on a real task before choosing."
+        ],
+        "faq": [
+          {
+            "q": "What is the best AI model right now?",
+            "a": "By Arena's votes as of {date}, {top1} ranks first with a score of {v1}, followed by {top2} and {top3}. The order changes often, and models close in score can swap places as votes come in."
+          },
+          {
+            "q": "How is this LLM leaderboard scored?",
+            "a": "People compare two anonymous models on the same prompt and vote. Arena turns the votes into a rating similar to chess ratings. A higher score means a model tends to beat others in those matchups."
+          },
+          {
+            "q": "Why does one model appear several times?",
+            "a": "Arena ranks settings separately, such as a High or Max thinking effort, because the same model can answer differently at each."
+          }
+        ]
+      },
+      "ai-coding-models": {
+        "title": "Best AI for Coding {year}: Coding LLM Leaderboard | cv.cm",
+        "description": "The best AI models for coding, from Arena's web development votes: {top1} leads at {v1}, then {top2} and {top3}. Top {rows} with votes, CSV download.",
+        "h1": "Best AI models for coding, {date}",
+        "lede": "The top {rows} models on Arena's web development leaderboard: people see two generated web apps and vote for the better one.",
+        "facts": [
+          "First: {top1} ({v1}), then {top2} ({v2}) and {top3} ({v3}).",
+          "{leadOrg} holds the most places in the top 10: {leadCount}.",
+          "Data as of {date}."
+        ],
+        "about": [
+          "Each vote compares two anonymous models given the same request to build a web page or small app. Voters judge the result they see, so this table rewards working, good-looking front ends more than back-end or algorithm skill.",
+          "Scores are ratings built from those votes. Models with few votes can move a lot, so read the votes column too, and test the top few on your own codebase, which no public ranking can stand in for."
+        ],
+        "faq": [
+          {
+            "q": "What is the best AI for coding right now?",
+            "a": "In Arena's web development votes as of {date}, {top1} ranks first with {v1}, then {top2} and {top3}."
+          },
+          {
+            "q": "Does this cover all kinds of programming?",
+            "a": "No. It covers building web pages and apps from a prompt. A model that wins here may not be the best at debugging a large project or writing systems code."
+          },
+          {
+            "q": "Why are the scores higher than in the chat table?",
+            "a": "Each table is rated from its own votes, so a score only compares models within one table."
+          }
+        ]
+      },
+      "ai-image-models": {
+        "title": "Best AI Image Generators {year}: Model Rankings | cv.cm",
+        "description": "The best AI image generators by blind votes: {top1} leads Arena at {v1}, then {top2} and {top3}. Top {rows} image models with scores and votes.",
+        "h1": "Best AI image generators, {date}",
+        "lede": "The top {rows} text-to-image models on Arena's leaderboard: people see two pictures from one prompt and vote without knowing which model made them.",
+        "facts": [
+          "First: {top1} ({v1}), then {top2} ({v2}) and {top3} ({v3}).",
+          "{leadOrg} holds the most places in the top 10: {leadCount}.",
+          "Data as of {date}."
+        ],
+        "about": [
+          "Voters pick the picture they prefer for a shared prompt, and those votes become a rating. That favours overall appeal, so a model that is strong at one job, such as text in images or a certain style, can rank lower than it deserves for that job.",
+          "The table ranks models, not apps. One app can offer several of these models, and price and limits differ by app."
+        ],
+        "faq": [
+          {
+            "q": "What is the best AI image generator?",
+            "a": "By Arena's votes as of {date}, {top1} ranks first with {v1}, then {top2} and {top3}. For a specific style, compare the top few with your own prompts."
+          },
+          {
+            "q": "Are these rankings about free tools?",
+            "a": "No. The table ranks the quality of models, whatever they cost. The licence column shows which ones have open weights."
+          },
+          {
+            "q": "How often does this change?",
+            "a": "Arena publishes new snapshots often, and this page shows the date of the one it uses."
+          }
+        ]
+      },
+      "ai-video-models": {
+        "title": "Best AI Video Generators {year}: Model Rankings | cv.cm",
+        "description": "The best AI video generators by blind votes: {top1} leads Arena at {v1}, then {top2} and {top3}. Top {rows} text-to-video models with scores and votes.",
+        "h1": "Best AI video generators, {date}",
+        "lede": "The top {rows} text-to-video models on Arena's leaderboard: people watch two clips from one prompt and vote without knowing which model made them.",
+        "facts": [
+          "First: {top1} ({v1}), then {top2} ({v2}) and {top3} ({v3}).",
+          "{leadOrg} holds the most places in the top 10: {leadCount}.",
+          "Data as of {date}."
+        ],
+        "about": [
+          "Voters choose the clip they prefer for a shared prompt, and those votes become a rating. Video gets fewer votes than text, so scores here carry more uncertainty, especially for new models.",
+          "The table covers video made from text alone. Tools that animate a photo or edit a clip are rated separately by Arena and are not included here."
+        ],
+        "faq": [
+          {
+            "q": "What is the best AI video generator?",
+            "a": "By Arena's votes as of {date}, {top1} ranks first with {v1}, then {top2} and {top3}."
+          },
+          {
+            "q": "Does the table include sound, length or price?",
+            "a": "No. It only reflects which clip voters preferred. Check length limits, audio and price with the app that offers the model."
+          },
+          {
+            "q": "Is cv.cm's photo to video tool in this ranking?",
+            "a": "No. cv.cm's tool moves a virtual camera through a photo in your browser and does not generate motion from text, so it is a different kind of tool."
+          }
+        ]
+      },
+      "ai-usage": {
+        "title": "Most Used AI Models {year}: OpenRouter Usage Ranking | cv.cm",
+        "description": "The most used AI models on OpenRouter: {top1} takes {v1} of all tokens over 7 days, then {top2} and {top3}. CSV download.",
+        "h1": "Most used AI models on OpenRouter, {date}",
+        "lede": "The top {rows} models by tokens processed through OpenRouter over the 7 days to {date}. This measures use, not quality.",
+        "facts": [
+          "First: {top1} ({v1} of all tokens), then {top2} ({v2}) and {top3} ({v3}).",
+          "Shares are of all tokens on OpenRouter, not of all AI use. Only public traffic counts, and a model only on days it makes OpenRouter's daily top 50.",
+          "Data for the 7 days to {date}."
+        ],
+        "about": [
+          "OpenRouter is a service developers use to reach many models through one API, and it publishes what passes through it. Cheap models used by busy automated agents can top this table, because tokens count machine traffic as well as people.",
+          "This is one platform. Use inside ChatGPT, Claude, Gemini and other apps, or through a vendor's own API, is not counted, so this table cannot tell you which AI has the most users overall."
+        ],
+        "faq": [
+          {
+            "q": "What is the most used AI model?",
+            "a": "On OpenRouter in the 7 days to {date}, {top1} processed the most tokens, {v1} of the platform's total. Across all AI products, no public figure gives a full answer."
+          },
+          {
+            "q": "Does most used mean best?",
+            "a": "No. Price matters a lot here. For quality, see the Arena tables in this section."
+          },
+          {
+            "q": "What is a token?",
+            "a": "A small piece of text, often part of a word, that models read and write. Long documents and agents that run many steps use far more tokens than a short chat."
+          }
+        ]
+      },
+      "ai-companies": {
+        "title": "AI Companies by Usage {year}: AI Market Share on OpenRouter | cv.cm",
+        "description": "AI companies ranked by tokens on OpenRouter: {top1} has {v1} of all tokens over 7 days, then {top2} and {top3}. One platform's share, CSV download.",
+        "h1": "AI companies by usage on OpenRouter, {date}",
+        "lede": "The companies behind the most used models on OpenRouter, ranked by their share of all tokens over 7 days. This covers one platform, not the whole AI market.",
+        "facts": [
+          "First: {top1} ({v1}), then {top2} ({v2}) and {top3} ({v3}).",
+          "Shares are of all tokens on OpenRouter. Models it groups as \"other\" count towards the total but belong to no company here, so shares do not add up to 100%. Only public traffic counts, and a model only on days it makes OpenRouter's daily top 50.",
+          "Data for the 7 days to {date}."
+        ],
+        "about": [
+          "cv.cm adds up, for each company, the tokens of the models OpenRouter names in its daily top list. Smaller models it groups as \"other\" are left out, and open models served by other providers still count for the company that made them.",
+          "It leaves out consumer apps and direct API use, where the order can be very different. Read it as what developers route through one service in one week."
+        ],
+        "faq": [
+          {
+            "q": "Which AI company has the largest market share?",
+            "a": "On OpenRouter in the 7 days to {date}, {top1} has the largest share at {v1} of all tokens. That covers one developer platform; no public source gives the share of all AI use."
+          },
+          {
+            "q": "Why is this different from other AI market share figures?",
+            "a": "Other reports count chatbot visits, app users or revenue. This table counts tokens through one API service, so it leans towards developers and cheap models."
+          },
+          {
+            "q": "Why might a well-known company rank low?",
+            "a": "Many of its customers may use its own API or app, which OpenRouter cannot see."
+          }
+        ]
+      },
+      "browser-market-share": {
+        "title": "Browser Market Share {year}: Worldwide and by Country | cv.cm",
+        "description": "Browser market share in {date}: {top1} {v1}, {top2} {v2}, {top3} {v3} worldwide, side by side with the US, China, Taiwan, Japan, Korea and more.",
+        "h1": "Browser market share, {date}",
+        "lede": "Share of web page views by browser, worldwide and in eight markets, on all devices. Compare countries side by side, or sort by any column.",
+        "facts": [
+          "Worldwide: {top1} {v1}, {top2} {v2}, {top3} {v3}.",
+          "China: {CNTop} leads with {CNV}. Japan: {JPTop} with {JPV}. US: {USTop} with {USV}.",
+          "Data for {date}."
+        ],
+        "about": [
+          "StatCounter counts page views on the more than a million sites that use its tracker, so this measures how much each browser is used on those sites, not how many people have it installed. Change is in percentage points against the same month a year earlier.",
+          "Browsers built on Chromium, such as Edge and many Chinese browsers, count under their own names here, even though they share Chrome's engine. Browsers that identify themselves as Chrome count as Chrome."
+        ],
+        "faq": [
+          {
+            "q": "What is the most used browser?",
+            "a": "{top1}, with {v1} of page views worldwide in {date}, followed by {top2} ({v2}) and {top3} ({v3})."
+          },
+          {
+            "q": "What is the most used browser in China?",
+            "a": "In StatCounter's {date} data, {CNTop} leads China with {CNV}. Local browsers such as UC and 360 hold a far larger share there than anywhere else in the table."
+          },
+          {
+            "q": "Is this share of users?",
+            "a": "No. It is a share of page views on StatCounter's tracked sites, so people who browse more count for more."
+          }
+        ]
+      },
+      "os-market-share": {
+        "title": "Operating System Market Share {year}: Android, Windows, iOS | cv.cm",
+        "description": "Operating system market share in {date}: {top1} {v1}, {top2} {v2}, {top3} {v3} worldwide, with the US, China, Japan, Korea and more side by side.",
+        "h1": "Operating system market share, {date}",
+        "lede": "Share of web page views by operating system across phones, tablets and computers, worldwide and in eight markets.",
+        "facts": [
+          "Worldwide: {top1} {v1}, {top2} {v2}, {top3} {v3}.",
+          "China: {CNTop} leads with {CNV}. US: {USTop} with {USV}. Indonesia: {IDTop} with {IDV}.",
+          "Data for {date}."
+        ],
+        "about": [
+          "StatCounter counts page views on sites using its tracker, across every device type. So this table shows how much of the web is viewed from each system, which is not the same as the number of devices sold.",
+          "Older and newer versions of a system count together. Phones and computers sit in one table, so a country that browses mostly on phones shows a high Android or iOS share."
+        ],
+        "faq": [
+          {
+            "q": "What is the most used operating system?",
+            "a": "Counting all devices, {top1} leads with {v1} of page views worldwide in {date}, followed by {top2} ({v2}) and {top3} ({v3})."
+          },
+          {
+            "q": "Is Windows still the biggest?",
+            "a": "On computers, usually yes. Across all devices it competes with Android, because so much browsing happens on phones. The table above shows the current order."
+          },
+          {
+            "q": "Does this count apps?",
+            "a": "No. It counts visits to websites in a browser, so time spent inside apps is left out."
+          }
+        ]
+      },
+      "search-engine-market-share": {
+        "title": "Search Engine Market Share {year}: Google, Bing, Baidu | cv.cm",
+        "description": "Search engine market share in {date}: {top1} {v1}, {top2} {v2}, {top3} {v3} worldwide, with China, Korea, Japan, the US and more side by side.",
+        "h1": "Search engine market share, {date}",
+        "lede": "Share of visits arriving from each search engine, worldwide and in eight markets. The order changes a lot by country.",
+        "facts": [
+          "Worldwide: {top1} {v1}, {top2} {v2}, {top3} {v3}.",
+          "China: {CNTop} leads with {CNV}. Korea: {KRTop} with {KRV}. Japan: {JPTop} with {JPV}.",
+          "Data for {date}."
+        ],
+        "about": [
+          "StatCounter counts page views that arrive from a search engine on sites using its tracker. It measures traffic sent to those sites, not the number of searches, and answers people read without clicking are not counted.",
+          "Coverage is a limit in China and other markets where few of the tracked sites are visited, and where searches inside apps are not seen, so treat those shares as a rough guide."
+        ],
+        "faq": [
+          {
+            "q": "What is the most used search engine?",
+            "a": "{top1}, sending {v1} of search visits worldwide in {date}, followed by {top2} ({v2}) and {top3} ({v3})."
+          },
+          {
+            "q": "Which search engine leads in China?",
+            "a": "In StatCounter's {date} data, {CNTop} leads China with {CNV}. Figures for China vary widely between sources because of which sites each one tracks."
+          },
+          {
+            "q": "Do AI chatbots count as search engines here?",
+            "a": "No. This table covers traditional search engines. Visits from AI assistants are not part of it."
+          }
+        ]
+      },
+      "phone-market-share": {
+        "title": "Phone Brand Market Share {year}: Apple, Samsung, Xiaomi | cv.cm",
+        "description": "Phone brand market share in {date}: {top1} {v1}, {top2} {v2}, {top3} {v3} worldwide, with the US, China, Japan, Korea, Vietnam and more side by side.",
+        "h1": "Phone brand market share, {date}",
+        "lede": "Share of mobile web page views by phone brand, worldwide and in eight markets. This shows the phones people are using, not those sold this year.",
+        "facts": [
+          "Worldwide: {top1} {v1}, {top2} {v2}, {top3} {v3}.",
+          "China: {CNTop} leads with {CNV}. Korea: {KRTop} with {KRV}. Indonesia: {IDTop} with {IDV}.",
+          "Data for {date}."
+        ],
+        "about": [
+          "StatCounter identifies the brand from visits to sites using its tracker on mobile devices. So old phones still in use count, which is why this differs from sales rankings published by research firms each quarter.",
+          "Some phones hide their brand from websites, and people who browse more count for more. Treat small gaps between brands as noise."
+        ],
+        "faq": [
+          {
+            "q": "Which phone brand is the most used?",
+            "a": "{top1}, with {v1} of mobile page views worldwide in {date}, followed by {top2} ({v2}) and {top3} ({v3})."
+          },
+          {
+            "q": "Is this the same as phones sold?",
+            "a": "No. Sales rankings count new phones shipped in a period. This table counts phones in use, weighted by how much people browse on them."
+          },
+          {
+            "q": "What is the top phone brand in China?",
+            "a": "In StatCounter's {date} data, {CNTop} leads China with {CNV} of mobile page views."
+          }
+        ]
+      },
+      "social-media-market-share": {
+        "title": "Social Media Market Share {year}: By Country | cv.cm",
+        "description": "Social media market share in {date}: {top1} {v1}, {top2} {v2}, {top3} {v3} of web visits from social networks, with the US, Japan, Korea and more.",
+        "h1": "Social media market share, {date}",
+        "lede": "Which social networks send the most visits to websites, worldwide and in eight markets. This measures links clicked, not how many people use each network.",
+        "facts": [
+          "Worldwide: {top1} {v1}, {top2} {v2}, {top3} {v3}.",
+          "Japan: {JPTop} leads with {JPV}. Korea: {KRTop} with {KRV}. US: {USTop} with {USV}.",
+          "Data for {date}."
+        ],
+        "about": [
+          "StatCounter counts page views that arrive from a social network on sites using its tracker. A network where people rarely click out, such as a video app, can rank low here despite having a huge audience.",
+          "Traffic inside apps often arrives with no label, and networks mainly used in mainland China are hardly visible in this data, so this table should not be read as a count of users."
+        ],
+        "faq": [
+          {
+            "q": "Which social network has the largest share?",
+            "a": "{top1}, with {v1} of visits sent from social networks worldwide in {date}, followed by {top2} ({v2}) and {top3} ({v3})."
+          },
+          {
+            "q": "Is this the number of users?",
+            "a": "No. It counts visits sent to other websites. A network's user count can be far higher than its share here suggests."
+          },
+          {
+            "q": "Why is TikTok or WeChat lower than expected?",
+            "a": "People mostly stay inside those apps, and links opened there are often not labelled as coming from them."
+          }
+        ]
+      },
+      "crypto-market-cap": {
+        "title": "Cryptocurrency Prices by Market Cap {year}: Top 100 Coins | cv.cm",
+        "description": "Top 100 cryptocurrencies by market cap on {date}: {top1} {v1}, {top2} {v2}, {top3} {v3}. Price, 24-hour and 7-day change and volume.",
+        "h1": "Top 100 cryptocurrencies by market cap, {date}",
+        "lede": "The 100 largest cryptocurrencies by market value, with price, 24-hour and 7-day change and trading volume. A daily snapshot, not a live price feed.",
+        "facts": [
+          "Largest: {top1} ({v1}), then {top2} ({v2}) and {top3} ({v3}).",
+          "Together the top 100 are worth {total}. Bitcoin is {dominance} of the whole crypto market.",
+          "Data as of {date}, taken once a day."
+        ],
+        "about": [
+          "Market cap is the price times the coins in circulation, as CoinMarketCap counts them. Prices move every second, so this table, refreshed once a day, is for comparing coins rather than for trading. Stablecoins such as Tether are listed because they rank by market cap.",
+          "Nothing here is investment advice. Crypto prices can swing sharply, and a high rank does not mean a coin is safe. cv.cm does not sell or recommend any coin."
+        ],
+        "faq": [
+          {
+            "q": "What is the biggest cryptocurrency by market cap?",
+            "a": "{top1}, worth {v1} on {date}, followed by {top2} ({v2}) and {top3} ({v3})."
+          },
+          {
+            "q": "How often are these prices updated?",
+            "a": "Once a day. For a live price, check an exchange or CoinMarketCap itself; the time on this page tells you when the snapshot was taken."
+          },
+          {
+            "q": "Why can't I download this table?",
+            "a": "CoinMarketCap allows cv.cm to show its data here but not to pass it on as a file, so this table has no CSV."
+          }
+        ]
+      },
+      "commodity-prices": {
+        "title": "Commodity Prices {year}: Biggest Gainers and Losers | cv.cm",
+        "description": "Commodity prices for {date}: best over a year {top1} ({v1}), worst {low1} ({lv1}). Oil, gas, metals, grains and more, from the World Bank.",
+        "h1": "Commodity prices: gainers and losers, {date}",
+        "lede": "{rows} commodities ranked by their price change over 12 months, with the latest monthly price and the change over one month. World Bank Pink Sheet data, in US dollars.",
+        "facts": [
+          "Strongest over a year: {top1} ({v1}), {top2} ({v2}) and {top3} ({v3}).",
+          "Weakest over a year: {low1} ({lv1}), {low2} ({lv2}) and {low3} ({lv3}).",
+          "Monthly average prices for {date}."
+        ],
+        "about": [
+          "The World Bank publishes the Pink Sheet early each month with average world market prices for the month before, in nominal US dollars. Each price is one benchmark, such as Brent crude delivered in Europe or Thai 5% broken rice, so what you pay locally can differ a lot.",
+          "Changes compare the latest monthly average with the month before and with the same month a year earlier. A monthly average smooths out daily swings, so the size of a move on a single day can be larger."
+        ],
+        "faq": [
+          {
+            "q": "Which commodity did best over the past year?",
+            "a": "Among the {rows} listed, {top1} did best over 12 months to {date}: {v1}."
+          },
+          {
+            "q": "Which commodity did worst over the past year?",
+            "a": "{low1}, with {lv1} over 12 months to {date}."
+          },
+          {
+            "q": "Are these live prices?",
+            "a": "No. They are monthly averages from the World Bank, updated when it publishes each month."
+          }
+        ]
+      },
+      "currency-strength": {
+        "title": "Currency Strength vs US Dollar {year}: {rows} Currencies Ranked | cv.cm",
+        "description": "Which currencies gained or lost against the US dollar since {yearAgo}: {top1} {v1}, {top2} {v2}, {low1} {lv1}. ECB reference rates.",
+        "h1": "Currency strength against the US dollar, {date}",
+        "lede": "{rows} currencies ranked by how their value changed against the US dollar over a year, with the rate per dollar and the change over one month. From the European Central Bank's daily reference rates.",
+        "facts": [
+          "Strongest against the dollar over a year: {top1} ({v1}), {top2} ({v2}) and {top3} ({v3}).",
+          "Weakest: {low1} ({lv1}), {low2} ({lv2}) and {low3} ({lv3}).",
+          "Rates for {date}, compared with {yearAgo}."
+        ],
+        "about": [
+          "The European Central Bank publishes one reference rate a day for each currency against the euro. cv.cm divides them by the euro's rate against the dollar to get each currency per US dollar, so these are cross rates, close to but not the same as what a bank charges.",
+          "A positive change means the currency now buys more dollars than before. The table covers the currencies the ECB quotes, so some, such as the Taiwan dollar and Vietnamese dong, are not included."
+        ],
+        "faq": [
+          {
+            "q": "Which currency did best against the dollar?",
+            "a": "{top1}: {v1} against the US dollar since {yearAgo}."
+          },
+          {
+            "q": "Which currency did worst over the past year?",
+            "a": "{low1}: {lv1} against the dollar since {yearAgo}."
+          },
+          {
+            "q": "Are these exchange rates live?",
+            "a": "No. They are the ECB's reference rates, published once each working day around 16:00 Central European Time, for information only."
+          }
+        ]
+      }
+    }
   }
 }

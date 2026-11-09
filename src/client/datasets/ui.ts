@@ -70,14 +70,17 @@ export function mountDatasetHub(host: HTMLElement, locale: Locale): void {
   );
 }
 
+type TableUi = { search: string; searchPlaceholder: string; rows: string; shown: string; noMatch: string; download: string; sortHint: string };
+
 /** Sortable, filterable table. The prerendered page carries every row, so crawlers see the whole table. */
-function tableView(locale: Locale, id: DatasetId, table: DatasetTable): HTMLElement {
-  const ui = datasetUi(locale);
+export function dataTable(locale: Locale, page: { label: string; caption: string; csvHref: string | null; csvName: string; ui: TableUi }, table: DatasetTable): HTMLElement {
+  const { ui } = page;
   const total = table.rows.length;
   const rows = table.rows.map((cells, index) => ({
     index,
     cells,
-    text: cells.map((c) => `${c.text} ${c.sort}`).join(" ").toLocaleLowerCase(locale),
+    // A missing value sorts as -Infinity; that is not text anyone filters for.
+    text: cells.map((c) => (typeof c.sort === "number" && !Number.isFinite(c.sort) ? c.text : `${c.text} ${c.sort}`)).join(" ").toLocaleLowerCase(locale),
     el: h("tr", null, ...cells.map((c, col) => {
       const column = table.columns[col];
       const cls = [column.num ? "num" : "", column.mono ? "mono" : "", column.wide ? "wide" : ""].join(" ").trim() || null;
@@ -99,7 +102,8 @@ function tableView(locale: Locale, id: DatasetId, table: DatasetTable): HTMLElem
       const sorted = [...rows].sort((a, b) => {
         const x = a.cells[index].sort;
         const y = b.cells[index].sort;
-        const diff = typeof x === "number" && typeof y === "number" ? x - y : collator.compare(String(x), String(y));
+        // Equal first: two missing values (-Infinity) would subtract to NaN.
+        const diff = x === y ? 0 : typeof x === "number" && typeof y === "number" ? x - y : collator.compare(String(x), String(y));
         return diff * dir || a.index - b.index;
       });
       body.append(...sorted.map((r) => r.el));
@@ -129,15 +133,15 @@ function tableView(locale: Locale, id: DatasetId, table: DatasetTable): HTMLElem
       : fill(ui.rows, { n: total.toLocaleString(locale) });
     empty.hidden = shown > 0;
   });
-  return h("section", { class: "data-table", "aria-label": datasetName(locale, id).name },
+  return h("section", { class: "data-table", "aria-label": page.label },
     h("div", { class: "data-tools" },
       search,
-      h("a", { class: "btn ghost", href: csvHref(id), download: `${id}.csv` }, ui.download),
+      page.csvHref ? h("a", { class: "btn ghost", href: page.csvHref, download: page.csvName }, ui.download) : null,
     ),
     count,
     h("div", { class: "data-wrap" },
       h("table", null,
-        h("caption", null, `${datasetPageCopy(locale, id).h1}. ${ui.sortHint}`),
+        h("caption", null, `${page.caption}. ${ui.sortHint}`),
         h("thead", null, h("tr", null, ...heads)),
         body,
       ),
@@ -163,7 +167,7 @@ export async function mountDataset(host: HTMLElement, locale: Locale, id: Datase
       h("h2", { id: "facts-title" }, ui.facts),
       h("ul", null, ...copy.facts.map((fact) => h("li", null, fact))),
     ),
-    tableView(locale, id, datasetTable(locale, id, rows, countries as CountryRow[])),
+    dataTable(locale, { label: datasetName(locale, id).name, caption: copy.h1, csvHref: csvHref(id), csvName: `${id}.csv`, ui }, datasetTable(locale, id, rows, countries as CountryRow[])),
     h("p", { class: "data-source muted" },
       `${ui.source}: `, h("a", { href: source.url, rel: "noopener", target: "_blank" }, source.name),
       ` · ${ui.license}: `, h("a", { href: source.licenseUrl, rel: "noopener license", target: "_blank" }, source.license),

@@ -244,7 +244,7 @@ export const PUBLISHER = {
   "@type": "Organization",
   name: "cv.cm",
   url: `${ORIGIN}/`,
-  logo: { "@type": "ImageObject", url: `${ORIGIN}/favicon-512.png` },
+  logo: `${ORIGIN}/favicon-512.png`,
 };
 
 /** TechArticle for an article; CollectionPage + ItemList for the hub. */

@@ -869,5 +869,526 @@
         { "q": "LF và CR khác nhau thế nào?", "a": "LF (10, xuống dòng) bắt đầu dòng mới trên Linux và macOS. File văn bản Windows kết thúc dòng bằng CR LF (13 rồi 10)." }
       ]
     }
+  },
+  "rankings": {
+    "hub": {
+      "title": "Bảng xếp hạng: AI, thị phần và hơn nữa, có nguồn | cv.cm",
+      "description": "Bảng xếp hạng có nguồn, sắp xếp và tải về được: AI tốt nhất, AI dùng nhiều nhất, thị phần trình duyệt, hệ điều hành, tìm kiếm, điện thoại, mạng xã hội.",
+      "h1": "Bảng xếp hạng",
+      "lede": "Các bảng xếp hạng xây dựng từ dữ liệu mở, mỗi bảng đều ghi nguồn, giấy phép và ngày. Bạn có thể sắp xếp theo cột bất kỳ, lọc hàng hoặc tải CSV.",
+      "groups": {
+        "ai": "AI",
+        "share": "Thị phần",
+        "countries": "Quốc gia",
+        "markets": "Thị trường"
+      },
+      "makeYourOwn": "Tự tạo bảng xếp hạng",
+      "about": [
+        "Mọi bảng ở đây đều lấy từ nguồn công khai cho phép dùng lại, và cv.cm không thêm điểm số riêng hay đưa sản phẩm của mình vào. Hãy đọc phần Giới thiệu trên mỗi trang: phần lớn danh sách chỉ đo một thứ, chẳng hạn phiếu bầu trên một trang hoặc lượt truy cập vào các trang web được theo dõi, và giới hạn đó rất quan trọng.",
+        "Dữ liệu là ảnh chụp có ghi ngày chứ không phải nguồn trực tiếp, nên mỗi trang đều cho biết đang hiển thị dữ liệu của ngày nào."
+      ],
+      "faq": [
+        {
+          "q": "Dữ liệu đến từ đâu?",
+          "a": "Chất lượng AI lấy từ bảng xếp hạng Arena, mức sử dụng AI từ OpenRouter, thị phần từ StatCounter Global Stats. Mỗi trang đều có liên kết đến nguồn và giấy phép."
+        },
+        {
+          "q": "Bảng xếp hạng được cập nhật bao lâu một lần?",
+          "a": "Chúng được cập nhật tự động mỗi ngày một lần và mỗi trang hiển thị ngày của dữ liệu. Các nguồn công bố với tốc độ khác nhau: thị phần theo tháng, các bảng AI thay đổi thường xuyên hơn."
+        },
+        {
+          "q": "Tôi có thể dùng lại các bảng này không?",
+          "a": "Có, theo giấy phép của nguồn ghi trên mỗi trang: CC BY 4.0 cho các bảng AI và CC BY-SA 3.0 cho thị phần. Hãy ghi công nguồn. Bảng nào cũng có thể tải CSV."
+        }
+      ]
+    },
+    "ui": {
+      "all": "Tất cả bảng xếp hạng",
+      "search": "Lọc hàng",
+      "searchPlaceholder": "Nhập tên hoặc giá trị",
+      "rows": "{n} hàng",
+      "shown": "{shown} trên {n} hàng",
+      "noMatch": "Không có hàng nào khớp.",
+      "download": "Tải CSV",
+      "sortHint": "Chọn tiêu đề cột để sắp xếp.",
+      "facts": "Thông tin chính",
+      "about": "Về bảng xếp hạng này",
+      "faq": "Câu hỏi thường gặp",
+      "related": "Bảng xếp hạng khác",
+      "source": "Nguồn",
+      "license": "Giấy phép",
+      "snapshot": "Thu thập ngày {date}",
+      "dataAsOf": "Dữ liệu tính đến {date}",
+      "rank": "#",
+      "model": "Mô hình",
+      "organization": "Công ty",
+      "licence": "Giấy phép",
+      "score": "Điểm",
+      "votes": "Phiếu bầu",
+      "tokens": "Lượng token",
+      "shareOfTokens": "Tỷ lệ token",
+      "modelsListed": "Số mô hình",
+      "name": "Tên",
+      "world": "Toàn cầu",
+      "change": "Thay đổi 1 năm (điểm %)",
+      "symbol": "Ký hiệu",
+      "price": "Giá",
+      "change24h": "24 giờ",
+      "change7d": "7 ngày",
+      "marketCap": "Vốn hóa",
+      "volume24h": "Khối lượng (24 giờ)",
+      "commodity": "Hàng hóa",
+      "unit": "Đơn vị",
+      "change1m": "1 tháng",
+      "change1y": "1 năm",
+      "currency": "Tiền tệ",
+      "code": "Mã",
+      "perUsd": "Mỗi đô la Mỹ",
+      "commodities": {
+        "crude-oil-brent": "Dầu thô (Brent)",
+        "crude-oil-wti": "Dầu thô (WTI)",
+        "natural-gas-us": "Khí tự nhiên (Mỹ)",
+        "natural-gas-europe": "Khí tự nhiên (châu Âu)",
+        "lng-japan": "Khí tự nhiên hóa lỏng (Nhật Bản)",
+        "coal": "Than đá (Úc)",
+        "cocoa": "Ca cao",
+        "coffee-arabica": "Cà phê (Arabica)",
+        "coffee-robusta": "Cà phê (Robusta)",
+        "tea": "Trà",
+        "palm-oil": "Dầu cọ",
+        "soybeans": "Đậu tương",
+        "soybean-oil": "Dầu đậu tương",
+        "maize": "Ngô",
+        "wheat": "Lúa mì",
+        "rice": "Gạo (Thái Lan, tấm 5%)",
+        "sugar": "Đường",
+        "orange": "Cam",
+        "beef": "Thịt bò",
+        "chicken": "Thịt gà",
+        "shrimp": "Tôm",
+        "cotton": "Bông",
+        "rubber": "Cao su",
+        "urea": "Urê (phân bón)",
+        "aluminum": "Nhôm",
+        "iron-ore": "Quặng sắt",
+        "copper": "Đồng",
+        "lead": "Chì",
+        "tin": "Thiếc",
+        "nickel": "Niken",
+        "zinc": "Kẽm",
+        "gold": "Vàng",
+        "platinum": "Bạch kim",
+        "silver": "Bạc"
+      },
+      "tools": "Công cụ liên quan"
+    },
+    "sets": {
+      "ai-models": {
+        "title": "Xếp hạng AI {year}: Bảng xếp hạng LLM tốt nhất | cv.cm",
+        "description": "Các mô hình chat AI tốt nhất hiện nay: {top1} dẫn đầu Arena với {v1}, tiếp theo là {top2} và {top3}. Top {rows} kèm điểm và phiếu bầu, tải CSV.",
+        "h1": "Mô hình AI tốt nhất: bảng xếp hạng LLM, {date}",
+        "lede": "Top {rows} mô hình chat trên bảng xếp hạng văn bản của Arena, xếp theo phiếu bầu mù của người dùng. Bạn có thể tìm, sắp xếp theo cột bất kỳ hoặc tải CSV.",
+        "facts": [
+          "Hạng nhất: {top1} ({v1}), tiếp theo là {top2} ({v2}) và {top3} ({v3}).",
+          "{leadOrg} có nhiều vị trí nhất trong top 10: {leadCount}.",
+          "Dữ liệu tính đến {date}."
+        ],
+        "about": [
+          "Arena cho phép mọi người đưa một prompt cho hai mô hình ẩn danh rồi bầu cho câu trả lời tốt hơn. Các phiếu đó tạo thành điểm xếp hạng, nên chênh lệch vài điểm không có nhiều ý nghĩa: hãy xem cột phiếu bầu, vì mô hình mới ít phiếu dao động nhiều nhất. Bảng này hiển thị hạng mục tổng thể từ ảnh chụp mới nhất được công bố.",
+          "Điểm cao cho thấy người bầu thích mô hình đó hơn khi trò chuyện nói chung. Điểm này không đo giá, tốc độ hay hiệu quả của mô hình với công việc của bạn, nên hãy thử vài mô hình đầu bảng với một tác vụ thực tế trước khi chọn."
+        ],
+        "faq": [
+          {
+            "q": "Mô hình AI tốt nhất hiện nay là gì?",
+            "a": "Theo phiếu bầu của Arena tính đến {date}, {top1} đứng đầu với điểm {v1}, tiếp theo là {top2} và {top3}. Thứ tự thay đổi thường xuyên, và các mô hình có điểm gần nhau có thể đổi chỗ khi có thêm phiếu."
+          },
+          {
+            "q": "Bảng xếp hạng LLM này chấm điểm thế nào?",
+            "a": "Mọi người so sánh hai mô hình ẩn danh trên cùng một prompt rồi bỏ phiếu. Arena chuyển các phiếu thành điểm xếp hạng tương tự hệ số cờ vua. Điểm cao hơn nghĩa là mô hình đó thường thắng các mô hình khác trong những lần đối đầu này."
+          },
+          {
+            "q": "Vì sao một mô hình xuất hiện nhiều lần?",
+            "a": "Arena xếp hạng riêng từng cấu hình, chẳng hạn mức suy luận High hoặc Max, vì cùng một mô hình có thể trả lời khác nhau ở mỗi mức."
+          }
+        ]
+      },
+      "ai-coding-models": {
+        "title": "AI lập trình tốt nhất {year}: Xếp hạng LLM | cv.cm",
+        "description": "Các mô hình AI lập trình tốt nhất theo phiếu bầu phát triển web của Arena: {top1} dẫn đầu với {v1}, tiếp theo là {top2} và {top3}. Top {rows} kèm phiếu bầu, tải CSV.",
+        "h1": "Mô hình AI lập trình tốt nhất, {date}",
+        "lede": "Top {rows} mô hình trên bảng xếp hạng phát triển web của Arena: mọi người xem hai web app được tạo ra và bầu cho app tốt hơn.",
+        "facts": [
+          "Hạng nhất: {top1} ({v1}), tiếp theo là {top2} ({v2}) và {top3} ({v3}).",
+          "{leadOrg} có nhiều vị trí nhất trong top 10: {leadCount}.",
+          "Dữ liệu tính đến {date}."
+        ],
+        "about": [
+          "Mỗi phiếu so sánh hai mô hình ẩn danh nhận cùng một yêu cầu xây dựng trang web hoặc ứng dụng nhỏ. Người bầu đánh giá kết quả họ nhìn thấy, nên bảng này ưu ái giao diện chạy được và đẹp mắt hơn là kỹ năng back-end hay thuật toán.",
+          "Điểm là điểm xếp hạng tạo từ các phiếu đó. Mô hình ít phiếu có thể dao động mạnh, nên hãy xem cả cột phiếu bầu và thử vài mô hình đầu bảng trên codebase của bạn, điều mà không bảng xếp hạng công khai nào thay thế được."
+        ],
+        "faq": [
+          {
+            "q": "AI lập trình tốt nhất hiện nay là gì?",
+            "a": "Trong các phiếu bầu phát triển web của Arena tính đến {date}, {top1} đứng đầu với {v1}, tiếp theo là {top2} và {top3}."
+          },
+          {
+            "q": "Bảng này có bao gồm mọi loại lập trình không?",
+            "a": "Không. Bảng chỉ bao gồm việc xây dựng trang web và ứng dụng từ một prompt. Mô hình thắng ở đây có thể không phải là mô hình giỏi nhất khi gỡ lỗi dự án lớn hoặc viết mã hệ thống."
+          },
+          {
+            "q": "Vì sao điểm cao hơn trong bảng chat?",
+            "a": "Mỗi bảng được tính điểm từ phiếu bầu riêng, nên điểm chỉ dùng để so sánh các mô hình trong cùng một bảng."
+          }
+        ]
+      },
+      "ai-image-models": {
+        "title": "AI tạo ảnh tốt nhất {year}: Xếp hạng mô hình | cv.cm",
+        "description": "Các AI tạo ảnh tốt nhất theo phiếu bầu mù: {top1} dẫn đầu Arena với {v1}, tiếp theo là {top2} và {top3}. Top {rows} mô hình ảnh kèm điểm và phiếu bầu.",
+        "h1": "AI tạo ảnh tốt nhất, {date}",
+        "lede": "Top {rows} mô hình tạo ảnh từ văn bản trên bảng xếp hạng Arena: mọi người xem hai ảnh từ cùng một prompt và bỏ phiếu mà không biết mô hình nào tạo ra.",
+        "facts": [
+          "Hạng nhất: {top1} ({v1}), tiếp theo là {top2} ({v2}) và {top3} ({v3}).",
+          "{leadOrg} có nhiều vị trí nhất trong top 10: {leadCount}.",
+          "Dữ liệu tính đến {date}."
+        ],
+        "about": [
+          "Người bầu chọn ảnh họ thích hơn cho cùng một prompt, và các phiếu đó tạo thành điểm xếp hạng. Cách này ưu ái sức hút chung, nên mô hình mạnh ở một việc, chẳng hạn chữ trong ảnh hoặc một phong cách nhất định, có thể xếp thấp hơn mức xứng đáng cho việc đó.",
+          "Bảng xếp hạng mô hình, không phải ứng dụng. Một ứng dụng có thể cung cấp nhiều mô hình trong số này, giá và giới hạn khác nhau tùy ứng dụng."
+        ],
+        "faq": [
+          {
+            "q": "AI tạo ảnh tốt nhất là gì?",
+            "a": "Theo phiếu bầu của Arena tính đến {date}, {top1} đứng đầu với {v1}, tiếp theo là {top2} và {top3}. Với một phong cách cụ thể, hãy so sánh vài mô hình đầu bảng bằng prompt của bạn."
+          },
+          {
+            "q": "Bảng xếp hạng này có nói về công cụ miễn phí không?",
+            "a": "Không. Bảng xếp hạng chất lượng của mô hình, bất kể chi phí. Cột giấy phép cho biết mô hình nào có trọng số mở."
+          },
+          {
+            "q": "Thứ hạng thay đổi bao lâu một lần?",
+            "a": "Arena thường xuyên công bố ảnh chụp mới, và trang này hiển thị ngày của ảnh chụp đang dùng."
+          }
+        ]
+      },
+      "ai-video-models": {
+        "title": "AI tạo video tốt nhất {year}: Xếp hạng mô hình | cv.cm",
+        "description": "Các AI tạo video tốt nhất theo phiếu bầu mù: {top1} dẫn đầu Arena với {v1}, tiếp theo là {top2} và {top3}. Top {rows} mô hình văn bản thành video kèm điểm và phiếu.",
+        "h1": "AI tạo video tốt nhất, {date}",
+        "lede": "Top {rows} mô hình tạo video từ văn bản trên bảng xếp hạng Arena: mọi người xem hai đoạn video từ cùng một prompt và bỏ phiếu mà không biết mô hình nào tạo ra.",
+        "facts": [
+          "Hạng nhất: {top1} ({v1}), tiếp theo là {top2} ({v2}) và {top3} ({v3}).",
+          "{leadOrg} có nhiều vị trí nhất trong top 10: {leadCount}.",
+          "Dữ liệu tính đến {date}."
+        ],
+        "about": [
+          "Người bầu chọn đoạn video họ thích hơn cho cùng một prompt, và các phiếu đó tạo thành điểm xếp hạng. Video có ít phiếu hơn văn bản, nên điểm ở đây kém chắc chắn hơn, nhất là với các mô hình mới.",
+          "Bảng chỉ gồm video tạo từ văn bản. Các công cụ làm ảnh chuyển động hoặc chỉnh sửa video được Arena đánh giá riêng và không có ở đây."
+        ],
+        "faq": [
+          {
+            "q": "AI tạo video tốt nhất là gì?",
+            "a": "Theo phiếu bầu của Arena tính đến {date}, {top1} đứng đầu với {v1}, tiếp theo là {top2} và {top3}."
+          },
+          {
+            "q": "Bảng có tính đến âm thanh, độ dài hay giá không?",
+            "a": "Không. Bảng chỉ phản ánh đoạn video mà người bầu thích hơn. Hãy kiểm tra giới hạn độ dài, âm thanh và giá với ứng dụng cung cấp mô hình."
+          },
+          {
+            "q": "Công cụ chuyển ảnh thành video của cv.cm có trong bảng này không?",
+            "a": "Không. Công cụ của cv.cm di chuyển một camera ảo qua ảnh ngay trong trình duyệt và không tạo chuyển động từ văn bản, nên đây là một loại công cụ khác."
+          }
+        ]
+      },
+      "ai-usage": {
+        "title": "Mô hình AI dùng nhiều nhất {year}: OpenRouter | cv.cm",
+        "description": "Các mô hình AI dùng nhiều nhất trên OpenRouter: {top1} chiếm {v1} tổng token trong 7 ngày, tiếp theo là {top2} và {top3}. Tải CSV.",
+        "h1": "Mô hình AI dùng nhiều nhất trên OpenRouter, {date}",
+        "lede": "Top {rows} mô hình theo lượng token xử lý qua OpenRouter trong 7 ngày đến {date}. Bảng đo mức sử dụng, không phải chất lượng.",
+        "facts": [
+          "Hạng nhất: {top1} ({v1} tổng token), tiếp theo là {top2} ({v2}) và {top3} ({v3}).",
+          "Tỷ lệ tính trên tổng token của OpenRouter, không phải toàn bộ mức sử dụng AI. Chỉ tính lưu lượng công khai, và mỗi mô hình chỉ được tính vào những ngày lọt top 50 hằng ngày của OpenRouter.",
+          "Dữ liệu 7 ngày đến {date}."
+        ],
+        "about": [
+          "OpenRouter là dịch vụ mà lập trình viên dùng để truy cập nhiều mô hình qua một API, và dịch vụ này công bố lượng dữ liệu đi qua. Các mô hình giá rẻ do những agent tự động hoạt động liên tục sử dụng có thể đứng đầu bảng, vì token tính cả lưu lượng của máy lẫn của con người.",
+          "Đây chỉ là một nền tảng. Việc dùng trong ChatGPT, Claude, Gemini và các ứng dụng khác, hoặc qua API riêng của nhà cung cấp, không được tính, nên bảng này không thể cho biết AI nào có nhiều người dùng nhất nói chung."
+        ],
+        "faq": [
+          {
+            "q": "Mô hình AI nào được dùng nhiều nhất?",
+            "a": "Trên OpenRouter trong 7 ngày đến {date}, {top1} xử lý nhiều token nhất, chiếm {v1} tổng của nền tảng. Với mọi sản phẩm AI, không có số liệu công khai nào đưa ra câu trả lời đầy đủ."
+          },
+          {
+            "q": "Dùng nhiều nhất có nghĩa là tốt nhất không?",
+            "a": "Không. Giá có ảnh hưởng lớn ở đây. Về chất lượng, hãy xem các bảng Arena trong mục này."
+          },
+          {
+            "q": "Token là gì?",
+            "a": "Là một mẩu văn bản nhỏ, thường là một phần của từ, mà mô hình đọc và viết. Tài liệu dài và agent chạy nhiều bước dùng nhiều token hơn hẳn một cuộc trò chuyện ngắn."
+          }
+        ]
+      },
+      "ai-companies": {
+        "title": "Công ty AI theo mức sử dụng {year}: Thị phần OpenRouter | cv.cm",
+        "description": "Công ty AI xếp theo token trên OpenRouter: {top1} chiếm {v1} tổng token trong 7 ngày, tiếp theo là {top2} và {top3}. Thị phần của một nền tảng, tải CSV.",
+        "h1": "Công ty AI theo mức sử dụng trên OpenRouter, {date}",
+        "lede": "Các công ty đứng sau những mô hình dùng nhiều nhất trên OpenRouter, xếp theo tỷ lệ trong tổng token của 7 ngày. Đây chỉ là một nền tảng, không phải toàn bộ thị trường AI.",
+        "facts": [
+          "Hạng nhất: {top1} ({v1}), tiếp theo là {top2} ({v2}) và {top3} ({v3}).",
+          "Tỷ lệ tính trên tổng token của OpenRouter. Các mô hình được nhóm là \"other\" vẫn tính vào tổng nhưng không thuộc công ty nào ở đây, nên tổng các tỷ lệ không bằng 100%. Chỉ tính lưu lượng công khai, và mỗi mô hình chỉ được tính vào những ngày lọt top 50 hằng ngày của OpenRouter.",
+          "Dữ liệu 7 ngày đến {date}."
+        ],
+        "about": [
+          "cv.cm cộng token của các mô hình mà OpenRouter nêu tên trong danh sách top hằng ngày, theo từng công ty. Các mô hình nhỏ hơn được nhóm là \"other\" bị loại, và các mô hình mở do nhà cung cấp khác phục vụ vẫn được tính cho công ty đã tạo ra chúng.",
+          "Bảng không tính các ứng dụng cho người tiêu dùng và việc dùng API trực tiếp, nơi thứ tự có thể rất khác. Hãy xem đây là lượng lập trình viên định tuyến qua một dịch vụ trong một tuần."
+        ],
+        "faq": [
+          {
+            "q": "Công ty AI nào có thị phần lớn nhất?",
+            "a": "Trên OpenRouter trong 7 ngày đến {date}, {top1} có tỷ lệ lớn nhất với {v1} tổng token. Số liệu này chỉ thuộc một nền tảng cho lập trình viên; không có nguồn công khai nào cho biết thị phần của toàn bộ việc sử dụng AI."
+          },
+          {
+            "q": "Vì sao số liệu này khác các số liệu thị phần AI khác?",
+            "a": "Các báo cáo khác đếm lượt truy cập chatbot, người dùng ứng dụng hoặc doanh thu. Bảng này đếm token qua một dịch vụ API, nên nghiêng về lập trình viên và các mô hình giá rẻ."
+          },
+          {
+            "q": "Vì sao một công ty nổi tiếng có thể xếp thấp?",
+            "a": "Nhiều khách hàng của công ty đó có thể dùng API hoặc ứng dụng riêng của họ, điều mà OpenRouter không nhìn thấy."
+          }
+        ]
+      },
+      "browser-market-share": {
+        "title": "Thị phần trình duyệt {year}: Toàn cầu và theo quốc gia | cv.cm",
+        "description": "Thị phần trình duyệt {date}: {top1} {v1}, {top2} {v2}, {top3} {v3} toàn cầu, đặt cạnh Mỹ, Trung Quốc, Đài Loan, Nhật Bản, Hàn Quốc và các nơi khác.",
+        "h1": "Thị phần trình duyệt, {date}",
+        "lede": "Tỷ lệ lượt xem trang web theo trình duyệt, toàn cầu và tại tám thị trường, trên mọi thiết bị. So sánh các quốc gia cạnh nhau hoặc sắp xếp theo cột bất kỳ.",
+        "facts": [
+          "Toàn cầu: {top1} {v1}, {top2} {v2}, {top3} {v3}.",
+          "Trung Quốc: {CNTop} dẫn đầu với {CNV}. Nhật Bản: {JPTop} với {JPV}. Mỹ: {USTop} với {USV}.",
+          "Dữ liệu cho {date}."
+        ],
+        "about": [
+          "StatCounter đếm lượt xem trang trên hơn một triệu trang web dùng công cụ theo dõi của họ, nên đây là mức độ mỗi trình duyệt được dùng trên các trang đó, không phải số người đã cài đặt. Thay đổi tính bằng điểm phần trăm so với cùng tháng năm trước.",
+          "Các trình duyệt xây dựng trên Chromium, như Edge và nhiều trình duyệt Trung Quốc, được tính theo tên riêng ở đây dù dùng chung engine với Chrome. Trình duyệt tự nhận là Chrome được tính là Chrome."
+        ],
+        "faq": [
+          {
+            "q": "Trình duyệt nào được dùng nhiều nhất?",
+            "a": "{top1}, với {v1} lượt xem trang toàn cầu trong {date}, tiếp theo là {top2} ({v2}) và {top3} ({v3})."
+          },
+          {
+            "q": "Trình duyệt nào được dùng nhiều nhất ở Trung Quốc?",
+            "a": "Trong dữ liệu {date} của StatCounter, {CNTop} dẫn đầu Trung Quốc với {CNV}. Các trình duyệt nội địa như UC và 360 có thị phần ở đó lớn hơn nhiều so với bất kỳ nơi nào khác trong bảng."
+          },
+          {
+            "q": "Đây có phải là thị phần người dùng không?",
+            "a": "Không. Đây là tỷ lệ lượt xem trang trên các trang web StatCounter theo dõi, nên người lướt web nhiều hơn được tính nhiều hơn."
+          }
+        ]
+      },
+      "os-market-share": {
+        "title": "Thị phần hệ điều hành {year}: Android, Windows, iOS | cv.cm",
+        "description": "Thị phần hệ điều hành {date}: {top1} {v1}, {top2} {v2}, {top3} {v3} toàn cầu, đặt cạnh Mỹ, Trung Quốc, Nhật Bản, Hàn Quốc và các nơi khác.",
+        "h1": "Thị phần hệ điều hành, {date}",
+        "lede": "Tỷ lệ lượt xem trang web theo hệ điều hành trên điện thoại, máy tính bảng và máy tính, toàn cầu và tại tám thị trường.",
+        "facts": [
+          "Toàn cầu: {top1} {v1}, {top2} {v2}, {top3} {v3}.",
+          "Trung Quốc: {CNTop} dẫn đầu với {CNV}. Mỹ: {USTop} với {USV}. Indonesia: {IDTop} với {IDV}.",
+          "Dữ liệu cho {date}."
+        ],
+        "about": [
+          "StatCounter đếm lượt xem trang trên các trang web dùng công cụ theo dõi của họ, trên mọi loại thiết bị. Vì vậy bảng này cho thấy bao nhiêu phần web được xem từ mỗi hệ điều hành, khác với số thiết bị đã bán.",
+          "Các phiên bản cũ và mới của một hệ điều hành được tính chung. Điện thoại và máy tính nằm chung một bảng, nên quốc gia chủ yếu lướt web bằng điện thoại sẽ có thị phần Android hoặc iOS cao."
+        ],
+        "faq": [
+          {
+            "q": "Hệ điều hành nào được dùng nhiều nhất?",
+            "a": "Tính trên mọi thiết bị, {top1} dẫn đầu với {v1} lượt xem trang toàn cầu trong {date}, tiếp theo là {top2} ({v2}) và {top3} ({v3})."
+          },
+          {
+            "q": "Windows có còn lớn nhất không?",
+            "a": "Trên máy tính thì thường là có. Trên mọi thiết bị, Windows cạnh tranh với Android vì rất nhiều hoạt động lướt web diễn ra trên điện thoại. Bảng phía trên cho thấy thứ tự hiện tại."
+          },
+          {
+            "q": "Số liệu này có tính ứng dụng không?",
+            "a": "Không. Số liệu đếm lượt truy cập trang web trong trình duyệt, nên thời gian dùng trong ứng dụng không được tính."
+          }
+        ]
+      },
+      "search-engine-market-share": {
+        "title": "Thị phần công cụ tìm kiếm {year}: Google, Bing, Baidu | cv.cm",
+        "description": "Thị phần công cụ tìm kiếm {date}: {top1} {v1}, {top2} {v2}, {top3} {v3} toàn cầu, đặt cạnh Trung Quốc, Hàn Quốc, Nhật Bản, Mỹ và các nơi khác.",
+        "h1": "Thị phần công cụ tìm kiếm, {date}",
+        "lede": "Tỷ lệ lượt truy cập đến từ mỗi công cụ tìm kiếm, toàn cầu và tại tám thị trường. Thứ tự thay đổi nhiều theo quốc gia.",
+        "facts": [
+          "Toàn cầu: {top1} {v1}, {top2} {v2}, {top3} {v3}.",
+          "Trung Quốc: {CNTop} dẫn đầu với {CNV}. Hàn Quốc: {KRTop} với {KRV}. Nhật Bản: {JPTop} với {JPV}.",
+          "Dữ liệu cho {date}."
+        ],
+        "about": [
+          "StatCounter đếm lượt xem trang đến từ công cụ tìm kiếm trên các trang web dùng công cụ theo dõi của họ. Số liệu đo lưu lượng gửi đến các trang đó, không phải số lượt tìm kiếm, và câu trả lời người ta đọc mà không bấm vào sẽ không được tính.",
+          "Phạm vi bao phủ là một hạn chế ở Trung Quốc và các thị trường khác nơi ít người truy cập các trang được theo dõi, và nơi không thấy được tìm kiếm trong ứng dụng, nên hãy xem các tỷ lệ đó như một tham khảo sơ bộ."
+        ],
+        "faq": [
+          {
+            "q": "Công cụ tìm kiếm nào được dùng nhiều nhất?",
+            "a": "{top1}, đem lại {v1} lượt truy cập từ tìm kiếm trên toàn cầu trong {date}, tiếp theo là {top2} ({v2}) và {top3} ({v3})."
+          },
+          {
+            "q": "Công cụ tìm kiếm nào dẫn đầu ở Trung Quốc?",
+            "a": "Trong dữ liệu {date} của StatCounter, {CNTop} dẫn đầu Trung Quốc với {CNV}. Số liệu về Trung Quốc khác nhau nhiều giữa các nguồn do mỗi nguồn theo dõi những trang khác nhau."
+          },
+          {
+            "q": "Chatbot AI có được tính là công cụ tìm kiếm ở đây không?",
+            "a": "Không. Bảng này gồm các công cụ tìm kiếm truyền thống. Lượt truy cập từ trợ lý AI không nằm trong đó."
+          }
+        ]
+      },
+      "phone-market-share": {
+        "title": "Thị phần điện thoại {year}: Apple, Samsung, Xiaomi | cv.cm",
+        "description": "Thị phần hãng điện thoại {date}: {top1} {v1}, {top2} {v2}, {top3} {v3} toàn cầu, đặt cạnh Mỹ, Trung Quốc, Nhật Bản, Hàn Quốc, Việt Nam và các nơi khác.",
+        "h1": "Thị phần điện thoại theo hãng, {date}",
+        "lede": "Tỷ lệ lượt xem trang web trên di động theo hãng điện thoại, toàn cầu và tại tám thị trường. Bảng cho thấy điện thoại mọi người đang dùng, không phải điện thoại bán ra năm nay.",
+        "facts": [
+          "Toàn cầu: {top1} {v1}, {top2} {v2}, {top3} {v3}.",
+          "Trung Quốc: {CNTop} dẫn đầu với {CNV}. Hàn Quốc: {KRTop} với {KRV}. Indonesia: {IDTop} với {IDV}.",
+          "Dữ liệu cho {date}."
+        ],
+        "about": [
+          "StatCounter nhận diện hãng từ lượt truy cập bằng thiết bị di động vào các trang web dùng công cụ theo dõi của họ. Vì vậy điện thoại cũ vẫn đang dùng cũng được tính, đó là lý do số liệu này khác với bảng xếp hạng doanh số mà các công ty nghiên cứu công bố mỗi quý.",
+          "Một số điện thoại ẩn hãng với trang web, và người lướt web nhiều hơn được tính nhiều hơn. Hãy xem chênh lệch nhỏ giữa các hãng là nhiễu."
+        ],
+        "faq": [
+          {
+            "q": "Hãng điện thoại nào được dùng nhiều nhất?",
+            "a": "{top1}, với {v1} lượt xem trang trên di động toàn cầu trong {date}, tiếp theo là {top2} ({v2}) và {top3} ({v3})."
+          },
+          {
+            "q": "Đây có giống số điện thoại đã bán không?",
+            "a": "Không. Bảng xếp hạng doanh số đếm điện thoại mới xuất xưởng trong một giai đoạn. Bảng này đếm điện thoại đang dùng, có trọng số theo mức độ lướt web trên đó."
+          },
+          {
+            "q": "Hãng điện thoại đứng đầu ở Trung Quốc là gì?",
+            "a": "Trong dữ liệu {date} của StatCounter, {CNTop} dẫn đầu Trung Quốc với {CNV} lượt xem trang trên di động."
+          }
+        ]
+      },
+      "social-media-market-share": {
+        "title": "Thị phần mạng xã hội {year}: Theo quốc gia | cv.cm",
+        "description": "Thị phần mạng xã hội {date}: {top1} {v1}, {top2} {v2}, {top3} {v3} lượt truy cập web từ mạng xã hội, cùng số liệu Mỹ, Nhật Bản, Hàn Quốc và các nơi khác.",
+        "h1": "Thị phần mạng xã hội, {date}",
+        "lede": "Mạng xã hội nào đem lại nhiều lượt truy cập trang web nhất, toàn cầu và tại tám thị trường. Bảng đo số liên kết được bấm, không phải số người dùng mỗi mạng.",
+        "facts": [
+          "Toàn cầu: {top1} {v1}, {top2} {v2}, {top3} {v3}.",
+          "Nhật Bản: {JPTop} dẫn đầu với {JPV}. Hàn Quốc: {KRTop} với {KRV}. Mỹ: {USTop} với {USV}.",
+          "Dữ liệu cho {date}."
+        ],
+        "about": [
+          "StatCounter đếm lượt xem trang đến từ mạng xã hội trên các trang web dùng công cụ theo dõi của họ. Một mạng mà mọi người hiếm khi bấm ra ngoài, như ứng dụng video, có thể xếp thấp ở đây dù có lượng khán giả khổng lồ.",
+          "Lưu lượng từ trong ứng dụng thường không có nhãn, và các mạng chủ yếu dùng ở Trung Quốc đại lục gần như không hiện trong dữ liệu này, nên không nên đọc bảng này như số đếm người dùng."
+        ],
+        "faq": [
+          {
+            "q": "Mạng xã hội nào có thị phần lớn nhất?",
+            "a": "{top1}, với {v1} lượt truy cập từ mạng xã hội trên toàn cầu trong {date}, tiếp theo là {top2} ({v2}) và {top3} ({v3})."
+          },
+          {
+            "q": "Đây có phải số người dùng không?",
+            "a": "Không. Số liệu đếm lượt truy cập gửi đến các trang web khác. Số người dùng của một mạng có thể cao hơn nhiều so với tỷ lệ ở đây."
+          },
+          {
+            "q": "Vì sao TikTok hoặc WeChat thấp hơn dự kiến?",
+            "a": "Mọi người chủ yếu ở lại trong các ứng dụng đó, và liên kết mở từ đó thường không được gắn nhãn là đến từ chúng."
+          }
+        ]
+      },
+      "crypto-market-cap": {
+        "title": "Xếp hạng tiền điện tử theo vốn hóa {year}: Top 100 | cv.cm",
+        "description": "Top 100 tiền điện tử theo vốn hóa ngày {date}: {top1} {v1}, {top2} {v2}, {top3} {v3}. Giá, biến động 24 giờ, 7 ngày và khối lượng giao dịch.",
+        "h1": "Top 100 tiền điện tử theo vốn hóa, {date}",
+        "lede": "100 loại tiền điện tử có giá trị lớn nhất theo vốn hóa, kèm giá, biến động 24 giờ và 7 ngày cùng khối lượng giao dịch. Đây là ảnh chụp theo ngày, không phải bảng giá trực tiếp.",
+        "facts": [
+          "Lớn nhất: {top1} ({v1}), tiếp theo là {top2} ({v2}) và {top3} ({v3}).",
+          "Tổng giá trị của top 100 là {total}. Bitcoin chiếm {dominance} toàn thị trường tiền điện tử.",
+          "Dữ liệu tính đến {date}, lấy mỗi ngày một lần."
+        ],
+        "about": [
+          "Vốn hóa thị trường là giá nhân với số coin đang lưu hành, theo cách CoinMarketCap tính. Giá thay đổi từng giây, nên bảng này, làm mới mỗi ngày một lần, dùng để so sánh các coin chứ không phải để giao dịch. Các stablecoin như Tether được liệt kê vì chúng cũng được xếp hạng theo vốn hóa.",
+          "Nội dung ở đây không phải lời khuyên đầu tư. Giá tiền điện tử có thể biến động mạnh, và thứ hạng cao không có nghĩa là coin an toàn. cv.cm không bán hay khuyến nghị bất kỳ coin nào."
+        ],
+        "faq": [
+          {
+            "q": "Tiền điện tử nào lớn nhất theo vốn hóa?",
+            "a": "{top1}, trị giá {v1} vào {date}, tiếp theo là {top2} ({v2}) và {top3} ({v3})."
+          },
+          {
+            "q": "Giá được cập nhật bao lâu một lần?",
+            "a": "Mỗi ngày một lần. Muốn xem giá trực tiếp, hãy xem trên sàn giao dịch hoặc chính CoinMarketCap; thời điểm hiển thị trên trang cho biết ảnh chụp được lấy lúc nào."
+          },
+          {
+            "q": "Vì sao tôi không tải được bảng này?",
+            "a": "CoinMarketCap cho phép cv.cm hiển thị dữ liệu của họ tại đây nhưng không cho phép chuyển tiếp dưới dạng tệp, nên bảng này không có CSV."
+          }
+        ]
+      },
+      "commodity-prices": {
+        "title": "Giá hàng hóa {year}: Tăng và giảm nhiều nhất | cv.cm",
+        "description": "Giá hàng hóa {date}: tốt nhất trong năm {top1} ({v1}), kém nhất {low1} ({lv1}). Dầu, khí, kim loại, ngũ cốc, từ Ngân hàng Thế giới.",
+        "h1": "Giá hàng hóa: tăng và giảm nhiều nhất, {date}",
+        "lede": "{rows} mặt hàng xếp theo mức thay đổi giá trong 12 tháng, kèm giá tháng mới nhất và mức thay đổi trong một tháng. Dữ liệu Pink Sheet của Ngân hàng Thế giới, tính bằng đô la Mỹ.",
+        "facts": [
+          "Mạnh nhất trong một năm: {top1} ({v1}), {top2} ({v2}) và {top3} ({v3}).",
+          "Kém nhất trong một năm: {low1} ({lv1}), {low2} ({lv2}) và {low3} ({lv3}).",
+          "Giá trung bình hằng tháng cho {date}."
+        ],
+        "about": [
+          "Ngân hàng Thế giới công bố Pink Sheet vào đầu mỗi tháng, với giá trung bình trên thị trường thế giới của tháng trước, tính bằng đô la Mỹ danh nghĩa. Mỗi mức giá là một chuẩn tham chiếu, như dầu Brent giao tại châu Âu hay gạo tấm 5% của Thái Lan, nên giá bạn trả tại địa phương có thể khác rất nhiều.",
+          "Mức thay đổi so sánh trung bình tháng mới nhất với tháng trước và với cùng tháng một năm trước. Trung bình tháng làm mượt các biến động hằng ngày, nên biên độ biến động trong một ngày có thể lớn hơn."
+        ],
+        "faq": [
+          {
+            "q": "Mặt hàng nào diễn biến tốt nhất trong năm qua?",
+            "a": "Trong {rows} mặt hàng được liệt kê, {top1} diễn biến tốt nhất trong 12 tháng đến {date}: {v1}."
+          },
+          {
+            "q": "Mặt hàng nào diễn biến kém nhất trong năm qua?",
+            "a": "{low1}: {lv1} trong 12 tháng đến {date}."
+          },
+          {
+            "q": "Đây có phải giá trực tiếp không?",
+            "a": "Không. Đây là giá trung bình tháng của Ngân hàng Thế giới, được cập nhật khi tổ chức này công bố mỗi tháng."
+          }
+        ]
+      },
+      "currency-strength": {
+        "title": "Sức mạnh tiền tệ so với USD {year}: Xếp hạng {rows} đồng tiền | cv.cm",
+        "description": "Đồng tiền nào tăng hay giảm so với đô la Mỹ kể từ {yearAgo}: {top1} {v1}, {top2} {v2}, {low1} {lv1}. Tỷ giá tham chiếu của ECB.",
+        "h1": "Sức mạnh tiền tệ so với đô la Mỹ, {date}",
+        "lede": "{rows} đồng tiền xếp theo mức thay đổi giá trị so với đô la Mỹ trong một năm, kèm tỷ giá trên mỗi đô la và mức thay đổi trong một tháng. Lấy từ tỷ giá tham chiếu hằng ngày của Ngân hàng Trung ương châu Âu.",
+        "facts": [
+          "Mạnh nhất so với đô la trong một năm: {top1} ({v1}), {top2} ({v2}) và {top3} ({v3}).",
+          "Yếu nhất: {low1} ({lv1}), {low2} ({lv2}) và {low3} ({lv3}).",
+          "Tỷ giá ngày {date}, so với {yearAgo}."
+        ],
+        "about": [
+          "Ngân hàng Trung ương châu Âu công bố mỗi ngày một tỷ giá tham chiếu của từng đồng tiền so với đồng euro. cv.cm chia chúng cho tỷ giá euro so với đô la để ra mỗi đồng tiền trên một đô la Mỹ, nên đây là tỷ giá chéo, gần với mức ngân hàng áp dụng nhưng không giống hệt.",
+          "Thay đổi dương nghĩa là đồng tiền đó hiện mua được nhiều đô la hơn trước. Bảng chỉ gồm các đồng tiền ECB niêm yết, nên một số đồng, như đô la Đài Loan và đồng Việt Nam, không có trong đó."
+        ],
+        "faq": [
+          {
+            "q": "Đồng tiền nào diễn biến tốt nhất so với đô la?",
+            "a": "{top1}: {v1} so với đô la Mỹ kể từ {yearAgo}."
+          },
+          {
+            "q": "Đồng tiền nào diễn biến kém nhất trong năm qua?",
+            "a": "{low1}: {lv1} so với đô la kể từ {yearAgo}."
+          },
+          {
+            "q": "Tỷ giá này có trực tiếp không?",
+            "a": "Không. Đây là tỷ giá tham chiếu của ECB, công bố mỗi ngày làm việc một lần vào khoảng 16:00 giờ Trung Âu, chỉ để tham khảo."
+          }
+        ]
+      }
+    }
   }
 }

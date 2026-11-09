@@ -162,6 +162,11 @@ describe("knowledge: routes", () => {
 });
 
 describe("knowledge: SEO", () => {
+  it("gives the publisher logo as a plain URL, not an ImageObject Search Console checks for licence fields", () => {
+    const ld = kbArticleJsonLd("en", KB_ARTICLES[0]) as { publisher: { logo: unknown } };
+    expect(ld.publisher.logo).toBe("https://cv.cm/favicon-512.png");
+  });
+
   it("serves crawlable HTML with article, breadcrumb and FAQ JSON-LD", () => {
     const html = applyHtmlSeo(SHELL, "es", { kb: true, kbId: "url-encoding" });
     expect(html).toContain('<link rel="canonical" href="https://cv.cm/es/learn/knowledge/url-encoding/"');

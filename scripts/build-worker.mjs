@@ -48,6 +48,7 @@ const pageModules = {
   markets: "src/client/markets/ui.ts",
   quiz: "src/client/quiz/ui.ts",
   dataset: "src/client/datasets/ui.ts",
+  ranking: "src/client/rankings/ui.ts",
   kb: "src/client/kb/ui.ts",
   ref: "src/client/ref/ui.ts",
 };
@@ -74,6 +75,9 @@ for (const file of readdirSync(resolve(root, "src/data"))) {
   if (!files.length) throw new Error(`no Vite chunk for src/data/${file}`);
   pageChunks[`rows-${m[1]}`] = files;
 }
+// Ranking rows are one chunk, preloaded the same way.
+pageChunks["rows-rankings"] = chunkFiles("src/shared/rankings-rows.json");
+if (!pageChunks["rows-rankings"].length) throw new Error("no Vite chunk for src/shared/rankings-rows.json");
 rmSync(manifestDir, { recursive: true, force: true });
 
 await esbuild.build({

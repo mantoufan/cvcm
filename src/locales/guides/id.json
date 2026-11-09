@@ -1182,6 +1182,114 @@
       "s2b": "Model diunduh sekali, lalu dalam sekitar satu detik menggubah melodi, bas, dan drum dan memutarnya berulang. Tekan Lagi yang mirip untuk variasi.",
       "s3t": "Unduh",
       "s3b": "Simpan WAV untuk video dan podcast, atau MIDI untuk mengganti instrumen di aplikasi musik."
+    },
+    "coin-flip": {
+      "lead": "Lempar koin yang adil, atau seribu koin, dalam satu ketukan. Tidak ada unggahan.",
+      "s1t": "Buka Lempar koin",
+      "s1b": "Ketuk koinnya atau tekan Lempar. Koin berputar lalu mendarat di angka atau gambar.",
+      "s2t": "Lempar banyak sekaligus",
+      "s2b": "Pilih 10, 100, atau 1.000 di Koin per lemparan untuk melihat bagaimana hasilnya menjadi seimbang.",
+      "s3t": "Baca hasilnya",
+      "s3b": "Jumlah angka dan gambar, persentase, rentetan terpanjang dan saat ini, serta 100 koin terakhir sebagai A dan G."
+    },
+    "guitar-tuner": {
+      "lead": "Stem gitar, bass, ukulele, atau biola dengan mikrofon. Tidak ada unggahan.",
+      "s1t": "Buka Tuner gitar",
+      "s1b": "Pilih instrumen dan penyeteman, lalu tekan Mulai tuner dan izinkan mikrofon.",
+      "s2t": "Petik satu senar",
+      "s2b": "Biarkan berdenging. Tuner menunjukkan senar terdekat, frekuensinya, dan selisihnya dalam cent.",
+      "s3t": "Putar penala sampai hijau",
+      "s3b": "Jarum ke kiri: terlalu rendah, kencangkan. Jarum ke kanan: terlalu tinggi, kendurkan. Pas berarti dalam ±5 cent. Putar nada acuan membunyikan nada senar itu."
+    },
+    "factors": {
+      "lead": "Cari setiap faktor bilangan dan apakah bilangan itu prima. Tidak ada unggahan.",
+      "s1t": "Buka Kalkulator faktor",
+      "s1b": "Ketik bilangan bulat sampai 18 digit, atau ketuk salah satu contoh.",
+      "s2t": "Baca faktorisasi prima",
+      "s2b": "Lihat apakah bilangan itu prima, faktorisasi primanya seperti 2³ × 3² × 5, dan bilangan prima tepat di bawah dan di atasnya.",
+      "s3t": "Lihat semua faktor dan pasangannya",
+      "s3b": "Setiap pembagi tercantum berurutan, beserta pasangan faktor, jumlah pembagi, dan totalnya."
+    },
+    "lcm-gcf": {
+      "lead": "Cari KPK dan FPB dari beberapa bilangan. Tidak ada unggahan.",
+      "s1t": "Buka Kalkulator KPK dan FPB",
+      "s1b": "Ketik 2 sampai 20 bilangan bulat, dipisah koma atau spasi.",
+      "s2t": "Baca FPB dan KPK",
+      "s2b": "Keduanya muncul sekaligus, dan halaman memberi tahu bila bilangannya relatif prima (FPB 1).",
+      "s3t": "Ikuti pengerjaannya",
+      "s3b": "Faktor prima tiap bilangan menunjukkan cara FPB dan KPK terbentuk. Untuk dua bilangan, algoritma Euclid ditampilkan langkah demi langkah."
+    },
+    "calculator": {
+      "lead": "Hitung dengan trigonometri, log, pangkat, dan persen. Tidak ada unggahan.",
+      "s1t": "Ketik atau tekan hitungannya",
+      "s1b": "Ketik ekspresi seperti 2 × (3 + 4) atau sin(30), atau pakai tombolnya. Hasil muncul saat Anda mengetik.",
+      "s2t": "Pilih derajat atau radian",
+      "s2b": "DEG/RAD mengatur satuan sudut untuk sin, cos, dan tan. % membagi dengan 100 dan Ans adalah hasil terakhir.",
+      "s3t": "Simpan dan pakai lagi hasilnya",
+      "s3b": "Tekan = atau Enter untuk menambahkan hitungan ke Riwayat. Ketuk hitungan lama untuk mengeditnya, atau Salin hasil untuk menempelnya."
+    },
+    "notepad": {
+      "lead": "Notepad sederhana yang menyimpan di browser saat Anda mengetik. Tidak ada unggahan.",
+      "s1t": "Ketik catatan Anda",
+      "s1b": "Tulis di kotak. Jumlah kata, karakter, dan baris diperbarui saat Anda mengetik.",
+      "s2t": "Tersimpan dengan sendirinya",
+      "s2b": "Catatan disimpan di browser ini sesaat setelah Anda berhenti mengetik dan masih ada saat Anda kembali.",
+      "s3t": "Simpan salinan",
+      "s3b": "Unduh .txt menyimpan file, Salin semua menyalin teks, dan Buka file membaca file teks ke notepad."
+    },
+    "markdown": {
+      "lead": "Tulis Markdown dan lihat hasilnya berdampingan. Tidak ada unggahan.",
+      "s1t": "Tulis atau tempel Markdown",
+      "s1b": "Ketik di kotak Markdown, atau tekan Lihat contoh untuk melihat judul, daftar, tabel, dan kode.",
+      "s2t": "Periksa pratinjau",
+      "s2b": "Pratinjau diperbarui saat Anda mengetik. HTML mentah ditampilkan sebagai teks, dan tautan terbuka di tab baru.",
+      "s3t": "Salin atau unduh",
+      "s3b": "Salin HTML untuk halaman web atau CMS, atau unduh halaman .html atau file .md."
+    },
+    "gradient": {
+      "lead": "Rancang gradien latar CSS dan salin kodenya. Tidak ada unggahan.",
+      "s1t": "Pilih jenis atau preset",
+      "s1b": "Mulai dari preset atau Acak, lalu pilih linear, radial, atau conic dan atur sudut atau bentuknya.",
+      "s2t": "Atur warnanya",
+      "s2b": "Ubah setiap warna dan geser posisinya. Tambahkan hingga enam warna; × menghapus satu.",
+      "s3t": "Salin CSS",
+      "s3b": "Tekan Salin CSS dan tempel ke stylesheet Anda, atau pilih ukuran lalu Simpan PNG untuk wallpaper."
+    },
+    "fancy-text": {
+      "lead": "Ubah teks jadi huruf tebal, sambung, gotik, gelembung, dan terbalik untuk ditempel di mana saja.",
+      "s1t": "Ketik teks Anda",
+      "s1b": "Ketik atau tempel teks ke kotak. Setiap gaya di bawah diperbarui saat Anda mengetik.",
+      "s2t": "Temukan gaya",
+      "s2b": "Gulir daftar: tebal, miring, sambung, gotik, garis ganda, dalam lingkaran, dalam kotak, kapital kecil, dan lainnya.",
+      "s3t": "Salin dan tempel",
+      "s3b": "Tekan Salin di samping gaya dan tempel ke bio, postingan, chat, atau nama game."
+    },
+    "rom-emulator": {
+      "lead": "Buka ROM Anda dan mainkan di halaman ini. Tidak ada yang diunggah.",
+      "s1t": "Pilih ROM",
+      "s1b": "Tekan tombol pilih ROM, lalu pilih file .nes, .sfc, .gb, .gbc, .gba, .md, atau .zip.",
+      "s2t": "Periksa konsol",
+      "s2b": "Konsol dikenali dari file. Jika salah atau tidak dikenal, pilih di Konsol dan game akan dimulai ulang.",
+      "s3t": "Mainkan",
+      "s3b": "Gunakan tombol yang tercantum di bawah game, pad di layar ponsel, atau gamepad Bluetooth."
+    },
+    "flash-player": {
+      "lead": "Buka file .swf di tab ini dengan Ruffle. Tanpa plugin, tanpa unggahan.",
+      "s1t": "Pilih SWF",
+      "s1b": "Tekan tombol pilih SWF, lalu pilih file .swf. File tetap di tab ini.",
+      "s2t": "Mulai",
+      "s2b": "File mulai sendiri. Klik gambar sekali untuk menyalakan suara.",
+      "s3t": "Mainkan",
+      "s3b": "Sebagian besar Flash memakai mouse; ketukan di ponsel dihitung sebagai klik. Gunakan tombol panah jika game memerlukan keyboard."
+    },
+    "tier-list": {
+      "lead": "Urutkan apa saja dalam baris dan simpan bagan sebagai gambar. Tidak ada yang diunggah.",
+      "s1t": "Tambah item",
+      "s1b": "Ketik satu item per baris lalu tekan Tambah item, atau tambah, tempel, atau jatuhkan gambar. Semuanya menunggu di Belum diurutkan.",
+      "s2t": "Urutkan ke baris",
+      "s2b": "Seret tiap item ke sebuah baris. Di ponsel, ketuk item lalu pilih Taruh di sini. Ganti nama, warna, atau tambah baris sesukamu.",
+      "s3t": "Simpan bagan",
+      "s3b": "Beri judul, lalu tekan Unduh PNG, atau Salin sebagai teks untuk menempelkan peringkat ke obrolan."
     }
   }
 }

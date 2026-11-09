@@ -39,6 +39,10 @@
       "name": "Text and calculators"
     },
     {
+      "id": "games",
+      "name": "Retro games: open your own ROM or SWF"
+    },
+    {
       "id": "assets",
       "name": "Precious metals, oil and stock calculators (unit and ratio math; the user enters any prices, no live quotes)"
     }
@@ -431,6 +435,14 @@
       "description": "Main colors of a photo as HEX.",
       "category": "image",
       "url": "https://cv.cm/en/image-colors/",
+      "data_handling": "Processes files in the page. Files are not uploaded."
+    },
+    {
+      "id": "tier-list",
+      "name": "Tier list maker",
+      "description": "Drag names or pictures into ranked rows, save a PNG.",
+      "category": "image",
+      "url": "https://cv.cm/en/tier-list/",
       "data_handling": "Processes files in the page. Files are not uploaded."
     },
     {
@@ -1240,6 +1252,94 @@
       "category": "text",
       "url": "https://cv.cm/en/touch-test/",
       "data_handling": "Runs in the page. Inputs are not uploaded."
+    },
+    {
+      "id": "coin-flip",
+      "name": "Coin flip",
+      "description": "Heads or tails, one coin or a thousand.",
+      "category": "text",
+      "url": "https://cv.cm/en/coin-flip/",
+      "data_handling": "Runs in the page. Inputs are not uploaded."
+    },
+    {
+      "id": "guitar-tuner",
+      "name": "Guitar tuner",
+      "description": "Tune guitar, bass or ukulele with your mic.",
+      "category": "text",
+      "url": "https://cv.cm/en/guitar-tuner/",
+      "data_handling": "Runs in the page. Inputs are not uploaded."
+    },
+    {
+      "id": "factors",
+      "name": "Factor calculator",
+      "description": "Factors, prime factorization, is it prime.",
+      "category": "text",
+      "url": "https://cv.cm/en/factors/",
+      "data_handling": "Runs in the page. Inputs are not uploaded."
+    },
+    {
+      "id": "lcm-gcf",
+      "name": "LCM and GCF calculator",
+      "description": "Least common multiple and greatest common factor.",
+      "category": "text",
+      "url": "https://cv.cm/en/lcm-gcf/",
+      "data_handling": "Runs in the page. Inputs are not uploaded."
+    },
+    {
+      "id": "calculator",
+      "name": "Scientific calculator",
+      "description": "Trig, logs, powers, history.",
+      "category": "text",
+      "url": "https://cv.cm/en/calculator/",
+      "data_handling": "Runs in the page. Inputs are not uploaded."
+    },
+    {
+      "id": "notepad",
+      "name": "Online notepad",
+      "description": "Saves as you type. Word count, .txt files.",
+      "category": "text",
+      "url": "https://cv.cm/en/notepad/",
+      "data_handling": "Keeps the note in this browser's local storage on the device; files it opens are read in the page. Notes and files are not uploaded."
+    },
+    {
+      "id": "markdown",
+      "name": "Markdown preview",
+      "description": "Live preview and Markdown to HTML.",
+      "category": "text",
+      "url": "https://cv.cm/en/markdown/",
+      "data_handling": "Renders in the page and keeps the text in this browser. Images written into the text load from their own addresses. The text is not uploaded."
+    },
+    {
+      "id": "gradient",
+      "name": "CSS gradient generator",
+      "description": "Linear, radial, conic. Copy CSS or PNG.",
+      "category": "text",
+      "url": "https://cv.cm/en/gradient/",
+      "data_handling": "Runs in the page. Inputs are not uploaded."
+    },
+    {
+      "id": "fancy-text",
+      "name": "Fancy text generator",
+      "description": "Bold, script, bubble fonts to paste.",
+      "category": "text",
+      "url": "https://cv.cm/en/fancy-text/",
+      "data_handling": "Runs in the page. Inputs are not uploaded."
+    },
+    {
+      "id": "rom-emulator",
+      "name": "ROM emulator",
+      "description": "Play your own GBA, NES, SNES, GB or Mega Drive ROM.",
+      "category": "games",
+      "url": "https://cv.cm/en/rom-emulator/",
+      "data_handling": "Processes files in the page. Files are not uploaded."
+    },
+    {
+      "id": "flash-player",
+      "name": "Flash player",
+      "description": "Open a Flash .swf file without a plugin.",
+      "category": "games",
+      "url": "https://cv.cm/en/flash-player/",
+      "data_handling": "Processes files in the page. Files are not uploaded."
     },
     {
       "id": "gold",

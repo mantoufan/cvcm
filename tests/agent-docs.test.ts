@@ -95,7 +95,7 @@ describe("agent discovery files", () => {
   it("declares every tool that has a file input", () => {
     // Text tools that can also read a file the user picks; they keep the generic local text.
     const LOCAL_FILE_INPUT_TOOLS = ["data", "hash", "word-count"];
-    const declared = new Set<string>([...DATA_HANDLING_GROUPS.FILES, ...DATA_HANDLING_GROUPS.AI, ...DATA_HANDLING_GROUPS.STORES, ...LOCAL_FILE_INPUT_TOOLS]);
+    const declared = new Set<string>([...DATA_HANDLING_GROUPS.FILES, ...DATA_HANDLING_GROUPS.AI, ...DATA_HANDLING_GROUPS.STORES, ...DATA_HANDLING_GROUPS.NOTES, ...LOCAL_FILE_INPUT_TOOLS]);
     const withFileInput = TOOLS.filter((tool) => {
       const dir = join(root, "src/client", tool);
       try {
@@ -114,7 +114,7 @@ describe("agent discovery files", () => {
       "src/client/clip/ui.ts": "the clipboard, which stores notes by design",
       "src/client/ai/worker.ts": "downloads model files",
       "src/client/portrait-sim/assets.ts": "downloads sample photos",
-      "src/client/games/ui.ts": "HEAD request for a ROM file",
+      "src/client/games/player.ts": "HEAD request for a ROM file",
       "src/client/device/ui.ts": "reads the visitor's own IP address",
       "src/client/decode.ts": "decodes a local image with new Image()",
       "src/client/analytics.ts": "loads Google Analytics on tracked pages (src/shared/analytics.ts)",

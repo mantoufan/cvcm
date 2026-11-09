@@ -869,5 +869,526 @@
         { "q": "¿Qué diferencia hay entre LF y CR?", "a": "LF (10, salto de línea) inicia una línea nueva en Linux y macOS. Los archivos de texto de Windows terminan las líneas con CR LF (13 y luego 10)." }
       ]
     }
+  },
+  "rankings": {
+    "hub": {
+      "title": "Rankings: mejores IA, cuota de mercado y más, con fuentes | cv.cm",
+      "description": "Rankings con fuentes para ordenar y descargar: mejores modelos de IA, IA más usadas y cuota de mercado de navegadores, sistemas, buscadores, teléfonos y redes.",
+      "h1": "Rankings",
+      "lede": "Rankings elaborados con datos abiertos, cada uno con su fuente, licencia y fecha. Ordena cualquier columna, filtra filas o descarga el CSV.",
+      "groups": {
+        "ai": "IA",
+        "share": "Cuota de mercado",
+        "countries": "Países",
+        "markets": "Mercados"
+      },
+      "makeYourOwn": "Crea tu propio ranking",
+      "about": [
+        "Todas las tablas proceden de una fuente publicada que permite la reutilización, y cv.cm no añade puntuaciones propias ni incluye sus propios productos. Lee la sección Acerca de cada página: la mayoría de las listas miden una sola cosa, como los votos en un sitio o las visitas a sitios web rastreados, y ese límite importa.",
+        "Los datos son una instantánea con fecha, no una fuente en directo, así que cada página indica qué fecha muestra."
+      ],
+      "faq": [
+        {
+          "q": "¿De dónde proceden los datos?",
+          "a": "La calidad de la IA procede del ranking de Arena, el uso de IA de OpenRouter y la cuota de mercado de StatCounter Global Stats. Cada página enlaza a su fuente y licencia."
+        },
+        {
+          "q": "¿Con qué frecuencia se actualizan los rankings?",
+          "a": "Se actualizan automáticamente una vez al día y cada página muestra la fecha de sus datos. Las fuentes publican a distinto ritmo: la cuota de mercado es mensual y las tablas de IA cambian más a menudo."
+        },
+        {
+          "q": "¿Puedo reutilizar estas tablas?",
+          "a": "Sí, con la licencia de la fuente que aparece en cada página: CC BY 4.0 para las tablas de IA y CC BY-SA 3.0 para la cuota de mercado. Cita la fuente. Todas las tablas se pueden descargar en CSV."
+        }
+      ]
+    },
+    "ui": {
+      "all": "Todos los rankings",
+      "search": "Filtrar filas",
+      "searchPlaceholder": "Escribe un nombre o valor",
+      "rows": "{n} filas",
+      "shown": "{shown} de {n} filas",
+      "noMatch": "Ninguna fila coincide.",
+      "download": "Descargar CSV",
+      "sortHint": "Selecciona el título de una columna para ordenar.",
+      "facts": "Datos clave",
+      "about": "Acerca de este ranking",
+      "faq": "Preguntas frecuentes",
+      "related": "Más rankings",
+      "source": "Fuente",
+      "license": "Licencia",
+      "snapshot": "Recopilado el {date}",
+      "dataAsOf": "Datos a {date}",
+      "rank": "#",
+      "model": "Modelo",
+      "organization": "Empresa",
+      "licence": "Licencia",
+      "score": "Puntuación",
+      "votes": "Votos",
+      "tokens": "N.º de tokens",
+      "shareOfTokens": "Cuota de tokens",
+      "modelsListed": "Modelos listados",
+      "name": "Nombre",
+      "world": "Mundo",
+      "change": "Cambio a 1 año (pts)",
+      "symbol": "Símbolo",
+      "price": "Precio",
+      "change24h": "24 h",
+      "change7d": "7 d",
+      "marketCap": "Capitalización",
+      "volume24h": "Volumen (24 h)",
+      "commodity": "Materia prima",
+      "unit": "Unidad",
+      "change1m": "1 mes",
+      "change1y": "1 año",
+      "currency": "Divisa",
+      "code": "Código",
+      "perUsd": "Por dólar estadounidense",
+      "commodities": {
+        "crude-oil-brent": "Petróleo crudo (Brent)",
+        "crude-oil-wti": "Petróleo crudo (WTI)",
+        "natural-gas-us": "Gas natural (EE. UU.)",
+        "natural-gas-europe": "Gas natural (Europa)",
+        "lng-japan": "Gas natural licuado (Japón)",
+        "coal": "Carbón (Australia)",
+        "cocoa": "Cacao",
+        "coffee-arabica": "Café (arábica)",
+        "coffee-robusta": "Café (robusta)",
+        "tea": "Té",
+        "palm-oil": "Aceite de palma",
+        "soybeans": "Soja",
+        "soybean-oil": "Aceite de soja",
+        "maize": "Maíz",
+        "wheat": "Trigo",
+        "rice": "Arroz (Tailandia, 5 % partido)",
+        "sugar": "Azúcar",
+        "orange": "Naranjas",
+        "beef": "Carne de vacuno",
+        "chicken": "Pollo",
+        "shrimp": "Gambas",
+        "cotton": "Algodón",
+        "rubber": "Caucho",
+        "urea": "Urea (fertilizante)",
+        "aluminum": "Aluminio",
+        "iron-ore": "Mineral de hierro",
+        "copper": "Cobre",
+        "lead": "Plomo",
+        "tin": "Estaño",
+        "nickel": "Níquel",
+        "zinc": "Zinc",
+        "gold": "Oro",
+        "platinum": "Platino",
+        "silver": "Plata"
+      },
+      "tools": "Herramientas relacionadas"
+    },
+    "sets": {
+      "ai-models": {
+        "title": "Ranking de modelos de IA {year}: mejores LLM | cv.cm",
+        "description": "Los mejores modelos de chat de IA ahora: {top1} lidera el ranking de Arena con {v1}, seguido de {top2} y {top3}. Top {rows} con puntuación y votos, CSV.",
+        "h1": "Mejores modelos de IA: ranking LLM, {date}",
+        "lede": "Los {rows} mejores modelos de chat en el ranking de texto de Arena, ordenados por votos humanos a ciegas. Busca, ordena cualquier columna o descarga el CSV.",
+        "facts": [
+          "Primero: {top1} ({v1}), seguido de {top2} ({v2}) y {top3} ({v3}).",
+          "{leadOrg} tiene más puestos en el top 10: {leadCount}.",
+          "Datos a {date}."
+        ],
+        "about": [
+          "Arena permite plantear un prompt a dos modelos anónimos y votar la mejor respuesta. Esos votos se convierten en una puntuación, por lo que una diferencia de pocos puntos significa poco: revisa la columna de votos, porque los modelos nuevos con pocos votos son los que más se mueven. Esta tabla muestra la categoría general de la última instantánea publicada.",
+          "Una puntuación alta muestra lo que los votantes prefirieron en el chat general. No mide el precio, la velocidad ni cómo rinde un modelo en tu propio trabajo, así que prueba los primeros con una tarea real antes de elegir."
+        ],
+        "faq": [
+          {
+            "q": "¿Cuál es el mejor modelo de IA ahora mismo?",
+            "a": "Según los votos de Arena a {date}, {top1} ocupa el primer puesto con una puntuación de {v1}, seguido de {top2} y {top3}. El orden cambia a menudo, y los modelos con puntuaciones cercanas pueden intercambiar puestos a medida que llegan votos."
+          },
+          {
+            "q": "¿Cómo se puntúa este ranking de LLM?",
+            "a": "Las personas comparan dos modelos anónimos con el mismo prompt y votan. Arena convierte los votos en una puntuación similar a la del ajedrez. Una puntuación más alta significa que un modelo tiende a ganar a otros en esos enfrentamientos."
+          },
+          {
+            "q": "¿Por qué un mismo modelo aparece varias veces?",
+            "a": "Arena clasifica por separado distintos ajustes, como un nivel de razonamiento High o Max, porque el mismo modelo puede responder de forma diferente en cada uno."
+          }
+        ]
+      },
+      "ai-coding-models": {
+        "title": "Mejores IA para programar {year}: ranking de LLM | cv.cm",
+        "description": "Los mejores modelos de IA para programar, según los votos de desarrollo web de Arena: {top1} lidera con {v1}, seguido de {top2} y {top3}. Top {rows} con votos, CSV.",
+        "h1": "Mejores modelos de IA para programar, {date}",
+        "lede": "Los {rows} mejores modelos en el ranking de desarrollo web de Arena: las personas ven dos apps web generadas y votan la mejor.",
+        "facts": [
+          "Primero: {top1} ({v1}), seguido de {top2} ({v2}) y {top3} ({v3}).",
+          "{leadOrg} tiene más puestos en el top 10: {leadCount}.",
+          "Datos a {date}."
+        ],
+        "about": [
+          "Cada voto compara dos modelos anónimos que reciben la misma petición de crear una página web o una app pequeña. Los votantes juzgan el resultado que ven, por lo que esta tabla premia los front ends que funcionan y se ven bien más que la destreza en back end o algoritmos.",
+          "Las puntuaciones se calculan a partir de esos votos. Los modelos con pocos votos pueden moverse mucho, así que mira también la columna de votos y prueba los primeros en tu propio código, algo que ningún ranking público puede sustituir."
+        ],
+        "faq": [
+          {
+            "q": "¿Cuál es la mejor IA para programar ahora mismo?",
+            "a": "En los votos de desarrollo web de Arena a {date}, {top1} ocupa el primer puesto con {v1}, seguido de {top2} y {top3}."
+          },
+          {
+            "q": "¿Abarca todos los tipos de programación?",
+            "a": "No. Abarca la creación de páginas web y apps a partir de un prompt. Un modelo que gana aquí puede no ser el mejor para depurar un proyecto grande o escribir código de sistemas."
+          },
+          {
+            "q": "¿Por qué las puntuaciones son más altas que en la tabla de chat?",
+            "a": "Cada tabla se puntúa con sus propios votos, por lo que una puntuación solo compara modelos dentro de una misma tabla."
+          }
+        ]
+      },
+      "ai-image-models": {
+        "title": "Mejores IA para generar imágenes {year}: ranking | cv.cm",
+        "description": "Las mejores IA para generar imágenes por votos a ciegas: {top1} lidera Arena con {v1}, seguido de {top2} y {top3}. Top {rows} de modelos con puntuación y votos.",
+        "h1": "Mejores IA para generar imágenes, {date}",
+        "lede": "Los {rows} mejores modelos de texto a imagen en el ranking de Arena: las personas ven dos imágenes de un mismo prompt y votan sin saber qué modelo las creó.",
+        "facts": [
+          "Primero: {top1} ({v1}), seguido de {top2} ({v2}) y {top3} ({v3}).",
+          "{leadOrg} tiene más puestos en el top 10: {leadCount}.",
+          "Datos a {date}."
+        ],
+        "about": [
+          "Los votantes eligen la imagen que prefieren para un mismo prompt, y esos votos se convierten en una puntuación. Eso favorece el atractivo general, así que un modelo fuerte en una tarea, como el texto en imágenes o cierto estilo, puede quedar por debajo de lo que merece en esa tarea.",
+          "La tabla clasifica modelos, no apps. Una app puede ofrecer varios de estos modelos, y el precio y los límites varían según la app."
+        ],
+        "faq": [
+          {
+            "q": "¿Cuál es la mejor IA para generar imágenes?",
+            "a": "Según los votos de Arena a {date}, {top1} ocupa el primer puesto con {v1}, seguido de {top2} y {top3}. Para un estilo concreto, compara los primeros con tus propios prompts."
+          },
+          {
+            "q": "¿Estos rankings tratan de herramientas gratuitas?",
+            "a": "No. La tabla clasifica la calidad de los modelos, sea cual sea su coste. La columna de licencia muestra cuáles tienen pesos abiertos."
+          },
+          {
+            "q": "¿Con qué frecuencia cambia?",
+            "a": "Arena publica nuevas instantáneas a menudo, y esta página muestra la fecha de la que utiliza."
+          }
+        ]
+      },
+      "ai-video-models": {
+        "title": "Mejores IA para generar vídeo {year}: ranking | cv.cm",
+        "description": "Las mejores IA para generar vídeo por votos a ciegas: {top1} lidera Arena con {v1}, seguido de {top2} y {top3}. Top {rows} de texto a vídeo con puntuación y votos.",
+        "h1": "Mejores IA para generar vídeo, {date}",
+        "lede": "Los {rows} mejores modelos de texto a vídeo en el ranking de Arena: las personas ven dos clips de un mismo prompt y votan sin saber qué modelo los creó.",
+        "facts": [
+          "Primero: {top1} ({v1}), seguido de {top2} ({v2}) y {top3} ({v3}).",
+          "{leadOrg} tiene más puestos en el top 10: {leadCount}.",
+          "Datos a {date}."
+        ],
+        "about": [
+          "Los votantes eligen el clip que prefieren para un mismo prompt, y esos votos se convierten en una puntuación. El vídeo recibe menos votos que el texto, por lo que aquí las puntuaciones tienen más incertidumbre, sobre todo en los modelos nuevos.",
+          "La tabla abarca el vídeo creado solo a partir de texto. Las herramientas que animan una foto o editan un clip las evalúa Arena por separado y no se incluyen aquí."
+        ],
+        "faq": [
+          {
+            "q": "¿Cuál es la mejor IA para generar vídeo?",
+            "a": "Según los votos de Arena a {date}, {top1} ocupa el primer puesto con {v1}, seguido de {top2} y {top3}."
+          },
+          {
+            "q": "¿La tabla incluye sonido, duración o precio?",
+            "a": "No. Solo refleja qué clip prefirieron los votantes. Consulta los límites de duración, el audio y el precio en la app que ofrece el modelo."
+          },
+          {
+            "q": "¿Está en este ranking la herramienta de foto a vídeo de cv.cm?",
+            "a": "No. La herramienta de cv.cm mueve una cámara virtual por una foto en tu navegador y no genera movimiento a partir de texto, así que es otro tipo de herramienta."
+          }
+        ]
+      },
+      "ai-usage": {
+        "title": "Modelos de IA más usados {year}: ranking de OpenRouter | cv.cm",
+        "description": "Los modelos de IA más usados en OpenRouter: {top1} acapara {v1} de todos los tokens en 7 días, seguido de {top2} y {top3}. Descarga en CSV.",
+        "h1": "Modelos de IA más usados en OpenRouter, {date}",
+        "lede": "Los {rows} primeros modelos por tokens procesados a través de OpenRouter en los 7 días hasta {date}. Esto mide el uso, no la calidad.",
+        "facts": [
+          "Primero: {top1} ({v1} de todos los tokens), seguido de {top2} ({v2}) y {top3} ({v3}).",
+          "Las cuotas se refieren a todos los tokens de OpenRouter, no a todo el uso de IA. Solo cuenta el tráfico público, y cada modelo solo los días en que entra en el top 50 diario de OpenRouter.",
+          "Datos de los 7 días hasta {date}."
+        ],
+        "about": [
+          "OpenRouter es un servicio que los desarrolladores usan para acceder a muchos modelos con una sola API, y publica lo que pasa por él. Los modelos baratos que usan agentes automatizados muy activos pueden encabezar esta tabla, porque los tokens cuentan el tráfico de máquinas además del de personas.",
+          "Es una sola plataforma. No se cuenta el uso dentro de ChatGPT, Claude, Gemini y otras apps, ni a través de la API propia de un proveedor, así que esta tabla no puede decirte qué IA tiene más usuarios en total."
+        ],
+        "faq": [
+          {
+            "q": "¿Cuál es el modelo de IA más usado?",
+            "a": "En OpenRouter en los 7 días hasta {date}, {top1} procesó la mayor cantidad de tokens, {v1} del total de la plataforma. Para el conjunto de productos de IA, ninguna cifra pública da una respuesta completa."
+          },
+          {
+            "q": "¿Más usado significa mejor?",
+            "a": "No. Aquí el precio pesa mucho. Para la calidad, consulta las tablas de Arena de esta sección."
+          },
+          {
+            "q": "¿Qué es un token?",
+            "a": "Un pequeño fragmento de texto, a menudo parte de una palabra, que los modelos leen y escriben. Los documentos largos y los agentes que ejecutan muchos pasos usan muchos más tokens que un chat breve."
+          }
+        ]
+      },
+      "ai-companies": {
+        "title": "Empresas de IA por uso {year}: cuota en OpenRouter | cv.cm",
+        "description": "Empresas de IA por tokens en OpenRouter: {top1} tiene {v1} de todos los tokens en 7 días, seguida de {top2} y {top3}. Cuota de una sola plataforma, CSV.",
+        "h1": "Empresas de IA por uso en OpenRouter, {date}",
+        "lede": "Las empresas detrás de los modelos más usados en OpenRouter, ordenadas por su cuota de todos los tokens en 7 días. Cubre una sola plataforma, no todo el mercado de IA.",
+        "facts": [
+          "Primero: {top1} ({v1}), seguido de {top2} ({v2}) y {top3} ({v3}).",
+          "Las cuotas se refieren a todos los tokens de OpenRouter. Los modelos que agrupa como \"other\" cuentan en el total pero no pertenecen a ninguna empresa aquí, así que las cuotas no suman el 100%. Solo cuenta el tráfico público, y cada modelo solo los días en que entra en el top 50 diario de OpenRouter.",
+          "Datos de los 7 días hasta {date}."
+        ],
+        "about": [
+          "cv.cm suma, para cada empresa, los tokens de los modelos que OpenRouter nombra en su lista diaria de más usados. Los modelos menores que agrupa como \"other\" se dejan fuera, y los modelos abiertos servidos por otros proveedores siguen contando para la empresa que los creó.",
+          "Deja fuera las apps de consumo y el uso directo de la API, donde el orden puede ser muy distinto. Interprétalo como lo que los desarrolladores canalizan a través de un servicio en una semana."
+        ],
+        "faq": [
+          {
+            "q": "¿Qué empresa de IA tiene la mayor cuota de mercado?",
+            "a": "En OpenRouter en los 7 días hasta {date}, {top1} tiene la mayor cuota, con {v1} de todos los tokens. Eso abarca una sola plataforma de desarrolladores; ninguna fuente pública da la cuota de todo el uso de IA."
+          },
+          {
+            "q": "¿Por qué difiere de otras cifras de cuota de mercado de IA?",
+            "a": "Otros informes cuentan visitas a chatbots, usuarios de apps o ingresos. Esta tabla cuenta tokens a través de un servicio de API, por lo que se inclina hacia los desarrolladores y los modelos baratos."
+          },
+          {
+            "q": "¿Por qué una empresa conocida puede quedar abajo?",
+            "a": "Muchos de sus clientes pueden usar su propia API o app, que OpenRouter no puede ver."
+          }
+        ]
+      },
+      "browser-market-share": {
+        "title": "Cuota de mercado de navegadores {year}: mundo y países | cv.cm",
+        "description": "Cuota de mercado de navegadores en {date}: {top1} {v1}, {top2} {v2}, {top3} {v3} en el mundo, junto a EE. UU., China, Taiwán, Japón, Corea y más.",
+        "h1": "Cuota de mercado de navegadores, {date}",
+        "lede": "Cuota de páginas vistas por navegador, en el mundo y en ocho mercados, en todos los dispositivos. Compara países en paralelo u ordena cualquier columna.",
+        "facts": [
+          "Mundo: {top1} {v1}, {top2} {v2}, {top3} {v3}.",
+          "China: {CNTop} lidera con {CNV}. Japón: {JPTop} con {JPV}. EE. UU.: {USTop} con {USV}.",
+          "Datos de {date}."
+        ],
+        "about": [
+          "StatCounter cuenta las páginas vistas en más de un millón de sitios que usan su rastreador, por lo que esto mide cuánto se usa cada navegador en esos sitios, no cuántas personas lo tienen instalado. El cambio se expresa en puntos porcentuales respecto al mismo mes del año anterior.",
+          "Los navegadores basados en Chromium, como Edge y muchos navegadores chinos, cuentan aquí con su propio nombre, aunque comparten el motor de Chrome. Los navegadores que se identifican como Chrome cuentan como Chrome."
+        ],
+        "faq": [
+          {
+            "q": "¿Cuál es el navegador más usado?",
+            "a": "{top1}, con {v1} de las páginas vistas en el mundo en {date}, seguido de {top2} ({v2}) y {top3} ({v3})."
+          },
+          {
+            "q": "¿Cuál es el navegador más usado en China?",
+            "a": "En los datos de StatCounter de {date}, {CNTop} lidera en China con {CNV}. Los navegadores locales como UC y 360 tienen allí una cuota mucho mayor que en cualquier otro lugar de la tabla."
+          },
+          {
+            "q": "¿Es esto una cuota de usuarios?",
+            "a": "No. Es una cuota de páginas vistas en los sitios que rastrea StatCounter, así que quienes navegan más cuentan más."
+          }
+        ]
+      },
+      "os-market-share": {
+        "title": "Cuota de mercado de sistemas operativos {year} | cv.cm",
+        "description": "Cuota de mercado de sistemas operativos en {date}: {top1} {v1}, {top2} {v2}, {top3} {v3} en el mundo, junto a EE. UU., China, Japón, Corea y más.",
+        "h1": "Cuota de mercado de sistemas operativos, {date}",
+        "lede": "Cuota de páginas vistas por sistema operativo en teléfonos, tabletas y ordenadores, en el mundo y en ocho mercados.",
+        "facts": [
+          "Mundo: {top1} {v1}, {top2} {v2}, {top3} {v3}.",
+          "China: {CNTop} lidera con {CNV}. EE. UU.: {USTop} con {USV}. Indonesia: {IDTop} con {IDV}.",
+          "Datos de {date}."
+        ],
+        "about": [
+          "StatCounter cuenta las páginas vistas en sitios que usan su rastreador, en todos los tipos de dispositivo. Así, esta tabla muestra qué parte de la web se ve desde cada sistema, que no es lo mismo que el número de dispositivos vendidos.",
+          "Las versiones antiguas y nuevas de un sistema cuentan juntas. Los teléfonos y los ordenadores están en la misma tabla, por lo que un país que navega sobre todo con el teléfono muestra una cuota alta de Android o iOS."
+        ],
+        "faq": [
+          {
+            "q": "¿Cuál es el sistema operativo más usado?",
+            "a": "Contando todos los dispositivos, {top1} lidera con {v1} de las páginas vistas en el mundo en {date}, seguido de {top2} ({v2}) y {top3} ({v3})."
+          },
+          {
+            "q": "¿Sigue siendo Windows el mayor?",
+            "a": "En ordenadores, normalmente sí. En todos los dispositivos compite con Android, porque gran parte de la navegación se hace en teléfonos. La tabla de arriba muestra el orden actual."
+          },
+          {
+            "q": "¿Esto cuenta las apps?",
+            "a": "No. Cuenta las visitas a sitios web en un navegador, así que el tiempo dentro de las apps queda fuera."
+          }
+        ]
+      },
+      "search-engine-market-share": {
+        "title": "Cuota de mercado de buscadores {year}: Google, Bing, Baidu | cv.cm",
+        "description": "Cuota de mercado de buscadores en {date}: {top1} {v1}, {top2} {v2}, {top3} {v3} en el mundo, junto a China, Corea, Japón, EE. UU. y más.",
+        "h1": "Cuota de mercado de buscadores, {date}",
+        "lede": "Cuota de visitas que llegan desde cada buscador, en el mundo y en ocho mercados. El orden cambia mucho según el país.",
+        "facts": [
+          "Mundo: {top1} {v1}, {top2} {v2}, {top3} {v3}.",
+          "China: {CNTop} lidera con {CNV}. Corea: {KRTop} con {KRV}. Japón: {JPTop} con {JPV}.",
+          "Datos de {date}."
+        ],
+        "about": [
+          "StatCounter cuenta las páginas vistas que llegan desde un buscador en sitios que usan su rastreador. Mide el tráfico enviado a esos sitios, no el número de búsquedas, y no cuenta las respuestas que se leen sin hacer clic.",
+          "La cobertura es un límite en China y otros mercados donde se visitan pocos de los sitios rastreados y donde no se ven las búsquedas dentro de las apps, así que toma esas cuotas como una guía aproximada."
+        ],
+        "faq": [
+          {
+            "q": "¿Cuál es el buscador más usado?",
+            "a": "{top1}, que envía {v1} de las visitas de búsqueda en el mundo en {date}, seguido de {top2} ({v2}) y {top3} ({v3})."
+          },
+          {
+            "q": "¿Qué buscador lidera en China?",
+            "a": "En los datos de StatCounter de {date}, {CNTop} lidera en China con {CNV}. Las cifras de China varían mucho entre fuentes según los sitios que rastrea cada una."
+          },
+          {
+            "q": "¿Los chatbots de IA cuentan aquí como buscadores?",
+            "a": "No. Esta tabla abarca los buscadores tradicionales. Las visitas desde asistentes de IA no forman parte de ella."
+          }
+        ]
+      },
+      "phone-market-share": {
+        "title": "Cuota de mercado de teléfonos {year}: por marca y país | cv.cm",
+        "description": "Cuota de mercado de marcas de teléfonos en {date}: {top1} {v1}, {top2} {v2}, {top3} {v3} en el mundo, junto a EE. UU., China, Japón, Corea, Vietnam y más.",
+        "h1": "Cuota de mercado de marcas de teléfonos, {date}",
+        "lede": "Cuota de páginas vistas móviles por marca de teléfono, en el mundo y en ocho mercados. Muestra los teléfonos que se están usando, no los vendidos este año.",
+        "facts": [
+          "Mundo: {top1} {v1}, {top2} {v2}, {top3} {v3}.",
+          "China: {CNTop} lidera con {CNV}. Corea: {KRTop} con {KRV}. Indonesia: {IDTop} con {IDV}.",
+          "Datos de {date}."
+        ],
+        "about": [
+          "StatCounter identifica la marca a partir de las visitas desde dispositivos móviles a sitios que usan su rastreador. Así, los teléfonos antiguos aún en uso cuentan, y por eso esto difiere de los rankings de ventas que publican las consultoras cada trimestre.",
+          "Algunos teléfonos ocultan su marca a los sitios web, y quienes navegan más cuentan más. Considera ruido las pequeñas diferencias entre marcas."
+        ],
+        "faq": [
+          {
+            "q": "¿Qué marca de teléfono es la más usada?",
+            "a": "{top1}, con {v1} de las páginas vistas móviles en el mundo en {date}, seguida de {top2} ({v2}) y {top3} ({v3})."
+          },
+          {
+            "q": "¿Es lo mismo que los teléfonos vendidos?",
+            "a": "No. Los rankings de ventas cuentan los teléfonos nuevos distribuidos en un periodo. Esta tabla cuenta los teléfonos en uso, ponderados según cuánto se navega con ellos."
+          },
+          {
+            "q": "¿Cuál es la primera marca de teléfonos en China?",
+            "a": "En los datos de StatCounter de {date}, {CNTop} lidera en China con {CNV} de las páginas vistas móviles."
+          }
+        ]
+      },
+      "social-media-market-share": {
+        "title": "Cuota de mercado de redes sociales {year}: por país | cv.cm",
+        "description": "Cuota de mercado de redes sociales en {date}: {top1} {v1}, {top2} {v2}, {top3} {v3} de las visitas web desde redes sociales, con EE. UU., Japón, Corea y más.",
+        "h1": "Cuota de mercado de redes sociales, {date}",
+        "lede": "Qué redes sociales envían más visitas a sitios web, en el mundo y en ocho mercados. Esto mide los enlaces en los que se hace clic, no cuántas personas usan cada red.",
+        "facts": [
+          "Mundo: {top1} {v1}, {top2} {v2}, {top3} {v3}.",
+          "Japón: {JPTop} lidera con {JPV}. Corea: {KRTop} con {KRV}. EE. UU.: {USTop} con {USV}.",
+          "Datos de {date}."
+        ],
+        "about": [
+          "StatCounter cuenta las páginas vistas que llegan desde una red social en sitios que usan su rastreador. Una red en la que rara vez se hace clic hacia fuera, como una app de vídeo, puede quedar abajo aquí pese a tener una audiencia enorme.",
+          "El tráfico dentro de las apps suele llegar sin etiqueta, y las redes usadas principalmente en China continental apenas se ven en estos datos, así que esta tabla no debe leerse como un recuento de usuarios."
+        ],
+        "faq": [
+          {
+            "q": "¿Qué red social tiene la mayor cuota?",
+            "a": "{top1}, con {v1} de las visitas enviadas desde redes sociales en el mundo en {date}, seguida de {top2} ({v2}) y {top3} ({v3})."
+          },
+          {
+            "q": "¿Es este el número de usuarios?",
+            "a": "No. Cuenta las visitas enviadas a otros sitios web. El número de usuarios de una red puede ser mucho mayor de lo que sugiere su cuota aquí."
+          },
+          {
+            "q": "¿Por qué TikTok o WeChat aparecen más abajo de lo esperado?",
+            "a": "La gente se queda sobre todo dentro de esas apps, y los enlaces que se abren allí a menudo no se etiquetan como procedentes de ellas."
+          }
+        ]
+      },
+      "crypto-market-cap": {
+        "title": "Ranking de Criptomonedas por Capitalización {year}: Top 100 | cv.cm",
+        "description": "Las 100 criptomonedas principales por capitalización a {date}: {top1} {v1}, {top2} {v2}, {top3} {v3}. Precio, variación a 24 horas y 7 días y volumen.",
+        "h1": "Top 100 criptomonedas por capitalización de mercado, {date}",
+        "lede": "Las 100 mayores criptomonedas por valor de mercado, con precio, variación a 24 horas y 7 días y volumen de negociación. Es una instantánea diaria, no un precio en directo.",
+        "facts": [
+          "La mayor: {top1} ({v1}), seguida de {top2} ({v2}) y {top3} ({v3}).",
+          "Juntas, las 100 primeras valen {total}. Bitcoin supone {dominance} de todo el mercado cripto.",
+          "Datos a {date}, tomados una vez al día."
+        ],
+        "about": [
+          "La capitalización es el precio multiplicado por las monedas en circulación, tal como las cuenta CoinMarketCap. Los precios cambian cada segundo, así que esta tabla, que se actualiza una vez al día, sirve para comparar monedas y no para operar. Las stablecoins como Tether aparecen porque se ordenan por capitalización.",
+          "Nada de esto es asesoramiento de inversión. Los precios de las criptomonedas pueden oscilar con fuerza, y un puesto alto no significa que una moneda sea segura. cv.cm no vende ni recomienda ninguna moneda."
+        ],
+        "faq": [
+          {
+            "q": "¿Cuál es la mayor criptomoneda por capitalización?",
+            "a": "{top1}, con un valor de {v1} a {date}, seguida de {top2} ({v2}) y {top3} ({v3})."
+          },
+          {
+            "q": "¿Cada cuánto se actualizan estos precios?",
+            "a": "Una vez al día. Para un precio en directo, consulta un exchange o la propia CoinMarketCap; la hora de esta página indica cuándo se tomó la instantánea."
+          },
+          {
+            "q": "¿Por qué no puedo descargar esta tabla?",
+            "a": "CoinMarketCap permite que cv.cm muestre sus datos aquí pero no que los redistribuya como archivo, así que esta tabla no tiene CSV."
+          }
+        ]
+      },
+      "commodity-prices": {
+        "title": "Precios de Materias Primas {year}: Subidas y Bajadas | cv.cm",
+        "description": "Precios de materias primas de {date}: mejor en un año {top1} ({v1}), peor {low1} ({lv1}). Petróleo, gas, metales y granos, del Banco Mundial.",
+        "h1": "Precios de materias primas: ganadoras y perdedoras, {date}",
+        "lede": "{rows} materias primas ordenadas por la variación de su precio en 12 meses, con el último precio mensual y la variación a un mes. Datos del Pink Sheet del Banco Mundial, en dólares estadounidenses.",
+        "facts": [
+          "Mejor evolución en un año: {top1} ({v1}), {top2} ({v2}) y {top3} ({v3}).",
+          "Peor evolución en un año: {low1} ({lv1}), {low2} ({lv2}) y {low3} ({lv3}).",
+          "Precios medios mensuales de {date}."
+        ],
+        "about": [
+          "El Banco Mundial publica el Pink Sheet a principios de cada mes con los precios medios del mercado mundial del mes anterior, en dólares estadounidenses nominales. Cada precio es una referencia concreta, como el Brent entregado en Europa o el arroz tailandés con 5 % de grano partido, por lo que lo que pagas localmente puede diferir mucho.",
+          "Las variaciones comparan la media mensual más reciente con la del mes anterior y con la del mismo mes un año antes. Una media mensual suaviza las oscilaciones diarias, así que el tamaño de un movimiento en un solo día puede ser mayor."
+        ],
+        "faq": [
+          {
+            "q": "¿Qué materia prima tuvo la mejor evolución en el último año?",
+            "a": "De las {rows} listadas, {top1} tuvo la mejor evolución en los 12 meses hasta {date}: {v1}."
+          },
+          {
+            "q": "¿Cuál tuvo la peor evolución en el último año?",
+            "a": "{low1}, con {lv1} en los 12 meses hasta {date}."
+          },
+          {
+            "q": "¿Son precios en directo?",
+            "a": "No. Son medias mensuales del Banco Mundial, que se actualizan cuando las publica cada mes."
+          }
+        ]
+      },
+      "currency-strength": {
+        "title": "Fortaleza de Divisas frente al Dólar {year}: {rows} Divisas | cv.cm",
+        "description": "Qué divisas ganaron o perdieron frente al dólar desde {yearAgo}: {top1} {v1}, {top2} {v2}, {low1} {lv1}. Tipos de referencia del BCE.",
+        "h1": "Fortaleza de divisas frente al dólar estadounidense, {date}",
+        "lede": "{rows} divisas ordenadas por cómo cambió su valor frente al dólar estadounidense en un año, con el tipo por dólar y la variación a un mes. Datos de los tipos de referencia diarios del Banco Central Europeo.",
+        "facts": [
+          "Más fuertes frente al dólar en un año: {top1} ({v1}), {top2} ({v2}) y {top3} ({v3}).",
+          "Más débiles: {low1} ({lv1}), {low2} ({lv2}) y {low3} ({lv3}).",
+          "Tipos a {date}, comparados con {yearAgo}."
+        ],
+        "about": [
+          "El Banco Central Europeo publica un tipo de referencia al día para cada divisa frente al euro. cv.cm los divide por el tipo del euro frente al dólar para obtener cada divisa por dólar estadounidense, así que son tipos cruzados, cercanos a lo que cobra un banco pero no iguales.",
+          "Una variación positiva significa que la divisa ahora compra más dólares que antes. La tabla cubre las divisas que cotiza el BCE, por lo que algunas, como el dólar taiwanés y el dong vietnamita, no están incluidas."
+        ],
+        "faq": [
+          {
+            "q": "¿Qué divisa tuvo la mejor evolución frente al dólar?",
+            "a": "{top1}: {v1} frente al dólar estadounidense desde {yearAgo}."
+          },
+          {
+            "q": "¿Cuál tuvo la peor evolución en el último año?",
+            "a": "{low1}: {lv1} frente al dólar desde {yearAgo}."
+          },
+          {
+            "q": "¿Son tipos de cambio en directo?",
+            "a": "No. Son los tipos de referencia del BCE, publicados una vez por día laborable hacia las 16:00 hora de Europa Central, solo a título informativo."
+          }
+        ]
+      }
+    }
   }
 }
