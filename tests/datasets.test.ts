@@ -151,8 +151,6 @@ describe("data pages: tables", () => {
     expect(formatIndicator("en", "military-spending", 0)).toBe("$0");
     expect(formatIndicator("en", "military-spending", 954387000000)).toBe("$954.39B");
     expect(formatIndicator("en", "gdp", 1.5e12)).toBe("$1.50T");
-    const row = datasetTable("en", "military-spending", JSON.parse(readFileSync("src/data/military-spending.json", "utf8")) as DatasetRows).rows.at(-1)!;
-    expect(row[2].text).toBe("$0");
   });
 
   it("gives every indicator a known format, a row file and a reason for each data filter", () => {

@@ -807,7 +807,7 @@
       "faq": [
         { "q": "Which country spends the most on its military?", "a": "{top1}, with {v1} in {year1}, followed by {top2} ({v2}) and {top3} ({v3})." },
         { "q": "How much does the world spend on the military?", "a": "{world} in {worldYear}." },
-        { "q": "Why do some countries spend nothing?", "a": "{last} have no standing army; police or border forces handle security, so their military spending is recorded as 0." }
+        { "q": "Which country spends the least on its military?", "a": "In this list, {last}, at {vlast}. Countries listed at 0, such as Costa Rica, Iceland and Panama, have no army of their own." }
       ]
     },
     "military-spending-gdp": {
@@ -829,7 +829,7 @@
       "faq": [
         { "q": "Which country spends the largest share of GDP on its military?", "a": "{top1}, at {v1}% of GDP in {year1}, followed by {top2} ({v2}%) and {top3} ({v3}%)." },
         { "q": "What share of world GDP is military spending?", "a": "{world}% in {worldYear}." },
-        { "q": "Which countries spend the least?", "a": "{last}, at {vlast}%: they have no army of their own." }
+        { "q": "Which country spends the smallest share of GDP on its military?", "a": "In this list, {last}, at {vlast}%. Countries at 0% have no army of their own." }
       ]
     },
     "rd-spending": {

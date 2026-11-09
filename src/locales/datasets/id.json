@@ -807,7 +807,7 @@
       "faq": [
         { "q": "Negara mana yang belanja militernya paling besar?", "a": "{top1}, sebesar {v1} pada {year1}, disusul {top2} ({v2}) dan {top3} ({v3})." },
         { "q": "Berapa belanja militer dunia?", "a": "{world} pada {worldYear}." },
-        { "q": "Mengapa sebagian negara tidak punya belanja militer?", "a": "Negara berikut tidak memiliki tentara tetap: {last}. Keamanan ditangani polisi atau pasukan perbatasan, sehingga belanja militernya tercatat 0." }
+        { "q": "Negara mana yang belanja militernya paling kecil?", "a": "Dalam daftar ini: {last}, sebesar {vlast}. Negara yang tercatat 0, seperti Kosta Rika, Islandia, dan Panama, tidak memiliki tentara sendiri." }
       ]
     },
     "military-spending-gdp": {
@@ -829,7 +829,7 @@
       "faq": [
         { "q": "Negara mana yang porsi PDB untuk militernya paling besar?", "a": "{top1}, yaitu {v1}% PDB pada {year1}, disusul {top2} ({v2}%) dan {top3} ({v3}%)." },
         { "q": "Berapa persen PDB dunia yang dipakai untuk belanja militer?", "a": "{world}% pada {worldYear}." },
-        { "q": "Negara mana yang belanja militernya paling kecil?", "a": "{last}, yaitu {vlast}%: negara-negara ini tidak memiliki tentara sendiri." }
+        { "q": "Negara mana yang belanja militernya paling kecil terhadap PDB?", "a": "Dalam daftar ini: {last}, sebesar {vlast}%. Negara dengan 0% tidak memiliki tentara sendiri." }
       ]
     },
     "rd-spending": {

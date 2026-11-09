@@ -39,7 +39,7 @@
   "remittances": { "code": "BX.TRF.PWKR.DT.GD.ZS", "decimals": 2, "maxAge": 2, "why": "Remittance flows swing with exchange rates and GDP revisions; three years keeps late reporters without old values." },
   "foreign-reserves": { "code": "FI.RES.TOTL.CD", "decimals": 0, "format": "usd-compact", "maxAge": 2, "why": "Reserves move with gold prices and interventions every year; older figures would rank against current ones. The World Bank has no world total, so no share column." },
   "military-spending": { "code": "MS.MIL.XPND.CD", "decimals": 0, "format": "usd-compact", "total": true, "maxAge": 1, "why": "SIPRI covers almost every country for the latest year; an older figure for a country at war would mislead." },
-  "military-spending-gdp": { "code": "MS.MIL.XPND.GD.ZS", "decimals": 1, "maxAge": 1, "why": "Same window as military spending, so both tables list the same countries." },
+  "military-spending-gdp": { "code": "MS.MIL.XPND.GD.ZS", "decimals": 1, "maxAge": 1, "why": "Same window as military spending: SIPRI's share-of-GDP series is updated with the dollar series, so older values would rank under the newer heading." },
   "rd-spending": { "code": "GB.XPD.RSDV.GD.ZS", "decimals": 2, "maxAge": 3, "why": "UNESCO R&D surveys lag two to three years; most countries report the year before last or earlier." },
   "aged-0-14": { "code": "SP.POP.0014.TO.ZS", "decimals": 1 },
   "international-migrants": { "code": "SM.POP.TOTL.ZS", "decimals": 1, "floor": 0.05, "why": "UN DESA estimates are rounded to 0.1%; a 0 is a missing estimate (Saint-Martin, where most residents were born abroad, is listed at 0)." },
@@ -48,5 +48,5 @@
   "co2-emissions": { "code": "EN.GHG.CO2.MT.CE.AR5", "decimals": 2, "total": true, "floor": 0.01, "skip": ["FRO", "PLW"], "why": "Same filters as CO2 per capita: EDGAR reports 0 to 0.0003 Mt for small US territories and Pacific islands it has no estimate for (Guam emits over 1 Mt), counts the Faroe Islands with Denmark and puts marine fuel sold in Palau on Palau." },
   "electricity-consumption": { "code": "EG.USE.ELEC.KH.PC", "decimals": 0, "maxAge": 1, "why": "Only this year and last, so a decade-old figure does not rank with current ones." },
   "mobile-subscriptions": { "code": "IT.CEL.SETS.P2", "decimals": 1, "maxAge": 2, "skip": ["FJI"], "why": "ITU data lags a year or two for many countries; three years keeps them without old values. Fiji jumps from 112 to 574 subscriptions per 100 people in two years, a reporting artifact." },
-  "broadband-subscriptions": { "code": "IT.NET.BBND.P2", "decimals": 2, "floor": 0.001, "maxAge": 2, "why": "ITU data lags a year or two for many countries; three years keeps them without old values. Chad is reported as exactly 0 every year, a placeholder for 'no data', not a count." }
+  "broadband-subscriptions": { "code": "IT.NET.BBND.P2", "decimals": 2, "floor": 0.005, "maxAge": 2, "why": "ITU data lags a year or two for many countries; three years keeps them without old values. Chad is reported as exactly 0 every year, a placeholder for 'no data'; anything under 0.005 would show as 0.00 at the stored precision, so it is left out too." }
 }
