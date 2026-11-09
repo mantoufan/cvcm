@@ -3,6 +3,7 @@
 // source APIs. Copy lives in `src/locales/datasets/<locale>.json`.
 import meta from "../data/meta.json";
 import indicatorSpec from "./indicators.json";
+import referenceFiles from "./dataset-files.json";
 import type { ToolId } from "./path";
 
 /** `/data/` is the JSON / CSV converter, so the column lives under `/datasets/`. */
@@ -145,7 +146,7 @@ export function datasetMeta(id: DatasetId): DatasetMeta {
 
 /** The date this table's rows last changed: its sitemap lastmod and the date the page shows. */
 export function datasetUpdated(id: DatasetId): string {
-  return datasetMeta(id).updated ?? DATASET_SNAPSHOT;
+  return datasetMeta(id).updated;
 }
 
 export function indicatorMeta(id: IndicatorId): IndicatorMeta {
@@ -155,12 +156,8 @@ export function indicatorMeta(id: IndicatorId): IndicatorMeta {
 /** Row files in `src/data/` each table reads (the currency table names its users from the country list). */
 export const DATASET_FILES: Record<DatasetId, readonly string[]> = {
   ...(Object.fromEntries(INDICATORS.map((id) => [id, [id] as readonly string[]])) as Record<IndicatorId, readonly string[]>),
-  "country-codes": ["countries"],
-  "calling-codes": ["countries"],
-  "currency-codes": ["currencies", "countries"],
-  "time-zones": ["time-zones"],
-  "paper-sizes": ["paper-sizes"],
-  ascii: ["ascii"],
+  // The fetch script reads the same file to tell which tables changed.
+  ...(referenceFiles as Record<Exclude<DatasetId, IndicatorId>, readonly string[]>),
 };
 
 export function csvHref(id: DatasetId): string {
