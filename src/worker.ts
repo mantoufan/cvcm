@@ -555,9 +555,9 @@ async function proxyCovers(pathname: string, method: string): Promise<Response |
 
 function withHeaders(res: Response, pathname: string): Response {
   const headers = new Headers(res.headers);
-  // Workers Static Assets sends text types without a charset (Pages added utf-8); every file here is UTF-8.
+  // Workers Static Assets sends text/* without a charset; Pages added utf-8 (not to JS, JSON or XML). Every file here is UTF-8.
   const type = headers.get("Content-Type");
-  if (type && !/charset=/i.test(type) && /^(text\/|application\/(json|xml|manifest\+json))/i.test(type)) {
+  if (type && !/charset=/i.test(type) && /^text\/(?!javascript)/i.test(type)) {
     headers.set("Content-Type", `${type}; charset=utf-8`);
   }
   headers.delete("Access-Control-Allow-Origin");
