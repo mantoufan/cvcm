@@ -228,6 +228,16 @@ Codex, refs `due-date-sweet.jpg` + `reading-time-sweet.jpg`. Same character and 
 
 Codex, refs `tone-generator-sweet.jpg` + `reading-time-sweet.jpg`. Same character and room. `ai-music-generator`: pink over-ear headphones with lace bows, she presses glowing pads on a small pearlescent pink keyboard synthesizer; pastel musical notes and a soft wave of little bars rise from it; a cream drum pad with heart buttons beside. No words, letters, numerals, logo or watermark.
 
+## Mortgage calculator, quadratic solver, random team generator, screen resolution, online alarm clock (2026-11-09)
+
+GPT Image 2.6 Flare image-to-image on kie.ai (Codex had no quota until 2026-11-10), refs `dice-sweet.jpg` + `metronome-sweet.jpg`. Same character and room, no words, letters, numerals, logo or watermark. Save `public/covers/<id>-sweet.jpg`, `sips -z 720 1280`.
+
+- `mortgage`: she holds a tiny pastel pink house model and a small calculator with blank keys, a stack of pink coins and a rolled document with a ribbon beside her, a dotted path of coins shrinking from left to right.
+- `quadratic`: a small pastel chalkboard on an easel shows only a pink U-shaped parabola crossing a line at two glowing heart points; she points at one heart with a pink pointer.
+- `team-generator`: she sorts round plush mascots in pink, mint and lavender into three groups on a big cushion, each under a blank pennant, a bowl of folded paper slips beside her.
+- `screen-resolution`: she holds a big pink ruler beside a white monitor with an empty pink screen and corner brackets, a phone and tablet with blank screens in descending sizes.
+- `alarm`: she lies sleepily under a pink blanket while a pastel pink twin-bell alarm clock with a blank face rings on the nightstand, motion lines and notes, an open laptop with a blank screen beside it.
+
 ## Coin flip, guitar tuner, factor calculator, LCM and GCF calculator (2026-11-03)
 
 GPT Image 2.5 on kie.ai (Codex had no quota, 2026-11-06), refs `dice-sweet.jpg` + `metronome-sweet.jpg`. Same character and room, no words, letters, numerals, logo or watermark. Save `public/covers/<id>-sweet.jpg`, `sips -z 720 1280`.

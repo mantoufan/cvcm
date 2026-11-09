@@ -1,0 +1,242 @@
+{
+  "meta": {
+    "titleCalculateMortgage": "Cómo calcular la cuota de una hipoteca (con amortización) | cv.cm",
+    "descCalculateMortgage": "Calcule la cuota mensual de la hipoteca, los intereses totales y el saldo año por año a partir del precio, la entrada, la tasa y el plazo. Cuotas fijas frente a amortización constante, explicado con un ejemplo.",
+    "titleSolveQuadratic": "Cómo resolver una ecuación cuadrática con la fórmula general | cv.cm",
+    "descSolveQuadratic": "Resuelva ax² + bx + c = 0 paso a paso: identifique a, b y c, use el discriminante, aplique la fórmula general y lea las raíces exactas, el vértice y la gráfica. Calculadora gratis en su navegador.",
+    "titleMakeRandomTeams": "Cómo hacer equipos aleatorios justos a partir de una lista | cv.cm",
+    "descMakeRandomTeams": "Reparta una clase, un club o un grupo de jugadores en equipos aleatorios de tamaño justo: pegue los nombres, elija el número de equipos o de personas por equipo, genere y comparta. Gratis, no se sube nada.",
+    "titleCheckScreenResolution": "Cómo ver la resolución de pantalla (y el escalado) | cv.cm",
+    "descCheckScreenResolution": "Averigüe su resolución de pantalla en píxeles reales, entienda los píxeles CSS, el escalado y la relación de píxeles del dispositivo, y vea el viewport del navegador. Funciona en cualquier computadora o teléfono.",
+    "titleSetOnlineAlarm": "Cómo poner una alarma online que realmente suene | cv.cm",
+    "descSetOnlineAlarm": "Ponga una alarma en el navegador con sonido y etiqueta, compruebe el volumen, haga que suene en una pestaña en segundo plano y pospóngala o deténgala. Sin app y sin registro."
+  },
+  "lessons": {
+    "calculate-mortgage": {
+      "copy": {
+        "name": "Cómo calcular la cuota de una hipoteca",
+        "blurb": "Cuota mensual, intereses totales y saldo de cada año a partir de cuatro números.",
+        "title": "Cómo calcular la cuota de una hipoteca",
+        "lead": "Antes de hablar con un banco, quiere saber cuánto costará una vivienda cada mes y en total. Convertirá el precio, la entrada, la tasa y el plazo en una cuota mensual y una tabla año por año. Funciona en su navegador.",
+        "result": "La cuota mensual, los intereses totales y cuánto queda del préstamo después de cada año.",
+        "note": "El resultado es solo capital e intereses. El impuesto predial, el seguro de la vivienda y el seguro hipotecario van aparte.",
+        "s1t": "Reúna los cuatro números",
+        "s1b": "Necesita el precio de la vivienda, la entrada en porcentaje, la tasa de interés anual y el plazo en años. El préstamo es el precio menos la entrada: 400.000 con un 20 % de entrada es un préstamo de 320.000.",
+        "s2t": "Abra la Calculadora de hipoteca en cv.cm",
+        "s2b": "Escriba los cuatro números en Precio de la vivienda, Entrada (%), Tasa de interés (% anual) y Plazo (años). El resultado se actualiza mientras escribe.",
+        "s3t": "Lea la cuota mensual y los intereses totales",
+        "s3b": "Con Cuotas fijas, 320.000 al 6,5 % a 30 años son 2022,62 al mes. En 360 cuotas eso suma 408.142 de intereses, más que el propio préstamo. Una tasa más baja o un plazo más corto reducen esa cifra rápidamente.",
+        "s4t": "Compare Cuotas fijas con Amortización constante",
+        "s4b": "Cambie Sistema de pago a Amortización constante. Cada mes devuelve la misma parte del préstamo más los intereses de ese mes, así que el mismo préstamo empieza en 2622,22, baja 4,81 cada mes hasta 893,70 y cuesta 312.867 de intereses. Ahorra dinero, pero exige una cuota más alta al principio.",
+        "s5t": "Lea la tabla de amortización",
+        "s5b": "Cada fila es un año: cuánto fue a capital, cuánto a intereses y el saldo pendiente. Con cuotas fijas, el año 1 es sobre todo intereses (20.695 de intereses, 3577 de capital); el último año es casi todo capital.",
+        "s6t": "Pruebe otros números y copie el resultado",
+        "s6b": "Cambie un número a la vez, por ejemplo 10 años más o un 1 % menos de interés, para ver qué cambia realmente. Copiar resultado copia el resumen para sus notas o un mensaje.",
+        "diagram1": "Los pagos de cada año: los primeros años van sobre todo a intereses y los últimos, sobre todo al préstamo.",
+        "diagram2": "Las cuotas fijas se mantienen planas; la amortización constante empieza más alta y baja cada mes."
+      },
+      "faq": {
+        "q1": "¿Cuál es la fórmula de la cuota mensual de una hipoteca?",
+        "a1": "M = P × r × (1 + r)ⁿ ÷ ((1 + r)ⁿ − 1), donde P es el préstamo, r la tasa anual ÷ 12 y n el número de meses. 320.000 al 6,5 % a 30 años da 2022,62.",
+        "q2": "¿Es mejor la amortización constante que las cuotas fijas?",
+        "a2": "Cuesta menos intereses porque el préstamo se reduce más rápido, pero las primeras cuotas son más altas. Las cuotas fijas son más fáciles de presupuestar. Elija la que sus ingresos puedan soportar al principio.",
+        "q3": "¿Cuánto ayuda una entrada mayor?",
+        "a3": "Cada unidad de entrada es una unidad que no pide prestada, así que la cuota y los intereses bajan en la misma proporción. En EE. UU., una entrada del 20 % suele evitar también el seguro hipotecario.",
+        "q4": "¿Por qué la primera cuota es en gran parte intereses?",
+        "a4": "Los intereses se cobran sobre el saldo pendiente, que es mayor al principio. A medida que baja el saldo, una parte mayor de la misma cuota va al préstamo.",
+        "q5": "¿Coincide el resultado con lo que cobrará mi banco?",
+        "a5": "Para el mismo préstamo, tasa y plazo, el capital y los intereses deberían coincidir al centavo o con diferencias de redondeo. Las ofertas del banco pueden añadir comisiones, impuestos, seguros o un tipo de tasa distinto."
+      }
+    },
+    "solve-quadratic": {
+      "copy": {
+        "name": "Cómo resolver una ecuación cuadrática",
+        "blurb": "Identifique a, b y c, revise el discriminante y use la fórmula general.",
+        "title": "Cómo resolver una ecuación cuadrática",
+        "lead": "Tiene una ecuación con x² y necesita los valores de x. La pondrá en forma estándar, verá cuántas soluciones tiene, las calculará con la fórmula general y las comprobará en una gráfica. Una calculadora verifica cada paso en su navegador.",
+        "result": "Las raíces de la ecuación, exactas y en decimales, con el desarrollo y una gráfica.",
+        "note": "La mayoría de los errores son de signo. Mantenga el signo menos con su número al leer b y c.",
+        "s1t": "Ponga la ecuación en forma estándar",
+        "s1b": "Pase todos los términos a un lado para que quede ax² + bx + c = 0. Para x² = 3x − 2, reste 3x y sume 2: x² − 3x + 2 = 0. Ahora a = 1, b = −3 y c = 2.",
+        "s2t": "Abra la Calculadora de ecuaciones cuadráticas en cv.cm",
+        "s2b": "Escriba a, b y c en sus casillas. Deje b o c vacío si falta ese término: x² − 4 = 0 tiene a = 1, b = 0, c = −4. a no puede ser 0, o no sería cuadrática.",
+        "s3t": "Revise el discriminante",
+        "s3b": "Δ = b² − 4ac decide la respuesta. Para x² − 3x + 2: Δ = 9 − 8 = 1. Positivo significa dos raíces reales; 0, una raíz doble; negativo, ninguna raíz real (dos complejas).",
+        "s4t": "Aplique la fórmula general",
+        "s4b": "x = (−b ± √Δ) ÷ 2a. Aquí x = (3 ± 1) ÷ 2, así que x = 1 o x = 2. Desarrollo muestra los mismos pasos con sus números, para que pueda seguirlos o copiarlos.",
+        "s5t": "Lea las raíces exactas y la forma factorizada",
+        "s5b": "Cuando a, b y c son enteros, la calculadora mantiene las respuestas exactas: x² − 2x − 1 = 0 da 1 ± √2 (aproximadamente −0.414 y 2.414). Las raíces racionales también dan la forma factorizada, como (x − 1)(x − 2) = 0.",
+        "s6t": "Compruebe con la gráfica",
+        "s6b": "Las raíces son los puntos donde la parábola corta el eje x, marcados con círculos; el punto relleno es el vértice. Si la curva nunca llega al eje, las raíces son complejas. Copiar resultado copia todo como texto.",
+        "diagram1": "El signo del discriminante indica cuántas veces la parábola toca el eje x.",
+        "diagram2": "La fórmula general aplicada paso a paso a x² − 3x + 2 = 0."
+      },
+      "faq": {
+        "q1": "¿Cuál es la fórmula general?",
+        "a1": "x = (−b ± √(b² − 4ac)) ÷ 2a. Resuelve toda ecuación de la forma ax² + bx + c = 0 con a distinto de 0.",
+        "q2": "¿Y si el discriminante es negativo?",
+        "a2": "No hay raíces reales y la gráfica no corta el eje x. Las raíces son complejas: para x² + 2x + 5 = 0 son −1 ± 2i.",
+        "q3": "¿Cuándo puedo factorizar en lugar de usar la fórmula?",
+        "a3": "Cuando el discriminante es un cuadrado perfecto y a, b y c son enteros, las raíces son fracciones y la ecuación se puede factorizar. x² − 3x + 2 = (x − 1)(x − 2).",
+        "q4": "¿Cómo encuentro el vértice?",
+        "a4": "El vértice está en x = −b ÷ 2a. Sustituya ese valor de x en la ecuación para obtener y. Para x² − 3x + 2 es (1.5, −0.25).",
+        "q5": "¿Cómo compruebo mi respuesta?",
+        "a5": "Sustituya cada raíz en ax² + bx + c. Si el resultado es 0 (o muy cercano, con decimales redondeados), la raíz es correcta."
+      }
+    },
+    "make-random-teams": {
+      "copy": {
+        "name": "Cómo hacer equipos aleatorios",
+        "blurb": "Reparta nombres en equipos de tamaño justo y comparta el resultado.",
+        "title": "Cómo hacer equipos aleatorios",
+        "lead": "Necesita repartir una clase, un club o un grupo de jugadores en equipos, y todos deben ver que fue justo. Pegará los nombres, elegirá cuántos equipos o cuántas personas por equipo, y sorteará equipos aleatorios y equilibrados. Funciona en su navegador.",
+        "result": "Equipos aleatorios cuyos tamaños difieren como mucho en uno, listos para copiar y compartir.",
+        "note": "Acuerden el número de equipos antes de pulsar Generar equipos. Sortear de nuevo hasta que el resultado le guste ya no es aleatorio.",
+        "s1t": "Escriba la lista de nombres",
+        "s1b": "Ponga un nombre por línea o separe los nombres con comas. Una lista copiada de una columna de una hoja de cálculo funciona tal cual. Si dos personas se llaman igual, añada una inicial para distinguirlas.",
+        "s2t": "Abra el Generador de equipos aleatorios en cv.cm",
+        "s2b": "Pegue los nombres en el cuadro. La línea de debajo cuenta los nombres, así puede comprobar que no falta nadie.",
+        "s3t": "Elija cómo repartir",
+        "s3b": "Elija Número de equipos si sabe cuántos equipos necesita, o Personas por equipo si sabe el tamaño. Escriba el número. La línea bajo la lista muestra el resultado, como 12 nombres → 3 equipos de 4.",
+        "s4t": "Sepa cómo se tratan los números desiguales",
+        "s4b": "Los nombres se reparten por turnos, así que los tamaños nunca difieren en más de uno: 10 nombres en 3 equipos dan 4, 3 y 3, y qué equipo recibe la persona extra es aleatorio. Personas por equipo redondea hacia arriba el número de equipos y reparte a todos por igual: 12 nombres en equipos de 5 dan 3 equipos de 4.",
+        "s5t": "Genere los equipos",
+        "s5b": "Pulse Generar equipos. El sorteo usa los números aleatorios criptográficos de su navegador, así que todos los repartos son igual de probables. Vuelva a pulsarlo para un sorteo completamente nuevo.",
+        "s6t": "Comparta el resultado",
+        "s6b": "Copiar equipos copia todos los equipos como texto, una línea por equipo, listos para un chat o una pizarra. No se guarda nada, así que copie el resultado antes de cerrar la pestaña.",
+        "diagram1": "Los nombres mezclados se reparten uno a uno, así que los tamaños se mantienen parejos.",
+        "diagram2": "Número de equipos y Personas por equipo pueden dar el mismo reparto."
+      },
+      "faq": {
+        "q1": "¿Un generador de equipos aleatorios es realmente justo?",
+        "a1": "Sí, si todos los repartos posibles son igual de probables y nadie vuelve a sortear hasta que le guste el resultado. Este mezcla con Web Crypto y reparte los nombres por turnos.",
+        "q2": "¿Y si los nombres no se reparten de forma exacta?",
+        "a2": "Los equipos difieren como mucho en una persona. 10 nombres en 3 equipos dan 4, 3 y 3, y el equipo de 4 se elige al azar.",
+        "q3": "¿Cuántos nombres puedo usar?",
+        "a3": "Hasta 500 nombres y 50 equipos. No puede haber más equipos que nombres.",
+        "q4": "¿Puedo mantener a algunas personas juntas o separadas?",
+        "a4": "No en el sorteo en sí. Ponga a una pareja en una sola línea (por ejemplo, \"Ana y Bruno\") para mantenerlos juntos como una sola entrada.",
+        "q5": "¿Se guardan los nombres en algún sitio?",
+        "a5": "No. Se quedan en esta pestaña y no se suben ni se guardan."
+      }
+    },
+    "check-screen-resolution": {
+      "copy": {
+        "name": "Cómo ver la resolución de pantalla",
+        "blurb": "Píxeles reales, píxeles CSS, escalado y el viewport del navegador, explicados.",
+        "title": "Cómo ver la resolución de pantalla",
+        "lead": "Un juego, un ajuste de video o un formulario de soporte le pide su resolución de pantalla, y los números que encuentra no coinciden. Encontrará la resolución real, verá por qué el escalado la cambia y leerá el tamaño de la ventana del navegador. Funciona en cualquier computadora, tableta o teléfono.",
+        "result": "Su resolución de pantalla en píxeles reales, el escalado de pantalla y el tamaño del área de la página en su navegador.",
+        "note": "El zoom del navegador también cambia la relación de píxeles. Pulse primero Ctrl + 0 (Cmd + 0 en una Mac) para restablecer el zoom al 100 %.",
+        "s1t": "Restablezca el zoom del navegador",
+        "s1b": "Acercar o alejar una página cambia lo que informa el navegador. Pulse Ctrl + 0, o Cmd + 0 en una Mac, para que el zoom quede al 100 %. En un teléfono, pellizque hasta volver al tamaño normal.",
+        "s2t": "Abra Resolución de pantalla en cv.cm",
+        "s2b": "El número grande es su resolución de pantalla en píxeles reales, como 1920 × 1080. Si tiene un nombre común, como Full HD (1080p) o 4K UHD, aparece en la primera fila.",
+        "s3t": "Entienda los píxeles CSS y el escalado",
+        "s3b": "Windows al 125 % y las pantallas Retina agrandan el texto usando más píxeles reales por cada píxel CSS. Relación de píxeles del dispositivo indica cuántos: una pantalla de 1920 × 1080 al 125 % muestra 1536 × 864 píxeles CSS y una relación de 1.25.",
+        "s4t": "Lea el viewport",
+        "s4b": "Viewport del navegador es la parte de la ventana que muestra la página, en píxeles CSS. Cambie el tamaño de la ventana y cambia al instante. Los diseñadores web usan este tamaño para los diseños responsivos.",
+        "s5t": "Revise los demás detalles",
+        "s5b": "Pantalla disponible deja fuera la barra de tareas o el Dock. Relación de aspecto da la forma, como 16:9 o 16:10; Orientación y Profundidad de color completan la información. Gire un teléfono y los valores lo siguen.",
+        "s6t": "Copie los detalles para soporte",
+        "s6b": "Copiar detalles copia todas las filas como texto. Péguelo en un informe de error o un chat de soporte para que la otra parte vea exactamente lo que ve su navegador.",
+        "diagram1": "Con un escalado del 125 %, 1920 × 1080 píxeles reales aparecen como 1536 × 864 píxeles CSS.",
+        "diagram2": "La pantalla, el espacio que deja la barra de tareas y el viewport dentro del navegador."
+      },
+      "faq": {
+        "q1": "¿Cómo veo mi resolución de pantalla en Windows o Mac?",
+        "a1": "En Windows, Configuración → Sistema → Pantalla; en una Mac, Configuración del Sistema → Pantallas. Abrir la página Resolución de pantalla da la misma cifra en cualquier navegador, también en teléfonos.",
+        "q2": "¿Por qué un sitio web dice que mi pantalla es más pequeña de lo que es?",
+        "a2": "Los sitios web ven píxeles CSS. Con un escalado de pantalla superior al 100 % hay menos píxeles CSS que reales. Multiplique por la relación de píxeles del dispositivo para obtener la resolución real.",
+        "q3": "¿Qué resolución tiene mi teléfono?",
+        "a3": "Los teléfonos tienen una relación de píxeles de 2 a 3 o más, así que un teléfono que indica 390 × 844 píxeles CSS con relación 3 tiene 1170 × 2532 píxeles reales.",
+        "q4": "¿Un viewport más grande es lo mismo que una pantalla más grande?",
+        "a4": "No. El viewport es solo el área de la página en la ventana del navegador. Es más pequeño que la pantalla cuando la ventana no está a pantalla completa o las barras de herramientas ocupan espacio.",
+        "q5": "¿Por qué no coinciden los valores con dos monitores?",
+        "a5": "La página lee la pantalla en la que está la ventana del navegador. Mueva la ventana al otro monitor y los valores se actualizan."
+      }
+    },
+    "set-online-alarm": {
+      "copy": {
+        "name": "Cómo poner una alarma online",
+        "blurb": "Ponga una alarma en el navegador, compruebe el sonido y pospóngala o deténgala.",
+        "title": "Cómo poner una alarma online",
+        "lead": "Necesita una alarma en su computadora: para una siesta, una reunión o el final de una sesión de estudio, sin instalar ninguna app. Pondrá la hora y el sonido, se asegurará de que realmente pueda sonar y la pospondrá o detendrá. Funciona en la pestaña de su navegador.",
+        "result": "Una alarma que suena a la hora indicada, con una etiqueta que se lee desde el otro lado de la habitación.",
+        "note": "La alarma vive en la pestaña. Cerrar la pestaña, el modo de suspensión o un teléfono bloqueado pueden detenerla, así que deje la pestaña abierta y el dispositivo despierto.",
+        "s1t": "Abra la Alarma online en cv.cm",
+        "s1b": "El reloj grande muestra la hora actual de este dispositivo. La alarma usa el mismo reloj, así que compruebe que sea correcta.",
+        "s2t": "Elija la hora, la etiqueta y el sonido",
+        "s2b": "Ajuste Hora de la alarma. Añada una Etiqueta como Reunión o Tomar un descanso; aparece cuando suena la alarma y en el título de la pestaña. Elija un Sonido: Pitido, Carillón, Campana o Digital.",
+        "s3t": "Pruebe antes el sonido",
+        "s3b": "Pulse Probar sonido para oír la alarma y ajustar el volumen. Si no oye nada, compruebe el volumen del sistema, que la pestaña del navegador no esté silenciada y que el teléfono no esté en modo silencio.",
+        "s4t": "Ponga la alarma",
+        "s4b": "Pulse Poner alarma. La página muestra cuándo sonará y una cuenta atrás, como suena en 7 h 30 min. Una hora anterior a la actual significa mañana: si pone 07:00 a las 23:30, suena a la mañana siguiente.",
+        "s5t": "Mantenga la pestaña lista",
+        "s5b": "Puede cambiar a otras pestañas: el sonido queda programado en el motor de audio del navegador, así que suena a tiempo. No cierre la pestaña ni deje que la computadora entre en suspensión. Donde el navegador lo permite, la página también evita que la pantalla se apague.",
+        "s6t": "Detenga o posponga",
+        "s6b": "Cuando suene, pulse Detener, o Posponer 5 min o Posponer 10 min para que vuelva a sonar más tarde. Si nadie responde, se detiene sola después de 10 minutos. Pulse Cancelar alarma para quitarla antes de que suene.",
+        "diagram1": "Una hora anterior a la actual suena mañana; la página muestra cuánto falta.",
+        "diagram2": "Qué mantiene la alarma funcionando y qué la detiene."
+      },
+      "faq": {
+        "q1": "¿Funciona una alarma online con la pestaña en segundo plano?",
+        "a1": "Sí, siempre que la pestaña esté abierta y la computadora despierta. El sonido se programa en el motor de audio, así que la limitación de las pestañas en segundo plano no lo retrasa.",
+        "q2": "¿Sonará si mi portátil entra en suspensión?",
+        "a2": "No. Una computadora en suspensión no ejecuta páginas web. Cambie la configuración de energía o deje el portátil conectado y despierto.",
+        "q3": "¿Puedo poner varias alarmas?",
+        "a3": "Una por pestaña. Abra la página en otra pestaña para una segunda alarma.",
+        "q4": "¿Por qué no oí nada cuando sonó?",
+        "a4": "La pestaña o el sistema estaban silenciados, o el teléfono estaba bloqueado o en modo silencio. Use Probar sonido antes de confiar en ella.",
+        "q5": "¿Se guarda la alarma si recargo la página?",
+        "a5": "No. Recargar o cerrar la pestaña la borra. No se guarda ni se sube nada."
+      }
+    }
+  },
+  "svg": {
+    "calculate-mortgage": {
+      "year": "Año",
+      "interest": "Intereses",
+      "principal": "Capital",
+      "equalPayments": "Cuotas fijas",
+      "equalPrincipal": "Amortización constante",
+      "month": "Mes",
+      "perMonth": "al mes"
+    },
+    "solve-quadratic": {
+      "two": "Dos raíces reales",
+      "one": "Una raíz doble",
+      "none": "Sin raíces reales",
+      "roots": "Raíces"
+    },
+    "make-random-teams": {
+      "shuffle": "Mezclados",
+      "team": "Equipo",
+      "names": "12 nombres",
+      "teamsOf": "3 equipos",
+      "perTeam": "Personas por equipo: 5",
+      "count": "Número de equipos: 3"
+    },
+    "check-screen-resolution": {
+      "real": "Píxeles reales",
+      "css": "Píxeles CSS",
+      "scaling": "Escalado 125 %",
+      "screen": "Pantalla",
+      "taskbar": "Barra de tareas",
+      "viewport": "Viewport",
+      "browser": "Ventana del navegador"
+    },
+    "set-online-alarm": {
+      "now": "Ahora",
+      "alarm": "Alarma",
+      "tomorrow": "Mañana",
+      "ringsIn": "Suena en 7 h 30 min",
+      "open": "Pestaña abierta",
+      "background": "Pestaña en segundo plano",
+      "awake": "Computadora despierta",
+      "closed": "Pestaña cerrada",
+      "sleep": "Modo de suspensión",
+      "muted": "Silenciada"
+    }
+  }
+}

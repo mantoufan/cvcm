@@ -862,4 +862,34 @@ export const TOOL_LOADERS: Record<ToolId, ToolLoader> = {
     m.mountFancyText(host);
     return m.unmountFancyText;
   },
+  "mortgage": async (host, ctx) => {
+    const m = await import("./mortgage/ui");
+    if (!ctx.alive()) return undefined;
+    m.mountMortgage(host);
+    return m.unmountMortgage;
+  },
+  "quadratic": async (host, ctx) => {
+    const m = await import("./quadratic/ui");
+    if (!ctx.alive()) return undefined;
+    m.mountQuadratic(host);
+    return m.unmountQuadratic;
+  },
+  "team-generator": async (host, ctx) => {
+    const m = await import("./team-generator/ui");
+    if (!ctx.alive()) return undefined;
+    m.mountTeamGenerator(host);
+    return m.unmountTeamGenerator;
+  },
+  "screen-resolution": async (host, ctx) => {
+    const m = await import("./screen-resolution/ui");
+    if (!ctx.alive()) return undefined;
+    m.mountScreenResolution(host);
+    return m.unmountScreenResolution;
+  },
+  "alarm": async (host, ctx) => {
+    const m = await import("./alarm/ui");
+    if (!ctx.alive()) return undefined;
+    m.mountAlarm(host);
+    return m.unmountAlarm;
+  },
 };

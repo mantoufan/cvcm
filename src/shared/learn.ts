@@ -609,6 +609,36 @@ export const TUTORIAL_META: Record<TutorialId, TutorialMeta> = {
     openAt: 2,
     related: ["lcm-gcf", "factors", "fraction"],
   },
+  "calculate-mortgage": {
+    minutes: 6,
+    steps: 6,
+    openAt: 2,
+    related: ["mortgage", "loan", "compound"],
+  },
+  "solve-quadratic": {
+    minutes: 6,
+    steps: 6,
+    openAt: 2,
+    related: ["quadratic", "calculator", "factors"],
+  },
+  "make-random-teams": {
+    minutes: 4,
+    steps: 6,
+    openAt: 2,
+    related: ["team-generator", "wheel", "random"],
+  },
+  "check-screen-resolution": {
+    minutes: 3,
+    steps: 6,
+    openAt: 2,
+    related: ["screen-resolution", "aspect", "refresh-rate"],
+  },
+  "set-online-alarm": {
+    minutes: 3,
+    steps: 6,
+    openAt: 1,
+    related: ["alarm", "countdown", "sleep"],
+  },
   "electricity-cost": {
     minutes: 6,
     steps: 6,
@@ -1171,6 +1201,26 @@ export const TUTORIAL_DIAGRAMS: Partial<Record<TutorialId, { step: number; src: 
   "find-lcm-gcf": [
     { step: 3, src: "/covers/tutorials/find-lcm-gcf-venn.svg" },
     { step: 4, src: "/covers/tutorials/find-lcm-gcf-euclid.svg" },
+  ],
+  "calculate-mortgage": [
+    { step: 5, src: "/covers/tutorials/calculate-mortgage-split.svg" },
+    { step: 4, src: "/covers/tutorials/calculate-mortgage-methods.svg" },
+  ],
+  "solve-quadratic": [
+    { step: 3, src: "/covers/tutorials/solve-quadratic-discriminant.svg" },
+    { step: 4, src: "/covers/tutorials/solve-quadratic-formula.svg" },
+  ],
+  "make-random-teams": [
+    { step: 4, src: "/covers/tutorials/make-random-teams-deal.svg" },
+    { step: 3, src: "/covers/tutorials/make-random-teams-split.svg" },
+  ],
+  "check-screen-resolution": [
+    { step: 3, src: "/covers/tutorials/check-screen-resolution-scaling.svg" },
+    { step: 4, src: "/covers/tutorials/check-screen-resolution-viewport.svg" },
+  ],
+  "set-online-alarm": [
+    { step: 4, src: "/covers/tutorials/set-online-alarm-timeline.svg" },
+    { step: 5, src: "/covers/tutorials/set-online-alarm-keep.svg" },
   ],
   "electricity-cost": [
     { step: 1, src: "/covers/tutorials/electricity-cost-formula.svg" },
