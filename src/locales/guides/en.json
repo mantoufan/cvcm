@@ -1335,6 +1335,51 @@
       "s2b": "Press Set alarm. The page shows the time it will ring and a countdown. Keep the tab open.",
       "s3t": "Stop or snooze",
       "s3b": "When it rings, press Stop, or Snooze 5 min or 10 min to ring again later."
+    },
+    "white-noise": {
+      "lead": "Play white, pink, brown or green noise for sleep or focus, with a sleep timer. Nothing is uploaded.",
+      "s1t": "Open White noise generator",
+      "s1b": "Pick a Noise colour. The line under it says how each one sounds.",
+      "s2t": "Set the volume and timer",
+      "s2b": "Start with a low Volume. Choose a Sleep timer, or leave it Off to play until you stop it.",
+      "s3t": "Play",
+      "s3b": "Press Play. You can switch colour or volume while it plays; the timer fades it out at the end."
+    },
+    "decibel-meter": {
+      "lead": "Measure how loud a room or machine is in dB(A) with your microphone. Nothing is recorded.",
+      "s1t": "Open Decibel meter",
+      "s1b": "Press Start and allow the microphone. Keep the device still and pointed at the sound.",
+      "s2t": "Read the level",
+      "s2b": "The big number is the current level. Min, Max and Average (Leq) build up while it measures.",
+      "s3t": "Calibrate if you can",
+      "s3b": "Next to a real sound level meter, change Calibration until both match. The offset is remembered."
+    },
+    "voice-recorder": {
+      "lead": "Record your voice from the microphone and download it as WebM, M4A or WAV. Nothing is uploaded.",
+      "s1t": "Open Voice recorder",
+      "s1b": "Press Record and allow the microphone. Watch the level bar move as you speak.",
+      "s2t": "Record",
+      "s2b": "Use Pause and Resume for breaks, then press Stop recording. The take appears under Recordings.",
+      "s3t": "Play and download",
+      "s3b": "Play it back, then press Download for the original file or Download WAV for any editor."
+    },
+    "screen-recorder": {
+      "lead": "Record your screen, a window or a browser tab with sound and save MP4 or WebM. No watermark, nothing uploaded.",
+      "s1t": "Open Screen recorder",
+      "s1b": "Choose Format and Quality. Tick System or tab audio and Microphone as needed.",
+      "s2t": "Choose what to share",
+      "s2b": "Press Start recording, pick the entire screen, a window or a tab, and press Share.",
+      "s3t": "Stop and download",
+      "s3b": "Press Stop recording when done, check the video, then press Download."
+    },
+    "triangle": {
+      "lead": "Solve any triangle from three values, or a right triangle from two. Nothing is uploaded.",
+      "s1t": "Open Triangle calculator",
+      "s1b": "Tick Right triangle if C is 90°. Side a is opposite angle A, and so on.",
+      "s2t": "Enter what you know",
+      "s2b": "Type three values (two for a right triangle), at least one of them a side.",
+      "s3t": "Read the result",
+      "s3b": "Every side, angle, area, perimeter and height appears with a drawing and the working. Copy result copies it."
     }
   }
 }

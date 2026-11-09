@@ -597,8 +597,9 @@ function withHeaders(res: Response, pathname: string): Response {
   const devices = devicePolicyOf(pathname).split(" ");
   headers.set(
     "Permissions-Policy",
-    // Speech to text and the mic test can record from the microphone, the webcam test can use the camera; every other page keeps them off.
-    `camera=(${devices.includes("camera") ? "self" : ""}), microphone=(${devices.includes("microphone") ? "self" : ""}), geolocation=(), interest-cohort=(), usb=()`,
+    // Mic pages (MIC_TOOLS) may record from the microphone, the webcam test may use the camera and the screen recorder may
+    // capture the screen; every other page keeps them off.
+    `camera=(${devices.includes("camera") ? "self" : ""}), microphone=(${devices.includes("microphone") ? "self" : ""}), display-capture=(${devices.includes("display-capture") ? "self" : ""}), geolocation=(), interest-cohort=(), usb=()`,
   );
   headers.set("Content-Security-Policy", player ? EMU_CSP : aiPage || script ? CSP_AI : isTrackedPath(pathname) ? CSP_ANALYTICS : CSP);
   if (pathname === "/api/device/ip") {

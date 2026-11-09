@@ -228,6 +228,16 @@ Codex, refs `due-date-sweet.jpg` + `reading-time-sweet.jpg`. Same character and 
 
 Codex, refs `tone-generator-sweet.jpg` + `reading-time-sweet.jpg`. Same character and room. `ai-music-generator`: pink over-ear headphones with lace bows, she presses glowing pads on a small pearlescent pink keyboard synthesizer; pastel musical notes and a soft wave of little bars rise from it; a cream drum pad with heart buttons beside. No words, letters, numerals, logo or watermark.
 
+## White noise, decibel meter, voice recorder, screen recorder, triangle calculator (2026-11-10)
+
+Codex (`codex exec -m gpt-6-astra`; the default model is refused on this account), refs `dice-sweet.jpg` + `metronome-sweet.jpg`, run one at a time. Same character and room, no words, letters, numerals, logo or watermark. Save `public/covers/<id>-sweet.jpg`, `sips -z 720 1280`.
+
+- `white-noise`: she cuddles a pink pillow sleepily; a round cream speaker on the nightstand sends pastel wave ripples and stars; crescent-moon night light, evening.
+- `decibel-meter`: she holds a pink handheld sound level meter with a blank gauge; a small trumpet puffs sound-wave arcs; pastel level bars.
+- `voice-recorder`: she sings into a pink studio microphone with a lace pop filter; a glowing record dot and waveform ribbons; a laptop with a blank screen.
+- `screen-recorder`: she points at a laptop whose blank pink screen has four capture corner brackets; a plush video camera with a record dot; a film-strip ribbon.
+- `triangle`: she holds a pink set square and compass; a chalkboard shows a plain triangle with a right-angle mark; a protractor on the desk.
+
 ## Mortgage calculator, quadratic solver, random team generator, screen resolution, online alarm clock (2026-11-09)
 
 GPT Image 2.6 Flare image-to-image on kie.ai (Codex had no quota until 2026-11-10), refs `dice-sweet.jpg` + `metronome-sweet.jpg`. Same character and room, no words, letters, numerals, logo or watermark. Save `public/covers/<id>-sweet.jpg`, `sips -z 720 1280`.

@@ -639,6 +639,36 @@ export const TUTORIAL_META: Record<TutorialId, TutorialMeta> = {
     openAt: 1,
     related: ["alarm", "countdown", "sleep"],
   },
+  "play-white-noise": {
+    minutes: 4,
+    steps: 6,
+    openAt: 1,
+    related: ["white-noise", "sleep", "pomodoro"],
+  },
+  "measure-decibels": {
+    minutes: 5,
+    steps: 6,
+    openAt: 1,
+    related: ["decibel-meter", "mic-test", "tone-generator"],
+  },
+  "record-voice-online": {
+    minutes: 4,
+    steps: 6,
+    openAt: 1,
+    related: ["voice-recorder", "mic-test", "audio-cutter"],
+  },
+  "record-screen-online": {
+    minutes: 5,
+    steps: 6,
+    openAt: 1,
+    related: ["screen-recorder", "screenshot", "voice-recorder"],
+  },
+  "solve-triangle": {
+    minutes: 6,
+    steps: 6,
+    openAt: 1,
+    related: ["triangle", "calculator", "quadratic"],
+  },
   "electricity-cost": {
     minutes: 6,
     steps: 6,
@@ -1221,6 +1251,26 @@ export const TUTORIAL_DIAGRAMS: Partial<Record<TutorialId, { step: number; src: 
   "set-online-alarm": [
     { step: 4, src: "/covers/tutorials/set-online-alarm-timeline.svg" },
     { step: 5, src: "/covers/tutorials/set-online-alarm-keep.svg" },
+  ],
+  "play-white-noise": [
+    { step: 2, src: "/covers/tutorials/play-white-noise-spectrum.svg" },
+    { step: 4, src: "/covers/tutorials/play-white-noise-timer.svg" },
+  ],
+  "measure-decibels": [
+    { step: 3, src: "/covers/tutorials/measure-decibels-scale.svg" },
+    { step: 6, src: "/covers/tutorials/measure-decibels-exposure.svg" },
+  ],
+  "record-voice-online": [
+    { step: 1, src: "/covers/tutorials/record-voice-online-flow.svg" },
+    { step: 6, src: "/covers/tutorials/record-voice-online-formats.svg" },
+  ],
+  "record-screen-online": [
+    { step: 4, src: "/covers/tutorials/record-screen-online-share.svg" },
+    { step: 3, src: "/covers/tutorials/record-screen-online-audio.svg" },
+  ],
+  "solve-triangle": [
+    { step: 1, src: "/covers/tutorials/solve-triangle-labels.svg" },
+    { step: 5, src: "/covers/tutorials/solve-triangle-ambiguous.svg" },
   ],
   "electricity-cost": [
     { step: 1, src: "/covers/tutorials/electricity-cost-formula.svg" },

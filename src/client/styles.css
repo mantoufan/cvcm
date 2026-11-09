@@ -937,3 +937,27 @@ html.dp-lock, html.dp-lock body { overflow: hidden; }
 .alarm-ring { padding: 1rem; border: 2px solid var(--pink-deep); border-radius: var(--radius); background: var(--pink-soft); }
 .alarm-ring-title { margin: 0; font-size: 1.6rem; font-weight: 700; color: var(--pink-deep); }
 .alarm-ring-label { margin: 0.25rem 0 0.75rem; }
+
+/* White noise, decibel meter, voice and screen recorders, triangle calculator (batch 24). */
+.noise-status { margin: 0.25rem 0 1rem; font-size: 1.15rem; font-weight: 700; color: var(--pink-deep); font-variant-numeric: tabular-nums; }
+.noise-guide { grid-template-columns: auto 1fr; }
+.noise-guide dd { font-weight: 400; color: var(--ink); text-align: left; }
+.db-now { margin: 0.25rem 0 0; font-size: clamp(2.5rem, 10vw, 4rem); font-weight: 700; line-height: 1.1; color: var(--pink-deep); font-variant-numeric: tabular-nums; }
+.db-unit { font-size: 1.1rem; color: var(--ink-soft); }
+.db-band { min-height: 1.5em; margin: 0.25rem 0 0.75rem; font-weight: 700; }
+.db-graph { height: 160px; margin: 1rem 0; }
+.db-examples-title { margin-top: 1.25rem; }
+.rec-time { margin: 0.25rem 0 0.75rem; font-size: clamp(2.25rem, 9vw, 3.25rem); font-weight: 700; font-variant-numeric: tabular-nums; }
+.rec-title { margin-top: 1.25rem; }
+.rec-list { margin: 0; padding-left: 1.4rem; }
+.rec-item { margin-bottom: 1rem; }
+.rec-meta { margin: 0 0 0.4rem; overflow-wrap: anywhere; }
+.rec-player { display: block; width: 100%; margin-bottom: 0.4rem; }
+.rec-video { display: block; width: 100%; max-height: 60vh; margin-bottom: 0.5rem; border: 1px solid var(--line); border-radius: var(--radius); background: #000; }
+.tri-fields { display: grid; grid-template-columns: 1fr 1fr; gap: 0 0.75rem; }
+.tri-fields input.tri-given { border-color: var(--pink-deep); }
+.tri-solution + .tri-solution { margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid var(--line); }
+.tri-svg { display: block; width: 100%; max-width: 26rem; height: auto; margin-bottom: 0.75rem; border: 1px solid var(--line); border-radius: var(--radius); background: #fff; }
+.tri-shape { fill: var(--pink-soft); stroke: var(--pink-deep); stroke-width: 2.5; stroke-linejoin: round; }
+.tri-vertex { fill: var(--pink-deep); font-size: 15px; font-weight: 700; }
+.tri-side { fill: var(--ink-soft); font-size: 14px; font-style: italic; }

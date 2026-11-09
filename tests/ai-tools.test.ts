@@ -121,6 +121,21 @@ describe("AI page headers", () => {
     expect(other.headers.get("Content-Security-Policy")).not.toContain("wasm-unsafe-eval");
   });
 
+  it("allows screen capture only on the screen recorder, and the mic on the new audio tools", async () => {
+    const screen = await worker.fetch(new Request("https://cv.cm/en/screen-recorder/"), { ASSETS: html });
+    expect(screen.headers.get("Permissions-Policy")).toContain("display-capture=(self)");
+    expect(screen.headers.get("Permissions-Policy")).toContain("microphone=(self)");
+    expect(screen.headers.get("Permissions-Policy")).toContain("camera=()");
+    for (const tool of ["decibel-meter", "voice-recorder"]) {
+      const page = await worker.fetch(new Request(`https://cv.cm/ja/${tool}/`), { ASSETS: html });
+      expect(page.headers.get("Permissions-Policy")).toContain("microphone=(self)");
+      expect(page.headers.get("Permissions-Policy")).toContain("display-capture=()");
+    }
+    const noise = await worker.fetch(new Request("https://cv.cm/en/white-noise/"), { ASSETS: html });
+    expect(noise.headers.get("Permissions-Policy")).toContain("microphone=()");
+    expect(noise.headers.get("Permissions-Policy")).toContain("display-capture=()");
+  });
+
   it("proxies model files from their source with long caching, and only catalog files", async () => {
     const seen: string[] = [];
     vi.stubGlobal("fetch", async (input: string) => {
