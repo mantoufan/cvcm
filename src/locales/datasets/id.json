@@ -1203,7 +1203,7 @@
   "rankings": {
     "hub": {
       "title": "Peringkat: AI Terbaik, Pangsa Pasar, dan Lainnya | cv.cm",
-      "description": "Peringkat bersumber yang bisa diurutkan dan diunduh: model AI terbaik, AI yang paling banyak dipakai, pangsa pasar browser, sistem operasi, mesin pencari, ponsel dan media sosial, serta gunung tertinggi di dunia.",
+      "description": "Peringkat bersumber yang bisa diurutkan dan diunduh: model AI terbaik, AI yang paling banyak dipakai, pangsa pasar browser, sistem operasi, mesin pencari, ponsel dan media sosial, serta gunung tertinggi, sungai terpanjang, dan danau serta pulau terbesar di dunia.",
       "h1": "Peringkat",
       "lede": "Peringkat yang disusun dari data terbuka, masing-masing dengan sumber, lisensi, dan tanggalnya. Urutkan kolom mana pun, saring baris, atau unduh CSV.",
       "groups": {
@@ -1221,15 +1221,15 @@
       "faq": [
         {
           "q": "Dari mana datanya berasal?",
-          "a": "Kualitas AI berasal dari papan peringkat Arena, penggunaan AI dari OpenRouter, pangsa pasar dari StatCounter Global Stats, dan ketinggian gunung dari Wikidata. Setiap halaman mencantumkan sumber dan lisensinya."
+          "a": "Kualitas AI berasal dari papan peringkat Arena, penggunaan AI dari OpenRouter, pangsa pasar dari StatCounter Global Stats, ketinggian gunung dari Wikidata, dan sungai, danau, serta pulau dari daftar di Wikipedia. Setiap halaman mencantumkan sumber dan lisensinya."
         },
         {
           "q": "Seberapa sering peringkat diperbarui?",
-          "a": "Peringkat diperbarui otomatis sekali sehari dan setiap halaman menampilkan tanggal datanya. Kecepatan terbit tiap sumber berbeda: pangsa pasar bulanan, ketinggian gunung diperiksa tiap bulan, tabel AI lebih sering berubah."
+          "a": "Peringkat diperbarui otomatis sekali sehari dan setiap halaman menampilkan tanggal datanya. Kecepatan terbit tiap sumber berbeda: pangsa pasar bulanan, gunung, sungai, danau, dan pulau diperiksa tiap bulan, tabel AI lebih sering berubah."
         },
         {
           "q": "Bolehkah saya memakai ulang tabel ini?",
-          "a": "Ya, sesuai lisensi sumber yang tertera di setiap halaman: CC BY 4.0 untuk tabel AI, CC BY-SA 3.0 untuk pangsa pasar, dan CC0 (tanpa syarat) untuk gunung. Cantumkan sumbernya. Sebagian besar tabel bisa diunduh sebagai CSV."
+          "a": "Ya, sesuai lisensi sumber yang tertera di setiap halaman: CC BY 4.0 untuk tabel AI, CC BY-SA 3.0 untuk pangsa pasar, CC0 (tanpa syarat) untuk gunung, dan CC BY-SA 4.0 untuk sungai, danau, dan pulau. Cantumkan sumbernya. Sebagian besar tabel bisa diunduh sebagai CSV."
         }
       ]
     },
@@ -1317,7 +1317,24 @@
       "elevationFt": "Ketinggian (kaki)",
       "prominence": "Prominensi",
       "countries": "Negara",
-      "range": "Pegunungan"
+      "range": "Pegunungan",
+      "river": "Sungai",
+      "lake": "Danau",
+      "island": "Pulau",
+      "lengthKm": "Panjang (km)",
+      "lengthMi": "Panjang (mil)",
+      "basinCountries": "Negara di daerah aliran",
+      "riverSystem": "Sistem sungai",
+      "areaKm2": "Luas (km²)",
+      "areaSqMi": "Luas (mil persegi)",
+      "maxDepth": "Kedalaman maks.",
+      "water": "Air",
+      "waters": {
+        "fresh": "Tawar",
+        "saline": "Asin",
+        "variable": "Berubah-ubah"
+      },
+      "unnamedIsland": "Pulau tanpa nama"
     },
     "sets": {
       "ai-models": {
@@ -1753,6 +1770,93 @@
           {
             "q": "Apa gunung tertinggi kedua di dunia?",
             "a": "{top2}, setinggi {v2}. Gunung ini lebih sulit dan lebih berbahaya untuk didaki daripada {top1}."
+          }
+        ]
+      },
+      "longest-rivers": {
+        "title": "Sungai Terpanjang di Dunia: {rows} Teratas Menurut Panjang | cv.cm",
+        "description": "{rows} sungai terpanjang di Bumi: {top1} {v1}, {top2} {v2}, {top3} {v3}. Panjang dalam km dan mil, negara di daerah alirannya, dan sistem sungai lengkapnya.",
+        "h1": "{rows} sungai terpanjang di dunia",
+        "lede": "{rows} sungai terpanjang di Bumi, masing-masing diukur sebagai sistem sungai dari hulu terjauh hingga muaranya, dengan panjang dalam kilometer dan mil serta negara di daerah alirannya. Dari daftar sistem sungai menurut panjang di Wikipedia.",
+        "facts": [
+          "Terpanjang: {top1} sepanjang {v1} ({alt1} mil), lalu {top2} ({v2}) dan {top3} ({v3}).",
+          "Sungai terbanyak di daftar ini: {countryLead}, dengan {countryCount}. Sungai dihitung untuk setiap negara di daerah alirannya.",
+          "Urutan ke-{lowRank} adalah {low1} sepanjang {lv1}."
+        ],
+        "about": [
+          "Panjang sungai bergantung pada letak hulu dan muara yang dipakai serta skala petanya, sehingga angka antarsumber bisa berselisih ratusan kilometer. Nil dan Amazon bergantian menempati urutan pertama, tergantung cara menarik muara Amazon dan hulu terjauh Nil. Tabel ini memakai angka dari daftar Wikipedia, yang mengukur setiap sistem sungai dari hulunya yang paling jauh: Mississippi dihitung bersama Missouri, Ob bersama Irtysh.",
+          "Panjang, daerah aliran, dan sistem sungai diambil dari daftar Wikipedia bahasa Inggris (CC BY-SA 4.0); nama dalam setiap bahasa diambil dari Wikidata (CC0). Sungai yang tercantum dua kali, sebagai satu sistem utuh dan sebagai alur hulu, hanya disimpan entri yang lebih panjang."
+        ],
+        "faq": [
+          {
+            "q": "Apa sungai terpanjang di dunia?",
+            "a": "{top1}, sepanjang {v1} ({alt1} mil), menurut angka yang dipakai di sini. {top2} menyusul tipis dengan {v2}, dan beberapa survei menempatkannya di urutan pertama: panjang sungai bergantung pada letak hulu dan muara yang dipakai."
+          },
+          {
+            "q": "Mengapa panjang sungai berbeda-beda antarsumber?",
+            "a": "Sungai berkelok, bercabang menjadi beberapa alur, dan berpindah arah, dan sumber-sumber tidak sepakat hulu dan muara mana yang dijadikan titik ukur. Skala peta juga berpengaruh: peta yang lebih rinci mengikuti lebih banyak kelokan sehingga sungainya jadi lebih panjang."
+          },
+          {
+            "q": "Negara mana yang punya sungai panjang terbanyak?",
+            "a": "{countryLead}: {countryCount} dari {rows} sungai di daftar ini memiliki sebagian daerah alirannya di sana."
+          }
+        ]
+      },
+      "largest-lakes": {
+        "title": "Danau Terbesar di Dunia: {rows} Teratas Menurut Luas | cv.cm",
+        "description": "{rows} danau terbesar di Bumi menurut luas permukaan: {top1} {v1}, {top2} {v2}, {top3} {v3}. Luas dalam km² dan mil persegi, kedalaman, air tawar atau asin, dan negaranya.",
+        "h1": "{rows} danau terbesar di dunia",
+        "lede": "{rows} danau terbesar di Bumi menurut luas permukaan, dengan luas dalam kilometer persegi dan mil persegi, kedalaman maksimum, jenis airnya, tawar atau asin, dan negara di tepiannya. Dari daftar danau menurut luas di Wikipedia.",
+        "facts": [
+          "Terbesar: {top1} seluas {v1} ({alt1} mil persegi), lalu {top2} ({v2}) dan {top3} ({v3}).",
+          "Danau terbanyak di daftar ini: {countryLead}, dengan {countryCount}. Danau dihitung untuk setiap negara di tepiannya.",
+          "Urutan ke-{lowRank} adalah {low1} seluas {lv1}."
+        ],
+        "about": [
+          "Laut Kaspia dihitung sebagai danau: laut ini tidak punya saluran keluar ke samudra, meskipun airnya asin dan sering disebut laut terbesar di dunia. Danau Michigan dan Huron terhubung oleh selat yang lebar dan secara hidrologi merupakan satu danau, tetapi di sini keduanya dicantumkan terpisah, seperti biasanya. Danau Vostok terletak di bawah es Antarktika setebal hampir 4 km.",
+          "Luas, kedalaman, dan jenis air diambil dari daftar Wikipedia bahasa Inggris (CC BY-SA 4.0); nama dalam setiap bahasa diambil dari Wikidata (CC0). Waduk tidak termasuk. Danau di wilayah kering berubah ukuran mengikuti musim dan tahun, jadi luasnya adalah angka yang umum dipakai."
+        ],
+        "faq": [
+          {
+            "q": "Apa danau terbesar di dunia?",
+            "a": "{top1}, seluas {v1} ({alt1} mil persegi). Jika Kaspia dihitung sebagai laut, yang terbesar adalah {top2} seluas {v2}."
+          },
+          {
+            "q": "Apa danau air tawar terbesar?",
+            "a": "Menurut luas, Danau Superior. Menurut volume, Danau Baikal di Siberia, yang juga merupakan danau terdalam di Bumi dengan kedalaman sekitar 1.642 m dan menampung sekitar seperlima air tawar permukaan dunia yang tidak membeku."
+          },
+          {
+            "q": "Negara mana yang punya danau besar terbanyak?",
+            "a": "{countryLead}: {countryCount} dari {rows} danau di daftar ini berbatasan dengannya."
+          }
+        ]
+      },
+      "largest-islands": {
+        "title": "Pulau Terbesar di Dunia: {rows} Teratas Menurut Luas | cv.cm",
+        "description": "{rows} pulau terbesar di Bumi: {top1} {v1}, {top2} {v2}, {top3} {v3}. Luas dalam km² dan mil persegi serta negara pemilik setiap pulau.",
+        "h1": "{rows} pulau terbesar di dunia",
+        "lede": "{rows} pulau terbesar di Bumi menurut luas, dengan luas dalam kilometer persegi dan mil persegi serta negara pemiliknya. Australia dihitung sebagai benua, bukan pulau. Dari daftar pulau menurut luas di Wikipedia.",
+        "facts": [
+          "Terbesar: {top1} seluas {v1} ({alt1} mil persegi), lalu {top2} ({v2}) dan {top3} ({v3}).",
+          "Pulau terbanyak di daftar ini: {countryLead}, dengan {countryCount}. Pulau yang dimiliki dua negara dihitung untuk keduanya.",
+          "Urutan ke-{lowRank} adalah {low1} seluas {lv1}."
+        ],
+        "about": [
+          "Batas antara pulau dan benua adalah soal kesepakatan. Australia, seluas sekitar 7,7 juta km², diperlakukan sebagai benua, sehingga Greenland menjadi pulau terbesar. Setiap luas hanya mencakup pulau utamanya, tanpa pulau-pulau kecil di sekitarnya.",
+          "Luas dan negara diambil dari daftar Wikipedia bahasa Inggris (CC BY-SA 4.0); nama dalam setiap bahasa diambil dari Wikidata (CC0). Pulau-pulau di lepas pantai Antarktika bukan milik negara mana pun dan ditandai dengan tanda pisah."
+        ],
+        "faq": [
+          {
+            "q": "Apa pulau terbesar di dunia?",
+            "a": "{top1}, seluas {v1} ({alt1} mil persegi). Australia lebih besar, tetapi dihitung sebagai benua."
+          },
+          {
+            "q": "Apakah Australia sebuah pulau?",
+            "a": "Menurut kesepakatan, bukan: para ahli geografi menghitung Australia sebagai benua, yang terkecil, karena berada di lempeng benuanya sendiri. Greenland adalah daratan terbesar yang dihitung sebagai pulau."
+          },
+          {
+            "q": "Negara mana yang punya pulau besar terbanyak?",
+            "a": "{countryLead}: {countryCount} dari {rows} pulau di daftar ini adalah miliknya."
           }
         ]
       }

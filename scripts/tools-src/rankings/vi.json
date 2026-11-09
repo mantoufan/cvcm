@@ -60,12 +60,24 @@
     "tallest-mountains": {
       "name": "Những ngọn núi cao nhất thế giới",
       "blurb": "Những đỉnh núi cao nhất Trái Đất, kèm độ nổi bật, quốc gia và dãy núi."
+    },
+    "longest-rivers": {
+      "name": "Những con sông dài nhất thế giới",
+      "blurb": "Các hệ thống sông dài nhất, kèm chiều dài, các quốc gia trong lưu vực và dòng chảy."
+    },
+    "largest-lakes": {
+      "name": "Những hồ lớn nhất thế giới",
+      "blurb": "Các hồ lớn nhất theo diện tích, kèm độ sâu và loại nước ngọt hay mặn."
+    },
+    "largest-islands": {
+      "name": "Những hòn đảo lớn nhất thế giới",
+      "blurb": "Các hòn đảo lớn nhất theo diện tích và quốc gia sở hữu."
     }
   },
   "rankings": {
     "hub": {
       "title": "Bảng xếp hạng: AI, thị phần và hơn nữa, có nguồn | cv.cm",
-      "description": "Bảng xếp hạng có nguồn, sắp xếp và tải về được: mô hình AI tốt nhất, AI được dùng nhiều nhất, thị phần trình duyệt, hệ điều hành, công cụ tìm kiếm, điện thoại, mạng xã hội và những ngọn núi cao nhất thế giới.",
+      "description": "Bảng xếp hạng có nguồn, sắp xếp và tải về được: mô hình AI tốt nhất, AI được dùng nhiều nhất, thị phần trình duyệt, hệ điều hành, công cụ tìm kiếm, điện thoại, mạng xã hội, cùng những ngọn núi cao nhất, con sông dài nhất, hồ và đảo lớn nhất thế giới.",
       "h1": "Bảng xếp hạng",
       "lede": "Các bảng xếp hạng xây dựng từ dữ liệu mở, mỗi bảng đều ghi nguồn, giấy phép và ngày. Bạn có thể sắp xếp theo cột bất kỳ, lọc hàng hoặc tải CSV.",
       "groups": {
@@ -83,15 +95,15 @@
       "faq": [
         {
           "q": "Dữ liệu đến từ đâu?",
-          "a": "Chất lượng AI lấy từ bảng xếp hạng Arena, mức sử dụng AI từ OpenRouter, thị phần từ StatCounter Global Stats và độ cao núi từ Wikidata. Mỗi trang đều ghi nguồn và giấy phép."
+          "a": "Chất lượng AI lấy từ bảng xếp hạng Arena, mức sử dụng AI từ OpenRouter, thị phần từ StatCounter Global Stats, độ cao núi từ Wikidata, còn sông, hồ và đảo lấy từ các danh sách trên Wikipedia. Mỗi trang đều ghi nguồn và giấy phép."
         },
         {
           "q": "Bảng xếp hạng được cập nhật bao lâu một lần?",
-          "a": "Chúng được cập nhật tự động mỗi ngày một lần và mỗi trang hiển thị ngày của dữ liệu. Các nguồn công bố với tốc độ khác nhau: thị phần theo tháng, độ cao núi được kiểm tra hằng tháng, các bảng AI thay đổi thường xuyên hơn."
+          "a": "Chúng được cập nhật tự động mỗi ngày một lần và mỗi trang hiển thị ngày của dữ liệu. Các nguồn công bố với tốc độ khác nhau: thị phần theo tháng, núi, sông, hồ và đảo được kiểm tra hằng tháng, các bảng AI thay đổi thường xuyên hơn."
         },
         {
           "q": "Tôi có thể dùng lại các bảng này không?",
-          "a": "Có, theo giấy phép của nguồn ghi trên từng trang: CC BY 4.0 cho các bảng AI, CC BY-SA 3.0 cho thị phần và CC0 (không điều kiện) cho núi. Hãy ghi nguồn. Hầu hết các bảng đều tải được CSV."
+          "a": "Có, theo giấy phép của nguồn ghi trên từng trang: CC BY 4.0 cho các bảng AI, CC BY-SA 3.0 cho thị phần, CC0 (không điều kiện) cho núi và CC BY-SA 4.0 cho sông, hồ và đảo. Hãy ghi nguồn. Hầu hết các bảng đều tải được CSV."
         }
       ]
     },
@@ -179,7 +191,24 @@
       "elevationFt": "Độ cao (ft)",
       "prominence": "Độ nổi bật",
       "countries": "Quốc gia",
-      "range": "Dãy núi"
+      "range": "Dãy núi",
+      "river": "Sông",
+      "lake": "Hồ",
+      "island": "Đảo",
+      "lengthKm": "Chiều dài (km)",
+      "lengthMi": "Chiều dài (dặm)",
+      "basinCountries": "Quốc gia trong lưu vực",
+      "riverSystem": "Hệ thống sông",
+      "areaKm2": "Diện tích (km²)",
+      "areaSqMi": "Diện tích (dặm vuông)",
+      "maxDepth": "Độ sâu tối đa",
+      "water": "Loại nước",
+      "waters": {
+        "fresh": "Ngọt",
+        "saline": "Mặn",
+        "variable": "Thay đổi"
+      },
+      "unnamedIsland": "Đảo chưa đặt tên"
     },
     "sets": {
       "ai-models": {
@@ -615,6 +644,93 @@
           {
             "q": "Ngọn núi cao thứ hai thế giới là núi nào?",
             "a": "{top2}, cao {v2}. Núi này khó leo và nguy hiểm hơn {top1}."
+          }
+        ]
+      },
+      "longest-rivers": {
+        "title": "Những Con Sông Dài Nhất Thế Giới: Top {rows} Theo Chiều Dài | cv.cm",
+        "description": "{rows} con sông dài nhất Trái Đất: {top1} {v1}, {top2} {v2}, {top3} {v3}. Chiều dài theo km và dặm, các quốc gia trong lưu vực và toàn bộ hệ thống sông.",
+        "h1": "{rows} con sông dài nhất thế giới",
+        "lede": "{rows} con sông dài nhất Trái Đất, mỗi sông được đo như một hệ thống sông từ nguồn xa nhất đến cửa sông, kèm chiều dài theo kilômét và dặm cùng các quốc gia trong lưu vực. Lấy từ danh sách hệ thống sông theo chiều dài trên Wikipedia.",
+        "facts": [
+          "Dài nhất là {top1} với {v1} ({alt1} dặm), tiếp theo là {top2} ({v2}) và {top3} ({v3}).",
+          "Nhiều sông nhất trong danh sách: {countryLead}, với {countryCount} sông. Một con sông được tính cho mọi quốc gia trong lưu vực của nó.",
+          "Vị trí thứ {lowRank} là {low1} với {lv1}."
+        ],
+        "about": [
+          "Chiều dài của một con sông phụ thuộc vào việc xác định nguồn và cửa sông ở đâu, cũng như tỷ lệ bản đồ, nên các nguồn có thể chênh nhau hàng trăm kilômét. Sông Nile và sông Amazon đổi chỗ cho nhau ở vị trí đầu tiên tùy theo cách vẽ cửa sông Amazon và thượng nguồn xa nhất của sông Nile. Bảng này dùng số liệu trong danh sách của Wikipedia, vốn đo mỗi hệ thống sông từ nguồn xa nhất: sông Mississippi được tính cùng sông Missouri, sông Ob cùng sông Irtysh.",
+          "Chiều dài, lưu vực và hệ thống sông lấy từ danh sách trên Wikipedia tiếng Anh (CC BY-SA 4.0); tên theo từng ngôn ngữ lấy từ Wikidata (CC0). Một con sông xuất hiện hai lần, vừa là cả hệ thống vừa là đoạn thượng lưu, chỉ giữ lại mục dài hơn."
+        ],
+        "faq": [
+          {
+            "q": "Con sông dài nhất thế giới là sông nào?",
+            "a": "{top1}, dài {v1} ({alt1} dặm), theo số liệu dùng ở đây. {top2} theo sát với {v2}, và một số khảo sát xếp sông này đứng đầu: chiều dài của một con sông phụ thuộc vào việc xác định nguồn và cửa sông ở đâu."
+          },
+          {
+            "q": "Vì sao chiều dài sông khác nhau giữa các nguồn?",
+            "a": "Sông uốn khúc, chia nhánh và đổi dòng, còn các nguồn lại không thống nhất nên đo từ thượng nguồn nào và cửa sông nào. Tỷ lệ bản đồ cũng ảnh hưởng: bản đồ càng chi tiết thì càng theo được nhiều khúc quanh và cho ra con sông dài hơn."
+          },
+          {
+            "q": "Quốc gia nào có nhiều sông dài nhất?",
+            "a": "{countryLead}: {countryCount} trong số {rows} con sông của danh sách này có một phần lưu vực ở đó."
+          }
+        ]
+      },
+      "largest-lakes": {
+        "title": "Những Hồ Lớn Nhất Thế Giới: {rows} Hồ Rộng Nhất Theo Diện Tích | cv.cm",
+        "description": "{rows} hồ lớn nhất Trái Đất theo diện tích mặt nước: {top1} {v1}, {top2} {v2}, {top3} {v3}. Diện tích theo km² và dặm vuông, độ sâu, nước ngọt hay mặn và các quốc gia.",
+        "h1": "{rows} hồ lớn nhất thế giới",
+        "lede": "{rows} hồ lớn nhất Trái Đất theo diện tích mặt nước, kèm diện tích theo kilômét vuông và dặm vuông, độ sâu tối đa, nước ngọt hay mặn và các quốc gia ven bờ. Lấy từ danh sách hồ theo diện tích trên Wikipedia.",
+        "facts": [
+          "Lớn nhất là {top1} với {v1} ({alt1} dặm vuông), tiếp theo là {top2} ({v2}) và {top3} ({v3}).",
+          "Nhiều hồ nhất trong danh sách: {countryLead}, với {countryCount} hồ. Một hồ được tính cho mọi quốc gia ven bờ của nó.",
+          "Vị trí thứ {lowRank} là {low1} với {lv1}."
+        ],
+        "about": [
+          "Biển Caspi được tính là hồ: nó không có lối thoát ra đại dương, dù nước mặn và thường được gọi là biển lớn nhất thế giới. Hồ Michigan và hồ Huron nối với nhau bằng một eo nước rộng và về mặt thủy văn là một hồ, nhưng ở đây được liệt kê riêng như thường lệ. Hồ Vostok nằm dưới lớp băng Nam Cực dày gần 4 km.",
+          "Diện tích, độ sâu và loại nước lấy từ danh sách trên Wikipedia tiếng Anh (CC BY-SA 4.0); tên theo từng ngôn ngữ lấy từ Wikidata (CC0). Không tính hồ chứa nhân tạo. Các hồ ở vùng khô hạn thay đổi kích thước theo mùa và theo năm, nên diện tích chỉ là con số điển hình."
+        ],
+        "faq": [
+          {
+            "q": "Hồ lớn nhất thế giới là hồ nào?",
+            "a": "{top1}, rộng {v1} ({alt1} dặm vuông). Nếu coi Caspi là biển thì hồ lớn nhất là {top2} với {v2}."
+          },
+          {
+            "q": "Hồ nước ngọt lớn nhất là hồ nào?",
+            "a": "Theo diện tích là hồ Superior. Theo thể tích là hồ Baikal ở Siberia, cũng là hồ sâu nhất Trái Đất với khoảng 1.642 m và chứa khoảng một phần năm lượng nước ngọt bề mặt không đóng băng của thế giới."
+          },
+          {
+            "q": "Quốc gia nào có nhiều hồ lớn nhất?",
+            "a": "{countryLead}: {countryCount} trong số {rows} hồ của danh sách này giáp quốc gia này."
+          }
+        ]
+      },
+      "largest-islands": {
+        "title": "Những Hòn Đảo Lớn Nhất Thế Giới: Top {rows} Theo Diện Tích | cv.cm",
+        "description": "{rows} hòn đảo lớn nhất Trái Đất: {top1} {v1}, {top2} {v2}, {top3} {v3}. Diện tích theo km² và dặm vuông cùng quốc gia sở hữu mỗi đảo.",
+        "h1": "{rows} hòn đảo lớn nhất thế giới",
+        "lede": "{rows} hòn đảo lớn nhất Trái Đất theo diện tích, kèm diện tích theo kilômét vuông và dặm vuông cùng quốc gia sở hữu. Úc được tính là lục địa, không phải đảo. Lấy từ danh sách đảo theo diện tích trên Wikipedia.",
+        "facts": [
+          "Lớn nhất là {top1} với {v1} ({alt1} dặm vuông), tiếp theo là {top2} ({v2}) và {top3} ({v3}).",
+          "Nhiều đảo nhất trong danh sách: {countryLead}, với {countryCount} đảo. Một hòn đảo do hai quốc gia cùng chia sẻ được tính cho cả hai.",
+          "Vị trí thứ {lowRank} là {low1} với {lv1}."
+        ],
+        "about": [
+          "Đâu là đảo và đâu là lục địa chỉ là quy ước. Úc, rộng khoảng 7,7 triệu km², được coi là lục địa, nên Greenland là hòn đảo lớn nhất. Diện tích mỗi đảo chỉ tính riêng đảo chính, không gồm các đảo nhỏ xung quanh.",
+          "Diện tích và quốc gia lấy từ danh sách trên Wikipedia tiếng Anh (CC BY-SA 4.0); tên theo từng ngôn ngữ lấy từ Wikidata (CC0). Các đảo ngoài khơi Nam Cực không thuộc quốc gia nào và được hiển thị bằng dấu gạch ngang."
+        ],
+        "faq": [
+          {
+            "q": "Hòn đảo lớn nhất thế giới là đảo nào?",
+            "a": "{top1}, rộng {v1} ({alt1} dặm vuông). Úc lớn hơn, nhưng được tính là lục địa."
+          },
+          {
+            "q": "Úc có phải là đảo không?",
+            "a": "Theo quy ước thì không: các nhà địa lý coi Úc là một lục địa, nhỏ nhất trong các lục địa, vì nó nằm trên mảng lục địa riêng. Greenland là vùng đất lớn nhất được tính là đảo."
+          },
+          {
+            "q": "Quốc gia nào có nhiều đảo lớn nhất?",
+            "a": "{countryLead}: {countryCount} trong số {rows} hòn đảo của danh sách này thuộc về quốc gia này."
           }
         ]
       }

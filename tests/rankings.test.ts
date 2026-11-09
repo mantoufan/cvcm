@@ -1,11 +1,18 @@
-import { existsSync, readFileSync } from "node:fs";
+import { existsSync, readdirSync, readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
-import rows from "../src/shared/rankings-rows.json";
+import baseRows from "../src/shared/rankings-rows.json";
+import mountainRows from "../src/shared/rankings-geo/tallest-mountains.json";
+import riverRows from "../src/shared/rankings-geo/longest-rivers.json";
+import lakeRows from "../src/shared/rankings-geo/largest-lakes.json";
+import islandRows from "../src/shared/rankings-geo/largest-islands.json";
 import { LOCALES } from "../src/shared/locale";
 import { appHref, parseAppPath, rankingHref } from "../src/shared/path";
-import { RANKINGS, RANKING_REGIONS, RANKING_SOURCE, rankingCsvHref, rankingKind, rankingMeta, type MountainRow } from "../src/shared/rankings";
+import { RANKINGS, RANKING_REGIONS, RANKING_SOURCE, rankingCsvHref, rankingKind, rankingMeta, type IslandRow, type LakeRow, type MountainRow, type RiverRow, rankingGroupOf, rankingRowsChunk } from "../src/shared/rankings";
 import { rankingFaqItems, rankingHub, rankingJsonLd, rankingName, rankingPageCopy, rankingStaticHtml, rankingTable, rankingTitle } from "../src/shared/rankings-i18n";
 import { applyHtmlSeo } from "../src/shared/seo";
+
+const geoRows: Record<string, unknown[]> = { "tallest-mountains": mountainRows, "longest-rivers": riverRows, "largest-lakes": lakeRows, "largest-islands": islandRows };
+const rows = { ...baseRows, ...geoRows };
 
 describe("ranking routes", () => {
   it("parses hub and tables, in and out of a locale", () => {
@@ -153,5 +160,51 @@ describe("tallest mountains", () => {
     expect(en.rows[0][5].text).toBe("—");
     expect(en.rows[0][6].text).toBe("—");
     expect(rankingTable("en", "tallest-mountains", [row]).rows[0][5].text).toBe("China, Nepal");
+  });
+});
+
+describe("rivers, lakes and islands", () => {
+  // Shape only: the refresh workflow runs these tests on live Wikipedia data.
+  const geo = rows as unknown as Record<string, (RiverRow | LakeRow | IslandRow)[]>;
+  it("keeps geography rows in their own file, one entry per place, largest first", () => {
+    for (const id of RANKINGS) expect(id in geoRows, id).toBe(rankingGroupOf(id) === "geography");
+    for (const id of RANKINGS) expect(rankingRowsChunk(id), id).toBe(rankingGroupOf(id) === "geography" ? `rows-ranking-${id}` : "rows-rankings");
+    for (const id of RANKINGS) expect(id in baseRows, id).toBe(rankingGroupOf(id) !== "geography");
+    // The fetch script's own list of geography tables (GEO_IDS) writes these files: one per table of the group, no more.
+    // The page's loaders (GEO_ROWS in src/client/rankings/ui.ts, literal imports) cover the same tables.
+    const loaders = [...readFileSync("src/client/rankings/ui.ts", "utf8").matchAll(/"([a-z-]+)": \(\) => import\("\.\.\/\.\.\/shared\/rankings-geo\/\1\.json"\)/g)].map((m) => m[1]).sort();
+    expect(loaders).toEqual(RANKINGS.filter((id) => rankingGroupOf(id) === "geography").sort());
+    expect(readdirSync("src/shared/rankings-geo").sort()).toEqual(RANKINGS.filter((id) => rankingGroupOf(id) === "geography").map((id) => `${id}.json`).sort());
+    for (const id of ["longest-rivers", "largest-lakes", "largest-islands"]) {
+      const table = geo[id];
+      const values = table.map((row) => row[3]);
+      expect(values, id).toEqual([...values].sort((a, b) => b - a));
+      expect(new Set(table.map((row) => row[1]).filter(Boolean)).size, id).toBe(table.filter((row) => row[1]).length);
+      for (const row of table) {
+        // An island the list does not link (an unnamed one) has no item.
+        expect(row[1], id).toMatch(id === "largest-islands" ? /^(Q\d+)?$/ : /^Q\d+$/);
+        for (const c of row[4]) if (typeof c === "string") expect(c, row[2].en).toMatch(/^[A-Z]{2}$/);
+        else expect(c.en, row[2].en).toBeTruthy();
+      }
+    }
+  });
+  it("shows imperial units, localized countries and the lake's water", () => {
+    const river: RiverRow = [1, "Q1", { en: "River", "zh-CN": "河" }, 6650, ["EG", { en: "Danish Realm", ja: "デンマーク王国" }], "A–B"];
+    const zh = rankingTable("zh-CN", "longest-rivers", [river]);
+    expect(zh.rows[0][1].text).toBe("河");
+    expect(zh.rows[0][2].text).toBe("6,650");
+    expect(zh.rows[0][3].text).toBe("4,132");
+    expect(zh.rows[0][4].text).toBe("埃及、Danish Realm");
+    expect(rankingTable("ja", "longest-rivers", [river]).rows[0][4].text).toBe("エジプト、デンマーク王国");
+    expect(rankingTable("en", "longest-rivers", [[1, "Q1", { en: "R" }, 10, [], null]]).rows[0][5].text).toBe("—");
+    const lake = rankingTable("en", "largest-lakes", [[1, "Q1", { en: "L" }, 82100, ["CA"], null, "saline"]]);
+    expect(lake.rows[0][3].text).toBe("31,699");
+    expect(lake.rows[0][4].text).toBe("—");
+    expect(lake.rows[0][5].text).toBe("Salt");
+    expect(rankingTable("zh-CN", "largest-islands", [[1, "", { en: "Unnamed Island" }, 9794, []]]).rows[0][1].text).toBe("无名岛");
+    expect(rankingTable("zh-CN", "largest-islands", [[1, "", { en: "Grande Terre" }, 6576, ["FR"]]]).rows[0][1].text).toBe("Grande Terre");
+    const island = rankingTable("en", "largest-islands", [[1, "Q1", { en: "I" }, 2108459.47, []]]);
+    expect(island.rows[0][2].text).toBe("2,108,459");
+    expect(island.rows[0][4].text).toBe("—");
   });
 });
