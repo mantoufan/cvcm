@@ -71,9 +71,9 @@ function unzip(buffer) {
   return files;
 }
 
-async function get(url, headers = {}) {
+async function get(url, headers = {}, timeout = 40_000) {
   for (let attempt = 0; ; attempt += 1) {
-    const res = await fetch(url, { headers: { "User-Agent": UA, ...headers }, signal: AbortSignal.timeout(40_000) }).catch((error) => {
+    const res = await fetch(url, { headers: { "User-Agent": UA, ...headers }, signal: AbortSignal.timeout(timeout) }).catch((error) => {
       if (attempt === 3) throw error;
       return null;
     });
@@ -378,8 +378,9 @@ const RANGE_MIN_SITELINKS = 3;
 /** Peaks rise at least this far above the col to a higher one: the usual line between a mountain and a shoulder of one. */
 const MIN_PROMINENCE = 500;
 const SPARQL = "https://query.wikidata.org/sparql";
-/** The Wikidata label for each cv.cm locale; a locale without one shows the English name. */
+/** Sitelinks that are not a Wikipedia. */
 const NOT_WIKIPEDIA = new Set(["commonswiki", "specieswiki", "wikidatawiki", "metawiki", "mediawikiwiki", "sourceswiki", "wikimaniawiki", "incubatorwiki", "outreachwiki", "wikifunctionswiki"]);
+/** The Wikidata label for each cv.cm locale; a locale without one shows the English name. */
 const LABEL_LANGS = { en: "en", "zh-CN": "zh-cn", "zh-TW": "zh-tw", ja: "ja", ko: "ko", vi: "vi", id: "id", es: "es" };
 
 /** Names in every locale, and how many Wikipedias cover the item. Chinese falls back across scripts, converted by Wikidata (zh-tw from zh-hans and back). */
@@ -421,7 +422,7 @@ const LABEL_FIX = {
   Q159621: { "zh-CN": "安纳布尔纳山脉", "zh-TW": "安納布爾納山脈" },
 };
 
-/** Elevation and prominence from the best-ranked statement (a newer survey outranks an old one), in metres. */
+/** Elevation and prominence from the best-ranked statements (a preferred survey outranks the rest; among equals, the highest), in metres. */
 async function mountains() {
   const query = `SELECT ?m (MAX(?e) AS ?elev) (MAX(?p) AS ?prom) (GROUP_CONCAT(DISTINCT ?cc; separator="|") AS ?cs) (GROUP_CONCAT(DISTINCT ?r; separator="|") AS ?ranges) (GROUP_CONCAT(DISTINCT CONCAT(STR(?lat), ",", STR(?lon)); separator="|") AS ?at) WHERE {
   ?m p:P2044 ?es . ?es a wikibase:BestRank ; psn:P2044/wikibase:quantityAmount ?e . FILTER(?e > 5000 && ?e < 9000)
@@ -430,7 +431,7 @@ async function mountains() {
   OPTIONAL { ?m wdt:P4552 ?r }
   OPTIONAL { ?m p:P625/psv:P625 [ wikibase:geoLatitude ?lat ; wikibase:geoLongitude ?lon ] }
 } GROUP BY ?m ORDER BY DESC(?elev) LIMIT ${MOUNTAIN_ROWS * 2}`;
-  const data = JSON.parse(await get(`${SPARQL}?${new URLSearchParams({ query, format: "json" })}`, { Accept: "application/sparql-results+json" }));
+  const data = JSON.parse(await get(`${SPARQL}?${new URLSearchParams({ query, format: "json" })}`, { Accept: "application/sparql-results+json" }, 70_000));
   const qid = (uri) => uri.slice(uri.lastIndexOf("/") + 1);
   const found = data.results.bindings.map((b) => ({
     id: qid(b.m.value),
@@ -509,9 +510,6 @@ let failures = 0;
 const listed = process.env.RANKINGS_ONLY?.split(",").map((id) => id.trim()).filter(Boolean);
 // Set but empty (an unfilled input) means every table, not none.
 const only = listed?.length ? listed : undefined;
-const ALL_IDS = [...Object.keys(ARENA), "ai-usage", "ai-companies", "crypto-market-cap", "currency-strength", "commodity-prices", "tallest-mountains", ...Object.keys(SHARE)];
-const unknown = only?.filter((id) => !ALL_IDS.includes(id));
-if (unknown?.length) throw new Error(`RANKINGS_ONLY: no table ${unknown.join(", ")}`);
 /** One source failing keeps its last good tables, so it cannot hold back the others. With no earlier data there is nothing to keep. */
 async function attempt(ids, fetchTables) {
   if (only && !ids.some((id) => only.includes(id))) {
@@ -599,6 +597,9 @@ for (const [id, spec] of Object.entries(SHARE)) {
   });
 }
 if (attempts && failures === attempts) throw new Error("every source failed");
+// Every table has passed through keep() or attempt() by now: an id still missing is a typo, and nothing is written.
+const unknown = only?.filter((id) => !(id in meta.sets));
+if (unknown?.length) throw new Error(`RANKINGS_ONLY: no table ${unknown.join(", ")}`);
 
 // A table's date moves only when its rows changed, so a monthly table never claims a daily update.
 for (const [id, set] of Object.entries(meta.sets)) {
