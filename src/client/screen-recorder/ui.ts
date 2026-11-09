@@ -1,5 +1,5 @@
 import { downloadBlob, h } from "../dom";
-import { setLeaveGuard } from "../leave-guard";
+import { setLeaveGuard, syncLeaveGuard } from "../leave-guard";
 import { fixInfiniteDuration } from "../media-duration";
 import { locale, t } from "../i18n";
 import { newAudioContext, resumeIfPaused } from "../audio";
@@ -110,6 +110,8 @@ function hasUnsaved(): boolean {
 
 function say(key: string, vars?: Record<string, string | number>): void {
   if (statusEl) statusEl.textContent = t(`screenRecorder.${key}`, vars);
+  // Every state change reports a status, so this is where the leave prompt is armed or dropped.
+  syncLeaveGuard();
 }
 
 function chosenType(): string {
@@ -292,7 +294,10 @@ function finish(): void {
 function saveRecording(rec: MediaRecorder, mine: number): void {
   if (recorder !== rec) return;
   recorder = null;
-  const ms = banked;
+  // finish() banks the time; a recorder that stopped by itself (an error, a lost track) has not, so add it here.
+  const ms = elapsedMs(banked, startedAt, performance.now());
+  banked = ms;
+  startedAt = null;
   const limited = hitLimit;
   hitLimit = false;
   release();
@@ -326,7 +331,7 @@ function showResult(blob: Blob, name: string, ms: number): void {
     video,
     h("p", { class: "rec-meta" }, h("strong", null, name), ` · ${clockText(ms)} · ${formatBytes(blob.size)}`),
     h("div", { class: "stage-actions" },
-      h("button", { type: "button", class: "btn", "data-action": "download", onClick: () => { unsaved = false; downloadBlob(blob, name); } }, t("screenRecorder.download", { ext: name.split(".").pop()!.toUpperCase() })),
+      h("button", { type: "button", class: "btn", "data-action": "download", onClick: () => { unsaved = false; syncLeaveGuard(); downloadBlob(blob, name); } }, t("screenRecorder.download", { ext: name.split(".").pop()!.toUpperCase() })),
       h("button", { type: "button", class: "btn ghost", "data-action": "discard", onClick: () => discard() }, t("screenRecorder.discard")),
     ),
   );

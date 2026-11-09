@@ -1,6 +1,6 @@
 import { armAudio } from "../audio";
 import { downloadBlob, h } from "../dom";
-import { setLeaveGuard } from "../leave-guard";
+import { setLeaveGuard, syncLeaveGuard } from "../leave-guard";
 import { fixInfiniteDuration } from "../media-duration";
 import { locale, t } from "../i18n";
 import { appHref } from "../../shared/path";
@@ -113,6 +113,8 @@ function hasUnsaved(): boolean {
 
 function say(key: string, vars?: Record<string, string | number>): void {
   if (statusEl) statusEl.textContent = t(`voiceRecorder.${key}`, vars);
+  // Every state change reports a status, so this is where the leave prompt is armed or dropped.
+  syncLeaveGuard();
 }
 
 async function begin(): Promise<void> {
@@ -276,7 +278,10 @@ function finish(): void {
 function saveTake(rec: MediaRecorder, mine: number): void {
   if (recorder !== rec) return;
   recorder = null;
-  const ms = banked;
+  // finish() banks the time; a recorder that stopped by itself (an error, a lost track) has not, so add it here.
+  const ms = elapsedMs(banked, startedAt, performance.now());
+  banked = ms;
+  startedAt = null;
   const limited = hitLimit;
   hitLimit = false;
   release();
@@ -358,7 +363,7 @@ function takeRow(take: Take): HTMLElement {
     h("p", { class: "rec-meta" }, h("strong", null, take.name), ` · ${clockText(take.ms)} · ${formatBytes(take.blob.size)}`),
     player,
     h("div", { class: "stage-actions" },
-      h("button", { type: "button", class: "btn", "data-action": "download", onClick: () => { take.saved = true; downloadBlob(take.blob, take.name); } }, t("voiceRecorder.download", { ext: take.name.split(".").pop()!.toUpperCase() })),
+      h("button", { type: "button", class: "btn", "data-action": "download", onClick: () => { take.saved = true; syncLeaveGuard(); downloadBlob(take.blob, take.name); } }, t("voiceRecorder.download", { ext: take.name.split(".").pop()!.toUpperCase() })),
       wavBtn,
       h("button", { type: "button", class: "btn ghost", "data-action": "delete", onClick: () => removeTake(take.id) }, t("voiceRecorder.delete")),
     ),
@@ -372,6 +377,7 @@ function removeTake(id: number): void {
   takes.splice(i, 1);
   dropRow(id);
   showEmpty();
+  syncLeaveGuard();
 }
 
 /** Decodes the take (at the AudioContext's sample rate) and writes it as 16-bit PCM WAV; mono stays mono. */
@@ -386,6 +392,7 @@ async function downloadWav(take: Take, btn: HTMLButtonElement): Promise<void> {
     const channels = Array.from({ length: decoded.numberOfChannels }, (_, c) => decoded.getChannelData(c));
     const wav = encodeWav(channels, decoded.sampleRate);
     take.saved = true;
+    syncLeaveGuard();
     downloadBlob(new Blob([wav.buffer as ArrayBuffer], { type: "audio/wav" }), take.name.replace(/\.[a-z0-9]+$/, ".wav"));
   } catch {
     say("wavFailed");

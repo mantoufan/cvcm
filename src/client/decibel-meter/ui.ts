@@ -52,6 +52,10 @@ let samples: Float32Array<ArrayBuffer> | null = null;
 let weighted = 0;
 /** False until the first frame, so a real 0 (digital silence) is still time-weighted. */
 let primed = false;
+let currentDbfs = -100;
+let sampleTimer = 0;
+/** About one analyser window (2048 samples ≈ 43 ms), so consecutive windows barely overlap. */
+const SAMPLE_MS = 40;
 /** Stats skip the first moments after (re)wiring: an empty analyser window and settling filters would set a false Min. */
 const WARMUP_MS = 500;
 let warmUntil = 0;
@@ -244,6 +248,8 @@ async function start(): Promise<void> {
       say("ended");
     }
   });
+  window.clearInterval(sampleTimer);
+  sampleTimer = window.setInterval(sample, SAMPLE_MS);
   frame = window.requestAnimationFrame(draw);
 }
 
@@ -299,6 +305,7 @@ function stop(): void {
   run++;
   asking = false;
   window.cancelAnimationFrame(frame);
+  window.clearInterval(sampleTimer);
   for (const n of nodes) n.disconnect();
   nodes = [];
   analyser = null;
@@ -323,32 +330,42 @@ function resetStats(): void {
   graphEl?.getContext("2d")?.clearRect(0, 0, graphEl.width, graphEl.height);
 }
 
-function draw(now: number): void {
+/**
+ * Takes one analyser window. Runs on a timer, not requestAnimationFrame: rAF stops in a hidden tab, while timers keep
+ * running (throttled), so a long measurement keeps counting with the tab in the background. Each window stands for
+ * the time since the previous one (up to a minute, the slowest a throttled timer runs).
+ */
+function sample(): void {
   if (!analyser || !samples) return;
+  const now = performance.now();
   analyser.getFloatTimeDomainData(samples);
   const level = rms(samples);
   const ms = level * level;
-  const dt = Math.min(0.5, Math.max(0, (now - lastFrame) / 1000));
+  const dt = Math.min(60, Math.max(0, (now - lastFrame) / 1000));
   lastFrame = now;
   weighted = primed ? timeWeight(weighted, ms, dt, TIME_WEIGHTS[speed()]) : ms;
   primed = true;
-  const cal = calibration();
-  const dbfs = powerToDbfs(weighted);
-  const db = toDb(dbfs, cal);
-  if (now >= warmUntil) stats.add(ms, dbfs, dt);
-  // One graph point per 100 ms is plenty for 60 s, and keeps the path short.
+  currentDbfs = powerToDbfs(weighted);
+  if (now >= warmUntil) stats.add(ms, currentDbfs, dt);
+  // One graph point per 100 ms is plenty for 60 s. Points are dBFS, so a calibration change moves the whole graph.
   if (!history.length || now - history[history.length - 1].at >= GRAPH_STEP_MS) {
-    history.push({ at: now, db });
+    history.push({ at: now, db: currentDbfs });
     let old = 0;
     while (old < history.length && history[old].at < now - HISTORY_S * 1000) old++;
     if (old) history.splice(0, old);
   }
+}
+
+/** Paints the latest sample: the bar and graph every frame, the numbers four times a second. */
+function draw(now: number): void {
+  if (!analyser) return;
+  const cal = calibration();
+  const db = toDb(currentDbfs, cal);
   if (meterFill) {
     const pct = Math.round(Math.max(0, Math.min(1, (db - GRAPH_MIN_DB) / (GRAPH_MAX_DB - GRAPH_MIN_DB))) * 100);
     meterFill.style.width = `${pct}%`;
     meterFill.classList.toggle("hot", db >= 85);
   }
-  // Numbers change four times a second, which is readable; the bar and graph move every frame.
   if (now - lastText >= 250) {
     lastText = now;
     if (nowEl) nowEl.textContent = dbText(db);
@@ -361,11 +378,11 @@ function draw(now: number): void {
     if (avgEl && leq !== null) avgEl.textContent = `${dbText(toDb(leq, cal))} dB`;
     if (timeEl) timeEl.textContent = clockText(stats.seconds() * 1000);
   }
-  drawGraph(now);
+  drawGraph(now, cal);
   frame = window.requestAnimationFrame(draw);
 }
 
-function drawGraph(now: number): void {
+function drawGraph(now: number, cal: number): void {
   const c = graphEl;
   const g = c?.getContext("2d");
   if (!c || !g) return;
@@ -385,8 +402,9 @@ function drawGraph(now: number): void {
   g.beginPath();
   history.forEach((p, i) => {
     const x = c.width - ((now - p.at) / (HISTORY_S * 1000)) * c.width;
-    if (i === 0) g.moveTo(x, y(p.db));
-    else g.lineTo(x, y(p.db));
+    const db = toDb(p.db, cal);
+    if (i === 0) g.moveTo(x, y(db));
+    else g.lineTo(x, y(db));
   });
   g.stroke();
 }
