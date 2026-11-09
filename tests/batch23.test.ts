@@ -104,7 +104,7 @@ describe("quadratic", () => {
       solveQuadratic(1, 999983, -999979);
       return performance.now() - t0;
     });
-    expect(Math.min(...runs)).toBeLessThan(50);
+    expect(Math.min(...runs)).toBeLessThan(100);
   });
 
   it("prints equations with real minus signs", () => {

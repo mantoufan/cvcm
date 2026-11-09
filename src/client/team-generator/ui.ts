@@ -12,6 +12,8 @@ let errorEl: HTMLElement | null = null;
 let outEl: HTMLElement | null = null;
 let copyBtn: HTMLButtonElement | null = null;
 let last = "";
+/** The names and settings of the shown draw, to tell a real change from an extra space or blank line. */
+let drawKey = "";
 
 export function mountTeamGenerator(host: HTMLElement): void {
   namesEl = h("textarea", { rows: 10, "data-field": "names", spellcheck: "false", onInput: () => onSettings() });
@@ -62,16 +64,22 @@ export function unmountTeamGenerator(): void {
   valueEl = null;
   countEl = errorEl = outEl = null;
   copyBtn = null;
-  last = "";
+  last = drawKey = "";
 }
 
 /** New names or numbers make the last draw out of date: clear it, so Copy teams never copies teams that no longer match. */
 function onSettings(): void {
   counted();
-  if (!last || !outEl || !errorEl) return;
-  last = "";
+  if (!outEl || !errorEl) return;
+  // An error belongs to the settings it was about.
   errorEl.textContent = "";
+  if (!last || settingsKey() === drawKey) return;
+  last = drawKey = "";
   outEl.replaceChildren(h("li", { class: "muted" }, t("teamGenerator.empty")));
+}
+
+function settingsKey(): string {
+  return JSON.stringify([parseNames(namesEl?.value ?? ""), modeEl?.value, Number(valueEl?.value)]);
 }
 
 /** Live "12 names → 3 teams of 4" line, so the split is clear before pressing Generate teams. */
@@ -105,7 +113,7 @@ function generate(): void {
     // Clear the last draw too, so Copy teams never copies teams that no longer match the settings.
     errorEl.textContent = planError(plan);
     outEl.replaceChildren(h("li", { class: "muted" }, t("teamGenerator.empty")));
-    last = "";
+    last = drawKey = "";
     return;
   }
   // Both modes can ask for more teams than allowed (one per name, 50 at most): say what was made instead.
@@ -116,5 +124,6 @@ function generate(): void {
     ` (${team.length})`,
     h("span", { class: "team-names" }, team.join(", ")),
   )));
+  drawKey = settingsKey();
   last = teams.map((team, i) => `${t("teamGenerator.team", { n: i + 1 })}: ${team.join(", ")}`).join("\n");
 }

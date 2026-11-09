@@ -74,10 +74,11 @@ function labeled(label: string, control: HTMLElement): HTMLElement {
   return h("label", { class: "field" }, h("span", null, label), control);
 }
 
-/** Two decimals, except where a double can no longer hold cents (above about 10^13): whole units there. */
+/** Decimals for this result: 2, or 0 when the total reaches 10^13, where a double no longer holds cents. */
+let decimals = 2;
+
 function fmt(n: number): string {
-  const cents = Math.abs(n) < 1e13;
-  return new Intl.NumberFormat(locale(), { minimumFractionDigits: cents ? 2 : 0, maximumFractionDigits: cents ? 2 : 0 }).format(n);
+  return new Intl.NumberFormat(locale(), { minimumFractionDigits: decimals, maximumFractionDigits: decimals }).format(n);
 }
 
 function fmtWhole(n: number): string {
@@ -87,24 +88,27 @@ function fmtWhole(n: number): string {
 function paint(): void {
   if (!priceEl || !downEl || !rateEl || !yearsEl || !methodEl || !errorEl || !outEl || !tableEl) return;
   const method = methodEl.value as MortgageMethod;
-  const res = mortgage({
+  const input = {
     price: priceEl.value === "" ? NaN : Number(priceEl.value),
     downPct: downEl.value === "" ? 0 : Number(downEl.value),
     rate: rateEl.value === "" ? NaN : Number(rateEl.value),
     years: yearsEl.value === "" ? NaN : Number(yearsEl.value),
     method,
-  });
+  };
+  const res = mortgage(input);
   outEl.replaceChildren();
   tableEl.replaceChildren();
   errorEl.textContent = "";
   last = "";
   if (!res) {
-    const tooBig = Number(priceEl.value) > MAX_PRICE;
+    const tooBig = input.price > MAX_PRICE;
     // Over the limit, still say whether the other fields are fine.
-    const othersBad = !tooBig || !mortgage({ price: 1, downPct: downEl.value === "" ? 0 : Number(downEl.value), rate: rateEl.value === "" ? NaN : Number(rateEl.value), years: yearsEl.value === "" ? NaN : Number(yearsEl.value), method });
+    const othersBad = !tooBig || !mortgage({ ...input, price: 1 });
     errorEl.textContent = [tooBig ? t("mortgage.tooBig", { max: fmtWhole(MAX_PRICE) }) : "", othersBad ? t("mortgage.invalid", { n: MAX_YEARS }) : ""].filter(Boolean).join(" ");
     return;
   }
+  // One precision for the whole result and table, so columns line up.
+  decimals = res.total >= 1e13 ? 0 : 2;
   const rows: Array<[string, string]> = [[t("mortgage.loan"), fmt(res.loan)]];
   if (method === "annuity") rows.push([t("mortgage.monthly"), fmt(res.firstPayment)]);
   else {

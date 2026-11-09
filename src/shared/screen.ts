@@ -68,31 +68,53 @@ export function physical(cssPx: number, dpr: number): number {
 const KNOWN: ReadonlyArray<readonly [number, number]> = [
   [2256, 1504], [2736, 1824], [2880, 1920], [3000, 2000], [1920, 1280], [2560, 1664], [2880, 1864], [2940, 1912],
   [3024, 1964], [3456, 2234], [2880, 1800], [3840, 2400], [2560, 1700], [3200, 2000], [3200, 1800], [2400, 1600],
-  [2048, 1536], [2360, 1640], [2388, 1668], [2732, 2048], [2160, 1440], [1600, 1200], [1680, 1050],
+  [2048, 1536], [2360, 1640], [2388, 1668], [2732, 2048], [2160, 1440], [1600, 1200], [1080, 2400], [1080, 2340],
+  [1440, 3200], [1440, 3120], [1170, 2532], [1179, 2556], [1290, 2796], [1284, 2778],
 ];
 const SNAP: ReadonlyArray<readonly [number, number]> = [...NAMES.map(([a, b]) => [a, b] as const), ...KNOWN];
 
 /**
  * Real resolution from the CSS screen size. With a fractional ratio browsers round (or floor) the CSS size, so at
- * 150% a 2560 × 1440 screen reports 1707 × 960 (2560.5) or 1706 × 960 (2559): snap to a known resolution within one
- * CSS pixel. Anything else keeps the exact product, or rounds with an exact half going to the even side.
+ * 150% a 2560 × 1440 screen reports 1707 × 960 (2560.5) or 1706 × 960 (2559). In order:
+ * 1. a known resolution within one CSS pixel on both sides (the nearest one);
+ * 2. a whole-number product, which is exact;
+ * 3. per side, among the pixel counts that round or floor to the reported size, the one with the most factors of 2
+ *    (panel sides are multiples of 8, or at least even), then the nearest.
  */
 export function realResolution(cssW: number, cssH: number, dpr: number): { w: number; h: number } {
   const r = dpr > 0 ? dpr : 1;
   const w = cssW * r;
   const h = cssH * r;
-  if (!Number.isInteger(r)) {
-    const near = (px: number, exact: number) => Math.abs(px - exact) < r;
-    for (const [a, b] of SNAP) {
-      if (near(a, w) && near(b, h)) return { w: a, h: b };
-      if (near(b, w) && near(a, h)) return { w: b, h: a };
+  if (Number.isInteger(r)) return { w: Math.round(w), h: Math.round(h) };
+  let best: { w: number; h: number } | null = null;
+  let bestDist = Infinity;
+  for (const [a, b] of SNAP) {
+    for (const [x, y] of [[a, b], [b, a]] as const) {
+      const dist = Math.abs(x - w) + Math.abs(y - h);
+      if (Math.abs(x - w) < r && Math.abs(y - h) < r && dist < bestDist) {
+        best = { w: x, h: y };
+        bestDist = dist;
+      }
     }
   }
-  return { w: roundHalfEven(w), h: roundHalfEven(h) };
+  if (best) return best;
+  return { w: side(cssW, r), h: side(cssH, r) };
 }
 
-function roundHalfEven(x: number): number {
-  const f = Math.floor(x);
-  if (x - f !== 0.5) return Math.round(x);
-  return f % 2 === 0 ? f : f + 1;
+function side(css: number, r: number): number {
+  const exact = css * r;
+  if (Number.isInteger(exact)) return exact;
+  let pick = Math.round(exact);
+  let pickScore = -Infinity;
+  for (let px = Math.ceil((css - 0.5) * r); px < (css + 1) * r; px++) {
+    if (Math.round(px / r) !== css && Math.floor(px / r) !== css) continue;
+    let twos = 0;
+    for (let v = px; v > 0 && v % 2 === 0 && twos < 3; v /= 2) twos++;
+    const score = twos * 10 - Math.abs(px - exact);
+    if (score > pickScore) {
+      pick = px;
+      pickScore = score;
+    }
+  }
+  return pick;
 }

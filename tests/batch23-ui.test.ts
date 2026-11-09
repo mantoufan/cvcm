@@ -79,9 +79,11 @@ describe("team generator ui", () => {
     expect(q("[data-out=count]").textContent).toContain("one team of everyone");
     q<HTMLButtonElement>("[data-action=generate]").click();
     expect(q("[data-out=teams]").textContent).toBe("Press Generate teams to draw.");
-    // Editing after a draw clears it, so Copy teams cannot copy an old split.
+    // Editing after a draw clears it, so Copy teams cannot copy an old split; a trailing newline does not.
     set("[data-field=value]", "4");
     q<HTMLButtonElement>("[data-action=generate]").click();
+    expect(host.querySelectorAll("[data-out=teams] li strong")).toHaveLength(3);
+    set("[data-field=names]", `${q<HTMLTextAreaElement>("[data-field=names]").value}\n`);
     expect(host.querySelectorAll("[data-out=teams] li strong")).toHaveLength(3);
     set("[data-field=value]", "12");
     expect(q("[data-out=teams]").textContent).toBe("Press Generate teams to draw.");
