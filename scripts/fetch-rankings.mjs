@@ -501,7 +501,7 @@ const WIKI = "https://en.wikipedia.org/w/api.php";
 const KM_PER_MILE = 1.609344;
 const KM2_PER_SQ_MI = 2.589988110336;
 
-const decode = (html) => html.replace(/&#160;|&nbsp;/g, " ").replace(/&#(\d+);/g, (_, n) => String.fromCodePoint(Number(n))).replace(/&amp;/g, "&").replace(/&quot;/g, '"').replace(/&#39;/g, "'");
+const decode = (html) => html.replace(/&#160;|&nbsp;/g, " ").replace(/&#x([0-9a-f]+);/gi, (_, n) => String.fromCodePoint(parseInt(n, 16))).replace(/&#(\d+);/g, (_, n) => String.fromCodePoint(Number(n))).replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&quot;/g, '"').replace(/&#39;/g, "'").replace(/&amp;/g, "&");
 /** A cell's text without markup or footnote marks ("6,650[3]" → "6,650"). */
 const cellText = (html) => decode(html.replace(/<sup[^>]*>.*?<\/sup>/gs, "").replace(/<br\s*\/?>/g, "\n").replace(/<[^>]+>/g, "")).replace(/\[[^\]]*\]/g, "").trim();
 const linkTitles = (html) => [...html.matchAll(/<a [^>]*href="\/wiki\/([^"#?]+)"[^>]*>/g)].map((m) => decodeURIComponent(m[1]).replace(/_/g, " ")).filter((t) => !/^(File|Help|Wikipedia|Template):/.test(t));
@@ -515,9 +515,11 @@ function firstNumber(text) {
 function wikitable(html, index) {
   const table = [...html.matchAll(/<table class="[^"]*wikitable[^"]*".*?<\/table>/gs)][index]?.[0];
   if (!table) throw new Error(`wikipedia: no table ${index}`);
-  // A merged cell shifts every later cell in the rows it spans: rather than read the wrong column, the table is not published.
-  const body = table.replace(/<tr[^>]*>.*?<\/tr>/s, "");
-  if (/<t[hd][^>]*\b(rowspan|colspan)="?([2-9]|\d\d)/.test(body.replace(/<tr[^>]*>(?:(?!<\/tr>).)*?<th[^>]*colspan.*?<\/tr>/gs, ""))) throw new Error(`wikipedia: table ${index} has merged cells`);
+  // A merged cell in a data row (one with <td>) shifts every later cell in the rows it spans: rather than read the wrong column,
+  // the table is not published. Header rows (all <th>) may span.
+  for (const row of table.matchAll(/<tr[^>]*>(.*?)<\/tr>/gs)) {
+    if (/<td/.test(row[1]) && /<t[hd][^>]*\b(rowspan|colspan)="?([2-9]|\d\d)/.test(row[1])) throw new Error(`wikipedia: table ${index} has merged cells`);
+  }
   return [...table.matchAll(/<tr[^>]*>(.*?)<\/tr>/gs)].map((row) => [...row[1].matchAll(/<t[hd][^>]*>(.*?)<\/t[hd]>/gs)].map((cell) => cell[1]));
 }
 
@@ -552,6 +554,8 @@ async function countryCodes(ids) {
   const out = {};
   for (const b of data.results.bindings) {
     const id = b.c.value.slice(b.c.value.lastIndexOf("/") + 1);
+    // Antarctica has a code (AQ) but is no country: its islands and lakes show none.
+    if (b.iso?.value === "AQ") continue;
     if (b.iso) out[id] = b.iso.value;
     else if (Number(b.state.value) > 0) out[id] = true;
   }
@@ -621,42 +625,40 @@ async function wikipediaList(id) {
       type: spec.type === undefined ? undefined : waterOf(cellText(row[spec.type])),
     });
   }
-  const ids = await titleIds(parsed.flatMap((row) => [row.title, ...row.countries]));
-  for (const row of parsed) if (!ids[row.title]) throw new Error(`wikipedia ${spec.page}: no Wikidata item for ${row.title}`);
-  const countryIds = [...new Set(parsed.flatMap((row) => row.countries.map((title) => ids[title]).filter(Boolean)))];
-  const codes = await countryCodes(countryIds);
-  // Islands: the row's item is the island itself, not the state the list links; names fill in from the state where the island has none.
-  const islandOf = {};
-  if (id === "largest-islands") {
-    // Only the rows that can make the list: asking for all 300-odd times the query service out.
-    const near = [...parsed].sort((a, b) => b.value - a.value).slice(0, spec.rows + 20);
-    const candidates = await islandItems([...new Set(near.map((row) => ids[row.title]))]);
-    const candidateInfo = await labels([...new Set(Object.values(candidates).flat())]);
-    for (const [c, options] of Object.entries(candidates)) {
-      const ranked = options.filter((i) => candidateInfo[i]).sort((a, b) => candidateInfo[b].sitelinks - candidateInfo[a].sitelinks);
-      if (ranked.length) islandOf[c] = { id: ranked[0], names: candidateInfo[ranked[0]].names };
-    }
-  }
-  const info = await labels([...new Set([...parsed.map((row) => ids[row.title]), ...countryIds.filter((c) => codes[c] === true)])]);
-  for (const [c, island] of Object.entries(islandOf)) {
-    if (!info[c]) continue;
-    // The state's names are kept where they are the island's too ("Madagascar"); a state's own name ("中華民國") gives way to the island's.
-    info[island.id] = { names: { ...info[c].names, ...island.names }, sitelinks: info[c].sitelinks };
-    for (const row of parsed) if (ids[row.title] === c) ids[row.title] = island.id;
-  }
+  // Each row's item first (to drop repeats and cut the list), then names and countries for the kept rows only.
+  const itemOf = await titleIds(parsed.map((row) => row.title));
+  for (const row of parsed) if (!itemOf[row.title]) throw new Error(`wikipedia ${spec.page}: no Wikidata item for ${row.title}`);
   // A river listed twice (its whole system and an upper course, say) keeps its longest entry.
   const seen = new Set();
-  const sorted = parsed.sort((a, b) => b.value - a.value).filter((row) => !seen.has(ids[row.title]) && seen.add(ids[row.title]));
+  const sorted = parsed.sort((a, b) => b.value - a.value).filter((row) => !seen.has(itemOf[row.title]) && seen.add(itemOf[row.title]));
   let cut = Math.min(spec.rows, sorted.length);
   while (cut < sorted.length && sorted[cut].value === sorted[cut - 1].value) cut += 1;
   const kept = sorted.slice(0, cut);
   if (kept.length < spec.rows) throw new Error(`wikipedia ${spec.page}: only ${kept.length} rows`);
-  if (ids[kept[0].title] !== spec.first) throw new Error(`wikipedia ${spec.page}: ${kept[0].title} first`);
+  if (itemOf[kept[0].title] !== spec.first) throw new Error(`wikipedia ${spec.page}: ${kept[0].title} first`);
+  const countryOf = await titleIds(kept.flatMap((row) => row.countries));
+  const countryIds = [...new Set(Object.values(countryOf))];
+  const codes = await countryCodes(countryIds);
+  const keptIds = [...new Set(kept.map((row) => itemOf[row.title]))];
+  const info = await labels([...new Set([...keptIds, ...countryIds.filter((c) => codes[c] === true)])]);
+  // Islands: a row the list links by its state or country takes the island's own item, and its names where the island has them
+  // ("中華民國" gives way to "臺灣島"); the state's names fill the rest, and a local fix on the state still wins.
+  const rowItem = Object.fromEntries(kept.map((row) => [row.title, itemOf[row.title]]));
+  if (id === "largest-islands") {
+    const candidates = await islandItems(keptIds);
+    const candidateInfo = await labels([...new Set(Object.values(candidates).flat())]);
+    for (const [c, options] of Object.entries(candidates)) {
+      const island = options.filter((i) => candidateInfo[i]).sort((a, b) => candidateInfo[b].sitelinks - candidateInfo[a].sitelinks)[0];
+      if (!island || !info[c]) continue;
+      info[island] = { names: { ...info[c].names, ...candidateInfo[island].names, ...LABEL_FIX[c] }, sitelinks: info[c].sitelinks };
+      for (const row of kept) if (rowItem[row.title] === c) rowItem[row.title] = island;
+    }
+  }
   const rows = kept.map((row) => {
-    const qid = ids[row.title];
+    const qid = rowItem[row.title];
     if (!info[qid]) throw new Error(`wikidata ${qid} (${row.title}): no English name`);
     // A country link that resolves to nothing (a dependency's own page, say) is left out rather than shown raw.
-    const countries = [...new Set(row.countries.map((title) => ids[title]).filter((c) => codes[c]))].map((c) => (codes[c] === true ? info[c]?.names : codes[c])).filter(Boolean);
+    const countries = [...new Set(row.countries.map((title) => countryOf[title]).filter((c) => codes[c]))].map((c) => (codes[c] === true ? info[c]?.names : codes[c])).filter(Boolean);
     const place = kept.findIndex((other) => other.value === row.value) + 1;
     const base = [place, qid, info[qid].names, row.value, countries];
     if (id === "longest-rivers") return [...base, row.system];
@@ -769,10 +771,10 @@ else {
   });
 }
 
-// Heights change only with a new survey: asked once a month (until a check succeeds). FORCE_MOUNTAINS=1 asks again.
+// Heights change only with a new survey: asked once a month (until a check succeeds). FORCE_MOUNTAINS=1 (or FORCE_GEO=1, every geography table) asks again.
 // asOf is the month the rows last changed; checked is the month they were last asked for.
 const thisMonth = today.toISOString().slice(0, 7);
-if (!process.env.FORCE_MOUNTAINS && !only?.includes("tallest-mountains") && oldMeta.sets["tallest-mountains"]?.checked === thisMonth && oldRows["tallest-mountains"]) keep("tallest-mountains");
+if (!process.env.FORCE_MOUNTAINS && !process.env.FORCE_GEO && !only?.includes("tallest-mountains") && oldMeta.sets["tallest-mountains"]?.checked === thisMonth && oldRows["tallest-mountains"]) keep("tallest-mountains");
 else {
   await attempt(["tallest-mountains"], async () => {
     const set = await mountains();
@@ -793,7 +795,8 @@ for (const id of Object.keys(WP_LISTS)) {
     rows[id] = set.rows;
     const unchanged = JSON.stringify(oldRows[id]) === JSON.stringify(set.rows);
     const last = set.rows.at(-1);
-    meta.sets[id] = { asOf: (unchanged && oldMeta.sets[id]?.asOf) || thisMonth, checked: thisMonth, revision: set.revision, rows: set.rows.length, top: topOf(set.rows, 1, 3), bottom: [[last[1], last[3]]], lowRank: last[0], ...countryLeaders(set.rows, 4), names: Object.fromEntries([...set.rows.slice(0, 3), last].map((r) => [r[1], r[2]])) };
+    // An edit elsewhere on the page moves its revision: the old one is still the citation for unchanged rows (and no commit follows).
+    meta.sets[id] = { asOf: (unchanged && oldMeta.sets[id]?.asOf) || thisMonth, checked: thisMonth, revision: (unchanged && oldMeta.sets[id]?.revision) || set.revision, rows: set.rows.length, top: topOf(set.rows, 1, 3), bottom: [[last[1], last[3]]], lowRank: last[0], ...countryLeaders(set.rows, 4), names: Object.fromEntries([...set.rows.slice(0, 3), last].map((r) => [r[1], r[2]])) };
     console.log(id, set.rows.length, "rows, revision", set.revision);
   });
 }

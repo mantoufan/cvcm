@@ -171,6 +171,9 @@ describe("rivers, lakes and islands", () => {
     for (const id of RANKINGS) expect(rankingRowsChunk(id), id).toBe(rankingGroupOf(id) === "geography" ? `rows-ranking-${id}` : "rows-rankings");
     for (const id of RANKINGS) expect(id in baseRows, id).toBe(rankingGroupOf(id) !== "geography");
     // The fetch script's own list of geography tables (GEO_IDS) writes these files: one per table of the group, no more.
+    // The page's loaders (GEO_ROWS in src/client/rankings/ui.ts, literal imports) cover the same tables.
+    const loaders = [...readFileSync("src/client/rankings/ui.ts", "utf8").matchAll(/"([a-z-]+)": \(\) => import\("\.\.\/\.\.\/shared\/rankings-geo\/\1\.json"\)/g)].map((m) => m[1]).sort();
+    expect(loaders).toEqual(RANKINGS.filter((id) => rankingGroupOf(id) === "geography").sort());
     expect(readdirSync("src/shared/rankings-geo").sort()).toEqual(RANKINGS.filter((id) => rankingGroupOf(id) === "geography").map((id) => `${id}.json`).sort());
     for (const id of ["longest-rivers", "largest-lakes", "largest-islands"]) {
       const table = geo[id];
