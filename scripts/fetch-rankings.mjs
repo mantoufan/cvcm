@@ -373,8 +373,6 @@ function csvOf(id, table, set) {
 
 const MOUNTAIN_ROWS = 100;
 const FEET = 0.3048;
-/** Tables whose asOf is the month they were last checked, not a date in the data: the same rows keep their date. */
-const CHECKED_AS_OF = new Set(["tallest-mountains"]);
 /** A range named by at least this many Wikipedias is a real one; fewer is usually a stub with a garbled label. */
 const RANGE_MIN_SITELINKS = 3;
 /** Peaks rise at least this far above the col to a higher one: the usual line between a mountain and a shoulder of one. */
@@ -449,19 +447,22 @@ async function mountains() {
     const byReach = m.ranges.filter((id) => info[id]).sort((a, b) => info[a].sitelinks - info[b].sitelinks || a.localeCompare(b));
     m.range = byReach.find((id) => info[id].sitelinks >= RANGE_MIN_SITELINKS) ?? byReach.at(-1) ?? null;
   }
-  // Wikidata has a few peaks twice (an item for the peak and one for its massif): same height, same spot. Keep the better known.
-  const peaks = [];
-  for (const m of found.sort((a, b) => b.elevation - a.elevation || (info[b.id]?.sitelinks ?? 0) - (info[a.id]?.sitelinks ?? 0))) {
-    if (m.lat === null) continue;
-    // A peak with no English name would drop out unnoticed and move every one below it up a place.
-    if (!info[m.id]) throw new Error(`wikidata ${m.id}: a ${m.elevation} m peak with no English name`);
-    if (peaks.some((p) => Math.abs(p.elevation - m.elevation) < 1 && Math.abs(p.lat - m.lat) < 0.02 && Math.abs(p.lon - m.lon) < 0.02)) continue;
-    peaks.push(m);
-    if (peaks.length === MOUNTAIN_ROWS) break;
+  // Wikidata has a few peaks twice (an item for the peak and one for its massif): within a metre, same spot. Keep the better known.
+  const same = (a, b) => Math.abs(a.elevation - b.elevation) < 1 && a.lat !== null && b.lat !== null && Math.abs(a.lat - b.lat) < 0.02 && Math.abs(a.lon - b.lon) < 0.02;
+  const kept = [];
+  for (const m of found) {
+    const at = kept.findIndex((p) => same(p, m));
+    if (at < 0) kept.push(m);
+    else if (info[m.id] && (!info[kept[at].id] || info[m.id].sitelinks > info[kept[at].id].sitelinks)) kept[at] = m;
   }
+  const reach = (m) => info[m.id]?.sitelinks ?? 0;
+  const peaks = kept.sort((a, b) => b.elevation - a.elevation || reach(b) - reach(a) || a.id.localeCompare(b.id)).slice(0, MOUNTAIN_ROWS);
+  // A peak with no English name would drop out unnoticed and move every one below it up a place.
+  for (const m of peaks) if (!info[m.id]) throw new Error(`wikidata ${m.id}: a ${m.elevation} m peak with no English name`);
   if (peaks.length < MOUNTAIN_ROWS) throw new Error(`wikidata: only ${peaks.length} mountains`);
   if (peaks[0].id !== "Q513") throw new Error(`wikidata: ${peaks[0].id} above Everest`);
-  const rows = peaks.map((m, i) => [i + 1, m.id, info[m.id].names, m.elevation, m.prominence, m.countries, m.range ? info[m.range].names : null]);
+  // Peaks of the same height share a place.
+  const rows = peaks.map((m, i) => [peaks.findIndex((p) => p.elevation === m.elevation) + 1, m.id, info[m.id].names, m.elevation, m.prominence, m.countries, m.range ? info[m.range].names : null]);
   const tally = new Map();
   for (const m of peaks) for (const c of m.countries) tally.set(c, (tally.get(c) ?? 0) + 1);
   const [countryLead, countryCount] = [...tally.entries()].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]))[0] ?? [null, 0];
@@ -496,6 +497,9 @@ let attempts = 0;
 let failures = 0;
 /** RANKINGS_ONLY=id,id refreshes just those tables (skipping their monthly wait) and keeps the rest as they are, for a new or fixed table. */
 const only = process.env.RANKINGS_ONLY?.split(",").filter(Boolean);
+const ALL_IDS = [...Object.keys(ARENA), "ai-usage", "ai-companies", "crypto-market-cap", "currency-strength", "commodity-prices", "tallest-mountains", ...Object.keys(SHARE)];
+const unknown = only?.filter((id) => !ALL_IDS.includes(id));
+if (unknown?.length) throw new Error(`RANKINGS_ONLY: no table ${unknown.join(", ")}`);
 /** One source failing keeps its last good tables, so it cannot hold back the others. With no earlier data there is nothing to keep. */
 async function attempt(ids, fetchTables) {
   if (only && !ids.some((id) => only.includes(id))) {
@@ -546,7 +550,7 @@ await attempt(["currency-strength"], async () => {
 });
 const month = lastMonth();
 // The Pink Sheet comes out early each month: nothing to ask for until a new month is due.
-if (!process.env.FORCE_COMMODITIES && oldMeta.sets["commodity-prices"]?.asOf === month && oldRows["commodity-prices"]) keep("commodity-prices");
+if (!process.env.FORCE_COMMODITIES && !only?.includes("commodity-prices") && oldMeta.sets["commodity-prices"]?.asOf === month && oldRows["commodity-prices"]) keep("commodity-prices");
 else {
   await attempt(["commodity-prices"], async () => {
     const set = await commodities();
@@ -555,21 +559,22 @@ else {
   });
 }
 
-const thisMonth = today.toISOString().slice(0, 7);
-// Heights change only with a new survey: once a month is plenty. FORCE_MOUNTAINS=1 asks again.
-if (!process.env.FORCE_MOUNTAINS && !only?.includes("tallest-mountains") && oldMeta.sets["tallest-mountains"]?.asOf === thisMonth && oldRows["tallest-mountains"]) keep("tallest-mountains");
+// Heights change only with a new survey: asked on the 1st of each month. FORCE_MOUNTAINS=1 asks again.
+// asOf is the month the rows last changed, so an unchanged check writes nothing.
+if (!process.env.FORCE_MOUNTAINS && !only?.includes("tallest-mountains") && today.getUTCDate() !== 1 && oldRows["tallest-mountains"]) keep("tallest-mountains");
 else {
   await attempt(["tallest-mountains"], async () => {
     const set = await mountains();
     rows["tallest-mountains"] = set.rows;
-    meta.sets["tallest-mountains"] = { asOf: thisMonth, rows: set.rows.length, top: topOf(set.rows, 1, 3), bottom: [[set.rows.at(-1)[1], set.rows.at(-1)[3]]], over8000: set.over8000, countryLead: set.countryLead, countryCount: set.countryCount, names: Object.fromEntries([...set.rows.slice(0, 3), set.rows.at(-1)].map((r) => [r[1], r[2]])) };
+    const unchanged = JSON.stringify(oldRows["tallest-mountains"]) === JSON.stringify(set.rows);
+    meta.sets["tallest-mountains"] = { asOf: unchanged ? oldMeta.sets["tallest-mountains"].asOf : today.toISOString().slice(0, 7), rows: set.rows.length, top: topOf(set.rows, 1, 3), bottom: [[set.rows.at(-1)[1], set.rows.at(-1)[3]]], over8000: set.over8000, countryLead: set.countryLead, countryCount: set.countryCount, names: Object.fromEntries([...set.rows.slice(0, 3), set.rows.at(-1)].map((r) => [r[1], r[2]])) };
   });
 }
 
 for (const [id, spec] of Object.entries(SHARE)) {
   // StatCounter publishes monthly: nothing to ask for until a new month is due.
   // FORCE_SHARE=1 asks again, for a fix to names or filters.
-  if (!process.env.FORCE_SHARE && oldMeta.sets[id]?.asOf === month && oldRows[id]) {
+  if (!process.env.FORCE_SHARE && !only?.includes(id) && oldMeta.sets[id]?.asOf === month && oldRows[id]) {
     keep(id);
     continue;
   }
@@ -584,7 +589,7 @@ if (attempts && failures === attempts) throw new Error("every source failed");
 
 // A table's date moves only when its rows changed, so a monthly table never claims a daily update.
 for (const [id, set] of Object.entries(meta.sets)) {
-  const same = oldMeta.sets[id]?.updated && (oldMeta.sets[id].asOf === set.asOf || CHECKED_AS_OF.has(id)) && JSON.stringify(oldRows[id]) === JSON.stringify(rows[id]);
+  const same = oldMeta.sets[id]?.updated && oldMeta.sets[id].asOf === set.asOf && JSON.stringify(oldRows[id]) === JSON.stringify(rows[id]);
   set.updated = same ? oldMeta.sets[id].updated : meta.updated;
   // Same data: the file stays, so a re-run with only a newer citation time makes no commit.
   if (NO_CSV.has(id)) continue;
