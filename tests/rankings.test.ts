@@ -179,9 +179,10 @@ describe("rivers, lakes and islands", () => {
       const table = geo[id];
       const values = table.map((row) => row[3]);
       expect(values, id).toEqual([...values].sort((a, b) => b - a));
-      expect(new Set(table.map((row) => row[1])).size, id).toBe(table.length);
+      expect(new Set(table.map((row) => row[1]).filter(Boolean)).size, id).toBe(table.filter((row) => row[1]).length);
       for (const row of table) {
-        expect(row[1], id).toMatch(/^Q\d+$/);
+        // An island the list does not link (an unnamed one) has no item.
+        expect(row[1], id).toMatch(id === "largest-islands" ? /^(Q\d+)?$/ : /^Q\d+$/);
         for (const c of row[4]) if (typeof c === "string") expect(c, row[2].en).toMatch(/^[A-Z]{2}$/);
         else expect(c.en, row[2].en).toBeTruthy();
       }
@@ -200,6 +201,8 @@ describe("rivers, lakes and islands", () => {
     expect(lake.rows[0][3].text).toBe("31,699");
     expect(lake.rows[0][4].text).toBe("—");
     expect(lake.rows[0][5].text).toBe("Salt");
+    expect(rankingTable("zh-CN", "largest-islands", [[1, "", { en: "Unnamed Island" }, 9794, []]]).rows[0][1].text).toBe("无名岛");
+    expect(rankingTable("zh-CN", "largest-islands", [[1, "", { en: "Grande Terre" }, 6576, ["FR"]]]).rows[0][1].text).toBe("Grande Terre");
     const island = rankingTable("en", "largest-islands", [[1, "Q1", { en: "I" }, 2108459.47, []]]);
     expect(island.rows[0][2].text).toBe("2,108,459");
     expect(island.rows[0][4].text).toBe("—");

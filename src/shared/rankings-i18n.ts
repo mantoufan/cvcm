@@ -280,7 +280,8 @@ export function rankingTable(locale: Locale, id: RankingId, rows: unknown[]): Da
   if (kind === "island") {
     return {
       columns: [{ label: ui.rank, num: true }, { label: ui.island, head: true }, { label: ui.areaKm2, num: true }, { label: ui.areaSqMi, num: true }, { label: ui.countries }],
-      rows: (rows as IslandRow[]).map(([place, , names, km2, countries]) => [rank(place), text(localName(locale, names)), num(plain(locale, km2), km2), num(plain(locale, toSqMiles(km2)), km2), text(countryList(locale, countries))]),
+      // An island the list does not link has no Wikidata item: its English name, or "unnamed" in the reader's language.
+      rows: (rows as IslandRow[]).map(([place, qid, names, km2, countries]) => [rank(place), text(qid || !/^unnamed\b/i.test(names.en) ? localName(locale, names) : ui.unnamedIsland), num(plain(locale, km2), km2), num(plain(locale, toSqMiles(km2)), km2), text(countryList(locale, countries))]),
     };
   }
   if (kind === "mountain") {

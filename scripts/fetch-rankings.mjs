@@ -422,16 +422,11 @@ async function labels(ids) {
   return out;
 }
 
-/** Wikidata labels that are wrong for a ranking: a group's name on its highest peak, another peak's name, a fragment, a state for its island. */
+/** Wikidata labels that are wrong: a group's name on its highest peak, another peak's name, a fragment. */
 const LABEL_FIX = {
   Q187138: { en: "Gasherbrum I" },
   Q2102394: { ja: "サセル・カンリ" },
   Q564576: { ja: "アンナプルナIII峰" },
-  // Islands the lists link by their province or state, with no island item to follow (islandItems): the island's own name.
-  Q42200: { "zh-CN": "海南岛", "zh-TW": "海南島", ja: "海南島", ko: "하이난섬", vi: "Đảo Hải Nam", id: "Pulau Hainan", es: "Isla de Hainan" },
-  Q34366: { "zh-CN": "塔斯马尼亚岛", "zh-TW": "塔斯馬尼亞島", ja: "タスマニア島", ko: "태즈메이니아섬", vi: "Đảo Tasmania", id: "Pulau Tasmania", es: "Isla de Tasmania" },
-  Q1460: { ja: "シチリア島" },
-  Q1462: { "zh-CN": "撒丁岛", ja: "サルデーニャ島" },
   Q1207615: { "zh-CN": "道拉吉里山脉", "zh-TW": "道拉吉里山脈" },
   Q159621: { "zh-CN": "安纳布尔纳山脉", "zh-TW": "安納布爾納山脈" },
 };
@@ -491,6 +486,15 @@ async function mountains() {
 
 // --- Wikipedia lists: longest rivers, largest lakes, largest islands ---------------------------------------------------
 
+/** The island table only: rows the list links by their province or state, in the island's own name ("海南省" reads "海南岛").
+ * Kept out of LABEL_FIX so the state keeps its name anywhere else it appears. */
+const ISLAND_NAMES = {
+  Q42200: { "zh-CN": "海南岛", "zh-TW": "海南島", ja: "海南島", ko: "하이난섬", vi: "Đảo Hải Nam", id: "Pulau Hainan", es: "Isla de Hainan" },
+  Q34366: { "zh-CN": "塔斯马尼亚岛", "zh-TW": "塔斯馬尼亞島", ja: "タスマニア島", ko: "태즈메이니아섬", vi: "Đảo Tasmania", id: "Pulau Tasmania", es: "Isla de Tasmania" },
+  Q1460: { ja: "シチリア島" },
+  Q1462: { "zh-CN": "撒丁岛", ja: "サルデーニャ島" },
+};
+
 /** Each table: its English Wikipedia list, which of the page's wikitables, the columns read, and checks on the result. */
 const WP_LISTS = {
   "longest-rivers": { page: "List of river systems by length", table: 1, name: 1, value: 2, countries: 7, rows: 100, first: "Q3392" },
@@ -511,7 +515,7 @@ function firstNumber(text) {
   return found ? Number(found[0].replace(/,/g, "")) : null;
 }
 
-/** The rows of one wikitable as cells of HTML. */
+/** The data rows of one wikitable as cells of HTML. */
 function wikitable(html, index) {
   const table = [...html.matchAll(/<table class="[^"]*wikitable[^"]*".*?<\/table>/gs)][index]?.[0];
   if (!table) throw new Error(`wikipedia: no table ${index}`);
@@ -520,7 +524,8 @@ function wikitable(html, index) {
   for (const row of table.matchAll(/<tr[^>]*>(.*?)<\/tr>/gs)) {
     if (/<td/.test(row[1]) && /<t[hd][^>]*\b(rowspan|colspan)="?([2-9]|\d\d)/.test(row[1])) throw new Error(`wikipedia: table ${index} has merged cells`);
   }
-  return [...table.matchAll(/<tr[^>]*>(.*?)<\/tr>/gs)].map((row) => [...row[1].matchAll(/<t[hd][^>]*>(.*?)<\/t[hd]>/gs)].map((cell) => cell[1]));
+  // Header rows (no <td>, repeated down long tables) are left out: "Area (km2)" would read as the number 2.
+  return [...table.matchAll(/<tr[^>]*>(.*?)<\/tr>/gs)].filter((row) => /<td/.test(row[1])).map((row) => [...row[1].matchAll(/<t[hd][^>]*>(.*?)<\/t[hd]>/gs)].map((cell) => cell[1]));
 }
 
 /** Wikidata ids for English Wikipedia titles, following redirects. */
@@ -571,10 +576,12 @@ function countryTitles(html) {
   return [...new Set([...linkTitles(html), ...names])];
 }
 
-/** "Fresh", "Saline 1.2%", "Salt", "Brackish"; anything else (a lake that is fresh in one part, salt in another) varies. */
+/** "Fresh", "Saline 1.2%", "Salt", "Brackish"; a cell naming both (fresh in the west, salt in the east) or neither varies. */
 function waterOf(text) {
-  if (/^fresh/i.test(text)) return "fresh";
-  if (/^(saline|salt|brackish|hypersaline|endorheic saline)/i.test(text)) return "saline";
+  const fresh = /fresh/i.test(text);
+  const salt = /salin|salt|brackish/i.test(text);
+  if (fresh && !salt) return "fresh";
+  if (salt && !fresh) return "saline";
   return "variable";
 }
 
@@ -586,7 +593,7 @@ async function islandItems(ids) {
   // Two small queries: the subclass walk over every candidate at once times the query service out.
   const pairs = await ask(`SELECT ?c ?i WHERE { VALUES ?c { ${ids.map((id) => `wd:${id}`).join(" ")} }
   ?c wdt:P706 ?i . FILTER(?i != ?c)
-  ?c rdfs:label ?cl FILTER(LANG(?cl) = "en") ?i rdfs:label ?il FILTER(LANG(?il) = "en")
+  ?c rdfs:label ?cl FILTER(LANG(?cl) IN ("en", "mul")) ?i rdfs:label ?il FILTER(LANG(?il) IN ("en", "mul"))
   FILTER(STRSTARTS(LCASE(?il), LCASE(?cl))) }`);
   const candidates = [...new Set(pairs.map((b) => qid(b.i.value)))];
   if (!candidates.length) return {};
@@ -611,12 +618,13 @@ async function wikipediaList(id) {
     if (row.length < needs) continue;
     const value = firstNumber(cellText(row[spec.value]));
     // The main island of a country links its geography article ("Geography of Madagascar"): the item is the place itself.
-    const title = linkTitles(row[spec.name])[0]?.replace(/^Geography of (the )?/, "");
-    // Header and sub-heading rows have no number in the value column (or too few cells, above).
-    if (!value || !title) continue;
+    const title = linkTitles(row[spec.name])[0]?.replace(/^Geography of (the )?/, "") ?? null;
+    if (!value) continue;
     const name = cellText(row[spec.name]).split("\n")[0].trim();
     parsed.push({
+      // No link (an unnamed Antarctic island): kept, with no item and its English name.
       title,
+      name,
       value,
       // A river system ("Mississippi–Missouri–Jefferson…") is named after its main river, with the whole course alongside.
       system: id === "longest-rivers" && /–/.test(name) ? name.replace(/\s*\(.*\)\s*$/, "") : null,
@@ -626,41 +634,49 @@ async function wikipediaList(id) {
     });
   }
   // Each row's item first (to drop repeats and cut the list), then names and countries for the kept rows only.
-  const itemOf = await titleIds(parsed.map((row) => row.title));
-  for (const row of parsed) if (!itemOf[row.title]) throw new Error(`wikipedia ${spec.page}: no Wikidata item for ${row.title}`);
+  const itemOf = await titleIds(parsed.map((row) => row.title).filter(Boolean));
+  for (const row of parsed) {
+    if (row.title && !itemOf[row.title]) throw new Error(`wikipedia ${spec.page}: no Wikidata item for ${row.title}`);
+    row.item = row.title ? itemOf[row.title] : "";
+  }
   // A river listed twice (its whole system and an upper course, say) keeps its longest entry.
   const seen = new Set();
-  const sorted = parsed.sort((a, b) => b.value - a.value).filter((row) => !seen.has(itemOf[row.title]) && seen.add(itemOf[row.title]));
+  const sorted = parsed.sort((a, b) => b.value - a.value).filter((row) => !row.item || (!seen.has(row.item) && seen.add(row.item)));
   let cut = Math.min(spec.rows, sorted.length);
   while (cut < sorted.length && sorted[cut].value === sorted[cut - 1].value) cut += 1;
   const kept = sorted.slice(0, cut);
   if (kept.length < spec.rows) throw new Error(`wikipedia ${spec.page}: only ${kept.length} rows`);
-  if (itemOf[kept[0].title] !== spec.first) throw new Error(`wikipedia ${spec.page}: ${kept[0].title} first`);
+  if (kept[0].item !== spec.first) throw new Error(`wikipedia ${spec.page}: ${kept[0].name} first`);
+  // Unlinked rows are rare (one unnamed island): many would mean the name column was misread.
+  if (kept.filter((row) => !row.item).length > 3) throw new Error(`wikipedia ${spec.page}: too many rows without a linked name`);
   const countryOf = await titleIds(kept.flatMap((row) => row.countries));
   const countryIds = [...new Set(Object.values(countryOf))];
   const codes = await countryCodes(countryIds);
-  const keptIds = [...new Set(kept.map((row) => itemOf[row.title]))];
+  const keptIds = [...new Set(kept.map((row) => row.item).filter(Boolean))];
   const info = await labels([...new Set([...keptIds, ...countryIds.filter((c) => codes[c] === true)])]);
   // Islands: a row the list links by its state or country takes the island's own item, and its names where the island has them
-  // ("中華民國" gives way to "臺灣島"); the state's names fill the rest, and a local fix on the state still wins.
-  const rowItem = Object.fromEntries(kept.map((row) => [row.title, itemOf[row.title]]));
+  // ("中華民國" gives way to "臺灣島"); the state's names fill the rest, and an island-name fix on the state still wins.
   if (id === "largest-islands") {
     const candidates = await islandItems(keptIds);
     const candidateInfo = await labels([...new Set(Object.values(candidates).flat())]);
     for (const [c, options] of Object.entries(candidates)) {
       const island = options.filter((i) => candidateInfo[i]).sort((a, b) => candidateInfo[b].sitelinks - candidateInfo[a].sitelinks)[0];
       if (!island || !info[c]) continue;
-      info[island] = { names: { ...info[c].names, ...candidateInfo[island].names, ...LABEL_FIX[c] }, sitelinks: info[c].sitelinks };
-      for (const row of kept) if (rowItem[row.title] === c) rowItem[row.title] = island;
+      info[island] = { names: { ...info[c].names, ...candidateInfo[island].names, ...ISLAND_NAMES[c] }, sitelinks: info[c].sitelinks };
+      for (const row of kept) if (row.item === c) row.item = island;
     }
   }
+  // Two rows that turn out to be one island (a province and the island itself) would be listed twice.
+  const items = kept.map((row) => row.item).filter(Boolean);
+  if (new Set(items).size !== items.length) throw new Error(`wikipedia ${spec.page}: two rows are one item after following P706`);
   const rows = kept.map((row) => {
-    const qid = rowItem[row.title];
-    if (!info[qid]) throw new Error(`wikidata ${qid} (${row.title}): no English name`);
+    const qid = row.item;
+    if (qid && !info[qid]) throw new Error(`wikidata ${qid} (${row.title}): no English name`);
     // A country link that resolves to nothing (a dependency's own page, say) is left out rather than shown raw.
     const countries = [...new Set(row.countries.map((title) => countryOf[title]).filter((c) => codes[c]))].map((c) => (codes[c] === true ? info[c]?.names : codes[c])).filter(Boolean);
     const place = kept.findIndex((other) => other.value === row.value) + 1;
-    const base = [place, qid, info[qid].names, row.value, countries];
+    const names = !qid ? { en: row.name } : id === "largest-islands" && ISLAND_NAMES[qid] ? { ...info[qid].names, ...ISLAND_NAMES[qid] } : info[qid].names;
+    const base = [place, qid, names, row.value, countries];
     if (id === "longest-rivers") return [...base, row.system];
     if (id === "largest-lakes") return [...base, row.depth ?? null, row.type];
     return base;
