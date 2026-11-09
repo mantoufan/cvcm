@@ -1,7 +1,7 @@
 import { escapeHtml } from "./device-i18n";
 import {
   DATASET_GROUPS,
-  DATASET_SNAPSHOT,
+  datasetUpdated,
   DATASET_SOURCE,
   DATASETS,
   INDICATOR_SPEC,
@@ -136,7 +136,7 @@ function formatCount(locale: Locale, n: number): string {
 /** Placeholders the copy may use: {rows} {from} {to} {year} {tz} {world} {worldYear} {top1} {v1} {year1} … {last} {vlast}. */
 export function datasetVars(locale: Locale, id: DatasetId): Record<string, string | number> {
   const meta = datasetMeta(id);
-  const vars: Record<string, string | number> = { rows: formatCount(locale, meta.rows), date: DATASET_SNAPSHOT };
+  const vars: Record<string, string | number> = { rows: formatCount(locale, meta.rows), date: datasetUpdated(id) };
   if (meta.year) vars.year = meta.year;
   if (meta.tzdata) vars.tz = meta.tzdata;
   if (meta.west !== undefined && meta.east !== undefined) {
@@ -366,7 +366,7 @@ function datasetNode(locale: Locale, id: DatasetId): Record<string, unknown> {
     inLanguage: locale,
     isAccessibleForFree: true,
     license: source.licenseUrl,
-    dateModified: DATASET_SNAPSHOT,
+    dateModified: datasetUpdated(id),
     keywords: [datasetName(locale, id).name, ...(copy.cols ? Object.values(copy.cols) : [copy.value ?? ""])].filter(Boolean),
     creator: { "@type": "Organization", name: source.name, url: source.url },
     isBasedOn: source.url,

@@ -9,9 +9,9 @@ import type { ToolId } from "./path";
 export const DATASET_SEGMENT = "datasets";
 
 export const DATASET_GROUPS = [
-  { id: "economy", sets: ["gdp", "gdp-per-capita", "gdp-ppp-per-capita", "gdp-growth", "inflation", "unemployment", "exports", "imports", "female-labor-force", "gni-per-capita", "youth-unemployment", "remittances", "foreign-reserves", "military-spending", "military-spending-gdp", "rd-spending"] },
-  { id: "people", sets: ["population", "population-growth", "population-density", "urban-population", "aged-65-plus", "life-expectancy", "life-expectancy-female", "life-expectancy-male", "fertility-rate", "birth-rate", "death-rate", "infant-mortality", "maternal-mortality", "health-spending-per-capita", "aged-0-14", "international-migrants", "physicians", "education-spending"] },
-  { id: "planet", sets: ["land-area", "forest-area", "co2-per-capita", "renewable-energy", "electricity-access", "internet-users", "co2-emissions", "electricity-consumption", "mobile-subscriptions", "broadband-subscriptions"] },
+  { id: "economy", sets: ["gdp", "gdp-per-capita", "gdp-ppp-per-capita", "gni-per-capita", "gdp-growth", "inflation", "unemployment", "youth-unemployment", "female-labor-force", "exports", "imports", "remittances", "foreign-reserves", "military-spending", "military-spending-gdp", "rd-spending"] },
+  { id: "people", sets: ["population", "population-growth", "population-density", "urban-population", "aged-0-14", "aged-65-plus", "international-migrants", "life-expectancy", "life-expectancy-female", "life-expectancy-male", "fertility-rate", "birth-rate", "death-rate", "infant-mortality", "maternal-mortality", "physicians", "health-spending-per-capita", "education-spending"] },
+  { id: "planet", sets: ["land-area", "forest-area", "co2-emissions", "co2-per-capita", "renewable-energy", "electricity-access", "electricity-consumption", "internet-users", "mobile-subscriptions", "broadband-subscriptions"] },
   { id: "codes", sets: ["country-codes", "calling-codes", "currency-codes", "time-zones"] },
   { id: "reference", sets: ["paper-sizes", "ascii"] },
 ] as const;
@@ -104,7 +104,7 @@ export const DATASET_TOOLS: Partial<Record<DatasetId, readonly ToolId[]>> = {
   "aged-0-14": ["age", "percent"],
   "international-migrants": ["percent"],
   physicians: ["percent"],
-  "education-spending": ["percent", "gpa"],
+  "education-spending": ["percent"],
   "co2-emissions": ["fuel-cost", "electricity"],
   "electricity-consumption": ["electricity", "units"],
   "mobile-subscriptions": ["percent"],
@@ -135,12 +135,17 @@ export type IndicatorMeta = {
   worlds?: Record<string, number>;
 };
 /** `west` / `east`: the extreme UTC offsets in minutes (time zones only). */
-export type DatasetMeta = { rows: number; year?: number; tzdata?: string | null; west?: number; east?: number } & Partial<IndicatorMeta>;
+export type DatasetMeta = { rows: number; /** The last snapshot that changed this table. */ updated: string; year?: number; tzdata?: string | null; west?: number; east?: number } & Partial<IndicatorMeta>;
 
 export const DATASET_SNAPSHOT: string = meta.updated;
 
 export function datasetMeta(id: DatasetId): DatasetMeta {
   return (meta.sets as unknown as Record<DatasetId, DatasetMeta>)[id];
+}
+
+/** The date this table's rows last changed: its sitemap lastmod and the date the page shows. */
+export function datasetUpdated(id: DatasetId): string {
+  return datasetMeta(id).updated ?? DATASET_SNAPSHOT;
 }
 
 export function indicatorMeta(id: IndicatorId): IndicatorMeta {

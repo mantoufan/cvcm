@@ -3,7 +3,7 @@
 //   World Bank indicators (CC BY 4.0): https://data.worldbank.org/ (CO2 from EDGAR via the World Bank)
 //   ISO 3166 / ITU dialing / ISO 4217 via datahub.io core datasets (ODC-PDDL)
 //   IANA time zones from zone.tab (data.iana.org), offsets from the Node ICU tz database
-import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
+import { existsSync, mkdirSync, readFileSync, readdirSync, writeFileSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -11,6 +11,9 @@ const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const dataDir = join(root, "src/data");
 mkdirSync(dataDir, { recursive: true });
 const today = new Date().toISOString().slice(0, 10);
+// What the last snapshot held, so each table keeps its own `updated` date until its rows change (sitemap lastmod).
+const before = new Map(readdirSync(dataDir).filter((f) => f.endsWith(".json")).map((f) => [f, readFileSync(join(dataDir, f), "utf8")]));
+const oldMeta = existsSync(join(dataDir, "meta.json")) ? JSON.parse(before.get("meta.json")) : { sets: {} };
 
 async function getJson(url) {
   for (let attempt = 1; ; attempt++) {
@@ -251,6 +254,16 @@ meta.sets.ascii = { rows: ascii.length };
 writeCsv("ascii", ["decimal", "hex", "octal", "binary", "char", "name"],
   ascii.map(([d, c, n]) => [d, d.toString(16).toUpperCase().padStart(2, "0"), d.toString(8).padStart(3, "0"), d.toString(2).padStart(7, "0"), c, n]));
 
+// A table's date moves only when its row files or its summary change; the World Bank's own "last updated"
+// stamp moves on every release and changes nothing on the page.
+const ROW_FILES = { "country-codes": ["countries"], "calling-codes": ["countries"], "currency-codes": ["currencies", "countries"] };
+const summary = ({ updated, sourceUpdated, ...rest }) => JSON.stringify(rest);
+for (const [id, set] of Object.entries(meta.sets)) {
+  const old = oldMeta.sets[id];
+  const files = (ROW_FILES[id] ?? [id]).map((f) => `${f}.json`);
+  const same = old && summary(old) === summary(set) && files.every((f) => before.get(f) === readFileSync(join(dataDir, f), "utf8"));
+  set.updated = same ? old.updated ?? oldMeta.updated : today;
+}
 writeJson("meta.json", meta);
 console.log("wrote src/data and public/datasets");
 
