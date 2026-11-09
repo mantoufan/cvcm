@@ -1,4 +1,4 @@
-// Snapshots the data behind /{locale}/rankings/ into src/shared/rankings-rows.json, rankings-meta.json and public/rankings/*.csv.
+// Snapshots the data behind /{locale}/rankings/ into src/shared/rankings-rows.json (geography: rankings-geo-rows.json), rankings-meta.json and public/rankings/*.csv.
 // Run daily by .github/workflows/refresh-rankings.yml, or by hand (`node scripts/fetch-rankings.mjs`). Pages never call these sources.
 //   Arena leaderboard (CC BY 4.0): huggingface.co/datasets/lmarena-ai/leaderboard-dataset
 //   OpenRouter rankings data API (CC BY 4.0, needs OPENROUTER_API_KEY, free): openrouter.ai/docs/cookbook/administration/data-api
@@ -7,6 +7,7 @@
 //   World Bank Pink Sheet monthly commodity prices (CC BY 4.0): worldbank.org/en/research/commodity-markets
 //   ECB euro foreign exchange reference rates (free reuse with the source named): ecb.europa.eu
 //   Wikidata (CC0): the tallest mountains, query.wikidata.org
+//   English Wikipedia lists (CC BY-SA 4.0): longest rivers, largest lakes, largest islands; names from Wikidata
 import { appendFileSync, existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { inflateRawSync } from "node:zlib";
@@ -366,6 +367,14 @@ function csvOf(id, table, set) {
   if (id === "currency-strength") return toCsv(["rank", "currency", "per_usd", "change_vs_usd_1_month_percent", "change_vs_usd_1_year_percent", "as_of", "month_ago", "year_ago"], table.map((row) => [...row, set.asOf, set.monthAgo, set.yearAgo]), ["European Central Bank euro reference rates (ecb.europa.eu)", "Reuse with source named"]);
   if (id === "commodity-prices") return toCsv(["rank", "commodity", "unit", "price_usd", "change_1_month_percent", "change_12_months_percent", "month"], table.map((row) => [...row, set.asOf]), [PINK_SHEET, "CC BY 4.0"]);
   if (id === "tallest-mountains") return toCsv(["rank", "wikidata_id", "name", "elevation_m", "elevation_ft", "prominence_m", "countries", "range"], table.map(([rank, qid, names, elevation, prominence, countries, range]) => [rank, qid, names.en, elevation, Math.round(elevation / METRES_PER_FOOT), prominence, countries.join(" "), range?.en ?? ""]), ["Wikidata (wikidata.org)", "CC0 1.0"]);
+  if (WP_LISTS[id]) {
+    // CC BY-SA asks for the page and its revision; names and countries are Wikidata's (CC0).
+    const cite = [`Wikipedia: ${WP_LISTS[id].page} (en.wikipedia.org/w/index.php?oldid=${set.revision}); names from Wikidata`, "CC BY-SA 4.0"];
+    const countryCsv = (countries) => countries.map((c) => (typeof c === "string" ? c : c.en)).join(" ");
+    if (id === "longest-rivers") return toCsv(["rank", "wikidata_id", "name", "length_km", "length_mi", "countries_in_basin", "river_system"], table.map(([rank, qid, names, km, countries, system]) => [rank, qid, names.en, km, Math.round(km / KM_PER_MILE), countryCsv(countries), system ?? ""]), cite);
+    if (id === "largest-lakes") return toCsv(["rank", "wikidata_id", "name", "area_km2", "area_sq_mi", "countries", "max_depth_m", "water"], table.map(([rank, qid, names, km2, countries, depth, water]) => [rank, qid, names.en, km2, Math.round(km2 / KM2_PER_SQ_MI), countryCsv(countries), depth, water]), cite);
+    return toCsv(["rank", "wikidata_id", "name", "area_km2", "area_sq_mi", "countries"], table.map(([rank, qid, names, km2, countries]) => [rank, qid, names.en, km2, Math.round(km2 / KM2_PER_SQ_MI), countryCsv(countries)]), cite);
+  }
   return toCsv(["rank", "name", `world_${set.yearAgo}`, ...REGIONS.map((r) => (r === "ww" ? `world_${set.asOf}` : r))], table, SOURCES.statcounter);
 }
 
@@ -413,11 +422,17 @@ async function labels(ids) {
   return out;
 }
 
-/** Wikidata labels that are wrong: a group's name on its highest peak, another peak's name, a fragment. */
+/** Wikidata labels that are wrong for a ranking: a group's name on its highest peak, another peak's name, a fragment, a state for its island. */
 const LABEL_FIX = {
   Q187138: { en: "Gasherbrum I" },
   Q2102394: { ja: "サセル・カンリ" },
   Q564576: { ja: "アンナプルナIII峰" },
+  // Islands the lists link by their state or province: the island's own name.
+  Q865: { "zh-CN": "台湾岛", "zh-TW": "臺灣島", ja: "台湾島", ko: "타이완섬", vi: "Đảo Đài Loan", id: "Pulau Taiwan", es: "Isla de Taiwán" },
+  Q42200: { "zh-CN": "海南岛", "zh-TW": "海南島", ja: "海南島", ko: "하이난섬", vi: "Đảo Hải Nam", id: "Pulau Hainan", es: "Isla de Hainan" },
+  Q34366: { "zh-CN": "塔斯马尼亚岛", "zh-TW": "塔斯馬尼亞島", ja: "タスマニア島", ko: "태즈메이니아섬", vi: "Đảo Tasmania", id: "Pulau Tasmania", es: "Isla de Tasmania" },
+  Q1460: { ja: "シチリア島" },
+  Q1462: { "zh-CN": "撒丁岛", ja: "サルデーニャ島" },
   Q1207615: { "zh-CN": "道拉吉里山脉", "zh-TW": "道拉吉里山脈" },
   Q159621: { "zh-CN": "安纳布尔纳山脉", "zh-TW": "安納布爾納山脈" },
 };
@@ -481,11 +496,147 @@ async function mountains() {
   return { rows, over8000: peaks.filter((m) => m.elevation > 8000).length, countryLead, countryCount };
 }
 
+// --- Wikipedia lists: longest rivers, largest lakes, largest islands ---------------------------------------------------
+
+/** Each table: its English Wikipedia list, which of the page's wikitables, the columns read, and checks on the result. */
+const WP_LISTS = {
+  "longest-rivers": { page: "List of river systems by length", table: 1, name: 1, value: 2, countries: 7, rows: 100, first: "Q3392" },
+  "largest-lakes": { page: "List of lakes by area", table: 1, name: 2, value: 5, countries: 3, depth: 7, type: 4, rows: 40, first: "Q5484" },
+  "largest-islands": { page: "List of islands by area", table: 1, name: 1, value: 2, countries: 4, rows: 100, first: "Q223" },
+};
+const WIKI = "https://en.wikipedia.org/w/api.php";
+const KM_PER_MILE = 1.609344;
+const KM2_PER_SQ_MI = 2.589988110336;
+
+const decode = (html) => html.replace(/&#160;|&nbsp;/g, " ").replace(/&#(\d+);/g, (_, n) => String.fromCodePoint(Number(n))).replace(/&amp;/g, "&").replace(/&quot;/g, '"').replace(/&#39;/g, "'");
+/** A cell's text without markup or footnote marks ("6,650[3]" → "6,650"). */
+const cellText = (html) => decode(html.replace(/<sup[^>]*>.*?<\/sup>/gs, "").replace(/<br\s*\/?>/g, "\n").replace(/<[^>]+>/g, "")).replace(/\[[^\]]*\]/g, "").trim();
+const linkTitles = (html) => [...html.matchAll(/<a [^>]*href="\/wiki\/([^"#?]+)"[^>]*>/g)].map((m) => decodeURIComponent(m[1]).replace(/_/g, " ")).filter((t) => !/^(File|Help|Wikipedia|Template):/.test(t));
+/** The first number in a cell, in the unit the column is in ("82,100 km2 31,700 sq mi" → 82100). */
+function firstNumber(text) {
+  const found = text.match(/\d[\d,]*(\.\d+)?/);
+  return found ? Number(found[0].replace(/,/g, "")) : null;
+}
+
+/** The rows of one wikitable as cells of HTML. */
+function wikitable(html, index) {
+  const table = [...html.matchAll(/<table class="[^"]*wikitable[^"]*".*?<\/table>/gs)][index]?.[0];
+  if (!table) throw new Error(`wikipedia: no table ${index}`);
+  return [...table.matchAll(/<tr[^>]*>(.*?)<\/tr>/gs)].map((row) => [...row[1].matchAll(/<t[hd][^>]*>(.*?)<\/t[hd]>/gs)].map((cell) => cell[1]));
+}
+
+/** Wikidata ids for English Wikipedia titles, following redirects. */
+async function titleIds(titles) {
+  const out = {};
+  const unique = [...new Set(titles)];
+  for (let i = 0; i < unique.length; i += 50) {
+    const q = new URLSearchParams({ action: "query", prop: "pageprops", ppprop: "wikibase_item", redirects: "1", titles: unique.slice(i, i + 50).join("|"), format: "json", formatversion: "2" });
+    const data = JSON.parse(await get(`${WIKI}?${q}`));
+    const renamed = new Map();
+    for (const step of [...(data.query.normalized ?? []), ...(data.query.redirects ?? [])]) renamed.set(step.from, step.to);
+    const ids = new Map(data.query.pages.filter((page) => page.pageprops?.wikibase_item).map((page) => [page.title, page.pageprops.wikibase_item]));
+    for (const title of unique.slice(i, i + 50)) {
+      let at = title;
+      for (let hop = 0; hop < 3 && renamed.has(at); hop += 1) at = renamed.get(at);
+      if (ids.has(at)) out[title] = ids.get(at);
+    }
+    await pause();
+  }
+  return out;
+}
+
+/** Which of these items are countries: an ISO 3166 code where they have one, else true for a state without one (the Danish Realm).
+ * Anything else a country cell links (a "China–India relations" article) is not a country. */
+async function countryCodes(ids) {
+  if (!ids.length) return {};
+  const query = `SELECT ?c (SAMPLE(?code) AS ?iso) (COUNT(?t) AS ?state) WHERE { VALUES ?c { ${ids.map((id) => `wd:${id}`).join(" ")} }
+  OPTIONAL { ?c wdt:P297 ?code } OPTIONAL { ?c wdt:P31 ?t . VALUES ?t { wd:Q3624078 wd:Q6256 wd:Q7275 wd:Q15634554 } } } GROUP BY ?c`;
+  const data = JSON.parse(await get(`${SPARQL}?${new URLSearchParams({ query, format: "json" })}`, { Accept: "application/sparql-results+json" }, 70_000));
+  const out = {};
+  for (const b of data.results.bindings) {
+    const id = b.c.value.slice(b.c.value.lastIndexOf("/") + 1);
+    if (b.iso) out[id] = b.iso.value;
+    else if (Number(b.state.value) > 0) out[id] = true;
+  }
+  return out;
+}
+
+/** Country cell → titles: its links and its comma-separated names ("Russia (97%), Mongolia (2.9%)"), as a cell often mixes the two.
+ * A name that is no page, or no country, drops out later. */
+function countryTitles(html) {
+  const names = cellText(html).split(/[,;\n]| and /).map((part) => part.replace(/\(.*?\)/g, "").trim()).filter((part) => part && part.length < 60);
+  return [...new Set([...linkTitles(html), ...names])];
+}
+
+async function wikipediaList(id) {
+  const spec = WP_LISTS[id];
+  const q = new URLSearchParams({ action: "parse", page: spec.page, prop: "text|revid", redirects: "1", format: "json", formatversion: "2" });
+  const page = JSON.parse(await get(`${WIKI}?${q}`));
+  if (page.error) throw new Error(`wikipedia ${spec.page}: ${page.error.info}`);
+  const cells = wikitable(page.parse.text, spec.table);
+  const needs = Math.max(spec.name, spec.value, spec.countries, spec.depth ?? 0, spec.type ?? 0) + 1;
+  const parsed = [];
+  for (const row of cells) {
+    if (row.length < needs) continue;
+    const value = firstNumber(cellText(row[spec.value]));
+    // The main island of a country links its geography article ("Geography of Madagascar"): the item is the place itself.
+    const title = linkTitles(row[spec.name])[0]?.replace(/^Geography of (the )?/, "");
+    // Header and sub-heading rows have no number in the value column (or too few cells, above).
+    if (!value || !title) continue;
+    const name = cellText(row[spec.name]).split("\n")[0].trim();
+    parsed.push({
+      title,
+      value,
+      // A river system ("Mississippi–Missouri–Jefferson…") is named after its main river, with the whole course alongside.
+      system: id === "longest-rivers" && /–/.test(name) ? name.replace(/\s*\(.*\)\s*$/, "") : null,
+      countries: countryTitles(row[spec.countries]),
+      depth: spec.depth === undefined ? undefined : firstNumber(cellText(row[spec.depth])),
+      type: spec.type === undefined ? undefined : /^fresh/i.test(cellText(row[spec.type])) ? "fresh" : /^saline/i.test(cellText(row[spec.type])) ? "saline" : "variable",
+    });
+  }
+  const ids = await titleIds(parsed.flatMap((row) => [row.title, ...row.countries]));
+  for (const row of parsed) if (!ids[row.title]) throw new Error(`wikipedia ${spec.page}: no Wikidata item for ${row.title}`);
+  const countryIds = [...new Set(parsed.flatMap((row) => row.countries.map((title) => ids[title]).filter(Boolean)))];
+  const codes = await countryCodes(countryIds);
+  const info = await labels([...new Set([...parsed.map((row) => ids[row.title]), ...countryIds.filter((c) => codes[c] === true)])]);
+  // A river listed twice (its whole system and an upper course, say) keeps its longest entry.
+  const seen = new Set();
+  const sorted = parsed.sort((a, b) => b.value - a.value).filter((row) => !seen.has(ids[row.title]) && seen.add(ids[row.title]));
+  let cut = Math.min(spec.rows, sorted.length);
+  while (cut < sorted.length && sorted[cut].value === sorted[cut - 1].value) cut += 1;
+  const kept = sorted.slice(0, cut);
+  if (kept.length < spec.rows) throw new Error(`wikipedia ${spec.page}: only ${kept.length} rows`);
+  if (ids[kept[0].title] !== spec.first) throw new Error(`wikipedia ${spec.page}: ${kept[0].title} first`);
+  const rows = kept.map((row) => {
+    const qid = ids[row.title];
+    if (!info[qid]) throw new Error(`wikidata ${qid} (${row.title}): no English name`);
+    // A country link that resolves to nothing (a dependency's own page, say) is left out rather than shown raw.
+    const countries = [...new Set(row.countries.map((title) => ids[title]).filter((c) => codes[c]))].map((c) => (codes[c] === true ? info[c]?.names : codes[c])).filter(Boolean);
+    const place = kept.findIndex((other) => other.value === row.value) + 1;
+    const base = [place, qid, info[qid].names, row.value, countries];
+    if (id === "longest-rivers") return [...base, row.system];
+    if (id === "largest-lakes") return [...base, row.depth ?? null, row.type];
+    return base;
+  });
+  return { rows, revision: page.parse.revid };
+}
+
+/** The country, or countries tied, with the most rows; ISO codes only (a named realm is not counted). */
+function countryLeaders(rows) {
+  const tally = new Map();
+  for (const row of rows) for (const c of row[4]) if (typeof c === "string") tally.set(c, (tally.get(c) ?? 0) + 1);
+  const count = Math.max(0, ...tally.values());
+  return { countryLead: [...tally.entries()].filter(([, n]) => n === count).map(([c]) => c).sort(), countryCount: count };
+}
+
 // --- Write ---------------------------------------------------------------------------------------------------------
 
 const rows = {};
 const meta = { updated: today.toISOString().slice(0, 10), sets: {} };
 const rowsPath = join(root, "src/shared/rankings-rows.json");
+/** Geography rows (names in eight languages) are most of the bytes: their own file, so the AI and market pages don't load them. */
+const geoRowsPath = join(root, "src/shared/rankings-geo-rows.json");
+const GEO_IDS = new Set(["tallest-mountains", ...Object.keys(WP_LISTS)]);
 const metaPath = join(root, "src/shared/rankings-meta.json");
 const csv = {};
 const esc = (v) => (v === null ? "" : typeof v === "string" && /[",\n]/.test(v) ? `"${v.replace(/"/g, '""')}"` : String(v));
@@ -497,7 +648,8 @@ const SOURCES = {
 const toCsv = (head, table, source) => [[...head, "source", "license"], ...table.map((row) => [...row, ...source])].map((r) => r.map(esc).join(",")).join("\n") + "\n";
 const topOf = (table, nameCol, valueCol) => table.slice(0, 3).map((r) => [r[nameCol], r[valueCol]]);
 
-const oldRows = existsSync(rowsPath) ? JSON.parse(readFileSync(rowsPath, "utf8")) : {};
+const readRows = (path) => (existsSync(path) ? JSON.parse(readFileSync(path, "utf8")) : {});
+const oldRows = { ...readRows(rowsPath), ...readRows(geoRowsPath) };
 const oldMeta = existsSync(metaPath) ? JSON.parse(readFileSync(metaPath, "utf8")) : { sets: {} };
 const keep = (id) => {
   rows[id] = oldRows[id];
@@ -582,6 +734,22 @@ else {
   });
 }
 
+// Wikipedia lists change with an edit now and then: asked monthly like the mountains.
+for (const id of Object.keys(WP_LISTS)) {
+  if (!process.env.FORCE_GEO && !only?.includes(id) && oldMeta.sets[id]?.checked === thisMonth && oldRows[id]) {
+    keep(id);
+    continue;
+  }
+  await attempt([id], async () => {
+    const set = await wikipediaList(id);
+    rows[id] = set.rows;
+    const unchanged = JSON.stringify(oldRows[id]) === JSON.stringify(set.rows);
+    const last = set.rows.at(-1);
+    meta.sets[id] = { asOf: (unchanged && oldMeta.sets[id]?.asOf) || thisMonth, checked: thisMonth, revision: set.revision, rows: set.rows.length, top: topOf(set.rows, 1, 3), bottom: [[last[1], last[3]]], lowRank: last[0], ...countryLeaders(set.rows), names: Object.fromEntries([...set.rows.slice(0, 3), last].map((r) => [r[1], r[2]])) };
+    console.log(id, set.rows.length, "rows, revision", set.revision);
+  });
+}
+
 for (const [id, spec] of Object.entries(SHARE)) {
   // StatCounter publishes monthly: nothing to ask for until a new month is due.
   // FORCE_SHARE=1 asks again, for a fix to names or filters.
@@ -615,9 +783,11 @@ for (const [id, set] of Object.entries(meta.sets)) {
   if (same && existsSync(file) && plain(readFileSync(file, "utf8")) === plain(csv[id])) delete csv[id];
 }
 meta.updated = Object.values(meta.sets).map((set) => set.updated).sort().at(-1);
-writeFileSync(rowsPath, `${JSON.stringify(rows)}\n`);
+const split = (geo) => Object.fromEntries(Object.entries(rows).filter(([id]) => GEO_IDS.has(id) === geo));
+writeFileSync(rowsPath, `${JSON.stringify(split(false))}\n`);
+writeFileSync(geoRowsPath, `${JSON.stringify(split(true))}\n`);
 writeFileSync(metaPath, `${JSON.stringify(meta, null, 1)}\n`);
 const dir = join(root, "public/rankings");
 mkdirSync(dir, { recursive: true });
 for (const [id, text] of Object.entries(csv)) writeFileSync(join(dir, `${id}.csv`), text);
-console.log("wrote src/shared/rankings-rows.json, rankings-meta.json and public/rankings");
+console.log("wrote src/shared/rankings-rows.json, rankings-geo-rows.json, rankings-meta.json and public/rankings");

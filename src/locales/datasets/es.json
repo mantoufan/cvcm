@@ -1203,7 +1203,7 @@
   "rankings": {
     "hub": {
       "title": "Rankings: mejores IA, cuota de mercado y más, con fuentes | cv.cm",
-      "description": "Rankings con fuente que puedes ordenar y descargar: los mejores modelos de IA, la IA más usada, cuota de mercado de navegadores, sistemas operativos, buscadores, móviles y redes sociales, y las montañas más altas del mundo.",
+      "description": "Rankings con fuente que puedes ordenar y descargar: los mejores modelos de IA, la IA más usada, cuota de mercado de navegadores, sistemas operativos, buscadores, móviles y redes sociales, y las montañas más altas, los ríos más largos y los lagos e islas más grandes del mundo.",
       "h1": "Rankings",
       "lede": "Rankings elaborados con datos abiertos, cada uno con su fuente, licencia y fecha. Ordena cualquier columna, filtra filas o descarga el CSV.",
       "groups": {
@@ -1221,7 +1221,7 @@
       "faq": [
         {
           "q": "¿De dónde proceden los datos?",
-          "a": "La calidad de la IA viene del ranking de Arena, el uso de IA de OpenRouter, la cuota de mercado de StatCounter Global Stats y la altitud de las montañas de Wikidata. Cada página enlaza su fuente y licencia."
+          "a": "La calidad de la IA viene del ranking de Arena, el uso de IA de OpenRouter, la cuota de mercado de StatCounter Global Stats, la altitud de las montañas de Wikidata, y los ríos, lagos e islas de las listas de Wikipedia. Cada página enlaza su fuente y licencia."
         },
         {
           "q": "¿Con qué frecuencia se actualizan los rankings?",
@@ -1229,7 +1229,7 @@
         },
         {
           "q": "¿Puedo reutilizar estas tablas?",
-          "a": "Sí, con la licencia de la fuente que indica cada página: CC BY 4.0 para las tablas de IA, CC BY-SA 3.0 para la cuota de mercado y CC0 (sin condiciones) para las montañas. Cita la fuente. La mayoría de las tablas se pueden descargar en CSV."
+          "a": "Sí, con la licencia de la fuente que indica cada página: CC BY 4.0 para las tablas de IA, CC BY-SA 3.0 para la cuota de mercado, CC0 (sin condiciones) para las montañas y CC BY-SA 4.0 para los ríos, lagos e islas. Cita la fuente. La mayoría de las tablas se pueden descargar en CSV."
         }
       ]
     },
@@ -1317,7 +1317,23 @@
       "elevationFt": "Altitud (pies)",
       "prominence": "Prominencia",
       "countries": "Países",
-      "range": "Cordillera"
+      "range": "Cordillera",
+      "river": "Río",
+      "lake": "Lago",
+      "island": "Isla",
+      "lengthKm": "Longitud (km)",
+      "lengthMi": "Longitud (millas)",
+      "basinCountries": "Países de la cuenca",
+      "riverSystem": "Sistema fluvial",
+      "areaKm2": "Superficie (km²)",
+      "areaSqMi": "Superficie (millas²)",
+      "maxDepth": "Profundidad máx.",
+      "water": "Agua",
+      "waters": {
+        "fresh": "Dulce",
+        "saline": "Salada",
+        "variable": "Variable"
+      }
     },
     "sets": {
       "ai-models": {
@@ -1753,6 +1769,93 @@
           {
             "q": "¿Cuál es la segunda montaña más alta del mundo?",
             "a": "{top2}, con {v2}. Es más difícil y peligrosa de escalar que {top1}."
+          }
+        ]
+      },
+      "longest-rivers": {
+        "title": "Ríos Más Largos del Mundo: Top {rows} por Longitud | cv.cm",
+        "description": "Los {rows} ríos más largos de la Tierra: {top1} {v1}, {top2} {v2}, {top3} {v3}. Longitud en km y millas, países de la cuenca y sistema fluvial completo.",
+        "h1": "Los {rows} ríos más largos del mundo",
+        "lede": "Los {rows} ríos más largos de la Tierra, cada uno medido como sistema fluvial desde su fuente más lejana hasta su desembocadura, con la longitud en kilómetros y millas y los países de su cuenca. De la lista de sistemas fluviales por longitud de Wikipedia.",
+        "facts": [
+          "El más largo: {top1}, con {v1} ({alt1} millas), seguido de {top2} ({v2}) y {top3} ({v3}).",
+          "Más ríos en la lista: {countryLead}, con {countryCount}. Un río cuenta para cada país de su cuenca.",
+          "El puesto {lowRank} es {low1}, con {lv1}."
+        ],
+        "about": [
+          "La longitud de un río depende de dónde se sitúen su fuente y su desembocadura y de la escala del mapa, por lo que las fuentes difieren en cientos de kilómetros. El Nilo y el Amazonas se alternan el primer puesto según cómo se tracen la desembocadura del Amazonas y la cabecera más lejana del Nilo. Esta tabla usa las cifras de la lista de Wikipedia, que mide cada sistema fluvial desde su fuente más distante: el Misisipi se cuenta junto con el Misuri, y el Obi con el Irtish.",
+          "Las longitudes, cuencas y sistemas fluviales proceden de la lista de la Wikipedia en inglés (CC BY-SA 4.0); los nombres en cada idioma, de Wikidata (CC0). Un río que aparece dos veces, como sistema completo y como curso alto, conserva solo su entrada más larga."
+        ],
+        "faq": [
+          {
+            "q": "¿Cuál es el río más largo del mundo?",
+            "a": "{top1}, con {v1} ({alt1} millas), según las cifras usadas aquí. {top2} le sigue muy de cerca con {v2}, y algunos estudios lo sitúan en primer lugar: la longitud de un río depende de dónde se tracen su fuente y su desembocadura."
+          },
+          {
+            "q": "¿Por qué la longitud de los ríos varía según la fuente?",
+            "a": "Los ríos serpentean, se dividen en brazos y cambian de curso, y las fuentes no coinciden en desde qué cabecera y qué desembocadura medir. La escala del mapa también influye: un mapa más detallado sigue más meandros y da un río más largo."
+          },
+          {
+            "q": "¿Qué país tiene más ríos largos?",
+            "a": "{countryLead}: {countryCount} de los {rows} ríos de esta lista tienen parte de su cuenca allí."
+          }
+        ]
+      },
+      "largest-lakes": {
+        "title": "Lagos Más Grandes del Mundo: los {rows} Mayores por Superficie | cv.cm",
+        "description": "Los {rows} lagos más grandes de la Tierra por superficie: {top1} {v1}, {top2} {v2}, {top3} {v3}. Superficie en km² y millas², profundidad, agua dulce o salada y países.",
+        "h1": "Los {rows} lagos más grandes del mundo",
+        "lede": "Los {rows} lagos más grandes de la Tierra por superficie, con el área en kilómetros cuadrados y millas cuadradas, la profundidad máxima, si el agua es dulce o salada y los países de sus orillas. De la lista de lagos por superficie de Wikipedia.",
+        "facts": [
+          "El más grande: {top1}, con {v1} ({alt1} millas²), seguido de {top2} ({v2}) y {top3} ({v3}).",
+          "Más lagos en la lista: {countryLead}, con {countryCount}. Un lago cuenta para cada país de sus orillas.",
+          "El puesto {lowRank} es {low1}, con {lv1}."
+        ],
+        "about": [
+          "El mar Caspio se cuenta como lago: no tiene salida al océano, aunque su agua es salada y a menudo se le llama el mar más grande del mundo. Los lagos Míchigan y Hurón están unidos por un amplio estrecho y forman un solo lago desde el punto de vista hidrológico, pero aquí aparecen por separado, como es habitual. El lago Vostok se encuentra bajo casi 4 km de hielo antártico.",
+          "Las superficies, profundidades y tipos de agua proceden de la lista de la Wikipedia en inglés (CC BY-SA 4.0); los nombres en cada idioma, de Wikidata (CC0). No se incluyen embalses. Los lagos de regiones áridas cambian de tamaño según la estación y el año, así que su superficie es una cifra típica."
+        ],
+        "faq": [
+          {
+            "q": "¿Cuál es el lago más grande del mundo?",
+            "a": "{top1}, con {v1} ({alt1} millas²). Si se considera el Caspio un mar, el más grande es {top2}, con {v2}."
+          },
+          {
+            "q": "¿Cuál es el lago de agua dulce más grande?",
+            "a": "Por superficie, el lago Superior. Por volumen, el lago Baikal, en Siberia, que además es el lago más profundo de la Tierra, con unos 1642 m, y alberga alrededor de una quinta parte del agua dulce superficial no congelada del mundo."
+          },
+          {
+            "q": "¿Qué país tiene más lagos grandes?",
+            "a": "{countryLead}: {countryCount} de los {rows} lagos de esta lista tocan su territorio."
+          }
+        ]
+      },
+      "largest-islands": {
+        "title": "Islas Más Grandes del Mundo: Top {rows} por Superficie | cv.cm",
+        "description": "Las {rows} islas más grandes de la Tierra: {top1} {v1}, {top2} {v2}, {top3} {v3}. Superficie en km² y millas² y los países a los que pertenece cada isla.",
+        "h1": "Las {rows} islas más grandes del mundo",
+        "lede": "Las {rows} islas más grandes de la Tierra por superficie, con el área en kilómetros cuadrados y millas cuadradas y los países a los que pertenecen. Australia se cuenta como continente, no como isla. De la lista de islas por superficie de Wikipedia.",
+        "facts": [
+          "La más grande: {top1}, con {v1} ({alt1} millas²), seguida de {top2} ({v2}) y {top3} ({v3}).",
+          "Más islas en la lista: {countryLead}, con {countryCount}. Una isla compartida por dos países cuenta para ambos.",
+          "El puesto {lowRank} es {low1}, con {lv1}."
+        ],
+        "about": [
+          "Dónde termina una isla y empieza un continente es una convención. Australia, con unos 7,7 millones de km², se considera un continente, lo que convierte a Groenlandia en la isla más grande. Cada superficie corresponde solo a la isla principal, sin las islas menores que la rodean.",
+          "Las superficies y los países proceden de la lista de la Wikipedia en inglés (CC BY-SA 4.0); los nombres en cada idioma, de Wikidata (CC0). Las islas de la Antártida no pertenecen a ningún país y muestran un guion."
+        ],
+        "faq": [
+          {
+            "q": "¿Cuál es la isla más grande del mundo?",
+            "a": "{top1}, con {v1} ({alt1} millas²). Australia es más grande, pero se considera un continente."
+          },
+          {
+            "q": "¿Australia es una isla?",
+            "a": "Por convención, no: los geógrafos consideran Australia un continente, el más pequeño, porque se asienta sobre su propia placa continental. Groenlandia es la mayor masa de tierra considerada isla."
+          },
+          {
+            "q": "¿Qué país tiene más islas grandes?",
+            "a": "{countryLead}: {countryCount} de las {rows} islas de esta lista le pertenecen."
           }
         ]
       }

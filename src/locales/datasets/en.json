@@ -1203,7 +1203,7 @@
   "rankings": {
     "hub": {
       "title": "Rankings: AI Models, Market Share and More, with Sources | cv.cm",
-      "description": "Sourced rankings you can sort and download: best AI models, most used AI, browser, operating system, search engine, phone and social media market share, and the tallest mountains in the world.",
+      "description": "Sourced rankings you can sort and download: best AI models, most used AI, browser, operating system, search engine, phone and social media market share, and the tallest mountains, longest rivers, largest lakes and islands.",
       "h1": "Rankings",
       "lede": "Rankings built from open data, each with its source, licence and date. Sort any column, filter rows or download the CSV.",
       "groups": {
@@ -1221,7 +1221,7 @@
       "faq": [
         {
           "q": "Where does the data come from?",
-          "a": "AI quality comes from the Arena leaderboard, AI usage from OpenRouter, market share from StatCounter Global Stats and mountain heights from Wikidata. Each page links to its source and licence."
+          "a": "AI quality comes from the Arena leaderboard, AI usage from OpenRouter, market share from StatCounter Global Stats, mountain heights from Wikidata, and rivers, lakes and islands from Wikipedia's lists. Each page links to its source and licence."
         },
         {
           "q": "How often are the rankings updated?",
@@ -1229,7 +1229,7 @@
         },
         {
           "q": "Can I reuse these tables?",
-          "a": "Yes, under the source's licence shown on each page: CC BY 4.0 for the AI tables, CC BY-SA 3.0 for market share and CC0 (no conditions) for mountains. Credit the source. Most tables have a CSV download."
+          "a": "Yes, under the source's licence shown on each page: CC BY 4.0 for the AI tables, CC BY-SA 3.0 for market share, CC0 (no conditions) for mountains and CC BY-SA 4.0 for rivers, lakes and islands. Credit the source. Most tables have a CSV download."
         }
       ]
     },
@@ -1317,7 +1317,23 @@
       "elevationFt": "Elevation (ft)",
       "prominence": "Prominence",
       "countries": "Countries",
-      "range": "Range"
+      "range": "Range",
+      "river": "River",
+      "lake": "Lake",
+      "island": "Island",
+      "lengthKm": "Length (km)",
+      "lengthMi": "Length (mi)",
+      "basinCountries": "Countries in basin",
+      "riverSystem": "River system",
+      "areaKm2": "Area (km²)",
+      "areaSqMi": "Area (sq mi)",
+      "maxDepth": "Max. depth",
+      "water": "Water",
+      "waters": {
+        "fresh": "Fresh",
+        "saline": "Salt",
+        "variable": "Varies"
+      }
     },
     "sets": {
       "ai-models": {
@@ -1753,6 +1769,93 @@
           {
             "q": "What is the second-tallest mountain in the world?",
             "a": "{top2}, at {v2}. It is harder and more dangerous to climb than {top1}."
+          }
+        ]
+      },
+      "longest-rivers": {
+        "title": "Longest Rivers in the World: Top {rows} by Length | cv.cm",
+        "description": "The {rows} longest rivers on Earth: {top1} {v1}, {top2} {v2}, {top3} {v3}. Length in km and miles, countries in the basin and the full river system.",
+        "h1": "The {rows} longest rivers in the world",
+        "lede": "The {rows} longest rivers on Earth, each measured as a river system from its farthest source to its mouth, with length in kilometres and miles and the countries in its basin. From Wikipedia's list of river systems by length.",
+        "facts": [
+          "Longest: {top1} at {v1} ({alt1} mi), then {top2} ({v2}) and {top3} ({v3}).",
+          "Most rivers on the list: {countryLead}, with {countryCount}. A river counts for every country in its basin.",
+          "Number {lowRank} is {low1} at {lv1}."
+        ],
+        "about": [
+          "A river's length depends on where its source and mouth are placed and on the scale of the map, so sources differ by hundreds of kilometres. The Nile and the Amazon swap first place depending on how the Amazon's mouth and the Nile's farthest headwater are drawn. This table uses the figures in Wikipedia's list, which measures each river system from its most distant source: the Mississippi is counted with the Missouri, the Ob with the Irtysh.",
+          "Lengths, basins and river systems come from the English Wikipedia list (CC BY-SA 4.0); names in each language come from Wikidata (CC0). A river listed twice, as a whole system and as an upper course, keeps only its longer entry."
+        ],
+        "faq": [
+          {
+            "q": "What is the longest river in the world?",
+            "a": "{top1}, at {v1} ({alt1} mi), by the figures used here. {top2} is close behind at {v2}, and some surveys put it first: a river's length depends on where its source and mouth are drawn."
+          },
+          {
+            "q": "Why do river lengths differ between sources?",
+            "a": "Rivers wind, split into channels and change course, and sources disagree on which headwater and which mouth to measure from. Map scale matters too: a more detailed map follows more bends and gives a longer river."
+          },
+          {
+            "q": "Which country has the most long rivers?",
+            "a": "{countryLead}: {countryCount} of the {rows} rivers on this list have part of their basin there."
+          }
+        ]
+      },
+      "largest-lakes": {
+        "title": "Largest Lakes in the World: {rows} Biggest by Area | cv.cm",
+        "description": "The {rows} largest lakes on Earth by surface area: {top1} {v1}, {top2} {v2}, {top3} {v3}. Area in km² and sq mi, depth, fresh or salt water and countries.",
+        "h1": "The {rows} largest lakes in the world",
+        "lede": "The {rows} largest lakes on Earth by surface area, with area in square kilometres and square miles, maximum depth, whether the water is fresh or salt, and the countries on the shore. From Wikipedia's list of lakes by area.",
+        "facts": [
+          "Largest: {top1} at {v1} ({alt1} sq mi), then {top2} ({v2}) and {top3} ({v3}).",
+          "Most lakes on the list: {countryLead}, with {countryCount}. A lake counts for every country on its shore.",
+          "Number {lowRank} is {low1} at {lv1}."
+        ],
+        "about": [
+          "The Caspian Sea is counted as a lake: it has no outlet to the ocean, though its water is salty and it is often called the world's largest sea. Lakes Michigan and Huron are joined by a wide strait and are one lake by hydrology, but they are listed separately here, as they usually are. Lake Vostok lies under nearly 4 km of Antarctic ice.",
+          "Areas, depths and water types come from the English Wikipedia list (CC BY-SA 4.0); names in each language come from Wikidata (CC0). Reservoirs are not included. Lakes in dry regions change size with the seasons and the years, so their area is a typical figure."
+        ],
+        "faq": [
+          {
+            "q": "What is the largest lake in the world?",
+            "a": "{top1}, at {v1} ({alt1} sq mi). Counting the Caspian as a sea instead, the largest is {top2} at {v2}."
+          },
+          {
+            "q": "What is the largest freshwater lake?",
+            "a": "By area, Lake Superior. By volume, Lake Baikal in Siberia, which is also the deepest lake on Earth at about 1,642 m and holds around a fifth of the world's unfrozen fresh surface water."
+          },
+          {
+            "q": "Which country has the most large lakes?",
+            "a": "{countryLead}: {countryCount} of the {rows} lakes on this list touch it."
+          }
+        ]
+      },
+      "largest-islands": {
+        "title": "Largest Islands in the World: Top {rows} by Area | cv.cm",
+        "description": "The {rows} largest islands on Earth: {top1} {v1}, {top2} {v2}, {top3} {v3}. Area in km² and sq mi and the countries each island belongs to.",
+        "h1": "The {rows} largest islands in the world",
+        "lede": "The {rows} largest islands on Earth by area, with area in square kilometres and square miles and the countries they belong to. Australia is counted as a continent, not an island. From Wikipedia's list of islands by area.",
+        "facts": [
+          "Largest: {top1} at {v1} ({alt1} sq mi), then {top2} ({v2}) and {top3} ({v3}).",
+          "Most islands on the list: {countryLead}, with {countryCount}. An island shared by two countries counts for both.",
+          "Number {lowRank} is {low1} at {lv1}."
+        ],
+        "about": [
+          "Where an island ends and a continent begins is a convention. Australia, at about 7.7 million km², is treated as a continent, which makes Greenland the largest island. Each area is for the main island alone, without the smaller islands around it.",
+          "Areas and countries come from the English Wikipedia list (CC BY-SA 4.0); names in each language come from Wikidata (CC0). Islands off Antarctica belong to no country and show a dash."
+        ],
+        "faq": [
+          {
+            "q": "What is the largest island in the world?",
+            "a": "{top1}, at {v1} ({alt1} sq mi). Australia is larger, but it is counted as a continent."
+          },
+          {
+            "q": "Is Australia an island?",
+            "a": "By convention, no: geographers count Australia as a continent, the smallest one, because it sits on its own continental plate. Greenland is the largest landmass counted as an island."
+          },
+          {
+            "q": "Which country has the most large islands?",
+            "a": "{countryLead}: {countryCount} of the {rows} islands on this list belong to it."
           }
         ]
       }

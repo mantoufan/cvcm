@@ -75,9 +75,11 @@ for (const file of readdirSync(resolve(root, "src/data"))) {
   if (!files.length) throw new Error(`no Vite chunk for src/data/${file}`);
   pageChunks[`rows-${m[1]}`] = files;
 }
-// Ranking rows are one chunk, preloaded the same way.
-pageChunks["rows-rankings"] = chunkFiles("src/shared/rankings-rows.json");
-if (!pageChunks["rows-rankings"].length) throw new Error("no Vite chunk for src/shared/rankings-rows.json");
+// Ranking rows are two chunks (geography apart), preloaded the same way.
+for (const [chunk, file] of [["rows-rankings", "src/shared/rankings-rows.json"], ["rows-rankings-geo", "src/shared/rankings-geo-rows.json"]]) {
+  pageChunks[chunk] = chunkFiles(file);
+  if (!pageChunks[chunk].length) throw new Error(`no Vite chunk for ${file}`);
+}
 rmSync(manifestDir, { recursive: true, force: true });
 
 await esbuild.build({

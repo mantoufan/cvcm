@@ -5,7 +5,7 @@ import type { Locale } from "../../shared/locale";
 import { appHref, datasetHref, rankingHref } from "../../shared/path";
 import { datasetMessages } from "../../shared/messages";
 import { fill } from "../../shared/datasets-i18n";
-import { RANKING_GROUPS, RANKING_SOURCE, RANKING_TOOLS, rankingCsvHref, rankingGroupOf, rankingMeta, type RankingId } from "../../shared/rankings";
+import { RANKING_GROUPS, RANKING_SOURCE, RANKING_TOOLS, rankingCsvHref, rankingGroupOf, rankingMeta, rankingRowsChunk, type RankingId } from "../../shared/rankings";
 import { rankingDate, rankingFaqItems, rankingHub, rankingLinkMeta, rankingName, rankingPageCopy, rankingTable, rankingUi } from "../../shared/rankings-i18n";
 import { dataTable } from "../datasets/ui";
 import type { DatasetId } from "../../shared/datasets";
@@ -68,7 +68,8 @@ export function mountRankingHub(host: HTMLElement, locale: Locale): void {
 }
 
 export async function mountRanking(host: HTMLElement, locale: Locale, id: RankingId, alive: () => boolean): Promise<void> {
-  const { default: all } = await import("../../shared/rankings-rows.json");
+  // Two literal imports, so each file is its own chunk (the Worker preloads the one the page needs).
+  const { default: all } = rankingRowsChunk(id) === "rows-rankings-geo" ? await import("../../shared/rankings-geo-rows.json") : await import("../../shared/rankings-rows.json");
   if (!alive()) return;
   const ui = rankingUi(locale);
   const copy = rankingPageCopy(locale, id);
