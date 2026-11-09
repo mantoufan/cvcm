@@ -5,8 +5,6 @@ import { appHref } from "../../shared/path";
 import { clockText } from "../../shared/recorder";
 import { rms } from "../../shared/mic";
 import {
-  CALIBRATION_MAX,
-  CALIBRATION_MIN,
   EXAMPLES,
   LevelStats,
   TIME_WEIGHTS,
@@ -55,6 +53,8 @@ let primed = false;
 let currentDbfs = -100;
 let sampleTimer = 0;
 let graphStamp = "";
+/** The offset in use; the field may hold a half-typed value. */
+let calValue = 0;
 /** About one analyser window (2048 samples ≈ 43 ms), so consecutive windows barely overlap. */
 const SAMPLE_MS = 40;
 /** Stats skip the first moments after (re)wiring: an empty analyser window and settling filters would set a false Min. */
@@ -81,7 +81,8 @@ export function mountDecibelMeter(host: HTMLElement): void {
   speedEl = h("select", { "data-field": "speed" },
     ...(Object.keys(TIME_WEIGHTS) as TimeWeight[]).map((w, i) => h("option", { value: w, selected: i === 0 }, t(`decibelMeter.speed_${w}`))),
   );
-  calEl = h("input", { type: "number", min: String(CALIBRATION_MIN), max: String(CALIBRATION_MAX), step: "0.5", value: "0", inputmode: "decimal", "data-field": "calibration", onChange: () => saveCalibration() });
+  // Text with a decimal keypad: a number box reads "" for "-2,5" or a half-typed value, which would mean 0 dB.
+  calEl = h("input", { type: "text", value: "0", inputmode: "decimal", autocomplete: "off", "data-field": "calibration", onInput: () => { calValue = parseCalibration(calEl?.value ?? "") ?? calValue; }, onChange: () => saveCalibration() });
   startBtn = h("button", { type: "button", class: "btn", "data-action": "start", onClick: () => (stream || asking ? stop() : void start()) }, t("decibelMeter.start"));
   statusEl = h("p", { class: "hint", "aria-live": "polite", "data-out": "status" }, t("decibelMeter.idle"));
   nowEl = h("span", { "data-out": "level" }, "—");
@@ -133,7 +134,8 @@ export function mountDecibelMeter(host: HTMLElement): void {
       ),
     ),
   );
-  calEl.value = String(loadCalibration());
+  calValue = loadCalibration();
+  calEl.value = String(calValue);
   updateUnit();
 }
 
@@ -156,8 +158,16 @@ function loadCalibration(): number {
   }
 }
 
+/** The typed offset (decimal comma allowed), or null while it is not a number yet. */
+function parseCalibration(raw: string): number | null {
+  const v = Number(raw.trim().replace(",", ".").replace("−", "-"));
+  return raw.trim() !== "" && Number.isFinite(v) ? clampCalibration(v) : null;
+}
+
 function saveCalibration(): void {
-  const v = clampCalibration(Number(calEl?.value));
+  // An unfinished or invalid entry keeps the last good offset.
+  const v = parseCalibration(calEl?.value ?? "") ?? calValue;
+  calValue = v;
   if (calEl) calEl.value = String(v);
   try {
     if (v) localStorage.setItem(CAL_KEY, String(v));
@@ -168,7 +178,7 @@ function saveCalibration(): void {
 }
 
 function calibration(): number {
-  return clampCalibration(Number(calEl?.value));
+  return calValue;
 }
 
 function weighting(): Weighting {

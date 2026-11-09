@@ -106,6 +106,11 @@ describe("decibel meter ui", () => {
     set("[data-field=calibration]", "99", "change");
     expect(q<HTMLInputElement>("[data-field=calibration]").value).toBe("30");
     expect(localStorage.getItem("cvcm.decibelMeter.calibration")).toBe("30");
+    // A decimal comma works; a half-typed value keeps the last good offset.
+    set("[data-field=calibration]", "-2,5", "change");
+    expect(localStorage.getItem("cvcm.decibelMeter.calibration")).toBe("-2.5");
+    set("[data-field=calibration]", "-", "change");
+    expect(q<HTMLInputElement>("[data-field=calibration]").value).toBe("-2.5");
     vi.stubGlobal("navigator", { ...navigator, mediaDevices: undefined });
     q<HTMLButtonElement>("[data-action=start]").click();
     await Promise.resolve();
@@ -182,6 +187,8 @@ describe("triangle ui", () => {
     expect(q("[data-out=error]").textContent).toContain("cannot form a triangle");
     set("[data-field=c]", "2,5");
     expect(text()).toContain("scalene");
+    set("[data-field=c]", "0,125");
+    expect(q("[data-out=error]").textContent).toContain("cannot form a triangle");
     set("[data-field=c]", "1,000");
     expect(q("[data-out=error]").textContent).toContain("cannot form a triangle");
     set("[data-field=c]", "abc");

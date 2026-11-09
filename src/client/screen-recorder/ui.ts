@@ -146,8 +146,9 @@ async function begin(): Promise<void> {
     // getDisplayMedia must be the first await after the click, or Safari drops the user gesture.
     screen = await navigator.mediaDevices.getDisplayMedia({ video: { frameRate: { ideal: 30, max: 60 } }, audio: wantSystem });
   } catch (err) {
-    setupFailed();
+    // A cancelled run must not touch the state of a newer one.
     if (mine !== run) return;
+    setupFailed();
     release();
     const name = (err as { name?: string })?.name;
     say(name === "NotAllowedError" ? "cancelled" : name === "NotReadableError" ? "busy" : "failed");
@@ -155,7 +156,6 @@ async function begin(): Promise<void> {
   }
   if (mine !== run) {
     screen.getTracks().forEach((tr) => tr.stop());
-    setupFailed();
     return;
   }
   display = screen;
@@ -166,18 +166,21 @@ async function begin(): Promise<void> {
     shareEnded = true;
     if (recorder) finish();
   });
+  let micStream: MediaStream | null = null;
   if (wantMic && navigator.mediaDevices.getUserMedia) {
     try {
-      mic = await navigator.mediaDevices.getUserMedia({ audio: { echoCancellation: true, noiseSuppression: true } });
+      micStream = await navigator.mediaDevices.getUserMedia({ audio: { echoCancellation: true, noiseSuppression: true } });
     } catch {
-      mic = null;
+      micStream = null;
     }
   }
   if (mine !== run) {
-    release();
-    setupFailed();
+    // Cancelled while the mic prompt was open: stop only this run's streams (cancelSetup released the rest).
+    screen.getTracks().forEach((tr) => tr.stop());
+    micStream?.getTracks().forEach((tr) => tr.stop());
     return;
   }
+  mic = micStream;
   // Sharing was stopped while the mic prompt was open: nothing to record.
   if (shareEnded || screen.getVideoTracks()[0]?.readyState === "ended") {
     release();

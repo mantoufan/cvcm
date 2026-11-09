@@ -5,6 +5,8 @@ import { appHref } from "../../shared/path";
 import { fmt, layout, solveTriangle, type TriangleDetails, type TriangleInput, type TriangleResult } from "../../shared/triangle";
 
 const SVG = "http://www.w3.org/2000/svg";
+/** Locales that write a decimal comma (as the scientific calculator also assumes). */
+const DECIMAL_COMMA: ReadonlySet<string> = new Set(["es", "id", "vi"]);
 const FIELDS = ["a", "b", "c", "A", "B", "C"] as const;
 type Field = (typeof FIELDS)[number];
 
@@ -96,8 +98,10 @@ function read(): TriangleInput {
   for (const f of FIELDS) {
     const raw = inputs[f]?.value.trim() ?? "";
     // A decimal comma (es, id, vi keyboards) is read as a point.
-    // "3,5" (decimal comma) reads as 3.5; with a point present, commas are thousands separators ("1,000.5").
-    const text = raw.includes(".") ? raw.replace(/,/g, "") : /^[^,]*,[^,]*$/.test(raw) && !/,\d{3}$/.test(raw) ? raw.replace(",", ".") : raw.replace(/,/g, "");
+    // With a point present, commas group thousands ("1,000.5"). A lone comma is a decimal comma in es/id/vi, where people
+    // write 2,375 for 2.375, and a thousands group elsewhere ("1,000"); "0,125" can only be a decimal anywhere.
+    const grouped = !DECIMAL_COMMA.has(locale()) && /^-?[1-9]\d{0,2}(,\d{3})+$/.test(raw);
+    const text = raw.includes(".") || grouped ? raw.replace(/,/g, "") : raw.replace(",", ".");
     if (raw !== "") out[f] = Number(text);
     // Anything that is not a number reads as NaN, which the solver treats as "not given"; flag it instead.
     if (raw !== "" && !Number.isFinite(out[f])) out[f] = -1;
