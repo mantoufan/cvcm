@@ -31,6 +31,7 @@ describe("mortgage", () => {
 
   it("handles 0% and rejects bad input", () => {
     expect(annuityPayment(1200, 0, 12)).toBe(100);
+    expect(annuityPayment(1200, 1e-17, 12)).toBeCloseTo(100, 9);
     expect(mortgage({ price: 120000, downPct: 0, rate: 0, years: 10, method: "annuity" })!.interest).toBeCloseTo(0, 6);
     expect(mortgage({ price: 0, downPct: 0, rate: 5, years: 30, method: "annuity" })).toBeNull();
     expect(mortgage({ price: 100, downPct: 100, rate: 5, years: 30, method: "annuity" })).toBeNull();
@@ -107,7 +108,9 @@ describe("quadratic", () => {
 
 describe("teams", () => {
   it("parses names from lines and commas", () => {
-    expect(parseNames("Ann\nBen, Cy，Dee\n\n  Eve  ")).toEqual(["Ann", "Ben", "Cy", "Dee", "Eve"]);
+    expect(parseNames("Ann, Ben，Cy、Dee; Eve")).toEqual(["Ann", "Ben", "Cy", "Dee", "Eve"]);
+    // A column pasted from a spreadsheet: each line is one person, commas and all.
+    expect(parseNames("Smith, John\r\nDoe, Jane\n\n  Eve  ")).toEqual(["Smith, John", "Doe, Jane", "Eve"]);
   });
 
   it("counts teams the way the tutorial says", () => {

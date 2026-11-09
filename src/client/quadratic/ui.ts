@@ -150,6 +150,7 @@ function paint(): void {
   ];
   if (exact) steps.push(`x = ${exact.join(t("quadratic.or"))}`);
   stepsEl.append(...steps.map((s) => h("li", null, s)));
+  last += `\n\n${t("quadratic.steps")}\n${steps.map((s, i) => `${i + 1}. ${s}`).join("\n")}`;
   graphEl.append(plot(r));
 }
 

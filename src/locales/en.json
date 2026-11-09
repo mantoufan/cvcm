@@ -3076,7 +3076,7 @@
       "s4t": "Set the alarm",
       "s4b": "Press Set alarm. The page shows when it will ring and a countdown, such as rings in 7 h 30 min. A time earlier than now means tomorrow: set 07:00 at 23:30 and it rings the next morning.",
       "s5t": "Keep the tab ready",
-      "s5b": "You can switch to other tabs: the sound is queued in the browser's audio engine, so it still rings on time. Do not close the tab, and do not let the computer sleep. Where the browser allows it, the page also keeps the screen from turning off.",
+      "s5b": "You can switch to other tabs: the sound is queued in the browser's audio engine, so it still rings on time. Do not close the tab, and make sure the computer will not sleep before the alarm time; check its power settings. While this tab is showing, the page also keeps the screen on where the browser allows it.",
       "s6t": "Stop or snooze",
       "s6b": "When it rings, press Stop, or Snooze 5 min or Snooze 10 min to ring again later. If nobody answers, it stops by itself after 10 minutes. Press Cancel alarm to remove it before it rings.",
       "diagram1": "A time earlier than now rings tomorrow; the page shows how long is left.",
@@ -5493,7 +5493,7 @@
       },
       "check-screen-resolution": {
         "q1": "How do I find my screen resolution on Windows or Mac?",
-        "a1": "In Windows, Settings → System → Display; on a Mac, System Settings → Displays. Opening the Screen resolution page gives the same figure in any browser, on phones too.",
+        "a1": "In Windows, Settings → System → Display shows the same figure as the big number here. On a Mac, System Settings → Displays shows the \"looks like\" size, which is the CSS size on this page; the big number is the real pixels behind it.",
         "q2": "Why does a website say my screen is smaller than it is?",
         "a2": "Websites see CSS pixels. With display scaling above 100% there are fewer CSS pixels than real ones. Multiply by the device pixel ratio to get the real resolution.",
         "q3": "What resolution is my phone?",
@@ -11489,8 +11489,7 @@
     "copy": "Copy details",
     "copied": "Copied",
     "copyFailed": "Copy failed",
-    "hint": "Resize the window or zoom and the values update. Set browser zoom to 100% for the true resolution.",
-    "zoomed": "Browser zoom looks like about {n}%. Press Ctrl + 0 (Cmd + 0 on a Mac) to reset it, or the resolution above will be off."
+    "hint": "Resize the window or zoom and the values update. Set browser zoom to 100% for the true resolution."
   },
   "alarm": {
     "title": "Online alarm clock",

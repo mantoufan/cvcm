@@ -3031,7 +3031,7 @@
       },
       "check-screen-resolution": {
         "q1": "¿Cómo veo mi resolución de pantalla en Windows o Mac?",
-        "a1": "En Windows, Configuración → Sistema → Pantalla; en una Mac, Configuración del Sistema → Pantallas. Abrir la página Resolución de pantalla da la misma cifra en cualquier navegador, también en teléfonos.",
+        "a1": "En Windows, Configuración → Sistema → Pantalla muestra la misma cifra que el número grande de aquí. En una Mac, Configuración del Sistema → Pantallas muestra el tamaño \"parece\", que es el tamaño CSS de esta página; el número grande son los píxeles reales que hay detrás.",
         "q2": "¿Por qué un sitio web dice que mi pantalla es más pequeña de lo que es?",
         "a2": "Los sitios web ven píxeles CSS. Con un escalado de pantalla superior al 100 % hay menos píxeles CSS que reales. Multiplique por la relación de píxeles del dispositivo para obtener la resolución real.",
         "q3": "¿Qué resolución tiene mi teléfono?",
@@ -7366,7 +7366,7 @@
       "s4t": "Ponga la alarma",
       "s4b": "Pulse Poner alarma. La página muestra cuándo sonará y una cuenta atrás, como suena en 7 h 30 min. Una hora anterior a la actual significa mañana: si pone 07:00 a las 23:30, suena a la mañana siguiente.",
       "s5t": "Mantenga la pestaña lista",
-      "s5b": "Puede cambiar a otras pestañas: el sonido queda programado en el motor de audio del navegador, así que suena a tiempo. No cierre la pestaña ni deje que la computadora entre en suspensión. Donde el navegador lo permite, la página también evita que la pantalla se apague.",
+      "s5b": "Puede cambiar a otras pestañas: el sonido queda programado en el motor de audio del navegador, así que suena a tiempo. No cierre la pestaña y asegúrese de que la computadora no entre en suspensión antes de la hora de la alarma; revise la configuración de energía. Mientras esta pestaña está a la vista, la página también mantiene la pantalla encendida donde el navegador lo permite.",
       "s6t": "Detenga o posponga",
       "s6b": "Cuando suene, pulse Detener, o Posponer 5 min o Posponer 10 min para que vuelva a sonar más tarde. Si nadie responde, se detiene sola después de 10 minutos. Pulse Cancelar alarma para quitarla antes de que suene.",
       "diagram1": "Una hora anterior a la actual suena mañana; la página muestra cuánto falta.",
@@ -11489,8 +11489,7 @@
     "copy": "Copiar detalles",
     "copied": "Copiado",
     "copyFailed": "No se pudo copiar",
-    "hint": "Redimensiona la ventana o cambia el zoom y los valores se actualizan. Pon el zoom del navegador al 100 % para ver la resolución real.",
-    "zoomed": "El zoom del navegador parece estar en torno al {n} %. Pulsa Ctrl + 0 (Cmd + 0 en Mac) para volver al 100 %; si no, la resolución de arriba no será correcta."
+    "hint": "Redimensiona la ventana o cambia el zoom y los valores se actualizan. Pon el zoom del navegador al 100 % para ver la resolución real."
   },
   "alarm": {
     "title": "Alarma online",

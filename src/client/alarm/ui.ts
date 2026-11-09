@@ -121,9 +121,9 @@ export function unmountAlarm(): void {
   statusEl = ringEl = ringLabelEl = errorEl = null;
 }
 
-/** A new time replaces a set or snoozed alarm; while it rings, the change waits for Stop or Snooze. */
+/** A new time replaces a set, snoozed or ringing alarm. */
 function onTimeChange(): void {
-  if (alarmAt !== null && ringingSince === null) arm();
+  if (alarmAt !== null) arm();
 }
 
 /** A new sound keeps the alarm time (and any snooze) and only swaps the queued audio. */
@@ -271,7 +271,9 @@ function startRinging(now: number): void {
     }
   }
   const label = labelEl?.value.trim() || t("alarm.title");
-  if (ringLabelEl) ringLabelEl.textContent = `${timeEl?.value ?? ""} · ${label}`;
+  // The time that is ringing: after a snooze it is not the one in the time box.
+  const at = new Date(alarmAt ?? now).toLocaleTimeString(locale(), { hour: "2-digit", minute: "2-digit" });
+  if (ringLabelEl) ringLabelEl.textContent = `${at} · ${label}`;
   if (ringEl) ringEl.hidden = false;
   if (savedTitle === null) savedTitle = document.title;
   document.title = `⏰ ${label}`;

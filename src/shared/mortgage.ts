@@ -34,11 +34,14 @@ export type MortgageResult = {
 export const MAX_YEARS = 50;
 export const MAX_PRICE = 1e12;
 
-/** Fixed monthly payment for a loan; 0% interest splits it evenly. */
+/**
+ * Fixed monthly payment for a loan: P·r / (1 − (1 + r)^−n), with expm1/log1p so a tiny rate does not round to 0/0.
+ * 0% interest splits it evenly.
+ */
 export function annuityPayment(loan: number, monthlyRate: number, months: number): number {
-  if (monthlyRate === 0) return loan / months;
-  const f = Math.pow(1 + monthlyRate, months);
-  return (loan * monthlyRate * f) / (f - 1);
+  const growth = -Math.expm1(-months * Math.log1p(monthlyRate));
+  if (monthlyRate === 0 || growth === 0) return loan / months;
+  return (loan * monthlyRate) / growth;
 }
 
 export function mortgage(input: MortgageInput): MortgageResult | null {

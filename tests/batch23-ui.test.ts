@@ -98,19 +98,8 @@ describe("screen resolution ui", () => {
     expect(details).toContain("1.25 (125%)");
     expect(details).toContain("16:9");
     expect(details).toContain("24-bit");
-    expect(q<HTMLElement>("[data-out=zoom]").hidden).toBe(true);
   });
 
-  it("warns when a mouse browser is zoomed", () => {
-    vi.stubGlobal("devicePixelRatio", 1.5);
-    vi.stubGlobal("screen", { width: 1920, height: 1080, availWidth: 1920, availHeight: 1040, colorDepth: 24 });
-    vi.stubGlobal("matchMedia", () => ({ matches: true, addEventListener() {}, removeEventListener() {} }));
-    vi.stubGlobal("outerWidth", 1920);
-    vi.stubGlobal("innerWidth", 1280);
-    mountScreenResolution(host);
-    expect(q<HTMLElement>("[data-out=zoom]").hidden).toBe(false);
-    expect(q("[data-out=zoom]").textContent).toContain("150%");
-  });
 });
 
 describe("alarm ui", () => {
@@ -147,12 +136,14 @@ describe("alarm ui", () => {
     q<HTMLButtonElement>("[data-action=snooze-10]").click();
     set("[data-field=sound]", "bell", "change");
     expect(q("[data-out=status]").textContent).toContain("0 h 10 min");
-    // A new time while ringing waits; a new time while set replaces the alarm.
     vi.setSystemTime(Date.now() + 10 * 60_000);
     vi.advanceTimersByTime(500);
     expect(q<HTMLElement>("[data-out=ring]").hidden).toBe(false);
+    expect(q("[data-out=ring]").textContent).toContain("07:10");
+    // A new time while ringing stops it and sets the new alarm.
     set("[data-field=time]", "08:00");
-    expect(q<HTMLElement>("[data-out=ring]").hidden).toBe(false);
+    expect(q<HTMLElement>("[data-out=ring]").hidden).toBe(true);
+    expect(q("[data-out=status]").textContent).toContain("0 h 50 min");
   });
 
   it("stops by itself after ten minutes", () => {

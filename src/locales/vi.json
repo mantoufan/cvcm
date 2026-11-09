@@ -3031,7 +3031,7 @@
       },
       "check-screen-resolution": {
         "q1": "Làm sao xem độ phân giải màn hình trên Windows hoặc Mac?",
-        "a1": "Trên Windows, vào Settings → System → Display; trên Mac, vào System Settings → Displays. Mở trang Độ phân giải màn hình cho ra cùng con số trên mọi trình duyệt, kể cả điện thoại.",
+        "a1": "Trên Windows, Settings → System → Display hiện đúng con số lớn ở đây. Trên Mac, System Settings → Displays hiện kích thước \"trông giống như\", tức là kích thước CSS trên trang này; con số lớn là số điểm ảnh thật phía sau.",
         "q2": "Vì sao trang web báo màn hình của tôi nhỏ hơn thực tế?",
         "a2": "Trang web nhìn thấy điểm ảnh CSS. Khi thu phóng hiển thị trên 100%, số điểm ảnh CSS ít hơn số điểm ảnh thực. Nhân với tỷ lệ điểm ảnh thiết bị để ra độ phân giải thật.",
         "q3": "Điện thoại của tôi có độ phân giải bao nhiêu?",
@@ -7366,7 +7366,7 @@
       "s4t": "Đặt báo thức",
       "s4b": "Nhấn Đặt báo thức. Trang cho biết khi nào sẽ reo và đếm ngược, như reo sau 7 giờ 30 phút. Giờ sớm hơn hiện tại nghĩa là ngày mai: đặt 07:00 lúc 23:30 thì sáng hôm sau sẽ reo.",
       "s5t": "Giữ tab sẵn sàng",
-      "s5b": "Bạn có thể chuyển sang tab khác: âm thanh được xếp lịch trong bộ xử lý âm thanh của trình duyệt, nên vẫn reo đúng giờ. Đừng đóng tab và đừng để máy tính ngủ. Nếu trình duyệt cho phép, trang còn giữ cho màn hình không tắt.",
+      "s5b": "Bạn có thể chuyển sang tab khác: âm thanh được xếp lịch trong bộ xử lý âm thanh của trình duyệt, nên vẫn reo đúng giờ. Đừng đóng tab, và hãy chắc rằng máy tính sẽ không ngủ trước giờ báo thức; kiểm tra phần cài đặt nguồn. Khi tab này đang hiển thị, nếu trình duyệt cho phép, trang còn giữ cho màn hình không tắt.",
       "s6t": "Dừng hoặc báo lại",
       "s6b": "Khi chuông reo, nhấn Dừng, hoặc Báo lại sau 5 phút hay Báo lại sau 10 phút để reo lại sau. Nếu không ai phản hồi, chuông tự tắt sau 10 phút. Nhấn Hủy báo thức để xóa báo thức trước khi nó reo.",
       "diagram1": "Giờ sớm hơn hiện tại sẽ reo vào ngày mai; trang cho biết còn bao lâu.",
@@ -11489,8 +11489,7 @@
     "copy": "Sao chép thông số",
     "copied": "Đã sao chép",
     "copyFailed": "Sao chép thất bại",
-    "hint": "Đổi kích thước cửa sổ hoặc thu phóng là các giá trị cập nhật. Đặt thu phóng trình duyệt về 100% để có độ phân giải thật.",
-    "zoomed": "Trình duyệt có vẻ đang thu phóng khoảng {n}%. Nhấn Ctrl + 0 (Cmd + 0 trên Mac) để về 100%, nếu không độ phân giải ở trên sẽ sai."
+    "hint": "Đổi kích thước cửa sổ hoặc thu phóng là các giá trị cập nhật. Đặt thu phóng trình duyệt về 100% để có độ phân giải thật."
   },
   "alarm": {
     "title": "Đồng hồ báo thức online",

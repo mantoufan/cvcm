@@ -5,12 +5,14 @@ import { randomBelow } from "./random";
 export const MAX_NAMES = 500;
 export const MAX_TEAMS = 50;
 
-/** One name per line; commas also separate names. Blank entries are dropped, duplicates kept (two people can share a name). */
+/**
+ * One name per line. A single-line list is split on commas instead, so "Smith, John" pasted from a column stays one
+ * person. Blank entries are dropped, duplicates kept (two people can share a name).
+ */
 export function parseNames(text: string): string[] {
-  return text
-    .split(/[\n,，、;；]/)
-    .map((s) => s.trim())
-    .filter(Boolean);
+  const lines = text.split(/\r?\n/).map((s) => s.trim()).filter(Boolean);
+  const parts = lines.length > 1 ? lines : text.split(/[,，、;；]/);
+  return parts.map((s) => s.trim()).filter(Boolean);
 }
 
 export function shuffle<T>(items: readonly T[], below: (n: number) => number = randomBelow): T[] {
