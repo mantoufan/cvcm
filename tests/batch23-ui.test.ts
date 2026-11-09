@@ -77,6 +77,10 @@ describe("team generator ui", () => {
     expect(teams).toHaveLength(2);
     const names = Array.from(host.querySelectorAll(".team-names")).flatMap((el) => el.textContent!.split(", "));
     expect(names.sort()).toEqual(["Alex", "Ben", "Chloe", "Daniel", "Emma", "Finn", "Grace", "Henry", "Ivy", "Jack", "Kate", "Leo"]);
+    set("[data-field=mode]", "count", "change");
+    set("[data-field=value]", "20");
+    q<HTMLButtonElement>("[data-action=generate]").click();
+    expect(q("[data-out=error]").textContent).toContain("12 teams");
     set("[data-field=names]", "Solo");
     q<HTMLButtonElement>("[data-action=generate]").click();
     expect(q("[data-out=error]").textContent).toBe("Add at least two names.");
@@ -94,6 +98,18 @@ describe("screen resolution ui", () => {
     expect(details).toContain("1.25 (125%)");
     expect(details).toContain("16:9");
     expect(details).toContain("24-bit");
+    expect(q<HTMLElement>("[data-out=zoom]").hidden).toBe(true);
+  });
+
+  it("warns when a mouse browser is zoomed", () => {
+    vi.stubGlobal("devicePixelRatio", 1.5);
+    vi.stubGlobal("screen", { width: 1920, height: 1080, availWidth: 1920, availHeight: 1040, colorDepth: 24 });
+    vi.stubGlobal("matchMedia", () => ({ matches: true, addEventListener() {}, removeEventListener() {} }));
+    vi.stubGlobal("outerWidth", 1920);
+    vi.stubGlobal("innerWidth", 1280);
+    mountScreenResolution(host);
+    expect(q<HTMLElement>("[data-out=zoom]").hidden).toBe(false);
+    expect(q("[data-out=zoom]").textContent).toContain("150%");
   });
 });
 
@@ -120,6 +136,23 @@ describe("alarm ui", () => {
     q<HTMLButtonElement>("[data-action=stop]").click();
     expect(q("[data-out=status]").textContent).toBe("No alarm set.");
     expect(document.title.startsWith("⏰")).toBe(false);
+  });
+
+  it("keeps a snooze when the sound changes", () => {
+    vi.useFakeTimers();
+    vi.setSystemTime(new Date(2026, 10, 9, 6, 59, 59));
+    mountAlarm(host);
+    q<HTMLButtonElement>("[data-action=set]").click();
+    vi.advanceTimersByTime(1500);
+    q<HTMLButtonElement>("[data-action=snooze-10]").click();
+    set("[data-field=sound]", "bell", "change");
+    expect(q("[data-out=status]").textContent).toContain("0 h 10 min");
+    // A new time while ringing waits; a new time while set replaces the alarm.
+    vi.setSystemTime(Date.now() + 10 * 60_000);
+    vi.advanceTimersByTime(500);
+    expect(q<HTMLElement>("[data-out=ring]").hidden).toBe(false);
+    set("[data-field=time]", "08:00");
+    expect(q<HTMLElement>("[data-out=ring]").hidden).toBe(false);
   });
 
   it("stops by itself after ten minutes", () => {

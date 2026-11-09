@@ -1,6 +1,6 @@
 /** Screen resolution helpers: reduced aspect ratio and the common name of a resolution. */
 
-import { gcdInt } from "./quadratic";
+import { gcd } from "./aspect";
 
 /** Marketing ratios that do not reduce cleanly (2560×1080 is 64:27, sold as 21:9). */
 const NAMED_RATIOS: Array<[number, string]> = [
@@ -25,7 +25,7 @@ export function aspectRatio(w: number, h: number): string {
   const short = Math.min(w, h);
   const r = long / short;
   for (const [v, name] of NAMED_RATIOS) if (Math.abs(r - v) / v < 0.012) return name;
-  const g = gcdInt(Math.round(long), Math.round(short)) || 1;
+  const g = gcd(Math.round(long), Math.round(short)) || 1;
   const a = Math.round(long) / g;
   const b = Math.round(short) / g;
   return a <= 64 && b <= 64 ? `${a}:${b}` : `${r.toFixed(2)}:1`;

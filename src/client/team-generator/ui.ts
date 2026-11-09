@@ -2,7 +2,7 @@ import { copyWithFlash } from "../copy";
 import { h } from "../dom";
 import { locale, t } from "../i18n";
 import { appHref } from "../../shared/path";
-import { MAX_NAMES, MAX_TEAMS, makeTeams, parseNames, teamCount } from "../../shared/teams";
+import { MAX_NAMES, makeTeams, parseNames, requestedTeams, teamCount } from "../../shared/teams";
 
 let namesEl: HTMLTextAreaElement | null = null;
 let modeEl: HTMLSelectElement | null = null;
@@ -98,7 +98,8 @@ function generate(): void {
   }
   const mode = modeEl.value as "count" | "size";
   const count = teamCount(names.length, mode, value);
-  if (mode === "count" && value > Math.min(names.length, MAX_TEAMS)) {
+  // Both modes can ask for more teams than allowed (one per name, 50 at most): say what was made instead.
+  if (requestedTeams(names.length, mode, value) > count) {
     errorEl.textContent = t("teamGenerator.capped", { n: count });
   }
   const teams = makeTeams(names, count);

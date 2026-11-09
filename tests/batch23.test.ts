@@ -1,7 +1,8 @@
 import { describe, expect, it } from "vitest";
 import { annuityPayment, mortgage } from "../src/shared/mortgage";
-import { equationText, simplifySqrt, solveQuadratic } from "../src/shared/quadratic";
-import { makeTeams, parseNames, randomBelow, shuffle, teamCount } from "../src/shared/teams";
+import { equationText, num, simplifySqrt, solveQuadratic } from "../src/shared/quadratic";
+import { makeTeams, parseNames, requestedTeams, shuffle, teamCount } from "../src/shared/teams";
+import { randomBelow } from "../src/shared/random";
 import { aspectRatio, physical, resolutionName } from "../src/shared/screen";
 import { nextAlarm, parseClock, remainingText, untilParts } from "../src/shared/alarm";
 import { lessonsForTool } from "../src/shared/learn";
@@ -76,6 +77,27 @@ describe("quadratic", () => {
     if (r.roots.kind === "two") expect(r.roots.x1).toBeCloseTo(1e-8, 15);
   });
 
+  it("treats a rounded-off zero discriminant as one root", () => {
+    const r = solveQuadratic(1, 0.2, 0.01)!;
+    expect(r.d).toBe(0);
+    expect(r.roots).toEqual({ kind: "one", x: -0.1 });
+    // Whole numbers stay exact: Δ = 1 is not rounded away.
+    expect(solveQuadratic(1, 999999, 249999500000)!.d).toBe(999999 ** 2 - 4 * 249999500000);
+  });
+
+  it("prints tiny values instead of 0", () => {
+    expect(num(1e-7)).toBe("1e-7");
+    expect(num(-2.5e-9)).toBe("−2.5e-9");
+    expect(num(0.1 + 0.2)).toBe("0.3");
+    expect(num(-0)).toBe("0");
+  });
+
+  it("finds exact forms quickly for the largest whole coefficients", () => {
+    const t0 = performance.now();
+    solveQuadratic(1, 999983, -999979);
+    expect(performance.now() - t0).toBeLessThan(100);
+  });
+
   it("prints equations with real minus signs", () => {
     expect(equationText(1, -3, 2)).toBe("x² − 3x + 2 = 0");
     expect(equationText(-1, 0, 4)).toBe("−x² + 4 = 0");
@@ -95,6 +117,9 @@ describe("teams", () => {
     expect(teamCount(4, "count", 9)).toBe(4);
     expect(teamCount(500, "size", 1)).toBe(50);
     expect(teamCount(0, "count", 3)).toBe(0);
+    // People per team 2 for 500 names asks for 250 teams; the page warns that it made 50.
+    expect(requestedTeams(500, "size", 2)).toBe(250);
+    expect(teamCount(500, "size", 2)).toBe(50);
   });
 
   it("deals every name once into teams that differ by at most one", () => {

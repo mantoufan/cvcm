@@ -13,3 +13,16 @@ export function randomInts(min: number, max: number, count: number): number[] {
   const n = Math.max(1, Math.min(200, Math.round(count) || 1));
   return Array.from({ length: n }, () => randomInt(min, max));
 }
+
+/**
+ * Uniform integer in [0, n) from Web Crypto, rejecting the top of the range that would bias small values.
+ * `rand` fills the buffer (tests pass a fake).
+ */
+export function randomBelow(n: number, rand: (buf: Uint32Array) => Uint32Array = (b) => crypto.getRandomValues(b)): number {
+  if (n <= 1) return 0;
+  const limit = Math.floor(0x1_0000_0000 / n) * n;
+  const buf = new Uint32Array(1);
+  do rand(buf);
+  while (buf[0]! >= limit);
+  return buf[0]! % n;
+}

@@ -1,4 +1,4 @@
-import { armAudio } from "../audio";
+import { armAudio, resumeIfPaused } from "../audio";
 import { h } from "../dom";
 import { locale, t } from "../i18n";
 import { appHref } from "../../shared/path";
@@ -13,8 +13,12 @@ const PATTERNS: Record<AlarmSound, Pattern> = {
   bell: { period: 1.5, notes: [{ at: 0, f: 523.25, d: 1.2, type: "sine", decay: true }, { at: 0, f: 1046.5, d: 0.8, type: "sine", decay: true }, { at: 0, f: 1568, d: 0.4, type: "sine", decay: true }] },
   digital: { period: 1, notes: [0, 0.18].map((at) => ({ at, f: 1046.5, d: 0.1, type: "square" as const })) },
 };
-/** Ring audio is queued on the audio clock this far ahead, so a throttled background tab still rings on time. */
-const CHUNK_S = 60;
+/**
+ * Ring audio is queued on the audio clock this far ahead, so a throttled background tab still rings on time.
+ * Chrome runs a hidden tab's timers about once a minute, so the queue is topped up while more than a minute is left.
+ */
+const CHUNK_S = 120;
+const REFILL_S = 75;
 const VOLUME = 0.22;
 
 let clockEl: HTMLElement | null = null;
@@ -41,9 +45,9 @@ let wakeLock: { release: () => Promise<void>; released?: boolean } | null = null
 
 export function mountAlarm(host: HTMLElement): void {
   clockEl = h("p", { class: "alarm-clock", "data-out": "clock", "data-volatile": "" });
-  timeEl = h("input", { type: "time", value: "07:00", "data-field": "time", "data-fixed-date": "", required: true, onInput: () => { if (alarmAt !== null) arm(); } });
+  timeEl = h("input", { type: "time", value: "07:00", "data-field": "time", "data-fixed-date": "", required: true, onInput: () => onTimeChange() });
   labelEl = h("input", { type: "text", maxlength: "60", "data-field": "label", placeholder: t("alarm.labelPlaceholder") });
-  soundEl = h("select", { "data-field": "sound", onChange: () => { if (alarmAt !== null) arm(); } },
+  soundEl = h("select", { "data-field": "sound", onChange: () => onSoundChange() },
     ...SOUNDS.map((s, i) => h("option", { value: s, selected: i === 0 }, t(`alarm.sound_${s}`))),
   );
   setBtn = h("button", { type: "button", class: "btn", "data-action": "set", onClick: () => (alarmAt === null ? arm() : cancel()) }, t("alarm.set"));
@@ -93,6 +97,7 @@ export function mountAlarm(host: HTMLElement): void {
 
 /** The screen wake lock is dropped whenever the tab is hidden; take it again when the alarm tab comes back. */
 function onVisibility(): void {
+  if (ctx && alarmAt !== null) resumeIfPaused(ctx);
   tick();
   if (alarmAt !== null && document.visibilityState === "visible") void holdWake();
 }
@@ -114,6 +119,29 @@ export function unmountAlarm(): void {
   soundEl = null;
   setBtn = null;
   statusEl = ringEl = ringLabelEl = errorEl = null;
+}
+
+/** A new time replaces a set or snoozed alarm; while it rings, the change waits for Stop or Snooze. */
+function onTimeChange(): void {
+  if (alarmAt !== null && ringingSince === null) arm();
+}
+
+/** A new sound keeps the alarm time (and any snooze) and only swaps the queued audio. */
+function onSoundChange(): void {
+  if (alarmAt === null || !ctx) return;
+  if (ringingSince !== null) {
+    stopAudio();
+    queueRingFromNow();
+  } else scheduleAt(alarmAt);
+}
+
+function queueRingFromNow(): void {
+  if (!ctx) return;
+  master = freshMaster();
+  if (!master) return;
+  scheduledFrom = ctx.currentTime;
+  scheduledUntil = scheduledFrom + CHUNK_S;
+  queue(master, scheduledFrom, scheduledUntil, sound());
 }
 
 function sound(): AlarmSound {
@@ -181,6 +209,7 @@ function arm(): void {
   if (!ctx) errorEl.textContent = t("alarm.noAudio");
   ringingSince = null;
   hideRing();
+  restoreTitle();
   alarmAt = nextAlarm(new Date(), mins).getTime();
   scheduleAt(alarmAt);
   void holdWake();
@@ -233,15 +262,12 @@ function restoreTitle(): void {
 function startRinging(now: number): void {
   ringingSince = now;
   if (ctx) {
-    // The queued minute already started on the audio clock unless the device slept: then start it now.
+    // iOS leaves the context suspended or "interrupted" after a call or app switch.
+    resumeIfPaused(ctx);
+    // The queued audio already started on the audio clock unless the device slept: then start it now.
     if (!master || scheduledFrom > ctx.currentTime + 0.5 || scheduledUntil < ctx.currentTime) {
       stopAudio();
-      master = freshMaster();
-      if (master) {
-        scheduledFrom = ctx.currentTime;
-        scheduledUntil = scheduledFrom + CHUNK_S;
-        queue(master, scheduledFrom, scheduledUntil, sound());
-      }
+      queueRingFromNow();
     }
   }
   const label = labelEl?.value.trim() || t("alarm.title");
@@ -258,9 +284,11 @@ function tick(): void {
   if (ringingSince === null && now >= alarmAt) startRinging(now);
   if (ringingSince !== null) {
     statusEl.textContent = t("alarm.ringingSince", { time: remainingText(now - ringingSince) });
-    if (ctx && master && scheduledUntil - ctx.currentTime < CHUNK_S / 2) {
-      queue(master, scheduledUntil, scheduledUntil + CHUNK_S, sound());
-      scheduledUntil += CHUNK_S;
+    if (ctx && master && scheduledUntil - ctx.currentTime < REFILL_S) {
+      // Never queue notes in the past: after a long gap they would all start at once.
+      const from = Math.max(scheduledUntil, ctx.currentTime + 0.05);
+      queue(master, from, from + CHUNK_S, sound());
+      scheduledUntil = from + CHUNK_S;
     }
     if (now - ringingSince >= RING_LIMIT_MS) {
       cancel();

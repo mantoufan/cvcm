@@ -1,5 +1,7 @@
 /** Quadratic equations ax² + bx + c = 0: discriminant, roots (exact for whole-number coefficients), vertex. */
 
+import { gcd as gcdInt } from "./aspect";
+
 export type QuadraticRoots =
   | { kind: "two"; x1: number; x2: number }
   | { kind: "one"; x: number }
@@ -18,23 +20,18 @@ export type QuadraticResult = {
   factored: string | null;
 };
 
-/** Largest |coefficient| we treat exactly (keeps b² − 4ac inside safe integers). */
-export const MAX_EXACT = 1e7;
+/** Largest |coefficient| we treat exactly: b² − 4ac stays a safe integer and its square-free split stays fast. */
+export const MAX_EXACT = 1e6;
 
 const MINUS = "−";
 
-export function gcdInt(a: number, b: number): number {
-  a = Math.abs(a);
-  b = Math.abs(b);
-  while (b) [a, b] = [b, a % b];
-  return a;
-}
 
 /** √n = k√m with m square-free; n ≥ 0 whole. */
 export function simplifySqrt(n: number): { k: number; m: number } {
   let k = 1;
   let m = n;
-  for (let f = 2; f * f <= m; f++) {
+  // Dividing out each prime found keeps the bound √m shrinking; only 2 and odd numbers are tried.
+  for (let f = 2; f * f <= m; f += f === 2 ? 1 : 2) {
     while (m % (f * f) === 0) {
       m /= f * f;
       k *= f;
@@ -58,10 +55,11 @@ export function fractionText(p: number, q: number): string {
 
 /** Plain number text for results: up to 6 decimals, no trailing zeros, real minus sign, no "−0". */
 export function num(n: number): string {
-  if (Object.is(n, -0) || Math.abs(n) < 1e-12) return "0";
-  const r = Number(n.toFixed(6));
-  const s = Math.abs(r) >= 1e15 || (Math.abs(r) < 1e-6 && r !== 0) ? n.toPrecision(6) : String(r);
-  return s.replace("-", MINUS);
+  if (n === 0) return "0";
+  // Tiny and huge values keep 6 significant digits; rounding them to 6 decimals first would print 1e-7 as 0.
+  const s = Math.abs(n) >= 1e15 || Math.abs(n) < 1e-6 ? String(Number(n.toPrecision(6))) : String(Number(n.toFixed(6)));
+  // Only the sign becomes a real minus; "1e-7" keeps its exponent hyphen.
+  return s.replace(/^-/, MINUS);
 }
 
 export function isWhole(n: number): boolean {
@@ -70,7 +68,10 @@ export function isWhole(n: number): boolean {
 
 export function solveQuadratic(a: number, b: number, c: number): QuadraticResult | null {
   if (![a, b, c].every(Number.isFinite) || a === 0) return null;
-  const d = b * b - 4 * a * c;
+  const whole = isWhole(a) && isWhole(b) && isWhole(c);
+  let d = b * b - 4 * a * c;
+  // With decimal coefficients b² and 4ac carry rounding error: 0.2² − 4 × 0.01 is 6.9e-18, not 0.
+  if (!whole && Math.abs(d) <= 1e-12 * Math.max(b * b, Math.abs(4 * a * c))) d = 0;
   let roots: QuadraticRoots;
   if (d > 0) {
     const s = Math.sqrt(d);
@@ -88,17 +89,17 @@ export function solveQuadratic(a: number, b: number, c: number): QuadraticResult
   const vertex = { x: vx, y: c - (b * b) / (4 * a) };
   let exact: string[] | null = null;
   let factored: string | null = null;
-  if (isWhole(a) && isWhole(b) && isWhole(c)) {
-    exact = exactRoots(a, b, d);
-    factored = factorForm(a, b, d);
+  if (whole) {
+    const root = d === 0 ? { k: 0, m: 1 } : simplifySqrt(Math.abs(d));
+    exact = exactRoots(a, b, d, root);
+    factored = factorForm(a, b, d, root);
   }
   return { a, b, c, d, roots, vertex, exact, factored };
 }
 
-function exactRoots(a: number, b: number, d: number): string[] {
+function exactRoots(a: number, b: number, d: number, { k, m }: { k: number; m: number }): string[] {
   const den = 2 * a;
   if (d === 0) return [fractionText(-b, den)];
-  const { k, m } = simplifySqrt(Math.abs(d));
   if (d > 0 && m === 1) {
     const r1 = fractionText(-b - k, den);
     const r2 = fractionText(-b + k, den);
@@ -124,10 +125,8 @@ function exactRoots(a: number, b: number, d: number): string[] {
   return [q === 1 ? top : p === 0 ? `±${rad}/${q}` : `(${top}) / ${q}`];
 }
 
-function factorForm(a: number, b: number, d: number): string | null {
-  if (d < 0) return null;
-  const { k, m } = d === 0 ? { k: 0, m: 1 } : simplifySqrt(d);
-  if (m !== 1) return null;
+function factorForm(a: number, b: number, d: number, { k, m }: { k: number; m: number }): string | null {
+  if (d < 0 || m !== 1) return null;
   const den = 2 * a;
   // Each root p/q gives a factor (qx − p); the leftover constant goes in front.
   const parts: Array<[number, number]> = [-b - k, -b + k].map((p) => {

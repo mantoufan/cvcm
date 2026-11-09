@@ -1,3 +1,4 @@
+import { randomBelow } from "./random";
 const FIRST = [
   "Ada", "Aiko", "Amir", "Ana", "Aria", "Ben", "Cam", "Cora", "Diego", "Elena",
   "Ezra", "Farah", "Hugo", "Ines", "Ivan", "Jade", "Kai", "Lina", "Luca", "Mara",
@@ -23,15 +24,7 @@ const NOUN = [
   "jasper", "koala", "lagoon", "moss", "nova", "olive", "pine", "quartz", "reef", "sage",
 ];
 
-function randIndex(max: number): number {
-  if (max <= 0) return 0;
-  const buf = new Uint32Array(1);
-  const limit = Math.floor(0x1_0000_0000 / max) * max;
-  do {
-    crypto.getRandomValues(buf);
-  } while (buf[0] >= limit);
-  return buf[0] % max;
-}
+const randIndex = (max: number): number => randomBelow(max);
 
 function pick(list: readonly string[]): string {
   return list[randIndex(list.length)]!;

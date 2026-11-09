@@ -1,5 +1,7 @@
 /** Random team generator: split a list of names into balanced teams with an unbiased crypto shuffle. */
 
+import { randomBelow } from "./random";
+
 export const MAX_NAMES = 500;
 export const MAX_TEAMS = 50;
 
@@ -9,16 +11,6 @@ export function parseNames(text: string): string[] {
     .split(/[\n,，、;；]/)
     .map((s) => s.trim())
     .filter(Boolean);
-}
-
-/** Uniform integer in [0, n) from Web Crypto, rejecting the biased top of the range. */
-export function randomBelow(n: number, rand: (buf: Uint32Array) => Uint32Array = (b) => crypto.getRandomValues(b)): number {
-  const limit = Math.floor(0x1_0000_0000 / n) * n;
-  const buf = new Uint32Array(1);
-  for (;;) {
-    rand(buf);
-    if (buf[0]! < limit) return buf[0]! % n;
-  }
 }
 
 export function shuffle<T>(items: readonly T[], below: (n: number) => number = randomBelow): T[] {
@@ -32,9 +24,14 @@ export function shuffle<T>(items: readonly T[], below: (n: number) => number = r
 
 /** How many teams: "count" asks for that many teams, "size" for teams of about that many people. */
 export function teamCount(names: number, mode: "count" | "size", value: number): number {
-  if (names <= 0 || !Number.isInteger(value) || value < 1) return 0;
-  const n = mode === "count" ? value : Math.ceil(names / value);
+  const n = requestedTeams(names, mode, value);
   return Math.min(n, names, MAX_TEAMS);
+}
+
+/** Teams the settings ask for before the caps (one per name, MAX_TEAMS); 0 for invalid input. */
+export function requestedTeams(names: number, mode: "count" | "size", value: number): number {
+  if (names <= 0 || !Number.isInteger(value) || value < 1) return 0;
+  return mode === "count" ? value : Math.ceil(names / value);
 }
 
 /** Deals shuffled names round-robin, so team sizes differ by at most one. */

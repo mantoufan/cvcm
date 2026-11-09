@@ -5,6 +5,7 @@ import { appHref } from "../../shared/path";
 import { aspectRatio, physical, resolutionName } from "../../shared/screen";
 
 let bigEl: HTMLElement | null = null;
+let zoomEl: HTMLElement | null = null;
 let outEl: HTMLElement | null = null;
 let copyBtn: HTMLButtonElement | null = null;
 let last = "";
@@ -15,6 +16,7 @@ export function mountScreenResolution(host: HTMLElement): void {
   // Every value is this visitor's screen: the prerendered page keeps placeholders (data-volatile).
   bigEl = h("p", { class: "screen-big", "data-out": "resolution", "data-volatile": "" });
   outEl = h("dl", { class: "stats-grid", "data-out": "details" });
+  zoomEl = h("p", { class: "hint", "aria-live": "polite", "data-out": "zoom", "data-volatile": "", hidden: true });
   host.append(
     h("header", { class: "tool-head" },
       h("a", { class: "back", href: appHref(locale(), null), "data-nav": "home" }, t("screenResolution.back")),
@@ -25,6 +27,7 @@ export function mountScreenResolution(host: HTMLElement): void {
       h("div", { class: "rail" },
         h("h2", null, t("screenResolution.yours")),
         bigEl,
+        zoomEl,
         outEl,
         h("div", { class: "stage-actions" },
           copyBtn = h("button", { type: "button", class: "btn ghost", "data-action": "copy", onClick: () => void copyWithFlash(copyBtn, last, { done: t("screenResolution.copied"), failed: t("screenResolution.copyFailed") }) }, t("screenResolution.copy")),
@@ -46,7 +49,7 @@ export function unmountScreenResolution(): void {
   dprQuery = null;
   if (frame) cancelAnimationFrame(frame);
   frame = 0;
-  bigEl = outEl = null;
+  bigEl = zoomEl = outEl = null;
   copyBtn = null;
   last = "";
 }
@@ -72,7 +75,7 @@ function onDpr(): void {
 }
 
 function paint(): void {
-  if (!bigEl || !outEl) return;
+  if (!bigEl || !outEl || !zoomEl) return;
   const dpr = window.devicePixelRatio || 1;
   const sw = screen.width;
   const sh = screen.height;
@@ -81,6 +84,13 @@ function paint(): void {
   const name = resolutionName(pw, ph);
   bigEl.textContent = `${pw} × ${ph}`;
   const orient = sw >= sh ? t("screenResolution.landscape") : t("screenResolution.portrait");
+  // Chromium keeps screen.width fixed but raises devicePixelRatio when the page is zoomed, which inflates the result.
+  // outerWidth (window pixels) over innerWidth (CSS pixels) gives the zoom there; it stays near 1 elsewhere.
+  // Only with a mouse: on phones pinch zoom and browser bars make the two widths differ for other reasons.
+  const fine = typeof matchMedia === "function" && matchMedia("(pointer: fine)").matches;
+  const zoom = fine && window.innerWidth > 0 && window.outerWidth > 0 ? window.outerWidth / window.innerWidth : 1;
+  zoomEl.hidden = zoom < 1.09 && zoom > 0.92;
+  zoomEl.textContent = zoomEl.hidden ? "" : t("screenResolution.zoomed", { n: Math.round(zoom * 100) });
   const rows: Array<[string, string]> = [
     [t("screenResolution.physical"), `${pw} × ${ph}${name ? ` — ${name}` : ""}`],
     [t("screenResolution.css"), `${sw} × ${sh}`],
