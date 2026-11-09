@@ -13,6 +13,8 @@ export type QuizCopy = {
   title: string;
   description: string;
   h1: string;
+  /** Replaces the scale hint above the questions, for tests that ask about a set period. */
+  hint?: string;
   lede: string;
   about: string[];
   faq: { q: string; a: string }[];
@@ -130,7 +132,7 @@ export function quizStaticHtml(locale: Locale, id: QuizId | null): string {
     if (typeof item === "string") return `<li>${escapeHtml(item)}</li>`;
     return `<li>${escapeHtml(item.q)}<ul>${item.options.map((o) => `<li>${escapeHtml(o)}</li>`).join("")}</ul></li>`;
   }).join("");
-  const hint = def.type === "likert" ? ui.scaleHint[def.scale] : ui.choiceHint;
+  const hint = copy.hint ?? (def.type === "likert" ? ui.scaleHint[def.scale] : ui.choiceHint);
   return [
     `<nav class="device-crumb">${home} <span aria-hidden="true">/</span> <a href="${escapeHtml(quizHref(locale))}">${escapeHtml(hub.h1)}</a> <span aria-hidden="true">/</span> <span>${escapeHtml(quizName(locale, id).name)}</span></nav>`,
     `<h1>${escapeHtml(copy.h1)}</h1>`,

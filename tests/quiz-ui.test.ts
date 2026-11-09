@@ -2,7 +2,7 @@
 import { describe, expect, it } from "vitest";
 import { mountQuiz, mountQuizHub } from "../src/client/quiz/ui";
 import { LOCALES } from "../src/shared/locale";
-import { QUIZ_DEFS, QUIZZES } from "../src/shared/quiz";
+import { QUIZ_DEFS, QUIZ_GROUPS, QUIZZES } from "../src/shared/quiz";
 import { quizUi } from "../src/shared/quiz-i18n";
 
 function mount(id: Parameters<typeof mountQuiz>[2], locale: Parameters<typeof mountQuiz>[1] = "en"): HTMLElement {
@@ -179,6 +179,31 @@ describe("test page UI", () => {
     const more = [...main.querySelectorAll<HTMLAnchorElement>('a[href^="/en/tests/"]')].map((a) => a.getAttribute("href"));
     expect(more).toContain("/en/tests/pokemon/");
     expect(more).not.toContain("/en/tests/mbti/");
+  });
+
+  it("links to every test in a group from at least one of its members", () => {
+    for (const group of QUIZ_GROUPS) {
+      const linked = new Set<string>();
+      for (const id of group.quizzes) {
+        const main = mount(id);
+        const wall = [...main.querySelectorAll("section.wall")].pop()!;
+        for (const a of wall.querySelectorAll("a")) linked.add(a.getAttribute("href") ?? "");
+      }
+      for (const id of group.quizzes) expect(linked, `${group.id} ${id}`).toContain(`/en/tests/${id}/`);
+    }
+  });
+
+  it("asks about a set period on the ADHD and burnout tests, and the usual self elsewhere", () => {
+    expect(mount("adhd").querySelector(".quiz-hint")?.textContent).toContain("last 6 months");
+    expect(mount("burnout").querySelector(".quiz-hint")?.textContent).toContain("last few weeks");
+    expect(mount("disc").querySelector(".quiz-hint")?.textContent).toContain("as you usually are");
+  });
+
+  it("shows the not-a-diagnosis notice on the health-sensitive tests only", () => {
+    const notice = quizUi("en").notDiagnosis;
+    expect(mount("narcissist").querySelector(".quiz-privacy")?.textContent).toContain(notice);
+    expect(mount("adhd").querySelector(".quiz-privacy")?.textContent).toContain(notice);
+    expect(mount("disc").querySelector(".quiz-privacy")?.textContent).not.toContain(notice);
   });
 
   it("names the pets the answers ruled out", () => {
