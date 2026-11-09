@@ -3,14 +3,14 @@
 // `src/locales/quiz/<locale>.json`, with items in the same order. Scoring runs in the page; answers never leave it.
 
 export const QUIZ_GROUPS = [
-  { id: "personality", quizzes: ["mbti", "big-five", "introvert", "enneagram", "eq", "temperament", "disc", "highly-sensitive-person", "narcissist"] },
+  { id: "personality", quizzes: ["mbti", "big-five", "introvert", "enneagram", "eq", "temperament", "disc", "highly-sensitive-person", "narcissist", "dark-triad"] },
   { id: "love", quizzes: ["love-language", "attachment", "love-style", "marriage", "conflict-style"] },
-  { id: "career", quizzes: ["career", "work-style", "leadership", "mindset", "money"] },
+  { id: "career", quizzes: ["career", "work-style", "leadership", "mindset", "learning-style", "money"] },
   { id: "games", quizzes: ["pokemon", "genshin", "sonic", "dnd-class"] },
   { id: "anime", quizzes: ["naruto", "one-piece", "ghibli", "demon-slayer", "jujutsu-kaisen", "avatar-element", "anime"] },
-  { id: "books", quizzes: ["hogwarts", "percy-jackson", "avengers"] },
-  { id: "fun", quizzes: ["chronotype", "pet", "face-shape", "friend-role", "spirit-animal", "color-personality"] },
-  { id: "wellbeing", quizzes: ["wellbeing-index", "self-esteem", "anxiety", "depression", "burnout", "adhd"] },
+  { id: "books", quizzes: ["hogwarts", "percy-jackson", "avengers", "stranger-things", "disney-princess", "lightsaber-color"] },
+  { id: "fun", quizzes: ["chronotype", "pet", "face-shape", "friend-role", "spirit-animal", "color-personality", "mental-age", "aura-color"] },
+  { id: "wellbeing", quizzes: ["wellbeing-index", "self-esteem", "anxiety", "depression", "burnout", "stress", "adhd"] },
 ] as const;
 
 export type QuizGroupId = (typeof QUIZ_GROUPS)[number]["id"];
@@ -181,6 +181,12 @@ const SENSITIVITY = likert(Array(7).fill("hsp+ hsp-").join(" "));
 const BURNOUT = likert(Array(8).fill("burnout+ burnout-").join(" "));
 /** Written for cv.cm from the adult symptom areas of ADHD. Not the ASRS and not clinically validated; the copy says so. */
 const ADHD = likert(Array(18).fill("adhd+").join(" "));
+/** Written for cv.cm (not the Perceived Stress Scale): stress over the past month, every second statement reversed. */
+const STRESS = likert(Array(7).fill("stress+ stress-").join(" "));
+/** Written for cv.cm: four statements for each of the four learning preferences. */
+const LEARNING = likert(Array(4).fill("visual+ auditory+ reading+ kinesthetic+").join(" "));
+/** Written for cv.cm (not the Short Dark Triad): six statements a trait, half of them reversed. */
+const DARK_TRIAD = likert(Array(3).fill("mach+ narc+ psych+ mach- narc- psych-").join(" "));
 
 /**
  * Growth or fixed mindset (after Carol Dweck): ten original statements, the fixed-mindset ones reversed. Total 0–40;
@@ -543,6 +549,29 @@ const COLOR_PERSONALITY: ChoiceItem[] = [
   { options: [{ blue: 2 }, { red: 2 }, { yellow: 2 }, { green: 2 }] },
 ];
 
+/** The same answer layout with other results: `keys` maps each result of `layout` to its replacement. */
+function relabel(layout: readonly ChoiceItem[], keys: Record<string, string>): ChoiceItem[] {
+  return layout.map((item) => ({
+    options: item.options.map((option) => Object.fromEntries(Object.entries(option).map(([key, points]) => [keys[key], points]))),
+  }));
+}
+
+/** Four mental ages, laid out like `HOGWARTS`. */
+const MENTAL_AGE = relabel(HOGWARTS, { gryffindor: "kid", hufflepuff: "teen", ravenclaw: "adult", slytherin: "elder" });
+/** Eight results each, laid out like `GHIBLI`. */
+const STRANGER_THINGS = relabel(GHIBLI, {
+  chihiro: "eleven", san: "max", kiki: "dustin", sophie: "will", nausicaa: "hopper", howl: "steve", haku: "mike", totoro: "lucas",
+});
+const DISNEY_PRINCESS = relabel(GHIBLI, {
+  chihiro: "moana", san: "mulan", kiki: "rapunzel", sophie: "belle", nausicaa: "tiana", howl: "ariel", haku: "jasmine", totoro: "cinderella",
+});
+const LIGHTSABER = relabel(GHIBLI, {
+  chihiro: "blue", san: "green", kiki: "yellow", sophie: "purple", nausicaa: "white", howl: "red", haku: "orange", totoro: "black",
+});
+const AURA = relabel(GHIBLI, {
+  chihiro: "red", san: "orange", kiki: "yellow", sophie: "green", nausicaa: "blue", howl: "indigo", haku: "violet", totoro: "pink",
+});
+
 export const QUIZ_DEFS: Record<QuizId, QuizDef> = {
   mbti: { id: "mbti", type: "likert", scale: "agree5", dims: ["EI", "SN", "TF", "JP"], items: TYPES, result: { kind: "types" } },
   "big-five": { id: "big-five", type: "likert", scale: "agree5", dims: ["O", "C", "E", "A", "N"], items: BIG_FIVE, result: { kind: "profile" } },
@@ -810,6 +839,66 @@ export const QUIZ_DEFS: Record<QuizId, QuizDef> = {
     // 28 and 47 of 72 are about 40% and 65%. Not clinical cut-offs; the copy says so.
     result: { kind: "band", bands: [{ max: 28, key: "few" }, { max: 47, key: "some" }, { max: 72, key: "many" }] },
   },
+  stress: {
+    id: "stress",
+    type: "likert",
+    scale: "agree5",
+    dims: ["stress"],
+    items: STRESS,
+    // Three equal bands around the neutral total of 28. Not clinical cut-offs; the copy says so.
+    result: { kind: "band", bands: [{ max: 18, key: "low" }, { max: 37, key: "moderate" }, { max: 56, key: "high" }] },
+  },
+  "learning-style": {
+    id: "learning-style",
+    type: "likert",
+    scale: "agree5",
+    dims: ["visual", "auditory", "reading", "kinesthetic"],
+    items: LEARNING,
+    result: { kind: "top", tie: "spread" },
+  },
+  "dark-triad": {
+    id: "dark-triad",
+    type: "likert",
+    scale: "agree5",
+    dims: ["mach", "narc", "psych"],
+    items: DARK_TRIAD,
+    result: { kind: "profile" },
+  },
+  "mental-age": {
+    id: "mental-age",
+    type: "choice",
+    dims: ["kid", "teen", "adult", "elder"],
+    items: MENTAL_AGE,
+    result: { kind: "top", tie: "spread" },
+  },
+  "aura-color": {
+    id: "aura-color",
+    type: "choice",
+    dims: ["red", "orange", "yellow", "green", "blue", "indigo", "violet", "pink"],
+    items: AURA,
+    result: { kind: "top", tie: "spread" },
+  },
+  "stranger-things": {
+    id: "stranger-things",
+    type: "choice",
+    dims: ["eleven", "mike", "dustin", "lucas", "will", "max", "steve", "hopper"],
+    items: STRANGER_THINGS,
+    result: { kind: "top", tie: "spread" },
+  },
+  "disney-princess": {
+    id: "disney-princess",
+    type: "choice",
+    dims: ["cinderella", "belle", "ariel", "jasmine", "mulan", "rapunzel", "tiana", "moana"],
+    items: DISNEY_PRINCESS,
+    result: { kind: "top", tie: "spread" },
+  },
+  "lightsaber-color": {
+    id: "lightsaber-color",
+    type: "choice",
+    dims: ["blue", "green", "purple", "yellow", "white", "red", "orange", "black"],
+    items: LIGHTSABER,
+    result: { kind: "top", tie: "spread" },
+  },
   "spirit-animal": {
     id: "spirit-animal",
     type: "choice",
@@ -859,12 +948,14 @@ export const SUPPORT: Partial<Record<QuizId, readonly string[]>> = {
   depression: ["moderate", "modsevere", "severe"],
   anxiety: ["moderate", "severe"],
   burnout: ["high"],
+  stress: ["high"],
 };
 
 /** Band results whose copy sends the reader to another test: the page links it under the result (band quizzes only). */
 export const FOLLOW_UP: Partial<Record<QuizId, { bands: readonly string[]; quiz: QuizId }>> = {
   "wellbeing-index": { bands: ["low", "reduced"], quiz: "depression" },
   burnout: { bands: ["high"], quiz: "depression" },
+  stress: { bands: ["high"], quiz: "anxiety" },
 };
 
 export function questionCount(id: QuizId): number {

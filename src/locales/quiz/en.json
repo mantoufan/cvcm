@@ -44,22 +44,22 @@
   },
   "hub": {
     "title": "Free personality tests: MBTI, Big Five, EQ, love and career — cv.cm",
-    "description": "Free personality and psychology tests: 16 types (MBTI-style), Big Five, DISC, highly sensitive person, narcissism, introvert or extrovert, Enneagram, emotional intelligence, four temperaments, love language, attachment, love style, conflict style, career, work style, leadership, growth mindset, money, chronotype, pet match, face shape, friend group role, spirit animal, color personality, well-being (WHO-5), self-esteem, anxiety, depression, burnout and adult ADHD, plus fan quizzes: Hogwarts house, Percy Jackson, Marvel, Studio Ghibli, Pokémon, Genshin Impact, Sonic, D&D, Naruto, One Piece, Demon Slayer, Jujutsu Kaisen, Avatar and anime archetypes. No sign-up; answers stay in your browser.",
+    "description": "Free personality and psychology tests: 16 types (MBTI-style), Big Five, DISC, dark triad, highly sensitive person, narcissism, introvert or extrovert, Enneagram, emotional intelligence, four temperaments, love language, attachment, love style, conflict style, career, work style, leadership, growth mindset, learning style, money, mental age, aura color, chronotype, pet match, face shape, friend group role, spirit animal, color personality, well-being (WHO-5), self-esteem, anxiety, depression, stress, burnout and adult ADHD, plus fan quizzes: Hogwarts house, Percy Jackson, Marvel, Stranger Things, Disney princess, lightsaber color, Studio Ghibli, Pokémon, Genshin Impact, Sonic, D&D, Naruto, One Piece, Demon Slayer, Jujutsu Kaisen, Avatar and anime archetypes. No sign-up; answers stay in your browser.",
     "h1": "Personality and psychology tests",
-    "lede": "Forty-five free tests, from 16 personality types, the Big Five and DISC to love styles, your spirit animal, Hogwarts, Percy Jackson, Marvel and Studio Ghibli fan quizzes, and quick self-checks for anxiety, burnout and adult ADHD. No sign-up, no email. Your answers are scored in your browser and never uploaded.",
+    "lede": "Fifty-three free tests, from 16 personality types, the Big Five and the dark triad to your learning style, mental age and aura color, Hogwarts, Stranger Things and Disney princess fan quizzes, and quick self-checks for stress, anxiety, burnout and adult ADHD. No sign-up, no email. Your answers are scored in your browser and never uploaded.",
     "groups": {
       "personality": "Personality",
       "love": "Love and relationships",
-      "career": "Career and money",
+      "career": "Career, study and money",
       "fun": "Just for fun",
       "wellbeing": "Wellbeing self-checks",
       "games": "Games",
       "anime": "Anime and animation",
-      "books": "Books and film"
+      "books": "Books, film and TV"
     },
     "about": [
       "Each test lists all of its questions on one page. Answer them, press the button, and the result appears under the questions with a short explanation and a chart of your scores.",
-      "Most wellbeing checks use published screening questionnaires (WHO-5, Rosenberg, GAD-7, PHQ-9); the burnout and adult ADHD checks were written for cv.cm and have not been clinically validated. The Big Five and the introvert–extrovert test use the public-domain IPIP item pool. The other tests are written for cv.cm from well-known models, and their results are a starting point for reflection, not a verdict. The game, anime, book and film quizzes are unofficial fan quizzes, just for fun."
+      "Most wellbeing checks use published screening questionnaires (WHO-5, Rosenberg, GAD-7, PHQ-9); the stress, burnout and adult ADHD checks were written for cv.cm and have not been clinically validated. The Big Five and the introvert–extrovert test use the public-domain IPIP item pool. The other tests are written for cv.cm from well-known models, and their results are a starting point for reflection, not a verdict. The game, anime, book, film and TV quizzes are unofficial fan quizzes, just for fun."
     ],
     "faq": [
       { "q": "Are these tests free?", "a": "Yes. Every test is free, with no sign-up, no email, and no paywall in front of the result." },
@@ -5013,6 +5013,1080 @@
         "many": {
           "name": "Many signs (48–72)",
           "body": "You recognize many of these difficulties. This doesn't mean you have ADHD, but it is a good reason to ask a doctor or psychologist about an assessment. Note down examples from your work, home and childhood to bring with you. Effective support exists."
+        }
+      }
+    },
+    "stress": {
+      "title": "Stress test: how stressed am I? Free stress level check — cv.cm",
+      "description": "Free stress test: rate 14 statements about the past month to get a stress score from 0 to 56, what it means and simple ways to cope. Private: nothing leaves your browser.",
+      "h1": "Stress test",
+      "hint": "Thinking about the past month, how well does each statement describe you?",
+      "scoreLabel": "Stress score (0 = low, 56 = high)",
+      "lede": "Feeling stretched thin, on edge or out of control? Rate 14 statements about the past month to see how stressed you have been, and what can help.",
+      "about": [
+        "Stress is the body's response to pressure. In short bursts it can sharpen you, but when demands keep feeling bigger than your ability to cope, it wears you down: poor sleep, irritability, worry, tension and trouble concentrating are common signs. Psychologists often measure perceived stress, meaning how unpredictable, uncontrollable and overloaded your life feels, rather than counting stressful events.",
+        "The statements here were written for cv.cm around perceived stress. This isn't the Perceived Stress Scale (PSS-10) and it hasn't been clinically validated, so the score bands are a rough guide rather than clinical cut-offs. Half the statements are reversed, so agreeing with everything lands in the middle. If stress is affecting your health, sleep or relationships for weeks, talk to a doctor or counselor."
+      ],
+      "faq": [
+        {
+          "q": "How is the stress score worked out?",
+          "a": "Each statement scores 0 to 4 and half are reversed, so the total runs from 0 to 56. 18 or less is low, 19 to 37 is moderate and 38 or more is high."
+        },
+        {
+          "q": "What are the signs of too much stress?",
+          "a": "Common signs are trouble sleeping, feeling tense or irritable, worrying a lot, headaches or an upset stomach, finding it hard to concentrate, and using alcohol, food or screens to cope."
+        },
+        {
+          "q": "How can I lower my stress quickly?",
+          "a": "Slow breathing (breathe out for longer than you breathe in), a short walk, writing your worries down and picking one small next step all help in the moment. Over weeks, regular sleep, exercise, time with people you trust and cutting back on what you can control make the biggest difference."
+        },
+        {
+          "q": "What is the difference between stress and anxiety?",
+          "a": "Stress is usually a reaction to a pressure you can name, such as a deadline, and eases when it passes. Anxiety is worry or fear that can continue without a clear cause. If worry stays with you most days, try the GAD-7 anxiety check on this site."
+        }
+      ],
+      "items": [
+        "I have often felt overwhelmed by everything I have to do.",
+        "I have felt able to handle the problems that came up.",
+        "Small things have upset me more than they normally would.",
+        "I have felt that things were going my way.",
+        "I have felt nervous, tense or on edge.",
+        "I have been able to relax when I had the chance.",
+        "I have felt unable to control the important things in my life.",
+        "I have felt confident about dealing with my personal problems.",
+        "Worries have kept me awake or woken me up at night.",
+        "I have had time for things I enjoy.",
+        "I have felt angry about things that were out of my control.",
+        "I have been able to stay calm when things got busy.",
+        "I have felt that difficulties were piling up too high to overcome.",
+        "I have felt on top of things."
+      ],
+      "results": {
+        "low": {
+          "name": "Low stress (0–18)",
+          "body": "You seem to be coping well with what life is asking of you right now. Keep up whatever is helping, such as sleep, exercise, time off and people you can talk to, so you have reserves when a busy patch comes."
+        },
+        "moderate": {
+          "name": "Moderate stress (19–37)",
+          "body": "You are carrying a fair amount of pressure. That is common, but it is worth acting before it builds. Pick one thing to drop, delegate or delay this week, protect your sleep, and build in short breaks: a walk, slow breathing or ten minutes away from screens."
+        },
+        "high": {
+          "name": "High stress (38–56)",
+          "body": "You seem to be under heavy stress, and it is probably affecting how you feel day to day. You don't have to fix everything at once. Talk to someone you trust, cut back where you can, and look after sleep and food first. If this has lasted for weeks, or you feel anxious or low most days, see a doctor or counselor. The anxiety check below can help you put it into words."
+        }
+      }
+    },
+    "learning-style": {
+      "title": "Learning style quiz: visual, auditory, reading or hands-on? Free test — cv.cm",
+      "description": "Free learning style quiz: rate 16 statements to see whether you prefer to learn visually, by listening, by reading and writing, or hands-on, with study tips for each. No sign-up.",
+      "h1": "Learning style quiz",
+      "lede": "Do you remember diagrams, conversations, notes or things you've tried yourself? Rate 16 statements to see which way of taking in information you prefer, and how to use all four when you study.",
+      "about": [
+        "Learning style models sort people by how they prefer to take in information. A well-known version, Neil Fleming's VARK, uses four: visual (pictures, diagrams, charts), auditory (listening and talking), reading and writing (text, lists, notes) and kinesthetic (doing, examples and practice). This quiz uses the same four preferences.",
+        "The statements were written for cv.cm; this is not the VARK questionnaire and has no link to its authors. Research has found little evidence that people learn better when teaching is matched to their preferred style, so treat your result as a preference, not a limit. Most people learn best by mixing methods, and testing yourself and spacing out study sessions help whatever your style."
+      ],
+      "faq": [
+        {
+          "q": "What are the four learning styles?",
+          "a": "Visual (diagrams, charts and color), auditory (lectures, discussion and saying things out loud), reading and writing (text, lists and notes) and kinesthetic (hands-on practice, real examples and movement)."
+        },
+        {
+          "q": "Are learning styles real?",
+          "a": "People do have preferences, and this quiz measures them. What research does not support is the idea that you only learn well in your style. The material matters too: maps are best seen and languages are best heard and spoken."
+        },
+        {
+          "q": "Can I have more than one learning style?",
+          "a": "Yes. Many people score highly on two or three. Your result names your strongest preference and shows your score for all four."
+        },
+        {
+          "q": "How should I study for my learning style?",
+          "a": "Start with your preferred method to make material feel approachable, then add others. Whatever your result, quizzing yourself, explaining ideas in your own words and spreading study over several days work better than rereading."
+        }
+      ],
+      "dims": {
+        "visual": "Visual",
+        "auditory": "Auditory",
+        "reading": "Reading and writing",
+        "kinesthetic": "Hands-on (kinesthetic)"
+      },
+      "items": [
+        "A diagram or chart helps me understand something faster than an explanation.",
+        "I understand things better when someone talks me through them.",
+        "I learn best by reading about a topic in detail.",
+        "I understand something best once I've tried it myself.",
+        "I remember faces and places better than names.",
+        "I remember what people said better than what I read.",
+        "Writing notes in my own words helps me remember.",
+        "I find it hard to sit still and just listen for a long time.",
+        "I use colors, highlighting or mind maps when I study.",
+        "Reading aloud or talking it through helps me learn.",
+        "I prefer written instructions to a demonstration.",
+        "I'd rather jump in and figure things out than read the manual.",
+        "When giving directions, I'd rather draw a map than describe the way.",
+        "I like podcasts, audiobooks and discussions as ways to learn.",
+        "I like lists, headings and handouts I can come back to.",
+        "Real examples, experiments and practice make ideas stick for me."
+      ],
+      "results": {
+        "visual": {
+          "name": "Visual learner",
+          "body": "You think in pictures. Diagrams, charts, maps and color help you see how ideas fit together. Try turning notes into mind maps or flowcharts, watching demonstrations, and sketching a problem before you solve it. Add self-testing so the pictures turn into recall."
+        },
+        "auditory": {
+          "name": "Auditory learner",
+          "body": "You learn by listening and talking. Lectures, discussion and explaining things out loud help ideas stick. Try study groups, recording key points and playing them back, or teaching a topic to a friend. Write a short summary afterward so you have something to review."
+        },
+        "reading": {
+          "name": "Reading and writing learner",
+          "body": "Words on the page work best for you. You like detailed texts, lists and well-organized notes. Rewrite notes in your own words, turn headings into questions, and make summary sheets. Mix in diagrams or practice problems for topics that are hard to put into words."
+        },
+        "kinesthetic": {
+          "name": "Hands-on (kinesthetic) learner",
+          "body": "You learn by doing. Practice, real examples, experiments and movement make ideas click. Try worked problems, building models, role play or studying on your feet in short sessions. Connect each idea to something you've experienced, then test yourself on it."
+        }
+      }
+    },
+    "dark-triad": {
+      "title": "Dark triad test: Machiavellianism, narcissism, psychopathy — free — cv.cm",
+      "description": "Free dark triad test: rate 18 statements to get a score for Machiavellianism, narcissism and psychopathy, with what each trait means. Not a diagnosis; answers stay in your browser.",
+      "h1": "Dark triad test",
+      "lede": "Do you like to stay one step ahead, enjoy the spotlight or act first and think later? Rate 18 statements to see where you sit on the three dark triad traits.",
+      "about": [
+        "The dark triad is a set of three overlapping personality traits named by psychologists Delroy Paulhus and Kevin Williams in 2002: Machiavellianism (strategic, manipulative, cynical about others), narcissism (a need for admiration and a sense of being special) and psychopathy (impulsive, thrill-seeking, low in empathy and guilt). Everyone has some of each; they are measured on a scale, like other traits.",
+        "The statements were written for cv.cm; this is not the Short Dark Triad (SD3) or any clinical tool. A high score is not a diagnosis of narcissistic or antisocial personality disorder, which only a clinician can make. Half the statements are reversed, so agreeing with everything lands in the middle. Use your result to reflect, not to label yourself or anyone else."
+      ],
+      "faq": [
+        {
+          "q": "What are the three dark triad traits?",
+          "a": "Machiavellianism is a cold, strategic approach to people and a willingness to manipulate them. Narcissism is grandiosity, entitlement and a need for admiration. Psychopathy is impulsivity, thrill-seeking and a lack of empathy or remorse."
+        },
+        {
+          "q": "How is the score worked out?",
+          "a": "Each trait has six statements scored 0 to 4, three of them reversed, giving a score for each trait out of 24, shown as a percentage. Below 40% is low, 40–60% is average and above 60% is high."
+        },
+        {
+          "q": "Does a high score mean I'm a psychopath?",
+          "a": "No. These are everyday traits that vary across the population, and a self-report quiz cannot diagnose a personality disorder. Moderate levels can even help in competitive settings; very high levels tend to harm relationships over time."
+        },
+        {
+          "q": "Can I take it about someone else?",
+          "a": "It is written for rating yourself. Answering for a partner or coworker mostly measures your view of them, so don't use it to label people."
+        }
+      ],
+      "dims": {
+        "mach": "Machiavellianism",
+        "narc": "Narcissism",
+        "psych": "Psychopathy"
+      },
+      "items": [
+        "It's smart to keep useful information to yourself until the right moment.",
+        "I deserve more recognition than most people get.",
+        "I often act on impulse, even when I know it's risky.",
+        "I'd rather lose a deal than win it by tricking someone.",
+        "I'm uncomfortable being the center of attention.",
+        "I feel guilty for a long time when I've hurt someone.",
+        "Flattering important people is a sensible way to get ahead.",
+        "People often tell me I'm special or gifted.",
+        "I enjoy taking risks that make other people nervous.",
+        "I believe most people can be trusted.",
+        "I'm happy to let others take credit for shared work.",
+        "I avoid doing things that could hurt others, even if I'd gain from them.",
+        "I plan carefully how to get people on my side.",
+        "I like being admired, and I go out of my way to be noticed.",
+        "Rules don't apply to me as much as they do to others.",
+        "I'm open and honest about what I want, even when it costs me.",
+        "I don't need others to see me as successful.",
+        "Other people's pain affects me deeply."
+      ],
+      "levels": {
+        "mach": {
+          "low": "You tend to be open and trusting, and you prefer honesty to strategy. People find you easy to deal with. In tough negotiations, it can help to prepare your position and not give everything away at once.",
+          "mid": "You can play the long game when you need to but don't usually manipulate people. You read situations realistically without being cynical about everyone.",
+          "high": "You think strategically about people and are willing to bend the truth to get ahead. That can win short-term advantages, but it erodes trust if others notice. Ask whether the goal is worth what it costs the relationship."
+        },
+        "narc": {
+          "low": "You don't need the spotlight and tend to play down your achievements. Modesty is attractive, but make sure your work is seen when it counts.",
+          "mid": "You like recognition and have healthy confidence, without needing constant admiration. You can take a compliment and also share the credit.",
+          "high": "You enjoy attention and feel you deserve more than others. Confidence can carry you far, but people may see you as self-centered. Practice asking about others and giving credit freely."
+        },
+        "psych": {
+          "low": "You are careful, considerate and feel others' pain strongly. You think before you act, which keeps you and others safe; just don't let fear of upsetting people stop you from acting.",
+          "mid": "You enjoy some excitement and can be bold, but empathy and guilt usually keep you in check.",
+          "high": "You act quickly, seek thrills and don't dwell on how others feel. That can make you fearless under pressure, but it can also hurt people and land you in trouble. Pausing before big decisions and checking how others are affected helps."
+        }
+      }
+    },
+    "mental-age": {
+      "title": "Mental age test: how old is your mind? Free quiz — cv.cm",
+      "description": "Free mental age test: answer 12 questions about weekends, food, money and music to find out whether your mind is a kid's, a teen's, a grown-up's or an old soul's. Just for fun, no sign-up.",
+      "h1": "Mental age test",
+      "lede": "Do you still squeal at puppies, live for the group chat, plan your week or go to bed at nine? Answer 12 questions to find out how old you are at heart.",
+      "about": [
+        "Your mental age here is a playful read on your habits and outlook, not your maturity or intelligence. The quiz sorts answers into four ages: a kid at heart (7–12), a teen (13–19), a grown-up (20–39) and an old soul (40+).",
+        "In psychology, \"mental age\" once meant the age at which a child performs on an intelligence test; this quiz has nothing to do with that and does not measure IQ. It was written for cv.cm, every result is equally likely, and your answers stay in your browser."
+      ],
+      "faq": [
+        {
+          "q": "What mental ages can I get?",
+          "a": "Kid at heart (7–12), teen spirit (13–19), grown-up (20–39) and old soul (40+). Your result shows how strongly you match all four."
+        },
+        {
+          "q": "Is a younger or older mental age better?",
+          "a": "Neither. A young mental age means you are playful and curious; an older one means you are calm and settled. Most people are a mix."
+        },
+        {
+          "q": "Is this an accurate mental age test?",
+          "a": "It is a fun quiz, not a psychological test. There is no scientific measure of mental age for adults."
+        }
+      ],
+      "dims": {
+        "kid": "Kid at heart",
+        "teen": "Teen spirit",
+        "adult": "Grown-up",
+        "elder": "Old soul"
+      },
+      "items": [
+        {
+          "q": "Your ideal Saturday:",
+          "options": [
+            "A theme park, a bouncy castle or a pillow fort",
+            "Sleeping until noon, then hanging out with friends",
+            "Errands done early, then brunch",
+            "Gardening, a long walk and an early night"
+          ]
+        },
+        {
+          "q": "You get some unexpected money. You…",
+          "options": [
+            "Put it in savings or toward a bill",
+            "Leave it where it is and think about it for a while",
+            "Buy the sneakers or concert tickets you've been eyeing",
+            "Buy toys, candy or something sparkly"
+          ]
+        },
+        {
+          "q": "Your phone's most-used app:",
+          "options": [
+            "A video or social app you scroll for hours",
+            "Your calendar or banking app",
+            "A game with cute characters",
+            "Phone calls, and maybe the weather"
+          ]
+        },
+        {
+          "q": "Bedtime on a normal night:",
+          "options": [
+            "Nine thirty, with a cup of tea",
+            "When someone tells me to, and I still argue",
+            "Two in the morning, still on my phone",
+            "Around eleven, after one more episode"
+          ]
+        },
+        {
+          "q": "Pick a dinner:",
+          "options": [
+            "Chicken nuggets shaped like dinosaurs",
+            "A recipe I've been meaning to try",
+            "A home-cooked meal, like my grandmother made",
+            "Whatever's quick: instant noodles or takeout"
+          ]
+        },
+        {
+          "q": "Your music:",
+          "options": [
+            "The classics; they don't make them like that anymore",
+            "Whatever's trending right now",
+            "A mix of what I loved at 20 and a few new finds",
+            "Cartoon theme songs I can sing every word of"
+          ]
+        },
+        {
+          "q": "A friend has a problem. You…",
+          "options": [
+            "Help them make a plan",
+            "Share the wisdom you've picked up over the years",
+            "Give them a hug and a sticker",
+            "Get angry on their behalf in the group chat"
+          ]
+        },
+        {
+          "q": "Your room looks like…",
+          "options": [
+            "Posters, fairy lights and clothes on the chair",
+            "Stuffed animals and crayons everywhere",
+            "Tidy enough, with a few plants",
+            "Neat, with photos and things you've kept for years"
+          ]
+        },
+        {
+          "q": "You see a puddle. You…",
+          "options": [
+            "Jump in it, obviously",
+            "Walk around it and complain about the drainage",
+            "Take a photo of your reflection for social media",
+            "Step around it to keep your shoes dry"
+          ]
+        },
+        {
+          "q": "Your favorite way to learn something new:",
+          "options": [
+            "A short video, sped up",
+            "An online course or a good how-to guide",
+            "A thick book and plenty of time",
+            "Asking \"why?\" over and over until it makes sense"
+          ]
+        },
+        {
+          "q": "What stresses you out most?",
+          "options": [
+            "How fast the world is changing",
+            "What people think of me",
+            "Having to share",
+            "Deadlines, bills and too many emails"
+          ]
+        },
+        {
+          "q": "Pick a superpower:",
+          "options": [
+            "Never feeling tired after work",
+            "Talking to animals",
+            "Turning back time",
+            "Being famous overnight"
+          ]
+        }
+      ],
+      "results": {
+        "kid": {
+          "name": "Kid at heart (mental age 7–12)",
+          "body": "You are playful, curious and easily delighted, and you still see wonder in ordinary things. You make friends fast and bring fun wherever you go. Just remember the grown-up stuff now and then, like bills and bedtime."
+        },
+        "teen": {
+          "name": "Teen spirit (mental age 13–19)",
+          "body": "You are spontaneous, social and passionate, always up on trends and ready for a late night. You feel things strongly and stand up for your friends. A bit of planning would save you some last-minute panic."
+        },
+        "adult": {
+          "name": "Grown-up (mental age 20–39)",
+          "body": "You are practical and balanced: you plan ahead, handle responsibilities and still make time for fun. People count on you to get things done. Don't forget to switch off sometimes."
+        },
+        "elder": {
+          "name": "Old soul (mental age 40+)",
+          "body": "You are calm, thoughtful and wise beyond your years. You value quiet routines, real conversations and things that last. Friends come to you for advice. Now and then, let yourself be silly."
+        }
+      }
+    },
+    "aura-color": {
+      "title": "What color is your aura? Free aura color quiz — cv.cm",
+      "description": "Free aura color quiz: answer 12 questions to find your aura color, from red, orange and yellow to green, blue, indigo, violet and pink, and what it says about you. Just for fun, no sign-up.",
+      "h1": "What color is your aura?",
+      "lede": "Are you a fiery red, a sunny yellow, a calm blue or a gentle pink? Answer 12 questions about how you think, feel and spend your time to find your aura color.",
+      "about": [
+        "In spiritual traditions, an aura is a field of color said to surround each person and reflect their energy and mood. This quiz matches your personality to one of eight aura colors: red, orange, yellow, green, blue, indigo, violet and pink.",
+        "There is no scientific evidence that auras exist or can be seen, so treat your result as a fun way to think about your personality. The questions were written for cv.cm, every color is equally likely, and your answers stay in your browser."
+      ],
+      "faq": [
+        {
+          "q": "What do the aura colors mean?",
+          "a": "Red is passion and energy, orange creativity and fun, yellow optimism, green growth and care, blue calm and honesty, indigo intuition, violet imagination and vision, and pink love and kindness."
+        },
+        {
+          "q": "Can your aura color change?",
+          "a": "In aura traditions, yes: your color is said to shift with your mood and life. Take the quiz again in a few months and see."
+        },
+        {
+          "q": "What is the rarest aura color?",
+          "a": "In this quiz, none: every color appears in the same number of answers, so each one is equally likely."
+        }
+      ],
+      "dims": {
+        "red": "Red",
+        "orange": "Orange",
+        "yellow": "Yellow",
+        "green": "Green",
+        "blue": "Blue",
+        "indigo": "Indigo",
+        "violet": "Violet",
+        "pink": "Pink"
+      },
+      "items": [
+        {
+          "q": "Friends describe you as…",
+          "options": [
+            "Bold and passionate",
+            "Fun and adventurous",
+            "Sunny and upbeat",
+            "Caring and grounded"
+          ]
+        },
+        {
+          "q": "Your perfect evening:",
+          "options": [
+            "A deep talk with one close friend",
+            "Alone with a book on mysteries of the mind",
+            "Dreaming up a big project",
+            "Cooking a cozy dinner for someone you love"
+          ]
+        },
+        {
+          "q": "Pick a place to recharge:",
+          "options": [
+            "A mountaintop at sunrise",
+            "A gym or a running track",
+            "A quiet lake",
+            "A sunny café terrace"
+          ]
+        },
+        {
+          "q": "In a group project, you…",
+          "options": [
+            "Keep everyone calm and the work on track",
+            "Sense what the team needs before anyone says it",
+            "Come up with the most original idea",
+            "Make sure everyone feels included"
+          ]
+        },
+        {
+          "q": "Your biggest strength:",
+          "options": [
+            "Kindness",
+            "Courage",
+            "Vision",
+            "Creativity"
+          ]
+        },
+        {
+          "q": "Which gift would you love most?",
+          "options": [
+            "A tarot deck or a journal for your dreams",
+            "A party in your honor",
+            "A plant or a weekend in nature",
+            "A heartfelt letter"
+          ]
+        },
+        {
+          "q": "When someone's upset, you…",
+          "options": [
+            "Listen honestly and help them see things clearly",
+            "Bring them flowers and a hug",
+            "Get fired up and ready to fix it",
+            "Help them take care of themselves"
+          ]
+        },
+        {
+          "q": "What do you daydream about?",
+          "options": [
+            "Good things coming your way",
+            "Changing the world",
+            "What other people are really feeling",
+            "Traveling somewhere you've never been"
+          ]
+        },
+        {
+          "q": "Pick a hobby:",
+          "options": [
+            "Meditation",
+            "Writing or singing",
+            "Dancing or painting",
+            "Competitive sports"
+          ]
+        },
+        {
+          "q": "Your weak spot:",
+          "options": [
+            "Getting lost in your head",
+            "Putting others first too often",
+            "Taking things too personally",
+            "Ignoring problems and staying positive"
+          ]
+        },
+        {
+          "q": "Your style:",
+          "options": [
+            "Bright and cheerful",
+            "Soft and romantic",
+            "Bold and daring",
+            "Simple and a little mysterious"
+          ]
+        },
+        {
+          "q": "What matters most to you?",
+          "options": [
+            "Joy and new experiences",
+            "Truth and peace",
+            "Health and harmony",
+            "Meaning and inspiration"
+          ]
+        }
+      ],
+      "results": {
+        "red": {
+          "name": "Red aura",
+          "body": "You are passionate, energetic and fearless. You go after what you want and inspire people with your drive. Your fire can flare into impatience, so give yourself time to cool down before big decisions."
+        },
+        "orange": {
+          "name": "Orange aura",
+          "body": "You are creative, adventurous and full of fun. You love new experiences and bring people together. Make sure your many plans have room for rest."
+        },
+        "yellow": {
+          "name": "Yellow aura",
+          "body": "You are optimistic, bright and warm, and your good mood rubs off on everyone. You find the upside in almost anything. It's fine to admit when something isn't okay."
+        },
+        "green": {
+          "name": "Green aura",
+          "body": "You are caring, grounded and growth-minded. You look after people, plants and yourself, and you feel at home in nature. Remember to accept help as easily as you give it."
+        },
+        "blue": {
+          "name": "Blue aura",
+          "body": "You are calm, honest and a good listener. People trust you with their feelings and you speak the truth gently. Share your own feelings too, not just everyone else's."
+        },
+        "indigo": {
+          "name": "Indigo aura",
+          "body": "You are intuitive, deep and perceptive. You sense moods and meanings that others miss, and you need quiet time to recharge. Trust your gut, and check it against the facts."
+        },
+        "violet": {
+          "name": "Violet aura",
+          "body": "You are imaginative, visionary and a little unusual. You dream big and want your life to mean something. Turn your best ideas into small first steps so they come true."
+        },
+        "pink": {
+          "name": "Pink aura",
+          "body": "You are loving, gentle and kind, and you make people feel cared for. Romance and friendship are at the heart of your life. Protect your soft heart by setting boundaries."
+        }
+      }
+    },
+    "stranger-things": {
+      "title": "Which Stranger Things character are you? Free quiz — cv.cm",
+      "description": "Free Stranger Things quiz: answer 12 questions to find out whether you are Eleven, Mike, Dustin, Lucas, Will, Max, Steve or Hopper. Unofficial fan quiz, no sign-up.",
+      "h1": "Which Stranger Things character are you?",
+      "lede": "Would you face the Upside Down head-on, crack the code or keep everyone safe? Answer 12 questions about friendship, danger and Hawkins life to see which character you are.",
+      "about": [
+        "Stranger Things, the Netflix series created by the Duffer Brothers, follows a group of friends in the small town of Hawkins, Indiana, in the 1980s as they face a secret laboratory and a dark parallel world, the Upside Down. This quiz matches you with eight of its characters: Eleven, Mike, Dustin, Lucas, Will, Max, Steve and Hopper.",
+        "Your result names your character and shows your scores for all eight. This is an unofficial fan quiz written for cv.cm. It is not affiliated with or endorsed by Netflix or the show's creators; the names and characters belong to their owners."
+      ],
+      "faq": [
+        {
+          "q": "Which characters can I get?",
+          "a": "Eleven, Mike Wheeler, Dustin Henderson, Lucas Sinclair, Will Byers, Max Mayfield, Steve Harrington and Jim Hopper."
+        },
+        {
+          "q": "Is one result rarer than the others?",
+          "a": "No. Every character appears in the same number of answers, so each one is equally likely."
+        },
+        {
+          "q": "Why isn't my favorite character here?",
+          "a": "Eight results keep the quiz short and fair. Nancy, Jonathan, Joyce, Robin, Eddie and others may join in a later update."
+        },
+        {
+          "q": "Does the quiz contain spoilers?",
+          "a": "Only light ones about the characters' personalities and the show's setting; no major plot twists."
+        }
+      ],
+      "dims": {
+        "eleven": "Eleven",
+        "mike": "Mike",
+        "dustin": "Dustin",
+        "lucas": "Lucas",
+        "will": "Will",
+        "max": "Max",
+        "steve": "Steve",
+        "hopper": "Hopper"
+      },
+      "items": [
+        {
+          "q": "Something strange is happening in town. You…",
+          "options": [
+            "Feel it before anyone else does, and go to face it",
+            "Grab your skateboard and go see for yourself",
+            "Start researching and radioing your friends",
+            "Quietly draw what you saw so you won't forget"
+          ]
+        },
+        {
+          "q": "Your role in the group:",
+          "options": [
+            "The grumpy protector who shows up when it counts",
+            "The one with the car, the bat and the good hair",
+            "The leader who won't give up on anyone",
+            "The realist who says what everyone's thinking"
+          ]
+        },
+        {
+          "q": "Pick a weekend plan:",
+          "options": [
+            "A long campaign of a tabletop game you're running",
+            "Eating waffles and watching TV in peace",
+            "Coffee and doughnuts, then a long drive with the radio on",
+            "Building a gadget out of spare parts"
+          ]
+        },
+        {
+          "q": "Your biggest fear:",
+          "options": [
+            "Being stuck somewhere no one can reach you",
+            "Being seen as uncool",
+            "Getting close to people and then losing them",
+            "Being left behind by your friends"
+          ]
+        },
+        {
+          "q": "Your weapon of choice:",
+          "options": [
+            "A wrist-rocket slingshot",
+            "Pure willpower",
+            "A walkie-talkie and a plan",
+            "A skateboard and a bad attitude"
+          ]
+        },
+        {
+          "q": "How do you handle a breakup?",
+          "options": [
+            "Fix your hair and help someone else instead",
+            "Make a joke and pretend it's fine",
+            "Keep it to yourself and draw how you feel",
+            "Bury yourself in work and pretend you're fine"
+          ]
+        },
+        {
+          "q": "Your friends love you because you're…",
+          "options": [
+            "Gruff on the outside, soft on the inside",
+            "Loyal, fair and honest with them",
+            "Brave and willing to protect them at any cost",
+            "Gentle, sensitive and a great listener"
+          ]
+        },
+        {
+          "q": "Pick a snack:",
+          "options": [
+            "Pudding cups, saved for later",
+            "Pizza on game night with the gang",
+            "Ice cream from the mall, eaten during a shift",
+            "A candy bar from the arcade"
+          ]
+        },
+        {
+          "q": "A new kid joins your school. You…",
+          "options": [
+            "Show them around and become their babysitter",
+            "Warn them off trouble in a gruff kind of way",
+            "Pretend you don't care, then sit with them anyway",
+            "Watch silently, then decide if they're a friend"
+          ]
+        },
+        {
+          "q": "Your best quality:",
+          "options": [
+            "Determination",
+            "Imagination",
+            "Good aim and good judgment",
+            "Curiosity"
+          ]
+        },
+        {
+          "q": "You find a strange creature in your trash can. You…",
+          "options": [
+            "Feed it and give it a name",
+            "Calmly get your friends somewhere safe",
+            "Use your powers on it",
+            "Hit it with a baseball bat"
+          ]
+        },
+        {
+          "q": "Your favorite place in Hawkins:",
+          "options": [
+            "The arcade, beating every high score",
+            "The cabin in the woods",
+            "Castle Byers, the fort in the forest",
+            "Your friend's basement, where it all began"
+          ]
+        }
+      ],
+      "results": {
+        "eleven": {
+          "name": "Eleven",
+          "body": "You are brave, loyal and stronger than you look. You may not always find the right words, but you show up for the people you love, whatever it takes. Let others protect you sometimes."
+        },
+        "mike": {
+          "name": "Mike Wheeler",
+          "body": "You are a natural leader with a big heart and bigger plans. You never give up on a friend and you believe in people when others don't. Watch your temper when you're worried."
+        },
+        "dustin": {
+          "name": "Dustin Henderson",
+          "body": "You are curious, funny and endlessly inventive. You make friends anywhere, fix problems with gadgets and know a lot of facts. Your optimism keeps the group going."
+        },
+        "lucas": {
+          "name": "Lucas Sinclair",
+          "body": "You are practical, brave and fiercely loyal. You say what others are afraid to say and you have a good aim with a slingshot and an argument. You keep your friends grounded."
+        },
+        "will": {
+          "name": "Will Byers",
+          "body": "You are gentle, creative and more resilient than anyone knows. You feel things deeply and express them through art. You've survived more than most, and kindness is still your first instinct."
+        },
+        "max": {
+          "name": "Max Mayfield",
+          "body": "You are tough, independent and quick on a skateboard. You keep people at arm's length until they earn your trust, then you'd fight for them. It's okay to let people see when you're hurting."
+        },
+        "steve": {
+          "name": "Steve Harrington",
+          "body": "You may have started out as the cool kid, but you've grown into everyone's protector. You're brave, funny and great with younger kids. Your hair is a bonus."
+        },
+        "hopper": {
+          "name": "Jim Hopper",
+          "body": "You are gruff, protective and much softer than you let on. You'd do anything for the people you love, even if you can't always say it. Let your guard down once in a while."
+        }
+      }
+    },
+    "disney-princess": {
+      "title": "Which Disney princess are you? Free quiz — cv.cm",
+      "description": "Free Disney princess quiz: answer 12 questions to find out whether you are Cinderella, Belle, Ariel, Jasmine, Mulan, Rapunzel, Tiana or Moana. Unofficial fan quiz, no sign-up.",
+      "h1": "Which Disney princess are you?",
+      "lede": "Are you a bookworm, a dreamer, a hard worker or an explorer? Answer 12 questions about your dreams, your friends and how you face a challenge to find your Disney princess.",
+      "about": [
+        "This quiz matches your personality with eight heroines from Disney animated films: Cinderella, Belle (Beauty and the Beast), Ariel (The Little Mermaid), Jasmine (Aladdin), Mulan, Rapunzel (Tangled), Tiana (The Princess and the Frog) and Moana.",
+        "Your result names your princess and shows your scores for all eight. This is an unofficial fan quiz written for cv.cm. It is not affiliated with or endorsed by Disney; the names and characters belong to their owners."
+      ],
+      "faq": [
+        {
+          "q": "Which princesses can I get?",
+          "a": "Cinderella, Belle, Ariel, Jasmine, Mulan, Rapunzel, Tiana and Moana. Your result names your main match and shows your score for all eight."
+        },
+        {
+          "q": "Is one princess rarer than the others?",
+          "a": "No. Every princess appears in the same number of answers, so each one is equally likely."
+        },
+        {
+          "q": "Why isn't my favorite princess here?",
+          "a": "Eight results keep the quiz short and fair. Snow White, Aurora, Pocahontas, Merida and others may join in a later update."
+        }
+      ],
+      "dims": {
+        "cinderella": "Cinderella",
+        "belle": "Belle",
+        "ariel": "Ariel",
+        "jasmine": "Jasmine",
+        "mulan": "Mulan",
+        "rapunzel": "Rapunzel",
+        "tiana": "Tiana",
+        "moana": "Moana"
+      },
+      "items": [
+        {
+          "q": "Your dream adventure:",
+          "options": [
+            "Sailing across the open ocean",
+            "Proving yourself where no one expects you to succeed",
+            "Finally seeing the world outside your window",
+            "Exploring a library no one else has read"
+          ]
+        },
+        {
+          "q": "What do you want most?",
+          "options": [
+            "To open my own business",
+            "To be part of a world that isn't mine yet",
+            "To choose my own life, not have it chosen for me",
+            "One magical night off, and kindness in return"
+          ]
+        },
+        {
+          "q": "Pick an animal sidekick:",
+          "options": [
+            "A tiger who guards your door",
+            "A clumsy chicken or a little pig",
+            "A frog who might be more than he seems",
+            "A chameleon who keeps you company"
+          ]
+        },
+        {
+          "q": "Your favorite way to spend a free afternoon:",
+          "options": [
+            "Reading somewhere quiet",
+            "Collecting interesting things from the beach",
+            "Training and getting stronger",
+            "Sewing, tidying and humming to the birds"
+          ]
+        },
+        {
+          "q": "Someone treats you unfairly. You…",
+          "options": [
+            "Stay kind and keep your hopes up",
+            "Stand up and tell them where the line is",
+            "Speak your mind with style",
+            "Quietly find a smarter way around them"
+          ]
+        },
+        {
+          "q": "Your biggest flaw:",
+          "options": [
+            "Diving in without thinking",
+            "Being a little naive about the world",
+            "Having your nose in a book when you should be listening",
+            "Working so hard you forget to have fun"
+          ]
+        },
+        {
+          "q": "Your friends count on you for…",
+          "options": [
+            "Good food and a solid plan",
+            "Patience and a gentle word",
+            "Finding the way when everyone's lost",
+            "Honest advice and a good book recommendation"
+          ]
+        },
+        {
+          "q": "Pick a talent:",
+          "options": [
+            "Painting, baking and a dozen other hobbies",
+            "Haggling your way through a busy market",
+            "Singing so well that sea creatures stop to listen",
+            "Thinking fast in a fight"
+          ]
+        },
+        {
+          "q": "Pick a place to live:",
+          "options": [
+            "Under the sea",
+            "A bustling city full of jazz",
+            "A mountain fortress",
+            "A tropical island"
+          ]
+        },
+        {
+          "q": "Your love life:",
+          "options": [
+            "I'd rather fall for someone who can surprise me than a polite one",
+            "I want someone who loves me for my mind",
+            "I'd like someone kind who sees my real self",
+            "Fine, as long as they help with the dishes"
+          ]
+        },
+        {
+          "q": "How do you face a scary challenge?",
+          "options": [
+            "With a frying pan in hand",
+            "With faith that things will get better",
+            "With the ocean and my ancestors behind me",
+            "By swimming straight toward it"
+          ]
+        },
+        {
+          "q": "What do people misjudge about you?",
+          "options": [
+            "They think I'm not strong enough",
+            "They think dreams don't pay the bills",
+            "They think I'm odd because I read so much",
+            "They think I'm just a pampered royal"
+          ]
+        }
+      ],
+      "results": {
+        "cinderella": {
+          "name": "Cinderella",
+          "body": "You are kind, patient and quietly resilient. Hard times haven't made you bitter, and you still believe good things are coming. Your gentle strength wins people over. Ask for what you deserve."
+        },
+        "belle": {
+          "name": "Belle",
+          "body": "You are bookish, curious and unafraid to be different. You look past appearances and see the best in people. Your independent mind is your greatest strength."
+        },
+        "ariel": {
+          "name": "Ariel",
+          "body": "You are adventurous, passionate and endlessly curious about the world beyond your own. You follow your heart, sometimes faster than your head. Your courage takes you places others only dream of."
+        },
+        "jasmine": {
+          "name": "Jasmine",
+          "body": "You are confident, independent and sharp. You won't let anyone decide your life for you, and you speak up for what you believe. You have a big heart under a strong will."
+        },
+        "mulan": {
+          "name": "Mulan",
+          "body": "You are brave, resourceful and fiercely loyal to your family. You'd take on any challenge to protect the people you love, and you prove doubters wrong. Remember you're worth it as you are."
+        },
+        "rapunzel": {
+          "name": "Rapunzel",
+          "body": "You are creative, cheerful and bursting with curiosity. You have a dozen hobbies and a sense of wonder about everything. Once you find your courage, nothing can keep you in a tower."
+        },
+        "tiana": {
+          "name": "Tiana",
+          "body": "You are hardworking, determined and practical. You know dreams take effort and you're willing to put it in. Don't forget to dance now and then: what you need and what you want both matter."
+        },
+        "moana": {
+          "name": "Moana",
+          "body": "You are adventurous, strong-willed and devoted to your people. You'll cross an ocean to do what's right, and you learn from every wave that knocks you down. You know who you are."
+        }
+      }
+    },
+    "lightsaber-color": {
+      "title": "What color is your lightsaber? Free Star Wars quiz — cv.cm",
+      "description": "Free lightsaber color quiz: answer 12 questions to find out whether your blade is blue, green, purple, yellow, white, red, orange or black, and what it says about you. Unofficial fan quiz.",
+      "h1": "What color is your lightsaber?",
+      "lede": "Guardian, sage, rebel or Sith? Answer 12 questions about how you fight, think and choose sides to find out what color your lightsaber would be.",
+      "about": [
+        "In the Star Wars stories, a lightsaber's color is often read as a sign of its wielder: blue for Jedi guardians, green for wise consulars, purple for those who walk a line between light and dark, yellow for sentinels, red for the Sith, white for a blade purified after the dark side, orange for rare independent spirits, and the black blade of the one-of-a-kind Darksaber.",
+        "Fans and different stories don't always agree on what each color means, so this quiz uses the most common fan readings. It is an unofficial fan quiz written for cv.cm, not affiliated with or endorsed by Lucasfilm or Disney; Star Wars and its characters belong to their owners."
+      ],
+      "faq": [
+        {
+          "q": "What do lightsaber colors mean?",
+          "a": "In common fan readings: blue is courage and protection, green is wisdom and calm, purple is balance, yellow is vigilance, white is renewal, red is ambition and the dark side, orange is independence, and black (the Darksaber) is leadership."
+        },
+        {
+          "q": "What is the rarest lightsaber color?",
+          "a": "In the stories, black is unique: there is only one Darksaber. In this quiz, every color is equally likely."
+        },
+        {
+          "q": "Is a red lightsaber bad?",
+          "a": "Red blades belong to the Sith in the films, but your result here describes ambition and passion, not evil. Plenty of heroes have a fiery streak."
+        }
+      ],
+      "dims": {
+        "blue": "Blue",
+        "green": "Green",
+        "purple": "Purple",
+        "yellow": "Yellow",
+        "white": "White",
+        "red": "Red",
+        "orange": "Orange",
+        "black": "Black (Darksaber)"
+      },
+      "items": [
+        {
+          "q": "Danger threatens a village. You…",
+          "options": [
+            "Charge in to protect the villagers",
+            "Find a peaceful way to end the conflict",
+            "Guard the gates through the night",
+            "Use any trick you need, dark or light"
+          ]
+        },
+        {
+          "q": "Your place in a fight:",
+          "options": [
+            "Wherever I'm needed, with no grudge afterward",
+            "Out in front, fueled by anger",
+            "On my own, by my own rules",
+            "Leading my clan into battle"
+          ]
+        },
+        {
+          "q": "Your view of the Jedi Order:",
+          "options": [
+            "Good people, but I'll serve the Force my own way",
+            "I'd defend it with my life",
+            "I left once, and came back wiser",
+            "I watch over it from the shadows"
+          ]
+        },
+        {
+          "q": "Your training focus:",
+          "options": [
+            "A fighting style that breaks every rule",
+            "Raw power",
+            "Meditation and knowledge of the Force",
+            "Strength to rule, not just to fight"
+          ]
+        },
+        {
+          "q": "Pick a home base:",
+          "options": [
+            "A fortress on a stormy world",
+            "A busy temple where you train younglings",
+            "A ship with no fixed destination",
+            "A quiet library of ancient texts"
+          ]
+        },
+        {
+          "q": "Someone betrays you. You…",
+          "options": [
+            "Get even",
+            "Watch them closely from now on",
+            "Feel the anger, then find your center",
+            "Forgive them and start again"
+          ]
+        },
+        {
+          "q": "Your biggest strength:",
+          "options": [
+            "Forgiveness and a fresh start",
+            "Leadership",
+            "Courage",
+            "Balance"
+          ]
+        },
+        {
+          "q": "Your biggest weakness:",
+          "options": [
+            "Suspicion",
+            "Not trusting anyone's rules but your own",
+            "Ambition",
+            "Overthinking"
+          ]
+        },
+        {
+          "q": "How do you see the Force?",
+          "options": [
+            "A source of power for those bold enough to use it",
+            "A light that can heal what was broken",
+            "Something to study and understand",
+            "A gift to defend others with"
+          ]
+        },
+        {
+          "q": "Pick a companion:",
+          "options": [
+            "A smuggler who owes you a favor",
+            "A friend from both sides of the war",
+            "A loyal army that follows your banner",
+            "A droid that keeps watch while you sleep"
+          ]
+        },
+        {
+          "q": "Your motto:",
+          "options": [
+            "Stay alert, stay ready",
+            "Lead, and others will follow",
+            "Protect those who can't protect themselves",
+            "Passion is power"
+          ]
+        },
+        {
+          "q": "Where do you stand in the end?",
+          "options": [
+            "In peace, with the wisdom to keep it",
+            "Reborn, after falling and rising",
+            "Somewhere between light and dark",
+            "On my own path"
+          ]
+        }
+      ],
+      "results": {
+        "blue": {
+          "name": "Blue lightsaber",
+          "body": "You are a guardian: brave, active and quick to defend others. You'd rather act than wait, and you put yourself between danger and the people you care about. Make sure your courage leaves room for patience."
+        },
+        "green": {
+          "name": "Green lightsaber",
+          "body": "You are a sage: wise, calm and thoughtful. You'd rather solve a conflict with words than a blade, and you seek to understand before you act. Others come to you for advice."
+        },
+        "purple": {
+          "name": "Purple lightsaber",
+          "body": "You walk the line between light and dark. You know your passions and use them without letting them rule you. Few people can hold that balance; you make it look easy."
+        },
+        "yellow": {
+          "name": "Yellow lightsaber",
+          "body": "You are a sentinel: watchful, practical and alert to trouble others miss. You prefer to protect quietly from the background, and you're always ready when you're needed."
+        },
+        "white": {
+          "name": "White lightsaber",
+          "body": "You have been through hard times and come out stronger. You value fresh starts, forgiveness and doing things your own way, with no master and no grudge. Your path is your own."
+        },
+        "red": {
+          "name": "Red lightsaber",
+          "body": "You are passionate, ambitious and powerful. You know what you want and you go after it with everything you have. Make sure your fire serves you and doesn't burn the people around you."
+        },
+        "orange": {
+          "name": "Orange lightsaber",
+          "body": "You are a free spirit: independent, inventive and loyal to your own code. Rules are suggestions to you, and you fight for what you believe in, whichever side it falls on."
+        },
+        "black": {
+          "name": "Black lightsaber (Darksaber)",
+          "body": "You are a leader. People follow you, and you take that responsibility seriously. Like the one-of-a-kind Darksaber, you are rare and you protect your people above all."
         }
       }
     }
