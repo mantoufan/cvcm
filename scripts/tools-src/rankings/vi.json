@@ -56,19 +56,24 @@
     "currency-strength": {
       "name": "Sức mạnh tiền tệ so với đô la Mỹ",
       "blurb": "Các đồng tiền xếp theo mức thay đổi giá trị so với đô la."
+    },
+    "tallest-mountains": {
+      "name": "Những ngọn núi cao nhất thế giới",
+      "blurb": "Những đỉnh núi cao nhất Trái Đất, kèm độ nổi bật, quốc gia và dãy núi."
     }
   },
   "rankings": {
     "hub": {
       "title": "Bảng xếp hạng: AI, thị phần và hơn nữa, có nguồn | cv.cm",
-      "description": "Bảng xếp hạng có nguồn, sắp xếp và tải về được: AI tốt nhất, AI dùng nhiều nhất, thị phần trình duyệt, hệ điều hành, tìm kiếm, điện thoại, mạng xã hội.",
+      "description": "Bảng xếp hạng có nguồn, sắp xếp và tải về được: mô hình AI tốt nhất, AI được dùng nhiều nhất, thị phần trình duyệt, hệ điều hành, công cụ tìm kiếm, điện thoại, mạng xã hội và những ngọn núi cao nhất thế giới.",
       "h1": "Bảng xếp hạng",
       "lede": "Các bảng xếp hạng xây dựng từ dữ liệu mở, mỗi bảng đều ghi nguồn, giấy phép và ngày. Bạn có thể sắp xếp theo cột bất kỳ, lọc hàng hoặc tải CSV.",
       "groups": {
         "ai": "AI",
         "share": "Thị phần",
         "countries": "Quốc gia",
-        "markets": "Thị trường"
+        "markets": "Thị trường",
+        "geography": "Địa lý"
       },
       "makeYourOwn": "Tự tạo bảng xếp hạng",
       "about": [
@@ -78,15 +83,15 @@
       "faq": [
         {
           "q": "Dữ liệu đến từ đâu?",
-          "a": "Chất lượng AI lấy từ bảng xếp hạng Arena, mức sử dụng AI từ OpenRouter, thị phần từ StatCounter Global Stats. Mỗi trang đều có liên kết đến nguồn và giấy phép."
+          "a": "Chất lượng AI lấy từ bảng xếp hạng Arena, mức sử dụng AI từ OpenRouter, thị phần từ StatCounter Global Stats và độ cao núi từ Wikidata. Mỗi trang đều ghi nguồn và giấy phép."
         },
         {
           "q": "Bảng xếp hạng được cập nhật bao lâu một lần?",
-          "a": "Chúng được cập nhật tự động mỗi ngày một lần và mỗi trang hiển thị ngày của dữ liệu. Các nguồn công bố với tốc độ khác nhau: thị phần theo tháng, các bảng AI thay đổi thường xuyên hơn."
+          "a": "Chúng được cập nhật tự động mỗi ngày một lần và mỗi trang hiển thị ngày của dữ liệu. Các nguồn công bố với tốc độ khác nhau: thị phần theo tháng, độ cao núi được kiểm tra hằng tháng, các bảng AI thay đổi thường xuyên hơn."
         },
         {
           "q": "Tôi có thể dùng lại các bảng này không?",
-          "a": "Có, theo giấy phép của nguồn ghi trên mỗi trang: CC BY 4.0 cho các bảng AI và CC BY-SA 3.0 cho thị phần. Hãy ghi công nguồn. Bảng nào cũng có thể tải CSV."
+          "a": "Có, theo giấy phép của nguồn ghi trên từng trang: CC BY 4.0 cho các bảng AI, CC BY-SA 3.0 cho thị phần và CC0 (không điều kiện) cho núi. Hãy ghi nguồn. Hầu hết các bảng đều tải được CSV."
         }
       ]
     },
@@ -168,7 +173,13 @@
         "platinum": "Bạch kim",
         "silver": "Bạc"
       },
-      "tools": "Công cụ liên quan"
+      "tools": "Công cụ liên quan",
+      "mountain": "Núi",
+      "elevation": "Độ cao",
+      "elevationFt": "Độ cao (ft)",
+      "prominence": "Độ nổi bật",
+      "countries": "Quốc gia",
+      "range": "Dãy núi"
     },
     "sets": {
       "ai-models": {
@@ -574,6 +585,36 @@
           {
             "q": "Tỷ giá này có trực tiếp không?",
             "a": "Không. Đây là tỷ giá tham chiếu của ECB, công bố mỗi ngày làm việc một lần vào khoảng 16:00 giờ Trung Âu, chỉ để tham khảo."
+          }
+        ]
+      },
+      "tallest-mountains": {
+        "title": "Những Ngọn Núi Cao Nhất Thế Giới: Top {rows} Đỉnh Theo Độ Cao | cv.cm",
+        "description": "{rows} ngọn núi cao nhất Trái Đất: {top1} {v1}, {top2} {v2}, {top3} {v3}. Độ cao theo mét và feet, độ nổi bật, quốc gia và dãy núi.",
+        "h1": "{rows} ngọn núi cao nhất thế giới",
+        "lede": "{rows} đỉnh núi cao nhất Trái Đất xếp theo độ cao so với mực nước biển, chỉ tính những đỉnh nhô lên ít nhất 500 m so với yên ngựa nối sang đỉnh cao hơn. Có độ cao theo mét và feet, độ nổi bật, quốc gia và dãy núi, lấy từ Wikidata.",
+        "facts": [
+          "Cao nhất là {top1} với {v1} ({ft1} ft), tiếp theo là {top2} ({v2}) và {top3} ({v3}).",
+          "Có {over8000} đỉnh cao hơn 8.000 m, tất cả đều thuộc Himalaya và Karakoram.",
+          "Nhiều đỉnh nhất trong danh sách: {countryLead}, với {countryCount} đỉnh. Đỉnh nằm trên biên giới được tính cho mỗi quốc gia mà nó chạm tới.",
+          "Vị trí thứ {lowRank} là {low1} với {lv1}. Mọi đỉnh trong danh sách đều ở châu Á."
+        ],
+        "about": [
+          "Độ nổi bật là khoảng cách từ đỉnh núi xuống điểm yên ngựa thấp nhất phải vượt qua để lên chỗ cao hơn. Lhotse là đỉnh cao thứ tư nhưng chỉ cao hơn yên ngựa nối với Everest 610 m. Danh sách núi, khác với danh sách đỉnh, đặt một mức độ nổi bật tối thiểu. Ở đây là 500 m, nên các đỉnh phụ như đỉnh tây Kangchenjunga không được tính.",
+          "Độ cao, độ nổi bật, quốc gia và dãy núi lấy từ Wikidata (CC0), nơi ghi lại các kết quả đo đạc đã công bố. Con số 8.848,86 m của Everest là kết quả đo chung giữa Trung Quốc và Nepal năm 2020. Một số đỉnh nằm ở vùng tranh chấp như Kashmir. Quốc gia được ghi theo Wikidata, và cv.cm không đưa ra quan điểm về biên giới. Tên núi là tên tiếng Việt trên Wikidata, nếu không có thì dùng tên tiếng Anh."
+        ],
+        "faq": [
+          {
+            "q": "Ngọn núi cao nhất thế giới là núi nào?",
+            "a": "{top1}, cao {v1} ({ft1} ft) so với mực nước biển. Nếu đo từ chân đến đỉnh thì Mauna Kea ở Hawaii cao hơn, nhưng phần lớn ngọn núi này nằm dưới biển."
+          },
+          {
+            "q": "Có bao nhiêu ngọn núi cao trên 8.000 mét?",
+            "a": "{over8000}, thường gọi là các đỉnh tám nghìn mét. Tất cả đều ở Himalaya và Karakoram, thuộc Nepal, Trung Quốc, Pakistan và Ấn Độ."
+          },
+          {
+            "q": "Ngọn núi cao thứ hai thế giới là núi nào?",
+            "a": "{top2}, cao {v2}. Núi này khó leo và nguy hiểm hơn {top1}."
           }
         ]
       }

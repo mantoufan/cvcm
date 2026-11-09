@@ -56,19 +56,24 @@
     "currency-strength": {
       "name": "Currency strength against the US dollar",
       "blurb": "Currencies ranked by how their value moved against the dollar."
+    },
+    "tallest-mountains": {
+      "name": "Tallest mountains in the world",
+      "blurb": "The highest peaks on Earth, with prominence, countries and range."
     }
   },
   "rankings": {
     "hub": {
       "title": "Rankings: AI Models, Market Share and More, with Sources | cv.cm",
-      "description": "Sourced rankings you can sort and download: best AI models, most used AI, and browser, operating system, search engine, phone and social media market share by country.",
+      "description": "Sourced rankings you can sort and download: best AI models, most used AI, browser, operating system, search engine, phone and social media market share, and the tallest mountains in the world.",
       "h1": "Rankings",
       "lede": "Rankings built from open data, each with its source, licence and date. Sort any column, filter rows or download the CSV.",
       "groups": {
         "ai": "AI",
         "share": "Market share",
         "countries": "Countries",
-        "markets": "Markets"
+        "markets": "Markets",
+        "geography": "Geography"
       },
       "makeYourOwn": "Make your own ranking",
       "about": [
@@ -78,15 +83,15 @@
       "faq": [
         {
           "q": "Where does the data come from?",
-          "a": "AI quality comes from the Arena leaderboard, AI usage from OpenRouter, and market share from StatCounter Global Stats. Each page links to its source and licence."
+          "a": "AI quality comes from the Arena leaderboard, AI usage from OpenRouter, market share from StatCounter Global Stats and mountain heights from Wikidata. Each page links to its source and licence."
         },
         {
           "q": "How often are the rankings updated?",
-          "a": "They are refreshed automatically once a day and each page shows its data date. Sources publish at different speeds: market share is monthly, AI tables change more often."
+          "a": "They are refreshed automatically once a day and each page shows its data date. Sources publish at different speeds: market share is monthly, mountain heights are checked monthly, AI tables change more often."
         },
         {
           "q": "Can I reuse these tables?",
-          "a": "Yes, under the source's licence shown on each page: CC BY 4.0 for the AI tables and CC BY-SA 3.0 for market share. Credit the source. Every table has a CSV download."
+          "a": "Yes, under the source's licence shown on each page: CC BY 4.0 for the AI tables, CC BY-SA 3.0 for market share and CC0 (no conditions) for mountains. Credit the source. Most tables have a CSV download."
         }
       ]
     },
@@ -168,7 +173,13 @@
         "platinum": "Platinum",
         "silver": "Silver"
       },
-      "tools": "Related tools"
+      "tools": "Related tools",
+      "mountain": "Mountain",
+      "elevation": "Elevation",
+      "elevationFt": "Elevation (ft)",
+      "prominence": "Prominence",
+      "countries": "Countries",
+      "range": "Range"
     },
     "sets": {
       "ai-models": {
@@ -574,6 +585,36 @@
           {
             "q": "Are these exchange rates live?",
             "a": "No. They are the ECB's reference rates, published once each working day around 16:00 Central European Time, for information only."
+          }
+        ]
+      },
+      "tallest-mountains": {
+        "title": "Tallest Mountains in the World: Top {rows} Peaks by Height | cv.cm",
+        "description": "The {rows} highest mountains on Earth: {top1} {v1}, {top2} {v2}, {top3} {v3}. Elevation in metres and feet, prominence, countries and range.",
+        "h1": "The {rows} tallest mountains in the world",
+        "lede": "The {rows} highest peaks on Earth by elevation above sea level, counting only peaks that rise at least 500 m above the saddle to a higher neighbour. With height in metres and feet, prominence, countries and mountain range, from Wikidata.",
+        "facts": [
+          "Highest: {top1} at {v1} ({ft1} ft), then {top2} ({v2}) and {top3} ({v3}).",
+          "{over8000} peaks are higher than 8,000 m, all in the Himalaya and Karakoram.",
+          "Most peaks on the list: {countryLead}, with {countryCount}. A peak on a border counts for each country it touches.",
+          "Number {lowRank} is {low1} at {lv1}. Every peak on the list is in Asia."
+        ],
+        "about": [
+          "Prominence is how far a summit rises above the lowest point you must cross to reach higher ground. Lhotse is the fourth-highest summit but only 610 m above its saddle with Everest. Lists of mountains, rather than of summits, use a minimum prominence. This one uses 500 m, so sub-peaks such as Kangchenjunga's west summit are not counted.",
+          "Heights, prominence, countries and ranges come from Wikidata (CC0), which records published surveys. Everest's 8,848.86 m is the joint China–Nepal measurement of 2020. Several peaks lie in disputed areas such as Kashmir. Countries are shown as Wikidata records them, and cv.cm takes no position on borders. Names are Wikidata's for each language, with the English name where it has none."
+        ],
+        "faq": [
+          {
+            "q": "What is the tallest mountain in the world?",
+            "a": "{top1}, at {v1} ({ft1} ft) above sea level. Measured from base to summit, Mauna Kea in Hawaii is taller, but most of it is under the sea."
+          },
+          {
+            "q": "How many mountains are higher than 8,000 metres?",
+            "a": "{over8000}, the so-called eight-thousanders. All are in the Himalaya and Karakoram, in Nepal, China, Pakistan and India."
+          },
+          {
+            "q": "What is the second-tallest mountain in the world?",
+            "a": "{top2}, at {v2}. It is harder and more dangerous to climb than {top1}."
           }
         ]
       }

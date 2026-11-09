@@ -11,11 +11,14 @@ import {
   rankingCsvHref,
   rankingKind,
   rankingMeta,
+  toFeet,
   type ArenaRow,
   type CommodityRow,
   type CompanyRow,
   type CryptoRow,
   type FxRow,
+  type LocaleNames,
+  type MountainRow,
   type RankingId,
   type ShareRow,
   type UsageRow,
@@ -59,8 +62,24 @@ export function rankingDate(locale: Locale, asOf: string): string {
   return new Intl.DateTimeFormat(locale, parts[2] ? { year: "numeric", month: "long", day: "numeric", timeZone: "UTC" } : { year: "numeric", month: "long", timeZone: "UTC" }).format(date);
 }
 
+const listFormats = new Map<string, Intl.ListFormat>();
+function listFormat(locale: Locale): Intl.ListFormat {
+  let format = listFormats.get(locale);
+  if (!format) {
+    format = new Intl.ListFormat(locale, { type: "conjunction" });
+    listFormats.set(locale, format);
+  }
+  return format;
+}
+
+const regionNames = new Map<string, Intl.DisplayNames>();
 function regionName(locale: Locale, code: string): string {
-  return new Intl.DisplayNames([locale], { type: "region" }).of(code) ?? code;
+  let names = regionNames.get(locale);
+  if (!names) {
+    names = new Intl.DisplayNames([locale], { type: "region" });
+    regionNames.set(locale, names);
+  }
+  return names.of(code) ?? code;
 }
 
 function percent(locale: Locale, value: number): string {
@@ -113,14 +132,28 @@ function displayName(locale: Locale, id: RankingId, name: string): string {
   const kind = rankingKind(id);
   if (kind === "commodity") return commodityName(locale, name);
   if (kind === "fx") return `${currencyName(locale, name)} (${name})`;
+  if (kind === "mountain") return localName(locale, rankingMeta(id).names?.[name]) || name;
   return name;
+}
+
+function localName(locale: Locale, names: LocaleNames | null | undefined): string {
+  return names ? names[locale] ?? names.en : "";
+}
+
+function metres(locale: Locale, value: number): string {
+  return `${numberFormat(locale, { maximumFractionDigits: 2 }).format(value)} m`;
+}
+
+/** A cell list, not a sentence: no "and". Intl.ListFormat's unit style runs Chinese names together, so the separator is set here. */
+function countryList(locale: Locale, codes: readonly string[]): string {
+  return codes.map((code) => regionName(locale, code)).join(locale.startsWith("zh") || locale === "ja" ? "、" : ", ");
 }
 
 function vars(locale: Locale, id: RankingId): Record<string, string | number> {
   const meta = rankingMeta(id);
   const out: Record<string, string | number> = { rows: meta.rows, date: rankingDate(locale, meta.asOf), year: meta.asOf.slice(0, 4) };
   const kind = rankingKind(id);
-  const shown = (value: number) => (kind === "arena" ? plain(locale, value) : kind === "crypto" ? usd(locale, value, true) : kind === "commodity" || kind === "fx" ? signed(locale, value) : percent(locale, value));
+  const shown = (value: number) => (kind === "mountain" ? metres(locale, value) : kind === "arena" ? plain(locale, value) : kind === "crypto" ? usd(locale, value, true) : kind === "commodity" || kind === "fx" ? signed(locale, value) : percent(locale, value));
   meta.top.forEach(([name, value], index) => {
     out[`top${index + 1}`] = displayName(locale, id, name);
     out[`v${index + 1}`] = shown(value);
@@ -129,6 +162,13 @@ function vars(locale: Locale, id: RankingId): Record<string, string | number> {
     out[`low${index + 1}`] = displayName(locale, id, name);
     out[`lv${index + 1}`] = shown(value);
   });
+  if (kind === "mountain") {
+    out.ft1 = plain(locale, toFeet(meta.top[0][1]));
+    out.over8000 = meta.over8000 ?? 0;
+    out.lowRank = meta.lowRank ?? meta.rows;
+    out.countryLead = listFormat(locale).format((meta.countryLead ?? []).map((code) => regionName(locale, code)));
+    out.countryCount = meta.countryCount ?? 0;
+  }
   if (meta.total !== undefined) out.total = usd(locale, meta.total, true);
   if (meta.dominance !== undefined) out.dominance = percent(locale, meta.dominance);
   if (meta.yearAgo) out.yearAgo = rankingDate(locale, meta.yearAgo);
@@ -212,6 +252,15 @@ export function rankingTable(locale: Locale, id: RankingId, rows: unknown[]): Da
     return {
       columns: [{ label: ui.rank, num: true }, { label: ui.currency, head: true }, { label: ui.code }, { label: ui.perUsd, num: true }, { label: ui.change1m, num: true }, { label: ui.change1y, num: true }],
       rows: (rows as FxRow[]).map(([place, code, perUsd, month, year]) => [rank(place), text(currencyName(locale, code)), text(code), num(new Intl.NumberFormat(locale, { maximumSignificantDigits: 6 }).format(perUsd), perUsd), num(signed(locale, month), month), num(signed(locale, year), year)]),
+    };
+  }
+  if (kind === "mountain") {
+    return {
+      columns: [{ label: ui.rank, num: true }, { label: ui.mountain, head: true }, { label: ui.elevation, num: true }, { label: ui.elevationFt, num: true }, { label: ui.prominence, num: true }, { label: ui.countries }, { label: ui.range }],
+      rows: (rows as MountainRow[]).map(([place, , names, elevation, prominence, countries, range]) => {
+        const feet = toFeet(elevation);
+        return [rank(place), text(localName(locale, names)), num(metres(locale, elevation), elevation), num(plain(locale, feet), feet), num(metres(locale, prominence), prominence), text(countryList(locale, countries)), text(localName(locale, range))];
+      }),
     };
   }
   if (kind === "companies") {

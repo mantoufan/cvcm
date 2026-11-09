@@ -6,6 +6,7 @@
 //   CoinMarketCap API (free Basic plan, needs COINMARKETCAP_API_KEY; no redistribution, so no CSV): coinmarketcap.com/api
 //   World Bank Pink Sheet monthly commodity prices (CC BY 4.0): worldbank.org/en/research/commodity-markets
 //   ECB euro foreign exchange reference rates (free reuse with the source named): ecb.europa.eu
+//   Wikidata (CC0): the tallest mountains, query.wikidata.org
 import { appendFileSync, existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { inflateRawSync } from "node:zlib";
@@ -70,9 +71,9 @@ function unzip(buffer) {
   return files;
 }
 
-async function get(url, headers = {}) {
+async function get(url, headers = {}, timeout = 40_000) {
   for (let attempt = 0; ; attempt += 1) {
-    const res = await fetch(url, { headers: { "User-Agent": UA, ...headers }, signal: AbortSignal.timeout(40_000) }).catch((error) => {
+    const res = await fetch(url, { headers: { "User-Agent": UA, ...headers }, signal: AbortSignal.timeout(timeout) }).catch((error) => {
       if (attempt === 3) throw error;
       return null;
     });
@@ -364,7 +365,120 @@ function csvOf(id, table, set) {
   if (id === "ai-companies") return toCsv(["rank", "company", "tokens", "share_of_public_tokens_percent", "models_listed"], table, cite);
   if (id === "currency-strength") return toCsv(["rank", "currency", "per_usd", "change_vs_usd_1_month_percent", "change_vs_usd_1_year_percent", "as_of", "month_ago", "year_ago"], table.map((row) => [...row, set.asOf, set.monthAgo, set.yearAgo]), ["European Central Bank euro reference rates (ecb.europa.eu)", "Reuse with source named"]);
   if (id === "commodity-prices") return toCsv(["rank", "commodity", "unit", "price_usd", "change_1_month_percent", "change_12_months_percent", "month"], table.map((row) => [...row, set.asOf]), [PINK_SHEET, "CC BY 4.0"]);
+  if (id === "tallest-mountains") return toCsv(["rank", "wikidata_id", "name", "elevation_m", "elevation_ft", "prominence_m", "countries", "range"], table.map(([rank, qid, names, elevation, prominence, countries, range]) => [rank, qid, names.en, elevation, Math.round(elevation / METRES_PER_FOOT), prominence, countries.join(" "), range?.en ?? ""]), ["Wikidata (wikidata.org)", "CC0 1.0"]);
   return toCsv(["rank", "name", `world_${set.yearAgo}`, ...REGIONS.map((r) => (r === "ww" ? `world_${set.asOf}` : r))], table, SOURCES.statcounter);
+}
+
+// --- Wikidata: tallest mountains -----------------------------------------------------------------------------------
+
+const MOUNTAIN_ROWS = 100;
+const METRES_PER_FOOT = 0.3048;
+/** A range named by at least this many Wikipedias is a real one; fewer is usually a stub with a garbled label. */
+const RANGE_MIN_SITELINKS = 3;
+/** Peaks rise at least this far above the col to a higher one: the usual line between a mountain and a shoulder of one. */
+const MIN_PROMINENCE = 500;
+const SPARQL = "https://query.wikidata.org/sparql";
+/** Sitelinks that are not a Wikipedia. */
+const NOT_WIKIPEDIA = new Set(["commonswiki", "specieswiki", "wikidatawiki", "metawiki", "mediawikiwiki", "sourceswiki", "wikimaniawiki", "incubatorwiki", "outreachwiki", "wikifunctionswiki"]);
+/** The Wikidata label for each cv.cm locale; a locale without one shows the English name. */
+const LABEL_LANGS = { en: "en", "zh-CN": "zh-cn", "zh-TW": "zh-tw", ja: "ja", ko: "ko", vi: "vi", id: "id", es: "es" };
+
+/** Names in every locale, and how many Wikipedias cover the item. Chinese falls back across scripts, converted by Wikidata (zh-tw from zh-hans and back). */
+async function labels(ids) {
+  const out = {};
+  for (let i = 0; i < ids.length; i += 50) {
+    const q = new URLSearchParams({ action: "wbgetentities", ids: ids.slice(i, i + 50).join("|"), props: "labels|sitelinks", languages: [...Object.values(LABEL_LANGS), "mul"].join("|"), languagefallback: "1", format: "json" });
+    const data = JSON.parse(await get(`https://www.wikidata.org/w/api.php?${q}`));
+    if (data.error) throw new Error(`wikidata labels: ${data.error.code} ${data.error.info ?? ""}`);
+    for (const [id, entity] of Object.entries(data.entities)) {
+      const label = (code) => {
+        const found = entity.labels?.[code];
+        if (!found) return null;
+        // A fallback to another language (Vietnamese to English, say) is no name in this one; Chinese across scripts is.
+        const from = found["source-language"] ?? found.language;
+        return from === code || (code.startsWith("zh") && from.startsWith("zh")) ? found.value : null;
+      };
+      // "mul" is Wikidata's name for every language, used where editors dropped a duplicate English label.
+      const en = label("en") ?? entity.labels?.mul?.value;
+      if (!en) continue;
+      const names = {};
+      for (const [locale, code] of Object.entries(LABEL_LANGS)) names[locale] = LABEL_FIX[id]?.[locale] ?? label(code) ?? LABEL_FIX[id]?.en ?? en;
+      // Every page loads every ranking's rows: a name the same as the English one is left for the page to fill in.
+      for (const locale of Object.keys(names)) if (locale !== "en" && names[locale] === names.en) delete names[locale];
+      // Wikipedias only: Commons, Wikivoyage and the rest link stubs too.
+      out[id] = { names, sitelinks: Object.keys(entity.sitelinks ?? {}).filter((site) => /wiki$/.test(site) && !NOT_WIKIPEDIA.has(site)).length };
+    }
+    await pause();
+  }
+  return out;
+}
+
+/** Wikidata labels that are wrong: a group's name on its highest peak, another peak's name, a fragment. */
+const LABEL_FIX = {
+  Q187138: { en: "Gasherbrum I" },
+  Q2102394: { ja: "サセル・カンリ" },
+  Q564576: { ja: "アンナプルナIII峰" },
+  Q1207615: { "zh-CN": "道拉吉里山脉", "zh-TW": "道拉吉里山脈" },
+  Q159621: { "zh-CN": "安纳布尔纳山脉", "zh-TW": "安納布爾納山脈" },
+};
+
+/** Elevation and prominence from the best-ranked statements (a preferred survey outranks the rest; among equals, the highest), in metres. */
+async function mountains() {
+  const query = `SELECT ?m (MAX(?e) AS ?elev) (MAX(?p) AS ?prom) (GROUP_CONCAT(DISTINCT ?cc; separator="|") AS ?cs) (GROUP_CONCAT(DISTINCT ?r; separator="|") AS ?ranges) (GROUP_CONCAT(DISTINCT CONCAT(STR(?lat), ",", STR(?lon)); separator="|") AS ?at) WHERE {
+  ?m p:P2044 ?es . ?es a wikibase:BestRank ; psn:P2044/wikibase:quantityAmount ?e . FILTER(?e > 5000 && ?e < 9000)
+  ?m p:P2660 ?ps . ?ps a wikibase:BestRank ; psn:P2660/wikibase:quantityAmount ?p . FILTER(?p >= ${MIN_PROMINENCE})
+  OPTIONAL { ?m p:P17 ?cst . ?cst a wikibase:BestRank ; ps:P17 ?c . ?c wdt:P297 ?cc . FILTER NOT EXISTS { ?c wdt:P576 [] } }
+  OPTIONAL { ?m wdt:P4552 ?r }
+  OPTIONAL { ?m p:P625/psv:P625 [ wikibase:geoLatitude ?lat ; wikibase:geoLongitude ?lon ] }
+} GROUP BY ?m ORDER BY DESC(?elev) LIMIT ${MOUNTAIN_ROWS * 2}`;
+  const data = JSON.parse(await get(`${SPARQL}?${new URLSearchParams({ query, format: "json" })}`, { Accept: "application/sparql-results+json" }, 70_000));
+  const qid = (uri) => uri.slice(uri.lastIndexOf("/") + 1);
+  const found = data.results.bindings.map((b) => ({
+    id: qid(b.m.value),
+    elevation: Math.round(Number(b.elev.value) * 100) / 100,
+    prominence: Math.round(Number(b.prom.value) * 100) / 100,
+    countries: b.cs?.value ? b.cs.value.split("|").sort() : [],
+    // "Unknown value" comes back as a blank-node URI, not an item: left out.
+    ranges: b.ranges?.value ? b.ranges.value.split("|").map(qid).filter((id) => /^Q\d+$/.test(id)) : [],
+    // An item with two coordinates (two surveys) keeps the same one on every run.
+    at: b.at?.value ? b.at.value.split("|").sort()[0].split(",").map((v) => Math.round(Number(v) * 1e4) / 1e4) : null,
+  }));
+  const info = await labels([...new Set(found.flatMap((m) => [m.id, ...m.ranges]))]);
+  for (const m of found) {
+    [m.lat, m.lon] = m.at ?? [null, null];
+    // No peak rises above its own height: Everest's prominence is its elevation, whatever survey each figure comes from.
+    m.prominence = Math.min(m.prominence, m.elevation);
+    // A peak in both "Himalayas" and "Mahalangur Himal" shows the narrower: the range with the fewest Wikipedias, among real ranges.
+    const byReach = m.ranges.filter((id) => info[id]).sort((a, b) => info[a].sitelinks - info[b].sitelinks || a.localeCompare(b));
+    m.range = byReach.find((id) => info[id].sitelinks >= RANGE_MIN_SITELINKS) ?? byReach.at(-1) ?? null;
+  }
+  // Wikidata has a few peaks twice (an item for the peak and one for its massif): within a metre, same spot. Keep the better known.
+  const same = (a, b) => Math.abs(a.elevation - b.elevation) < 1 && a.lat !== null && b.lat !== null && Math.abs(a.lat - b.lat) < 0.02 && Math.abs(a.lon - b.lon) < 0.02;
+  const kept = [];
+  for (const m of found) {
+    const at = kept.findIndex((p) => same(p, m));
+    if (at < 0) kept.push(m);
+    else if (info[m.id] && (!info[kept[at].id] || info[m.id].sitelinks > info[kept[at].id].sitelinks)) kept[at] = m;
+  }
+  const reach = (m) => info[m.id]?.sitelinks ?? 0;
+  const sorted = kept.sort((a, b) => b.elevation - a.elevation || reach(b) - reach(a) || a.id.localeCompare(b.id));
+  // A peak as high as the last one shares its place, so it is in the list too.
+  let cut = MOUNTAIN_ROWS;
+  while (cut < sorted.length && sorted[cut].elevation === sorted[MOUNTAIN_ROWS - 1].elevation) cut += 1;
+  const peaks = sorted.slice(0, cut);
+  // A peak with no English name would drop out unnoticed and move every one below it up a place.
+  for (const m of peaks) if (!info[m.id]) throw new Error(`wikidata ${m.id}: a ${m.elevation} m peak with no English name`);
+  if (peaks.length < MOUNTAIN_ROWS) throw new Error(`wikidata: only ${peaks.length} mountains`);
+  if (peaks[0].id !== "Q513") throw new Error(`wikidata: ${peaks[0].id} above Everest`);
+  // Peaks of the same height share a place.
+  const rows = peaks.map((m, i) => [peaks.findIndex((p) => p.elevation === m.elevation) + 1, m.id, info[m.id].names, m.elevation, m.prominence, m.countries, m.range ? info[m.range].names : null]);
+  const tally = new Map();
+  for (const m of peaks) for (const c of m.countries) tally.set(c, (tally.get(c) ?? 0) + 1);
+  const countryCount = Math.max(0, ...tally.values());
+  if (!countryCount) throw new Error("wikidata: no countries");
+  // Countries tied for the most peaks are all named.
+  const countryLead = [...tally.entries()].filter(([, n]) => n === countryCount).map(([c]) => c).sort();
+  return { rows, over8000: peaks.filter((m) => m.elevation > 8000).length, countryLead, countryCount };
 }
 
 // --- Write ---------------------------------------------------------------------------------------------------------
@@ -392,8 +506,18 @@ const keep = (id) => {
 rmSync(FAILURES_FILE, { force: true });
 let attempts = 0;
 let failures = 0;
+/** RANKINGS_ONLY=id,id refreshes just those tables (skipping their monthly wait) and keeps the rest as they are, for a new or fixed table. */
+const listed = process.env.RANKINGS_ONLY?.split(",").map((id) => id.trim()).filter(Boolean);
+// Set but empty (an unfilled input) means every table, not none.
+const only = listed?.length ? listed : undefined;
 /** One source failing keeps its last good tables, so it cannot hold back the others. With no earlier data there is nothing to keep. */
 async function attempt(ids, fetchTables) {
+  if (only && !ids.some((id) => only.includes(id))) {
+    const missing = ids.filter((id) => !oldRows[id]);
+    if (missing.length) throw new Error(`RANKINGS_ONLY: ${missing.join(", ")} has no earlier data to keep; list it too`);
+    ids.forEach(keep);
+    return;
+  }
   attempts += 1;
   try {
     await fetchTables();
@@ -436,7 +560,7 @@ await attempt(["currency-strength"], async () => {
 });
 const month = lastMonth();
 // The Pink Sheet comes out early each month: nothing to ask for until a new month is due.
-if (!process.env.FORCE_COMMODITIES && oldMeta.sets["commodity-prices"]?.asOf === month && oldRows["commodity-prices"]) keep("commodity-prices");
+if (!process.env.FORCE_COMMODITIES && !only?.includes("commodity-prices") && oldMeta.sets["commodity-prices"]?.asOf === month && oldRows["commodity-prices"]) keep("commodity-prices");
 else {
   await attempt(["commodity-prices"], async () => {
     const set = await commodities();
@@ -445,10 +569,23 @@ else {
   });
 }
 
+// Heights change only with a new survey: asked once a month (until a check succeeds). FORCE_MOUNTAINS=1 asks again.
+// asOf is the month the rows last changed; checked is the month they were last asked for.
+const thisMonth = today.toISOString().slice(0, 7);
+if (!process.env.FORCE_MOUNTAINS && !only?.includes("tallest-mountains") && oldMeta.sets["tallest-mountains"]?.checked === thisMonth && oldRows["tallest-mountains"]) keep("tallest-mountains");
+else {
+  await attempt(["tallest-mountains"], async () => {
+    const set = await mountains();
+    rows["tallest-mountains"] = set.rows;
+    const unchanged = JSON.stringify(oldRows["tallest-mountains"]) === JSON.stringify(set.rows);
+    meta.sets["tallest-mountains"] = { asOf: (unchanged && oldMeta.sets["tallest-mountains"]?.asOf) || thisMonth, checked: thisMonth, rows: set.rows.length, top: topOf(set.rows, 1, 3), bottom: [[set.rows.at(-1)[1], set.rows.at(-1)[3]]], lowRank: set.rows.at(-1)[0], over8000: set.over8000, countryLead: set.countryLead, countryCount: set.countryCount, names: Object.fromEntries([...set.rows.slice(0, 3), set.rows.at(-1)].map((r) => [r[1], r[2]])) };
+  });
+}
+
 for (const [id, spec] of Object.entries(SHARE)) {
   // StatCounter publishes monthly: nothing to ask for until a new month is due.
   // FORCE_SHARE=1 asks again, for a fix to names or filters.
-  if (!process.env.FORCE_SHARE && oldMeta.sets[id]?.asOf === month && oldRows[id]) {
+  if (!process.env.FORCE_SHARE && !only?.includes(id) && oldMeta.sets[id]?.asOf === month && oldRows[id]) {
     keep(id);
     continue;
   }
@@ -460,6 +597,9 @@ for (const [id, spec] of Object.entries(SHARE)) {
   });
 }
 if (attempts && failures === attempts) throw new Error("every source failed");
+// Every table has passed through keep() or attempt() by now: an id still missing is a typo, and nothing is written.
+const unknown = only?.filter((id) => !(id in meta.sets));
+if (unknown?.length) throw new Error(`RANKINGS_ONLY: no table ${unknown.join(", ")}`);
 
 // A table's date moves only when its rows changed, so a monthly table never claims a daily update.
 for (const [id, set] of Object.entries(meta.sets)) {
