@@ -128,3 +128,41 @@ it("moves old /zh URLs Google still crawls to their zh-cn pages", async () => {
     expect((await worker.fetch(new Request(gone), { ASSETS: assets })).status).toBe(404);
   }
 });
+
+it("answers Workers Static Assets' 307 redirects with Pages' permanent 308", async () => {
+  const res = await worker.fetch(new Request("https://cv.cm/emu/player.html"), {
+    ASSETS: { fetch: async () => new Response(null, { status: 307, headers: { Location: "/emu/player" } }) },
+  });
+  expect(res.status).toBe(308);
+  expect(res.headers.get("Location")).toBe("/emu/player");
+});
+
+it("labels built text files UTF-8 like Pages did, but not JavaScript", async () => {
+  const typed = (type: string) => ({ fetch: async () => new Response("x", { headers: { "Content-Type": type } }) });
+  const csv = await worker.fetch(new Request("https://cv.cm/datasets/ascii.csv"), { ASSETS: typed("text/csv") });
+  expect(csv.headers.get("Content-Type")).toBe("text/csv; charset=utf-8");
+  const css = await worker.fetch(new Request("https://cv.cm/assets/a.css"), { ASSETS: typed("text/css") });
+  expect(css.headers.get("Content-Type")).toBe("text/css; charset=utf-8");
+  const js = await worker.fetch(new Request("https://cv.cm/assets/a.js"), { ASSETS: typed("text/javascript") });
+  expect(js.headers.get("Content-Type")).toBe("text/javascript");
+  const json = await worker.fetch(new Request("https://cv.cm/tools.json"), { ASSETS: typed("application/json") });
+  expect(json.headers.get("Content-Type")).toBe("application/json");
+});
+
+it("falls back to the SPA shell at / (Workers Static Assets redirects /index.html)", async () => {
+  const seen: string[] = [];
+  const res = await worker.fetch(new Request("https://cv.cm/en/tip/"), {
+    ASSETS: {
+      fetch: async (input: Request | string) => {
+        const path = new URL(typeof input === "string" ? input : input.url).pathname;
+        seen.push(path);
+        if (path === "/") return new Response("<!doctype html><title>cv.cm</title>", { headers: { "Content-Type": "text/html" } });
+        return new Response("missing", { status: 404 });
+      },
+    },
+  });
+  expect(res.status).toBe(200);
+  expect(seen).toContain("/");
+  expect(seen).not.toContain("/index.html");
+  expect(res.headers.get("Content-Type")).toContain("text/html");
+});

@@ -2,7 +2,7 @@
   "$schema": "./node_modules/wrangler/config-schema.json",
   "name": "cvcm",
   "compatibility_date": "2026-09-06",
-  // Built by scripts/build-worker.mjs (`npm run build`), which bundles it as UTF-8; deploy with --no-bundle.
+  // Built by scripts/build-worker.mjs (`npm run build`), which bundles it as UTF-8; no_bundle keeps wrangler from re-bundling it.
   "main": "dist/_worker.js",
   "no_bundle": true,
   // dist/ also holds the client chunks; only the single built script is the Worker.

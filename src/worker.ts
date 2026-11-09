@@ -258,12 +258,7 @@ export default {
     const ssr = request.method === "GET" ? prerendered(env, url.origin, ssrPath(parseAppPath(path), path)) : Promise.resolve(null);
     // Page HTML is rebuilt per request (locale, prerendered body), so index.html's ETag must not answer for it:
     // drop the conditional headers on page routes and the validators from the page response below.
-    let assetResponse = await env.ASSETS.fetch(STATIC_FILE.test(path) ? request : unconditional(request));
-    // Workers Static Assets answers its own .html / trailing-slash redirects with 307; Pages used 308.
-    // Keep them permanent so search engines move the URL rather than keep both.
-    if (assetResponse.status === 307) {
-      assetResponse = new Response(null, { status: 308, headers: assetResponse.headers });
-    }
+    let assetResponse = await assetsFetch(env, STATIC_FILE.test(path) ? request : unconditional(request));
     if (COVER_PROXY.test(path)) {
       const type = assetResponse.headers.get("content-type") || "";
       const image = type.startsWith("image/") || type.includes("octet-stream");
@@ -287,7 +282,8 @@ export default {
       return redirect(new URL(thumbFallback, url.origin).toString(), 302);
     }
     if (assetResponse.status === 404 && !STATIC_FILE.test(path)) {
-      assetResponse = await env.ASSETS.fetch(new URL("/index.html", url.origin).toString());
+      // "/", not "/index.html": Workers Static Assets redirects the latter to the former.
+      assetResponse = await assetsFetch(env, new URL("/", url.origin).toString());
     }
 
     const type = assetResponse.headers.get("content-type") || "";
@@ -377,11 +373,28 @@ function ssrPath(parsed: ReturnType<typeof parseAppPath>, path: string): string 
   return null;
 }
 
+/**
+ * env.ASSETS.fetch with Pages' answers, which the site was built and indexed on. Workers Static Assets differs twice:
+ * it redirects `.html` and trailing-slash URLs with 307 (Pages: 308, so search engines move the URL), and it sends
+ * text/html, text/css, text/plain and text/csv without a charset (Pages: utf-8). Every built file is UTF-8; JS
+ * (text/javascript) keeps no charset as on Pages. Upstream proxies (emu, AI, covers) do not pass through here.
+ */
+async function assetsFetch(env: Pick<Env, "ASSETS">, input: Request | string): Promise<Response> {
+  const res = await env.ASSETS.fetch(input);
+  const type = res.headers.get("Content-Type");
+  const charset = !!type && !/charset=/i.test(type) && /^text\/(?!javascript)/i.test(type);
+  if (res.status !== 307 && !charset) return res;
+  const headers = new Headers(res.headers);
+  if (charset) headers.set("Content-Type", `${type}; charset=utf-8`);
+  if (res.status === 307) return new Response(null, { status: 308, headers });
+  return new Response(res.body, { status: res.status, statusText: res.statusText, headers });
+}
+
 /** The page body scripts/prerender.ts rendered for this path, or null (clip notes, a page the prerender skipped). */
 async function prerendered(env: Env, origin: string, pagePath: string | null): Promise<string | null> {
   if (!pagePath || !pagePath.startsWith("/") || !pagePath.endsWith("/") || pagePath.includes("..")) return null;
   try {
-    const res = await env.ASSETS.fetch(`${origin}${SSR_PREFIX.slice(0, -1)}${pagePath}`);
+    const res = await assetsFetch(env, `${origin}${SSR_PREFIX.slice(0, -1)}${pagePath}`);
     if (!res.ok) return null;
     const text = await res.text();
     // A missing file comes back as the SPA's index.html, which has no marker.
@@ -555,12 +568,6 @@ async function proxyCovers(pathname: string, method: string): Promise<Response |
 
 function withHeaders(res: Response, pathname: string): Response {
   const headers = new Headers(res.headers);
-  // Workers Static Assets sends text/* without a charset, Pages added utf-8: text/html, text/css, text/plain, text/csv here
-  // (JS is text/javascript and keeps none; JSON and XML are application/* and untouched). Every file here is UTF-8.
-  const type = headers.get("Content-Type");
-  if (type && !/charset=/i.test(type) && /^text\/(?!javascript)/i.test(type)) {
-    headers.set("Content-Type", `${type}; charset=utf-8`);
-  }
   headers.delete("Access-Control-Allow-Origin");
   headers.set("X-Content-Type-Options", "nosniff");
   headers.set("Referrer-Policy", "no-referrer");
