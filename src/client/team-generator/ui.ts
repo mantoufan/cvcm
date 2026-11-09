@@ -71,7 +71,7 @@ function counted(): void {
   const n = parseNames(namesEl.value).length;
   const plan = planTeams(n, modeEl.value as "count" | "size", Number(valueEl.value));
   if (!plan.ok) {
-    countEl.textContent = n >= 2 && plan.error !== "tooMany" ? planError(plan) : t("teamGenerator.countNames", { n });
+    countEl.textContent = plan.error === "needTwo" ? t("teamGenerator.countNames", { n }) : planError(plan);
     return;
   }
   if (plan.capped) {
@@ -93,7 +93,10 @@ function generate(): void {
   const names = parseNames(namesEl.value);
   const plan = planTeams(names.length, modeEl.value as "count" | "size", Number(valueEl.value));
   if (!plan.ok) {
+    // Clear the last draw too, so Copy teams never copies teams that no longer match the settings.
     errorEl.textContent = planError(plan);
+    outEl.replaceChildren(h("li", { class: "muted" }, t("teamGenerator.empty")));
+    last = "";
     return;
   }
   // Both modes can ask for more teams than allowed (one per name, 50 at most): say what was made instead.

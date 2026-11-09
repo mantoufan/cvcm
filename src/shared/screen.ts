@@ -65,23 +65,34 @@ export function physical(cssPx: number, dpr: number): number {
 }
 
 /**
- * Real resolution from the CSS screen size. Browsers round the CSS size, so at 150% a 2560 × 1440 screen reports
- * 1707 × 960, which multiplies back to 2561. Among the whole pixel counts that round to the reported CSS size, take
- * the one panels actually use: the most factors of 2 (panel sizes are multiples of 8 or at least even), then the
- * nearest. A whole-number ratio is exact already.
+ * Real resolution from the CSS screen size. Browsers round (or floor) the CSS size, so at 150% a 2560 × 1440 screen
+ * reports 1707 × 960, which multiplies back to 2561. Look at every pixel count within one CSS pixel: a common
+ * resolution there wins; otherwise each side takes the count with the most factors of 2 (panel sizes are multiples
+ * of 8, or at least even), then the nearest. A whole-number ratio is exact already.
  */
 export function realResolution(cssW: number, cssH: number, dpr: number): { w: number; h: number } {
-  return { w: realSide(cssW, dpr), h: realSide(cssH, dpr) };
+  const r = dpr > 0 ? dpr : 1;
+  if (Number.isInteger(r)) return { w: Math.round(cssW * r), h: Math.round(cssH * r) };
+  const ws = candidates(cssW, r);
+  const hs = candidates(cssH, r);
+  for (const [a, b] of NAMES) {
+    if (ws.includes(a) && hs.includes(b)) return { w: a, h: b };
+    if (ws.includes(b) && hs.includes(a)) return { w: b, h: a };
+  }
+  return { w: bestSide(ws, cssW * r), h: bestSide(hs, cssH * r) };
 }
 
-function realSide(css: number, dpr: number): number {
-  const r = dpr > 0 ? dpr : 1;
-  const exact = css * r;
-  if (Number.isInteger(r) || Number.isInteger(exact)) return Math.round(exact);
+/** Pixel counts that a browser could report as this CSS size, rounding any way. */
+function candidates(css: number, r: number): number[] {
+  const out: number[] = [];
+  for (let px = Math.floor((css - 1) * r) + 1; px < (css + 1) * r; px++) out.push(px);
+  return out.length ? out : [Math.round(css * r)];
+}
+
+function bestSide(options: number[], exact: number): number {
   let best = Math.round(exact);
-  let bestScore = -1;
-  for (let px = Math.ceil((css - 0.5) * r); px < (css + 0.5) * r; px++) {
-    if (Math.round(px / r) !== css) continue;
+  let bestScore = -Infinity;
+  for (const px of options) {
     let twos = 0;
     for (let v = px; v > 0 && v % 2 === 0 && twos < 3; v /= 2) twos++;
     const score = twos * 10 - Math.abs(px - exact);

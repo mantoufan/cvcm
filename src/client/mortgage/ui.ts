@@ -78,6 +78,10 @@ function fmt(n: number): string {
   return new Intl.NumberFormat(locale(), { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(n);
 }
 
+function fmtWhole(n: number): string {
+  return new Intl.NumberFormat(locale(), { maximumFractionDigits: 0 }).format(n);
+}
+
 function paint(): void {
   if (!priceEl || !downEl || !rateEl || !yearsEl || !methodEl || !errorEl || !outEl || !tableEl) return;
   const method = methodEl.value as MortgageMethod;
@@ -93,7 +97,9 @@ function paint(): void {
   errorEl.textContent = "";
   last = "";
   if (!res) {
-    errorEl.textContent = t("mortgage.invalid", { n: MAX_YEARS });
+    errorEl.textContent = Number(priceEl.value) > MAX_PRICE
+      ? t("mortgage.tooBig", { max: fmtWhole(MAX_PRICE) })
+      : t("mortgage.invalid", { n: MAX_YEARS });
     return;
   }
   const rows: Array<[string, string]> = [[t("mortgage.loan"), fmt(res.loan)]];

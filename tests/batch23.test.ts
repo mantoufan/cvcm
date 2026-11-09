@@ -178,6 +178,11 @@ describe("screen", () => {
     expect(realResolution(1093, 614, 1.25)).toEqual({ w: 1366, h: 768 });
     expect(realResolution(1536, 864, 1.25)).toEqual({ w: 1920, h: 1080 });
     expect(realResolution(1470, 956, 2)).toEqual({ w: 2940, h: 1912 });
+    // Browsers that floor or ceil, zoomed out, and a ratio where css × dpr happens to be whole.
+    expect(realResolution(1706, 960, 1.5)).toEqual({ w: 2560, h: 1440 });
+    expect(realResolution(1093, 615, 1.25)).toEqual({ w: 1366, h: 768 });
+    expect(realResolution(2134, 1200, 0.9)).toEqual({ w: 1920, h: 1080 });
+    expect(realResolution(546, 307, 2.5)).toEqual({ w: 1366, h: 768 });
   });
 });
 

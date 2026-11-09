@@ -32,7 +32,7 @@ export type MortgageResult = {
 };
 
 export const MAX_YEARS = 50;
-/** High enough for prices in đồng, rupiah or won; doubles still hold cents for totals up to a few times this. */
+/** High enough for prices in đồng, rupiah or won. */
 export const MAX_PRICE = 1e13;
 
 /**
