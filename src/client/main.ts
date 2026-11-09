@@ -111,7 +111,8 @@ export function start(): void {
       if (mustStay() && renderedHref) {
         const target = location.href;
         history.pushState(null, "", renderedHref);
-        // replace, not assign: after leaving, Back goes to the page before the recorder, not to the restored entry.
+        // replace, not assign, so only one extra entry (the target again) is left behind after leaving; a popstate
+        // cannot be cancelled, so some duplicate is unavoidable.
         location.replace(target);
         return;
       }
@@ -1004,6 +1005,11 @@ function langLinks(current: Locale): HTMLElement {
 
 /** Show the page on screen in another locale, keeping its query. render() sets the locale once its pack is loaded, like any navigation. */
 function switchLocale(next: Locale): void {
+  // Unsaved work in this tab: load the other language as a new document, so beforeunload can ask first.
+  if (mustStay()) {
+    location.assign(localeHref(next));
+    return;
+  }
   history.pushState(null, "", localeHref(next));
   render();
 }

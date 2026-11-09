@@ -175,5 +175,7 @@ describe("triangle ui", () => {
     expect(q("[data-out=error]").textContent).toContain("cannot form a triangle");
     set("[data-field=c]", "2,5");
     expect(text()).toContain("scalene");
+    set("[data-field=c]", "abc");
+    expect(q("[data-out=error]").textContent).toBe("Sides and angles must be numbers above 0.");
   });
 });

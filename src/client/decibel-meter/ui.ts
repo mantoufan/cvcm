@@ -50,6 +50,9 @@ let samples: Float32Array<ArrayBuffer> | null = null;
 let weighted = 0;
 /** False until the first frame, so a real 0 (digital silence) is still time-weighted. */
 let primed = false;
+/** Stats skip the first moments after (re)wiring: an empty analyser window and settling filters would set a false Min. */
+const WARMUP_MS = 500;
+let warmUntil = 0;
 let stats = new LevelStats();
 let history: Array<{ at: number; db: number }> = [];
 let lastFrame = 0;
@@ -64,7 +67,7 @@ export function mountDecibelMeter(host: HTMLElement): void {
     updateUnit();
     // A- and Z-weighted energy must not mix in one Leq.
     resetStats();
-    if (stream) void start();
+    if (stream) rewire();
   } },
     ...WEIGHTINGS.map((w, i) => h("option", { value: w, selected: i === 0 }, t(`decibelMeter.weight_${w}`))),
   );
@@ -226,6 +229,7 @@ async function start(): Promise<void> {
   weighted = 0;
   primed = false;
   lastFrame = performance.now();
+  warmUntil = lastFrame + WARMUP_MS;
   lastText = 0;
   if (startBtn) startBtn.textContent = t("decibelMeter.stop");
   say(weighting() === "a" && nodes.length < 4 ? "noWeighting" : "listening");
@@ -263,6 +267,22 @@ function buildGraph(ctx: AudioContext, s: MediaStream): boolean {
     analyser = null;
     return false;
   }
+}
+
+/** Weighting changed while measuring: rebuild the filters on the same microphone stream (no new permission prompt). */
+function rewire(): void {
+  if (!audio || !stream) return;
+  for (const n of nodes) n.disconnect();
+  nodes = [];
+  if (!buildGraph(audio, stream)) {
+    stop();
+    say("failed");
+    return;
+  }
+  weighted = 0;
+  primed = false;
+  warmUntil = performance.now() + WARMUP_MS;
+  say(weighting() === "a" && nodes.length < 4 ? "noWeighting" : "listening");
 }
 
 function stop(): void {
@@ -306,7 +326,7 @@ function draw(now: number): void {
   const cal = calibration();
   const dbfs = powerToDbfs(weighted);
   const db = toDb(dbfs, cal);
-  stats.add(ms, dbfs, dt);
+  if (now >= warmUntil) stats.add(ms, dbfs, dt);
   history.push({ at: now, db });
   while (history.length && history[0].at < now - HISTORY_S * 1000) history.shift();
   if (meterFill) {

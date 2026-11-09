@@ -26,7 +26,8 @@ let last = "";
 
 export function mountTriangle(host: HTMLElement): void {
   for (const f of FIELDS) {
-    inputs[f] = h("input", { type: "number", inputmode: "decimal", step: "any", min: "0", "data-field": f, onInput: () => paint() });
+    // Text with a decimal keypad, not type=number: a number box empties itself on "3,5", and es/id/vi users type commas.
+    inputs[f] = h("input", { type: "text", inputmode: "decimal", autocomplete: "off", "data-field": f, onInput: () => paint() });
   }
   inputs.a!.value = "3";
   inputs.b!.value = "4";
@@ -94,6 +95,8 @@ function read(): TriangleInput {
     const raw = inputs[f]?.value.trim() ?? "";
     // A decimal comma (es, id, vi keyboards) is read as a point.
     if (raw !== "") out[f] = Number(raw.replace(",", "."));
+    // Anything that is not a number reads as NaN, which the solver treats as "not given"; flag it instead.
+    if (raw !== "" && !Number.isFinite(out[f])) out[f] = -1;
   }
   return out;
 }

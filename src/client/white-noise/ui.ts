@@ -20,7 +20,6 @@ let aboutEl: HTMLElement | null = null;
 
 let ctx: AudioContext | null = null;
 let master: GainNode | null = null;
-/** The playing source and its own gain (for fades and the sleep timer). */
 /** The playing source, its own gain (fades and the sleep timer), and when its fade-in starts and ends. */
 let voice: { src: AudioBufferSourceNode; gain: GainNode; color: NoiseColor; start: number; fullAt: number } | null = null;
 let buffers = new Map<NoiseColor, AudioBuffer>();

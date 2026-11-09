@@ -162,6 +162,12 @@ async function begin(): Promise<void> {
     return;
   }
   display = screen;
+  // The browser's own "Stop sharing" ends the video track, possibly while the mic prompt is still open.
+  let shareEnded = false;
+  screen.getVideoTracks()[0]?.addEventListener("ended", () => {
+    shareEnded = true;
+    if (recorder) finish();
+  });
   if (wantMic && navigator.mediaDevices.getUserMedia) {
     try {
       mic = await navigator.mediaDevices.getUserMedia({ audio: { echoCancellation: true, noiseSuppression: true } });
@@ -216,10 +222,7 @@ async function begin(): Promise<void> {
   recorder = rec;
   banked = 0;
   startedAt = performance.now();
-  // The browser's own "Stop sharing" button ends the video track.
-  screen.getVideoTracks()[0]?.addEventListener("ended", () => {
-    if (recorder === rec) finish();
-  });
+  if (shareEnded || screen.getVideoTracks()[0]?.readyState === "ended") finish();
   if (startBtn) startBtn.textContent = t("screenRecorder.stop");
   if (pauseBtn) {
     pauseBtn.disabled = typeof rec.pause !== "function";

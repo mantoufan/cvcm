@@ -379,7 +379,7 @@ function removeTake(id: number): void {
   showEmpty();
 }
 
-/** Decodes the take and writes 16-bit PCM WAV at its own sample rate (mono stays mono). */
+/** Decodes the take (at the AudioContext's sample rate) and writes it as 16-bit PCM WAV; mono stays mono. */
 async function downloadWav(take: Take, btn: HTMLButtonElement): Promise<void> {
   btn.disabled = true;
   btn.textContent = t("voiceRecorder.converting");
