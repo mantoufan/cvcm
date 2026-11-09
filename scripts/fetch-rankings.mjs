@@ -429,8 +429,44 @@ async function labels(ids) {
         if (name) own[locale] = name;
       }
       // Wikipedias only: Commons, Wikivoyage and the rest link stubs too.
-      out[id] = { names: localeNames(own), own, sitelinks: Object.keys(entity.sitelinks ?? {}).filter((site) => /wiki$/.test(site) && !NOT_WIKIPEDIA.has(site)).length };
+      out[id] = { names: null, own, sitelinks: Object.keys(entity.sitelinks ?? {}).filter((site) => /wiki$/.test(site) && !NOT_WIKIPEDIA.has(site)).length };
     }
+    await pause();
+  }
+  // Wikidata's Chinese labels are not always in the script their code says (Lake Superior's zh-tw label is Simplified):
+  // every one goes through MediaWiki's own converter, as zh.wikipedia shows it to readers of that variant.
+  for (const [locale, variant] of [["zh-CN", "zh-cn"], ["zh-TW", "zh-tw"]]) {
+    const ids = Object.keys(out).filter((id) => out[id].own[locale] && !LABEL_FIX[id]?.[locale]);
+    const converted = await zhVariant(ids.map((id) => out[id].own[locale]), variant);
+    ids.forEach((id, i) => {
+      out[id].own[locale] = converted[i];
+    });
+  }
+  for (const item of Object.values(out)) item.names = localeNames(item.own);
+  return out;
+}
+
+/** Chinese text in one script variant (zh-cn Simplified, zh-tw Traditional), by zh.wikipedia's converter, characters only. */
+async function zhVariant(texts, variant) {
+  const out = [];
+  const escape = (text) => text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/[[\]{}|'~]/g, (c) => `&#${c.charCodeAt(0)};`);
+  for (let i = 0; i < texts.length; i += 100) {
+    const batch = texts.slice(i, i + 100);
+    // One span per paragraph: no line can start a list or heading, and each comes back on its own.
+    const body = new URLSearchParams({ action: "parse", format: "json", formatversion: "2", prop: "text", contentmodel: "wikitext", disablelimitreport: "1", variant, text: batch.map((t) => `<span>${escape(t)}</span>`).join("\n\n") });
+    let data;
+    for (let attempt = 0; ; attempt += 1) {
+      const res = await fetch("https://zh.wikipedia.org/w/api.php", { method: "POST", body, headers: { "User-Agent": UA }, signal: AbortSignal.timeout(40_000) }).catch(() => null);
+      if (res?.ok) {
+        data = await res.json();
+        break;
+      }
+      if (attempt === 3) throw new Error(`zh.wikipedia convert: ${res?.status}`);
+      await new Promise((r) => setTimeout(r, 2000 * (attempt + 1)));
+    }
+    const spans = [...data.parse.text.matchAll(/<span>(.*?)<\/span>/gs)].map((m) => decode(m[1]));
+    if (spans.length !== batch.length) throw new Error(`zh.wikipedia convert: ${spans.length} of ${batch.length} back`);
+    out.push(...spans);
     await pause();
   }
   return out;
@@ -639,7 +675,7 @@ async function wikipediaList(id) {
     // The main island of a country links its geography article ("Geography of Madagascar"): the item is the place itself.
     // The first link names the row; if it is red (no page), the cell's next link (its archipelago, say) is not the row's item.
     // A link to a section of another page ("Kerguelen Islands#Grande Terre") names a part of it: no item of its own either.
-    const firstLink = row[spec.name].match(/<a [^>]*>/)?.[0] ?? "";
+    const firstLink = [...row[spec.name].matchAll(/<a [^>]*>/g)].map((m) => m[0]).find((a) => !/href="\/wiki\/(File|Image):/.test(a)) ?? "";
     const title = /redlink=1|class="new"|href="[^"]*#/.test(firstLink) ? null : linkTitles(row[spec.name])[0]?.replace(/^Geography of (the )?/, "") ?? null;
     if (!value) continue;
     const lines = cellText(row[spec.name]).split("\n").map((line) => line.trim()).filter(Boolean);
@@ -697,9 +733,10 @@ async function wikipediaList(id) {
       for (const row of kept) if (row.item === c) row.item = island;
     }
   }
-  // Two rows that turn out to be one island (a province and the island itself) would be listed twice.
-  const items = kept.map((row) => row.item).filter(Boolean);
-  if (new Set(items).size !== items.length) throw new Error(`wikipedia ${spec.page}: two rows are one item after following P706`);
+  // Two rows that turn out to be one island (a province and the island itself): the larger entry stays.
+  for (let i = kept.length - 1; i >= 0; i -= 1) {
+    if (kept[i].item && kept.slice(0, i).some((row) => row.item === kept[i].item)) kept.splice(i, 1);
+  }
   const rows = kept.map((row) => {
     const item = row.item;
     if (item && !info[item]) throw new Error(`wikidata ${item} (${row.title}): no English name`);
