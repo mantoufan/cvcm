@@ -1,13 +1,17 @@
-import { existsSync, readFileSync } from "node:fs";
+import { existsSync, readdirSync, readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
 import baseRows from "../src/shared/rankings-rows.json";
-import geoRows from "../src/shared/rankings-geo-rows.json";
+import mountainRows from "../src/shared/rankings-geo/tallest-mountains.json";
+import riverRows from "../src/shared/rankings-geo/longest-rivers.json";
+import lakeRows from "../src/shared/rankings-geo/largest-lakes.json";
+import islandRows from "../src/shared/rankings-geo/largest-islands.json";
 import { LOCALES } from "../src/shared/locale";
 import { appHref, parseAppPath, rankingHref } from "../src/shared/path";
 import { RANKINGS, RANKING_REGIONS, RANKING_SOURCE, rankingCsvHref, rankingKind, rankingMeta, type IslandRow, type LakeRow, type MountainRow, type RiverRow, rankingGroupOf, rankingRowsChunk } from "../src/shared/rankings";
 import { rankingFaqItems, rankingHub, rankingJsonLd, rankingName, rankingPageCopy, rankingStaticHtml, rankingTable, rankingTitle } from "../src/shared/rankings-i18n";
 import { applyHtmlSeo } from "../src/shared/seo";
 
+const geoRows: Record<string, unknown[]> = { "tallest-mountains": mountainRows, "longest-rivers": riverRows, "largest-lakes": lakeRows, "largest-islands": islandRows };
 const rows = { ...baseRows, ...geoRows };
 
 describe("ranking routes", () => {
@@ -164,7 +168,10 @@ describe("rivers, lakes and islands", () => {
   const geo = rows as unknown as Record<string, (RiverRow | LakeRow | IslandRow)[]>;
   it("keeps geography rows in their own file, one entry per place, largest first", () => {
     for (const id of RANKINGS) expect(id in geoRows, id).toBe(rankingGroupOf(id) === "geography");
-    for (const id of RANKINGS) expect(rankingRowsChunk(id), id).toBe(rankingGroupOf(id) === "geography" ? "rows-rankings-geo" : "rows-rankings");
+    for (const id of RANKINGS) expect(rankingRowsChunk(id), id).toBe(rankingGroupOf(id) === "geography" ? `rows-ranking-${id}` : "rows-rankings");
+    for (const id of RANKINGS) expect(id in baseRows, id).toBe(rankingGroupOf(id) !== "geography");
+    // The fetch script's own list of geography tables (GEO_IDS) writes these files: one per table of the group, no more.
+    expect(readdirSync("src/shared/rankings-geo").sort()).toEqual(RANKINGS.filter((id) => rankingGroupOf(id) === "geography").map((id) => `${id}.json`).sort());
     for (const id of ["longest-rivers", "largest-lakes", "largest-islands"]) {
       const table = geo[id];
       const values = table.map((row) => row[3]);

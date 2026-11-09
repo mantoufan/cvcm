@@ -10,6 +10,7 @@ import {
   RANKING_SOURCE,
   rankingCsvHref,
   rankingKind,
+  rankingGroupOf,
   rankingMeta,
   toFeet,
   toMiles,
@@ -138,11 +139,9 @@ function displayName(locale: Locale, id: RankingId, name: string): string {
   const kind = rankingKind(id);
   if (kind === "commodity") return commodityName(locale, name);
   if (kind === "fx") return `${currencyName(locale, name)} (${name})`;
-  if (GEO_KINDS.has(kind)) return localName(locale, rankingMeta(id).names?.[name]) || name;
+  if (rankingGroupOf(id) === "geography") return localName(locale, rankingMeta(id).names?.[name]) || name;
   return name;
 }
-
-const GEO_KINDS: ReadonlySet<string> = new Set(["mountain", "river", "lake", "island"]);
 
 function localName(locale: Locale, names: LocaleNames | null | undefined): string {
   return names ? names[locale] ?? names.en : "";
@@ -176,7 +175,7 @@ function vars(locale: Locale, id: RankingId): Record<string, string | number> {
   }
   if (kind === "river") out.alt1 = plain(locale, toMiles(meta.top[0][1]));
   if (kind === "lake" || kind === "island") out.alt1 = plain(locale, toSqMiles(meta.top[0][1]));
-  if (GEO_KINDS.has(kind)) {
+  if (rankingGroupOf(id) === "geography") {
     out.lowRank = meta.lowRank ?? meta.rows;
     out.countryLead = listFormat(locale).format((meta.countryLead ?? []).map((code) => regionName(locale, code)));
     out.countryCount = meta.countryCount ?? 0;

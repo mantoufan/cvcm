@@ -1,4 +1,4 @@
-// Snapshots the data behind /{locale}/rankings/ into src/shared/rankings-rows.json (geography: rankings-geo-rows.json), rankings-meta.json and public/rankings/*.csv.
+// Snapshots the data behind /{locale}/rankings/ into src/shared/rankings-rows.json (geography: rankings-geo/<id>.json), rankings-meta.json and public/rankings/*.csv.
 // Run daily by .github/workflows/refresh-rankings.yml, or by hand (`node scripts/fetch-rankings.mjs`). Pages never call these sources.
 //   Arena leaderboard (CC BY 4.0): huggingface.co/datasets/lmarena-ai/leaderboard-dataset
 //   OpenRouter rankings data API (CC BY 4.0, needs OPENROUTER_API_KEY, free): openrouter.ai/docs/cookbook/administration/data-api
@@ -370,7 +370,7 @@ function csvOf(id, table, set) {
   if (WP_LISTS[id]) {
     // CC BY-SA asks for the page and its revision; names and countries are Wikidata's (CC0).
     const cite = [`Wikipedia: ${WP_LISTS[id].page} (en.wikipedia.org/w/index.php?oldid=${set.revision}); names from Wikidata`, "CC BY-SA 4.0"];
-    const countryCsv = (countries) => countries.map((c) => (typeof c === "string" ? c : c.en)).join(" ");
+    const countryCsv = (countries) => countries.map((c) => (typeof c === "string" ? c : c.en)).join("; ");
     if (id === "longest-rivers") return toCsv(["rank", "wikidata_id", "name", "length_km", "length_mi", "countries_in_basin", "river_system"], table.map(([rank, qid, names, km, countries, system]) => [rank, qid, names.en, km, Math.round(km / KM_PER_MILE), countryCsv(countries), system ?? ""]), cite);
     if (id === "largest-lakes") return toCsv(["rank", "wikidata_id", "name", "area_km2", "area_sq_mi", "countries", "max_depth_m", "water"], table.map(([rank, qid, names, km2, countries, depth, water]) => [rank, qid, names.en, km2, Math.round(km2 / KM2_PER_SQ_MI), countryCsv(countries), depth, water]), cite);
     return toCsv(["rank", "wikidata_id", "name", "area_km2", "area_sq_mi", "countries"], table.map(([rank, qid, names, km2, countries]) => [rank, qid, names.en, km2, Math.round(km2 / KM2_PER_SQ_MI), countryCsv(countries)]), cite);
@@ -427,8 +427,7 @@ const LABEL_FIX = {
   Q187138: { en: "Gasherbrum I" },
   Q2102394: { ja: "サセル・カンリ" },
   Q564576: { ja: "アンナプルナIII峰" },
-  // Islands the lists link by their state or province: the island's own name.
-  Q865: { "zh-CN": "台湾岛", "zh-TW": "臺灣島", ja: "台湾島", ko: "타이완섬", vi: "Đảo Đài Loan", id: "Pulau Taiwan", es: "Isla de Taiwán" },
+  // Islands the lists link by their province or state, with no island item to follow (islandItems): the island's own name.
   Q42200: { "zh-CN": "海南岛", "zh-TW": "海南島", ja: "海南島", ko: "하이난섬", vi: "Đảo Hải Nam", id: "Pulau Hainan", es: "Isla de Hainan" },
   Q34366: { "zh-CN": "塔斯马尼亚岛", "zh-TW": "塔斯馬尼亞島", ja: "タスマニア島", ko: "태즈메이니아섬", vi: "Đảo Tasmania", id: "Pulau Tasmania", es: "Isla de Tasmania" },
   Q1460: { ja: "シチリア島" },
@@ -487,13 +486,7 @@ async function mountains() {
   if (peaks[0].id !== "Q513") throw new Error(`wikidata: ${peaks[0].id} above Everest`);
   // Peaks of the same height share a place.
   const rows = peaks.map((m, i) => [peaks.findIndex((p) => p.elevation === m.elevation) + 1, m.id, info[m.id].names, m.elevation, m.prominence, m.countries, m.range ? info[m.range].names : null]);
-  const tally = new Map();
-  for (const m of peaks) for (const c of m.countries) tally.set(c, (tally.get(c) ?? 0) + 1);
-  const countryCount = Math.max(0, ...tally.values());
-  if (!countryCount) throw new Error("wikidata: no countries");
-  // Countries tied for the most peaks are all named.
-  const countryLead = [...tally.entries()].filter(([, n]) => n === countryCount).map(([c]) => c).sort();
-  return { rows, over8000: peaks.filter((m) => m.elevation > 8000).length, countryLead, countryCount };
+  return { rows, over8000: peaks.filter((m) => m.elevation > 8000).length, ...countryLeaders(rows, 5) };
 }
 
 // --- Wikipedia lists: longest rivers, largest lakes, largest islands ---------------------------------------------------
@@ -522,6 +515,9 @@ function firstNumber(text) {
 function wikitable(html, index) {
   const table = [...html.matchAll(/<table class="[^"]*wikitable[^"]*".*?<\/table>/gs)][index]?.[0];
   if (!table) throw new Error(`wikipedia: no table ${index}`);
+  // A merged cell shifts every later cell in the rows it spans: rather than read the wrong column, the table is not published.
+  const body = table.replace(/<tr[^>]*>.*?<\/tr>/s, "");
+  if (/<t[hd][^>]*\b(rowspan|colspan)="?([2-9]|\d\d)/.test(body.replace(/<tr[^>]*>(?:(?!<\/tr>).)*?<th[^>]*colspan.*?<\/tr>/gs, ""))) throw new Error(`wikipedia: table ${index} has merged cells`);
   return [...table.matchAll(/<tr[^>]*>(.*?)<\/tr>/gs)].map((row) => [...row[1].matchAll(/<t[hd][^>]*>(.*?)<\/t[hd]>/gs)].map((cell) => cell[1]));
 }
 
@@ -550,6 +546,7 @@ async function titleIds(titles) {
 async function countryCodes(ids) {
   if (!ids.length) return {};
   const query = `SELECT ?c (SAMPLE(?code) AS ?iso) (COUNT(?t) AS ?state) WHERE { VALUES ?c { ${ids.map((id) => `wd:${id}`).join(" ")} }
+  FILTER NOT EXISTS { ?c wdt:P576 [] }
   OPTIONAL { ?c wdt:P297 ?code } OPTIONAL { ?c wdt:P31 ?t . VALUES ?t { wd:Q3624078 wd:Q6256 wd:Q7275 wd:Q15634554 } } } GROUP BY ?c`;
   const data = JSON.parse(await get(`${SPARQL}?${new URLSearchParams({ query, format: "json" })}`, { Accept: "application/sparql-results+json" }, 70_000));
   const out = {};
@@ -564,8 +561,38 @@ async function countryCodes(ids) {
 /** Country cell → titles: its links and its comma-separated names ("Russia (97%), Mongolia (2.9%)"), as a cell often mixes the two.
  * A name that is no page, or no country, drops out later. */
 function countryTitles(html) {
-  const names = cellText(html).split(/[,;\n]| and /).map((part) => part.replace(/\(.*?\)/g, "").trim()).filter((part) => part && part.length < 60);
+  // Brackets first ("Russia (Siberia, Yakutia)"), then commas; a part with "and" is tried whole too ("Bosnia and Herzegovina").
+  const parts = cellText(html).replace(/\([^)]*\)/g, "").split(/[,;\n]/).map((part) => part.trim()).filter((part) => part && part.length < 60);
+  const names = parts.flatMap((part) => (/ and /.test(part) ? [part, ...part.split(/ and /).map((p) => p.trim())] : [part]));
   return [...new Set([...linkTitles(html), ...names])];
+}
+
+/** "Fresh", "Saline 1.2%", "Salt", "Brackish"; anything else (a lake that is fresh in one part, salt in another) varies. */
+function waterOf(text) {
+  if (/^fresh/i.test(text)) return "fresh";
+  if (/^(saline|salt|brackish|hypersaline|endorheic saline)/i.test(text)) return "saline";
+  return "variable";
+}
+
+/** Islands a list links by their state, province or country (an island country counts as an island in Wikidata, so every row is asked):
+ * the island item Wikidata places them on (P706), named like them. */
+async function islandItems(ids) {
+  const ask = async (query) => JSON.parse(await get(`${SPARQL}?${new URLSearchParams({ query, format: "json" })}`, { Accept: "application/sparql-results+json" }, 70_000)).results.bindings;
+  const qid = (uri) => uri.slice(uri.lastIndexOf("/") + 1);
+  // Two small queries: the subclass walk over every candidate at once times the query service out.
+  const pairs = await ask(`SELECT ?c ?i WHERE { VALUES ?c { ${ids.map((id) => `wd:${id}`).join(" ")} }
+  ?c wdt:P706 ?i . FILTER(?i != ?c)
+  ?c rdfs:label ?cl FILTER(LANG(?cl) = "en") ?i rdfs:label ?il FILTER(LANG(?il) = "en")
+  FILTER(STRSTARTS(LCASE(?il), LCASE(?cl))) }`);
+  const candidates = [...new Set(pairs.map((b) => qid(b.i.value)))];
+  if (!candidates.length) return {};
+  const islands = new Set((await ask(`SELECT DISTINCT ?i WHERE { VALUES ?i { ${candidates.map((id) => `wd:${id}`).join(" ")} } ?i wdt:P31/wdt:P279* wd:Q23442 . }`)).map((b) => qid(b.i.value)));
+  const out = {};
+  for (const b of pairs) {
+    const [c, i] = [qid(b.c.value), qid(b.i.value)];
+    if (islands.has(i)) (out[c] ??= []).push(i);
+  }
+  return out;
 }
 
 async function wikipediaList(id) {
@@ -591,14 +618,32 @@ async function wikipediaList(id) {
       system: id === "longest-rivers" && /–/.test(name) ? name.replace(/\s*\(.*\)\s*$/, "") : null,
       countries: countryTitles(row[spec.countries]),
       depth: spec.depth === undefined ? undefined : firstNumber(cellText(row[spec.depth])),
-      type: spec.type === undefined ? undefined : /^fresh/i.test(cellText(row[spec.type])) ? "fresh" : /^saline/i.test(cellText(row[spec.type])) ? "saline" : "variable",
+      type: spec.type === undefined ? undefined : waterOf(cellText(row[spec.type])),
     });
   }
   const ids = await titleIds(parsed.flatMap((row) => [row.title, ...row.countries]));
   for (const row of parsed) if (!ids[row.title]) throw new Error(`wikipedia ${spec.page}: no Wikidata item for ${row.title}`);
   const countryIds = [...new Set(parsed.flatMap((row) => row.countries.map((title) => ids[title]).filter(Boolean)))];
   const codes = await countryCodes(countryIds);
+  // Islands: the row's item is the island itself, not the state the list links; names fill in from the state where the island has none.
+  const islandOf = {};
+  if (id === "largest-islands") {
+    // Only the rows that can make the list: asking for all 300-odd times the query service out.
+    const near = [...parsed].sort((a, b) => b.value - a.value).slice(0, spec.rows + 20);
+    const candidates = await islandItems([...new Set(near.map((row) => ids[row.title]))]);
+    const candidateInfo = await labels([...new Set(Object.values(candidates).flat())]);
+    for (const [c, options] of Object.entries(candidates)) {
+      const ranked = options.filter((i) => candidateInfo[i]).sort((a, b) => candidateInfo[b].sitelinks - candidateInfo[a].sitelinks);
+      if (ranked.length) islandOf[c] = { id: ranked[0], names: candidateInfo[ranked[0]].names };
+    }
+  }
   const info = await labels([...new Set([...parsed.map((row) => ids[row.title]), ...countryIds.filter((c) => codes[c] === true)])]);
+  for (const [c, island] of Object.entries(islandOf)) {
+    if (!info[c]) continue;
+    // The state's names are kept where they are the island's too ("Madagascar"); a state's own name ("中華民國") gives way to the island's.
+    info[island.id] = { names: { ...info[c].names, ...island.names }, sitelinks: info[c].sitelinks };
+    for (const row of parsed) if (ids[row.title] === c) ids[row.title] = island.id;
+  }
   // A river listed twice (its whole system and an upper course, say) keeps its longest entry.
   const seen = new Set();
   const sorted = parsed.sort((a, b) => b.value - a.value).filter((row) => !seen.has(ids[row.title]) && seen.add(ids[row.title]));
@@ -621,11 +666,13 @@ async function wikipediaList(id) {
   return { rows, revision: page.parse.revid };
 }
 
-/** The country, or countries tied, with the most rows; ISO codes only (a named realm is not counted). */
-function countryLeaders(rows) {
+/** The country, or countries tied (all named), with the most rows; ISO codes only (a named realm is not counted).
+ * None at all means the country column was misread: the table is not published. */
+function countryLeaders(rows, column) {
   const tally = new Map();
-  for (const row of rows) for (const c of row[4]) if (typeof c === "string") tally.set(c, (tally.get(c) ?? 0) + 1);
+  for (const row of rows) for (const c of row[column]) if (typeof c === "string") tally.set(c, (tally.get(c) ?? 0) + 1);
   const count = Math.max(0, ...tally.values());
+  if (!count) throw new Error("no countries in the rows");
   return { countryLead: [...tally.entries()].filter(([, n]) => n === count).map(([c]) => c).sort(), countryCount: count };
 }
 
@@ -634,8 +681,9 @@ function countryLeaders(rows) {
 const rows = {};
 const meta = { updated: today.toISOString().slice(0, 10), sets: {} };
 const rowsPath = join(root, "src/shared/rankings-rows.json");
-/** Geography rows (names in eight languages) are most of the bytes: their own file, so the AI and market pages don't load them. */
-const geoRowsPath = join(root, "src/shared/rankings-geo-rows.json");
+/** Geography rows (names in eight languages) are most of the bytes: one file per table, so a page loads only its own.
+ * The ids must match the geography group in src/shared/rankings.ts (tests/rankings.test.ts checks). */
+const geoDir = join(root, "src/shared/rankings-geo");
 const GEO_IDS = new Set(["tallest-mountains", ...Object.keys(WP_LISTS)]);
 const metaPath = join(root, "src/shared/rankings-meta.json");
 const csv = {};
@@ -649,7 +697,7 @@ const toCsv = (head, table, source) => [[...head, "source", "license"], ...table
 const topOf = (table, nameCol, valueCol) => table.slice(0, 3).map((r) => [r[nameCol], r[valueCol]]);
 
 const readRows = (path) => (existsSync(path) ? JSON.parse(readFileSync(path, "utf8")) : {});
-const oldRows = { ...readRows(rowsPath), ...readRows(geoRowsPath) };
+const oldRows = { ...readRows(rowsPath), ...Object.fromEntries([...GEO_IDS].map((id) => [id, readRows(join(geoDir, `${id}.json`))]).filter(([, table]) => Array.isArray(table))) };
 const oldMeta = existsSync(metaPath) ? JSON.parse(readFileSync(metaPath, "utf8")) : { sets: {} };
 const keep = (id) => {
   rows[id] = oldRows[id];
@@ -745,7 +793,7 @@ for (const id of Object.keys(WP_LISTS)) {
     rows[id] = set.rows;
     const unchanged = JSON.stringify(oldRows[id]) === JSON.stringify(set.rows);
     const last = set.rows.at(-1);
-    meta.sets[id] = { asOf: (unchanged && oldMeta.sets[id]?.asOf) || thisMonth, checked: thisMonth, revision: set.revision, rows: set.rows.length, top: topOf(set.rows, 1, 3), bottom: [[last[1], last[3]]], lowRank: last[0], ...countryLeaders(set.rows), names: Object.fromEntries([...set.rows.slice(0, 3), last].map((r) => [r[1], r[2]])) };
+    meta.sets[id] = { asOf: (unchanged && oldMeta.sets[id]?.asOf) || thisMonth, checked: thisMonth, revision: set.revision, rows: set.rows.length, top: topOf(set.rows, 1, 3), bottom: [[last[1], last[3]]], lowRank: last[0], ...countryLeaders(set.rows, 4), names: Object.fromEntries([...set.rows.slice(0, 3), last].map((r) => [r[1], r[2]])) };
     console.log(id, set.rows.length, "rows, revision", set.revision);
   });
 }
@@ -783,11 +831,11 @@ for (const [id, set] of Object.entries(meta.sets)) {
   if (same && existsSync(file) && plain(readFileSync(file, "utf8")) === plain(csv[id])) delete csv[id];
 }
 meta.updated = Object.values(meta.sets).map((set) => set.updated).sort().at(-1);
-const split = (geo) => Object.fromEntries(Object.entries(rows).filter(([id]) => GEO_IDS.has(id) === geo));
-writeFileSync(rowsPath, `${JSON.stringify(split(false))}\n`);
-writeFileSync(geoRowsPath, `${JSON.stringify(split(true))}\n`);
+writeFileSync(rowsPath, `${JSON.stringify(Object.fromEntries(Object.entries(rows).filter(([id]) => !GEO_IDS.has(id))))}\n`);
+mkdirSync(geoDir, { recursive: true });
+for (const id of GEO_IDS) if (rows[id]) writeFileSync(join(geoDir, `${id}.json`), `${JSON.stringify(rows[id])}\n`);
 writeFileSync(metaPath, `${JSON.stringify(meta, null, 1)}\n`);
 const dir = join(root, "public/rankings");
 mkdirSync(dir, { recursive: true });
 for (const [id, text] of Object.entries(csv)) writeFileSync(join(dir, `${id}.csv`), text);
-console.log("wrote src/shared/rankings-rows.json, rankings-geo-rows.json, rankings-meta.json and public/rankings");
+console.log("wrote src/shared/rankings-rows.json, rankings-geo/, rankings-meta.json and public/rankings");

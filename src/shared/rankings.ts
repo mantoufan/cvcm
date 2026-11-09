@@ -25,9 +25,9 @@ export function rankingGroupOf(id: RankingId): RankingGroupId {
   return RANKING_GROUPS.find((group) => (group.sets as readonly string[]).includes(id))!.id;
 }
 
-/** The rows chunk a ranking page preloads: geography (names in eight languages) is kept apart from the rest. */
-export function rankingRowsChunk(id: RankingId): "rows-rankings" | "rows-rankings-geo" {
-  return rankingGroupOf(id) === "geography" ? "rows-rankings-geo" : "rows-rankings";
+/** The rows chunk a ranking page preloads: each geography table (names in eight languages) is its own; the rest share one. */
+export function rankingRowsChunk(id: RankingId): string {
+  return rankingGroupOf(id) === "geography" ? `rows-ranking-${id}` : "rows-rankings";
 }
 
 export type RankingKind = "arena" | "usage" | "companies" | "share" | "crypto" | "commodity" | "fx" | "mountain" | "river" | "lake" | "island";

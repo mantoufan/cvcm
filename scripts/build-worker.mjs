@@ -75,8 +75,9 @@ for (const file of readdirSync(resolve(root, "src/data"))) {
   if (!files.length) throw new Error(`no Vite chunk for src/data/${file}`);
   pageChunks[`rows-${m[1]}`] = files;
 }
-// Ranking rows are two chunks (geography apart), preloaded the same way.
-for (const [chunk, file] of [["rows-rankings", "src/shared/rankings-rows.json"], ["rows-rankings-geo", "src/shared/rankings-geo-rows.json"]]) {
+// Ranking rows: one chunk for the small tables, one per geography table, preloaded the same way.
+const rankingRowFiles = [["rows-rankings", "src/shared/rankings-rows.json"], ...readdirSync(resolve(root, "src/shared/rankings-geo")).filter((f) => f.endsWith(".json")).map((f) => [`rows-ranking-${f.slice(0, -5)}`, `src/shared/rankings-geo/${f}`])];
+for (const [chunk, file] of rankingRowFiles) {
   pageChunks[chunk] = chunkFiles(file);
   if (!pageChunks[chunk].length) throw new Error(`no Vite chunk for ${file}`);
 }

@@ -5,11 +5,19 @@ import type { Locale } from "../../shared/locale";
 import { appHref, datasetHref, rankingHref } from "../../shared/path";
 import { datasetMessages } from "../../shared/messages";
 import { fill } from "../../shared/datasets-i18n";
-import { RANKING_GROUPS, RANKING_SOURCE, RANKING_TOOLS, rankingCsvHref, rankingGroupOf, rankingMeta, rankingRowsChunk, type RankingId } from "../../shared/rankings";
+import { RANKING_GROUPS, RANKING_SOURCE, RANKING_TOOLS, rankingCsvHref, rankingGroupOf, rankingMeta, type RankingId } from "../../shared/rankings";
 import { rankingDate, rankingFaqItems, rankingHub, rankingLinkMeta, rankingName, rankingPageCopy, rankingTable, rankingUi } from "../../shared/rankings-i18n";
 import { dataTable } from "../datasets/ui";
 import type { DatasetId } from "../../shared/datasets";
 import { datasetLinkMeta, datasetName } from "../../shared/datasets-i18n";
+
+/** Geography rows, one chunk per table: literal imports, so Vite splits them (import.meta.glob breaks the prerender). */
+const GEO_ROWS: Partial<Record<RankingId, () => Promise<{ default: unknown }>>> = {
+  "tallest-mountains": () => import("../../shared/rankings-geo/tallest-mountains.json"),
+  "longest-rivers": () => import("../../shared/rankings-geo/longest-rivers.json"),
+  "largest-lakes": () => import("../../shared/rankings-geo/largest-lakes.json"),
+  "largest-islands": () => import("../../shared/rankings-geo/largest-islands.json"),
+};
 
 /** Country tables that are rankings too: the hub links them rather than repeating them. */
 const COUNTRY_TABLES: readonly DatasetId[] = ["population", "gdp", "gdp-per-capita", "life-expectancy", "land-area", "internet-users"];
@@ -68,8 +76,8 @@ export function mountRankingHub(host: HTMLElement, locale: Locale): void {
 }
 
 export async function mountRanking(host: HTMLElement, locale: Locale, id: RankingId, alive: () => boolean): Promise<void> {
-  // Two literal imports, so each file is its own chunk (the Worker preloads the one the page needs).
-  const { default: all } = rankingRowsChunk(id) === "rows-rankings-geo" ? await import("../../shared/rankings-geo-rows.json") : await import("../../shared/rankings-rows.json");
+  const geo = GEO_ROWS[id];
+  const table = geo ? (await geo()).default : ((await import("../../shared/rankings-rows.json")).default as Record<string, unknown[]>)[id];
   if (!alive()) return;
   const ui = rankingUi(locale);
   const copy = rankingPageCopy(locale, id);
@@ -90,7 +98,7 @@ export async function mountRanking(host: HTMLElement, locale: Locale, id: Rankin
       csvHref: rankingCsvHref(id),
       csvName: `${id}.csv`,
       ui,
-    }, rankingTable(locale, id, (all as Record<string, unknown[]>)[id])),
+    }, rankingTable(locale, id, table as unknown[])),
     h("p", { class: "data-source muted" },
       `${ui.source}: `, h("a", { href: source.url, rel: "noopener", target: "_blank" }, source.name),
       ` · ${ui.license}: `, h("a", { href: source.licenseUrl, rel: "noopener license", target: "_blank" }, source.license),
