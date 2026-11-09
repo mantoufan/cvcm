@@ -365,14 +365,14 @@ function csvOf(id, table, set) {
   if (id === "ai-companies") return toCsv(["rank", "company", "tokens", "share_of_public_tokens_percent", "models_listed"], table, cite);
   if (id === "currency-strength") return toCsv(["rank", "currency", "per_usd", "change_vs_usd_1_month_percent", "change_vs_usd_1_year_percent", "as_of", "month_ago", "year_ago"], table.map((row) => [...row, set.asOf, set.monthAgo, set.yearAgo]), ["European Central Bank euro reference rates (ecb.europa.eu)", "Reuse with source named"]);
   if (id === "commodity-prices") return toCsv(["rank", "commodity", "unit", "price_usd", "change_1_month_percent", "change_12_months_percent", "month"], table.map((row) => [...row, set.asOf]), [PINK_SHEET, "CC BY 4.0"]);
-  if (id === "tallest-mountains") return toCsv(["rank", "wikidata_id", "name", "elevation_m", "elevation_ft", "prominence_m", "countries", "range"], table.map(([rank, qid, names, elevation, prominence, countries, range]) => [rank, qid, names.en, elevation, Math.round(elevation / FEET), prominence, countries.join(" "), range?.en ?? ""]), ["Wikidata (wikidata.org)", "CC0 1.0"]);
+  if (id === "tallest-mountains") return toCsv(["rank", "wikidata_id", "name", "elevation_m", "elevation_ft", "prominence_m", "countries", "range"], table.map(([rank, qid, names, elevation, prominence, countries, range]) => [rank, qid, names.en, elevation, Math.round(elevation / METRES_PER_FOOT), prominence, countries.join(" "), range?.en ?? ""]), ["Wikidata (wikidata.org)", "CC0 1.0"]);
   return toCsv(["rank", "name", `world_${set.yearAgo}`, ...REGIONS.map((r) => (r === "ww" ? `world_${set.asOf}` : r))], table, SOURCES.statcounter);
 }
 
 // --- Wikidata: tallest mountains -----------------------------------------------------------------------------------
 
 const MOUNTAIN_ROWS = 100;
-const FEET = 0.3048;
+const METRES_PER_FOOT = 0.3048;
 /** A range named by at least this many Wikipedias is a real one; fewer is usually a stub with a garbled label. */
 const RANGE_MIN_SITELINKS = 3;
 /** Peaks rise at least this far above the col to a higher one: the usual line between a mountain and a shoulder of one. */
