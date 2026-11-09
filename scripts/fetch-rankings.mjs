@@ -379,6 +379,7 @@ const RANGE_MIN_SITELINKS = 3;
 const MIN_PROMINENCE = 500;
 const SPARQL = "https://query.wikidata.org/sparql";
 /** The Wikidata label for each cv.cm locale; a locale without one shows the English name. */
+const NOT_WIKIPEDIA = new Set(["commonswiki", "specieswiki", "wikidatawiki", "metawiki", "mediawikiwiki", "sourceswiki", "wikimaniawiki", "incubatorwiki", "outreachwiki", "wikifunctionswiki"]);
 const LABEL_LANGS = { en: "en", "zh-CN": "zh-cn", "zh-TW": "zh-tw", ja: "ja", ko: "ko", vi: "vi", id: "id", es: "es" };
 
 /** Names in every locale, and how many Wikipedias cover the item. Chinese falls back across scripts, converted by Wikidata (zh-tw from zh-hans and back). */
@@ -402,7 +403,8 @@ async function labels(ids) {
       for (const [locale, code] of Object.entries(LABEL_LANGS)) names[locale] = LABEL_FIX[id]?.[locale] ?? label(code) ?? LABEL_FIX[id]?.en ?? en;
       // Every page loads every ranking's rows: a name the same as the English one is left for the page to fill in.
       for (const locale of Object.keys(names)) if (locale !== "en" && names[locale] === names.en) delete names[locale];
-      out[id] = { names, sitelinks: Object.keys(entity.sitelinks ?? {}).length };
+      // Wikipedias only: Commons, Wikivoyage and the rest link stubs too.
+      out[id] = { names, sitelinks: Object.keys(entity.sitelinks ?? {}).filter((site) => /wiki$/.test(site) && !NOT_WIKIPEDIA.has(site)).length };
     }
     await pause();
   }
@@ -465,8 +467,10 @@ async function mountains() {
   const rows = peaks.map((m, i) => [peaks.findIndex((p) => p.elevation === m.elevation) + 1, m.id, info[m.id].names, m.elevation, m.prominence, m.countries, m.range ? info[m.range].names : null]);
   const tally = new Map();
   for (const m of peaks) for (const c of m.countries) tally.set(c, (tally.get(c) ?? 0) + 1);
-  const [countryLead, countryCount] = [...tally.entries()].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]))[0] ?? [null, 0];
-  if (!countryLead) throw new Error("wikidata: no countries");
+  const countryCount = Math.max(0, ...tally.values());
+  if (!countryCount) throw new Error("wikidata: no countries");
+  // Countries tied for the most peaks are all named.
+  const countryLead = [...tally.entries()].filter(([, n]) => n === countryCount).map(([c]) => c).sort();
   return { rows, over8000: peaks.filter((m) => m.elevation >= 8000).length, countryLead, countryCount };
 }
 
@@ -496,7 +500,9 @@ rmSync(FAILURES_FILE, { force: true });
 let attempts = 0;
 let failures = 0;
 /** RANKINGS_ONLY=id,id refreshes just those tables (skipping their monthly wait) and keeps the rest as they are, for a new or fixed table. */
-const only = process.env.RANKINGS_ONLY?.split(",").filter(Boolean);
+const listed = process.env.RANKINGS_ONLY?.split(",").map((id) => id.trim()).filter(Boolean);
+// Set but empty (an unfilled input) means every table, not none.
+const only = listed?.length ? listed : undefined;
 const ALL_IDS = [...Object.keys(ARENA), "ai-usage", "ai-companies", "crypto-market-cap", "currency-strength", "commodity-prices", "tallest-mountains", ...Object.keys(SHARE)];
 const unknown = only?.filter((id) => !ALL_IDS.includes(id));
 if (unknown?.length) throw new Error(`RANKINGS_ONLY: no table ${unknown.join(", ")}`);
@@ -559,15 +565,16 @@ else {
   });
 }
 
-// Heights change only with a new survey: asked on the 1st of each month. FORCE_MOUNTAINS=1 asks again.
-// asOf is the month the rows last changed, so an unchanged check writes nothing.
-if (!process.env.FORCE_MOUNTAINS && !only?.includes("tallest-mountains") && today.getUTCDate() !== 1 && oldRows["tallest-mountains"]) keep("tallest-mountains");
+// Heights change only with a new survey: asked once a month (until a check succeeds). FORCE_MOUNTAINS=1 asks again.
+// asOf is the month the rows last changed; checked is the month they were last asked for.
+const thisMonth = today.toISOString().slice(0, 7);
+if (!process.env.FORCE_MOUNTAINS && !only?.includes("tallest-mountains") && oldMeta.sets["tallest-mountains"]?.checked === thisMonth && oldRows["tallest-mountains"]) keep("tallest-mountains");
 else {
   await attempt(["tallest-mountains"], async () => {
     const set = await mountains();
     rows["tallest-mountains"] = set.rows;
     const unchanged = JSON.stringify(oldRows["tallest-mountains"]) === JSON.stringify(set.rows);
-    meta.sets["tallest-mountains"] = { asOf: unchanged ? oldMeta.sets["tallest-mountains"].asOf : today.toISOString().slice(0, 7), rows: set.rows.length, top: topOf(set.rows, 1, 3), bottom: [[set.rows.at(-1)[1], set.rows.at(-1)[3]]], over8000: set.over8000, countryLead: set.countryLead, countryCount: set.countryCount, names: Object.fromEntries([...set.rows.slice(0, 3), set.rows.at(-1)].map((r) => [r[1], r[2]])) };
+    meta.sets["tallest-mountains"] = { asOf: (unchanged && oldMeta.sets["tallest-mountains"]?.asOf) || thisMonth, checked: thisMonth, rows: set.rows.length, top: topOf(set.rows, 1, 3), bottom: [[set.rows.at(-1)[1], set.rows.at(-1)[3]]], over8000: set.over8000, countryLead: set.countryLead, countryCount: set.countryCount, names: Object.fromEntries([...set.rows.slice(0, 3), set.rows.at(-1)].map((r) => [r[1], r[2]])) };
   });
 }
 

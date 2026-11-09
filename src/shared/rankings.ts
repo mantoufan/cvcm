@@ -97,9 +97,16 @@ export type RankingMeta = {
   /** Mountains: rows are Wikidata ids, named here for the head tags; peaks of 8,000 m or more; the country with the most peaks. */
   names?: Record<string, LocaleNames>;
   over8000?: number;
-  countryLead?: string;
+  /** Mountains: the month the rows were last asked for (asOf is the month they last changed). */
+  checked?: string;
+  countryLead?: string[];
   countryCount?: number;
 };
+
+/** Metres to feet, rounded to the foot, for the table and the copy alike. */
+export function toFeet(metres: number): number {
+  return Math.round(metres / 0.3048);
+}
 
 export const RANKING_SNAPSHOT: string = meta.updated;
 

@@ -11,6 +11,7 @@ import {
   rankingCsvHref,
   rankingKind,
   rankingMeta,
+  toFeet,
   type ArenaRow,
   type CommodityRow,
   type CompanyRow,
@@ -133,8 +134,6 @@ function metres(locale: Locale, value: number): string {
   return `${numberFormat(locale, { maximumFractionDigits: 2 }).format(value)} m`;
 }
 
-const FEET = 0.3048;
-
 /** A cell list, not a sentence: no "and". Intl.ListFormat's unit style runs Chinese names together, so the separator is set here. */
 function countryList(locale: Locale, codes: readonly string[]): string {
   return codes.map((code) => regionName(locale, code)).join(locale.startsWith("zh") || locale === "ja" ? "、" : ", ");
@@ -154,9 +153,9 @@ function vars(locale: Locale, id: RankingId): Record<string, string | number> {
     out[`lv${index + 1}`] = shown(value);
   });
   if (kind === "mountain") {
-    out.ft1 = plain(locale, Math.round(meta.top[0][1] / FEET));
+    out.ft1 = plain(locale, toFeet(meta.top[0][1]));
     out.over8000 = meta.over8000 ?? 0;
-    out.countryLead = meta.countryLead ? regionName(locale, meta.countryLead) : "";
+    out.countryLead = new Intl.ListFormat(locale, { type: "conjunction" }).format((meta.countryLead ?? []).map((code) => regionName(locale, code)));
     out.countryCount = meta.countryCount ?? 0;
   }
   if (meta.total !== undefined) out.total = usd(locale, meta.total, true);
@@ -248,7 +247,7 @@ export function rankingTable(locale: Locale, id: RankingId, rows: unknown[]): Da
     return {
       columns: [{ label: ui.rank, num: true }, { label: ui.mountain, head: true }, { label: ui.elevation, num: true }, { label: ui.elevationFt, num: true }, { label: ui.prominence, num: true }, { label: ui.countries }, { label: ui.range }],
       rows: (rows as MountainRow[]).map(([place, , names, elevation, prominence, countries, range]) => {
-        const feet = Math.round(elevation / FEET);
+        const feet = toFeet(elevation);
         return [rank(place), text(localName(locale, names)), num(metres(locale, elevation), elevation), num(plain(locale, feet), feet), num(metres(locale, prominence), prominence), text(countryList(locale, countries)), text(localName(locale, range))];
       }),
     };
