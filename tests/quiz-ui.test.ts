@@ -193,9 +193,10 @@ describe("test page UI", () => {
     }
   });
 
-  it("asks about a set period on the ADHD and burnout tests, and the usual self elsewhere", () => {
+  it("asks about a set period on the ADHD, burnout and stress tests, and the usual self elsewhere", () => {
     expect(mount("adhd").querySelector(".quiz-hint")?.textContent).toContain("last 6 months");
     expect(mount("burnout").querySelector(".quiz-hint")?.textContent).toContain("last few weeks");
+    expect(mount("stress").querySelector(".quiz-hint")?.textContent).toContain("past month");
     expect(mount("disc").querySelector(".quiz-hint")?.textContent).toContain("as you usually are");
   });
 
@@ -204,6 +205,16 @@ describe("test page UI", () => {
     expect(mount("narcissist").querySelector(".quiz-privacy")?.textContent).toContain(notice);
     expect(mount("adhd").querySelector(".quiz-privacy")?.textContent).toContain(notice);
     expect(mount("disc").querySelector(".quiz-privacy")?.textContent).not.toContain(notice);
+  });
+
+  it("repeats the not-a-diagnosis notice under a health-sensitive profile result", () => {
+    const notice = quizUi("en").notDiagnosis;
+    for (const [id, shown] of [["dark-triad", true], ["big-five", false]] as const) {
+      const main = mount(id);
+      answer(main, () => 2);
+      submit(main);
+      expect(main.querySelector("#result")?.textContent?.includes(notice), id).toBe(shown);
+    }
   });
 
   it("names the pets the answers ruled out", () => {

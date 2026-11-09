@@ -155,8 +155,8 @@ describe("test pages: copy", () => {
           expect(ui.scale[def.scale], `${where} scale`).toHaveLength(SCALE_POINTS[def.scale]);
           expect(ui.scaleHint[def.scale], `${where} hint`).toBeTruthy();
         }
-        // These two ask about a set period, and an empty hint would silently fall back to "as you usually are".
-        if (id === "adhd" || id === "burnout") {
+        // These ask about a set period, and an empty hint would silently fall back to "as you usually are".
+        if (id === "adhd" || id === "burnout" || id === "stress") {
           expect(copy.hint, `${where} own hint`).toBeTruthy();
           expect(quizStaticHtml(locale, id), `${where} static hint`).toContain(escapeHtml(copy.hint!));
         }
@@ -167,7 +167,9 @@ describe("test pages: copy", () => {
           for (const letter of def.dims.join("")) expect(copy.letters?.[letter], `${where} ${letter}`).toBeTruthy();
         }
         if (def.result.kind === "profile") {
-          for (const dim of def.dims) expect(copy.levels?.[dim]?.high, `${where} level ${dim}`).toBeTruthy();
+          for (const dim of def.dims) {
+            for (const level of ["low", "mid", "high"] as const) expect(copy.levels?.[dim]?.[level], `${where} level ${dim} ${level}`).toBeTruthy();
+          }
         }
         if (def.result.kind === "areas") {
           for (const dim of def.dims) expect(copy.tips?.[dim], `${where} tip ${dim}`).toBeTruthy();
@@ -331,6 +333,7 @@ describe("test pages: scoring", () => {
       { id: "narcissist", max: 64, keys: ["low", "mid", "high"], cuts: [21, 42] },
       { id: "highly-sensitive-person", max: 56, keys: ["low", "mid", "high"], cuts: [18, 37] },
       { id: "burnout", max: 64, keys: ["low", "risk", "high"], cuts: [21, 42] },
+      { id: "stress", max: 56, keys: ["low", "moderate", "high"], cuts: [18, 37] },
     ] as const;
     for (const { id, max, keys, cuts } of cases) {
       const def = QUIZ_DEFS[id];
@@ -375,21 +378,43 @@ describe("test pages: scoring", () => {
     expect(scoreQuiz("burnout", QUIZ_DEFS.burnout.items.map((_, i) => (i % 2 === 0 ? 4 : 0))).safety).toBe(false);
   });
 
-  it("lets every DISC style win, spreads ties and keeps the styles level", () => {
-    const def = QUIZ_DEFS.disc;
+  it("offers help at the high stress band, links the anxiety check and never shows a crisis box", () => {
+    expect(SUPPORT.stress).toEqual(["high"]);
+    expect(FOLLOW_UP.stress).toEqual({ bands: ["high"], quiz: "anxiety" });
+    expect(scoreQuiz("stress", QUIZ_DEFS.stress.items.map((_, i) => (i % 2 === 0 ? 4 : 0))).safety).toBe(false);
+  });
+
+  it("lets every DISC style and learning style win, spreads ties and keeps the results level", () => {
+    for (const [id, per] of [["disc", 5], ["learning-style", 4]] as const) {
+      const def = QUIZ_DEFS[id];
+      if (def.type !== "likert") throw new Error();
+      for (const dim of def.dims) {
+        expect(def.items.filter((i) => i.dim === dim), `${id} ${dim}`).toHaveLength(per);
+        expect(scoreQuiz(id, lean(id, [dim])).key, `${id} ${dim}`).toBe(dim);
+      }
+      const next = randomInts(23);
+      const counts = new Map<string, number>();
+      const runs = 12000;
+      for (let run = 0; run < runs; run++) {
+        const key = scoreQuiz(id, def.items.map(() => next(5))).key;
+        counts.set(key, (counts.get(key) ?? 0) + 1);
+      }
+      for (const dim of def.dims) expect((counts.get(dim) ?? 0) / runs, `${id} ${dim}`).toBeGreaterThan(0.2);
+    }
+  });
+
+  it("scores the three dark triad traits as a profile, half of each trait reversed", () => {
+    const def = QUIZ_DEFS["dark-triad"];
     if (def.type !== "likert") throw new Error();
     for (const dim of def.dims) {
-      expect(def.items.filter((i) => i.dim === dim), dim).toHaveLength(5);
-      expect(scoreQuiz("disc", lean("disc", [dim])).key, dim).toBe(dim);
+      expect(def.items.filter((i) => i.dim === dim), dim).toHaveLength(6);
+      expect(def.items.filter((i) => i.dim === dim && i.rev), dim).toHaveLength(3);
     }
-    const next = randomInts(23);
-    const counts = new Map<string, number>();
-    const runs = 12000;
-    for (let run = 0; run < runs; run++) {
-      const key = scoreQuiz("disc", def.items.map(() => next(5))).key;
-      counts.set(key, (counts.get(key) ?? 0) + 1);
-    }
-    for (const dim of def.dims) expect((counts.get(dim) ?? 0) / runs, dim).toBeGreaterThan(0.2);
+    const result = scoreQuiz("dark-triad", lean("dark-triad", ["narc"]));
+    expect(result.key).toBe("profile");
+    expect(result.scores.map((s) => [s.dim, s.pct])).toEqual([["mach", 0], ["narc", 100], ["psych", 0]]);
+    // Agreeing with everything is not a high score on any trait.
+    expect(scoreQuiz("dark-triad", all("dark-triad", 4)).scores.every((s) => s.pct === 50)).toBe(true);
   });
 
   it("scores the four EQ areas as a profile", () => {
@@ -415,6 +440,8 @@ describe("test pages: scoring", () => {
     expect(isTrackedPath("/en/tests/adhd/")).toBe(false);
     expect(isTrackedPath("/ja/tests/narcissist/")).toBe(false);
     expect(isTrackedPath("/es/tests/burnout/")).toBe(false);
+    expect(isTrackedPath("/ko/tests/stress/")).toBe(false);
+    expect(isTrackedPath("/en/tests/dark-triad/")).toBe(false);
     expect(isTrackedPath("/en/tests/mbti/")).toBe(true);
     expect(isTrackedPath("/en/tests/")).toBe(true);
   });
@@ -599,8 +626,8 @@ describe("test pages: scoring", () => {
     // eight results, four a question (each in six); four results, all in every question.
     const positions = [
       { ids: ["friend-role", "avengers"], min: 2, max: 2 },
-      { ids: ["one-piece", "ghibli", "spirit-animal", "percy-jackson"], min: 1, max: 2 },
-      { ids: ["avatar-element", "hogwarts", "color-personality"], min: 3, max: 3 },
+      { ids: ["one-piece", "ghibli", "spirit-animal", "percy-jackson", "aura-color", "stranger-things", "disney-princess", "lightsaber-color"], min: 1, max: 2 },
+      { ids: ["avatar-element", "hogwarts", "color-personality", "mental-age"], min: 3, max: 3 },
     ] as const;
     for (const { ids, min, max } of positions) {
       for (const id of ids) {

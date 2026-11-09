@@ -307,6 +307,7 @@ function resultView(locale: Locale, id: QuizId, copy: QuizCopy, result: QuizResu
           h("p", null, levels[s.dim]?.[level] ?? ""),
         );
       });
+      if (UNTRACKED_QUIZZES.has(id)) nodes.push(h("p", { class: "muted" }, ui.notDiagnosis));
       const summary = result.scores.map((s) => `${label(s.dim)} ${s.pct}`).join(", ");
       return { nodes, summary };
     }

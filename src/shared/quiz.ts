@@ -3,14 +3,14 @@
 // `src/locales/quiz/<locale>.json`, with items in the same order. Scoring runs in the page; answers never leave it.
 
 export const QUIZ_GROUPS = [
-  { id: "personality", quizzes: ["mbti", "big-five", "introvert", "enneagram", "eq", "temperament", "disc", "highly-sensitive-person", "narcissist"] },
+  { id: "personality", quizzes: ["mbti", "big-five", "introvert", "enneagram", "eq", "temperament", "disc", "highly-sensitive-person", "narcissist", "dark-triad"] },
   { id: "love", quizzes: ["love-language", "attachment", "love-style", "marriage", "conflict-style"] },
-  { id: "career", quizzes: ["career", "work-style", "leadership", "mindset", "money"] },
+  { id: "career", quizzes: ["career", "work-style", "leadership", "mindset", "learning-style", "money"] },
   { id: "games", quizzes: ["pokemon", "genshin", "sonic", "dnd-class"] },
   { id: "anime", quizzes: ["naruto", "one-piece", "ghibli", "demon-slayer", "jujutsu-kaisen", "avatar-element", "anime"] },
-  { id: "books", quizzes: ["hogwarts", "percy-jackson", "avengers"] },
-  { id: "fun", quizzes: ["chronotype", "pet", "face-shape", "friend-role", "spirit-animal", "color-personality"] },
-  { id: "wellbeing", quizzes: ["wellbeing-index", "self-esteem", "anxiety", "depression", "burnout", "adhd"] },
+  { id: "books", quizzes: ["hogwarts", "percy-jackson", "avengers", "stranger-things", "disney-princess", "lightsaber-color"] },
+  { id: "fun", quizzes: ["chronotype", "pet", "face-shape", "friend-role", "spirit-animal", "color-personality", "mental-age", "aura-color"] },
+  { id: "wellbeing", quizzes: ["wellbeing-index", "self-esteem", "anxiety", "depression", "burnout", "stress", "adhd"] },
 ] as const;
 
 export type QuizGroupId = (typeof QUIZ_GROUPS)[number]["id"];
@@ -181,6 +181,12 @@ const SENSITIVITY = likert(Array(7).fill("hsp+ hsp-").join(" "));
 const BURNOUT = likert(Array(8).fill("burnout+ burnout-").join(" "));
 /** Written for cv.cm from the adult symptom areas of ADHD. Not the ASRS and not clinically validated; the copy says so. */
 const ADHD = likert(Array(18).fill("adhd+").join(" "));
+/** Written for cv.cm (not the Perceived Stress Scale): stress over the past month, every second statement reversed. */
+const STRESS = likert(Array(7).fill("stress+ stress-").join(" "));
+/** Written for cv.cm: four statements for each of the four learning preferences. */
+const LEARNING = likert(Array(4).fill("visual+ auditory+ reading+ kinesthetic+").join(" "));
+/** Written for cv.cm (not the Short Dark Triad): six statements a trait, half of them reversed. */
+const DARK_TRIAD = likert(Array(3).fill("mach+ narc+ psych+ mach- narc- psych-").join(" "));
 
 /**
  * Growth or fixed mindset (after Carol Dweck): ten original statements, the fixed-mindset ones reversed. Total 0–40;
@@ -543,6 +549,86 @@ const COLOR_PERSONALITY: ChoiceItem[] = [
   { options: [{ blue: 2 }, { red: 2 }, { yellow: 2 }, { green: 2 }] },
 ];
 
+/** Four mental ages, laid out like `HOGWARTS`: all four in every question, each three times in each position. */
+const MENTAL_AGE: ChoiceItem[] = [
+  { options: [{ kid: 2 }, { teen: 2 }, { adult: 2 }, { elder: 2 }] },
+  { options: [{ adult: 2 }, { elder: 2 }, { teen: 2 }, { kid: 2 }] },
+  { options: [{ teen: 2 }, { adult: 2 }, { kid: 2 }, { elder: 2 }] },
+  { options: [{ elder: 2 }, { kid: 2 }, { teen: 2 }, { adult: 2 }] },
+  { options: [{ kid: 2 }, { adult: 2 }, { elder: 2 }, { teen: 2 }] },
+  { options: [{ elder: 2 }, { teen: 2 }, { adult: 2 }, { kid: 2 }] },
+  { options: [{ adult: 2 }, { elder: 2 }, { kid: 2 }, { teen: 2 }] },
+  { options: [{ teen: 2 }, { kid: 2 }, { adult: 2 }, { elder: 2 }] },
+  { options: [{ kid: 2 }, { elder: 2 }, { teen: 2 }, { adult: 2 }] },
+  { options: [{ teen: 2 }, { adult: 2 }, { elder: 2 }, { kid: 2 }] },
+  { options: [{ elder: 2 }, { teen: 2 }, { kid: 2 }, { adult: 2 }] },
+  { options: [{ adult: 2 }, { kid: 2 }, { elder: 2 }, { teen: 2 }] },
+];
+
+/** Eight characters, laid out like `GHIBLI`: each in six questions, once or twice in each position. */
+const STRANGER_THINGS: ChoiceItem[] = [
+  { options: [{ eleven: 2 }, { max: 2 }, { dustin: 2 }, { will: 2 }] },
+  { options: [{ hopper: 2 }, { steve: 2 }, { mike: 2 }, { lucas: 2 }] },
+  { options: [{ mike: 2 }, { eleven: 2 }, { hopper: 2 }, { dustin: 2 }] },
+  { options: [{ will: 2 }, { steve: 2 }, { max: 2 }, { lucas: 2 }] },
+  { options: [{ lucas: 2 }, { eleven: 2 }, { mike: 2 }, { max: 2 }] },
+  { options: [{ steve: 2 }, { dustin: 2 }, { will: 2 }, { hopper: 2 }] },
+  { options: [{ hopper: 2 }, { lucas: 2 }, { eleven: 2 }, { will: 2 }] },
+  { options: [{ dustin: 2 }, { mike: 2 }, { steve: 2 }, { max: 2 }] },
+  { options: [{ steve: 2 }, { hopper: 2 }, { max: 2 }, { eleven: 2 }] },
+  { options: [{ mike: 2 }, { will: 2 }, { lucas: 2 }, { dustin: 2 }] },
+  { options: [{ dustin: 2 }, { lucas: 2 }, { eleven: 2 }, { steve: 2 }] },
+  { options: [{ max: 2 }, { hopper: 2 }, { will: 2 }, { mike: 2 }] },
+];
+
+/** Eight princesses, laid out like `GHIBLI`. */
+const DISNEY_PRINCESS: ChoiceItem[] = [
+  { options: [{ moana: 2 }, { mulan: 2 }, { rapunzel: 2 }, { belle: 2 }] },
+  { options: [{ tiana: 2 }, { ariel: 2 }, { jasmine: 2 }, { cinderella: 2 }] },
+  { options: [{ jasmine: 2 }, { moana: 2 }, { tiana: 2 }, { rapunzel: 2 }] },
+  { options: [{ belle: 2 }, { ariel: 2 }, { mulan: 2 }, { cinderella: 2 }] },
+  { options: [{ cinderella: 2 }, { moana: 2 }, { jasmine: 2 }, { mulan: 2 }] },
+  { options: [{ ariel: 2 }, { rapunzel: 2 }, { belle: 2 }, { tiana: 2 }] },
+  { options: [{ tiana: 2 }, { cinderella: 2 }, { moana: 2 }, { belle: 2 }] },
+  { options: [{ rapunzel: 2 }, { jasmine: 2 }, { ariel: 2 }, { mulan: 2 }] },
+  { options: [{ ariel: 2 }, { tiana: 2 }, { mulan: 2 }, { moana: 2 }] },
+  { options: [{ jasmine: 2 }, { belle: 2 }, { cinderella: 2 }, { rapunzel: 2 }] },
+  { options: [{ rapunzel: 2 }, { cinderella: 2 }, { moana: 2 }, { ariel: 2 }] },
+  { options: [{ mulan: 2 }, { tiana: 2 }, { belle: 2 }, { jasmine: 2 }] },
+];
+
+/** Eight blade colors, laid out like `GHIBLI`. */
+const LIGHTSABER: ChoiceItem[] = [
+  { options: [{ blue: 2 }, { green: 2 }, { yellow: 2 }, { purple: 2 }] },
+  { options: [{ white: 2 }, { red: 2 }, { orange: 2 }, { black: 2 }] },
+  { options: [{ orange: 2 }, { blue: 2 }, { white: 2 }, { yellow: 2 }] },
+  { options: [{ purple: 2 }, { red: 2 }, { green: 2 }, { black: 2 }] },
+  { options: [{ black: 2 }, { blue: 2 }, { orange: 2 }, { green: 2 }] },
+  { options: [{ red: 2 }, { yellow: 2 }, { purple: 2 }, { white: 2 }] },
+  { options: [{ white: 2 }, { black: 2 }, { blue: 2 }, { purple: 2 }] },
+  { options: [{ yellow: 2 }, { orange: 2 }, { red: 2 }, { green: 2 }] },
+  { options: [{ red: 2 }, { white: 2 }, { green: 2 }, { blue: 2 }] },
+  { options: [{ orange: 2 }, { purple: 2 }, { black: 2 }, { yellow: 2 }] },
+  { options: [{ yellow: 2 }, { black: 2 }, { blue: 2 }, { red: 2 }] },
+  { options: [{ green: 2 }, { white: 2 }, { purple: 2 }, { orange: 2 }] },
+];
+
+/** Eight aura colors, laid out like `GHIBLI`. */
+const AURA: ChoiceItem[] = [
+  { options: [{ red: 2 }, { orange: 2 }, { yellow: 2 }, { green: 2 }] },
+  { options: [{ blue: 2 }, { indigo: 2 }, { violet: 2 }, { pink: 2 }] },
+  { options: [{ violet: 2 }, { red: 2 }, { blue: 2 }, { yellow: 2 }] },
+  { options: [{ green: 2 }, { indigo: 2 }, { orange: 2 }, { pink: 2 }] },
+  { options: [{ pink: 2 }, { red: 2 }, { violet: 2 }, { orange: 2 }] },
+  { options: [{ indigo: 2 }, { yellow: 2 }, { green: 2 }, { blue: 2 }] },
+  { options: [{ blue: 2 }, { pink: 2 }, { red: 2 }, { green: 2 }] },
+  { options: [{ yellow: 2 }, { violet: 2 }, { indigo: 2 }, { orange: 2 }] },
+  { options: [{ indigo: 2 }, { blue: 2 }, { orange: 2 }, { red: 2 }] },
+  { options: [{ violet: 2 }, { green: 2 }, { pink: 2 }, { yellow: 2 }] },
+  { options: [{ yellow: 2 }, { pink: 2 }, { red: 2 }, { indigo: 2 }] },
+  { options: [{ orange: 2 }, { blue: 2 }, { green: 2 }, { violet: 2 }] },
+];
+
 export const QUIZ_DEFS: Record<QuizId, QuizDef> = {
   mbti: { id: "mbti", type: "likert", scale: "agree5", dims: ["EI", "SN", "TF", "JP"], items: TYPES, result: { kind: "types" } },
   "big-five": { id: "big-five", type: "likert", scale: "agree5", dims: ["O", "C", "E", "A", "N"], items: BIG_FIVE, result: { kind: "profile" } },
@@ -810,6 +896,66 @@ export const QUIZ_DEFS: Record<QuizId, QuizDef> = {
     // 28 and 47 of 72 are about 40% and 65%. Not clinical cut-offs; the copy says so.
     result: { kind: "band", bands: [{ max: 28, key: "few" }, { max: 47, key: "some" }, { max: 72, key: "many" }] },
   },
+  stress: {
+    id: "stress",
+    type: "likert",
+    scale: "agree5",
+    dims: ["stress"],
+    items: STRESS,
+    // Three equal bands around the neutral total of 28. Not clinical cut-offs; the copy says so.
+    result: { kind: "band", bands: [{ max: 18, key: "low" }, { max: 37, key: "moderate" }, { max: 56, key: "high" }] },
+  },
+  "learning-style": {
+    id: "learning-style",
+    type: "likert",
+    scale: "agree5",
+    dims: ["visual", "auditory", "reading", "kinesthetic"],
+    items: LEARNING,
+    result: { kind: "top", tie: "spread" },
+  },
+  "dark-triad": {
+    id: "dark-triad",
+    type: "likert",
+    scale: "agree5",
+    dims: ["mach", "narc", "psych"],
+    items: DARK_TRIAD,
+    result: { kind: "profile" },
+  },
+  "mental-age": {
+    id: "mental-age",
+    type: "choice",
+    dims: ["kid", "teen", "adult", "elder"],
+    items: MENTAL_AGE,
+    result: { kind: "top", tie: "spread" },
+  },
+  "aura-color": {
+    id: "aura-color",
+    type: "choice",
+    dims: ["red", "orange", "yellow", "green", "blue", "indigo", "violet", "pink"],
+    items: AURA,
+    result: { kind: "top", tie: "spread" },
+  },
+  "stranger-things": {
+    id: "stranger-things",
+    type: "choice",
+    dims: ["eleven", "mike", "dustin", "lucas", "will", "max", "steve", "hopper"],
+    items: STRANGER_THINGS,
+    result: { kind: "top", tie: "spread" },
+  },
+  "disney-princess": {
+    id: "disney-princess",
+    type: "choice",
+    dims: ["cinderella", "belle", "ariel", "jasmine", "mulan", "rapunzel", "tiana", "moana"],
+    items: DISNEY_PRINCESS,
+    result: { kind: "top", tie: "spread" },
+  },
+  "lightsaber-color": {
+    id: "lightsaber-color",
+    type: "choice",
+    dims: ["blue", "green", "purple", "yellow", "white", "red", "orange", "black"],
+    items: LIGHTSABER,
+    result: { kind: "top", tie: "spread" },
+  },
   "spirit-animal": {
     id: "spirit-animal",
     type: "choice",
@@ -859,12 +1005,14 @@ export const SUPPORT: Partial<Record<QuizId, readonly string[]>> = {
   depression: ["moderate", "modsevere", "severe"],
   anxiety: ["moderate", "severe"],
   burnout: ["high"],
+  stress: ["high"],
 };
 
 /** Band results whose copy sends the reader to another test: the page links it under the result (band quizzes only). */
 export const FOLLOW_UP: Partial<Record<QuizId, { bands: readonly string[]; quiz: QuizId }>> = {
   "wellbeing-index": { bands: ["low", "reduced"], quiz: "depression" },
   burnout: { bands: ["high"], quiz: "depression" },
+  stress: { bands: ["high"], quiz: "anxiety" },
 };
 
 export function questionCount(id: QuizId): number {

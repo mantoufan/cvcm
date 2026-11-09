@@ -44,22 +44,22 @@
   },
   "hub": {
     "title": "Tests de personalidad gratis: MBTI, Big Five, inteligencia emocional y amor — cv.cm",
-    "description": "Tests de personalidad y psicología gratis: 16 personalidades (estilo MBTI), Big Five, DISC, persona altamente sensible, narcisismo, introvertido o extrovertido, eneagrama, inteligencia emocional, cuatro temperamentos, lenguajes del amor, apego, estilos de amor, conflicto, vocacional, estilo de trabajo, liderazgo, mentalidad de crecimiento, dinero, cronotipo, mascota, forma de cara, papel en tu grupo de amigos, animal espiritual, personalidad por colores, bienestar (WHO-5), autoestima, ansiedad, depresión, burnout y TDAH en adultos, además de tests de fans: casa de Hogwarts, Percy Jackson, Marvel, Studio Ghibli, Pokémon, Genshin Impact, Sonic, D&D, Naruto, One Piece, Demon Slayer, Jujutsu Kaisen, Avatar y arquetipos de anime. Sin registro; tus respuestas no salen del navegador.",
+    "description": "Tests de personalidad y psicología gratis: 16 personalidades (estilo MBTI), Big Five, DISC, tríada oscura, persona altamente sensible, narcisismo, introvertido o extrovertido, eneagrama, inteligencia emocional, cuatro temperamentos, lenguajes del amor, apego, estilos de amor, conflicto, vocacional, estilo de trabajo, liderazgo, mentalidad de crecimiento, estilos de aprendizaje, dinero, edad mental, color de tu aura, cronotipo, mascota, forma de cara, papel en tu grupo de amigos, animal espiritual, personalidad por colores, bienestar (WHO-5), autoestima, ansiedad, depresión, estrés, burnout y TDAH en adultos, además de tests de fans: casa de Hogwarts, Percy Jackson, Marvel, Stranger Things, princesa Disney, color de tu sable de luz, Studio Ghibli, Pokémon, Genshin Impact, Sonic, D&D, Naruto, One Piece, Demon Slayer, Jujutsu Kaisen, Avatar y arquetipos de anime. Sin registro; tus respuestas no salen del navegador.",
     "h1": "Tests de personalidad y psicología",
-    "lede": "Cuarenta y cinco tests gratuitos, desde los 16 tipos de personalidad, el Big Five y DISC hasta los estilos de amor, tu animal espiritual, tests de fans de Hogwarts, Percy Jackson, Marvel y Studio Ghibli y breves autoevaluaciones de ansiedad, burnout y TDAH en adultos. Sin registro ni correo. Tus respuestas se puntúan en tu navegador y nunca se suben.",
+    "lede": "Cincuenta y tres tests gratuitos, desde los 16 tipos de personalidad, el Big Five y la tríada oscura hasta tu estilo de aprendizaje, tu edad mental y el color de tu aura, tests de fans de Hogwarts, Stranger Things y princesas Disney y breves autoevaluaciones de estrés, ansiedad, burnout y TDAH en adultos. Sin registro ni correo. Tus respuestas se puntúan en tu navegador y nunca se suben.",
     "groups": {
       "personality": "Personalidad",
       "love": "Amor y relaciones",
-      "career": "Carrera y dinero",
+      "career": "Carrera, estudios y dinero",
       "fun": "Por diversión",
       "wellbeing": "Autoevaluaciones de bienestar",
       "games": "Videojuegos",
       "anime": "Anime y animación",
-      "books": "Libros y cine"
+      "books": "Libros, cine y series"
     },
     "about": [
       "Cada test muestra todas sus preguntas en una sola página. Respóndelas, pulsa el botón y el resultado aparece debajo con una breve explicación y un gráfico de tus puntuaciones.",
-      "La mayoría de las autoevaluaciones de bienestar usan cuestionarios de cribado publicados (WHO-5, Rosenberg, GAD-7, PHQ-9); las de burnout y TDAH en adultos se han escrito para cv.cm y no se han validado clínicamente. El Big Five y el test de introvertido o extrovertido usan el banco de ítems IPIP, de dominio público. Los demás tests se han escrito para cv.cm a partir de modelos conocidos, y sus resultados son un punto de partida para reflexionar, no un veredicto. Los tests de videojuegos, anime, libros y cine son tests de fans no oficiales, solo por diversión."
+      "La mayoría de las autoevaluaciones de bienestar usan cuestionarios de cribado publicados (WHO-5, Rosenberg, GAD-7, PHQ-9); las de estrés, burnout y TDAH en adultos se han escrito para cv.cm y no se han validado clínicamente. El Big Five y el test de introvertido o extrovertido usan el banco de ítems IPIP, de dominio público. Los demás tests se han escrito para cv.cm a partir de modelos conocidos, y sus resultados son un punto de partida para reflexionar, no un veredicto. Los tests de videojuegos, anime, libros, cine y series son tests de fans no oficiales, solo por diversión."
     ],
     "faq": [
       { "q": "¿Son gratis estos tests?", "a": "Sí. Todos los tests son gratuitos, sin registro, sin correo y sin pagar para ver el resultado." },
@@ -5013,6 +5013,1080 @@
         "many": {
           "name": "Muchos signos (48–72)",
           "body": "Reconoces muchas de estas dificultades. Esto no significa que tengas TDAH, pero es un buen motivo para pedirle a un médico o a un psicólogo una evaluación. Anota ejemplos de tu trabajo, tu casa y tu infancia para llevarlos a la consulta. Existe apoyo eficaz."
+        }
+      }
+    },
+    "stress": {
+      "title": "Test de estrés: ¿cuánto estrés tengo? Mide tu nivel de estrés gratis — cv.cm",
+      "description": "Test de estrés gratis: valora 14 afirmaciones sobre el último mes y obtén una puntuación de estrés de 0 a 56, qué significa y formas sencillas de afrontarlo. Privado: nada sale de tu navegador.",
+      "h1": "Test de estrés",
+      "hint": "Pensando en el último mes, ¿hasta qué punto te describe cada afirmación?",
+      "scoreLabel": "Puntuación de estrés (0 = baja, 56 = alta)",
+      "lede": "¿Te sientes desbordado, con los nervios de punta o sin control? Valora 14 afirmaciones sobre el último mes para ver cuánto estrés has tenido y qué puede ayudarte.",
+      "about": [
+        "El estrés es la respuesta del cuerpo ante la presión. En dosis cortas puede ponerte alerta, pero cuando las exigencias parecen una y otra vez mayores que tu capacidad para afrontarlas, te desgasta: dormir mal, la irritabilidad, la preocupación, la tensión y la dificultad para concentrarte son señales habituales. Los psicólogos suelen medir el estrés percibido, es decir, hasta qué punto sientes tu vida impredecible, incontrolable y sobrecargada, en lugar de contar acontecimientos estresantes.",
+        "Las afirmaciones se han escrito para cv.cm en torno a señales habituales de estrés en el cuerpo, el sueño, el estado de ánimo, la forma de pensar y los hábitos. No proceden de la Escala de Estrés Percibido ni de ningún otro cuestionario, y no se han validado clínicamente, así que los tramos de puntuación son una guía aproximada y no puntos de corte clínicos. La mitad de las afirmaciones están invertidas, así que estar de acuerdo con todo te deja en el medio. Si el estrés lleva semanas afectando a tu salud, tu sueño o tus relaciones, habla con un médico o un psicólogo."
+      ],
+      "faq": [
+        {
+          "q": "¿Cómo se calcula la puntuación de estrés?",
+          "a": "Cada afirmación puntúa de 0 a 4 y la mitad están invertidas, así que el total va de 0 a 56. 18 o menos es bajo, de 19 a 37 es moderado y 38 o más es alto."
+        },
+        {
+          "q": "¿Cuáles son las señales de un exceso de estrés?",
+          "a": "Las señales habituales son dormir mal, sentirte tenso o irritable, preocuparte mucho, tener dolores de cabeza o molestias de estómago, que te cueste concentrarte y recurrir al alcohol, la comida o las pantallas para sobrellevarlo."
+        },
+        {
+          "q": "¿Cómo puedo bajar el estrés rápido?",
+          "a": "Respirar despacio (soltando el aire durante más tiempo del que tardas en tomarlo), dar un paseo corto, escribir tus preocupaciones y elegir un pequeño paso siguiente ayudan en el momento. A lo largo de semanas, lo que más se nota es dormir con regularidad, hacer ejercicio, pasar tiempo con gente de confianza y recortar en lo que sí puedes controlar."
+        },
+        {
+          "q": "¿Cuál es la diferencia entre estrés y ansiedad?",
+          "a": "El estrés suele ser una reacción a una presión concreta, como una fecha límite, y se alivia cuando pasa. La ansiedad es una preocupación o un miedo que puede continuar sin una causa clara. Si la preocupación te acompaña casi todos los días, prueba el test de ansiedad GAD-7 de este sitio."
+        }
+      ],
+      "items": [
+        "Casi todos los días he notado tensión en los hombros, la mandíbula o el estómago.",
+        "La mayoría de las noches he dormido bien.",
+        "He saltado con la gente por cosas sin importancia.",
+        "Me ha quedado energía para las cosas que disfruto.",
+        "No he parado de darle vueltas a todo lo que tengo pendiente.",
+        "Por las noches he podido desconectar.",
+        "He tenido dolores de cabeza, molestias de estómago u otros dolores sin una causa clara.",
+        "He sentido calma durante la mayor parte del día.",
+        "He tirado de picoteo, alcohol, cafeína o el móvil para aguantar el día.",
+        "He tomado las decisiones del día a día sin cuestionarme una y otra vez.",
+        "Se me han olvidado cosas o me ha costado concentrarme.",
+        "He tenido tiempo suficiente en el día para lo que me importa.",
+        "He sentido que un problema más sería demasiado.",
+        "He esperado con ganas la semana que viene."
+      ],
+      "results": {
+        "low": {
+          "name": "Estrés bajo (0–18)",
+          "body": "Parece que llevas bien lo que la vida te pide ahora mismo. Sigue con lo que te ayuda, como dormir bien, hacer ejercicio, descansar y tener gente con quien hablar, para tener reservas cuando llegue una racha de mucho trabajo."
+        },
+        "moderate": {
+          "name": "Estrés moderado (19–37)",
+          "body": "Llevas encima bastante presión. Es habitual, pero conviene actuar antes de que vaya a más. Elige una cosa que dejar, delegar o aplazar esta semana, protege tu sueño y haz pausas cortas: un paseo, respirar despacio o diez minutos lejos de las pantallas."
+        },
+        "high": {
+          "name": "Estrés alto (38–56)",
+          "body": "Parece que estás bajo mucho estrés, y probablemente afecta a cómo te sientes cada día. Habla con un médico o un psicólogo sobre cómo te has sentido: pueden ayudarte con el estrés y con lo que hay detrás, y no hace falta esperar a que empeore. Mientras tanto, apóyate en alguien de confianza, recorta donde puedas y cuida primero el sueño y la alimentación. El test de ansiedad de abajo puede ayudarte a ponerle palabras."
+        }
+      }
+    },
+    "learning-style": {
+      "title": "Test de estilos de aprendizaje: ¿visual, auditivo, lectoescritor o práctico? Gratis — cv.cm",
+      "description": "Test de estilos de aprendizaje gratis: valora 16 afirmaciones y descubre si prefieres aprender de forma visual, escuchando, leyendo y escribiendo o con la práctica, con consejos de estudio para cada estilo. Sin registro.",
+      "h1": "Test de estilos de aprendizaje",
+      "lede": "¿Recuerdas mejor los esquemas, las conversaciones, los apuntes o lo que has probado tú mismo? Valora 16 afirmaciones para ver qué forma de asimilar la información prefieres y cómo aprovechar las cuatro al estudiar.",
+      "about": [
+        "Los modelos de estilos de aprendizaje clasifican a las personas según cómo prefieren asimilar la información. Una versión conocida, el modelo VARK de Neil Fleming, usa cuatro: visual (imágenes, esquemas, gráficos), auditivo (escuchar y hablar), lectura y escritura (textos, listas, apuntes) y kinestésico (hacer, ejemplos y práctica). Este test usa esas mismas cuatro preferencias.",
+        "Las afirmaciones se han escrito para cv.cm; este no es el cuestionario VARK y no tiene relación con sus autores. La investigación ha encontrado poca evidencia de que se aprenda mejor cuando la enseñanza se adapta al estilo preferido, así que toma tu resultado como una preferencia, no como un límite. La mayoría de las personas aprende mejor combinando métodos, y ponerte a prueba y repartir las sesiones de estudio ayuda sea cual sea tu estilo."
+      ],
+      "faq": [
+        {
+          "q": "¿Cuáles son los cuatro estilos de aprendizaje?",
+          "a": "Visual (esquemas, gráficos y color), auditivo (clases, debates y decir las cosas en voz alta), lectura y escritura (textos, listas y apuntes) y kinestésico (práctica, ejemplos reales y movimiento)."
+        },
+        {
+          "q": "¿Existen de verdad los estilos de aprendizaje?",
+          "a": "Las preferencias sí existen, y este test las mide. Lo que la investigación no respalda es la idea de que solo aprendes bien con tu estilo. El contenido también importa: los mapas se aprenden mejor viéndolos y los idiomas, escuchándolos y hablándolos."
+        },
+        {
+          "q": "¿Puedo tener más de un estilo de aprendizaje?",
+          "a": "Sí. Mucha gente puntúa alto en dos o tres. Tu resultado indica tu preferencia más fuerte y muestra tu puntuación en los cuatro."
+        },
+        {
+          "q": "¿Cómo debo estudiar según mi estilo de aprendizaje?",
+          "a": "Empieza con tu método preferido para que el contenido te resulte más accesible y luego añade otros. Sea cual sea tu resultado, hacerte preguntas, explicar las ideas con tus propias palabras y repartir el estudio en varios días funciona mejor que releer."
+        }
+      ],
+      "dims": {
+        "visual": "Visual",
+        "auditory": "Auditivo",
+        "reading": "Lectura y escritura",
+        "kinesthetic": "Práctico (kinestésico)"
+      },
+      "items": [
+        "Un esquema o un gráfico me ayuda a entender algo más rápido que una explicación.",
+        "Entiendo mejor las cosas cuando alguien me las explica de palabra.",
+        "Aprendo mejor leyendo sobre un tema en detalle.",
+        "Entiendo mejor algo cuando lo he probado yo mismo.",
+        "Recuerdo mejor las caras y los lugares que los nombres.",
+        "Recuerdo mejor lo que me dice la gente que lo que leo.",
+        "Escribir apuntes con mis propias palabras me ayuda a recordar.",
+        "Me cuesta estar mucho rato quieto solo escuchando.",
+        "Uso colores, subrayados o mapas mentales cuando estudio.",
+        "Leer en voz alta o comentarlo con alguien me ayuda a aprender.",
+        "Prefiero las instrucciones por escrito a una demostración.",
+        "Prefiero lanzarme y averiguarlo sobre la marcha antes que leer el manual.",
+        "Para indicar un camino, prefiero dibujar un mapa que describirlo.",
+        "Me gustan los pódcasts, los audiolibros y los debates como forma de aprender.",
+        "Me gustan las listas, los títulos y los materiales a los que puedo volver.",
+        "Los ejemplos reales, los experimentos y la práctica me ayudan a fijar las ideas."
+      ],
+      "results": {
+        "visual": {
+          "name": "Aprendizaje visual",
+          "body": "Piensas en imágenes. Los esquemas, gráficos, mapas y colores te ayudan a ver cómo encajan las ideas. Prueba a convertir tus apuntes en mapas mentales o diagramas de flujo, a ver demostraciones y a dibujar un problema antes de resolverlo. Añade autoevaluaciones para que esas imágenes se conviertan en recuerdo."
+        },
+        "auditory": {
+          "name": "Aprendizaje auditivo",
+          "body": "Aprendes escuchando y hablando. Las clases, los debates y explicar las cosas en voz alta te ayudan a fijar las ideas. Prueba los grupos de estudio, grabar los puntos clave y volver a escucharlos, o explicarle un tema a un amigo. Escribe después un resumen breve para tener algo que repasar."
+        },
+        "reading": {
+          "name": "Aprendizaje por lectura y escritura",
+          "body": "Lo tuyo son las palabras escritas. Te gustan los textos detallados, las listas y los apuntes bien organizados. Reescribe tus apuntes con tus propias palabras, convierte los títulos en preguntas y haz fichas de resumen. Combínalo con esquemas o ejercicios prácticos en los temas difíciles de expresar con palabras."
+        },
+        "kinesthetic": {
+          "name": "Aprendizaje práctico (kinestésico)",
+          "body": "Aprendes haciendo. La práctica, los ejemplos reales, los experimentos y el movimiento hacen que las ideas encajen. Prueba con problemas resueltos, construir maquetas, juegos de rol o estudiar de pie en sesiones cortas. Relaciona cada idea con algo que hayas vivido y luego ponte a prueba."
+        }
+      }
+    },
+    "dark-triad": {
+      "title": "Test de la tríada oscura: maquiavelismo, narcisismo y psicopatía, gratis — cv.cm",
+      "description": "Test de la tríada oscura gratis: valora 18 afirmaciones y obtén una puntuación de maquiavelismo, narcisismo y psicopatía, con lo que significa cada rasgo. No es un diagnóstico; tus respuestas no salen del navegador.",
+      "h1": "Test de la tríada oscura",
+      "lede": "¿Te gusta ir un paso por delante, disfrutas siendo el centro de atención o actúas primero y piensas después? Valora 18 afirmaciones para ver dónde te sitúas en los tres rasgos de la tríada oscura.",
+      "about": [
+        "La tríada oscura es un conjunto de tres rasgos de personalidad relacionados entre sí que los psicólogos Delroy Paulhus y Kevin Williams definieron en 2002: el maquiavelismo (estratégico, manipulador, cínico con los demás), el narcisismo (necesidad de admiración y sensación de ser especial) y la psicopatía (impulsividad, búsqueda de emociones fuertes, poca empatía y poca culpa). Todo el mundo tiene algo de cada uno; se miden en una escala, como otros rasgos.",
+        "Las afirmaciones se han escrito para cv.cm; este no es el Short Dark Triad (SD3) ni ninguna herramienta clínica. Una puntuación alta no es un diagnóstico de trastorno narcisista o antisocial de la personalidad, que solo puede hacer un profesional clínico. La mitad de las afirmaciones están invertidas, así que estar de acuerdo con todo te deja en el medio. Usa tu resultado para reflexionar, no para ponerte etiquetas ni ponérselas a nadie."
+      ],
+      "faq": [
+        {
+          "q": "¿Cuáles son los tres rasgos de la tríada oscura?",
+          "a": "El maquiavelismo es una forma fría y estratégica de tratar a la gente y la disposición a manipularla. El narcisismo es grandiosidad, sensación de tener derecho a todo y necesidad de admiración. La psicopatía es impulsividad, búsqueda de emociones fuertes y falta de empatía o remordimiento."
+        },
+        {
+          "q": "¿Cómo se calcula la puntuación?",
+          "a": "Cada rasgo tiene seis afirmaciones que puntúan de 0 a 4, tres de ellas invertidas, lo que da una puntuación sobre 24 para cada rasgo, mostrada como porcentaje. Menos del 40 % es bajo, del 40 al 60 % es medio y más del 60 % es alto."
+        },
+        {
+          "q": "¿Una puntuación alta significa que soy un psicópata?",
+          "a": "No. Son rasgos cotidianos que varían entre la población, y un test de autoinforme no puede diagnosticar un trastorno de la personalidad. Los niveles moderados pueden incluso ayudar en entornos competitivos; los muy altos suelen dañar las relaciones con el tiempo."
+        },
+        {
+          "q": "¿Puedo hacerlo pensando en otra persona?",
+          "a": "Está pensado para valorarte a ti mismo. Si respondes por tu pareja o un compañero de trabajo, sobre todo medirás la imagen que tienes de esa persona, así que no lo uses para etiquetar a nadie."
+        }
+      ],
+      "dims": {
+        "mach": "Maquiavelismo",
+        "narc": "Narcisismo",
+        "psych": "Psicopatía"
+      },
+      "items": [
+        "Antes de decidir lo amable que voy a ser con alguien, pienso en lo que puede hacer por mí.",
+        "Merezco más reconocimiento del que recibe la mayoría de la gente.",
+        "A menudo actúo por impulso, aunque sepa que es arriesgado.",
+        "Prefiero perder un trato que ganarlo engañando a alguien.",
+        "En los eventos sociales no me importa quedarme en segundo plano.",
+        "Me siento culpable durante mucho tiempo cuando he hecho daño a alguien.",
+        "Le digo a la gente lo que quiere oír si así consigo lo que quiero.",
+        "La gente me dice a menudo que soy especial o que tengo un don.",
+        "Disfruto corriendo riesgos que ponen nerviosos a los demás.",
+        "Creo que se puede confiar en la mayoría de la gente.",
+        "No me importa que otros se lleven el mérito de un trabajo compartido.",
+        "Evito hacer cosas que puedan dañar a otros, aunque yo saliera ganando.",
+        "Me gusta conocer los puntos débiles de la gente, por si algún día me hacen falta.",
+        "Me gusta que me admiren, y hago lo posible por llamar la atención.",
+        "Cuando alguien sale herido por mi culpa, lo olvido enseguida.",
+        "Soy abierto y sincero sobre lo que quiero, aunque me cueste caro.",
+        "No necesito que los demás me vean como alguien de éxito.",
+        "El dolor de los demás me afecta profundamente."
+      ],
+      "levels": {
+        "mach": {
+          "low": "Sueles ser abierto y confiado, y prefieres la sinceridad a la estrategia. A la gente le resulta fácil tratar contigo. En negociaciones difíciles, puede ayudarte preparar tu postura y no ceder todo de golpe.",
+          "mid": "Sabes jugar a largo plazo cuando hace falta, pero no sueles manipular a la gente. Lees las situaciones con realismo sin ser cínico con todo el mundo.",
+          "high": "Piensas en la gente de forma estratégica y estás dispuesto a maquillar la verdad para prosperar. Eso puede darte ventajas a corto plazo, pero desgasta la confianza si los demás se dan cuenta. Pregúntate si el objetivo compensa lo que le cuesta a la relación."
+        },
+        "narc": {
+          "low": "No necesitas ser el centro de atención y tiendes a quitar importancia a tus logros. La modestia es atractiva, pero asegúrate de que tu trabajo se vea cuando importa.",
+          "mid": "Te gusta el reconocimiento y tienes una confianza sana, sin necesitar admiración constante. Sabes aceptar un cumplido y también compartir el mérito.",
+          "high": "Disfrutas de la atención y sientes que mereces más que los demás. La seguridad puede llevarte lejos, pero puede que la gente te vea como egocéntrico. Practica interesarte por los demás y reconocer su mérito sin reservas."
+        },
+        "psych": {
+          "low": "Eres prudente, considerado y sientes con fuerza el dolor ajeno. Piensas antes de actuar, lo que os protege a ti y a los demás; solo procura que el miedo a molestar no te impida actuar.",
+          "mid": "Te gusta algo de emoción y puedes ser atrevido, pero la empatía y la culpa suelen frenarte.",
+          "high": "Actúas rápido, buscas emociones fuertes y no te detienes mucho en cómo se sienten los demás. Eso puede hacerte intrépido bajo presión, pero también puede hacer daño a la gente y meterte en líos. Te ayudará pararte antes de las decisiones importantes y comprobar cómo afectan a los demás."
+        }
+      }
+    },
+    "mental-age": {
+      "title": "Test de edad mental: ¿cuántos años tiene tu mente? Gratis — cv.cm",
+      "description": "Test de edad mental gratis: responde 12 preguntas sobre fines de semana, comida, dinero y música y descubre si tu mente es la de un niño, un adolescente, un adulto o un alma vieja. Solo por diversión, sin registro.",
+      "h1": "Test de edad mental",
+      "lede": "¿Todavía chillas al ver cachorritos, vives pegado al chat del grupo, planificas tu semana o te acuestas a las nueve? Responde 12 preguntas y descubre cuántos años tienes de corazón.",
+      "about": [
+        "Tu edad mental aquí es una lectura divertida de tus hábitos y tu forma de ver la vida, no de tu madurez ni de tu inteligencia. El test reparte las respuestas en cuatro edades: niño de corazón (7–12), adolescente (13–19), adulto (20–39) y alma vieja (40+).",
+        "En psicología, la «edad mental» designaba antes la edad que correspondía al rendimiento de un niño en un test de inteligencia; este test no tiene nada que ver con eso y no mide el CI. Se ha escrito para cv.cm, todos los resultados son igual de probables y tus respuestas no salen de tu navegador."
+      ],
+      "faq": [
+        {
+          "q": "¿Qué edades mentales me pueden salir?",
+          "a": "Niño de corazón (7–12), espíritu adolescente (13–19), adulto (20–39) y alma vieja (40+). Tu resultado muestra cuánto encajas con las cuatro."
+        },
+        {
+          "q": "¿Es mejor una edad mental más joven o más mayor?",
+          "a": "Ninguna de las dos. Una edad mental joven significa que eres juguetón y curioso; una mayor, que eres tranquilo y asentado. La mayoría de la gente es una mezcla."
+        },
+        {
+          "q": "¿Es un test de edad mental preciso?",
+          "a": "Es un test divertido, no una prueba psicológica. No existe una medida científica de la edad mental en adultos."
+        }
+      ],
+      "dims": {
+        "kid": "Niño de corazón",
+        "teen": "Espíritu adolescente",
+        "adult": "Adulto",
+        "elder": "Alma vieja"
+      },
+      "items": [
+        {
+          "q": "Tu sábado ideal:",
+          "options": [
+            "Un parque de atracciones, un castillo hinchable o un fuerte de almohadas",
+            "Dormir hasta mediodía y luego quedar con los amigos",
+            "Hacer los recados temprano y luego un brunch",
+            "Jardinería, un paseo largo y a la cama pronto"
+          ]
+        },
+        {
+          "q": "Te llega un dinero inesperado. Tú…",
+          "options": [
+            "Lo metes en tus ahorros o lo usas para pagar una factura",
+            "Lo dejas donde está y te lo piensas un tiempo",
+            "Te compras las zapatillas o las entradas de concierto que tenías fichadas",
+            "Compras juguetes, chuches o algo que brille"
+          ]
+        },
+        {
+          "q": "La app que más usas en el móvil:",
+          "options": [
+            "Una app de vídeos o una red social en la que pasas horas",
+            "El calendario o la app del banco",
+            "Un juego con personajes monos",
+            "Las llamadas, y quizá el tiempo"
+          ]
+        },
+        {
+          "q": "La hora de acostarte un día normal:",
+          "options": [
+            "Las nueve y media, con una taza de té",
+            "Cuando alguien me lo manda, y aun así protesto",
+            "Las dos de la mañana, todavía con el móvil",
+            "Hacia las once, después de un episodio más"
+          ]
+        },
+        {
+          "q": "Elige una cena:",
+          "options": [
+            "Nuggets de pollo con forma de dinosaurio",
+            "Una receta que tenía pendiente probar",
+            "Comida casera, como la que hacía mi abuela",
+            "Lo que sea rápido: fideos instantáneos o comida para llevar"
+          ]
+        },
+        {
+          "q": "Tu música:",
+          "options": [
+            "Los clásicos; ya no se hacen canciones como las de antes",
+            "Lo que esté de moda ahora mismo",
+            "Una mezcla de lo que me encantaba a los 20 y algunos descubrimientos nuevos",
+            "Sintonías de dibujos animados que me sé de memoria"
+          ]
+        },
+        {
+          "q": "Un amigo tiene un problema. Tú…",
+          "options": [
+            "Le ayudas a hacer un plan",
+            "Le transmites la sabiduría que has ido acumulando con los años",
+            "Le das un abrazo y una pegatina",
+            "Te indignas por él en el chat del grupo"
+          ]
+        },
+        {
+          "q": "Tu habitación parece…",
+          "options": [
+            "Pósteres, lucecitas y ropa en la silla",
+            "Peluches y ceras de colores por todas partes",
+            "Bastante ordenada, con algunas plantas",
+            "Impecable, con fotos y cosas que guardas desde hace años"
+          ]
+        },
+        {
+          "q": "Ves un charco. Tú…",
+          "options": [
+            "Saltas dentro, obviamente",
+            "Lo rodeas quejándote del alcantarillado",
+            "Haces una foto de tu reflejo para las redes",
+            "Lo esquivas para no mojarte los zapatos"
+          ]
+        },
+        {
+          "q": "Tu forma favorita de aprender algo nuevo:",
+          "options": [
+            "Un vídeo corto, a velocidad rápida",
+            "Un curso online o una buena guía práctica",
+            "Un libro gordo y mucho tiempo",
+            "Preguntar «¿por qué?» una y otra vez hasta que tenga sentido"
+          ]
+        },
+        {
+          "q": "¿Qué es lo que más te estresa?",
+          "options": [
+            "Lo rápido que está cambiando el mundo",
+            "Lo que piense la gente de mí",
+            "Tener que compartir",
+            "Las fechas límite, las facturas y demasiados correos"
+          ]
+        },
+        {
+          "q": "Elige un superpoder:",
+          "options": [
+            "No volver nunca cansado del trabajo",
+            "Hablar con los animales",
+            "Volver atrás en el tiempo",
+            "Hacerte famoso de la noche a la mañana"
+          ]
+        }
+      ],
+      "results": {
+        "kid": {
+          "name": "Niño de corazón (edad mental 7–12)",
+          "body": "Eres juguetón, curioso y te ilusionas con facilidad, y todavía ves magia en las cosas corrientes. Haces amigos enseguida y llevas la diversión allá donde vas. Solo acuérdate de vez en cuando de las cosas de mayores, como las facturas y la hora de dormir."
+        },
+        "teen": {
+          "name": "Espíritu adolescente (edad mental 13–19)",
+          "body": "Eres espontáneo, sociable y apasionado, siempre al día de las tendencias y dispuesto a trasnochar. Sientes las cosas con intensidad y das la cara por tus amigos. Un poco de planificación te ahorraría algún que otro agobio de última hora."
+        },
+        "adult": {
+          "name": "Adulto (edad mental 20–39)",
+          "body": "Eres práctico y equilibrado: planificas con antelación, cumples con tus responsabilidades y aun así sacas tiempo para divertirte. La gente cuenta contigo para sacar las cosas adelante. No te olvides de desconectar de vez en cuando."
+        },
+        "elder": {
+          "name": "Alma vieja (edad mental 40+)",
+          "body": "Eres tranquilo, reflexivo y sabio para tu edad. Valoras las rutinas tranquilas, las conversaciones de verdad y las cosas que duran. Tus amigos acuden a ti en busca de consejo. De vez en cuando, permítete hacer el tonto."
+        }
+      }
+    },
+    "aura-color": {
+      "title": "¿De qué color es tu aura? Test del color del aura gratis — cv.cm",
+      "description": "Test de aura gratis: responde 12 preguntas y descubre de qué color es tu aura, de roja, naranja y amarilla a verde, azul, índigo, violeta y rosa, y qué dice de ti. Solo por diversión, sin registro.",
+      "h1": "¿De qué color es tu aura?",
+      "lede": "¿Eres un rojo ardiente, un amarillo radiante, un azul sereno o un rosa dulce? Responde 12 preguntas sobre cómo piensas, cómo sientes y en qué pasas el tiempo y descubre el color de tu aura.",
+      "about": [
+        "En las tradiciones espirituales, el aura es un campo de color que, según se dice, rodea a cada persona y refleja su energía y su estado de ánimo. Este test relaciona tu personalidad con uno de ocho colores de aura: rojo, naranja, amarillo, verde, azul, índigo, violeta y rosa.",
+        "No hay ninguna evidencia científica de que el aura exista o pueda verse, así que toma tu resultado como una forma divertida de pensar en tu personalidad. Las preguntas se han escrito para cv.cm, todos los colores son igual de probables y tus respuestas no salen de tu navegador."
+      ],
+      "faq": [
+        {
+          "q": "¿Qué significan los colores del aura?",
+          "a": "El rojo es pasión y energía; el naranja, creatividad y diversión; el amarillo, optimismo; el verde, crecimiento y cuidado; el azul, calma y sinceridad; el índigo, intuición; el violeta, imaginación y visión; y el rosa, amor y bondad."
+        },
+        {
+          "q": "¿Puede cambiar el color del aura?",
+          "a": "Según las tradiciones del aura, sí: se dice que tu color cambia con tu estado de ánimo y tu vida. Vuelve a hacer el test dentro de unos meses y compruébalo."
+        },
+        {
+          "q": "¿Cuál es el color de aura más raro?",
+          "a": "En este test, ninguno: todos los colores aparecen en el mismo número de respuestas, así que todos son igual de probables."
+        }
+      ],
+      "dims": {
+        "red": "Rojo",
+        "orange": "Naranja",
+        "yellow": "Amarillo",
+        "green": "Verde",
+        "blue": "Azul",
+        "indigo": "Índigo",
+        "violet": "Violeta",
+        "pink": "Rosa"
+      },
+      "items": [
+        {
+          "q": "Tus amigos te describen como…",
+          "options": [
+            "Atrevido y apasionado",
+            "Divertido y aventurero",
+            "Alegre y positivo",
+            "Atento y con los pies en la tierra"
+          ]
+        },
+        {
+          "q": "Tu tarde perfecta:",
+          "options": [
+            "Una conversación profunda con un amigo íntimo",
+            "A solas con un libro sobre los misterios de la mente",
+            "Imaginando un gran proyecto",
+            "Cocinando una cena acogedora para alguien a quien quieres"
+          ]
+        },
+        {
+          "q": "Elige un lugar para recargar pilas:",
+          "options": [
+            "La cima de una montaña al amanecer",
+            "Un gimnasio o una pista de atletismo",
+            "Un lago tranquilo",
+            "La terraza soleada de un café"
+          ]
+        },
+        {
+          "q": "En un proyecto en grupo, tú…",
+          "options": [
+            "Mantienes la calma de todos y el trabajo encarrilado",
+            "Notas lo que necesita el equipo antes de que nadie lo diga",
+            "Tienes la idea más original",
+            "Te aseguras de que todos se sientan incluidos"
+          ]
+        },
+        {
+          "q": "Tu mayor fortaleza:",
+          "options": [
+            "La bondad",
+            "El valor",
+            "La visión",
+            "La creatividad"
+          ]
+        },
+        {
+          "q": "¿Qué regalo te haría más ilusión?",
+          "options": [
+            "Una baraja de tarot o un diario para tus sueños",
+            "Una fiesta en tu honor",
+            "Una planta o un fin de semana en la naturaleza",
+            "Una carta sincera y emotiva"
+          ]
+        },
+        {
+          "q": "Cuando alguien está mal, tú…",
+          "options": [
+            "Le escuchas con sinceridad y le ayudas a ver las cosas con claridad",
+            "Le llevas flores y le das un abrazo",
+            "Te enciendes y te pones manos a la obra para arreglarlo",
+            "Le ayudas a cuidarse"
+          ]
+        },
+        {
+          "q": "¿Con qué sueñas despierto?",
+          "options": [
+            "Con cosas buenas que están por llegar",
+            "Con cambiar el mundo",
+            "Con lo que sienten de verdad los demás",
+            "Con viajar a un lugar donde nunca has estado"
+          ]
+        },
+        {
+          "q": "Elige una afición:",
+          "options": [
+            "La meditación",
+            "Escribir o cantar",
+            "Bailar o pintar",
+            "Los deportes de competición"
+          ]
+        },
+        {
+          "q": "Tu punto débil:",
+          "options": [
+            "Perderte en tus pensamientos",
+            "Anteponer a los demás demasiado a menudo",
+            "Tomarte las cosas demasiado a pecho",
+            "Ignorar los problemas y seguir siendo positivo"
+          ]
+        },
+        {
+          "q": "Tu estilo:",
+          "options": [
+            "Vivo y alegre",
+            "Suave y romántico",
+            "Atrevido y audaz",
+            "Sencillo y un poco misterioso"
+          ]
+        },
+        {
+          "q": "¿Qué es lo que más te importa?",
+          "options": [
+            "La alegría y las experiencias nuevas",
+            "La verdad y la paz",
+            "La salud y la armonía",
+            "El sentido y la inspiración"
+          ]
+        }
+      ],
+      "results": {
+        "red": {
+          "name": "Aura roja",
+          "body": "Eres apasionado, enérgico e intrépido. Vas a por lo que quieres e inspiras a la gente con tu empuje. Tu fuego puede convertirse en impaciencia, así que date tiempo para enfriarte antes de las decisiones importantes."
+        },
+        "orange": {
+          "name": "Aura naranja",
+          "body": "Eres creativo, aventurero y muy divertido. Te encantan las experiencias nuevas y unes a la gente. Asegúrate de que tus muchos planes dejen sitio para descansar."
+        },
+        "yellow": {
+          "name": "Aura amarilla",
+          "body": "Eres optimista, luminoso y cálido, y tu buen humor se contagia a todo el mundo. Le ves el lado bueno a casi todo. No pasa nada por admitir cuando algo no va bien."
+        },
+        "green": {
+          "name": "Aura verde",
+          "body": "Eres atento, tienes los pies en la tierra y te gusta crecer. Cuidas de la gente, de las plantas y de ti mismo, y te sientes como en casa en la naturaleza. Recuerda aceptar ayuda con la misma facilidad con la que la das."
+        },
+        "blue": {
+          "name": "Aura azul",
+          "body": "Eres tranquilo, sincero y sabes escuchar. La gente te confía sus sentimientos y tú dices la verdad con delicadeza. Comparte también tus propios sentimientos, no solo los de los demás."
+        },
+        "indigo": {
+          "name": "Aura índigo",
+          "body": "Eres intuitivo, profundo y perspicaz. Percibes estados de ánimo y significados que a otros se les escapan, y necesitas tiempo a solas para recargarte. Fíate de tu instinto y contrástalo con los hechos."
+        },
+        "violet": {
+          "name": "Aura violeta",
+          "body": "Eres imaginativo, visionario y un poco peculiar. Sueñas a lo grande y quieres que tu vida tenga sentido. Convierte tus mejores ideas en pequeños primeros pasos para que se hagan realidad."
+        },
+        "pink": {
+          "name": "Aura rosa",
+          "body": "Eres cariñoso, dulce y amable, y haces que la gente se sienta querida. El romance y la amistad están en el centro de tu vida. Protege tu corazón tierno poniendo límites."
+        }
+      }
+    },
+    "stranger-things": {
+      "title": "¿Qué personaje de Stranger Things eres? Test gratis — cv.cm",
+      "description": "Test de Stranger Things gratis: responde 12 preguntas y descubre si eres Once, Mike, Dustin, Lucas, Will, Max, Steve o Hopper. Test de fans no oficial, sin registro.",
+      "h1": "¿Qué personaje de Stranger Things eres?",
+      "lede": "¿Te enfrentarías cara a cara al Mundo del Revés, descifrarías el código o mantendrías a todos a salvo? Responde 12 preguntas sobre la amistad, el peligro y la vida en Hawkins y descubre qué personaje eres.",
+      "about": [
+        "Stranger Things, la serie de Netflix creada por los hermanos Duffer, sigue a un grupo de amigos del pequeño pueblo de Hawkins, Indiana, en los años 80, que se enfrentan a un laboratorio secreto y a un oscuro mundo paralelo, el Mundo del Revés. Este test te empareja con ocho de sus personajes: Once, Mike, Dustin, Lucas, Will, Max, Steve y Hopper.",
+        "Tu resultado indica tu personaje y muestra tus puntuaciones en los ocho. Este es un test de fans no oficial escrito para cv.cm. No está afiliado a Netflix ni a los creadores de la serie, ni cuenta con su respaldo; los nombres y personajes pertenecen a sus respectivos dueños."
+      ],
+      "faq": [
+        {
+          "q": "¿Qué personajes me pueden salir?",
+          "a": "Once, Mike Wheeler, Dustin Henderson, Lucas Sinclair, Will Byers, Max Mayfield, Steve Harrington y Jim Hopper."
+        },
+        {
+          "q": "¿Hay algún resultado más raro que los demás?",
+          "a": "No. Todos los personajes aparecen en el mismo número de respuestas, así que todos son igual de probables."
+        },
+        {
+          "q": "¿Por qué no está mi personaje favorito?",
+          "a": "Ocho resultados mantienen el test corto y equilibrado. Nancy, Jonathan, Joyce, Robin, Eddie y otros podrían sumarse en una próxima actualización."
+        },
+        {
+          "q": "¿El test contiene spoilers?",
+          "a": "Solo algunos leves sobre la personalidad de los personajes y el ambiente de la serie; ningún giro importante de la trama."
+        }
+      ],
+      "dims": {
+        "eleven": "Once",
+        "mike": "Mike",
+        "dustin": "Dustin",
+        "lucas": "Lucas",
+        "will": "Will",
+        "max": "Max",
+        "steve": "Steve",
+        "hopper": "Hopper"
+      },
+      "items": [
+        {
+          "q": "Está pasando algo raro en el pueblo. Tú…",
+          "options": [
+            "Lo notas antes que nadie y vas a enfrentarte a ello",
+            "Coges el monopatín y vas a verlo con tus propios ojos",
+            "Empiezas a investigar y llamas a tus amigos por walkie",
+            "Dibujas en silencio lo que viste para no olvidarlo"
+          ]
+        },
+        {
+          "q": "Tu papel en el grupo:",
+          "options": [
+            "El protector gruñón que aparece cuando importa",
+            "El del coche, el bate y el pelazo",
+            "El líder que no abandona a nadie",
+            "El realista que dice lo que todos piensan"
+          ]
+        },
+        {
+          "q": "Elige un plan para el fin de semana:",
+          "options": [
+            "Una larga campaña de un juego de rol de mesa que diriges tú",
+            "Comer gofres y ver la tele tranquilamente",
+            "Café y dónuts, y luego un largo trayecto en coche con la radio puesta",
+            "Construir un aparato con piezas sueltas"
+          ]
+        },
+        {
+          "q": "Tu mayor miedo:",
+          "options": [
+            "Quedarte atrapado en un sitio donde nadie pueda llegar hasta ti",
+            "Que te vean como alguien que no mola",
+            "Acercarte a la gente y luego perderla",
+            "Que tus amigos te dejen atrás"
+          ]
+        },
+        {
+          "q": "Tu arma preferida:",
+          "options": [
+            "Un tirachinas de muñeca",
+            "Pura fuerza de voluntad",
+            "Un walkie-talkie y un plan",
+            "Un monopatín y mala actitud"
+          ]
+        },
+        {
+          "q": "¿Cómo llevas una ruptura?",
+          "options": [
+            "Te arreglas el pelo y te dedicas a ayudar a otro",
+            "Haces una broma y finges que todo va bien",
+            "Te lo guardas y dibujas lo que sientes",
+            "Te entierras en el trabajo y finges que estás bien"
+          ]
+        },
+        {
+          "q": "Tus amigos te quieren porque eres…",
+          "options": [
+            "Duro por fuera y tierno por dentro",
+            "Leal, justo y sincero con ellos",
+            "Valiente y capaz de protegerlos cueste lo que cueste",
+            "Dulce, sensible y un gran oyente"
+          ]
+        },
+        {
+          "q": "Elige un tentempié:",
+          "options": [
+            "Vasitos de natillas, guardados para luego",
+            "Pizza en la noche de juegos con la pandilla",
+            "Helado del centro comercial, comido en pleno turno",
+            "Una chocolatina de la sala de recreativos"
+          ]
+        },
+        {
+          "q": "Llega alguien nuevo al instituto. Tú…",
+          "options": [
+            "Le enseñas el sitio y acabas haciendo de niñera",
+            "Le adviertes de malas maneras que no se meta en líos",
+            "Finges que te da igual, pero te sientas con él de todos modos",
+            "Lo observas en silencio y luego decides si es tu amigo"
+          ]
+        },
+        {
+          "q": "Tu mejor cualidad:",
+          "options": [
+            "La determinación",
+            "La imaginación",
+            "La buena puntería y el buen juicio",
+            "La curiosidad"
+          ]
+        },
+        {
+          "q": "Encuentras una criatura extraña en tu cubo de basura. Tú…",
+          "options": [
+            "Le das de comer y le pones nombre",
+            "Llevas con calma a tus amigos a un lugar seguro",
+            "Usas tus poderes contra ella",
+            "Le das con un bate de béisbol"
+          ]
+        },
+        {
+          "q": "Tu lugar favorito de Hawkins:",
+          "options": [
+            "Los recreativos, batiendo todos los récords",
+            "La cabaña del bosque",
+            "Castillo Byers, el fuerte del bosque",
+            "El sótano de tu amigo, donde empezó todo"
+          ]
+        }
+      ],
+      "results": {
+        "eleven": {
+          "name": "Once",
+          "body": "Eres valiente, leal y más fuerte de lo que pareces. Puede que no siempre encuentres las palabras adecuadas, pero estás ahí para la gente que quieres, cueste lo que cueste. Deja que los demás te protejan de vez en cuando."
+        },
+        "mike": {
+          "name": "Mike Wheeler",
+          "body": "Eres un líder nato con un gran corazón y planes aún más grandes. Nunca abandonas a un amigo y crees en la gente cuando los demás no lo hacen. Cuidado con tu genio cuando estás preocupado."
+        },
+        "dustin": {
+          "name": "Dustin Henderson",
+          "body": "Eres curioso, gracioso e inventivo sin límites. Haces amigos en cualquier parte, resuelves problemas con aparatos y sabes un montón de datos. Tu optimismo mantiene al grupo en marcha."
+        },
+        "lucas": {
+          "name": "Lucas Sinclair",
+          "body": "Eres práctico, valiente y leal a muerte. Dices lo que otros no se atreven a decir y tienes buena puntería, tanto con el tirachinas como con los argumentos. Mantienes a tus amigos con los pies en la tierra."
+        },
+        "will": {
+          "name": "Will Byers",
+          "body": "Eres dulce, creativo y más resiliente de lo que nadie imagina. Sientes las cosas profundamente y las expresas a través del arte. Has sobrevivido a más que la mayoría, y la bondad sigue siendo tu primer instinto."
+        },
+        "max": {
+          "name": "Max Mayfield",
+          "body": "Tienes carácter, eres independiente y vas a toda velocidad sobre el monopatín. Mantienes a la gente a distancia hasta que se gana tu confianza, y entonces lucharías por ella. No pasa nada por dejar que vean cuándo estás mal."
+        },
+        "steve": {
+          "name": "Steve Harrington",
+          "body": "Puede que empezaras siendo el chico popular, pero te has convertido en el protector de todos. Eres valiente, gracioso y se te dan genial los más pequeños. Tu pelo es un extra."
+        },
+        "hopper": {
+          "name": "Jim Hopper",
+          "body": "Eres brusco, protector y mucho más tierno de lo que dejas ver. Harías cualquier cosa por la gente que quieres, aunque no siempre sepas decirlo. Baja la guardia de vez en cuando."
+        }
+      }
+    },
+    "disney-princess": {
+      "title": "¿Qué princesa Disney eres? Test gratis — cv.cm",
+      "description": "Test de princesas Disney gratis: responde 12 preguntas y descubre si eres Cenicienta, Bella, Ariel, Jasmín, Mulán, Rapunzel, Tiana o Moana (Vaiana). Test de fans no oficial, sin registro.",
+      "h1": "¿Qué princesa Disney eres?",
+      "lede": "¿Eres una devoradora de libros, una soñadora, una trabajadora incansable o una exploradora? Responde 12 preguntas sobre tus sueños, tus amigos y cómo afrontas un reto y descubre tu princesa Disney.",
+      "about": [
+        "Este test relaciona tu personalidad con ocho heroínas de las películas de animación de Disney: Cenicienta, Bella (La bella y la bestia), Ariel (La sirenita), Jasmín (Aladdín), Mulán, Rapunzel (Enredados), Tiana (Tiana y el sapo) y Moana (Vaiana en España).",
+        "Tu resultado indica tu princesa y muestra tus puntuaciones en las ocho. Este es un test de fans no oficial escrito para cv.cm. No está afiliado a Disney ni cuenta con su respaldo; los nombres y personajes pertenecen a sus respectivos dueños."
+      ],
+      "faq": [
+        {
+          "q": "¿Qué princesas me pueden salir?",
+          "a": "Cenicienta, Bella, Ariel, Jasmín, Mulán, Rapunzel, Tiana y Moana. Tu resultado indica tu princesa principal y muestra tu puntuación en las ocho."
+        },
+        {
+          "q": "¿Hay alguna princesa más rara que las demás?",
+          "a": "No. Todas las princesas aparecen en el mismo número de respuestas, así que todas son igual de probables."
+        },
+        {
+          "q": "¿Por qué no está mi princesa favorita?",
+          "a": "Ocho resultados mantienen el test corto y equilibrado. Blancanieves, Aurora, Pocahontas, Mérida y otras podrían sumarse en una próxima actualización."
+        }
+      ],
+      "dims": {
+        "cinderella": "Cenicienta",
+        "belle": "Bella",
+        "ariel": "Ariel",
+        "jasmine": "Jasmín",
+        "mulan": "Mulán",
+        "rapunzel": "Rapunzel",
+        "tiana": "Tiana",
+        "moana": "Moana"
+      },
+      "items": [
+        {
+          "q": "Tu aventura soñada:",
+          "options": [
+            "Navegar por mar abierto",
+            "Demostrar tu valía donde nadie espera que lo consigas",
+            "Ver por fin el mundo que hay más allá de tu ventana",
+            "Explorar una biblioteca que nadie más ha leído"
+          ]
+        },
+        {
+          "q": "¿Qué es lo que más deseas?",
+          "options": [
+            "Abrir mi propio negocio",
+            "Formar parte de un mundo que todavía no es el mío",
+            "Elegir mi propia vida, no que la elijan por mí",
+            "Una noche mágica libre, y bondad a cambio"
+          ]
+        },
+        {
+          "q": "Elige un compañero animal:",
+          "options": [
+            "Un tigre que vigila tu puerta",
+            "Un gallo torpe o un cerdito",
+            "Una rana que quizá sea más de lo que parece",
+            "Un camaleón que te hace compañía"
+          ]
+        },
+        {
+          "q": "Tu forma favorita de pasar una tarde libre:",
+          "options": [
+            "Leer en un rincón tranquilo",
+            "Coleccionar objetos curiosos de la playa",
+            "Entrenar y ponerte más fuerte",
+            "Coser, ordenar y tararear con los pájaros"
+          ]
+        },
+        {
+          "q": "Alguien te trata injustamente. Tú…",
+          "options": [
+            "Sigues siendo amable y no pierdes la esperanza",
+            "Te plantas y le dejas claro dónde está el límite",
+            "Dices lo que piensas con estilo",
+            "Buscas en silencio una forma más lista de esquivarlo"
+          ]
+        },
+        {
+          "q": "Tu mayor defecto:",
+          "options": [
+            "Lanzarte sin pensar",
+            "Ser un poco ingenua sobre el mundo",
+            "Estar con la nariz metida en un libro cuando deberías escuchar",
+            "Trabajar tanto que te olvidas de divertirte"
+          ]
+        },
+        {
+          "q": "Tus amigos cuentan contigo para…",
+          "options": [
+            "Buena comida y un plan sólido",
+            "Paciencia y una palabra amable",
+            "Encontrar el camino cuando todos están perdidos",
+            "Consejos sinceros y una buena recomendación de lectura"
+          ]
+        },
+        {
+          "q": "Elige un talento:",
+          "options": [
+            "Pintar, hornear y una docena de aficiones más",
+            "Regatear para abrirte paso por un mercado abarrotado",
+            "Cantar tan bien que las criaturas del mar se paran a escuchar",
+            "Pensar rápido en plena pelea"
+          ]
+        },
+        {
+          "q": "Elige un lugar para vivir:",
+          "options": [
+            "Bajo el mar",
+            "Una ciudad bulliciosa llena de jazz",
+            "Una fortaleza en la montaña",
+            "Una isla tropical"
+          ]
+        },
+        {
+          "q": "Tu vida amorosa:",
+          "options": [
+            "Prefiero enamorarme de alguien que me sorprenda antes que de alguien educado",
+            "Quiero a alguien que me quiera por cómo pienso",
+            "Me gustaría alguien amable que vea cómo soy de verdad",
+            "Bien, siempre que me ayude a fregar los platos"
+          ]
+        },
+        {
+          "q": "¿Cómo afrontas un reto que da miedo?",
+          "options": [
+            "Con una sartén en la mano",
+            "Con fe en que las cosas mejorarán",
+            "Con el océano y mis antepasados detrás de mí",
+            "Nadando directa hacia él"
+          ]
+        },
+        {
+          "q": "¿En qué se equivoca la gente contigo?",
+          "options": [
+            "Creen que no soy lo bastante fuerte",
+            "Creen que los sueños no pagan las facturas",
+            "Creen que soy rara porque leo mucho",
+            "Creen que solo soy una princesa mimada"
+          ]
+        }
+      ],
+      "results": {
+        "cinderella": {
+          "name": "Cenicienta",
+          "body": "Eres amable, paciente y tienes una resiliencia silenciosa. Los tiempos difíciles no te han amargado y sigues creyendo que llegarán cosas buenas. Tu fuerza serena conquista a la gente. Pide lo que mereces."
+        },
+        "belle": {
+          "name": "Bella",
+          "body": "Eres lectora, curiosa y no te da miedo ser diferente. Miras más allá de las apariencias y ves lo mejor de cada persona. Tu mente independiente es tu mayor fortaleza."
+        },
+        "ariel": {
+          "name": "Ariel",
+          "body": "Eres aventurera, apasionada y sientes una curiosidad infinita por el mundo más allá del tuyo. Sigues a tu corazón, a veces más deprisa que a tu cabeza. Tu valor te lleva a lugares con los que otros solo sueñan."
+        },
+        "jasmine": {
+          "name": "Jasmín",
+          "body": "Eres segura, independiente y aguda. No dejas que nadie decida tu vida por ti y defiendes lo que crees. Bajo tu fuerte voluntad hay un gran corazón."
+        },
+        "mulan": {
+          "name": "Mulán",
+          "body": "Eres valiente, ingeniosa y leal a muerte a tu familia. Aceptarías cualquier reto para proteger a quienes quieres, y demuestras que quienes dudaban de ti se equivocaban. Recuerda que vales tal como eres."
+        },
+        "rapunzel": {
+          "name": "Rapunzel",
+          "body": "Eres creativa, alegre y rebosas curiosidad. Tienes una docena de aficiones y todo te maravilla. Cuando encuentres tu valor, ninguna torre podrá retenerte."
+        },
+        "tiana": {
+          "name": "Tiana",
+          "body": "Eres trabajadora, decidida y práctica. Sabes que los sueños cuestan esfuerzo y estás dispuesta a ponerlo. No te olvides de bailar de vez en cuando: lo que necesitas y lo que quieres importan por igual."
+        },
+        "moana": {
+          "name": "Moana",
+          "body": "Eres aventurera, tenaz y entregada a tu pueblo. Cruzarías un océano para hacer lo correcto, y aprendes de cada ola que te derriba. Sabes quién eres."
+        }
+      }
+    },
+    "lightsaber-color": {
+      "title": "¿De qué color es tu sable de luz? Test de Star Wars gratis — cv.cm",
+      "description": "Test del color de tu sable de luz gratis: responde 12 preguntas y descubre si tu hoja es azul, verde, morada, amarilla, blanca, roja, naranja o negra, y qué dice de ti. Test de fans no oficial.",
+      "h1": "¿De qué color es tu sable de luz?",
+      "lede": "¿Guardián, sabio, rebelde o Sith? Responde 12 preguntas sobre cómo luchas, cómo piensas y qué bando eliges y descubre de qué color sería tu sable de luz.",
+      "about": [
+        "En las historias de Star Wars, el color de un sable de luz suele interpretarse como un reflejo de quien lo empuña: azul para los guardianes Jedi, verde para los sabios cónsules, morado para quienes caminan entre la luz y la oscuridad, amarillo para los centinelas, rojo para los Sith, blanco para una hoja purificada tras el lado oscuro, naranja para raros espíritus independientes, y la hoja negra del Sable Oscuro, único en su especie.",
+        "Los fans y las distintas historias no siempre coinciden en lo que significa cada color, así que este test usa las interpretaciones más comunes entre los fans. Es un test de fans no oficial escrito para cv.cm, no afiliado a Lucasfilm ni a Disney ni respaldado por ellos; Star Wars y sus personajes pertenecen a sus respectivos dueños."
+      ],
+      "faq": [
+        {
+          "q": "¿Qué significan los colores de los sables de luz?",
+          "a": "Según las interpretaciones habituales de los fans: el azul es valor y protección; el verde, sabiduría y calma; el morado, equilibrio; el amarillo, vigilancia; el blanco, renovación; el rojo, ambición y el lado oscuro; el naranja, independencia; y el negro (el Sable Oscuro), liderazgo."
+        },
+        {
+          "q": "¿Cuál es el color de sable de luz más raro?",
+          "a": "En las historias, el negro es único: solo existe un Sable Oscuro. En este test, todos los colores son igual de probables."
+        },
+        {
+          "q": "¿Un sable de luz rojo es malo?",
+          "a": "En las películas, las hojas rojas son de los Sith, pero tu resultado aquí describe ambición y pasión, no maldad. Muchos héroes tienen una vena ardiente."
+        }
+      ],
+      "dims": {
+        "blue": "Azul",
+        "green": "Verde",
+        "purple": "Morado",
+        "yellow": "Amarillo",
+        "white": "Blanco",
+        "red": "Rojo",
+        "orange": "Naranja",
+        "black": "Negro (Sable Oscuro)"
+      },
+      "items": [
+        {
+          "q": "Un peligro amenaza a una aldea. Tú…",
+          "options": [
+            "Te lanzas a proteger a los aldeanos",
+            "Buscas una forma pacífica de acabar con el conflicto",
+            "Vigilas las puertas durante toda la noche",
+            "Usas cualquier truco que haga falta, oscuro o luminoso"
+          ]
+        },
+        {
+          "q": "Tu lugar en un combate:",
+          "options": [
+            "Donde me necesiten, sin rencor después",
+            "En primera línea, alimentado por la ira",
+            "Por mi cuenta, con mis propias reglas",
+            "Al frente de mi clan en la batalla"
+          ]
+        },
+        {
+          "q": "Tu opinión sobre la Orden Jedi:",
+          "options": [
+            "Buena gente, pero serviré a la Fuerza a mi manera",
+            "La defendería con mi vida",
+            "La dejé una vez y volví más sabio",
+            "La protejo desde las sombras"
+          ]
+        },
+        {
+          "q": "En qué se centra tu entrenamiento:",
+          "options": [
+            "Un estilo de combate que rompe todas las reglas",
+            "El poder en estado puro",
+            "La meditación y el conocimiento de la Fuerza",
+            "La fuerza para gobernar, no solo para luchar"
+          ]
+        },
+        {
+          "q": "Elige una base:",
+          "options": [
+            "Una fortaleza en un mundo tormentoso",
+            "Un templo bullicioso donde entrenas a los iniciados",
+            "Una nave sin destino fijo",
+            "Una tranquila biblioteca de textos antiguos"
+          ]
+        },
+        {
+          "q": "Alguien te traiciona. Tú…",
+          "options": [
+            "Te la devuelves",
+            "Lo vigilas de cerca a partir de ahora",
+            "Sientes la ira y luego recuperas tu centro",
+            "Lo perdonas y empiezas de nuevo"
+          ]
+        },
+        {
+          "q": "Tu mayor fortaleza:",
+          "options": [
+            "El perdón y empezar de cero",
+            "El liderazgo",
+            "El valor",
+            "El equilibrio"
+          ]
+        },
+        {
+          "q": "Tu mayor debilidad:",
+          "options": [
+            "La desconfianza",
+            "No fiarte de más reglas que las tuyas",
+            "La ambición",
+            "Darle demasiadas vueltas a todo"
+          ]
+        },
+        {
+          "q": "¿Cómo ves la Fuerza?",
+          "options": [
+            "Una fuente de poder para quien se atreva a usarla",
+            "Una luz capaz de sanar lo que se rompió",
+            "Algo que estudiar y comprender",
+            "Un don para defender a los demás"
+          ]
+        },
+        {
+          "q": "Elige un compañero:",
+          "options": [
+            "Un contrabandista que te debe un favor",
+            "Un amigo de cada bando de la guerra",
+            "Un ejército leal que sigue tu estandarte",
+            "Un droide que vigila mientras duermes"
+          ]
+        },
+        {
+          "q": "Tu lema:",
+          "options": [
+            "Siempre alerta, siempre preparado",
+            "Lidera, y los demás te seguirán",
+            "Protege a quienes no pueden protegerse",
+            "La pasión es poder"
+          ]
+        },
+        {
+          "q": "¿Dónde te encuentras al final?",
+          "options": [
+            "En paz, con la sabiduría para conservarla",
+            "Renacido, tras caer y volver a levantarme",
+            "En algún punto entre la luz y la oscuridad",
+            "En mi propio camino"
+          ]
+        }
+      ],
+      "results": {
+        "blue": {
+          "name": "Sable de luz azul",
+          "body": "Eres un guardián: valiente, activo y rápido para defender a los demás. Prefieres actuar a esperar, y te interpones entre el peligro y la gente que te importa. Procura que tu valor deje sitio a la paciencia."
+        },
+        "green": {
+          "name": "Sable de luz verde",
+          "body": "Eres un sabio: prudente, sereno y reflexivo. Prefieres resolver un conflicto con palabras antes que con una hoja, y buscas comprender antes de actuar. Los demás acuden a ti en busca de consejo."
+        },
+        "purple": {
+          "name": "Sable de luz morado",
+          "body": "Caminas en la frontera entre la luz y la oscuridad. Conoces tus pasiones y las usas sin dejar que te dominen. Pocos pueden mantener ese equilibrio; tú haces que parezca fácil."
+        },
+        "yellow": {
+          "name": "Sable de luz amarillo",
+          "body": "Eres un centinela: atento, práctico y alerta ante problemas que a otros se les escapan. Prefieres proteger en silencio desde un segundo plano, y siempre estás listo cuando te necesitan."
+        },
+        "white": {
+          "name": "Sable de luz blanco",
+          "body": "Has pasado por momentos difíciles y has salido más fuerte. Valoras los nuevos comienzos, el perdón y hacer las cosas a tu manera, sin maestro y sin rencor. Tu camino es solo tuyo."
+        },
+        "red": {
+          "name": "Sable de luz rojo",
+          "body": "Eres apasionado, ambicioso y poderoso. Sabes lo que quieres y vas a por ello con todo lo que tienes. Asegúrate de que tu fuego te sirva a ti y no queme a quienes te rodean."
+        },
+        "orange": {
+          "name": "Sable de luz naranja",
+          "body": "Eres un espíritu libre: independiente, ingenioso y fiel a tu propio código. Para ti las normas son sugerencias, y luchas por lo que crees, caiga del lado que caiga."
+        },
+        "black": {
+          "name": "Sable de luz negro (Sable Oscuro)",
+          "body": "Eres un líder. La gente te sigue, y te tomas esa responsabilidad en serio. Como el Sable Oscuro, único en su especie, eres excepcional y proteges a los tuyos por encima de todo."
         }
       }
     }
