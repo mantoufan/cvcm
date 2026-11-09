@@ -72,9 +72,9 @@ function unzip(buffer) {
   return files;
 }
 
-async function get(url, headers = {}, timeout = 40_000) {
+async function get(url, headers = {}, timeout = 40_000, init = {}) {
   for (let attempt = 0; ; attempt += 1) {
-    const res = await fetch(url, { headers: { "User-Agent": UA, ...headers }, signal: AbortSignal.timeout(timeout) }).catch((error) => {
+    const res = await fetch(url, { ...init, headers: { "User-Agent": UA, ...headers }, signal: AbortSignal.timeout(timeout) }).catch((error) => {
       if (attempt === 3) throw error;
       return null;
     });
@@ -429,7 +429,7 @@ async function labels(ids) {
         if (name) own[locale] = name;
       }
       // Wikipedias only: Commons, Wikivoyage and the rest link stubs too.
-      out[id] = { names: null, own, sitelinks: Object.keys(entity.sitelinks ?? {}).filter((site) => /wiki$/.test(site) && !NOT_WIKIPEDIA.has(site)).length };
+      out[id] = { own, sitelinks: Object.keys(entity.sitelinks ?? {}).filter((site) => /wiki$/.test(site) && !NOT_WIKIPEDIA.has(site)).length };
     }
     await pause();
   }
@@ -454,16 +454,8 @@ async function zhVariant(texts, variant) {
     const batch = texts.slice(i, i + 100);
     // One span per paragraph: no line can start a list or heading, and each comes back on its own.
     const body = new URLSearchParams({ action: "parse", format: "json", formatversion: "2", prop: "text", contentmodel: "wikitext", disablelimitreport: "1", variant, text: batch.map((t) => `<span>${escape(t)}</span>`).join("\n\n") });
-    let data;
-    for (let attempt = 0; ; attempt += 1) {
-      const res = await fetch("https://zh.wikipedia.org/w/api.php", { method: "POST", body, headers: { "User-Agent": UA }, signal: AbortSignal.timeout(40_000) }).catch(() => null);
-      if (res?.ok) {
-        data = await res.json();
-        break;
-      }
-      if (attempt === 3) throw new Error(`zh.wikipedia convert: ${res?.status}`);
-      await new Promise((r) => setTimeout(r, 2000 * (attempt + 1)));
-    }
+    const data = JSON.parse(await get("https://zh.wikipedia.org/w/api.php", {}, 40_000, { method: "POST", body }));
+    if (data.error) throw new Error(`zh.wikipedia convert: ${data.error.code} ${data.error.info ?? ""}`);
     const spans = [...data.parse.text.matchAll(/<span>(.*?)<\/span>/gs)].map((m) => decode(m[1]));
     if (spans.length !== batch.length) throw new Error(`zh.wikipedia convert: ${spans.length} of ${batch.length} back`);
     out.push(...spans);
@@ -553,7 +545,7 @@ const WIKI = "https://en.wikipedia.org/w/api.php";
 const KM_PER_MILE = 1.609344;
 const KM2_PER_SQ_MI = 2.589988110336;
 
-const decode = (html) => html.replace(/&#160;|&nbsp;/g, " ").replace(/&#x([0-9a-f]+);/gi, (_, n) => String.fromCodePoint(parseInt(n, 16))).replace(/&#(\d+);/g, (_, n) => String.fromCodePoint(Number(n))).replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&quot;/g, '"').replace(/&#39;/g, "'").replace(/&amp;/g, "&");
+const decode = (html) => decodeXml(html.replace(/&nbsp;/g, " "));
 /** A cell's text without markup or footnote marks ("6,650[3]" → "6,650"). */
 const cellText = (html) => decode(html.replace(/<sup[^>]*>.*?<\/sup>/gs, "").replace(/<br\s*\/?>/g, "\n").replace(/<[^>]+>/g, "")).replace(/\[[^\]]*\]/g, "").trim();
 const linkTitles = (html) => [...html.matchAll(/<a [^>]*href="\/wiki\/([^"#?]+)"[^>]*>/g)].map((m) => decodeURIComponent(m[1]).replace(/_/g, " ")).filter((t) => !/^(File|Help|Wikipedia|Template):/.test(t));
@@ -585,6 +577,7 @@ async function titleIds(titles) {
   for (let i = 0; i < unique.length; i += 50) {
     const q = new URLSearchParams({ action: "query", prop: "pageprops", ppprop: "wikibase_item", redirects: "1", titles: unique.slice(i, i + 50).join("|"), format: "json", formatversion: "2" });
     const data = JSON.parse(await get(`${WIKI}?${q}`));
+    if (data.error || !data.query) throw new Error(`wikipedia titles: ${data.error?.info ?? "no query result"} (${unique.slice(i, i + 50).join(", ").slice(0, 120)})`);
     const renamed = new Map();
     // A redirect to a section ("X Island" → "Some Archipelago#X Island") is a part of that page: no item of its own.
     const toSection = new Set((data.query.redirects ?? []).filter((step) => step.tofragment).map((step) => step.from));
@@ -675,7 +668,8 @@ async function wikipediaList(id) {
     // The main island of a country links its geography article ("Geography of Madagascar"): the item is the place itself.
     // The first link names the row; if it is red (no page), the cell's next link (its archipelago, say) is not the row's item.
     // A link to a section of another page ("Kerguelen Islands#Grande Terre") names a part of it: no item of its own either.
-    const firstLink = [...row[spec.name].matchAll(/<a [^>]*>/g)].map((m) => m[0]).find((a) => !/href="\/wiki\/(File|Image):/.test(a)) ?? "";
+    // The first anchor that could name the row: an article, red or section link (not a file, help, interwiki or external link).
+    const firstLink = [...row[spec.name].matchAll(/<a [^>]*>/g)].map((m) => m[0]).find((a) => /class="new"|redlink=1/.test(a) || (/href="\/wiki\//.test(a) && !/href="\/wiki\/(File|Image|Help|Wikipedia|Template|Special):/.test(a))) ?? "";
     const title = /redlink=1|class="new"|href="[^"]*#/.test(firstLink) ? null : linkTitles(row[spec.name])[0]?.replace(/^Geography of (the )?/, "") ?? null;
     if (!value) continue;
     const lines = cellText(row[spec.name]).split("\n").map((line) => line.trim()).filter(Boolean);
@@ -703,15 +697,10 @@ async function wikipediaList(id) {
   for (const row of parsed) row.item = (row.title && itemOf[row.title]) || "";
   // A river listed twice (its whole system and an upper course, say) keeps its longest entry.
   const seen = new Set();
-  const sorted = parsed.sort((a, b) => b.value - a.value).filter((row) => !row.item || (!seen.has(row.item) && seen.add(row.item)));
-  let cut = Math.min(spec.rows, sorted.length);
-  while (cut < sorted.length && sorted[cut].value === sorted[cut - 1].value) cut += 1;
-  const kept = sorted.slice(0, cut);
-  if (kept.length < spec.rows) throw new Error(`wikipedia ${spec.page}: only ${kept.length} rows`);
-  if (kept[0].item !== spec.first) throw new Error(`wikipedia ${spec.page}: ${kept[0].name} first`);
-  // Unlinked rows: an unnamed or unlinked island is real, a few of them; elsewhere, or many, the name column was misread.
-  const unlinked = kept.filter((row) => !row.item);
-  if (unlinked.length && (id !== "largest-islands" || unlinked.length > 3)) throw new Error(`wikipedia ${spec.page}: ${unlinked.map((row) => row.name).join(", ")} has no linked name`);
+  const sorted = parsed.filter((row) => !row.item || (!seen.has(row.item) && seen.add(row.item)));
+  if (sorted[0]?.item !== spec.first) throw new Error(`wikipedia ${spec.page}: ${sorted[0]?.name} first`);
+  // A pool a little past the cut: an island remap below can merge two rows, and the next one then moves up.
+  const kept = sorted.slice(0, spec.rows + 10);
   const countryOf = await titleIds(kept.flatMap((row) => row.countries));
   const countryIds = [...new Set(Object.values(countryOf))];
   const codes = await countryCodes(countryIds);
@@ -737,6 +726,14 @@ async function wikipediaList(id) {
   for (let i = kept.length - 1; i >= 0; i -= 1) {
     if (kept[i].item && kept.slice(0, i).some((row) => row.item === kept[i].item)) kept.splice(i, 1);
   }
+  // The cut, with every row tied with the last.
+  let cut = Math.min(spec.rows, kept.length);
+  while (cut < kept.length && kept[cut].value === kept[cut - 1].value) cut += 1;
+  kept.splice(cut);
+  if (kept.length < spec.rows) throw new Error(`wikipedia ${spec.page}: only ${kept.length} rows`);
+  // Unlinked rows: an unnamed or unlinked island is real, a few of them; elsewhere, or many, the name column was misread.
+  const unlinked = kept.filter((row) => !row.item);
+  if (unlinked.length && (id !== "largest-islands" || unlinked.length > 3)) throw new Error(`wikipedia ${spec.page}: ${unlinked.map((row) => row.name).join(", ")} has no linked name`);
   const rows = kept.map((row) => {
     const item = row.item;
     if (item && !info[item]) throw new Error(`wikidata ${item} (${row.title}): no English name`);
