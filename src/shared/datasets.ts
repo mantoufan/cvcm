@@ -3,15 +3,16 @@
 // source APIs. Copy lives in `src/locales/datasets/<locale>.json`.
 import meta from "../data/meta.json";
 import indicatorSpec from "./indicators.json";
+import referenceFiles from "./dataset-files.json";
 import type { ToolId } from "./path";
 
 /** `/data/` is the JSON / CSV converter, so the column lives under `/datasets/`. */
 export const DATASET_SEGMENT = "datasets";
 
 export const DATASET_GROUPS = [
-  { id: "economy", sets: ["gdp", "gdp-per-capita", "gdp-ppp-per-capita", "gdp-growth", "inflation", "unemployment", "exports", "imports", "female-labor-force"] },
-  { id: "people", sets: ["population", "population-growth", "population-density", "urban-population", "aged-65-plus", "life-expectancy", "life-expectancy-female", "life-expectancy-male", "fertility-rate", "birth-rate", "death-rate", "infant-mortality", "maternal-mortality", "health-spending-per-capita"] },
-  { id: "planet", sets: ["land-area", "forest-area", "co2-per-capita", "renewable-energy", "electricity-access", "internet-users"] },
+  { id: "economy", sets: ["gdp", "gdp-per-capita", "gdp-ppp-per-capita", "gni-per-capita", "gdp-growth", "inflation", "unemployment", "youth-unemployment", "female-labor-force", "exports", "imports", "remittances", "foreign-reserves", "military-spending", "military-spending-gdp", "rd-spending"] },
+  { id: "people", sets: ["population", "population-growth", "population-density", "urban-population", "aged-0-14", "aged-65-plus", "international-migrants", "life-expectancy", "life-expectancy-female", "life-expectancy-male", "fertility-rate", "birth-rate", "death-rate", "infant-mortality", "maternal-mortality", "physicians", "health-spending-per-capita", "education-spending"] },
+  { id: "planet", sets: ["land-area", "forest-area", "co2-emissions", "co2-per-capita", "renewable-energy", "electricity-access", "electricity-consumption", "internet-users", "mobile-subscriptions", "broadband-subscriptions"] },
   { id: "codes", sets: ["country-codes", "calling-codes", "currency-codes", "time-zones"] },
   { id: "reference", sets: ["paper-sizes", "ascii"] },
 ] as const;
@@ -94,6 +95,21 @@ export const DATASET_TOOLS: Partial<Record<DatasetId, readonly ToolId[]>> = {
   "female-labor-force": ["hourly", "percent"],
   "forest-area": ["units", "percent"],
   "renewable-energy": ["electricity", "percent"],
+  "gni-per-capita": ["hourly", "compound"],
+  "youth-unemployment": ["percent", "hourly"],
+  remittances: ["percent", "compound"],
+  "foreign-reserves": ["gold", "percent"],
+  "military-spending": ["percent", "compound"],
+  "military-spending-gdp": ["percent"],
+  "rd-spending": ["percent", "compound"],
+  "aged-0-14": ["age", "percent"],
+  "international-migrants": ["percent"],
+  physicians: ["percent"],
+  "education-spending": ["percent"],
+  "co2-emissions": ["fuel-cost", "electricity"],
+  "electricity-consumption": ["electricity", "units"],
+  "mobile-subscriptions": ["percent"],
+  "broadband-subscriptions": ["percent"],
   "country-codes": ["data", "json"],
   "calling-codes": ["qr"],
   "currency-codes": ["vat", "margin"],
@@ -120,12 +136,17 @@ export type IndicatorMeta = {
   worlds?: Record<string, number>;
 };
 /** `west` / `east`: the extreme UTC offsets in minutes (time zones only). */
-export type DatasetMeta = { rows: number; year?: number; tzdata?: string | null; west?: number; east?: number } & Partial<IndicatorMeta>;
+export type DatasetMeta = { rows: number; /** The last snapshot that changed this table. */ updated: string; year?: number; tzdata?: string | null; west?: number; east?: number } & Partial<IndicatorMeta>;
 
 export const DATASET_SNAPSHOT: string = meta.updated;
 
 export function datasetMeta(id: DatasetId): DatasetMeta {
   return (meta.sets as unknown as Record<DatasetId, DatasetMeta>)[id];
+}
+
+/** The date this table's rows last changed: its sitemap lastmod and the date the page shows. */
+export function datasetUpdated(id: DatasetId): string {
+  return datasetMeta(id).updated;
 }
 
 export function indicatorMeta(id: IndicatorId): IndicatorMeta {
@@ -135,12 +156,8 @@ export function indicatorMeta(id: IndicatorId): IndicatorMeta {
 /** Row files in `src/data/` each table reads (the currency table names its users from the country list). */
 export const DATASET_FILES: Record<DatasetId, readonly string[]> = {
   ...(Object.fromEntries(INDICATORS.map((id) => [id, [id] as readonly string[]])) as Record<IndicatorId, readonly string[]>),
-  "country-codes": ["countries"],
-  "calling-codes": ["countries"],
-  "currency-codes": ["currencies", "countries"],
-  "time-zones": ["time-zones"],
-  "paper-sizes": ["paper-sizes"],
-  ascii: ["ascii"],
+  // The fetch script reads the same file to tell which tables changed.
+  ...(referenceFiles as Record<Exclude<DatasetId, IndicatorId>, readonly string[]>),
 };
 
 export function csvHref(id: DatasetId): string {

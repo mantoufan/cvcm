@@ -5,7 +5,7 @@ import type { Locale } from "../../shared/locale";
 import { appHref, datasetHref } from "../../shared/path";
 import {
   DATASET_GROUPS,
-  DATASET_SNAPSHOT,
+  datasetUpdated,
   DATASET_SOURCE,
   DATASET_FILES,
   DATASET_TOOLS,
@@ -171,7 +171,7 @@ export async function mountDataset(host: HTMLElement, locale: Locale, id: Datase
     h("p", { class: "data-source muted" },
       `${ui.source}: `, h("a", { href: source.url, rel: "noopener", target: "_blank" }, source.name),
       ` · ${ui.license}: `, h("a", { href: source.licenseUrl, rel: "noopener license", target: "_blank" }, source.license),
-      ` · ${fill(ui.snapshot, { date: DATASET_SNAPSHOT })}`,
+      ` · ${fill(ui.snapshot, { date: datasetUpdated(id) })}`,
     ),
     h("section", { class: "quiz-about" }, h("h2", null, ui.about), ...copy.about.map((p) => h("p", null, p))),
     faq(locale, id),

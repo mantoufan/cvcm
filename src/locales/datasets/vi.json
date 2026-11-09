@@ -2,7 +2,7 @@
   "crumbHome": "Trang chủ",
   "hub": {
     "title": "Bảng dữ liệu mở miễn phí: dân số, GDP, mã quốc gia | cv.cm",
-    "description": "Bảng dữ liệu mở có thể tìm kiếm, sắp xếp và tải CSV: dân số, GDP, xuất khẩu, lạm phát, thất nghiệp, tuổi thọ nam và nữ, tỷ suất sinh và tỷ suất chết, diện tích đất và rừng, phát thải CO2, năng lượng tái tạo, tỷ lệ dùng internet, mã quốc gia và mã tiền tệ ISO, mã vùng điện thoại, múi giờ, khổ giấy và bảng mã ASCII.",
+    "description": "Bảng dữ liệu mở có thể tìm kiếm, sắp xếp và tải CSV: dân số, GDP, GNI, xuất khẩu, lạm phát, thất nghiệp, chi tiêu quân sự, dự trữ ngoại hối, chi tiêu R&D, tuổi thọ, bác sĩ, tỷ suất sinh và tỷ suất chết, người di cư, diện tích đất và rừng, phát thải CO2, tiêu thụ điện, năng lượng tái tạo, tỷ lệ dùng internet, điện thoại di động và băng thông rộng, mã quốc gia và mã tiền tệ ISO, mã vùng điện thoại, múi giờ, khổ giấy và bảng mã ASCII.",
     "h1": "Dữ liệu mở",
     "lede": "Dữ liệu công khai từ Ngân hàng Thế giới, ISO và IANA, trình bày thành bảng đơn giản. Bạn có thể tìm kiếm, sắp xếp theo cột bất kỳ hoặc tải file CSV. Mỗi bảng đều ghi rõ nguồn và giấy phép.",
     "groups": {
@@ -698,6 +698,336 @@
         { "q": "Nước nào sử dụng nhiều năng lượng tái tạo nhất?", "a": "Xét theo tỷ trọng là {top1}, nơi {v1}% năng lượng sử dụng là năng lượng tái tạo vào năm {year1}, chủ yếu từ củi và thủy điện." },
         { "q": "Năng lượng tái tạo chiếm bao nhiêu phần trăm năng lượng thế giới?", "a": "{world}% tổng tiêu thụ năng lượng cuối cùng vào năm {worldYear}." },
         { "q": "Nước nào sử dụng ít năng lượng tái tạo nhất?", "a": "Trong danh sách này là {last}, ở mức {vlast}%." }
+      ]
+    },
+    "gni-per-capita": {
+      "name": "GNI bình quân đầu người các nước",
+      "title": "GNI bình quân đầu người các nước năm {to}: giàu nhất và nghèo nhất (Atlas, USD) | cv.cm",
+      "description": "Tổng thu nhập quốc dân mỗi người của {rows} nền kinh tế theo USD (phương pháp Atlas của Ngân hàng Thế giới), xếp hạng. Thế giới {world} ({worldYear}). Dữ liệu Ngân hàng Thế giới, tải CSV.",
+      "h1": "GNI bình quân đầu người các nước năm {to} (phương pháp Atlas, USD hiện hành)",
+      "lede": "Tổng thu nhập quốc dân chia cho dân số, cho {rows} quốc gia và vùng lãnh thổ, xếp từ cao đến thấp. Đây là con số Ngân hàng Thế giới dùng để xếp các nước vào các nhóm thu nhập. Nguồn: Ngân hàng Thế giới.",
+      "value": "GNI bình quân đầu người (USD)",
+      "facts": [
+        "Thế giới: {world} mỗi người ({worldYear}).",
+        "Cao nhất: {top1} ({v1}), {top2} ({v2}) và {top3} ({v3}).",
+        "Thấp nhất trong danh sách: {last} ({vlast})."
+      ],
+      "about": [
+        "GNI bằng GDP cộng thu nhập cư dân kiếm được ở nước ngoài, trừ thu nhập người nước ngoài chuyển ra khỏi nước đó. GNI cao hơn GDP ở những nơi có nhiều người làm việc bên kia biên giới hoặc sở hữu tài sản ở nước ngoài, và thấp hơn ở những nơi như Ireland, nơi các tập đoàn đa quốc gia ghi nhận lợi nhuận lớn rồi chuyển đi.",
+        "Phương pháp Atlas quy đổi nội tệ theo tỷ giá bình quân ba năm, nên một năm đồng tiền mất giá mạnh sẽ ít làm con số thay đổi hơn. Phương pháp này không điều chỉnh theo mặt bằng giá: xem bảng GDP bình quân đầu người (PPP) để có số liệu đó."
+      ],
+      "faq": [
+        { "q": "Nước nào có GNI bình quân đầu người cao nhất?", "a": "{top1}, với {v1} mỗi người năm {year1}, tiếp theo là {top2} ({v2}) và {top3} ({v3})." },
+        { "q": "GNI bình quân đầu người của thế giới là bao nhiêu?", "a": "{world} mỗi người năm {worldYear}." },
+        { "q": "GNI và GDP khác nhau thế nào?", "a": "GDP tính những gì được sản xuất trong lãnh thổ một nước. GNI tính thu nhập mà cư dân nước đó nhận được, dù kiếm ở đâu, nên cộng thêm thu nhập từ nước ngoài và trừ đi thu nhập trả cho người nước ngoài." }
+      ]
+    },
+    "youth-unemployment": {
+      "name": "Tỷ lệ thất nghiệp thanh niên các nước",
+      "title": "Tỷ lệ thất nghiệp thanh niên các nước năm {to}: độ tuổi 15–24 | cv.cm",
+      "description": "Tỷ lệ thất nghiệp của người 15–24 tuổi tại {rows} quốc gia, xếp hạng. Thế giới {world}% ({worldYear}). Ước tính của ILO qua Ngân hàng Thế giới, tải CSV.",
+      "h1": "Tỷ lệ thất nghiệp thanh niên các nước năm {to} (% lực lượng lao động 15–24 tuổi)",
+      "lede": "Tỷ lệ người trẻ từ 15 đến 24 tuổi muốn có việc và đang tìm việc nhưng chưa có việc làm, cho {rows} quốc gia và vùng lãnh thổ, xếp từ cao đến thấp. Nguồn: Ngân hàng Thế giới, từ ước tính mô hình của Tổ chức Lao động Quốc tế.",
+      "value": "Thất nghiệp thanh niên (%)",
+      "facts": [
+        "Thế giới: {world}% người trẻ trong lực lượng lao động bị thất nghiệp ({worldYear}).",
+        "Cao nhất: {top1} ({v1}%), {top2} ({v2}%) và {top3} ({v3}%).",
+        "Thấp nhất trong danh sách: {last} ({vlast}%)."
+      ],
+      "about": [
+        "Học sinh, sinh viên không tìm việc thì không thuộc lực lượng lao động, nên không bị tính là thất nghiệp. Ở những nước phần lớn người trẻ đang đi học, tỷ lệ này được tính trên nhóm nhỏ hơn là những người có tìm việc.",
+        "Tỷ lệ rất thấp ở một số nước nghèo không có nghĩa là có việc làm tốt: khi không có trợ cấp thất nghiệp, gần như ai cũng phải làm một công việc phi chính thức nào đó. Tỷ lệ thất nghiệp thanh niên thường gấp hai đến ba lần tỷ lệ chung."
+      ],
+      "faq": [
+        { "q": "Nước nào có tỷ lệ thất nghiệp thanh niên cao nhất?", "a": "{top1}, nơi {v1}% người trẻ trong lực lượng lao động bị thất nghiệp vào năm {year1}, tiếp theo là {top2} ({v2}%) và {top3} ({v3}%)." },
+        { "q": "Tỷ lệ thất nghiệp thanh niên của thế giới là bao nhiêu?", "a": "{world}% vào năm {worldYear}, theo ước tính của ILO." },
+        { "q": "Nước nào có tỷ lệ thất nghiệp thanh niên thấp nhất?", "a": "Trong danh sách này là {last}, ở mức {vlast}%." }
+      ]
+    },
+    "remittances": {
+      "name": "Kiều hối các nước (% GDP)",
+      "title": "Kiều hối các nước năm {to}: nước phụ thuộc nhiều nhất vào tiền gửi về (% GDP) | cv.cm",
+      "description": "Kiều hối cá nhân nhận được tính theo tỷ lệ GDP của {rows} quốc gia, xếp hạng. Thế giới {world}% ({worldYear}). Dữ liệu Ngân hàng Thế giới, tải CSV.",
+      "h1": "Kiều hối cá nhân nhận được các nước năm {to} (% GDP)",
+      "lede": "Tiền người lao động ở nước ngoài gửi về cho gia đình, so với quy mô của mỗi nền kinh tế, cho {rows} quốc gia và vùng lãnh thổ, xếp từ cao đến thấp. Nguồn: Ngân hàng Thế giới.",
+      "value": "Kiều hối (% GDP)",
+      "facts": [
+        "Thế giới: kiều hối bằng {world}% GDP ({worldYear}).",
+        "Cao nhất: {top1} ({v1}%), {top2} ({v2}%) và {top3} ({v3}%).",
+        "Thấp nhất trong danh sách: {last} ({vlast}%)."
+      ],
+      "about": [
+        "Kiều hối gồm tiền lương của người lao động sống ở nước ngoài dưới một năm và tiền người di cư gửi về cho các hộ gia đình ở quê nhà. Với những nền kinh tế nhỏ có nhiều người làm việc ở nước ngoài, kiều hối có thể mang về nhiều tiền hơn cả xuất khẩu hay đầu tư nước ngoài.",
+        "Chỉ những khoản chuyển tiền được ghi nhận mới được tính. Tiền mang theo người hoặc gửi qua kênh phi chính thức không có trong số liệu, nên dòng tiền thực tế lớn hơn."
+      ],
+      "faq": [
+        { "q": "Nước nào phụ thuộc nhiều nhất vào kiều hối?", "a": "{top1}, nơi kiều hối bằng {v1}% GDP vào năm {year1}, tiếp theo là {top2} ({v2}%) và {top3} ({v3}%)." },
+        { "q": "Kiều hối lớn đến mức nào so với kinh tế thế giới?", "a": "{world}% GDP thế giới vào năm {worldYear}." },
+        { "q": "Kiều hối là gì?", "a": "Là tiền do những người làm việc ở nước khác gửi về quê nhà, thường để hỗ trợ gia đình." }
+      ]
+    },
+    "foreign-reserves": {
+      "name": "Dự trữ ngoại hối các nước",
+      "title": "Dự trữ ngoại hối các nước năm {to}: nước dự trữ lớn nhất (gồm vàng) | cv.cm",
+      "description": "Tổng dự trữ bao gồm vàng của {rows} nền kinh tế theo USD hiện hành, xếp hạng. Lớn nhất: {top1} ({v1}). Dữ liệu Ngân hàng Thế giới / IMF, tải CSV.",
+      "h1": "Dự trữ ngoại hối các nước năm {to} (bao gồm vàng, USD hiện hành)",
+      "lede": "Ngoại tệ, vàng, vị thế dự trữ tại IMF và quyền rút vốn đặc biệt (SDR) do ngân hàng trung ương mỗi nước nắm giữ, cho {rows} quốc gia và vùng lãnh thổ, xếp từ lớn đến nhỏ. Nguồn: Ngân hàng Thế giới, từ dữ liệu IMF.",
+      "value": "Dự trữ (USD)",
+      "facts": [
+        "Dự trữ lớn nhất: {top1} ({v1}), {top2} ({v2}) và {top3} ({v3}).",
+        "Nhỏ nhất trong danh sách: {last} ({vlast}).",
+        "Mỗi dòng là năm gần nhất nước đó báo cáo, từ {from} đến {to}."
+      ],
+      "about": [
+        "Ngân hàng trung ương giữ dự trữ để thanh toán nhập khẩu, trả nợ nước ngoài và bảo vệ đồng tiền. Vàng được định giá theo giá thị trường, nên khi giá vàng tăng, những nước nắm giữ nhiều vàng sẽ có dự trữ tăng theo.",
+        "Các nước phát hành đồng tiền dự trữ, như Mỹ, cần ít dự trữ của riêng mình hơn. Các nước khu vực đồng euro báo cáo lượng dự trữ của riêng họ; dự trữ của Ngân hàng Trung ương châu Âu không được chia cho các nước này."
+      ],
+      "faq": [
+        { "q": "Nước nào có dự trữ ngoại hối lớn nhất?", "a": "{top1}, với {v1} năm {year1}, tiếp theo là {top2} ({v2}) và {top3} ({v3})." },
+        { "q": "Số liệu có bao gồm vàng không?", "a": "Có. Tổng dự trữ gồm vàng theo giá thị trường, ngoại tệ, quyền rút vốn đặc biệt và vị thế dự trữ tại IMF." },
+        { "q": "Vì sao không có tổng của thế giới?", "a": "Ngân hàng Thế giới không công bố tổng thế giới cho chuỗi số liệu này, nên bảng không có cột tỷ trọng trong thế giới." }
+      ]
+    },
+    "military-spending": {
+      "name": "Chi tiêu quân sự các nước",
+      "title": "Chi tiêu quân sự các nước năm {to}: ngân sách quốc phòng lớn nhất (USD) | cv.cm",
+      "description": "Chi tiêu quân sự của {rows} quốc gia theo USD hiện hành, xếp hạng, kèm tỷ trọng trong tổng thế giới. Thế giới {world} ({worldYear}). Dữ liệu SIPRI qua Ngân hàng Thế giới, tải CSV.",
+      "h1": "Chi tiêu quân sự các nước năm {to} (USD hiện hành)",
+      "lede": "Số tiền mỗi chính phủ chi cho lực lượng vũ trang, cho {rows} quốc gia, xếp từ lớn đến nhỏ, kèm tỷ trọng của từng nước trong chi tiêu quân sự thế giới. Nguồn: Ngân hàng Thế giới, từ Viện Nghiên cứu Hòa bình Quốc tế Stockholm (SIPRI).",
+      "value": "Chi tiêu quân sự (USD)",
+      "facts": [
+        "Chi tiêu quân sự thế giới: {world} ({worldYear}).",
+        "Lớn nhất: {top1} ({v1}), {top2} ({v2}) và {top3} ({v3}).",
+        "Thấp nhất trong danh sách: {last} ({vlast})."
+      ],
+      "about": [
+        "SIPRI tính chi tiêu cho lực lượng vũ trang, bộ quốc phòng, lực lượng bán quân sự được huấn luyện cho tác chiến, lương hưu quân nhân và viện trợ quân sự cho nước khác. Số liệu của một số nước, trong đó có Trung Quốc và Nga, là ước tính của SIPRI, vì ngân sách chính thức bỏ sót một số khoản.",
+        "Giá trị tính theo USD hiện hành với tỷ giá thị trường, nên chưa phản ánh đủ sức mua của một đô la ở những nước có mặt bằng giá thấp. Các nước ghi 0 là những nước không có quân đội riêng."
+      ],
+      "faq": [
+        { "q": "Nước nào chi tiêu quân sự nhiều nhất?", "a": "{top1}, với {v1} năm {year1}, tiếp theo là {top2} ({v2}) và {top3} ({v3})." },
+        { "q": "Thế giới chi bao nhiêu cho quân sự?", "a": "{world} năm {worldYear}." },
+        { "q": "Nước nào chi tiêu quân sự ít nhất?", "a": "Trong danh sách này là {last}, với {vlast}." }
+      ]
+    },
+    "military-spending-gdp": {
+      "name": "Chi tiêu quân sự theo % GDP các nước",
+      "title": "Chi tiêu quân sự theo % GDP các nước năm {to} | cv.cm",
+      "description": "Chi tiêu quân sự tính theo tỷ lệ GDP của {rows} quốc gia, xếp hạng. Thế giới {world}% ({worldYear}). Dữ liệu SIPRI qua Ngân hàng Thế giới, tải CSV.",
+      "h1": "Chi tiêu quân sự các nước năm {to} (% GDP)",
+      "lede": "Chi tiêu quân sự so với quy mô của mỗi nền kinh tế, cho {rows} quốc gia, xếp từ cao đến thấp. Nguồn: Ngân hàng Thế giới, từ Viện Nghiên cứu Hòa bình Quốc tế Stockholm (SIPRI).",
+      "value": "Chi tiêu quân sự (% GDP)",
+      "facts": [
+        "Thế giới: {world}% GDP dành cho quân sự ({worldYear}).",
+        "Cao nhất: {top1} ({v1}%), {top2} ({v2}%) và {top3} ({v3}%).",
+        "Thấp nhất trong danh sách: {last} ({vlast}%)."
+      ],
+      "about": [
+        "Tỷ lệ theo GDP cho thấy một nước dành bao nhiêu phần nền kinh tế cho quốc phòng, điều mà tổng số tiền tính bằng USD không thể hiện. Các nước đang có chiến tranh hoặc bị đe dọa xếp cao nhất.",
+        "Các thành viên NATO đã cam kết chi ít nhất 2% GDP cho quốc phòng, và năm 2025 đã nhất trí mục tiêu cao hơn là 5% vào năm 2035, trong đó 3,5% cho quốc phòng cốt lõi."
+      ],
+      "faq": [
+        { "q": "Nước nào dành tỷ lệ GDP cho quân sự lớn nhất?", "a": "{top1}, ở mức {v1}% GDP năm {year1}, tiếp theo là {top2} ({v2}%) và {top3} ({v3}%)." },
+        { "q": "Chi tiêu quân sự chiếm bao nhiêu phần trăm GDP thế giới?", "a": "{world}% vào năm {worldYear}." },
+        { "q": "Nước nào có chi tiêu quân sự thấp nhất so với GDP?", "a": "Trong danh sách này là {last}, với {vlast}%." }
+      ]
+    },
+    "rd-spending": {
+      "name": "Chi tiêu R&D các nước (% GDP)",
+      "title": "Chi tiêu R&D các nước năm {to}: nghiên cứu và phát triển (% GDP) | cv.cm",
+      "description": "Chi tiêu cho nghiên cứu và phát triển tính theo tỷ lệ GDP của {rows} quốc gia, xếp hạng. Thế giới {world}% ({worldYear}). Dữ liệu UNESCO qua Ngân hàng Thế giới, tải CSV.",
+      "h1": "Chi tiêu cho nghiên cứu và phát triển các nước năm {to} (% GDP)",
+      "lede": "Tổng số tiền doanh nghiệp, chính phủ, trường đại học và tổ chức phi lợi nhuận chi cho nghiên cứu và phát triển, tính theo tỷ lệ GDP, cho {rows} quốc gia và vùng lãnh thổ, xếp từ cao đến thấp. Nguồn: Ngân hàng Thế giới, từ Viện Thống kê UNESCO.",
+      "value": "Chi tiêu R&D (% GDP)",
+      "facts": [
+        "Thế giới: {world}% GDP được chi cho R&D ({worldYear}).",
+        "Cao nhất: {top1} ({v1}%), {top2} ({v2}%) và {top3} ({v3}%).",
+        "Thấp nhất trong danh sách: {last} ({vlast}%)."
+      ],
+      "about": [
+        "R&D gồm nghiên cứu cơ bản, nghiên cứu ứng dụng và phát triển thực nghiệm. Ở những nước chi nhiều nhất, phần lớn do doanh nghiệp chi trả: các hãng sản xuất chip, ô tô và dược phẩm.",
+        "Nhiều nước chỉ khảo sát R&D vài năm một lần, nên mỗi dòng là năm gần nhất được báo cáo trong vòng bốn năm. Các nước chưa báo cáo không có trong bảng."
+      ],
+      "faq": [
+        { "q": "Nước nào chi cho R&D nhiều nhất?", "a": "Tính theo tỷ lệ GDP là {top1}, ở mức {v1}% năm {year1}, tiếp theo là {top2} ({v2}%) và {top3} ({v3}%)." },
+        { "q": "Thế giới chi bao nhiêu cho R&D?", "a": "{world}% GDP thế giới vào năm {worldYear}." },
+        { "q": "Những gì được tính là R&D?", "a": "Công việc sáng tạo, có hệ thống nhằm mở rộng tri thức và tìm ra cách ứng dụng mới: nghiên cứu cơ bản, nghiên cứu ứng dụng và phát triển thực nghiệm, do doanh nghiệp, chính phủ, trường đại học và tổ chức phi lợi nhuận thực hiện." }
+      ]
+    },
+    "aged-0-14": {
+      "name": "Dân số từ 0–14 tuổi các nước",
+      "title": "Các nước có dân số trẻ nhất năm {to}: tỷ lệ dân số 0–14 tuổi | cv.cm",
+      "description": "Tỷ lệ dân số dưới 15 tuổi của {rows} quốc gia, xếp từ trẻ nhất đến già nhất. Thế giới {world}% ({worldYear}). Dữ liệu Ngân hàng Thế giới / Liên Hợp Quốc, tải CSV.",
+      "h1": "Dân số từ 0 đến 14 tuổi các nước năm {to} (% tổng dân số)",
+      "lede": "Tỷ lệ người dân mỗi nước là trẻ em dưới 15 tuổi, cho {rows} quốc gia và vùng lãnh thổ, xếp từ dân số trẻ nhất đến già nhất. Nguồn: Ngân hàng Thế giới, từ ước tính dân số của Liên Hợp Quốc.",
+      "value": "Từ 0–14 tuổi (%)",
+      "facts": [
+        "Thế giới: {world}% dân số dưới 15 tuổi ({worldYear}).",
+        "Trẻ nhất: {top1} ({v1}%), {top2} ({v2}%) và {top3} ({v3}%).",
+        "Tỷ lệ trẻ em thấp nhất: {last} ({vlast}%)."
+      ],
+      "about": [
+        "Tỷ lệ trẻ em phản ánh tỷ suất sinh trong 15 năm qua. Các nước châu Phi cận Sahara, nơi trung bình mỗi phụ nữ sinh từ năm con trở lên, có dân số trẻ nhất.",
+        "Ở Nhật Bản, Hàn Quốc và phần lớn Nam Âu, nơi số con trên mỗi phụ nữ đã giảm xuống thấp hơn nhiều so với hai, số trẻ em nay đã ít hơn số người từ 65 tuổi trở lên."
+      ],
+      "faq": [
+        { "q": "Nước nào có dân số trẻ nhất?", "a": "{top1}, nơi {v1}% dân số dưới 15 tuổi vào năm {year1}, tiếp theo là {top2} ({v2}%) và {top3} ({v3}%)." },
+        { "q": "Trẻ em chiếm bao nhiêu phần trăm dân số thế giới?", "a": "{world}% dân số từ 0 đến 14 tuổi vào năm {worldYear}." },
+        { "q": "Nước nào có ít trẻ em nhất?", "a": "Trong danh sách này là {last}, nơi {vlast}% dân số dưới 15 tuổi." }
+      ]
+    },
+    "international-migrants": {
+      "name": "Dân số nhập cư các nước",
+      "title": "Dân số nhập cư các nước năm {to}: người di cư quốc tế (% dân số) | cv.cm",
+      "description": "Số người di cư quốc tế tính theo tỷ lệ dân số của {rows} quốc gia, xếp hạng. Thế giới {world}% ({worldYear}). Dữ liệu UN DESA qua Ngân hàng Thế giới, tải CSV.",
+      "h1": "Người di cư quốc tế các nước năm {to} (% dân số)",
+      "lede": "Tỷ lệ cư dân mỗi nước sinh ra ở nước khác, bao gồm người tị nạn, cho {rows} quốc gia và vùng lãnh thổ, xếp từ cao đến thấp. Nguồn: Ngân hàng Thế giới, từ số liệu người di cư quốc tế của UN DESA.",
+      "value": "Người di cư (% dân số)",
+      "facts": [
+        "Thế giới: {world}% dân số sống ngoài đất nước nơi họ sinh ra ({worldYear}).",
+        "Cao nhất: {top1} ({v1}%), {top2} ({v2}%) và {top3} ({v3}%).",
+        "Thấp nhất trong danh sách: {last} ({vlast}%)."
+      ],
+      "about": [
+        "Người di cư ở đây là bất kỳ ai sống ở một nước khác với nước nơi họ sinh ra, bất kể quốc tịch. Ở những nơi không ghi nhận nơi sinh, Liên Hợp Quốc tính số công dân nước ngoài thay thế.",
+        "Liên Hợp Quốc công bố các ước tính này khoảng năm năm một lần. Các nước vùng Vịnh xếp cao nhất vì phần lớn người lao động của họ đến từ nước ngoài."
+      ],
+      "faq": [
+        { "q": "Nước nào có tỷ lệ người nhập cư trong dân số cao nhất?", "a": "{top1}, nơi {v1}% cư dân sinh ra ở nước ngoài vào năm {year1}, tiếp theo là {top2} ({v2}%) và {top3} ({v3}%)." },
+        { "q": "Người di cư chiếm bao nhiêu phần trăm dân số thế giới?", "a": "{world}% dân số thế giới sống ngoài đất nước nơi họ sinh ra vào năm {worldYear}." },
+        { "q": "Người tị nạn có được tính không?", "a": "Có. Người tị nạn và người xin tị nạn đang sống tại một nước được tính vào số người di cư của nước đó." }
+      ]
+    },
+    "physicians": {
+      "name": "Số bác sĩ trên 1.000 dân các nước",
+      "title": "Số bác sĩ trên 1.000 dân các nước năm {to}: mật độ bác sĩ | cv.cm",
+      "description": "Số bác sĩ trên 1.000 dân của {rows} quốc gia, xếp hạng. Thế giới {world} ({worldYear}). Dữ liệu WHO qua Ngân hàng Thế giới, tải CSV.",
+      "h1": "Số bác sĩ trên 1.000 dân các nước năm {to}",
+      "lede": "Số bác sĩ trên mỗi 1.000 dân, gồm cả bác sĩ đa khoa và chuyên khoa, cho {rows} quốc gia và vùng lãnh thổ, xếp từ cao đến thấp. Nguồn: Ngân hàng Thế giới, từ Tổ chức Y tế Thế giới.",
+      "value": "Bác sĩ trên 1.000 dân",
+      "facts": [
+        "Thế giới: {world} bác sĩ trên 1.000 dân ({worldYear}).",
+        "Cao nhất: {top1} ({v1}), {top2} ({v2}) và {top3} ({v3}).",
+        "Thấp nhất trong danh sách: {last} ({vlast})."
+      ],
+      "about": [
+        "Có nước tính mọi bác sĩ có giấy phép hành nghề, có nước chỉ tính những người trực tiếp khám chữa bệnh, nên chênh lệch nhỏ giữa các nước không nói lên nhiều. Điều dưỡng và nữ hộ sinh không được tính.",
+        "Các nước vài năm mới báo cáo một lần; mỗi dòng là số liệu gần nhất trong vòng bốn năm. WHO cho rằng khi tổng số bác sĩ, điều dưỡng và nữ hộ sinh dưới khoảng 4,5 người trên 1.000 dân thì dịch vụ y tế cơ bản sẽ bị thiếu hụt."
+      ],
+      "faq": [
+        { "q": "Nước nào có nhiều bác sĩ nhất tính theo đầu người?", "a": "{top1}, với {v1} bác sĩ trên 1.000 dân năm {year1}, tiếp theo là {top2} ({v2}) và {top3} ({v3})." },
+        { "q": "Thế giới có bao nhiêu bác sĩ trên 1.000 dân?", "a": "{world} vào năm {worldYear}." },
+        { "q": "Nước nào có ít bác sĩ nhất?", "a": "Trong danh sách này là {last}, với {vlast} bác sĩ trên 1.000 dân." }
+      ]
+    },
+    "education-spending": {
+      "name": "Chi tiêu cho giáo dục các nước (% GDP)",
+      "title": "Chi tiêu cho giáo dục các nước năm {to}: chi tiêu công (% GDP) | cv.cm",
+      "description": "Chi tiêu của chính phủ cho giáo dục tính theo tỷ lệ GDP của {rows} quốc gia, xếp hạng. Thế giới {world}% ({worldYear}). Dữ liệu UNESCO qua Ngân hàng Thế giới, tải CSV.",
+      "h1": "Chi tiêu của chính phủ cho giáo dục các nước năm {to} (% GDP)",
+      "lede": "Số tiền chính quyền trung ương, vùng và địa phương chi cho trường học, đại học và các hình thức giáo dục khác, tính theo tỷ lệ GDP, cho {rows} quốc gia và vùng lãnh thổ, xếp từ cao đến thấp. Nguồn: Ngân hàng Thế giới, từ Viện Thống kê UNESCO.",
+      "value": "Giáo dục (% GDP)",
+      "facts": [
+        "Thế giới: chính phủ chi {world}% GDP cho giáo dục ({worldYear}).",
+        "Cao nhất: {top1} ({v1}%), {top2} ({v2}%) và {top3} ({v3}%).",
+        "Thấp nhất trong danh sách: {last} ({vlast}%)."
+      ],
+      "about": [
+        "Chỉ tính tiền công, kể cả viện trợ nước ngoài đi qua ngân sách nhà nước. Học phí và trường tư do các gia đình chi trả không được tính, nên những nước có hệ thống tư thục lớn trông như chi ít hơn tổng số họ thực chi.",
+        "Các quốc đảo nhỏ đứng đầu danh sách vì hệ thống trường học có chi phí cố định trong khi nền kinh tế của họ nhỏ. UNESCO khuyến nghị chi từ 4% đến 6% GDP cho giáo dục."
+      ],
+      "faq": [
+        { "q": "Nước nào chi cho giáo dục nhiều nhất?", "a": "Tính theo tỷ lệ GDP là {top1}, ở mức {v1}% năm {year1}, tiếp theo là {top2} ({v2}%) và {top3} ({v3}%)." },
+        { "q": "Chính phủ các nước trên thế giới chi bao nhiêu cho giáo dục?", "a": "{world}% GDP vào năm {worldYear}." },
+        { "q": "Nước nào chi cho giáo dục ít nhất?", "a": "Trong danh sách này là {last}, ở mức {vlast}% GDP." }
+      ]
+    },
+    "co2-emissions": {
+      "name": "Phát thải CO2 các nước",
+      "title": "Phát thải CO2 các nước năm {to}: nước phát thải lớn nhất (triệu tấn) | cv.cm",
+      "description": "Tổng lượng khí CO2 phát thải của {rows} quốc gia tính bằng triệu tấn, xếp hạng, kèm tỷ trọng trong tổng thế giới. Thế giới {world} triệu tấn ({worldYear}). Dữ liệu EDGAR qua Ngân hàng Thế giới, tải CSV.",
+      "h1": "Phát thải CO2 các nước năm {to} (triệu tấn)",
+      "lede": "Lượng khí CO2 mỗi nước thải ra trong một năm từ nhiên liệu, xi măng và công nghiệp, cho {rows} quốc gia và vùng lãnh thổ, xếp từ lớn đến nhỏ, kèm tỷ trọng của từng nơi trong tổng thế giới. Không tính sử dụng đất và rừng. Nguồn: Ngân hàng Thế giới, từ cơ sở dữ liệu EDGAR của EU.",
+      "value": "CO2 (triệu tấn)",
+      "facts": [
+        "Thế giới: {world} triệu tấn CO2 ({worldYear}).",
+        "Phát thải lớn nhất: {top1} ({v1} triệu tấn), {top2} ({v2} triệu tấn) và {top3} ({v3} triệu tấn).",
+        "Nhỏ nhất trong danh sách: {last} ({vlast} triệu tấn)."
+      ],
+      "about": [
+        "Phát thải được tính tại nơi đốt nhiên liệu. Hàng hóa sản xuất ở nước này và tiêu dùng ở nước khác được tính cho nước sản xuất, còn nhiên liệu cho các chuyến bay và tàu biển quốc tế không được tính cho nước nào.",
+        "Các nước đông dân xếp cao về tổng lượng nhưng thấp khi tính theo đầu người: hãy so sánh với bảng phát thải CO2 bình quân đầu người. Khí mê-tan và các khí nhà kính khác không được tính."
+      ],
+      "faq": [
+        { "q": "Nước nào phát thải CO2 nhiều nhất?", "a": "{top1}, với {v1} triệu tấn năm {year1}, tiếp theo là {top2} ({v2} triệu tấn) và {top3} ({v3} triệu tấn)." },
+        { "q": "Thế giới phát thải bao nhiêu CO2?", "a": "{world} triệu tấn vào năm {worldYear}, không tính sử dụng đất và rừng." },
+        { "q": "Số liệu có tính phá rừng không?", "a": "Không. Chuỗi số liệu này không tính sử dụng đất, thay đổi sử dụng đất và lâm nghiệp (LULUCF), nên việc mất rừng và rừng tái sinh không có trong các con số này." }
+      ]
+    },
+    "electricity-consumption": {
+      "name": "Tiêu thụ điện bình quân đầu người các nước",
+      "title": "Tiêu thụ điện bình quân đầu người các nước năm {to}: kWh mỗi người | cv.cm",
+      "description": "Lượng điện tiêu thụ mỗi người của {rows} quốc gia tính bằng kWh, xếp hạng. Thế giới {world} kWh ({worldYear}). Dữ liệu Ngân hàng Thế giới, tải CSV.",
+      "h1": "Tiêu thụ điện bình quân đầu người các nước năm {to} (kWh)",
+      "lede": "Lượng điện sử dụng trong một năm chia cho dân số, tính chung hộ gia đình, doanh nghiệp và công nghiệp, cho {rows} quốc gia và vùng lãnh thổ, xếp từ cao đến thấp. Nguồn: Ngân hàng Thế giới.",
+      "value": "kWh mỗi người",
+      "facts": [
+        "Thế giới: {world} kWh mỗi người ({worldYear}).",
+        "Cao nhất: {top1} ({v1} kWh), {top2} ({v2} kWh) và {top3} ({v3} kWh).",
+        "Thấp nhất trong danh sách: {last} ({vlast} kWh)."
+      ],
+      "about": [
+        "Số liệu tính lượng điện sản xuất và nhập khẩu, trừ phần xuất khẩu và tổn thất truyền tải. Công nghiệp cũng được tính, nên những nước có nhà máy luyện nhôm hoặc trung tâm dữ liệu mà ít dân, như Iceland, xếp cao hơn hẳn phần còn lại.",
+        "Khí hậu lạnh và rất nóng dùng nhiều điện hơn cho sưởi ấm và điều hòa. Một chiếc tủ lạnh gia đình dùng khoảng 300 đến 500 kWh mỗi năm."
+      ],
+      "faq": [
+        { "q": "Nước nào tiêu thụ điện bình quân đầu người nhiều nhất?", "a": "{top1}, ở mức {v1} kWh mỗi người năm {year1}, tiếp theo là {top2} ({v2} kWh) và {top3} ({v3} kWh)." },
+        { "q": "Trung bình mỗi người dùng bao nhiêu điện?", "a": "{world} kWh mỗi năm trên toàn thế giới vào năm {worldYear}, tính cả công nghiệp lẫn hộ gia đình." },
+        { "q": "Nước nào tiêu thụ điện bình quân đầu người ít nhất?", "a": "Trong danh sách này là {last}, ở mức {vlast} kWh mỗi năm." }
+      ]
+    },
+    "mobile-subscriptions": {
+      "name": "Thuê bao di động các nước",
+      "title": "Thuê bao di động các nước năm {to}: số thuê bao trên 100 dân | cv.cm",
+      "description": "Số thuê bao di động trên 100 dân của {rows} quốc gia, xếp hạng. Thế giới {world} ({worldYear}). Dữ liệu ITU qua Ngân hàng Thế giới, tải CSV.",
+      "h1": "Thuê bao di động các nước năm {to} (trên 100 dân)",
+      "lede": "Số thuê bao di động đang hoạt động, cả trả trước lẫn trả sau, trên mỗi 100 dân, cho {rows} quốc gia và vùng lãnh thổ, xếp từ cao đến thấp. Nguồn: Ngân hàng Thế giới, từ Liên minh Viễn thông Quốc tế (ITU).",
+      "value": "Trên 100 dân",
+      "facts": [
+        "Thế giới: {world} thuê bao di động trên 100 dân ({worldYear}).",
+        "Cao nhất: {top1} ({v1}), {top2} ({v2}) và {top3} ({v3}).",
+        "Thấp nhất trong danh sách: {last} ({vlast})."
+      ],
+      "about": [
+        "Giá trị trên 100 là bình thường: nhiều người dùng hai SIM, du khách mua SIM địa phương, và một số thuê bao dành cho máy tính bảng hoặc ô tô. Hồng Kông và các trung tâm khác có nhiều khách đến xếp cao nhất.",
+        "Thuê bao không đồng nghĩa với người dùng, nên số liệu này không cho biết bao nhiêu người có điện thoại. SIM trả trước chỉ được tính nếu có sử dụng trong ba tháng gần nhất."
+      ],
+      "faq": [
+        { "q": "Nước nào có nhiều thuê bao di động nhất tính theo đầu người?", "a": "{top1}, với {v1} thuê bao trên 100 dân năm {year1}, tiếp theo là {top2} ({v2}) và {top3} ({v3})." },
+        { "q": "Thế giới có bao nhiêu thuê bao di động?", "a": "{world} trên 100 dân vào năm {worldYear}, nhiều hơn một thuê bao mỗi người." },
+        { "q": "Vì sao một số giá trị vượt quá 100?", "a": "Nhiều người có hơn một SIM, còn khách du lịch và người đi công tác thì mua SIM địa phương." }
+      ]
+    },
+    "broadband-subscriptions": {
+      "name": "Thuê bao băng thông rộng cố định các nước",
+      "title": "Thuê bao băng thông rộng cố định các nước năm {to}: trên 100 dân | cv.cm",
+      "description": "Số thuê bao internet băng thông rộng cố định trên 100 dân của {rows} quốc gia, xếp hạng. Thế giới {world} ({worldYear}). Dữ liệu ITU qua Ngân hàng Thế giới, tải CSV.",
+      "h1": "Thuê bao băng thông rộng cố định các nước năm {to} (trên 100 dân)",
+      "lede": "Số đường truyền internet có dây và không dây cố định từ 256 kbit/s trở lên, như cáp quang, cáp đồng trục và DSL, trên mỗi 100 dân, cho {rows} quốc gia và vùng lãnh thổ, xếp từ cao đến thấp. Nguồn: Ngân hàng Thế giới, từ Liên minh Viễn thông Quốc tế (ITU).",
+      "value": "Trên 100 dân",
+      "facts": [
+        "Thế giới: {world} đường truyền băng thông rộng cố định trên 100 dân ({worldYear}).",
+        "Cao nhất: {top1} ({v1}), {top2} ({v2}) và {top3} ({v3}).",
+        "Thấp nhất trong danh sách: {last} ({vlast})."
+      ],
+      "about": [
+        "Một đường truyền thường phục vụ cả hộ gia đình, nên khoảng 40 đường truyền trên 100 dân đã có nghĩa là phần lớn các hộ được kết nối. Dữ liệu di động không được tính: xem bảng thuê bao di động và bảng người dùng internet.",
+        "Nhiều người ở châu Phi và Nam Á lên mạng chủ yếu qua mạng di động, nên băng thông rộng cố định thấp ở đó không có nghĩa là ít người dùng internet."
+      ],
+      "faq": [
+        { "q": "Nước nào có nhiều thuê bao băng thông rộng nhất tính theo đầu người?", "a": "{top1}, với {v1} thuê bao trên 100 dân năm {year1}, tiếp theo là {top2} ({v2}) và {top3} ({v3})." },
+        { "q": "Thế giới có bao nhiêu đường truyền băng thông rộng cố định?", "a": "{world} trên 100 dân vào năm {worldYear}." },
+        { "q": "Băng thông rộng có bao gồm internet di động không?", "a": "Không. Bảng này tính các đường truyền cố định như cáp quang, cáp đồng trục và DSL; các gói dữ liệu di động được tính riêng." }
       ]
     },
     "country-codes": {

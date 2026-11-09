@@ -6,9 +6,9 @@ import countries from "../src/data/countries.json";
 import { LOCALES } from "../src/shared/locale";
 import { datasetMessages } from "../src/shared/messages";
 import { STATIC_FILE, datasetHref, parseAppPath } from "../src/shared/path";
-import { DATASETS, DATASET_FILES, INDICATORS, INDICATOR_SPEC, csvHref, datasetMeta, isIndicator, type CountryRow, type DatasetId, type DatasetRows, type IndicatorRow } from "../src/shared/datasets";
+import { DATASETS, DATASET_FILES, DATASET_SNAPSHOT, datasetUpdated, INDICATORS, INDICATOR_SPEC, csvHref, datasetMeta, isIndicator, type CountryRow, type DatasetId, type DatasetRows, type IndicatorRow } from "../src/shared/datasets";
 import { ROW_FILES } from "../src/client/datasets/rows";
-import { datasetJsonLd, datasetPageCopy, datasetStaticHtml, datasetTable, datasetTitle, regionName, utcOffset } from "../src/shared/datasets-i18n";
+import { datasetJsonLd, datasetPageCopy, datasetStaticHtml, datasetTable, datasetTitle, formatIndicator, regionName, utcOffset } from "../src/shared/datasets-i18n";
 import { applyHtmlSeo, pageCanonical } from "../src/shared/seo";
 import { buildSitemapXml } from "../src/shared/sitemap";
 
@@ -145,6 +145,22 @@ describe("data pages: tables", () => {
     expect(table.rows[0][1].text).toBe("India");
     const sorts = table.rows.map((r) => r[2].sort as number);
     expect(sorts).toEqual([...sorts].sort((a, b) => b - a));
+  });
+
+  it("dates each table by its own last change, in the sitemap and the Dataset JSON-LD", () => {
+    for (const id of DATASETS) {
+      expect(datasetUpdated(id), id).toMatch(/^\d{4}-\d{2}-\d{2}$/);
+      expect(datasetUpdated(id) <= DATASET_SNAPSHOT, id).toBe(true);
+    }
+    const xml = buildSitemapXml();
+    for (const id of DATASETS) expect(xml, id).toContain(`/en/datasets/${id}/</loc>\n    <lastmod>${datasetUpdated(id)}</lastmod>`);
+    expect(JSON.stringify(datasetJsonLd("en", "population"))).toContain(`"dateModified":"${datasetUpdated("population")}"`);
+  });
+
+  it("shows a zero dollar total without cents and keeps compact totals as they were", () => {
+    expect(formatIndicator("en", "military-spending", 0)).toBe("$0");
+    expect(formatIndicator("en", "military-spending", 954387000000)).toBe("$954.39B");
+    expect(formatIndicator("en", "gdp", 1.5e12)).toBe("$1.50T");
   });
 
   it("gives every indicator a known format, a row file and a reason for each data filter", () => {
