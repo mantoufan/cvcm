@@ -45,7 +45,7 @@ export function mountScreenRecorder(host: HTMLElement): void {
   );
   systemEl = h("input", { type: "checkbox", checked: true, "data-field": "system-audio" });
   micEl = h("input", { type: "checkbox", "data-field": "mic" });
-  startBtn = h("button", { type: "button", class: "btn", "data-action": "start", onClick: () => (recorder ? finish() : void begin()) }, t("screenRecorder.start"));
+  startBtn = h("button", { type: "button", class: "btn", "data-action": "start", onClick: () => (recorder ? finish() : busy ? cancelSetup() : void begin()) }, t("screenRecorder.start"));
   pauseBtn = h("button", { type: "button", class: "btn ghost", "data-action": "pause", disabled: true, onClick: () => togglePause() }, t("screenRecorder.pause"));
   timeEl = h("p", { class: "rec-time", "data-out": "time" }, "0:00");
   statusEl = h("p", { class: "hint", "aria-live": "polite", "data-out": "status" }, t("screenRecorder.idle"));
@@ -135,6 +135,7 @@ async function begin(): Promise<void> {
     return;
   }
   busy = true;
+  if (startBtn) startBtn.textContent = t("screenRecorder.stop");
   say("choose");
   const wantSystem = systemEl?.checked ?? true;
   const wantMic = micEl?.checked ?? false;
@@ -145,7 +146,7 @@ async function begin(): Promise<void> {
     // getDisplayMedia must be the first await after the click, or Safari drops the user gesture.
     screen = await navigator.mediaDevices.getDisplayMedia({ video: { frameRate: { ideal: 30, max: 60 } }, audio: wantSystem });
   } catch (err) {
-    busy = false;
+    setupFailed();
     if (mine !== run) return;
     release();
     const name = (err as { name?: string })?.name;
@@ -154,7 +155,7 @@ async function begin(): Promise<void> {
   }
   if (mine !== run) {
     screen.getTracks().forEach((tr) => tr.stop());
-    busy = false;
+    setupFailed();
     return;
   }
   display = screen;
@@ -174,13 +175,13 @@ async function begin(): Promise<void> {
   }
   if (mine !== run) {
     release();
-    busy = false;
+    setupFailed();
     return;
   }
   // Sharing was stopped while the mic prompt was open: nothing to record.
   if (shareEnded || screen.getVideoTracks()[0]?.readyState === "ended") {
     release();
-    busy = false;
+    setupFailed();
     say("cancelled");
     return;
   }
@@ -206,7 +207,7 @@ async function begin(): Promise<void> {
     rec = new MediaRecorder(stream, { ...(type ? { mimeType: type } : {}), videoBitsPerSecond: bits, audioBitsPerSecond: 128_000 });
   } catch {
     release();
-    busy = false;
+    setupFailed();
     say("failed");
     return;
   }
@@ -219,7 +220,7 @@ async function begin(): Promise<void> {
     rec.start(1000);
   } catch {
     release();
-    busy = false;
+    setupFailed();
     say("failed");
     return;
   }
@@ -237,6 +238,20 @@ async function begin(): Promise<void> {
   window.clearInterval(timer);
   timer = window.setInterval(tickTime, 250);
   tickTime();
+}
+
+/** Setup ended without recording: the button reads Start again. */
+function setupFailed(): void {
+  busy = false;
+  if (startBtn) startBtn.textContent = t("screenRecorder.start");
+}
+
+/** Stop pressed while the share or mic prompt is open: drop the setup (a late answer is ignored by `run`). */
+function cancelSetup(): void {
+  run++;
+  setupFailed();
+  release();
+  say("cancelled");
 }
 
 function mixAudio(streams: MediaStream[]): MediaStreamTrack | null {

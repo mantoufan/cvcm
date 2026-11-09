@@ -160,6 +160,13 @@ describe("triangle ui", () => {
     expect(q<HTMLInputElement>("[data-field=C]").disabled).toBe(true);
     expect(text()).toContain("36.8699°");
     expect(host.querySelectorAll(".tri-svg")).toHaveLength(1);
+    // Right mode keeps the user's C and gives it back when turned off.
+    q<HTMLInputElement>("[data-field=right]").click();
+    set("[data-field=C]", "60");
+    q<HTMLInputElement>("[data-field=right]").click();
+    expect(q<HTMLInputElement>("[data-field=C]").value).toBe("90");
+    q<HTMLInputElement>("[data-field=right]").click();
+    expect(q<HTMLInputElement>("[data-field=C]").value).toBe("60");
     q<HTMLButtonElement>("[data-example=ssa]").click();
     expect(q<HTMLInputElement>("[data-field=C]").disabled).toBe(false);
     expect(q<HTMLInputElement>("[data-field=C]").value).toBe("");
@@ -175,6 +182,8 @@ describe("triangle ui", () => {
     expect(q("[data-out=error]").textContent).toContain("cannot form a triangle");
     set("[data-field=c]", "2,5");
     expect(text()).toContain("scalene");
+    set("[data-field=c]", "1,000");
+    expect(q("[data-out=error]").textContent).toContain("cannot form a triangle");
     set("[data-field=c]", "abc");
     expect(q("[data-out=error]").textContent).toBe("Sides and angles must be numbers above 0.");
   });

@@ -61,13 +61,15 @@ export function mountTriangle(host: HTMLElement): void {
           class: "chip",
           "data-example": ex.id,
           onClick: () => {
+            // The example's values replace everything, so paint() must not restore an older C.
+            inputs.C!.disabled = false;
             for (const f of FIELDS) if (inputs[f]) inputs[f]!.value = ex.values[f] !== undefined ? String(ex.values[f]) : "";
             if (rightEl) rightEl.checked = ex.right;
             paint();
           },
         }, t(`triangle.ex_${ex.id}`)))),
         h("div", { class: "stage-actions" },
-          h("button", { type: "button", class: "btn ghost", "data-action": "clear", onClick: () => { for (const f of FIELDS) inputs[f]!.value = ""; paint(); } }, t("triangle.clear")),
+          h("button", { type: "button", class: "btn ghost", "data-action": "clear", onClick: () => { inputs.C!.disabled = false; inputs.C!.dataset.saved = ""; for (const f of FIELDS) inputs[f]!.value = ""; paint(); } }, t("triangle.clear")),
           copyBtn = h("button", { type: "button", class: "btn ghost", "data-action": "copy", onClick: () => void copyWithFlash(copyBtn, last, { done: t("triangle.copied"), failed: t("triangle.copyFailed") }) }, t("triangle.copy")),
         ),
         h("p", { class: "hint" }, t("triangle.hint")),
@@ -94,7 +96,9 @@ function read(): TriangleInput {
   for (const f of FIELDS) {
     const raw = inputs[f]?.value.trim() ?? "";
     // A decimal comma (es, id, vi keyboards) is read as a point.
-    if (raw !== "") out[f] = Number(raw.replace(",", "."));
+    // "3,5" (decimal comma) reads as 3.5; with a point present, commas are thousands separators ("1,000.5").
+    const text = raw.includes(".") ? raw.replace(/,/g, "") : /^[^,]*,[^,]*$/.test(raw) && !/,\d{3}$/.test(raw) ? raw.replace(",", ".") : raw.replace(/,/g, "");
+    if (raw !== "") out[f] = Number(text);
     // Anything that is not a number reads as NaN, which the solver treats as "not given"; flag it instead.
     if (raw !== "" && !Number.isFinite(out[f])) out[f] = -1;
   }
@@ -105,10 +109,14 @@ function paint(): void {
   if (!errorEl || !outEl || !rightEl) return;
   const right = rightEl.checked;
   const cEl = inputs.C!;
+  // Right mode shows 90 in C; the user's own C comes back when it is turned off.
+  if (right && !cEl.disabled) {
+    cEl.dataset.saved = cEl.value;
+    cEl.value = "90";
+  } else if (!right && cEl.disabled) {
+    cEl.value = cEl.dataset.saved ?? "";
+  }
   cEl.disabled = right;
-  if (right) cEl.value = "90";
-  else if (cEl.value === "90" && cEl.dataset.auto === "1") cEl.value = "";
-  cEl.dataset.auto = right ? "1" : "";
   const need = outEl.closest(".data-tool")?.querySelector<HTMLElement>("[data-out=need]");
   if (need) need.textContent = right ? t("triangle.needRight") : t("triangle.needThree");
   const input = read();

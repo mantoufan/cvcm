@@ -129,9 +129,9 @@ async function begin(): Promise<void> {
   }
   // The meter's AudioContext is created inside the click, as iOS requires.
   audio = armAudio(audio);
+  asking = true;
   say("asking");
   if (recordBtn) recordBtn.textContent = t("voiceRecorder.stopRecording");
-  asking = true;
   const clean = cleanEl?.checked ?? true;
   const id = deviceEl?.value;
   let s: MediaStream;

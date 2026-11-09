@@ -54,6 +54,7 @@ let weighted = 0;
 let primed = false;
 let currentDbfs = -100;
 let sampleTimer = 0;
+let graphStamp = "";
 /** About one analyser window (2048 samples ≈ 43 ms), so consecutive windows barely overlap. */
 const SAMPLE_MS = 40;
 /** Stats skip the first moments after (re)wiring: an empty analyser window and settling filters would set a false Min. */
@@ -236,6 +237,8 @@ async function start(): Promise<void> {
   lineColor = style?.getPropertyValue("--pink-deep").trim() || "#a13f6c";
   weighted = 0;
   primed = false;
+  // Each Start is a new measurement; Reset min/max clears one that is running.
+  resetStats();
   lastFrame = performance.now();
   warmUntil = lastFrame + WARMUP_MS;
   lastText = 0;
@@ -378,7 +381,12 @@ function draw(now: number): void {
     if (avgEl && leq !== null) avgEl.textContent = `${dbText(toDb(leq, cal))} dB`;
     if (timeEl) timeEl.textContent = clockText(stats.seconds() * 1000);
   }
-  drawGraph(now, cal);
+  // The graph gains a point every 100 ms: repaint only when it did or the calibration moved it.
+  const stamp = `${history.length && history[history.length - 1].at}|${cal}`;
+  if (stamp !== graphStamp) {
+    graphStamp = stamp;
+    drawGraph(now, cal);
+  }
   frame = window.requestAnimationFrame(draw);
 }
 
