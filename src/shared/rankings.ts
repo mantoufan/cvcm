@@ -97,6 +97,8 @@ export type RankingMeta = {
   /** Mountains: rows are Wikidata ids, named here for the head tags; peaks of 8,000 m or more; the country with the most peaks. */
   names?: Record<string, LocaleNames>;
   over8000?: number;
+  /** Mountains: the place of the last row, which shares a place with the one above when they are the same height. */
+  lowRank?: number;
   /** Mountains: the month the rows were last asked for (asOf is the month they last changed). */
   checked?: string;
   countryLead?: string[];

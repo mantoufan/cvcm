@@ -62,6 +62,16 @@ export function rankingDate(locale: Locale, asOf: string): string {
   return new Intl.DateTimeFormat(locale, parts[2] ? { year: "numeric", month: "long", day: "numeric", timeZone: "UTC" } : { year: "numeric", month: "long", timeZone: "UTC" }).format(date);
 }
 
+const listFormats = new Map<string, Intl.ListFormat>();
+function listFormat(locale: Locale): Intl.ListFormat {
+  let format = listFormats.get(locale);
+  if (!format) {
+    format = new Intl.ListFormat(locale, { type: "conjunction" });
+    listFormats.set(locale, format);
+  }
+  return format;
+}
+
 const regionNames = new Map<string, Intl.DisplayNames>();
 function regionName(locale: Locale, code: string): string {
   let names = regionNames.get(locale);
@@ -155,7 +165,8 @@ function vars(locale: Locale, id: RankingId): Record<string, string | number> {
   if (kind === "mountain") {
     out.ft1 = plain(locale, toFeet(meta.top[0][1]));
     out.over8000 = meta.over8000 ?? 0;
-    out.countryLead = new Intl.ListFormat(locale, { type: "conjunction" }).format((meta.countryLead ?? []).map((code) => regionName(locale, code)));
+    out.lowRank = meta.lowRank ?? meta.rows;
+    out.countryLead = listFormat(locale).format((meta.countryLead ?? []).map((code) => regionName(locale, code)));
     out.countryCount = meta.countryCount ?? 0;
   }
   if (meta.total !== undefined) out.total = usd(locale, meta.total, true);

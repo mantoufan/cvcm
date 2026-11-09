@@ -388,6 +388,7 @@ async function labels(ids) {
   for (let i = 0; i < ids.length; i += 50) {
     const q = new URLSearchParams({ action: "wbgetentities", ids: ids.slice(i, i + 50).join("|"), props: "labels|sitelinks", languages: [...Object.values(LABEL_LANGS), "mul"].join("|"), languagefallback: "1", format: "json" });
     const data = JSON.parse(await get(`https://www.wikidata.org/w/api.php?${q}`));
+    if (data.error) throw new Error(`wikidata labels: ${data.error.code} ${data.error.info ?? ""}`);
     for (const [id, entity] of Object.entries(data.entities)) {
       const label = (code) => {
         const found = entity.labels?.[code];
@@ -436,7 +437,8 @@ async function mountains() {
     elevation: Math.round(Number(b.elev.value) * 100) / 100,
     prominence: Math.round(Number(b.prom.value) * 100) / 100,
     countries: b.cs?.value ? b.cs.value.split("|").sort() : [],
-    ranges: b.ranges?.value ? b.ranges.value.split("|").map(qid) : [],
+    // "Unknown value" comes back as a blank-node URI, not an item: left out.
+    ranges: b.ranges?.value ? b.ranges.value.split("|").map(qid).filter((id) => /^Q\d+$/.test(id)) : [],
     // An item with two coordinates (two surveys) keeps the same one on every run.
     at: b.at?.value ? b.at.value.split("|").sort()[0].split(",").map((v) => Math.round(Number(v) * 1e4) / 1e4) : null,
   }));
@@ -458,7 +460,11 @@ async function mountains() {
     else if (info[m.id] && (!info[kept[at].id] || info[m.id].sitelinks > info[kept[at].id].sitelinks)) kept[at] = m;
   }
   const reach = (m) => info[m.id]?.sitelinks ?? 0;
-  const peaks = kept.sort((a, b) => b.elevation - a.elevation || reach(b) - reach(a) || a.id.localeCompare(b.id)).slice(0, MOUNTAIN_ROWS);
+  const sorted = kept.sort((a, b) => b.elevation - a.elevation || reach(b) - reach(a) || a.id.localeCompare(b.id));
+  // A peak as high as the last one shares its place, so it is in the list too.
+  let cut = MOUNTAIN_ROWS;
+  while (cut < sorted.length && sorted[cut].elevation === sorted[MOUNTAIN_ROWS - 1].elevation) cut += 1;
+  const peaks = sorted.slice(0, cut);
   // A peak with no English name would drop out unnoticed and move every one below it up a place.
   for (const m of peaks) if (!info[m.id]) throw new Error(`wikidata ${m.id}: a ${m.elevation} m peak with no English name`);
   if (peaks.length < MOUNTAIN_ROWS) throw new Error(`wikidata: only ${peaks.length} mountains`);
@@ -471,7 +477,7 @@ async function mountains() {
   if (!countryCount) throw new Error("wikidata: no countries");
   // Countries tied for the most peaks are all named.
   const countryLead = [...tally.entries()].filter(([, n]) => n === countryCount).map(([c]) => c).sort();
-  return { rows, over8000: peaks.filter((m) => m.elevation >= 8000).length, countryLead, countryCount };
+  return { rows, over8000: peaks.filter((m) => m.elevation > 8000).length, countryLead, countryCount };
 }
 
 // --- Write ---------------------------------------------------------------------------------------------------------
@@ -574,7 +580,7 @@ else {
     const set = await mountains();
     rows["tallest-mountains"] = set.rows;
     const unchanged = JSON.stringify(oldRows["tallest-mountains"]) === JSON.stringify(set.rows);
-    meta.sets["tallest-mountains"] = { asOf: (unchanged && oldMeta.sets["tallest-mountains"]?.asOf) || thisMonth, checked: thisMonth, rows: set.rows.length, top: topOf(set.rows, 1, 3), bottom: [[set.rows.at(-1)[1], set.rows.at(-1)[3]]], over8000: set.over8000, countryLead: set.countryLead, countryCount: set.countryCount, names: Object.fromEntries([...set.rows.slice(0, 3), set.rows.at(-1)].map((r) => [r[1], r[2]])) };
+    meta.sets["tallest-mountains"] = { asOf: (unchanged && oldMeta.sets["tallest-mountains"]?.asOf) || thisMonth, checked: thisMonth, rows: set.rows.length, top: topOf(set.rows, 1, 3), bottom: [[set.rows.at(-1)[1], set.rows.at(-1)[3]]], lowRank: set.rows.at(-1)[0], over8000: set.over8000, countryLead: set.countryLead, countryCount: set.countryCount, names: Object.fromEntries([...set.rows.slice(0, 3), set.rows.at(-1)].map((r) => [r[1], r[2]])) };
   });
 }
 
