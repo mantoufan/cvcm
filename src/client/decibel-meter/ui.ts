@@ -27,6 +27,7 @@ const CAL_KEY = "cvcm.decibelMeter.calibration";
 const HISTORY_S = 60;
 const GRAPH_MIN_DB = 20;
 const GRAPH_MAX_DB = 120;
+const GRAPH_STEP_MS = 100;
 
 let weightEl: HTMLSelectElement | null = null;
 let speedEl: HTMLSelectElement | null = null;
@@ -173,8 +174,10 @@ function speed(): TimeWeight {
   return speedEl?.value === "slow" ? "slow" : "fast";
 }
 
+/** A is shown only when the filters are really in place (a browser without IIRFilterNode measures unweighted). */
 function updateUnit(): void {
-  if (unitEl) unitEl.textContent = weighting() === "a" ? "dB(A)" : "dB(Z)";
+  const weighted = weighting() === "a" && (!stream || nodes.length > 3);
+  if (unitEl) unitEl.textContent = weighted ? "dB(A)" : "dB(Z)";
 }
 
 function say(key: string): void {
@@ -233,6 +236,7 @@ async function start(): Promise<void> {
   warmUntil = lastFrame + WARMUP_MS;
   lastText = 0;
   if (startBtn) startBtn.textContent = t("decibelMeter.stop");
+  updateUnit();
   say(weighting() === "a" && nodes.length < 4 ? "noWeighting" : "listening");
   s.getAudioTracks()[0]?.addEventListener("ended", () => {
     if (stream === s) {
@@ -287,6 +291,7 @@ function rewire(): void {
   weighted = 0;
   primed = false;
   warmUntil = performance.now() + WARMUP_MS;
+  updateUnit();
   say(weighting() === "a" && nodes.length < 4 ? "noWeighting" : "listening");
 }
 
@@ -307,6 +312,7 @@ function stop(): void {
     meterFill.style.width = "0%";
     meterFill.classList.remove("hot");
   }
+  updateUnit();
   say("idle");
 }
 
@@ -330,8 +336,13 @@ function draw(now: number): void {
   const dbfs = powerToDbfs(weighted);
   const db = toDb(dbfs, cal);
   if (now >= warmUntil) stats.add(ms, dbfs, dt);
-  history.push({ at: now, db });
-  while (history.length && history[0].at < now - HISTORY_S * 1000) history.shift();
+  // One graph point per 100 ms is plenty for 60 s, and keeps the path short.
+  if (!history.length || now - history[history.length - 1].at >= GRAPH_STEP_MS) {
+    history.push({ at: now, db });
+    let old = 0;
+    while (old < history.length && history[old].at < now - HISTORY_S * 1000) old++;
+    if (old) history.splice(0, old);
+  }
   if (meterFill) {
     const pct = Math.round(Math.max(0, Math.min(1, (db - GRAPH_MIN_DB) / (GRAPH_MAX_DB - GRAPH_MIN_DB))) * 100);
     meterFill.style.width = `${pct}%`;

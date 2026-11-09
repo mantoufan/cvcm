@@ -81,12 +81,10 @@ export function mountVoiceRecorder(host: HTMLElement): void {
       ),
     ),
   );
-  window.addEventListener("beforeunload", onLeave);
   setLeaveGuard(hasUnsaved);
 }
 
 export function unmountVoiceRecorder(): void {
-  window.removeEventListener("beforeunload", onLeave);
   setLeaveGuard(null);
   run++;
   if (recorder && recorder.state !== "inactive") {
@@ -94,6 +92,8 @@ export function unmountVoiceRecorder(): void {
     recorder.stop();
   }
   recorder = null;
+  asking = false;
+  hitLimit = false;
   release();
   if (audio) void audio.close().catch(() => undefined);
   audio = null;
@@ -105,17 +105,11 @@ export function unmountVoiceRecorder(): void {
   timeEl = statusEl = meterFill = listEl = null;
 }
 
-/** Ask before leaving with a recording running or one not yet downloaded: recordings live only in this tab. */
+/** A recording running or not yet downloaded: recordings live only in this tab, so leaving asks first (leave-guard). */
 function hasUnsaved(): boolean {
   return recorder !== null || asking || takes.some((tk) => !tk.saved);
 }
 
-function onLeave(e: BeforeUnloadEvent): void {
-  if (hasUnsaved()) {
-    e.preventDefault();
-    e.returnValue = "";
-  }
-}
 
 function say(key: string, vars?: Record<string, string | number>): void {
   if (statusEl) statusEl.textContent = t(`voiceRecorder.${key}`, vars);
@@ -283,6 +277,8 @@ function saveTake(rec: MediaRecorder, mine: number): void {
   if (recorder !== rec) return;
   recorder = null;
   const ms = banked;
+  const limited = hitLimit;
+  hitLimit = false;
   release();
   if (recordBtn) recordBtn.textContent = t("voiceRecorder.record");
   if (pauseBtn) {
@@ -307,9 +303,8 @@ function saveTake(rec: MediaRecorder, mine: number): void {
     takes.splice(i, 1);
   }
   showEmpty();
-  if (hitLimit) say("limit", { n: MAX_VOICE_MINUTES });
+  if (limited) say("limit", { n: MAX_VOICE_MINUTES });
   else say("saved", { time: clockText(ms) });
-  hitLimit = false;
 }
 
 /** Stops the microphone and the meter (the recorder must already be stopped). */

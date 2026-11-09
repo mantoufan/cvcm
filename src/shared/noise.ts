@@ -1,5 +1,7 @@
 /** Noise colours for the white noise generator: sample generators, a seamless loop, and the sleep timer. */
 
+import { shortClock } from "./subtitles";
+
 export const NOISE_COLORS = ["white", "pink", "brown", "green"] as const;
 export type NoiseColor = (typeof NOISE_COLORS)[number];
 
@@ -111,9 +113,5 @@ export function noiseLoop(color: NoiseColor, sampleRate: number, rand: () => num
 
 /** Timer text "m:ss" or "h:mm:ss" for the seconds left (rounded up, never negative). */
 export function timerText(seconds: number): string {
-  const s = Math.max(0, Math.ceil(seconds));
-  const h = Math.floor(s / 3600);
-  const m = Math.floor((s % 3600) / 60);
-  const ss = String(s % 60).padStart(2, "0");
-  return h ? `${h}:${String(m).padStart(2, "0")}:${ss}` : `${m}:${ss}`;
+  return shortClock(Math.ceil(seconds));
 }

@@ -1,5 +1,7 @@
 /** Shared helpers for the voice and screen recorders: container choice, file names and readouts. */
 
+import { shortClock } from "./subtitles";
+
 /** Audio containers in order of preference. Chrome/Firefox record WebM Opus, Safari only MP4 (AAC). */
 export const AUDIO_TYPES = ["audio/webm;codecs=opus", "audio/ogg;codecs=opus", "audio/mp4;codecs=mp4a.40.2", "audio/mp4", "audio/webm"] as const;
 
@@ -43,11 +45,7 @@ export function recordingName(prefix: string, at: Date, ext: string): string {
 
 /** Elapsed time as m:ss or h:mm:ss (whole seconds, rounded down). */
 export function clockText(ms: number): string {
-  const s = Math.max(0, Math.floor(ms / 1000));
-  const h = Math.floor(s / 3600);
-  const m = Math.floor((s % 3600) / 60);
-  const ss = String(s % 60).padStart(2, "0");
-  return h ? `${h}:${String(m).padStart(2, "0")}:${ss}` : `${m}:${ss}`;
+  return shortClock(ms / 1000);
 }
 
 /**

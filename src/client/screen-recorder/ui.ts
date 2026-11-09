@@ -76,12 +76,10 @@ export function mountScreenRecorder(host: HTMLElement): void {
       ),
     ),
   );
-  window.addEventListener("beforeunload", onLeave);
   setLeaveGuard(hasUnsaved);
 }
 
 export function unmountScreenRecorder(): void {
-  window.removeEventListener("beforeunload", onLeave);
   setLeaveGuard(null);
   run++;
   if (recorder && recorder.state !== "inactive") {
@@ -89,6 +87,8 @@ export function unmountScreenRecorder(): void {
     recorder.stop();
   }
   recorder = null;
+  busy = false;
+  hitLimit = false;
   release();
   if (lastUrl) URL.revokeObjectURL(lastUrl);
   lastUrl = "";
@@ -107,12 +107,6 @@ function hasUnsaved(): boolean {
   return recorder !== null || busy || unsaved;
 }
 
-function onLeave(e: BeforeUnloadEvent): void {
-  if (hasUnsaved()) {
-    e.preventDefault();
-    e.returnValue = "";
-  }
-}
 
 function say(key: string, vars?: Record<string, string | number>): void {
   if (statusEl) statusEl.textContent = t(`screenRecorder.${key}`, vars);
@@ -181,6 +175,13 @@ async function begin(): Promise<void> {
     busy = false;
     return;
   }
+  // Sharing was stopped while the mic prompt was open: nothing to record.
+  if (shareEnded || screen.getVideoTracks()[0]?.readyState === "ended") {
+    release();
+    busy = false;
+    say("cancelled");
+    return;
+  }
   const tracks: MediaStreamTrack[] = [...screen.getVideoTracks()];
   const audioTracks = [...screen.getAudioTracks(), ...(mic?.getAudioTracks() ?? [])];
   if (audioTracks.length > 1) {
@@ -224,7 +225,6 @@ async function begin(): Promise<void> {
   recorder = rec;
   banked = 0;
   startedAt = performance.now();
-  if (shareEnded || screen.getVideoTracks()[0]?.readyState === "ended") finish();
   if (startBtn) startBtn.textContent = t("screenRecorder.stop");
   if (pauseBtn) {
     pauseBtn.disabled = typeof rec.pause !== "function";
@@ -293,6 +293,8 @@ function saveRecording(rec: MediaRecorder, mine: number): void {
   if (recorder !== rec) return;
   recorder = null;
   const ms = banked;
+  const limited = hitLimit;
+  hitLimit = false;
   release();
   if (startBtn) startBtn.textContent = t("screenRecorder.start");
   if (pauseBtn) {
@@ -312,9 +314,8 @@ function saveRecording(rec: MediaRecorder, mine: number): void {
   lastUrl = URL.createObjectURL(blob);
   unsaved = true;
   showResult(blob, name, ms);
-  if (hitLimit) say("limit", { n: MAX_SCREEN_MINUTES });
+  if (limited) say("limit", { n: MAX_SCREEN_MINUTES });
   else say("saved", { time: clockText(ms) });
-  hitLimit = false;
 }
 
 function showResult(blob: Blob, name: string, ms: number): void {

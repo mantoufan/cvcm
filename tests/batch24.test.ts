@@ -235,6 +235,7 @@ describe("triangle", () => {
     expect(solveTriangle({ a: 3, b: 4, c: 5, A: 30 })).toEqual({ ok: false, error: "tooMany" });
     expect(solveTriangle({ a: -3, b: 4, c: 5 })).toEqual({ ok: false, error: "positive" });
     expect(solveTriangle({ a: 3, b: 4, A: 200 })).toEqual({ ok: false, error: "angleRange" });
+    expect(solveTriangle({ a: 1, b: 1, C: 1e-7 })).toEqual({ ok: false, error: "noTriangle" });
   });
 
   it("formats and lays out", () => {

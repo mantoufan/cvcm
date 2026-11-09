@@ -111,6 +111,8 @@ export function solveTriangle(input: TriangleInput, right = false): TriangleResu
     const y = given[s2]!;
     const g = given[angle]!;
     const z = Math.sqrt(Math.max(0, x * x + y * y - 2 * x * y * cosD(g)));
+    // A sliver angle between equal sides can round the third side to 0: no triangle to show.
+    if (!(z > EPS * Math.max(x, y))) return { ok: false, error: "noTriangle" };
     const t: Partial<Solved> = { ...given, [third]: z };
     // The arccosine covers 0–180°, so unlike the law of sines it never picks the wrong branch.
     const angX = acosD((y * y + z * z - x * x) / (2 * y * z));

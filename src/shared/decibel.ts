@@ -127,7 +127,8 @@ const F4 = 12194.217;
  * A-weighting as three biquads (for Web Audio IIRFilterNodes), scaled to 0 dB at 1 kHz.
  * Sections 1–2 (the low-frequency poles) are bilinear transforms of s² / (s + ω1)² and s² / ((s + ω2)(s + ω3)).
  * The double pole at 12.2 kHz sits close to Nyquist, where a bilinear pair (zeros at Nyquist) cuts 16 kHz about 3 dB
- * too much and a matched-z pair cuts it too little; one of each stays within 0.1 dB of IEC 61672 up to 10 kHz.
+ * too much and a matched-z pair too little; one of each is within about 0.1 dB of IEC 61672 up to 10 kHz, then reads
+ * low by about 0.5–0.7 dB at 12.5 kHz and 2–2.6 dB at 16 kHz (inside the class 1 tolerance of +3.5 / −17 dB there).
  */
 export function aWeighting(sampleRate: number): Biquad[] {
   const w = (f: number) => 2 * Math.PI * f;
