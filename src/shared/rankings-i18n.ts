@@ -145,7 +145,8 @@ function displayName(locale: Locale, id: RankingId, name: string): string {
 
 /** A place's name: an unlinked one (no Wikidata item) keeps its English name, or reads "unnamed" in the reader's language. */
 function placeName(locale: Locale, qid: string, names: LocaleNames | null | undefined): string {
-  return qid || !names || !/^unnamed\b/i.test(names.en) ? localName(locale, names) : rankingUi(locale).unnamedIsland;
+  // "Unnamed Island (Antarctica)" keeps its qualifier, so two unnamed islands read apart.
+  return qid || !names || !/^unnamed island\b/i.test(names.en) ? localName(locale, names) : names.en.replace(/^unnamed island/i, rankingUi(locale).unnamedIsland);
 }
 
 function localName(locale: Locale, names: LocaleNames | null | undefined): string {

@@ -398,9 +398,10 @@ const NOT_WIKIPEDIA = new Set(["commonswiki", "specieswiki", "wikidatawiki", "me
 /** The Wikidata label for each cv.cm locale; a locale without one shows the English name. */
 const LABEL_LANGS = { en: "en", "zh-CN": "zh-cn", "zh-TW": "zh-tw", ja: "ja", ko: "ko", vi: "vi", id: "id", es: "es" };
 
-/** Rows are shipped to the browser: a name the same as the English one is left for the page to fill in. */
-function withoutEnglishCopies(names) {
-  return Object.fromEntries(Object.entries(names).filter(([locale, name]) => locale === "en" || name !== names.en));
+/** A row's names from the names an item has: English always; other locales only where they differ from it, as the page
+ * falls back to English (rows are shipped to the browser). */
+function localeNames(own) {
+  return Object.fromEntries(Object.entries(own).filter(([locale, name]) => locale === "en" || name !== own.en));
 }
 
 /** Names in every locale, and how many Wikipedias cover the item. Chinese falls back across scripts, converted by Wikidata (zh-tw from zh-hans and back). */
@@ -421,10 +422,14 @@ async function labels(ids) {
       // "mul" is Wikidata's name for every language, used where editors dropped a duplicate English label.
       const en = label("en") ?? entity.labels?.mul?.value;
       if (!en) continue;
-      const names = {};
-      for (const [locale, code] of Object.entries(LABEL_LANGS)) names[locale] = LABEL_FIX[id]?.[locale] ?? label(code) ?? LABEL_FIX[id]?.en ?? en;
+      // own: the names Wikidata (or a fix) really has; names: every locale, English where there is none, English copies dropped.
+      const own = {};
+      for (const [locale, code] of Object.entries(LABEL_LANGS)) {
+        const name = LABEL_FIX[id]?.[locale] ?? label(code) ?? (locale === "en" ? LABEL_FIX[id]?.en ?? en : null);
+        if (name) own[locale] = name;
+      }
       // Wikipedias only: Commons, Wikivoyage and the rest link stubs too.
-      out[id] = { names: withoutEnglishCopies(names), all: names, sitelinks: Object.keys(entity.sitelinks ?? {}).filter((site) => /wiki$/.test(site) && !NOT_WIKIPEDIA.has(site)).length };
+      out[id] = { names: localeNames(own), own, sitelinks: Object.keys(entity.sitelinks ?? {}).filter((site) => /wiki$/.test(site) && !NOT_WIKIPEDIA.has(site)).length };
     }
     await pause();
   }
@@ -545,12 +550,18 @@ async function titleIds(titles) {
     const q = new URLSearchParams({ action: "query", prop: "pageprops", ppprop: "wikibase_item", redirects: "1", titles: unique.slice(i, i + 50).join("|"), format: "json", formatversion: "2" });
     const data = JSON.parse(await get(`${WIKI}?${q}`));
     const renamed = new Map();
+    // A redirect to a section ("X Island" → "Some Archipelago#X Island") is a part of that page: no item of its own.
+    const toSection = new Set((data.query.redirects ?? []).filter((step) => step.tofragment).map((step) => step.from));
     for (const step of [...(data.query.normalized ?? []), ...(data.query.redirects ?? [])]) renamed.set(step.from, step.to);
     const ids = new Map(data.query.pages.filter((page) => page.pageprops?.wikibase_item).map((page) => [page.title, page.pageprops.wikibase_item]));
     for (const title of unique.slice(i, i + 50)) {
       let at = title;
-      for (let hop = 0; hop < 3 && renamed.has(at); hop += 1) at = renamed.get(at);
-      if (ids.has(at)) out[title] = ids.get(at);
+      let section = false;
+      for (let hop = 0; hop < 3 && renamed.has(at); hop += 1) {
+        section ||= toSection.has(at);
+        at = renamed.get(at);
+      }
+      if (ids.has(at) && !section) out[title] = ids.get(at);
     }
     await pause();
   }
@@ -652,10 +663,8 @@ async function wikipediaList(id) {
   parsed.sort((a, b) => b.value - a.value);
   parsed.splice(spec.rows + 50);
   const itemOf = await titleIds(parsed.map((row) => row.title).filter(Boolean));
-  for (const row of parsed) {
-    if (row.title && !itemOf[row.title]) throw new Error(`wikipedia ${spec.page}: no Wikidata item for ${row.title}`);
-    row.item = row.title ? itemOf[row.title] : "";
-  }
+  // A linked page with no Wikidata item (a new article) has no id: like an unlinked row, refused below only if it makes the list.
+  for (const row of parsed) row.item = (row.title && itemOf[row.title]) || "";
   // A river listed twice (its whole system and an upper course, say) keeps its longest entry.
   const seen = new Set();
   const sorted = parsed.sort((a, b) => b.value - a.value).filter((row) => !row.item || (!seen.has(row.item) && seen.add(row.item)));
@@ -675,14 +684,16 @@ async function wikipediaList(id) {
   // Islands: a row the list links by its state or country takes the island's own item, and its names where the island has them
   // ("中華民國" gives way to "臺灣島"); the state's names fill the rest, and an island-name fix on the state still wins.
   if (id === "largest-islands") {
+    // Island-name fixes go on the state's names once, before any remap below, so both paths carry them.
+    for (const [c, fix] of Object.entries(ISLAND_NAMES)) if (info[c]) info[c] = { ...info[c], own: { ...info[c].own, ...fix }, names: localeNames({ ...info[c].own, ...fix }) };
     const candidates = await islandItems(keptIds);
     const candidateInfo = await labels([...new Set(Object.values(candidates).flat())]);
     for (const [c, options] of Object.entries(candidates)) {
       const island = options.filter((i) => candidateInfo[i]).sort((a, b) => candidateInfo[b].sitelinks - candidateInfo[a].sitelinks)[0];
       if (!island || !info[c]) continue;
-      // Full label sets (before names equal to English are dropped), so a locale where the island's name is its English one keeps that.
-      const merged = { ...info[c].all, ...candidateInfo[island].all, ...ISLAND_NAMES[c] };
-      info[island] = { names: withoutEnglishCopies(merged), all: merged, sitelinks: info[c].sitelinks };
+      // The island's own names, then the state's for locales the island has none in, then the fixes.
+      const merged = { ...info[c].own, ...candidateInfo[island].own, ...ISLAND_NAMES[c] };
+      info[island] = { names: localeNames(merged), own: merged, sitelinks: info[c].sitelinks };
       for (const row of kept) if (row.item === c) row.item = island;
     }
   }
@@ -690,13 +701,12 @@ async function wikipediaList(id) {
   const items = kept.map((row) => row.item).filter(Boolean);
   if (new Set(items).size !== items.length) throw new Error(`wikipedia ${spec.page}: two rows are one item after following P706`);
   const rows = kept.map((row) => {
-    const qid = row.item;
-    if (qid && !info[qid]) throw new Error(`wikidata ${qid} (${row.title}): no English name`);
+    const item = row.item;
+    if (item && !info[item]) throw new Error(`wikidata ${item} (${row.title}): no English name`);
     // A country link that resolves to nothing (a dependency's own page, say) is left out rather than shown raw.
     const countries = [...new Set(row.countries.map((title) => countryOf[title]).filter((c) => codes[c]))].map((c) => (codes[c] === true ? info[c]?.names : codes[c])).filter(Boolean);
     const place = kept.findIndex((other) => other.value === row.value) + 1;
-    const names = !qid ? { en: row.name } : id === "largest-islands" && ISLAND_NAMES[qid] ? { ...info[qid].names, ...ISLAND_NAMES[qid] } : info[qid].names;
-    const base = [place, qid, names, row.value, countries];
+    const base = [place, item, item ? info[item].names : { en: row.name }, row.value, countries];
     if (id === "longest-rivers") return [...base, row.system];
     if (id === "largest-lakes") return [...base, row.depth ?? null, row.type];
     return base;
