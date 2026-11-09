@@ -1203,14 +1203,15 @@
   "rankings": {
     "hub": {
       "title": "Rankings: mejores IA, cuota de mercado y más, con fuentes | cv.cm",
-      "description": "Rankings con fuentes para ordenar y descargar: mejores modelos de IA, IA más usadas y cuota de mercado de navegadores, sistemas, buscadores, teléfonos y redes.",
+      "description": "Rankings con fuente que puedes ordenar y descargar: los mejores modelos de IA, la IA más usada, cuota de mercado de navegadores, sistemas operativos, buscadores, móviles y redes sociales, y las montañas más altas del mundo.",
       "h1": "Rankings",
       "lede": "Rankings elaborados con datos abiertos, cada uno con su fuente, licencia y fecha. Ordena cualquier columna, filtra filas o descarga el CSV.",
       "groups": {
         "ai": "IA",
         "share": "Cuota de mercado",
         "countries": "Países",
-        "markets": "Mercados"
+        "markets": "Mercados",
+        "geography": "Geografía"
       },
       "makeYourOwn": "Crea tu propio ranking",
       "about": [
@@ -1220,7 +1221,7 @@
       "faq": [
         {
           "q": "¿De dónde proceden los datos?",
-          "a": "La calidad de la IA procede del ranking de Arena, el uso de IA de OpenRouter y la cuota de mercado de StatCounter Global Stats. Cada página enlaza a su fuente y licencia."
+          "a": "La calidad de la IA viene del ranking de Arena, el uso de IA de OpenRouter, la cuota de mercado de StatCounter Global Stats y la altitud de las montañas de Wikidata. Cada página enlaza su fuente y licencia."
         },
         {
           "q": "¿Con qué frecuencia se actualizan los rankings?",
@@ -1228,7 +1229,7 @@
         },
         {
           "q": "¿Puedo reutilizar estas tablas?",
-          "a": "Sí, con la licencia de la fuente que aparece en cada página: CC BY 4.0 para las tablas de IA y CC BY-SA 3.0 para la cuota de mercado. Cita la fuente. Todas las tablas se pueden descargar en CSV."
+          "a": "Sí, con la licencia de la fuente que indica cada página: CC BY 4.0 para las tablas de IA, CC BY-SA 3.0 para la cuota de mercado y CC0 (sin condiciones) para las montañas. Cita la fuente. La mayoría de las tablas se pueden descargar en CSV."
         }
       ]
     },
@@ -1310,7 +1311,13 @@
         "platinum": "Platino",
         "silver": "Plata"
       },
-      "tools": "Herramientas relacionadas"
+      "tools": "Herramientas relacionadas",
+      "mountain": "Montaña",
+      "elevation": "Altitud",
+      "elevationFt": "Altitud (pies)",
+      "prominence": "Prominencia",
+      "countries": "Países",
+      "range": "Cordillera"
     },
     "sets": {
       "ai-models": {
@@ -1716,6 +1723,36 @@
           {
             "q": "¿Son tipos de cambio en directo?",
             "a": "No. Son los tipos de referencia del BCE, publicados una vez por día laborable hacia las 16:00 hora de Europa Central, solo a título informativo."
+          }
+        ]
+      },
+      "tallest-mountains": {
+        "title": "Montañas Más Altas del Mundo: las {rows} Cumbres Más Altas | cv.cm",
+        "description": "Las {rows} montañas más altas de la Tierra: {top1} {v1}, {top2} {v2}, {top3} {v3}. Altitud en metros y pies, prominencia, países y cordillera.",
+        "h1": "Las {rows} montañas más altas del mundo",
+        "lede": "Las {rows} cumbres más altas de la Tierra por altitud sobre el nivel del mar, contando solo las que se elevan al menos 500 m sobre el collado hacia una cima más alta. Con altitud en metros y pies, prominencia, países y cordillera, de Wikidata.",
+        "facts": [
+          "La más alta: {top1}, con {v1} ({ft1} pies), seguida de {top2} ({v2}) y {top3} ({v3}).",
+          "{over8000} cumbres superan los 8000 m, todas en el Himalaya y el Karakórum.",
+          "{countryLead} es el país con más cumbres en la lista: {countryCount}. Una cumbre en una frontera cuenta para cada país que toca.",
+          "El puesto {rows} es {low1}, con {lv1}. Todas las cumbres de la lista están en Asia."
+        ],
+        "about": [
+          "La prominencia es cuánto se eleva una cumbre sobre el punto más bajo que hay que cruzar para llegar a un terreno más alto. El Lhotse es la cuarta cima más alta, pero solo se alza 610 m sobre su collado con el Everest. Las listas de montañas, y no de cimas, fijan una prominencia mínima. Aquí es de 500 m, así que no cuentan cimas secundarias como la cumbre oeste del Kanchenjunga.",
+          "La altitud, la prominencia, los países y la cordillera vienen de Wikidata (CC0), que recoge mediciones publicadas. Los 8848,86 m del Everest son la medición conjunta de China y Nepal de 2020. Algunas cumbres están en zonas en disputa como Cachemira. Los países se muestran tal como los registra Wikidata, y cv.cm no toma partido sobre fronteras. Los nombres son los de Wikidata en español, o el nombre en inglés si no lo hay."
+        ],
+        "faq": [
+          {
+            "q": "¿Cuál es la montaña más alta del mundo?",
+            "a": "{top1}, con {v1} ({ft1} pies) sobre el nivel del mar. Medido desde la base hasta la cima, el Mauna Kea de Hawái es más alto, pero la mayor parte está bajo el mar."
+          },
+          {
+            "q": "¿Cuántas montañas superan los 8000 metros?",
+            "a": "{over8000}, los llamados ochomiles. Todos están en el Himalaya y el Karakórum, entre Nepal, China, Pakistán e India."
+          },
+          {
+            "q": "¿Cuál es la segunda montaña más alta del mundo?",
+            "a": "{top2}, con {v2}. Es más difícil y peligrosa de escalar que {top1}."
           }
         ]
       }

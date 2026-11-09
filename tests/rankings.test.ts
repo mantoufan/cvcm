@@ -125,3 +125,33 @@ describe("share table gaps", () => {
     for (const name of usage) expect(name).not.toMatch(/-\d{8}$/);
   });
 });
+
+describe("tallest mountains", () => {
+  const table = (rows as unknown as Record<string, [number, string, Record<string, string>, number, number, string[], Record<string, string> | null, number, number][]>)["tallest-mountains"];
+  it("lists distinct peaks by height, Everest first, with current countries", () => {
+    expect(table[0][1]).toBe("Q513");
+    const heights = table.map((row) => row[3]);
+    expect(heights).toEqual([...heights].sort((a, b) => b - a));
+    expect(new Set(table.map((row) => row[1])).size).toBe(table.length);
+    expect(table.filter((row) => row[3] >= 8000).length).toBe(14);
+    for (const row of table) {
+      expect(row[4], row[2].en).toBeGreaterThanOrEqual(500);
+      expect(row[5].length, row[2].en).toBeGreaterThan(0);
+      for (const code of row[5]) expect(code, row[2].en).toMatch(/^[A-Z]{2}$/);
+      expect(row[5], row[2].en).not.toContain("SU");
+    }
+  });
+  it("names peaks, countries and ranges in the reader's language and shows feet", () => {
+    const zh = rankingTable("zh-CN", "tallest-mountains", table);
+    expect(zh.rows[0][1].text).toBe("珠穆朗玛峰");
+    expect(zh.rows[0][2].text).toBe("8,848.86 m");
+    expect(zh.rows[0][3].text).toBe("29,032");
+    expect(zh.rows[0][5].text).toBe("中国、尼泊尔");
+    expect(rankingTable("en", "tallest-mountains", table).rows[0][5].text).toBe("China, Nepal");
+    const tw = rankingTable("zh-TW", "tallest-mountains", table);
+    expect(tw.rows[0][6].text).toBe("馬哈蘭格·喜瑪爾");
+    expect(rankingPageCopy("ja", "tallest-mountains").faq[0].a).toContain("エベレスト");
+    const en = rankingPageCopy("en", "tallest-mountains");
+    expect(en.facts[0]).toContain("Mount Everest at 8,848.86 m (29,032 ft)");
+  });
+});

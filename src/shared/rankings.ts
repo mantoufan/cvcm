@@ -10,6 +10,7 @@ export const RANKING_GROUPS = [
   { id: "ai", sets: ["ai-models", "ai-coding-models", "ai-image-models", "ai-video-models", "ai-usage", "ai-companies"] },
   { id: "share", sets: ["browser-market-share", "os-market-share", "search-engine-market-share", "phone-market-share", "social-media-market-share"] },
   { id: "markets", sets: ["crypto-market-cap", "commodity-prices", "currency-strength"] },
+  { id: "geography", sets: ["tallest-mountains"] },
 ] as const;
 
 export type RankingGroupId = (typeof RANKING_GROUPS)[number]["id"];
@@ -24,7 +25,7 @@ export function rankingGroupOf(id: RankingId): RankingGroupId {
   return RANKING_GROUPS.find((group) => (group.sets as readonly string[]).includes(id))!.id;
 }
 
-export type RankingKind = "arena" | "usage" | "companies" | "share" | "crypto" | "commodity" | "fx";
+export type RankingKind = "arena" | "usage" | "companies" | "share" | "crypto" | "commodity" | "fx" | "mountain";
 
 export function rankingKind(id: RankingId): RankingKind {
   if (id === "ai-usage") return "usage";
@@ -32,6 +33,7 @@ export function rankingKind(id: RankingId): RankingKind {
   if (id === "crypto-market-cap") return "crypto";
   if (id === "commodity-prices") return "commodity";
   if (id === "currency-strength") return "fx";
+  if (id === "tallest-mountains") return "mountain";
   return rankingGroupOf(id) === "ai" ? "arena" : "share";
 }
 
@@ -56,6 +58,7 @@ export const RANKING_SOURCE: Record<RankingId, RankingSource> = {
   // CoinMarketCap's licence covers showing the data on cv.cm, not passing it on: no CSV for this table.
   "crypto-market-cap": { name: "CoinMarketCap", url: "https://coinmarketcap.com/", license: "CoinMarketCap API terms", licenseUrl: "https://coinmarketcap.com/api/" },
   "commodity-prices": { name: "World Bank Commodity Price Data (The Pink Sheet)", url: "https://www.worldbank.org/en/research/commodity-markets", license: "CC BY 4.0", licenseUrl: CC_BY },
+  "tallest-mountains": { name: "Wikidata", url: "https://www.wikidata.org/", license: "CC0 1.0", licenseUrl: "https://creativecommons.org/publicdomain/zero/1.0/" },
   "currency-strength": { name: "ECB euro foreign exchange reference rates", url: "https://www.ecb.europa.eu/stats/policy_and_exchange_rates/euro_reference_exchange_rates/html/index.en.html", license: "Reuse with source named", licenseUrl: "https://www.ecb.europa.eu/services/disclaimer/html/index.en.html" },
 };
 
@@ -91,6 +94,11 @@ export type RankingMeta = {
   dominance?: number;
   /** Currencies: the dates the changes are measured from (`yearAgo` also above). */
   monthAgo?: string;
+  /** Mountains: rows are Wikidata ids, named here for the head tags; peaks of 8,000 m or more; the country with the most peaks. */
+  names?: Record<string, Record<string, string>>;
+  over8000?: number;
+  countryLead?: string;
+  countryCount?: number;
 };
 
 export const RANKING_SNAPSHOT: string = meta.updated;
@@ -115,5 +123,9 @@ export type ShareRow = [number, string, number | null, number, ...number[]];
 export type CryptoRow = [number, string, string, number, number | null, number | null, number, number | null];
 /** [rank, commodity id, unit, latest monthly price USD, 1-month change %, 12-month change %] */
 export type CommodityRow = [number, string, string, number, number, number];
+/** A name in each cv.cm locale (English where Wikidata has none). */
+export type LocaleNames = Record<string, string>;
+/** [rank, Wikidata id, names, elevation m, prominence m, ISO 3166 countries, range names (null when Wikidata names none), latitude, longitude] */
+export type MountainRow = [number, string, LocaleNames, number, number, string[], LocaleNames | null, number, number];
 /** [rank, ISO 4217 code, units per US dollar, change vs USD over 1 month %, over 1 year %] */
 export type FxRow = [number, string, number, number, number];
