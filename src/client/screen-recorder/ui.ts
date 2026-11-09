@@ -164,6 +164,7 @@ async function begin(): Promise<void> {
   display = screen;
   // The browser's own "Stop sharing" ends the video track, possibly while the mic prompt is still open.
   let shareEnded = false;
+  let mixFailed = false;
   screen.getVideoTracks()[0]?.addEventListener("ended", () => {
     shareEnded = true;
     if (recorder) finish();
@@ -191,6 +192,7 @@ async function begin(): Promise<void> {
       tracks.push(audioTracks[0]);
       mic?.getTracks().forEach((tr) => tr.stop());
       mic = null;
+      mixFailed = true;
     }
   } else if (audioTracks.length) tracks.push(audioTracks[0]);
   const stream = new MediaStream(tracks);
@@ -229,7 +231,7 @@ async function begin(): Promise<void> {
     pauseBtn.textContent = t("screenRecorder.pause");
   }
   // Recording goes on without the missing sound; the status says what is not in it.
-  say(wantMic && !mic ? "micDenied" : wantSystem && !screen.getAudioTracks().length ? "noSystemAudio" : "recording");
+  say(mixFailed ? "noMix" : wantMic && !mic ? "micDenied" : wantSystem && !screen.getAudioTracks().length ? "noSystemAudio" : "recording");
   window.clearInterval(timer);
   timer = window.setInterval(tickTime, 250);
   tickTime();

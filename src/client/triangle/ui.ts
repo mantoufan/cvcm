@@ -158,9 +158,14 @@ function solutionBlock(s: TriangleDetails, index: number, r: Extract<TriangleRes
 function stepsFor(s: TriangleDetails, r: Extract<TriangleResult, { ok: true }>): string[] {
   const out = [t(`triangle.case_${r.case}`)];
   if (r.case === "right") {
-    if (r.method === "pythagoras") out.push(`a² + b² = c² → ${fmt(s.a)}² + ${fmt(s.b)}² = ${fmt(s.c)}²`);
-    else out.push(`a = c · sin A = ${fmt(s.c)} · sin ${fmt(s.A)}° = ${fmt(s.a)}`, `b = c · cos A = ${fmt(s.c)} · cos ${fmt(s.A)}° = ${fmt(s.b)}`);
-    out.push(`A = arcsin(a / c) = ${fmt(s.A)}°`, `B = 90° − A = ${fmt(s.B)}°`);
+    if (r.method === "pythagoras") {
+      // Two sides were given: Pythagoras gives the third, then the angles follow from a / c.
+      out.push(`a² + b² = c² → ${fmt(s.a)}² + ${fmt(s.b)}² = ${fmt(s.c)}²`, `sin A = a / c → A = ${fmt(s.A)}°`);
+    } else {
+      // An angle and a side were given: sine and cosine give the other two sides.
+      out.push(`a = c · sin A = ${fmt(s.c)} · sin ${fmt(s.A)}° = ${fmt(s.a)}`, `b = c · cos A = ${fmt(s.c)} · cos ${fmt(s.A)}° = ${fmt(s.b)}`);
+    }
+    out.push(`B = 90° − A = ${fmt(s.B)}°`);
   } else if (r.case === "sss") {
     out.push(`cos A = (b² + c² − a²) / 2bc → A = ${fmt(s.A)}°`, `cos B = (a² + c² − b²) / 2ac → B = ${fmt(s.B)}°`, `C = 180° − A − B = ${fmt(s.C)}°`);
   } else if (r.case === "sas") {

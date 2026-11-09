@@ -21,7 +21,8 @@ let aboutEl: HTMLElement | null = null;
 let ctx: AudioContext | null = null;
 let master: GainNode | null = null;
 /** The playing source, its own gain (fades and the sleep timer), and when its fade-in starts and ends. */
-let voice: { src: AudioBufferSourceNode; gain: GainNode; color: NoiseColor; start: number; fullAt: number } | null = null;
+/** The playing source, its own gain, and the gain envelope scheduled on it (linear segments between points). */
+let voice: { src: AudioBufferSourceNode; gain: GainNode; color: NoiseColor; points: Array<[number, number]> } | null = null;
 let buffers = new Map<NoiseColor, AudioBuffer>();
 /** Audio-clock time the sleep timer ends, or null for no timer. */
 let endsAt: number | null = null;
@@ -126,8 +127,8 @@ function startVoice(c: NoiseColor, fade: number): boolean {
   src.connect(gain).connect(master);
   // Random start point, so replaying does not begin with the same second of noise.
   src.start(now, Math.random() * buf.duration);
-  voice = { src, gain, color: c, start: now, fullAt: now + fade };
-  scheduleEnd();
+  voice = { src, gain, color: c, points: [[now, 0]] };
+  scheduleEnd(fade);
   return true;
 }
 
@@ -136,8 +137,8 @@ function fadeOut(v: NonNullable<typeof voice>, seconds: number): void {
   if (!ctx) return;
   const now = ctx.currentTime;
   const g = v.gain.gain;
-  g.cancelScheduledValues(now);
-  g.setValueAtTime(g.value, now);
+  g.cancelScheduledValues(0);
+  g.setValueAtTime(levelAt(v.points, now), now);
   g.linearRampToValueAtTime(0, now + seconds);
   try {
     v.src.stop(now + seconds + 0.05);
@@ -211,28 +212,48 @@ function onTimer(): void {
   if (!ctx || !voice) return;
   const minutes = Number(timerEl?.value ?? 0);
   endsAt = minutes > 0 ? ctx.currentTime + minutes * 60 : null;
-  scheduleEnd();
+  scheduleEnd(SWITCH_S);
   tick();
 }
 
+/** The envelope's level at audio time t (linear between points, flat after the last). */
+function levelAt(points: Array<[number, number]>, t: number): number {
+  let prev = points[0];
+  for (const p of points) {
+    if (p[0] >= t) {
+      if (p[0] === prev[0]) return p[1];
+      return prev[1] + ((p[1] - prev[1]) * (t - prev[0])) / (p[0] - prev[0]);
+    }
+    prev = p;
+  }
+  return prev[1];
+}
+
 /**
- * Puts the sleep timer's fade on the audio clock, so a background tab (whose timers the browser slows down)
- * still ends on time. Without a timer the voice holds at full level.
+ * Schedules the voice's gain on the audio clock from where it is now: a ramp (over `ramp` seconds) to the level the
+ * sleep timer allows, hold, then the timer's 30 s fade to 0. A background tab (whose timers the browser slows down) still
+ * ends on time, and a colour or timer change in the middle of the fade continues it rather than jumping to full level.
+ * Only the gain is scheduled: a scheduled stop() could not be taken back if the timer is turned off; tick() stops the
+ * silent source once it notices the end.
  */
-function scheduleEnd(): void {
+function scheduleEnd(ramp: number): void {
   if (!ctx || !voice) return;
+  const now = ctx.currentTime;
+  const cap = (t: number) => (endsAt === null ? 1 : Math.max(0, Math.min(1, (endsAt - t) / FADE_OUT_S)));
+  const from = levelAt(voice.points, now);
+  const points: Array<[number, number]> = [[now, from]];
+  const t1 = endsAt === null ? now + ramp : Math.min(now + ramp, endsAt);
+  points.push([t1, cap(t1)]);
+  if (endsAt !== null) {
+    const fadeFrom = endsAt - FADE_OUT_S;
+    if (fadeFrom > t1) points.push([fadeFrom, 1]);
+    if (endsAt > t1) points.push([endsAt, 0]);
+  }
   const g = voice.gain.gain;
-  // Rebuild the whole envelope from the voice's start: fade-in, hold, and the timer's fade-out. Reading g.value after
-  // cancelling would lose a fade-in that is still running.
   g.cancelScheduledValues(0);
-  g.setValueAtTime(0, voice.start);
-  g.linearRampToValueAtTime(1, voice.fullAt);
-  // Only the gain is scheduled: a scheduled stop() could not be taken back if the timer is turned off.
-  // tick() stops the silent source once it notices the end.
-  if (endsAt === null) return;
-  const fadeFrom = Math.max(voice.fullAt, endsAt - FADE_OUT_S);
-  g.setValueAtTime(1, fadeFrom);
-  g.linearRampToValueAtTime(0, Math.max(fadeFrom, endsAt));
+  g.setValueAtTime(points[0][1], points[0][0]);
+  for (const [t, v] of points.slice(1)) g.linearRampToValueAtTime(v, t);
+  voice.points = points;
 }
 
 function applyVolume(): void {

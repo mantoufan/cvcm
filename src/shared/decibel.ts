@@ -125,23 +125,29 @@ const F4 = 12194.217;
 
 /**
  * A-weighting as three biquads (for Web Audio IIRFilterNodes), scaled to 0 dB at 1 kHz.
- * Section 1: s² / (s + ω1)²; section 2: s² / ((s + ω2)(s + ω3)); section 3: ω4² / (s + ω4)², with ω4 prewarped
- * so the top pole lands where it should at 44.1/48 kHz.
+ * Sections 1–2 (the low-frequency poles) are bilinear transforms of s² / (s + ω1)² and s² / ((s + ω2)(s + ω3)).
+ * The double pole at 12.2 kHz sits close to Nyquist, where a bilinear pair (zeros at Nyquist) cuts 16 kHz about 3 dB
+ * too much and a matched-z pair cuts it too little; one of each stays within 0.1 dB of IEC 61672 up to 10 kHz.
  */
 export function aWeighting(sampleRate: number): Biquad[] {
   const w = (f: number) => 2 * Math.PI * f;
   const w1 = w(F1);
   const w2 = w(F2);
   const w3 = w(F3);
-  const f4 = Math.min(F4, sampleRate * 0.45);
-  const w4 = 2 * sampleRate * Math.tan((Math.PI * f4) / sampleRate);
-  const sections = [
+  const w4 = w(F4);
+  const k = 2 * sampleRate;
+  // Bilinear first-order ω4 / (s + ω4): b = [g, g], a = [1, q].
+  const g = w4 / (k + w4);
+  const q = (w4 - k) / (k + w4);
+  // Matched-z first-order: (1 − p) / (1 − p z⁻¹).
+  const p = Math.exp(-w4 / sampleRate);
+  const sections: Biquad[] = [
     bilinear([1, 0, 0], [1, 2 * w1, w1 * w1], sampleRate),
     bilinear([1, 0, 0], [1, w2 + w3, w2 * w3], sampleRate),
-    bilinear([0, 0, w4 * w4], [1, 2 * w4, w4 * w4], sampleRate),
+    { b: [g * (1 - p), g * (1 - p), 0], a: [1, q - p, -p * q] },
   ];
-  const g = 1 / magnitude(sections, 1000, sampleRate);
-  sections[0].b = sections[0].b.map((v) => v * g) as [number, number, number];
+  const gain = 1 / magnitude(sections, 1000, sampleRate);
+  sections[0].b = sections[0].b.map((v) => v * gain) as [number, number, number];
   return sections;
 }
 

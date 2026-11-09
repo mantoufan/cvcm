@@ -108,8 +108,10 @@ describe("decibel", () => {
       expect(db(500)).toBeCloseTo(-3.2, 0);
       expect(db(2000)).toBeCloseTo(1.2, 0);
       expect(db(4000)).toBeCloseTo(1.0, 0);
-      // The bilinear transform squeezes the top octave a little; IEC class 2 allows far more at 8 kHz.
-      expect(Math.abs(db(8000) - -1.1)).toBeLessThan(1);
+      expect(db(8000)).toBeCloseTo(-1.1, 0);
+      expect(db(10000)).toBeCloseTo(-2.5, 0);
+      // IEC 61672 class 1 allows +3.5 / −17 dB at 16 kHz; the standard value is −6.6.
+      expect(Math.abs(db(16000) - -6.6)).toBeLessThan(3);
     }
   });
 

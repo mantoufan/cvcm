@@ -1007,6 +1007,9 @@ function langLinks(current: Locale): HTMLElement {
 function switchLocale(next: Locale): void {
   // Unsaved work in this tab: load the other language as a new document, so beforeunload can ask first.
   if (mustStay()) {
+    // If the leave prompt is cancelled the page stays: put the picker back and forget the pending scroll.
+    scrollOnSwap = false;
+    restoreRendered();
     location.assign(localeHref(next));
     return;
   }

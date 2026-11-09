@@ -3,6 +3,7 @@ import { h } from "../dom";
 import { locale, t } from "../i18n";
 import { appHref } from "../../shared/path";
 import { clockText } from "../../shared/recorder";
+import { rms } from "../../shared/mic";
 import {
   CALIBRATION_MAX,
   CALIBRATION_MIN,
@@ -244,9 +245,12 @@ async function start(): Promise<void> {
 
 /** Microphone → (A-weighting biquads) → analyser → silent gain → output. */
 function buildGraph(ctx: AudioContext, s: MediaStream): boolean {
+  const chain: AudioNode[] = [];
   try {
     const source = ctx.createMediaStreamSource(s);
-    const chain: AudioNode[] = [source];
+    chain.push(source);
+    // Very old WebKit lacks float samples; the meter needs them, so it reports the browser as unsupported.
+    if (typeof AnalyserNode.prototype.getFloatTimeDomainData !== "function") throw new Error("no float samples");
     if (weighting() === "a" && typeof ctx.createIIRFilter === "function") {
       for (const { b, a } of aWeighting(ctx.sampleRate)) chain.push(ctx.createIIRFilter(b, a));
     }
@@ -262,7 +266,8 @@ function buildGraph(ctx: AudioContext, s: MediaStream): boolean {
     nodes = chain;
     return true;
   } catch {
-    for (const n of nodes) n.disconnect();
+    // Disconnect whatever was linked before the failure, so no orphan source keeps running.
+    for (const n of chain) n.disconnect();
     nodes = [];
     analyser = null;
     return false;
@@ -314,11 +319,9 @@ function resetStats(): void {
 
 function draw(now: number): void {
   if (!analyser || !samples) return;
-  if (typeof analyser.getFloatTimeDomainData === "function") analyser.getFloatTimeDomainData(samples);
-  else return;
-  let sum = 0;
-  for (let i = 0; i < samples.length; i++) sum += samples[i] * samples[i];
-  const ms = sum / samples.length;
+  analyser.getFloatTimeDomainData(samples);
+  const level = rms(samples);
+  const ms = level * level;
   const dt = Math.min(0.5, Math.max(0, (now - lastFrame) / 1000));
   lastFrame = now;
   weighted = primed ? timeWeight(weighted, ms, dt, TIME_WEIGHTS[speed()]) : ms;
@@ -340,8 +343,9 @@ function draw(now: number): void {
     if (nowEl) nowEl.textContent = dbText(db);
     meterFill?.parentElement?.setAttribute("aria-valuenow", dbText(Math.max(GRAPH_MIN_DB, Math.min(GRAPH_MAX_DB, db))));
     if (bandEl) bandEl.textContent = t(`decibelMeter.band_${bandOf(db)}`);
-    if (minEl) minEl.textContent = `${dbText(toDb(stats.min, cal))} dB`;
-    if (maxEl) maxEl.textContent = `${dbText(toDb(stats.max, cal))} dB`;
+    // Still warming up: nothing measured yet.
+    if (minEl && Number.isFinite(stats.min)) minEl.textContent = `${dbText(toDb(stats.min, cal))} dB`;
+    if (maxEl && Number.isFinite(stats.max)) maxEl.textContent = `${dbText(toDb(stats.max, cal))} dB`;
     const leq = stats.leqDbfs();
     if (avgEl && leq !== null) avgEl.textContent = `${dbText(toDb(leq, cal))} dB`;
     if (timeEl) timeEl.textContent = clockText(stats.seconds() * 1000);
