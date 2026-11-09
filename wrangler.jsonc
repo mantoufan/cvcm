@@ -14,8 +14,14 @@
     "not_found_handling": "single-page-application",
     "run_worker_first": true
   },
+  // Like cvcm.pages.dev before it: a direct origin for comparing against cv.cm.
   "workers_dev": true,
-  "preview_urls": true,
+  "preview_urls": false,
+  // DNS for both hosts still points at the old Pages project; these routes put the Worker in front of it.
+  "routes": [
+    { "pattern": "cv.cm/*", "zone_name": "cv.cm" },
+    { "pattern": "www.cv.cm/*", "zone_name": "cv.cm" }
+  ],
   "d1_databases": [
     {
       "binding": "DB",
