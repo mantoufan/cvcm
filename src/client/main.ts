@@ -1,3 +1,4 @@
+import { mustStay } from "./leave-guard";
 import { h } from "./dom";
 import { faqSection, syncPageJsonLd } from "./faq";
 import { guideSection } from "./guide";
@@ -103,6 +104,14 @@ export function start(): void {
       // Following an in-page #anchor (a table of contents, #tools) also fires popstate: the page itself is unchanged.
       if (renderedHref && renderedHref.split("#")[0] === location.pathname + location.search) {
         renderedHref = location.pathname + location.search + location.hash;
+        return;
+      }
+      // A recording that is not downloaded yet: put the URL back and load the target as a new document,
+      // so the browser's leave prompt can stop it.
+      if (mustStay() && renderedHref) {
+        const target = location.href;
+        history.pushState(null, "", renderedHref);
+        location.assign(target);
         return;
       }
       gateAnalytics(location.pathname);
@@ -300,6 +309,8 @@ function onClick(e: MouseEvent): void {
   // The microphone and camera are allowed only by a mic or camera tool page's own response headers: entering or leaving one loads a new document.
   if (devicePolicyOf(a.pathname) !== devicePolicyOf(location.pathname)) return;
   if (parseAppPath(a.pathname).kind === "static") return;
+  // Unsaved work in this tab: a full navigation lets beforeunload ask before it is lost.
+  if (mustStay()) return;
   e.preventDefault();
   history.pushState(null, "", a.href);
   scrollOnSwap = true;

@@ -2,6 +2,7 @@ import { armAudio } from "../audio";
 import { h } from "../dom";
 import { locale, t } from "../i18n";
 import { appHref } from "../../shared/path";
+import { clockText } from "../../shared/recorder";
 import {
   CALIBRATION_MAX,
   CALIBRATION_MIN,
@@ -47,6 +48,8 @@ let nodes: AudioNode[] = [];
 let analyser: AnalyserNode | null = null;
 let samples: Float32Array<ArrayBuffer> | null = null;
 let weighted = 0;
+/** False until the first frame, so a real 0 (digital silence) is still time-weighted. */
+let primed = false;
 let stats = new LevelStats();
 let history: Array<{ at: number; db: number }> = [];
 let lastFrame = 0;
@@ -57,7 +60,12 @@ let asking = false;
 let lineColor = "#a13f6c";
 
 export function mountDecibelMeter(host: HTMLElement): void {
-  weightEl = h("select", { "data-field": "weighting", onChange: () => { updateUnit(); if (stream) void start(); } },
+  weightEl = h("select", { "data-field": "weighting", onChange: () => {
+    updateUnit();
+    // A- and Z-weighted energy must not mix in one Leq.
+    resetStats();
+    if (stream) void start();
+  } },
     ...WEIGHTINGS.map((w, i) => h("option", { value: w, selected: i === 0 }, t(`decibelMeter.weight_${w}`))),
   );
   speedEl = h("select", { "data-field": "speed" },
@@ -221,6 +229,7 @@ async function start(): Promise<void> {
   const style = graphEl ? getComputedStyle(graphEl) : null;
   lineColor = style?.getPropertyValue("--pink-deep").trim() || "#a13f6c";
   weighted = 0;
+  primed = false;
   lastFrame = performance.now();
   lastText = 0;
   if (startBtn) startBtn.textContent = t("decibelMeter.stop");
@@ -297,10 +306,12 @@ function draw(now: number): void {
   const ms = sum / samples.length;
   const dt = Math.min(0.5, Math.max(0, (now - lastFrame) / 1000));
   lastFrame = now;
-  weighted = weighted ? timeWeight(weighted, ms, dt, TIME_WEIGHTS[speed()]) : ms;
+  weighted = primed ? timeWeight(weighted, ms, dt, TIME_WEIGHTS[speed()]) : ms;
+  primed = true;
   const cal = calibration();
-  const db = toDb(powerToDbfs(weighted), cal);
-  stats.add(ms, db, dt);
+  const dbfs = powerToDbfs(weighted);
+  const db = toDb(dbfs, cal);
+  stats.add(ms, dbfs, dt);
   history.push({ at: now, db });
   while (history.length && history[0].at < now - HISTORY_S * 1000) history.shift();
   if (meterFill) {
@@ -314,20 +325,14 @@ function draw(now: number): void {
     if (nowEl) nowEl.textContent = dbText(db);
     meterFill?.parentElement?.setAttribute("aria-valuenow", dbText(Math.max(GRAPH_MIN_DB, Math.min(GRAPH_MAX_DB, db))));
     if (bandEl) bandEl.textContent = t(`decibelMeter.band_${bandOf(db)}`);
-    if (minEl) minEl.textContent = `${dbText(stats.min)} dB`;
-    if (maxEl) maxEl.textContent = `${dbText(stats.max)} dB`;
+    if (minEl) minEl.textContent = `${dbText(toDb(stats.min, cal))} dB`;
+    if (maxEl) maxEl.textContent = `${dbText(toDb(stats.max, cal))} dB`;
     const leq = stats.leqDbfs();
     if (avgEl && leq !== null) avgEl.textContent = `${dbText(toDb(leq, cal))} dB`;
-    if (timeEl) timeEl.textContent = clock(stats.seconds());
+    if (timeEl) timeEl.textContent = clockText(stats.seconds() * 1000);
   }
   drawGraph(now);
   frame = window.requestAnimationFrame(draw);
-}
-
-function clock(seconds: number): string {
-  const s = Math.floor(seconds);
-  const m = Math.floor(s / 60);
-  return `${m}:${String(s % 60).padStart(2, "0")}`;
 }
 
 function drawGraph(now: number): void {

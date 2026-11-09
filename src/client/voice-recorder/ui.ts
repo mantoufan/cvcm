@@ -1,12 +1,14 @@
 import { armAudio } from "../audio";
 import { downloadBlob, h } from "../dom";
+import { setLeaveGuard } from "../leave-guard";
+import { fixInfiniteDuration } from "../media-duration";
 import { locale, t } from "../i18n";
 import { appHref } from "../../shared/path";
 import { encodeWav } from "../../shared/wav";
 import { rms, toDbfs, meterPercent } from "../../shared/mic";
 import { AUDIO_TYPES, MAX_VOICE_MINUTES, clockText, elapsedMs, extensionFor, pickType, recordingName, sizeText } from "../../shared/recorder";
 
-/** Recordings kept in the list; older ones drop off (their files stay downloadable until then). */
+/** Downloaded takes beyond this many drop off the list, oldest first; a take not yet downloaded is never dropped. */
 const MAX_TAKES = 20;
 
 type Take = { id: number; blob: Blob; url: string; ms: number; at: Date; name: string; saved: boolean };
@@ -36,6 +38,8 @@ let run = 0;
 let asking = false;
 let takes: Take[] = [];
 let nextId = 1;
+/** The take was stopped by the length limit, so the status says that rather than a plain "saved". */
+let hitLimit = false;
 
 export function mountVoiceRecorder(host: HTMLElement): void {
   deviceEl = h("select", { "data-field": "device", disabled: true },
@@ -75,10 +79,12 @@ export function mountVoiceRecorder(host: HTMLElement): void {
     ),
   );
   window.addEventListener("beforeunload", onLeave);
+  setLeaveGuard(hasUnsaved);
 }
 
 export function unmountVoiceRecorder(): void {
   window.removeEventListener("beforeunload", onLeave);
+  setLeaveGuard(null);
   run++;
   if (recorder && recorder.state !== "inactive") {
     recorder.onstop = null;
@@ -97,8 +103,12 @@ export function unmountVoiceRecorder(): void {
 }
 
 /** Ask before leaving with a recording running or one not yet downloaded: recordings live only in this tab. */
+function hasUnsaved(): boolean {
+  return recorder !== null || asking || takes.some((tk) => !tk.saved);
+}
+
 function onLeave(e: BeforeUnloadEvent): void {
-  if (recorder || takes.some((tk) => !tk.saved)) {
+  if (hasUnsaved()) {
     e.preventDefault();
     e.returnValue = "";
   }
@@ -221,8 +231,8 @@ function tickTime(): void {
   const ms = elapsedMs(banked, startedAt, performance.now());
   if (timeEl) timeEl.textContent = clockText(ms);
   if (recorder && ms >= MAX_VOICE_MINUTES * 60_000) {
-    say("limit", { n: MAX_VOICE_MINUTES });
-    finish(true);
+    hitLimit = true;
+    finish();
   }
 }
 
@@ -248,7 +258,7 @@ function togglePause(): void {
 }
 
 /** Stops recording; the take is added once MediaRecorder hands over the last chunk. */
-function finish(keepStatus = false): void {
+function finish(): void {
   if (asking && !recorder) {
     // Still waiting for permission: cancel.
     run++;
@@ -263,7 +273,7 @@ function finish(keepStatus = false): void {
   if (recorder.state !== "inactive") recorder.stop();
   else saveTake(recorder, run);
   window.clearInterval(timer);
-  if (!keepStatus) say("saving");
+  say("saving");
 }
 
 function saveTake(rec: MediaRecorder, mine: number): void {
@@ -286,9 +296,15 @@ function saveTake(rec: MediaRecorder, mine: number): void {
   const at = new Date();
   const take: Take = { id: nextId++, blob, url: URL.createObjectURL(blob), ms, at, name: recordingName("recording", at, extensionFor(type)), saved: false };
   takes.unshift(take);
-  while (takes.length > MAX_TAKES) URL.revokeObjectURL(takes.pop()!.url);
+  for (let i = takes.length - 1; i >= 0 && takes.length > MAX_TAKES; i--) {
+    if (!takes[i].saved) continue;
+    URL.revokeObjectURL(takes[i].url);
+    takes.splice(i, 1);
+  }
   renderTakes();
-  say("saved", { time: clockText(ms) });
+  if (hitLimit) say("limit", { n: MAX_VOICE_MINUTES });
+  else say("saved", { time: clockText(ms) });
+  hitLimit = false;
 }
 
 /** Stops the microphone and the meter (the recorder must already be stopped). */
@@ -330,17 +346,7 @@ function renderTakes(): void {
 
 function takeRow(take: Take): HTMLElement {
   const player = h("audio", { controls: true, preload: "metadata", src: take.url, class: "rec-player" });
-  // Chrome's WebM recordings carry no duration, so the player shows ∞ until it has seeked to the end once.
-  player.addEventListener("loadedmetadata", () => {
-    if (player.duration === Infinity) {
-      const back = () => {
-        player.removeEventListener("durationchange", back);
-        player.currentTime = 0;
-      };
-      player.addEventListener("durationchange", back);
-      player.currentTime = 1e7;
-    }
-  }, { once: true });
+  fixInfiniteDuration(player);
   const wavBtn = h("button", { type: "button", class: "btn ghost", "data-action": "wav" }, t("voiceRecorder.downloadWav"));
   wavBtn.addEventListener("click", () => void downloadWav(take, wavBtn));
   return h("li", { class: "rec-item", "data-take": String(take.id) },

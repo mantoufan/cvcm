@@ -2,9 +2,10 @@
 
 /**
  * Default dB SPL of a full-scale (0 dBFS) sine. Phone and laptop microphones differ by ±10 dB or more,
- * so the page offers a calibration offset on top of this.
+ * so the page offers a calibration offset on top of this. 100 puts a quiet room (about −60 dBFS) near 40 dB and leaves
+ * room above 100 dB before the input clips.
  */
-export const DEFAULT_FULL_SCALE_DB = 94;
+export const DEFAULT_FULL_SCALE_DB = 100;
 export const CALIBRATION_MIN = -30;
 export const CALIBRATION_MAX = 30;
 
@@ -73,21 +74,21 @@ export function timeWeight(y: number, x: number, dt: number, tau: number): numbe
   return y + (x - y) * k;
 }
 
-/** Running energy average (Leq) plus min and max of the time-weighted level. */
+/** Running energy average (Leq) plus min and max of the time-weighted level, all in dBFS so calibration applies at display. */
 export class LevelStats {
   private energy = 0;
   private time = 0;
   min = Infinity;
   max = -Infinity;
 
-  add(meanSquare: number, weightedDb: number, dt: number): void {
+  add(meanSquare: number, weightedDbfs: number, dt: number): void {
     if (dt > 0 && Number.isFinite(meanSquare)) {
       this.energy += meanSquare * dt;
       this.time += dt;
     }
-    if (Number.isFinite(weightedDb)) {
-      this.min = Math.min(this.min, weightedDb);
-      this.max = Math.max(this.max, weightedDb);
+    if (Number.isFinite(weightedDbfs)) {
+      this.min = Math.min(this.min, weightedDbfs);
+      this.max = Math.max(this.max, weightedDbfs);
     }
   }
 

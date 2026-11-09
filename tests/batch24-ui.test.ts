@@ -5,6 +5,7 @@ import { mountDecibelMeter, unmountDecibelMeter } from "../src/client/decibel-me
 import { mountVoiceRecorder, unmountVoiceRecorder } from "../src/client/voice-recorder/ui";
 import { mountScreenRecorder, unmountScreenRecorder } from "../src/client/screen-recorder/ui";
 import { mountTriangle, unmountTriangle } from "../src/client/triangle/ui";
+import { mustStay } from "../src/client/leave-guard";
 
 let host: HTMLElement;
 
@@ -127,6 +128,10 @@ describe("voice recorder ui", () => {
     await new Promise((r) => setTimeout(r, 0));
     expect(q("[data-out=status]").textContent).toContain("blocked");
     expect(q("[data-action=record]").textContent).toBe("Record");
+    // Nothing recorded, so links may swap in-app; the guard is cleared on unmount.
+    expect(mustStay()).toBe(false);
+    unmountVoiceRecorder();
+    expect(mustStay()).toBe(false);
   });
 });
 
@@ -143,6 +148,8 @@ describe("screen recorder ui", () => {
     q<HTMLButtonElement>("[data-action=start]").click();
     await new Promise((r) => setTimeout(r, 0));
     expect(q("[data-out=status]").textContent).toBe("Screen sharing was cancelled.");
+    expect(host.querySelectorAll("[data-field=format] option")).toHaveLength(2);
+    expect(mustStay()).toBe(false);
   });
 });
 

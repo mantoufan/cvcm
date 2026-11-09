@@ -1,10 +1,12 @@
 import { downloadBlob, h } from "../dom";
+import { setLeaveGuard } from "../leave-guard";
+import { fixInfiniteDuration } from "../media-duration";
 import { locale, t } from "../i18n";
 import { newAudioContext, resumeIfPaused } from "../audio";
 import { appHref } from "../../shared/path";
 import { MAX_SCREEN_MINUTES, VIDEO_MP4_TYPES, VIDEO_WEBM_TYPES, clockText, elapsedMs, extensionFor, pickType, recordingName, sizeText } from "../../shared/recorder";
 
-const FORMATS = ["auto", "mp4", "webm"] as const;
+const FORMATS = ["auto", "webm"] as const;
 type Format = (typeof FORMATS)[number];
 const QUALITIES = { standard: 4_000_000, high: 8_000_000 } as const;
 type Quality = keyof typeof QUALITIES;
@@ -31,6 +33,7 @@ let run = 0;
 let busy = false;
 let lastUrl = "";
 let unsaved = false;
+let hitLimit = false;
 
 export function mountScreenRecorder(host: HTMLElement): void {
   formatEl = h("select", { "data-field": "format" },
@@ -73,10 +76,12 @@ export function mountScreenRecorder(host: HTMLElement): void {
     ),
   );
   window.addEventListener("beforeunload", onLeave);
+  setLeaveGuard(() => recorder !== null || busy || unsaved);
 }
 
 export function unmountScreenRecorder(): void {
   window.removeEventListener("beforeunload", onLeave);
+  setLeaveGuard(null);
   run++;
   if (recorder && recorder.state !== "inactive") {
     recorder.onstop = null;
@@ -112,12 +117,17 @@ function chosenType(): string {
   const f = (formatEl?.value ?? "auto") as Format;
   const ok = (x: string) => MediaRecorder.isTypeSupported(x);
   if (f === "webm") return pickType(VIDEO_WEBM_TYPES, ok) || pickType(VIDEO_MP4_TYPES, ok);
-  // Auto and MP4 both try MP4 first; a browser without an MP4 writer falls back to WebM.
+  // Auto tries MP4 first; a browser without an MP4 writer falls back to WebM.
   return pickType(VIDEO_MP4_TYPES, ok) || pickType(VIDEO_WEBM_TYPES, ok);
 }
 
 async function begin(): Promise<void> {
   if (busy) return;
+  // A finished recording that was not downloaded would be replaced: ask for Download or Discard first.
+  if (unsaved) {
+    say("saveFirst");
+    return;
+  }
   const mine = ++run;
   if (!canCapture()) {
     say(window.isSecureContext === false ? "insecure" : "noCapture");
@@ -228,8 +238,8 @@ function tickTime(): void {
   const ms = elapsedMs(banked, startedAt, performance.now());
   if (timeEl) timeEl.textContent = clockText(ms);
   if (recorder && ms >= MAX_SCREEN_MINUTES * 60_000) {
+    hitLimit = true;
     finish();
-    say("limit", { n: MAX_SCREEN_MINUTES });
   }
 }
 
@@ -287,23 +297,15 @@ function saveRecording(rec: MediaRecorder, mine: number): void {
   lastUrl = URL.createObjectURL(blob);
   unsaved = true;
   showResult(blob, name, ms);
-  say("saved", { time: clockText(ms) });
+  if (hitLimit) say("limit", { n: MAX_SCREEN_MINUTES });
+  else say("saved", { time: clockText(ms) });
+  hitLimit = false;
 }
 
 function showResult(blob: Blob, name: string, ms: number): void {
   if (!resultEl) return;
   const video = h("video", { controls: true, playsinline: true, preload: "metadata", src: lastUrl, class: "rec-video" });
-  // WebM from Chrome has no duration until the player has seeked to the end once.
-  video.addEventListener("loadedmetadata", () => {
-    if (video.duration === Infinity) {
-      const back = () => {
-        video.removeEventListener("durationchange", back);
-        video.currentTime = 0;
-      };
-      video.addEventListener("durationchange", back);
-      video.currentTime = 1e7;
-    }
-  }, { once: true });
+  fixInfiniteDuration(video);
   resultEl.replaceChildren(
     video,
     h("p", { class: "rec-meta" }, h("strong", null, name), ` · ${clockText(ms)} · ${sizeText(blob.size)}`),

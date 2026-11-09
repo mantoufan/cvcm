@@ -116,8 +116,8 @@ describe("decibel", () => {
   it("reads a full-scale sine as 0 dBFS and calibrates", () => {
     expect(powerToDbfs(0.5)).toBeCloseTo(0, 9);
     expect(powerToDbfs(0)).toBe(-100);
-    expect(toDb(-40, 0)).toBe(54);
-    expect(toDb(-40, -5)).toBe(49);
+    expect(toDb(-40, 0)).toBe(60);
+    expect(toDb(-40, -5)).toBe(55);
     expect(clampCalibration(99)).toBe(30);
     expect(clampCalibration(Number.NaN)).toBe(0);
     expect(clampCalibration(2.345)).toBe(2.3);
@@ -127,12 +127,12 @@ describe("decibel", () => {
     // After one time constant the reading has moved 63% of the way.
     expect(timeWeight(0, 1, 0.125, 0.125)).toBeCloseTo(1 - Math.exp(-1), 9);
     const stats = new LevelStats();
-    stats.add(0.5, 60, 1);
-    stats.add(0.005, 40, 1);
+    stats.add(0.5, 0, 1);
+    stats.add(0.005, -20, 1);
     // Energy mean of 0 dBFS and −20 dBFS for a second each.
     expect(stats.leqDbfs()!).toBeCloseTo(10 * Math.log10(0.505), 6);
-    expect(stats.min).toBe(40);
-    expect(stats.max).toBe(60);
+    expect(stats.min).toBe(-20);
+    expect(stats.max).toBe(0);
     expect(new LevelStats().leqDbfs()).toBeNull();
     expect(bandOf(20)).toBe("faint");
     expect(bandOf(55)).toBe("moderate");

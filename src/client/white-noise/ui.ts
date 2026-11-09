@@ -21,7 +21,8 @@ let aboutEl: HTMLElement | null = null;
 let ctx: AudioContext | null = null;
 let master: GainNode | null = null;
 /** The playing source and its own gain (for fades and the sleep timer). */
-let voice: { src: AudioBufferSourceNode; gain: GainNode; color: NoiseColor } | null = null;
+/** The playing source, its own gain (fades and the sleep timer), and when its fade-in starts and ends. */
+let voice: { src: AudioBufferSourceNode; gain: GainNode; color: NoiseColor; start: number; fullAt: number } | null = null;
 let buffers = new Map<NoiseColor, AudioBuffer>();
 /** Audio-clock time the sleep timer ends, or null for no timer. */
 let endsAt: number | null = null;
@@ -123,12 +124,10 @@ function startVoice(c: NoiseColor, fade: number): boolean {
   src.loop = true;
   const gain = ctx.createGain();
   const now = ctx.currentTime;
-  gain.gain.setValueAtTime(0, now);
-  gain.gain.linearRampToValueAtTime(1, now + fade);
   src.connect(gain).connect(master);
   // Random start point, so replaying does not begin with the same second of noise.
   src.start(now, Math.random() * buf.duration);
-  voice = { src, gain, color: c };
+  voice = { src, gain, color: c, start: now, fullAt: now + fade };
   scheduleEnd();
   return true;
 }
@@ -224,18 +223,17 @@ function onTimer(): void {
 function scheduleEnd(): void {
   if (!ctx || !voice) return;
   const g = voice.gain.gain;
-  const now = ctx.currentTime;
-  g.cancelScheduledValues(now);
-  // Hold where a fade-in is, then continue it to full.
-  g.setValueAtTime(g.value, now);
-  const fullAt = now + Math.max(0, (1 - g.value) * FADE_IN_S);
-  g.linearRampToValueAtTime(1, fullAt);
+  // Rebuild the whole envelope from the voice's start: fade-in, hold, and the timer's fade-out. Reading g.value after
+  // cancelling would lose a fade-in that is still running.
+  g.cancelScheduledValues(0);
+  g.setValueAtTime(0, voice.start);
+  g.linearRampToValueAtTime(1, voice.fullAt);
   // Only the gain is scheduled: a scheduled stop() could not be taken back if the timer is turned off.
   // tick() stops the silent source once it notices the end.
   if (endsAt === null) return;
-  const fadeFrom = Math.max(fullAt, endsAt - FADE_OUT_S);
+  const fadeFrom = Math.max(voice.fullAt, endsAt - FADE_OUT_S);
   g.setValueAtTime(1, fadeFrom);
-  g.linearRampToValueAtTime(0, endsAt);
+  g.linearRampToValueAtTime(0, Math.max(fadeFrom, endsAt));
 }
 
 function applyVolume(): void {
