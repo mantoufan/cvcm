@@ -167,7 +167,9 @@ describe("test pages: copy", () => {
           for (const letter of def.dims.join("")) expect(copy.letters?.[letter], `${where} ${letter}`).toBeTruthy();
         }
         if (def.result.kind === "profile") {
-          for (const dim of def.dims) expect(copy.levels?.[dim]?.high, `${where} level ${dim}`).toBeTruthy();
+          for (const dim of def.dims) {
+            for (const level of ["low", "mid", "high"] as const) expect(copy.levels?.[dim]?.[level], `${where} level ${dim} ${level}`).toBeTruthy();
+          }
         }
         if (def.result.kind === "areas") {
           for (const dim of def.dims) expect(copy.tips?.[dim], `${where} tip ${dim}`).toBeTruthy();

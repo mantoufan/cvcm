@@ -549,28 +549,85 @@ const COLOR_PERSONALITY: ChoiceItem[] = [
   { options: [{ blue: 2 }, { red: 2 }, { yellow: 2 }, { green: 2 }] },
 ];
 
-/** The same answer layout with other results: `keys` maps each result of `layout` to its replacement. */
-function relabel(layout: readonly ChoiceItem[], keys: Record<string, string>): ChoiceItem[] {
-  return layout.map((item) => ({
-    options: item.options.map((option) => Object.fromEntries(Object.entries(option).map(([key, points]) => [keys[key], points]))),
-  }));
-}
+/** Four mental ages, laid out like `HOGWARTS`: all four in every question, each three times in each position. */
+const MENTAL_AGE: ChoiceItem[] = [
+  { options: [{ kid: 2 }, { teen: 2 }, { adult: 2 }, { elder: 2 }] },
+  { options: [{ adult: 2 }, { elder: 2 }, { teen: 2 }, { kid: 2 }] },
+  { options: [{ teen: 2 }, { adult: 2 }, { kid: 2 }, { elder: 2 }] },
+  { options: [{ elder: 2 }, { kid: 2 }, { teen: 2 }, { adult: 2 }] },
+  { options: [{ kid: 2 }, { adult: 2 }, { elder: 2 }, { teen: 2 }] },
+  { options: [{ elder: 2 }, { teen: 2 }, { adult: 2 }, { kid: 2 }] },
+  { options: [{ adult: 2 }, { elder: 2 }, { kid: 2 }, { teen: 2 }] },
+  { options: [{ teen: 2 }, { kid: 2 }, { adult: 2 }, { elder: 2 }] },
+  { options: [{ kid: 2 }, { elder: 2 }, { teen: 2 }, { adult: 2 }] },
+  { options: [{ teen: 2 }, { adult: 2 }, { elder: 2 }, { kid: 2 }] },
+  { options: [{ elder: 2 }, { teen: 2 }, { kid: 2 }, { adult: 2 }] },
+  { options: [{ adult: 2 }, { kid: 2 }, { elder: 2 }, { teen: 2 }] },
+];
 
-/** Four mental ages, laid out like `HOGWARTS`. */
-const MENTAL_AGE = relabel(HOGWARTS, { gryffindor: "kid", hufflepuff: "teen", ravenclaw: "adult", slytherin: "elder" });
-/** Eight results each, laid out like `GHIBLI`. */
-const STRANGER_THINGS = relabel(GHIBLI, {
-  chihiro: "eleven", san: "max", kiki: "dustin", sophie: "will", nausicaa: "hopper", howl: "steve", haku: "mike", totoro: "lucas",
-});
-const DISNEY_PRINCESS = relabel(GHIBLI, {
-  chihiro: "moana", san: "mulan", kiki: "rapunzel", sophie: "belle", nausicaa: "tiana", howl: "ariel", haku: "jasmine", totoro: "cinderella",
-});
-const LIGHTSABER = relabel(GHIBLI, {
-  chihiro: "blue", san: "green", kiki: "yellow", sophie: "purple", nausicaa: "white", howl: "red", haku: "orange", totoro: "black",
-});
-const AURA = relabel(GHIBLI, {
-  chihiro: "red", san: "orange", kiki: "yellow", sophie: "green", nausicaa: "blue", howl: "indigo", haku: "violet", totoro: "pink",
-});
+/** Eight characters, laid out like `GHIBLI`: each in six questions, once or twice in each position. */
+const STRANGER_THINGS: ChoiceItem[] = [
+  { options: [{ eleven: 2 }, { max: 2 }, { dustin: 2 }, { will: 2 }] },
+  { options: [{ hopper: 2 }, { steve: 2 }, { mike: 2 }, { lucas: 2 }] },
+  { options: [{ mike: 2 }, { eleven: 2 }, { hopper: 2 }, { dustin: 2 }] },
+  { options: [{ will: 2 }, { steve: 2 }, { max: 2 }, { lucas: 2 }] },
+  { options: [{ lucas: 2 }, { eleven: 2 }, { mike: 2 }, { max: 2 }] },
+  { options: [{ steve: 2 }, { dustin: 2 }, { will: 2 }, { hopper: 2 }] },
+  { options: [{ hopper: 2 }, { lucas: 2 }, { eleven: 2 }, { will: 2 }] },
+  { options: [{ dustin: 2 }, { mike: 2 }, { steve: 2 }, { max: 2 }] },
+  { options: [{ steve: 2 }, { hopper: 2 }, { max: 2 }, { eleven: 2 }] },
+  { options: [{ mike: 2 }, { will: 2 }, { lucas: 2 }, { dustin: 2 }] },
+  { options: [{ dustin: 2 }, { lucas: 2 }, { eleven: 2 }, { steve: 2 }] },
+  { options: [{ max: 2 }, { hopper: 2 }, { will: 2 }, { mike: 2 }] },
+];
+
+/** Eight princesses, laid out like `GHIBLI`. */
+const DISNEY_PRINCESS: ChoiceItem[] = [
+  { options: [{ moana: 2 }, { mulan: 2 }, { rapunzel: 2 }, { belle: 2 }] },
+  { options: [{ tiana: 2 }, { ariel: 2 }, { jasmine: 2 }, { cinderella: 2 }] },
+  { options: [{ jasmine: 2 }, { moana: 2 }, { tiana: 2 }, { rapunzel: 2 }] },
+  { options: [{ belle: 2 }, { ariel: 2 }, { mulan: 2 }, { cinderella: 2 }] },
+  { options: [{ cinderella: 2 }, { moana: 2 }, { jasmine: 2 }, { mulan: 2 }] },
+  { options: [{ ariel: 2 }, { rapunzel: 2 }, { belle: 2 }, { tiana: 2 }] },
+  { options: [{ tiana: 2 }, { cinderella: 2 }, { moana: 2 }, { belle: 2 }] },
+  { options: [{ rapunzel: 2 }, { jasmine: 2 }, { ariel: 2 }, { mulan: 2 }] },
+  { options: [{ ariel: 2 }, { tiana: 2 }, { mulan: 2 }, { moana: 2 }] },
+  { options: [{ jasmine: 2 }, { belle: 2 }, { cinderella: 2 }, { rapunzel: 2 }] },
+  { options: [{ rapunzel: 2 }, { cinderella: 2 }, { moana: 2 }, { ariel: 2 }] },
+  { options: [{ mulan: 2 }, { tiana: 2 }, { belle: 2 }, { jasmine: 2 }] },
+];
+
+/** Eight blade colors, laid out like `GHIBLI`. */
+const LIGHTSABER: ChoiceItem[] = [
+  { options: [{ blue: 2 }, { green: 2 }, { yellow: 2 }, { purple: 2 }] },
+  { options: [{ white: 2 }, { red: 2 }, { orange: 2 }, { black: 2 }] },
+  { options: [{ orange: 2 }, { blue: 2 }, { white: 2 }, { yellow: 2 }] },
+  { options: [{ purple: 2 }, { red: 2 }, { green: 2 }, { black: 2 }] },
+  { options: [{ black: 2 }, { blue: 2 }, { orange: 2 }, { green: 2 }] },
+  { options: [{ red: 2 }, { yellow: 2 }, { purple: 2 }, { white: 2 }] },
+  { options: [{ white: 2 }, { black: 2 }, { blue: 2 }, { purple: 2 }] },
+  { options: [{ yellow: 2 }, { orange: 2 }, { red: 2 }, { green: 2 }] },
+  { options: [{ red: 2 }, { white: 2 }, { green: 2 }, { blue: 2 }] },
+  { options: [{ orange: 2 }, { purple: 2 }, { black: 2 }, { yellow: 2 }] },
+  { options: [{ yellow: 2 }, { black: 2 }, { blue: 2 }, { red: 2 }] },
+  { options: [{ green: 2 }, { white: 2 }, { purple: 2 }, { orange: 2 }] },
+];
+
+/** Eight aura colors, laid out like `GHIBLI`. */
+const AURA: ChoiceItem[] = [
+  { options: [{ red: 2 }, { orange: 2 }, { yellow: 2 }, { green: 2 }] },
+  { options: [{ blue: 2 }, { indigo: 2 }, { violet: 2 }, { pink: 2 }] },
+  { options: [{ violet: 2 }, { red: 2 }, { blue: 2 }, { yellow: 2 }] },
+  { options: [{ green: 2 }, { indigo: 2 }, { orange: 2 }, { pink: 2 }] },
+  { options: [{ pink: 2 }, { red: 2 }, { violet: 2 }, { orange: 2 }] },
+  { options: [{ indigo: 2 }, { yellow: 2 }, { green: 2 }, { blue: 2 }] },
+  { options: [{ blue: 2 }, { pink: 2 }, { red: 2 }, { green: 2 }] },
+  { options: [{ yellow: 2 }, { violet: 2 }, { indigo: 2 }, { orange: 2 }] },
+  { options: [{ indigo: 2 }, { blue: 2 }, { orange: 2 }, { red: 2 }] },
+  { options: [{ violet: 2 }, { green: 2 }, { pink: 2 }, { yellow: 2 }] },
+  { options: [{ yellow: 2 }, { pink: 2 }, { red: 2 }, { indigo: 2 }] },
+  { options: [{ orange: 2 }, { blue: 2 }, { green: 2 }, { violet: 2 }] },
+];
 
 export const QUIZ_DEFS: Record<QuizId, QuizDef> = {
   mbti: { id: "mbti", type: "likert", scale: "agree5", dims: ["EI", "SN", "TF", "JP"], items: TYPES, result: { kind: "types" } },
