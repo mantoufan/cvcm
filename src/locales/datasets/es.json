@@ -2,7 +2,7 @@
   "crumbHome": "Inicio",
   "hub": {
     "title": "Datos públicos gratis: población, PIB, códigos de país | cv.cm",
-    "description": "Tablas de datos abiertos para buscar, ordenar y descargar en CSV: población, PIB, exportaciones, inflación, desempleo, esperanza de vida de hombres y mujeres, natalidad y mortalidad, superficie y bosques, emisiones de CO2, energía renovable, uso de internet, códigos ISO de país y moneda, prefijos telefónicos, husos horarios, tamaños de papel y ASCII.",
+    "description": "Tablas de datos abiertos para buscar, ordenar y descargar en CSV: población, PIB, INB, exportaciones, inflación, desempleo, gasto militar, reservas internacionales, gasto en I+D, esperanza de vida, médicos, natalidad y mortalidad, migrantes, superficie y bosques, emisiones de CO2, consumo de electricidad, energía renovable, uso de internet, telefonía móvil y banda ancha, códigos ISO de país y moneda, prefijos telefónicos, husos horarios, tamaños de papel y ASCII.",
     "h1": "Datos públicos",
     "lede": "Tablas sencillas con datos públicos del Banco Mundial, ISO e IANA. Se pueden buscar, ordenar por cualquier columna o descargar en CSV. Cada tabla indica su fuente y su licencia.",
     "groups": {
@@ -698,6 +698,336 @@
         { "q": "¿Qué país usa más energía renovable?", "a": "Por porcentaje, {top1}, donde el {v1}% del consumo de energía fue renovable en {year1}, sobre todo leña y energía hidráulica." },
         { "q": "¿Qué porcentaje de la energía mundial es renovable?", "a": "El {world}% del consumo de energía final en {worldYear}." },
         { "q": "¿Qué país usa menos energía renovable?", "a": "En esta lista, {last}, con un {vlast}%." }
+      ]
+    },
+    "gni-per-capita": {
+      "name": "INB per cápita por país",
+      "title": "INB per cápita por país {to}: más ricos y más pobres (Atlas, US$) | cv.cm",
+      "description": "Ingreso nacional bruto por persona de {rows} economías en dólares estadounidenses (método Atlas del Banco Mundial), en orden. Mundo: {world} ({worldYear}). Datos del Banco Mundial, descarga en CSV.",
+      "h1": "INB per cápita por país, {to} (método Atlas, US$ corrientes)",
+      "lede": "Ingreso nacional bruto dividido entre la población, en {rows} países y territorios, de mayor a menor. Es la cifra que usa el Banco Mundial para clasificar a los países por grupos de ingreso. Fuente: Banco Mundial.",
+      "value": "INB per cápita (US$)",
+      "facts": [
+        "Mundo: {world} por persona ({worldYear}).",
+        "Los más altos: {top1} ({v1}), {top2} ({v2}) y {top3} ({v3}).",
+        "Valor más bajo de la lista: {last} ({vlast})."
+      ],
+      "about": [
+        "El INB es el PIB más los ingresos que los residentes obtienen en el extranjero, menos los ingresos que los extranjeros sacan del país. Es mayor que el PIB donde mucha gente trabaja al otro lado de la frontera o posee activos en el exterior, y menor en lugares como Irlanda, donde las multinacionales registran grandes beneficios que luego salen del país.",
+        "El método Atlas convierte la moneda local con un tipo de cambio promedio de tres años, así que un mal año para una moneda mueve menos la cifra. No ajusta por precios: para eso, consulte el PIB per cápita (PPA)."
+      ],
+      "faq": [
+        { "q": "¿Qué país tiene el INB per cápita más alto?", "a": "{top1}, con {v1} por persona en {year1}, seguido de {top2} ({v2}) y {top3} ({v3})." },
+        { "q": "¿Cuál es el INB per cápita mundial?", "a": "{world} por persona en {worldYear}." },
+        { "q": "¿Qué diferencia hay entre el INB y el PIB?", "a": "El PIB mide lo que se produce dentro de un país. El INB mide los ingresos que reciben sus residentes, dondequiera que se obtengan, así que suma los ingresos del exterior y resta los pagados a extranjeros." }
+      ]
+    },
+    "youth-unemployment": {
+      "name": "Tasa de desempleo juvenil por país",
+      "title": "Desempleo juvenil por país {to}: de 15 a 24 años | cv.cm",
+      "description": "Desempleo entre jóvenes de 15 a 24 años en {rows} países, en orden. Mundo: {world}% ({worldYear}). Estimaciones de la OIT a través del Banco Mundial, descarga en CSV.",
+      "h1": "Tasa de desempleo juvenil por país, {to} (% de la población activa de 15 a 24 años)",
+      "lede": "Porcentaje de jóvenes de 15 a 24 años que quieren trabajar y buscan empleo pero no lo tienen, en {rows} países y territorios, de mayor a menor. Fuente: Banco Mundial, con estimaciones modelizadas de la Organización Internacional del Trabajo.",
+      "value": "Desempleo juvenil (%)",
+      "facts": [
+        "Mundo: el {world}% de los jóvenes de la población activa está desempleado ({worldYear}).",
+        "Los más altos: {top1} ({v1}%), {top2} ({v2}%) y {top3} ({v3}%).",
+        "Valor más bajo de la lista: {last} ({vlast}%)."
+      ],
+      "about": [
+        "Los estudiantes que no buscan trabajo no forman parte de la población activa, así que no se cuentan como desempleados. En los países donde la mayoría de los jóvenes estudia, la tasa es un porcentaje del grupo más pequeño que sí busca trabajo.",
+        "Las tasas muy bajas en algunos países pobres no significan buenos empleos: cuando no hay subsidio de desempleo, casi todo el mundo hace algún trabajo informal. Las tasas juveniles suelen ser dos o tres veces la tasa general."
+      ],
+      "faq": [
+        { "q": "¿Qué país tiene el desempleo juvenil más alto?", "a": "{top1}, donde el {v1}% de los jóvenes de la población activa estaba desempleado en {year1}, seguido de {top2} ({v2}%) y {top3} ({v3}%)." },
+        { "q": "¿Cuál es la tasa de desempleo juvenil mundial?", "a": "El {world}% en {worldYear}, según estimaciones de la OIT." },
+        { "q": "¿Qué país tiene el desempleo juvenil más bajo?", "a": "En esta lista, {last}, con un {vlast}%." }
+      ]
+    },
+    "remittances": {
+      "name": "Remesas por país (% del PIB)",
+      "title": "Remesas por país {to}: los más dependientes del dinero del exterior (% del PIB) | cv.cm",
+      "description": "Remesas personales recibidas como porcentaje del PIB en {rows} países, en orden. Mundo: {world}% ({worldYear}). Datos del Banco Mundial, descarga en CSV.",
+      "h1": "Remesas personales recibidas por país, {to} (% del PIB)",
+      "lede": "Dinero que las personas que trabajan en el extranjero envían a sus familias, comparado con el tamaño de cada economía, en {rows} países y territorios, de mayor a menor. Fuente: Banco Mundial.",
+      "value": "Remesas (% del PIB)",
+      "facts": [
+        "Mundo: las remesas equivalen al {world}% del PIB ({worldYear}).",
+        "Los más altos: {top1} ({v1}%), {top2} ({v2}%) y {top3} ({v3}%).",
+        "Valor más bajo de la lista: {last} ({vlast}%)."
+      ],
+      "about": [
+        "Las remesas incluyen los salarios de trabajadores que viven en el extranjero menos de un año y el dinero que los migrantes envían a sus hogares. En economías pequeñas con mucha gente trabajando fuera, pueden aportar más que las exportaciones o la inversión extranjera.",
+        "Solo se cuentan las transferencias registradas. Falta el dinero llevado en mano o enviado por canales informales, así que los flujos reales son mayores."
+      ],
+      "faq": [
+        { "q": "¿Qué país depende más de las remesas?", "a": "{top1}, donde las remesas equivalieron al {v1}% del PIB en {year1}, seguido de {top2} ({v2}%) y {top3} ({v3}%)." },
+        { "q": "¿Qué peso tienen las remesas en la economía mundial?", "a": "El {world}% del PIB mundial en {worldYear}." },
+        { "q": "¿Qué son las remesas?", "a": "Dinero que envían a su país las personas que trabajan en otro, normalmente para mantener a sus familias." }
+      ]
+    },
+    "foreign-reserves": {
+      "name": "Reservas internacionales por país",
+      "title": "Reservas internacionales por país {to}: las mayores, incluido el oro | cv.cm",
+      "description": "Reservas totales, incluido el oro, de {rows} economías en dólares estadounidenses corrientes, en orden. Las mayores: {top1} ({v1}). Datos del Banco Mundial / FMI, descarga en CSV.",
+      "h1": "Reservas internacionales por país, {to} (incluido el oro, US$ corrientes)",
+      "lede": "Divisas, oro, posición de reserva en el FMI y derechos especiales de giro que tiene cada banco central, en {rows} países y territorios, de mayor a menor. Fuente: Banco Mundial, con datos del FMI.",
+      "value": "Reservas (US$)",
+      "facts": [
+        "Mayores reservas: {top1} ({v1}), {top2} ({v2}) y {top3} ({v3}).",
+        "Valor más bajo de la lista: {last} ({vlast}).",
+        "Cada fila es el último año informado por el país, de {from} a {to}."
+      ],
+      "about": [
+        "Los bancos centrales mantienen reservas para pagar importaciones, devolver deuda externa y defender su moneda. El oro se valora a precio de mercado, así que una subida de su precio favorece a los países que tienen mucho.",
+        "Los países que emiten una moneda de reserva, como Estados Unidos, necesitan menos reservas propias. Los países de la zona del euro informan de sus propias tenencias; las reservas del Banco Central Europeo no se reparten entre ellos."
+      ],
+      "faq": [
+        { "q": "¿Qué país tiene las mayores reservas internacionales?", "a": "{top1}, con {v1} en {year1}, seguido de {top2} ({v2}) y {top3} ({v3})." },
+        { "q": "¿Incluye el oro?", "a": "Sí. Las reservas totales incluyen el oro a valor de mercado, las divisas, los derechos especiales de giro y la posición de reserva en el FMI." },
+        { "q": "¿Por qué no hay un total mundial?", "a": "El Banco Mundial no publica una suma mundial para esta serie, así que la tabla no tiene columna de porcentaje mundial." }
+      ]
+    },
+    "military-spending": {
+      "name": "Gasto militar por país",
+      "title": "Gasto militar por país {to}: los mayores presupuestos de defensa (US$) | cv.cm",
+      "description": "Gasto militar de {rows} países en dólares estadounidenses corrientes, en orden, con su porcentaje del total mundial. Mundo: {world} ({worldYear}). Datos del SIPRI a través del Banco Mundial, descarga en CSV.",
+      "h1": "Gasto militar por país, {to} (US$ corrientes)",
+      "lede": "Lo que cada gobierno gastó en sus fuerzas armadas, en {rows} países, de mayor a menor, con el porcentaje del gasto militar mundial de cada uno. Fuente: Banco Mundial, con datos del Instituto Internacional de Estocolmo para la Investigación de la Paz (SIPRI).",
+      "value": "Gasto militar (US$)",
+      "facts": [
+        "Gasto militar mundial: {world} ({worldYear}).",
+        "Los mayores: {top1} ({v1}), {top2} ({v2}) y {top3} ({v3}).",
+        "Valor más bajo de la lista: {last} ({vlast})."
+      ],
+      "about": [
+        "El SIPRI cuenta el gasto en fuerzas armadas, ministerios de defensa, fuerzas paramilitares entrenadas para operaciones militares, pensiones militares y ayuda militar a otros países. Las cifras de algunos países, como China y Rusia, son estimaciones del SIPRI, porque los presupuestos oficiales omiten algunas partidas.",
+        "Los valores están en dólares estadounidenses corrientes a tipos de cambio de mercado, así que subestiman lo que compra un dólar en países con precios bajos. Los países que figuran con 0 no tienen ejército propio."
+      ],
+      "faq": [
+        { "q": "¿Qué país gasta más en su ejército?", "a": "{top1}, con {v1} en {year1}, seguido de {top2} ({v2}) y {top3} ({v3})." },
+        { "q": "¿Cuánto gasta el mundo en defensa?", "a": "{world} en {worldYear}." },
+        { "q": "¿Por qué algunos países no gastan nada?", "a": "En {last} no hay ejército permanente; la policía o las fuerzas fronterizas se encargan de la seguridad, por lo que su gasto militar se registra como 0." }
+      ]
+    },
+    "military-spending-gdp": {
+      "name": "Gasto militar como % del PIB",
+      "title": "Gasto militar como % del PIB por país {to} | cv.cm",
+      "description": "Gasto militar como porcentaje del PIB en {rows} países, en orden. Mundo: {world}% ({worldYear}). Datos del SIPRI a través del Banco Mundial, descarga en CSV.",
+      "h1": "Gasto militar por país, {to} (% del PIB)",
+      "lede": "Gasto militar comparado con el tamaño de cada economía, en {rows} países, de mayor a menor. Fuente: Banco Mundial, con datos del Instituto Internacional de Estocolmo para la Investigación de la Paz (SIPRI).",
+      "value": "Gasto militar (% del PIB)",
+      "facts": [
+        "Mundo: el {world}% del PIB se destina a defensa ({worldYear}).",
+        "Los más altos: {top1} ({v1}%), {top2} ({v2}%) y {top3} ({v3}%).",
+        "Valor más bajo de la lista: {last} ({vlast}%)."
+      ],
+      "about": [
+        "El porcentaje del PIB muestra qué parte de su economía dedica un país a la defensa, algo que el total en dólares no muestra. Los países en guerra o bajo amenaza ocupan los primeros puestos.",
+        "Los miembros de la OTAN acordaron gastar al menos el 2% del PIB en defensa y, en 2025, fijaron un objetivo más alto del 5% para 2035, del cual un 3,5% para defensa básica."
+      ],
+      "faq": [
+        { "q": "¿Qué país dedica el mayor porcentaje del PIB a su ejército?", "a": "{top1}, con el {v1}% del PIB en {year1}, seguido de {top2} ({v2}%) y {top3} ({v3}%)." },
+        { "q": "¿Qué porcentaje del PIB mundial es gasto militar?", "a": "El {world}% en {worldYear}." },
+        { "q": "¿Qué países gastan menos?", "a": "{last}, con un {vlast}%: no tienen ejército propio." }
+      ]
+    },
+    "rd-spending": {
+      "name": "Gasto en I+D por país (% del PIB)",
+      "title": "Gasto en I+D por país {to}: investigación y desarrollo (% del PIB) | cv.cm",
+      "description": "Gasto en investigación y desarrollo como porcentaje del PIB en {rows} países, en orden. Mundo: {world}% ({worldYear}). Datos de la UNESCO a través del Banco Mundial, descarga en CSV.",
+      "h1": "Gasto en investigación y desarrollo por país, {to} (% del PIB)",
+      "lede": "Lo que empresas, gobiernos, universidades y entidades sin fines de lucro gastan en conjunto en investigación y desarrollo, como porcentaje del PIB, en {rows} países y territorios, de mayor a menor. Fuente: Banco Mundial, con datos del Instituto de Estadística de la UNESCO.",
+      "value": "Gasto en I+D (% del PIB)",
+      "facts": [
+        "Mundo: el {world}% del PIB se dedica a I+D ({worldYear}).",
+        "Los más altos: {top1} ({v1}%), {top2} ({v2}%) y {top3} ({v3}%).",
+        "Valor más bajo de la lista: {last} ({vlast}%)."
+      ],
+      "about": [
+        "La I+D abarca la investigación básica, la investigación aplicada y el desarrollo experimental. En los países que más gastan, las empresas pagan la mayor parte: fabricantes de chips, de automóviles y farmacéuticas.",
+        "Muchos países hacen encuestas de I+D solo cada pocos años, así que cada fila muestra el último año informado dentro de los cuatro últimos años. Los países que no han informado no aparecen."
+      ],
+      "faq": [
+        { "q": "¿Qué país gasta más en I+D?", "a": "Como porcentaje del PIB, {top1}, con un {v1}% en {year1}, seguido de {top2} ({v2}%) y {top3} ({v3}%)." },
+        { "q": "¿Cuánto gasta el mundo en I+D?", "a": "El {world}% del PIB mundial en {worldYear}." },
+        { "q": "¿Qué se considera I+D?", "a": "El trabajo creativo y sistemático para aumentar el conocimiento y encontrarle nuevos usos: investigación básica, investigación aplicada y desarrollo experimental, realizado por empresas, gobiernos, universidades y entidades sin fines de lucro." }
+      ]
+    },
+    "aged-0-14": {
+      "name": "Población de 0 a 14 años por país",
+      "title": "Países más jóvenes {to}: población de 0 a 14 años por país | cv.cm",
+      "description": "Porcentaje de la población menor de 15 años en {rows} países, del más joven al más envejecido. Mundo: {world}% ({worldYear}). Datos del Banco Mundial / ONU, descarga en CSV.",
+      "h1": "Población de 0 a 14 años por país, {to} (% del total)",
+      "lede": "Porcentaje de los habitantes de cada país que son menores de 15 años, en {rows} países y territorios, de la población más joven a la más envejecida. Fuente: Banco Mundial, con estimaciones de población de la ONU.",
+      "value": "De 0 a 14 años (%)",
+      "facts": [
+        "Mundo: el {world}% de las personas tiene menos de 15 años ({worldYear}).",
+        "Los más jóvenes: {top1} ({v1}%), {top2} ({v2}%) y {top3} ({v3}%).",
+        "Menor porcentaje de niños: {last} ({vlast}%)."
+      ],
+      "about": [
+        "El porcentaje de niños refleja la natalidad de los últimos 15 años. Los países del África subsahariana, donde las mujeres tienen en promedio cinco hijos o más, tienen las poblaciones más jóvenes.",
+        "En Japón, Corea del Sur y buena parte del sur de Europa, donde los nacimientos han caído muy por debajo de dos por mujer, ya hay más personas de 65 años o más que niños."
+      ],
+      "faq": [
+        { "q": "¿Qué país tiene la población más joven?", "a": "{top1}, donde el {v1}% de las personas tenía menos de 15 años en {year1}, seguido de {top2} ({v2}%) y {top3} ({v3}%)." },
+        { "q": "¿Qué porcentaje de la población mundial son niños?", "a": "El {world}% tenía entre 0 y 14 años en {worldYear}." },
+        { "q": "¿Qué país tiene menos niños?", "a": "En esta lista, {last}, donde el {vlast}% de las personas tiene menos de 15 años." }
+      ]
+    },
+    "international-migrants": {
+      "name": "Población inmigrante por país",
+      "title": "Población inmigrante por país {to}: migrantes internacionales (% de la población) | cv.cm",
+      "description": "Población migrante internacional como porcentaje de la población en {rows} países, en orden. Mundo: {world}% ({worldYear}). Datos de UN DESA a través del Banco Mundial, descarga en CSV.",
+      "h1": "Migrantes internacionales por país, {to} (% de la población)",
+      "lede": "Porcentaje de los residentes de cada país que nacieron en otro país, incluidos los refugiados, en {rows} países y territorios, de mayor a menor. Fuente: Banco Mundial, con datos de International Migrant Stock de UN DESA.",
+      "value": "Migrantes (% de la población)",
+      "facts": [
+        "Mundo: el {world}% de las personas vive fuera de su país de nacimiento ({worldYear}).",
+        "Los más altos: {top1} ({v1}%), {top2} ({v2}%) y {top3} ({v3}%).",
+        "Valor más bajo de la lista: {last} ({vlast}%)."
+      ],
+      "about": [
+        "Aquí, migrante es toda persona que vive en un país distinto de aquel en el que nació, sea cual sea su ciudadanía. Donde no se registra el lugar de nacimiento, la ONU cuenta a los ciudadanos extranjeros.",
+        "La ONU publica estas estimaciones aproximadamente cada cinco años. Los países del Golfo ocupan los primeros puestos porque la mayoría de sus trabajadores vienen del extranjero."
+      ],
+      "faq": [
+        { "q": "¿Qué país tiene más inmigrantes en proporción a su población?", "a": "{top1}, donde el {v1}% de los residentes había nacido en el extranjero en {year1}, seguido de {top2} ({v2}%) y {top3} ({v3}%)." },
+        { "q": "¿Qué porcentaje de la población mundial son migrantes?", "a": "El {world}% de las personas del mundo vivía fuera de su país de nacimiento en {worldYear}." },
+        { "q": "¿Se cuentan los refugiados?", "a": "Sí. Los refugiados y solicitantes de asilo que viven en un país forman parte de su población migrante." }
+      ]
+    },
+    "physicians": {
+      "name": "Médicos por cada 1000 habitantes por país",
+      "title": "Médicos por cada 1000 habitantes por país {to}: densidad de médicos | cv.cm",
+      "description": "Médicos por cada 1000 habitantes en {rows} países, en orden. Mundo: {world} ({worldYear}). Datos de la OMS a través del Banco Mundial, descarga en CSV.",
+      "h1": "Médicos por cada 1000 habitantes por país, {to}",
+      "lede": "Número de médicos por cada 1000 habitantes, generalistas y especialistas juntos, en {rows} países y territorios, de mayor a menor. Fuente: Banco Mundial, con datos de la Organización Mundial de la Salud.",
+      "value": "Médicos por cada 1000",
+      "facts": [
+        "Mundo: {world} médicos por cada 1000 habitantes ({worldYear}).",
+        "Los más altos: {top1} ({v1}), {top2} ({v2}) y {top3} ({v3}).",
+        "Valor más bajo de la lista: {last} ({vlast})."
+      ],
+      "about": [
+        "Algunos países cuentan a todos los médicos colegiados y otros solo a los que atienden pacientes, así que las diferencias pequeñas entre países dicen poco. No se incluyen enfermeras ni parteras.",
+        "Los países informan cada pocos años; cada fila es el último recuento dentro de los cuatro últimos años. La OMS asocia tener menos de unos 4,5 médicos, enfermeras y parteras en total por cada 1000 habitantes con carencias en la atención básica de salud."
+      ],
+      "faq": [
+        { "q": "¿Qué país tiene más médicos por habitante?", "a": "{top1}, con {v1} médicos por cada 1000 habitantes en {year1}, seguido de {top2} ({v2}) y {top3} ({v3})." },
+        { "q": "¿Cuántos médicos hay en el mundo por cada 1000 habitantes?", "a": "{world} en {worldYear}." },
+        { "q": "¿Qué país tiene menos médicos?", "a": "En esta lista, {last}, con {vlast} médicos por cada 1000 habitantes." }
+      ]
+    },
+    "education-spending": {
+      "name": "Gasto en educación por país (% del PIB)",
+      "title": "Gasto en educación por país {to}: gasto público (% del PIB) | cv.cm",
+      "description": "Gasto público en educación como porcentaje del PIB en {rows} países, en orden. Mundo: {world}% ({worldYear}). Datos de la UNESCO a través del Banco Mundial, descarga en CSV.",
+      "h1": "Gasto público en educación por país, {to} (% del PIB)",
+      "lede": "Lo que los gobiernos nacionales, regionales y locales gastan en escuelas, universidades y otra educación, como porcentaje del PIB, en {rows} países y territorios, de mayor a menor. Fuente: Banco Mundial, con datos del Instituto de Estadística de la UNESCO.",
+      "value": "Educación (% del PIB)",
+      "facts": [
+        "Mundo: los gobiernos gastan el {world}% del PIB en educación ({worldYear}).",
+        "Los más altos: {top1} ({v1}%), {top2} ({v2}%) y {top3} ({v3}%).",
+        "Valor más bajo de la lista: {last} ({vlast}%)."
+      ],
+      "about": [
+        "Solo se cuenta el dinero público, incluida la ayuda exterior que pasa por el presupuesto del gobierno. No se cuentan las matrículas ni las escuelas privadas que pagan las familias, así que los países con grandes sistemas privados parecen gastar menos de lo que gastan en total.",
+        "Los pequeños Estados insulares encabezan la lista porque un sistema escolar tiene costos fijos y sus economías son pequeñas. La UNESCO recomienda gastar entre el 4% y el 6% del PIB en educación."
+      ],
+      "faq": [
+        { "q": "¿Qué país gasta más en educación?", "a": "Como porcentaje del PIB, {top1}, con un {v1}% en {year1}, seguido de {top2} ({v2}%) y {top3} ({v3}%)." },
+        { "q": "¿Cuánto gastan los gobiernos del mundo en educación?", "a": "El {world}% del PIB en {worldYear}." },
+        { "q": "¿Qué país gasta menos en educación?", "a": "En esta lista, {last}, con un {vlast}% del PIB." }
+      ]
+    },
+    "co2-emissions": {
+      "name": "Emisiones de CO2 por país",
+      "title": "Emisiones de CO2 por país {to}: los mayores emisores (millones de toneladas) | cv.cm",
+      "description": "Emisiones totales de dióxido de carbono de {rows} países en millones de toneladas, en orden, con su porcentaje del total mundial. Mundo: {world} Mt ({worldYear}). Datos de EDGAR a través del Banco Mundial, descarga en CSV.",
+      "h1": "Emisiones de CO2 por país, {to} (millones de toneladas)",
+      "lede": "Dióxido de carbono que emite cada país en un año por combustibles, cemento e industria, en {rows} países y territorios, de mayor a menor, con el porcentaje mundial de cada uno. No se incluyen el uso de la tierra ni los bosques. Fuente: Banco Mundial, con datos de la base EDGAR de la UE.",
+      "value": "CO2 (Mt)",
+      "facts": [
+        "Mundo: {world} millones de toneladas de CO2 ({worldYear}).",
+        "Los mayores emisores: {top1} ({v1} Mt), {top2} ({v2} Mt) y {top3} ({v3} Mt).",
+        "Valor más bajo de la lista: {last} ({vlast} Mt)."
+      ],
+      "about": [
+        "Las emisiones se cuentan donde se quema el combustible. Los bienes fabricados en un país y usados en otro cuentan para el fabricante, y el combustible de los vuelos y barcos internacionales no se asigna a ningún país.",
+        "Los países muy poblados quedan arriba en el total y abajo por persona: compare con la tabla de CO2 per cápita. No se incluyen el metano ni otros gases de efecto invernadero."
+      ],
+      "faq": [
+        { "q": "¿Qué país emite más CO2?", "a": "{top1}, con {v1} millones de toneladas en {year1}, seguido de {top2} ({v2} Mt) y {top3} ({v3} Mt)." },
+        { "q": "¿Cuánto CO2 emite el mundo?", "a": "{world} millones de toneladas en {worldYear}, sin contar el uso de la tierra ni los bosques." },
+        { "q": "¿Incluye la deforestación?", "a": "No. La serie excluye el uso de la tierra, el cambio de uso de la tierra y la silvicultura (UTCUTS), así que la pérdida y la recuperación de bosques no están en estas cifras." }
+      ]
+    },
+    "electricity-consumption": {
+      "name": "Consumo de electricidad per cápita por país",
+      "title": "Consumo de electricidad per cápita por país {to}: kWh por persona | cv.cm",
+      "description": "Consumo de energía eléctrica por persona en {rows} países, en kWh, en orden. Mundo: {world} kWh ({worldYear}). Datos del Banco Mundial, descarga en CSV.",
+      "h1": "Consumo de electricidad per cápita por país, {to} (kWh)",
+      "lede": "Electricidad consumida en un año dividida entre la población, sumando hogares, empresas e industria, en {rows} países y territorios, de mayor a menor. Fuente: Banco Mundial.",
+      "value": "kWh por persona",
+      "facts": [
+        "Mundo: {world} kWh por persona ({worldYear}).",
+        "Los más altos: {top1} ({v1} kWh), {top2} ({v2} kWh) y {top3} ({v3} kWh).",
+        "Valor más bajo de la lista: {last} ({vlast} kWh)."
+      ],
+      "about": [
+        "Se cuenta la electricidad producida e importada, menos la exportada y la perdida en la transmisión. Se incluye la industria, así que los países con fundiciones de aluminio o centros de datos y poca población, como Islandia, quedan muy por encima del resto.",
+        "Los climas fríos y los muy calurosos consumen más en calefacción y aire acondicionado. Un refrigerador doméstico consume unos 300 a 500 kWh al año."
+      ],
+      "faq": [
+        { "q": "¿Qué país consume más electricidad por persona?", "a": "{top1}, con {v1} kWh por persona en {year1}, seguido de {top2} ({v2} kWh) y {top3} ({v3} kWh)." },
+        { "q": "¿Cuánta electricidad consume una persona en promedio?", "a": "{world} kWh al año en el mundo en {worldYear}, contando la industria además de los hogares." },
+        { "q": "¿Qué país consume menos electricidad por persona?", "a": "En esta lista, {last}, con {vlast} kWh al año." }
+      ]
+    },
+    "mobile-subscriptions": {
+      "name": "Suscripciones de telefonía móvil por país",
+      "title": "Líneas de telefonía móvil por país {to}: por cada 100 habitantes | cv.cm",
+      "description": "Suscripciones de telefonía celular móvil por cada 100 habitantes en {rows} países, en orden. Mundo: {world} ({worldYear}). Datos de la UIT a través del Banco Mundial, descarga en CSV.",
+      "h1": "Suscripciones de telefonía móvil por país, {to} (por cada 100 habitantes)",
+      "lede": "Suscripciones activas de telefonía móvil, de prepago y de pospago, por cada 100 habitantes, en {rows} países y territorios, de mayor a menor. Fuente: Banco Mundial, con datos de la Unión Internacional de Telecomunicaciones (UIT).",
+      "value": "Por cada 100 habitantes",
+      "facts": [
+        "Mundo: {world} suscripciones móviles por cada 100 habitantes ({worldYear}).",
+        "Los más altos: {top1} ({v1}), {top2} ({v2}) y {top3} ({v3}).",
+        "Valor más bajo de la lista: {last} ({vlast})."
+      ],
+      "about": [
+        "Los valores por encima de 100 son normales: mucha gente lleva dos tarjetas SIM, los visitantes compran una local y algunas líneas son para tabletas o automóviles. Hong Kong y otros centros con muchos visitantes ocupan los primeros puestos.",
+        "Una suscripción no equivale a un usuario, así que esto no indica cuántas personas tienen teléfono. Las SIM de prepago solo cuentan si se usaron en los últimos tres meses."
+      ],
+      "faq": [
+        { "q": "¿Qué país tiene más suscripciones móviles por persona?", "a": "{top1}, con {v1} por cada 100 habitantes en {year1}, seguido de {top2} ({v2}) y {top3} ({v3})." },
+        { "q": "¿Cuántas suscripciones móviles hay en el mundo?", "a": "{world} por cada 100 habitantes en {worldYear}, más de una por persona." },
+        { "q": "¿Por qué algunos valores superan 100?", "a": "Mucha gente tiene más de una tarjeta SIM, y los turistas y viajeros de negocios compran tarjetas locales." }
+      ]
+    },
+    "broadband-subscriptions": {
+      "name": "Suscripciones de banda ancha fija por país",
+      "title": "Banda ancha fija por país {to}: suscripciones por cada 100 habitantes | cv.cm",
+      "description": "Suscripciones de internet de banda ancha fija por cada 100 habitantes en {rows} países, en orden. Mundo: {world} ({worldYear}). Datos de la UIT a través del Banco Mundial, descarga en CSV.",
+      "h1": "Suscripciones de banda ancha fija por país, {to} (por cada 100 habitantes)",
+      "lede": "Líneas de internet por cable e inalámbricas fijas de 256 kbit/s o más, como fibra, cable y DSL, por cada 100 habitantes, en {rows} países y territorios, de mayor a menor. Fuente: Banco Mundial, con datos de la Unión Internacional de Telecomunicaciones (UIT).",
+      "value": "Por cada 100 habitantes",
+      "facts": [
+        "Mundo: {world} líneas de banda ancha fija por cada 100 habitantes ({worldYear}).",
+        "Los más altos: {top1} ({v1}), {top2} ({v2}) y {top3} ({v3}).",
+        "Valor más bajo de la lista: {last} ({vlast})."
+      ],
+      "about": [
+        "Una línea suele dar servicio a todo un hogar, así que unas 40 líneas por cada 100 habitantes ya significan que la mayoría de los hogares está conectada. No se incluyen los datos móviles: consulte las tablas de suscripciones móviles y de usuarios de internet.",
+        "Mucha gente en África y el sur de Asia se conecta sobre todo a través de redes móviles, así que una banda ancha fija baja allí no significa pocos usuarios de internet."
+      ],
+      "faq": [
+        { "q": "¿Qué país tiene más suscripciones de banda ancha por persona?", "a": "{top1}, con {v1} por cada 100 habitantes en {year1}, seguido de {top2} ({v2}) y {top3} ({v3})." },
+        { "q": "¿Cuántas líneas de banda ancha fija hay en el mundo?", "a": "{world} por cada 100 habitantes en {worldYear}." },
+        { "q": "¿La banda ancha incluye el internet móvil?", "a": "No. Aquí se cuentan líneas fijas como fibra, cable y DSL; los planes de datos móviles se cuentan aparte." }
       ]
     },
     "country-codes": {

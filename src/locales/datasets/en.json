@@ -2,7 +2,7 @@
   "crumbHome": "Home",
   "hub": {
     "title": "Free Public Data Tables: Population, GDP, Country Codes and More | cv.cm",
-    "description": "Open data tables you can search, sort and download as CSV: population, GDP, exports, inflation, unemployment, life expectancy for men and women, birth and death rates, land and forest area, CO2 emissions, renewable energy, internet use, ISO country and currency codes, calling codes, time zones, paper sizes and ASCII.",
+    "description": "Open data tables you can search, sort and download as CSV: population, GDP, GNI, exports, inflation, unemployment, military spending, foreign reserves, R&D spending, life expectancy, doctors, birth and death rates, migrants, land and forest area, CO2 emissions, electricity use, renewable energy, internet, mobile and broadband use, ISO country and currency codes, calling codes, time zones, paper sizes and ASCII.",
     "h1": "Public data",
     "lede": "Plain tables of public data from the World Bank, ISO and IANA. Search, sort by any column, or download the CSV. Every table names its source and licence.",
     "groups": {
@@ -698,6 +698,336 @@
         { "q": "Which country uses the most renewable energy?", "a": "By share, {top1}, where {v1}% of energy use was renewable in {year1}, mostly from firewood and hydropower." },
         { "q": "What share of the world's energy is renewable?", "a": "{world}% of final energy consumption in {worldYear}." },
         { "q": "Which country uses the least renewable energy?", "a": "In this list, {last}, at {vlast}%." }
+      ]
+    },
+    "gni-per-capita": {
+      "name": "GNI per capita by country",
+      "title": "GNI per Capita by Country {to}: Richest and Poorest (Atlas, US$) | cv.cm",
+      "description": "Gross national income per person for {rows} economies in US dollars (World Bank Atlas method), ranked. World {world} ({worldYear}). World Bank data, CSV download.",
+      "h1": "GNI per capita by country, {to} (Atlas method, current US$)",
+      "lede": "Gross national income divided by population, for {rows} countries and areas, ranked from highest to lowest. This is the figure the World Bank uses to sort countries into income groups. Source: World Bank.",
+      "value": "GNI per capita (US$)",
+      "facts": [
+        "World: {world} per person ({worldYear}).",
+        "Highest: {top1} ({v1}), {top2} ({v2}) and {top3} ({v3}).",
+        "Lowest in the list: {last} ({vlast})."
+      ],
+      "about": [
+        "GNI is GDP plus income residents earn abroad, minus income foreigners take out of the country. It is higher than GDP where many people work across the border or own foreign assets, and lower in places such as Ireland, where multinationals book large profits that leave again.",
+        "The Atlas method converts local currency with a three-year average exchange rate, so one bad year for a currency moves the figure less. It does not adjust for prices: see GDP per capita (PPP) for that."
+      ],
+      "faq": [
+        { "q": "Which country has the highest GNI per capita?", "a": "{top1}, at {v1} per person in {year1}, followed by {top2} ({v2}) and {top3} ({v3})." },
+        { "q": "What is the world's GNI per capita?", "a": "{world} per person in {worldYear}." },
+        { "q": "What is the difference between GNI and GDP?", "a": "GDP counts what is produced inside a country. GNI counts the income its residents receive, wherever it is earned, so it adds income from abroad and subtracts income paid to foreigners." }
+      ]
+    },
+    "youth-unemployment": {
+      "name": "Youth unemployment rate by country",
+      "title": "Youth Unemployment Rate by Country {to}: Ages 15–24 | cv.cm",
+      "description": "Unemployment among 15–24-year-olds for {rows} countries, ranked. World {world}% ({worldYear}). ILO estimates via the World Bank, CSV download.",
+      "h1": "Youth unemployment rate by country, {to} (% of labour force aged 15–24)",
+      "lede": "Share of young people aged 15 to 24 who want a job and are looking for one but do not have one, for {rows} countries and areas, ranked from highest to lowest. Source: World Bank, from International Labour Organization modelled estimates.",
+      "value": "Youth unemployment (%)",
+      "facts": [
+        "World: {world}% of young people in the labour force are unemployed ({worldYear}).",
+        "Highest: {top1} ({v1}%), {top2} ({v2}%) and {top3} ({v3}%).",
+        "Lowest in the list: {last} ({vlast}%)."
+      ],
+      "about": [
+        "Students who are not looking for work are not in the labour force, so they are not counted as unemployed. In countries where most young people study, the rate is a share of the smaller group that does look for work.",
+        "Very low rates in some poor countries do not mean good jobs: when there is no unemployment benefit, almost everyone does some informal work. Youth rates are usually two to three times the overall rate."
+      ],
+      "faq": [
+        { "q": "Which country has the highest youth unemployment?", "a": "{top1}, where {v1}% of young people in the labour force were unemployed in {year1}, followed by {top2} ({v2}%) and {top3} ({v3}%)." },
+        { "q": "What is the world youth unemployment rate?", "a": "{world}% in {worldYear}, according to ILO estimates." },
+        { "q": "Which country has the lowest youth unemployment?", "a": "In this list, {last}, at {vlast}%." }
+      ]
+    },
+    "remittances": {
+      "name": "Remittances by country (% of GDP)",
+      "title": "Remittances by Country {to}: Most Dependent on Money from Abroad (% of GDP) | cv.cm",
+      "description": "Personal remittances received as a share of GDP for {rows} countries, ranked. World {world}% ({worldYear}). World Bank data, CSV download.",
+      "h1": "Personal remittances received by country, {to} (% of GDP)",
+      "lede": "Money that people working abroad send home to their families, compared with the size of each economy, for {rows} countries and areas, ranked from highest to lowest. Source: World Bank.",
+      "value": "Remittances (% of GDP)",
+      "facts": [
+        "World: remittances equal {world}% of GDP ({worldYear}).",
+        "Highest: {top1} ({v1}%), {top2} ({v2}%) and {top3} ({v3}%).",
+        "Lowest in the list: {last} ({vlast}%)."
+      ],
+      "about": [
+        "Remittances include the wages of workers who live abroad for less than a year and the money migrants send to households at home. For small economies with many people working abroad, they can bring in more than exports or foreign investment.",
+        "Only recorded transfers are counted. Money carried by hand or sent through informal channels is missing, so the true flows are larger."
+      ],
+      "faq": [
+        { "q": "Which country relies most on remittances?", "a": "{top1}, where remittances equalled {v1}% of GDP in {year1}, followed by {top2} ({v2}%) and {top3} ({v3}%)." },
+        { "q": "How big are remittances for the world economy?", "a": "{world}% of world GDP in {worldYear}." },
+        { "q": "What are remittances?", "a": "Money sent home by people who work in another country, usually to support their families." }
+      ]
+    },
+    "foreign-reserves": {
+      "name": "Foreign exchange reserves by country",
+      "title": "Foreign Exchange Reserves by Country {to}: Largest Reserves Incl. Gold | cv.cm",
+      "description": "Total reserves including gold for {rows} economies in current US dollars, ranked. Largest: {top1} ({v1}). World Bank / IMF data, CSV download.",
+      "h1": "Foreign exchange reserves by country, {to} (including gold, current US$)",
+      "lede": "Foreign currency, gold, IMF reserve position and special drawing rights held by each central bank, for {rows} countries and areas, ranked from largest to smallest. Source: World Bank, from IMF data.",
+      "value": "Reserves (US$)",
+      "facts": [
+        "Largest reserves: {top1} ({v1}), {top2} ({v2}) and {top3} ({v3}).",
+        "Smallest in the list: {last} ({vlast}).",
+        "Each row is the latest year the country reported, from {from} to {to}."
+      ],
+      "about": [
+        "Central banks hold reserves to pay for imports, repay foreign debt and defend their currency. Gold is valued at market prices, so a rise in the gold price lifts countries that hold a lot of it.",
+        "Countries that issue a reserve currency, such as the United States, need fewer reserves of their own. Euro area countries report their own holdings; the European Central Bank's reserves are not split between them."
+      ],
+      "faq": [
+        { "q": "Which country has the largest foreign exchange reserves?", "a": "{top1}, with {v1} in {year1}, followed by {top2} ({v2}) and {top3} ({v3})." },
+        { "q": "Does this include gold?", "a": "Yes. Total reserves include gold at market value, foreign currency, special drawing rights and the reserve position at the IMF." },
+        { "q": "Why is there no world total?", "a": "The World Bank does not publish a world sum for this series, so the table has no share-of-world column." }
+      ]
+    },
+    "military-spending": {
+      "name": "Military spending by country",
+      "title": "Military Spending by Country {to}: Largest Defence Budgets (US$) | cv.cm",
+      "description": "Military expenditure for {rows} countries in current US dollars, ranked, with share of the world total. World {world} ({worldYear}). SIPRI data via the World Bank, CSV download.",
+      "h1": "Military spending by country, {to} (current US$)",
+      "lede": "What each government spent on its armed forces, for {rows} countries, ranked from largest to smallest, with each one's share of world military spending. Source: World Bank, from the Stockholm International Peace Research Institute (SIPRI).",
+      "value": "Military spending (US$)",
+      "facts": [
+        "World military spending: {world} ({worldYear}).",
+        "Largest: {top1} ({v1}), {top2} ({v2}) and {top3} ({v3}).",
+        "Lowest in the list: {last} ({vlast})."
+      ],
+      "about": [
+        "SIPRI counts spending on armed forces, defence ministries, paramilitary forces trained for military operations, military pensions and military aid to other countries. Figures for some countries, including China and Russia, are SIPRI estimates, because official budgets leave out some items.",
+        "Values are in current US dollars at market exchange rates, so they understate what a dollar buys in countries with low prices. Countries listed at 0 have no army of their own."
+      ],
+      "faq": [
+        { "q": "Which country spends the most on its military?", "a": "{top1}, with {v1} in {year1}, followed by {top2} ({v2}) and {top3} ({v3})." },
+        { "q": "How much does the world spend on the military?", "a": "{world} in {worldYear}." },
+        { "q": "Why do some countries spend nothing?", "a": "{last} have no standing army; police or border forces handle security, so their military spending is recorded as 0." }
+      ]
+    },
+    "military-spending-gdp": {
+      "name": "Military spending as % of GDP",
+      "title": "Military Spending as % of GDP by Country {to} | cv.cm",
+      "description": "Military expenditure as a share of GDP for {rows} countries, ranked. World {world}% ({worldYear}). SIPRI data via the World Bank, CSV download.",
+      "h1": "Military spending by country, {to} (% of GDP)",
+      "lede": "Military spending compared with the size of each economy, for {rows} countries, ranked from highest to lowest. Source: World Bank, from the Stockholm International Peace Research Institute (SIPRI).",
+      "value": "Military spending (% of GDP)",
+      "facts": [
+        "World: {world}% of GDP goes to the military ({worldYear}).",
+        "Highest: {top1} ({v1}%), {top2} ({v2}%) and {top3} ({v3}%).",
+        "Lowest in the list: {last} ({vlast}%)."
+      ],
+      "about": [
+        "The share of GDP shows how much of its economy a country puts into defence, which the dollar total does not. Countries at war or under threat rank highest.",
+        "NATO members have agreed to spend at least 2% of GDP on defence, and in 2025 agreed on a higher target of 5% by 2035, of which 3.5% for core defence."
+      ],
+      "faq": [
+        { "q": "Which country spends the largest share of GDP on its military?", "a": "{top1}, at {v1}% of GDP in {year1}, followed by {top2} ({v2}%) and {top3} ({v3}%)." },
+        { "q": "What share of world GDP is military spending?", "a": "{world}% in {worldYear}." },
+        { "q": "Which countries spend the least?", "a": "{last}, at {vlast}%: they have no army of their own." }
+      ]
+    },
+    "rd-spending": {
+      "name": "R&D spending by country (% of GDP)",
+      "title": "R&D Spending by Country {to}: Research and Development (% of GDP) | cv.cm",
+      "description": "Research and development expenditure as a share of GDP for {rows} countries, ranked. World {world}% ({worldYear}). UNESCO data via the World Bank, CSV download.",
+      "h1": "Research and development spending by country, {to} (% of GDP)",
+      "lede": "What businesses, governments, universities and non-profits together spend on research and development, as a share of GDP, for {rows} countries and areas, ranked from highest to lowest. Source: World Bank, from the UNESCO Institute for Statistics.",
+      "value": "R&D spending (% of GDP)",
+      "facts": [
+        "World: {world}% of GDP is spent on R&D ({worldYear}).",
+        "Highest: {top1} ({v1}%), {top2} ({v2}%) and {top3} ({v3}%).",
+        "Lowest in the list: {last} ({vlast}%)."
+      ],
+      "about": [
+        "R&D covers basic research, applied research and experimental development. In the countries that spend the most, companies pay for most of it: chipmakers, carmakers and drug companies.",
+        "Many countries run R&D surveys only every few years, so each row shows the latest year reported within four years. Countries that have not reported are left out."
+      ],
+      "faq": [
+        { "q": "Which country spends the most on R&D?", "a": "As a share of GDP, {top1}, at {v1}% in {year1}, followed by {top2} ({v2}%) and {top3} ({v3}%)." },
+        { "q": "How much does the world spend on R&D?", "a": "{world}% of world GDP in {worldYear}." },
+        { "q": "What counts as R&D?", "a": "Creative, systematic work to increase knowledge and find new uses for it: basic research, applied research and experimental development, by firms, governments, universities and non-profits." }
+      ]
+    },
+    "aged-0-14": {
+      "name": "Population aged 0–14 by country",
+      "title": "Youngest Countries {to}: Population Aged 0–14 by Country | cv.cm",
+      "description": "Share of the population aged under 15 for {rows} countries, ranked from youngest to oldest. World {world}% ({worldYear}). World Bank / UN data, CSV download.",
+      "h1": "Population aged 0 to 14 by country, {to} (% of total)",
+      "lede": "Share of each country's people who are children under 15, for {rows} countries and areas, ranked from the youngest population to the oldest. Source: World Bank, from UN population estimates.",
+      "value": "Aged 0–14 (%)",
+      "facts": [
+        "World: {world}% of people are under 15 ({worldYear}).",
+        "Youngest: {top1} ({v1}%), {top2} ({v2}%) and {top3} ({v3}%).",
+        "Lowest share of children: {last} ({vlast}%)."
+      ],
+      "about": [
+        "The share of children follows the birth rate of the last 15 years. Countries in Sub-Saharan Africa, where women have five or more children on average, have the youngest populations.",
+        "In Japan, South Korea and much of Southern Europe, where births have fallen far below two per woman, children are now outnumbered by people aged 65 and over."
+      ],
+      "faq": [
+        { "q": "Which country has the youngest population?", "a": "{top1}, where {v1}% of people were under 15 in {year1}, followed by {top2} ({v2}%) and {top3} ({v3}%)." },
+        { "q": "What share of the world's people are children?", "a": "{world}% were aged 0 to 14 in {worldYear}." },
+        { "q": "Which country has the fewest children?", "a": "In this list, {last}, where {vlast}% of people are under 15." }
+      ]
+    },
+    "international-migrants": {
+      "name": "Immigrant population by country",
+      "title": "Immigrant Population by Country {to}: International Migrants (% of Population) | cv.cm",
+      "description": "International migrant stock as a share of the population for {rows} countries, ranked. World {world}% ({worldYear}). UN DESA data via the World Bank, CSV download.",
+      "h1": "International migrants by country, {to} (% of population)",
+      "lede": "Share of each country's residents who were born in another country, including refugees, for {rows} countries and areas, ranked from highest to lowest. Source: World Bank, from UN DESA International Migrant Stock.",
+      "value": "Migrants (% of population)",
+      "facts": [
+        "World: {world}% of people live outside the country they were born in ({worldYear}).",
+        "Highest: {top1} ({v1}%), {top2} ({v2}%) and {top3} ({v3}%).",
+        "Lowest in the list: {last} ({vlast}%)."
+      ],
+      "about": [
+        "A migrant here is anyone living in a country other than the one they were born in, whatever their citizenship. Where birthplace is not recorded, the UN counts foreign citizens instead.",
+        "The UN publishes these estimates every five years or so. Gulf states rank highest because most of their workers come from abroad."
+      ],
+      "faq": [
+        { "q": "Which country has the most immigrants as a share of its population?", "a": "{top1}, where {v1}% of residents were born abroad in {year1}, followed by {top2} ({v2}%) and {top3} ({v3}%)." },
+        { "q": "What share of the world are migrants?", "a": "{world}% of the world's people lived outside their country of birth in {worldYear}." },
+        { "q": "Are refugees counted?", "a": "Yes. Refugees and asylum seekers living in a country are part of its migrant stock." }
+      ]
+    },
+    "physicians": {
+      "name": "Doctors per 1,000 people by country",
+      "title": "Doctors per 1,000 People by Country {to}: Physicians Density | cv.cm",
+      "description": "Physicians per 1,000 people for {rows} countries, ranked. World {world} ({worldYear}). WHO data via the World Bank, CSV download.",
+      "h1": "Physicians per 1,000 people by country, {to}",
+      "lede": "Number of medical doctors for every 1,000 people, generalists and specialists together, for {rows} countries and areas, ranked from highest to lowest. Source: World Bank, from the World Health Organization.",
+      "value": "Doctors per 1,000",
+      "facts": [
+        "World: {world} doctors per 1,000 people ({worldYear}).",
+        "Highest: {top1} ({v1}), {top2} ({v2}) and {top3} ({v3}).",
+        "Lowest in the list: {last} ({vlast})."
+      ],
+      "about": [
+        "Some countries count every licensed doctor and others only those who see patients, so small gaps between countries say little. Nurses and midwives are not included.",
+        "Countries report every few years; each row is the latest count within four years. The WHO links fewer than about 4.5 doctors, nurses and midwives together per 1,000 people with gaps in basic health care."
+      ],
+      "faq": [
+        { "q": "Which country has the most doctors per person?", "a": "{top1}, with {v1} doctors per 1,000 people in {year1}, followed by {top2} ({v2}) and {top3} ({v3})." },
+        { "q": "How many doctors does the world have per 1,000 people?", "a": "{world} in {worldYear}." },
+        { "q": "Which country has the fewest doctors?", "a": "In this list, {last}, with {vlast} doctors per 1,000 people." }
+      ]
+    },
+    "education-spending": {
+      "name": "Education spending by country (% of GDP)",
+      "title": "Education Spending by Country {to}: Government Spending (% of GDP) | cv.cm",
+      "description": "Government expenditure on education as a share of GDP for {rows} countries, ranked. World {world}% ({worldYear}). UNESCO data via the World Bank, CSV download.",
+      "h1": "Government spending on education by country, {to} (% of GDP)",
+      "lede": "What national, regional and local governments spend on schools, universities and other education, as a share of GDP, for {rows} countries and areas, ranked from highest to lowest. Source: World Bank, from the UNESCO Institute for Statistics.",
+      "value": "Education (% of GDP)",
+      "facts": [
+        "World: governments spend {world}% of GDP on education ({worldYear}).",
+        "Highest: {top1} ({v1}%), {top2} ({v2}%) and {top3} ({v3}%).",
+        "Lowest in the list: {last} ({vlast}%)."
+      ],
+      "about": [
+        "Only public money is counted, including foreign aid that passes through the government budget. Tuition and private schools paid by families are not, so countries with large private systems look lower than they spend in total.",
+        "Small island states top the list because a school system has fixed costs and their economies are small. UNESCO suggests spending 4% to 6% of GDP on education."
+      ],
+      "faq": [
+        { "q": "Which country spends the most on education?", "a": "As a share of GDP, {top1}, at {v1}% in {year1}, followed by {top2} ({v2}%) and {top3} ({v3}%)." },
+        { "q": "How much do governments spend on education worldwide?", "a": "{world}% of GDP in {worldYear}." },
+        { "q": "Which country spends the least on education?", "a": "In this list, {last}, at {vlast}% of GDP." }
+      ]
+    },
+    "co2-emissions": {
+      "name": "CO2 emissions by country",
+      "title": "CO2 Emissions by Country {to}: Biggest Emitters (Million Tonnes) | cv.cm",
+      "description": "Total carbon dioxide emissions for {rows} countries in million tonnes, ranked, with share of the world total. World {world} Mt ({worldYear}). EDGAR data via the World Bank, CSV download.",
+      "h1": "CO2 emissions by country, {to} (million tonnes)",
+      "lede": "Carbon dioxide each country emits from fuel, cement and industry in a year, for {rows} countries and areas, ranked from largest to smallest, with each one's share of the world. Land use and forests are not included. Source: World Bank, from the EU's EDGAR database.",
+      "value": "CO2 (Mt)",
+      "facts": [
+        "World: {world} million tonnes of CO2 ({worldYear}).",
+        "Biggest emitters: {top1} ({v1} Mt), {top2} ({v2} Mt) and {top3} ({v3} Mt).",
+        "Smallest in the list: {last} ({vlast} Mt)."
+      ],
+      "about": [
+        "Emissions are counted where the fuel is burned. Goods made in one country and used in another count for the maker, and fuel for international flights and ships is not given to any country.",
+        "Big populations rank high on totals and low per person: compare the CO2 per capita table. Methane and other greenhouse gases are not included."
+      ],
+      "faq": [
+        { "q": "Which country emits the most CO2?", "a": "{top1}, with {v1} million tonnes in {year1}, followed by {top2} ({v2} Mt) and {top3} ({v3} Mt)." },
+        { "q": "How much CO2 does the world emit?", "a": "{world} million tonnes in {worldYear}, not counting land use and forests." },
+        { "q": "Does this include deforestation?", "a": "No. The series excludes land use, land-use change and forestry (LULUCF), so forest loss and regrowth are not in these numbers." }
+      ]
+    },
+    "electricity-consumption": {
+      "name": "Electricity consumption per capita by country",
+      "title": "Electricity Consumption per Capita by Country {to}: kWh per Person | cv.cm",
+      "description": "Electric power consumption per person for {rows} countries in kWh, ranked. World {world} kWh ({worldYear}). World Bank data, CSV download.",
+      "h1": "Electricity consumption per capita by country, {to} (kWh)",
+      "lede": "Electricity used in a year divided by population, homes, businesses and industry together, for {rows} countries and areas, ranked from highest to lowest. Source: World Bank.",
+      "value": "kWh per person",
+      "facts": [
+        "World: {world} kWh per person ({worldYear}).",
+        "Highest: {top1} ({v1} kWh), {top2} ({v2} kWh) and {top3} ({v3} kWh).",
+        "Lowest in the list: {last} ({vlast} kWh)."
+      ],
+      "about": [
+        "This counts electricity produced and imported, minus what is exported and lost in transmission. Industry is included, so countries with aluminium smelters or data centres and few people, such as Iceland, rank far above the rest.",
+        "Cold and very hot climates use more for heating and air conditioning. A household fridge uses roughly 300 to 500 kWh a year."
+      ],
+      "faq": [
+        { "q": "Which country uses the most electricity per person?", "a": "{top1}, at {v1} kWh per person in {year1}, followed by {top2} ({v2} kWh) and {top3} ({v3} kWh)." },
+        { "q": "How much electricity does the average person use?", "a": "{world} kWh a year worldwide in {worldYear}, counting industry as well as homes." },
+        { "q": "Which country uses the least electricity per person?", "a": "In this list, {last}, at {vlast} kWh a year." }
+      ]
+    },
+    "mobile-subscriptions": {
+      "name": "Mobile phone subscriptions by country",
+      "title": "Mobile Phone Subscriptions by Country {to}: per 100 People | cv.cm",
+      "description": "Mobile cellular subscriptions per 100 people for {rows} countries, ranked. World {world} ({worldYear}). ITU data via the World Bank, CSV download.",
+      "h1": "Mobile phone subscriptions by country, {to} (per 100 people)",
+      "lede": "Active mobile phone subscriptions, prepaid and postpaid, for every 100 people, for {rows} countries and areas, ranked from highest to lowest. Source: World Bank, from the International Telecommunication Union (ITU).",
+      "value": "Per 100 people",
+      "facts": [
+        "World: {world} mobile subscriptions per 100 people ({worldYear}).",
+        "Highest: {top1} ({v1}), {top2} ({v2}) and {top3} ({v3}).",
+        "Lowest in the list: {last} ({vlast})."
+      ],
+      "about": [
+        "Values above 100 are normal: many people carry two SIM cards, visitors buy local ones, and some lines are for tablets or cars. Hong Kong and other hubs with many visitors rank highest.",
+        "A subscription is not the same as a user, so this does not tell how many people own a phone. Prepaid SIMs count only if used in the last three months."
+      ],
+      "faq": [
+        { "q": "Which country has the most mobile subscriptions per person?", "a": "{top1}, with {v1} per 100 people in {year1}, followed by {top2} ({v2}) and {top3} ({v3})." },
+        { "q": "How many mobile subscriptions does the world have?", "a": "{world} per 100 people in {worldYear}, more than one per person." },
+        { "q": "Why are some values above 100?", "a": "Many people have more than one SIM card, and tourists and business travellers buy local ones." }
+      ]
+    },
+    "broadband-subscriptions": {
+      "name": "Fixed broadband subscriptions by country",
+      "title": "Fixed Broadband Subscriptions by Country {to}: per 100 People | cv.cm",
+      "description": "Fixed broadband internet subscriptions per 100 people for {rows} countries, ranked. World {world} ({worldYear}). ITU data via the World Bank, CSV download.",
+      "h1": "Fixed broadband subscriptions by country, {to} (per 100 people)",
+      "lede": "Wired and fixed wireless internet lines of 256 kbit/s or more, such as fibre, cable and DSL, for every 100 people, for {rows} countries and areas, ranked from highest to lowest. Source: World Bank, from the International Telecommunication Union (ITU).",
+      "value": "Per 100 people",
+      "facts": [
+        "World: {world} fixed broadband lines per 100 people ({worldYear}).",
+        "Highest: {top1} ({v1}), {top2} ({v2}) and {top3} ({v3}).",
+        "Lowest in the list: {last} ({vlast})."
+      ],
+      "about": [
+        "One line usually serves a whole household, so about 40 lines per 100 people already means most homes are connected. Mobile data is not included: see the mobile subscriptions and internet users tables.",
+        "Many people in Africa and South Asia go online mainly through mobile networks, so low fixed broadband there does not mean few internet users."
+      ],
+      "faq": [
+        { "q": "Which country has the most broadband subscriptions per person?", "a": "{top1}, with {v1} per 100 people in {year1}, followed by {top2} ({v2}) and {top3} ({v3})." },
+        { "q": "How many fixed broadband lines does the world have?", "a": "{world} per 100 people in {worldYear}." },
+        { "q": "Does broadband include mobile internet?", "a": "No. This counts fixed lines such as fibre, cable and DSL; mobile data plans are counted separately." }
       ]
     },
     "country-codes": {

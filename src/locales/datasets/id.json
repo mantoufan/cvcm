@@ -2,7 +2,7 @@
   "crumbHome": "Beranda",
   "hub": {
     "title": "Tabel Data Publik Gratis: Penduduk, PDB, Kode Negara | cv.cm",
-    "description": "Tabel data terbuka yang bisa dicari, diurutkan, dan diunduh sebagai CSV: jumlah penduduk, PDB, ekspor, inflasi, pengangguran, angka harapan hidup laki-laki dan perempuan, angka kelahiran dan kematian, luas daratan dan hutan, emisi CO2, energi terbarukan, pengguna internet, kode negara dan mata uang ISO, kode telepon, zona waktu, ukuran kertas, dan ASCII.",
+    "description": "Tabel data terbuka yang bisa dicari, diurutkan, dan diunduh sebagai CSV: jumlah penduduk, PDB, GNI, ekspor, inflasi, pengangguran, belanja militer, cadangan devisa, belanja R&D, angka harapan hidup, dokter, angka kelahiran dan kematian, migran, luas daratan dan hutan, emisi CO2, konsumsi listrik, energi terbarukan, penggunaan internet, ponsel, dan broadband, kode negara dan mata uang ISO, kode telepon, zona waktu, ukuran kertas, dan ASCII.",
     "h1": "Data publik",
     "lede": "Tabel sederhana berisi data publik dari Bank Dunia, ISO, dan IANA. Cari, urutkan berdasarkan kolom apa pun, atau unduh CSV-nya. Setiap tabel mencantumkan sumber dan lisensinya.",
     "groups": {
@@ -698,6 +698,336 @@
         { "q": "Negara mana yang paling banyak memakai energi terbarukan?", "a": "Berdasarkan porsi, {top1}, di mana {v1}% penggunaan energinya berasal dari sumber terbarukan pada {year1}, sebagian besar dari kayu bakar dan tenaga air." },
         { "q": "Berapa persen energi dunia yang terbarukan?", "a": "{world}% konsumsi energi final pada {worldYear}." },
         { "q": "Negara mana yang paling sedikit memakai energi terbarukan?", "a": "Dalam daftar ini, {last}, yaitu {vlast}%." }
+      ]
+    },
+    "gni-per-capita": {
+      "name": "GNI per kapita per negara",
+      "title": "GNI per Kapita per Negara {to}: Terkaya dan Termiskin (Atlas, US$) | cv.cm",
+      "description": "Pendapatan nasional bruto per orang di {rows} perekonomian dalam dolar AS (metode Atlas Bank Dunia), diurutkan. Dunia {world} ({worldYear}). Data Bank Dunia, unduh CSV.",
+      "h1": "GNI per kapita per negara, {to} (metode Atlas, US$ berlaku)",
+      "lede": "Pendapatan nasional bruto dibagi jumlah penduduk, untuk {rows} negara dan wilayah, diurutkan dari tertinggi ke terendah. Angka inilah yang dipakai Bank Dunia untuk mengelompokkan negara menurut tingkat pendapatan. Sumber: Bank Dunia.",
+      "value": "GNI per kapita (US$)",
+      "facts": [
+        "Dunia: {world} per orang ({worldYear}).",
+        "Tertinggi: {top1} ({v1}), {top2} ({v2}) dan {top3} ({v3}).",
+        "Terendah dalam daftar: {last} ({vlast})."
+      ],
+      "about": [
+        "GNI adalah PDB ditambah pendapatan yang diperoleh penduduk di luar negeri, dikurangi pendapatan yang dibawa keluar oleh pihak asing. Angkanya lebih tinggi dari PDB di tempat yang banyak penduduknya bekerja di seberang perbatasan atau memiliki aset di luar negeri, dan lebih rendah di tempat seperti Irlandia, tempat perusahaan multinasional membukukan laba besar yang kemudian mengalir keluar lagi.",
+        "Metode Atlas mengonversi mata uang lokal dengan rata-rata kurs tiga tahun, sehingga satu tahun yang buruk bagi suatu mata uang tidak terlalu menggeser angkanya. Metode ini tidak menyesuaikan dengan tingkat harga: untuk itu, lihat PDB per kapita (PPP)."
+      ],
+      "faq": [
+        { "q": "Negara mana yang GNI per kapitanya tertinggi?", "a": "{top1}, sebesar {v1} per orang pada {year1}, disusul {top2} ({v2}) dan {top3} ({v3})." },
+        { "q": "Berapa GNI per kapita dunia?", "a": "{world} per orang pada {worldYear}." },
+        { "q": "Apa bedanya GNI dan PDB?", "a": "PDB menghitung apa yang diproduksi di dalam suatu negara. GNI menghitung pendapatan yang diterima penduduknya, di mana pun diperoleh, sehingga menambahkan pendapatan dari luar negeri dan mengurangi pendapatan yang dibayarkan kepada pihak asing." }
+      ]
+    },
+    "youth-unemployment": {
+      "name": "Tingkat pengangguran usia muda per negara",
+      "title": "Pengangguran Usia Muda per Negara {to}: Usia 15–24 Tahun | cv.cm",
+      "description": "Pengangguran penduduk usia 15–24 tahun di {rows} negara, diurutkan. Dunia {world}% ({worldYear}). Estimasi ILO melalui Bank Dunia, unduh CSV.",
+      "h1": "Tingkat pengangguran usia muda per negara, {to} (% angkatan kerja usia 15–24)",
+      "lede": "Persentase anak muda berusia 15 sampai 24 tahun yang ingin bekerja dan sedang mencari pekerjaan tetapi belum mendapatkannya, untuk {rows} negara dan wilayah, diurutkan dari tertinggi ke terendah. Sumber: Bank Dunia, dari estimasi model Organisasi Perburuhan Internasional (ILO).",
+      "value": "Pengangguran usia muda (%)",
+      "facts": [
+        "Dunia: {world}% anak muda dalam angkatan kerja menganggur ({worldYear}).",
+        "Tertinggi: {top1} ({v1}%), {top2} ({v2}%) dan {top3} ({v3}%).",
+        "Terendah dalam daftar: {last} ({vlast}%)."
+      ],
+      "about": [
+        "Pelajar yang tidak mencari kerja tidak termasuk angkatan kerja, jadi tidak dihitung sebagai penganggur. Di negara tempat sebagian besar anak muda bersekolah, tingkat ini adalah persentase dari kelompok yang lebih kecil, yaitu mereka yang memang mencari kerja.",
+        "Tingkat yang sangat rendah di sebagian negara miskin bukan berarti pekerjaannya bagus: jika tidak ada tunjangan pengangguran, hampir semua orang melakukan pekerjaan informal. Tingkat pengangguran usia muda biasanya dua sampai tiga kali tingkat pengangguran keseluruhan."
+      ],
+      "faq": [
+        { "q": "Negara mana yang tingkat pengangguran usia mudanya tertinggi?", "a": "{top1}, di mana {v1}% anak muda dalam angkatan kerja menganggur pada {year1}, disusul {top2} ({v2}%) dan {top3} ({v3}%)." },
+        { "q": "Berapa tingkat pengangguran usia muda dunia?", "a": "{world}% pada {worldYear}, menurut estimasi ILO." },
+        { "q": "Negara mana yang tingkat pengangguran usia mudanya terendah?", "a": "Dalam daftar ini, {last}, yaitu {vlast}%." }
+      ]
+    },
+    "remittances": {
+      "name": "Remitansi per negara (% PDB)",
+      "title": "Remitansi per Negara {to}: Paling Bergantung pada Kiriman Uang (% PDB) | cv.cm",
+      "description": "Remitansi pribadi yang diterima sebagai persentase PDB di {rows} negara, diurutkan. Dunia {world}% ({worldYear}). Data Bank Dunia, unduh CSV.",
+      "h1": "Remitansi pribadi yang diterima per negara, {to} (% PDB)",
+      "lede": "Uang yang dikirim orang yang bekerja di luar negeri kepada keluarganya di kampung halaman, dibandingkan dengan besarnya perekonomian masing-masing, untuk {rows} negara dan wilayah, diurutkan dari tertinggi ke terendah. Sumber: Bank Dunia.",
+      "value": "Remitansi (% PDB)",
+      "facts": [
+        "Dunia: remitansi setara {world}% PDB ({worldYear}).",
+        "Tertinggi: {top1} ({v1}%), {top2} ({v2}%) dan {top3} ({v3}%).",
+        "Terendah dalam daftar: {last} ({vlast}%)."
+      ],
+      "about": [
+        "Remitansi mencakup upah pekerja yang tinggal di luar negeri kurang dari setahun dan uang yang dikirim migran ke rumah tangga di negara asalnya. Bagi perekonomian kecil dengan banyak warga yang bekerja di luar negeri, nilainya bisa melebihi ekspor atau investasi asing.",
+        "Hanya transfer yang tercatat yang dihitung. Uang yang dibawa langsung atau dikirim lewat jalur informal tidak termasuk, jadi aliran sebenarnya lebih besar."
+      ],
+      "faq": [
+        { "q": "Negara mana yang paling bergantung pada remitansi?", "a": "{top1}, di mana remitansi setara {v1}% PDB pada {year1}, disusul {top2} ({v2}%) dan {top3} ({v3}%)." },
+        { "q": "Seberapa besar remitansi bagi perekonomian dunia?", "a": "{world}% PDB dunia pada {worldYear}." },
+        { "q": "Apa itu remitansi?", "a": "Uang yang dikirim pulang oleh orang yang bekerja di negara lain, biasanya untuk menghidupi keluarganya." }
+      ]
+    },
+    "foreign-reserves": {
+      "name": "Cadangan devisa per negara",
+      "title": "Cadangan Devisa per Negara {to}: Terbesar Termasuk Emas | cv.cm",
+      "description": "Total cadangan termasuk emas di {rows} perekonomian dalam dolar AS berlaku, diurutkan. Terbesar: {top1} ({v1}). Data Bank Dunia / IMF, unduh CSV.",
+      "h1": "Cadangan devisa per negara, {to} (termasuk emas, US$ berlaku)",
+      "lede": "Valuta asing, emas, posisi cadangan di IMF, dan hak penarikan khusus (SDR) yang dipegang setiap bank sentral, untuk {rows} negara dan wilayah, diurutkan dari terbesar ke terkecil. Sumber: Bank Dunia, dari data IMF.",
+      "value": "Cadangan (US$)",
+      "facts": [
+        "Cadangan terbesar: {top1} ({v1}), {top2} ({v2}) dan {top3} ({v3}).",
+        "Terkecil dalam daftar: {last} ({vlast}).",
+        "Setiap baris adalah tahun terakhir yang dilaporkan negara tersebut, dari {from} sampai {to}."
+      ],
+      "about": [
+        "Bank sentral memegang cadangan untuk membayar impor, melunasi utang luar negeri, dan menjaga nilai mata uangnya. Emas dinilai dengan harga pasar, sehingga kenaikan harga emas mengangkat negara yang menyimpan banyak emas.",
+        "Negara penerbit mata uang cadangan, seperti Amerika Serikat, tidak perlu banyak cadangan sendiri. Negara kawasan euro melaporkan cadangannya masing-masing; cadangan Bank Sentral Eropa tidak dibagi ke negara-negara tersebut."
+      ],
+      "faq": [
+        { "q": "Negara mana yang cadangan devisanya terbesar?", "a": "{top1}, sebesar {v1} pada {year1}, disusul {top2} ({v2}) dan {top3} ({v3})." },
+        { "q": "Apakah ini termasuk emas?", "a": "Ya. Total cadangan mencakup emas dengan nilai pasar, valuta asing, hak penarikan khusus, dan posisi cadangan di IMF." },
+        { "q": "Mengapa tidak ada total dunia?", "a": "Bank Dunia tidak menerbitkan jumlah dunia untuk seri ini, jadi tabel ini tidak memiliki kolom porsi dunia." }
+      ]
+    },
+    "military-spending": {
+      "name": "Belanja militer per negara",
+      "title": "Belanja Militer per Negara {to}: Anggaran Pertahanan Terbesar (US$) | cv.cm",
+      "description": "Pengeluaran militer {rows} negara dalam dolar AS berlaku, diurutkan, beserta porsinya dari total dunia. Dunia {world} ({worldYear}). Data SIPRI melalui Bank Dunia, unduh CSV.",
+      "h1": "Belanja militer per negara, {to} (US$ berlaku)",
+      "lede": "Pengeluaran setiap pemerintah untuk angkatan bersenjatanya, untuk {rows} negara, diurutkan dari terbesar ke terkecil, beserta porsi masing-masing dari belanja militer dunia. Sumber: Bank Dunia, dari Stockholm International Peace Research Institute (SIPRI).",
+      "value": "Belanja militer (US$)",
+      "facts": [
+        "Belanja militer dunia: {world} ({worldYear}).",
+        "Terbesar: {top1} ({v1}), {top2} ({v2}) dan {top3} ({v3}).",
+        "Terendah dalam daftar: {last} ({vlast})."
+      ],
+      "about": [
+        "SIPRI menghitung belanja untuk angkatan bersenjata, kementerian pertahanan, pasukan paramiliter yang dilatih untuk operasi militer, pensiun militer, dan bantuan militer ke negara lain. Angka sebagian negara, termasuk Tiongkok dan Rusia, adalah perkiraan SIPRI, karena anggaran resminya tidak mencantumkan beberapa pos.",
+        "Nilainya dalam dolar AS berlaku dengan kurs pasar, sehingga meremehkan daya beli satu dolar di negara dengan harga rendah. Negara yang tercatat 0 tidak memiliki tentara sendiri."
+      ],
+      "faq": [
+        { "q": "Negara mana yang belanja militernya paling besar?", "a": "{top1}, sebesar {v1} pada {year1}, disusul {top2} ({v2}) dan {top3} ({v3})." },
+        { "q": "Berapa belanja militer dunia?", "a": "{world} pada {worldYear}." },
+        { "q": "Mengapa sebagian negara tidak punya belanja militer?", "a": "Negara berikut tidak memiliki tentara tetap: {last}. Keamanan ditangani polisi atau pasukan perbatasan, sehingga belanja militernya tercatat 0." }
+      ]
+    },
+    "military-spending-gdp": {
+      "name": "Belanja militer sebagai % PDB",
+      "title": "Belanja Militer sebagai % PDB per Negara {to} | cv.cm",
+      "description": "Pengeluaran militer sebagai persentase PDB di {rows} negara, diurutkan. Dunia {world}% ({worldYear}). Data SIPRI melalui Bank Dunia, unduh CSV.",
+      "h1": "Belanja militer per negara, {to} (% PDB)",
+      "lede": "Belanja militer dibandingkan dengan besarnya perekonomian masing-masing, untuk {rows} negara, diurutkan dari tertinggi ke terendah. Sumber: Bank Dunia, dari Stockholm International Peace Research Institute (SIPRI).",
+      "value": "Belanja militer (% PDB)",
+      "facts": [
+        "Dunia: {world}% PDB dipakai untuk militer ({worldYear}).",
+        "Tertinggi: {top1} ({v1}%), {top2} ({v2}%) dan {top3} ({v3}%).",
+        "Terendah dalam daftar: {last} ({vlast}%)."
+      ],
+      "about": [
+        "Persentase PDB menunjukkan seberapa besar bagian perekonomian yang dialokasikan suatu negara untuk pertahanan, hal yang tidak terlihat dari total dalam dolar. Negara yang sedang berperang atau berada di bawah ancaman menempati peringkat tertinggi.",
+        "Anggota NATO telah sepakat membelanjakan sedikitnya 2% PDB untuk pertahanan, dan pada 2025 menyepakati target lebih tinggi sebesar 5% pada 2035, dengan 3,5% di antaranya untuk pertahanan inti."
+      ],
+      "faq": [
+        { "q": "Negara mana yang porsi PDB untuk militernya paling besar?", "a": "{top1}, yaitu {v1}% PDB pada {year1}, disusul {top2} ({v2}%) dan {top3} ({v3}%)." },
+        { "q": "Berapa persen PDB dunia yang dipakai untuk belanja militer?", "a": "{world}% pada {worldYear}." },
+        { "q": "Negara mana yang belanja militernya paling kecil?", "a": "{last}, yaitu {vlast}%: negara-negara ini tidak memiliki tentara sendiri." }
+      ]
+    },
+    "rd-spending": {
+      "name": "Belanja R&D per negara (% PDB)",
+      "title": "Belanja R&D per Negara {to}: Penelitian dan Pengembangan (% PDB) | cv.cm",
+      "description": "Pengeluaran penelitian dan pengembangan sebagai persentase PDB di {rows} negara, diurutkan. Dunia {world}% ({worldYear}). Data UNESCO melalui Bank Dunia, unduh CSV.",
+      "h1": "Belanja penelitian dan pengembangan per negara, {to} (% PDB)",
+      "lede": "Total belanja perusahaan, pemerintah, universitas, dan lembaga nirlaba untuk penelitian dan pengembangan, sebagai persentase PDB, untuk {rows} negara dan wilayah, diurutkan dari tertinggi ke terendah. Sumber: Bank Dunia, dari UNESCO Institute for Statistics.",
+      "value": "Belanja R&D (% PDB)",
+      "facts": [
+        "Dunia: {world}% PDB dibelanjakan untuk R&D ({worldYear}).",
+        "Tertinggi: {top1} ({v1}%), {top2} ({v2}%) dan {top3} ({v3}%).",
+        "Terendah dalam daftar: {last} ({vlast}%)."
+      ],
+      "about": [
+        "R&D mencakup penelitian dasar, penelitian terapan, dan pengembangan eksperimental. Di negara dengan belanja terbesar, sebagian besarnya dibiayai perusahaan: produsen cip, produsen mobil, dan perusahaan farmasi.",
+        "Banyak negara hanya melakukan survei R&D setiap beberapa tahun, jadi setiap baris menampilkan tahun terakhir yang dilaporkan dalam empat tahun terakhir. Negara yang belum melapor tidak dicantumkan."
+      ],
+      "faq": [
+        { "q": "Negara mana yang belanja R&D-nya paling besar?", "a": "Sebagai persentase PDB, {top1}, yaitu {v1}% pada {year1}, disusul {top2} ({v2}%) dan {top3} ({v3}%)." },
+        { "q": "Berapa belanja R&D dunia?", "a": "{world}% PDB dunia pada {worldYear}." },
+        { "q": "Apa saja yang termasuk R&D?", "a": "Kerja kreatif dan sistematis untuk menambah pengetahuan dan menemukan penerapan barunya: penelitian dasar, penelitian terapan, dan pengembangan eksperimental, oleh perusahaan, pemerintah, universitas, dan lembaga nirlaba." }
+      ]
+    },
+    "aged-0-14": {
+      "name": "Penduduk usia 0–14 per negara",
+      "title": "Negara dengan Penduduk Termuda {to}: Usia 0–14 Tahun per Negara | cv.cm",
+      "description": "Persentase penduduk berusia di bawah 15 tahun di {rows} negara, diurutkan dari termuda ke tertua. Dunia {world}% ({worldYear}). Data Bank Dunia / PBB, unduh CSV.",
+      "h1": "Penduduk usia 0 sampai 14 tahun per negara, {to} (% dari total)",
+      "lede": "Persentase penduduk setiap negara yang merupakan anak di bawah 15 tahun, untuk {rows} negara dan wilayah, diurutkan dari penduduk termuda ke tertua. Sumber: Bank Dunia, dari perkiraan penduduk PBB.",
+      "value": "Usia 0–14 (%)",
+      "facts": [
+        "Dunia: {world}% penduduk berusia di bawah 15 tahun ({worldYear}).",
+        "Termuda: {top1} ({v1}%), {top2} ({v2}%) dan {top3} ({v3}%).",
+        "Porsi anak terendah: {last} ({vlast}%)."
+      ],
+      "about": [
+        "Porsi anak mengikuti angka kelahiran 15 tahun terakhir. Negara-negara di Afrika Sub-Sahara, tempat perempuan rata-rata memiliki lima anak atau lebih, memiliki penduduk termuda.",
+        "Di Jepang, Korea Selatan, dan sebagian besar Eropa Selatan, tempat angka kelahiran telah turun jauh di bawah dua per perempuan, jumlah anak kini kalah banyak dibanding penduduk berusia 65 tahun ke atas."
+      ],
+      "faq": [
+        { "q": "Negara mana yang penduduknya paling muda?", "a": "{top1}, di mana {v1}% penduduknya berusia di bawah 15 tahun pada {year1}, disusul {top2} ({v2}%) dan {top3} ({v3}%)." },
+        { "q": "Berapa persen penduduk dunia yang masih anak-anak?", "a": "{world}% berusia 0 sampai 14 tahun pada {worldYear}." },
+        { "q": "Negara mana yang anaknya paling sedikit?", "a": "Dalam daftar ini, {last}, di mana {vlast}% penduduknya berusia di bawah 15 tahun." }
+      ]
+    },
+    "international-migrants": {
+      "name": "Jumlah imigran per negara",
+      "title": "Jumlah Imigran per Negara {to}: Migran Internasional (% Penduduk) | cv.cm",
+      "description": "Stok migran internasional sebagai persentase penduduk di {rows} negara, diurutkan. Dunia {world}% ({worldYear}). Data UN DESA melalui Bank Dunia, unduh CSV.",
+      "h1": "Migran internasional per negara, {to} (% penduduk)",
+      "lede": "Persentase penduduk setiap negara yang lahir di negara lain, termasuk pengungsi, untuk {rows} negara dan wilayah, diurutkan dari tertinggi ke terendah. Sumber: Bank Dunia, dari International Migrant Stock UN DESA.",
+      "value": "Migran (% penduduk)",
+      "facts": [
+        "Dunia: {world}% orang tinggal di luar negara kelahirannya ({worldYear}).",
+        "Tertinggi: {top1} ({v1}%), {top2} ({v2}%) dan {top3} ({v3}%).",
+        "Terendah dalam daftar: {last} ({vlast}%)."
+      ],
+      "about": [
+        "Migran di sini adalah siapa saja yang tinggal di negara selain negara kelahirannya, apa pun kewarganegaraannya. Jika tempat lahir tidak dicatat, PBB menghitung warga negara asing sebagai gantinya.",
+        "PBB menerbitkan perkiraan ini kira-kira setiap lima tahun. Negara-negara Teluk menempati peringkat tertinggi karena sebagian besar pekerjanya berasal dari luar negeri."
+      ],
+      "faq": [
+        { "q": "Negara mana yang persentase imigrannya paling tinggi?", "a": "{top1}, di mana {v1}% penduduknya lahir di luar negeri pada {year1}, disusul {top2} ({v2}%) dan {top3} ({v3}%)." },
+        { "q": "Berapa persen penduduk dunia yang merupakan migran?", "a": "{world}% penduduk dunia tinggal di luar negara kelahirannya pada {worldYear}." },
+        { "q": "Apakah pengungsi ikut dihitung?", "a": "Ya. Pengungsi dan pencari suaka yang tinggal di suatu negara termasuk dalam stok migran negara tersebut." }
+      ]
+    },
+    "physicians": {
+      "name": "Dokter per 1.000 penduduk per negara",
+      "title": "Jumlah Dokter per 1.000 Penduduk per Negara {to}: Rasio Dokter | cv.cm",
+      "description": "Dokter per 1.000 penduduk di {rows} negara, diurutkan. Dunia {world} ({worldYear}). Data WHO melalui Bank Dunia, unduh CSV.",
+      "h1": "Dokter per 1.000 penduduk per negara, {to}",
+      "lede": "Jumlah dokter untuk setiap 1.000 penduduk, dokter umum dan spesialis sekaligus, untuk {rows} negara dan wilayah, diurutkan dari tertinggi ke terendah. Sumber: Bank Dunia, dari Organisasi Kesehatan Dunia (WHO).",
+      "value": "Dokter per 1.000",
+      "facts": [
+        "Dunia: {world} dokter per 1.000 penduduk ({worldYear}).",
+        "Tertinggi: {top1} ({v1}), {top2} ({v2}) dan {top3} ({v3}).",
+        "Terendah dalam daftar: {last} ({vlast})."
+      ],
+      "about": [
+        "Sebagian negara menghitung semua dokter berlisensi dan yang lain hanya dokter yang menangani pasien, jadi selisih kecil antarnegara tidak banyak artinya. Perawat dan bidan tidak termasuk.",
+        "Negara melapor setiap beberapa tahun; setiap baris adalah hitungan terakhir dalam empat tahun terakhir. WHO mengaitkan jumlah dokter, perawat, dan bidan yang kurang dari sekitar 4,5 per 1.000 penduduk dengan kesenjangan layanan kesehatan dasar."
+      ],
+      "faq": [
+        { "q": "Negara mana yang dokternya paling banyak per penduduk?", "a": "{top1}, dengan {v1} dokter per 1.000 penduduk pada {year1}, disusul {top2} ({v2}) dan {top3} ({v3})." },
+        { "q": "Berapa jumlah dokter per 1.000 penduduk di dunia?", "a": "{world} pada {worldYear}." },
+        { "q": "Negara mana yang dokternya paling sedikit?", "a": "Dalam daftar ini, {last}, dengan {vlast} dokter per 1.000 penduduk." }
+      ]
+    },
+    "education-spending": {
+      "name": "Belanja pendidikan per negara (% PDB)",
+      "title": "Anggaran Pendidikan per Negara {to}: Belanja Pemerintah (% PDB) | cv.cm",
+      "description": "Belanja pemerintah untuk pendidikan sebagai persentase PDB di {rows} negara, diurutkan. Dunia {world}% ({worldYear}). Data UNESCO melalui Bank Dunia, unduh CSV.",
+      "h1": "Belanja pemerintah untuk pendidikan per negara, {to} (% PDB)",
+      "lede": "Belanja pemerintah pusat, daerah, dan lokal untuk sekolah, universitas, dan pendidikan lainnya, sebagai persentase PDB, untuk {rows} negara dan wilayah, diurutkan dari tertinggi ke terendah. Sumber: Bank Dunia, dari UNESCO Institute for Statistics.",
+      "value": "Pendidikan (% PDB)",
+      "facts": [
+        "Dunia: pemerintah membelanjakan {world}% PDB untuk pendidikan ({worldYear}).",
+        "Tertinggi: {top1} ({v1}%), {top2} ({v2}%) dan {top3} ({v3}%).",
+        "Terendah dalam daftar: {last} ({vlast}%)."
+      ],
+      "about": [
+        "Hanya dana publik yang dihitung, termasuk bantuan luar negeri yang melewati anggaran pemerintah. Biaya kuliah dan sekolah swasta yang dibayar keluarga tidak termasuk, sehingga negara dengan sistem swasta yang besar tampak lebih rendah dari total belanjanya.",
+        "Negara kepulauan kecil berada di puncak daftar karena sistem sekolah memiliki biaya tetap dan perekonomiannya kecil. UNESCO menyarankan belanja pendidikan sebesar 4% sampai 6% PDB."
+      ],
+      "faq": [
+        { "q": "Negara mana yang belanja pendidikannya paling besar?", "a": "Sebagai persentase PDB, {top1}, yaitu {v1}% pada {year1}, disusul {top2} ({v2}%) dan {top3} ({v3}%)." },
+        { "q": "Berapa belanja pemerintah untuk pendidikan di seluruh dunia?", "a": "{world}% PDB pada {worldYear}." },
+        { "q": "Negara mana yang belanja pendidikannya paling kecil?", "a": "Dalam daftar ini, {last}, yaitu {vlast}% PDB." }
+      ]
+    },
+    "co2-emissions": {
+      "name": "Emisi CO2 per negara",
+      "title": "Emisi CO2 per Negara {to}: Penghasil Emisi Terbesar (Juta Ton) | cv.cm",
+      "description": "Total emisi karbon dioksida {rows} negara dalam juta ton, diurutkan, beserta porsinya dari total dunia. Dunia {world} Mt ({worldYear}). Data EDGAR melalui Bank Dunia, unduh CSV.",
+      "h1": "Emisi CO2 per negara, {to} (juta ton)",
+      "lede": "Karbon dioksida yang diemisikan setiap negara dari bahan bakar, semen, dan industri dalam setahun, untuk {rows} negara dan wilayah, diurutkan dari terbesar ke terkecil, beserta porsi masing-masing dari total dunia. Penggunaan lahan dan kehutanan tidak termasuk. Sumber: Bank Dunia, dari basis data EDGAR Uni Eropa.",
+      "value": "CO2 (Mt)",
+      "facts": [
+        "Dunia: {world} juta ton CO2 ({worldYear}).",
+        "Penghasil emisi terbesar: {top1} ({v1} Mt), {top2} ({v2} Mt) dan {top3} ({v3} Mt).",
+        "Terkecil dalam daftar: {last} ({vlast} Mt)."
+      ],
+      "about": [
+        "Emisi dihitung di tempat bahan bakar dibakar. Barang yang dibuat di satu negara dan dipakai di negara lain dihitung untuk negara pembuatnya, dan bahan bakar untuk penerbangan serta pelayaran internasional tidak dibebankan ke negara mana pun.",
+        "Negara berpenduduk besar berperingkat tinggi dalam total dan rendah per orang: bandingkan dengan tabel CO2 per kapita. Metana dan gas rumah kaca lainnya tidak termasuk."
+      ],
+      "faq": [
+        { "q": "Negara mana yang emisi CO2-nya paling besar?", "a": "{top1}, dengan {v1} juta ton pada {year1}, disusul {top2} ({v2} Mt) dan {top3} ({v3} Mt)." },
+        { "q": "Berapa emisi CO2 dunia?", "a": "{world} juta ton pada {worldYear}, tidak termasuk penggunaan lahan dan kehutanan." },
+        { "q": "Apakah ini termasuk deforestasi?", "a": "Tidak. Seri ini tidak mencakup penggunaan lahan, perubahan penggunaan lahan, dan kehutanan (LULUCF), jadi hilangnya hutan dan pertumbuhan kembali hutan tidak ada dalam angka ini." }
+      ]
+    },
+    "electricity-consumption": {
+      "name": "Konsumsi listrik per kapita per negara",
+      "title": "Konsumsi Listrik per Kapita per Negara {to}: kWh per Orang | cv.cm",
+      "description": "Konsumsi tenaga listrik per orang di {rows} negara dalam kWh, diurutkan. Dunia {world} kWh ({worldYear}). Data Bank Dunia, unduh CSV.",
+      "h1": "Konsumsi listrik per kapita per negara, {to} (kWh)",
+      "lede": "Listrik yang dipakai dalam setahun dibagi jumlah penduduk, rumah tangga, bisnis, dan industri sekaligus, untuk {rows} negara dan wilayah, diurutkan dari tertinggi ke terendah. Sumber: Bank Dunia.",
+      "value": "kWh per orang",
+      "facts": [
+        "Dunia: {world} kWh per orang ({worldYear}).",
+        "Tertinggi: {top1} ({v1} kWh), {top2} ({v2} kWh) dan {top3} ({v3} kWh).",
+        "Terendah dalam daftar: {last} ({vlast} kWh)."
+      ],
+      "about": [
+        "Angka ini menghitung listrik yang diproduksi dan diimpor, dikurangi yang diekspor dan yang hilang dalam transmisi. Industri ikut dihitung, sehingga negara dengan peleburan aluminium atau pusat data dan sedikit penduduk, seperti Islandia, berperingkat jauh di atas yang lain.",
+        "Iklim dingin dan sangat panas memakai lebih banyak listrik untuk pemanas dan AC. Satu kulkas rumah tangga memakai sekitar 300 sampai 500 kWh per tahun."
+      ],
+      "faq": [
+        { "q": "Negara mana yang konsumsi listrik per orangnya paling tinggi?", "a": "{top1}, yaitu {v1} kWh per orang pada {year1}, disusul {top2} ({v2} kWh) dan {top3} ({v3} kWh)." },
+        { "q": "Berapa listrik yang dipakai rata-rata orang?", "a": "{world} kWh per tahun di seluruh dunia pada {worldYear}, termasuk industri selain rumah tangga." },
+        { "q": "Negara mana yang konsumsi listrik per orangnya paling rendah?", "a": "Dalam daftar ini, {last}, yaitu {vlast} kWh per tahun." }
+      ]
+    },
+    "mobile-subscriptions": {
+      "name": "Langganan ponsel per negara",
+      "title": "Langganan Ponsel per Negara {to}: per 100 Penduduk | cv.cm",
+      "description": "Langganan seluler per 100 penduduk di {rows} negara, diurutkan. Dunia {world} ({worldYear}). Data ITU melalui Bank Dunia, unduh CSV.",
+      "h1": "Langganan ponsel per negara, {to} (per 100 penduduk)",
+      "lede": "Langganan ponsel aktif, prabayar dan pascabayar, untuk setiap 100 penduduk, untuk {rows} negara dan wilayah, diurutkan dari tertinggi ke terendah. Sumber: Bank Dunia, dari International Telecommunication Union (ITU).",
+      "value": "Per 100 penduduk",
+      "facts": [
+        "Dunia: {world} langganan seluler per 100 penduduk ({worldYear}).",
+        "Tertinggi: {top1} ({v1}), {top2} ({v2}) dan {top3} ({v3}).",
+        "Terendah dalam daftar: {last} ({vlast})."
+      ],
+      "about": [
+        "Nilai di atas 100 itu wajar: banyak orang memakai dua kartu SIM, pengunjung membeli kartu lokal, dan sebagian sambungan dipakai untuk tablet atau mobil. Hong Kong dan pusat lain yang banyak dikunjungi berperingkat tertinggi.",
+        "Langganan tidak sama dengan pengguna, jadi angka ini tidak menunjukkan berapa banyak orang yang memiliki ponsel. Kartu SIM prabayar hanya dihitung jika dipakai dalam tiga bulan terakhir."
+      ],
+      "faq": [
+        { "q": "Negara mana yang langganan ponsel per orangnya paling banyak?", "a": "{top1}, dengan {v1} per 100 penduduk pada {year1}, disusul {top2} ({v2}) dan {top3} ({v3})." },
+        { "q": "Berapa jumlah langganan ponsel di dunia?", "a": "{world} per 100 penduduk pada {worldYear}, lebih dari satu per orang." },
+        { "q": "Mengapa sebagian nilai di atas 100?", "a": "Banyak orang memiliki lebih dari satu kartu SIM, dan wisatawan serta pelaku perjalanan bisnis membeli kartu lokal." }
+      ]
+    },
+    "broadband-subscriptions": {
+      "name": "Langganan broadband tetap per negara",
+      "title": "Langganan Broadband Tetap per Negara {to}: per 100 Penduduk | cv.cm",
+      "description": "Langganan internet broadband tetap per 100 penduduk di {rows} negara, diurutkan. Dunia {world} ({worldYear}). Data ITU melalui Bank Dunia, unduh CSV.",
+      "h1": "Langganan broadband tetap per negara, {to} (per 100 penduduk)",
+      "lede": "Sambungan internet kabel dan nirkabel tetap berkecepatan 256 kbit/s atau lebih, seperti fiber, kabel, dan DSL, untuk setiap 100 penduduk, untuk {rows} negara dan wilayah, diurutkan dari tertinggi ke terendah. Sumber: Bank Dunia, dari International Telecommunication Union (ITU).",
+      "value": "Per 100 penduduk",
+      "facts": [
+        "Dunia: {world} sambungan broadband tetap per 100 penduduk ({worldYear}).",
+        "Tertinggi: {top1} ({v1}), {top2} ({v2}) dan {top3} ({v3}).",
+        "Terendah dalam daftar: {last} ({vlast})."
+      ],
+      "about": [
+        "Satu sambungan biasanya melayani satu rumah tangga, jadi sekitar 40 sambungan per 100 penduduk sudah berarti sebagian besar rumah terhubung. Data seluler tidak termasuk: lihat tabel langganan ponsel dan pengguna internet.",
+        "Banyak orang di Afrika dan Asia Selatan mengakses internet terutama melalui jaringan seluler, jadi broadband tetap yang rendah di sana tidak berarti pengguna internetnya sedikit."
+      ],
+      "faq": [
+        { "q": "Negara mana yang langganan broadband per orangnya paling banyak?", "a": "{top1}, dengan {v1} per 100 penduduk pada {year1}, disusul {top2} ({v2}) dan {top3} ({v3})." },
+        { "q": "Berapa jumlah sambungan broadband tetap di dunia?", "a": "{world} per 100 penduduk pada {worldYear}." },
+        { "q": "Apakah broadband termasuk internet seluler?", "a": "Tidak. Tabel ini menghitung sambungan tetap seperti fiber, kabel, dan DSL; paket data seluler dihitung terpisah." }
       ]
     },
     "country-codes": {
