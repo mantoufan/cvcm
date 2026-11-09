@@ -920,3 +920,20 @@ html.dp-lock, html.dp-lock body { overflow: hidden; }
   .tier-item, .tier-place { width: 3.75rem; height: 3.75rem; min-height: 3.75rem; font-size: 0.72rem; }
   .tier-label input { font-size: 0.9rem; }
 }
+
+/* Quadratic solver graph, team generator, screen resolution, alarm clock (batch 23). */
+.quad-graph svg { width: 100%; max-width: 26rem; height: auto; border: 1px solid var(--line); border-radius: var(--radius); background: #fff; }
+.quad-axis { stroke: var(--ink-soft); stroke-width: 1; }
+.quad-sym { stroke: var(--line); stroke-width: 1; stroke-dasharray: 4 4; }
+.quad-curve { fill: none; stroke: var(--pink-deep); stroke-width: 2.5; }
+.quad-vertex { fill: var(--pink-deep); }
+.quad-root { fill: #fff; stroke: var(--pink-deep); stroke-width: 2; }
+.team-list { margin: 0; padding-left: 1.4rem; line-height: 1.6; }
+.team-list li { margin-bottom: 0.6rem; }
+.team-names { display: block; }
+.screen-big { margin: 0.25rem 0 1rem; font-size: clamp(2rem, 8vw, 3.25rem); font-weight: 700; font-variant-numeric: tabular-nums; color: var(--pink-deep); }
+.alarm-clock { margin: 0.25rem 0 0.5rem; font-size: clamp(2.25rem, 9vw, 3.5rem); font-weight: 700; font-variant-numeric: tabular-nums; }
+.alarm-status { margin: 0 0 1rem; font-variant-numeric: tabular-nums; }
+.alarm-ring { padding: 1rem; border: 2px solid var(--pink-deep); border-radius: var(--radius); background: var(--pink-soft); }
+.alarm-ring-title { margin: 0; font-size: 1.6rem; font-weight: 700; color: var(--pink-deep); }
+.alarm-ring-label { margin: 0.25rem 0 0.75rem; }

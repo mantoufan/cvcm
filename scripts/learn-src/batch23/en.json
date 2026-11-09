@@ -1,0 +1,242 @@
+{
+  "meta": {
+    "titleCalculateMortgage": "How to calculate a mortgage payment (with amortization) | cv.cm",
+    "descCalculateMortgage": "Work out the monthly mortgage payment, total interest and year-by-year balance from price, down payment, rate and term. Equal payments vs equal principal, explained with an example.",
+    "titleSolveQuadratic": "How to solve a quadratic equation with the formula | cv.cm",
+    "descSolveQuadratic": "Solve ax² + bx + c = 0 step by step: find a, b and c, use the discriminant, apply the quadratic formula, read exact roots, the vertex and the graph. Free solver in your browser.",
+    "titleMakeRandomTeams": "How to make random teams fairly from a list of names | cv.cm",
+    "descMakeRandomTeams": "Split a class, club or group of players into random teams of fair size: paste names, choose the number of teams or people per team, generate and share. Free, nothing uploaded.",
+    "titleCheckScreenResolution": "How to check your screen resolution (and display scaling) | cv.cm",
+    "descCheckScreenResolution": "Find your screen resolution in real pixels, understand CSS pixels, display scaling and device pixel ratio, and see your browser viewport. Works on any computer or phone.",
+    "titleSetOnlineAlarm": "How to set an online alarm clock that really rings | cv.cm",
+    "descSetOnlineAlarm": "Set an alarm in your browser with a sound and a label, check the volume, keep it ringing in a background tab, and snooze or stop it. No app, no sign-up."
+  },
+  "lessons": {
+    "calculate-mortgage": {
+      "copy": {
+        "name": "How to calculate a mortgage payment",
+        "blurb": "Monthly payment, total interest and the balance each year, from four numbers.",
+        "title": "How to calculate a mortgage payment",
+        "lead": "Before you talk to a bank, you want to know what a home will cost each month and in total. You will turn the price, down payment, rate and term into a monthly payment and a year-by-year schedule. It runs in your browser.",
+        "result": "The monthly payment, the total interest, and how much of the loan is left after each year.",
+        "note": "The result is principal and interest only. Property tax, home insurance and mortgage insurance come on top.",
+        "s1t": "Gather the four numbers",
+        "s1b": "You need the home price, the down payment as a percentage, the yearly interest rate and the term in years. The loan is the price minus the down payment: 400,000 with 20% down is a 320,000 loan.",
+        "s2t": "Open the Mortgage calculator on cv.cm",
+        "s2b": "Type the four numbers into Home price, Down payment (%), Interest rate (% per year) and Term (years). The result updates as you type.",
+        "s3t": "Read the monthly payment and total interest",
+        "s3b": "With Equal payments, 320,000 at 6.5% for 30 years is 2,022.62 a month. Over 360 payments that is 408,142 in interest, more than the loan itself. A lower rate or a shorter term cuts that figure fast.",
+        "s4t": "Compare Equal payments with Equal principal",
+        "s4b": "Switch Repayment to Equal principal. Each month repays the same part of the loan plus that month's interest, so the same loan starts at 2,622.22, falls by 4.81 every month to 893.70, and costs 312,867 in interest. It saves money but needs a higher payment at the start.",
+        "s5t": "Read the amortization table",
+        "s5b": "Each row is one year: how much went to principal, how much to interest, and the balance left. With equal payments, year 1 is mostly interest (20,695 interest, 3,577 principal); by the last year it is almost all principal.",
+        "s6t": "Try other numbers and copy the result",
+        "s6b": "Change one number at a time, such as 10 more years or 1% less interest, to see what it really changes. Copy result copies the summary for your notes or a message.",
+        "diagram1": "Each year's payments: early years go mostly to interest, later years mostly to the loan.",
+        "diagram2": "Equal payments stay flat; equal principal starts higher and falls every month."
+      },
+      "faq": {
+        "q1": "What is the formula for a monthly mortgage payment?",
+        "a1": "M = P × r × (1 + r)ⁿ ÷ ((1 + r)ⁿ − 1), where P is the loan, r the yearly rate ÷ 12 and n the number of months. 320,000 at 6.5% for 30 years gives 2,022.62.",
+        "q2": "Is equal principal better than equal payments?",
+        "a2": "It costs less interest because the loan shrinks faster, but the first payments are higher. Equal payments are easier to budget. Choose the one your income can carry at the start.",
+        "q3": "How much does a bigger down payment help?",
+        "a3": "Every unit of down payment is a unit you do not borrow, so the payment and the interest fall in the same proportion. In the US, 20% down usually also avoids mortgage insurance.",
+        "q4": "Why is so much of the first payment interest?",
+        "a4": "Interest is charged on the balance still owed, which is highest at the start. As the balance falls, more of the same payment goes to the loan.",
+        "q5": "Does the result match what my bank will charge?",
+        "a5": "For the same loan, rate and term, the principal and interest should match to the cent or within rounding. Bank quotes may add fees, tax, insurance or a different rate type."
+      }
+    },
+    "solve-quadratic": {
+      "copy": {
+        "name": "How to solve a quadratic equation",
+        "blurb": "Find a, b and c, check the discriminant, and use the quadratic formula.",
+        "title": "How to solve a quadratic equation",
+        "lead": "You have an equation with an x² in it and need the values of x. You will put it in standard form, see how many answers it has, work them out with the quadratic formula, and check them on a graph. A solver checks each step in your browser.",
+        "result": "The roots of the equation, exact and as decimals, with the working and a graph.",
+        "note": "Most mistakes are sign mistakes. Keep the minus sign with its number when you read off b and c.",
+        "s1t": "Put the equation in standard form",
+        "s1b": "Move every term to one side so it reads ax² + bx + c = 0. For x² = 3x − 2, subtract 3x and add 2: x² − 3x + 2 = 0. Now a = 1, b = −3 and c = 2.",
+        "s2t": "Open the Quadratic equation solver on cv.cm",
+        "s2b": "Type a, b and c into their boxes. Leave b or c empty if that term is missing: x² − 4 = 0 has a = 1, b = 0, c = −4. a cannot be 0, or it is not quadratic.",
+        "s3t": "Check the discriminant",
+        "s3b": "Δ = b² − 4ac decides the answer. For x² − 3x + 2: Δ = 9 − 8 = 1. Positive means two real roots, 0 means one repeated root, negative means no real roots (two complex ones).",
+        "s4t": "Apply the quadratic formula",
+        "s4b": "x = (−b ± √Δ) ÷ 2a. Here x = (3 ± 1) ÷ 2, so x = 1 or x = 2. Working shows the same steps with your numbers, so you can follow or copy them.",
+        "s5t": "Read exact roots and the factored form",
+        "s5b": "When a, b and c are whole numbers, the solver keeps exact answers: x² − 2x − 1 = 0 gives 1 ± √2 (about −0.414 and 2.414). Rational roots also give the factored form, such as (x − 1)(x − 2) = 0.",
+        "s6t": "Check with the graph",
+        "s6b": "The roots are where the parabola crosses the x-axis, marked with circles; the filled dot is the vertex. If the curve never reaches the axis, the roots are complex. Copy result copies everything as text.",
+        "diagram1": "The sign of the discriminant shows how often the parabola meets the x-axis.",
+        "diagram2": "The quadratic formula worked through for x² − 3x + 2 = 0."
+      },
+      "faq": {
+        "q1": "What is the quadratic formula?",
+        "a1": "x = (−b ± √(b² − 4ac)) ÷ 2a. It solves every equation of the form ax² + bx + c = 0 with a not 0.",
+        "q2": "What if the discriminant is negative?",
+        "a2": "There are no real roots and the graph does not cross the x-axis. The roots are complex: for x² + 2x + 5 = 0 they are −1 ± 2i.",
+        "q3": "When can I factor instead?",
+        "a3": "When the discriminant is a perfect square and a, b and c are whole numbers, the roots are fractions and the equation factors. x² − 3x + 2 = (x − 1)(x − 2).",
+        "q4": "How do I find the vertex?",
+        "a4": "The vertex is at x = −b ÷ 2a. Put that x back in the equation for y. For x² − 3x + 2 it is (1.5, −0.25).",
+        "q5": "How do I check my answer?",
+        "a5": "Put each root back into ax² + bx + c. If the result is 0 (or very close, for rounded decimals), the root is right."
+      }
+    },
+    "make-random-teams": {
+      "copy": {
+        "name": "How to make random teams",
+        "blurb": "Split names into teams of fair size, then share the result.",
+        "title": "How to make random teams",
+        "lead": "You need to split a class, a club or a group of players into teams, and everyone should see it was fair. You will paste the names, choose how many teams or how many per team, and draw teams that are random and even. It runs in your browser.",
+        "result": "Random teams whose sizes differ by at most one, ready to copy and share.",
+        "note": "Agree on the team count before you press Generate teams. Drawing again until you like the result is no longer random.",
+        "s1t": "Write the list of names",
+        "s1b": "Put one name per line, or separate names with commas. A list copied from a spreadsheet column works as it is. If two people share a name, add an initial so you can tell them apart.",
+        "s2t": "Open the Random team generator on cv.cm",
+        "s2b": "Paste the names into the box. The line under it counts the names, so you can check nobody is missing.",
+        "s3t": "Choose how to split",
+        "s3b": "Pick Number of teams if you know how many teams you need, or People per team if you know the size. Type the number. The line under the list shows the result, such as 12 names → 3 teams of 4.",
+        "s4t": "Know how uneven numbers are handled",
+        "s4b": "Names are dealt round-robin, so sizes never differ by more than one: 10 names into 3 teams gives 4, 3 and 3, and which team gets the extra person is random. People per team rounds the number of teams up and spreads everyone evenly: 12 names in teams of 5 makes 3 teams of 4.",
+        "s5t": "Generate the teams",
+        "s5b": "Press Generate teams. The shuffle uses your browser's cryptographic random numbers, so every split is equally likely. Press it again for a completely new draw.",
+        "s6t": "Share the result",
+        "s6b": "Copy teams copies every team as text, one line per team, ready for a chat or a board. Nothing is saved, so copy the result before you close the tab.",
+        "diagram1": "Shuffled names are dealt one by one, so the sizes stay even.",
+        "diagram2": "Number of teams and People per team can give the same split."
+      },
+      "faq": {
+        "q1": "Is a random team generator really fair?",
+        "a1": "Yes, if every possible split is equally likely and no one redraws until they like it. This one shuffles with Web Crypto and deals the names round-robin.",
+        "q2": "What if the names don't divide evenly?",
+        "a2": "Teams differ by at most one person. 10 names into 3 teams gives 4, 3 and 3, and the team with 4 is picked at random.",
+        "q3": "How many names can I use?",
+        "a3": "Up to 500 names and 50 teams. There can be no more teams than names.",
+        "q4": "Can I keep some people together or apart?",
+        "a4": "Not in the draw itself. Put a pair on one line (for example \"Ann & Ben\") to keep them together as one entry.",
+        "q5": "Are the names stored anywhere?",
+        "a5": "No. They stay in this tab and are not uploaded or saved."
+      }
+    },
+    "check-screen-resolution": {
+      "copy": {
+        "name": "How to check your screen resolution",
+        "blurb": "Real pixels, CSS pixels, scaling and the browser viewport, explained.",
+        "title": "How to check your screen resolution",
+        "lead": "A game, a video setting or a support form asks for your screen resolution, and the numbers you find do not agree. You will find the real resolution, see why scaling changes it, and read the size of your browser window. It works on any computer, tablet or phone.",
+        "result": "Your screen resolution in real pixels, your display scaling, and the size of the page area in your browser.",
+        "note": "Browser zoom changes the pixel ratio too. Press Ctrl + 0 (Cmd + 0 on a Mac) to reset zoom to 100% first.",
+        "s1t": "Reset the browser zoom",
+        "s1b": "Zooming a page in or out changes what the browser reports. Press Ctrl + 0, or Cmd + 0 on a Mac, so zoom is 100%. On a phone, pinch back to normal size.",
+        "s2t": "Open Screen resolution on cv.cm",
+        "s2b": "The large number is your screen resolution in real pixels, such as 1920 × 1080. If it has a common name, like Full HD (1080p) or 4K UHD, that appears in the first row.",
+        "s3t": "Understand CSS pixels and scaling",
+        "s3b": "Windows at 125% and Retina screens make text larger by using more real pixels per CSS pixel. Device pixel ratio says how many: a 1920 × 1080 screen at 125% shows 1536 × 864 CSS pixels and a ratio of 1.25.",
+        "s4t": "Read the viewport",
+        "s4b": "Browser viewport is the part of the window that shows the page, in CSS pixels. Resize the window and it changes at once. Web designers use this size for responsive layouts.",
+        "s5t": "Check the other details",
+        "s5b": "Available screen leaves out the taskbar or Dock. Aspect ratio gives the shape, such as 16:9 or 16:10; Orientation and Colour depth complete the picture. Turn a phone and the values follow.",
+        "s6t": "Copy the details for support",
+        "s6b": "Copy details copies every row as text. Paste it into a bug report or support chat so the other side sees exactly what your browser sees.",
+        "diagram1": "With 125% scaling, 1920 × 1080 real pixels are reported as 1536 × 864 CSS pixels.",
+        "diagram2": "The screen, the space left by the taskbar, and the viewport inside the browser."
+      },
+      "faq": {
+        "q1": "How do I find my screen resolution on Windows or Mac?",
+        "a1": "In Windows, Settings → System → Display shows the same figure as the big number here. On a Mac, System Settings → Displays shows the \"looks like\" size, which is the CSS size on this page; the big number is the real pixels behind it.",
+        "q2": "Why does a website say my screen is smaller than it is?",
+        "a2": "Websites see CSS pixels. With display scaling above 100% there are fewer CSS pixels than real ones. Multiply by the device pixel ratio to get the real resolution.",
+        "q3": "What resolution is my phone?",
+        "a3": "Phones have a pixel ratio of 2 to 3 or more, so a phone that reports 390 × 844 CSS pixels at ratio 3 has 1170 × 2532 real pixels.",
+        "q4": "Is a bigger viewport the same as a bigger screen?",
+        "a4": "No. The viewport is only the browser window's page area. It is smaller than the screen when the window is not full screen or toolbars take space.",
+        "q5": "Why don't the values match with two monitors?",
+        "a5": "The page reads the screen the browser window is on. Move the window to the other monitor and the values update."
+      }
+    },
+    "set-online-alarm": {
+      "copy": {
+        "name": "How to set an online alarm",
+        "blurb": "Set an alarm in the browser, check the sound, and snooze or stop it.",
+        "title": "How to set an online alarm",
+        "lead": "You need an alarm on your computer: for a nap, a meeting or the end of a study session, without installing an app. You will set the time and sound, make sure it can really ring, and snooze or stop it. It runs in your browser tab.",
+        "result": "An alarm that rings at the time you set, with a label you can read from across the room.",
+        "note": "The alarm lives in the tab. Closing the tab, sleep mode or a locked phone can stop it, so keep the tab open and the device awake.",
+        "s1t": "Open the Online alarm clock on cv.cm",
+        "s1b": "The large clock shows the current time on this device. The alarm uses the same clock, so check it is right.",
+        "s2t": "Pick the time, label and sound",
+        "s2b": "Set Alarm time. Add a Label such as Meeting or Take a break; it shows when the alarm rings and in the tab title. Choose a Sound: Beep, Chime, Bell or Digital.",
+        "s3t": "Test the sound first",
+        "s3b": "Press Test sound to hear the alarm and set the volume. If you hear nothing, check the system volume, the browser tab is not muted, and a phone is not in silent mode.",
+        "s4t": "Set the alarm",
+        "s4b": "Press Set alarm. The page shows when it will ring and a countdown, such as rings in 7 h 30 min. A time earlier than now means tomorrow: set 07:00 at 23:30 and it rings the next morning.",
+        "s5t": "Keep the tab ready",
+        "s5b": "You can switch to other tabs: the sound is queued in the browser's audio engine, so it still rings on time. Do not close the tab, and make sure the computer will not sleep before the alarm time; check its power settings. While this tab is showing, the page also keeps the screen on where the browser allows it.",
+        "s6t": "Stop or snooze",
+        "s6b": "When it rings, press Stop, or Snooze 5 min or Snooze 10 min to ring again later. If nobody answers, it stops by itself after 10 minutes. Press Cancel alarm to remove it before it rings.",
+        "diagram1": "A time earlier than now rings tomorrow; the page shows how long is left.",
+        "diagram2": "What keeps the alarm working and what stops it."
+      },
+      "faq": {
+        "q1": "Does an online alarm work when the tab is in the background?",
+        "a1": "Yes, as long as the tab is open and the computer is awake. The ring is scheduled in the audio engine, so background tab throttling does not delay it.",
+        "q2": "Will it ring if my laptop goes to sleep?",
+        "a2": "No. A sleeping computer runs no web pages. Change the power settings or keep the laptop plugged in and awake.",
+        "q3": "Can I set several alarms?",
+        "a3": "One per tab. Open the page in another tab for a second alarm.",
+        "q4": "Why did I hear nothing when it rang?",
+        "a4": "The tab or system was muted, or the phone was locked or in silent mode. Use Test sound before you rely on it.",
+        "q5": "Is the alarm saved if I reload?",
+        "a5": "No. Reloading or closing the tab clears it. Nothing is stored or uploaded."
+      }
+    }
+  },
+  "svg": {
+    "calculate-mortgage": {
+      "year": "Year",
+      "interest": "Interest",
+      "principal": "Principal",
+      "equalPayments": "Equal payments",
+      "equalPrincipal": "Equal principal",
+      "month": "Month",
+      "perMonth": "per month"
+    },
+    "solve-quadratic": {
+      "two": "Two real roots",
+      "one": "One repeated root",
+      "none": "No real roots",
+      "roots": "Roots"
+    },
+    "make-random-teams": {
+      "shuffle": "Shuffled",
+      "team": "Team",
+      "names": "12 names",
+      "teamsOf": "3 teams",
+      "perTeam": "People per team: 5",
+      "count": "Number of teams: 3"
+    },
+    "check-screen-resolution": {
+      "real": "Real pixels",
+      "css": "CSS pixels",
+      "scaling": "Scaling 125%",
+      "screen": "Screen",
+      "taskbar": "Taskbar",
+      "viewport": "Viewport",
+      "browser": "Browser window"
+    },
+    "set-online-alarm": {
+      "now": "Now",
+      "alarm": "Alarm",
+      "tomorrow": "Tomorrow",
+      "ringsIn": "Rings in 7 h 30 min",
+      "open": "Tab open",
+      "background": "Background tab",
+      "awake": "Computer awake",
+      "closed": "Tab closed",
+      "sleep": "Sleep mode",
+      "muted": "Muted"
+    }
+  }
+}

@@ -1,0 +1,242 @@
+{
+  "meta": {
+    "titleCalculateMortgage": "Cara menghitung angsuran KPR (dengan amortisasi) | cv.cm",
+    "descCalculateMortgage": "Hitung angsuran KPR bulanan, total bunga, dan sisa pinjaman per tahun dari harga, uang muka, suku bunga, dan tenor. Anuitas vs angsuran pokok tetap, dijelaskan dengan contoh.",
+    "titleSolveQuadratic": "Cara menyelesaikan persamaan kuadrat dengan rumus ABC | cv.cm",
+    "descSolveQuadratic": "Selesaikan ax² + bx + c = 0 langkah demi langkah: tentukan a, b, dan c, pakai diskriminan, terapkan rumus ABC, baca akar eksak, titik puncak, dan grafik. Kalkulator gratis di browser Anda.",
+    "titleMakeRandomTeams": "Cara membagi kelompok acak secara adil dari daftar nama | cv.cm",
+    "descMakeRandomTeams": "Bagi kelas, klub, atau sekelompok pemain menjadi tim acak dengan ukuran adil: tempel nama, pilih jumlah tim atau orang per tim, buat, lalu bagikan. Gratis, tidak ada yang diunggah.",
+    "titleCheckScreenResolution": "Cara mengecek resolusi layar (dan skala tampilan) | cv.cm",
+    "descCheckScreenResolution": "Temukan resolusi layar Anda dalam piksel asli, pahami piksel CSS, skala tampilan, dan rasio piksel perangkat, serta lihat viewport browser Anda. Berfungsi di komputer atau ponsel apa pun.",
+    "titleSetOnlineAlarm": "Cara memasang alarm online yang benar-benar berbunyi | cv.cm",
+    "descSetOnlineAlarm": "Pasang alarm di browser dengan suara dan label, periksa volume, biarkan tetap berbunyi di tab latar belakang, lalu tunda atau hentikan. Tanpa aplikasi, tanpa daftar."
+  },
+  "lessons": {
+    "calculate-mortgage": {
+      "copy": {
+        "name": "Cara menghitung angsuran KPR",
+        "blurb": "Angsuran bulanan, total bunga, dan sisa pinjaman tiap tahun, dari empat angka.",
+        "title": "Cara menghitung angsuran KPR",
+        "lead": "Sebelum bicara dengan bank, Anda ingin tahu berapa biaya rumah per bulan dan secara total. Anda akan mengubah harga, uang muka, suku bunga, dan tenor menjadi angsuran bulanan dan jadwal per tahun. Semuanya berjalan di browser Anda.",
+        "result": "Angsuran bulanan, total bunga, dan sisa pinjaman setelah setiap tahun.",
+        "note": "Hasilnya hanya pokok dan bunga. Pajak properti, asuransi rumah, dan asuransi KPR dihitung terpisah.",
+        "s1t": "Kumpulkan empat angka",
+        "s1b": "Anda perlu harga rumah, uang muka dalam persen, suku bunga tahunan, dan tenor dalam tahun. Pinjaman adalah harga dikurangi uang muka: 400.000 dengan uang muka 20% berarti pinjaman 320.000.",
+        "s2t": "Buka Kalkulator KPR di cv.cm",
+        "s2b": "Ketik keempat angka di Harga rumah, Uang muka (%), Suku bunga (% per tahun), dan Tenor (tahun). Hasil diperbarui saat Anda mengetik.",
+        "s3t": "Baca angsuran bulanan dan total bunga",
+        "s3b": "Dengan Anuitas, 320.000 dengan bunga 6,5% selama 30 tahun berarti 2.022,62 per bulan. Selama 360 angsuran, bunganya 408.142, lebih besar dari pinjamannya sendiri. Suku bunga lebih rendah atau tenor lebih pendek cepat memangkas angka itu.",
+        "s4t": "Bandingkan Anuitas dengan Pokok tetap",
+        "s4b": "Ubah Metode angsuran ke Pokok tetap. Setiap bulan melunasi bagian pinjaman yang sama ditambah bunga bulan itu, jadi pinjaman yang sama dimulai dari 2.622,22, turun 4,81 setiap bulan hingga 893,70, dan total bunganya 312.867. Lebih hemat, tetapi angsuran awalnya lebih tinggi.",
+        "s5t": "Baca tabel amortisasi",
+        "s5b": "Setiap baris adalah satu tahun: berapa yang masuk ke pokok, berapa ke bunga, dan sisa pinjamannya. Dengan anuitas, tahun ke-1 sebagian besar bunga (bunga 20.695, pokok 3.577); di tahun terakhir hampir semuanya pokok.",
+        "s6t": "Coba angka lain dan salin hasilnya",
+        "s6b": "Ubah satu angka setiap kali, misalnya tenor 10 tahun lebih lama atau bunga 1% lebih rendah, untuk melihat apa yang benar-benar berubah. Salin hasil menyalin ringkasan untuk catatan atau pesan Anda.",
+        "diagram1": "Pembayaran tiap tahun: tahun-tahun awal sebagian besar untuk bunga, tahun-tahun akhir sebagian besar untuk pinjaman.",
+        "diagram2": "Anuitas tetap datar; pokok tetap mulai lebih tinggi dan turun setiap bulan."
+      },
+      "faq": {
+        "q1": "Apa rumus angsuran KPR bulanan?",
+        "a1": "M = P × r × (1 + r)ⁿ ÷ ((1 + r)ⁿ − 1), dengan P pinjaman, r suku bunga tahunan ÷ 12, dan n jumlah bulan. 320.000 dengan bunga 6,5% selama 30 tahun menghasilkan 2.022,62.",
+        "q2": "Apakah pokok tetap lebih baik daripada anuitas?",
+        "a2": "Bunganya lebih kecil karena pinjaman berkurang lebih cepat, tetapi angsuran awalnya lebih tinggi. Anuitas lebih mudah dianggarkan. Pilih yang sanggup ditanggung penghasilan Anda di awal.",
+        "q3": "Seberapa besar manfaat uang muka yang lebih besar?",
+        "a3": "Setiap satuan uang muka adalah satuan yang tidak Anda pinjam, jadi angsuran dan bunga turun dengan proporsi yang sama. Di AS, uang muka 20% biasanya juga membebaskan dari asuransi KPR.",
+        "q4": "Mengapa sebagian besar angsuran pertama adalah bunga?",
+        "a4": "Bunga dihitung dari sisa pinjaman, yang paling besar di awal. Saat sisa pinjaman turun, makin banyak bagian dari angsuran yang sama masuk ke pinjaman.",
+        "q5": "Apakah hasilnya sama dengan tagihan bank saya?",
+        "a5": "Untuk pinjaman, suku bunga, dan tenor yang sama, pokok dan bunga seharusnya sama sampai sen atau hanya beda pembulatan. Penawaran bank bisa menambahkan biaya, pajak, asuransi, atau jenis bunga yang berbeda."
+      }
+    },
+    "solve-quadratic": {
+      "copy": {
+        "name": "Cara menyelesaikan persamaan kuadrat",
+        "blurb": "Tentukan a, b, dan c, periksa diskriminan, lalu pakai rumus ABC.",
+        "title": "Cara menyelesaikan persamaan kuadrat",
+        "lead": "Anda punya persamaan dengan x² dan perlu nilai x. Anda akan menuliskannya dalam bentuk baku, melihat berapa banyak jawabannya, menghitungnya dengan rumus ABC, dan memeriksanya di grafik. Kalkulator memeriksa setiap langkah di browser Anda.",
+        "result": "Akar-akar persamaan, eksak dan desimal, dengan langkah pengerjaan dan grafik.",
+        "note": "Kebanyakan kesalahan adalah kesalahan tanda. Biarkan tanda minus tetap bersama angkanya saat membaca b dan c.",
+        "s1t": "Tulis persamaan dalam bentuk baku",
+        "s1b": "Pindahkan semua suku ke satu ruas sehingga menjadi ax² + bx + c = 0. Untuk x² = 3x − 2, kurangi 3x dan tambah 2: x² − 3x + 2 = 0. Sekarang a = 1, b = −3, dan c = 2.",
+        "s2t": "Buka Kalkulator persamaan kuadrat di cv.cm",
+        "s2b": "Ketik a, b, dan c di kotaknya. Kosongkan b atau c jika suku itu tidak ada: x² − 4 = 0 punya a = 1, b = 0, c = −4. a tidak boleh 0, karena itu bukan persamaan kuadrat.",
+        "s3t": "Periksa diskriminan",
+        "s3b": "Δ = b² − 4ac menentukan jawabannya. Untuk x² − 3x + 2: Δ = 9 − 8 = 1. Positif berarti dua akar real, 0 berarti satu akar kembar, negatif berarti tidak ada akar real (dua akar kompleks).",
+        "s4t": "Terapkan rumus ABC",
+        "s4b": "x = (−b ± √Δ) ÷ 2a. Di sini x = (3 ± 1) ÷ 2, jadi x = 1 atau x = 2. Langkah pengerjaan menunjukkan langkah yang sama dengan angka Anda, jadi Anda bisa mengikuti atau menyalinnya.",
+        "s5t": "Baca akar eksak dan bentuk faktor",
+        "s5b": "Jika a, b, dan c bilangan bulat, kalkulator mempertahankan jawaban eksak: x² − 2x − 1 = 0 menghasilkan 1 ± √2 (sekitar −0.414 dan 2.414). Akar rasional juga memberi bentuk faktor, seperti (x − 1)(x − 2) = 0.",
+        "s6t": "Periksa dengan grafik",
+        "s6b": "Akar adalah titik parabola memotong sumbu x, ditandai lingkaran; titik penuh adalah titik puncak. Jika kurva tidak pernah mencapai sumbu, akarnya kompleks. Salin hasil menyalin semuanya sebagai teks.",
+        "diagram1": "Tanda diskriminan menunjukkan berapa kali parabola bertemu sumbu x.",
+        "diagram2": "Rumus ABC dikerjakan untuk x² − 3x + 2 = 0."
+      },
+      "faq": {
+        "q1": "Apa itu rumus ABC?",
+        "a1": "x = (−b ± √(b² − 4ac)) ÷ 2a. Rumus ini menyelesaikan setiap persamaan berbentuk ax² + bx + c = 0 dengan a tidak sama dengan 0.",
+        "q2": "Bagaimana jika diskriminan negatif?",
+        "a2": "Tidak ada akar real dan grafik tidak memotong sumbu x. Akarnya kompleks: untuk x² + 2x + 5 = 0 akarnya −1 ± 2i.",
+        "q3": "Kapan saya bisa memfaktorkan saja?",
+        "a3": "Jika diskriminan adalah kuadrat sempurna dan a, b, dan c bilangan bulat, akarnya pecahan dan persamaannya bisa difaktorkan. x² − 3x + 2 = (x − 1)(x − 2).",
+        "q4": "Bagaimana cara mencari titik puncak?",
+        "a4": "Titik puncak ada di x = −b ÷ 2a. Masukkan x itu kembali ke persamaan untuk mendapat y. Untuk x² − 3x + 2 hasilnya (1.5, −0.25).",
+        "q5": "Bagaimana cara memeriksa jawaban saya?",
+        "a5": "Masukkan setiap akar kembali ke ax² + bx + c. Jika hasilnya 0 (atau sangat dekat, untuk desimal yang dibulatkan), akarnya benar."
+      }
+    },
+    "make-random-teams": {
+      "copy": {
+        "name": "Cara membagi kelompok acak",
+        "blurb": "Bagi nama menjadi tim dengan ukuran adil, lalu bagikan hasilnya.",
+        "title": "Cara membagi kelompok acak",
+        "lead": "Anda perlu membagi kelas, klub, atau sekelompok pemain menjadi tim, dan semua orang harus melihat bahwa pembagiannya adil. Anda akan menempel nama, memilih berapa tim atau berapa orang per tim, lalu mengundi tim yang acak dan merata. Semuanya berjalan di browser Anda.",
+        "result": "Tim acak dengan ukuran yang selisih paling banyak satu, siap disalin dan dibagikan.",
+        "note": "Sepakati jumlah tim sebelum menekan Buat tim. Mengundi ulang sampai Anda suka hasilnya tidak lagi acak.",
+        "s1t": "Tulis daftar nama",
+        "s1b": "Tulis satu nama per baris, atau pisahkan nama dengan koma. Daftar yang disalin dari kolom spreadsheet bisa dipakai apa adanya. Jika dua orang bernama sama, tambahkan inisial agar bisa dibedakan.",
+        "s2t": "Buka Pembagi kelompok acak di cv.cm",
+        "s2b": "Tempel nama-nama ke dalam kotak. Baris di bawahnya menghitung jumlah nama, jadi Anda bisa memastikan tidak ada yang terlewat.",
+        "s3t": "Pilih cara membagi",
+        "s3b": "Pilih Jumlah tim jika Anda tahu berapa tim yang dibutuhkan, atau Orang per tim jika Anda tahu ukurannya. Ketik angkanya. Baris di bawah daftar menunjukkan hasilnya, seperti 12 nama → 3 tim berisi 4.",
+        "s4t": "Pahami cara menangani jumlah yang tidak rata",
+        "s4b": "Nama dibagikan bergiliran, jadi ukuran tim tidak pernah selisih lebih dari satu: 10 nama ke 3 tim menghasilkan 4, 3, dan 3, dan tim yang mendapat orang tambahan dipilih acak. Orang per tim membulatkan jumlah tim ke atas dan membagi semua orang secara rata: 12 nama dalam tim berisi 5 menjadi 3 tim berisi 4.",
+        "s5t": "Buat timnya",
+        "s5b": "Tekan Buat tim. Pengacakan memakai angka acak kriptografis browser Anda, jadi setiap pembagian sama mungkinnya. Tekan lagi untuk undian yang benar-benar baru.",
+        "s6t": "Bagikan hasilnya",
+        "s6b": "Salin tim menyalin semua tim sebagai teks, satu baris per tim, siap untuk chat atau papan. Tidak ada yang disimpan, jadi salin hasilnya sebelum menutup tab.",
+        "diagram1": "Nama yang sudah diacak dibagikan satu per satu, jadi ukurannya tetap merata.",
+        "diagram2": "Jumlah tim dan Orang per tim bisa menghasilkan pembagian yang sama."
+      },
+      "faq": {
+        "q1": "Apakah pembagi kelompok acak benar-benar adil?",
+        "a1": "Ya, jika setiap kemungkinan pembagian sama mungkinnya dan tidak ada yang mengundi ulang sampai suka hasilnya. Alat ini mengacak dengan Web Crypto dan membagikan nama secara bergiliran.",
+        "q2": "Bagaimana jika jumlah nama tidak habis dibagi?",
+        "a2": "Tim selisih paling banyak satu orang. 10 nama ke 3 tim menghasilkan 4, 3, dan 3, dan tim berisi 4 dipilih secara acak.",
+        "q3": "Berapa banyak nama yang bisa saya pakai?",
+        "a3": "Hingga 500 nama dan 50 tim. Jumlah tim tidak boleh lebih banyak dari jumlah nama.",
+        "q4": "Bisakah saya menyatukan atau memisahkan orang tertentu?",
+        "a4": "Tidak dalam undiannya sendiri. Tulis sepasang orang di satu baris (misalnya \"Ani & Budi\") agar mereka tetap bersama sebagai satu entri.",
+        "q5": "Apakah nama-nama disimpan di suatu tempat?",
+        "a5": "Tidak. Nama tetap di tab ini dan tidak diunggah atau disimpan."
+      }
+    },
+    "check-screen-resolution": {
+      "copy": {
+        "name": "Cara mengecek resolusi layar",
+        "blurb": "Piksel asli, piksel CSS, skala, dan viewport browser, dijelaskan.",
+        "title": "Cara mengecek resolusi layar",
+        "lead": "Game, pengaturan video, atau formulir dukungan meminta resolusi layar Anda, dan angka yang Anda temukan tidak sama. Anda akan menemukan resolusi sebenarnya, melihat mengapa skala mengubahnya, dan membaca ukuran jendela browser. Berfungsi di komputer, tablet, atau ponsel apa pun.",
+        "result": "Resolusi layar Anda dalam piksel asli, skala tampilan Anda, dan ukuran area halaman di browser Anda.",
+        "note": "Zoom browser juga mengubah rasio piksel. Tekan Ctrl + 0 (Cmd + 0 di Mac) untuk mengembalikan zoom ke 100% terlebih dulu.",
+        "s1t": "Kembalikan zoom browser",
+        "s1b": "Memperbesar atau memperkecil halaman mengubah apa yang dilaporkan browser. Tekan Ctrl + 0, atau Cmd + 0 di Mac, agar zoom 100%. Di ponsel, cubit kembali ke ukuran normal.",
+        "s2t": "Buka Resolusi layar di cv.cm",
+        "s2b": "Angka besar itu adalah resolusi layar Anda dalam piksel asli, seperti 1920 × 1080. Jika punya nama umum, seperti Full HD (1080p) atau 4K UHD, nama itu muncul di baris pertama.",
+        "s3t": "Pahami piksel CSS dan skala",
+        "s3b": "Windows pada 125% dan layar Retina memperbesar teks dengan memakai lebih banyak piksel asli per piksel CSS. Rasio piksel perangkat menunjukkan berapa banyak: layar 1920 × 1080 pada 125% menampilkan 1536 × 864 piksel CSS dan rasio 1.25.",
+        "s4t": "Baca viewport",
+        "s4b": "Viewport browser adalah bagian jendela yang menampilkan halaman, dalam piksel CSS. Ubah ukuran jendela dan nilainya langsung berubah. Desainer web memakai ukuran ini untuk tata letak responsif.",
+        "s5t": "Periksa detail lainnya",
+        "s5b": "Layar tersedia tidak menghitung taskbar atau Dock. Rasio aspek memberi bentuknya, seperti 16:9 atau 16:10; Orientasi dan Kedalaman warna melengkapinya. Putar ponsel dan nilainya ikut berubah.",
+        "s6t": "Salin detail untuk dukungan teknis",
+        "s6b": "Salin detail menyalin setiap baris sebagai teks. Tempel ke laporan bug atau chat dukungan agar pihak lain melihat persis apa yang dilihat browser Anda.",
+        "diagram1": "Dengan skala 125%, 1920 × 1080 piksel asli dilaporkan sebagai 1536 × 864 piksel CSS.",
+        "diagram2": "Layar, ruang yang tersisa setelah taskbar, dan viewport di dalam browser."
+      },
+      "faq": {
+        "q1": "Bagaimana cara mengetahui resolusi layar di Windows atau Mac?",
+        "a1": "Di Windows, Settings → System → Display menampilkan angka yang sama dengan angka besar di sini. Di Mac, System Settings → Displays menampilkan ukuran \"terlihat seperti\", yaitu ukuran CSS di halaman ini; angka besar adalah piksel asli di baliknya.",
+        "q2": "Mengapa situs web bilang layar saya lebih kecil dari sebenarnya?",
+        "a2": "Situs web melihat piksel CSS. Dengan skala tampilan di atas 100%, piksel CSS lebih sedikit daripada piksel asli. Kalikan dengan rasio piksel perangkat untuk mendapat resolusi sebenarnya.",
+        "q3": "Berapa resolusi ponsel saya?",
+        "a3": "Ponsel punya rasio piksel 2 sampai 3 atau lebih, jadi ponsel yang melaporkan 390 × 844 piksel CSS dengan rasio 3 punya 1170 × 2532 piksel asli.",
+        "q4": "Apakah viewport lebih besar sama dengan layar lebih besar?",
+        "a4": "Tidak. Viewport hanya area halaman di jendela browser. Ukurannya lebih kecil dari layar jika jendela tidak layar penuh atau toolbar memakan tempat.",
+        "q5": "Mengapa nilainya tidak cocok saat memakai dua monitor?",
+        "a5": "Halaman membaca layar tempat jendela browser berada. Pindahkan jendela ke monitor lain dan nilainya diperbarui."
+      }
+    },
+    "set-online-alarm": {
+      "copy": {
+        "name": "Cara memasang alarm online",
+        "blurb": "Pasang alarm di browser, periksa suaranya, lalu tunda atau hentikan.",
+        "title": "Cara memasang alarm online",
+        "lead": "Anda butuh alarm di komputer: untuk tidur siang, rapat, atau akhir sesi belajar, tanpa memasang aplikasi. Anda akan mengatur waktu dan suara, memastikan alarm benar-benar bisa berbunyi, lalu menunda atau menghentikannya. Semuanya berjalan di tab browser Anda.",
+        "result": "Alarm yang berbunyi pada waktu yang Anda atur, dengan label yang bisa dibaca dari seberang ruangan.",
+        "note": "Alarm hidup di dalam tab. Menutup tab, mode tidur, atau ponsel terkunci dapat menghentikannya, jadi biarkan tab terbuka dan perangkat tetap menyala.",
+        "s1t": "Buka Alarm online di cv.cm",
+        "s1b": "Jam besar menunjukkan waktu saat ini di perangkat ini. Alarm memakai jam yang sama, jadi pastikan jamnya benar.",
+        "s2t": "Pilih waktu, label, dan suara",
+        "s2b": "Atur Waktu alarm. Tambahkan Label seperti Rapat atau Istirahat; label tampil saat alarm berbunyi dan di judul tab. Pilih Suara: Bip, Lonceng angin, Bel, atau Digital.",
+        "s3t": "Tes suaranya dulu",
+        "s3b": "Tekan Tes suara untuk mendengar alarm dan mengatur volume. Jika tidak terdengar apa pun, periksa volume sistem, pastikan tab browser tidak dibisukan dan ponsel tidak dalam mode senyap.",
+        "s4t": "Pasang alarm",
+        "s4b": "Tekan Pasang alarm. Halaman menunjukkan kapan alarm berbunyi dan hitung mundurnya, seperti berbunyi dalam 7 jam 30 menit. Waktu yang lebih awal dari sekarang berarti besok: pasang 07:00 pada pukul 23:30 dan alarm berbunyi keesokan paginya.",
+        "s5t": "Jaga tab tetap siap",
+        "s5b": "Anda bisa pindah ke tab lain: suara dijadwalkan di mesin audio browser, jadi tetap berbunyi tepat waktu. Jangan tutup tab, dan pastikan komputer tidak tidur sebelum waktu alarm; periksa pengaturan dayanya. Selama tab ini tampil, halaman juga menjaga layar tetap menyala jika browser mengizinkan.",
+        "s6t": "Hentikan atau tunda",
+        "s6b": "Saat berbunyi, tekan Berhenti, atau Tunda 5 menit atau Tunda 10 menit agar berbunyi lagi nanti. Jika tidak ada yang merespons, alarm berhenti sendiri setelah 10 menit. Tekan Batalkan alarm untuk menghapusnya sebelum berbunyi.",
+        "diagram1": "Waktu yang lebih awal dari sekarang berbunyi besok; halaman menunjukkan sisa waktunya.",
+        "diagram2": "Yang membuat alarm tetap berfungsi dan yang menghentikannya."
+      },
+      "faq": {
+        "q1": "Apakah alarm online berfungsi saat tab di latar belakang?",
+        "a1": "Ya, selama tab terbuka dan komputer tidak tidur. Bunyi dijadwalkan di mesin audio, jadi pembatasan tab latar belakang tidak menundanya.",
+        "q2": "Apakah alarm berbunyi jika laptop saya tidur?",
+        "a2": "Tidak. Komputer yang tidur tidak menjalankan halaman web. Ubah pengaturan daya atau biarkan laptop tercolok dan tetap menyala.",
+        "q3": "Bisakah saya memasang beberapa alarm?",
+        "a3": "Satu per tab. Buka halaman di tab lain untuk alarm kedua.",
+        "q4": "Mengapa saya tidak mendengar apa pun saat alarm berbunyi?",
+        "a4": "Tab atau sistem dibisukan, atau ponsel terkunci atau dalam mode senyap. Gunakan Tes suara sebelum mengandalkannya.",
+        "q5": "Apakah alarm tersimpan jika saya memuat ulang?",
+        "a5": "Tidak. Memuat ulang atau menutup tab akan menghapusnya. Tidak ada yang disimpan atau diunggah."
+      }
+    }
+  },
+  "svg": {
+    "calculate-mortgage": {
+      "year": "Tahun",
+      "interest": "Bunga",
+      "principal": "Pokok",
+      "equalPayments": "Anuitas",
+      "equalPrincipal": "Pokok tetap",
+      "month": "Bulan",
+      "perMonth": "per bulan"
+    },
+    "solve-quadratic": {
+      "two": "Dua akar real",
+      "one": "Satu akar kembar",
+      "none": "Tidak ada akar real",
+      "roots": "Akar"
+    },
+    "make-random-teams": {
+      "shuffle": "Diacak",
+      "team": "Tim",
+      "names": "12 nama",
+      "teamsOf": "3 tim",
+      "perTeam": "Orang per tim: 5",
+      "count": "Jumlah tim: 3"
+    },
+    "check-screen-resolution": {
+      "real": "Piksel asli",
+      "css": "Piksel CSS",
+      "scaling": "Skala 125%",
+      "screen": "Layar",
+      "taskbar": "Taskbar",
+      "viewport": "Viewport",
+      "browser": "Jendela browser"
+    },
+    "set-online-alarm": {
+      "now": "Sekarang",
+      "alarm": "Alarm",
+      "tomorrow": "Besok",
+      "ringsIn": "Berbunyi dalam 7 jam 30 menit",
+      "open": "Tab terbuka",
+      "background": "Tab latar belakang",
+      "awake": "Komputer menyala",
+      "closed": "Tab ditutup",
+      "sleep": "Mode tidur",
+      "muted": "Dibisukan"
+    }
+  }
+}

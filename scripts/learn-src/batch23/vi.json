@@ -1,0 +1,242 @@
+{
+  "meta": {
+    "titleCalculateMortgage": "Cách tính tiền trả góp mua nhà (kèm lịch trả nợ) | cv.cm",
+    "descCalculateMortgage": "Tính số tiền trả hằng tháng, tổng tiền lãi và dư nợ từng năm từ giá nhà, tiền trả trước, lãi suất và thời hạn. Giải thích trả góp đều và trả gốc đều bằng ví dụ.",
+    "titleSolveQuadratic": "Cách giải phương trình bậc hai bằng công thức nghiệm | cv.cm",
+    "descSolveQuadratic": "Giải ax² + bx + c = 0 từng bước: xác định a, b, c, xét biệt thức (delta), áp dụng công thức nghiệm, đọc nghiệm chính xác, đỉnh và đồ thị. Công cụ giải miễn phí trên trình duyệt.",
+    "titleMakeRandomTeams": "Cách chia đội ngẫu nhiên công bằng từ danh sách tên | cv.cm",
+    "descMakeRandomTeams": "Chia lớp học, câu lạc bộ hay nhóm người chơi thành các đội ngẫu nhiên có số người công bằng: dán tên, chọn số đội hoặc số người mỗi đội, chia và chia sẻ. Miễn phí, không tải lên.",
+    "titleCheckScreenResolution": "Cách xem độ phân giải màn hình (và mức thu phóng) | cv.cm",
+    "descCheckScreenResolution": "Xem độ phân giải màn hình bằng điểm ảnh thực, hiểu điểm ảnh CSS, thu phóng hiển thị và tỷ lệ điểm ảnh thiết bị, và xem khung nhìn trình duyệt. Dùng được trên mọi máy tính hoặc điện thoại.",
+    "titleSetOnlineAlarm": "Cách đặt đồng hồ báo thức online reo thật | cv.cm",
+    "descSetOnlineAlarm": "Đặt báo thức trên trình duyệt với âm thanh và nhãn, kiểm tra âm lượng, giữ chuông reo khi tab ở nền, báo lại hoặc tắt. Không cần ứng dụng, không cần đăng ký."
+  },
+  "lessons": {
+    "calculate-mortgage": {
+      "copy": {
+        "name": "Cách tính tiền trả góp mua nhà",
+        "blurb": "Số tiền trả hằng tháng, tổng tiền lãi và dư nợ mỗi năm, từ bốn con số.",
+        "title": "Cách tính tiền trả góp mua nhà",
+        "lead": "Trước khi làm việc với ngân hàng, bạn muốn biết căn nhà sẽ tốn bao nhiêu mỗi tháng và tổng cộng. Bạn sẽ chuyển giá nhà, tiền trả trước, lãi suất và thời hạn thành số tiền trả hằng tháng và lịch trả nợ theo từng năm. Mọi thứ chạy trên trình duyệt.",
+        "result": "Số tiền trả hằng tháng, tổng tiền lãi và khoản vay còn lại sau mỗi năm.",
+        "note": "Kết quả chỉ gồm gốc và lãi. Thuế nhà đất, bảo hiểm nhà và bảo hiểm khoản vay tính thêm bên ngoài.",
+        "s1t": "Chuẩn bị bốn con số",
+        "s1b": "Bạn cần giá nhà, tiền trả trước theo phần trăm, lãi suất năm và thời hạn tính bằng năm. Khoản vay là giá nhà trừ tiền trả trước: nhà 400.000 trả trước 20% là khoản vay 320.000.",
+        "s2t": "Mở Tính lãi vay mua nhà trên cv.cm",
+        "s2b": "Nhập bốn con số vào Giá nhà, Trả trước (%), Lãi suất (%/năm) và Thời hạn (năm). Kết quả cập nhật ngay khi bạn gõ.",
+        "s3t": "Đọc số tiền trả hằng tháng và tổng tiền lãi",
+        "s3b": "Với Trả góp đều, khoản vay 320.000 lãi suất 6,5% trong 30 năm là 2.022,62 mỗi tháng. Qua 360 kỳ, tiền lãi là 408.142, nhiều hơn cả khoản vay. Lãi suất thấp hơn hoặc thời hạn ngắn hơn sẽ giảm con số này rất nhanh.",
+        "s4t": "So sánh Trả góp đều với Trả gốc đều",
+        "s4b": "Chuyển Cách trả nợ sang Trả gốc đều. Mỗi tháng trả cùng một phần gốc cộng tiền lãi của tháng đó, nên cùng khoản vay này bắt đầu ở 2.622,22, giảm 4,81 mỗi tháng xuống 893,70 và tốn 312.867 tiền lãi. Cách này tiết kiệm tiền nhưng cần trả nhiều hơn lúc đầu.",
+        "s5t": "Đọc bảng lịch trả nợ",
+        "s5b": "Mỗi dòng là một năm: bao nhiêu trả vào gốc, bao nhiêu trả vào lãi và dư nợ còn lại. Với trả góp đều, năm 1 chủ yếu là lãi (20.695 tiền lãi, 3.577 tiền gốc); đến năm cuối gần như toàn bộ là gốc.",
+        "s6t": "Thử các con số khác và sao chép kết quả",
+        "s6b": "Đổi từng con số một, như thêm 10 năm hoặc giảm 1% lãi suất, để thấy thực sự thay đổi những gì. Sao chép kết quả sẽ sao chép phần tóm tắt để ghi chú hoặc gửi tin nhắn.",
+        "diagram1": "Tiền trả mỗi năm: những năm đầu chủ yếu trả lãi, những năm sau chủ yếu trả gốc.",
+        "diagram2": "Trả góp đều giữ nguyên; trả gốc đều bắt đầu cao hơn và giảm dần mỗi tháng."
+      },
+      "faq": {
+        "q1": "Công thức tính tiền trả góp mua nhà hằng tháng là gì?",
+        "a1": "M = P × r × (1 + r)ⁿ ÷ ((1 + r)ⁿ − 1), trong đó P là khoản vay, r là lãi suất năm ÷ 12 và n là số tháng. 320.000 với lãi suất 6,5% trong 30 năm cho kết quả 2.022,62.",
+        "q2": "Trả gốc đều có tốt hơn trả góp đều không?",
+        "a2": "Trả gốc đều tốn ít tiền lãi hơn vì khoản vay giảm nhanh hơn, nhưng các kỳ đầu phải trả nhiều hơn. Trả góp đều dễ lập ngân sách hơn. Hãy chọn cách mà thu nhập của bạn gánh được ngay từ đầu.",
+        "q3": "Trả trước nhiều hơn giúp được bao nhiêu?",
+        "a3": "Mỗi đồng trả trước là một đồng bạn không phải vay, nên số tiền trả hằng tháng và tiền lãi giảm theo cùng tỷ lệ. Ở Mỹ, trả trước 20% thường còn giúp tránh bảo hiểm khoản vay.",
+        "q4": "Vì sao kỳ trả đầu tiên phần lớn là tiền lãi?",
+        "a4": "Lãi được tính trên dư nợ còn lại, mà dư nợ cao nhất lúc đầu. Khi dư nợ giảm, phần lớn hơn của cùng số tiền trả sẽ đi vào gốc.",
+        "q5": "Kết quả có khớp với số ngân hàng tính không?",
+        "a5": "Với cùng khoản vay, lãi suất và thời hạn, gốc và lãi phải khớp đến từng xu hoặc chỉ lệch do làm tròn. Báo giá của ngân hàng có thể cộng thêm phí, thuế, bảo hiểm hoặc dùng loại lãi suất khác."
+      }
+    },
+    "solve-quadratic": {
+      "copy": {
+        "name": "Cách giải phương trình bậc hai",
+        "blurb": "Xác định a, b, c, xét biệt thức và dùng công thức nghiệm.",
+        "title": "Cách giải phương trình bậc hai",
+        "lead": "Bạn có một phương trình chứa x² và cần tìm các giá trị của x. Bạn sẽ đưa nó về dạng chuẩn, xem có bao nhiêu nghiệm, tính nghiệm bằng công thức nghiệm và kiểm tra trên đồ thị. Công cụ giải kiểm tra từng bước ngay trên trình duyệt.",
+        "result": "Các nghiệm của phương trình, dạng chính xác và dạng thập phân, kèm lời giải và đồ thị.",
+        "note": "Phần lớn lỗi là lỗi dấu. Giữ dấu trừ đi kèm con số khi đọc b và c.",
+        "s1t": "Đưa phương trình về dạng chuẩn",
+        "s1b": "Chuyển mọi hạng tử về một vế để có ax² + bx + c = 0. Với x² = 3x − 2, trừ 3x và cộng 2: x² − 3x + 2 = 0. Khi đó a = 1, b = −3 và c = 2.",
+        "s2t": "Mở Giải phương trình bậc hai trên cv.cm",
+        "s2b": "Nhập a, b và c vào các ô. Để trống b hoặc c nếu thiếu hạng tử đó: x² − 4 = 0 có a = 1, b = 0, c = −4. a không được bằng 0, nếu không thì đó không phải phương trình bậc hai.",
+        "s3t": "Xét biệt thức",
+        "s3b": "Δ = b² − 4ac quyết định kết quả. Với x² − 3x + 2: Δ = 9 − 8 = 1. Dương nghĩa là có hai nghiệm thực, bằng 0 là một nghiệm kép, âm là không có nghiệm thực (có hai nghiệm phức).",
+        "s4t": "Áp dụng công thức nghiệm",
+        "s4b": "x = (−b ± √Δ) ÷ 2a. Ở đây x = (3 ± 1) ÷ 2, nên x = 1 hoặc x = 2. Phần Lời giải hiển thị các bước tương tự với số của bạn, để bạn theo dõi hoặc chép lại.",
+        "s5t": "Đọc nghiệm chính xác và dạng phân tích nhân tử",
+        "s5b": "Khi a, b và c là số nguyên, công cụ giữ kết quả chính xác: x² − 2x − 1 = 0 cho 1 ± √2 (khoảng −0.414 và 2.414). Nghiệm hữu tỉ còn cho dạng phân tích nhân tử, như (x − 1)(x − 2) = 0.",
+        "s6t": "Kiểm tra bằng đồ thị",
+        "s6b": "Nghiệm là các điểm parabol cắt trục x, được đánh dấu bằng vòng tròn; chấm đặc là đỉnh. Nếu đường cong không chạm trục, nghiệm là số phức. Sao chép kết quả sẽ sao chép toàn bộ dưới dạng văn bản.",
+        "diagram1": "Dấu của biệt thức cho biết parabol cắt trục x bao nhiêu lần.",
+        "diagram2": "Áp dụng công thức nghiệm cho x² − 3x + 2 = 0."
+      },
+      "faq": {
+        "q1": "Công thức nghiệm của phương trình bậc hai là gì?",
+        "a1": "x = (−b ± √(b² − 4ac)) ÷ 2a. Công thức này giải được mọi phương trình dạng ax² + bx + c = 0 với a khác 0.",
+        "q2": "Nếu biệt thức âm thì sao?",
+        "a2": "Khi đó không có nghiệm thực và đồ thị không cắt trục x. Nghiệm là số phức: với x² + 2x + 5 = 0, nghiệm là −1 ± 2i.",
+        "q3": "Khi nào có thể phân tích nhân tử thay vì dùng công thức?",
+        "a3": "Khi biệt thức là số chính phương và a, b, c là số nguyên, nghiệm là phân số và phương trình phân tích được thành nhân tử. x² − 3x + 2 = (x − 1)(x − 2).",
+        "q4": "Làm sao để tìm đỉnh?",
+        "a4": "Đỉnh nằm tại x = −b ÷ 2a. Thay x đó vào phương trình để tìm y. Với x² − 3x + 2, đỉnh là (1.5, −0.25).",
+        "q5": "Làm sao để kiểm tra lại kết quả?",
+        "a5": "Thay từng nghiệm vào ax² + bx + c. Nếu kết quả bằng 0 (hoặc rất gần 0, với số thập phân đã làm tròn) thì nghiệm đúng."
+      }
+    },
+    "make-random-teams": {
+      "copy": {
+        "name": "Cách chia đội ngẫu nhiên",
+        "blurb": "Chia danh sách tên thành các đội có số người công bằng, rồi chia sẻ kết quả.",
+        "title": "Cách chia đội ngẫu nhiên",
+        "lead": "Bạn cần chia một lớp học, một câu lạc bộ hay một nhóm người chơi thành các đội, và mọi người phải thấy việc chia là công bằng. Bạn sẽ dán danh sách tên, chọn số đội hoặc số người mỗi đội, rồi bốc ra các đội ngẫu nhiên và đều nhau. Mọi thứ chạy trên trình duyệt.",
+        "result": "Các đội ngẫu nhiên có số người chênh nhau tối đa một, sẵn sàng sao chép và chia sẻ.",
+        "note": "Hãy thống nhất số đội trước khi nhấn Chia đội. Bốc đi bốc lại đến khi vừa ý thì không còn là ngẫu nhiên nữa.",
+        "s1t": "Viết danh sách tên",
+        "s1b": "Mỗi dòng một tên, hoặc cách các tên bằng dấu phẩy. Danh sách sao chép từ một cột bảng tính dùng được ngay. Nếu hai người trùng tên, hãy thêm chữ cái đầu để phân biệt.",
+        "s2t": "Mở Chia đội ngẫu nhiên trên cv.cm",
+        "s2b": "Dán danh sách tên vào ô. Dòng bên dưới đếm số tên, để bạn kiểm tra không sót ai.",
+        "s3t": "Chọn cách chia",
+        "s3b": "Chọn Số đội nếu bạn biết cần bao nhiêu đội, hoặc Số người mỗi đội nếu bạn biết quy mô mỗi đội. Nhập số. Dòng dưới danh sách cho thấy kết quả, như 12 tên → 3 đội, mỗi đội 4 người.",
+        "s4t": "Hiểu cách xử lý khi không chia hết",
+        "s4b": "Tên được chia lần lượt vòng tròn, nên số người các đội không bao giờ chênh nhau quá một: 10 tên chia 3 đội được 4, 3 và 3, và đội nào có thêm người là ngẫu nhiên. Số người mỗi đội làm tròn số đội lên và chia đều mọi người: 12 tên với đội 5 người sẽ thành 3 đội 4 người.",
+        "s5t": "Chia đội",
+        "s5b": "Nhấn Chia đội. Việc xáo trộn dùng số ngẫu nhiên mật mã của trình duyệt, nên mọi cách chia đều có khả năng như nhau. Nhấn lần nữa để bốc lại hoàn toàn mới.",
+        "s6t": "Chia sẻ kết quả",
+        "s6b": "Sao chép các đội sẽ sao chép tất cả các đội dưới dạng văn bản, mỗi đội một dòng, sẵn sàng dán vào chat hoặc bảng. Không có gì được lưu, nên hãy sao chép kết quả trước khi đóng tab.",
+        "diagram1": "Các tên đã xáo trộn được chia lần lượt từng người, nên số người các đội luôn đều.",
+        "diagram2": "Số đội và Số người mỗi đội có thể cho cùng một cách chia."
+      },
+      "faq": {
+        "q1": "Công cụ chia đội ngẫu nhiên có thật sự công bằng không?",
+        "a1": "Có, nếu mọi cách chia đều có khả năng như nhau và không ai bốc lại đến khi vừa ý. Công cụ này xáo trộn bằng Web Crypto và chia tên lần lượt vòng tròn.",
+        "q2": "Nếu số tên không chia hết thì sao?",
+        "a2": "Các đội chênh nhau tối đa một người. 10 tên chia 3 đội được 4, 3 và 3, và đội có 4 người được chọn ngẫu nhiên.",
+        "q3": "Tôi có thể dùng bao nhiêu tên?",
+        "a3": "Tối đa 500 tên và 50 đội. Số đội không được nhiều hơn số tên.",
+        "q4": "Có thể giữ một số người chung đội hoặc tách riêng không?",
+        "a4": "Không thể trong chính lượt bốc. Hãy đặt một cặp trên cùng một dòng (ví dụ \"An & Bình\") để giữ họ chung đội như một mục.",
+        "q5": "Danh sách tên có được lưu ở đâu không?",
+        "a5": "Không. Chúng ở lại trong tab này, không được tải lên hay lưu lại."
+      }
+    },
+    "check-screen-resolution": {
+      "copy": {
+        "name": "Cách xem độ phân giải màn hình",
+        "blurb": "Giải thích điểm ảnh thực, điểm ảnh CSS, thu phóng và khung nhìn trình duyệt.",
+        "title": "Cách xem độ phân giải màn hình",
+        "lead": "Một trò chơi, một cài đặt video hay một biểu mẫu hỗ trợ hỏi độ phân giải màn hình của bạn, nhưng các con số bạn tìm được lại không khớp nhau. Bạn sẽ tìm ra độ phân giải thật, hiểu vì sao thu phóng làm nó thay đổi, và xem kích thước cửa sổ trình duyệt. Dùng được trên mọi máy tính, máy tính bảng hoặc điện thoại.",
+        "result": "Độ phân giải màn hình tính bằng điểm ảnh thực, mức thu phóng hiển thị và kích thước vùng hiển thị trang trong trình duyệt.",
+        "note": "Thu phóng trình duyệt cũng làm thay đổi tỷ lệ điểm ảnh. Nhấn Ctrl + 0 (Cmd + 0 trên Mac) để đặt thu phóng về 100% trước.",
+        "s1t": "Đặt lại thu phóng trình duyệt",
+        "s1b": "Phóng to hoặc thu nhỏ trang làm thay đổi số liệu trình duyệt báo cáo. Nhấn Ctrl + 0, hoặc Cmd + 0 trên Mac, để thu phóng về 100%. Trên điện thoại, chụm ngón tay đưa trang về kích thước bình thường.",
+        "s2t": "Mở Độ phân giải màn hình trên cv.cm",
+        "s2b": "Con số lớn là độ phân giải màn hình tính bằng điểm ảnh thực, như 1920 × 1080. Nếu nó có tên phổ biến, như Full HD (1080p) hoặc 4K UHD, tên đó hiện ở dòng đầu tiên.",
+        "s3t": "Hiểu điểm ảnh CSS và thu phóng",
+        "s3b": "Windows ở mức 125% và màn hình Retina làm chữ to hơn bằng cách dùng nhiều điểm ảnh thực hơn cho mỗi điểm ảnh CSS. Tỷ lệ điểm ảnh thiết bị cho biết là bao nhiêu: màn hình 1920 × 1080 ở mức 125% hiển thị 1536 × 864 điểm ảnh CSS và tỷ lệ 1.25.",
+        "s4t": "Xem khung nhìn",
+        "s4b": "Khung nhìn trình duyệt là phần cửa sổ hiển thị trang, tính bằng điểm ảnh CSS. Đổi kích thước cửa sổ là nó thay đổi ngay. Người thiết kế web dùng kích thước này cho bố cục responsive.",
+        "s5t": "Xem các thông số khác",
+        "s5b": "Màn hình khả dụng không tính thanh tác vụ hoặc Dock. Tỷ lệ khung hình cho biết hình dạng, như 16:9 hoặc 16:10; Hướng màn hình và Độ sâu màu bổ sung phần còn lại. Xoay điện thoại là các giá trị thay đổi theo.",
+        "s6t": "Sao chép thông số để gửi hỗ trợ",
+        "s6b": "Sao chép thông số sẽ sao chép mọi dòng dưới dạng văn bản. Dán vào báo cáo lỗi hoặc khung chat hỗ trợ để bên kia thấy đúng những gì trình duyệt của bạn thấy.",
+        "diagram1": "Với thu phóng 125%, 1920 × 1080 điểm ảnh thực được báo là 1536 × 864 điểm ảnh CSS.",
+        "diagram2": "Màn hình, phần còn lại sau thanh tác vụ, và khung nhìn bên trong trình duyệt."
+      },
+      "faq": {
+        "q1": "Làm sao xem độ phân giải màn hình trên Windows hoặc Mac?",
+        "a1": "Trên Windows, Settings → System → Display hiện đúng con số lớn ở đây. Trên Mac, System Settings → Displays hiện kích thước \"trông giống như\", tức là kích thước CSS trên trang này; con số lớn là số điểm ảnh thật phía sau.",
+        "q2": "Vì sao trang web báo màn hình của tôi nhỏ hơn thực tế?",
+        "a2": "Trang web nhìn thấy điểm ảnh CSS. Khi thu phóng hiển thị trên 100%, số điểm ảnh CSS ít hơn số điểm ảnh thực. Nhân với tỷ lệ điểm ảnh thiết bị để ra độ phân giải thật.",
+        "q3": "Điện thoại của tôi có độ phân giải bao nhiêu?",
+        "a3": "Điện thoại có tỷ lệ điểm ảnh từ 2 đến 3 hoặc hơn, nên một điện thoại báo 390 × 844 điểm ảnh CSS với tỷ lệ 3 có 1170 × 2532 điểm ảnh thực.",
+        "q4": "Khung nhìn lớn hơn có nghĩa là màn hình lớn hơn không?",
+        "a4": "Không. Khung nhìn chỉ là vùng hiển thị trang của cửa sổ trình duyệt. Nó nhỏ hơn màn hình khi cửa sổ không toàn màn hình hoặc thanh công cụ chiếm chỗ.",
+        "q5": "Vì sao các giá trị không khớp khi dùng hai màn hình?",
+        "a5": "Trang đọc màn hình mà cửa sổ trình duyệt đang nằm trên đó. Kéo cửa sổ sang màn hình kia là các giá trị cập nhật."
+      }
+    },
+    "set-online-alarm": {
+      "copy": {
+        "name": "Cách đặt báo thức online",
+        "blurb": "Đặt báo thức trên trình duyệt, kiểm tra âm thanh, báo lại hoặc tắt.",
+        "title": "Cách đặt báo thức online",
+        "lead": "Bạn cần một báo thức trên máy tính: cho giấc ngủ trưa, một cuộc họp hay cuối buổi học, mà không phải cài ứng dụng. Bạn sẽ đặt giờ và âm thanh, đảm bảo nó thật sự reo được, rồi báo lại hoặc tắt. Mọi thứ chạy trong tab trình duyệt.",
+        "result": "Một báo thức reo đúng giờ bạn đặt, kèm nhãn đọc được từ đầu kia căn phòng.",
+        "note": "Báo thức tồn tại trong tab. Đóng tab, chế độ ngủ hoặc khóa điện thoại có thể làm nó dừng, nên hãy giữ tab mở và thiết bị không ngủ.",
+        "s1t": "Mở Đồng hồ báo thức online trên cv.cm",
+        "s1b": "Đồng hồ lớn hiển thị giờ hiện tại trên thiết bị này. Báo thức dùng cùng đồng hồ đó, nên hãy kiểm tra giờ có đúng không.",
+        "s2t": "Chọn giờ, nhãn và âm thanh",
+        "s2b": "Đặt Giờ báo thức. Thêm Nhãn như Họp hoặc Nghỉ giải lao; nhãn hiện khi báo thức reo và trên tiêu đề tab. Chọn Âm thanh: Bíp, Chuông gió, Chuông hoặc Điện tử.",
+        "s3t": "Thử âm thanh trước",
+        "s3b": "Nhấn Thử âm thanh để nghe báo thức và chỉnh âm lượng. Nếu không nghe thấy gì, hãy kiểm tra âm lượng hệ thống, tab trình duyệt không bị tắt tiếng và điện thoại không ở chế độ im lặng.",
+        "s4t": "Đặt báo thức",
+        "s4b": "Nhấn Đặt báo thức. Trang cho biết khi nào sẽ reo và đếm ngược, như reo sau 7 giờ 30 phút. Giờ sớm hơn hiện tại nghĩa là ngày mai: đặt 07:00 lúc 23:30 thì sáng hôm sau sẽ reo.",
+        "s5t": "Giữ tab sẵn sàng",
+        "s5b": "Bạn có thể chuyển sang tab khác: âm thanh được xếp lịch trong bộ xử lý âm thanh của trình duyệt, nên vẫn reo đúng giờ. Đừng đóng tab, và hãy chắc rằng máy tính sẽ không ngủ trước giờ báo thức; kiểm tra phần cài đặt nguồn. Khi tab này đang hiển thị, nếu trình duyệt cho phép, trang còn giữ cho màn hình không tắt.",
+        "s6t": "Dừng hoặc báo lại",
+        "s6b": "Khi chuông reo, nhấn Dừng, hoặc Báo lại sau 5 phút hay Báo lại sau 10 phút để reo lại sau. Nếu không ai phản hồi, chuông tự tắt sau 10 phút. Nhấn Hủy báo thức để xóa báo thức trước khi nó reo.",
+        "diagram1": "Giờ sớm hơn hiện tại sẽ reo vào ngày mai; trang cho biết còn bao lâu.",
+        "diagram2": "Điều gì giữ báo thức hoạt động và điều gì làm nó dừng."
+      },
+      "faq": {
+        "q1": "Báo thức online có hoạt động khi tab ở nền không?",
+        "a1": "Có, miễn là tab vẫn mở và máy tính không ngủ. Tiếng chuông được xếp lịch trong bộ xử lý âm thanh, nên việc trình duyệt giảm tốc tab nền không làm nó bị trễ.",
+        "q2": "Báo thức có reo khi laptop chuyển sang chế độ ngủ không?",
+        "a2": "Không. Máy tính đang ngủ không chạy trang web nào. Hãy đổi cài đặt nguồn hoặc cắm sạc và giữ laptop không ngủ.",
+        "q3": "Có đặt được nhiều báo thức không?",
+        "a3": "Mỗi tab một báo thức. Mở trang trong tab khác để đặt báo thức thứ hai.",
+        "q4": "Vì sao báo thức reo mà tôi không nghe thấy gì?",
+        "a4": "Tab hoặc hệ thống đã bị tắt tiếng, hoặc điện thoại bị khóa hay ở chế độ im lặng. Hãy dùng Thử âm thanh trước khi dựa vào báo thức.",
+        "q5": "Báo thức có được lưu nếu tôi tải lại trang không?",
+        "a5": "Không. Tải lại hoặc đóng tab sẽ xóa báo thức. Không có gì được lưu hay tải lên."
+      }
+    }
+  },
+  "svg": {
+    "calculate-mortgage": {
+      "year": "Năm",
+      "interest": "Lãi",
+      "principal": "Gốc",
+      "equalPayments": "Trả góp đều",
+      "equalPrincipal": "Trả gốc đều",
+      "month": "Tháng",
+      "perMonth": "mỗi tháng"
+    },
+    "solve-quadratic": {
+      "two": "Hai nghiệm thực",
+      "one": "Một nghiệm kép",
+      "none": "Không có nghiệm thực",
+      "roots": "Nghiệm"
+    },
+    "make-random-teams": {
+      "shuffle": "Đã xáo trộn",
+      "team": "Đội",
+      "names": "12 tên",
+      "teamsOf": "3 đội",
+      "perTeam": "Số người mỗi đội: 5",
+      "count": "Số đội: 3"
+    },
+    "check-screen-resolution": {
+      "real": "Điểm ảnh thực",
+      "css": "Điểm ảnh CSS",
+      "scaling": "Thu phóng 125%",
+      "screen": "Màn hình",
+      "taskbar": "Thanh tác vụ",
+      "viewport": "Khung nhìn",
+      "browser": "Cửa sổ trình duyệt"
+    },
+    "set-online-alarm": {
+      "now": "Hiện tại",
+      "alarm": "Báo thức",
+      "tomorrow": "Ngày mai",
+      "ringsIn": "Reo sau 7 giờ 30 phút",
+      "open": "Tab đang mở",
+      "background": "Tab ở nền",
+      "awake": "Máy tính không ngủ",
+      "closed": "Tab đã đóng",
+      "sleep": "Chế độ ngủ",
+      "muted": "Tắt tiếng"
+    }
+  }
+}
