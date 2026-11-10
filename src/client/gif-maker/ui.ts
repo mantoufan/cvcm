@@ -1,13 +1,14 @@
 import { GifWriter } from "../../shared/gif";
 import { outputFilename } from "../../shared/filename";
-import { fitFrame, frameTimes, gifSize, MAX_FRAMES, type Fit } from "../../shared/gif-frames";
+import { fitFrame, frameCount, frameTimes, gifSize, MAX_FRAMES, type Fit } from "../../shared/gif-frames";
 import { decodeImage } from "../decode";
 import { downloadBlob, h } from "../dom";
 import { formatBytes } from "../../shared/resize";
 import { locale, t } from "../i18n";
 import { appHref } from "../../shared/path";
 
-type Still = { id: string; file: File; url: string; bitmap: ImageBitmap; width: number; height: number };
+/** A picture frame: its original size (for the GIF's shape), and a bitmap no bigger than the GIF can use. */
+type Still = { id: string; file: File; bitmap: ImageBitmap; width: number; height: number };
 type Clip = { file: File; url: string; video: HTMLVideoElement; duration: number; width: number; height: number };
 type LoopId = "forever" | "once" | "three";
 
@@ -211,7 +212,8 @@ async function addFiles(files: File[]): Promise<void> {
   if (!images.length) return;
   if (state.mode === "video") clearAll();
   state.mode = "images";
-  const load = ++state.load;
+  // Another drop of pictures adds to this one; only a video or Clear replaces it.
+  const load = state.load;
   let failed = 0;
   for (const file of images) {
     if (state.stills.length >= MAX_FRAMES) {
@@ -225,7 +227,12 @@ async function addFiles(files: File[]): Promise<void> {
         d.bitmap.close();
         return;
       }
-      state.stills.push({ id: crypto.randomUUID(), file, url: URL.createObjectURL(file), ...d });
+      const bitmap = await shrink(d.bitmap);
+      if (!els || load !== state.load) {
+        bitmap.close();
+        return;
+      }
+      state.stills.push({ id: crypto.randomUUID(), file, bitmap, width: d.width, height: d.height });
     } catch {
       failed++;
     }
@@ -277,7 +284,6 @@ function clearAll(paint = true): void {
   state.load++;
   for (const s of state.stills) {
     s.bitmap.close();
-    URL.revokeObjectURL(s.url);
   }
   state.stills = [];
   if (state.clip) {
@@ -330,7 +336,7 @@ function refresh(): void {
 function renderList(): void {
   if (!els) return;
   if (state.mode === "video" && state.clip) {
-    const n = frameTimes(state.start, state.end, state.fps, state.clip.duration).length;
+    const n = frameCount(state.start, state.end, state.fps, state.clip.duration);
     els.list.replaceChildren(h("li", { class: "file" },
       h("div", null, h("strong", null, state.clip.file.name), h("span", null, t("gifMaker.clipInfo", { s: Math.round(state.clip.duration * 10) / 10, n }))),
     ));
@@ -347,7 +353,7 @@ function renderList(): void {
     changed();
   };
   els.list.replaceChildren(...state.stills.map((s, i) => h("li", { class: "file", "data-frame": String(i + 1) },
-    h("img", { src: s.url, alt: s.file.name }),
+    thumb(s.bitmap),
     h("div", null, h("strong", null, `${i + 1}. ${s.file.name}`), h("span", null, `${s.width}×${s.height}`)),
     h("span", { class: "gif-move" },
       h("button", { type: "button", class: "icon", "aria-label": t("gifMaker.moveUp"), "data-action": "up", disabled: i === 0, onClick: () => move(i, -1) }, "↑"),
@@ -360,7 +366,6 @@ function renderList(): void {
         onClick: () => {
           const [gone] = state.stills.splice(i, 1);
           gone?.bitmap.close();
-          if (gone) URL.revokeObjectURL(gone.url);
           changed();
         },
       }, "×"),
@@ -399,6 +404,35 @@ function drawFrame(ctx: CanvasRenderingContext2D, source: ImageBitmap | HTMLVide
   const r = fitFrame(sw, sh, w, hgt, state.mode === "video" ? "cover" : state.fit);
   ctx.imageSmoothingQuality = "high";
   ctx.drawImage(source, r.sx, r.sy, r.sw, r.sh, r.dx, r.dy, r.dw, r.dh);
+}
+
+/**
+ * A frame never needs more than twice the widest GIF (800 px) on its long edge, even filled into a frame of another
+ * shape, so phone photos are kept small instead of as 12-megapixel bitmaps.
+ */
+const KEEP_EDGE = 1600;
+
+async function shrink(bitmap: ImageBitmap): Promise<ImageBitmap> {
+  const scale = KEEP_EDGE / Math.max(bitmap.width, bitmap.height);
+  if (scale >= 1) return bitmap;
+  try {
+    const small = await createImageBitmap(bitmap, { resizeWidth: Math.round(bitmap.width * scale), resizeHeight: Math.round(bitmap.height * scale), resizeQuality: "high" });
+    bitmap.close();
+    return small;
+  } catch {
+    return bitmap;
+  }
+}
+
+/** A 42 px list thumbnail drawn from the kept bitmap (no second full-size decode). */
+function thumb(bitmap: ImageBitmap): HTMLCanvasElement {
+  const c = h("canvas", { class: "gif-thumb", width: 84, height: 84 });
+  const ctx = c.getContext("2d");
+  if (ctx) {
+    const r = fitFrame(bitmap.width, bitmap.height, 84, 84, "cover");
+    ctx.drawImage(bitmap, r.sx, r.sy, r.sw, r.sh, r.dx, r.dy, r.dw, r.dh);
+  }
+  return c;
 }
 
 const yieldFrame = () => new Promise<void>((resolve) => setTimeout(resolve, 0));

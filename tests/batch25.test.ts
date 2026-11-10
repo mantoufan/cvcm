@@ -1,12 +1,12 @@
 import sharp from "sharp";
 import { describe, expect, it } from "vitest";
 import { GifWriter, delayCs, lzw, mapPixels, quantize } from "../src/shared/gif";
-import { MAX_FRAMES, fitFrame, frameTimes, gifSize } from "../src/shared/gif-frames";
+import { MAX_FRAMES, fitFrame, frameCount, frameTimes, gifSize } from "../src/shared/gif-frames";
 import { AREA_FIELDS, AREA_SHAPES, convertArea, solveArea } from "../src/shared/area";
 import { VOLUME_FIELDS, VOLUME_SHAPES, convertVolume, solveVolume } from "../src/shared/volume";
 import { ALPHABET, ALPHABETS, drawLetters, letterPool } from "../src/shared/random-letter";
 import { cropArea, postingOrder, splitGrid, tileName } from "../src/shared/image-split";
-import { readSvg, sizedSvg, svgLength, svgPixelSize, MAX_SVG_EDGE } from "../src/shared/svg-size";
+import { readSvg, sizedSvg, svgLength, svgPixelSize, MAX_SVG_EDGE, MAX_SVG_PIXELS } from "../src/shared/svg-size";
 import { parseDecimalInput } from "../src/shared/decimal-input";
 
 const W = 160;
@@ -126,6 +126,7 @@ describe("gif encoder", () => {
     expect(frameTimes(4, 9, 10, 5)).toHaveLength(10);
     expect(frameTimes(2, 2, 10, 5)).toEqual([]);
     expect(frameTimes(0, 1000, 25, 1000)).toHaveLength(MAX_FRAMES + 1);
+    expect(frameCount(0, 60, 10, 120)).toBe(600);
   });
 });
 
@@ -252,6 +253,10 @@ describe("random letter", () => {
     expect(letterPool({ alphabet: "en", kind: "consonants", exclude: "x, q z" })).toHaveLength(18);
     expect(letterPool({ alphabet: "es", kind: "all", exclude: "" })).toContain("Ñ");
     expect(letterPool({ alphabet: "vi", kind: "all", exclude: "" })).toHaveLength(29);
+    // A decomposed ă (a + combining breve) leaves out Ă, not A.
+    const vi = letterPool({ alphabet: "vi", kind: "all", exclude: "a\u0306" });
+    expect(vi).toContain("A");
+    expect(vi).not.toContain("Ă");
     expect(letterPool({ alphabet: "ru", kind: "all", exclude: "" })).toHaveLength(33);
     // Ъ and Ь are neither vowels nor consonants.
     expect(letterPool({ alphabet: "ru", kind: "consonants", exclude: "" })).not.toContain("Ь");
@@ -336,7 +341,11 @@ describe("svg size", () => {
 
   it("scales but caps the pixel size", () => {
     expect(svgPixelSize({ width: 24, height: 12 }, 4)).toEqual({ width: 96, height: 48 });
-    expect(svgPixelSize({ width: 5000, height: 2500 }, 4)).toEqual({ width: MAX_SVG_EDGE, height: MAX_SVG_EDGE / 2 });
+    expect(svgPixelSize({ width: 5000, height: 1000 }, 4)).toEqual({ width: MAX_SVG_EDGE, height: 1638 });
+    // iOS Safari's canvas limit: 2048² at 4× would be 67 megapixels; it stays at 16.7.
+    const big = svgPixelSize({ width: 2048, height: 2048 }, 4);
+    expect(big).toEqual({ width: 4096, height: 4096 });
+    expect(big.width * big.height).toBeLessThanOrEqual(MAX_SVG_PIXELS);
   });
 });
 
@@ -354,6 +363,7 @@ describe("decimal input", () => {
     expect(parseDecimalInput("1.5", "es")).toBe(1.5);
     expect(parseDecimalInput("1.000", "en")).toBe(1);
     expect(parseDecimalInput("1.000.5", "en")).toBeNaN();
+    expect(parseDecimalInput("+5", "en")).toBe(5);
     expect(parseDecimalInput("0,125", "en")).toBe(0.125);
     expect(parseDecimalInput("−2", "en")).toBe(-2);
     expect(parseDecimalInput("", "en")).toBeUndefined();

@@ -210,17 +210,31 @@ export function lzw(indices: Uint8Array, minCodeSize: number): Uint8Array {
   return out.result();
 }
 
-/** Code for a prefix code (≤ 4095) followed by an index (≤ 255): 2 MB, so a writer keeps one for all its frames. */
-function newLzwTable(): Int16Array {
-  return new Int16Array(4096 << 8);
+/**
+ * Code for a prefix code (≤ 4095) followed by an index (≤ 255), 1M entries, so a writer keeps one for all its frames.
+ * An entry counts only when its stamp equals the current generation, so starting over is one increment, not a 2 MB fill.
+ */
+type LzwTable = { codes: Int16Array; stamps: Uint16Array; gen: number };
+
+function newLzwTable(): LzwTable {
+  return { codes: new Int16Array(4096 << 8), stamps: new Uint16Array(4096 << 8), gen: 0 };
 }
 
-function writeLzw(indices: Uint8Array, minCodeSize: number, out: Bytes, table: Int16Array): void {
+function resetLzwTable(t: LzwTable): void {
+  t.gen++;
+  if (t.gen === 65536) {
+    t.stamps.fill(0);
+    t.gen = 1;
+  }
+}
+
+function writeLzw(indices: Uint8Array, minCodeSize: number, out: Bytes, table: LzwTable): void {
   const clear = 1 << minCodeSize;
   const eoi = clear + 1;
   let codeSize = minCodeSize + 1;
   let next = eoi + 1;
-  table.fill(-1);
+  resetLzwTable(table);
+  const { codes, stamps } = table;
   const block = new Uint8Array(255);
   let blockLen = 0;
   let acc = 0;
@@ -249,22 +263,22 @@ function writeLzw(indices: Uint8Array, minCodeSize: number, out: Bytes, table: I
     for (let i = 1; i < indices.length; i++) {
       const k = indices[i]!;
       const key = (prefix << 8) | k;
-      const code = table[key]!;
-      if (code >= 0) {
-        prefix = code;
+      if (stamps[key] === table.gen) {
+        prefix = codes[key]!;
         continue;
       }
       emit(prefix);
       if (next === 4096) {
         // Table full: start over.
         emit(clear);
-        table.fill(-1);
+        resetLzwTable(table);
         codeSize = minCodeSize + 1;
         next = eoi + 1;
       } else {
         // Grow the code size when the next entry would not fit (the decoder grows at the same moment).
         if (next >= 1 << codeSize) codeSize++;
-        table[key] = next++;
+        codes[key] = next++;
+        stamps[key] = table.gen;
       }
       prefix = k;
     }

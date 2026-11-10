@@ -6,8 +6,10 @@
 /** CSS pixels per unit, as browsers resolve them (1in = 96px). Relative units fall back to a 16px font. */
 const PX: Record<string, number> = { "": 1, px: 1, pt: 96 / 72, pc: 16, in: 96, cm: 96 / 2.54, mm: 96 / 25.4, q: 96 / 101.6, em: 16, rem: 16 };
 
-/** The largest edge a rasterised SVG may have (canvas limits in Safari and Chrome are near 16k; memory goes first). */
+/** The largest edge a rasterised SVG may have. */
 export const MAX_SVG_EDGE = 8192;
+/** The most pixels one: iOS Safari will not draw a canvas larger than 16,777,216 pixels (4096 × 4096). */
+export const MAX_SVG_PIXELS = 16_777_216;
 
 export type SvgInfo = { width: number; height: number; tag: string; tagStart: number; tagEnd: number; hasViewBox: boolean };
 
@@ -48,10 +50,11 @@ export function readSvg(text: string): SvgInfo | null {
   return { width, height, tag, tagStart: m.index, tagEnd: m.index + tag.length, hasViewBox: ratio !== null };
 }
 
-/** Pixel size at `scale`, shrunk to fit MAX_SVG_EDGE and never under 1 px. */
+/** Pixel size at `scale`, shrunk to fit MAX_SVG_EDGE and MAX_SVG_PIXELS, never under 1 px. */
 export function svgPixelSize(info: Pick<SvgInfo, "width" | "height">, scale: number): { width: number; height: number } {
-  const fit = Math.min(scale, MAX_SVG_EDGE / Math.max(info.width, info.height));
-  return { width: Math.max(1, Math.round(info.width * fit)), height: Math.max(1, Math.round(info.height * fit)) };
+  const fit = Math.min(scale, MAX_SVG_EDGE / Math.max(info.width, info.height), Math.sqrt(MAX_SVG_PIXELS / (info.width * info.height)));
+  // Rounding up could cross the pixel cap by a row; floor keeps it under.
+  return { width: Math.max(1, Math.floor(info.width * fit + 1e-9)), height: Math.max(1, Math.floor(info.height * fit + 1e-9)) };
 }
 
 /**

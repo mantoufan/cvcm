@@ -1,35 +1,26 @@
 /** Volume calculator: volume and surface area of common solids, and volume / capacity unit conversion. */
 import { METRES, type Formatter, type LengthUnit, type ShapeField } from "./area";
+import { convertAmount } from "./units";
 
 export const VOLUME_UNITS = ["mm3", "cm3", "ml", "l", "m3", "in3", "ft3", "yd3", "usFlOz", "usCup", "usGal", "ukGal"] as const;
 export type VolumeUnit = (typeof VOLUME_UNITS)[number];
 
-/** Cubic metres per unit. US gallon = 231 in³; imperial gallon = 4.54609 L; US cup = 8 US fl oz. */
-export const CUBIC_METRES: Record<VolumeUnit, number> = {
-  mm3: 1e-9,
-  cm3: 1e-6,
-  ml: 1e-6,
-  l: 1e-3,
-  m3: 1,
-  in3: 0.000016387064,
-  ft3: 0.028316846592,
-  yd3: 0.764554857984,
-  usFlOz: 0.003785411784 / 128,
-  usCup: 0.003785411784 / 16,
-  usGal: 0.003785411784,
-  ukGal: 0.00454609,
-};
+const litres = (unit: string) => convertAmount("volume", 1, unit, "l") / 1000;
 
-/** Unit symbols that need no translation; the UI names the rest (cups, gallons). */
-export const VOLUME_SYMBOL: Partial<Record<VolumeUnit, string>> = {
-  mm3: "mm³",
-  cm3: "cm³",
-  ml: "mL",
-  l: "L",
-  m3: "m³",
-  in3: "in³",
-  ft3: "ft³",
-  yd3: "yd³",
+/** Cubic metres per unit: cubes of the length units, US measures from the unit converter, and the imperial gallon (4.54609 L exactly). */
+export const CUBIC_METRES: Record<VolumeUnit, number> = {
+  mm3: METRES.mm ** 3,
+  cm3: METRES.cm ** 3,
+  ml: litres("ml"),
+  l: litres("l"),
+  m3: 1,
+  in3: METRES.in ** 3,
+  ft3: METRES.ft ** 3,
+  yd3: METRES.yd ** 3,
+  usFlOz: litres("floz"),
+  usCup: litres("cup"),
+  usGal: litres("gal"),
+  ukGal: 0.00454609,
 };
 
 export const VOLUME_SHAPES = [

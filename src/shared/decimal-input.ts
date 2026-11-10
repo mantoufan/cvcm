@@ -7,10 +7,10 @@ export const DECIMAL_COMMA_LOCALES: ReadonlySet<string> = new Set(["es", "id", "
  * - A lone comma is a decimal comma in es/id/vi ("2,375") and a thousands group elsewhere when it looks like one
  *   ("1,000"); "0,125" can only be a decimal anywhere.
  * - Likewise a dot that groups thousands ("1.000", "12.500.000") is a thousands dot in es/id/vi; "1.5" is a decimal.
- * The typographic minus (−) counts as a minus sign.
  */
 export function parseDecimalInput(raw: string, locale: string): number | undefined {
-  const text = raw.trim().replace(/^−/, "-");
+  // A leading + is just a positive number; the typographic minus (−) is a minus.
+  const text = raw.trim().replace(/^−/, "-").replace(/^\+/, "");
   if (text === "") return undefined;
   const commaLocale = DECIMAL_COMMA_LOCALES.has(locale);
   let plain: string;

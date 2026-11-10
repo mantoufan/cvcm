@@ -1,61 +1,27 @@
 /** Area calculator: area and perimeter of common plane shapes, and area unit conversion. */
+import { convertAmount } from "./units";
 
 export const LENGTH_UNITS = ["mm", "cm", "m", "km", "in", "ft", "yd", "mi"] as const;
 export type LengthUnit = (typeof LENGTH_UNITS)[number];
 
-/** Metres per unit (international inch, foot, yard and mile). */
-export const METRES: Record<LengthUnit, number> = {
-  mm: 0.001,
-  cm: 0.01,
-  m: 1,
-  km: 1000,
-  in: 0.0254,
-  ft: 0.3048,
-  yd: 0.9144,
-  mi: 1609.344,
-};
+/** Metres per unit (international inch, foot, yard and mile), from the unit converter's table. */
+export const METRES = Object.fromEntries(LENGTH_UNITS.map((u) => [u, convertAmount("length", 1, u, "m")])) as Record<LengthUnit, number>;
 
 export const AREA_UNITS = ["mm2", "cm2", "m2", "ha", "km2", "in2", "ft2", "yd2", "acre", "mi2"] as const;
 export type AreaUnit = (typeof AREA_UNITS)[number];
 
-/** Square metres per unit. An acre is 43,560 ft² exactly; a hectare is 10,000 m². */
+/** Square metres per unit: squares of the length units, plus the hectare and acre from the unit converter. */
 export const SQUARE_METRES: Record<AreaUnit, number> = {
-  mm2: 1e-6,
-  cm2: 1e-4,
+  mm2: METRES.mm ** 2,
+  cm2: METRES.cm ** 2,
   m2: 1,
-  ha: 1e4,
-  km2: 1e6,
-  in2: 0.00064516,
-  ft2: 0.09290304,
-  yd2: 0.83612736,
-  acre: 4046.8564224,
-  mi2: 2589988.110336,
-};
-
-/** Display symbols; "ha" and "acre" are translated in the UI. */
-export const AREA_SYMBOL: Record<AreaUnit, string> = {
-  mm2: "mm²",
-  cm2: "cm²",
-  m2: "m²",
-  ha: "ha",
-  km2: "km²",
-  in2: "in²",
-  ft2: "ft²",
-  yd2: "yd²",
-  acre: "ac",
-  mi2: "mi²",
-};
-
-/** The area unit that matches a length unit (km → km², in → in²). */
-export const SQUARE_OF: Record<LengthUnit, AreaUnit> = {
-  mm: "mm2",
-  cm: "cm2",
-  m: "m2",
-  km: "km2",
-  in: "in2",
-  ft: "ft2",
-  yd: "yd2",
-  mi: "mi2",
+  ha: convertAmount("area", 1, "ha", "m2"),
+  km2: METRES.km ** 2,
+  in2: METRES.in ** 2,
+  ft2: METRES.ft ** 2,
+  yd2: METRES.yd ** 2,
+  acre: convertAmount("area", 1, "acre", "m2"),
+  mi2: METRES.mi ** 2,
 };
 
 export const AREA_SHAPES = [

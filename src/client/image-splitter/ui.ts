@@ -20,6 +20,8 @@ const state = {
   pieces: [] as Piece[],
   /** Bumped by every change, so a slow split that finishes late does not show stale tiles. */
   run: 0,
+  /** Bumped by each new picture, so a slower earlier load does not replace it (separate from `run`: Split must not cancel a load). */
+  load: 0,
 };
 
 let preview: HTMLCanvasElement | null = null;
@@ -49,6 +51,7 @@ export function unmountImageSplitter(): void {
   state.source?.bitmap.close();
   state.source = null;
   state.run++;
+  state.load++;
   preview = statusEl = infoEl = galleryEl = null;
   rowsEl = colsEl = squareEl = null;
 }
@@ -180,11 +183,11 @@ function onPaste(e: ClipboardEvent): void {
 }
 
 async function setFile(file: File): Promise<void> {
-  const run = ++state.run;
+  const load = ++state.load;
   if (statusEl) statusEl.textContent = t("imageSplitter.loading");
   try {
     const decoded = await decodeImage(file);
-    if (run !== state.run) {
+    if (load !== state.load || !preview) {
       decoded.bitmap.close();
       return;
     }
@@ -198,7 +201,7 @@ async function setFile(file: File): Promise<void> {
     if (statusEl) statusEl.textContent = "";
     changed();
   } catch {
-    if (run === state.run && statusEl) statusEl.textContent = t("imageSplitter.errorDecode");
+    if (load === state.load && statusEl) statusEl.textContent = t("imageSplitter.errorDecode");
   }
 }
 
@@ -300,7 +303,6 @@ async function split(): Promise<Piece[] | null> {
   const run = ++state.run;
   if (statusEl) statusEl.textContent = t("imageSplitter.working");
   const stem = safeStem(s.file.name, "image");
-  const ext = state.format === "jpeg" ? "jpg" : state.format;
   const mime = mimeForFormat(state.format);
   const pieces: Piece[] = [];
   try {
@@ -321,6 +323,8 @@ async function split(): Promise<Piece[] | null> {
         for (const p of pieces) URL.revokeObjectURL(p.url);
         return null;
       }
+      // Name by what the browser actually wrote: Safari has no WebP encoder and hands back PNG.
+      const ext = blob.type === "image/jpeg" ? "jpg" : blob.type === "image/webp" ? "webp" : "png";
       pieces.push({ tile, blob, url: URL.createObjectURL(blob), name: tileName(stem, tile, state.rows, state.cols, ext) });
     }
   } catch {

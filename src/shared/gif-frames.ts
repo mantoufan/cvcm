@@ -32,16 +32,23 @@ export function fitFrame(srcW: number, srcH: number, w: number, h: number, fit: 
   return { sx: 0, sy: 0, sw, sh, dx: (w - dw) / 2, dy: (h - dh) / 2, dw, dh };
 }
 
+/** How many frames a video range gives at `fps` (not capped, so the page can say how far over the limit it is). */
+export function frameCount(start: number, end: number, fps: number, duration: number): number {
+  const lo = Math.max(0, start);
+  const hi = duration > 0 ? Math.min(end, duration) : end;
+  if (!(hi > lo)) return 0;
+  return Math.max(1, Math.round((hi - lo) * Math.max(1, fps)));
+}
+
 /**
  * Times (seconds) to grab from a video: every 1/fps from `start` while before `end`, clipped to the clip's length.
  * Each frame is sampled at its middle, so the last frame never asks for the very end, where some browsers show black.
  */
 export function frameTimes(start: number, end: number, fps: number, duration: number): number[] {
+  const n = frameCount(start, end, fps, duration);
   const lo = Math.max(0, start);
   const hi = duration > 0 ? Math.min(end, duration) : end;
-  const step = 1 / Math.max(1, fps);
-  if (!(hi > lo)) return [];
-  const n = Math.max(1, Math.round((hi - lo) / step));
+  if (n === 0) return [];
   // Past MAX_FRAMES the caller refuses the job; one extra is enough to say so without building a huge list.
   return Array.from({ length: Math.min(n, MAX_FRAMES + 1) }, (_, i) => lo + (i + 0.5) * ((hi - lo) / n));
 }

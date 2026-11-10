@@ -42,7 +42,8 @@ export const MAX_LETTERS = 1000;
 /** The letters a draw picks from, in alphabetical order and upper case. */
 export function letterPool(o: Pick<LetterOptions, "alphabet" | "kind" | "exclude">): string[] {
   const a = ALPHABET[o.alphabet];
-  const out = new Set([...o.exclude.toUpperCase()].filter((ch) => ch.trim() !== ""));
+  // NFC first, so a decomposed Ă (A + breve) leaves out Ă, not A.
+  const out = new Set([...o.exclude.normalize("NFC").toUpperCase()].filter((ch) => ch.trim() !== ""));
   // Kana have no vowel split: every kind keeps them all.
   return a.letters.filter((ch) => {
     if (out.has(ch)) return false;
