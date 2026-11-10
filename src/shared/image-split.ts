@@ -5,25 +5,50 @@ export const MAX_GRID = 20;
 export type Rect = { x: number; y: number; width: number; height: number };
 export type Tile = Rect & { row: number; col: number; index: number };
 
-/** Common grids: Instagram's three-across profile rows, the 3 × 3 nine-grid, carousel panoramas. */
+/**
+ * Width : height of a tile, or null for the whole picture as it is; the menu lists them in this order. Instagram's
+ * profile grid has shown every post as a 3:4 thumbnail since 2025, so 3:4 tiles posted in order line up there; WeChat
+ * Moments shows nine pictures as squares, so its nine-grid wants square tiles.
+ */
+export const TILE_RATIO = {
+  whole: null,
+  square: [1, 1],
+  portrait: [3, 4],
+} as const satisfies Record<string, readonly [number, number] | null>;
+export type TileShape = keyof typeof TILE_RATIO;
+export const TILE_SHAPES = Object.keys(TILE_RATIO) as TileShape[];
+
+/** The shape a page starts on: square in zh-CN (WeChat Moments shows its nine-grid as squares), 3:4 elsewhere. */
+export function defaultShape(locale: string): TileShape {
+  return locale === "zh-CN" ? "square" : "portrait";
+}
+
+/** Common grids: Instagram's three-across profile rows (3:4 tiles), carousels (square slides), halves. */
 export const SPLIT_PRESETS = [
-  { id: "grid3x3", rows: 3, cols: 3, square: true },
-  { id: "grid2x2", rows: 2, cols: 2, square: true },
-  { id: "row1x3", rows: 1, cols: 3, square: true },
-  { id: "row1x2", rows: 1, cols: 2, square: false },
-  { id: "col2x1", rows: 2, cols: 1, square: false },
-  { id: "grid3x2", rows: 2, cols: 3, square: true },
-] as const;
+  { id: "grid3x3", rows: 3, cols: 3, shape: "portrait" },
+  { id: "grid3x3sq", rows: 3, cols: 3, shape: "square" },
+  { id: "grid3x2", rows: 2, cols: 3, shape: "portrait" },
+  { id: "row1x3", rows: 1, cols: 3, shape: "square" },
+  { id: "grid2x2", rows: 2, cols: 2, shape: "square" },
+  { id: "row1x2", rows: 1, cols: 2, shape: "whole" },
+  { id: "col2x1", rows: 2, cols: 1, shape: "whole" },
+] as const satisfies readonly { id: string; rows: number; cols: number; shape: TileShape }[];
 
 /**
- * The part of the picture that is cut. With `square` every tile is square: the largest rows × cols block of squares
- * that fits, centred (the rest is trimmed evenly from both sides). Otherwise the whole picture.
+ * The part of the picture that is cut. With a tile shape, the largest rows × cols block of equal tiles of that shape
+ * that fits, centred (the rest is trimmed evenly from both sides). Tile width is the widest that fits; its height is
+ * the nearest whole pixel to the ratio, so a tile is within a pixel of 3:4 and almost nothing more is trimmed. With
+ * "whole", the whole picture.
  */
-export function cropArea(width: number, height: number, rows: number, cols: number, square: boolean): Rect {
-  if (!square) return { x: 0, y: 0, width, height };
-  const side = Math.floor(Math.min(width / cols, height / rows));
-  const w = side * cols;
-  const h = side * rows;
+export function cropArea(width: number, height: number, rows: number, cols: number, shape: TileShape): Rect {
+  const ratio = TILE_RATIO[shape];
+  if (!ratio) return { x: 0, y: 0, width, height };
+  const [a, b] = ratio;
+  // At least 1 px each way whenever the picture has a pixel per row and column (a 2000 × 20 strip in 20 rows still cuts).
+  const tileW = Math.min(Math.floor(width / cols), Math.max(1, Math.floor((height * a) / (rows * b))));
+  const tileH = Math.min(Math.floor(height / rows), Math.max(1, Math.round((tileW * b) / a)));
+  const w = tileW * cols;
+  const h = tileH * rows;
   return { x: Math.floor((width - w) / 2), y: Math.floor((height - h) / 2), width: w, height: h };
 }
 

@@ -109,14 +109,23 @@ describe("image splitter ui", () => {
   it("asks for a picture before splitting", () => {
     mountImageSplitter(host);
     expect(q("[data-out=info]").textContent).toBe("Add a picture to see the grid.");
-    expect(host.querySelectorAll("[data-preset]")).toHaveLength(6);
+    expect(host.querySelectorAll("[data-preset]")).toHaveLength(7);
     click("[data-action=split]");
     expect(q("[data-out=status]").textContent).toBe("Add a picture first.");
     expect(q<HTMLInputElement>("[data-field=order]").disabled).toBe(false);
     click("[data-preset=grid2x2]");
     // Posting order is for Instagram's three-wide grid only.
     expect(q<HTMLInputElement>("[data-field=order]").disabled).toBe(true);
+    // The Instagram grid presets cut 3:4 tiles; the carousel preset square ones.
+    click("[data-preset=grid3x3]");
+    expect(q<HTMLSelectElement>("[data-field=shape]").value).toBe("portrait");
+    expect(host.querySelectorAll("[data-field=shape] option")).toHaveLength(3);
+    click("[data-preset=grid3x3sq]");
+    expect(q<HTMLSelectElement>("[data-field=shape]").value).toBe("square");
     click("[data-preset=row1x3]");
+    expect(q<HTMLSelectElement>("[data-field=shape]").value).toBe("square");
+    set("[data-field=shape]", "whole", "change");
+    expect(q<HTMLSelectElement>("[data-field=shape]").value).toBe("whole");
     expect(q<HTMLInputElement>("[data-field=rows]").value).toBe("1");
     expect(q<HTMLInputElement>("[data-field=cols]").value).toBe("3");
     // A cleared box shows the grid still in use when left, and an oversized one the clamped value.
