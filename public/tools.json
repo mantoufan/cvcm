@@ -31,12 +31,48 @@
       "name": "Images"
     },
     {
-      "id": "convert",
-      "name": "Convert files and data"
+      "id": "pdf",
+      "name": "PDF"
+    },
+    {
+      "id": "audio",
+      "name": "Audio and recording"
     },
     {
       "id": "text",
-      "name": "Text and calculators"
+      "name": "Text"
+    },
+    {
+      "id": "dev",
+      "name": "Developer tools"
+    },
+    {
+      "id": "math",
+      "name": "Math and school"
+    },
+    {
+      "id": "finance",
+      "name": "Money calculators"
+    },
+    {
+      "id": "health",
+      "name": "Health and fitness calculators (estimates, not medical advice)"
+    },
+    {
+      "id": "time",
+      "name": "Date and time"
+    },
+    {
+      "id": "design",
+      "name": "Color and design"
+    },
+    {
+      "id": "hardware",
+      "name": "Hardware tests (keyboard, microphone, camera, screen, controllers)"
+    },
+    {
+      "id": "fun",
+      "name": "Random and fun"
     },
     {
       "id": "games",
@@ -366,6 +402,14 @@
       "data_handling": "Processes files in the page. Files are not uploaded."
     },
     {
+      "id": "convert",
+      "name": "HEIC to JPG",
+      "description": "HEIC to JPG, WebP to PNG, JPG ↔ PNG, SVG, ICO. Optional resize.",
+      "category": "image",
+      "url": "https://cv.cm/en/convert/",
+      "data_handling": "Processes files in the page. Files are not uploaded."
+    },
+    {
       "id": "resize",
       "name": "Resize image",
       "description": "Resize image or compress JPG and WebP.",
@@ -446,18 +490,10 @@
       "data_handling": "Processes files in the page. Files are not uploaded."
     },
     {
-      "id": "convert",
-      "name": "HEIC to JPG",
-      "description": "HEIC to JPG, WebP to PNG, JPG ↔ PNG, SVG, ICO. Optional resize.",
-      "category": "convert",
-      "url": "https://cv.cm/en/convert/",
-      "data_handling": "Processes files in the page. Files are not uploaded."
-    },
-    {
       "id": "image-pdf",
       "name": "JPG to PDF",
       "description": "JPG to PDF and PNG to PDF. Several photos, one file.",
-      "category": "convert",
+      "category": "pdf",
       "url": "https://cv.cm/en/image-pdf/",
       "data_handling": "Processes files in the page. Files are not uploaded."
     },
@@ -465,7 +501,7 @@
       "id": "pdf-jpg",
       "name": "PDF to JPG",
       "description": "PDF pages to JPG, PNG, or WebP. ZIP for many pages.",
-      "category": "convert",
+      "category": "pdf",
       "url": "https://cv.cm/en/pdf-jpg/",
       "data_handling": "Processes files in the page. Files are not uploaded."
     },
@@ -473,7 +509,7 @@
       "id": "merge-pdf",
       "name": "Merge PDF",
       "description": "Combine PDFs in this tab. Reorder, then download one file.",
-      "category": "convert",
+      "category": "pdf",
       "url": "https://cv.cm/en/merge-pdf/",
       "data_handling": "Processes files in the page. Files are not uploaded."
     },
@@ -481,7 +517,7 @@
       "id": "compress-pdf",
       "name": "Compress PDF",
       "description": "PDF compressor. Re-encode pages as JPEG. Smaller file.",
-      "category": "convert",
+      "category": "pdf",
       "url": "https://cv.cm/en/compress-pdf/",
       "data_handling": "Processes files in the page. Files are not uploaded."
     },
@@ -489,7 +525,7 @@
       "id": "split-pdf",
       "name": "Split PDF",
       "description": "One PDF per page, or extract 1–3,5.",
-      "category": "convert",
+      "category": "pdf",
       "url": "https://cv.cm/en/split-pdf/",
       "data_handling": "Processes files in the page. Files are not uploaded."
     },
@@ -497,7 +533,7 @@
       "id": "invoice",
       "name": "Invoice generator",
       "description": "Fill line items, tax, and currency. Download a PDF.",
-      "category": "convert",
+      "category": "pdf",
       "url": "https://cv.cm/en/invoice/",
       "data_handling": "Runs in the page. Inputs are not uploaded."
     },
@@ -505,7 +541,7 @@
       "id": "audio",
       "name": "Audio to WAV",
       "description": "MP3 to WAV, plus M4A and OGG. Choose sample rate.",
-      "category": "convert",
+      "category": "audio",
       "url": "https://cv.cm/en/audio/",
       "data_handling": "Processes files in the page. Files are not uploaded."
     },
@@ -513,7 +549,7 @@
       "id": "audio-cutter",
       "name": "Audio cutter",
       "description": "Trim a clip. Download WAV.",
-      "category": "convert",
+      "category": "audio",
       "url": "https://cv.cm/en/audio-cutter/",
       "data_handling": "Processes files in the page. Files are not uploaded."
     },
@@ -521,56 +557,64 @@
       "id": "audio-joiner",
       "name": "Audio joiner",
       "description": "Join clips into one WAV.",
-      "category": "convert",
+      "category": "audio",
       "url": "https://cv.cm/en/audio-joiner/",
       "data_handling": "Processes files in the page. Files are not uploaded."
     },
     {
-      "id": "data",
-      "name": "Text & data",
-      "description": "JSON formatter, CSV ↔ JSON, Base64, Markdown.",
-      "category": "convert",
-      "url": "https://cv.cm/en/data/",
+      "id": "voice-recorder",
+      "name": "Voice recorder",
+      "description": "Record from the mic, play back and download.",
+      "category": "audio",
+      "url": "https://cv.cm/en/voice-recorder/",
       "data_handling": "Runs in the page. Inputs are not uploaded."
     },
     {
-      "id": "xml-json",
-      "name": "XML to JSON",
-      "description": "XML ↔ JSON in this tab.",
-      "category": "convert",
-      "url": "https://cv.cm/en/xml-json/",
+      "id": "screen-recorder",
+      "name": "Screen recorder",
+      "description": "Record a screen, window or tab to MP4 or WebM.",
+      "category": "audio",
+      "url": "https://cv.cm/en/screen-recorder/",
       "data_handling": "Runs in the page. Inputs are not uploaded."
     },
     {
-      "id": "yaml-json",
-      "name": "YAML to JSON",
-      "description": "YAML ↔ JSON in this tab.",
-      "category": "convert",
-      "url": "https://cv.cm/en/yaml-json/",
+      "id": "text-to-speech",
+      "name": "Text to speech",
+      "description": "Hear text with device voices. Rate and pitch.",
+      "category": "audio",
+      "url": "https://cv.cm/en/text-to-speech/",
+      "data_handling": "Speaks with the browser's voices. On-device voices keep the text on the device; online voices (such as Chrome's Google voices) send it to the voice provider."
+    },
+    {
+      "id": "white-noise",
+      "name": "White noise generator",
+      "description": "White, pink, brown or green noise with a sleep timer.",
+      "category": "audio",
+      "url": "https://cv.cm/en/white-noise/",
       "data_handling": "Runs in the page. Inputs are not uploaded."
     },
     {
-      "id": "json",
-      "name": "JSON formatter",
-      "description": "Pretty-print or minify.",
-      "category": "convert",
-      "url": "https://cv.cm/en/json/",
+      "id": "tone-generator",
+      "name": "Tone generator",
+      "description": "Play any frequency from 20 Hz to 20 kHz.",
+      "category": "audio",
+      "url": "https://cv.cm/en/tone-generator/",
       "data_handling": "Runs in the page. Inputs are not uploaded."
     },
     {
-      "id": "base64",
-      "name": "Base64",
-      "description": "Encode or decode UTF-8.",
-      "category": "convert",
-      "url": "https://cv.cm/en/base64/",
+      "id": "metronome",
+      "name": "Metronome",
+      "description": "BPM, beats per bar and tap tempo.",
+      "category": "audio",
+      "url": "https://cv.cm/en/metronome/",
       "data_handling": "Runs in the page. Inputs are not uploaded."
     },
     {
-      "id": "password",
-      "name": "Password generator",
-      "description": "Strong random passwords on your device. Choose length and symbols.",
-      "category": "text",
-      "url": "https://cv.cm/en/password/",
+      "id": "guitar-tuner",
+      "name": "Guitar tuner",
+      "description": "Tune guitar, bass or ukulele with your mic.",
+      "category": "audio",
+      "url": "https://cv.cm/en/guitar-tuner/",
       "data_handling": "Runs in the page. Inputs are not uploaded."
     },
     {
@@ -582,102 +626,6 @@
       "data_handling": "Runs in the page. Inputs are not uploaded."
     },
     {
-      "id": "color",
-      "name": "Color picker",
-      "description": "Hex, RGB, HSL, contrast, eyedropper.",
-      "category": "text",
-      "url": "https://cv.cm/en/color/",
-      "data_handling": "Runs in the page. Inputs are not uploaded."
-    },
-    {
-      "id": "hex-rgb",
-      "name": "Hex to RGB",
-      "description": "HEX, RGB, HSL, CMYK. Copy values.",
-      "category": "text",
-      "url": "https://cv.cm/en/hex-rgb/",
-      "data_handling": "Runs in the page. Inputs are not uploaded."
-    },
-    {
-      "id": "names",
-      "name": "Name generator",
-      "description": "Random names and usernames. Copy a list.",
-      "category": "text",
-      "url": "https://cv.cm/en/names/",
-      "data_handling": "Runs in the page. Inputs are not uploaded."
-    },
-    {
-      "id": "timezone",
-      "name": "Timezone converter",
-      "description": "Convert a clock time between IANA zones. DST and UTC offset.",
-      "category": "text",
-      "url": "https://cv.cm/en/timezone/",
-      "data_handling": "Runs in the page. Inputs are not uploaded."
-    },
-    {
-      "id": "timestamp",
-      "name": "Timestamp converter",
-      "description": "Unix time to date. Seconds, milliseconds, ISO.",
-      "category": "text",
-      "url": "https://cv.cm/en/timestamp/",
-      "data_handling": "Runs in the page. Inputs are not uploaded."
-    },
-    {
-      "id": "lorem",
-      "name": "Lorem ipsum",
-      "description": "Classic placeholder paragraphs, sentences, or words. Copy in this tab.",
-      "category": "text",
-      "url": "https://cv.cm/en/lorem/",
-      "data_handling": "Runs in the page. Inputs are not uploaded."
-    },
-    {
-      "id": "units",
-      "name": "Unit converter",
-      "description": "cm to inches, kg to lbs, °C to °F. Length, mass, volume, area, speed.",
-      "category": "text",
-      "url": "https://cv.cm/en/units/",
-      "data_handling": "Runs in the page. Inputs are not uploaded."
-    },
-    {
-      "id": "text-to-speech",
-      "name": "Text to speech",
-      "description": "Hear text with device voices. Rate and pitch.",
-      "category": "text",
-      "url": "https://cv.cm/en/text-to-speech/",
-      "data_handling": "Speaks with the browser's voices. On-device voices keep the text on the device; online voices (such as Chrome's Google voices) send it to the voice provider."
-    },
-    {
-      "id": "diff",
-      "name": "Diff checker",
-      "description": "Compare two texts. Added and removed lines.",
-      "category": "text",
-      "url": "https://cv.cm/en/diff/",
-      "data_handling": "Runs in the page. Inputs are not uploaded."
-    },
-    {
-      "id": "uuid",
-      "name": "UUID generator",
-      "description": "Random v4 UUIDs. Copy a list.",
-      "category": "text",
-      "url": "https://cv.cm/en/uuid/",
-      "data_handling": "Runs in the page. Inputs are not uploaded."
-    },
-    {
-      "id": "hash",
-      "name": "Hash generator",
-      "description": "MD5, SHA-256, SHA-1. Hash text or a file.",
-      "category": "text",
-      "url": "https://cv.cm/en/hash/",
-      "data_handling": "Runs in the page. Inputs are not uploaded."
-    },
-    {
-      "id": "regex",
-      "name": "Regex tester",
-      "description": "Test a pattern. See matches.",
-      "category": "text",
-      "url": "https://cv.cm/en/regex/",
-      "data_handling": "Runs in the page. Inputs are not uploaded."
-    },
-    {
       "id": "case",
       "name": "Case converter",
       "description": "Upper, lower, title, camel, snake.",
@@ -686,187 +634,11 @@
       "data_handling": "Runs in the page. Inputs are not uploaded."
     },
     {
-      "id": "jwt",
-      "name": "JWT decoder",
-      "description": "Read header and payload. Not a signature check.",
+      "id": "diff",
+      "name": "Diff checker",
+      "description": "Compare two texts. Added and removed lines.",
       "category": "text",
-      "url": "https://cv.cm/en/jwt/",
-      "data_handling": "Runs in the page. Inputs are not uploaded."
-    },
-    {
-      "id": "percent",
-      "name": "Percentage calculator",
-      "description": "What percent, percent of, increase.",
-      "category": "text",
-      "url": "https://cv.cm/en/percent/",
-      "data_handling": "Runs in the page. Inputs are not uploaded."
-    },
-    {
-      "id": "random",
-      "name": "Random number",
-      "description": "Random integers with Web Crypto.",
-      "category": "text",
-      "url": "https://cv.cm/en/random/",
-      "data_handling": "Runs in the page. Inputs are not uploaded."
-    },
-    {
-      "id": "html",
-      "name": "HTML encode",
-      "description": "Encode or decode entities.",
-      "category": "text",
-      "url": "https://cv.cm/en/html/",
-      "data_handling": "Runs in the page. Inputs are not uploaded."
-    },
-    {
-      "id": "cron",
-      "name": "Cron explainer",
-      "description": "Read a crontab line.",
-      "category": "text",
-      "url": "https://cv.cm/en/cron/",
-      "data_handling": "Runs in the page. Inputs are not uploaded."
-    },
-    {
-      "id": "slug",
-      "name": "Slug generator",
-      "description": "Title to URL slug.",
-      "category": "text",
-      "url": "https://cv.cm/en/slug/",
-      "data_handling": "Runs in the page. Inputs are not uploaded."
-    },
-    {
-      "id": "age",
-      "name": "Age calculator",
-      "description": "Years, months, days from a birth date.",
-      "category": "text",
-      "url": "https://cv.cm/en/age/",
-      "data_handling": "Runs in the page. Inputs are not uploaded."
-    },
-    {
-      "id": "bmi",
-      "name": "BMI calculator",
-      "description": "BMI from kg and cm. WHO bands.",
-      "category": "text",
-      "url": "https://cv.cm/en/bmi/",
-      "data_handling": "Runs in the page. Inputs are not uploaded."
-    },
-    {
-      "id": "binary",
-      "name": "Binary converter",
-      "description": "Text ↔ binary (UTF-8).",
-      "category": "text",
-      "url": "https://cv.cm/en/binary/",
-      "data_handling": "Runs in the page. Inputs are not uploaded."
-    },
-    {
-      "id": "tip",
-      "name": "Tip calculator",
-      "description": "Tip and split a bill.",
-      "category": "text",
-      "url": "https://cv.cm/en/tip/",
-      "data_handling": "Runs in the page. Inputs are not uploaded."
-    },
-    {
-      "id": "morse",
-      "name": "Morse code",
-      "description": "Text ↔ Morse.",
-      "category": "text",
-      "url": "https://cv.cm/en/morse/",
-      "data_handling": "Runs in the page. Inputs are not uploaded."
-    },
-    {
-      "id": "roman",
-      "name": "Roman numerals",
-      "description": "1–3999 ↔ Roman.",
-      "category": "text",
-      "url": "https://cv.cm/en/roman/",
-      "data_handling": "Runs in the page. Inputs are not uploaded."
-    },
-    {
-      "id": "discount",
-      "name": "Discount calculator",
-      "description": "Sale price after a percent off.",
-      "category": "text",
-      "url": "https://cv.cm/en/discount/",
-      "data_handling": "Runs in the page. Inputs are not uploaded."
-    },
-    {
-      "id": "countdown",
-      "name": "Countdown",
-      "description": "Hours, minutes, seconds.",
-      "category": "text",
-      "url": "https://cv.cm/en/countdown/",
-      "data_handling": "Runs in the page. Inputs are not uploaded."
-    },
-    {
-      "id": "loan",
-      "name": "Loan calculator",
-      "description": "Monthly payment from principal, rate, years.",
-      "category": "text",
-      "url": "https://cv.cm/en/loan/",
-      "data_handling": "Runs in the page. Inputs are not uploaded."
-    },
-    {
-      "id": "stopwatch",
-      "name": "Stopwatch",
-      "description": "Elapsed time.",
-      "category": "text",
-      "url": "https://cv.cm/en/stopwatch/",
-      "data_handling": "Runs in the page. Inputs are not uploaded."
-    },
-    {
-      "id": "compound",
-      "name": "Compound interest",
-      "description": "Future value from principal, rate, years.",
-      "category": "text",
-      "url": "https://cv.cm/en/compound/",
-      "data_handling": "Runs in the page. Inputs are not uploaded."
-    },
-    {
-      "id": "vat",
-      "name": "VAT calculator",
-      "description": "Add tax or split a gross price.",
-      "category": "text",
-      "url": "https://cv.cm/en/vat/",
-      "data_handling": "Runs in the page. Inputs are not uploaded."
-    },
-    {
-      "id": "reverse",
-      "name": "Reverse text",
-      "description": "Backwards text and palindrome check.",
-      "category": "text",
-      "url": "https://cv.cm/en/reverse/",
-      "data_handling": "Runs in the page. Inputs are not uploaded."
-    },
-    {
-      "id": "url-encode",
-      "name": "URL encode",
-      "description": "Percent-encode or decode.",
-      "category": "text",
-      "url": "https://cv.cm/en/url-encode/",
-      "data_handling": "Runs in the page. Inputs are not uploaded."
-    },
-    {
-      "id": "text-hex",
-      "name": "Text to hex",
-      "description": "UTF-8 hex.",
-      "category": "text",
-      "url": "https://cv.cm/en/text-hex/",
-      "data_handling": "Runs in the page. Inputs are not uploaded."
-    },
-    {
-      "id": "days",
-      "name": "Days between dates",
-      "description": "Calendar day count.",
-      "category": "text",
-      "url": "https://cv.cm/en/days/",
-      "data_handling": "Runs in the page. Inputs are not uploaded."
-    },
-    {
-      "id": "sort",
-      "name": "Sort lines",
-      "description": "A→Z, Z→A, or unique.",
-      "category": "text",
-      "url": "https://cv.cm/en/sort/",
+      "url": "https://cv.cm/en/diff/",
       "data_handling": "Runs in the page. Inputs are not uploaded."
     },
     {
@@ -878,443 +650,35 @@
       "data_handling": "Runs in the page. Inputs are not uploaded."
     },
     {
-      "id": "words",
-      "name": "Number to words",
-      "description": "US English words.",
+      "id": "sort",
+      "name": "Sort lines",
+      "description": "A→Z, Z→A, or unique.",
       "category": "text",
-      "url": "https://cv.cm/en/words/",
+      "url": "https://cv.cm/en/sort/",
       "data_handling": "Runs in the page. Inputs are not uploaded."
     },
     {
-      "id": "add-days",
-      "name": "Add days to a date",
-      "description": "Add or subtract whole days.",
+      "id": "reverse",
+      "name": "Reverse text",
+      "description": "Backwards text and palindrome check.",
       "category": "text",
-      "url": "https://cv.cm/en/add-days/",
+      "url": "https://cv.cm/en/reverse/",
       "data_handling": "Runs in the page. Inputs are not uploaded."
     },
     {
-      "id": "week",
-      "name": "Week number",
-      "description": "ISO week for a date.",
+      "id": "slug",
+      "name": "Slug generator",
+      "description": "Title to URL slug.",
       "category": "text",
-      "url": "https://cv.cm/en/week/",
+      "url": "https://cv.cm/en/slug/",
       "data_handling": "Runs in the page. Inputs are not uploaded."
     },
     {
-      "id": "aspect",
-      "name": "Aspect ratio",
-      "description": "Simplify 1920×1080 to 16:9.",
+      "id": "lorem",
+      "name": "Lorem ipsum",
+      "description": "Classic placeholder paragraphs, sentences, or words. Copy in this tab.",
       "category": "text",
-      "url": "https://cv.cm/en/aspect/",
-      "data_handling": "Runs in the page. Inputs are not uploaded."
-    },
-    {
-      "id": "workdays",
-      "name": "Business days",
-      "description": "Weekdays between two dates.",
-      "category": "text",
-      "url": "https://cv.cm/en/workdays/",
-      "data_handling": "Runs in the page. Inputs are not uploaded."
-    },
-    {
-      "id": "fraction",
-      "name": "Fraction calculator",
-      "description": "Simplify or convert a decimal.",
-      "category": "text",
-      "url": "https://cv.cm/en/fraction/",
-      "data_handling": "Runs in the page. Inputs are not uploaded."
-    },
-    {
-      "id": "hourly",
-      "name": "Hourly to yearly",
-      "description": "Gross pay from hours and weeks.",
-      "category": "text",
-      "url": "https://cv.cm/en/hourly/",
-      "data_handling": "Runs in the page. Inputs are not uploaded."
-    },
-    {
-      "id": "margin",
-      "name": "Profit margin",
-      "description": "Margin and markup from cost and price.",
-      "category": "text",
-      "url": "https://cv.cm/en/margin/",
-      "data_handling": "Runs in the page. Inputs are not uploaded."
-    },
-    {
-      "id": "radix",
-      "name": "Base converter",
-      "description": "Binary, decimal, and hex.",
-      "category": "text",
-      "url": "https://cv.cm/en/radix/",
-      "data_handling": "Runs in the page. Inputs are not uploaded."
-    },
-    {
-      "id": "duration",
-      "name": "Time duration",
-      "description": "Add or subtract hours and minutes.",
-      "category": "text",
-      "url": "https://cv.cm/en/duration/",
-      "data_handling": "Runs in the page. Inputs are not uploaded."
-    },
-    {
-      "id": "tdee",
-      "name": "TDEE calculator",
-      "description": "BMR and daily calories.",
-      "category": "text",
-      "url": "https://cv.cm/en/tdee/",
-      "data_handling": "Runs in the page. Inputs are not uploaded."
-    },
-    {
-      "id": "cidr",
-      "name": "Subnet calculator",
-      "description": "IPv4 CIDR, mask and host range.",
-      "category": "text",
-      "url": "https://cv.cm/en/cidr/",
-      "data_handling": "Runs in the page. Inputs are not uploaded."
-    },
-    {
-      "id": "chmod",
-      "name": "Chmod calculator",
-      "description": "Octal ↔ rwx permissions.",
-      "category": "text",
-      "url": "https://cv.cm/en/chmod/",
-      "data_handling": "Runs in the page. Inputs are not uploaded."
-    },
-    {
-      "id": "typing",
-      "name": "Typing speed test",
-      "description": "WPM and accuracy in 30 or 60 seconds.",
-      "category": "text",
-      "url": "https://cv.cm/en/typing/",
-      "data_handling": "Runs in the page. Inputs are not uploaded."
-    },
-    {
-      "id": "dice",
-      "name": "Dice roller",
-      "description": "Roll dice or flip a coin.",
-      "category": "text",
-      "url": "https://cv.cm/en/dice/",
-      "data_handling": "Runs in the page. Inputs are not uploaded."
-    },
-    {
-      "id": "gpa",
-      "name": "GPA calculator",
-      "description": "Letter grades and credits to a 4.0 GPA.",
-      "category": "text",
-      "url": "https://cv.cm/en/gpa/",
-      "data_handling": "Runs in the page. Inputs are not uploaded."
-    },
-    {
-      "id": "pomodoro",
-      "name": "Pomodoro timer",
-      "description": "25-minute focus and breaks with a chime.",
-      "category": "text",
-      "url": "https://cv.cm/en/pomodoro/",
-      "data_handling": "Runs in the page. Inputs are not uploaded."
-    },
-    {
-      "id": "sleep",
-      "name": "Sleep calculator",
-      "description": "Bedtime or wake-up time by 90-minute cycles.",
-      "category": "text",
-      "url": "https://cv.cm/en/sleep/",
-      "data_handling": "Runs in the page. Inputs are not uploaded."
-    },
-    {
-      "id": "body-fat",
-      "name": "Body fat calculator",
-      "description": "U.S. Navy tape method, metric or imperial.",
-      "category": "text",
-      "url": "https://cv.cm/en/body-fat/",
-      "data_handling": "Runs in the page. Inputs are not uploaded."
-    },
-    {
-      "id": "contrast",
-      "name": "Contrast checker",
-      "description": "WCAG AA / AAA ratio for two colors.",
-      "category": "text",
-      "url": "https://cv.cm/en/contrast/",
-      "data_handling": "Runs in the page. Inputs are not uploaded."
-    },
-    {
-      "id": "pace",
-      "name": "Pace calculator",
-      "description": "Pace, time or distance, with race predictions.",
-      "category": "text",
-      "url": "https://cv.cm/en/pace/",
-      "data_handling": "Runs in the page. Inputs are not uploaded."
-    },
-    {
-      "id": "grade",
-      "name": "Final grade calculator",
-      "description": "The final exam score you need.",
-      "category": "text",
-      "url": "https://cv.cm/en/grade/",
-      "data_handling": "Runs in the page. Inputs are not uploaded."
-    },
-    {
-      "id": "due-date",
-      "name": "Due date calculator",
-      "description": "Due date and weeks pregnant from the last period.",
-      "category": "text",
-      "url": "https://cv.cm/en/due-date/",
-      "data_handling": "Runs in the page. Inputs are not uploaded."
-    },
-    {
-      "id": "ideal-weight",
-      "name": "Ideal weight calculator",
-      "description": "Four formulas and the healthy BMI range.",
-      "category": "text",
-      "url": "https://cv.cm/en/ideal-weight/",
-      "data_handling": "Runs in the page. Inputs are not uploaded."
-    },
-    {
-      "id": "water-intake",
-      "name": "Water intake calculator",
-      "description": "Daily water from weight, exercise and climate.",
-      "category": "text",
-      "url": "https://cv.cm/en/water-intake/",
-      "data_handling": "Runs in the page. Inputs are not uploaded."
-    },
-    {
-      "id": "fuel-cost",
-      "name": "Fuel cost calculator",
-      "description": "Trip fuel and cost, round trip, split by people.",
-      "category": "text",
-      "url": "https://cv.cm/en/fuel-cost/",
-      "data_handling": "Runs in the page. Inputs are not uploaded."
-    },
-    {
-      "id": "reading-time",
-      "name": "Reading time calculator",
-      "description": "Minutes to read or speak a text.",
-      "category": "text",
-      "url": "https://cv.cm/en/reading-time/",
-      "data_handling": "Runs in the page. Inputs are not uploaded."
-    },
-    {
-      "id": "time-card",
-      "name": "Time card calculator",
-      "description": "Weekly hours, breaks, overtime and pay.",
-      "category": "text",
-      "url": "https://cv.cm/en/time-card/",
-      "data_handling": "Runs in the page. Inputs are not uploaded."
-    },
-    {
-      "id": "electricity",
-      "name": "Electricity cost calculator",
-      "description": "What an appliance costs to run.",
-      "category": "text",
-      "url": "https://cv.cm/en/electricity/",
-      "data_handling": "Runs in the page. Inputs are not uploaded."
-    },
-    {
-      "id": "ovulation",
-      "name": "Ovulation calculator",
-      "description": "Fertile window and next period.",
-      "category": "text",
-      "url": "https://cv.cm/en/ovulation/",
-      "data_handling": "Runs in the page. Inputs are not uploaded."
-    },
-    {
-      "id": "macro",
-      "name": "Macro calculator",
-      "description": "Protein, fat and carbs in grams.",
-      "category": "text",
-      "url": "https://cv.cm/en/macro/",
-      "data_handling": "Runs in the page. Inputs are not uploaded."
-    },
-    {
-      "id": "calories-burned",
-      "name": "Calories burned calculator",
-      "description": "Calories for 16 activities by weight and time.",
-      "category": "text",
-      "url": "https://cv.cm/en/calories-burned/",
-      "data_handling": "Runs in the page. Inputs are not uploaded."
-    },
-    {
-      "id": "wheel",
-      "name": "Spin the wheel",
-      "description": "Pick a name or option at random.",
-      "category": "text",
-      "url": "https://cv.cm/en/wheel/",
-      "data_handling": "Runs in the page. Inputs are not uploaded."
-    },
-    {
-      "id": "average",
-      "name": "Average calculator",
-      "description": "Mean, median, mode and standard deviation.",
-      "category": "text",
-      "url": "https://cv.cm/en/average/",
-      "data_handling": "Runs in the page. Inputs are not uploaded."
-    },
-    {
-      "id": "metronome",
-      "name": "Metronome",
-      "description": "BPM, beats per bar and tap tempo.",
-      "category": "text",
-      "url": "https://cv.cm/en/metronome/",
-      "data_handling": "Runs in the page. Inputs are not uploaded."
-    },
-    {
-      "id": "keyboard-test",
-      "name": "Keyboard tester",
-      "description": "See which keys work.",
-      "category": "text",
-      "url": "https://cv.cm/en/keyboard-test/",
-      "data_handling": "Runs in the page. Inputs are not uploaded."
-    },
-    {
-      "id": "zodiac",
-      "name": "Zodiac sign finder",
-      "description": "Star sign and Chinese zodiac from a birthday.",
-      "category": "text",
-      "url": "https://cv.cm/en/zodiac/",
-      "data_handling": "Runs in the page. Inputs are not uploaded."
-    },
-    {
-      "id": "click-test",
-      "name": "CPS test",
-      "description": "Clicks per second in 1–60 seconds.",
-      "category": "text",
-      "url": "https://cv.cm/en/click-test/",
-      "data_handling": "Runs in the page. Inputs are not uploaded."
-    },
-    {
-      "id": "reaction-time",
-      "name": "Reaction time test",
-      "description": "Click when it turns green. Five tries, in ms.",
-      "category": "text",
-      "url": "https://cv.cm/en/reaction-time/",
-      "data_handling": "Runs in the page. Inputs are not uploaded."
-    },
-    {
-      "id": "tone-generator",
-      "name": "Tone generator",
-      "description": "Play any frequency from 20 Hz to 20 kHz.",
-      "category": "text",
-      "url": "https://cv.cm/en/tone-generator/",
-      "data_handling": "Runs in the page. Inputs are not uploaded."
-    },
-    {
-      "id": "tally-counter",
-      "name": "Tally counter",
-      "description": "Count with big buttons or the keyboard.",
-      "category": "text",
-      "url": "https://cv.cm/en/tally-counter/",
-      "data_handling": "Runs in the page. Inputs are not uploaded."
-    },
-    {
-      "id": "mic-test",
-      "name": "Mic test",
-      "description": "Level meter and playback.",
-      "category": "text",
-      "url": "https://cv.cm/en/mic-test/",
-      "data_handling": "Runs in the page. Inputs are not uploaded."
-    },
-    {
-      "id": "webcam-test",
-      "name": "Webcam test",
-      "description": "Preview, resolution and frame rate.",
-      "category": "text",
-      "url": "https://cv.cm/en/webcam-test/",
-      "data_handling": "Runs in the page. Inputs are not uploaded."
-    },
-    {
-      "id": "gamepad-test",
-      "name": "Gamepad tester",
-      "description": "Buttons, triggers, sticks and drift.",
-      "category": "text",
-      "url": "https://cv.cm/en/gamepad-test/",
-      "data_handling": "Runs in the page. Inputs are not uploaded."
-    },
-    {
-      "id": "dead-pixel",
-      "name": "Dead pixel test",
-      "description": "Full-screen colours to find bad pixels.",
-      "category": "text",
-      "url": "https://cv.cm/en/dead-pixel/",
-      "data_handling": "Runs in the page. Inputs are not uploaded."
-    },
-    {
-      "id": "refresh-rate",
-      "name": "Refresh rate test",
-      "description": "Your screen's Hz and skipped frames.",
-      "category": "text",
-      "url": "https://cv.cm/en/refresh-rate/",
-      "data_handling": "Runs in the page. Inputs are not uploaded."
-    },
-    {
-      "id": "touch-test",
-      "name": "Touch screen test",
-      "description": "Multi-touch count and dead zones.",
-      "category": "text",
-      "url": "https://cv.cm/en/touch-test/",
-      "data_handling": "Runs in the page. Inputs are not uploaded."
-    },
-    {
-      "id": "coin-flip",
-      "name": "Coin flip",
-      "description": "Heads or tails, one coin or a thousand.",
-      "category": "text",
-      "url": "https://cv.cm/en/coin-flip/",
-      "data_handling": "Runs in the page. Inputs are not uploaded."
-    },
-    {
-      "id": "guitar-tuner",
-      "name": "Guitar tuner",
-      "description": "Tune guitar, bass or ukulele with your mic.",
-      "category": "text",
-      "url": "https://cv.cm/en/guitar-tuner/",
-      "data_handling": "Runs in the page. Inputs are not uploaded."
-    },
-    {
-      "id": "factors",
-      "name": "Factor calculator",
-      "description": "Factors, prime factorization, is it prime.",
-      "category": "text",
-      "url": "https://cv.cm/en/factors/",
-      "data_handling": "Runs in the page. Inputs are not uploaded."
-    },
-    {
-      "id": "lcm-gcf",
-      "name": "LCM and GCF calculator",
-      "description": "Least common multiple and greatest common factor.",
-      "category": "text",
-      "url": "https://cv.cm/en/lcm-gcf/",
-      "data_handling": "Runs in the page. Inputs are not uploaded."
-    },
-    {
-      "id": "calculator",
-      "name": "Scientific calculator",
-      "description": "Trig, logs, powers, history.",
-      "category": "text",
-      "url": "https://cv.cm/en/calculator/",
-      "data_handling": "Runs in the page. Inputs are not uploaded."
-    },
-    {
-      "id": "notepad",
-      "name": "Online notepad",
-      "description": "Saves as you type. Word count, .txt files.",
-      "category": "text",
-      "url": "https://cv.cm/en/notepad/",
-      "data_handling": "Keeps the note in this browser's local storage on the device; files it opens are read in the page. Notes and files are not uploaded."
-    },
-    {
-      "id": "markdown",
-      "name": "Markdown preview",
-      "description": "Live preview and Markdown to HTML.",
-      "category": "text",
-      "url": "https://cv.cm/en/markdown/",
-      "data_handling": "Renders in the page and keeps the text in this browser. Images written into the text load from their own addresses. The text is not uploaded."
-    },
-    {
-      "id": "gradient",
-      "name": "CSS gradient generator",
-      "description": "Linear, radial, conic. Copy CSS or PNG.",
-      "category": "text",
-      "url": "https://cv.cm/en/gradient/",
+      "url": "https://cv.cm/en/lorem/",
       "data_handling": "Runs in the page. Inputs are not uploaded."
     },
     {
@@ -1326,83 +690,755 @@
       "data_handling": "Runs in the page. Inputs are not uploaded."
     },
     {
-      "id": "mortgage",
-      "name": "Mortgage calculator",
-      "description": "Monthly payment, total interest and amortization by year.",
+      "id": "markdown",
+      "name": "Markdown preview",
+      "description": "Live preview and Markdown to HTML.",
       "category": "text",
-      "url": "https://cv.cm/en/mortgage/",
+      "url": "https://cv.cm/en/markdown/",
+      "data_handling": "Renders in the page and keeps the text in this browser. Images written into the text load from their own addresses. The text is not uploaded."
+    },
+    {
+      "id": "notepad",
+      "name": "Online notepad",
+      "description": "Saves as you type. Word count, .txt files.",
+      "category": "text",
+      "url": "https://cv.cm/en/notepad/",
+      "data_handling": "Keeps the note in this browser's local storage on the device; files it opens are read in the page. Notes and files are not uploaded."
+    },
+    {
+      "id": "reading-time",
+      "name": "Reading time calculator",
+      "description": "Minutes to read or speak a text.",
+      "category": "text",
+      "url": "https://cv.cm/en/reading-time/",
+      "data_handling": "Runs in the page. Inputs are not uploaded."
+    },
+    {
+      "id": "morse",
+      "name": "Morse code",
+      "description": "Text ↔ Morse.",
+      "category": "text",
+      "url": "https://cv.cm/en/morse/",
+      "data_handling": "Runs in the page. Inputs are not uploaded."
+    },
+    {
+      "id": "json",
+      "name": "JSON formatter",
+      "description": "Pretty-print or minify.",
+      "category": "dev",
+      "url": "https://cv.cm/en/json/",
+      "data_handling": "Runs in the page. Inputs are not uploaded."
+    },
+    {
+      "id": "data",
+      "name": "Text & data",
+      "description": "JSON formatter, CSV ↔ JSON, Base64, Markdown.",
+      "category": "dev",
+      "url": "https://cv.cm/en/data/",
+      "data_handling": "Runs in the page. Inputs are not uploaded."
+    },
+    {
+      "id": "xml-json",
+      "name": "XML to JSON",
+      "description": "XML ↔ JSON in this tab.",
+      "category": "dev",
+      "url": "https://cv.cm/en/xml-json/",
+      "data_handling": "Runs in the page. Inputs are not uploaded."
+    },
+    {
+      "id": "yaml-json",
+      "name": "YAML to JSON",
+      "description": "YAML ↔ JSON in this tab.",
+      "category": "dev",
+      "url": "https://cv.cm/en/yaml-json/",
+      "data_handling": "Runs in the page. Inputs are not uploaded."
+    },
+    {
+      "id": "base64",
+      "name": "Base64",
+      "description": "Encode or decode UTF-8.",
+      "category": "dev",
+      "url": "https://cv.cm/en/base64/",
+      "data_handling": "Runs in the page. Inputs are not uploaded."
+    },
+    {
+      "id": "url-encode",
+      "name": "URL encode",
+      "description": "Percent-encode or decode.",
+      "category": "dev",
+      "url": "https://cv.cm/en/url-encode/",
+      "data_handling": "Runs in the page. Inputs are not uploaded."
+    },
+    {
+      "id": "html",
+      "name": "HTML encode",
+      "description": "Encode or decode entities.",
+      "category": "dev",
+      "url": "https://cv.cm/en/html/",
+      "data_handling": "Runs in the page. Inputs are not uploaded."
+    },
+    {
+      "id": "text-hex",
+      "name": "Text to hex",
+      "description": "UTF-8 hex.",
+      "category": "dev",
+      "url": "https://cv.cm/en/text-hex/",
+      "data_handling": "Runs in the page. Inputs are not uploaded."
+    },
+    {
+      "id": "binary",
+      "name": "Binary converter",
+      "description": "Text ↔ binary (UTF-8).",
+      "category": "dev",
+      "url": "https://cv.cm/en/binary/",
+      "data_handling": "Runs in the page. Inputs are not uploaded."
+    },
+    {
+      "id": "hash",
+      "name": "Hash generator",
+      "description": "MD5, SHA-256, SHA-1. Hash text or a file.",
+      "category": "dev",
+      "url": "https://cv.cm/en/hash/",
+      "data_handling": "Runs in the page. Inputs are not uploaded."
+    },
+    {
+      "id": "jwt",
+      "name": "JWT decoder",
+      "description": "Read header and payload. Not a signature check.",
+      "category": "dev",
+      "url": "https://cv.cm/en/jwt/",
+      "data_handling": "Runs in the page. Inputs are not uploaded."
+    },
+    {
+      "id": "uuid",
+      "name": "UUID generator",
+      "description": "Random v4 UUIDs. Copy a list.",
+      "category": "dev",
+      "url": "https://cv.cm/en/uuid/",
+      "data_handling": "Runs in the page. Inputs are not uploaded."
+    },
+    {
+      "id": "password",
+      "name": "Password generator",
+      "description": "Strong random passwords on your device. Choose length and symbols.",
+      "category": "dev",
+      "url": "https://cv.cm/en/password/",
+      "data_handling": "Runs in the page. Inputs are not uploaded."
+    },
+    {
+      "id": "regex",
+      "name": "Regex tester",
+      "description": "Test a pattern. See matches.",
+      "category": "dev",
+      "url": "https://cv.cm/en/regex/",
+      "data_handling": "Runs in the page. Inputs are not uploaded."
+    },
+    {
+      "id": "cron",
+      "name": "Cron explainer",
+      "description": "Read a crontab line.",
+      "category": "dev",
+      "url": "https://cv.cm/en/cron/",
+      "data_handling": "Runs in the page. Inputs are not uploaded."
+    },
+    {
+      "id": "cidr",
+      "name": "Subnet calculator",
+      "description": "IPv4 CIDR, mask and host range.",
+      "category": "dev",
+      "url": "https://cv.cm/en/cidr/",
+      "data_handling": "Runs in the page. Inputs are not uploaded."
+    },
+    {
+      "id": "chmod",
+      "name": "Chmod calculator",
+      "description": "Octal ↔ rwx permissions.",
+      "category": "dev",
+      "url": "https://cv.cm/en/chmod/",
+      "data_handling": "Runs in the page. Inputs are not uploaded."
+    },
+    {
+      "id": "timestamp",
+      "name": "Timestamp converter",
+      "description": "Unix time to date. Seconds, milliseconds, ISO.",
+      "category": "dev",
+      "url": "https://cv.cm/en/timestamp/",
+      "data_handling": "Runs in the page. Inputs are not uploaded."
+    },
+    {
+      "id": "calculator",
+      "name": "Scientific calculator",
+      "description": "Trig, logs, powers, history.",
+      "category": "math",
+      "url": "https://cv.cm/en/calculator/",
+      "data_handling": "Runs in the page. Inputs are not uploaded."
+    },
+    {
+      "id": "percent",
+      "name": "Percentage calculator",
+      "description": "What percent, percent of, increase.",
+      "category": "math",
+      "url": "https://cv.cm/en/percent/",
+      "data_handling": "Runs in the page. Inputs are not uploaded."
+    },
+    {
+      "id": "fraction",
+      "name": "Fraction calculator",
+      "description": "Simplify or convert a decimal.",
+      "category": "math",
+      "url": "https://cv.cm/en/fraction/",
+      "data_handling": "Runs in the page. Inputs are not uploaded."
+    },
+    {
+      "id": "average",
+      "name": "Average calculator",
+      "description": "Mean, median, mode and standard deviation.",
+      "category": "math",
+      "url": "https://cv.cm/en/average/",
+      "data_handling": "Runs in the page. Inputs are not uploaded."
+    },
+    {
+      "id": "factors",
+      "name": "Factor calculator",
+      "description": "Factors, prime factorization, is it prime.",
+      "category": "math",
+      "url": "https://cv.cm/en/factors/",
+      "data_handling": "Runs in the page. Inputs are not uploaded."
+    },
+    {
+      "id": "lcm-gcf",
+      "name": "LCM and GCF calculator",
+      "description": "Least common multiple and greatest common factor.",
+      "category": "math",
+      "url": "https://cv.cm/en/lcm-gcf/",
       "data_handling": "Runs in the page. Inputs are not uploaded."
     },
     {
       "id": "quadratic",
       "name": "Quadratic equation solver",
       "description": "Roots of ax² + bx + c = 0 with steps and a graph.",
-      "category": "text",
+      "category": "math",
       "url": "https://cv.cm/en/quadratic/",
-      "data_handling": "Runs in the page. Inputs are not uploaded."
-    },
-    {
-      "id": "team-generator",
-      "name": "Random team generator",
-      "description": "Split a list of names into fair random teams.",
-      "category": "text",
-      "url": "https://cv.cm/en/team-generator/",
-      "data_handling": "Runs in the page. Inputs are not uploaded."
-    },
-    {
-      "id": "screen-resolution",
-      "name": "Screen resolution",
-      "description": "Your screen size, viewport and pixel ratio.",
-      "category": "text",
-      "url": "https://cv.cm/en/screen-resolution/",
-      "data_handling": "Runs in the page. Inputs are not uploaded."
-    },
-    {
-      "id": "alarm",
-      "name": "Online alarm clock",
-      "description": "Set an alarm with sound, label and snooze.",
-      "category": "text",
-      "url": "https://cv.cm/en/alarm/",
-      "data_handling": "Runs in the page. Inputs are not uploaded."
-    },
-    {
-      "id": "white-noise",
-      "name": "White noise generator",
-      "description": "White, pink, brown or green noise with a sleep timer.",
-      "category": "text",
-      "url": "https://cv.cm/en/white-noise/",
-      "data_handling": "Runs in the page. Inputs are not uploaded."
-    },
-    {
-      "id": "decibel-meter",
-      "name": "Decibel meter",
-      "description": "Measure sound level in dB with your microphone.",
-      "category": "text",
-      "url": "https://cv.cm/en/decibel-meter/",
-      "data_handling": "Runs in the page. Inputs are not uploaded."
-    },
-    {
-      "id": "voice-recorder",
-      "name": "Voice recorder",
-      "description": "Record from the mic, play back and download.",
-      "category": "text",
-      "url": "https://cv.cm/en/voice-recorder/",
-      "data_handling": "Runs in the page. Inputs are not uploaded."
-    },
-    {
-      "id": "screen-recorder",
-      "name": "Screen recorder",
-      "description": "Record a screen, window or tab to MP4 or WebM.",
-      "category": "text",
-      "url": "https://cv.cm/en/screen-recorder/",
       "data_handling": "Runs in the page. Inputs are not uploaded."
     },
     {
       "id": "triangle",
       "name": "Triangle calculator",
       "description": "Sides, angles, area and heights from three values.",
-      "category": "text",
+      "category": "math",
       "url": "https://cv.cm/en/triangle/",
+      "data_handling": "Runs in the page. Inputs are not uploaded."
+    },
+    {
+      "id": "radix",
+      "name": "Base converter",
+      "description": "Binary, decimal, and hex.",
+      "category": "math",
+      "url": "https://cv.cm/en/radix/",
+      "data_handling": "Runs in the page. Inputs are not uploaded."
+    },
+    {
+      "id": "roman",
+      "name": "Roman numerals",
+      "description": "1–3999 ↔ Roman.",
+      "category": "math",
+      "url": "https://cv.cm/en/roman/",
+      "data_handling": "Runs in the page. Inputs are not uploaded."
+    },
+    {
+      "id": "words",
+      "name": "Number to words",
+      "description": "US English words.",
+      "category": "math",
+      "url": "https://cv.cm/en/words/",
+      "data_handling": "Runs in the page. Inputs are not uploaded."
+    },
+    {
+      "id": "aspect",
+      "name": "Aspect ratio",
+      "description": "Simplify 1920×1080 to 16:9.",
+      "category": "math",
+      "url": "https://cv.cm/en/aspect/",
+      "data_handling": "Runs in the page. Inputs are not uploaded."
+    },
+    {
+      "id": "units",
+      "name": "Unit converter",
+      "description": "cm to inches, kg to lbs, °C to °F. Length, mass, volume, area, speed.",
+      "category": "math",
+      "url": "https://cv.cm/en/units/",
+      "data_handling": "Runs in the page. Inputs are not uploaded."
+    },
+    {
+      "id": "gpa",
+      "name": "GPA calculator",
+      "description": "Letter grades and credits to a 4.0 GPA.",
+      "category": "math",
+      "url": "https://cv.cm/en/gpa/",
+      "data_handling": "Runs in the page. Inputs are not uploaded."
+    },
+    {
+      "id": "grade",
+      "name": "Final grade calculator",
+      "description": "The final exam score you need.",
+      "category": "math",
+      "url": "https://cv.cm/en/grade/",
+      "data_handling": "Runs in the page. Inputs are not uploaded."
+    },
+    {
+      "id": "loan",
+      "name": "Loan calculator",
+      "description": "Monthly payment from principal, rate, years.",
+      "category": "finance",
+      "url": "https://cv.cm/en/loan/",
+      "data_handling": "Runs in the page. Inputs are not uploaded."
+    },
+    {
+      "id": "mortgage",
+      "name": "Mortgage calculator",
+      "description": "Monthly payment, total interest and amortization by year.",
+      "category": "finance",
+      "url": "https://cv.cm/en/mortgage/",
+      "data_handling": "Runs in the page. Inputs are not uploaded."
+    },
+    {
+      "id": "compound",
+      "name": "Compound interest",
+      "description": "Future value from principal, rate, years.",
+      "category": "finance",
+      "url": "https://cv.cm/en/compound/",
+      "data_handling": "Runs in the page. Inputs are not uploaded."
+    },
+    {
+      "id": "discount",
+      "name": "Discount calculator",
+      "description": "Sale price after a percent off.",
+      "category": "finance",
+      "url": "https://cv.cm/en/discount/",
+      "data_handling": "Runs in the page. Inputs are not uploaded."
+    },
+    {
+      "id": "tip",
+      "name": "Tip calculator",
+      "description": "Tip and split a bill.",
+      "category": "finance",
+      "url": "https://cv.cm/en/tip/",
+      "data_handling": "Runs in the page. Inputs are not uploaded."
+    },
+    {
+      "id": "vat",
+      "name": "VAT calculator",
+      "description": "Add tax or split a gross price.",
+      "category": "finance",
+      "url": "https://cv.cm/en/vat/",
+      "data_handling": "Runs in the page. Inputs are not uploaded."
+    },
+    {
+      "id": "margin",
+      "name": "Profit margin",
+      "description": "Margin and markup from cost and price.",
+      "category": "finance",
+      "url": "https://cv.cm/en/margin/",
+      "data_handling": "Runs in the page. Inputs are not uploaded."
+    },
+    {
+      "id": "hourly",
+      "name": "Hourly to yearly",
+      "description": "Gross pay from hours and weeks.",
+      "category": "finance",
+      "url": "https://cv.cm/en/hourly/",
+      "data_handling": "Runs in the page. Inputs are not uploaded."
+    },
+    {
+      "id": "time-card",
+      "name": "Time card calculator",
+      "description": "Weekly hours, breaks, overtime and pay.",
+      "category": "finance",
+      "url": "https://cv.cm/en/time-card/",
+      "data_handling": "Runs in the page. Inputs are not uploaded."
+    },
+    {
+      "id": "fuel-cost",
+      "name": "Fuel cost calculator",
+      "description": "Trip fuel and cost, round trip, split by people.",
+      "category": "finance",
+      "url": "https://cv.cm/en/fuel-cost/",
+      "data_handling": "Runs in the page. Inputs are not uploaded."
+    },
+    {
+      "id": "electricity",
+      "name": "Electricity cost calculator",
+      "description": "What an appliance costs to run.",
+      "category": "finance",
+      "url": "https://cv.cm/en/electricity/",
+      "data_handling": "Runs in the page. Inputs are not uploaded."
+    },
+    {
+      "id": "bmi",
+      "name": "BMI calculator",
+      "description": "BMI from kg and cm. WHO bands.",
+      "category": "health",
+      "url": "https://cv.cm/en/bmi/",
+      "data_handling": "Runs in the page. Inputs are not uploaded."
+    },
+    {
+      "id": "tdee",
+      "name": "TDEE calculator",
+      "description": "BMR and daily calories.",
+      "category": "health",
+      "url": "https://cv.cm/en/tdee/",
+      "data_handling": "Runs in the page. Inputs are not uploaded."
+    },
+    {
+      "id": "body-fat",
+      "name": "Body fat calculator",
+      "description": "U.S. Navy tape method, metric or imperial.",
+      "category": "health",
+      "url": "https://cv.cm/en/body-fat/",
+      "data_handling": "Runs in the page. Inputs are not uploaded."
+    },
+    {
+      "id": "ideal-weight",
+      "name": "Ideal weight calculator",
+      "description": "Four formulas and the healthy BMI range.",
+      "category": "health",
+      "url": "https://cv.cm/en/ideal-weight/",
+      "data_handling": "Runs in the page. Inputs are not uploaded."
+    },
+    {
+      "id": "water-intake",
+      "name": "Water intake calculator",
+      "description": "Daily water from weight, exercise and climate.",
+      "category": "health",
+      "url": "https://cv.cm/en/water-intake/",
+      "data_handling": "Runs in the page. Inputs are not uploaded."
+    },
+    {
+      "id": "macro",
+      "name": "Macro calculator",
+      "description": "Protein, fat and carbs in grams.",
+      "category": "health",
+      "url": "https://cv.cm/en/macro/",
+      "data_handling": "Runs in the page. Inputs are not uploaded."
+    },
+    {
+      "id": "calories-burned",
+      "name": "Calories burned calculator",
+      "description": "Calories for 16 activities by weight and time.",
+      "category": "health",
+      "url": "https://cv.cm/en/calories-burned/",
+      "data_handling": "Runs in the page. Inputs are not uploaded."
+    },
+    {
+      "id": "pace",
+      "name": "Pace calculator",
+      "description": "Pace, time or distance, with race predictions.",
+      "category": "health",
+      "url": "https://cv.cm/en/pace/",
+      "data_handling": "Runs in the page. Inputs are not uploaded."
+    },
+    {
+      "id": "sleep",
+      "name": "Sleep calculator",
+      "description": "Bedtime or wake-up time by 90-minute cycles.",
+      "category": "health",
+      "url": "https://cv.cm/en/sleep/",
+      "data_handling": "Runs in the page. Inputs are not uploaded."
+    },
+    {
+      "id": "due-date",
+      "name": "Due date calculator",
+      "description": "Due date and weeks pregnant from the last period.",
+      "category": "health",
+      "url": "https://cv.cm/en/due-date/",
+      "data_handling": "Runs in the page. Inputs are not uploaded."
+    },
+    {
+      "id": "ovulation",
+      "name": "Ovulation calculator",
+      "description": "Fertile window and next period.",
+      "category": "health",
+      "url": "https://cv.cm/en/ovulation/",
+      "data_handling": "Runs in the page. Inputs are not uploaded."
+    },
+    {
+      "id": "timezone",
+      "name": "Timezone converter",
+      "description": "Convert a clock time between IANA zones. DST and UTC offset.",
+      "category": "time",
+      "url": "https://cv.cm/en/timezone/",
+      "data_handling": "Runs in the page. Inputs are not uploaded."
+    },
+    {
+      "id": "countdown",
+      "name": "Countdown",
+      "description": "Hours, minutes, seconds.",
+      "category": "time",
+      "url": "https://cv.cm/en/countdown/",
+      "data_handling": "Runs in the page. Inputs are not uploaded."
+    },
+    {
+      "id": "stopwatch",
+      "name": "Stopwatch",
+      "description": "Elapsed time.",
+      "category": "time",
+      "url": "https://cv.cm/en/stopwatch/",
+      "data_handling": "Runs in the page. Inputs are not uploaded."
+    },
+    {
+      "id": "alarm",
+      "name": "Online alarm clock",
+      "description": "Set an alarm with sound, label and snooze.",
+      "category": "time",
+      "url": "https://cv.cm/en/alarm/",
+      "data_handling": "Runs in the page. Inputs are not uploaded."
+    },
+    {
+      "id": "pomodoro",
+      "name": "Pomodoro timer",
+      "description": "25-minute focus and breaks with a chime.",
+      "category": "time",
+      "url": "https://cv.cm/en/pomodoro/",
+      "data_handling": "Runs in the page. Inputs are not uploaded."
+    },
+    {
+      "id": "days",
+      "name": "Days between dates",
+      "description": "Calendar day count.",
+      "category": "time",
+      "url": "https://cv.cm/en/days/",
+      "data_handling": "Runs in the page. Inputs are not uploaded."
+    },
+    {
+      "id": "add-days",
+      "name": "Add days to a date",
+      "description": "Add or subtract whole days.",
+      "category": "time",
+      "url": "https://cv.cm/en/add-days/",
+      "data_handling": "Runs in the page. Inputs are not uploaded."
+    },
+    {
+      "id": "workdays",
+      "name": "Business days",
+      "description": "Weekdays between two dates.",
+      "category": "time",
+      "url": "https://cv.cm/en/workdays/",
+      "data_handling": "Runs in the page. Inputs are not uploaded."
+    },
+    {
+      "id": "week",
+      "name": "Week number",
+      "description": "ISO week for a date.",
+      "category": "time",
+      "url": "https://cv.cm/en/week/",
+      "data_handling": "Runs in the page. Inputs are not uploaded."
+    },
+    {
+      "id": "duration",
+      "name": "Time duration",
+      "description": "Add or subtract hours and minutes.",
+      "category": "time",
+      "url": "https://cv.cm/en/duration/",
+      "data_handling": "Runs in the page. Inputs are not uploaded."
+    },
+    {
+      "id": "age",
+      "name": "Age calculator",
+      "description": "Years, months, days from a birth date.",
+      "category": "time",
+      "url": "https://cv.cm/en/age/",
+      "data_handling": "Runs in the page. Inputs are not uploaded."
+    },
+    {
+      "id": "color",
+      "name": "Color picker",
+      "description": "Hex, RGB, HSL, contrast, eyedropper.",
+      "category": "design",
+      "url": "https://cv.cm/en/color/",
+      "data_handling": "Runs in the page. Inputs are not uploaded."
+    },
+    {
+      "id": "hex-rgb",
+      "name": "Hex to RGB",
+      "description": "HEX, RGB, HSL, CMYK. Copy values.",
+      "category": "design",
+      "url": "https://cv.cm/en/hex-rgb/",
+      "data_handling": "Runs in the page. Inputs are not uploaded."
+    },
+    {
+      "id": "contrast",
+      "name": "Contrast checker",
+      "description": "WCAG AA / AAA ratio for two colors.",
+      "category": "design",
+      "url": "https://cv.cm/en/contrast/",
+      "data_handling": "Runs in the page. Inputs are not uploaded."
+    },
+    {
+      "id": "gradient",
+      "name": "CSS gradient generator",
+      "description": "Linear, radial, conic. Copy CSS or PNG.",
+      "category": "design",
+      "url": "https://cv.cm/en/gradient/",
+      "data_handling": "Runs in the page. Inputs are not uploaded."
+    },
+    {
+      "id": "mic-test",
+      "name": "Mic test",
+      "description": "Level meter and playback.",
+      "category": "hardware",
+      "url": "https://cv.cm/en/mic-test/",
+      "data_handling": "Runs in the page. Inputs are not uploaded."
+    },
+    {
+      "id": "decibel-meter",
+      "name": "Decibel meter",
+      "description": "Measure sound level in dB with your microphone.",
+      "category": "hardware",
+      "url": "https://cv.cm/en/decibel-meter/",
+      "data_handling": "Runs in the page. Inputs are not uploaded."
+    },
+    {
+      "id": "webcam-test",
+      "name": "Webcam test",
+      "description": "Preview, resolution and frame rate.",
+      "category": "hardware",
+      "url": "https://cv.cm/en/webcam-test/",
+      "data_handling": "Runs in the page. Inputs are not uploaded."
+    },
+    {
+      "id": "keyboard-test",
+      "name": "Keyboard tester",
+      "description": "See which keys work.",
+      "category": "hardware",
+      "url": "https://cv.cm/en/keyboard-test/",
+      "data_handling": "Runs in the page. Inputs are not uploaded."
+    },
+    {
+      "id": "gamepad-test",
+      "name": "Gamepad tester",
+      "description": "Buttons, triggers, sticks and drift.",
+      "category": "hardware",
+      "url": "https://cv.cm/en/gamepad-test/",
+      "data_handling": "Runs in the page. Inputs are not uploaded."
+    },
+    {
+      "id": "touch-test",
+      "name": "Touch screen test",
+      "description": "Multi-touch count and dead zones.",
+      "category": "hardware",
+      "url": "https://cv.cm/en/touch-test/",
+      "data_handling": "Runs in the page. Inputs are not uploaded."
+    },
+    {
+      "id": "dead-pixel",
+      "name": "Dead pixel test",
+      "description": "Full-screen colours to find bad pixels.",
+      "category": "hardware",
+      "url": "https://cv.cm/en/dead-pixel/",
+      "data_handling": "Runs in the page. Inputs are not uploaded."
+    },
+    {
+      "id": "refresh-rate",
+      "name": "Refresh rate test",
+      "description": "Your screen's Hz and skipped frames.",
+      "category": "hardware",
+      "url": "https://cv.cm/en/refresh-rate/",
+      "data_handling": "Runs in the page. Inputs are not uploaded."
+    },
+    {
+      "id": "screen-resolution",
+      "name": "Screen resolution",
+      "description": "Your screen size, viewport and pixel ratio.",
+      "category": "hardware",
+      "url": "https://cv.cm/en/screen-resolution/",
+      "data_handling": "Runs in the page. Inputs are not uploaded."
+    },
+    {
+      "id": "random",
+      "name": "Random number",
+      "description": "Random integers with Web Crypto.",
+      "category": "fun",
+      "url": "https://cv.cm/en/random/",
+      "data_handling": "Runs in the page. Inputs are not uploaded."
+    },
+    {
+      "id": "dice",
+      "name": "Dice roller",
+      "description": "Roll dice or flip a coin.",
+      "category": "fun",
+      "url": "https://cv.cm/en/dice/",
+      "data_handling": "Runs in the page. Inputs are not uploaded."
+    },
+    {
+      "id": "coin-flip",
+      "name": "Coin flip",
+      "description": "Heads or tails, one coin or a thousand.",
+      "category": "fun",
+      "url": "https://cv.cm/en/coin-flip/",
+      "data_handling": "Runs in the page. Inputs are not uploaded."
+    },
+    {
+      "id": "wheel",
+      "name": "Spin the wheel",
+      "description": "Pick a name or option at random.",
+      "category": "fun",
+      "url": "https://cv.cm/en/wheel/",
+      "data_handling": "Runs in the page. Inputs are not uploaded."
+    },
+    {
+      "id": "team-generator",
+      "name": "Random team generator",
+      "description": "Split a list of names into fair random teams.",
+      "category": "fun",
+      "url": "https://cv.cm/en/team-generator/",
+      "data_handling": "Runs in the page. Inputs are not uploaded."
+    },
+    {
+      "id": "names",
+      "name": "Name generator",
+      "description": "Random names and usernames. Copy a list.",
+      "category": "fun",
+      "url": "https://cv.cm/en/names/",
+      "data_handling": "Runs in the page. Inputs are not uploaded."
+    },
+    {
+      "id": "zodiac",
+      "name": "Zodiac sign finder",
+      "description": "Star sign and Chinese zodiac from a birthday.",
+      "category": "fun",
+      "url": "https://cv.cm/en/zodiac/",
+      "data_handling": "Runs in the page. Inputs are not uploaded."
+    },
+    {
+      "id": "typing",
+      "name": "Typing speed test",
+      "description": "WPM and accuracy in 30 or 60 seconds.",
+      "category": "fun",
+      "url": "https://cv.cm/en/typing/",
+      "data_handling": "Runs in the page. Inputs are not uploaded."
+    },
+    {
+      "id": "click-test",
+      "name": "CPS test",
+      "description": "Clicks per second in 1–60 seconds.",
+      "category": "fun",
+      "url": "https://cv.cm/en/click-test/",
+      "data_handling": "Runs in the page. Inputs are not uploaded."
+    },
+    {
+      "id": "reaction-time",
+      "name": "Reaction time test",
+      "description": "Click when it turns green. Five tries, in ms.",
+      "category": "fun",
+      "url": "https://cv.cm/en/reaction-time/",
+      "data_handling": "Runs in the page. Inputs are not uploaded."
+    },
+    {
+      "id": "tally-counter",
+      "name": "Tally counter",
+      "description": "Count with big buttons or the keyboard.",
+      "category": "fun",
+      "url": "https://cv.cm/en/tally-counter/",
       "data_handling": "Runs in the page. Inputs are not uploaded."
     },
     {
