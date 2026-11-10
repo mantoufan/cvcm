@@ -206,17 +206,21 @@ export function mapPixels(rgba: Uint8ClampedArray, width: number, height: number
 /** GIF LZW for one frame's indices, as the code-size byte, 255-byte sub-blocks and the empty block. */
 export function lzw(indices: Uint8Array, minCodeSize: number): Uint8Array {
   const out = new Bytes();
-  writeLzw(indices, minCodeSize, out);
+  writeLzw(indices, minCodeSize, out, newLzwTable());
   return out.result();
 }
 
-function writeLzw(indices: Uint8Array, minCodeSize: number, out: Bytes): void {
+/** Code for a prefix code (≤ 4095) followed by an index (≤ 255): 2 MB, so a writer keeps one for all its frames. */
+function newLzwTable(): Int16Array {
+  return new Int16Array(4096 << 8);
+}
+
+function writeLzw(indices: Uint8Array, minCodeSize: number, out: Bytes, table: Int16Array): void {
   const clear = 1 << minCodeSize;
   const eoi = clear + 1;
   let codeSize = minCodeSize + 1;
   let next = eoi + 1;
-  // Code for prefix code (≤ 4095) followed by index (≤ 255).
-  const table = new Int16Array(4096 << 8).fill(-1);
+  table.fill(-1);
   const block = new Uint8Array(255);
   let blockLen = 0;
   let acc = 0;
@@ -279,6 +283,7 @@ function writeLzw(indices: Uint8Array, minCodeSize: number, out: Bytes): void {
 export class GifWriter {
   private out = new Bytes();
   private frames = 0;
+  private table = newLzwTable();
   constructor(private readonly opts: GifOptions) {
     const { width, height, loop } = opts;
     this.out.push(0x47, 0x49, 0x46, 0x38, 0x39, 0x61);
@@ -315,7 +320,7 @@ export class GifWriter {
     const table = new Uint8Array((1 << bits) * 3);
     table.set(palette);
     this.out.bytes(table);
-    writeLzw(indices, Math.max(2, bits), this.out);
+    writeLzw(indices, Math.max(2, bits), this.out, this.table);
     this.frames++;
   }
 

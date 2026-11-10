@@ -176,7 +176,8 @@
       "saveTile": "保存 {name}",
       "tileAlt": "第 {row} 行第 {col} 列的切片",
       "postN": "第 {n} 条",
-      "errorDecode": "这个文件无法作为图片读取。"
+      "errorDecode": "这个文件无法作为图片读取。",
+      "tooFine": "网格比图片还细（{W} × {H} 像素）：每块至少要 1 像素。请减少行数或列数，或关闭正方形切片。"
     },
     "area": {
       "title": "面积计算器",

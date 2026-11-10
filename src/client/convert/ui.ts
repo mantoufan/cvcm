@@ -1,7 +1,7 @@
 import { blobFromBytes, encodeBmp, encodeGif, encodeIco } from "../../shared/image-encode";
 import { lossyFormat, mimeForFormat, outputFilename, type ImageFormat } from "../../shared/filename";
 import { zipStore } from "../../shared/zip";
-import { canvasToBlob, decodeImage, drawToCanvas } from "../decode";
+import { canvasToBlob, decodeImage, drawToCanvas, loadImage } from "../decode";
 import { downloadBlob, h } from "../dom";
 import { locale, t } from "../i18n";
 import { CONVERT_JOB_FORMAT, appHref, parseAppPath, type ConvertJobId } from "../../shared/path";
@@ -297,7 +297,15 @@ async function ingestFile(file: File): Promise<void> {
       const info = readSvg(text);
       if (!info) throw new Error("svg");
       item.svg = { text, info };
-      applyRaster(item, await rasterSvg(item, state.svgScale));
+      // If the scale changes while this draws, draw again at the new one.
+      let scale = state.svgScale;
+      let r = await rasterSvg(item, scale);
+      while (scale !== state.svgScale) {
+        r.bitmap.close();
+        scale = state.svgScale;
+        r = await rasterSvg(item, scale);
+      }
+      applyRaster(item, r);
       return;
     }
     const decoded = await decodeImage(file);
@@ -309,17 +317,19 @@ async function ingestFile(file: File): Promise<void> {
   }
 }
 
-/** Draws an SVG item at its own size × `scale`, from the vector source. */
+/** Draws an SVG item at its own size × `scale` from the vector source, so 2×–4× stay sharp. */
 async function rasterSvg(item: Item, scale: SvgScale): Promise<{ bitmap: ImageBitmap; width: number; height: number }> {
   if (!item.svg) throw new Error("svg");
   const { width, height } = svgPixelSize(item.svg.info, scale);
-  const blob = new Blob([sizedSvg(item.svg.text, item.svg.info, width, height)], { type: "image/svg+xml" });
-  const decoded = await decodeImage(blob);
-  if (decoded.width === width && decoded.height === height) return { bitmap: decoded.bitmap, width, height };
-  // Some browsers ignore the size of an SVG decoded straight to a bitmap; draw it at the size asked for.
-  const bitmap = await createImageBitmap(drawToCanvas(decoded.bitmap, width, height));
-  decoded.bitmap.close();
-  return { bitmap, width, height };
+  const url = URL.createObjectURL(new Blob([sizedSvg(item.svg.text, item.svg.info, width, height)], { type: "image/svg+xml" }));
+  try {
+    const img = await loadImage(url);
+    // Drawing the <img> (not a decoded bitmap) at the target size renders the shapes at that size.
+    const bitmap = await createImageBitmap(drawToCanvas(img, width, height));
+    return { bitmap, width, height };
+  } finally {
+    URL.revokeObjectURL(url);
+  }
 }
 
 function applyRaster(item: Item, r: { bitmap: ImageBitmap; width: number; height: number }): void {

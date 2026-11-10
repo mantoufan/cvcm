@@ -115,6 +115,13 @@ describe("image splitter ui", () => {
     click("[data-preset=row1x3]");
     expect(q<HTMLInputElement>("[data-field=rows]").value).toBe("1");
     expect(q<HTMLInputElement>("[data-field=cols]").value).toBe("3");
+    // A cleared box shows the grid still in use when left, and an oversized one the clamped value.
+    set("[data-field=cols]", "");
+    q("[data-field=cols]").dispatchEvent(new Event("change"));
+    expect(q<HTMLInputElement>("[data-field=cols]").value).toBe("3");
+    set("[data-field=cols]", "99");
+    q("[data-field=cols]").dispatchEvent(new Event("change"));
+    expect(q<HTMLInputElement>("[data-field=cols]").value).toBe("20");
   });
 });
 
@@ -126,5 +133,8 @@ describe("gif maker ui", () => {
     expect(q<HTMLInputElement>("[data-field=fps]").closest("div")!.hidden).toBe(true);
     click("[data-action=make]");
     expect(q("[data-out=status]").textContent).toBe("Add pictures or a video first.");
+    set("[data-field=delay]", "5");
+    q("[data-field=delay]").dispatchEvent(new Event("change"));
+    expect(q<HTMLInputElement>("[data-field=delay]").value).toBe("20");
   });
 });

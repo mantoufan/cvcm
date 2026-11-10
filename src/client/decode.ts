@@ -16,7 +16,8 @@ export async function decodeImage(
   }
 }
 
-function loadImage(src: string): Promise<HTMLImageElement> {
+/** An <img> loaded from a same-page (blob:) URL. */
+export function loadImage(src: string): Promise<HTMLImageElement> {
   return new Promise((resolve, reject) => {
     const img = new Image();
     img.onload = () => resolve(img);

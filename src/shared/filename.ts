@@ -21,12 +21,16 @@ export function stemAndExt(name: string): { stem: string; ext: string } {
 
 export type ImageFormat = "png" | "jpeg" | "webp" | "avif" | "bmp" | "ico" | "gif";
 
+/** A file name's stem without characters file systems refuse, at most 80 characters; `fallback` when nothing is left. */
+export function safeStem(name: string, fallback = "file"): string {
+  return stemAndExt(name).stem.replace(/[^\w\u0080-\uFFFF.-]+/g, "_").slice(0, 80) || fallback;
+}
+
 export function outputFilename(
   originalName: string,
   mime: string,
   suffix = "-watermark",
 ): string {
-  const { stem } = stemAndExt(originalName);
   const ext =
     mime === "application/pdf"
       ? "pdf"
@@ -47,8 +51,7 @@ export function outputFilename(
                   : mime === "image/x-icon" || mime === "image/vnd.microsoft.icon"
                     ? "ico"
                     : "png";
-  const safe = stem.replace(/[^\w\u0080-\uFFFF.-]+/g, "_").slice(0, 80) || "file";
-  return `${safe}${suffix}.${ext}`;
+  return `${safeStem(originalName)}${suffix}.${ext}`;
 }
 
 export function mimeForFormat(format: ImageFormat): string {

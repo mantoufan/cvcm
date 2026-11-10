@@ -1,5 +1,5 @@
 import { GifWriter } from "../../shared/gif";
-import { stemAndExt } from "../../shared/filename";
+import { outputFilename } from "../../shared/filename";
 import { fitFrame, frameTimes, gifSize, MAX_FRAMES, type Fit } from "../../shared/gif-frames";
 import { decodeImage } from "../decode";
 import { downloadBlob, h } from "../dom";
@@ -33,6 +33,8 @@ const state = {
   result: null as { blob: Blob; url: string; frames: number; width: number; height: number } | null,
   /** Bumped by every change and by unmount, so a running encode stops and its result is dropped. */
   run: 0,
+  /** Bumped when new files start loading or the list is cleared, so a slower earlier load drops its result. */
+  load: 0,
   busy: false,
 };
 
@@ -89,7 +91,7 @@ export function mountGifMaker(host: HTMLElement): void {
   const status = h("p", { class: "status", "aria-live": "polite", "data-out": "status" });
   const result = h("div", { class: "gif-result", "data-out": "result" });
   const make = h("button", { type: "button", class: "btn", "data-action": "make", onClick: () => void makeGif() }, t("gifMaker.make"));
-  const num = (field: string, value: number, min: number, max: number, step: number, set: (n: number) => void) => {
+  const num = (field: string, value: number, min: number, max: number, step: number, set: (n: number) => void, get: () => number) => {
     const el = h("input", {
       type: "number",
       min: String(min),
@@ -105,6 +107,8 @@ export function mountGifMaker(host: HTMLElement): void {
         set(Math.min(max, Math.max(min, n)));
         changed();
       },
+      // Leaving the box shows the value in use: clamped, or the last good one for a blank or broken entry.
+      onChange: () => { el.value = String(get()); },
     });
     return el;
   };
@@ -119,16 +123,16 @@ export function mountGifMaker(host: HTMLElement): void {
     }, ...options.map(([v, label]) => h("option", { value: String(v), selected: v === value }, label)));
     return el;
   };
-  const start = num("start", state.start, 0, 36000, 0.1, (n) => { state.start = n; });
-  const end = num("end", state.end, 0, 36000, 0.1, (n) => { state.end = n; });
+  const start = num("start", state.start, 0, 36000, 0.1, (n) => { state.start = n; }, () => state.start);
+  const end = num("end", state.end, 0, 36000, 0.1, (n) => { state.end = n; }, () => state.end);
   const imageOpts = h("div", null,
-    labeled(t("gifMaker.delay"), num("delay", state.delayMs, 20, 10000, 10, (n) => { state.delayMs = n; })),
+    labeled(t("gifMaker.delay"), num("delay", state.delayMs, 20, 10000, 10, (n) => { state.delayMs = n; }, () => state.delayMs)),
     labeled(t("gifMaker.fit"), select<Fit>("fit", [["contain", t("gifMaker.fitContain")], ["cover", t("gifMaker.fitCover")]], state.fit, (v) => { state.fit = v; })),
   );
   const videoOpts = h("div", { hidden: true },
     labeled(t("gifMaker.start"), start),
     labeled(t("gifMaker.end"), end),
-    labeled(t("gifMaker.fps"), num("fps", state.fps, 1, 25, 1, (n) => { state.fps = Math.round(n); })),
+    labeled(t("gifMaker.fps"), num("fps", state.fps, 1, 25, 1, (n) => { state.fps = Math.round(n); }, () => state.fps)),
   );
   const dither = h("input", { type: "checkbox", checked: state.dither, "data-field": "dither", onChange: () => { state.dither = dither.checked; changed(); } });
   const background = h("input", { type: "color", value: state.background, "data-field": "background", onInput: () => { state.background = background.value; changed(); } });
@@ -207,6 +211,7 @@ async function addFiles(files: File[]): Promise<void> {
   if (!images.length) return;
   if (state.mode === "video") clearAll();
   state.mode = "images";
+  const load = ++state.load;
   let failed = 0;
   for (const file of images) {
     if (state.stills.length >= MAX_FRAMES) {
@@ -215,7 +220,8 @@ async function addFiles(files: File[]): Promise<void> {
     }
     try {
       const d = await decodeImage(file);
-      if (!els) {
+      // Unmounted, cleared, or a video took over while this picture decoded.
+      if (!els || load !== state.load) {
         d.bitmap.close();
         return;
       }
@@ -231,6 +237,7 @@ async function addFiles(files: File[]): Promise<void> {
 async function setClip(file: File): Promise<void> {
   clearAll();
   state.mode = "video";
+  const load = ++state.load;
   const url = URL.createObjectURL(file);
   const video = h("video", { src: url, muted: true, playsinline: true, controls: true, preload: "auto", class: "gif-clip" });
   video.muted = true;
@@ -242,12 +249,16 @@ async function setClip(file: File): Promise<void> {
     });
   } catch {
     URL.revokeObjectURL(url);
+    if (load !== state.load) return;
     state.mode = "images";
     setStatus(t("gifMaker.errorVideo"));
     refresh();
     return;
   }
-  if (!els) {
+  // Unmounted, cleared, or another file dropped while this one loaded.
+  if (!els || load !== state.load) {
+    video.removeAttribute("src");
+    video.load();
     URL.revokeObjectURL(url);
     return;
   }
@@ -263,6 +274,7 @@ async function setClip(file: File): Promise<void> {
 }
 
 function clearAll(paint = true): void {
+  state.load++;
   for (const s of state.stills) {
     s.bitmap.close();
     URL.revokeObjectURL(s.url);
@@ -445,7 +457,8 @@ async function makeGif(): Promise<void> {
     return;
   }
   const writer = new GifWriter({ ...size, loop: LOOPS[state.loop] });
-  const delayMs = clip ? 1000 / state.fps : state.delayMs;
+  // Video frames show for exactly the time between their samples, so the GIF plays at the clip's own speed.
+  const delayMs = clip ? (times.length > 1 ? (times[1]! - times[0]!) * 1000 : 1000 / state.fps) : state.delayMs;
   try {
     if (clip) clip.video.pause();
     for (let i = 0; i < count; i++) {
@@ -478,7 +491,7 @@ async function makeGif(): Promise<void> {
   state.busy = false;
   setStatus(t("gifMaker.done", { n: count, size: formatBytes(blob.size), w: size.width, h: size.height }));
   const first = clip ? clip.file : state.stills[0]!.file;
-  const name = `${stemAndExt(first.name).stem.replace(/[^\w\u0080-\uFFFF.-]+/g, "_").slice(0, 60) || "animation"}.gif`;
+  const name = outputFilename(first.name, "image/gif", "");
   els.result.replaceChildren(
     h("img", { src: state.result.url, alt: t("gifMaker.resultAlt"), width: size.width, height: size.height, class: "gif-out" }),
     h("div", { class: "stage-actions" },

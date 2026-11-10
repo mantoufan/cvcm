@@ -1,4 +1,4 @@
-import { mimeForFormat, stemAndExt } from "../../shared/filename";
+import { mimeForFormat, safeStem } from "../../shared/filename";
 import { MAX_GRID, SPLIT_PRESETS, clampGrid, cropArea, postingOrder, splitGrid, tileName, type Tile } from "../../shared/image-split";
 import { zipStore } from "../../shared/zip";
 import { canvasToBlob, decodeImage } from "../decode";
@@ -107,7 +107,7 @@ function stagePane(): HTMLElement {
 }
 
 function controls(): HTMLElement {
-  const num = (value: number, onInput: (n: number) => void) => {
+  const num = (value: number, onInput: (n: number) => void, get: () => number) => {
     const el = h("input", {
       type: "number",
       min: "1",
@@ -118,18 +118,20 @@ function controls(): HTMLElement {
       onInput: () => {
         // A half-typed box keeps the last good value.
         if (el.value.trim() === "" || !Number.isFinite(Number(el.value))) return;
-        onInput(clampGrid(Number(el.value)));
+        const n = clampGrid(Number(el.value));
+        if (n !== get()) onInput(n);
       },
-      onChange: () => { el.value = String(clampGrid(Number(el.value))); },
+      // Leaving the box shows the value in use: clamped, or the last good one for a blank or broken entry.
+      onChange: () => { el.value = String(get()); },
     });
     return el;
   };
-  rowsEl = num(state.rows, (n) => { state.rows = n; changed(); });
+  rowsEl = num(state.rows, (n) => { state.rows = n; changed(); }, () => state.rows);
   rowsEl.dataset.field = "rows";
-  colsEl = num(state.cols, (n) => { state.cols = n; changed(); });
+  colsEl = num(state.cols, (n) => { state.cols = n; changed(); }, () => state.cols);
   colsEl.dataset.field = "cols";
   squareEl = h("input", { type: "checkbox", checked: state.square, "data-field": "square", onChange: () => { state.square = squareEl!.checked; changed(); } });
-  const order = h("input", { type: "checkbox", checked: state.showOrder, "data-field": "order", onChange: () => { state.showOrder = order.checked; paint(); } });
+  const order = h("input", { type: "checkbox", checked: state.showOrder, "data-field": "order", onChange: () => { state.showOrder = order.checked; paint(); renderGallery(); } });
   const format = h("select", { "data-field": "format", onChange: () => { state.format = format.value as Format; changed(); } },
     h("option", { value: "png", selected: state.format === "png" }, "PNG"),
     h("option", { value: "jpeg", selected: state.format === "jpeg" }, "JPG"),
@@ -236,6 +238,10 @@ function paint(): void {
   ctx.drawImage(s.bitmap, 0, 0, preview.width, preview.height);
   const list = tiles();
   const area = cropArea(s.width, s.height, state.rows, state.cols, state.square);
+  if (tooFine(list)) {
+    infoEl.textContent = t("imageSplitter.tooFine", { W: s.width, H: s.height });
+    return;
+  }
   // Dim what the square crop trims off.
   ctx.fillStyle = "rgba(255, 255, 255, 0.7)";
   ctx.fillRect(0, 0, preview.width, area.y * scale);
@@ -287,9 +293,13 @@ async function split(): Promise<Piece[] | null> {
     return null;
   }
   if (state.pieces.length) return state.pieces;
+  if (tooFine(tiles())) {
+    if (statusEl) statusEl.textContent = t("imageSplitter.tooFine", { W: s.width, H: s.height });
+    return null;
+  }
   const run = ++state.run;
   if (statusEl) statusEl.textContent = t("imageSplitter.working");
-  const { stem } = stemAndExt(s.file.name);
+  const stem = safeStem(s.file.name, "image");
   const ext = state.format === "jpeg" ? "jpg" : state.format;
   const mime = mimeForFormat(state.format);
   const pieces: Piece[] = [];
@@ -311,7 +321,7 @@ async function split(): Promise<Piece[] | null> {
         for (const p of pieces) URL.revokeObjectURL(p.url);
         return null;
       }
-      pieces.push({ tile, blob, url: URL.createObjectURL(blob), name: tileName(safeStem(stem), tile, state.rows, state.cols, ext) });
+      pieces.push({ tile, blob, url: URL.createObjectURL(blob), name: tileName(stem, tile, state.rows, state.cols, ext) });
     }
   } catch {
     for (const p of pieces) URL.revokeObjectURL(p.url);
@@ -319,13 +329,7 @@ async function split(): Promise<Piece[] | null> {
     return null;
   }
   state.pieces = pieces;
-  const order = postingOrder(pieces.length);
-  galleryEl?.replaceChildren(...pieces.map((p) => h("li", { class: "split-tile" },
-    h("button", { type: "button", class: "split-save", title: t("imageSplitter.saveTile", { name: p.name }), onClick: () => downloadBlob(p.blob, p.name) },
-      h("img", { src: p.url, alt: t("imageSplitter.tileAlt", { row: p.tile.row + 1, col: p.tile.col + 1 }), width: p.tile.width, height: p.tile.height }),
-      h("span", null, state.showOrder ? t("imageSplitter.postN", { n: order[p.tile.index]! }) : p.name),
-    ),
-  )));
+  renderGallery();
   if (statusEl) statusEl.textContent = t("imageSplitter.done", { n: pieces.length });
   return pieces;
 }
@@ -338,11 +342,21 @@ async function downloadZip(): Promise<void> {
   const zip = zipStore(entries);
   const packed = new ArrayBuffer(zip.byteLength);
   new Uint8Array(packed).set(zip);
-  const { stem } = stemAndExt(state.source.file.name);
-  downloadBlob(new Blob([packed], { type: "application/zip" }), `${safeStem(stem)}-${state.rows}x${state.cols}.zip`);
+  downloadBlob(new Blob([packed], { type: "application/zip" }), `${safeStem(state.source.file.name, "image")}-${state.rows}x${state.cols}.zip`);
 }
 
-/** A file-name stem without characters file systems refuse. */
-function safeStem(stem: string): string {
-  return stem.replace(/[^\w\u0080-\uFFFF.-]+/g, "_").slice(0, 60) || "image";
+/** Every tile needs at least one pixel each way: a grid finer than the picture cannot be cut. */
+function tooFine(list: Tile[]): boolean {
+  return list.length === 0 || list.some((tl) => tl.width < 1 || tl.height < 1);
+}
+
+/** The cut tiles, each a button that saves it, labelled by file name or by posting order. */
+function renderGallery(): void {
+  const order = postingOrder(state.pieces.length);
+  galleryEl?.replaceChildren(...state.pieces.map((p) => h("li", { class: "split-tile" },
+    h("button", { type: "button", class: "split-save", title: t("imageSplitter.saveTile", { name: p.name }), onClick: () => downloadBlob(p.blob, p.name) },
+      h("img", { src: p.url, alt: t("imageSplitter.tileAlt", { row: p.tile.row + 1, col: p.tile.col + 1 }), width: p.tile.width, height: p.tile.height }),
+      h("span", null, state.showOrder ? t("imageSplitter.postN", { n: order[p.tile.index]! }) : p.name),
+    ),
+  )));
 }

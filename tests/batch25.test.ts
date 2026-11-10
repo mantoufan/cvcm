@@ -347,6 +347,13 @@ describe("decimal input", () => {
     expect(parseDecimalInput("1,000", "en")).toBe(1000);
     expect(parseDecimalInput("1,000", "vi")).toBe(1);
     expect(parseDecimalInput("1,000.5", "es")).toBe(1000.5);
+    expect(parseDecimalInput("1.000,5", "es")).toBe(1000.5);
+    expect(parseDecimalInput("1.000,5", "en")).toBe(1000.5);
+    expect(parseDecimalInput("1.000", "id")).toBe(1000);
+    expect(parseDecimalInput("12.500.000", "vi")).toBe(12500000);
+    expect(parseDecimalInput("1.5", "es")).toBe(1.5);
+    expect(parseDecimalInput("1.000", "en")).toBe(1);
+    expect(parseDecimalInput("1.000.5", "en")).toBeNaN();
     expect(parseDecimalInput("0,125", "en")).toBe(0.125);
     expect(parseDecimalInput("−2", "en")).toBe(-2);
     expect(parseDecimalInput("", "en")).toBeUndefined();
