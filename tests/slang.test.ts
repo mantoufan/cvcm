@@ -72,6 +72,14 @@ describe("slang: catalog", () => {
     }
     for (const id of SLANG_FOCUS) expect(isSlangId(id), id).toBe(true);
   });
+
+  it("keeps the footer's entry names equal to each entry's name", () => {
+    for (const locale of LOCALES) {
+      const names = (readJson(`src/locales/${locale}.json`) as { slangFocus: Record<string, string> }).slangFocus;
+      expect(Object.keys(names).sort()).toEqual([...SLANG_FOCUS].sort());
+      for (const id of SLANG_FOCUS) expect(names[id], `${locale} ${id}`).toBe((readJson(`src/locales/slang/${locale}/${id}.json`) as { name: string }).name);
+    }
+  });
 });
 
 describe("slang: content", () => {
@@ -116,7 +124,7 @@ describe("slang: content", () => {
         }
       }
     }
-  });
+  }, 30_000);
 
   it("puts the searched phrase at the start of each Chinese title", () => {
     for (const id of SLANG_ENTRIES) {

@@ -21,6 +21,7 @@ describe("slang shell", () => {
     expect(order.indexOf("slang")).toBe(order.indexOf("reference") + 1);
     expect(document.querySelector('.dir a[data-nav="slang"]')).not.toBeNull();
     expect(document.querySelector('.dir a[data-nav="slang-334424044"]')?.textContent).toBe("334424044");
+    expect(document.querySelector('.dir a[data-nav="slang-neijuan"]')?.textContent).toBe("Neijuan (内卷)");
     expect(document.getElementById("article-jsonld")?.textContent).toContain("DefinedTermSet");
 
     document.querySelector<HTMLAnchorElement>('main a[data-nav="slang-yyds"]')!.click();

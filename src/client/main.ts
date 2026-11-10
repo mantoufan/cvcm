@@ -40,7 +40,7 @@ import { DATASETS, type DatasetId } from "../shared/datasets";
 import { RANKINGS, type RankingId } from "../shared/rankings";
 import { KB_SHELVES, KNOWLEDGE_ARTICLES, isKbId, kbArticleOf, kbGroupsOf, kbHubOfNav, type KbPage } from "../shared/kb";
 import { REF_FOCUS, isRefId, type RefId, type RefPage } from "../shared/ref";
-import { SLANG_FOCUS, SLANG_META, isSlangId, type SlangId, type SlangPage } from "../shared/slang";
+import { SLANG_FOCUS, isSlangId, type SlangId, type SlangPage } from "../shared/slang";
 import { BRANDED_TOOLS, hreflangAlternates, pageCanonical, pageDescription, pageTitle } from "../shared/seo";
 import { HREFLANG } from "../shared/sitemap";
 import { toolLessonsSection } from "./tool-lessons";
@@ -894,13 +894,13 @@ function toolDirectory(loc: Locale): HTMLElement {
         ),
       ),
     ),
-    // Slang entries are in the slang pack; the footer links the hub and the SLANG_FOCUS terms, which read the same in
-    // every locale (SLANG_META term).
+    // Slang entry names live in the slang pack (slang pages only), so the footer links the hub and only the SLANG_FOCUS
+    // entries, whose names are also in the core pack (slangFocus.*).
     h("div", { class: "dir-group" },
       h("h2", null, h("a", { href: slangHref(loc), "data-nav": "slang", "aria-current": slangPage === "hub" ? "page" : undefined }, t("nav.slang"))),
       h("p", null,
         ...SLANG_FOCUS.map((id) =>
-          h("a", { href: slangHref(loc, id), "data-nav": `slang-${id}`, "aria-current": slangPage === id ? "page" : undefined }, SLANG_META[id].term),
+          h("a", { href: slangHref(loc, id), "data-nav": `slang-${id}`, "aria-current": slangPage === id ? "page" : undefined }, t(`slangFocus.${id}`)),
         ),
       ),
     ),
