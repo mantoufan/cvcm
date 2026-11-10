@@ -115,8 +115,8 @@ function syncOptions(): void {
   els.kind.disabled = !a.vowels;
   els.letterCase.disabled = !a.cased;
   const o = options();
-  const n = letterPool(o).length;
-  els.pool.textContent = t("randomLetter.poolSize", { n, letters: letterPool(o).join(" ") });
+  const pool = letterPool(o);
+  els.pool.textContent = t("randomLetter.poolSize", { n: pool.length, letters: pool.join(" ") });
   els.error.textContent = "";
 }
 

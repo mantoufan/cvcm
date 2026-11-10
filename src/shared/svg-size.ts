@@ -76,3 +76,26 @@ export function sizedSvg(text: string, info: SvgInfo, width: number, height: num
 export function isSvgFile(file: { name: string; type: string }): boolean {
   return file.type === "image/svg+xml" || /\.svg$/i.test(file.name);
 }
+
+/**
+ * An SVG file's bytes as text, decoded the way an XML parser would (byte-order mark, else the encoding declaration,
+ * else UTF-8), with the declaration rewritten to UTF-8 because the text is saved again as UTF-8 for drawing.
+ */
+export function svgText(bytes: ArrayBuffer): string {
+  const b = new Uint8Array(bytes);
+  let label = "utf-8";
+  if (b[0] === 0xfe && b[1] === 0xff) label = "utf-16be";
+  else if (b[0] === 0xff && b[1] === 0xfe) label = "utf-16le";
+  else {
+    const head = String.fromCharCode(...b.subarray(0, 200));
+    const m = /^(?:\uFEFF|\xEF\xBB\xBF)?<\?xml[^>]*\sencoding\s*=\s*["']([A-Za-z0-9._-]+)["']/.exec(head);
+    if (m) label = m[1]!;
+  }
+  let text: string;
+  try {
+    text = new TextDecoder(label).decode(b);
+  } catch {
+    text = new TextDecoder("utf-8").decode(b);
+  }
+  return text.replace(/^(\uFEFF?<\?xml[^>]*\sencoding\s*=\s*)(["'])[^"']*\2/, "$1$2UTF-8$2");
+}

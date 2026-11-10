@@ -57,31 +57,38 @@ class Bytes {
   }
 }
 
-// Scratch buffers reused frame after frame (the page encodes one frame at a time), cleared on each use.
-let hist: { count: Uint32Array; sumR: Float64Array; sumG: Float64Array; sumB: Float64Array } | null = null;
-let cacheBuf: Int16Array | null = null;
+/** Scratch buffers one writer reuses frame after frame (cleared on each use) and drops with the writer. */
+export type GifScratch = {
+  hist: { count: Uint32Array; sumR: Float64Array; sumG: Float64Array; sumB: Float64Array } | null;
+  cache: Int16Array | null;
+  lzw: LzwTable | null;
+};
 
-function histogram(): NonNullable<typeof hist> {
-  hist ??= { count: new Uint32Array(32768), sumR: new Float64Array(32768), sumG: new Float64Array(32768), sumB: new Float64Array(32768) };
-  hist.count.fill(0);
-  hist.sumR.fill(0);
-  hist.sumG.fill(0);
-  hist.sumB.fill(0);
-  return hist;
+export function newScratch(): GifScratch {
+  return { hist: null, cache: null, lzw: null };
 }
 
-function colorCache(): Int16Array {
-  cacheBuf ??= new Int16Array(262144);
-  return cacheBuf.fill(-1);
+function histogram(sc: GifScratch): NonNullable<GifScratch["hist"]> {
+  sc.hist ??= { count: new Uint32Array(32768), sumR: new Float64Array(32768), sumG: new Float64Array(32768), sumB: new Float64Array(32768) };
+  sc.hist.count.fill(0);
+  sc.hist.sumR.fill(0);
+  sc.hist.sumG.fill(0);
+  sc.hist.sumB.fill(0);
+  return sc.hist;
+}
+
+function colorCache(sc: GifScratch): Int16Array {
+  sc.cache ??= new Int16Array(262144);
+  return sc.cache.fill(-1);
 }
 
 /**
  * Median cut over a 5-bit-per-channel histogram: boxes are split at the pixel-count median of their longest channel,
  * the busiest wide box first, and each colour is the true mean of the pixels in its box. Returns RGB triples.
  */
-export function quantize(rgba: Uint8ClampedArray, colors: number): Uint8Array {
+export function quantize(rgba: Uint8ClampedArray, colors: number, sc: GifScratch = newScratch()): Uint8Array {
   const want = Math.max(2, Math.min(256, Math.round(colors)));
-  const { count, sumR, sumG, sumB } = histogram();
+  const { count, sumR, sumG, sumB } = histogram(sc);
   for (let i = 0; i < rgba.length; i += 4) {
     const r = rgba[i]!;
     const g = rgba[i + 1]!;
@@ -155,10 +162,10 @@ export function quantize(rgba: Uint8ClampedArray, colors: number): Uint8Array {
 }
 
 /** Palette index for every pixel; with `dither`, Floyd–Steinberg spreads each pixel's error to its neighbours. */
-export function mapPixels(rgba: Uint8ClampedArray, width: number, height: number, palette: Uint8Array, dither: boolean): Uint8Array {
+export function mapPixels(rgba: Uint8ClampedArray, width: number, height: number, palette: Uint8Array, dither: boolean, sc: GifScratch = newScratch()): Uint8Array {
   const n = palette.length / 3;
   // Nearest colour per 6-bit-per-channel cell, found on first use.
-  const cache = colorCache();
+  const cache = colorCache(sc);
   const nearest = (r: number, g: number, b: number): number => {
     const key = ((r >> 2) << 12) | ((g >> 2) << 6) | (b >> 2);
     const hit = cache[key]!;
@@ -233,14 +240,6 @@ type LzwTable = { codes: Int16Array; stamps: Uint16Array; gen: number };
 
 function newLzwTable(): LzwTable {
   return { codes: new Int16Array(4096 << 8), stamps: new Uint16Array(4096 << 8), gen: 0 };
-}
-
-let shared: LzwTable | null = null;
-
-/** One table for every writer: frames are encoded one at a time and each starts with a reset. */
-function sharedLzwTable(): LzwTable {
-  shared ??= newLzwTable();
-  return shared;
 }
 
 function resetLzwTable(t: LzwTable): void {
@@ -323,7 +322,8 @@ function writeLzw(indices: Uint8Array, minCodeSize: number, out: Bytes, table: L
 export class GifWriter {
   private out = new Bytes();
   private frames = 0;
-  private table = sharedLzwTable();
+  /** Buffers kept for this writer's frames only; they go when the writer does, finished or abandoned. */
+  private scratch = newScratch();
   constructor(private readonly opts: GifOptions) {
     const { width, height, loop } = opts;
     this.out.push(0x47, 0x49, 0x46, 0x38, 0x39, 0x61);
@@ -342,8 +342,8 @@ export class GifWriter {
   addFrame(rgba: Uint8ClampedArray, frame: FrameOptions): void {
     const { width, height } = this.opts;
     if (rgba.length !== width * height * 4) throw new Error("frame size");
-    const palette = quantize(rgba, frame.colors);
-    const indices = mapPixels(rgba, width, height, palette, frame.dither);
+    const palette = quantize(rgba, frame.colors, this.scratch);
+    const indices = mapPixels(rgba, width, height, palette, frame.dither, this.scratch);
     // The colour table holds 2^bits entries; unused ones stay black.
     let bits = 1;
     while (1 << bits < palette.length / 3) bits++;
@@ -360,7 +360,8 @@ export class GifWriter {
     const table = new Uint8Array((1 << bits) * 3);
     table.set(palette);
     this.out.bytes(table);
-    writeLzw(indices, Math.max(2, bits), this.out, this.table);
+    this.scratch.lzw ??= newLzwTable();
+    writeLzw(indices, Math.max(2, bits), this.out, this.scratch.lzw);
     this.frames++;
   }
 
@@ -368,12 +369,10 @@ export class GifWriter {
     return this.frames;
   }
 
-  /** The file. Also lets the shared scratch buffers go, so about 5 MB is not held after the last GIF. */
+  /** The file. The scratch buffers are let go at once rather than with the writer. */
   finish(): Uint8Array {
     this.out.byte(0x3b);
-    shared = null;
-    hist = null;
-    cacheBuf = null;
+    this.scratch = newScratch();
     return this.out.result();
   }
 }

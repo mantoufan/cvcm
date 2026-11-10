@@ -34,6 +34,7 @@ let rowsEl: HTMLInputElement | null = null;
 let colsEl: HTMLInputElement | null = null;
 let squareEl: HTMLInputElement | null = null;
 let formatEl: HTMLSelectElement | null = null;
+let orderEl: HTMLInputElement | null = null;
 
 export function mountImageSplitter(host: HTMLElement): void {
   host.append(
@@ -57,7 +58,7 @@ export function unmountImageSplitter(): void {
   state.load++;
   preview = statusEl = infoEl = galleryEl = null;
   rowsEl = colsEl = squareEl = null;
-  formatEl = null;
+  formatEl = orderEl = null;
   state.formatChosen = false;
 }
 
@@ -139,7 +140,7 @@ function controls(): HTMLElement {
   colsEl = num(state.cols, (n) => { state.cols = n; changed(); }, () => state.cols);
   colsEl.dataset.field = "cols";
   squareEl = h("input", { type: "checkbox", checked: state.square, "data-field": "square", onChange: () => { state.square = squareEl!.checked; changed(); } });
-  const order = h("input", { type: "checkbox", checked: state.showOrder, "data-field": "order", onChange: () => { state.showOrder = order.checked; paint(); renderGallery(); } });
+  orderEl = h("input", { type: "checkbox", checked: state.showOrder, "data-field": "order", onChange: () => { state.showOrder = orderEl!.checked; paint(); renderGallery(); } });
   formatEl = h("select", { "data-field": "format", onChange: () => { state.format = formatEl!.value as Format; state.formatChosen = true; changed(); } },
     h("option", { value: "png", selected: state.format === "png" }, "PNG"),
     h("option", { value: "jpeg", selected: state.format === "jpeg" }, "JPG"),
@@ -165,7 +166,7 @@ function controls(): HTMLElement {
       labeled(t("imageSplitter.rows"), rowsEl),
       labeled(t("imageSplitter.cols"), colsEl),
       h("label", { class: "check" }, squareEl, h("span", null, t("imageSplitter.square"))),
-      h("label", { class: "check" }, order, h("span", null, t("imageSplitter.showOrder"))),
+      h("label", { class: "check" }, orderEl, h("span", null, t("imageSplitter.showOrder"))),
       labeled(t("imageSplitter.format"), formatEl),
     ),
     h("p", { class: "hint" }, t("imageSplitter.hint")),
@@ -234,6 +235,7 @@ function dropPieces(): void {
 /** The picture with the grid on top, trimmed areas dimmed, and each tile's number. */
 function paint(): void {
   if (!preview || !infoEl) return;
+  if (orderEl) orderEl.disabled = state.cols !== 3;
   const s = state.source;
   const ctx = preview.getContext("2d");
   if (!s) {
@@ -276,7 +278,7 @@ function paint(): void {
     ctx.lineWidth = Math.max(1, line / 2);
     ctx.strokeRect(x, y, w, hgt);
     ctx.lineWidth = line;
-    const label = String(state.showOrder ? order[tile.index] : tile.index + 1);
+    const label = String(showingOrder() ? order[tile.index] : tile.index + 1);
     ctx.fillStyle = "rgba(0, 0, 0, 0.45)";
     ctx.beginPath();
     ctx.arc(x + w / 2, y + hgt / 2, font * 0.85, 0, Math.PI * 2);
@@ -359,6 +361,14 @@ async function downloadZip(): Promise<void> {
   downloadBlob(new Blob([packed], { type: "application/zip" }), zipName);
 }
 
+/**
+ * Posting order only works for three columns: Instagram's profile grid is three wide, so other grids would land
+ * scrambled. The box is off for them.
+ */
+function showingOrder(): boolean {
+  return state.showOrder && state.cols === 3;
+}
+
 /** Every tile needs at least one pixel each way: a grid finer than the picture cannot be cut. */
 function tooFine(list: Tile[]): boolean {
   return list.length === 0 || list.some((tl) => tl.width < 1 || tl.height < 1);
@@ -370,7 +380,7 @@ function renderGallery(): void {
   galleryEl?.replaceChildren(...state.pieces.map((p) => h("li", { class: "split-tile" },
     h("button", { type: "button", class: "split-save", title: t("imageSplitter.saveTile", { name: p.name }), onClick: () => downloadBlob(p.blob, p.name) },
       h("img", { src: p.url, alt: t("imageSplitter.tileAlt", { row: p.tile.row + 1, col: p.tile.col + 1 }), width: p.tile.width, height: p.tile.height }),
-      h("span", null, state.showOrder ? t("imageSplitter.postN", { n: order[p.tile.index]! }) : p.name),
+      h("span", null, showingOrder() ? t("imageSplitter.postN", { n: order[p.tile.index]! }) : p.name),
     ),
   )));
 }

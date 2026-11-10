@@ -444,14 +444,15 @@ function drawFrame(ctx: CanvasRenderingContext2D, source: ImageBitmap | HTMLVide
 }
 
 /**
- * No GIF side is more than 1600 px (800 wide, at most twice that tall for a portrait first frame), and a picture filled
- * into a frame of another shape is scaled by its short edge, so a short edge of 1600 px is always enough. Phone photos
- * are kept at about 3 megapixels instead of 12, and a long panorama keeps its full length.
+ * A picture is kept at most 1600 px on its short edge (no GIF side is longer) and at most 1.5 megapixels, so 300 phone
+ * photos stay near 1.8 GB rather than 14. That is plenty for GIFs up to 800 px wide; filling a very tall frame with a
+ * wide picture may scale it up a little.
  */
 const KEEP_EDGE = 1600;
+const KEEP_PIXELS = 1_500_000;
 
 async function shrink(bitmap: ImageBitmap): Promise<ImageBitmap> {
-  const scale = KEEP_EDGE / Math.min(bitmap.width, bitmap.height);
+  const scale = Math.min(KEEP_EDGE / Math.min(bitmap.width, bitmap.height), Math.sqrt(KEEP_PIXELS / (bitmap.width * bitmap.height)));
   if (scale >= 1) return bitmap;
   try {
     const small = await createImageBitmap(bitmap, { resizeWidth: Math.round(bitmap.width * scale), resizeHeight: Math.round(bitmap.height * scale), resizeQuality: "high" });
@@ -478,7 +479,9 @@ const yieldFrame = () => new Promise<void>((resolve) => setTimeout(resolve, 0));
 /** How long a video may take to report its size, or one seek to land, before the page says it cannot read it. */
 const LOAD_TIMEOUT_MS = 20000;
 
-function seek(video: HTMLVideoElement, time: number): Promise<void> {
+async function seek(video: HTMLVideoElement, time: number): Promise<void> {
+  // A seek still landing from a stopped encode would otherwise answer this one early.
+  if (video.seeking) await new Promise((r) => video.addEventListener("seeked", r, { once: true }));
   return new Promise((resolve, reject) => {
     const timer = window.setTimeout(() => fail(), LOAD_TIMEOUT_MS);
     const done = () => {
@@ -568,7 +571,8 @@ async function makeGif(): Promise<void> {
     }
     return;
   } finally {
-    if (clip) {
+    // A newer encode may already have the player locked: only the last one unlocks it.
+    if (clip && (run === state.run || !state.busy)) {
       clip.video.controls = true;
       clip.video.style.pointerEvents = "";
     }

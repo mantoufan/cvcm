@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Check a batch 25 translation against en: same keys, same {placeholders}, button names quoted in how-tos exist in the UI."""
+"""Check a batch 25 translation against en: same keys and the same {placeholders} (button names quoted in how-tos are checked by hand)."""
 import json, re, sys
 from pathlib import Path
 

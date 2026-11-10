@@ -112,6 +112,10 @@ describe("image splitter ui", () => {
     expect(host.querySelectorAll("[data-preset]")).toHaveLength(6);
     click("[data-action=split]");
     expect(q("[data-out=status]").textContent).toBe("Add a picture first.");
+    expect(q<HTMLInputElement>("[data-field=order]").disabled).toBe(false);
+    click("[data-preset=grid2x2]");
+    // Posting order is for Instagram's three-wide grid only.
+    expect(q<HTMLInputElement>("[data-field=order]").disabled).toBe(true);
     click("[data-preset=row1x3]");
     expect(q<HTMLInputElement>("[data-field=rows]").value).toBe("1");
     expect(q<HTMLInputElement>("[data-field=cols]").value).toBe("3");

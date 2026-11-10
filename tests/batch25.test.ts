@@ -6,7 +6,7 @@ import { AREA_FIELDS, AREA_SHAPES, convertArea, solveArea } from "../src/shared/
 import { VOLUME_FIELDS, VOLUME_SHAPES, convertVolume, solveVolume } from "../src/shared/volume";
 import { ALPHABET, ALPHABETS, drawLetters, letterPool } from "../src/shared/random-letter";
 import { cropArea, postingOrder, splitGrid, tileName } from "../src/shared/image-split";
-import { readSvg, sizedSvg, svgLength, svgPixelSize, MAX_SVG_EDGE, MAX_SVG_PIXELS } from "../src/shared/svg-size";
+import { readSvg, sizedSvg, svgLength, svgPixelSize, svgText, MAX_SVG_EDGE, MAX_SVG_PIXELS } from "../src/shared/svg-size";
 import { parseDecimalInput } from "../src/shared/decimal-input";
 
 const W = 160;
@@ -355,6 +355,12 @@ describe("svg size", () => {
     expect(out).toBe('<svg width="40" height="80" viewBox="0 0 10 20" stroke-width="3"><rect width="5" height="5"/></svg>');
     const vb = '<svg viewBox="0 0 24 24" width="24px" height="24px"/>';
     expect(sizedSvg(vb, readSvg(vb)!, 96, 96)).toBe('<svg width="96" height="96" viewBox="0 0 24 24"/>');
+  });
+
+  it("decodes an SVG in its declared encoding and redeclares it as UTF-8", () => {
+    const latin1 = new Uint8Array([...new TextEncoder().encode('<?xml version="1.0" encoding="ISO-8859-1"?><svg><text>caf'), 0xe9, ...new TextEncoder().encode("</text></svg>")]);
+    expect(svgText(latin1.buffer)).toBe('<?xml version="1.0" encoding="UTF-8"?><svg><text>café</text></svg>');
+    expect(svgText(new TextEncoder().encode("<svg>é</svg>").buffer)).toBe("<svg>é</svg>");
   });
 
   it("scales but caps the pixel size", () => {

@@ -1,4 +1,4 @@
-import { isSvgFile, readSvg, sizedSvg, svgPixelSize } from "../shared/svg-size";
+import { isSvgFile, readSvg, sizedSvg, svgPixelSize, svgText, type SvgInfo } from "../shared/svg-size";
 
 /**
  * Any picture the browser can read. An SVG is drawn from its source at its own size (given an explicit width and height
@@ -8,13 +8,11 @@ export async function decodeImage(
   file: Blob,
 ): Promise<{ bitmap: ImageBitmap; width: number; height: number }> {
   if (isSvgFile({ name: file instanceof File ? file.name : "", type: file.type })) {
-    const text = await file.text();
-    const info = readSvg(text);
-    // An SVG whose root we cannot read (a prefixed svg:svg, say) still gets the browser's own try below.
-    if (info) {
-      const { width, height } = svgPixelSize(info, 1);
+    // An SVG whose root we cannot read (a prefixed svg:svg, say) or draw still gets the browser's own try below.
+    const svg = await readSvgFile(file);
+    if (svg) {
       try {
-        return { bitmap: await rasterizeSvg(sizedSvg(text, info, width, height), width, height), width, height };
+        return await drawSvg(svg, 1);
       } catch {
         // Fall through.
       }
@@ -69,8 +67,23 @@ export function drawToCanvas(
   return canvas;
 }
 
-/** Draws SVG text (already sized to `width` × `height`) as an image onto a canvas of that size: vector-sharp at any scale. */
-export async function rasterizeSvg(svg: string, width: number, height: number): Promise<ImageBitmap> {
+export type SvgSource = { text: string; info: SvgInfo };
+
+/** An SVG file's text (in its declared encoding) and root size; null when its root tag cannot be read. */
+export async function readSvgFile(file: Blob): Promise<SvgSource | null> {
+  const text = svgText(await file.arrayBuffer());
+  const info = readSvg(text);
+  return info ? { text, info } : null;
+}
+
+/** An SVG drawn from its source at its own size × `scale` (capped by svgPixelSize), vector-sharp. */
+export async function drawSvg(svg: SvgSource, scale: number): Promise<{ bitmap: ImageBitmap; width: number; height: number }> {
+  const { width, height } = svgPixelSize(svg.info, scale);
+  return { bitmap: await rasterizeSvg(sizedSvg(svg.text, svg.info, width, height), width, height), width, height };
+}
+
+/** Draws SVG text (already sized to `width` × `height`) as an image onto a canvas of that size. */
+async function rasterizeSvg(svg: string, width: number, height: number): Promise<ImageBitmap> {
   const url = URL.createObjectURL(new Blob([svg], { type: "image/svg+xml" }));
   try {
     const img = await loadImage(url);

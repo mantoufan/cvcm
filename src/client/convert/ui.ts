@@ -1,12 +1,12 @@
 import { blobFromBytes, encodeBmp, encodeGif, encodeIco } from "../../shared/image-encode";
 import { lossyFormat, mimeForFormat, outputFilename, type ImageFormat } from "../../shared/filename";
 import { zipStore } from "../../shared/zip";
-import { canvasToBlob, decodeImage, drawToCanvas, rasterizeSvg } from "../decode";
+import { canvasToBlob, decodeImage, drawSvg, drawToCanvas, readSvgFile, type SvgSource } from "../decode";
 import { downloadBlob, h } from "../dom";
 import { locale, t } from "../i18n";
 import { CONVERT_JOB_FORMAT, appHref, parseAppPath, type ConvertJobId } from "../../shared/path";
 import { clearDraft, debounce, loadDraft, markSession, saveDraft, sessionLive } from "../session";
-import { isSvgFile, readSvg, sizedSvg, svgPixelSize, type SvgInfo } from "../../shared/svg-size";
+import { isSvgFile } from "../../shared/svg-size";
 
 type Item = {
   id: string;
@@ -17,7 +17,7 @@ type Item = {
   bitmap: ImageBitmap | null;
   error: string | null;
   /** SVG source, kept so a new scale redraws it sharp instead of stretching the bitmap. */
-  svg: { text: string; info: SvgInfo } | null;
+  svg: SvgSource | null;
   /** Still being read in: a scale change is picked up by the ingest itself, not redrawn twice. */
   ingesting: boolean;
 };
@@ -314,10 +314,9 @@ async function ingestFile(file: File): Promise<void> {
 
 /** Draws an SVG from its source at the SVG scale; false when its root cannot be read or drawn that way. */
 async function ingestSvg(item: Item): Promise<boolean> {
-  const text = await item.file.text();
-  const info = readSvg(text);
-  if (!info) return false;
-  item.svg = { text, info };
+  const svg = await readSvgFile(item.file);
+  if (!svg) return false;
+  item.svg = svg;
   try {
     // If the scale changes while this draws, draw again at the new one.
     let scale = state.svgScale;
@@ -340,8 +339,7 @@ async function ingestSvg(item: Item): Promise<boolean> {
 /** Draws an SVG item at its own size × `scale` from the vector source, so 2×–4× stay sharp. */
 async function rasterSvg(item: Item, scale: SvgScale): Promise<{ bitmap: ImageBitmap; width: number; height: number }> {
   if (!item.svg) throw new Error("svg");
-  const { width, height } = svgPixelSize(item.svg.info, scale);
-  return { bitmap: await rasterizeSvg(sizedSvg(item.svg.text, item.svg.info, width, height), width, height), width, height };
+  return drawSvg(item.svg, scale);
 }
 
 function applyRaster(item: Item, r: { bitmap: ImageBitmap; width: number; height: number }): void {
