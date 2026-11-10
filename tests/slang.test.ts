@@ -12,7 +12,7 @@ import { SLANG_ENTRIES, SLANG_FOCUS, SLANG_GROUPS, SLANG_META, SLANG_PUBLISHED, 
 import { slangArticleJsonLd, slangCopy, slangPageHtml, slangTitle, type SlangEntryCopy } from "../src/shared/slang-i18n";
 import { slangSyncFiles } from "../src/shared/slang-sync";
 import type { KbBlock } from "../src/shared/kb-i18n";
-import { applyHtmlSeo, pageCanonical, pageTitle } from "../src/shared/seo";
+import { applyHtmlSeo, pageCanonical, pageDescription, pageTitle } from "../src/shared/seo";
 import { buildSitemapXml, sitemapPages } from "../src/shared/sitemap";
 import { isTrackedPath } from "../src/shared/analytics";
 
@@ -90,9 +90,11 @@ describe("slang: content", () => {
         const path = `src/locales/slang/${locale}/${id}.json`;
         expect(existsSync(join(root, path)), path).toBe(true);
         const copy = readJson(path) as SlangEntryCopy;
-        const en = readJson(`src/locales/slang/en/${id}.json`) as SlangEntryCopy;
-        expect(Object.keys(copy).sort(), path).toEqual(Object.keys(en).sort());
-        expect(structure(copy).sections, path).toBe(structure(en).sections);
+        // Chinese-origin entries are mastered in zh-CN, English ones in en: translations keep the master's sections and block kinds.
+        const master = readJson(`src/locales/slang/${SLANG_META[id].origin === "en" ? "en" : "zh-CN"}/${id}.json`) as SlangEntryCopy;
+        expect(Object.keys(copy).sort(), path).toEqual(Object.keys(master).sort());
+        // en and zh-CN were both written from sources (the other is not a translation of the master), so only the six translated locales must match.
+        if (locale !== "en" && locale !== "zh-CN") expect(structure(copy), path).toEqual(structure(master));
         // The registered copy is this locale's own file, not the English fallback.
         expect(slangCopy(locale, id), path).toEqual(copy);
       }
@@ -185,6 +187,7 @@ describe("slang: routes", () => {
     expect(parseAppPath("/slang/yyds")).toEqual({ kind: "bare-slang", entry: "yyds" });
     expect(parseAppPath("/en/slang/nope/")).toEqual({ kind: "unknown" });
     expect(parseAppPath("/en/slang/yyds/x/")).toEqual({ kind: "unknown" });
+    expect(parseAppPath("/en/slang/FOMO/")).toEqual({ kind: "slang", locale: "en", entry: "fomo" });
     expect(slangHref("zh-TW")).toBe("/zh-tw/slang/");
     expect(slangHref("ja", "67")).toBe("/ja/slang/67/");
     for (const locale of LOCALES) {
@@ -201,6 +204,9 @@ describe("slang: routes", () => {
     const slash = await worker.fetch(new Request("https://cv.cm/en/slang/yyds"), { ASSETS: assets });
     expect(slash.status).toBe(301);
     expect(slash.headers.get("Location")).toBe("https://cv.cm/en/slang/yyds/");
+    const upper = await worker.fetch(new Request("https://cv.cm/en/slang/FOMO/"), { ASSETS: assets });
+    expect(upper.status).toBe(301);
+    expect(upper.headers.get("Location")).toBe("https://cv.cm/en/slang/fomo/");
     const unknown = await worker.fetch(new Request("https://cv.cm/en/slang/nope/"), { ASSETS: assets });
     expect(unknown.status).toBe(404);
     const hub = await worker.fetch(new Request("https://cv.cm/es/slang/"), { ASSETS: assets });
@@ -261,6 +267,10 @@ describe("slang: page HTML and SEO", () => {
       expect(pageTitle(locale, { slang: true })).toBe(`${slangMessages(locale).hub.title} — cv.cm`);
     }
     expect(pageCanonical("en", { slang: true })).toBe("https://cv.cm/en/slang/");
+    for (const locale of LOCALES) {
+      expect(pageDescription(locale, { slang: true }), locale).toContain(String(SLANG_ENTRIES.length));
+      expect(pageDescription(locale, { slang: true }), locale).not.toContain("{n}");
+    }
     expect(pageCanonical("zh-CN", { slang: true, slangId: "neijuan" })).toBe("https://cv.cm/zh-cn/slang/neijuan/");
     const ld = slangArticleJsonLd("ko", "rizz") as Record<string, unknown>;
     expect(ld["@type"]).toBe("Article");

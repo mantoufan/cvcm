@@ -626,7 +626,8 @@ export function parseAppPath(pathname: string): AppPath {
     if (second === SLANG_SEGMENT) {
       if (rest.length > 0) return { kind: "unknown" };
       if (!third) return { kind: "slang", locale, entry: null };
-      if (isSlangId(third)) return { kind: "slang", locale, entry: third };
+      // Acronyms are often typed in capitals (/slang/FOMO/): parse them as the lowercase id so the Worker 301s.
+      if (isSlangId(third.toLowerCase())) return { kind: "slang", locale, entry: third.toLowerCase() as SlangId };
       return { kind: "unknown" };
     }
     if (isLegalPageId(second)) {
@@ -700,7 +701,7 @@ export function parseAppPath(pathname: string): AppPath {
   }
   if (first === SLANG_SEGMENT) {
     if (!second) return { kind: "bare-slang", entry: null };
-    if (isSlangId(second) && !third) return { kind: "bare-slang", entry: second };
+    if (isSlangId(second.toLowerCase()) && !third) return { kind: "bare-slang", entry: second.toLowerCase() as SlangId };
     return { kind: "unknown" };
   }
   if (isLegalPageId(first) && !second) return { kind: "bare-legal", page: first };

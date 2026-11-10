@@ -25,7 +25,7 @@ export type SlangPage = SlangId | "hub" | null;
 export type SlangSource = { name: string; url: string };
 
 export type SlangMeta = {
-  /** The term as written where it comes from (shown untranslated in every locale). */
+  /** The term as written where it comes from (the catalog key readers search; pages show each locale's `name`). */
   term: string;
   /** Where the word comes from: Chinese internet, English internet or a Cantonese song lyric. */
   origin: "zh" | "en" | "yue";
@@ -39,7 +39,7 @@ export const SLANG_PUBLISHED = "2026-11-10";
 /** Entries edited after SLANG_PUBLISHED, for dateModified and the sitemap. */
 export const SLANG_UPDATED: Partial<Record<SlangId, string>> = {};
 
-/** Entries the site footer links directly (highest Keyword Planner volume); their terms are SLANG_META[id].term. */
+/** Entries the site footer links directly (highest Keyword Planner volume); their names are core-pack `slangFocus.*`. */
 export const SLANG_FOCUS = [
   "334424044",
   "67",
@@ -59,18 +59,18 @@ export const SLANG_META: Record<SlangId, SlangMeta> = {
   "520": { term: "520", origin: "zh", related: ["666", "334424044", "baiyueguang"], sources: [{ name: "Wikipedia: Chinese Internet slang", url: "https://en.wikipedia.org/wiki/Chinese_Internet_slang" }, { name: "京报网: 今天，微信红包额度上调至520元", url: "https://news.bjd.com.cn/2026/05/20/11755716.shtml" }] },
   yyds: { term: "yyds", origin: "zh", related: ["xswl", "awsl", "666"], sources: [{ name: "Wiktionary: yyds", url: "https://en.wiktionary.org/wiki/yyds" }, { name: "腾讯新闻: 2021年十大流行语和网络用语出炉", url: "https://news.qq.com/rain/a/20211209A045LF00" }, { name: "澎湃新闻: 《咬文嚼字》年度流行语为何不选「YYDS」和「绝绝子」", url: "https://m.thepaper.cn/newsDetail_forward_15762358" }] },
   xswl: { term: "xswl", origin: "zh", related: ["yyds", "awsl", "dbq"], sources: [{ name: "Wiktionary: xswl", url: "https://en.wiktionary.org/wiki/xswl" }, { name: "澎湃新闻（转载中国青年报）: 00后靠说「黑话」提高社交效率", url: "https://m.thepaper.cn/newsDetail_forward_2579894" }] },
-  awsl: { term: "awsl", origin: "zh", related: ["xswl", "yyds", "hajimi"], sources: [{ name: "Wiktionary: awsl", url: "https://en.wiktionary.org/wiki/awsl" }, { name: "经济观察网: AWSL成B站年度弹幕词", url: "http://www.eeo.com.cn/2019/1205/371135.shtml" }, { name: "数英网: 「AWSL」当选B站年度弹幕", url: "https://www.digitaling.com/articles/240204.html" }] },
+  awsl: { term: "awsl", origin: "zh", related: ["xswl", "yyds", "hajimi"], sources: [{ name: "Wiktionary: awsl", url: "https://en.wiktionary.org/wiki/awsl" }, { name: "经济观察网: AWSL成B站年度弹幕词", url: "https://www.eeo.com.cn/2019/1205/371135.shtml" }, { name: "数英网: 「AWSL」当选B站年度弹幕", url: "https://www.digitaling.com/articles/240204.html" }] },
   dbq: { term: "dbq", origin: "zh", related: ["xswl", "cpdd", "pofang"], sources: [{ name: "澎湃新闻（转载中国青年报）: 00后靠说「黑话」提高社交效率", url: "https://m.thepaper.cn/newsDetail_forward_2579894" }] },
   cpdd: { term: "cpdd", origin: "zh", related: ["dbq", "crush", "situationship"], sources: [] },
   neijuan: { term: "内卷", origin: "zh", related: ["tangping", "bailan", "niuma"], sources: [{ name: "Wikipedia: Neijuan", url: "https://en.wikipedia.org/wiki/Neijuan" }, { name: "中国新闻网: 2020年十大流行语出炉 打工人、凡尔赛文学等上榜", url: "https://www.chinanews.com.cn/m/cul/2020/12-04/9354293.shtml" }] },
   tangping: { term: "躺平", origin: "zh", related: ["neijuan", "bailan", "niuma"], sources: [{ name: "Wikipedia: Tang ping", url: "https://en.wikipedia.org/wiki/Tang_ping" }, { name: "腾讯新闻: 2021年十大流行语和网络用语出炉", url: "https://news.qq.com/rain/a/20211209A045LF00" }] },
-  bailan: { term: "摆烂", origin: "zh", related: ["tangping", "neijuan", "emo"], sources: [{ name: "腾讯新闻: 「摆烂」一词很火，什么意思？英语怎么说？", url: "https://news.qq.com/rain/a/20220414A04MZY00" }, { name: "津云: 《咬文嚼字》主编答疑：为何这些网络热词没入选2022年十大流行语", url: "http://www.tjyun.com/system/2022/12/26/053479577.shtml" }] },
+  bailan: { term: "摆烂", origin: "zh", related: ["tangping", "neijuan", "emo"], sources: [{ name: "腾讯新闻: 「摆烂」一词很火，什么意思？英语怎么说？", url: "https://news.qq.com/rain/a/20220414A04MZY00" }, { name: "津云: 《咬文嚼字》主编答疑：为何这些网络热词没入选2022年十大流行语", url: "https://www.tjyun.com/system/2022/12/26/053479577.shtml" }] },
   niuma: { term: "牛马", origin: "zh", related: ["neijuan", "tangping", "caotai-banzi"], sources: [{ name: "Wiktionary: 牛马", url: "https://en.wiktionary.org/wiki/牛马" }] },
   "caotai-banzi": { term: "草台班子", origin: "zh", related: ["niuma", "neijuan", "fanersai"], sources: [{ name: "Wiktionary: 草台班子", url: "https://en.wiktionary.org/wiki/草台班子" }, { name: "新浪财经（语言文字周报）: 偷感很重、草台班子、那咋了？2024网络流行语", url: "https://finance.sina.com.cn/jjxw/2024-12-13/doc-inczhxxx5957067.shtml" }] },
   fanersai: { term: "凡尔赛", origin: "zh", related: ["caotai-banzi", "chigua", "puxinnan"], sources: [{ name: "维基百科: 凡尔赛文学", url: "https://zh.wikipedia.org/wiki/凡尔赛文学" }, { name: "中国新闻网: 2020年十大流行语出炉 打工人、凡尔赛文学等上榜", url: "https://www.chinanews.com.cn/m/cul/2020/12-04/9354293.shtml" }, { name: "Wiktionary: 凡爾賽", url: "https://en.wiktionary.org/wiki/凡爾賽" }] },
-  chigua: { term: "吃瓜", origin: "zh", related: ["fanersai", "haiwang", "xswl"], sources: [{ name: "新华网: 《咬文嚼字》公布2016年十大流行语", url: "http://www.xinhuanet.com/politics/2016-12/15/c_1120121641.htm" }, { name: "维基百科: 吃瓜群众", url: "https://zh.wikipedia.org/wiki/吃瓜群众" }, { name: "Wikipedia: Chinese Internet slang", url: "https://en.wikipedia.org/wiki/Chinese_Internet_slang" }] },
+  chigua: { term: "吃瓜", origin: "zh", related: ["fanersai", "haiwang", "xswl"], sources: [{ name: "新华网: 《咬文嚼字》公布2016年十大流行语", url: "https://www.xinhuanet.com/politics/2016-12/15/c_1120121641.htm" }, { name: "维基百科: 吃瓜群众", url: "https://zh.wikipedia.org/wiki/吃瓜群众" }, { name: "Wikipedia: Chinese Internet slang", url: "https://en.wikipedia.org/wiki/Chinese_Internet_slang" }] },
   emo: { term: "emo", origin: "zh", related: ["pofang", "qingxu-jiazhi", "bailan"], sources: [{ name: "Wikipedia: Emo", url: "https://en.wikipedia.org/wiki/Emo" }, { name: "中新网：满屏都是「我emo了」 网友们到底在说些啥？", url: "https://www.chinanews.com/sh/2021/10-11/9583344.shtml" }, { name: "中国日报双语：「我emo了」到底是什么梗？", url: "https://language.chinadaily.com.cn/a/202108/09/WS6110c4d9a310efa1bd667a30.html" }] },
-  pofang: { term: "破防", origin: "zh", related: ["emo", "qingxu-jiazhi", "dbq"], sources: [{ name: "新华网：2021年度十大网络用语发布", url: "http://www.news.cn/politics/2021-12/07/c_1128137881.htm" }, { name: "人民网：《咬文嚼字》发布今年十大流行语", url: "http://bj.people.com.cn/n2/2021/1209/c82846-35042692.html" }] },
+  pofang: { term: "破防", origin: "zh", related: ["emo", "qingxu-jiazhi", "dbq"], sources: [{ name: "新华网：2021年度十大网络用语发布", url: "https://www.news.cn/politics/2021-12/07/c_1128137881.htm" }, { name: "人民网：《咬文嚼字》发布今年十大流行语", url: "http://bj.people.com.cn/n2/2021/1209/c82846-35042692.html" }] },
   "qingxu-jiazhi": { term: "情绪价值", origin: "zh", related: ["emo", "lianainao", "pua"], sources: [{ name: "光明网：2023年十大流行语发布", url: "https://m.gmw.cn/2023-12/04/content_1303590844.htm" }, { name: "中国江苏网：《咬文嚼字》2023年「十大流行语」发布", url: "https://edu.jschina.com.cn/jy/202312/t20231205_8163375.shtml" }] },
   "i-ren-e-ren": { term: "i人 / e人", origin: "zh", related: ["sheniu", "npc", "qingxu-jiazhi"], sources: [{ name: "腾讯新闻（东方网）：2023年10大网络流行语出炉", url: "https://news.qq.com/rain/a/20231208A04OQR00" }, { name: "The Myers-Briggs Foundation: Myers-Briggs Overview", url: "https://www.myersbriggs.org/my-mbti-personality-type/myers-briggs-overview/" }] },
   sheniu: { term: "社牛", origin: "zh", related: ["i-ren-e-ren", "emo", "npc"], sources: [{ name: "人民论坛网：从社恐到社牛：青年人社交议题背后的心理分析", url: "https://www.rmlt.com.cn/2022/0117/637836.shtml" }, { name: "澎湃新闻：别惹我，我社交牛逼", url: "https://m.thepaper.cn/newsDetail_forward_14610726" }] },

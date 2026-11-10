@@ -4,7 +4,7 @@ import { fill } from "./fill";
 import { PUBLISHER, blockHtml, dateLabel, inline, linkListHtml, type KbBlock } from "./kb-i18n";
 import { slangEntryMessages, slangMessages, type SlangMessages } from "./messages";
 import { appHref, slangHref } from "./path";
-import { SLANG_GROUPS, SLANG_META, SLANG_PUBLISHED, SLANG_UPDATED, slangGroupOf, type SlangId } from "./slang";
+import { SLANG_ENTRIES, SLANG_GROUPS, SLANG_META, SLANG_PUBLISHED, SLANG_UPDATED, slangGroupOf, type SlangId } from "./slang";
 import { HREFLANG } from "./sitemap";
 
 /** One entry's copy, `src/locales/slang/<locale>/<id>.json`. Blocks are the kb blocks (backticks are the only inline markup). */
@@ -47,7 +47,7 @@ export function slangTitle(locale: Locale, id: SlangId | null): string {
 }
 
 export function slangDescription(locale: Locale, id: SlangId | null): string {
-  return id ? slangCopy(locale, id).description : slangHub(locale).description;
+  return id ? slangCopy(locale, id).description : fill(slangHub(locale).description, { n: SLANG_ENTRIES.length });
 }
 
 export function slangFaqItems(locale: Locale, id: SlangId | null): { q: string; a: string }[] {
@@ -177,7 +177,7 @@ export function slangArticleJsonLd(locale: Locale, id: SlangId | null): Record<s
       "@context": "https://schema.org",
       "@type": "CollectionPage",
       name: hub.h1,
-      description: hub.description,
+      description: slangDescription(locale, null),
       url: `${ORIGIN}${slangHref(locale)}`,
       inLanguage: HREFLANG[locale],
       mainEntity: {
