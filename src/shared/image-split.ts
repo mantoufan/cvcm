@@ -6,10 +6,10 @@ export type Rect = { x: number; y: number; width: number; height: number };
 export type Tile = Rect & { row: number; col: number; index: number };
 
 /**
- * Tile shapes: the whole picture cut as it is, square tiles, or 3:4 portrait tiles. Instagram's profile grid has shown
- * every post as a 3:4 thumbnail since 2025, so 3:4 tiles posted in order line up there with no gaps at the seams.
+ * Width : height of a tile, or null for the whole picture as it is; the menu lists them in this order. Instagram's
+ * profile grid has shown every post as a 3:4 thumbnail since 2025, so 3:4 tiles posted in order line up there; WeChat
+ * Moments shows nine pictures as squares, so its nine-grid wants square tiles.
  */
-/** Width : height of a tile, or null for "whatever the picture gives". Menu order is this order. */
 export const TILE_RATIO = {
   whole: null,
   square: [1, 1],
@@ -21,6 +21,7 @@ export const TILE_SHAPES = Object.keys(TILE_RATIO) as TileShape[];
 /** Common grids: Instagram's three-across profile rows (3:4 tiles), carousels (square slides), halves. */
 export const SPLIT_PRESETS = [
   { id: "grid3x3", rows: 3, cols: 3, shape: "portrait" },
+  { id: "grid3x3sq", rows: 3, cols: 3, shape: "square" },
   { id: "grid3x2", rows: 2, cols: 3, shape: "portrait" },
   { id: "row1x3", rows: 1, cols: 3, shape: "square" },
   { id: "grid2x2", rows: 2, cols: 2, shape: "square" },
@@ -38,10 +39,11 @@ export function cropArea(width: number, height: number, rows: number, cols: numb
   const ratio = TILE_RATIO[shape];
   if (!ratio) return { x: 0, y: 0, width, height };
   const [a, b] = ratio;
-  const tileW = Math.floor(Math.min(width / cols, ((height / rows) * a) / b));
-  const tileH = Math.min(Math.floor(height / rows), Math.round((tileW * b) / a));
-  const w = Math.max(0, tileW) * cols;
-  const h = Math.max(0, tileH) * rows;
+  // At least 1 px each way whenever the picture has a pixel per row and column (a 2000 × 20 strip in 20 rows still cuts).
+  const tileW = Math.min(Math.floor(width / cols), Math.max(1, Math.floor(Math.min(width / cols, ((height / rows) * a) / b))));
+  const tileH = Math.min(Math.floor(height / rows), Math.max(1, Math.round((tileW * b) / a)));
+  const w = tileW * cols;
+  const h = tileH * rows;
   return { x: Math.floor((width - w) / 2), y: Math.floor((height - h) / 2), width: w, height: h };
 }
 

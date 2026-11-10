@@ -109,7 +109,7 @@ describe("image splitter ui", () => {
   it("asks for a picture before splitting", () => {
     mountImageSplitter(host);
     expect(q("[data-out=info]").textContent).toBe("Add a picture to see the grid.");
-    expect(host.querySelectorAll("[data-preset]")).toHaveLength(6);
+    expect(host.querySelectorAll("[data-preset]")).toHaveLength(7);
     click("[data-action=split]");
     expect(q("[data-out=status]").textContent).toBe("Add a picture first.");
     expect(q<HTMLInputElement>("[data-field=order]").disabled).toBe(false);
@@ -120,6 +120,8 @@ describe("image splitter ui", () => {
     click("[data-preset=grid3x3]");
     expect(q<HTMLSelectElement>("[data-field=shape]").value).toBe("portrait");
     expect(host.querySelectorAll("[data-field=shape] option")).toHaveLength(3);
+    click("[data-preset=grid3x3sq]");
+    expect(q<HTMLSelectElement>("[data-field=shape]").value).toBe("square");
     click("[data-preset=row1x3]");
     expect(q<HTMLSelectElement>("[data-field=shape]").value).toBe("square");
     set("[data-field=shape]", "whole", "change");

@@ -324,6 +324,7 @@ describe("image splitter", () => {
     for (const t of splitGrid(odd, 20, 20)) expect(Math.abs(t.width / t.height - 0.75)).toBeLessThan(1 / t.height + 1e-9);
     // A tiny picture still splits (1 px tiles) instead of reporting a grid finer than the picture.
     expect(cropArea(50, 50, 20, 20, "portrait")).toEqual({ x: 15, y: 15, width: 20, height: 20 });
+    expect(cropArea(2000, 20, 20, 20, "portrait")).toEqual({ x: 990, y: 0, width: 20, height: 20 });
   });
 
   it("numbers posts from the last tile and names files in reading order", () => {

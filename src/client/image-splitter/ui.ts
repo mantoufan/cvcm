@@ -15,6 +15,7 @@ const state = {
   source: null as Source | null,
   rows: 3,
   cols: 3,
+  // Set on mount: square in zh-CN (WeChat Moments shows squares), 3:4 for the Instagram grid elsewhere.
   shape: "portrait" as TileShape,
   format: "png" as Format,
   showOrder: false,
@@ -38,6 +39,7 @@ let formatEl: HTMLSelectElement | null = null;
 let orderEl: HTMLInputElement | null = null;
 
 export function mountImageSplitter(host: HTMLElement): void {
+  state.shape = locale() === "zh-CN" ? "square" : "portrait";
   host.append(
     h("header", { class: "tool-head" },
       h("a", { class: "back", href: appHref(locale(), null), "data-nav": "home" }, t("imageSplitter.back")),
@@ -59,8 +61,7 @@ export function unmountImageSplitter(): void {
   state.load++;
   splitting = null;
   preview = statusEl = infoEl = galleryEl = null;
-  rowsEl = colsEl = null;
-  shapeEl = null;
+  rowsEl = colsEl = shapeEl = null;
   formatEl = orderEl = null;
   state.formatChosen = false;
 }
@@ -255,8 +256,8 @@ function paint(): void {
   preview.width = Math.max(1, Math.round(s.width * scale));
   preview.height = Math.max(1, Math.round(s.height * scale));
   ctx.drawImage(s.bitmap, 0, 0, preview.width, preview.height);
-  const list = tiles();
   const area = cropArea(s.width, s.height, state.rows, state.cols, state.shape);
+  const list = splitGrid(area, state.rows, state.cols);
   if (tooFine(list)) {
     infoEl.textContent = t("imageSplitter.tooFine", { W: s.width, H: s.height });
     return;
@@ -324,7 +325,8 @@ async function cutTiles(): Promise<Piece[] | null> {
     return null;
   }
   if (state.pieces.length) return state.pieces;
-  if (tooFine(tiles())) {
+  const list = tiles();
+  if (tooFine(list)) {
     if (statusEl) statusEl.textContent = t("imageSplitter.tooFine", { W: s.width, H: s.height });
     return null;
   }
@@ -334,7 +336,7 @@ async function cutTiles(): Promise<Piece[] | null> {
   const mime = mimeForFormat(state.format);
   const pieces: Piece[] = [];
   try {
-    for (const tile of tiles()) {
+    for (const tile of list) {
       const canvas = document.createElement("canvas");
       canvas.width = tile.width;
       canvas.height = tile.height;
