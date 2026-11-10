@@ -1,4 +1,4 @@
-import { GifWriter, newScratch } from "./gif";
+import { GifWriter, newScratch, type GifScratch } from "./gif";
 export type Pixels = { data: Uint8ClampedArray; width: number; height: number };
 
 export function blobFromBytes(data: Uint8Array, type: string): Blob {
@@ -72,11 +72,14 @@ export function encodeIco(png: Uint8Array, width: number, height: number): Uint8
   return out;
 }
 
-/** Reused by every still GIF (the convert page's size estimate runs often); dropped when the page leaves. */
-let stillScratch = newScratch();
+/**
+ * Reused by every still GIF (the convert page's size estimate runs often); dropped when the page leaves. Made on first
+ * use, so modules that import this file only for BMP, ICO or blobFromBytes can drop the GIF encoder.
+ */
+let stillScratch: GifScratch | null = null;
 
 export function releaseGifScratch(): void {
-  stillScratch = newScratch();
+  stillScratch = null;
 }
 
 /**
@@ -84,6 +87,7 @@ export function releaseGifScratch(): void {
  * pixels come out as their colour channels, as before; the page draws the picture over its canvas first.
  */
 export function encodeGif(px: Pixels): Uint8Array {
+  stillScratch ??= newScratch();
   const writer = new GifWriter({ width: px.width, height: px.height, loop: null }, stillScratch);
   writer.addFrame(px.data, { colors: 256, dither: false, delayMs: 0 });
   return writer.finish();

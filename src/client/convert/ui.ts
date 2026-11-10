@@ -321,11 +321,11 @@ async function ingestSvg(item: Item): Promise<boolean> {
   try {
     // If the scale changes while this draws, draw again at the new one.
     let scale = state.svgScale;
-    let r = await rasterSvg(item, scale);
+    let r = await drawSvg(svg, scale);
     while (scale !== state.svgScale && state.items.includes(item)) {
       r.bitmap.close();
       scale = state.svgScale;
-      r = await rasterSvg(item, scale);
+      r = await drawSvg(svg, scale);
     }
     // Removed or cleared while it drew: nothing holds this bitmap.
     if (!state.items.includes(item)) r.bitmap.close();
@@ -336,12 +336,6 @@ async function ingestSvg(item: Item): Promise<boolean> {
   }
 }
 
-
-/** Draws an SVG item at its own size × `scale` from the vector source, so 2×–4× stay sharp. */
-async function rasterSvg(item: Item, scale: SvgScale): Promise<{ bitmap: ImageBitmap; width: number; height: number }> {
-  if (!item.svg) throw new Error("svg");
-  return drawSvg(item.svg, scale);
-}
 
 function applyRaster(item: Item, r: { bitmap: ImageBitmap; width: number; height: number }): void {
   item.bitmap?.close();
@@ -361,7 +355,7 @@ async function rerasterSvgs(): Promise<void> {
     // Items still being read in pick up the new scale themselves.
     if (!item.svg || item.ingesting) continue;
     try {
-      const r = await rasterSvg(item, scale);
+      const r = await drawSvg(item.svg, scale);
       // A newer scale or a removed item: drop this one.
       if (run !== rasterRun || !state.items.includes(item)) {
         r.bitmap.close();

@@ -86,10 +86,6 @@ export type AreaResult =
 export type Formatter = (n: number) => string;
 
 /**
- * Area (in the input unit squared) and perimeter (in the input unit, null when the inputs do not fix it).
- * `values` holds the fields of `shape` by id; `f` formats the numbers in the working.
- */
-/**
  * Area of a triangle from its three sides (Heron's formula in Kahan's form, accurate for needle-thin triangles), or
  * null when the sides do not make one. The small margin keeps rounding (0.1 + 0.2 vs 0.3) from passing a flat triangle.
  */
@@ -99,6 +95,10 @@ export function heron(a: number, b: number, c: number): number | null {
   return Math.sqrt((z + (y + x)) * (x - (z - y)) * (x + (z - y)) * (z + (y - x))) / 4;
 }
 
+/**
+ * Area (in the input unit squared) and perimeter (in the input unit, null when the inputs do not fix it).
+ * `values` holds the fields of `shape` by id; `f` formats the numbers in the working.
+ */
 export function solveArea(shape: AreaShape, values: Readonly<Record<string, number | undefined>>, f: Formatter = String): AreaResult {
   const fields = AREA_FIELDS[shape];
   for (const field of fields) {

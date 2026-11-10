@@ -251,8 +251,10 @@ async function loadPictures(images: File[], load: number): Promise<void> {
       failed++;
     }
   }
-  if (failed) setStatus(t("gifMaker.errorDecode"));
   changed();
+  // Too many frames matters more than one unreadable picture: it says why the rest were left out.
+  if (state.stills.length >= MAX_FRAMES) setStatus(t("gifMaker.tooMany", { max: MAX_FRAMES }));
+  else if (failed) setStatus(t("gifMaker.errorDecode"));
 }
 
 async function setClip(file: File): Promise<void> {
@@ -494,7 +496,11 @@ const LOAD_TIMEOUT_MS = 20000;
 
 async function seek(video: HTMLVideoElement, time: number): Promise<void> {
   // A seek still landing from a stopped encode would otherwise answer this one early (but never wait on it for long).
-  if (video.seeking) await Promise.race([new Promise((r) => video.addEventListener("seeked", r, { once: true })), new Promise((r) => setTimeout(r, 2000))]);
+  if (video.seeking) {
+    let landed = () => {};
+    await Promise.race([new Promise<void>((r) => { landed = r; video.addEventListener("seeked", landed, { once: true }); }), new Promise((r) => setTimeout(r, 2000))]);
+    video.removeEventListener("seeked", landed);
+  }
   return new Promise((resolve, reject) => {
     const timer = window.setTimeout(() => fail(), LOAD_TIMEOUT_MS);
     const done = () => {
