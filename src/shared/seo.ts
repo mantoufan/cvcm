@@ -22,7 +22,7 @@ import { messages } from "./messages";
 import { HREFLANG } from "./sitemap";
 import { marketCopy, marketFaqItems, marketHub, marketHubFaqItems } from "./markets-i18n";
 import type { MarketId } from "./markets";
-import { CATEGORIES, FEATURED_TUTORIALS, appHref, categoryOf, deviceHref, gamesHref, learnHref, kbHref, legalHref, marketsHref, quizHref, datasetHref, rankingHref, refHref, type ConvertJobId, type LegalPageId, type ResizeJobId, type ToolId, type TutorialId } from "./path";
+import { CATEGORIES, FEATURED_TUTORIALS, appHref, categoryOf, deviceHref, gamesHref, learnHref, kbHref, legalHref, marketsHref, quizHref, datasetHref, rankingHref, refHref, type CategoryId, type ConvertJobId, type LegalPageId, type ResizeJobId, type ToolId, type TutorialId } from "./path";
 
 
 export type FaqItem = { q: string; a: string };
@@ -937,10 +937,20 @@ export function gameVideoGameJsonLd(locale: Locale, id: GameId): Record<string, 
   };
 }
 
-const IMAGE_TOOLS = new Set<ToolId>([
-  ...CATEGORIES.find((c) => c.id === "image")!.tools,
-  ...CATEGORIES.find((c) => c.id === "ai")!.tools,
-]);
+/** schema.org applicationCategory per tool category (values Google's software app rich results know). */
+const APP_CATEGORY: Partial<Record<CategoryId, string>> = {
+  image: "MultimediaApplication",
+  ai: "MultimediaApplication",
+  audio: "MultimediaApplication",
+  pdf: "BusinessApplication",
+  dev: "DeveloperApplication",
+  math: "EducationalApplication",
+  finance: "FinanceApplication",
+  health: "HealthApplication",
+  design: "DesignApplication",
+  games: "GameApplication",
+  fun: "EntertainmentApplication",
+};
 /** Tools sold under their own name (watermark + mosaic share the ID Watermark & Redact brand). */
 export const BRANDED_TOOLS = new Set<ToolId>(["watermark", "mosaic"]);
 
@@ -957,7 +967,7 @@ export function toolSoftwareJsonLd(locale: Locale, tool: ToolId): Record<string,
     url: pageCanonical(locale, tool),
     image: coverUrl(TOOL_COVER[tool]),
     inLanguage: HREFLANG[locale],
-    applicationCategory: IMAGE_TOOLS.has(tool) ? "MultimediaApplication" : "UtilitiesApplication",
+    applicationCategory: APP_CATEGORY[categoryOf(tool)] ?? "UtilitiesApplication",
     operatingSystem: "Web",
     browserRequirements: "Requires JavaScript",
     isAccessibleForFree: true,
