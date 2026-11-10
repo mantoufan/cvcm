@@ -6,7 +6,8 @@ import { KB_ARTICLES, kbArticleOf, kbGroupsOf, kbShelfOfPage, kbUpdatedOn, type 
 import { DATASET_SNAPSHOT, DATASETS, datasetUpdated, type DatasetId } from "./datasets";
 import { RANKING_SNAPSHOT, RANKINGS, rankingMeta, type RankingId } from "./rankings";
 import { REF_ENTRIES, REF_UPDATED, type RefId } from "./ref";
-import { CONVERT_JOBS, RESIZE_JOBS, SITEMAP_SECTIONS, TOOLS, FEATURED_TUTORIALS, LEGAL_PAGES, appHref, rankingHref, deviceHref, gamesHref, kbHref, learnHref, legalHref, quizHref, datasetHref, refHref, type ConvertJobId, type ResizeJobId, type ToolId, type LegalPageId, type TutorialId } from "./path";
+import { SLANG_ENTRIES, SLANG_PUBLISHED, SLANG_UPDATED, type SlangId } from "./slang";
+import { CONVERT_JOBS, RESIZE_JOBS, SITEMAP_SECTIONS, TOOLS, FEATURED_TUTORIALS, LEGAL_PAGES, appHref, rankingHref, deviceHref, gamesHref, kbHref, learnHref, legalHref, quizHref, datasetHref, refHref, slangHref, type ConvertJobId, type ResizeJobId, type ToolId, type LegalPageId, type TutorialId } from "./path";
 
 export const SITE_ORIGIN = "https://cv.cm";
 
@@ -35,7 +36,8 @@ export type SitemapPage =
   | { locale: Locale; kind: "dataset"; dataset: DatasetId | null }
   | { locale: Locale; kind: "ranking"; ranking: RankingId | null }
   | { locale: Locale; kind: "kb"; article: KbPage }
-  | { locale: Locale; kind: "ref"; entry: RefId | null };
+  | { locale: Locale; kind: "ref"; entry: RefId | null }
+  | { locale: Locale; kind: "slang"; entry: SlangId | null };
 
 export function sitemapPages(): SitemapPage[] {
   const pages: SitemapPage[] = [];
@@ -66,6 +68,8 @@ export function sitemapPages(): SitemapPage[] {
     for (const ranking of RANKINGS) pages.push({ locale, kind: "ranking", ranking });
     pages.push({ locale, kind: "ref", entry: null });
     for (const entry of REF_ENTRIES) pages.push({ locale, kind: "ref", entry });
+    pages.push({ locale, kind: "slang", entry: null });
+    for (const entry of SLANG_ENTRIES) pages.push({ locale, kind: "slang", entry });
     for (const page of LEGAL_PAGES) pages.push({ locale, kind: "legal", page });
   }
   return pages;
@@ -84,6 +88,7 @@ export function pageUrl(page: SitemapPage): string {
   if (page.kind === "ranking") return `${SITE_ORIGIN}${rankingHref(page.locale, page.ranking)}`;
   if (page.kind === "kb") return `${SITE_ORIGIN}${kbHref(page.locale, page.article)}`;
   if (page.kind === "ref") return `${SITE_ORIGIN}${refHref(page.locale, page.entry)}`;
+  if (page.kind === "slang") return `${SITE_ORIGIN}${slangHref(page.locale, page.entry)}`;
   return `${SITE_ORIGIN}${appHref(page.locale, null)}`;
 }
 
@@ -104,6 +109,7 @@ function pathFor(locale: Locale, page: SitemapPage): string {
   if (page.kind === "ranking") return `${SITE_ORIGIN}${rankingHref(locale, page.ranking)}`;
   if (page.kind === "kb") return `${SITE_ORIGIN}${kbHref(locale, page.article)}`;
   if (page.kind === "ref") return `${SITE_ORIGIN}${refHref(locale, page.entry)}`;
+  if (page.kind === "slang") return `${SITE_ORIGIN}${slangHref(locale, page.entry)}`;
   return `${SITE_ORIGIN}${appHref(locale, null)}`;
 }
 
@@ -127,6 +133,7 @@ export function sitemapSection(page: SitemapPage): SitemapSection {
   if (page.kind === "dataset") return "datasets";
   if (page.kind === "ranking") return "rankings";
   if (page.kind === "ref") return "reference";
+  if (page.kind === "slang") return "slang";
   return "pages";
 }
 
@@ -136,7 +143,7 @@ export function sitemapSectionUrl(section: SitemapSection): string {
 
 /**
  * `<lastmod>` only where a real edit date exists: knowledge articles (per-locale dates from git via
- * `npm run kb:sync`), their hub (newest article), data tables (snapshot date), reference entries in REF_UPDATED. Other pages have no tracked
+ * `npm run kb:sync`), their hub (newest article), data tables (snapshot date), reference entries in REF_UPDATED, slang entries (published or edited date; the hub takes the newest). Other pages have no tracked
  * edit date, and stamping the build date on every URL teaches Google to ignore lastmod.
  */
 function pageLastmod(page: SitemapPage): string | null {
@@ -149,6 +156,10 @@ function pageLastmod(page: SitemapPage): string | null {
   if (page.kind === "dataset") return page.dataset ? datasetUpdated(page.dataset) : DATASET_SNAPSHOT;
   if (page.kind === "ranking") return page.ranking ? rankingMeta(page.ranking).updated : RANKING_SNAPSHOT;
   if (page.kind === "ref" && page.entry) return REF_UPDATED[page.entry] ?? null;
+  if (page.kind === "slang") {
+    if (page.entry) return SLANG_UPDATED[page.entry] ?? SLANG_PUBLISHED;
+    return [SLANG_PUBLISHED, ...Object.values(SLANG_UPDATED)].sort().at(-1) ?? SLANG_PUBLISHED;
+  }
   return null;
 }
 

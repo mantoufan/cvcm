@@ -606,6 +606,9 @@ input[type="color"] { width: 2.6rem; height: 2.2rem; padding: 0; border: 1px sol
 .kb-note p { margin: 0; }
 .kb-sources li { font-size: 0.9rem; }
 .kb-about { margin-top: 2rem; color: var(--ink-soft); }
+/* Slang hub: a plain text jump list to the groups. */
+.slang-jump { margin: 0.25rem 0 1rem; color: var(--ink-soft); font-size: 0.9rem; line-height: 1.8; }
+
 /* Reference pages: photos are content (hotlinked from s1.mtf6.com), plain grid, no shadows. */
 .ref-aka { margin: 0.3rem 0 0; color: var(--ink-soft); font-size: 0.9rem; }
 .ref-photos { margin-top: 2rem; }

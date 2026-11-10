@@ -32,11 +32,18 @@ import {
   type QuizMessages,
   type DatasetMessages,
   type RefMessages,
+  type SlangMessages,
+  hasSlangEntry,
+  hasSlangMessages,
+  registerSlangEntry,
+  registerSlangMessages,
 } from "../shared/messages";
 import type { KbArticleCopy } from "../shared/kb-i18n";
 import { kbArticleOf, type KbId, type KbPage } from "../shared/kb";
 import type { RefEntryCopy } from "../shared/ref-i18n";
 import type { RefId, RefPage } from "../shared/ref";
+import type { SlangEntryCopy } from "../shared/slang-i18n";
+import type { SlangId, SlangPage } from "../shared/slang";
 
 // One chunk per locale, so a page downloads only the strings it shows.
 const PACKS: Record<Locale, () => Promise<{ default: LocaleMessages }>> = {
@@ -159,18 +166,51 @@ async function loadRefEntry(next: Locale, id: RefId): Promise<void> {
   registerRefEntry(next, id, m.default);
 }
 
-/** Whether the strings a page needs are loaded: the locale pack, plus the game, legal, quiz, dataset or kb pack on those pages. */
-export function hasPageMessages(next: Locale, game: boolean, legal = false, quiz = false, dataset = false, kb: KbPage = null, ref: RefPage = null): boolean {
-  const article = kbArticleOf(kb);
-  const entry = ref && ref !== "hub" ? ref : null;
-  return hasMessages(next) && (!game || hasGameMessages(next)) && (!legal || hasLegalMessages(next)) && (!quiz || hasQuizMessages(next)) && (!dataset || hasDatasetMessages(next))
-    && (!kb || (hasKbMessages(next) && (!article || hasKbArticle(next, article))))
-    && (!ref || (hasRefMessages(next) && (!entry || hasRefEntry(next, entry))));
+// Slang hub copy plus entry names (`npm run slang:sync`), only for /slang/ pages.
+const SLANG_PACKS: Record<Locale, () => Promise<{ default: SlangMessages }>> = {
+  en: () => import("../locales/packs/slang-en"),
+  "zh-CN": () => import("../locales/packs/slang-zh-CN"),
+  "zh-TW": () => import("../locales/packs/slang-zh-TW"),
+  ja: () => import("../locales/packs/slang-ja"),
+  ko: () => import("../locales/packs/slang-ko"),
+  vi: () => import("../locales/packs/slang-vi"),
+  id: () => import("../locales/packs/slang-id"),
+  es: () => import("../locales/packs/slang-es"),
+};
+
+// One chunk per slang entry and locale, through that locale's generated loader table.
+const SLANG_LOADER_TABLES: Record<Locale, () => Promise<{ SLANG_LOADERS: Record<SlangId, () => Promise<unknown>> }>> = {
+  en: () => import("../locales/slang/loaders/en"),
+  "zh-CN": () => import("../locales/slang/loaders/zh-CN"),
+  "zh-TW": () => import("../locales/slang/loaders/zh-TW"),
+  ja: () => import("../locales/slang/loaders/ja"),
+  ko: () => import("../locales/slang/loaders/ko"),
+  vi: () => import("../locales/slang/loaders/vi"),
+  id: () => import("../locales/slang/loaders/id"),
+  es: () => import("../locales/slang/loaders/es"),
+};
+
+async function loadSlangEntry(next: Locale, id: SlangId): Promise<void> {
+  const { SLANG_LOADERS } = await SLANG_LOADER_TABLES[next]();
+  const m = (await SLANG_LOADERS[id]()) as { default: SlangEntryCopy };
+  registerSlangEntry(next, id, m.default);
 }
 
-export async function loadPageMessages(next: Locale, game: boolean, legal = false, quiz = false, dataset = false, kb: KbPage = null, ref: RefPage = null): Promise<void> {
+/** Whether the strings a page needs are loaded: the locale pack, plus the game, legal, quiz, dataset or kb pack on those pages. */
+export function hasPageMessages(next: Locale, game: boolean, legal = false, quiz = false, dataset = false, kb: KbPage = null, ref: RefPage = null, slang: SlangPage = null): boolean {
   const article = kbArticleOf(kb);
   const entry = ref && ref !== "hub" ? ref : null;
+  const term = slang && slang !== "hub" ? slang : null;
+  return hasMessages(next) && (!game || hasGameMessages(next)) && (!legal || hasLegalMessages(next)) && (!quiz || hasQuizMessages(next)) && (!dataset || hasDatasetMessages(next))
+    && (!kb || (hasKbMessages(next) && (!article || hasKbArticle(next, article))))
+    && (!ref || (hasRefMessages(next) && (!entry || hasRefEntry(next, entry))))
+    && (!slang || (hasSlangMessages(next) && (!term || hasSlangEntry(next, term))));
+}
+
+export async function loadPageMessages(next: Locale, game: boolean, legal = false, quiz = false, dataset = false, kb: KbPage = null, ref: RefPage = null, slang: SlangPage = null): Promise<void> {
+  const article = kbArticleOf(kb);
+  const entry = ref && ref !== "hub" ? ref : null;
+  const term = slang && slang !== "hub" ? slang : null;
   await Promise.all([
     hasMessages(next) ? null : PACKS[next]().then((m) => registerMessages(next, m.default)),
     !game || hasGameMessages(next) ? null : GAME_PACKS[next]().then((m) => registerGameMessages(next, m.default)),
@@ -181,6 +221,8 @@ export async function loadPageMessages(next: Locale, game: boolean, legal = fals
     !article || hasKbArticle(next, article) ? null : loadKbArticle(next, article),
     !ref || hasRefMessages(next) ? null : REF_PACKS[next]().then((m) => registerRefMessages(next, m.default)),
     !entry || hasRefEntry(next, entry) ? null : loadRefEntry(next, entry),
+    !slang || hasSlangMessages(next) ? null : SLANG_PACKS[next]().then((m) => registerSlangMessages(next, m.default)),
+    !term || hasSlangEntry(next, term) ? null : loadSlangEntry(next, term),
   ]);
 }
 

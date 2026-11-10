@@ -151,7 +151,7 @@ function tutorialLinkItems(locale: Locale, id: KbId): { href: string; name: stri
   return kbMeta(id).tutorials.map((tutorial) => ({ href: learnHref(locale, tutorial), name: learn[tutorial].name, blurb: learn[tutorial].blurb, nav: `learn-${tutorial}` }));
 }
 
-function dateLabel(locale: Locale, iso: string): string {
+export function dateLabel(locale: Locale, iso: string): string {
   try {
     return new Intl.DateTimeFormat(HREFLANG[locale], { year: "numeric", month: "long", day: "numeric", timeZone: "UTC" }).format(new Date(`${iso}T00:00:00Z`));
   } catch {

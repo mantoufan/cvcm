@@ -14,6 +14,7 @@
     "typecheck": "tsc --noEmit",
     "kb:sync": "node scripts/kb-sync.mjs",
     "ref:sync": "node scripts/ref-sync.mjs",
+    "slang:sync": "node scripts/slang-sync.mjs",
     "test": "vitest run",
     "deploy": "npm run build && wrangler deploy"
   },
