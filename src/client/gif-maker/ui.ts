@@ -249,12 +249,20 @@ async function setClip(file: File): Promise<void> {
   const video = h("video", { src: url, muted: true, playsinline: true, controls: true, preload: "auto", class: "gif-clip" });
   video.muted = true;
   setStatus(t("gifMaker.loading"));
+  // On the page from the start (some mobile browsers load nothing for a detached video), and only the metadata is
+  // awaited: iOS Safari may not load frame data before a gesture, and seeking for each frame loads what is needed.
+  els?.videoBox.replaceChildren(video);
+  if (els) els.videoBox.hidden = false;
   try {
     await new Promise<void>((resolve, reject) => {
-      video.addEventListener("loadeddata", () => resolve(), { once: true });
-      video.addEventListener("error", () => reject(new Error("video")), { once: true });
+      const timer = window.setTimeout(() => reject(new Error("timeout")), LOAD_TIMEOUT_MS);
+      video.addEventListener("loadedmetadata", () => { window.clearTimeout(timer); resolve(); }, { once: true });
+      video.addEventListener("error", () => { window.clearTimeout(timer); reject(new Error("video")); }, { once: true });
     });
   } catch {
+    video.removeAttribute("src");
+    video.load();
+    video.remove();
     URL.revokeObjectURL(url);
     if (load !== state.load) return;
     state.mode = "images";
@@ -266,6 +274,7 @@ async function setClip(file: File): Promise<void> {
   if (!els || load !== state.load) {
     video.removeAttribute("src");
     video.load();
+    video.remove();
     URL.revokeObjectURL(url);
     return;
   }
@@ -437,15 +446,22 @@ function thumb(bitmap: ImageBitmap): HTMLCanvasElement {
 
 const yieldFrame = () => new Promise<void>((resolve) => setTimeout(resolve, 0));
 
+/** How long a video may take to report its size, or one seek to land, before the page says it cannot read it. */
+const LOAD_TIMEOUT_MS = 20000;
+
 function seek(video: HTMLVideoElement, time: number): Promise<void> {
   return new Promise((resolve, reject) => {
+    const timer = window.setTimeout(() => fail(), LOAD_TIMEOUT_MS);
     const done = () => {
+      window.clearTimeout(timer);
       video.removeEventListener("seeked", done);
       video.removeEventListener("error", fail);
       resolve();
     };
     const fail = () => {
+      window.clearTimeout(timer);
       video.removeEventListener("seeked", done);
+      video.removeEventListener("error", fail);
       reject(new Error("seek"));
     };
     video.addEventListener("seeked", done);

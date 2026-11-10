@@ -57,16 +57,31 @@ class Bytes {
   }
 }
 
+// Scratch buffers reused frame after frame (the page encodes one frame at a time), cleared on each use.
+let hist: { count: Uint32Array; sumR: Float64Array; sumG: Float64Array; sumB: Float64Array } | null = null;
+let cacheBuf: Int16Array | null = null;
+
+function histogram(): NonNullable<typeof hist> {
+  hist ??= { count: new Uint32Array(32768), sumR: new Float64Array(32768), sumG: new Float64Array(32768), sumB: new Float64Array(32768) };
+  hist.count.fill(0);
+  hist.sumR.fill(0);
+  hist.sumG.fill(0);
+  hist.sumB.fill(0);
+  return hist;
+}
+
+function colorCache(): Int16Array {
+  cacheBuf ??= new Int16Array(262144);
+  return cacheBuf.fill(-1);
+}
+
 /**
  * Median cut over a 5-bit-per-channel histogram: boxes are split at the pixel-count median of their longest channel,
  * the busiest wide box first, and each colour is the true mean of the pixels in its box. Returns RGB triples.
  */
 export function quantize(rgba: Uint8ClampedArray, colors: number): Uint8Array {
   const want = Math.max(2, Math.min(256, Math.round(colors)));
-  const count = new Uint32Array(32768);
-  const sumR = new Float64Array(32768);
-  const sumG = new Float64Array(32768);
-  const sumB = new Float64Array(32768);
+  const { count, sumR, sumG, sumB } = histogram();
   for (let i = 0; i < rgba.length; i += 4) {
     const r = rgba[i]!;
     const g = rgba[i + 1]!;
@@ -143,7 +158,7 @@ export function quantize(rgba: Uint8ClampedArray, colors: number): Uint8Array {
 export function mapPixels(rgba: Uint8ClampedArray, width: number, height: number, palette: Uint8Array, dither: boolean): Uint8Array {
   const n = palette.length / 3;
   // Nearest colour per 6-bit-per-channel cell, found on first use.
-  const cache = new Int16Array(262144).fill(-1);
+  const cache = colorCache();
   const nearest = (r: number, g: number, b: number): number => {
     const key = ((r >> 2) << 12) | ((g >> 2) << 6) | (b >> 2);
     const hit = cache[key]!;
@@ -283,6 +298,9 @@ function writeLzw(indices: Uint8Array, minCodeSize: number, out: Bytes, table: L
       prefix = k;
     }
     emit(prefix);
+    // The decoder adds one more entry on reading that last code and may widen its codes right then: match it, or
+    // the end code is one bit short.
+    if (next === 1 << codeSize && codeSize < 12) codeSize++;
     emit(eoi);
   }
   if (bits > 0) {

@@ -106,6 +106,14 @@ describe("gif encoder", () => {
     expect(i).toBe(out.length - 1);
   });
 
+  it("widens the end code when the decoder widens after the last code", () => {
+    // [0, 1, 2] at code size 2: entries 6 and 7 fill the 3-bit range, so the decoder reads the end code in 4 bits.
+    // Codes, least significant bit first: clear(4) 0 1 2 in 3 bits, then end(5) in 4 bits = 16 bits in one sub-block.
+    // (Zero padding hides a 3-bit end code in this tiny case; the layout is what a strict decoder expects.)
+    const out = lzw(new Uint8Array([0, 1, 2]), 2);
+    expect([...out]).toEqual([2, 2, 0b01000100, 0b01010100, 0]);
+  });
+
   it("stores delays in hundredths with a 2 floor", () => {
     expect(delayCs(500)).toBe(50);
     expect(delayCs(5)).toBe(2);
@@ -328,6 +336,10 @@ describe("svg size", () => {
     expect(readSvg('<svg width="48" viewBox="0 0 24 12"></svg>')).toMatchObject({ width: 48, height: 24 });
     expect(readSvg('<svg width="100%" height="100%"></svg>')).toMatchObject({ width: 300, height: 150 });
     expect(readSvg("<html></html>")).toBeNull();
+    // A tag inside a comment or the DOCTYPE is not the root.
+    const commented = '<!DOCTYPE svg [<!ENTITY x "<svg width=\'1\'>">]><!-- <svg width="16" height="16"> --><svg width="64" height="32"></svg>';
+    expect(readSvg(commented)).toMatchObject({ width: 64, height: 32 });
+    expect(sizedSvg(commented, readSvg(commented)!, 128, 64)).toContain('<!-- <svg width="16" height="16"> --><svg width="128" height="64"');
   });
 
   it("rewrites only the root size and adds a viewBox when there is none", () => {
@@ -358,8 +370,10 @@ describe("decimal input", () => {
     expect(parseDecimalInput("1,000.5", "es")).toBe(1000.5);
     expect(parseDecimalInput("1.000,5", "es")).toBe(1000.5);
     expect(parseDecimalInput("1.000,5", "en")).toBe(1000.5);
-    expect(parseDecimalInput("1.000", "id")).toBe(1000);
-    expect(parseDecimalInput("12.500.000", "vi")).toBe(12500000);
+    // A lone dot is a decimal point everywhere (phones type "." on decimal keypads); several dots are not a number.
+    expect(parseDecimalInput("2.375", "vi")).toBe(2.375);
+    expect(parseDecimalInput("1.000", "id")).toBe(1);
+    expect(parseDecimalInput("12.500.000", "vi")).toBeNaN();
     expect(parseDecimalInput("1.5", "es")).toBe(1.5);
     expect(parseDecimalInput("1.000", "en")).toBe(1);
     expect(parseDecimalInput("1.000.5", "en")).toBeNaN();

@@ -1,6 +1,19 @@
+import { isSvgFile, readSvg, sizedSvg, svgPixelSize } from "../shared/svg-size";
+
+/**
+ * Any picture the browser can read. An SVG is drawn from its source at its own size (given an explicit width and height
+ * first, which Firefox needs and an SVG without one would otherwise come out at 300 × 150 or fail).
+ */
 export async function decodeImage(
   file: Blob,
 ): Promise<{ bitmap: ImageBitmap; width: number; height: number }> {
+  if (isSvgFile({ name: file instanceof File ? file.name : "", type: file.type })) {
+    const text = await file.text();
+    const info = readSvg(text);
+    if (!info) throw new Error("svg");
+    const { width, height } = svgPixelSize(info, 1);
+    return { bitmap: await rasterizeSvg(sizedSvg(text, info, width, height), width, height), width, height };
+  }
   try {
     const bitmap = await createImageBitmap(file, { imageOrientation: "from-image" });
     return { bitmap, width: bitmap.width, height: bitmap.height };
@@ -48,4 +61,15 @@ export function drawToCanvas(
   if (!ctx) throw new Error("canvas");
   ctx.drawImage(source, 0, 0, canvas.width, canvas.height);
   return canvas;
+}
+
+/** Draws SVG text (already sized to `width` × `height`) as an image onto a canvas of that size: vector-sharp at any scale. */
+export async function rasterizeSvg(svg: string, width: number, height: number): Promise<ImageBitmap> {
+  const url = URL.createObjectURL(new Blob([svg], { type: "image/svg+xml" }));
+  try {
+    const img = await loadImage(url);
+    return await createImageBitmap(drawToCanvas(img, width, height));
+  } finally {
+    URL.revokeObjectURL(url);
+  }
 }

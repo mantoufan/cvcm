@@ -32,9 +32,11 @@ export function svgLength(value: string | null): number | null {
  * ratio; the viewBox size when neither is given; else 300 × 150, the CSS default for a replaced element.
  */
 export function readSvg(text: string): SvgInfo | null {
-  const m = /<svg\b(?:"[^"]*"|'[^']*'|[^'">])*>/i.exec(text);
+  // Blank out comments, CDATA and the DOCTYPE (same length, so offsets still match) before looking for the root tag.
+  const masked = text.replace(/<!--[\s\S]*?-->|<!\[CDATA\[[\s\S]*?\]\]>|<!DOCTYPE[^>[]*(?:\[[\s\S]*?\])?\s*>/gi, (x) => " ".repeat(x.length));
+  const m = /<svg\b(?:"[^"]*"|'[^']*'|[^'">])*>/i.exec(masked);
   if (!m) return null;
-  const tag = m[0];
+  const tag = text.slice(m.index, m.index + m[0].length);
   const vb = (attr(tag, "viewBox") ?? "").trim().split(/[\s,]+/).map(Number);
   const vbw = vb.length === 4 && vb[2]! > 0 ? vb[2]! : null;
   const vbh = vb.length === 4 && vb[3]! > 0 ? vb[3]! : null;

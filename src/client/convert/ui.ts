@@ -1,7 +1,7 @@
 import { blobFromBytes, encodeBmp, encodeGif, encodeIco } from "../../shared/image-encode";
 import { lossyFormat, mimeForFormat, outputFilename, type ImageFormat } from "../../shared/filename";
 import { zipStore } from "../../shared/zip";
-import { canvasToBlob, decodeImage, drawToCanvas, loadImage } from "../decode";
+import { canvasToBlob, decodeImage, drawToCanvas, rasterizeSvg } from "../decode";
 import { downloadBlob, h } from "../dom";
 import { locale, t } from "../i18n";
 import { CONVERT_JOB_FORMAT, appHref, parseAppPath, type ConvertJobId } from "../../shared/path";
@@ -300,10 +300,15 @@ async function ingestFile(file: File): Promise<void> {
       // If the scale changes while this draws, draw again at the new one.
       let scale = state.svgScale;
       let r = await rasterSvg(item, scale);
-      while (scale !== state.svgScale) {
+      while (scale !== state.svgScale && state.items.includes(item)) {
         r.bitmap.close();
         scale = state.svgScale;
         r = await rasterSvg(item, scale);
+      }
+      // Removed or cleared while it drew: nothing holds this bitmap.
+      if (!state.items.includes(item)) {
+        r.bitmap.close();
+        return;
       }
       applyRaster(item, r);
       return;
@@ -321,15 +326,7 @@ async function ingestFile(file: File): Promise<void> {
 async function rasterSvg(item: Item, scale: SvgScale): Promise<{ bitmap: ImageBitmap; width: number; height: number }> {
   if (!item.svg) throw new Error("svg");
   const { width, height } = svgPixelSize(item.svg.info, scale);
-  const url = URL.createObjectURL(new Blob([sizedSvg(item.svg.text, item.svg.info, width, height)], { type: "image/svg+xml" }));
-  try {
-    const img = await loadImage(url);
-    // Drawing the <img> (not a decoded bitmap) at the target size renders the shapes at that size.
-    const bitmap = await createImageBitmap(drawToCanvas(img, width, height));
-    return { bitmap, width, height };
-  } finally {
-    URL.revokeObjectURL(url);
-  }
+  return { bitmap: await rasterizeSvg(sizedSvg(item.svg.text, item.svg.info, width, height), width, height), width, height };
 }
 
 function applyRaster(item: Item, r: { bitmap: ImageBitmap; width: number; height: number }): void {
@@ -359,6 +356,9 @@ async function rerasterSvgs(): Promise<void> {
       applyRaster(item, r);
     } catch {
       if (run !== rasterRun) return;
+      // The old size must not be exported as if it were the new one.
+      item.bitmap?.close();
+      item.bitmap = null;
       item.error = t("convert.errorDecode");
     }
   }
