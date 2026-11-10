@@ -6,6 +6,7 @@ import { finiteDuration } from "../media-duration";
 import { downloadBlob, h } from "../dom";
 import { formatBytes } from "../../shared/resize";
 import { locale, t } from "../i18n";
+import { parseDecimalInput } from "../../shared/decimal-input";
 import { appHref } from "../../shared/path";
 
 /** A picture frame: its original size (for the GIF's shape), and a bitmap no bigger than the GIF can use. */
@@ -94,18 +95,18 @@ export function mountGifMaker(host: HTMLElement): void {
   const result = h("div", { class: "gif-result", "data-out": "result" });
   const make = h("button", { type: "button", class: "btn", "data-action": "make", onClick: () => void makeGif() }, t("gifMaker.make"));
   const num = (field: string, value: number, min: number, max: number, step: number, set: (n: number) => void, get: () => number) => {
+    // Text with a decimal keypad, not type=number: a number box empties itself on "1,5", and es/id/vi type commas.
     const el = h("input", {
-      type: "number",
-      min: String(min),
-      max: String(max),
-      step: String(step),
+      type: "text",
       value: String(value),
       inputmode: "decimal",
+      autocomplete: "off",
+      "data-step": String(step),
       "data-field": field,
       onInput: () => {
-        const n = Number(el.value);
+        const n = parseDecimalInput(el.value, locale()) ?? NaN;
         // A half-typed box keeps the last good value.
-        if (el.value.trim() === "" || !Number.isFinite(n)) return;
+        if (!Number.isFinite(n)) return;
         set(Math.min(max, Math.max(min, n)));
         changed();
       },
@@ -317,8 +318,8 @@ async function setClip(file: File): Promise<void> {
   }
   state.clip = { file, url, video, duration, width: video.videoWidth, height: video.videoHeight };
   state.start = 0;
-  // Rounded as the box shows it, so the range used is the range on screen.
-  state.end = Math.round(Math.min(duration || 3, 3) * 10) / 10;
+  // To 0.1 s as the box shows it (rounded up, so a very short clip still has a range; frames stop at its end anyway).
+  state.end = Math.ceil(Math.min(duration || 3, 3) * 10) / 10;
   els.start.value = String(state.start);
   els.end.value = String(Math.round(state.end * 10) / 10);
   els.videoBox.replaceChildren(video);
@@ -560,7 +561,8 @@ async function makeGif(): Promise<void> {
   const writer = new GifWriter({ ...size, loop: LOOPS[state.loop] });
   // Video frames show for the time between their samples. GIF stores whole hundredths, so each delay is the difference
   // of rounded running totals: the frames take turns rounding up and down and the GIF lasts as long as the clip.
-  const spacing = clip ? (times.length > 1 ? times[1]! - times[0]! : 1 / state.fps) : 0;
+  // Samples sit in the middle of equal slices, so a lone sample's slice is twice its distance from the start.
+  const spacing = clip ? (times.length > 1 ? times[1]! - times[0]! : 2 * (times[0]! - Math.max(0, state.start))) : 0;
   const delayFor = (i: number) => (clip ? (Math.round((i + 1) * spacing * 100) - Math.round(i * spacing * 100)) * 10 : state.delayMs);
   // The player is locked while its frames are grabbed: a seek or play by hand would capture the wrong moments.
   if (clip) {

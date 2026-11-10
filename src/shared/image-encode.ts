@@ -83,8 +83,8 @@ export function releaseGifScratch(): void {
 }
 
 /**
- * A still GIF: one frame with its own median-cut palette (src/shared/gif.ts, the GIF maker's encoder). Transparent
- * pixels come out as their colour channels, as before; the page draws the picture over its canvas first.
+ * A still GIF: one frame with its own median-cut palette (src/shared/gif.ts, the GIF maker's encoder). GIF here has no
+ * transparency: a clear pixel comes out as the colour stored under it (usually black), as with the old encoder.
  */
 export function encodeGif(px: Pixels): Uint8Array {
   stillScratch ??= newScratch();

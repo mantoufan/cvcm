@@ -180,7 +180,7 @@ function labeled(label: string, control: HTMLElement): HTMLElement {
 }
 
 function isImage(f: File): boolean {
-  return f.type.startsWith("image/") || /\.(png|jpe?g|webp|gif|bmp|avif|heic|heif)$/i.test(f.name);
+  return f.type.startsWith("image/") || /\.(png|jpe?g|webp|gif|bmp|avif|heic|heif|svg)$/i.test(f.name);
 }
 
 function onPaste(e: ClipboardEvent): void {

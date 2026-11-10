@@ -17,12 +17,12 @@ def flat(o, p=""):
 def check(loc: str) -> list[str]:
     errs = []
     for kind in ("tools-src", "learn-src"):
-        en = dict(flat(json.loads((ROOT / f"scripts/{kind}/batch25/en.json").read_text())))
+        en = dict(flat(json.loads((ROOT / f"scripts/{kind}/batch25/en.json").read_text(encoding="utf-8"))))
         path = ROOT / f"scripts/{kind}/batch25/{loc}.json"
         if not path.exists():
             errs.append(f"missing {path}")
             continue
-        tr = dict(flat(json.loads(path.read_text())))
+        tr = dict(flat(json.loads(path.read_text(encoding="utf-8"))))
         for k in en.keys() - tr.keys():
             errs.append(f"{kind}: missing {k}")
         for k in tr.keys() - en.keys():
