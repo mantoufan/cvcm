@@ -1,29 +1,29 @@
 {
- "updated": "2026-11-09",
+ "updated": "2026-11-10",
  "sets": {
   "ai-models": {
-   "asOf": "2026-11-08",
+   "asOf": "2026-11-09",
    "rows": 30,
    "top": [
     [
      "Gemini 4 Carbon (High)",
-     1539
+     1538
     ],
     [
      "Gemini 4 Argon (High)",
      1530
     ],
     [
-     "Claude Fable 5.1 (Max)",
+     "Claude Opus 5.5 (High)",
      1513
     ]
    ],
    "leadOrg": "Anthropic",
    "leadCount": 6,
-   "updated": "2026-11-09"
+   "updated": "2026-11-10"
   },
   "ai-coding-models": {
-   "asOf": "2026-11-08",
+   "asOf": "2026-11-09",
    "rows": 30,
    "top": [
     [
@@ -32,7 +32,7 @@
     ],
     [
      "Claude Sonnet 5.5 (xHigh)",
-     1773
+     1774
     ],
     [
      "Gemini 4 Carbon (High)",
@@ -41,15 +41,15 @@
    ],
    "leadOrg": "Anthropic",
    "leadCount": 5,
-   "updated": "2026-11-09"
+   "updated": "2026-11-10"
   },
   "ai-image-models": {
-   "asOf": "2026-11-08",
+   "asOf": "2026-11-09",
    "rows": 30,
    "top": [
     [
      "GPT-Image-2.5 Sunburst",
-     1428
+     1429
     ],
     [
      "GPT-Image-2.6 Sunburst (Medium)",
@@ -62,10 +62,10 @@
    ],
    "leadOrg": "OpenAI",
    "leadCount": 5,
-   "updated": "2026-11-09"
+   "updated": "2026-11-10"
   },
   "ai-video-models": {
-   "asOf": "2026-11-08",
+   "asOf": "2026-11-09",
    "rows": 30,
    "top": [
     [
@@ -83,103 +83,103 @@
    ],
    "leadOrg": "Google",
    "leadCount": 3,
-   "updated": "2026-11-09"
+   "updated": "2026-11-10"
   },
   "ai-usage": {
-   "asOf": "2026-11-07",
-   "citedAt": "2026-11-09T09:55:35.716Z",
+   "asOf": "2026-11-08",
+   "citedAt": "2026-11-10T09:59:40.418Z",
    "rows": 20,
    "top": [
     [
      "DeepSeek V4.1 Flash 1017",
-     27
+     26.7
     ],
     [
      "DeepSeek V4.1 Flash",
-     8.5
+     8.4
     ],
     [
      "GLM 5.3 Flash",
-     6.5
+     6.3
     ]
    ],
-   "updated": "2026-11-09"
+   "updated": "2026-11-10"
   },
   "ai-companies": {
-   "asOf": "2026-11-07",
-   "citedAt": "2026-11-09T09:55:35.716Z",
+   "asOf": "2026-11-08",
+   "citedAt": "2026-11-10T09:59:40.418Z",
    "rows": 15,
    "top": [
     [
      "DeepSeek",
-     38.9
-    ],
-    [
-     "Z.ai",
-     8.7
+     38.5
     ],
     [
      "Tencent",
-     8.1
+     9
+    ],
+    [
+     "Z.ai",
+     8.5
     ]
    ],
-   "updated": "2026-11-09"
+   "updated": "2026-11-10"
   },
   "crypto-market-cap": {
-   "asOf": "2026-11-09",
+   "asOf": "2026-11-10",
    "rows": 100,
    "top": [
     [
      "Bitcoin",
-     1493246520911
+     1497139596938
     ],
     [
      "Ethereum",
-     257667502006
+     257008698439
     ],
     [
      "Tether USDt",
-     176832045588
+     176820718324
     ]
    ],
-   "total": 2454145962451,
+   "total": 2457417118635,
    "dominance": 60.3,
-   "updated": "2026-11-09"
+   "updated": "2026-11-10"
   },
   "currency-strength": {
-   "asOf": "2026-11-06",
-   "monthAgo": "2026-10-06",
-   "yearAgo": "2025-11-06",
+   "asOf": "2026-11-09",
+   "monthAgo": "2026-10-09",
+   "yearAgo": "2025-11-07",
    "rows": 29,
    "top": [
     [
+     "KRW",
+     8.4
+    ],
+    [
      "NOK",
-     7.9
+     8.3
     ],
     [
      "CNY",
      6.7
-    ],
-    [
-     "KRW",
-     6.4
     ]
    ],
    "bottom": [
     [
      "TRY",
-     -16
-    ],
-    [
-     "IDR",
-     -7.9
+     -15.8
     ],
     [
      "RON",
      -7.8
+    ],
+    [
+     "IDR",
+     -7.6
     ]
    ],
-   "updated": "2026-11-07"
+   "updated": "2026-11-10"
   },
   "commodity-prices": {
    "asOf": "2026-10",
