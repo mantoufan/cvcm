@@ -134,15 +134,29 @@ export function quantize(rgba: Uint8ClampedArray, colors: number, sc: GifScratch
     });
     if (best < 0) break;
     const box = boxes[best]!;
-    const sorted = [...box.bins].sort((a, b) => chan(a, box.channel) - chan(b, box.channel));
+    // Pixel counts per level of the split channel (32 levels), then the level where half the pixels are reached:
+    // a linear pass instead of sorting the box's bins.
+    const levels = new Float64Array(32);
+    for (const k of box.bins) levels[chan(k, box.channel)]! += count[k]!;
+    let lo = 31;
+    let hi = 0;
+    for (let v = 0; v < 32; v++) {
+      if (!levels[v]) continue;
+      lo = Math.min(lo, v);
+      hi = Math.max(hi, v);
+    }
+    // The cut level leaves at least one level on each side (the box spans more than one level, or it would not split).
     let acc = 0;
-    let cut = 1;
-    for (let i = 0; i < sorted.length - 1; i++) {
-      acc += count[sorted[i]!]!;
-      cut = i + 1;
+    let cutLevel = lo;
+    for (let v = lo; v < hi; v++) {
+      acc += levels[v]!;
+      cutLevel = v;
       if (acc * 2 >= box.pixels) break;
     }
-    boxes.splice(best, 1, measure(sorted.slice(0, cut)), measure(sorted.slice(cut)));
+    const low: number[] = [];
+    const high: number[] = [];
+    for (const k of box.bins) (chan(k, box.channel) <= cutLevel ? low : high).push(k);
+    boxes.splice(best, 1, measure(low), measure(high));
   }
   const palette = new Uint8Array(boxes.length * 3);
   boxes.forEach((b, i) => {

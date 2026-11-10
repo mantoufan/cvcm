@@ -1,5 +1,5 @@
 /** Volume calculator: volume and surface area of common solids, and volume / capacity unit conversion. */
-import { METRES, type Formatter, type LengthUnit, type ShapeField } from "./area";
+import { METRES, heron, len, type Formatter, type LengthUnit, type ShapeField } from "./area";
 import { convertAmount } from "./units";
 
 export const VOLUME_UNITS = ["mm3", "cm3", "ml", "l", "m3", "in3", "ft3", "yd3", "usFlOz", "usCup", "usGal", "ukGal"] as const;
@@ -39,7 +39,6 @@ export const VOLUME_SHAPES = [
 ] as const;
 export type VolumeShape = (typeof VOLUME_SHAPES)[number];
 
-const len = (id: string, symbol: string): ShapeField => ({ id, kind: "length", symbol });
 
 export const VOLUME_FIELDS: Record<VolumeShape, readonly ShapeField[]> = {
   box: [len("length", "l"), len("width", "w"), len("height", "h")],
@@ -131,9 +130,8 @@ export function solveVolume(shape: VolumeShape, values: Readonly<Record<string, 
     }
     case "triangular-prism": {
       const [a, b, c, l] = [v("a"), v("b"), v("c"), v("length")];
-      const [x, y, z] = [a, b, c].sort((m, n) => m - n);
-      if (x + y <= z * (1 + 1e-12)) return { ok: false, error: "triangle" };
-      const base = Math.sqrt((z + (y + x)) * (x - (z - y)) * (x + (z - y)) * (z + (y - x))) / 4;
+      const base = heron(a, b, c);
+      if (base === null) return { ok: false, error: "triangle" };
       const volume = base * l;
       const surface = 2 * base + (a + b + c) * l;
       return out(volume, surface, [

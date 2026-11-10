@@ -1,4 +1,4 @@
-import { blobFromBytes, encodeBmp, encodeGif, encodeIco } from "../../shared/image-encode";
+import { blobFromBytes, encodeBmp, encodeGif, encodeIco, releaseGifScratch } from "../../shared/image-encode";
 import { lossyFormat, mimeForFormat, outputFilename, type ImageFormat } from "../../shared/filename";
 import { zipStore } from "../../shared/zip";
 import { canvasToBlob, decodeImage, drawSvg, drawToCanvas, readSvgFile, type SvgSource } from "../decode";
@@ -127,6 +127,7 @@ export function unmountConvert(): void {
   sizeEl = null;
   qualityField = null;
   svgField = null;
+  releaseGifScratch();
 }
 
 function filesRail(): HTMLElement {

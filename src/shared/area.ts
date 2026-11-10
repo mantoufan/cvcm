@@ -44,7 +44,7 @@ export type AreaShape = (typeof AREA_SHAPES)[number];
 export type FieldKind = "length" | "angle" | "count";
 export type ShapeField = { id: string; kind: FieldKind; symbol: string };
 
-const len = (id: string, symbol: string): ShapeField => ({ id, kind: "length", symbol });
+export const len = (id: string, symbol: string): ShapeField => ({ id, kind: "length", symbol });
 
 export const AREA_FIELDS: Record<AreaShape, readonly ShapeField[]> = {
   rectangle: [len("length", "l"), len("width", "w")],
@@ -89,6 +89,16 @@ export type Formatter = (n: number) => string;
  * Area (in the input unit squared) and perimeter (in the input unit, null when the inputs do not fix it).
  * `values` holds the fields of `shape` by id; `f` formats the numbers in the working.
  */
+/**
+ * Area of a triangle from its three sides (Heron's formula in Kahan's form, accurate for needle-thin triangles), or
+ * null when the sides do not make one. The small margin keeps rounding (0.1 + 0.2 vs 0.3) from passing a flat triangle.
+ */
+export function heron(a: number, b: number, c: number): number | null {
+  const [x, y, z] = [a, b, c].sort((m, n) => m - n) as [number, number, number];
+  if (x + y <= z * (1 + 1e-12)) return null;
+  return Math.sqrt((z + (y + x)) * (x - (z - y)) * (x + (z - y)) * (z + (y - x))) / 4;
+}
+
 export function solveArea(shape: AreaShape, values: Readonly<Record<string, number | undefined>>, f: Formatter = String): AreaResult {
   const fields = AREA_FIELDS[shape];
   for (const field of fields) {
@@ -115,12 +125,9 @@ export function solveArea(shape: AreaShape, values: Readonly<Record<string, numb
     }
     case "triangle-sides": {
       const [a, b, c] = [v("a"), v("b"), v("c")];
-      const [x, y, z] = [a, b, c].sort((m, n) => m - n);
-      // Strict triangle inequality; the small margin keeps rounding (0.1 + 0.2 vs 0.3) from passing a flat triangle.
-      if (x + y <= z * (1 + 1e-12)) return { ok: false, error: "triangle" };
+      const area = heron(a, b, c);
+      if (area === null) return { ok: false, error: "triangle" };
       const p = (a + b + c) / 2;
-      // Kahan's form of Heron's formula stays accurate for needle-thin triangles.
-      const area = Math.sqrt((z + (y + x)) * (x - (z - y)) * (x + (z - y)) * (z + (y - x))) / 4;
       return done(area, a + b + c, [
         `p = (${f(a)} + ${f(b)} + ${f(c)}) / 2 = ${f(p)}`,
         `A = √(${f(p)} × ${f(p - a)} × ${f(p - b)} × ${f(p - c)}) = ${f(area)}`,

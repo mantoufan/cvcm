@@ -292,6 +292,18 @@ async function setClip(file: File): Promise<void> {
     URL.revokeObjectURL(url);
     return;
   }
+  // A sound-only file (a voice recording saved as .webm, say) has no picture to make frames from.
+  if (!video.videoWidth || !video.videoHeight) {
+    video.removeAttribute("src");
+    video.load();
+    video.remove();
+    URL.revokeObjectURL(url);
+    if (load !== state.load || !els) return;
+    state.mode = "images";
+    setStatus(t("gifMaker.errorVideo"));
+    refresh();
+    return;
+  }
   // MediaRecorder WebM (cv.cm's own recorders too) has no duration until the browser looks at its end.
   const duration = await finiteDuration(video, 3000);
   if (!els || load !== state.load) {
@@ -303,7 +315,8 @@ async function setClip(file: File): Promise<void> {
   }
   state.clip = { file, url, video, duration, width: video.videoWidth, height: video.videoHeight };
   state.start = 0;
-  state.end = Math.min(duration || 3, 3);
+  // Rounded as the box shows it, so the range used is the range on screen.
+  state.end = Math.round(Math.min(duration || 3, 3) * 10) / 10;
   els.start.value = String(state.start);
   els.end.value = String(Math.round(state.end * 10) / 10);
   els.videoBox.replaceChildren(video);
@@ -556,6 +569,8 @@ async function makeGif(): Promise<void> {
       if (clip) {
         await seek(clip.video, times[i]!);
         if (run !== state.run) return;
+        // Length unknown and the seek stopped short: the clip has ended, so the GIF ends with the frames so far.
+        if (clip.duration === 0 && i > 0 && clip.video.currentTime < times[i]! - 0.25) break;
         drawFrame(ctx, clip.video, size.width, size.height);
       } else {
         drawFrame(ctx, state.stills[i]!.bitmap, size.width, size.height);
@@ -578,13 +593,12 @@ async function makeGif(): Promise<void> {
     }
   }
   if (run !== state.run || !els) return;
-  const bytes = writer.finish();
-  const packed = new ArrayBuffer(bytes.byteLength);
-  new Uint8Array(packed).set(bytes);
-  const blob = new Blob([packed], { type: "image/gif" });
-  state.result = { blob, url: URL.createObjectURL(blob), frames: count, ...size };
+  // finish() returns its own exactly-sized buffer, so the Blob takes it without another copy.
+  const blob = new Blob([writer.finish().buffer as ArrayBuffer], { type: "image/gif" });
+  const frames = writer.frameCount;
+  state.result = { blob, url: URL.createObjectURL(blob), frames, ...size };
   state.busy = false;
-  setStatus(t("gifMaker.done", { n: count, size: formatBytes(blob.size), w: size.width, h: size.height }));
+  setStatus(t("gifMaker.done", { n: frames, size: formatBytes(blob.size), w: size.width, h: size.height }));
   const first = clip ? clip.file : state.stills[0]!.file;
   // A suffix keeps a GIF made from cat.gif from taking the source's own name.
   const name = outputFilename(first.name, "image/gif", "-animated");

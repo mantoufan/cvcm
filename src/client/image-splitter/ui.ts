@@ -1,6 +1,7 @@
 import { mimeForFormat, safeStem } from "../../shared/filename";
 import { MAX_GRID, SPLIT_PRESETS, clampGrid, cropArea, postingOrder, splitGrid, tileName, type Tile } from "../../shared/image-split";
 import { zipStore } from "../../shared/zip";
+import { blobFromBytes } from "../../shared/image-encode";
 import { canvasToBlob, decodeImage } from "../decode";
 import { downloadBlob, h } from "../dom";
 import { locale, t } from "../i18n";
@@ -56,6 +57,7 @@ export function unmountImageSplitter(): void {
   state.source = null;
   state.run++;
   state.load++;
+  splitting = null;
   preview = statusEl = infoEl = galleryEl = null;
   rowsEl = colsEl = squareEl = null;
   formatEl = orderEl = null;
@@ -220,6 +222,8 @@ function tiles(): Tile[] {
 /** Any setting changed: the old tiles no longer match. */
 function changed(): void {
   state.run++;
+  // The split in progress is for the old settings: the next Split starts a new one.
+  splitting = null;
   // A split in progress was just cancelled, and old messages no longer apply.
   if (statusEl) statusEl.textContent = "";
   dropPieces();
@@ -297,8 +301,20 @@ function paint(): void {
   });
 }
 
-/** Cuts every tile to a Blob and lists them, each a link that saves that tile. */
-async function split(): Promise<Piece[] | null> {
+/** The split in progress, so Split and Download ZIP pressed together share it instead of cancelling each other. */
+let splitting: Promise<Piece[] | null> | null = null;
+
+/** Cuts every tile to a Blob and lists them, each a button that saves that tile. */
+function split(): Promise<Piece[] | null> {
+  if (splitting) return splitting;
+  const job: Promise<Piece[] | null> = cutTiles().finally(() => {
+    if (splitting === job) splitting = null;
+  });
+  splitting = job;
+  return job;
+}
+
+async function cutTiles(): Promise<Piece[] | null> {
   const s = state.source;
   if (!s) {
     if (statusEl) statusEl.textContent = t("imageSplitter.needImage");
@@ -355,10 +371,7 @@ async function downloadZip(): Promise<void> {
   if (!pieces || !source || source !== state.source) return;
   const entries = [];
   for (const p of pieces) entries.push({ name: p.name, data: new Uint8Array(await p.blob.arrayBuffer()) });
-  const zip = zipStore(entries);
-  const packed = new ArrayBuffer(zip.byteLength);
-  new Uint8Array(packed).set(zip);
-  downloadBlob(new Blob([packed], { type: "application/zip" }), zipName);
+  downloadBlob(blobFromBytes(zipStore(entries), "application/zip"), zipName);
 }
 
 /**
