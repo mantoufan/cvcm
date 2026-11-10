@@ -9,38 +9,39 @@ export type Tile = Rect & { row: number; col: number; index: number };
  * Tile shapes: the whole picture cut as it is, square tiles, or 3:4 portrait tiles. Instagram's profile grid has shown
  * every post as a 3:4 thumbnail since 2025, so 3:4 tiles posted in order line up there with no gaps at the seams.
  */
-export const TILE_SHAPES = ["whole", "square", "portrait"] as const;
-export type TileShape = (typeof TILE_SHAPES)[number];
-
-/** Width : height of a tile, or null for "whatever the picture gives". */
-export const TILE_RATIO: Record<TileShape, readonly [number, number] | null> = {
+/** Width : height of a tile, or null for "whatever the picture gives". Menu order is this order. */
+export const TILE_RATIO = {
   whole: null,
   square: [1, 1],
   portrait: [3, 4],
-};
+} as const satisfies Record<string, readonly [number, number] | null>;
+export type TileShape = keyof typeof TILE_RATIO;
+export const TILE_SHAPES = Object.keys(TILE_RATIO) as TileShape[];
 
 /** Common grids: Instagram's three-across profile rows (3:4 tiles), carousels (square slides), halves. */
-export const SPLIT_PRESETS: readonly { id: string; rows: number; cols: number; shape: TileShape }[] = [
+export const SPLIT_PRESETS = [
   { id: "grid3x3", rows: 3, cols: 3, shape: "portrait" },
   { id: "grid3x2", rows: 2, cols: 3, shape: "portrait" },
   { id: "row1x3", rows: 1, cols: 3, shape: "square" },
   { id: "grid2x2", rows: 2, cols: 2, shape: "square" },
   { id: "row1x2", rows: 1, cols: 2, shape: "whole" },
   { id: "col2x1", rows: 2, cols: 1, shape: "whole" },
-];
+] as const satisfies readonly { id: string; rows: number; cols: number; shape: TileShape }[];
 
 /**
- * The part of the picture that is cut. With a tile shape, the largest rows × cols block of tiles of exactly that shape
- * that fits, centred (the rest is trimmed evenly from both sides); every tile is a whole multiple of the ratio, so
- * 3:4 tiles really are 3:4. With "whole", the whole picture.
+ * The part of the picture that is cut. With a tile shape, the largest rows × cols block of equal tiles of that shape
+ * that fits, centred (the rest is trimmed evenly from both sides). Tile width is the widest that fits; its height is
+ * the nearest whole pixel to the ratio, so a tile is within a pixel of 3:4 and almost nothing more is trimmed. With
+ * "whole", the whole picture.
  */
 export function cropArea(width: number, height: number, rows: number, cols: number, shape: TileShape): Rect {
   const ratio = TILE_RATIO[shape];
   if (!ratio) return { x: 0, y: 0, width, height };
   const [a, b] = ratio;
-  const unit = Math.floor(Math.min(width / (cols * a), height / (rows * b)));
-  const w = unit * a * cols;
-  const h = unit * b * rows;
+  const tileW = Math.floor(Math.min(width / cols, ((height / rows) * a) / b));
+  const tileH = Math.min(Math.floor(height / rows), Math.round((tileW * b) / a));
+  const w = Math.max(0, tileW) * cols;
+  const h = Math.max(0, tileH) * rows;
   return { x: Math.floor((width - w) / 2), y: Math.floor((height - h) / 2), width: w, height: h };
 }
 

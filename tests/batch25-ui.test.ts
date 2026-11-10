@@ -122,6 +122,8 @@ describe("image splitter ui", () => {
     expect(host.querySelectorAll("[data-field=shape] option")).toHaveLength(3);
     click("[data-preset=row1x3]");
     expect(q<HTMLSelectElement>("[data-field=shape]").value).toBe("square");
+    set("[data-field=shape]", "whole", "change");
+    expect(q<HTMLSelectElement>("[data-field=shape]").value).toBe("whole");
     expect(q<HTMLInputElement>("[data-field=rows]").value).toBe("1");
     expect(q<HTMLInputElement>("[data-field=cols]").value).toBe("3");
     // A cleared box shows the grid still in use when left, and an oversized one the clamped value.

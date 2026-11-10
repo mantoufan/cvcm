@@ -318,6 +318,12 @@ describe("image splitter", () => {
     expect(area).toEqual({ x: 375, y: 0, width: 2250, height: 3000 });
     const tiles = splitGrid(area, 3, 3);
     for (const t of tiles) expect(t.width * 4).toBe(t.height * 3);
+    // Sizes that do not divide: tiles stay within a pixel of 3:4 and almost nothing extra is trimmed.
+    const odd = cropArea(1199, 1599, 20, 20, "portrait");
+    expect(odd).toEqual({ x: 9, y: 9, width: 1180, height: 1580 });
+    for (const t of splitGrid(odd, 20, 20)) expect(Math.abs(t.width / t.height - 0.75)).toBeLessThan(1 / t.height + 1e-9);
+    // A tiny picture still splits (1 px tiles) instead of reporting a grid finer than the picture.
+    expect(cropArea(50, 50, 20, 20, "portrait")).toEqual({ x: 15, y: 15, width: 20, height: 20 });
   });
 
   it("numbers posts from the last tile and names files in reading order", () => {
