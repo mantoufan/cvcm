@@ -1,0 +1,183 @@
+{
+  "title": "Auto Captions: How to Add Automatic Captions to Video with AI — cv.cm",
+  "description": "How to add auto captions with an AI subtitle generator: transcribe, fix errors, set line length and reading speed, export SRT or VTT, burn in with ffmpeg.",
+  "h1": "How to Add Auto Captions to a Video with AI",
+  "answer": "To add auto captions, run the audio through a speech recognition model such as Whisper, correct names and numbers, split the text into short lines of up to about 42 characters (16 for Chinese), keep reading speed under about 20 characters per second, then export an SRT or WebVTT file. Upload it as soft subtitles or burn it into the picture.",
+  "sections": [
+    {
+      "h": "What an AI subtitle generator actually does",
+      "body": [
+        "Automatic captions come from automatic speech recognition (ASR). A model listens to the audio track and writes out the words with a start and end time for each phrase. Whisper is a well-known open example: its paper describes training on 680,000 hours of multilingual audio, which is why one model can transcribe many languages and also translate them into English. For how the model works inside, see our guide to how speech-to-text works.",
+        "The output of ASR is a draft, not finished captions. YouTube's own help page on automatic captions says the quality may vary and asks creators to always review them and fix the parts that were not transcribed properly. Good captions need three more steps that a raw transcript skips: correcting errors, splitting the text into readable lines, and timing each line so people can read it.",
+        "You can generate subtitles from a video in three common places: inside the platform (YouTube, TikTok and Instagram all offer automatic captions in some form), inside an editor (CapCut or Jianying, Premiere Pro, DaVinci Resolve, Descript), or with a separate transcription tool that exports a subtitle file. A separate file gives you the most control and can be reused on every platform. For example, cv.cm's speech-to-text tool runs Whisper in the browser and exports TXT, SRT or VTT without uploading the audio."
+      ]
+    },
+    {
+      "h": "The workflow, step by step",
+      "body": [
+        {
+          "ol": [
+            "Export a clean audio track from your final edit. Captions must match the cut you will post, so transcribe last, after the picture is locked.",
+            "Transcribe with a Whisper-class model. Set the language by hand if you know it; automatic detection can guess wrong on short clips or clips that start with music.",
+            "Read the transcript while you listen. Fix names, brand names, numbers, technical words and words that sound alike.",
+            "Split the text into caption cards: one or two short lines each, broken at natural phrase boundaries.",
+            "Check timing: each card should appear when the words start and stay long enough to read.",
+            "Style for the screen: font size, outline or box, and a position inside the safe zone.",
+            "Deliver: upload the SRT or VTT as a caption track, or burn the captions into the video, or both."
+          ]
+        },
+        {
+          "note": "Transcribing the final edit, not the raw recording, saves you from re-timing every line after each cut."
+        }
+      ]
+    },
+    {
+      "h": "Line length and reading speed rules",
+      "body": [
+        "Professional subtitle guides set firm limits so viewers can read without missing the picture. Netflix publishes per-language timed text style guides; these are useful, verifiable numbers to start from:",
+        {
+          "table": {
+            "head": [
+              "Language (Netflix guide)",
+              "Characters per line",
+              "Lines per card",
+              "Reading speed, adult",
+              "Reading speed, children"
+            ],
+            "rows": [
+              [
+                "English (USA)",
+                "42",
+                "2 at most",
+                "Up to 20 characters per second",
+                "Up to 17 characters per second"
+              ],
+              [
+                "Chinese (Simplified)",
+                "16",
+                "2 at most",
+                "Up to 9 characters per second",
+                "Up to 7 characters per second"
+              ]
+            ]
+          }
+        },
+        "The English guide also explains where to break a line: after punctuation, before conjunctions and before prepositions. Keep an article with its noun, an adjective with its noun, and a first name with a last name.",
+        "Here is how the reading speed rule works in practice. A card that says `Three things nobody tells you about captions` has 44 characters, including spaces. At 20 characters per second it needs at least 2.2 seconds on screen. If the speaker says it in 1.5 seconds, either keep the card up longer or shorten the text, for example to `Three things nobody tells you` (29 characters, about 1.5 seconds).",
+        "Short vertical videos need tighter limits than a TV screen. A 1080-pixel-wide phone frame with large, bold text holds far fewer characters per line than 42. In practice, one line of about 20 to 30 Latin characters, or 8 to 12 Chinese characters, reads well on a phone. Many creators show one short phrase per card and change cards often."
+      ]
+    },
+    {
+      "h": "SRT and WebVTT: the two subtitle file formats",
+      "body": [
+        "Almost every platform and editor accepts SRT. WebVTT (VTT) is the W3C format for subtitles on the web, used by the HTML video element. They look almost the same:",
+        {
+          "code": "SRT (file: captions.srt)\n\n1\n00:00:00,000 --> 00:00:01,600\nThree things nobody tells you\n\n2\n00:00:01,600 --> 00:00:03,400\nabout auto captions.\n\nWebVTT (file: captions.vtt)\n\nWEBVTT\n\n00:00:00.000 --> 00:00:01.600\nThree things nobody tells you\n\n00:00:01.600 --> 00:00:03.400 line:70%\nabout auto captions.",
+          "lang": "text"
+        },
+        {
+          "ul": [
+            "SRT numbers each card and uses a comma before the milliseconds: `00:00:01,600`.",
+            "WebVTT starts with the line `WEBVTT`, uses a period before the milliseconds: `00:00:01.600`, and does not need card numbers.",
+            "WebVTT can carry cue settings after the timing, such as `line`, `position` and `align`, to place a card on screen. Not every player honors them.",
+            "Save both as UTF-8 text so accents and CJK characters survive."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Burned-in or soft subtitles",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Type",
+              "What it is",
+              "Good for",
+              "Downside"
+            ],
+            "rows": [
+              [
+                "Soft subtitles (caption track)",
+                "A separate SRT or VTT file the player draws on top",
+                "YouTube uploads, several languages, accessibility, search text",
+                "Not all short-video apps accept a file upload; style is up to the player"
+              ],
+              [
+                "Burned-in (open) captions",
+                "Text drawn into the video pixels",
+                "TikTok, Reels and Shorts, where many people watch with the sound off; full control of style",
+                "Cannot be turned off or translated; errors need a new export"
+              ]
+            ]
+          }
+        },
+        "Many creators do both: burned-in styled captions for the short-video apps, and a clean SRT for YouTube. These ffmpeg commands show each option. The `subtitles` filter needs an ffmpeg build with libass.",
+        {
+          "code": "# Burn captions into a 1080x1920 video (white text, black outline, raised above the bottom UI)\nffmpeg -i final.mp4 \\\n  -vf \"subtitles=captions.srt:force_style='FontName=Arial,FontSize=12,Bold=1,PrimaryColour=&H00FFFFFF,OutlineColour=&H00000000,BorderStyle=1,Outline=2,Alignment=2,MarginV=100'\" \\\n  -c:v libx264 -crf 18 -pix_fmt yuv420p -c:a copy captioned.mp4\n\n# Add a soft caption track to an MP4 without re-encoding the video\nffmpeg -i final.mp4 -i captions.srt -map 0 -map 1 -c copy -c:s mov_text \\\n  -metadata:s:s:0 language=eng soft_captions.mp4",
+          "lang": "bash"
+        },
+        "In the burn-in command, an SRT file is drawn on a virtual canvas 288 units tall, so `FontSize=12` is about 80 pixels on a 1920-pixel frame, and `MarginV=100` lifts the text about a third of the way up from the bottom. Test on one short clip and adjust."
+      ]
+    },
+    {
+      "h": "Styling captions for vertical video",
+      "body": [
+        {
+          "ul": [
+            "Position: keep captions out of the bottom third, where the app shows the account name, description and buttons. See our guide to vertical video sizes for safe zone pixels.",
+            "Size: on a phone, text that looks large in the editor is often just right. Check on a real phone at arm's length.",
+            "Contrast: white or yellow text with a dark outline or a semi-transparent box stays readable over any background.",
+            "Do not cover the face. If the speaker's face sits in the middle of the frame, place captions just below the chin, not over the mouth.",
+            "One style per video. Changing fonts and colors between cards makes viewers read the style instead of the words."
+          ]
+        },
+        "Word-by-word or karaoke captions show one to three words at a time and highlight the word being spoken. They need word-level timestamps, which Whisper-class tools can produce. They keep eyes on the screen in fast talking-head clips, but they are tiring for long explanations. Use them for hooks and punchlines, and normal two-line cards for the rest."
+      ]
+    },
+    {
+      "h": "Translating subtitles",
+      "body": [
+        "Translate the corrected source captions, not the raw transcript. Keep the same card timings and translate card by card, so each translated line still matches the moment it is spoken.",
+        "Translations change length. Spanish and German usually need more characters than English for the same idea, while Chinese and Japanese need fewer characters but have much lower reading speed limits. After translating, check every card against the line length and reading speed limits for the target language and shorten where needed. A machine translation of a subtitle file is a fast first draft; a fluent speaker should read it before you publish."
+      ]
+    },
+    {
+      "h": "Common errors and limits of automatic captions",
+      "body": [
+        {
+          "ul": [
+            "Names and new words: the model writes the closest common word. Keep a list of names and brand spellings and search the transcript for them.",
+            "Numbers: check every price, date and measurement against what was said. A wrong number in a caption is worse than no caption.",
+            "Music and noise: background music, crowd noise and overlapping speakers lower accuracy. Transcribe a version with the music turned down if you can.",
+            "Text in silence: in practice, ASR models sometimes write words during long silences or music-only parts. Delete cards that appear where no one speaks.",
+            "Mixed languages: a clip that switches languages can be transcribed in only one of them. Split it and transcribe each part with the language set by hand.",
+            "Accessibility: captions for deaf and hard-of-hearing viewers should also mark important sounds, such as [door slams], which ASR does not add."
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "How do I generate subtitles from a video for free?",
+      "a": "Use a Whisper-based transcription tool or your editor's built-in auto captions, then export an SRT file. Check and correct the text before you publish."
+    },
+    {
+      "q": "Are YouTube auto captions accurate?",
+      "a": "They are often usable but not reliable for names, numbers or noisy audio. YouTube itself says the quality may vary and asks creators to review and edit them."
+    },
+    {
+      "q": "What is the difference between SRT and VTT?",
+      "a": "Both list caption text with start and end times. SRT uses a comma before the milliseconds and numbers each card; WebVTT starts with WEBVTT, uses a period, and can carry position settings."
+    },
+    {
+      "q": "How many characters per line should subtitles have?",
+      "a": "Netflix's English guide allows up to 42 characters per line and two lines; its Simplified Chinese guide allows 16 characters per line. For vertical short videos, shorter lines read better."
+    },
+    {
+      "q": "Should I burn in captions or upload an SRT?",
+      "a": "Burn them in for TikTok, Reels and Shorts, where you want a fixed style and many people watch muted. Upload an SRT for YouTube and for other languages, so viewers can turn captions on or off."
+    }
+  ]
+}

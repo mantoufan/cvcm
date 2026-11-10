@@ -1,0 +1,219 @@
+{
+  "title": "Tamaño de video para TikTok, Shorts y Reels y zonas seguras — cv.cm",
+  "description": "Tamaño de video para TikTok, medidas de YouTube Shorts y Reels y zonas seguras en una sola tabla, con comandos de ffmpeg para pasar clips de IA a 1080×1920.",
+  "h1": "Tamaño de video para TikTok y medidas de YouTube Shorts y Reels: tabla de referencia",
+  "answer": "Para TikTok, YouTube Shorts y Reels, exporta un video vertical 9:16 de 1080×1920 píxeles, MP4 con H.264 y 30 fotogramas por segundo. Al momento de escribir esto, TikTok acepta subidas web de hasta 30 minutos, Shorts hasta 3 minutos y los reels de Instagram hasta 20 minutos. Mantén el texto y las caras en el centro del encuadre, lejos del 14 % superior y del 35 % inferior.",
+  "sections": [
+    {
+      "h": "La respuesta corta: un archivo maestro para todas las apps",
+      "body": [
+        "Todas las grandes apps de video corto muestran el video a pantalla completa con el teléfono en vertical. Esa pantalla tiene proporción 9:16, y el tamaño que la llena en Full HD es de 1080 píxeles de ancho por 1920 de alto. Si haces un maestro de 1080×1920, puedes publicar el mismo archivo en TikTok, YouTube Shorts, Instagram Reels y Facebook Reels sin volver a editar.",
+        "Las cifras de abajo son las que indican las páginas de ayuda de cada plataforma al momento de escribir esto (noviembre de 2026). Las plataformas cambian los límites con frecuencia, y algunos difieren entre la app del móvil y el cargador web. Cuando una página oficial no indica un valor, la tabla lo dice en lugar de inventarlo.",
+        {
+          "note": "Un maestro seguro por defecto: 1080×1920, 9:16, video H.264 en un archivo MP4, audio AAC, 30 fps, velocidad de fotogramas constante. Cumple todos los límites verificados en la tabla de abajo."
+        }
+      ]
+    },
+    {
+      "h": "Medidas de video vertical por plataforma (noviembre de 2026)",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Plataforma",
+              "Formato",
+              "Resolución",
+              "Duración",
+              "Archivos y fotogramas"
+            ],
+            "rows": [
+              [
+                "TikTok (subida web en TikTok Studio)",
+                "No se indica en la página de subida; el 9:16 llena la pantalla",
+                "720×1280 o más",
+                "Hasta 30 minutos",
+                "MP4 o WebM, menos de 10 GB"
+              ],
+              [
+                "YouTube Shorts",
+                "Cuadrado o vertical; el 16:9 y más ancho se trata como video largo",
+                "Hasta 1080p en subidas de Shorts",
+                "Hasta 3 minutos",
+                "No se indica en las páginas de Shorts"
+              ],
+              [
+                "Instagram Reels",
+                "Entre 1,91:1 y 9:16",
+                "Al menos 720 píxeles",
+                "Hasta 20 minutos; los reels de más de 3 minutos no se recomiendan a audiencias nuevas",
+                "Al menos 30 fps"
+              ],
+              [
+                "Facebook Reels",
+                "Cualquier orientación",
+                "No se indica",
+                "Cualquier duración",
+                "No se indica"
+              ],
+              [
+                "Anuncios de Reels en Instagram (guía de anuncios de Meta)",
+                "9:16",
+                "1440×2560",
+                "De 0 segundos a 15 minutos",
+                "MP4 o MOV, hasta 4 GB, velocidad de fotogramas fija"
+              ],
+              [
+                "Douyin, Kuaishou, Xiaohongshu, WeChat Channels, Snapchat Spotlight",
+                "Consulta la app",
+                "Consulta la app",
+                "Consulta la app",
+                "No pudimos verificarlo en una página oficial; en la práctica el MP4 de 1080×1920 se acepta casi en todas partes"
+              ]
+            ]
+          }
+        },
+        "Dos detalles de esta tabla importan más de lo que parece. Primero, en YouTube la forma decide el formato: un video cuadrado o vertical de 3 minutos o menos se convierte en Short, y uno 16:9 sigue siendo un video normal. Segundo, Instagram pide al menos 30 fps. Muchos modelos de video con IA renderizan a 24 fps, así que convierte la tasa de fotogramas antes de publicar un reel (mira los comandos más abajo).",
+        "Facebook pasó todos los videos a Reels en junio de 2025, de modo que un reel de Facebook puede tener cualquier duración o formato. Aun así, un archivo vertical 9:16 aprovecha mejor el reproductor a pantalla completa."
+      ]
+    },
+    {
+      "h": "Zonas seguras: dónde los subtítulos y los botones tapan tu video",
+      "body": [
+        "En todas las apps de video corto, la interfaz se coloca encima de tu imagen: el nombre de la cuenta y la descripción abajo, los botones de me gusta, comentar y compartir por el lado derecho, y pestañas o una barra de búsqueda arriba. Todo lo que pongas ahí puede quedar oculto.",
+        "La guía de anuncios de Meta para Reels da una regla clara: deja libres de texto, logos y otros elementos clave al menos el 14 % superior, el 35 % inferior y el 6 % de cada lado. TikTok publica sus propios archivos de zona segura para anuncios, y siguen la misma idea. En la práctica, las cifras de Meta sirven como regla única para todas las plataformas. En un encuadre de 1080×1920 se traducen así:",
+        {
+          "table": {
+            "head": [
+              "Borde",
+              "Porcentaje del encuadre",
+              "Píxeles en 1080×1920",
+              "Mantén libre de"
+            ],
+            "rows": [
+              [
+                "Superior",
+                "14 %",
+                "269 px",
+                "Pestañas, barra de búsqueda, etiquetas de En vivo o Siguiendo"
+              ],
+              [
+                "Inferior",
+                "35 %",
+                "672 px",
+                "Nombre de la cuenta, texto de la descripción, línea de música, barra de progreso"
+              ],
+              [
+                "Izquierdo",
+                "6 %",
+                "65 px",
+                "Recorte de los bordes en algunos teléfonos"
+              ],
+              [
+                "Derecho",
+                "6 %",
+                "65 px",
+                "La columna de botones ocupa más; deja el texto importante bien adentro"
+              ]
+            ]
+          }
+        },
+        "Eso deja una caja segura de x = 65 a x = 1015 y de y = 269 a y = 1248: 950 píxeles de ancho y 979 de alto. Coloca dentro de esta caja los subtítulos incrustados, los nombres de producto y la cara. El tercio inferior del encuadre sí puede llevar imagen, como piernas, una mesa o el suelo, pero no palabras.",
+        {
+          "note": "Comprobación rápida: exporta un fotograma de tu edición, dibuja encima la caja segura y míralo en un teléfono. Si una línea de subtítulos toca el borde de la caja, súbela o acórtala."
+        }
+      ]
+    },
+    {
+      "h": "Portadas y miniaturas",
+      "body": [
+        "La portada es la imagen fija que la gente ve en la cuadrícula de tu perfil y en algunos feeds. Cada app la gestiona de forma un poco distinta:",
+        {
+          "ul": [
+            "Instagram Reels: la página de ayuda recomienda una portada de 420×654 píxeles, proporción 1:1,55. También indica que la portada no se puede editar después de subir, así que elígela antes de compartir.",
+            "TikTok: el cargador web te deja elegir una imagen de portada después de subir. La cuadrícula del perfil recorta las portadas verticales, así que mantén el título en el centro.",
+            "YouTube Shorts: las opciones de miniatura para Shorts han cambiado con el tiempo. Revisa la pantalla de subida actual en vez de fiarte de una guía antigua."
+          ]
+        },
+        "Un hábito sencillo que funciona en todas las apps: diseña la portada dentro de un cuadrado centrado de 1080×1080 dentro del encuadre de 1080×1920. Si una app recorta la portada a un cuadrado o a un mosaico 3:4, el título y la cara sobreviven."
+      ]
+    },
+    {
+      "h": "Qué pasa con las subidas en 16:9 o 1:1",
+      "body": [
+        "Un video horizontal 16:9 no llena la pantalla de un teléfono en vertical. En YouTube ni siquiera es un Short. En TikTok y Reels suele verse pequeño, con grandes bandas negras o desenfocadas arriba y abajo. Los espectadores pasan de largo ante bandas de espacio vacío, así que una versión vertical casi siempre rinde mejor.",
+        "Un video cuadrado 1:1 cuenta como Short en YouTube y se acepta en Instagram, pero sigue dejando espacio vacío en una pantalla alta. Lo cuadrado es una opción razonable cuando el mismo clip también debe funcionar en una publicación del feed; para Shorts, TikTok y Reels, haz una versión 9:16 de verdad.",
+        "Tienes tres formas de convertir un clip horizontal en vertical:",
+        {
+          "ol": [
+            "Recortar: saca una ventana 9:16 del encuadre ancho. Es lo mejor cuando el sujeto se mantiene cerca del centro. Pierdes los lados.",
+            "Rellenar con bandas: reduce todo el encuadre ancho para que quepa en el ancho y añade bandas arriba y abajo. No se pierde nada, pero la imagen queda pequeña.",
+            "Fondo desenfocado: coloca el encuadre ancho completo en el centro, sobre una copia ampliada y desenfocada de sí mismo. Queda mejor que las bandas negras; la imagen sigue siendo pequeña."
+          ]
+        },
+        "Si el sujeto se mueve por el encuadre ancho, un recorte fijo lo perderá. De eso se encarga el reencuadre automático (auto reframe), que sigue al sujeto; consulta nuestra guía de edición de video con IA."
+      ]
+    },
+    {
+      "h": "Cómo renderizar clips de IA a 1080×1920 con ffmpeg",
+      "body": [
+        "Los modelos de video con IA suelen devolver 720p, o tamaños cercanos a una proporción estándar pero no exactos, como 720×1280 o un ancho con unos píxeles de diferencia. Algunos solo devuelven 16:9. Convierte cada clip al mismo maestro de 1080×1920 antes de editar, para que la línea de tiempo tenga un único tamaño y una única tasa de fotogramas.",
+        "Si el clip ya es vertical pero pequeño, amplíalo y recorta los píxeles sobrantes para que el resultado sea exactamente 9:16:",
+        {
+          "code": "# Vertical AI clip (for example 720x1280) -> exactly 1080x1920\nffmpeg -i ai_clip.mp4 \\\n  -vf \"scale=1080:1920:force_original_aspect_ratio=increase:flags=lanczos,crop=1080:1920,setsar=1\" \\\n  -r 30 -c:v libx264 -crf 18 -preset slow -pix_fmt yuv420p \\\n  -c:a aac -b:a 192k -movflags +faststart vertical.mp4",
+          "lang": "bash"
+        },
+        "Si el clip es 16:9, elige uno de los tres métodos:",
+        {
+          "code": "# 1) Center crop a 16:9 clip to 9:16 (loses the sides)\nffmpeg -i wide.mp4 -vf \"scale=-2:1920,crop=1080:1920,setsar=1\" \\\n  -c:v libx264 -crf 18 -pix_fmt yuv420p -c:a copy crop.mp4\n\n# 2) Pad: fit the full frame, black bands above and below\nffmpeg -i wide.mp4 \\\n  -vf \"scale=1080:1920:force_original_aspect_ratio=decrease,pad=1080:1920:(ow-iw)/2:(oh-ih)/2:color=black,setsar=1\" \\\n  -c:v libx264 -crf 18 -pix_fmt yuv420p -c:a copy pad.mp4\n\n# 3) Blurred background behind the full frame\nffmpeg -i wide.mp4 -filter_complex \\\n  \"[0:v]split=2[bg][fg];[bg]scale=1080:1920:force_original_aspect_ratio=increase,crop=1080:1920,boxblur=20:2[bg];[fg]scale=1080:-2[fg];[bg][fg]overlay=(W-w)/2:(H-h)/2,setsar=1[v]\" \\\n  -map \"[v]\" -map '0:a?' -c:v libx264 -crf 18 -pix_fmt yuv420p -c:a copy blur.mp4",
+          "lang": "bash"
+        },
+        "En el comando de recorte, la ventana se centra por defecto. Para seguir a un sujeto que está a la izquierda, añade un desplazamiento en x; por ejemplo, `crop=1080:1920:200:0` mantiene la ventana a 200 píxeles del borde izquierdo.",
+        "Sobre la tasa de fotogramas: `-r 30` convierte un clip de 24 fps en uno de 30 fps repitiendo fotogramas. Eso cumple el mínimo de 30 fps de Instagram y se ve igual que el original. Para generar fotogramas intermedios suaves hace falta interpolación de fotogramas, que puede deformar las manos y los movimientos rápidos, así que úsala solo cuando el clip la necesite.",
+        {
+          "note": "Amplía la resolución después de editar, no antes. Los clips de IA en 720p suelen tener poco detalle; escalar cada clip al principio multiplica el trabajo y puede hacer que los cortes se vean distintos. Edita a 1080×1920, luego amplía o enfoca el maestro final una sola vez y conserva ese único archivo. Cada recodificación extra, incluida la de cada app, añade artefactos."
+        }
+      ]
+    },
+    {
+      "h": "Errores comunes",
+      "body": [
+        {
+          "ul": [
+            "Exportar sin querer a 1920×1080. Muchos editores usan por defecto una línea de tiempo horizontal. Configura el proyecto a 1080×1920 antes de colocar el primer clip.",
+            "Mezclar tasas de fotogramas en una misma línea de tiempo. Un clip de IA a 24 fps junto a uno de móvil a 30 fps puede dar tirones en el corte. Convierte primero todos los clips a la misma tasa.",
+            "Incrustar subtítulos en el tercio inferior. Acaban debajo de la descripción y de los botones de la propia app. Mantenlos dentro de la caja segura.",
+            "Fiarte de una lista de especificaciones antigua. Límites como la duración de Shorts o la de los reels de Instagram han cambiado varias veces. Mira la fecha de cualquier tabla, incluida esta.",
+            "Subir un archivo muy comprimido. La app lo comprime otra vez. Exporta con un ajuste de alta calidad (por ejemplo `-crf 18`) y deja que la plataforma haga la compresión final una sola vez."
+          ]
+        },
+        "Para el resto del proceso, del gancho a la publicación, consulta nuestra guía del flujo de trabajo para videos cortos con IA. Para comprobar rápido un tamaño raro, una calculadora de proporción como la herramienta aspect de cv.cm muestra que 1080×1920 es exactamente 9:16 y que 1248×704 no es 16:9."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "¿Cuál es el mejor tamaño de video para TikTok?",
+      "a": "1080×1920 píxeles en un encuadre vertical 9:16. Al momento de escribir esto, el cargador web de TikTok pide al menos 720×1280, MP4 o WebM, menos de 10 GB y hasta 30 minutos."
+    },
+    {
+      "q": "¿Qué medidas tienen los YouTube Shorts?",
+      "a": "Usa 1080×1920 (9:16). YouTube trata como Shorts los videos cuadrados o verticales de hasta 3 minutos, y su página de ayuda indica que las subidas de Shorts pueden llegar a 1080p."
+    },
+    {
+      "q": "¿1080×1920 es lo mismo que 9:16?",
+      "a": "Sí. 1080 dividido entre 1920 es igual a 9 dividido entre 16, así que 1080×1920 es exactamente 9:16. 720×1280 y 1440×2560 tienen la misma forma con menor y mayor resolución."
+    },
+    {
+      "q": "¿Puedo subir un video 16:9 como YouTube Short?",
+      "a": "No. YouTube indica que una proporción más ancha como 16:9 mantiene el video como contenido largo. Recórtalo o reencuádralo antes a vertical o cuadrado."
+    },
+    {
+      "q": "¿Cuál es la zona segura de Reels y TikTok?",
+      "a": "La guía de anuncios de Reels de Meta sugiere dejar libres de texto y logos el 14 % superior, el 35 % inferior y el 6 % de cada lado. En un encuadre de 1080×1920 son 269 px arriba, 672 px abajo y 65 px a cada lado."
+    },
+    {
+      "q": "¿Qué tamaño debe tener la portada de un reel de Instagram?",
+      "a": "La página de ayuda de Instagram recomienda 420×654 píxeles, proporción 1:1,55. Deja el título en el centro para que sobreviva al recorte cuadrado de la cuadrícula del perfil."
+    }
+  ]
+}

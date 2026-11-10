@@ -1,0 +1,184 @@
+{
+  "title": "AI Lip Sync: How It Works and How to Get Clean Results — cv.cm",
+  "description": "How AI lip sync works, what face and audio it needs, how to prepare a clean vocal, and how to fix blurry teeth, drifting sync and side-profile failures.",
+  "h1": "How does AI lip sync work, and how do you get a clean result?",
+  "answer": "AI lip sync takes an audio track and a face, predicts the mouth shapes that match each moment of sound, and redraws the mouth area frame by frame. Clean results need a frontal, well-lit face with a visible mouth and a dry, noise-free vocal cut to the exact segment. Check sync against the original audio and label realistic results.",
+  "sections": [
+    {
+      "h": "How audio-driven lip sync works",
+      "body": [
+        "Speech sounds map to a small set of visible mouth shapes, often called visemes. The sounds p, b and m close the lips; f and v put the lower lip against the teeth; an open \"ah\" drops the jaw. Lip sync AI learns this mapping from many hours of video of people talking, so that given new audio it can predict which shape the mouth should take at each frame.",
+        "A well-known example is Wav2Lip, published in 2020 by Prajwal and colleagues. Its generator receives a face frame with the lower half hidden, a reference frame of the same person, and a short window of audio, and it paints a new lower face to match the sound. A separate network, a pretrained lip-sync \"expert\", judges whether the mouth matches the audio, and the generator is trained to satisfy it. The paper reports that this expert is the main reason the model keeps sync on arbitrary faces in unconstrained video.",
+        "Newer systems go further. Diffusion-based and avatar models generate the whole face or head, with blinks, head motion and expressions driven by the audio, which is how a single photo becomes a talking video. Some video generators now produce speech and lip movement together from a prompt. The core idea is the same: sound in, matching mouth motion out, and the quality depends heavily on what you feed in."
+      ]
+    },
+    {
+      "h": "Three uses: talking photo, dubbing, singing",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Use case",
+              "Input",
+              "What usually goes wrong",
+              "Tip"
+            ],
+            "rows": [
+              [
+                "Talking photo or AI avatar video",
+                "One photo or a short clip + speech",
+                "Stiff head, dead eyes, teeth that look painted",
+                "Choose a photo with a slightly open, relaxed mouth and soft front light"
+              ],
+              [
+                "Dubbing real footage",
+                "Existing video + translated speech",
+                "Mouth matches but the face no longer looks like the person",
+                "Use takes where the speaker faces the camera; keep the cut tight around speech"
+              ],
+              [
+                "Singing or music video",
+                "Performance clip or photo + vocal stem",
+                "Held notes look frozen, fast lyrics smear",
+                "Use an isolated vocal, not the full mix, and split long songs into phrases"
+              ]
+            ]
+          }
+        },
+        "Talking photos are the easiest to make and the hardest to make convincing, because the model invents every frame of motion. Dubbing real footage keeps real motion and only replaces the mouth, so it looks more natural but is less forgiving of bad source video. Singing is the most demanding: vowels are long, the mouth opens wider than in speech, and the timing has to match the music, not just the words. For full song workflows, see our guide to AI music videos."
+      ]
+    },
+    {
+      "h": "Input requirements for the face and the audio",
+      "body": [
+        "Most failures trace back to the input. Check these before you generate.",
+        {
+          "ul": [
+            "Face angle: frontal or up to roughly a three-quarter view. Side profiles fail often, because the model sees too little of the mouth.",
+            "Mouth visible: no hand, microphone, hair or mask over the lips, and no heavy motion blur.",
+            "Light: even, soft light on the face. Hard shadows across the mouth make the redrawn area stand out.",
+            "Face size: the face should fill a good part of the frame. Small faces in wide shots give the model few pixels to work with, and the result looks soft.",
+            "Audio: one voice, dry (little room echo), no music underneath, no clipping.",
+            "Length: check the tool's limits. Many tools cap clip length or total audio length, and long clips drift more. Shorter segments are easier to check and redo."
+          ]
+        },
+        {
+          "note": "In our tests, a clean, dry vocal matters more than the face image. Reverb, background music and crowd noise produce mouth movement on sounds that are not speech, such as a drum hit or a breath."
+        }
+      ]
+    },
+    {
+      "h": "Preparing the audio and a worked example",
+      "body": [
+        "Treat the audio as the master and the video as something that follows it. Here is a complete example: a 12-second English line from a talking-head clip, dubbed into Spanish with lip sync for a vertical short.",
+        {
+          "ol": [
+            "Export the original speech and transcribe it. A Whisper-based transcriber, for example cv.cm's speech-to-text tool, gives you timestamps for each line.",
+            "Translate the line and shorten it to fit about 12 seconds when spoken. Spanish usually needs more time than English, so cut words rather than speed up the voice.",
+            "Generate the Spanish voice, or record it. See our guide to AI voiceover for voice choice and pronunciation fixes.",
+            "Clean it: remove background noise, keep the voice dry, and trim silence at the start so the first sound lands where the speaker's first mouth movement is.",
+            "Cut the audio to the exact segment the tool will use, with an audio cutter, instead of letting the tool choose a slice of a longer file.",
+            "Convert it to a plain format the tool accepts, then run lip sync on the 12-second video clip.",
+            "Put the clean audio back on the result and check sync at full screen, frame by frame on the p, b and m sounds."
+          ]
+        },
+        {
+          "code": "# 1. Extract a mono 48 kHz WAV from the source clip\nffmpeg -i source.mp4 -vn -ac 1 -ar 48000 speech.wav\n\n# 2. Cut the dubbed voice to exactly 12 seconds, starting at 0.25 s\nffmpeg -ss 0.25 -t 12 -i dub_es.wav -ac 1 -ar 48000 dub_es_12s.wav\n\n# 3. Replace whatever audio the tool returned with your own clean track\nffmpeg -i lipsync.mp4 -i dub_es_12s.wav -map 0:v:0 -map 1:a:0 -c:v copy -c:a aac -shortest synced.mp4",
+          "lang": "bash"
+        },
+        "Step 3 matters more than it looks. When a tool regenerates or re-encodes the soundtrack, the audio can start a little late while the picture still follows the original timing. With video models that render audio themselves, we have measured shifts of around one second. Before you decide the sync is wrong, put your own audio back on the clip with the command above and check again.",
+        "For a talking photo, the same audio steps apply. Some tools also take a voice sample to set the voice; a clean 3-second sample is usually enough. Take the loudest, most continuous sentence, and keep in mind that some tools cap the total length of all reference audio combined."
+      ]
+    },
+    {
+      "h": "Common artifacts and how to fix them",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Artifact",
+              "Likely cause",
+              "Fix"
+            ],
+            "rows": [
+              [
+                "Blurry or smeared teeth",
+                "The mouth area is redrawn at low resolution, or the face is small in frame",
+                "Use a closer shot; run lip sync on a face crop and composite it back; upscale only after the final edit"
+              ],
+              [
+                "Sync drifts later in the clip",
+                "Long clip, re-encoded audio, or a frame-rate mismatch",
+                "Split into shorter segments; use constant frame rate; replace the audio with your master track"
+              ],
+              [
+                "Mouth moves during silence or music",
+                "Noise, music or reverb in the audio",
+                "Use an isolated, dry vocal; mute gaps between lines"
+              ],
+              [
+                "Lips fail on side profile",
+                "Too little of the mouth is visible",
+                "Choose frontal takes, or cut away to another shot during profile moments"
+              ],
+              [
+                "Face no longer looks like the person",
+                "The model over-paints the lower face",
+                "Use a stronger reference frame of the same person; reduce the area or strength if the tool allows it"
+              ],
+              [
+                "Held sung notes look frozen",
+                "The model sees one long vowel and stops moving",
+                "Add small head and jaw motion in the source, or cut during long notes"
+              ],
+              [
+                "Visible seam around the jaw",
+                "Color or sharpness differs between the new mouth and the face",
+                "Match grain and color in the edit; avoid hard light on the jaw line"
+              ]
+            ]
+          }
+        },
+        "Upscaling helps soft results, but do it once, after the edit, and keep one master export. Every extra encode, including the one a social app does on upload, adds artifacts around the mouth, where viewers look first."
+      ]
+    },
+    {
+      "h": "Consent, deepfake rules and labeling",
+      "body": [
+        "Lip sync changes what a person appears to say. That is exactly what deepfake rules address, so treat consent and labels as part of the workflow, not an afterthought.",
+        {
+          "ul": [
+            "Use only faces and voices you own or have written permission to use, with the purpose stated. Dubbing a client's video into other languages is a clear case; making a public figure say new words is not.",
+            "YouTube asks creators to disclose realistic altered or synthetic content, including content that makes a real person appear to say or do something they did not. YouTube also offers its own experimental lip sync for auto-dubbed videos on selected channels.",
+            "The EU AI Act (Article 50) requires deployers to disclose AI-generated or manipulated audio and video that constitutes a deep fake. For evidently artistic, creative, satirical or fictional works, the duty is limited to disclosing that the content exists in a way that does not spoil the work.",
+            "China's Measures for Labeling AI-Generated Synthetic Content, in force since 1 September 2025, require visible labels on synthetic video, including at the start, and require users to declare AI content when they publish it on platforms such as Douyin, Kuaishou, Xiaohongshu or WeChat Channels.",
+            "Avoid minors' faces, and never use lip sync to create sexual, defamatory or fraudulent content. Those uses are prohibited on major platforms and illegal in many places, with or without a label."
+          ]
+        },
+        "Our guide to labeling AI content explains how each platform's AI label works."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "What is the best way to make a talking photo?",
+      "a": "Start with a sharp, frontal photo in soft light with a relaxed, slightly open mouth, and pair it with a clean, dry voice recording. Keep clips short and generate several takes."
+    },
+    {
+      "q": "Can AI lip sync work with singing?",
+      "a": "Yes, but it is harder than speech. Use an isolated vocal stem rather than the full song, split the song into phrases, and check long notes and fast lyrics closely."
+    },
+    {
+      "q": "Why is my lip sync video out of sync?",
+      "a": "The most common causes are an audio track that was re-encoded or shifted by the tool, a long clip that drifts, or a frame-rate mismatch. Replace the audio with your own track and work in shorter segments."
+    },
+    {
+      "q": "Is AI lip sync legal?",
+      "a": "Lip syncing your own face or a face you have permission to use is generally fine. Making a real person appear to say things they did not say can break platform rules and laws on fraud, defamation and deepfakes, and usually needs a label."
+    },
+    {
+      "q": "Does dubbing lip sync change the speaker's face?",
+      "a": "It redraws the mouth and lower face. Good tools keep the identity, but strong settings or low-resolution faces can make the person look slightly different, so compare against the original."
+    }
+  ]
+}

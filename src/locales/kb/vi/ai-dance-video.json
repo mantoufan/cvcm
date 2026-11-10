@@ -1,0 +1,181 @@
+{
+  "title": "Video AI nhảy: cách làm ảnh nhảy múa không bị lỗi — cv.cm",
+  "description": "Cách làm video AI nhảy: chuyển chuyển động từ video nhảy mẫu hoặc tạo điệu nhảy từ prompt và nhạc, kèm quy tắc về nhịp, trang phục và khung hình đầu.",
+  "h1": "Cách làm video AI nhảy",
+  "answer": "Có hai cách làm video AI nhảy. Chuyển chuyển động (motion transfer) sao chép động tác từ một video nhảy mẫu sang nhân vật hoặc ảnh của bạn. Nhảy theo prompt thì tạo động tác từ dòng thời gian bằng văn bản và nhạc. Dù cách nào, hãy bắt đầu bằng khung hình đầu sáng và rõ, mô tả chuyển động liên tục theo từng câu nhạc, tự cắt âm thanh và kiểm tra độ khớp với bài hát gốc.",
+  "sections": [
+    {
+      "h": "Hai cách làm: chuyển chuyển động hoặc nhảy theo prompt",
+      "body": [
+        "Chuyển chuyển động (motion transfer) lấy động tác cơ thể từ một video nguồn rồi áp lên một người hoặc nhân vật khác. Các hệ thống nghiên cứu như Everybody Dance Now dùng tư thế (pose) làm cầu nối giữa người nhảy gốc và đối tượng đích; các phương pháp khuếch tán (diffusion) về sau như Animate Anyone làm động một ảnh tĩnh từ chuỗi pose mà vẫn giữ ngoại hình của ảnh tham chiếu. Các công cụ tạo video nhảy dành cho người dùng và chế độ video tham chiếu trong Kling, Seedance, Runway hay Hailuo đều theo cùng ý tưởng này.",
+        "Nhảy theo prompt thì đưa cho mô hình ảnh nhân vật, nhạc và dòng thời gian các động tác viết bằng chữ. Không có video dẫn, nên mô hình tự nghĩ ra vũ đạo từ lời mô tả của bạn.",
+        {
+          "table": {
+            "head": [
+              "",
+              "Chuyển chuyển động",
+              "Nhảy theo prompt"
+            ],
+            "rows": [
+              [
+                "Đầu vào",
+                "Ảnh nhân vật cộng video nhảy mẫu",
+                "Ảnh nhân vật, nhạc, dòng thời gian bằng văn bản"
+              ],
+              [
+                "Vũ đạo",
+                "Sao chép sát từ video mẫu",
+                "Mô hình tự nghĩ ra từ lời bạn mô tả"
+              ],
+              [
+                "Độ khớp nhịp",
+                "Tốt bằng video mẫu",
+                "Tùy bạn canh thời gian trong prompt tốt đến đâu"
+              ],
+              [
+                "Rủi ro chính",
+                "Sao chép cả những chi tiết không mong muốn của video mẫu",
+                "Tư thế cứng hoặc động tác ngẫu nhiên, giật cục"
+              ],
+              [
+                "Phù hợp nhất",
+                "Điệu nhảy trend đã có, bài nhảy chính xác",
+                "Chuyển động mềm mại hoặc tự do, sáng tạo gốc"
+              ]
+            ]
+          }
+        },
+        "Dùng chuyển chuyển động khi bài nhảy là điều quan trọng. Dùng nhảy theo prompt khi bạn muốn một tác phẩm gốc, hoặc khi không có video mẫu sạch."
+      ]
+    },
+    {
+      "h": "Chuẩn bị ảnh và khung hình đầu",
+      "body": [
+        "Ảnh nhân vật trở thành khung hình đầu hoặc mỏ neo nhận diện, nên nó quyết định cả chất lượng lẫn tỷ lệ giữ chân người xem. Trên thực tế, khung hình đầu quyết định có bao nhiêu người xem rời đi trong hai đến ba giây đầu. Nó nên là khung đẹp nhất của cả video ngay từ đầu.",
+        {
+          "ul": [
+            "Toàn thân hoặc từ đầu gối trở lên, đứng thẳng, toàn bộ cơ thể và cả hai bàn tay nằm trong khung. Bàn chân hoặc bàn tay bị cắt sẽ bị mô hình vẽ bù rất tệ.",
+            "Ánh sáng sáng và đều, khuôn mặt hiện rõ và đủ sáng. Không cúi đầu, không để tóc hay mũ che mặt, không phòng tối.",
+            "Chủ thể đã ở tư thế sẵn sàng nhảy hoặc đang cười, không đứng cứng đờ. Bài nhảy bắt đầu từ tư thế tĩnh, trung tính trông như mở đầu chậm.",
+            "Với khung 9:16, người nhảy nên chiếm phần lớn chiều cao khung hình. Dáng người nhỏ trong căn phòng rộng dễ bị khuôn mặt mờ và tay chân thừa hoặc dính vào nhau.",
+            "Trang phục dễ nhận ra: eo rõ, tay áo dừng ở cổ tay, váy ngắn hơn mắt cá chân. Vải dài lê thê là trường hợp khó nhất (xem bên dưới)."
+          ]
+        },
+        "Nếu bạn dùng một bộ nhân vật, hãy đối chiếu mỗi ảnh tham chiếu mới với character sheet, từng nhân vật một: trang phục, bàn tay hoặc chân vuốt, phụ kiện, tóc, màu sắc và tỷ lệ chiều cao. Công cụ chỉnh sửa ảnh âm thầm thay đổi những chi tiết bạn không yêu cầu, và mô hình video sao chép lỗi đó vào mọi khung hình. Hướng dẫn về nhân vật AI nhất quán của chúng tôi giải thích cách tạo character sheet."
+      ]
+    },
+    {
+      "h": "Chuyển chuyển động: sửa video mẫu trước khi tạo",
+      "body": [
+        "Video tham chiếu là mỏ neo mạnh hơn văn bản rất nhiều. Nếu video mẫu có lóa sáng ống kính, đạo cụ trong tay người nhảy, gương, kiểu ánh sáng đặc biệt hoặc người thứ hai ở phía sau, mô hình vẫn có xu hướng chép lại dù prompt dặn không được. Cãi nhau với video mẫu bằng prompt hiếm khi hiệu quả.",
+        {
+          "ol": [
+            "Cắt video mẫu đúng đoạn bài nhảy bạn cần, với nhạc cắt cùng khoảng thời gian.",
+            "Cắt khung để người nhảy ở giữa, thấy toàn thân, cùng tỷ lệ khung hình với video đầu ra của bạn.",
+            "Che hoặc xóa đạo cụ và người phía sau. Chỉnh lại màu nếu ánh sáng quá mạnh hoặc có màu.",
+            "Kiểm tra xem người nhảy trong video mẫu và nhân vật của bạn có tỷ lệ cơ thể tương tự không. Một linh vật lùn, tròn bắt chước động tác chân dài của người nhảy cao sẽ bị kéo giãn hoặc hỏng.",
+            "Sau đó viết prompt mô tả kết quả bạn muốn (nhân vật, bối cảnh, ánh sáng), không phải mô tả các vấn đề của video mẫu."
+          ]
+        },
+        "Lưới storyboard cũng là tham chiếu chuyển động rất tốt. Làm một ảnh 9:16 với, ví dụ, 12 ô, mỗi ô một tư thế theo phách, rồi viết dòng thời gian trong prompt kiểu 'ô 1 (trên cùng bên trái) = 0–2 giây'. Đừng ghi số hay chữ lên các ô; mô hình sẽ chép chúng thành đồ họa trên màn hình. Hãy kiểm tra từng ô ở kích thước đầy đủ, vì lỗi ở một ô sẽ bị chép vào video.",
+        "Sự đồng ý rất quan trọng ở đây. Chỉ dùng ảnh người thật khi họ cho phép, và đừng biến ảnh của ai đó thành điệu nhảy họ chưa từng nhảy rồi đăng như thật. Vũ đạo của biên đạo múa cũng có thể được bảo hộ; các điệu nhảy trend được chia sẻ để dùng lại trên một nền tảng thường không sao trong chính nền tảng đó, nhưng quảng cáo trả phí dựa trên vũ đạo của người khác thì cần xin phép."
+      ]
+    },
+    {
+      "h": "Nhảy theo prompt: viết chuyển động cho liền mạch",
+      "body": [
+        "Mô hình video làm theo một số từ rất chính xác. Trong thử nghiệm của chúng tôi, các từ 'giữ nguyên tư thế', 'đóng băng', 'bất động' và 'quay chậm' biến điệu nhảy thành một chuỗi ảnh tư thế: người nhảy nhảy cóc giữa các dáng và đứng yên giữa chừng. Hãy bỏ những từ đó và mô tả chuyển động liên tục.",
+        "Hãy lên kế hoạch một cảnh dài cho mỗi câu nhạc, khoảng 4 giây hay một eight-count, với vài mốc chuyển động có thời gian bên trong. Nhưng đừng quá tay: quá nhiều động tác nhỏ trên mỗi phách trông giật cục và hài hước. Với phong cách mềm như cổ điển, đương đại hay pop chậm, hãy mô tả quỹ đạo thay vì tư thế, mỗi một hai phách một động tác, và mọi khoảng giữ chỉ nên nửa phách hoặc ngắn hơn.",
+        {
+          "code": "Phrase 2 (4.0-8.0 s), one continuous shot, 9:16, medium-wide, camera at chest height.\nThe dancer from the reference: long white sleeves, pale blue skirt, hair in a low bun.\n4.0-5.0 s (downbeat): step right, weight shifts onto the right foot, both arms open low at hip height.\n5.0-6.0 s: the right arm sweeps in an arc from the hip to shoulder height while the body turns a quarter left.\n6.0-7.0 s: step back with the left foot, both arms float down, sleeves trail behind the hands.\n7.0-8.0 s (pause in the music): a soft half turn to face the camera, arms rising to chest height, smile.\nArms stay below 45 degrees above the shoulder. Continuous movement, no stops.",
+          "lang": "text"
+        },
+        "Vải cần quy tắc riêng. Với tay áo rộng, dải ruy băng dài hay áo choàng, vải bám theo cánh tay và có thể che mặt. Hãy giới hạn độ cao của tay, ví dụ không cao quá 45 độ trên vai, và viết điều đó vào mọi câu nhạc.",
+        "Chỉ viết những gì máy quay nhìn thấy. Mô hình video hiểu ẩn dụ theo nghĩa đen: 'tay áo cô lướt như nét cọ vẽ giữa không trung' có thể đặt một cây cọ thật vào tay cô. Hãy mô tả hành động, chất liệu và ánh sáng, và đừng dùng phép so sánh."
+      ]
+    },
+    {
+      "h": "Giữ động tác đúng phách",
+      "body": [
+        "Trước hết hãy tìm BPM, ví dụ bằng cách gõ theo máy đếm nhịp của cv.cm. Ở 120 BPM một phách là 0,5 giây và một eight-count là 4 giây; ở 100 BPM, một eight-count là 4,8 giây. Hãy canh thời gian mỗi mốc bằng giây và gọi tên cả sự kiện âm nhạc: 'phách mạnh đầu tiên', 'nốt to nhất', 'đoạn ngắt'. Mô hình dùng cả hai.",
+        "Nhiều mô hình chỉ nhận thời lượng cố định, như số giây nguyên hoặc các mức 5, 10, 15 giây. Hãy chọn đoạn nhạc khớp chính xác với độ dài clip, và khi tạo theo từng đoạn, tự cắt âm thanh cho mỗi đoạn thay vì để mô hình chọn. Một số công cụ giới hạn tổng âm thanh tham chiếu ở khoảng 30 giây cho tất cả clip, nên một bài nhảy dài cần nhiều đoạn.",
+        "Khi mô hình tự tạo hoặc render lại nhạc nền, nhạc có thể bắt đầu muộn. Chúng tôi đo được độ lệch khoảng 1 giây trong khi chuyển động bám sát thời gian trong prompt. Trước khi kết luận động tác bị lệch nhịp, hãy ghép lại bài hát gốc:",
+        {
+          "code": "ffmpeg -i gen.mp4 -i song.mp3 -map 0:v:0 -map 1:a:0 -c:v copy -c:a aac -shortest synced.mp4",
+          "lang": "bash"
+        },
+        "Nếu một đoạn vẫn trông sớm hoặc muộn vài khung hình, hãy trượt nó trong phần mềm dựng thay vì tạo lại."
+      ]
+    },
+    {
+      "h": "Lỗi hay gặp và cách khắc phục",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Lỗi",
+              "Nguyên nhân thường gặp",
+              "Cách khắc phục"
+            ],
+            "rows": [
+              [
+                "Chuỗi ảnh tư thế",
+                "Các từ như giữ, đóng băng, bất động, quay chậm",
+                "Mô tả quỹ đạo liên tục; chỗ giữ tối đa nửa phách"
+              ],
+              [
+                "Động tác giật cục, hài hước",
+                "Quá nhiều động tác trên mỗi phách",
+                "Mỗi một hai phách một động tác"
+              ],
+              [
+                "Tay áo hoặc tóc che mặt",
+                "Giơ tay quá cao khi mặc vải dài",
+                "Giới hạn độ cao của tay trong mọi câu nhạc"
+              ],
+              [
+                "Tay chân thừa hoặc dính nhau",
+                "Dáng người nhỏ, khoanh tay, xoay nhanh",
+                "Nhân vật lớn hơn trong khung, ít bắt chéo, xoay chậm hơn"
+              ],
+              [
+                "Trang phục đổi giữa chừng",
+                "Trang phục không rõ trong ảnh nguồn",
+                "Ảnh tham chiếu rõ ràng, nêu trang phục trong mọi prompt"
+              ],
+              [
+                "Đạo cụ hoặc lóa sáng không mong muốn",
+                "Sao chép từ video mẫu",
+                "Chỉnh sửa video mẫu rồi tạo lại"
+              ]
+            ]
+          }
+        },
+        "Hãy chuẩn bị tinh thần rằng bàn tay và bàn chân là phần yếu nhất, nhất là ở động tác chân nhanh và xoay người. Giữ máy quay gần như cố định khi làm động tác phức tạp; máy quay di chuyển cộng cơ thể di chuyển làm tăng gấp đôi khả năng hỏng khung hình.",
+        "Clip tạo ra thường ở 720p hoặc 1080p và chi tiết hơi mềm. Chỉ nâng độ phân giải một lần, sau khi dựng, và giữ một bản xuất master để clip không bị mã hóa lại nhiều lần. Hãy gắn nhãn kết quả chân thực ở nơi nền tảng yêu cầu; xem hướng dẫn gắn nhãn nội dung AI của chúng tôi."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Làm sao để cho ảnh nhảy múa bằng AI?",
+      "a": "Tải ảnh toàn thân rõ nét lên công cụ có chế độ nhảy hoặc video tham chiếu, thêm clip nhảy mẫu hoặc mô tả bằng chữ có canh thời gian, rồi tạo. Hãy dùng ảnh của chính bạn hoặc của người đã đồng ý."
+    },
+    {
+      "q": "Vì sao điệu nhảy AI của tôi trông như một chuỗi tư thế?",
+      "a": "Rất có thể prompt chứa các từ như đóng băng, giữ hay quay chậm, và mô hình làm theo rất sát nghĩa. Hãy mô tả chuyển động liên tục giữa các mốc có thời gian và giữ mọi khoảng dừng dưới nửa phách."
+    },
+    {
+      "q": "Tôi có thể làm video AI nhảy của người nổi tiếng không?",
+      "a": "Nên tránh. Video nhảy chân thực của người thật mà không có sự đồng ý có thể vi phạm quyền về hình ảnh và quyền nhân thân ở nhiều quốc gia, và các nền tảng yêu cầu khai báo người tổng hợp chân thực."
+    },
+    {
+      "q": "Bắt chước điệu nhảy TikTok bằng AI có hợp pháp không?",
+      "a": "Làm lại điệu nhảy trend trên cùng nền tảng với âm thanh có sẵn trong ứng dụng là việc phổ biến. Dùng vũ đạo hoặc video tham chiếu của người khác trong quảng cáo hay bối cảnh thương mại khác thì cần xin phép."
+    },
+    {
+      "q": "Độ dài tốt nhất cho một clip nhảy AI là bao nhiêu?",
+      "a": "Mỗi cảnh một câu nhạc, khoảng 4 đến 5 giây, là đơn vị đáng tin cậy nhất. Ghép nhiều câu trong phần mềm dựng để có video ngắn 15 đến 30 giây."
+    }
+  ]
+}

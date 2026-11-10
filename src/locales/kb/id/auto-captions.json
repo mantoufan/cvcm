@@ -1,0 +1,183 @@
+{
+  "title": "Subtitle Otomatis: Cara Menambah Subtitle ke Video dengan AI — cv.cm",
+  "description": "Cara membuat subtitle otomatis dengan AI: transkripsi, perbaiki kesalahan, atur panjang baris dan kecepatan baca, ekspor SRT atau VTT, lalu pasang permanen dengan ffmpeg.",
+  "h1": "Cara Membuat Subtitle Otomatis di Video dengan AI",
+  "answer": "Untuk membuat subtitle otomatis, jalankan audio lewat model pengenalan suara seperti Whisper, koreksi nama dan angka, pecah teks menjadi baris pendek maksimal sekitar 42 karakter (16 untuk bahasa Mandarin), jaga kecepatan baca di bawah sekitar 20 karakter per detik, lalu ekspor file SRT atau WebVTT. Unggah sebagai subtitle terpisah atau pasang permanen ke dalam gambar.",
+  "sections": [
+    {
+      "h": "Apa sebenarnya yang dilakukan generator subtitle AI",
+      "body": [
+        "Subtitle otomatis berasal dari pengenalan suara otomatis (automatic speech recognition, ASR). Model mendengarkan trek audio lalu menuliskan kata-katanya lengkap dengan waktu mulai dan selesai untuk tiap frasa. Whisper adalah contoh terbuka yang terkenal: makalahnya menyebut pelatihan dengan 680.000 jam audio multibahasa, itu sebabnya satu model bisa mentranskripsi banyak bahasa dan juga menerjemahkannya ke bahasa Inggris. Untuk cara kerja model di dalamnya, lihat panduan kami tentang cara kerja speech-to-text.",
+        "Hasil ASR adalah draf, bukan subtitle jadi. Halaman bantuan YouTube tentang subtitle otomatis sendiri mengatakan kualitasnya bisa bervariasi dan meminta kreator selalu memeriksanya serta memperbaiki bagian yang tidak tertranskripsi dengan benar. Subtitle yang baik butuh tiga langkah lagi yang dilewati transkrip mentah: memperbaiki kesalahan, memecah teks menjadi baris yang mudah dibaca, dan mengatur waktu tiap baris agar sempat dibaca.",
+        "Ada tiga tempat umum untuk membuat subtitle dari video: di dalam platform (YouTube, TikTok, dan Instagram sama-sama punya caption otomatis dalam bentuk tertentu), di dalam editor (CapCut atau Jianying, Premiere Pro, DaVinci Resolve, Descript), atau lewat alat transkripsi terpisah yang mengekspor file subtitle. File terpisah memberi kendali paling besar dan bisa dipakai ulang di semua platform. Contohnya, alat speech-to-text di cv.cm menjalankan Whisper di browser dan mengekspor TXT, SRT, atau VTT tanpa mengunggah audio."
+      ]
+    },
+    {
+      "h": "Alur kerja, langkah demi langkah",
+      "body": [
+        {
+          "ol": [
+            "Ekspor trek audio bersih dari hasil edit akhir. Subtitle harus cocok dengan potongan yang akan diposting, jadi transkripsi paling akhir, setelah gambar dikunci.",
+            "Transkripsi dengan model sekelas Whisper. Atur bahasa secara manual kalau Anda tahu; deteksi otomatis bisa salah pada klip pendek atau klip yang dibuka dengan musik.",
+            "Baca transkrip sambil mendengarkan. Perbaiki nama, nama merek, angka, istilah teknis, dan kata yang bunyinya mirip.",
+            "Pecah teks menjadi kartu subtitle: satu atau dua baris pendek per kartu, dipotong di batas frasa yang wajar.",
+            "Periksa waktunya: tiap kartu harus muncul saat kata mulai diucapkan dan bertahan cukup lama untuk dibaca.",
+            "Atur tampilan untuk layar: ukuran font, outline atau kotak, dan posisi di dalam safe zone.",
+            "Kirim hasilnya: unggah SRT atau VTT sebagai trek subtitle, atau pasang subtitle permanen ke dalam video, atau keduanya."
+          ]
+        },
+        {
+          "note": "Mentranskripsi hasil edit akhir, bukan rekaman mentah, menghindarkan Anda dari mengatur ulang waktu setiap baris setelah tiap pemotongan."
+        }
+      ]
+    },
+    {
+      "h": "Aturan panjang baris dan kecepatan baca",
+      "body": [
+        "Panduan subtitle profesional menetapkan batas yang tegas agar penonton bisa membaca tanpa ketinggalan gambar. Netflix menerbitkan panduan gaya timed text per bahasa; angka-angka ini berguna dan bisa diverifikasi sebagai titik awal:",
+        {
+          "table": {
+            "head": [
+              "Bahasa (panduan Netflix)",
+              "Karakter per baris",
+              "Baris per kartu",
+              "Kecepatan baca, dewasa",
+              "Kecepatan baca, anak-anak"
+            ],
+            "rows": [
+              [
+                "Inggris (AS)",
+                "42",
+                "Maksimal 2",
+                "Sampai 20 karakter per detik",
+                "Sampai 17 karakter per detik"
+              ],
+              [
+                "Mandarin (Sederhana)",
+                "16",
+                "Maksimal 2",
+                "Sampai 9 karakter per detik",
+                "Sampai 7 karakter per detik"
+              ]
+            ]
+          }
+        },
+        "Panduan bahasa Inggris juga menjelaskan di mana baris sebaiknya dipotong: setelah tanda baca, sebelum konjungsi, dan sebelum preposisi. Jaga agar artikel tetap bersama kata bendanya, kata sifat bersama kata bendanya, dan nama depan bersama nama belakang.",
+        "Begini cara aturan kecepatan baca bekerja dalam praktik. Kartu berisi `Three things nobody tells you about captions` punya 44 karakter, termasuk spasi. Pada 20 karakter per detik, kartu itu perlu tampil minimal 2,2 detik. Kalau pembicara mengucapkannya dalam 1,5 detik, pertahankan kartu lebih lama atau persingkat teksnya, misalnya menjadi `Three things nobody tells you` (29 karakter, sekitar 1,5 detik).",
+        "Video vertikal pendek butuh batas yang lebih ketat daripada layar TV. Frame ponsel selebar 1080 piksel dengan teks besar dan tebal memuat jauh lebih sedikit karakter per baris daripada 42. Dalam praktik, satu baris berisi sekitar 20 sampai 30 karakter Latin, atau 8 sampai 12 karakter Mandarin, nyaman dibaca di ponsel. Banyak kreator menampilkan satu frasa pendek per kartu dan sering mengganti kartu."
+      ]
+    },
+    {
+      "h": "SRT dan WebVTT: dua format file subtitle",
+      "body": [
+        "Hampir semua platform dan editor menerima SRT. WebVTT (VTT) adalah format W3C untuk subtitle di web, dipakai oleh elemen video HTML. Bentuknya hampir sama:",
+        {
+          "code": "SRT (file: captions.srt)\n\n1\n00:00:00,000 --> 00:00:01,600\nThree things nobody tells you\n\n2\n00:00:01,600 --> 00:00:03,400\nabout auto captions.\n\nWebVTT (file: captions.vtt)\n\nWEBVTT\n\n00:00:00.000 --> 00:00:01.600\nThree things nobody tells you\n\n00:00:01.600 --> 00:00:03.400 line:70%\nabout auto captions.",
+          "lang": "text"
+        },
+        {
+          "ul": [
+            "SRT memberi nomor pada tiap kartu dan memakai koma sebelum milidetik: `00:00:01,600`.",
+            "WebVTT diawali baris `WEBVTT`, memakai titik sebelum milidetik: `00:00:01.600`, dan tidak butuh nomor kartu.",
+            "WebVTT bisa membawa pengaturan cue setelah waktu, seperti `line`, `position`, dan `align`, untuk menempatkan kartu di layar. Tidak semua pemutar mematuhinya.",
+            "Simpan keduanya sebagai teks UTF-8 agar aksen dan karakter CJK tidak rusak."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Subtitle permanen atau terpisah",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Jenis",
+              "Apa itu",
+              "Cocok untuk",
+              "Kekurangan"
+            ],
+            "rows": [
+              [
+                "Subtitle terpisah (soft, trek caption)",
+                "File SRT atau VTT terpisah yang digambar pemutar di atas video",
+                "Unggahan YouTube, banyak bahasa, aksesibilitas, teks untuk pencarian",
+                "Tidak semua aplikasi video pendek menerima unggahan file; gayanya ditentukan pemutar"
+              ],
+              [
+                "Subtitle permanen (open caption, burned-in)",
+                "Teks digambar langsung ke piksel video",
+                "TikTok, Reels, dan Shorts, tempat banyak orang menonton tanpa suara; gaya sepenuhnya terkendali",
+                "Tidak bisa dimatikan atau diterjemahkan; kesalahan butuh ekspor ulang"
+              ]
+            ]
+          }
+        },
+        "Banyak kreator melakukan keduanya: subtitle permanen bergaya untuk aplikasi video pendek, dan SRT bersih untuk YouTube. Perintah ffmpeg berikut menunjukkan tiap opsi. Filter `subtitles` membutuhkan build ffmpeg dengan libass.",
+        {
+          "code": "# Burn captions into a 1080x1920 video (white text, black outline, raised above the bottom UI)\nffmpeg -i final.mp4 \\\n  -vf \"subtitles=captions.srt:force_style='FontName=Arial,FontSize=12,Bold=1,PrimaryColour=&H00FFFFFF,OutlineColour=&H00000000,BorderStyle=1,Outline=2,Alignment=2,MarginV=100'\" \\\n  -c:v libx264 -crf 18 -pix_fmt yuv420p -c:a copy captioned.mp4\n\n# Add a soft caption track to an MP4 without re-encoding the video\nffmpeg -i final.mp4 -i captions.srt -map 0 -map 1 -c copy -c:s mov_text \\\n  -metadata:s:s:0 language=eng soft_captions.mp4",
+          "lang": "bash"
+        },
+        "Pada perintah burn-in, file SRT digambar di kanvas virtual setinggi 288 unit, sehingga `FontSize=12` kira-kira 80 piksel pada frame setinggi 1920 piksel, dan `MarginV=100` mengangkat teks sekitar sepertiga jarak dari bawah. Uji pada satu klip pendek lalu sesuaikan."
+      ]
+    },
+    {
+      "h": "Mengatur gaya subtitle untuk video vertikal",
+      "body": [
+        {
+          "ul": [
+            "Posisi: jauhkan subtitle dari sepertiga bagian bawah, tempat aplikasi menampilkan nama akun, deskripsi, dan tombol. Lihat panduan kami tentang ukuran video vertikal untuk angka piksel safe zone.",
+            "Ukuran: di ponsel, teks yang tampak besar di editor sering justru pas. Periksa di ponsel sungguhan dengan jarak sepanjang lengan.",
+            "Kontras: teks putih atau kuning dengan outline gelap atau kotak semi-transparan tetap terbaca di atas latar apa pun.",
+            "Jangan menutupi wajah. Kalau wajah pembicara ada di tengah frame, letakkan subtitle tepat di bawah dagu, bukan di atas mulut.",
+            "Satu gaya per video. Mengganti font dan warna antar kartu membuat penonton membaca gayanya, bukan katanya."
+          ]
+        },
+        "Subtitle kata demi kata atau gaya karaoke menampilkan satu sampai tiga kata sekaligus dan menyorot kata yang sedang diucapkan. Gaya ini butuh stempel waktu per kata, yang bisa dihasilkan alat sekelas Whisper. Gaya ini menjaga mata tetap di layar pada klip talking head yang cepat, tetapi melelahkan untuk penjelasan panjang. Pakai untuk hook dan punchline, dan kartu dua baris biasa untuk sisanya."
+      ]
+    },
+    {
+      "h": "Menerjemahkan subtitle",
+      "body": [
+        "Terjemahkan subtitle sumber yang sudah dikoreksi, bukan transkrip mentah. Pertahankan waktu kartu yang sama dan terjemahkan kartu demi kartu, supaya setiap baris terjemahan tetap cocok dengan saat kalimat itu diucapkan.",
+        "Terjemahan mengubah panjang teks. Bahasa Spanyol dan Jerman biasanya butuh lebih banyak karakter daripada bahasa Inggris untuk gagasan yang sama, sedangkan bahasa Mandarin dan Jepang butuh lebih sedikit karakter tetapi punya batas kecepatan baca yang jauh lebih rendah. Setelah menerjemahkan, periksa setiap kartu terhadap batas panjang baris dan kecepatan baca bahasa tujuan, lalu persingkat bila perlu. Terjemahan mesin untuk file subtitle adalah draf awal yang cepat; penutur yang fasih sebaiknya membacanya sebelum Anda menerbitkan."
+      ]
+    },
+    {
+      "h": "Kesalahan umum dan batasan subtitle otomatis",
+      "body": [
+        {
+          "ul": [
+            "Nama dan kata baru: model menuliskan kata umum yang paling mirip. Simpan daftar nama dan ejaan merek, lalu cari di transkrip.",
+            "Angka: cocokkan setiap harga, tanggal, dan ukuran dengan yang diucapkan. Angka yang salah di subtitle lebih buruk daripada tanpa subtitle.",
+            "Musik dan kebisingan: musik latar, keramaian, dan pembicara yang saling menimpa menurunkan akurasi. Transkripsikan versi dengan musik dipelankan kalau bisa.",
+            "Teks saat hening: dalam praktik, model ASR kadang menulis kata pada bagian hening panjang atau bagian yang hanya berisi musik. Hapus kartu yang muncul saat tidak ada yang berbicara.",
+            "Campuran bahasa: klip yang berganti bahasa bisa tertranskripsi hanya dalam salah satunya. Pisahkan dan transkripsikan tiap bagian dengan bahasa yang diatur manual.",
+            "Aksesibilitas: subtitle untuk penonton tuli dan tunarungu juga harus menandai bunyi penting, seperti [pintu dibanting], yang tidak ditambahkan ASR."
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Bagaimana cara membuat subtitle dari video secara gratis?",
+      "a": "Pakai alat transkripsi berbasis Whisper atau fitur subtitle otomatis bawaan editor Anda, lalu ekspor file SRT. Periksa dan koreksi teksnya sebelum diterbitkan."
+    },
+    {
+      "q": "Apakah subtitle otomatis YouTube akurat?",
+      "a": "Sering cukup bisa dipakai, tetapi tidak andal untuk nama, angka, atau audio yang berisik. YouTube sendiri menyatakan kualitasnya bisa bervariasi dan meminta kreator memeriksa serta mengeditnya."
+    },
+    {
+      "q": "Apa bedanya SRT dan VTT?",
+      "a": "Keduanya mendaftar teks subtitle dengan waktu mulai dan selesai. SRT memakai koma sebelum milidetik dan menomori tiap kartu; WebVTT diawali WEBVTT, memakai titik, dan bisa membawa pengaturan posisi."
+    },
+    {
+      "q": "Berapa karakter per baris untuk subtitle?",
+      "a": "Panduan bahasa Inggris Netflix membolehkan sampai 42 karakter per baris dan dua baris; panduan Mandarin Sederhananya membolehkan 16 karakter per baris. Untuk video pendek vertikal, baris yang lebih pendek lebih enak dibaca."
+    },
+    {
+      "q": "Sebaiknya subtitle dipasang permanen atau mengunggah SRT?",
+      "a": "Pasang permanen untuk TikTok, Reels, dan Shorts, saat Anda ingin gaya tetap dan banyak orang menonton tanpa suara. Unggah SRT untuk YouTube dan untuk bahasa lain, supaya penonton bisa menyalakan atau mematikan subtitle."
+    }
+  ]
+}

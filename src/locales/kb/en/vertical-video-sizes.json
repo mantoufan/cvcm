@@ -1,0 +1,219 @@
+{
+  "title": "TikTok Video Size, YouTube Shorts Dimensions and Safe Zones — cv.cm",
+  "description": "TikTok video size, YouTube Shorts dimensions, Reels specs and safe zones in one table, plus ffmpeg commands to turn AI clips into 1080×1920.",
+  "h1": "TikTok Video Size and YouTube Shorts Dimensions: One Reference Table",
+  "answer": "For TikTok, YouTube Shorts and Reels, export a vertical 9:16 video at 1080×1920 pixels, H.264 MP4, 30 frames per second. At the time of writing, TikTok web uploads accept up to 30 minutes, Shorts up to 3 minutes, and Instagram reels up to 20 minutes. Keep text and faces inside the middle of the frame, away from the top 14% and bottom 35%.",
+  "sections": [
+    {
+      "h": "The short answer: one master file for every app",
+      "body": [
+        "Every major short-video app shows video full screen on a phone held upright. That screen shape is 9:16, and the size that fills it at full HD is 1080 pixels wide by 1920 pixels tall. If you make one master at 1080×1920, you can post the same file to TikTok, YouTube Shorts, Instagram Reels and Facebook Reels without a new edit.",
+        "The numbers below are what each platform's own help pages say at the time of writing (November 2026). Platforms change limits often, and some limits differ between the phone app and the web uploader. Where an official page does not state a value, the table says so instead of guessing.",
+        {
+          "note": "A safe default master: 1080×1920, 9:16, H.264 video in an MP4 file, AAC audio, 30 fps, constant frame rate. It meets every limit verified in the table below."
+        }
+      ]
+    },
+    {
+      "h": "Vertical video sizes by platform (November 2026)",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Platform",
+              "Shape",
+              "Resolution",
+              "Length",
+              "Files and frame rate"
+            ],
+            "rows": [
+              [
+                "TikTok (web upload in TikTok Studio)",
+                "Not stated on the upload page; 9:16 fills the screen",
+                "720×1280 or higher",
+                "Up to 30 minutes",
+                "MP4 or WebM, less than 10 GB"
+              ],
+              [
+                "YouTube Shorts",
+                "Square or vertical; 16:9 and wider is treated as a long-form video",
+                "Up to 1080p for Shorts uploads",
+                "Up to 3 minutes",
+                "Not stated on the Shorts pages"
+              ],
+              [
+                "Instagram Reels",
+                "Between 1.91:1 and 9:16",
+                "At least 720 pixels",
+                "Up to 20 minutes; reels over 3 minutes are not recommended to new audiences",
+                "At least 30 fps"
+              ],
+              [
+                "Facebook Reels",
+                "Any orientation",
+                "Not stated",
+                "Any length",
+                "Not stated"
+              ],
+              [
+                "Reels ads on Instagram (Meta ad guide)",
+                "9:16",
+                "1440×2560",
+                "0 seconds to 15 minutes",
+                "MP4 or MOV, up to 4 GB, fixed frame rate"
+              ],
+              [
+                "Douyin, Kuaishou, Xiaohongshu, WeChat Channels, Snapchat Spotlight",
+                "Check the app",
+                "Check the app",
+                "Check the app",
+                "We could not verify these on an official page; 1080×1920 MP4 is accepted widely in practice"
+              ]
+            ]
+          }
+        },
+        "Two details in this table matter more than they look. First, on YouTube the shape decides the format: a square or vertical video of 3 minutes or less becomes a Short, and a 16:9 video stays a normal video. Second, Instagram asks for at least 30 fps. Many AI video models render at 24 fps, so convert the frame rate before you post a reel (see the commands below).",
+        "Facebook moved all videos into Reels in June 2025, so a Facebook reel can be any length or shape. A vertical 9:16 file still uses the full-screen player best."
+      ]
+    },
+    {
+      "h": "Safe zones: where captions and buttons cover your video",
+      "body": [
+        "On every short-video app, the interface sits on top of your picture: the account name and caption at the bottom, the like, comment and share buttons down the right side, and tabs or a search bar at the top. Anything you put there may be hidden.",
+        "Meta's ad guide for Reels gives a clear rule: keep at least 14% of the top, 35% of the bottom and 6% of each side free of text, logos and other key elements. TikTok publishes its own safe zone files for ads, and they follow the same idea. In practice, Meta's numbers work as one cross-platform rule. On a 1080×1920 frame they become:",
+        {
+          "table": {
+            "head": [
+              "Edge",
+              "Share of frame",
+              "Pixels on 1080×1920",
+              "Keep clear of"
+            ],
+            "rows": [
+              [
+                "Top",
+                "14%",
+                "269 px",
+                "Tabs, search bar, Live or Following labels"
+              ],
+              [
+                "Bottom",
+                "35%",
+                "672 px",
+                "Account name, caption text, music line, progress bar"
+              ],
+              [
+                "Left",
+                "6%",
+                "65 px",
+                "Edge cropping on some phones"
+              ],
+              [
+                "Right",
+                "6%",
+                "65 px",
+                "The column of buttons needs more; keep key text well inside"
+              ]
+            ]
+          }
+        },
+        "That leaves a safe box from x = 65 to x = 1015 and from y = 269 to y = 1248: 950 pixels wide and 979 pixels tall. Put burned-in captions, product names and the face in this box. The bottom third of the frame can still hold picture, such as legs, a table or floor, just not words.",
+        {
+          "note": "Quick check: export one frame of your edit, draw the safe box on it, and look at it on a phone. If a caption line touches the box edge, move it up or shorten it."
+        }
+      ]
+    },
+    {
+      "h": "Covers and thumbnails",
+      "body": [
+        "The cover is the still image people see on your profile grid and in some feeds. Each app handles it a little differently:",
+        {
+          "ul": [
+            "Instagram Reels: the help page recommends a cover photo of 420×654 pixels, a 1:1.55 ratio. The page also says a cover cannot be edited after upload, so choose it before you share.",
+            "TikTok: the web uploader lets you select a cover image after upload. The profile grid crops vertical covers, so keep the title text in the middle.",
+            "YouTube Shorts: the options for Shorts thumbnails have changed over time. Check the current upload screen instead of trusting an old guide."
+          ]
+        },
+        "A simple habit that works in every app: design the cover inside a centered square of 1080×1080 within the 1080×1920 frame. If an app crops the cover to a square or a 3:4 tile, the title and face survive."
+      ]
+    },
+    {
+      "h": "What happens to 16:9 or 1:1 uploads",
+      "body": [
+        "A horizontal 16:9 video does not fill a phone screen held upright. On YouTube it is not a Short at all. On TikTok and Reels it usually plays small, with large black or blurred bands above and below. Viewers scroll past bands of empty space, so a vertical version almost always performs better.",
+        "A square 1:1 video counts as a Short on YouTube and is accepted on Instagram, but it still leaves empty space on a tall screen. Square is a fair choice when the same clip must also work in a feed post; for Shorts, TikTok and Reels, make a true 9:16 version.",
+        "You have three ways to turn a horizontal clip into a vertical one:",
+        {
+          "ol": [
+            "Crop: cut a 9:16 window out of the wide frame. Best when the subject stays near the center. You lose the sides.",
+            "Pad: shrink the whole wide frame to fit the width and add bands above and below. Nothing is lost, but the picture is small.",
+            "Blurred background: place the full wide frame in the middle over a blurred, zoomed copy of itself. Looks better than black bands; the picture is still small."
+          ]
+        },
+        "If the subject moves around the wide frame, a fixed crop will lose it. That is the job of auto reframe, which tracks the subject; see our guide to AI video editing."
+      ]
+    },
+    {
+      "h": "How to render AI clips to 1080×1920 with ffmpeg",
+      "body": [
+        "AI video models often return 720p, or sizes that are close to a standard ratio but not exact, such as 720×1280 or a width a few pixels off. Some return only 16:9. Convert every clip to the same 1080×1920 master before you edit, so the timeline has one size and one frame rate.",
+        "If the clip is already vertical but small, scale it up and crop any extra pixels so the result is exactly 9:16:",
+        {
+          "code": "# Vertical AI clip (for example 720x1280) -> exactly 1080x1920\nffmpeg -i ai_clip.mp4 \\\n  -vf \"scale=1080:1920:force_original_aspect_ratio=increase:flags=lanczos,crop=1080:1920,setsar=1\" \\\n  -r 30 -c:v libx264 -crf 18 -preset slow -pix_fmt yuv420p \\\n  -c:a aac -b:a 192k -movflags +faststart vertical.mp4",
+          "lang": "bash"
+        },
+        "If the clip is 16:9, choose one of the three methods:",
+        {
+          "code": "# 1) Center crop a 16:9 clip to 9:16 (loses the sides)\nffmpeg -i wide.mp4 -vf \"scale=-2:1920,crop=1080:1920,setsar=1\" \\\n  -c:v libx264 -crf 18 -pix_fmt yuv420p -c:a copy crop.mp4\n\n# 2) Pad: fit the full frame, black bands above and below\nffmpeg -i wide.mp4 \\\n  -vf \"scale=1080:1920:force_original_aspect_ratio=decrease,pad=1080:1920:(ow-iw)/2:(oh-ih)/2:color=black,setsar=1\" \\\n  -c:v libx264 -crf 18 -pix_fmt yuv420p -c:a copy pad.mp4\n\n# 3) Blurred background behind the full frame\nffmpeg -i wide.mp4 -filter_complex \\\n  \"[0:v]split=2[bg][fg];[bg]scale=1080:1920:force_original_aspect_ratio=increase,crop=1080:1920,boxblur=20:2[bg];[fg]scale=1080:-2[fg];[bg][fg]overlay=(W-w)/2:(H-h)/2,setsar=1[v]\" \\\n  -map \"[v]\" -map '0:a?' -c:v libx264 -crf 18 -pix_fmt yuv420p -c:a copy blur.mp4",
+          "lang": "bash"
+        },
+        "In the crop command, the crop window is centered by default. To follow a subject on the left, add an x offset, for example `crop=1080:1920:200:0` keeps the window 200 pixels from the left edge.",
+        "About frame rate: `-r 30` turns a 24 fps clip into 30 fps by repeating frames. That meets Instagram's 30 fps minimum and looks the same as the original. Smooth new in-between frames need frame interpolation, which can warp hands and fast motion, so use it only when the clip needs it.",
+        {
+          "note": "Upscale after the edit, not before. AI clips at 720p often have soft detail; scaling each clip early multiplies work and can make the cuts look different. Edit at 1080×1920, then upscale or sharpen the final master once, and keep that one master file. Every extra re-encode, including each app's own, adds artifacts."
+        }
+      ]
+    },
+    {
+      "h": "Common mistakes",
+      "body": [
+        {
+          "ul": [
+            "Exporting 1920×1080 by accident. Many editors default to a horizontal timeline. Set the project to 1080×1920 before you place the first clip.",
+            "Mixing frame rates on one timeline. A 24 fps AI clip next to a 30 fps phone clip can stutter at the cut. Convert all clips to one rate first.",
+            "Burning captions into the bottom third. They end up under the app's own caption and buttons. Keep them inside the safe box.",
+            "Trusting an old spec list. Limits such as the Shorts length and the Instagram reel length have changed several times. Check the date on any table, including this one.",
+            "Uploading a heavily compressed file. The app compresses again. Export at a high quality setting (for example `-crf 18`) and let the platform do the final compression once."
+          ]
+        },
+        "For the rest of the pipeline, from hook to posting, see our guide to the AI short video workflow. To check an odd size quickly, an aspect ratio calculator such as cv.cm's aspect tool shows that 1080×1920 is exactly 9:16 and that 1248×704 is not 16:9."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "What is the best TikTok video size?",
+      "a": "1080×1920 pixels in a 9:16 vertical frame. At the time of writing, TikTok's web uploader asks for at least 720×1280, MP4 or WebM, under 10 GB and up to 30 minutes."
+    },
+    {
+      "q": "What are the YouTube Shorts dimensions?",
+      "a": "Use 1080×1920 (9:16). YouTube treats square or vertical videos of up to 3 minutes as Shorts, and its help page says Shorts uploads can be up to 1080p."
+    },
+    {
+      "q": "Is 1080×1920 the same as 9:16?",
+      "a": "Yes. 1080 divided by 1920 equals 9 divided by 16, so 1080×1920 is exactly 9:16. 720×1280 and 1440×2560 are the same shape at lower and higher resolution."
+    },
+    {
+      "q": "Can I upload a 16:9 video as a YouTube Short?",
+      "a": "No. YouTube says a wider aspect ratio such as 16:9 keeps a video in long-form. Crop or reframe it to vertical or square first."
+    },
+    {
+      "q": "What is the safe zone for Reels and TikTok?",
+      "a": "Meta's Reels ad guide suggests keeping the top 14%, the bottom 35% and 6% on each side free of text and logos. On a 1080×1920 frame that is 269 px at the top, 672 px at the bottom and 65 px at each side."
+    },
+    {
+      "q": "What size should an Instagram Reels cover be?",
+      "a": "Instagram's help page recommends 420×654 pixels, a 1:1.55 ratio. Keep the title in the middle so it survives the square crop on the profile grid."
+    }
+  ]
+}

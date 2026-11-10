@@ -1,0 +1,219 @@
+{
+  "title": "Ukuran Video TikTok, Shorts, Reels dan Safe Zone — cv.cm",
+  "description": "Ukuran video TikTok, dimensi YouTube Shorts, spesifikasi Reels, dan safe zone dalam satu tabel, plus perintah ffmpeg untuk mengubah klip AI jadi 1080×1920.",
+  "h1": "Ukuran Video TikTok dan YouTube Shorts: Tabel Rujukan Lengkap",
+  "answer": "Untuk TikTok, YouTube Shorts, dan Reels, ekspor video vertikal 9:16 dengan ukuran 1080×1920 piksel, MP4 H.264, 30 frame per detik. Saat artikel ini ditulis, unggahan TikTok lewat web menerima durasi sampai 30 menit, Shorts sampai 3 menit, dan reel Instagram sampai 20 menit. Letakkan teks dan wajah di bagian tengah frame, jauhi 14% bagian atas dan 35% bagian bawah.",
+  "sections": [
+    {
+      "h": "Jawaban singkat: satu file master untuk semua aplikasi",
+      "body": [
+        "Semua aplikasi video pendek besar menampilkan video layar penuh di ponsel yang dipegang tegak. Bentuk layar itu 9:16, dan ukuran yang memenuhinya pada resolusi full HD adalah lebar 1080 piksel dan tinggi 1920 piksel. Kalau Anda membuat satu master 1080×1920, file yang sama bisa diunggah ke TikTok, YouTube Shorts, Instagram Reels, dan Facebook Reels tanpa perlu mengedit ulang.",
+        "Angka-angka di bawah ini berasal dari halaman bantuan resmi tiap platform saat artikel ini ditulis (November 2026). Platform sering mengubah batasannya, dan sebagian batas berbeda antara aplikasi ponsel dan uploader web. Jika halaman resmi tidak menyebut suatu nilai, tabel mencantumkannya apa adanya, bukan menebak.",
+        {
+          "note": "Master default yang aman: 1080×1920, 9:16, video H.264 dalam file MP4, audio AAC, 30 fps, frame rate konstan. Spesifikasi ini memenuhi semua batas yang berhasil diverifikasi di tabel di bawah."
+        }
+      ]
+    },
+    {
+      "h": "Ukuran video vertikal per platform (November 2026)",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Platform",
+              "Rasio",
+              "Resolusi",
+              "Durasi",
+              "File dan frame rate"
+            ],
+            "rows": [
+              [
+                "TikTok (unggah web di TikTok Studio)",
+                "Tidak disebut di halaman unggah; 9:16 memenuhi layar",
+                "720×1280 atau lebih tinggi",
+                "Sampai 30 menit",
+                "MP4 atau WebM, kurang dari 10 GB"
+              ],
+              [
+                "YouTube Shorts",
+                "Persegi atau vertikal; 16:9 dan yang lebih lebar dianggap video panjang",
+                "Sampai 1080p untuk unggahan Shorts",
+                "Sampai 3 menit",
+                "Tidak disebut di halaman Shorts"
+              ],
+              [
+                "Instagram Reels",
+                "Antara 1,91:1 dan 9:16",
+                "Minimal 720 piksel",
+                "Sampai 20 menit; reel di atas 3 menit tidak direkomendasikan ke audiens baru",
+                "Minimal 30 fps"
+              ],
+              [
+                "Facebook Reels",
+                "Orientasi apa saja",
+                "Tidak disebut",
+                "Durasi bebas",
+                "Tidak disebut"
+              ],
+              [
+                "Iklan Reels di Instagram (panduan iklan Meta)",
+                "9:16",
+                "1440×2560",
+                "0 detik sampai 15 menit",
+                "MP4 atau MOV, maksimal 4 GB, frame rate tetap"
+              ],
+              [
+                "Douyin, Kuaishou, Xiaohongshu, WeChat Channels, Snapchat Spotlight",
+                "Cek di aplikasinya",
+                "Cek di aplikasinya",
+                "Cek di aplikasinya",
+                "Belum bisa kami verifikasi lewat halaman resmi; MP4 1080×1920 umumnya diterima dalam praktik"
+              ]
+            ]
+          }
+        },
+        "Dua detail di tabel ini lebih penting daripada kelihatannya. Pertama, di YouTube bentuk video menentukan formatnya: video persegi atau vertikal berdurasi 3 menit atau kurang menjadi Short, sedangkan video 16:9 tetap menjadi video biasa. Kedua, Instagram meminta minimal 30 fps. Banyak model video AI merender dengan 24 fps, jadi ubah frame rate sebelum memposting reel (lihat perintah di bawah).",
+        "Facebook memindahkan semua video ke Reels pada Juni 2025, sehingga reel Facebook bisa berdurasi dan berbentuk apa saja. File vertikal 9:16 tetap paling pas di pemutar layar penuh."
+      ]
+    },
+    {
+      "h": "Safe zone: bagian video yang tertutup caption dan tombol",
+      "body": [
+        "Di setiap aplikasi video pendek, antarmuka menumpuk di atas gambar Anda: nama akun dan caption di bagian bawah, tombol suka, komentar, dan bagikan di sisi kanan, serta tab atau bilah pencarian di atas. Apa pun yang diletakkan di sana bisa tertutup.",
+        "Panduan iklan Reels dari Meta memberi aturan yang jelas: sisakan minimal 14% bagian atas, 35% bagian bawah, dan 6% di tiap sisi bebas dari teks, logo, dan elemen penting lainnya. TikTok juga menerbitkan file safe zone untuk iklan, dengan prinsip yang sama. Dalam praktik, angka Meta bisa dipakai sebagai satu aturan lintas platform. Pada frame 1080×1920 angkanya menjadi:",
+        {
+          "table": {
+            "head": [
+              "Sisi",
+              "Porsi frame",
+              "Piksel pada 1080×1920",
+              "Jauhkan dari"
+            ],
+            "rows": [
+              [
+                "Atas",
+                "14%",
+                "269 px",
+                "Tab, bilah pencarian, label Live atau Following"
+              ],
+              [
+                "Bawah",
+                "35%",
+                "672 px",
+                "Nama akun, teks caption, baris musik, progress bar"
+              ],
+              [
+                "Kiri",
+                "6%",
+                "65 px",
+                "Pemotongan tepi di sebagian ponsel"
+              ],
+              [
+                "Kanan",
+                "6%",
+                "65 px",
+                "Kolom tombol butuh ruang lebih; letakkan teks penting jauh di dalam"
+              ]
+            ]
+          }
+        },
+        "Hasilnya adalah kotak aman dari x = 65 sampai x = 1015 dan dari y = 269 sampai y = 1248: lebar 950 piksel dan tinggi 979 piksel. Taruh caption permanen, nama produk, dan wajah di dalam kotak ini. Sepertiga bagian bawah frame tetap boleh berisi gambar, misalnya kaki, meja, atau lantai, asal bukan tulisan.",
+        {
+          "note": "Cek cepat: ekspor satu frame dari hasil edit, gambar kotak aman di atasnya, lalu lihat di ponsel. Kalau ada baris caption yang menyentuh tepi kotak, geser ke atas atau persingkat."
+        }
+      ]
+    },
+    {
+      "h": "Cover dan thumbnail",
+      "body": [
+        "Cover adalah gambar diam yang dilihat orang di grid profil dan di sebagian feed. Tiap aplikasi menanganinya sedikit berbeda:",
+        {
+          "ul": [
+            "Instagram Reels: halaman bantuan menyarankan foto cover 420×654 piksel, rasio 1:1,55. Halaman itu juga menyebut cover tidak bisa diedit setelah diunggah, jadi pilih sebelum membagikan.",
+            "TikTok: uploader web memungkinkan Anda memilih gambar cover setelah unggah. Grid profil memotong cover vertikal, jadi letakkan teks judul di tengah.",
+            "YouTube Shorts: opsi thumbnail untuk Shorts sudah beberapa kali berubah. Lihat layar unggah yang berlaku sekarang, jangan percaya panduan lama."
+          ]
+        },
+        "Kebiasaan sederhana yang cocok di semua aplikasi: rancang cover di dalam persegi 1080×1080 di tengah frame 1080×1920. Kalau aplikasi memotong cover menjadi persegi atau petak 3:4, judul dan wajah tetap aman."
+      ]
+    },
+    {
+      "h": "Apa yang terjadi pada unggahan 16:9 atau 1:1",
+      "body": [
+        "Video horizontal 16:9 tidak memenuhi layar ponsel yang dipegang tegak. Di YouTube, video seperti itu bukan Short sama sekali. Di TikTok dan Reels, video biasanya tampil kecil dengan pita hitam atau buram yang lebar di atas dan bawah. Penonton menggulir melewati ruang kosong itu, jadi versi vertikal hampir selalu berkinerja lebih baik.",
+        "Video persegi 1:1 dihitung sebagai Short di YouTube dan diterima di Instagram, tetapi tetap menyisakan ruang kosong di layar yang tinggi. Persegi cocok kalau klip yang sama juga harus tampil sebagai posting feed; untuk Shorts, TikTok, dan Reels, buat versi 9:16 yang sebenarnya.",
+        "Ada tiga cara mengubah klip horizontal menjadi vertikal:",
+        {
+          "ol": [
+            "Crop: potong jendela 9:16 dari frame lebar. Paling cocok kalau subjek tetap dekat tengah. Bagian sisi akan hilang.",
+            "Pad: kecilkan seluruh frame lebar agar muat di lebar layar, lalu tambahkan pita di atas dan bawah. Tidak ada yang hilang, tetapi gambar jadi kecil.",
+            "Latar buram: taruh frame lebar utuh di tengah, di atas salinan dirinya sendiri yang diperbesar dan diburamkan. Tampilannya lebih bagus daripada pita hitam; gambarnya tetap kecil."
+          ]
+        },
+        "Kalau subjek bergerak di seluruh frame lebar, crop tetap akan kehilangan subjek. Itulah tugas auto reframe, yang melacak subjek; lihat panduan kami tentang edit video AI."
+      ]
+    },
+    {
+      "h": "Cara merender klip AI ke 1080×1920 dengan ffmpeg",
+      "body": [
+        "Model video AI sering menghasilkan 720p, atau ukuran yang mendekati rasio standar tetapi tidak persis, misalnya 720×1280 atau lebar yang meleset beberapa piksel. Sebagian hanya menghasilkan 16:9. Ubah setiap klip ke master 1080×1920 yang sama sebelum mengedit, supaya timeline punya satu ukuran dan satu frame rate.",
+        "Kalau klipnya sudah vertikal tetapi kecil, perbesar lalu potong kelebihan pikselnya agar hasilnya tepat 9:16:",
+        {
+          "code": "# Vertical AI clip (for example 720x1280) -> exactly 1080x1920\nffmpeg -i ai_clip.mp4 \\\n  -vf \"scale=1080:1920:force_original_aspect_ratio=increase:flags=lanczos,crop=1080:1920,setsar=1\" \\\n  -r 30 -c:v libx264 -crf 18 -preset slow -pix_fmt yuv420p \\\n  -c:a aac -b:a 192k -movflags +faststart vertical.mp4",
+          "lang": "bash"
+        },
+        "Kalau klipnya 16:9, pilih salah satu dari tiga metode:",
+        {
+          "code": "# 1) Center crop a 16:9 clip to 9:16 (loses the sides)\nffmpeg -i wide.mp4 -vf \"scale=-2:1920,crop=1080:1920,setsar=1\" \\\n  -c:v libx264 -crf 18 -pix_fmt yuv420p -c:a copy crop.mp4\n\n# 2) Pad: fit the full frame, black bands above and below\nffmpeg -i wide.mp4 \\\n  -vf \"scale=1080:1920:force_original_aspect_ratio=decrease,pad=1080:1920:(ow-iw)/2:(oh-ih)/2:color=black,setsar=1\" \\\n  -c:v libx264 -crf 18 -pix_fmt yuv420p -c:a copy pad.mp4\n\n# 3) Blurred background behind the full frame\nffmpeg -i wide.mp4 -filter_complex \\\n  \"[0:v]split=2[bg][fg];[bg]scale=1080:1920:force_original_aspect_ratio=increase,crop=1080:1920,boxblur=20:2[bg];[fg]scale=1080:-2[fg];[bg][fg]overlay=(W-w)/2:(H-h)/2,setsar=1[v]\" \\\n  -map \"[v]\" -map '0:a?' -c:v libx264 -crf 18 -pix_fmt yuv420p -c:a copy blur.mp4",
+          "lang": "bash"
+        },
+        "Pada perintah crop, jendela crop secara default berada di tengah. Untuk mengikuti subjek di sisi kiri, tambahkan offset x, misalnya `crop=1080:1920:200:0` menjaga jendela 200 piksel dari tepi kiri.",
+        "Soal frame rate: `-r 30` mengubah klip 24 fps menjadi 30 fps dengan mengulang frame. Itu memenuhi syarat minimal 30 fps di Instagram dan tampilannya sama dengan aslinya. Untuk membuat frame sisipan yang mulus dibutuhkan interpolasi frame, yang bisa membuat tangan dan gerakan cepat tampak terdistorsi, jadi pakai hanya kalau klip memang memerlukannya.",
+        {
+          "note": "Upscale setelah edit, bukan sebelumnya. Klip AI 720p sering punya detail yang lembut; memperbesar tiap klip lebih awal menambah pekerjaan dan bisa membuat antar-potongan terlihat berbeda. Edit di 1080×1920, lalu upscale atau pertajam master akhir sekali saja, dan simpan satu file master itu. Setiap encode ulang tambahan, termasuk yang dilakukan aplikasi, menambah artefak."
+        }
+      ]
+    },
+    {
+      "h": "Kesalahan umum",
+      "body": [
+        {
+          "ul": [
+            "Tidak sengaja mengekspor 1920×1080. Banyak editor memakai timeline horizontal sebagai default. Atur proyek ke 1080×1920 sebelum menaruh klip pertama.",
+            "Mencampur frame rate dalam satu timeline. Klip AI 24 fps di samping klip ponsel 30 fps bisa tersendat di titik potong. Ubah semua klip ke satu frame rate dulu.",
+            "Menaruh caption permanen di sepertiga bawah. Hasilnya tertimpa caption dan tombol bawaan aplikasi. Simpan di dalam kotak aman.",
+            "Memercayai daftar spesifikasi lama. Batas seperti durasi Shorts dan durasi reel Instagram sudah beberapa kali berubah. Periksa tanggal di tabel mana pun, termasuk yang ini.",
+            "Mengunggah file yang terlalu terkompresi. Aplikasi akan mengompresnya lagi. Ekspor dengan kualitas tinggi (misalnya `-crf 18`) dan biarkan platform melakukan kompresi akhir satu kali saja."
+          ]
+        },
+        "Untuk sisa alur kerjanya, dari hook sampai posting, lihat panduan kami tentang alur kerja video pendek AI. Untuk mengecek ukuran yang janggal dengan cepat, kalkulator rasio aspek seperti alat aspect di cv.cm menunjukkan bahwa 1080×1920 tepat 9:16 dan 1248×704 bukan 16:9."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Berapa ukuran video TikTok yang terbaik?",
+      "a": "1080×1920 piksel dalam frame vertikal 9:16. Saat artikel ini ditulis, uploader web TikTok meminta minimal 720×1280, MP4 atau WebM, di bawah 10 GB, dan durasi sampai 30 menit."
+    },
+    {
+      "q": "Berapa dimensi YouTube Shorts?",
+      "a": "Pakai 1080×1920 (9:16). YouTube menganggap video persegi atau vertikal berdurasi sampai 3 menit sebagai Shorts, dan halaman bantuannya menyebut unggahan Shorts bisa sampai 1080p."
+    },
+    {
+      "q": "Apakah 1080×1920 sama dengan 9:16?",
+      "a": "Ya. 1080 dibagi 1920 sama dengan 9 dibagi 16, jadi 1080×1920 tepat 9:16. 720×1280 dan 1440×2560 adalah bentuk yang sama pada resolusi lebih rendah dan lebih tinggi."
+    },
+    {
+      "q": "Bisakah video 16:9 diunggah sebagai YouTube Short?",
+      "a": "Tidak. YouTube menyatakan rasio yang lebih lebar seperti 16:9 membuat video tetap masuk kategori panjang. Crop atau reframe dulu menjadi vertikal atau persegi."
+    },
+    {
+      "q": "Apa safe zone untuk Reels dan TikTok?",
+      "a": "Panduan iklan Reels dari Meta menyarankan 14% bagian atas, 35% bagian bawah, dan 6% di tiap sisi bebas dari teks dan logo. Pada frame 1080×1920, itu 269 px di atas, 672 px di bawah, dan 65 px di tiap sisi."
+    },
+    {
+      "q": "Berapa ukuran cover Instagram Reels?",
+      "a": "Halaman bantuan Instagram menyarankan 420×654 piksel, rasio 1:1,55. Letakkan judul di tengah agar tetap terlihat saat dipotong persegi di grid profil."
+    }
+  ]
+}

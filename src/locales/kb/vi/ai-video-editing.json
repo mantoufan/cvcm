@@ -1,0 +1,194 @@
+{
+  "title": "Chỉnh sửa video bằng AI: tính năng nào làm gì, khi nào dùng — cv.cm",
+  "description": "Cách edit video AI: cắt khoảng lặng, dựng theo bản ghi lời, auto reframe, tách giọng, upscale và hơn thế, kèm quy trình cắt một video ngắn 60 giây.",
+  "h1": "Cách chỉnh sửa video bằng AI: từng tính năng làm gì và khi nào nên dùng",
+  "answer": "Chỉnh sửa video bằng AI là dùng mô hình để làm thay các việc dựng tốn thời gian: cắt khoảng lặng và từ đệm, dựng theo bản ghi lời, reframe cảnh 16:9 sang 9:16, thêm phụ đề, làm sạch giọng nói, tách nền, upscale và tạo B-roll. Hãy dùng AI cho bản cắt thô đầu tiên, rồi tự xem lại từng đoạn cắt, vì công cụ AI hay mất ngữ cảnh, tạo jump cut và có thể xử lý giọng nói quá đà.",
+  "sections": [
+    {
+      "h": "Trình dựng video AI làm được gì và không làm được gì",
+      "body": [
+        "Trình dựng video AI là một phần mềm dựng bình thường có gắn thêm mô hình cho những tác vụ cụ thể. Các mô hình nghe lời nói, bám theo khuôn mặt và vật thể, tách giọng khỏi tạp âm, hoặc tạo ra pixel mới. Các phần mềm như CapCut hay Jianying, Premiere Pro, DaVinci Resolve và Descript đều có những tính năng này ở thời điểm viết bài, dưới nhiều tên khác nhau.",
+        "Cách hiểu hữu ích về dựng bằng AI là chia thành hai nhóm. Tính năng phân tích tìm thứ có sẵn trong cảnh quay: từ ngữ, khoảng ngừng, khuôn mặt, nhịp nhạc, chuyển cảnh. Chúng tiết kiệm thời gian và dễ kiểm tra. Tính năng tạo sinh (generative) tạo ra hình hoặc tiếng mới: chi tiết upscale, khung hình trung gian, phần nền mở rộng, B-roll mới. Chúng có thể thêm những thứ chưa từng được quay, nên cần xem xét kỹ hơn và, khi trông chân thực, cần công khai.",
+        "AI không quyết định video của bạn nói về gì. Nó không biết 60 giây nào trong một bài nói dài là thú vị nhất với khán giả của bạn, và không biết khoảng ngừng nào là nhịp kịch tính, khoảng nào là thời gian chết. Phán đoán đó vẫn thuộc về bạn."
+      ]
+    },
+    {
+      "h": "Tổng quan các tính năng dựng bằng AI",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Tính năng",
+              "Làm gì",
+              "Dùng khi",
+              "Cần lưu ý"
+            ],
+            "rows": [
+              [
+                "Cắt khoảng lặng và từ đệm",
+                "Tìm khoảng ngừng và các từ như ừm, à trong bản ghi lời hoặc mức âm lượng, rồi xoá chúng",
+                "Clip người nói trực diện, hướng dẫn, podcast",
+                "Nhịp nói hụt hơi, đuôi từ bị cắt, jump cut"
+              ],
+              [
+                "Dựng theo bản ghi lời",
+                "Hiện lời nói dưới dạng văn bản; xoá chữ thì xoá đoạn video tương ứng",
+                "Phỏng vấn và bản ghi dài mà bạn dựng theo ý nghĩa",
+                "Đoạn cắt nghe ổn trong văn bản nhưng giật về hình"
+              ],
+              [
+                "Auto reframe",
+                "Bám theo chủ thể chính và di chuyển cửa sổ cắt 9:16 trên khung 16:9",
+                "Biến cảnh quay ngang thành Shorts, TikTok và Reels",
+                "Mất người thứ hai trong cảnh đôi; cửa sổ cắt di chuyển giật"
+              ],
+              [
+                "Phụ đề tự động",
+                "Nhận dạng giọng nói rồi viết phụ đề có mốc thời gian",
+                "Hầu như mọi video ngắn",
+                "Sai tên riêng và số liệu"
+              ],
+              [
+                "Khử ồn và tách giọng",
+                "Tách lời nói khỏi âm thanh nền và loại bỏ phần còn lại",
+                "Phòng ồn, ghi âm ngoài đường, tiếng quạt",
+                "Giọng mỏng, nghe như kim loại hoặc như dưới nước"
+              ],
+              [
+                "Tách nền",
+                "Cắt người ra khỏi phông nền ở mọi khung hình",
+                "Hiệu ứng kiểu phông xanh mà không cần phông xanh",
+                "Viền nhấp nháy, mất tóc và ngón tay"
+              ],
+              [
+                "Upscale",
+                "Phóng to khung hình và thêm chi tiết bằng mô hình siêu phân giải",
+                "Clip AI 720p mềm hoặc cảnh quay cũ để ra bản master 1080p",
+                "Chi tiết bịa ra ở khuôn mặt, chữ và vải"
+              ],
+              [
+                "Nội suy khung hình",
+                "Tạo khung hình mới giữa các khung có sẵn để làm slow motion hoặc tăng tốc độ khung hình",
+                "Slow motion mượt từ cảnh quay thường",
+                "Bàn tay méo, vật thể tan chảy khi chuyển động nhanh"
+              ],
+              [
+                "Đồng bộ màu",
+                "Chỉnh màu một clip theo clip tham chiếu",
+                "Trộn nhiều máy quay, điện thoại và clip AI trong một video",
+                "Màu da lệch; không sửa được phơi sáng kém"
+              ],
+              [
+                "Đồng bộ nhịp (beat sync)",
+                "Phát hiện nhịp trong nhạc và đặt điểm cắt đúng nhịp",
+                "Video montage và video dựng theo nhạc",
+                "Cắt ở mọi nhịp nghe máy móc"
+              ],
+              [
+                "Tạo B-roll",
+                "Tạo clip mới từ prompt văn bản hoặc ảnh",
+                "Minh hoạ một ý khi không có cảnh quay phù hợp",
+                "Cảnh giả trông chân thực cần công khai"
+              ],
+              [
+                "AI extend và fill",
+                "Thêm khung hình ở cuối clip hoặc thêm hình mới ngoài mép khung",
+                "Cảnh quay ngắn hơn một giây; mở rộng khung hình",
+                "Nội dung lệch khỏi bản gốc"
+              ]
+            ]
+          }
+        },
+        "Nhiều tính năng trong số này dựa trên nghiên cứu đã công bố mà bạn có thể đọc: RIFE cho nội suy khung hình thời gian thực, Real-ESRGAN cho siêu phân giải ảnh đời thực, Hybrid Demucs để tách nguồn âm thanh, và Whisper để nhận dạng giọng nói. Công cụ thương mại dùng mô hình riêng, nhưng điểm mạnh và kiểu lỗi đều tương tự."
+      ]
+    },
+    {
+      "h": "Quy trình: cắt video ngắn 60 giây từ bản ghi dài",
+      "body": [
+        "Đây là một ví dụ cụ thể. Bạn có bản ghi ngang dài 40 phút của podcast hai người và muốn có một clip dọc 60 giây cho Shorts, TikTok và Reels.",
+        {
+          "ol": [
+            "Chép lời toàn bộ bản ghi. Giờ bạn có văn bản tìm kiếm được kèm mốc thời gian.",
+            "Tìm khoảnh khắc. Đọc hoặc tìm trong bản ghi một đoạn tự đứng được: một câu hỏi và trả lời rõ ràng, một ý kiến mạnh, một con số gây bất ngờ. Đánh dấu hai hoặc ba ứng viên.",
+            "Tính ngân sách số từ. Tiếng Anh nói chạy khoảng 2,5 đến 3 từ mỗi giây, nên 60 giây chứa khoảng 150 đến 180 từ. Hãy chọn đoạn khoảng 200 đến 250 từ, vì bạn sẽ cắt bớt.",
+            "Làm bản cắt thô theo bản ghi lời. Xoá các câu lạc đề và phần dẫn mà người xem không cần. Bắt đầu bằng câu thú vị nhất, không phải lời chào.",
+            "Chạy cắt khoảng lặng và từ đệm, rồi nghe lại. Đặt lại mọi khoảng ngừng có ý nghĩa, như nhịp trước câu chốt.",
+            "Làm sạch âm thanh. Áp dụng khử ồn hoặc tách giọng ở mức vừa phải, và so với bản gốc bằng tai nghe.",
+            "Reframe sang 9:16. Để auto reframe bám theo người nói, rồi kiểm tra mọi điểm cắt giữa các người nói. Sửa chỗ nào cửa sổ cắt hiện ra chiếc ghế trống.",
+            "Thêm phụ đề. Sửa tên riêng và số liệu, và giữ chữ trong vùng an toàn.",
+            "Thêm hook. Đảm bảo khung hình đầu tiên đã có mặt người nói, đủ sáng, đang nói giữa câu. Trong thử nghiệm của chúng tôi, một giây đầu chậm hoặc tối làm mất người xem trước khi clip kịp có cơ hội.",
+            "Xuất một bản master chất lượng cao 1080×1920, rồi đăng chính file đó lên từng nền tảng."
+          ]
+        },
+        "Nếu phần mềm dựng của bạn không có tính năng reframe, ffmpeg có thể cắt cố định. Các lệnh này cắt đoạn, liệt kê các khoảng ngừng và cắt nửa trái của cảnh hai người thành 9:16:",
+        {
+          "code": "# 1) Cut the chosen passage (from 12:04 to 13:15) out of the recording\nffmpeg -ss 00:12:04 -to 00:13:15 -i podcast.mp4 -c:v libx264 -crf 18 -c:a aac -b:a 192k segment.mp4\n\n# 2) List pauses longer than 0.6 s that are quieter than -35 dB\nffmpeg -i segment.mp4 -af silencedetect=noise=-35dB:d=0.6 -f null - 2>&1 | grep silence_\n\n# 3) Fixed 9:16 crop around the left speaker of a 1920x1080 frame\nffmpeg -i segment.mp4 -vf \"crop=608:1080:180:0,scale=1080:1920:flags=lanczos,setsar=1\" \\\n  -c:v libx264 -crf 18 -pix_fmt yuv420p -c:a copy vertical.mp4",
+          "lang": "bash"
+        },
+        "Ở bước 3, `crop=608:1080:180:0` lấy một cửa sổ rộng 608 pixel, cao 1080 pixel, bắt đầu cách mép trái 180 pixel. 608×1080 gần với 9:16, và bước scale làm nó đúng 1080×1920. Đổi số thứ ba để di chuyển cửa sổ."
+      ]
+    },
+    {
+      "h": "Thứ tự thao tác đúng",
+      "body": [
+        "Thứ tự quan trọng vì một số bước phá huỷ thông tin mà bước sau cần, và một số việc sẽ uổng công nếu làm quá sớm.",
+        {
+          "ol": [
+            "Chọn và cắt nội dung trước. Mọi bước sau chỉ phải chạy trên ít cảnh quay hơn.",
+            "Làm sạch âm thanh trước phụ đề, để nhận dạng giọng nói nghe được lời rõ.",
+            "Reframe trước phụ đề, để bạn đặt chữ lên đúng khung hình cuối.",
+            "Đồng bộ màu trước khi xuất, sau khi mọi clip đã nằm trên timeline.",
+            "Upscale sau cùng, một lần, trên bản dựng hoàn chỉnh. Upscale từng clip trước khi dựng làm tăng thời gian render, và thiết lập khác nhau có thể khiến các đoạn cắt trông không khớp.",
+            "Giữ một file master duy nhất. Mỗi ứng dụng sẽ nén lại bản tải lên của bạn, và mỗi lần mã hoá lại đều thêm nhiễu hình."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Tính năng tạo sinh và việc công khai",
+      "body": [
+        "Tính năng phân tích hiếm khi gây thắc mắc. Tính năng tạo sinh thì có thể. Chính sách công khai của YouTube yêu cầu người sáng tạo gắn nhãn nội dung chân thực được tạo hoặc chỉnh sửa bằng AI, như một người thật có vẻ nói điều họ chưa nói, cảnh quay sự kiện thật bị chỉnh sửa, hoặc một cảnh chân thực chưa từng xảy ra. Cùng trang đó liệt kê các chỉnh sửa không cần công khai, gồm chỉnh màu, bộ lọc làm đẹp, tạo phụ đề và hỗ trợ công việc sản xuất.",
+        "Trên thực tế: phụ đề, cắt khoảng lặng, khử ồn và đồng bộ màu không làm thay đổi điều đã xảy ra trước ống kính. B-roll tạo sinh về một con phố chân thực, cảnh quay được mở rộng thêm người, hay khuôn mặt bị thay trong clip thì có. Nếu người xem có thể nhầm phần được tạo ra với cảnh quay thật, hãy gắn nhãn. TikTok, Douyin và các nền tảng khác có nhãn nội dung AI riêng, Trung Quốc và EU có quy định về gắn nhãn; xem hướng dẫn của chúng tôi về gắn nhãn nội dung AI."
+      ]
+    },
+    {
+      "h": "Giới hạn và lỗi thường gặp",
+      "body": [
+        {
+          "ul": [
+            "Jump cut khắp nơi. Xoá hết khoảng ngừng khiến đầu người nói nhảy giữa các khung hình. Hãy che một số điểm cắt bằng zoom vào khoảng 10 đến 15 phần trăm, một cảnh B-roll hoặc đổi phụ đề, và để lại vài khoảng ngừng tự nhiên.",
+            "Mất ngữ cảnh. Một clip ngắn cắt từ bài nói dài có thể đổi ý người nói. Hãy đọc các câu trước và sau clip của bạn, và đừng cắt một câu trích dẫn sao cho nó nói điều ngược lại.",
+            "Giọng bị xử lý quá đà. Khử ồn mạnh làm giọng nghe mỏng hoặc như robot. Hãy dùng mức thấp nhất đủ loại bỏ tiếng gây phiền, và giữ lại một chút tiếng phòng (room tone).",
+            "Upscale bịa ra chi tiết. Mô hình siêu phân giải đoán chi tiết. Khuôn mặt có thể đổi chút ít, và chữ nhỏ có thể thành chữ giả. Hãy so bản master đã upscale với bản gốc trên màn hình lớn.",
+            "Nội suy trên chuyển động nhanh. Khung hình trung gian mới chỉ là phỏng đoán. Bàn tay, vật quay tròn và người đi ngang qua nhau thường bị méo. Chỉ dùng nội suy cho chuyển động chậm, đơn giản.",
+            "Tin tưởng reframe. Auto reframe bám theo chuyển động và khuôn mặt, không bám theo ý nghĩa. Trong cuộc nói chuyện hai người, nó có thể ở nhầm người. Hãy kiểm tra mọi lần đổi người nói.",
+            "Dùng AI xử lý bản ghi thô nguyên độ dài trước tiên. Hãy chọn đoạn trước khi chạy xử lý nặng; vậy nhanh hơn và bạn kiểm tra ít hơn."
+          ]
+        },
+        "Trình dựng video AI miễn phí thường đủ cho clip ngắn. Khi so sánh các lựa chọn, hãy kiểm tra điều quan trọng với nhu cầu của bạn thay vì xem bảng xếp hạng: bản xuất có watermark không, độ phân giải xuất ra, file được xử lý trên máy bạn hay tải lên máy chủ, và phụ đề hỗ trợ những ngôn ngữ nào. Về tỉ lệ và kích thước của file cuối, xem hướng dẫn kích thước video dọc của chúng tôi."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "AI có thể tự động dựng video cho tôi không?",
+      "a": "AI có thể làm bản cắt thô: xoá khoảng lặng, cắt theo bản ghi lời, reframe và thêm phụ đề. Bạn vẫn phải chọn nội dung, kiểm tra từng đoạn cắt và sửa lỗi trước khi đăng."
+    },
+    {
+      "q": "Làm sao biến video ngang thành video dọc bằng AI?",
+      "a": "Dùng tính năng auto reframe, tính năng bám theo chủ thể và di chuyển cửa sổ cắt 9:16 trên khung hình. Với cảnh quay mà chủ thể đứng yên, cắt cố định trong bất kỳ phần mềm dựng hay ffmpeg nào đều được."
+    },
+    {
+      "q": "Khử ồn bằng AI có làm giảm chất lượng giọng nói không?",
+      "a": "Có thể. Thiết lập mạnh khiến giọng nghe mỏng hoặc như kim loại. Hãy dùng mức vừa phải và so với bản gốc bằng tai nghe."
+    },
+    {
+      "q": "Nên upscale video AI trước hay sau khi dựng?",
+      "a": "Sau. Hãy dựng bằng các clip gốc, xuất một bản master ở độ phân giải gốc, rồi upscale bản master đó một lần. Upscale từng clip trước vừa tốn thời gian vừa có thể làm các đoạn cắt trông không khớp."
+    },
+    {
+      "q": "Video chỉnh sửa bằng AI có phải gắn nhãn không?",
+      "a": "Không với các chỉnh sửa thông thường như phụ đề, chỉnh màu hay khử ồn. YouTube yêu cầu công khai khi AI tạo ra nội dung chân thực có thể bị nhầm với sự kiện hoặc con người thật."
+    }
+  ]
+}

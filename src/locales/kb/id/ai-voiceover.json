@@ -1,0 +1,177 @@
+{
+  "title": "Voice Over AI untuk Video: Cara Membuat Suara Natural — cv.cm",
+  "description": "Cara membuat voice over AI untuk video: pilih suara, tulis untuk telinga, atur tempo sesuai potongan, perbaiki pelafalan, capai -14 LUFS, dubbing, dan kloning suara dengan izin.",
+  "h1": "Cara membuat voice over AI yang terdengar natural",
+  "answer": "Pilih suara yang cocok untuk audiens, tulis ulang naskah untuk didengarkan (kalimat pendek, tanpa deretan angka), hasilkan baris demi baris, dan perbaiki kata yang salah ucap dengan menulis ulang ejaannya atau dengan SSML bila generator suara mendukungnya. Edit video mengikuti suara, normalisasi ke sekitar -14 LUFS untuk media sosial, dan klon hanya suara yang izin tertulisnya Anda miliki.",
+  "sections": [
+    {
+      "h": "Alur kerja voice over AI dalam delapan langkah",
+      "body": [
+        "Voice over AI adalah narasi yang dihasilkan suara text-to-speech neural, bukan dari mikrofon. Model suara hanya satu bagian dari pekerjaan. Sebagian besar kualitas datang dari naskah, timing, dan mixing. Alur kerja yang andal untuk video pendek atau explainer seperti ini:",
+        {
+          "ol": [
+            "Selesaikan naskah dan bacakan sendiri satu kali dengan timer.",
+            "Pilih suara dan uji pada dua kalimat tersulit di naskah, bukan pada paragraf contoh.",
+            "Tulis ulang baris yang terdengar janggal saat diucapkan: kalimat panjang, singkatan, angka, nama merek.",
+            "Hasilkan voice over dalam potongan pendek, satu beat atau satu kalimat sekaligus, supaya take yang buruk bisa diulang tanpa menyentuh sisanya.",
+            "Perbaiki pelafalan dengan menulis ulang ejaan atau tag SSML.",
+            "Letakkan suara di timeline lebih dulu, lalu potong gambar mengikutinya.",
+            "Bersihkan dan normalisasi suara, lalu mix musik di bawahnya.",
+            "Ekspor, dengarkan di speaker ponsel dan di headphone, lalu tambahkan label AI bila platform mewajibkan."
+          ]
+        },
+        "Halaman ini membahas pemakaian suara AI untuk video. Untuk cara ucapan disintesis di balik layar, lihat panduan text-to-speech kami."
+      ]
+    },
+    {
+      "h": "Memilih suara untuk video",
+      "body": [
+        "Kebanyakan generator voice over, seperti ElevenLabs, suara bawaan CapCut atau Jianying, atau TTS di platform cloud besar, menawarkan puluhan suara. Pilih berdasarkan pekerjaannya, bukan demo reel. Teks demo ditulis untuk memamerkan suara; naskah Anda berisi nama produk, angka, dan kalimat pendek yang menohok.",
+        {
+          "table": {
+            "head": [
+              "Jenis video",
+              "Ciri suara yang dicari",
+              "Hindari"
+            ],
+            "rows": [
+              [
+                "Tips cepat dan daftar",
+                "Cerah, nada menengah, konsonan jelas, sedikit cepat",
+                "Suara berdesah atau sangat berat yang kabur saat cepat"
+              ],
+              [
+                "Narasi cerita",
+                "Hangat, rentang nada lebar, jeda natural",
+                "Gaya \"penyiar\" yang datar"
+              ],
+              [
+                "Tutorial dan rekaman layar",
+                "Tenang, netral, tempo rata",
+                "Emosi kuat yang mengalihkan dari langkah-langkah"
+              ],
+              [
+                "Video produk atau brand",
+                "Sesuai usia dan daerah brand",
+                "Suara mirip selebritas yang menyiratkan endorsement"
+              ],
+              [
+                "Karakter atau komedi",
+                "Timbre khas, ekspresif",
+                "Suara yang terdengar seperti tokoh publik sungguhan"
+              ]
+            ]
+          }
+        },
+        "Pakai satu suara per kanal atau seri. Penonton belajar mengenalinya, dan berganti suara antar episode membuat seri terasa seperti unggahan terpisah. Catat nama suara dan semua pengaturannya (kecepatan, nilai stability atau style, model), karena penyedia memperbarui model mereka dan pengaturan yang sama bisa bergeser hasilnya."
+      ]
+    },
+    {
+      "h": "Menulis untuk telinga dan mengatur tempo sesuai potongan",
+      "body": [
+        "Teks yang enak dibaca di halaman sering terdengar kaku saat diucapkan. Pendengar tidak bisa menggulir mundur. Tulis agar setiap kalimat masuk akal pada pendengaran pertama.",
+        {
+          "ul": [
+            "Satu ide per kalimat, idealnya kurang dari 15 kata.",
+            "Taruh kata penting di akhir kalimat, tempat suara secara alami mendarat.",
+            "Tulis angka sebagaimana diucapkan: \"sekitar dua ribu\" alih-alih \"~2.000\".",
+            "Uraikan singkatan kecuali orang mengucapkannya sebagai huruf.",
+            "Gunakan koma dan titik untuk mengatur ritme. Kebanyakan suara berhenti di titik dan nyaris tidak di koma."
+          ]
+        },
+        {
+          "code": "Before (written):\n  Our app supports 4K/60fps export, HDR & batch processing (Win/Mac).\n\nAfter (for the ear):\n  You can export in 4K at sixty frames per second.\n  It handles HDR. And it works in batches, on Windows and Mac.",
+          "lang": "text"
+        },
+        "Untuk tempo, rencanakan sekitar 2,5 sampai 3 kata per detik untuk narasi bahasa Inggris yang jelas. Di video pendek, potong gambar mengikuti suara, bukan sebaliknya: letakkan voice over di timeline lebih dulu, lalu buat tiap potongan jatuh di awal kalimat baru atau pada kata kunci. Kalau bagian suara terlalu panjang untuk shot-nya, tulis ulang barisnya lebih pendek alih-alih mempercepat suara. Dalam praktik, perubahan kecepatan di atas sekitar 10 persen cenderung membuat suara AI terdengar terburu-buru dan tidak natural.",
+        "Untuk mendengar tempo sebelum membayar generasi suara, Anda bisa membacakan naskah dengan suara perangkat, misalnya lewat tool text-to-speech cv.cm, yang memakai suara bawaan browser dan memungkinkan Anda mengubah kecepatan. Tool itu tidak mengekspor audio dan bukan suara studio; fungsinya hanya cek timing. Kalau Anda lebih suka suara sendiri sebagai guide track, rekam dengan perekam suara dan sesuaikan potongan dengan rekaman itu."
+      ]
+    },
+    {
+      "h": "Memperbaiki pelafalan: ejaan ulang, jeda, dan fonem",
+      "body": [
+        "Nama, merek, akronim, dan kata serapan adalah tempat suara AI paling sering gagal. Coba perbaikan berikut berurutan, dari yang paling sederhana hingga paling presisi.",
+        {
+          "ol": [
+            "Tulis ulang kata secara fonetis di naskah: \"Nguyen\" menjadi \"Win\", \"GIF\" menjadi \"jif\" atau \"gif\" sesuai pilihan Anda. Simpan daftar ejaan ulang per proyek.",
+            "Tambahkan tanda baca untuk memaksa jeda atau mengubah tekanan: koma sebelum nama, atau tanda hubung pada kata majemuk.",
+            "Pakai SSML bila tool mendukungnya. SSML (Speech Synthesis Markup Language) adalah standar W3C. Elemen `break` menyisipkan jeda dengan `time` seperti `400ms`, `sub` mengganti teks tertulis dengan yang seharusnya diucapkan, dan `phoneme` memberi pelafalan tepat dalam IPA lewat atribut `ph`.",
+            "Pakai kamus pelafalan milik tool, kalau ada, supaya perbaikannya berlaku untuk semua naskah berikutnya."
+          ]
+        },
+        {
+          "code": "<speak>\n  Welcome to <sub alias=\"see vee dot see em\">cv.cm</sub>.\n  <break time=\"400ms\"/>\n  Today we test the <phoneme alphabet=\"ipa\" ph=\"ˈkiːnwɑː\">quinoa</phoneme> recipe.\n</speak>",
+          "lang": "text"
+        },
+        {
+          "note": "Dukungan SSML berbeda antar penyedia. Ada yang menerima standar penuh, ada yang hanya menerima `break`, dan ada yang mengabaikan tag atau malah membacakannya. Uji satu kalimat bertag sebelum menandai seluruh naskah."
+        }
+      ]
+    },
+    {
+      "h": "Target loudness untuk video media sosial",
+      "body": [
+        "Loudness diukur dalam LUFS (loudness units relative to full scale) dengan algoritma di ITU-R BS.1770, pengukuran yang sama di balik rekomendasi siaran EBU R 128. EBU R 128 menetapkan -23 LUFS untuk program siaran. Platform streaming dan media sosial tidak semuanya mempublikasikan targetnya, tetapi sekitar -14 LUFS integrated dengan true peak tidak lebih tinggi dari sekitar -1 dBTP adalah target kerja yang umum untuk video online.",
+        "Kebanyakan platform besar menormalkan loudness pemutaran, jadi video yang dimaster jauh lebih keras akan diturunkan dan tidak mendapat apa-apa, sementara limiting berat untuk mencapainya membuat suara terdengar kasar. Video yang dimaster jauh lebih pelan mungkin dinaikkan lebih sedikit dari dugaan Anda. Membidik target umum menghindari kedua masalah itu.",
+        {
+          "code": "# Pass 1: measure. Note the measured_* values in the JSON it prints.\nffmpeg -i voice.wav -af loudnorm=I=-14:TP=-1:LRA=11:print_format=json -f null -\n# Pass 2: normalize with your measured values (the numbers below are examples)\nffmpeg -i voice.wav -af loudnorm=I=-14:TP=-1:LRA=11:measured_I=-19.6:measured_TP=-3.2:measured_LRA=6.1:measured_thresh=-30.0:offset=0.4:linear=true -ar 48000 voice_norm.wav",
+          "lang": "bash"
+        },
+        "Normalisasi mix akhir, bukan hanya suaranya. Dalam praktik, musik di bawah ucapan sebaiknya jauh di bawah suara; sekitar 12 sampai 20 dB lebih pelan saat seseorang bicara adalah titik awal yang wajar, lalu naikkan di sela kalimat. Selalu cek di speaker ponsel, tempat musik pelan menghilang dan frekuensi tinggi yang kasar menonjol."
+      ]
+    },
+    {
+      "h": "Dubbing AI ke bahasa lain",
+      "body": [
+        "Dubbing AI menerjemahkan naskah dan menghasilkan ucapan dalam bahasa lain, sering dengan suara yang mirip aslinya. Masalah praktis utamanya adalah waktu. Kalimat yang sama biasanya lebih lama diucapkan dalam bahasa Spanyol atau Jerman daripada bahasa Inggris, sehingga dubbing yang mengikuti potongan versi Inggris cenderung kelebihan durasi.",
+        {
+          "ul": [
+            "Tulis naskah sumber dengan ruang cadangan. Kalau versi Inggris memakai seluruh slot, terjemahannya tidak akan muat. Menyisakan 10 sampai 20 persen tiap beat di naskah asli membuat dubbing jauh lebih mudah.",
+            "Terjemahkan untuk diucapkan, bukan kata per kata. Minta penerjemah atau LLM memangkas baris agar pas dengan jumlah detik tertentu.",
+            "Periksa ulang nama, satuan, dan teks di layar untuk setiap bahasa. Dubbing yang menyebut \"mil\" di atas caption dalam kilometer terlihat ceroboh.",
+            "Potong ulang bila perlu. Menambah beberapa frame pada shot lebih murah daripada mempercepat suara sampai terdengar tidak natural."
+          ]
+        },
+        "Platform mulai menambahkan tool sendiri. Dubbing otomatis YouTube membuat trek audio terjemahan dan menandai video tersebut sebagai auto-dubbed. Halaman bantuannya menyebut dubbing bisa mengandung kesalahan pelafalan, nama diri, idiom, dan istilah teknis, dan kreator dapat meninjau dubbing sebelum dipublikasikan. Manfaatkan langkah tinjauan itu, atau unggah trek buatan Anda yang sudah dicek. Kalau Anda ingin mulut pembicara cocok dengan bahasa baru, lihat panduan lip sync AI kami."
+      ]
+    },
+    {
+      "h": "Kloning suara: izin, pengungkapan, dan hukum",
+      "body": [
+        "Kloning suara membangun suara sintetis dari rekaman orang sungguhan. Beberapa detik ucapan yang bersih bisa cukup untuk hasil yang dikenali, itulah sebabnya aturan berfokus pada izin dan pengungkapan.",
+        {
+          "ul": [
+            "Klon hanya suara Anda sendiri atau suara yang Anda miliki izin tertulisnya. Izin itu sebaiknya menyebut untuk apa suara boleh dipakai, berapa lama, dan bagaimana izin bisa dicabut.",
+            "Jangan mengklon tokoh publik, aktor, atau kreator untuk membuat mereka mengatakan sesuatu. Itu bisa melanggar aturan platform dan, di banyak negara, hukum hak kepribadian, publisitas, atau penipuan.",
+            "Aturan pengungkapan YouTube mewajibkan label ketika konten realistis membuat orang sungguhan tampak mengatakan atau melakukan sesuatu yang tidak mereka lakukan. Halaman bantuannya mencantumkan mengklon suara Anda sendiri untuk voice over atau dubbing sebagai contoh yang tidak perlu diungkapkan.",
+            "EU AI Act (Pasal 50) mewajibkan deployer mengungkapkan audio dan video buatan AI atau hasil manipulasi yang merupakan deepfake, dengan kewajiban lebih ringan untuk karya yang jelas bersifat seni, kreatif, atau satir.",
+            "Peraturan Tiongkok tentang pelabelan konten sintetis buatan AI (Measures for Labeling AI-Generated Synthetic Content), berlaku sejak 1 September 2025, mewajibkan penyedia melabeli audio sintetis, misalnya dengan penanda lisan atau berirama, dan mewajibkan pengguna yang memublikasikan konten tersebut untuk mendeklarasikannya dan memakai fitur pelabelan."
+          ]
+        },
+        "Narator sintetis generik yang membacakan naskah Anda sendiri jarang menjadi masalah hukum. Suara klon dari orang sungguhan adalah masalah. Panduan pelabelan konten AI kami membahas label platform dengan lebih rinci."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Apa bedanya text-to-speech dan voice over AI?",
+      "a": "Text-to-speech adalah teknologi yang mengubah teks menjadi ucapan. Voice over AI adalah narasi jadi untuk video: suara pilihan, naskah yang ditulis untuk didengarkan, timing sesuai potongan, dan mix yang bersih."
+    },
+    {
+      "q": "Apakah ada voice over AI gratis?",
+      "a": "Banyak generator voice over punya paket gratis dengan menit terbatas, suara lebih sedikit, atau tanpa hak komersial. Periksa lisensi penggunaan komersial sebelum memublikasikan."
+    },
+    {
+      "q": "Seberapa keras voice over untuk TikTok atau Reels?",
+      "a": "Sekitar -14 LUFS integrated dengan true peak dekat -1 dBTP adalah target kerja yang umum untuk video online. Platform menormalkan pemutaran, jadi mastering jauh lebih keras tidak ada gunanya."
+    },
+    {
+      "q": "Kenapa suara AI saya salah mengucapkan nama?",
+      "a": "Model menebak pelafalan dari ejaan dan data latihnya. Tulis ulang nama secara fonetis, atau pakai tag phoneme SSML atau kamus pelafalan bila tool mendukungnya."
+    },
+    {
+      "q": "Apakah voice over AI harus diungkapkan?",
+      "a": "Narator sintetis generik biasanya tidak perlu label di YouTube. Suara realistis yang membuat orang sungguhan seolah mengatakan sesuatu yang tidak ia katakan perlu label, dan sebagian undang-undang mewajibkan label pada audio sintetis."
+    }
+  ]
+}

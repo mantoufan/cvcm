@@ -54,7 +54,7 @@ export type KbHub = "hub" | "code" | "ai";
 export type KbPage = KbId | KbHub | null;
 
 export type CodeGroupId = "languages" | "patterns" | "structures" | "algorithms";
-export type AiGroupId = "basics" | "prompts" | "image" | "video" | "audio" | "dev" | "trust";
+export type AiGroupId = "basics" | "prompts" | "image" | "video" | "shorts" | "audio" | "dev" | "trust";
 export type KbGroupId = "files" | "data" | "time" | "money" | CodeGroupId | AiGroupId;
 
 const KNOWLEDGE_GROUPS: readonly { id: KbGroupId; articles: readonly KbId[] }[] = [

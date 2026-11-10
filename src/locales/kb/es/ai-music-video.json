@@ -1,0 +1,161 @@
+{
+  "title": "Cómo hacer un videoclip con IA que siga el ritmo — cv.cm",
+  "description": "Cómo hacer un videoclip con IA: asegura los derechos de la canción, mapea BPM y secciones, planifica planos al compás, genera por segmentos y comprueba la sincronía.",
+  "h1": "Cómo hacer un videoclip con IA",
+  "answer": "Para hacer un videoclip con IA, empieza con una canción cuyos derechos tengas y mapéala: BPM, secciones y tiempos de cada primer pulso. Planifica un plano por frase sobre esa cuadrícula de compases, fija el personaje y el estilo, y genera cada segmento con un audio que hayas cortado tú. Edita al ritmo, vuelve a poner la canción original y comprueba la sincronía.",
+  "sections": [
+    {
+      "h": "Qué hace realmente un generador de videoclips con IA",
+      "body": [
+        "Un generador de videoclips con IA convierte prompts, imágenes o clips de referencia en segmentos de video cortos, normalmente de unos pocos segundos. Hoy por hoy, ninguna herramienta convierte de forma fiable una canción entera de tres minutos en un video terminado de una sola vez. El método práctico es el mismo con Veo, Kling, Seedance, Runway, Hailuo o cualquier modelo similar: divides la canción en trozos, generas un clip para cada trozo y lo montas todo en un editor como CapCut, Premiere Pro o DaVinci Resolve.",
+        "Eso significa que la canción manda. El modelo crea imágenes en movimiento; tú decides dónde empieza y dónde acaba cada una. Lo que hace que un videoclip parezca profesional ocurre antes y después de generar: mapear la canción, planificar los planos al compás y comprobar la sincronía al final.",
+        {
+          "note": "Esta guía trata de videos guiados por una canción para Shorts, Reels, TikTok, Douyin o una subida completa a YouTube. Para coreografías, consulta nuestra guía de video de baile con IA. Para mantener la continuidad entre muchos planos, consulta nuestra guía de video de IA con varios planos."
+        }
+      ]
+    },
+    {
+      "h": "Paso 1: Asegúrate de poder usar la canción",
+      "body": [
+        "Revisa los derechos antes de gastar un solo crédito. Un video basado en una canción que no puedes publicar será silenciado, bloqueado o reclamado. En YouTube, cada subida se analiza con Content ID; cuando coincide con un archivo de referencia de un titular de derechos, este decide si bloquea el video, muestra anuncios en él o solo lo monitoriza, y esa decisión puede variar según el país.",
+        {
+          "ul": [
+            "Una canción tuya: no hay problema, pero regístrala en tu distribuidora si quieres tener Content ID de tu lado.",
+            "Una pista con licencia: lee la licencia para sincronización con video y para cada plataforma donde vayas a publicar. Una licencia para música de fondo en un video corto puede no cubrir un videoclip completo.",
+            "Una canción generada con IA (por ejemplo, con Suno): lee los términos de la herramienta sobre uso comercial y titularidad en tu plan. Los términos cambian según el plan y con el tiempo.",
+            "Un éxito comercial que no es tuyo: úsalo solo desde la biblioteca de música de la propia plataforma dentro de la app, donde la plataforma tiene la licencia. No lo exportes ni lo vuelvas a subir a otro sitio."
+          ]
+        },
+        "YouTube también pide a los creadores que declaren la música generada con IA cuando es el foco principal del video, así como las imágenes de IA realistas de personas o lugares reales. Nuestra guía sobre cómo etiquetar contenido de IA explica las reglas de cada plataforma y región."
+      ]
+    },
+    {
+      "h": "Paso 2: Mapea la canción en una cuadrícula de compases",
+      "body": [
+        "Escribe una línea de tiempo de la canción antes de redactar ningún prompt. Necesitas cuatro cosas: el tempo, las secciones, los primeros tiempos de compás y algunos eventos musicales fuertes.",
+        {
+          "ol": [
+            "Averigua los BPM. Marca el pulso con el estribillo; por ejemplo, el metrónomo de cv.cm tiene un modo de tap tempo que te da los BPM tras unos cuantos toques.",
+            "Marca las secciones con marcas de tiempo: intro, estrofa, pre-estribillo, estribillo, puente, final.",
+            "Marca el primer tiempo fuerte de cada sección, la nota más alta y cualquier pausa o caída. Son los momentos en que debe caer un corte o un movimiento grande.",
+            "Calcula la duración de una frase. En compás de 4/4 un compás tiene 4 pulsos, así que dura 240 / BPM segundos. A 120 BPM un compás dura 2 s y una frase de dos compases (un ocho) dura 4 s."
+          ]
+        },
+        "Una frase de 4 segundos es una unidad útil porque se acerca a la duración mínima de clip que aceptan muchos modelos. A 90 BPM un compás dura unos 2,67 s, así que un ocho dura unos 5,3 s; a 128 BPM dura 3,75 s. Elige duraciones de plano que sean frases completas y recorta la fracción de segundo sobrante en la edición."
+      ]
+    },
+    {
+      "h": "Paso 3: Planifica los planos en la cuadrícula y fija el aspecto",
+      "body": [
+        "Convierte la línea de tiempo en una lista de planos. Un plano por frase es un buen punto de partida; en canciones rápidas puedes usar un plano por compás en el estribillo. Cada fila debe indicar el intervalo de tiempo, la sección, lo que ve la cámara y en qué evento musical cae la acción principal.",
+        {
+          "table": {
+            "head": [
+              "Tiempo",
+              "Sección",
+              "Plano",
+              "Cae en"
+            ],
+            "rows": [
+              [
+                "0,0–4,0 s",
+                "Intro",
+                "Primer plano, la cantante ya mira a cámara, luz cálida de ventana, travelling lento hacia delante",
+                "Primer tiempo en 0,0 s: abre los ojos hacia el objetivo"
+              ],
+              [
+                "4,0–8,0 s",
+                "Estrofa, verso 1",
+                "Plano medio, camina por una calle mojada al anochecer, seguimiento con cámara en mano",
+                "Paso en el pulso 1 de cada compás"
+              ],
+              [
+                "8,0–12,0 s",
+                "Estrofa, verso 2",
+                "Primer plano, verso cantado, lip sync",
+                "El verso empieza en 8,2 s"
+              ],
+              [
+                "12,0–16,0 s",
+                "Pre-estribillo",
+                "Contrapicado, se levanta el viento, el abrigo se mueve",
+                "Nota más alta en 15,5 s: se gira hacia cámara"
+              ],
+              [
+                "16,0–20,0 s",
+                "Estribillo",
+                "Plano general, azotea, luces de la ciudad, órbita a la izquierda",
+                "Corte justo en el primer tiempo del estribillo"
+              ]
+            ]
+          }
+        },
+        "El plano inicial es el más importante. En la práctica, el primer fotograma decide cuántos espectadores se van en los dos o tres primeros segundos. Haz que el primer fotograma ya sea el más atractivo: luminoso, con el rostro bien visible e iluminado, con el sujeto ya en movimiento o sonriendo, y encuadrado en primer plano o plano medio para que ocupe casi todo el cuadro. Un fundido lento desde negro, una cabeza mirando al suelo o una habitación oscura hacen perder espectadores antes de que empiece la canción. Si el concepto necesita una introducción narrativa, ponla en el atrezo y el escenario, no en un arranque lento.",
+        "Después, fija el aspecto. Crea una hoja de personaje (vistas de frente, de perfil y de espaldas, vestuario, peinado, colores) y una línea de estilo breve que pegarás sin cambios en cada prompt, con el objetivo, la luz y la gradación de color. Nuestra guía de personajes consistentes con IA explica cómo construir la hoja. Cada nueva imagen de referencia que crees debe revisarse contra esa hoja, personaje por personaje: ropa, manos, accesorios, pelo, colores y proporción de alturas. Las herramientas de edición de imágenes cambian en silencio detalles que no les pediste, y luego el modelo de video copia el error en todos los planos."
+      ]
+    },
+    {
+      "h": "Paso 4: Genera segmento a segmento con el audio cortado",
+      "body": [
+        "Genera cada plano como un segmento independiente, con su propio fragmento de la canción. Corta el audio de cada segmento tú mismo, por ejemplo con el cortador de audio de cv.cm, en lugar de subir la canción entera y dejar que el modelo elija un fragmento. Así tu línea de tiempo y la del modelo coinciden.",
+        "Muchos modelos solo aceptan duraciones fijas, como segundos enteros o niveles de 5, 10 o 15 s. Planifica la edición en torno a esas duraciones y haz que cada fragmento de audio dure exactamente lo que el clip que vas a pedir. Algunas herramientas también limitan el audio de referencia total, por ejemplo a unos 30 segundos entre todos los clips de referencia, y la longitud del prompt a unos pocos miles de caracteres. Si además necesitas una referencia de voz, calcula el presupuesto: el fragmento de música más la muestra de voz tienen que caber. Una muestra de voz limpia de 3 segundos suele bastar; toma la frase más fuerte y continua.",
+        "Escribe el prompt como una línea de tiempo que nombre tanto los segundos como los eventos musicales. Escribe solo lo que vería una cámara. Los modelos de video interpretan las metáforas al pie de la letra: «su voz se eleva como un pájaro» puede meter un pájaro de verdad en el plano, y «una ciudad como un cuadro» puede aplanar un fondo real hasta convertirlo en una ilustración.",
+        {
+          "code": "Segment 4 (12.0-16.0 s of the song, pre-chorus), 4 seconds, 9:16.\nSame woman as the reference: short black bob, cream trench coat, silver hoop earrings.\nLow-angle medium shot on a rooftop at blue hour, city lights behind her, soft rim light.\n0-1 s: she stands facing left, wind moves her hair and coat.\n1-3 s: she turns slowly toward the camera, chin lifting, the coat swings out.\n3.5 s (loudest note): she looks straight into the lens and opens her mouth to sing.\nCamera: slow push in from waist to chest height. No text on screen.",
+          "lang": "text"
+        },
+        "Para los versos cantados, usa lip sync. O bien generas el plano con la voz cortada como entrada de audio, si el modelo lo admite, o bien generas el plano primero y aplicas un paso de lip sync guiado por audio con la voz aislada. Los planos frontales, cercanos y medios funcionan mejor; los perfiles y las manos cerca de la boca fallan con más frecuencia. Nuestra guía de lip sync con IA explica las entradas y las soluciones."
+      ]
+    },
+    {
+      "h": "Paso 5: Edita al ritmo y comprueba la sincronía",
+      "body": [
+        "Coloca primero la canción original completa en la línea de tiempo y luego sitúa cada segmento en su punto de inicio previsto. Pon los cortes en los primeros tiempos o en los eventos fuertes que marcaste. Un corte unos fotogramas antes o después se nota mucho en la caída del estribillo.",
+        "Cuando un modelo genera o vuelve a renderizar la banda sonora por su cuenta, la música del clip puede empezar tarde. En nuestras pruebas el desfase fue de aproximadamente 1 segundo, mientras que el movimiento seguía bien los tiempos del prompt. Por eso nunca juzgues la sincronía por el audio del archivo generado. Sustitúyelo primero por la canción original:",
+        {
+          "code": "ffmpeg -i gen.mp4 -i song.mp3 -map 0:v:0 -map 1:a:0 -c:v copy -c:a aac -shortest synced.mp4",
+          "lang": "bash"
+        },
+        "Si un segmento sigue viéndose adelantado o retrasado respecto a la música, desplázalo fotogramas completos en el editor en lugar de volver a generarlo. Revisa los versos con lip sync a tamaño completo; un desfase de la boca de dos o tres fotogramas se ve en los primeros planos.",
+        "Los clips generados suelen salir a 720p o 1080p con poco detalle. Haz el escalado después de la edición, no antes, para escalar solo lo que conservas, y guarda una única exportación maestra. Sube esa exportación a cada plataforma directamente; recodificar el archivo varias veces, por ejemplo descargándolo de una app y volviendo a publicarlo en otra, acumula artefactos de compresión."
+      ]
+    },
+    {
+      "h": "Errores comunes y límites reales",
+      "body": [
+        {
+          "ul": [
+            "Pedir toda la canción de una vez. El modelo no puede seguir una estructura de tres minutos; planifica planos del tamaño de una frase.",
+            "Discutir con una referencia. Un video o una imagen de referencia es un ancla mucho más fuerte que el texto. Si tiene un destello de lente, un objeto o una iluminación que no quieres, el modelo tiende a copiarlos igualmente. Arregla la referencia (recorta, enmascara, reajusta el color) antes de generar.",
+            "Deriva del personaje. Sin hoja de personaje y sin una línea de estilo fija, las caras y la ropa cambian de un plano a otro. Revisa cada segmento contra la hoja antes de aceptarlo.",
+            "Texto en pantalla. Las letras y los títulos generados dentro del video suelen salir con faltas. Añade el texto en el editor.",
+            "Cantantes reales. No hagas un video realista de un artista real cantando una canción que no grabó ni interpretó. Requiere consentimiento y declaración, y en muchos lugares vulnera los derechos de imagen y de la personalidad."
+          ]
+        },
+        "Cuenta con generar entre dos y cuatro tomas para los planos más difíciles, normalmente los primeros planos cantados y el arranque del estribillo. La mayor parte de la calidad viene del mapa de compases y de la edición, no de una única generación perfecta."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "¿Puede la IA hacer un videoclip a partir de una canción de forma automática?",
+      "a": "Algunas herramientas cortan clips generados al ritmo de forma automática, pero hoy los resultados son genéricos. Para un video que siga la letra y la estructura de la canción, planifica tú los planos y genera segmento a segmento."
+    },
+    {
+      "q": "¿Cuánto se tarda en hacer un videoclip con IA?",
+      "a": "Un video corto de 30 segundos con seis u ocho planos puede llevar una tarde, incluidas las repeticiones. Una canción completa de tres minutos tiene 40 planos o más, así que cuenta con varios días y reutiliza una hoja de personaje y una línea de estilo fijas."
+    },
+    {
+      "q": "¿Puedo usar una canción famosa en un videoclip con IA?",
+      "a": "Solo si tienes licencia. Dentro de TikTok, Reels o Shorts puedes usar canciones de la biblioteca de música de la app, donde la plataforma tiene los derechos; es probable que una copia subida por ti sea silenciada, bloqueada o reclamada."
+    },
+    {
+      "q": "¿Tengo que etiquetar un videoclip hecho con IA?",
+      "a": "En YouTube debes declarar el contenido sintético realista y la música generada con IA cuando sea el foco principal del video. Otras plataformas y regiones tienen sus propias etiquetas; consulta nuestra guía sobre cómo etiquetar contenido de IA."
+    },
+    {
+      "q": "¿Por qué mi videoclip con IA está desincronizado?",
+      "a": "A menudo el modelo ha desplazado la música dentro del clip generado, a veces cerca de un segundo, mientras que el movimiento sigue a tiempo. Sustituye el audio por la canción original antes de juzgar la sincronía y corta tú mismo cada fragmento de audio a la duración exacta del segmento."
+    }
+  ]
+}

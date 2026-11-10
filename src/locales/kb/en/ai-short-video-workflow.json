@@ -1,0 +1,214 @@
+{
+  "title": "AI Short Video Workflow: How to Make AI Shorts and Reels — cv.cm",
+  "description": "An AI short video workflow for 15–60 s vertical clips: hook, script, visuals, voice, captions, music, edit, posting checklist and reading retention.",
+  "h1": "How to make AI shorts and reels: a short video workflow",
+  "answer": "An AI short video comes out of a fixed pipeline: one idea, a hook for the first 1–3 seconds, a script timed in seconds, AI visuals generated shot by shot, a voice or music track, captions, an edit with a visual change every few seconds, a cover, a disclosure label where needed, and a look at the retention graph before the next video.",
+  "sections": [
+    {
+      "h": "The pipeline for a 15–60 second vertical clip",
+      "body": [
+        "Short-form video rewards the same few things on TikTok, Douyin, Instagram Reels, YouTube Shorts, Kuaishou, Xiaohongshu and WeChat Channels: a strong start, no dead seconds, and a clear payoff. AI tools speed up the middle of the pipeline, but the decisions at the start and end are still yours.",
+        {
+          "table": {
+            "head": [
+              "Stage",
+              "What you produce",
+              "Check before moving on"
+            ],
+            "rows": [
+              [
+                "1. Idea",
+                "One sentence: who it is for and what they get",
+                "Can you say the payoff in under 10 words?"
+              ],
+              [
+                "2. Hook",
+                "The first frame and the first line",
+                "Is the best image already on screen at 0 s?"
+              ],
+              [
+                "3. Script",
+                "Lines with timestamps",
+                "About 2.5–3 spoken words per second fits the length"
+              ],
+              [
+                "4. Visuals",
+                "One AI clip per shot, in the model's fixed lengths",
+                "Faces, hands, text and outfit match your reference"
+              ],
+              [
+                "5. Voice",
+                "Voiceover or dialogue track",
+                "Pacing matches the cuts"
+              ],
+              [
+                "6. Captions",
+                "Burned-in or platform captions",
+                "Inside the safe zone, readable on a phone"
+              ],
+              [
+                "7. Music",
+                "A track cut to the video length",
+                "You have the rights; it does not bury the voice"
+              ],
+              [
+                "8. Edit",
+                "One master file, 1080×1920",
+                "A visual change every few seconds; no dead frames"
+              ],
+              [
+                "9. Cover and post",
+                "Cover frame, title, caption, label",
+                "Disclosure label set where the content is realistic"
+              ],
+              [
+                "10. Read analytics",
+                "Notes on where viewers left",
+                "One change to test in the next video"
+              ]
+            ]
+          }
+        },
+        "The scripting and voice stages have their own guides: see short video script, AI voiceover and auto captions. This page focuses on how the stages connect and what makes a short hold attention."
+      ]
+    },
+    {
+      "h": "The first 1–3 seconds decide the rest",
+      "body": [
+        "In our tests, the opening frame has more effect on early drop-off than anything later in the clip. The first frame should already be the best-looking frame of the video: bright, the face fully visible and lit, the subject already moving or smiling, framed close or medium so the subject fills most of the screen.",
+        "Openings that lose viewers in practice: a slow reveal, a head looking down, a dark room, a half-covered face, a logo card, or a 'waking up' intro that explains the concept. Put the concept into the props and setting instead. If the video is about a rainy-day recipe, open on the steaming bowl by a wet window, not on someone walking into the kitchen.",
+        "Pair the image with a first line that makes a specific promise or shows a specific problem, for example 'This is the cheapest way to keep basil alive' or 'Three settings that fix blurry phone photos'. The line and the image should say the same thing."
+      ]
+    },
+    {
+      "h": "Visuals, voice, captions and music",
+      "body": [
+        {
+          "ul": [
+            "Plan shots around the model's durations. Many models only accept whole seconds or tiers such as 5, 10 or 15 seconds. A 30-second short is often six 5-second shots or three 10-second shots.",
+            "Use one reference image per character and check every new image against it: clothing, hands, accessories, hair, colors and height. Image editors can change details you did not ask for, and the video model then copies the error into every frame.",
+            "Write only what a camera would see. Video models render metaphors literally, so 'mountains like an ink painting' can turn a real background into a flat illustration.",
+            "Record or generate the voice before the final edit, so you cut pictures to the voice, not the other way around.",
+            "Keep captions short, high contrast, and away from the bottom and right edges, where the platform puts its buttons and text. See our guide to vertical video sizes for safe zones.",
+            "Make the music length match the video length. When you generate in segments, cut the audio for each segment yourself rather than letting the model pick a slice."
+          ]
+        },
+        "If a model generates or re-renders the soundtrack, the music can start late. We have measured shifts of about one second, while the motion followed the prompt timing closely. Before you judge sync, put the original audio back on the generated clip:",
+        {
+          "code": "ffmpeg -i gen.mp4 -i song.mp3 -map 0:v:0 -map 1:a:0 -c:v copy -c:a aac -shortest synced.mp4",
+          "lang": "bash"
+        },
+        "Generated clips often come out at 720p or soft 1080p. Upscale after the edit, not before, and keep one master export. Every re-upload and re-encode on social apps adds artifacts."
+      ]
+    },
+    {
+      "h": "Retention: loops and pattern breaks",
+      "body": [
+        "Short-form apps show your clip to a small group first and widen the audience if people watch to the end, replay or share. A few editing habits help in practice:",
+        {
+          "ul": [
+            "Change something on screen every 2–4 seconds: a new shot, a zoom, a caption, an object entering the frame. A static shot longer than that tends to feel slow on a phone.",
+            "Show the payoff late but promise it early. 'Wait for the last one' only works if the last one is really the best.",
+            "Build a loop: make the last frame lead back into the first, so a replay feels continuous. A sentence that starts at the end and finishes at the beginning also works.",
+            "Cut every pause in the voice. Silence that is fine in a long video feels like a mistake in a short one.",
+            "End on the payoff, not on a goodbye or a logo card. Viewers leave at goodbyes."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Worked example: a 30-second AI short",
+      "body": [
+        "This beat sheet is for a 30-second explainer about why cats knock things off tables. It uses six 5-second AI shots of one cartoon cat made from a single character image, a voiceover of about 80 words, and a loop at the end.",
+        {
+          "code": "0-5 s   SHOT 1 close-up: orange cat on a kitchen counter, paw already pushing a cup\n        toward the edge, bright morning light. Cup falls off frame at 4 s.\n        VO: \"Your cat is not being rude. It is running an experiment.\"\n5-10 s  SHOT 2 medium: cat watches the floor, ears forward.\n        VO: \"Cats are hunters. A paw tap tests whether something is alive.\"\n10-15 s SHOT 3 close-up: paw taps a pen three times, pen rolls.\n        VO: \"If it moves, it is interesting. If it falls, even better.\"\n15-20 s SHOT 4 medium: cat looks at the camera, then at an empty bowl.\n        VO: \"It also works on you. You came running, didn't you?\"\n20-25 s SHOT 5 wide: owner's hand fills the bowl, cat ignores it, looks at a glass.\n        VO: \"The fix: give it toys that move, and keep glasses away from edges.\"\n25-30 s SHOT 6 close-up: paw rests next to a new cup at the counter edge.\n        VO: \"Because tomorrow, the experiment starts again...\"\n        (last frame matches the first frame for a clean loop)\n\nCaptions: 3-5 words per line, upper middle of the frame.\nMusic: light pizzicato loop cut to exactly 30 s, -18 dB under the voice.",
+          "lang": "text"
+        },
+        "The first frame already shows the cat and the cup in motion, so there is no slow setup. Each shot is one action, and each line of voiceover lasts about one shot."
+      ]
+    },
+    {
+      "h": "Batch production of a series",
+      "body": [
+        "A series is easier to grow than one-off clips, because viewers know what the next episode will give them. Batching saves most time when you reuse the structure and the assets, not the content.",
+        {
+          "ol": [
+            "Fix the format: length, beat structure, caption style, music style, cover layout.",
+            "Make the reusable assets once: character sheet, background plates, intro sound.",
+            "Write five to ten scripts in one session, each with its own facts or story.",
+            "Generate all first frames, check them against the character sheet, then queue the video shots together.",
+            "Edit from a template project, but change the hook, the shots and the payoff every time."
+          ]
+        },
+        {
+          "note": "Do not batch identical videos with only the words swapped. YouTube's monetization policy calls mass-produced, repetitive content 'inauthentic content' and does not monetize it. See our guide to a faceless channel with AI for what that policy covers."
+        }
+      ]
+    },
+    {
+      "h": "Posting checklist and reading analytics",
+      "body": [
+        "Platform limits change, so check them in each app before a series. A few points verified on official pages at the time of writing (November 2026):",
+        {
+          "table": {
+            "head": [
+              "Platform",
+              "Point to check",
+              "What the official page says"
+            ],
+            "rows": [
+              [
+                "YouTube Shorts",
+                "Length",
+                "Shorts can be up to three minutes long, square or vertical"
+              ],
+              [
+                "YouTube Shorts",
+                "AI disclosure",
+                "Disclose realistic altered or synthetic content; AI help with scripts, captions or upscaling does not need it"
+              ],
+              [
+                "TikTok",
+                "AI label",
+                "Label AI-generated content that contains realistic images, audio or video; TikTok can also auto-label content carrying C2PA Content Credentials"
+              ],
+              [
+                "TikTok",
+                "Creator Rewards",
+                "The program rewards original content over one minute long"
+              ],
+              [
+                "Douyin, Kuaishou, Xiaohongshu, WeChat Channels",
+                "AI label",
+                "China's labeling measures (since 1 September 2025) require you to declare AI-generated content when you post it and use the platform's label; generation tools must add a visible label at the opening frame of a video"
+              ]
+            ]
+          }
+        },
+        "When you read analytics, look at the retention graph, not only views. Since 24 August 2026, YouTube counts a view the moment a video starts to play, so a high view count with low engaged views usually means the first seconds are not working. Find the second where the line drops most, watch that moment, and change one thing in the next video: the first frame, the first line, or the length. For the labeling rules in more depth, see our guide to labeling AI content."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "How long should an AI short be?",
+      "a": "Make it as long as the idea needs and no longer. Many shorts work at 15–40 seconds; TikTok's Creator Rewards program only counts videos over one minute, so creators aiming for it plan longer clips."
+    },
+    {
+      "q": "Can AI make a whole YouTube Short from one prompt?",
+      "a": "Some tools assemble script, stock or generated clips, voice and captions in one step. The results tend to be generic, and generic templated videos are what YouTube's inauthentic content policy does not monetize, so edit and add your own material."
+    },
+    {
+      "q": "Do AI-generated Reels and TikToks get less reach?",
+      "a": "Platforms do not say they penalize AI as such. Clips that lose viewers in the first seconds or look repetitive get little reach, whether or not AI made them."
+    },
+    {
+      "q": "Do I need to label an AI short?",
+      "a": "If it looks realistic, yes on YouTube and TikTok, and in China you must declare AI-generated content when you post it. Obviously animated or fantastical content usually does not need a label on YouTube."
+    },
+    {
+      "q": "How many shorts should I post per week?",
+      "a": "Post only as often as you can keep the quality and variety up. A steady series of a few good clips per week teaches you more from analytics than many rushed ones."
+    }
+  ]
+}

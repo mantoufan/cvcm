@@ -1,0 +1,181 @@
+{
+  "title": "Video de baile con IA: haz bailar una foto sin errores — cv.cm",
+  "description": "Cómo hacer un video de baile con IA: transferencia de movimiento desde un baile de referencia o baile por prompt con música, con reglas de tiempos, vestuario y primer fotograma.",
+  "h1": "Cómo hacer un video de baile con IA",
+  "answer": "Hay dos formas de hacer un video de baile con IA. La transferencia de movimiento copia los pasos de un video de baile de referencia a tu personaje o foto. El baile por prompt genera los pasos a partir de una línea de tiempo escrita y la música. En ambos casos, empieza con un primer fotograma claro y luminoso, describe un movimiento continuo por frase musical, corta tú el audio y comprueba la sincronía con la canción original.",
+  "sections": [
+    {
+      "h": "Dos métodos: transferencia de movimiento o baile por prompt",
+      "body": [
+        "La transferencia de movimiento toma el movimiento corporal de un video guía y lo aplica a otra persona o personaje. Sistemas de investigación como Everybody Dance Now usaban la pose como puente entre el bailarín de origen y el destino; métodos de difusión posteriores como Animate Anyone animan una sola imagen fija a partir de una secuencia de poses, conservando el aspecto de la imagen de referencia. Los generadores de video de baile para el público general y los modos de video de referencia de herramientas como Kling, Seedance, Runway o Hailuo siguen la misma idea.",
+        "El baile por prompt le da al modelo una imagen del personaje, la música y una línea de tiempo escrita con los movimientos. No hay video guía, así que el modelo inventa la coreografía a partir de tus palabras.",
+        {
+          "table": {
+            "head": [
+              "",
+              "Transferencia de movimiento",
+              "Baile por prompt"
+            ],
+            "rows": [
+              [
+                "Entrada",
+                "Imagen del personaje más un video de baile de referencia",
+                "Imagen del personaje, música y una línea de tiempo en texto"
+              ],
+              [
+                "Coreografía",
+                "Copiada fielmente de la referencia",
+                "Inventada por el modelo a partir de tus palabras"
+              ],
+              [
+                "Precisión rítmica",
+                "Tan buena como el video de referencia",
+                "Depende de cómo marques los tiempos en el prompt"
+              ],
+              [
+                "Riesgo principal",
+                "Copia detalles no deseados de la referencia",
+                "Poses rígidas o movimientos aleatorios y bruscos"
+              ],
+              [
+                "Ideal para",
+                "Bailes virales conocidos, rutinas exactas",
+                "Movimiento suave o libre y original"
+              ]
+            ]
+          }
+        },
+        "Usa la transferencia de movimiento cuando la rutina importe. Usa el baile por prompt cuando quieras una pieza original o cuando no exista una referencia limpia."
+      ]
+    },
+    {
+      "h": "Prepara la foto y el primer fotograma",
+      "body": [
+        "La imagen del personaje se convierte en el primer fotograma o en el ancla de identidad, así que determina tanto la calidad como la retención. En la práctica, el primer fotograma decide cuántos espectadores se van en los dos o tres primeros segundos. Debería ser ya el fotograma más atractivo del video.",
+        {
+          "ul": [
+            "Cuerpo entero o hasta las rodillas, de pie, con todo el cuerpo y ambas manos dentro del encuadre. Los pies o las manos recortados se inventan mal.",
+            "Luz brillante y uniforme, con el rostro totalmente visible e iluminado. Sin la cabeza mirando al suelo, sin pelo ni sombrero tapando la cara, sin habitación oscura.",
+            "El sujeto ya en una pose lista para bailar o sonriendo, no rígido. Un baile que arranca desde una pose neutra e inmóvil parece un comienzo lento.",
+            "En 9:16, la bailarina debe ocupar la mayor parte de la altura del cuadro. Una figura pequeña en una habitación grande da caras borrosas y extremidades de más o fusionadas.",
+            "Ropa que se lea con claridad: cintura marcada, mangas que terminan en la muñeca, falda que termina por encima del tobillo. La tela larga que arrastra es el caso más difícil (ver abajo)."
+          ]
+        },
+        "Si usas varios personajes, revisa cada nueva imagen de referencia contra la hoja de personaje, personaje por personaje: ropa, manos o patas, accesorios, pelo, colores y proporción de alturas. Las herramientas de edición de imágenes cambian en silencio detalles que no les pediste, y el modelo de video copia el error en cada fotograma. Nuestra guía de personajes consistentes con IA explica cómo construir la hoja."
+      ]
+    },
+    {
+      "h": "Transferencia de movimiento: arregla la referencia antes de generar",
+      "body": [
+        "Un video de referencia es un ancla mucho más fuerte que el texto. Si la referencia tiene un destello de lente, un objeto en la mano de la bailarina, un espejo, un estilo de iluminación concreto o una segunda persona al fondo, el modelo tiende a copiarlo aunque el prompt diga que no. Discutir con la referencia en el prompt rara vez funciona.",
+        {
+          "ol": [
+            "Recorta la referencia justo a la parte de la rutina que necesitas, con la música cortada al mismo intervalo.",
+            "Encuadra para que la bailarina quede centrada, de cuerpo entero y con la misma relación de aspecto que tu salida.",
+            "Enmascara o elimina objetos y personas del fondo. Reajusta el color si la luz es intensa o de color.",
+            "Comprueba que la bailarina de la referencia y tu personaje tengan proporciones corporales parecidas. Una mascota baja y redondeada que copie los movimientos de piernas largas de una bailarina alta se estirará o se deformará.",
+            "Después escribe un prompt que describa el resultado que quieres (el personaje, el escenario, la luz), no los problemas de la referencia."
+          ]
+        },
+        "Una cuadrícula de storyboard también funciona bien como referencia de movimiento. Crea una imagen 9:16 con, por ejemplo, 12 viñetas, una pose rítmica por viñeta, y escribe la línea de tiempo del prompt como «viñeta 1 (arriba a la izquierda) = 0–2 s». No pongas números ni texto en las viñetas; los modelos los copian como gráficos en pantalla. Revisa cada viñeta a tamaño completo, porque un error en una se copia al video.",
+        "Aquí el consentimiento importa. Usa la foto de una persona real solo con su permiso, y no animes la imagen de alguien en un baile que nunca hizo para presentarlo como real. La rutina de un coreógrafo también puede estar protegida; los bailes virales compartidos para reutilizarse en una plataforma suelen poder usarse dentro de ella, pero un anuncio de pago basado en la coreografía de alguien necesita permiso."
+      ]
+    },
+    {
+      "h": "Baile por prompt: escribe movimiento que fluya",
+      "body": [
+        "Los modelos de video siguen algunas palabras con mucha precisión. En nuestras pruebas, «mantén la pose», «congelado», «quieta» y «cámara lenta» convirtieron un baile en una presentación de poses: la bailarina salta de una forma a otra y se detiene entre ellas. Deja esas palabras fuera y describe un movimiento continuo.",
+        "Planifica un plano largo por frase musical, de unos 4 segundos o un ocho, con varios anclajes de movimiento temporizados dentro. Pero no te pases: demasiados movimientos diminutos por pulso se ven bruscos y cómicos. En estilos suaves como el clásico, el contemporáneo o el pop lento, describe trayectorias en lugar de poses, pon un movimiento cada uno o dos pulsos y deja cualquier pausa en medio pulso o menos.",
+        {
+          "code": "Phrase 2 (4.0-8.0 s), one continuous shot, 9:16, medium-wide, camera at chest height.\nThe dancer from the reference: long white sleeves, pale blue skirt, hair in a low bun.\n4.0-5.0 s (downbeat): step right, weight shifts onto the right foot, both arms open low at hip height.\n5.0-6.0 s: the right arm sweeps in an arc from the hip to shoulder height while the body turns a quarter left.\n6.0-7.0 s: step back with the left foot, both arms float down, sleeves trail behind the hands.\n7.0-8.0 s (pause in the music): a soft half turn to face the camera, arms rising to chest height, smile.\nArms stay below 45 degrees above the shoulder. Continuous movement, no stops.",
+          "lang": "text"
+        },
+        "La tela necesita su propia regla. Con mangas anchas, cintas largas o una capa, la tela sigue al brazo y puede cubrir la cara. Limita la altura de los brazos, por ejemplo a no más de 45 grados por encima del hombro, y escríbelo en cada frase.",
+        "Escribe solo lo que vería una cámara. Los modelos de video interpretan las metáforas al pie de la letra: «sus mangas se mueven como un pincel pintando en el aire» puede poner un pincel de verdad en su mano. Describe la acción, el material y la luz, y deja fuera los símiles."
+      ]
+    },
+    {
+      "h": "Mantén los movimientos en el ritmo",
+      "body": [
+        "Averigua primero los BPM, por ejemplo marcando el pulso con el metrónomo de cv.cm. A 120 BPM un pulso dura 0,5 s y un ocho dura 4 s; a 100 BPM un ocho dura 4,8 s. Marca cada anclaje en segundos y nombra también el evento musical: «primer tiempo», «nota más alta», «la pausa». El modelo usa ambas cosas.",
+        "Muchos modelos solo aceptan duraciones fijas, como segundos enteros o niveles de 5, 10 o 15 s. Elige un fragmento de música que coincida exactamente con la duración del clip, y cuando generes por segmentos, corta tú el audio de cada uno en lugar de dejar que lo elija el modelo. Algunas herramientas limitan el audio de referencia total a unos 30 segundos entre todos los clips, así que un baile largo necesita varios segmentos.",
+        "Cuando el modelo genera o vuelve a renderizar la banda sonora, la música puede empezar tarde. Medimos desfases de aproximadamente 1 segundo, mientras que el movimiento seguía bien los tiempos del prompt. Antes de decidir que los movimientos van fuera de ritmo, vuelve a poner la canción original:",
+        {
+          "code": "ffmpeg -i gen.mp4 -i song.mp3 -map 0:v:0 -map 1:a:0 -c:v copy -c:a aac -shortest synced.mp4",
+          "lang": "bash"
+        },
+        "Si un segmento sigue viéndose unos fotogramas adelantado o retrasado, desplázalo en el editor en lugar de volver a generarlo."
+      ]
+    },
+    {
+      "h": "Artefactos comunes y cómo corregirlos",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Artefacto",
+              "Causa habitual",
+              "Solución"
+            ],
+            "rows": [
+              [
+                "Presentación de poses",
+                "Palabras como mantener, congelar, quieto, cámara lenta",
+                "Describe trayectorias continuas; pausas de medio pulso como máximo"
+              ],
+              [
+                "Movimientos bruscos y cómicos",
+                "Demasiados movimientos por pulso",
+                "Un movimiento cada uno o dos pulsos"
+              ],
+              [
+                "La manga o el pelo cubre la cara",
+                "Brazos demasiado altos con tela larga",
+                "Limita la altura de los brazos en cada frase"
+              ],
+              [
+                "Extremidades de más o fusionadas",
+                "Figura pequeña, brazos cruzados, giros rápidos",
+                "Más grande en el encuadre, menos cruces, giros más lentos"
+              ],
+              [
+                "Cambios de vestuario a mitad del baile",
+                "Ropa poco clara en la imagen de origen",
+                "Referencia clara y vestuario nombrado en cada prompt"
+              ],
+              [
+                "Objeto o destello no deseado",
+                "Copiado del video de referencia",
+                "Edita la referencia y vuelve a generar"
+              ]
+            ]
+          }
+        },
+        "Cuenta con que las manos y los pies serán lo más débil, sobre todo en juegos de pies rápidos y giros. Mantén la cámara bastante fija durante los movimientos complejos; una cámara en movimiento más un cuerpo en movimiento duplica la probabilidad de un fotograma roto.",
+        "Los clips generados suelen salir a 720p o 1080p con poco detalle. Escala una sola vez, después de la edición, y guarda una única exportación maestra para que el clip no se recodifique una y otra vez. Etiqueta los resultados realistas donde la plataforma lo pida; consulta nuestra guía sobre cómo etiquetar contenido de IA."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "¿Cómo hago bailar una foto con IA?",
+      "a": "Sube una foto nítida de cuerpo entero a una herramienta con modo de baile o de video de referencia, añade un clip de baile de referencia o una descripción de texto con tiempos y genera. Usa una foto tuya o de alguien que haya dado su permiso."
+    },
+    {
+      "q": "¿Por qué mi baile con IA parece una serie de poses?",
+      "a": "Seguramente el prompt contiene palabras como congelar, mantener o cámara lenta, que los modelos siguen muy al pie de la letra. Describe un movimiento continuo entre anclajes temporizados y deja cualquier pausa en menos de medio pulso."
+    },
+    {
+      "q": "¿Puedo hacer un video de baile con IA de una celebridad?",
+      "a": "Evítalo. Un baile realista de una persona real sin su consentimiento puede vulnerar los derechos de imagen y de la personalidad en muchos países, y las plataformas exigen declarar las personas sintéticas realistas."
+    },
+    {
+      "q": "¿Es legal copiar un baile de TikTok con IA?",
+      "a": "Recrear un baile viral en la misma plataforma con su sonido dentro de la app es una práctica habitual. Usar la coreografía de alguien o un video de referencia en un anuncio o en otro contexto comercial requiere permiso."
+    },
+    {
+      "q": "¿Cuál es la mejor duración para un clip de baile con IA?",
+      "a": "Una frase musical por plano, de unos 4 a 5 segundos, es la unidad más fiable. Une varias frases en un editor para conseguir un video corto de 15 a 30 segundos."
+    }
+  ]
+}

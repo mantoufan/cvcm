@@ -1,0 +1,202 @@
+{
+  "title": "How to Make AI Videos for Free: 5 Methods and a First Clip — cv.cm",
+  "description": "How to make AI videos for free: the 5 methods, which one fits your goal, a first 15-second clip step by step, free-tier trade-offs and a pre-post check.",
+  "h1": "How to make AI videos (including for free)",
+  "answer": "To make an AI video, pick one of five methods: text-to-video, image-to-video, a camera move over a photo, a talking avatar with lip sync, or AI-assisted editing of real footage. Write one short prompt per shot, generate clips of a few seconds each, then join them with music and captions in an editor. Free tiers work for learning but add watermarks, queues and lower resolution.",
+  "sections": [
+    {
+      "h": "The five ways to make an AI video",
+      "body": [
+        "Most guides list tools. It is more useful to list methods, because every tool is a version of one of these five. Once you know which method you need, the choice of tool matters much less.",
+        {
+          "table": {
+            "head": [
+              "Method",
+              "What you give it",
+              "What moves",
+              "Good for",
+              "Typical weakness"
+            ],
+            "rows": [
+              [
+                "Text-to-video",
+                "A written prompt",
+                "Everything: subject, camera, scene",
+                "Scenes you cannot film, quick ideas",
+                "Less control over faces and details; the character changes between clips"
+              ],
+              [
+                "Image-to-video",
+                "A still image plus a prompt",
+                "The subject and camera, starting from your image",
+                "Keeping one look or character across shots",
+                "Quality depends on the first image; small errors in it are copied"
+              ],
+              [
+                "Photo camera move (parallax)",
+                "One photo",
+                "Only the camera; the subject stays still",
+                "Travel photos, products, portraits, slideshows that feel alive",
+                "No real motion, so it gets repetitive over a long video"
+              ],
+              [
+                "Talking avatar or lip sync",
+                "A face image or video plus a voice track",
+                "The mouth, head and some expression",
+                "Explainers, dubbing, a presenter without filming",
+                "Teeth and side profiles look wrong; consent rules apply"
+              ],
+              [
+                "AI-assisted editing",
+                "Your own footage or recording",
+                "Nothing new is invented; AI cuts, captions, reframes, cleans audio",
+                "Turning real recordings into short clips",
+                "Over-processed voice, jump cuts, lost context"
+              ]
+            ]
+          }
+        },
+        "You can mix methods in one video. A common short uses image-to-video for the main shots, a photo camera move for a cutaway, and AI captions on top. Each method has its own detailed guide: see our guides to text-to-video, image-to-video, AI lip sync and AI video editing."
+      ]
+    },
+    {
+      "h": "Which method to pick for your goal",
+      "body": [
+        "Start from what the viewer must see, not from the tool you have heard of.",
+        {
+          "ul": [
+            "The same person or mascot in every shot: make a character image first, then use image-to-video for each shot. See our guide to consistent AI characters.",
+            "A product, a dish or a place you already photographed: a photo camera move or image-to-video from your own photo. It looks real because it is real.",
+            "A scene that is impossible or expensive to film (space, history, fantasy): text-to-video, or text-to-image followed by image-to-video for more control.",
+            "Someone explaining something to camera: a talking avatar from a photo, or a faceless format with voiceover and B-roll. See our guide to a faceless channel with AI.",
+            "You already have a long recording (podcast, lesson, stream): AI-assisted editing, not generation.",
+            "A music video or dance: image-to-video timed to the song. See our guides to AI music video and AI dance video."
+          ]
+        },
+        {
+          "note": "If you are unsure, start with image-to-video. You control the first frame, which is the frame that decides whether people keep watching."
+        }
+      ]
+    },
+    {
+      "h": "Your first 15-second AI video, step by step",
+      "body": [
+        "The example below is a 15-second vertical clip for a small coffee shop, built from three 5-second shots. Many models only accept fixed durations such as 5 or 10 seconds, so planning in those blocks saves edits later.",
+        {
+          "ol": [
+            "Write the idea in one sentence: 'Morning at a small coffee shop, from the first pour to the first sip.'",
+            "Split it into shots that match the model's lengths: three shots of 5 seconds each.",
+            "Make or choose the first frame of shot 1 with care. It should already be the best-looking frame of the video: bright, close, the subject moving. In practice, a dim or slow opening loses viewers in the first two seconds.",
+            "Write one prompt per shot. Describe only what a camera would see: the action, the materials, the light. Video models tend to render comparisons literally, so 'steam like a ghost' can produce a ghost.",
+            "Generate two or three versions of each shot and keep the best. Expect to discard some.",
+            "Pick or make music that is exactly 15 seconds, or cut it to that length, so the cut points land on the beat.",
+            "Assemble in an editor such as CapCut, Premiere Pro or DaVinci Resolve. Add captions, set the export to 1080×1920, and export one master file.",
+            "Upscale, if needed, after the edit and not before, then post the master file. Each extra re-encode adds artifacts."
+          ]
+        },
+        {
+          "code": "Shot 1 (0-5 s), close-up, image-to-video\nFirst frame: barista's hands pouring milk into a latte, warm morning light from the left.\nPrompt: Close-up. Milk pours into the cup and forms a leaf pattern. Steam rises.\nThe camera pushes in slowly. Warm window light, shallow depth of field.\n\nShot 2 (5-10 s), medium shot\nPrompt: Medium shot. The barista slides the cup across a wooden counter toward\nthe camera and smiles. Morning street visible through the window behind.\nStatic camera.\n\nShot 3 (10-15 s), close-up\nPrompt: Close-up of a customer's hands lifting the cup. She takes a first sip,\nlowers the cup and the leaf pattern is still visible. Soft daylight.\nSlow pull back.\n\nText on screen (added in the editor, not in the prompt):\n0-2 s: 'Open at 7:00'\n12-15 s: shop name and street",
+          "lang": "text"
+        },
+        "Notice that the on-screen text is added in the editor. Most video models still render text poorly, so ask for clean frames and add words yourself. For more on prompt structure, see our guide to video prompts; for camera words such as push-in and pull back, see camera movement terms."
+      ]
+    },
+    {
+      "h": "How to make AI videos for free: the trade-offs",
+      "body": [
+        "Almost every video generator has a free tier or free daily credits at the time of writing. Free plans change often, so check the terms on the day you use them. These are the limits you will meet most often:",
+        {
+          "table": {
+            "head": [
+              "Free-tier limit",
+              "What it means for you",
+              "Workaround"
+            ],
+            "rows": [
+              [
+                "Watermark",
+                "A logo on the clip; it can also make platforms treat it as reused content",
+                "Use free tiers for drafts; check whether a paid plan removes it before a real post"
+              ],
+              [
+                "Queue time",
+                "Free jobs wait behind paid ones, from minutes to hours",
+                "Queue all shots at once, then edit while they finish"
+              ],
+              [
+                "Lower resolution",
+                "Often 480p or 720p output",
+                "Upscale the finished edit once; keep shots close so faces stay sharp"
+              ],
+              [
+                "Daily or monthly credits",
+                "A handful of short clips per day",
+                "Test prompts on still images first; generate video only for prompts you trust"
+              ],
+              [
+                "Commercial-use terms",
+                "Some free plans forbid commercial use",
+                "Read the terms before using a clip in an ad or a client project"
+              ]
+            ]
+          }
+        },
+        "Some steps can be free with no account at all because they run on your own device. For example, cv.cm's AI photo to video tool turns one photo into an MP4 with a 3D camera move using a depth map. The subject does not move, only the camera, so it suits product and travel photos rather than action. Free editors such as CapCut or DaVinci Resolve cover the assembly step."
+      ]
+    },
+    {
+      "h": "What to check before you post",
+      "body": [
+        {
+          "ul": [
+            "Watch the first two seconds on a phone with the sound off. Is the subject clear, bright and already moving?",
+            "Look at hands, teeth, text, logos and the background at full size. Generation errors are easy to miss in a thumbnail.",
+            "Check the size: vertical platforms expect 9:16, usually 1080×1920. See our guide to vertical video sizes.",
+            "Check that music and cuts line up. If the model generated its own soundtrack, put your original audio back before judging sync.",
+            "Make sure you have the rights to the music, the photos and any person shown. A real person's face needs their consent.",
+            "Label realistic AI content. YouTube asks creators to disclose realistic altered or synthetic content, such as a realistic scene that never happened. TikTok requires a label on AI-generated content that contains realistic images, audio or video. In China, the labeling measures in force since 1 September 2025 require you to declare AI-generated content when you post it and use the platform's label, and require generation tools to put a visible label on video, including at the opening frame. See our guide to labeling AI content for the details."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Common mistakes and honest limits",
+      "body": [
+        "Beginners usually lose time in the same places:",
+        {
+          "ul": [
+            "Writing one long prompt for a whole story. Video models make short clips; one prompt should describe one shot.",
+            "Using metaphors in action lines. Write 'the scarf moves in a wide arc', not 'the scarf paints the air like a brush'.",
+            "Starting with a slow reveal: a face looking down, a dark room, a 'waking up' intro. Put the concept in the props and setting, and open on the best frame.",
+            "Generating the same shot dozens of times instead of fixing the first frame or the prompt.",
+            "Upscaling every raw clip before editing, which wastes time and credits on shots you will cut.",
+            "Expecting faces and outfits to stay identical across clips without a reference image."
+          ]
+        },
+        "Be realistic about what AI video does well at the time of writing: short shots, simple actions, mood and atmosphere. It still struggles with readable text, hands doing precise tasks, several characters interacting, and long continuous takes. Plan your video around short, clear shots and the results will look much better than a single ambitious prompt."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Can I make AI videos for free?",
+      "a": "Yes. Most generators offer free credits or a free tier, and free editors such as CapCut and DaVinci Resolve handle editing. Expect watermarks, queues and lower resolution on free plans, and check whether the free terms allow commercial use."
+    },
+    {
+      "q": "What is the easiest way to make an AI video for a beginner?",
+      "a": "Image-to-video from a photo you like. You control the first frame, the prompt only has to describe the motion, and the result stays close to what you planned."
+    },
+    {
+      "q": "How long does it take to make a short AI video?",
+      "a": "A 15-second clip of three shots can take an hour or two the first time, most of it spent on prompts, retries and editing. With a planned shot list and prompts you have tested, it gets much faster."
+    },
+    {
+      "q": "Do I have to say a video is made with AI?",
+      "a": "For realistic content, often yes. YouTube and TikTok ask creators to label realistic AI-generated content, and in China you must declare AI-generated content when you post it. Clearly fantastical or animated content usually does not need a label on YouTube."
+    },
+    {
+      "q": "Can AI turn a photo into a video?",
+      "a": "Yes, in two ways. Image-to-video models animate the subject from your photo, and depth-based tools move a virtual camera through the photo while the subject stays still."
+    }
+  ]
+}

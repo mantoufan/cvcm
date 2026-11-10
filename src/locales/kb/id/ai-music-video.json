@@ -1,0 +1,161 @@
+{
+  "title": "Cara Membuat Video Musik AI yang Pas dengan Beat — cv.cm",
+  "description": "Cara membuat video musik AI: pastikan hak lagu aman, petakan BPM dan bagian lagu, rencanakan shot sesuai beat, generate per segmen, lalu cek sinkronisasi.",
+  "h1": "Cara Membuat Video Musik AI",
+  "answer": "Untuk membuat video musik AI, mulailah dari lagu yang hak pakainya jelas, lalu petakan BPM, bagian lagu, dan timestamp downbeat-nya. Rencanakan satu shot per frasa di atas grid beat itu, kunci karakter dan gaya visual, lalu generate tiap segmen dengan potongan audio yang Anda buat sendiri. Edit tepat di beat, pasang kembali lagu aslinya, dan cek sinkronisasinya.",
+  "sections": [
+    {
+      "h": "Sebenarnya apa yang dikerjakan generator video musik AI",
+      "body": [
+        "Generator video musik AI mengubah prompt, gambar, atau klip referensi menjadi segmen video pendek, biasanya hanya beberapa detik per klip. Saat artikel ini ditulis, belum ada tool yang bisa mengubah satu lagu utuh berdurasi tiga menit menjadi video jadi sekali proses dengan hasil yang andal. Cara yang praktis sama untuk Veo, Kling, Seedance, Runway, Hailuo, atau model sejenis: pecah lagu menjadi potongan, generate satu klip untuk tiap potongan, lalu susun di editor seperti CapCut, Premiere Pro, atau DaVinci Resolve.",
+        "Artinya, lagulah yang mengatur segalanya. Model hanya membuat gambar yang bergerak; Anda yang menentukan kapan tiap gambar mulai dan berhenti. Hal yang membuat video musik terasa profesional dikerjakan sebelum dan sesudah generate: memetakan lagu, merencanakan shot di atas beat, dan mengecek sinkronisasi di akhir.",
+        {
+          "note": "Panduan ini membahas video berbasis lagu untuk Shorts, Reels, TikTok, Douyin, atau unggahan YouTube utuh. Untuk koreografi tari, lihat panduan video dance AI kami. Untuk konsistensi di banyak shot, lihat panduan video AI multi-shot kami."
+        }
+      ]
+    },
+    {
+      "h": "Langkah 1: Pastikan lagunya boleh dipakai",
+      "body": [
+        "Cek hak lagu sebelum memakai satu kredit pun. Video dengan lagu yang tidak boleh Anda publikasikan akan dibisukan, diblokir, atau terkena klaim. Di YouTube, setiap unggahan dipindai oleh Content ID; jika cocok dengan file referensi pemegang hak, pemilik yang memutuskan apakah video diblokir, dipasangi iklan, atau hanya dilacak, dan keputusan itu bisa berbeda per negara.",
+        {
+          "ul": [
+            "Lagu buatan sendiri: aman, tetapi daftarkan lewat distributor Anda jika ingin Content ID berpihak pada Anda.",
+            "Lagu berlisensi: baca lisensinya untuk sinkronisasi video dan untuk tiap platform tempat Anda akan posting. Lisensi musik latar untuk video pendek belum tentu mencakup video musik penuh.",
+            "Lagu buatan AI (misalnya dari Suno): baca ketentuan tool tersebut soal penggunaan komersial dan kepemilikan pada paket Anda. Ketentuannya berbeda per paket dan bisa berubah.",
+            "Lagu hit komersial yang bukan milik Anda: pakai hanya lewat perpustakaan musik bawaan di dalam aplikasi platform, karena platform yang memegang lisensinya. Jangan diekspor lalu diunggah ulang di tempat lain."
+          ]
+        },
+        "YouTube juga meminta kreator mengungkapkan musik buatan AI bila itu fokus utama video, serta rekaman AI yang realistis tentang orang atau tempat nyata. Panduan pelabelan konten AI kami menjelaskan aturan tiap platform dan wilayah."
+      ]
+    },
+    {
+      "h": "Langkah 2: Petakan lagu menjadi grid beat",
+      "body": [
+        "Buat timeline lagu sebelum menulis prompt apa pun. Anda butuh empat hal: tempo, bagian lagu, downbeat, dan beberapa peristiwa musik yang kuat.",
+        {
+          "ol": [
+            "Cari BPM. Ketuk mengikuti chorus; misalnya, metronom cv.cm punya tap tempo yang memberi BPM setelah beberapa ketukan.",
+            "Tandai bagian lagu dengan timestamp: intro, verse, pre-chorus, chorus, bridge, outro.",
+            "Tandai downbeat pertama tiap bagian, nada paling keras, serta jeda atau drop. Di momen inilah pemotongan atau gerakan besar harus jatuh.",
+            "Hitung panjang satu frasa. Dalam birama 4/4, satu bar berisi 4 ketukan, sehingga satu bar berlangsung 240 / BPM detik. Pada 120 BPM satu bar adalah 2 dtk dan frasa dua bar (satu hitungan delapan) adalah 4 dtk."
+          ]
+        },
+        "Frasa 4 detik adalah satuan yang berguna karena mendekati durasi klip terpendek yang diterima banyak model. Pada 90 BPM satu bar sekitar 2,67 dtk, jadi hitungan delapan sekitar 5,3 dtk; pada 128 BPM menjadi 3,75 dtk. Pilih durasi shot berupa frasa utuh, dan pangkas sisa pecahan detik saat mengedit."
+      ]
+    },
+    {
+      "h": "Langkah 3: Rencanakan shot di atas grid dan kunci tampilannya",
+      "body": [
+        "Ubah timeline menjadi daftar shot. Satu shot per frasa adalah patokan yang baik; lagu cepat bisa memakai satu shot per bar di bagian chorus. Setiap baris sebaiknya memuat rentang waktu, bagian lagu, apa yang dilihat kamera, dan peristiwa musik tempat aksi utama jatuh.",
+        {
+          "table": {
+            "head": [
+              "Waktu",
+              "Bagian",
+              "Shot",
+              "Jatuh di"
+            ],
+            "rows": [
+              [
+                "0,0–4,0 dtk",
+                "Intro",
+                "Close-up, penyanyi sudah menghadap kamera, cahaya hangat dari jendela, push in pelan",
+                "Downbeat pertama di 0,0 dtk: mata terbuka menatap lensa"
+              ],
+              [
+                "4,0–8,0 dtk",
+                "Verse baris 1",
+                "Medium shot, berjalan di jalan basah saat senja, handheld mengikuti",
+                "Langkah kaki di ketukan 1 setiap bar"
+              ],
+              [
+                "8,0–12,0 dtk",
+                "Verse baris 2",
+                "Close-up, baris dinyanyikan, lip sync",
+                "Baris mulai di 8,2 dtk"
+              ],
+              [
+                "12,0–16,0 dtk",
+                "Pre-chorus",
+                "Low angle, angin menguat, mantel bergerak",
+                "Nada paling keras di 15,5 dtk: menoleh ke kamera"
+              ],
+              [
+                "16,0–20,0 dtk",
+                "Chorus",
+                "Wide shot, atap gedung, lampu kota, orbit ke kiri",
+                "Potong tepat di downbeat chorus"
+              ]
+            ]
+          }
+        },
+        "Shot pembuka paling menentukan. Dalam praktiknya, frame pertama menentukan berapa banyak penonton yang pergi dalam dua atau tiga detik pertama. Jadikan frame pertama sebagai frame terbaik: terang, wajah terlihat penuh dan tersinari, subjek sudah bergerak atau tersenyum, dengan framing close atau medium sehingga subjek memenuhi sebagian besar layar. Fade-in pelan dari hitam, kepala menunduk, atau ruangan gelap membuat orang pergi sebelum lagunya mulai. Jika konsep butuh pengantar cerita, taruh di properti dan latar, bukan di pembukaan yang lambat.",
+        "Lalu kunci tampilannya. Buat character sheet (tampak depan, samping, dan belakang, pakaian, rambut, warna) dan satu baris gaya singkat yang ditempel tanpa diubah di setiap prompt, misalnya soal lensa, cahaya, dan color grade. Panduan karakter AI yang konsisten kami menjelaskan cara membuat sheet-nya. Setiap gambar referensi baru harus dicek terhadap sheet itu, karakter demi karakter: pakaian, tangan, aksesori, rambut, warna, dan rasio tinggi. Tool edit gambar diam-diam mengubah detail yang tidak Anda minta, lalu model video menyalin kesalahan itu ke setiap shot."
+      ]
+    },
+    {
+      "h": "Langkah 4: Generate per segmen dengan audio yang sudah dipotong",
+      "body": [
+        "Generate setiap shot sebagai segmen sendiri, dengan potongan lagunya sendiri. Potong audio untuk tiap segmen sendiri, misalnya dengan audio cutter cv.cm, jangan mengunggah seluruh lagu lalu membiarkan model memilih potongannya. Dengan begitu timeline Anda dan timeline model tetap sama.",
+        "Banyak model hanya menerima durasi tetap, seperti hitungan detik utuh atau tingkatan 5, 10, atau 15 dtk. Rencanakan editan sesuai durasi itu dan buat tiap potongan audio persis sepanjang klip yang akan Anda minta. Sebagian tool juga membatasi total audio referensi, misalnya sekitar 30 detik untuk semua klip referensi, dan panjang prompt hingga beberapa ribu karakter. Jika Anda juga butuh referensi suara, perhitungkan: potongan musik ditambah sampel suara harus muat. Sampel suara bersih 3 detik biasanya cukup; ambil kalimat yang paling keras dan paling bersambung.",
+        "Tulis prompt sebagai timeline yang menyebut detik sekaligus peristiwa musiknya. Tulis hanya apa yang akan terlihat kamera. Model video menerjemahkan metafora secara harfiah: 'suaranya naik seperti burung' bisa memunculkan burung sungguhan di shot, dan 'kota bagaikan lukisan' bisa meratakan latar nyata menjadi ilustrasi.",
+        {
+          "code": "Segment 4 (12.0-16.0 s of the song, pre-chorus), 4 seconds, 9:16.\nSame woman as the reference: short black bob, cream trench coat, silver hoop earrings.\nLow-angle medium shot on a rooftop at blue hour, city lights behind her, soft rim light.\n0-1 s: she stands facing left, wind moves her hair and coat.\n1-3 s: she turns slowly toward the camera, chin lifting, the coat swings out.\n3.5 s (loudest note): she looks straight into the lens and opens her mouth to sing.\nCamera: slow push in from waist to chest height. No text on screen.",
+          "lang": "text"
+        },
+        "Untuk baris yang dinyanyikan, pakai lip sync. Generate shot dengan vokal yang sudah dipotong sebagai input audio, jika modelnya mendukung, atau generate shot lebih dulu lalu jalankan lip sync berbasis audio dengan vokal yang sudah diisolasi. Shot frontal close dan medium paling bagus hasilnya; tampak samping dan tangan di dekat mulut paling sering gagal. Panduan lip sync AI kami membahas input dan cara memperbaikinya."
+      ]
+    },
+    {
+      "h": "Langkah 5: Edit tepat di beat dan cek sinkronisasi",
+      "body": [
+        "Letakkan dulu lagu asli utuh di timeline, lalu taruh tiap segmen di waktu mulai yang sudah direncanakan. Jatuhkan potongan di downbeat atau di peristiwa kuat yang sudah Anda tandai. Potongan yang meleset beberapa frame lebih awal atau lambat mudah terasa pada drop chorus.",
+        "Ketika model membuat atau merender ulang soundtrack-nya sendiri, musik di dalam klip bisa mulai terlambat. Dalam pengujian kami, pergeserannya sekitar 1 detik, sementara gerakannya mengikuti timing prompt dengan cukup akurat. Jadi jangan pernah menilai sinkronisasi dari audio di dalam file hasil generate. Ganti dulu dengan lagu aslinya:",
+        {
+          "code": "ffmpeg -i gen.mp4 -i song.mp3 -map 0:v:0 -map 1:a:0 -c:v copy -c:a aac -shortest synced.mp4",
+          "lang": "bash"
+        },
+        "Jika satu segmen masih terlihat terlalu awal atau terlambat terhadap musik, geser per frame utuh di editor alih-alih generate ulang. Tonton baris yang di-lip-sync dalam ukuran penuh; mulut yang meleset dua atau tiga frame terlihat jelas pada close-up.",
+        "Klip hasil generate sering keluar dalam 720p atau 1080p dengan detail yang lembut. Upscale setelah editing, bukan sebelumnya, agar hanya bagian yang dipakai yang di-upscale, dan simpan satu master ekspor. Unggah master itu langsung ke tiap platform; meng-encode ulang file berkali-kali, misalnya mengunduh dari satu aplikasi lalu memposting ulang di aplikasi lain, menumpuk artefak kompresi."
+      ]
+    },
+    {
+      "h": "Kesalahan umum dan batasan yang jujur",
+      "body": [
+        {
+          "ul": [
+            "Mem-prompt seluruh lagu sekaligus. Model tidak bisa mengikuti struktur tiga menit; rencanakan shot seukuran satu frasa.",
+            "Berdebat dengan referensi. Video atau gambar referensi adalah jangkar yang jauh lebih kuat daripada teks. Jika ada lens flare, properti, atau pencahayaan yang tidak Anda inginkan, model cenderung tetap menyalinnya. Perbaiki referensinya (crop, masking, regrade) sebelum generate.",
+            "Karakter berubah-ubah. Tanpa sheet dan baris gaya yang tetap, wajah dan pakaian berubah antar shot. Cek tiap segmen terhadap sheet sebelum menerimanya.",
+            "Teks di layar. Lirik dan judul yang dibuat di dalam video sering salah eja. Tambahkan teks di editor.",
+            "Penyanyi asli. Jangan membuat video realistis seorang artis nyata menyanyikan lagu yang tidak pernah ia rekam atau bawakan. Itu butuh persetujuan dan pengungkapan, dan di banyak tempat melanggar hak kepribadian dan hak atas citra diri."
+          ]
+        },
+        "Siapkan dua sampai empat take untuk shot tersulit, biasanya close-up saat bernyanyi dan pembuka chorus. Sebagian besar kualitas berasal dari peta beat dan editing, bukan dari satu hasil generate yang sempurna."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Bisakah AI membuat video musik dari lagu secara otomatis?",
+      "a": "Beberapa tool memotong klip hasil generate mengikuti beat secara otomatis, tetapi saat artikel ini ditulis hasilnya masih generik. Untuk video yang mengikuti lirik dan struktur lagu, rencanakan sendiri shot-nya dan generate per segmen."
+    },
+    {
+      "q": "Berapa lama membuat video musik AI?",
+      "a": "Video pendek 30 detik dengan enam sampai delapan shot bisa selesai dalam satu sore, termasuk take ulang. Lagu utuh tiga menit butuh 40 shot atau lebih, jadi sediakan beberapa hari dan pakai ulang character sheet serta baris gaya yang sudah dikunci."
+    },
+    {
+      "q": "Bolehkah memakai lagu terkenal di video musik AI?",
+      "a": "Hanya jika Anda punya lisensinya. Di dalam TikTok, Reels, atau Shorts Anda bisa memakai lagu dari perpustakaan musik bawaan, karena platform yang memegang haknya; salinan yang Anda unggah sendiri kemungkinan besar akan dibisukan, diblokir, atau terkena klaim."
+    },
+    {
+      "q": "Apakah video musik AI harus diberi label?",
+      "a": "Di YouTube Anda wajib mengungkapkan konten sintetis yang realistis dan musik buatan AI yang menjadi fokus utama video. Platform dan wilayah lain punya label masing-masing; lihat panduan pelabelan konten AI kami."
+    },
+    {
+      "q": "Kenapa video musik AI saya tidak sinkron?",
+      "a": "Sering kali model menggeser musik di dalam klip hasil generate, kadang sekitar satu detik, sementara gerakannya tetap tepat waktu. Ganti audio dengan lagu asli sebelum menilai sinkronisasi, dan potong sendiri tiap potongan audio sesuai panjang segmen yang persis."
+    }
+  ]
+}
