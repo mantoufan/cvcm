@@ -922,4 +922,34 @@ export const TOOL_LOADERS: Record<ToolId, ToolLoader> = {
     m.mountTriangle(host);
     return m.unmountTriangle;
   },
+  "gif-maker": async (host, ctx) => {
+    const m = await import("./gif-maker/ui");
+    if (!ctx.alive()) return undefined;
+    m.mountGifMaker(host);
+    return m.unmountGifMaker;
+  },
+  "image-splitter": async (host, ctx) => {
+    const m = await import("./image-splitter/ui");
+    if (!ctx.alive()) return undefined;
+    m.mountImageSplitter(host);
+    return m.unmountImageSplitter;
+  },
+  "area": async (host, ctx) => {
+    const m = await import("./area/ui");
+    if (!ctx.alive()) return undefined;
+    m.mountArea(host);
+    return m.unmountArea;
+  },
+  "volume": async (host, ctx) => {
+    const m = await import("./volume/ui");
+    if (!ctx.alive()) return undefined;
+    m.mountVolume(host);
+    return m.unmountVolume;
+  },
+  "random-letter": async (host, ctx) => {
+    const m = await import("./random-letter/ui");
+    if (!ctx.alive()) return undefined;
+    m.mountRandomLetter(host);
+    return m.unmountRandomLetter;
+  },
 };

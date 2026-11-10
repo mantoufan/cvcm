@@ -964,3 +964,18 @@ html.dp-lock, html.dp-lock body { overflow: hidden; }
 .tri-shape { fill: var(--pink-soft); stroke: var(--pink-deep); stroke-width: 2.5; stroke-linejoin: round; }
 .tri-vertex { fill: var(--pink-deep); font-size: 15px; font-weight: 700; }
 .tri-side { fill: var(--ink-soft); font-size: 14px; font-style: italic; }
+
+/* GIF maker, image splitter, area and volume calculators, random letter (batch 25). */
+.gif-move { display: flex; gap: 0.15rem; }
+.gif-video video, .gif-clip { display: block; width: 100%; max-height: 60vh; background: #000; }
+.gif-result { margin-top: 1rem; }
+.gif-out { display: block; max-width: 100%; height: auto; margin-bottom: 0.5rem; border: 1px solid var(--line); border-radius: var(--radius); }
+.split-gallery { display: grid; grid-template-columns: repeat(auto-fill, minmax(7rem, 1fr)); gap: 0.5rem; margin: 1rem 0 0; padding: 0; list-style: none; }
+.split-save { display: block; width: 100%; padding: 0.25rem; border: 1px solid var(--line); border-radius: var(--radius); background: #fff; color: var(--ink); font: inherit; font-size: 0.8rem; cursor: pointer; text-align: center; overflow-wrap: anywhere; }
+.split-save img { display: block; width: 100%; height: auto; margin-bottom: 0.25rem; }
+.shape-formula { margin: 0.5rem 0; font-weight: 700; color: var(--pink-deep); overflow-wrap: anywhere; }
+.shape-main { margin: 0.25rem 0 0.75rem; font-size: clamp(1.8rem, 7vw, 2.6rem); font-weight: 700; color: var(--pink-deep); font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
+.letter-out { margin: 0.5rem 0 1rem; font-size: clamp(3rem, 16vw, 6rem); font-weight: 700; line-height: 1.1; color: var(--pink-deep); white-space: pre-wrap; overflow-wrap: anywhere; }
+.letter-out.letter-many { font-size: clamp(1.4rem, 5vw, 2rem); }
+.letter-history-title { margin-top: 1.25rem; }
+.letter-history { margin: 0; padding-left: 1.4rem; overflow-wrap: anywhere; }

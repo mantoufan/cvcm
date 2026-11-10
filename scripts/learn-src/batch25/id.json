@@ -1,0 +1,229 @@
+{
+  "meta": {
+    "titleMakeGif": "Cara membuat GIF dari gambar atau video (gratis, tanpa watermark) | cv.cm",
+    "descMakeGif": "Buat GIF animasi online: tambahkan foto atau klip pendek, atur urutan, jeda atau frame per detik, ukuran, dan pengulangan, jaga file tetap kecil, lalu unduh. Gratis, di browser, tidak ada yang diunggah.",
+    "titleSplitImage": "Cara membagi foto menjadi grid untuk Instagram (3×3, carousel) | cv.cm",
+    "descSplitImage": "Potong satu foto menjadi grid 3×3 atau carousel yang bisa digeser: pilih grid, pangkas menjadi potongan persegi, bagi, unduh potongannya, dan unggah dalam urutan yang benar.",
+    "titleCalculateArea": "Cara menghitung luas: persegi panjang, segitiga, lingkaran, dan lainnya | cv.cm",
+    "descCalculateArea": "Rumus luas bangun datar umum dengan contoh soal: ukur, pilih rumus, pakai satu satuan, ubah m² ke ft², acre, atau hektare, dan jumlahkan ruangan atau lahan yang bentuknya tidak beraturan.",
+    "titleCalculateVolume": "Cara menghitung volume: balok, tabung, bola, kerucut | cv.cm",
+    "descCalculateVolume": "Rumus volume bangun ruang umum dengan contoh soal, cara mengukur ukuran bagian dalam, dan cara mengubah cm³ atau kaki kubik menjadi liter dan galon.",
+    "titlePickRandomLetter": "Cara memilih huruf acak (A–Z, vokal, tanpa pengulangan) | cv.cm",
+    "descPickRandomLetter": "Undi huruf acak yang adil untuk permainan seperti Scattergories, latihan di kelas, atau mencari nama: pilih hurufnya, kecualikan sebagian, undi beberapa tanpa pengulangan, dan simpan catatannya."
+  },
+  "lessons": {
+    "make-gif": {
+      "copy": {
+        "name": "Cara membuat GIF",
+        "blurb": "GIF animasi dari foto atau klip video pendek.",
+        "title": "Cara membuat GIF dari gambar atau video",
+        "lead": "GIF bisa diputar di chat, slide, email, dan halaman web tanpa pemutar. Anda akan mengumpulkan frame, mengatur waktunya, memilih ukuran dan pengulangan, menjaga file tetap kecil, lalu mengunduhnya. Pembuat GIF melakukannya di browser, tanpa watermark.",
+        "result": "GIF animasi yang berulang (atau diputar sekali) dengan kecepatan pilihan Anda, siap dikirim atau disematkan.",
+        "note": "GIF menampung paling banyak 256 warna per frame dan tanpa suara. Untuk klip yang panjang atau detail, MP4 pendek sering lebih kecil.",
+        "s1t": "Buka Pembuat GIF di cv.cm",
+        "s1b": "Kumpulkan frame: dua gambar atau lebih dengan bentuk yang sama, atau satu video pendek. Foto ponsel, tangkapan layar, dan gambar tangan semuanya bisa.",
+        "s2t": "Tambahkan frame dan atur urutannya",
+        "s2b": "Letakkan gambar; masing-masing menjadi satu frame dan diputar dari atas ke bawah. Pakai tombol panah untuk mengubah urutan dan × untuk membuang. Untuk video, letakkan filenya lalu atur Mulai dan Selesai dalam detik.",
+        "s3t": "Atur waktunya",
+        "s3b": "Untuk gambar, Jeda per frame menentukan berapa lama setiap gambar tampil: 500 ms berarti dua frame per detik, 100 ms terlihat seperti gerakan. Untuk video, 10 frame per detik sudah cukup mulus untuk kebanyakan klip.",
+        "s4t": "Pilih ukuran dan pengulangan",
+        "s4b": "Pilih lebar; tingginya mengikuti bentuk frame pertama. Gambar dengan bentuk lain bisa dimuat di dalam dengan warna latar atau memenuhi frame. Pilih Ulang terus, Putar sekali, atau Putar 3 kali.",
+        "s5t": "Jaga file tetap kecil",
+        "s5b": "Ukuran file bertambah sesuai lebar × tinggi × jumlah frame. Membagi dua lebar membuat file sekitar empat kali lebih kecil. Warna lebih sedikit dan dithering dimatikan membantu grafik datar; biarkan dithering aktif untuk foto.",
+        "s6t": "Buat dan unduh",
+        "s6b": "Tekan Buat GIF. GIF jadi diputar di bawah beserta ukurannya dalam piksel dan byte. Periksa, lalu Unduh GIF. Ubah pengaturan mana pun dan buat lagi jika terlalu besar atau terlalu cepat.",
+        "diagram1": "Setiap frame tampil selama jedanya; pengulangan dimulai lagi setelah frame terakhir.",
+        "diagram2": "Lebar, jumlah frame, dan warna menentukan ukuran file."
+      },
+      "faq": {
+        "q1": "Berapa banyak frame yang bisa dimuat GIF?",
+        "a1": "Formatnya tidak punya batas nyata; pembuat ini berhenti di 300 frame agar tab tetap responsif. Itu sama dengan 30 detik pada 10 frame per detik.",
+        "q2": "Jeda frame berapa yang sebaiknya dipakai?",
+        "a2": "100–200 ms untuk gerakan, 500 ms sampai 1 detik untuk slideshow. Browser memperlambat jeda di bawah 20 ms, jadi GIF yang sangat cepat diputar lebih lambat dari pengaturannya.",
+        "q3": "Apakah GIF bisa bersuara?",
+        "a3": "Tidak. GIF hanya berisi gambar. Pakai file video jika suara penting.",
+        "q4": "Bagaimana membuat GIF berulang terus?",
+        "a4": "Pilih Ulang terus di Pengulangan. Putar sekali membuatnya berhenti di frame terakhir.",
+        "q5": "Apakah gratis dan privat?",
+        "a5": "Ya. Gratis, tanpa watermark, dan berjalan di halaman, jadi gambar dan video Anda tidak diunggah."
+      }
+    },
+    "split-image": {
+      "copy": {
+        "name": "Cara membagi foto menjadi grid",
+        "blurb": "Potong satu foto menjadi beberapa potongan untuk grid atau carousel Instagram.",
+        "title": "Cara membagi foto menjadi grid untuk Instagram",
+        "lead": "Satu foto besar yang tersebar di beberapa postingan membuat profil terlihat seperti satu poster, dan foto lebar yang dipotong menjadi slide menjadi carousel yang bisa digeser. Anda akan memilih grid, memangkas menjadi potongan persegi, membagi, mengunduh, dan mengunggah dalam urutan yang benar.",
+        "result": "Potongan sama besar yang dinamai menurut baris dan kolom, dalam ZIP atau satu per satu, bernomor sesuai urutan unggah.",
+        "note": "Grid profil Instagram menampilkan postingan sebagai thumbnail tegak 3:4, jadi potongan persegi sedikit terpotong di atas dan bawah di sana; postingan lengkapnya tetap menampilkan seluruh potongan.",
+        "s1t": "Buka Pembagi gambar di cv.cm",
+        "s1b": "Pilih foto yang tajam dengan objek di dekat tengah. Untuk grid 3 × 3 dengan potongan 1080 px, mulai dari foto selebar minimal 3.240 px.",
+        "s2t": "Pilih grid",
+        "s2b": "Pakai Grid 3 × 3 untuk blok profil sembilan postingan, Carousel 1 × 3 atau 1 × 2 untuk panorama yang bisa digeser, atau atur baris dan kolom sampai 20 masing-masing. Grid langsung digambar di atas foto.",
+        "s3t": "Pangkas menjadi potongan persegi",
+        "s3b": "Biarkan Potongan persegi aktif untuk Instagram. Grid persegi terbesar yang muat dipertahankan di tengah dan tepi yang diredupkan dipangkas. Matikan untuk memakai seluruh foto.",
+        "s4t": "Bagi dan unduh",
+        "s4b": "Tekan Bagi. Potongan muncul di bawah; ketuk satu untuk menyimpannya, atau Unduh ZIP untuk semuanya. File dinamai photo-r1-c1, photo-r1-c2, dan seterusnya, jadi tersusun sesuai urutan baca.",
+        "s5t": "Unggah dalam urutan yang benar",
+        "s5b": "Postingan terbaru berada di kiri atas, jadi unggah potongan terakhir (kanan bawah) lebih dulu dan potongan pertama paling akhir. Centang Tampilkan urutan unggah untuk memberi nomor 1, 2, 3 sesuai urutan Anda mengunggah.",
+        "s6t": "Atau unggah sebagai carousel",
+        "s6b": "Untuk panorama, pilih semua slide dalam satu postingan, sesuai urutan baca (kiri ke kanan). Orang menggesernya sebagai satu gambar yang menyambung.",
+        "diagram1": "Grid 3 × 3 berisi potongan persegi, dipotong dari bagian tengah foto.",
+        "diagram2": "Unggah potongan terakhir lebih dulu: nanti posisinya di kanan bawah."
+      },
+      "faq": {
+        "q1": "Berapa ukuran setiap potongan untuk Instagram?",
+        "a1": "Minimal 1080 × 1080 px untuk postingan persegi. Jadi grid 3 × 3 butuh foto selebar minimal 3.240 px agar Instagram tidak perlu memperbesarnya.",
+        "q2": "Kenapa potongan saya berbeda satu piksel?",
+        "a2": "Jika ukuran foto tidak habis dibagi jumlah baris atau kolom, beberapa potongan mendapat satu piksel tambahan agar tidak ada yang hilang.",
+        "q3": "Bisakah membagi foto menjadi dua bagian?",
+        "a3": "Bisa: 1 × 2 memotongnya menjadi kiri dan kanan, 2 × 1 menjadi atas dan bawah.",
+        "q4": "Apakah bisa untuk mencetak poster?",
+        "a4": "Bisa. Matikan potongan persegi, pilih grid seperti 2 × 3, lalu cetak setiap potongan di lembar tersendiri.",
+        "q5": "Apakah fotonya diunggah?",
+        "a5": "Tidak. Potongan dibuat di browser Anda."
+      }
+    },
+    "calculate-area": {
+      "copy": {
+        "name": "Cara menghitung luas",
+        "blurb": "Rumus luas persegi panjang, segitiga, lingkaran, dan lainnya.",
+        "title": "Cara menghitung luas",
+        "lead": "Luas memberi tahu berapa banyak lantai, cat, rumput, atau kain yang Anda perlukan, atau seberapa besar sebidang tanah. Anda akan mengukur, memilih rumus untuk bangunnya, memakai satu satuan, mengubah satuan hasilnya, dan memecah bentuk yang tidak beraturan menjadi bentuk sederhana.",
+        "result": "Luas bangun dalam satuan persegi, kelilingnya jika bisa ditentukan, dan luas yang sama dalam m², ft², acre, atau hektare.",
+        "note": "Luas selalu dalam satuan kuadrat: meter menjadi m², kaki menjadi ft². Jangan pernah mencampur satuan dalam satu perhitungan.",
+        "s1t": "Buka Kalkulator luas di cv.cm",
+        "s1b": "Ukur semua ukuran yang dibutuhkan bangun dengan satu satuan, misalnya semuanya dalam meter. Untuk ruangan, ukur dari dinding ke dinding di permukaan lantai.",
+        "s2t": "Pilih rumus untuk bangunnya",
+        "s2b": "Persegi panjang: panjang × lebar. Segitiga: ½ × alas × tinggi, dengan tinggi tegak lurus terhadap alas. Lingkaran: π × r². Trapesium: (a + b) / 2 × h. Kalkulator menampilkan rumus untuk setiap 12 bangunnya.",
+        "s3t": "Ketik ukurannya",
+        "s3b": "Pilih bangun dan satuan, lalu masukkan setiap ukuran. Ruangan 5 m kali 3 m menghasilkan 15 m². Jika Anda hanya tahu tiga sisi segitiga, pakai Segitiga (tiga sisi): rumus Heron tidak memerlukan tinggi.",
+        "s4t": "Ubah satuannya",
+        "s4b": "Hasilnya juga ditampilkan dalam satuan lain. 1 m² adalah 10,764 ft², 1 ft² adalah 0,0929 m², satu acre adalah 43.560 ft², dan satu hektare adalah 10.000 m². Mengubah panjang lebih dulu lalu mengkuadratkannya memberi jawaban yang sama.",
+        "s5t": "Pecah bentuk yang tidak beraturan",
+        "s5b": "Ruangan berbentuk L adalah dua persegi panjang: hitung masing-masing lalu jumlahkan. Kurangi luas lubang, tiang, atau kolam. Tepi bedeng yang melengkung mendekati bagian dari lingkaran (juring).",
+        "s6t": "Tambahkan cadangan dan periksa",
+        "s6b": "Untuk bahan, tambahkan sisa potongan: sekitar 10% untuk ubin dan lantai, lebih banyak untuk pola diagonal. Periksa apakah jawabannya masuk akal: ruangan 5 m × 3 m tidak mungkin 150 m².",
+        "diagram1": "Rumus untuk tiga bangun yang paling sering Anda pakai.",
+        "diagram2": "Satu meter persegi sekitar 10,76 kaki persegi."
+      },
+      "faq": {
+        "q1": "Apa beda luas dan keliling?",
+        "a1": "Luas adalah permukaan di dalam bangun (m²). Keliling adalah panjang di sekelilingnya (m): yang Anda butuhkan untuk plin atau pagar.",
+        "q2": "Bagaimana menghitung luas lingkaran dari diameter?",
+        "a2": "Bagi dua diameternya untuk mendapat jari-jari, lalu A = π × r². Lingkaran 10 cm punya r = 5 cm dan A ≈ 78,54 cm².",
+        "q3": "Bagaimana menghitung luas dalam kaki persegi?",
+        "a3": "Ukur panjang dan lebar dalam kaki lalu kalikan. Ruangan 12 ft × 10 ft luasnya 120 ft². Jumlahkan persegi panjang dari ruangan berbentuk L.",
+        "q4": "Satu acre berapa meter persegi?",
+        "a4": "Sekitar 4.046,86 m². Satu hektare (10.000 m²) sekitar 2,47 acre.",
+        "q5": "Bagaimana jika tinggi segitiga tidak diketahui?",
+        "a5": "Ukur ketiga sisinya dan pakai rumus Heron, atau Kalkulator segitiga untuk sudut-sudutnya."
+      }
+    },
+    "calculate-volume": {
+      "copy": {
+        "name": "Cara menghitung volume",
+        "blurb": "Rumus volume balok, tabung, bola, dan kerucut.",
+        "title": "Cara menghitung volume",
+        "lead": "Volume memberi tahu berapa banyak isi tangki, kotak, pot, atau ruangan, berapa banyak beton atau tanah yang perlu dipesan, atau berapa ukuran sebuah paket. Anda akan mengukur, memilih rumus, memakai satu satuan, dan mengubah jawabannya menjadi liter atau galon.",
+        "result": "Volume dalam satuan kubik, luas permukaan, dan volume yang sama dalam liter, mililiter, galon AS atau imperial, dan cangkir.",
+        "note": "Volume dalam satuan pangkat tiga: sentimeter menjadi cm³. 1.000 cm³ tepat 1 liter.",
+        "s1t": "Buka Kalkulator volume di cv.cm",
+        "s1b": "Ukur dengan satu satuan. Untuk isi sebuah wadah, ukur bagian dalamnya; untuk banyaknya bahan yang dibutuhkan, ukur bagian luarnya.",
+        "s2t": "Pilih rumus untuk bangun ruangnya",
+        "s2b": "Balok: panjang × lebar × tinggi. Tabung: π × r² × h. Bola: 4/3 × π × r³. Kerucut dan limas: sepertiga dari tabung atau balok yang sepadan. Kalkulator mencakup 12 bangun ruang.",
+        "s3t": "Ketik ukurannya",
+        "s3b": "Pilih bangun ruang dan satuan, lalu masukkan setiap ukuran. Kotak 30 × 20 × 10 cm menghasilkan 6.000 cm³. Untuk bentuk bulat, pakai jari-jari, yaitu setengah diameter.",
+        "s4t": "Baca juga luas permukaannya",
+        "s4b": "Luas permukaan adalah kulit luarnya: bagian yang akan Anda cat, bungkus, atau beri insulasi. Kotak 30 × 20 × 10 cm punya luas permukaan 2.200 cm².",
+        "s5t": "Ubah ke liter atau galon",
+        "s5b": "1 cm³ = 1 mL dan 1.000 cm³ = 1 L, jadi 6.000 cm³ adalah 6 L. Satu meter kubik adalah 1.000 L. Satu galon AS adalah 3,785 L dan satu galon imperial 4,546 L; satu kaki kubik adalah 28,3 L.",
+        "s6t": "Perhitungkan bentuk nyata",
+        "s6b": "Tangki jarang diisi sampai penuh, dan dinding memakan tempat: kurangi tebal dinding dari setiap ukuran bagian dalam. Untuk beton atau tanah, tambahkan 5–10% untuk sisa dan penyusutan.",
+        "diagram1": "Rumus untuk tiga bangun ruang yang umum.",
+        "diagram2": "Kubus 10 cm memuat tepat satu liter."
+      },
+      "faq": {
+        "q1": "Bagaimana menghitung liter dari sentimeter?",
+        "a1": "Kalikan tiga ukuran bagian dalam dalam cm untuk mendapat cm³, lalu bagi dengan 1.000. 40 × 30 × 25 cm = 30.000 cm³ = 30 L.",
+        "q2": "Berapa volume kerucut?",
+        "a2": "V = 1/3 × π × r² × h, sepertiga dari tabung dengan alas dan tinggi yang sama.",
+        "q3": "Bagaimana menghitung volume pipa?",
+        "a3": "Ambil lingkaran luar dikurangi lingkaran dalam lalu kalikan dengan panjangnya: V = π × (R² − r²) × h. Bagian dalamnya sendiri memuat π × r² × h.",
+        "q4": "Satu kaki kubik berapa galon?",
+        "a4": "Sekitar 7,48 galon AS (28,32 liter).",
+        "q5": "Apakah volume sama dengan kapasitas?",
+        "a5": "Kapasitas adalah volume yang bisa dimuat sebuah wadah, biasanya dinyatakan dalam liter atau galon; volume adalah besarnya ruang apa pun, sering dalam satuan kubik."
+      }
+    },
+    "pick-random-letter": {
+      "copy": {
+        "name": "Cara memilih huruf acak",
+        "blurb": "Huruf yang adil untuk permainan kata, kelas, dan mencari nama.",
+        "title": "Cara memilih huruf acak",
+        "lead": "Permainan kata seperti Scattergories, latihan mengeja, nama tim, dan ice breaker semuanya dimulai dengan huruf yang adil. Anda akan menentukan huruf mana yang bisa keluar, mengecualikan huruf yang sulit, mengundi satu atau beberapa, menghindari pengulangan, dan menyimpan catatan.",
+        "result": "Satu huruf atau daftar huruf, masing-masing dengan peluang yang sama, dengan sepuluh undian terakhir tersimpan di halaman.",
+        "note": "Setiap undian berdiri sendiri: setelah A keluar, peluang huruf berikutnya A lagi tetap 1 banding 26, kecuali Tanpa pengulangan aktif.",
+        "s1t": "Buka Generator huruf acak di cv.cm",
+        "s1b": "Tentukan untuk apa hurufnya. Permainan kata butuh huruf yang mengawali banyak kata; latihan mengeja mungkin hanya butuh vokal.",
+        "s2t": "Pilih huruf yang bisa keluar",
+        "s2b": "Pilih alfabet (bawaannya Inggris A–Z), lalu Semua huruf, Vokal saja, atau Konsonan saja. Baris di bawah opsi menampilkan persis huruf mana saja yang ikut diundi.",
+        "s3t": "Kecualikan huruf yang sulit",
+        "s3b": "Ketik huruf di Kecualikan, misalnya Q X Z untuk permainan kata, karena hanya sedikit kata yang diawali huruf itu. Spasi dan koma di antaranya tidak masalah; huruf besar atau kecil tidak berpengaruh.",
+        "s4t": "Undi beberapa dengan atau tanpa pengulangan",
+        "s4b": "Atur Jumlah. Centang Tanpa pengulangan untuk daftar yang semua hurufnya berbeda, misalnya urutan acak seluruh alfabet; biarkan mati untuk undian yang saling lepas.",
+        "s5t": "Undi",
+        "s5b": "Tekan Undi. Setiap huruf berasal dari generator acak kriptografis browser, jadi tidak ada yang lebih mungkin keluar daripada yang lain. Pilih huruf besar, kecil, atau campuran, dan cara memisahkan beberapa huruf.",
+        "s6t": "Simpan catatan",
+        "s6b": "Sepuluh undian terakhir tercantum di bawah hasil, jadi Anda bisa melihat huruf apa saja yang sudah keluar dalam permainan. Salin menyalin huruf terbaru ke clipboard.",
+        "diagram1": "Hanya huruf yang tersisa dalam undian yang bisa keluar.",
+        "diagram2": "Dengan Tanpa pengulangan, setiap huruf yang keluar dikeluarkan dari undian."
+      },
+      "faq": {
+        "q1": "Apakah setiap huruf punya peluang yang sama?",
+        "a1": "Ya, di antara huruf yang ikut diundi. Jika Anda mengecualikan Q, X, dan Z, masing-masing dari 23 huruf lainnya punya peluang 1 banding 23.",
+        "q2": "Huruf apa yang paling cocok untuk Scattergories?",
+        "a2": "Kebanyakan pemain mengecualikan Q, U, V, X, Y, dan Z, yang hanya mengawali sedikit kata bahasa Inggris.",
+        "q3": "Bisakah mengundi huruf dari alfabet lain?",
+        "a3": "Bisa: Spanyol, Vietnam, Yunani, Rusia, hiragana, dan katakana ada di menu Alfabet.",
+        "q4": "Bagaimana mengacak seluruh alfabet?",
+        "a4": "Atur Jumlah ke 26 dan centang Tanpa pengulangan. Hasilnya setiap huruf muncul sekali, dalam urutan acak.",
+        "q5": "Apakah Y termasuk vokal?",
+        "a5": "Dalam mode Inggris, vokalnya A, E, I, O, dan U. Sertakan atau buang Y dengan Kecualikan. Dalam bahasa Vietnam, Y termasuk vokal."
+      }
+    }
+  },
+  "svg": {
+    "make-gif": {
+      "frame": "Frame",
+      "loop": "Ulang",
+      "delay": "jeda",
+      "frames": "Frame",
+      "colors": "Warna",
+      "size": "Ukuran file",
+      "pixels": "Piksel"
+    },
+    "split-image": {
+      "trimmed": "Dipangkas",
+      "post": "Unggah",
+      "newest": "Postingan terbaru"
+    },
+    "calculate-area": {
+      "rectangle": "Persegi panjang",
+      "triangle": "Segitiga",
+      "circle": "Lingkaran"
+    },
+    "calculate-volume": {
+      "box": "Balok",
+      "cylinder": "Tabung",
+      "sphere": "Bola",
+      "litre": "1 liter"
+    },
+    "pick-random-letter": {
+      "pool": "Ikut diundi",
+      "left": "Dikecualikan",
+      "repeats": "Boleh berulang",
+      "unique": "Tanpa pengulangan"
+    }
+  }
+}

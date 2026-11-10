@@ -213,6 +213,11 @@ const TITLE: Record<ToolId, string> = {
   "voice-recorder": "meta.titleVoiceRecorder",
   "screen-recorder": "meta.titleScreenRecorder",
   "triangle": "meta.titleTriangle",
+  "gif-maker": "meta.titleGifMaker",
+  "image-splitter": "meta.titleImageSplitter",
+  "area": "meta.titleArea",
+  "volume": "meta.titleVolume",
+  "random-letter": "meta.titleRandomLetter",
   gold: "meta.titleGold",
   silver: "meta.titleSilver",
   platinum: "meta.titlePlatinum",
@@ -235,6 +240,7 @@ const CONVERT_JOB_TITLE: Record<ConvertJobId, string> = {
   "jpg-to-png": "meta.titleJobJpgToPng",
   "avif-to-jpg": "meta.titleJobAvifToJpg",
   "png-to-webp": "meta.titleJobPngToWebp",
+  "svg-to-png": "meta.titleJobSvgToPng",
 };
 
 const CONVERT_JOB_DESC: Record<ConvertJobId, string> = {
@@ -244,6 +250,7 @@ const CONVERT_JOB_DESC: Record<ConvertJobId, string> = {
   "jpg-to-png": "meta.descJobJpgToPng",
   "avif-to-jpg": "meta.descJobAvifToJpg",
   "png-to-webp": "meta.descJobPngToWebp",
+  "svg-to-png": "meta.descJobSvgToPng",
 };
 
 const RESIZE_JOB_TITLE: Record<ResizeJobId, string> = {
@@ -393,6 +400,11 @@ const DESC: Record<ToolId, string> = {
   "voice-recorder": "meta.descVoiceRecorder",
   "screen-recorder": "meta.descScreenRecorder",
   "triangle": "meta.descTriangle",
+  "gif-maker": "meta.descGifMaker",
+  "image-splitter": "meta.descImageSplitter",
+  "area": "meta.descArea",
+  "volume": "meta.descVolume",
+  "random-letter": "meta.descRandomLetter",
   gold: "meta.descGold",
   silver: "meta.descSilver",
   platinum: "meta.descPlatinum",
@@ -518,6 +530,11 @@ const LEARN_TITLE: Record<TutorialId, string> = {
   "record-voice-online": "meta.titleRecordVoiceOnline",
   "record-screen-online": "meta.titleRecordScreenOnline",
   "solve-triangle": "meta.titleSolveTriangle",
+  "make-gif": "meta.titleMakeGif",
+  "split-image": "meta.titleSplitImage",
+  "calculate-area": "meta.titleCalculateArea",
+  "calculate-volume": "meta.titleCalculateVolume",
+  "pick-random-letter": "meta.titlePickRandomLetter",
   "find-fertile-window": "meta.titleFindFertileWindow",
   "calculate-macros": "meta.titleCalculateMacros",
   "calories-burned-exercise": "meta.titleCaloriesBurnedExercise",
@@ -647,6 +664,11 @@ const LEARN_DESC: Record<TutorialId, string> = {
   "record-voice-online": "meta.descRecordVoiceOnline",
   "record-screen-online": "meta.descRecordScreenOnline",
   "solve-triangle": "meta.descSolveTriangle",
+  "make-gif": "meta.descMakeGif",
+  "split-image": "meta.descSplitImage",
+  "calculate-area": "meta.descCalculateArea",
+  "calculate-volume": "meta.descCalculateVolume",
+  "pick-random-letter": "meta.descPickRandomLetter",
   "find-fertile-window": "meta.descFindFertileWindow",
   "calculate-macros": "meta.descCalculateMacros",
   "calories-burned-exercise": "meta.descCaloriesBurnedExercise",

@@ -279,3 +279,13 @@ GPT Image 2.5 on kie.ai (Codex at its usage limit until 2026-11-10), refs `click
 GPT Image 2.5 on kie.ai, refs `dice-sweet.jpg` + `wheel-sweet.jpg`. Same character and room, no words, letters, numerals, logo or watermark. Save `public/covers/tier-list-sweet.jpg`, `sips -z 720 1280`.
 
 - `tier-list`: she drags a small blank square card with one finger into a big cream board with five stacked rows, each starting with a blank coloured block from coral red through orange and yellow to white; blank pastel cards with tiny hearts and stars already sit in the rows.
+
+## GIF maker, image splitter, area calculator, volume calculator, random letter generator (2026-11-11)
+
+GPT Image 2.6 Flare image-to-image on kie.ai (Codex at its usage limit until 2026-11-13), refs `dice-sweet.jpg` + `metronome-sweet.jpg`, 16:9 2K. Same character and room, no words, letters, numerals, logo or watermark. Save `public/covers/<id>-sweet.jpg`, `sips -z 720 1280`.
+
+- `gif-maker`: she holds a pearlescent pink photo frame with a pastel heart mid-bounce; three film-frame squares fan out like a flip-book with a looping ribbon; a blank pink camera on the desk.
+- `image-splitter`: she holds up a square rose picture cut into a three-by-three grid of tiles drifting apart; small pink scissors; loose tiles on the desk.
+- `area`: she stretches a pastel tape measure along a pink floor plan with a cream rectangle, a pink circle and a small triangle; pencil and ruler nearby.
+- `volume`: she pours sparkling pink water into a clear measuring cube; a pink cylinder can, a cream sphere and a small cone on the desk; a blank measuring cup.
+- `random-letter`: she lifts one tile from a pink drawstring bag of cream tiles showing only hearts and stars (no real letters); tiles tumble on the desk.

@@ -1,0 +1,229 @@
+{
+  "meta": {
+    "titleMakeGif": "How to make a GIF from pictures or a video (free, no watermark) | cv.cm",
+    "descMakeGif": "Make an animated GIF online: add photos or a short clip, set the order, delay or frame rate, size and loop, keep the file small and download it. Free, in your browser, nothing uploaded.",
+    "titleSplitImage": "How to split an image into a grid for Instagram (3×3, carousel) | cv.cm",
+    "descSplitImage": "Cut one picture into a 3×3 grid or a swipeable carousel: choose the grid, crop to square tiles, split, download the tiles and post them in the right order.",
+    "titleCalculateArea": "How to calculate area: rectangle, triangle, circle and more | cv.cm",
+    "descCalculateArea": "Area formulas for common shapes with worked examples: measure, pick the formula, keep one unit, convert m² to ft², acres or hectares, and add up irregular rooms and plots.",
+    "titleCalculateVolume": "How to calculate volume: box, cylinder, sphere, cone | cv.cm",
+    "descCalculateVolume": "Volume formulas for common solids with worked examples, how to measure inside sizes, and how to turn cm³ or cubic feet into litres and gallons.",
+    "titlePickRandomLetter": "How to pick a random letter (A–Z, vowels, no repeats) | cv.cm",
+    "descPickRandomLetter": "Draw a fair random letter for games like Scattergories, classroom drills or naming: choose the letters, leave some out, draw several with no repeats and keep a record."
+  },
+  "lessons": {
+    "make-gif": {
+      "copy": {
+        "name": "How to make a GIF",
+        "blurb": "Animated GIF from photos or a short video clip.",
+        "title": "How to make a GIF from pictures or a video",
+        "lead": "A GIF plays in chats, slides, emails and web pages without a player. You will gather the frames, set their timing, choose a size and repeat, keep the file small and download it. The GIF maker does it in the browser, with no watermark.",
+        "result": "An animated GIF that loops (or plays once) at the speed you chose, ready to send or embed.",
+        "note": "GIF holds at most 256 colours per frame and no sound. For long or detailed clips a short MP4 is often smaller.",
+        "s1t": "Open the GIF maker on cv.cm",
+        "s1b": "Collect the frames: two or more pictures of the same shape, or one short video. Phone photos, screenshots and drawings all work.",
+        "s2t": "Add the frames and set the order",
+        "s2b": "Drop the pictures; each one is a frame and they play top to bottom. Use the arrows to reorder and × to remove. For a video, drop the file and set Start and End in seconds.",
+        "s3t": "Set the timing",
+        "s3b": "For pictures, Delay per frame sets how long each one shows: 500 ms is two frames a second, 100 ms looks like motion. For a video, 10 frames per second is smooth enough for most clips.",
+        "s4t": "Choose the size and repeat",
+        "s4b": "Pick a width; the height follows the first frame's shape. Pictures of other shapes can fit inside on the background colour or fill the frame. Choose Loop forever, Play once or Play 3 times.",
+        "s5t": "Keep the file small",
+        "s5b": "File size grows with width × height × frames. Halving the width makes the file about four times smaller. Fewer colours and dithering off help flat graphics; keep dithering on for photos.",
+        "s6t": "Make and download",
+        "s6b": "Press Make GIF. The finished GIF plays below with its size in pixels and bytes. Check it, then Download GIF. Change any setting and make it again if it is too big or too fast.",
+        "diagram1": "Each frame shows for its delay; the loop starts again after the last.",
+        "diagram2": "Width, frame count and colours decide the file size."
+      },
+      "faq": {
+        "q1": "How many frames can a GIF have?",
+        "a1": "The format has no real limit; this maker stops at 300 frames to keep the tab responsive. That is 30 seconds at 10 frames per second.",
+        "q2": "What frame delay should I use?",
+        "a2": "100–200 ms for motion, 500 ms to 1 s for a slideshow. Browsers slow delays under 20 ms, so very fast GIFs play slower than set.",
+        "q3": "Can a GIF have sound?",
+        "a3": "No. GIF is pictures only. Use a video file if sound matters.",
+        "q4": "How do I make a GIF loop?",
+        "a4": "Choose Loop forever under Repeat. Play once makes it stop on the last frame.",
+        "q5": "Is it free and private?",
+        "a5": "Yes. It is free, adds no watermark and works in the page, so your pictures and videos are not uploaded."
+      }
+    },
+    "split-image": {
+      "copy": {
+        "name": "How to split an image into a grid",
+        "blurb": "Cut one picture into tiles for an Instagram grid or carousel.",
+        "title": "How to split an image into a grid for Instagram",
+        "lead": "One big picture spread over several posts makes a profile look like a single poster, and a wide photo cut into slides makes a carousel you swipe through. You will choose the grid, crop to square tiles, split, download and post in the right order.",
+        "result": "Equal tiles named by row and column, in a ZIP or one by one, numbered in the order to post them.",
+        "note": "Instagram's profile grid shows posts as tall 3:4 thumbnails, so square tiles lose a little at the top and bottom there; the full post still shows the whole tile.",
+        "s1t": "Open the Image splitter on cv.cm",
+        "s1b": "Pick a sharp picture with the subject near the middle. For a 3 × 3 grid of 1080 px tiles, start from a picture at least 3240 px across.",
+        "s2t": "Choose the grid",
+        "s2b": "Use 3 × 3 for a nine-post profile block, 1 × 3 or 1 × 2 for a swipeable panorama, or set rows and columns up to 20 each. The grid is drawn on the picture at once.",
+        "s3t": "Crop to square tiles",
+        "s3b": "Keep Square tiles on for Instagram. The largest square grid that fits is kept in the centre and the dimmed edges are trimmed. Turn it off to use the whole picture.",
+        "s4t": "Split and download",
+        "s4b": "Press Split. Tiles appear below; tap one to save it, or Download ZIP for all. Files are named photo-r1-c1, photo-r1-c2 and so on, so they sort in reading order.",
+        "s5t": "Post in the right order",
+        "s5b": "The newest post goes top left, so post the last tile (bottom right) first and the first tile last. Tick Show posting order to number the tiles 1, 2, 3 in the order you post them.",
+        "s6t": "Post a carousel instead",
+        "s6b": "For a panorama, select all the slides in one post, in reading order (left to right). People swipe through them as one continuous picture.",
+        "diagram1": "A 3 × 3 grid of square tiles, cut from the centre of the picture.",
+        "diagram2": "Post the last tile first: it ends up bottom right."
+      },
+      "faq": {
+        "q1": "What size should each tile be for Instagram?",
+        "a1": "At least 1080 × 1080 px for square posts. A 3 × 3 grid therefore needs a picture at least 3240 px wide to avoid upscaling on Instagram's side.",
+        "q2": "Why do my tiles differ by one pixel?",
+        "a2": "When the picture's size does not divide by the number of rows or columns, some tiles get one extra pixel so nothing is lost.",
+        "q3": "Can I split a picture into two halves?",
+        "a3": "Yes: 1 × 2 cuts it left and right, 2 × 1 top and bottom.",
+        "q4": "Does it work for printing posters?",
+        "a4": "Yes. Turn square tiles off, choose a grid such as 2 × 3 and print each tile on its own sheet.",
+        "q5": "Is the picture uploaded?",
+        "a5": "No. The tiles are cut in your browser."
+      }
+    },
+    "calculate-area": {
+      "copy": {
+        "name": "How to calculate area",
+        "blurb": "Area formulas for rectangles, triangles, circles and more.",
+        "title": "How to calculate area",
+        "lead": "Area tells you how much flooring, paint, turf or fabric you need, or how big a plot is. You will measure, pick the formula for the shape, keep one unit, convert the answer, and split odd shapes into simple ones.",
+        "result": "The area of the shape in square units, its perimeter where it is fixed, and the same area in m², ft², acres or hectares.",
+        "note": "Area is always in a unit squared: metres give m², feet give ft². Never mix units in one calculation.",
+        "s1t": "Open the Area calculator on cv.cm",
+        "s1b": "Measure the sizes the shape needs with one unit, for example all in metres. For a room, measure wall to wall at floor level.",
+        "s2t": "Pick the formula for the shape",
+        "s2b": "Rectangle: length × width. Triangle: ½ × base × height, where the height is at right angles to the base. Circle: π × r². Trapezoid: (a + b) / 2 × h. The calculator shows the formula for each of its 12 shapes.",
+        "s3t": "Type the sizes",
+        "s3b": "Choose the shape and the unit, then enter each size. A 5 m by 3 m room gives 15 m². If you only know a triangle's three sides, use Triangle (three sides): Heron's formula needs no height.",
+        "s4t": "Convert the unit",
+        "s4b": "The result is listed in other units too. 1 m² is 10.764 ft², 1 ft² is 0.0929 m², an acre is 43,560 ft² and a hectare is 10,000 m². Converting lengths first and then squaring gives the same answer.",
+        "s5t": "Split odd shapes",
+        "s5b": "An L-shaped room is two rectangles: work out each and add them. Take away the area of a hole, a pillar or a pond. A curved bed edge is close to part of a circle (a sector).",
+        "s6t": "Add a margin and check",
+        "s6b": "For materials, add waste: about 10% for tiles and flooring, more for diagonal patterns. Check the answer is sensible: a 5 m × 3 m room cannot be 150 m².",
+        "diagram1": "Formulas for the three shapes you will use most.",
+        "diagram2": "One square metre is about 10.76 square feet."
+      },
+      "faq": {
+        "q1": "What is the difference between area and perimeter?",
+        "a1": "Area is the surface inside the shape (m²). Perimeter is the length around it (m): what you need for skirting or a fence.",
+        "q2": "How do I find the area of a circle from the diameter?",
+        "a2": "Halve the diameter to get the radius, then A = π × r². A 10 cm circle has r = 5 cm and A ≈ 78.54 cm².",
+        "q3": "How do I calculate square footage?",
+        "a3": "Measure length and width in feet and multiply. A 12 ft × 10 ft room is 120 ft². Add the rectangles of an L-shaped room.",
+        "q4": "How many square metres in an acre?",
+        "a4": "About 4,046.86 m². A hectare (10,000 m²) is about 2.47 acres.",
+        "q5": "What if a triangle's height is unknown?",
+        "a5": "Measure all three sides and use Heron's formula, or the Triangle calculator for angles."
+      }
+    },
+    "calculate-volume": {
+      "copy": {
+        "name": "How to calculate volume",
+        "blurb": "Volume formulas for boxes, cylinders, spheres and cones.",
+        "title": "How to calculate volume",
+        "lead": "Volume tells you how much a tank, a box, a pot or a room holds, how much concrete or soil to order, or what a parcel measures. You will measure, pick the formula, keep one unit and turn the answer into litres or gallons.",
+        "result": "The volume in cubic units, the surface area, and the same volume in litres, millilitres, US or imperial gallons and cups.",
+        "note": "Volume is in a unit cubed: centimetres give cm³. 1,000 cm³ is exactly 1 litre.",
+        "s1t": "Open the Volume calculator on cv.cm",
+        "s1b": "Measure with one unit. For how much a container holds, measure the inside; for how much material you need, the outside.",
+        "s2t": "Pick the formula for the solid",
+        "s2b": "Box: length × width × height. Cylinder: π × r² × h. Sphere: 4/3 × π × r³. Cone and pyramid: one third of the matching cylinder or box. The calculator covers 12 solids.",
+        "s3t": "Type the sizes",
+        "s3b": "Choose the solid and unit, then enter each size. A box 30 × 20 × 10 cm gives 6,000 cm³. Use the radius, which is half the diameter, for round shapes.",
+        "s4t": "Read the surface area too",
+        "s4b": "Surface area is the outside skin: what you would paint, wrap or insulate. A 30 × 20 × 10 cm box has 2,200 cm² of surface.",
+        "s5t": "Convert to litres or gallons",
+        "s5b": "1 cm³ = 1 mL and 1,000 cm³ = 1 L, so 6,000 cm³ is 6 L. One cubic metre is 1,000 L. A US gallon is 3.785 L and an imperial gallon 4.546 L; a cubic foot is 28.3 L.",
+        "s6t": "Allow for real shapes",
+        "s6b": "A tank is rarely filled to the brim, and walls take space: subtract the wall thickness from each inside size. For concrete or soil add 5–10% for waste and settling.",
+        "diagram1": "Formulas for three common solids.",
+        "diagram2": "A 10 cm cube holds exactly one litre."
+      },
+      "faq": {
+        "q1": "How do I work out litres from centimetres?",
+        "a1": "Multiply the three inside sizes in cm to get cm³, then divide by 1,000. 40 × 30 × 25 cm = 30,000 cm³ = 30 L.",
+        "q2": "What is the volume of a cone?",
+        "a2": "V = 1/3 × π × r² × h, a third of the cylinder with the same base and height.",
+        "q3": "How do I find the volume of a pipe or tube?",
+        "a3": "Take the outer circle minus the inner circle and multiply by the length: V = π × (R² − r²) × h. The inside alone holds π × r² × h.",
+        "q4": "How many gallons in a cubic foot?",
+        "a4": "About 7.48 US gallons (28.32 litres).",
+        "q5": "Is volume the same as capacity?",
+        "a5": "Capacity is the volume a container holds, usually given in litres or gallons; volume is any amount of space, often in cubic units."
+      }
+    },
+    "pick-random-letter": {
+      "copy": {
+        "name": "How to pick a random letter",
+        "blurb": "Fair letters for word games, classes and naming.",
+        "title": "How to pick a random letter",
+        "lead": "Word games like Scattergories, spelling drills, team names and icebreakers all start with a fair letter. You will decide which letters can come up, leave out the awkward ones, draw one or several, avoid repeats and keep a record.",
+        "result": "One letter or a list of letters, each equally likely, with the last ten draws kept on the page.",
+        "note": "Each draw is independent: after an A, the next letter is still 1 in 26 to be A again, unless No repeats is on.",
+        "s1t": "Open the Random letter generator on cv.cm",
+        "s1b": "Decide what the letter is for. A word game needs letters that start many words; a spelling drill may need only vowels.",
+        "s2t": "Choose the letters that can come up",
+        "s2b": "Pick the alphabet (English A–Z by default), then All letters, Vowels only or Consonants only. The line under the options lists exactly which letters are in the draw.",
+        "s3t": "Leave out hard letters",
+        "s3b": "Type letters into Leave out, such as Q X Z for word games, where few words start with them. Spaces and commas between them are fine; case does not matter.",
+        "s4t": "Draw several with or without repeats",
+        "s4b": "Set How many. Tick No repeats for a list where every letter is different, for example a random order of the whole alphabet; leave it off for independent draws.",
+        "s5t": "Draw",
+        "s5b": "Press Draw. Each letter comes from the browser's cryptographic random generator, so none is more likely than another. Choose upper, lower or mixed case and how to separate several letters.",
+        "s6t": "Keep a record",
+        "s6b": "The last ten draws are listed under the result, so you can see what has come up in a game. Copy puts the latest letters on the clipboard.",
+        "diagram1": "Only the letters left in the pool can be drawn.",
+        "diagram2": "With No repeats, each drawn letter leaves the pool."
+      },
+      "faq": {
+        "q1": "Is every letter equally likely?",
+        "a1": "Yes, among the letters in the draw. If you leave out Q, X and Z, each of the other 23 has a 1 in 23 chance.",
+        "q2": "Which letters are best for Scattergories?",
+        "a2": "Most players leave out Q, U, V, X, Y and Z, which start few English words.",
+        "q3": "Can I draw letters in another alphabet?",
+        "a3": "Yes: Spanish, Vietnamese, Greek, Russian, hiragana and katakana are in the Alphabet menu.",
+        "q4": "How do I shuffle the whole alphabet?",
+        "a4": "Set How many to 26 and tick No repeats. The result is every letter once, in random order.",
+        "q5": "Does Y count as a vowel?",
+        "a5": "In English mode the vowels are A, E, I, O and U. Leave Y in or out with Leave out. In Vietnamese, Y counts as a vowel."
+      }
+    }
+  },
+  "svg": {
+    "make-gif": {
+      "frame": "Frame",
+      "loop": "Loop",
+      "delay": "delay",
+      "frames": "Frames",
+      "colors": "Colours",
+      "size": "File size",
+      "pixels": "Pixels"
+    },
+    "split-image": {
+      "trimmed": "Trimmed",
+      "post": "Post",
+      "newest": "Newest post"
+    },
+    "calculate-area": {
+      "rectangle": "Rectangle",
+      "triangle": "Triangle",
+      "circle": "Circle"
+    },
+    "calculate-volume": {
+      "box": "Box",
+      "cylinder": "Cylinder",
+      "sphere": "Sphere",
+      "litre": "1 litre"
+    },
+    "pick-random-letter": {
+      "pool": "In the draw",
+      "left": "Left out",
+      "repeats": "Repeats allowed",
+      "unique": "No repeats"
+    }
+  }
+}
