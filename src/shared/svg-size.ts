@@ -38,6 +38,8 @@ export function readSvg(text: string): SvgInfo | null {
   // A plain <svg> root only: a prefixed <svg:svg> is left to the browser (rewriting it would break the markup).
   const m = /<svg(?=[\s/>])(?:"[^"]*"|'[^']*'|[^'">])*>/i.exec(masked);
   if (!m) return null;
+  // Under a prefixed root (<svg:svg>) a plain <svg> is a nested child, not the root: leave that file to the browser.
+  if (/<[\w.-]+:svg(?=[\s/>])/i.test(masked.slice(0, m.index))) return null;
   const tag = text.slice(m.index, m.index + m[0].length);
   const vb = (attr(tag, "viewBox") ?? "").trim().split(/[\s,]+/).map(Number);
   const vbw = vb.length === 4 && vb[2]! > 0 ? vb[2]! : null;

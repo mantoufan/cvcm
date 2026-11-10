@@ -340,6 +340,7 @@ describe("svg size", () => {
     expect(readSvg("<html></html>")).toBeNull();
     // A prefixed root is left to the browser rather than rewritten into broken markup.
     expect(readSvg('<svg:svg xmlns:svg="http://www.w3.org/2000/svg" width="10" height="10"/>')).toBeNull();
+    expect(readSvg('<svg:svg xmlns:svg="http://www.w3.org/2000/svg" width="800" height="600"><svg width="50" height="50"/></svg:svg>')).toBeNull();
     // Attribute names are case-sensitive: browsers ignore "viewbox", so a viewBox is still added.
     expect(readSvg('<svg viewbox="0 0 10 10"></svg>')).toMatchObject({ width: 300, height: 150, hasViewBox: false });
     // A tag inside a comment or the DOCTYPE is not the root.

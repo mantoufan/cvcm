@@ -209,15 +209,19 @@ export function mapPixels(rgba: Uint8ClampedArray, width: number, height: number
       const er = r - palette[idx * 3]!;
       const eg = g - palette[idx * 3 + 1]!;
       const eb = b - palette[idx * 3 + 2]!;
-      const spread = (arr: Float32Array, at: number, w: number) => {
-        arr[at]! += er * w;
-        arr[at + 1]! += eg * w;
-        arr[at + 2]! += eb * w;
-      };
-      spread(cur, e + 3, 7 / 16);
-      spread(next, e - 3, 3 / 16);
-      spread(next, e, 5 / 16);
-      spread(next, e + 3, 1 / 16);
+      // 7/16 right, 3/16 down-left, 5/16 down, 1/16 down-right (inlined: this is the hottest loop).
+      cur[e + 3]! += er * 0.4375;
+      cur[e + 4]! += eg * 0.4375;
+      cur[e + 5]! += eb * 0.4375;
+      next[e - 3]! += er * 0.1875;
+      next[e - 2]! += eg * 0.1875;
+      next[e - 1]! += eb * 0.1875;
+      next[e]! += er * 0.3125;
+      next[e + 1]! += eg * 0.3125;
+      next[e + 2]! += eb * 0.3125;
+      next[e + 3]! += er * 0.0625;
+      next[e + 4]! += eg * 0.0625;
+      next[e + 5]! += eb * 0.0625;
     }
     [cur, next] = [next, cur];
     next.fill(0);
@@ -322,9 +326,8 @@ function writeLzw(indices: Uint8Array, minCodeSize: number, out: Bytes, table: L
 export class GifWriter {
   private out = new Bytes();
   private frames = 0;
-  /** Buffers kept for this writer's frames only; they go when the writer does, finished or abandoned. */
-  private scratch = newScratch();
-  constructor(private readonly opts: GifOptions) {
+  /** `scratch` can be shared by writers that never run at the same time (still GIFs one after another). */
+  constructor(private readonly opts: GifOptions, private scratch: GifScratch = newScratch()) {
     const { width, height, loop } = opts;
     this.out.push(0x47, 0x49, 0x46, 0x38, 0x39, 0x61);
     this.out.word(width);
@@ -369,10 +372,8 @@ export class GifWriter {
     return this.frames;
   }
 
-  /** The file. The scratch buffers are let go at once rather than with the writer. */
   finish(): Uint8Array {
     this.out.byte(0x3b);
-    this.scratch = newScratch();
     return this.out.result();
   }
 }

@@ -1,4 +1,4 @@
-import { GifWriter } from "./gif";
+import { GifWriter, newScratch } from "./gif";
 export type Pixels = { data: Uint8ClampedArray; width: number; height: number };
 
 export function blobFromBytes(data: Uint8Array, type: string): Blob {
@@ -76,8 +76,11 @@ export function encodeIco(png: Uint8Array, width: number, height: number): Uint8
  * A still GIF: one frame with its own median-cut palette (src/shared/gif.ts, the GIF maker's encoder). Transparent
  * pixels come out as their colour channels, as before; the page draws the picture over its canvas first.
  */
+/** Reused by every still GIF (the convert page's size estimate runs often), not reallocated each time. */
+const stillScratch = newScratch();
+
 export function encodeGif(px: Pixels): Uint8Array {
-  const writer = new GifWriter({ width: px.width, height: px.height, loop: null });
+  const writer = new GifWriter({ width: px.width, height: px.height, loop: null }, stillScratch);
   writer.addFrame(px.data, { colors: 256, dither: false, delayMs: 0 });
   return writer.finish();
 }

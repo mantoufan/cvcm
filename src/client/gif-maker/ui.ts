@@ -293,7 +293,7 @@ async function setClip(file: File): Promise<void> {
     return;
   }
   // MediaRecorder WebM (cv.cm's own recorders too) has no duration until the browser looks at its end.
-  const duration = await finiteDuration(video);
+  const duration = await finiteDuration(video, 3000);
   if (!els || load !== state.load) {
     video.removeAttribute("src");
     video.load();
@@ -480,8 +480,8 @@ const yieldFrame = () => new Promise<void>((resolve) => setTimeout(resolve, 0));
 const LOAD_TIMEOUT_MS = 20000;
 
 async function seek(video: HTMLVideoElement, time: number): Promise<void> {
-  // A seek still landing from a stopped encode would otherwise answer this one early.
-  if (video.seeking) await new Promise((r) => video.addEventListener("seeked", r, { once: true }));
+  // A seek still landing from a stopped encode would otherwise answer this one early (but never wait on it for long).
+  if (video.seeking) await Promise.race([new Promise((r) => video.addEventListener("seeked", r, { once: true })), new Promise((r) => setTimeout(r, 2000))]);
   return new Promise((resolve, reject) => {
     const timer = window.setTimeout(() => fail(), LOAD_TIMEOUT_MS);
     const done = () => {
@@ -586,7 +586,8 @@ async function makeGif(): Promise<void> {
   state.busy = false;
   setStatus(t("gifMaker.done", { n: count, size: formatBytes(blob.size), w: size.width, h: size.height }));
   const first = clip ? clip.file : state.stills[0]!.file;
-  const name = outputFilename(first.name, "image/gif", "");
+  // A suffix keeps a GIF made from cat.gif from taking the source's own name.
+  const name = outputFilename(first.name, "image/gif", "-animated");
   els.result.replaceChildren(
     h("img", { src: state.result.url, alt: t("gifMaker.resultAlt"), width: size.width, height: size.height, class: "gif-out" }),
     h("div", { class: "stage-actions" },
