@@ -1,0 +1,229 @@
+{
+  "meta": {
+    "titleMakeGif": "Cómo hacer un GIF con imágenes o un video (gratis, sin marca de agua) | cv.cm",
+    "descMakeGif": "Cree un GIF animado online: añada fotos o un clip corto, ordénelos, ajuste el retardo o los fotogramas por segundo, el tamaño y la repetición, mantenga el archivo ligero y descárguelo. Gratis, en su navegador y sin subir nada.",
+    "titleSplitImage": "Cómo dividir una imagen en cuadrícula para Instagram (3×3, carrusel) | cv.cm",
+    "descSplitImage": "Corte una imagen en una cuadrícula de 3×3 o en un carrusel para deslizar: elija la cuadrícula, recorte en piezas cuadradas, divida, descargue las piezas y publíquelas en el orden correcto.",
+    "titleCalculateArea": "Cómo calcular el área: rectángulo, triángulo, círculo y más | cv.cm",
+    "descCalculateArea": "Fórmulas de área de las figuras habituales con ejemplos resueltos: mida, elija la fórmula, use una sola unidad, pase de m² a ft², acres o hectáreas, y sume habitaciones y terrenos irregulares.",
+    "titleCalculateVolume": "Cómo calcular el volumen: caja, cilindro, esfera, cono | cv.cm",
+    "descCalculateVolume": "Fórmulas de volumen de los cuerpos habituales con ejemplos resueltos, cómo medir las dimensiones interiores y cómo pasar de cm³ o pies cúbicos a litros y galones.",
+    "titlePickRandomLetter": "Cómo sacar una letra al azar (A–Z, vocales, sin repetir) | cv.cm",
+    "descPickRandomLetter": "Saque una letra aleatoria y justa para juegos como Stop (Basta) o Scattergories, ejercicios en clase o para elegir nombres: elija las letras, excluya algunas, saque varias sin repetir y lleve un registro."
+  },
+  "lessons": {
+    "make-gif": {
+      "copy": {
+        "name": "Cómo hacer un GIF",
+        "blurb": "GIF animado a partir de fotos o de un clip de video corto.",
+        "title": "Cómo hacer un GIF con imágenes o un video",
+        "lead": "Un GIF se reproduce en chats, presentaciones, correos y páginas web sin necesidad de reproductor. Reunirá los fotogramas, ajustará su tiempo, elegirá el tamaño y la repetición, mantendrá el archivo ligero y lo descargará. El Creador de GIF lo hace en el navegador, sin marca de agua.",
+        "result": "Un GIF animado que se repite (o se reproduce una vez) a la velocidad elegida, listo para enviar o insertar.",
+        "note": "Un GIF admite como máximo 256 colores por fotograma y no tiene sonido. Para clips largos o con mucho detalle, un MP4 corto suele pesar menos.",
+        "s1t": "Abra el Creador de GIF en cv.cm",
+        "s1b": "Reúna los fotogramas: dos o más imágenes con la misma proporción, o un video corto. Sirven fotos del teléfono, capturas de pantalla y dibujos.",
+        "s2t": "Añada los fotogramas y ordénelos",
+        "s2b": "Suelte las imágenes; cada una es un fotograma y se reproducen de arriba abajo. Use las flechas para reordenarlas y × para quitarlas. Con un video, suelte el archivo e indique Inicio y Fin en segundos.",
+        "s3t": "Ajuste el tiempo",
+        "s3b": "Con imágenes, Retardo por fotograma fija cuánto se ve cada una: 500 ms son dos fotogramas por segundo y 100 ms ya parece movimiento. Con un video, 10 fotogramas por segundo es suficientemente fluido para la mayoría de los clips.",
+        "s4t": "Elija el tamaño y la repetición",
+        "s4b": "Elija un ancho; el alto sigue la proporción del primer fotograma. Las imágenes con otra proporción pueden encajarse sobre el color de fondo o rellenar el fotograma. Elija Repetir siempre, Reproducir una vez o Reproducir 3 veces.",
+        "s5t": "Mantenga el archivo ligero",
+        "s5b": "El tamaño del archivo crece con ancho × alto × fotogramas. Reducir el ancho a la mitad hace el archivo unas cuatro veces más pequeño. Menos colores y el tramado desactivado ayudan con gráficos planos; deje el tramado activado para fotos.",
+        "s6t": "Cree y descargue",
+        "s6b": "Pulse Crear GIF. El GIF terminado se reproduce debajo con su tamaño en píxeles y en bytes. Revíselo y luego pulse Descargar GIF. Si es demasiado grande o demasiado rápido, cambie cualquier ajuste y vuelva a crearlo.",
+        "diagram1": "Cada fotograma se muestra durante su retardo; tras el último, la repetición vuelve a empezar.",
+        "diagram2": "El ancho, el número de fotogramas y los colores deciden el tamaño del archivo."
+      },
+      "faq": {
+        "q1": "¿Cuántos fotogramas puede tener un GIF?",
+        "a1": "El formato no tiene un límite real; este creador se detiene en 300 fotogramas para que la pestaña siga respondiendo. Son 30 segundos a 10 fotogramas por segundo.",
+        "q2": "¿Qué retardo por fotograma debo usar?",
+        "a2": "De 100 a 200 ms para movimiento, de 500 ms a 1 s para una presentación de fotos. Los navegadores ralentizan los retardos de menos de 20 ms, así que los GIF muy rápidos se reproducen más despacio de lo indicado.",
+        "q3": "¿Puede un GIF tener sonido?",
+        "a3": "No. El GIF solo contiene imágenes. Use un archivo de video si necesita sonido.",
+        "q4": "¿Cómo hago que un GIF se repita?",
+        "a4": "Elija Repetir siempre en Repetición. Reproducir una vez hace que se detenga en el último fotograma.",
+        "q5": "¿Es gratis y privado?",
+        "a5": "Sí. Es gratis, no añade marca de agua y funciona en la página, así que sus imágenes y videos no se suben."
+      }
+    },
+    "split-image": {
+      "copy": {
+        "name": "Cómo dividir una imagen en cuadrícula",
+        "blurb": "Corte una imagen en piezas para una cuadrícula o un carrusel de Instagram.",
+        "title": "Cómo dividir una imagen en cuadrícula para Instagram",
+        "lead": "Una imagen grande repartida en varias publicaciones hace que un perfil parezca un único póster, y una foto ancha cortada en diapositivas forma un carrusel para deslizar. Elegirá la cuadrícula, recortará en piezas cuadradas, dividirá, descargará y publicará en el orden correcto.",
+        "result": "Piezas iguales nombradas por fila y columna, en un ZIP o una a una, numeradas en el orden de publicación.",
+        "note": "La cuadrícula del perfil de Instagram muestra las publicaciones como miniaturas verticales 3:4, así que ahí las piezas cuadradas pierden un poco por la izquierda y la derecha, y se notan cortes entre columnas; la publicación completa sigue mostrando toda la pieza.",
+        "s1t": "Abra el Divisor de imágenes en cv.cm",
+        "s1b": "Elija una imagen nítida con el motivo cerca del centro. Para una cuadrícula de 3 × 3 con piezas de 1080 px, parta de una imagen de al menos 3240 px de ancho.",
+        "s2t": "Elija la cuadrícula",
+        "s2b": "Use 3 × 3 para un bloque de nueve publicaciones en el perfil, 1 × 3 o 1 × 2 para una panorámica que se desliza, o indique filas y columnas, hasta 20 de cada. La cuadrícula aparece sobre la imagen al instante.",
+        "s3t": "Recorte en piezas cuadradas",
+        "s3b": "Deje Piezas cuadradas activado para Instagram. Se conserva en el centro la mayor cuadrícula cuadrada que cabe y se recortan los bordes atenuados. Desactívelo para usar toda la imagen.",
+        "s4t": "Divida y descargue",
+        "s4b": "Pulse Dividir. Las piezas aparecen debajo; toque una para guardarla, o pulse Descargar ZIP para todas. Los archivos se llaman photo-r1-c1, photo-r1-c2 y así sucesivamente, para que se ordenen en orden de lectura.",
+        "s5t": "Publique en el orden correcto",
+        "s5b": "La publicación más reciente aparece arriba a la izquierda, así que publique primero la última pieza (abajo a la derecha) y al final la primera. Marque Mostrar orden de publicación para numerar las piezas 1, 2, 3 en el orden en que las publica.",
+        "s6t": "O publique un carrusel",
+        "s6b": "Para una panorámica, seleccione todas las diapositivas en una sola publicación, en orden de lectura (de izquierda a derecha). La gente las desliza como una única imagen continua.",
+        "diagram1": "Una cuadrícula de 3 × 3 con piezas cuadradas, cortada del centro de la imagen.",
+        "diagram2": "Publique primero la última pieza: acaba abajo a la derecha."
+      },
+      "faq": {
+        "q1": "¿Qué tamaño debe tener cada pieza para Instagram?",
+        "a1": "Al menos 1080 × 1080 px para publicaciones cuadradas. Por eso, una cuadrícula de 3 × 3 necesita una imagen de al menos 3240 px de ancho para que Instagram no tenga que ampliarla.",
+        "q2": "¿Por qué mis piezas se diferencian en un píxel?",
+        "a2": "Cuando el tamaño de la imagen no es divisible entre el número de filas o columnas, algunas piezas reciben un píxel más para que no se pierda nada.",
+        "q3": "¿Puedo dividir una imagen en dos mitades?",
+        "a3": "Sí: 1 × 2 la corta en izquierda y derecha, y 2 × 1 en arriba y abajo.",
+        "q4": "¿Sirve para imprimir pósteres?",
+        "a4": "Sí. Desactive las piezas cuadradas, elija una cuadrícula como 2 × 3 e imprima cada pieza en una hoja.",
+        "q5": "¿Se sube la imagen?",
+        "a5": "No. Las piezas se cortan en su navegador."
+      }
+    },
+    "calculate-area": {
+      "copy": {
+        "name": "Cómo calcular el área",
+        "blurb": "Fórmulas de área para rectángulos, triángulos, círculos y más.",
+        "title": "Cómo calcular el área",
+        "lead": "El área le dice cuánto suelo, pintura, césped o tela necesita, o qué tamaño tiene un terreno. Medirá, elegirá la fórmula de la figura, usará una sola unidad, convertirá el resultado y dividirá las figuras irregulares en figuras sencillas.",
+        "result": "El área de la figura en unidades cuadradas, su perímetro cuando está determinado y la misma área en m², ft², acres o hectáreas.",
+        "note": "El área siempre se expresa en una unidad al cuadrado: con metros se obtienen m², con pies, ft². Nunca mezcle unidades en un mismo cálculo.",
+        "s1t": "Abra la Calculadora de área en cv.cm",
+        "s1b": "Mida lo que necesita la figura con una sola unidad, por ejemplo todo en metros. En una habitación, mida de pared a pared a ras de suelo.",
+        "s2t": "Elija la fórmula de la figura",
+        "s2b": "Rectángulo: largo × ancho. Triángulo: ½ × base × altura, donde la altura es perpendicular a la base. Círculo: π × r². Trapecio: (a + b) / 2 × h. La calculadora muestra la fórmula de cada una de sus 12 figuras.",
+        "s3t": "Escriba las medidas",
+        "s3b": "Elija la figura y la unidad, y escriba cada medida. Una habitación de 5 m por 3 m da 15 m². Si solo conoce los tres lados de un triángulo, use Triángulo (tres lados): la fórmula de Herón no necesita la altura.",
+        "s4t": "Convierta la unidad",
+        "s4b": "El resultado también aparece en otras unidades. 1 m² son 10,764 ft², 1 ft² son 0,0929 m², un acre son 43.560 ft² y una hectárea son 10.000 m². Convertir primero las longitudes y luego elevar al cuadrado da el mismo resultado.",
+        "s5t": "Divida las figuras irregulares",
+        "s5b": "Una habitación en forma de L son dos rectángulos: calcule cada uno y súmelos. Reste el área de un hueco, un pilar o un estanque. El borde curvo de un parterre se parece a una parte de un círculo (un sector).",
+        "s6t": "Añada un margen y compruebe",
+        "s6b": "Para materiales, añada un margen por desperdicio: alrededor del 10 % para baldosas y suelos, más si la colocación es en diagonal. Compruebe que el resultado es razonable: una habitación de 5 m × 3 m no puede medir 150 m².",
+        "diagram1": "Fórmulas de las tres figuras que más usará.",
+        "diagram2": "Un metro cuadrado son unos 10,76 pies cuadrados."
+      },
+      "faq": {
+        "q1": "¿Qué diferencia hay entre área y perímetro?",
+        "a1": "El área es la superficie dentro de la figura (m²). El perímetro es la longitud de su contorno (m): lo que necesita para un rodapié o una valla.",
+        "q2": "¿Cómo calculo el área de un círculo a partir del diámetro?",
+        "a2": "Divida el diámetro entre dos para obtener el radio y luego A = π × r². Un círculo de 10 cm tiene r = 5 cm y A ≈ 78,54 cm².",
+        "q3": "¿Cómo calculo los pies cuadrados?",
+        "a3": "Mida el largo y el ancho en pies y multiplíquelos. Una habitación de 12 ft × 10 ft mide 120 ft². En una habitación en forma de L, sume los rectángulos.",
+        "q4": "¿Cuántos metros cuadrados tiene un acre?",
+        "a4": "Unos 4046,86 m². Una hectárea (10.000 m²) son unos 2,47 acres.",
+        "q5": "¿Y si no conozco la altura del triángulo?",
+        "a5": "Mida los tres lados y use la fórmula de Herón, o la Calculadora de triángulos si también quiere los ángulos."
+      }
+    },
+    "calculate-volume": {
+      "copy": {
+        "name": "Cómo calcular el volumen",
+        "blurb": "Fórmulas de volumen para cajas, cilindros, esferas y conos.",
+        "title": "Cómo calcular el volumen",
+        "lead": "El volumen le dice cuánto cabe en un depósito, una caja, una maceta o una habitación, cuánto hormigón o tierra pedir, o cuánto mide un paquete. Medirá, elegirá la fórmula, usará una sola unidad y convertirá el resultado en litros o galones.",
+        "result": "El volumen en unidades cúbicas, el área de la superficie y el mismo volumen en litros, mililitros, galones estadounidenses o imperiales y tazas.",
+        "note": "El volumen se expresa en una unidad al cubo: con centímetros se obtienen cm³. 1000 cm³ son exactamente 1 litro.",
+        "s1t": "Abra la Calculadora de volumen en cv.cm",
+        "s1b": "Mida con una sola unidad. Para saber cuánto cabe en un recipiente, mida el interior; para saber cuánto material necesita, el exterior.",
+        "s2t": "Elija la fórmula del cuerpo",
+        "s2b": "Caja: largo × ancho × alto. Cilindro: π × r² × h. Esfera: 4/3 × π × r³. Cono y pirámide: un tercio del cilindro o la caja equivalentes. La calculadora abarca 12 cuerpos.",
+        "s3t": "Escriba las medidas",
+        "s3b": "Elija el cuerpo y la unidad, y escriba cada medida. Una caja de 30 × 20 × 10 cm da 6000 cm³. En las figuras redondas, use el radio, que es la mitad del diámetro.",
+        "s4t": "Mire también el área de la superficie",
+        "s4b": "El área de la superficie es la piel exterior: lo que pintaría, envolvería o aislaría. Una caja de 30 × 20 × 10 cm tiene 2200 cm² de superficie.",
+        "s5t": "Convierta a litros o galones",
+        "s5b": "1 cm³ = 1 mL y 1000 cm³ = 1 L, así que 6000 cm³ son 6 L. Un metro cúbico son 1000 L. Un galón estadounidense son 3,785 L y un galón imperial, 4,546 L; un pie cúbico son 28,3 L.",
+        "s6t": "Tenga en cuenta las formas reales",
+        "s6b": "Un depósito casi nunca se llena hasta el borde, y las paredes ocupan espacio: reste el grosor de la pared de cada medida interior. Para hormigón o tierra, añada entre un 5 y un 10 % por desperdicio y asentamiento.",
+        "diagram1": "Fórmulas de tres cuerpos habituales.",
+        "diagram2": "Un cubo de 10 cm contiene exactamente un litro."
+      },
+      "faq": {
+        "q1": "¿Cómo calculo los litros a partir de centímetros?",
+        "a1": "Multiplique las tres medidas interiores en cm para obtener cm³ y divida entre 1000. 40 × 30 × 25 cm = 30.000 cm³ = 30 L.",
+        "q2": "¿Cuál es el volumen de un cono?",
+        "a2": "V = 1/3 × π × r² × h, un tercio del cilindro con la misma base y altura.",
+        "q3": "¿Cómo calculo el volumen de un tubo?",
+        "a3": "Tome el círculo exterior menos el interior y multiplíquelo por la longitud: V = π × (R² − r²) × h. Solo el interior contiene π × r² × h.",
+        "q4": "¿Cuántos galones tiene un pie cúbico?",
+        "a4": "Unos 7,48 galones estadounidenses (28,32 litros).",
+        "q5": "¿Es lo mismo volumen que capacidad?",
+        "a5": "La capacidad es el volumen que cabe en un recipiente, normalmente en litros o galones; el volumen es cualquier cantidad de espacio, a menudo en unidades cúbicas."
+      }
+    },
+    "pick-random-letter": {
+      "copy": {
+        "name": "Cómo sacar una letra al azar",
+        "blurb": "Letras justas para juegos de palabras, clases y nombres.",
+        "title": "Cómo sacar una letra al azar",
+        "lead": "Juegos de palabras como Stop (Basta) o Scattergories, ejercicios de ortografía, nombres de equipos y dinámicas para romper el hielo empiezan con una letra justa. Decidirá qué letras pueden salir, excluirá las difíciles, sacará una o varias, evitará repeticiones y llevará un registro.",
+        "result": "Una letra o una lista de letras, todas con la misma probabilidad, con las diez últimas tiradas guardadas en la página.",
+        "note": "Cada tirada es independiente: después de una A, la siguiente letra sigue teniendo 1 posibilidad entre 26 de volver a ser A, salvo que Sin repetir esté activado.",
+        "s1t": "Abra el Generador de letras aleatorias en cv.cm",
+        "s1b": "Decida para qué es la letra. Un juego de palabras necesita letras con las que empiecen muchas palabras; un ejercicio de ortografía quizá solo necesite vocales.",
+        "s2t": "Elija las letras que pueden salir",
+        "s2b": "Elija el alfabeto (Inglés A–Z por defecto) y luego Todas las letras, Solo vocales o Solo consonantes. La línea bajo las opciones muestra exactamente qué letras entran en el sorteo.",
+        "s3t": "Excluya las letras difíciles",
+        "s3b": "Escriba letras en Excluir, como Q X Z para juegos de palabras, porque pocas palabras empiezan por ellas. Puede separarlas con espacios o comas; da igual si van en mayúsculas o minúsculas.",
+        "s4t": "Saque varias, con o sin repetición",
+        "s4b": "Indique Cuántas. Marque Sin repetir para obtener una lista en la que todas las letras sean distintas, por ejemplo el alfabeto completo en orden aleatorio; déjelo desactivado para tiradas independientes.",
+        "s5t": "Genere",
+        "s5b": "Pulse Generar. Cada letra sale del generador aleatorio criptográfico del navegador, así que ninguna es más probable que otra. Elija mayúsculas, minúsculas o mezcladas y cómo separar varias letras.",
+        "s6t": "Lleve un registro",
+        "s6b": "Las diez últimas tiradas aparecen bajo el resultado, así que puede ver qué ha salido durante una partida. Copiar pone las últimas letras en el portapapeles.",
+        "diagram1": "Solo pueden salir las letras que quedan en el sorteo.",
+        "diagram2": "Con Sin repetir, cada letra que sale deja el sorteo."
+      },
+      "faq": {
+        "q1": "¿Todas las letras tienen la misma probabilidad?",
+        "a1": "Sí, entre las letras del sorteo. Si excluye Q, X y Z, cada una de las otras 23 tiene 1 posibilidad entre 23.",
+        "q2": "¿Qué letras son mejores para Scattergories?",
+        "a2": "La mayoría de los jugadores excluyen Q, U, V, X, Y y Z, con las que empiezan pocas palabras en inglés.",
+        "q3": "¿Puedo sacar letras de otro alfabeto?",
+        "a3": "Sí: español, vietnamita, griego, ruso, hiragana y katakana están en el menú Alfabeto.",
+        "q4": "¿Cómo desordeno el alfabeto completo?",
+        "a4": "Ponga Cuántas en 26 y marque Sin repetir. El resultado contiene cada letra una vez, en orden aleatorio.",
+        "q5": "¿La Y cuenta como vocal?",
+        "a5": "En el modo inglés, las vocales son A, E, I, O y U. Incluya o quite la Y con Excluir. En vietnamita, la Y cuenta como vocal."
+      }
+    }
+  },
+  "svg": {
+    "make-gif": {
+      "frame": "Fotograma",
+      "loop": "Repetición",
+      "delay": "retardo",
+      "frames": "Fotogramas",
+      "colors": "Colores",
+      "size": "Tamaño del archivo",
+      "pixels": "Píxeles"
+    },
+    "split-image": {
+      "trimmed": "Recortado",
+      "post": "Publicación",
+      "newest": "Más reciente"
+    },
+    "calculate-area": {
+      "rectangle": "Rectángulo",
+      "triangle": "Triángulo",
+      "circle": "Círculo"
+    },
+    "calculate-volume": {
+      "box": "Caja",
+      "cylinder": "Cilindro",
+      "sphere": "Esfera",
+      "litre": "1 litro"
+    },
+    "pick-random-letter": {
+      "pool": "En el sorteo",
+      "left": "Excluidas",
+      "repeats": "Con repetición",
+      "unique": "Sin repetir"
+    }
+  }
+}

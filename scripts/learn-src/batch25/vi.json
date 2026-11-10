@@ -1,0 +1,229 @@
+{
+  "meta": {
+    "titleMakeGif": "Cách làm ảnh GIF từ ảnh hoặc video (miễn phí, không logo) | cv.cm",
+    "descMakeGif": "Tạo ảnh GIF online: thêm ảnh hoặc một đoạn video ngắn, sắp thứ tự, chỉnh thời gian mỗi khung hình hoặc số khung hình/giây, kích thước và số lần lặp, giữ file nhẹ rồi tải về. Miễn phí, ngay trên trình duyệt, không tải lên.",
+    "titleSplitImage": "Cách cắt ảnh thành nhiều phần cho Instagram (lưới 3×3, carousel) | cv.cm",
+    "descSplitImage": "Chia một bức ảnh thành lưới 3×3 hoặc carousel vuốt ngang: chọn lưới, cắt thành ô vuông, cắt ảnh, tải các ô về và đăng theo đúng thứ tự.",
+    "titleCalculateArea": "Cách tính diện tích: hình chữ nhật, tam giác, hình tròn và nhiều hình khác | cv.cm",
+    "descCalculateArea": "Công thức tính diện tích các hình thường gặp kèm ví dụ: đo, chọn công thức, dùng một đơn vị, đổi m² sang ft², mẫu Anh hoặc héc-ta, và cộng diện tích phòng hay mảnh đất có hình dạng phức tạp.",
+    "titleCalculateVolume": "Cách tính thể tích: hình hộp, hình trụ, hình cầu, hình nón | cv.cm",
+    "descCalculateVolume": "Công thức tính thể tích các khối thường gặp kèm ví dụ, cách đo kích thước bên trong, và cách đổi cm³ hoặc foot khối sang lít và gallon.",
+    "titlePickRandomLetter": "Cách chọn chữ cái ngẫu nhiên (A–Z, nguyên âm, không lặp lại) | cv.cm",
+    "descPickRandomLetter": "Rút chữ cái ngẫu nhiên công bằng cho trò chơi như Scattergories, bài luyện trên lớp hay đặt tên: chọn chữ cái, loại bỏ vài chữ, rút nhiều chữ không lặp lại và giữ lại lịch sử."
+  },
+  "lessons": {
+    "make-gif": {
+      "copy": {
+        "name": "Cách làm ảnh GIF",
+        "blurb": "GIF động từ ảnh hoặc một đoạn video ngắn.",
+        "title": "Cách làm ảnh GIF từ ảnh hoặc video",
+        "lead": "GIF phát được trong khung chat, slide, email và trang web mà không cần trình phát. Bạn sẽ gom các khung hình, đặt thời gian, chọn kích thước và số lần lặp, giữ file nhẹ rồi tải về. Công cụ Tạo ảnh GIF làm tất cả ngay trên trình duyệt, không chèn logo.",
+        "result": "Một ảnh GIF động lặp mãi (hoặc phát một lần) ở tốc độ bạn chọn, sẵn sàng để gửi hoặc nhúng.",
+        "note": "GIF có tối đa 256 màu mỗi khung hình và không có âm thanh. Với đoạn dài hoặc nhiều chi tiết, một file MP4 ngắn thường nhẹ hơn.",
+        "s1t": "Mở Tạo ảnh GIF trên cv.cm",
+        "s1b": "Chuẩn bị khung hình: từ hai ảnh trở lên cùng tỉ lệ, hoặc một video ngắn. Ảnh chụp điện thoại, ảnh chụp màn hình và hình vẽ đều dùng được.",
+        "s2t": "Thêm khung hình và sắp thứ tự",
+        "s2b": "Thả ảnh vào; mỗi ảnh là một khung hình và phát từ trên xuống dưới. Dùng các mũi tên để sắp lại và × để xóa. Với video, thả file vào rồi đặt Bắt đầu và Kết thúc tính bằng giây.",
+        "s3t": "Đặt thời gian",
+        "s3b": "Với ảnh, Thời gian mỗi khung hình quyết định mỗi ảnh hiện bao lâu: 500 ms là hai khung hình mỗi giây, 100 ms trông như chuyển động. Với video, 10 khung hình/giây là đủ mượt cho hầu hết các đoạn.",
+        "s4t": "Chọn kích thước và số lần lặp",
+        "s4b": "Chọn Chiều rộng; chiều cao theo tỉ lệ của khung hình đầu tiên. Ảnh khác tỉ lệ có thể nằm vừa trong khung trên màu nền hoặc lấp đầy khung. Chọn Lặp mãi, Phát một lần hoặc Phát 3 lần.",
+        "s5t": "Giữ file nhẹ",
+        "s5b": "Dung lượng file tăng theo chiều rộng × chiều cao × số khung hình. Giảm chiều rộng một nửa giúp file nhẹ đi khoảng bốn lần. Ít màu hơn và tắt dithering có ích với hình đồ họa phẳng; với ảnh chụp thì nên bật dithering.",
+        "s6t": "Tạo và tải về",
+        "s6b": "Nhấn Tạo GIF. Ảnh GIF hoàn chỉnh phát bên dưới kèm kích thước theo pixel và dung lượng. Kiểm tra lại rồi nhấn Tải GIF. Nếu GIF quá nặng hoặc quá nhanh, đổi cài đặt và tạo lại.",
+        "diagram1": "Mỗi khung hình hiện trong thời gian của nó; sau khung cuối, vòng lặp bắt đầu lại.",
+        "diagram2": "Chiều rộng, số khung hình và số màu quyết định dung lượng file."
+      },
+      "faq": {
+        "q1": "Một ảnh GIF có thể có bao nhiêu khung hình?",
+        "a1": "Định dạng này gần như không giới hạn; công cụ dừng ở 300 khung hình để tab không bị đơ. Tức là 30 giây ở 10 khung hình/giây.",
+        "q2": "Nên đặt thời gian mỗi khung hình bao nhiêu?",
+        "a2": "100–200 ms cho chuyển động, 500 ms đến 1 giây cho trình chiếu ảnh. Trình duyệt làm chậm các khung dưới 20 ms, nên GIF quá nhanh sẽ phát chậm hơn mức đã đặt.",
+        "q3": "GIF có âm thanh được không?",
+        "a3": "Không. GIF chỉ có hình. Hãy dùng file video nếu cần âm thanh.",
+        "q4": "Làm sao để GIF lặp lại liên tục?",
+        "a4": "Chọn Lặp mãi trong mục Lặp lại. Phát một lần sẽ dừng ở khung hình cuối.",
+        "q5": "Có miễn phí và riêng tư không?",
+        "a5": "Có. Công cụ miễn phí, không chèn logo và chạy ngay trong trang, nên ảnh và video của bạn không bị tải lên."
+      }
+    },
+    "split-image": {
+      "copy": {
+        "name": "Cách cắt ảnh thành nhiều phần",
+        "blurb": "Chia một bức ảnh thành các ô cho lưới Instagram hoặc carousel.",
+        "title": "Cách cắt ảnh thành nhiều phần cho Instagram",
+        "lead": "Một bức ảnh lớn trải trên nhiều bài đăng khiến trang cá nhân trông như một tấm poster liền mạch, còn một ảnh rộng cắt thành nhiều slide sẽ thành carousel để vuốt xem. Bạn sẽ chọn lưới, cắt thành ô vuông, cắt ảnh, tải về và đăng theo đúng thứ tự.",
+        "result": "Các ô bằng nhau, đặt tên theo hàng và cột, tải trong một file ZIP hoặc từng ô, được đánh số theo thứ tự đăng.",
+        "note": "Lưới trang cá nhân Instagram hiển thị bài đăng dưới dạng ảnh thu nhỏ dọc 3:4, nên ô vuông sẽ bị mất một chút ở bên trái và bên phải khi xem ở đó, nên chỗ nối giữa các cột bị hở; mở bài đăng vẫn thấy trọn ô.",
+        "s1t": "Mở Cắt ảnh thành nhiều phần trên cv.cm",
+        "s1b": "Chọn một ảnh nét, chủ thể ở gần giữa. Với lưới 3 × 3 gồm các ô 1080 px, hãy bắt đầu từ ảnh rộng ít nhất 3240 px.",
+        "s2t": "Chọn lưới",
+        "s2b": "Dùng 3 × 3 cho một khối chín bài đăng trên trang cá nhân, 1 × 3 hoặc 1 × 2 cho ảnh toàn cảnh vuốt ngang, hoặc đặt số hàng và số cột, mỗi chiều tối đa 20. Lưới hiện ngay trên ảnh.",
+        "s3t": "Cắt thành ô vuông",
+        "s3b": "Giữ Ô vuông bật khi đăng Instagram. Lưới vuông lớn nhất vừa với ảnh được giữ ở giữa và phần mép bị làm mờ sẽ bị cắt bỏ. Tắt đi để dùng toàn bộ ảnh.",
+        "s4t": "Cắt ảnh và tải về",
+        "s4b": "Nhấn Cắt ảnh. Các ô hiện bên dưới; chạm vào một ô để lưu, hoặc nhấn Tải ZIP để lấy tất cả. File được đặt tên photo-r1-c1, photo-r1-c2 và cứ thế, nên sắp xếp đúng thứ tự đọc.",
+        "s5t": "Đăng theo đúng thứ tự",
+        "s5b": "Bài mới nhất nằm ở góc trên bên trái, nên hãy đăng ô cuối cùng (góc dưới bên phải) trước và ô đầu tiên sau cùng. Đánh dấu Hiện thứ tự đăng để các ô được đánh số 1, 2, 3 theo thứ tự bạn đăng.",
+        "s6t": "Hoặc đăng dạng carousel",
+        "s6b": "Với ảnh toàn cảnh, chọn tất cả các slide trong một bài đăng, theo thứ tự đọc (từ trái sang phải). Người xem sẽ vuốt qua chúng như một bức ảnh liền mạch.",
+        "diagram1": "Lưới 3 × 3 gồm các ô vuông, cắt từ phần giữa ảnh.",
+        "diagram2": "Đăng ô cuối trước: nó sẽ nằm ở góc dưới bên phải."
+      },
+      "faq": {
+        "q1": "Mỗi ô nên có kích thước bao nhiêu cho Instagram?",
+        "a1": "Ít nhất 1080 × 1080 px cho bài đăng vuông. Vì vậy lưới 3 × 3 cần ảnh rộng ít nhất 3240 px để Instagram không phải phóng to.",
+        "q2": "Vì sao các ô chênh nhau một pixel?",
+        "a2": "Khi kích thước ảnh không chia hết cho số hàng hoặc số cột, một số ô được thêm một pixel để không mất phần nào của ảnh.",
+        "q3": "Có thể cắt ảnh thành hai nửa không?",
+        "a3": "Được: 1 × 2 cắt thành trái và phải, 2 × 1 cắt thành trên và dưới.",
+        "q4": "Có dùng để in poster được không?",
+        "a4": "Được. Tắt ô vuông, chọn lưới như 2 × 3 và in mỗi ô trên một tờ giấy riêng.",
+        "q5": "Ảnh có bị tải lên không?",
+        "a5": "Không. Các ô được cắt ngay trên trình duyệt của bạn."
+      }
+    },
+    "calculate-area": {
+      "copy": {
+        "name": "Cách tính diện tích",
+        "blurb": "Công thức diện tích hình chữ nhật, tam giác, hình tròn và nhiều hình khác.",
+        "title": "Cách tính diện tích",
+        "lead": "Diện tích cho biết bạn cần bao nhiêu sàn gỗ, sơn, cỏ hay vải, hoặc một mảnh đất rộng bao nhiêu. Bạn sẽ đo, chọn công thức theo hình, dùng một đơn vị, đổi kết quả, và chia hình phức tạp thành những hình đơn giản.",
+        "result": "Diện tích của hình theo đơn vị vuông, chu vi nếu xác định được, và cùng diện tích đó theo m², ft², mẫu Anh hoặc héc-ta.",
+        "note": "Diện tích luôn tính bằng đơn vị bình phương: mét cho m², foot cho ft². Không bao giờ trộn đơn vị trong cùng một phép tính.",
+        "s1t": "Mở Tính diện tích trên cv.cm",
+        "s1b": "Đo các kích thước hình cần, dùng một đơn vị, ví dụ tất cả bằng mét. Với căn phòng, đo từ tường này sang tường kia ở sát sàn.",
+        "s2t": "Chọn công thức theo hình",
+        "s2b": "Hình chữ nhật: dài × rộng. Tam giác: ½ × đáy × chiều cao, trong đó chiều cao vuông góc với đáy. Hình tròn: π × r². Hình thang: (a + b) / 2 × h. Công cụ hiện công thức cho từng hình trong 12 hình.",
+        "s3t": "Nhập kích thước",
+        "s3b": "Chọn hình và đơn vị, rồi nhập từng kích thước. Phòng 5 m × 3 m cho 15 m². Nếu chỉ biết ba cạnh của tam giác, hãy dùng Tam giác (ba cạnh): công thức Heron không cần chiều cao.",
+        "s4t": "Đổi đơn vị",
+        "s4b": "Kết quả cũng được liệt kê theo các đơn vị khác. 1 m² là 10,764 ft², 1 ft² là 0,0929 m², một mẫu Anh là 43.560 ft² và một héc-ta là 10.000 m². Đổi độ dài trước rồi bình phương cũng cho cùng kết quả.",
+        "s5t": "Chia nhỏ hình phức tạp",
+        "s5b": "Phòng hình chữ L là hai hình chữ nhật: tính từng phần rồi cộng lại. Trừ đi diện tích của lỗ trống, cột hay ao. Mép bồn cây cong gần giống một phần hình tròn (hình quạt).",
+        "s6t": "Cộng thêm phần dư và kiểm tra",
+        "s6b": "Khi mua vật liệu, hãy tính thêm phần hao hụt: khoảng 10% cho gạch và sàn, nhiều hơn nếu lát chéo. Kiểm tra kết quả có hợp lý không: phòng 5 m × 3 m không thể rộng 150 m².",
+        "diagram1": "Công thức của ba hình bạn dùng nhiều nhất.",
+        "diagram2": "Một mét vuông xấp xỉ 10,76 foot vuông."
+      },
+      "faq": {
+        "q1": "Diện tích và chu vi khác nhau thế nào?",
+        "a1": "Diện tích là phần bề mặt bên trong hình (m²). Chu vi là độ dài đường bao quanh hình (m): thứ bạn cần khi làm phào chân tường hoặc hàng rào.",
+        "q2": "Tính diện tích hình tròn từ đường kính thế nào?",
+        "a2": "Chia đôi đường kính để có bán kính, rồi A = π × r². Hình tròn đường kính 10 cm có r = 5 cm và A ≈ 78,54 cm².",
+        "q3": "Tính diện tích theo foot vuông thế nào?",
+        "a3": "Đo chiều dài và chiều rộng bằng foot rồi nhân lại. Phòng 12 ft × 10 ft là 120 ft². Với phòng hình chữ L, cộng diện tích các hình chữ nhật.",
+        "q4": "Một mẫu Anh bằng bao nhiêu mét vuông?",
+        "a4": "Khoảng 4.046,86 m². Một héc-ta (10.000 m²) xấp xỉ 2,47 mẫu Anh.",
+        "q5": "Nếu không biết chiều cao của tam giác thì sao?",
+        "a5": "Đo cả ba cạnh và dùng công thức Heron, hoặc dùng công cụ Giải tam giác nếu biết góc."
+      }
+    },
+    "calculate-volume": {
+      "copy": {
+        "name": "Cách tính thể tích",
+        "blurb": "Công thức thể tích hình hộp, hình trụ, hình cầu và hình nón.",
+        "title": "Cách tính thể tích",
+        "lead": "Thể tích cho biết một bể nước, chiếc hộp, cái nồi hay căn phòng chứa được bao nhiêu, cần đặt bao nhiêu bê tông hoặc đất, hay một kiện hàng to cỡ nào. Bạn sẽ đo, chọn công thức, dùng một đơn vị và đổi kết quả sang lít hoặc gallon.",
+        "result": "Thể tích theo đơn vị khối, diện tích bề mặt, và cùng thể tích đó theo lít, mililít, gallon Mỹ hoặc gallon Anh và cốc.",
+        "note": "Thể tích tính bằng đơn vị lập phương: xentimét cho cm³. 1.000 cm³ đúng bằng 1 lít.",
+        "s1t": "Mở Tính thể tích trên cv.cm",
+        "s1b": "Đo bằng một đơn vị. Muốn biết vật chứa được bao nhiêu, hãy đo bên trong; muốn biết cần bao nhiêu vật liệu, hãy đo bên ngoài.",
+        "s2t": "Chọn công thức theo khối",
+        "s2b": "Hình hộp: dài × rộng × cao. Hình trụ: π × r² × h. Hình cầu: 4/3 × π × r³. Hình nón và hình chóp: một phần ba hình trụ hoặc hình hộp tương ứng. Công cụ có 12 khối.",
+        "s3t": "Nhập kích thước",
+        "s3b": "Chọn khối và đơn vị, rồi nhập từng kích thước. Hộp 30 × 20 × 10 cm cho 6.000 cm³. Với hình tròn xoay, hãy dùng bán kính, tức một nửa đường kính.",
+        "s4t": "Xem cả diện tích bề mặt",
+        "s4b": "Diện tích bề mặt là lớp vỏ bên ngoài: phần bạn sẽ sơn, bọc hoặc cách nhiệt. Hộp 30 × 20 × 10 cm có diện tích bề mặt 2.200 cm².",
+        "s5t": "Đổi sang lít hoặc gallon",
+        "s5b": "1 cm³ = 1 mL và 1.000 cm³ = 1 L, nên 6.000 cm³ là 6 L. Một mét khối là 1.000 L. Một gallon Mỹ là 3,785 L và một gallon Anh là 4,546 L; một foot khối là 28,3 L.",
+        "s6t": "Tính đến hình dạng thực tế",
+        "s6b": "Bể nước hiếm khi được đổ đầy đến miệng, và thành bể cũng chiếm chỗ: hãy trừ độ dày thành khỏi mỗi kích thước bên trong. Với bê tông hoặc đất, cộng thêm 5–10% cho hao hụt và lún.",
+        "diagram1": "Công thức của ba khối thường gặp.",
+        "diagram2": "Một khối lập phương cạnh 10 cm chứa đúng một lít."
+      },
+      "faq": {
+        "q1": "Tính số lít từ xentimét thế nào?",
+        "a1": "Nhân ba kích thước bên trong (cm) để có cm³, rồi chia cho 1.000. 40 × 30 × 25 cm = 30.000 cm³ = 30 L.",
+        "q2": "Thể tích hình nón tính thế nào?",
+        "a2": "V = 1/3 × π × r² × h, bằng một phần ba hình trụ có cùng đáy và chiều cao.",
+        "q3": "Tính thể tích ống thế nào?",
+        "a3": "Lấy hình tròn ngoài trừ hình tròn trong rồi nhân với chiều dài: V = π × (R² − r²) × h. Riêng lòng ống chứa được π × r² × h.",
+        "q4": "Một foot khối bằng bao nhiêu gallon?",
+        "a4": "Khoảng 7,48 gallon Mỹ (28,32 lít).",
+        "q5": "Thể tích và dung tích có giống nhau không?",
+        "a5": "Dung tích là thể tích mà một vật chứa được, thường tính bằng lít hoặc gallon; thể tích là bất kỳ lượng không gian nào, thường tính bằng đơn vị khối."
+      }
+    },
+    "pick-random-letter": {
+      "copy": {
+        "name": "Cách chọn chữ cái ngẫu nhiên",
+        "blurb": "Chữ cái công bằng cho trò chơi chữ, lớp học và đặt tên.",
+        "title": "Cách chọn chữ cái ngẫu nhiên",
+        "lead": "Trò chơi chữ như Scattergories, bài luyện chính tả, đặt tên đội và trò khởi động đều bắt đầu bằng một chữ cái công bằng. Bạn sẽ quyết định những chữ nào có thể ra, loại bỏ các chữ khó, rút một hoặc nhiều chữ, tránh lặp lại và giữ lại lịch sử.",
+        "result": "Một chữ cái hoặc một danh sách chữ cái, mỗi chữ có khả năng ra như nhau, kèm mười lần rút gần nhất trên trang.",
+        "note": "Mỗi lần rút là độc lập: sau chữ A, lần tiếp theo vẫn có xác suất 1/26 ra A, trừ khi bật Không lặp lại.",
+        "s1t": "Mở Tạo chữ cái ngẫu nhiên trên cv.cm",
+        "s1b": "Xác định bạn cần chữ cái để làm gì. Trò chơi chữ cần những chữ mở đầu được nhiều từ; bài luyện chính tả có thể chỉ cần nguyên âm.",
+        "s2t": "Chọn những chữ có thể ra",
+        "s2b": "Chọn bảng chữ cái (mặc định Tiếng Anh A–Z), rồi Tất cả chữ cái, Chỉ nguyên âm hoặc Chỉ phụ âm. Dòng dưới các tùy chọn liệt kê chính xác những chữ nằm trong lượt rút.",
+        "s3t": "Loại bỏ chữ khó",
+        "s3b": "Gõ các chữ vào Loại bỏ, ví dụ Q X Z cho trò chơi chữ, vì ít từ bắt đầu bằng chúng. Có thể ngăn cách bằng dấu cách hoặc dấu phẩy; không phân biệt hoa thường.",
+        "s4t": "Rút nhiều chữ, có hoặc không lặp lại",
+        "s4b": "Đặt Số lượng. Đánh dấu Không lặp lại để có danh sách mà mọi chữ đều khác nhau, ví dụ xếp cả bảng chữ cái theo thứ tự ngẫu nhiên; để tắt nếu muốn các lần rút độc lập.",
+        "s5t": "Rút chữ",
+        "s5b": "Nhấn Rút chữ. Mỗi chữ cái lấy từ bộ sinh số ngẫu nhiên mật mã của trình duyệt, nên không chữ nào dễ ra hơn chữ nào. Chọn chữ hoa, chữ thường hoặc cả hai và cách ngăn cách khi rút nhiều chữ.",
+        "s6t": "Giữ lại lịch sử",
+        "s6b": "Mười lần rút gần nhất được liệt kê dưới kết quả, nên bạn biết những chữ nào đã ra trong ván chơi. Sao chép đưa các chữ mới nhất vào bộ nhớ tạm.",
+        "diagram1": "Chỉ những chữ còn trong lượt rút mới có thể ra.",
+        "diagram2": "Khi bật Không lặp lại, mỗi chữ đã rút sẽ rời khỏi lượt rút."
+      },
+      "faq": {
+        "q1": "Mọi chữ cái có khả năng ra như nhau không?",
+        "a1": "Có, trong số các chữ nằm trong lượt rút. Nếu loại bỏ Q, X và Z, mỗi chữ trong 23 chữ còn lại có xác suất 1/23.",
+        "q2": "Chữ cái nào phù hợp nhất cho Scattergories?",
+        "a2": "Phần lớn người chơi loại bỏ Q, U, V, X, Y và Z, vì ít từ tiếng Anh bắt đầu bằng các chữ này.",
+        "q3": "Có rút chữ cái ở bảng chữ cái khác được không?",
+        "a3": "Được: tiếng Tây Ban Nha, tiếng Việt, tiếng Hy Lạp, tiếng Nga, hiragana và katakana có trong menu Bảng chữ cái.",
+        "q4": "Làm sao để xáo trộn cả bảng chữ cái?",
+        "a4": "Đặt Số lượng là 26 và đánh dấu Không lặp lại. Kết quả là mọi chữ cái xuất hiện một lần, theo thứ tự ngẫu nhiên.",
+        "q5": "Y có được tính là nguyên âm không?",
+        "a5": "Ở chế độ tiếng Anh, nguyên âm là A, E, I, O và U. Giữ hoặc bỏ Y bằng ô Loại bỏ. Trong tiếng Việt, Y được tính là nguyên âm."
+      }
+    }
+  },
+  "svg": {
+    "make-gif": {
+      "frame": "Khung",
+      "loop": "Lặp",
+      "delay": "thời gian",
+      "frames": "Khung hình",
+      "colors": "Số màu",
+      "size": "Dung lượng",
+      "pixels": "Điểm ảnh"
+    },
+    "split-image": {
+      "trimmed": "Bị cắt bỏ",
+      "post": "Đăng",
+      "newest": "Bài mới nhất"
+    },
+    "calculate-area": {
+      "rectangle": "Hình chữ nhật",
+      "triangle": "Tam giác",
+      "circle": "Hình tròn"
+    },
+    "calculate-volume": {
+      "box": "Hình hộp",
+      "cylinder": "Hình trụ",
+      "sphere": "Hình cầu",
+      "litre": "1 lít"
+    },
+    "pick-random-letter": {
+      "pool": "Trong lượt rút",
+      "left": "Đã loại bỏ",
+      "repeats": "Cho phép lặp lại",
+      "unique": "Không lặp lại"
+    }
+  }
+}

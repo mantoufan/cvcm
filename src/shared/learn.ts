@@ -669,6 +669,36 @@ export const TUTORIAL_META: Record<TutorialId, TutorialMeta> = {
     openAt: 1,
     related: ["triangle", "calculator", "quadratic"],
   },
+  "make-gif": {
+    minutes: 5,
+    steps: 6,
+    openAt: 1,
+    related: ["gif-maker", "convert", "resize"],
+  },
+  "split-image": {
+    minutes: 4,
+    steps: 6,
+    openAt: 1,
+    related: ["image-splitter", "crop", "collage"],
+  },
+  "calculate-area": {
+    minutes: 5,
+    steps: 6,
+    openAt: 1,
+    related: ["area", "units", "triangle"],
+  },
+  "calculate-volume": {
+    minutes: 5,
+    steps: 6,
+    openAt: 1,
+    related: ["volume", "units", "area"],
+  },
+  "pick-random-letter": {
+    minutes: 3,
+    steps: 6,
+    openAt: 1,
+    related: ["random-letter", "wheel", "random"],
+  },
   "electricity-cost": {
     minutes: 6,
     steps: 6,
@@ -1271,6 +1301,26 @@ export const TUTORIAL_DIAGRAMS: Partial<Record<TutorialId, { step: number; src: 
   "solve-triangle": [
     { step: 1, src: "/covers/tutorials/solve-triangle-labels.svg" },
     { step: 5, src: "/covers/tutorials/solve-triangle-ambiguous.svg" },
+  ],
+  "make-gif": [
+    { step: 2, src: "/covers/tutorials/make-gif-frames.svg" },
+    { step: 5, src: "/covers/tutorials/make-gif-size.svg" },
+  ],
+  "split-image": [
+    { step: 2, src: "/covers/tutorials/split-image-grid.svg" },
+    { step: 5, src: "/covers/tutorials/split-image-order.svg" },
+  ],
+  "calculate-area": [
+    { step: 2, src: "/covers/tutorials/calculate-area-shapes.svg" },
+    { step: 4, src: "/covers/tutorials/calculate-area-units.svg" },
+  ],
+  "calculate-volume": [
+    { step: 2, src: "/covers/tutorials/calculate-volume-shapes.svg" },
+    { step: 5, src: "/covers/tutorials/calculate-volume-capacity.svg" },
+  ],
+  "pick-random-letter": [
+    { step: 2, src: "/covers/tutorials/pick-random-letter-pool.svg" },
+    { step: 4, src: "/covers/tutorials/pick-random-letter-unique.svg" },
   ],
   "electricity-cost": [
     { step: 1, src: "/covers/tutorials/electricity-cost-formula.svg" },

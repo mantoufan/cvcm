@@ -490,6 +490,22 @@
       "data_handling": "Processes files in the page. Files are not uploaded."
     },
     {
+      "id": "gif-maker",
+      "name": "GIF maker",
+      "description": "Animated GIF from photos or a video clip.",
+      "category": "image",
+      "url": "https://cv.cm/en/gif-maker/",
+      "data_handling": "Processes files in the page. Files are not uploaded."
+    },
+    {
+      "id": "image-splitter",
+      "name": "Image splitter",
+      "description": "Cut a picture into a grid of tiles.",
+      "category": "image",
+      "url": "https://cv.cm/en/image-splitter/",
+      "data_handling": "Processes files in the page. Files are not uploaded."
+    },
+    {
       "id": "image-pdf",
       "name": "JPG to PDF",
       "description": "JPG to PDF and PNG to PDF. Several photos, one file.",
@@ -927,6 +943,22 @@
       "description": "Sides, angles, area and heights from three values.",
       "category": "math",
       "url": "https://cv.cm/en/triangle/",
+      "data_handling": "Runs in the page. Inputs are not uploaded."
+    },
+    {
+      "id": "area",
+      "name": "Area calculator",
+      "description": "Area and perimeter of 12 shapes.",
+      "category": "math",
+      "url": "https://cv.cm/en/area/",
+      "data_handling": "Runs in the page. Inputs are not uploaded."
+    },
+    {
+      "id": "volume",
+      "name": "Volume calculator",
+      "description": "Volume and surface area of 12 solids.",
+      "category": "math",
+      "url": "https://cv.cm/en/volume/",
       "data_handling": "Runs in the page. Inputs are not uploaded."
     },
     {
@@ -1399,6 +1431,14 @@
       "description": "Random names and usernames. Copy a list.",
       "category": "fun",
       "url": "https://cv.cm/en/names/",
+      "data_handling": "Runs in the page. Inputs are not uploaded."
+    },
+    {
+      "id": "random-letter",
+      "name": "Random letter generator",
+      "description": "Draw random letters, vowels or consonants.",
+      "category": "fun",
+      "url": "https://cv.cm/en/random-letter/",
       "data_handling": "Runs in the page. Inputs are not uploaded."
     },
     {

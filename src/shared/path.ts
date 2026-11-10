@@ -41,18 +41,18 @@ export const CATEGORIES = [
   { id: "share", tools: ["clip", "qr", "barcode"] },
   // In-browser AI (Transformers.js / ONNX Runtime): models download once from /ai/models/ and run on the GPU or CPU.
   { id: "ai", tools: ["v", "ai-image-generator", "ai-music-generator", "remove-background", "image-upscaler", "speech-to-text", "depth-map"] },
-  { id: "image", tools: ["watermark", "mosaic", "collage", "portrait-sim", "convert", "resize", "crop", "rotate", "exif", "meme", "signature", "favicon", "screenshot", "image-colors", "tier-list"] },
+  { id: "image", tools: ["watermark", "mosaic", "collage", "portrait-sim", "convert", "resize", "crop", "rotate", "exif", "meme", "signature", "favicon", "screenshot", "image-colors", "tier-list", "gif-maker", "image-splitter"] },
   { id: "pdf", tools: ["image-pdf", "pdf-jpg", "merge-pdf", "compress-pdf", "split-pdf", "invoice"] },
   { id: "audio", tools: ["audio", "audio-cutter", "audio-joiner", "voice-recorder", "screen-recorder", "text-to-speech", "white-noise", "tone-generator", "metronome", "guitar-tuner"] },
   { id: "text", tools: ["word-count", "case", "diff", "replace", "sort", "reverse", "slug", "lorem", "fancy-text", "markdown", "notepad", "reading-time", "morse"] },
   { id: "dev", tools: ["json", "data", "xml-json", "yaml-json", "base64", "url-encode", "html", "text-hex", "binary", "hash", "jwt", "uuid", "password", "regex", "cron", "cidr", "chmod", "timestamp"] },
-  { id: "math", tools: ["calculator", "percent", "fraction", "average", "factors", "lcm-gcf", "quadratic", "triangle", "radix", "roman", "words", "aspect", "units", "gpa", "grade"] },
+  { id: "math", tools: ["calculator", "percent", "fraction", "average", "factors", "lcm-gcf", "quadratic", "triangle", "area", "volume", "radix", "roman", "words", "aspect", "units", "gpa", "grade"] },
   { id: "finance", tools: ["loan", "mortgage", "compound", "discount", "tip", "vat", "margin", "hourly", "time-card", "fuel-cost", "electricity"] },
   { id: "health", tools: ["bmi", "tdee", "body-fat", "ideal-weight", "water-intake", "macro", "calories-burned", "pace", "sleep", "due-date", "ovulation"] },
   { id: "time", tools: ["timezone", "countdown", "stopwatch", "alarm", "pomodoro", "days", "add-days", "workdays", "week", "duration", "age"] },
   { id: "design", tools: ["color", "hex-rgb", "contrast", "gradient"] },
   { id: "hardware", tools: ["mic-test", "decibel-meter", "webcam-test", "keyboard-test", "gamepad-test", "touch-test", "dead-pixel", "refresh-rate", "screen-resolution"] },
-  { id: "fun", tools: ["random", "dice", "coin-flip", "wheel", "team-generator", "names", "zodiac", "typing", "click-test", "reaction-time", "tally-counter"] },
+  { id: "fun", tools: ["random", "dice", "coin-flip", "wheel", "team-generator", "names", "random-letter", "zodiac", "typing", "click-test", "reaction-time", "tally-counter"] },
   { id: "games", tools: ["rom-emulator", "flash-player"] },
   { id: "assets", tools: ["gold", "silver", "platinum", "palladium", "oil", "stocks"] },
 ] as const;
@@ -199,6 +199,11 @@ export const TOOLS = [
   "voice-recorder",
   "screen-recorder",
   "triangle",
+  "gif-maker",
+  "image-splitter",
+  "area",
+  "volume",
+  "random-letter",
   "gold",
   "silver",
   "platinum",
@@ -223,6 +228,7 @@ export const CONVERT_JOBS = [
   "jpg-to-png",
   "avif-to-jpg",
   "png-to-webp",
+  "svg-to-png",
 ] as const;
 export type ConvertJobId = (typeof CONVERT_JOBS)[number];
 
@@ -237,6 +243,7 @@ export const CONVERT_JOB_FORMAT: Record<ConvertJobId, "jpeg" | "png" | "webp"> =
   "jpg-to-png": "png",
   "avif-to-jpg": "jpeg",
   "png-to-webp": "webp",
+  "svg-to-png": "png",
 };
 
 /** File-size page for the resizer. Same engine, exact query. */
@@ -363,6 +370,11 @@ export const TUTORIALS = [
   "record-voice-online",
   "record-screen-online",
   "solve-triangle",
+  "make-gif",
+  "split-image",
+  "calculate-area",
+  "calculate-volume",
+  "pick-random-letter",
   "portrait",
   "algorithms",
   "phone-photos",
@@ -386,7 +398,7 @@ export const TUTORIAL_GROUPS: readonly {
 }[] = [
   { id: "codes", tutorials: ["make-qr", "make-barcode"] },
   { id: "files", tutorials: ["merge-pdf", "compress-pdf", "split-pdf", "heic-to-jpg", "jpg-to-pdf", "pdf-to-jpg", "webp-to-png", "png-to-jpg", "jpg-to-png", "avif-to-jpg", "png-to-webp", "make-invoice"] },
-  { id: "photo", tutorials: ["crop-photo", "rotate-photo", "resize-image", "add-watermark", "watermark-id-copy", "mosaic-photo", "remove-exif", "make-collage", "make-meme", "make-favicon", "make-signature", "annotate-screenshot", "remove-photo-background"] },
+  { id: "photo", tutorials: ["crop-photo", "rotate-photo", "resize-image", "add-watermark", "watermark-id-copy", "mosaic-photo", "remove-exif", "make-collage", "make-meme", "make-favicon", "make-signature", "annotate-screenshot", "remove-photo-background", "make-gif", "split-image"] },
   { id: "audio", tutorials: ["trim-audio", "mp3-to-wav", "join-audio", "use-metronome", "generate-test-tone", "test-microphone", "tune-guitar", "play-white-noise", "measure-decibels", "record-voice-online"] },
   { id: "games", tutorials: ["use-emulator", "open-swf-file"] },
   { id: "dev", tutorials: ["format-json", "decode-base64", "encode-url", "read-jwt", "unix-time", "convert-base", "read-cron", "hash-text", "generate-uuid", "test-regex", "make-password", "check-contrast", "test-keyboard", "test-click-speed", "test-reaction-time", "test-webcam", "test-gamepad", "check-dead-pixels", "check-refresh-rate", "test-touch-screen", "make-css-gradient", "check-screen-resolution", "record-screen-online"] },
@@ -394,7 +406,7 @@ export const TUTORIAL_GROUPS: readonly {
   { id: "time", tutorials: ["days-between", "shift-date", "count-workdays", "add-duration", "calculate-age", "iso-week", "convert-timezone", "calculate-work-hours", "use-pomodoro", "find-zodiac-sign", "set-online-alarm"] },
   { id: "money", tutorials: ["calculate-percent", "percent-off", "vat-price", "split-tip", "profit-margin", "hourly-pay", "loan-payment", "compound-interest", "trip-fuel-cost", "electricity-cost", "calculate-mortgage"] },
   { id: "health", tutorials: ["calculate-bmi", "measure-body-fat", "find-ideal-weight", "calculate-tdee", "calculate-macros", "calories-burned-exercise", "daily-water", "calculate-pace", "find-bedtime", "find-due-date", "find-fertile-window"] },
-  { id: "math", tutorials: ["simplify-fraction", "aspect-ratio", "calculate-final-grade", "calculate-gpa", "calculate-average", "pick-random-name", "use-tally-counter", "use-scientific-calculator", "flip-coin", "find-factors", "find-lcm-gcf", "solve-quadratic", "make-random-teams", "solve-triangle"] },
+  { id: "math", tutorials: ["simplify-fraction", "aspect-ratio", "calculate-final-grade", "calculate-gpa", "calculate-average", "pick-random-name", "use-tally-counter", "use-scientific-calculator", "flip-coin", "find-factors", "find-lcm-gcf", "solve-quadratic", "make-random-teams", "solve-triangle", "calculate-area", "calculate-volume", "pick-random-letter"] },
 ];
 export const FEATURED_TUTORIALS: readonly TutorialId[] = TUTORIAL_GROUPS.flatMap(
   (group) => [...group.tutorials],

@@ -1380,6 +1380,51 @@
       "s2b": "Escribe tres valores (dos para un triángulo rectángulo), al menos uno de ellos un lado.",
       "s3t": "Lee el resultado",
       "s3b": "Aparecen todos los lados, ángulos, el área, el perímetro y las alturas, con un dibujo y el desarrollo. Copiar resultado lo copia."
+    },
+    "gif-maker": {
+      "lead": "Crea un GIF animado con imágenes o con un video corto en tres pasos. No se sube nada.",
+      "s1t": "Añade los fotogramas",
+      "s1b": "Suelta dos o más imágenes (cada una es un fotograma) o un clip de video. Reordena las imágenes con las flechas.",
+      "s2t": "Ajusta el tiempo y el tamaño",
+      "s2b": "Con imágenes, elige el retardo por fotograma; con un video, indica Inicio, Fin y los fotogramas por segundo. Elige el ancho, la repetición y los colores.",
+      "s3t": "Crea y descarga",
+      "s3b": "Pulsa Crear GIF, mira cómo se reproduce el resultado y luego Descargar GIF. Con menos ancho o menos fotogramas el archivo pesa menos."
+    },
+    "image-splitter": {
+      "lead": "Corta una imagen en piezas iguales para una cuadrícula o un carrusel de Instagram. No se sube nada.",
+      "s1t": "Añade la imagen",
+      "s1b": "Suelta, elige o pega una imagen. La cuadrícula aparece encima al instante.",
+      "s2t": "Elige la cuadrícula",
+      "s2b": "Elige un ajuste predefinido como Cuadrícula 3 × 3 o indica filas y columnas. Piezas cuadradas recorta el centro para que todas las piezas sean cuadradas.",
+      "s3t": "Divide y guarda",
+      "s3b": "Pulsa Dividir y luego Descargar ZIP, o toca piezas sueltas. Mostrar orden de publicación las numera para Instagram, empezando por la última pieza."
+    },
+    "area": {
+      "lead": "Calcula el área y el perímetro de una figura en tres pasos.",
+      "s1t": "Elige la figura y la unidad",
+      "s1b": "Elige entre 12 figuras y la unidad de tus medidas. La fórmula aparece debajo de los menús.",
+      "s2t": "Escribe las medidas",
+      "s2b": "Rellena cada campo. El resultado se actualiza mientras escribes; un mensaje te avisa si falta una medida o es imposible.",
+      "s3t": "Lee el resultado",
+      "s3b": "Verás el área, el perímetro cuando está determinado, cada paso del desarrollo y el área en m², ft², acres y más."
+    },
+    "volume": {
+      "lead": "Calcula el volumen y el área de la superficie de un cuerpo en tres pasos.",
+      "s1t": "Elige el cuerpo y la unidad",
+      "s1b": "Elige entre 12 cuerpos y la unidad de tus medidas. La fórmula aparece debajo de los menús.",
+      "s2t": "Escribe las medidas",
+      "s2b": "Rellena cada campo, todos en la misma unidad. El resultado se actualiza mientras escribes.",
+      "s3t": "Lee el resultado",
+      "s3b": "Verás el volumen, el área de la superficie, el desarrollo y el volumen en litros, galones, tazas y unidades cúbicas."
+    },
+    "random-letter": {
+      "lead": "Saca letras al azar en tres pasos.",
+      "s1t": "Elige las letras",
+      "s1b": "Elige el alfabeto, todas las letras o solo vocales o consonantes, y mayúsculas o minúsculas. Excluye las letras que no quieras.",
+      "s2t": "Elige cuántas",
+      "s2b": "Indica Cuántas y marca Sin repetir si cada letra solo puede salir una vez.",
+      "s3t": "Genera",
+      "s3b": "Pulsa Generar. Las letras aparecen en grande; Copiar las pone en el portapapeles y las diez últimas tiradas quedan en la lista."
     }
   }
 }

@@ -1,11 +1,12 @@
-import { blobFromBytes, encodeBmp, encodeGif, encodeIco } from "../../shared/image-encode";
+import { blobFromBytes, encodeBmp, encodeGif, encodeIco, releaseGifScratch } from "../../shared/image-encode";
 import { lossyFormat, mimeForFormat, outputFilename, type ImageFormat } from "../../shared/filename";
 import { zipStore } from "../../shared/zip";
-import { canvasToBlob, decodeImage, drawToCanvas } from "../decode";
+import { canvasToBlob, decodeImage, drawSvg, drawToCanvas, readSvgFile, type SvgSource } from "../decode";
 import { downloadBlob, h } from "../dom";
 import { locale, t } from "../i18n";
 import { CONVERT_JOB_FORMAT, appHref, parseAppPath, type ConvertJobId } from "../../shared/path";
 import { clearDraft, debounce, loadDraft, markSession, saveDraft, sessionLive } from "../session";
+import { isSvgFile } from "../../shared/svg-size";
 
 type Item = {
   id: string;
@@ -15,12 +16,20 @@ type Item = {
   height: number;
   bitmap: ImageBitmap | null;
   error: string | null;
+  /** SVG source, kept so a new scale redraws it sharp instead of stretching the bitmap. */
+  svg: SvgSource | null;
+  /** Still being read in: a scale change is picked up by the ingest itself, not redrawn twice. */
+  ingesting: boolean;
 };
 
 type Format = ImageFormat;
 
 const MAX_EDGES = [0, 2048, 1920, 1280, 800] as const;
 type MaxEdge = (typeof MAX_EDGES)[number];
+
+/** How many pixels an SVG gets per CSS pixel of its own size. */
+const SVG_SCALES = [1, 2, 3, 4] as const;
+type SvgScale = (typeof SVG_SCALES)[number];
 
 const CHIPS: { format: Format; key: string }[] = [
   { format: "jpeg", key: "convert.chipHeicJpg" },
@@ -37,6 +46,7 @@ const state = {
   format: "jpeg" as Format,
   quality: 0.92,
   maxEdge: 0 as MaxEdge,
+  svgScale: 1 as SvgScale,
 };
 
 let preview: HTMLCanvasElement | null = null;
@@ -44,6 +54,7 @@ let fileList: HTMLElement | null = null;
 let statusEl: HTMLElement | null = null;
 let sizeEl: HTMLElement | null = null;
 let qualityField: HTMLElement | null = null;
+let svgField: HTMLElement | null = null;
 let pagehideBound = false;
 let restoring = false;
 let hydrated = false;
@@ -115,6 +126,8 @@ export function unmountConvert(): void {
   statusEl = null;
   sizeEl = null;
   qualityField = null;
+  svgField = null;
+  releaseGifScratch();
 }
 
 function filesRail(): HTMLElement {
@@ -191,6 +204,19 @@ function controls(): HTMLElement {
     }),
   );
   qualityField.hidden = !lossyFormat(state.format);
+  svgField = labeled(t("convert.svgScale"),
+    h("select", {
+      "data-field": "svg-scale",
+      onChange: (e: Event) => {
+        state.svgScale = Number((e.target as HTMLSelectElement).value) as SvgScale;
+        scheduleSave();
+        void rerasterSvgs();
+      },
+    },
+      ...SVG_SCALES.map((n) => h("option", { value: String(n), selected: state.svgScale === n }, `${n}×`)),
+    ),
+  );
+  syncSvgField();
   const formatSelect = h("select", {
     onChange: (e: Event) => {
       state.format = (e.target as HTMLSelectElement).value as Format;
@@ -244,6 +270,7 @@ function controls(): HTMLElement {
           ),
         ),
       ),
+      svgField,
       qualityField,
     ),
   );
@@ -264,17 +291,93 @@ function onPaste(e: ClipboardEvent): void {
 async function ingestFile(file: File): Promise<void> {
   const id = crypto.randomUUID();
   const url = URL.createObjectURL(file);
-  const item: Item = { id, file, url, width: 0, height: 0, bitmap: null, error: null };
+  const item: Item = { id, file, url, width: 0, height: 0, bitmap: null, error: null, svg: null, ingesting: true };
   state.items.push(item);
   if (!state.selected) state.selected = id;
   try {
+    if (isSvgFile(file) && (await ingestSvg(item))) return;
+    // Not an SVG, or one we cannot redraw from source (a prefixed svg:svg root, say): the browser's own decoding.
+    item.svg = null;
     const decoded = await decodeImage(file);
+    if (!state.items.includes(item)) {
+      decoded.bitmap.close();
+      return;
+    }
     item.bitmap = decoded.bitmap;
     item.width = decoded.width;
     item.height = decoded.height;
   } catch {
     item.error = t("convert.errorDecode");
+  } finally {
+    item.ingesting = false;
   }
+}
+
+/** Draws an SVG from its source at the SVG scale; false when its root cannot be read or drawn that way. */
+async function ingestSvg(item: Item): Promise<boolean> {
+  const svg = await readSvgFile(item.file);
+  if (!svg) return false;
+  item.svg = svg;
+  try {
+    // If the scale changes while this draws, draw again at the new one.
+    let scale = state.svgScale;
+    let r = await drawSvg(svg, scale);
+    while (scale !== state.svgScale && state.items.includes(item)) {
+      r.bitmap.close();
+      scale = state.svgScale;
+      r = await drawSvg(svg, scale);
+    }
+    // Removed or cleared while it drew: nothing holds this bitmap.
+    if (!state.items.includes(item)) r.bitmap.close();
+    else applyRaster(item, r);
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+
+function applyRaster(item: Item, r: { bitmap: ImageBitmap; width: number; height: number }): void {
+  item.bitmap?.close();
+  item.bitmap = r.bitmap;
+  item.width = r.width;
+  item.height = r.height;
+  item.error = null;
+}
+
+/** Bumped on every scale change, so a slower earlier redraw cannot land after a newer one. */
+let rasterRun = 0;
+
+async function rerasterSvgs(): Promise<void> {
+  const run = ++rasterRun;
+  const scale = state.svgScale;
+  for (const item of [...state.items]) {
+    // Items still being read in pick up the new scale themselves.
+    if (!item.svg || item.ingesting) continue;
+    try {
+      const r = await drawSvg(item.svg, scale);
+      // A newer scale or a removed item: drop this one.
+      if (run !== rasterRun || !state.items.includes(item)) {
+        r.bitmap.close();
+        if (run !== rasterRun) return;
+        continue;
+      }
+      applyRaster(item, r);
+    } catch {
+      if (run !== rasterRun) return;
+      // The old size must not be exported as if it were the new one.
+      item.bitmap?.close();
+      item.bitmap = null;
+      item.error = t("convert.errorDecode");
+    }
+  }
+  refreshList();
+  redraw();
+}
+
+/** The SVG scale is shown on the SVG to PNG page and whenever an SVG is in the list. */
+function syncSvgField(): void {
+  if (svgField) svgField.hidden = currentJob() !== "svg-to-png" && !state.items.some((it) => it.svg);
 }
 
 async function addFiles(list: FileList | File[]): Promise<void> {
@@ -310,6 +413,7 @@ function clearItems(): void {
 }
 
 function refreshList(): void {
+  syncSvgField();
   if (!fileList) return;
   fileList.replaceChildren();
   if (state.items.length === 0) {
@@ -485,6 +589,7 @@ async function persist(): Promise<void> {
     format: state.format,
     quality: state.quality,
     maxEdge: state.maxEdge,
+    svgScale: state.svgScale,
     selected: Math.max(0, state.items.findIndex((it) => it.id === state.selected)),
     files: state.items.map((it) => ({ name: it.file.name, type: it.file.type || "image/png", blob: it.file })),
   });
@@ -495,6 +600,7 @@ async function restore(): Promise<void> {
     format: Format;
     quality: number;
     maxEdge?: number;
+    svgScale?: number;
     selected: number;
     files: { name: string; type: string; blob: Blob }[];
   }>("convert");
@@ -502,6 +608,7 @@ async function restore(): Promise<void> {
   if (draft.format) state.format = draft.format;
   if (draft.quality) state.quality = draft.quality;
   if (MAX_EDGES.includes((draft.maxEdge ?? 0) as MaxEdge)) state.maxEdge = (draft.maxEdge ?? 0) as MaxEdge;
+  if (SVG_SCALES.includes((draft.svgScale ?? 1) as SvgScale)) state.svgScale = (draft.svgScale ?? 1) as SvgScale;
   state.items = [];
   state.selected = null;
   for (const rec of draft.files || []) {
