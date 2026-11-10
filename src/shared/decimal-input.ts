@@ -16,6 +16,9 @@ export function parseDecimalInput(raw: string, locale: string): number | undefin
   if (text.includes(".") && text.includes(",")) {
     const decimal = text.lastIndexOf(".") > text.lastIndexOf(",") ? "." : ",";
     const group = decimal === "." ? "," : ".";
+    // The groups must be real thousands groups ("1,234.5"), or a typo like "1.5,000" would quietly read as 15.
+    const g = `\\${group}`;
+    if (!new RegExp(`^-?\\d{1,3}(${g}\\d{3})+\\${decimal}\\d+$`).test(text)) return NaN;
     plain = text.split(group).join("").replace(decimal, ".");
   } else if (text.includes(",")) {
     plain = decimalMarkOf(locale) === "." && /^-?[1-9]\d{0,2}(,\d{3})+$/.test(text) ? text.replace(/,/g, "") : text.replace(",", ".");

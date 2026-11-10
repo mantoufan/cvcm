@@ -336,6 +336,8 @@ describe("svg size", () => {
     expect(readSvg('<svg width="48" viewBox="0 0 24 12"></svg>')).toMatchObject({ width: 48, height: 24 });
     expect(readSvg('<svg width="100%" height="100%"></svg>')).toMatchObject({ width: 300, height: 150 });
     expect(readSvg("<html></html>")).toBeNull();
+    // Attribute names are case-sensitive: browsers ignore "viewbox", so a viewBox is still added.
+    expect(readSvg('<svg viewbox="0 0 10 10"></svg>')).toMatchObject({ width: 300, height: 150, hasViewBox: false });
     // A tag inside a comment or the DOCTYPE is not the root.
     const commented = '<!DOCTYPE svg [<!ENTITY x "<svg width=\'1\'>">]><!-- <svg width="16" height="16"> --><svg width="64" height="32"></svg>';
     expect(readSvg(commented)).toMatchObject({ width: 64, height: 32 });
@@ -378,6 +380,10 @@ describe("decimal input", () => {
     expect(parseDecimalInput("1.000", "en")).toBe(1);
     expect(parseDecimalInput("1.000.5", "en")).toBeNaN();
     expect(parseDecimalInput("+5", "en")).toBe(5);
+    // Mixed separators must be real thousands groups.
+    expect(parseDecimalInput("1.5,000", "en")).toBeNaN();
+    expect(parseDecimalInput("1,2,3.4", "en")).toBeNaN();
+    expect(parseDecimalInput("12,345,678.9", "en")).toBe(12345678.9);
     expect(parseDecimalInput("0,125", "en")).toBe(0.125);
     expect(parseDecimalInput("−2", "en")).toBe(-2);
     expect(parseDecimalInput("", "en")).toBeUndefined();

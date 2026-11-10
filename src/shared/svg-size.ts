@@ -14,7 +14,8 @@ export const MAX_SVG_PIXELS = 16_777_216;
 export type SvgInfo = { width: number; height: number; tag: string; tagStart: number; tagEnd: number; hasViewBox: boolean };
 
 function attr(tag: string, name: string): string | null {
-  const m = new RegExp(`\\s${name}\\s*=\\s*(?:"([^"]*)"|'([^']*)')`, "i").exec(tag);
+  // XML attribute names are case-sensitive: browsers ignore a lowercase "viewbox".
+  const m = new RegExp(`\\s${name}\\s*=\\s*(?:"([^"]*)"|'([^']*)')`).exec(tag);
   return m ? (m[1] ?? m[2] ?? "") : null;
 }
 
@@ -64,9 +65,9 @@ export function svgPixelSize(info: Pick<SvgInfo, "width" | "height">, scale: num
  * the drawing scales with the new width and height instead of staying put in the corner.
  */
 export function sizedSvg(text: string, info: SvgInfo, width: number, height: number): string {
-  let tag = info.tag.replace(/\s(width|height)\s*=\s*(?:"[^"]*"|'[^']*')/gi, "");
+  let tag = info.tag.replace(/\s(width|height)\s*=\s*(?:"[^"]*"|'[^']*')/g, "");
   const extra = ` width="${width}" height="${height}"${info.hasViewBox ? "" : ` viewBox="0 0 ${info.width} ${info.height}"`}`;
-  if (!info.hasViewBox) tag = tag.replace(/\sviewBox\s*=\s*(?:"[^"]*"|'[^']*')/i, "");
+  if (!info.hasViewBox) tag = tag.replace(/\sviewBox\s*=\s*(?:"[^"]*"|'[^']*')/, "");
   tag = tag.replace(/^<svg\b/i, `<svg${extra}`);
   return text.slice(0, info.tagStart) + tag + text.slice(info.tagEnd);
 }

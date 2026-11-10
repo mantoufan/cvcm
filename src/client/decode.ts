@@ -10,9 +10,15 @@ export async function decodeImage(
   if (isSvgFile({ name: file instanceof File ? file.name : "", type: file.type })) {
     const text = await file.text();
     const info = readSvg(text);
-    if (!info) throw new Error("svg");
-    const { width, height } = svgPixelSize(info, 1);
-    return { bitmap: await rasterizeSvg(sizedSvg(text, info, width, height), width, height), width, height };
+    // An SVG whose root we cannot read (a prefixed svg:svg, say) still gets the browser's own try below.
+    if (info) {
+      const { width, height } = svgPixelSize(info, 1);
+      try {
+        return { bitmap: await rasterizeSvg(sizedSvg(text, info, width, height), width, height), width, height };
+      } catch {
+        // Fall through.
+      }
+    }
   }
   try {
     const bitmap = await createImageBitmap(file, { imageOrientation: "from-image" });

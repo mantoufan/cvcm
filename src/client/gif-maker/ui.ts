@@ -175,6 +175,7 @@ export function mountGifMaker(host: HTMLElement): void {
     ),
   );
   window.addEventListener("paste", onPaste);
+  listKey = "";
   refresh();
 }
 
@@ -185,6 +186,7 @@ export function unmountGifMaker(): void {
   window.clearTimeout(timer);
   clearAll(false);
   els = null;
+  listKey = "";
 }
 
 function labeled(label: string, control: HTMLElement): HTMLElement {
@@ -212,8 +214,19 @@ async function addFiles(files: File[]): Promise<void> {
   if (!images.length) return;
   if (state.mode === "video") clearAll();
   state.mode = "images";
-  // Another drop of pictures adds to this one; only a video or Clear replaces it.
+  // Another drop of pictures adds after this one (drops load one after another, so frames keep their order); only a
+  // video or Clear replaces it.
   const load = state.load;
+  const turn = pictureQueue.then(() => loadPictures(images, load));
+  pictureQueue = turn.catch(() => undefined);
+  await turn;
+}
+
+/** The pictures of earlier drops finish loading before the next drop starts. */
+let pictureQueue: Promise<void> = Promise.resolve();
+
+async function loadPictures(images: File[], load: number): Promise<void> {
+  if (!els || load !== state.load) return;
   let failed = 0;
   for (const file of images) {
     if (state.stills.length >= MAX_FRAMES) {
@@ -342,8 +355,14 @@ function refresh(): void {
   animate();
 }
 
+/** The frames the list was last built for, so a setting change does not redraw every thumbnail. */
+let listKey = "";
+
 function renderList(): void {
   if (!els) return;
+  const key = state.mode === "video" ? "" : state.stills.map((s) => s.id).join() || "empty";
+  if (key && key === listKey) return;
+  listKey = key;
   if (state.mode === "video" && state.clip) {
     const n = frameCount(state.start, state.end, state.fps, state.clip.duration);
     els.list.replaceChildren(h("li", { class: "file" },
@@ -416,13 +435,14 @@ function drawFrame(ctx: CanvasRenderingContext2D, source: ImageBitmap | HTMLVide
 }
 
 /**
- * A frame never needs more than twice the widest GIF (800 px) on its long edge, even filled into a frame of another
- * shape, so phone photos are kept small instead of as 12-megapixel bitmaps.
+ * No GIF side is more than 1600 px (800 wide, at most twice that tall for a portrait first frame), and a picture filled
+ * into a frame of another shape is scaled by its short edge, so a short edge of 1600 px is always enough. Phone photos
+ * are kept at about 3 megapixels instead of 12, and a long panorama keeps its full length.
  */
 const KEEP_EDGE = 1600;
 
 async function shrink(bitmap: ImageBitmap): Promise<ImageBitmap> {
-  const scale = KEEP_EDGE / Math.max(bitmap.width, bitmap.height);
+  const scale = KEEP_EDGE / Math.min(bitmap.width, bitmap.height);
   if (scale >= 1) return bitmap;
   try {
     const small = await createImageBitmap(bitmap, { resizeWidth: Math.round(bitmap.width * scale), resizeHeight: Math.round(bitmap.height * scale), resizeQuality: "high" });
@@ -507,8 +527,10 @@ async function makeGif(): Promise<void> {
     return;
   }
   const writer = new GifWriter({ ...size, loop: LOOPS[state.loop] });
-  // Video frames show for exactly the time between their samples, so the GIF plays at the clip's own speed.
-  const delayMs = clip ? (times.length > 1 ? (times[1]! - times[0]!) * 1000 : 1000 / state.fps) : state.delayMs;
+  // Video frames show for the time between their samples. GIF stores whole hundredths, so each delay is the difference
+  // of rounded running totals: the frames take turns rounding up and down and the GIF lasts as long as the clip.
+  const spacing = clip ? (times.length > 1 ? times[1]! - times[0]! : 1 / state.fps) : 0;
+  const delayFor = (i: number) => (clip ? (Math.round((i + 1) * spacing * 100) - Math.round(i * spacing * 100)) * 10 : state.delayMs);
   try {
     if (clip) clip.video.pause();
     for (let i = 0; i < count; i++) {
@@ -521,7 +543,7 @@ async function makeGif(): Promise<void> {
       } else {
         drawFrame(ctx, state.stills[i]!.bitmap, size.width, size.height);
       }
-      writer.addFrame(ctx.getImageData(0, 0, size.width, size.height).data, { colors: state.colors, dither: state.dither, delayMs });
+      writer.addFrame(ctx.getImageData(0, 0, size.width, size.height).data, { colors: state.colors, dither: state.dither, delayMs: delayFor(i) });
       await yieldFrame();
     }
   } catch {

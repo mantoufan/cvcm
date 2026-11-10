@@ -17,6 +17,8 @@ const state = {
   square: true,
   format: "png" as Format,
   showOrder: false,
+  /** Set once the user picks a format; until then each new picture keeps its own kind. */
+  formatChosen: false,
   pieces: [] as Piece[],
   /** Bumped by every change, so a slow split that finishes late does not show stale tiles. */
   run: 0,
@@ -31,6 +33,7 @@ let galleryEl: HTMLElement | null = null;
 let rowsEl: HTMLInputElement | null = null;
 let colsEl: HTMLInputElement | null = null;
 let squareEl: HTMLInputElement | null = null;
+let formatEl: HTMLSelectElement | null = null;
 
 export function mountImageSplitter(host: HTMLElement): void {
   host.append(
@@ -54,6 +57,8 @@ export function unmountImageSplitter(): void {
   state.load++;
   preview = statusEl = infoEl = galleryEl = null;
   rowsEl = colsEl = squareEl = null;
+  formatEl = null;
+  state.formatChosen = false;
 }
 
 function filesRail(): HTMLElement {
@@ -135,7 +140,7 @@ function controls(): HTMLElement {
   colsEl.dataset.field = "cols";
   squareEl = h("input", { type: "checkbox", checked: state.square, "data-field": "square", onChange: () => { state.square = squareEl!.checked; changed(); } });
   const order = h("input", { type: "checkbox", checked: state.showOrder, "data-field": "order", onChange: () => { state.showOrder = order.checked; paint(); renderGallery(); } });
-  const format = h("select", { "data-field": "format", onChange: () => { state.format = format.value as Format; changed(); } },
+  formatEl = h("select", { "data-field": "format", onChange: () => { state.format = formatEl!.value as Format; state.formatChosen = true; changed(); } },
     h("option", { value: "png", selected: state.format === "png" }, "PNG"),
     h("option", { value: "jpeg", selected: state.format === "jpeg" }, "JPG"),
     h("option", { value: "webp", selected: state.format === "webp" }, "WebP"),
@@ -161,7 +166,7 @@ function controls(): HTMLElement {
       labeled(t("imageSplitter.cols"), colsEl),
       h("label", { class: "check" }, squareEl, h("span", null, t("imageSplitter.square"))),
       h("label", { class: "check" }, order, h("span", null, t("imageSplitter.showOrder"))),
-      labeled(t("imageSplitter.format"), format),
+      labeled(t("imageSplitter.format"), formatEl),
     ),
     h("p", { class: "hint" }, t("imageSplitter.hint")),
   );
@@ -193,11 +198,11 @@ async function setFile(file: File): Promise<void> {
     }
     state.source?.bitmap.close();
     state.source = { file, ...decoded };
-    // Keep the original kind where we can write it; anything else becomes PNG.
-    const type = file.type === "image/jpeg" ? "jpeg" : file.type === "image/webp" ? "webp" : "png";
-    state.format = type;
-    const sel = document.querySelector<HTMLSelectElement>("[data-field=format]");
-    if (sel) sel.value = type;
+    // Keep the original kind where we can write it (anything else becomes PNG), unless the user picked a format.
+    if (!state.formatChosen) {
+      state.format = file.type === "image/jpeg" ? "jpeg" : file.type === "image/webp" ? "webp" : "png";
+      if (formatEl) formatEl.value = state.format;
+    }
     if (statusEl) statusEl.textContent = "";
     changed();
   } catch {
@@ -214,6 +219,8 @@ function tiles(): Tile[] {
 /** Any setting changed: the old tiles no longer match. */
 function changed(): void {
   state.run++;
+  // A split in progress was just cancelled, and old messages no longer apply.
+  if (statusEl) statusEl.textContent = "";
   dropPieces();
   paint();
 }

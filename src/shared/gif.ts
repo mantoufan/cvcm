@@ -235,6 +235,14 @@ function newLzwTable(): LzwTable {
   return { codes: new Int16Array(4096 << 8), stamps: new Uint16Array(4096 << 8), gen: 0 };
 }
 
+let shared: LzwTable | null = null;
+
+/** One table for every writer: frames are encoded one at a time and each starts with a reset. */
+function sharedLzwTable(): LzwTable {
+  shared ??= newLzwTable();
+  return shared;
+}
+
 function resetLzwTable(t: LzwTable): void {
   t.gen++;
   if (t.gen === 65536) {
@@ -315,7 +323,7 @@ function writeLzw(indices: Uint8Array, minCodeSize: number, out: Bytes, table: L
 export class GifWriter {
   private out = new Bytes();
   private frames = 0;
-  private table = newLzwTable();
+  private table = sharedLzwTable();
   constructor(private readonly opts: GifOptions) {
     const { width, height, loop } = opts;
     this.out.push(0x47, 0x49, 0x46, 0x38, 0x39, 0x61);
