@@ -5,10 +5,17 @@ export const MAX_FRAMES = 300;
 
 export type Fit = "contain" | "cover";
 
-/** Output size: `width` wide (never wider than the source) with the source's shape, at least 1 px each way. */
+/** The longest side a GIF may have: the widest choice (800 px) twice over, for tall pictures and screenshots. */
+export const MAX_GIF_EDGE = 1600;
+
+/**
+ * Output size: `width` wide (never wider than the source) with the source's shape, narrower if that would make it taller
+ * than MAX_GIF_EDGE, and at least 1 px each way.
+ */
 export function gifSize(srcW: number, srcH: number, width: number): { width: number; height: number } {
-  const w = Math.max(1, Math.min(Math.round(width), Math.round(srcW)));
-  return { width: w, height: Math.max(1, Math.round((w * srcH) / Math.max(1, srcW))) };
+  const ratio = srcH / Math.max(1, srcW);
+  const w = Math.max(1, Math.min(Math.round(width), Math.round(srcW), Math.floor(MAX_GIF_EDGE / Math.max(ratio, 1e-9))));
+  return { width: w, height: Math.max(1, Math.min(MAX_GIF_EDGE, Math.round(w * ratio))) };
 }
 
 export type FrameRect = { sx: number; sy: number; sw: number; sh: number; dx: number; dy: number; dw: number; dh: number };

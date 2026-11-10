@@ -18,6 +18,8 @@ type Item = {
   error: string | null;
   /** SVG source, kept so a new scale redraws it sharp instead of stretching the bitmap. */
   svg: { text: string; info: SvgInfo } | null;
+  /** Still being read in: a scale change is picked up by the ingest itself, not redrawn twice. */
+  ingesting: boolean;
 };
 
 type Format = ImageFormat;
@@ -288,39 +290,52 @@ function onPaste(e: ClipboardEvent): void {
 async function ingestFile(file: File): Promise<void> {
   const id = crypto.randomUUID();
   const url = URL.createObjectURL(file);
-  const item: Item = { id, file, url, width: 0, height: 0, bitmap: null, error: null, svg: null };
+  const item: Item = { id, file, url, width: 0, height: 0, bitmap: null, error: null, svg: null, ingesting: true };
   state.items.push(item);
   if (!state.selected) state.selected = id;
   try {
-    if (isSvgFile(file)) {
-      const text = await file.text();
-      const info = readSvg(text);
-      if (!info) throw new Error("svg");
-      item.svg = { text, info };
-      // If the scale changes while this draws, draw again at the new one.
-      let scale = state.svgScale;
-      let r = await rasterSvg(item, scale);
-      while (scale !== state.svgScale && state.items.includes(item)) {
-        r.bitmap.close();
-        scale = state.svgScale;
-        r = await rasterSvg(item, scale);
-      }
-      // Removed or cleared while it drew: nothing holds this bitmap.
-      if (!state.items.includes(item)) {
-        r.bitmap.close();
-        return;
-      }
-      applyRaster(item, r);
+    if (isSvgFile(file) && (await ingestSvg(item))) return;
+    // Not an SVG, or one we cannot redraw from source (a prefixed svg:svg root, say): the browser's own decoding.
+    item.svg = null;
+    const decoded = await decodeImage(file);
+    if (!state.items.includes(item)) {
+      decoded.bitmap.close();
       return;
     }
-    const decoded = await decodeImage(file);
     item.bitmap = decoded.bitmap;
     item.width = decoded.width;
     item.height = decoded.height;
   } catch {
     item.error = t("convert.errorDecode");
+  } finally {
+    item.ingesting = false;
   }
 }
+
+/** Draws an SVG from its source at the SVG scale; false when its root cannot be read or drawn that way. */
+async function ingestSvg(item: Item): Promise<boolean> {
+  const text = await item.file.text();
+  const info = readSvg(text);
+  if (!info) return false;
+  item.svg = { text, info };
+  try {
+    // If the scale changes while this draws, draw again at the new one.
+    let scale = state.svgScale;
+    let r = await rasterSvg(item, scale);
+    while (scale !== state.svgScale && state.items.includes(item)) {
+      r.bitmap.close();
+      scale = state.svgScale;
+      r = await rasterSvg(item, scale);
+    }
+    // Removed or cleared while it drew: nothing holds this bitmap.
+    if (!state.items.includes(item)) r.bitmap.close();
+    else applyRaster(item, r);
+    return true;
+  } catch {
+    return false;
+  }
+}
+
 
 /** Draws an SVG item at its own size × `scale` from the vector source, so 2×–4× stay sharp. */
 async function rasterSvg(item: Item, scale: SvgScale): Promise<{ bitmap: ImageBitmap; width: number; height: number }> {
@@ -344,7 +359,8 @@ async function rerasterSvgs(): Promise<void> {
   const run = ++rasterRun;
   const scale = state.svgScale;
   for (const item of [...state.items]) {
-    if (!item.svg) continue;
+    // Items still being read in pick up the new scale themselves.
+    if (!item.svg || item.ingesting) continue;
     try {
       const r = await rasterSvg(item, scale);
       // A newer scale or a removed item: drop this one.

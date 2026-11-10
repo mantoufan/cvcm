@@ -2,6 +2,7 @@ import { GifWriter } from "../../shared/gif";
 import { outputFilename } from "../../shared/filename";
 import { fitFrame, frameCount, frameTimes, gifSize, MAX_FRAMES, type Fit } from "../../shared/gif-frames";
 import { decodeImage } from "../decode";
+import { finiteDuration } from "../media-duration";
 import { downloadBlob, h } from "../dom";
 import { formatBytes } from "../../shared/resize";
 import { locale, t } from "../i18n";
@@ -291,7 +292,15 @@ async function setClip(file: File): Promise<void> {
     URL.revokeObjectURL(url);
     return;
   }
-  const duration = Number.isFinite(video.duration) ? video.duration : 0;
+  // MediaRecorder WebM (cv.cm's own recorders too) has no duration until the browser looks at its end.
+  const duration = await finiteDuration(video);
+  if (!els || load !== state.load) {
+    video.removeAttribute("src");
+    video.load();
+    video.remove();
+    URL.revokeObjectURL(url);
+    return;
+  }
   state.clip = { file, url, video, duration, width: video.videoWidth, height: video.videoHeight };
   state.start = 0;
   state.end = Math.min(duration || 3, 3);
@@ -531,8 +540,13 @@ async function makeGif(): Promise<void> {
   // of rounded running totals: the frames take turns rounding up and down and the GIF lasts as long as the clip.
   const spacing = clip ? (times.length > 1 ? times[1]! - times[0]! : 1 / state.fps) : 0;
   const delayFor = (i: number) => (clip ? (Math.round((i + 1) * spacing * 100) - Math.round(i * spacing * 100)) * 10 : state.delayMs);
+  // The player is locked while its frames are grabbed: a seek or play by hand would capture the wrong moments.
+  if (clip) {
+    clip.video.pause();
+    clip.video.controls = false;
+    clip.video.style.pointerEvents = "none";
+  }
   try {
-    if (clip) clip.video.pause();
     for (let i = 0; i < count; i++) {
       if (run !== state.run) return;
       setStatus(t("gifMaker.encoding", { i: i + 1, n: count }));
@@ -553,6 +567,11 @@ async function makeGif(): Promise<void> {
       refresh();
     }
     return;
+  } finally {
+    if (clip) {
+      clip.video.controls = true;
+      clip.video.style.pointerEvents = "";
+    }
   }
   if (run !== state.run || !els) return;
   const bytes = writer.finish();

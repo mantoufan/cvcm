@@ -123,6 +123,8 @@ describe("gif encoder", () => {
   it("sizes frames and samples video moments", () => {
     expect(gifSize(1920, 1080, 480)).toEqual({ width: 480, height: 270 });
     expect(gifSize(300, 200, 800)).toEqual({ width: 300, height: 200 });
+    // A tall screenshot is narrowed so the GIF is at most 1600 px tall.
+    expect(gifSize(1080, 8000, 480)).toEqual({ width: 216, height: 1600 });
     const contain = fitFrame(100, 50, 100, 100, "contain");
     expect(contain).toMatchObject({ dx: 0, dy: 25, dw: 100, dh: 50 });
     const cover = fitFrame(100, 50, 100, 100, "cover");
@@ -336,6 +338,8 @@ describe("svg size", () => {
     expect(readSvg('<svg width="48" viewBox="0 0 24 12"></svg>')).toMatchObject({ width: 48, height: 24 });
     expect(readSvg('<svg width="100%" height="100%"></svg>')).toMatchObject({ width: 300, height: 150 });
     expect(readSvg("<html></html>")).toBeNull();
+    // A prefixed root is left to the browser rather than rewritten into broken markup.
+    expect(readSvg('<svg:svg xmlns:svg="http://www.w3.org/2000/svg" width="10" height="10"/>')).toBeNull();
     // Attribute names are case-sensitive: browsers ignore "viewbox", so a viewBox is still added.
     expect(readSvg('<svg viewbox="0 0 10 10"></svg>')).toMatchObject({ width: 300, height: 150, hasViewBox: false });
     // A tag inside a comment or the DOCTYPE is not the root.

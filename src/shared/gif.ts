@@ -368,8 +368,12 @@ export class GifWriter {
     return this.frames;
   }
 
+  /** The file. Also lets the shared scratch buffers go, so about 5 MB is not held after the last GIF. */
   finish(): Uint8Array {
     this.out.byte(0x3b);
+    shared = null;
+    hist = null;
+    cacheBuf = null;
     return this.out.result();
   }
 }

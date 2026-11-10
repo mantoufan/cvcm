@@ -346,14 +346,17 @@ async function split(): Promise<Piece[] | null> {
 }
 
 async function downloadZip(): Promise<void> {
+  // Name the ZIP for the picture and grid of these tiles, even if another picture loads while it is packed.
+  const source = state.source;
+  const zipName = source ? `${safeStem(source.file.name, "image")}-${state.rows}x${state.cols}.zip` : "";
   const pieces = await split();
-  if (!pieces || !state.source) return;
+  if (!pieces || !source || source !== state.source) return;
   const entries = [];
   for (const p of pieces) entries.push({ name: p.name, data: new Uint8Array(await p.blob.arrayBuffer()) });
   const zip = zipStore(entries);
   const packed = new ArrayBuffer(zip.byteLength);
   new Uint8Array(packed).set(zip);
-  downloadBlob(new Blob([packed], { type: "application/zip" }), `${safeStem(state.source.file.name, "image")}-${state.rows}x${state.cols}.zip`);
+  downloadBlob(new Blob([packed], { type: "application/zip" }), zipName);
 }
 
 /** Every tile needs at least one pixel each way: a grid finer than the picture cannot be cut. */

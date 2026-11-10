@@ -35,7 +35,8 @@ export function svgLength(value: string | null): number | null {
 export function readSvg(text: string): SvgInfo | null {
   // Blank out comments, CDATA and the DOCTYPE (same length, so offsets still match) before looking for the root tag.
   const masked = text.replace(/<!--[\s\S]*?-->|<!\[CDATA\[[\s\S]*?\]\]>|<!DOCTYPE[^>[]*(?:\[[\s\S]*?\])?\s*>/gi, (x) => " ".repeat(x.length));
-  const m = /<svg\b(?:"[^"]*"|'[^']*'|[^'">])*>/i.exec(masked);
+  // A plain <svg> root only: a prefixed <svg:svg> is left to the browser (rewriting it would break the markup).
+  const m = /<svg(?=[\s/>])(?:"[^"]*"|'[^']*'|[^'">])*>/i.exec(masked);
   if (!m) return null;
   const tag = text.slice(m.index, m.index + m[0].length);
   const vb = (attr(tag, "viewBox") ?? "").trim().split(/[\s,]+/).map(Number);

@@ -31,10 +31,12 @@ let mounted: Mounted | null = null;
 /** Locale-aware number: up to 8 significant digits, exponent form for the very large and very small. */
 export function formatter(loc: string): Formatter {
   const nf = new Intl.NumberFormat(loc, { maximumSignificantDigits: 8 });
+  // Scientific form in the page's own decimal mark ("1,5E-6" in es), like the average calculator.
+  const sci = new Intl.NumberFormat(loc, { notation: "scientific", maximumSignificantDigits: 7 });
   return (n: number) => {
     if (!Number.isFinite(n)) return "—";
     const abs = Math.abs(n);
-    if (abs !== 0 && (abs >= 1e15 || abs < 1e-6)) return n.toExponential(6).replace(/\.?0+e/, "e").replace("e+", "e");
+    if (abs !== 0 && (abs >= 1e15 || abs < 1e-6)) return sci.format(n);
     return nf.format(n);
   };
 }
