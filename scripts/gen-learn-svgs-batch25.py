@@ -137,21 +137,25 @@ def split_grid(t) -> str:
 
 
 def split_order(t) -> str:
-    # The profile after posting: the tile posted last (post 9) is the newest, top left; post 1 ends bottom right.
-    side, x0, y0 = 120, 330, 90
+    # The profile after posting, in Instagram's 3:4 cells: the tile posted last (post 9) is the newest, top left;
+    # post 1 ends bottom right.
+    cw, ch, x0, y0 = 105, 140, 322, 50
     out = ""
     for r in range(3):
         for c in range(3):
             n = 9 - (r * 3 + c)
-            x, y = x0 + c * side, y0 + r * side
+            x, y = x0 + c * cw, y0 + r * ch
             first = n == 1
-            out += box(x + 4, y + 4, side - 8, side - 8, PINK if first else SOFT, PINK, 10)
-            out += text(x + side / 2, y + side / 2 - 4, f"{t['post']} {n}", 22, WHITE if first else DEEP, 800, "middle")
-            out += text(x + side / 2, y + side / 2 + 26, f"r{r + 1}c{c + 1}", 18, WHITE if first else MUTED, 400, "middle", MONO)
-    out += arrow(300, 150, x0 + 6, 150, DEEP)
-    out += wrapped(290, 150, t["newest"], 22, DEEP, 800, "end", 12)
-    out += arrow(760, 390, x0 + 3 * side - 6, 390, PINK)
-    out += text(775, 398, f"{t['post']} 1", 22, PINK, 800, "start")
+            out += box(x + 3, y + 3, cw - 6, ch - 6, PINK if first else SOFT, PINK, 10)
+            # Long words ("Publicación") get a smaller size so they stay inside the cell.
+            size = 17 if len(t["post"]) <= 8 else max(12, int(17 * 8 / len(t["post"])))
+            out += text(x + cw / 2, y + 44, t["post"], size, WHITE if first else DEEP, 700, "middle")
+            out += text(x + cw / 2, y + 84, str(n), 34, WHITE if first else DEEP, 800, "middle")
+            out += text(x + cw / 2, y + 114, f"r{r + 1}c{c + 1}", 16, WHITE if first else MUTED, 400, "middle", MONO)
+    out += arrow(292, y0 + ch / 2, x0 + 6, y0 + ch / 2, DEEP)
+    out += wrapped(282, y0 + ch / 2, t["newest"], 22, DEEP, 800, "end", 12)
+    out += arrow(760, y0 + 2.5 * ch, x0 + 3 * cw - 6, y0 + 2.5 * ch, PINK)
+    out += text(772, y0 + 2.5 * ch + 8, f"{t['post']} 1", 22, PINK, 800, "start")
     return out
 
 

@@ -18,6 +18,11 @@ export const TILE_RATIO = {
 export type TileShape = keyof typeof TILE_RATIO;
 export const TILE_SHAPES = Object.keys(TILE_RATIO) as TileShape[];
 
+/** The shape a page starts on: square in zh-CN (WeChat Moments shows its nine-grid as squares), 3:4 elsewhere. */
+export function defaultShape(locale: string): TileShape {
+  return locale === "zh-CN" ? "square" : "portrait";
+}
+
 /** Common grids: Instagram's three-across profile rows (3:4 tiles), carousels (square slides), halves. */
 export const SPLIT_PRESETS = [
   { id: "grid3x3", rows: 3, cols: 3, shape: "portrait" },
@@ -40,7 +45,7 @@ export function cropArea(width: number, height: number, rows: number, cols: numb
   if (!ratio) return { x: 0, y: 0, width, height };
   const [a, b] = ratio;
   // At least 1 px each way whenever the picture has a pixel per row and column (a 2000 × 20 strip in 20 rows still cuts).
-  const tileW = Math.min(Math.floor(width / cols), Math.max(1, Math.floor(Math.min(width / cols, ((height / rows) * a) / b))));
+  const tileW = Math.min(Math.floor(width / cols), Math.max(1, Math.floor((height * a) / (rows * b))));
   const tileH = Math.min(Math.floor(height / rows), Math.max(1, Math.round((tileW * b) / a)));
   const w = tileW * cols;
   const h = tileH * rows;

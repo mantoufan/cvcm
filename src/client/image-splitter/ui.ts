@@ -1,5 +1,5 @@
 import { mimeForFormat, safeStem } from "../../shared/filename";
-import { MAX_GRID, SPLIT_PRESETS, TILE_SHAPES, type TileShape, clampGrid, cropArea, postingOrder, splitGrid, tileName, type Tile } from "../../shared/image-split";
+import { type Rect, MAX_GRID, SPLIT_PRESETS, TILE_SHAPES, defaultShape, type TileShape, clampGrid, cropArea, postingOrder, splitGrid, tileName, type Tile } from "../../shared/image-split";
 import { zipStore } from "../../shared/zip";
 import { blobFromBytes } from "../../shared/image-encode";
 import { canvasToBlob, decodeImage } from "../decode";
@@ -15,8 +15,8 @@ const state = {
   source: null as Source | null,
   rows: 3,
   cols: 3,
-  // Set on mount: square in zh-CN (WeChat Moments shows squares), 3:4 for the Instagram grid elsewhere.
-  shape: "portrait" as TileShape,
+  /** null until the first mount picks the locale's default; then it stays, like rows and columns. */
+  shape: null as TileShape | null,
   format: "png" as Format,
   showOrder: false,
   /** Set once the user picks a format; until then each new picture keeps its own kind. */
@@ -39,7 +39,7 @@ let formatEl: HTMLSelectElement | null = null;
 let orderEl: HTMLInputElement | null = null;
 
 export function mountImageSplitter(host: HTMLElement): void {
-  state.shape = locale() === "zh-CN" ? "square" : "portrait";
+  state.shape ??= defaultShape(locale());
   host.append(
     h("header", { class: "tool-head" },
       h("a", { class: "back", href: appHref(locale(), null), "data-nav": "home" }, t("imageSplitter.back")),
@@ -144,7 +144,7 @@ function controls(): HTMLElement {
   colsEl = num(state.cols, (n) => { state.cols = n; changed(); }, () => state.cols);
   colsEl.dataset.field = "cols";
   shapeEl = h("select", { "data-field": "shape", onChange: () => { state.shape = shapeEl!.value as TileShape; changed(); } },
-    ...TILE_SHAPES.map((sh) => h("option", { value: sh, selected: sh === state.shape }, t(`imageSplitter.shape_${sh}`))),
+    ...TILE_SHAPES.map((sh) => h("option", { value: sh, selected: sh === shape() }, t(`imageSplitter.shape_${sh}`))),
   );
   orderEl = h("input", { type: "checkbox", checked: state.showOrder, "data-field": "order", onChange: () => { state.showOrder = orderEl!.checked; paint(); renderGallery(); } });
   formatEl = h("select", { "data-field": "format", onChange: () => { state.format = formatEl!.value as Format; state.formatChosen = true; changed(); } },
@@ -217,10 +217,20 @@ async function setFile(file: File): Promise<void> {
   }
 }
 
-function tiles(): Tile[] {
+/** The cut area and its tiles for the current picture and settings (one place for both preview and Split). */
+function layout(): { area: Rect; list: Tile[] } | null {
   const s = state.source;
-  if (!s) return [];
-  return splitGrid(cropArea(s.width, s.height, state.rows, state.cols, state.shape), state.rows, state.cols);
+  if (!s) return null;
+  const area = cropArea(s.width, s.height, state.rows, state.cols, shape());
+  return { area, list: splitGrid(area, state.rows, state.cols) };
+}
+
+function tiles(): Tile[] {
+  return layout()?.list ?? [];
+}
+
+function shape(): TileShape {
+  return state.shape ?? defaultShape(locale());
 }
 
 /** Any setting changed: the old tiles no longer match. */
@@ -256,8 +266,7 @@ function paint(): void {
   preview.width = Math.max(1, Math.round(s.width * scale));
   preview.height = Math.max(1, Math.round(s.height * scale));
   ctx.drawImage(s.bitmap, 0, 0, preview.width, preview.height);
-  const area = cropArea(s.width, s.height, state.rows, state.cols, state.shape);
-  const list = splitGrid(area, state.rows, state.cols);
+  const { area, list } = layout()!;
   if (tooFine(list)) {
     infoEl.textContent = t("imageSplitter.tooFine", { W: s.width, H: s.height });
     return;
