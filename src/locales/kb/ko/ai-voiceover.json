@@ -114,7 +114,7 @@
         "음량은 ITU-R BS.1770 알고리즘으로 측정한 LUFS(풀스케일 대비 라우드니스 단위)로 나타냅니다. 방송 권고안 EBU R 128도 같은 측정을 쓰며, 방송 프로그램 기준은 -23 LUFS입니다. 스트리밍과 소셜 플랫폼은 목표치를 모두 공개하지는 않지만, 통합 약 -14 LUFS에 트루 피크 약 -1 dBTP 이하가 온라인 영상의 일반적인 작업 기준입니다.",
         "대부분의 대형 플랫폼은 재생 음량을 정규화하므로, 훨씬 크게 마스터링한 영상은 낮춰서 재생되어 이득이 없고, 그 음량을 맞추려고 리미터를 세게 걸면 목소리가 거칠어집니다. 훨씬 작게 마스터링한 영상은 기대만큼 키워지지 않을 수 있습니다. 일반적인 목표 근처에 맞추면 두 문제를 모두 피할 수 있습니다.",
         {
-          "code": "# Measure, then normalize a voiceover to about -14 LUFS, true peak -1 dBTP (ffmpeg loudnorm)\nffmpeg -i voice.wav -af loudnorm=I=-14:TP=-1:LRA=11:print_format=summary -f null -\nffmpeg -i voice.wav -af loudnorm=I=-14:TP=-1:LRA=11 -ar 48000 voice_norm.wav",
+          "code": "# Pass 1: measure. Note the measured_* values in the JSON it prints.\nffmpeg -i voice.wav -af loudnorm=I=-14:TP=-1:LRA=11:print_format=json -f null -\n# Pass 2: normalize with your measured values (the numbers below are examples)\nffmpeg -i voice.wav -af loudnorm=I=-14:TP=-1:LRA=11:measured_I=-19.6:measured_TP=-3.2:measured_LRA=6.1:measured_thresh=-30.0:offset=0.4:linear=true -ar 48000 voice_norm.wav",
           "lang": "bash"
         },
         "목소리만이 아니라 최종 믹스를 정규화하세요. 말하는 동안 음악은 목소리보다 훨씬 아래에 있어야 하고, 대략 12~20dB 낮게 두는 것이 무난한 시작점이며 문장 사이에서 올리면 됩니다. 반드시 폰 스피커에서 확인하세요. 작은 음악은 사라지고 거친 고음은 두드러지는 환경입니다."

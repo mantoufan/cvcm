@@ -114,7 +114,7 @@
         "ラウドネスは、LUFS（フルスケールを基準にしたラウドネス単位）で測ります。測定には、ITU-R BS.1770のアルゴリズムを使い、放送向けのEBU R 128勧告も同じ測定法です。EBU R 128は、放送番組を-23 LUFSと定めています。ストリーミングやSNSの各プラットフォームが目標値をすべて公開しているわけではありませんが、統合ラウドネス約-14 LUFS、トゥルーピーク約-1 dBTP以下は、オンライン動画で一般的に使われる目標値です。",
         "大手のプラットフォームの多くは再生時にラウドネスを正規化します。このため、極端に大きく仕上げた動画は音量を下げられるだけで得がなく、そこまで上げるために強いリミッターをかけると、声が耳障りになります。逆に、極端に小さい動画は、期待ほど持ち上げられないことがあります。一般的な目標値の近くに合わせれば、どちらの問題も避けられます。",
         {
-          "code": "# Measure, then normalize a voiceover to about -14 LUFS, true peak -1 dBTP (ffmpeg loudnorm)\nffmpeg -i voice.wav -af loudnorm=I=-14:TP=-1:LRA=11:print_format=summary -f null -\nffmpeg -i voice.wav -af loudnorm=I=-14:TP=-1:LRA=11 -ar 48000 voice_norm.wav",
+          "code": "# Pass 1: measure. Note the measured_* values in the JSON it prints.\nffmpeg -i voice.wav -af loudnorm=I=-14:TP=-1:LRA=11:print_format=json -f null -\n# Pass 2: normalize with your measured values (the numbers below are examples)\nffmpeg -i voice.wav -af loudnorm=I=-14:TP=-1:LRA=11:measured_I=-19.6:measured_TP=-3.2:measured_LRA=6.1:measured_thresh=-30.0:offset=0.4:linear=true -ar 48000 voice_norm.wav",
           "lang": "bash"
         },
         "声だけでなく、最終ミックスを正規化しましょう。実際のところ、話している間のBGMは声よりかなり小さくしておく必要があり、声の約12〜20 dB下を出発点にして、セリフの合間に上げるのが妥当です。スマホのスピーカーでの確認は必ずしてください。小さいBGMは消え、耳に刺さる高域が目立ちます。"

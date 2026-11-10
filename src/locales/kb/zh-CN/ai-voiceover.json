@@ -114,7 +114,7 @@
         "响度用LUFS（相对满刻度的响度单位）衡量，算法来自ITU-R BS.1770，也是欧洲广播联盟EBU R 128建议所依据的测量方法。EBU R 128规定广播节目为-23 LUFS。流媒体和社交平台并非都公布自己的目标，但对在线视频来说，积分响度约-14 LUFS、真峰值不高于约-1 dBTP，是常见的工作目标。",
         "大多数大型平台会对播放响度做归一化，所以母带做得响很多的视频会被压低，毫无好处，而为了做响而过度限幅，又会让人声刺耳。母带做得安静很多的视频，被抬高的幅度也可能不及预期。把目标定在常见值附近，两个问题都能避免。",
         {
-          "code": "# Measure, then normalize a voiceover to about -14 LUFS, true peak -1 dBTP (ffmpeg loudnorm)\nffmpeg -i voice.wav -af loudnorm=I=-14:TP=-1:LRA=11:print_format=summary -f null -\nffmpeg -i voice.wav -af loudnorm=I=-14:TP=-1:LRA=11 -ar 48000 voice_norm.wav",
+          "code": "# Pass 1: measure. Note the measured_* values in the JSON it prints.\nffmpeg -i voice.wav -af loudnorm=I=-14:TP=-1:LRA=11:print_format=json -f null -\n# Pass 2: normalize with your measured values (the numbers below are examples)\nffmpeg -i voice.wav -af loudnorm=I=-14:TP=-1:LRA=11:measured_I=-19.6:measured_TP=-3.2:measured_LRA=6.1:measured_thresh=-30.0:offset=0.4:linear=true -ar 48000 voice_norm.wav",
           "lang": "bash"
         },
         "要对最终混音做归一化，而不只是人声。实际操作中，说话时音乐应远低于人声，比人声低约12到20 dB是合理的起点，台词间隙再把音乐抬上来。一定要用手机外放检查，在那里低音量的音乐会消失，刺耳的高频则会很突出。"

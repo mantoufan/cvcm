@@ -114,7 +114,7 @@
         "響度以 LUFS（相對於滿刻度的響度單位）衡量，採用 ITU-R BS.1770 的演算法，這也是歐洲廣播聯盟 EBU R 128 建議背後的量測方式。EBU R 128 規定廣播節目為 -23 LUFS。串流與社群平台不一定公開自己的目標，但對線上影片來說，整合響度約 -14 LUFS、真實峰值不高於約 -1 dBTP，是常見的實用目標。",
         "多數大型平台會對播放音量做標準化，所以母帶做得很大聲，只會被調小而得不到好處，為了做大聲而過度壓縮，還會讓人聲聽起來刺耳。母帶太小聲的影片，也可能不會被調大到你預期的程度。把目標抓在常見數值附近，就能同時避開這兩個問題。",
         {
-          "code": "# Measure, then normalize a voiceover to about -14 LUFS, true peak -1 dBTP (ffmpeg loudnorm)\nffmpeg -i voice.wav -af loudnorm=I=-14:TP=-1:LRA=11:print_format=summary -f null -\nffmpeg -i voice.wav -af loudnorm=I=-14:TP=-1:LRA=11 -ar 48000 voice_norm.wav",
+          "code": "# Pass 1: measure. Note the measured_* values in the JSON it prints.\nffmpeg -i voice.wav -af loudnorm=I=-14:TP=-1:LRA=11:print_format=json -f null -\n# Pass 2: normalize with your measured values (the numbers below are examples)\nffmpeg -i voice.wav -af loudnorm=I=-14:TP=-1:LRA=11:measured_I=-19.6:measured_TP=-3.2:measured_LRA=6.1:measured_thresh=-30.0:offset=0.4:linear=true -ar 48000 voice_norm.wav",
           "lang": "bash"
         },
         "請標準化最終混音，而不只是人聲。實務上，說話時的音樂要明顯低於人聲；先壓低約 12 到 20 dB 是合理的起點，等兩句話之間再拉高。一定要用手機喇叭檢查，因為低音量的音樂在那裡會消失，刺耳的高頻則會特別突出。"
