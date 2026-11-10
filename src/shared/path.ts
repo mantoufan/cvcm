@@ -13,10 +13,11 @@ import { DATASET_SEGMENT, isDatasetId, type DatasetId } from "./datasets";
 import { RANKING_SEGMENT, isRankingId, type RankingId } from "./rankings";
 import { KB_SHELVES, isKbId, kbArticleOf, kbShelfOf, kbShelfOfPage, type KbHub, type KbId, type KbPage, type KbShelf } from "./kb";
 import { REF_SEGMENT, isRefId, type RefId } from "./ref";
+import { SLANG_SEGMENT, isSlangId, type SlangId } from "./slang";
 import { localePath, parseLocale, type Locale } from "./locale";
 
 /** Child sitemaps listed by `/sitemap.xml` (`/sitemaps/<section>.xml`), so Search Console reports indexing per section. */
-export const SITEMAP_SECTIONS = ["pages", "learn", "games", "tests", "datasets", "rankings", "reference"] as const;
+export const SITEMAP_SECTIONS = ["pages", "learn", "games", "tests", "datasets", "rankings", "reference", "slang"] as const;
 
 /** Agent discovery files (`src/shared/agent-docs.ts`): static, and readable from any origin (the Worker adds CORS). */
 export const AGENT_DOC_PATHS = ["/llms.txt", "/tools.json", "/.well-known/poppy.json"] as const;
@@ -493,6 +494,7 @@ export type AppPath =
   | { kind: "bare-ranking"; ranking: RankingId | null }
   | { kind: "bare-kb"; article: KbArticlePath }
   | { kind: "bare-ref"; entry: RefId | null }
+  | { kind: "bare-slang"; entry: SlangId | null }
   | { kind: "app"; locale: Locale; tool: ToolId | null; clipId?: string; convertJob?: ConvertJobId; resizeJob?: ResizeJobId }
   | { kind: "learn"; locale: Locale; tutorial: TutorialId | null }
   | ({ kind: "games"; locale: Locale } & GamesPath)
@@ -504,6 +506,7 @@ export type AppPath =
   | { kind: "ranking"; locale: Locale; ranking: RankingId | null }
   | { kind: "kb"; locale: Locale; article: KbArticlePath }
   | { kind: "ref"; locale: Locale; entry: RefId | null }
+  | { kind: "slang"; locale: Locale; entry: SlangId | null }
   | { kind: "clip"; id: string }
   | { kind: "unknown" };
 
@@ -620,6 +623,13 @@ export function parseAppPath(pathname: string): AppPath {
       if (isRefId(third)) return { kind: "ref", locale, entry: third };
       return { kind: "unknown" };
     }
+    if (second === SLANG_SEGMENT) {
+      if (rest.length > 0) return { kind: "unknown" };
+      if (!third) return { kind: "slang", locale, entry: null };
+      // Acronyms are often typed in capitals (/slang/FOMO/): parse them as the lowercase id so the Worker 301s.
+      if (isSlangId(third.toLowerCase())) return { kind: "slang", locale, entry: third.toLowerCase() as SlangId };
+      return { kind: "unknown" };
+    }
     if (isLegalPageId(second)) {
       if (third || rest.length > 0) return { kind: "unknown" };
       return { kind: "legal", locale, page: second };
@@ -689,6 +699,11 @@ export function parseAppPath(pathname: string): AppPath {
     if (isRefId(second) && !third) return { kind: "bare-ref", entry: second };
     return { kind: "unknown" };
   }
+  if (first === SLANG_SEGMENT) {
+    if (!second) return { kind: "bare-slang", entry: null };
+    if (isSlangId(second.toLowerCase()) && !third) return { kind: "bare-slang", entry: second.toLowerCase() as SlangId };
+    return { kind: "unknown" };
+  }
   if (isLegalPageId(first) && !second) return { kind: "bare-legal", page: first };
   if (isToolId(first) && !second) return { kind: "bare", tool: first };
   if (first === "v" && second && LEGACY_V_PAGES.has(second) && rest.length === 0) return { kind: "bare", tool: "v" };
@@ -747,6 +762,12 @@ export function datasetHref(locale: Locale, dataset: DatasetId | null = null): s
 /** The pose and style reference: `/{locale}/reference/` (hub) and `/{locale}/reference/{id}/`. */
 export function refHref(locale: Locale, entry: RefId | null = null): string {
   const base = `/${localePath(locale)}/${REF_SEGMENT}`;
+  return entry ? `${base}/${entry}/` : `${base}/`;
+}
+
+/** The internet slang dictionary: `/{locale}/slang/` (hub) and `/{locale}/slang/{id}/`. */
+export function slangHref(locale: Locale, entry: SlangId | null = null): string {
+  const base = `/${localePath(locale)}/${SLANG_SEGMENT}`;
   return entry ? `${base}/${entry}/` : `${base}/`;
 }
 

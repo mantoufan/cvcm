@@ -57,6 +57,16 @@ import viRef from "../locales/packs/ref-vi";
 import zhCNRef from "../locales/packs/ref-zh-CN";
 import zhTWRef from "../locales/packs/ref-zh-TW";
 import { REF_ALL } from "../locales/ref/all";
+import enSlang from "../locales/packs/slang-en";
+import esSlang from "../locales/packs/slang-es";
+import idSlang from "../locales/packs/slang-id";
+import jaSlang from "../locales/packs/slang-ja";
+import koSlang from "../locales/packs/slang-ko";
+import viSlang from "../locales/packs/slang-vi";
+import zhCNSlang from "../locales/packs/slang-zh-CN";
+import zhTWSlang from "../locales/packs/slang-zh-TW";
+import { SLANG_ALL } from "../locales/slang/all";
+import type { SlangId } from "./slang";
 import type { RefId } from "./ref";
 import type { KbId } from "./kb";
 import type { Locale } from "./locale";
@@ -70,6 +80,8 @@ import {
   registerDatasetMessages,
   registerRefEntry,
   registerRefMessages,
+  registerSlangEntry,
+  registerSlangMessages,
   type GameMessages,
   type KbMessages,
   type LegalMessages,
@@ -77,6 +89,7 @@ import {
   type QuizMessages,
   type DatasetMessages,
   type RefMessages,
+  type SlangMessages,
 } from "./messages";
 
 const ALL: Record<Locale, LocaleMessages> = { en, "zh-CN": zhCN, "zh-TW": zhTW, ja, ko, vi, id, es };
@@ -158,4 +171,19 @@ const REF: Record<Locale, RefMessages> = {
 for (const [locale, pack] of Object.entries(REF)) registerRefMessages(locale as Locale, pack);
 for (const [locale, entries] of Object.entries(REF_ALL)) {
   for (const [id, copy] of Object.entries(entries)) registerRefEntry(locale as Locale, id as RefId, copy);
+}
+
+const SLANG: Record<Locale, SlangMessages> = {
+  en: enSlang,
+  "zh-CN": zhCNSlang,
+  "zh-TW": zhTWSlang,
+  ja: jaSlang,
+  ko: koSlang,
+  vi: viSlang,
+  id: idSlang,
+  es: esSlang,
+};
+for (const [locale, pack] of Object.entries(SLANG)) registerSlangMessages(locale as Locale, pack);
+for (const [locale, entries] of Object.entries(SLANG_ALL)) {
+  for (const [id, copy] of Object.entries(entries)) registerSlangEntry(locale as Locale, id as SlangId, copy);
 }

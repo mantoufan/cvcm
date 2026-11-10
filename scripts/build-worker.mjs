@@ -30,6 +30,11 @@ for (const [src, chunk] of Object.entries(manifest)) {
   if (entry && entry[1] !== "index") localePacks[`ref-${entry[1]}/${entry[2]}`] = [`/${chunk.file}`];
   const refLoaders = /^src\/locales\/ref\/loaders\/([^/]+)\.ts$/.exec(src);
   if (refLoaders) localePacks[`ref-${refLoaders[1]}/loaders`] = [`/${chunk.file}`];
+  // Slang entries and loader tables: "slang-<locale>/<id>" and "slang-<locale>/loaders" (the pack is "slang-<locale>").
+  const slangEntry = /^src\/locales\/slang\/([a-zA-Z-]+)\/([a-z0-9-]+)\.json$/.exec(src);
+  if (slangEntry && slangEntry[1] !== "index") localePacks[`slang-${slangEntry[1]}/${slangEntry[2]}`] = [`/${chunk.file}`];
+  const slangLoaders = /^src\/locales\/slang\/loaders\/([^/]+)\.ts$/.exec(src);
+  if (slangLoaders) localePacks[`slang-${slangLoaders[1]}/loaders`] = [`/${chunk.file}`];
 }
 if (!Object.keys(localePacks).length) throw new Error("no locale packs in Vite manifest");
 
@@ -51,6 +56,7 @@ const pageModules = {
   ranking: "src/client/rankings/ui.ts",
   kb: "src/client/kb/ui.ts",
   ref: "src/client/ref/ui.ts",
+  slang: "src/client/slang/ui.ts",
 };
 const hubs = Object.keys(pageModules).length;
 const toolsSrc = readFileSync(resolve(root, "src/client/tools.ts"), "utf8");

@@ -6,6 +6,8 @@ import type { KbArticleCopy } from "./kb-i18n";
 import type { MarketMessages } from "./markets-i18n";
 import type { RefId } from "./ref";
 import type { RefEntryCopy, RefPhoto } from "./ref-i18n";
+import type { SlangId } from "./slang";
+import type { SlangEntryCopy } from "./slang-i18n";
 
 export type UiMessages = typeof import("../locales/en.json");
 export type GuideMessages = typeof import("../locales/guides/en.json");
@@ -21,6 +23,11 @@ export type RefMessages = typeof import("../locales/ref/en.json") & {
   names: Record<RefId, Record<Locale, string>>;
   /** src/data/ref-photos.json (the same module in every locale's pack). */
   photos: Partial<Record<RefId, RefPhoto[]>>;
+};
+
+/** Slang hub copy plus every entry's name and blurb (`list`), from `npm run slang:sync`. */
+export type SlangMessages = typeof import("../locales/slang/en.json") & {
+  list: Record<SlangId, { name: string; blurb: string }>;
 };
 
 /** Strings every page of one locale needs. The client loads only the active locale's pack. */
@@ -47,6 +54,8 @@ const loadedKb: Partial<Record<Locale, KbMessages>> = {};
 const loadedKbArticles: Partial<Record<Locale, Partial<Record<KbId, KbArticleCopy>>>> = {};
 const loadedRef: Partial<Record<Locale, RefMessages>> = {};
 const loadedRefEntries: Partial<Record<Locale, Partial<Record<RefId, RefEntryCopy>>>> = {};
+const loadedSlang: Partial<Record<Locale, SlangMessages>> = {};
+const loadedSlangEntries: Partial<Record<Locale, Partial<Record<SlangId, SlangEntryCopy>>>> = {};
 
 function pick<T>(table: Partial<Record<Locale, T>>, locale: Locale, what: string): T {
   const pack = table[locale] ?? table.en ?? Object.values(table)[0];
@@ -170,5 +179,33 @@ export function hasRefEntry(locale: Locale, id: RefId): boolean {
 export function refEntryMessages(locale: Locale, id: RefId): RefEntryCopy {
   const copy = loadedRefEntries[locale]?.[id] ?? loadedRefEntries.en?.[id];
   if (!copy) throw new Error(`reference entry not loaded: ${locale} ${id}`);
+  return copy;
+}
+
+export function registerSlangMessages(locale: Locale, pack: SlangMessages): void {
+  loadedSlang[locale] = pack;
+}
+
+export function hasSlangMessages(locale: Locale): boolean {
+  return Boolean(loadedSlang[locale]);
+}
+
+/** Slang hub copy, labels and entry names; on the client only after the slang pack is loaded (slang pages). */
+export function slangMessages(locale: Locale): SlangMessages {
+  return pick(loadedSlang, locale, "slang messages");
+}
+
+/** One slang entry's copy. The client loads each entry on its own. */
+export function registerSlangEntry(locale: Locale, id: SlangId, copy: SlangEntryCopy): void {
+  (loadedSlangEntries[locale] ??= {})[id] = copy;
+}
+
+export function hasSlangEntry(locale: Locale, id: SlangId): boolean {
+  return Boolean(loadedSlangEntries[locale]?.[id]);
+}
+
+export function slangEntryMessages(locale: Locale, id: SlangId): SlangEntryCopy {
+  const copy = loadedSlangEntries[locale]?.[id] ?? loadedSlangEntries.en?.[id];
+  if (!copy) throw new Error(`slang entry not loaded: ${locale} ${id}`);
   return copy;
 }
